@@ -1,0 +1,3 @@
+var a=window,b=document;
+function e(){var h=b.querySelectorAll("[data-lazy-original]"),j=a.pageYOffset||b.documentElement.scrollTop||b.body.scrollTop,d;d=0;b.body&&b.body.offsetWidth&&(d=b.body.offsetHeight);"CSS1Compat"==b.compatMode&&(b.documentElement&&b.documentElement.offsetWidth)&&(d=b.documentElement.offsetHeight);a.innerWidth&&a.innerHeight&&(d=a.innerHeight);for(var g=0;g<h.length;g++){var f=h[g],c=f;ot=0;if(c.offsetParent){do ot+=c.offsetTop;while(c=c.offsetParent)}c=ot;console.log(c);c<d+j&&(f.src=f.getAttribute("data-lazy-original"),
+f.removeAttribute("data-lazy-original"))}}a.addEventListener?(a.addEventListener("DOMContentLoaded",e,!1),a.addEventListener("scroll",e,!1)):(a.attachEvent("onload",e),a.attachEvent("onscroll",e));
