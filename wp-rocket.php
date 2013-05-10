@@ -73,9 +73,10 @@ register_deactivation_hook(__FILE__, 'wp_rocket_deactivation' );
 function wp_rocket_deactivation()
 {
 
-	//
-	//remove_filter( 'mod_rewrite_rules', 'override_mod_rewrite_rules' );
-	flush_rewrite_rules( true );
+	// Delete All WP Rocket rules of the .htaccess file
+	remove_filter( 'mod_rewrite_rules', 'rocket_override_mod_rewrite_rules' );
+	flush_rocket_htaccess( true );
+	flush_rewrite_rules();
 
 }
 

@@ -7,9 +7,10 @@
  * since 1.0
  *
  */
-function flush_rocket_htaccess()
+function flush_rocket_htaccess( $force = false )
 {
 
+	$file = '';
 	$htaccess_file = ABSPATH . '.htaccess';
 
 	if( file_exists( $htaccess_file ) && is_writeable( $htaccess_file ) )
@@ -21,13 +22,19 @@ function flush_rocket_htaccess()
 		// Delete the WP Rocket marker
 		$ftmp = preg_replace( '/# BEGIN WP Rocket(.*)# END WP Rocket/isUe', '', $ftmp );
 		
-		// Recreate WP Rocket marker
-		$file  = '# BEGIN WP Rocket' . "\n";
-		$file .= get_rocket_htaccess_charset();
-		$file .= get_rocket_mod_headers();
-		$file .= get_rocket_htaccess_gzip_encoding();
-		$file .= get_rocket_mod_rewrite();
-		$file .= '# END WP Rocket'. "\n\n";
+		
+		if( $force === false  ) {
+			
+			// Recreate WP Rocket marker
+			$file  = '# BEGIN WP Rocket' . "\n";
+			$file .= get_rocket_htaccess_charset();
+			$file .= get_rocket_mod_headers();
+			$file .= get_rocket_htaccess_gzip_encoding();
+			$file .= get_rocket_mod_rewrite();
+			$file .= '# END WP Rocket'. "\n\n";
+				
+		}
+		
 
 		// Update the .htacces file
 		file_put_contents( $htaccess_file , $file . $ftmp );
