@@ -61,7 +61,7 @@ function rocket_clean_comment( $arg1, $arg2 = '', $arg3 = '' )
     $actions = array(
         	'rocket_clean_post_terms' => array( $post_ID ),
         	'rocket_clean_post_dates' => array( $post_ID ),
-        	'rocket_clean_cache_files' => array( get_permalink( $post_ID ), get_post_type_archive_link( $post_type ) ),
+        	'rocket_clean_files' 	  => array( get_permalink( $post_ID ), get_post_type_archive_link( $post_type ) ),
         	'rocket_clean_home'
         );
 

@@ -73,8 +73,8 @@ function get_rocket_mod_rewrite()
 	$rules .= 'RewriteCond %{HTTP:Cookie} !^.*(' . get_rocket_cookies_not_cached() . ').*$' . "\n";
 	$rules .= 'RewriteCond %{HTTP:Accept-Encoding} gzip' . "\n";
 	$rules .= 'RewriteCond %{HTTPS} off' . "\n";
-	$rules .= 'RewriteCond %{DOCUMENT_ROOT}/'. $cache_root .'%{REQUEST_URI}index.html.gz -f' . "\n";
-	$rules .= 'RewriteRule ^(.*) /' . $cache_root . '%{REQUEST_URI}index.html.gz [L]' . "\n";
+	$rules .= 'RewriteCond %{DOCUMENT_ROOT}/'. $cache_root .'/%{HTTP_HOST}%{REQUEST_URI}index.html.gz -f' . "\n";
+	$rules .= 'RewriteRule ^(.*) /' . $cache_root . '/%{HTTP_HOST}%{REQUEST_URI}index.html.gz [L]' . "\n";
 	$rules .= '</IfModule>' . "\n";
 
 	return $rules;
