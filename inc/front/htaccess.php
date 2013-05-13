@@ -28,9 +28,9 @@ function flush_rocket_htaccess( $force = false )
 			// Recreate WP Rocket marker
 			$file  = '# BEGIN WP Rocket' . "\n";
 			$file .= get_rocket_htaccess_charset();
-			$file .= get_rocket_mod_headers();
-			$file .= get_rocket_htaccess_gzip_encoding();
-			$file .= get_rocket_mod_rewrite();
+			$file .= get_rocket_htaccess_etag();
+			$file .= get_rocket_htaccess_mod_deflate();
+			$file .= get_rocket_htaccess_mod_rewrite();
 			$file .= '# END WP Rocket'. "\n\n";
 				
 		}
@@ -55,7 +55,7 @@ function flush_rocket_htaccess( $force = false )
  * since 1.0
  *
  */
-function get_rocket_mod_rewrite()
+function get_rocket_htaccess_mod_rewrite()
 {
 
 	// Get root base
@@ -71,11 +71,55 @@ function get_rocket_mod_rewrite()
 	$rules .= 'RewriteCond %{REQUEST_METHOD} GET' . "\n";
 	$rules .= 'RewriteCond %{QUERY_STRING} !.*=.*' . "\n";
 	$rules .= 'RewriteCond %{HTTP:Cookie} !^.*(' . get_rocket_cookies_not_cached() . ').*$' . "\n";
-	$rules .= 'RewriteCond %{HTTP:Accept-Encoding} gzip' . "\n";
 	$rules .= 'RewriteCond %{HTTPS} off' . "\n";
-	$rules .= 'RewriteCond %{DOCUMENT_ROOT}/'. $cache_root .'/%{HTTP_HOST}%{REQUEST_URI}index.html.gz -f' . "\n";
-	$rules .= 'RewriteRule ^(.*) /' . $cache_root . '/%{HTTP_HOST}%{REQUEST_URI}index.html.gz [L]' . "\n";
+	$rules .= 'RewriteCond %{DOCUMENT_ROOT}/'. $cache_root .'/%{HTTP_HOST}%{REQUEST_URI}index.html -f' . "\n";
+	$rules .= 'RewriteRule ^(.*) /' . $cache_root . '/%{HTTP_HOST}%{REQUEST_URI}index.html [L]' . "\n";
+	$rules .= '</IfModule>' . "\n\n";
+
+	return $rules;
+
+}
+
+
+
+/**
+ * TO DO - Description
+ *
+ * since 1.0
+ *
+ */
+function get_rocket_htaccess_mod_deflate()
+{
+
+	$rules = '# Gzip compression' . "\n";
+	$rules .= '<IfModule mod_deflate.c>' . "\n";
+	$rules .= '# Force deflate for mangled headers developer.yahoo.com/blogs/ydn/posts/2010/12/pushing-beyond-gzipping/' . "\n";
+	$rules .= '<IfModule mod_setenvif.c>' . "\n";
+	$rules .= '<IfModule mod_headers.c>' . "\n";
+	$rules .= 'SetEnvIfNoCase ^(Accept-EncodXng|X-cept-Encoding|X{15}|~{15}|-{15})$ ^((gzip|deflate)\s*,?\s*)+|[X~-]{4,13}$ HAVE_Accept-Encoding' . "\n";
+	$rules .= 'RequestHeader append Accept-Encoding "gzip,deflate" env=HAVE_Accept-Encoding' . "\n";
 	$rules .= '</IfModule>' . "\n";
+	$rules .= '</IfModule>' . "\n\n";
+	$rules .= '# Compress all output labeled with one of the following MIME-types' . "\n";
+	$rules .= '<IfModule mod_filter.c>' . "\n";
+	$rules .= 'AddOutputFilterByType DEFLATE application/atom+xml \
+	                          application/javascript \
+	                          application/json \
+	                          application/rss+xml \
+	                          application/vnd.ms-fontobject \
+	                          application/x-font-ttf \
+	                          application/xhtml+xml \
+	                          application/xml \
+	                          font/opentype \
+	                          image/svg+xml \
+	                          image/x-icon \
+	                          text/css \
+	                          text/html \
+	                          text/plain \
+	                          text/x-component \
+	                          text/xml' . "\n";
+	$rules .= '</IfModule>' . "\n";
+	$rules .= '</IfModule>' . "\n\n";
 
 	return $rules;
 
@@ -108,35 +152,19 @@ function get_rocket_htaccess_charset()
  * since 1.0
  *
  */
-function get_rocket_mod_headers()
+function get_rocket_htaccess_etag()
 {
 
 	$rules = "# FileETag None is not enough for every server.\n";
 	$rules .= "<IfModule mod_headers.c>\n";
 	$rules .= "Header unset ETag\n";
 	$rules .= "</IfModule>\n\n";
+	$rules .= "# Since we're sending far-future expires, we don't need ETags for\n";
+	$rules .= "# static content.\n";
+	$rules .= "# developer.yahoo.com/performance/rules.html#etags\n";
+	$rules .= "FileETag None\n\n";
 
 	return $rules;
-}
-
-
-
-/**
- * TO DO - Description
- *
- * since 1.0
- *
- */
-function get_rocket_htaccess_gzip_encoding()
-{
-
-	$rules = "<FilesMatch '\.html.gz$'>\n";
-	$rules .= "AddEncoding x-gzip .gz\n";
-	$rules .= "AddType text/html .gz\n";
-	$rules .= "</FilesMatch>\n\n";
-
-	return $rules;
-
 }
 
 

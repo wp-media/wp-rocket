@@ -103,13 +103,7 @@ function wp_rocket_activation()
 			array(
 				'cache_not_logged_in'  => 1,
 				'cache_mobile'         => 0,
-				'lazyload'			   => array(
-											'avatar'       => 1,
-											'thumbnail'    => 1,
-											'post_content' => 1,
-											'widget_text'  => 1,
-											'smilies'      => 1
-				)
+				'lazyload'			   => 1
 			)
 		);
 

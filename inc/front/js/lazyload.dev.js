@@ -37,8 +37,6 @@
          var img = imgTags[i];
          var imgOTop = findTotalOffset(img).top;
 
-         console.log(imgOTop);
-
          if(imgOTop < (winHeight + winScrollTop)){
 
             img.src = img.getAttribute('data-lazy-original');
