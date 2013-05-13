@@ -40,10 +40,10 @@ function get_rocket_cookies_not_cached()
 	$cookies = array( 'wp-postpass_' );
 
 	if( $is_cache_not_logged_in )
-		$cookies[] = 'wordpress_logged_in';
+		$cookies[] = LOGGED_IN_COOKIE;
 
 	if( $is_cache_comment_author )
-		$cookies[] = 'comment_author_';
+		$cookies[] = 'comment_author_' . COOKIEHASH;
 
 	return implode( '|', $cookies );
 

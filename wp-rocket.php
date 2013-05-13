@@ -14,7 +14,6 @@ Copyright 2013 WP Rocket
 
 
 define( 'WP_ROCKET_VERSION'			, '1.0');
-define( 'WP_ROCKET_TEXTDOMAIN'		, 'wp-rocket');
 
 define( 'WP_ROCKET_PATH'			, plugin_dir_path(__FILE__) );
 define( 'WP_ROCKET_INC_PATH'		, WP_ROCKET_PATH . 'inc/' );
@@ -80,6 +79,8 @@ function wp_rocket_deactivation()
 
 }
 
+
+
 /*
  * Tell WP what to do when plugin is activated
  *
@@ -89,11 +90,6 @@ function wp_rocket_deactivation()
 register_activation_hook(__FILE__, 'wp_rocket_activation' );
 function wp_rocket_activation()
 {
-
-
-	// Create "cache" folder if no exist
-	if( !is_dir( WP_ROCKET_CACHE_PATH ) )
-		mkdir( WP_ROCKET_CACHE_PATH, 0755 );
 
 
 	// Create option

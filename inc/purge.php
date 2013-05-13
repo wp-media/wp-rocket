@@ -5,7 +5,7 @@
 add_action( 'switch_theme', 'rocket_clean_domain' );					// When user change theme
 add_action( 'wp_update_nav_menu', 'rocket_clean_domain' );				// When a custom menu is update
 add_action( 'update_option_theme_mods_' . get_option( 'stylesheet' ), 'rocket_clean_domain' );
-add_action( 'update_option_sidebars_widgets', 'rocket_clean_domain' );
+add_action( 'update_option_sidebars_widgets', 'rocket_clean_domain' );	// When you change the order of widgets
 add_action( 'update_option_category_base', 'rocket_clean_domain' );		// When category permalink prefix is update
 add_action( 'update_option_tag_base', 'rocket_clean_domain' ); 			// When tag permalink prefix is update
 add_action( 'permalink_structure_changed', 'rocket_clean_domain' ); 	// When permalink structure is update
@@ -75,6 +75,8 @@ function rocket_clean_comment( $arg1, $arg2 = '', $arg3 = '' )
 		return $arg1;
 
 }
+
+
 
 /**
  * TO DO - Description

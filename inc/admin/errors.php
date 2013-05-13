@@ -18,7 +18,7 @@ function warning_using_permalinks() {
  	?>
 
 	<div class="error">
-	<p><?php _e('A custom permalink structure is required for <strong>WP Rocket</strong> to work correctly. Please go to the Permalinks Options Page to configure your permalinks.', WP_ROCKET_TEXTDOMAIN ); ?></p>
+	<p><?php _e('A custom permalink structure is required for <strong>WP Rocket</strong> to work correctly. Please go to the Permalinks Options Page to configure your permalinks.', 'wp-rocket' ); ?></p>
 	</div>
 
 	<?php

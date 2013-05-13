@@ -1,4 +1,4 @@
- <?php
+<?php
 
 
 /**
@@ -14,13 +14,8 @@ function rocket_enqueue_lazyload() {
 	if( is_feed() || is_preview() )
 		return false;
 
-	wp_enqueue_script(
-		'rocket-lazyload',
-		WP_ROCKET_FRONT_JS_URL . 'lazyload.js',
-		array(),
-		null,
-		true
-	);
+	wp_enqueue_script( 'rocket-lazyload', WP_ROCKET_FRONT_JS_URL . 'lazyload.js', array(), null, true );
+	
 }
 
 
