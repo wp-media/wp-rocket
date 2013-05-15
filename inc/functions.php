@@ -68,7 +68,7 @@ function rocket_clean_files( $urls )
 
 		do_action( 'before_rocket_clean_file', $url );
 
-		rocket_rrmdir( WP_ROCKET_CACHE_PATH .  str_replace( home_url( '/' ), '/', $url ) );
+		rocket_rrmdir( WP_ROCKET_CACHE_PATH .  str_replace( 'http://', '', $url ) );
 
 		do_action( 'after_rocket_clean_file', $url );
 
@@ -106,7 +106,7 @@ function rocket_clean_post_terms( $post_ID )
 	}
 
 	do_action( 'before_rocket_clean_post_terms', $urls, $post_ID );
-
+	
     rocket_clean_files( $urls );
 
     do_action( 'after_rocket_clean_post_terms', $urls, $post_ID );
@@ -128,7 +128,7 @@ function rocket_clean_post_dates( $post_ID )
 	$date = explode( '-', get_the_time( 'Y-m-d', $post_ID ) );
 
 	$urls = array(
-		get_year_link( $date[0] ) . 'index.html.gz',
+		get_year_link( $date[0] ) . 'index.html',
 		get_year_link( $date[0] ) . $GLOBALS['wp_rewrite']->pagination_base,
 		get_month_link( $date[0], $date[1] ),
 		get_month_link( $date[0], $date[1] ) . $GLOBALS['wp_rewrite']->pagination_base,
@@ -155,11 +155,15 @@ function rocket_clean_post_dates( $post_ID )
  */
 function rocket_clean_home()
 {
-
+	
+	$root = WP_ROCKET_CACHE_PATH . str_replace( 'http://', '', site_url( '/' ) );
+	
 	do_action( 'before_rocket_clean_home' );
+	
+	foreach( glob( $root . '/*.{html,css,js}', GLOB_BRACE ) as $file )
+		unlink( $file );
 
-    @unlink(  WP_ROCKET_CACHE_PATH . WPCM_CACHE_FILE );
-    rrmdir(  WP_ROCKET_CACHE_PATH . '/' . $GLOBALS['wp_rewrite']->pagination_base );
+    rrmdir( $root . $GLOBALS['wp_rewrite']->pagination_base );
 
     do_action( 'after_rocket_clean_home' );
 }
@@ -178,7 +182,7 @@ function rocket_clean_domain()
 
 	do_action( 'before_rocket_clean_domain' );
 
-    rocket_rrmdir( WP_ROCKET_CACHE_PATH );
+    rocket_rrmdir( WP_ROCKET_CACHE_PATH . str_replace( 'http://', '', site_url( '/' ) ) );
 
     do_action( 'after_rocket_clean_domain' );
 
@@ -217,24 +221,24 @@ function rocket_rrmdir( $dir )
  */
 function rocket_count_cache_contents( $base = null )
 {
-	$base = $base===null ? ( WP_ROCKET_CACHE_PATH ) : $base;
+        $base = $base===null ? ( WP_ROCKET_CACHE_PATH ) : $base;
 
-	$count = 0;
+        $count = 0;
 
-	if( !file_exists( $base ) )
-		return $count;
+        if( !file_exists( $base ) )
+                return $count;
 
-	$root = scandir( $base );
+        $root = scandir( $base );
 
     foreach( $root as $value )
     {
         if( $value=='.' || $value=='..' )
-			continue;
+                        continue;
 
         if( is_file( $base.'/'.$value ) )
-			$count++;
-		else
-			$count = $count + rocket_count_cache_contents( $base.'/'.$value );
+                        $count++;
+                else
+                        $count = $count + rocket_count_cache_contents( $base.'/'.$value );
     }
 
     return $count;

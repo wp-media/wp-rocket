@@ -63,7 +63,7 @@ function get_rocket_htaccess_mod_rewrite()
 	$home_root = isset( $home_root['path'] ) ? trailingslashit($home_root['path']) : '/';
 
 	// Get cache root
-	$cache_root = trim( str_replace( site_url( '/' ), '', WP_ROCKET_CACHE_URL ), '/' );
+	$cache_root = str_replace( site_url( '/' ), '', WP_ROCKET_CACHE_URL );
 
 	$rules  = '<IfModule mod_rewrite.c>' . "\n";
 	$rules .= 'RewriteEngine On' . "\n";
@@ -72,8 +72,8 @@ function get_rocket_htaccess_mod_rewrite()
 	$rules .= 'RewriteCond %{QUERY_STRING} !.*=.*' . "\n";
 	$rules .= 'RewriteCond %{HTTP:Cookie} !^.*(' . get_rocket_cookies_not_cached() . ').*$' . "\n";
 	$rules .= 'RewriteCond %{HTTPS} off' . "\n";
-	$rules .= 'RewriteCond %{DOCUMENT_ROOT}/'. $cache_root .'/%{HTTP_HOST}%{REQUEST_URI}index.html -f' . "\n";
-	$rules .= 'RewriteRule ^(.*) /' . $cache_root . '/%{HTTP_HOST}%{REQUEST_URI}index.html [L]' . "\n";
+	$rules .= 'RewriteCond %{DOCUMENT_ROOT}/'. $cache_root .'%{HTTP_HOST}%{REQUEST_URI}index.html -f' . "\n";
+	$rules .= 'RewriteRule ^(.*) /' . $cache_root . '%{HTTP_HOST}%{REQUEST_URI}index.html [L]' . "\n";
 	$rules .= '</IfModule>' . "\n\n";
 
 	return $rules;

@@ -68,7 +68,7 @@ function rocket_minyfy_css( $data, $paths )  {
 
 
 		// Insert the minify css file below <head>
-		$data = preg_replace('/<head>/', '\\0<link rel="stylesheet" href="' . $paths['WP_ROCKET_CACHE_URL'] . '/' . $css_path . '" />', $data, 1);
+		$data = preg_replace('/<head>/', '\\0<link rel="stylesheet" href="' . $paths['WP_ROCKET_CACHE_URL'] . $css_path . '" />', $data, 1);
 
 
     }
