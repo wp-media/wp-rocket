@@ -11,6 +11,7 @@ function flush_rocket_launcher() {
 
 	$boostrap = file_get_contents( WP_ROCKET_PATH . 'bootstrap-sample.php' );
 	$boostrap = str_replace( '{{COOKIES_NOT_CACHED}}'		, get_rocket_cookies_not_cached(), $boostrap );
+	$boostrap = str_replace( '{{WP_ROCKET_PATH}}'			, WP_ROCKET_PATH, $boostrap );
 	$boostrap = str_replace( '{{WP_ROCKET_URL}}'			, WP_ROCKET_URL, $boostrap );
 	$boostrap = str_replace( '{{WP_ROCKET_FRONT_PATH}}'		, WP_ROCKET_FRONT_PATH, $boostrap );
 	$boostrap = str_replace( '{{WP_ROCKET_CACHE_URL}}'		, WP_ROCKET_CACHE_URL, $boostrap );

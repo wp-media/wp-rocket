@@ -111,7 +111,9 @@ function rocket_minyfy_inline_css( $data, $paths ) {
 
 
 	 	// Create and save the minify file
-	 	file_put_contents( $paths['CACHE_DIR'] . '/' . $inline_css_path, $inline_css );
+	 	require $paths['WP_ROCKET_PATH'] . 'min/lib/Minify/CSS/Compressor.php';
+	 	
+	 	file_put_contents( $paths['CACHE_DIR'] . '/' . $inline_css_path, Minify_CSS_Compressor::process( $inline_css ) );
 
 
 	 	// Insert the minify css file below <head>
@@ -156,10 +158,10 @@ function rocket_minify_js( $data, $paths ) {
 
     }
 
-    $minify_js = 'http://' . $_SERVER['HTTP_HOST'] . '/wp-content/plugins/wp-rocket/min/f=' . implode(',', $internal_js);
+    $minify_js = 'http://' . $_SERVER['HTTP_HOST'] . '/wp-content/plugins/wp-rocket/min/f=' . implode( ',', $internal_js );
 
 	// Insert the minify css file
-	$data = preg_replace('/<\/head>/', '<script src="'.$minify_js.'"></script>\\0', $data, 1);
+	$data = preg_replace('/<\/head>/', '<script src="'. $minify_js .'"></script>\\0', $data, 1);
 
 
 }

@@ -20,6 +20,7 @@ if( isset( $_SERVER['HTTP_USER_AGENT'] )
 
     	
     	$paths = array(
+    		'WP_ROCKET_PATH'       => '{{WP_ROCKET_PATH}}',
     		'WP_ROCKET_URL'       => '{{WP_ROCKET_URL}}',
     		'WP_ROCKET_CACHE_URL' => '{{WP_ROCKET_CACHE_URL}}',
     		'CACHE_DIR'           => '{{CACHE_DIR}}'

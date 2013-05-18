@@ -19,13 +19,13 @@ define( 'WP_ROCKET_PATH'			, plugin_dir_path(__FILE__) );
 define( 'WP_ROCKET_INC_PATH'		, WP_ROCKET_PATH . 'inc/' );
 define( 'WP_ROCKET_FRONT_PATH'		, WP_ROCKET_INC_PATH . 'front/' );
 define( 'WP_ROCKET_ADMIN_PATH'		, WP_ROCKET_INC_PATH . 'admin/' );
-define( 'WP_ROCKET_CACHE_PATH'		, WP_ROCKET_PATH . 'cache' );
+define( 'WP_ROCKET_CACHE_PATH'		, WP_ROCKET_PATH . 'cache/' );
 
 define( 'WP_ROCKET_URL'				, plugin_dir_url(__FILE__) );
 define( 'WP_ROCKET_INC_URL'			, WP_ROCKET_URL . 'inc/' );
 define( 'WP_ROCKET_FRONT_URL'		, WP_ROCKET_INC_URL . 'front/' );
 define( 'WP_ROCKET_FRONT_JS_URL'	, WP_ROCKET_FRONT_URL . 'js/' );
-define( 'WP_ROCKET_CACHE_URL'		, WP_ROCKET_URL . 'cache' );
+define( 'WP_ROCKET_CACHE_URL'		, WP_ROCKET_URL . 'cache/' );
 
 // TO DO - description
 if( !defined( 'WP_ROCKET_EXPIRATION_TIME' ) )
