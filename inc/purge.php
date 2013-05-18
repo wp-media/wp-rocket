@@ -10,6 +10,8 @@ add_action( 'update_option_category_base', 'rocket_clean_domain' );		// When cat
 add_action( 'update_option_tag_base', 'rocket_clean_domain' ); 			// When tag permalink prefix is update
 add_action( 'permalink_structure_changed', 'rocket_clean_domain' ); 	// When permalink structure is update
 add_filter( 'widget_update_callback', 'rocket_clean_domain' ); 			// When a widget is update
+add_filter( 'edited_terms', 'rocket_clean_domain' ); 					// When a term is updated
+add_filter( 'delete_term', 'rocket_clean_domain' ); 					// When a term is deleted
 
 
 
