@@ -9,7 +9,7 @@ if( isset( $_SERVER['HTTP_USER_AGENT'] )
 ) {
 
     // Get HTML
-	$data = file_get_contents( 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
+	$buffer = file_get_contents( 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
 
 	// Checking the status of the request
 	if( strstr( $http_response_header[0], '200' )!=false ) {
@@ -29,14 +29,17 @@ if( isset( $_SERVER['HTTP_USER_AGENT'] )
     	
     	// Concatenate and minify internal css files
     	require '{{WP_ROCKET_FRONT_PATH}}minify.php';
-    	$data = rocket_minyfy_css( $data, $paths );
-    	$data = rocket_minyfy_inline_css( $data, $paths );
+    	
+    	list( $buffer, $conditionals ) = rocket_extract_ie_conditionals( $buffer );
+    	$buffer = rocket_minyfy_inline_css( $buffer, $paths );
+    	$buffer = rocket_minyfy_css( $buffer, $paths );
+    	$buffer = rocket_inject_ie_conditionals( $buffer, $conditionals );
     	
     	
     	// Concatenate and minify internal javascript files
     	$internal_js = array();
 
-    	preg_match_all( '/<script.+src=.+(\.js).+><\/script>/i', $data, $script_tags_match );
+    	preg_match_all( '/<script.+src=.+(\.js).+><\/script>/i', $buffer, $script_tags_match );
 
 	    foreach ( $script_tags_match[0] as $script_tag ) {
 
@@ -48,7 +51,7 @@ if( isset( $_SERVER['HTTP_USER_AGENT'] )
 
 				if( substr($url, 0, 4 ) != 'http' ) {
 
-				    $data = str_replace($script_tag, '', $data);
+				    $buffer = str_replace($script_tag, '', $buffer);
 				    $internal_js[] = ltrim( preg_replace( '#\?.*$#', '', $url ), '/' );
 				}
 
@@ -59,7 +62,7 @@ if( isset( $_SERVER['HTTP_USER_AGENT'] )
 	    $minify_js = 'http://' . $_SERVER['HTTP_HOST'] . '/wp-content/plugins/wp-rocket/min/f=' . implode(',', $internal_js);
 
     	// Insert the minify css file
-    	$data = preg_replace('/<\/head>/', '<script src="'.$minify_js.'"></script>\\0', $data, 1);
+    	$buffer = preg_replace('/<\/head>/', '<script src="'.$minify_js.'"></script>\\0', $buffer, 1);
 
 
     	// Minify HTML
@@ -67,7 +70,7 @@ if( isset( $_SERVER['HTTP_USER_AGENT'] )
 
 
     	// Create file cache
-		file_put_contents( '{{CACHE_DIR}}/' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . '/index.html', Minify_HTML::minify( $data ) );
+		file_put_contents( '{{CACHE_DIR}}/' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . '/index.html', Minify_HTML::minify( $buffer ) );
 
 
 		// Read and display file
