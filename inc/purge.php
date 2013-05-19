@@ -86,6 +86,7 @@ function rocket_clean_comment( $arg1, $arg2 = '', $arg3 = '' )
  * @since 1.0
  *
  */
+
 add_action( 'wp_ajax_purge_cache', 'rocket_purge_cache' );
 add_action( 'admin_post_purge_cache', 'rocket_purge_cache' );
 function rocket_purge_cache()

@@ -29,6 +29,7 @@ function flush_rocket_htaccess( $force = false )
 			$file  = '# BEGIN WP Rocket' . "\n";
 			$file .= get_rocket_htaccess_charset();
 			$file .= get_rocket_htaccess_etag();
+			$file .= get_rocket_htaccess_expires();
 			$file .= get_rocket_htaccess_mod_deflate();
 			$file .= get_rocket_htaccess_mod_rewrite();
 			$file .= '# END WP Rocket'. "\n\n";
@@ -71,6 +72,10 @@ function get_rocket_htaccess_mod_rewrite()
 	$rules .= 'RewriteCond %{REQUEST_METHOD} GET' . "\n";
 	$rules .= 'RewriteCond %{QUERY_STRING} !.*=.*' . "\n";
 	$rules .= 'RewriteCond %{HTTP:Cookie} !^.*(' . get_rocket_cookies_not_cached() . ').*$' . "\n";
+	$rules .= 'RewriteCond %{HTTP:X-Wap-Profile} !^[a-z0-9\"]+ [NC]' . "\n";
+	$rules .= 'RewriteCond %{HTTP:Profile} !^[a-z0-9\"]+ [NC]' . "\n";
+	$rules .= 'RewriteCond %{HTTP_USER_AGENT} !^.*(2.0\ MMP|240x320|400X240|AvantGo|BlackBerry|Blazer|Cellphone|Danger|DoCoMo|Elaine/3.0|EudoraWeb|Googlebot-Mobile|hiptop|IEMobile|KYOCERA/WX310K|LG/U990|MIDP-2.|MMEF20|MOT-V|NetFront|Newt|Nintendo\ Wii|Nitro|Nokia|Opera\ Mini|Palm|PlayStation\ Portable|portalmmm|Proxinet|ProxiNet|SHARP-TQ-GX10|SHG-i900|Small|SonyEricsson|Symbian\ OS|SymbianOS|TS21i-10|UP.Browser|UP.Link|webOS|Windows\ CE|WinWAP|YahooSeeker/M1A1-R2D2|iPhone|iPod|Android|BlackBerry9530|LG-TU915\ Obigo|LGE\ VX|webOS|Nokia5800).* [NC]' . "\n";
+	$rules .= 'RewriteCond %{HTTP_USER_AGENT} !^(w3c\ |w3c-|acs-|alav|alca|amoi|audi|avan|benq|bird|blac|blaz|brew|cell|cldc|cmd-|dang|doco|eric|hipt|htc_|inno|ipaq|ipod|jigs|kddi|keji|leno|lg-c|lg-d|lg-g|lge-|lg/u|maui|maxo|midp|mits|mmef|mobi|mot-|moto|mwbp|nec-|newt|noki|palm|pana|pant|phil|play|port|prox|qwap|sage|sams|sany|sch-|sec-|send|seri|sgh-|shar|sie-|siem|smal|smar|sony|sph-|symb|t-mo|teli|tim-|tosh|tsm-|upg1|upsi|vk-v|voda|wap-|wapa|wapi|wapp|wapr|webc|winw|winw|xda\ |xda-).* [NC]' . "\n";
 	$rules .= 'RewriteCond %{HTTPS} off' . "\n";
 	$rules .= 'RewriteCond %{DOCUMENT_ROOT}/'. $cache_root .'%{HTTP_HOST}%{REQUEST_URI}index.html -f' . "\n";
 	$rules .= 'RewriteRule ^(.*) /' . $cache_root . '%{HTTP_HOST}%{REQUEST_URI}index.html [L]' . "\n";
@@ -123,6 +128,60 @@ function get_rocket_htaccess_mod_deflate()
 
 	return $rules;
 
+}
+
+
+
+/**
+ * TO DO - Description
+ *
+ * since 1.0
+ *
+ */
+ 
+function get_rocket_htaccess_expires() {
+	
+	$rules = '# Expires headers (for better cache control)' . "\n";
+	$rules .= '<IfModule mod_expires.c>' . "\n";
+	  $rules .= 'ExpiresActive on' . "\n\n";
+	  $rules .= '# Perhaps better to whitelist expires rules? Perhaps.' . "\n";
+	  $rules .= 'ExpiresDefault                          "access plus 1 month"' . "\n\n";
+	  $rules .= '# cache.appcache needs re-requests in FF 3.6 (thanks Remy ~Introducing HTML5)' . "\n";
+	  $rules .= 'ExpiresByType text/cache-manifest       "access plus 0 seconds"' . "\n\n";
+	  $rules .= '# Your document html' . "\n";
+	  $rules .= 'ExpiresByType text/html                 "access plus 0 seconds"' . "\n\n";
+	  $rules .= '# Data' . "\n";
+	  $rules .= 'ExpiresByType text/xml                  "access plus 0 seconds"' . "\n";
+	  $rules .= 'ExpiresByType application/xml           "access plus 0 seconds"' . "\n";
+	  $rules .= 'ExpiresByType application/json          "access plus 0 seconds"' . "\n\n";
+	  $rules .= '# Feed' . "\n";
+	  $rules .= 'ExpiresByType application/rss+xml       "access plus 1 hour"' . "\n";
+	  $rules .= 'ExpiresByType application/atom+xml      "access plus 1 hour"' . "\n\n";
+	  $rules .= '# Favicon (cannot be renamed)' . "\n";
+	  $rules .= 'ExpiresByType image/x-icon              "access plus 1 week"' . "\n\n";
+	  $rules .= '# Media: images, video, audio' . "\n";
+	  $rules .= 'ExpiresByType image/gif                 "access plus 1 month"' . "\n";
+	  $rules .= 'ExpiresByType image/png                 "access plus 1 month"' . "\n";
+	  $rules .= 'ExpiresByType image/jpeg                "access plus 1 month"' . "\n";
+	  $rules .= 'ExpiresByType video/ogg                 "access plus 1 month"' . "\n";
+	  $rules .= 'ExpiresByType audio/ogg                 "access plus 1 month"' . "\n";
+	  $rules .= 'ExpiresByType video/mp4                 "access plus 1 month"' . "\n";
+	  $rules .= 'ExpiresByType video/webm                "access plus 1 month"' . "\n\n";
+	  $rules .= '# HTC files  (css3pie)' . "\n";
+	  $rules .= 'ExpiresByType text/x-component          "access plus 1 month"' . "\n\n";
+	  $rules .= '# Webfonts' . "\n";
+	  $rules .= 'ExpiresByType application/x-font-ttf    "access plus 1 month"' . "\n";
+	  $rules .= 'ExpiresByType font/opentype             "access plus 1 month"' . "\n";
+	  $rules .= 'ExpiresByType application/x-font-woff   "access plus 1 month"' . "\n";
+	  $rules .= 'ExpiresByType image/svg+xml             "access plus 1 month"' . "\n";
+	  $rules .= 'ExpiresByType application/vnd.ms-fontobject "access plus 1 month"' . "\n\n";
+	  $rules .= '# CSS and JavaScript' . "\n";
+	  $rules .= 'ExpiresByType text/css                  "access plus 1 year"' . "\n";
+	  $rules .= 'ExpiresByType application/javascript    "access plus 1 year"' . "\n";
+	$rules .= '</IfModule>' . "\n\n";
+	
+	return $rules;
+	
 }
 
 

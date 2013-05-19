@@ -8,11 +8,12 @@
  */
 function rocket_minyfy_css( $buffer, $paths )  {
 
-	$internal_css = array();
+	$internals_css = array();
+	$externals_css = array();
 
 
 	// Get all css files with this regex
-	preg_match_all( '/<link.+href=.+(\.css).+>/i', $buffer, $link_tags_match );
+	preg_match_all( '/<link.+rel=["\']stylesheet["\'].+>/i', $buffer, $link_tags_match );
 
 
     foreach ( $link_tags_match[0] as $link_tag ) {
@@ -37,15 +38,17 @@ function rocket_minyfy_css( $buffer, $paths )  {
 				// Check if the link isn't external
 				if( substr( $url, 0, 4 ) != 'http' ) {
 
-
-					// Delete the link tag
-				    $buffer = str_replace( $link_tag, '', $buffer );
-
-
 				    // Insert the relative path to the array without query string
-				    $internal_css[] = ltrim( preg_replace( '#\?.*$#', '', $url ), '/' );
+				    $internals_css[] = ltrim( preg_replace( '#\?.*$#', '', $url ), '/' );
 
 				}
+				else {
+					$externals_css[] = $link_tag;
+				}
+
+
+				// Delete the link tag
+				$buffer = str_replace( $link_tag, '', $buffer );
 
 			}
 
@@ -53,10 +56,10 @@ function rocket_minyfy_css( $buffer, $paths )  {
 
     }
 
-    if( count( $internal_css ) >= 1 ) {
+    if( count( $internals_css ) >= 1 ) {
 
 	    // Get the minify Google code link
-		$minify_css = $paths['WP_ROCKET_URL'] . 'min/f=' . implode( ',', $internal_css );
+		$minify_css = $paths['WP_ROCKET_URL'] . 'min/f=' . implode( ',', $internals_css );
 
 
 	    // Create the new unique css filename
@@ -67,10 +70,19 @@ function rocket_minyfy_css( $buffer, $paths )  {
 	    file_put_contents( $paths['CACHE_DIR'] . $css_path, file_get_contents( $minify_css ) );
 
 
-
 		// Insert the minify css file below <head>
-		$buffer = preg_replace('/<head>/', '\\0<link rel="stylesheet" href="' . $paths['WP_ROCKET_CACHE_URL'] . $css_path . '" />', $buffer, 1);
+		$buffer = preg_replace('/<head>/', '\\0<link rel="stylesheet" href="' . $paths['WP_ROCKET_CACHE_URL'] . $css_path . '" />', $buffer, 1 );
 
+
+    }
+
+
+    if( count( $externals_css ) >= 1 ) {
+
+	    $externals_css = implode( "\n" , $externals_css );
+
+	    // Insert the external CSS
+	    $buffer = preg_replace('/<head>/', '\\0' . $externals_css, $buffer, 1 );
 
     }
 
@@ -105,6 +117,7 @@ function rocket_minyfy_inline_css( $buffer, $paths ) {
 
 
     if( !empty( $inline_css ) ) {
+
 
 	    // Create the new unique css filename
     	$inline_css_path = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . 'style-inline' . time() . '.css';
@@ -146,33 +159,74 @@ function rocket_minyfy_inline_css( $buffer, $paths ) {
  */
 function rocket_minify_js( $buffer, $paths ) {
 
-	$internal_js = array();
+	$internals_js = array();
+	$externals_js = array();
 
+
+	// Get all JS files with this regex
 	preg_match_all( '/<script.+src=.+(\.js).+><\/script>/i', $buffer, $script_tags_match );
+
 
     foreach ( $script_tags_match[0] as $script_tag ) {
 
-		preg_match('/src=[\'"]([^\'"]+)/', $script_tag, $href_match);
 
-		if ( $href_match[1] ) {
+		preg_match('/src=[\'"]([^\'"]+)/', $script_tag, $src_match );
 
-			$url = str_replace( 'http://' . $_SERVER['HTTP_HOST'], '', $href_match[1]);
 
-			if( substr($url, 0, 4 ) != 'http' ) {
+		if ( $src_match[1] ) {
 
-			    $buffer = str_replace($script_tag, '', $buffer);
-			    $internal_js[] = ltrim( preg_replace( '#\?.*$#', '', $url ), '/' );
+			// Get relative url
+			$url = str_replace( 'http://' . $_SERVER['HTTP_HOST'], '', $src_match[1] );
+
+
+			// Check if the link isn't external
+			if( substr( $url, 0, 4 ) != 'http' ) {
+
+				// Insert the relative path to the array without query string
+			    $internals_js[] = ltrim( preg_replace( '#\?.*$#', '', $url ), '/' );
+
 			}
+			else {
+				$externals_js[] = $script_tag;
+			}
+
+			$buffer = str_replace( $script_tag, '', $buffer );
 
 		}
 
     }
 
-    $minify_js = 'http://' . $_SERVER['HTTP_HOST'] . '/wp-content/plugins/wp-rocket/min/f=' . implode( ',', $internal_js );
 
-	// Insert the minify css file
-	$buffer = preg_replace('/<\/head>/', '<script src="'. $minify_js .'"></script>\\0', $buffer, 1);
+	if( count( $externals_js ) >= 1 ) {
 
+		$externals_js = implode( "\n" , $externals_js );
+
+		// Insert the minify JS file
+		$buffer = preg_replace('/<\/head>/', $externals_js . '\\0', $buffer, 1 );
+
+	}
+
+
+	if( count( $internals_js ) >= 1 ) {
+
+		// Get the minify Google code link
+		$minify_js = $paths['WP_ROCKET_URL'] . 'min/f=' . implode( ',', $internals_js );
+
+
+		// Create the new unique css filename
+	    $js_path = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . 'script' . time() . '.js';
+
+
+	    // Create and save the minify file
+	    file_put_contents( $paths['CACHE_DIR'] . $js_path, file_get_contents( $minify_js ) );
+
+
+		// Insert the minify JS file
+		$buffer = preg_replace('/<\/head>/', '<script src="'. $paths['WP_ROCKET_CACHE_URL'] . $js_path .'"></script>\\0', $buffer, 1 );
+
+	}
+
+	return $buffer;
 
 }
 
@@ -186,7 +240,7 @@ function rocket_minify_js( $buffer, $paths ) {
  *
  */
 function rocket_extract_ie_conditionals( $buffer ) {
-    
+
     preg_match_all('/<!--\[if[^\]]*?\]>.*?<!\[endif\]-->/is', $buffer, $conditionals_match );
     $buffer = preg_replace( '/<!--\[if[^\]]*?\]>.*?<!\[endif\]-->/is', '{{WP_ROCKET_CONDITIONAL}}', $buffer );
 

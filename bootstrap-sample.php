@@ -20,7 +20,7 @@ if( isset( $_SERVER['HTTP_USER_AGENT'] )
 
     	
     	$paths = array(
-    		'WP_ROCKET_PATH'       => '{{WP_ROCKET_PATH}}',
+    		'WP_ROCKET_PATH'      => '{{WP_ROCKET_PATH}}',
     		'WP_ROCKET_URL'       => '{{WP_ROCKET_URL}}',
     		'WP_ROCKET_CACHE_URL' => '{{WP_ROCKET_CACHE_URL}}',
     		'CACHE_DIR'           => '{{CACHE_DIR}}'
@@ -33,38 +33,10 @@ if( isset( $_SERVER['HTTP_USER_AGENT'] )
     	list( $buffer, $conditionals ) = rocket_extract_ie_conditionals( $buffer );
     	$buffer = rocket_minyfy_inline_css( $buffer, $paths );
     	$buffer = rocket_minyfy_css( $buffer, $paths );
+    	$buffer = rocket_minify_js( $buffer, $paths );
     	$buffer = rocket_inject_ie_conditionals( $buffer, $conditionals );
     	
     	
-    	// Concatenate and minify internal javascript files
-    	$internal_js = array();
-
-    	preg_match_all( '/<script.+src=.+(\.js).+><\/script>/i', $buffer, $script_tags_match );
-
-	    foreach ( $script_tags_match[0] as $script_tag ) {
-
-			preg_match('/src=[\'"]([^\'"]+)/', $script_tag, $href_match);
-
-			if ( $href_match[1] ) {
-
-				$url = str_replace( 'http://' . $_SERVER['HTTP_HOST'], '', $href_match[1]);
-
-				if( substr($url, 0, 4 ) != 'http' ) {
-
-				    $buffer = str_replace($script_tag, '', $buffer);
-				    $internal_js[] = ltrim( preg_replace( '#\?.*$#', '', $url ), '/' );
-				}
-
-			}
-
-	    }
-
-	    $minify_js = 'http://' . $_SERVER['HTTP_HOST'] . '/wp-content/plugins/wp-rocket/min/f=' . implode(',', $internal_js);
-
-    	// Insert the minify css file
-    	$buffer = preg_replace('/<\/head>/', '<script src="'.$minify_js.'"></script>\\0', $buffer, 1);
-
-
     	// Minify HTML
     	require( 'min/lib/Minify/HTML.php' );
 
