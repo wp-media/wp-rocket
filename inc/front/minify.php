@@ -13,7 +13,7 @@ function rocket_minyfy_css( $buffer, $paths )  {
 
 
 	// Get all css files with this regex
-	preg_match_all( '/<link.+rel=["\']stylesheet["\'].+>/i', $buffer, $link_tags_match );
+	preg_match_all( '/<link.+href=.+(\.css).+>/i', $buffer, $link_tags_match );
 
 
     foreach ( $link_tags_match[0] as $link_tag ) {
@@ -71,7 +71,7 @@ function rocket_minyfy_css( $buffer, $paths )  {
 
 
 		// Insert the minify css file below <head>
-		$buffer = preg_replace('/<head>/', '\\0<link rel="stylesheet" href="' . $paths['WP_ROCKET_CACHE_URL'] . $css_path . '" />', $buffer, 1 );
+		$buffer = preg_replace( '/<head>/', '\\0<link rel="stylesheet" href="' . $paths['WP_ROCKET_CACHE_URL'] . $css_path . '" />', $buffer, 1 );
 
 
     }
@@ -82,7 +82,7 @@ function rocket_minyfy_css( $buffer, $paths )  {
 	    $externals_css = implode( "\n" , $externals_css );
 
 	    // Insert the external CSS
-	    $buffer = preg_replace('/<head>/', '\\0' . $externals_css, $buffer, 1 );
+	    $buffer = preg_replace( '/<head>/', '\\0' . $externals_css, $buffer, 1 );
 
     }
 
@@ -140,7 +140,7 @@ function rocket_minyfy_inline_css( $buffer, $paths ) {
 
 
 	 	// Insert the minify css file below <head>
-		$buffer = preg_replace('/<head>/', '\\0<link rel="stylesheet" href="' . $paths['WP_ROCKET_CACHE_URL'] . $inline_css_path . '" />', $buffer, 1);
+		$buffer = preg_replace( '/<head>/', '\\0<link rel="stylesheet" href="' . $paths['WP_ROCKET_CACHE_URL'] . $inline_css_path . '" />', $buffer, 1);
 
 
     }
@@ -202,7 +202,7 @@ function rocket_minify_js( $buffer, $paths ) {
 		$externals_js = implode( "\n" , $externals_js );
 
 		// Insert the minify JS file
-		$buffer = preg_replace('/<\/head>/', $externals_js . '\\0', $buffer, 1 );
+		$buffer = preg_replace('/<head>/', '\\0' . $externals_js, $buffer, 1 );
 
 	}
 
@@ -222,8 +222,8 @@ function rocket_minify_js( $buffer, $paths ) {
 
 
 		// Insert the minify JS file
-		$buffer = preg_replace('/<\/head>/', '<script src="'. $paths['WP_ROCKET_CACHE_URL'] . $js_path .'"></script>\\0', $buffer, 1 );
-
+		$buffer = preg_replace('/<head>/', '\\0<script src="'. $paths['WP_ROCKET_CACHE_URL'] . $js_path .'"></script>', $buffer, 1 );
+		
 	}
 
 	return $buffer;

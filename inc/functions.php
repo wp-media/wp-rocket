@@ -164,7 +164,7 @@ function rocket_clean_home()
 	foreach( glob( $root . '/*.{html,css,js}', GLOB_BRACE ) as $file )
 		unlink( $file );
 
-    rrmdir( $root . $GLOBALS['wp_rewrite']->pagination_base );
+    rocket_rrmdir( $root . $GLOBALS['wp_rewrite']->pagination_base );
 
     do_action( 'after_rocket_clean_home' );
 }

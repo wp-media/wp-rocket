@@ -3,10 +3,10 @@
 /*
 Plugin Name: WP Rocket
 Plugin URI: http://www.wp-rocket.me
-Description:
+Description: The best WordPress performance plugin
 Version: 1.0
 Author: Jonathan Buttigieg, Julio Potier
-Author URI: http://www.wp-rocket.me
+Author URI: http://www.wp-rocket.me.
 
 Copyright 2013 WP Rocket
 
@@ -35,7 +35,9 @@ if( !defined( 'WP_ROCKET_EXPIRATION_TIME' ) )
 // Call all class and functions
 require  WP_ROCKET_INC_PATH . 'functions.php';
 require  WP_ROCKET_INC_PATH . 'purge.php';
+require  WP_ROCKET_INC_PATH . 'cron.php';
 require  WP_ROCKET_ADMIN_PATH . 'admin-bar.php';
+require  WP_ROCKET_FRONT_PATH . 'cookie.php';
 require  WP_ROCKET_FRONT_PATH . 'htaccess.php';
 
 if( is_admin() )
@@ -97,6 +99,7 @@ function wp_rocket_activation()
 
 		add_option( 'wp_rocket_settings',
 			array(
+				'purge_cron_interval'  => 14400, // 4 hours
 				'cache_not_logged_in'  => 1,
 				'cache_mobile'         => 0,
 				'lazyload'			   => 1
