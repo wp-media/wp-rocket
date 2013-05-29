@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * TO DO - Description
  *
@@ -10,12 +9,10 @@
 function flush_rocket_launcher() {
 
 	$boostrap = file_get_contents( WP_ROCKET_PATH . 'bootstrap-sample.php' );
+
 	$boostrap = str_replace( '{{COOKIES_NOT_CACHED}}'		, get_rocket_cookies_not_cached(), $boostrap );
-	$boostrap = str_replace( '{{WP_ROCKET_PATH}}'			, WP_ROCKET_PATH, $boostrap );
-	$boostrap = str_replace( '{{WP_ROCKET_URL}}'			, WP_ROCKET_URL, $boostrap );
-	$boostrap = str_replace( '{{WP_ROCKET_FRONT_PATH}}'		, WP_ROCKET_FRONT_PATH, $boostrap );
-	$boostrap = str_replace( '{{WP_ROCKET_CACHE_URL}}'		, WP_ROCKET_CACHE_URL, $boostrap );
-	$boostrap = str_replace( '{{CACHE_DIR}}'				, WP_ROCKET_CACHE_PATH, $boostrap );
+	$boostrap = str_replace( '{{PAGES_NOT_CACHED}}'			, get_rocket_pages_not_cached(), $boostrap );
+	$boostrap = str_replace( '{{WP_ROCKET_CACHE_PATH}}'		, WP_ROCKET_CACHE_PATH, $boostrap );
 	$boostrap = str_replace( '{{ABSPATH}}'					, ABSPATH, $boostrap );
 
 	file_put_contents( WP_ROCKET_PATH . 'bootstrap.php', $boostrap   );
@@ -30,20 +27,33 @@ function flush_rocket_launcher() {
  * since 1.0
  *
  */
+function get_rocket_pages_not_cached()
+{
+
+	$options = get_option( 'wp_rocket_settings' );
+	$pages = array( '.*/feed/' );
+	
+	if( count( $options['cache_reject_uri'] ) >= 1 )
+		$pages =  array_filter( array_merge( $pages, (array)$options['cache_reject_uri'] ) );
+	
+	return implode( '|', $pages );
+	
+}
+
+
+/**
+ * TO DO - Description
+ *
+ * since 1.0
+ *
+ */
 function get_rocket_cookies_not_cached()
 {
 
 	$options = get_option( 'wp_rocket_settings' );
+	$cookies = array( LOGGED_IN_COOKIE, 'wp-postpass_', 'wptouch_switch_toggle' );
 
-	$is_cache_not_logged_in  = $options['cache_not_logged_in'] == 1 ? true : false;
-	$is_cache_comment_author = get_option( 'comment_moderation' ) == '1' || get_option( 'comment_whitelist' ) == '1' ? true : false;
-
-	$cookies = array( 'wp-postpass_' );
-
-	if( $is_cache_not_logged_in )
-		$cookies[] = LOGGED_IN_COOKIE;
-
-	if( $is_cache_comment_author )
+	if( get_option( 'comment_moderation' ) == '1' || get_option( 'comment_whitelist' ) == '1' )
 		$cookies[] = 'comment_author_' . COOKIEHASH;
 
 	return implode( '|', $cookies );
@@ -107,7 +117,7 @@ function rocket_clean_post_terms( $post_ID )
 	}
 
 	do_action( 'before_rocket_clean_post_terms', $urls, $post_ID );
-	
+
     rocket_clean_files( $urls );
 
     do_action( 'after_rocket_clean_post_terms', $urls, $post_ID );
@@ -156,11 +166,11 @@ function rocket_clean_post_dates( $post_ID )
  */
 function rocket_clean_home()
 {
-	
+
 	$root = WP_ROCKET_CACHE_PATH . str_replace( 'http://', '', site_url( '/' ) );
-	
+
 	do_action( 'before_rocket_clean_home' );
-	
+
 	foreach( glob( $root . '/*.{html,css,js}', GLOB_BRACE ) as $file )
 		unlink( $file );
 

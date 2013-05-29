@@ -1,92 +1,100 @@
 <?php
 
+add_action( 'get_header', create_function("", "ob_start( 'rocket_minify_process' );"));
+function rocket_minify_process( $buffer ) {
+
+	$options = get_option( 'wp_rocket_settings' );
+	$enable_js = isset( $options['minify_js'] ) && $options['minify_js'] == '1' ? true : false;
+	$enable_css = isset( $options['minify_css'] ) && $options['minify_css'] == '1' ? true : false;
+
+	if( $enable_css || $enable_js )
+	{
+
+		list( $buffer, $conditionals ) = rocket_extract_ie_conditionals( $buffer );
+
+
+	    // Minify JavaScript
+	    if( $enable_js )
+	    	$buffer = rocket_minify_js( $buffer );
+
+	    // Minify CSS
+	    if( $enable_css )
+	    	$buffer = rocket_minify_css( $buffer );
+
+
+	    $buffer = rocket_inject_ie_conditionals( $buffer, $conditionals );
+
+	}
+
+	// Minify HTML
+    require( WP_ROCKET_PATH . 'min/lib/Minify/HTML.php' );
+	return Minify_HTML::minify( $buffer );
+
+}
+
+
+
 /**
  * TO DO - Description
  *
  * since 1.0
  *
  */
-function rocket_minyfy_css( $buffer, $paths )  {
+function rocket_minify_css( $buffer )  {
 
-	$internals_css = array();
-	$externals_css = array();
+	$options = get_option( 'wp_rocket_settings' );
+
+    $internals_css = array();
+    $externals_css = array();
 
 
-	// Get all css files with this regex
-	preg_match_all( '/<link.+href=.+(\.css).+>/i', $buffer, $link_tags_match );
+    // Get all css files with this regex
+    preg_match_all( '/<link.+href=.+(\.css).+>/i', $buffer, $link_tags_match );
 
 
     foreach ( $link_tags_match[0] as $link_tag ) {
 
         // Check css media type
         if ( !strpos( strtolower( $link_tag ), 'media=' )
-        	|| preg_match('/media=["\'](?:["\']|[^"\']*?(all|screen)[^"\']*?["\'])/', $link_tag )
+                || preg_match('/media=["\'](?:["\']|[^"\']*?(all|screen)[^"\']*?["\'])/', $link_tag )
         ) {
 
 
-	        // Get link of the file
-			preg_match( '/href=[\'"]([^\'"]+)/', $link_tag, $href_match );
+            // Get link of the file
+            preg_match( '/href=[\'"]([^\'"]+)/', $link_tag, $href_match );
 
 
-			if ( $href_match[1] ) {
+            // Get relative url
+            $url = str_replace( 'http://' . $_SERVER['HTTP_HOST'] . '/', '', $href_match[1] );
+			$url = preg_replace( '#\?.*$#', '', $url );
+
+            // Check if the link isn't external
+            // Insert the relative path to the array without query string
+			substr( $url, 0, 4 ) != 'http' && !in_array( $url, $options['exclude_css'] )
+	            ? $internals_css[] = $url
+				: $externals_css[] = $link_tag;
 
 
-				// Get relative url
-				$url = str_replace( 'http://' . $_SERVER['HTTP_HOST'], '', $href_match[1] );
-
-
-				// Check if the link isn't external
-				if( substr( $url, 0, 4 ) != 'http' ) {
-
-				    // Insert the relative path to the array without query string
-				    $internals_css[] = ltrim( preg_replace( '#\?.*$#', '', $url ), '/' );
-
-				}
-				else {
-					$externals_css[] = $link_tag;
-				}
-
-
-				// Delete the link tag
-				$buffer = str_replace( $link_tag, '', $buffer );
-
-			}
+            // Delete the link tag
+            $buffer = str_replace( $link_tag, '', $buffer );
 
         }
 
     }
 
+
     if( count( $internals_css ) >= 1 ) {
 
-	    // Get the minify Google code link
-		$minify_css = $paths['WP_ROCKET_URL'] . 'min/f=' . implode( ',', $internals_css );
-
-
-	    // Create the new unique css filename
-	    $css_path = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . 'style' . time() . '.css';
-
-
-	    // Create and save the minify file
-	    file_put_contents( $paths['CACHE_DIR'] . $css_path, file_get_contents( $minify_css ) );
+		// Get all external link tags
+		$externals_css = count( $externals_css ) >= 1 ? implode( "\n" , $externals_css ) : '';
 
 
 		// Insert the minify css file below <head>
-		$buffer = preg_replace( '/<head>/', '\\0<link rel="stylesheet" href="' . $paths['WP_ROCKET_CACHE_URL'] . $css_path . '" />', $buffer, 1 );
-
-
-    }
-
-
-    if( count( $externals_css ) >= 1 ) {
-
-	    $externals_css = implode( "\n" , $externals_css );
-
-	    // Insert the external CSS
-	    $buffer = preg_replace( '/<head>/', '\\0' . $externals_css, $buffer, 1 );
+		$buffer = preg_replace( '/<head>/', '\\0' . $externals_css . '<link rel="stylesheet" href="' . WP_ROCKET_URL . 'min/f=' . implode( ',', $internals_css ) . '" />', $buffer, 1 );
 
     }
 
-	return $buffer;
+    return $buffer;
 
 }
 
@@ -98,135 +106,53 @@ function rocket_minyfy_css( $buffer, $paths )  {
  * since 1.0
  *
  */
-function rocket_minyfy_inline_css( $buffer, $paths ) {
+function rocket_minify_js( $buffer ) {
+
+	$options = get_option( 'wp_rocket_settings' );
+
+    $internals_js = array();
+    $externals_js = array();
 
 
-	$inline_css = '';
-
-    // Get all inline css with this regex
-	preg_match_all( '#<style?.+>(.*)</style>#isUe', $buffer, $style_tags_match );
-
-
-	// Delete the style tags
-	foreach( $style_tags_match[0] as $style_tag )
-		$buffer = str_replace( $style_tag, '', $buffer );
-
-
-	foreach( $style_tags_match[1] as $style_tag_content )
-    	$inline_css .= $style_tag_content;
-
-
-    if( !empty( $inline_css ) ) {
-
-
-	    // Create the new unique css filename
-    	$inline_css_path = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . 'style-inline' . time() . '.css';
-
-
-	 	require $paths['WP_ROCKET_PATH'] . 'min/lib/Minify/CSS/Compressor.php';
-	 	require $paths['WP_ROCKET_PATH'] . 'min/lib/Minify/CSS/UriRewriter.php';
-
-
-	 	// Minify the code
-	 	$inline_css = Minify_CSS_Compressor::process( $inline_css );
-
-
-	 	// Rewrite URI for background propriety
-	 	$inline_css = Minify_CSS_UriRewriter::rewrite( $inline_css, $_SERVER['DOCUMENT_ROOT'] );
-
-
-	 	// Save the minify file
-	 	file_put_contents( $paths['CACHE_DIR'] . '/' . $inline_css_path, $inline_css );
-
-
-	 	// Insert the minify css file below <head>
-		$buffer = preg_replace( '/<head>/', '\\0<link rel="stylesheet" href="' . $paths['WP_ROCKET_CACHE_URL'] . $inline_css_path . '" />', $buffer, 1);
-
-
-    }
-
-	return $buffer;
-
-}
-
-
-
-/**
- * TO DO - Description
- *
- * since 1.0
- *
- */
-function rocket_minify_js( $buffer, $paths ) {
-
-	$internals_js = array();
-	$externals_js = array();
-
-
-	// Get all JS files with this regex
-	preg_match_all( '/<script.+src=.+(\.js).+><\/script>/i', $buffer, $script_tags_match );
-
+    // Get all JS files with this regex
+    preg_match_all( '/<script.+src=.+(\.js).+><\/script>/i', $buffer, $script_tags_match );
 
     foreach ( $script_tags_match[0] as $script_tag ) {
 
-
-		preg_match('/src=[\'"]([^\'"]+)/', $script_tag, $src_match );
-
-
-		if ( $src_match[1] ) {
-
-			// Get relative url
-			$url = str_replace( 'http://' . $_SERVER['HTTP_HOST'], '', $src_match[1] );
+        preg_match('/src=[\'"]([^\'"]+)/', $script_tag, $src_match );
 
 
-			// Check if the link isn't external
-			if( substr( $url, 0, 4 ) != 'http' ) {
+        // Get relative url
+        $url = str_replace( 'http://' . $_SERVER['HTTP_HOST'] . '/', '', $src_match[1] );
+		$url = preg_replace( '#\?.*$#', '', $url );
 
-				// Insert the relative path to the array without query string
-			    $internals_js[] = ltrim( preg_replace( '#\?.*$#', '', $url ), '/' );
 
-			}
-			else {
-				$externals_js[] = $script_tag;
-			}
+        // Check if the link isn't external
+        // Insert the relative path to the array without query string
+        substr( $url, 0, 4 ) != 'http' && !in_array( $url, $options['exclude_js'] )
+            ? $internals_js[] = $url
+			: $externals_js[] = $script_tag;
 
-			$buffer = str_replace( $script_tag, '', $buffer );
 
-		}
+		// Delete the script tag
+        $buffer = str_replace( $script_tag, '', $buffer );
 
     }
 
 
-	if( count( $externals_js ) >= 1 ) {
+    if( count( $internals_js ) >= 1  ) {
 
-		$externals_js = implode( "\n" , $externals_js );
-
-		// Insert the minify JS file
-		$buffer = preg_replace('/<head>/', '\\0' . $externals_js, $buffer, 1 );
-
-	}
+		// Get all external script tags
+		$externals_js = count( $externals_js ) >= 1 ? implode( "\n" , $externals_js ) : '';
 
 
-	if( count( $internals_js ) >= 1 ) {
+        // Insert the minify JS file
+        $buffer = preg_replace('/<head>/', '\\0' . $externals_js . '<script src="'. WP_ROCKET_URL . 'min/f=' . implode( ',', $internals_js ) .'"></script>', $buffer, 1 );
 
-		// Get the minify Google code link
-		$minify_js = $paths['WP_ROCKET_URL'] . 'min/f=' . implode( ',', $internals_js );
-
-
-		// Create the new unique css filename
-	    $js_path = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . 'script' . time() . '.js';
+    }
 
 
-	    // Create and save the minify file
-	    file_put_contents( $paths['CACHE_DIR'] . $js_path, file_get_contents( $minify_js ) );
-
-
-		// Insert the minify JS file
-		$buffer = preg_replace('/<head>/', '\\0<script src="'. $paths['WP_ROCKET_CACHE_URL'] . $js_path .'"></script>', $buffer, 1 );
-		
-	}
-
-	return $buffer;
+    return $buffer;
 
 }
 
