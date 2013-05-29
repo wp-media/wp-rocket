@@ -1,25 +1,5 @@
 <?php
 
-/**
- * TO DO - Description
- *
- * since 1.0
- *
- */
-function flush_rocket_launcher() {
-
-	$boostrap = file_get_contents( WP_ROCKET_PATH . 'bootstrap-sample.php' );
-
-	$boostrap = str_replace( '{{COOKIES_NOT_CACHED}}'		, get_rocket_cookies_not_cached(), $boostrap );
-	$boostrap = str_replace( '{{PAGES_NOT_CACHED}}'			, get_rocket_pages_not_cached(), $boostrap );
-	$boostrap = str_replace( '{{WP_ROCKET_CACHE_PATH}}'		, WP_ROCKET_CACHE_PATH, $boostrap );
-	$boostrap = str_replace( '{{ABSPATH}}'					, ABSPATH, $boostrap );
-
-	file_put_contents( WP_ROCKET_PATH . 'bootstrap.php', $boostrap   );
-
-}
-
-
 
 /**
  * TO DO - Description

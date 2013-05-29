@@ -27,18 +27,12 @@ define( 'WP_ROCKET_FRONT_URL'		, WP_ROCKET_INC_URL . 'front/' );
 define( 'WP_ROCKET_FRONT_JS_URL'	, WP_ROCKET_FRONT_URL . 'js/' );
 define( 'WP_ROCKET_CACHE_URL'		, WP_ROCKET_URL . 'cache/' );
 
-// Call all class and functions
-require  WP_ROCKET_INC_PATH . 'functions.php';
-require  WP_ROCKET_INC_PATH . 'purge.php';
-require  WP_ROCKET_ADMIN_PATH . 'admin-bar.php';
-require  WP_ROCKET_FRONT_PATH . 'htaccess.php';
-	
-if( is_admin() )
-{
 
-	//
-	add_filter( 'mod_rewrite_rules', 'rocket_override_mod_rewrite_rules' );
-}
+// Call all class and functions
+require WP_ROCKET_INC_PATH . 'functions.php';
+require WP_ROCKET_INC_PATH . 'purge.php';
+require WP_ROCKET_INC_PATH . 'admin-bar.php';
+require WP_ROCKET_FRONT_PATH . 'htaccess.php';
 
 
 add_action( 'plugins_loaded', 'wp_rocket_init' );
@@ -53,13 +47,14 @@ function wp_rocket_init()
 
 	if( is_admin() )
 	{
-		require  WP_ROCKET_ADMIN_PATH . 'options.php';
-		require  WP_ROCKET_ADMIN_PATH . 'notices.php';
+		require WP_ROCKET_ADMIN_PATH . 'options.php';
+		require WP_ROCKET_ADMIN_PATH . 'notices.php';
 	}
 	else
 	{
-		require  WP_ROCKET_FRONT_PATH . 'cookie.php';
+		require WP_ROCKET_FRONT_PATH . 'process.php';
 		require WP_ROCKET_FRONT_PATH . 'minify.php';
+		require WP_ROCKET_FRONT_PATH . 'cookie.php';
 
 		if( isset( $options['lazyload'] ) && $options['lazyload'] == '1' )
 			require WP_ROCKET_FRONT_PATH . 'lazyload.php';
@@ -80,11 +75,10 @@ function wp_rocket_deactivation()
 {
 
 	// Delete All WP Rocket rules of the .htaccess file
-	remove_filter( 'mod_rewrite_rules', 'rocket_override_mod_rewrite_rules' );
 	flush_rocket_htaccess( true );
 	flush_rewrite_rules();
-
 }
+
 
 
 /*
@@ -118,10 +112,6 @@ function wp_rocket_activation()
 	}
 
 	//
-	flush_rocket_launcher();
-
-	//
 	flush_rocket_htaccess();
 	flush_rewrite_rules();
-
 }

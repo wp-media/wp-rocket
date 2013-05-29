@@ -1,6 +1,11 @@
 <?php
 
-add_action( 'get_header', create_function("", "ob_start( 'rocket_minify_process' );"));
+/**
+ * TO DO - Description
+ *
+ * since 1.0
+ *
+ */
 function rocket_minify_process( $buffer ) {
 
 	$options = get_option( 'wp_rocket_settings' );

@@ -242,35 +242,3 @@ function get_rocket_htaccess_etag()
 
 	return $rules;
 }
-
-
-
-/**
- * TO DO - Description
- *
- * since 1.0
- *
- */
-function rocket_override_mod_rewrite_rules( $rules )
-{
-
-	$rules = explode( "\n", $rules );
-
-	$i=0;
-	foreach( $rules as $rule )
-	{
-
-		if( strstr( $rule, '^index\.php$ -' ) != false )
-			$rules[$i] = 'RewriteRule ^index\.php$ ' . ltrim( str_replace( get_option( 'siteurl' ), '', WP_PLUGIN_URL ), '/' )  . '/wp-rocket/bootstrap.php [L]' . "\n";
-
-
-		if( strstr( $rule, '/index.php' ) != false )
-			$rules[$i] = 'RewriteRule . ' . str_replace( get_option( 'siteurl' ), '', WP_PLUGIN_URL )  . '/wp-rocket/bootstrap.php [L]' . "\n";
-
-		$i++;
-
-	}
-
-	return implode( "\n" , $rules );
-
-}

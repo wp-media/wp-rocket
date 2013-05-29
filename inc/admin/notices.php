@@ -27,17 +27,12 @@ function warning_htaccess_permissions()
 
 	$htaccess_file = ABSPATH . '.htaccess';
 
-	$wordpress_markers = "# BEGIN WordPress\n";
-	$wordpress_markers .= implode( "\n", extract_from_markers( $htaccess_file, 'WordPress' ) );
-	$wordpress_markers .= "# END WordPress\n";
-
-
 	if( !file_exists( $htaccess_file ) || !is_writeable( $htaccess_file ) )
 	{ ?>
 
 		<div class="error">
 			<p>Si vous aviez les <a href="http://codex.wordpress.org/Changing_File_Permissions" target="_blank">droits en écriture (en)</a> sur le fichier <code>.htaccess</code>, <strong>WP Rocket</strong> pourrait faire cela automatiquement. Ce n’est pas le cas, donc voici les règles de réécriture que vous devrez mettre dans votre fichier <code>.htaccess</code> pour que le <strong>WP Rocket</strong> fonctionne correctement. Cliquez sur le champ et appuyez sur Ctrl-a pour tout sélectionner.</p>
-			<p><textarea readonly="readonly" id="rules" name="rules" class="large-text readonly" rows="6"><?php echo esc_textarea( get_rocket_htaccess_marker() . $wordpress_markers ); ?></textarea></p>
+			<p><textarea readonly="readonly" id="rules" name="rules" class="large-text readonly" rows="6"><?php echo esc_textarea( get_rocket_htaccess_marker() ); ?></textarea></p>
 		</div>
 
 	<?php

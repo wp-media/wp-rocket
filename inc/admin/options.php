@@ -41,14 +41,10 @@ function rocket_after_save_options()
 	// Clear cron
 	wp_clear_scheduled_hook( 'rocket_purge_time_event' );
 	
-	
-	//
-	flush_rocket_launcher();
 
 	//
 	flush_rocket_htaccess();
-	flush_rewrite_rules();
-	
+	flush_rewrite_rules();	
 }
 
 
