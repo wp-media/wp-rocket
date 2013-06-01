@@ -25,13 +25,21 @@ add_filter( 'delete_term', 'rocket_clean_domain' ); 					// When a term is delet
 add_action( 'transition_post_status', 'rocket_clean_post', 10, 3 );
 function rocket_clean_post( $new_status, $old_status, $post )
 {
-
-
     if( $new_status == 'publish' || $old_status == 'publish' ) {
+       
         $actions = array(
         	'rocket_clean_post_terms' => array( $post->ID ),
         	'rocket_clean_post_dates' => array( $post->ID ),
-        	'rocket_clean_files'      => array( get_permalink( $post->ID ), get_post_type_archive_link( $post->post_type ) ),
+        	'rocket_clean_files'      => array( 
+        									array(
+        										get_permalink( $post->ID ), 
+												get_post_type_archive_link( $post->post_type ),
+												get_permalink( get_adjacent_post( false,'', false ) ),
+												get_permalink( get_adjacent_post( true,'', false ) ),
+												get_permalink( get_adjacent_post( false, '', true ) ),
+												get_permalink( get_adjacent_post( true, '', true ) ),
+        									)
+        								),
         	'rocket_clean_home'
         );
 
@@ -63,7 +71,12 @@ function rocket_clean_comment( $arg1, $arg2 = '', $arg3 = '' )
     $actions = array(
         	'rocket_clean_post_terms' => array( $post_ID ),
         	'rocket_clean_post_dates' => array( $post_ID ),
-        	'rocket_clean_files' 	  => array( get_permalink( $post_ID ), get_post_type_archive_link( $post_type ) ),
+        	'rocket_clean_files' 	  => array( 
+        									array(
+        										get_permalink( $post_ID ), 
+												get_post_type_archive_link( $post_type ) 
+        									)
+        								),
         	'rocket_clean_home'
         );
 

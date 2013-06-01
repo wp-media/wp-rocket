@@ -12,13 +12,13 @@ function get_rocket_pages_not_cached()
 
 	$options = get_option( 'wp_rocket_settings' );
 	$pages = array( '.*/feed/' );
-	
+
 	if( count( $options['cache_reject_uri'] ) >= 1 )
 		$pages =  array_filter( array_merge( $pages, (array)$options['cache_reject_uri'] ) );
-	
+
 	return implode( '|', $pages );
-	
 }
+
 
 
 /**
@@ -37,7 +37,6 @@ function get_rocket_cookies_not_cached()
 		$cookies[] = 'comment_author_' . COOKIEHASH;
 
 	return implode( '|', $cookies );
-
 }
 
 
@@ -54,17 +53,16 @@ function rocket_clean_files( $urls )
 	if( is_string( $urls ) )
 		$urls = (array)$urls;
 
-    foreach( (array)$urls as $url )
+    foreach( array_filter($urls) as $url )
     {
-
+		
 		do_action( 'before_rocket_clean_file', $url );
 
-		rocket_rrmdir( WP_ROCKET_CACHE_PATH .  str_replace( 'http://', '', $url ) );
+		rocket_rrmdir( WP_ROCKET_CACHE_PATH . str_replace( 'http://', '', $url ) );
 
 		do_action( 'after_rocket_clean_file', $url );
 
 	}
-
 }
 
 
@@ -101,7 +99,6 @@ function rocket_clean_post_terms( $post_ID )
     rocket_clean_files( $urls );
 
     do_action( 'after_rocket_clean_post_terms', $urls, $post_ID );
-
 }
 
 
@@ -132,8 +129,6 @@ function rocket_clean_post_dates( $post_ID )
 	rocket_clean_files( $urls );
 
 	do_action( 'after_rocket_clean_post_dates', $urls, $post_ID );
-
-
 }
 
 
@@ -147,7 +142,7 @@ function rocket_clean_post_dates( $post_ID )
 function rocket_clean_home()
 {
 
-	$root = WP_ROCKET_CACHE_PATH . str_replace( 'http://', '', site_url( '/' ) );
+	$root = WP_ROCKET_CACHE_PATH . str_replace( 'http://', '', home_url( '/' ) );
 
 	do_action( 'before_rocket_clean_home' );
 
@@ -173,10 +168,9 @@ function rocket_clean_domain()
 
 	do_action( 'before_rocket_clean_domain' );
 
-    rocket_rrmdir( WP_ROCKET_CACHE_PATH . str_replace( 'http://', '', site_url( '/' ) ) );
+    rocket_rrmdir( WP_ROCKET_CACHE_PATH . str_replace( 'http://', '', home_url( '/' ) ) );
 
     do_action( 'after_rocket_clean_domain' );
-
 }
 
 
@@ -212,14 +206,14 @@ function rocket_rrmdir( $dir )
  */
 function rocket_count_cache_contents( $base = null )
 {
-        $base = $base===null ? ( WP_ROCKET_CACHE_PATH ) : $base;
+    $base = $base===null ? ( WP_ROCKET_CACHE_PATH ) : $base;
 
-        $count = 0;
+    $count = 0;
 
-        if( !file_exists( $base ) )
-                return $count;
+    if( !file_exists( $base ) )
+    	return $count;
 
-        $root = scandir( $base );
+    $root = scandir( $base );
 
     foreach( $root as $value )
     {
@@ -227,9 +221,9 @@ function rocket_count_cache_contents( $base = null )
                         continue;
 
         if( is_file( $base.'/'.$value ) )
-                        $count++;
-                else
-                        $count = $count + rocket_count_cache_contents( $base.'/'.$value );
+        	$count++;
+        else
+        	$count = $count + rocket_count_cache_contents( $base.'/'.$value );
     }
 
     return $count;
