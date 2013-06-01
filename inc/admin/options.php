@@ -1,60 +1,12 @@
 <?php
 
 /**
- * TO DO - Description
- *
- * Since 1.0
- *
- */
-add_action('admin_init', create_function("", "register_setting( 'wp_rocket', 'wp_rocket_settings', 'wp_rocket_settings_callback' );") );
-function wp_rocket_settings_callback( $inputs )
-{
-
-	// Clean and register exclude CSS and JS files in a array
-	$inputs['cache_reject_uri'] = array_map( 'clean_exclude_file', explode( "\n", trim($_POST['wp_rocket_settings']['cache_reject_uri']) ) );
-	$inputs['exclude_css'] = array_map( 'clean_exclude_file', explode( "\n", trim($_POST['wp_rocket_settings']['exclude_css']) ) );
-	$inputs['exclude_js'] = array_map( 'clean_exclude_file', explode( "\n", trim($_POST['wp_rocket_settings']['exclude_js']) ) );
-
-
-	//
-	$inputs['purge_cron_interval'] = isset( $_POST['wp_rocket_settings']['purge_cron_interval'] ) ? (int)$_POST['wp_rocket_settings']['purge_cron_interval'] : 0;
-
-	return $inputs;
-}
-
-
-
-/**
- * TO DO - Description
- *
- * Since 1.0
- *
- */
-add_action( 'update_option_wp_rocket_settings', 'rocket_after_save_options' );
-function rocket_after_save_options()
-{
-	
-	// Purge all cache files when user save options
-	rocket_clean_domain();
-	
-	
-	// Clear cron
-	wp_clear_scheduled_hook( 'rocket_purge_time_event' );
-	
-
-	//
-	flush_rocket_htaccess();
-	flush_rewrite_rules();	
-}
-
-
-
-/**
  * Add submenu in menu "Settings"
  *
  * Since 1.0
  *
  */
+
 add_action( 'admin_menu', create_function( "", "add_options_page( 'WP Rocket', 'WP Rocket', 'manage_options', 'wprocket', 'rocket_display_options');" ) );
 function rocket_display_options()
 {
@@ -182,6 +134,74 @@ function rocket_display_options()
 
 <?php
 }
+
+
+
+/**
+ * Lien vers la page de configuration du plugin
+ *
+ * Since 1.0
+ *
+ */
+
+add_filter( 'plugin_action_links_wp-rocket/wp-rocket.php', 'rocket_settings_action_links' );
+function rocket_settings_action_links( $links )
+{
+    array_unshift( $links, '<a href="' . admin_url( 'options-general.php?page=wprocket' ) . '">' . __( 'Settings' ) . '</a>' );
+    return $links;
+}
+
+
+
+/**
+ * TO DO - Description
+ *
+ * Since 1.0
+ *
+ */
+
+add_action('admin_init', create_function("", "register_setting( 'wp_rocket', 'wp_rocket_settings', 'wp_rocket_settings_callback' );") );
+function wp_rocket_settings_callback( $inputs )
+{
+
+	// Clean and register exclude CSS and JS files in a array
+	$inputs['cache_reject_uri'] = array_filter( array_map( 'clean_exclude_file', explode( "\n", trim($_POST['wp_rocket_settings']['cache_reject_uri']) ) ) );
+	$inputs['cache_reject_cookies'] = array_filter(array_map( 'clean_exclude_file', explode( "\n", trim($_POST['wp_rocket_settings']['cache_reject_cookies']) ) ) );
+	$inputs['exclude_css'] = array_filter( array_map( 'clean_exclude_file', explode( "\n", trim($_POST['wp_rocket_settings']['exclude_css']) ) ) );
+	$inputs['exclude_js'] = array_filter( array_map( 'clean_exclude_file', explode( "\n", trim($_POST['wp_rocket_settings']['exclude_js']) ) ) );
+
+
+	//
+	$inputs['purge_cron_interval'] = isset( $_POST['wp_rocket_settings']['purge_cron_interval'] ) ? (int)$_POST['wp_rocket_settings']['purge_cron_interval'] : 0;
+
+	return $inputs;
+}
+
+
+
+/**
+ * TO DO - Description
+ *
+ * Since 1.0
+ *
+ */
+
+add_action( 'update_option_wp_rocket_settings', 'rocket_after_save_options' );
+function rocket_after_save_options()
+{
+
+	// Purge all cache files when user save options
+	rocket_clean_domain();
+
+
+	// Clear cron
+	wp_clear_scheduled_hook( 'rocket_purge_time_event' );
+
+
+	//
+	flush_rocket_htaccess();
+}
+
 
 
 function clean_exclude_file( $file )
