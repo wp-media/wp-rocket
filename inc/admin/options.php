@@ -23,10 +23,14 @@ function rocket_display_options()
 
 		    <table class="form-table">
 			    <tr>
-				    <th scope="row">LazyLoad :</th>
+				    <th scope="row">
+				    	Chargement différé des images :
+				    	<br/>
+				    	<span class="description">(Lazyload)</span>
+				    </th>
 				    <td valign="top">
 				        <fieldset>
-				            <legend class="screen-reader-text"><span>LazyLoad</span></legend>
+				            <legend class="screen-reader-text"><span>Chargement différé des images</span></legend>
 				            <label for="lazyload">
 				                <input type="checkbox" <?php echo isset( $options['lazyload'] ) ? checked( $options['lazyload'], 1, false ) : ''; ?> value="1" id="lazyload" name="wp_rocket_settings[lazyload]">
 				                <p class="description">Le LazyLoad (ou chargement différé des images) consiste à afficher les images d’une page uniquement quand elles sont visibles par l’internaute.
@@ -62,6 +66,18 @@ function rocket_display_options()
 				        </fieldset>
 				    </td>
 				</tr>
+				<tr>
+				    <th scope="row">Mobile :</th>
+				    <td valign="top">
+				        <fieldset>
+				            <legend class="screen-reader-text"><span>Mobile</span></legend>
+				            <label for="cache_mobile">
+				                <input type="checkbox" <?php echo isset( $options['cache_mobile'] ) ? checked( $options['cache_mobile'], 1, false ) : ''; ?> value="1" id="cache_mobile" name="wp_rocket_settings[cache_mobile]"> Désactiver la mise en cache pour les appareils mobile.
+				                <p class="description"></p>
+				            </label>
+				        </fieldset>
+				    </td>
+				</tr>
 		    </table>
 
 			<h3>Options avancées</h3>
@@ -84,8 +100,10 @@ function rocket_display_options()
 
 				    <td>
 				        <textarea id="cache_reject_uri" name="wp_rocket_settings[cache_reject_uri]" cols="50" rows="5"><?php echo esc_textarea( implode( "\n" , (array)$options['cache_reject_uri'] ) ); ?></textarea>
-				        <br>
-				        <span class="description">Additional information or instructions.</span>
+				        <p class="description">Indiquez l'URL des pages à rejeter (une par ligne).
+					        <br/>
+					        Il est possible d'utiliser des expressions régulières (REGEX).
+				        </p>
 				    </td>
 				</tr>
 				<tr>
@@ -95,8 +113,7 @@ function rocket_display_options()
 
 				    <td>
 				        <textarea id="cache_reject_cookies" name="wp_rocket_settings[cache_reject_cookies]" cols="50" rows="5"><?php echo esc_textarea( implode( "\n" , (array)$options['cache_reject_cookies'] ) ); ?></textarea>
-				        <br>
-				        <span class="description">Additional information or instructions.</span>
+				        <p class="description">Indiquez les noms des cookies à rejeter (un par ligne)</p>
 				    </td>
 				</tr>
 				<tr>
@@ -108,6 +125,7 @@ function rocket_display_options()
 				    </th>
 				    <td>
 				        <textarea id="exclude_css" name="wp_rocket_settings[exclude_css]" cols="50" rows="5"><?php echo esc_textarea( implode( "\n" , (array)$options['exclude_css'] ) ); ?></textarea>
+				        <p class="description">Indiquez l'URL des fichiers <strong>CSS</strong> à rejeter (un par ligne)</p>
 				    </td>
 				</tr>
 				<tr>
@@ -116,6 +134,7 @@ function rocket_display_options()
 				    </th>
 				    <td>
 				        <textarea id="exclude_js" name="wp_rocket_settings[exclude_js]" cols="50" rows="5"><?php echo esc_textarea( implode( "\n" , (array)$options['exclude_js'] ) ); ?></textarea>
+				        <p class="description">Indiquez l'URL des fichiers <strong>JavaScript</strong> à rejeter (un par ligne)</p>
 				    </td>
 				</tr>
 			</table>
