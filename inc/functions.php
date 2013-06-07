@@ -35,8 +35,24 @@ function get_rocket_cookies_not_cached()
 
 	if( get_option( 'comment_moderation' ) == '1' || get_option( 'comment_whitelist' ) == '1' )
 		$cookies[] = 'comment_author_' . COOKIEHASH;
-
+	
+	if( count( $options['cache_reject_cookies'] ) >= 1 )
+		$cookies =  array_filter( array_merge( $cookies, (array)$options['cache_reject_cookies'] ) );
+	
 	return implode( '|', $cookies );
+}
+
+
+/**
+ * TO DO - Description
+ *
+ * since 1.0
+ *
+ */
+function is_rocket_cache_mobile()
+{
+	$options = get_option( 'wp_rocket_settings' );
+	return isset( $options['cache_mobile'] ) && $options['cache_mobile'] == '1' ? true : false;
 }
 
 
@@ -59,7 +75,7 @@ function rocket_clean_files( $urls )
 		do_action( 'before_rocket_clean_file', $url );
 
 		rocket_rrmdir( WP_ROCKET_CACHE_PATH . str_replace( 'http://', '', $url ) );
-
+						
 		do_action( 'after_rocket_clean_file', $url );
 
 	}
@@ -146,11 +162,11 @@ function rocket_clean_home()
 
 	do_action( 'before_rocket_clean_home' );
 
-	foreach( glob( $root . '/*.{html,css,js}', GLOB_BRACE ) as $file )
-		unlink( $file );
-
+	@unlink( $root . '/index.html' );
     rocket_rrmdir( $root . $GLOBALS['wp_rewrite']->pagination_base );
-
+	
+	wp_remote_get( home_url( '/' ) );
+	
     do_action( 'after_rocket_clean_home' );
 }
 
