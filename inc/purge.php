@@ -1,5 +1,5 @@
 <?php
-
+defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 
 // Launch hooks that deletes all the cache domain
 add_action( 'switch_theme', 'rocket_clean_domain' );					// When user change theme
@@ -26,13 +26,13 @@ add_action( 'transition_post_status', 'rocket_clean_post', 10, 3 );
 function rocket_clean_post( $new_status, $old_status, $post )
 {
     if( $new_status == 'publish' || $old_status == 'publish' ) {
-       
+
         $actions = array(
         	'rocket_clean_post_terms' => array( $post->ID ),
         	'rocket_clean_post_dates' => array( $post->ID ),
-        	'rocket_clean_files'      => array( 
+        	'rocket_clean_files'      => array(
         									array(
-        										get_permalink( $post->ID ), 
+        										get_permalink( $post->ID ),
 												get_post_type_archive_link( $post->post_type ),
 												get_permalink( get_adjacent_post( false,'', false ) ),
 												get_permalink( get_adjacent_post( true,'', false ) ),
@@ -71,10 +71,10 @@ function rocket_clean_comment( $arg1, $arg2 = '', $arg3 = '' )
     $actions = array(
         	'rocket_clean_post_terms' => array( $post_ID ),
         	'rocket_clean_post_dates' => array( $post_ID ),
-        	'rocket_clean_files' 	  => array( 
+        	'rocket_clean_files' 	  => array(
         									array(
-        										get_permalink( $post_ID ), 
-												get_post_type_archive_link( $post_type ) 
+        										get_permalink( $post_ID ),
+												get_post_type_archive_link( $post_type )
         									)
         								),
         	'rocket_clean_home'
@@ -133,6 +133,28 @@ function rocket_purge_cache()
 				wp_nonce_ays( '' );
 				break;
 		}
+
+		if( !defined( 'DOING_AJAX' ) || !DOING_AJAX ) {
+			wp_redirect( wp_get_referer() );
+			die();
+		}
+
+	}
+
+}
+
+add_action( 'wp_ajax_preload', 'rocket_preload_cache' );
+add_action( 'wp_ajax_nopriv_preload', 'rocket_preload_cache' );
+add_action( 'admin_post_preload', 'rocket_preload_cache' );
+add_action( 'admin_post_nopriv_preload', 'rocket_preload_cache' );
+function rocket_preload_cache()
+{
+	if( isset( $_GET['_wpnonce'] ) ) {
+
+		if( !wp_verify_nonce( $_GET['_wpnonce'], 'preload' ) )
+			defined( 'DOING_AJAX' ) && DOING_AJAX ? die( '-1' ) : wp_nonce_ays( '' );
+
+		// $var = wp_remote_post(); // GET est plus rapide que POST en perf, obligé de POSTER ?
 
 		if( !defined( 'DOING_AJAX' ) || !DOING_AJAX ) {
 			wp_redirect( wp_get_referer() );

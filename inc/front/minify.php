@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 /**
  * TO DO - Description

@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 
 /**
  * TO DO - Description
@@ -7,8 +8,8 @@
  *
  */
 
-add_action( 'admin_footer', 'warning_using_permalinks' );
-function warning_using_permalinks()
+add_action( 'admin_footer', 'rocket_warning_using_permalinks' );
+function rocket_warning_using_permalinks()
 {
 
 	if( $GLOBALS['wp_rewrite']->using_permalinks() )
@@ -21,8 +22,19 @@ function warning_using_permalinks()
 	<?php
 }
 
-add_action( 'admin_footer', 'warning_htaccess_permissions' );
-function warning_htaccess_permissions()
+// Need API key
+function rocket_need_api_key()
+{
+
+	?>
+	<div class="updated">
+		<p><strong>WP Rocket</strong> : Pour finaliser l'installation et profiter des performances apportées par notre plugin, merci de <a href="<?php echo admin_url( 'options-general.php?page=wprocket' ); ?>">renseigner votre clé API</a>.</p>
+	</div>
+	<?php
+}
+
+add_action( 'admin_footer', 'rocket_warning_htaccess_permissions' ); //// footer, pas admin_notices
+function rocket_warning_htaccess_permissions()
 {
 
 	$htaccess_file = ABSPATH . '.htaccess';

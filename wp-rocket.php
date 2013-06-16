@@ -5,52 +5,69 @@ Plugin Name: WP Rocket
 Plugin URI: http://www.wp-rocket.me
 Description: The best WordPress performance plugin.
 Version: 1.0
-Author: Jonathan Buttigieg, Julio Potier
+Author: WP-Rocket
+Contributors: Jonathan Buttigieg, Julio Potier
 Author URI: http://www.wp-rocket.me
 
 Copyright 2013 WP Rocket
 
 */
-
+defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 
 define( 'WP_ROCKET_VERSION'			, '1.0');
-
+define( 'WP_ROCKET_SLUG'			, 'wp_rocket_settings');
+// define( 'WP_ROCKET_WEB_MAIN'		, 'http://wp-rocket.me/'); // prod
+define( 'WP_ROCKET_WEB_MAIN'		, 'http://dev.wp-rocket.me/'); // dev
+define( 'WP_ROCKET_WEB_CHECK'		, 'check_update.php');
+define( 'WP_ROCKET_WEB_VALID'		, 'valid_key.php');
+define( 'WP_ROCKET_WEB_INFO'		, 'plugin_information.php');
+define( 'WP_ROCKET_WEB_SUPPORT'		, 'http://support.wp-rocket.me/');
+define( 'WP_ROCKET_FILE'			, __FILE__ );
 define( 'WP_ROCKET_PATH'			, plugin_dir_path(__FILE__) );
 define( 'WP_ROCKET_INC_PATH'		, WP_ROCKET_PATH . 'inc/' );
 define( 'WP_ROCKET_FRONT_PATH'		, WP_ROCKET_INC_PATH . 'front/' );
 define( 'WP_ROCKET_ADMIN_PATH'		, WP_ROCKET_INC_PATH . 'admin/' );
 define( 'WP_ROCKET_CACHE_PATH'		, WP_ROCKET_PATH . 'cache/' );
-
 define( 'WP_ROCKET_URL'				, plugin_dir_url(__FILE__) );
 define( 'WP_ROCKET_INC_URL'			, WP_ROCKET_URL . 'inc/' );
 define( 'WP_ROCKET_FRONT_URL'		, WP_ROCKET_INC_URL . 'front/' );
 define( 'WP_ROCKET_FRONT_JS_URL'	, WP_ROCKET_FRONT_URL . 'js/' );
 define( 'WP_ROCKET_CACHE_URL'		, WP_ROCKET_URL . 'cache/' );
 
+if( !defined( 'SECOND_IN_SECONDS' ) )
+	define( 'SECOND_IN_SECONDS', 1 );
 
-// Call all class and functions
-require WP_ROCKET_INC_PATH . 'functions.php';
-require WP_ROCKET_INC_PATH . 'purge.php';
-require WP_ROCKET_INC_PATH . 'admin-bar.php';
-require WP_ROCKET_FRONT_PATH . 'htaccess.php';
-
-
-add_action( 'plugins_loaded', 'wp_rocket_init' );
-function wp_rocket_init()
+add_action( 'plugins_loaded', 'rocket_init' );
+function rocket_init()
 {
 
-	$options = get_option( 'wp_rocket_settings' );
+	if( defined( 'DOING_AUTOSAVE' ) )
+			return;
 
-	if( $options['purge_cron_interval'] > 0 )
-		require  WP_ROCKET_INC_PATH . 'cron.php';
+	// Call all classes and functions
+	require WP_ROCKET_INC_PATH . 'functions.php';
+	require WP_ROCKET_FRONT_PATH . 'htaccess.php';
+
+	if( rocket_valid_key() ) {
+		require WP_ROCKET_INC_PATH . 'purge.php';
+		require WP_ROCKET_INC_PATH . 'admin-bar.php';
+	}
+
+	$options = get_option( WP_ROCKET_SLUG );
+
+	if( rocket_valid_key() )
+		if( isset( $options['purge_cron_interval'] ) && (int)$options['purge_cron_interval'] > 0 )
+			require  WP_ROCKET_INC_PATH . 'cron.php';
 
 
 	if( is_admin() )
 	{
+		require WP_ROCKET_ADMIN_PATH . 'upgrader.php';
+		require WP_ROCKET_ADMIN_PATH . 'updater.php';
 		require WP_ROCKET_ADMIN_PATH . 'options.php';
 		require WP_ROCKET_ADMIN_PATH . 'notices.php';
 	}
-	else
+	elseif( rocket_valid_key() )
 	{
 		require WP_ROCKET_FRONT_PATH . 'process.php';
 		require WP_ROCKET_FRONT_PATH . 'minify.php';
@@ -60,9 +77,11 @@ function wp_rocket_init()
 			require WP_ROCKET_FRONT_PATH . 'lazyload.php';
 	}
 
+	// You can hook this to trigger any action when WP Rocket is correctly loaded, so, not in AJAX or AUTOSAVE mode
+	if( rocket_valid_key() )
+		do_action( 'wp_rocket_loaded' );
+
 }
-
-
 
 /*
  * Tell WP what to do when plugin is deactivated
@@ -70,48 +89,26 @@ function wp_rocket_init()
  * since 1.0
  *
  */
-register_deactivation_hook(__FILE__, 'wp_rocket_deactivation' );
-function wp_rocket_deactivation()
+register_deactivation_hook( __FILE__, 'rocket_deactivation' );
+function rocket_deactivation()
 {
-
 	// Delete All WP Rocket rules of the .htaccess file
 	flush_rocket_htaccess( true );
 	flush_rewrite_rules();
 }
 
 
-
 /*
- * Tell WP what to do when plugin is activated
+ * Tell WP what to do when plugin is uninstalled
  *
  * since 1.0
  *
  */
-register_activation_hook(__FILE__, 'wp_rocket_activation' );
-function wp_rocket_activation()
+register_uninstall_hook( __FILE__, 'rocket_uninstall' );
+function rocket_uninstall()
 {
-
-	// Create option
-	if( !get_option( 'wp_rocket_settings' ) )
-	{
-
-		add_option( 'wp_rocket_settings',
-			array(
-				'purge_cron_interval'  => 14400, // 4 hours
-				'cache_mobile'         => 0,
-				'cache_reject_uri'     => array(),
-				'cache_reject_cookies' => array(),
-				'lazyload'			   => 1,
-				'minify_css'		   => 0,
-				'exclude_css'		   => array(),
-				'minify_js'			   => 0,
-				'exclude_js'		   => array()
-			)
-		);
-
-	}
-
-	//
-	flush_rocket_htaccess();
-	flush_rewrite_rules();
+	// Delete All WP Rocket rules of the .htaccess file
+	wp_rocket_deactivation();
+	// We delete the options
+	delete_option( WP_ROCKET_SLUG );
 }

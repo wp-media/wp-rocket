@@ -1,5 +1,5 @@
 <?php
-
+defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 
 /**
  * TO DO - Description
@@ -15,7 +15,7 @@ function rocket_enqueue_lazyload() {
 		return false;
 
 	wp_enqueue_script( 'rocket-lazyload', WP_ROCKET_FRONT_JS_URL . 'lazyload.js', array(), null, true );
-	
+
 }
 
 

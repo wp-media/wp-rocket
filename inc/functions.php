@@ -1,5 +1,5 @@
 <?php
-
+defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 
 /**
  * TO DO - Description
@@ -13,7 +13,7 @@ function get_rocket_pages_not_cached()
 	$options = get_option( 'wp_rocket_settings' );
 	$pages = array( '.*/feed/' );
 
-	if( count( $options['cache_reject_uri'] ) >= 1 )
+	if( isset( $options['cache_reject_uri'] ) && count( $options['cache_reject_uri'] ) >= 1 )
 		$pages =  array_filter( array_merge( $pages, (array)$options['cache_reject_uri'] ) );
 
 	return implode( '|', $pages );
@@ -31,31 +31,16 @@ function get_rocket_cookies_not_cached()
 {
 
 	$options = get_option( 'wp_rocket_settings' );
-	$cookies = array( LOGGED_IN_COOKIE, 'wp-postpass_', 'wptouch_switch_toggle' );
+	$cookies = array( str_replace( COOKIEHASH, '', LOGGED_IN_COOKIE ), 'wp-postpass_', 'wptouch_switch_toggle' );
 
 	if( get_option( 'comment_moderation' ) == '1' || get_option( 'comment_whitelist' ) == '1' )
-		$cookies[] = 'comment_author_' . COOKIEHASH;
-	
-	if( count( $options['cache_reject_cookies'] ) >= 1 )
+		$cookies[] = 'comment_author_';
+
+	if( isset( $options['cache_reject_uri'] ) && count( $options['cache_reject_cookies'] ) >= 1 )
 		$cookies =  array_filter( array_merge( $cookies, (array)$options['cache_reject_cookies'] ) );
-	
+
 	return implode( '|', $cookies );
 }
-
-
-/**
- * TO DO - Description
- *
- * since 1.0
- *
- */
-function is_rocket_cache_mobile()
-{
-	$options = get_option( 'wp_rocket_settings' );
-	return isset( $options['cache_mobile'] ) && $options['cache_mobile'] == '1' ? true : false;
-}
-
-
 
 /**
  * Remove cache files
@@ -71,11 +56,12 @@ function rocket_clean_files( $urls )
 
     foreach( array_filter($urls) as $url )
     {
-		
-		do_action( 'before_rocket_clean_file', $url );
 
-		rocket_rrmdir( WP_ROCKET_CACHE_PATH . str_replace( 'http://', '', $url ) );
-						
+		$url = apply_filters( 'before_rocket_clean_file', $url );
+
+		if( $url )
+			rocket_rrmdir( WP_ROCKET_CACHE_PATH . str_replace( array( 'http://', 'https://' ), '', $url ) );
+
 		do_action( 'after_rocket_clean_file', $url );
 
 	}
@@ -130,14 +116,14 @@ function rocket_clean_post_dates( $post_ID )
 
 	// Get the day and month of the post
 	$date = explode( '-', get_the_time( 'Y-m-d', $post_ID ) );
-
+	global $wp_rewrite;
 	$urls = array(
 		get_year_link( $date[0] ) . 'index.html',
-		get_year_link( $date[0] ) . $GLOBALS['wp_rewrite']->pagination_base,
+		get_year_link( $date[0] ) . $wp_rewrite->pagination_base,
 		get_month_link( $date[0], $date[1] ),
-		get_month_link( $date[0], $date[1] ) . $GLOBALS['wp_rewrite']->pagination_base,
+		get_month_link( $date[0], $date[1] ) . $wp_rewrite->pagination_base,
 		get_day_link( $date[0], $date[1], $date[2] ),
-		get_day_link( $date[0], $date[1], $date[2] ) . $GLOBALS['wp_rewrite']->pagination_base
+		get_day_link( $date[0], $date[1], $date[2] ) . $wp_rewrite->pagination_base
 	);
 
 	do_action( 'before_rocket_clean_post_dates', $urls, $post_ID );
@@ -162,11 +148,11 @@ function rocket_clean_home()
 
 	do_action( 'before_rocket_clean_home' );
 
-	@unlink( $root . '/index.html' );
+	foreach( glob( $root . '/*.{html,css,js}', GLOB_BRACE ) as $file )
+		unlink( $file );
+
     rocket_rrmdir( $root . $GLOBALS['wp_rewrite']->pagination_base );
-	
-	wp_remote_get( home_url( '/' ) );
-	
+
     do_action( 'after_rocket_clean_home' );
 }
 
@@ -222,25 +208,56 @@ function rocket_rrmdir( $dir )
  */
 function rocket_count_cache_contents( $base = null )
 {
-    $base = $base===null ? ( WP_ROCKET_CACHE_PATH ) : $base;
-
-    $count = 0;
+    $base = is_null( $base ) ? WP_ROCKET_CACHE_PATH : $base;
 
     if( !file_exists( $base ) )
-    	return $count;
+    	return 0;
+
+    $count = 0;
 
     $root = scandir( $base );
 
     foreach( $root as $value )
     {
         if( $value=='.' || $value=='..' )
-                        continue;
+			continue;
 
         if( is_file( $base.'/'.$value ) )
-        	$count++;
-        else
-        	$count = $count + rocket_count_cache_contents( $base.'/'.$value );
+			$count++;
+		else
+			$count = $count + rocket_count_cache_contents( $base.'/'.$value );
     }
 
     return $count;
+}
+
+
+
+function rocket_clean_exclude_file( $file )
+{
+
+	// Get relative url
+    return trim( reset( explode( '?', str_replace( array( '#\?.*$#', home_url( '/' ), 'http://', 'https://' ), '', $file ) ) ) );
+
+}
+
+function rocket_valid_key()
+{
+	$options = get_option( WP_ROCKET_SLUG );
+	if( !isset( $options['consumer_key'] ) || !isset( $options['secret_key'] ) )
+		return false;
+	return $options['consumer_key']==hash( 'crc32', get_rocket_home_url().chr(98) ) && $options['secret_key']==md5( $options['consumer_key'] );
+}
+
+function get_rocket_cron_interval()
+{
+	$options = get_option( WP_ROCKET_SLUG );
+	if( !isset( $options['purge_cron_interval'] ) || !isset( $options['purge_cron_unit'] ) )
+		return 0;
+	return (int)( $options['purge_cron_interval'] * constant( $options['purge_cron_unit'] ) );
+}
+
+function get_rocket_home_url()
+{
+	return apply_filters( 'rocket_home_url', str_replace( 'www.', '', home_url('/') ) );
 }

@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 
 /**
  * TO DO - Description
@@ -24,7 +25,7 @@ function rocket_post_submitbox_start()
  *
  */
 
-add_action('admin_bar_menu', 'rocket_admin_bar', 500);
+add_action( 'admin_bar_menu', 'rocket_admin_bar', PHP_INT_MAX );
 function rocket_admin_bar( $wp_admin_bar )
 {
 	$action = 'purge_cache';
@@ -32,13 +33,13 @@ function rocket_admin_bar( $wp_admin_bar )
     $wp_admin_bar->add_menu(array(
 	    'id'    => 'wp-rocket',
 	    'title' => 'WP Rocket',
-	    'href'  => '#',
+	    'href'  => admin_url( 'options-general.php?page=wprocket' ),
 	));
 		// Purge All
 		$wp_admin_bar->add_menu(array(
 			'parent'	=> 'wp-rocket',
 			'id' 		=> 'purge-all',
-			'title' 	=> sprintf( __( 'Full Purge <span class="count-cache" title="%1$d files">%1$d</span>', 'wp-rocket' ), rocket_count_cache_contents() ),
+			'title' 	=> sprintf( __( 'Full Purge <span class="count-cache" title="%1$d files">%1$d</span>', 'rocket' ), rocket_count_cache_contents() ),
 			'href' 		=> wp_nonce_url( admin_url( 'admin-post.php?action='.$action.'&type=all' ), $action.'_all' ),
 			'meta' 		=> array( 'class'=>'ajaxme' )
 		));
@@ -49,11 +50,11 @@ function rocket_admin_bar( $wp_admin_bar )
 			global $pagenow, $post;
 			if( $post && $pagenow=='post.php' && isset( $_GET['action'], $_GET['post'] ) )
 			{
-				$cache_slug = str_replace( home_url( '/' ), '/', get_permalink( $post->ID ) );
+				$pobject = get_post_type_object( $post->post_type );
 				$wp_admin_bar->add_menu(array(
 					'parent' => 'wp-rocket',
 					'id' => 'purge-post',
-					'title' => __( 'Purge this post', 'wp-rocket' ),
+					'title' => sprintf( __( 'Purger ce %s', 'rocket' ), $pobject->labels->singular_name ),
 					'href' => wp_nonce_url( admin_url( 'admin-post.php?action='.$action.'&type=post-'.$post->ID ), $action.'_post-'.$post->ID ),
 					'meta' => array( 'class'=>'ajaxme' )
 				));
@@ -61,15 +62,23 @@ function rocket_admin_bar( $wp_admin_bar )
 		}
 		else {
 			// Purge this URL (frontend)
-			$cache_slug = $_SERVER['REQUEST_URI'];
 			$wp_admin_bar->add_menu(array(
 				'parent' => 'wp-rocket',
 				'id' => 'purge-url',
-				'title' => __( 'Purge this URL', 'wp-rocket' ),
+				'title' => __( 'Purger cette URL', 'rocket' ),
 				'href' => wp_nonce_url( admin_url( 'admin-post.php?action='.$action.'&type=url' ), $action.'_url' ),
 				'meta' => array( 'class'=>'ajaxme' )
 			));
 		}
+		$action = 'preload';
+		// Go robot gogo !
+		$wp_admin_bar->add_menu(array(
+			'parent' => 'wp-rocket',
+			'id' => 'preload-cache',
+			'title' => __( 'Précharger le cache', 'rocket' ),
+			'href' => wp_nonce_url( admin_url( 'admin-post.php?action='.$action ), $action ),
+			'meta' => array( 'class'=>'ajaxme' )
+		));
 }
 
 
@@ -108,7 +117,7 @@ function rocket_wp_before_admin_bar_render()
 			position:relative;
 		}
 	</style>
-	
+
 	<script>
 		jQuery(document).ready(function($){
 			$('#wp-admin-bar-wp-rocket a:first').append('<span class="ajax_load"> <img src="<?php echo admin_url( '/images/wpspin_light.gif' ); ?>" /></span>');
@@ -127,6 +136,6 @@ function rocket_wp_before_admin_bar_render()
 			});
 		});
 	</script>
-	
+
 <?php
 }
