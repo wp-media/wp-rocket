@@ -96,19 +96,3 @@ function rocket_deactivation()
 	flush_rocket_htaccess( true );
 	flush_rewrite_rules();
 }
-
-
-/*
- * Tell WP what to do when plugin is uninstalled
- *
- * since 1.0
- *
- */
-register_uninstall_hook( __FILE__, 'rocket_uninstall' );
-function rocket_uninstall()
-{
-	// Delete All WP Rocket rules of the .htaccess file
-	wp_rocket_deactivation();
-	// We delete the options
-	delete_option( WP_ROCKET_SLUG );
-}
