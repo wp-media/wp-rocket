@@ -46,7 +46,7 @@ function get_rocket_cookies_not_cached()
 
 
 /**
- * TO DO - Description
+ * Check if user want to cache mobile version
  *
  * since 1.0
  *
@@ -248,6 +248,12 @@ function rocket_count_cache_contents( $base = null )
 
 
 
+/**
+ * TO DO - Description
+ *
+ * since 1.0
+ *
+ */
 function rocket_clean_exclude_file( $file )
 {
 
@@ -256,6 +262,14 @@ function rocket_clean_exclude_file( $file )
 
 }
 
+
+
+/**
+ * TO DO - Description
+ *
+ * since 1.0
+ *
+ */
 function rocket_valid_key()
 {
 	$options = get_option( WP_ROCKET_SLUG );
@@ -264,6 +278,14 @@ function rocket_valid_key()
 	return $options['consumer_key']==hash( 'crc32', get_rocket_home_url().chr(98) ) && $options['secret_key']==md5( $options['consumer_key'] );
 }
 
+
+
+/**
+ * TO DO - Description
+ *
+ * since 1.0
+ *
+ */
 function get_rocket_cron_interval()
 {
 	$options = get_option( WP_ROCKET_SLUG );
@@ -272,7 +294,34 @@ function get_rocket_cron_interval()
 	return (int)( $options['purge_cron_interval'] * constant( $options['purge_cron_unit'] ) );
 }
 
+
+
+/**
+ * TO DO - Description
+ *
+ * since 1.0
+ *
+ */
 function get_rocket_home_url()
 {
 	return apply_filters( 'rocket_home_url', str_replace( 'www.', '', home_url('/') ) );
+}
+
+
+
+/**
+ * TO DO - Description
+ *
+ * source : http://stackoverflow.com/a/15498686
+ * since 1.0
+ *
+ */
+function get_domain( $url )
+{
+      $urlobj=parse_url($url);
+      $domain=$urlobj['host'];
+      if (preg_match('/(?P<domain>[a-z0-9][a-z0-9\-]{1,63}\.[a-z\.]{2,6})$/i', $domain, $regs)) {
+        return $regs['domain'];
+      }
+      return false;
 }

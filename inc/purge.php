@@ -155,10 +155,9 @@ function rocket_preload_cache()
 			defined( 'DOING_AJAX' ) && DOING_AJAX ? die( '-1' ) : wp_nonce_ays( '' );
 
 		$home_url = home_url();
-		$host_names = explode( ".", $home_url );
-		$domain = $host_names[count($host_names)-2] . "." . $host_names[count($host_names)-1];
+		$domain = get_domain( $home_url );
 
-		wp_remote_get( 'http://bot.wp-rocket.me/launch.php?project=wprocket&spider=cache-preload&start_url=' . $home_url . '&allow_url=' . $domain );
+		wp_remote_get( 'http://bot.wp-rocket.me/launch.php?&spider=cache-preload&start_url=' . $home_url . '&allow_url=' . $domain );
 
 		if( !defined( 'DOING_AJAX' ) || !DOING_AJAX ) {
 			wp_redirect( wp_get_referer() );
