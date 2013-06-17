@@ -7,7 +7,8 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
  * since 1.0
  *
  */
-function rocket_minify_process( $buffer ) {
+function rocket_minify_process( $buffer ) 
+{
 
 	$options = get_option( 'wp_rocket_settings' );
 	$enable_js = isset( $options['minify_js'] ) && $options['minify_js'] == '1' ? true : false;
@@ -46,17 +47,17 @@ function rocket_minify_process( $buffer ) {
  * since 1.0
  *
  */
-function rocket_minify_css( $buffer )  {
+ 
+function rocket_minify_css( $buffer ) 
+{
 
 	$options = get_option( 'wp_rocket_settings' );
 
     $internals_css = array();
     $externals_css = array();
 
-
     // Get all css files with this regex
     preg_match_all( '/<link.+href=.+(\.css).+>/i', $buffer, $link_tags_match );
-
 
     foreach ( $link_tags_match[0] as $link_tag ) {
 
@@ -88,20 +89,16 @@ function rocket_minify_css( $buffer )  {
 
     }
 
+    // Get the internal CSS File
+	$internals_css = count( $internals_js )>=1 ? '<link rel="stylesheet" href="' . WP_ROCKET_URL . 'min/f=' . implode( ',', $internals_css ) . '" />' : '';
 
-    if( count( $internals_css ) >= 1 ) {
+	// Get all external link tags
+	$externals_css = count( $externals_css )>=1 ? implode( "\n" , $externals_css ) : '';
 
-		// Get all external link tags
-		$externals_css = count( $externals_css ) >= 1 ? implode( "\n" , $externals_css ) : '';
-
-
-		// Insert the minify css file below <head>
-		$buffer = preg_replace( '/<head>/', '\\0' . $externals_css . '<link rel="stylesheet" href="' . WP_ROCKET_URL . 'min/f=' . implode( ',', $internals_css ) . '" />', $buffer, 1 );
-
-    }
+	// Insert the minify css file below <head>
+	$buffer = preg_replace( '/<head(.*)>/', '<head$1>' . $externals_css . $internals_css, $buffer, 1 );
 
     return $buffer;
-
 }
 
 
@@ -112,13 +109,14 @@ function rocket_minify_css( $buffer )  {
  * since 1.0
  *
  */
-function rocket_minify_js( $buffer ) {
+ 
+function rocket_minify_js( $buffer ) 
+{
 
 	$options = get_option( 'wp_rocket_settings' );
 
     $internals_js = array();
     $externals_js = array();
-
 
     // Get all JS files with this regex
     preg_match_all( '/<script.+src=.+(\.js).+><\/script>/i', $buffer, $script_tags_match );
@@ -145,21 +143,16 @@ function rocket_minify_js( $buffer ) {
 
     }
 
+    // Get the internal JavaScript File
+	$internals_js = count( $internals_js )>=1 ? '<script src="'. WP_ROCKET_URL . 'min/f=' . implode( ',', $internals_js ) .'"></script>' : '';
 
-    if( count( $internals_js ) >= 1  ) {
+	// Get all external script tags
+	$externals_js = count( $externals_js )>=1 ? implode( "\n" , $externals_js ) : '';
 
-		// Get all external script tags
-		$externals_js = count( $externals_js ) >= 1 ? implode( "\n" , $externals_js ) : '';
-
-
-        // Insert the minify JS file
-        $buffer = preg_replace('/<head>/', '\\0' . $externals_js . '<script src="'. WP_ROCKET_URL . 'min/f=' . implode( ',', $internals_js ) .'"></script>', $buffer, 1 );
-
-    }
-
+    // Insert the minify JS file
+    $buffer = preg_replace( '/<head(.*)>/', '<head$1>' . $externals_js . $internals_js, $buffer, 1 );
 
     return $buffer;
-
 }
 
 
@@ -171,7 +164,9 @@ function rocket_minify_js( $buffer ) {
  * source : WP Minify
  *
  */
-function rocket_extract_ie_conditionals( $buffer ) {
+
+function rocket_extract_ie_conditionals( $buffer ) 
+{
 
     preg_match_all('/<!--\[if[^\]]*?\]>.*?<!\[endif\]-->/is', $buffer, $conditionals_match );
     $buffer = preg_replace( '/<!--\[if[^\]]*?\]>.*?<!\[endif\]-->/is', '{{WP_ROCKET_CONDITIONAL}}', $buffer );
@@ -193,7 +188,9 @@ function rocket_extract_ie_conditionals( $buffer ) {
  * source : WP Minify
  *
  */
-function rocket_inject_ie_conditionals( $buffer, $conditionals ) {
+ 
+function rocket_inject_ie_conditionals( $buffer, $conditionals ) 
+{
 
     while ( count( $conditionals ) > 0 && strpos( $buffer, '{{WP_ROCKET_CONDITIONAL}}' ) ) {
       $conditional = array_shift( $conditionals );

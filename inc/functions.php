@@ -2,7 +2,8 @@
 defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 
 /**
- * TO DO - Description
+ * Get all pages we don't cache (string)
+ * This function is used in inc/front/process.php and in inc/front/htaccess.php
  *
  * since 1.0
  *
@@ -41,6 +42,22 @@ function get_rocket_cookies_not_cached()
 
 	return implode( '|', $cookies );
 }
+
+
+
+/**
+ * TO DO - Description
+ *
+ * since 1.0
+ *
+ */
+function is_rocket_cache_mobile()
+{
+	$options = get_option( 'wp_rocket_settings' );
+	return isset( $options['cache_mobile'] ) && $options['cache_mobile'] == '1' ? true : false;
+}
+
+
 
 /**
  * Remove cache files
@@ -148,9 +165,7 @@ function rocket_clean_home()
 
 	do_action( 'before_rocket_clean_home' );
 
-	foreach( glob( $root . '/*.{html,css,js}', GLOB_BRACE ) as $file )
-		unlink( $file );
-
+	@unlink( $root . '/index.html' );
     rocket_rrmdir( $root . $GLOBALS['wp_rewrite']->pagination_base );
 
     do_action( 'after_rocket_clean_home' );

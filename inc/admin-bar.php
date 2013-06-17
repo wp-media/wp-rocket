@@ -2,7 +2,7 @@
 defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 
 /**
- * TO DO - Description
+ * Add a link "Purge cache" in the post submit area
  *
  * since 1.0
  *
@@ -18,8 +18,9 @@ function rocket_post_submitbox_start()
 }
 
 
+
 /**
- * TO DO - Description
+ * Add menu in admin bar
  *
  * since 1.0
  *
@@ -39,7 +40,7 @@ function rocket_admin_bar( $wp_admin_bar )
 		$wp_admin_bar->add_menu(array(
 			'parent'	=> 'wp-rocket',
 			'id' 		=> 'purge-all',
-			'title' 	=> sprintf( __( 'Full Purge <span class="count-cache" title="%1$d files">%1$d</span>', 'rocket' ), rocket_count_cache_contents() ),
+			'title' 	=> sprintf( __( 'Vider le cache <span class="count-cache" title="%1$d files">%1$d</span>', 'rocket' ), rocket_count_cache_contents() ),
 			'href' 		=> wp_nonce_url( admin_url( 'admin-post.php?action='.$action.'&type=all' ), $action.'_all' ),
 			'meta' 		=> array( 'class'=>'ajaxme' )
 		));
@@ -54,7 +55,7 @@ function rocket_admin_bar( $wp_admin_bar )
 				$wp_admin_bar->add_menu(array(
 					'parent' => 'wp-rocket',
 					'id' => 'purge-post',
-					'title' => sprintf( __( 'Purger ce %s', 'rocket' ), $pobject->labels->singular_name ),
+					'title' => __( 'Purger cet article', 'rocket' ),
 					'href' => wp_nonce_url( admin_url( 'admin-post.php?action='.$action.'&type=post-'.$post->ID ), $action.'_post-'.$post->ID ),
 					'meta' => array( 'class'=>'ajaxme' )
 				));
@@ -82,8 +83,9 @@ function rocket_admin_bar( $wp_admin_bar )
 }
 
 
+
 /**
- * TO DO - Description
+ * Add CSS and JavaScript for WP Rocket Admin Bar
  *
  * since 1.0
  *

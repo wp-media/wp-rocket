@@ -20,7 +20,6 @@ function rocket_purge_cron_schedule( $schedules )
 	);
 
 	return $schedules;
-
 }
 
 
@@ -45,7 +44,8 @@ function rocket_purge_cron_scheduled()
 
 
 /**
- * TO DO - Description
+ * This event is launch when the cron is run
+ * It's delete the domain cache
  *
  * since 1.0
  *
@@ -58,6 +58,5 @@ function do_rocket_purge_cron() {
 	rocket_rrmdir( WP_ROCKET_CACHE_PATH );
 
 	// Re-create the cache dir
-	mkdir( WP_ROCKET_CACHE_PATH, 0755 );
-
+	mkdir( WP_ROCKET_CACHE_PATH, CHMOD_WP_ROCKET_CACHE_DIRS );
 }

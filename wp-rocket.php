@@ -1,4 +1,5 @@
 <?php
+
 /*
 Plugin Name: WP Rocket
 Plugin URI: http://www.wp-rocket.me
@@ -9,8 +10,8 @@ Contributors: Jonathan Buttigieg, Julio Potier
 Author URI: http://www.wp-rocket.me
 
 Copyright 2013 WP Rocket
-*/
 
+*/
 defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 
 define( 'WP_ROCKET_VERSION'			, '1.0');
@@ -32,9 +33,20 @@ define( 'WP_ROCKET_FRONT_URL'		, WP_ROCKET_INC_URL . 'front/' );
 define( 'WP_ROCKET_FRONT_JS_URL'	, WP_ROCKET_FRONT_URL . 'js/' );
 define( 'WP_ROCKET_CACHE_URL'		, WP_ROCKET_URL . 'cache/' );
 
+if( !defined( 'CHMOD_WP_ROCKET_CACHE_DIRS' ) )
+	define( 'CHMOD_WP_ROCKET_CACHE_DIRS', 0755 );
+
 if( !defined( 'SECOND_IN_SECONDS' ) )
 	define( 'SECOND_IN_SECONDS', 1 );
 
+
+
+/*
+ * Tell WP what to do when plugin is loaded
+ *
+ * since 1.0
+ *
+ */
 add_action( 'plugins_loaded', 'rocket_init' );
 function rocket_init()
 {
@@ -80,6 +92,8 @@ function rocket_init()
 		do_action( 'wp_rocket_loaded' );
 
 }
+
+
 
 /*
  * Tell WP what to do when plugin is deactivated
