@@ -36,19 +36,13 @@ function rocket_clean_post( $new_status, $old_status, $post )
 			get_permalink( get_adjacent_post( true, '', true ) )
 		);
 		
-		// Add urls page to purge every time a post is save
-		$options = get_option( WP_ROCKET_SLUG );
-		if( isset( $options['cache_purge_pages'] ) && count( $options['cache_purge_pages'] )>=1 ) 
-			foreach( $options['cache_purge_pages'] as $page )
-				array_push( $purge_urls, home_url( $page ) );
-		
 		// Add all terms archive page to purge
-		$purge_terms = get_rocket_post_terms_urls( $post->ID );
+		$purge_terms = rocket_clean_post_terms( $post->ID );
 		if( count($purge_terms)>=1 )
 			$purge_urls = array_merge( $purge_urls, $purge_terms );
 
 		// Add all dates archive page to purge
-		$purge_dates = get_rocket_post_dates_urls( $post->ID );
+		$purge_dates = rocket_clean_post_dates( $post->ID );
 		if( count($purge_dates)>=1 )
 			$purge_urls = array_merge( $purge_urls, $purge_dates );
 
@@ -83,20 +77,14 @@ function rocket_clean_comment( $arg1, $arg2 = '', $arg3 = '' )
 		get_permalink( $post_ID ),
 		get_post_type_archive_link( $post_type )
 	);
-	
-	// Add urls page to purge every time a post is save
-	$options = get_option( WP_ROCKET_SLUG );
-	if( isset( $options['cache_purge_pages'] ) && count( $options['cache_purge_pages'] )>=1 ) 
-		foreach( $options['cache_purge_pages'] as $page )
-			array_push( $purge_urls, home_url( $page ) );
-	
+
 	// Add all terms archive page to purge
-	$purge_terms = get_rocket_post_terms_urls( $post_ID );
+	$purge_terms = rocket_clean_post_terms( $post_ID );
 	if( count($purge_terms)>=1 )
 		$purge_urls = array_merge( $purge_urls, $purge_terms );
 
 	// Add all dates archive page to purge
-	$purge_dates = get_rocket_post_dates_urls( $post_ID );
+	$purge_dates = rocket_clean_post_dates( $post_ID );
 	if( count($purge_dates)>=1 )
 		$purge_urls = array_merge( $purge_urls, $purge_dates );
 
