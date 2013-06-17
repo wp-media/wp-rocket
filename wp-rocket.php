@@ -21,7 +21,7 @@ define( 'WP_ROCKET_WEB_MAIN'		, 'http://dev.wp-rocket.me/'); // dev
 define( 'WP_ROCKET_WEB_CHECK'		, 'check_update.php');
 define( 'WP_ROCKET_WEB_VALID'		, 'valid_key.php');
 define( 'WP_ROCKET_WEB_INFO'		, 'plugin_information.php');
-define( 'WP_ROCKET_WEB_SUPPORT'		, 'http://support.wp-rocket.me/');
+define( 'WP_ROCKET_WEB_SUPPORT'		, 'http://support.wp-rocket.me/forum/fr/');
 define( 'WP_ROCKET_FILE'			, __FILE__ );
 define( 'WP_ROCKET_PATH'			, plugin_dir_path(__FILE__) );
 define( 'WP_ROCKET_INC_PATH'		, WP_ROCKET_PATH . 'inc/' );
