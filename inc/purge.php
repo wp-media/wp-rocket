@@ -16,7 +16,7 @@ add_filter( 'delete_term', 'rocket_clean_domain' ); 					// When a term is delet
 
 
 /**
- * Update cache at every save of a post
+ * Update cache at every save of a publish post
  *
  * @since 1.0
  *
@@ -27,25 +27,30 @@ function rocket_clean_post( $new_status, $old_status, $post )
 {
     if( $new_status == 'publish' || $old_status == 'publish' ) {
 
-        $actions = array(
-        	'rocket_clean_post_terms' => array( $post->ID ),
-        	'rocket_clean_post_dates' => array( $post->ID ),
-        	'rocket_clean_files'      => array(
-        									array(
-        										get_permalink( $post->ID ),
-												get_post_type_archive_link( $post->post_type ),
-												get_permalink( get_adjacent_post( false,'', false ) ),
-												get_permalink( get_adjacent_post( true,'', false ) ),
-												get_permalink( get_adjacent_post( false, '', true ) ),
-												get_permalink( get_adjacent_post( true, '', true ) ),
-        									)
-        								),
-        	'rocket_clean_home'
-        );
+		$purge_urls = array(
+			get_permalink( $post->ID ),
+			get_post_type_archive_link( $post->post_type ),
+			get_permalink( get_adjacent_post( false,'', false ) ),
+			get_permalink( get_adjacent_post( true,'', false ) ),
+			get_permalink( get_adjacent_post( false, '', true ) ),
+			get_permalink( get_adjacent_post( true, '', true ) )
+		);
+		
+		// Add all terms archive page to purge
+		$purge_terms = rocket_clean_post_terms( $post->ID );
+		if( count($purge_terms)>=1 )
+			$purge_urls = array_merge( $purge_urls, $purge_terms );
 
-        $callbacks = apply_filters( 'rocket_clean_post_callback', $actions, $post->ID );
-        foreach( (array)$callbacks as $k => $v )
-	        is_array( $v ) ?  call_user_func_array( $k, $v ) : call_user_func( $v );
+		// Add all dates archive page to purge
+		$purge_dates = rocket_clean_post_dates( $post->ID );
+		if( count($purge_dates)>=1 )
+			$purge_urls = array_merge( $purge_urls, $purge_dates );
+
+		// Purge all files
+		rocket_clean_files( apply_filters( 'rocket_post_purge_urls', $purge_urls ) );
+
+		// Never forget to purge homepage and their pagination
+		rocket_clean_home();
 
     }
 
@@ -68,27 +73,30 @@ function rocket_clean_comment( $arg1, $arg2 = '', $arg3 = '' )
     $post_ID = current_filter() == 'preprocess_comment' ? $arg1['comment_post_ID'] : $arg3->comment_post_ID;
     $post_type = get_post_type( $post_ID );
 
-    $actions = array(
-        	'rocket_clean_post_terms' => array( $post_ID ),
-        	'rocket_clean_post_dates' => array( $post_ID ),
-        	'rocket_clean_files' 	  => array(
-        									array(
-        										get_permalink( $post_ID ),
-												get_post_type_archive_link( $post_type )
-        									)
-        								),
-        	'rocket_clean_home'
-        );
+	$purge_urls = array(
+		get_permalink( $post_ID ),
+		get_post_type_archive_link( $post_type )
+	);
 
-    $callbacks = apply_filters( 'rocket_clean_comment_callback', $actions, $post_ID );
-    foreach( (array)$callbacks as $k => $v )
-        is_array( $v ) ?  call_user_func_array( $k, $v ) : call_user_func( $v );
+	// Add all terms archive page to purge
+	$purge_terms = rocket_clean_post_terms( $post_ID );
+	if( count($purge_terms)>=1 )
+		$purge_urls = array_merge( $purge_urls, $purge_terms );
 
+	// Add all dates archive page to purge
+	$purge_dates = rocket_clean_post_dates( $post_ID );
+	if( count($purge_dates)>=1 )
+		$purge_urls = array_merge( $purge_urls, $purge_dates );
+
+	// Purge all files
+	rocket_clean_files( apply_filters( 'rocket_comment_purge_urls', $purge_urls ) );
+
+	// Never forget to purge homepage and their pagination
+	rocket_clean_home();
 
     // Return data for preprocess_comment filter
     if( current_filter() == 'preprocess_comment' )
 		return $arg1;
-
 }
 
 
@@ -100,13 +108,13 @@ function rocket_clean_comment( $arg1, $arg2 = '', $arg3 = '' )
  *
  */
 
-add_action( 'wp_ajax_purge_cache', 'rocket_purge_cache' );
 add_action( 'admin_post_purge_cache', 'rocket_purge_cache' );
 function rocket_purge_cache()
 {
 	if( isset( $_GET['type'], $_GET['_wpnonce'] ) ) {
 
-		$_type = reset( explode( '-', $_GET['type'] ) );
+		$_type = explode( '-', $_GET['type'] );
+		$_type = reset( $_type );
 		$_id = end( explode( '-', $_GET['type'] ) );
 
 		if( !wp_verify_nonce( $_GET['_wpnonce'], 'purge_cache_' . $_GET['type'] ) )
@@ -143,8 +151,15 @@ function rocket_purge_cache()
 
 }
 
-add_action( 'wp_ajax_preload', 'rocket_preload_cache' );
-add_action( 'wp_ajax_nopriv_preload', 'rocket_preload_cache' );
+
+
+/**
+ * TO DO - Description
+ *
+ * @since 1.0
+ *
+ */
+
 add_action( 'admin_post_preload', 'rocket_preload_cache' );
 add_action( 'admin_post_nopriv_preload', 'rocket_preload_cache' );
 function rocket_preload_cache()
@@ -154,10 +169,7 @@ function rocket_preload_cache()
 		if( !wp_verify_nonce( $_GET['_wpnonce'], 'preload' ) )
 			defined( 'DOING_AJAX' ) && DOING_AJAX ? die( '-1' ) : wp_nonce_ays( '' );
 
-		$home_url = home_url();
-		$domain = get_domain( $home_url );
-
-		wp_remote_get( 'http://bot.wp-rocket.me/launch.php?&spider=cache-preload&start_url=' . $home_url . '&allow_url=' . $domain );
+		wp_remote_get( 'http://bot.wp-rocket.me/launch.php?&spider=cache-preload&start_url=' . home_url() . '&allow_url=' . rocket_get_domain( home_url() ) );
 
 		if( !defined( 'DOING_AJAX' ) || !DOING_AJAX ) {
 			wp_redirect( wp_get_referer() );

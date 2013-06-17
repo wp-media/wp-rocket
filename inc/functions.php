@@ -8,6 +8,7 @@ defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
  * since 1.0
  *
  */
+
 function get_rocket_pages_not_cached()
 {
 
@@ -28,6 +29,7 @@ function get_rocket_pages_not_cached()
  * since 1.0
  *
  */
+
 function get_rocket_cookies_not_cached()
 {
 
@@ -51,6 +53,7 @@ function get_rocket_cookies_not_cached()
  * since 1.0
  *
  */
+
 function is_rocket_cache_mobile()
 {
 	$options = get_option( 'wp_rocket_settings' );
@@ -65,6 +68,7 @@ function is_rocket_cache_mobile()
  * @since 1.0
  *
  */
+
 function rocket_clean_files( $urls )
 {
 
@@ -87,48 +91,42 @@ function rocket_clean_files( $urls )
 
 
 /**
- * Remove all terms cache files of a specific post
+ * Get all terms archives urls associated to a specific post
  *
  * @since 1.0
  *
  */
-function rocket_clean_post_terms( $post_ID )
+
+function get_rocket_post_terms_urls( $post_ID )
 {
 
 	$urls = array();
 
 	foreach ( get_object_taxonomies( get_post_type( $post_ID ) ) as $taxonomy )
 	{
-
 		// Get the terms related to post
 		$terms = get_the_terms( $post_ID, $taxonomy );
 
 		if ( !empty( $terms ) )
 		{
-
 			foreach ( $terms as $term )
 				$urls[] = get_term_link( $term->slug, $taxonomy );
-
 		}
-
 	}
-
-	do_action( 'before_rocket_clean_post_terms', $urls, $post_ID );
-
-    rocket_clean_files( $urls );
-
-    do_action( 'after_rocket_clean_post_terms', $urls, $post_ID );
+	
+	return $urls;
 }
 
 
 
 /**
- *
+ * Get all dates archives urls associated to a specific post
  *
  * @since 1.0
  *
  */
-function rocket_clean_post_dates( $post_ID )
+
+function get_rocket_post_dates_urls( $post_ID )
 {
 
 	// Get the day and month of the post
@@ -143,21 +141,18 @@ function rocket_clean_post_dates( $post_ID )
 		get_day_link( $date[0], $date[1], $date[2] ) . $wp_rewrite->pagination_base
 	);
 
-	do_action( 'before_rocket_clean_post_dates', $urls, $post_ID );
-
-	rocket_clean_files( $urls );
-
-	do_action( 'after_rocket_clean_post_dates', $urls, $post_ID );
+	return $urls;
 }
 
 
 
 /**
- * Remove the home cache file and pagination
+ * Remove the homepage cache file and pagination
  *
  * @since 1.0
  *
  */
+
 function rocket_clean_home()
 {
 
@@ -198,6 +193,7 @@ function rocket_clean_domain()
  * @since 1.0
  *
  */
+
 function rocket_rrmdir( $dir )
 {
 
@@ -221,6 +217,7 @@ function rocket_rrmdir( $dir )
  * since 1.0
  *
  */
+
 function rocket_count_cache_contents( $base = null )
 {
     $base = is_null( $base ) ? WP_ROCKET_CACHE_PATH : $base;
@@ -254,6 +251,7 @@ function rocket_count_cache_contents( $base = null )
  * since 1.0
  *
  */
+
 function rocket_clean_exclude_file( $file )
 {
 
@@ -270,6 +268,7 @@ function rocket_clean_exclude_file( $file )
  * since 1.0
  *
  */
+
 function rocket_valid_key()
 {
 	$options = get_option( WP_ROCKET_SLUG );
@@ -286,6 +285,7 @@ function rocket_valid_key()
  * since 1.0
  *
  */
+
 function get_rocket_cron_interval()
 {
 	$options = get_option( WP_ROCKET_SLUG );
@@ -302,6 +302,7 @@ function get_rocket_cron_interval()
  * since 1.0
  *
  */
+
 function get_rocket_home_url()
 {
 	return apply_filters( 'rocket_home_url', str_replace( 'www.', '', home_url('/') ) );
@@ -316,7 +317,8 @@ function get_rocket_home_url()
  * since 1.0
  *
  */
-function get_domain( $url )
+
+function rocket_get_domain( $url )
 {
       $urlobj=parse_url($url);
       $domain=$urlobj['host'];

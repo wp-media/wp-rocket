@@ -15,6 +15,15 @@ function rocket_admin_menu()
 	add_options_page( 'WP Rocket', 'WP Rocket', 'manage_options', 'wprocket', 'rocket_display_options' );
 }
 
+
+
+/**
+ * TO DO - Description
+ *
+ * Since 1.0
+ *
+ */
+ 
 function rocket_field( $args )
 {
 	$options = get_option( WP_ROCKET_SLUG );
@@ -83,6 +92,14 @@ function rocket_field( $args )
 	}
 }
 
+
+
+/**
+ * TO DO - Description
+ *
+ * Since 1.0
+ *
+ */
 function rocket_display_options()
 {
 	add_settings_section( 'rocket_display_apikey_options', __( 'API KEY', 'rocket' ), '__return_false', 'apikey' );
@@ -110,6 +127,9 @@ function rocket_display_options()
 						'options' => array( 'SECOND_IN_SECONDS'=>'seconde(s)', 'MINUTE_IN_SECONDS'=>'minute(s)', 'HOUR_IN_SECONDS'=>'heure(s)', 'DAY_IN_SECONDS'=>'jour(s)' )
 					)
 				)
+		);
+		add_settings_field( 'rocket_purge_pages', __( 'Vider le cache des pages suivantes lors de la mise à jour d\'un article :', 'rocket' ), 'rocket_field', 'improved', 'rocket_display_imp_options',
+			array( 'type'=>'textarea', 'label_for'=>'cache_purge_pages', 'label_screen'=>'Vider le cache des pages suivantes lors de la mise à jour d\'un article', 'description'=>'Indiquez l\'URL des pages supplémentaires à purger lors de la mise à jour d\'un article (une par ligne).<br/>Il est possible d\'utiliser des expressions régulières (REGEX).' )
 		);
 		add_settings_field( 'rocket_reject_uri', __( 'Ne jamais mettre en cache les pages suivantes :', 'rocket' ), 'rocket_field', 'improved', 'rocket_display_imp_options',
 			array( 'type'=>'textarea', 'label_for'=>'cache_reject_uri', 'label_screen'=>'Ne jamais mettre en cache les pages suivantes', 'description'=>'Indiquez l\'URL des pages à rejeter (une par ligne).<br/>Il est possible d\'utiliser des expressions régulières (REGEX).' )
@@ -141,6 +161,8 @@ function rocket_display_options()
 <?php
 }
 
+
+
 /**
  * Lien vers la page de configuration du plugin
  *
@@ -155,6 +177,15 @@ function rocket_settings_action_links( $actions )
     return $actions;
 }
 
+
+
+/**
+ * TO DO - Description
+ *
+ * Since 1.0
+ *
+ */
+ 
 add_filter( 'plugin_row_meta', 'rocket_plugin_row_meta', 10, 2 );
 function rocket_plugin_row_meta( $plugin_meta, $plugin_file )
 {
@@ -176,12 +207,23 @@ function rocket_plugin_row_meta( $plugin_meta, $plugin_file )
 	return $plugin_meta;
 }
 
+
+
+/**
+ * TO DO - Description
+ *
+ * Since 1.0
+ *
+ */
+ 
 add_action( 'updated_option', 'rocket_flush_for_comment', 10, 3 );
 function rocket_flush_for_comment( $option, $oldvalue, $_newvalue )
 {
 	if( ( $option=='comment_whitelist' || $option=='flush_rocket_htaccess' ) && $oldvalue!=$_newvalue )
 		flush_rocket_htaccess();
 }
+
+
 
 /**
  * TO DO - Description
@@ -196,30 +238,66 @@ function rocket_register_setting()
 	register_setting( 'wp_rocket', WP_ROCKET_SLUG, 'rocket_settings_callback' );
 }
 
+
+
+/**
+ * TO DO - Description
+ *
+ * Since 1.0
+ *
+ */
+ 
 function rocket_sanitize_css( $file )
 {
 	$ext = strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
 	return $ext=='css' ? $file : false;
 }
 
+
+
+/**
+ * TO DO - Description
+ *
+ * Since 1.0
+ *
+ */
+ 
 function rocket_sanitize_js( $file )
 {
 	$ext = strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
 	return $ext=='js' ? $file : false;
 }
 
+
+
+/**
+ * TO DO - Description
+ *
+ * Since 1.0
+ *
+ */
+ 
 function rocket_settings_callback( $inputs )
 {
 	// Clean inputs
 	if( $inputs['consumer_key']==hash( 'crc32', get_rocket_home_url().chr(98) ) ){
+		
+		$inputs['cache_purge_pages'] = 		isset( $inputs['cache_purge_pages'] ) ? 		array_unique( array_filter( array_map( 'rocket_clean_exclude_file',	array_map( 'esc_url', 					explode( "\n", trim( $inputs['cache_purge_pages'] ) ) ) ) ) 		) : '';
+		
 		$inputs['cache_reject_uri'] = 		isset( $inputs['cache_reject_uri'] ) ? 		array_unique( array_filter( array_map( 'rocket_clean_exclude_file',	array_map( 'esc_url', 					explode( "\n", trim( $inputs['cache_reject_uri'] ) ) ) ) ) 		) : '';
+		
 		$inputs['cache_reject_cookies'] = 	isset( $inputs['cache_reject_cookies'] ) ? 	array_unique( array_filter( array_map( 'rocket_clean_exclude_file',	array_map( 'sanitize_key', 				explode( "\n", trim( $inputs['cache_reject_cookies'] ) ) ) ) ) 	) : '';
+		
 		$inputs['exclude_css'] = 			isset( $inputs['exclude_css'] ) ? 			array_unique( array_filter( array_map( 'rocket_sanitize_css', 		array_map( 'rocket_clean_exclude_file',	explode( "\n", trim( $inputs['exclude_css'] ) ) ) ) ) 			) : '';
+		
 		$inputs['exclude_js'] = 			isset( $inputs['exclude_js'] ) ? 			array_unique( array_filter( array_map( 'rocket_sanitize_js', 		array_map( 'rocket_clean_exclude_file',	explode( "\n", trim( $inputs['exclude_js']) ) ) ) ) 			) : '';
+		
 		$inputs['purge_cron_interval'] = 	isset( $inputs['purge_cron_interval'] ) ? 	(int)$inputs['purge_cron_interval'] : 0;
 		$inputs['purge_cron_unit'] = 		isset( $inputs['purge_cron_unit'] ) ? $inputs['purge_cron_unit'] : 'SECOND_IN_SECONDS';
+		
 		$inputs['secret_key'] = 			@file_get_contents( WP_ROCKET_WEB_MAIN.WP_ROCKET_WEB_VALID . '?k='.sanitize_key( $inputs['consumer_key'] ).'&u='.urlencode( get_rocket_home_url() ).'&v='.WP_ROCKET_VERSION );
-	}else{
+	
+	} else {
 		$inputs = array( 'consumer_key'=>$inputs['consumer_key'] );
 	}
 	return $inputs;
