@@ -16,7 +16,7 @@ function rocket_upgrader()
 	// You can hook the upgrader to trigger any action when WP Rocket is upgraded
 	if( !$actual_version ){ // first install
 		do_action( 'wp_rocket_first_install' );
-	}elseif( WP_ROCKET_SLUG != $actual_version ){ // already installed but got updated
+	}elseif( WP_ROCKET_VERSION != $actual_version ){ // already installed but got updated
 		do_action( 'wp_rocket_upgrade', WP_ROCKET_VERSION, $actual_version );
 	}
 
