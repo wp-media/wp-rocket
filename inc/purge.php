@@ -154,7 +154,11 @@ function rocket_preload_cache()
 		if( !wp_verify_nonce( $_GET['_wpnonce'], 'preload' ) )
 			defined( 'DOING_AJAX' ) && DOING_AJAX ? die( '-1' ) : wp_nonce_ays( '' );
 
-		// $var = wp_remote_post(); // GET est plus rapide que POST en perf, obligé de POSTER ?
+		$home_url = home_url();
+		$host_names = explode( ".", $home_url );
+		$domain = $host_names[count($host_names)-2] . "." . $host_names[count($host_names)-1];
+
+		wp_remote_get( 'http://bot.wp-rocket.me/launch.php?project=wprocket&spider=cache-preload&start_url=' . $home_url . '&allow_url=' . $domain );
 
 		if( !defined( 'DOING_AJAX' ) || !DOING_AJAX ) {
 			wp_redirect( wp_get_referer() );
