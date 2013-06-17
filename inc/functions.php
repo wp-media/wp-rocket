@@ -8,7 +8,6 @@ defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
  * since 1.0
  *
  */
-
 function get_rocket_pages_not_cached()
 {
 
@@ -29,7 +28,6 @@ function get_rocket_pages_not_cached()
  * since 1.0
  *
  */
-
 function get_rocket_cookies_not_cached()
 {
 
@@ -53,7 +51,6 @@ function get_rocket_cookies_not_cached()
  * since 1.0
  *
  */
-
 function is_rocket_cache_mobile()
 {
 	$options = get_option( 'wp_rocket_settings' );
@@ -68,7 +65,6 @@ function is_rocket_cache_mobile()
  * @since 1.0
  *
  */
-
 function rocket_clean_files( $urls )
 {
 
@@ -96,7 +92,7 @@ function rocket_clean_files( $urls )
  * @since 1.0
  *
  */
-
+function rocket_clean_post_terms( $post_ID )
 function get_rocket_post_terms_urls( $post_ID )
 {
 
@@ -104,20 +100,19 @@ function get_rocket_post_terms_urls( $post_ID )
 
 	foreach ( get_object_taxonomies( get_post_type( $post_ID ) ) as $taxonomy )
 	{
+
 		// Get the terms related to post
 		$terms = get_the_terms( $post_ID, $taxonomy );
 
 		if ( !empty( $terms ) )
 		{
+
 			foreach ( $terms as $term )
 				$urls[] = get_term_link( $term->slug, $taxonomy );
+
 		}
-	}
-	
+
 	return $urls;
-}
-
-
 
 /**
  * Get all dates archives urls associated to a specific post
@@ -141,22 +136,21 @@ function get_rocket_post_dates_urls( $post_ID )
 		get_day_link( $date[0], $date[1], $date[2] ) . $wp_rewrite->pagination_base
 	);
 
-	return $urls;
+        return $urls;
 }
 
 
 
 /**
- * Remove the homepage cache file and pagination
+ * Remove the home cache file and pagination
  *
  * @since 1.0
  *
  */
-
 function rocket_clean_home()
 {
 
-	$root = WP_ROCKET_CACHE_PATH . str_replace( 'http://', '', home_url( '/' ) );
+	$root = WP_ROCKET_CACHE_PATH . str_replace( array( 'http://', 'https://' ), '', home_url( '/' ) );
 
 	do_action( 'before_rocket_clean_home' );
 
@@ -180,7 +174,7 @@ function rocket_clean_domain()
 
 	do_action( 'before_rocket_clean_domain' );
 
-    rocket_rrmdir( WP_ROCKET_CACHE_PATH . str_replace( 'http://', '', home_url( '/' ) ) );
+    rocket_rrmdir( WP_ROCKET_CACHE_PATH . str_replace( array( 'http://', 'https://' ), '', home_url( '/' ) ) );
 
     do_action( 'after_rocket_clean_domain' );
 }
@@ -193,7 +187,6 @@ function rocket_clean_domain()
  * @since 1.0
  *
  */
-
 function rocket_rrmdir( $dir )
 {
 
@@ -217,7 +210,6 @@ function rocket_rrmdir( $dir )
  * since 1.0
  *
  */
-
 function rocket_count_cache_contents( $base = null )
 {
     $base = is_null( $base ) ? WP_ROCKET_CACHE_PATH : $base;
@@ -254,12 +246,10 @@ function rocket_count_cache_contents( $base = null )
 
 function rocket_clean_exclude_file( $file )
 {
-
 	// Get relative url
     return trim( reset( explode( '?', str_replace( array( '#\?.*$#', home_url( '/' ), 'http://', 'https://' ), '', $file ) ) ) );
 
 }
-
 
 
 /**
@@ -285,7 +275,6 @@ function rocket_valid_key()
  * since 1.0
  *
  */
-
 function get_rocket_cron_interval()
 {
 	$options = get_option( WP_ROCKET_SLUG );
@@ -294,7 +283,7 @@ function get_rocket_cron_interval()
 	return (int)( $options['purge_cron_interval'] * constant( $options['purge_cron_unit'] ) );
 }
 
-
+function get_rocket_option( $option, $default=false )
 
 /**
  * TO DO - Description
@@ -308,8 +297,6 @@ function get_rocket_home_url()
 	return apply_filters( 'rocket_home_url', str_replace( 'www.', '', home_url('/') ) );
 }
 
-
-
 /**
  * TO DO - Description
  *
@@ -320,10 +307,9 @@ function get_rocket_home_url()
 
 function rocket_get_domain( $url )
 {
-      $urlobj=parse_url($url);
-      $domain=$urlobj['host'];
-      if (preg_match('/(?P<domain>[a-z0-9][a-z0-9\-]{1,63}\.[a-z\.]{2,6})$/i', $domain, $regs)) {
-        return $regs['domain'];
-      }
+      $urlobj = parse_url( $url );
+      $domain = $urlobj['host'];
+      if( preg_match( '/(?P<domain>[a-z0-9][a-z0-9\-]{1,63}\.[a-z\.]{2,6})$/i', $domain, $regs ) )
+          return $regs['domain'];
       return false;
 }

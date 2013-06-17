@@ -115,10 +115,11 @@ function rocket_purge_cache()
 
 		$_type = explode( '-', $_GET['type'] );
 		$_type = reset( $_type );
-		$_id = end( explode( '-', $_GET['type'] ) );
+		$_id = explode( '-', $_GET['type'] );
+		$_id = end( $_id );
 
 		if( !wp_verify_nonce( $_GET['_wpnonce'], 'purge_cache_' . $_GET['type'] ) )
-			defined( 'DOING_AJAX' ) && DOING_AJAX ? die( '-1' ) : wp_nonce_ays( '' );
+			wp_nonce_ays( '' );
 
 		switch( $_type )
 		{
@@ -142,10 +143,9 @@ function rocket_purge_cache()
 				break;
 		}
 
-		if( !defined( 'DOING_AJAX' ) || !DOING_AJAX ) {
-			wp_redirect( wp_get_referer() );
-			die();
-		}
+		wp_redirect( wp_get_referer() );
+		die();
+
 
 	}
 
@@ -167,15 +167,18 @@ function rocket_preload_cache()
 	if( isset( $_GET['_wpnonce'] ) ) {
 
 		if( !wp_verify_nonce( $_GET['_wpnonce'], 'preload' ) )
-			defined( 'DOING_AJAX' ) && DOING_AJAX ? die( '-1' ) : wp_nonce_ays( '' );
+			wp_nonce_ays( '' );
 
-		wp_remote_get( 'http://bot.wp-rocket.me/launch.php?&spider=cache-preload&start_url=' . home_url() . '&allow_url=' . rocket_get_domain( home_url() ) );
+		$home_url = home_url();
+		$host_names = explode( '.', $home_url );
+		$domain = $host_names[count($host_names)-2] . '.' . $host_names[count($host_names)-1];
 
-		if( !defined( 'DOING_AJAX' ) || !DOING_AJAX ) {
-			wp_redirect( wp_get_referer() );
-			die();
-		}
+		wp_remote_get( 'http://bot.wp-rocket.me/launch.php?project=wprocket&spider=cache-preload&start_url=' . $home_url . '&allow_url=' . $domain );
+
+		wp_redirect( wp_get_referer() );
+		die();
 
 	}
 
+}
 }
