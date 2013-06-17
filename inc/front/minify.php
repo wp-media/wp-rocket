@@ -90,7 +90,7 @@ function rocket_minify_css( $buffer )
     }
 
     // Get the internal CSS File
-	$internals_css = count( $internals_js )>=1 ? '<link rel="stylesheet" href="' . WP_ROCKET_URL . 'min/f=' . implode( ',', $internals_css ) . '" />' : '';
+	$internals_css = count( $internals_css )>=1 ? '<link rel="stylesheet" href="' . WP_ROCKET_URL . 'min/f=' . implode( ',', $internals_css ) . '" />' : '';
 
 	// Get all external link tags
 	$externals_css = count( $externals_css )>=1 ? implode( "\n" , $externals_css ) : '';
