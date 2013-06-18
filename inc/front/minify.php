@@ -88,17 +88,21 @@ function rocket_minify_css( $buffer )
         }
 
     }
-
-    // Get the internal CSS File
-	$internals_css = count( $internals_css )>=1 ? '<link rel="stylesheet" href="' . WP_ROCKET_URL . 'min/f=' . implode( ',', $internals_css ) . '" />' : '';
-
+	
+	// Get the internal CSS Files
+	// To avoid conflicts with file URLs are too long for browsers, 
+	// cut into several parts concatenated files
+	$internals_link_tags = '';
+	if( count( $internals_css )>=1 ) 
+		foreach( array_chunk( $internals_css, apply_filters( 'rocket_chuck_minify_css_count', 5 ) ) as $css )
+			$internals_link_tags .= '<link rel="stylesheet" href="' . WP_ROCKET_URL . 'min/f=' . implode( ',', $css ) . '" />';
+    
 	// Get all external link tags
-	$externals_css = count( $externals_css )>=1 ? implode( "\n" , $externals_css ) : '';
+	$externals_link_tags = count( $externals_css )>=1 ? implode( "\n" , $externals_css ) : '';
 
 	// Insert the minify css file below <head>
-	$buffer = preg_replace( '/<head(.*)>/', '<head$1>' . $externals_css . $internals_css, $buffer, 1 );
+	return preg_replace( '/<head(.*)>/', '<head$1>' . $externals_link_tags . $internals_link_tags, $buffer, 1 );
 
-    return $buffer;
 }
 
 
@@ -142,17 +146,20 @@ function rocket_minify_js( $buffer )
         $buffer = str_replace( $script_tag, '', $buffer );
 
     }
-
-    // Get the internal JavaScript File
-	$internals_js = count( $internals_js )>=1 ? '<script src="'. WP_ROCKET_URL . 'min/f=' . implode( ',', $internals_js ) .'"></script>' : '';
-
+	
+	// Get the internal JavaScript Files
+	// To avoid conflicts with file URLs are too long for browsers, 
+	// cut into several parts concatenated files
+	$internals_script_tags = '';
+	if( count( $internals_js )>=1 ) 
+		foreach( array_chunk( $internals_js, apply_filters( 'rocket_chuck_minify_js_count', 5 ) ) as $css )
+			$internals_script_tags .= '<script src="' . WP_ROCKET_URL . 'min/f=' . implode( ',', $css ) . '"></script>';
+	
 	// Get all external script tags
-	$externals_js = count( $externals_js )>=1 ? implode( "\n" , $externals_js ) : '';
+	$externals_script_tags = count( $externals_js )>=1 ? implode( "\n" , $externals_js ) : '';
 
     // Insert the minify JS file
-    $buffer = preg_replace( '/<head(.*)>/', '<head$1>' . $externals_js . $internals_js, $buffer, 1 );
-
-    return $buffer;
+    return preg_replace( '/<head(.*)>/', '<head$1>' . $externals_script_tags . $internals_script_tags, $buffer, 1 );
 }
 
 

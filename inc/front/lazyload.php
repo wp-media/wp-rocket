@@ -1,8 +1,10 @@
 <?php
 defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 
+
 /**
- * TO DO - Description
+ * Add Lazy Load JavaScript file in the footer
+ * No jQuery or other library is required !!
  *
  * since 1.0
  *
@@ -21,16 +23,16 @@ function rocket_enqueue_lazyload() {
 
 
 /**
- * TO DO - Description
+ * Replace Gravatar, thumbnails, images in post content and in widget text by Lazy Load
  *
  * since 0.1
  *
  */
 
-add_filter( 'get_avatar', 'rocket_lazyload_images' );
-add_filter( 'post_thumbnail_html', 'rocket_lazyload_images' );
-add_filter( 'the_content', 'rocket_lazyload_images' );
-add_filter( 'widget_text', 'rocket_lazyload_images' );
+add_filter( 'get_avatar', 'rocket_lazyload_images', PHP_INT_MAX );
+add_filter( 'post_thumbnail_html', 'rocket_lazyload_images', PHP_INT_MAX );
+add_filter( 'the_content', 'rocket_lazyload_images', PHP_INT_MAX );
+add_filter( 'widget_text', 'rocket_lazyload_images', PHP_INT_MAX );
 function rocket_lazyload_images( $html )
 {
 	if( is_feed() || is_preview() || empty( $html ) )
@@ -44,13 +46,13 @@ function rocket_lazyload_images( $html )
 
 
 /**
- * TO DO - Description
+ * Replace WordPress smilies by Lazy Load
  *
  * since 0.1
  *
  */
 
-add_filter('smilies_src', 'rocket_lazyload_smilies' );
+add_filter('smilies_src', 'rocket_lazyload_smilies', PHP_INT_MAX );
 function rocket_lazyload_smilies( $src )
 {
 	return "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==' data-lazy-original='" . $src;
