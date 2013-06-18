@@ -30,18 +30,18 @@ function rocket_clean_post( $new_status, $old_status, $post )
 		$purge_urls = array(
 			get_permalink( $post->ID ),
 			get_post_type_archive_link( $post->post_type ),
-			get_permalink( get_adjacent_post( false,'', false ) ),
-			get_permalink( get_adjacent_post( true,'', false ) ),
+			get_permalink( get_adjacent_post( false, '', false ) ),
+			get_permalink( get_adjacent_post( true, '', false ) ),
 			get_permalink( get_adjacent_post( false, '', true ) ),
 			get_permalink( get_adjacent_post( true, '', true ) )
 		);
-		
+
 		// Add urls page to purge every time a post is save
 		$options = get_option( WP_ROCKET_SLUG );
-		if( isset( $options['cache_purge_pages'] ) && count( $options['cache_purge_pages'] )>=1 ) 
+		if( isset( $options['cache_purge_pages'] ) && count( $options['cache_purge_pages'] )>=1 )
 			foreach( $options['cache_purge_pages'] as $page )
 				array_push( $purge_urls, home_url( $page ) );
-		
+
 		// Add all terms archive page to purge
 		$purge_terms = get_rocket_post_terms_urls( $post->ID );
 		if( count($purge_terms)>=1 )
@@ -83,13 +83,13 @@ function rocket_clean_comment( $arg1, $arg2 = '', $arg3 = '' )
 		get_permalink( $post_ID ),
 		get_post_type_archive_link( $post_type )
 	);
-	
+
 	// Add urls page to purge every time a post is save
 	$options = get_option( WP_ROCKET_SLUG );
-	if( isset( $options['cache_purge_pages'] ) && count( $options['cache_purge_pages'] )>=1 ) 
+	if( isset( $options['cache_purge_pages'] ) && count( $options['cache_purge_pages'] )>=1 )
 		foreach( $options['cache_purge_pages'] as $page )
 			array_push( $purge_urls, home_url( $page ) );
-	
+
 	// Add all terms archive page to purge
 	$purge_terms = get_rocket_post_terms_urls( $post_ID );
 	if( count($purge_terms)>=1 )
@@ -127,10 +127,11 @@ function rocket_purge_cache()
 
 		$_type = explode( '-', $_GET['type'] );
 		$_type = reset( $_type );
-		$_id = end( explode( '-', $_GET['type'] ) );
+		$_id = explode( '-', $_GET['type'] );
+		$_id = end( $_id );
 
 		if( !wp_verify_nonce( $_GET['_wpnonce'], 'purge_cache_' . $_GET['type'] ) )
-			defined( 'DOING_AJAX' ) && DOING_AJAX ? die( '-1' ) : wp_nonce_ays( '' );
+			wp_nonce_ays( '' );
 
 		switch( $_type )
 		{
@@ -154,10 +155,9 @@ function rocket_purge_cache()
 				break;
 		}
 
-		if( !defined( 'DOING_AJAX' ) || !DOING_AJAX ) {
-			wp_redirect( wp_get_referer() );
-			die();
-		}
+		wp_redirect( wp_get_referer() );
+		die();
+
 
 	}
 
@@ -179,14 +179,12 @@ function rocket_preload_cache()
 	if( isset( $_GET['_wpnonce'] ) ) {
 
 		if( !wp_verify_nonce( $_GET['_wpnonce'], 'preload' ) )
-			defined( 'DOING_AJAX' ) && DOING_AJAX ? die( '-1' ) : wp_nonce_ays( '' );
+			wp_nonce_ays( '' );
 
 		wp_remote_get( 'http://bot.wp-rocket.me/launch.php?&spider=cache-preload&start_url=' . home_url() . '&allow_url=' . rocket_get_domain( home_url() ) );
 
-		if( !defined( 'DOING_AJAX' ) || !DOING_AJAX ) {
-			wp_redirect( wp_get_referer() );
-			die();
-		}
+		wp_redirect( wp_get_referer() );
+		die();
 
 	}
 

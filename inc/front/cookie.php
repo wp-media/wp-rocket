@@ -2,7 +2,7 @@
 defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 
 /**
- * By default, the lifetime of the cookie comment is one year. 
+ * By default, the lifetime of the cookie comment is one year.
  * Life is reduced to 3 minutes so that the visitor can enjoy the cached site.
  *
  * since 1.0
@@ -12,6 +12,5 @@ defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 add_filter( 'comment_cookie_lifetime', 'rocket_comment_cookie_lifetime' );
 function rocket_comment_cookie_lifetime()
 {
-	// Three minutes
-	return 180;
+	return 3 * MINUTE_IN_SECONDS;
 }

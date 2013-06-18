@@ -48,7 +48,6 @@ if( !defined( 'SECOND_IN_SECONDS' ) )
  * since 1.0
  *
  */
- 
 add_action( 'plugins_loaded', 'rocket_init' );
 function rocket_init()
 {
@@ -103,7 +102,6 @@ function rocket_init()
  * since 1.0
  *
  */
- 
 register_deactivation_hook( __FILE__, 'rocket_deactivation' );
 function rocket_deactivation()
 {
