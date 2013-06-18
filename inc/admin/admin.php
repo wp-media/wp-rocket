@@ -19,7 +19,7 @@ function rocket_settings_action_links( $actions )
 
 
 /**
- * TO DO - Description
+ * Add some informations about authors in plugins list area
  *
  * Since 1.0
  *
@@ -49,7 +49,7 @@ function rocket_plugin_row_meta( $plugin_meta, $plugin_file )
 
 
 /**
- * TO DO - Description
+ * Add a link "Purge this cache" in the post edit area
  *
  * since 1.0
  *

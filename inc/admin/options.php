@@ -236,8 +236,8 @@ function rocket_settings_callback( $inputs )
 {
 	// Clean inputs
 	if( $inputs['consumer_key']==hash( 'crc32', get_rocket_home_url().chr(98) ) ){
-		
-		$inputs['cache_purge_pages'] = 		isset( $inputs['cache_purge_pages'] ) ? 		array_unique( array_filter( array_map( 'rocket_clean_exclude_file',	array_map( 'esc_url', 					explode( "\n", trim( $inputs['cache_purge_pages'] ) ) ) ) ) 		) : '';
+
+		$inputs['cache_purge_pages'] = 		isset( $inputs['cache_purge_pages'] ) ? 	array_unique( array_filter( array_map( 'rocket_clean_exclude_file',	array_map( 'esc_url', 					explode( "\n", trim( $inputs['cache_purge_pages'] ) ) ) ) ) 		) : '';
 		
 		$inputs['cache_reject_uri'] = 		isset( $inputs['cache_reject_uri'] ) ? 		array_unique( array_filter( array_map( 'rocket_clean_exclude_file',	array_map( 'esc_url', 					explode( "\n", trim( $inputs['cache_reject_uri'] ) ) ) ) ) 		) : '';
 		
@@ -251,11 +251,11 @@ function rocket_settings_callback( $inputs )
 		$inputs['purge_cron_unit'] = 		isset( $inputs['purge_cron_unit'] ) ? $inputs['purge_cron_unit'] : 'SECOND_IN_SECONDS';
 		
 		$inputs['secret_key'] = 			@file_get_contents( WP_ROCKET_WEB_MAIN.WP_ROCKET_WEB_VALID . '?k='.sanitize_key( $inputs['consumer_key'] ).'&u='.urlencode( get_rocket_home_url() ).'&v='.WP_ROCKET_VERSION );
-	
+
 	} else {
 		$inputs = array( 'consumer_key'=>$inputs['consumer_key'] );
 	}
-	
+
 	return $inputs;
 }
 
