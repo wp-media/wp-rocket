@@ -1,8 +1,13 @@
 <?php
 defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
-/* BEGIN UPDATER */
 
-// Exclude WP Rocket from WP updates
+/**
+ * Excludes WP Rocket from WP updates
+ *
+ * Since 1.0
+ *
+ */
+
 add_filter( 'http_request_args', 'rocket_updates_exclude', 5, 2 );
 function rocket_updates_exclude( $r, $url ) {
 	if ( 0 !== strpos( $url, 'http://api.wordpress.org/plugins/update-check' ) )
@@ -14,14 +19,28 @@ function rocket_updates_exclude( $r, $url ) {
 	return $r;
 }
 
-// Check updates twicedaily (like WP plugins)
+
+/**
+ * Check updates twicedaily (like WP plugins)
+ *
+ * Since 1.0
+ *
+ */
+
 register_activation_hook( WP_ROCKET_FILE, 'rocket_check_activation' );
 function rocket_check_activation()
 {
 	wp_schedule_event( time(), 'twicedaily', 'rocket_check_event');
 }
 
-// Check core
+
+/**
+ * Check core update
+ *
+ * Since 1.0
+ *
+ */
+
 add_action( 'rocket_check_event', 'rocket_check_update' );
 function rocket_check_update()
 {
@@ -47,12 +66,27 @@ function rocket_check_update()
 	set_site_transient( 'update_plugins', $plugin_transient );
 }
 
-//remove cron task upon deactivation
+
+/**
+ * Remove cron task upon deactivation
+ *
+ * Since 1.0
+ *
+ */
+
 register_deactivation_hook( WP_ROCKET_FILE, 'rocket_check_deactivation' );
 function rocket_check_deactivation()
 {
 	wp_clear_scheduled_hook('rocket_check_event');
 }
+
+
+/**
+ * Hack the returned object
+ *
+ * Since 1.0
+ *
+ */
 
 add_filter( 'plugins_api', 'rocket_force_info', 10, 3 );
 function rocket_force_info( $bool, $action, $args )
@@ -61,6 +95,14 @@ function rocket_force_info( $bool, $action, $args )
 		return new stdClass();
 	return $bool;
 }
+
+
+/**
+ * Hack the returned result with our content
+ *
+ * Since 1.0
+ *
+ */
 
 add_filter( 'plugins_api_result', 'rocket_force_info_result', 10, 3 );
 function rocket_force_info_result( $res, $action, $args )

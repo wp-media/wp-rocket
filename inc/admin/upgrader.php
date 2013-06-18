@@ -8,7 +8,7 @@ defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
  * since 1.0
  *
  */
- 
+
 add_action( 'admin_init', 'rocket_upgrader' );
 function rocket_upgrader()
 {
@@ -38,8 +38,6 @@ function rocket_upgrader()
 
 /* BEGIN UPGRADER'S HOOKS */
 
-
-
 /**
  * Keeps this function up to date at each version
  *
@@ -50,7 +48,7 @@ function rocket_upgrader()
 add_action( 'wp_rocket_first_install', 'rocket_first_install' );
 function rocket_first_install()
 {
-		
+
 	// Create Option
 	add_option( WP_ROCKET_SLUG,
 		array(
@@ -62,7 +60,7 @@ function rocket_first_install()
 			'purge_cron_unit'  		=> 'HOUR_IN_SECONDS',
 			'exclude_css'		   	=> array(),
 			'exclude_js'		   	=> array(),
-			'lazyload'			   	=> '1',
+			'lazyload'			   	=> 0,
 			'minify_css'		   	=> 0,
 			'minify_js'			   	=> 0,
 		)
@@ -71,14 +69,13 @@ function rocket_first_install()
 /* END UPGRADER'S HOOKS */
 
 
-
 /**
  * TO DO - Description
  *
  * since 1.0
  *
  */
- 
+ /*
 add_action( 'wp_rocket_upgrade', 'new_upgrade', 10, 2 );
 function new_upgrade( $wp_rocket_version, $actual_version )
 {
@@ -86,3 +83,4 @@ function new_upgrade( $wp_rocket_version, $actual_version )
 	}else{
 	}
 }
+*/

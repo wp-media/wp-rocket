@@ -2,7 +2,7 @@
 defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 
 /**
- * Catch the pages contents if needed, then , starts an Output Buffer (ob_start) with a callback
+ * Catch the pages contents if needed, then, starts an Output Buffer (ob_start) with a callback
  *
  * since 1.0
  *

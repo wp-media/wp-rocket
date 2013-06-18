@@ -152,8 +152,8 @@ function rocket_minify_js( $buffer )
 	// cut into several parts concatenated files
 	$internals_script_tags = '';
 	if( count( $internals_js )>=1 ) 
-		foreach( array_chunk( $internals_js, apply_filters( 'rocket_chuck_minify_js_count', 5 ) ) as $css )
-			$internals_script_tags .= '<script src="' . WP_ROCKET_URL . 'min/f=' . implode( ',', $css ) . '"></script>';
+		foreach( array_chunk( $internals_js, apply_filters( 'rocket_chuck_minify_js_count', 5 ) ) as $js )
+			$internals_script_tags .= '<script src="' . WP_ROCKET_URL . 'min/f=' . implode( ',', $js ) . '"></script>';
 	
 	// Get all external script tags
 	$externals_script_tags = count( $externals_js )>=1 ? implode( "\n" , $externals_js ) : '';

@@ -19,12 +19,12 @@ function rocket_admin_menu()
 
 
 /**
- * TO DO - Description
+ * Used to display fields on settings form
  *
  * Since 1.0
  *
  */
- 
+
 function rocket_field( $args )
 {
 	$options = get_option( WP_ROCKET_SLUG );
@@ -96,7 +96,7 @@ function rocket_field( $args )
 
 
 /**
- * TO DO - Description
+ * The main settings page construtor using the required functions from WP
  *
  * Since 1.0
  *
@@ -148,7 +148,7 @@ function rocket_display_options()
 	<div class="wrap">
 	<div id="icon-rocket" class="icon32" style="background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6RTEwQzc4NjhDRjc4MTFFMjg4QUZFMzFGRTgwOTgwNjgiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6RTEwQzc4NjlDRjc4MTFFMjg4QUZFMzFGRTgwOTgwNjgiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpFMTBDNzg2NkNGNzgxMUUyODhBRkUzMUZFODA5ODA2OCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpFMTBDNzg2N0NGNzgxMUUyODhBRkUzMUZFODA5ODA2OCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PpIJhBsAAAWPSURBVHjatJd/TJR1HMef435xdBxcEoesX6DR0OagoaJcLeiHjMWaZpSttbnox/yxmbXKpaYu1yJra47+qc2lqautlZWTy9GakBEMxH7ISDApWEpBnAccd9xxvT/4fth3t+c6zPndXoPnue/zfN7fz+fz/Xy+j6m+vl67ipEK3KAUFIPbwQ0gEzg4JwRGwQi4CAbAb+A8aLf8T8PyXBF4AtwHbgR2YAMpSZ4VQWEQAe9fqQATV/cCqOXqbVf4DjuRcb9lFgZzwAJwM/CAarrbMQtjMRAEXeAn0Erx8/j79YkE3AQeAHeBO8EcxltW60xiVGLbDc7QsPA7GAN+sEuZ64wXIMn0DCgDWaIwyep0IxdpuIfXYizA5Isqz9zNxejDpgswgyqwGSxhkvzNzL31PxKrE7wDzoIJMJnEOxUM60yILUqsxdhuME5XSaI8DjYmSDR5phzcAvrAAeBLImCx0XbS6KYfuPLrwBrGf6kyx2jkEi84MovsL0kkIMZVPsXttSiR4Vgsdnn5phlPDoMNoDGJgDtAdty9qBrbTO7ro2A9E2tmTE1NaTabTcvIyBBiFotFi0ajf1H0YQrRzGZzIgFeg3t+dZXygg9ZKmUH1KmGXS5Xv9/v39/f39+D1dshYi7utY6NjR2dWU40qlmt1um/BmOpwb2zqoBxImMTyBB3i/HU1NSPfT6fZLtjYGCgEPfP1dTUfAARkcnJy4k/MTExEx5lSB41cRcZCWgyirP48El5mbgzPT39s4aGhqdbWlqezc7OlqLUjRU2dnR0ROx2uxYKhaYfKiwsjH/PNrCShczJ3RI/PjcSkMdKqKWlpQ02NzdvbG9vr/V4PGthcAs8MgFxRd3d3fMhxAeRUwYC1oGtTOxFbDzxyfGzlGcjAVL3p2MZDAbfbWtri2VmZr7udDofRD64YfR56QUQInXjGNgiERBvIBw2iNvAcqvXDpl/zsDOG5JiRgKmS6W8EPHeh/jXOhyOQzB+mn3cxXke9v8fkZT74CUtPz9/LjxVF4lE1NWuYmFTxynwqZagxJqUfe6Hi0tY5aoV4+pYLXPhqXuHhobMEqK43116SJWxk+cCQwFDqhhkdwAGJIF+NezXJlODFBl47DWE6jzbb7IW3axfGAmQvq3BjRpcX1xQUHBwfHz85ZSUlO9x+5O4uY3hcHgvcmUPfj+Zm5ubgV0xJ4mAS/rqtQTlVuLcipUvcbvdW71eb2VXV9dOVL7dyIdXxBNItHlYuRSswyhEa5GYC0tLSytxvw4CTEkE9LFNJxQgLtqGl/mQ1Svw/yMlJSVVnZ2dR3Cdgpw4CU4gKS3wUiWErCoqKnqsvLx82fDw8CaDYqSxTVv5/2mjZqTugNvk+IUXYzGhCGrB/rKysmq8eE1vb+86GK2CkAA8koa4h5H5z1VUVFhHR0cPYb5VaVL6+A4MsijJ+DqRAMnUl5jtknT1iOujiH8WjB+HF7bD2LGRkRFtcHDQmZWVFUSIQki85ciBHZjnxnxNae8RtuAdbPErGfvjRgLEPW+Lu3n9Dffqw3jpKeRDMdy+KycnR8M+/zYvL68PhcqDe8th2AUBGo2HeP6TAlVDj0qbXs33fhHfZS3KUUk3Lmc5+Vp5EeyVFg23LkDMOwOBgJz/F8OYF9lvgmfC+G0YXOKLm3gwaeY3w0fMKb1Ov5XoQLJeubeHdfoA3biZp6WH2N0WQoy0azMMSzZf4OFUzof/KGcLif2rvBYBso3bjARIp7pHORPU8VtgPo1r3P9S+78ks/lkk/P/n6ysrVyY4SeWfGSk8/oX1u7trPMyeunKKxkXiD7eU4tPvIBlyrWIOajUgx7G0n8VH7CxRMZ1ASuUawcni7u/Am/yzH/NhoUfFGfosj/kkxmcYPMJatd4/CvAAKFM+DWaJ2g7AAAAAElFTkSuQmCC) 0 0 no-repeat;"><br/></div>
 	<h2>WP Rocket <small>v<?php echo WP_ROCKET_VERSION; ?></small></h2>
-		
+
 	<form action="options.php" method="post">
 		<?php settings_fields( 'wp_rocket' ); ?>
 		<?php submit_button(); ?>
@@ -165,23 +165,23 @@ function rocket_display_options()
 
 
 /**
- * TO DO - Description
+ * When the options 'comment_whitelist' & 'comment_moderation' are modified, we flush the htaccess
  *
  * Since 1.0
  *
  */
- 
+
 add_action( 'updated_option', 'rocket_flush_for_comment', 10, 3 );
 function rocket_flush_for_comment( $option, $oldvalue, $_newvalue )
 {
-	if( ( $option=='comment_whitelist' || $option=='flush_rocket_htaccess' ) && $oldvalue!=$_newvalue )
+	if( ( $option=='comment_whitelist' || $option=='comment_moderation' ) && $oldvalue!=$_newvalue )
 		flush_rocket_htaccess();
 }
 
 
 
 /**
- * TO DO - Description
+ * Tell to WordPress to be confident with uor setting, we are clean!
  *
  * Since 1.0
  *
@@ -196,12 +196,12 @@ function rocket_register_setting()
 
 
 /**
- * TO DO - Description
+ * Used with array_filter to remove files without .css extension
  *
  * Since 1.0
  *
  */
- 
+
 function rocket_sanitize_css( $file )
 {
 	$ext = strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
@@ -211,12 +211,12 @@ function rocket_sanitize_css( $file )
 
 
 /**
- * TO DO - Description
+ * Used with array_filter to remove files without .js extension
  *
  * Since 1.0
  *
  */
- 
+
 function rocket_sanitize_js( $file )
 {
 	$ext = strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
@@ -226,31 +226,25 @@ function rocket_sanitize_js( $file )
 
 
 /**
- * TO DO - Description
+ * Used to clean and sanitize the settings fields
  *
  * Since 1.0
  *
  */
- 
+
 function rocket_settings_callback( $inputs )
 {
 	// Clean inputs
-	if( $inputs['consumer_key']==hash( 'crc32', get_rocket_home_url().chr(98) ) ){
+	if( $inputs['consumer_key']==hash( 'crc32', rocket_get_domain( home_url() ).chr(98) ) ){
 
 		$inputs['cache_purge_pages'] = 		isset( $inputs['cache_purge_pages'] ) ? 	array_unique( array_filter( array_map( 'rocket_clean_exclude_file',	array_map( 'esc_url', 					explode( "\n", trim( $inputs['cache_purge_pages'] ) ) ) ) ) 		) : '';
-		
 		$inputs['cache_reject_uri'] = 		isset( $inputs['cache_reject_uri'] ) ? 		array_unique( array_filter( array_map( 'rocket_clean_exclude_file',	array_map( 'esc_url', 					explode( "\n", trim( $inputs['cache_reject_uri'] ) ) ) ) ) 		) : '';
-		
 		$inputs['cache_reject_cookies'] = 	isset( $inputs['cache_reject_cookies'] ) ? 	array_unique( array_filter( array_map( 'rocket_clean_exclude_file',	array_map( 'sanitize_key', 				explode( "\n", trim( $inputs['cache_reject_cookies'] ) ) ) ) ) 	) : '';
-		
 		$inputs['exclude_css'] = 			isset( $inputs['exclude_css'] ) ? 			array_unique( array_filter( array_map( 'rocket_sanitize_css', 		array_map( 'rocket_clean_exclude_file',	explode( "\n", trim( $inputs['exclude_css'] ) ) ) ) ) 			) : '';
-		
 		$inputs['exclude_js'] = 			isset( $inputs['exclude_js'] ) ? 			array_unique( array_filter( array_map( 'rocket_sanitize_js', 		array_map( 'rocket_clean_exclude_file',	explode( "\n", trim( $inputs['exclude_js']) ) ) ) ) 			) : '';
-		
 		$inputs['purge_cron_interval'] = 	isset( $inputs['purge_cron_interval'] ) ? 	(int)$inputs['purge_cron_interval'] : 0;
 		$inputs['purge_cron_unit'] = 		isset( $inputs['purge_cron_unit'] ) ? $inputs['purge_cron_unit'] : 'SECOND_IN_SECONDS';
-		
-		$inputs['secret_key'] = 			@file_get_contents( WP_ROCKET_WEB_MAIN.WP_ROCKET_WEB_VALID . '?k='.sanitize_key( $inputs['consumer_key'] ).'&u='.urlencode( get_rocket_home_url() ).'&v='.WP_ROCKET_VERSION );
+		$inputs['secret_key'] = 			@file_get_contents( WP_ROCKET_WEB_MAIN.WP_ROCKET_WEB_VALID . '?k='.sanitize_key( $inputs['consumer_key'] ).'&u='.urlencode( rocket_get_domain( home_url() ) ).'&v='.WP_ROCKET_VERSION );
 
 	} else {
 		$inputs = array( 'consumer_key'=>$inputs['consumer_key'] );
@@ -262,7 +256,7 @@ function rocket_settings_callback( $inputs )
 
 
 /**
- * TO DO - Description
+ * When our settings are saved: purge, cron, flush, preload!
  *
  * Since 1.0
  *
@@ -280,7 +274,7 @@ function rocket_after_save_options()
 
 	// Update .htaccess file rules
 	flush_rocket_htaccess( !rocket_valid_key() );
-	
+
 	// Run WP Rocket Bot for preload cache files
 	run_rocket_bot( 'cache-preload', home_url() );
 }

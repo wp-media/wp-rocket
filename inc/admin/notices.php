@@ -2,7 +2,7 @@
 defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 
 /**
- * This warning is display when they are no permalink structure in the configuration.
+ * This warning is displayed when there is no permalink structure in the configuration.
  *
  * since 1.0
  *
@@ -24,7 +24,7 @@ function rocket_warning_using_permalinks()
 
 
 /**
- * This warning is display when the .htaccess file isn't exist or isn't writeable 
+ * This warning is displayed when the .htaccess file doesn't exist or isn't writeable
  *
  * since 1.0
  *
@@ -52,31 +52,37 @@ function rocket_warning_htaccess_permissions()
 
 
 /**
- * This warning is display when the .htaccess file isn't exist or isn't writeable 
+ * This warning is displayed when the .htaccess file doesn't exist or isn't writeable
  *
  * since 1.0
  *
  */
- 
+
 add_action( 'admin_footer', 'rocket_warning_cache_dir_permissions' );
-function rocket_warning_cache_dir_permissions() 
+function rocket_warning_cache_dir_permissions()
 {
-	
+
 	if( !is_dir( WP_ROCKET_CACHE_PATH ) || !is_writeable( WP_ROCKET_CACHE_PATH ) )
 	{ ?>
-		
+
 		<div class="error">
 			<p><strong>WP Rocket</strong> : Attention, vous n'avez pas les <a href="http://codex.wordpress.org/Changing_File_Permissions" target="_blank">droits en écriture (en)</a> sur le dossier de cache de <strong>WP Rocket</strong> (<code><?php echo WP_ROCKET_CACHE_PATH; ?></code>). Pour que <strong>WP Rocket</strong> fonctionne correctement, veuillez indiquer un CHMOD de <code>755</code> ou de <code>775</code> sur ce dossier.</p>
 		</div>
-		
+
 	<?php
 	}
-		
+
 }
 
 
 
-// Need API key
+/**
+ * This warning is displayed when the API KEY isn't already set or not valid
+ *
+ * since 1.0
+ *
+ */
+
 function rocket_need_api_key()
 {
 

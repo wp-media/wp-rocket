@@ -2,7 +2,7 @@
 defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 
 /**
- * Customizing the time interval (in seconds) between automatic cache purge
+ * Customizing the time interval between automatic cache purge
  * This setting can be changed from the options page of the plugin
  * By default, the interval is 4 hours
  *
@@ -44,8 +44,8 @@ function rocket_purge_cron_scheduled()
 
 
 /**
- * This event is launch when the cron is run
- * It's delete the domain cache
+ * This event is launched when the cron is triggered
+ * That delete the domain cache
  *
  * since 1.0
  *

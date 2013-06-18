@@ -23,7 +23,7 @@ function get_rocket_pages_not_cached()
 
 
 /**
- * TO DO - Description
+ * Get all cookie names we don't cache (string)
  * This function is used in inc/front/process.php and in inc/front/htaccess.php
  *
  * since 1.0
@@ -47,7 +47,7 @@ function get_rocket_cookies_not_cached()
 
 
 /**
- * Check if user want to cache mobile version
+ * Check if we need to cache the mobile version of the website (if available)
  *
  * since 1.0
  *
@@ -204,12 +204,12 @@ function rocket_rrmdir( $dir )
 
 
 /**
- * TO DO - Description
+ * Count cached files
  *
  * since 1.0
  *
  */
- 
+
 function rocket_count_cache_contents( $base = null )
 {
     $base = is_null( $base ) ? WP_ROCKET_CACHE_PATH : $base;
@@ -253,7 +253,7 @@ function rocket_clean_exclude_file( $file )
 
 
 /**
- * Determine if the key saved in option is a valid key
+ * Determine if the key is valid
  *
  * since 1.0
  *
@@ -264,7 +264,7 @@ function rocket_valid_key()
 	$options = get_option( WP_ROCKET_SLUG );
 	if( !isset( $options['consumer_key'] ) || !isset( $options['secret_key'] ) )
 		return false;
-	return $options['consumer_key']==hash( 'crc32', get_rocket_home_url().chr(98) ) && $options['secret_key']==md5( $options['consumer_key'] );
+	return $options['consumer_key']==hash( 'crc32', rocket_get_domain( home_url() ).chr(98) ) && $options['secret_key']==md5( $options['consumer_key'] );
 }
 
 
@@ -302,16 +302,17 @@ function get_rocket_option( $option, $default=false )
 
 
 /**
- * TO DO - Description
+ * Returns a full and correct home_url without subdmain, see rocket_get_domain()
  *
  * since 1.0
  *
  */
 
-function get_rocket_home_url()
+function get_rocket_home_url( $url=null )
 {
+	$url = is_null( $url ) ? home_url( '/' ) : $url;
 	$s = is_ssl() ? 's' : '';
-	return 'http' . $s . '://' . rocket_get_domain( home_url( '/' ) );
+	return 'http' . $s . '://' . rocket_get_domain( $url );
 }
 
 
@@ -330,14 +331,14 @@ function rocket_get_domain( $url )
       $urlobj = parse_url( $url );
       $domain = $urlobj['host'];
       if( preg_match( '/(?P<domain>[a-z0-9][a-z0-9\-]{1,63}\.[a-z\.]{2,6})$/i', $domain, $regs ) )
-          return trailingslashit( $regs['domain'] );
+          return $regs['domain'];
       return false;
 }
 
 
 
 /**
- * TO DO - Description
+ * Launch the Robot
  *
  * @param mixed $spider
  * @param mixed $start_url

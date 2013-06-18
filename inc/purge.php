@@ -1,7 +1,7 @@
 <?php
 defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 
-// Launch hooks that deletes all the cache domain
+ // Launch hooks that deletes all the cache domain
 add_action( 'switch_theme'				, 'rocket_clean_domain' );		// When user change theme
 add_action( 'edit_user_profile_update'	, 'rocket_clean_domain' );		// When a user is update their profile
 add_action( 'wp_update_nav_menu'		, 'rocket_clean_domain' );		// When a custom menu is update
@@ -57,17 +57,17 @@ function rocket_clean_post( $new_status, $old_status, $post )
 		rocket_clean_files( apply_filters( 'rocket_post_purge_urls', $purge_urls ) );
 
 		// Never forget to purge homepage and their pagination
-		rocket_clean_home();		
-		
+		rocket_clean_home();
+
 		// Add Homepage URL to $purge_urls for bot crawl
 		array_push( $purge_urls, home_url() );
-		
-	
+
+
 		// Create json file and run WP Rocket Bot
 		$json_encode_urls = '["'.implode( '","', array_filter($purge_urls) ).'"]';
 		file_put_contents( WP_ROCKET_PATH . 'cache.json', $json_encode_urls );
 		run_rocket_bot( 'cache-json', WP_ROCKET_URL . 'cache.json' );
-		 
+
     }
 
 }
@@ -115,15 +115,15 @@ function rocket_clean_comment( $arg1, $arg2 = '', $arg3 = '' )
 
 	// Never forget to purge homepage and their pagination
 	rocket_clean_home();
-	
+
 	// Add Homepage URL to $purge_urls for bot crawl
 	array_push( $purge_urls, home_url() );
-	
+
 	// Create json file and run WP Rocket Bot
 	$json_encode_urls = '["'.implode( '","', array_filter($purge_urls) ).'"]';
 	file_put_contents( WP_ROCKET_PATH . 'cache.json', $json_encode_urls );
 	run_rocket_bot( 'cache-json', WP_ROCKET_URL . 'cache.json' );
-	
+
     // Return data for preprocess_comment filter
     if( current_filter() == 'preprocess_comment' )
 		return $arg1;
@@ -157,14 +157,14 @@ function rocket_purge_cache()
 			case 'all':
 				rocket_clean_domain();
 				break;
-			
+
 			// Clear terms, homepage and other files associated at current post in back-end
 			case 'post':
 				rocket_clean_post( 'publish', '', get_post( $_id ) );
 				break;
-			
-			
-			// Clear cache file of the current page in front-end 
+
+
+			// Clear cache file of the current page in front-end
 			case 'url':
 				rocket_clean_files( wp_get_referer() );
 				break;
@@ -201,7 +201,7 @@ function rocket_preload_cache()
 			wp_nonce_ays( '' );
 
 		run_rocket_bot( 'cache-preload', home_url() );
-		
+
 		wp_redirect( wp_get_referer() );
 		die();
 

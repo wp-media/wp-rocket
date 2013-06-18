@@ -2,11 +2,12 @@
 defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 
 /**
- * TO DO - Description
+ * Used to flush the .htaccess file
  *
  * since 1.0
  *
  */
+
 function flush_rocket_htaccess( $force = false )
 {
 
@@ -37,7 +38,7 @@ function flush_rocket_htaccess( $force = false )
 
 
 /**
- * TO DO - Description
+ * Return the markers for htacces rules
  *
  * since 1.0
  *
@@ -59,7 +60,7 @@ function get_rocket_htaccess_marker()
 
 
 /**
- * TO DO - Description
+ * Add somes rules need by the plugin
  *
  * since 1.0
  *
@@ -98,7 +99,7 @@ function get_rocket_htaccess_mod_rewrite()
 
 
 /**
- * TO DO - Description
+ * Other rules for mobile version
  *
  * since 1.0
  *
@@ -116,7 +117,7 @@ function get_rocket_htaccess_mobile_rewritecond()
 
 
 /**
- * TO DO - Description
+ * Other rules again to improve performances
  *
  * since 1.0
  *
@@ -162,7 +163,7 @@ function get_rocket_htaccess_mod_deflate()
 
 
 /**
- * TO DO - Description
+ * Other rules to improve performances again
  *
  * since 1.0
  *
@@ -218,7 +219,7 @@ function get_rocket_htaccess_mod_expires()
 
 
 /**
- * TO DO - Description
+ * Add some encoding rules
  *
  * since 1.0
  *
@@ -238,7 +239,7 @@ function get_rocket_htaccess_charset()
 
 
 /**
- * TO DO - Description
+ * Rules to remove the etag
  *
  * since 1.0
  *
