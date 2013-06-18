@@ -5,6 +5,7 @@ defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 
 /**
  * Add menu in admin bar
+ * From this menu, you can preload the cache files, clear entire domain cache or post cache (front & back-end)
  *
  * since 1.0
  *
