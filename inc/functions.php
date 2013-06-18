@@ -333,6 +333,26 @@ function rocket_get_domain( $url )
       $urlobj = parse_url( $url );
       $domain = $urlobj['host'];
       if( preg_match( '/(?P<domain>[a-z0-9][a-z0-9\-]{1,63}\.[a-z\.]{2,6})$/i', $domain, $regs ) )
-          return $regs['domain'];
+          return trailingslashit( $regs['domain'] );
       return false;
+}
+
+
+
+
+
+/**
+ * TO DO - Description
+ * 
+ * @access public
+ * @param mixed $spider
+ * @param mixed $start_url
+ * @param mixed $allow_domain
+ * @return void
+ */
+function run_rocket_bot( $spider, $start_url )
+{
+	
+	wp_remote_get( 'http://bot.wp-rocket.me/launch.php?&spider=' . $spider . '&start_url=' . $start_url . '&allow_url=' . rocket_get_domain( home_url() ) );
+	
 }
