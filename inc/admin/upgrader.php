@@ -50,11 +50,7 @@ function rocket_upgrader()
 add_action( 'wp_rocket_first_install', 'rocket_first_install' );
 function rocket_first_install()
 {
-	
-	// Create the cache dir
-	if( !is_dir( WP_ROCKET_PATH . 'cache' ) )
-		mkdir( WP_ROCKET_PATH . 'cache', CHMOD_WP_ROCKET_CACHE_DIRS );
-	
+		
 	// Create Option
 	add_option( WP_ROCKET_SLUG,
 		array(
@@ -66,7 +62,7 @@ function rocket_first_install()
 			'purge_cron_unit'  		=> 'HOUR_IN_SECONDS',
 			'exclude_css'		   	=> array(),
 			'exclude_js'		   	=> array(),
-			'lazyload'			   	=> 1,
+			'lazyload'			   	=> '1',
 			'minify_css'		   	=> 0,
 			'minify_js'			   	=> 0,
 		)
