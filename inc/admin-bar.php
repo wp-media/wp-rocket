@@ -9,6 +9,7 @@ defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
  */
 
 add_action( 'post_submitbox_start', 'rocket_post_submitbox_start' );
+
 function rocket_post_submitbox_start()
 {
 	global $post;
@@ -41,6 +42,7 @@ function rocket_admin_bar( $wp_admin_bar )
 			'id' 		=> 'purge-all',
 			'title' 	=> sprintf( __( 'Vider le cache <span class="count-cache" title="%1$d files">%1$d</span>', 'rocket' ), rocket_count_cache_contents() ),
 			'href' 		=> wp_nonce_url( admin_url( 'admin-post.php?action='.$action.'&type=all' ), $action.'_all' ),
+			'meta' 		=> array( 'class'=>'ajaxme' )
 		));
 
 		if( is_admin() )
@@ -55,6 +57,7 @@ function rocket_admin_bar( $wp_admin_bar )
 					'id' => 'purge-post',
 					'title' => __( 'Purger cet article', 'rocket' ),
 					'href' => wp_nonce_url( admin_url( 'admin-post.php?action='.$action.'&type=post-'.$post->ID ), $action.'_post-'.$post->ID ),
+					'meta' => array( 'class'=>'ajaxme' )
 				));
 			}
 		}
@@ -65,6 +68,7 @@ function rocket_admin_bar( $wp_admin_bar )
 				'id' => 'purge-url',
 				'title' => __( 'Purger cette URL', 'rocket' ),
 				'href' => wp_nonce_url( admin_url( 'admin-post.php?action='.$action.'&type=url' ), $action.'_url' ),
+				'meta' => array( 'class'=>'ajaxme' )
 			));
 		}
 		$action = 'preload';
@@ -74,6 +78,7 @@ function rocket_admin_bar( $wp_admin_bar )
 			'id' => 'preload-cache',
 			'title' => __( 'Précharger le cache', 'rocket' ),
 			'href' => wp_nonce_url( admin_url( 'admin-post.php?action='.$action ), $action ),
+			'meta' => array( 'class'=>'ajaxme' )
 		));
 }
 
@@ -106,5 +111,6 @@ function rocket_wp_before_admin_bar_render()
 			text-align: center;
 		}
 	</style>
+
 <?php
 }
