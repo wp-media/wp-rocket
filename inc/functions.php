@@ -11,7 +11,6 @@ defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 
 function get_rocket_pages_not_cached()
 {
-
 	$options = get_option( 'wp_rocket_settings' );
 	$pages = array( '.*/feed/' );
 
@@ -25,6 +24,7 @@ function get_rocket_pages_not_cached()
 
 /**
  * TO DO - Description
+ * This function is used in inc/front/process.php and in inc/front/htaccess.php
  *
  * since 1.0
  *
@@ -32,7 +32,6 @@ function get_rocket_pages_not_cached()
 
 function get_rocket_cookies_not_cached()
 {
-
 	$options = get_option( 'wp_rocket_settings' );
 	$cookies = array( str_replace( COOKIEHASH, '', LOGGED_IN_COOKIE ), 'wp-postpass_', 'wptouch_switch_toggle' );
 
@@ -63,7 +62,7 @@ function is_rocket_cache_mobile()
 
 
 /**
- * Remove cache files
+ * Delete one or several cache files
  *
  * @since 1.0
  *
@@ -71,7 +70,6 @@ function is_rocket_cache_mobile()
 
 function rocket_clean_files( $urls )
 {
-
 	if( is_string( $urls ) )
 		$urls = (array)$urls;
 
@@ -99,7 +97,6 @@ function rocket_clean_files( $urls )
 
 function get_rocket_post_terms_urls( $post_ID )
 {
-
 	$urls = array();
 
 	foreach ( get_object_taxonomies( get_post_type( $post_ID ) ) as $taxonomy )
@@ -118,6 +115,8 @@ function get_rocket_post_terms_urls( $post_ID )
 	return $urls;
 }
 
+
+
 /**
  * Get all dates archives urls associated to a specific post
  *
@@ -127,7 +126,6 @@ function get_rocket_post_terms_urls( $post_ID )
 
 function get_rocket_post_dates_urls( $post_ID )
 {
-
 	// Get the day and month of the post
 	$date = explode( '-', get_the_time( 'Y-m-d', $post_ID ) );
 	global $wp_rewrite;
@@ -154,7 +152,6 @@ function get_rocket_post_dates_urls( $post_ID )
 
 function rocket_clean_home()
 {
-
 	$root = WP_ROCKET_CACHE_PATH . str_replace( array( 'http://', 'https://' ), '', home_url( '/' ) );
 
 	do_action( 'before_rocket_clean_home' );
@@ -176,7 +173,6 @@ function rocket_clean_home()
 
 function rocket_clean_domain()
 {
-
 	do_action( 'before_rocket_clean_domain' );
 
     rocket_rrmdir( WP_ROCKET_CACHE_PATH . str_replace( array( 'http://', 'https://' ), '', home_url( '/' ) ) );
@@ -194,7 +190,6 @@ function rocket_clean_domain()
  */
 function rocket_rrmdir( $dir )
 {
-
 	if( !is_dir( $dir ) ):
 		@unlink( $dir );
 		return;
@@ -204,7 +199,6 @@ function rocket_rrmdir( $dir )
         is_dir( $file ) ? rocket_rrmdir($file) : @unlink( $file );
 
     @rmdir($dir);
-
 }
 
 
@@ -215,6 +209,7 @@ function rocket_rrmdir( $dir )
  * since 1.0
  *
  */
+ 
 function rocket_count_cache_contents( $base = null )
 {
     $base = is_null( $base ) ? WP_ROCKET_CACHE_PATH : $base;
@@ -243,7 +238,9 @@ function rocket_count_cache_contents( $base = null )
 
 
 /**
- * TO DO - Description
+ * Get relative url
+ * Clean URL file to get only the equivalent of REQUEST_URI
+ * ex: rocket_clean_exclude_file( 'http://www.geekpress.fr/referencement-wordpress/') return /referencement-wordpress/
  *
  * since 1.0
  *
@@ -251,14 +248,12 @@ function rocket_count_cache_contents( $base = null )
 
 function rocket_clean_exclude_file( $file )
 {
-	// Get relative url
     return trim( reset( explode( '?', str_replace( array( '#\?.*$#', home_url( '/' ), 'http://', 'https://' ), '', $file ) ) ) );
-
 }
 
 
 /**
- * TO DO - Description
+ * Determine if the key saved in option is a valid key
  *
  * since 1.0
  *
@@ -275,12 +270,13 @@ function rocket_valid_key()
 
 
 /**
- * TO DO - Description
+ * Get the interval task cron purge in seconds
+ * This setting can be changed from the options page of the plugin
  *
  * since 1.0
  *
  */
- 
+
 function get_rocket_cron_interval()
 {
 	$options = get_option( WP_ROCKET_SLUG );
@@ -297,7 +293,7 @@ function get_rocket_cron_interval()
  * since 1.0
  *
  */
- 
+
 function get_rocket_option( $option, $default=false )
 {
 // soon
@@ -321,7 +317,8 @@ function get_rocket_home_url()
 
 
 /**
- * TO DO - Description
+ * Get the domain of an URL without subdomain
+ * (ex: rocket_get_domain( 'http://www.geekpress.fr' ) return geekpress.fr
  *
  * source : http://stackoverflow.com/a/15498686
  * since 1.0
@@ -339,20 +336,18 @@ function rocket_get_domain( $url )
 
 
 
-
-
 /**
  * TO DO - Description
- * 
- * @access public
+ *
  * @param mixed $spider
  * @param mixed $start_url
- * @param mixed $allow_domain
- * @return void
+ * since 1.0
+ *
  */
+
 function run_rocket_bot( $spider, $start_url )
 {
-	
+
 	wp_remote_get( 'http://bot.wp-rocket.me/launch.php?&spider=' . $spider . '&start_url=' . $start_url . '&allow_url=' . trim(rocket_get_domain( home_url() ), '/') );
-	
+
 }

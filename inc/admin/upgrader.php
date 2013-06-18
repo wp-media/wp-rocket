@@ -1,12 +1,14 @@
 <?php
 defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 
+
 /*
  * Tell WP what to do when admin is loaded aka upgrader
  *
  * since 1.0
  *
  */
+ 
 add_action( 'admin_init', 'rocket_upgrader' );
 function rocket_upgrader()
 {
@@ -36,15 +38,23 @@ function rocket_upgrader()
 
 /* BEGIN UPGRADER'S HOOKS */
 
-// Keeps this function up to date at each version
+
+
+/**
+ * Keeps this function up to date at each version
+ *
+ * since 1.0
+ *
+ */
+
 add_action( 'wp_rocket_first_install', 'rocket_first_install' );
 function rocket_first_install()
 {
-
+	
 	// Create the cache dir
 	if( !is_dir( WP_ROCKET_CACHE_PATH ) )
 		mkdir( WP_ROCKET_CACHE_PATH, CHMOD_WP_ROCKET_CACHE_DIRS );
-
+	
 	// Create Option
 	add_option( WP_ROCKET_SLUG,
 		array(
@@ -64,6 +74,15 @@ function rocket_first_install()
 }
 /* END UPGRADER'S HOOKS */
 
+
+
+/**
+ * TO DO - Description
+ *
+ * since 1.0
+ *
+ */
+ 
 add_action( 'wp_rocket_upgrade', 'new_upgrade', 10, 2 );
 function new_upgrade( $wp_rocket_version, $actual_version )
 {

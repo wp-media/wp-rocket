@@ -17,7 +17,7 @@ add_filter( 'delete_term'				, 'rocket_clean_domain' ); 		// When a term is dele
 
 
 /**
- * Update cache at every save of a publish post
+ * Update cache at every save of a publish post or an unpublish post
  *
  * @since 1.0
  *
@@ -75,7 +75,7 @@ function rocket_clean_post( $new_status, $old_status, $post )
 
 
 /**
- * Update cache on comment add and update
+ * Update cache on comment add or update
  *
  * @since 1.0
  *
@@ -132,7 +132,7 @@ function rocket_clean_comment( $arg1, $arg2 = '', $arg3 = '' )
 
 
 /**
- * TO DO - Description
+ * Purge Cache file System in Admin Bar
  *
  * @since 1.0
  *
@@ -153,15 +153,18 @@ function rocket_purge_cache()
 
 		switch( $_type )
 		{
-
+			// Clear all cache domain
 			case 'all':
 				rocket_clean_domain();
 				break;
-
+			
+			// Clear terms, homepage and other files associated at current post in back-end
 			case 'post':
 				rocket_clean_post( 'publish', '', get_post( $_id ) );
 				break;
-
+			
+			
+			// Clear cache file of the current page in front-end 
 			case 'url':
 				rocket_clean_files( wp_get_referer() );
 				break;
@@ -174,7 +177,6 @@ function rocket_purge_cache()
 		wp_redirect( wp_get_referer() );
 		die();
 
-
 	}
 
 }
@@ -182,7 +184,8 @@ function rocket_purge_cache()
 
 
 /**
- * TO DO - Description
+ * Preload cache system in Admin Bar
+ * It launch the WP Rocket Bot
  *
  * @since 1.0
  *

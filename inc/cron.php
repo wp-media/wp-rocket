@@ -2,9 +2,9 @@
 defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 
 /**
- * Personnalisation de l'interval de temps (en secondes) entre chaque purge automatique du cache
- * Ce paramètre peut être modifié à partir de la page d'options du plugin
- * Par défaut, l'interval est de 4 heures
+ * Customizing the time interval (in seconds) between automatic cache purge
+ * This setting can be changed from the options page of the plugin
+ * By default, the interval is 4 hours
  *
  * since 1.0
  *
@@ -25,8 +25,8 @@ function rocket_purge_cron_schedule( $schedules )
 
 
 /**
- * Planification de la tâche cron
- * Si la tâche n'est pas programmée, elle est automatiquement déclenchée
+ * Planning cron
+ * If the task is not programmed, it is automatically triggered
  *
  * since 1.0
  *
