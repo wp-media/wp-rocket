@@ -174,7 +174,6 @@ function rocket_purge_cache()
 		wp_redirect( wp_get_referer() );
 		die();
 
-
 	}
 
 }
