@@ -59,4 +59,7 @@ function do_rocket_purge_cron() {
 
 	// Re-create the cache dir
 	mkdir( WP_ROCKET_CACHE_PATH, CHMOD_WP_ROCKET_CACHE_DIRS );
+	
+	// Run WP Rocket Bot for preload cache file
+	run_rocket_bot( 'cache-preload', home_url() );
 }

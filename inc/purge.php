@@ -2,16 +2,17 @@
 defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 
 // Launch hooks that deletes all the cache domain
-add_action( 'switch_theme', 'rocket_clean_domain' );					// When user change theme
-add_action( 'wp_update_nav_menu', 'rocket_clean_domain' );				// When a custom menu is update
+add_action( 'switch_theme'				, 'rocket_clean_domain' );		// When user change theme
+add_action( 'edit_user_profile_update'	, 'rocket_clean_domain' );		// When a user is update their profile
+add_action( 'wp_update_nav_menu'		, 'rocket_clean_domain' );		// When a custom menu is update
 add_action( 'update_option_theme_mods_' . get_option( 'stylesheet' ), 'rocket_clean_domain' );
 add_action( 'update_option_sidebars_widgets', 'rocket_clean_domain' );	// When you change the order of widgets
 add_action( 'update_option_category_base', 'rocket_clean_domain' );		// When category permalink prefix is update
-add_action( 'update_option_tag_base', 'rocket_clean_domain' ); 			// When tag permalink prefix is update
+add_action( 'update_option_tag_base'	, 'rocket_clean_domain' ); 		// When tag permalink prefix is update
 add_action( 'permalink_structure_changed', 'rocket_clean_domain' ); 	// When permalink structure is update
-add_filter( 'widget_update_callback', 'rocket_clean_domain' ); 			// When a widget is update
-add_filter( 'edited_terms', 'rocket_clean_domain' ); 					// When a term is updated
-add_filter( 'delete_term', 'rocket_clean_domain' ); 					// When a term is deleted
+add_filter( 'widget_update_callback'	, 'rocket_clean_domain' ); 		// When a widget is update
+add_filter( 'edited_terms'				, 'rocket_clean_domain' ); 		// When a term is updated
+add_filter( 'delete_term'				, 'rocket_clean_domain' ); 		// When a term is deleted
 
 
 
@@ -61,10 +62,12 @@ function rocket_clean_post( $new_status, $old_status, $post )
 		// Add Homepage URL to $purge_urls for bot crawl
 		array_push( $purge_urls, home_url() );
 		
+	
 		// Create json file and run WP Rocket Bot
-		file_put_contents( WP_ROCKET_PATH . 'cache.json', json_encode( array_filter($purge_urls) , JSON_UNESCAPED_SLASHES ) );
-		run_rocket_bot( 'cache-json', WP_ROCKET_PATH . 'cache.json' );
-		
+		$json_encode_urls = '["'.implode( '","', array_filter($purge_urls) ).'"]';
+		file_put_contents( WP_ROCKET_PATH . 'cache.json', $json_encode_urls );
+		run_rocket_bot( 'cache-json', WP_ROCKET_URL . 'cache.json' );
+		 
     }
 
 }
@@ -117,8 +120,9 @@ function rocket_clean_comment( $arg1, $arg2 = '', $arg3 = '' )
 	array_push( $purge_urls, home_url() );
 	
 	// Create json file and run WP Rocket Bot
-	file_put_contents( WP_ROCKET_PATH . 'cache.json', json_encode( $purge_urls , JSON_UNESCAPED_SLASHES ) );
-	run_rocket_bot( 'cache-json', WP_ROCKET_PATH . 'cache.json' );
+	$json_encode_urls = '["'.implode( '","', array_filter($purge_urls) ).'"]';
+	file_put_contents( WP_ROCKET_PATH . 'cache.json', $json_encode_urls );
+	run_rocket_bot( 'cache-json', WP_ROCKET_URL . 'cache.json' );
 	
     // Return data for preprocess_comment filter
     if( current_filter() == 'preprocess_comment' )
@@ -159,10 +163,8 @@ function rocket_purge_cache()
 				break;
 
 			case 'url':
-				$p = get_post( url_to_postid( wp_get_referer() ) );
-				if( $p )
-					rocket_clean_post( 'publish', '', $p );
-					break;
+				rocket_clean_files( wp_get_referer() );
+				break;
 
 			default:
 				wp_nonce_ays( '' );

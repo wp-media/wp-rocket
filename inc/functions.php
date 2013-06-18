@@ -353,6 +353,6 @@ function rocket_get_domain( $url )
 function run_rocket_bot( $spider, $start_url )
 {
 	
-	wp_remote_get( 'http://bot.wp-rocket.me/launch.php?&spider=' . $spider . '&start_url=' . $start_url . '&allow_url=' . rocket_get_domain( home_url() ) );
+	wp_remote_get( 'http://bot.wp-rocket.me/launch.php?&spider=' . $spider . '&start_url=' . $start_url . '&allow_url=' . trim(rocket_get_domain( home_url() ), '/') );
 	
 }
