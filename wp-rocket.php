@@ -13,8 +13,7 @@ Copyright 2013 WP Rocket
 
 */
 defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
-if( !defined( 'DS' ) )
-	define( 'DS', DIRECTORY_SEPARATOR );
+
 define( 'WP_ROCKET_VERSION'			, '1.0');
 define( 'WP_ROCKET_SLUG'			, 'wp_rocket_settings');
 define( 'WP_ROCKET_WEB_MAIN'		, 'http://wp-rocket.me/');
@@ -77,6 +76,7 @@ function rocket_init()
 		require WP_ROCKET_ADMIN_PATH . '/updater.php';
 		require WP_ROCKET_ADMIN_PATH . '/options.php';
 		require WP_ROCKET_ADMIN_PATH . '/notices.php';
+		require WP_ROCKET_ADMIN_PATH . '/admin.php';
 	}
 	elseif( rocket_valid_key() )
 	{

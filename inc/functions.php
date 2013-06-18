@@ -8,6 +8,7 @@ defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
  * since 1.0
  *
  */
+
 function get_rocket_pages_not_cached()
 {
 
@@ -28,6 +29,7 @@ function get_rocket_pages_not_cached()
  * since 1.0
  *
  */
+
 function get_rocket_cookies_not_cached()
 {
 
@@ -51,6 +53,7 @@ function get_rocket_cookies_not_cached()
  * since 1.0
  *
  */
+
 function is_rocket_cache_mobile()
 {
 	$options = get_option( 'wp_rocket_settings' );
@@ -65,6 +68,7 @@ function is_rocket_cache_mobile()
  * @since 1.0
  *
  */
+
 function rocket_clean_files( $urls )
 {
 
@@ -92,6 +96,7 @@ function rocket_clean_files( $urls )
  * @since 1.0
  *
  */
+
 function get_rocket_post_terms_urls( $post_ID )
 {
 
@@ -105,10 +110,8 @@ function get_rocket_post_terms_urls( $post_ID )
 
 		if ( !empty( $terms ) )
 		{
-
 			foreach ( $terms as $term )
 				$urls[] = get_term_link( $term->slug, $taxonomy );
-
 		}
 
 	}
@@ -137,7 +140,7 @@ function get_rocket_post_dates_urls( $post_ID )
 		get_day_link( $date[0], $date[1], $date[2] ) . $wp_rewrite->pagination_base
 	);
 
-        return $urls;
+    return $urls;
 }
 
 
@@ -148,6 +151,7 @@ function get_rocket_post_dates_urls( $post_ID )
  * @since 1.0
  *
  */
+
 function rocket_clean_home()
 {
 
@@ -276,6 +280,7 @@ function rocket_valid_key()
  * since 1.0
  *
  */
+ 
 function get_rocket_cron_interval()
 {
 	$options = get_option( WP_ROCKET_SLUG );
@@ -284,10 +289,21 @@ function get_rocket_cron_interval()
 	return (int)( $options['purge_cron_interval'] * constant( $options['purge_cron_unit'] ) );
 }
 
+
+
+/**
+ * TO DO - Description
+ *
+ * since 1.0
+ *
+ */
+ 
 function get_rocket_option( $option, $default=false )
 {
 // soon
 }
+
+
 
 /**
  * TO DO - Description
@@ -298,8 +314,11 @@ function get_rocket_option( $option, $default=false )
 
 function get_rocket_home_url()
 {
-	return str_replace( apply_filters( 'rocket_home_url', array( 'www.' ) ), '', home_url('/') );
+	$s = is_ssl() ? 's' : '';
+	return 'http' . $s . '://' . rocket_get_domain( home_url( '/' ) );
 }
+
+
 
 /**
  * TO DO - Description
@@ -316,13 +335,4 @@ function rocket_get_domain( $url )
       if( preg_match( '/(?P<domain>[a-z0-9][a-z0-9\-]{1,63}\.[a-z\.]{2,6})$/i', $domain, $regs ) )
           return $regs['domain'];
       return false;
-}
-
-add_filter( 'page_row_actions', 'rocket_row_actions', 10, 2 );
-add_filter( 'post_row_actions', 'rocket_row_actions', 10, 2 );
-function rocket_row_actions( $actions, $post )
-{
-	$url = wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=post-'.$post->ID ), 'purge_cache_post-'.$post->ID );
-    $actions['rocket_purge'] = '<a href="'.$url.'">Purger le cache</a>';
-    return $actions;
 }

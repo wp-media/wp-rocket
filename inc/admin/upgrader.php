@@ -50,7 +50,7 @@ function rocket_first_install()
 			'purge_cron_unit'  		=> 'HOUR_IN_SECONDS',
 			'exclude_css'		   	=> array(),
 			'exclude_js'		   	=> array(),
-			'lazyload'			   	=> 0,
+			'lazyload'			   	=> 1,
 			'minify_css'		   	=> 0,
 			'minify_js'			   	=> 0,
 		)

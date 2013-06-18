@@ -1,21 +1,6 @@
 <?php
 defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 
-/**
- * Add a link "Purge cache" in the post submit area
- *
- * since 1.0
- *
- */
-
-add_action( 'post_submitbox_start', 'rocket_post_submitbox_start' );
-function rocket_post_submitbox_start()
-{
-	global $post;
-	if ( current_user_can( 'edit_post', $post->ID ) )
-		echo '<div id="purge-action"><a class="button-secondary" href="'.wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=post-' . $post->ID ), 'purge_cache_post-' . $post->ID ).'">'.__( 'Purge cache', 'wp-rocket' ).'</a></div>';
-}
-
 
 
 /**
@@ -53,7 +38,7 @@ function rocket_admin_bar( $wp_admin_bar )
 				$wp_admin_bar->add_menu(array(
 					'parent' => 'wp-rocket',
 					'id' => 'purge-post',
-					'title' => sprintf( __( 'Purger ce %s', 'rocket' ), $pobject->labels->singular_name ),
+					'title' => sprintf( __( 'Purger cet article', 'rocket' ), $pobject->labels->singular_name ),
 					'href' => wp_nonce_url( admin_url( 'admin-post.php?action='.$action.'&type=post-'.$post->ID ), $action.'_post-'.$post->ID ),
 				));
 			}
@@ -80,7 +65,7 @@ function rocket_admin_bar( $wp_admin_bar )
 
 
 /**
- * Add CSS and JavaScript for WP Rocket Admin Bar
+ * Add CSS for WP Rocket Admin Bar
  *
  * since 1.0
  *

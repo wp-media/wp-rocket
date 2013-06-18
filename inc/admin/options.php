@@ -164,52 +164,6 @@ function rocket_display_options()
 
 
 /**
- * Lien vers la page de configuration du plugin
- *
- * Since 1.0
- *
- */
-
-add_filter( 'plugin_action_links_'.plugin_basename( WP_ROCKET_FILE ), 'rocket_settings_action_links' );
-function rocket_settings_action_links( $actions )
-{
-    array_unshift( $actions, '<a href="' . admin_url( 'options-general.php?page=wprocket' ) . '">' . __( 'Settings' ) . '</a>' );
-    return $actions;
-}
-
-
-
-/**
- * TO DO - Description
- *
- * Since 1.0
- *
- */
- 
-add_filter( 'plugin_row_meta', 'rocket_plugin_row_meta', 10, 2 );
-function rocket_plugin_row_meta( $plugin_meta, $plugin_file )
-{
-	if( plugin_basename( WP_ROCKET_FILE ) == $plugin_file ):
-		$last = end( $plugin_meta );
-		$plugin_meta = array_slice( $plugin_meta, 0, -2 );
-		$a = array();
-		$authors = array( 	// array(	'name'=>'WP-Rocket', 'url'=>'http://wp-rocket.me' ),
-							array( 	'name'=>'Jonathan Buttigieg', 'url'=>'http://www.geekpress.fr' ),
-							array( 	'name'=>'Julio Potier', 'url'=>'http://www.boiteaweb.fr' ),
-							array( 	'name'=>'Jean-Baptiste Marchand-Arvier', 'url'=>'http://jbma.me/blog/' ),
-						);
-		foreach( $authors as $author )
-			$a[] = '<a href="' . $author['url'] . '" title="' . esc_attr__( 'Visit author homepage' ) . '">' . $author['name'] . '</a>';
-		$a = sprintf( __( 'By %s' ), wp_sprintf( '%l', $a ) );
-		$plugin_meta[] = $a;
-		$plugin_meta[] = $last;
-	endif;
-	return $plugin_meta;
-}
-
-
-
-/**
  * TO DO - Description
  *
  * Since 1.0
