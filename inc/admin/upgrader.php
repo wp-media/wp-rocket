@@ -52,8 +52,8 @@ function rocket_first_install()
 {
 	
 	// Create the cache dir
-	if( !is_dir( WP_ROCKET_CACHE_PATH ) )
-		mkdir( WP_ROCKET_CACHE_PATH, CHMOD_WP_ROCKET_CACHE_DIRS );
+	if( !is_dir( WP_ROCKET_PATH . 'cache' ) )
+		mkdir( WP_ROCKET_PATH . 'cache', CHMOD_WP_ROCKET_CACHE_DIRS );
 	
 	// Create Option
 	add_option( WP_ROCKET_SLUG,
