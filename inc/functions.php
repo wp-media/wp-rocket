@@ -264,7 +264,7 @@ function rocket_valid_key()
 	$options = get_option( WP_ROCKET_SLUG );
 	if( !isset( $options['consumer_key'] ) || !isset( $options['secret_key'] ) )
 		return false;
-	return $options['consumer_key']==hash( 'crc32', get_rocket_home_url().chr(98) ) && $options['secret_key']==md5( $options['consumer_key'] );
+	return $options['consumer_key']==hash( 'crc32', home_url( '/' ).chr(98) ) && $options['secret_key']==md5( $options['consumer_key'] );
 }
 
 
