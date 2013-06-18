@@ -40,11 +40,11 @@ function rocket_upgrader()
 add_action( 'wp_rocket_first_install', 'rocket_first_install' );
 function rocket_first_install()
 {
-	
+
 	// Create the cache dir
 	if( !is_dir( WP_ROCKET_CACHE_PATH ) )
 		mkdir( WP_ROCKET_CACHE_PATH, CHMOD_WP_ROCKET_CACHE_DIRS );
-	
+
 	// Create Option
 	add_option( WP_ROCKET_SLUG,
 		array(
