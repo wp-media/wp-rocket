@@ -1,6 +1,7 @@
 <?php
 defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 
+
 /**
  * Get all pages we don't cache (string)
  * This function is used in inc/front/process.php and in inc/front/htaccess.php
@@ -30,7 +31,7 @@ function get_rocket_pages_not_cached()
  *
  */
 
-function get_rocket_cookies_not_cached()
+function get_rocket_cookies_not_cached() 
 {
 	$options = get_option( 'wp_rocket_settings' );
 	$cookies = array( str_replace( COOKIEHASH, '', LOGGED_IN_COOKIE ), 'wp-postpass_', 'wptouch_switch_toggle' );

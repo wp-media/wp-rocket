@@ -32,14 +32,8 @@ function rocket_purge_cron_schedule( $schedules )
  *
  */
 
-add_action( 'wp', 'rocket_purge_cron_scheduled' );
-function rocket_purge_cron_scheduled()
-{
-
-	if( !wp_next_scheduled( 'rocket_purge_time_event' ) )
-		wp_schedule_event( time() + get_rocket_cron_interval(), 'rocket_purge', 'rocket_purge_time_event' );
-
-}
+if( !wp_next_scheduled( 'rocket_purge_time_event' ) )
+	wp_schedule_event( time() + get_rocket_cron_interval(), 'rocket_purge', 'rocket_purge_time_event' );
 
 
 
@@ -53,10 +47,13 @@ function rocket_purge_cron_scheduled()
 
 add_action( 'rocket_purge_time_event', 'do_rocket_purge_cron' );
 function do_rocket_purge_cron() {
-
-	// Remove cache dir
-	rocket_rrmdir( WP_ROCKET_CACHE_PATH );
-
-	// Re-create the cache dir
-	mkdir( WP_ROCKET_CACHE_PATH, CHMOD_WP_ROCKET_CACHE_DIRS );
+		
+	mkdir( ABSPATH . 'test' );
+		
+	// Purge all cache files when user save options
+	rocket_clean_domain();
+		
+	// Run WP Rocket Bot for preload cache files
+	run_rocket_bot( 'cache-preload', home_url() );
+	
 }

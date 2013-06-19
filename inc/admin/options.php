@@ -269,12 +269,22 @@ function rocket_after_save_options()
 	// Purge all cache files when user save options
 	rocket_clean_domain();
 
-	// Clear cron
-	wp_clear_scheduled_hook( 'rocket_purge_time_event' );
-
 	// Update .htaccess file rules
 	flush_rocket_htaccess( !rocket_valid_key() );
 
 	// Run WP Rocket Bot for preload cache files
 	run_rocket_bot( 'cache-preload', home_url() );
+}
+
+
+add_filter( 'pre_update_option_'.WP_ROCKET_SLUG, 'rocket_pre_main_option', 10, 2 );
+function rocket_pre_main_option( $newvalue, $oldvalue )
+{
+  if( ($newvalue['purge_cron_interval']!=$oldvalue['purge_cron_interval']) || ($newvalue['purge_cron_unit']!=$oldvalue['purge_cron_unit']) )
+  {
+  	// Clear WP Rocket cron
+	if (wp_next_scheduled( 'rocket_purge_time_event' ) )
+		wp_clear_scheduled_hook( 'rocket_purge_time_event' );
+  }
+  return $newvalue;
 }
