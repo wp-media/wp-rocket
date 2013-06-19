@@ -176,8 +176,12 @@ function rocket_clean_domain()
 {
 	do_action( 'before_rocket_clean_domain' );
 
+	// Delete cache domaine files
     rocket_rrmdir( WP_ROCKET_CACHE_PATH . str_replace( array( 'http://', 'https://' ), '', home_url( '/' ) ) );
-
+	
+	// Run WP Rocket Bot for preload cache files
+	run_rocket_bot( 'cache-preload', home_url() );
+	
     do_action( 'after_rocket_clean_domain' );
 }
 

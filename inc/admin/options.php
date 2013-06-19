@@ -248,7 +248,7 @@ function rocket_settings_callback( $inputs )
 	} else {
 		unset( $inputs['secret_key'] );
 	}
-	$inputs = wp_parse_args( array_filter( $inputs ), $options );
+	//$inputs = wp_parse_args( array_filter( $inputs ), $options );
 
 	return $inputs;
 }
@@ -272,8 +272,6 @@ function rocket_after_save_options()
 	// Update .htaccess file rules
 	flush_rocket_htaccess( !rocket_valid_key() );
 
-	// Run WP Rocket Bot for preload cache files
-	run_rocket_bot( 'cache-preload', home_url() );
 }
 
 

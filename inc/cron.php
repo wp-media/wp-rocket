@@ -47,9 +47,7 @@ if( !wp_next_scheduled( 'rocket_purge_time_event' ) )
 
 add_action( 'rocket_purge_time_event', 'do_rocket_purge_cron' );
 function do_rocket_purge_cron() {
-		
-	mkdir( ABSPATH . 'test' );
-		
+				
 	// Purge all cache files when user save options
 	rocket_clean_domain();
 		
