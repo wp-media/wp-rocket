@@ -4,7 +4,7 @@
 Plugin Name: WP Rocket
 Plugin URI: http://www.wp-rocket.me
 Description: The best WordPress performance plugin.
-Version: 1.0.2
+Version: 1.0.1
 Author: WP-Rocket
 Contributors: Jonathan Buttigieg, Julio Potier
 Author URI: http://www.wp-rocket.me
@@ -14,9 +14,11 @@ Copyright 2013 WP Rocket
 */
 defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 
-define( 'WP_ROCKET_VERSION'			, '1.0.2');
+define( 'WP_ROCKET_VERSION'			, '1.0.1');
 define( 'WP_ROCKET_SLUG'			, 'wp_rocket_settings');
-define( 'WP_ROCKET_WEB_MAIN'		, 'http://wp-rocket.me/');
+if( !defined( 'WP_ROCKET_ENV' ) )
+	define( 'WP_ROCKET_ENV', '' );
+define( 'WP_ROCKET_WEB_MAIN'		, 'http://'.WP_ROCKET_ENV.'wp-rocket.me/');
 define( 'WP_ROCKET_WEB_CHECK'		, 'check_update.php');
 define( 'WP_ROCKET_WEB_VALID'		, 'valid_key.php');
 define( 'WP_ROCKET_WEB_INFO'		, 'plugin_information.php');
@@ -38,8 +40,16 @@ if( !defined( 'CHMOD_WP_ROCKET_CACHE_DIRS' ) )
 
 if( !defined( 'SECOND_IN_SECONDS' ) )
 	define( 'SECOND_IN_SECONDS', 1 );
-
-
+if( !defined( 'MINUTE_IN_SECONDS' ) )
+	define( 'MINUTE_IN_SECONDS', SECOND_IN_SECONDS*60 );
+if( !defined( 'HOUR_IN_SECONDS' ) )
+	define( 'HOUR_IN_SECONDS', 60 * MINUTE_IN_SECONDS );
+if( !defined( 'DAY_IN_SECONDS' ) )
+	define( 'DAY_IN_SECONDS', 24 * HOUR_IN_SECONDS);
+if( !defined( 'WEEK_IN_SECONDS' ) )
+	define( 'WEEK_IN_SECONDS', 7 * DAY_IN_SECONDS );
+if( !defined( 'YEAR_IN_SECONDS' ) )
+	define( 'YEAR_IN_SECONDS', 365 * DAY_IN_SECONDS );
 
 /*
  * Tell WP what to do when plugin is loaded
@@ -47,6 +57,7 @@ if( !defined( 'SECOND_IN_SECONDS' ) )
  * since 1.0
  *
  */
+
 add_action( 'plugins_loaded', 'rocket_init' );
 function rocket_init()
 {
@@ -72,7 +83,7 @@ function rocket_init()
 
 	if( is_admin() )
 	{
-		
+
 		require WP_ROCKET_ADMIN_PATH . '/upgrader.php';
 		require WP_ROCKET_ADMIN_PATH . '/updater.php';
 		require WP_ROCKET_ADMIN_PATH . '/options.php';
@@ -94,7 +105,6 @@ function rocket_init()
 		do_action( 'wp_rocket_loaded' );
 
 }
-
 
 /*
  * Tell WP what to do when plugin is deactivated

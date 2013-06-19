@@ -66,21 +66,22 @@ function rocket_first_install()
 		)
 	);
 }
-/* END UPGRADER'S HOOKS */
-
 
 /**
- * TO DO - Description
+ * What to do when ROcket is updated, depending on versions
  *
  * since 1.0
  *
  */
- /*
-add_action( 'wp_rocket_upgrade', 'new_upgrade', 10, 2 );
-function new_upgrade( $wp_rocket_version, $actual_version )
+
+add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );
+function rocket_new_upgrade( $wp_rocket_version, $actual_version )
 {
-	if( $actual_version<3){
+	if( version_compare( $actual_version, '1.0.1', '<' ) ){
+		wp_clear_scheduled_hook( 'rocket_check_event' );
 	}else{
+		// Do nothing
 	}
 }
-*/
+
+/* END UPGRADER'S HOOKS */
