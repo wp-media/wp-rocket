@@ -65,6 +65,7 @@ function get_rocket_htaccess_marker()
  * since 1.0
  *
  */
+
 function get_rocket_htaccess_mod_rewrite()
 {
 
@@ -73,7 +74,7 @@ function get_rocket_htaccess_mod_rewrite()
 	$home_root = isset( $home_root['path'] ) ? trailingslashit($home_root['path']) : '/';
 
 	// Get cache root
-	$cache_root = str_replace( realpath( $_SERVER['DOCUMENT_ROOT'] ), '', WP_ROCKET_CACHE_PATH );
+	$cache_root = str_replace( ABSPATH, '', WP_ROCKET_CACHE_PATH );
 
 	$rules  = '<IfModule mod_rewrite.c>' . "\n";
 	$rules .= 'RewriteEngine On' . "\n";
@@ -87,7 +88,7 @@ function get_rocket_htaccess_mod_rewrite()
 		$rules .= get_rocket_htaccess_mobile_rewritecond();
 
 	$rules .= 'RewriteCond %{HTTPS} off' . "\n";
-	$rules .= 'RewriteCond %{DOCUMENT_ROOT}'. $cache_root .'%{HTTP_HOST}%{REQUEST_URI}index.html -f' . "\n";
+	$rules .= 'RewriteCond ' . WP_ROCKET_CACHE_PATH .'%{HTTP_HOST}%{REQUEST_URI}index.html -f' . "\n";
 	$rules .= 'RewriteRule ^(.*) ' . $cache_root . '%{HTTP_HOST}%{REQUEST_URI}index.html [L]' . "\n";
 	$rules .= '</IfModule>' . "\n\n";
 	$rules = apply_filters( 'rocket_htaccess_mod_rewrite', $rules );
