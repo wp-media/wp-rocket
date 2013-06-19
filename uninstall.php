@@ -1,15 +1,21 @@
 <?php
 
-// If uninstall not called from WordPress exit
-if( !defined( 'WP_UNINSTALL_PLUGIN' ) )
-	exit();
 
 /**
- * Delete option and transient from option table
+ * If uninstall not called from WordPress exit
  *
  * since 1.0
  *
  */
 
-delete_site_transient( 'update_rocket' );
+if( !defined( 'WP_UNINSTALL_PLUGIN' ) )
+	exit();
+
+/**
+ * Delete option from option table
+ *
+ * since 1.0
+ *
+ */
+
 delete_option( 'wp_rocket_settings' );
