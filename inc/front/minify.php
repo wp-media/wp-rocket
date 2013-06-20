@@ -2,11 +2,12 @@
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 /**
- * TO DO - Description
+ * Launch WP Rocket minification process (CSS and JavaScript)
  *
  * since 1.0
  *
  */
+ 
 function rocket_minify_process( $buffer )
 {
 
@@ -42,12 +43,13 @@ function rocket_minify_process( $buffer )
 
 
 /**
- * TO DO - Description
+ * Used to minify and concat CSS files
  *
+ * since 1.0.2 Remove the filter, remove the array_chunk, add an automatic way to cut strings to 255c max
  * since 1.0
  *
  */
-
+ 
 function rocket_minify_css( $buffer )
 {
 
@@ -95,7 +97,7 @@ function rocket_minify_css( $buffer )
 	$i=0;
 	$internals_links = array($i=>'');
 	$internals_link_tags = '';
-	$_base = WP_ROCKET_URL . 'min/?f=';
+	$_base = WP_ROCKET_MINIFY_URL;
 	if( count( $internals_css ) ) {
 		foreach( $internals_css as $css ){
 			if( strlen( $internals_links[$i].$_base.$css )+1>=255 ) // +1 : we count the extra comma
@@ -116,8 +118,9 @@ function rocket_minify_css( $buffer )
 
 
 /**
- * TO DO - Description
+ * Used to minify and concat JavaScript files
  *
+ * since 1.0.2 Remove the filter, remove the array_chunk, add an automatic way to cut strings to 255c max
  * since 1.0
  *
  */
@@ -161,7 +164,7 @@ function rocket_minify_js( $buffer )
 	$i=0;
 	$internals_scripts = array($i=>'');
 	$internals_script_tags = '';
-	$_base = WP_ROCKET_URL . 'min/?f=';
+	$_base = WP_ROCKET_MINIFY_URL;
 	if( count( $internals_js ) ) {
 		foreach( $internals_js as $js ){
 			if( strlen( $internals_scripts[$i].$_base.$js )+1>=255 ) // +1 : we count the extra comma
@@ -181,7 +184,7 @@ function rocket_minify_js( $buffer )
 
 
 /**
- * TO DO - Description
+ * Get all CSS ans JS files of IE conditionals tags
  *
  * since 1.0
  * source : WP Minify
@@ -205,7 +208,7 @@ function rocket_extract_ie_conditionals( $buffer )
 
 
 /**
- * TO DO - Description
+ * Replace WP Rocket IE conditionals tags
  *
  * since 1.0
  * source : WP Minify

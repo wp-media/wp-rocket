@@ -34,6 +34,7 @@ define( 'WP_ROCKET_INC_URL'			, WP_ROCKET_URL . 'inc/' );
 define( 'WP_ROCKET_FRONT_URL'		, WP_ROCKET_INC_URL . 'front/' );
 define( 'WP_ROCKET_FRONT_JS_URL'	, WP_ROCKET_FRONT_URL . 'js/' );
 define( 'WP_ROCKET_CACHE_URL'		, WP_ROCKET_URL . 'cache/' );
+define( 'WP_ROCKET_MINIFY_URL'		, home_url( '/' ) . 'rmin/' ); // Since 1.0.2
 
 if( !defined( 'CHMOD_WP_ROCKET_CACHE_DIRS' ) )
 	define( 'CHMOD_WP_ROCKET_CACHE_DIRS', 0755 );
