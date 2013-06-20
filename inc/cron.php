@@ -32,8 +32,14 @@ function rocket_purge_cron_schedule( $schedules )
  *
  */
 
-if( !wp_next_scheduled( 'rocket_purge_time_event' ) )
-	wp_schedule_event( time() + get_rocket_cron_interval(), 'rocket_purge', 'rocket_purge_time_event' );
+add_action( 'plugins_loaded', 'rocket_purge_cron_scheduled' );
+function rocket_purge_cron_scheduled()
+{
+
+	if( !wp_next_scheduled( 'rocket_purge_time_event' ) )
+		wp_schedule_event( time() + get_rocket_cron_interval(), 'rocket_purge', 'rocket_purge_time_event' );
+
+}
 
 
 

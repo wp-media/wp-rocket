@@ -7,12 +7,12 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
  * since 1.0
  *
  */
-function rocket_minify_process( $buffer ) 
+function rocket_minify_process( $buffer )
 {
 
 	$options = get_option( 'wp_rocket_settings' );
-	$enable_js = isset( $options['minify_js'] ) && $options['minify_js'] == '1' ? true : false;
-	$enable_css = isset( $options['minify_css'] ) && $options['minify_css'] == '1' ? true : false;
+	$enable_js = isset( $options['minify_js'] ) && $options['minify_js'] == '1';
+	$enable_css = isset( $options['minify_css'] ) && $options['minify_css'] == '1';
 
 	if( $enable_css || $enable_js )
 	{
@@ -47,8 +47,8 @@ function rocket_minify_process( $buffer )
  * since 1.0
  *
  */
- 
-function rocket_minify_css( $buffer ) 
+
+function rocket_minify_css( $buffer )
 {
 
 	$options = get_option( 'wp_rocket_settings' );
@@ -88,17 +88,25 @@ function rocket_minify_css( $buffer )
         }
 
     }
-	
+
 	// Get the internal CSS Files
-	// To avoid conflicts with file URLs are too long for browsers, 
+	// To avoid conflicts with file URLs are too long for browsers,
 	// cut into several parts concatenated files
+	$i=0;
+	$internals_links = array($i=>'');
 	$internals_link_tags = '';
-	if( count( $internals_css )>=1 ) 
-		foreach( array_chunk( $internals_css, apply_filters( 'rocket_chuck_minify_css_count', 5 ) ) as $css )
-			$internals_link_tags .= '<link rel="stylesheet" href="' . WP_ROCKET_URL . 'min/f=' . implode( ',', $css ) . '" />';
-    
+	$_base = WP_ROCKET_URL . 'min/?f=';
+	if( count( $internals_css ) ) {
+		foreach( $internals_css as $css ){
+			if( strlen( $internals_links[$i].$_base.$css )+1>=255 ) // +1 : we count the extra comma
+				$i++;
+			$internals_links[$i] .= $css.',';
+		}
+		foreach( $internals_links as $tags )
+			$internals_link_tags .= '<link rel="stylesheet" href="' . $_base . rtrim( $tags, ',' ) . '" />'."\n";
+	}
 	// Get all external link tags
-	$externals_link_tags = count( $externals_css )>=1 ? implode( "\n" , $externals_css ) : '';
+	$externals_link_tags = count( $externals_css ) ? implode( "\n" , $externals_css ) : '';
 
 	// Insert the minify css file below <head>
 	return preg_replace( '/<head(.*)>/', '<head$1>' . $externals_link_tags . $internals_link_tags, $buffer, 1 );
@@ -113,8 +121,8 @@ function rocket_minify_css( $buffer )
  * since 1.0
  *
  */
- 
-function rocket_minify_js( $buffer ) 
+
+function rocket_minify_js( $buffer )
 {
 
 	$options = get_option( 'wp_rocket_settings' );
@@ -146,17 +154,25 @@ function rocket_minify_js( $buffer )
         $buffer = str_replace( $script_tag, '', $buffer );
 
     }
-	
+
 	// Get the internal JavaScript Files
-	// To avoid conflicts with file URLs are too long for browsers, 
+	// To avoid conflicts with file URLs are too long for browsers,
 	// cut into several parts concatenated files
+	$i=0;
+	$internals_scripts = array($i=>'');
 	$internals_script_tags = '';
-	if( count( $internals_js )>=1 ) 
-		foreach( array_chunk( $internals_js, apply_filters( 'rocket_chuck_minify_js_count', 5 ) ) as $js )
-			$internals_script_tags .= '<script src="' . WP_ROCKET_URL . 'min/f=' . implode( ',', $js ) . '"></script>';
-	
+	$_base = WP_ROCKET_URL . 'min/?f=';
+	if( count( $internals_js ) ) {
+		foreach( $internals_js as $js ){
+			if( strlen( $internals_scripts[$i].$_base.$js )+1>=255 ) // +1 : we count the extra comma
+				$i++;
+			$internals_scripts[$i] .= $js.',';
+		}
+		foreach( $internals_scripts as $tags )
+			$internals_script_tags .= '<script src="' . $_base . rtrim( $tags, ',' ) . '"></script>'."\n";
+	}
 	// Get all external script tags
-	$externals_script_tags = count( $externals_js )>=1 ? implode( "\n" , $externals_js ) : '';
+	$externals_script_tags = count( $externals_js ) ? implode( "\n" , $externals_js ) : '';
 
     // Insert the minify JS file
     return preg_replace( '/<head(.*)>/', '<head$1>' . $externals_script_tags . $internals_script_tags, $buffer, 1 );
@@ -172,7 +188,7 @@ function rocket_minify_js( $buffer )
  *
  */
 
-function rocket_extract_ie_conditionals( $buffer ) 
+function rocket_extract_ie_conditionals( $buffer )
 {
 
     preg_match_all('/<!--\[if[^\]]*?\]>.*?<!\[endif\]-->/is', $buffer, $conditionals_match );
@@ -195,8 +211,8 @@ function rocket_extract_ie_conditionals( $buffer )
  * source : WP Minify
  *
  */
- 
-function rocket_inject_ie_conditionals( $buffer, $conditionals ) 
+
+function rocket_inject_ie_conditionals( $buffer, $conditionals )
 {
 
     while ( count( $conditionals ) > 0 && strpos( $buffer, '{{WP_ROCKET_CONDITIONAL}}' ) ) {
