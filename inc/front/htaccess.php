@@ -144,7 +144,6 @@ function get_rocket_htaccess_mod_deflate()
 	                          application/rss+xml \
 	                          application/vnd.ms-fontobject \
 	                          application/x-font-ttf \
-	                          application/x-font-woff \
 	                          application/xhtml+xml \
 	                          application/xml \
 	                          font/opentype \
