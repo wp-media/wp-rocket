@@ -96,7 +96,7 @@ $min_serveOptions['bubbleCssImports'] = false;
  * Note: Despite this setting, if you include a number at the end of the
  * querystring, maxAge will be set to one year. E.g. /min/f=hello.css&123456
  */
-$min_serveOptions['maxAge'] = 1800;
+$min_serveOptions['maxAge'] = 31536000;
 
 
 /**

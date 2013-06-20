@@ -40,7 +40,6 @@ function flush_rocket_htaccess( $force = false )
 /**
  * Return the markers for htacces rules
  *
- * since 1.0.2 Add get_rocket_htaccess_minify_rewrite()
  * since 1.0
  *
  */
@@ -54,7 +53,6 @@ function get_rocket_htaccess_marker()
 	$marker .= get_rocket_htaccess_mod_expires();
 	$marker .= get_rocket_htaccess_mod_deflate();
 	$marker .= get_rocket_htaccess_mod_rewrite();
-	$marker .= get_rocket_htaccess_minify_rewrite();
 	$marker .= '# END WP Rocket' . "\n";
 
 	return $marker;
@@ -263,38 +261,4 @@ function get_rocket_htaccess_etag()
 	$rules = apply_filters( 'rocket_htaccess_etag', $rules );
 
 	return $rules;
-}
-
-
-
-/**
- * Rules to rewrite WP Rocket Minify URLs
- *
- * since 1.0.2
- *
- */
- 
-function get_rocket_htaccess_minify_rewrite() 
-{
-	
-	$options = get_option( WP_ROCKET_SLUG );
-	$enable_js = isset( $options['minify_js'] ) && $options['minify_js'] == '1';
-	$enable_css = isset( $options['minify_css'] ) && $options['minify_css'] == '1';
-
-	if( $enable_css || $enable_js )
-	{
-		
-		$rules = "<IfModule mod_rewrite.c>\n";
-		$rules .= "RewriteEngine On\n";
-		$rules .= "RewriteBase /\n";
-		$rules .= "RewriteCond %{REQUEST_FILENAME} !-f\n";
-		$rules .= "RewriteCond %{REQUEST_URI} rmin/(.*)\n";
-		$rules .= "RewriteRule .* /wp-content/plugins/wp-rocket/min/?f=%1 [R,L]\n";
-		$rules .= "</IfModule>\n";
-		
-		return $rules;
-			
-	}
-	
-	return false;
 }

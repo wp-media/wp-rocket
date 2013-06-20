@@ -97,7 +97,7 @@ function rocket_minify_css( $buffer )
 	$i=0;
 	$internals_links = array($i=>'');
 	$internals_link_tags = '';
-	$_base = WP_ROCKET_MINIFY_URL;
+	$_base = WP_ROCKET_URL . 'min/?f=';
 	if( count( $internals_css ) ) {
 		foreach( $internals_css as $css ){
 			if( strlen( $internals_links[$i].$_base.$css )+1>=255 ) // +1 : we count the extra comma
@@ -164,7 +164,7 @@ function rocket_minify_js( $buffer )
 	$i=0;
 	$internals_scripts = array($i=>'');
 	$internals_script_tags = '';
-	$_base = WP_ROCKET_MINIFY_URL;
+	$_base = WP_ROCKET_URL . 'min/?f=';
 	if( count( $internals_js ) ) {
 		foreach( $internals_js as $js ){
 			if( strlen( $internals_scripts[$i].$_base.$js )+1>=255 ) // +1 : we count the extra comma

@@ -34,7 +34,6 @@ define( 'WP_ROCKET_INC_URL'			, WP_ROCKET_URL . 'inc/' );
 define( 'WP_ROCKET_FRONT_URL'		, WP_ROCKET_INC_URL . 'front/' );
 define( 'WP_ROCKET_FRONT_JS_URL'	, WP_ROCKET_FRONT_URL . 'js/' );
 define( 'WP_ROCKET_CACHE_URL'		, WP_ROCKET_URL . 'cache/' );
-define( 'WP_ROCKET_MINIFY_URL'		, home_url( '/' ) . 'rmin/' ); // Since 1.0.2
 
 if( !defined( 'CHMOD_WP_ROCKET_CACHE_DIRS' ) )
 	define( 'CHMOD_WP_ROCKET_CACHE_DIRS', 0755 );
@@ -117,6 +116,9 @@ register_deactivation_hook( __FILE__, 'rocket_deactivation' );
 function rocket_deactivation()
 {
 	// Delete All WP Rocket rules of the .htaccess file
+	flush_rocket_htaccess( true );
+	flush_rewrite_rules();
+}f the .htaccess file
 	flush_rocket_htaccess( true );
 	flush_rewrite_rules();
 }
