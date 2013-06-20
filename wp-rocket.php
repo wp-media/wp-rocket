@@ -118,7 +118,4 @@ function rocket_deactivation()
 	// Delete All WP Rocket rules of the .htaccess file
 	flush_rocket_htaccess( true );
 	flush_rewrite_rules();
-}f the .htaccess file
-	flush_rocket_htaccess( true );
-	flush_rewrite_rules();
 }
