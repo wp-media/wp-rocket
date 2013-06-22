@@ -10,7 +10,7 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
  
 function rocket_minify_process( $buffer )
 {
-
+	
 	$options = get_option( 'wp_rocket_settings' );
 	$enable_js = isset( $options['minify_js'] ) && $options['minify_js'] == '1';
 	$enable_css = isset( $options['minify_css'] ) && $options['minify_css'] == '1';
@@ -74,7 +74,7 @@ function rocket_minify_css( $buffer )
 
 
             // Get relative url
-            $url = str_replace( 'http://' . $_SERVER['HTTP_HOST'] . '/', '', $href_match[1] );
+            $url = str_replace( home_url( '/' ), '', $href_match[1] );
 			$url = preg_replace( '#\?.*$#', '', $url );
 
             // Check if the link isn't external
@@ -142,7 +142,7 @@ function rocket_minify_js( $buffer )
 
 
         // Get relative url
-        $url = str_replace( 'http://' . $_SERVER['HTTP_HOST'] . '/', '', $src_match[1] );
+        $url = str_replace( home_url( '/' ), '', $src_match[1] );
 		$url = preg_replace( '#\?.*$#', '', $url );
 
 
