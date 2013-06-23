@@ -3,21 +3,18 @@ defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 
 
 /**
- * Add Lazy Load JavaScript file in the footer
+ * Add Lazy Load JavaScript in the header
  * No jQuery or other library is required !!
  *
+ * since 1.1.0 This code is insert in head with inline script for more performance
  * since 1.0
  *
  */
 
-add_action( 'wp_enqueue_scripts', 'rocket_enqueue_lazyload' );
-function rocket_enqueue_lazyload() {
-
-	if( is_feed() || is_preview() )
-		return false;
-
-	wp_enqueue_script( 'rocket-lazyload', WP_ROCKET_FRONT_JS_URL . 'lazyload.js', array(), null, true );
-
+add_action( 'wp_head', 'rocket_lazyload_script', PHP_INT_MAX );
+function rocket_lazyload_script()
+{
+	echo '<script type="text/javascript">(function(a,e){function f(){var d=0;if(e.body&&e.body.offsetWidth){d=e.body.offsetHeight}if(e.compatMode=="CSS1Compat"&&e.documentElement&&e.documentElement.offsetWidth){d=e.documentElement.offsetHeight}if(a.innerWidth&&a.innerHeight){d=a.innerHeight}return d}function b(g){var d=ot=0;if(g.offsetParent){do{d+=g.offsetLeft;ot+=g.offsetTop}while(g=g.offsetParent)}return{left:d,top:ot}}function c(){var l=e.querySelectorAll("[data-lazy-original]");var j=a.pageYOffset||e.documentElement.scrollTop||e.body.scrollTop;var d=f();for(var k=0;k<l.length;k++){var h=l[k];var g=b(h).top;if(g<(d+j)){h.src=h.getAttribute("data-lazy-original");h.removeAttribute("data-lazy-original")}}}if(a.addEventListener){a.addEventListener("DOMContentLoaded",c,false);a.addEventListener("scroll",c,false)}else{a.attachEvent("onload",c);a.attachEvent("onscroll",c)}})(window,document);</script>';
 }
 
 
@@ -25,7 +22,8 @@ function rocket_enqueue_lazyload() {
 /**
  * Replace Gravatar, thumbnails, images in post content and in widget text by Lazy Load
  *
- * since 0.1
+ * since 1.0.1 Add priority of hooks at maximum later with PHP_INT_MAX
+ * since 1.0
  *
  */
 
@@ -48,6 +46,7 @@ function rocket_lazyload_images( $html )
 /**
  * Replace WordPress smilies by Lazy Load
  *
+ * since 1.0.1 Add priority of hooks at maximum later with PHP_INT_MAX
  * since 0.1
  *
  */

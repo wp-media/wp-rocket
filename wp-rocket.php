@@ -107,6 +107,8 @@ function rocket_init()
 
 }
 
+
+
 /*
  * Tell WP what to do when plugin is deactivated
  *
@@ -118,5 +120,24 @@ function rocket_deactivation()
 {
 	// Delete All WP Rocket rules of the .htaccess file
 	flush_rocket_htaccess( true );
+	flush_rewrite_rules();
+}
+
+
+
+/*
+ * Tell WP what to do when plugin is activated
+ *
+ * since 1.1.0
+ *
+ */
+register_activation_hook( __FILE__, 'rocket_activation' );
+function rocket_activation()
+{
+	require WP_ROCKET_INC_PATH . '/functions.php';
+	require WP_ROCKET_FRONT_PATH . '/htaccess.php';
+	
+	// Add All WP Rocket rules of the .htaccess file
+	flush_rocket_htaccess();
 	flush_rewrite_rules();
 }

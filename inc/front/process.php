@@ -39,22 +39,22 @@ function do_rocket_process( $buffer )
 
 	if( strlen( $buffer ) > 255 ) {
 
-	    // Minification HTML/CSS/JavaScript
-		$buffer = rocket_minify_process( $buffer );
-
 		// Add width and height attributes on images
 		$buffer = rocket_specify_image_dimensions( $buffer );
 
+	    // Minification HTML/CSS/JavaScript
+		$buffer = rocket_minify_process( $buffer );
+
 	    // Get root cache dir
-	    $cache_dir = WP_ROCKET_CACHE_PATH  . '/' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+	    $cache_dir = WP_ROCKET_CACHE_PATH . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 
 		// Create cache folder if not already exist
 	    if( !is_dir( $cache_dir ) )
 	    	mkdir( $cache_dir, CHMOD_WP_ROCKET_CACHE_DIRS, true );
 
 		// Save the cache file
-	    file_put_contents( $cache_dir . '/index.html', $buffer . "\n" . '<!-- This website is like a Rocket, isn\'t ? Performance optimized by WP Rocket Learn more: http://wp-rocket.me -->' );
+	    file_put_contents( $cache_dir . '/index.html', $buffer . "\n" . '<!-- This website is like a Rocket, isn\'t ? Performance optimized by WP Rocket Learn more: http://wp-rocket.me - Debug : cached -->' );
     }
 
-	return $buffer;
+	return $buffer . "\n" . '<!-- This website is like a Rocket, isn\'t ? Performance optimized by WP Rocket Learn more: http://wp-rocket.me - Debug : not cached -->';
 }

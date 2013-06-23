@@ -13,7 +13,7 @@ function rocket_specify_image_dimensions( $buffer )
 {
 
 	// Get all images without width or height attribute
-	preg_match_all( '#<img(?:[^>](?!(height|width)=))*+>#' , $buffer, $image_match );
+	preg_match_all( '/<img(?:[^>](?!(height|width)=))*+>/i' , $buffer, $image_match );
 
 	foreach( $image_match[0] as $image )
 	{
