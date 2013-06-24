@@ -135,7 +135,7 @@ $min_serveOptions['minApp']['groupsOnly'] = false;
  * To minify all files, set this option to null. You could also specify your
  * own pattern that is matched against the filename.
  */
-//$min_serveOptions['minApp']['noMinPattern'] = '@[-\\.]min\\.(?:js|css)$@i';
+$min_serveOptions['minApp']['noMinPattern'] = null;
 
 
 /**
