@@ -4,6 +4,7 @@ defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 /**
  * Used to flush the .htaccess file
  *
+ * since 1.1.0 Remove empty spacings then .htaccess is generated
  * since 1.0
  *
  */
@@ -12,7 +13,7 @@ function flush_rocket_htaccess( $force = false )
 {
 
 	$rules = '';
-	$htaccess_file = ABSPATH . '.htaccess';
+	$htaccess_file = get_real_file_to_edit( '.htaccess' );
 
 	if( file_exists( $htaccess_file ) && is_writeable( $htaccess_file ) )
 	{
@@ -20,9 +21,11 @@ function flush_rocket_htaccess( $force = false )
 		// Get content of .htaccess file
 		$ftmp = file_get_contents( $htaccess_file );
 
-		// Delete the WP Rocket marker
+		// Remove the WP Rocket marker
 		$ftmp = preg_replace( '/# BEGIN WP Rocket(.*)# END WP Rocket/isUe', '', $ftmp );
-
+		
+		// Remove empty spacings
+		$ftmp = str_replace( "\n\n" , "\n" , $ftmp );
 
 		if( $force === false  )
 			$rules = get_rocket_htaccess_marker();
@@ -72,9 +75,13 @@ function get_rocket_htaccess_mod_rewrite()
 	// Get root base
 	$home_root = parse_url(home_url());
 	$home_root = isset( $home_root['path'] ) ? trailingslashit($home_root['path']) : '/';
-
+	
+	$site_root = parse_url( site_url() );
+	if( isset( $site_root['path'] ) )
+		$site_root = trailingslashit($site_root['path']);
+	
 	// Get cache root
-	$cache_root = str_replace( ABSPATH, '', WP_ROCKET_CACHE_PATH );
+	$cache_root = ltrim( $site_root , '/' ) . str_replace( ABSPATH, '', WP_ROCKET_CACHE_PATH );
 
 	$rules  = '<IfModule mod_rewrite.c>' . "\n";
 	$rules .= 'RewriteEngine On' . "\n";
@@ -90,7 +97,7 @@ function get_rocket_htaccess_mod_rewrite()
 	$rules .= 'RewriteCond %{HTTPS} off' . "\n";
 	$rules .= 'RewriteCond ' . WP_ROCKET_CACHE_PATH .'%{HTTP_HOST}%{REQUEST_URI}index.html -f' . "\n";
 	$rules .= 'RewriteRule ^(.*) ' . $cache_root . '%{HTTP_HOST}%{REQUEST_URI}index.html [L]' . "\n";
-	$rules .= '</IfModule>' . "\n\n";
+	$rules .= '</IfModule>' . "\n";
 	$rules = apply_filters( 'rocket_htaccess_mod_rewrite', $rules );
 
 	return $rules;
@@ -120,7 +127,6 @@ function get_rocket_htaccess_mobile_rewritecond()
 /**
  * Other rules again to improve performances
  *
- * since 1.0.2 Add gzip support for .woff
  * since 1.0
  *
  */

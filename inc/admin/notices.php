@@ -23,6 +23,7 @@ function rocket_warning_using_permalinks()
 }
 
 
+
 /**
  * This warning is displayed when the .htaccess file doesn't exist or isn't writeable
  *
@@ -34,9 +35,9 @@ add_action( 'admin_footer', 'rocket_warning_htaccess_permissions' );
 function rocket_warning_htaccess_permissions()
 {
 
-	$htaccess_file = ABSPATH . '.htaccess';
+	$htaccess_file = get_real_file_to_edit( '.htaccess' );
 
-	if( !file_exists( $htaccess_file ) || !is_writeable( $htaccess_file ) )
+	if( !file_exists( $htaccess_file ) || !is_writable( $htaccess_file ) )
 	{ ?>
 
 		<div class="error">
@@ -62,7 +63,7 @@ add_action( 'admin_footer', 'rocket_warning_cache_dir_permissions' );
 function rocket_warning_cache_dir_permissions()
 {
 
-	if( !is_dir( WP_ROCKET_CACHE_PATH ) || !is_writeable( WP_ROCKET_CACHE_PATH ) )
+	if( !is_dir( WP_ROCKET_CACHE_PATH ) || !is_writable( WP_ROCKET_CACHE_PATH ) )
 	{ ?>
 
 		<div class="error">
