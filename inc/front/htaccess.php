@@ -78,10 +78,10 @@ function get_rocket_htaccess_mod_rewrite()
 	
 	$site_root = parse_url( site_url() );
 	if( isset( $site_root['path'] ) )
-		$site_root = trailingslashit($site_root['path']);
+		$site_root = ltrim( trailingslashit($site_root['path']), '/' );
 	
 	// Get cache root
-	$cache_root = ltrim( $site_root , '/' ) . str_replace( ABSPATH, '', WP_ROCKET_CACHE_PATH );
+	$cache_root = $site_root . str_replace( ABSPATH, '', WP_ROCKET_CACHE_PATH );
 
 	$rules  = '<IfModule mod_rewrite.c>' . "\n";
 	$rules .= 'RewriteEngine On' . "\n";
