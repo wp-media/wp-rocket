@@ -77,8 +77,7 @@ function get_rocket_htaccess_mod_rewrite()
 	$home_root = isset( $home_root['path'] ) ? trailingslashit($home_root['path']) : '/';
 	
 	$site_root = parse_url( site_url() );
-	if( isset( $site_root['path'] ) )
-		$site_root = ltrim( trailingslashit($site_root['path']), '/' );
+	$site_root = isset( $site_root['path'] ) ? ltrim( trailingslashit($site_root['path']), '/' ) : '';
 	
 	// Get cache root
 	$cache_root = $site_root . str_replace( ABSPATH, '', WP_ROCKET_CACHE_PATH );
