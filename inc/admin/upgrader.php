@@ -28,7 +28,7 @@ function rocket_upgrader()
 		flush_rewrite_rules();
 		$options = get_option( WP_ROCKET_SLUG );
 		$options['version'] = WP_ROCKET_VERSION;
-		if( $options['consumer_key']==hash( 'crc32', rocket_get_domain( home_url() ) ) ){
+		if( isset( $options['consumer_key'] ) && $options['consumer_key']==hash( 'crc32', rocket_get_domain( home_url() ) ) ){
 			$response = wp_remote_get( WP_ROCKET_WEB_VALID, array( 'timeout'=>15 ) );
 			if( !is_a($response, 'WP_Error') && strlen( $response['body'] )==32 )
 				$options['secret_key'] = $response['body'];

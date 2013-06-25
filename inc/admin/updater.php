@@ -38,7 +38,7 @@ function rocket_check_update()
 	$version = true;
 	$plugin_transient = null;
 	$response = wp_remote_get( WP_ROCKET_WEB_CHECK, array( 'timeout'=>15 ) );
-	if( !is_a($response, 'WP_Error') && $response['body']!='-1' ){
+	if( !is_a($response, 'WP_Error') && strlen( $response['body'] )>32 ){
 		list($version, $url) = explode( '|', $response['body'] );
 		if( version_compare( $version, WP_ROCKET_VERSION, '<=' ) )
 			return false;
