@@ -31,7 +31,7 @@ function get_rocket_pages_not_cached()
  *
  */
 
-function get_rocket_cookies_not_cached() 
+function get_rocket_cookies_not_cached()
 {
 	$options = get_option( 'wp_rocket_settings' );
 	$cookies = array( str_replace( COOKIEHASH, '', LOGGED_IN_COOKIE ), 'wp-postpass_', 'wptouch_switch_toggle' );
@@ -57,7 +57,7 @@ function get_rocket_cookies_not_cached()
 function is_rocket_cache_mobile()
 {
 	$options = get_option( 'wp_rocket_settings' );
-	return isset( $options['cache_mobile'] ) && $options['cache_mobile'] == '1' ? true : false;
+	return isset( $options['cache_mobile'] ) && $options['cache_mobile'] == '1';
 }
 
 
@@ -74,10 +74,10 @@ function rocket_clean_files( $urls )
 	if( is_string( $urls ) )
 		$urls = (array)$urls;
 
+	$urls = apply_filters( 'rocket_clean_files', $urls );
+
     foreach( array_filter($urls) as $url )
     {
-
-		$url = apply_filters( 'before_rocket_clean_file', $url );
 
 		if( $url )
 			rocket_rrmdir( WP_ROCKET_CACHE_PATH . str_replace( array( 'http://', 'https://' ), '', $url ) );
@@ -113,7 +113,7 @@ function get_rocket_post_terms_urls( $post_ID )
 		}
 
 	}
-	return $urls;
+	return apply_filters( 'get_rocket_post_terms_urls', $urls );
 }
 
 
@@ -155,12 +155,12 @@ function rocket_clean_home()
 {
 	$root = WP_ROCKET_CACHE_PATH . str_replace( array( 'http://', 'https://' ), '', home_url( '/' ) );
 
-	do_action( 'before_rocket_clean_home' );
+	$root = apply_filters( 'before_rocket_clean_home', $root );
 
 	@unlink( $root . '/index.html' );
     rocket_rrmdir( $root . $GLOBALS['wp_rewrite']->pagination_base );
 
-    do_action( 'after_rocket_clean_home' );
+    do_action( 'after_rocket_clean_home', $root );
 }
 
 
@@ -178,10 +178,10 @@ function rocket_clean_domain()
 
 	// Delete cache domaine files
     rocket_rrmdir( WP_ROCKET_CACHE_PATH . str_replace( array( 'http://', 'https://' ), '', home_url( '/' ) ) );
-	
+
 	// Run WP Rocket Bot for preload cache files
 	run_rocket_bot( 'cache-preload', home_url() );
-	
+
     do_action( 'after_rocket_clean_domain' );
 }
 
@@ -195,6 +195,7 @@ function rocket_clean_domain()
  */
 function rocket_rrmdir( $dir )
 {
+	do_action( 'before_rocket_rrmdir', $dir );
 	if( !is_dir( $dir ) ):
 		@unlink( $dir );
 		return;
@@ -204,6 +205,7 @@ function rocket_rrmdir( $dir )
         is_dir( $file ) ? rocket_rrmdir($file) : @unlink( $file );
 
     @rmdir($dir);
+	do_action( 'after_rocket_rrmdir', $dir );
 }
 
 
@@ -217,6 +219,7 @@ function rocket_rrmdir( $dir )
 
 function rocket_count_cache_contents( $base = null )
 {
+	do_action( 'before_rocket_count_cache_contents', $base );
     $base = is_null( $base ) ? WP_ROCKET_CACHE_PATH : $base;
 
     if( !file_exists( $base ) )
@@ -253,7 +256,10 @@ function rocket_count_cache_contents( $base = null )
 
 function rocket_clean_exclude_file( $file )
 {
-    return trim( reset( explode( '?', str_replace( array( '#\?.*$#', home_url( '/' ), 'http://', 'https://' ), '', $file ) ) ) );
+	$file = str_replace( array( '#\?.*$#', home_url( '/' ), 'http://', 'https://' ), '', $file );
+	$ex = explode( '?', $file );
+	$r = reset( $ex );
+    return trim( $r );
 }
 
 
@@ -269,7 +275,7 @@ function rocket_valid_key()
 	$options = get_option( WP_ROCKET_SLUG );
 	if( !isset( $options['consumer_key'] ) || !isset( $options['secret_key'] ) )
 		return false;
-	return $options['consumer_key']==hash( 'crc32', rocket_get_domain( home_url() ).chr(98) ) && $options['secret_key']==md5( $options['consumer_key'] );
+	return $options['consumer_key']==hash( 'crc32', rocket_get_domain( home_url() ) ) && $options['secret_key']==md5( $options['consumer_key'] );
 }
 
 
@@ -336,7 +342,7 @@ function rocket_get_domain( $url )
       $urlobj = parse_url( $url );
       $domain = $urlobj['host'];
       if( preg_match( '/(?P<domain>[a-z0-9][a-z0-9\-]{1,63}\.[a-z\.]{2,6})$/i', $domain, $regs ) )
-          return $regs['domain'];
+          return $regs['domain'].chr(98); //// beta
       return false;
 }
 
@@ -354,6 +360,10 @@ function rocket_get_domain( $url )
 function run_rocket_bot( $spider, $start_url )
 {
 
-	wp_remote_get( 'http://bot.wp-rocket.me/launch.php?&spider=' . $spider . '&start_url=' . $start_url . '&allow_url=' . trim(rocket_get_domain( home_url() ), '/') );
+	do_action( 'before_run_rocket_bot' );
+
+	wp_remote_get( WP_ROCKET_BOT_URL.'?spider=' . $spider . '&start_url='.$start_url );
+
+	do_action( 'after_run_rocket_bot' );
 
 }

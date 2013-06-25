@@ -77,7 +77,7 @@ function rocket_wp_before_admin_bar_render()
 { ?>
 
 	<style>
-		#wpadminbar .count-cache {
+		.count-cache, #wpadminbar .count-cache {
 			background-color: #464646;
 			border-radius: 10px;
 			color: white;
