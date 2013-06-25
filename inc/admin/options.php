@@ -108,15 +108,15 @@ function rocket_defered_module()
 	<legend class="screen-reader-text"><span><?php _e( 'Fichiers <strong>JS</strong> en chargement différé (Deferred Loading JavaScript)', 'rocket' ); ?></span></legend>
 	<div id="rktdrop">
 		<?php
-		if( count( $options['deferred_js_file'] ) ) {
-			foreach( $options['deferred_js_file'] as $k=>$_url ) {
-				$checked = isset( $options['deferred_js_box'][$k] ) ? checked( $options['deferred_js_box'][$k], '1', false ) : '';
+		if( count( $options['deferred_js_files'] ) ) {
+			foreach( $options['deferred_js_files'] as $k=>$_url ) {
+				$checked = isset( $options['deferred_js_wait'][$k] ) ? checked( $options['deferred_js_wait'][$k], '1', false ) : '';
 				// The loop on files
 			?>
 			<div class="rktdrag">
 				<img class="rktmove hide-if-no-js" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAIAAAD9iXMrAAAAA3NCSVQICAjb4U/gAAAACXBIWXMAAAsSAAALEgHS3X78AAAAFnRFWHRDcmVhdGlvbiBUaW1lADAxLzIxLzEwY83pkAAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNAay06AAAADqSURBVCiRjZGxasMwEIZ/ydLmh+gQQ5vNmI6FrMkL9C0CXpMOHtrQJUMHv4BXkyFD4kHgoWPAa/MCeQr7ZHWQbBRKQr/p7ufjjpOYUgr/QABIkiQMwztSnuccgNaaiPTAy/KkrwHAAfR9T0Rd1xHRLG0AzNKGPK48q1abKYBqM+08nEdEbdvOVz9jags/YUqpKIpePy+3jti9PZRlyQEEQbDPJgD22eRvIYRw7yKEkFIeP57GGVJKY8zh/XFM3Dw5sFifASzWZ+nhPMZYMFBvYwD1NhYebi/n3DaW769n/w5jjPOKorjzaZZfO46WvQF5uikAAAAASUVORK5CYII%3D" width="16" heigth="16" alt="<?php _e( 'Move' ); ?>" title="<?php _e( 'Move' ); ?>" />
-				<input type="text" placeholder="http://" class="deferred_js regular-text" name="wp_rocket_settings[deferred_js_file][<?php echo $k; ?>]" value="<?php echo esc_url( $_url ); ?>" />
-				<label><input type="checkbox" class="deferred_js" name="wp_rocket_settings[deferred_js_box][<?php echo $k; ?>]" value="1" <?php echo $checked; ?>/> <?php _e( 'Attendre le chargement de ce fichier ?', 'rocket' ); ?></label>
+				<input type="text" placeholder="http://" class="deferred_js regular-text" name="wp_rocket_settings[deferred_js_files][<?php echo $k; ?>]" value="<?php echo esc_url( $_url ); ?>" />
+				<label><input type="checkbox" class="deferred_js" name="wp_rocket_settings[deferred_js_wait][<?php echo $k; ?>]" value="1" <?php echo $checked; ?>/> <?php _e( 'Attendre le chargement de ce fichier ?', 'rocket' ); ?></label>
 				<img class="rktdelete hide-if-no-js" style="vertical-align:middle" src="<?php echo admin_url( '/images/no.png' ); ?>" title="<?php _e( 'Delete' ); ?>" alt="<?php _e( 'Delete' ); ?>" width="16" height="16" />
 			</div>
 			<?php }
@@ -125,16 +125,16 @@ function rocket_defered_module()
 			?>
 			<div class="rktdrag">
 				<img class="rktmove hide-if-no-js" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAIAAAD9iXMrAAAAA3NCSVQICAjb4U/gAAAACXBIWXMAAAsSAAALEgHS3X78AAAAFnRFWHRDcmVhdGlvbiBUaW1lADAxLzIxLzEwY83pkAAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNAay06AAAADqSURBVCiRjZGxasMwEIZ/ydLmh+gQQ5vNmI6FrMkL9C0CXpMOHtrQJUMHv4BXkyFD4kHgoWPAa/MCeQr7ZHWQbBRKQr/p7ufjjpOYUgr/QABIkiQMwztSnuccgNaaiPTAy/KkrwHAAfR9T0Rd1xHRLG0AzNKGPK48q1abKYBqM+08nEdEbdvOVz9jags/YUqpKIpePy+3jti9PZRlyQEEQbDPJgD22eRvIYRw7yKEkFIeP57GGVJKY8zh/XFM3Dw5sFifASzWZ+nhPMZYMFBvYwD1NhYebi/n3DaW769n/w5jjPOKorjzaZZfO46WvQF5uikAAAAASUVORK5CYII%3D" width="16" heigth="16" alt="<?php _e( 'Move' ); ?>" title="<?php _e( 'Move' ); ?>" />
-				<input type="text" placeholder="http://" class="deferred_js regular-text" name="wp_rocket_settings[deferred_js_file][0]" value="" />
-				<label><input type="checkbox" class="deferred_js" name="wp_rocket_settings[deferred_js_box][0]" value="1" /> <?php _e( 'Attendre le chargement de ce fichier ?', 'rocket' ); ?></label>
+				<input type="text" placeholder="http://" class="deferred_js regular-text" name="wp_rocket_settings[deferred_js_files][0]" value="" />
+				<label><input type="checkbox" class="deferred_js" name="wp_rocket_settings[deferred_js_wait][0]" value="1" /> <?php _e( 'Attendre le chargement de ce fichier ?', 'rocket' ); ?></label>
 			</div>
 		<?php } ?>
 	</div>
 	<?php // Clone Template ?>
 	<div class="rktmodel rktdrag hide-if-js">
 		<img class="rktmove hide-if-no-js" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAIAAAD9iXMrAAAAA3NCSVQICAjb4U/gAAAACXBIWXMAAAsSAAALEgHS3X78AAAAFnRFWHRDcmVhdGlvbiBUaW1lADAxLzIxLzEwY83pkAAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNAay06AAAADqSURBVCiRjZGxasMwEIZ/ydLmh+gQQ5vNmI6FrMkL9C0CXpMOHtrQJUMHv4BXkyFD4kHgoWPAa/MCeQr7ZHWQbBRKQr/p7ufjjpOYUgr/QABIkiQMwztSnuccgNaaiPTAy/KkrwHAAfR9T0Rd1xHRLG0AzNKGPK48q1abKYBqM+08nEdEbdvOVz9jags/YUqpKIpePy+3jti9PZRlyQEEQbDPJgD22eRvIYRw7yKEkFIeP57GGVJKY8zh/XFM3Dw5sFifASzWZ+nhPMZYMFBvYwD1NhYebi/n3DaW769n/w5jjPOKorjzaZZfO46WvQF5uikAAAAASUVORK5CYII%3D" width="16" heigth="16" alt="<?php _e( 'Move' ); ?>" title="<?php _e( 'Move' ); ?>" />
-		<input type="text" placeholder="http://" class="deferred_js regular-text" name="wp_rocket_settings[deferred_js_file][]" value="" />
-		<label><input type="checkbox" class="deferred_js" name="wp_rocket_settings[deferred_js_box][]" value="1" /> <?php _e( 'Attendre le chargement de ce fichier ?', 'rocket' ); ?></label>
+		<input type="text" placeholder="http://" class="deferred_js regular-text" name="wp_rocket_settings[deferred_js_files][]" value="" />
+		<label><input type="checkbox" class="deferred_js" name="wp_rocket_settings[deferred_js_wait][]" value="1" /> <?php _e( 'Attendre le chargement de ce fichier ?', 'rocket' ); ?></label>
 	</div>
 
 	<p><a href="javascript:void(0)" id="rktclone" class="hide-if-no-js button-secondary"><?php _e( 'Ajouter une URL', 'rocket' ); ?></a></p>
@@ -161,6 +161,8 @@ function rocket_button( $args )
 	</fieldset>
 <?php
 }
+
+
 
 /**
  * The main settings page construtor using the required functions from WP
@@ -299,6 +301,7 @@ function rocket_register_setting()
 
 function rocket_sanitize_css( $file )
 {
+	$file = preg_replace( '#\?.*$#', '', $file );
 	$ext = strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
 	return $ext=='css' ? $file : false;
 }
@@ -314,6 +317,7 @@ function rocket_sanitize_css( $file )
 
 function rocket_sanitize_js( $file )
 {
+	$file = preg_replace( '#\?.*$#', '', $file );
 	$ext = strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
 	return $ext=='js' ? $file : false;
 }
@@ -336,18 +340,18 @@ function rocket_settings_callback( $inputs )
 	$inputs['cache_reject_cookies'] = 	isset( $inputs['cache_reject_cookies'] ) ? 	array_unique( array_filter( array_map( 'rocket_clean_exclude_file',	array_map( 'sanitize_key', 				explode( "\n", trim( $inputs['cache_reject_cookies'] ) ) ) ) ) 	)	: array();
 	$inputs['exclude_css'] = 			isset( $inputs['exclude_css'] ) ? 			array_unique( array_filter( array_map( 'rocket_sanitize_css', 		array_map( 'rocket_clean_exclude_file',	explode( "\n", trim( $inputs['exclude_css'] ) ) ) ) ) 			)	: array();
 	$inputs['exclude_js'] = 			isset( $inputs['exclude_js'] ) ? 			array_unique( array_filter( array_map( 'rocket_sanitize_js', 		array_map( 'rocket_clean_exclude_file',	explode( "\n", trim( $inputs['exclude_js']) ) ) ) ) 			)	: array();
-	$inputs['deferred_js_file'] = 		isset( $inputs['deferred_js_file'] ) ? 		array_filter( array_map( 'rocket_sanitize_js', 																	 array_unique(	 $inputs['deferred_js_file'] ) ) ) 				: array();
-	if( !$inputs['deferred_js_file'] ){
-		$inputs['deferred_js_box'] = array();
+	$inputs['deferred_js_files'] = 		isset( $inputs['deferred_js_files'] ) ? 		array_filter( array_map( 'rocket_sanitize_js', 																	 array_unique(	 $inputs['deferred_js_files'] ) ) ) 				: array();
+	if( !$inputs['deferred_js_files'] ){
+		$inputs['deferred_js_wait'] = array();
 	}else{
-		for( $i=0; $i<=max(array_keys($inputs['deferred_js_file'])); $i++) {
-			if( !isset( $inputs['deferred_js_file'][$i] ) )
-				unset( $inputs['deferred_js_box'][$i] );
-			else $inputs['deferred_js_box'][$i] = isset( $inputs['deferred_js_box'][$i] ) ? '1' : '0';
+		for( $i=0; $i<=max(array_keys($inputs['deferred_js_files'])); $i++) {
+			if( !isset( $inputs['deferred_js_files'][$i] ) )
+				unset( $inputs['deferred_js_wait'][$i] );
+			else $inputs['deferred_js_wait'][$i] = isset( $inputs['deferred_js_wait'][$i] ) ? '1' : '0';
 		}
-		$inputs['deferred_js_file'] = array_values( $inputs['deferred_js_file'] );
-		ksort( $inputs['deferred_js_box'] );
-		$inputs['deferred_js_box'] = array_values( $inputs['deferred_js_box'] );
+		$inputs['deferred_js_files'] = array_values( $inputs['deferred_js_files'] );
+		ksort( $inputs['deferred_js_wait'] );
+		$inputs['deferred_js_wait'] = array_values( $inputs['deferred_js_wait'] );
 	}
 
 	$inputs['purge_cron_interval'] = 	isset( $inputs['purge_cron_interval'] ) ? 	(int)$inputs['purge_cron_interval'] : $options['purge_cron_interval'];

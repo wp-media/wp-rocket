@@ -57,7 +57,7 @@ function rocket_minify_css( $buffer )
     $externals_css = array();
 
     // Get all css files with this regex
-    preg_match_all( '/<link.+href=.+(\.css).+>/i', $buffer, $link_tags_match );
+    preg_match_all( '/<link.+href=.+(\.css).+>/iU', $buffer, $link_tags_match );
 
     foreach ( $link_tags_match[0] as $tag ) {
 
@@ -92,7 +92,7 @@ function rocket_minify_css( $buffer )
 	$i=0;
 	$internals_links = array($i=>'');
 	$internals_link_tags = '';
-	$_base = WP_ROCKET_URL . 'min/?f=';
+	$_base = str_replace( 'http:', '', WP_ROCKET_URL ) . 'min/?f=';
 
 	if( count( $internals_css ) )
 	{
@@ -135,13 +135,13 @@ function rocket_minify_js( $buffer )
     $externals_js = array();
 
     // Get all JS files with this regex
-    preg_match_all( '/<script.+src=.+(\.js).+><\/script>/i', $buffer, $tags_match );
+    preg_match_all( '/<script.+src=.+(\.js).+><\/script>/iU', $buffer, $tags_match );
 
     foreach ( $tags_match[0] as $tag ) {
 
 		// Get link of the file
         preg_match('/src=[\'"]([^\'"]+)/', $tag, $src_match );
-
+		
         // Get URLs infos
         $js_url = parse_url( $src_match[1] );
 		$home_url = parse_url( home_url() );
@@ -151,7 +151,7 @@ function rocket_minify_js( $buffer )
         $js_url['host'] == $home_url['host'] && !in_array( $js_url['path'], $options['exclude_js'] )
             ? $internals_js[] = $js_url['path']
 			: $externals_js[] = $tag;
-
+		
 		// Delete the script tag
         $buffer = str_replace( $tag, '', $buffer );
 
@@ -163,8 +163,8 @@ function rocket_minify_js( $buffer )
 	$i=0;
 	$internals_scripts = array($i=>'');
 	$internals_script_tags = '';
-	$_base = WP_ROCKET_URL . 'min/?f=';
-
+	$_base = str_replace( 'http:', '', WP_ROCKET_URL ) . 'min/?f=';
+		
 	if( count( $internals_js ) )
 	{
 		foreach( $internals_js as $js )

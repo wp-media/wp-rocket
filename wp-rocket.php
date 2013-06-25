@@ -98,6 +98,7 @@ function rocket_init()
 		require WP_ROCKET_FRONT_PATH . '/minify.php';
 		require WP_ROCKET_FRONT_PATH . '/cookie.php';
 		require WP_ROCKET_FRONT_PATH . '/images.php';
+		require WP_ROCKET_FRONT_PATH . '/deferred-js.php';
 
 		if( isset( $options['lazyload'] ) && $options['lazyload'] == '1' )
 			require WP_ROCKET_FRONT_PATH . '/lazyload.php';

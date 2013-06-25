@@ -41,7 +41,10 @@ function do_rocket_process( $buffer )
 
 		// Add width and height attributes on images
 		$buffer = rocket_specify_image_dimensions( $buffer );
-
+		
+		// Deferred JavaScript files
+		$buffer = rocket_exclude_deferred_js( $buffer );
+		
 	    // Minification HTML/CSS/JavaScript
 		$buffer = rocket_minify_process( $buffer );
 

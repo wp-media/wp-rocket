@@ -139,8 +139,8 @@ function rocket_script_settings_page()
 			$('#rktdrop .rktdrag').each( function(i){
 				var $item_t_input = $(this).find( 'input[type=text]' );
 				var $item_c_input = $(this).find( 'input[type=checkbox]' );
-				$($item_t_input).attr( 'name', '<?php echo WP_ROCKET_SLUG; ?>[deferred_js_file]['+i+']' );
-				$($item_c_input).attr( 'name', '<?php echo WP_ROCKET_SLUG; ?>[deferred_js_box]['+i+']' );
+				$($item_t_input).attr( 'name', '<?php echo WP_ROCKET_SLUG; ?>[deferred_js_files]['+i+']' );
+				$($item_c_input).attr( 'name', '<?php echo WP_ROCKET_SLUG; ?>[deferred_js_wait]['+i+']' );
 			});
 		}
 		$( "#tabs" ).tabs();
