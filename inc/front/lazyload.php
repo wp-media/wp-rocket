@@ -38,7 +38,7 @@ function rocket_lazyload_images( $html )
 		return $html;
 	
 	// Don't lazy-load if the thumbnail has already been run through previously
-	if ( false !== strpos( $html, 'data-lazy-src' ) )
+	if ( strpos( $html, 'data-lazy-original' ) )
 		return $html;
 	
 	$html = preg_replace( '#<img([^>]+?)src=[\'"]?([^\'"\s>]+)[\'"]?([^>]*)>#', '<img${1}src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-lazy-original="${2}"${3}><noscript><img${1}src="${2}"${3}></noscript>', $html );
@@ -61,7 +61,7 @@ add_filter('smilies_src', 'rocket_lazyload_smilies', PHP_INT_MAX );
 function rocket_lazyload_smilies( $src )
 {
 	// Don't lazy-load if the thumbnail has already been run through previously
-	if ( false !== strpos( $src, 'data-lazy-src' ) )
+	if ( strpos( $src, 'data-lazy-original' ) )
 		return $src;
 	
 	return "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==' data-lazy-original='" . $src;
