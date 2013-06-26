@@ -66,7 +66,7 @@ function rocket_clean_post( $new_status, $old_status, $post )
 		// Create json file and run WP Rocket Bot
 		$json_encode_urls = '["'.implode( '","', array_filter($purge_urls) ).'"]';
 		file_put_contents( WP_ROCKET_PATH . 'cache.json', $json_encode_urls );
-		run_rocket_bot( 'cache-json', WP_ROCKET_URL . 'cache.json' );
+		run_rocket_bot( 'cache-json' );
 
     }
 
@@ -122,7 +122,7 @@ function rocket_clean_comment( $arg1, $arg2 = '', $arg3 = '' )
 	// Create json file and run WP Rocket Bot
 	$json_encode_urls = '["'.implode( '","', array_filter($purge_urls) ).'"]';
 	file_put_contents( WP_ROCKET_PATH . 'cache.json', $json_encode_urls );
-	run_rocket_bot( 'cache-json', WP_ROCKET_URL . 'cache.json' );
+	run_rocket_bot( 'cache-json' );
 
     // Return data for preprocess_comment filter
     if( current_filter() == 'preprocess_comment' )
@@ -200,7 +200,7 @@ function rocket_preload_cache()
 		if( !wp_verify_nonce( $_GET['_wpnonce'], 'preload' ) )
 			wp_nonce_ays( '' );
 
-		run_rocket_bot( 'cache-preload', home_url() );
+		run_rocket_bot( 'cache-preload' );
 
 		wp_redirect( wp_get_referer() );
 		die();

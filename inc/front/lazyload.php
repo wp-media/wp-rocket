@@ -22,6 +22,7 @@ function rocket_lazyload_script()
 /**
  * Replace Gravatar, thumbnails, images in post content and in widget text by Lazy Load
  *
+ * since 1.1.0 Don't lazy-load if the thumbnail has already been run through previously
  * since 1.0.1 Add priority of hooks at maximum later with PHP_INT_MAX
  * since 1.0
  *
@@ -35,10 +36,14 @@ function rocket_lazyload_images( $html )
 {
 	if( is_feed() || is_preview() || empty( $html ) )
 		return $html;
-
+	
+	// Don't lazy-load if the thumbnail has already been run through previously
+	if ( false !== strpos( $html, 'data-lazy-src' ) )
+		return $html;
+	
 	$html = preg_replace( '#<img([^>]+?)src=[\'"]?([^\'"\s>]+)[\'"]?([^>]*)>#', '<img${1}src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-lazy-original="${2}"${3}><noscript><img${1}src="${2}"${3}></noscript>', $html );
+	
 	return $html;
-
 }
 
 
@@ -46,6 +51,7 @@ function rocket_lazyload_images( $html )
 /**
  * Replace WordPress smilies by Lazy Load
  *
+ * since 1.1.0 Don't lazy-load if the thumbnail has already been run through previously
  * since 1.0.1 Add priority of hooks at maximum later with PHP_INT_MAX
  * since 0.1
  *
@@ -54,5 +60,9 @@ function rocket_lazyload_images( $html )
 add_filter('smilies_src', 'rocket_lazyload_smilies', PHP_INT_MAX );
 function rocket_lazyload_smilies( $src )
 {
+	// Don't lazy-load if the thumbnail has already been run through previously
+	if ( false !== strpos( $src, 'data-lazy-src' ) )
+		return $src;
+	
 	return "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==' data-lazy-original='" . $src;
 }

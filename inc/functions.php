@@ -180,7 +180,7 @@ function rocket_clean_domain()
     rocket_rrmdir( WP_ROCKET_CACHE_PATH . str_replace( array( 'http://', 'https://' ), '', home_url( '/' ) ) );
 
 	// Run WP Rocket Bot for preload cache files
-	run_rocket_bot( 'cache-preload', home_url() );
+	run_rocket_bot( 'cache-preload' );
 
     do_action( 'after_rocket_clean_domain' );
 }
@@ -352,17 +352,28 @@ function rocket_get_domain( $url )
  * Launch the Robot
  *
  * @param mixed $spider
- * @param mixed $start_url
+ *
+ * since 1.1.0 Remove $start_url arg. This is a variable
  * since 1.0
  *
  */
 
-function run_rocket_bot( $spider, $start_url )
+function run_rocket_bot( $spider = 'cache-preload' )
 {
-
+	
+	$start_url = '';
+	
+	if( $spider == 'cache-preload' )
+		$start_url = home_url();
+	else if( $spider == 'cache-json' )
+		$start_url = WP_ROCKET_URL . 'cache.json';
+	
+	if( empty($start_url) )
+		return false;
+	
 	do_action( 'before_run_rocket_bot' );
 
-	wp_remote_get( WP_ROCKET_BOT_URL.'?spider=' . $spider . '&start_url='.$start_url );
+	wp_remote_get( WP_ROCKET_BOT_URL.'?spider=' . $spider . '&start_url=' . $start_url );
 
 	do_action( 'after_run_rocket_bot' );
 

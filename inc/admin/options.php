@@ -115,7 +115,7 @@ function rocket_defered_module()
 			?>
 			<div class="rktdrag">
 				<img class="rktmove hide-if-no-js" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAIAAAD9iXMrAAAAA3NCSVQICAjb4U/gAAAACXBIWXMAAAsSAAALEgHS3X78AAAAFnRFWHRDcmVhdGlvbiBUaW1lADAxLzIxLzEwY83pkAAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNAay06AAAADqSURBVCiRjZGxasMwEIZ/ydLmh+gQQ5vNmI6FrMkL9C0CXpMOHtrQJUMHv4BXkyFD4kHgoWPAa/MCeQr7ZHWQbBRKQr/p7ufjjpOYUgr/QABIkiQMwztSnuccgNaaiPTAy/KkrwHAAfR9T0Rd1xHRLG0AzNKGPK48q1abKYBqM+08nEdEbdvOVz9jags/YUqpKIpePy+3jti9PZRlyQEEQbDPJgD22eRvIYRw7yKEkFIeP57GGVJKY8zh/XFM3Dw5sFifASzWZ+nhPMZYMFBvYwD1NhYebi/n3DaW769n/w5jjPOKorjzaZZfO46WvQF5uikAAAAASUVORK5CYII%3D" width="16" heigth="16" alt="<?php _e( 'Move' ); ?>" title="<?php _e( 'Move' ); ?>" />
-				<input type="text" placeholder="http://" class="deferred_js regular-text" name="wp_rocket_settings[deferred_js_files][<?php echo $k; ?>]" value="<?php echo esc_url( $_url ); ?>" />
+				<input style="width: 32em" type="text" placeholder="http://" class="deferred_js regular-text" name="wp_rocket_settings[deferred_js_files][<?php echo $k; ?>]" value="<?php echo esc_url( $_url ); ?>" />
 				<label><input type="checkbox" class="deferred_js" name="wp_rocket_settings[deferred_js_wait][<?php echo $k; ?>]" value="1" <?php echo $checked; ?>/> <?php _e( 'Attendre le chargement de ce fichier ?', 'rocket' ); ?></label>
 				<img class="rktdelete hide-if-no-js" style="vertical-align:middle" src="<?php echo admin_url( '/images/no.png' ); ?>" title="<?php _e( 'Delete' ); ?>" alt="<?php _e( 'Delete' ); ?>" width="16" height="16" />
 			</div>
@@ -125,7 +125,7 @@ function rocket_defered_module()
 			?>
 			<div class="rktdrag">
 				<img class="rktmove hide-if-no-js" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAIAAAD9iXMrAAAAA3NCSVQICAjb4U/gAAAACXBIWXMAAAsSAAALEgHS3X78AAAAFnRFWHRDcmVhdGlvbiBUaW1lADAxLzIxLzEwY83pkAAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNAay06AAAADqSURBVCiRjZGxasMwEIZ/ydLmh+gQQ5vNmI6FrMkL9C0CXpMOHtrQJUMHv4BXkyFD4kHgoWPAa/MCeQr7ZHWQbBRKQr/p7ufjjpOYUgr/QABIkiQMwztSnuccgNaaiPTAy/KkrwHAAfR9T0Rd1xHRLG0AzNKGPK48q1abKYBqM+08nEdEbdvOVz9jags/YUqpKIpePy+3jti9PZRlyQEEQbDPJgD22eRvIYRw7yKEkFIeP57GGVJKY8zh/XFM3Dw5sFifASzWZ+nhPMZYMFBvYwD1NhYebi/n3DaW769n/w5jjPOKorjzaZZfO46WvQF5uikAAAAASUVORK5CYII%3D" width="16" heigth="16" alt="<?php _e( 'Move' ); ?>" title="<?php _e( 'Move' ); ?>" />
-				<input type="text" placeholder="http://" class="deferred_js regular-text" name="wp_rocket_settings[deferred_js_files][0]" value="" />
+				<input style="width: 32em" type="text" placeholder="http://" class="deferred_js regular-text" name="wp_rocket_settings[deferred_js_files][0]" value="" />
 				<label><input type="checkbox" class="deferred_js" name="wp_rocket_settings[deferred_js_wait][0]" value="1" /> <?php _e( 'Attendre le chargement de ce fichier ?', 'rocket' ); ?></label>
 			</div>
 		<?php } ?>
@@ -133,14 +133,14 @@ function rocket_defered_module()
 	<?php // Clone Template ?>
 	<div class="rktmodel rktdrag hide-if-js">
 		<img class="rktmove hide-if-no-js" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAIAAAD9iXMrAAAAA3NCSVQICAjb4U/gAAAACXBIWXMAAAsSAAALEgHS3X78AAAAFnRFWHRDcmVhdGlvbiBUaW1lADAxLzIxLzEwY83pkAAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNAay06AAAADqSURBVCiRjZGxasMwEIZ/ydLmh+gQQ5vNmI6FrMkL9C0CXpMOHtrQJUMHv4BXkyFD4kHgoWPAa/MCeQr7ZHWQbBRKQr/p7ufjjpOYUgr/QABIkiQMwztSnuccgNaaiPTAy/KkrwHAAfR9T0Rd1xHRLG0AzNKGPK48q1abKYBqM+08nEdEbdvOVz9jags/YUqpKIpePy+3jti9PZRlyQEEQbDPJgD22eRvIYRw7yKEkFIeP57GGVJKY8zh/XFM3Dw5sFifASzWZ+nhPMZYMFBvYwD1NhYebi/n3DaW769n/w5jjPOKorjzaZZfO46WvQF5uikAAAAASUVORK5CYII%3D" width="16" heigth="16" alt="<?php _e( 'Move' ); ?>" title="<?php _e( 'Move' ); ?>" />
-		<input type="text" placeholder="http://" class="deferred_js regular-text" name="wp_rocket_settings[deferred_js_files][]" value="" />
+		<input style="width: 32em" type="text" placeholder="http://" class="deferred_js regular-text" name="wp_rocket_settings[deferred_js_files][]" value="" />
 		<label><input type="checkbox" class="deferred_js" name="wp_rocket_settings[deferred_js_wait][]" value="1" /> <?php _e( 'Attendre le chargement de ce fichier ?', 'rocket' ); ?></label>
 	</div>
 
 	<p><a href="javascript:void(0)" id="rktclone" class="hide-if-no-js button-secondary"><?php _e( 'Ajouter une URL', 'rocket' ); ?></a></p>
-	<p><?php _e( 'Indiquez l\'URL des fichiers <strong>JS</strong> à inclure dans le chargement différé.', 'rocket' ); ?></p>
+	<p class="description"><?php _e( 'Vous avez la possibilité d’ajouter des fichiers Javascript qui seront chargés de manière asynchrone en même temps que le chargement de la page.', 'rocket' ); ?></p>
 	<p class="hide-if-js"><?php _e( 'Videz le contenu d\'un champ pour le supprimer.', 'rocket' ); ?></p>
-	<p><?php _e( '<strong>Attention :</strong> vous devez indiquez les URLs complètes des fichiers.', 'rocket' ); ?></p>
+	<p class="description"><?php _e( '<strong>Attention :</strong> vous devez indiquez les URLs complètes des fichiers.', 'rocket' ); ?></p>
 	</fieldset>
 <?php
 }
@@ -197,7 +197,7 @@ function rocket_display_options()
 		add_settings_field( 'rocket_purge', __( 'Délai de Purge :', 'rocket' ), 'rocket_field', 'basic', 'rocket_display_main_options',
 			array(
 				array( 'type'=>'number', 'label_for'=>'purge_cron_interval', 'label_screen'=>'Délai de purge', 'fieldset'=>'start' ),
-				array( 'type'=>'select', 'label_for'=>'purge_cron_unit', 'label_screen'=>'Unité de temps', 'fieldset'=>'end', 'description'=>'Vous pouvez spécifier une durée de vie pour les fichiers de cache.<br/>Indiquez 0 pour une durée de vie illimitée.',
+				array( 'type'=>'select', 'label_for'=>'purge_cron_unit', 'label_screen'=>'Unité de temps', 'fieldset'=>'end', 'description'=>'Par défaut le délai de purge est de 4h, cela signifie qu’une fois créé, les fichiers de cache se supprimeront automatiquement au bout de 4h avant d’être recréé.<br/>Cela peut être utile si vous affichez vos derniers tweets ou des flux rss dans votre sidebar, par exemple.<br/>Indiquez 0 pour une durée de vie illimitée.',
 						'options' => array( 'SECOND_IN_SECONDS'=>'seconde(s)', 'MINUTE_IN_SECONDS'=>'minute(s)', 'HOUR_IN_SECONDS'=>'heure(s)', 'DAY_IN_SECONDS'=>'jour(s)' )
 					)
 				)
@@ -206,7 +206,7 @@ function rocket_display_options()
 	add_settings_section( 'rocket_display_imp_options', __( 'Options avancées', 'rocket' ), '__return_false', 'advanced' );
 
 		add_settings_field( 'rocket_purge_pages', __( 'Vider le cache des pages suivantes lors de la mise à jour d\'un article :', 'rocket' ), 'rocket_field', 'advanced', 'rocket_display_imp_options',
-			array( 'type'=>'textarea', 'label_for'=>'cache_purge_pages', 'label_screen'=>'Vider le cache des pages suivantes lors de la mise à jour d\'un article', 'description'=>'Indiquez l\'URL des pages supplémentaires à purger lors de la mise à jour d\'un article (une par ligne).<br/>Il est possible d\'utiliser des expressions régulières (REGEX).' )
+			array( 'type'=>'textarea', 'label_for'=>'cache_purge_pages', 'label_screen'=>'Vider le cache des pages suivantes lors de la mise à jour d\'un article', 'description'=>'Indiquez l\'URL des pages supplémentaires à purger lors de la mise à jour d\'un article (une par ligne).<br/>Il est possible d\'utiliser des expressions régulières (REGEX).<br/><strong>NB</strong> : Lorsque vous mettez à jour un article ou qu’un commentaire est posté, la page d\'accueil, les catégories et les tags associés à l\'article sont automatiquement supprimées du cache puis recréés grâce au robot WP Rocket.' )
 		);
 		add_settings_field( 'rocket_reject_uri', __( 'Ne jamais mettre en cache les pages suivantes :', 'rocket' ), 'rocket_field', 'advanced', 'rocket_display_imp_options',
 			array( 'type'=>'textarea', 'label_for'=>'cache_reject_uri', 'label_screen'=>'Ne jamais mettre en cache les pages suivantes', 'description'=>'Indiquez l\'URL des pages à rejeter (une par ligne).<br/>Il est possible d\'utiliser des expressions régulières (REGEX).' )
