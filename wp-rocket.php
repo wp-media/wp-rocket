@@ -68,8 +68,7 @@ function rocket_init()
 	// Call defines,  classes and functions
 	require WP_ROCKET_INC_PATH . '/functions.php';
 	require WP_ROCKET_FRONT_PATH . '/htaccess.php';
-	// Hooks for admin and front
-	require WP_ROCKET_INC_PATH . '/hooks.php';
+	require WP_ROCKET_INC_PATH . '/headers.php';
 
 	if( rocket_valid_key() ) {
 		require WP_ROCKET_INC_PATH . '/purge.php';
