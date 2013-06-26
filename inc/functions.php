@@ -256,7 +256,7 @@ function rocket_count_cache_contents( $base = null )
 
 function rocket_clean_exclude_file( $file )
 {
-	$file = str_replace( array( '#\?.*$#', home_url( '/' ), 'http://', 'https://' ), '', $file );
+	$file = str_replace( array( '#\?.*$#', home_url(), 'http://', 'https://' ), '', $file );
 	$ex = explode( '?', $file );
 	$r = reset( $ex );
     return trim( $r );
@@ -372,8 +372,8 @@ function run_rocket_bot( $spider = 'cache-preload' )
 		return false;
 	
 	do_action( 'before_run_rocket_bot' );
-
-	wp_remote_get( WP_ROCKET_BOT_URL.'?spider=' . $spider . '&start_url=' . $start_url );
+	
+	wp_remote_get( WP_ROCKET_BOT_URL.'?spider=' . $spider . '&start_url=' . home_url() );
 
 	do_action( 'after_run_rocket_bot' );
 

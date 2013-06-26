@@ -68,7 +68,7 @@ function rocket_minify_css( $buffer )
 
             // Get link of the file
             preg_match( '/href=[\'"]([^\'"]+)/', $tag, $href_match );
-
+			
             // Get URLs infos
 			$css_url = parse_url( $href_match[1] );
 			$home_url = parse_url( home_url() );
