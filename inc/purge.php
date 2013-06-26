@@ -10,9 +10,12 @@ add_action( 'update_option_sidebars_widgets', 'rocket_clean_domain' );	// When y
 add_action( 'update_option_category_base', 'rocket_clean_domain' );		// When category permalink prefix is update
 add_action( 'update_option_tag_base'	, 'rocket_clean_domain' ); 		// When tag permalink prefix is update
 add_action( 'permalink_structure_changed', 'rocket_clean_domain' ); 	// When permalink structure is update
-add_filter( 'widget_update_callback'	, 'rocket_clean_domain' ); 		// When a widget is update
 add_filter( 'edited_terms'				, 'rocket_clean_domain' ); 		// When a term is updated
 add_filter( 'delete_term'				, 'rocket_clean_domain' ); 		// When a term is deleted
+
+/* since 1.1.1 */
+add_filter( 'widget_update_callback'	, 'rocket_widget_update_callback' ); // When a widget is update
+function rocket_widget_update_callback( $instance ) { rocket_clean_domain(); return $instance; }
 
 
 
