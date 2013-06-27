@@ -5,6 +5,7 @@ defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 /*
  * Add width and height attributes on all images
  *
+ * since 1.1.2 Fix Bug : No conflit with Photon Plugin (Jetpack)
  * since 1.1.0
  *
  */
@@ -18,6 +19,7 @@ function rocket_specify_image_dimensions( $buffer )
 	foreach( $image_match[0] as $image )
 	{
 
+		// Don't touch lazy-load file (no conflit with Photon (Jetpack))
 		if ( strpos( $image, 'data-lazy-original' ) )
 			continue;
 		
