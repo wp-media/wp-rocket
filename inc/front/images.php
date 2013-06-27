@@ -18,6 +18,9 @@ function rocket_specify_image_dimensions( $buffer )
 	foreach( $image_match[0] as $image )
 	{
 
+		if ( strpos( $image, 'data-lazy-original' ) )
+			continue;
+		
 		$tmp = $image;
 
 		// Get link of the file
