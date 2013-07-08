@@ -50,3 +50,16 @@ function rocket_specify_image_dimensions( $buffer )
 
 	return $buffer;
 }
+
+// COMING SOON - CDN Fonctionnality
+//add_filter( 'wp_get_attachment_image_attributes', 'rocket_cdn_thumbnail_src' );
+function rocket_cdn_thumbnail_src( $attr )
+{
+	
+	$image_url_parts = parse_url( $attr['src'] );
+	$image_host_path = $image_url_parts['host'] . $image_url_parts['path'];
+	$subdomain = (abs(crc32($image_host_path)) % 3 + 1);
+	$attr['src']  = "http://i{$subdomain}.wp-rocket.me/$image_host_path";
+	
+	return $attr;
+}
