@@ -373,7 +373,7 @@ function run_rocket_bot( $spider = 'cache-preload' )
 	
 	do_action( 'before_run_rocket_bot' );
 	
-	wp_remote_get( WP_ROCKET_BOT_URL.'?spider=' . $spider . '&start_url=' . home_url() );
+	wp_remote_get( WP_ROCKET_BOT_URL.'?spider=' . $spider . '&start_url=' . $start_url );
 
 	do_action( 'after_run_rocket_bot' );
 
