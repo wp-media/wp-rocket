@@ -175,7 +175,7 @@ function rocket_clean_home()
 function rocket_clean_domain()
 {
 	do_action( 'before_rocket_clean_domain' );
-
+	
 	// Delete cache domaine files
     rocket_rrmdir( WP_ROCKET_CACHE_PATH . str_replace( array( 'http://', 'https://' ), '', home_url( '/' ) ) );
 
@@ -200,9 +200,12 @@ function rocket_rrmdir( $dir )
 		@unlink( $dir );
 		return;
 	endif;
-
-    foreach( glob( $dir . '/*' ) as $file )
-        is_dir( $file ) ? rocket_rrmdir($file) : @unlink( $file );
+	
+    if( $globs = glob( $dir . '/*' ) ) {
+	    
+	    foreach( $globs as $file )
+	        is_dir( $file ) ? rocket_rrmdir($file) : @unlink( $file );	
+	}
 
     @rmdir($dir);
 	do_action( 'after_rocket_rrmdir', $dir );
