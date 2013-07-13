@@ -53,13 +53,13 @@ function rocket_admin_bar( $wp_admin_bar )
 				'href' => wp_nonce_url( admin_url( 'admin-post.php?action='.$action.'&type=url' ), $action.'_url' ),
 			));
 		}
-		$action = 'preload';
-		// Go robot gogo !
+		
+		// Go to WP Rocket Support
 		$wp_admin_bar->add_menu(array(
 			'parent' => 'wp-rocket',
-			'id' => 'preload-cache',
-			'title' => __( 'Précharger le cache', 'rocket' ),
-			'href' => wp_nonce_url( admin_url( 'admin-post.php?action='.$action ), $action ),
+			'id' => 'support',
+			'title' => __( 'Support', 'rocket' ),
+			'href' => 'http://support.wp-rocket.me',
 		));
 }
 
@@ -90,6 +90,9 @@ function rocket_wp_before_admin_bar_render()
 			min-width: 12px;
 			padding: 2px 3px;
 			text-align: center;
+		}
+		#wpadminbar #wp-admin-bar-support a {
+			color: #FF0000;
 		}
 	</style>
 <?php

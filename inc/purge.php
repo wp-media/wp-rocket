@@ -126,31 +126,3 @@ function rocket_purge_cache()
 	}
 
 }
-
-
-
-/**
- * Preload cache system in Admin Bar
- * It launch the WP Rocket Bot
- *
- * @since 1.0
- *
- */
-
-add_action( 'admin_post_preload', 'rocket_preload_cache' );
-add_action( 'admin_post_nopriv_preload', 'rocket_preload_cache' );
-function rocket_preload_cache()
-{
-	if( isset( $_GET['_wpnonce'] ) ) {
-
-		if( !wp_verify_nonce( $_GET['_wpnonce'], 'preload' ) )
-			wp_nonce_ays( '' );
-
-		run_rocket_bot( 'cache-preload' );
-
-		wp_redirect( wp_get_referer() );
-		die();
-
-	}
-
-}

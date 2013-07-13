@@ -4,6 +4,7 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 /**
  * Launch WP Rocket minification process (CSS and JavaScript)
  *
+ * since 1.1.6 Minify inline CSS and JavaScript
  * since 1.0
  *
  */
@@ -11,30 +12,73 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 function rocket_minify_process( $buffer )
 {
 
-	$options = get_option( 'wp_rocket_settings' );
-	$enable_js = isset( $options['minify_js'] ) && $options['minify_js'] == '1';
-	$enable_css = isset( $options['minify_css'] ) && $options['minify_css'] == '1';
+	$options 		 = get_option( 'wp_rocket_settings' );
+	$enable_js 		 = isset( $options['minify_js'] ) && $options['minify_js'] == '1';
+	$enable_css 	 = isset( $options['minify_css'] ) && $options['minify_css'] == '1';
+	$all_link_tags 	 = '';
+	$all_script_tags = '';
 
 	if( $enable_css || $enable_js )
 	{
 
 		list( $buffer, $conditionals ) = rocket_extract_ie_conditionals( $buffer );
-
+		
+		// Minify CSS
+	    if( $enable_css )
+	    	list( $buffer, $all_link_tags ) = rocket_minify_css( $buffer );
+		
 	    // Minify JavaScript
 	    if( $enable_js )
-	    	$buffer = rocket_minify_js( $buffer );
+	    	list( $buffer, $all_script_tags ) = rocket_minify_js( $buffer );
 
-	    // Minify CSS
-	    if( $enable_css )
-	    	$buffer = rocket_minify_css( $buffer );
-
+		// Insert all CSS and JS files in head
+		$buffer = preg_replace( '/<head(.*)>/', '<head$1>' . $all_link_tags . $all_script_tags, $buffer, 1 );
+	    
 	    $buffer = rocket_inject_ie_conditionals( $buffer, $conditionals );
 
 	}
 
 	// Minify HTML
     require( WP_ROCKET_PATH . 'min/lib/Minify/HTML.php' );
-	return Minify_HTML::minify( $buffer );
+	require( WP_ROCKET_PATH . 'min/lib/Minify/CSS/Compressor.php' );
+	require( WP_ROCKET_PATH . 'min/lib/JSMin.php' );
+	
+	$buffer = Minify_HTML::minify( 
+		$buffer, 
+		array(
+			'cssMinifier'     => 'rocket_minify_inline_css',
+			'jsMinifier'      => 'rocket_minify_inline_js',
+			'ignoredComments' => array( 'google_ad_', 'RSPEAK_' ),
+			'stripCrlf'		  => true
+		) 
+	);
+	
+	return $buffer;
+}
+
+
+/**
+ * Used for minify inline CSS
+ *
+ * since 1.1.6
+ *
+ */
+function rocket_minify_inline_css( $css ) 
+{
+	return Minify_CSS_Compressor::process( $css );
+}
+
+
+
+/**
+ * Used for minify inline JavaScript
+ *
+ * since 1.1.6
+ *
+ */
+function rocket_minify_inline_js( $js )
+{
+	return JSMin::minify( $js );
 }
 
 
@@ -55,6 +99,7 @@ function rocket_minify_css( $buffer )
 
     $internals_css = array();
     $externals_css = array();
+    $excludes_css = array();
 
     // Get all css files with this regex
     preg_match_all( '/<link.+href=.+(\.css).+>/iU', $buffer, $link_tags_match );
@@ -75,10 +120,18 @@ function rocket_minify_css( $buffer )
 
             // Check if the link isn't external
             // Insert the relative path to the array without query string
-			$css_url['host'] == $home_url['host'] && !in_array( $css_url['path'], $options['exclude_css'] )
-	            ? $internals_css[] = $css_url['path']
-				: $externals_css[] = $tag;
-
+			if( $css_url['host'] == $home_url['host'] ) 
+			{
+				if( !in_array( $css_url['path'], $options['exclude_css'] ) )
+					$internals_css[] = $css_url['path'];
+				else
+					$excludes_css[] = $tag;	
+			}
+			else 
+			{
+				$externals_css[] = $tag;	
+			}
+	          
             // Delete the link tag
             $buffer = str_replace( $tag, '', $buffer );
 
@@ -104,15 +157,17 @@ function rocket_minify_css( $buffer )
 		}
 
 		foreach( $internals_links as $tag )
-			$internals_link_tags .= '<link rel="stylesheet" href="' . $_base . rtrim( $tag, ',' ) . '" />'."\n";
+			$internals_link_tags .= '<link rel="stylesheet" href="' . $_base . rtrim( $tag, ',' ) . '" />';
 	}
 
 	// Get all external link tags
-    $externals_link_tags = count( $externals_css ) ? implode( "\n" , $externals_css ) : '';
+    $externals_link_tags = count( $externals_css ) ? implode( "\n" , $externals_css ) : '';// Get all external link tags
+    
+    // Get all exclude link tags
+    $excludes_link_tags = count( $excludes_css ) ? implode( "\n" , $excludes_css ) : '';
 
 	// Insert the minify css file below <head>
-	return preg_replace( '/<head(.*)>/', '<head$1>' . $externals_link_tags . $internals_link_tags, $buffer, 1 );
-
+	return array( $buffer, $externals_link_tags . $internals_link_tags . $excludes_link_tags );
 }
 
 
@@ -133,6 +188,7 @@ function rocket_minify_js( $buffer )
 
     $internals_js = array();
     $externals_js = array();
+    $excludes_js  = array();
 
     // Get all JS files with this regex
     preg_match_all( '/<script.+src=.+(\.js).+><\/script>/iU', $buffer, $tags_match );
@@ -148,9 +204,17 @@ function rocket_minify_js( $buffer )
 
         // Check if the link isn't external
         // Insert the relative path to the array without query string
-        $js_url['host'] == $home_url['host'] && !in_array( $js_url['path'], $options['exclude_js'] )
-            ? $internals_js[] = $js_url['path']
-			: $externals_js[] = $tag;
+        if( $js_url['host'] == $home_url['host'] )
+        {
+	        if( !in_array( $js_url['path'], $options['exclude_js'] ) )
+	        	$internals_js[] = $js_url['path'];
+	        else
+	        	$excludes_js[] = $tag;
+        }
+        else
+        {
+	        $externals_js[] = $tag;
+        }
 		
 		// Delete the script tag
         $buffer = str_replace( $tag, '', $buffer );
@@ -175,14 +239,17 @@ function rocket_minify_js( $buffer )
 		}
 
 		foreach( $internals_scripts as $tag )
-			$internals_script_tags .= '<script src="' . $_base . rtrim( $tag, ',' ) . '"></script>'."\n";
+			$internals_script_tags .= '<script src="' . $_base . rtrim( $tag, ',' ) . '"></script>';
 	}
 
 	// Get all external script tags
     $externals_script_tags = count( $externals_js ) ? implode( "\n" , $externals_js ) : '';
+    
+    // Get all excludes script tags
+    $excludes_script_tags = count( $excludes_js ) ? implode( "\n" , $excludes_js ) : '';
 
     // Insert the minify JS file
-    return preg_replace( '/<head(.*)>/', '<head$1>' . $externals_script_tags . $internals_script_tags, $buffer, 1 );
+    return array( $buffer,  $externals_script_tags . $internals_script_tags . $excludes_script_tags );
 }
 
 
