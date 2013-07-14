@@ -16,7 +16,7 @@ function rocket_delete_script_wp_version( $src )
 	global $wp_version;  
 	$parts = explode( '?', $src );
 	
-	if( preg_match( '/\?ver='.$wp_version.'$/' , $src) )
+	if( $parts[1] == 'ver='.$wp_version )
 		return $parts[0];
 	
 	return $src;
