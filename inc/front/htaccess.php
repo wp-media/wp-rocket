@@ -277,7 +277,7 @@ function get_rocket_htaccess_if_no_mod_expires()
  */
 function get_rocket_htaccess_charset()
 {
-		
+
 	$rules = "# Use UTF-8 encoding for anything served text/plain or text/html\n";
 	$rules .= "AddDefaultCharset UTF-8\n";
 	$rules .= "# Force UTF-8 for a number of file formats\n";

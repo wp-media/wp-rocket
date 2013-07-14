@@ -8,14 +8,17 @@ defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
  * since 1.1.6
  *
  */
- 
+  
 add_filter( 'script_loader_src', 'rocket_delete_script_wp_version', 15 );
 add_filter( 'style_loader_src', 'rocket_delete_script_wp_version', 15 );
 function rocket_delete_script_wp_version( $src )
 {
-   global $wp_version;
-   $parts = explode( '?', $src );   
+	global $wp_version;  
+	$parts = explode( '?', $src );
+	
+	if( preg_match( '/\?ver='.$wp_version.'$/' , $src) )
+		return $parts[0];
+	
+	return $src;
    
-   return strstr( $parts[1], $wp_version ) ? $parts[0] : $src;
-
 }
