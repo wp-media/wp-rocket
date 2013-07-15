@@ -90,6 +90,10 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version )
 	if( version_compare( $actual_version, '1.0.1', '<' ) ){
 		wp_clear_scheduled_hook( 'rocket_check_event' );
 	}
+	
+	 if( version_compare( $actual_version, '1.1.8', '<=' ) ){
+	 	flush_rocket_htaccess();
+	 }
 }
 
 /* END UPGRADER'S HOOKS */
