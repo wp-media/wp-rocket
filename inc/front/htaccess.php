@@ -51,7 +51,6 @@ function get_rocket_htaccess_marker()
 
 	// Recreate WP Rocket marker
 	$marker  = '# BEGIN WP Rocket' . "\n";
-	$marker .= get_rocket_htaccess_server_signature();
 	$marker .= get_rocket_htaccess_charset();
 	$marker .= get_rocket_htaccess_etag();
 	$marker .= get_rocket_htaccess_files_match();
@@ -340,24 +339,6 @@ function get_rocket_htaccess_etag()
     $rules .= "# developer.yahoo.com/performance/rules.html#etags\n";
     $rules .= "FileETag None\n\n";
     $rules = apply_filters( 'rocket_htaccess_etag', $rules );
-
-	return $rules;
-}
-
-
-
-/**
- * Rules to remove server signature
- *
- * since 1.1.6
- *
- */
-function get_rocket_htaccess_server_signature()
-{
-
-	$rules = "# Disable the server signature\n";
-	$rules = "ServerSignature Off\n\n";
-	$rules = apply_filters( 'rocket_htaccess_server_signature', $rules );
 
 	return $rules;
 }
