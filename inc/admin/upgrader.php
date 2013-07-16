@@ -26,6 +26,7 @@ function rocket_upgrader()
 	if( did_action( 'wp_rocket_first_install' ) || did_action( 'wp_rocket_upgrade' ) ){
 		flush_rocket_htaccess();
 		flush_rewrite_rules();
+		rocket_renew_all_boxes();
 		$options = get_option( WP_ROCKET_SLUG );
 		$options['version'] = WP_ROCKET_VERSION;
 		if( isset( $options['consumer_key'] ) && $options['consumer_key']==hash( 'crc32', rocket_get_domain( home_url() ) ) ){

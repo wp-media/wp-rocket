@@ -379,6 +379,26 @@ function run_rocket_bot( $spider = 'cache-preload' )
 }
 
 /**
+ * Renew all boxes for everyone if $uid is missing
+ *
+ * @param integer $uid
+ *
+ * since 1.1.10
+ *
+ */
+
+function rocket_renew_all_boxes( $uid=0 )
+{
+	if( (int)$uid>0 ){
+		delete_user_meta( $uid, 'rocket_boxes' );
+	}else{
+		global $wpdb;
+		// do not use $wpdb->delete because WP 3.4 is required!
+		$wpdb->query( 'DELETE FROM ' . $wpdb->usermeta . ' WHERE meta_key="rocket_boxes"' );
+	}
+}
+
+/**
  * Renew a dismissed error box admin side
  *
  * @param string $function

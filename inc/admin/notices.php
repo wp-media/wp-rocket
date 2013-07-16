@@ -2,6 +2,30 @@
 defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 
 /**
+ * This warning is displayed to inform the user that the plugin can not be tested in connected mode
+ *
+ * since 1.1.10
+ *
+ */
+
+add_action( 'admin_footer', 'rocket_warning_logged_users' );
+function rocket_warning_logged_users()
+{
+
+	global $current_user;
+	$boxes = get_user_meta( $current_user->ID, 'rocket_boxes', true );
+	if( !in_array( __FUNCTION__, (array)$boxes ) ) { ?>
+
+		<div class="updated">
+			<span class="rocket_cross"><a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>"><img src="<?php echo admin_url( '/images/no.png' ); ?>" title="Ignorer jusqu'à la prochaine fois" alt="Ignorer" /></a></span>
+			<p><strong>WP Rocket</strong> : Pour rappel, les utilisateurs connectés n'ont pas la version du site en cache. Nous vous conseillons de naviguer sur le site en étant déconnecté pour être en situation réelle.</p>
+		</div>
+
+		<?php
+	}
+}
+
+/**
  * This warning is displayed when there is no permalink structure in the configuration.
  *
  * since 1.0
@@ -14,9 +38,9 @@ function rocket_warning_using_permalinks()
 
 	if( $GLOBALS['wp_rewrite']->using_permalinks() )
 		return false;
-		global $current_user;
-		$boxes = get_user_meta( $current_user->ID, 'rocket_boxes', true );
-		if( !in_array( __FUNCTION__, (array)$boxes ) ) { ?>
+	global $current_user;
+	$boxes = get_user_meta( $current_user->ID, 'rocket_boxes', true );
+	if( !in_array( __FUNCTION__, (array)$boxes ) ) { ?>
 
 		<div class="error">
 			<span class="rocket_cross"><a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>"><img src="<?php echo admin_url( '/images/no.png' ); ?>" title="Ignorer jusqu'à la prochaine fois" alt="Ignorer" /></a></span>
