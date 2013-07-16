@@ -377,3 +377,24 @@ function run_rocket_bot( $spider = 'cache-preload' )
 	do_action( 'after_run_rocket_bot' );
 
 }
+
+/**
+ * Renew a dismissed error box admin side
+ *
+ * @param string $function
+ * @param integer $uid
+ *
+ * since 1.1.10
+ *
+ */
+
+function rocket_renew_box( $function, $uid=0 )
+{
+	global $current_user;
+	$uid = $uid==0 ? $current_user->ID : $uid;
+	$actual = get_user_meta( $uid, 'rocket_boxes', true );
+	if( $actual ) {
+		unset( $actual[array_search( $function, $actual )] );
+		update_user_meta( $uid, 'rocket_boxes', $actual );
+	}
+}

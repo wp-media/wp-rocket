@@ -115,7 +115,7 @@ function rocket_add_jquerys()
 	wp_enqueue_script( 'jquery-ui-tabs', null, array( 'jquery', 'jquery-ui-core' ), null, true );
 	if( apply_filters( 'rocket_my_skin_is_dark', false ) ) : ?>
 		<style>.form-table label, .form-table td, .form-table th, .form-table tbody, .form-table em{color: white !important}</style>
-	<?php endif;
+	<?php endif; 
 }
 
 /**
@@ -172,3 +172,43 @@ function rocket_script_settings_page()
 	</script>
 <?php
 }
+
+/**
+ * Add some CSS to display the dismiss cross
+ *
+ * since 1.1.10
+ *
+ */
+
+add_action( 'admin_print_styles', 'rocket_admin_print_styles' );
+function rocket_admin_print_styles()
+{ ?>
+<style>.rocket_cross{float: right !important; cursor: pointer;}</style>
+<?php
+ }
+
+/**
+ * Manage the dismissed boxes
+ *
+ * since 1.1.10
+ *
+ */
+
+add_action( 'admin_post_rocket_ignore', 'rocket_dismiss_boxes' );
+function rocket_dismiss_boxes()
+{
+	if( isset( $_GET['box'], $_GET['_wpnonce'] ) ) {
+
+		if( !wp_verify_nonce( $_GET['_wpnonce'], $_GET['action'] . '_' . $_GET['box'] ) )
+			wp_nonce_ays( '' );
+
+		global $current_user;
+		$actual = get_user_meta( $current_user->ID, 'rocket_boxes', true );
+		update_user_meta( $current_user->ID, 'rocket_boxes', array_filter( array_merge( (array)$actual, array( $_GET['box'] ) ) ) );
+
+		wp_redirect( wp_get_referer() );
+		die();
+
+	}
+}
+
