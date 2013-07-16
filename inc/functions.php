@@ -207,43 +207,6 @@ function rocket_rrmdir( $dir )
 	do_action( 'after_rocket_rrmdir', $dir );
 }
 
-
-
-/**
- * Count cached files
- *
- * since 1.0
- *
- */
-
-function rocket_count_cache_contents( $base = null )
-{
-	do_action( 'before_rocket_count_cache_contents', $base );
-    $base = is_null( $base ) ? WP_ROCKET_CACHE_PATH : $base;
-
-    if( !file_exists( $base ) )
-    	return 0;
-
-    $count = 0;
-
-    $root = scandir( $base );
-
-    foreach( $root as $value )
-    {
-        if( $value=='.' || $value=='..' )
-			continue;
-
-        if( is_file( $base.'/'.$value ) )
-			$count++;
-		else
-			$count = $count + rocket_count_cache_contents( $base.'/'.$value );
-    }
-
-    return $count;
-}
-
-
-
 /**
  * Get relative url
  * Clean URL file to get only the equivalent of REQUEST_URI

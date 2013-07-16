@@ -224,7 +224,7 @@ function rocket_display_options()
 	// Tools
 	add_settings_section( 'rocket_display_tools', __( 'Outils', 'rocket' ), '__return_false', 'tools' );
 
-		add_settings_field( 'rocket_purge_all', sprintf( __( 'Vider le cache <span class="count-cache" title="%1$d files">%1$d</span>', 'rocket' ), rocket_count_cache_contents() ), 'rocket_button', 'tools', 'rocket_display_tools',
+		add_settings_field( 'rocket_purge_all', __( 'Vider le cache', 'rocket' ), 'rocket_button', 'tools', 'rocket_display_tools',
 			array( 'button_label'=>__( 'Vider le cache', 'rocket' ), 'url'=>wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=all' ), 'purge_cache_all' ), 'description'=>'Permet de purger le cache du site complet.' )
 		);
 		 add_settings_field( 'rocket_preload', __( 'Précharger le cache', 'rocket' ), 'rocket_button', 'tools', 'rocket_display_tools',

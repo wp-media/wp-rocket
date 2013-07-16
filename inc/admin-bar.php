@@ -25,7 +25,7 @@ function rocket_admin_bar( $wp_admin_bar )
 		$wp_admin_bar->add_menu(array(
 			'parent'	=> 'wp-rocket',
 			'id' 		=> 'purge-all',
-			'title' 	=> sprintf( __( 'Vider le cache <span class="count-cache" title="%1$d files">%1$d</span>', 'rocket' ), rocket_count_cache_contents() ),
+			'title' 	=> __( 'Vider le cache', 'rocket' ),
 			'href' 		=> wp_nonce_url( admin_url( 'admin-post.php?action='.$action.'&type=all' ), $action.'_all' ),
 		));
 
