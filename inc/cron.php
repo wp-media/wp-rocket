@@ -55,5 +55,9 @@ add_action( 'rocket_purge_time_event', 'do_rocket_purge_cron' );
 function do_rocket_purge_cron() {
 				
 	// Purge all cache files when user save options
-	rocket_clean_domain();	
+	rocket_clean_domain();
+	
+	// Run WP Rocket Bot for preload cache files
+    run_rocket_bot( 'cache-preload' );
+	
 }

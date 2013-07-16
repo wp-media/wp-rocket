@@ -54,6 +54,15 @@ function rocket_admin_bar( $wp_admin_bar )
 			));
 		}
 		
+		 $action = 'preload';
+        // Go robot gogo !
+        $wp_admin_bar->add_menu(array(
+                'parent' => 'wp-rocket',
+                'id' => 'preload-cache',
+                'title' => __( 'Précharger le cache', 'rocket' ),
+                'href' => wp_nonce_url( admin_url( 'admin-post.php?action='.$action ), $action ),
+        ));
+		
 		// Go to WP Rocket Support
 		$wp_admin_bar->add_menu(array(
 			'parent' => 'wp-rocket',

@@ -32,16 +32,35 @@ function rocket_widget_update_callback( $instance ) { rocket_clean_domain(); ret
 add_action( 'clean_post_cache', 'rocket_clean_post' );
 function rocket_clean_post( $post_id )
 {
-
+	
+	if( get_post_status( $post_id ) != 'publish' )
+		return;
+	
 	$purge_urls = array(
 		get_permalink( $post_id ),
-		get_post_type_archive_link( get_post_type( $post_id ) ),
-		get_permalink( get_adjacent_post( false, '', false ) ),
-		get_permalink( get_adjacent_post( true, '', false ) ),
-		get_permalink( get_adjacent_post( false, '', true ) ),
-		get_permalink( get_adjacent_post( true, '', true ) )
+		get_post_type_archive_link( get_post_type( $post_id ) )
 	);
-
+	
+	// Add next post 
+	$next_post = get_adjacent_post( false, '', false );
+	if( $next_post )
+		array_push( $purge_urls, get_permalink( $next_post ) );
+	
+	// Add next post in same category
+	$next_in_same_cat_post = get_adjacent_post( true, '', false );
+	if( $next_in_same_cat_post )
+		array_push( $purge_urls, get_permalink( $next_in_same_cat_post ) );
+	
+	// Add previous post
+	$previous_post = get_adjacent_post( false, '', true );
+	if( $previous_post )
+		array_push( $purge_urls, get_permalink( $previous_post ) );
+	
+	// Add previous post in same category
+	$previous_in_same_cat_post = get_adjacent_post( true, '', true );
+	if( $previous_in_same_cat_post )
+		array_push( $purge_urls, get_permalink( $previous_in_same_cat_post ) );	
+	
 	// Add urls page to purge every time a post is save
 	$options = get_option( WP_ROCKET_SLUG );
 	if( isset( $options['cache_purge_pages'] ) && count( $options['cache_purge_pages'] )>=1 )
@@ -67,11 +86,13 @@ function rocket_clean_post( $post_id )
 	// Add Homepage URL to $purge_urls for bot crawl
 	array_push( $purge_urls, home_url() );
 	
+	// Remove dates archives page to preload cache
+	$purge_urls = array_diff( $purge_urls , $purge_dates );
 	
 	// Create json file and run WP Rocket Bot
 	$json_encode_urls = '["'.implode( '","', array_filter($purge_urls) ).'"]';
-	file_put_contents( WP_ROCKET_PATH . 'cache.json', $json_encode_urls );
-	run_rocket_bot( 'cache-json' );
+	if(@file_put_contents( WP_ROCKET_PATH . 'cache.json', $json_encode_urls ));
+		run_rocket_bot( 'cache-json' );
 
 }
 
@@ -125,4 +146,31 @@ function rocket_purge_cache()
 
 	}
 
+}
+
+
+
+/**
+ * Preload cache system in Admin Bar
+ * It launch the WP Rocket Bot
+ *
+ * @since 1.0 (delete in 1.1.6 and re-add in 1.1.9)
+ *
+ */
+
+add_action( 'admin_post_preload', 'rocket_preload_cache' );
+add_action( 'admin_post_nopriv_preload', 'rocket_preload_cache' );
+function rocket_preload_cache()
+{
+    if( isset( $_GET['_wpnonce'] ) ) {
+
+        if( !wp_verify_nonce( $_GET['_wpnonce'], 'preload' ) )
+                wp_nonce_ays( '' );
+
+        run_rocket_bot( 'cache-preload' );
+
+        wp_redirect( wp_get_referer() );
+        die();
+
+    }
 }

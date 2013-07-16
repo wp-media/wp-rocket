@@ -54,7 +54,7 @@ function get_rocket_htaccess_marker()
 	$marker .= get_rocket_htaccess_charset();
 	$marker .= get_rocket_htaccess_etag();
 	$marker .= get_rocket_htaccess_files_match();
-	$marker .= apache_mod_loaded( 'mod_expires' ) ? get_rocket_htaccess_mod_expires() : get_rocket_htaccess_if_no_mod_expires();
+	$marker .= get_rocket_htaccess_mod_expires();
 	$marker .= get_rocket_htaccess_mod_deflate();
 	$marker .= get_rocket_htaccess_mod_rewrite();
 	$marker .= '# END WP Rocket' . "\n";
@@ -227,45 +227,6 @@ function get_rocket_htaccess_mod_expires()
 	return $rules;
 
 }
-
-
-
-/**
- * Other rules to improve performances again if mod_expires is deactivated
- *
- * since 1.1.6
- *
- */
-function get_rocket_htaccess_if_no_mod_expires()
-{
-
-	$rules = '<IfModule mod_headers.c>' . "\n";
-       $rules .= '# default cache 1 year = 31556926 seconds' . "\n";
-       $rules .= 'Header set Cache-Control "max-age=31556926, public"' . "\n\n";
-       $rules .= '<IfModule mod_alias.c>' . "\n";
-               $rules .= '<FilesMatch "\.(htm|html|json|rss|txt|xhtml|xml)$">' . "\n";
-                      $rules .= '# cache markup for 0 second' . "\n";
-                      $rules .= 'Header set Cache-Control "max-age=0, public"' . "\n";
-               $rules .= '</FilesMatch>' . "\n\n";
-               $rules .= '<FilesMatch "\.(ico)$">' . "\n";
-                      $rules .= '# cache for 1 week = 604800 seconds' . "\n";
-                      $rules .= 'Header set Cache-Control "max-age=604800"' . "\n";
-               $rules .= '</FilesMatch>' . "\n\n";
-               $rules .= '<FilesMatch "\.(gif|jpe|jpeg|jpg|png|doc|eot|flv|mp4|ogg|pdf|svg|swf|ttf|woff)$">' . "\n";
-                      $rules .= '# cache image files for 1 month = 2629744 seconds' . "\n";
-                      $rules .= 'Header set Cache-Control "max-age=2629744, public"' . "\n";
-               $rules .= '</FilesMatch>' . "\n\n";
-               $rules .= '<FilesMatch "\.(js|css)$">' . "\n";
-                      $rules .= '# cache for 1 year = 31556926 seconds' . "\n";
-                      $rules .= 'Header set Cache-Control "max-age=31556926, public"' . "\n";
-               $rules .= '</FilesMatch>' . "\n\n";
-       $rules .= '</IfModule>' . "\n";
-	$rules .= '</IfModule>' . "\n\n";
-	$rules = apply_filters( 'rocket_htaccess_if_no_mod_expires', $rules );
-
-	return $rules;
-}
-
 
 
 /**

@@ -133,10 +133,9 @@ function get_rocket_post_dates_urls( $post_ID )
 	$urls = array(
 		get_year_link( $date[0] ) . 'index.html',
 		get_year_link( $date[0] ) . $wp_rewrite->pagination_base,
-		get_month_link( $date[0], $date[1] ),
+		get_month_link( $date[0], $date[1] ) . 'index.html',
 		get_month_link( $date[0], $date[1] ) . $wp_rewrite->pagination_base,
-		get_day_link( $date[0], $date[1], $date[2] ),
-		get_day_link( $date[0], $date[1], $date[2] ) . $wp_rewrite->pagination_base
+		get_day_link( $date[0], $date[1], $date[2] )
 	);
 
     return $urls;
@@ -178,9 +177,6 @@ function rocket_clean_domain()
 	
 	// Delete cache domaine files
     rocket_rrmdir( WP_ROCKET_CACHE_PATH . str_replace( array( 'http://', 'https://' ), '', home_url( '/' ) ) );
-
-	// Run WP Rocket Bot for preload cache files
-	run_rocket_bot( 'cache-preload' );
 
     do_action( 'after_rocket_clean_domain' );
 }

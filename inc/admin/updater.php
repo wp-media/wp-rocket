@@ -37,7 +37,7 @@ function rocket_check_update()
 	$plugin_file = basename( WP_ROCKET_FILE );
 	$version = true;
 	$plugin_transient = null;
-	$response = wp_remote_get( WP_ROCKET_WEB_CHECK, array( 'timeout'=>15 ) );
+	$response = wp_remote_get( WP_ROCKET_WEB_CHECK, array( 'timeout'=>30 ) );
 	if( !is_a($response, 'WP_Error') && strlen( $response['body'] )>32 ){
 		list($version, $url) = explode( '|', $response['body'] );
 		if( version_compare( $version, WP_ROCKET_VERSION, '<=' ) )
@@ -97,7 +97,7 @@ add_filter( 'plugins_api_result', 'rocket_force_info_result', 10, 3 );
 function rocket_force_info_result( $res, $action, $args )
 {
 	if( $action=='plugin_information' && $args->slug=='wp-rocket' && isset( $res->external ) && $res->external ) {
-		$request = wp_remote_post( WP_ROCKET_WEB_INFO, array( 'timeout' => 15, 'action' => 'plugin_information', 'request' => serialize($args) ) );
+		$request = wp_remote_post( WP_ROCKET_WEB_INFO, array( 'timeout' => 30, 'action' => 'plugin_information', 'request' => serialize($args) ) );
 		if ( is_wp_error( $request ) ) {
 			$res = new WP_Error('plugins_api_failed', '1) '.__( 'An unexpected error occurred. Something may be wrong with WP-Rocket.me or this server&#8217;s configuration. If you continue to have problems, please try the <a href="'.WP_ROCKET_WEB_SUPPORT.'">support forums</a>.' ), $request->get_error_message() );
 		} else {
