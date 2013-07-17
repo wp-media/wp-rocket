@@ -363,7 +363,7 @@ function rocket_settings_callback( $inputs )
 	}else{
 			unset( $inputs['secret_key'] );
 	}
-
+	rocket_renew_box( 'rocket_warning_logged_users' );
 	return $inputs;
 }
 

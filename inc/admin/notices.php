@@ -8,7 +8,7 @@ defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
  *
  */
 
-add_action( 'admin_footer', 'rocket_warning_logged_users' );
+add_action( 'admin_footer-settings_page_wprocket', 'rocket_warning_logged_users' );
 function rocket_warning_logged_users()
 {
 
