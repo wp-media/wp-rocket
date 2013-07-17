@@ -35,7 +35,7 @@ function rocket_field( $args )
 		$args['name'] = isset( $args['name'] ) ? $args['name'] : $args['label_for'];
 		$description = isset( $args['description'] ) ? '<p class="description">'.$args['description'].'</p>' : '';
 		$placeholder = isset( $args['placeholder'] ) ? 'placeholder="'. $args['placeholder'].'" ' : '';
-		$label = isset( $args['label'] ) ? $args['label'] : '' ;
+		$label = isset( $args['label'] ) ? $args['label'] : '';
 		$readonly = $args['name'] == 'consumer_key' && rocket_valid_key() ? ' readonly="readonly"' : '';
 		if( !isset( $args['fieldset'] ) || $args['fieldset']=='start' )
 			echo '<fieldset>';
@@ -388,6 +388,14 @@ function rocket_after_save_options()
 
 }
 
+
+
+/**
+ * When purge settings are saved we change the scheduled purge
+ *
+ * Since 1.0
+ *
+ */
 
 add_filter( 'pre_update_option_'.WP_ROCKET_SLUG, 'rocket_pre_main_option', 10, 2 );
 function rocket_pre_main_option( $newvalue, $oldvalue )
