@@ -122,7 +122,7 @@ function rocket_minify_css( $buffer )
             // Insert the relative path to the array without query string
 			if( $css_url['host'] == $home_url['host'] ) 
 			{
-				if( !in_array( $css_url['path'], $options['exclude_css'] ) )
+				if( !in_array( $css_url['path'], $options['exclude_css'] ) && pathinfo( $css_url['path'], PATHINFO_EXTENSION ) == 'css' )
 					$internals_css[] = $css_url['path'];
 				else
 					$excludes_css[] = $tag;	
@@ -145,7 +145,7 @@ function rocket_minify_css( $buffer )
 	$i=0;
 	$internals_links = array($i=>'');
 	$internals_link_tags = '';
-	$_base = str_replace( 'http:', '', WP_ROCKET_URL ) . 'min/?f=';
+	$_base = WP_ROCKET_URL . 'min/?f=';
 
 	if( count( $internals_css ) )
 	{
@@ -206,7 +206,7 @@ function rocket_minify_js( $buffer )
         // Insert the relative path to the array without query string
         if( $js_url['host'] == $home_url['host'] )
         {
-	        if( !in_array( $js_url['path'], $options['exclude_js'] ) )
+	        if( !in_array( $js_url['path'], $options['exclude_js'] ) && pathinfo( $js_url['path'], PATHINFO_EXTENSION ) == 'js' )
 	        	$internals_js[] = $js_url['path'];
 	        else
 	        	$excludes_js[] = $tag;
@@ -227,7 +227,7 @@ function rocket_minify_js( $buffer )
 	$i=0;
 	$internals_scripts = array($i=>'');
 	$internals_script_tags = '';
-	$_base = str_replace( 'http:', '', WP_ROCKET_URL ) . 'min/?f=';
+	$_base = WP_ROCKET_URL . 'min/?f=';
 		
 	if( count( $internals_js ) )
 	{
