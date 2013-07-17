@@ -389,6 +389,13 @@ function rocket_after_save_options()
 }
 
 
+/**
+ * When purge settings are saved we change the scheduled purge
+ *
+ * Since 1.0
+ *
+ */
+
 add_filter( 'pre_update_option_'.WP_ROCKET_SLUG, 'rocket_pre_main_option', 10, 2 );
 function rocket_pre_main_option( $newvalue, $oldvalue )
 {
@@ -400,3 +407,56 @@ function rocket_pre_main_option( $newvalue, $oldvalue )
   }
   return $newvalue;
 }
+
+/**
+ * We keep the last opened tab, open the next time
+ *
+ * Since 1.1.10
+ *
+ */
+
+add_action( 'admin_footer-settings_page_wprocket', 'rocket_add_script_in_options' );
+function rocket_add_script_in_options()
+{ ?>
+<script>
+	function setCookie(c_name,value,exdays)
+	{
+		var exdate=new Date();
+		exdate.setDate(exdate.getDate() + exdays);
+		var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
+		document.cookie=c_name + "=" + c_value;
+	}
+
+	function getCookie(c_name) {
+	    var c_value = document.cookie;
+	    var c_start = c_value.indexOf(" " + c_name + "=");
+	    if (c_start == -1) {
+	        c_start = c_value.indexOf(c_name + "=");
+	    }
+	    if (c_start == -1) {
+	        c_value = null;
+	    } else {
+	        c_start = c_value.indexOf("=", c_start) + 1;
+	        var c_end = c_value.indexOf(";", c_start);
+	        if (c_end == -1) {
+	            c_end = c_value.length;
+	        }
+	        c_value = unescape(c_value.substring(c_start, c_end));
+	    }
+	    return c_value;
+	}
+
+	jQuery( document ).ready( function($){
+		var tab = '';
+		if( tab = getCookie( 'rocket_tab' )  ) {
+			$('#tabs a[href="'+tab+'"]').click();
+			// window.location.hash = tab;
+		}
+		$('#tabs li.ui-state-default a').on( 'click', function(){
+			tab = $(this).attr( 'href' );
+			setCookie( 'rocket_tab', tab, 365 );
+			// window.location.hash = tab;
+		} );
+	} );
+</script>
+<?php }
