@@ -22,37 +22,49 @@ function rocket_minify_process( $buffer )
 	{
 
 		list( $buffer, $conditionals ) = rocket_extract_ie_conditionals( $buffer );
-		
+
 		// Minify CSS
 	    if( $enable_css )
 	    	list( $buffer, $all_link_tags ) = rocket_minify_css( $buffer );
-		
+
 	    // Minify JavaScript
 	    if( $enable_js )
 	    	list( $buffer, $all_script_tags ) = rocket_minify_js( $buffer );
 
 		// Insert all CSS and JS files in head
 		$buffer = preg_replace( '/<head(.*)>/', '<head$1>' . $all_link_tags . $all_script_tags, $buffer, 1 );
-	    
+
 	    $buffer = rocket_inject_ie_conditionals( $buffer, $conditionals );
 
 	}
 
 	// Minify HTML
-    require( WP_ROCKET_PATH . 'min/lib/Minify/HTML.php' );
-	require( WP_ROCKET_PATH . 'min/lib/Minify/CSS/Compressor.php' );
-	require( WP_ROCKET_PATH . 'min/lib/JSMin.php' );
-	
-	$buffer = Minify_HTML::minify( 
-		$buffer, 
-		array(
-			'cssMinifier'     => 'rocket_minify_inline_css',
-			'jsMinifier'      => 'rocket_minify_inline_js',
-			'ignoredComments' => array( 'google_ad_', 'RSPEAK_' ),
-			'stripCrlf'		  => true
-		) 
-	);
-	
+
+    // Check if Minify_HTML is enable
+    if( !class_exists( 'Minify_HTML' ) )
+    {
+
+	    $html_args = array( 'ignoredComments' => array( 'google_ad_', 'RSPEAK_' ), 'stripCrlf' => true );
+	    require( WP_ROCKET_PATH . 'min/lib/Minify/HTML.php' );
+
+
+		// Check if Minify_CSS_Compressor is enable
+		if( !class_exists( 'Minify_CSS_Compressor' ) )
+		{
+			require( WP_ROCKET_PATH . 'min/lib/Minify/CSS/Compressor.php' );
+			$html_args['cssMinifier'] = 'rocket_minify_inline_css';
+		}
+
+		// Check if JSMin is enable
+		if( !class_exists( 'JSMin' ) )
+		{
+			require( WP_ROCKET_PATH . 'min/lib/JSMin.php' );
+			$html_args['jsMinifier'] = 	'rocket_minify_inline_js';
+		}
+
+		$buffer = Minify_HTML::minify( $buffer, $html_args );
+    }
+
 	return $buffer;
 }
 
@@ -63,7 +75,7 @@ function rocket_minify_process( $buffer )
  * since 1.1.6
  *
  */
-function rocket_minify_inline_css( $css ) 
+function rocket_minify_inline_css( $css )
 {
 	return Minify_CSS_Compressor::process( $css );
 }
@@ -113,25 +125,25 @@ function rocket_minify_css( $buffer )
 
             // Get link of the file
             preg_match( '/href=[\'"]([^\'"]+)/', $tag, $href_match );
-			
+
             // Get URLs infos
 			$css_url = parse_url( $href_match[1] );
 			$home_url = parse_url( home_url() );
 
             // Check if the link isn't external
             // Insert the relative path to the array without query string
-			if( $css_url['host'] == $home_url['host'] ) 
+			if( $css_url['host'] == $home_url['host'] )
 			{
 				if( !in_array( $css_url['path'], $options['exclude_css'] ) && pathinfo( $css_url['path'], PATHINFO_EXTENSION ) == 'css' )
 					$internals_css[] = $css_url['path'];
 				else
-					$excludes_css[] = $tag;	
+					$excludes_css[] = $tag;
 			}
-			else 
+			else
 			{
-				$externals_css[] = $tag;	
+				$externals_css[] = $tag;
 			}
-	          
+
             // Delete the link tag
             $buffer = str_replace( $tag, '', $buffer );
 
@@ -162,7 +174,7 @@ function rocket_minify_css( $buffer )
 
 	// Get all external link tags
     $externals_link_tags = count( $externals_css ) ? implode( "\n" , $externals_css ) : '';// Get all external link tags
-    
+
     // Get all exclude link tags
     $excludes_link_tags = count( $excludes_css ) ? implode( "\n" , $excludes_css ) : '';
 
@@ -197,7 +209,7 @@ function rocket_minify_js( $buffer )
 
 		// Get link of the file
         preg_match('/src=[\'"]([^\'"]+)/', $tag, $src_match );
-		
+
         // Get URLs infos
         $js_url = parse_url( $src_match[1] );
 		$home_url = parse_url( home_url() );
@@ -215,7 +227,7 @@ function rocket_minify_js( $buffer )
         {
 	        $externals_js[] = $tag;
         }
-		
+
 		// Delete the script tag
         $buffer = str_replace( $tag, '', $buffer );
 
@@ -228,7 +240,7 @@ function rocket_minify_js( $buffer )
 	$internals_scripts = array($i=>'');
 	$internals_script_tags = '';
 	$_base = WP_ROCKET_URL . 'min/?f=';
-		
+
 	if( count( $internals_js ) )
 	{
 		foreach( $internals_js as $js )
@@ -244,7 +256,7 @@ function rocket_minify_js( $buffer )
 
 	// Get all external script tags
     $externals_script_tags = count( $externals_js ) ? implode( "\n" , $externals_js ) : '';
-    
+
     // Get all excludes script tags
     $excludes_script_tags = count( $excludes_js ) ? implode( "\n" , $excludes_js ) : '';
 
