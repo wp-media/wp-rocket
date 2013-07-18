@@ -14,8 +14,6 @@ defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 add_action( 'admin_bar_menu', 'rocket_admin_bar', PHP_INT_MAX );
 function rocket_admin_bar( $wp_admin_bar )
 {
-	if( !current_user_can( 'manage_options' ) )
-		return;
 	$action = 'purge_cache';
 	// Parent
     $wp_admin_bar->add_menu(array(
