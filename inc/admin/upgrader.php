@@ -73,6 +73,7 @@ function rocket_first_install()
 			'lazyload'			   	=> 0,
 			'minify_css'		   	=> 0,
 			'minify_js'			   	=> 0,
+			'minify_html'			=> 0,
 			// 'cut_concat'		   	=> 0,
 		)
 	);
