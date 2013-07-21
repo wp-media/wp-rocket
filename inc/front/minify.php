@@ -15,7 +15,6 @@ function rocket_minify_process( $buffer )
 	$options 		 = get_option( 'wp_rocket_settings' );
 	$enable_js 		 = isset( $options['minify_js'] ) && $options['minify_js'] == '1';
 	$enable_css 	 = isset( $options['minify_css'] ) && $options['minify_css'] == '1';
-	$enable_html 	 = isset( $options['minify_html'] ) && $options['minify_html'] == '1';
 	$all_link_tags 	 = '';
 	$all_script_tags = '';
 
@@ -39,10 +38,7 @@ function rocket_minify_process( $buffer )
 
 	}
 
-	// Minify HTML
-	if( $enable_html )
-	    $buffer = rocket_minify_html( $buffer );
-	
+	$buffer = apply_filters( 'before_rocket_minify', $buffer );
 	return $buffer;
 }
 
@@ -54,6 +50,7 @@ function rocket_minify_process( $buffer )
  * since 1.1.12
  *
  */
+add_filter( 'before_rocket_minify', 'rocket_minify_html' );
 function rocket_minify_html( $buffer )
 {
 
