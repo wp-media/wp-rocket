@@ -12,8 +12,9 @@ defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 
 function get_rocket_pages_not_cached()
 {
+	global $wp_rewrite;
 	$options = get_option( 'wp_rocket_settings' );
-	$pages = array( '.*/feed/' );
+	$pages = array( '.*/' . $wp_rewrite->feed_base . '/' );
 
 	if( isset( $options['cache_reject_uri'] ) && count( $options['cache_reject_uri'] ) >= 1 )
 		$pages =  array_filter( array_merge( $pages, (array)$options['cache_reject_uri'] ) );
@@ -341,6 +342,8 @@ function run_rocket_bot( $spider = 'cache-preload' )
 
 }
 
+
+
 /**
  * Renew all boxes for everyone if $uid is missing
  *
@@ -360,6 +363,8 @@ function rocket_renew_all_boxes( $uid=0 )
 		$wpdb->query( 'DELETE FROM ' . $wpdb->usermeta . ' WHERE meta_key="rocket_boxes"' );
 	}
 }
+
+
 
 /**
  * Renew a dismissed error box admin side

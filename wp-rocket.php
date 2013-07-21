@@ -4,7 +4,7 @@
 Plugin Name: WP Rocket
 Plugin URI: http://www.wp-rocket.me
 Description: The best WordPress performance plugin.
-Version: 1.1.12
+Version: 1.2.0
 Author: WP-Rocket
 Contributors: Jonathan Buttigieg, Julio Potier
 Author URI: http://www.wp-rocket.me
@@ -15,7 +15,7 @@ Copyright 2013 WP Rocket
 defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 
 // Rocket defines
-define( 'WP_ROCKET_VERSION'			, '1.1.12');
+define( 'WP_ROCKET_VERSION'			, '1.2.0');
 define( 'WP_ROCKET_SLUG'			, 'wp_rocket_settings');
 define( 'WP_ROCKET_WEB_MAIN'		, 'http://support.wp-rocket.me/');
 define( 'WP_ROCKET_WEB_CHECK'		, WP_ROCKET_WEB_MAIN.'check_update.php');
@@ -28,12 +28,12 @@ define( 'WP_ROCKET_PATH'			, realpath( plugin_dir_path(WP_ROCKET_FILE) ).'/' );
 define( 'WP_ROCKET_INC_PATH'		, realpath( WP_ROCKET_PATH . 'inc/' ) . '/' );
 define( 'WP_ROCKET_FRONT_PATH'		, realpath( WP_ROCKET_INC_PATH . 'front/' ) . '/' );
 define( 'WP_ROCKET_ADMIN_PATH'		, realpath( WP_ROCKET_INC_PATH . 'admin' ) . '/' );
-define( 'WP_ROCKET_CACHE_PATH'		, realpath( WP_ROCKET_PATH . 'cache' ) . '/' );
+define( 'WP_ROCKET_CACHE_PATH'		, WP_CONTENT_DIR . '/wp-rocket-cache/' );
 define( 'WP_ROCKET_URL'				, plugin_dir_url(WP_ROCKET_FILE) );
 define( 'WP_ROCKET_INC_URL'			, WP_ROCKET_URL . 'inc/' );
 define( 'WP_ROCKET_FRONT_URL'		, WP_ROCKET_INC_URL . 'front/' );
 define( 'WP_ROCKET_FRONT_JS_URL'	, WP_ROCKET_FRONT_URL . 'js/' );
-define( 'WP_ROCKET_CACHE_URL'		, WP_ROCKET_URL . 'cache/' );
+define( 'WP_ROCKET_CACHE_URL'		, WP_CONTENT_URL . '/wp-rocket-cache/' );
 if( !defined( 'CHMOD_WP_ROCKET_CACHE_DIRS' ) )
 	define( 'CHMOD_WP_ROCKET_CACHE_DIRS', 0755 );
 
@@ -140,4 +140,9 @@ function rocket_activation()
 	// Add All WP Rocket rules of the .htaccess file
 	flush_rocket_htaccess();
 	flush_rewrite_rules();
+	
+	// Create cache folder if not exist
+	if( !is_dir( WP_ROCKET_CACHE_PATH ) )
+		mkdir( WP_ROCKET_CACHE_PATH );
+	
 }

@@ -73,6 +73,7 @@ function rocket_first_install()
 			'lazyload'			   	=> 0,
 			'minify_css'		   	=> 0,
 			'minify_js'			   	=> 0,
+			'minify_html'			=> 0,
 			// 'cut_concat'		   	=> 0,
 		)
 	);
@@ -90,6 +91,11 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version )
 {
 	if( version_compare( $actual_version, '1.0.1', '<' ) ){
 		wp_clear_scheduled_hook( 'rocket_check_event' );
+	}
+	
+	if( version_compare( $actual_version, '1.2.0', '<' ) ){
+		// Delete old WP Rocket cache folder
+		rocket_rrmdir( WP_ROCKET_PATH . 'cache' );
 	}
 }
 
