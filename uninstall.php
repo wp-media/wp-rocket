@@ -13,3 +13,29 @@ if( !defined( 'WP_UNINSTALL_PLUGIN' ) )
 
 delete_site_transient( 'update_rocket' );
 delete_option( 'wp_rocket_settings' );
+
+
+
+/**
+ * Remove all cache files
+ *
+ * @since 1.2.0
+ *
+ */
+function __rocket_rrmdir( $dir )
+{
+
+	if( !is_dir( $dir ) ):
+		@unlink( $dir );
+		return;
+	endif;
+	
+    if( $globs = glob( $dir . '/*' ) ) {
+	    
+	    foreach( $globs as $file )
+	        is_dir( $file ) ? __rocket_rrmdir($file) : @unlink( $file );	
+	}
+
+    @rmdir($dir);
+    
+}
