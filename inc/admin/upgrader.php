@@ -94,8 +94,11 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version )
 	}
 	
 	if( version_compare( $actual_version, '1.2.0', '<' ) ){
-		// Delete old WP Rocket cache folder
+		// Delete old WP Rocket cache dir
 		rocket_rrmdir( WP_ROCKET_PATH . 'cache' );
+		
+		// Create new WP Rocket cache dir
+		mkdir( WP_ROCKET_CACHE_PATH );
 	}
 }
 
