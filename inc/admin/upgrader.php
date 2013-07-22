@@ -98,7 +98,8 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version )
 		rocket_rrmdir( WP_ROCKET_PATH . 'cache' );
 		
 		// Create new WP Rocket cache dir
-		mkdir( WP_ROCKET_CACHE_PATH );
+		if( !is_dir( WP_ROCKET_CACHE_PATH ) )
+			mkdir( WP_ROCKET_CACHE_PATH );
 	}
 }
 
