@@ -3,9 +3,9 @@ defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 
  // Launch hooks that deletes all the cache domain
 add_action( 'switch_theme'				, 'rocket_clean_domain' );		// When user change theme
-add_action( 'user_register'	, 'rocket_clean_domain' );					// When a user is added
-add_action( 'profile_update'	, 'rocket_clean_domain' );				// When a user is updated
-add_action( 'deleted_user'	, 'rocket_clean_domain' );					// When a user is deleted
+add_action( 'user_register'				, 'rocket_clean_domain' );		// When a user is added
+add_action( 'profile_update'			, 'rocket_clean_domain' );		// When a user is updated
+add_action( 'deleted_user'				, 'rocket_clean_domain' );		// When a user is deleted
 add_action( 'wp_update_nav_menu'		, 'rocket_clean_domain' );		// When a custom menu is update
 add_action( 'update_option_theme_mods_' . get_option( 'stylesheet' ), 'rocket_clean_domain' );
 add_action( 'update_option_sidebars_widgets', 'rocket_clean_domain' );	// When you change the order of widgets
@@ -24,18 +24,18 @@ function rocket_widget_update_callback( $instance ) { rocket_clean_domain(); ret
 /**
  * Update cache when a post is updated or commented
  *
- * @since 1.1.3 Use clean_post_cache instead of transition_post_status and 
+ * @since 1.2.2 Add wp_trash_post and delete_post to purge cache when a post is trashed or deleted
+ * @since 1.1.3 Use clean_post_cache instead of transition_post_status, transition_comment_status and preprocess_comment
  * @since 1.0
  *
  */
 
+add_action( 'wp_trash_post', 'rocket_clean_post' );
+add_action( 'delete_post', 'rocket_clean_post' );
 add_action( 'clean_post_cache', 'rocket_clean_post' );
 function rocket_clean_post( $post_id )
 {
-	
-	if( get_post_status( $post_id ) != 'publish' )
-		return;
-	
+			
 	$purge_urls = array(
 		get_permalink( $post_id ),
 		get_post_type_archive_link( get_post_type( $post_id ) )
