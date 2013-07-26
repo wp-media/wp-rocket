@@ -4,6 +4,7 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 /**
  * Launch WP Rocket minification process (CSS and JavaScript)
  *
+ * since 1.2.3 Add <!--[if IE]><![endif]--> in head to optimize IE conditionals tags
  * since 1.1.6 Minify inline CSS and JavaScript
  * since 1.0
  *
@@ -19,7 +20,7 @@ function rocket_minify_process( $buffer )
 	$all_link_tags 	 = '';
 	$all_script_tags = '';
 
-	if( $enable_css || $enable_js  )
+	if( $enable_css || $enable_js )
 	{
 
 		list( $buffer, $conditionals ) = rocket_extract_ie_conditionals( $buffer );
@@ -32,13 +33,13 @@ function rocket_minify_process( $buffer )
 	    if( $enable_js )
 	    	list( $buffer, $all_script_tags ) = rocket_minify_js( $buffer );
 
-		// Insert all CSS and JS files in head
-		$buffer = preg_replace( '/<head(.*)>/', '<head$1>' . $all_link_tags . $all_script_tags, $buffer, 1 );
-
 	    $buffer = rocket_inject_ie_conditionals( $buffer, $conditionals );
 
 	}
-
+	
+	// Insert all CSS and JS files in head
+	$buffer = preg_replace( '/<head(.*)>/', '<head$1><!--[if IE]><![endif]-->' . $all_link_tags . $all_script_tags, $buffer, 1 );
+	
 	// Minify HTML
 	if( $enable_html )
 	    $buffer = rocket_minify_html( $buffer );

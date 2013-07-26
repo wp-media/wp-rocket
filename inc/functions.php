@@ -18,7 +18,7 @@ function get_rocket_pages_not_cached()
 
 	if( isset( $options['cache_reject_uri'] ) && count( $options['cache_reject_uri'] ) >= 1 )
 		$pages =  array_filter( array_merge( $pages, (array)$options['cache_reject_uri'] ) );
-
+	
 	return implode( '|', $pages );
 }
 
@@ -35,12 +35,15 @@ function get_rocket_pages_not_cached()
 function get_rocket_cookies_not_cached()
 {
 	$options = get_option( 'wp_rocket_settings' );
-	$cookies = array( str_replace( COOKIEHASH, '', LOGGED_IN_COOKIE ), 'wp-postpass_', 'wptouch_switch_toggle' );
+	$cookies = array( 
+		str_replace( COOKIEHASH, '', LOGGED_IN_COOKIE ), 
+		'wp-postpass_', 
+		'wptouch_switch_toggle' ,
+		'comment_author_',
+		'comment_author_email_'
+	);
 
-	if( get_option( 'comment_moderation' ) == '1' || get_option( 'comment_whitelist' ) == '1' )
-		$cookies[] = 'comment_author_';
-
-	if( isset( $options['cache_reject_uri'] ) && count( $options['cache_reject_cookies'] ) >= 1 )
+	if( isset( $options['cache_reject_cookies'] ) && count( $options['cache_reject_cookies'] ) )
 		$cookies =  array_filter( array_merge( $cookies, (array)$options['cache_reject_cookies'] ) );
 
 	return implode( '|', $cookies );
