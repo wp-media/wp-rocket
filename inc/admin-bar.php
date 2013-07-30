@@ -25,7 +25,7 @@ function rocket_admin_bar( $wp_admin_bar )
 	));
 
 		// Compatibility with WPML
-		if( is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
+		if( rocket_is_wpml_active() ) {
 
 			// Purge All
 			$wp_admin_bar->add_menu(array(
@@ -87,7 +87,7 @@ function rocket_admin_bar( $wp_admin_bar )
         // Go robot gogo !
 
         // Compatibility with WPML
-		if( is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
+		if( rocket_is_wpml_active() ) {
 
 			$wp_admin_bar->add_menu(array(
                 'parent' => 'wp-rocket',

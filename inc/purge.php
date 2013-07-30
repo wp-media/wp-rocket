@@ -82,17 +82,10 @@ function rocket_clean_post( $post_id )
 	rocket_clean_files( apply_filters( 'rocket_post_purge_urls', $purge_urls ) );
 
 	// Never forget to purge homepage and their pagination
-	if( !defined('DOING_AJAX') || !DOING_AJAX ) {
-		
-		// Compatibility with WPML
-		if( is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
-			global $sitepress;
-			rocket_clean_home($sitepress->get_language_for_element($post_id, 'post_' . get_post_type($post_id)));
-		}
-		else {
-			rocket_clean_home();
-		}
-			
+	// Compatibility with WPML	
+	if( rocket_is_wpml_active() ) {
+		global $sitepress;
+		rocket_clean_home($sitepress->get_language_for_element($post_id, 'post_' . get_post_type($post_id)));
 	}
 	else {
 		rocket_clean_home();

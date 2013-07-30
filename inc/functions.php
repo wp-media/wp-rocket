@@ -179,12 +179,12 @@ function rocket_clean_domain( $domain = '', $dirs_to_preserve = array() )
 {
 	$domain = !empty( $domain ) ? $domain : home_url( '/' );
 	
-	do_action( 'before_rocket_clean_domain', $domain );
+	do_action( 'before_rocket_clean_domain', $domain, $dirs_to_preserve );
 
 	// Delete cache domaine files
     rocket_rrmdir( WP_ROCKET_CACHE_PATH . str_replace( array( 'http://', 'https://' ), '', $domain ), $dirs_to_preserve );
 
-    do_action( 'after_rocket_clean_domain', $domain );
+    do_action( 'after_rocket_clean_domain', $domain, $dirs_to_preserve );
 }
 
 
@@ -197,7 +197,7 @@ function rocket_clean_domain( $domain = '', $dirs_to_preserve = array() )
  */
 function rocket_rrmdir( $dir, $dirs_to_preserve = array() )
 {
-	do_action( 'before_rocket_rrmdir', $dir );
+	do_action( 'before_rocket_rrmdir', $dir, $dirs_to_preserve );
 
 	if( !is_dir( $dir ) ) :
 		@unlink( $dir );
@@ -224,7 +224,7 @@ function rocket_rrmdir( $dir, $dirs_to_preserve = array() )
 
 	@rmdir($dir);
 
-	do_action( 'after_rocket_rrmdir', $dir );
+	do_action( 'after_rocket_rrmdir', $dir, $dirs_to_preserve );
 }
 
 
@@ -367,7 +367,7 @@ function run_rocket_bot( $spider = 'cache-preload', $start_url = '' )
  *
  * @param integer $uid
  *
- * since 1.1.10
+ * @since 1.1.10
  *
  */
 
@@ -390,7 +390,7 @@ function rocket_renew_all_boxes( $uid=0 )
  * @param string $function
  * @param integer $uid
  *
- * since 1.1.10
+ * @since 1.1.10
  *
  */
 
@@ -403,4 +403,17 @@ function rocket_renew_box( $function, $uid=0 )
 		unset( $actual[array_search( $function, $actual )] );
 		update_user_meta( $uid, 'rocket_boxes', $actual );
 	}
+}
+
+
+
+/**
+ * Check if WPML is activated
+ *
+ * @since 1.3.0
+ *
+ */
+function rocket_is_wpml_active()
+{	
+	return in_array( 'sitepress-multilingual-cms/sitepress.php', (array) get_option( 'active_plugins', array() ) ) || is_plugin_active_for_network( 'sitepress-multilingual-cms/sitepress.php' );
 }
