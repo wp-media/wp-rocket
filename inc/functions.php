@@ -18,7 +18,7 @@ function get_rocket_pages_not_cached()
 
 	if( isset( $options['cache_reject_uri'] ) && count( $options['cache_reject_uri'] ) >= 1 )
 		$pages =  array_filter( array_merge( $pages, (array)$options['cache_reject_uri'] ) );
-	
+
 	return implode( '|', $pages );
 }
 
@@ -35,10 +35,10 @@ function get_rocket_pages_not_cached()
 function get_rocket_cookies_not_cached()
 {
 	$options = get_option( 'wp_rocket_settings' );
-	$cookies = array( 
-		str_replace( COOKIEHASH, '', LOGGED_IN_COOKIE ), 
-		'wp-postpass_', 
-		'wptouch_switch_toggle' ,
+	$cookies = array(
+		str_replace( COOKIEHASH, '', LOGGED_IN_COOKIE ),
+		'wp-postpass_',
+		'wptouch_switch_toggle',
 		'comment_author_',
 		'comment_author_email_'
 	);
@@ -154,10 +154,9 @@ function get_rocket_post_dates_urls( $post_ID )
  *
  */
 
-function rocket_clean_home()
+function rocket_clean_home( $location = '' )
 {
-	$root = WP_ROCKET_CACHE_PATH . str_replace( array( 'http://', 'https://' ), '', home_url( '/' ) );
-
+	$root = WP_ROCKET_CACHE_PATH . str_replace( array( 'http://', 'https://' ), '', home_url( $location ) );
 	$root = apply_filters( 'before_rocket_clean_home', $root );
 
 	@unlink( $root . '/index.html' );
@@ -171,18 +170,21 @@ function rocket_clean_home()
 /**
  * Remove all cache files of the domain
  *
+ * @since 1.3.0 Add $domain and $dir_to_preseve args
  * @since 1.0
  *
  */
 
-function rocket_clean_domain()
+function rocket_clean_domain( $domain = '', $dirs_to_preserve = array() )
 {
-	do_action( 'before_rocket_clean_domain' );
+	$domain = !empty( $domain ) ? $domain : home_url( '/' );
 	
-	// Delete cache domaine files
-    rocket_rrmdir( WP_ROCKET_CACHE_PATH . str_replace( array( 'http://', 'https://' ), '', home_url( '/' ) ) );
+	do_action( 'before_rocket_clean_domain', $domain );
 
-    do_action( 'after_rocket_clean_domain' );
+	// Delete cache domaine files
+    rocket_rrmdir( WP_ROCKET_CACHE_PATH . str_replace( array( 'http://', 'https://' ), '', $domain ), $dirs_to_preserve );
+
+    do_action( 'after_rocket_clean_domain', $domain );
 }
 
 
@@ -193,30 +195,46 @@ function rocket_clean_domain()
  * @since 1.0
  *
  */
-function rocket_rrmdir( $dir )
+function rocket_rrmdir( $dir, $dirs_to_preserve = array() )
 {
 	do_action( 'before_rocket_rrmdir', $dir );
-	if( !is_dir( $dir ) ):
+
+	if( !is_dir( $dir ) ) :
 		@unlink( $dir );
 		return;
 	endif;
-	
+
+	$dir = rtrim( $dir, '/' );
     if( $globs = glob( $dir . '/*' ) ) {
-	    
-	    foreach( $globs as $file )
-	        is_dir( $file ) ? rocket_rrmdir($file) : @unlink( $file );	
+
+		foreach( $globs as $file ) {
+
+			if( is_dir( $file ) ) {
+
+				if( !in_array( str_replace( WP_ROCKET_CACHE_PATH, '', $file ), $dirs_to_preserve ) )
+					rocket_rrmdir( $file, $dirs_to_preserve );
+			}
+			else {
+			   @unlink( $file );
+			}
+
+		}
+
 	}
 
-    @rmdir($dir);
+	@rmdir($dir);
+
 	do_action( 'after_rocket_rrmdir', $dir );
 }
+
+
 
 /**
  * Get relative url
  * Clean URL file to get only the equivalent of REQUEST_URI
  * ex: rocket_clean_exclude_file( 'http://www.geekpress.fr/referencement-wordpress/') return /referencement-wordpress/
  *
- * since 1.0
+ * @since 1.0
  *
  */
 
@@ -229,10 +247,11 @@ function rocket_clean_exclude_file( $file )
 }
 
 
+
 /**
  * Determine if the key is valid
  *
- * since 1.0
+ * @since 1.0
  *
  */
 
@@ -250,7 +269,7 @@ function rocket_valid_key()
  * Get the interval task cron purge in seconds
  * This setting can be changed from the options page of the plugin
  *
- * since 1.0
+ * @since 1.0
  *
  */
 
@@ -267,7 +286,7 @@ function get_rocket_cron_interval()
 /**
  * TO DO - Description
  *
- * since 1.0
+ * @since 1.0
  *
  */
 
@@ -281,7 +300,7 @@ function get_rocket_option( $option, $default=false )
 /**
  * Returns a full and correct home_url without subdmain, see rocket_get_domain()
  *
- * since 1.0
+ * @since 1.0
  *
  */
 
@@ -298,8 +317,8 @@ function get_rocket_home_url( $url=null )
  * Get the domain of an URL without subdomain
  * (ex: rocket_get_domain( 'http://www.geekpress.fr' ) return geekpress.fr
  *
- * source : http://stackoverflow.com/a/15498686
- * since 1.0
+ * @source : http://stackoverflow.com/a/15498686
+ * @since 1.0
  *
  */
 
@@ -316,29 +335,25 @@ function rocket_get_domain( $url )
 
 /**
  * Launch the Robot
+
  *
- * @param mixed $spider
- *
- * since 1.1.0 Remove $start_url arg. This is a variable
- * since 1.0
+ * @since 1.0
  *
  */
 
-function run_rocket_bot( $spider = 'cache-preload' )
+function run_rocket_bot( $spider = 'cache-preload', $start_url = '' )
 {
-	
-	$start_url = '';
-	
-	if( $spider == 'cache-preload' )
+
+	if( $spider == 'cache-preload' && empty( $start_url ) )
 		$start_url = home_url();
 	else if( $spider == 'cache-json' )
 		$start_url = WP_ROCKET_URL . 'cache.json';
-	
-	if( empty($start_url) )
+
+	if( empty( $start_url ) )
 		return false;
-	
+
 	do_action( 'before_run_rocket_bot' );
-	
+
 	wp_remote_get( WP_ROCKET_BOT_URL.'?spider=' . $spider . '&start_url=' . $start_url );
 
 	do_action( 'after_run_rocket_bot' );

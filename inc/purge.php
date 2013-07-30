@@ -24,6 +24,7 @@ function rocket_widget_update_callback( $instance ) { rocket_clean_domain(); ret
 /**
  * Update cache when a post is updated or commented
  *
+ * @since 1.3.0 Compatibility with WPML
  * @since 1.2.2 Add wp_trash_post and delete_post to purge cache when a post is trashed or deleted
  * @since 1.1.3 Use clean_post_cache instead of transition_post_status, transition_comment_status and preprocess_comment
  * @since 1.0
@@ -35,32 +36,32 @@ add_action( 'delete_post', 'rocket_clean_post' );
 add_action( 'clean_post_cache', 'rocket_clean_post' );
 function rocket_clean_post( $post_id )
 {
-			
+
 	$purge_urls = array(
 		get_permalink( $post_id ),
 		get_post_type_archive_link( get_post_type( $post_id ) )
 	);
-	
-	// Add next post 
+
+	// Add next post
 	$next_post = get_adjacent_post( false, '', false );
 	if( $next_post )
 		array_push( $purge_urls, get_permalink( $next_post ) );
-	
+
 	// Add next post in same category
 	$next_in_same_cat_post = get_adjacent_post( true, '', false );
 	if( $next_in_same_cat_post )
 		array_push( $purge_urls, get_permalink( $next_in_same_cat_post ) );
-	
+
 	// Add previous post
 	$previous_post = get_adjacent_post( false, '', true );
 	if( $previous_post )
 		array_push( $purge_urls, get_permalink( $previous_post ) );
-	
+
 	// Add previous post in same category
 	$previous_in_same_cat_post = get_adjacent_post( true, '', true );
 	if( $previous_in_same_cat_post )
-		array_push( $purge_urls, get_permalink( $previous_in_same_cat_post ) );	
-	
+		array_push( $purge_urls, get_permalink( $previous_in_same_cat_post ) );
+
 	// Add urls page to purge every time a post is save
 	$options = get_option( WP_ROCKET_SLUG );
 	if( isset( $options['cache_purge_pages'] ) && count( $options['cache_purge_pages'] )>=1 )
@@ -81,14 +82,28 @@ function rocket_clean_post( $post_id )
 	rocket_clean_files( apply_filters( 'rocket_post_purge_urls', $purge_urls ) );
 
 	// Never forget to purge homepage and their pagination
-	rocket_clean_home();
-
+	if( !defined('DOING_AJAX') || !DOING_AJAX ) {
+		
+		// Compatibility with WPML
+		if( is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
+			global $sitepress;
+			rocket_clean_home($sitepress->get_language_for_element($post_id, 'post_' . get_post_type($post_id)));
+		}
+		else {
+			rocket_clean_home();
+		}
+			
+	}
+	else {
+		rocket_clean_home();
+	}
+	
 	// Add Homepage URL to $purge_urls for bot crawl
 	array_push( $purge_urls, home_url() );
-	
+
 	// Remove dates archives page to preload cache
 	$purge_urls = array_diff( $purge_urls , $purge_dates );
-	
+
 	// Create json file and run WP Rocket Bot
 	$json_encode_urls = '["'.implode( '","', array_filter($purge_urls) ).'"]';
 	if(@file_put_contents( WP_ROCKET_PATH . 'cache.json', $json_encode_urls ));
@@ -101,6 +116,7 @@ function rocket_clean_post( $post_id )
 /**
  * Purge Cache file System in Admin Bar
  *
+ * @since 1.3.0 Compatibility with WPML
  * @since 1.0
  *
  */
@@ -110,6 +126,7 @@ function rocket_purge_cache()
 {
 	if( isset( $_GET['type'], $_GET['_wpnonce'] ) ) {
 
+		$_lang = sanitize_key( $_GET['lang'] );
 		$_type = explode( '-', $_GET['type'] );
 		$_type = reset( $_type );
 		$_id = explode( '-', $_GET['type'] );
@@ -122,14 +139,39 @@ function rocket_purge_cache()
 		{
 			// Clear all cache domain
 			case 'all':
-				rocket_clean_domain();
+				// Check if WPML is activated
+				if( is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) )
+				{
+
+					global $sitepress;
+					$langs = $sitepress->get_active_languages();
+
+					if( $_lang != 'all' )
+					{
+						unset($langs[$_lang]);
+						$langs_to_preserve = array();
+						foreach ( array_keys($langs) as $lang )
+							$langs_to_preserve[] = str_replace( array( 'http://', 'https://' ), '', trim($sitepress->language_url( $lang ),'/'));
+
+						rocket_clean_domain( $sitepress->language_url( $_lang ), $langs_to_preserve );
+					}
+					else
+					{
+						foreach ( array_keys($langs) as $lang )
+							rocket_clean_domain( $sitepress->language_url( $lang ) );
+					}
+
+				}
+				else
+				{
+					rocket_clean_domain();
+				}
 				break;
 
 			// Clear terms, homepage and other files associated at current post in back-end
 			case 'post':
 				rocket_clean_post( $_id );
 				break;
-
 
 			// Clear cache file of the current page in front-end
 			case 'url':
@@ -154,6 +196,7 @@ function rocket_purge_cache()
  * Preload cache system in Admin Bar
  * It launch the WP Rocket Bot
  *
+ * @since 1.3.0 Compatibility with WPML
  * @since 1.0 (delete in 1.1.6 and re-add in 1.1.9)
  *
  */
@@ -167,7 +210,28 @@ function rocket_preload_cache()
         if( !wp_verify_nonce( $_GET['_wpnonce'], 'preload' ) )
                 wp_nonce_ays( '' );
 
-        run_rocket_bot( 'cache-preload' );
+
+		// Check if WPML is activated
+		if( is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
+
+			global $sitepress;	
+			$_lang = sanitize_key( $_GET['lang'] );
+			
+			
+			if( $_lang != 'all' ) {
+				run_rocket_bot( 'cache-preload', $sitepress->language_url( $_lang ) );
+			}
+			else {
+				
+				$langs = $sitepress->get_active_languages();
+				foreach ( array_keys($langs) as $lang )
+					run_rocket_bot( 'cache-preload',  $sitepress->language_url( $lang ) );
+					
+			}
+		}
+		else {
+			run_rocket_bot( 'cache-preload' );
+		}
 
         wp_redirect( wp_get_referer() );
         die();
