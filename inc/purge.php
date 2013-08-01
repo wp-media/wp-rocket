@@ -14,6 +14,9 @@ add_action( 'update_option_tag_base'	, 'rocket_clean_domain' ); 		// When tag pe
 add_action( 'permalink_structure_changed', 'rocket_clean_domain' ); 	// When permalink structure is update
 add_action( 'edited_terms'				, 'rocket_clean_domain' ); 		// When a term is updated
 add_action( 'delete_term'				, 'rocket_clean_domain' ); 		// When a term is deleted
+add_action( 'add_link'					, 'rocket_clean_domain' ); );   // When a link is added
+add_action( 'edit_link'					, 'rocket_clean_domain' ); );	// When a link is updated
+add_action( 'delete_link'				, 'rocket_clean_domain' ); );	// When a link is deleted
 
 /* since 1.1.1 */
 add_filter( 'widget_update_callback'	, 'rocket_widget_update_callback' ); // When a widget is update
