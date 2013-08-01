@@ -106,7 +106,6 @@ function rocket_script_settings_page()
 				$($item_c_input).attr( 'name', '<?php echo WP_ROCKET_SLUG; ?>[deferred_js_wait]['+i+']' );
 			});
 		}
-		$( "#tabs" ).tabs();
 		$('#rktdrop').sortable({
 			update : function(){ rocket_rename(); },
 			axis: "y",
