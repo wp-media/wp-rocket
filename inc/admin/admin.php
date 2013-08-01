@@ -82,6 +82,21 @@ function rocket_post_submitbox_start()
 }
 
 /**
+ * Add the styles for the tabs in settings page
+ *
+ * since 1.0.0
+ *
+ */
+
+add_action( 'admin_print_styles-settings_page_wprocket', 'rocket_add_jquerys' );
+function rocket_add_jquerys()
+{
+	wp_enqueue_script( 'jquery-ui-sortable', null, array( 'jquery', 'jquery-ui-core' ), null, true );
+	wp_enqueue_script( 'jquery-ui-draggable', null, array( 'jquery', 'jquery-ui-core' ), null, true );
+	wp_enqueue_script( 'jquery-ui-droppable', null, array( 'jquery', 'jquery-ui-core' ), null, true );
+}
+
+/**
  * Add the scripts for the JS deffered files fields module box
  *
  * since 1.1.0
