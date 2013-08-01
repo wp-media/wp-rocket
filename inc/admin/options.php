@@ -238,20 +238,20 @@ function rocket_display_options()
 	<form action="options.php" method="post">
 		<?php settings_fields( 'wp_rocket' ); ?>
 		<?php submit_button(); ?>
-		<div id="tabs">
-			<ul class="hide-if-no-js">
-				<?php if( rocket_valid_key() ) : ?>
-				<li><a href="#tab_basic"><?php _e( 'Options de base', 'rocket' ); ?></a></li>
-				<li><a href="#tab_advanced"><?php _e( 'Options avancées', 'rocket' ); ?></a></li>
-				<li><a href="#tab_tools"><?php _e( 'Outils', 'rocket' ); ?></a></li>
-				<?php endif; ?>
-				<li><a href="#tab_apikey"><?php _e( 'API KEY', 'rocket' ); ?></a></li>
-			</ul>
-  			<div id="tab_apikey"><?php do_settings_sections( 'apikey' ); ?></div>
+		<h2 class="nav-tab-wrapper">
 			<?php if( rocket_valid_key() ) : ?>
-			<div id="tab_basic"><?php do_settings_sections( 'basic' ); ?></div>
-			<div id="tab_advanced"><?php do_settings_sections( 'advanced' ); ?></div>
-			<div id="tab_tools"><?php do_settings_sections( 'tools' ); ?></div>
+			<a href="#tab_basic" class="nav-tab"><?php _e( 'Options de base', 'rocket' ); ?></a>
+			<a href="#tab_advanced" class="nav-tab"><?php _e( 'Options avancées', 'rocket' ); ?></a>
+			<a href="#tab_tools" class="nav-tab"><?php _e( 'Outils', 'rocket' ); ?></a>
+			<?php endif; ?>
+			<a href="#tab_apikey" class="nav-tab"><?php _e( 'API KEY', 'rocket' ); ?></a>
+		</h2>
+		<div id="rockettabs">
+			<div class="rkt-tab" id="tab_apikey"><?php do_settings_sections( 'apikey' ); ?></div>
+			<?php if( rocket_valid_key() ) : ?>
+			<div class="rkt-tab" id="tab_basic"><?php do_settings_sections( 'basic' ); ?></div>
+			<div class="rkt-tab" id="tab_advanced"><?php do_settings_sections( 'advanced' ); ?></div>
+			<div class="rkt-tab" id="tab_tools"><?php do_settings_sections( 'tools' ); ?></div>
 			<?php endif; ?>
 		</div>
 		<?php submit_button(); ?>
@@ -446,16 +446,32 @@ function rocket_add_script_in_options()
 	}
 
 	jQuery( document ).ready( function($){
+		$('#rockettabs').css({padding: '5px', border: '1px solid #ccc', borderTop: '0px'});
+		$('#rockettabs .rkt-tab').hide();
 		var tab = '';
-		if( tab = getCookie( 'rocket_tab' )  ) {
-			$('#tabs a[href="'+tab+'"]').click();
-			// window.location.hash = tab;
+		if( tab = getCookie( 'rocket_tab' ) && tab!='' ) {
+			$('#rockettabs .nav-tab').hide();
+			$('h2.nav-tab-wrapper a[href="'+tab+'"]').addClass('nav-tab-active');
+			$(tab).show();
+		}else{
+			$('h2.nav-tab-wrapper a:first').addClass('nav-tab-active');
+			if( $('#tab_basic').length==1 )
+				$('#tab_basic').show();
 		}
-		$('#tabs li.ui-state-default a').on( 'click', function(){
+		$('h2.nav-tab-wrapper .nav-tab').on( 'click', function(e){
+			e.preventDefault();
 			tab = $(this).attr( 'href' );
 			setCookie( 'rocket_tab', tab, 365 );
-			// window.location.hash = tab;
+			$('#rockettabs .rkt-tab').hide();
+			$('h2.nav-tab-wrapper .nav-tab').removeClass('nav-tab-active');
+			$('h2.nav-tab-wrapper a[href="'+tab+'"]').addClass('nav-tab-active');
+			$(tab).show();
 		} );
+		if( $('#rockettabs .rkt-tab:visible').length==0 ){
+			$('h2.nav-tab-wrapper a:first').addClass('nav-tab-active');
+			$('#tab_apikey').show();
+			setCookie( 'rocket_tab', '', -1 );
+		}
 	} );
 </script>
 <?php }

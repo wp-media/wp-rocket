@@ -82,43 +82,6 @@ function rocket_post_submitbox_start()
 }
 
 /**
- * Add the jQuery ui CSS for tabs
- *
- * since 1.1.0
- *
- */
-
-add_action( 'admin_print_scripts-settings_page_wprocket', 'rocket_add_jqueryuis' );
-function rocket_add_jqueryuis()
-{
-	global $wp_scripts;
-	$jqui_version_from_wp = $wp_scripts->registered['jquery-ui-core']->ver;
-	$skin = sanitize_key( apply_filters( 'rocket_settings_skin', 'redmond' ) ); // See http://jqueryui.com/themeroller/
-	wp_enqueue_style('jquery-ui-rocket-css', 'http://ajax.googleapis.com/ajax/libs/jqueryui/'.$jqui_version_from_wp.'/themes/'.$skin.'/jquery-ui.css', false, $jqui_version_from_wp, false );
-}
-
-/**
- * Add the styles for the tabs in settings page
- *
- * since 1.1.0
- *
- */
-
-add_action( 'admin_print_styles-settings_page_wprocket', 'rocket_add_jquerys' );
-function rocket_add_jquerys()
-{
-	global $wp_scripts;
-	$jqui_version_from_wp = $wp_scripts->registered['jquery-ui-core']->ver;
-	wp_enqueue_script( 'jquery-ui-sortable', null, array( 'jquery', 'jquery-ui-core' ), null, true );
-	wp_enqueue_script( 'jquery-ui-draggable', null, array( 'jquery', 'jquery-ui-core' ), null, true );
-	wp_enqueue_script( 'jquery-ui-droppable', null, array( 'jquery', 'jquery-ui-core' ), null, true );
-	wp_enqueue_script( 'jquery-ui-tabs', null, array( 'jquery', 'jquery-ui-core' ), null, true );
-	if( apply_filters( 'rocket_my_skin_is_dark', false ) ) : ?>
-		<style>.form-table label, .form-table td, .form-table th, .form-table tbody, .form-table em{color: white !important}</style>
-	<?php endif; 
-}
-
-/**
  * Add the scripts for the JS deffered files fields module box
  *
  * since 1.1.0
