@@ -448,6 +448,7 @@ function rocket_add_script_in_options()
 	jQuery( document ).ready( function($){
 		$('#rockettabs').css({padding: '5px', border: '1px solid #ccc', borderTop: '0px'});
 		$('#rockettabs .rkt-tab').hide();
+		$('#rockettabs h3').hide();
 		var tab = '';
 		if( tab = getCookie( 'rocket_tab' ) && tab!='' ) {
 			$('#rockettabs .nav-tab').hide();
