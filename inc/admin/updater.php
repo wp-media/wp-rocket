@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 /**
  * Excludes WP Rocket from WP updates
  *
- * Since 1.0
+ * @since 1.0
  *
  */
 
@@ -22,7 +22,7 @@ function rocket_updates_exclude( $r, $url ) {
 /**
  * Check Rocket updates twicedaily (like WP plugins)
  *
- * Since 1.0
+ * @since 1.0
  *
  */
 add_action( 'load-plugins.php', 'rocket_check_update', PHP_INT_MAX );
@@ -73,7 +73,7 @@ function _maybe_update_rocket() {
 /**
  * Hack the returned object
  *
- * Since 1.0
+ * @since 1.0
  *
  */
 
@@ -89,7 +89,7 @@ function rocket_force_info( $bool, $action, $args )
 /**
  * Hack the returned result with our content
  *
- * Since 1.0
+ * @since 1.0
  *
  */
 

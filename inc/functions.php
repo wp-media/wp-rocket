@@ -82,9 +82,11 @@ function rocket_clean_files( $urls )
 
     foreach( array_filter($urls) as $url )
     {
-
+		
+		do_action( 'before_rocket_clean_file', $url );
+		
 		if( $url )
-			rocket_rrmdir( WP_ROCKET_CACHE_PATH . str_replace( array( 'http://', 'https://' ), '', $url ) );
+			rocket_rrmdir( WP_ROCKET_CACHE_PATH . rocket_remove_url_protocol($url) );
 
 		do_action( 'after_rocket_clean_file', $url );
 
@@ -131,9 +133,11 @@ function get_rocket_post_terms_urls( $post_ID )
 
 function get_rocket_post_dates_urls( $post_ID )
 {
+	global $wp_rewrite;
+
 	// Get the day and month of the post
 	$date = explode( '-', get_the_time( 'Y-m-d', $post_ID ) );
-	global $wp_rewrite;
+	
 	$urls = array(
 		get_year_link( $date[0] ) . 'index.html',
 		get_year_link( $date[0] ) . $wp_rewrite->pagination_base,
@@ -154,12 +158,12 @@ function get_rocket_post_dates_urls( $post_ID )
  *
  */
 
-function rocket_clean_home( $location = '' )
+function rocket_clean_home()
 {
-	$root = WP_ROCKET_CACHE_PATH . str_replace( array( 'http://', 'https://' ), '', home_url( $location ) );
+	$root = WP_ROCKET_CACHE_PATH . rocket_remove_url_protocol( home_url( '/' ) );
 	$root = apply_filters( 'before_rocket_clean_home', $root );
 
-	@unlink( $root . '/index.html' );
+	@unlink( $root . 'index.html' );
     rocket_rrmdir( $root . $GLOBALS['wp_rewrite']->pagination_base );
 
     do_action( 'after_rocket_clean_home', $root );
@@ -170,21 +174,20 @@ function rocket_clean_home( $location = '' )
 /**
  * Remove all cache files of the domain
  *
- * @since 1.3.0 Add $domain and $dir_to_preseve args
  * @since 1.0
  *
  */
 
-function rocket_clean_domain( $domain = '', $dirs_to_preserve = array() )
+function rocket_clean_domain()
 {
-	$domain = !empty( $domain ) ? $domain : home_url( '/' );
+	$domain = WP_ROCKET_CACHE_PATH . parse_url( home_url(), PHP_URL_HOST );
+		
+	do_action( 'before_rocket_clean_domain', $domain );
 	
-	do_action( 'before_rocket_clean_domain', $domain, $dirs_to_preserve );
+	// Delete cache domain files
+    rocket_rrmdir( $domain );
 
-	// Delete cache domaine files
-    rocket_rrmdir( WP_ROCKET_CACHE_PATH . str_replace( array( 'http://', 'https://' ), '', $domain ), $dirs_to_preserve );
-
-    do_action( 'after_rocket_clean_domain', $domain, $dirs_to_preserve );
+    do_action( 'after_rocket_clean_domain', $domain );
 }
 
 
@@ -195,8 +198,10 @@ function rocket_clean_domain( $domain = '', $dirs_to_preserve = array() )
  * @since 1.0
  *
  */
+ 
 function rocket_rrmdir( $dir, $dirs_to_preserve = array() )
 {
+	
 	do_action( 'before_rocket_rrmdir', $dir, $dirs_to_preserve );
 
 	if( !is_dir( $dir ) ) :
@@ -210,7 +215,6 @@ function rocket_rrmdir( $dir, $dirs_to_preserve = array() )
 		foreach( $globs as $file ) {
 
 			if( is_dir( $file ) ) {
-
 				if( !in_array( str_replace( WP_ROCKET_CACHE_PATH, '', $file ), $dirs_to_preserve ) )
 					rocket_rrmdir( $file, $dirs_to_preserve );
 			}
@@ -413,7 +417,22 @@ function rocket_renew_box( $function, $uid=0 )
  * @since 1.3.0
  *
  */
-function rocket_is_wpml_active()
+ 
+function is_rocket_wpml_active()
 {	
 	return in_array( 'sitepress-multilingual-cms/sitepress.php', (array) get_option( 'active_plugins', array() ) ) || is_plugin_active_for_network( 'sitepress-multilingual-cms/sitepress.php' );
+}
+
+
+
+/**
+ * Get an url without protocol
+ *
+ * @since 1.3.0
+ *
+ */
+ 
+function rocket_remove_url_protocol( $url ) 
+{
+	return str_replace( array( 'http://', 'https://' ) , '', $url );
 }

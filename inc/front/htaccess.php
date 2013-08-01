@@ -95,7 +95,7 @@ function get_rocket_htaccess_mod_rewrite()
 		$rules .= get_rocket_htaccess_mobile_rewritecond();
 
 	$rules .= 'RewriteCond %{HTTPS} off' . "\n";
-	$rules .= 'RewriteCond ' . WP_ROCKET_CACHE_PATH .'%{HTTP_HOST}/%{REQUEST_URI}/index.html -f' . "\n";
+	$rules .= 'RewriteCond "' . WP_ROCKET_CACHE_PATH .'%{HTTP_HOST}/%{REQUEST_URI}/index.html" -f' . "\n";
 	$rules .= 'RewriteRule ^(.*) ' . $cache_root . '%{HTTP_HOST}/%{REQUEST_URI}/index.html [L]' . "\n";
 	$rules .= '</IfModule>' . "\n";
 	$rules = apply_filters( 'rocket_htaccess_mod_rewrite', $rules );

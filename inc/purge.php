@@ -7,13 +7,13 @@ add_action( 'user_register'				, 'rocket_clean_domain' );		// When a user is add
 add_action( 'profile_update'			, 'rocket_clean_domain' );		// When a user is updated
 add_action( 'deleted_user'				, 'rocket_clean_domain' );		// When a user is deleted
 add_action( 'wp_update_nav_menu'		, 'rocket_clean_domain' );		// When a custom menu is update
-add_action( 'update_option_theme_mods_' . get_option( 'stylesheet' ), 'rocket_clean_domain' );
+add_action( 'update_option_theme_mods_' . get_option( 'stylesheet' ), 'rocket_clean_domain' ); // When location af a menu is updated
 add_action( 'update_option_sidebars_widgets', 'rocket_clean_domain' );	// When you change the order of widgets
 add_action( 'update_option_category_base', 'rocket_clean_domain' );		// When category permalink prefix is update
 add_action( 'update_option_tag_base'	, 'rocket_clean_domain' ); 		// When tag permalink prefix is update
 add_action( 'permalink_structure_changed', 'rocket_clean_domain' ); 	// When permalink structure is update
-add_filter( 'edited_terms'				, 'rocket_clean_domain' ); 		// When a term is updated
-add_filter( 'delete_term'				, 'rocket_clean_domain' ); 		// When a term is deleted
+add_action( 'edited_terms'				, 'rocket_clean_domain' ); 		// When a term is updated
+add_action( 'delete_term'				, 'rocket_clean_domain' ); 		// When a term is deleted
 
 /* since 1.1.1 */
 add_filter( 'widget_update_callback'	, 'rocket_widget_update_callback' ); // When a widget is update
@@ -36,7 +36,11 @@ add_action( 'delete_post', 'rocket_clean_post' );
 add_action( 'clean_post_cache', 'rocket_clean_post' );
 function rocket_clean_post( $post_id )
 {
-
+	// No purge for specifics conditions	
+	if( !get_post_type($post_id) || get_post_type($post_id) == 'nav_menu_item' )
+		return;
+	
+	// Add permalink
 	$purge_urls = array(
 		get_permalink( $post_id ),
 		get_post_type_archive_link( get_post_type( $post_id ) )
@@ -81,11 +85,16 @@ function rocket_clean_post( $post_id )
 	// Purge all files
 	rocket_clean_files( apply_filters( 'rocket_post_purge_urls', $purge_urls ) );
 
-	// Never forget to purge homepage and their pagination
-	// Compatibility with WPML	
-	if( rocket_is_wpml_active() ) {
+	// Never forget to purge homepage and their pagination	
+	if( is_rocket_wpml_active() ) 
+	{
+		
 		global $sitepress;
-		rocket_clean_home($sitepress->get_language_for_element($post_id, 'post_' . get_post_type($post_id)));
+		$root = WP_ROCKET_CACHE_PATH . rocket_remove_url_protocol($sitepress->language_url($sitepress->get_language_for_element($post_id, 'post_' . get_post_type($post_id))));
+
+		@unlink( $root . 'index.html' );
+		rocket_rrmdir( $root . $GLOBALS['wp_rewrite']->pagination_base );
+			
 	}
 	else {
 		rocket_clean_home();
@@ -132,31 +141,44 @@ function rocket_purge_cache()
 		{
 			// Clear all cache domain
 			case 'all':
+				
 				// Check if WPML is activated
-				if( is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) )
-				{
+				if( is_rocket_wpml_active() ) {
 
 					global $sitepress;
+					
+					// Get all active languages
 					$langs = $sitepress->get_active_languages();
 
-					if( $_lang != 'all' )
-					{
+					// Check if user want to purge only one lang
+					if( $_lang != 'all' ) {
+						
+						// Unset current lang to the preserve dirs
 						unset($langs[$_lang]);
+						
+						// Assign a new array to stock dirs to preserve to the purge
 						$langs_to_preserve = array();
+						
+						
+						// Stock all URLs of langs to preserve
 						foreach ( array_keys($langs) as $lang )
-							$langs_to_preserve[] = str_replace( array( 'http://', 'https://' ), '', trim($sitepress->language_url( $lang ),'/'));
-
-						rocket_clean_domain( $sitepress->language_url( $_lang ), $langs_to_preserve );
+							$langs_to_preserve[] = rtrim(rocket_remove_url_protocol($sitepress->language_url($lang)),'/');
+						
+						
+						// Remove only cache files of selected lang 
+						rocket_rrmdir(WP_ROCKET_CACHE_PATH . rocket_remove_url_protocol($sitepress->language_url($_lang)), $langs_to_preserve);
+						
 					}
-					else
-					{
+					else {
+						// Remove all cache langs
 						foreach ( array_keys($langs) as $lang )
-							rocket_clean_domain( $sitepress->language_url( $lang ) );
+							rocket_rrmdir(WP_ROCKET_CACHE_PATH . rocket_remove_url_protocol($sitepress->language_url($lang)));
+							
 					}
 
 				}
-				else
-				{
+				else {
+					// If WPML isn't activated, you can purge your domain normally
 					rocket_clean_domain();
 				}
 				break;
@@ -205,17 +227,18 @@ function rocket_preload_cache()
 
 
 		// Check if WPML is activated
-		if( is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
+		if( is_rocket_wpml_active() ) {
 
 			global $sitepress;	
 			$_lang = sanitize_key( $_GET['lang'] );
 			
-			
+			// Check if user want to purge only one lang
 			if( $_lang != 'all' ) {
 				run_rocket_bot( 'cache-preload', $sitepress->language_url( $_lang ) );
 			}
 			else {
 				
+				// Get all active languages
 				$langs = $sitepress->get_active_languages();
 				foreach ( array_keys($langs) as $lang )
 					run_rocket_bot( 'cache-preload',  $sitepress->language_url( $lang ) );
