@@ -412,15 +412,37 @@ function rocket_renew_box( $function, $uid=0 )
 
 
 /**
- * Check if WPML is activated
+ * Check whether the plugin is active by checking the active_plugins list.
  *
  * @since 1.3.0
+ * @source : wp-admin/includes/plugin.php
  *
  */
  
-function is_rocket_wpml_active()
+function rocket_is_plugin_active( $plugin )
 {	
-	return in_array( 'sitepress-multilingual-cms/sitepress.php', (array) get_option( 'active_plugins', array() ) ) || is_plugin_active_for_network( 'sitepress-multilingual-cms/sitepress.php' );
+	return in_array( $plugin, (array) get_option( 'active_plugins', array() ) ) || rocket_is_plugin_active_for_network( $plugin );
+}
+
+
+
+/**
+ * Check whether the plugin is active for the entire network. 
+ *
+ * @since 1.3.0
+ * @source : wp-admin/includes/plugin.php
+ *
+ */
+ 
+function rocket_is_plugin_active_for_network( $plugin ) {
+	if ( !is_multisite() )
+		return false;
+
+	$plugins = get_site_option( 'active_sitewide_plugins');
+	if ( isset($plugins[$plugin]) )
+		return true;
+
+	return false;
 }
 
 

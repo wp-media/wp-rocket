@@ -5,10 +5,12 @@ defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 /**
  * Remove tags of deferred JavaScript files 
  *
- * since 1.1.0
+ * @since 1.3.0 This process is called via the new filter rocket_buffer
+ * @since 1.1.0
  *
  */
 
+add_filter( 'rocket_buffer', 'rocket_exclude_deferred_js', 11 );
 function rocket_exclude_deferred_js( $buffer )
 {
 	$options = get_option( WP_ROCKET_SLUG );
@@ -42,7 +44,7 @@ function rocket_exclude_deferred_js( $buffer )
 /**
  * Insert LABjs deferred process in footer
  *
- * since 1.1.0
+ * @since 1.1.0
  *
  */
 

@@ -33,7 +33,8 @@ function ob_rocket_callback()
 /**
  * The famous callback, it puts contents in a cache file if buffer length > 255 (IE do not read pages under 255 c. )
  *
- * since 1.0
+ * @since 1.3.0 Add filter rocket_buffer
+ * @since 1.0
  *
  */
 
@@ -41,16 +42,13 @@ function do_rocket_process( $buffer )
 {
 
 	if( strlen( $buffer ) > 255 ) {
-
-		// Add width and height attributes on images
-		$buffer = rocket_specify_image_dimensions( $buffer );
-
-		// Deferred JavaScript files
-		$buffer = rocket_exclude_deferred_js( $buffer );
-
-	    // Minification HTML/CSS/JavaScript
-		$buffer = rocket_minify_process( $buffer );
-
+		
+		// This hook is used for :
+		// - Add width and height attributes on images
+		// - Deferred JavaScript files
+		// - Minification HTML/CSS/JavaScript
+		$buffer = apply_filters( 'rocket_buffer', $buffer );
+		
 	    // Get root cache dir
 	    $cache_dir = WP_ROCKET_CACHE_PATH . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 

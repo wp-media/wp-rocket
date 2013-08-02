@@ -4,12 +4,14 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 /**
  * Launch WP Rocket minification process (CSS and JavaScript)
  *
- * since 1.2.3 Add <!--[if IE]><![endif]--> in head to optimize IE conditionals tags
- * since 1.1.6 Minify inline CSS and JavaScript
- * since 1.0
+ * @since 1.3.0 This process is called via the new filter rocket_buffer
+ * @since 1.2.3 Add <!--[if IE]><![endif]--> in head to optimize IE conditionals tags
+ * @since 1.1.6 Minify inline CSS and JavaScript
+ * @since 1.0
  *
  */
 
+add_filter( 'rocket_buffer', 'rocket_minify_process', 12 );
 function rocket_minify_process( $buffer )
 {
 
@@ -52,7 +54,7 @@ function rocket_minify_process( $buffer )
 /**
  * Used for minify inline HTML
  *
- * since 1.1.12
+ * @since 1.1.12
  *
  */
 function rocket_minify_html( $buffer )
@@ -93,7 +95,7 @@ function rocket_minify_html( $buffer )
 /**
  * Used for minify inline CSS
  *
- * since 1.1.6
+ * @since 1.1.6
  *
  */
 function rocket_minify_inline_css( $css )
@@ -106,7 +108,7 @@ function rocket_minify_inline_css( $css )
 /**
  * Used for minify inline JavaScript
  *
- * since 1.1.6
+ * @since 1.1.6
  *
  */
 function rocket_minify_inline_js( $js )
@@ -119,9 +121,9 @@ function rocket_minify_inline_js( $js )
 /**
  * Used to minify and concat CSS files
  *
- * since 1.1.0 Fix Bug with externals URLs like //ajax.google.com
- * since 1.0.2 Remove the filter, remove the array_chunk, add an automatic way to cut strings to 255c max
- * since 1.0
+ * @since 1.1.0 Fix Bug with externals URLs like //ajax.google.com
+ * @since 1.0.2 Remove the filter, remove the array_chunk, add an automatic way to cut strings to 255c max
+ * @since 1.0
  *
  */
 
@@ -208,9 +210,9 @@ function rocket_minify_css( $buffer )
 /**
  * Used to minify and concat JavaScript files
  *
- * since 1.1.0 Fix Bug with externals URLs like //ajax.google.com
- * since 1.0.2 Remove the filter, remove the array_chunk, add an automatic way to cut strings to 255c max
- * since 1.0
+ * @since 1.1.0 Fix Bug with externals URLs like //ajax.google.com
+ * @since 1.0.2 Remove the filter, remove the array_chunk, add an automatic way to cut strings to 255c max
+ * @since 1.0
  *
  */
 
@@ -290,8 +292,8 @@ function rocket_minify_js( $buffer )
 /**
  * Get all CSS ans JS files of IE conditionals tags
  *
- * since 1.0
- * source : WP Minify
+ * @since 1.0
+ * @source : WP Minify
  *
  */
 
@@ -313,8 +315,8 @@ function rocket_extract_ie_conditionals( $buffer )
 /**
  * Replace WP Rocket IE conditionals tags
  *
- * since 1.0
- * source : WP Minify
+ * @since 1.0
+ * @source : WP Minify
  *
  */
 

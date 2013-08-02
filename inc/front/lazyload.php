@@ -6,8 +6,8 @@ defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
  * Add Lazy Load JavaScript in the header
  * No jQuery or other library is required !!
  *
- * since 1.1.0 This code is insert in head with inline script for more performance
- * since 1.0
+ * @since 1.1.0 This code is insert in head with inline script for more performance
+ * @since 1.0
  *
  */
 
@@ -22,10 +22,10 @@ function rocket_lazyload_script()
 /**
  * Replace Gravatar, thumbnails, images in post content and in widget text by Lazy Load
  *
- * since 1.2.0 It's possible to not lazy load an image with data-no-lazy attribute
- * since 1.1.0 Don't lazy-load if the thumbnail has already been run through previously
- * since 1.0.1 Add priority of hooks at maximum later with PHP_INT_MAX
- * since 1.0
+ * @since 1.2.0 It's possible to not lazy load an image with data-no-lazy attribute
+ * @since 1.1.0 Don't lazy-load if the thumbnail has already been run through previously
+ * @since 1.0.1 Add priority of hooks at maximum later with PHP_INT_MAX
+ * @since 1.0
  *
  */
 
@@ -52,9 +52,9 @@ function rocket_lazyload_images( $html )
 /**
  * Replace WordPress smilies by Lazy Load
  *
- * since 1.1.0 Don't lazy-load if the thumbnail has already been run through previously
- * since 1.0.1 Add priority of hooks at maximum later with PHP_INT_MAX
- * since 0.1
+ * @since 1.1.0 Don't lazy-load if the thumbnail has already been run through previously
+ * @since 1.0.1 Add priority of hooks at maximum later with PHP_INT_MAX
+ * @since 0.1
  *
  */
 

@@ -5,11 +5,14 @@ defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 /*
  * Add width and height attributes on all images
  *
- * since 1.1.2 Fix Bug : No conflit with Photon Plugin (Jetpack)
- * since 1.1.0
+ * @since 1.3.0 This process is called via the new filter rocket_buffer
+ * @since 1.3.0 It's possible to not specify dimensions of an image with data-no-image-dimensions attribute
+ * @since 1.1.2 Fix Bug : No conflit with Photon Plugin (Jetpack)
+ * @since 1.1.0
  *
  */
 
+add_filter( 'rocket_buffer', 'rocket_specify_image_dimensions', 10 );
 function rocket_specify_image_dimensions( $buffer )
 {
 
@@ -20,9 +23,9 @@ function rocket_specify_image_dimensions( $buffer )
 	{
 
 		// Don't touch lazy-load file (no conflit with Photon (Jetpack))
-		if ( strpos( $image, 'data-lazy-original' ) )
+		if ( strpos( $image, 'data-lazy-original' ) || strpos( $image, 'data-no-image-dimensions' ) )
 			continue;
-		
+			
 		$tmp = $image;
 
 		// Get link of the file
@@ -49,17 +52,4 @@ function rocket_specify_image_dimensions( $buffer )
 	}
 
 	return $buffer;
-}
-
-// COMING SOON - CDN Fonctionnality
-//add_filter( 'wp_get_attachment_image_attributes', 'rocket_cdn_thumbnail_src' );
-function rocket_cdn_thumbnail_src( $attr )
-{
-	
-	$image_url_parts = parse_url( $attr['src'] );
-	$image_host_path = $image_url_parts['host'] . $image_url_parts['path'];
-	$subdomain = (abs(crc32($image_host_path)) % 3 + 1);
-	$attr['src']  = "http://i{$subdomain}.wp-rocket.me/$image_host_path";
-	
-	return $attr;
 }
