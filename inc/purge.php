@@ -101,7 +101,7 @@ function rocket_clean_post( $post_id )
 	{
 
 		global $sitepress;
-		$root = WP_ROCKET_CACHE_PATH . rocket_remove_url_protocol($sitepress->language_url($sitepress->get_language_for_element($post_id, 'post_' . get_post_type($post_id))));
+		$root = WP_ROCKET_CACHE_PATH . rocket_remove_url_protocol( $sitepress->language_url($sitepress->get_language_for_element($post_id, 'post_' . get_post_type($post_id))) );
 
 		@unlink( $root . 'index.html' );
 		rocket_rrmdir( $root . $GLOBALS['wp_rewrite']->pagination_base );
@@ -149,7 +149,6 @@ function rocket_purge_cache()
 {
 	if( isset( $_GET['type'], $_GET['_wpnonce'] ) ) {
 
-		$_lang = sanitize_key( $_GET['lang'] );
 		$_type = explode( '-', $_GET['type'] );
 		$_type = reset( $_type );
 		$_id = explode( '-', $_GET['type'] );
@@ -168,6 +167,7 @@ function rocket_purge_cache()
 
 					global $sitepress;
 
+					$_lang = isset( $_GET['lang'] ) ? sanitize_key( $_GET['lang'] ) : 'all';
 					// Get all active languages
 					$langs = $sitepress->get_active_languages();
 

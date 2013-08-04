@@ -47,10 +47,11 @@ function do_rocket_process( $buffer )
 		// - Add width and height attributes on images
 		// - Deferred JavaScript files
 		// - Minification HTML/CSS/JavaScript
-		$buffer = apply_filters( 'rocket_buffer', $buffer );
+		$buffer = apply_filters( 'rocket_buffer_process', $buffer );
 		
 	    // Get root cache dir
-	    $cache_dir = WP_ROCKET_CACHE_PATH . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+	    $host = rocket_remove_url_protocol( $_SERVER['HTTP_HOST'] );
+	    $cache_dir = WP_ROCKET_CACHE_PATH . $host . $_SERVER['REQUEST_URI'];
 
 		// Create cache folder if not already exist
 	    if( !is_dir( $cache_dir ) )
