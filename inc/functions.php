@@ -80,9 +80,9 @@ function rocket_clean_files( $urls )
 
     foreach( array_filter($urls) as $url )
     {
-		
+
 		do_action( 'before_rocket_clean_file', $url );
-		
+
 		if( $url )
 			rocket_rrmdir( WP_ROCKET_CACHE_PATH . rocket_remove_url_protocol( $url ) );
 
@@ -135,7 +135,7 @@ function get_rocket_post_dates_urls( $post_ID )
 
 	// Get the day and month of the post
 	$date = explode( '-', get_the_time( 'Y-m-d', $post_ID ) );
-	
+
 	$urls = array(
 		get_year_link( $date[0] ) . 'index.html',
 		get_year_link( $date[0] ) . $wp_rewrite->pagination_base,
@@ -179,7 +179,7 @@ function rocket_clean_home()
 function rocket_clean_domain()
 {
 	$domain = apply_filters( 'before_rocket_clean_domain', WP_ROCKET_CACHE_PATH . rocket_remove_url_protocol( home_url() ) );
-	
+
 	// Delete cache domain files
     rocket_rrmdir( $domain );
 
@@ -194,10 +194,10 @@ function rocket_clean_domain()
  * @since 1.0
  *
  */
- 
+
 function rocket_rrmdir( $dir, $dirs_to_preserve = array() )
 {
-	
+
 	$dir = apply_filters( 'before_rocket_rrmdir', $dir, $dirs_to_preserve );
 
 	if( !is_dir( $dir ) ) :
@@ -412,22 +412,22 @@ function rocket_renew_box( $function, $uid=0 )
  * @source : wp-admin/includes/plugin.php
  *
  */
- 
+
 function rocket_is_plugin_active( $plugin )
-{	
+{
 	return in_array( $plugin, (array) get_option( 'active_plugins', array() ) ) || rocket_is_plugin_active_for_network( $plugin );
 }
 
 
 
 /**
- * Check whether the plugin is active for the entire network. 
+ * Check whether the plugin is active for the entire network.
  *
  * @since 1.3.0
  * @source : wp-admin/includes/plugin.php
  *
  */
- 
+
 function rocket_is_plugin_active_for_network( $plugin ) {
 	if ( !is_multisite() )
 		return false;
@@ -447,8 +447,8 @@ function rocket_is_plugin_active_for_network( $plugin ) {
  * @since 1.3.0
  *
  */
- 
-function rocket_remove_url_protocol( $url, $no_dots=false ) 
+
+function rocket_remove_url_protocol( $url, $no_dots=false )
 {
 	$url = parse_url( home_url(), PHP_URL_HOST );
 	if( apply_filters( 'rocket_url_no_dots', $no_dots ) )

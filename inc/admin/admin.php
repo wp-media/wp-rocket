@@ -202,3 +202,27 @@ function rocket_dismiss_plugin_box()
 {
 	rocket_renew_box( 'rocket_warning_plugin_modification' );
 }
+
+
+
+/**
+ * Display a prevention message when enabling or disabling a plugin can be in conflict with WP Rocket
+ *
+ * since 1.3.0
+ *
+ */
+ 
+add_action( 'admin_post_deactivate_plugin', 'rocket_deactivate_plugin' );
+function rocket_deactivate_plugin()
+{
+
+	$_plugin = $_GET['plugin'];
+	
+	if( !wp_verify_nonce( $_GET['_wpnonce'], 'deactivate_plugin' ) )
+			wp_nonce_ays( '' );
+	
+	deactivate_plugins( $_plugin );
+	
+	wp_redirect( wp_get_referer() );
+	die();
+}

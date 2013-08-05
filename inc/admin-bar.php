@@ -25,7 +25,7 @@ function rocket_admin_bar( $wp_admin_bar )
 	));
 
 		// Compatibility with WPML
-		if( rocket_is_plugin_active('sitepress-multilingual-cms/sitepress.php') ) {
+		if( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
 
 			// Purge All
 			$wp_admin_bar->add_menu(array(
@@ -87,7 +87,7 @@ function rocket_admin_bar( $wp_admin_bar )
         // Go robot gogo !
 
         // Compatibility with WPML
-		if( rocket_is_plugin_active('sitepress-multilingual-cms/sitepress.php') ) {
+		if( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
 
 			$wp_admin_bar->add_menu(array(
                 'parent' => 'wp-rocket',
@@ -121,16 +121,16 @@ function rocket_admin_bar( $wp_admin_bar )
 		// Go to WP Rocket Support
 		$wp_admin_bar->add_menu(array(
 			'parent' => 'wp-rocket',
-			'id' => 'support',
-			'title' => __( 'Support', 'rocket' ),
-			'href' => 'http://support.wp-rocket.me',
+			'id'     => 'support',
+			'title'  => __( 'Support', 'rocket' ),
+			'href'   => 'http://support.wp-rocket.me',
 		));
 }
 
 
 
 /**
- * TO DO - Description
+ * Get all langs to display in admin bar
  *
  * @since 1.3.0
  *
@@ -143,10 +143,11 @@ function get_rocket_wpml_langs_for_admin_bar() {
 	foreach ( $sitepress->get_active_languages() as $lang ) {
 		// Get flag
 		$flag = $sitepress->get_flag($lang['code']);
-        if($flag->from_template){
+        if( $flag->from_template ) {
             $wp_upload_dir = wp_upload_dir();
             $flag_url = $wp_upload_dir['baseurl'] . '/flags/' . $flag->flag;
-        }else{
+        }
+        else {
             $flag_url = ICL_PLUGIN_URL . '/res/flags/'.$flag->flag;
         }
 
@@ -162,7 +163,7 @@ function get_rocket_wpml_langs_for_admin_bar() {
         array_unshift( $langlinks, array(
             'code'		=> 'all',
             'current'   => 'all' == $sitepress->get_current_language(),
-            'anchor'    => __('All languages', 'sitepress'),
+            'anchor'    => __( 'All languages', 'sitepress' ),
             'flag'      => '<img class="icl_als_iclflag" src="'.ICL_PLUGIN_URL.'/res/img/icon16.png" alt="all" width="16" height="16" />'
         ));
     }
@@ -170,7 +171,7 @@ function get_rocket_wpml_langs_for_admin_bar() {
         array_push( $langlinks,  array(
             'code'		=> 'all',
             'current'   => 'all' == $sitepress->get_current_language(),
-            'anchor'    => __('All languages', 'sitepress'),
+            'anchor'    => __( 'All languages', 'sitepress' ),
             'flag'      => '<img class="icl_als_iclflag" src="'.ICL_PLUGIN_URL.'/res/img/icon16.png" alt="all" width="16" height="16" />'
         ));
     }
@@ -191,20 +192,6 @@ function rocket_wp_before_admin_bar_render()
 { ?>
 
 	<style>
-		.count-cache {
-			background-color: #464646;
-			border-radius: 10px;
-			color: white;
-			display: inline-block;
-			font-size: 11px;
-			font-weight: bold;
-			height: 13px;
-			line-height: 1.2em;
-			margin-left: 2px;
-			min-width: 12px;
-			padding: 2px 3px;
-			text-align: center;
-		}
 		#wpadminbar #wp-admin-bar-support a {
 			color: #FF0000;
 		}
