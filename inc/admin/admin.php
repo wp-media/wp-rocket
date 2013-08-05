@@ -189,3 +189,16 @@ function rocket_dismiss_boxes()
 	}
 }
 
+
+/**
+ * Renew the plugin modification warning on plugin de/activation
+ *
+ * since 1.3.0
+ *
+ */
+add_action( 'activated_plugin', 'rocket_dismiss_plugin_box' );
+add_action( 'deactivated_plugin', 'rocket_dismiss_plugin_box' );
+function rocket_dismiss_plugin_box()
+{
+	rocket_renew_box( 'rocket_warning_plugin_modification' );
+}

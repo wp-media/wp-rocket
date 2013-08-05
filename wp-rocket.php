@@ -28,7 +28,7 @@ define( 'WP_ROCKET_PATH'			, realpath( plugin_dir_path(WP_ROCKET_FILE) ).'/' );
 define( 'WP_ROCKET_INC_PATH'		, realpath( WP_ROCKET_PATH . 'inc/' ) . '/' );
 define( 'WP_ROCKET_FRONT_PATH'		, realpath( WP_ROCKET_INC_PATH . 'front/' ) . '/' );
 define( 'WP_ROCKET_ADMIN_PATH'		, realpath( WP_ROCKET_INC_PATH . 'admin' ) . '/' );
-define( 'WP_ROCKET_CACHE_PATH'		, WP_CONTENT_DIR . '/wp-rocket-cache/' );
+define( 'WP_ROCKET_CACHE_PATH'		, str_replace( DIRECTORY_SEPARATOR, '/',  WP_CONTENT_DIR ) . '/wp-rocket-cache/' );
 define( 'WP_ROCKET_URL'				, plugin_dir_url(WP_ROCKET_FILE) );
 define( 'WP_ROCKET_INC_URL'			, WP_ROCKET_URL . 'inc/' );
 define( 'WP_ROCKET_FRONT_URL'		, WP_ROCKET_INC_URL . 'front/' );

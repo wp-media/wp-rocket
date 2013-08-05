@@ -37,26 +37,26 @@ function rocket_check_update()
 	$plugin_file = basename( WP_ROCKET_FILE );
 	$version = true;
 	$plugin_transient = null;
+	set_site_transient( 'update_wprocket', time() );
 	$response = wp_remote_get( WP_ROCKET_WEB_CHECK, array( 'timeout'=>30 ) );
 	if( !is_a($response, 'WP_Error') && strlen( $response['body'] )>32 ){
 		list($version, $url) = explode( '|', $response['body'] );
 		if( version_compare( $version, WP_ROCKET_VERSION, '<=' ) )
 			return false;
 		$plugin_transient = get_site_transient( 'update_plugins' );
-		$a = array(
+		$temp_array = array(
 			'slug' => $plugin_folder,
 			'new_version' => $version,
 			'url' => 'http://wp-rocket.me',
 			'package' => $url
 		);
 	}else{
-		$a = array();
+		$temp_array = array();
 	}
 	if( $plugin_transient ) {
-		$o = (object)$a;
-		$plugin_transient->response[$plugin_folder.'/'.$plugin_file] = $o;
+		$temp_object = (object)$temp_array;
+		$plugin_transient->response[$plugin_folder.'/'.$plugin_file] = $temp_object;
 		set_site_transient( 'update_plugins', $plugin_transient );
-		set_site_transient( 'update_wprocket', time() );
 	}else{
 		return false;
 	}

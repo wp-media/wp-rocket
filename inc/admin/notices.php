@@ -1,6 +1,33 @@
 <?php
 defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 
+
+/**
+ * This warning is displayed to inform the user that a plugin de/activation can be followed by a cache purgation
+ *
+ * since 1.3.0
+ *
+ */
+
+add_action( 'admin_notices', 'rocket_warning_plugin_modification' );
+function rocket_warning_plugin_modification()
+{
+
+	global $pagenow, $current_user;
+	if( 'plugins.php'==$pagenow && current_user_can( 'manage_options' ) ) {
+		$boxes = get_user_meta( $current_user->ID, 'rocket_boxes', true );
+		if( !in_array( __FUNCTION__, (array)$boxes ) ) { ?>
+
+			<div class="updated">
+				<span class="rocket_cross"><a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>"><img src="<?php echo admin_url( '/images/no.png' ); ?>" title="Ignorer jusqu'à la prochaine fois" alt="Ignorer" /></a></span>
+				<p><strong>WP Rocket</strong> : Activer ou désactiver un plugin peut être suivi d'une purge du cache si ce plugin impacte le site en front-end.</p>
+			</div>
+
+			<?php
+		}
+	}
+}
+
 /**
  * This warning is displayed to inform the user that the plugin can not be tested in connected mode
  *

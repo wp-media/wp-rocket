@@ -103,7 +103,7 @@ function rocket_clean_post( $post_id )
 		global $sitepress;
 		$root = WP_ROCKET_CACHE_PATH . rocket_remove_url_protocol( $sitepress->language_url($sitepress->get_language_for_element($post_id, 'post_' . get_post_type($post_id))) );
 
-		@unlink( $root . 'index.html' );
+		@unlink( $root . '/index.html' );
 		rocket_rrmdir( $root . $GLOBALS['wp_rewrite']->pagination_base );
 
 	}
