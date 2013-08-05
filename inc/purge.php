@@ -40,6 +40,9 @@ add_action( 'delete_post', 'rocket_clean_post' );
 add_action( 'clean_post_cache', 'rocket_clean_post' );
 function rocket_clean_post( $post_id )
 {
+	if( defined( 'DOING_AUTOSAVE' ) )
+		return;
+
 	// Get all post infos
 	$post = get_post($post_id);
 	
@@ -74,9 +77,9 @@ function rocket_clean_post( $post_id )
 		array_push( $purge_urls, get_permalink( $previous_in_same_cat_post ) );
 
 	// Add urls page to purge every time a post is save
-	$options = get_option( WP_ROCKET_SLUG );
-	if( isset( $options['cache_purge_pages'] ) && count( $options['cache_purge_pages'] )>=1 )
-		foreach( $options['cache_purge_pages'] as $page )
+	$cache_purge_pages = get_rocket_option( 'cache_purge_pages' );
+	if( $cache_purge_pages )
+		foreach( $cache_purge_pages as $page )
 			array_push( $purge_urls, home_url( $page ) );
 
 	// Add all terms archive page to purge

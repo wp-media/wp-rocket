@@ -11,7 +11,6 @@ defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 add_action( 'admin_menu', 'rocket_admin_menu' );
 function rocket_admin_menu()
 {
-	$options = get_option( WP_ROCKET_SLUG );
 	add_options_page( 'WP Rocket', 'WP Rocket', 'manage_options', 'wprocket', 'rocket_display_options' );
 }
 
@@ -26,7 +25,6 @@ function rocket_admin_menu()
 
 function rocket_field( $args )
 {
-	$options = get_option( WP_ROCKET_SLUG );
 	if( !is_array( reset( $args ) ) )
 		$args = array( $args );
 	$full = $args;
@@ -41,7 +39,7 @@ function rocket_field( $args )
 		switch( $args['type'] ){
 			case 'number' :
 			case 'text' :
-				$value = isset( $options[$args['name']] ) ? esc_attr( $options[$args['name']] ) : '';
+				$value = esc_attr( get_rocket_option( $args['name'], '' ) );
 				$number_options = $args['type']=='number' ? ' min="0" class="small-text"' : '';
 				?>
 					<legend class="screen-reader-text"><span><?php echo $args['label_screen']; ?></span></legend>
@@ -56,7 +54,8 @@ function rocket_field( $args )
 				echo $description;
 			break;
 			case 'textarea' :
-				$value = !empty( $options[$args['name']] ) ? esc_textarea( implode( "\n" , $options[$args['name']] ) ) : '';
+				$t_temp = get_rocket_option( $args['name'], '' );
+				$value = !empty( $t_temp ) ? esc_textarea( implode( "\n" , $t_temp ) ) : '';
 				?>
 					<legend class="screen-reader-text"><span><?php echo $args['label_screen']; ?></span></legend>
 					<label><textarea id="<?php echo $args['label_for']; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]" cols="50" rows="5"><?php echo $value; ?></textarea>
@@ -65,10 +64,9 @@ function rocket_field( $args )
 				<?php
 			break;
 			case 'checkbox' :
-				$checked = isset( $options[$args['name']] ) ? checked( $options[$args['name']], 1, false ) : '';
 				?>
 					<legend class="screen-reader-text"><span><?php echo $args['label_screen']; ?></span></legend>
-					<label><input type="checkbox" id="<?php echo $args['name']; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]" value="1" <?php echo $checked; ?>/> <?php echo $args['label']; ?>
+					<label><input type="checkbox" id="<?php echo $args['name']; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]" value="1" <?php checked( get_rocket_option( $args['name'], 0 ), 1 ); ?>/> <?php echo $args['label']; ?>
 					</label>
 					<?php echo $description; ?>
 				<?php
@@ -78,7 +76,7 @@ function rocket_field( $args )
 					<legend class="screen-reader-text"><span><?php echo $args['label_screen']; ?></span></legend>
 					<label>	<select id="<?php echo $args['name']; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]">
 							<?php foreach( $args['options'] as $val => $title) : ?>
-								<option value="<?php echo $val; ?>" <?php selected( isset( $options[$args['name']] ) && $options[$args['name']]==$val, true ); ?>><?php echo $title; ?></option>
+								<option value="<?php echo $val; ?>" <?php selected( get_rocket_option( $args['name'] ), $val ); ?>><?php echo $title; ?></option>
 							<?php endforeach; ?>
 							</select>
 					<?php echo $label; ?>
@@ -101,15 +99,15 @@ function rocket_field( $args )
  */
 function rocket_defered_module()
 {
-	$options = get_option( WP_ROCKET_SLUG );
 ?>
 	<fieldset>
 	<legend class="screen-reader-text"><span><?php _e( 'Fichiers <strong>JS</strong> en chargement différé (Deferred Loading JavaScript)', 'rocket' ); ?></span></legend>
 	<div id="rktdrop">
 		<?php
-		if( count( $options['deferred_js_files'] ) ) {
-			foreach( $options['deferred_js_files'] as $k=>$_url ) {
-				$checked = isset( $options['deferred_js_wait'][$k] ) ? checked( $options['deferred_js_wait'][$k], '1', false ) : '';
+		$deferred_js_files = get_rocket_option( 'deferred_js_files' );
+		if( $deferred_js_files ) {
+			foreach( $deferred_js_files as $k=>$_url ) {
+				$checked = isset( $deferred_js_wait[$k] ) ? checked( $deferred_js_wait[$k], '1', false ) : '';
 				// The loop on files
 			?>
 			<div class="rktdrag">
@@ -340,7 +338,6 @@ function rocket_sanitize_js( $file )
 
 function rocket_settings_callback( $inputs )
 {
-	$options = get_option( WP_ROCKET_SLUG );
 	// Clean inputs
 	$inputs['cache_purge_pages'] = 		isset( $inputs['cache_purge_pages'] ) ? 	array_unique( array_filter( array_map( 'rocket_clean_exclude_file',	array_map( 'esc_url', 					explode( "\n", trim( $inputs['cache_purge_pages'] ) ) ) ) ) 	)	: array();
 	$inputs['cache_reject_uri'] = 		isset( $inputs['cache_reject_uri'] ) ? 		array_unique( array_filter( array_map( 'rocket_clean_exclude_file',	array_map( 'esc_url', 					explode( "\n", trim( $inputs['cache_reject_uri'] ) ) ) ) ) 		)	: array();
@@ -361,8 +358,8 @@ function rocket_settings_callback( $inputs )
 		$inputs['deferred_js_wait'] = array_values( $inputs['deferred_js_wait'] );
 	}
 
-	$inputs['purge_cron_interval'] = 	isset( $inputs['purge_cron_interval'] ) ? 	(int)$inputs['purge_cron_interval'] : $options['purge_cron_interval'];
-	$inputs['purge_cron_unit'] = 		isset( $inputs['purge_cron_unit'] ) ? $inputs['purge_cron_unit'] : $options['purge_cron_unit'];
+	$inputs['purge_cron_interval'] = 	isset( $inputs['purge_cron_interval'] ) ? (int)$inputs['purge_cron_interval'] : get_rocket_option( 'purge_cron_interval' );
+	$inputs['purge_cron_unit'] = 		isset( $inputs['purge_cron_unit'] ) ? $inputs['purge_cron_unit'] : get_rocket_option( 'purge_cron_unit' );
 	if( $inputs['consumer_key']==hash( 'crc32', rocket_get_domain( home_url() ) ) ){
 		$response = wp_remote_get( WP_ROCKET_WEB_VALID, array( 'timeout'=>30 ) );
 		if( !is_a($response, 'WP_Error') && strlen( $response['body'] )==32 )
@@ -457,8 +454,8 @@ function rocket_add_script_in_options()
 		$('.nav-tab-wrapper a').css({outline: '0px'});
 		$('#rockettabs .rkt-tab').hide();
 		$('#rockettabs h3').hide();
-		var tab = '';
-		if( tab = getCookie( 'rocket_tab' ) && tab!='' ) {
+		var tab = unescape( getCookie( 'rocket_tab' ) );
+		if( tab!='' ) {
 			$('#rockettabs .nav-tab').hide();
 			$('h2.nav-tab-wrapper a[href="'+tab+'"]').addClass('nav-tab-active');
 			$(tab).show();

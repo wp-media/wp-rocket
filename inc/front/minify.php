@@ -15,16 +15,14 @@ add_filter( 'rocket_buffer', 'rocket_minify_process', 12 );
 function rocket_minify_process( $buffer )
 {
 
-	$options 		 = get_option( 'wp_rocket_settings' );
-	$enable_js 		 = isset( $options['minify_js'] ) && $options['minify_js'] == '1';
-	$enable_css 	 = isset( $options['minify_css'] ) && $options['minify_css'] == '1';
-	$enable_html 	 = isset( $options['minify_html'] ) && $options['minify_html'] == '1';
+	$enable_js 		 = get_rocket_option( 'minify_js' ) == '1';
+	$enable_css 	 = get_rocket_option( 'minify_css' ) == '1';
+	$enable_html 	 = get_rocket_option( 'minify_html' ) == '1';
 	$all_link_tags 	 = '';
 	$all_script_tags = '';
 
 	if( $enable_css || $enable_js )
 	{
-
 		list( $buffer, $conditionals ) = rocket_extract_ie_conditionals( $buffer );
 
 		// Minify CSS
@@ -130,8 +128,6 @@ function rocket_minify_inline_js( $js )
 function rocket_minify_css( $buffer )
 {
 
-	$options = get_option( 'wp_rocket_settings' );
-
     $internals_css = array();
     $externals_css = array();
     $excludes_css = array();
@@ -157,7 +153,7 @@ function rocket_minify_css( $buffer )
             // Insert the relative path to the array without query string
 			if( $css_url['host'] == $home_url['host'] )
 			{
-				if( !in_array( $css_url['path'], $options['exclude_css'] ) && pathinfo( $css_url['path'], PATHINFO_EXTENSION ) == 'css' )
+				if( !in_array( $css_url['path'], get_rocket_option( 'exclude_css', array() ) ) && pathinfo( $css_url['path'], PATHINFO_EXTENSION ) == 'css' )
 					$internals_css[] = $css_url['path'];
 				else
 					$excludes_css[] = $tag;
@@ -219,8 +215,6 @@ function rocket_minify_css( $buffer )
 function rocket_minify_js( $buffer )
 {
 
-	$options = get_option( 'wp_rocket_settings' );
-
     $internals_js = array();
     $externals_js = array();
     $excludes_js  = array();
@@ -241,7 +235,7 @@ function rocket_minify_js( $buffer )
         // Insert the relative path to the array without query string
         if( $js_url['host'] == $home_url['host'] )
         {
-	        if( !in_array( $js_url['path'], $options['exclude_js'] ) && pathinfo( $js_url['path'], PATHINFO_EXTENSION ) == 'js' )
+	        if( !in_array( $js_url['path'], get_rocket_option( 'exclude_js', array() ) ) && pathinfo( $js_url['path'], PATHINFO_EXTENSION ) == 'js' )
 	        	$internals_js[] = $js_url['path'];
 	        else
 	        	$excludes_js[] = $tag;

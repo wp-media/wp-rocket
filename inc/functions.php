@@ -13,11 +13,10 @@ defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 function get_rocket_pages_not_cached()
 {
 	global $wp_rewrite;
-	$options = get_option( 'wp_rocket_settings' );
 	$pages = array( '.*/' . $wp_rewrite->feed_base . '/' );
-
-	if( isset( $options['cache_reject_uri'] ) && count( $options['cache_reject_uri'] ) >= 1 )
-		$pages =  array_filter( array_merge( $pages, (array)$options['cache_reject_uri'] ) );
+	$cache_reject_uri = get_rocket_option( 'cache_reject_uri', array() );
+	if( count( $cache_reject_uri ) )
+		$pages =  array_filter( array_merge( $pages, (array)$cache_reject_uri ) );
 
 	return implode( '|', $pages );
 }
@@ -34,7 +33,6 @@ function get_rocket_pages_not_cached()
 
 function get_rocket_cookies_not_cached()
 {
-	$options = get_option( 'wp_rocket_settings' );
 	$cookies = array(
 		str_replace( COOKIEHASH, '', LOGGED_IN_COOKIE ),
 		'wp-postpass_',
@@ -42,6 +40,7 @@ function get_rocket_cookies_not_cached()
 		'comment_author_',
 		'comment_author_email_'
 	);
+	$cache_reject_cookies = get_rocket_option( 'cache_reject_cookies', array() );
 
 	if( isset( $options['cache_reject_cookies'] ) && count( $options['cache_reject_cookies'] ) )
 		$cookies =  array_filter( array_merge( $cookies, (array)$options['cache_reject_cookies'] ) );
@@ -60,8 +59,7 @@ function get_rocket_cookies_not_cached()
 
 function is_rocket_cache_mobile()
 {
-	$options = get_option( 'wp_rocket_settings' );
-	return isset( $options['cache_mobile'] ) && $options['cache_mobile'] == '1';
+	return get_rocket_option( 'cache_mobile', 0 );
 }
 
 
@@ -259,10 +257,9 @@ function rocket_clean_exclude_file( $file )
 
 function rocket_valid_key()
 {
-	$options = get_option( WP_ROCKET_SLUG );
-	if( !isset( $options['consumer_key'] ) || !isset( $options['secret_key'] ) )
+	if( !get_rocket_option( 'consumer_key' ) || !get_rocket_option( 'secret_key' ) )
 		return false;
-	return $options['consumer_key']==hash( 'crc32', rocket_get_domain( home_url() ) ) && $options['secret_key']==md5( $options['consumer_key'] );
+	return get_rocket_option( 'consumer_key' )==hash( 'crc32', rocket_get_domain( home_url() ) ) && get_rocket_option( 'secret_key' )==md5( get_rocket_option( 'consumer_key' ) );
 }
 
 
@@ -277,24 +274,24 @@ function rocket_valid_key()
 
 function get_rocket_cron_interval()
 {
-	$options = get_option( WP_ROCKET_SLUG );
-	if( !isset( $options['purge_cron_interval'] ) || !isset( $options['purge_cron_unit'] ) )
+	if( !get_rocket_option( 'purge_cron_interval' ) || !get_rocket_option( 'purge_cron_unit' ) )
 		return 0;
-	return (int)( $options['purge_cron_interval'] * constant( $options['purge_cron_unit'] ) );
+	return (int)( get_rocket_option( 'purge_cron_interval' ) * constant( get_rocket_option( 'purge_cron_unit' ) ) );
 }
 
 
 
 /**
- * TO DO - Description
+ * A wrapper to easily get rocket option
  *
- * @since 1.0
+ * @since 1.3.0
  *
  */
 
 function get_rocket_option( $option, $default=false )
 {
-// soon
+	$options = get_option( WP_ROCKET_SLUG );
+	return isset( $options[$option] ) ? $options[$option] : $default;
 }
 
 

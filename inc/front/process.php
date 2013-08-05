@@ -47,7 +47,7 @@ function do_rocket_process( $buffer )
 		// - Add width and height attributes on images
 		// - Deferred JavaScript files
 		// - Minification HTML/CSS/JavaScript
-		$buffer = apply_filters( 'rocket_buffer_process', $buffer );
+		$buffer = apply_filters( 'rocket_buffer', $buffer );
 		
 	    // Get root cache dir
 	    $host = rocket_remove_url_protocol( $_SERVER['HTTP_HOST'] );

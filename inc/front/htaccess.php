@@ -82,8 +82,11 @@ function get_rocket_htaccess_mod_rewrite()
 
 	// Get cache root
 	$cache_root = $site_root . str_replace( ABSPATH, '', WP_ROCKET_CACHE_PATH );
+
 	// Set correct HOST dependong on hook (not multisite compatible!)
 	$HTTP_HOST = apply_filters( 'rocket_url_no_dots', false ) ? rocket_remove_url_protocol( home_url() ) : '%{HTTP_HOST}';
+
+	$is_1and1_or_force = apply_filters( 'rocket_force_full_path', strpos( $_SERVER['DOCUMENT_ROOT'], '/kunden/' ) === 0 );
 
 	$rules  = '<IfModule mod_rewrite.c>' . "\n";
 	$rules .= 'RewriteEngine On' . "\n";
@@ -94,8 +97,11 @@ function get_rocket_htaccess_mod_rewrite()
 	$rules .= 'RewriteCond %{REQUEST_URI} !^(' . get_rocket_pages_not_cached() . ')$ [NC]' . "\n";
 	$rules .= !is_rocket_cache_mobile() ? get_rocket_htaccess_mobile_rewritecond() : '';
 	$rules .= 'RewriteCond %{HTTPS} off' . "\n";
-	$rules .= 'RewriteCond "%{DOCUMENT_ROOT}/'. basename( dirname( WP_ROCKET_CACHE_PATH ) ) . '/' . basename( WP_ROCKET_CACHE_PATH ) .'/'.$HTTP_HOST.'/%{REQUEST_URI}/index.html" -f' . "\n";
-	$rules .= 'RewriteRule ^(.*) ' . $cache_root . $HTTP_HOST . '/%{REQUEST_URI}/index.html [L]' . "\n";
+	if( $is_1and1_or_force )
+		$rules .= 'RewriteCond "' . str_replace( '/kunden/', '/', WP_ROCKET_CACHE_PATH ) . $HTTP_HOST . '%{REQUEST_URI}/index.html" -f' . "\n";
+	else
+		$rules .= 'RewriteCond "%{DOCUMENT_ROOT}/'. basename( dirname( WP_ROCKET_CACHE_PATH ) ) . '/' . basename( WP_ROCKET_CACHE_PATH ) .'/'.$HTTP_HOST.'%{REQUEST_URI}/index.html" -f' . "\n";
+	$rules .= 'RewriteRule ^(.*) ' . $cache_root . $HTTP_HOST . '%{REQUEST_URI}/index.html [L]' . "\n";
 	$rules .= '</IfModule>' . "\n";
 	$rules = apply_filters( 'rocket_htaccess_mod_rewrite', $rules );
 

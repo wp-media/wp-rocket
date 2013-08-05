@@ -20,7 +20,7 @@ function rocket_warning_plugin_modification()
 
 			<div class="updated">
 				<span class="rocket_cross"><a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>"><img src="<?php echo admin_url( '/images/no.png' ); ?>" title="Ignorer jusqu'à la prochaine fois" alt="Ignorer" /></a></span>
-				<p><strong>WP Rocket</strong> : Activer ou désactiver un plugin peut être suivi d'une purge du cache si ce plugin impacte le site en front-end.</p>
+				<p><strong>WP Rocket</strong> : Une ou plusieurs extensions ont été activées ou désactivées, n'oubliez pas de vider le cache si nécessaire. <a class="wp-core-ui button" href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=all' ), 'purge_cache_all' ); ?>">Vider le cache</a></p>
 			</div>
 
 			<?php

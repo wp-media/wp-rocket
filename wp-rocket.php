@@ -24,12 +24,12 @@ define( 'WP_ROCKET_WEB_INFO'		, WP_ROCKET_WEB_MAIN.'plugin_information.php');
 define( 'WP_ROCKET_WEB_SUPPORT'		, WP_ROCKET_WEB_MAIN.'forum/fr/');
 define( 'WP_ROCKET_BOT_URL'			, 'http://bot.wp-rocket.me/launch.php');
 define( 'WP_ROCKET_FILE'			, __FILE__ );
-define( 'WP_ROCKET_PATH'			, realpath( plugin_dir_path(WP_ROCKET_FILE) ).'/' );
+define( 'WP_ROCKET_PATH'			, realpath( plugin_dir_path( WP_ROCKET_FILE ) ).'/' );
 define( 'WP_ROCKET_INC_PATH'		, realpath( WP_ROCKET_PATH . 'inc/' ) . '/' );
 define( 'WP_ROCKET_FRONT_PATH'		, realpath( WP_ROCKET_INC_PATH . 'front/' ) . '/' );
 define( 'WP_ROCKET_ADMIN_PATH'		, realpath( WP_ROCKET_INC_PATH . 'admin' ) . '/' );
-define( 'WP_ROCKET_CACHE_PATH'		, str_replace( DIRECTORY_SEPARATOR, '/',  WP_CONTENT_DIR ) . '/wp-rocket-cache/' );
-define( 'WP_ROCKET_URL'				, plugin_dir_url(WP_ROCKET_FILE) );
+define( 'WP_ROCKET_CACHE_PATH' 		, WP_CONTENT_DIR . '/wp-rocket-cache/' );
+define( 'WP_ROCKET_URL'				, plugin_dir_url( WP_ROCKET_FILE ) );
 define( 'WP_ROCKET_INC_URL'			, WP_ROCKET_URL . 'inc/' );
 define( 'WP_ROCKET_FRONT_URL'		, WP_ROCKET_INC_URL . 'front/' );
 define( 'WP_ROCKET_FRONT_JS_URL'	, WP_ROCKET_FRONT_URL . 'js/' );
@@ -75,10 +75,8 @@ function rocket_init()
 		require WP_ROCKET_INC_PATH . '/admin-bar.php';
 	}
 
-	$options = get_option( WP_ROCKET_SLUG );
-
 	if( rocket_valid_key() )
-		if( isset( $options['purge_cron_interval'] ) && (int)$options['purge_cron_interval'] > 0 )
+		if( (int)get_rocket_option( 'purge_cron_interval' ) > 0 )
 			require  WP_ROCKET_INC_PATH . '/cron.php';
 
 
@@ -98,13 +96,14 @@ function rocket_init()
 		require WP_ROCKET_FRONT_PATH . '/cookie.php';
 		require WP_ROCKET_FRONT_PATH . '/images.php';
 		require WP_ROCKET_FRONT_PATH . '/enqueue.php';
-		require WP_ROCKET_FRONT_PATH . '/deferred-js.php';
+		if( get_rocket_option( 'deferred_js_files' ) )
+			require WP_ROCKET_FRONT_PATH . '/deferred-js.php';
 
-		if( isset( $options['lazyload'] ) && $options['lazyload'] == '1' )
+		if( get_rocket_option( 'lazyload' ) == '1' )
 			require WP_ROCKET_FRONT_PATH . '/lazyload.php';
 	}
 
-	// You can hook this to trigger any action when WP Rocket is correctly loaded, so, not in AJAX or AUTOSAVE mode
+	// You can hook this to trigger any action when WP Rocket is correctly loaded, so, not in AUTOSAVE mode
 	if( rocket_valid_key() )
 		do_action( 'wp_rocket_loaded' );
 

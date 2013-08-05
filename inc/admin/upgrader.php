@@ -13,8 +13,7 @@ add_action( 'admin_init', 'rocket_upgrader' );
 function rocket_upgrader()
 {
 	// Grab some infos
-	$options = get_option( WP_ROCKET_SLUG );
-	$actual_version = isset( $options['version'] ) ? $options['version'] : false;
+	$actual_version = get_rocket_option( 'version' );
 	// You can hook the upgrader to trigger any action when WP Rocket is upgraded
 	if( !$actual_version ){ // first install
 		do_action( 'wp_rocket_first_install' );
@@ -27,7 +26,7 @@ function rocket_upgrader()
 		flush_rocket_htaccess();
 		flush_rewrite_rules();
 		rocket_renew_all_boxes();
-		$options = get_option( WP_ROCKET_SLUG );
+		$options = get_option( WP_ROCKET_SLUG ); // do not use get_rocket_option() here
 		$options['version'] = WP_ROCKET_VERSION;
 		if( isset( $options['consumer_key'] ) && $options['consumer_key']==hash( 'crc32', rocket_get_domain( home_url() ) ) ){
 			$response = wp_remote_get( WP_ROCKET_WEB_VALID, array( 'timeout'=>30 ) );
