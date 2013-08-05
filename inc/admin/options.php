@@ -249,7 +249,6 @@ function rocket_display_options()
 			<?php endif; ?>
 		</h2>
 		<div id="rockettabs">
-<<<<<<< HEAD
 			<?php if( !rocket_valid_key() ) : ?>
 				<div class="rkt-tab" id="tab_apikey"><?php do_settings_sections( 'apikey' ); ?></div>
 			<?php else: ?>
