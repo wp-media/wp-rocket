@@ -40,12 +40,15 @@ add_action( 'delete_post', 'rocket_clean_post' );
 add_action( 'clean_post_cache', 'rocket_clean_post' );
 function rocket_clean_post( $post_id )
 {
+
 	if( defined( 'DOING_AUTOSAVE' ) )
 		return;
 
 	// Get all post infos
 	$post = get_post($post_id);
-	
+
+	do_action( 'before_rocket_clean_post', $post );
+
 	// No purge for specifics conditions
 	if( empty($post->post_type) || $post->post_type == 'nav_menu_item' )
 		return;
@@ -84,18 +87,18 @@ function rocket_clean_post( $post_id )
 
 	// Add all terms archive page to purge
 	$purge_terms = get_rocket_post_terms_urls( $post_id );
-	if( count($purge_terms)>=1 )
+	if( count($purge_terms) )
 		$purge_urls = array_merge( $purge_urls, $purge_terms );
 
 	// Add all dates archive page to purge
 	$purge_dates = get_rocket_post_dates_urls( $post_id );
-	if( count($purge_dates)>=1 )
+	if( count($purge_dates) )
 		$purge_urls = array_merge( $purge_urls, $purge_dates );
-	
+
 	// Add the author page
 	$purge_author = array( get_author_posts_url( $post->post_author ) );
 	$purge_urls = array_merge( $purge_urls, $purge_author );
-	
+
 	// Purge all files
 	rocket_clean_files( apply_filters( 'rocket_post_purge_urls', $purge_urls ) );
 
@@ -114,29 +117,48 @@ function rocket_clean_post( $post_id )
 		rocket_clean_home();
 	}
 
-	// Add Homepage URL to $purge_urls for bot crawl
-	array_push( $purge_urls, home_url() );
-
-	// Remove dates archives page and author page to preload cache
-	$purge_urls = array_diff( $purge_urls , $purge_dates, $purge_author );
-	//$purge_urls = array_diff( $purge_urls , $purge_author );
-
-	// Create json file and run WP Rocket Bot
-	$json_encode_urls = '["'.implode( '","', array_filter($purge_urls) ).'"]';
-	if(@file_put_contents( WP_ROCKET_PATH . 'cache.json', $json_encode_urls ));
-		run_rocket_bot( 'cache-json' );
-
 	// Purge all parents
 	$parents = get_post_ancestors( $post_id );
 	if( count( $parents ) ) {
 
 		foreach( $parents as $parent_id )
-			rocket_clean_post( $parent_id);
+			rocket_clean_post( $parent_id );
 
 	}
 
+	do_action( 'after_rocket_clean_post', $post, $purge_urls );
 }
 
+
+
+/**
+ * run_rocket_bot_after_clean_post function.
+ *
+ * @since 1.3.0
+ *
+ */
+
+add_action( 'after_rocket_clean_post', 'run_rocket_bot_after_clean_post', 10, 2 );
+function run_rocket_bot_after_clean_post( $post, $purge_urls )
+{
+
+	// Add Homepage URL to $purge_urls for bot crawl
+	array_push( $purge_urls, home_url() );
+
+	// Get the author page
+	$purge_author = array( get_author_posts_url( $post->post_author ) );
+
+	// Get all dates archive page
+	$purge_dates = get_rocket_post_dates_urls( $post->ID );
+
+	// Remove dates archives page and author page to preload cache
+	$purge_urls = array_diff( $purge_urls, $purge_dates, $purge_author );
+
+	// Create json file and run WP Rocket Bot
+	$json_encode_urls = '["'.implode( '","', array_filter($purge_urls) ).'"]';
+	if(@file_put_contents( WP_ROCKET_PATH . 'cache.json', $json_encode_urls ));
+		run_rocket_bot( 'cache-json' );
+}
 
 
 /**
@@ -169,8 +191,10 @@ function rocket_purge_cache()
 				if( rocket_is_plugin_active('sitepress-multilingual-cms/sitepress.php') ) {
 
 					global $sitepress;
-
+					
+					// Get current lang
 					$_lang = isset( $_GET['lang'] ) ? sanitize_key( $_GET['lang'] ) : 'all';
+					
 					// Get all active languages
 					$langs = $sitepress->get_active_languages();
 

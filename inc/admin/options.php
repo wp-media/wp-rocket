@@ -254,8 +254,48 @@ function rocket_display_options()
 			<div class="rkt-tab" id="tab_tools"><?php do_settings_sections( 'tools' ); ?></div>
 			<div class="rkt-tab" id="tab_tutos"></div>
 			<div class="rkt-tab" id="tab_faq">
+				<h2>Quels outils dois-je utilisé pour mesurer les performances de mon site ?</h2>
+				<p>Vous pouvez mesuré les performances de votre site Internet à l’aide des outils suivants : </p>
+				<ul>
+					<li>- Pingdom Tools</li>
+					<li>- GT Metrix</li>
+					<li>- Webpagetest</li>
+				</ul>
+
+				<p>Ces outils donnent 2 indications :</p>
+				<ul>
+					<li>- une note globale des bonnes pratiques à appliquer</li>
+					<li>- un temps de chargement</li>
+				</ul>
+				
+				<p>Ces données sont indicatives et ne reflètent pas forcément  la vitesse d’affichage réelle de votre site Internet.</p>
+
+				<p>Pour réaliser des tests de temps de chargement proche de la réalité,, nous conseillons d’utiliser Pingdom Tools avec l’option “Amsterdam” comme serveur.</p>
+				
 				<h2>WP Rocket fonctionne-t-il si avec les permaliens par défaut ?</h2>
-				<p>Non, il est nécessaire d'avoir des percalines personnalisés du type <code>http://monsite.com/mon-article/</code> plutôt que <code>http://monsite.com/?p=1234</code>.</p>
+				<p>Non.</p>
+				
+				<p>Il est nécessaire d'avoir des percalines personnalisés du type <code>http://monsite.com/mon-article/</code> plutôt que <code>http://monsite.com/?p=1234</code>.</p>
+				
+				<h2>Est-ce que WP Rocket est compatible avec les autres plugins de cache, tels que WP Super Cache ou W3 Total Cache ?</h2>		
+				<p>Non.</p>
+				
+				<p>Il est impératif de désactiver tous les autres plugins d’optimisation (cache, minification, lazy load) avant l’activation de WP Rocket.</p>
+				
+				<h2>En quoi consiste la minification et concaténation des fichiers ?</h2>
+				<p>La minification consiste à supprimer tous les éléments superflus d’une fichier HTML, CSS ou JavaScript : espaces, commentaires, etc... Cela permet de diminuer la taille des fichiers. Ainsi, les navigateurs lisent plus rapidement les fichiers.</p>
+				
+				<p>La concaténation consiste à regrouper en un seul, un ensemble de fichiers. Cela a pour effet de diminuer le nombre de requêtes HTTP.</p>
+				<h2>Que dois-je faire si WP Rocket déforme l’affichage de mon site ?</h2>
+				<p>Il y a de fortes chances que la déformation soit provoquée par la minification des fichiers HTML, CSS et/ou JavaScript. Pour résoudre le problème, nous vous conseillons de regarder la vidéo suivante :</p>
+				
+				<h2>Comment fonctionne les robots de préchargement des fichiers de cache ?</h2>
+				<p>Pour mettre une page en cache, il faut un premier visiteur. Pour éviter qu’un premier visiteur le fasse, nous avons développé deux robots (en python) qui crawl les pages de votre site Internet.</p>
+				
+				<p>Le premier va visiter votre site à la demande à l’aide du bouton “Précharger le cache”. Le second va automatiquement visiter votre site dès que vous allez créer/éditer/supprimer un article.</p>
+				
+				<p>Pour plus d’informations, vous pouvez consulter notre vidéo à ce propos :</p>
+				
 			</div>
 			<?php endif; ?>
 		</div>
