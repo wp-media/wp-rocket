@@ -238,25 +238,28 @@ function rocket_display_options()
 		<?php submit_button(); ?>
 		<h2 class="nav-tab-wrapper">
 			<?php if( rocket_valid_key() ) : ?>
-			<a href="#tab_basic" class="nav-tab"><?php _e( 'Options de base', 'rocket' ); ?></a>
-			<a href="#tab_advanced" class="nav-tab"><?php _e( 'Options avancées', 'rocket' ); ?></a>
-			<a href="#tab_tools" class="nav-tab"><?php _e( 'Outils', 'rocket' ); ?></a>
-			<a href="#tab_tutos" class="nav-tab"><?php _e( 'Tutoriels', 'rocket' ); ?></a>
-			<a href="#tab_faq" class="nav-tab"><?php _e( 'F.A.Q.', 'rocket' ); ?></a>
+				<a href="#tab_basic" class="nav-tab"><?php _e( 'Options de base', 'rocket' ); ?></a>
+				<a href="#tab_advanced" class="nav-tab"><?php _e( 'Options avancées', 'rocket' ); ?></a>
+				<a href="#tab_tools" class="nav-tab"><?php _e( 'Outils', 'rocket' ); ?></a>
+				<a href="#tab_tutos" class="nav-tab"><?php _e( 'Tutoriels', 'rocket' ); ?></a>
+				<a href="#tab_faq" class="nav-tab"><?php _e( 'F.A.Q.', 'rocket' ); ?></a>
+				<input type="hidden" name="wp_rocket_settings[consumer_key]" value="<?php esc_attr_e( get_rocket_option( 'consumer_key' ) ); ?>" />
+			<?php else: ?>
+				<a href="#tab_apikey" class="nav-tab"><?php _e( 'API KEY', 'rocket' ); ?></a>
 			<?php endif; ?>
-			<a href="#tab_apikey" class="nav-tab"><?php _e( 'API KEY', 'rocket' ); ?></a>
 		</h2>
 		<div id="rockettabs">
-			<div class="rkt-tab" id="tab_apikey"><?php do_settings_sections( 'apikey' ); ?></div>
-			<?php if( rocket_valid_key() ) : ?>
-			<div class="rkt-tab" id="tab_basic"><?php do_settings_sections( 'basic' ); ?></div>
-			<div class="rkt-tab" id="tab_advanced"><?php do_settings_sections( 'advanced' ); ?></div>
-			<div class="rkt-tab" id="tab_tools"><?php do_settings_sections( 'tools' ); ?></div>
-			<div class="rkt-tab" id="tab_tutos"></div>
-			<div class="rkt-tab" id="tab_faq">
-				<h2>WP Rocket fonctionne-t-il si avec les permaliens par défaut ?</h2>
-				<p>Non, il est nécessaire d'avoir des percalines personnalisés du type <code>http://monsite.com/mon-article/</code> plutôt que <code>http://monsite.com/?p=1234</code>.</p>
-			</div>
+			<?php if( !rocket_valid_key() ) : ?>
+				<div class="rkt-tab" id="tab_apikey"><?php do_settings_sections( 'apikey' ); ?></div>
+			<?php else: ?>
+				<div class="rkt-tab" id="tab_basic"><?php do_settings_sections( 'basic' ); ?></div>
+				<div class="rkt-tab" id="tab_advanced"><?php do_settings_sections( 'advanced' ); ?></div>
+				<div class="rkt-tab" id="tab_tools"><?php do_settings_sections( 'tools' ); ?></div>
+				<div class="rkt-tab" id="tab_tutos"></div>
+				<div class="rkt-tab" id="tab_faq">
+					<h2>WP Rocket fonctionne-t-il si avec les permaliens par défaut ?</h2>
+					<p>Non, il est nécessaire d'avoir des percalines personnalisés du type <code>http://monsite.com/mon-article/</code> plutôt que <code>http://monsite.com/?p=1234</code>.</p>
+				</div>
 			<?php endif; ?>
 		</div>
 		<?php submit_button(); ?>
