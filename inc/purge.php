@@ -103,7 +103,7 @@ function rocket_clean_post( $post_id )
 	rocket_clean_files( apply_filters( 'rocket_post_purge_urls', $purge_urls ) );
 
 	// Never forget to purge homepage and their pagination
-	if( rocket_is_plugin_active('sitepress-multilingual-cms/sitepress.php') )
+	if( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) )
 	{
 
 		global $sitepress;
@@ -191,10 +191,10 @@ function rocket_purge_cache()
 				if( rocket_is_plugin_active('sitepress-multilingual-cms/sitepress.php') ) {
 
 					global $sitepress;
-					
+
 					// Get current lang
 					$_lang = isset( $_GET['lang'] ) ? sanitize_key( $_GET['lang'] ) : 'all';
-					
+
 					// Get all active languages
 					$langs = $sitepress->get_active_languages();
 
@@ -210,7 +210,7 @@ function rocket_purge_cache()
 
 						// Stock all URLs of langs to preserve
 						foreach ( array_keys($langs) as $lang )
-							$langs_to_preserve[] = rtrim(rocket_remove_url_protocol($sitepress->language_url($lang)),'/');
+							$langs_to_preserve[] = rtrim( rocket_remove_url_protocol($sitepress->language_url($lang)), '/' );
 
 
 						// Remove only cache files of selected lang

@@ -33,10 +33,10 @@ function rocket_plugin_row_meta( $plugin_meta, $plugin_file )
 		$plugin_meta = array_slice( $plugin_meta, 0, -2 );
 		$a = array();
 		$authors = array(// array(	'name'=>'WP-Rocket', 'url'=>'http://wp-rocket.me' ),
-						array( 	'name'=>'Jonathan Buttigieg', 'url'=>'http://www.geekpress.fr' ),
-						array( 	'name'=>'Julio Potier', 'url'=>'http://www.boiteaweb.fr' ),
-						array( 	'name'=>'Jean-Baptiste Marchand-Arvier', 'url'=>'http://jbma.me/blog/' ),
-					);
+			array( 	'name'=>'Jonathan Buttigieg', 'url'=>'http://www.geekpress.fr' ),
+			array( 	'name'=>'Julio Potier', 'url'=>'http://www.boiteaweb.fr' ),
+			array( 	'name'=>'Jean-Baptiste Marchand-Arvier', 'url'=>'http://jbma.me/blog/' ),
+		);
 		foreach( $authors as $author )
 			$a[] = '<a href="' . $author['url'] . '" title="' . esc_attr__( 'Visit author homepage' ) . '">' . $author['name'] . '</a>';
 		$a = sprintf( __( 'By %s' ), wp_sprintf( '%l', $a ) );
@@ -81,74 +81,28 @@ function rocket_post_submitbox_start()
 		echo '<div id="purge-action"><a class="button-secondary" href="'.wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=post-' . $post->ID ), 'purge_cache_post-' . $post->ID ).'">'.__( 'Purge cache', 'wp-rocket' ).'</a></div>';
 }
 
+
+
 /**
- * Add the styles for the tabs in settings page
+ * Add the CSS and JS files for WP Rocket options page
  *
  * since 1.0.0
  *
  */
 
-add_action( 'admin_print_styles-settings_page_wprocket', 'rocket_add_jquerys' );
-function rocket_add_jquerys()
+add_action( 'admin_print_styles-settings_page_wprocket', 'rocket_add_admin_css_js' );
+function rocket_add_admin_css_js()
 {
 	wp_enqueue_script( 'jquery-ui-sortable', null, array( 'jquery', 'jquery-ui-core' ), null, true );
 	wp_enqueue_script( 'jquery-ui-draggable', null, array( 'jquery', 'jquery-ui-core' ), null, true );
 	wp_enqueue_script( 'jquery-ui-droppable', null, array( 'jquery', 'jquery-ui-core' ), null, true );
+	wp_enqueue_script( 'options-wp-rocket', WP_ROCKET_ADMIN_JS_URL . 'options.js', array( 'jquery', 'jquery-ui-core' ), WP_ROCKET_VERSION, true );
+	wp_enqueue_script( 'fancybox-wp-rocket', WP_ROCKET_ADMIN_JS_URL . '/vendors/jquery.fancybox.pack.js', array( 'options-wp-rocket' ), WP_ROCKET_VERSION, true );
+	wp_enqueue_style( 'options-wp-rocket', WP_ROCKET_ADMIN_CSS_URL . 'options.css', array(), WP_ROCKET_VERSION );
+	wp_enqueue_style( 'fancybox-wp-rocket', WP_ROCKET_ADMIN_CSS_URL . 'fancybox/jquery.fancybox.css', array( 'options-wp-rocket' ), WP_ROCKET_VERSION );
 }
 
-/**
- * Add the scripts for the JS deffered files fields module box
- *
- * since 1.1.0
- *
- */
 
-add_action( 'admin_print_footer_scripts', 'rocket_script_settings_page', PHP_INT_MAX );
-function rocket_script_settings_page()
-{
-	global $current_screen;
-	if( $current_screen->id != 'settings_page_wprocket' )
-		return;
-?>
-	<script>
-	jQuery( document ).ready( function($){
-		function rocket_rename()
-		{
-			$('#rktdrop .rktdrag').each( function(i){
-				var $item_t_input = $(this).find( 'input[type=text]' );
-				var $item_c_input = $(this).find( 'input[type=checkbox]' );
-				$($item_t_input).attr( 'name', '<?php echo WP_ROCKET_SLUG; ?>[deferred_js_files]['+i+']' );
-				$($item_c_input).attr( 'name', '<?php echo WP_ROCKET_SLUG; ?>[deferred_js_wait]['+i+']' );
-			});
-		}
-		$('#rktdrop').sortable({
-			update : function(){ rocket_rename(); },
-			axis: "y",
-			items: ".rktdrag",
-			containment: "parent",
-			cursor: "move",
-			handle: ".rktmove",
-			forcePlaceholderSize: true,
-			dropOnEmpty: false,
-			placeholder: 'sortable-placeholder',
-			tolerance: 'pointer',
-			revert: true,
-		});
-		$('#rktclone').on('click', function(e){
-			e.preventDefault();
-			if( $('#rktdrop .rktdrag:last input[type=text]').val()=='' )
-				return;
-			var $item = $('.rktmodel:last').clone().appendTo('#rktdrop').removeClass('rktmodel').show();
-			rocket_rename();
-		} );
-		$('.rktdelete').css('cursor','pointer').on('click', function(e){
-			e.preventDefault();
-			$(this).parent().css('background-color','red' ).slideUp( 'slow' , function(){$(this).remove(); } );
-		} );
-	} );
-	</script>
-<?php
-}
 
 /**
  * Add some CSS to display the dismiss cross
@@ -159,10 +113,11 @@ function rocket_script_settings_page()
 
 add_action( 'admin_print_styles', 'rocket_admin_print_styles' );
 function rocket_admin_print_styles()
-{ ?>
-<style>.rocket_cross{float: right !important; cursor: pointer;}</style>
-<?php
- }
+{
+	wp_enqueue_style( 'admin-wp-rocket', WP_ROCKET_ADMIN_CSS_URL . 'admin.css', array(), WP_ROCKET_VERSION );
+}
+
+
 
 /**
  * Manage the dismissed boxes
@@ -190,12 +145,14 @@ function rocket_dismiss_boxes()
 }
 
 
+
 /**
  * Renew the plugin modification warning on plugin de/activation
  *
  * since 1.3.0
  *
  */
+
 add_action( 'activated_plugin', 'rocket_dismiss_plugin_box' );
 add_action( 'deactivated_plugin', 'rocket_dismiss_plugin_box' );
 function rocket_dismiss_plugin_box()
@@ -211,18 +168,18 @@ function rocket_dismiss_plugin_box()
  * since 1.3.0
  *
  */
- 
+
 add_action( 'admin_post_deactivate_plugin', 'rocket_deactivate_plugin' );
 function rocket_deactivate_plugin()
 {
 
 	$_plugin = $_GET['plugin'];
-	
+
 	if( !wp_verify_nonce( $_GET['_wpnonce'], 'deactivate_plugin' ) )
 			wp_nonce_ays( '' );
-	
+
 	deactivate_plugins( $_plugin );
-	
+
 	wp_redirect( wp_get_referer() );
 	die();
 }

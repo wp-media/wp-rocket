@@ -32,7 +32,7 @@ function rocket_purge_cron_schedule( $schedules )
  *
  */
 
-add_action( 'plugins_loaded', 'rocket_purge_cron_scheduled' );
+add_action( 'wp', 'rocket_purge_cron_scheduled' );
 function rocket_purge_cron_scheduled()
 {
 

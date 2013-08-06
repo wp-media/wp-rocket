@@ -178,23 +178,3 @@ function get_rocket_wpml_langs_for_admin_bar() {
 
     return $langlinks;
 }
-
-
-/**
- * Add CSS for WP Rocket Admin Bar
- *
- * @since 1.0
- *
- */
-
-add_action( 'wp_before_admin_bar_render', 'rocket_wp_before_admin_bar_render' );
-function rocket_wp_before_admin_bar_render()
-{ ?>
-
-	<style>
-		#wpadminbar #wp-admin-bar-support a {
-			color: #FF0000;
-		}
-	</style>
-<?php
-}

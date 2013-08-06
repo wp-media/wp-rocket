@@ -41,9 +41,8 @@ function get_rocket_cookies_not_cached()
 		'comment_author_email_'
 	);
 	$cache_reject_cookies = get_rocket_option( 'cache_reject_cookies', array() );
-
-	if( isset( $options['cache_reject_cookies'] ) && count( $options['cache_reject_cookies'] ) )
-		$cookies =  array_filter( array_merge( $cookies, (array)$options['cache_reject_cookies'] ) );
+	if( count( $cache_reject_cookies ) )
+		$cookies =  array_filter( array_merge( $cookies, (array)$cache_reject_cookies ) );
 
 	return implode( '|', $cookies );
 }
@@ -161,8 +160,8 @@ function rocket_clean_home()
 	$root = WP_ROCKET_CACHE_PATH . rocket_remove_url_protocol( home_url() );
 	$root = apply_filters( 'before_rocket_clean_home', $root );
 
-	@unlink( $root . 'index.html' );
-    rocket_rrmdir( $root . $GLOBALS['wp_rewrite']->pagination_base );
+	@unlink( $root . '/index.html' );
+    rocket_rrmdir( $root . '/' . $GLOBALS['wp_rewrite']->pagination_base );
 
     do_action( 'after_rocket_clean_home', $root );
 }
@@ -450,7 +449,7 @@ function rocket_is_plugin_active_for_network( $plugin ) {
 
 function rocket_remove_url_protocol( $url, $no_dots=false )
 {
-	$url = parse_url( home_url(), PHP_URL_HOST );
+	$url = str_replace( array( 'http://', 'https://' ) , '', $url );
 	if( apply_filters( 'rocket_url_no_dots', $no_dots ) )
 		$url = str_replace( '.', '_', $url );
 	return $url;
