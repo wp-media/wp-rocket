@@ -159,9 +159,10 @@ function rocket_dismiss_boxes( $args )
 
 add_action( 'activated_plugin', 'rocket_dismiss_plugin_box' );
 add_action( 'deactivated_plugin', 'rocket_dismiss_plugin_box' );
-function rocket_dismiss_plugin_box()
+function rocket_dismiss_plugin_box( $plugin )
 {
-	rocket_renew_box( 'rocket_warning_plugin_modification' );
+	if( $plugin != plugin_basename( WP_ROCKET_FILE ) )
+		rocket_renew_box( 'rocket_warning_plugin_modification' );
 }
 
 
