@@ -13,8 +13,8 @@ add_action( 'admin_notices', 'rocket_warning_plugin_modification' );
 function rocket_warning_plugin_modification()
 {
 
-	global $pagenow, $current_user;
-	if( 'plugins.php'==$pagenow && current_user_can( 'manage_options' ) && rocket_valid_key() ) {
+	global $current_user;
+	if( current_user_can( 'manage_options' ) && rocket_valid_key() ) {
 		$boxes = get_user_meta( $current_user->ID, 'rocket_boxes', true );
 		if( !in_array( __FUNCTION__, (array)$boxes ) ) { ?>
 
