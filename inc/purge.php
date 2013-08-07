@@ -28,6 +28,7 @@ function rocket_widget_update_callback( $instance ) { rocket_clean_domain(); ret
  * Update cache when a post is updated or commented
  *
  * @since 1.3.0 Compatibility with WPML
+ * @since 1.3.0 Add 2 hooks : before_rocket_clean_post, after_rocket_clean_post
  * @since 1.3.0 Purge all parents of the post and the author page
  * @since 1.2.2 Add wp_trash_post and delete_post to purge cache when a post is trashed or deleted
  * @since 1.1.3 Use clean_post_cache instead of transition_post_status, transition_comment_status and preprocess_comment
@@ -44,8 +45,10 @@ function rocket_clean_post( $post_id )
 	if( defined( 'DOING_AUTOSAVE' ) )
 		return;
 
+	$purge_urls = array();
+
 	// Get all post infos
-	$post = get_post($post_id);
+	$post = get_post( $post_id );
 
 	do_action( 'before_rocket_clean_post', $post );
 
@@ -53,11 +56,19 @@ function rocket_clean_post( $post_id )
 	if( empty($post->post_type) || $post->post_type == 'nav_menu_item' )
 		return;
 
+	// Get the permalink structure
+    $permalink_structure = get_sample_permalink( $post_id );
+
+    // Get permalink
+    $permalink = str_replace( '%postname%', $permalink_structure[1], $permalink_structure[0] );
+
 	// Add permalink
-	$purge_urls = array(
-		get_permalink( $post_id ),
-		get_post_type_archive_link( get_post_type( $post_id ) )
-	);
+	array_push( $purge_urls, $permalink );
+
+	// Add Post Type archive
+	$post_type_archive = get_post_type_archive_link( get_post_type( $post_id ) );
+	if( $post_type_archive )
+		array_push( $purge_urls, $post_type_archive );
 
 	// Add next post
 	$next_post = get_adjacent_post( false, '', false );
@@ -111,7 +122,6 @@ function rocket_clean_post( $post_id )
 
 		@unlink( $root . '/index.html' );
 		rocket_rrmdir( $root . $GLOBALS['wp_rewrite']->pagination_base );
-
 	}
 	else {
 		rocket_clean_home();
@@ -119,11 +129,11 @@ function rocket_clean_post( $post_id )
 
 	// Purge all parents
 	$parents = get_post_ancestors( $post_id );
-	if( count( $parents ) ) {
+	if( count( $parents ) )
+	{
 
 		foreach( $parents as $parent_id )
 			rocket_clean_post( $parent_id );
-
 	}
 
 	do_action( 'after_rocket_clean_post', $post, $purge_urls );
@@ -272,7 +282,6 @@ function rocket_preload_cache()
 
         if( !wp_verify_nonce( $_GET['_wpnonce'], 'preload' ) )
                 wp_nonce_ays( '' );
-
 
 		// Check if WPML is activated
 		if( rocket_is_plugin_active('sitepress-multilingual-cms/sitepress.php') ) {
