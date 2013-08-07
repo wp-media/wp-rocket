@@ -60,7 +60,7 @@ function rocket_clean_post( $post_id )
     $permalink_structure = get_sample_permalink( $post_id );
 
     // Get permalink
-    $permalink = str_replace( '%postname%', $permalink_structure[1], $permalink_structure[0] );
+    $permalink = str_replace( array( '%postname%', '%pagename%' ), $permalink_structure[1], $permalink_structure[0] );
 
 	// Add permalink
 	array_push( $purge_urls, $permalink );
