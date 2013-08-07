@@ -108,6 +108,7 @@ function rocket_defered_module()
 	<div id="rktdrop">
 		<?php
 		$deferred_js_files = get_rocket_option( 'deferred_js_files' );
+		$deferred_js_wait = get_rocket_option( 'deferred_js_wait' );
 		if( $deferred_js_files ) {
 			foreach( $deferred_js_files as $k=>$_url ) {
 				$checked = isset( $deferred_js_wait[$k] ) ? checked( $deferred_js_wait[$k], '1', false ) : '';

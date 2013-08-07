@@ -51,6 +51,7 @@ function rocket_insert_deferred_js( $buffer )
 	$labjs_src 	       = apply_filters( 'rocket_labjs_src', '//cdnjs.cloudflare.com/ajax/libs/labjs/2.0.3/LAB.min.js' );
 	$labjs_options     = apply_filters( 'rocket_labjs_options', array( 'AlwaysPreserveOrder' => true ) );
 	$deferred_js_files = apply_filters( 'rocket_labjs_deferred_js', get_rocket_option( 'deferred_js_files' ) );
+	$deferred_js_wait = apply_filters( 'rocket_labjs_deferred_wait', get_rocket_option( 'deferred_js_wait' ) );
 
 	$defer  = '<script type="text/javascript" src="' . $labjs_src . '"></script>';
 	$defer .= '<script type="text/javascript">';
