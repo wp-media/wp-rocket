@@ -186,7 +186,7 @@ function rocket_purge_cache()
 		{
 			// Clear all cache domain
 			case 'all':
-
+				rocket_dismiss_boxes( array( 'box'=>'rocket_warning_plugin_modification', '_wpnonce'=>wp_create_nonce( 'rocket_ignore_rocket_warning_plugin_modification' ), 'action'=>'rocket_ignore' ) );
 				// Check if WPML is activated
 				if( rocket_is_plugin_active('sitepress-multilingual-cms/sitepress.php') ) {
 

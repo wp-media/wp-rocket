@@ -59,8 +59,10 @@ add_filter( 'page_row_actions', 'rocket_row_actions', 10, 2 );
 add_filter( 'post_row_actions', 'rocket_row_actions', 10, 2 );
 function rocket_row_actions( $actions, $post )
 {
-	$url = wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=post-'.$post->ID ), 'purge_cache_post-'.$post->ID );
-    $actions['rocket_purge'] = '<a href="'.$url.'">Purger le cache</a>';
+	if( current_user_can( 'manage_options' ) ) {
+		$url = wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=post-'.$post->ID ), 'purge_cache_post-'.$post->ID );
+	    $actions['rocket_purge'] = '<a href="'.$url.'">Purger le cache</a>';
+	}
     return $actions;
 }
 
@@ -77,8 +79,8 @@ add_action( 'post_submitbox_start', 'rocket_post_submitbox_start' );
 function rocket_post_submitbox_start()
 {
 	global $post;
-	if ( current_user_can( 'edit_post', $post->ID ) )
-		echo '<div id="purge-action"><a class="button-secondary" href="'.wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=post-' . $post->ID ), 'purge_cache_post-' . $post->ID ).'">'.__( 'Purge cache', 'wp-rocket' ).'</a></div>';
+	if ( current_user_can( 'manage_options' ) )
+		echo '<div id="purge-action"><a class="button-secondary" href="'.wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=post-' . $post->ID ), 'purge_cache_post-' . $post->ID ).'">'.__( 'Purge cache', 'rocket' ).'</a></div>';
 }
 
 /**
@@ -167,21 +169,23 @@ function rocket_admin_print_styles()
 /**
  * Manage the dismissed boxes
  *
+ * since 1.3.0 $args can replace $_GET when called internaly
  * since 1.1.10
  *
  */
 
 add_action( 'admin_post_rocket_ignore', 'rocket_dismiss_boxes' );
-function rocket_dismiss_boxes()
+function rocket_dismiss_boxes( $args )
 {
-	if( isset( $_GET['box'], $_GET['_wpnonce'] ) ) {
+	$args = empty( $args ) ? $_GET : $args;
+	if( isset( $args['box'], $args['_wpnonce'] ) ) {
 
-		if( !wp_verify_nonce( $_GET['_wpnonce'], $_GET['action'] . '_' . $_GET['box'] ) )
+		if( !wp_verify_nonce( $args['_wpnonce'], $args['action'] . '_' . $args['box'] ) )
 			wp_nonce_ays( '' );
 
 		global $current_user;
 		$actual = get_user_meta( $current_user->ID, 'rocket_boxes', true );
-		update_user_meta( $current_user->ID, 'rocket_boxes', array_filter( array_merge( (array)$actual, array( $_GET['box'] ) ) ) );
+		update_user_meta( $current_user->ID, 'rocket_boxes', array_filter( array_merge( (array)$actual, array( $args['box'] ) ) ) );
 
 		wp_redirect( wp_get_referer() );
 		die();

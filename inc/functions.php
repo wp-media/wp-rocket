@@ -451,6 +451,7 @@ function rocket_is_plugin_active_for_network( $plugin ) {
 function rocket_remove_url_protocol( $url, $no_dots=false )
 {
 	$url = parse_url( home_url(), PHP_URL_HOST );
+	$no_dots = defined( 'ROCKET_URL_NO_DOTS' ) ? (bool)ROCKET_URL_NO_DOTS : $no_dots;
 	if( apply_filters( 'rocket_url_no_dots', $no_dots ) )
 		$url = str_replace( '.', '_', $url );
 	return $url;
