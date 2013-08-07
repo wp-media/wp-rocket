@@ -267,7 +267,7 @@ function rocket_display_options()
 					<p><a href="http://www.youtube.com/embed/9jDcg2f-9yM" class="button-primary fancybox">Voir la vidéo</a></p>
 
 					<h2>Minification des fichiers CSS et JavaScript</h2>
-					<p>Cette vidéo donne quelques explications sur l’utilisation avancées du processus de minification.</p>
+					<p>Cette vidéo donne quelques explications sur l’utilisation avancée du processus de minification et concaténation des fichiers CSS et JavaScript.</p>
 					<p><a href="http://www.youtube.com/embed/iziXSvZgxLk" class="button-primary fancybox">Voir la vidéo</a></p>
 				</div>
 				<div class="rkt-tab rkt-tab-txt" id="tab_faq">
