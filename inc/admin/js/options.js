@@ -1,4 +1,4 @@
-function setCookie(c_name,value,exdays)
+function rocket_setCookie(c_name,value,exdays)
 {
 	var exdate=new Date();
 	exdate.setDate(exdate.getDate() + exdays);
@@ -6,7 +6,7 @@ function setCookie(c_name,value,exdays)
 	document.cookie=c_name + "=" + c_value;
 }
 
-function getCookie(c_name) {
+function rocket_getCookie(c_name) {
     var c_value = document.cookie;
     var c_start = c_value.indexOf(" " + c_name + "=");
     if (c_start == -1) {
@@ -70,7 +70,7 @@ jQuery( document ).ready( function($){
 	$('.nav-tab-wrapper a').css({outline: '0px'});
 	$('#rockettabs .rkt-tab').hide();
 	$('#rockettabs h3').hide();
-	var tab = unescape( getCookie( 'rocket_tab' ) );
+	var tab = unescape( rocket_getCookie( 'rocket_tab' ) );
 	if( tab!='' ) {
 		$('#rockettabs .nav-tab').hide();
 		$('h2.nav-tab-wrapper a[href="'+tab+'"]').addClass('nav-tab-active');
@@ -83,7 +83,7 @@ jQuery( document ).ready( function($){
 	$('h2.nav-tab-wrapper .nav-tab').on( 'click', function(e){
 		e.preventDefault();
 		tab = $(this).attr( 'href' );
-		setCookie( 'rocket_tab', tab, 365 );
+		rocket_setCookie( 'rocket_tab', tab, 365 );
 		$('#rockettabs .rkt-tab').hide();
 		$('h2.nav-tab-wrapper .nav-tab').removeClass('nav-tab-active');
 		$('h2.nav-tab-wrapper a[href="'+tab+'"]').addClass('nav-tab-active');
@@ -92,7 +92,7 @@ jQuery( document ).ready( function($){
 	if( $('#rockettabs .rkt-tab:visible').length==0 ){
 		$('h2.nav-tab-wrapper a:first').addClass('nav-tab-active');
 		$('#tab_apikey').show();
-		setCookie( 'rocket_tab', '', -1 );
+		rocket_setCookie( 'rocket_tab', '', -1 );
 	}
 	
 } );
