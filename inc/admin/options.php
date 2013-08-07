@@ -1,10 +1,11 @@
 <?php
 defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 
+
 /**
  * Add submenu in menu "Settings"
  *
- * Since 1.0
+ * @since 1.0
  *
  */
 
@@ -19,7 +20,7 @@ function rocket_admin_menu()
 /**
  * Used to display fields on settings form
  *
- * Since 1.0
+ * @since 1.0
  *
  */
 
@@ -91,12 +92,14 @@ function rocket_field( $args )
 }
 
 
+
 /**
  * Used to display the defered module on settings form
  *
- * Since 1.1.0
+ * @since 1.1.0
  *
  */
+
 function rocket_defered_module()
 {
 ?>
@@ -111,7 +114,7 @@ function rocket_defered_module()
 				// The loop on files
 			?>
 			<div class="rktdrag">
-				<img class="rktmove hide-if-no-js" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAIAAAD9iXMrAAAAA3NCSVQICAjb4U/gAAAACXBIWXMAAAsSAAALEgHS3X78AAAAFnRFWHRDcmVhdGlvbiBUaW1lADAxLzIxLzEwY83pkAAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNAay06AAAADqSURBVCiRjZGxasMwEIZ/ydLmh+gQQ5vNmI6FrMkL9C0CXpMOHtrQJUMHv4BXkyFD4kHgoWPAa/MCeQr7ZHWQbBRKQr/p7ufjjpOYUgr/QABIkiQMwztSnuccgNaaiPTAy/KkrwHAAfR9T0Rd1xHRLG0AzNKGPK48q1abKYBqM+08nEdEbdvOVz9jags/YUqpKIpePy+3jti9PZRlyQEEQbDPJgD22eRvIYRw7yKEkFIeP57GGVJKY8zh/XFM3Dw5sFifASzWZ+nhPMZYMFBvYwD1NhYebi/n3DaW769n/w5jjPOKorjzaZZfO46WvQF5uikAAAAASUVORK5CYII%3D" width="16" heigth="16" alt="<?php _e( 'Move' ); ?>" title="<?php _e( 'Move' ); ?>" />
+				<img class="rktmove hide-if-no-js" src="<?php echo WP_ROCKET_ADMIN_IMG_URL . 'icon-move.png'; ?>" width="16" heigth="16" alt="<?php _e( 'Move' ); ?>" title="<?php _e( 'Move' ); ?>" />
 				<input style="width: 32em" type="text" placeholder="http://" class="deferred_js regular-text" name="wp_rocket_settings[deferred_js_files][<?php echo $k; ?>]" value="<?php echo esc_url( $_url ); ?>" />
 				<label><input type="checkbox" class="deferred_js" name="wp_rocket_settings[deferred_js_wait][<?php echo $k; ?>]" value="1" <?php echo $checked; ?>/> <?php _e( 'Attendre le chargement de ce fichier ?', 'rocket' ); ?></label>
 				<img class="rktdelete hide-if-no-js" style="vertical-align:middle" src="<?php echo admin_url( '/images/no.png' ); ?>" title="<?php _e( 'Delete' ); ?>" alt="<?php _e( 'Delete' ); ?>" width="16" height="16" />
@@ -121,7 +124,7 @@ function rocket_defered_module()
 			// If no files yet, use this template inside #rktdrop
 			?>
 			<div class="rktdrag">
-				<img class="rktmove hide-if-no-js" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAIAAAD9iXMrAAAAA3NCSVQICAjb4U/gAAAACXBIWXMAAAsSAAALEgHS3X78AAAAFnRFWHRDcmVhdGlvbiBUaW1lADAxLzIxLzEwY83pkAAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNAay06AAAADqSURBVCiRjZGxasMwEIZ/ydLmh+gQQ5vNmI6FrMkL9C0CXpMOHtrQJUMHv4BXkyFD4kHgoWPAa/MCeQr7ZHWQbBRKQr/p7ufjjpOYUgr/QABIkiQMwztSnuccgNaaiPTAy/KkrwHAAfR9T0Rd1xHRLG0AzNKGPK48q1abKYBqM+08nEdEbdvOVz9jags/YUqpKIpePy+3jti9PZRlyQEEQbDPJgD22eRvIYRw7yKEkFIeP57GGVJKY8zh/XFM3Dw5sFifASzWZ+nhPMZYMFBvYwD1NhYebi/n3DaW769n/w5jjPOKorjzaZZfO46WvQF5uikAAAAASUVORK5CYII%3D" width="16" heigth="16" alt="<?php _e( 'Move' ); ?>" title="<?php _e( 'Move' ); ?>" />
+				<img class="rktmove hide-if-no-js" src="<?php echo WP_ROCKET_ADMIN_IMG_URL . 'icon-move.png'; ?>" width="16" heigth="16" alt="<?php _e( 'Move' ); ?>" title="<?php _e( 'Move' ); ?>" />
 				<input style="width: 32em" type="text" placeholder="http://" class="deferred_js regular-text" name="wp_rocket_settings[deferred_js_files][0]" value="" />
 				<label><input type="checkbox" class="deferred_js" name="wp_rocket_settings[deferred_js_wait][0]" value="1" /> <?php _e( 'Attendre le chargement de ce fichier ?', 'rocket' ); ?></label>
 			</div>
@@ -129,7 +132,7 @@ function rocket_defered_module()
 	</div>
 	<?php // Clone Template ?>
 	<div class="rktmodel rktdrag hide-if-js">
-		<img class="rktmove hide-if-no-js" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAIAAAD9iXMrAAAAA3NCSVQICAjb4U/gAAAACXBIWXMAAAsSAAALEgHS3X78AAAAFnRFWHRDcmVhdGlvbiBUaW1lADAxLzIxLzEwY83pkAAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNAay06AAAADqSURBVCiRjZGxasMwEIZ/ydLmh+gQQ5vNmI6FrMkL9C0CXpMOHtrQJUMHv4BXkyFD4kHgoWPAa/MCeQr7ZHWQbBRKQr/p7ufjjpOYUgr/QABIkiQMwztSnuccgNaaiPTAy/KkrwHAAfR9T0Rd1xHRLG0AzNKGPK48q1abKYBqM+08nEdEbdvOVz9jags/YUqpKIpePy+3jti9PZRlyQEEQbDPJgD22eRvIYRw7yKEkFIeP57GGVJKY8zh/XFM3Dw5sFifASzWZ+nhPMZYMFBvYwD1NhYebi/n3DaW769n/w5jjPOKorjzaZZfO46WvQF5uikAAAAASUVORK5CYII%3D" width="16" heigth="16" alt="<?php _e( 'Move' ); ?>" title="<?php _e( 'Move' ); ?>" />
+		<img class="rktmove hide-if-no-js" src="<?php echo WP_ROCKET_ADMIN_IMG_URL . 'icon-move.png'; ?>" width="16" heigth="16" alt="<?php _e( 'Move' ); ?>" title="<?php _e( 'Move' ); ?>" />
 		<input style="width: 32em" type="text" placeholder="http://" class="deferred_js regular-text" name="wp_rocket_settings[deferred_js_files][]" value="" />
 		<label><input type="checkbox" class="deferred_js" name="wp_rocket_settings[deferred_js_wait][]" value="1" /> <?php _e( 'Attendre le chargement de ce fichier ?', 'rocket' ); ?></label>
 	</div>
@@ -143,10 +146,11 @@ function rocket_defered_module()
 }
 
 
+
 /**
  * Used to display buttons on settings form, tools tab
  *
- * Since 1.1.0
+ * @since 1.1.0
  *
  */
 
@@ -163,12 +167,13 @@ function rocket_button( $args )
 
 /**
  * The main settings page construtor using the required functions from WP
- * Since 1.0
+ * @since 1.0
  *
  * Add tabs, tools tab and change options severity
- * Since 1.1.0
+ * @since 1.1.0
  *
  */
+
 function rocket_display_options()
 {
 	// Clé API
@@ -230,7 +235,7 @@ function rocket_display_options()
         );
 ?>
 	<div class="wrap">
-	<div id="icon-rocket" class="icon32" style="background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6RTEwQzc4NjhDRjc4MTFFMjg4QUZFMzFGRTgwOTgwNjgiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6RTEwQzc4NjlDRjc4MTFFMjg4QUZFMzFGRTgwOTgwNjgiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpFMTBDNzg2NkNGNzgxMUUyODhBRkUzMUZFODA5ODA2OCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpFMTBDNzg2N0NGNzgxMUUyODhBRkUzMUZFODA5ODA2OCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PpIJhBsAAAWPSURBVHjatJd/TJR1HMef435xdBxcEoesX6DR0OagoaJcLeiHjMWaZpSttbnox/yxmbXKpaYu1yJra47+qc2lqautlZWTy9GakBEMxH7ISDApWEpBnAccd9xxvT/4fth3t+c6zPndXoPnue/zfN7fz+fz/Xy+j6m+vl67ipEK3KAUFIPbwQ0gEzg4JwRGwQi4CAbAb+A8aLf8T8PyXBF4AtwHbgR2YAMpSZ4VQWEQAe9fqQATV/cCqOXqbVf4DjuRcb9lFgZzwAJwM/CAarrbMQtjMRAEXeAn0Erx8/j79YkE3AQeAHeBO8EcxltW60xiVGLbDc7QsPA7GAN+sEuZ64wXIMn0DCgDWaIwyep0IxdpuIfXYizA5Isqz9zNxejDpgswgyqwGSxhkvzNzL31PxKrE7wDzoIJMJnEOxUM60yILUqsxdhuME5XSaI8DjYmSDR5phzcAvrAAeBLImCx0XbS6KYfuPLrwBrGf6kyx2jkEi84MovsL0kkIMZVPsXttSiR4Vgsdnn5phlPDoMNoDGJgDtAdty9qBrbTO7ro2A9E2tmTE1NaTabTcvIyBBiFotFi0ajf1H0YQrRzGZzIgFeg3t+dZXygg9ZKmUH1KmGXS5Xv9/v39/f39+D1dshYi7utY6NjR2dWU40qlmt1um/BmOpwb2zqoBxImMTyBB3i/HU1NSPfT6fZLtjYGCgEPfP1dTUfAARkcnJy4k/MTExEx5lSB41cRcZCWgyirP48El5mbgzPT39s4aGhqdbWlqezc7OlqLUjRU2dnR0ROx2uxYKhaYfKiwsjH/PNrCShczJ3RI/PjcSkMdKqKWlpQ02NzdvbG9vr/V4PGthcAs8MgFxRd3d3fMhxAeRUwYC1oGtTOxFbDzxyfGzlGcjAVL3p2MZDAbfbWtri2VmZr7udDofRD64YfR56QUQInXjGNgiERBvIBw2iNvAcqvXDpl/zsDOG5JiRgKmS6W8EPHeh/jXOhyOQzB+mn3cxXke9v8fkZT74CUtPz9/LjxVF4lE1NWuYmFTxynwqZagxJqUfe6Hi0tY5aoV4+pYLXPhqXuHhobMEqK43116SJWxk+cCQwFDqhhkdwAGJIF+NezXJlODFBl47DWE6jzbb7IW3axfGAmQvq3BjRpcX1xQUHBwfHz85ZSUlO9x+5O4uY3hcHgvcmUPfj+Zm5ubgV0xJ4mAS/rqtQTlVuLcipUvcbvdW71eb2VXV9dOVL7dyIdXxBNItHlYuRSswyhEa5GYC0tLSytxvw4CTEkE9LFNJxQgLtqGl/mQ1Svw/yMlJSVVnZ2dR3Cdgpw4CU4gKS3wUiWErCoqKnqsvLx82fDw8CaDYqSxTVv5/2mjZqTugNvk+IUXYzGhCGrB/rKysmq8eE1vb+86GK2CkAA8koa4h5H5z1VUVFhHR0cPYb5VaVL6+A4MsijJ+DqRAMnUl5jtknT1iOujiH8WjB+HF7bD2LGRkRFtcHDQmZWVFUSIQki85ciBHZjnxnxNae8RtuAdbPErGfvjRgLEPW+Lu3n9Dffqw3jpKeRDMdy+KycnR8M+/zYvL68PhcqDe8th2AUBGo2HeP6TAlVDj0qbXs33fhHfZS3KUUk3Lmc5+Vp5EeyVFg23LkDMOwOBgJz/F8OYF9lvgmfC+G0YXOKLm3gwaeY3w0fMKb1Ov5XoQLJeubeHdfoA3biZp6WH2N0WQoy0azMMSzZf4OFUzof/KGcLif2rvBYBso3bjARIp7pHORPU8VtgPo1r3P9S+78ks/lkk/P/n6ysrVyY4SeWfGSk8/oX1u7trPMyeunKKxkXiD7eU4tPvIBlyrWIOajUgx7G0n8VH7CxRMZ1ASuUawcni7u/Am/yzH/NhoUfFGfosj/kkxmcYPMJatd4/CvAAKFM+DWaJ2g7AAAAAElFTkSuQmCC) 0 0 no-repeat;"><br/></div>
+	<div id="icon-rocket" class="icon32"></div>
 	<h2>WP Rocket <small>v<?php echo WP_ROCKET_VERSION; ?></small></h2>
 
 	<form action="options.php" method="post">
@@ -255,49 +260,123 @@ function rocket_display_options()
 				<div class="rkt-tab" id="tab_basic"><?php do_settings_sections( 'basic' ); ?></div>
 				<div class="rkt-tab" id="tab_advanced"><?php do_settings_sections( 'advanced' ); ?></div>
 				<div class="rkt-tab" id="tab_tools"><?php do_settings_sections( 'tools' ); ?></div>
-				<div class="rkt-tab" id="tab_tutos"></div>
-				<div class="rkt-tab" id="tab_faq">
-					<h2>Quels outils dois-je utilisé pour mesurer les performances de mon site ?</h2>
-					<p>Vous pouvez mesuré les performances de votre site Internet à l’aide des outils suivants : </p>
+				<div class="rkt-tab rkt-tab-txt" id="tab_tutos">
+					<h2>Préchargement des fichiers de cache</h2>
+					<p>Cette vidéo donne quelques explications sur les 2 robots crawler de WP Rocket. Ils permettent de générer plusieurs vingtaines de fichiers de cache en quelques secondes.</p>
+					<p><a href="http://www.youtube.com/embed/9jDcg2f-9yM" class="button-primary fancybox">Voir la vidéo</a></p>
+
+					<h2>Minification des fichiers CSS et JavaScript</h2>
+					<p>Cette vidéo donne quelques explications sur l’utilisation avancées du processus de minification.</p>
+					<p><a href="http://www.youtube.com/embed/iziXSvZgxLk" class="button-primary fancybox">Voir la vidéo</a></p>
+				</div>
+				<div class="rkt-tab rkt-tab-txt" id="tab_faq">
+					<h2>Que fait exactement WP Rocket ? </h2>
+					<p>WP Rocket est un plugin de cache complet qui embarque de nombreuses fonctionnalités :</p>
 					<ul>
-						<li>- Pingdom Tools</li>
-						<li>- GT Metrix</li>
-						<li>- Webpagetest</li>
+						<li>Mise en cache de l'ensemble des pages pour un affichage rapide</li>
+						<li>Préchargement des fichiers de cache à l'aide de 2 robots en Python</li>
+						<li>Réduction du nombres de requêtes HTTP pour réduire le temps de chargement</li>
+						<li>Diminution de la bande passante grâce à la compression GZIP</li>
+						<li>Gestion des headers (expire, etags, etc...)</li>
+						<li>Minification et concaténations des JS et CSS</li>
+						<li>Chargement différé des images (LazyLoad)</li>
+						<li>Chargement différé des fichiers JavaScript</li>
+						<li>Optimisation des images</li>
+					</ul>
+
+					<h2>J'ai activé aucune des options de base, est-ce que WP Rocket fonctionne ?</h2>
+					<p>Oui.</p>
+					<p>Les options de base sont des optimisations complémentaires que l’on peut qualifié de bonus. Ces options ne sont pas indispensables pour améliorer le temps de chargement de votre site Internet.</p>
+					<p>Quelque soit votre configuration de WP Rocket, les fonctionnalités suivantes seront toujours actives :</p>
+					<ul>
+						<li>Mise en cache de l'ensemble des pages pour affichage rapide</li>
+						<li>Diminution de la bande passante grâce à la compression GZIP</li>
+						<li>Gestion des headers (expire, etags, etc)</li>
+						<li>Optimisation des images</li>
+					</ul>
+
+					<h2>Que dois-je faire en cas de problème lié à WP Rocket que je n’arrive pas à résoudre ?</h2>
+					<p>Si aucune des réponses de la F.A.Q. présente ci-dessous apporte une réponse à votre problématique, vous pouvez nous faire part de votre problème sur notre <a href="http://support.wp-rocket.me" target="_blank">support</a>. Nous vous répondrons dans les plus brefs délais.</p>
+
+					<h2>Ma licence est expirée, que dois-je faire ?</h2>
+					<p>Pas de panique, WP Rocket continuera de fonctionner sans problème. Vous recevrez un mail vous indiquant que votre licence va bientôt arriver à expiration. Vous trouverez un lien de renouvellement qui sera actif même après l’expiration.</p>
+
+					<h2>Je souhaite modifier l'URL de mon site associé à ma licence, que dois-je faire ?</h2>
+					<p>Vous devez nous contacter par mail (<a href="mailto:contact@wp-rocket.me">contact@wp-rocket.me</a>) en nous indiquant la raison de votre modification. La modification sera réalisée par l’équipe de WP Rocket.</p>
+
+					<h2>Quels outils dois-je utilisé pour mesurer les performances de mon site ?</h2>
+					<p>Vous pouvez mesurer les performances de votre site Internet à l’aide des outils suivants : </p>
+					<ul>
+						<li><a href="http://tools.pingdom.com/fpt/" target="_blank">Pingdom Tools</a></li>
+						<li><a href="http://gtmetrix.com/" target="_blank">GT Metrix</a></li>
+						<li><a href="http://www.webpagetest.org/" target="_blank">Webpagetest</a></li>
 					</ul>
 
 					<p>Ces outils donnent 2 indications :</p>
 					<ul>
-						<li>- une note globale des bonnes pratiques à appliquer</li>
-						<li>- un temps de chargement</li>
+						<li>une note globale des bonnes pratiques à appliquer</li>
+						<li>un temps de chargement</li>
 					</ul>
-					
+
 					<p>Ces données sont indicatives et ne reflètent pas forcément  la vitesse d’affichage réelle de votre site Internet.</p>
 
-					<p>Pour réaliser des tests de temps de chargement proche de la réalité,, nous conseillons d’utiliser Pingdom Tools avec l’option “Amsterdam” comme serveur.</p>
-					
-					<h2>WP Rocket fonctionne-t-il si avec les permaliens par défaut ?</h2>
+					<p>Pour réaliser des tests de temps de chargement plus proche de la réalité,, nous conseillons d’utiliser <a href="http://tools.pingdom.com/fpt/" target="_blank">Pingdom Tools</a> avec l’option <code>Amsterdam</code> comme serveur.</p>
+
+					<h2>WP Rocket fonctionne-t-il avec les permaliens par défaut ?</h2>
 					<p>Non.</p>
-					
+
 					<p>Il est nécessaire d'avoir des permaliens personnalisés du type <code>http://example.com/mon-article/</code> plutôt que <code>http://example.com/?p=1234</code>.</p>
-					
-					<h2>Est-ce que WP Rocket est compatible avec les autres plugins de cache, tels que WP Super Cache ou W3 Total Cache ?</h2>		
+
+					<h2>Avec quels serveurs Web WP Rocket est-il compatible ?</h2>
+					<p>WP Rocket est compatible avec les serveurs Web <strong>Apache</strong>. Pour le moment, WP Rocket n’est donc pas compatible avec les serveurs Web NGINX et Litepseed.</p>
+
+					<h2>Le rapport PageSpeed ou Yslow m’indique que le contenu n’est pas gzipé et/ou n’a pas d’expiration, que dois-je faire ?</h2>
+
+					<p>WP Rocket ajoute automatiquement les bonnes règles d’expirations et de gzip des fichiers statiques. Si elles ne sont pas appliquées, il est possible qu’un plugin rentre en conflit (exemple: <a href="http://wordpress.org/plugins/wp-retina-2x/" target="_blank">WP Retina 2x</a>). Essayez de désactiver temporairement tous les plugins, excepté WP Rocket, et de refaire le test.</p>
+
+					<p>Si cela n’est pas concluant, cela signifie que le <code>mod_expire</code> et/ou <code>mod_deflate</code> n’est pas activé sur votre serveur.</p>
+
+					<h2>WP Rocket est-il compatible avec les autres plugins de cache, tels que WP Super Cache ou W3 Total Cache ?</h2>
 					<p>Non.</p>
-					
-					<p>Il est impératif de désactiver tous les autres plugins d’optimisation (cache, minification, lazy load) avant l’activation de WP Rocket.</p>
-					
+
+					<p>Il est impératif de <strong>supprimer tous les autres plugins d'optimisation</strong> (cache, minification, LazyLoad) avant l’activation de WP Rocket.</p>
+
+					<h2>WP Rocket est-il compatible avec WP Touch ?</h2>
+					<p>Oui.</p>
+					<p>Par contre, dans les options de base, vous devez décocher la case <code>Activer la mise en cache pour les appareils mobile</code>.</p>
+
+					<h2>WP Rocket est-il compatible avec WooCommerce ?</h2>
+					<p>Oui.</p>
+
+					<p>Cependant, il faut exclure les pages panier et commande de la mise en cache. Cela se fait à partir de l’option avancée <code>Ne jamais mettre en cache les pages suivantes</code> et en ajoutant les valeurs suivantes :</p>
+					<p><code>/panier/<br/>
+					/commande/*
+					</code></p>
+
+					<h2>WP Rocket est-il compatible avec WPML ?</h2>
+					<p>Oui.</p>
+					<p>Vous avez même la possibilité de vider/précharger la cache d'une langue précise ou de toutes les langues en même temps.</p>
+
 					<h2>En quoi consiste la minification et concaténation des fichiers ?</h2>
 					<p>La minification consiste à supprimer tous les éléments superflus d’une fichier HTML, CSS ou JavaScript : espaces, commentaires, etc... Cela permet de diminuer la taille des fichiers. Ainsi, les navigateurs lisent plus rapidement les fichiers.</p>
-					
+
 					<p>La concaténation consiste à regrouper en un seul, un ensemble de fichiers. Cela a pour effet de diminuer le nombre de requêtes HTTP.</p>
 					<h2>Que dois-je faire si WP Rocket déforme l’affichage de mon site ?</h2>
-					<p>Il y a de fortes chances que la déformation soit provoquée par la minification des fichiers HTML, CSS et/ou JavaScript. Pour résoudre le problème, nous vous conseillons de regarder la vidéo suivante :</p>
-					
+					<p>Il y a de fortes chances que la déformation soit provoquée par la minification des fichiers HTML, CSS et/ou JavaScript. Pour résoudre le problème, nous conseillons de regarder la vidéo suivante : <a href="http://www.youtube.com/embed/iziXSvZgxLk" class="fancybox">http://www.youtube.com/embed/iziXSvZgxLk</a>.</p>
+
+					<h2>À quel intervalle le cache est mis à jour ?</h2>
+					<p>Le cache est automatiquement rafraîchit à chaque mise à jour d'un contenu (ajout/édition/suppression d’un article, publication d’un commentaire, etc...).</p>
+					<p>Dans les options de base, vous pouvez aussi spécifier un délai de purge automatique du cache.</p>
+
+					<h2>Comment ne pas mettre en cache une page particulière ?</h2>
+					<p>Dans les options avancées, il est possible de spécifier des URLs à ne pas mettre en cache. Pour cela, il faut ajouter dans le champ de saisie <code>Ne jamais mettre en cache les pages suivantes</code> les URLs à exclure.</p>
+
 					<h2>Comment fonctionne les robots de préchargement des fichiers de cache ?</h2>
 					<p>Pour mettre une page en cache, il faut un premier visiteur. Pour éviter qu’un premier visiteur le fasse, nous avons développé deux robots (en python) qui crawl les pages de votre site Internet.</p>
-					
+
 					<p>Le premier va visiter votre site à la demande à l’aide du bouton “Précharger le cache”. Le second va automatiquement visiter votre site dès que vous allez créer/éditer/supprimer un article.</p>
-					
-					<p>Pour plus d’informations, vous pouvez consulter notre vidéo à ce propos :</p>				
+
+					<p>Pour plus d’informations, vous pouvez consulter notre vidéo à ce propos : <a href="http://www.youtube.com/embed/9jDcg2f-9yM" class="fancybox">http://www.youtube.com/embed/9jDcg2f-9yM</a>.</p>
 				</div>
 			<?php endif; ?>
 		</div>
@@ -309,25 +388,9 @@ function rocket_display_options()
 
 
 /**
- * When the options 'comment_whitelist' & 'comment_moderation' are modified, we flush the htaccess
- *
- * Since 1.0
- *
- */
-
-add_action( 'updated_option', 'rocket_flush_for_comment', 10, 3 );
-function rocket_flush_for_comment( $option, $oldvalue, $_newvalue )
-{
-	if( ( $option=='comment_whitelist' || $option=='comment_moderation' ) && $oldvalue!=$_newvalue )
-		flush_rocket_htaccess();
-}
-
-
-
-/**
  * Tell to WordPress to be confident with uor setting, we are clean!
  *
- * Since 1.0
+ * @since 1.0
  *
  */
 
@@ -342,7 +405,7 @@ function rocket_register_setting()
 /**
  * Used with array_filter to remove files without .css extension
  *
- * Since 1.0
+ * @since 1.0
  *
  */
 
@@ -358,7 +421,7 @@ function rocket_sanitize_css( $file )
 /**
  * Used with array_filter to remove files without .js extension
  *
- * Since 1.0
+ * @since 1.0
  *
  */
 
@@ -374,7 +437,7 @@ function rocket_sanitize_js( $file )
 /**
  * Used to clean and sanitize the settings fields
  *
- * Since 1.0
+ * @since 1.0
  *
  */
 
@@ -418,7 +481,7 @@ function rocket_settings_callback( $inputs )
 /**
  * When our settings are saved: purge, cron, flush, preload!
  *
- * Since 1.0
+ * @since 1.0
  *
  */
 
@@ -434,10 +497,12 @@ function rocket_after_save_options()
 
 }
 
+
+
 /**
  * When purge settings are saved we change the scheduled purge
  *
- * Since 1.0
+ * @since 1.0
  *
  */
 
@@ -452,74 +517,3 @@ function rocket_pre_main_option( $newvalue, $oldvalue )
   }
   return $newvalue;
 }
-
-/**
- * We keep the last opened tab, open the next time
- *
- * Since 1.1.10
- *
- */
-
-add_action( 'admin_footer-settings_page_wprocket', 'rocket_add_script_in_options' );
-function rocket_add_script_in_options()
-{ ?>
-<script>
-	function setCookie(c_name,value,exdays)
-	{
-		var exdate=new Date();
-		exdate.setDate(exdate.getDate() + exdays);
-		var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
-		document.cookie=c_name + "=" + c_value;
-	}
-
-	function getCookie(c_name) {
-	    var c_value = document.cookie;
-	    var c_start = c_value.indexOf(" " + c_name + "=");
-	    if (c_start == -1) {
-	        c_start = c_value.indexOf(c_name + "=");
-	    }
-	    if (c_start == -1) {
-	        c_value = null;
-	    } else {
-	        c_start = c_value.indexOf("=", c_start) + 1;
-	        var c_end = c_value.indexOf(";", c_start);
-	        if (c_end == -1) {
-	            c_end = c_value.length;
-	        }
-	        c_value = unescape(c_value.substring(c_start, c_end));
-	    }
-	    return c_value;
-	}
-
-	jQuery( document ).ready( function($){
-		$('#rockettabs').css({padding: '5px', border: '1px solid #ccc', borderTop: '0px'});
-		$('.nav-tab-wrapper a').css({outline: '0px'});
-		$('#rockettabs .rkt-tab').hide();
-		$('#rockettabs h3').hide();
-		var tab = unescape( getCookie( 'rocket_tab' ) );
-		if( tab!='' ) {
-			$('#rockettabs .nav-tab').hide();
-			$('h2.nav-tab-wrapper a[href="'+tab+'"]').addClass('nav-tab-active');
-			$(tab).show();
-		}else{
-			$('h2.nav-tab-wrapper a:first').addClass('nav-tab-active');
-			if( $('#tab_basic').length==1 )
-				$('#tab_basic').show();
-		}
-		$('h2.nav-tab-wrapper .nav-tab').on( 'click', function(e){
-			e.preventDefault();
-			tab = $(this).attr( 'href' );
-			setCookie( 'rocket_tab', tab, 365 );
-			$('#rockettabs .rkt-tab').hide();
-			$('h2.nav-tab-wrapper .nav-tab').removeClass('nav-tab-active');
-			$('h2.nav-tab-wrapper a[href="'+tab+'"]').addClass('nav-tab-active');
-			$(tab).show();
-		} );
-		if( $('#rockettabs .rkt-tab:visible').length==0 ){
-			$('h2.nav-tab-wrapper a:first').addClass('nav-tab-active');
-			$('#tab_apikey').show();
-			setCookie( 'rocket_tab', '', -1 );
-		}
-	} );
-</script>
-<?php }

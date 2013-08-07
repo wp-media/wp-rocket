@@ -65,5 +65,5 @@ function rocket_lazyload_smilies( $src )
 	if ( strpos( $src, 'data-lazy-original' ) )
 		return $src;
 	
-	return "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==' data-lazy-original='" . $src;
+	return "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==' data-lazy-original='".$src;
 }
