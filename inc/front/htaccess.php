@@ -168,7 +168,6 @@ function get_rocket_htaccess_mod_deflate()
 		$rules .= '</IfModule>' . "\n";
 		$rules .= '<IfModule mod_headers.c>' . "\n";
              $rules .= 'Header append Vary User-Agent env=!dont-vary' . "\n";
-             $rules .= 'Header append Vary Accept-Encoding' . "\n";
        $rules .= '</IfModule>' . "\n";
 	$rules .= '</IfModule>' . "\n\n";
 	$rules = apply_filters( 'rocket_htaccess_mod_deflate', $rules );
