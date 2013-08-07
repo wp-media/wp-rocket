@@ -58,7 +58,7 @@ function do_rocket_process( $buffer )
 	    	mkdir( $cache_dir, CHMOD_WP_ROCKET_CACHE_DIRS, true );
 
 		// Save the cache file
-	    file_put_contents( $cache_dir . '/index.html', $buffer . "\n" . '<!-- This website is like a Rocket, isn\'t ? Performance optimized by WP Rocket. Learn more: http://wp-rocket.me - Debug: cached -->' );
+	    file_put_contents( $cache_dir . '/index.html', $buffer . "\n" . '<!-- This website is like a Rocket, isn\'t ? Performance optimized by WP Rocket. Learn more: http://wp-rocket.me - Debug: cached@'.time().'-->' );
     }
 
 	return $buffer . "\n" . '<!-- This website is like a Rocket, isn\'t ? Performance optimized by WP Rocket. Learn more: http://wp-rocket.me -->';
