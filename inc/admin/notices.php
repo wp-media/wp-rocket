@@ -14,7 +14,7 @@ function rocket_warning_plugin_modification()
 {
 
 	global $pagenow, $current_user;
-	if( 'plugins.php'==$pagenow && current_user_can( 'manage_options' ) ) {
+	if( 'plugins.php'==$pagenow && current_user_can( 'manage_options' ) && rocket_valid_key() ) {
 		$boxes = get_user_meta( $current_user->ID, 'rocket_boxes', true );
 		if( !in_array( __FUNCTION__, (array)$boxes ) ) { ?>
 
@@ -106,7 +106,7 @@ function rocket_warning_logged_users()
 
 	global $current_user;
 	$boxes = get_user_meta( $current_user->ID, 'rocket_boxes', true );
-	if( !in_array( __FUNCTION__, (array)$boxes ) ) { ?>
+	if( !in_array( __FUNCTION__, (array)$boxes ) && rocket_valid_key() ) { ?>
 
 		<div class="updated">
 			<span class="rocket_cross"><a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>"><img src="<?php echo admin_url( '/images/no.png' ); ?>" title="Ignorer jusqu'à la prochaine fois" alt="Ignorer" /></a></span>
@@ -214,7 +214,6 @@ function rocket_warning_cache_dir_permissions()
 
 function rocket_need_api_key()
 {
-
 	?>
 	<div class="updated">
 		<p><strong>WP Rocket</strong> : Pour finaliser l'installation et profiter des performances apportées par notre plugin, merci de <a href="<?php echo admin_url( 'options-general.php?page=wprocket' ); ?>">renseigner votre clé API</a>.</p>
