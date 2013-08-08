@@ -45,7 +45,7 @@ function rocket_admin_pointers_check()
 
 function rocket_admin_pointers_footer()
 {
-	global $pagenow;
+	global $pagenow, $current_screen;
 	$admin_pointers = rocket_admin_pointers();
 	?>
 <script type="text/javascript">
@@ -54,23 +54,26 @@ function rocket_admin_pointers_footer()
 <?php
 foreach ( $admin_pointers as $pointer => $array ) {
 	$ai = isset( $array['anchor_id'][$pagenow] ) ? $array['anchor_id'][$pagenow] : $array['anchor_id']['all'];
-	?>
-	$( '<?php echo $ai; ?>' ).pointer( {
-		content: '<?php echo addslashes( $array['content'] ); ?>',
-		position: {
-			edge: '<?php echo $array['edge']; ?>',
-			align: '<?php echo $array['align']; ?>'
-		},
-		<?php if( !empty( $array['action'] ) ): ?>
-			close: function() {
-				$.post( ajaxurl, {
-					pointer: '<?php echo $pointer; ?>',
-					action: '<?php echo $array['action']; ?>',
-				} );
+	$ai = isset( $array['anchor_id'][$current_screen->base] ) ? $array['anchor_id'][$current_screen->base] : $ai;
+	if( !empty( $ai ) ) {
+		?>
+		$( '<?php echo $ai; ?>' ).pointer( {
+			content: '<?php echo addslashes( $array['content'] ); ?>',
+			position: {
+				edge: '<?php echo $array['edge']; ?>',
+				align: '<?php echo $array['align']; ?>'
 			},
-		<?php endif; ?>
-	} ).pointer( 'open' );
-	<?php
+			<?php if( !empty( $array['action'] ) ): ?>
+				close: function() {
+					$.post( ajaxurl, {
+						pointer: '<?php echo $pointer; ?>',
+						action: '<?php echo $array['action']; ?>',
+					} );
+				},
+			<?php endif; ?>
+		} ).pointer( 'open' );
+		<?php
+	}
 }
 ?>
 } )(jQuery);
@@ -101,7 +104,7 @@ function rocket_admin_pointers()
 		         'active' => true,
 		         'action' => $options['action'],
 		   );
-		   $new_pointer[$pointer_key.$action]['content'] = '<h3>' . __( 'WP Rocket '.WP_ROCKET_VERSION ) . '</h3><p>' . $options['content'] . '</p>';
+		   $new_pointer[$pointer_key.$action]['content'] = '<h3>' . __( 'WP-Rocket '.WP_ROCKET_VERSION ) . '</h3><p>' . $options['content'] . '</p>';
 		}
 	}
    return $new_pointer;
@@ -117,7 +120,7 @@ function rocket_admin_pointers()
 add_filter( 'rocket_pointer_actions', 'rocket_pointer_apikey' );
 function rocket_pointer_apikey( $pointers )
 {
-	$pointers['apikey'] = array('anchor_id'	=> array( 'options-general.php'=>'ul.wp-submenu li a[href$="page=wprocket"]', 'all'=>'#menu-settings' ),
+	$pointers['apikey'] = array('anchor_id'	=> array( 'options-general.php'=>'ul.wp-submenu li a[href$="page=wprocket"]', 'settings_page_wprocket'=>' ', 'all'=>'#menu-settings' ),
 								'edge' 		=> 'left',
 								'align'		=> 'right',
 								'action'	=> '',
