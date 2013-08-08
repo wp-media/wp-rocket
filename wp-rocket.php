@@ -91,6 +91,7 @@ function rocket_init()
         require WP_ROCKET_ADMIN_PATH . '/options.php';
         require WP_ROCKET_ADMIN_PATH . '/notices.php';
         require WP_ROCKET_ADMIN_PATH . '/admin.php';
+        require WP_ROCKET_ADMIN_PATH . '/pointers.php';
     }
     elseif( rocket_valid_key() )
     {

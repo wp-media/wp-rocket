@@ -37,7 +37,7 @@ function rocket_warning_plugin_modification()
  *
  */
 
-add_action( 'admin_footer', 'rocket_plugins_to_deactivate' );
+add_action( 'admin_notices', 'rocket_plugins_to_deactivate' );
 function rocket_plugins_to_deactivate()
 {
 	$options = get_option( WP_ROCKET_SLUG );
@@ -100,13 +100,13 @@ function rocket_plugins_to_deactivate()
  *
  */
 
-add_action( 'admin_footer-settings_page_wprocket', 'rocket_warning_logged_users' );
+add_action( 'admin_notices', 'rocket_warning_logged_users' );
 function rocket_warning_logged_users()
 {
 
-	global $current_user;
+	global $current_user, $current_screen;
 	$boxes = get_user_meta( $current_user->ID, 'rocket_boxes', true );
-	if( !in_array( __FUNCTION__, (array)$boxes ) && rocket_valid_key() ) { ?>
+	if( 'settings_page_wprocket'==$current_screen->base && !in_array( __FUNCTION__, (array)$boxes ) && rocket_valid_key() ) { ?>
 
 		<div class="updated">
 			<span class="rocket_cross"><a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>"><img src="<?php echo admin_url( '/images/no.png' ); ?>" title="Ignorer jusqu'à la prochaine fois" alt="Ignorer" /></a></span>
@@ -126,7 +126,7 @@ function rocket_warning_logged_users()
  *
  */
 
-add_action( 'admin_footer', 'rocket_warning_using_permalinks' );
+add_action( 'admin_notices', 'rocket_warning_using_permalinks' );
 function rocket_warning_using_permalinks()
 {
 
@@ -148,10 +148,9 @@ function rocket_warning_using_permalinks()
  *
  */
 
-add_action( 'admin_footer', 'rocket_warning_htaccess_permissions' );
+add_action( 'admin_notices', 'rocket_warning_htaccess_permissions' );
 function rocket_warning_htaccess_permissions()
 {
-
 	$htaccess_file = get_real_file_to_edit( '.htaccess' );
 
 	if( !file_exists( $htaccess_file ) || !is_writable( $htaccess_file ) )
@@ -160,13 +159,11 @@ function rocket_warning_htaccess_permissions()
 		$boxes = get_user_meta( $current_user->ID, 'rocket_boxes', true );
 		if( !in_array( __FUNCTION__, (array)$boxes ) ) {
 			?>
-
 			<div class="error">
 				<span class="rocket_cross"><a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>"><img src="<?php echo admin_url( '/images/no.png' ); ?>" title="Ignorer jusqu'à la prochaine fois" alt="Ignorer" /></a></span>
 				<p><strong>WP Rocket</strong> : Si vous aviez les <a href="http://codex.wordpress.org/Changing_File_Permissions" target="_blank">droits en écriture (en)</a> sur le fichier <code>.htaccess</code>, <strong>WP Rocket</strong> pourrait faire cela automatiquement. Ce n’est pas le cas, donc voici les règles de réécriture que vous devrez mettre dans votre fichier <code>.htaccess</code> pour que le <strong>WP Rocket</strong> fonctionne correctement. Cliquez sur le champ et appuyez sur Ctrl-a pour tout sélectionner.</p>
 				<p><textarea readonly="readonly" id="rules" name="rules" class="large-text readonly" rows="6"><?php echo esc_textarea( get_rocket_htaccess_marker() ); ?></textarea></p>
 			</div>
-
 		<?php
 		}
 	}
@@ -182,7 +179,7 @@ function rocket_warning_htaccess_permissions()
  *
  */
 
-add_action( 'admin_footer', 'rocket_warning_cache_dir_permissions' );
+add_action( 'admin_notices', 'rocket_warning_cache_dir_permissions' );
 function rocket_warning_cache_dir_permissions()
 {
 
@@ -215,7 +212,7 @@ function rocket_warning_cache_dir_permissions()
 function rocket_need_api_key()
 {
 	?>
-	<div class="updated">
+	<div class="updated hide-if-js">
 		<p><strong>WP Rocket</strong> : Pour finaliser l'installation et profiter des performances apportées par notre plugin, merci de <a href="<?php echo admin_url( 'options-general.php?page=wprocket' ); ?>">renseigner votre clé API</a>.</p>
 	</div>
 	<?php

@@ -242,7 +242,7 @@ function rocket_display_options()
 	<form action="options.php" method="post">
 		<?php settings_fields( 'wp_rocket' ); ?>
 		<?php submit_button(); ?>
-		<h2 class="nav-tab-wrapper">
+		<h2 class="nav-tab-wrapper hide-if-no-js">
 			<?php if( rocket_valid_key() ) : ?>
 				<a href="#tab_basic" class="nav-tab"><?php _e( 'Options de base', 'rocket' ); ?></a>
 				<a href="#tab_advanced" class="nav-tab"><?php _e( 'Options avancées', 'rocket' ); ?></a>

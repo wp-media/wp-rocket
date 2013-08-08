@@ -141,9 +141,10 @@ function rocket_dismiss_boxes( $args )
 		global $current_user;
 		$actual = get_user_meta( $current_user->ID, 'rocket_boxes', true );
 		update_user_meta( $current_user->ID, 'rocket_boxes', array_filter( array_merge( (array)$actual, array( $args['box'] ) ) ) );
-
-		wp_redirect( wp_get_referer() );
-		die();
+		if( 'admin-post.php'==$GLOBALS['pagenow'] ){
+			wp_safe_redirect( wp_get_referer() );
+			die();
+		}
 
 	}
 }

@@ -38,8 +38,10 @@ function rocket_upgrader()
 		update_option( WP_ROCKET_SLUG, $options );
 	}
 
-	if( !rocket_valid_key() && current_user_can( 'manage_options' ) )
+	if( !rocket_valid_key() && current_user_can( 'manage_options' ) ){
 		add_action( 'admin_notices', 'rocket_need_api_key' );
+		add_filter( 'rocket_pointer_apikey', '__return_true' );
+	}
 
 }
 
