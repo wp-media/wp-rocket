@@ -37,7 +37,7 @@ function rocket_admin_pointers_check()
 }
 
 /**
- * The pointers core for WP-Rocket
+ * The pointers core for WP Rocket
  *
  * since 1.3.0
  *
@@ -80,7 +80,7 @@ foreach ( $admin_pointers as $pointer => $array ) {
 }
 
 /**
- * Get all pointers for WP-Rocket
+ * Get all pointers for WP Rocket
  *
  * since 1.3.0
  *
@@ -101,7 +101,7 @@ function rocket_admin_pointers()
 		         'active' => true,
 		         'action' => $options['action'],
 		   );
-		   $new_pointer[$pointer_key.$action]['content'] = '<h3>' . __( 'WP-Rocket '.WP_ROCKET_VERSION ) . '</h3><p>' . $options['content'] . '</p>';
+		   $new_pointer[$pointer_key.$action]['content'] = '<h3>' . __( 'WP Rocket '.WP_ROCKET_VERSION ) . '</h3><p>' . $options['content'] . '</p>';
 		}
 	}
    return $new_pointer;
