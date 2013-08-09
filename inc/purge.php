@@ -57,7 +57,7 @@ function rocket_clean_post( $post_id )
 		return;
 
 	// Get the permalink structure
-    $permalink_structure = get_sample_permalink( $post_id );
+    $permalink_structure = get_rocket_sample_permalink( $post_id );
 
     // Get permalink
     $permalink = str_replace( array( '%postname%', '%pagename%' ), $permalink_structure[1], $permalink_structure[0] );
