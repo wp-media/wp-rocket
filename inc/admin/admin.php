@@ -137,7 +137,6 @@ function rocket_dismiss_boxes( $args )
 
 		if( !wp_verify_nonce( $args['_wpnonce'], $args['action'] . '_' . $args['box'] ) )
 			wp_nonce_ays( '' );
-
 		global $current_user;
 		$actual = get_user_meta( $current_user->ID, 'rocket_boxes', true );
 		update_user_meta( $current_user->ID, 'rocket_boxes', array_filter( array_merge( (array)$actual, array( $args['box'] ) ) ) );
@@ -147,6 +146,19 @@ function rocket_dismiss_boxes( $args )
 		}
 
 	}
+}
+
+
+/**
+ * Dismissed 1 box, wrapper of rocket_dismiss_boxes()
+ *
+ * since 1.3.0
+ *
+ */
+
+function rocket_dismiss_box( $function )
+{
+	rocket_dismiss_boxes( array( 'box'=>$function, '_wpnonce'=>wp_create_nonce( 'rocket_ignore_'.$function ), 'action'=>'rocket_ignore' ) );
 }
 
 

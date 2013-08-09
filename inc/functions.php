@@ -368,14 +368,25 @@ function run_rocket_bot( $spider = 'cache-preload', $start_url = '' )
  *
  */
 
-function rocket_renew_all_boxes( $uid=0 )
+function rocket_renew_all_boxes( $uid=0, $keep_this=array() )
 {
 	if( (int)$uid>0 ){
 		delete_user_meta( $uid, 'rocket_boxes' );
 	}else{
 		global $wpdb;
+		$query = 'DELETE FROM ' . $wpdb->usermeta . ' WHERE meta_key="rocket_boxes"';
 		// do not use $wpdb->delete because WP 3.4 is required!
-		$wpdb->query( 'DELETE FROM ' . $wpdb->usermeta . ' WHERE meta_key="rocket_boxes"' );
+		$wpdb->query( $query );
+	}
+	// $keep_this works only for the current user
+	if( !empty( $keep_this ) ) {
+		if( is_array( $keep_this ) ) {
+			foreach( $keep_this as $kt ) {
+				rocket_dismiss_box( $kt );
+			}
+		}else{
+			rocket_dismiss_box( $keep_this );
+		}
 	}
 }
 

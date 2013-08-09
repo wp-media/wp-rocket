@@ -238,7 +238,7 @@ function rocket_purge_cache()
 					// If WPML isn't activated, you can purge your domain normally
 					rocket_clean_domain();
 				}
-				rocket_dismiss_boxes( array( 'box'=>'rocket_warning_plugin_modification', '_wpnonce'=>wp_create_nonce( 'rocket_ignore_rocket_warning_plugin_modification' ), 'action'=>'rocket_ignore' ) );
+				rocket_dismiss_box( 'rocket_warning_plugin_modification' );
 				break;
 
 			// Clear terms, homepage and other files associated at current post in back-end
