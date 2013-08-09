@@ -177,8 +177,10 @@ function rocket_clean_home()
 
 function rocket_clean_domain()
 {
-	$domain = apply_filters( 'before_rocket_clean_domain', WP_ROCKET_CACHE_PATH . rocket_remove_url_protocol( home_url() ) );
-
+	$domain = apply_filters( 'rocket_clean_domain', WP_ROCKET_CACHE_PATH . rocket_remove_url_protocol( home_url() ) );
+	
+	do_action( 'before_rocket_clean_domain', $domain );
+	
 	// Delete cache domain files
     rocket_rrmdir( $domain );
 

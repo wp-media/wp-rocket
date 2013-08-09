@@ -56,6 +56,7 @@ function rocket_plugins_to_deactivate()
 	if( $options['lazyload'] ) {
 		$plugins[] = 'bj-lazy-load/bj-lazy-load.php';
 		$plugins[] = 'lazy-load/lazy-load.php';
+		$plugins[] = 'jquery-image-lazy-loading/jq_img_lazy_load.php';
 	}
 
 	if( $options['minify_css'] || $options['minify_js'] || $options['minify_html'] ) {
@@ -75,12 +76,12 @@ function rocket_plugins_to_deactivate()
 
 		<div class="error">
 			<p><strong>WP Rocket</strong> : <?php _e( 'Les plugins suivants ne sont pas compatibles avec WP Rocket et vont entraîner des résultats inattendus :', 'rocket' ); ?></p>
-			<ul style="overflow:hidden; padding-left: 20px;list-style-type:disc;">
+			<ul class="rocket-plugins-error">
 			<?php
 			foreach ( $plugins_to_deactivate as $plugin ) {
 
 				$plugin_data = get_plugin_data( WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . $plugin);
-				echo '<li style="width:250px; line-height: 25px;"><span class="alignleft">' . $plugin_data['Name'] . '</span> <a href="' . wp_nonce_url( admin_url( 'admin-post.php?action=deactivate_plugin&plugin=' . urlencode($plugin) ), 'deactivate_plugin' ) . '" class="button-secondary alignright">' . __( 'Désactiver', 'rocket' ) . '</a></li>';
+				echo '<li>' . $plugin_data['Name'] . '</span> <a href="' . wp_nonce_url( admin_url( 'admin-post.php?action=deactivate_plugin&plugin=' . urlencode($plugin) ), 'deactivate_plugin' ) . '" class="button-secondary alignright">' . __( 'Désactiver', 'rocket' ) . '</a></li>';
 
 			}
 			?>

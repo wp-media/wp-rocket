@@ -1,2 +1,4 @@
-#wpadminbar #wp-admin-bar-support a {color: #FF0000;}
-.rocket_cross{float: right !important; cursor: pointer;}
+#wpadminbar #wp-admin-bar-support a {color: #FF0000}
+.rocket_cross{float: right !important; cursor: pointer}
+.rocket-plugins-error {overflow:hidden; padding-left: 20px;list-style-type:disc}
+.rocket-plugins-error li{width:250px; line-height: 25px}

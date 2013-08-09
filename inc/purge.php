@@ -151,7 +151,10 @@ function rocket_clean_post( $post_id )
 add_action( 'after_rocket_clean_post', 'run_rocket_bot_after_clean_post', 10, 2 );
 function run_rocket_bot_after_clean_post( $post, $purge_urls )
 {
-
+	// Run robot only if post is published
+	if( $post->post_status != 'publish' )
+		return false;
+	
 	// Add Homepage URL to $purge_urls for bot crawl
 	array_push( $purge_urls, home_url() );
 
