@@ -246,7 +246,7 @@ function get_rocket_htaccess_charset()
 {
 
 	// Get charset of the blog
-	$charset = strtolower( get_option( 'blog_charset' ) );
+	$charset = preg_replace( '/[^a-zA-Z0-9_\-\.:]+/', '', get_bloginfo( 'charset', 'display' ) );
 
 	$rules = "# Use $charset encoding for anything served text/plain or text/html\n";
 	$rules .= "AddDefaultCharset $charset\n";
