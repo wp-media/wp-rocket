@@ -1,6 +1,7 @@
 <?php
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
+
 /**
  * Launch WP Rocket minification process (CSS and JavaScript)
  *
@@ -15,9 +16,9 @@ add_filter( 'rocket_buffer', 'rocket_minify_process', 12 );
 function rocket_minify_process( $buffer )
 {
 
-	$enable_js 		 = get_rocket_option( 'minify_js' ) == '1';
-	$enable_css 	 = get_rocket_option( 'minify_css' ) == '1';
-	$enable_html 	 = get_rocket_option( 'minify_html' ) == '1';
+	$enable_js 		 = get_rocket_option( 'minify_js' );
+	$enable_css 	 = get_rocket_option( 'minify_css' );
+	$enable_html 	 = get_rocket_option( 'minify_html' );
 	$all_link_tags 	 = '';
 	$all_script_tags = '';
 
@@ -36,14 +37,14 @@ function rocket_minify_process( $buffer )
 	    $buffer = rocket_inject_ie_conditionals( $buffer, $conditionals );
 
 	}
-	
+
 	// Insert all CSS and JS files in head
 	$buffer = preg_replace( '/<head(.*)>/', '<head$1><!--[if IE]><![endif]-->' . $all_link_tags . $all_script_tags, $buffer, 1 );
-	
+
 	// Minify HTML
 	if( $enable_html )
 	    $buffer = rocket_minify_html( $buffer );
-	
+
 	return $buffer;
 }
 
@@ -55,6 +56,7 @@ function rocket_minify_process( $buffer )
  * @since 1.1.12
  *
  */
+
 function rocket_minify_html( $buffer )
 {
 
@@ -79,11 +81,11 @@ function rocket_minify_html( $buffer )
 			require( WP_ROCKET_PATH . 'min/lib/JSMin.php' );
 			$html_options['jsMinifier'] = 	'rocket_minify_inline_js';
 		}
-		
+
 		$html_options = apply_filters( 'rocket_minify_html_options', $html_options );
 		$buffer = Minify_HTML::minify( $buffer, $html_options );
     }
-    
+
     return $buffer;
 
 }
@@ -96,6 +98,7 @@ function rocket_minify_html( $buffer )
  * @since 1.1.6
  *
  */
+
 function rocket_minify_inline_css( $css )
 {
 	return Minify_CSS_Compressor::process( $css );
@@ -109,6 +112,7 @@ function rocket_minify_inline_css( $css )
  * @since 1.1.6
  *
  */
+
 function rocket_minify_inline_js( $js )
 {
 	return JSMin::minify( $js );
@@ -131,11 +135,13 @@ function rocket_minify_css( $buffer )
     $internals_css = array();
     $externals_css = array();
     $excludes_css = array();
+    $google_fonts = array();
 
     // Get all css files with this regex
     preg_match_all( '/<link.+href=.+(\.css).+>/iU', $buffer, $link_tags_match );
 
-    foreach ( $link_tags_match[0] as $tag ) {
+    foreach ( $link_tags_match[0] as $tag ) 
+    {
 
         // Check css media type
         if ( !strpos( strtolower( $tag ), 'media=' )
@@ -196,9 +202,27 @@ function rocket_minify_css( $buffer )
 
     // Get all exclude link tags
     $excludes_link_tags = count( $excludes_css ) ? implode( "\n" , $excludes_css ) : '';
-
+	
+	// Get all Google Fonts CSS files
+	preg_match_all( '/<link.+href=.+(fonts\.googleapis\.com\/css).+>/iU', $buffer, $google_fonts_tags_match );
+	
+	foreach ( $google_fonts_tags_match[0] as $tag ) 
+	{
+		
+		// Get link of the file
+        preg_match( '/href=[\'"]([^\'"]+)/', $tag, $href_match );
+        
+        $google_fonts[] = $tag;
+        
+        // Delete the link tag
+        $buffer = str_replace( $tag, '', $buffer ); 
+	}
+	
+	// Get all exclude link tags
+    $google_fonts_tags = count( $google_fonts ) ? implode( "\n" , $google_fonts ) : '';
+	
 	// Insert the minify css file below <head>
-	return array( $buffer, $externals_link_tags . $internals_link_tags . $excludes_link_tags );
+	return array( $buffer, $google_fonts_tags . $externals_link_tags . $internals_link_tags . $excludes_link_tags );
 }
 
 

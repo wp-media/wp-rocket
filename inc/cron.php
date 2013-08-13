@@ -6,7 +6,7 @@ defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
  * This setting can be changed from the options page of the plugin
  * By default, the interval is 4 hours
  *
- * since 1.0
+ * @since 1.0
  *
  */
 
@@ -28,11 +28,12 @@ function rocket_purge_cron_schedule( $schedules )
  * Planning cron
  * If the task is not programmed, it is automatically triggered
  *
- * since 1.0
+ * @since 1.3.2 Use "init" hook up to "wp"
+ * @since 1.0
  *
  */
 
-add_action( 'wp', 'rocket_purge_cron_scheduled' );
+add_action( 'init', 'rocket_purge_cron_scheduled' );
 function rocket_purge_cron_scheduled()
 {
 
@@ -47,7 +48,7 @@ function rocket_purge_cron_scheduled()
  * This event is launched when the cron is triggered
  * That delete the domain cache
  *
- * since 1.0
+ * @since 1.0
  *
  */
 

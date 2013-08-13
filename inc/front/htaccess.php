@@ -4,8 +4,8 @@ defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 /**
  * Used to flush the .htaccess file
  *
- * since 1.1.0 Remove empty spacings then .htaccess is generated
- * since 1.0
+ * @since 1.1.0 Remove empty spacings then .htaccess is generated
+ * @since 1.0
  *
  */
 
@@ -43,9 +43,10 @@ function flush_rocket_htaccess( $force = false )
 /**
  * Return the markers for htacces rules
  *
- * since 1.0
+ * @since 1.0
  *
  */
+
 function get_rocket_htaccess_marker()
 {
 
@@ -63,10 +64,11 @@ function get_rocket_htaccess_marker()
 }
 
 
+
 /**
  * Add somes rules need by the plugin
  *
- * since 1.0
+ * @since 1.0
  *
  */
 
@@ -114,7 +116,7 @@ function get_rocket_htaccess_mod_rewrite()
 /**
  * Other rules for mobile version
  *
- * since 1.0
+ * @since 1.0
  *
  */
 
@@ -132,9 +134,10 @@ function get_rocket_htaccess_mobile_rewritecond()
 /**
  * Other rules again to improve performances
  *
- * since 1.0
+ * @since 1.0
  *
  */
+
 function get_rocket_htaccess_mod_deflate()
 {
 
@@ -181,7 +184,7 @@ function get_rocket_htaccess_mod_deflate()
 /**
  * Other rules to improve performances again
  *
- * since 1.0
+ * @since 1.0
  *
  */
 
@@ -233,19 +236,26 @@ function get_rocket_htaccess_mod_expires()
 }
 
 
+
 /**
  * Add default charset
  *
- * since 1.0
+ * @since 1.0
  *
  */
+
 function get_rocket_htaccess_charset()
 {
 
-	$rules = "# Use UTF-8 encoding for anything served text/plain or text/html\n";
-	$rules .= "AddDefaultCharset UTF-8\n";
-	$rules .= "# Force UTF-8 for a number of file formats\n";
-	$rules .= "AddCharset utf-8 .atom .css .js .json .rss .vtt .xml\n\n";
+	// Get charset of the blog
+	$charset = strtolower( get_option( 'blog_charset' ) );
+
+	$rules = "# Use $charset encoding for anything served text/plain or text/html\n";
+	$rules .= "AddDefaultCharset $charset\n";
+	$rules .= "# Force $charset for a number of file formats\n";
+	$rules .= "<IfModule mod_mime.c>\n";
+		$rules .= "AddCharset $charset .atom .css .js .json .rss .vtt .xml\n";
+	$rules .= "</IfModule>\n\n";
 	$rules = apply_filters( 'rocket_htaccess_charset', $rules );
 
 	return $rules;
@@ -256,9 +266,10 @@ function get_rocket_htaccess_charset()
 /**
  * Add some files match rules
  *
- * since 1.1.6
+ * @since 1.1.6
  *
  */
+
 function get_rocket_htaccess_files_match()
 {
 
@@ -289,9 +300,10 @@ function get_rocket_htaccess_files_match()
 /**
  * Rules to remove the etag
  *
- * since 1.0
+ * @since 1.0
  *
  */
+
 function get_rocket_htaccess_etag()
 {
 

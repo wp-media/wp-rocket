@@ -142,7 +142,8 @@ function rocket_clean_post( $post_id )
 
 
 /**
- * run_rocket_bot_after_clean_post function.
+ * Actions to be done after the purge cache files of a post
+ * By Default, this hook call the WP Rocket Bot (cache json)
  *
  * @since 1.3.0
  *
@@ -169,9 +170,30 @@ function run_rocket_bot_after_clean_post( $post, $purge_urls )
 
 	// Create json file and run WP Rocket Bot
 	$json_encode_urls = '["'.implode( '","', array_filter($purge_urls) ).'"]';
-	if(@file_put_contents( WP_ROCKET_PATH . 'cache.json', $json_encode_urls ));
-		run_rocket_bot( 'cache-json' );
+	if(@file_put_contents( WP_ROCKET_PATH . 'cache.json', $json_encode_urls )) 
+	{
+		global $do_rocket_bot_cache_json;
+		$do_rocket_bot_cache_json = true;
+	}
 }
+
+
+
+/**
+ * Run WP Rocket Bot when a post is added, updated or deleted
+ *
+ * @since 1.3.2
+ *
+ */
+ 
+add_action( 'shutdown', 'do_rocket_bot_cache_json' );
+function do_rocket_bot_cache_json() 
+{
+	global $do_rocket_bot_cache_json;
+	if( $do_rocket_bot_cache_json )
+		run_rocket_bot( 'cache-json' );	
+}
+
 
 
 /**
