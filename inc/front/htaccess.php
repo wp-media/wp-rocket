@@ -30,10 +30,8 @@ function flush_rocket_htaccess( $force = false )
 		if( $force === false  )
 			$rules = get_rocket_htaccess_marker();
 
-
 		// Update the .htacces file
 		file_put_contents( $htaccess_file , $rules . $ftmp );
-
 	}
 
 }
@@ -102,7 +100,7 @@ function get_rocket_htaccess_mod_rewrite()
 	if( $is_1and1_or_force )
 		$rules .= 'RewriteCond "' . str_replace( '/kunden/', '/', WP_ROCKET_CACHE_PATH ) . $HTTP_HOST . '%{REQUEST_URI}/index.html" -f' . "\n";
 	else
-		$rules .= 'RewriteCond "%{DOCUMENT_ROOT}/'. basename( dirname( WP_ROCKET_CACHE_PATH ) ) . '/' . basename( WP_ROCKET_CACHE_PATH ) .'/'.$HTTP_HOST.'%{REQUEST_URI}/index.html" -f' . "\n";
+		$rules .= 'RewriteCond "%{DOCUMENT_ROOT}/' . ltrim( $cache_root, '/' ) . $HTTP_HOST . '%{REQUEST_URI}/index.html" -f' . "\n";
 	$rules .= 'RewriteRule .* "' . $cache_root . $HTTP_HOST . '%{REQUEST_URI}/index.html" [L]' . "\n";
 	$rules .= '</IfModule>' . "\n";
 	$rules = apply_filters( 'rocket_htaccess_mod_rewrite', $rules );
