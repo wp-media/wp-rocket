@@ -39,6 +39,7 @@ function rocket_widget_update_callback( $instance ) { rocket_clean_domain(); ret
 add_action( 'wp_trash_post', 'rocket_clean_post' );
 add_action( 'delete_post', 'rocket_clean_post' );
 add_action( 'clean_post_cache', 'rocket_clean_post' );
+add_action( 'wp_update_comment_count', 'rocket_clean_post' );
 function rocket_clean_post( $post_id )
 {
 
