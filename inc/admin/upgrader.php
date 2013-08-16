@@ -106,6 +106,13 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version )
 	if( version_compare( $actual_version, '1.3.0', '<' ) ){
 		rocket_dismiss_boxes( array( 'box'=>'rocket_warning_plugin_modification', '_wpnonce'=>wp_create_nonce( 'rocket_ignore_rocket_warning_plugin_modification' ), 'action'=>'rocket_ignore' ) );
 	}
+	
+	if( version_compare( $actual_version, '1.3.3', '<' ) ){
+		// Clean cache
+		rocket_clean_domain();
+		// Create cache files
+		run_rocket_bot( 'cache-preload' );
+	}
 }
 
 /* END UPGRADER'S HOOKS */
