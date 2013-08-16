@@ -196,7 +196,7 @@ function rocket_display_options()
 			)
 		);
 		add_settings_field( 'rocket_mobile', __( 'Cache mobile :', 'rocket' ), 'rocket_field', 'basic', 'rocket_display_main_options',
-			array( 'type'=>'checkbox', 'label'=>'Activer la mise en cache pour les appareils mobile.', 'label_for'=>'cache_mobile', 'label_screen'=>'Mobile', 'description'=>'<strong>Attention : si vous utilisez le plugin WP Touch, vous ne devez pas activer cette option.</strong>' )
+			array( 'type'=>'checkbox', 'label'=>'Activer la mise en cache pour les appareils mobile.', 'label_for'=>'cache_mobile', 'label_screen'=>'Mobile', 'description'=>'<strong style="color:#FF0000;">Attention : si vous utilisez le plugin <a href="http://wordpress.org/plugins/wptouch/" target="_blank">WP Touch</a>, <a href="http://wordpress.org/plugins/wp-mobile-detector/" target="_blank">WP Mobile Detector</a>, <a href="http://wordpress.org/plugins/wiziapp-create-your-own-native-iphone-app/" target="_blank">WiziApp</a> ou <a href="http://wordpress.org/plugins/wordpress-mobile-pack/" target="_blank">WordPress Mobile Pack</a>, vous ne devez pas activer cette option.</strong>' )
 		);
 		add_settings_field( 'rocket_purge', __( 'Délai de Purge :', 'rocket' ), 'rocket_field', 'basic', 'rocket_display_main_options',
 			array(
@@ -249,6 +249,7 @@ function rocket_display_options()
 				<a href="#tab_tools" class="nav-tab"><?php _e( 'Outils', 'rocket' ); ?></a>
 				<a href="#tab_tutos" class="nav-tab"><?php _e( 'Tutoriels', 'rocket' ); ?></a>
 				<a href="#tab_faq" class="nav-tab"><?php _e( 'F.A.Q.', 'rocket' ); ?></a>
+				<a href="#tab_support" class="nav-tab" style="color:#FF0000;"><?php _e( 'Support', 'rocket' ); ?></a>
 				<input type="hidden" name="wp_rocket_settings[consumer_key]" value="<?php esc_attr_e( get_rocket_option( 'consumer_key' ) ); ?>" />
 			<?php else: ?>
 				<a href="#tab_apikey" class="nav-tab"><?php _e( 'API KEY', 'rocket' ); ?></a>
@@ -342,7 +343,7 @@ function rocket_display_options()
 
 					<p>Il est impératif de <strong>supprimer tous les autres plugins d'optimisation</strong> (cache, minification, LazyLoad) avant l’activation de WP Rocket.</p>
 
-					<h2>WP Rocket est-il compatible avec WP Touch ?</h2>
+					<h2>WP Rocket est-il compatible avec WP Touch, WordPress Mobile Pack et WP Mobile Detector ?</h2>
 					<p>Oui.</p>
 					<p>Par contre, dans les options de base, vous devez décocher la case <code>Activer la mise en cache pour les appareils mobile</code>.</p>
 
@@ -379,7 +380,11 @@ function rocket_display_options()
 
 					<p>Pour plus d’informations, vous pouvez consulter notre vidéo à ce propos : <a href="http://www.youtube.com/embed/9jDcg2f-9yM" class="fancybox">http://www.youtube.com/embed/9jDcg2f-9yM</a>.</p>
 				</div>
+				<div class="rkt-tab rkt-tab-txt" id="tab_support">
+					<p>Si aucune des réponses de la F.A.Q. répond à votre problématique, vous pouvez nous faire part de votre problème sur notre <a href="http://support.wp-rocket.me/" target="_blank">support</a>. Nous vous répondrons dans les plus brefs délais.</p>
+					<p><a href="http://support.wp-rocket.me/" class="button-primary" target="_blank">Accéder au support de WP Rocket</a></p>
 			<?php endif; ?>
+				</div>
 		</div>
 		<?php submit_button(); ?>
 	</form>

@@ -150,7 +150,14 @@ function rocket_activation()
     flush_rewrite_rules();
 
     // Create cache folder if not exist
-    if( !is_dir( WP_ROCKET_CACHE_PATH ) )
-		mkdir( WP_ROCKET_CACHE_PATH );
+    if( !is_dir( WP_ROCKET_CACHE_PATH ) ) {
+	    global $wp_filesystem;
+	    if( !$wp_filesystem ){
+			require_once( ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php' );
+			require_once( ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php' );
+			$wp_filesystem = new WP_Filesystem_Direct( new StdClass() );
+		}
+		$wp_filesystem->mkdir(WP_ROCKET_CACHE_PATH, CHMOD_WP_ROCKET_CACHE_DIRS);
+    }
 
 }
