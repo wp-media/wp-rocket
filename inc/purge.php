@@ -27,6 +27,7 @@ function rocket_widget_update_callback( $instance ) { rocket_clean_domain(); ret
 /**
  * Update cache when a post is updated or commented
  *
+ * @since 1.3.2 Add wp_update_comment_count to purge cache when a comment is addes/updated/deleted
  * @since 1.3.0 Compatibility with WPML
  * @since 1.3.0 Add 2 hooks : before_rocket_clean_post, after_rocket_clean_post
  * @since 1.3.0 Purge all parents of the post and the author page
@@ -39,6 +40,7 @@ function rocket_widget_update_callback( $instance ) { rocket_clean_domain(); ret
 add_action( 'wp_trash_post', 'rocket_clean_post' );
 add_action( 'delete_post', 'rocket_clean_post' );
 add_action( 'clean_post_cache', 'rocket_clean_post' );
+add_filter( 'delete_transient_wc_products_onsale', 'wp_suspend_cache_invalidation' ); // since 1.3.3, for not conflit with WooCommerce when clean_post_cache is called
 add_action( 'wp_update_comment_count', 'rocket_clean_post' );
 function rocket_clean_post( $post_id )
 {
