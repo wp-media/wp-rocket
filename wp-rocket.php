@@ -4,7 +4,7 @@
 Plugin Name: WP Rocket
 Plugin URI: http://www.wp-rocket.me
 Description: The best WordPress performance plugin.
-Version: 1.3.3
+Version: 1.3.4
 Author: WP Rocket
 Contributors: Jonathan Buttigieg, Julio Potier
 Author URI: http://www.wp-rocket.me
@@ -15,7 +15,7 @@ Copyright 2013 WP Rocket
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 // Rocket defines
-define( 'WP_ROCKET_VERSION'             , '1.3.3');
+define( 'WP_ROCKET_VERSION'             , '1.3.4');
 define( 'WP_ROCKET_SLUG'                , 'wp_rocket_settings');
 define( 'WP_ROCKET_WEB_MAIN'            , 'http://support.wp-rocket.me/');
 define( 'WP_ROCKET_WEB_CHECK'           , WP_ROCKET_WEB_MAIN.'check_update.php');
@@ -115,7 +115,6 @@ function rocket_init()
     // You can hook this to trigger any action when WP Rocket is correctly loaded, so, not in AUTOSAVE mode
     if( rocket_valid_key() )
 		do_action( 'wp_rocket_loaded' );
-
 }
 
 /*
@@ -150,14 +149,6 @@ function rocket_activation()
     flush_rewrite_rules();
 
     // Create cache folder if not exist
-    if( !is_dir( WP_ROCKET_CACHE_PATH ) ) {
-	    global $wp_filesystem;
-	    if( !$wp_filesystem ){
-			require_once( ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php' );
-			require_once( ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php' );
-			$wp_filesystem = new WP_Filesystem_Direct( new StdClass() );
-		}
-		$wp_filesystem->mkdir(WP_ROCKET_CACHE_PATH, CHMOD_WP_ROCKET_CACHE_DIRS);
-    }
-
+    if( !is_dir( WP_ROCKET_CACHE_PATH ) ) 
+	    rocket_mkdir( WP_ROCKET_CACHE_PATH );
 }

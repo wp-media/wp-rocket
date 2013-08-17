@@ -48,24 +48,18 @@ function do_rocket_process( $buffer )
 		// - Deferred JavaScript files
 		// - Minification HTML/CSS/JavaScript
 		$buffer = apply_filters( 'rocket_buffer', $buffer );
+			    
+		// Create cache folder of host name
+	    $request_uri_path = WP_ROCKET_CACHE_PATH . $_SERVER['HTTP_HOST'] . rtrim( $_SERVER['REQUEST_URI'], '/' );
 		
-	    // Get root cache dir
-	    $host = rocket_remove_url_protocol( $_SERVER['HTTP_HOST'] );
-	    $cache_dir = WP_ROCKET_CACHE_PATH . $host . $_SERVER['REQUEST_URI'];
-
-		// Create cache folder if not already exist
-	    if( !is_dir( $cache_dir ) ) {
-		    global $wp_filesystem;
-		    if( !$wp_filesystem ){
-				require_once( ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php' );
-				require_once( ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php' );
-				$wp_filesystem = new WP_Filesystem_Direct( new StdClass() );
-			}
-			$wp_filesystem->mkdir($cache_dir, CHMOD_WP_ROCKET_CACHE_DIRS);
-	    }
-
+		// Get path of cache file
+		$cache_file_path = $request_uri_path . '/index.html';
+		
+		// Create cache folders of the requet uri
+		rocket_mkdir_p( $request_uri_path );
+		
 		// Save the cache file
-	    file_put_contents( $cache_dir . '/index.html', $buffer . "\n" . '<!-- This website is like a Rocket, isn\'t ? Performance optimized by WP Rocket. Learn more: http://wp-rocket.me - Debug: cached@'.time().'-->' );
+	    file_put_contents( $cache_file_path, $buffer . "\n" . '<!-- This website is like a Rocket, isn\'t ? Performance optimized by WP Rocket. Learn more: http://wp-rocket.me - Debug: cached@'.time().'-->' );
     }
 
 	return $buffer . "\n" . '<!-- This website is like a Rocket, isn\'t ? Performance optimized by WP Rocket. Learn more: http://wp-rocket.me -->';

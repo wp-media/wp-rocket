@@ -178,13 +178,72 @@ function rocket_clean_home()
 function rocket_clean_domain()
 {
 	$domain = apply_filters( 'rocket_clean_domain', WP_ROCKET_CACHE_PATH . rocket_remove_url_protocol( home_url() ) );
-	
+
 	do_action( 'before_rocket_clean_domain', $domain );
-	
+
 	// Delete cache domain files
     rocket_rrmdir( $domain );
 
     do_action( 'after_rocket_clean_domain', $domain );
+}
+
+
+
+/**
+ * Directory creation based on WordPress Filesystem
+ *
+ * @since 1.3.4
+ *
+ */
+
+function rocket_mkdir( $dir )
+{
+
+	global $wp_filesystem;
+    if( !$wp_filesystem )
+    {
+		require_once( ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php' );
+		require_once( ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php' );
+		$wp_filesystem = new WP_Filesystem_Direct( new StdClass() );
+	}
+	return $wp_filesystem->mkdir( $dir, CHMOD_WP_ROCKET_CACHE_DIRS );
+}
+
+
+
+/**
+ * Recursive directory creation based on full path.
+ *
+ * @source wp_mkdir_p() in /wp-includes/functions.php
+ * @since 1.3.4
+ */
+
+function rocket_mkdir_p( $target )
+{
+
+	// from php.net/mkdir user contributed notes
+	$target = str_replace( '//', '/', $target );
+
+	// safe mode fails with a trailing slash under certain PHP versions.
+	$target = rtrim($target, '/'); // Use rtrim() instead of untrailingslashit to avoid formatting.php dependency.
+	if ( empty($target) )
+		$target = '/';
+
+	if ( file_exists( $target ) )
+		return @is_dir( $target );
+
+	// Attempting to create the directory may clutter up our display.
+	if ( rocket_mkdir( $target ) ) {
+		return true;
+	} elseif ( is_dir( dirname( $target ) ) ) {
+			return false;
+	}
+
+	// If the above failed, attempt to create the parent node, then try again.
+	if ( ( $target != '/' ) && ( rocket_mkdir_p( dirname( $target ) ) ) )
+		return rocket_mkdir_p( $target );
+
+	return false;
 }
 
 
@@ -470,7 +529,6 @@ function rocket_remove_url_protocol( $url, $no_dots=false )
 
 
 
-
 /**
  * Get the permalink post
  *
@@ -478,8 +536,8 @@ function rocket_remove_url_protocol( $url, $no_dots=false )
  * @source : wp-admin/includes/post.php
  *
  */
- 
-function get_rocket_sample_permalink( $id ) 
+
+function get_rocket_sample_permalink( $id )
 {
 	$post = get_post($id);
 	if ( !$post->ID )
