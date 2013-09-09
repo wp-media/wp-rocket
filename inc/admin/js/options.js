@@ -3,14 +3,14 @@ jQuery( document ).ready( function($){
 	// Fancybox
 	$(".fancybox").fancybox({'type' : 'iframe'});
 	
-	// Deffered JS
+	// Deferred JS
 	function rocket_rename()
 	{
 		$('#rktdrop .rktdrag').each( function(i){
 			var $item_t_input = $(this).find( 'input[type=text]' );
 			var $item_c_input = $(this).find( 'input[type=checkbox]' );
-			$($item_t_input).attr( 'name', '<?php echo WP_ROCKET_SLUG; ?>[deferred_js_files]['+i+']' );
-			$($item_c_input).attr( 'name', '<?php echo WP_ROCKET_SLUG; ?>[deferred_js_wait]['+i+']' );
+			$($item_t_input).attr( 'name', 'wp_rocket_settings[deferred_js_files]['+i+']' );
+			$($item_c_input).attr( 'name', 'wp_rocket_settings[deferred_js_wait]['+i+']' );
 		});
 	}
 	$('#rktdrop').sortable({
