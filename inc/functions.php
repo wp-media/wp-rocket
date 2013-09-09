@@ -316,15 +316,17 @@ function rocket_rrmdir( $dir, $dirs_to_preserve = array() )
  * ex: rocket_clean_exclude_file( 'http://www.geekpress.fr/referencement-wordpress/') return /referencement-wordpress/
  *
  * @since 1.0
+ * @since 1.3.5 Redo the function
  *
  */
 
 function rocket_clean_exclude_file( $file )
 {
-	$file = str_replace( array( '#\?.*$#', home_url(), 'http://', 'https://' ), '', $file );
-	$ex = explode( '?', $file );
-	$r = reset( $ex );
-    return trim( $r );
+	if( !filter_var( $file, FILTER_VALIDATE_URL ) )
+		return false;
+	$urls = parse_url( $file );
+	$path = $urls['path'];
+    return $path;
 }
 
 
