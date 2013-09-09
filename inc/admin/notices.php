@@ -52,34 +52,34 @@ function rocket_plugins_to_deactivate()
 		'wp-fast-cache/wp-fast-cache.php'
 	);
 
-	if( get_rocket_option( 'lazyload' ) ) 
+	if( get_rocket_option( 'lazyload' ) )
 	{
 		$plugins[] = 'bj-lazy-load/bj-lazy-load.php';
 		$plugins[] = 'lazy-load/lazy-load.php';
 		$plugins[] = 'jquery-image-lazy-loading/jq_img_lazy_load.php';
 	}
 
-	if( get_rocket_option( 'minify_css' ) || get_rocket_option( 'minify_js' ) || get_rocket_option( 'minify_html' ) ) 
+	if( get_rocket_option( 'minify_css' ) || get_rocket_option( 'minify_js' ) || get_rocket_option( 'minify_html' ) )
 	{
 		$plugins[] = 'bwp-minify/bwp-minify.php';
 		$plugins[] = 'wp-minify/wp-minify.php';
 		$plugins[] = 'wp-html-compression/wp-html-compression.php';
 	}
 
-	foreach ( $plugins as $plugin ) 
+	foreach ( $plugins as $plugin )
 	{
 		if( is_plugin_active( $plugin ) )
 			$plugins_to_deactivate[] = $plugin;
 	}
 
-	if( count($plugins_to_deactivate) ) 
+	if( current_user_can( 'manage_options' ) && count( $plugins_to_deactivate ) && rocket_valid_key() )
 	{ ?>
 
 		<div class="error">
 			<p><strong>WP Rocket</strong> : <?php _e( 'Les plugins suivants ne sont pas compatibles avec WP Rocket et vont entraîner des résultats inattendus :', 'rocket' ); ?></p>
 			<ul class="rocket-plugins-error">
 			<?php
-			foreach ( $plugins_to_deactivate as $plugin ) 
+			foreach ( $plugins_to_deactivate as $plugin )
 			{
 
 				$plugin_data = get_plugin_data( WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . $plugin);
@@ -109,7 +109,7 @@ function rocket_warning_logged_users()
 
 	global $current_user, $current_screen;
 	$boxes = get_user_meta( $current_user->ID, 'rocket_boxes', true );
-	if( 'settings_page_wprocket'==$current_screen->base && !in_array( __FUNCTION__, (array)$boxes ) && rocket_valid_key() ) { ?>
+	if( current_user_can( 'manage_options' ) && 'settings_page_wprocket'==$current_screen->base && !in_array( __FUNCTION__, (array)$boxes ) && rocket_valid_key() ) { ?>
 
 		<div class="updated">
 			<span class="rocket_cross"><a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>"><img src="<?php echo admin_url( '/images/no.png' ); ?>" title="Ignorer jusqu'à la prochaine fois" alt="Ignorer" /></a></span>
@@ -133,13 +133,14 @@ add_action( 'admin_notices', 'rocket_warning_using_permalinks' );
 function rocket_warning_using_permalinks()
 {
 
-	if( $GLOBALS['wp_rewrite']->using_permalinks() )
-		return false;
+	if( current_user_can( 'manage_options' ) && !$GLOBALS['wp_rewrite']->using_permalinks() && rocket_valid_key() )
+	{
 	?>
 		<div class="error">
 			<p><strong>WP Rocket</strong> : Une structure de permalien personnalisé est requis pour que <strong>WP Rocket</strong> pour fonctionne correctement. S'il vous plaît, aller à la page <a href="<?php echo admin_url( '/options-permalink.php' ); ?>">Permaliens</a> pour configurer vos permaliens.</p>
 		</div>
 	<?php
+	}
 }
 
 
@@ -156,7 +157,7 @@ function rocket_warning_htaccess_permissions()
 {
 	$htaccess_file = get_real_file_to_edit( '.htaccess' );
 
-	if( !file_exists( $htaccess_file ) || !is_writable( $htaccess_file ) )
+	if( current_user_can( 'manage_options' ) && ( !file_exists( $htaccess_file ) || !is_writable( $htaccess_file ) ) && rocket_valid_key() )
 	{
 		global $current_user;
 		$boxes = get_user_meta( $current_user->ID, 'rocket_boxes', true );
@@ -170,7 +171,6 @@ function rocket_warning_htaccess_permissions()
 		<?php
 		}
 	}
-
 }
 
 
@@ -186,7 +186,7 @@ add_action( 'admin_notices', 'rocket_warning_cache_dir_permissions' );
 function rocket_warning_cache_dir_permissions()
 {
 
-	if( !is_dir( WP_ROCKET_CACHE_PATH ) || !is_writable( WP_ROCKET_CACHE_PATH ) )
+	if( current_user_can( 'manage_options' ) && ( !is_dir( WP_ROCKET_CACHE_PATH ) || !is_writable( WP_ROCKET_CACHE_PATH ) ) && rocket_valid_key() )
 	{
 		global $current_user;
 		$boxes = get_user_meta( $current_user->ID, 'rocket_boxes', true );
@@ -200,7 +200,6 @@ function rocket_warning_cache_dir_permissions()
 		<?php
 		}
 	}
-
 }
 
 

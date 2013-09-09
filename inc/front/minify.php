@@ -64,9 +64,12 @@ function rocket_minify_html( $buffer )
     if( !class_exists( 'Minify_HTML' ) )
     {
 
-	    $html_options = array( 'ignoredComments' => array( 'google_ad_', 'RSPEAK_' ), 'stripCrlf' => true );
+	    $html_options = array( 
+	    	'ignoredComments' => array( 'google_ad_', 'RSPEAK_' ), 
+	    	'stripCrlf'       => true
+	    );
+	    
 	    require( WP_ROCKET_PATH . 'min/lib/Minify/HTML.php' );
-
 
 		// Check if Minify_CSS_Compressor is enable
 		if( !class_exists( 'Minify_CSS_Compressor' ) )

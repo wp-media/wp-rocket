@@ -2,11 +2,18 @@
 /**
  * Utility functions for generating URIs in HTML files
  *
+ * @warning These functions execute min/groupsConfig.php, sometimes multiple times.
+ * You must make sure that functions are not redefined, and if your use custom sources,
+ * you must require_once dirname(__FILE__) . '/lib/Minify/Source.php' so that
+ * class is available.
+ *
  * @package Minify
  */
 
-require_once dirname(__FILE__) . '/lib/Minify/HTML/Helper.php';
-
+if (! class_exists('Minify_Loader', false)) {
+    require dirname(__FILE__) . '/lib/Minify/Loader.php';
+    Minify_Loader::register();
+}
 
 /*
  * Get an HTML-escaped Minify URI for a group or set of files. By default, URIs
@@ -44,7 +51,7 @@ function Minify_getUri($keyOrFiles, $opts = array())
  *
  * Since this makes a bunch of stat() calls, you might not want to check this
  * on every request.
- *
+ * 
  * @param array $keysAndFiles group keys and/or file paths/URIs.
  * @return int latest modification time of all given keys/files
  */

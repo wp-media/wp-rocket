@@ -46,6 +46,29 @@ function rocket_admin_bar( $wp_admin_bar )
 	        }
 
 		}
+		// Compatibility with qTranslate
+		else if( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) )
+		{
+
+			// Purge All
+			$wp_admin_bar->add_menu(array(
+				'parent'	=> 'wp-rocket',
+				'id' 		=> 'purge-all',
+				'title' 	=> __( 'Vider le cache', 'rocket' ),
+				'href' 		=> '#',
+			));
+
+			$langlinks = get_rocket_qtranslate_langs_for_admin_bar();
+			foreach( $langlinks as $lang ) {
+	            $wp_admin_bar->add_menu( array(
+	                'parent' => 'purge-all',
+	                'id' 	 =>  'purge-all-' . $lang['code'],
+	                'title'  => $lang['flag'] . '&nbsp;' . $lang['anchor'],
+	                'href'   => wp_nonce_url( admin_url( 'admin-post.php?action='.$action.'&type=all&lang='.$lang['code'] ), $action.'_all' ),
+	            ));
+	        }
+
+		}
 		else {
 
 			// Purge All
@@ -107,6 +130,26 @@ function rocket_admin_bar( $wp_admin_bar )
 	        }
 
 		}
+		else if( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
+			
+			$wp_admin_bar->add_menu(array(
+                'parent' => 'wp-rocket',
+                'id' 	 => 'preload-cache',
+                'title'  => __( 'Précharger le cache', 'rocket' ),
+                'href' 	 => '#'
+	        ));
+
+            $langlinks = get_rocket_qtranslate_langs_for_admin_bar();
+			foreach( $langlinks as $lang ) {
+	            $wp_admin_bar->add_menu( array(
+	                'parent' => 'preload-cache',
+	                'id' 	 => 'preload-cache-' . $lang['code'],
+	                'title'  => $lang['flag'] . '&nbsp;' . $lang['anchor'],
+	                'href' 	 => wp_nonce_url( admin_url( 'admin-post.php?action='.$action.'&lang='.$lang['code'] ), $action ),
+	            ));
+	        }
+			
+		}
 		else {
 
 			$wp_admin_bar->add_menu(array(
@@ -130,7 +173,7 @@ function rocket_admin_bar( $wp_admin_bar )
 
 
 /**
- * Get all langs to display in admin bar
+ * Get all langs to display in admin bar for WPML
  *
  * @since 1.3.0
  *
@@ -177,4 +220,37 @@ function get_rocket_wpml_langs_for_admin_bar() {
     }
 
     return $langlinks;
+}
+
+
+
+/**
+ * Get all langs to display in admin bar for qTranslate
+ *
+ * @since 1.4.0
+ *
+ */
+
+function get_rocket_qtranslate_langs_for_admin_bar() {
+
+	global $q_config;
+
+	foreach( $q_config['enabled_languages'] as $lang ) {
+
+		$langlinks[$lang] = array(
+            'code'		=> $lang,
+            'anchor'    => $q_config['language_name'][$lang],
+            'flag'      => '<img src="' . trailingslashit(WP_CONTENT_URL).$q_config['flag_location'].$q_config['flag'][$lang] .  '" alt="' . $q_config['language_name'][$lang] . '" width="18" height="12" />'
+        );
+
+	}
+
+	if( isset( $_GET['lang'] ) && qtrans_isEnabled( $_GET['lang'] ) ) 
+	{
+		$currentlang[$_GET['lang']] = $langlinks[$_GET['lang']];
+		unset( $langlinks[$_GET['lang']] );
+		$langlinks = $currentlang + $langlinks;
+	}
+
+	return $langlinks;
 }
