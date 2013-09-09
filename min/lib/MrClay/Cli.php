@@ -2,9 +2,6 @@
 
 namespace MrClay;
 
-use MrClay\Cli\Arg;
-use InvalidArgumentException;
-
 /**
  * Forms a front controller for a console app, handling and validating arguments (options)
  *
@@ -54,7 +51,7 @@ class Cli {
     public $isHelpRequest = false;
 
     /**
-     * @var Arg[]
+     * @var array of Cli\Arg
      */
     protected $_args = array();
 
@@ -83,8 +80,8 @@ class Cli {
     }
 
     /**
-     * @param Arg|string $letter
-     * @return Arg
+     * @param Cli\Arg|string $letter
+     * @return Cli\Arg
      */
     public function addOptionalArg($letter)
     {
@@ -92,8 +89,8 @@ class Cli {
     }
 
     /**
-     * @param Arg|string $letter
-     * @return Arg
+     * @param Cli\Arg|string $letter
+     * @return Cli\Arg
      */
     public function addRequiredArg($letter)
     {
@@ -103,17 +100,17 @@ class Cli {
     /**
      * @param string $letter
      * @param bool $required
-     * @param Arg|null $arg
-     * @return Arg
-     * @throws InvalidArgumentException
+     * @param Cli\Arg|null $arg
+     * @return Cli\Arg
+     * @throws \InvalidArgumentException
      */
-    public function addArgument($letter, $required, Arg $arg = null)
+    public function addArgument($letter, $required, Cli\Arg $arg = null)
     {
         if (! preg_match('/^[a-zA-Z]$/', $letter)) {
-            throw new InvalidArgumentException('$letter must be in [a-zA-Z]');
+            throw new \InvalidArgumentException('$letter must be in [a-zA-z]');
         }
         if (! $arg) {
-            $arg = new Arg($required);
+            $arg = new Cli\Arg($required);
         }
         $this->_args[$letter] = $arg;
         return $arg;
@@ -121,7 +118,7 @@ class Cli {
 
     /**
      * @param string $letter
-     * @return Arg|null
+     * @return Cli\Arg|null
      */
     public function getArgument($letter)
     {
@@ -146,7 +143,7 @@ class Cli {
         
         $lettersUsed = '';
         foreach ($this->_args as $letter => $arg) {
-            /* @var Arg $arg  */
+            /* @var Cli\Arg $arg  */
             $options .= $letter;
             $lettersUsed .= $letter;
             
@@ -162,7 +159,7 @@ class Cli {
         $this->debug['getopt_return'] = $o;
 
         foreach ($this->_args as $letter => $arg) {
-            /* @var Arg $arg  */
+            /* @var Cli\Arg $arg  */
             $this->values[$letter] = false;
             if (isset($o[$letter])) {
                 if (is_bool($o[$letter])) {
@@ -298,7 +295,7 @@ class Cli {
     {
         $r = "\n";
         foreach ($this->_args as $letter => $arg) {
-            /* @var Arg $arg  */
+            /* @var Cli\Arg $arg  */
             $desc = $arg->getDescription();
             $flag = " -$letter ";
             if ($arg->mayHaveValue) {

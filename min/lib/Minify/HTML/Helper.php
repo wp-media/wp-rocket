@@ -15,10 +15,10 @@ class Minify_HTML_Helper {
     public $minAppUri = '/min';
     public $groupsConfigFile = '';
 
-    /**
+    /*
      * Get an HTML-escaped Minify URI for a group or set of files
      * 
-     * @param string|array $keyOrFiles a group key or array of filepaths/URIs
+     * @param mixed $keyOrFiles a group key or array of filepaths/URIs
      * @param array $opts options:
      *   'farExpires' : (default true) append a modified timestamp for cache revving
      *   'debug' : (default false) append debug flag
@@ -51,12 +51,8 @@ class Minify_HTML_Helper {
         return htmlspecialchars($uri, ENT_QUOTES, $opts['charset']);
     }
 
-    /**
+    /*
      * Get non-HTML-escaped URI to minify the specified files
-     *
-     * @param bool $farExpires
-     * @param bool $debug
-     * @return string
      */
     public function getRawUri($farExpires = true, $debug = false)
     {
@@ -78,12 +74,6 @@ class Minify_HTML_Helper {
         return $path;
     }
 
-    /**
-     * Set the files that will comprise the URI we're building
-     *
-     * @param array $files
-     * @param bool $checkLastModified
-     */
     public function setFiles($files, $checkLastModified = true)
     {
         $this->_groupKey = null;
@@ -104,12 +94,6 @@ class Minify_HTML_Helper {
         $this->_filePaths = $files;
     }
 
-    /**
-     * Set the group of files that will comprise the URI we're building
-     *
-     * @param string $key
-     * @param bool $checkLastModified
-     */
     public function setGroup($key, $checkLastModified = true)
     {
         $this->_groupKey = $key;
@@ -119,23 +103,13 @@ class Minify_HTML_Helper {
             }
             if (is_file($this->groupsConfigFile)) {
                 $gc = (require $this->groupsConfigFile);
-                $keys = explode(',', $key);
-                foreach ($keys as $key) {
-                    if (isset($gc[$key])) {
-                        $this->_lastModified = self::getLastModified($gc[$key], $this->_lastModified);
-                    }
+                if (isset($gc[$key])) {
+                    $this->_lastModified = self::getLastModified($gc[$key]);
                 }
             }
         }
     }
-
-    /**
-     * Get the max(lastModified) of all files
-     *
-     * @param array|string $sources
-     * @param int $lastModified
-     * @return int
-     */
+    
     public static function getLastModified($sources, $lastModified = 0)
     {
         $max = $lastModified;
@@ -168,19 +142,13 @@ class Minify_HTML_Helper {
      * @return mixed a common char or '' if any do not match
      */
     protected static function _getCommonCharAtPos($arr, $pos) {
-        if (!isset($arr[0][$pos])) {
-            return '';
-        }
-        $c = $arr[0][$pos];
         $l = count($arr);
-        if ($l === 1) {
+        $c = $arr[0][$pos];
+        if ($c === '' || $l === 1)
             return $c;
-        }
-        for ($i = 1; $i < $l; ++$i) {
-            if ($arr[$i][$pos] !== $c) {
+        for ($i = 1; $i < $l; ++$i)
+            if ($arr[$i][$pos] !== $c)
                 return '';
-            }
-        }
         return $c;
     }
 
@@ -189,11 +157,11 @@ class Minify_HTML_Helper {
      *
      * @param array $paths root-relative URIs of files
      * @param string $minRoot root-relative URI of the "min" application
-     * @return string
      */
     protected static function _getShortestUri($paths, $minRoot = '/min/') {
         $pos = 0;
         $base = '';
+        $c;
         while (true) {
             $c = self::_getCommonCharAtPos($paths, $pos);
             if ($c === '') {

@@ -3,6 +3,11 @@
  * Class Minify  
  * @package Minify
  */
+
+/**
+ * Minify_Source
+ */
+require_once 'Minify/Source.php';
  
 /**
  * Minify - Combines, minifies, and caches JavaScript and CSS files on demand.
@@ -24,7 +29,7 @@
  */
 class Minify {
     
-    const VERSION = '2.1.7';
+    const VERSION = '2.1.5';
     const TYPE_CSS = 'text/css';
     const TYPE_HTML = 'text/html';
     // there is some debate over the ideal JS Content-Type, but this is the
@@ -80,6 +85,7 @@ class Minify {
     public static function setCache($cache = '', $fileLocking = true)
     {
         if (is_string($cache)) {
+            require_once 'Minify/Cache/File.php';
             self::$_cache = new Minify_Cache_File($cache, $fileLocking);
         } else {
             self::$_cache = $cache;
@@ -155,11 +161,9 @@ class Minify {
      * 
      * @param array $options controller/serve options
      * 
-     * @return null|array if the 'quiet' option is set to true, an array
+     * @return mixed null, or, if the 'quiet' option is set to true, an array
      * with keys "success" (bool), "statusCode" (int), "content" (string), and
      * "headers" (array).
-     *
-     * @throws Exception
      */
     public static function serve($controller, $options = array())
     {
@@ -170,6 +174,10 @@ class Minify {
         if (is_string($controller)) {
             // make $controller into object
             $class = 'Minify_Controller_' . $controller;
+            if (! class_exists($class, false)) {
+                require_once "Minify/Controller/" 
+                    . str_replace('_', '/', $controller) . ".php";    
+            }
             $controller = new $class();
             /* @var Minify_Controller_Base $controller */
         }
@@ -211,7 +219,8 @@ class Minify {
                 $contentEncoding = self::$_options['encodeMethod'];
             } else {
                 // sniff request header
-                // depending on what the client accepts, $contentEncoding may be
+                require_once 'HTTP/Encoder.php';
+                // depending on what the client accepts, $contentEncoding may be 
                 // 'x-gzip' while our internal encodeMethod is 'gzip'. Calling
                 // getAcceptedEncoding(false, false) leaves out compress and deflate as options.
                 list(self::$_options['encodeMethod'], $contentEncoding) = HTTP_Encoder::getAcceptedEncoding(false, false);
@@ -222,6 +231,7 @@ class Minify {
         }
         
         // check client cache
+        require_once 'HTTP/ConditionalGet.php';
         $cgOptions = array(
             'lastModifiedTime' => self::$_options['lastModifiedTime']
             ,'isPublic' => self::$_options['isPublic']
@@ -290,7 +300,7 @@ class Minify {
                     throw $e;
                 }
                 self::$_cache->store($cacheId, $content);
-                if (function_exists('gzencode') && self::$_options['encodeMethod']) {
+                if (function_exists('gzencode')) {
                     self::$_cache->store($cacheId . '.gz', gzencode($content, self::$_options['encodeLevel']));
                 }
             }
@@ -441,7 +451,7 @@ class Minify {
     /**
      * Set up sources to use Minify_Lines
      *
-     * @param Minify_Source[] $sources Minify_Source instances
+     * @param array $sources Minify_Source instances
      */
     protected static function _setupDebug($sources)
     {
@@ -458,8 +468,6 @@ class Minify {
      * Combines sources and minifies the result.
      *
      * @return string
-     *
-     * @throws Exception
      */
     protected static function _combineMinify()
     {
@@ -518,6 +526,7 @@ class Minify {
                 $imploded = implode($implodeSeparator, $groupToProcessTogether);
                 $groupToProcessTogether = array();
                 if ($lastMinifier) {
+                    self::$_controller->loadMinifier($lastMinifier);
                     try {
                         $content[] = call_user_func($lastMinifier, $imploded, $lastOptions);
                     } catch (Exception $e) {

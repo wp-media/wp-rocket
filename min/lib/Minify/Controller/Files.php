@@ -4,6 +4,8 @@
  * @package Minify
  */
 
+require_once 'Minify/Controller/Base.php';
+
 /**
  * Controller class for minifying a set of files
  * 

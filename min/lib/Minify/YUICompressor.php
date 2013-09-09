@@ -13,17 +13,14 @@
  * Java environment.
  * 
  * <code>
- * Minify_YUICompressor::$jarFile = '/path/to/yuicompressor-2.4.6.jar';
+ * Minify_YUICompressor::$jarFile = '/path/to/yuicompressor-2.3.5.jar';
  * Minify_YUICompressor::$tempDir = '/tmp';
  * $code = Minify_YUICompressor::minifyJs(
  *   $code
  *   ,array('nomunge' => true, 'line-break' => 1000)
  * );
  * </code>
- *
- * Note: In case you run out stack (default is 512k), you may increase stack size in $options:
- *   array('stack-size' => '2048k')
- *
+ * 
  * @todo unit tests, $options docs
  * 
  * @package Minify
@@ -111,15 +108,10 @@ class Minify_YUICompressor {
                 ,'nomunge' => false
                 ,'preserve-semi' => false
                 ,'disable-optimizations' => false
-	            ,'stack-size' => ''
             )
             ,$userOptions
         );
-        $cmd = self::$javaExecutable
-	         . (!empty($o['stack-size'])
-	            ? ' -Xss' . $o['stack-size']
-	            : '')
-	         . ' -jar ' . escapeshellarg(self::$jarFile)
+        $cmd = self::$javaExecutable . ' -jar ' . escapeshellarg(self::$jarFile)
              . " --type {$type}"
              . (preg_match('/^[\\da-zA-Z0-9\\-]+$/', $o['charset'])
                 ? " --charset {$o['charset']}" 
@@ -142,8 +134,8 @@ class Minify_YUICompressor {
         if (! is_file(self::$jarFile)) {
             throw new Exception('Minify_YUICompressor : $jarFile('.self::$jarFile.') is not a valid file.');
         }
-        if (! is_readable(self::$jarFile)) {
-            throw new Exception('Minify_YUICompressor : $jarFile('.self::$jarFile.') is not readable.');
+        if (! is_executable(self::$jarFile)) {
+            throw new Exception('Minify_YUICompressor : $jarFile('.self::$jarFile.') is not executable.');
         }
         if (! is_dir(self::$tempDir)) {
             throw new Exception('Minify_YUICompressor : $tempDir('.self::$tempDir.') is not a valid direcotry.');

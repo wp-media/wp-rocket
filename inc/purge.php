@@ -80,7 +80,7 @@ function rocket_clean_post( $post_id )
 
 	// Add next post in same category
 	$next_in_same_cat_post = get_adjacent_post( true, '', false );
-	if( $next_in_same_cat_post && $next_in_same_cat_post != $next_post )
+	if( $next_in_same_cat_post )
 		array_push( $purge_urls, get_permalink( $next_in_same_cat_post ) );
 
 	// Add previous post
@@ -90,7 +90,7 @@ function rocket_clean_post( $post_id )
 
 	// Add previous post in same category
 	$previous_in_same_cat_post = get_adjacent_post( true, '', true );
-	if( $previous_in_same_cat_post && $previous_in_same_cat_post != $previous_post )
+	if( $previous_in_same_cat_post )
 		array_push( $purge_urls, get_permalink( $previous_in_same_cat_post ) );
 
 	// Add urls page to purge every time a post is save
@@ -145,40 +145,6 @@ function rocket_clean_post( $post_id )
 
 
 /**
- *
- *
- * @since 1.4.0
- *
- */
-
-add_filter( 'rocket_post_purge_urls', 'rocket_post_purge_urls_for_qtranslate' );
-function rocket_post_purge_urls_for_qtranslate( $urls )
-{
-	if( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) )
-	{
-
-		global $q_config;
-
-		// Get all languages
-		$enabled_languages = $q_config['enabled_languages'];
-
-		// Remove default language
-		$enabled_languages = array_diff( $enabled_languages, array($q_config['default_language']) );
-
-		// Add translate URLs
-		foreach( $urls as $url )
-		{
-			foreach( $enabled_languages as $lang )
-				$urls[] = qtrans_convertURL( $url, $lang, true );
-		}
-	}
-
-	return $urls;
-}
-
-
-
-/**
  * Actions to be done after the purge cache files of a post
  * By Default, this hook call the WP Rocket Bot (cache json)
  *
@@ -192,7 +158,7 @@ function run_rocket_bot_after_clean_post( $post, $purge_urls )
 	// Run robot only if post is published
 	if( $post->post_status != 'publish' )
 		return false;
-
+	
 	// Add Homepage URL to $purge_urls for bot crawl
 	array_push( $purge_urls, home_url() );
 
@@ -207,7 +173,7 @@ function run_rocket_bot_after_clean_post( $post, $purge_urls )
 
 	// Create json file and run WP Rocket Bot
 	$json_encode_urls = '["'.implode( '","', array_filter($purge_urls) ).'"]';
-	if(@file_put_contents( WP_ROCKET_PATH . 'cache.json', $json_encode_urls ))
+	if(@file_put_contents( WP_ROCKET_PATH . 'cache.json', $json_encode_urls )) 
 	{
 		global $do_rocket_bot_cache_json;
 		$do_rocket_bot_cache_json = true;
@@ -222,13 +188,13 @@ function run_rocket_bot_after_clean_post( $post, $purge_urls )
  * @since 1.3.2
  *
  */
-
+ 
 add_action( 'shutdown', 'do_rocket_bot_cache_json' );
-function do_rocket_bot_cache_json()
+function do_rocket_bot_cache_json() 
 {
 	global $do_rocket_bot_cache_json;
 	if( $do_rocket_bot_cache_json )
-		run_rocket_bot( 'cache-json' );
+		run_rocket_bot( 'cache-json' );	
 }
 
 
@@ -259,8 +225,7 @@ function rocket_purge_cache()
 			// Clear all cache domain
 			case 'all':
 				// Check if WPML is activated
-				if( rocket_is_plugin_active('sitepress-multilingual-cms/sitepress.php') )
-				{
+				if( rocket_is_plugin_active('sitepress-multilingual-cms/sitepress.php') ) {
 
 					global $sitepress;
 
@@ -271,8 +236,7 @@ function rocket_purge_cache()
 					$langs = $sitepress->get_active_languages();
 
 					// Check if user want to purge only one lang
-					if( $_lang != 'all' )
-					{
+					if( $_lang != 'all' ) {
 
 						// Unset current lang to the preserve dirs
 						unset($langs[$_lang]);
@@ -280,16 +244,17 @@ function rocket_purge_cache()
 						// Assign a new array to stock dirs to preserve to the purge
 						$langs_to_preserve = array();
 
+
 						// Stock all URLs of langs to preserve
 						foreach ( array_keys($langs) as $lang )
 							$langs_to_preserve[] = rtrim( rocket_remove_url_protocol($sitepress->language_url($lang)), '/' );
+
 
 						// Remove only cache files of selected lang
 						rocket_rrmdir(WP_ROCKET_CACHE_PATH . rocket_remove_url_protocol($sitepress->language_url($_lang)), $langs_to_preserve);
 
 					}
-					else
-					{
+					else {
 						// Remove all cache langs
 						foreach ( array_keys($langs) as $lang )
 							rocket_rrmdir(WP_ROCKET_CACHE_PATH . rocket_remove_url_protocol($sitepress->language_url($lang)));
@@ -297,40 +262,7 @@ function rocket_purge_cache()
 					}
 
 				}
-				else if( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) )
-				{
-
-					global $q_config;
-
-					// Check if language is enabled
-					if( !qtrans_isEnabled( $_GET['lang'] ) )
-					{
-						wp_nonce_ays( '' );
-						break;
-					}
-
-					// Get current lang
-					$_lang = $_GET['lang'];
-
-					// Get all active languages
-					$langs = $q_config['enabled_languages'];
-
-					// Unset current lang to the preserve dirs
-					unset($langs[$_lang]);
-
-					// Assign a new array to stock dirs to preserve to the purge
-					$langs_to_preserve = array();
-
-					// Stock all URLs of langs to preserve
-					foreach ( $langs as $lang )
-						$langs_to_preserve[] = rtrim( rocket_remove_url_protocol(qtrans_convertURL(home_url(),$lang, true)), '/' );
-
-					// Remove only cache files of selected lang
-					rocket_rrmdir(WP_ROCKET_CACHE_PATH . rocket_remove_url_protocol(qtrans_convertURL(home_url(),$_lang, true)), $langs_to_preserve);
-
-				}
-				else
-				{
+				else {
 					// If WPML isn't activated, you can purge your domain normally
 					rocket_clean_domain();
 				}

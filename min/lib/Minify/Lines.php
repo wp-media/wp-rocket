@@ -55,11 +55,7 @@ class Minify_Lines {
         $newLines = array();
         while (null !== ($line = array_shift($lines))) {
             if (('' !== $id) && (0 == $i % 50)) {
-                if ($inComment) {
-                    array_push($newLines, '', "/* {$id} *|", '');
-                } else {
-                    array_push($newLines, '', "/* {$id} */", '');
-                }
+                array_push($newLines, '', "/* {$id} */", '');
             }
             ++$i;
             $newLines[] = self::_addNote($line, $i, $inComment, $padTo);
@@ -69,6 +65,7 @@ class Minify_Lines {
         
         // check for desired URI rewriting
         if (isset($options['currentDir'])) {
+            require_once 'Minify/CSS/UriRewriter.php';
             Minify_CSS_UriRewriter::$debugText = '';
             $content = Minify_CSS_UriRewriter::rewrite(
                  $content
@@ -96,9 +93,6 @@ class Minify_Lines {
      */
     private static function _eolInComment($line, $inComment)
     {
-        // crude way to avoid things like // */
-        $line = preg_replace('~//.*?(\\*/|/\\*).*~', '', $line);
-
         while (strlen($line)) {
             $search = $inComment
                 ? '*/'

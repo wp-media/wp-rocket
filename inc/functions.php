@@ -249,27 +249,6 @@ function rocket_mkdir_p( $target )
 
 
 /**
- * File creation based on WordPress Filesystem
- *
- * @since 1.3.5
- *
- */
-
-function rocket_put_content( $file, $content )
-{
-
-	global $wp_filesystem;
-    if( !$wp_filesystem )
-    {
-		require_once( ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php' );
-		require_once( ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php' );
-		$wp_filesystem = new WP_Filesystem_Direct( new StdClass() );
-	}
-	return $wp_filesystem->put_contents( $file, $content, 0644 );
-}
-
-
-/**
  * Remove a single file or a folder recursively
  *
  * @since 1.0
@@ -604,17 +583,4 @@ function get_rocket_sample_permalink( $id )
 	unset($post->filter);
 
 	return $permalink;
-}
-
-
-function get_rocket_request_uri() 
-{
-	
-	if( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) 
-	{
-		global $q_config;
-		return $q_config['url_info']['original_url'];
-	}
-	
-	return $_SERVER['REQUEST_URI'];
 }
