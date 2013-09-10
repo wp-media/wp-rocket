@@ -1,7 +1,7 @@
 <?php
 defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 
- // Launch hooks that deletes all the cache domain
+// Launch hooks that deletes all the cache domain
 add_action( 'switch_theme'				, 'rocket_clean_domain' );		// When user change theme
 add_action( 'user_register'				, 'rocket_clean_domain' );		// When a user is added
 add_action( 'profile_update'			, 'rocket_clean_domain' );		// When a user is updated

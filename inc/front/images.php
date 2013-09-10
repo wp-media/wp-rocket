@@ -30,16 +30,15 @@ function rocket_specify_image_dimensions( $buffer )
 
 		// Get link of the file
         preg_match( '/src=[\'"]([^\'"]+)/', $image, $src_match );
-
-		// Get relative src
-        $src = str_replace( home_url( '/' ), '', $src_match[1] );
-
+		
 		// Check if the link isn't external
-		if( substr( $src, 0, 4 ) != 'http' )
+		$image_url = parse_url( $src_match[1] );
+	
+		if( empty( $image_url['host'] ) || $image_url['host'] == rocket_remove_url_protocol( home_url() ) )
 		{
 			
 			// Get image attributes
-			$sizes = getimagesize( str_replace( home_url(), ABSPATH, $src_match[1] ) );
+			$sizes = getimagesize( ABSPATH . $image_url['path'] );
 
 			// Add width and width attribute
 			$image = str_replace( '<img', '<img ' . $sizes[3], $image );
