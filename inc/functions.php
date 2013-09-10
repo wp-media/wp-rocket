@@ -322,7 +322,7 @@ function rocket_rrmdir( $dir, $dirs_to_preserve = array() )
 
 function rocket_clean_exclude_file( $file )
 {
-	if( !filter_var( $file, FILTER_VALIDATE_URL ) )
+	if( !$file )
 		return false;
 	$urls = parse_url( $file );
 	$path = $urls['path'];
