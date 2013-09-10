@@ -450,12 +450,12 @@ function rocket_sanitize_js( $file )
 function rocket_settings_callback( $inputs )
 {
 	// Clean inputs
-	$inputs['cache_purge_pages'] = 		isset( $inputs['cache_purge_pages'] ) ? 	array_unique( array_filter( array_map( 'rocket_clean_exclude_file',	array_map( 'esc_url', 					explode( "\n", trim( $inputs['cache_purge_pages'] ) ) ) ) ) 	)	: array();
-	$inputs['cache_reject_uri'] = 		isset( $inputs['cache_reject_uri'] ) ? 		array_unique( array_filter( array_map( 'rocket_clean_exclude_file',	array_map( 'esc_url', 					explode( "\n", trim( $inputs['cache_reject_uri'] ) ) ) ) ) 		)	: array();
-	$inputs['cache_reject_cookies'] = 	isset( $inputs['cache_reject_cookies'] ) ? 	array_unique( array_filter( array_map( 'rocket_clean_exclude_file',	array_map( 'sanitize_key', 				explode( "\n", trim( $inputs['cache_reject_cookies'] ) ) ) ) ) 	)	: array();
-	$inputs['exclude_css'] = 			isset( $inputs['exclude_css'] ) ? 			array_unique( array_filter( array_map( 'rocket_sanitize_css', 		array_map( 'rocket_clean_exclude_file',	explode( "\n", trim( $inputs['exclude_css'] ) ) ) ) ) 			)	: array();
-	$inputs['exclude_js'] = 			isset( $inputs['exclude_js'] ) ? 			array_unique( array_filter( array_map( 'rocket_sanitize_js', 		array_map( 'rocket_clean_exclude_file',	explode( "\n", trim( $inputs['exclude_js']) ) ) ) ) 			)	: array();
-	$inputs['deferred_js_files'] = 		isset( $inputs['deferred_js_files'] ) ? 		array_filter( array_map( 'rocket_sanitize_js', 																	 array_unique(	 $inputs['deferred_js_files'] ) ) ) 				: array();
+	$inputs['cache_purge_pages'] = 		isset( $inputs['cache_purge_pages'] ) ? 	array_unique( array_filter( array_map( 'rocket_clean_exclude_file',	array_map( 'esc_url', 					array_map( 'trim', explode( "\n", $inputs['cache_purge_pages'] ) ) ) ) ) )		: array();
+	$inputs['cache_reject_uri'] = 		isset( $inputs['cache_reject_uri'] ) ? 		array_unique( array_filter( array_map( 'rocket_clean_exclude_file',	array_map( 'esc_url', 					array_map( 'trim', explode( "\n", $inputs['cache_reject_uri'] ) ) ) ) ) )		: array();
+	$inputs['cache_reject_cookies'] = 	isset( $inputs['cache_reject_cookies'] ) ? 	array_unique( array_filter( array_map( 'rocket_clean_exclude_file',	array_map( 'sanitize_key', 				array_map( 'trim', explode( "\n", $inputs['cache_reject_cookies'] ) ) ) ) ) )	: array();
+	$inputs['exclude_css'] = 			isset( $inputs['exclude_css'] ) ? 			array_unique( array_filter( array_map( 'rocket_sanitize_css', 		array_map( 'rocket_clean_exclude_file',	array_map( 'trim', explode( "\n", $inputs['exclude_css'] ) ) ) ) ) )			: array();
+	$inputs['exclude_js'] = 			isset( $inputs['exclude_js'] ) ? 			array_unique( array_filter( array_map( 'rocket_sanitize_js', 		array_map( 'rocket_clean_exclude_file',	array_map( 'trim', explode( "\n", $inputs['exclude_js']) ) ) ) ) )				: array();
+	$inputs['deferred_js_files'] = 		isset( $inputs['deferred_js_files'] ) ? 	array_filter( 				array_map( 'rocket_sanitize_js', 		array_unique( $inputs['deferred_js_files'] ) ) ) : array();
 	if( !$inputs['deferred_js_files'] ){
 		$inputs['deferred_js_wait'] = array();
 	}else{

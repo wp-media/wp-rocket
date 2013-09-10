@@ -324,8 +324,7 @@ function rocket_clean_exclude_file( $file )
 {
 	if( !$file )
 		return false;
-	$urls = parse_url( $file );
-	$path = $urls['path'];
+	$path = parse_url( $file, PHP_URL_PATH );
     return $path;
 }
 
