@@ -344,10 +344,10 @@ function rocket_extract_ie_conditionals( $buffer )
 function rocket_inject_ie_conditionals( $buffer, $conditionals )
 {
 
-    while ( count( $conditionals ) > 0 && strpos( $buffer, '{{WP_ROCKET_CONDITIONAL}}' ) ) {
-      $conditional = array_shift( $conditionals );
-      $buffer = preg_replace( '/{{WP_ROCKET_CONDITIONAL}}/' , $conditional, $buffer, 1 );
-    }
-
+    foreach( $conditionals as $conditional )
+      if( strpos( $buffer, '{{WP_ROCKET_CONDITIONAL}}' ) )
+        $buffer = preg_replace( '/{{WP_ROCKET_CONDITIONAL}}/' , $conditional, $buffer, 1 );
+      else break;
+   
     return $buffer;
 }
