@@ -5,7 +5,7 @@ defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 /**
  * Add input fields in all widgets
  *
- * since 1.3.0
+ * since 1.4.0
  *
  */
 
@@ -41,23 +41,12 @@ function rocket_in_widget_form( $t, $return, $instance )
     
 }
 
-add_action( 'admin_print_styles-widgets.php', 'rocket_gangnam_style' );
-function rocket_gangnam_style()
-{ ?>
-<style>
-.rocketboxpanel{
-    display: none;
-}
-.rocketbox:checked ~ .rocketboxpanel {
-    display: block;
-}
-</style>
-<?php }
+
 
 /**
  * Callback function for options update
  *
- * since 1.3.0
+ * since 1.4.0
  *
  */
 

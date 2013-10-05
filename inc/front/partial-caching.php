@@ -5,7 +5,7 @@ defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 /**
  * Add WP Rocket attribut in before_widget
  *
- * since 1.3.0
+ * since 1.4.0
  *
  */
  
@@ -52,7 +52,7 @@ function rocket_dynamic_sidebar_params( $params )
 /**
  * TO DO - Description
  *
- * since 1.3.0
+ * since 1.4.0
  *
  */
  
@@ -91,8 +91,8 @@ function rocket_get_refreshed_fragments()
 			
 			// 
 			if( !isset( $widget_options['rocket-partial-caching-interval'] ) ||
-				!isset( $widget_options['rocket-partial-caching-unit'] ) ||
-				!isset( $widget_options['rocket-partial-caching-active'] ) ||
+				!isset( $widget_options['rocket-partial-caching-unit'] ) 	 ||
+				!isset( $widget_options['rocket-partial-caching-active'] ) 	 ||
 				(int)$widget_options['rocket-partial-caching-active']!=1 )
 				continue;
 			
@@ -137,7 +137,7 @@ function rocket_get_refreshed_fragments()
 /**
  * TO DO - Description
  *
- * since 1.3.0
+ * since 1.4.0
  *
  */
  
