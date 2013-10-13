@@ -209,6 +209,9 @@ function rocket_display_options()
 	// Advanced
 	add_settings_section( 'rocket_display_imp_options', __( 'Options avancées', 'rocket' ), '__return_false', 'advanced' );
 
+		add_settings_field( 'rocket_dns_prefetch', __( 'Pré-chargement des requêtes DNS :', 'rocket' ), 'rocket_field', 'advanced', 'rocket_display_imp_options',
+			array( 'type'=>'textarea', 'label_for'=>'dns_prefetch', 'label_screen'=>'Pré-chargement des requêtes DNS', 'description'=>'Le DNS prefetching est une méthode permettant aux navigateurs d’anticiper la résolution DNS des noms de domaines externes présents sur votre site.<br/>Ce mécanisme permet de diminuer les temps de latence de certains fichiers externes bloquants.<br/>Pour en savoir plus sur cette option et apprendre à l\'utiliser correctement, nous vous conseillons de regarder la vidéo suivante : <br/><strong>Attention :</strong> Indiquez les noms de domaines sans leur protocole, par exemple : <code>//ajax.googleapis.com</code> sans le <code>http:</code>  (un par ligne).<br/>' )
+		);
 		add_settings_field( 'rocket_purge_pages', __( 'Vider le cache des pages suivantes lors de la mise à jour d\'un article :', 'rocket' ), 'rocket_field', 'advanced', 'rocket_display_imp_options',
 			array( 'type'=>'textarea', 'label_for'=>'cache_purge_pages', 'label_screen'=>'Vider le cache des pages suivantes lors de la mise à jour d\'un article', 'description'=>'Indiquez l\'URL des pages supplémentaires à purger lors de la mise à jour d\'un article (une par ligne).<br/>Il est possible d\'utiliser des expressions régulières (REGEX).<br/><strong>NB</strong> : Lorsque vous mettez à jour un article ou qu’un commentaire est posté, la page d\'accueil, les catégories et les tags associés à l\'article sont automatiquement supprimées du cache puis recréés grâce au robot WP Rocket.' )
 		);
@@ -219,10 +222,10 @@ function rocket_display_options()
 			array( 'type'=>'textarea', 'label_for'=>'cache_reject_cookies', 'label_screen'=>'Ne jamais mettre en cache les pages qui utilisent les cookies suivants', 'description'=>'Indiquez les noms des cookies à rejeter (un par ligne)' )
 		);
 		add_settings_field( 'rocket_exclude_css', __( 'Fichiers <strong>CSS</strong> à exclure lors de la minification :', 'rocket' ), 'rocket_field', 'advanced', 'rocket_display_imp_options',
-			array( 'type'=>'textarea', 'label_for'=>'exclude_css', 'label_screen'=>'Fichiers CSS à exclure lors de la minification', 'description'=>'Indiquez l\'URL des fichiers <strong>CSS</strong> à rejeter (un par ligne)' )
+			array( 'type'=>'textarea', 'label_for'=>'exclude_css', 'label_screen'=>'Fichiers CSS à exclure lors de la minification', 'description'=>'Indiquez l\'URL des fichiers <strong>CSS</strong> à rejeter (un par ligne).' )
 		);
 		add_settings_field( 'rocket_exclude_js', __( 'Fichiers <strong>JS</strong> à exclure lors de la minification :', 'rocket' ), 'rocket_field', 'advanced', 'rocket_display_imp_options',
-			array( 'type'=>'textarea', 'label_for'=>'exclude_js', 'label_screen'=>'Fichiers JS à exclure lors de la minification', 'description'=>'Indiquez l\'URL des fichiers <strong>JS</strong> à rejeter (un par ligne)' )
+			array( 'type'=>'textarea', 'label_for'=>'exclude_js', 'label_screen'=>'Fichiers JS à exclure lors de la minification', 'description'=>'Indiquez l\'URL des fichiers <strong>JS</strong> à rejeter (un par ligne).' )
 		);
 		add_settings_field( 'rocket_deferred_js', __( 'Fichiers <strong>JS</strong> en chargement différé (Deferred Loading JavaScript) :', 'rocket' ), 'rocket_defered_module', 'advanced', 'rocket_display_imp_options' );
 	// Tools
@@ -450,6 +453,7 @@ function rocket_sanitize_js( $file )
 function rocket_settings_callback( $inputs )
 {
 	// Clean inputs
+	$inputs['dns_prefetch'] = 		isset( $inputs['dns_prefetch'] ) ? 	array_unique( array_filter( array_map( 'esc_url', 					array_map( 'trim', explode( "\n", $inputs['dns_prefetch'] ) ) ) ) ) 		: array();
 	$inputs['cache_purge_pages'] = 		isset( $inputs['cache_purge_pages'] ) ? 	array_unique( array_filter( array_map( 'rocket_clean_exclude_file',	array_map( 'esc_url', 					array_map( 'trim', explode( "\n", $inputs['cache_purge_pages'] ) ) ) ) ) )		: array();
 	$inputs['cache_reject_uri'] = 		isset( $inputs['cache_reject_uri'] ) ? 		array_unique( array_filter( array_map( 'rocket_clean_exclude_file',	array_map( 'esc_url', 					array_map( 'trim', explode( "\n", $inputs['cache_reject_uri'] ) ) ) ) ) )		: array();
 	$inputs['cache_reject_cookies'] = 	isset( $inputs['cache_reject_cookies'] ) ? 	array_unique( array_filter( array_map( 'rocket_clean_exclude_file',	array_map( 'sanitize_key', 				array_map( 'trim', explode( "\n", $inputs['cache_reject_cookies'] ) ) ) ) ) )	: array();

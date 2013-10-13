@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
  *
  */
 
-add_filter( 'rocket_buffer', 'rocket_minify_process', 12 );
+add_filter( 'rocket_buffer', 'rocket_minify_process', 13 );
 function rocket_minify_process( $buffer )
 {
 
@@ -35,11 +35,10 @@ function rocket_minify_process( $buffer )
 	    	list( $buffer, $all_script_tags ) = rocket_minify_js( $buffer );
 
 	    $buffer = rocket_inject_ie_conditionals( $buffer, $conditionals );
-
+		
+		// Insert all CSS and JS files in head
+		$buffer = preg_replace( '/<head(.*)>/', '<head$1>' . $all_link_tags . $all_script_tags, $buffer, 1 );
 	}
-
-	// Insert all CSS and JS files in head
-	$buffer = preg_replace( '/<head(.*)>/', '<head$1><!--[if IE]><![endif]-->' . $all_link_tags . $all_script_tags, $buffer, 1 );
 
 	// Minify HTML
 	if( $enable_html )
