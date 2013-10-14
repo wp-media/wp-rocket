@@ -5,7 +5,7 @@ defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 /**
  * Add input fields in all widgets
  *
- * since 1.3.0
+ * since 1.4.0
  *
  */
 
@@ -19,7 +19,7 @@ function rocket_in_widget_form( $t, $return, $instance )
     <div>
         <input type="checkbox" class="rocketbox" id="<?php echo $t->get_field_id('rocket-partial-caching-active'); ?>"
             name="<?php echo $t->get_field_name('rocket-partial-caching-active'); ?>" value="1" 
-            <?php checked( $instance['rocket-partial-caching-active'], 1 ); ?> />
+            <?php checked( isset( $instance['rocket-partial-caching-active'] ) && $instance['rocket-partial-caching-active'] == 1, true ); ?> />
         <label for="<?php echo $t->get_field_id('rocket-partial-caching-active'); ?>"><?php _e( 'Mettre en cache partiel', 'wp-rocket' ); ?></label>
         <div class="rocketboxpanel">
             <?php _e( 'Pendant : ', 'wp-rocket' ); ?>
@@ -41,23 +41,10 @@ function rocket_in_widget_form( $t, $return, $instance )
     
 }
 
-add_action( 'admin_print_styles-widgets.php', 'rocket_gangnam_style' );
-function rocket_gangnam_style()
-{ ?>
-<style>
-.rocketboxpanel{
-    display: none;
-}
-.rocketbox:checked ~ .rocketboxpanel {
-    display: block;
-}
-</style>
-<?php }
-
 /**
  * Callback function for options update
  *
- * since 1.3.0
+ * since 1.4.0
  *
  */
 

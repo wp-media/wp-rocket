@@ -64,15 +64,14 @@ if( !defined( 'YEAR_IN_SECONDS' ) )
 add_action( 'plugins_loaded', 'rocket_init' );
 function rocket_init()
 {
-	
-	// Nothing to do if autosave
+    // Nothing to do if autosave
     if( defined( 'DOING_AUTOSAVE' ) )
                     return;
-	
-	// Necessary to call correctly WP Rocket Bot for cache json
-	global $do_rocket_bot_cache_json;
-	$do_rocket_bot_cache_json = false;
-	
+    
+    // Necessary to call correctly WP Rocket Bot for cache json
+    global $do_rocket_bot_cache_json;
+    $do_rocket_bot_cache_json = false;
+    
     // Call defines,  classes and functions
     require WP_ROCKET_INC_PATH . '/functions.php';
     require WP_ROCKET_FRONT_PATH . '/htaccess.php';
@@ -84,13 +83,12 @@ function rocket_init()
     }
 
     if( rocket_valid_key() )
-		if( (int)get_rocket_option( 'purge_cron_interval' ) > 0 )
-			require  WP_ROCKET_INC_PATH . '/cron.php';
+        if( (int)get_rocket_option( 'purge_cron_interval' ) > 0 )
+            require  WP_ROCKET_INC_PATH . '/cron.php';
 
 
     if( is_admin() )
     {
-
         require WP_ROCKET_ADMIN_PATH . '/upgrader.php';
         require WP_ROCKET_ADMIN_PATH . '/updater.php';
         require WP_ROCKET_ADMIN_PATH . '/options.php';
@@ -98,6 +96,7 @@ function rocket_init()
         require WP_ROCKET_ADMIN_PATH . '/admin.php';
         require WP_ROCKET_ADMIN_PATH . '/pointers.php';
         require WP_ROCKET_ADMIN_PATH . '/widgets.php';
+        require WP_ROCKET_ADMIN_PATH . '/partial-caching-admin.php';
     }
     elseif( rocket_valid_key() )
     {
@@ -106,9 +105,9 @@ function rocket_init()
         require WP_ROCKET_FRONT_PATH . '/cookie.php';
         require WP_ROCKET_FRONT_PATH . '/images.php';
         require WP_ROCKET_FRONT_PATH . '/enqueue.php';
-        require WP_ROCKET_FRONT_PATH . '/partial-caching.php';
+        require WP_ROCKET_FRONT_PATH . '/partial-caching-front.php';
         if( get_rocket_option( 'deferred_js_files' ) )
-			require WP_ROCKET_FRONT_PATH . '/deferred-js.php';
+            require WP_ROCKET_FRONT_PATH . '/deferred-js.php';
 
         if( get_rocket_option( 'lazyload' ) == '1' )
 			require WP_ROCKET_FRONT_PATH . '/lazyload.php';
