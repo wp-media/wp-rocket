@@ -21,7 +21,7 @@ function rocket_in_widget_form( $t, $return, $instance )
             name="<?php echo $t->get_field_name('rocket-partial-caching-active'); ?>" value="1" 
             <?php checked( isset( $instance['rocket-partial-caching-active'] ) && $instance['rocket-partial-caching-active'] == 1, true ); ?> />
         <label for="<?php echo $t->get_field_id('rocket-partial-caching-active'); ?>"><?php _e( 'Mettre en cache partiel', 'wp-rocket' ); ?></label>
-        <div class="rocketboxpanel">
+        <div class="rocketboxpanel hide-if-js">
             <?php _e( 'Pendant : ', 'wp-rocket' ); ?>
             <input id="<?php echo $t->get_field_id('rocket-partial-caching-interval'); ?>" 
                 name="<?php echo $t->get_field_name('rocket-partial-caching-interval'); ?>" 
