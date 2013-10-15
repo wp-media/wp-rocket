@@ -234,8 +234,11 @@ function rocket_display_options()
 		add_settings_field( 'rocket_purge_all', __( 'Vider le cache', 'rocket' ), 'rocket_button', 'tools', 'rocket_display_tools',
 			array( 'button_label'=>__( 'Vider le cache', 'rocket' ), 'url'=>wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=all' ), 'purge_cache_all' ), 'description'=>'Permet de purger le cache du site complet.' )
 		);
-		 add_settings_field( 'rocket_preload', __( 'Précharger le cache', 'rocket' ), 'rocket_button', 'tools', 'rocket_display_tools',
+		add_settings_field( 'rocket_preload', __( 'Précharger le cache', 'rocket' ), 'rocket_button', 'tools', 'rocket_display_tools',
             array( 'button_label'=>__( 'Précharger le cache', 'rocket' ), 'url'=>wp_nonce_url( admin_url( 'admin-post.php?action=preload' ), 'preload' ), 'description'=>'Permet de demander le passage du robot pour précharger le cache (homepage + liens internes de cette page).' )
+        );
+		add_settings_field( 'rocketeer', __( 'Envoyer mes infos pour un meilleur support', 'rocket' ), 'rocket_button', 'tools', 'rocket_display_tools',
+            array( 'button_label'=>__( 'Envoyer mes infos pour un meilleur support', 'rocket' ), 'url'=>wp_nonce_url( admin_url( 'admin-post.php?action=rocketeer' ), 'rocketeer' ), 'description'=>'Lorsque vous postez un demande de support, merci de cliquer sur ce bouton aussi, nous recevrons alors des informations concernant votre installation et ainsi gagner du temps dans nos réponses. Les informations collectées ne sont pas revendues ni utilisées pour d\'autres choses que le support. Cliquez de nouveau à chaque nouvelle demande de support, merci.' )
         );
 ?>
 	<div class="wrap">

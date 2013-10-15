@@ -201,3 +201,20 @@ function rocket_deactivate_plugin()
 	wp_redirect( wp_get_referer() );
 	die();
 }
+
+
+
+/**
+ * Send various informations from your installation to the support team
+ *
+ * since 1.4.0
+ *
+ */
+
+add_action( 'admin_post_rocketeer', 'send_rocketeer_infos' );
+function send_rocketeer_infos()
+{
+	if( isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'rocketeer' ) )
+		require( 'rocketeer.php' );
+	wp_redirect( wp_get_referer() );
+}
