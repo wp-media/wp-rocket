@@ -55,17 +55,11 @@ function rocket_dynamic_sidebar_params( $params )
  *
  */
 
-// You can change the hook, "wp_footer" or "wp_head" are the bests just add "define( 'ROCKET_PARTIAL_CACHE_HOOK', 'wp_footer' )" in wp-config.php
-$ROCKET_PARTIAL_CACHE_HOOK = 'wp_head'; // wp_head default hook
-if( defined( 'ROCKET_PARTIAL_CACHE_HOOK' ) )
-	$ROCKET_PARTIAL_CACHE_HOOK = ROCKET_PARTIAL_CACHE_HOOK;
-
 // You can enqueue the full human readable script if you need to debug it, just add "define( 'ROCKET_SCRIPT_DEBUG', true )" in wp-config.php
 if( !defined( 'ROCKET_SCRIPT_DEBUG' ) )
-	add_action( $ROCKET_PARTIAL_CACHE_HOOK, 'rocket_partial_caching_script_min', PHP_INT_MAX );
+	add_action( 'wp_footer', 'rocket_partial_caching_script_min', PHP_INT_MAX );
 else
-	add_action( $ROCKET_PARTIAL_CACHE_HOOK, 'rocket_partial_caching_script', 0 );
-unset( $ROCKET_PARTIAL_CACHE_HOOK );
+	add_action( 'wp_footer', 'rocket_partial_caching_script', 0 );
 function rocket_partial_caching_script()
 { 
 	?>
@@ -122,10 +116,6 @@ function rocket_partial_caching_script()
 		xhr.send(params);
 
         return xhr;
-	}
- 
-	function rocketRemover( arr, index ) {
-	    return arr.splice( index, 1 );
 	}
 
 	function _WPR_cb( data )
@@ -186,7 +176,7 @@ function rocket_partial_caching_script()
 	</script>
 <?php
 }
-
+ // same as above, minified
 function rocket_partial_caching_script_min()
 { ?>
 <script>var rocketAdminAJaxUrl="<?php echo admin_url( 'admin-ajax.php?action=rocket_get_refreshed_fragments' ); ?>";var sup_html5st='sessionStorage' in window && window['sessionStorage']!==undefined;

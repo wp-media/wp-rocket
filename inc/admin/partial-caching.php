@@ -66,9 +66,8 @@ function rocket_get_refreshed_fragments()
 					ob_start();
 					call_user_func_array($callback, $params);
 					$fragments[$widget_id]['content'] = sprintf( ob_get_clean(), $callback[0]->id, $callback[0]->option_name );
-					$tmp_content = explode( ' ', $fragments[$widget_id]['content'] );
-					$tmp_content = str_replace( '<', '', reset( $tmp_content ) );
-					$fragments[$widget_id]['content'] = substr( str_replace( '</'.$tmp_content.'>', '', strstr( $fragments[$widget_id]['content'], '>' ) ), 1 );
+					$tmp_content = @reset( @explode( ' ', $fragments[$widget_id]['content'] ) ); // @:PHP 5.4 notice
+					$fragments[$widget_id]['content'] = substr( $fragments[$widget_id]['content'], strpos( $fragments[$widget_id]['content'], '>' )+1, -(int)(strlen( $tmp_content )+3) );
 					$fragments[$widget_id]['interval'] = (int)(time() + $interval);
 				}
 
@@ -84,6 +83,5 @@ function rocket_get_refreshed_fragments()
 			$_POST[$k] = array( 'content'=>'', 'interval'=>0 );
 		$fragments = wp_parse_args( $fragments, $_POST );
 	}
-	// wp_die(var_dump($fragments));
 	wp_send_json( $fragments );
 }

@@ -76,6 +76,7 @@ function rocket_init()
     require WP_ROCKET_INC_PATH . '/functions.php';
     require WP_ROCKET_FRONT_PATH . '/htaccess.php';
     require WP_ROCKET_INC_PATH . '/headers.php';
+    require WP_ROCKET_INC_PATH . '/ajax.php';
 
     if( rocket_valid_key() ) {
             require WP_ROCKET_INC_PATH . '/purge.php';
@@ -96,7 +97,7 @@ function rocket_init()
         require WP_ROCKET_ADMIN_PATH . '/admin.php';
         require WP_ROCKET_ADMIN_PATH . '/pointers.php';
         require WP_ROCKET_ADMIN_PATH . '/widgets.php';
-        require WP_ROCKET_ADMIN_PATH . '/partial-caching-admin.php';
+        require WP_ROCKET_ADMIN_PATH . '/partial-caching.php';
     }
     elseif( rocket_valid_key() )
     {
@@ -105,7 +106,6 @@ function rocket_init()
         require WP_ROCKET_FRONT_PATH . '/cookie.php';
         require WP_ROCKET_FRONT_PATH . '/images.php';
         require WP_ROCKET_FRONT_PATH . '/enqueue.php';
-        require WP_ROCKET_FRONT_PATH . '/partial-caching-front.php';
         require WP_ROCKET_FRONT_PATH . '/dns-prefetch.php';
         if( get_rocket_option( 'deferred_js_files' ) )
             require WP_ROCKET_FRONT_PATH . '/deferred-js.php';
