@@ -64,10 +64,10 @@ function rocket_get_refreshed_fragments()
 					if( !is_array( $fragments ) )
 						$fragments = array();
 					ob_start();
+					unset( $params[0]['before_widget'] );
+					unset( $params[0]['after_widget'] );
 					call_user_func_array($callback, $params);
-					$fragments[$widget_id]['content'] = sprintf( ob_get_clean(), $callback[0]->id, $callback[0]->option_name );
-					$tmp_content = @reset( @explode( ' ', $fragments[$widget_id]['content'] ) ); // @:PHP 5.4 notice
-					$fragments[$widget_id]['content'] = substr( $fragments[$widget_id]['content'], strpos( $fragments[$widget_id]['content'], '>' )+1, -(int)(strlen( $tmp_content )+3) );
+					$fragments[$widget_id]['content'] = ob_get_clean();
 					$fragments[$widget_id]['interval'] = (int)(time() + $interval);
 				}
 

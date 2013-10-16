@@ -66,7 +66,7 @@ function rocket_init()
 {
     // Nothing to do if autosave
     if( defined( 'DOING_AUTOSAVE' ) )
-                    return;
+        return;
     
     // Necessary to call correctly WP Rocket Bot for cache json
     global $do_rocket_bot_cache_json;
@@ -76,11 +76,12 @@ function rocket_init()
     require WP_ROCKET_INC_PATH . '/functions.php';
     require WP_ROCKET_FRONT_PATH . '/htaccess.php';
     require WP_ROCKET_INC_PATH . '/headers.php';
-    require WP_ROCKET_INC_PATH . '/ajax.php';
 
     if( rocket_valid_key() ) {
-            require WP_ROCKET_INC_PATH . '/purge.php';
-            require WP_ROCKET_INC_PATH . '/admin-bar.php';
+        require WP_ROCKET_INC_PATH . '/purge.php';
+        require WP_ROCKET_INC_PATH . '/admin-bar.php';
+        require WP_ROCKET_INC_PATH . '/ajax.php';
+        require WP_ROCKET_INC_PATH . '/partial-caching.php';
     }
 
     if( rocket_valid_key() )
@@ -106,7 +107,6 @@ function rocket_init()
         require WP_ROCKET_FRONT_PATH . '/images.php';
         require WP_ROCKET_FRONT_PATH . '/enqueue.php';
         require WP_ROCKET_FRONT_PATH . '/dns-prefetch.php';
-        require WP_ROCKET_FRONT_PATH . '/partial-caching.php';
         if( get_rocket_option( 'deferred_js_files' ) )
             require WP_ROCKET_FRONT_PATH . '/deferred-js.php';
 

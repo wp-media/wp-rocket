@@ -11,38 +11,45 @@ defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 add_filter( 'dynamic_sidebar_params', 'rocket_dynamic_sidebar_params' );
 function rocket_dynamic_sidebar_params( $params )
 {
-    
+
     global $wp_registered_widgets;
-    $widget_id = $params[0]['widget_id'];
-    $widget_obj = $wp_registered_widgets[$widget_id];
-    $widget_opt = get_option($widget_obj['callback'][0]->option_name);
-    $widget_num = $widget_obj['params'][0]['number'];
+    $widget_id           = $params[0]['widget_id'];
+    $widget_obj          = $wp_registered_widgets[$widget_id];
+    $widget_opt          = get_option($widget_obj['callback'][0]->option_name);
+    $widget_num          = $widget_obj['params'][0]['number'];
+    $widget_data		 = $widget_opt[$widget_num];
+    $before_widget       = $params[0]['before_widget'];
+    $after_widget        = $params[0]['after_widget'];
+    $widget_opt_active   = isset( $widget_data['rocket-partial-caching-active'] ) ? $widget_data['rocket-partial-caching-active'] : false;
+    $widget_opt_interval = isset( $widget_data['rocket-partial-caching-interval'] ) ? (int)$widget_data['rocket-partial-caching-interval'] : false;
+    $widget_opt_unit     = isset( $widget_data['rocket-partial-caching-unit'] ) ? $widget_data['rocket-partial-caching-unit'] : false;
     
-    
-    // On vérifie si le widget doit être mis en cache partiel
-	if ( 	isset( $widget_opt[$widget_num]['rocket-partial-caching-active'], $widget_opt[$widget_num]['rocket-partial-caching-interval'], $widget_opt[$widget_num]['rocket-partial-caching-unit'] )
-			&& (int)$widget_opt[$widget_num]['rocket-partial-caching-interval']>0 && (int)$widget_opt[$widget_num]['rocket-partial-caching-interval']==1 )
+	
+    // Check if the widget should be in partial cache
+	if ( $widget_opt_active && $widget_opt_interval > 0 )
 	{
-		$interval = (string)(time()+(int)( $widget_opt[$widget_num]['rocket-partial-caching-interval'] * constant( $widget_opt[$widget_num]['rocket-partial-caching-unit'] ) ));
-		$data_partial_caching = 'data-partial-caching-debug="'.$interval.','.$interval.'" ';
+		$interval = (int)( $widget_opt_interval * constant( $widget_opt_unit ) );
+
 		// Si les widgets de la sidebar ne possède pas d'argument "before_widget",
 		// On ajoute automatiquement l'id du widget et l'attribut data-partial-caching
-		if( empty($params[0]['before_widget']) ) 
+		if( empty( $before_widget ) )
 		{
-			$params[0]['before_widget'] = '<div id="' . $widget_id . '" '.$data_partial_caching.'>';
-			$params[0]['after_widget']  = '</div>';
+			$before_widget = '<div id="' . $widget_id . '" data-partial-caching="true">';
+			$after_widget  = '</div>';
 		}
-		else 
-		{		
-			// Is there an ID ? Ok use it, or create id with partial caching data infos
-			if( strpos( $params[0]['before_widget'], 'id="' )>0 )
-				$params[0]['before_widget'] = str_replace( 'id="', $data_partial_caching . 'id="', $params[0]['before_widget'] );	
+		else
+		{
+			//
+			if( preg_match( '/id=[\'"](.*)[\'"]/' , $before_widget ) )
+				$before_widget = preg_replace( '/id=[\'"](.*)[\'"]/', '/id="$1" data-partial-caching="true"/', $before_widget );
 			else
-				$params[0]['before_widget'] = str_replace( '>', ' id="' . $widget_id . '" '.$data_partial_caching.'>', $params[0]['before_widget'] );		
+				$before_widget = str_replace( '>', ' id="' . $widget_id . '" data-partial-caching="true">', $before_widget );
 		}
-			
+
 	}
-    	    
+	
+	$params[0]['before_widget'] = $before_widget;
+	$params[0]['after_widget']  = $after_widget;
     return $params;
 }
 
@@ -56,9 +63,9 @@ function rocket_dynamic_sidebar_params( $params )
  */
 
 // You can enqueue the full human readable script if you need to debug it, just add "define( 'ROCKET_SCRIPT_DEBUG', true )" in wp-config.php
-if( !defined( 'ROCKET_SCRIPT_DEBUG' ) )
-	add_action( 'wp_footer', 'rocket_partial_caching_script_min', PHP_INT_MAX );
-else
+// if( !defined( 'ROCKET_SCRIPT_DEBUG' ) )
+// 	add_action( 'wp_footer', 'rocket_partial_caching_script_min', PHP_INT_MAX );
+// else
 	add_action( 'wp_footer', 'rocket_partial_caching_script', 0 );
 function rocket_partial_caching_script()
 { 
@@ -105,12 +112,14 @@ function rocket_partial_caching_script()
         xhr.setRequestHeader( 'X-Requested-With', 'WPRXMLHttpRequest' );
 		var params = '';
 		var postData = JSON.parse( sessionStorage.getItem( 'WPR_SS' ) );
-		for(var key in postData){
-			var value = postData[key];
-			if(!postData.hasOwnProperty(value) ){
-				params += key + '=' + encodeURIComponent(value['interval']) + '&';
+		if( postData!=null && postData!='' && postData!='{}' && postData!=undefined ){
+			for(var key in postData){
+				var value = postData[key];
+				if(!postData.hasOwnProperty(value) ){
+					params += key + '=' + encodeURIComponent(value['interval']) + '&';
+				}
 			}
-		}
+	    }
 		params += 'action=rocket_get_refreshed_fragments';
 
 		xhr.send(params);
@@ -118,33 +127,50 @@ function rocket_partial_caching_script()
         return xhr;
 	}
 
+	function WPR_isEmpty(obj) {
+		if( typeof obj==Object )
+			return Object.keys(obj).length === 0;
+		else
+			return true;
+	}
+
 	function _WPR_cb( data )
 	{
+		var wp_rocket_fragments = null;
 		if ( data != -1 ) {
+			var done=false;
 			data = JSON.parse( data );
 			for( var key in data ) {
-				if( data[key]['content'] != '' ) {
+				if( data[key]['content'] != undefined && data[key]['content'] != '' ) {
 					var elem = document.getElementById( key );
 					if( elem != undefined && elem != null ) {
 						document.getElementById(key).innerHTML = data[key]['content'];
+						done = true;
 					}
 				}
 			}
 
 			if ( sup_html5st ) {
-				var wp_rocket_fragments = JSON.parse( sessionStorage.getItem( 'WPR_SS' ) );
-				for( var key in data ) {
-					if( data[key]['content'] != '' && wp_rocket_fragments!=undefined) {
-						wp_rocket_fragments[key]['content'] = data[key]['content'];
-						wp_rocket_fragments[key]['interval'] = data[key]['interval'];
-					}else if( data[key]['content'] == '' && wp_rocket_fragments!=undefined ){
-						delete wp_rocket_fragments[key];
+				var WPR_SS = sessionStorage.getItem( 'WPR_SS' );
+				if( WPR_SS!=null && WPR_SS!='' && WPR_SS!='{}' && WPR_SS!=undefined ){
+					wp_rocket_fragments = JSON.parse( WPR_SS );
+					for( var key in data ) {
+						if( data[key] && data[key]['content'] != undefined && data[key]['content'] != '' && wp_rocket_fragments!=undefined) {
+							wp_rocket_fragments[key]['content'] = data[key]['content'];
+							wp_rocket_fragments[key]['interval'] = data[key]['interval'];
+						}else if( data[key]['content'] == '' && wp_rocket_fragments!=undefined ){
+							delete wp_rocket_fragments[key];
+						}
 					}
 				}
 				try {
-					if( wp_rocket_fragments==null )
+					console.log(data);
+					console.log(wp_rocket_fragments);
+					if( WPR_SS==null || WPR_SS=='' || WPR_SS=='{}' || WPR_SS==undefined ){
 						wp_rocket_fragments = data;
-					sessionStorage.setItem( 'WPR_SS', JSON.stringify( wp_rocket_fragments ) );
+					}
+					if( done )
+						sessionStorage.setItem( 'WPR_SS', JSON.stringify( wp_rocket_fragments ) );
 				}
 				catch( e ) {
 					if( e == QUOTA_EXCEEDED_ERR ) {
@@ -157,10 +183,10 @@ function rocket_partial_caching_script()
 	
 	if ( sup_html5st )
 	{
-		var wp_rocket_fragments = JSON.parse( sessionStorage.getItem( 'WPR_SS' ) );
+		var WPR_SS = sessionStorage.getItem( 'WPR_SS' );
+		if( WPR_SS!=null && WPR_SS!='' && WPR_SS!='{}' && WPR_SS!=undefined ){
+		var wp_rocket_fragments = JSON.parse( WPR_SS );
 
-		if ( wp_rocket_fragments ) {
-			
 			for(var key in wp_rocket_fragments) {
 				var elem = document.getElementById(key);
 				if( elem != undefined && elem != null ) {
@@ -172,7 +198,7 @@ function rocket_partial_caching_script()
 	}
 
 	_WPR_Ajax();
-		
+
 	</script>
 <?php
 }
