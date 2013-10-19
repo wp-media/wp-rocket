@@ -608,14 +608,22 @@ function get_rocket_sample_permalink( $id )
 }
 
 
+
+/**
+ * Get REQUEST_URI (compatibily for qtranslate)
+ *
+ * @since 1.3.6
+ *
+ */
+
 function get_rocket_request_uri() 
 {
 	
 	if( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) 
 	{
 		global $q_config;
-		return $q_config['url_info']['original_url'];
+		return strtolower($q_config['url_info']['original_url']);
 	}
 	
-	return $_SERVER['REQUEST_URI'];
+	return strtolower($_SERVER['REQUEST_URI']);
 }
