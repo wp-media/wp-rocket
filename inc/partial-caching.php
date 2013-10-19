@@ -53,7 +53,12 @@ function rocket_dynamic_sidebar_params( $params )
     return $params;
 }
 
-
+add_action( 'wp_enqueue_scripts', 'rocket_add_ajax_for_partial_cache' );
+function rocket_add_ajax_for_partial_cache()
+{
+	wp_enqueue_script( 'rocket_ajax_partial_cache', WP_ROCKET_INC_JS_URL . 'partial-cache.js', array(), WP_ROCKET_VERSION, true /*in_footer*/ );
+	wp_localize_script( 'rocket_ajax_partial_cache', 'rocket_l10n', array( 'ajaxUrl' => admin_url( 'admin-ajax.php' ) ) );
+}
 
 /**
  * JavaScript code to read LocalStorage and send ajax informations
@@ -61,7 +66,7 @@ function rocket_dynamic_sidebar_params( $params )
  * since 1.4.0
  *
  */
-
+/*
 // You can enqueue the full human readable script if you need to debug it, just add "define( 'ROCKET_SCRIPT_DEBUG', true )" in wp-config.php
 // if( !defined( 'ROCKET_SCRIPT_DEBUG' ) )
 // 	add_action( 'wp_footer', 'rocket_partial_caching_script_min', PHP_INT_MAX );
@@ -213,3 +218,4 @@ function _WPR_cb(a){if(-1!=a){a=JSON.parse(a);for(var b in a)if(""!=a[b].content
 </script>
 <?php
 }
+*/

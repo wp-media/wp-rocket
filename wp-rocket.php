@@ -31,6 +31,7 @@ define( 'WP_ROCKET_ADMIN_PATH'          , realpath( WP_ROCKET_INC_PATH . 'admin'
 define( 'WP_ROCKET_CACHE_PATH'          , WP_CONTENT_DIR . '/wp-rocket-cache/' );
 define( 'WP_ROCKET_URL'                 , plugin_dir_url( WP_ROCKET_FILE ) );
 define( 'WP_ROCKET_INC_URL'             , WP_ROCKET_URL . 'inc/' );
+define( 'WP_ROCKET_INC_JS_URL'          , WP_ROCKET_INC_URL . 'js/' );
 define( 'WP_ROCKET_FRONT_URL'           , WP_ROCKET_INC_URL . 'front/' );
 define( 'WP_ROCKET_ADMIN_URL'           , WP_ROCKET_INC_URL . 'admin/' );
 define( 'WP_ROCKET_ADMIN_JS_URL'        , WP_ROCKET_ADMIN_URL . 'js/' );
