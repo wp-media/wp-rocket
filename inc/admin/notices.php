@@ -64,6 +64,7 @@ function rocket_plugins_to_deactivate()
 		$plugins[] = 'bwp-minify/bwp-minify.php';
 		$plugins[] = 'wp-minify/wp-minify.php';
 		$plugins[] = 'wp-html-compression/wp-html-compression.php';
+		$plugins[] = 'scripts-gzip/scripts_gzip.php';
 	}
 
 	foreach ( $plugins as $plugin )
