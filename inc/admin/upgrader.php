@@ -75,6 +75,7 @@ function rocket_first_install()
 			'minify_css'		   	=> 0,
 			'minify_js'			   	=> 0,
 			'minify_html'			=> 0,
+			'dns_prefetch'			=> 0
 		)
 	);
 	rocket_dismiss_box( 'rocket_warning_plugin_modification' );
