@@ -28,7 +28,7 @@ define( 'WP_ROCKET_PATH'                , realpath( plugin_dir_path( WP_ROCKET_F
 define( 'WP_ROCKET_INC_PATH'            , realpath( WP_ROCKET_PATH . 'inc/' ) . '/' );
 define( 'WP_ROCKET_FRONT_PATH'          , realpath( WP_ROCKET_INC_PATH . 'front/' ) . '/' );
 define( 'WP_ROCKET_ADMIN_PATH'          , realpath( WP_ROCKET_INC_PATH . 'admin' ) . '/' );
-define( 'WP_ROCKET_CACHE_PATH'          , WP_CONTENT_DIR . '/wp-rocket-cache/' );
+define( 'WP_ROCKET_CACHE_PATH'          , WP_CONTENT_DIR . '/cache/wp-rocket/' );
 define( 'WP_ROCKET_URL'                 , plugin_dir_url( WP_ROCKET_FILE ) );
 define( 'WP_ROCKET_INC_URL'             , WP_ROCKET_URL . 'inc/' );
 define( 'WP_ROCKET_FRONT_URL'           , WP_ROCKET_INC_URL . 'front/' );
@@ -36,7 +36,7 @@ define( 'WP_ROCKET_ADMIN_URL'           , WP_ROCKET_INC_URL . 'admin/' );
 define( 'WP_ROCKET_ADMIN_JS_URL'        , WP_ROCKET_ADMIN_URL . 'js/' );
 define( 'WP_ROCKET_ADMIN_CSS_URL'       , WP_ROCKET_ADMIN_URL . 'css/' );
 define( 'WP_ROCKET_ADMIN_IMG_URL'       , WP_ROCKET_ADMIN_URL . 'img/' );
-define( 'WP_ROCKET_CACHE_URL'           , WP_CONTENT_URL . '/wp-rocket-cache/' );
+define( 'WP_ROCKET_CACHE_URL'           , WP_CONTENT_URL . '/cache/wp-rocket/' );
 if( !defined( 'CHMOD_WP_ROCKET_CACHE_DIRS' ) )
 	define( 'CHMOD_WP_ROCKET_CACHE_DIRS', 0755 );
 
@@ -67,11 +67,11 @@ function rocket_init()
     // Nothing to do if autosave
     if( defined( 'DOING_AUTOSAVE' ) )
         return;
-    
+
     // Necessary to call correctly WP Rocket Bot for cache json
     global $do_rocket_bot_cache_json;
     $do_rocket_bot_cache_json = false;
-    
+
     // Call defines,  classes and functions
     require WP_ROCKET_INC_PATH . '/functions.php';
     require WP_ROCKET_FRONT_PATH . '/htaccess.php';
@@ -119,12 +119,15 @@ function rocket_init()
 		do_action( 'wp_rocket_loaded' );
 }
 
+
+
 /*
  * Tell WP what to do when plugin is deactivated
  *
  * @since 1.0
  *
  */
+
 register_deactivation_hook( __FILE__, 'rocket_deactivation' );
 function rocket_deactivation()
 {
@@ -140,6 +143,7 @@ function rocket_deactivation()
  * @since 1.1.0
  *
  */
+
 register_activation_hook( __FILE__, 'rocket_activation' );
 function rocket_activation()
 {
@@ -151,6 +155,6 @@ function rocket_activation()
     flush_rewrite_rules();
 
     // Create cache folder if not exist
-    if( !is_dir( WP_ROCKET_CACHE_PATH ) ) 
-	    rocket_mkdir( WP_ROCKET_CACHE_PATH );
+    if( !is_dir( WP_ROCKET_CACHE_PATH ) )
+	    rocket_mkdir_p( WP_ROCKET_CACHE_PATH );
 }
