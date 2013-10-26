@@ -64,6 +64,19 @@ function is_rocket_cache_mobile()
 
 
 /**
+ * Check if we need to cache SSL requests of the website (if available)
+ *
+ * since 1.0
+ *
+ */
+
+function is_rocket_cache_ssl()
+{
+	return get_rocket_option( 'cache_ssl', 0 );
+}
+
+
+/**
  * Delete one or several cache files
  *
  * @since 1.0
@@ -622,8 +635,8 @@ function get_rocket_request_uri()
 	if( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) 
 	{
 		global $q_config;
-		return strtolower($q_config['url_info']['original_url']);
+		return $q_config['url_info']['original_url'];
 	}
 	
-	return strtolower($_SERVER['REQUEST_URI']);
+	return $_SERVER['REQUEST_URI'];
 }

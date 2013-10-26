@@ -198,6 +198,9 @@ function rocket_display_options()
 		add_settings_field( 'rocket_mobile', __( 'Cache mobile :', 'rocket' ), 'rocket_field', 'basic', 'rocket_display_main_options',
 			array( 'type'=>'checkbox', 'label'=>'Activer la mise en cache pour les appareils mobile.', 'label_for'=>'cache_mobile', 'label_screen'=>'Mobile', 'description'=>'<strong style="color:#FF0000;">Attention : si vous utilisez le plugin <a href="http://wordpress.org/plugins/wptouch/" target="_blank">WP Touch</a>, <a href="http://wordpress.org/plugins/wp-mobile-detector/" target="_blank">WP Mobile Detector</a>, <a href="http://wordpress.org/plugins/wiziapp-create-your-own-native-iphone-app/" target="_blank">WiziApp</a> ou <a href="http://wordpress.org/plugins/wordpress-mobile-pack/" target="_blank">WordPress Mobile Pack</a>, vous ne devez pas activer cette option.</strong>' )
 		);
+		add_settings_field( 'rocket_ssl', __( 'Cache SSL :', 'rocket' ), 'rocket_field', 'basic', 'rocket_display_main_options',
+			array( 'type'=>'checkbox', 'label'=>'Activer la mise en cache pour les adresses en <code>https://</code>.', 'label_for'=>'cache_ssl', 'label_screen'=>'Mobile', 'description'=>'' )
+		);
 		add_settings_field( 'rocket_purge', __( 'Délai de Purge :', 'rocket' ), 'rocket_field', 'basic', 'rocket_display_main_options',
 			array(
 				array( 'type'=>'number', 'label_for'=>'purge_cron_interval', 'label_screen'=>'Délai de purge', 'fieldset'=>'start' ),
@@ -358,7 +361,7 @@ function rocket_display_options()
 
 					<p>Cependant, il faut exclure les pages panier et commande de la mise en cache. Cela se fait à partir de l’option avancée <code>Ne jamais mettre en cache les pages suivantes</code> et en ajoutant les valeurs suivantes :</p>
 					<p><code>/panier/<br/>
-					/commande/*
+					/commande/(.*)
 					</code></p>
 
 					<h2>WP Rocket est-il compatible avec WPML ?</h2>

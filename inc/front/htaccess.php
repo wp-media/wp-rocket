@@ -74,7 +74,7 @@ function get_rocket_htaccess_mod_rewrite()
 {
 
 	// Get root base
-	$home_root = parse_url(home_url());
+	$home_root = parse_url( home_url() );
 	$home_root = isset( $home_root['path'] ) ? trailingslashit($home_root['path']) : '/';
 
 	$site_root = parse_url( site_url() );
@@ -83,7 +83,7 @@ function get_rocket_htaccess_mod_rewrite()
 	// Get cache root
 	$cache_root = $site_root . str_replace( ABSPATH, '', WP_ROCKET_CACHE_PATH );
 
-	// Set correct HOST dependong on hook (not multisite compatible!)
+	// Set correct HOST depending on hook (not multisite compatible!)
 	$HTTP_HOST = apply_filters( 'rocket_url_no_dots', false ) ? rocket_remove_url_protocol( home_url() ) : '%{HTTP_HOST}';
 
 	$is_1and1_or_force = apply_filters( 'rocket_force_full_path', strpos( $_SERVER['DOCUMENT_ROOT'], '/kunden/' ) === 0 );
@@ -96,7 +96,7 @@ function get_rocket_htaccess_mod_rewrite()
 	$rules .= 'RewriteCond %{HTTP:Cookie} !(' . get_rocket_cookies_not_cached() . ') [NC]' . "\n";
 	$rules .= 'RewriteCond %{REQUEST_URI} !^(' . get_rocket_pages_not_cached() . ')$ [NC]' . "\n";
 	$rules .= !is_rocket_cache_mobile() ? get_rocket_htaccess_mobile_rewritecond() : '';
-	$rules .= 'RewriteCond %{HTTPS} off' . "\n";
+	$rules .= !is_rocket_cache_ssl() ? get_rocket_htaccess_ssl_rewritecond() : '';
 	if( $is_1and1_or_force )
 		$rules .= 'RewriteCond "' . str_replace( '/kunden/', '/', WP_ROCKET_CACHE_PATH ) . $HTTP_HOST . '%{REQUEST_URI}/index.html" -f' . "\n";
 	else
@@ -124,7 +124,25 @@ function get_rocket_htaccess_mobile_rewritecond()
 	$rules = 'RewriteCond %{HTTP_USER_AGENT} !^.*(2.0\ MMP|240x320|400X240|AvantGo|BlackBerry|Blazer|Cellphone|Danger|DoCoMo|Elaine/3.0|EudoraWeb|Googlebot-Mobile|hiptop|IEMobile|KYOCERA/WX310K|LG/U990|MIDP-2.|MMEF20|MOT-V|NetFront|Newt|Nintendo\ Wii|Nitro|Nokia|Opera\ Mini|Palm|PlayStation\ Portable|portalmmm|Proxinet|ProxiNet|SHARP-TQ-GX10|SHG-i900|Small|SonyEricsson|Symbian\ OS|SymbianOS|TS21i-10|UP.Browser|UP.Link|webOS|Windows\ CE|WinWAP|YahooSeeker/M1A1-R2D2|iPhone|iPod|Android|BlackBerry9530|LG-TU915\ Obigo|LGE\ VX|webOS|Nokia5800).* [NC]' . "\n";
 	$rules .= 'RewriteCond %{HTTP_USER_AGENT} !^(w3c\ |w3c-|acs-|alav|alca|amoi|audi|avan|benq|bird|blac|blaz|brew|cell|cldc|cmd-|dang|doco|eric|hipt|htc_|inno|ipaq|ipod|jigs|kddi|keji|leno|lg-c|lg-d|lg-g|lge-|lg/u|maui|maxo|midp|mits|mmef|mobi|mot-|moto|mwbp|nec-|newt|noki|palm|pana|pant|phil|play|port|prox|qwap|sage|sams|sany|sch-|sec-|send|seri|sgh-|shar|sie-|siem|smal|smar|sony|sph-|symb|t-mo|teli|tim-|tosh|tsm-|upg1|upsi|vk-v|voda|wap-|wapa|wapi|wapp|wapr|webc|winw|winw|xda\ |xda-).* [NC]' . "\n";
 	$rules = apply_filters( 'rocket_htaccess_mobile_rewritecond', $rules );
-	
+
+	return $rules;
+}
+
+
+
+/**
+ * Other rules for SSL requests
+ *
+ * @since 1.4.0
+ *
+ */
+
+function get_rocket_htaccess_ssl_rewritecond()
+{
+
+	$rules = 'RewriteCond %{HTTPS} off' . "\n";
+	$rules = apply_filters( 'rocket_htaccess_ssl_rewritecond', $rules );
+
 	return $rules;
 }
 
