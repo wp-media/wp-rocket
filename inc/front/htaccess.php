@@ -13,7 +13,7 @@ function flush_rocket_htaccess( $force = false )
 {
 
 	$rules = '';
-	$htaccess_file = get_real_file_to_edit( '.htaccess' );
+	$htaccess_file =  get_home_path() . '.htaccess';
 
 	if( file_exists( $htaccess_file ) && is_writeable( $htaccess_file ) )
 	{

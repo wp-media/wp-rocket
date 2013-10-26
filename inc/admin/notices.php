@@ -156,7 +156,7 @@ function rocket_warning_using_permalinks()
 add_action( 'admin_notices', 'rocket_warning_htaccess_permissions' );
 function rocket_warning_htaccess_permissions()
 {
-	$htaccess_file = get_real_file_to_edit( '.htaccess' );
+	$htaccess_file =  get_home_path() . '.htaccess';
 
 	if( current_user_can( 'manage_options' ) && ( !file_exists( $htaccess_file ) || !is_writable( $htaccess_file ) ) && rocket_valid_key() )
 	{
