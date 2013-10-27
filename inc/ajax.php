@@ -84,14 +84,25 @@ function rocket_get_refreshed_fragments()
 	}
 
 	unset( $_POST['action'] );
-	if( !empty( $_POST ) )
+
+	$get_transient_widgets = (array)get_transient( 'rocket-refresh-widgets-partial-caching' );
+	if( !empty( $get_transient_widgets ) ){
+		if( !is_array( $fragments ) )
+			$fragments = array();
+		foreach( $get_transient_widgets as $widget_id) {
+			$fragments[$widget_id]['content'] = '';
+			$fragments[$widget_id]['interval'] = 0;
+		}
+		delete_transient( 'rocket-refresh-widgets-partial-caching' );
+	}
+
+	if( is_array( $fragments ) && !empty( $_POST ) )
 	{
 		
 		$fragments = array_intersect_key( $fragments, $_POST );
 		foreach( $_POST as $k=>$v )
 			$_POST[$k] = array( 'content'=>'', 'interval'=>0 );
 		$fragments = wp_parse_args( $fragments, $_POST );
-		
 
 	}
 	wp_send_json( $fragments );

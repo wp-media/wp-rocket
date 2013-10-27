@@ -87,12 +87,11 @@ function _WPR_cb( data )
 						wp_rocket_fragments[key]['interval'] = data[key]['interval'];
 					}else if( data[key]['content'] == '' && wp_rocket_fragments!=undefined ){
 						delete wp_rocket_fragments[key];
+						done = true;
 					}
 				}
 			}
 			try {
-				console.log(data);
-				console.log(wp_rocket_fragments);
 				if( WPR_SS==null || WPR_SS=='' || WPR_SS=='{}' || WPR_SS==undefined ){
 					wp_rocket_fragments = data;
 				}

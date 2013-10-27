@@ -48,11 +48,16 @@ function rocket_in_widget_form( $t, $return, $instance )
  *
  */
 
-add_filter( 'widget_update_callback', 'rocket_widget_partial_caching_update', 10, 3 );
-function rocket_widget_partial_caching_update( $instance, $new_instance, $old_instance ) 
+add_filter( 'widget_update_callback', 'rocket_widget_partial_caching_update', 10, 4 );
+function rocket_widget_partial_caching_update( $instance, $new_instance, $old_instance, $_this ) 
 {
     $instance['rocket-partial-caching-interval'] = isset($new_instance['rocket-partial-caching-interval']) ? (int)$new_instance['rocket-partial-caching-interval'] : 1;
     $instance['rocket-partial-caching-unit'] = isset($new_instance['rocket-partial-caching-unit']) ? $new_instance['rocket-partial-caching-unit'] : 'HOUR_IN_SECONDS';
     $instance['rocket-partial-caching-active'] = isset($new_instance['rocket-partial-caching-active']) ? (int)$new_instance['rocket-partial-caching-active'] : 0;
+    if( isset( $old_instance['rocket-partial-caching-active'] ) && !isset($new_instance['rocket-partial-caching-active']) ) {
+        $refresh_this = (array)get_transient( 'rocket-refresh-widgets-partial-caching' );
+        $refresh_this[] = $_this->id;
+        set_transient( 'rocket-refresh-widgets-partial-caching', array_filter( array_unique( $refresh_this ) ) );
+    }
     return $instance;
 }
