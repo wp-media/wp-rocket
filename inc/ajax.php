@@ -85,7 +85,7 @@ function rocket_get_refreshed_fragments()
 
 	unset( $_POST['action'] );
 
-	$get_transient_widgets = (array)get_transient( 'rocket-refresh-widgets-partial-caching' );
+	$get_transient_widgets = array_filter( (array)get_transient( 'rocket-refresh-widgets-partial-caching' ) );
 	if( !empty( $get_transient_widgets ) ){
 		if( !is_array( $fragments ) )
 			$fragments = array();
