@@ -65,6 +65,7 @@ function _WPR_cb( data )
 	var wp_rocket_fragments = null;
 	if ( data != -1 ) {
 		var done=false;
+		
 		data = JSON.parse( data );
 		for( var key in data ) {
 			if( data[key]['content'] != undefined && data[key]['content'] != '' ) {
