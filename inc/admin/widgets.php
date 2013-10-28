@@ -61,3 +61,22 @@ function rocket_widget_partial_caching_update( $instance, $new_instance, $old_in
     }
     return $instance;
 }
+
+
+/**
+ * Inform Ajax that we deleted a widget, so he can now talk to Storage and tell him "hey dude, get out!"
+ *
+ * since 1.4.0
+ *
+ */
+
+add_action( 'sidebar_admin_setup', 'rocket_sidebar_admin_setup' );
+function rocket_sidebar_admin_setup() 
+{
+    global $wp_registered_widgets;
+    if( isset( $_POST['delete_widget'], $_POST['widget-id'], $wp_registered_widgets[$_POST['widget-id']] ) && $_POST['delete_widget'] ) {
+        $refresh_this = (array)get_transient( 'rocket-refresh-widgets-partial-caching' );
+        $refresh_this[] = $_POST['widget-id'];
+        set_transient( 'rocket-refresh-widgets-partial-caching', array_filter( array_unique( $refresh_this ) ) );
+    } 
+}
