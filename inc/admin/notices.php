@@ -110,7 +110,13 @@ function rocket_warning_logged_users()
 
 	global $current_user, $current_screen;
 	$boxes = get_user_meta( $current_user->ID, 'rocket_boxes', true );
-	if( current_user_can( 'manage_options' ) && 'settings_page_wprocket'==$current_screen->base && !in_array( __FUNCTION__, (array)$boxes ) && rocket_valid_key() ) { ?>
+	if( current_user_can( 'manage_options' )
+	    && 'settings_page_wprocket'==$current_screen->base
+	    && !in_array( __FUNCTION__, (array)$boxes )
+	    && !get_rocket_option( 'cache_logged_user' )
+	    && rocket_valid_key()
+	) {
+	?>
 
 		<div class="updated">
 			<span class="rocket_cross"><a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>"><img src="<?php echo admin_url( '/images/no.png' ); ?>" title="Ignorer jusqu'à la prochaine fois" alt="Ignorer" /></a></span>
@@ -134,8 +140,10 @@ add_action( 'admin_notices', 'rocket_warning_using_permalinks' );
 function rocket_warning_using_permalinks()
 {
 
-	if( current_user_can( 'manage_options' ) && !$GLOBALS['wp_rewrite']->using_permalinks() && rocket_valid_key() )
-	{
+	if( current_user_can( 'manage_options' )
+	    && !$GLOBALS['wp_rewrite']->using_permalinks()
+	    && rocket_valid_key()
+	) {
 	?>
 		<div class="error">
 			<p><strong>WP Rocket</strong> : Une structure de permalien personnalisé est requis pour que <strong>WP Rocket</strong> pour fonctionne correctement. S'il vous plaît, aller à la page <a href="<?php echo admin_url( '/options-permalink.php' ); ?>">Permaliens</a> pour configurer vos permaliens.</p>
@@ -144,6 +152,41 @@ function rocket_warning_using_permalinks()
 	}
 }
 
+
+
+/**
+ * This warning is displayed when the wp-config.php file isn't writeable
+ *
+ * since 1.0
+ *
+ */
+
+add_action( 'admin_notices', 'rocket_warning_wp_config_permissions' );
+function rocket_warning_wp_config_permissions()
+{
+	$config_file =  ABSPATH . 'wp-config.php';
+
+	if( current_user_can( 'manage_options' )
+	    && ( !defined( 'WP_CACHE' ) || !WP_CACHE )
+	    && rocket_valid_key()
+	) {
+		global $current_user;
+		$boxes = get_user_meta( $current_user->ID, 'rocket_boxes', true );
+		if( !in_array( __FUNCTION__, (array)$boxes ) ) {
+			?>
+			<div class="error">
+				<span class="rocket_cross"><a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>"><img src="<?php echo admin_url( '/images/no.png' ); ?>" title="Ignorer jusqu'à la prochaine fois" alt="Ignorer" /></a></span>
+				<p><strong>WP Rocket</strong> : Si vous aviez les <a href="http://codex.wordpress.org/Changing_File_Permissions" target="_blank">droits en écriture (en)</a> sur le fichier <code>wp-config.php</code>, <strong>WP Rocket</strong> pourrait faire cela automatiquement. Ce n’est pas le cas, donc voici la constante que vous devrez mettre dans votre fichier <code>wp-config.php</code> pour que <strong>WP Rocket</strong> fonctionne correctement.</p>
+				<?php 
+				// Get the content of the WP_CACHE constant added by WP Rocket
+				$define = "/** Enable Cache */\r\n" . "define('WP_CACHE', 'true'); // Added by WP Rocket\r\n";
+				?>
+				<p><textarea readonly="readonly" id="rules" name="rules" class="large-text readonly" rows="2"><?php echo $define; ?></textarea></p>
+			</div>
+		<?php
+		}
+	}
+}
 
 
 /**
@@ -158,15 +201,17 @@ function rocket_warning_htaccess_permissions()
 {
 	$htaccess_file =  get_home_path() . '.htaccess';
 
-	if( current_user_can( 'manage_options' ) && ( !file_exists( $htaccess_file ) || !is_writable( $htaccess_file ) ) && rocket_valid_key() )
-	{
+	if( current_user_can( 'manage_options' )
+	    && ( !file_exists( $htaccess_file ) || !is_writable( $htaccess_file ) )
+	    && rocket_valid_key()
+	) {
 		global $current_user;
 		$boxes = get_user_meta( $current_user->ID, 'rocket_boxes', true );
 		if( !in_array( __FUNCTION__, (array)$boxes ) ) {
 			?>
 			<div class="error">
 				<span class="rocket_cross"><a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>"><img src="<?php echo admin_url( '/images/no.png' ); ?>" title="Ignorer jusqu'à la prochaine fois" alt="Ignorer" /></a></span>
-				<p><strong>WP Rocket</strong> : Si vous aviez les <a href="http://codex.wordpress.org/Changing_File_Permissions" target="_blank">droits en écriture (en)</a> sur le fichier <code>.htaccess</code>, <strong>WP Rocket</strong> pourrait faire cela automatiquement. Ce n’est pas le cas, donc voici les règles de réécriture que vous devrez mettre dans votre fichier <code>.htaccess</code> pour que le <strong>WP Rocket</strong> fonctionne correctement. Cliquez sur le champ et appuyez sur Ctrl-a pour tout sélectionner.</p>
+				<p><strong>WP Rocket</strong> : Si vous aviez les <a href="http://codex.wordpress.org/Changing_File_Permissions" target="_blank">droits en écriture (en)</a> sur le fichier <code>.htaccess</code>, <strong>WP Rocket</strong> pourrait faire cela automatiquement. Ce n’est pas le cas, donc voici les règles de réécriture que vous devrez mettre dans votre fichier <code>.htaccess</code> pour que <strong>WP Rocket</strong> fonctionne correctement. Cliquez sur le champ et appuyez sur Ctrl-a pour tout sélectionner.</p>
 				<p><textarea readonly="readonly" id="rules" name="rules" class="large-text readonly" rows="6"><?php echo esc_textarea( get_rocket_htaccess_marker() ); ?></textarea></p>
 			</div>
 		<?php
@@ -177,7 +222,7 @@ function rocket_warning_htaccess_permissions()
 
 
 /**
- * This warning is displayed when the .htaccess file doesn't exist or isn't writeable
+ * This warning is displayed when the cache dir isn't writeable
  *
  * since 1.0
  *
@@ -187,8 +232,10 @@ add_action( 'admin_notices', 'rocket_warning_cache_dir_permissions' );
 function rocket_warning_cache_dir_permissions()
 {
 
-	if( current_user_can( 'manage_options' ) && ( !is_dir( WP_ROCKET_CACHE_PATH ) || !is_writable( WP_ROCKET_CACHE_PATH ) ) && rocket_valid_key() )
-	{
+	if( current_user_can( 'manage_options' )
+	    && ( !is_dir( WP_ROCKET_CACHE_PATH ) || !is_writable( WP_ROCKET_CACHE_PATH ) )
+	    && rocket_valid_key()
+	) {
 		global $current_user;
 		$boxes = get_user_meta( $current_user->ID, 'rocket_boxes', true );
 		if( !in_array( __FUNCTION__, (array)$boxes ) ) {

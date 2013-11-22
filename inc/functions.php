@@ -3,48 +3,111 @@ defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 
 
 /**
- * Get all pages we don't cache (string)
- * This function is used in inc/front/process.php and in inc/front/htaccess.php
+ * Generate the content of advanced-cache.php file
  *
- * since 1.0
+ * @since 2.0.0
  *
  */
 
-function get_rocket_pages_not_cached()
+function rocket_generate_advanced_cache_file()
 {
-	global $wp_rewrite;
-	$pages = array( '.*/' . $wp_rewrite->feed_base . '/' );
-	$cache_reject_uri = get_rocket_option( 'cache_reject_uri', array() );
-	if( count( $cache_reject_uri ) )
-		$pages =  array_filter( array_merge( $pages, (array)$cache_reject_uri ) );
 
-	return implode( '|', $pages );
+	$buffer = '<?php' . "\n";
+	$buffer .= 'defined( \'ABSPATH\' ) or die( \'Cheatin\\\' uh?\' );' . "\n\n";
+
+	// Get cache path
+	$buffer .= '$rocket_cache_path = \'' . WP_ROCKET_CACHE_PATH . '\'' . ";\n";
+
+	// Get config path
+	$buffer .= '$rocket_config_path = \'' . WP_ROCKET_CONFIG_PATH . '\'' . ";\n";
+
+	// Include the process file in buffer
+	$buffer .= 'include( \''. WP_ROCKET_FRONT_PATH . 'process.php' . '\' );';
+
+	// Create advanced-cache.php file
+	rocket_put_content( WP_CONTENT_DIR . '/advanced-cache.php', $buffer );
 }
 
 
 
 /**
- * Get all cookie names we don't cache (string)
- * This function is used in inc/front/process.php and in inc/front/htaccess.php
+ * TO DO
  *
- * since 1.0
+ * @since 2.0.0
  *
  */
 
-function get_rocket_cookies_not_cached()
+function rocket_generate_config_file()
 {
-	$cookies = array(
-		str_replace( COOKIEHASH, '', LOGGED_IN_COOKIE ),
-		'wp-postpass_',
-		'wptouch_switch_toggle',
-		'comment_author_',
-		'comment_author_email_'
-	);
-	$cache_reject_cookies = get_rocket_option( 'cache_reject_cookies', array() );
-	if( count( $cache_reject_cookies ) )
-		$cookies =  array_filter( array_merge( $cookies, (array)$cache_reject_cookies ) );
 
-	return implode( '|', $cookies );
+	$options = get_option( WP_ROCKET_SLUG );
+	
+	if( !$options )
+		return;
+
+	$buffer = '<?php' . "\n";
+	$buffer .= 'defined( \'ABSPATH\' ) or die( \'Cheatin\\\' uh?\' );' . "\n\n";
+	$buffer .= '$rocket_cookie_hash = \'' . COOKIEHASH . '\'' . ";\n";
+
+	foreach( $options as $option => $value )
+	{
+
+		if( $option == 'cache_ssl' || $option == 'cache_mobile' || $option == 'secret_cache_key' )
+			$buffer .= '$rocket_' . $option . ' = \'' . $value . '\';' . "\n";
+
+		if( $option == 'cache_reject_uri' )
+			$buffer .= '$rocket_' . $option . ' = \'' . get_rocket_pages_not_cached() . '\';' . "\n";
+
+		if( $option == 'cache_reject_cookies' )
+		{
+			$cookies = get_rocket_cookies_not_cached();
+			$cookies = get_rocket_option( 'cache_logged_user' ) ? trim( str_replace( 'wordpress_logged_in_', '', $cookies ), '|' ) : $cookies;
+			$buffer .= '$rocket_' . $option . ' = \'' . $cookies . '\';' . "\n";
+		}
+	}
+
+	$url = parse_url( rtrim( home_url(), '/' ) );
+
+	if( !isset( $url['path'] ) )
+	{
+		$config_file_path = WP_ROCKET_CONFIG_PATH . $url['host'] . '.php';
+	}
+	else
+	{
+
+		$home_url_path       = explode( '/', trim( $url['path'], '/' ) );
+		$home_url_start_path = reset( ( $home_url_path ) );
+		$home_url_end_path   = end  ( ( $home_url_path ) );
+
+		$config_dir_path     = WP_ROCKET_CONFIG_PATH . $url['host'];
+
+		if( $home_url_start_path != $home_url_end_path )
+			$config_dir_path = $config_dir_path . '/' . trim( str_replace( $home_url_end_path , '', $url['path'] ), '/' );
+
+		if( !is_dir( $config_dir_path ) )
+			rocket_mkdir_p( $config_dir_path );
+
+		$config_file_name = $home_url_end_path . '.php';
+		$config_file_path = $config_dir_path . '/' . $config_file_name;
+	}
+
+	rocket_put_content( $config_file_path , $buffer );
+}
+
+
+
+/**
+ * A wrapper to easily get rocket option
+ *
+ * @since 2.0.0 Use get_site_option "à la place de" get_option
+ * @since 1.3.0
+ *
+ */
+
+function get_rocket_option( $option, $default=false )
+{
+	$options = get_option( WP_ROCKET_SLUG );
+	return isset( $options[$option] ) ? $options[$option] : $default;
 }
 
 
@@ -76,31 +139,67 @@ function is_rocket_cache_ssl()
 }
 
 
+
 /**
- * Delete one or several cache files
+ * Get the interval task cron purge in seconds
+ * This setting can be changed from the options page of the plugin
  *
  * @since 1.0
  *
  */
 
-function rocket_clean_files( $urls )
+function get_rocket_cron_interval()
 {
-	if( is_string( $urls ) )
-		$urls = (array)$urls;
+	if( !get_rocket_option( 'purge_cron_interval' ) || !get_rocket_option( 'purge_cron_unit' ) )
+		return 0;
+	return (int)( get_rocket_option( 'purge_cron_interval' ) * constant( get_rocket_option( 'purge_cron_unit' ) ) );
+}
 
-	$urls = apply_filters( 'rocket_clean_files', $urls );
 
-    foreach( array_filter($urls) as $url )
-    {
 
-		do_action( 'before_rocket_clean_file', $url );
+/**
+ * Get all pages we don't cache (string)
+ *
+ * @since 1.0
+ *
+ */
 
-		if( $url )
-			rocket_rrmdir( WP_ROCKET_CACHE_PATH . rocket_remove_url_protocol( $url ) );
+function get_rocket_pages_not_cached()
+{
+	global $wp_rewrite;
+	$pages = array( '.*/' . $wp_rewrite->feed_base . '/' );
+	$cache_reject_uri = get_rocket_option( 'cache_reject_uri', array() );
 
-		do_action( 'after_rocket_clean_file', $url );
+	if( count( $cache_reject_uri ) )
+		$pages =  array_filter( array_merge( $pages, $cache_reject_uri ) );
 
-	}
+	return implode( '|', $pages );
+}
+
+
+
+/**
+ * Get all cookie names we don't cache (string)
+ *
+ * since 1.0
+ *
+ */
+
+function get_rocket_cookies_not_cached()
+{
+	$cookies = array(
+		str_replace( COOKIEHASH, '', LOGGED_IN_COOKIE ),
+		'wp-postpass_',
+		'wptouch_switch_toggle',
+		'comment_author_',
+		'comment_author_email_'
+	);
+	$cache_reject_cookies = get_rocket_option( 'cache_reject_cookies', array() );
+
+	if( count( $cache_reject_cookies ) )
+		$cookies =  array_filter( array_merge( $cookies, $cache_reject_cookies ) );
+
+	return implode( '|', $cookies );
 }
 
 
@@ -149,11 +248,11 @@ function get_rocket_post_dates_urls( $post_ID )
 	$date = explode( '-', get_the_time( 'Y-m-d', $post_ID ) );
 
 	$urls = array(
-		get_year_link( $date[0] ) . 'index.html',
-		get_year_link( $date[0] ) . $wp_rewrite->pagination_base,
+		get_year_link ( $date[0] ) . 'index.html',
+		get_year_link ( $date[0] ) . $wp_rewrite->pagination_base,
 		get_month_link( $date[0], $date[1] ) . 'index.html',
 		get_month_link( $date[0], $date[1] ) . $wp_rewrite->pagination_base,
-		get_day_link( $date[0], $date[1], $date[2] )
+		get_day_link  ( $date[0], $date[1], $date[2] )
 	);
 
     return $urls;
@@ -162,8 +261,42 @@ function get_rocket_post_dates_urls( $post_ID )
 
 
 /**
+ * Delete one or several cache files
+ *
+ * @since 2.0.0 Delete cache files for all users
+ * @since 1.0
+ *
+ */
+
+function rocket_clean_files( $urls )
+{
+	if( is_string( $urls ) )
+		$urls = (array)$urls;
+
+	$urls = apply_filters( 'rocket_clean_files', $urls );
+
+    foreach( array_filter($urls) as $url )
+    {
+
+		do_action( 'before_rocket_clean_file', $url );
+
+		if( $dirs = glob( WP_ROCKET_CACHE_PATH . rocket_remove_url_protocol( $url ) ) )
+		{
+			foreach( $dirs as $dir )
+				rocket_rrmdir( $dir );
+		}
+
+		do_action( 'after_rocket_clean_file', $url );
+
+	}
+}
+
+
+
+/**
  * Remove the home cache file and pagination
  *
+ * @since 2.0.0 Delete cache files for all users
  * @since 1.0
  *
  */
@@ -171,10 +304,22 @@ function get_rocket_post_dates_urls( $post_ID )
 function rocket_clean_home()
 {
 	$root = WP_ROCKET_CACHE_PATH . rocket_remove_url_protocol( home_url() );
-	$root = apply_filters( 'before_rocket_clean_home', $root );
 
-	@unlink( $root . '/index.html' );
-    rocket_rrmdir( $root . '/' . $GLOBALS['wp_rewrite']->pagination_base );
+	do_action( 'before_rocket_clean_home', $root );
+
+	// Delete homepage
+	if( $files = glob( $root . '*/index.html' ) )
+	{
+		foreach( $files as $file )
+			@unlink( $file );
+	}
+
+	// Delete homepage pagination
+	if( $dirs = glob( $root . '*/' . $GLOBALS['wp_rewrite']->pagination_base ) )
+	{
+		foreach( $dirs as $dir )
+			rocket_rrmdir( $dir );
+	}
 
     do_action( 'after_rocket_clean_home', $root );
 }
@@ -184,20 +329,72 @@ function rocket_clean_home()
 /**
  * Remove all cache files of the domain
  *
+ * @since 2.0.0 Delete domain cache files for all users
  * @since 1.0
  *
  */
 
 function rocket_clean_domain()
 {
-	$domain = apply_filters( 'rocket_clean_domain', WP_ROCKET_CACHE_PATH . rocket_remove_url_protocol( home_url() ) );
+	$domain = WP_ROCKET_CACHE_PATH . rocket_remove_url_protocol( home_url() );
 
 	do_action( 'before_rocket_clean_domain', $domain );
 
 	// Delete cache domain files
-    rocket_rrmdir( $domain );
+	if( $dirs = glob( $domain . '*' ) )
+	{
+		foreach( $dirs as $dir )
+			rocket_rrmdir( $dir );
+	}
 
     do_action( 'after_rocket_clean_domain', $domain );
+}
+
+
+
+/**
+ * Remove a single file or a folder recursively
+ *
+ * @since 1.0
+ *
+ */
+
+function rocket_rrmdir( $dir, $dirs_to_preserve = array() )
+{
+
+	$dir = rtrim( $dir, '/' );
+
+	do_action( 'before_rocket_rrmdir', $dir, $dirs_to_preserve );
+
+	if( !is_dir( $dir ) )
+	{
+		@unlink( $dir );
+		return;
+	};
+
+    if( $dirs = glob( $dir . '/*' ) )
+    {
+
+		$keys = array();
+		foreach( $dirs_to_preserve as $dir_to_preserve )
+		{
+			$matches = preg_grep( "#^$dir_to_preserve$#" , $dirs );
+			$keys[] = reset( $matches );
+		}
+
+		$dirs = array_diff( $dirs, array_filter( $keys ) );
+		foreach( $dirs as $dir )
+		{
+			if( is_dir( $dir ) )
+				rocket_rrmdir( $dir, $dirs_to_preserve );
+			else
+				@unlink( $dir );
+		}
+	}
+
+	@rmdir($dir);
+
+	do_action( 'after_rocket_rrmdir', $dir, $dirs_to_preserve );
 }
 
 
@@ -282,46 +479,6 @@ function rocket_put_content( $file, $content )
 }
 
 
-/**
- * Remove a single file or a folder recursively
- *
- * @since 1.0
- *
- */
-
-function rocket_rrmdir( $dir, $dirs_to_preserve = array() )
-{
-
-	$dir = apply_filters( 'before_rocket_rrmdir', $dir, $dirs_to_preserve );
-
-	if( !is_dir( $dir ) ) :
-		@unlink( $dir );
-		return;
-	endif;
-
-	$dir = rtrim( $dir, '/' );
-    if( $globs = glob( $dir . '/*' ) ) {
-
-		foreach( $globs as $file ) {
-
-			if( is_dir( $file ) ) {
-				if( !in_array( str_replace( WP_ROCKET_CACHE_PATH, '', $file ), $dirs_to_preserve ) )
-					rocket_rrmdir( $file, $dirs_to_preserve );
-			}
-			else {
-			   @unlink( $file );
-			}
-
-		}
-
-	}
-
-	@rmdir($dir);
-
-	do_action( 'after_rocket_rrmdir', $dir, $dirs_to_preserve );
-}
-
-
 
 /**
  * Get relative url
@@ -355,38 +512,6 @@ function rocket_valid_key()
 	if( !get_rocket_option( 'consumer_key' ) || !get_rocket_option( 'secret_key' ) )
 		return false;
 	return get_rocket_option( 'consumer_key' )==hash( 'crc32', rocket_get_domain( home_url() ) ) && get_rocket_option( 'secret_key' )==md5( get_rocket_option( 'consumer_key' ) );
-}
-
-
-
-/**
- * Get the interval task cron purge in seconds
- * This setting can be changed from the options page of the plugin
- *
- * @since 1.0
- *
- */
-
-function get_rocket_cron_interval()
-{
-	if( !get_rocket_option( 'purge_cron_interval' ) || !get_rocket_option( 'purge_cron_unit' ) )
-		return 0;
-	return (int)( get_rocket_option( 'purge_cron_interval' ) * constant( get_rocket_option( 'purge_cron_unit' ) ) );
-}
-
-
-
-/**
- * A wrapper to easily get rocket option
- *
- * @since 1.3.0
- *
- */
-
-function get_rocket_option( $option, $default=false )
-{
-	$options = get_option( WP_ROCKET_SLUG );
-	return isset( $options[$option] ) ? $options[$option] : $default;
 }
 
 
@@ -450,7 +575,6 @@ function run_rocket_bot( $spider = 'cache-preload', $start_url = '' )
 	wp_remote_get( WP_ROCKET_BOT_URL.'?spider=' . $spider . '&start_url=' . $start_url );
 
 	do_action( 'after_run_rocket_bot' );
-
 }
 
 
@@ -534,7 +658,8 @@ function rocket_is_plugin_active( $plugin )
  *
  */
 
-function rocket_is_plugin_active_for_network( $plugin ) {
+function rocket_is_plugin_active_for_network( $plugin )
+{
 	if ( !is_multisite() )
 		return false;
 
@@ -568,7 +693,7 @@ function rocket_remove_url_protocol( $url, $no_dots=false )
  * Get the permalink post
  *
  * @since 1.3.1
- * @source : wp-admin/includes/post.php
+ * @source : get_sample_permalik() in wp-admin/includes/post.php
  *
  */
 
@@ -623,20 +748,18 @@ function get_rocket_sample_permalink( $id )
 
 
 /**
- * Get REQUEST_URI (compatibily for qtranslate)
+ * TO DO
  *
- * @since 1.3.6
+ * @since 2.0.0
  *
  */
 
-function get_rocket_request_uri() 
+function get_rocket_parse_url( $url )
 {
-	
-	if( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) 
-	{
-		global $q_config;
-		return $q_config['url_info']['original_url'];
-	}
-	
-	return $_SERVER['REQUEST_URI'];
+
+	$url    = parse_url( $url );
+	$host   = $url['host'];
+	$path   = isset( $url['path'] ) ? $url['path'] : '';
+	$scheme = isset( $url['scheme'] ) ? $url['scheme'] : '';
+	return array( $host, $path, $scheme );
 }

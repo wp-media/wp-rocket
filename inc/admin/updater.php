@@ -9,12 +9,18 @@ defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
  */
 
 add_filter( 'http_request_args', 'rocket_updates_exclude', 5, 2 );
-function rocket_updates_exclude( $r, $url ) {
+function rocket_updates_exclude( $r, $url ) 
+{
+	
 	if ( 0 !== strpos( $url, 'http://api.wordpress.org/plugins/update-check' ) )
 		return $r; // Not a plugin update request. Stop immediately.
+	
 	$plugins = unserialize( $r['body']['plugins'] );
-	unset( $plugins->plugins[ plugin_basename( WP_ROCKET_FILE ) ] );
-	unset( $plugins->active[ array_search( plugin_basename( WP_ROCKET_FILE ), $plugins->active ) ] );
+	if ( isset( $plugins->plugins[ plugin_basename( WP_ROCKET_FILE ) ], $plugins->active[ array_search( plugin_basename( WP_ROCKET_FILE ), $plugins->active ) ] ) )
+	{
+		unset( $plugins->plugins[ plugin_basename( WP_ROCKET_FILE ) ] );
+		unset( $plugins->active[ array_search( plugin_basename( WP_ROCKET_FILE ), $plugins->active ) ] );
+	}
 	$r['body']['plugins'] = serialize( $plugins );
 	return $r;
 }

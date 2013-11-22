@@ -31,7 +31,7 @@ function flush_rocket_htaccess( $force = false )
 			$rules = get_rocket_htaccess_marker();
 
 		// Update the .htacces file
-		file_put_contents( $htaccess_file , $rules . $ftmp );
+		rocket_put_content( $htaccess_file , $rules . $ftmp );
 	}
 
 }
@@ -72,7 +72,10 @@ function get_rocket_htaccess_marker()
 
 function get_rocket_htaccess_mod_rewrite()
 {
-
+	
+	if( is_multisite() )
+		return;
+	
 	// Get root base
 	$home_root = parse_url( home_url() );
 	$home_root = isset( $home_root['path'] ) ? trailingslashit($home_root['path']) : '/';
@@ -133,7 +136,7 @@ function get_rocket_htaccess_mobile_rewritecond()
 /**
  * Other rules for SSL requests
  *
- * @since 1.4.0
+ * @since 2.0.0
  *
  */
 

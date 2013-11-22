@@ -53,7 +53,8 @@ function rocket_purge_cron_scheduled()
  */
 
 add_action( 'rocket_purge_time_event', 'do_rocket_purge_cron' );
-function do_rocket_purge_cron() {
+function do_rocket_purge_cron() 
+{
 				
 	// Purge all cache files when user save options
 	rocket_clean_domain();

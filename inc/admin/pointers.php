@@ -12,7 +12,8 @@ defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 add_action( 'admin_enqueue_scripts', 'rocket_admin_pointers_header' );
 function rocket_admin_pointers_header()
 {
-   if ( rocket_admin_pointers_check() ) {
+   if ( rocket_admin_pointers_check() ) 
+   {
       add_action( 'admin_print_footer_scripts', 'rocket_admin_pointers_footer' );
       wp_enqueue_script( 'wp-pointer' );
       wp_enqueue_style( 'wp-pointer' );
@@ -48,37 +49,39 @@ function rocket_admin_pointers_footer()
 	global $pagenow, $current_screen;
 	$admin_pointers = rocket_admin_pointers();
 	?>
-<script type="text/javascript">
-/* <![CDATA[ */
-( function($) {
-<?php
-foreach ( $admin_pointers as $pointer => $array ) {
-	$ai = isset( $array['anchor_id'][$pagenow] ) ? $array['anchor_id'][$pagenow] : $array['anchor_id']['all'];
-	$ai = isset( $array['anchor_id'][$current_screen->base] ) ? $array['anchor_id'][$current_screen->base] : $ai;
-	if( !empty( $ai ) ) {
-		?>
-		$( '<?php echo $ai; ?>' ).pointer( {
-			content: '<?php echo addslashes( $array['content'] ); ?>',
-			position: {
-				edge: '<?php echo $array['edge']; ?>',
-				align: '<?php echo $array['align']; ?>'
-			},
-			<?php if( !empty( $array['action'] ) ): ?>
-				close: function() {
-					$.post( ajaxurl, {
-						pointer: '<?php echo $pointer; ?>',
-						action: '<?php echo $array['action']; ?>',
-					} );
+	
+	<script type="text/javascript">
+	/* <![CDATA[ */
+	( function($) {
+	<?php
+	foreach ( $admin_pointers as $pointer => $array ) {
+		$ai = isset( $array['anchor_id'][$pagenow] ) ? $array['anchor_id'][$pagenow] : $array['anchor_id']['all'];
+		$ai = isset( $array['anchor_id'][$current_screen->base] ) ? $array['anchor_id'][$current_screen->base] : $ai;
+		if( !empty( $ai ) ) {
+			?>
+			$( '<?php echo $ai; ?>' ).pointer( {
+				content: '<?php echo addslashes( $array['content'] ); ?>',
+				position: {
+					edge: '<?php echo $array['edge']; ?>',
+					align: '<?php echo $array['align']; ?>'
 				},
-			<?php endif; ?>
-		} ).pointer( 'open' );
-		<?php
+				<?php if( !empty( $array['action'] ) ): ?>
+					close: function() {
+						$.post( ajaxurl, {
+							pointer: '<?php echo $pointer; ?>',
+							action: '<?php echo $array['action']; ?>',
+						} );
+					},
+				<?php endif; ?>
+			} ).pointer( 'open' );
+			<?php
+		}
 	}
-}
-?>
-} )(jQuery);
-/* ]]> */
-</script>
+	?>
+	} )(jQuery);
+	/* ]]> */
+	</script>
+	
    <?php
 }
 
@@ -96,15 +99,16 @@ function rocket_admin_pointers()
    $new_pointer = array();
    $actions = apply_filters( 'rocket_pointer_actions', array() );
    foreach( $actions as $action=>$options ) {
-	   if( apply_filters( 'rocket_pointer_'.$action, false ) && !in_array( $pointer_key.$action, $dismissed ) ) {
+	   if( apply_filters( 'rocket_pointer_'.$action, false ) && !in_array( $pointer_key.$action, $dismissed ) ) 
+	   {
 		   $new_pointer[$pointer_key.$action] = array(
 		         'anchor_id' => $options['anchor_id'],
-		         'edge' => $options['edge'],
-		         'align' => $options['align'],
-		         'active' => true,
-		         'action' => $options['action'],
+		         'edge'      => $options['edge'],
+		         'align'     => $options['align'],
+		         'active'    => true,
+		         'action'    => $options['action'],
 		   );
-		   $new_pointer[$pointer_key.$action]['content'] = '<h3>' . __( 'WP-Rocket '.WP_ROCKET_VERSION ) . '</h3><p>' . $options['content'] . '</p>';
+		   $new_pointer[$pointer_key.$action]['content'] = '<h3>' . __( 'WP Rocket '.WP_ROCKET_VERSION ) . '</h3><p>' . $options['content'] . '</p>';
 		}
 	}
    return $new_pointer;

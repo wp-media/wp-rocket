@@ -57,16 +57,21 @@ function rocket_upgrader()
 add_action( 'wp_rocket_first_install', 'rocket_first_install' );
 function rocket_first_install()
 {
-
+	
+	// Generate an andom key for cache dir of user	
+	$secret_cache_key = str_replace( '.', '', uniqid( '', true ) );
+	
 	// Create Option
 	add_option( WP_ROCKET_SLUG,
 		array(
+			'secret_cache_key'		=> $secret_cache_key,
 			'cache_mobile'         	=> 0,
+			'cache_logged_user'     => 0,
 			'cache_ssl'         	=> 0,
 			'cache_reject_uri'     	=> array(),
 			'cache_reject_cookies' 	=> array(),
 			'cache_purge_pages'  	=> array(),
-			'purge_cron_interval'  	=> 4,
+			'purge_cron_interval'  	=> 12,
 			'purge_cron_unit'  		=> 'HOUR_IN_SECONDS',
 			'exclude_css'		   	=> array(),
 			'exclude_js'		   	=> array(),
@@ -119,6 +124,7 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version )
 
 		// Clean cache
 		rocket_clean_domain();
+		
 		// Create cache files
 		run_rocket_bot( 'cache-preload' );
 	}
@@ -126,6 +132,11 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version )
 	if( version_compare( $actual_version, '1.4.0', '<' ) )
 	{
 
+		// Add secret cache key
+		$options = get_option( WP_ROCKET_SLUG );
+		$options['secret_cache_key'] = str_replace( '.', '', uniqid( '', true ) );
+		update_option( WP_ROCKET_SLUG, $options );
+		
 		global $wp_filesystem;
 	    if( !$wp_filesystem )
 	    {

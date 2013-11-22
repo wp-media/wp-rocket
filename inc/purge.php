@@ -18,16 +18,23 @@ add_action( 'add_link'					, 'rocket_clean_domain' );   	// When a link is added
 add_action( 'edit_link'					, 'rocket_clean_domain' );		// When a link is updated
 add_action( 'delete_link'				, 'rocket_clean_domain' );		// When a link is deleted
 
-/* since 1.1.1 */
+/* @since 1.1.1 */
 add_filter( 'widget_update_callback'	, 'rocket_widget_update_callback' ); // When a widget is update
 function rocket_widget_update_callback( $instance ) { rocket_clean_domain(); return $instance; }
+
+
+
+/* @since 1.3.3 
+ * For not conflit with WooCommerce when clean_post_cache is called 
+*/
+add_filter( 'delete_transient_wc_products_onsale', 'wp_suspend_cache_invalidation' );
 
 
 
 /**
  * Update cache when a post is updated or commented
  *
- * @since 1.3.2 Add wp_update_comment_count to purge cache when a comment is addes/updated/deleted
+ * @since 1.3.2 Add wp_update_comment_count to purge cache when a comment is added/updated/deleted
  * @since 1.3.0 Compatibility with WPML
  * @since 1.3.0 Add 2 hooks : before_rocket_clean_post, after_rocket_clean_post
  * @since 1.3.0 Purge all parents of the post and the author page
@@ -40,7 +47,6 @@ function rocket_widget_update_callback( $instance ) { rocket_clean_domain(); ret
 add_action( 'wp_trash_post', 'rocket_clean_post' );
 add_action( 'delete_post', 'rocket_clean_post' );
 add_action( 'clean_post_cache', 'rocket_clean_post' );
-add_filter( 'delete_transient_wc_products_onsale', 'wp_suspend_cache_invalidation' ); // since 1.3.3, for not conflit with WooCommerce when clean_post_cache is called
 add_action( 'wp_update_comment_count', 'rocket_clean_post' );
 function rocket_clean_post( $post_id )
 {
@@ -121,12 +127,28 @@ function rocket_clean_post( $post_id )
 	{
 
 		global $sitepress;
-		$root = WP_ROCKET_CACHE_PATH . rocket_remove_url_protocol( $sitepress->language_url($sitepress->get_language_for_element($post_id, 'post_' . get_post_type($post_id))) );
 
-		@unlink( $root . '/index.html' );
-		rocket_rrmdir( $root . $GLOBALS['wp_rewrite']->pagination_base );
+		$domain = $sitepress->language_url( $sitepress->get_language_for_element( $post_id, 'post_' . get_post_type( $post_id ) ) );
+		$host   = parse_url( $domain, PHP_URL_HOST );
+		$root   = WP_ROCKET_CACHE_PATH . str_replace( $host, $host . '*', rocket_remove_url_protocol( $domain ) );
+
+		// Delete homepage file
+		if( $files = glob( $root . '/index.html' ) )
+		{
+			foreach( $files as $file )
+				@unlink( $file );
+		}
+
+		// Delete homepage pagination
+		if( $dirs = glob( $root . '/' . $GLOBALS['wp_rewrite']->pagination_base ) )
+		{
+			foreach( $dirs as $dir )
+				rocket_rrmdir( $dir );
+		}
+
 	}
-	else {
+	else 
+	{
 		rocket_clean_home();
 	}
 
@@ -145,15 +167,36 @@ function rocket_clean_post( $post_id )
 
 
 /**
+ * TO DO
  *
+ * @since 2.0.0
  *
- * @since 1.4.0
+ */
+
+add_filter( 'rocket_clean_files', 'rocket_clean_files_users' );
+function rocket_clean_files_users( $urls )
+{
+	$pattern_urls = array();
+
+	foreach( $urls as $url )
+		$pattern_urls[] = str_replace( home_url() , home_url() . '*', $url );
+
+	return $pattern_urls;
+}
+
+
+
+/**
+ * TO DO
+ *
+ * @since 1.3.5
  *
  */
 
 add_filter( 'rocket_post_purge_urls', 'rocket_post_purge_urls_for_qtranslate' );
 function rocket_post_purge_urls_for_qtranslate( $urls )
 {
+	
 	if( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) )
 	{
 
@@ -163,7 +206,7 @@ function rocket_post_purge_urls_for_qtranslate( $urls )
 		$enabled_languages = $q_config['enabled_languages'];
 
 		// Remove default language
-		$enabled_languages = array_diff( $enabled_languages, array($q_config['default_language']) );
+		$enabled_languages = array_diff( $enabled_languages, array( $q_config['default_language'] ) );
 
 		// Add translate URLs
 		foreach( $urls as $url )
@@ -206,8 +249,8 @@ function run_rocket_bot_after_clean_post( $post, $purge_urls )
 	$purge_urls = array_diff( $purge_urls, $purge_dates, $purge_author );
 
 	// Create json file and run WP Rocket Bot
-	$json_encode_urls = '["'.implode( '","', array_filter($purge_urls) ).'"]';
-	if(@file_put_contents( WP_ROCKET_PATH . 'cache.json', $json_encode_urls ))
+	$json_encode_urls = '["' . implode( '","', array_filter( $purge_urls ) ) . '"]';
+	if( rocket_put_content( WP_ROCKET_PATH . 'cache.json', $json_encode_urls ) )
 	{
 		global $do_rocket_bot_cache_json;
 		$do_rocket_bot_cache_json = true;
@@ -256,47 +299,28 @@ function rocket_purge_cache()
 
 		switch( $_type )
 		{
+			
 			// Clear all cache domain
 			case 'all':
+				
 				// Check if WPML is activated
-				if( rocket_is_plugin_active('sitepress-multilingual-cms/sitepress.php') )
+				if( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) )
 				{
 
-					global $sitepress;
-
-					// Get current lang
-					$_lang = isset( $_GET['lang'] ) ? sanitize_key( $_GET['lang'] ) : 'all';
-
-					// Get all active languages
-					$langs = $sitepress->get_active_languages();
-
-					// Check if user want to purge only one lang
-					if( $_lang != 'all' )
-					{
-
-						// Unset current lang to the preserve dirs
-						unset($langs[$_lang]);
-
-						// Assign a new array to stock dirs to preserve to the purge
-						$langs_to_preserve = array();
-
-						// Stock all URLs of langs to preserve
-						foreach ( array_keys($langs) as $lang )
-							$langs_to_preserve[] = rtrim( rocket_remove_url_protocol($sitepress->language_url($lang)), '/' );
-
+					if( isset( $_GET['lang'] ) && $_GET['lang'] != 'all' )
+					{	
 						// Remove only cache files of selected lang
-						rocket_rrmdir(WP_ROCKET_CACHE_PATH . rocket_remove_url_protocol($sitepress->language_url($_lang)), $langs_to_preserve);
-
-					}
-					else
-					{
-						// Remove all cache langs
-						foreach ( array_keys($langs) as $lang )
-							rocket_rrmdir(WP_ROCKET_CACHE_PATH . rocket_remove_url_protocol($sitepress->language_url($lang)));
-
-					}
-
+						rocket_purge_cache_for_selected_lang( sanitize_key( $_GET['lang'] ) );
+					}	
+					else 
+					{	
+						// Remove all cache langs	
+						rocket_purge_cache_for_all_langs();	
+					}				
+						
 				}
+				
+				// Check if qTranslate is activated
 				else if( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) )
 				{
 
@@ -309,31 +333,15 @@ function rocket_purge_cache()
 						break;
 					}
 
-					// Get current lang
-					$_lang = $_GET['lang'];
-
-					// Get all active languages
-					$langs = $q_config['enabled_languages'];
-
-					// Unset current lang to the preserve dirs
-					unset($langs[$_lang]);
-
-					// Assign a new array to stock dirs to preserve to the purge
-					$langs_to_preserve = array();
-
-					// Stock all URLs of langs to preserve
-					foreach ( $langs as $lang )
-						$langs_to_preserve[] = rtrim( rocket_remove_url_protocol(qtrans_convertURL(home_url(),$lang, true)), '/' );
-
 					// Remove only cache files of selected lang
-					rocket_rrmdir(WP_ROCKET_CACHE_PATH . rocket_remove_url_protocol(qtrans_convertURL(home_url(),$_lang, true)), $langs_to_preserve);
-
+					rocket_purge_cache_for_selected_lang( sanitize_key( $_GET['lang'] ) );
 				}
 				else
 				{
-					// If WPML isn't activated, you can purge your domain normally
-					rocket_clean_domain();
+					// If WPML or qTranslate aren't activated, you can purge your domain normally
+					rocket_clean_domain();					
 				}
+				
 				rocket_dismiss_box( 'rocket_warning_plugin_modification' );
 				break;
 
@@ -354,9 +362,7 @@ function rocket_purge_cache()
 
 		wp_redirect( wp_get_referer() );
 		die();
-
 	}
-
 }
 
 
@@ -374,36 +380,193 @@ add_action( 'admin_post_preload', 'rocket_preload_cache' );
 add_action( 'admin_post_nopriv_preload', 'rocket_preload_cache' );
 function rocket_preload_cache()
 {
-    if( isset( $_GET['_wpnonce'] ) ) {
+    if( isset( $_GET['_wpnonce'] ) )
+    {
 
         if( !wp_verify_nonce( $_GET['_wpnonce'], 'preload' ) )
                 wp_nonce_ays( '' );
 
 		// Check if WPML is activated
-		if( rocket_is_plugin_active('sitepress-multilingual-cms/sitepress.php') ) {
+		if( rocket_is_plugin_active('sitepress-multilingual-cms/sitepress.php') )
+		{
 
 			global $sitepress;
-			$_lang = sanitize_key( $_GET['lang'] );
 
 			// Check if user want to purge only one lang
-			if( $_lang != 'all' ) {
-				run_rocket_bot( 'cache-preload', $sitepress->language_url( $_lang ) );
+			if( isset( $_GET['lang'] ) && $_GET['lang'] != 'all' )
+			{
+				run_rocket_bot( 'cache-preload', $sitepress->language_url( sanitize_key( $_GET['lang'] ) ) );
 			}
-			else {
-
+			else
+			{
 				// Get all active languages
 				$langs = $sitepress->get_active_languages();
-				foreach ( array_keys($langs) as $lang )
+				foreach ( array_keys( $langs ) as $lang )
 					run_rocket_bot( 'cache-preload',  $sitepress->language_url( $lang ) );
-
 			}
 		}
-		else {
+		else 
+		{
 			run_rocket_bot( 'cache-preload' );
 		}
 
         wp_redirect( wp_get_referer() );
         die();
-
     }
+}
+
+
+
+/**
+ * Get all active languages
+ *
+ * @since 2.0.0
+ *
+ */
+
+function get_rocket_all_langs()
+{
+
+	// WPML
+	if( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) )
+	{
+		global $sitepress;
+		return $sitepress->get_active_languages();
+	}
+
+	// qTranslate
+	if( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) )
+	{
+		global $q_config;
+		return $q_config['enabled_languages'];
+	}
+
+	return false;
+}
+
+
+
+/**
+ * TO DO
+ *
+ * @since 2.0.0
+ *
+ */
+
+function get_rocket_langs_to_preserve( $current_lang )
+{
+
+	$langs = get_rocket_all_langs();
+	$langs_to_preserve = array();
+
+	// Unset current lang to the preserve dirs
+	
+	// WPML
+	if( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) )
+	{
+		unset( $langs[$current_lang] );
+		$langs = array_keys( $langs );
+	}
+		
+	// qTranslate
+	if( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) )
+	{
+		$langs = array_flip( $langs );
+		unset( $langs[$current_lang] );
+		$langs = array_flip( $langs );
+	}
+	
+	// Stock all URLs of langs to preserve
+	foreach ( $langs as $lang )
+	{
+		list( $host, $path ) = get_rocket_parse_url_for_lang( $lang );
+		$langs_to_preserve[] = WP_ROCKET_CACHE_PATH . $host . '(.*)/' . trim( $path, '/' );
+	}
+	
+	$langs_to_preserve = apply_filters( 'rocket_langs_to_preserve', $langs_to_preserve );
+	return $langs_to_preserve;
+}
+
+
+
+/**
+ * TO DO
+ *
+ * @since 2.0.0
+ *
+ */
+
+function rocket_purge_cache_for_all_langs()
+{
+
+	$langs = get_rocket_all_langs();
+	
+	if( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) )
+	{
+		global $sitepress;
+		$langs = array_keys( $langs );
+	}
+	
+	do_action( 'before_rocket_purge_cache_for_all_langs' , $dirs );
+	
+	// Remove all cache langs
+	foreach ( $langs as $lang )
+	{
+		list( $host ) = get_rocket_parse_url_for_lang( $lang );
+		if( $dirs = glob( WP_ROCKET_CACHE_PATH . $host . '*' ) )
+		{
+			foreach( $dirs as $dir )
+				rocket_rrmdir( $dir );
+		}
+	}
+	
+	do_action( 'after_rocket_purge_cache_for_all_langs' , $dirs );
+}
+
+
+
+/**
+ * Remove only cache files of selected lang
+ *
+ * @since 2.0.0
+ *
+ */
+
+function rocket_purge_cache_for_selected_lang( $lang )
+{
+
+	do_action( 'before_purge_cache_for_selected_lang' , $lang );
+	
+	list( $host, $path ) = get_rocket_parse_url_for_lang( $lang );
+	if( $dirs = glob( WP_ROCKET_CACHE_PATH . $host . '*/' . $path ) )
+	{
+		foreach( $dirs as $dir )
+			rocket_rrmdir( $dir, get_rocket_langs_to_preserve( $lang ) );
+	}
+	
+	do_action( 'after_purge_cache_for_selected_lang' , $lang );
+}
+
+
+
+/**
+ * TO DO
+ *
+ * @since 2.0.0
+ *
+ */
+
+function get_rocket_parse_url_for_lang( $lang )
+{
+
+	// WPML
+	if( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) )
+	{
+		global $sitepress;
+		return get_rocket_parse_url( $sitepress->language_url( $lang ) );
+	}
+
+	// qTranslate
+	if( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) )
+		return get_rocket_parse_url( qtrans_convertURL( home_url(), $lang, true ) );
 }

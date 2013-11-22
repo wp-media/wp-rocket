@@ -5,8 +5,8 @@ defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 /**
  * Remove query strings from static files if ?ver= egal WordPress version
  *
- * since 1.1.6
- * since 1.4.0 : code improvment: "ver=$wp_version" can be at any place now
+ * @since 2.0.0 : code improvment: "ver=$wp_version" can be at any place now
+ * @since 1.1.6
  *
  */
   
