@@ -60,6 +60,7 @@ function rocket_lazyload_images( $html )
 /**
  * Replace WordPress smilies by Lazy Load
  *
+ * @since 2.0.0 & WP 3.8 New system for replace smilies by Lazy Load
  * @since 1.3.5 It's possible to exclude LazyLoad process by used do_rocket_lazyload filter
  * @since 1.1.0 Don't lazy-load if the thumbnail has already been run through previously
  * @since 1.0.1 Add priority of hooks at maximum later with PHP_INT_MAX
@@ -67,13 +68,103 @@ function rocket_lazyload_images( $html )
  *
  */
 
-add_filter('smilies_src', 'rocket_lazyload_smilies', PHP_INT_MAX );
-function rocket_lazyload_smilies( $src )
-{
-	// Don't lazy-load if the thumbnail has already been run through previously or stop process with a hook
 
-	if ( strpos( $src, 'data-lazy-original' ) || !apply_filters( 'do_rocket_lazyload', true ) )
-		return $src;
+remove_filter( 'the_content', 'convert_smilies' );
+remove_filter( 'the_excerpt', 'convert_smilies' );
+remove_filter( 'comment_text', 'convert_smilies' );
 
-	return "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==' data-lazy-original='" . $src;
+add_filter( 'the_content', 'rocket_convert_smilies' );
+add_filter( 'the_excerpt', 'rocket_convert_smilies' );
+add_filter( 'comment_text', 'rocket_convert_smilies' );
+
+
+
+/**
+ * Convert text equivalent of smilies to images.
+ *
+ * @since 2.0.0
+ * @source convert_smilies() in /wp-includes/formattings.php
+ *
+ */
+
+function rocket_convert_smilies( $text ) {
+	global $wp_smiliessearch;
+
+	$output = '';
+	if ( get_option( 'use_smilies' ) && ! empty( $wp_smiliessearch ) ) {
+		// HTML loop taken from texturize function, could possible be consolidated
+		$textarr = preg_split( '/(<.*>)/U', $text, -1, PREG_SPLIT_DELIM_CAPTURE ); // capture the tags as well as in between
+		$stop = count( $textarr );// loop stuff
+
+		// Ignore proessing of specific tags
+		$tags_to_ignore = 'code|pre|style|script|textarea';
+		$ignore_block_element = '';
+
+		for ( $i = 0; $i < $stop; $i++ ) {
+			$content = $textarr[$i];
+
+			// If we're in an ignore block, wait until we find its closing tag
+			if ( '' == $ignore_block_element && preg_match( '/^<(' . $tags_to_ignore . ')>/', $content, $matches ) )  {
+				$ignore_block_element = $matches[1];
+			}
+
+			// If it's not a tag and not in ignore block
+			if ( '' ==  $ignore_block_element && strlen( $content ) > 0 && '<' != $content[0] ) {
+				$content = preg_replace_callback( $wp_smiliessearch, 'rocket_translate_smiley', $content );
+			}
+
+			// did we exit ignore block
+			if ( '' != $ignore_block_element && '</' . $ignore_block_element . '>' == $content )  {
+				$ignore_block_element = '';
+			}
+
+			$output .= $content;
+		}
+	} else {
+		// return default text.
+		$output = $text;
+	}
+	return $output;
+}
+
+
+
+/**
+ * Convert one smiley code to the icon graphic file equivalent.
+ *
+ * @since 2.0.0
+ * @source translate_smiley() in /wp-includes/formattings.php
+ *
+ */
+
+function rocket_translate_smiley( $matches ) {
+	global $wpsmiliestrans;
+
+	if ( count( $matches ) == 0 )
+		return '';
+
+	$smiley = trim( reset( $matches ) );
+	$img = $wpsmiliestrans[ $smiley ];
+
+	/**
+	 * Filter the Smiley image URL before it's used in the image element.
+	 *
+	 * @since 2.9.0
+	 *
+	 * @param string $smiley_url URL for the smiley image.
+	 * @param string $img        Filename for the smiley image.
+	 * @param string $site_url   Site URL, as returned by site_url().
+	 */
+	$src_url = apply_filters( 'smilies_src', includes_url( "images/smilies/$img" ), $img, site_url() );
+
+	// Don't lazy-load if process is stopped with a hook
+	if ( apply_filters( 'do_rocket_lazyload', true ) )
+	{
+		return sprintf( ' <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==\'" data-src="%s" alt="%s" class="wp-smiley" /> ', esc_url( $src_url ), esc_attr( $smiley ) );
+	}
+	else
+	{
+		return sprintf( ' <img src="%s" alt="%s" class="wp-smiley" /> ', esc_url( $src_url ), esc_attr( $smiley ) );
+	}
+
 }
