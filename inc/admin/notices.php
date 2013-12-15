@@ -14,7 +14,8 @@ function rocket_warning_plugin_modification()
 {
 
 	global $current_user;
-	if( current_user_can( 'manage_options' ) && rocket_valid_key() ) {
+	if( current_user_can( 'manage_options' ) && rocket_valid_key() ) 
+	{
 		$boxes = get_user_meta( $current_user->ID, 'rocket_boxes', true );
 		if( !in_array( __FUNCTION__, (array)$boxes ) ) { ?>
 
@@ -49,7 +50,8 @@ function rocket_plugins_to_deactivate()
 		'quick-cache/quick-cache.php',
 		'hyper-cache/plugin.php',
 		'hyper-cache-extended/plugin.php',
-		'wp-fast-cache/wp-fast-cache.php'
+		'wp-fast-cache/wp-fast-cache.php',
+		'flexicache/wp-plugin.php'
 	);
 
 	if( get_rocket_option( 'lazyload' ) )
@@ -65,6 +67,8 @@ function rocket_plugins_to_deactivate()
 		$plugins[] = 'wp-minify/wp-minify.php';
 		$plugins[] = 'wp-html-compression/wp-html-compression.php';
 		$plugins[] = 'scripts-gzip/scripts_gzip.php';
+		$plugins[] = 'autoptimize/autoptimize.php';
+		$plugins[] = 'wp-js/wp-js.php';
 	}
 
 	foreach ( $plugins as $plugin )
@@ -177,7 +181,7 @@ function rocket_warning_wp_config_permissions()
 			<div class="error">
 				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>" class="rocket-cross">Ignorer</a>
 				<p><strong>WP Rocket</strong> : Si vous aviez les <a href="http://codex.wordpress.org/Changing_File_Permissions" target="_blank">droits en écriture (en)</a> sur le fichier <code>wp-config.php</code>, <strong>WP Rocket</strong> pourrait faire cela automatiquement. Ce n’est pas le cas, donc voici la constante que vous devrez mettre dans votre fichier <code>wp-config.php</code> pour que <strong>WP Rocket</strong> fonctionne correctement.</p>
-				<?php 
+				<?php
 				// Get the content of the WP_CACHE constant added by WP Rocket
 				$define = "/** Enable Cache */\r\n" . "define('WP_CACHE', 'true'); // Added by WP Rocket\r\n";
 				?>
@@ -187,6 +191,7 @@ function rocket_warning_wp_config_permissions()
 		}
 	}
 }
+
 
 
 /**
