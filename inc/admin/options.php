@@ -701,6 +701,26 @@ function rocket_sanitize_js( $file )
 
 
 /**
+ * Get relative url
+ * Clean URL file to get only the equivalent of REQUEST_URI
+ * ex: rocket_clean_exclude_file( 'http://www.geekpress.fr/referencement-wordpress/') return /referencement-wordpress/
+ *
+ * @since 1.0
+ * @since 1.3.5 Redo the function
+ *
+ */
+
+function rocket_clean_exclude_file( $file )
+{
+	if( !$file )
+		return false;
+	$path = parse_url( $file, PHP_URL_PATH );
+    return $path;
+}
+
+
+
+/**
  * Used to clean and sanitize the settings fields
  *
  * @since 1.0

@@ -29,6 +29,7 @@ define( 'WP_ROCKET_INC_PATH'            , realpath( WP_ROCKET_PATH . 'inc/' ) . 
 define( 'WP_ROCKET_CONFIG_PATH'         , realpath( WP_ROCKET_PATH . 'config/' ) . '/' );
 define( 'WP_ROCKET_FRONT_PATH'          , realpath( WP_ROCKET_INC_PATH . 'front/' ) . '/' );
 define( 'WP_ROCKET_ADMIN_PATH'          , realpath( WP_ROCKET_INC_PATH . 'admin' ) . '/' );
+define( 'WP_ROCKET_FUNCTIONS_PATH'      , realpath( WP_ROCKET_INC_PATH . 'functions' ) . '/' );
 define( 'WP_ROCKET_CACHE_PATH'          , WP_CONTENT_DIR . '/cache/wp-rocket/' );
 define( 'WP_ROCKET_URL'                 , plugin_dir_url( WP_ROCKET_FILE ) );
 define( 'WP_ROCKET_INC_URL'             , WP_ROCKET_URL . 'inc/' );
@@ -79,10 +80,16 @@ function rocket_init()
     $do_rocket_bot_cache_json = false;
 
     // Call defines,  classes and functions
-    require WP_ROCKET_INC_PATH . '/functions.php';
-    require WP_ROCKET_PATH . '/deprecated.php';
-    require WP_ROCKET_FRONT_PATH . '/htaccess.php';
-    require WP_ROCKET_INC_PATH . '/headers.php';
+    require WP_ROCKET_FUNCTIONS_PATH . '/options.php';
+    require WP_ROCKET_FUNCTIONS_PATH . '/files.php';
+    require WP_ROCKET_FUNCTIONS_PATH . '/posts.php';
+    require WP_ROCKET_FUNCTIONS_PATH . '/admin.php';
+    require WP_ROCKET_FUNCTIONS_PATH . '/formatting.php';
+    require WP_ROCKET_FUNCTIONS_PATH . '/plugins.php';
+    require WP_ROCKET_FUNCTIONS_PATH . '/bots.php';
+    require WP_ROCKET_PATH 			 . '/deprecated.php';
+    require WP_ROCKET_FRONT_PATH 	 . '/htaccess.php';
+    require WP_ROCKET_INC_PATH 		 . '/headers.php';
 
     if( rocket_valid_key() )
     {
@@ -147,8 +154,12 @@ function rocket_deactivation()
 
     // Delete content of advanced-cache.php file
     rocket_put_content( WP_CONTENT_DIR . '/advanced-cache.php', '' );
+    
+    // Check if WP_CACHE egal false
+    if( defined( 'WP_CACHE' ) && WP_CACHE )
+    	return false;
+    
 }
-
 
 
 /*
@@ -161,8 +172,8 @@ function rocket_deactivation()
 register_activation_hook( __FILE__, 'rocket_activation' );
 function rocket_activation()
 {
-    require WP_ROCKET_INC_PATH . '/functions.php';
-    require WP_ROCKET_INC_PATH . '/wp-config.php';
+    require WP_ROCKET_INC_PATH . '/options.php';
+    require WP_ROCKET_INC_PATH . '/files.php';
     require WP_ROCKET_FRONT_PATH . '/htaccess.php';
 
     // Add All WP Rocket rules of the .htaccess file

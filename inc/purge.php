@@ -187,7 +187,8 @@ function rocket_clean_files_users( $urls )
 
 
 /**
- * TO DO
+ * Return all translated version of a post when qTranslate is used.
+ * Use the "rocket_post_purge_urls" filter to insert URLs of traduction post
  *
  * @since 1.3.5
  *
