@@ -61,7 +61,7 @@ function rocket_row_actions( $actions, $post )
 {
 	if( current_user_can( 'manage_options' ) ) {
 		$url = wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=post-'.$post->ID ), 'purge_cache_post-'.$post->ID );
-	    $actions['rocket_purge'] = '<a href="'.$url.'">Purger le cache</a>';
+	    $actions['rocket_purge'] = '<a href="'.$url.'">' . __ ( 'Purge this cache', 'rocket' ) . '</a>';
 	}
     return $actions;
 }
@@ -158,7 +158,13 @@ function rocket_dismiss_boxes( $args )
 
 function rocket_dismiss_box( $function )
 {
-	rocket_dismiss_boxes( array( 'box'=>$function, '_wpnonce'=>wp_create_nonce( 'rocket_ignore_'.$function ), 'action'=>'rocket_ignore' ) );
+	rocket_dismiss_boxes( 
+		array( 
+			'box'      => $function, 
+			'_wpnonce' => wp_create_nonce( 'rocket_ignore_'.$function ), 
+			'action'   => 'rocket_ignore' 
+		) 
+	);
 }
 
 

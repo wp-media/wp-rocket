@@ -28,54 +28,73 @@ function rocket_field( $args )
 {
 	if( !is_array( reset( $args ) ) )
 		$args = array( $args );
+
 	$full = $args;
+
 	foreach ( $full as $args )
 	{
-		$args['name'] = isset( $args['name'] ) ? $args['name'] : $args['label_for'];
-		$description = isset( $args['description'] ) ? '<p class="description">'.$args['description'].'</p>' : '';
-		$placeholder = isset( $args['placeholder'] ) ? 'placeholder="'. $args['placeholder'].'" ' : '';
-		$label = isset( $args['label'] ) ? $args['label'] : '';
-		$readonly = $args['name'] == 'consumer_key' && rocket_valid_key() ? ' readonly="readonly"' : '';
+		$args['name'] 	= isset( $args['name'] ) ? $args['name'] : $args['label_for'];
+		$description 	= isset( $args['description'] ) ? '<p class="description">'.$args['description'].'</p>' : '';
+		$placeholder 	= isset( $args['placeholder'] ) ? 'placeholder="'. $args['placeholder'].'" ' : '';
+		$label 			= isset( $args['label'] ) ? $args['label'] : '';
+		$readonly 		= $args['name'] == 'consumer_key' && rocket_valid_key() ? ' readonly="readonly"' : '';
+
 		if( !isset( $args['fieldset'] ) || $args['fieldset']=='start' )
 			echo '<fieldset>';
+
 		switch( $args['type'] )
 		{
 			case 'number' :
 			case 'text' :
+
 				$value = esc_attr( get_rocket_option( $args['name'], '' ) );
 				$number_options = $args['type']=='number' ? ' min="0" class="small-text"' : '';
+
 				?>
+
 					<legend class="screen-reader-text"><span><?php echo $args['label_screen']; ?></span></legend>
 					<label><input type="<?php echo $args['type']; ?>"<?php echo $number_options; ?> id="<?php echo $args['label_for']; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]" value="<?php echo $value; ?>" <?php echo $placeholder; ?><?php echo $readonly; ?>/> <?php echo $label; ?></label>
+
 				<?php
 				if( $args['name'] == 'consumer_key' )
-					if( !rocket_valid_key() ){
-					echo '<span style="font-weight:bold;color:red">Clé non valide</span>';
-					}else{
-						echo '<span style="font-weight:bold;color:green">Clé valide</span>';
-					}
+
+					if( !rocket_valid_key() )
+						echo '<span style="font-weight:bold;color:red">'. __('Key is not valid', 'rocket') .'</span>';
+					else
+						echo '<span style="font-weight:bold;color:green">'. __('Key is valid', 'rocket') .'</span>';
+
+
 				echo $description;
+
 			break;
+
 			case 'textarea' :
+
 				$t_temp = get_rocket_option( $args['name'], '' );
 				$value = !empty( $t_temp ) ? esc_textarea( implode( "\n" , $t_temp ) ) : '';
+
 				?>
+
 					<legend class="screen-reader-text"><span><?php echo $args['label_screen']; ?></span></legend>
 					<label><textarea id="<?php echo $args['label_for']; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]" cols="50" rows="5"><?php echo $value; ?></textarea>
 					</label>
 					<?php echo $description; ?>
+
 				<?php
 			break;
-			case 'checkbox' :
-				?>
+
+			case 'checkbox' : ?>
+
 					<legend class="screen-reader-text"><span><?php echo $args['label_screen']; ?></span></legend>
 					<label><input type="checkbox" id="<?php echo $args['name']; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]" value="1" <?php checked( get_rocket_option( $args['name'], 0 ), 1 ); ?>/> <?php echo $args['label']; ?>
 					</label>
 					<?php echo $description; ?>
-				<?php
+
+			<?php
 			break;
-			case 'select' :
-				?>
+
+			case 'select' : ?>
+
 					<legend class="screen-reader-text"><span><?php echo $args['label_screen']; ?></span></legend>
 					<label>	<select id="<?php echo $args['name']; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]">
 							<?php foreach( $args['options'] as $val => $title) : ?>
@@ -84,10 +103,14 @@ function rocket_field( $args )
 							</select>
 					<?php echo $label; ?>
 					</label>
-					<?php echo $description;
+					<?php echo $description; ?>
+
+			<?php
 			break;
-			default : ?> TYPE manquant ! <?php
+
+			default : _e( 'Missing TYPE ! ', 'rocket' );
 		}
+
 		if( !isset( $args['fieldset'] ) || $args['fieldset']=='end' )
 			echo '</fieldset>';
 	}
@@ -106,45 +129,75 @@ function rocket_defered_module()
 {
 ?>
 	<fieldset>
-	<legend class="screen-reader-text"><span><?php _e( 'Fichiers <strong>JS</strong> en chargement différé (Deferred Loading JavaScript)', 'rocket' ); ?></span></legend>
-	<div id="rktdrop">
-		<?php
-		$deferred_js_files = get_rocket_option( 'deferred_js_files' );
-		$deferred_js_wait = get_rocket_option( 'deferred_js_wait' );
-		if( $deferred_js_files ) {
-			foreach( $deferred_js_files as $k=>$_url ) {
-				$checked = isset( $deferred_js_wait[$k] ) ? checked( $deferred_js_wait[$k], '1', false ) : '';
-				// The loop on files
-			?>
-			<div class="rktdrag">
-				<img class="rktmove hide-if-no-js" src="<?php echo WP_ROCKET_ADMIN_IMG_URL . 'icon-move.png'; ?>" width="16" heigth="16" alt="<?php _e( 'Move' ); ?>" title="<?php _e( 'Move' ); ?>" />
-				<input style="width: 32em" type="text" placeholder="http://" class="deferred_js regular-text" name="wp_rocket_settings[deferred_js_files][<?php echo $k; ?>]" value="<?php echo esc_url( $_url ); ?>" />
-				<label><input type="checkbox" class="deferred_js" name="wp_rocket_settings[deferred_js_wait][<?php echo $k; ?>]" value="1" <?php echo $checked; ?>/> <?php _e( 'Attendre le chargement de ce fichier ?', 'rocket' ); ?></label>
-				<img class="rktdelete hide-if-no-js" style="vertical-align:middle" src="<?php echo admin_url( '/images/no.png' ); ?>" title="<?php _e( 'Delete' ); ?>" alt="<?php _e( 'Delete' ); ?>" width="16" height="16" />
-			</div>
-			<?php }
-		}else{
-			// If no files yet, use this template inside #rktdrop
-			?>
-			<div class="rktdrag">
-				<img class="rktmove hide-if-no-js" src="<?php echo WP_ROCKET_ADMIN_IMG_URL . 'icon-move.png'; ?>" width="16" heigth="16" alt="<?php _e( 'Move' ); ?>" title="<?php _e( 'Move' ); ?>" />
-				<input style="width: 32em" type="text" placeholder="http://" class="deferred_js regular-text" name="wp_rocket_settings[deferred_js_files][0]" value="" />
-				<label><input type="checkbox" class="deferred_js" name="wp_rocket_settings[deferred_js_wait][0]" value="1" /> <?php _e( 'Attendre le chargement de ce fichier ?', 'rocket' ); ?></label>
-			</div>
-		<?php } ?>
-	</div>
-	<?php // Clone Template ?>
-	<div class="rktmodel rktdrag hide-if-js">
-		<img class="rktmove hide-if-no-js" src="<?php echo WP_ROCKET_ADMIN_IMG_URL . 'icon-move.png'; ?>" width="16" heigth="16" alt="<?php _e( 'Move' ); ?>" title="<?php _e( 'Move' ); ?>" />
-		<input style="width: 32em" type="text" placeholder="http://" class="deferred_js regular-text" name="wp_rocket_settings[deferred_js_files][]" value="" />
-		<label><input type="checkbox" class="deferred_js" name="wp_rocket_settings[deferred_js_wait][]" value="1" /> <?php _e( 'Attendre le chargement de ce fichier ?', 'rocket' ); ?></label>
-	</div>
+		<legend class="screen-reader-text"><span><?php _e( '<strong>JS</strong> files with Deferred Loading JavaScript', 'rocket' ); ?></span></legend>
+		<div id="rktdrop">
 
-	<p><a href="javascript:void(0)" id="rktclone" class="hide-if-no-js button-secondary"><?php _e( 'Ajouter une URL', 'rocket' ); ?></a></p>
-	<p class="description"><?php _e( 'Vous avez la possibilité d’ajouter des fichiers Javascript qui seront chargés de manière asynchrone en même temps que le chargement de la page.', 'rocket' ); ?></p>
-	<p class="hide-if-js"><?php _e( 'Videz le contenu d\'un champ pour le supprimer.', 'rocket' ); ?></p>
-	<p class="description"><?php _e( '<strong>Attention :</strong> vous devez indiquez les URLs complètes des fichiers.', 'rocket' ); ?></p>
+			<?php
+
+			$deferred_js_files = get_rocket_option( 'deferred_js_files' );
+			$deferred_js_wait = get_rocket_option( 'deferred_js_wait' );
+
+			if( $deferred_js_files )
+			{
+
+				foreach( $deferred_js_files as $k=>$_url )
+				{
+					$checked = isset( $deferred_js_wait[$k] ) ? checked( $deferred_js_wait[$k], '1', false ) : '';
+					// The loop on files
+				?>
+
+				<div class="rktdrag">
+
+					<img class="rktmove hide-if-no-js" src="<?php echo WP_ROCKET_ADMIN_IMG_URL . 'icon-move.png'; ?>" width="16" heigth="16" alt="<?php _e( 'Move' ); ?>" title="<?php _e( 'Move' ); ?>" />
+
+					<input style="width: 32em" type="text" placeholder="http://" class="deferred_js regular-text" name="wp_rocket_settings[deferred_js_files][<?php echo $k; ?>]" value="<?php echo esc_url( $_url ); ?>" />
+
+					<label>
+						<input type="checkbox" class="deferred_js" name="wp_rocket_settings[deferred_js_wait][<?php echo $k; ?>]" value="1" <?php echo $checked; ?>/> <?php _e( 'Wait until this file is loaded ?', 'rocket' ); ?>
+					</label>
+					<span class="rkt-delete hide-if-no-js rkt-cross"><?php _e( 'Delete' ); ?></span>
+
+				</div>
+
+				<?php }
+			}
+			else
+			{
+				// If no files yet, use this template inside #rktdrop
+				?>
+
+				<div class="rktdrag">
+
+					<img class="rktmove hide-if-no-js" src="<?php echo WP_ROCKET_ADMIN_IMG_URL . 'icon-move.png'; ?>" width="16" heigth="16" alt="<?php _e( 'Move' ); ?>" title="<?php _e( 'Move' ); ?>" />
+
+					<input style="width: 32em" type="text" placeholder="http://" class="deferred_js regular-text" name="wp_rocket_settings[deferred_js_files][0]" value="" />
+
+					<label>
+						<input type="checkbox" class="deferred_js" name="wp_rocket_settings[deferred_js_wait][0]" value="1" /> <?php _e( 'Wait until this file is loaded ?', 'rocket' ); ?>
+					</label>
+
+				</div>
+
+			<?php } ?>
+
+		</div>
+
+		<?php // Clone Template ?>
+
+		<div class="rktmodel rktdrag hide-if-js">
+
+			<img class="rktmove hide-if-no-js" src="<?php echo WP_ROCKET_ADMIN_IMG_URL . 'icon-move.png'; ?>" width="16" heigth="16" alt="<?php _e( 'Move' ); ?>" title="<?php _e( 'Move' ); ?>" />
+			<input style="width: 32em" type="text" placeholder="http://" class="deferred_js regular-text" name="wp_rocket_settings[deferred_js_files][]" value="" />
+			<label><input type="checkbox" class="deferred_js" name="wp_rocket_settings[deferred_js_wait][]" value="1" /> <?php _e( 'Wait until this file is loaded?', 'rocket' ); ?></label>
+
+		</div>
+
+		<p><a href="javascript:void(0)" id="rktclone" class="hide-if-no-js button-secondary"><?php _e( 'Add an URL', 'rocket' ); ?></a></p>
+		<p class="description"><?php _e( 'You can add JavaScript files that will be loaded asynchronously at the same time as the page loads.', 'rocket' ); ?></p>
+		<p class="hide-if-js"><?php _e( 'Empty the field to remove it.', 'rocket' ); ?></p>
+		<p class="description"><?php _e( '<strong>Warning :</strong> you must specify the complete URL of the files.', 'rocket' ); ?></p>
 	</fieldset>
+
 <?php
 }
 
@@ -162,6 +215,7 @@ function rocket_button( $args )
 ?>
 	<fieldset>
 		<a href="<?php echo esc_url( $args['url'] ); ?>" class="button-secondary"/><?php echo esc_html( strip_tags( $args['button_label'] ) ); ?></a>
+		<p class="description"><?php echo esc_html( $args['description'] ); ?></p>
 	</fieldset>
 <?php
 }
@@ -183,37 +237,37 @@ function rocket_display_options()
 	add_settings_section( 'rocket_display_apikey_options', __( 'API KEY', 'rocket' ), '__return_false', 'apikey' );
 	add_settings_field(
 		'rocket_api_key',
-		__( 'Clé API :<br /><span class="description">(Validation de WP Rocket)</span>', 'rocket' ),
+		__( 'API Key :<br /><span class="description">(WP Rocket validation)</span>', 'rocket' ),
 		'rocket_field',
 		'apikey',
 		'rocket_display_apikey_options',
 		array(
 			'type'         => 'text',
 			'label_for'    => 'consumer_key',
-			'label_screen' => 'Clé API',
-			'description'  => 'Merci d\'entrer la clé API obtenue lors de votre achat.'
+			'label_screen' => __('API Key', 'rocket'),
+			'description'  => __('Thank you to enter the API key obtained when buying.', 'rocket' )
 		)
 	);
 
 	// Basic
-	add_settings_section( 'rocket_display_main_options', __( 'Options de base', 'rocket' ), '__return_false', 'basic' );
+	add_settings_section( 'rocket_display_main_options', __( 'Basic options', 'rocket' ), '__return_false', 'basic' );
 	add_settings_field(
 		'rocket_lazyload',
-		__( 'Chargement différé des images :<br /><span class="description">(Lazyload)</span>', 'rocket' ),
+		__( 'Lazyload:', 'rocket' ),
 		'rocket_field',
 		'basic',
 		'rocket_display_main_options',
 		array(
 			'type'         => 'checkbox',
-			'label'        => 'Activer le LazyLoad',
+			'label'        => __('Enable Lazy loading images.', 'rocket' ),
 			'label_for'    => 'lazyload',
-			'label_screen' => 'Chargement différé des images',
-			'description'  => 'Le LazyLoad (ou chargement différé des images) consiste à afficher les images d\'une page uniquement quand elles sont visibles par l\'internaute.<br/>Ce mécanisme réduit le nombre de requêtes HTTP et améliore le temps de chargement des pages.'
+			'label_screen' => __( 'Lazyload:', 'rocket' ),
+			'description'  => __( 'LazyLoad displays images on a page only when they are visible to the user. <br/> This reduces the number of HTTP requests mechanism and improves the loading time.', 'rocket' )
 		)
 	);
 	add_settings_field(
 		'rocket_min_js',
-		__( 'Optimisation des fichiers : <br/> <span class="description">(Minification & Concaténation)</span>' ),
+		 __( 'Files optimisation: <br/> <span class="description">(Minification & Concatenation)</span>', 'rocket' ),
 		'rocket_field',
 		'basic',
 		'rocket_display_main_options',
@@ -222,66 +276,66 @@ function rocket_display_options()
 				'type'         => 'checkbox',
 				'label'        => 'HTML',
 				'name'         => 'minify_html',
-				'label_screen' => 'Minification des fichiers'
+				'label_screen' => __( 'Files minification', 'rocket' )
 			),
 			array(
 				'type'         => 'checkbox',
 				'label'        => 'CSS',
 				'name'         => 'minify_css',
-				'label_screen' => 'Minification des fichiers'
+				'label_screen' => __( 'Files minification', 'rocket' )
 			),
 			array(
 				'type'		   => 'checkbox',
 				'label'		   => 'JS',
 				'name'		   => 'minify_js',
-				'label_screen' => 'Minification des fichiers',
-				'description'  => 'La minification supprime tout espace, retour à la ligne et commentaires présents dans les fichiers CSS et JavaScript. <br/>Ce mécanisme réduit le poids de chaque fichier et permet une lecture plus rapide par les navigateurs et les moteurs de recherche. <br/> La concaténation combine tous les fichiers CSS et JavaScript afin de n\'en faire plus qu\'un seul par type. <br/>Ce mécanisme réduit le nombre de requêtes HTTP et améliore le temps de chargement des pages.<br /><strong style="color:#FF0000;">Attention : la concaténation des fichiers peut générer des problèmes d\'affichage, en cas d\'erreur nous vous conseillons de le désactiver ou de regarder la vidéo suivante : <a href="http://www.youtube.com/embed/iziXSvZgxLk" class="fancybox">http://www.youtube.com/embed/iziXSvZgxLk</a></strong>.' )
+				'label_screen' => __( 'Files minification', 'rocket' ),
+				'description'  => sprintf( __( 'Minification removes any space and comments present in the CSS and Javascript files.<br/>This mechanism reduces the weight of each file and allow a faster reading of browsers and search engines.<br/>Concatenation combines all CSS and Javascript files.<br/>This reduces the number of HTTP requests and improves the loading time.<br/><strong style="color:#FF0000;">Warning: concatenating files can cause display errors. In case of any errors we recommend that you disable this option or watch the following videos: <a href="%s" class="fancybox">%s</a></strong>.' ,'rocket' ), 'http:// www.youtube.com/embed/ziXSvZgxLk', 'http:// www.youtube.com/embed/ziXSvZgxLk' ) )
 		)
 	);
 	add_settings_field(
 		'rocket_mobile',
-		__( 'Cache mobile :', 'rocket' ),
+		__( 'Mobile cache:', 'rocket' ),
 		'rocket_field',
 		'basic',
 		'rocket_display_main_options',
 		array(
 			'type'		   => 'checkbox',
-			'label'		   => 'Activer la mise en cache pour les appareils mobile.',
+			'label'		   => __( 'Enable caching for mobile devices.', 'rocket' ),
 			'label_for'	   => 'cache_mobile',
-			'label_screen' => 'Mobile',
-			'description'  => '<strong style="color:#FF0000;">Attention : si vous utilisez le plugin <a href="http://wordpress.org/plugins/wptouch/" target="_blank">WP Touch</a>, <a href="http://wordpress.org/plugins/wp-mobile-detector/" target="_blank">WP Mobile Detector</a>, <a href="http://wordpress.org/plugins/wiziapp-create-your-own-native-iphone-app/" target="_blank">WiziApp</a> ou <a href="http://wordpress.org/plugins/wordpress-mobile-pack/" target="_blank">WordPress Mobile Pack</a>, vous ne devez pas activer cette option.</strong>'
+			'label_screen' => __( 'Mobile cache:', 'rocket' ),
+			'description'  => __( '<strong style="color:#FF0000;">Warning: if you use the plugin <a target="_blank" href="http://wordpress.org/plugins/wptouch/">WP Touch</a>, <a href="http://wordpress.org/plugins/wp-mobile-detector/" target="_blank">WP Mobile Detector</a>, <a href="http://wordpress.org/plugins/wiziapp-create-your-own-native-iphone-app" target="_blank">wiziApp</a> or <a href="http://wordpress.org/plugins/wordpress-mobile-pack/" target="_blank">WordPress Mobile Pack</a>, you should not enable this option.</strong>', 'rocket' )
 		)
 	);
 	add_settings_field(
 		'rocket_logged_user',
-		__( 'Cache utilisateur :', 'rocket' ),
+		__( 'Logged in user cache:', 'rocket' ),
 		'rocket_field', 'basic',
 		'rocket_display_main_options',
 		array(
 			'type'         => 'checkbox',
-			'label'        => 'Activer la mise en cache pour les utilisateurs connectés.',
+			'label'        => __('Enable caching for logged in users.', 'rocket' ),
 			'label_for'    => 'cache_logged_user',
-			'label_screen' => 'Mobile',
+			'label_screen' =>__( 'Logged in user cache:', 'rocket' ),
 			'description'  => ''
 		)
 	);
 	add_settings_field(
 		'rocket_ssl',
-		__( 'Cache SSL :', 'rocket' ),
+		__( 'SSL cache:', 'rocket' ),
 		'rocket_field',
 		'basic',
 		'rocket_display_main_options',
 		array(
 			'type'         => 'checkbox',
-			'label'        => 'Activer la mise en cache pour les pages utilisants le protocole SSL (<code>https://</code>).',
+			'label'        => __('Enable caching for pages with SSL protocol (<code>https://</code>).', 'rocket' ),
 			'label_for'    => 'cache_ssl',
-			'label_screen' => 'Mobile',
+			'label_screen' => __( 'SSL cache:', 'rocket' ),
 			'description'  => ''
 		)
 	);
 	add_settings_field(
 		'rocket_purge',
-		__( 'Délai de Purge :', 'rocket' ),
+		__( 'Purge delay', 'rocket' ),
 		'rocket_field',
 		'basic',
 		'rocket_display_main_options',
@@ -289,151 +343,152 @@ function rocket_display_options()
 			array(
 				'type'         => 'number',
 				'label_for'    => 'purge_cron_interval',
-				'label_screen' => 'Délai de purge',
+				'label_screen' => __( 'Purge delay', 'rocket' ),
 				'fieldset'     => 'start'
 			),
 			array(
 				'type'		   => 'select',
 				'label_for'	   => 'purge_cron_unit',
-				'label_screen' => 'Unité de temps',
+				'label_screen' => __( 'Unit of time', 'rocket' ),
 				'fieldset'	   => 'end',
-				'description'  => 'Par défaut le délai de purge est de 4h, cela signifie qu’une fois créé, les fichiers de cache se supprimeront automatiquement au bout de 4h avant d’être recréé.<br/>Cela peut être utile si vous affichez vos derniers tweets ou des flux rss dans votre sidebar, par exemple.<br/>Indiquez 0 pour une durée de vie illimitée.',
+				'description'  => __( 'By default purge time is 12 hours, this means that once created, the cache files are automatically removed after 4 hours before being recreated. <br/> This can be useful if you display your latest tweets or rss feeds in your sidebar, for example. <br/> Specify 0 for unlimited life.', 'rocket' ),
 				'options' => array(
-								'SECOND_IN_SECONDS' => 'seconde(s)',
+								'SECOND_IN_SECONDS' => __( 'second(s)', 'rocket' ),
 								'MINUTE_IN_SECONDS' => 'minute(s)',
-								'HOUR_IN_SECONDS'   => 'heure(s)',
-								'DAY_IN_SECONDS'    => 'jour(s)'
+								'HOUR_IN_SECONDS'   => __( 'hour(s)', 'rocket' ),
+								'DAY_IN_SECONDS'    => __( 'day(s)', 'rocket' )
 							)
 				)
 			)
 	);
 	// Advanced
-	add_settings_section( 'rocket_display_imp_options', __( 'Options avancées', 'rocket' ), '__return_false', 'advanced' );
+	add_settings_section( 'rocket_display_imp_options', __( 'Advanced options', 'rocket' ), '__return_false', 'advanced' );
 	add_settings_field(
 		'rocket_dns_prefetch',
-		__( 'Pré-chargement des requêtes DNS :', 'rocket' ),
+		__( 'Prefetch DNS requests:', 'rocket' ),
 		'rocket_field',
 		'advanced',
 		'rocket_display_imp_options',
 		array(
 			'type'         => 'textarea',
 			'label_for'    => 'dns_prefetch',
-			'label_screen' => 'Pré-chargement des requêtes DNS',
-			'description'  => 'Le DNS prefetching est une méthode permettant aux navigateurs d’anticiper la résolution DNS des noms de domaines externes présents sur votre site.<br/>Ce mécanisme permet de diminuer les temps de latence de certains fichiers externes bloquants.<br/>Pour en savoir plus sur cette option et apprendre à l\'utiliser correctement, nous vous conseillons de regarder la vidéo suivante : <br/><strong>Attention :</strong> Indiquez les noms de domaines sans leur protocole, par exemple : <code>//ajax.googleapis.com</code> sans le <code>http:</code>  (un par ligne).<br/>'
+			'label_screen' => __('Prefetch DNS requests', 'rocket' ),
+			'description'  => sprintf( __( 'DNS prefetching is a way for browsers to anticipate the DNS resolution of external domains from your site.<br/>This mechanism reduces the latency of some external files.<br/>To Learn more about this option and how to use it correctly, we advise you to watch the following video: <a href="%s">%s</a><br/><strong>Warning:</strong> Enter the domain names without their protocol, for example: <code>//ajax.googleapis.com</code> without <code>http:</code> (one per line).', 'rocket' ), '', '' )
 		)
 	);
 	add_settings_field(
 		'rocket_purge_pages',
-		__( 'Vider le cache des pages suivantes lors de la mise à jour d\'un article :', 'rocket' ),
+		__( 'Empty the cache of the following pages when updating an article:', 'rocket' ),
 		'rocket_field',
 		'advanced',
 		'rocket_display_imp_options',
 		array(
 			'type'         => 'textarea',
 			'label_for'    => 'cache_purge_pages',
-			'label_screen' => 'Vider le cache des pages suivantes lors de la mise à jour d\'un article',
-			'description'  => 'Indiquez l\'URL des pages supplémentaires à purger lors de la mise à jour d\'un article (une par ligne).<br/>Il est possible d\'utiliser des expressions régulières (REGEX).<br/><strong>NB</strong> : Lorsque vous mettez à jour un article ou qu’un commentaire est posté, la page d\'accueil, les catégories et les tags associés à l\'article sont automatiquement supprimées du cache puis recréés grâce au robot WP Rocket.'
+			'label_screen' => __( 'Empty the cache of the following pages when updating a post:', 'rocket' ),
+			'description'  => __('Enter the URL of additionnal page to purge when updating a post (one per line). <br/>It’s possible to use regular expressions (regex). <br/><strong>NB</strong>: When you update a post or when a comment is posted, the home page, categories, and tags associated whith the post are automatically removed from the cache, and the recreated by the WP Rocket Bot', 'rocket' )
 		)
 	);
 	add_settings_field(
 		'rocket_reject_uri',
-		__( 'Ne jamais mettre en cache les pages suivantes :', 'rocket' ),
+		__( 'Never cache the following pages :', 'rocket' ),
 		'rocket_field',
 		'advanced',
 		'rocket_display_imp_options',
 		array(
 			'type'         => 'textarea',
 			'label_for'    => 'cache_reject_uri',
-			'label_screen' => 'Ne jamais mettre en cache les pages suivantes',
-			'description'  => 'Indiquez l\'URL des pages à rejeter (une par ligne).<br/>Il est possible d\'utiliser des expressions régulières (REGEX).' )
+			'label_screen' => __( 'Never cache the following pages :', 'rocket' ),
+			'description'  => __( 'Enter the URL of pages to reject (one per line). <br/> You can use regular expressions (regex).', 'rocket' )
+		)
 	);
 	add_settings_field(
 		'rocket_reject_cookies',
-		__( 'Ne jamais mettre en cache les pages qui utilisent les cookies suivants :', 'rocket' ),
+		__( 'Don\'t cache pages that use the following cookies:', 'rocket' ),
 		'rocket_field',
 		'advanced',
 		'rocket_display_imp_options',
 		array(
 			'type'         => 'textarea',
 			'label_for'    => 'cache_reject_cookies',
-			'label_screen' => 'Ne jamais mettre en cache les pages qui utilisent les cookies suivants',
-			'description'  => 'Indiquez les noms des cookies à rejeter (un par ligne).'
+			'label_screen' => __( 'Don\'t cache pages that use the following cookies:', 'rocket' ),
+			'description'  => __( 'List the names of the cookies (one per line).', 'rocket' ) 
 		)
 	);
 	add_settings_field(
 		'rocket_exclude_css',
-		__( 'Fichiers <strong>CSS</strong> à exclure lors de la minification :', 'rocket' ),
+		__( '<strong>CSS</strong> files to exclude of the minification:', 'rocket' ),
 		'rocket_field',
 		'advanced',
 		'rocket_display_imp_options',
 		array(
 			'type'         => 'textarea',
 			'label_for'    => 'exclude_css',
-			'label_screen' => 'Fichiers CSS à exclure lors de la minification',
-			'description'  => 'Indiquez l\'URL des fichiers <strong>CSS</strong> à rejeter (un par ligne).'
+			'label_screen' => __( '<strong>CSS</strong> files to exclude of the minification:', 'rocket' ),
+			'description'  => __( 'Specify the URL of <strong>CSS </strong> files to reject (one per line).', 'rocket' )
 		)
 	);
 	add_settings_field(
 		'rocket_exclude_js',
-		__( 'Fichiers <strong>JS</strong> à exclure lors de la minification :', 'rocket' ),
+		__( '<strong>JS</strong> files to exclude of the minification:', 'rocket' ),
 		'rocket_field',
 		'advanced',
 		'rocket_display_imp_options',
 		array(
 			'type'         => 'textarea',
 			'label_for'    => 'exclude_js',
-			'label_screen' => 'Fichiers JS à exclure lors de la minification',
-			'description'  => 'Indiquez l\'URL des fichiers <strong>JS</strong> à rejeter (un par ligne).'
+			'label_screen' => __( '<strong>JS</strong> files to exclude of the minification:', 'rocket' ),
+			'description'  => __('Specify the URL of <strong> JS </strong> files to reject (one per line).', 'rocket' )
 		)
 	);
 	add_settings_field(
 		'rocket_deferred_js',
-		__( 'Fichiers <strong>JS</strong> en chargement différé (Deferred Loading JavaScript) :', 'rocket' ),
+		__( '<strong>JS </strong>files with deferred loading:', 'rocket' ),
 		'rocket_defered_module',
 		'advanced',
 		'rocket_display_imp_options'
 	);
 	// Tools
-	add_settings_section( 'rocket_display_tools', __( 'Outils', 'rocket' ), '__return_false', 'tools' );
+	add_settings_section( 'rocket_display_tools', __( 'Tools', 'rocket' ), '__return_false', 'tools' );
 	add_settings_field(
 		'rocket_purge_all',
-		__( 'Vider le cache', 'rocket' ),
+		__( 'Clear cache', 'rocket' ),
 		'rocket_button',
 		'tools',
 		'rocket_display_tools',
 		array(
-			'button_label' => __( 'Vider le cache', 'rocket' ),
+			'button_label' => __( 'Clear cache', 'rocket' ),
 			'url'		   => wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=all' ), 'purge_cache_all' ),
-			'description'  => 'Permet de purger le cache du site complet.'
+			'description'  => __( 'To purge the cache for the whole site.', 'rocket' )
 		)
 	);
 	add_settings_field(
 		'rocket_preload',
-		__( 'Précharger le cache', 'rocket' ),
+		__( 'Preload cache', 'rocket' ),
 		'rocket_button',
 		'tools',
 		'rocket_display_tools',
         array(
-        	'button_label' => __( 'Précharger le cache', 'rocket' ),
+        	'button_label' => __( 'Preload cache', 'rocket' ),
         	'url'		   => wp_nonce_url( admin_url( 'admin-post.php?action=preload' ), 'preload' ),
-        	'description'  => 'Permet de demander le passage du robot pour précharger le cache (homepage + liens internes de cette page).'
+        	'description'  => __( 'Lets ask the passage of the bot to preload the cache (homepage + internal links on this page)', 'rocket' )
         )
     );
 	add_settings_field(
 		'rocketeer',
-		__( 'Envoyer mes infos pour un meilleur support', 'rocket' ),
+		__( 'Support', 'rocket' ),
 		'rocket_button',
 		'tools',
 		'rocket_display_tools',
         array(
-        	'button_label' => __( 'Envoyer mes infos pour un meilleur support', 'rocket' ),
+        	'button_label' => __( 'Send my configuration', 'rocket' ),
         	'url'		   => wp_nonce_url( admin_url( 'admin-post.php?action=rocketeer' ), 'rocketeer' ),
-        	'description'  =>'Lorsque vous postez un demande de support, merci de cliquer sur ce bouton aussi, nous recevrons alors des informations concernant votre installation et ainsi gagner du temps dans nos réponses. Les informations collectées ne sont pas revendues ni utilisées pour d\'autres choses que le support. Cliquez de nouveau à chaque nouvelle demande de support, merci.' )
+        	'description'  => __( 'When posting a support request, thank you to click on this button. We receive information regarding your installation to help us understand and solve your problem. The information collected will not be sold or used for other purpose than support.', 'rocket' ) )
     );
 ?>
 	<div class="wrap">
 	<div id="icon-rocket" class="icon32"></div>
-	<h2>WP Rocket <small>v<?php echo WP_ROCKET_VERSION; ?></small></h2>
+	<h2>WP Rocket</h2>
 
 	<form action="options.php" method="post">
 		<?php settings_fields( 'wp_rocket' ); ?>
@@ -441,11 +496,19 @@ function rocket_display_options()
 		<?php submit_button(); ?>
 		<h2 class="nav-tab-wrapper hide-if-no-js">
 			<?php if( rocket_valid_key() ) : ?>
-				<a href="#tab_basic" class="nav-tab"><?php _e( 'Options de base', 'rocket' ); ?></a>
-				<a href="#tab_advanced" class="nav-tab"><?php _e( 'Options avancées', 'rocket' ); ?></a>
-				<a href="#tab_tools" class="nav-tab"><?php _e( 'Outils', 'rocket' ); ?></a>
-				<a href="#tab_tutos" class="nav-tab"><?php _e( 'Tutoriels', 'rocket' ); ?></a>
-				<a href="#tab_faq" class="nav-tab"><?php _e( 'F.A.Q.', 'rocket' ); ?></a>
+				<a href="#tab_basic" class="nav-tab"><?php _e( 'Basic options', 'rocket' ); ?></a>
+				<a href="#tab_advanced" class="nav-tab"><?php _e( 'Advanced options', 'rocket' ); ?></a>
+				<a href="#tab_tools" class="nav-tab"><?php _e( 'Tools', 'rocket' ); ?></a>
+				<?php
+				if( WPLANG == 'fr_FR' ) { ?>
+				
+				<a href="#tab_tutos" class="nav-tab"><?php _e( 'Tutorials', 'rocket' ); ?></a>
+				<a href="#tab_faq" class="nav-tab"><?php _e( 'FAQ', 'rocket' ); ?></a>
+				
+				<?php
+				}
+				?>
+				
 				<a href="#tab_support" class="nav-tab" style="color:#FF0000;"><?php _e( 'Support', 'rocket' ); ?></a>
 				<input type="hidden" name="wp_rocket_settings[consumer_key]" value="<?php esc_attr_e( get_rocket_option( 'consumer_key' ) ); ?>" />
 			<?php else: ?>
@@ -460,13 +523,13 @@ function rocket_display_options()
 				<div class="rkt-tab" id="tab_advanced"><?php do_settings_sections( 'advanced' ); ?></div>
 				<div class="rkt-tab" id="tab_tools"><?php do_settings_sections( 'tools' ); ?></div>
 				<div class="rkt-tab rkt-tab-txt" id="tab_tutos">
-					<h2>Préchargement des fichiers de cache</h2>
-					<p>Cette vidéo donne quelques explications sur les 2 robots crawler de WP Rocket. Ils permettent de générer plusieurs vingtaines de fichiers de cache en quelques secondes.</p>
-					<p><a href="http://www.youtube.com/embed/9jDcg2f-9yM" class="button-primary fancybox">Voir la vidéo</a></p>
+					<h2><?php _e( 'Preload cache', 'rocket' ); ?></h2>
+					<p><?php _e ( 'This video gives some explanations about our two crawler robots. They generate several cache files in a few seconds.', 'rocket' );?></p>
+					<p><a href="http://www.youtube.com/embed/9jDcg2f-9yM" class="button-primary fancybox"><?php _e( 'Watch the video', 'rocket' ); ?></a></p>
 
-					<h2>Minification des fichiers CSS et JavaScript</h2>
+					<h2><?php _e( 'CSS and JavaScript minification', 'rocket' );?></h2>
 					<p>Cette vidéo donne quelques explications sur l’utilisation avancée du processus de minification et concaténation des fichiers CSS et JavaScript.</p>
-					<p><a href="http://www.youtube.com/embed/iziXSvZgxLk" class="button-primary fancybox">Voir la vidéo</a></p>
+					<p><a href="http://www.youtube.com/embed/iziXSvZgxLk" class="button-primary fancybox"><?php _e( 'Watch the video', 'rocket' ); ?></a></p>
 				</div>
 				<div class="rkt-tab rkt-tab-txt" id="tab_faq">
 					<h2>Que fait exactement WP Rocket ? </h2>
@@ -578,8 +641,8 @@ function rocket_display_options()
 					<p>Pour plus d’informations, vous pouvez consulter notre vidéo à ce propos : <a href="http://www.youtube.com/embed/9jDcg2f-9yM" class="fancybox">http://www.youtube.com/embed/9jDcg2f-9yM</a>.</p>
 				</div>
 				<div class="rkt-tab rkt-tab-txt" id="tab_support">
-					<p>Si aucune des réponses de la F.A.Q. répond à votre problématique, vous pouvez nous faire part de votre problème sur notre <a href="http://support.wp-rocket.me/" target="_blank">support</a>. Nous vous répondrons dans les plus brefs délais.</p>
-					<p><a href="http://support.wp-rocket.me/" class="button-primary" target="_blank">Accéder au support de WP Rocket</a></p>
+					<p><?php _e('If none of the FAQ answers, answer your problem, you can tell us your issue on our <a href="http://support.wp-rocket.me/" target="_blank">Support</a>. We will reply as soon as possible.', 'rocket');?></p>
+					<p><a href="http://support.wp-rocket.me/" class="button-primary" target="_blank"><?php _e('Go to Support');?></a></p>
 			<?php endif; ?>
 				</div>
 		</div>
@@ -698,7 +761,7 @@ function rocket_after_save_options()
 
 	// Update .htaccess file rules
 	flush_rocket_htaccess( !rocket_valid_key() );
-	
+
 	// Update config file
 	rocket_generate_config_file();
 }

@@ -5,7 +5,7 @@ defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 /**
  * Launch DNS Prefetching process
  *
- * @since 2.0.0
+ * @since 2.0
  *
  */
 

@@ -168,7 +168,7 @@ function do_rocket_callback( $buffer )
 /**
  * Serve the cache file if exist
  *
- * @since 2.0.0
+ * @since 2.0
  *
  */
 
@@ -208,7 +208,7 @@ function rocket_serve_cache_file( $request_uri_path )
 /**
  * Get WP Rocket footprint
  *
- * @since 2.0.0
+ * @since 2.0
  *
  */
 
@@ -227,7 +227,7 @@ function get_rocket_footprint( $debug = true )
  * Determine if SSL is used
  *
  * @source is_ssl() in /wp-includes/functions.php
- * @since 2.0.0
+ * @since 2.0
  *
  */
 

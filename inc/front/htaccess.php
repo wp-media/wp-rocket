@@ -96,8 +96,8 @@ function get_rocket_htaccess_mod_rewrite()
 	$rules .= 'RewriteBase ' . $home_root . "\n";
 	$rules .= 'RewriteCond %{REQUEST_METHOD} GET' . "\n";
 	$rules .= 'RewriteCond %{QUERY_STRING} !.*=.*' . "\n";
-	$rules .= 'RewriteCond %{HTTP:Cookie} !(' . get_rocket_cookies_not_cached() . ') [NC]' . "\n";
-	$rules .= 'RewriteCond %{REQUEST_URI} !^(' . get_rocket_pages_not_cached() . ')$ [NC]' . "\n";
+	$rules .= 'RewriteCond %{HTTP:Cookie} !(' . get_rocket_cache_reject_cookies() . ') [NC]' . "\n";
+	$rules .= 'RewriteCond %{REQUEST_URI} !^(' . get_rocket_cache_reject_uri() . ')$ [NC]' . "\n";
 	$rules .= !is_rocket_cache_mobile() ? get_rocket_htaccess_mobile_rewritecond() : '';
 	$rules .= !is_rocket_cache_ssl() ? get_rocket_htaccess_ssl_rewritecond() : '';
 	if( $is_1and1_or_force )
@@ -136,7 +136,7 @@ function get_rocket_htaccess_mobile_rewritecond()
 /**
  * Other rules for SSL requests
  *
- * @since 2.0.0
+ * @since 2.0
  *
  */
 
@@ -161,8 +161,12 @@ function get_rocket_htaccess_ssl_rewritecond()
 function get_rocket_htaccess_mod_deflate()
 {
 
+	
+	
 	$rules = '# Gzip compression' . "\n";
 	$rules .= '<IfModule mod_deflate.c>' . "\n";
+		$rules .= '# Active compression' . "\n";
+		$rules .= 'SetOutputFilter DEFLATE' . "\n";
 		$rules .= '# Force deflate for mangled headers developer.yahoo.com/blogs/ydn/posts/2010/12/pushing-beyond-gzipping/' . "\n";
 		$rules .= '<IfModule mod_setenvif.c>' . "\n";
 			$rules .= '<IfModule mod_headers.c>' . "\n";

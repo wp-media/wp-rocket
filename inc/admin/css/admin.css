@@ -1,7 +1,7 @@
 #wpadminbar #wp-admin-bar-support a {color: #FF0000}
-.rocket-cross{display:block;width:14px;height:14px;text-indent:-9999px;background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAtklEQVQ4y4XSzWpCQQyG4QextR5U6O3bpbgt1VqF+rMQf6DoNR03IwzpjAaySfLON/kIdDHFD/rq0WCJD3RggjblbwVusM3mxrDJCm0aaB5ALRaSwjo0jhhhiEPozfB6f3WAfRj4wynU1qVVSsp5znOlGANcCtAx7F0ErwXw/Ah8r0D3PCSz/ilFc/bPzBmlr+QDn3hJZsxryrvQWKL35AC+48mt8FY5uV08uW6CvypQDq8S1LkB5eFjp8/gZjMAAAAASUVORK5CIIA=) no-repeat}
-.updated .rocket-cross,
-.error .rocket-cross{float:right;margin-top:10px}
+.rkt-cross{display:inline-block;width:14px;height:14px;text-indent:-9999px;background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAMAAAAolt3jAAAABGdBTUEAALGPC/xhBQAAAHhQTFRFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFchIiAAAACd0Uk5Ts5u0sLG8taW6EQeuBcrMAre+BAi2DseyzcXGmqMNBsTCvbsMCQoA2fO6RQAAAIFJREFUCNc1j1cSwzAIREl1Yidx77bcJLj/DQNI5oPlDczOAkX0tKjlqksKE9FL2W1EIzyIaHOe6Ap2Z+nreWG5G8Bj5eE7cNstAqLuuVqDgnj8hHo28NgJNgHfnT9eZkG1Wk+ruuEh+ZhW95CzVHGIARIyKzVkLiGL6VaGF7Ix/QNQwRkGPYzdrAAAAABJRU5ErkJggg==) no-repeat}
+.updated .rkt-cross,
+.error .rkt-cross{float:right;margin-top:10px}
 .rocket-plugins-error {overflow:hidden; padding-left: 20px;list-style-type:disc}
 .rocket-plugins-error li{width:250px; line-height: 25px}
 .rocketbox:checked ~ .rocketboxpanel{display: block;}

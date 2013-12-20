@@ -5,7 +5,7 @@ defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 /**
  * Enqueue pointers script and style if needed
  *
- * since 1.3.0
+ * @since 1.3.0
  *
  */
 
@@ -20,10 +20,12 @@ function rocket_admin_pointers_header()
    }
 }
 
+
+
 /**
  * The pointers checker function
  *
- * since 1.3.0
+ * @since 1.3.0
  *
  */
 
@@ -37,10 +39,13 @@ function rocket_admin_pointers_check()
 	}
 }
 
+
+
+
 /**
  * The pointers core for WP Rocket
  *
- * since 1.3.0
+ * @since 1.3.0
  *
  */
 
@@ -85,22 +90,27 @@ function rocket_admin_pointers_footer()
    <?php
 }
 
+
+
 /**
  * Get all pointers for WP Rocket
  *
- * since 1.3.0
+ * @since 1.3.0
  *
  */
 
 function rocket_admin_pointers()
 {
-   $dismissed = explode( ',', (string)get_user_meta( get_current_user_id(), 'dismissed_wp_pointers', true ) );
+   $dismissed   = explode( ',', (string)get_user_meta( get_current_user_id(), 'dismissed_wp_pointers', true ) );
    $pointer_key = WP_ROCKET_SLUG.'_'.str_replace( '.', '_', WP_ROCKET_VERSION ).'_';
    $new_pointer = array();
-   $actions = apply_filters( 'rocket_pointer_actions', array() );
-   foreach( $actions as $action=>$options ) {
+   $actions     = apply_filters( 'rocket_pointer_actions', array() );
+   
+   foreach( $actions as $action=>$options ) 
+   {
 	   if( apply_filters( 'rocket_pointer_'.$action, false ) && !in_array( $pointer_key.$action, $dismissed ) ) 
 	   {
+		   
 		   $new_pointer[$pointer_key.$action] = array(
 		         'anchor_id' => $options['anchor_id'],
 		         'edge'      => $options['edge'],
@@ -108,27 +118,39 @@ function rocket_admin_pointers()
 		         'active'    => true,
 		         'action'    => $options['action'],
 		   );
-		   $new_pointer[$pointer_key.$action]['content'] = '<h3>' . __( 'WP Rocket '.WP_ROCKET_VERSION ) . '</h3><p>' . $options['content'] . '</p>';
+		   $new_pointer[$pointer_key.$action]['content'] = '<h3>WP Rocket</h3><p>' . $options['content'] . '</p>';
+		   
 		}
-	}
+   }
+	
    return $new_pointer;
 }
+
+
+
 
 /**
  * Add APIKEY pointer
  *
- * since 1.3.0
+ * @since 1.3.0
  *
  */
 
 add_filter( 'rocket_pointer_actions', 'rocket_pointer_apikey' );
 function rocket_pointer_apikey( $pointers )
 {
-	$pointers['apikey'] = array('anchor_id'	=> array( 'options-general.php'=>'ul.wp-submenu li a[href$="page=wprocket"]', 'settings_page_wprocket'=>' ', 'all'=>'#menu-settings' ),
-								'edge' 		=> 'left',
-								'align'		=> 'right',
-								'action'	=> '',
-								'content'	=> __( 'Pour finaliser l\'installation et profiter des performances apportées par notre plugin, merci de renseigner <a href="'.admin_url( 'options-general.php?page=wprocket' ).'">votre clé API</a>.' )
-								);
+	
+	$pointers['apikey'] = array(
+		'anchor_id'	=> array( 
+			'options-general.php' 	 => 'ul.wp-submenu li a[href$="page=wprocket"]', 
+			'settings_page_wprocket' => ' ', 
+			'all'					 =>'#menu-settings' 
+		),
+		'edge' 		=> 'left',
+		'align'		=> 'right',
+		'action'	=> '',
+		'content'	=> sprintf( __( 'To finalize the installation and enjoy the performance provided by our plugin, thank you to fill <a href="%s">your API key</a>.', 'rocket' ), admin_url( 'options-general.php?page=wprocket' ) )
+	);
+	
 	return $pointers;
 }

@@ -15,7 +15,7 @@ function rocket_purge_cron_schedule( $schedules )
 {
 
 	$schedules['rocket_purge'] = array(
-		'interval'	=> get_rocket_cron_interval(),
+		'interval'	=> get_rocket_purge_cron_interval(),
 		'display' 	=> 'WP Rocket Purge',
 	);
 
@@ -33,12 +33,12 @@ function rocket_purge_cron_schedule( $schedules )
  *
  */
 
-add_action( 'init', 'rocket_purge_cron_scheduled' );
+add_action( 'wp', 'rocket_purge_cron_scheduled' );
 function rocket_purge_cron_scheduled()
 {
 
 	if( !wp_next_scheduled( 'rocket_purge_time_event' ) )
-		wp_schedule_event( time() + get_rocket_cron_interval(), 'rocket_purge', 'rocket_purge_time_event' );
+		wp_schedule_event( time() + get_rocket_purge_cron_interval(), 'rocket_purge', 'rocket_purge_time_event' );
 
 }
 
@@ -46,20 +46,33 @@ function rocket_purge_cron_scheduled()
 
 /**
  * This event is launched when the cron is triggered
- * That delete the domain cache
+ * Purge all cache files when user save options
  *
+ * @since 2.0 Clear cache files for all langs when a plugin translation is activated
  * @since 1.0
  *
  */
 
 add_action( 'rocket_purge_time_event', 'do_rocket_purge_cron' );
-function do_rocket_purge_cron() 
+function do_rocket_purge_cron()
 {
-				
-	// Purge all cache files when user save options
-	rocket_clean_domain();
-	
-	// Run WP Rocket Bot for preload cache files
-    run_rocket_bot( 'cache-preload' );
-	
+
+	if( rocket_has_translation_plugin_active() )
+	{
+
+		// Purge files
+		rocket_clean_domain_for_all_langs();
+
+		// Run WP Rocket Bot for preload cache files
+		run_rocket_bot_for_all_langs();
+	}
+	else
+	{
+
+		// Purge files
+		rocket_clean_domain();
+
+		// Run WP Rocket Bot for preload cache files
+	    run_rocket_bot( 'cache-preload' );
+	}
 }

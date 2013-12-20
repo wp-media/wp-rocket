@@ -4,7 +4,7 @@
 Plugin Name: WP Rocket
 Plugin URI: http://www.wp-rocket.me
 Description: The best WordPress performance plugin.
-Version: 2.0.0
+Version: 2.0
 Author: WP Rocket
 Contributors: Jonathan Buttigieg, Julio Potier
 Author URI: http://www.wp-rocket.me
@@ -15,7 +15,7 @@ Copyright 2013 WP Rocket
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 // Rocket defines
-define( 'WP_ROCKET_VERSION'             , '2.0.0');
+define( 'WP_ROCKET_VERSION'             , '2.0');
 define( 'WP_ROCKET_SLUG'                , 'wp_rocket_settings');
 define( 'WP_ROCKET_WEB_MAIN'            , 'http://support.wp-rocket.me/');
 define( 'WP_ROCKET_WEB_CHECK'           , WP_ROCKET_WEB_MAIN.'check_update.php');
@@ -62,20 +62,25 @@ if( !defined( 'YEAR_IN_SECONDS' ) )
  * @since 1.0
  *
  */
-
+ 
 add_action( 'plugins_loaded', 'rocket_init' );
 function rocket_init()
 {
+    
+    // Load translations
+	load_plugin_textdomain( 'rocket', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+    
     // Nothing to do if autosave
     if( defined( 'DOING_AUTOSAVE' ) )
         return;
-
+		
     // Necessary to call correctly WP Rocket Bot for cache json
     global $do_rocket_bot_cache_json;
     $do_rocket_bot_cache_json = false;
 
     // Call defines,  classes and functions
     require WP_ROCKET_INC_PATH . '/functions.php';
+    require WP_ROCKET_PATH . '/deprecated.php';
     require WP_ROCKET_FRONT_PATH . '/htaccess.php';
     require WP_ROCKET_INC_PATH . '/headers.php';
 
@@ -83,7 +88,6 @@ function rocket_init()
     {
         require WP_ROCKET_INC_PATH . '/purge.php';
         require WP_ROCKET_INC_PATH . '/admin-bar.php';
-        require WP_ROCKET_INC_PATH . '/ajax.php';
 
         if( (int)get_rocket_option( 'purge_cron_interval' ) > 0 )
             require  WP_ROCKET_INC_PATH . '/cron.php';

@@ -1,0 +1,657 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: WP Rocket\n"
+"POT-Creation-Date: 2013-12-20 19:29+0100\n"
+"PO-Revision-Date: 2013-12-20 19:33+0100\n"
+"Last-Translator: \n"
+"Language-Team:  <contact@wp-rocket.me>\n"
+"Language: Français\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.7\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket\n"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin-bar.php:34
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin-bar.php:57
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin-bar.php:78
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/notices.php:30
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:455
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:460
+msgid "Clear cache"
+msgstr "Vider le cache"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin-bar.php:94
+msgid "Purge this post"
+msgstr "Purger cet article"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin-bar.php:104
+msgid "Purge this URL"
+msgstr "Purger cette URL"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin-bar.php:118
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin-bar.php:138
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin-bar.php:158
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:467
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:472
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:518
+msgid "Preload cache"
+msgstr "Précharger le cache"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin-bar.php:168
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:479
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:504
+msgid "Support"
+msgstr "Support"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin-bar.php:209
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin-bar.php:217
+msgid "All languages"
+msgstr "Toutes les langues"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/admin.php:15
+msgid "Settings"
+msgstr "Paramètres"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/admin.php:42
+#, php-format
+msgid "By %s"
+msgstr "Par %s"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/admin.php:64
+msgid "Purge this cache"
+msgstr "Purger cet article"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/admin.php:83
+msgid "Purge cache"
+msgstr "Purger le cache"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/notices.php:28
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/notices.php:142
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/notices.php:208
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/notices.php:256
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/notices.php:304
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/notices.php:345
+msgid "Ignore"
+msgstr "Ignorer"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/notices.php:30
+msgid ""
+"One or more extensions have been enabled or disabled, do not forget to clear "
+"the cache if necessary."
+msgstr ""
+"Une ou plusieurs extensions ont été activées ou désactivées, n'oubliez pas "
+"de vider le cache si nécessaire."
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/notices.php:96
+msgid ""
+"The following plugins are not compatible with WP Rocket and will cause "
+"unexpected results:"
+msgstr ""
+"Les plugins suivants ne sont pas compatible avec WP Rocket et vont générer "
+"des résultats inatendus "
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/notices.php:104
+msgid "Desactivate"
+msgstr "Désactiver"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/notices.php:144
+msgid ""
+"Connected users don't have the cached version of the website. We recommend "
+"you, to browse your website disconnected."
+msgstr ""
+"Pour rappel, les utilisateurs connectés n'ont pas la version du site en "
+"cache. Nous vous conseillons de naviguer sur le site en étant déconnecté "
+"pour être en situation réelle."
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/notices.php:172
+#, php-format
+msgid ""
+"A custom permalink structure is required for <strong>WP Rocket</strong> to "
+"work properly. Please go to <a href=\"%s\">Permalink</a> to configure them."
+msgstr ""
+"Une structure de permalien personnalisé est requis pour que <strong>WP "
+"Rocket</strong> fonctionne correctement. S'il vous plaît, aller à la page <a "
+"href=\"%s\">Permaliens</a> pour les configurer."
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/notices.php:210
+#, php-format
+msgid ""
+"If you had <a href=\"%s\" target=\"_blank\">writing permissions</a> on "
+"<code>wp-config.php/code> file, <strong>WP Rocket</strong> could do this "
+"automatically. This is not the case, so here are the constance  you have to "
+"put in your <code>wp-config.php</code> file for <strong>WP Rocket</strong> "
+"works correctly."
+msgstr ""
+"Si vous aviez <a href=\"%s\" target=\"_blank\">les droits en écriture</a> "
+"sur le fichier <code> .htaccess </code>, <strong>WP Rocket </strong>pourrait "
+"faire cela automatiquement. Ce n’est pas le cas, donc voici les règles de "
+"réécriture que vous devrez mettre dans votre fichier <code>.htaccess</code> "
+"pour que WP Rocket fonctionne correctement. Cliquez sur le champ et appuyez "
+"sur Ctrl-A pour tout sélectionner. "
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/notices.php:258
+#, php-format
+msgid ""
+"If you had <a href=\"%s\" target=\"_blank\">writing permissions</a> on <code>"
+"%s</code> file, <strong>WP Rocket</strong> could do this automatically. This "
+"is not the case, so here are the code you have to put in your <code>%s</"
+"code> file for <strong>WP Rocket</strong> works correctly."
+msgstr ""
+"Si vous aviez les <a href=\"%s\" target=\"_blank\">droits en écriture (en)</"
+"a> sur le fichier <code>%s</code>, <strong>WP Rocket</strong> pourrait faire "
+"cela automatiquement. Ce n’est pas le cas, donc voici le code que vous "
+"devrez mettre dans votre fichier <code>%s</code> pour que <strong>WP Rocket</"
+"strong> fonctionne correctement."
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/notices.php:306
+#, php-format
+msgid ""
+"If you had <a href=\"%s\" target=\"_blank\">writing permissions</a> on "
+"<code>.htaccess</code> file, <strong>WP Rocket</strong> could do this "
+"automatically. This is not the case, so here are the rewrite rules you have "
+"to put in your <code>.htaccess</code> file for <strong>WP Rocket</strong> "
+"works correctly. Click on the field and press Ctrl-A to select all."
+msgstr ""
+"Si vous aviez <a href=\"%s\" target=\"_blank\">les droits en écriture</a> "
+"sur le fichier <code> .htaccess </code>, <strong>WP Rocket </strong>pourrait "
+"faire cela automatiquement. Ce n’est pas le cas, donc voici les règles de "
+"réécriture que vous devrez mettre dans votre fichier <code>.htaccess</code> "
+"pour que WP Rocket fonctionne correctement. Cliquez sur le champ et appuyez "
+"sur Ctrl-A pour tout sélectionner. "
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/notices.php:347
+#, php-format
+msgid ""
+"Be careful, you don't have <a href=\"%s\" target=\"_blank\">writing "
+"permissions</a> on <strong>WP Rocket</strong> cache folder (<code>%s</"
+"code>). For <strong>WP Rocket</strong> works properly, please give CHMOD "
+"<code>755</code> or <code>775</code> on this folder."
+msgstr ""
+"Attention, vous n'avez pas les <a href=\"%s\" target=\"_blank\">droits en "
+"écriture (en)</a> sur le dossier de cache de <strong>WP Rocket</strong> "
+"(<code>%s</code>). Pour que <strong>WP Rocket</strong> fonctionne "
+"correctement, veuillez indiquer un CHMOD de <code>755</code> ou de "
+"<code>775</code> sur ce dossier."
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/notices.php:371
+#, php-format
+msgid ""
+"To finish the install and take advantage of high performance provided by our "
+"plugin, thank you to <a href=\"%s\">Enter you API key</a>."
+msgstr ""
+"Pour finaliser l'installation et profiter des performances apportées par "
+"notre plugin, merci de <a href=\"%s\">renseigner votre clé API</a>"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:62
+msgid "Key is not valid"
+msgstr "Clé non valide"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:64
+msgid "Key is valid"
+msgstr "Clé valide"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:111
+msgid "Missing TYPE ! "
+msgstr "Type manquant"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:132
+msgid "<strong>JS</strong> files with Deferred Loading JavaScript"
+msgstr ""
+"Fichiers <strong>JS</strong> en chargement différé (Deferred Loading "
+"JavaScript)"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:151
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:171
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:189
+msgid "Move"
+msgstr "Déplacer"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:156
+msgid "Attendre le chargement de ce fichier ?"
+msgstr "Wait until this file is loaded ? "
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:158
+msgid "Delete"
+msgstr "Supprimer"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:176
+msgid "Wait until this file is loaded ?"
+msgstr "Attendre le chargement de ce fichier ?"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:191
+msgid "Wait until this file is loaded?"
+msgstr "Attendre le chargement de ce fichier ?"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:195
+msgid "Add an URL"
+msgstr "Ajouter une url"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:196
+msgid ""
+"You can add JavaScript files that will be loaded asynchronously at the same "
+"time as the page loads."
+msgstr ""
+"Vous avez la possibilité d’ajouter des fichiers Javascript qui seront "
+"chargés de manière asynchrone en même temps que le chargement de la page."
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:197
+msgid "Empty the field to remove it."
+msgstr "Videz le contenu d'un champ pour le supprimer."
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:198
+msgid ""
+"<strong>Warning :</strong> you must specify the complete URL of the files."
+msgstr ""
+"<strong>Attention :</strong> vous devez indiquez les URLs complètes des "
+"fichiers."
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:237
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:507
+msgid "API KEY"
+msgstr "Clé api"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:240
+msgid ""
+"API Key :<br /><span class=\"description\">(WP Rocket validation)</span>"
+msgstr "Clé API :<br /><span class=\"description\">(Validation de WP Rocket)"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:247
+msgid "API Key"
+msgstr "Clé api"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:248
+msgid "Thank you to enter the API key obtained when buying."
+msgstr "Merci d'entrer la clé API obtenue lors de votre achat."
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:253
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:499
+msgid "Basic options"
+msgstr "Options de base"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:256
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:264
+msgid "Lazyload:"
+msgstr "Chargement différé des images : "
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:262
+msgid "Enable Lazy loading images."
+msgstr "Activer le LazyLoad"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:265
+msgid ""
+"LazyLoad displays images on a page only when they are visible to the user. "
+"<br/> This reduces the number of HTTP requests mechanism and improves the "
+"loading time."
+msgstr ""
+"Le LazyLoad (ou chargement différé des images) consiste à afficher les "
+"images d'une page uniquement quand elles sont visibles par l'internaute.<br/"
+">Ce mécanisme réduit le nombre de requêtes HTTP et améliore le temps de "
+"chargement des pages."
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:270
+msgid ""
+"Files optimisation: <br/> <span class=\"description\">(Minification & "
+"Concatenation)</span>"
+msgstr ""
+"Optimisation des fichiers : <br/> <span class=\"description\">(Minification "
+"& Concaténation)</span>"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:279
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:285
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:291
+msgid "Files minification"
+msgstr "Minification des fichiers "
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:292
+#, php-format
+msgid ""
+"Minification removes any space and comments present in the CSS and "
+"Javascript files.<br/>This mechanism reduces the weight of each file and "
+"allow a faster reading of browsers and search engines.<br/>Concatenation "
+"combines all CSS and Javascript files.<br/>This reduces the number of HTTP "
+"requests and improves the loading time.<br/><strong style=\"color:#FF0000;"
+"\">Warning: concatenating files can cause display errors. In case of any "
+"errors we recommend that you disable this option or watch the following "
+"videos: <a href=\"%s\" class=\"fancybox\">%s</a></strong>."
+msgstr ""
+"La minification supprime tout espace, retour à la ligne et commentaires "
+"présents dans les fichiers CSS et JavaScript. <br/>Ce mécanisme réduit le "
+"poids de chaque fichier et permet une lecture plus rapide par les "
+"navigateurs et les moteurs de recherche. <br/> La concaténation combine tous "
+"les fichiers CSS et JavaScript afin de n'en faire plus qu'un seul par type. "
+"<br/>Ce mécanisme réduit le nombre de requêtes HTTP et améliore le temps de "
+"chargement des pages.<br /><strong style=\"color:#FF0000;\">Attention : la "
+"concaténation des fichiers peut générer des problèmes d'affichage, en cas "
+"d'erreur nous vous conseillons de le désactiver ou de regarder la vidéo "
+"suivante : <a href=\"%s\" class=\"fancybox\">%s</a></strong>."
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:297
+msgid "Mobile cache:"
+msgstr "Cache mobile :"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:303
+msgid "Enable caching for mobile devices."
+msgstr "Activer la mise en cache pour les appareils mobile."
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:306
+msgid ""
+"<strong style=\"color:#FF0000;\">Warning: if you use the plugin <a target="
+"\"_blank\" href=\"http://wordpress.org/plugins/wptouch/\">WP Touch</a>, <a "
+"href=\"http://wordpress.org/plugins/wp-mobile-detector/\" target=\"_blank"
+"\">WP Mobile Detector</a>, <a href=\"http://wordpress.org/plugins/wiziapp-"
+"create-your-own-native-iphone-app\" target=\"_blank\">wiziApp</a> or <a href="
+"\"http://wordpress.org/plugins/wordpress-mobile-pack/\" target=\"_blank"
+"\">WordPress Mobile Pack</a>, you should not enable this option.</strong>"
+msgstr ""
+"<strong style=\"color:#FF0000;\">Attention : si vous utilisez le plugin <a "
+"href=\"http://wordpress.org/plugins/wptouch/\" target=\"_blank\">WP Touch</"
+"a>, <a href=\"http://wordpress.org/plugins/wp-mobile-detector/\" target="
+"\"_blank\">WP Mobile Detector</a>, <a href=\"http://wordpress.org/plugins/"
+"wiziapp-create-your-own-native-iphone-app/\" target=\"_blank\">WiziApp</a> "
+"ou <a href=\"http://wordpress.org/plugins/wordpress-mobile-pack/\" target="
+"\"_blank\">WordPress Mobile Pack</a>, vous ne devez pas activer cette option."
+"</strong> - <strong style=\"color:#FF0000;\"> Warning: if you use the plugin "
+"WP target=\"_blank\"> <a href=\"http://wordpress.org/plugins/wptouch/\" "
+"Touch </ a> <a href=\"http://wordpress.org/plugins/wp-mobile-detector/\" "
+"target=\"_blank\"> WP Mobile Detector </ a>, <a href = \"http://wordpress."
+"org/plugins / wiziapp-create-your-own-native-iphone-app / \"target =\" "
+"_blank \"> wiziApp </ a> or <a href =\" http://wordpress.org/plugins/"
+"wordpress-mobile-pack/ \"target = \"_blank\"> WordPress Mobile Pack </ a>, "
+"you should not enable this option. </ strong>"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:311
+msgid "Logged in user cache:"
+msgstr "Cache mobile :"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:316
+msgid "Enable caching for logged in users."
+msgstr "Activer la mise en cache pour les appareils mobile."
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:324
+msgid "SSL cache:"
+msgstr "Cache SSL :"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:330
+msgid "Enable caching for pages with SSL protocol (<code>https://</code>)."
+msgstr ""
+"Activer la mise en cache pour les pages utilisants le protocole SSL "
+"(<code>https://</code>)."
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:338
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:346
+msgid "Purge delay"
+msgstr "Délai de Purge :"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:352
+msgid "Unit of time"
+msgstr "Unité de temps"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:354
+msgid ""
+"By default purge time is 12 hours, this means that once created, the cache "
+"files are automatically removed after 4 hours before being recreated. <br/> "
+"This can be useful if you display your latest tweets or rss feeds in your "
+"sidebar, for example. <br/> Specify 0 for unlimited life."
+msgstr ""
+"Par défaut le délai de purge est de 12h, cela signifie qu’une fois créé, les "
+"fichiers de cache se supprimeront automatiquement au bout de 4h avant d’être "
+"recréé.<br/>Cela peut être utile si vous affichez vos derniers tweets ou des "
+"flux rss dans votre sidebar, par exemple.<br/>Indiquez 0 pour une durée de "
+"vie illimitée."
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:356
+msgid "second(s)"
+msgstr "seconde(s)"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:358
+msgid "hour(s)"
+msgstr "heure(s)"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:359
+msgid "day(s)"
+msgstr "jour(s)"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:365
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:500
+msgid "Advanced options"
+msgstr "Options avancées"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:368
+msgid "Prefetch DNS requests:"
+msgstr "Pré-chargement des requêtes DNS :"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:375
+msgid "Prefetch DNS requests"
+msgstr "Pré-chargement des requêtes DNS "
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:376
+#, php-format
+msgid ""
+"DNS prefetching is a way for browsers to anticipate the DNS resolution of "
+"external domains from your site.<br/>This mechanism reduces the latency of "
+"some external files.<br/>To Learn more about this option and how to use it "
+"correctly, we advise you to watch the following video: <a href=\"%s\">%s</"
+"a><br/><strong>Warning:</strong> Enter the domain names without their "
+"protocol, for example: <code>//ajax.googleapis.com</code> without <code>http:"
+"</code> (one per line)."
+msgstr ""
+"Le DNS prefetching est une méthode permettant aux navigateurs d’anticiper la "
+"résolution DNS des noms de domaines externes présents sur votre site.<br/>Ce "
+"mécanisme permet de diminuer les temps de latence de certains fichiers "
+"externes bloquants.<br/>Pour en savoir plus sur cette option et apprendre à "
+"l'utiliser correctement, nous vous conseillons de regarder la vidéo "
+"suivante : <a href=\"%s\">%s</a><br/><strong>Attention :</strong> Indiquez "
+"les noms de domaines sans leur protocole, par exemple : <code>//ajax."
+"googleapis.com</code> sans le <code>http:</code>  (un par ligne)."
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:381
+msgid "Empty the cache of the following pages when updating an article:"
+msgstr ""
+"Vider le cache des pages suivantes lors de la mise à jour d'un article :"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:388
+msgid "Empty the cache of the following pages when updating a post:"
+msgstr ""
+"Vider le cache des pages suivantes lors de la mise à jour d'un article :"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:389
+msgid ""
+"Enter the URL of additionnal page to purge when updating a post (one per "
+"line). <br/>It’s possible to use regular expressions (regex). <br/"
+"><strong>NB</strong>: When you update a post or when a comment is posted, "
+"the home page, categories, and tags associated whith the post are "
+"automatically removed from the cache, and the recreated by the WP Rocket Bot"
+msgstr ""
+"Indiquez l'URL des pages supplémentaires à purger lors de la mise à jour "
+"d'un article (une par ligne).<br/>Il est possible d'utiliser des expressions "
+"régulières (REGEX).<br/><strong>NB</strong> : Lorsque vous mettez à jour un "
+"article ou qu’un commentaire est posté, la page d'accueil, les catégories et "
+"les tags associés à l\article sont automatiquement supprimées du cache puis "
+"recréés grâce au robot WP Rocket."
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:394
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:401
+msgid "Never cache the following pages :"
+msgstr "Ne jamais mettre en cache les pages suivantes :"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:402
+msgid ""
+"Enter the URL of pages to reject (one per line). <br/> You can use regular "
+"expressions (regex)."
+msgstr ""
+"Indiquez l'URL des pages à rejeter (une par ligne).<br/>Il est possible "
+"d'utiliser des expressions régulières (REGEX)"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:407
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:414
+msgid "Don't cache pages that use the following cookies:"
+msgstr ""
+"Ne jamais mettre en cache les pages qui utilisent les cookies suivants :"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:415
+msgid "List the names of the cookies (one per line)."
+msgstr "Indiquez les noms des cookies à rejeter (un par ligne)."
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:420
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:427
+msgid "<strong>CSS</strong> files to exclude of the minification:"
+msgstr "Fichiers <strong>CSS</strong> à exclure lors de la minification :"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:428
+msgid ""
+"Specify the URL of <strong>CSS </strong> files to reject (one per line)."
+msgstr ""
+"Indiquez l'URL des fichiers <strong>CSS</strong> à rejeter (une par ligne)."
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:433
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:440
+msgid "<strong>JS</strong> files to exclude of the minification:"
+msgstr "Fichiers <strong>JS</strong> à exclure lors de la minification : "
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:441
+msgid ""
+"Specify the URL of <strong> JS </strong> files to reject (one per line)."
+msgstr ""
+"Indiquez l'URL des fichiers <strong>JS</strong> à rejeter (une par ligne)."
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:446
+msgid "<strong>JS </strong>files with deferred loading:"
+msgstr ""
+"Fichiers <strong>JS</strong> en chargement différé (Deferred Loading "
+"JavaScript) : "
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:452
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:501
+msgid "Tools"
+msgstr "Outils"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:462
+msgid "To purge the cache for the whole site."
+msgstr "Permet de purger le cache du site complet"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:474
+msgid ""
+"Lets ask the passage of the bot to preload the cache (homepage + internal "
+"links on this page)"
+msgstr ""
+"Permet de demander le passage du robot pour précharger le cache (homepage + "
+"liens internes de cette page)"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:484
+msgid "Send my configuration"
+msgstr "Envoyer ma configuration"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:486
+msgid ""
+"When posting a support request, thank you to click on this button. We "
+"receive information regarding your installation to help us understand and "
+"solve your problem. The information collected will not be sold or used for "
+"other purpose than support."
+msgstr ""
+"Lorsque vous postez un demande de support, merci de cliquer sur ce bouton. "
+"Nous recevrons des informations concernant votre installation pour nous "
+"aider à comprendre et régler votre problème. Les informations collectées ne "
+"seront ni revendues, ni utilisées pour d'autres choses que le support."
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:502
+msgid "Tutorials"
+msgstr "Tutoriels"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:503
+msgid "FAQ"
+msgstr "FAQ"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:519
+msgid ""
+"This video gives some explanations about our two crawler robots. They "
+"generate several cache files in a few seconds."
+msgstr ""
+"Cette vidéo donne quelques explications sur les 2 robots crawler de WP "
+"Rocket. Ils permettent de générer plusieurs vingtaines de fichiers de cache "
+"en quelques secondes."
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:520
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:524
+msgid "Watch the video"
+msgstr "Voir la vidéo"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:522
+msgid "CSS and JavaScript minification"
+msgstr "Minification des fichiers CSS et JavaScript"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:636
+msgid ""
+"If none of the FAQ answers, answer your problem, you can tell us your issue "
+"on our <a href=\"http://support.wp-rocket.me/\" target=\"_blank\">Support</"
+"a>. We will reply as soon as possible."
+msgstr ""
+"Si aucune des réponses de la F.A.Q. répond à votre problématique, vous "
+"pouvez nous faire part de votre problème sur notre <a href=\"http://support."
+"wp-rocket.me/\" target=\"_blank\">support</a>. Nous vous répondrons dans les "
+"plus brefs délais."
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/options.php:637
+msgid "Go to Support"
+msgstr "Support"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/pointers.php:107
+msgid "WP-Rocket "
+msgstr "WP-Rocket"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/pointers.php:127
+#, php-format
+msgid ""
+"To finalize the installation and enjoy the performance provided by our "
+"plugin, thank you to fill <a href=\"%s\">your API key</a>."
+msgstr ""
+"Pour finaliser l'installation et profiter des performances apportées par "
+"notre plugin, merci de <a href=\"%s\">renseigner votre clé API</a>"
+
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/updater.php:102
+#: /Users/jb/Sites/wp/wp-content/plugins/wp-rocket/inc/admin/updater.php:106
+#, php-format
+msgid ""
+"An unexpected error occurred. Something may be wrong with WP-Rocket.me or "
+"this server&#8217;s configuration. If you continue to have problems, please "
+"try the <a href=\"%s\">support forums</a>."
+msgstr ""
+"Une erreur inattendue s'est produite. Quelque chose ne va pas avec WP-Rocket."
+"me ou avec la configuration de ce serveur. Si vous continuez à avoir des "
+"problèmes, merci d'aller sur notre <a href=\"%s\">forum de support</a>."
+
+#~ msgid "Cache SSL:"
+#~ msgstr "SSL Cache : "
+
+#~ msgid "Ignore until next time"
+#~ msgstr "Toutes les langues"
+
+#, fuzzy
+#~ msgid "Vider le cache"
+#~ msgstr "Vider le cache"
+
+#, fuzzy
+#~ msgid "Précharger le cache"
+#~ msgstr "Purger le cache"
+
+#~ msgid "Lazy Load"
+#~ msgstr "Chargement différé des images"
+
+#~ msgid "Never cache the following pages"
+#~ msgstr "Ne jamais mettre en cache les pages suivantes"
+
+#~ msgid "Do not cache pages that use the following cookies"
+#~ msgstr ""
+#~ "Ne jamais mettre en cache les pages qui utilisent les cookies suivants :"
+
+#~ msgid "CSS files to exclude of the minification :"
+#~ msgstr "Fichiers CSS à exclure lors de la minification : "
+
+#~ msgid "JS files to exclude of the minification :"
+#~ msgstr "Fichiers JS à exlure du processus de minification"
+
+#~ msgid "Preload the cache"
+#~ msgstr "Préchargement des fichiers de cach"

@@ -31,7 +31,7 @@ function rocket_admin_bar( $wp_admin_bar )
 			$wp_admin_bar->add_menu(array(
 				'parent'	=> 'wp-rocket',
 				'id' 		=> 'purge-all',
-				'title' 	=> __( 'Vider le cache', 'rocket' ),
+				'title' 	=> __( 'Clear cache', 'rocket' ),
 				'href' 		=> '#',
 			));
 			
@@ -42,7 +42,7 @@ function rocket_admin_bar( $wp_admin_bar )
 				{
 		            $wp_admin_bar->add_menu( array(
 		                'parent' => 'purge-all',
-		                'id' 	 =>  'purge-all-' . $lang['code'],
+		                'id' 	 => 'purge-all-' . $lang['code'],
 		                'title'  => $lang['flag'] . '&nbsp;' . $lang['anchor'],
 		                'href'   => wp_nonce_url( admin_url( 'admin-post.php?action='.$action.'&type=all&lang='.$lang['code'] ), $action.'_all' ),
 		            ));
@@ -58,19 +58,28 @@ function rocket_admin_bar( $wp_admin_bar )
 			$wp_admin_bar->add_menu(array(
 				'parent'	=> 'wp-rocket',
 				'id' 		=> 'purge-all',
-				'title' 	=> __( 'Vider le cache', 'rocket' ),
+				'title' 	=> __( 'Clear cache', 'rocket' ),
 				'href' 		=> '#',
 			));
 
+			// Add submen for each active langs
 			$langlinks = get_rocket_qtranslate_langs_for_admin_bar();
 			foreach( $langlinks as $lang ) {
 	            $wp_admin_bar->add_menu( array(
 	                'parent' => 'purge-all',
-	                'id' 	 =>  'purge-all-' . $lang['code'],
+	                'id' 	 => 'purge-all-' . $lang['code'],
 	                'title'  => $lang['flag'] . '&nbsp;' . $lang['anchor'],
 	                'href'   => wp_nonce_url( admin_url( 'admin-post.php?action='.$action.'&type=all&lang='.$lang['code'] ), $action.'_all' ),
 	            ));
 	        }
+	        
+	        // Add subemnu "All langs"
+	        $wp_admin_bar->add_menu( array(
+                'parent' => 'purge-all',
+                'id' 	 => 'purge-all-all',
+                'title'  =>  '<img src="' . WP_ROCKET_ADMIN_IMG_URL . 'earth.png" alt="" width="18" height="18" /> ' . __( 'Toutes les langues', WP_ROCKET_SLUG ),
+                'href'   => wp_nonce_url( admin_url( 'admin-post.php?action='.$action.'&type=all&lang=all' ), $action.'_all' ),
+            ));
 
 		}
 		else {
@@ -79,7 +88,7 @@ function rocket_admin_bar( $wp_admin_bar )
 			$wp_admin_bar->add_menu(array(
 				'parent'	=> 'wp-rocket',
 				'id' 		=> 'purge-all',
-				'title' 	=> __( 'Vider le cache', 'rocket' ),
+				'title' 	=> __( 'Clear cache', 'rocket' ),
 				'href' 		=> wp_nonce_url( admin_url( 'admin-post.php?action='.$action.'&type=all' ), $action.'_all' ),
 			));
 
@@ -95,7 +104,7 @@ function rocket_admin_bar( $wp_admin_bar )
 				$wp_admin_bar->add_menu(array(
 					'parent' => 'wp-rocket',
 					'id' 	 => 'purge-post',
-					'title'  => sprintf( __( 'Purger cet article', 'rocket' ), $pobject->labels->singular_name ),
+					'title'  => sprintf( __( 'Purge this post', 'rocket' ), $pobject->labels->singular_name ),
 					'href' 	 => wp_nonce_url( admin_url( 'admin-post.php?action='.$action.'&type=post-'.$post->ID ), $action.'_post-'.$post->ID ),
 				));
 			}
@@ -105,7 +114,7 @@ function rocket_admin_bar( $wp_admin_bar )
 			$wp_admin_bar->add_menu(array(
 				'parent' => 'wp-rocket',
 				'id' 	 => 'purge-url',
-				'title'  => __( 'Purger cette URL', 'rocket' ),
+				'title'  => __( 'Purge this URL', 'rocket' ),
 				'href' 	 => wp_nonce_url( admin_url( 'admin-post.php?action='.$action.'&type=url' ), $action.'_url' ),
 			));
 		}
@@ -120,7 +129,7 @@ function rocket_admin_bar( $wp_admin_bar )
 			$wp_admin_bar->add_menu(array(
                 'parent' => 'wp-rocket',
                 'id' 	 => 'preload-cache',
-                'title'  => __( 'Précharger le cache', 'rocket' ),
+                'title'  => __( 'Preload cache', 'rocket' ),
                 'href' 	 => '#'
 	        ));
 			
@@ -143,7 +152,7 @@ function rocket_admin_bar( $wp_admin_bar )
 			$wp_admin_bar->add_menu(array(
                 'parent' => 'wp-rocket',
                 'id' 	 => 'preload-cache',
-                'title'  => __( 'Précharger le cache', 'rocket' ),
+                'title'  => __( 'Preload cache', 'rocket' ),
                 'href' 	 => '#'
 	        ));
 
@@ -156,6 +165,13 @@ function rocket_admin_bar( $wp_admin_bar )
 	                'href' 	 => wp_nonce_url( admin_url( 'admin-post.php?action='.$action.'&lang='.$lang['code'] ), $action ),
 	            ));
 	        }
+	        
+	        $wp_admin_bar->add_menu( array(
+                'parent' => 'preload-cache',
+                'id' 	 => 'preload-cache-all',
+                'title'  =>  '<img src="' . WP_ROCKET_ADMIN_IMG_URL . 'earth.png" alt="" width="18" height="18" /> ' . __( 'Toutes les langues', WP_ROCKET_SLUG ),
+                'href' 	 => wp_nonce_url( admin_url( 'admin-post.php?action='.$action.'&lang=all' ), $action ),
+            ));
 			
 		}
 		else {
@@ -163,7 +179,7 @@ function rocket_admin_bar( $wp_admin_bar )
 			$wp_admin_bar->add_menu(array(
                 'parent' => 'wp-rocket',
                 'id' 	 => 'preload-cache',
-                'title'  => __( 'Précharger le cache', 'rocket' ),
+                'title'  => __( 'Preload cache', 'rocket' ),
                 'href' 	 => wp_nonce_url( admin_url( 'admin-post.php?action='.$action ), $action )
 	        ));
 
@@ -237,7 +253,7 @@ function get_rocket_wpml_langs_for_admin_bar() {
 /**
  * Get all langs to display in admin bar for qTranslate
  *
- * @since 2.0.0
+ * @since 2.0
  *
  */
 

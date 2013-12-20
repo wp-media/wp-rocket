@@ -60,7 +60,7 @@ function rocket_lazyload_images( $html )
 /**
  * Replace WordPress smilies by Lazy Load
  *
- * @since 2.0.0 & WP 3.8 New system for replace smilies by Lazy Load
+ * @since 2.0 & WP 3.8 New system for replace smilies by Lazy Load
  * @since 1.3.5 It's possible to exclude LazyLoad process by used do_rocket_lazyload filter
  * @since 1.1.0 Don't lazy-load if the thumbnail has already been run through previously
  * @since 1.0.1 Add priority of hooks at maximum later with PHP_INT_MAX
@@ -82,8 +82,8 @@ add_filter( 'comment_text', 'rocket_convert_smilies' );
 /**
  * Convert text equivalent of smilies to images.
  *
- * @since 2.0.0
  * @source convert_smilies() in /wp-includes/formattings.php
+ * @since 2.0
  *
  */
 
@@ -132,8 +132,8 @@ function rocket_convert_smilies( $text ) {
 /**
  * Convert one smiley code to the icon graphic file equivalent.
  *
- * @since 2.0.0
  * @source translate_smiley() in /wp-includes/formattings.php
+ * @since 2.0
  *
  */
 

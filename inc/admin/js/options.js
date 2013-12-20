@@ -33,7 +33,7 @@ jQuery( document ).ready( function($){
 		var $item = $('.rktmodel:last').clone().appendTo('#rktdrop').removeClass('rktmodel').show();
 		rocket_rename();
 	} );
-	$('.rktdelete').css('cursor','pointer').on('click', function(e){
+	$('.rkt-delete').css('cursor','pointer').on('click', function(e){
 		e.preventDefault();
 		$(this).parent().css('background-color','red' ).slideUp( 'slow' , function(){$(this).remove(); } );
 	} );

@@ -13,20 +13,29 @@ add_action( 'admin_notices', 'rocket_warning_plugin_modification' );
 function rocket_warning_plugin_modification()
 {
 
-	global $current_user;
+	
 	if( current_user_can( 'manage_options' ) && rocket_valid_key() ) 
 	{
+		
+		global $current_user;
 		$boxes = get_user_meta( $current_user->ID, 'rocket_boxes', true );
-		if( !in_array( __FUNCTION__, (array)$boxes ) ) { ?>
+		
+		if( !in_array( __FUNCTION__, (array)$boxes ) ) 
+		{ ?>
 
 			<div class="updated">
-				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>" class="rocket-cross">Ignorer</a>
-				<p><strong>WP Rocket</strong> : Une ou plusieurs extensions ont été activées ou désactivées, n'oubliez pas de vider le cache si nécessaire. <a class="wp-core-ui button" href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=all' ), 'purge_cache_all' ); ?>">Vider le cache</a></p>
+				
+				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>" class="rkt-cross"><?php _e('Ignore', 'rocket'); ?></a>
+				
+				<p><strong>WP Rocket</strong>: <?php _e( 'One or more extensions have been enabled or disabled, do not forget to clear the cache if necessary.', 'rocket' ) ;?> <a class="wp-core-ui button" href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=all' ), 'purge_cache_all' ); ?>"><?php _e('Clear cache', 'rocket') ; ?></a></p>
+				
 			</div>
 
 			<?php
 		}
+		
 	}
+	
 }
 
 
@@ -77,26 +86,32 @@ function rocket_plugins_to_deactivate()
 			$plugins_to_deactivate[] = $plugin;
 	}
 
-	if( current_user_can( 'manage_options' ) && count( $plugins_to_deactivate ) && rocket_valid_key() )
-	{ ?>
+	if( current_user_can( 'manage_options' ) 
+		&& count( $plugins_to_deactivate ) 
+		&& rocket_valid_key() 
+	) { ?>
 
 		<div class="error">
-			<p><strong>WP Rocket</strong> : <?php _e( 'Les plugins suivants ne sont pas compatibles avec WP Rocket et vont entraîner des résultats inattendus :', 'rocket' ); ?></p>
+			
+			<p><strong>WP Rocket</strong>: <?php _e( 'The following plugins are not compatible with WP Rocket and will cause unexpected results:', 'rocket' ); ?></p>
+			
 			<ul class="rocket-plugins-error">
 			<?php
 			foreach ( $plugins_to_deactivate as $plugin )
 			{
 
 				$plugin_data = get_plugin_data( WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . $plugin);
-				echo '<li>' . $plugin_data['Name'] . '</span> <a href="' . wp_nonce_url( admin_url( 'admin-post.php?action=deactivate_plugin&plugin=' . urlencode($plugin) ), 'deactivate_plugin' ) . '" class="button-secondary alignright">' . __( 'Désactiver', 'rocket' ) . '</a></li>';
+				echo '<li>' . $plugin_data['Name'] . '</span> <a href="' . wp_nonce_url( admin_url( 'admin-post.php?action=deactivate_plugin&plugin=' . urlencode($plugin) ), 'deactivate_plugin' ) . '" class="button-secondary alignright">' . __( 'Desactivate', 'rocket' ) . '</a></li>';
 
 			}
 			?>
 			</ul>
+			
 		</div>
 
 	<?php
 	}
+	
 }
 
 
@@ -114,21 +129,25 @@ function rocket_warning_logged_users()
 
 	global $current_user, $current_screen;
 	$boxes = get_user_meta( $current_user->ID, 'rocket_boxes', true );
+	
 	if( current_user_can( 'manage_options' )
-	    && 'settings_page_wprocket'==$current_screen->base
+	    && 'settings_page_wprocket' == $current_screen->base
 	    && !in_array( __FUNCTION__, (array)$boxes )
 	    && !get_rocket_option( 'cache_logged_user' )
 	    && rocket_valid_key()
-	) {
-	?>
+	) { ?>
 
 		<div class="updated">
-			<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>" class="rocket-cross">Ignorer</a>
-			<p><strong>WP Rocket</strong> : Pour rappel, les utilisateurs connectés n'ont pas la version du site en cache. Nous vous conseillons de naviguer sur le site en étant déconnecté pour être en situation réelle.</p>
+			
+			<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>" class="rkt-cross"><?php _e('Ignore', 'rocket'); ?></a>
+			
+			<p><strong>WP Rocket</strong>: <?php _e( 'Connected users don\'t have the cached version of the website. We recommend you, to browse your website disconnected.', 'rocket' );?></p>
+			
 		</div>
 
-		<?php
+	<?php
 	}
+	
 }
 
 
@@ -147,13 +166,15 @@ function rocket_warning_using_permalinks()
 	if( current_user_can( 'manage_options' )
 	    && !$GLOBALS['wp_rewrite']->using_permalinks()
 	    && rocket_valid_key()
-	) {
-	?>
+	) { ?>
+		
 		<div class="error">
-			<p><strong>WP Rocket</strong> : Une structure de permalien personnalisé est requis pour que <strong>WP Rocket</strong> pour fonctionne correctement. S'il vous plaît, aller à la page <a href="<?php echo admin_url( '/options-permalink.php' ); ?>">Permaliens</a> pour configurer vos permaliens.</p>
+			<p><strong>WP Rocket</strong>: <?php echo sprintf( __( 'A custom permalink structure is required for <strong>WP Rocket</strong> to work properly. Please go to <a href="%s">Permalink</a> to configure them.', 'rocket'), admin_url( '/options-permalink.php' ) ); ?></p>
 		</div>
+		
 	<?php
 	}
+	
 }
 
 
@@ -161,35 +182,96 @@ function rocket_warning_using_permalinks()
 /**
  * This warning is displayed when the wp-config.php file isn't writeable
  *
- * since 1.0
+ * since 2.0
  *
  */
 
 add_action( 'admin_notices', 'rocket_warning_wp_config_permissions' );
 function rocket_warning_wp_config_permissions()
 {
-	$config_file =  ABSPATH . 'wp-config.php';
+	$config_file =  get_home_path() . 'wp-config.php';
 
 	if( current_user_can( 'manage_options' )
+		&& ( !file_exists( $config_file ) || !is_writable( $config_file ) )
 	    && ( !defined( 'WP_CACHE' ) || !WP_CACHE )
 	    && rocket_valid_key()
 	) {
+		
 		global $current_user;
 		$boxes = get_user_meta( $current_user->ID, 'rocket_boxes', true );
-		if( !in_array( __FUNCTION__, (array)$boxes ) ) {
-			?>
+		
+		if( !in_array( __FUNCTION__, (array)$boxes ) )
+		{ ?>
+			
 			<div class="error">
-				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>" class="rocket-cross">Ignorer</a>
-				<p><strong>WP Rocket</strong> : Si vous aviez les <a href="http://codex.wordpress.org/Changing_File_Permissions" target="_blank">droits en écriture (en)</a> sur le fichier <code>wp-config.php</code>, <strong>WP Rocket</strong> pourrait faire cela automatiquement. Ce n’est pas le cas, donc voici la constante que vous devrez mettre dans votre fichier <code>wp-config.php</code> pour que <strong>WP Rocket</strong> fonctionne correctement.</p>
+				
+				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>" class="rkt-cross"><?php _e('Ignore', 'rocket'); ?></a>
+				
+				<p><strong>WP Rocket</strong>: <?php echo sprintf( __('If you had <a href="%s" target="_blank">writing permissions</a> on <code>wp-config.php/code> file, <strong>WP Rocket</strong> could do this automatically. This is not the case, so here are the constance  you have to put in your <code>wp-config.php</code> file for <strong>WP Rocket</strong> works correctly.', 'rocket' ), 'http://codex.wordpress.org/Changing_File_Permissions' ); ?></p>
+				
 				<?php
+				
 				// Get the content of the WP_CACHE constant added by WP Rocket
 				$define = "/** Enable Cache */\r\n" . "define('WP_CACHE', 'true'); // Added by WP Rocket\r\n";
+				
 				?>
-				<p><textarea readonly="readonly" id="rules" name="rules" class="large-text readonly" rows="2"><?php echo $define; ?></textarea></p>
+				
+				<p><textarea readonly="readonly" id="rules" name="rules" class="large-text readonly" rows="2"><?php echo esc_textarea( $define ); ?></textarea></p>
 			</div>
+			
 		<?php
 		}
+		
 	}
+	
+}
+
+
+
+/**
+ * This warning is displayed when the advanced-cache.php file isn't writeable
+ *
+ * since 2.0
+ *
+ */
+
+add_action( 'admin_notices', 'rocket_warning_advanced_cache_permissions' );
+function rocket_warning_advanced_cache_permissions()
+{
+	$advanced_cache_file =  WP_CONTENT_DIR . '/advanced-cache.php';
+
+	if( current_user_can( 'manage_options' )
+		&& ( !file_exists( $advanced_cache_file ) || !is_writable( $advanced_cache_file ) )
+	    && rocket_valid_key()
+	) {
+		
+		global $current_user;
+		$boxes = get_user_meta( $current_user->ID, 'rocket_boxes', true );
+		
+		if( !in_array( __FUNCTION__, (array)$boxes ) )
+		{ ?>
+			
+			<div class="error">
+				
+				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>" class="rkt-cross"><?php _e('Ignore', 'rocket'); ?></a>
+				
+				<p><strong>WP Rocket</strong>: <?php echo sprintf( __( 'If you had <a href="%s" target="_blank">writing permissions</a> on <code>%s</code> file, <strong>WP Rocket</strong> could do this automatically. This is not the case, so here are the code you have to put in your <code>%s</code> file for <strong>WP Rocket</strong> works correctly.', 'rocket' ), 'http://codex.wordpress.org/Changing_File_Permissions', basename( WP_CONTENT_DIR ) . '/advanced-cache.php', basename( WP_CONTENT_DIR ) . '/advanced-cache.php' ); ?></p>
+				
+				<?php
+				
+				// Get the content of advanced-cache.php file added by WP Rocket
+				$config = get_rocket_config_file();
+				
+				?>
+				
+				<p><textarea readonly="readonly" id="rules" name="rules" class="large-text readonly" rows="8"><?php echo esc_textarea( $config[1] ); ?></textarea></p>
+			</div>
+			
+		<?php
+		}
+		
+	}
+	
 }
 
 
@@ -210,18 +292,28 @@ function rocket_warning_htaccess_permissions()
 	    && ( !file_exists( $htaccess_file ) || !is_writable( $htaccess_file ) )
 	    && rocket_valid_key()
 	) {
+		
 		global $current_user;
 		$boxes = get_user_meta( $current_user->ID, 'rocket_boxes', true );
-		if( !in_array( __FUNCTION__, (array)$boxes ) ) {
-			?>
+		
+		if( !in_array( __FUNCTION__, (array)$boxes ) ) 
+		{ ?>
+			
 			<div class="error">
-				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>" class="rocket-cross">Ignorer</a>
-				<p><strong>WP Rocket</strong> : Si vous aviez les <a href="http://codex.wordpress.org/Changing_File_Permissions" target="_blank">droits en écriture (en)</a> sur le fichier <code>.htaccess</code>, <strong>WP Rocket</strong> pourrait faire cela automatiquement. Ce n’est pas le cas, donc voici les règles de réécriture que vous devrez mettre dans votre fichier <code>.htaccess</code> pour que <strong>WP Rocket</strong> fonctionne correctement. Cliquez sur le champ et appuyez sur Ctrl-a pour tout sélectionner.</p>
+				
+				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>" class="rkt-cross"><?php _e('Ignore', 'rocket'); ?></a>
+				
+				<p><strong>WP Rocket</strong>: <?php echo sprintf( __( 'If you had <a href="%s" target="_blank">writing permissions</a> on <code>.htaccess</code> file, <strong>WP Rocket</strong> could do this automatically. This is not the case, so here are the rewrite rules you have to put in your <code>.htaccess</code> file for <strong>WP Rocket</strong> works correctly. Click on the field and press Ctrl-A to select all.', 'rocket' ), 'http://codex.wordpress.org/Changing_File_Permissions' ); ?></p>
+				
 				<p><textarea readonly="readonly" id="rules" name="rules" class="large-text readonly" rows="6"><?php echo esc_textarea( get_rocket_htaccess_marker() ); ?></textarea></p>
+				
 			</div>
+			
 		<?php
 		}
+		
 	}
+	
 }
 
 
@@ -241,18 +333,26 @@ function rocket_warning_cache_dir_permissions()
 	    && ( !is_dir( WP_ROCKET_CACHE_PATH ) || !is_writable( WP_ROCKET_CACHE_PATH ) )
 	    && rocket_valid_key()
 	) {
+		
 		global $current_user;
 		$boxes = get_user_meta( $current_user->ID, 'rocket_boxes', true );
-		if( !in_array( __FUNCTION__, (array)$boxes ) ) {
+		
+		if( !in_array( __FUNCTION__, (array)$boxes ) ) 
+		{
 			?>
 			<div class="error">
-				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>" class="rocket-cross">Ignorer</a>
-				<p><strong>WP Rocket</strong> : Attention, vous n'avez pas les <a href="http://codex.wordpress.org/Changing_File_Permissions" target="_blank">droits en écriture (en)</a> sur le dossier de cache de <strong>WP Rocket</strong> (<code><?php echo WP_ROCKET_CACHE_PATH; ?></code>). Pour que <strong>WP Rocket</strong> fonctionne correctement, veuillez indiquer un CHMOD de <code>755</code> ou de <code>775</code> sur ce dossier.</p>
+				
+				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>" class="rkt-cross"><?php _e('Ignore', 'rocket'); ?></a>
+				
+				<p><strong>WP Rocket</strong>: <?php echo sprintf ( __('Be careful, you don\'t have <a href="%s" target="_blank">writing permissions</a> on <strong>WP Rocket</strong> cache folder (<code>%s</code>). For <strong>WP Rocket</strong> works properly, please give CHMOD <code>755</code> or <code>775</code> on this folder.', 'rocket' ), 'http://codex.wordpress.org/Changing_File_Permissions', WP_ROCKET_CACHE_PATH ); ?></p>
+				
 			</div>
 
 		<?php
 		}
+		
 	}
+	
 }
 
 
@@ -265,10 +365,11 @@ function rocket_warning_cache_dir_permissions()
  */
 
 function rocket_need_api_key()
-{
-	?>
+{ ?>
+	
 	<div class="updated hide-if-js">
-		<p><strong>WP Rocket</strong> : Pour finaliser l'installation et profiter des performances apportées par notre plugin, merci de <a href="<?php echo admin_url( 'options-general.php?page=wprocket' ); ?>">renseigner votre clé API</a>.</p>
+		<p><strong>WP Rocket</strong> : <?php echo sprintf ( __ ('To finish the install and take advantage of high performance provided by our plugin, thank you to <a href="%s">Enter you API key</a>.', 'rocket' ), admin_url( 'options-general.php?page=wprocket' ) ) ;?></p>
 	</div>
-	<?php
+	
+<?php
 }
