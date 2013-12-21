@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "POT-Creation-Date: 2013-12-21 10:47+0100\n"
-"PO-Revision-Date: 2013-12-21 10:55+0100\n"
+"PO-Revision-Date: 2013-12-21 15:00+0100\n"
 "Last-Translator: \n"
 "Language-Team:  <contact@wp-rocket.me>\n"
 "Language: Français\n"
@@ -367,11 +367,11 @@ msgstr ""
 
 #: ../inc/admin/options.php:311 ../inc/admin/options.php:318
 msgid "Logged in user cache:"
-msgstr "Cache mobile :"
+msgstr "Cache utilisateur :"
 
 #: ../inc/admin/options.php:316
 msgid "Enable caching for logged in users."
-msgstr "Activer la mise en cache pour les appareils mobile."
+msgstr "Activer la mise en cache pour les utilisateurs connectés."
 
 #: ../inc/admin/options.php:324 ../inc/admin/options.php:332
 msgid "SSL cache:"
