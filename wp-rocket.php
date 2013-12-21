@@ -63,18 +63,18 @@ if( !defined( 'YEAR_IN_SECONDS' ) )
  * @since 1.0
  *
  */
- 
+
 add_action( 'plugins_loaded', 'rocket_init' );
 function rocket_init()
 {
-    
+
     // Load translations
 	load_plugin_textdomain( 'rocket', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
-    
+
     // Nothing to do if autosave
     if( defined( 'DOING_AUTOSAVE' ) )
         return;
-		
+
     // Necessary to call correctly WP Rocket Bot for cache json
     global $do_rocket_bot_cache_json;
     $do_rocket_bot_cache_json = false;
@@ -152,24 +152,30 @@ function rocket_deactivation()
 
     // Delete content of advanced-cache.php file
     rocket_put_content( WP_CONTENT_DIR . '/advanced-cache.php', '' );
-    
-    // Check if WP_CACHE egal false
+
     $htaccess_file =  get_home_path() . '.htaccess';
     $cause = null;
-    // "wpconfig"
-    if( defined( 'WP_CACHE' ) && WP_CACHE ) {
+
+    // If the WP_CACHE is defined and egal true, WP Rocket will always be active
+    if( defined( 'WP_CACHE' ) && WP_CACHE )
+    {
         $cause = 'wpconfig';
     }
-    // "htaccess"
-    elseif( !file_exists( $htaccess_file ) || !is_writable( $htaccess_file ) ) {
+     // If the file permissions of .htacces are not correct, WP Rocket will always be active
+    elseif( !file_exists( $htaccess_file ) || !is_writable( $htaccess_file ) )
+    {
         $cause = 'htaccess';
     }
-    // if deactivation is not recommanded and not forcer
-    if( $cause && !isset( $_GET['rocket_nonce'] ) || !wp_verify_nonce( $_GET['rocket_nonce'], 'force_deactivation' ) ) {
+
+    // If deactivation is not recommanded and not forcer
+    if( $cause && !isset( $_GET['rocket_nonce'] ) || !wp_verify_nonce( $_GET['rocket_nonce'], 'force_deactivation' ) )
+    {
+
         global $current_user;
         set_transient( $current_user->ID . '_donotdeactivaterocket', $cause );
-        wp_safe_redirect( admin_url( 'options-general.php?page=wprocket' ) );
+        wp_safe_redirect( admin_url( 'plugins.php' ) );
         die();
+
     }
 
 }

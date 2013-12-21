@@ -6,6 +6,7 @@ defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
  * Add menu in admin bar
  * From this menu, you can preload the cache files, clear entire domain cache or post cache (front & back-end)
  *
+ * @since 1.3.5 Compatibility with qTranslate
  * @since 1.3.0 Compatibility with WPML
  * @since 1.0
  *
@@ -16,6 +17,7 @@ function rocket_admin_bar( $wp_admin_bar )
 {
 	if( !current_user_can( 'manage_options' ) )
 		return;
+
 	$action = 'purge_cache';
 	// Parent
     $wp_admin_bar->add_menu(array(
@@ -34,11 +36,11 @@ function rocket_admin_bar( $wp_admin_bar )
 				'title' 	=> __( 'Clear cache', 'rocket' ),
 				'href' 		=> '#',
 			));
-			
-			if( $langlinks = get_rocket_wpml_langs_for_admin_bar() ) 
+
+			if( $langlinks = get_rocket_wpml_langs_for_admin_bar() )
 			{
-				
-				foreach( $langlinks as $lang ) 
+
+				foreach( $langlinks as $lang )
 				{
 		            $wp_admin_bar->add_menu( array(
 		                'parent' => 'purge-all',
@@ -46,7 +48,8 @@ function rocket_admin_bar( $wp_admin_bar )
 		                'title'  => $lang['flag'] . '&nbsp;' . $lang['anchor'],
 		                'href'   => wp_nonce_url( admin_url( 'admin-post.php?action='.$action.'&type=all&lang='.$lang['code'] ), $action.'_all' ),
 		            ));
-		        }			
+		        }
+
 			}
 
 		}
@@ -72,17 +75,18 @@ function rocket_admin_bar( $wp_admin_bar )
 	                'href'   => wp_nonce_url( admin_url( 'admin-post.php?action='.$action.'&type=all&lang='.$lang['code'] ), $action.'_all' ),
 	            ));
 	        }
-	        
+
 	        // Add subemnu "All langs"
 	        $wp_admin_bar->add_menu( array(
                 'parent' => 'purge-all',
                 'id' 	 => 'purge-all-all',
-                'title'  =>  '<img src="' . WP_ROCKET_ADMIN_IMG_URL . 'earth.png" alt="" width="18" height="18" /> ' . __( 'Toutes les langues', WP_ROCKET_SLUG ),
+                'title'  =>  '<img src="' . WP_ROCKET_ADMIN_IMG_URL . 'earth.png" alt="" width="18" height="18" /> ' . __( 'All languages', WP_ROCKET_SLUG ),
                 'href'   => wp_nonce_url( admin_url( 'admin-post.php?action='.$action.'&type=all&lang=all' ), $action.'_all' ),
             ));
 
 		}
-		else {
+		else
+		{
 
 			// Purge All
 			$wp_admin_bar->add_menu(array(
@@ -107,9 +111,13 @@ function rocket_admin_bar( $wp_admin_bar )
 					'title'  => sprintf( __( 'Purge this post', 'rocket' ), $pobject->labels->singular_name ),
 					'href' 	 => wp_nonce_url( admin_url( 'admin-post.php?action='.$action.'&type=post-'.$post->ID ), $action.'_post-'.$post->ID ),
 				));
+
 			}
+
 		}
-		else {
+		else
+		{
+
 			// Purge this URL (frontend)
 			$wp_admin_bar->add_menu(array(
 				'parent' => 'wp-rocket',
@@ -117,13 +125,14 @@ function rocket_admin_bar( $wp_admin_bar )
 				'title'  => __( 'Purge this URL', 'rocket' ),
 				'href' 	 => wp_nonce_url( admin_url( 'admin-post.php?action='.$action.'&type=url' ), $action.'_url' ),
 			));
+
 		}
 
 		$action = 'preload';
         // Go robot gogo !
 
         // Compatibility with WPML
-		if( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) 
+		if( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) )
 		{
 
 			$wp_admin_bar->add_menu(array(
@@ -132,10 +141,10 @@ function rocket_admin_bar( $wp_admin_bar )
                 'title'  => __( 'Preload cache', 'rocket' ),
                 'href' 	 => '#'
 	        ));
-			
-			if( $langlinks = get_rocket_wpml_langs_for_admin_bar() ) 
+
+			if( $langlinks = get_rocket_wpml_langs_for_admin_bar() )
 			{
-				foreach( $langlinks as $lang ) 
+				foreach( $langlinks as $lang )
 				{
 		            $wp_admin_bar->add_menu( array(
 		                'parent' => 'preload-cache',
@@ -143,12 +152,14 @@ function rocket_admin_bar( $wp_admin_bar )
 		                'title'  => $lang['flag'] . '&nbsp;' . $lang['anchor'],
 		                'href' 	 => wp_nonce_url( admin_url( 'admin-post.php?action='.$action.'&lang='.$lang['code'] ), $action ),
 		            ));
-		        }	
+		        }
+
 			}
 
 		}
-		else if( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
-			
+		else if( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) )
+		{
+
 			$wp_admin_bar->add_menu(array(
                 'parent' => 'wp-rocket',
                 'id' 	 => 'preload-cache',
@@ -165,16 +176,17 @@ function rocket_admin_bar( $wp_admin_bar )
 	                'href' 	 => wp_nonce_url( admin_url( 'admin-post.php?action='.$action.'&lang='.$lang['code'] ), $action ),
 	            ));
 	        }
-	        
+
 	        $wp_admin_bar->add_menu( array(
                 'parent' => 'preload-cache',
                 'id' 	 => 'preload-cache-all',
-                'title'  =>  '<img src="' . WP_ROCKET_ADMIN_IMG_URL . 'earth.png" alt="" width="18" height="18" /> ' . __( 'Toutes les langues', WP_ROCKET_SLUG ),
+                'title'  =>  '<img src="' . WP_ROCKET_ADMIN_IMG_URL . 'earth.png" alt="" width="18" height="18" /> ' . __( 'All languages', WP_ROCKET_SLUG ),
                 'href' 	 => wp_nonce_url( admin_url( 'admin-post.php?action='.$action.'&lang=all' ), $action ),
             ));
-			
+
 		}
-		else {
+		else
+		{
 
 			$wp_admin_bar->add_menu(array(
                 'parent' => 'wp-rocket',
@@ -199,7 +211,7 @@ function rocket_admin_bar( $wp_admin_bar )
 /**
  * Get all langs to display in admin bar for WPML
  *
- * @since 1.3.5
+ * @since 1.3.0
  *
  */
 
@@ -207,8 +219,8 @@ function get_rocket_wpml_langs_for_admin_bar() {
 
 	global $sitepress;
 	$langlinks = array();
-	
-	foreach ( $sitepress->get_active_languages() as $lang ) 
+
+	foreach ( $sitepress->get_active_languages() as $lang )
 	{
 		// Get flag
 		$flag = $sitepress->get_flag($lang['code']);
@@ -253,16 +265,16 @@ function get_rocket_wpml_langs_for_admin_bar() {
 /**
  * Get all langs to display in admin bar for qTranslate
  *
- * @since 2.0
+ * @since 1.3.5
  *
  */
 
-function get_rocket_qtranslate_langs_for_admin_bar() 
+function get_rocket_qtranslate_langs_for_admin_bar()
 {
 
 	global $q_config;
 
-	foreach( $q_config['enabled_languages'] as $lang ) 
+	foreach( $q_config['enabled_languages'] as $lang )
 	{
 
 		$langlinks[$lang] = array(
@@ -273,7 +285,7 @@ function get_rocket_qtranslate_langs_for_admin_bar()
 
 	}
 
-	if( isset( $_GET['lang'] ) && qtrans_isEnabled( $_GET['lang'] ) ) 
+	if( isset( $_GET['lang'] ) && qtrans_isEnabled( $_GET['lang'] ) )
 	{
 		$currentlang[$_GET['lang']] = $langlinks[$_GET['lang']];
 		unset( $langlinks[$_GET['lang']] );
