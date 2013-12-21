@@ -12,6 +12,7 @@ add_action( 'update_option_sidebars_widgets', 'rocket_clean_domain' );	// When y
 add_action( 'update_option_category_base', 'rocket_clean_domain' );		// When category permalink prefix is update
 add_action( 'update_option_tag_base'	, 'rocket_clean_domain' ); 		// When tag permalink prefix is update
 add_action( 'permalink_structure_changed', 'rocket_clean_domain' ); 	// When permalink structure is update
+add_action( 'create_term'				, 'rocket_clean_domain' ); 		// When a term is created
 add_action( 'edited_terms'				, 'rocket_clean_domain' ); 		// When a term is updated
 add_action( 'delete_term'				, 'rocket_clean_domain' ); 		// When a term is deleted
 add_action( 'add_link'					, 'rocket_clean_domain' );   	// When a link is added
