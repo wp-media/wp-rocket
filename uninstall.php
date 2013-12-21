@@ -39,3 +39,5 @@ function __rocket_rrmdir( $dir )
     @rmdir($dir);
     
 }
+
+__rocket_rrmdir( WP_CONTENT_DIR . '/cache/wp-rocket/' );
