@@ -106,7 +106,7 @@ function rocket_clean_post( $post_id )
 		foreach( $cache_purge_pages as $page )
 			array_push( $purge_urls, home_url( $page ) );
 	}
-
+		
 	// Add all terms archive page to purge
 	$purge_terms = get_rocket_post_terms_urls( $post_id );
 	if( count($purge_terms) )
