@@ -3,6 +3,46 @@ defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 
 
 /**
+ * This warnings are displayed when the plugin can not be deactivated correctly
+ *
+ * since 2.0.0
+ *
+ */
+add_action( 'admin_notices', 'rocket_bad_deactivations' );
+function rocket_bad_deactivations() 
+{ 
+
+	global $current_user;
+	if( current_user_can( 'manage_options' ) && $msg = get_transient( $current_user->ID . '_donotdeactivaterocket' ) ) {
+		delete_transient( $current_user->ID . '_donotdeactivaterocket' );
+	?>
+		<div class="error">
+	<?php
+	switch( $msg ) {
+		case 'wpconfig' :
+	?>
+			<p><?php _e( 'WP Rocket can not be deactivated because the <b>WP_CACHE</b> constant is still defined.<br>Maybe we do not have the write rights on <b>wp-config.php</b>.<br>Please give us rigths or remove this constant. Then retry deactivation.', 'rocket' ); ?></p>
+	<?php
+		break;
+		case 'htaccess' :
+	?>
+			<p><?php _e( 'WP Rocket can not be deactivated because the <b>.htaccess</b> file is not writable.<br>Please give us rigths or remove our block of code. Then retry deactivation.', 'rocket' ); ?></p>
+	<?php
+		break;
+	}
+	// We add a link to permit "force deactivation", use at your own risks.
+	global $status, $page, $s;
+	$plugin_file = 'wp-rocket/wp-rocket.php';
+	$rocket_nonce = wp_create_nonce( 'force_deactivation' );
+	echo '<a href="'.wp_nonce_url('plugins.php?action=deactivate&amp;rocket_nonce=' . $rocket_nonce . '&amp;plugin=' . $plugin_file . '&amp;plugin_status=' . $status . '&amp;paged=' . $page . '&amp;s=' . $s, 'deactivate-plugin_' . $plugin_file).'">' . __( 'You can still force the deactivation by clicking here.', 'rocket' ) . '</a>';
+	?>
+		</div>
+	<?php 
+	}
+
+}
+
+/**
  * This warning is displayed to inform the user that a plugin de/activation can be followed by a cache purgation
  *
  * since 1.3.0

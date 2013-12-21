@@ -87,7 +87,7 @@ function rocket_init()
     require WP_ROCKET_FUNCTIONS_PATH . '/formatting.php';
     require WP_ROCKET_FUNCTIONS_PATH . '/plugins.php';
     require WP_ROCKET_FUNCTIONS_PATH . '/bots.php';
-    require WP_ROCKET_PATH 			 . '/deprecated.php';
+    require WP_ROCKET_INC_PATH		 . '/deprecated.php';
     require WP_ROCKET_FRONT_PATH 	 . '/htaccess.php';
     require WP_ROCKET_INC_PATH 		 . '/headers.php';
 
@@ -143,8 +143,6 @@ register_deactivation_hook( __FILE__, 'rocket_deactivation' );
 function rocket_deactivation()
 {
 
-    require WP_ROCKET_INC_PATH . '/wp-config.php';
-
     // Delete All WP Rocket rules of the .htaccess file
     flush_rocket_htaccess( true );
     flush_rewrite_rules();
@@ -156,9 +154,24 @@ function rocket_deactivation()
     rocket_put_content( WP_CONTENT_DIR . '/advanced-cache.php', '' );
     
     // Check if WP_CACHE egal false
-    if( defined( 'WP_CACHE' ) && WP_CACHE )
-    	return false;
-    
+    $htaccess_file =  get_home_path() . '.htaccess';
+    $cause = null;
+    // "wpconfig"
+    if( defined( 'WP_CACHE' ) && WP_CACHE ) {
+        $cause = 'wpconfig';
+    }
+    // "htaccess"
+    elseif( !file_exists( $htaccess_file ) || !is_writable( $htaccess_file ) ) {
+        $cause = 'htaccess';
+    }
+    // if deactivation is not recommanded and not forcer
+    if( $cause && !isset( $_GET['rocket_nonce'] ) || !wp_verify_nonce( $_GET['rocket_nonce'], 'force_deactivation' ) ) {
+        global $current_user;
+        set_transient( $current_user->ID . '_donotdeactivaterocket', $cause );
+        wp_safe_redirect( admin_url( 'options-general.php?page=wprocket' ) );
+        die();
+    }
+
 }
 
 
@@ -172,8 +185,8 @@ function rocket_deactivation()
 register_activation_hook( __FILE__, 'rocket_activation' );
 function rocket_activation()
 {
-    require WP_ROCKET_INC_PATH . '/options.php';
-    require WP_ROCKET_INC_PATH . '/files.php';
+    require WP_ROCKET_FUNCTIONS_PATH . '/options.php';
+    require WP_ROCKET_FUNCTIONS_PATH . '/files.php';
     require WP_ROCKET_FRONT_PATH . '/htaccess.php';
 
     // Add All WP Rocket rules of the .htaccess file
