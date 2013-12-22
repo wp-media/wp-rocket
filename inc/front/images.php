@@ -25,20 +25,39 @@ function rocket_specify_image_dimensions( $buffer )
 		// Don't touch lazy-load file (no conflit with Photon (Jetpack))
 		if ( strpos( $image, 'data-lazy-original' ) || strpos( $image, 'data-no-image-dimensions' ) )
 			continue;
-			
+
 		$tmp = $image;
 
 		// Get link of the file
         preg_match( '/src=[\'"]([^\'"]+)/', $image, $src_match );
-		
-		// Check if the link isn't external
+
+		// Get infos of the URL
 		$image_url = parse_url( $src_match[1] );
-	
+
+		// Check if the link isn't external
 		if( empty( $image_url['host'] ) || $image_url['host'] == rocket_remove_url_protocol( home_url() ) )
 		{
-			
+
 			// Get image attributes
 			$sizes = getimagesize( ABSPATH . $image_url['path'] );
+
+		}
+		else
+		{
+
+			// if link is external, check if allow_url_fopen is On in php.ini
+			if( ini_get('allow_url_fopen') )
+			{
+
+				// Get image attributes
+				$sizes = getimagesize( $image_url['scheme'] . '://' . $image_url['host'] . $image_url['path'] );
+
+			}
+
+		}
+
+		if( !empty($sizes) )
+		{
 
 			// Add width and width attribute
 			$image = str_replace( '<img', '<img ' . $sizes[3], $image );
