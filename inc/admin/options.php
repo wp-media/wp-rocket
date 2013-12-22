@@ -289,7 +289,7 @@ function rocket_display_options()
 				'label'		   => 'JS',
 				'name'		   => 'minify_js',
 				'label_screen' => __( 'Files minification', 'rocket' ),
-				'description'  => sprintf( __( 'Minification removes any space and comments present in the CSS and Javascript files.<br/>This mechanism reduces the weight of each file and allow a faster reading of browsers and search engines.<br/>Concatenation combines all CSS and Javascript files.<br/>This reduces the number of HTTP requests and improves the loading time.<br/><strong style="color:#FF0000;">Warning: concatenating files can cause display errors. In case of any errors we recommend that you disable this option or watch the following videos: <a href="%s" class="fancybox">%s</a></strong>.' ,'rocket' ), 'http:// www.youtube.com/embed/ziXSvZgxLk', 'http:// www.youtube.com/embed/ziXSvZgxLk' ) )
+				'description'  => sprintf( __( 'Minification removes any space and comments present in the CSS and Javascript files.<br/>This mechanism reduces the weight of each file and allows a faster reading of browsers and search engines.<br/>Concatenation combines all CSS and Javascript files.<br/>This reduces the number of HTTP requests and improves the loading time.<br/><strong style="color:#FF0000;">Warning: concatenating files can cause display errors. In case of any errors we recommend that you disable this option or watch the following videos: <a href="%s" class="fancybox">%s</a></strong>.' ,'rocket' ), 'http:// www.youtube.com/embed/ziXSvZgxLk', 'http:// www.youtube.com/embed/ziXSvZgxLk' ) )
 		)
 	);
 	add_settings_field(
@@ -351,7 +351,7 @@ function rocket_display_options()
 				'label_for'	   => 'purge_cron_unit',
 				'label_screen' => __( 'Unit of time', 'rocket' ),
 				'fieldset'	   => 'end',
-				'description'  => __( 'By default purge time is 12 hours, this means that once created, the cache files are automatically removed after 4 hours before being recreated. <br/> This can be useful if you display your latest tweets or rss feeds in your sidebar, for example. <br/> Specify 0 for unlimited life.', 'rocket' ),
+				'description'  => __( 'By default purge time is 12 hours, this means that once created, the cache files are automatically removed after 12 hours before being recreated. <br/> This can be useful if you display your latest tweets or rss feeds in your sidebar, for example. <br/> Specify 0 for unlimited life.', 'rocket' ),
 				'options' => array(
 								'SECOND_IN_SECONDS' => __( 'second(s)', 'rocket' ),
 								'MINUTE_IN_SECONDS' => 'minute(s)',

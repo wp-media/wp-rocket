@@ -155,21 +155,22 @@ function rocket_deactivation()
     rocket_put_content( WP_CONTENT_DIR . '/advanced-cache.php', '' );
 
     $htaccess_file =  get_home_path() . '.htaccess';
+    $config_file =  get_home_path() . 'wp-config.php';
     $cause = null;
 
-    // If the WP_CACHE is defined and egal true, WP Rocket will always be active
-    if( defined( 'WP_CACHE' ) && WP_CACHE )
+    // If the file permissions of wp-config.php are not correct, WP Rocket will always be active
+    if( !is_writable( $config_file ) )
     {
         $cause = 'wpconfig';
     }
-     // If the file permissions of .htacces are not correct, WP Rocket will always be active
+     // If the file permissions of .htaccess are not correct, WP Rocket will always be active
     elseif( !file_exists( $htaccess_file ) || !is_writable( $htaccess_file ) )
     {
         $cause = 'htaccess';
     }
 
     // If deactivation is not recommanded and not forcer
-    if( $cause && !isset( $_GET['rocket_nonce'] ) || !wp_verify_nonce( $_GET['rocket_nonce'], 'force_deactivation' ) )
+    if( $cause && ( !isset( $_GET['rocket_nonce'] ) && !wp_verify_nonce( $_GET['rocket_nonce'], 'force_deactivation' ) ) )
     {
 
         global $current_user;
@@ -180,6 +181,7 @@ function rocket_deactivation()
     }
 
 }
+
 
 
 /*
