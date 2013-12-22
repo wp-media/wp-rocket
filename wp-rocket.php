@@ -144,41 +144,38 @@ register_deactivation_hook( __FILE__, 'rocket_deactivation' );
 function rocket_deactivation()
 {
 
+    // Check if all the job can be done
+    $htaccess_file =  get_home_path() . '.htaccess';
+    $config_file =  get_home_path() . 'wp-config.php';
+
+    if( ( !isset( $_GET['rocket_nonce'] ) || !wp_verify_nonce( $_GET['rocket_nonce'], 'force_deactivation' ) ) &&
+        ( !file_exists( $htaccess_file ) || !is_writable( $htaccess_file ) ||
+        !file_exists( $config_file ) || !is_writable( $config_file ) ) ) {
+
+        $causes = array();
+        // .htaccess problem
+        if( !file_exists( $htaccess_file ) || !is_writable( $htaccess_file ) ){
+            $causes[] = 'htaccess';
+        }
+        // wp-config problem
+        if( !file_exists( $config_file ) || !is_writable( $config_file ) ){
+            $causes[] = 'wpconfig';
+        }
+
+        global $current_user;
+        set_transient( $current_user->ID . '_donotdeactivaterocket', $causes );
+        wp_safe_redirect( wp_get_referer() );
+        die();
+    }
     // Delete All WP Rocket rules of the .htaccess file
     flush_rocket_htaccess( true );
     flush_rewrite_rules();
 
     // Remove WP_CACHE constant in wp-config.php
-	set_rocket_wp_cache_define( false );
+    set_rocket_wp_cache_define( false );
 
     // Delete content of advanced-cache.php file
     rocket_put_content( WP_CONTENT_DIR . '/advanced-cache.php', '' );
-
-    $htaccess_file =  get_home_path() . '.htaccess';
-    $config_file =  get_home_path() . 'wp-config.php';
-    $cause = null;
-
-    // If the file permissions of wp-config.php are not correct, WP Rocket will always be active
-    if( !is_writable( $config_file ) )
-    {
-        $cause = 'wpconfig';
-    }
-     // If the file permissions of .htaccess are not correct, WP Rocket will always be active
-    elseif( !file_exists( $htaccess_file ) || !is_writable( $htaccess_file ) )
-    {
-        $cause = 'htaccess';
-    }
-
-    // If deactivation is not recommanded and not forcer
-    if( $cause && ( !isset( $_GET['rocket_nonce'] ) && !wp_verify_nonce( $_GET['rocket_nonce'], 'force_deactivation' ) ) )
-    {
-
-        global $current_user;
-        set_transient( $current_user->ID . '_donotdeactivaterocket', $cause );
-        wp_safe_redirect( admin_url( 'plugins.php' ) );
-        die();
-
-    }
 
 }
 

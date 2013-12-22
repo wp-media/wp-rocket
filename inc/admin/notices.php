@@ -13,37 +13,63 @@ function rocket_bad_deactivations()
 {
 
 	global $current_user;
-	if( current_user_can( 'manage_options' ) && $msg = get_transient( $current_user->ID . '_donotdeactivaterocket' ) ) 
+	if( current_user_can( 'manage_options' ) && $msgs = get_transient( $current_user->ID . '_donotdeactivaterocket' ) ) 
 	{
+		
 		delete_transient( $current_user->ID . '_donotdeactivaterocket' );
+		$errors = array();
 		?>
 
 		<div class="error">
 			<?php
-			switch( $msg )
+			foreach( $msgs as $msg)
 			{
-				case 'wpconfig' : ?>
 
-					<p><?php _e( '<strong>WP Rocket</strong> can not be deactivated because the <code>WP_CACHE</code> constant is still defined.<br>Maybe we do not have the write rights on <code>wp-config.php</code>.<br>Please give us rigths or remove this constant. Then retry deactivation.', 'rocket' ); ?></p>
+				switch( $msg ) {
 
-				<?php
-				break;
+					case 'wpconfig' :
 
-				case 'htaccess' : ?>
+						$errors['wpconfig'] = 	'<p>' . 
+													sprintf( __( '<strong>WP Rocket</strong> can not be deactivated because of <code>%s</code>.', 'rocket' ), 'WP_CACHE' ) . '<br>' .
+													__( 'This constant is still defined in <code>wp-config.php</code> file and its value must be set to <code>false</code>.', 'rocket' ) . ' ' .
+													sprintf( __( 'Maybe we do not have the write rights on <code>%s</code>.', 'rocket' ), 'wp-config.php' ) . '<br>' .
+													__( 'Please give us rigths or resolve the problem yourself. Then retry deactivation.', 'rocket' ) . 
+												'</p>';
 
-					<p><?php _e( '<strong>WP Rocket</strong> can not be deactivated because the <code>.htaccess</code> file is not writable.<br>Please give us rigths or remove our block of code. Then retry deactivation.', 'rocket' ); ?></p>
+					break;
 
-				<?php
-				break;
+					case 'htaccess' :
+
+						$errors['htaccess'] = '<p>' . 
+												sprintf( __( '<strong>WP Rocket</strong> can not be deactivated because of <code>%s</code>.', 'rocket' ), '.htaccess' ) . '<br>' .
+												__( 'This file is not writable and we can not remove these directives.', 'rocket' ) . ' ' .
+													sprintf( __( 'Maybe we do not have the write rights on <code>%s</code>.', 'rocket' ), '.htaccess' ) . '<br>' .
+												__( 'Please give us rigths or resolve the problem yourself. Then retry deactivation.', 'rocket' ) . 
+												'</p>';
+
+					break;
+
+				}
+
+				$errors = apply_filters( 'rocket_bad_deactivations', $errors, $msg );
+
+			}
+	
+
+			if( count( $errors ) ) {
+
+				array_map( 'printf', $errors );
 
 			}
 
 			// We add a link to permit "force deactivation", use at your own risks.
-			global $status, $page, $s;
-			$plugin_file = 'wp-rocket/wp-rocket.php';
-			$rocket_nonce = wp_create_nonce( 'force_deactivation' );
+			if( apply_filters( 'rocket_permit_force_deactivation', true ) ) {
+				global $status, $page, $s;
+				$plugin_file = 'wp-rocket/wp-rocket.php';
+				$rocket_nonce = wp_create_nonce( 'force_deactivation' );
 
-			echo '<p><a href="'.wp_nonce_url('plugins.php?action=deactivate&amp;rocket_nonce=' . $rocket_nonce . '&amp;plugin=' . $plugin_file . '&amp;plugin_status=' . $status . '&amp;paged=' . $page . '&amp;s=' . $s, 'deactivate-plugin_' . $plugin_file).'">' . __( 'You can still force the deactivation by clicking here.', 'rocket' ) . '</a></p>';
+				echo '<p><a href="'.wp_nonce_url('plugins.php?action=deactivate&amp;rocket_nonce=' . $rocket_nonce . '&amp;plugin=' . $plugin_file . '&amp;plugin_status=' . $status . '&amp;paged=' . $page . '&amp;s=' . $s, 'deactivate-plugin_' . $plugin_file).'">' . __( 'You can still force the deactivation by clicking here.', 'rocket' ) . '</a></p>';
+			}
 			?>
 			
 		</div>
