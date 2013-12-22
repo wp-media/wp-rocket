@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
-"POT-Creation-Date: 2013-12-22 13:35+0100\n"
-"PO-Revision-Date: 2013-12-22 13:38+0100\n"
+"POT-Creation-Date: 2013-12-23 00:42+0100\n"
+"PO-Revision-Date: 2013-12-23 00:42+0100\n"
 "Last-Translator: \n"
 "Language-Team:  <contact@wp-rocket.me>\n"
 "Language: fr\n"
@@ -16,7 +16,7 @@ msgstr ""
 "X-Poedit-SearchPath-0: ..\n"
 
 #: ../inc/admin-bar.php:36 ../inc/admin-bar.php:64 ../inc/admin-bar.php:95
-#: ../inc/admin/notices.php:80 ../inc/admin/options.php:455
+#: ../inc/admin/notices.php:100 ../inc/admin/options.php:455
 #: ../inc/admin/options.php:460
 msgid "Clear cache"
 msgstr "Vider le cache"
@@ -62,41 +62,54 @@ msgstr "Purger cet article"
 msgid "Purge cache"
 msgstr "Purger le cache"
 
-#: ../inc/admin/notices.php:27
+#: ../inc/admin/notices.php:34 ../inc/admin/notices.php:40
+#, php-format
 msgid ""
-"<strong>WP Rocket</strong> can not be deactivated because the "
-"<code>WP_CACHE</code> constant is still defined.<br>Maybe we do not have the "
-"write rights on <code>wp-config.php</code>.<br>Please give us rigths or "
-"remove this constant. Then retry deactivation."
+"<strong>WP Rocket</strong> can not be deactivated because of <code>%s</code>."
 msgstr ""
-"<strong>WP Rocket</strong> ne peut pas être désactivé à cause de la "
-"constante <code>WP_CACHE</code> qui est encore définie.<br/>Peut-être que "
-"nous n'avez pas les droits d'écriture sur le fichier <code>wp-config.php</"
-"code>.<br/>S'il vous plaît, merci de rétablir les bons droits ou de "
-"supprimer cette constante. Relancez ensuite la désactivation."
+"<strong>WP Rocket</strong> ne peut pas être désactivé à cause de <code>%s</"
+"code>."
 
 #: ../inc/admin/notices.php:34
 msgid ""
-"<strong>WP Rocket</strong> can not be deactivated because the <code>."
-"htaccess</code> file is not writable.<br>Please give us rigths or remove our "
-"block of code. Then retry deactivation."
+"This constant is still defined in <code>wp-config.php</code> file and its "
+"value must be set to <code>false</code>."
 msgstr ""
-"<strong>WP Rocket</strong> ne peut pas être désactivé à cause du fichier "
-"<code>.htaccess</code> qui n'est pas accessible en écriture.<br/>S'il vous "
-"plaît, merci de rétablier les bons droits ou de supprimer notre bloc de "
-"code. Relancez ensuite la désactivation."
+"Cette constante est encore définie dans le fichier <code>wp-config.php</"
+"code> et sa valeur doit être à <code>false</code>."
 
-#: ../inc/admin/notices.php:46
+#: ../inc/admin/notices.php:34 ../inc/admin/notices.php:40
+#, php-format
+msgid "Maybe we do not have the write rights on <code>%s</code>."
+msgstr ""
+"Peut-être que vous n'avez pas les droits d'écriture sur le fichier <code>%s</"
+"code>."
+
+#: ../inc/admin/notices.php:34 ../inc/admin/notices.php:40
+msgid ""
+"Please give us rigths or resolve the problem yourself. Then retry "
+"deactivation."
+msgstr ""
+"S'il vous plaît, merci de rétablir les bons droits d'écriture ou de résoudre "
+"le problème vous-même. Relancez ensuite la désactivation."
+
+#: ../inc/admin/notices.php:40
+msgid "This file is not writable and we can not remove these directives."
+msgstr ""
+"Ce fichier n'est pas accessible en écriture et nous ne pouvons pas supprimer "
+"ces directives."
+
+#: ../inc/admin/notices.php:65
 msgid "You can still force the deactivation by clicking here."
-msgstr "Vous pouvez toujours forcer la désactivation en cliquant ici."
+msgstr "Vous pouvez forcer la désactivation en cliquant ici."
 
-#: ../inc/admin/notices.php:78 ../inc/admin/notices.php:193
-#: ../inc/admin/notices.php:259 ../inc/admin/notices.php:307
-#: ../inc/admin/notices.php:355 ../inc/admin/notices.php:396
+#: ../inc/admin/notices.php:98 ../inc/admin/notices.php:213
+#: ../inc/admin/notices.php:279 ../inc/admin/notices.php:327
+#: ../inc/admin/notices.php:375 ../inc/admin/notices.php:416
 msgid "Ignore"
 msgstr "Ignorer"
 
-#: ../inc/admin/notices.php:80
+#: ../inc/admin/notices.php:100
 msgid ""
 "One or more extensions have been enabled or disabled, do not forget to clear "
 "the cache if necessary."
@@ -104,7 +117,7 @@ msgstr ""
 "Une ou plusieurs extensions ont été activées ou désactivées, n'oubliez pas "
 "de vider le cache si nécessaire."
 
-#: ../inc/admin/notices.php:147
+#: ../inc/admin/notices.php:167
 msgid ""
 "The following plugins are not compatible with WP Rocket and will cause "
 "unexpected results:"
@@ -112,11 +125,11 @@ msgstr ""
 "Les plugins suivants ne sont pas compatible avec WP Rocket et vont générer "
 "des résultats inatendus "
 
-#: ../inc/admin/notices.php:155
+#: ../inc/admin/notices.php:175
 msgid "Desactivate"
 msgstr "Désactiver"
 
-#: ../inc/admin/notices.php:195
+#: ../inc/admin/notices.php:215
 msgid ""
 "Connected users don't have the cached version of the website. We recommend "
 "you, to browse your website disconnected."
@@ -125,7 +138,7 @@ msgstr ""
 "cache. Nous vous conseillons de naviguer sur le site en étant déconnecté "
 "pour être en situation réelle."
 
-#: ../inc/admin/notices.php:223
+#: ../inc/admin/notices.php:243
 #, php-format
 msgid ""
 "A custom permalink structure is required for <strong>WP Rocket</strong> to "
@@ -135,23 +148,23 @@ msgstr ""
 "Rocket</strong> fonctionne correctement. S'il vous plaît, aller à la page <a "
 "href=\"%s\">Permaliens</a> pour les configurer."
 
-#: ../inc/admin/notices.php:261
+#: ../inc/admin/notices.php:281
 #, php-format
 msgid ""
 "If you had <a href=\"%s\" target=\"_blank\">writing permissions</a> on "
 "<code>wp-config.php/code> file, <strong>WP Rocket</strong> could do this "
-"automatically. This is not the case, so here are the constance  you have to "
+"automatically. This is not the case, so here are the constant you have to "
 "put in your <code>wp-config.php</code> file for <strong>WP Rocket</strong> "
 "works correctly."
 msgstr ""
 "Si vous aviez <a href=\"%s\" target=\"_blank\">les droits en écriture</a> "
-"sur le fichier <code> .htaccess </code>, <strong>WP Rocket </strong>pourrait "
-"faire cela automatiquement. Ce n’est pas le cas, donc voici les règles de "
-"réécriture que vous devrez mettre dans votre fichier <code>.htaccess</code> "
-"pour que WP Rocket fonctionne correctement. Cliquez sur le champ et appuyez "
-"sur Ctrl-A pour tout sélectionner. "
+"sur le fichier <code>wp-config.php</code>, <strong>WP Rocket </"
+"strong>pourrait faire cela automatiquement. Ce n’est pas le cas, donc voici "
+"la constante que vous devrez insérer dans votre fichier <code>wp-config.php</"
+"code> pour que WP Rocket fonctionne correctement. Cliquez sur le champ et "
+"appuyez sur Ctrl-A pour tout sélectionner. "
 
-#: ../inc/admin/notices.php:309
+#: ../inc/admin/notices.php:329
 #, php-format
 msgid ""
 "If you had <a href=\"%s\" target=\"_blank\">writing permissions</a> on <code>"
@@ -165,7 +178,7 @@ msgstr ""
 "devrez mettre dans votre fichier <code>%s</code> pour que <strong>WP Rocket</"
 "strong> fonctionne correctement."
 
-#: ../inc/admin/notices.php:357
+#: ../inc/admin/notices.php:377
 #, php-format
 msgid ""
 "If you had <a href=\"%s\" target=\"_blank\">writing permissions</a> on "
@@ -181,7 +194,7 @@ msgstr ""
 "pour que WP Rocket fonctionne correctement. Cliquez sur le champ et appuyez "
 "sur Ctrl-A pour tout sélectionner. "
 
-#: ../inc/admin/notices.php:398
+#: ../inc/admin/notices.php:418
 #, php-format
 msgid ""
 "Be careful, you don't have <a href=\"%s\" target=\"_blank\">writing "
@@ -195,7 +208,7 @@ msgstr ""
 "correctement, veuillez indiquer un CHMOD de <code>755</code> ou de "
 "<code>775</code> sur ce dossier."
 
-#: ../inc/admin/notices.php:422
+#: ../inc/admin/notices.php:442
 #, php-format
 msgid ""
 "To finish the install and take advantage of high performance provided by our "
@@ -611,6 +624,28 @@ msgstr ""
 "Une erreur inattendue s'est produite. Quelque chose ne va pas avec WP-Rocket."
 "me ou avec la configuration de ce serveur. Si vous continuez à avoir des "
 "problèmes, merci d'aller sur notre <a href=\"%s\">forum de support</a>."
+
+#~ msgid ""
+#~ "<strong>WP Rocket</strong> can not be deactivated because the "
+#~ "<code>WP_CACHE</code> constant is still defined.<br>Maybe we do not have "
+#~ "the write rights on <code>wp-config.php</code>.<br>Please give us rigths "
+#~ "or remove this constant. Then retry deactivation."
+#~ msgstr ""
+#~ "<strong>WP Rocket</strong> ne peut pas être désactivé à cause de la "
+#~ "constante <code>WP_CACHE</code> qui est encore définie.<br/>Peut-être que "
+#~ "nous n'avez pas les droits d'écriture sur le fichier <code>wp-config.php</"
+#~ "code>.<br/>S'il vous plaît, merci de rétablir les bons droits ou de "
+#~ "supprimer cette constante. Relancez ensuite la désactivation."
+
+#~ msgid ""
+#~ "<strong>WP Rocket</strong> can not be deactivated because the <code>."
+#~ "htaccess</code> file is not writable.<br>Please give us rigths or remove "
+#~ "our block of code. Then retry deactivation."
+#~ msgstr ""
+#~ "<strong>WP Rocket</strong> ne peut pas être désactivé à cause du fichier "
+#~ "<code>.htaccess</code> qui n'est pas accessible en écriture.<br/>S'il "
+#~ "vous plaît, merci de rétablier les bons droits ou de supprimer notre bloc "
+#~ "de code. Relancez ensuite la désactivation."
 
 #~ msgid "Attendre le chargement de ce fichier ?"
 #~ msgstr "Wait until this file is loaded ? "

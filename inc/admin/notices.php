@@ -8,6 +8,7 @@ defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
  * since 2.0.0
  *
  */
+ 
 add_action( 'admin_notices', 'rocket_bad_deactivations' );
 function rocket_bad_deactivations()
 {
@@ -21,6 +22,7 @@ function rocket_bad_deactivations()
 		?>
 
 		<div class="error">
+			
 			<?php
 			foreach( $msgs as $msg)
 			{
@@ -29,23 +31,13 @@ function rocket_bad_deactivations()
 
 					case 'wpconfig' :
 
-						$errors['wpconfig'] = 	'<p>' . 
-													sprintf( __( '<strong>WP Rocket</strong> can not be deactivated because of <code>%s</code>.', 'rocket' ), 'WP_CACHE' ) . '<br>' .
-													__( 'This constant is still defined in <code>wp-config.php</code> file and its value must be set to <code>false</code>.', 'rocket' ) . ' ' .
-													sprintf( __( 'Maybe we do not have the write rights on <code>%s</code>.', 'rocket' ), 'wp-config.php' ) . '<br>' .
-													__( 'Please give us rigths or resolve the problem yourself. Then retry deactivation.', 'rocket' ) . 
-												'</p>';
+						$errors['wpconfig'] = 	'<p>' . sprintf( __( '<strong>WP Rocket</strong> can not be deactivated because of <code>%s</code>.', 'rocket' ), 'WP_CACHE' ) . '<br>' . __( 'This constant is still defined in <code>wp-config.php</code> file and its value must be set to <code>false</code>.', 'rocket' ) . ' ' . sprintf( __( 'Maybe we do not have the write rights on <code>%s</code>.', 'rocket' ), 'wp-config.php' ) . '<br>' . __( 'Please give us rigths or resolve the problem yourself. Then retry deactivation.', 'rocket' ) . '</p>';
 
 					break;
 
 					case 'htaccess' :
 
-						$errors['htaccess'] = '<p>' . 
-												sprintf( __( '<strong>WP Rocket</strong> can not be deactivated because of <code>%s</code>.', 'rocket' ), '.htaccess' ) . '<br>' .
-												__( 'This file is not writable and we can not remove these directives.', 'rocket' ) . ' ' .
-													sprintf( __( 'Maybe we do not have the write rights on <code>%s</code>.', 'rocket' ), '.htaccess' ) . '<br>' .
-												__( 'Please give us rigths or resolve the problem yourself. Then retry deactivation.', 'rocket' ) . 
-												'</p>';
+						$errors['htaccess'] = '<p>' . sprintf( __( '<strong>WP Rocket</strong> can not be deactivated because of <code>%s</code>.', 'rocket' ), '.htaccess' ) . '<br>' . __( 'This file is not writable and we can not remove these directives.', 'rocket' ) . ' ' . sprintf( __( 'Maybe we do not have the write rights on <code>%s</code>.', 'rocket' ), '.htaccess' ) . '<br>' . __( 'Please give us rigths or resolve the problem yourself. Then retry deactivation.', 'rocket' ) . '</p>';
 
 					break;
 
@@ -55,15 +47,17 @@ function rocket_bad_deactivations()
 
 			}
 	
-
-			if( count( $errors ) ) {
+			// Display errors
+			if( count( $errors ) ) 
+			{
 
 				array_map( 'printf', $errors );
 
 			}
 
 			// We add a link to permit "force deactivation", use at your own risks.
-			if( apply_filters( 'rocket_permit_force_deactivation', true ) ) {
+			if( apply_filters( 'rocket_permit_force_deactivation', true ) ) 
+			{
 				global $status, $page, $s;
 				$plugin_file = 'wp-rocket/wp-rocket.php';
 				$rocket_nonce = wp_create_nonce( 'force_deactivation' );
@@ -284,7 +278,7 @@ function rocket_warning_wp_config_permissions()
 
 				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>" class="rkt-cross"><?php _e('Ignore', 'rocket'); ?></a>
 
-				<p><strong>WP Rocket</strong>: <?php echo sprintf( __('If you had <a href="%s" target="_blank">writing permissions</a> on <code>wp-config.php/code> file, <strong>WP Rocket</strong> could do this automatically. This is not the case, so here are the constance  you have to put in your <code>wp-config.php</code> file for <strong>WP Rocket</strong> works correctly.', 'rocket' ), 'http://codex.wordpress.org/Changing_File_Permissions' ); ?></p>
+				<p><strong>WP Rocket</strong>: <?php echo sprintf( __('If you had <a href="%s" target="_blank">writing permissions</a> on <code>wp-config.php/code> file, <strong>WP Rocket</strong> could do this automatically. This is not the case, so here are the constant you have to put in your <code>wp-config.php</code> file for <strong>WP Rocket</strong> works correctly.', 'rocket' ), 'http://codex.wordpress.org/Changing_File_Permissions' ); ?></p>
 
 				<?php
 

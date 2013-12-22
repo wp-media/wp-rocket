@@ -150,15 +150,20 @@ function rocket_deactivation()
 
     if( ( !isset( $_GET['rocket_nonce'] ) || !wp_verify_nonce( $_GET['rocket_nonce'], 'force_deactivation' ) ) &&
         ( !file_exists( $htaccess_file ) || !is_writable( $htaccess_file ) ||
-        !file_exists( $config_file ) || !is_writable( $config_file ) ) ) {
+        !file_exists( $config_file ) || !is_writable( $config_file ) ) ) 
+    {
 
         $causes = array();
+       
         // .htaccess problem
-        if( !file_exists( $htaccess_file ) || !is_writable( $htaccess_file ) ){
+        if( !file_exists( $htaccess_file ) || !is_writable( $htaccess_file ) )
+        {
             $causes[] = 'htaccess';
         }
+       
         // wp-config problem
-        if( !file_exists( $config_file ) || !is_writable( $config_file ) ){
+        if( !file_exists( $config_file ) || !is_writable( $config_file ) )
+        {
             $causes[] = 'wpconfig';
         }
 
@@ -167,6 +172,7 @@ function rocket_deactivation()
         wp_safe_redirect( wp_get_referer() );
         die();
     }
+    
     // Delete All WP Rocket rules of the .htaccess file
     flush_rocket_htaccess( true );
     flush_rewrite_rules();
