@@ -143,7 +143,7 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version )
 		run_rocket_bot( 'cache-preload' );
 	}
 
-	if( version_compare( $actual_version, '1.4.0', '<' ) )
+	if( version_compare( $actual_version, '2.0', '<' ) )
 	{
 
 		// Add secret cache key
@@ -167,7 +167,7 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version )
 			$wp_filesystem->mkdir( WP_ROCKET_CACHE_PATH, octdec($chmod) );
 
 		// Move old cache folder in new path
-		$wp_filesystem->move( $old_dir, WP_ROCKET_CACHE_PATH );
+		$wp_filesystem->move( WP_CONTENT_DIR . '/wp-rocket-cache', WP_ROCKET_CACHE_PATH );
 
 	}
 
