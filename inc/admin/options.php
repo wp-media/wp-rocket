@@ -289,7 +289,7 @@ function rocket_display_options()
 				'label'		   => 'JS',
 				'name'		   => 'minify_js',
 				'label_screen' => __( 'Files minification', 'rocket' ),
-				'description'  => sprintf( __( 'Minification removes any space and comments present in the CSS and Javascript files.<br/>This mechanism reduces the weight of each file and allows a faster reading of browsers and search engines.<br/>Concatenation combines all CSS and Javascript files.<br/>This reduces the number of HTTP requests and improves the loading time.<br/><strong style="color:#FF0000;">Warning: concatenating files can cause display errors. In case of any errors we recommend that you disable this option or watch the following videos: <a href="%s" class="fancybox">%s</a></strong>.' ,'rocket' ), 'http:// www.youtube.com/embed/ziXSvZgxLk', 'http:// www.youtube.com/embed/ziXSvZgxLk' ) )
+				'description'  => sprintf( __( 'Minification removes any space and comments present in the CSS and Javascript files.<br/>This mechanism reduces the weight of each file and allows a faster reading of browsers and search engines.<br/>Concatenation combines all CSS and Javascript files.<br/>This reduces the number of HTTP requests and improves the loading time.<br/><strong style="color:#FF0000;">Warning: concatenating files can cause display errors. In case of any errors we recommend that you disable this option or watch the following videos: <a href="%s" class="fancybox">%s</a></strong>.' ,'rocket' ), 'http://www.youtube.com/embed/ziXSvZgxLk', 'http://www.youtube.com/embed/ziXSvZgxLk' ) )
 		)
 	);
 	add_settings_field(
@@ -373,7 +373,7 @@ function rocket_display_options()
 			'type'         => 'textarea',
 			'label_for'    => 'dns_prefetch',
 			'label_screen' => __('Prefetch DNS requests', 'rocket' ),
-			'description'  => sprintf( __( 'DNS prefetching is a way for browsers to anticipate the DNS resolution of external domains from your site.<br/>This mechanism reduces the latency of some external files.<br/>To Learn more about this option and how to use it correctly, we advise you to watch the following video: <a href="%s">%s</a><br/><strong>Warning:</strong> Enter the domain names without their protocol, for example: <code>//ajax.googleapis.com</code> without <code>http:</code> (one per line).', 'rocket' ), '', '' )
+			'description'  => sprintf( __( 'DNS prefetching is a way for browsers to anticipate the DNS resolution of external domains from your site.<br/>This mechanism reduces the latency of some external files.<br/>To Learn more about this option and how to use it correctly, we advise you to watch the following video: <a href="%s" class="fancybox">%s</a><br/><strong>Warning:</strong> Enter the domain names without their protocol, for example: <code>//ajax.googleapis.com</code> without <code>http:</code> (one per line).', 'rocket' ), 'http://www.youtube.com/embed/ElJCtUidLwc', 'http://www.youtube.com/embed/ElJCtUidLwc' )
 		)
 	);
 	add_settings_field(
@@ -412,7 +412,7 @@ function rocket_display_options()
 			'type'         => 'textarea',
 			'label_for'    => 'cache_reject_cookies',
 			'label_screen' => __( 'Don\'t cache pages that use the following cookies:', 'rocket' ),
-			'description'  => __( 'List the names of the cookies (one per line).', 'rocket' ) 
+			'description'  => __( 'List the names of the cookies (one per line).', 'rocket' )
 		)
 	);
 	add_settings_field(
@@ -501,14 +501,14 @@ function rocket_display_options()
 				<a href="#tab_tools" class="nav-tab"><?php _e( 'Tools', 'rocket' ); ?></a>
 				<?php
 				if( WPLANG == 'fr_FR' ) { ?>
-				
+
 				<a href="#tab_tutos" class="nav-tab"><?php _e( 'Tutorials', 'rocket' ); ?></a>
 				<a href="#tab_faq" class="nav-tab"><?php _e( 'FAQ', 'rocket' ); ?></a>
-				
+
 				<?php
 				}
 				?>
-				
+
 				<a href="#tab_support" class="nav-tab" style="color:#FF0000;"><?php _e( 'Support', 'rocket' ); ?></a>
 				<input type="hidden" name="wp_rocket_settings[consumer_key]" value="<?php esc_attr_e( get_rocket_option( 'consumer_key' ) ); ?>" />
 			<?php else: ?>
@@ -530,6 +530,11 @@ function rocket_display_options()
 					<h2><?php _e( 'CSS and JavaScript minification', 'rocket' );?></h2>
 					<p>Cette vidéo donne quelques explications sur l’utilisation avancée du processus de minification et concaténation des fichiers CSS et JavaScript.</p>
 					<p><a href="http://www.youtube.com/embed/iziXSvZgxLk" class="button-primary fancybox"><?php _e( 'Watch the video', 'rocket' ); ?></a></p>
+
+					<h2>Pré-chargement des requêtes DNS</h2>
+					<p>Cette vidéo permet de comprendre en toute simplicité le fonctionnement de l'option avancée "Pré-chargement des requêtes DNS" et de l'utilisation du filtre <code>rocket_dns_prefetch</code>.</p>
+					<p><a href="http://www.youtube.com/embed/iziXSvZgxLk" class="button-primary fancybox"><?php _e( 'Watch the video', 'rocket' ); ?></a></p>
+
 				</div>
 				<div class="rkt-tab rkt-tab-txt" id="tab_faq">
 					<h2>Que fait exactement WP Rocket ? </h2>

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
-"POT-Creation-Date: 2013-12-23 00:42+0100\n"
-"PO-Revision-Date: 2013-12-23 00:42+0100\n"
+"POT-Creation-Date: 2013-12-24 11:56+0100\n"
+"PO-Revision-Date: 2013-12-24 11:56+0100\n"
 "Last-Translator: \n"
 "Language-Team:  <contact@wp-rocket.me>\n"
 "Language: fr\n"
@@ -447,19 +447,20 @@ msgid ""
 "DNS prefetching is a way for browsers to anticipate the DNS resolution of "
 "external domains from your site.<br/>This mechanism reduces the latency of "
 "some external files.<br/>To Learn more about this option and how to use it "
-"correctly, we advise you to watch the following video: <a href=\"%s\">%s</"
-"a><br/><strong>Warning:</strong> Enter the domain names without their "
-"protocol, for example: <code>//ajax.googleapis.com</code> without <code>http:"
-"</code> (one per line)."
+"correctly, we advise you to watch the following video: <a href=\"%s\" class="
+"\"fancybox\">%s</a><br/><strong>Warning:</strong> Enter the domain names "
+"without their protocol, for example: <code>//ajax.googleapis.com</code> "
+"without <code>http:</code> (one per line)."
 msgstr ""
 "Le DNS prefetching est une méthode permettant aux navigateurs d’anticiper la "
 "résolution DNS des noms de domaines externes présents sur votre site.<br/>Ce "
 "mécanisme permet de diminuer les temps de latence de certains fichiers "
 "externes bloquants.<br/>Pour en savoir plus sur cette option et apprendre à "
 "l'utiliser correctement, nous vous conseillons de regarder la vidéo "
-"suivante : <a href=\"%s\">%s</a><br/><strong>Attention :</strong> Indiquez "
-"les noms de domaines sans leur protocole, par exemple : <code>//ajax."
-"googleapis.com</code> sans le <code>http:</code>  (un par ligne)."
+"suivante : <a href=\"%s\" class=\"\fancybox\">%s</a><br/><strong>Attention :"
+"</strong> Indiquez les noms de domaines sans leur protocole, par exemple : "
+"<code>//ajax.googleapis.com</code> sans le <code>http:</code>  (un par "
+"ligne)."
 
 #: ../inc/admin/options.php:381
 msgid "Empty the cache of the following pages when updating an article:"
@@ -583,6 +584,7 @@ msgstr ""
 "en quelques secondes."
 
 #: ../inc/admin/options.php:528 ../inc/admin/options.php:532
+#: ../inc/admin/options.php:536
 msgid "Watch the video"
 msgstr "Voir la vidéo"
 
@@ -590,7 +592,7 @@ msgstr "Voir la vidéo"
 msgid "CSS and JavaScript minification"
 msgstr "Minification des fichiers CSS et JavaScript"
 
-#: ../inc/admin/options.php:644
+#: ../inc/admin/options.php:649
 msgid ""
 "If none of the FAQ answers, answer your problem, you can tell us your issue "
 "on our <a href=\"http://support.wp-rocket.me/\" target=\"_blank\">Support</"
@@ -601,7 +603,7 @@ msgstr ""
 "wp-rocket.me/\" target=\"_blank\">support</a>. Nous vous répondrons dans les "
 "plus brefs délais."
 
-#: ../inc/admin/options.php:645
+#: ../inc/admin/options.php:650
 msgid "Go to Support"
 msgstr "Support"
 
