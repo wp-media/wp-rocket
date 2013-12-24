@@ -163,12 +163,23 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version )
 		$chmod = is_dir( WP_CONTENT_DIR . '/wp-rocket-cache' ) ? substr( sprintf( '%o', fileperms( WP_CONTENT_DIR . '/wp-rocket-cache' ) ), -4 ) : CHMOD_WP_ROCKET_CACHE_DIRS;
 
 		// Check and create cache folder in wp-content if not already exist
-		if( !$wp_filesystem->is_dir( WP_ROCKET_CACHE_PATH ) )
-			$wp_filesystem->mkdir( WP_ROCKET_CACHE_PATH, octdec($chmod) );
-
+		if( !$wp_filesystem->is_dir( WP_CONTENT_DIR . '/cache' ) )
+			$wp_filesystem->mkdir( WP_CONTENT_DIR . '/cache' , octdec($chmod) );
+		
+		$wp_filesystem->mkdir( WP_CONTENT_DIR . '/cache/wp-rocket' , octdec($chmod) );
+		
 		// Move old cache folder in new path
-		$wp_filesystem->move( WP_CONTENT_DIR . '/wp-rocket-cache', WP_ROCKET_CACHE_PATH );
-
+		@rename( WP_CONTENT_DIR . '/wp-rocket-cache', WP_CONTENT_DIR . '/cache/wp-rocket'  );
+			
+		// Add WP_CACHE constant in wp-config.php
+		set_rocket_wp_cache_define();
+	
+		// Create advanced-cache.php file
+		rocket_generate_advanced_cache_file();
+	
+		// Create config file
+		rocket_generate_config_file();
+		
 	}
 
 }

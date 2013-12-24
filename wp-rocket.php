@@ -204,11 +204,11 @@ function rocket_activation()
     // Add All WP Rocket rules of the .htaccess file
     flush_rocket_htaccess();
     flush_rewrite_rules();
-
-    // Create cache folder if not exist
+		
+	// Create cache folder if not exist
     if( !is_dir( WP_ROCKET_CACHE_PATH ) )
 	    rocket_mkdir_p( WP_ROCKET_CACHE_PATH );
-
+	
 	// Add WP_CACHE constant in wp-config.php
 	set_rocket_wp_cache_define();
 
