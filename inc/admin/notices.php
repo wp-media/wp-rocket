@@ -392,6 +392,45 @@ function rocket_warning_htaccess_permissions()
 
 
 /**
+ * This warning is displayed when the config dir isn't writeable
+ *
+ * since 2.0.2
+ *
+ */
+
+add_action( 'admin_notices', 'rocket_warning_config_dir_permissions' );
+function rocket_warning_config_dir_permissions()
+{
+
+	if( current_user_can( 'manage_options' )
+	    && ( !is_dir( WP_ROCKET_CONFIG_PATH ) || !is_writable( WP_ROCKET_CONFIG_PATH ) )
+	    && rocket_valid_key()
+	) {
+
+		global $current_user;
+		$boxes = get_user_meta( $current_user->ID, 'rocket_boxes', true );
+
+		if( !in_array( __FUNCTION__, (array)$boxes ) )
+		{
+			?>
+			<div class="error">
+
+				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>" class="rkt-cross"><?php _e('Ignore', 'rocket'); ?></a>
+
+				<p><strong>WP Rocket</strong>: <?php echo sprintf ( __('Be careful, you don\'t have <a href="%s" target="_blank">writing permissions</a> on <strong>WP Rocket</strong> domain configuration folder (<code>%s</code>). For <strong>WP Rocket</strong> works properly, please give CHMOD <code>755</code> or <code>775</code> on this folder.', 'rocket' ), 'http://codex.wordpress.org/Changing_File_Permissions', trim( str_replace( ABSPATH, '', WP_ROCKET_CONFIG_PATH ), '/' ) ); ?></p>
+
+			</div>
+
+		<?php
+		}
+
+	}
+
+}
+
+
+
+/**
  * This warning is displayed when the cache dir isn't writeable
  *
  * since 1.0
@@ -417,7 +456,7 @@ function rocket_warning_cache_dir_permissions()
 
 				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>" class="rkt-cross"><?php _e('Ignore', 'rocket'); ?></a>
 
-				<p><strong>WP Rocket</strong>: <?php echo sprintf ( __('Be careful, you don\'t have <a href="%s" target="_blank">writing permissions</a> on <strong>WP Rocket</strong> cache folder (<code>%s</code>). For <strong>WP Rocket</strong> works properly, please give CHMOD <code>755</code> or <code>775</code> on this folder.', 'rocket' ), 'http://codex.wordpress.org/Changing_File_Permissions', WP_ROCKET_CACHE_PATH ); ?></p>
+				<p><strong>WP Rocket</strong>: <?php echo sprintf ( __('Be careful, you don\'t have <a href="%s" target="_blank">writing permissions</a> on <strong>WP Rocket</strong> cache folder (<code>%s</code>). For <strong>WP Rocket</strong> works properly, please give CHMOD <code>755</code> or <code>775</code> on this folder.', 'rocket' ), 'http://codex.wordpress.org/Changing_File_Permissions', trim( str_replace( ABSPATH, '', WP_ROCKET_CACHE_PATH ), '/' ) ); ?></p>
 
 			</div>
 

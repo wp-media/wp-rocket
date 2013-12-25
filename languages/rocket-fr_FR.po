@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
-"POT-Creation-Date: 2013-12-24 11:56+0100\n"
-"PO-Revision-Date: 2013-12-24 11:56+0100\n"
+"POT-Creation-Date: 2013-12-25 19:10+0100\n"
+"PO-Revision-Date: 2013-12-25 19:12+0100\n"
 "Last-Translator: \n"
 "Language-Team:  <contact@wp-rocket.me>\n"
 "Language: fr\n"
@@ -105,7 +105,8 @@ msgstr "Vous pouvez forcer la désactivation en cliquant ici."
 
 #: ../inc/admin/notices.php:98 ../inc/admin/notices.php:213
 #: ../inc/admin/notices.php:279 ../inc/admin/notices.php:327
-#: ../inc/admin/notices.php:375 ../inc/admin/notices.php:416
+#: ../inc/admin/notices.php:377 ../inc/admin/notices.php:418
+#: ../inc/admin/notices.php:457
 msgid "Ignore"
 msgstr "Ignorer"
 
@@ -178,7 +179,7 @@ msgstr ""
 "devrez mettre dans votre fichier <code>%s</code> pour que <strong>WP Rocket</"
 "strong> fonctionne correctement."
 
-#: ../inc/admin/notices.php:377
+#: ../inc/admin/notices.php:379
 #, php-format
 msgid ""
 "If you had <a href=\"%s\" target=\"_blank\">writing permissions</a> on "
@@ -194,7 +195,21 @@ msgstr ""
 "pour que WP Rocket fonctionne correctement. Cliquez sur le champ et appuyez "
 "sur Ctrl-A pour tout sélectionner. "
 
-#: ../inc/admin/notices.php:418
+#: ../inc/admin/notices.php:420
+#, php-format
+msgid ""
+"Be careful, you don't have <a href=\"%s\" target=\"_blank\">writing "
+"permissions</a> on <strong>WP Rocket</strong> domain configuration folder "
+"(<code>%s</code>). For <strong>WP Rocket</strong> works properly, please "
+"give CHMOD <code>755</code> or <code>775</code> on this folder."
+msgstr ""
+"Attention, vous n'avez pas les <a href=\"%s\" target=\"_blank\">droits en "
+"écriture (en)</a> sur le dossier de configuration du domaine de <strong>WP "
+"Rocket</strong> (<code>%s</code>). Pour que <strong>WP Rocket</strong> "
+"fonctionne correctement, veuillez indiquer un CHMOD de <code>755</code> ou "
+"de <code>775</code> sur ce dossier."
+
+#: ../inc/admin/notices.php:459
 #, php-format
 msgid ""
 "Be careful, you don't have <a href=\"%s\" target=\"_blank\">writing "
@@ -208,7 +223,7 @@ msgstr ""
 "correctement, veuillez indiquer un CHMOD de <code>755</code> ou de "
 "<code>775</code> sur ce dossier."
 
-#: ../inc/admin/notices.php:442
+#: ../inc/admin/notices.php:483
 #, php-format
 msgid ""
 "To finish the install and take advantage of high performance provided by our "

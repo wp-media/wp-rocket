@@ -80,13 +80,13 @@ if ( rocket_is_ssl() && !isset( $rocket_cache_ssl ) )
 
 
 // Don't cache this pages
-if( preg_match( '#^(' . $rocket_cache_reject_uri . ')$#', $_SERVER['REQUEST_URI'] ) )
+if( isset( $rocket_cache_reject_uri ) && preg_match( '#^(' . $rocket_cache_reject_uri . ')$#', $_SERVER['REQUEST_URI'] ) )
 	return;
 
 
 
 // Don't cache page with this cookie
-if( preg_match( '#(' . $rocket_cache_reject_cookies . ')#', var_export( $_COOKIE, true ) ) )
+if( isset( $rocket_cache_reject_cookies ) && preg_match( '#(' . $rocket_cache_reject_cookies . ')#', var_export( $_COOKIE, true ) ) )
 	return;
 
 
