@@ -5,11 +5,11 @@ defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 /**
  * Generate the content of advanced-cache.php file
  *
- * @since 2.0
+ * @since 2.0.3
  *
  */
 
-function rocket_generate_advanced_cache_file()
+function get_rocket_advanced_cache_file()
 {
 
 	$buffer = '<?php' . "\n";
@@ -24,10 +24,28 @@ function rocket_generate_advanced_cache_file()
 	// Include the process file in buffer
 	$buffer .= 'include( \''. WP_ROCKET_FRONT_PATH . 'process.php' . '\' );';
 
-	// Create advanced-cache.php file
-	rocket_put_content( WP_CONTENT_DIR . '/advanced-cache.php', $buffer );
-	
+	return $buffer;
+
 }
+
+
+
+/**
+ * Create advanced-cache.php file
+ *
+ * @since 2.0
+ *
+ */
+
+
+function rocket_generate_advanced_cache_file()
+{
+
+	$buffer = get_rocket_advanced_cache_file();
+	rocket_put_content( WP_CONTENT_DIR . '/advanced-cache.php', $buffer );
+
+}
+
 
 
 
