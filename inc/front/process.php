@@ -15,7 +15,7 @@ if ( strstr( $_SERVER['REQUEST_URI'], 'robots.txt') )
 
 
 // Don't cache not allowed extensions
-if( in_array( pathinfo( $_SERVER['REQUEST_URI'], PATHINFO_EXTENSION ), array( 'php', 'xml', 'xsl' ) ) )
+if( strtolower( $_SERVER['REQUEST_URI'] ) != '/index.php' && in_array( pathinfo( $_SERVER['REQUEST_URI'], PATHINFO_EXTENSION ), array( 'php', 'xml', 'xsl' ) ) )
 	return;
 
 
@@ -74,7 +74,7 @@ else
 
 
 // Don't cache SSL
-if ( rocket_is_ssl() && !isset( $rocket_cache_ssl ) )
+if ( !isset( $rocket_cache_ssl ) && rocket_is_ssl() )
 	return;
 
 
