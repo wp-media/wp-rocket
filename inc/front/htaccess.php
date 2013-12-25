@@ -1,6 +1,7 @@
 <?php
 defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 
+
 /**
  * Used to flush the .htaccess file
  *
@@ -11,6 +12,10 @@ defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 
 function flush_rocket_htaccess( $force = false )
 {
+
+	global $is_apache;
+	if( !$is_apache )
+		return false;
 
 	$rules = '';
 	$htaccess_file =  get_home_path() . '.htaccess';
@@ -32,6 +37,7 @@ function flush_rocket_htaccess( $force = false )
 
 		// Update the .htacces file
 		rocket_put_content( $htaccess_file , $rules . $ftmp );
+
 	}
 
 }
@@ -59,6 +65,7 @@ function get_rocket_htaccess_marker()
 	$marker .= '# END WP Rocket' . "\n";
 
 	return $marker;
+
 }
 
 
@@ -72,10 +79,10 @@ function get_rocket_htaccess_marker()
 
 function get_rocket_htaccess_mod_rewrite()
 {
-	
+
 	if( is_multisite() )
 		return;
-	
+
 	// Get root base
 	$home_root = parse_url( home_url() );
 	$home_root = isset( $home_root['path'] ) ? trailingslashit($home_root['path']) : '/';
@@ -129,6 +136,7 @@ function get_rocket_htaccess_mobile_rewritecond()
 	$rules = apply_filters( 'rocket_htaccess_mobile_rewritecond', $rules );
 
 	return $rules;
+
 }
 
 
@@ -147,6 +155,7 @@ function get_rocket_htaccess_ssl_rewritecond()
 	$rules = apply_filters( 'rocket_htaccess_ssl_rewritecond', $rules );
 
 	return $rules;
+
 }
 
 
@@ -161,8 +170,6 @@ function get_rocket_htaccess_ssl_rewritecond()
 function get_rocket_htaccess_mod_deflate()
 {
 
-	
-	
 	$rules = '# Gzip compression' . "\n";
 	$rules .= '<IfModule mod_deflate.c>' . "\n";
 		$rules .= '# Active compression' . "\n";
@@ -342,4 +349,5 @@ function get_rocket_htaccess_etag()
     $rules = apply_filters( 'rocket_htaccess_etag', $rules );
 
 	return $rules;
+
 }

@@ -8,21 +8,21 @@ defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
  * since 2.0.0
  *
  */
- 
+
 add_action( 'admin_notices', 'rocket_bad_deactivations' );
 function rocket_bad_deactivations()
 {
 
 	global $current_user;
-	if( current_user_can( 'manage_options' ) && $msgs = get_transient( $current_user->ID . '_donotdeactivaterocket' ) ) 
+	if( current_user_can( 'manage_options' ) && $msgs = get_transient( $current_user->ID . '_donotdeactivaterocket' ) )
 	{
-		
+
 		delete_transient( $current_user->ID . '_donotdeactivaterocket' );
 		$errors = array();
 		?>
 
 		<div class="error">
-			
+
 			<?php
 			foreach( $msgs as $msg)
 			{
@@ -46,9 +46,9 @@ function rocket_bad_deactivations()
 				$errors = apply_filters( 'rocket_bad_deactivations', $errors, $msg );
 
 			}
-	
+
 			// Display errors
-			if( count( $errors ) ) 
+			if( count( $errors ) )
 			{
 
 				array_map( 'printf', $errors );
@@ -56,7 +56,7 @@ function rocket_bad_deactivations()
 			}
 
 			// We add a link to permit "force deactivation", use at your own risks.
-			if( apply_filters( 'rocket_permit_force_deactivation', true ) ) 
+			if( apply_filters( 'rocket_permit_force_deactivation', true ) )
 			{
 				global $status, $page, $s;
 				$plugin_file = 'wp-rocket/wp-rocket.php';
@@ -65,7 +65,7 @@ function rocket_bad_deactivations()
 				echo '<p><a href="'.wp_nonce_url('plugins.php?action=deactivate&amp;rocket_nonce=' . $rocket_nonce . '&amp;plugin=' . $plugin_file . '&amp;plugin_status=' . $status . '&amp;paged=' . $page . '&amp;s=' . $s, 'deactivate-plugin_' . $plugin_file).'">' . __( 'You can still force the deactivation by clicking here.', 'rocket' ) . '</a></p>';
 			}
 			?>
-			
+
 		</div>
 
 	<?php
@@ -120,7 +120,7 @@ function rocket_warning_plugin_modification()
 add_action( 'admin_notices', 'rocket_plugins_to_deactivate' );
 function rocket_plugins_to_deactivate()
 {
-	
+
 	$plugins_to_deactivate = array();
 
 	// Deactivate all plugins who can cause conflicts with WP Rocket
@@ -357,10 +357,12 @@ function rocket_warning_advanced_cache_permissions()
 add_action( 'admin_notices', 'rocket_warning_htaccess_permissions' );
 function rocket_warning_htaccess_permissions()
 {
+	global $is_apache;
 	$htaccess_file =  get_home_path() . '.htaccess';
 
 	if( current_user_can( 'manage_options' )
 	    && ( !file_exists( $htaccess_file ) || !is_writable( $htaccess_file ) )
+	    && $is_apache
 	    && rocket_valid_key()
 	) {
 
