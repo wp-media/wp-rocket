@@ -20,7 +20,7 @@ function flush_rocket_htaccess( $force = false )
 	$rules = '';
 	$htaccess_file =  get_home_path() . '.htaccess';
 
-	if( file_exists( $htaccess_file ) && is_writeable( $htaccess_file ) )
+	if( is_writable( $htaccess_file ) )
 	{
 
 		// Get content of .htaccess file
