@@ -263,8 +263,7 @@ function rocket_warning_wp_config_permissions()
 	$config_file =  get_home_path() . 'wp-config.php';
 
 	if( current_user_can( 'manage_options' )
-		&& ( !file_exists( $config_file ) || !is_writable( $config_file ) )
-	    && ( !defined( 'WP_CACHE' ) || !WP_CACHE )
+		&& ( !is_writable( $config_file ) && !defined( 'WP_CACHE' ) || !WP_CACHE )
 	    && rocket_valid_key()
 	) {
 
@@ -312,7 +311,7 @@ function rocket_warning_advanced_cache_permissions()
 	$advanced_cache_file =  WP_CONTENT_DIR . '/advanced-cache.php';
 
 	if( current_user_can( 'manage_options' )
-		&& ( !file_exists( $advanced_cache_file ) || !is_writable( $advanced_cache_file ) )
+		&& ( !is_writable( $advanced_cache_file ) )
 	    && rocket_valid_key()
 	) {
 
@@ -331,11 +330,11 @@ function rocket_warning_advanced_cache_permissions()
 				<?php
 
 				// Get the content of advanced-cache.php file added by WP Rocket
-				$config = get_rocket_config_file();
+				$content = get_rocket_advanced_cache_file();
 
 				?>
 
-				<p><textarea readonly="readonly" id="rules" name="rules" class="large-text readonly" rows="8"><?php echo esc_textarea( $config[1] ); ?></textarea></p>
+				<p><textarea readonly="readonly" id="rules" name="rules" class="large-text readonly" rows="8"><?php echo esc_textarea( $content ); ?></textarea></p>
 			</div>
 
 		<?php
@@ -361,7 +360,7 @@ function rocket_warning_htaccess_permissions()
 	$htaccess_file =  get_home_path() . '.htaccess';
 
 	if( current_user_can( 'manage_options' )
-	    && ( !file_exists( $htaccess_file ) || !is_writable( $htaccess_file ) )
+	    && ( !is_writable( $htaccess_file ) )
 	    && $is_apache
 	    && rocket_valid_key()
 	) {
@@ -403,7 +402,7 @@ function rocket_warning_config_dir_permissions()
 {
 
 	if( current_user_can( 'manage_options' )
-	    && ( !is_dir( WP_ROCKET_CONFIG_PATH ) || !is_writable( WP_ROCKET_CONFIG_PATH ) )
+	    && ( !is_writable( WP_ROCKET_CONFIG_PATH ) )
 	    && rocket_valid_key()
 	) {
 
@@ -442,7 +441,7 @@ function rocket_warning_cache_dir_permissions()
 {
 
 	if( current_user_can( 'manage_options' )
-	    && ( !is_dir( WP_ROCKET_CACHE_PATH ) || !is_writable( WP_ROCKET_CACHE_PATH ) )
+	    && ( !is_writable( WP_ROCKET_CACHE_PATH ) )
 	    && rocket_valid_key()
 	) {
 
