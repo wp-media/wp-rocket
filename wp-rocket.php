@@ -4,7 +4,7 @@
 Plugin Name: WP Rocket
 Plugin URI: http://www.wp-rocket.me
 Description: The best WordPress performance plugin.
-Version: 2.0.2
+Version: 2.0.3
 Author: WP Rocket
 Contributors: Jonathan Buttigieg, Julio Potier
 Author URI: http://www.wp-rocket.me
@@ -15,7 +15,7 @@ Copyright 2013 WP Rocket
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 // Rocket defines
-define( 'WP_ROCKET_VERSION'             , '2.0.2');
+define( 'WP_ROCKET_VERSION'             , '2.0.3');
 define( 'WP_ROCKET_SLUG'                , 'wp_rocket_settings');
 define( 'WP_ROCKET_WEB_MAIN'            , 'http://support.wp-rocket.me/');
 define( 'WP_ROCKET_WEB_CHECK'           , WP_ROCKET_WEB_MAIN.'check_update.php');
@@ -148,29 +148,34 @@ function rocket_deactivation()
     $htaccess_file =  get_home_path() . '.htaccess';
     $config_file =  get_home_path() . 'wp-config.php';
 
-    if( ( !isset( $_GET['rocket_nonce'] ) || !wp_verify_nonce( $_GET['rocket_nonce'], 'force_deactivation' ) ) &&
-        ( !file_exists( $htaccess_file ) || !is_writable( $htaccess_file ) ||
-        !file_exists( $config_file ) || !is_writable( $config_file ) ) ) 
+    if( !isset( $_GET['rocket_nonce'] ) || !wp_verify_nonce( $_GET['rocket_nonce'], 'force_deactivation' ) )
     {
 
         $causes = array();
        
         // .htaccess problem
-        if( !file_exists( $htaccess_file ) || !is_writable( $htaccess_file ) )
+        global $is_apache;
+        if( $is_apache && !is_writable( $htaccess_file ) )
         {
             $causes[] = 'htaccess';
         }
        
         // wp-config problem
-        if( !file_exists( $config_file ) || !is_writable( $config_file ) )
+        if( !is_writable( $config_file ) )
         {
             $causes[] = 'wpconfig';
         }
-
-        global $current_user;
-        set_transient( $current_user->ID . '_donotdeactivaterocket', $causes );
-        wp_safe_redirect( wp_get_referer() );
-        die();
+		
+		if( count( $causes ) ) 
+		{
+			
+			global $current_user;
+	        set_transient( $current_user->ID . '_donotdeactivaterocket', $causes );
+	        wp_safe_redirect( wp_get_referer() );
+	        die();
+	        
+		}    
+        
     }
     
     // Delete All WP Rocket rules of the .htaccess file
