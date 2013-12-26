@@ -277,12 +277,12 @@ function rocket_warning_wp_config_permissions()
 
 				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>" class="rkt-cross"><?php _e('Ignore', 'rocket'); ?></a>
 
-				<p><strong>WP Rocket</strong>: <?php echo sprintf( __('If you had <a href="%s" target="_blank">writing permissions</a> on <code>wp-config.php/code> file, <strong>WP Rocket</strong> could do this automatically. This is not the case, so here are the constant you have to put in your <code>wp-config.php</code> file for <strong>WP Rocket</strong> works correctly.', 'rocket' ), 'http://codex.wordpress.org/Changing_File_Permissions' ); ?></p>
+				<p><strong>WP Rocket</strong>: <?php echo sprintf( __('Be careful, if this message doesn\'t disappear after refreshed this page, is that you don\'t have rights <a href="%s" target="_blank">writing permissions</a> on <code>wp-config.php</code> file or the value of the constant <code>WP_CACHE</code> is set to <code>false</code>.<br/><br/>If this message persists, you have to put this code in your <code>wp-config.php</code> file for <strong>WP Rocket</strong> works correctly. Click on the field and press Ctrl-A to select all.', 'rocket' ), 'http://codex.wordpress.org/Changing_File_Permissions' ); ?></p>
 
 				<?php
 
 				// Get the content of the WP_CACHE constant added by WP Rocket
-				$define = "/** Enable Cache */\r\n" . "define('WP_CACHE', 'true'); // Added by WP Rocket\r\n";
+				$define = "/** Enable Cache */\r\n" . "define('WP_CACHE', true); // Added by WP Rocket\r\n";
 
 				?>
 

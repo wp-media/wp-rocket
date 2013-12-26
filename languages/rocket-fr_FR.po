@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
-"POT-Creation-Date: 2013-12-25 19:10+0100\n"
-"PO-Revision-Date: 2013-12-25 19:12+0100\n"
+"POT-Creation-Date: 2013-12-26 02:15+0100\n"
+"PO-Revision-Date: 2013-12-26 02:15+0100\n"
 "Last-Translator: \n"
 "Language-Team:  <contact@wp-rocket.me>\n"
 "Language: fr\n"
@@ -104,9 +104,9 @@ msgid "You can still force the deactivation by clicking here."
 msgstr "Vous pouvez forcer la désactivation en cliquant ici."
 
 #: ../inc/admin/notices.php:98 ../inc/admin/notices.php:213
-#: ../inc/admin/notices.php:279 ../inc/admin/notices.php:327
-#: ../inc/admin/notices.php:377 ../inc/admin/notices.php:418
-#: ../inc/admin/notices.php:457
+#: ../inc/admin/notices.php:278 ../inc/admin/notices.php:326
+#: ../inc/admin/notices.php:376 ../inc/admin/notices.php:417
+#: ../inc/admin/notices.php:456
 msgid "Ignore"
 msgstr "Ignorer"
 
@@ -149,23 +149,26 @@ msgstr ""
 "Rocket</strong> fonctionne correctement. S'il vous plaît, aller à la page <a "
 "href=\"%s\">Permaliens</a> pour les configurer."
 
-#: ../inc/admin/notices.php:281
+#: ../inc/admin/notices.php:280
 #, php-format
 msgid ""
-"If you had <a href=\"%s\" target=\"_blank\">writing permissions</a> on "
-"<code>wp-config.php/code> file, <strong>WP Rocket</strong> could do this "
-"automatically. This is not the case, so here are the constant you have to "
-"put in your <code>wp-config.php</code> file for <strong>WP Rocket</strong> "
-"works correctly."
+"Be careful, if this message doesn't disappear after refreshed this page, is "
+"that you don't have rights <a href=\"%s\" target=\"_blank\">writing "
+"permissions</a> on <code>wp-config.php</code> file or the value of the "
+"constant <code>WP_CACHE</code> is set to <code>false</code>.<br/><br/>If "
+"this message persists, you have to put this code in your <code>wp-config."
+"php</code> file for <strong>WP Rocket</strong> works correctly. Click on the "
+"field and press Ctrl-A to select all."
 msgstr ""
-"Si vous aviez <a href=\"%s\" target=\"_blank\">les droits en écriture</a> "
-"sur le fichier <code>wp-config.php</code>, <strong>WP Rocket </"
-"strong>pourrait faire cela automatiquement. Ce n’est pas le cas, donc voici "
-"la constante que vous devrez insérer dans votre fichier <code>wp-config.php</"
-"code> pour que WP Rocket fonctionne correctement. Cliquez sur le champ et "
-"appuyez sur Ctrl-A pour tout sélectionner. "
+"Attention, si ce message ne disparaît pas après avoir rafraîchit cette page, "
+"c'est que vous n'avez pas <a href=\"%s\" target=\"_blank\">les droits en "
+"écriture</a> sur le fichier <code>wp-config.php</code> ou que la valeur de "
+"la constante <code>WP_CACHE</code> est défine à <code>false</code>.<br/><br/"
+">Si ce message persiste, vous devrez insérer ce code dans votre fichier "
+"<code>wp-config.php</code> pour que WP Rocket fonctionne correctement. "
+"Cliquez sur le champ et appuyez sur Ctrl-A pour tout sélectionner. "
 
-#: ../inc/admin/notices.php:329
+#: ../inc/admin/notices.php:328
 #, php-format
 msgid ""
 "If you had <a href=\"%s\" target=\"_blank\">writing permissions</a> on <code>"
@@ -179,7 +182,7 @@ msgstr ""
 "devrez mettre dans votre fichier <code>%s</code> pour que <strong>WP Rocket</"
 "strong> fonctionne correctement."
 
-#: ../inc/admin/notices.php:379
+#: ../inc/admin/notices.php:378
 #, php-format
 msgid ""
 "If you had <a href=\"%s\" target=\"_blank\">writing permissions</a> on "
@@ -195,7 +198,7 @@ msgstr ""
 "pour que WP Rocket fonctionne correctement. Cliquez sur le champ et appuyez "
 "sur Ctrl-A pour tout sélectionner. "
 
-#: ../inc/admin/notices.php:420
+#: ../inc/admin/notices.php:419
 #, php-format
 msgid ""
 "Be careful, you don't have <a href=\"%s\" target=\"_blank\">writing "
@@ -209,7 +212,7 @@ msgstr ""
 "fonctionne correctement, veuillez indiquer un CHMOD de <code>755</code> ou "
 "de <code>775</code> sur ce dossier."
 
-#: ../inc/admin/notices.php:459
+#: ../inc/admin/notices.php:458
 #, php-format
 msgid ""
 "Be careful, you don't have <a href=\"%s\" target=\"_blank\">writing "
@@ -223,7 +226,7 @@ msgstr ""
 "correctement, veuillez indiquer un CHMOD de <code>755</code> ou de "
 "<code>775</code> sur ce dossier."
 
-#: ../inc/admin/notices.php:483
+#: ../inc/admin/notices.php:482
 #, php-format
 msgid ""
 "To finish the install and take advantage of high performance provided by our "
