@@ -33,8 +33,13 @@ if( $_SERVER['REQUEST_METHOD'] != 'GET' )
 
 
 // Don't cache with variables
-if( !empty( $_GET ) )
+// but the cache is enabled if the visitor comes from an RSS feed or an Facebook action
+if( !empty( $_GET )
+	&& ( !isset( $_GET['utm_source'], $_GET['utm_medium'], $_GET['utm_campaign'] ) )
+	&& ( !isset( $_GET['fb_action_ids'], $_GET['fb_action_types'], $_GET['fb_source'] ) )
+)
 	return;
+
 
 
 // Get the correct config file
@@ -97,6 +102,11 @@ if ( !isset( $rocket_cache_mobile ) && (preg_match('#^.*(2.0\ MMP|240x320|400X24
 
 
 
+// Check if dots should be replace by underscores
+$host = isset( $rocket_url_no_dots ) ? str_replace( '.', '_', $host ) : $host;
+
+
+
 // Get cache folder of host name
 if( isset( $_COOKIE[ 'wordpress_logged_in_' . $rocket_cookie_hash ] )
 	&& isset( $rocket_cache_reject_cookies )
@@ -136,7 +146,7 @@ ob_start( 'do_rocket_callback' );
 function do_rocket_callback( $buffer )
 {
 
-	if( strlen( $buffer ) > 255 
+	if( strlen( $buffer ) > 255
 		&& !is_404() 	// Don't cache 404
 		&& !is_search() // Don't cache search results
 	) {

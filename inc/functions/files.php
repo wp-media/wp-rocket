@@ -38,10 +38,11 @@ function get_rocket_advanced_cache_file()
  */
 
 
-function rocket_generate_advanced_cache_file()
+function rocket_generate_advanced_cache_file( $no_dots = false )
 {
-
-	$buffer = get_rocket_advanced_cache_file();
+	
+	$no_dots = apply_filters( 'rocket_url_no_dots', $no_dots );
+	$buffer  = get_rocket_advanced_cache_file( $no_dots );
 	rocket_put_content( WP_CONTENT_DIR . '/advanced-cache.php', $buffer );
 
 }
@@ -56,7 +57,7 @@ function rocket_generate_advanced_cache_file()
  *
  */
 
-function get_rocket_config_file()
+function get_rocket_config_file( $no_dots = false )
 {
 
 	$options = get_option( WP_ROCKET_SLUG );
@@ -84,7 +85,12 @@ function get_rocket_config_file()
 			$buffer .= '$rocket_' . $option . ' = \'' . $cookies . '\';' . "\n";
 		}
 	}
-
+	
+	if( apply_filters( 'rocket_url_no_dots', $no_dots ) ) 
+	{
+		$buffer .= '$rocket_url_no_dots = \'1\';';
+	}
+	
 	$url = parse_url( rtrim( home_url(), '/' ) );
 
 	if( !isset( $url['path'] ) )
@@ -127,7 +133,7 @@ function get_rocket_config_file()
 
 function rocket_generate_config_file()
 {
-
+	$no_dots = 
 	list( $config_file_path, $buffer ) = get_rocket_config_file();
 	rocket_put_content( $config_file_path , $buffer );
 
