@@ -47,34 +47,51 @@ $protocol = rocket_is_ssl() ? 'https://' : 'http://';
 $host 	  = trim( strtolower( $_SERVER['HTTP_HOST'] ), '.' );
 $url 	  = parse_url( $protocol . $host . rtrim( $_SERVER['REQUEST_URI'], '/' ) );
 
+
+$continue = false;
 if( file_exists( $rocket_config_path . $url['host'] . '.php' ) )
 {
 	include( $rocket_config_path . $url['host'] . '.php' );
+	$continue = true;
 }
 else
 {
 
-	$path = explode( '/' , trim( $url['path'], '/') );
-
-	foreach( $path as $p )
+	if( isset( $url['path'] ) )
 	{
-		static $dir;
 
-		if( file_exists( $rocket_config_path . $url['host'] . '/' . $p . '.php' ) )
+		$path = explode( '/' , trim( $url['path'], '/') );
+
+		foreach( $path as $p )
 		{
-			include( $rocket_config_path . $url['host'] . '/' . $p .'.php' );
-			break;
+			static $dir;
+
+			if( file_exists( $rocket_config_path . $url['host'] . '/' . $p . '.php' ) )
+			{
+				include( $rocket_config_path . $url['host'] . '/' . $p .'.php' );
+				$continue = true;
+				break;
+			}
+
+			if( file_exists( $rocket_config_path . $url['host'] . '/' . $dir . $p . '.php' ) )
+			{
+				include( $rocket_config_path . $url['host'] . '/' . $dir. $p . '.php' );
+				$continue = true;
+				break;
+			}
+
+			$dir .= $p . '/';
 		}
 
-		if( file_exists( $rocket_config_path . $url['host'] . '/' . $dir . $p . '.php' ) )
-		{
-			include( $rocket_config_path . $url['host'] . '/' . $dir. $p . '.php' );
-			break;
-		}
-
-		$dir .= $p . '/';
 	}
+
 }
+
+
+
+// Exit if no config file is exist
+if( !$continue )
+	return;
 
 
 
@@ -108,7 +125,8 @@ $host = isset( $rocket_url_no_dots ) ? str_replace( '.', '_', $host ) : $host;
 
 
 // Get cache folder of host name
-if( isset( $_COOKIE[ 'wordpress_logged_in_' . $rocket_cookie_hash ] )
+if( isset( $rocket_cookie_hash )
+	&& isset( $_COOKIE[ 'wordpress_logged_in_' . $rocket_cookie_hash ] )
 	&& isset( $rocket_cache_reject_cookies )
 	&& !strstr( $rocket_cache_reject_cookies, 'wordpress_logged_in_' )
 ) {
