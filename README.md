@@ -1,4 +1,4 @@
-delayed-job
+Task Scheduler
 ===========
 
-Delayed Job for Wordpress
+A robust task scheduling system for Wordpress
