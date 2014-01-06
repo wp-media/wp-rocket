@@ -2,6 +2,7 @@
 
 /**
  * Class TaskScheduler_NullJob_Test
+ * @group jobs
  */
 class TaskScheduler_NullJob_Test extends TaskScheduler_UnitTestCase {
 	public function test_null_job() {

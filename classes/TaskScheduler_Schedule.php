@@ -8,6 +8,6 @@ interface TaskScheduler_Schedule {
 	 * @param DateTime $after
 	 * @return DateTime|null
 	 */
-	public function next( $after = NULL );
+	public function next( DateTime $after = NULL );
 }
  

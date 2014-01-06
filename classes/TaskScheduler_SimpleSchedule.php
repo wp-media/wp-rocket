@@ -14,8 +14,8 @@ class TaskScheduler_SimpleSchedule implements TaskScheduler_Schedule {
 	 *
 	 * @return DateTime|null
 	 */
-	public function next( $after = NULL ) {
-		$after = empty($after) ? new DateTime('10 seconds ago') : $after;
+	public function next( DateTime $after = NULL ) {
+		$after = empty($after) ? new DateTime('@0') : $after;
 		return ( $after > $this->date ) ? NULL : clone( $this->date );
 	}
 }

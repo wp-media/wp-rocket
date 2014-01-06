@@ -19,6 +19,13 @@ abstract class TaskScheduler_JobStore {
 	 */
 	abstract public function fetch_job( $job_id );
 
+
+	/**
+	 * @param int $max_jobs
+	 * @return TaskScheduler_JobClaim
+	 */
+	abstract public function stake_claim( $max_jobs );
+
 	public function init() {}
 
 	/**

@@ -14,11 +14,14 @@ function task_scheduler_initialize() {
 }
 
 function task_scheduler_autoload( $class ) {
-
-	if ( strpos( $class, 'TaskScheduler' ) !== 0 ) {
+	$d = DIRECTORY_SEPARATOR;
+	if ( strpos( $class, 'TaskScheduler' ) === 0 ) {
+		$dir = dirname(__FILE__).$d.'classes'.$d;
+	} elseif ( strpos( $class, 'CronExpression' ) === 0 ) {
+		$dir = dirname(__FILE__).$d.'lib'.$d.'cron-expression'.$d;
+	} else {
 		return;
 	}
-	$dir = dirname(__FILE__).DIRECTORY_SEPARATOR.'classes'.DIRECTORY_SEPARATOR;
 
 	if ( file_exists( $dir.$class.'.php' ) ) {
 		include( $dir.$class.'.php' );

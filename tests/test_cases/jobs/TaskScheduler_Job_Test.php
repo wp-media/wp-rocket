@@ -2,6 +2,7 @@
 
 /**
  * Class TaskScheduler_Job_Test
+ * @group jobs
  */
 class TaskScheduler_Job_Test extends TaskScheduler_UnitTestCase {
 	public function test_set_schedule() {

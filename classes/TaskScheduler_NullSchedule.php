@@ -5,7 +5,7 @@
  */
 class TaskScheduler_NullSchedule implements TaskScheduler_Schedule {
 
-	public function next( $after = NULL ) {
+	public function next( DateTime $after = NULL ) {
 		return NULL;
 	}
 }

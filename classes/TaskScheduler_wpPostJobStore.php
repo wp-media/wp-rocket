@@ -91,6 +91,66 @@ class TaskScheduler_wpPostJobStore extends TaskScheduler_JobStore {
 		return $job;
 	}
 
+	public function stake_claim( $max_jobs = 10 ){
+		$claim_id = $this->generate_claim_id();
+		$this->claim_jobs( $claim_id, $max_jobs );
+		$job_ids = $this->find_jobs_by_claim_id( $claim_id );
+		return new TaskScheduler_JobClaim( $claim_id, $job_ids );
+	}
+
+	protected function generate_claim_id() {
+		$claim_id = md5(microtime(true) . rand(0,1000));
+		return substr($claim_id, 0, 20); // to fit in db field with 20 char limit
+	}
+
+	/**
+	 * @param string $claim_id
+	 * @param int $limit
+	 * @return int The number of jobs that were claimed
+	 * @throws RuntimeException
+	 */
+	protected function claim_jobs( $claim_id, $limit ) {
+		/** @var wpdb $wpdb */
+		global $wpdb;
+		// can't use $wpdb->update() because of the <= condition
+		$sql = "UPDATE {$wpdb->posts} SET post_password = %s WHERE post_type = %s AND post_status = %s AND post_password = '' AND post_date_gmt <= %s LIMIT %d";
+		$sql = $wpdb->prepare( $sql, array( $claim_id, self::POST_TYPE, 'pending', date('Y-m-d H:i:s'), $limit ) );
+		$rows_affected = $wpdb->query($sql);
+		if ( $rows_affected === false ) {
+			throw new RuntimeException(__('Unable to claim jobs. Database error.', 'task-scheduler'));
+		}
+		return (int)$rows_affected;
+	}
+
+	/**
+	 * @param string $claim_id
+	 * @return array
+	 */
+	protected function find_jobs_by_claim_id( $claim_id ) {
+		/** @var wpdb $wpdb */
+		global $wpdb;
+		$sql = "SELECT ID FROM {$wpdb->posts} WHERE post_type = %s AND post_password = %s";
+		$sql = $wpdb->prepare( $sql, array( self::POST_TYPE, $claim_id ) );
+		$job_ids = $wpdb->get_col( $sql );
+		return $job_ids;
+	}
+
+	public function release_claim( TaskScheduler_JobClaim $claim ) {
+		$job_ids = $this->find_jobs_by_claim_id( $claim->get_id() );
+		if ( empty($job_ids) ) {
+			return; // nothing to do
+		}
+		$job_id_string = implode(',', array_map('intval', $job_ids));
+		/** @var wpdb $wpdb */
+		global $wpdb;
+		$sql = "UPDATE {$wpdb->posts} SET post_password = '' WHERE ID IN ($job_id_string) AND post_password = %s";
+		$sql = $wpdb->prepare( $sql, array( $claim->get_id() ) );
+		$result = $wpdb->query($sql);
+		if ( $result === false ) {
+			throw new RuntimeException( sprintf( __('Unable to unlock claim %s. Database error.', 'task-scheduler'), $claim->get_id() ) );
+		}
+	}
+
 	public function init() {
 		$post_type_registrar = new TaskScheduler_wpPostJobStore_PostTypeRegistrar();
 		$post_type_registrar->register();
