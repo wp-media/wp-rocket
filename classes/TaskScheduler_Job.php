@@ -66,5 +66,12 @@ class TaskScheduler_Job {
 	public function get_group() {
 		return $this->group;
 	}
+
+	/**
+	 * @return bool If the job has been finished
+	 */
+	public function is_finished() {
+		return FALSE;
+	}
 }
  

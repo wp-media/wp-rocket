@@ -8,9 +8,9 @@ class TaskScheduler_wpPostJobStore extends TaskScheduler_JobStore {
 	const GROUP_TAXONOMY = 'task-group';
 	const SCHEDULE_META_KEY = '_task_manager_schedule';
 
-	public function save_job( TaskScheduler_Job $job ){
+	public function save_job( TaskScheduler_Job $job, DateTime $date = NULL ){
 		try {
-			$post_array = $this->create_post_array( $job );
+			$post_array = $this->create_post_array( $job, $date );
 			$post_id = $this->save_post_array( $post_array );
 			$this->save_post_schedule( $post_id, $job->get_schedule() );
 			$this->save_job_group( $post_id, $job->get_group() );
@@ -20,19 +20,19 @@ class TaskScheduler_wpPostJobStore extends TaskScheduler_JobStore {
 		}
 	}
 
-	protected function create_post_array( TaskScheduler_Job $job ) {
+	protected function create_post_array( TaskScheduler_Job $job, DateTime $date = NULL ) {
 		$post = array(
 			'post_type' => self::POST_TYPE,
 			'post_title' => $job->get_hook(),
 			'post_content' => json_encode($job->get_args()),
-			'post_status' => 'pending',
-			'post_date_gmt' => $this->get_timestamp($job),
+			'post_status' => ( $job->is_finished() ? 'publish' : 'pending' ),
+			'post_date_gmt' => $this->get_timestamp($job, $date),
 		);
 		return $post;
 	}
 
-	protected function get_timestamp( TaskScheduler_Job $job ) {
-		$next = $job->get_schedule()->next();
+	protected function get_timestamp( TaskScheduler_Job $job, DateTime $date = NULL ) {
+		$next = is_null($date) ? $job->get_schedule()->next() : $date;
 		if ( !$next ) {
 			throw new InvalidArgumentException(__('Invalid schedule. Cannot save job.', 'task-scheduler'));
 		}
@@ -87,13 +87,23 @@ class TaskScheduler_wpPostJobStore extends TaskScheduler_JobStore {
 		}
 		$group = wp_get_object_terms( $post->ID, self::GROUP_TAXONOMY, array('fields' => 'names') );
 		$group = empty( $group ) ? '' : reset($group);
-		$job = new TaskScheduler_Job( $hook, $args, $schedule, $group );
+		if ( $post->post_status == 'publish' ) {
+			$job = new TaskScheduler_FinishedJob( $hook, $args, $schedule, $group );
+		} else {
+			$job = new TaskScheduler_Job( $hook, $args, $schedule, $group );
+		}
 		return $job;
 	}
 
-	public function stake_claim( $max_jobs = 10 ){
+	/**
+	 * @param int $max_jobs
+	 * @param DateTime $before_date Jobs must be schedule before this date. Defaults to now.
+	 *
+	 * @return TaskScheduler_JobClaim
+	 */
+	public function stake_claim( $max_jobs = 10, DateTime $before_date = NULL ){
 		$claim_id = $this->generate_claim_id();
-		$this->claim_jobs( $claim_id, $max_jobs );
+		$this->claim_jobs( $claim_id, $max_jobs, $before_date );
 		$job_ids = $this->find_jobs_by_claim_id( $claim_id );
 		return new TaskScheduler_JobClaim( $claim_id, $job_ids );
 	}
@@ -106,15 +116,17 @@ class TaskScheduler_wpPostJobStore extends TaskScheduler_JobStore {
 	/**
 	 * @param string $claim_id
 	 * @param int $limit
+	 * @param DateTime $before_date
 	 * @return int The number of jobs that were claimed
 	 * @throws RuntimeException
 	 */
-	protected function claim_jobs( $claim_id, $limit ) {
+	protected function claim_jobs( $claim_id, $limit, DateTime $before_date = NULL ) {
 		/** @var wpdb $wpdb */
 		global $wpdb;
+		$date = is_null($before_date) ? new DateTime() : $before_date;
 		// can't use $wpdb->update() because of the <= condition
 		$sql = "UPDATE {$wpdb->posts} SET post_password = %s WHERE post_type = %s AND post_status = %s AND post_password = '' AND post_date_gmt <= %s LIMIT %d";
-		$sql = $wpdb->prepare( $sql, array( $claim_id, self::POST_TYPE, 'pending', date('Y-m-d H:i:s'), $limit ) );
+		$sql = $wpdb->prepare( $sql, array( $claim_id, self::POST_TYPE, 'pending', $date->format('Y-m-d H:i:s'), $limit ) );
 		$rows_affected = $wpdb->query($sql);
 		if ( $rows_affected === false ) {
 			throw new RuntimeException(__('Unable to claim jobs. Database error.', 'task-scheduler'));
@@ -148,6 +160,20 @@ class TaskScheduler_wpPostJobStore extends TaskScheduler_JobStore {
 		$result = $wpdb->query($sql);
 		if ( $result === false ) {
 			throw new RuntimeException( sprintf( __('Unable to unlock claim %s. Database error.', 'task-scheduler'), $claim->get_id() ) );
+		}
+	}
+
+	public function mark_complete( $job_id ) {
+		$post = get_post($job_id);
+		if ( empty($post) || ($post->post_type != self::POST_TYPE) ) {
+			throw new InvalidArgumentException(sprintf(__('Unidentified job %s', 'task-scheduler'), $job_id));
+		}
+		$result = wp_update_post(array(
+			'ID' => $job_id,
+			'post_status' => 'publish',
+		), TRUE);
+		if ( is_wp_error($result) ) {
+			throw new RuntimeException($result->get_error_message());
 		}
 	}
 

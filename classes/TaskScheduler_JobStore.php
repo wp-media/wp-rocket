@@ -11,7 +11,7 @@ abstract class TaskScheduler_JobStore {
 	 * @param TaskScheduler_Job $job
 	 * @return string The job ID
 	 */
-	abstract public function save_job( TaskScheduler_Job $job );
+	abstract public function save_job( TaskScheduler_Job $job, DateTime $date = NULL );
 
 	/**
 	 * @param string $job_id
@@ -25,6 +25,12 @@ abstract class TaskScheduler_JobStore {
 	 * @return TaskScheduler_JobClaim
 	 */
 	abstract public function stake_claim( $max_jobs );
+
+	/**
+	 * @param string $job_id
+	 * @return void
+	 */
+	abstract public function mark_complete( $job_id );
 
 	public function init() {}
 

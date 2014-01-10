@@ -31,6 +31,15 @@ class TaskScheduler_JobRunner {
 	protected function process_job( $job_id ) {
 		$job = $this->store->fetch_job( $job_id );
 		$job->execute();
+		$this->store->mark_complete( $job_id );
+		$this->schedule_next_instance( $job );
+	}
+
+	protected function schedule_next_instance( TaskScheduler_Job $job ) {
+		$next = $job->get_schedule()->next( new DateTime() );
+		if ( $next ) {
+			$this->store->save_job( $job, $next );
+		}
 	}
 }
  
