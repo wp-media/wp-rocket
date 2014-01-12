@@ -114,6 +114,7 @@ function rocket_field( $args )
 		if( !isset( $args['fieldset'] ) || $args['fieldset']=='end' )
 			echo '</fieldset>';
 	}
+	
 }
 
 
@@ -126,11 +127,12 @@ function rocket_field( $args )
  */
 
 function rocket_defered_module()
-{
-?>
+{ ?>
+	
 	<fieldset>
 		<legend class="screen-reader-text"><span><?php _e( '<strong>JS</strong> files with Deferred Loading JavaScript', 'rocket' ); ?></span></legend>
-		<div id="rktdrop">
+		
+		<div id="rkt-drop-deferred">
 
 			<?php
 
@@ -146,34 +148,136 @@ function rocket_defered_module()
 					// The loop on files
 				?>
 
-				<div class="rktdrag">
+				<div class="rkt-drag-deferred">
 
-					<img class="rktmove hide-if-no-js" src="<?php echo WP_ROCKET_ADMIN_IMG_URL . 'icon-move.png'; ?>" width="16" heigth="16" alt="<?php _e( 'Move' ); ?>" title="<?php _e( 'Move' ); ?>" />
+					<img class="rkt-move-deferred hide-if-no-js" src="<?php echo WP_ROCKET_ADMIN_IMG_URL . 'icon-move.png'; ?>" width="16" heigth="16" alt="<?php _e( 'Move' ); ?>" title="<?php _e( 'Move' ); ?>" />
 
 					<input style="width: 32em" type="text" placeholder="http://" class="deferred_js regular-text" name="wp_rocket_settings[deferred_js_files][<?php echo $k; ?>]" value="<?php echo esc_url( $_url ); ?>" />
 
 					<label>
 						<input type="checkbox" class="deferred_js" name="wp_rocket_settings[deferred_js_wait][<?php echo $k; ?>]" value="1" <?php echo $checked; ?>/> <?php _e( 'Wait until this file is loaded ?', 'rocket' ); ?>
 					</label>
-					<span class="rkt-delete hide-if-no-js rkt-cross"><?php _e( 'Delete' ); ?></span>
+					<span class="rkt-delete-deferred hide-if-no-js rkt-cross"><?php _e( 'Delete' ); ?></span>
 
 				</div>
-
+				<!-- .rkt-drag-deferred -->
+				
 				<?php }
 			}
 			else
 			{
-				// If no files yet, use this template inside #rktdrop
+				// If no files yet, use this template inside #rkt-drop-deferred
 				?>
 
-				<div class="rktdrag">
+				<div class="rkt-drag-deferred">
 
-					<img class="rktmove hide-if-no-js" src="<?php echo WP_ROCKET_ADMIN_IMG_URL . 'icon-move.png'; ?>" width="16" heigth="16" alt="<?php _e( 'Move' ); ?>" title="<?php _e( 'Move' ); ?>" />
+					<img class="rkt-move-deferred hide-if-no-js" src="<?php echo WP_ROCKET_ADMIN_IMG_URL . 'icon-move.png'; ?>" width="16" heigth="16" alt="<?php _e( 'Move' ); ?>" title="<?php _e( 'Move' ); ?>" />
 
 					<input style="width: 32em" type="text" placeholder="http://" class="deferred_js regular-text" name="wp_rocket_settings[deferred_js_files][0]" value="" />
 
 					<label>
 						<input type="checkbox" class="deferred_js" name="wp_rocket_settings[deferred_js_wait][0]" value="1" /> <?php _e( 'Wait until this file is loaded ?', 'rocket' ); ?>
+					</label>
+
+				</div>
+				<!-- .rkt-drag-deferred -->
+				
+			<?php } ?>
+
+		</div>
+		<!-- .rkt-drop-deferred -->
+		
+		<?php // Clone Template ?>
+
+		<div class="rkt-model-deferred rkt-drag-deferred hide-if-js">
+
+			<img class="rkt-move-deferred hide-if-no-js" src="<?php echo WP_ROCKET_ADMIN_IMG_URL . 'icon-move.png'; ?>" width="16" heigth="16" alt="<?php _e( 'Move' ); ?>" title="<?php _e( 'Move' ); ?>" />
+			
+			<input style="width: 32em" type="text" placeholder="http://" class="deferred_js regular-text" name="wp_rocket_settings[deferred_js_files][]" value="" />
+			
+			<label>
+				<input type="checkbox" class="deferred_js" name="wp_rocket_settings[deferred_js_wait][]" value="1" /> <?php _e( 'Wait until this file is loaded?', 'rocket' ); ?>
+			</label>
+			<span class="rkt-delete-deferred hide-if-no-js rkt-cross"><?php _e( 'Delete' ); ?></span>
+			
+		</div>
+		<!-- .rkt-model-deferred-->
+		
+		<p><a href="javascript:void(0)" id="rkt-clone-deferred" class="hide-if-no-js button-secondary"><?php _e( 'Add an URL', 'rocket' ); ?></a></p>
+		<p class="description"><?php _e( 'You can add JavaScript files that will be loaded asynchronously at the same time as the page loads.', 'rocket' ); ?></p>
+		<p class="hide-if-js"><?php _e( 'Empty the field to remove it.', 'rocket' ); ?></p>
+		<p class="description"><?php _e( '<strong>Warning :</strong> you must specify the complete URL of the files.', 'rocket' ); ?></p>
+		
+	</fieldset>
+
+<?php
+}
+
+
+
+/**
+ * Used to display the CNAMES module on settings form
+ *
+ * @since 2.1
+ *
+ */
+
+function rocket_cnames_module()
+{ ?>
+
+	<fieldset>
+		<legend class="screen-reader-text"><span><?php _e( 'Replace site\'s hostname with:', 'rocket' ); ?></span></legend>
+
+		<div id="rkt-cnames">
+
+			<?php
+
+			$cnames = get_rocket_option( 'cdn_cnames' );
+			$cnames_zone = get_rocket_option( 'cdn_zone' );
+
+			if( $cnames )
+			{
+
+				foreach( $cnames as $k=>$_url )
+				{ ?>
+
+					<div class="rkt-cname">
+
+						<input style="width: 32em" type="text" placeholder="http://" class="regular-text" name="wp_rocket_settings[cdn_cnames][<?php echo $k; ?>]" value="<?php echo esc_attr( $_url ); ?>" />
+
+						<label>
+							<?php _e( 'reserved for', 'rocket' ); ?>
+							<select name="wp_rocket_settings[cdn_zone][<?php echo $k; ?>]">
+								<option value="all" <?php selected( $cnames_zone[$k], 'all' ); ?>><?php _e( 'All files', 'rocket' ); ?></option>
+								<option value="images" <?php selected( $cnames_zone[$k], 'images' ); ?>><?php _e( 'Images', 'rocket' ); ?></option>
+								<option value="css_and_js" <?php selected( $cnames_zone[$k], 'css_and_js' ); ?>>CSS & JavaScript</option>
+							</select>
+						</label>
+						<span class="rkt-delete-cname hide-if-no-js rkt-cross"><?php _e( 'Delete' ); ?></span>
+
+					</div>
+
+				<?php
+				}
+
+			}
+			else
+			{
+
+				// If no files yet, use this template inside #rkt-cnames
+				?>
+
+				<div class="rkt-cname">
+
+					<input style="width: 32em" type="text" placeholder="http://" class="regular-text" name="wp_rocket_settings[cdn_cnames][]" value="" />
+
+					<label>
+						<?php _e( 'reserved for', 'rocket' ); ?>
+						<select name="wp_rocket_settings[cdn_zone][]">
+							<option value="all"><?php _e( 'All files', 'rocket' ); ?></option>
+							<option value="images"><?php _e( 'Images', 'rocket' ); ?></option>
+							<option value="css_and_js">CSS & JavaScript</option>
+						</select>
 					</label>
 
 				</div>
@@ -183,24 +287,28 @@ function rocket_defered_module()
 		</div>
 
 		<?php // Clone Template ?>
+		<div class="rkt-model-cname rkt-cname hide-if-js">
 
-		<div class="rktmodel rktdrag hide-if-js">
+			<input style="width: 32em" type="text" placeholder="http://" class="regular-text" name="wp_rocket_settings[cdn_cnames][]" value="" />
 
-			<img class="rktmove hide-if-no-js" src="<?php echo WP_ROCKET_ADMIN_IMG_URL . 'icon-move.png'; ?>" width="16" heigth="16" alt="<?php _e( 'Move' ); ?>" title="<?php _e( 'Move' ); ?>" />
-			<input style="width: 32em" type="text" placeholder="http://" class="deferred_js regular-text" name="wp_rocket_settings[deferred_js_files][]" value="" />
-			<label><input type="checkbox" class="deferred_js" name="wp_rocket_settings[deferred_js_wait][]" value="1" /> <?php _e( 'Wait until this file is loaded?', 'rocket' ); ?></label>
+			<label>
+				<?php _e( 'reserved for', 'rocket' ); ?>
+				<select name="wp_rocket_settings[cdn_zone][]">
+					<option value="all"><?php _e( 'All files', 'rocket' ); ?></option>
+					<option value="images"><?php _e( 'Images', 'rocket' ); ?></option>
+					<option value="css_and_js">CSS & JavaScript</option>
+				</select>
+			</label>
+			<span class="rkt-delete-cname hide-if-no-js rkt-cross"><?php _e( 'Delete' ); ?></span>
 
 		</div>
 
-		<p><a href="javascript:void(0)" id="rktclone" class="hide-if-no-js button-secondary"><?php _e( 'Add an URL', 'rocket' ); ?></a></p>
-		<p class="description"><?php _e( 'You can add JavaScript files that will be loaded asynchronously at the same time as the page loads.', 'rocket' ); ?></p>
-		<p class="hide-if-js"><?php _e( 'Empty the field to remove it.', 'rocket' ); ?></p>
-		<p class="description"><?php _e( '<strong>Warning :</strong> you must specify the complete URL of the files.', 'rocket' ); ?></p>
+		<p><a href="javascript:void(0)" id="rkt-clone-cname" class="hide-if-no-js button-secondary"><?php _e( 'Add CNAME', 'rocket' ); ?></a></p>
+
 	</fieldset>
 
 <?php
 }
-
 
 
 /**
@@ -266,7 +374,7 @@ function rocket_display_options()
 		)
 	);
 	add_settings_field(
-		'rocket_min_js',
+		'rocket_minify',
 		 __( 'Files optimisation: <br/> <span class="description">(Minification & Concatenation)</span>', 'rocket' ),
 		'rocket_field',
 		'basic',
@@ -361,6 +469,7 @@ function rocket_display_options()
 				)
 			)
 	);
+
 	// Advanced
 	add_settings_section( 'rocket_display_imp_options', __( 'Advanced options', 'rocket' ), '__return_false', 'advanced' );
 	add_settings_field(
@@ -416,6 +525,27 @@ function rocket_display_options()
 		)
 	);
 	add_settings_field(
+		'rocket_minify_pretty_url',
+		 __( 'Use "pretty URL" in minification for:', 'rocket' ),
+		'rocket_field',
+		'advanced',
+		'rocket_display_imp_options',
+		array(
+			array(
+				'type'         => 'checkbox',
+				'label'        => 'CSS',
+				'name'         => 'minify_pretty_url_css',
+				'label_screen' => __( 'Files minification', 'rocket' )
+			),
+			array(
+				'type'		   => 'checkbox',
+				'label'		   => 'JS',
+				'name'		   => 'minify_pretty_url_js',
+				'label_screen' => __( 'Files minification', 'rocket' ),
+				'description'  => '' )
+		)
+	);
+	add_settings_field(
 		'rocket_exclude_css',
 		__( '<strong>CSS</strong> files to exclude of the minification:', 'rocket' ),
 		'rocket_field',
@@ -448,6 +578,30 @@ function rocket_display_options()
 		'advanced',
 		'rocket_display_imp_options'
 	);
+
+	// Content Delivery Network
+	add_settings_section( 'rocket_display_cdn_options', __( 'Content Delivery Network options', 'rocket' ), '__return_false', 'cdn' );
+	add_settings_field(
+		'rocket_cdn',
+		__( 'CDN:', 'rocket' ),
+		'rocket_field',
+		'cdn',
+		'rocket_display_cdn_options',
+		array(
+			'type'         => 'checkbox',
+			'label'        => __('Enable Content Delivery Network.', 'rocket' ),
+			'label_for'    => 'cdn',
+			'label_screen' => __( 'CDN:', 'rocket' )
+		)
+	);
+	add_settings_field(
+		'rocket_cdn_cnames',
+		__( 'Replace site\'s hostname with:', 'rocket' ),
+		'rocket_cnames_module',
+		'cdn',
+		'rocket_display_cdn_options'
+	);
+
 	// Tools
 	add_settings_section( 'rocket_display_tools', __( 'Tools', 'rocket' ), '__return_false', 'tools' );
 	add_settings_field(
@@ -493,21 +647,18 @@ function rocket_display_options()
 	<form action="options.php" method="post">
 		<?php settings_fields( 'wp_rocket' ); ?>
 		<input type="hidden" name="wp_rocket_settings[secret_cache_key]" value="<?php echo esc_attr( get_rocket_option( 'secret_cache_key' ) ) ;?>" />
+		<input type="hidden" name="wp_rocket_settings[minify_key]" value="<?php echo str_replace( '.', '', uniqid( '', true ) ); ?>" />
 		<?php submit_button(); ?>
 		<h2 class="nav-tab-wrapper hide-if-no-js">
 			<?php if( rocket_valid_key() ) : ?>
 				<a href="#tab_basic" class="nav-tab"><?php _e( 'Basic options', 'rocket' ); ?></a>
 				<a href="#tab_advanced" class="nav-tab"><?php _e( 'Advanced options', 'rocket' ); ?></a>
+				<a href="#tab_cdn" class="nav-tab">CDN</a>
 				<a href="#tab_tools" class="nav-tab"><?php _e( 'Tools', 'rocket' ); ?></a>
-				<?php
-				if( WPLANG == 'fr_FR' ) { ?>
-
-				<a href="#tab_tutos" class="nav-tab"><?php _e( 'Tutorials', 'rocket' ); ?></a>
-				<a href="#tab_faq" class="nav-tab"><?php _e( 'FAQ', 'rocket' ); ?></a>
-
-				<?php
-				}
-				?>
+				<?php if( WPLANG == 'fr_FR' ) : ?>
+					<a href="#tab_tutos" class="nav-tab"><?php _e( 'Tutorials', 'rocket' ); ?></a>
+					<a href="#tab_faq" class="nav-tab"><?php _e( 'FAQ', 'rocket' ); ?></a>
+				<?php endif; ?>
 
 				<a href="#tab_support" class="nav-tab" style="color:#FF0000;"><?php _e( 'Support', 'rocket' ); ?></a>
 				<input type="hidden" name="wp_rocket_settings[consumer_key]" value="<?php esc_attr_e( get_rocket_option( 'consumer_key' ) ); ?>" />
@@ -521,133 +672,17 @@ function rocket_display_options()
 			<?php else: ?>
 				<div class="rkt-tab" id="tab_basic"><?php do_settings_sections( 'basic' ); ?></div>
 				<div class="rkt-tab" id="tab_advanced"><?php do_settings_sections( 'advanced' ); ?></div>
+				<div class="rkt-tab" id="tab_cdn"><?php do_settings_sections( 'cdn' ); ?></div>
 				<div class="rkt-tab" id="tab_tools"><?php do_settings_sections( 'tools' ); ?></div>
 				<div class="rkt-tab rkt-tab-txt" id="tab_tutos">
-					<h2><?php _e( 'Preload cache', 'rocket' ); ?></h2>
-					<p><?php _e ( 'This video gives some explanations about our two crawler robots. They generate several cache files in a few seconds.', 'rocket' );?></p>
-					<p><a href="http://www.youtube.com/embed/9jDcg2f-9yM" class="button-primary fancybox"><?php _e( 'Watch the video', 'rocket' ); ?></a></p>
-
-					<h2><?php _e( 'CSS and JavaScript minification', 'rocket' );?></h2>
-					<p>Cette vidéo donne quelques explications sur l’utilisation avancée du processus de minification et concaténation des fichiers CSS et JavaScript.</p>
-					<p><a href="http://www.youtube.com/embed/iziXSvZgxLk" class="button-primary fancybox"><?php _e( 'Watch the video', 'rocket' ); ?></a></p>
-
-					<h2>Pré-chargement des requêtes DNS</h2>
-					<p>Cette vidéo permet de comprendre en toute simplicité le fonctionnement de l'option avancée "Pré-chargement des requêtes DNS" et de l'utilisation du filtre <code>rocket_dns_prefetch</code>.</p>
-					<p><a href="http://www.youtube.com/embed/iziXSvZgxLk" class="button-primary fancybox"><?php _e( 'Watch the video', 'rocket' ); ?></a></p>
-
+					<?php include( WP_ROCKET_ADMIN_PATH . 'tutorials.php' ); ?>
 				</div>
 				<div class="rkt-tab rkt-tab-txt" id="tab_faq">
-					<h2>Que fait exactement WP Rocket ? </h2>
-					<p>WP Rocket est un plugin de cache complet qui embarque de nombreuses fonctionnalités :</p>
-					<ul>
-						<li>Mise en cache de l'ensemble des pages pour un affichage rapide</li>
-						<li>Préchargement des fichiers de cache à l'aide de 2 robots en Python</li>
-						<li>Réduction du nombres de requêtes HTTP pour réduire le temps de chargement</li>
-						<li>Diminution de la bande passante grâce à la compression GZIP</li>
-						<li>Gestion des headers (expire, etags, etc...)</li>
-						<li>Minification et concaténations des JS et CSS</li>
-						<li>Chargement différé des images (LazyLoad)</li>
-						<li>Chargement différé des fichiers JavaScript</li>
-						<li>Optimisation des images</li>
-					</ul>
-
-					<h2>J'ai activé aucune des options de base, est-ce que WP Rocket fonctionne ?</h2>
-					<p>Oui.</p>
-					<p>Les options de base sont des optimisations complémentaires que l’on peut qualifié de bonus. Ces options ne sont pas indispensables pour améliorer le temps de chargement de votre site Internet.</p>
-					<p>Quelque soit votre configuration de WP Rocket, les fonctionnalités suivantes seront toujours actives :</p>
-					<ul>
-						<li>Mise en cache de l'ensemble des pages pour affichage rapide</li>
-						<li>Diminution de la bande passante grâce à la compression GZIP</li>
-						<li>Gestion des headers (expire, etags, etc)</li>
-						<li>Optimisation des images</li>
-					</ul>
-
-					<h2>Que dois-je faire en cas de problème lié à WP Rocket que je n’arrive pas à résoudre ?</h2>
-					<p>Si aucune des réponses de la F.A.Q. présente ci-dessous apporte une réponse à votre problématique, vous pouvez nous faire part de votre problème sur notre <a href="http://support.wp-rocket.me" target="_blank">support</a>. Nous vous répondrons dans les plus brefs délais.</p>
-
-					<h2>Ma licence est expirée, que dois-je faire ?</h2>
-					<p>Pas de panique, WP Rocket continuera de fonctionner sans problème. Vous recevrez un mail vous indiquant que votre licence va bientôt arriver à expiration. Vous trouverez un lien de renouvellement qui sera actif même après l’expiration.</p>
-
-					<h2>Je souhaite modifier l'URL de mon site associé à ma licence, que dois-je faire ?</h2>
-					<p>Vous devez nous contacter par mail (<a href="mailto:contact@wp-rocket.me">contact@wp-rocket.me</a>) en nous indiquant la raison de votre modification. La modification sera réalisée par l’équipe de WP Rocket.</p>
-
-					<h2>Quels outils dois-je utilisé pour mesurer les performances de mon site ?</h2>
-					<p>Vous pouvez mesurer les performances de votre site Internet à l’aide des outils suivants : </p>
-					<ul>
-						<li><a href="http://tools.pingdom.com/fpt/" target="_blank">Pingdom Tools</a></li>
-						<li><a href="http://gtmetrix.com/" target="_blank">GT Metrix</a></li>
-						<li><a href="http://www.webpagetest.org/" target="_blank">Webpagetest</a></li>
-					</ul>
-
-					<p>Ces outils donnent 2 indications :</p>
-					<ul>
-						<li>une note globale des bonnes pratiques à appliquer</li>
-						<li>un temps de chargement</li>
-					</ul>
-
-					<p>Ces données sont indicatives et ne reflètent pas forcément  la vitesse d’affichage réelle de votre site Internet.</p>
-
-					<p>Pour réaliser des tests de temps de chargement plus proche de la réalité,, nous conseillons d’utiliser <a href="http://tools.pingdom.com/fpt/" target="_blank">Pingdom Tools</a> avec l’option <code>Amsterdam</code> comme serveur.</p>
-
-					<h2>WP Rocket fonctionne-t-il avec les permaliens par défaut ?</h2>
-					<p>Non.</p>
-
-					<p>Il est nécessaire d'avoir des permaliens personnalisés du type <code>http://example.com/mon-article/</code> plutôt que <code>http://example.com/?p=1234</code>.</p>
-
-					<h2>Avec quels serveurs Web WP Rocket est-il compatible ?</h2>
-					<p>WP Rocket est compatible avec les serveurs Web <strong>Apache</strong>. Pour le moment, WP Rocket n’est donc pas compatible avec les serveurs Web NGINX et Litepseed.</p>
-
-					<h2>Le rapport PageSpeed ou Yslow m’indique que le contenu n’est pas gzipé et/ou n’a pas d’expiration, que dois-je faire ?</h2>
-
-					<p>WP Rocket ajoute automatiquement les bonnes règles d’expirations et de gzip des fichiers statiques. Si elles ne sont pas appliquées, il est possible qu’un plugin rentre en conflit (exemple: <a href="http://wordpress.org/plugins/wp-retina-2x/" target="_blank">WP Retina 2x</a>). Essayez de désactiver temporairement tous les plugins, excepté WP Rocket, et de refaire le test.</p>
-
-					<p>Si cela n’est pas concluant, cela signifie que le <code>mod_expire</code> et/ou <code>mod_deflate</code> n’est pas activé sur votre serveur.</p>
-
-					<h2>WP Rocket est-il compatible avec les autres plugins de cache, tels que WP Super Cache ou W3 Total Cache ?</h2>
-					<p>Non.</p>
-
-					<p>Il est impératif de <strong>supprimer tous les autres plugins d'optimisation</strong> (cache, minification, LazyLoad) avant l’activation de WP Rocket.</p>
-
-					<h2>WP Rocket est-il compatible avec WP Touch, WordPress Mobile Pack et WP Mobile Detector ?</h2>
-					<p>Oui.</p>
-					<p>Par contre, dans les options de base, vous devez décocher la case <code>Activer la mise en cache pour les appareils mobile</code>.</p>
-
-					<h2>WP Rocket est-il compatible avec WooCommerce ?</h2>
-					<p>Oui.</p>
-
-					<p>Cependant, il faut exclure les pages panier et commande de la mise en cache. Cela se fait à partir de l’option avancée <code>Ne jamais mettre en cache les pages suivantes</code> et en ajoutant les valeurs suivantes :</p>
-					<p><code>/panier/<br/>
-					/commande/(.*)
-					</code></p>
-
-					<h2>WP Rocket est-il compatible avec WPML ?</h2>
-					<p>Oui.</p>
-					<p>Vous avez même la possibilité de vider/précharger la cache d'une langue précise ou de toutes les langues en même temps.</p>
-
-					<h2>En quoi consiste la minification et concaténation des fichiers ?</h2>
-					<p>La minification consiste à supprimer tous les éléments superflus d’une fichier HTML, CSS ou JavaScript : espaces, commentaires, etc... Cela permet de diminuer la taille des fichiers. Ainsi, les navigateurs lisent plus rapidement les fichiers.</p>
-
-					<p>La concaténation consiste à regrouper en un seul, un ensemble de fichiers. Cela a pour effet de diminuer le nombre de requêtes HTTP.</p>
-					<h2>Que dois-je faire si WP Rocket déforme l’affichage de mon site ?</h2>
-					<p>Il y a de fortes chances que la déformation soit provoquée par la minification des fichiers HTML, CSS et/ou JavaScript. Pour résoudre le problème, nous conseillons de regarder la vidéo suivante : <a href="http://www.youtube.com/embed/iziXSvZgxLk" class="fancybox">http://www.youtube.com/embed/iziXSvZgxLk</a>.</p>
-
-					<h2>À quel intervalle le cache est mis à jour ?</h2>
-					<p>Le cache est automatiquement rafraîchit à chaque mise à jour d'un contenu (ajout/édition/suppression d’un article, publication d’un commentaire, etc...).</p>
-					<p>Dans les options de base, vous pouvez aussi spécifier un délai de purge automatique du cache.</p>
-
-					<h2>Comment ne pas mettre en cache une page particulière ?</h2>
-					<p>Dans les options avancées, il est possible de spécifier des URLs à ne pas mettre en cache. Pour cela, il faut ajouter dans le champ de saisie <code>Ne jamais mettre en cache les pages suivantes</code> les URLs à exclure.</p>
-
-					<h2>Comment fonctionne les robots de préchargement des fichiers de cache ?</h2>
-					<p>Pour mettre une page en cache, il faut un premier visiteur. Pour éviter qu’un premier visiteur le fasse, nous avons développé deux robots (en python) qui crawl les pages de votre site Internet.</p>
-
-					<p>Le premier va visiter votre site à la demande à l’aide du bouton “Précharger le cache”. Le second va automatiquement visiter votre site dès que vous allez créer/éditer/supprimer un article.</p>
-
-					<p>Pour plus d’informations, vous pouvez consulter notre vidéo à ce propos : <a href="http://www.youtube.com/embed/9jDcg2f-9yM" class="fancybox">http://www.youtube.com/embed/9jDcg2f-9yM</a>.</p>
+					<?php include( WP_ROCKET_ADMIN_PATH . 'faq.php' ); ?>
 				</div>
 				<div class="rkt-tab rkt-tab-txt" id="tab_support">
 					<p><?php _e('If none of the FAQ answers, answer your problem, you can tell us your issue on our <a href="http://support.wp-rocket.me/" target="_blank">Support</a>. We will reply as soon as possible.', 'rocket');?></p>
-					<p><a href="http://support.wp-rocket.me/" class="button-primary" target="_blank"><?php _e('Go to Support');?></a></p>
+					<p><a href="http://support.wp-rocket.me/" class="button-primary" target="_blank"><?php _e( 'Go to Support', 'rocket' );?></a></p>
 			<?php endif; ?>
 				</div>
 		</div>
@@ -734,45 +769,206 @@ function rocket_clean_exclude_file( $file )
 
 function rocket_settings_callback( $inputs )
 {
-	// Clean inputs
-	$inputs['dns_prefetch'] = 		isset( $inputs['dns_prefetch'] ) ? 	array_unique( array_filter( array_map( 'esc_url', 					array_map( 'trim', explode( "\n", $inputs['dns_prefetch'] ) ) ) ) ) 		: array();
-	$inputs['cache_purge_pages'] = 		isset( $inputs['cache_purge_pages'] ) ? 	array_unique( array_filter( array_map( 'rocket_clean_exclude_file',	array_map( 'esc_url', 					array_map( 'trim', explode( "\n", $inputs['cache_purge_pages'] ) ) ) ) ) )		: array();
-	$inputs['cache_reject_uri'] = 		isset( $inputs['cache_reject_uri'] ) ? 		array_unique( array_filter( array_map( 'rocket_clean_exclude_file',	array_map( 'esc_url', 					array_map( 'trim', explode( "\n", $inputs['cache_reject_uri'] ) ) ) ) ) )		: array();
-	$inputs['cache_reject_cookies'] = 	isset( $inputs['cache_reject_cookies'] ) ? 	array_unique( array_filter( array_map( 'rocket_clean_exclude_file',	array_map( 'sanitize_key', 				array_map( 'trim', explode( "\n", $inputs['cache_reject_cookies'] ) ) ) ) ) )	: array();
-	$inputs['exclude_css'] = 			isset( $inputs['exclude_css'] ) ? 			array_unique( array_filter( array_map( 'rocket_sanitize_css', 		array_map( 'rocket_clean_exclude_file',	array_map( 'trim', explode( "\n", $inputs['exclude_css'] ) ) ) ) ) )			: array();
-	$inputs['exclude_js'] = 			isset( $inputs['exclude_js'] ) ? 			array_unique( array_filter( array_map( 'rocket_sanitize_js', 		array_map( 'rocket_clean_exclude_file',	array_map( 'trim', explode( "\n", $inputs['exclude_js']) ) ) ) ) )				: array();
-	$inputs['deferred_js_files'] = 		isset( $inputs['deferred_js_files'] ) ? 	array_filter( 				array_map( 'rocket_sanitize_js', 		array_unique( $inputs['deferred_js_files'] ) ) ) : array();
-	if( !$inputs['deferred_js_files'] ){
+
+	if( isset( $_GET['action'] ) && $_GET['action'] == 'purge_cache' )
+		return $inputs;
+
+
+	/*
+	 * Option : Purge delay
+	 */
+
+	$inputs['purge_cron_interval'] = isset( $inputs['purge_cron_interval'] ) ? (int)$inputs['purge_cron_interval'] : get_rocket_option( 'purge_cron_interval' );
+
+	$inputs['purge_cron_unit'] = isset( $inputs['purge_cron_unit'] ) ? $inputs['purge_cron_unit'] : get_rocket_option( 'purge_cron_unit' );
+
+
+	/*
+	 * Option : Prefetch DNS requests
+	 */
+
+	if( isset( $inputs['dns_prefetch'] ) ) :
+
+		$inputs['dns_prefetch'] = array_unique( array_filter( array_map( 'esc_url', array_map( 'trim', explode( "\n", $inputs['dns_prefetch'] ) ) ) ) );
+
+	else :
+
+		$inputs['dns_prefetch'] = array();
+
+	endif;
+
+
+	/*
+	 * Option : Empty the cache of the following pages when updating an article
+	 */
+
+	if( isset( $inputs['cache_purge_pages'] ) ) :
+
+		$inputs['cache_purge_pages'] = array_unique( array_filter( array_map( 'rocket_clean_exclude_file', array_map( 'esc_url', 					array_map( 'trim', explode( "\n", $inputs['cache_purge_pages'] ) ) ) ) ) );
+
+	else :
+
+		$inputs['cache_purge_pages'] = array();
+
+	endif;
+
+
+	/*
+	 * Option : Never cache the following pages
+	 */
+
+	if( isset( $inputs['cache_reject_uri'] ) ) :
+
+		$inputs['cache_reject_uri'] = array_unique( array_filter( array_map( 'rocket_clean_exclude_file', array_map( 'esc_url', 					array_map( 'trim', explode( "\n", $inputs['cache_reject_uri'] ) ) ) ) ) );
+
+	else :
+
+		$inputs['cache_reject_uri'] = array();
+
+	endif;
+
+
+	/*
+	 * Option : Don't cache pages that use the following cookies
+	 */
+
+	if( isset( $inputs['cache_reject_cookies'] ) ) :
+
+		$inputs['cache_reject_cookies'] = array_unique( array_filter( array_map( 'sanitize_key', array_map( 'trim', explode( "\n", $inputs['cache_reject_cookies'] ) ) ) ) );
+
+	else :
+
+		$inputs['cache_reject_cookies'] = array();
+
+	endif;
+
+
+	/*
+	 * Option : CSS files to exclude of the minification
+	 */
+
+	if( isset( $inputs['exclude_css'] ) ) :
+
+		$inputs['exclude_css'] = array_unique( array_filter( array_map( 'rocket_sanitize_css', array_map( 'rocket_clean_exclude_file',	array_map( 'trim', explode( "\n", $inputs['exclude_css'] ) ) ) ) ) );
+
+	else :
+
+		$inputs['exclude_css'] = array();
+
+	endif;
+
+
+	/*
+	 * Option : JS files to exclude of the minification
+	 */
+
+	if( isset( $inputs['exclude_js'] ) ) :
+
+		$inputs['exclude_js'] = array_unique( array_filter( array_map( 'rocket_sanitize_js', 		array_map( 'rocket_clean_exclude_file',	array_map( 'trim', explode( "\n", $inputs['exclude_js']) ) ) ) ) );
+
+	else :
+
+		$inputs['exclude_js'] = array();
+
+	endif;
+
+
+	/*
+	 * Option : JS files with deferred loading
+	 */
+
+	if( isset( $inputs['deferred_js_files'] ) ) :
+
+		$inputs['deferred_js_files'] = array_filter( array_map( 'rocket_sanitize_js', array_unique( $inputs['deferred_js_files'] ) ) );
+
+	else :
+
+		$inputs['deferred_js_files'] = array();
+
+	endif;
+
+
+	if( !$inputs['deferred_js_files'] )
+	{
 		$inputs['deferred_js_wait'] = array();
-	}else{
-		for( $i=0; $i<=max(array_keys($inputs['deferred_js_files'])); $i++) {
+	}
+	else
+	{
+
+		for( $i=0; $i<=max(array_keys($inputs['deferred_js_files'])); $i++)
+		{
+
 			if( !isset( $inputs['deferred_js_files'][$i] ) )
 				unset( $inputs['deferred_js_wait'][$i] );
-			else $inputs['deferred_js_wait'][$i] = isset( $inputs['deferred_js_wait'][$i] ) ? '1' : '0';
+			else
+				$inputs['deferred_js_wait'][$i] = isset( $inputs['deferred_js_wait'][$i] ) ? '1' : '0';
+
 		}
+
 		$inputs['deferred_js_files'] = array_values( $inputs['deferred_js_files'] );
 		ksort( $inputs['deferred_js_wait'] );
 		$inputs['deferred_js_wait'] = array_values( $inputs['deferred_js_wait'] );
+
 	}
 
-	$inputs['purge_cron_interval'] = 	isset( $inputs['purge_cron_interval'] ) ? (int)$inputs['purge_cron_interval'] : get_rocket_option( 'purge_cron_interval' );
-	$inputs['purge_cron_unit'] = 		isset( $inputs['purge_cron_unit'] ) ? $inputs['purge_cron_unit'] : get_rocket_option( 'purge_cron_unit' );
-	if( $inputs['consumer_key']==hash( 'crc32', rocket_get_domain( home_url() ) ) ){
+
+	/*
+	 * Option : CDN
+	 */
+
+	$inputs['cdn_cnames'] = isset( $inputs['cdn_cnames'] ) ? array_unique( array_filter( $inputs['cdn_cnames'] ) ) : array();
+
+
+	if( !$inputs['cdn_cnames'] )
+	{
+		$inputs['cdn_zone'] = array();
+	}
+	else
+	{
+
+		for( $i=0; $i<=max(array_keys($inputs['cdn_cnames'])); $i++)
+		{
+
+			if( !isset( $inputs['cdn_cnames'][$i] ) )
+				unset( $inputs['cdn_zone'][$i] );
+			else
+				$inputs['cdn_zone'][$i] = isset( $inputs['cdn_zone'][$i] ) ? '1' : '0';
+
+		}
+
+		$inputs['cdn_cnames'] = array_values( $inputs['cdn_cnames'] );
+		ksort( $inputs['cdn_zone'] );
+		$inputs['cdn_zone'] = array_values( $inputs['cdn_zone'] );
+
+	}
+
+
+	/*
+	 * Option : Consumer Key
+	 */
+
+	if( $inputs['consumer_key']==hash( 'crc32', rocket_get_domain( home_url() ) ) )
+	{
+
 		$response = wp_remote_get( WP_ROCKET_WEB_VALID, array( 'timeout'=>30 ) );
 		if( !is_a($response, 'WP_Error') && strlen( $response['body'] )==32 )
 			$inputs['secret_key'] = $response['body'];
 
-	}else{
-			unset( $inputs['secret_key'] );
 	}
+	else
+	{
+		unset( $inputs['secret_key'] );
+	}
+
 	rocket_renew_box( 'rocket_warning_logged_users' );
 	return $inputs;
+
 }
 
 
 
 /**
- * When our settings are saved: purge, cron, flush, preload!
+ * When our settings are saved: purge, flush, preload!
  *
  * @since 1.0
  *
@@ -781,14 +977,22 @@ function rocket_settings_callback( $inputs )
 add_action( 'update_option_wp_rocket_settings', 'rocket_after_save_options' );
 function rocket_after_save_options()
 {
-	// Purge all cache files when user save options
+
+	// Purge all cache files
 	rocket_clean_domain();
+
+	// Purge all minify cache files
+	rocket_clean_minify();
 
 	// Update .htaccess file rules
 	flush_rocket_htaccess( !rocket_valid_key() );
 
 	// Update config file
 	rocket_generate_config_file();
+
+	// Set COOKIE_DOMAIN constant in wp-config.php
+	set_rocket_cookie_domain_define( get_rocket_option( 'cdn', false ) );
+
 }
 
 
@@ -803,11 +1007,16 @@ function rocket_after_save_options()
 add_filter( 'pre_update_option_'.WP_ROCKET_SLUG, 'rocket_pre_main_option', 10, 2 );
 function rocket_pre_main_option( $newvalue, $oldvalue )
 {
+
   if( ( $newvalue['purge_cron_interval'] != $oldvalue['purge_cron_interval'] ) || ( $newvalue['purge_cron_unit']!=$oldvalue['purge_cron_unit'] ) )
   {
+
   	// Clear WP Rocket cron
 	if ( wp_next_scheduled( 'rocket_purge_time_event' ) )
 		wp_clear_scheduled_hook( 'rocket_purge_time_event' );
+
   }
+
   return $newvalue;
+
 }

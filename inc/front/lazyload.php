@@ -42,7 +42,7 @@ add_filter( 'widget_text', 'rocket_lazyload_images', PHP_INT_MAX );
 function rocket_lazyload_images( $html )
 {
 
-	// // Don't LazyLoad if the thumbnail is in a feed or in a post preview
+	// Don't LazyLoad if the thumbnail is in a feed or in a post preview
 	if( is_feed() || is_preview() || empty( $html ) )
 		return $html;
 

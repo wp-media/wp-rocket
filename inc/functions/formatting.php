@@ -95,3 +95,144 @@ function get_rocket_parse_url_for_lang( $lang )
 	if( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) )
 		return get_rocket_parse_url( qtrans_convertURL( home_url(), $lang, true ) );
 }
+
+
+
+/*
+ * Get an URL with one of CNAMES added in options
+ *
+ * @since 2.1
+ *
+ */
+
+function get_rocket_cdn_url( $url, $reserved_for = array() )
+{
+
+	if( (int)get_rocket_option( 'cdn' ) == 0 )
+		return $url;
+
+	$url    = parse_url( $url );
+	$path   = $url['path'];
+	$query  = $url['query'] ? '?' . $url['query'] : '';
+
+	$cnames = get_rocket_cdn_cnames( count($reserved_for) ? $reserved_for : 'all' );
+	$cname  = rocket_remove_url_protocol( $cnames[(abs(crc32($path))%count($cnames))] );
+
+	$scheme = parse_url( $cname, PHP_URL_SCHEME );
+	$scheme = !empty($scheme) ? $scheme : 'http';
+
+	return $scheme . '://' . rtrim( $cname , '/' ) . $path . $query;
+
+}
+
+
+
+/*
+ * Alias of get_rocket_cdn_url() and print result
+ *
+ * @since 2.1
+ *
+ */
+
+function rocket_cdn_url( $url, $reserved_for = array() )
+{
+
+	echo get_rocket_cdn_url( $url, $reserved_for );
+
+}
+
+
+
+/**
+ * TO DO
+ *
+ * @since 2.1
+ *
+ */
+
+function get_rocket_minify_files( $files, $force_pretty_url = false, $force_pretty_name = false )
+{
+
+	// Get the internal CSS Files
+	// To avoid conflicts with file URLs are too long for browsers,
+	// cut into several parts concatenated files
+	$tags 		= '';
+	$data_attr  = '';
+	$urls 		= array(0=>'');
+	$base_url 	= WP_ROCKET_URL . 'min/?f=';
+	$files  	= is_array( $files ) ? $files : (array)$files;
+
+	if( count( $files ) )
+	{
+
+		$i=0;
+		foreach( $files as $file )
+		{
+
+			if( strlen( $urls[$i] . $base_url . $file )+1>=255 ) // +1 : we count the extra comma
+				$i++;
+
+			$urls[$i] .= $file.',';
+
+		}
+
+		foreach( $urls as $url )
+		{
+
+			$url = $base_url . rtrim( $url, ',' );
+			$ext = pathinfo( $url, PATHINFO_EXTENSION );
+
+			//
+			if( $force_pretty_url )
+			{
+
+				$pretty_url = !$force_pretty_name ? WP_ROCKET_MINIFY_CACHE_URL . md5( $url . get_rocket_option( 'minify_key' ) ) . '.' . $ext : WP_ROCKET_MINIFY_CACHE_URL . $force_pretty_name . '.' . $ext;
+				$pretty_url = apply_filters( 'rocket_minify_pretty_url', $pretty_url );
+				
+				$url        = rocket_fetch_and_cache_minify( $url, $pretty_url ) ? $pretty_url : $url;
+				$data_attr 	= !strpos( $url , 'min/?f=' ) ? 'data-pretty-minify="1"' : '';
+				
+			}
+
+			//
+			$url = get_rocket_cdn_url( $url, array( 'all', 'css_and_js' ) );
+
+			//
+			if( $ext == 'css' )
+			{
+
+				$tags .= '<link rel="stylesheet" href="' . apply_filters( 'rocket_css_url', $url ) . '" ' . $data_attr . '/>';
+
+			}
+
+			//
+			if ( $ext == 'js' )
+			{
+
+				$tags .= '<script src="' . apply_filters( 'rocket_js_url', $url ) . '" ' . $data_attr . '></script>';
+
+			}
+
+		}
+
+	}
+
+	return $tags;
+
+}
+
+
+
+/*
+ * Alias of get_rocket_minify_files() and print result
+ *
+ * @since 2.1
+ *
+ */
+
+function rocket_minify_files( $files, $force_pretty_url = false )
+{
+
+	echo get_rocket_minify_files( $files, $force_pretty_url );
+
+}

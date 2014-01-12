@@ -5,6 +5,7 @@ defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 /**
  * Launch DNS Prefetching process
  *
+ * @since 2.1 Adding CNAMES fo CDN automatically in DNS Prefetch process
  * @since 2.0
  *
  */
@@ -16,7 +17,8 @@ function rocket_dns_prefetch( $buffer )
 
 	// Get all domains to prefetch DNS
 	// It's possible to add domains for specific conditions with 'rocket_dns_prefetch' filter
-	$domains = apply_filters( 'rocket_dns_prefetch', get_rocket_option( 'dns_prefetch', array() ) );
+	$domains = array_merge( get_rocket_cdn_cnames( array( 'all' ) ), get_rocket_option( 'dns_prefetch', array() ) );
+	$domains = apply_filters( 'rocket_dns_prefetch', $domains );
 
 	if( count( $domains ) )
 	{

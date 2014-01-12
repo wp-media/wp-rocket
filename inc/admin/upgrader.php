@@ -72,8 +72,11 @@ add_action( 'wp_rocket_first_install', 'rocket_first_install' );
 function rocket_first_install()
 {
 
-	// Generate an andom key for cache dir of user
+	// Generate an random key for cache dir of user
 	$secret_cache_key = str_replace( '.', '', uniqid( '', true ) );
+
+	// Generate an random key for minify md5 filename
+	$minify_key = uniqid();
 
 	// Create Option
 	add_option( WP_ROCKET_SLUG,
@@ -93,12 +96,19 @@ function rocket_first_install()
 			'deferred_js_wait'	   	=> array(),
 			'lazyload'			   	=> 0,
 			'minify_css'		   	=> 0,
+			'minify_pretty_url_css' => 0,
 			'minify_js'			   	=> 0,
+			'minify_pretty_url_js'	=> 0,
 			'minify_html'			=> 0,
-			'dns_prefetch'			=> 0
+			'minify_key'			=> $minify_key,
+			'dns_prefetch'			=> 0,
+			'cdn'					=> 0,
+			'cdn_cnames'			=> array(),
+			'cdn_reserved_for'		=> array()
 		)
 	);
 	rocket_dismiss_box( 'rocket_warning_plugin_modification' );
+
 }
 
 
@@ -113,6 +123,7 @@ function rocket_first_install()
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );
 function rocket_new_upgrade( $wp_rocket_version, $actual_version )
 {
+
 	if( version_compare( $actual_version, '1.0.1', '<' ) )
 	{
 		wp_clear_scheduled_hook( 'rocket_check_event' );
@@ -165,21 +176,21 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version )
 		// Check and create cache folder in wp-content if not already exist
 		if( !$wp_filesystem->is_dir( WP_CONTENT_DIR . '/cache' ) )
 			$wp_filesystem->mkdir( WP_CONTENT_DIR . '/cache' , octdec($chmod) );
-		
+
 		$wp_filesystem->mkdir( WP_CONTENT_DIR . '/cache/wp-rocket' , octdec($chmod) );
-		
+
 		// Move old cache folder in new path
 		@rename( WP_CONTENT_DIR . '/wp-rocket-cache', WP_CONTENT_DIR . '/cache/wp-rocket'  );
-			
+
 		// Add WP_CACHE constant in wp-config.php
 		set_rocket_wp_cache_define();
-	
+
 		// Create advanced-cache.php file
 		rocket_generate_advanced_cache_file();
-	
+
 		// Create config file
 		rocket_generate_config_file();
-		
+
 	}
 
 }

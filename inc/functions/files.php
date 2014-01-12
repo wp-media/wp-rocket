@@ -40,7 +40,7 @@ function get_rocket_advanced_cache_file()
 
 function rocket_generate_advanced_cache_file()
 {
-	
+
 	$buffer  = get_rocket_advanced_cache_file();
 	rocket_put_content( WP_CONTENT_DIR . '/advanced-cache.php', $buffer );
 
@@ -84,39 +84,47 @@ function get_rocket_config_file()
 			$buffer .= '$rocket_' . $option . ' = \'' . $cookies . '\';' . "\n";
 		}
 	}
-	
-	if( apply_filters( 'rocket_url_no_dots', false ) ) 
-	{
+
+	// If user use the rocket_url_no_dots filter
+	if( apply_filters( 'rocket_url_no_dots', false ) )
 		$buffer .= '$rocket_url_no_dots = \'1\';';
-	}
-	
-	$url = parse_url( rtrim( home_url(), '/' ) );
 
-	if( !isset( $url['path'] ) )
-	{
-		$config_file_path = WP_ROCKET_CONFIG_PATH . $url['host'] . '.php';
-	}
-	else
+
+	$config_files_path = array();
+	$urls = rocket_has_translation_plugin_active() ? get_rocket_subdomains_langs() : array( home_url() );
+
+	foreach( $urls as $url )
 	{
 
-		$home_url_path       = explode( '/', trim( $url['path'], '/' ) );
-		$home_url_start_path = reset( ( $home_url_path ) );
-		$home_url_end_path   = end  ( ( $home_url_path ) );
+		$url = parse_url( rtrim( $url, '/' ) );
 
-		$config_dir_path     = WP_ROCKET_CONFIG_PATH . $url['host'];
+		if( !isset( $url['path'] ) )
+		{
+			$config_files_path[] = WP_ROCKET_CONFIG_PATH . $url['host'] . '.php';
+		}
+		else
+		{
 
-		if( $home_url_start_path != $home_url_end_path )
-			$config_dir_path = $config_dir_path . '/' . trim( str_replace( $home_url_end_path , '', $url['path'] ), '/' );
+			$home_url_path       = explode( '/', trim( $url['path'], '/' ) );
+			$home_url_start_path = reset( ( $home_url_path ) );
+			$home_url_end_path   = end  ( ( $home_url_path ) );
 
-		if( !is_dir( $config_dir_path ) )
-			rocket_mkdir_p( $config_dir_path );
+			$config_dir_path     = WP_ROCKET_CONFIG_PATH . $url['host'];
 
-		$config_file_name = $home_url_end_path . '.php';
-		$config_file_path = $config_dir_path . '/' . $config_file_name;
+			if( $home_url_start_path != $home_url_end_path )
+				$config_dir_path = $config_dir_path . '/' . trim( str_replace( $home_url_end_path , '', $url['path'] ), '/' );
+
+			if( !is_dir( $config_dir_path ) )
+				rocket_mkdir_p( $config_dir_path );
+
+			$config_file_name = $home_url_end_path . '.php';
+			$config_files_path[] = $config_dir_path . '/' . $config_file_name;
+
+		}
+
 	}
 
-
-	return array( $config_file_path, $buffer );
+	return array( $config_files_path, $buffer );
 
 }
 
@@ -132,9 +140,11 @@ function get_rocket_config_file()
 
 function rocket_generate_config_file()
 {
-	
-	list( $config_file_path, $buffer ) = get_rocket_config_file();
-	rocket_put_content( $config_file_path , $buffer );
+
+	list( $config_files_path, $buffer ) = get_rocket_config_file();
+
+	foreach( $config_files_path as $file )
+		rocket_put_content( $file , $buffer );
 
 }
 
@@ -169,8 +179,84 @@ function set_rocket_wp_cache_define( $enable = true )
 	$config_file = preg_replace( "~\\/\\*\\* Enable Cache \\*\\*?\\/.*?\\/\\/ Added by WP Rocket(\r\n)*~s", '', $config_file );
     $config_file = preg_replace( "~(\\/\\/\\s*)?define\\s*\\(\\s*['\"]?WP_CACHE['\"]?\\s*,.*?\\)\\s*;+\\r?\\n?~is", '', $config_file );
 	$config_file = preg_replace( '~<\?(php)?~', "\\0\r\n" . $define, $config_file );
-
+	
+	// Remove empty spacings
+	$config_file = str_replace( "\n\n" , "\n" , $config_file );
+	
+	// Put the constant to the beginning of wp-config.php
 	rocket_put_content( ABSPATH . 'wp-config.php', $config_file );
+
+}
+
+
+
+/**
+ * Added or set the value of the COOKIE_DOMAIN constant
+ *
+ * @since 2.0
+ *
+ */
+
+function set_rocket_cookie_domain_define( $enable = true )
+{
+
+	if( is_multisite() )
+		return false;
+
+	// If COOKIE_DOMAIN is already define, return to get a coffee
+	if( $enable && defined( 'COOKIE_DOMAIN' ) && COOKIE_DOMAIN  )
+		return;
+
+
+	// Get content of the config file
+	$config_file = @file_get_contents( get_home_path() . 'wp-config.php' );
+
+    if ( !$config_file )
+        return;
+
+
+	if( !$enable )
+	{
+
+		$config_file = preg_replace( "~\\/\\*\\* Enable Cookie domain \\*\\*?\\/.*?\\/\\/ Added by WP Rocket(\r\n)*~s", '', $config_file );
+		$config_file = preg_replace( "~(\\/\\/\\s*)?define\\s*\\(\\s*['\"]?COOKIE_DOMAIN['\"]?\\s*,.*?\\)\\s*;+\\r?\\n?~is", '', $config_file );
+
+	}
+	else
+	{
+
+		// Get the content of the COOKIE_DOMAIN constant added by WP Rocket
+		$host = parse_url( home_url(), PHP_URL_HOST );
+		$define = "/** Enable Cookie domain */\r\n" . "define('COOKIE_DOMAIN', '$host'); // Added by WP Rocket\r\n";
+
+		$config_file = preg_replace( '~<\?(php)?~', "\\0\r\n" . $define, $config_file );
+
+	}
+
+	// Put the constant to the beginning of wp-config.php
+	rocket_put_content( ABSPATH . 'wp-config.php', $config_file );
+
+}
+
+
+
+/**
+ * Delete all minify cache files
+ *
+ * @since 2.1
+ *
+ */
+
+function rocket_clean_minify()
+{
+
+	do_action( 'before_rocket_clean_minify' );
+	
+	$extensions = apply_filters( 'rocket_clean_minify_ext', array( 'js', 'css' ) );
+	$files = @glob( WP_ROCKET_MINIFY_CACHE_PATH . '/*.{' . implode( ',', $extensions ) . '}', GLOB_BRACE );
+	@array_map( 'unlink' , $files );
+	
+	do_action( 'after_rocket_clean_minify' );
 
 }
 
@@ -186,6 +272,7 @@ function set_rocket_wp_cache_define( $enable = true )
 
 function rocket_clean_files( $urls )
 {
+
 	if( is_string( $urls ) )
 		$urls = (array)$urls;
 
@@ -205,6 +292,7 @@ function rocket_clean_files( $urls )
 		do_action( 'after_rocket_clean_file', $url );
 
 	}
+
 }
 
 
@@ -452,4 +540,47 @@ function rocket_put_content( $file, $content )
 		$wp_filesystem = new WP_Filesystem_Direct( new StdClass() );
 	}
 	return $wp_filesystem->put_contents( $file, $content, 0644 );
+}
+
+
+
+/**
+ * TO DO
+ *
+ * @since 2.1
+ *
+ */
+
+function rocket_fetch_and_cache_minify( $url, $pretty_url )
+{
+
+	$pretty_path = str_replace( WP_ROCKET_MINIFY_CACHE_URL, WP_ROCKET_MINIFY_CACHE_PATH, $pretty_url );
+
+	if( file_exists( $pretty_path ) )
+		return false;
+
+	$ch = curl_init();
+	$timeout = 5; // set to zero for no timeout
+	curl_setopt ($ch, CURLOPT_URL, $url);
+	curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
+	curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+	curl_setopt ($ch, CURLOPT_USERAGENT, 'WP-Rocket-Minify');
+
+	$content = curl_exec($ch);
+	curl_close($ch);
+
+	if ( $content )
+	{
+
+		if ( is_array( $content ) )
+			$content = implode( $content );
+
+		// save cache file
+		if( rocket_put_content( $pretty_path, $content ) )
+			return $content;
+
+	}
+
+	return false;
+
 }

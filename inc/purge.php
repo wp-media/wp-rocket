@@ -1,6 +1,7 @@
 <?php
 defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 
+
 // Launch hooks that deletes all the cache domain
 add_action( 'switch_theme'				, 'rocket_clean_domain' );		// When user change theme
 add_action( 'user_register'				, 'rocket_clean_domain' );		// When a user is added
@@ -102,12 +103,12 @@ function rocket_clean_post( $post_id )
 
 	// Add urls page to purge every time a post is save
 	$cache_purge_pages = get_rocket_option( 'cache_purge_pages' );
-	if( $cache_purge_pages ) 
+	if( $cache_purge_pages )
 	{
 		foreach( $cache_purge_pages as $page )
 			array_push( $purge_urls, home_url( $page ) );
 	}
-		
+
 	// Add all terms archive page to purge
 	$purge_terms = get_rocket_post_terms_urls( $post_id );
 	if( count($purge_terms) )
@@ -328,6 +329,11 @@ function rocket_purge_cache()
 					// If WPML or qTranslate aren't activated, you can purge your domain normally
 					rocket_clean_domain();
 				}
+
+				// Generate a new random key for minify cache file
+				$options = get_option( WP_ROCKET_SLUG );
+				$options['minify_key'] = str_replace( '.', '', uniqid( '', true ) );
+				update_option( WP_ROCKET_SLUG, $options );				
 
 				rocket_dismiss_box( 'rocket_warning_plugin_modification' );
 				break;

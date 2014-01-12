@@ -4,7 +4,7 @@
 Plugin Name: WP Rocket
 Plugin URI: http://www.wp-rocket.me
 Description: The best WordPress performance plugin.
-Version: 2.0.5
+Version: 2.1
 Author: WP Rocket
 Contributors: Jonathan Buttigieg, Julio Potier
 Author URI: http://www.wp-rocket.me
@@ -15,7 +15,7 @@ Copyright 2013 WP Rocket
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 // Rocket defines
-define( 'WP_ROCKET_VERSION'             , '2.0.5');
+define( 'WP_ROCKET_VERSION'             , '2.1');
 define( 'WP_ROCKET_SLUG'                , 'wp_rocket_settings');
 define( 'WP_ROCKET_WEB_MAIN'            , 'http://support.wp-rocket.me/');
 define( 'WP_ROCKET_WEB_CHECK'           , WP_ROCKET_WEB_MAIN.'check_update.php');
@@ -31,6 +31,7 @@ define( 'WP_ROCKET_FRONT_PATH'          , realpath( WP_ROCKET_INC_PATH . 'front/
 define( 'WP_ROCKET_ADMIN_PATH'          , realpath( WP_ROCKET_INC_PATH . 'admin' ) . '/' );
 define( 'WP_ROCKET_FUNCTIONS_PATH'      , realpath( WP_ROCKET_INC_PATH . 'functions' ) . '/' );
 define( 'WP_ROCKET_CACHE_PATH'          , WP_CONTENT_DIR . '/cache/wp-rocket/' );
+define( 'WP_ROCKET_MINIFY_CACHE_PATH'   , WP_CONTENT_DIR . '/cache/minify/' );
 define( 'WP_ROCKET_URL'                 , plugin_dir_url( WP_ROCKET_FILE ) );
 define( 'WP_ROCKET_INC_URL'             , WP_ROCKET_URL . 'inc/' );
 define( 'WP_ROCKET_FRONT_URL'           , WP_ROCKET_INC_URL . 'front/' );
@@ -41,6 +42,7 @@ define( 'WP_ROCKET_ADMIN_JS_URL'        , WP_ROCKET_ADMIN_URL . 'js/' );
 define( 'WP_ROCKET_ADMIN_CSS_URL'       , WP_ROCKET_ADMIN_URL . 'css/' );
 define( 'WP_ROCKET_ADMIN_IMG_URL'       , WP_ROCKET_ADMIN_URL . 'img/' );
 define( 'WP_ROCKET_CACHE_URL'           , WP_CONTENT_URL . '/cache/wp-rocket/' );
+define( 'WP_ROCKET_MINIFY_CACHE_URL'    , WP_CONTENT_URL . '/cache/minify/' );
 if( !defined( 'CHMOD_WP_ROCKET_CACHE_DIRS' ) )
 	define( 'CHMOD_WP_ROCKET_CACHE_DIRS', 0755 );
 
@@ -99,6 +101,9 @@ function rocket_init()
 
         if( (int)get_rocket_option( 'purge_cron_interval' ) > 0 )
             require  WP_ROCKET_INC_PATH . '/cron.php';
+            
+        if( (int)get_rocket_option( 'cdn' ) > 0 )
+        	require  WP_ROCKET_FRONT_PATH . '/cdn.php';
     }
 
     if( is_admin() )
@@ -125,7 +130,7 @@ function rocket_init()
         if( get_rocket_option( 'lazyload' ) == '1' )
 			require WP_ROCKET_FRONT_PATH . '/lazyload.php';
     }
-
+	
     // You can hook this to trigger any action when WP Rocket is correctly loaded, so, not in AUTOSAVE mode
     if( rocket_valid_key() )
 		do_action( 'wp_rocket_loaded' );
@@ -204,6 +209,8 @@ function rocket_activation()
 {
     require WP_ROCKET_FUNCTIONS_PATH . '/options.php';
     require WP_ROCKET_FUNCTIONS_PATH . '/files.php';
+    require WP_ROCKET_FUNCTIONS_PATH . '/formatting.php';
+    require WP_ROCKET_FUNCTIONS_PATH . '/plugins.php';
     require WP_ROCKET_FRONT_PATH . '/htaccess.php';
 
     // Add All WP Rocket rules of the .htaccess file
@@ -213,6 +220,10 @@ function rocket_activation()
 	// Create cache folder if not exist
     if( !is_dir( WP_ROCKET_CACHE_PATH ) )
 	    rocket_mkdir_p( WP_ROCKET_CACHE_PATH );
+	
+	// Create minify cache folder if not exist
+    if( !is_dir( WP_ROCKET_MINIFY_CACHE_PATH ) )
+	    rocket_mkdir_p( WP_ROCKET_MINIFY_CACHE_PATH );
 	
 	// Add WP_CACHE constant in wp-config.php
 	set_rocket_wp_cache_define();

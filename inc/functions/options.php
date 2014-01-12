@@ -110,6 +110,50 @@ function get_rocket_cache_reject_cookies()
 
 
 
+/*
+ * TO DO
+ *
+ * @since 2.1
+ *
+ */
+
+function get_rocket_cdn_cnames( $_reserved_for = 'all' )
+{
+
+	if( (int)get_rocket_option( 'cdn' ) == 0 )
+		return array();
+
+
+	$hosts               = array();
+	$cnames              = get_rocket_option( 'cdn_cnames', array() );
+	$cnames_zone = get_rocket_option( 'cdn_zone', array() );
+	$_reserved_for 		 = is_array( $_reserved_for ) ? $_reserved_for : (array)$_reserved_for;
+
+	//
+	foreach( $cnames as $k=>$_urls )
+	{
+
+		//
+		if( in_array( $cnames_zone[$k], $_reserved_for ) )
+		{
+
+			$_urls = explode( ',' , $_urls );
+			$_urls = array_map( 'trim' , $_urls );
+
+			//
+			foreach( $_urls as $url )
+				$hosts[] = $url;
+
+		}
+
+	}
+
+	return $hosts;
+
+}
+
+
+
 /**
  * Determine if the key is valid
  *

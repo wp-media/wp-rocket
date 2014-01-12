@@ -6,34 +6,49 @@ jQuery( document ).ready( function($){
 	// Deferred JS
 	function rocket_rename()
 	{
-		$('#rktdrop .rktdrag').each( function(i){
+		$('#rkt-drop-deferred .rkt-drag-deferred').each( function(i){
 			var $item_t_input = $(this).find( 'input[type=text]' );
 			var $item_c_input = $(this).find( 'input[type=checkbox]' );
 			$($item_t_input).attr( 'name', 'wp_rocket_settings[deferred_js_files]['+i+']' );
 			$($item_c_input).attr( 'name', 'wp_rocket_settings[deferred_js_wait]['+i+']' );
 		});
 	}
-	$('#rktdrop').sortable({
+	$('#rkt-drop-deferred').sortable({
 		update : function(){ rocket_rename(); },
 		axis: "y",
-		items: ".rktdrag",
+		items: ".rkt-drag-deferred",
 		containment: "parent",
 		cursor: "move",
-		handle: ".rktmove",
+		handle: ".rkt-move-deferred",
 		forcePlaceholderSize: true,
 		dropOnEmpty: false,
 		placeholder: 'sortable-placeholder',
 		tolerance: 'pointer',
 		revert: true,
 	});
-	$('#rktclone').on('click', function(e){
+	$('#rkt-clone-deferred').on('click', function(e){
 		e.preventDefault();
-		if( $('#rktdrop .rktdrag:last input[type=text]').val()=='' )
+		if( $('#rkt-drop-deferred .rkt-drag-deferred:last input[type=text]').val()=='' )
 			return;
-		var $item = $('.rktmodel:last').clone().appendTo('#rktdrop').removeClass('rktmodel').show();
+		var $item = $('.rkt-model-deferred:last').clone().appendTo('#rkt-drop-deferred').removeClass('rkt-model-deferred').show();
 		rocket_rename();
 	} );
-	$('.rkt-delete').css('cursor','pointer').on('click', function(e){
+	$('.rkt-delete-deferred').css('cursor','pointer').on('click', function(e){
+		e.preventDefault();
+		$(this).parent().css('background-color','red' ).slideUp( 'slow' , function(){$(this).remove(); } );
+	} );
+	
+	// CNAMES
+	$('#rkt-clone-cname').on('click', function(e)
+	{
+		e.preventDefault();
+		if( $('#rkt-cnames .rkt-cname:last input[type=text]').val()=='' )
+			return;
+		var $item = $('.rkt-model-cname:last').clone().appendTo('#rkt-cnames').removeClass('rkt-model-cname').show();
+		rocket_rename();
+	} );
+	$('.rkt-delete-cname').css('cursor','pointer').on('click', function(e)
+	{
 		e.preventDefault();
 		$(this).parent().css('background-color','red' ).slideUp( 'slow' , function(){$(this).remove(); } );
 	} );

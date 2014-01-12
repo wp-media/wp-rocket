@@ -29,15 +29,16 @@ function __rocket_rrmdir( $dir )
 		@unlink( $dir );
 		return;
 	endif;
-	
+
     if( $globs = glob( $dir . '/*' ) ) {
-	    
+
 	    foreach( $globs as $file )
-	        is_dir( $file ) ? __rocket_rrmdir($file) : @unlink( $file );	
+	        is_dir( $file ) ? __rocket_rrmdir($file) : @unlink( $file );
 	}
 
     @rmdir($dir);
-    
+
 }
 
 __rocket_rrmdir( WP_CONTENT_DIR . '/cache/wp-rocket/' );
+__rocket_rrmdir( WP_CONTENT_DIR . '/cache/minify/' );
