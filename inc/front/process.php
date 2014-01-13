@@ -242,7 +242,9 @@ function rocket_serve_cache_file( $request_uri_path )
 
 function get_rocket_footprint( $debug = true )
 {
-	$footprint = "\n" . '<!-- This website is like a Rocket, isn\'t ? Performance optimized by WP Rocket. Learn more: http://wp-rocket.me';
+	$footprint = !rocket_is_white_label() ? 
+					"\n" . '<!-- This website is like a Rocket, isn\'t ? Performance optimized by WP Rocket. Learn more: http://wp-rocket.me' :
+					"\n" . '<!-- Cached page for great performance'; //// WL option ?
 	if( $debug )
 		$footprint .= ' - Debug: cached@' . time();
 	$footprint .= ' -->';

@@ -1,5 +1,4 @@
 <?php
-
 /*
 Plugin Name: WP Rocket
 Plugin URI: http://www.wp-rocket.me
@@ -10,13 +9,15 @@ Contributors: Jonathan Buttigieg, Julio Potier
 Author URI: http://www.wp-rocket.me
 
 Copyright 2013 WP Rocket
-
 */
+define( 'WP_ROCKET_PLUGIN_NAME', 'WP Rocket' );
+
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 // Rocket defines
 define( 'WP_ROCKET_VERSION'             , '2.1');
 define( 'WP_ROCKET_SLUG'                , 'wp_rocket_settings');
+define( 'WP_ROCKET_PLUGIN_SLUG'         , sanitize_key( WP_ROCKET_PLUGIN_NAME ) );
 define( 'WP_ROCKET_WEB_MAIN'            , 'http://support.wp-rocket.me/');
 define( 'WP_ROCKET_WEB_CHECK'           , WP_ROCKET_WEB_MAIN.'check_update.php');
 define( 'WP_ROCKET_WEB_VALID'           , WP_ROCKET_WEB_MAIN.'valid_key.php');

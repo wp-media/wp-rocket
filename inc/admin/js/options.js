@@ -2,6 +2,28 @@ jQuery( document ).ready( function($){
 	
 	// Fancybox
 	$(".fancybox").fancybox({'type' : 'iframe'});
+
+	// Checkboxes "pretty url"
+	if( !$('#minify_css').prop('checked') ){
+		$("#minify_css_pretty_url").prop('disabled', true).parent().css('color', '#999');
+	}
+	$('#minify_css').on( 'click', function(){
+		if( !$('#minify_css').prop('checked') ){
+			$("#minify_css_pretty_url").prop('disabled', true).parent().css('color', '#999');
+		}else{
+			$("#minify_css_pretty_url").prop('disabled', false).parent().css('color', '#000');
+		}
+	});
+	if( !$('#minify_js').prop('checked') ){
+		$("#minify_js_pretty_url").prop('disabled', true).parent().css('color', '#999');
+	}
+	$('#minify_js').on( 'click', function(){
+		if( !$('#minify_js').prop('checked') ){
+			$("#minify_js_pretty_url").prop('disabled', true).parent().css('color', '#999');
+		}else{
+			$("#minify_js_pretty_url").prop('disabled', false).parent().css('color', '#000');
+		}
+	});
 	
 	// Deferred JS
 	function rocket_rename()

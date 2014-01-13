@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 add_filter( 'plugin_action_links_'.plugin_basename( WP_ROCKET_FILE ), 'rocket_settings_action_links' );
 function rocket_settings_action_links( $actions )
 {
-    array_unshift( $actions, '<a href="' . admin_url( 'options-general.php?page=wprocket' ) . '">' . __( 'Settings' ) . '</a>' );
+    array_unshift( $actions, '<a href="' . admin_url( 'options-general.php?page='.WP_ROCKET_PLUGIN_SLUG ) . '">' . __( 'Settings' ) . '</a>' );
     return $actions;
 }
 
@@ -92,7 +92,7 @@ function rocket_post_submitbox_start()
  *
  */
 
-add_action( 'admin_print_styles-settings_page_wprocket', 'rocket_add_admin_css_js' );
+add_action( 'admin_print_styles-settings_page_'.WP_ROCKET_PLUGIN_SLUG, 'rocket_add_admin_css_js' );
 function rocket_add_admin_css_js()
 {
 	wp_enqueue_script( 'jquery-ui-sortable', null, array( 'jquery', 'jquery-ui-core' ), null, true );
@@ -102,6 +102,21 @@ function rocket_add_admin_css_js()
 	wp_enqueue_script( 'fancybox-wp-rocket', WP_ROCKET_ADMIN_JS_URL . '/vendors/jquery.fancybox.pack.js', array( 'options-wp-rocket' ), WP_ROCKET_VERSION, true );
 	wp_enqueue_style( 'options-wp-rocket', WP_ROCKET_ADMIN_CSS_URL . 'options.css', array(), WP_ROCKET_VERSION );
 	wp_enqueue_style( 'fancybox-wp-rocket', WP_ROCKET_ADMIN_CSS_URL . 'fancybox/jquery.fancybox.css', array( 'options-wp-rocket' ), WP_ROCKET_VERSION );
+}
+
+
+
+/**
+ * Add the CSS and JS files needed by WP Rocket everywhere on admin pages
+ *
+ * since 2.1
+ *
+ */
+
+add_action( 'admin_print_styles', 'rocket_add_admin_css_js_everywhere', 11 );
+function rocket_add_admin_css_js_everywhere()
+{
+	wp_enqueue_script( 'all-wp-rocket', WP_ROCKET_ADMIN_JS_URL . 'all.js', array( 'jquery' ), WP_ROCKET_VERSION, true );
 }
 
 
@@ -129,6 +144,7 @@ function rocket_admin_print_styles()
  *
  */
 
+add_action( 'wp_ajax_rocket_ignore', 'rocket_dismiss_boxes' );
 add_action( 'admin_post_rocket_ignore', 'rocket_dismiss_boxes' );
 function rocket_dismiss_boxes( $args )
 {
@@ -136,15 +152,26 @@ function rocket_dismiss_boxes( $args )
 	if( isset( $args['box'], $args['_wpnonce'] ) ) {
 
 		if( !wp_verify_nonce( $args['_wpnonce'], $args['action'] . '_' . $args['box'] ) )
-			wp_nonce_ays( '' );
+		{
+			if( defined( 'DOING_AJAX' ) )
+			{
+				wp_send_json( array( 'error'=>1 ) );
+			}else{
+				wp_nonce_ays( '' );
+			}
+		}
 		global $current_user;
 		$actual = get_user_meta( $current_user->ID, 'rocket_boxes', true );
 		update_user_meta( $current_user->ID, 'rocket_boxes', array_filter( array_merge( (array)$actual, array( $args['box'] ) ) ) );
 		if( 'admin-post.php'==$GLOBALS['pagenow'] ){
-			wp_safe_redirect( wp_get_referer() );
-			die();
+			if( defined(DOING_AJAX) )
+			{
+				wp_send_json( array( 'error'=>0 ) );
+			}else{
+				wp_safe_redirect( wp_get_referer() );
+				die();
+			}
 		}
-
 	}
 }
 

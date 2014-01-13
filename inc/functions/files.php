@@ -174,9 +174,9 @@ function set_rocket_wp_cache_define( $enable = true )
 	$enable = $enable ? 'true' : 'false';
 
 	// Get the content of the WP_CACHE constant added by WP Rocket
-	$define = "/** Enable Cache */\r\n" . "define('WP_CACHE', $enable); // Added by WP Rocket\r\n";
+	$define = "/** Enable Cache */\r\n" . "define('WP_CACHE', $enable); // Added by ".WP_ROCKET_PLUGIN_NAME."\r\n";
 
-	$config_file = preg_replace( "~\\/\\*\\* Enable Cache \\*\\*?\\/.*?\\/\\/ Added by WP Rocket(\r\n)*~s", '', $config_file );
+	$config_file = preg_replace( "~\\/\\*\\* Enable Cache \\*\\*?\\/.*?\\/\\/ Added by ".WP_ROCKET_PLUGIN_NAME."(\r\n)*~s", '', $config_file );
     $config_file = preg_replace( "~(\\/\\/\\s*)?define\\s*\\(\\s*['\"]?WP_CACHE['\"]?\\s*,.*?\\)\\s*;+\\r?\\n?~is", '', $config_file );
 	$config_file = preg_replace( '~<\?(php)?~', "\\0\r\n" . $define, $config_file );
 	
@@ -218,7 +218,7 @@ function set_rocket_cookie_domain_define( $enable = true )
 	if( !$enable )
 	{
 
-		$config_file = preg_replace( "~\\/\\*\\* Enable Cookie domain \\*\\*?\\/.*?\\/\\/ Added by WP Rocket(\r\n)*~s", '', $config_file );
+		$config_file = preg_replace( "~\\/\\*\\* Enable Cookie domain \\*\\*?\\/.*?\\/\\/ Added by ".WP_ROCKET_PLUGIN_NAME."(\r\n)*~s", '', $config_file );
 		$config_file = preg_replace( "~(\\/\\/\\s*)?define\\s*\\(\\s*['\"]?COOKIE_DOMAIN['\"]?\\s*,.*?\\)\\s*;+\\r?\\n?~is", '', $config_file );
 
 	}
@@ -227,7 +227,7 @@ function set_rocket_cookie_domain_define( $enable = true )
 
 		// Get the content of the COOKIE_DOMAIN constant added by WP Rocket
 		$host = parse_url( home_url(), PHP_URL_HOST );
-		$define = "/** Enable Cookie domain */\r\n" . "define('COOKIE_DOMAIN', '$host'); // Added by WP Rocket\r\n";
+		$define = "/** Enable Cookie domain */\r\n" . "define('COOKIE_DOMAIN', '$host'); // Added by ".WP_ROCKET_PLUGIN_NAME."\r\n";
 
 		$config_file = preg_replace( '~<\?(php)?~', "\\0\r\n" . $define, $config_file );
 

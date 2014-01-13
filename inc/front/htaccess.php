@@ -27,7 +27,7 @@ function flush_rocket_htaccess( $force = false )
 		$ftmp = file_get_contents( $htaccess_file );
 
 		// Remove the WP Rocket marker
-		$ftmp = preg_replace( '/# BEGIN WP Rocket(.*)# END WP Rocket/isUe', '', $ftmp );
+		$ftmp = preg_replace( '/# BEGIN '.WP_ROCKET_PLUGIN_NAME.'(.*)# END '.WP_ROCKET_PLUGIN_NAME.'/isUe', '', $ftmp );
 
 		// Remove empty spacings
 		$ftmp = str_replace( "\n\n" , "\n" , $ftmp );
@@ -55,14 +55,14 @@ function get_rocket_htaccess_marker()
 {
 
 	// Recreate WP Rocket marker
-	$marker  = '# BEGIN WP Rocket v' . WP_ROCKET_VERSION ."\n";
+	$marker  = '# BEGIN '.WP_ROCKET_PLUGIN_NAME.' v' . WP_ROCKET_VERSION ."\n";
 	$marker .= get_rocket_htaccess_charset();
 	$marker .= get_rocket_htaccess_etag();
 	$marker .= get_rocket_htaccess_files_match();
 	$marker .= get_rocket_htaccess_mod_expires();
 	$marker .= get_rocket_htaccess_mod_deflate();
 	$marker .= get_rocket_htaccess_mod_rewrite();
-	$marker .= '# END WP Rocket' . "\n";
+	$marker .= '# END '.WP_ROCKET_PLUGIN_NAME . "\n";
 
 	return $marker;
 
@@ -307,7 +307,7 @@ function get_rocket_htaccess_files_match()
 	$rules = '<IfModule mod_alias.c>' . "\n";
 		$rules .= '<FilesMatch "\.(html|htm|rtf|rtx|svg|svgz|txt|xsd|xsl|xml)$">' . "\n";
 		    $rules .= '<IfModule mod_headers.c>' . "\n";
-		         $rules .= 'Header set X-Powered-By "WP Rocket/' . WP_ROCKET_VERSION . '"' . "\n";
+		         $rules .= 'Header set X-Powered-By "'.WP_ROCKET_PLUGIN_NAME.' (WPR)/' . WP_ROCKET_VERSION . '"' . "\n";
 		         $rules .= 'Header unset Pragma' . "\n";
 		         $rules .= 'Header append Cache-Control "public"' . "\n";
 		         $rules .= 'Header unset Last-Modified' . "\n";

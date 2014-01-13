@@ -15,15 +15,15 @@ defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 add_action( 'admin_bar_menu', 'rocket_admin_bar', PHP_INT_MAX );
 function rocket_admin_bar( $wp_admin_bar )
 {
-	if( !current_user_can( 'manage_options' ) )
+	if( !current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) )
 		return;
 
 	$action = 'purge_cache';
 	// Parent
     $wp_admin_bar->add_menu(array(
 	    'id'    => 'wp-rocket',
-	    'title' => 'WP Rocket',
-	    'href'  => admin_url( 'options-general.php?page=wprocket' ),
+	    'title' => WP_ROCKET_PLUGIN_NAME,
+	    'href'  => admin_url( 'options-general.php?page='.WP_ROCKET_PLUGIN_SLUG ),
 	));
 
 		// Compatibility with WPML
@@ -80,7 +80,7 @@ function rocket_admin_bar( $wp_admin_bar )
 	        $wp_admin_bar->add_menu( array(
                 'parent' => 'purge-all',
                 'id' 	 => 'purge-all-all',
-                'title'  =>  '<img src="' . WP_ROCKET_ADMIN_IMG_URL . 'earth.png" alt="" width="18" height="18" /> ' . __( 'All languages', WP_ROCKET_SLUG ),
+                'title'  =>  '<img src="' . WP_ROCKET_ADMIN_IMG_URL . 'earth.png" alt="" width="18" height="18" /> ' . __( 'All languages', 'rocket' ),
                 'href'   => wp_nonce_url( admin_url( 'admin-post.php?action='.$action.'&type=all&lang=all' ), $action.'_all' ),
             ));
 
@@ -180,7 +180,7 @@ function rocket_admin_bar( $wp_admin_bar )
 	        $wp_admin_bar->add_menu( array(
                 'parent' => 'preload-cache',
                 'id' 	 => 'preload-cache-all',
-                'title'  =>  '<img src="' . WP_ROCKET_ADMIN_IMG_URL . 'earth.png" alt="" width="18" height="18" /> ' . __( 'All languages', WP_ROCKET_SLUG ),
+                'title'  =>  '<img src="' . WP_ROCKET_ADMIN_IMG_URL . 'earth.png" alt="" width="18" height="18" /> ' . __( 'All languages', 'rocket' ),
                 'href' 	 => wp_nonce_url( admin_url( 'admin-post.php?action='.$action.'&lang=all' ), $action ),
             ));
 
@@ -197,13 +197,15 @@ function rocket_admin_bar( $wp_admin_bar )
 
 		}
 
-		// Go to WP Rocket Support
-		$wp_admin_bar->add_menu(array(
-			'parent' => 'wp-rocket',
-			'id'     => 'support',
-			'title'  => __( 'Support', 'rocket' ),
-			'href'   => 'http://support.wp-rocket.me',
-		));
+		if( !rocket_is_white_label() ) {
+			// Go to WP Rocket Support
+			$wp_admin_bar->add_menu(array(
+				'parent' => 'wp-rocket',
+				'id'     => 'support',
+				'title'  => __( 'Support', 'rocket' ),
+				'href'   => 'http://support.wp-rocket.me',
+			));
+		}
 }
 
 

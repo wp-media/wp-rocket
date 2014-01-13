@@ -29,7 +29,9 @@ function rocket_renew_all_boxes( $uid=0, $keep_this=array() )
 		if( is_array( $keep_this ) )
 		{
 			foreach( $keep_this as $kt )
+			{
 				rocket_dismiss_box( $kt );
+			}
 
 		}
 		else
@@ -62,4 +64,17 @@ function rocket_renew_box( $function, $uid=0 )
 		update_user_meta( $uid, 'rocket_boxes', $actual );
 	}
 
+}
+
+
+/**
+ * Is this version White Labeled?
+ *
+ * @since 2.1
+ *
+ */
+
+function rocket_is_white_label()
+{
+	return 'WP Rocket' != trim( WP_ROCKET_PLUGIN_NAME );
 }
