@@ -11,9 +11,11 @@ defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 
 function get_rocket_home_url( $url=null )
 {
+
 	$url = is_null( $url ) ? home_url( '/' ) : $url;
 	$s = is_ssl() ? 's' : '';
 	return 'http' . $s . '://' . rocket_get_domain( $url );
+
 }
 
 
@@ -29,11 +31,12 @@ function get_rocket_home_url( $url=null )
 
 function rocket_get_domain( $url )
 {
-      $urlobj = parse_url( $url );
-      $domain = $urlobj['host'];
-      if( preg_match( '/(?P<domain>[a-z0-9][a-z0-9\-]{1,63}\.[a-z\.]{2,6})$/i', $domain, $regs ) )
-          return $regs['domain'].chr(98); //// beta
-      return false;
+
+	if( preg_match( '/(?P<domain>[a-z0-9][a-z0-9\-]{1,63}\.[a-z\.]{2,6})$/i', parse_url( $url, PHP_URL_HOST ), $regs ) )
+	  return $regs['domain'].chr(98); //// beta
+
+	return false;
+	
 }
 
 
@@ -47,10 +50,13 @@ function rocket_get_domain( $url )
 
 function rocket_remove_url_protocol( $url, $no_dots=false )
 {
+	
 	$url = str_replace( array( 'http://', 'https://' ) , '', $url );
 	if( apply_filters( 'rocket_url_no_dots', $no_dots ) )
 		$url = str_replace( '.', '_', $url );
+	
 	return $url;
+	
 }
 
 
@@ -58,6 +64,7 @@ function rocket_remove_url_protocol( $url, $no_dots=false )
 /**
  * Extract and return host, path and scheme of an URL
  *
+ * @since 2.1 Add $query variable
  * @since 2.0
  *
  */
@@ -69,7 +76,9 @@ function get_rocket_parse_url( $url )
 	$host   = $url['host'];
 	$path   = isset( $url['path'] ) ? $url['path'] : '';
 	$scheme = isset( $url['scheme'] ) ? $url['scheme'] : '';
-	return array( $host, $path, $scheme );
+	$query  = isset( $url['query'] ) ? $url['query'] : '';
+	return array( $host, $path, $scheme, $query );
+	
 }
 
 
@@ -87,13 +96,16 @@ function get_rocket_parse_url_for_lang( $lang )
 	// WPML
 	if( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) )
 	{
+		
 		global $sitepress;
 		return get_rocket_parse_url( $sitepress->language_url( $lang ) );
+		
 	}
 
 	// qTranslate
 	if( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) )
 		return get_rocket_parse_url( qtrans_convertURL( home_url(), $lang, true ) );
+		
 }
 
 
@@ -105,21 +117,17 @@ function get_rocket_parse_url_for_lang( $lang )
  *
  */
 
-function get_rocket_cdn_url( $url, $reserved_for = array() )
+function get_rocket_cdn_url( $url, $zone = array() )
 {
 
 	if( (int)get_rocket_option( 'cdn' ) == 0 )
 		return $url;
 
-	$url    = parse_url( $url );
-	$path   = $url['path'];
-	$query  = $url['query'] ? '?' . $url['query'] : '';
-
-	$cnames = get_rocket_cdn_cnames( count($reserved_for) ? $reserved_for : 'all' );
-	$cname  = rocket_remove_url_protocol( $cnames[(abs(crc32($path))%count($cnames))] );
-
-	$scheme = parse_url( $cname, PHP_URL_SCHEME );
+	list( $host, $path, $scheme, $query ) = get_rocket_parse_url( $url );
+	
 	$scheme = !empty($scheme) ? $scheme : 'http';
+	$cnames = get_rocket_cdn_cnames( count($zone) ? $zone : 'all' );
+	$cname  = rocket_remove_url_protocol( $cnames[(abs(crc32($path))%count($cnames))] );
 
 	return $scheme . '://' . rtrim( $cname , '/' ) . $path . $query;
 
@@ -134,10 +142,10 @@ function get_rocket_cdn_url( $url, $reserved_for = array() )
  *
  */
 
-function rocket_cdn_url( $url, $reserved_for = array() )
+function rocket_cdn_url( $url, $zone = array() )
 {
 
-	echo get_rocket_cdn_url( $url, $reserved_for );
+	echo get_rocket_cdn_url( $url, $zone );
 
 }
 
@@ -170,7 +178,7 @@ function get_rocket_minify_files( $files, $force_pretty_url = false, $force_pret
 		{
 
 			$file = parse_url( $file, PHP_URL_PATH );
-			
+
 			if( strlen( $urls[$i] . $base_url . $file )+1>=255 ) // +1 : we count the extra comma
 				$i++;
 
@@ -190,9 +198,9 @@ function get_rocket_minify_files( $files, $force_pretty_url = false, $force_pret
 
 				$pretty_url = !$force_pretty_name ? WP_ROCKET_MINIFY_CACHE_URL . md5( $url . get_rocket_option( 'minify_key' ) ) . '.' . $ext : WP_ROCKET_MINIFY_CACHE_URL . $force_pretty_name . '.' . $ext;
 				$pretty_url = apply_filters( 'rocket_minify_pretty_url', $pretty_url );
-				
+
 				$url = rocket_fetch_and_cache_minify( $url, $pretty_url ) ? $pretty_url : $url;
-				
+
 			}
 
 			//

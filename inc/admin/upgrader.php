@@ -104,7 +104,7 @@ function rocket_first_install()
 			'dns_prefetch'			=> 0,
 			'cdn'					=> 0,
 			'cdn_cnames'			=> array(),
-			'cdn_reserved_for'		=> array()
+			'cdn_zone'		=> array()
 		)
 	);
 	rocket_dismiss_box( 'rocket_warning_plugin_modification' );

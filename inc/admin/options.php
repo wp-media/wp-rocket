@@ -1315,6 +1315,7 @@ function rocket_settings_callback( $inputs )
 add_action( 'update_option_' . WP_ROCKET_SLUG, 'rocket_after_save_options', 10, 2 );
 function rocket_after_save_options( $oldvalue, $value )
 {
+	
 	// Purge all cache files
 	rocket_clean_domain();
 
@@ -1322,11 +1323,13 @@ function rocket_after_save_options( $oldvalue, $value )
 	rocket_clean_minify();
 
 	// Update .htaccess file rules
-	if( $oldvalue['wl_plugin_name'] != $value['wl_plugin_name'] &&
+	if( !empty( $_POST ) && $oldvalue['wl_plugin_name'] != $value['wl_plugin_name'] &&
 		isset( $_POST['option_page'], $_POST['action'] ) && 'wp_rocket'==$_POST['option_page'] && 'update'==$_POST['action'] )
 	{
 		flush_rocket_htaccess( true, $oldvalue['wl_plugin_name'] );
-	}else{
+	}
+	else
+	{
 		flush_rocket_htaccess( !rocket_valid_key(), $value['wl_plugin_name'] );
 	}
 
@@ -1351,11 +1354,14 @@ function rocket_after_save_options( $oldvalue, $value )
 	if( $oldvalue['wl_plugin_name'] != $value['wl_plugin_name'] &&
 		isset( $_POST['option_page'], $_POST['action'] ) && 'wp_rocket'==$_POST['option_page'] && 'update'==$_POST['action'] )
 	{
+		
 		add_settings_error('general', 'settings_updated', __('Settings saved.'), 'updated'); 
 		set_transient('settings_errors', get_settings_errors(), 30); 
 		wp_redirect( admin_url( 'options-general.php?page=' . sanitize_key( $value['wl_plugin_name'] ) . '&settings-updated=true' ) );
 		die();
+		
 	}
+	
 }
 
 

@@ -93,6 +93,7 @@ function get_rocket_cache_reject_uri()
 
 function get_rocket_cache_reject_cookies()
 {
+	
 	$cookies = array(
 		str_replace( COOKIEHASH, '', LOGGED_IN_COOKIE ),
 		'wp-postpass_',
@@ -100,12 +101,9 @@ function get_rocket_cache_reject_cookies()
 		'comment_author_',
 		'comment_author_email_'
 	);
-	$cache_reject_cookies = get_rocket_option( 'cache_reject_cookies', array() );
 
-	if( count( $cache_reject_cookies ) )
-		$cookies =  array_filter( array_merge( $cookies, $cache_reject_cookies ) );
-
-	return implode( '|', $cookies );
+	return implode( '|', array_filter( array_merge( $cookies, get_rocket_option( 'cache_reject_cookies', array() ) ) ) );
+	
 }
 
 
@@ -117,7 +115,7 @@ function get_rocket_cache_reject_cookies()
  *
  */
 
-function get_rocket_cdn_cnames( $_reserved_for = 'all' )
+function get_rocket_cdn_cnames( $_zone = 'all' )
 {
 
 	if( (int)get_rocket_option( 'cdn' ) == 0 )
@@ -127,14 +125,14 @@ function get_rocket_cdn_cnames( $_reserved_for = 'all' )
 	$hosts               = array();
 	$cnames              = get_rocket_option( 'cdn_cnames', array() );
 	$cnames_zone = get_rocket_option( 'cdn_zone', array() );
-	$_reserved_for 		 = is_array( $_reserved_for ) ? $_reserved_for : (array)$_reserved_for;
+	$_zone 		 = is_array( $_zone ) ? $_zone : (array)$_zone;
 
 	//
 	foreach( $cnames as $k=>$_urls )
 	{
 
 		//
-		if( in_array( $cnames_zone[$k], $_reserved_for ) )
+		if( in_array( $cnames_zone[$k], $_zone ) )
 		{
 
 			$_urls = explode( ',' , $_urls );

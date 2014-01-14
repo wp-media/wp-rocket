@@ -25,7 +25,7 @@ function rocket_cdn_file( $url )
 		case 'wp_get_attachment_url':
 		case 'smilies_src':
 			
-			$reserved_for = array( 'all', 'images' );
+			$zone = array( 'all', 'images' );
 			break;
 		
 		case 'stylesheet_uri':
@@ -33,13 +33,13 @@ function rocket_cdn_file( $url )
 		case 'wp_minify_js_url':
 		case 'bwp_get_minify_src':
 			
-			$reserved_for = array( 'all', 'css_and_js' );
+			$zone = array( 'all', 'css_and_js' );
 			break;
 
 	}
 	
-	if( !is_admin() && $cnames = get_rocket_cdn_cnames( $reserved_for ) )
-		$url = get_rocket_cdn_url( $url, $reserved_for );
+	if( !is_admin() && $cnames = get_rocket_cdn_cnames( $zone ) )
+		$url = get_rocket_cdn_url( $url, $zone );
 
 	return $url;
 
@@ -63,8 +63,8 @@ function rocket_cdn_images( $html )
 	if( is_admin() && is_feed() || is_preview() || empty( $html ) )
 		return $html;
 
-	$reserved_for = array( 'all', 'images' );
-	if( $cnames = get_rocket_cdn_cnames( $reserved_for ) )
+	$zone = array( 'all', 'images' );
+	if( $cnames = get_rocket_cdn_cnames( $zone ) )
 	{
 
 		// Get all images of the content
@@ -85,7 +85,7 @@ function rocket_cdn_images( $html )
 					sprintf(
 						'<img %1$s %2$s %3$s />',
 						$images_match[1][$k],
-						'src="' . get_rocket_cdn_url( $image_url, $reserved_for ) .'"',
+						'src="' . get_rocket_cdn_url( $image_url, $zone ) .'"',
 						$images_match[3][$k]
 					),
 					$html
@@ -119,8 +119,8 @@ function rocket_cdn_enqueue( $src )
 	if( is_admin() )
 		return $src;
 
-	$reserved_for = array( 'all', 'css_and_js' );
-	if( $cnames = get_rocket_cdn_cnames( $reserved_for ) )
+	$zone = array( 'all', 'css_and_js' );
+	if( $cnames = get_rocket_cdn_cnames( $zone ) )
 	{
 
 		// Get host of the URL
@@ -129,7 +129,7 @@ function rocket_cdn_enqueue( $src )
 		// Check if the link isn't external
 		if( empty( $src_host ) || $src_host == rocket_remove_url_protocol( home_url() ) )
 		{
-			$src = get_rocket_cdn_url( $src, $reserved_for );
+			$src = get_rocket_cdn_url( $src, $zone );
 		}
 
 	}
