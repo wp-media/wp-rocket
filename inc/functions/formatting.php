@@ -157,7 +157,7 @@ function get_rocket_minify_files( $files, $force_pretty_url = false, $force_pret
 	// To avoid conflicts with file URLs are too long for browsers,
 	// cut into several parts concatenated files
 	$tags 		= '';
-	$data_attr  = '';
+	$data_attr  = 'data-minify="1"';
 	$urls 		= array(0=>'');
 	$base_url 	= WP_ROCKET_URL . 'min/?f=';
 	$files  	= is_array( $files ) ? $files : (array)$files;
@@ -169,6 +169,8 @@ function get_rocket_minify_files( $files, $force_pretty_url = false, $force_pret
 		foreach( $files as $file )
 		{
 
+			$file = parse_url( $file, PHP_URL_PATH );
+			
 			if( strlen( $urls[$i] . $base_url . $file )+1>=255 ) // +1 : we count the extra comma
 				$i++;
 
@@ -189,8 +191,7 @@ function get_rocket_minify_files( $files, $force_pretty_url = false, $force_pret
 				$pretty_url = !$force_pretty_name ? WP_ROCKET_MINIFY_CACHE_URL . md5( $url . get_rocket_option( 'minify_key' ) ) . '.' . $ext : WP_ROCKET_MINIFY_CACHE_URL . $force_pretty_name . '.' . $ext;
 				$pretty_url = apply_filters( 'rocket_minify_pretty_url', $pretty_url );
 				
-				$url        = rocket_fetch_and_cache_minify( $url, $pretty_url ) ? $pretty_url : $url;
-				$data_attr 	= !strpos( $url , 'min/?f=' ) ? 'data-pretty-minify="1"' : '';
+				$url = rocket_fetch_and_cache_minify( $url, $pretty_url ) ? $pretty_url : $url;
 				
 			}
 
@@ -230,9 +231,9 @@ function get_rocket_minify_files( $files, $force_pretty_url = false, $force_pret
  *
  */
 
-function rocket_minify_files( $files, $force_pretty_url = false )
+function rocket_minify_files( $files, $force_pretty_url = false, $force_pretty_name = false )
 {
 
-	echo get_rocket_minify_files( $files, $force_pretty_url );
+	echo get_rocket_minify_files( $files, $force_pretty_url, $force_pretty_name );
 
 }
