@@ -157,34 +157,36 @@ function rocket_generate_config_file()
  *
  */
 
-function set_rocket_wp_cache_define( $enable = true )
+function set_rocket_wp_cache_define( $turn_it_on )
 {
 
 	// If WP_CACHE is already define, return to get a coffee
-	if( $enable && defined( 'WP_CACHE' ) && WP_CACHE  )
+	if( $turn_it_on && defined( 'WP_CACHE' ) && WP_CACHE  )
 		return;
 
-	// Get content of the config file
-	$config_file = @file_get_contents( get_home_path() . 'wp-config.php' );
+	$config_file = rocket_find_wpconfig_path();
 
     if ( !$config_file )
         return;
 
+	// Get content of the config file
+	$config_file_content = @file_get_contents( $config_file );
+
 	// Get the value of WP_CACHE constant
-	$enable = $enable ? 'true' : 'false';
+	$turn_it_on = $turn_it_on ? 'true' : 'false';
 
 	// Get the content of the WP_CACHE constant added by WP Rocket
-	$define = "/** Enable Cache */\r\n" . "define('WP_CACHE', $enable); // Added by ".WP_ROCKET_PLUGIN_NAME."\r\n";
+	$define = "/** Enable Cache */\r\n" . "define('WP_CACHE', {$turn_it_on}); // Added by ".WP_ROCKET_PLUGIN_NAME."\r\n";
 
-	$config_file = preg_replace( "~\\/\\*\\* Enable Cache \\*\\*?\\/.*?\\/\\/ Added by ".WP_ROCKET_PLUGIN_NAME."(\r\n)*~s", '', $config_file );
-    $config_file = preg_replace( "~(\\/\\/\\s*)?define\\s*\\(\\s*['\"]?WP_CACHE['\"]?\\s*,.*?\\)\\s*;+\\r?\\n?~is", '', $config_file );
-	$config_file = preg_replace( '~<\?(php)?~', "\\0\r\n" . $define, $config_file );
+	$config_file_content = preg_replace( "~\\/\\*\\* Enable Cache \\*\\*?\\/.*?\\/\\/ Added by ".WP_ROCKET_PLUGIN_NAME."(\r\n)*~s", '', $config_file_content );
+    $config_file_content = preg_replace( "~(\\/\\/\\s*)?define\\s*\\(\\s*['\"]?WP_CACHE['\"]?\\s*,.*?\\)\\s*;+\\r?\\n?~is", '', $config_file_content );
+	$config_file_content = preg_replace( '~<\?(php)?~', "\\0\r\n" . $define, $config_file_content );
 	
 	// Remove empty spacings
-	$config_file = str_replace( "\n\n" , "\n" , $config_file );
+	$config_file_content = str_replace( "\n\n" , "\n" , $config_file_content );
 	
 	// Put the constant to the beginning of wp-config.php
-	rocket_put_content( ABSPATH . 'wp-config.php', $config_file );
+	rocket_put_content( $config_file, $config_file_content );
 
 }
 
@@ -197,29 +199,29 @@ function set_rocket_wp_cache_define( $enable = true )
  *
  */
 
-function set_rocket_cookie_domain_define( $enable = true )
+function set_rocket_cookie_domain_define( $turn_it_on )
 {
 
 	if( is_multisite() )
 		return false;
 
-	// If COOKIE_DOMAIN is already define, return to get a coffee
-	if( $enable && defined( 'COOKIE_DOMAIN' ) && COOKIE_DOMAIN  )
+	// If COOKIE_DOMAIN is already defined, return to get a coffee
+	if( $turn_it_on && defined( 'COOKIE_DOMAIN' ) && COOKIE_DOMAIN  )
 		return;
 
-
-	// Get content of the config file
-	$config_file = @file_get_contents( get_home_path() . 'wp-config.php' );
-
+	$config_file = rocket_find_wpconfig_path();
     if ( !$config_file )
         return;
 
+	// Get content of the config file
+	$config_file_content = @file_get_contents( $config_file );
 
-	if( !$enable )
+
+	if( !$turn_it_on )
 	{
 
-		$config_file = preg_replace( "~\\/\\*\\* Enable Cookie domain \\*\\*?\\/.*?\\/\\/ Added by ".WP_ROCKET_PLUGIN_NAME."(\r\n)*~s", '', $config_file );
-		$config_file = preg_replace( "~(\\/\\/\\s*)?define\\s*\\(\\s*['\"]?COOKIE_DOMAIN['\"]?\\s*,.*?\\)\\s*;+\\r?\\n?~is", '', $config_file );
+		$config_file_content = preg_replace( "~\\/\\*\\* Enable Cookie domain \\*\\*?\\/.*?\\/\\/ Added by ".WP_ROCKET_PLUGIN_NAME."(\r\n)*~s", '', $config_file_content );
+		$config_file_content = preg_replace( "~(\\/\\/\\s*)?define\\s*\\(\\s*['\"]?COOKIE_DOMAIN['\"]?\\s*,.*?\\)\\s*;+\\r?\\n?~is", '', $config_file_content );
 
 	}
 	else
@@ -229,12 +231,12 @@ function set_rocket_cookie_domain_define( $enable = true )
 		$host = parse_url( home_url(), PHP_URL_HOST );
 		$define = "/** Enable Cookie domain */\r\n" . "define('COOKIE_DOMAIN', '$host'); // Added by ".WP_ROCKET_PLUGIN_NAME."\r\n";
 
-		$config_file = preg_replace( '~<\?(php)?~', "\\0\r\n" . $define, $config_file );
+		$config_file_content = preg_replace( '~<\?(php)?~', "\\0\r\n" . $define, $config_file_content );
 
 	}
 
 	// Put the constant to the beginning of wp-config.php
-	rocket_put_content( ABSPATH . 'wp-config.php', $config_file );
+	rocket_put_content( rocket_find_wpconfig_path(), $config_file_content );
 
 }
 
@@ -581,6 +583,35 @@ function rocket_fetch_and_cache_minify( $url, $pretty_url )
 
 	}
 
+	return false;
+
+}
+
+
+/**
+ * Try to find the correct wp-config.php file, support one level up in filetree
+ *
+ * @since 2.1
+ *
+ */
+
+function rocket_find_wpconfig_path(){
+
+	$config_file = get_home_path() . 'wp-config.php';
+	$config_file_alt = dirname( get_home_path() ) . '/wp-config.php';
+	
+	if ( file_exists( $config_file ) && is_writable( $config_file ) )
+	{
+		
+		return $config_file;
+
+	} elseif ( file_exists( $config_file_alt ) && is_writable( $config_file_alt ) && !file_exists( dirname( get_home_path() ) . '/wp-settings.php' ) ) {
+
+		return $config_file_alt;
+
+	}
+
+	// No writable file found
 	return false;
 
 }

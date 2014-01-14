@@ -51,7 +51,7 @@ function rocket_upgrader()
 
 	}
 
-	if( !rocket_valid_key() && current_user_can( 'manage_options' ) )
+	if( !rocket_valid_key() && current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) )
 	{
 		add_action( 'admin_notices', 'rocket_need_api_key' );
 		add_filter( 'rocket_pointer_apikey', '__return_true' );
@@ -183,13 +183,28 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version )
 		@rename( WP_CONTENT_DIR . '/wp-rocket-cache', WP_CONTENT_DIR . '/cache/wp-rocket'  );
 
 		// Add WP_CACHE constant in wp-config.php
-		set_rocket_wp_cache_define();
+		set_rocket_wp_cache_define( true );
 
 		// Create advanced-cache.php file
 		rocket_generate_advanced_cache_file();
 
 		// Create config file
 		rocket_generate_config_file();
+
+	}
+
+	if( version_compare( $actual_version, '2.1', '<' ) )
+	{
+
+		// Add White Label default values
+		$options = get_option( WP_ROCKET_SLUG );
+		$options['wl_plugin_name']        = 'WP Rocket';
+		$options['wl_plugin_slug']        = sanitize_key( $options['wl_plugin_name'] );
+		$options['wl_plugin_URI']         = 'http://www.wp-rocket.me';
+		$options['wl_plugin_description'] = 'The best WordPress performance plugin.';
+		$options['wl_author']             = 'WP Rocket';
+		$options['wl_author_URI']         = 'http://www.wp-rocket.me';
+		update_option( WP_ROCKET_SLUG, $options );
 
 	}
 

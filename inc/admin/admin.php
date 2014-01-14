@@ -59,7 +59,7 @@ add_filter( 'page_row_actions', 'rocket_row_actions', 10, 2 );
 add_filter( 'post_row_actions', 'rocket_row_actions', 10, 2 );
 function rocket_row_actions( $actions, $post )
 {
-	if( current_user_can( 'manage_options' ) ) {
+	if( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
 		$url = wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=post-'.$post->ID ), 'purge_cache_post-'.$post->ID );
 	    $actions['rocket_purge'] = '<a href="'.$url.'">' . __ ( 'Purge this cache', 'rocket' ) . '</a>';
 	}
@@ -79,7 +79,7 @@ add_action( 'post_submitbox_start', 'rocket_post_submitbox_start' );
 function rocket_post_submitbox_start()
 {
 	global $post;
-	if ( current_user_can( 'manage_options' ) )
+	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) )
 		echo '<div id="purge-action"><a class="button-secondary" href="'.wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=post-' . $post->ID ), 'purge_cache_post-' . $post->ID ).'">'.__( 'Purge cache', 'rocket' ).'</a></div>';
 }
 
@@ -250,4 +250,50 @@ function send_rocketeer_infos()
 	if( isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'rocketeer' ) )
 		require( 'rocketeer.php' );
 	wp_redirect( wp_get_referer() );
+}
+
+
+/**
+ * White Label the plugin, if you need to
+ *
+ * @since 2.1
+ *
+ */
+
+add_filter( 'all_plugins', 'rocket_white_label' );
+function rocket_white_label( $plugins )
+{
+
+	// We change the plugin header
+	$plugins['wp-rocket/wp-rocket.php'] = array(
+	      'Name' => get_rocket_option( 'wl_plugin_name' ),
+	      'PluginURI' => get_rocket_option( 'wl_plugin_URI' ),
+	      'Version' => WP_ROCKET_VERSION,
+	      'Description' => reset( (get_rocket_option( 'wl_description' ) ) ),
+	      'Author' => get_rocket_option( 'wl_author' ),
+	      'AuthorURI' => get_rocket_option( 'wl_author_URI' ),
+	      );
+
+	// if white label, remove our names from contributors
+	if( rocket_is_white_label() ) {
+		remove_filter( 'plugin_row_meta', 'rocket_plugin_row_meta', 10, 2 );
+	}
+
+	// remove the plugin from list
+	if( get_rocket_option( 'wl_hide_plugin' ) )
+	{
+		unset( $plugins['wp-rocket/wp-rocket.php'] );
+	}
+
+	return $plugins;
+}
+
+add_action( 'admin_init', 'rocket_show_tab_and_menu' );
+function rocket_show_tab_and_menu()
+{
+	if( isset( $_GET['wprocket'] ) ){
+		$nonce = wp_create_nonce( __FUNCTION__ );
+		wp_safe_redirect( admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '&_nonce_show_all='.$nonce ) );
+		die();
+	}
 }

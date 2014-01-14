@@ -12,7 +12,10 @@ defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 add_action( 'admin_menu', 'rocket_admin_menu' );
 function rocket_admin_menu()
 {
-	add_options_page( WP_ROCKET_PLUGIN_NAME, WP_ROCKET_PLUGIN_NAME, apply_filters( 'rocket_capacity', 'manage_options' ), WP_ROCKET_PLUGIN_SLUG, 'rocket_display_options' );
+	$show_all = wp_verify_nonce( isset( $_GET['_nonce_show_all'] ) ? $_GET['_nonce_show_all'] : '', 'rocket_show_tab_and_menu' );
+	if( $show_all || !get_rocket_option( 'wl_hide_menu' ) ) {
+		add_options_page( WP_ROCKET_PLUGIN_NAME, WP_ROCKET_PLUGIN_NAME, apply_filters( 'rocket_capacity', 'manage_options' ), WP_ROCKET_PLUGIN_SLUG, 'rocket_display_options' );
+	}
 }
 
 
@@ -53,15 +56,19 @@ function rocket_field( $args )
 				?>
 
 					<legend class="screen-reader-text"><span><?php echo $args['label_screen']; ?></span></legend>
-					<label><input type="<?php echo $args['type']; ?>"<?php echo $number_options; ?> id="<?php echo $args['label_for']; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]" value="<?php echo $value; ?>" <?php echo $placeholder; ?><?php echo $readonly; ?>/> <?php echo $label; ?></label>
+					<label><input<?php if( $args['name'] == 'consumer_key' ){ echo ' autocomplete="off"'; } ?> type="<?php echo $args['type']; ?>"<?php echo $number_options; ?> id="<?php echo $args['label_for']; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]" value="<?php echo $value; ?>" <?php echo $placeholder; ?><?php echo $readonly; ?>/> <?php echo $label; ?></label>
 
 				<?php
-				if( $args['name'] == 'consumer_key' )
+				if( $args['name'] == 'consumer_key' ){
 
 					if( !rocket_valid_key() )
+					{
 						echo '<span style="font-weight:bold;color:red">'. __('Key is not valid', 'rocket') .'</span>';
-					else
+					}else{
 						echo '<span style="font-weight:bold;color:green">'. __('Key is valid', 'rocket') .'</span>';
+					}
+
+				}
 
 			break;
 
@@ -123,7 +130,7 @@ function rocket_field( $args )
 
 			break;
 
-			default : __( 'Missing or incorrect type!', 'rocket' );
+			default : 'Type manquant ou incorrect'; // ne pas traduire
 		}
 
 		if( !isset( $args['fieldset'] ) || $args['fieldset']=='end' )
@@ -694,7 +701,7 @@ function rocket_display_options()
 			array( 
 				'type'         => 'helper_help',
 				'name'         => 'exclude_js',
-				'description'  => __('Specify the URL of <b>JS</b> files to reject (one per line).', 'rocket' )
+				'description'  => __( 'Specify the URL of <b>JS</b> files to reject (one per line).', 'rocket' )
 				),
 		)
 	);
@@ -747,6 +754,142 @@ function rocket_display_options()
 		'rocket_display_cdn_options'
 	);
 
+	add_settings_section( 'rocket_display_white_label', __( 'White Label', 'rocket' ), '__return_false', 'white_label' );
+	add_settings_field(
+		'rocket_wl_hide_plugin',
+		__( 'Visibility;', 'rocket' ),
+		'rocket_field',
+		'white_label',
+		'rocket_display_white_label',
+		array(
+			array(
+				'type'         => 'checkbox',
+				'name'         => 'wl_hide_plugin',
+				'label_for'    => 'wl_hide_plugin',
+				'label'        => __( 'Hide the plugin', 'rocket' ),
+				'label_screen' => __( 'Hide the plugin', 'rocket' ),
+			),
+			array(
+				'type'         => 'helper_description',
+				'description'  => sprintf( __( 'If checked, the plugin will be hidden from <a href="%s">the plugins list</a>. You will have to manually update it using (s)FTP or via an external dashboard service.', 'rocket' ), admin_url( 'plugins.php' ) )
+			),
+			array(
+				'type'         => 'checkbox',
+				'name'         => 'wl_hide_tab',
+				'label_for'    => 'wl_hide_tab',
+				'label'        => __( 'Hide the White Label tab', 'rocket' ),
+				'label_screen' => __( 'Hide the White Label tab', 'rocket' ),
+			),
+			array(
+				'type'         => 'helper_help',
+				'description'  => __( 'If you want to use the white label functionnality, you can also hide this tab.', 'rocket' ),
+			),
+			array(
+				'type'         => 'checkbox',
+				'name'         => 'wl_hide_menu',
+				'label_for'    => 'wl_hide_menu',
+				'label'        => __( 'Hide the settings menu', 'rocket' ),
+				'label_screen' => __( 'Hide the settings menu', 'rocket' ),
+			),
+			array(
+				'type'         => 'helper_help',
+				'description'  => __( 'You can also remove the setting menu if you want to hide all.', 'rocket' ),
+			),
+			array(
+				'type'         => 'helper_warning',
+				'description'  => __( 'Once you hide the tab or menu, you can force the display again adding this parameter to any URL in the admin area :<br>'.
+									  '<code>?wprocket</code> ( or <code>&wprocket</code> if <code>?</code> is already used). If you don\'t remember it, we do.', 'rocket' )
+			),
+		)		
+	);
+	add_settings_field(
+		'rocket_wl_plugin_name',
+		__( 'Plugin Name:', 'rocket' ),
+		'rocket_field',
+		'white_label',
+		'rocket_display_white_label',
+		array(
+			array(
+				'type'         => 'text',
+				'name'         => 'wl_plugin_name',
+				'label_for'    => 'wl_plugin_name',
+				'label_screen' => __( 'Plugin Name:', 'rocket' ),
+			),
+		)		
+	);
+	add_settings_field(
+		'rocket_wl_plugin_URI',
+		__( 'Plugin URI:', 'rocket' ),
+		'rocket_field',
+		'white_label',
+		'rocket_display_white_label',
+		array(
+			array(
+				'type'         => 'text',
+				'name'         => 'wl_plugin_URI',
+				'label_for'    => 'wl_plugin_URI',
+				'label_screen' => __( 'Plugin URI:', 'rocket' ),
+			),
+		)		
+	);
+	add_settings_field(
+		'rocket_wl_description',
+		__( 'Description:', 'rocket' ),
+		'rocket_field',
+		'white_label',
+		'rocket_display_white_label',
+		array(
+			array(
+				'type'         => 'textarea',
+				'name'         => 'wl_description',
+				'label_for'    => 'wl_description',
+				'label_screen' => __( 'Description:', 'rocket' ),
+			),
+		)		
+	);
+	add_settings_field(
+		'rocket_wl_author',
+		__( 'Author:', 'rocket' ),
+		'rocket_field',
+		'white_label',
+		'rocket_display_white_label',
+		array(
+			array(
+				'type'         => 'text',
+				'name'         => 'wl_author',
+				'label_for'    => 'wl_author',
+				'label_screen' => __( 'Author:', 'rocket' ),
+			),
+		)		
+	);
+	add_settings_field(
+		'rocket_wl_author_URI',
+		__( 'Author URI:', 'rocket' ),
+		'rocket_field',
+		'white_label',
+		'rocket_display_white_label',
+		array(
+			array(
+				'type'         => 'text',
+				'name'         => 'wl_author_URI',
+				'label_for'    => 'wl_author_URI',
+				'label_screen' => __( 'Author URI:', 'rocket' ),
+			),
+		)		
+	);	add_settings_field(
+		'rocket_wl_warning',
+		__( 'Warning:', 'rocket' ),
+		'rocket_field',
+		'white_label',
+		'rocket_display_white_label',
+		array(
+			array(
+				'type'         => 'helper_warning',
+				'name'         => 'wl_warning',
+				'description'  => __( 'If you change anything, the tutorial + FAQ + Support tabs will be hidden.', 'rocket' ),
+			),
+		)		
+	);
 	// Tools
 	add_settings_section( 'rocket_display_tools', __( 'Tools', 'rocket' ), '__return_false', 'tools' );
 	add_settings_field(
@@ -802,9 +945,12 @@ function rocket_display_options()
 			)
 	    );
 	}
+	$show_all = wp_verify_nonce( isset( $_GET['_nonce_show_all'] ) ? $_GET['_nonce_show_all'] : '', 'rocket_show_tab_and_menu' );
 ?>
 	<div class="wrap">
+	<?php if( version_compare( $GLOBALS['wp_version'], '3.8' )<0 || !rocket_is_white_label() ) { ?>
 	<div id="icon-rocket" class="icon32"></div>
+	<?php } ?>
 	<h2><?php echo WP_ROCKET_PLUGIN_NAME; ?> <small><sup><?php echo WP_ROCKET_VERSION; ?></sup></small></h2>
 
 	<form action="options.php" method="post">
@@ -817,11 +963,14 @@ function rocket_display_options()
 				<a href="#tab_basic" class="nav-tab"><?php _e( 'Basic options', 'rocket' ); ?></a>
 				<a href="#tab_advanced" class="nav-tab"><?php _e( 'Advanced options', 'rocket' ); ?></a>
 				<a href="#tab_cdn" class="nav-tab"><?php _e( 'CDN', 'rocket' ); ?></a>
+				<?php if( $show_all || !get_rocket_option( 'wl_hide_tab' ) ) { ?>
+					<a href="#tab_whitelabel" class="nav-tab"><?php _e( 'White Label', 'rocket' ); ?></a>
+				<?php } ?>
 				<a href="#tab_tools" class="nav-tab"><?php _e( 'Tools', 'rocket' ); ?></a>
 				<?php if( !rocket_is_white_label() ) { ?>
 					<a href="#tab_tutos" class="nav-tab"><?php _e( 'Tutorials (french)', 'rocket' ); ?></a>
 					<a href="#tab_faq" class="nav-tab"><?php _e( 'FAQ (french)', 'rocket' ); ?></a>
-					<a href="#tab_support" class="nav-tab" style="color:#FF0000;"><?php _e( 'Support', 'rocket' ); ?></a>
+					<a href="#tab_support" class="nav-tab file-error"><?php _e( 'Support', 'rocket' ); ?></a>
 				<?php } ?>
 				<input type="hidden" name="wp_rocket_settings[consumer_key]" value="<?php esc_attr_e( get_rocket_option( 'consumer_key' ) ); ?>" />
 			<?php }else{ ?>
@@ -837,6 +986,9 @@ function rocket_display_options()
 				<div class="rkt-tab" id="tab_basic"><?php do_settings_sections( 'basic' ); ?></div>
 				<div class="rkt-tab" id="tab_advanced"><?php do_settings_sections( 'advanced' ); ?></div>
 				<div class="rkt-tab" id="tab_cdn"><?php do_settings_sections( 'cdn' ); ?></div>
+				<?php if( $show_all || !get_rocket_option( 'wl_hide_tab' ) ) { ?>
+					<div class="rkt-tab" id="tab_whitelabel"><?php do_settings_sections( 'white_label' ); ?></div>
+				<?php } ?>
 				<div class="rkt-tab" id="tab_tools"><?php do_settings_sections( 'tools' ); ?></div>
 				<div class="rkt-tab rkt-tab-txt" id="tab_tutos">
 					<?php include( WP_ROCKET_ADMIN_PATH . 'tutorials.php' ); ?>
@@ -872,6 +1024,7 @@ add_action( 'admin_init', 'rocket_register_setting' );
 function rocket_register_setting()
 {
 	register_setting( 'wp_rocket', WP_ROCKET_SLUG, 'rocket_settings_callback' );
+
 }
 
 
@@ -1082,6 +1235,12 @@ function rocket_settings_callback( $inputs )
 
 
 	/*
+	 * Option : WL
+	 */
+
+	$inputs['wl_description'] = (array)$inputs['wl_description'];
+
+	/*
 	 * Option : CDN
 	 */
 
@@ -1146,12 +1305,16 @@ function rocket_settings_callback( $inputs )
  *
  * @since 1.0
  *
+ * When the White Label Plugin name has changed, redirect on the correct page slug name to avoid a "you dont have permission" false negative annoying page
+ * When the settins menu is hidden, redirect on the main settings page to avoid the same thing
+ * (Only when a form is sent from our options page )
+ *
+ * @since 2.1
  */
 
-add_action( 'update_option_wp_rocket_settings', 'rocket_after_save_options' );
-function rocket_after_save_options()
+add_action( 'update_option_' . WP_ROCKET_SLUG, 'rocket_after_save_options', 10, 2 );
+function rocket_after_save_options( $oldvalue, $value )
 {
-
 	// Purge all cache files
 	rocket_clean_domain();
 
@@ -1159,7 +1322,13 @@ function rocket_after_save_options()
 	rocket_clean_minify();
 
 	// Update .htaccess file rules
-	flush_rocket_htaccess( !rocket_valid_key() );
+	if( $oldvalue['wl_plugin_name'] != $value['wl_plugin_name'] &&
+		isset( $_POST['option_page'], $_POST['action'] ) && 'wp_rocket'==$_POST['option_page'] && 'update'==$_POST['action'] )
+	{
+		flush_rocket_htaccess( true, $oldvalue['wl_plugin_name'] );
+	}else{
+		flush_rocket_htaccess( !rocket_valid_key(), $value['wl_plugin_name'] );
+	}
 
 	// Update config file
 	rocket_generate_config_file();
@@ -1167,6 +1336,26 @@ function rocket_after_save_options()
 	// Set COOKIE_DOMAIN constant in wp-config.php
 	set_rocket_cookie_domain_define( get_rocket_option( 'cdn', false ) );
 
+	// Set WP_CACHE constant in wp-config.php
+	set_rocket_wp_cache_define( true );
+
+	// Redirect on the main settings page page if the menu has been hidden to avoid false negative error message
+	if( $value['wl_hide_menu'] &&
+		isset( $_POST['option_page'], $_POST['action'] ) && 'wp_rocket'==$_POST['option_page'] && 'update'==$_POST['action'] )
+	{
+		wp_redirect( admin_url( 'options-general.php' ) );
+		die();
+	}
+
+	// Redirect on the correct page slug name to avoid false negative error message
+	if( $oldvalue['wl_plugin_name'] != $value['wl_plugin_name'] &&
+		isset( $_POST['option_page'], $_POST['action'] ) && 'wp_rocket'==$_POST['option_page'] && 'update'==$_POST['action'] )
+	{
+		add_settings_error('general', 'settings_updated', __('Settings saved.'), 'updated'); 
+		set_transient('settings_errors', get_settings_errors(), 30); 
+		wp_redirect( admin_url( 'options-general.php?page=' . sanitize_key( $value['wl_plugin_name'] ) . '&settings-updated=true' ) );
+		die();
+	}
 }
 
 
@@ -1182,18 +1371,17 @@ add_filter( 'pre_update_option_'.WP_ROCKET_SLUG, 'rocket_pre_main_option', 10, 2
 function rocket_pre_main_option( $newvalue, $oldvalue )
 {
 
-  if( ( $newvalue['purge_cron_interval'] != $oldvalue['purge_cron_interval'] ) || ( $newvalue['purge_cron_unit']!=$oldvalue['purge_cron_unit'] ) )
-  {
+	if( ( $newvalue['purge_cron_interval'] != $oldvalue['purge_cron_interval'] ) || ( $newvalue['purge_cron_unit']!=$oldvalue['purge_cron_unit'] ) )
+	{
 
-  	// Clear WP Rocket cron
-	if ( wp_next_scheduled( 'rocket_purge_time_event' ) ){
-
-		wp_clear_scheduled_hook( 'rocket_purge_time_event' );
+		// Clear WP Rocket cron
+		if ( wp_next_scheduled( 'rocket_purge_time_event' ) )
+		{
+			wp_clear_scheduled_hook( 'rocket_purge_time_event' );
+		}
 
 	}
 
-  }
-
-  return $newvalue;
+	return $newvalue;
 
 }

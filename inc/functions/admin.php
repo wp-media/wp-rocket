@@ -76,5 +76,11 @@ function rocket_renew_box( $function, $uid=0 )
 
 function rocket_is_white_label()
 {
-	return 'WP Rocket' != trim( WP_ROCKET_PLUGIN_NAME );
+	$names = array( 'wl_plugin_name', 'wl_plugin_URI', 'wl_description', 'wl_author', 'wl_author_URI' );
+	$options = '';
+	foreach( $names as $value )
+	{
+		$options .= !is_array( get_rocket_option( $value ) ) ? get_rocket_option( $value ) : reset( ( get_rocket_option( $value ) ) );
+	}
+	return 'a509cac94e0cd8238b250074fe802b90' != md5( $options );
 }

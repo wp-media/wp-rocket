@@ -14,7 +14,7 @@ function rocket_bad_deactivations()
 {
 
 	global $current_user;
-	if( current_user_can( 'manage_options' ) && $msgs = get_transient( $current_user->ID . '_donotdeactivaterocket' ) )
+	if( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) && $msgs = get_transient( $current_user->ID . '_donotdeactivaterocket' ) )
 	{
 
 		delete_transient( $current_user->ID . '_donotdeactivaterocket' );
@@ -84,7 +84,7 @@ add_action( 'admin_notices', 'rocket_warning_plugin_modification' );
 function rocket_warning_plugin_modification()
 {
 
-	if( current_user_can( 'manage_options' ) && rocket_valid_key() )
+	if( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) && rocket_valid_key() )
 	{
 
 		global $current_user;
@@ -97,7 +97,7 @@ function rocket_warning_plugin_modification()
 
 				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>" class="rkt-cross"><?php _e('Ignore', 'rocket'); ?></a>
 
-				<p><b><?php echo WP_ROCKET_PLUGIN_NAME; ?></b>: <?php _e( 'One or more extensions have been enabled or disabled, do not forget to clear the cache if necessary.', 'rocket' ) ;?> <a class="wp-core-ui button" href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=all' ), 'purge_cache_all' ); ?>"><?php _e('Clear cache', 'rocket') ; ?></a></p>
+				<p><?php printf( __( '<b>%s</b>: One or more extensions have been enabled or disabled, do not forget to clear the cache if necessary.', 'rocket' ), WP_ROCKET_PLUGIN_NAME ); ?> <a class="wp-core-ui button" href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=all' ), 'purge_cache_all' ); ?>"><?php _e('Clear cache', 'rocket') ; ?></a></p>
 
 			</div>
 
@@ -158,14 +158,14 @@ function rocket_plugins_to_deactivate()
 			$plugins_to_deactivate[] = $plugin;
 	}
 
-	if( current_user_can( 'manage_options' )
+	if( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
 		&& count( $plugins_to_deactivate )
 		&& rocket_valid_key()
 	) { ?>
 
 		<div class="error">
 
-			<p><b><?php echo WP_ROCKET_PLUGIN_NAME; ?></b>: <?php printf( __( 'The following plugins are not compatible with %s and will cause unexpected results:', 'rocket' ), WP_ROCKET_PLUGIN_NAME ); ?></p>
+			<p><?php printf( __( '<b>%s</b>: The following plugins are not compatible with this plugin and may cause unexpected results:', 'rocket' ), WP_ROCKET_PLUGIN_NAME ); ?></p>
 
 			<ul class="rocket-plugins-error">
 			<?php
@@ -202,7 +202,7 @@ function rocket_warning_logged_users()
 	global $current_user, $current_screen;
 	$boxes = get_user_meta( $current_user->ID, 'rocket_boxes', true );
 
-	if( current_user_can( 'manage_options' )
+	if( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
 	    && 'settings_page_'.WP_ROCKET_PLUGIN_SLUG == $current_screen->base
 	    && !in_array( __FUNCTION__, (array)$boxes )
 	    && !get_rocket_option( 'cache_logged_user' )
@@ -213,7 +213,7 @@ function rocket_warning_logged_users()
 
 			<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>" class="rkt-cross"><?php _e('Ignore', 'rocket'); ?></a>
 
-			<p><b><?php echo WP_ROCKET_PLUGIN_NAME; ?></b>: <?php _e( 'Connected users don\'t have the cached version of the website. We recommend you, to browse your website disconnected.', 'rocket' );?></p>
+			<p><?php printf( __( '<b>%s</b>: Connected users don\'t have the cached version of the website. We recommend you, to browse your website disconnected.', 'rocket' ), WP_ROCKET_PLUGIN_NAME );?></p>
 
 		</div>
 
@@ -235,13 +235,13 @@ add_action( 'admin_notices', 'rocket_warning_using_permalinks' );
 function rocket_warning_using_permalinks()
 {
 
-	if( current_user_can( 'manage_options' )
+	if( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
 	    && !$GLOBALS['wp_rewrite']->using_permalinks()
 	    && rocket_valid_key()
 	) { ?>
 
 		<div class="error">
-			<p><b><?php echo WP_ROCKET_PLUGIN_NAME; ?></b>: <?php echo sprintf( __( 'A custom permalink structure is required for <b>%s</b> to work properly. Please go to <a href="%s">Permalink</a> to configure them.', 'rocket'), WP_ROCKET_PLUGIN_NAME, admin_url( '/options-permalink.php' ) ); ?></p>
+			<p><?php printf( __( '<b>%s</b>: A custom permalink structure is required to work properly. Please go to <a href="%s">Permalink</a> to configure them.', 'rocket'), WP_ROCKET_PLUGIN_NAME, admin_url( 'options-permalink.php' ) ); ?></p>
 		</div>
 
 	<?php
@@ -252,7 +252,7 @@ function rocket_warning_using_permalinks()
 
 
 /**
- * This warning is displayed when the wp-config.php file isn't writeable
+ * This warning is displayed when the wp-config.php file isn't writable
  *
  * since 2.0
  *
@@ -261,10 +261,10 @@ function rocket_warning_using_permalinks()
 add_action( 'admin_notices', 'rocket_warning_wp_config_permissions' );
 function rocket_warning_wp_config_permissions()
 {
-	$config_file =  get_home_path() . 'wp-config.php';
+	$config_file = rocket_find_wpconfig_path();
 
-	if( current_user_can( 'manage_options' )
-		&& ( !is_writable( $config_file ) && !defined( 'WP_CACHE' ) || !WP_CACHE )
+	if( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
+		&& ( !is_writable( $config_file ) || !defined( 'WP_CACHE' ) || !WP_CACHE )
 	    && rocket_valid_key()
 	) {
 
@@ -278,7 +278,9 @@ function rocket_warning_wp_config_permissions()
 
 				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>" class="rkt-cross"><?php _e('Ignore', 'rocket'); ?></a>
 
-				<p><b><?php echo WP_ROCKET_PLUGIN_NAME; ?></b>: <?php echo sprintf( __('Be careful, if this message doesn\'t disappear after refreshed this page, is that you don\'t have rights <a href="%s" target="_blank">writing permissions</a> on <code>wp-config.php</code> file or the value of the constant <code>WP_CACHE</code> is set to <code>false</code>.<br/><br/>If this message persists, you have to put this code in your <code>wp-config.php</code> file for <strong>WP Rocket</strong> works correctly. Click on the field and press Ctrl-A to select all.', 'rocket' ), 'http://codex.wordpress.org/Changing_File_Permissions' ); ?></p>
+				<p><?php printf( __( '<b>%s</b>: It seems we don\'t have <a href="%s" target="_blank">writing permissions</a> on <code>wp-config.php</code> file or the value of the constant <code>WP_CACHE</code> is set to <code>false</code>.<br>'.
+									 'To fix this you have to give write rights on <code>wp-config.php</code> and then save again this settings.<br>'.
+									 'If this message persists, you have to put this following code in your <code>wp-config.php</code> file so that it works correctly. Click on the field and press Ctrl-A to select all.', 'rocket' ), 'http://codex.wordpress.org/Changing_File_Permissions', WP_ROCKET_PLUGIN_NAME ); ?></p>
 
 				<?php
 
@@ -311,7 +313,7 @@ function rocket_warning_advanced_cache_permissions()
 {
 	$advanced_cache_file =  WP_CONTENT_DIR . '/advanced-cache.php';
 
-	if( current_user_can( 'manage_options' )
+	if( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
 		&& ( !is_writable( $advanced_cache_file ) )
 	    && rocket_valid_key()
 	) {
@@ -360,7 +362,7 @@ function rocket_warning_htaccess_permissions()
 	global $is_apache;
 	$htaccess_file =  get_home_path() . '.htaccess';
 
-	if( current_user_can( 'manage_options' )
+	if( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
 	    && ( !is_writable( $htaccess_file ) )
 	    && $is_apache
 	    && rocket_valid_key()
@@ -402,7 +404,7 @@ add_action( 'admin_notices', 'rocket_warning_config_dir_permissions' );
 function rocket_warning_config_dir_permissions()
 {
 
-	if( current_user_can( 'manage_options' )
+	if( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
 	    && ( !is_writable( WP_ROCKET_CONFIG_PATH ) )
 	    && rocket_valid_key()
 	) {
@@ -441,7 +443,7 @@ add_action( 'admin_notices', 'rocket_warning_cache_dir_permissions' );
 function rocket_warning_cache_dir_permissions()
 {
 
-	if( current_user_can( 'manage_options' )
+	if( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
 	    && ( !is_writable( WP_ROCKET_CACHE_PATH ) )
 	    && rocket_valid_key()
 	) {
@@ -480,7 +482,7 @@ add_action( 'admin_notices', 'rocket_warning_minify_cache_dir_permissions' );
 function rocket_warning_minify_cache_dir_permissions()
 {
 
-	if( current_user_can( 'manage_options' )
+	if( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
 	    && ( !is_writable( WP_ROCKET_MINIFY_CACHE_PATH ) )
 	    && ( get_rocket_option( 'minify_pretty_url_css', false ) || get_rocket_option( 'minify_pretty_url_js', false ) )
 	    && rocket_valid_key()

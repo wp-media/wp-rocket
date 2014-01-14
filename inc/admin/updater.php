@@ -116,12 +116,12 @@ add_filter( 'plugins_api', 'rocket_force_info', 10, 3 );
 function rocket_force_info( $bool, $action, $args )
 {
 
-	if( $action=='plugin_information' && $args->slug=='wp-rocket' )
+	if( $action=='plugin_information' && $args->slug=='wp-rocket' ) {
 		return new stdClass();
+	}
 	return $bool;
 
 }
-
 
 /**
  * Hack the returned result with our content
@@ -130,6 +130,7 @@ function rocket_force_info( $bool, $action, $args )
  *
  */
 
+add_filter( 'plugins_api_result', 'rocket_force_info_result', 10, 3 );
 function rocket_force_info_result( $res, $action, $args )
 {
 	if( $action=='plugin_information' && $args->slug=='wp-rocket' && isset( $res->external ) && $res->external )

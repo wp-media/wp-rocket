@@ -10,14 +10,12 @@ Author URI: http://www.wp-rocket.me
 
 Copyright 2013 WP Rocket
 */
-define( 'WP_ROCKET_PLUGIN_NAME', 'WP Rocket' );
 
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 // Rocket defines
 define( 'WP_ROCKET_VERSION'             , '2.1');
 define( 'WP_ROCKET_SLUG'                , 'wp_rocket_settings');
-define( 'WP_ROCKET_PLUGIN_SLUG'         , sanitize_key( WP_ROCKET_PLUGIN_NAME ) );
 define( 'WP_ROCKET_WEB_MAIN'            , 'http://support.wp-rocket.me/');
 define( 'WP_ROCKET_WEB_CHECK'           , WP_ROCKET_WEB_MAIN.'check_update.php');
 define( 'WP_ROCKET_WEB_VALID'           , WP_ROCKET_WEB_MAIN.'valid_key.php');
@@ -45,11 +43,11 @@ define( 'WP_ROCKET_ADMIN_IMG_URL'       , WP_ROCKET_ADMIN_URL . 'img/' );
 define( 'WP_ROCKET_CACHE_URL'           , WP_CONTENT_URL . '/cache/wp-rocket/' );
 define( 'WP_ROCKET_MINIFY_CACHE_URL'    , WP_CONTENT_URL . '/cache/minify/' );
 if( !defined( 'CHMOD_WP_ROCKET_CACHE_DIRS' ) )
-	define( 'CHMOD_WP_ROCKET_CACHE_DIRS', 0755 );
+    define( 'CHMOD_WP_ROCKET_CACHE_DIRS', 0755 );
 
 // WP <3.5 defines
 if( !defined( 'SECOND_IN_SECONDS' ) )
-	define( 'SECOND_IN_SECONDS', 1 );
+    define( 'SECOND_IN_SECONDS', 1 );
 if( !defined( 'MINUTE_IN_SECONDS' ) )
     define( 'MINUTE_IN_SECONDS', SECOND_IN_SECONDS*60 );
 if( !defined( 'HOUR_IN_SECONDS' ) )
@@ -57,9 +55,9 @@ if( !defined( 'HOUR_IN_SECONDS' ) )
 if( !defined( 'DAY_IN_SECONDS' ) )
     define( 'DAY_IN_SECONDS', 24 * HOUR_IN_SECONDS);
 if( !defined( 'WEEK_IN_SECONDS' ) )
-	define( 'WEEK_IN_SECONDS', 7 * DAY_IN_SECONDS );
+    define( 'WEEK_IN_SECONDS', 7 * DAY_IN_SECONDS );
 if( !defined( 'YEAR_IN_SECONDS' ) )
-	define( 'YEAR_IN_SECONDS', 365 * DAY_IN_SECONDS );
+    define( 'YEAR_IN_SECONDS', 365 * DAY_IN_SECONDS );
 
 /*
  * Tell WP what to do when plugin is loaded
@@ -71,9 +69,9 @@ if( !defined( 'YEAR_IN_SECONDS' ) )
 add_action( 'plugins_loaded', 'rocket_init' );
 function rocket_init()
 {
-
+    
     // Load translations
-	load_plugin_textdomain( 'rocket', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+    load_plugin_textdomain( 'rocket', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 
     // Nothing to do if autosave
     if( defined( 'DOING_AUTOSAVE' ) )
@@ -85,15 +83,19 @@ function rocket_init()
 
     // Call defines,  classes and functions
     require WP_ROCKET_FUNCTIONS_PATH . '/options.php';
+    // Last constants
+    define( 'WP_ROCKET_PLUGIN_NAME'         , get_rocket_option( 'wl_plugin_name' ) );
+    define( 'WP_ROCKET_PLUGIN_SLUG'         , sanitize_key( WP_ROCKET_PLUGIN_NAME ) );
+    // Call defines,  classes and functions ²
     require WP_ROCKET_FUNCTIONS_PATH . '/files.php';
     require WP_ROCKET_FUNCTIONS_PATH . '/posts.php';
     require WP_ROCKET_FUNCTIONS_PATH . '/admin.php';
     require WP_ROCKET_FUNCTIONS_PATH . '/formatting.php';
     require WP_ROCKET_FUNCTIONS_PATH . '/plugins.php';
     require WP_ROCKET_FUNCTIONS_PATH . '/bots.php';
-    require WP_ROCKET_INC_PATH		 . '/deprecated.php';
-    require WP_ROCKET_FRONT_PATH 	 . '/htaccess.php';
-    require WP_ROCKET_INC_PATH 		 . '/headers.php';
+    require WP_ROCKET_INC_PATH       . '/deprecated.php';
+    require WP_ROCKET_FRONT_PATH     . '/htaccess.php';
+    require WP_ROCKET_INC_PATH       . '/headers.php';
 
     if( rocket_valid_key() )
     {
@@ -152,7 +154,7 @@ function rocket_deactivation()
 
     // Check if all the job can be done
     $htaccess_file =  get_home_path() . '.htaccess';
-    $config_file =  get_home_path() . 'wp-config.php';
+    $config_file =  rocket_find_wpconfig_path();
 
     if( !isset( $_GET['rocket_nonce'] ) || !wp_verify_nonce( $_GET['rocket_nonce'], 'force_deactivation' ) )
     {
@@ -227,7 +229,7 @@ function rocket_activation()
 	    rocket_mkdir_p( WP_ROCKET_MINIFY_CACHE_PATH );
 	
 	// Add WP_CACHE constant in wp-config.php
-	set_rocket_wp_cache_define();
+	set_rocket_wp_cache_define( true );
 
 	// Create advanced-cache.php file
 	rocket_generate_advanced_cache_file();
