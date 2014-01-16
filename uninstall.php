@@ -11,9 +11,10 @@ if( !defined( 'WP_UNINSTALL_PLUGIN' ) )
  *
  */
 
-delete_site_transient( 'update_rocket' );
+delete_site_transient( 'update_wprocket' );
 delete_option( 'wp_rocket_settings' );
-
+global $wpdb;
+$wpdb->query( 'DELETE FROM '.$wpdb->usermeta.' WHERE meta_key="rocket_boxes"' );
 
 
 /**

@@ -208,7 +208,9 @@ add_action( 'deactivated_plugin', 'rocket_dismiss_plugin_box' );
 function rocket_dismiss_plugin_box( $plugin )
 {
 	if( $plugin != plugin_basename( WP_ROCKET_FILE ) )
+	{
 		rocket_renew_box( 'rocket_warning_plugin_modification' );
+	}
 }
 
 
@@ -231,7 +233,7 @@ function rocket_deactivate_plugin()
 
 	deactivate_plugins( $_plugin );
 
-	wp_redirect( wp_get_referer() );
+	wp_safe_redirect( wp_get_referer() );
 	die();
 }
 
@@ -248,8 +250,57 @@ add_action( 'admin_post_rocketeer', 'send_rocketeer_infos' );
 function send_rocketeer_infos()
 {
 	if( isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'rocketeer' ) )
+	{
 		require( 'rocketeer.php' );
-	wp_redirect( wp_get_referer() );
+	}
+	wp_safe_redirect( wp_get_referer() );
+	die();
+}
+
+
+
+/**
+ * What to do when Rocket is updated, depending on versions
+ *
+ * since 1.0
+ *
+ */
+
+function rocket_reset_white_label_values( $hack_post )
+{
+
+		// White Label default values
+		$options = get_option( WP_ROCKET_SLUG );
+		$options['wl_plugin_name']        = 'WP Rocket';
+		$options['wl_plugin_slug']        = 'wprocket';
+		$options['wl_plugin_URI']         = 'http://www.wp-rocket.me';
+		$options['wl_description']        = array( 'The best WordPress performance plugin.' );
+		$options['wl_author']             = 'WP Rocket';
+		$options['wl_author_URI']         = 'http://www.wp-rocket.me';
+		if( $hack_post )
+		{
+			$_POST['page']                = 'wprocket'; // hack $_POST to force refresh of files, sorry
+		}
+		update_option( WP_ROCKET_SLUG, $options );
+
+}
+
+/**
+ * Reset White Label values to WP Rocket default values
+ *
+ * since 2.1
+ *
+ */
+
+add_action( 'admin_post_resetwl', 'rocket_reset_white_label_values_action' );
+function rocket_reset_white_label_values_action()
+{
+	if( isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'resetwl' ) )
+	{
+		rocket_reset_white_label_values( true );
+	}
+	wp_safe_redirect( add_query_arg( 'page', 'wprocket', remove_query_arg( 'page', wp_get_referer() ) ) );
+	die();
 }
 
 
@@ -268,10 +319,11 @@ function rocket_white_label( $plugins )
 	$plugins['wp-rocket/wp-rocket.php'] = array(
 	      'Name' => get_rocket_option( 'wl_plugin_name' ),
 	      'PluginURI' => get_rocket_option( 'wl_plugin_URI' ),
-	      'Version' => WP_ROCKET_VERSION,
-	      'Description' => reset( (get_rocket_option( 'wl_description' ) ) ),
+	      'Version' => $plugins['wp-rocket/wp-rocket.php']['Version'],
+	      'Description' => reset( ( get_rocket_option( 'wl_description' ) ) ),
 	      'Author' => get_rocket_option( 'wl_author' ),
 	      'AuthorURI' => get_rocket_option( 'wl_author_URI' ),
+	      'TextDomain' => $plugins['wp-rocket/wp-rocket.php']['TextDomain'],
 	      );
 
 	// if white label, remove our names from contributors
@@ -279,21 +331,38 @@ function rocket_white_label( $plugins )
 		remove_filter( 'plugin_row_meta', 'rocket_plugin_row_meta', 10, 2 );
 	}
 
-	// remove the plugin from list
-	if( get_rocket_option( 'wl_hide_plugin' ) )
-	{
-		unset( $plugins['wp-rocket/wp-rocket.php'] );
-	}
-
 	return $plugins;
 }
 
-add_action( 'admin_init', 'rocket_show_tab_and_menu' );
-function rocket_show_tab_and_menu()
-{
-	if( isset( $_GET['wprocket'] ) ){
-		$nonce = wp_create_nonce( __FUNCTION__ );
-		wp_safe_redirect( admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '&_nonce_show_all='.$nonce ) );
-		die();
+
+/**
+ * When you're doing an update, the constant does not contain yet your option or any value, reset and redirect!
+ *
+ * @since 2.1
+ *
+ */
+
+add_action( 'admin_init', '__rocket_check_no_empty_name', 11 );
+function __rocket_check_no_empty_name() {
+	$wl_plugin_name = trim( get_rocket_option( 'wl_plugin_name' ) );
+	if( empty( $wl_plugin_name ) )
+	{
+		rocket_reset_white_label_values( false );
+		wp_safe_redirect( admin_url( $_SERVER['REQUEST_URI'] ) );
+		die();		
 	}
+}
+
+
+
+/**
+ * Just return the define for WL
+ *
+ * @since 2.1
+ *
+ */
+
+add_filter( 'rocket_pointer_whitelabel', '__return_rocket_is_white_label' );
+function __return_rocket_is_white_label() {
+	return defined( 'WP_RWL' );
 }

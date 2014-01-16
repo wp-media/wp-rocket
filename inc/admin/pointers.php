@@ -106,8 +106,9 @@ function rocket_admin_pointers()
    $new_pointer = array();
    $actions     = apply_filters( 'rocket_pointer_actions', array() );
    
-   foreach( $actions as $action=>$options ) 
+   foreach( $actions as $action => $options ) 
    {
+
 	   if( apply_filters( 'rocket_pointer_'.$action, false ) && !in_array( $pointer_key.$action, $dismissed ) ) 
 	   {
 		   
@@ -150,6 +151,32 @@ function rocket_pointer_apikey( $pointers )
 		'align'		=> 'right',
 		'action'	=> '',
 		'content'	=> sprintf( __( 'To finalize the installation and enjoy the performance provided by our plugin, thank you to fill <a href="%s">your API key</a>.', 'rocket' ), admin_url( 'options-general.php?page='.WP_ROCKET_PLUGIN_SLUG ) )
+	);
+	
+	return $pointers;
+}
+
+/**
+ * Add White Label pointer
+ *
+ * @since 2.1
+ *
+ */
+
+add_filter( 'rocket_pointer_actions', 'rocket_pointer_whitelabel' );
+function rocket_pointer_whitelabel( $pointers )
+{
+	
+	$pointers['whitelabel'] = array(
+		'anchor_id'	=> array( 
+			'options-general.php' 	 => 'ul.wp-submenu li a[href$="page='.WP_ROCKET_PLUGIN_SLUG.'"]', 
+			'settings_page_'.WP_ROCKET_PLUGIN_SLUG => 'a[href="#tab_whitelabel"]',
+			'all'					 =>'#menu-settings' 
+		),
+		'edge' 		=> 'bottom',
+		'align'		=> 'left',
+		'action'	=> '',
+		'content'	=> __( 'This is your new functionnality : White Label. Enjoy!', 'rocket' ),
 	);
 	
 	return $pointers;

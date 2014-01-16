@@ -83,9 +83,11 @@ function rocket_init()
 
     // Call defines,  classes and functions
     require WP_ROCKET_FUNCTIONS_PATH . '/options.php';
+
     // Last constants
-    define( 'WP_ROCKET_PLUGIN_NAME'         , get_rocket_option( 'wl_plugin_name' ) );
-    define( 'WP_ROCKET_PLUGIN_SLUG'         , sanitize_key( WP_ROCKET_PLUGIN_NAME ) );
+    define( 'WP_ROCKET_PLUGIN_NAME', get_rocket_option( 'wl_plugin_name', 'WP Rocket' ) );
+    define( 'WP_ROCKET_PLUGIN_SLUG', sanitize_key( WP_ROCKET_PLUGIN_NAME ) );
+
     // Call defines,  classes and functions ²
     require WP_ROCKET_FUNCTIONS_PATH . '/files.php';
     require WP_ROCKET_FUNCTIONS_PATH . '/posts.php';

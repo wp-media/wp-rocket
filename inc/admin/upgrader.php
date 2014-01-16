@@ -15,7 +15,6 @@ function rocket_upgrader()
 	// Grab some infos
 	$actual_version = get_rocket_option( 'version' );
 	// You can hook the upgrader to trigger any action when WP Rocket is upgraded
-
 	// first install
 	if( !$actual_version )
 	{
@@ -104,7 +103,7 @@ function rocket_first_install()
 			'dns_prefetch'			=> 0,
 			'cdn'					=> 0,
 			'cdn_cnames'			=> array(),
-			'cdn_zone'		=> array()
+			'cdn_reserved_for'		=> array()
 		)
 	);
 	rocket_dismiss_box( 'rocket_warning_plugin_modification' );
@@ -196,18 +195,11 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version )
 	if( version_compare( $actual_version, '2.1', '<' ) )
 	{
 
-		// Add White Label default values
-		$options = get_option( WP_ROCKET_SLUG );
-		$options['wl_plugin_name']        = 'WP Rocket';
-		$options['wl_plugin_slug']        = sanitize_key( $options['wl_plugin_name'] );
-		$options['wl_plugin_URI']         = 'http://www.wp-rocket.me';
-		$options['wl_plugin_description'] = 'The best WordPress performance plugin.';
-		$options['wl_author']             = 'WP Rocket';
-		$options['wl_author_URI']         = 'http://www.wp-rocket.me';
-		update_option( WP_ROCKET_SLUG, $options );
+		rocket_reset_white_label_values( false );
 
 	}
 
 }
+
 
 /* END UPGRADER'S HOOKS */
