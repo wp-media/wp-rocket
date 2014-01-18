@@ -48,6 +48,22 @@ abstract class TaskScheduler {
 		return plugins_url($path, self::$plugin_file);
 	}
 
+	public static function autoload( $class ) {
+		$d = DIRECTORY_SEPARATOR;
+		if ( strpos( $class, 'TaskScheduler' ) === 0 ) {
+			$dir = self::plugin_path('classes'.$d);
+		} elseif ( strpos( $class, 'CronExpression' ) === 0 ) {
+			$dir = self::plugin_path('lib'.$d.'cron-expression'.$d);
+		} else {
+			return;
+		}
+
+		if ( file_exists( $dir.$class.'.php' ) ) {
+			include( $dir.$class.'.php' );
+			return;
+		}
+	}
+
 	/**
 	 * Initialize the plugin
 	 *
@@ -57,8 +73,12 @@ abstract class TaskScheduler {
 	 */
 	public static function init( $plugin_file ) {
 		self::$plugin_file = $plugin_file;
+		spl_autoload_register( array( __CLASS__, 'autoload' ) );
+
 		self::store();
 		self::logger();
+
+		require_once( self::plugin_path('functions.php') );
 	}
 
 

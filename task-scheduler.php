@@ -5,28 +5,26 @@ Plugin URI: https://github.com/flightless/delayed-job
 Description: A robust task scheduler for WordPress
 Author: Flightless
 Author URI: http://flightless.us/
-Version: 0.1
+Version: 1.0-dev
 */
 
-function task_scheduler_initialize() {
-	spl_autoload_register('task_scheduler_autoload');
+if ( function_exists('task_scheduler_register_1_dot_0_dev') ) {
+	return;
+}
+
+if ( !class_exists('TaskScheduler_Versions') ) {
+	require_once('classes/TaskScheduler_Versions.php');
+	add_action( 'plugins_loaded', array( 'TaskScheduler_Versions', 'initialize_latest_version' ), 1, 0 );
+}
+
+add_action( 'plugins_loaded', 'task_scheduler_register_1_dot_0_dev', 0, 0 );
+
+function task_scheduler_register_1_dot_0_dev() {
+	$versions = TaskScheduler_Versions::instance();
+	$versions->register( '1.0-dev', 'task_scheduler_initialize_1_dot_0_dev' );
+}
+
+function task_scheduler_initialize_1_dot_0_dev() {
+	require_once('classes/TaskScheduler.php');
 	TaskScheduler::init( __FILE__ );
-	require_once( 'functions.php' );
 }
-
-function task_scheduler_autoload( $class ) {
-	$d = DIRECTORY_SEPARATOR;
-	if ( strpos( $class, 'TaskScheduler' ) === 0 ) {
-		$dir = dirname(__FILE__).$d.'classes'.$d;
-	} elseif ( strpos( $class, 'CronExpression' ) === 0 ) {
-		$dir = dirname(__FILE__).$d.'lib'.$d.'cron-expression'.$d;
-	} else {
-		return;
-	}
-
-	if ( file_exists( $dir.$class.'.php' ) ) {
-		include( $dir.$class.'.php' );
-		return;
-	}
-}
-add_action( 'plugins_loaded', 'task_scheduler_initialize', 10, 0 );
