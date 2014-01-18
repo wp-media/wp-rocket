@@ -10,7 +10,7 @@ defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
  *
  */
 
-function flush_rocket_htaccess( $force = false, $WP_ROCKET_PLUGIN_NAME = WP_ROCKET_PLUGIN_NAME )
+function flush_rocket_htaccess( $force = false, $wp_rocket_plugin_name = WP_ROCKET_PLUGIN_NAME )
 {
 
 	global $is_apache;
@@ -27,7 +27,7 @@ function flush_rocket_htaccess( $force = false, $WP_ROCKET_PLUGIN_NAME = WP_ROCK
 		$ftmp = file_get_contents( $htaccess_file );
 
 		// Remove the WP Rocket marker
-		$ftmp = preg_replace( '/# BEGIN '.$WP_ROCKET_PLUGIN_NAME.'(.*)# END '.$WP_ROCKET_PLUGIN_NAME.'(.*)#/isUe', '', $ftmp );
+		$ftmp = preg_replace( '/# BEGIN '.$wp_rocket_plugin_name.'(.*)# END '.$wp_rocket_plugin_name.'(.*)#/isUe', '', $ftmp );
 
 		// Remove empty spacings
 		$ftmp = str_replace( "\n\n" , "\n" , $ftmp );
@@ -64,7 +64,7 @@ function get_rocket_htaccess_marker()
 	$marker .= get_rocket_htaccess_mod_expires();
 	$marker .= get_rocket_htaccess_mod_deflate();
 	$marker .= get_rocket_htaccess_mod_rewrite();
-	$marker .= '# END ' . WP_ROCKET_PLUGIN_NAME . "\n";
+	$marker .= '# END ' . WP_ROCKET_PLUGIN_NAME . '#' . "\n";
 
 	return $marker;
 
