@@ -175,7 +175,7 @@ function rocket_pointer_whitelabel( $pointers )
 		),
 		'edge' 		=> 'bottom',
 		'align'		=> 'left',
-		'action'	=> '',
+		'action'	=> 'dismiss-wp-pointer',
 		'content'	=> __( 'This is your new functionnality : White Label. Enjoy!', 'rocket' ),
 	);
 	
