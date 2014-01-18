@@ -75,7 +75,9 @@ function rocket_init()
 
     // Nothing to do if autosave
     if( defined( 'DOING_AUTOSAVE' ) )
+    {
         return;
+    }
 
     // Necessary to call correctly WP Rocket Bot for cache json
     global $do_rocket_bot_cache_json;
@@ -105,10 +107,14 @@ function rocket_init()
         require WP_ROCKET_INC_PATH . '/admin-bar.php';
 
         if( (int)get_rocket_option( 'purge_cron_interval' ) > 0 )
+        {
             require  WP_ROCKET_INC_PATH . '/cron.php';
+        }
             
         if( (int)get_rocket_option( 'cdn' ) > 0 )
+        {
         	require  WP_ROCKET_FRONT_PATH . '/cdn.php';
+        }
     }
 
     if( is_admin() )
@@ -138,7 +144,9 @@ function rocket_init()
 	
     // You can hook this to trigger any action when WP Rocket is correctly loaded, so, not in AUTOSAVE mode
     if( rocket_valid_key() )
+    {
 		do_action( 'wp_rocket_loaded' );
+    }
 }
 
 
@@ -212,6 +220,11 @@ function rocket_deactivation()
 register_activation_hook( __FILE__, 'rocket_activation' );
 function rocket_activation()
 {
+
+    // Last constants
+    define( 'WP_ROCKET_PLUGIN_NAME', 'WP Rocket' );
+    define( 'WP_ROCKET_PLUGIN_SLUG', sanitize_key( WP_ROCKET_PLUGIN_NAME ) );
+
     require WP_ROCKET_FUNCTIONS_PATH . '/options.php';
     require WP_ROCKET_FUNCTIONS_PATH . '/files.php';
     require WP_ROCKET_FUNCTIONS_PATH . '/formatting.php';

@@ -27,13 +27,15 @@ function flush_rocket_htaccess( $force = false, $WP_ROCKET_PLUGIN_NAME = WP_ROCK
 		$ftmp = file_get_contents( $htaccess_file );
 
 		// Remove the WP Rocket marker
-		$ftmp = preg_replace( '/# BEGIN '.$WP_ROCKET_PLUGIN_NAME.'(.*)# END '.$WP_ROCKET_PLUGIN_NAME.'/isUe', '', $ftmp );
+		$ftmp = preg_replace( '/# BEGIN '.$WP_ROCKET_PLUGIN_NAME.'(.*)# END '.$WP_ROCKET_PLUGIN_NAME.'(.*)#/isUe', '', $ftmp );
 
 		// Remove empty spacings
 		$ftmp = str_replace( "\n\n" , "\n" , $ftmp );
 
-		if( $force === false  )
+		if( $force === false )
+		{
 			$rules = get_rocket_htaccess_marker();
+		}
 
 		// Update the .htacces file
 		rocket_put_content( $htaccess_file , $rules . $ftmp );

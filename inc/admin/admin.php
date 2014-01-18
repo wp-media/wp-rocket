@@ -253,6 +253,7 @@ function send_rocketeer_infos()
 	{
 		require( 'rocketeer.php' );
 	}
+
 	wp_safe_redirect( wp_get_referer() );
 	die();
 }
@@ -269,17 +270,18 @@ function send_rocketeer_infos()
 function rocket_reset_white_label_values( $hack_post )
 {
 
-		// White Label default values
+		// White Label default values - !!! DO NOT TRANSLATE !!!
 		$options = get_option( WP_ROCKET_SLUG );
 		$options['wl_plugin_name']        = 'WP Rocket';
 		$options['wl_plugin_slug']        = 'wprocket';
 		$options['wl_plugin_URI']         = 'http://www.wp-rocket.me';
-		$options['wl_description']        = array( 'The best WordPress performance plugin.' );
+		$options['wl_description']        = array( 'The best WordPress performance plugin.' ); 
 		$options['wl_author']             = 'WP Rocket';
 		$options['wl_author_URI']         = 'http://www.wp-rocket.me';
 		if( $hack_post )
-		{
-			$_POST['page']                = 'wprocket'; // hack $_POST to force refresh of files, sorry
+		{// hack $_POST to force refresh of files, sorry
+			$_POST['option_page'] = 'wp_rocket';
+			$_POST['action'] = 'update'; 
 		}
 		update_option( WP_ROCKET_SLUG, $options );
 
