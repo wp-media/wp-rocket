@@ -30,7 +30,13 @@ class TaskScheduler_JobRunner {
 
 	protected function process_job( $job_id ) {
 		$job = $this->store->fetch_job( $job_id );
-		$job->execute();
+		do_action( 'task_scheduler_before_execute', $job_id );
+		try {
+			$job->execute();
+			do_action( 'task_scheduler_after_execute', $job_id );
+		} catch ( Exception $e ) {
+			do_action( 'task_scheduler_failed_execution', $job_id, $e );
+		}
 		$this->store->mark_complete( $job_id );
 		$this->schedule_next_instance( $job );
 	}

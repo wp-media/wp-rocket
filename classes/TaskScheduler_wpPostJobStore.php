@@ -14,6 +14,7 @@ class TaskScheduler_wpPostJobStore extends TaskScheduler_JobStore {
 			$post_id = $this->save_post_array( $post_array );
 			$this->save_post_schedule( $post_id, $job->get_schedule() );
 			$this->save_job_group( $post_id, $job->get_group() );
+			do_action( 'task_scheduler_stored_job', $post_id );
 			return $post_id;
 		} catch ( Exception $e ) {
 			throw new RuntimeException( __('Error saving job', 'task-scheduler'), 0, $e );

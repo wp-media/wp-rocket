@@ -19,6 +19,10 @@ abstract class TaskScheduler {
 		return TaskScheduler_JobStore::instance();
 	}
 
+	public static function logger() {
+		return TaskScheduler_Logger::instance();
+	}
+
 	/**
 	 * Get the absolute system path to the plugin directory, or a file therein
 	 * @static
@@ -53,7 +57,8 @@ abstract class TaskScheduler {
 	 */
 	public static function init( $plugin_file ) {
 		self::$plugin_file = $plugin_file;
-		TaskScheduler_JobStore::instance();
+		self::store();
+		self::logger();
 	}
 
 
