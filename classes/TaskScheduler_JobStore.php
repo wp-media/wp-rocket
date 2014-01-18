@@ -9,6 +9,9 @@ abstract class TaskScheduler_JobStore {
 
 	/**
 	 * @param TaskScheduler_Job $job
+	 * @param DateTime $date Optional date of the first instance
+	 *        to store. Otherwise uses the first date of the job's
+	 *        schedule.
 	 * @return string The job ID
 	 */
 	abstract public function save_job( TaskScheduler_Job $job, DateTime $date = NULL );

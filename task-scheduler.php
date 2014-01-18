@@ -11,6 +11,7 @@ Version: 0.1
 function task_scheduler_initialize() {
 	spl_autoload_register('task_scheduler_autoload');
 	TaskScheduler::init( __FILE__ );
+	require_once( 'functions.php' );
 }
 
 function task_scheduler_autoload( $class ) {

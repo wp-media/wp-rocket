@@ -5,10 +5,19 @@
  */
 abstract class TaskScheduler {
 	private static $plugin_file = '';
-	/** @var TaskScheduler */
-	private static $instance = NULL;
-	/** @var TaskScheduler_JobStore */
-	private static $store = NULL;
+	/** @var TaskScheduler_JobFactory */
+	private static $factory = NULL;
+
+	public static function factory() {
+		if ( !isset(self::$factory) ) {
+			self::$factory = new TaskScheduler_JobFactory();
+		}
+		return self::$factory;
+	}
+
+	public static function store() {
+		return TaskScheduler_JobStore::instance();
+	}
 
 	/**
 	 * Get the absolute system path to the plugin directory, or a file therein
