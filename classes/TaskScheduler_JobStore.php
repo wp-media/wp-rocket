@@ -44,7 +44,6 @@ abstract class TaskScheduler_JobStore {
 		if ( empty(self::$store) ) {
 			$class = apply_filters('task_scheduler_job_store_class', 'TaskScheduler_wpPostJobStore');
 			self::$store = new $class();
-			add_action( 'init', array( self::$store, 'init' ), 10, 0 );
 		}
 		return self::$store;
 	}

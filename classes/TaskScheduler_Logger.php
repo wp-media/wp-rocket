@@ -13,7 +13,6 @@ abstract class TaskScheduler_Logger {
 		if ( empty(self::$logger) ) {
 			$class = apply_filters('task_scheduler_logger_class', 'TaskScheduler_wpCommentLogger');
 			self::$logger = new $class();
-			add_action( 'init', array( self::$logger, 'init' ), 10, 0 );
 		}
 		return self::$logger;
 	}

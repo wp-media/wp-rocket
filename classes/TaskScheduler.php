@@ -23,6 +23,10 @@ abstract class TaskScheduler {
 		return TaskScheduler_Logger::instance();
 	}
 
+	public static function runner() {
+		return TaskScheduler_JobRunner::instance();
+	}
+
 	/**
 	 * Get the absolute system path to the plugin directory, or a file therein
 	 * @static
@@ -75,8 +79,14 @@ abstract class TaskScheduler {
 		self::$plugin_file = $plugin_file;
 		spl_autoload_register( array( __CLASS__, 'autoload' ) );
 
-		self::store();
-		self::logger();
+		$store = self::store();
+		add_action( 'init', array( $store, 'init' ), 10, 0 );
+
+		$logger = self::logger();
+		add_action( 'init', array( $logger, 'init' ), 10, 0 );
+
+		$runner = self::runner();
+		add_action( 'init', array( $runner, 'init' ), 10, 0 );
 
 		require_once( self::plugin_path('functions.php') );
 	}

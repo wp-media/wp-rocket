@@ -4,11 +4,33 @@
  * Class TaskScheduler_JobRunner
  */
 class TaskScheduler_JobRunner {
+	const WP_CRON_HOOK = 'task_scheduler_run_jobs';
+
+	/** @var TaskScheduler_JobRunner  */
+	private static $runner = NULL;
 	/** @var TaskScheduler_JobStore */
 	private $store = NULL;
 
+	/**
+	 * @return TaskScheduler_JobRunner
+	 */
+	public static function instance() {
+		if ( empty(self::$runner) ) {
+			$class = apply_filters('task_scheduler_job_runner_class', 'TaskScheduler_JobRunner');
+			self::$runner = new $class();
+		}
+		return self::$runner;
+	}
+
 	public function __construct( TaskScheduler_JobStore $store = NULL ) {
 		$this->store = $store ? $store : TaskScheduler_JobStore::instance();
+	}
+
+	public function init() {
+		if ( !wp_next_scheduled(self::WP_CRON_HOOK) ) {
+			$schedule = apply_filters( 'task_scheduler_run_schedule', 'hourly' );
+			wp_schedule_event( time(), $schedule, self::WP_CRON_HOOK );
+		}
 	}
 
 	public function run() {

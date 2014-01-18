@@ -104,7 +104,11 @@ class TaskScheduler_JobRunner_Test extends TaskScheduler_UnitTestCase {
 
 		$this->assertEquals( $random, $new_job->get_hook() );
 		$this->assertEquals( $schedule->next(new DateTime()), $new_job->get_schedule()->next(new DateTime()) );
+	}
 
+	public function test_hooked_into_wp_cron() {
+		$next = wp_next_scheduled( TaskScheduler_JobRunner::WP_CRON_HOOK );
+		$this->assertNotEmpty($next);
 	}
 }
  
