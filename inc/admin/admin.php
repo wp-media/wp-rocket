@@ -280,8 +280,7 @@ function rocket_reset_white_label_values( $hack_post )
 		$options['wl_author_URI']         = 'http://www.wp-rocket.me';
 		if( $hack_post )
 		{// hack $_POST to force refresh of files, sorry
-			$_POST['option_page'] = 'wp_rocket';
-			$_POST['action'] = 'update'; 
+			$_POST['page'] = 'wprocket';
 		}
 		update_option( WP_ROCKET_SLUG, $options );
 
@@ -350,7 +349,7 @@ function __rocket_check_no_empty_name() {
 	if( empty( $wl_plugin_name ) )
 	{
 		rocket_reset_white_label_values( false );
-		wp_safe_redirect( admin_url( $_SERVER['REQUEST_URI'] ) );
+		wp_safe_redirect( $_SERVER['REQUEST_URI'] );
 		die();		
 	}
 }
