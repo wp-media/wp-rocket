@@ -2,6 +2,7 @@
 
 /**
  * Class TaskScheduler_Logger
+ * @codeCoverageIgnore
  */
 abstract class TaskScheduler_Logger {
 	private static $logger = NULL;

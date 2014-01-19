@@ -2,6 +2,7 @@
 
 /**
  * Class TaskScheduler_wpPostJobStore_TaxonomyRegistrar
+ * @codeCoverageIgnore
  */
 class TaskScheduler_wpPostJobStore_TaxonomyRegistrar {
 	public function register() {

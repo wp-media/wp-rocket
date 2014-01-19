@@ -42,6 +42,7 @@ class TaskScheduler_Versions {
 
 	/**
 	 * @return TaskScheduler_Versions
+	 * @codeCoverageIgnore
 	 */
 	public static function instance() {
 		if ( empty(self::$instance) ) {
@@ -50,6 +51,9 @@ class TaskScheduler_Versions {
 		return self::$instance;
 	}
 
+	/**
+	 * @codeCoverageIgnore
+	 */
 	public static function initialize_latest_version() {
 		$self = self::instance();
 		call_user_func($self->latest_version_callback());

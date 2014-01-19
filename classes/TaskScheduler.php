@@ -2,6 +2,7 @@
 
 /**
  * Class TaskScheduler
+ * @codeCoverageIgnore
  */
 abstract class TaskScheduler {
 	private static $plugin_file = '';

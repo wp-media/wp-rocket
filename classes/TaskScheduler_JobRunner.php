@@ -13,6 +13,7 @@ class TaskScheduler_JobRunner {
 
 	/**
 	 * @return TaskScheduler_JobRunner
+	 * @codeCoverageIgnore
 	 */
 	public static function instance() {
 		if ( empty(self::$runner) ) {
@@ -26,6 +27,9 @@ class TaskScheduler_JobRunner {
 		$this->store = $store ? $store : TaskScheduler_JobStore::instance();
 	}
 
+	/**
+	 * @codeCoverageIgnore
+	 */
 	public function init() {
 		if ( !wp_next_scheduled(self::WP_CRON_HOOK) ) {
 			$schedule = apply_filters( 'task_scheduler_run_schedule', 'hourly' );

@@ -178,6 +178,9 @@ class TaskScheduler_wpPostJobStore extends TaskScheduler_JobStore {
 		}
 	}
 
+	/**
+	 * @codeCoverageIgnore
+	 */
 	public function init() {
 		$post_type_registrar = new TaskScheduler_wpPostJobStore_PostTypeRegistrar();
 		$post_type_registrar->register();

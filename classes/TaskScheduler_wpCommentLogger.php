@@ -71,6 +71,9 @@ class TaskScheduler_wpCommentLogger extends TaskScheduler_Logger {
 		return get_comment( $comment_id );
 	}
 
+	/**
+	 * @codeCoverageIgnore
+	 */
 	public function init() {
 		add_action( 'task_scheduler_stored_job', array( $this, 'log_stored_job' ), 10, 1 );
 		add_action( 'task_scheduler_before_execute', array( $this, 'log_started_job' ), 10, 1 );

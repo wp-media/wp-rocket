@@ -21,4 +21,12 @@
 			<group>ignore</group>
 		</exclude>
 	</groups>
+	<filter>
+		<whitelist processsUncoveredFilesFromWhitelist="true">
+			<directory suffix=".php">..</directory>
+			<exclude>
+				<directory>.</directory>
+			</exclude>
+		</whitelist>
+	</filter>
 </phpunit>

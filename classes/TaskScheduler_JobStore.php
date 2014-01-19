@@ -2,6 +2,7 @@
 
 /**
  * Class TaskScheduler_JobStore
+ * @codeCoverageIgnore
  */
 abstract class TaskScheduler_JobStore {
 	/** @var TaskScheduler_JobStore */
