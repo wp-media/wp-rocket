@@ -81,6 +81,15 @@ class TaskScheduler_wpCommentLogger_Test extends TaskScheduler_UnitTestCase {
 		$this->assertTrue( in_array( $failed, $logs ) );
 	}
 
+	public function test_canceled_job_comments() {
+		$job_id = schedule_single_task( time(), 'a hook' );
+		unschedule_task( 'a hook' );
+		$logger = TaskScheduler::logger();
+		$logs = $logger->get_logs( $job_id );
+		$expected = new TaskScheduler_LogEntry( $job_id, 'job canceled' );
+		$this->assertTrue( in_array( $expected, $logs ) );
+	}
+
 	public function _a_hook_callback_that_throws_an_exception() {
 		throw new RuntimeException('Execution failed');
 	}

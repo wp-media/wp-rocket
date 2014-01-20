@@ -51,11 +51,16 @@ class TaskScheduler_wpCommentLogger extends TaskScheduler_Logger {
 	 * @return TaskScheduler_LogEntry[]
 	 */
 	public function get_logs( $job_id ) {
+		$status = 'all';
+		if ( get_post_status($job_id) == 'trash' ) {
+			$status = 'post-trashed';
+		}
 		$comments = get_comments(array(
-			'post_ID' => $job_id,
+			'post_id' => $job_id,
 			'orderby' => 'comment_date_gmt',
 			'order' => 'ASC',
 			'type' => self::TYPE,
+			'status' => $status,
 		));
 		$logs = array();
 		foreach ( $comments as $c ) {
@@ -76,6 +81,7 @@ class TaskScheduler_wpCommentLogger extends TaskScheduler_Logger {
 	 */
 	public function init() {
 		add_action( 'task_scheduler_stored_job', array( $this, 'log_stored_job' ), 10, 1 );
+		add_action( 'task_scheduler_canceled_job', array( $this, 'log_canceled_job' ), 10, 1 );
 		add_action( 'task_scheduler_before_execute', array( $this, 'log_started_job' ), 10, 1 );
 		add_action( 'task_scheduler_after_execute', array( $this, 'log_completed_job' ), 10, 1 );
 		add_action( 'task_scheduler_failed_execution', array( $this, 'log_failed_job' ), 10, 2 );
@@ -83,6 +89,10 @@ class TaskScheduler_wpCommentLogger extends TaskScheduler_Logger {
 
 	public function log_stored_job( $job_id ) {
 		$this->log( $job_id, __('job created', 'task-scheduler') );
+	}
+
+	public function log_canceled_job( $job_id ) {
+		$this->log( $job_id, __('job canceled', 'task-scheduler') );
 	}
 
 	public function log_started_job( $job_id ) {

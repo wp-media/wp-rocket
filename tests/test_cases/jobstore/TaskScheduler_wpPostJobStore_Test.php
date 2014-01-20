@@ -30,6 +30,18 @@ class TaskScheduler_wpPostJobStore_Test extends TaskScheduler_UnitTestCase {
 		$this->assertEquals($job->get_group(), $retrieved->get_group());
 	}
 
+	public function test_cancel_job() {
+		$time = new DateTime();
+		$schedule = new TaskScheduler_SimpleSchedule($time);
+		$job = new TaskScheduler_Job('my_hook', array(), $schedule, 'my_group');
+		$store = new TaskScheduler_wpPostJobStore();
+		$job_id = $store->save_job($job);
+		$store->cancel_job( $job_id );
+
+		$fetched = $store->fetch_job( $job_id );
+		$this->assertInstanceOf( 'TaskScheduler_NullJob', $fetched );
+	}
+
 	public function test_claim_jobs() {
 		$created_jobs = array();
 		$store = new TaskScheduler_wpPostJobStore();
@@ -79,6 +91,38 @@ class TaskScheduler_wpPostJobStore_Test extends TaskScheduler_UnitTestCase {
 
 		$claim2 = $store->stake_claim();
 		$this->assertCount( 3, $claim2->get_jobs() );
+	}
+
+	public function test_search() {
+		$created_jobs = array();
+		$store = new TaskScheduler_wpPostJobStore();
+		for ( $i = -3 ; $i <= 3 ; $i++ ) {
+			$time = new DateTime($i.' hours');
+			$schedule = new TaskScheduler_SimpleSchedule($time);
+			$job = new TaskScheduler_Job('my_hook', array($i), $schedule, 'my_group');
+			$created_jobs[] = $store->save_job($job);
+		}
+
+		$next_no_args = $store->find_job( 'my_hook' );
+		$this->assertEquals( $created_jobs[0], $next_no_args );
+
+		$next_with_args = $store->find_job( 'my_hook', array( 'args' => array( 1 ) ) );
+		$this->assertEquals( $created_jobs[4], $next_with_args );
+
+		$non_existent = $store->find_job( 'my_hook', array( 'args' => array( 17 ) ) );
+		$this->assertNull( $non_existent );
+	}
+
+	public function test_search_by_group() {
+		$store = new TaskScheduler_wpPostJobStore();
+		$schedule = new TaskScheduler_SimpleSchedule(new DateTime('tomorrow'));
+		$abc = $store->save_job(new TaskScheduler_Job('my_hook', array(1), $schedule, 'abc'));
+		$def = $store->save_job(new TaskScheduler_Job('my_hook', array(1), $schedule, 'def'));
+		$ghi = $store->save_job(new TaskScheduler_Job('my_hook', array(1), $schedule, 'ghi'));
+
+		$this->assertEquals( $abc, $store->find_job('my_hook', array('group' => 'abc')));
+		$this->assertEquals( $def, $store->find_job('my_hook', array('group' => 'def')));
+		$this->assertEquals( $ghi, $store->find_job('my_hook', array('group' => 'ghi')));
 	}
 }
  

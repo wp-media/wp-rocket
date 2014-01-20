@@ -62,7 +62,7 @@ class TaskScheduler_wpPostJobStore extends TaskScheduler_JobStore {
 
 	public function fetch_job( $job_id ) {
 		$post = $this->get_post( $job_id );
-		if ( empty($post) || $post->post_type != self::POST_TYPE ) {
+		if ( empty($post) || $post->post_type != self::POST_TYPE || $post->post_status == 'trash' ) {
 			return $this->get_null_job();
 		}
 		return $this->make_job_from_post($post);
@@ -95,6 +95,64 @@ class TaskScheduler_wpPostJobStore extends TaskScheduler_JobStore {
 		}
 		return $job;
 	}
+
+	/**
+	 * @param string $hook
+	 * @param array $params
+	 *
+	 * @return string or NULL if not found
+	 */
+	public function find_job( $hook, $params = array() ) {
+		$params = wp_parse_args( $params, array(
+			'args' => NULL,
+			'status' => TaskScheduler_JobStore::STATUS_PENDING,
+			'group' => '',
+		));
+		/** @var wpdb $wpdb */
+		global $wpdb;
+		$query = "SELECT p.ID FROM {$wpdb->posts} p";
+		$args = array();
+		if ( !empty($params['group']) ) {
+			$query .= " INNER JOIN {$wpdb->term_relationships} tr ON tr.object_id=p.ID";
+			$query .= " INNER JOIN {$wpdb->term_taxonomy} tt ON tr.term_taxonomy_id=tt.term_taxonomy_id";
+			$query .= " INNER JOIN {$wpdb->terms} t ON tt.term_id=t.term_id AND t.slug=%s";
+			$args[] = $params['group'];
+		}
+		$query .= " WHERE p.post_title=%s";
+		$args[] = $hook;
+		if ( !is_null($params['args']) ) {
+			$query .= " AND p.post_content=%s";
+			$args[] = json_encode($params['args']);
+		}
+		if ( $params['status'] == TaskScheduler_JobStore::STATUS_COMPLETE ) {
+			$query .= " AND p.post_status='publish'";
+			$order = 'DESC'; // Find the most recent job that matches
+		} else {
+			$query .= " AND p.post_status='pending'";
+			$order = 'ASC'; // Find the next job that matches
+		}
+		$query .= " ORDER BY post_date $order LIMIT 1";
+
+		$query = $wpdb->prepare( $query, $args );
+
+		$id = $wpdb->get_var($query);
+		return $id;
+	}
+
+	/**
+	 * @param string $job_id
+	 *
+	 * @return void
+	 */
+	public function cancel_job( $job_id ) {
+		$post = get_post($job_id);
+		if ( empty($post) || ($post->post_type != self::POST_TYPE) ) {
+			throw new InvalidArgumentException(sprintf(__('Unidentified job %s', 'task-scheduler'), $job_id));
+		}
+		do_action( 'task_scheduler_canceled_job', $job_id );
+		wp_trash_post($job_id);
+	}
+
 
 	/**
 	 * @param int $max_jobs

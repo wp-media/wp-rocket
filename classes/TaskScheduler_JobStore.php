@@ -5,6 +5,9 @@
  * @codeCoverageIgnore
  */
 abstract class TaskScheduler_JobStore {
+	const STATUS_COMPLETE = 'complete';
+	const STATUS_PENDING = 'pending';
+
 	/** @var TaskScheduler_JobStore */
 	private static $store = NULL;
 
@@ -23,12 +26,31 @@ abstract class TaskScheduler_JobStore {
 	 */
 	abstract public function fetch_job( $job_id );
 
+	/**
+	 * @param string $hook
+	 * @param array $params
+	 * @return string ID of the next job matching the criteria
+	 */
+	abstract public function find_job( $hook, $params = array() );
+
+	/**
+	 * @param string $job_id
+	 * @return void
+	 */
+	abstract public function cancel_job( $job_id );
+
 
 	/**
 	 * @param int $max_jobs
 	 * @return TaskScheduler_JobClaim
 	 */
 	abstract public function stake_claim( $max_jobs );
+
+	/**
+	 * @param TaskScheduler_JobClaim $claim
+	 * @return mixed
+	 */
+	abstract public function release_claim ( TaskScheduler_JobClaim $claim );
 
 	/**
 	 * @param string $job_id
