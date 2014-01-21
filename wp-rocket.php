@@ -8,6 +8,9 @@ Author: WP Rocket
 Contributors: Jonathan Buttigieg, Julio Potier
 Author URI: http://www.wp-rocket.me
 
+Text Domain: rocket
+Domain Path: languages
+
 Copyright 2013-2014 WP Rocket
 */
 
