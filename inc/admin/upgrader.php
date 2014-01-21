@@ -72,10 +72,10 @@ function rocket_first_install()
 {
 
 	// Generate an random key for cache dir of user
-	$secret_cache_key = str_replace( '.', '', uniqid( '', true ) );
+	$secret_cache_key = create_rocket_uniqid();
 
 	// Generate an random key for minify md5 filename
-	$minify_key = uniqid();
+	$minify_key = create_rocket_uniqid();
 
 	// Create Option
 	add_option( WP_ROCKET_SLUG,
@@ -158,7 +158,7 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version )
 
 		// Add secret cache key
 		$options = get_option( WP_ROCKET_SLUG );
-		$options['secret_cache_key'] = str_replace( '.', '', uniqid( '', true ) );
+		$options['secret_cache_key'] = create_rocket_uniqid();
 		update_option( WP_ROCKET_SLUG, $options );
 
 		global $wp_filesystem;

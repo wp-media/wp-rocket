@@ -33,7 +33,9 @@ function rocket_admin_menu()
 function rocket_field( $args )
 {
 	if( !is_array( reset( $args ) ) )
+	{
 		$args = array( $args );
+	}
 
 	$full = $args;
 
@@ -47,7 +49,9 @@ function rocket_field( $args )
 		$readonly 		= $args['name'] == 'consumer_key' && rocket_valid_key() ? ' readonly="readonly"' : '';
 
 		if( !isset( $args['fieldset'] ) || $args['fieldset']=='start' )
+		{
 			echo '<fieldset class="fieldname-'.sanitize_html_class( $args['name'] ).' fieldtype-'.sanitize_html_class( $args['type'] ).'">';
+		}
 
 		switch( $args['type'] )
 		{
@@ -138,7 +142,9 @@ function rocket_field( $args )
 		}
 
 		if( !isset( $args['fieldset'] ) || $args['fieldset']=='end' )
+		{
 			echo '</fieldset>';
+		}
 	}
 	
 }
@@ -480,7 +486,7 @@ function rocket_display_options()
 			array( 
 				'type'			=> 'helper_warning',
 				'name'			=> 'minify',
-				'description'  => __( 'Concatenating files can cause display errors. In case of any errors we recommend you to turn off this option or watch the following video: <a href="http://www.youtube.com/embed/ziXSvZgxLk" class="fancybox">http://www.youtube.com/embed/ziXSvZgxLk</a>.', 'rocket' )
+				'description'  => sprintf( __( 'Concatenating files can cause display errors. In case of any errors we recommend you to turn off this option or watch the following video: <a href="%1$s" class="fancybox">%1$s</a>.', 'rocket' ), 'http://www.youtube.com/embed/ziXSvZgxLk' )
 			),
 
 		)
@@ -887,7 +893,8 @@ function rocket_display_options()
 			),
 		)
     );
-    if( !rocket_is_white_label() ) {
+    if( !rocket_is_white_label() )
+    {
 		add_settings_field(
 			'rocketeer',
 			__( 'Support', 'rocket' ),
@@ -915,8 +922,8 @@ function rocket_display_options()
 
 	<form action="options.php" method="post">
 		<?php settings_fields( 'wp_rocket' ); ?>
+		<input type="hidden" name="wp_rocket_settings[consumer_key]" value="<?php esc_attr_e( get_rocket_option( 'consumer_key' ) ); ?>" />
 		<input type="hidden" name="wp_rocket_settings[secret_cache_key]" value="<?php echo esc_attr( get_rocket_option( 'secret_cache_key' ) ) ;?>" />
-		<input type="hidden" name="wp_rocket_settings[minify_key]" value="<?php echo str_replace( '.', '', uniqid( '', true ) ); ?>" />
 		<?php submit_button(); ?>
 		<h2 class="nav-tab-wrapper hide-if-no-js">
 			<?php if( rocket_valid_key() ) { ?>
@@ -928,40 +935,50 @@ function rocket_display_options()
 				<?php } ?>
 				<a href="#tab_tools" class="nav-tab"><?php _e( 'Tools', 'rocket' ); ?></a>
 				<?php if( !rocket_is_white_label() ) { ?>
-					<a href="#tab_tutos" class="nav-tab"><?php _e( 'Tutorials (fr)', 'rocket' ); ?></a>
-					<a href="#tab_faq" class="nav-tab"><?php _e( 'FAQ (fr)', 'rocket' ); ?></a>
+					<a href="#tab_tutos" class="nav-tab"><?php _e( 'Tutorials', 'rocket' ); ?></a>
+					<a href="#tab_faq" class="nav-tab"><?php _e( 'FAQ', 'rocket' ); ?></a>
 					<a href="#tab_support" class="nav-tab file-error"><?php _e( 'Support', 'rocket' ); ?></a>
-				<?php } ?>
-				<input type="hidden" name="wp_rocket_settings[consumer_key]" value="<?php esc_attr_e( get_rocket_option( 'consumer_key' ) ); ?>" />
+			<?php } ?>
 			<?php }else{ ?>
 				<a href="#tab_apikey" class="nav-tab"><?php _e( 'API KEY', 'rocket' ); ?></a>
-			<?php } 
+				<a href="#tab_faq" class="nav-tab"><?php _e( 'FAQ', 'rocket' ); ?></a>
+				<a href="#tab_support" class="nav-tab file-error"><?php _e( 'Support', 'rocket' ); ?></a>
+			<?php }  ?>
+			<?php
 			do_action( 'rocket_tab', rocket_valid_key() );
 			?>
 		</h2>
 		<div id="rockettabs">
-			<?php if( !rocket_valid_key() ) { ?>
-				<div class="rkt-tab" id="tab_apikey"><?php do_settings_sections( 'apikey' ); ?></div>
-			<?php }else{ ?>
+			<?php if( rocket_valid_key() ) { ?>
 				<div class="rkt-tab" id="tab_basic"><?php do_settings_sections( 'basic' ); ?></div>
 				<div class="rkt-tab" id="tab_advanced"><?php do_settings_sections( 'advanced' ); ?></div>
 				<div class="rkt-tab" id="tab_cdn"><?php do_settings_sections( 'cdn' ); ?></div>
 				<?php $class_hidden = !defined( 'WP_RWL' ) ? ' hidden' : ''; ?>
 				<div class="rkt-tab<?php echo $class_hidden; ?>" id="tab_whitelabel"><?php do_settings_sections( 'white_label' ); ?></div>
 				<div class="rkt-tab" id="tab_tools"><?php do_settings_sections( 'tools' ); ?></div>
+				<?php if( !rocket_is_white_label() ) { ?>
 				<div class="rkt-tab rkt-tab-txt" id="tab_tutos">
 					<?php include( WP_ROCKET_ADMIN_PATH . 'tutorials.php' ); ?>
 				</div>
 				<div class="rkt-tab rkt-tab-txt" id="tab_faq">
 					<?php include( WP_ROCKET_ADMIN_PATH . 'faq.php' ); ?>
 				</div>
-				<?php if( !rocket_is_white_label() ) { ?>
 				<div class="rkt-tab rkt-tab-txt" id="tab_support">
 					<p><?php _e( 'If none of the FAQ answers resolves your problem, you can tell us your issue on our <a href="http://support.wp-rocket.me/" target="_blank">Support</a>. We will reply as soon as possible.', 'rocket');?></p>
 					<p><a href="http://support.wp-rocket.me/" class="button-primary" target="_blank"><?php _e( 'Go to Support', 'rocket' );?></a></p>
 				</div>
-				<?php } ?>
-			<?php } 
+			<?php } ?>
+			<?php }else{ ?>
+				<div class="rkt-tab" id="tab_apikey"><?php do_settings_sections( 'apikey' ); ?></div>
+				<div class="rkt-tab rkt-tab-txt" id="tab_faq">
+					<?php include( WP_ROCKET_ADMIN_PATH . 'faq.php' ); ?>
+				</div>
+				<div class="rkt-tab rkt-tab-txt" id="tab_support">
+					<p><?php _e( 'If none of the FAQ answers resolves your problem, you can tell us your issue on our <a href="http://support.wp-rocket.me/" target="_blank">Support</a>. We will reply as soon as possible.', 'rocket');?></p>
+					<p><a href="http://support.wp-rocket.me/" class="button-primary" target="_blank"><?php _e( 'Go to Support', 'rocket' );?></a></p>
+				</div>
+			<?php } ?>
+			<?php
 			do_action( 'rocket_tab_content', rocket_valid_key() );
 			?>
 		</div>
@@ -983,7 +1000,6 @@ add_action( 'admin_init', 'rocket_register_setting' );
 function rocket_register_setting()
 {
 	register_setting( 'wp_rocket', WP_ROCKET_SLUG, 'rocket_settings_callback' );
-
 }
 
 
@@ -1033,7 +1049,10 @@ function rocket_sanitize_js( $file )
 function rocket_clean_exclude_file( $file )
 {
 	if( !$file )
+	{
 		return false;
+	}
+
 	$path = parse_url( $file, PHP_URL_PATH );
     return $path;
 }
@@ -1050,7 +1069,8 @@ function rocket_clean_exclude_file( $file )
 function rocket_settings_callback( $inputs )
 {
 
-	if( isset( $_GET['action'] ) && $_GET['action'] == 'purge_cache' ) {
+	if( isset( $_GET['action'] ) && $_GET['action'] == 'purge_cache' )
+	{
 		return $inputs;
 	}
 
@@ -1068,14 +1088,11 @@ function rocket_settings_callback( $inputs )
 	 * Option : Prefetch DNS requests
 	 */
 
-	if( isset( $inputs['dns_prefetch'] ) ) {
-
+	if( isset( $inputs['dns_prefetch'] ) )
+	{
 		$inputs['dns_prefetch'] = array_unique( array_filter( array_map( 'esc_url', array_map( 'trim', explode( "\n", $inputs['dns_prefetch'] ) ) ) ) );
-
 	}else{
-
 		$inputs['dns_prefetch'] = array();
-
 	}
 
 
@@ -1083,14 +1100,11 @@ function rocket_settings_callback( $inputs )
 	 * Option : Empty the cache of the following pages when updating an article
 	 */
 
-	if( isset( $inputs['cache_purge_pages'] ) ) {
-
-		$inputs['cache_purge_pages'] = array_unique( array_filter( array_map( 'rocket_clean_exclude_file', array_map( 'esc_url', 					array_map( 'trim', explode( "\n", $inputs['cache_purge_pages'] ) ) ) ) ) );
-
+	if( isset( $inputs['cache_purge_pages'] ) )
+	{
+		$inputs['cache_purge_pages'] = array_unique( array_filter( array_map( 'rocket_clean_exclude_file', array_map( 'esc_url', array_map( 'trim', explode( "\n", $inputs['cache_purge_pages'] ) ) ) ) ) );
 	}else{
-
 		$inputs['cache_purge_pages'] = array();
-
 	}
 
 
@@ -1098,14 +1112,11 @@ function rocket_settings_callback( $inputs )
 	 * Option : Never cache the following pages
 	 */
 
-	if( isset( $inputs['cache_reject_uri'] ) ) {
-
-		$inputs['cache_reject_uri'] = array_unique( array_filter( array_map( 'rocket_clean_exclude_file', array_map( 'esc_url', 					array_map( 'trim', explode( "\n", $inputs['cache_reject_uri'] ) ) ) ) ) );
-
+	if( isset( $inputs['cache_reject_uri'] ) )
+	{
+		$inputs['cache_reject_uri'] = array_unique( array_filter( array_map( 'rocket_clean_exclude_file', array_map( 'esc_url', array_map( 'trim', explode( "\n", $inputs['cache_reject_uri'] ) ) ) ) ) );
 	}else{
-
 		$inputs['cache_reject_uri'] = array();
-
 	}
 
 
@@ -1113,14 +1124,11 @@ function rocket_settings_callback( $inputs )
 	 * Option : Don't cache pages that use the following cookies
 	 */
 
-	if( isset( $inputs['cache_reject_cookies'] ) ) {
-
+	if( isset( $inputs['cache_reject_cookies'] ) )
+	{
 		$inputs['cache_reject_cookies'] = array_unique( array_filter( array_map( 'sanitize_key', array_map( 'trim', explode( "\n", $inputs['cache_reject_cookies'] ) ) ) ) );
-
 	}else{
-
 		$inputs['cache_reject_cookies'] = array();
-
 	}
 
 
@@ -1128,14 +1136,11 @@ function rocket_settings_callback( $inputs )
 	 * Option : CSS files to exclude of the minification
 	 */
 
-	if( isset( $inputs['exclude_css'] ) ) {
-
+	if( isset( $inputs['exclude_css'] ) )
+	{
 		$inputs['exclude_css'] = array_unique( array_filter( array_map( 'rocket_sanitize_css', array_map( 'rocket_clean_exclude_file',	array_map( 'trim', explode( "\n", $inputs['exclude_css'] ) ) ) ) ) );
-
 	}else{
-
 		$inputs['exclude_css'] = array();
-
 	}
 
 
@@ -1143,14 +1148,11 @@ function rocket_settings_callback( $inputs )
 	 * Option : JS files to exclude of the minification
 	 */
 
-	if( isset( $inputs['exclude_js'] ) ) {
-
-		$inputs['exclude_js'] = array_unique( array_filter( array_map( 'rocket_sanitize_js', 		array_map( 'rocket_clean_exclude_file',	array_map( 'trim', explode( "\n", $inputs['exclude_js']) ) ) ) ) );
-
+	if( isset( $inputs['exclude_js'] ) )
+	{
+		$inputs['exclude_js'] = array_unique( array_filter( array_map( 'rocket_sanitize_js', array_map( 'rocket_clean_exclude_file',	array_map( 'trim', explode( "\n", $inputs['exclude_js']) ) ) ) ) );
 	}else{
-
 		$inputs['exclude_js'] = array();
-
 	}
 
 
@@ -1158,21 +1160,17 @@ function rocket_settings_callback( $inputs )
 	 * Option : JS files with deferred loading
 	 */
 
-	if( isset( $inputs['deferred_js_files'] ) ) {
-
+	if( isset( $inputs['deferred_js_files'] ) )
+	{
 		$inputs['deferred_js_files'] = array_filter( array_map( 'rocket_sanitize_js', array_unique( $inputs['deferred_js_files'] ) ) );
-
 	}else{
-
 		$inputs['deferred_js_files'] = array();
-
 	}
 
 
-	if( !$inputs['deferred_js_files'] ) {
-
+	if( !$inputs['deferred_js_files'] )
+	{
 		$inputs['deferred_js_wait'] = array();
-
 	}else{
 
 		for( $i=0; $i<=max(array_keys($inputs['deferred_js_files'])); $i++ )
@@ -1197,7 +1195,12 @@ function rocket_settings_callback( $inputs )
 	 * Option : WL
 	 */
 
-	$inputs['wl_description'] = (array)$inputs['wl_description'];
+	$inputs['wl_plugin_name'] = isset( $inputs['wl_plugin_name'] ) ? wp_strip_all_tags( $inputs['wl_plugin_name'] ) : get_rocket_option( 'wl_plugin_name' );
+	$inputs['wl_plugin_URI']  = isset( $inputs['wl_plugin_URI'] )  ? esc_url( $inputs['wl_plugin_URI'] )            : get_rocket_option( 'wl_plugin_URI' );
+	$inputs['wl_author']      = isset( $inputs['wl_author'] )      ? wp_strip_all_tags( $inputs['wl_author'] )      : get_rocket_option( 'wl_author' );
+	$inputs['wl_author_URI']  = isset( $inputs['wl_author_URI'] )  ? esc_url( $inputs['wl_author_URI'] )            : get_rocket_option( 'wl_author_URI' );
+	$inputs['wl_description'] = isset( $inputs['wl_description'] ) ? (array)$inputs['wl_description']               : get_rocket_option( 'wl_description' );
+	$inputs['wl_plugin_slug'] = sanitize_key( $inputs['wl_plugin_name'] );
 
 	/*
 	 * Option : CDN
@@ -1206,23 +1209,19 @@ function rocket_settings_callback( $inputs )
 	$inputs['cdn_cnames'] = isset( $inputs['cdn_cnames'] ) ? array_unique( array_filter( $inputs['cdn_cnames'] ) ) : array();
 
 
-	if( !$inputs['cdn_cnames'] ) {
-
+	if( !$inputs['cdn_cnames'] )
+	{
 		$inputs['cdn_zone'] = array();
-
 	}else{
 
 		for( $i=0; $i<=max( array_keys( $inputs['cdn_cnames'] ) ); $i++ )
 		{
 
-			if( !isset( $inputs['cdn_cnames'][$i] ) ) {
-
+			if( !isset( $inputs['cdn_cnames'][$i] ) )
+			{
 				unset( $inputs['cdn_zone'][$i] );
-
 			}else{
-
 				$inputs['cdn_zone'][$i] = isset( $inputs['cdn_zone'][$i] ) ? '1' : '0';
-
 			}
 
 		}
@@ -1242,17 +1241,17 @@ function rocket_settings_callback( $inputs )
 	{
 
 		$response = wp_remote_get( WP_ROCKET_WEB_VALID, array( 'timeout'=>30 ) );
-		if( !is_a($response, 'WP_Error') && strlen( $response['body'] )==32 ) {
+		if( !is_a($response, 'WP_Error') && strlen( $response['body'] )==32 )
+		{
 			$inputs['secret_key'] = $response['body'];
 		}
 
 	}else{
-
 		unset( $inputs['secret_key'] );
-
 	}
 
 	rocket_renew_box( 'file-error_logged_users' );
+
 	return $inputs;
 
 }
@@ -1331,6 +1330,12 @@ function rocket_pre_main_option( $newvalue, $oldvalue )
 			wp_clear_scheduled_hook( 'rocket_purge_time_event' );
 		}
 
+	}
+
+	// Regenerate the minify key if JS or CS files have been modified
+	if( ( $newvalue['exclude_css'] != $oldvalue['exclude_css'] ) || ( $newvalue['exclude_js']!=$oldvalue['exclude_js'] ) )
+	{
+		$newvalue['minify_key'] = create_rocket_uniqid();
 	}
 
 	return $newvalue;

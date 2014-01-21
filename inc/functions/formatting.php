@@ -169,7 +169,6 @@ function get_rocket_minify_files( $files, $force_pretty_url = false, $force_pret
 	$urls 		= array(0=>'');
 	$base_url 	= WP_ROCKET_URL . 'min/?f=';
 	$files  	= is_array( $files ) ? $files : (array)$files;
-
 	if( count( $files ) )
 	{
 
@@ -196,8 +195,8 @@ function get_rocket_minify_files( $files, $force_pretty_url = false, $force_pret
 			if( $force_pretty_url )
 			{
 
-				$pretty_url = !$force_pretty_name ? WP_ROCKET_MINIFY_CACHE_URL . md5( $url . get_rocket_option( 'minify_key' ) ) . '.' . $ext : WP_ROCKET_MINIFY_CACHE_URL . $force_pretty_name . '.' . $ext;
-				$pretty_url = apply_filters( 'rocket_minify_pretty_url', $pretty_url );
+				$pretty_url = !$force_pretty_name ? WP_ROCKET_MINIFY_CACHE_URL . md5( $url . get_rocket_option( 'minify_key', create_rocket_uniqid() ) ) . '.' . $ext : WP_ROCKET_MINIFY_CACHE_URL . $force_pretty_name . '.' . $ext;
+				$pretty_url = apply_filters( 'rocket_minify_pretty_url', $pretty_url, $force_pretty_name );
 
 				$url = rocket_fetch_and_cache_minify( $url, $pretty_url ) ? $pretty_url : $url;
 
@@ -233,7 +232,7 @@ function get_rocket_minify_files( $files, $force_pretty_url = false, $force_pret
 
 
 /*
- * Alias of get_rocket_minify_files() and print result
+ * Wrapper of get_rocket_minify_files() and echoes the result
  *
  * @since 2.1
  *

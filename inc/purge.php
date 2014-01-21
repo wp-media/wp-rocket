@@ -332,7 +332,7 @@ function rocket_purge_cache()
 
 				// Generate a new random key for minify cache file
 				$options = get_option( WP_ROCKET_SLUG );
-				$options['minify_key'] = str_replace( '.', '', uniqid( '', true ) );
+				$options['minify_key'] = create_rocket_uniqid();
 				update_option( WP_ROCKET_SLUG, $options );				
 
 				rocket_dismiss_box( 'rocket_warning_plugin_modification' );

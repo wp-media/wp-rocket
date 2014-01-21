@@ -1,5 +1,16 @@
 <?php defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' ); ?>
 
+<h2>Ma clé ne fonctionne pas</h2>
+<p>Vérifiez l'orthographe du site dans votre profil sur le site de WP Rocket.</p>
+<p>Si c'est correct, vérifiez alors que le site entré est bien le même que celui dans les options de Wordpress et non une redirection.</p>
+<p>Exemple avec le site example.com dans le paramétrage WordPress : S'il redirige sur le .fr, et que vous auriez entré le .fr dans votre compte WP Rocket, alors il y a un soucis.</p>
+<p>Les deux valeurs étant différentes, la clé n'est pas valide pour le .com mais pour le .fr</p>
+
+<h2>Pour combien de sites ma clé est-elle valide ?</h2>
+<p>Une clé valide 1 nom de domaine. Si vous avez example.com, cela fait 1 clé.</p>
+<p>Si vous avez example.com, ww.example.com, dev.example.com, demo.example.com, example.com/dev/, example.com/demo/ tous ces sites dépendent de la même clé WP Rocket.</p>
+<p>Il vous faudra donc une clé supplémentaire pour chaque autre nom de domaine différent de example.com</p>
+
 <h2>Que fait exactement WP Rocket ? </h2>
 <p>WP Rocket est un plugin de cache complet qui embarque de nombreuses fonctionnalités :</p>
 <ul>
@@ -8,15 +19,15 @@
 	<li>Réduction du nombres de requêtes HTTP pour réduire le temps de chargement</li>
 	<li>Diminution de la bande passante grâce à la compression GZIP</li>
 	<li>Gestion des headers (expire, etags, etc...)</li>
-	<li>Minification et concaténations des JS et CSS</li>
+	<li>Minification et concaténation des fichiers JS et CSS</li>
 	<li>Chargement différé des images (LazyLoad)</li>
 	<li>Chargement différé des fichiers JavaScript</li>
 	<li>Optimisation des images</li>
 </ul>
 
-<h2>J'ai activé aucune des options de base, est-ce que WP Rocket fonctionne ?</h2>
+<h2>Je n'ai activé aucune des options de base, est-ce que WP Rocket fonctionne ?</h2>
 <p>Oui.</p>
-<p>Les options de base sont des optimisations complémentaires que l’on peut qualifié de bonus. Ces options ne sont pas indispensables pour améliorer le temps de chargement de votre site Internet.</p>
+<p>Les options de base sont des optimisations complémentaires que l’on peut qualifier de bonus. Ces options ne sont pas indispensables pour améliorer le temps de chargement de votre site Internet.</p>
 <p>Quelque soit votre configuration de WP Rocket, les fonctionnalités suivantes seront toujours actives :</p>
 <ul>
 	<li>Mise en cache de l'ensemble des pages pour affichage rapide</li>
@@ -32,9 +43,9 @@
 <p>Pas de panique, WP Rocket continuera de fonctionner sans problème. Vous recevrez un mail vous indiquant que votre licence va bientôt arriver à expiration. Vous trouverez un lien de renouvellement qui sera actif même après l’expiration.</p>
 
 <h2>Je souhaite modifier l'URL de mon site associé à ma licence, que dois-je faire ?</h2>
-<p>Vous devez nous contacter par mail (<a href="mailto:contact@wp-rocket.me">contact@wp-rocket.me</a>) en nous indiquant la raison de votre modification. La modification sera réalisée par l’équipe de WP Rocket.</p>
+<p>Vous devez nous contacter par mail (<a href="mailto:contact@wp-rocket.me">contact@wp-rocket.me</a>) en nous indiquant la raison de votre modification. Si acceptée, la modification sera réalisée par l’équipe de WP Rocket.</p>
 
-<h2>Quels outils dois-je utilisé pour mesurer les performances de mon site ?</h2>
+<h2>Quels outils dois-je utiliser pour mesurer les performances de mon site ?</h2>
 <p>Vous pouvez mesurer les performances de votre site Internet à l’aide des outils suivants : </p>
 <ul>
 	<li><a href="http://tools.pingdom.com/fpt/" target="_blank">Pingdom Tools</a></li>
@@ -42,15 +53,15 @@
 	<li><a href="http://www.webpagetest.org/" target="_blank">Webpagetest</a></li>
 </ul>
 
-<p>Ces outils donnent 2 indications :</p>
+<p>Ces 2 derniers donnent deux indications :</p>
 <ul>
 	<li>une note globale des bonnes pratiques à appliquer</li>
 	<li>un temps de chargement</li>
 </ul>
 
-<p>Ces données sont indicatives et ne reflètent pas forcément  la vitesse d’affichage réelle de votre site Internet.</p>
+<p>Ces données sont indicatives et ne reflètent pas forcément la vitesse d’affichage réelle de votre site Internet.</p>
 
-<p>Pour réaliser des tests de temps de chargement plus proche de la réalité,, nous conseillons d’utiliser <a href="http://tools.pingdom.com/fpt/" target="_blank">Pingdom Tools</a> avec l’option <code>Amsterdam</code> comme serveur.</p>
+<p>Pour réaliser des tests de temps de chargement plus proche de la réalité nous conseillons d’utiliser <a href="http://tools.pingdom.com/fpt/" target="_blank">Pingdom Tools</a> avec l’option <code>Amsterdam</code> comme serveur.</p>
 
 <h2>WP Rocket fonctionne-t-il avec les permaliens par défaut ?</h2>
 <p>Non.</p>
@@ -60,16 +71,16 @@
 <h2>Avec quels serveurs Web WP Rocket est-il compatible ?</h2>
 <p>WP Rocket est compatible avec les serveurs Web <strong>Apache</strong>. Pour le moment, WP Rocket n’est donc pas compatible avec les serveurs Web NGINX et Litepseed.</p>
 
-<h2>Le rapport PageSpeed ou Yslow m’indique que le contenu n’est pas gzipé et/ou n’a pas d’expiration, que dois-je faire ?</h2>
+<h2>Le rapport PageSpeed ou YSlow m’indique que le contenu n’est pas gzipé et/ou n’a pas d’expiration, que dois-je faire ?</h2>
 
-<p>WP Rocket ajoute automatiquement les bonnes règles d’expirations et de gzip des fichiers statiques. Si elles ne sont pas appliquées, il est possible qu’un plugin rentre en conflit (exemple: <a href="http://wordpress.org/plugins/wp-retina-2x/" target="_blank">WP Retina 2x</a>). Essayez de désactiver temporairement tous les plugins, excepté WP Rocket, et de refaire le test.</p>
+<p>WP Rocket ajoute automatiquement les bonnes règles d’expirations et de gzip des fichiers statiques. Si elles ne sont pas appliquées, il est possible qu’un plugin entre en conflit (exemple: <a href="http://wordpress.org/plugins/wp-retina-2x/" target="_blank">WP Retina 2x</a>). Essayez de désactiver temporairement tous les plugins, excepté WP Rocket, et de refaire le test.</p>
 
 <p>Si cela n’est pas concluant, cela signifie que le <code>mod_expire</code> et/ou <code>mod_deflate</code> n’est pas activé sur votre serveur.</p>
 
 <h2>WP Rocket est-il compatible avec les autres plugins de cache, tels que WP Super Cache ou W3 Total Cache ?</h2>
 <p>Non.</p>
 
-<p>Il est impératif de <strong>supprimer tous les autres plugins d'optimisation</strong> (cache, minification, LazyLoad) avant l’activation de WP Rocket.</p>
+<p>Il est impératif de <strong>supprimer tous les autres plugins d'optimisation</strong> (cache, minification, LazyLoad) AVANT l’activation de WP Rocket.</p>
 
 <h2>WP Rocket est-il compatible avec WP Touch, WordPress Mobile Pack et WP Mobile Detector ?</h2>
 <p>Oui.</p>

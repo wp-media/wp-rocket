@@ -82,5 +82,18 @@ function rocket_is_white_label()
 	{
 		$options .= !is_array( get_rocket_option( $value ) ) ? get_rocket_option( $value ) : reset( ( get_rocket_option( $value ) ) );
 	}
-	return 'a509cac94e0cd8238b250074fe802b90' != md5( $options );
+	return __( 'a509cac94e0cd8238b250074fe802b90', 'wprocket' ) != md5( $options );
+}
+
+
+/**
+ * Create a uniid for some Rocket options and functions
+ *
+ * @since 2.1
+ *
+ */
+
+function create_rocket_uniqid()
+{
+	return str_replace( '.', '', uniqid( '', true ) );
 }

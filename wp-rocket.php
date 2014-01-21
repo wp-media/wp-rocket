@@ -8,7 +8,7 @@ Author: WP Rocket
 Contributors: Jonathan Buttigieg, Julio Potier
 Author URI: http://www.wp-rocket.me
 
-Copyright 2013 WP Rocket
+Copyright 2013-2014 WP Rocket
 */
 
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );

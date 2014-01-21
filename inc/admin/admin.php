@@ -275,7 +275,7 @@ function rocket_reset_white_label_values( $hack_post )
 		$options['wl_plugin_name']        = 'WP Rocket';
 		$options['wl_plugin_slug']        = 'wprocket';
 		$options['wl_plugin_URI']         = 'http://www.wp-rocket.me';
-		$options['wl_description']        = array( 'The best WordPress performance plugin.' ); 
+		$options['wl_description']        = array( __( 'The best WordPress performance plugin.', 'rocket' ) ); // !!! but this !!!
 		$options['wl_author']             = 'WP Rocket';
 		$options['wl_author_URI']         = 'http://www.wp-rocket.me';
 		if( $hack_post )
@@ -316,7 +316,7 @@ add_filter( 'all_plugins', 'rocket_white_label' );
 function rocket_white_label( $plugins )
 {
 
-	// We change the plugin header
+	// We change the plugin's header
 	$plugins['wp-rocket/wp-rocket.php'] = array(
 	      'Name' => get_rocket_option( 'wl_plugin_name' ),
 	      'PluginURI' => get_rocket_option( 'wl_plugin_URI' ),
@@ -325,10 +325,12 @@ function rocket_white_label( $plugins )
 	      'Author' => get_rocket_option( 'wl_author' ),
 	      'AuthorURI' => get_rocket_option( 'wl_author_URI' ),
 	      'TextDomain' => $plugins['wp-rocket/wp-rocket.php']['TextDomain'],
+	      'Domain Path' => $plugins['wp-rocket/wp-rocket.php']['Domain Path'],
 	      );
 
 	// if white label, remove our names from contributors
-	if( rocket_is_white_label() ) {
+	if( rocket_is_white_label() )
+	{
 		remove_filter( 'plugin_row_meta', 'rocket_plugin_row_meta', 10, 2 );
 	}
 
@@ -344,7 +346,8 @@ function rocket_white_label( $plugins )
  */
 
 add_action( 'admin_init', '__rocket_check_no_empty_name', 11 );
-function __rocket_check_no_empty_name() {
+function __rocket_check_no_empty_name()
+{
 	$wl_plugin_name = trim( get_rocket_option( 'wl_plugin_name' ) );
 	if( empty( $wl_plugin_name ) )
 	{
@@ -364,6 +367,7 @@ function __rocket_check_no_empty_name() {
  */
 
 add_filter( 'rocket_pointer_whitelabel', '__return_rocket_is_white_label' );
-function __return_rocket_is_white_label() {
+function __return_rocket_is_white_label() 
+{
 	return defined( 'WP_RWL' );
 }
