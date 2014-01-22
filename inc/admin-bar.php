@@ -108,7 +108,7 @@ function rocket_admin_bar( $wp_admin_bar )
 				$wp_admin_bar->add_menu(array(
 					'parent' => 'wp-rocket',
 					'id' 	 => 'purge-post',
-					'title'  => sprintf( __( 'Purge this post', 'rocket' ), $pobject->labels->singular_name ),
+					'title'  => sprintf( __( 'Clear this post', 'rocket' ), $pobject->labels->singular_name ),
 					'href' 	 => wp_nonce_url( admin_url( 'admin-post.php?action='.$action.'&type=post-'.$post->ID ), $action.'_post-'.$post->ID ),
 				));
 

@@ -131,8 +131,8 @@ function get_rocket_all_active_langs_uri()
 /**
  * Get folder paths to preserve languages ​​when purging a domain
  * This function is required when the domains of languages (​​other than the default) are managed by subfolders
- * By default, when you purge the cache of the french website with the domain example.com, all subdirectory like /en/ and /de/ are deleted.
- * But, if you have a domain for your english and german websites with example.com/en/ and example.com/de/, you want to keep the /en/ and /de/ directory when the french domain is purged.
+ * By default, when you clear the cache of the french website with the domain example.com, all subdirectory like /en/ and /de/ are deleted.
+ * But, if you have a domain for your english and german websites with example.com/en/ and example.com/de/, you want to keep the /en/ and /de/ directory when the french domain is cleared.
  *
  * @since 2.0
  *

@@ -16,7 +16,7 @@ function rocket_purge_cron_schedule( $schedules )
 
 	$schedules['rocket_purge'] = array(
 		'interval'	=> get_rocket_purge_cron_interval(),
-		'display' 	=> sprintf( __( '%s purge', 'rocket' ), WP_ROCKET_PLUGIN_NAME )
+		'display' 	=> sprintf( __( '%s clear', 'rocket' ), WP_ROCKET_PLUGIN_NAME )
 	);
 
 	return $schedules;

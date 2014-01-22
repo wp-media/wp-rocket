@@ -4,13 +4,28 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 2.1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/wp-rocket\n"
-"POT-Creation-Date: 2014-01-21 18:30:18+00:00\n"
+"POT-Creation-Date: 2014-01-22 13:09:07+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2014-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: config/localhost/wp-rocket.php:2 inc/admin/admin.php:2 inc/admin/faq.php:1
+#: inc/admin/options.php:2 inc/admin/pointers.php:2 inc/admin/rocketeer.php:2
+#: inc/admin/tutorials.php:1 inc/admin/updater.php:2 inc/admin/upgrader.php:2
+#: inc/admin-bar.php:2 inc/cron.php:2 inc/deprecated.php:2 inc/front/cdn.php:2
+#: inc/front/cookie.php:2 inc/front/deferred-js.php:2
+#: inc/front/dns-prefetch.php:2 inc/front/enqueue.php:2
+#: inc/front/htaccess.php:2 inc/front/images.php:2 inc/front/lazyload.php:2
+#: inc/front/minify.php:2 inc/front/process.php:2 inc/functions/admin.php:2
+#: inc/functions/bots.php:2 inc/functions/files.php:2
+#: inc/functions/formatting.php:2 inc/functions/options.php:2
+#: inc/functions/plugins.php:2 inc/functions/posts.php:2 inc/headers.php:2
+#: inc/purge.php:2 wp-rocket.php:17
+msgid "Cheatin&#8217; uh?"
+msgstr ""
 
 #: inc/admin/admin.php:15
 msgid "Settings"
@@ -25,11 +40,13 @@ msgid "By %s"
 msgstr ""
 
 #: inc/admin/admin.php:64
-msgid "Purge this cache"
+msgid "Clear this cache"
 msgstr ""
 
-#: inc/admin/admin.php:83
-msgid "Purge cache"
+#: inc/admin/admin.php:83 inc/admin/notices.php:100 inc/admin/options.php:864
+#: inc/admin/options.php:870 inc/admin-bar.php:36 inc/admin-bar.php:64
+#: inc/admin-bar.php:95
+msgid "Clear cache"
 msgstr ""
 
 #. #-#-#-#-#  rocket.pot (WP Rocket 2.1)  #-#-#-#-#
@@ -77,12 +94,6 @@ msgstr ""
 msgid ""
 "<b>%s</b>: One or more extensions have been enabled or disabled, do not "
 "forget to clear the cache if necessary."
-msgstr ""
-
-#: inc/admin/notices.php:100 inc/admin/options.php:864
-#: inc/admin/options.php:870 inc/admin-bar.php:36 inc/admin-bar.php:64
-#: inc/admin-bar.php:95
-msgid "Clear cache"
 msgstr ""
 
 #: inc/admin/notices.php:168
@@ -312,7 +323,7 @@ msgid "Enable caching for pages with SSL protocol (<code>https://</code>)."
 msgstr ""
 
 #: inc/admin/options.php:547 inc/admin/options.php:555
-msgid "Purge delay"
+msgid "Clear cache delay"
 msgstr ""
 
 #: inc/admin/options.php:561
@@ -335,6 +346,18 @@ msgstr ""
 msgid "day(s)"
 msgstr ""
 
+#: inc/admin/options.php:573
+msgid ""
+"By default, clear cache time is 12 hours, this means that once created, the "
+"cache files are automatically removed after 12 hours before being recreated."
+msgstr ""
+
+#: inc/admin/options.php:574
+msgid ""
+"This can be useful if you display your latest tweets or rss feeds in your "
+"sidebar, for example."
+msgstr ""
+
 #: inc/admin/options.php:579
 msgid "Specify 0 for unlimited lifetime."
 msgstr ""
@@ -349,6 +372,12 @@ msgstr ""
 
 #: inc/admin/options.php:596
 msgid "Prefetch DNS requests"
+msgstr ""
+
+#: inc/admin/options.php:601
+msgid ""
+"DNS prefetching is a way for browsers to anticipate the DNS resolution of "
+"external domains from your site."
 msgstr ""
 
 #: inc/admin/options.php:607
@@ -471,7 +500,7 @@ msgid "Tools"
 msgstr ""
 
 #: inc/admin/options.php:875
-msgid "Purge the cache for the whole site."
+msgid "Clear the cache for the whole site."
 msgstr ""
 
 #: inc/admin/options.php:881 inc/admin/options.php:887
@@ -568,7 +597,7 @@ msgid "All languages"
 msgstr ""
 
 #: inc/admin-bar.php:111
-msgid "Purge this post"
+msgid "Clear this post"
 msgstr ""
 
 #: inc/admin-bar.php:125
@@ -576,7 +605,7 @@ msgid "Purge this URL"
 msgstr ""
 
 #: inc/cron.php:19
-msgid "%s purge"
+msgid "%s clear"
 msgstr ""
 
 #: inc/functions/admin.php:85

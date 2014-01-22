@@ -544,7 +544,7 @@ function rocket_display_options()
 	);
 	add_settings_field(
 		'rocket_purge',
-		__( 'Purge delay', 'rocket' ),
+		__( 'Clear cache delay', 'rocket' ),
 		'rocket_field',
 		'basic',
 		'rocket_display_main_options',
@@ -552,7 +552,7 @@ function rocket_display_options()
 			array(
 				'type'         => 'number',
 				'label_for'    => 'purge_cron_interval',
-				'label_screen' => __( 'Purge delay', 'rocket' ),
+				'label_screen' => __( 'Clear cache delay', 'rocket' ),
 				'fieldset'     => 'start'
 			),
 			array(
@@ -570,8 +570,8 @@ function rocket_display_options()
 			array( 
 				'type'         => 'helper_description',
 				'name'         => 'purge',
-				'description'  => __( 'By default, purge time is 12 hours, this means that once created, the cache files are automatically removed after 12 hours before being recreated.<br/>'.
-									  'This can be useful if you display your latest tweets or rss feeds in your sidebar, for example.', 'rocket' ),
+				'description'  => __( 'By default, clear cache time is 12 hours, this means that once created, the cache files are automatically removed after 12 hours before being recreated.', 'rocket' ). '<br/>' .
+									  __('This can be useful if you display your latest tweets or rss feeds in your sidebar, for example.', 'rocket' ),
 				),
 			array( 
 				'type'         => 'helper_help',
@@ -598,8 +598,8 @@ function rocket_display_options()
 			array( 
 				'type'         => 'helper_description',
 				'name'         => 'dns_prefetch',
-				'description'  => __( 'DNS prefetching is a way for browsers to anticipate the DNS resolution of external domains from your site.<br/>'.
-									  'This mechanism reduces the latency of some external files.', 'rocket' ),
+				'description'  => __( 'DNS prefetching is a way for browsers to anticipate the DNS resolution of external domains from your site.', 'rocket' . '<br/>' .
+									  __( 'This mechanism reduces the latency of some external files.', 'rocket' ) ),
 				),
 			array( 
 				'type'         => 'helper_help',
@@ -872,7 +872,7 @@ function rocket_display_options()
 			),
 			'helper_description'=>array( 
 				'name'         => 'purge_all',
-				'description'  => __( 'Purge the cache for the whole site.', 'rocket' )
+				'description'  => __( 'Clear the cache for the whole site.', 'rocket' )
 			),
 		)
 	);

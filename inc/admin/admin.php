@@ -61,7 +61,7 @@ function rocket_row_actions( $actions, $post )
 {
 	if( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
 		$url = wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=post-'.$post->ID ), 'purge_cache_post-'.$post->ID );
-	    $actions['rocket_purge'] = '<a href="'.$url.'">' . __ ( 'Purge this cache', 'rocket' ) . '</a>';
+	    $actions['rocket_purge'] = '<a href="'.$url.'">' . __ ( 'Clear this cache', 'rocket' ) . '</a>';
 	}
     return $actions;
 }
@@ -80,7 +80,7 @@ function rocket_post_submitbox_start()
 {
 	global $post;
 	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) )
-		echo '<div id="purge-action"><a class="button-secondary" href="'.wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=post-' . $post->ID ), 'purge_cache_post-' . $post->ID ).'">'.__( 'Purge cache', 'rocket' ).'</a></div>';
+		echo '<div id="purge-action"><a class="button-secondary" href="'.wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=post-' . $post->ID ), 'purge_cache_post-' . $post->ID ).'">'.__( 'Clear cache', 'rocket' ).'</a></div>';
 }
 
 

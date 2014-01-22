@@ -107,7 +107,7 @@
 
 <h2>À quel intervalle le cache est mis à jour ?</h2>
 <p>Le cache est automatiquement rafraîchit à chaque mise à jour d'un contenu (ajout/édition/suppression d’un article, publication d’un commentaire, etc...).</p>
-<p>Dans les options de base, vous pouvez aussi spécifier un délai de purge automatique du cache.</p>
+<p>Dans les options de base, vous pouvez aussi spécifier un délai de nettoyage automatique du cache.</p>
 
 <h2>Comment ne pas mettre en cache une page particulière ?</h2>
 <p>Dans les options avancées, il est possible de spécifier des URLs à ne pas mettre en cache. Pour cela, il faut ajouter dans le champ de saisie <code>Ne jamais mettre en cache les pages suivantes</code> les URLs à exclure.</p>
