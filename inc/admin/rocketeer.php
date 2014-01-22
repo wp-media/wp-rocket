@@ -1,5 +1,5 @@
 <?php
-defined( 'WP_ADMIN' ) or die( 'Cheatin\' uh?' );
+defined( 'WP_ADMIN' ) or die( __( 'Cheatin&#8217; uh?', 'rocket' ) );
 @set_time_limit( 0 );
 
 function rocket_obf( $data )

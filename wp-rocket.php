@@ -14,7 +14,7 @@ Domain Path: languages
 Copyright 2013-2014 WP Rocket
 */
 
-defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
+defined( 'ABSPATH' ) or die( __( 'Cheatin&#8217; uh?', 'rocket' ) );
 
 // Rocket defines
 define( 'WP_ROCKET_VERSION'             , '2.1');

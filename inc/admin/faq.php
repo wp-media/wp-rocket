@@ -1,4 +1,4 @@
-<?php defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' ); ?>
+<?php defined( 'ABSPATH' ) or	die( __( 'Cheatin&#8217; uh?', 'rocket' ) ); ?>
 
 <h2>Ma clé ne fonctionne pas</h2>
 <p>Vérifiez l'orthographe du site dans votre profil sur le site de WP Rocket.</p>
