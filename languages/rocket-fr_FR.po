@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/wp-rocket\n"
-"POT-Creation-Date: 2014-01-22 13:09:07+00:00\n"
-"PO-Revision-Date: 2014-01-22 15:13+0100\n"
+"POT-Creation-Date: 2014-01-23 09:05:45+00:00\n"
+"PO-Revision-Date: 2014-01-23 10:22+0100\n"
 "Last-Translator: fxbenard | FxB <fx@fxbenard.com>\n"
 "Language-Team:  <contact@wp-rocket.me>\n"
 "Language: fr\n"
@@ -29,7 +29,7 @@ msgstr ""
 #: inc/functions/plugins.php:2 inc/functions/posts.php:2 inc/headers.php:2
 #: inc/purge.php:2 wp-rocket.php:17
 msgid "Cheatin&#8217; uh?"
-msgstr "Alors on triche ?"
+msgstr "Alors on triche&nbsp;?"
 
 #: inc/admin/admin.php:15
 msgid "Settings"
@@ -106,16 +106,16 @@ msgid ""
 "<b>%s</b>: One or more extensions have been enabled or disabled, do not "
 "forget to clear the cache if necessary."
 msgstr ""
-"<b>%s</b> : Une ou plusieurs extensions ont été activées ou désactivées, "
-"n'oubliez pas de vider le cache si nécessaire."
+"<b>%s</b>&nbsp;: Une ou plusieurs extensions ont été activées ou "
+"désactivées, n'oubliez pas de vider le cache si nécessaire."
 
 #: inc/admin/notices.php:168
 msgid ""
 "<b>%s</b>: The following plugins are not compatible with this plugin and may "
 "cause unexpected results:"
 msgstr ""
-"<b>%s</b> : Les extensions suivantes ne sont pas compatibles avec WP Rocket "
-"et vont générer des résultats inattendus :"
+"<b>%s</b>&nbsp;: Les extensions suivantes ne sont pas compatibles avec WP "
+"Rocket et vont générer des résultats inattendus&nbsp;:"
 
 #: inc/admin/notices.php:176
 msgid "Desactivate"
@@ -126,18 +126,18 @@ msgid ""
 "<b>%s</b>: Connected users don't have the cached version of the website. We "
 "recommend you, to browse your website disconnected."
 msgstr ""
-"<b>%s</b> : Les utilisateurs connectés ne disposent pas de la version mise "
-"en cache du site. Nous vous recommandons, de parcourir votre site en étant "
-"déconnecté."
+"<b>%s</b>&nbsp;: Les utilisateurs connectés ne disposent pas de la version "
+"mise en cache du site. Nous vous recommandons, de parcourir votre site en "
+"étant déconnecté."
 
 #: inc/admin/notices.php:244
 msgid ""
 "<b>%s</b>: A custom permalink structure is required to work properly. Please "
 "go to <a href=\"%s\">Permalink</a> to configure them."
 msgstr ""
-"<b>%s</b> :Une structure de permalien personnalisée est requise pour que "
-"tout fonctionne correctement. S'il vous plaît, rendez-vous sur la page des "
-"<a href=\"%s\">Permaliens</a> pour les configurer."
+"<b>%s</b>&nbsp;: Une structure de permalien personnalisée est requise pour "
+"que tout fonctionne correctement. S'il vous plaît, rendez-vous sur la page "
+"des <a href=\"%s\">Permaliens</a> pour les configurer."
 
 #: inc/admin/notices.php:331
 msgid ""
@@ -226,7 +226,7 @@ msgstr "La clé est valide"
 
 #: inc/admin/options.php:136 inc/admin/options.php:369
 msgid "Warning: "
-msgstr "Attention : "
+msgstr "Attention&nbsp;:&nbsp; "
 
 #: inc/admin/options.php:165
 msgid "<b>JS</b> files with Deferred Loading JavaScript"
@@ -241,7 +241,7 @@ msgstr "Déplacer"
 
 #: inc/admin/options.php:190 inc/admin/options.php:211
 msgid "Wait until this file is loaded ?"
-msgstr "Attendre le chargement de ce fichier ?"
+msgstr "Attendre le chargement de ce fichier&nbsp;?"
 
 #: inc/admin/options.php:192 inc/admin/options.php:233
 #: inc/admin/options.php:285 inc/admin/options.php:331
@@ -250,7 +250,7 @@ msgstr "Supprimer"
 
 #: inc/admin/options.php:231
 msgid "Wait until this file is loaded?"
-msgstr "Attendre le chargement de ce fichier ?"
+msgstr "Attendre le chargement de ce fichier&nbsp;?"
 
 #: inc/admin/options.php:238
 msgid "Add an URL"
@@ -286,7 +286,8 @@ msgstr "Clé API"
 #: inc/admin/options.php:400
 msgid "API Key:<br/><span class=\"description\">(Licence validation)</span>"
 msgstr ""
-"Clé API :<br /><span class=\"description\">(Validation de WP Rocket)</span>"
+"Clé API&nbsp;:<br /><span class=\"description\">(Validation de WP Rocket)</"
+"span>"
 
 #: inc/admin/options.php:408
 msgid "API Key"
@@ -308,13 +309,28 @@ msgstr "Chargement différé des images : "
 msgid "Enable Lazy loading images."
 msgstr "Activer le LazyLoad"
 
+#: inc/admin/options.php:436
+msgid ""
+"LazyLoad displays images on a page only when they are visible to the user."
+msgstr ""
+"Le LazyLoad (ou chargement différé des images) consiste à afficher les "
+"images d'une page uniquement quand elles sont visibles par l'internaute."
+
+#: inc/admin/options.php:437
+msgid ""
+"This reduces the number of HTTP requests mechanism and improves the loading "
+"time."
+msgstr ""
+"Ce mécanisme réduit le nombre de requêtes HTTP et améliore le temps de "
+"chargement des pages."
+
 #: inc/admin/options.php:443
 msgid ""
 "Files optimisation:<br/><span class=\"description\">(Minification & "
 "Concatenation)</span>"
 msgstr ""
-"Optimisation des fichiers : <br/> <span class=\"description\">(Minification "
-"& Concaténation)</span>"
+"Optimisation des fichiers&nbsp;: <br/> <span class=\"description"
+"\">(Minification & Concaténation)</span>"
 
 #: inc/admin/options.php:452
 msgid "HTML Files minification"
@@ -340,6 +356,32 @@ msgstr "Minification des fichiers JS"
 msgid "JS pretty URL"
 msgstr "JS pretty URL"
 
+#: inc/admin/options.php:481
+msgid ""
+"Minification removes any space and comments present in the CSS and "
+"JavaScript files."
+msgstr ""
+"La minification supprime toutes les espaces et tous les commentaires "
+"présents dans les fichiers CSS et JavaScript."
+
+#: inc/admin/options.php:482
+msgid ""
+"This mechanism reduces the weight of each file and allows a faster reading "
+"of browsers and search engines."
+msgstr ""
+"Ce mécanisme reduit le poids de chaque fichier et permet ainsi une lecture "
+"plus rapide par les navigateurs et les moteurs de recherche."
+
+#: inc/admin/options.php:483
+msgid "Concatenation combines all CSS and JavaScript files."
+msgstr "La concaténation combine tous les fichiers CSS et JavaScript."
+
+#: inc/admin/options.php:484
+msgid "This reduces the number of HTTP requests and improves the loading time."
+msgstr ""
+"Ce mécanisme réduit le nombre de requêtes HTTP et améliore le temps de "
+"chargement des pages."
+
 #: inc/admin/options.php:489
 msgid ""
 "Concatenating files can cause display errors. In case of any errors we "
@@ -352,7 +394,7 @@ msgstr ""
 
 #: inc/admin/options.php:502 inc/admin/options.php:511
 msgid "Mobile cache:"
-msgstr "Cache mobile :"
+msgstr "Cache mobile&nbsp;:"
 
 #: inc/admin/options.php:509
 msgid "Enable caching for mobile devices."
@@ -367,7 +409,7 @@ msgstr ""
 
 #: inc/admin/options.php:522 inc/admin/options.php:529
 msgid "Logged in user cache:"
-msgstr "Cache utilisateur :"
+msgstr "Cache utilisateur&nbsp;:"
 
 #: inc/admin/options.php:527
 msgid "Enable caching for logged in users."
@@ -375,7 +417,7 @@ msgstr "Activer la mise en cache pour les utilisateurs connectés."
 
 #: inc/admin/options.php:534 inc/admin/options.php:542
 msgid "SSL cache:"
-msgstr "Cache SSL :"
+msgstr "Cache SSL&nbsp;:"
 
 #: inc/admin/options.php:540
 msgid "Enable caching for pages with SSL protocol (<code>https://</code>)."
@@ -434,7 +476,7 @@ msgstr "Options avancées"
 
 #: inc/admin/options.php:588
 msgid "Prefetch DNS requests:"
-msgstr "Pré-chargement des requêtes DNS :"
+msgstr "Pré-chargement des requêtes DNS&nbsp;:"
 
 #: inc/admin/options.php:596
 msgid "Prefetch DNS requests"
@@ -445,17 +487,21 @@ msgid ""
 "DNS prefetching is a way for browsers to anticipate the DNS resolution of "
 "external domains from your site."
 msgstr ""
+"Le préchargement de DNS est une façon pour les navigateurs d'anticiper la "
+"résolution des DNS des domaines externes depuis votre site."
+
+#: inc/admin/options.php:602
+msgid "This mechanism reduces the latency of some external files."
+msgstr "Ce mécanisme réduit le temps de latence de certains fichiers externes."
 
 #: inc/admin/options.php:607
 msgid ""
 "To learn more about this option and how to use it correctly, we advise you "
-"to watch the following video: <a href=\"http://www.youtube.com/embed/"
-"ElJCtUidLwc\" class=\"fancybox\">http://www.youtube.com/embed/ElJCtUidLwc</a>"
+"to watch the following video: <a href=\"%1$s\" class=\"fancybox\">%1$s</a>."
 msgstr ""
 "Pour en savoir plus sur cette option et comment l'utiliser correctement, "
-"nous vous conseillons de regarder la vidéo suivante : <a href=\"http://www."
-"youtube.com/embed/ElJCtUidLwc\" class=\"fancybox\">http://www.youtube.com/"
-"embed/ElJCtUidLwc</a>"
+"nous vous conseillons de regarder la vidéo suivante : <a href=\"%1$s\" class="
+"\"fancybox\">%1$s</a>."
 
 #: inc/admin/options.php:612
 msgid ""
@@ -468,7 +514,19 @@ msgstr ""
 #: inc/admin/options.php:618 inc/admin/options.php:626
 msgid "Empty the cache of the following pages when updating a post:"
 msgstr ""
-"Vider le cache des pages suivantes lors de la mise à jour d'un article :"
+"Vider le cache des pages suivantes lors de la mise à jour d'un article&nbsp;:"
+
+#: inc/admin/options.php:631
+msgid ""
+"Enter the URL of additionnal pages to purge when updating a post (one per "
+"line)."
+msgstr ""
+"Entrez l'URL de pages supplémentaires à vider lors de l'actualisation d'un "
+"article (une par ligne)."
+
+#: inc/admin/options.php:632
+msgid "It's possible to use regular expressions (regex)."
+msgstr "Vous pouvez utiliser des expressions régulières (regex)."
 
 #: inc/admin/options.php:637
 msgid ""
@@ -485,6 +543,14 @@ msgstr ""
 msgid "Never cache the following pages:"
 msgstr "Ne jamais mettre en cache les pages suivantes :"
 
+#: inc/admin/options.php:656
+msgid "Enter the URL of pages to reject (one per line)."
+msgstr "Indiquez l'URL des pages à rejeter (une par ligne)."
+
+#: inc/admin/options.php:657
+msgid "You can use regular expressions (regex)."
+msgstr "Vous pouvez utiliser des expressions régulières (regex)."
+
 #: inc/admin/options.php:663 inc/admin/options.php:671
 msgid "Don't cache pages that use the following cookies:"
 msgstr ""
@@ -496,7 +562,7 @@ msgstr "Indiquez les noms des cookies à rejeter (un par ligne)."
 
 #: inc/admin/options.php:682 inc/admin/options.php:690
 msgid "<b>CSS</b> files to exclude of the minification:"
-msgstr "Fichiers <b>CSS</b> à exlure du processus de minification :"
+msgstr "Fichiers <b>CSS</b> à exlure du processus de minification&nbsp;:"
 
 #: inc/admin/options.php:695
 msgid "Specify the URL of <b>CSS</b> files to reject (one per line)."
@@ -505,7 +571,7 @@ msgstr ""
 
 #: inc/admin/options.php:701 inc/admin/options.php:709
 msgid "<b>JS</b> files to exclude of the minification:"
-msgstr "Fichiers <b>JS</b> à exlure du processus de minification :"
+msgstr "Fichiers <b>JS</b> à exlure du processus de minification&nbsp;:"
 
 #: inc/admin/options.php:714
 msgid "Specify the URL of <b>JS</b> files to reject (one per line)."
@@ -514,7 +580,7 @@ msgstr ""
 
 #: inc/admin/options.php:720
 msgid "<b>JS</b> files with deferred loading:"
-msgstr "Fichiers <strong>JS</strong> en chargement différé : "
+msgstr "Fichiers <strong>JS</strong> en chargement différé&nbsp;:"
 
 #: inc/admin/options.php:728
 msgid ""
@@ -538,7 +604,7 @@ msgstr "Options du Content Delivery Network"
 
 #: inc/admin/options.php:748 inc/admin/options.php:756
 msgid "CDN:"
-msgstr "CDN :"
+msgstr "CDN&nbsp;:"
 
 #: inc/admin/options.php:754
 msgid "Enable Content Delivery Network."
@@ -550,23 +616,23 @@ msgstr "Marque blanche"
 
 #: inc/admin/options.php:770 inc/admin/options.php:779
 msgid "Plugin Name:"
-msgstr "Nom de l'extension :"
+msgstr "Nom de l'extension&nbsp;:"
 
 #: inc/admin/options.php:785 inc/admin/options.php:794
 msgid "Plugin URI:"
-msgstr "URI de l'extension :"
+msgstr "URI de l'extension&nbsp;:"
 
 #: inc/admin/options.php:800 inc/admin/options.php:809
 msgid "Description:"
-msgstr "Description :"
+msgstr "Description&nbsp;:"
 
 #: inc/admin/options.php:815 inc/admin/options.php:824
 msgid "Author:"
-msgstr "Auteur :"
+msgstr "Auteur&nbsp;:"
 
 #: inc/admin/options.php:830 inc/admin/options.php:839
 msgid "Author URI:"
-msgstr "URI de l'auteur :"
+msgstr "URI de l'auteur&nbsp;:"
 
 #: inc/admin/options.php:851
 msgid "Reset White Label values to default"
@@ -665,7 +731,7 @@ msgstr ""
 msgid "This is your new functionnality: White Label. Enjoy!"
 msgstr ""
 "Il s'agit de votre nouvelle fonctionnalité : la Marque blanche. Faites vous "
-"plaisir !"
+"plaisir&nbsp;!"
 
 #: inc/admin/tutorials.php:4
 msgid ""
@@ -755,16 +821,6 @@ msgstr "http://www.wp-rocket.me"
 
 #~ msgid "Missing TYPE ! "
 #~ msgstr "Type manquant"
-
-#~ msgid ""
-#~ "LazyLoad displays images on a page only when they are visible to the "
-#~ "user. <br/> This reduces the number of HTTP requests mechanism and "
-#~ "improves the loading time."
-#~ msgstr ""
-#~ "Le LazyLoad (ou chargement différé des images) consiste à afficher les "
-#~ "images d'une page uniquement quand elles sont visibles par l'internaute."
-#~ "<br/>Ce mécanisme réduit le nombre de requêtes HTTP et améliore le temps "
-#~ "de chargement des pages."
 
 #~ msgid ""
 #~ "Minification removes any space and comments present in the CSS and "

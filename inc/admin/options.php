@@ -433,8 +433,8 @@ function rocket_display_options()
 			array( 
 				'type'         => 'helper_description',
 				'name'         => 'lazyload',
-				'description'  => __( 'LazyLoad displays images on a page only when they are visible to the user.<br/>'.
-									  'This reduces the number of HTTP requests mechanism and improves the loading time.', 'rocket' )
+				'description'  => __( 'LazyLoad displays images on a page only when they are visible to the user.', 'rocket') . '<br/>' .
+									  __('This reduces the number of HTTP requests mechanism and improves the loading time.', 'rocket' )
 			),
 		)
 	);
@@ -478,10 +478,10 @@ function rocket_display_options()
 			array( 
 				'type'			=> 'helper_description',
 				'name'			=> 'minify',
-				'description'  => __( 'Minification removes any space and comments present in the CSS and JavaScript files.<br/>'.
-									  'This mechanism reduces the weight of each file and allows a faster reading of browsers and search engines.<br/>'.
-									  'Concatenation combines all CSS and JavaScript files.<br/>'.
-									  'This reduces the number of HTTP requests and improves the loading time.', 'rocket' )
+				'description'  => __( 'Minification removes any space and comments present in the CSS and JavaScript files.', 'rocket' ) . '<br/>' .
+									  __( 'This mechanism reduces the weight of each file and allows a faster reading of browsers and search engines.', 'rocket' ) . '<br/>' .
+									  __( 'Concatenation combines all CSS and JavaScript files.', 'rocket' ) . '<br/>' .
+									  __( 'This reduces the number of HTTP requests and improves the loading time.', 'rocket' )
 			),
 			array( 
 				'type'			=> 'helper_warning',
@@ -598,13 +598,13 @@ function rocket_display_options()
 			array( 
 				'type'         => 'helper_description',
 				'name'         => 'dns_prefetch',
-				'description'  => __( 'DNS prefetching is a way for browsers to anticipate the DNS resolution of external domains from your site.', 'rocket' . '<br/>' .
-									  __( 'This mechanism reduces the latency of some external files.', 'rocket' ) ),
+				'description'  => __( 'DNS prefetching is a way for browsers to anticipate the DNS resolution of external domains from your site.', 'rocket' ) . '<br/>' .
+									  __( 'This mechanism reduces the latency of some external files.', 'rocket' ),
 				),
 			array( 
 				'type'         => 'helper_help',
 				'name'         => 'dns_prefetch',
-				'description'  => __( 'To learn more about this option and how to use it correctly, we advise you to watch the following video: <a href="http://www.youtube.com/embed/ElJCtUidLwc" class="fancybox">http://www.youtube.com/embed/ElJCtUidLwc</a>', 'rocket' ),
+				'description'  => sprintf( __( 'To learn more about this option and how to use it correctly, we advise you to watch the following video: <a href="%1$s" class="fancybox">%1$s</a>.', 'rocket' ), 'http://www.youtube.com/embed/ElJCtUidLwc' ),				
 				),
 			array( 
 				'type'         => 'helper_warning',
@@ -628,8 +628,8 @@ function rocket_display_options()
 			array( 
 				'type'         => 'helper_help',
 				'name'         => 'purge_pages',
-				'description'  => __( 'Enter the URL of additionnal pages to purge when updating a post (one per line). <br/>'.
-									  'It\'s possible to use regular expressions (regex).', 'rocket' ),
+				'description'  => __( 'Enter the URL of additionnal pages to purge when updating a post (one per line).','rocket' ) . '<br/>' .
+									  __( 'It\'s possible to use regular expressions (regex).', 'rocket' ),
 			),
 			array( 
 				'type'         => 'helper_warning',
@@ -653,8 +653,8 @@ function rocket_display_options()
 			array( 
 				'type'         => 'helper_help',
 				'name'         => 'reject_uri',
-				'description'  => __( 'Enter the URL of pages to reject (one per line).<br/>'.
-									  'You can use regular expressions (regex).', 'rocket' )
+				'description'  => __( 'Enter the URL of pages to reject (one per line).', 'rocket' ) . '<br/>' .
+									  __( 'You can use regular expressions (regex).', 'rocket' )
 			),
 		)
 	);
