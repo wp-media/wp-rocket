@@ -3,8 +3,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 2.1\n"
-"Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/wp-rocket\n"
-"POT-Creation-Date: 2014-01-23 12:55:15+00:00\n"
+"Report-Msgid-Bugs-To: http://support.wp-rocket.me\n"
+"POT-Creation-Date: 2014-01-23 13:10:11+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -15,8 +15,9 @@ msgstr ""
 #: config/localhost/wp-rocket.php:2 inc/admin/admin.php:2
 #: inc/admin/faq-fr.php:1 inc/admin/faq.php:1 inc/admin/options.php:2
 #: inc/admin/pointers.php:2 inc/admin/rocketeer.php:2
-#: inc/admin/tutorials.php:1 inc/admin/updater.php:2 inc/admin/upgrader.php:2
-#: inc/admin-bar.php:2 inc/cron.php:2 inc/deprecated.php:2 inc/front/cdn.php:2
+#: inc/admin/tutorials-fr.php:1 inc/admin/tutorials.php:1
+#: inc/admin/updater.php:2 inc/admin/upgrader.php:2 inc/admin-bar.php:2
+#: inc/cron.php:2 inc/deprecated.php:2 inc/front/cdn.php:2
 #: inc/front/cookie.php:2 inc/front/deferred-js.php:2
 #: inc/front/dns-prefetch.php:2 inc/front/enqueue.php:2
 #: inc/front/htaccess.php:2 inc/front/images.php:2 inc/front/lazyload.php:2
@@ -925,8 +926,8 @@ msgid "Clear the cache for the whole site."
 msgstr ""
 
 #: inc/admin/options.php:881 inc/admin/options.php:887
-#: inc/admin/tutorials.php:3 inc/admin-bar.php:141 inc/admin-bar.php:166
-#: inc/admin-bar.php:194
+#: inc/admin/tutorials-fr.php:3 inc/admin/tutorials.php:3
+#: inc/admin-bar.php:141 inc/admin-bar.php:166 inc/admin-bar.php:194
 msgid "Preload cache"
 msgstr ""
 
@@ -990,19 +991,36 @@ msgstr ""
 msgid "This is your new functionnality: White Label. Enjoy!"
 msgstr ""
 
-#: inc/admin/tutorials.php:4
+#: inc/admin/tutorials-fr.php:4 inc/admin/tutorials.php:4
 msgid ""
 "This video gives some explanations about our two crawler robots. They "
 "generate several cache files in a few seconds."
 msgstr ""
 
-#: inc/admin/tutorials.php:5 inc/admin/tutorials.php:9
-#: inc/admin/tutorials.php:13
+#: inc/admin/tutorials-fr.php:5 inc/admin/tutorials-fr.php:9
+#: inc/admin/tutorials-fr.php:13 inc/admin/tutorials.php:5
+#: inc/admin/tutorials.php:9 inc/admin/tutorials.php:13
 msgid "Watch the video"
 msgstr ""
 
-#: inc/admin/tutorials.php:7
+#: inc/admin/tutorials-fr.php:7 inc/admin/tutorials.php:7
 msgid "CSS and JavaScript minification"
+msgstr ""
+
+#: inc/admin/tutorials.php:8
+msgid ""
+"This video gives some explanations about how to use the advanced process of "
+"minification and concatenation of CSS and JavaScript files."
+msgstr ""
+
+#: inc/admin/tutorials.php:11
+msgid "Preloading DNS queries"
+msgstr ""
+
+#: inc/admin/tutorials.php:12
+msgid ""
+"This video helps to understand easily the advanced option of \"Preloading "
+"DNS queries\" and the use of the filter <code>rocket_dns_prefetch</code>."
 msgstr ""
 
 #: inc/admin/updater.php:142 inc/admin/updater.php:149
