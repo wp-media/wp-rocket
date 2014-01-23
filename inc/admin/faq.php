@@ -1,120 +1,119 @@
 <?php defined( 'ABSPATH' ) or	die( __( 'Cheatin&#8217; uh?', 'rocket' ) ); ?>
 
-<h2>Ma clé ne fonctionne pas</h2>
-<p>Vérifiez l'orthographe du site dans votre profil sur le site de WP Rocket.</p>
-<p>Si c'est correct, vérifiez alors que le site entré est bien le même que celui dans les options de Wordpress et non une redirection.</p>
-<p>Exemple avec le site example.com dans le paramétrage WordPress : S'il redirige sur le .fr, et que vous auriez entré le .fr dans votre compte WP Rocket, alors il y a un soucis.</p>
-<p>Les deux valeurs étant différentes, la clé n'est pas valide pour le .com mais pour le .fr</p>
+<h2><?php _e( 'My key does not work', 'rocket' );?></h2>
+<p><?php _e( 'Check the spelling of your site in your profile on the WP Rocket\'s site.', 'rocket' );?></p>
+<p><?php _e( 'If it\'s correct, check if the entered website is the same as the one in the WordPress options and not a redirection.', 'rocket' );?></p>
+<p><?php _e( 'Example with the site example.com in the WordPress setup: if it redirects on .fr, and you would have entered the .fr in your WP Rocket account, then there is a problem.', 'rocket' );?></p>
+<p><?php _e( 'The two values are different, the key is not valid for the .com but for .fr', 'rocket' );?></p>
 
-<h2>Pour combien de sites ma clé est-elle valide ?</h2>
-<p>Une clé valide 1 nom de domaine. Si vous avez example.com, cela fait 1 clé.</p>
-<p>Si vous avez example.com, ww.example.com, dev.example.com, demo.example.com, example.com/dev/, example.com/demo/ tous ces sites dépendent de la même clé WP Rocket.</p>
-<p>Il vous faudra donc une clé supplémentaire pour chaque autre nom de domaine différent de example.com</p>
+<h2><?php _e( 'For how many sites my key is valid for?', 'rocket' );?></h2>
+<p><?php _e( 'A key is valid for 1 domain name. If you have example.com, that makes 1 key.', 'rocket' );?></p>
+<p><?php _e( 'If you have example.com, www.example.com, dev.example.com, demo.example.com, example.com/dev/, example.com/demo/ all these sites depend on the same WP Rocket key.', 'rocket' );?></p>
+<p><?php _e( 'You will need an additional key for each other different example.com domain name', 'rocket' );?></p>
 
-<h2>Que fait exactement WP Rocket ? </h2>
-<p>WP Rocket est un plugin de cache complet qui embarque de nombreuses fonctionnalités :</p>
+<h2><?php _e( 'What exactly do WP Rocket?', 'rocket' );?></h2>
+<p><?php _e( 'WP Rocket is a full cache plugin that comes with many features:', 'rocket' );?></p>
 <ul>
-	<li>Mise en cache de l'ensemble des pages pour un affichage rapide</li>
-	<li>Préchargement des fichiers de cache à l'aide de 2 robots en Python</li>
-	<li>Réduction du nombres de requêtes HTTP pour réduire le temps de chargement</li>
-	<li>Diminution de la bande passante grâce à la compression GZIP</li>
-	<li>Gestion des headers (expire, etags, etc...)</li>
-	<li>Minification et concaténation des fichiers JS et CSS</li>
-	<li>Chargement différé des images (LazyLoad)</li>
-	<li>Chargement différé des fichiers JavaScript</li>
-	<li>Optimisation des images</li>
+	<li><?php _e( 'Caching of all the pages for quick viewing', 'rocket' );?></li>
+	<li><?php _e( 'Preloading the cache of files using 2 bots in Python', 'rocket' );?></li>
+	<li><?php _e( 'Reduction of numbers of HTTP requests to reduce the load time', 'rocket' );?></li>
+	<li><?php _e( 'Decrease of the bandwidth with GZIP compression', 'rocket' );?></li>
+	<li><?php _e( 'Management of the headers (expires, etags...)', 'rocket' );?></li>
+	<li><?php _e( 'Minification and concatenation of the JS and CSS files', 'rocket' );?></li>
+	<li><?php _e( 'Loading delay of images (LazyLoad)', 'rocket' );?></li>
+	<li><?php _e( 'Loading deferred of JavaScript files', 'rocket' );?></li>
+	<li><?php _e( 'Images Optimisation', 'rocket' );?></li>
 </ul>
 
-<h2>Je n'ai activé aucune des options de base, est-ce que WP Rocket fonctionne ?</h2>
-<p>Oui.</p>
-<p>Les options de base sont des optimisations complémentaires que l’on peut qualifier de bonus. Ces options ne sont pas indispensables pour améliorer le temps de chargement de votre site Internet.</p>
-<p>Quelque soit votre configuration de WP Rocket, les fonctionnalités suivantes seront toujours actives :</p>
+<h2><?php _e( 'I have turned any of the basic options on, does WP Rocket work?', 'rocket' );?></h2>
+<p><?php _e( 'Yes.', 'rocket' );?></p>
+<p><?php _e( 'The basic options are additional optimizations that could be described as bonuses. These options are not essential to improve the loading time of your website.', 'rocket' );?></p>
+<p><?php _e( 'Whatever is your WP Rocket configuration, the following features will be still active:', 'rocket' );?></p>
 <ul>
-	<li>Mise en cache de l'ensemble des pages pour affichage rapide</li>
-	<li>Diminution de la bande passante grâce à la compression GZIP</li>
-	<li>Gestion des headers (expire, etags, etc)</li>
-	<li>Optimisation des images</li>
+	<li><?php _e( 'Caching of all the pages for quick viewing', 'rocket' );?></li>
+	<li><?php _e( 'Decrease of the bandwidth with our GZIP compression', 'rocket' );?></li>
+	<li><?php _e( 'Management of the headers (expires, etags...)', 'rocket' );?></li>
+	<li><?php _e( 'Images Optimisation', 'rocket' );?></li>
 </ul>
 
-<h2>Que dois-je faire en cas de problème lié à WP Rocket que je n’arrive pas à résoudre ?</h2>
-<p>Si aucune des réponses de la F.A.Q. présente ci-dessous apporte une réponse à votre problématique, vous pouvez nous faire part de votre problème sur notre <a href="http://support.wp-rocket.me" target="_blank">support</a>. Nous vous répondrons dans les plus brefs délais.</p>
+<h2><?php _e( 'What should I do in case of problem with WP Rocket that I can\'t solve?', 'rocket' );?></h2>
+<p><?php _e( 'If none of the answers from our FAQ give an answer to your problem, you can let us know about your problem on our <a href="http://support.wp-rocket.me" target="_blank"> support</a>. We will answer you as soon as possible.', 'rocket' );?></p>
 
-<h2>Ma licence est expirée, que dois-je faire ?</h2>
-<p>Pas de panique, WP Rocket continuera de fonctionner sans problème. Vous recevrez un mail vous indiquant que votre licence va bientôt arriver à expiration. Vous trouverez un lien de renouvellement qui sera actif même après l’expiration.</p>
+<h2><?php _e( 'My licence has expired, what should I do?', 'rocket' );?></h2>
+<p><?php _e( 'Don\'t panic, WP Rocket will continue to operate without a problem. You will receive an email telling you that your license will soon expire. You will find a renewal link which will be active even after the expiration.', 'rocket' );?></p>
 
-<h2>Je souhaite modifier l'URL de mon site associé à ma licence, que dois-je faire ?</h2>
-<p>Vous devez nous contacter par mail (<a href="mailto:contact@wp-rocket.me">contact@wp-rocket.me</a>) en nous indiquant la raison de votre modification. Si acceptée, la modification sera réalisée par l’équipe de WP Rocket.</p>
+<h2><?php _e( 'I want to change the URL of my site associated with my license, what should I do?', 'rocket' );?></h2>
+<p><?php _e( 'You must contact us by email (<a href="mailto:contact@wp-rocket.me">contact@wp-rocket.me</a>) indicating the reason for your change. If accepted, the amendment will be carried out by the WP Rocket team.', 'rocket' );?></p>
 
-<h2>Quels outils dois-je utiliser pour mesurer les performances de mon site ?</h2>
-<p>Vous pouvez mesurer les performances de votre site Internet à l’aide des outils suivants : </p>
+<h2><?php _e( 'What tools should I use to measure the performance of my site?', 'rocket' );?></h2>
+<p><?php _e( 'You can measure the performance of your website using the following tools:', 'rocket' );?></p>
 <ul>
 	<li><a href="http://tools.pingdom.com/fpt/" target="_blank">Pingdom Tools</a></li>
 	<li><a href="http://gtmetrix.com/" target="_blank">GT Metrix</a></li>
 	<li><a href="http://www.webpagetest.org/" target="_blank">Webpagetest</a></li>
 </ul>
 
-<p>Ces 2 derniers donnent deux indications :</p>
+<p><?php _e( 'These last 2 give two indications:', 'rocket' );?></p>
 <ul>
-	<li>une note globale des bonnes pratiques à appliquer</li>
-	<li>un temps de chargement</li>
+	<li><?php _e( 'a global note of good practices to apply', 'rocket' );?></li>
+	<li><?php _e( 'a loading time', 'rocket' );?></li>
 </ul>
 
-<p>Ces données sont indicatives et ne reflètent pas forcément la vitesse d’affichage réelle de votre site Internet.</p>
+<p><?php _e( 'These data are indicative and do not necessarily reflect the actual display speed of your website', 'rocket' );?>.</p>
 
-<p>Pour réaliser des tests de temps de chargement plus proche de la réalité nous conseillons d’utiliser <a href="http://tools.pingdom.com/fpt/" target="_blank">Pingdom Tools</a> avec l’option <code>Amsterdam</code> comme serveur.</p>
+<p><?php _e( 'For tests closest to reality load time we recommend using <a href="http://tools.pingdom.com/fpt/" target="_blank">Pingdom Tools</a> with <code>Amsterdam</code> setup as server.', 'rocket' );?></p>
 
-<h2>WP Rocket fonctionne-t-il avec les permaliens par défaut ?</h2>
-<p>Non.</p>
+<h2><?php _e( 'WP Rocket work with default permalinks?', 'rocket' );?></h2>
+<p><?php _e( 'No.', 'rocket' );?></p>
 
-<p>Il est nécessaire d'avoir des permaliens personnalisés du type <code>http://example.com/mon-article/</code> plutôt que <code>http://example.com/?p=1234</code>.</p>
+<p><?php _e( 'It\'s necessary to have custom permalinks of the type <code>http://example.com/mon-article/</code> rather than <code>http://example.com/?p=1234</code>.', 'rocket' );?></p>
 
-<h2>Avec quels serveurs Web WP Rocket est-il compatible ?</h2>
-<p>WP Rocket est compatible avec les serveurs Web <strong>Apache</strong>. Pour le moment, WP Rocket n’est donc pas compatible avec les serveurs Web NGINX et Litepseed.</p>
+<h2><?php _e( 'Which web servers WP Rocket is compatible with?', 'rocket' );?></h2>
+<p><?php _e( 'WP Rocket is compatible with <strong>Apache</strong> web servers. For the moment, WP Rocket is therefore not compatible with NGINX and Litepseed web servers.', 'rocket' );?></p>
 
-<h2>Le rapport PageSpeed ou YSlow m’indique que le contenu n’est pas gzipé et/ou n’a pas d’expiration, que dois-je faire ?</h2>
+<h2><?php _e( 'Reports from PageSpeed and YSlow tells me that the content is not gziped and/or did not expire, what should I do?', 'rocket' );?></h2>
 
-<p>WP Rocket ajoute automatiquement les bonnes règles d’expirations et de gzip des fichiers statiques. Si elles ne sont pas appliquées, il est possible qu’un plugin entre en conflit (exemple: <a href="http://wordpress.org/plugins/wp-retina-2x/" target="_blank">WP Retina 2x</a>). Essayez de désactiver temporairement tous les plugins, excepté WP Rocket, et de refaire le test.</p>
+<p><?php _e( 'WP Rocket automatically adds good rules timeouts and gzip for static files. If they are not applied, it is possible that there is a plugin conflict (exemple: <a href="http://wordpress.org/plugins/wp-retina-2x/" target="_blank">WP Retina 2x</a>). Try temporarily disabling all plugins except WP Rocket and retest.', 'rocket' );?></p>
 
-<p>Si cela n’est pas concluant, cela signifie que le <code>mod_expire</code> et/ou <code>mod_deflate</code> n’est pas activé sur votre serveur.</p>
+<p><?php _e( 'If this is not conclusive, this means that the <code>mod_expire</code> and/or <code>mod_deflate</code> is not enabled on your server.', 'rocket' );?></p>
 
-<h2>WP Rocket est-il compatible avec les autres plugins de cache, tels que WP Super Cache ou W3 Total Cache ?</h2>
-<p>Non.</p>
+<h2><?php _e( 'Is WP Rocket compatible with others cache plugins like WP Super Cache or W3 Total Cache?', 'rocket' );?></h2>
+<p><?php _e( 'No.', 'rocket' );?></p>
 
-<p>Il est impératif de <strong>supprimer tous les autres plugins d'optimisation</strong> (cache, minification, LazyLoad) AVANT l’activation de WP Rocket.</p>
+<p><?php _e( 'It\'s imperative to <strong>remove all other optimization plugins</strong> (cache, minification, LazyLoad) PRIOR to the activation of WP Rocket.', 'rocket' );?></p>
 
-<h2>WP Rocket est-il compatible avec WP Touch, WordPress Mobile Pack et WP Mobile Detector ?</h2>
-<p>Oui.</p>
-<p>Par contre, dans les options de base, vous devez décocher la case <code>Activer la mise en cache pour les appareils mobile</code>.</p>
+<h2><?php _e( 'Is WP Rocket compatible with WP Touch, WordPress Mobile Pack and WP Mobile Detector?', 'rocket' );?></h2>
+<p><?php _e( 'Yes.', 'rocket' );?></p>
+<p><?php _e( 'On the other hand, in the basic options, you must uncheck the <code>enable caching for mobile devices</code>.', 'rocket' );?></p>
 
-<h2>WP Rocket est-il compatible avec WooCommerce ?</h2>
-<p>Oui.</p>
+<h2><?php _e( 'Is WP Rocket compatible with WooCommerce?', 'rocket' );?></h2>
+<p><?php _e( 'Yes.', 'rocket' );?></p>
 
-<p>Cependant, il faut exclure les pages panier et commande de la mise en cache. Cela se fait à partir de l’option avancée <code>Ne jamais mettre en cache les pages suivantes</code> et en ajoutant les valeurs suivantes :</p>
-<p><code>/panier/<br/>
-/commande/(.*)
-</code></p>
+<p><?php _e( 'However, you should exclude basket and checkout pages from caching. This is done from the advanced option <code>never to cache pages</code> and adding the following values:', 'rocket' );?></p>
+<p><code><?php echo __( '/basket/', 'rocket' ) . '<br/>' .
+__( '/checkout/(.*)', 'rocket' );?></code></p>
 
-<h2>WP Rocket est-il compatible avec WPML ?</h2>
-<p>Oui.</p>
-<p>Vous avez même la possibilité de vider/précharger la cache d'une langue précise ou de toutes les langues en même temps.</p>
+<h2><?php _e( 'Is WP Rocket compatible with WPML?', 'rocket' );?></h2>
+<p><?php _e( 'Yes.', 'rocket' );?></p>
+<p><?php _e( 'You have even the possibility of empty/preload the cache for a specific language or for all languages at the same time.', 'rocket' );?></p>
 
-<h2>En quoi consiste la minification et concaténation des fichiers ?</h2>
-<p>La minification consiste à supprimer tous les éléments superflus d’une fichier HTML, CSS ou JavaScript : espaces, commentaires, etc... Cela permet de diminuer la taille des fichiers. Ainsi, les navigateurs lisent plus rapidement les fichiers.</p>
+<h2><?php _e( 'What is the minification and concatenation of files?', 'rocket' );?></h2>
+<p><?php _e( 'The minification is the process to remove all unnecessary items in a HTML, CSS or JavaScript file: spaces, comments, etc... This allows to reduce the size of the files. Thus, browsers read files faster.', 'rocket' );?></p>
 
-<p>La concaténation consiste à regrouper en un seul, un ensemble de fichiers. Cela a pour effet de diminuer le nombre de requêtes HTTP.</p>
-<h2>Que dois-je faire si WP Rocket déforme l’affichage de mon site ?</h2>
-<p>Il y a de fortes chances que la déformation soit provoquée par la minification des fichiers HTML, CSS et/ou JavaScript. Pour résoudre le problème, nous conseillons de regarder la vidéo suivante : <a href="http://www.youtube.com/embed/iziXSvZgxLk" class="fancybox">http://www.youtube.com/embed/iziXSvZgxLk</a>.</p>
+<p><?php _e( 'The concatenation is to consolidate into one, a set of files. This has the effect of reducing the number of HTTP requests.', 'rocket' );?></p>
+<h2><?php _e( 'What should I do if WP Rocket distorts my site display?', 'rocket' );?></h2>
+<p><?php _e( 'There are good chances that the deformation is caused by the minification of HTML, CSS or JavaScript files. To resolve the problem, we recommend watching the following video: <a href="http://www.youtube.com/embed/iziXSvZgxLk" class="fancybox">http://www.youtube.com/embed/iziXSvZgxLk</a>.', 'rocket' );?></p>
 
-<h2>À quel intervalle le cache est mis à jour ?</h2>
-<p>Le cache est automatiquement rafraîchit à chaque mise à jour d'un contenu (ajout/édition/suppression d’un article, publication d’un commentaire, etc...).</p>
-<p>Dans les options de base, vous pouvez aussi spécifier un délai de nettoyage automatique du cache.</p>
+<h2><?php _e( 'How often the cache is updated?', 'rocket' );?></h2>
+<p><?php _e( 'The cache is automatically refreshed at every update of your content (add/edit/delete of an article, publication of a comment, etc..).', 'rocket' );?></p>
+<p><?php _e( 'In the basic options, you can also specify a period of automatic cleaning of the cache.', 'rocket' );?></p>
 
-<h2>Comment ne pas mettre en cache une page particulière ?</h2>
-<p>Dans les options avancées, il est possible de spécifier des URLs à ne pas mettre en cache. Pour cela, il faut ajouter dans le champ de saisie <code>Ne jamais mettre en cache les pages suivantes</code> les URLs à exclure.</p>
+<h2><?php _e( 'How not to cache a particular page?', 'rocket' );?></h2>
+<p><?php _e( 'In advanced options, it\'s possible to specify URLs to not cache. For this, you must add in the input field <code>should never be cached pages</code> the URLs to exclude.', 'rocket' );?></p>
 
-<h2>Comment fonctionne les robots de préchargement des fichiers de cache ?</h2>
-<p>Pour mettre une page en cache, il faut un premier visiteur. Pour éviter qu’un premier visiteur le fasse, nous avons développé deux robots (en python) qui crawl les pages de votre site Internet.</p>
+<h2><?php _e( 'How does the robots of preloading the cache files work?', 'rocket' );?></h2>
+<p><?php _e( 'To cache a page, it must be a first visitor. To avoid that a first visitor to do so, we have developed two robots (in python) that crawl the pages of your website.', 'rocket' );?></p>
 
-<p>Le premier va visiter votre site à la demande à l’aide du bouton “Précharger le cache”. Le second va automatiquement visiter votre site dès que vous allez créer/éditer/supprimer un article.</p>
+<p><?php _e( 'The first will visit your site when using the button "Preload the cache". The second will automatically visit your site as soon as you are going to create/edit/delete an article.', 'rocket' );?></p>
 
-<p>Pour plus d’informations, vous pouvez consulter notre vidéo à ce propos : <a href="http://www.youtube.com/embed/9jDcg2f-9yM" class="fancybox">http://www.youtube.com/embed/9jDcg2f-9yM</a>.</p>
+<p><?php _e( 'For more information, please visit our video: <a href="http://www.youtube.com/embed/9jDcg2f-9yM" class="fancybox">http://www.youtube.com/embed/9jDcg2f-9yM</a>.', 'rocket' );?></p>

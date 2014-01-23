@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/wp-rocket\n"
-"POT-Creation-Date: 2014-01-23 09:05:45+00:00\n"
-"PO-Revision-Date: 2014-01-23 10:22+0100\n"
+"POT-Creation-Date: 2014-01-23 12:55:15+00:00\n"
+"PO-Revision-Date: 2014-01-23 13:56+0100\n"
 "Last-Translator: fxbenard | FxB <fx@fxbenard.com>\n"
 "Language-Team:  <contact@wp-rocket.me>\n"
 "Language: fr\n"
@@ -16,8 +16,9 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: config/localhost/wp-rocket.php:2 inc/admin/admin.php:2 inc/admin/faq.php:1
-#: inc/admin/options.php:2 inc/admin/pointers.php:2 inc/admin/rocketeer.php:2
+#: config/localhost/wp-rocket.php:2 inc/admin/admin.php:2
+#: inc/admin/faq-fr.php:1 inc/admin/faq.php:1 inc/admin/options.php:2
+#: inc/admin/pointers.php:2 inc/admin/rocketeer.php:2
 #: inc/admin/tutorials.php:1 inc/admin/updater.php:2 inc/admin/upgrader.php:2
 #: inc/admin-bar.php:2 inc/cron.php:2 inc/deprecated.php:2 inc/front/cdn.php:2
 #: inc/front/cookie.php:2 inc/front/deferred-js.php:2
@@ -57,6 +58,482 @@ msgstr "Vider le cache"
 #: inc/admin/admin.php:278
 msgid "The best WordPress performance plugin."
 msgstr "Simplement la meilleure extension pour optimiser votre site."
+
+#: inc/admin/faq.php:3
+msgid "My key does not work"
+msgstr "Ma clé ne fonctionne pas"
+
+#: inc/admin/faq.php:4
+msgid ""
+"Check the spelling of your site in your profile on the WP Rocket's site."
+msgstr ""
+"Vérifiez l'orthographe du site dans votre profil sur le site de WP Rocket."
+
+#: inc/admin/faq.php:5
+msgid ""
+"If it's correct, check if the entered website is the same as the one in the "
+"WordPress options and not a redirection."
+msgstr ""
+"Si c'est correct, vérifiez alors que le site entré est bien le même que "
+"celui dans les options de Wordpress et non une redirection."
+
+#: inc/admin/faq.php:6
+msgid ""
+"Example with the site example.com in the WordPress setup: if it redirects "
+"on .fr, and you would have entered the .fr in your WP Rocket account, then "
+"there is a problem."
+msgstr ""
+"Par exemple avec le site exemple.com dans le paramétrage WordPress : S'il "
+"redirige sur le .fr, et que vous auriez entré le .fr dans votre compte WP "
+"Rocket, alors il y a un soucis."
+
+#: inc/admin/faq.php:7
+msgid ""
+"The two values are different, the key is not valid for the .com but for .fr"
+msgstr ""
+"Les deux valeurs étant différentes, la clé n'est pas valide pour le .com "
+"mais uniquement pour le .fr"
+
+#: inc/admin/faq.php:9
+msgid "For how many sites my key is valid for?"
+msgstr "Pour combien de sites ma clé est-elle valide ?"
+
+#: inc/admin/faq.php:10
+msgid ""
+"A key is valid for 1 domain name. If you have example.com, that makes 1 key."
+msgstr ""
+"Une clé est valide pour 1 nom de domaine. Si vous avez exemple.com, cela "
+"fait 1 clé."
+
+#: inc/admin/faq.php:11
+msgid ""
+"If you have example.com, www.example.com, dev.example.com, demo.example.com, "
+"example.com/dev/, example.com/demo/ all these sites depend on the same WP "
+"Rocket key."
+msgstr ""
+"Si vous avez exemple.com, www.exemple.com, dev.exemple.com, demo.exemple."
+"com, exemple.com/dev/, exemple.com/demo/ tous ces sites dépendent de la même "
+"clé WP Rocket."
+
+#: inc/admin/faq.php:12
+msgid ""
+"You will need an additional key for each other different example.com domain "
+"name"
+msgstr ""
+"Il vous faudra donc une clé supplémentaire pour chaque autre nom de domaine "
+"différent de exemple.com"
+
+#: inc/admin/faq.php:14
+msgid "What exactly do WP Rocket?"
+msgstr "Que fait exactement WP Rocket ?"
+
+#: inc/admin/faq.php:15
+msgid "WP Rocket is a full cache plugin that comes with many features:"
+msgstr ""
+"WP Rocket est une extension de cache complète qui embarque de nombreuses "
+"fonctionnalités :"
+
+#: inc/admin/faq.php:17 inc/admin/faq.php:33
+msgid "Caching of all the pages for quick viewing"
+msgstr "Mise en cache de l'ensemble des pages pour un affichage rapide"
+
+#: inc/admin/faq.php:18
+msgid "Preloading the cache of files using 2 bots in Python"
+msgstr ""
+"Préchargement des fichiers de cache à l'aide de 2 robots écrits en Python"
+
+#: inc/admin/faq.php:19
+msgid "Reduction of numbers of HTTP requests to reduce the load time"
+msgstr ""
+"Réduction du nombres de requêtes HTTP pour réduire le temps de chargement"
+
+#: inc/admin/faq.php:20
+msgid "Decrease of the bandwidth with GZIP compression"
+msgstr "Diminution de la bande passante grâce à la compression GZIP"
+
+#: inc/admin/faq.php:21 inc/admin/faq.php:35
+msgid "Management of the headers (expires, etags...)"
+msgstr "Gestion des headers (expire, etags, etc...)"
+
+#: inc/admin/faq.php:22
+msgid "Minification and concatenation of the JS and CSS files"
+msgstr "Minification et concaténation des fichiers JS et CSS"
+
+#: inc/admin/faq.php:23
+msgid "Loading delay of images (LazyLoad)"
+msgstr "Chargement différé des images (LazyLoad)"
+
+#: inc/admin/faq.php:24
+msgid "Loading deferred of JavaScript files"
+msgstr "Chargement différé des fichiers JavaScript"
+
+#: inc/admin/faq.php:25 inc/admin/faq.php:36
+msgid "Images Optimisation"
+msgstr "Optimisation des images"
+
+#: inc/admin/faq.php:28
+msgid "I have turned any of the basic options on, does WP Rocket work?"
+msgstr ""
+"Je n'ai activé aucune des options de base, est-ce que WP Rocket fonctionne ?"
+
+#: inc/admin/faq.php:29 inc/admin/faq.php:86 inc/admin/faq.php:90
+#: inc/admin/faq.php:97
+msgid "Yes."
+msgstr "Oui."
+
+#: inc/admin/faq.php:30
+msgid ""
+"The basic options are additional optimizations that could be described as "
+"bonuses. These options are not essential to improve the loading time of your "
+"website."
+msgstr ""
+"Les options de base sont des optimisations complémentaires que l’on peut "
+"qualifier de bonus. Ces options ne sont pas indispensables pour améliorer le "
+"temps de chargement de votre site Internet."
+
+#: inc/admin/faq.php:31
+msgid ""
+"Whatever is your WP Rocket configuration, the following features will be "
+"still active:"
+msgstr ""
+"Quelque soit votre configuration de WP Rocket, les fonctionnalités suivantes "
+"seront toujours actives :"
+
+#: inc/admin/faq.php:34
+msgid "Decrease of the bandwidth with our GZIP compression"
+msgstr "Diminution de la bande passante grâce à la compression GZIP"
+
+#: inc/admin/faq.php:39
+msgid "What should I do in case of problem with WP Rocket that I can't solve?"
+msgstr ""
+"Que dois-je faire en cas de problème lié à WP Rocket que je n’arrive pas à "
+"résoudre ?"
+
+#: inc/admin/faq.php:40
+msgid ""
+"If none of the answers from our FAQ give an answer to your problem, you can "
+"let us know about your problem on our <a href=\"http://support.wp-rocket.me"
+"\" target=\"_blank\"> support</a>. We will answer you as soon as possible."
+msgstr ""
+"Si aucune des réponses de la FAQ ne répond à votre problématique, vous "
+"pouvez nous en faire part via notre <a href=\"http://support.wp-rocket.me/\" "
+"target=\"_blank\">support</a>. Nous vous répondrons dans les plus brefs "
+"délais."
+
+#: inc/admin/faq.php:42
+msgid "My licence has expired, what should I do?"
+msgstr "Ma licence est expirée, que dois-je faire ?"
+
+#: inc/admin/faq.php:43
+msgid ""
+"Don't panic, WP Rocket will continue to operate without a problem. You will "
+"receive an email telling you that your license will soon expire. You will "
+"find a renewal link which will be active even after the expiration."
+msgstr ""
+"Pas de panique, WP Rocket continuera de fonctionner sans problème. Vous "
+"recevrez un mail vous indiquant que votre licence va bientôt arriver à "
+"expiration. Vous trouverez un lien de renouvellement qui sera actif même "
+"après l’expiration."
+
+#: inc/admin/faq.php:45
+msgid ""
+"I want to change the URL of my site associated with my license, what should "
+"I do?"
+msgstr ""
+"Je souhaite modifier l'URL de mon site associé à ma licence, que dois-je "
+"faire ?"
+
+#: inc/admin/faq.php:46
+msgid ""
+"You must contact us by email (<a href=\"mailto:contact@wp-rocket.me"
+"\">contact@wp-rocket.me</a>) indicating the reason for your change. If "
+"accepted, the amendment will be carried out by the WP Rocket team."
+msgstr ""
+"Vous devez nous contacter par mail (<a href=\"mailto:contact@wp-rocket.me"
+"\">contact@wp-rocket.me</a>) en nous indiquant la raison de votre "
+"modification. Si acceptée, la modification sera réalisée par l’équipe de WP "
+"Rocket."
+
+#: inc/admin/faq.php:48
+msgid "What tools should I use to measure the performance of my site?"
+msgstr ""
+"Quels outils dois-je utiliser pour mesurer les performances de mon site ?"
+
+#: inc/admin/faq.php:49
+msgid ""
+"You can measure the performance of your website using the following tools:"
+msgstr ""
+"Vous pouvez mesurer les performances de votre site Internet à l’aide des "
+"outils suivants :"
+
+#: inc/admin/faq.php:56
+msgid "These last 2 give two indications:"
+msgstr "Ces 2 derniers donnent deux indications :"
+
+#: inc/admin/faq.php:58
+msgid "a global note of good practices to apply"
+msgstr "une note globale des bonnes pratiques à appliquer"
+
+#: inc/admin/faq.php:59
+msgid "a loading time"
+msgstr "un temps de chargement"
+
+#: inc/admin/faq.php:62
+msgid ""
+"These data are indicative and do not necessarily reflect the actual display "
+"speed of your website"
+msgstr ""
+"Ces données sont indicatives et ne reflètent pas forcément la vitesse "
+"d’affichage réelle de votre site Internet."
+
+#: inc/admin/faq.php:64
+msgid ""
+"For tests closest to reality load time we recommend using <a href=\"http://"
+"tools.pingdom.com/fpt/\" target=\"_blank\">Pingdom Tools</a> with "
+"<code>Amsterdam</code> setup as server."
+msgstr ""
+"Pour réaliser des tests de temps de chargement plus proche de la réalité "
+"nous conseillons d’utiliser <a href=\"http://tools.pingdom.com/fpt/\" target="
+"\"_blank\">Pingdom Tools</a> avec l’option <code>Amsterdam</code> comme "
+"serveur."
+
+#: inc/admin/faq.php:66
+msgid "WP Rocket work with default permalinks?"
+msgstr "WP Rocket fonctionne-t-il avec les permaliens par défaut ?"
+
+#: inc/admin/faq.php:67 inc/admin/faq.php:81
+msgid "No."
+msgstr "Non."
+
+#: inc/admin/faq.php:69
+msgid ""
+"It's necessary to have custom permalinks of the type <code>http://example."
+"com/mon-article/</code> rather than <code>http://example.com/?p=1234</code>."
+msgstr ""
+"Il est nécessaire d'avoir des permaliens personnalisés du type <code>http://"
+"exemple.com/mon-article/</code> plutôt que <code>http://exemple.com/?p=1234</"
+"code>."
+
+#: inc/admin/faq.php:71
+msgid "Which web servers WP Rocket is compatible with?"
+msgstr "Avec quels serveurs Web WP Rocket est-il compatible ?"
+
+#: inc/admin/faq.php:72
+msgid ""
+"WP Rocket is compatible with <strong>Apache</strong> web servers. For the "
+"moment, WP Rocket is therefore not compatible with NGINX and Litepseed web "
+"servers."
+msgstr ""
+"WP Rocket est compatible avec les serveurs Web <strong>Apache</strong>. Pour "
+"le moment, WP Rocket n’est donc pas compatible avec les serveurs Web NGINX "
+"et Litepseed."
+
+#: inc/admin/faq.php:74
+msgid ""
+"Reports from PageSpeed and YSlow tells me that the content is not gziped and/"
+"or did not expire, what should I do?"
+msgstr ""
+"Les rapports de PageSpeed ou de YSlow m’indiquent que mon contenu n’est pas "
+"gzipé et/ou n’a pas d’expiration, que dois-je faire ?"
+
+#: inc/admin/faq.php:76
+msgid ""
+"WP Rocket automatically adds good rules timeouts and gzip for static files. "
+"If they are not applied, it is possible that there is a plugin conflict "
+"(exemple: <a href=\"http://wordpress.org/plugins/wp-retina-2x/\" target="
+"\"_blank\">WP Retina 2x</a>). Try temporarily disabling all plugins except "
+"WP Rocket and retest."
+msgstr ""
+"WP Rocket ajoute automatiquement les bonnes règles d’expirations et de gzip "
+"des fichiers statiques. Si elles ne sont pas appliquées, il est possible "
+"qu’un plugin entre en conflit (exemple: <a href=\"http://wordpress.org/"
+"plugins/wp-retina-2x/\" target=\"_blank\">WP Retina 2x</a>). Essayez de "
+"désactiver temporairement tous les plugins, excepté WP Rocket, et de refaire "
+"le test."
+
+#: inc/admin/faq.php:78
+msgid ""
+"If this is not conclusive, this means that the <code>mod_expire</code> and/"
+"or <code>mod_deflate</code> is not enabled on your server."
+msgstr ""
+"Si cela n’est pas concluant, cela signifie que le <code>mod_expire</code> et/"
+"ou <code>mod_deflate</code> n’est pas activé sur votre serveur."
+
+#: inc/admin/faq.php:80
+msgid ""
+"Is WP Rocket compatible with others cache plugins like WP Super Cache or W3 "
+"Total Cache?"
+msgstr ""
+"WP Rocket est-il compatible avec les autres plugins de cache, tels que WP "
+"Super Cache ou W3 Total Cache ?"
+
+#: inc/admin/faq.php:83
+msgid ""
+"It's imperative to <strong>remove all other optimization plugins</strong> "
+"(cache, minification, LazyLoad) PRIOR to the activation of WP Rocket."
+msgstr ""
+"Il est impératif de <strong>supprimer tous les autres plugins "
+"d'optimisation</strong> (cache, minification, LazyLoad) AVANT l’activation "
+"de WP Rocket."
+
+#: inc/admin/faq.php:85
+msgid ""
+"Is WP Rocket compatible with WP Touch, WordPress Mobile Pack and WP Mobile "
+"Detector?"
+msgstr ""
+"WP Rocket est-il compatible avec WP Touch, WordPress Mobile Pack et WP "
+"Mobile Detector ?"
+
+#: inc/admin/faq.php:87
+msgid ""
+"On the other hand, in the basic options, you must uncheck the <code>enable "
+"caching for mobile devices</code>."
+msgstr ""
+"Par contre, dans les options de base, vous devez décocher la case "
+"<code>Activer la mise en cache pour les appareils mobile</code>."
+
+#: inc/admin/faq.php:89
+msgid "Is WP Rocket compatible with WooCommerce?"
+msgstr "WP Rocket est-il compatible avec WooCommerce ?"
+
+#: inc/admin/faq.php:92
+msgid ""
+"However, you should exclude basket and checkout pages from caching. This is "
+"done from the advanced option <code>never to cache pages</code> and adding "
+"the following values:"
+msgstr ""
+"Cependant, il faut exclure les pages panier et commande de la mise en cache. "
+"Cela se fait à partir de l’option avancée <code>Ne jamais mettre en cache "
+"les pages suivantes</code> et en ajoutant les valeurs suivantes :"
+
+#: inc/admin/faq.php:93
+msgid "/basket/"
+msgstr "/panier/"
+
+#: inc/admin/faq.php:94
+msgid "/checkout/(.*)"
+msgstr "/commande/(.*)"
+
+#: inc/admin/faq.php:96
+msgid "Is WP Rocket compatible with WPML?"
+msgstr "WP Rocket est-il compatible avec WPML ?"
+
+#: inc/admin/faq.php:98
+msgid ""
+"You have even the possibility of empty/preload the cache for a specific "
+"language or for all languages at the same time."
+msgstr ""
+"Vous avez même la possibilité de vider/précharger la cache d'une langue "
+"précise ou de toutes les langues en même temps."
+
+#: inc/admin/faq.php:100
+msgid "What is the minification and concatenation of files?"
+msgstr "En quoi consiste la minification et concaténation des fichiers ?"
+
+#: inc/admin/faq.php:101
+msgid ""
+"The minification is the process to remove all unnecessary items in a HTML, "
+"CSS or JavaScript file: spaces, comments, etc... This allows to reduce the "
+"size of the files. Thus, browsers read files faster."
+msgstr ""
+"La minification consiste à supprimer tous les éléments superflus d’une "
+"fichier HTML, CSS ou JavaScript : espaces, commentaires, etc... Cela permet "
+"de diminuer la taille des fichiers. Ainsi, les navigateurs lisent plus "
+"rapidement les fichiers."
+
+#: inc/admin/faq.php:103
+msgid ""
+"The concatenation is to consolidate into one, a set of files. This has the "
+"effect of reducing the number of HTTP requests."
+msgstr ""
+"La concaténation consiste à regrouper en un seul, un ensemble de fichiers. "
+"Cela a pour effet de diminuer le nombre de requêtes HTTP."
+
+#: inc/admin/faq.php:104
+msgid "What should I do if WP Rocket distorts my site display?"
+msgstr "Que dois-je faire si WP Rocket déforme l’affichage de mon site ?"
+
+#: inc/admin/faq.php:105
+msgid ""
+"There are good chances that the deformation is caused by the minification of "
+"HTML, CSS or JavaScript files. To resolve the problem, we recommend watching "
+"the following video: <a href=\"http://www.youtube.com/embed/iziXSvZgxLk\" "
+"class=\"fancybox\">http://www.youtube.com/embed/iziXSvZgxLk</a>."
+msgstr ""
+"Il y a de fortes chances que la déformation soit provoquée par la "
+"minification des fichiers HTML, CSS et/ou JavaScript. Pour résoudre le "
+"problème, nous conseillons de regarder la vidéo suivante : <a href=\"http://"
+"www.youtube.com/embed/iziXSvZgxLk\" class=\"fancybox\">http://www.youtube."
+"com/embed/iziXSvZgxLk</a>."
+
+#: inc/admin/faq.php:107
+msgid "How often the cache is updated?"
+msgstr "À quel intervalle le cache est-il mis à jour ?"
+
+#: inc/admin/faq.php:108
+msgid ""
+"The cache is automatically refreshed at every update of your content (add/"
+"edit/delete of an article, publication of a comment, etc..)."
+msgstr ""
+"Le cache est automatiquement rafraîchit à chaque mise à jour d'un contenu "
+"(ajout/édition/suppression d’un article, publication d’un commentaire, "
+"etc..)."
+
+#: inc/admin/faq.php:109
+msgid ""
+"In the basic options, you can also specify a period of automatic cleaning of "
+"the cache."
+msgstr ""
+"Dans les options de base, vous pouvez aussi spécifier un délai de nettoyage "
+"automatique du cache."
+
+#: inc/admin/faq.php:111
+msgid "How not to cache a particular page?"
+msgstr "Comment ne pas mettre en cache une page particulière ?"
+
+#: inc/admin/faq.php:112
+msgid ""
+"In advanced options, it's possible to specify URLs to not cache. For this, "
+"you must add in the input field <code>should never be cached pages</code> "
+"the URLs to exclude."
+msgstr ""
+"Dans les options avancées, il est possible de spécifier des URLs à ne pas "
+"mettre en cache. Pour cela, il faut ajouter dans le champ de saisie <code>Ne "
+"jamais mettre en cache les pages suivantes</code> les URLs à exclure."
+
+#: inc/admin/faq.php:114
+msgid "How does the robots of preloading the cache files work?"
+msgstr "Comment fonctionne les robots de préchargement des fichiers de cache ?"
+
+#: inc/admin/faq.php:115
+msgid ""
+"To cache a page, it must be a first visitor. To avoid that a first visitor "
+"to do so, we have developed two robots (in python) that crawl the pages of "
+"your website."
+msgstr ""
+"Pour mettre une page en cache, il faut un premier visiteur. Pour éviter "
+"qu’un premier visiteur le fasse, nous avons développé deux robots (en "
+"python) qui crawl les pages de votre site Internet."
+
+#: inc/admin/faq.php:117
+msgid ""
+"The first will visit your site when using the button \"Preload the cache\". "
+"The second will automatically visit your site as soon as you are going to "
+"create/edit/delete an article."
+msgstr ""
+"Le premier va visiter votre site à la demande en appuyant sur le bouton "
+"“Précharger le cache”. Le second va automatiquement visiter votre site dès "
+"que vous allez créer/modifier/supprimer un article."
+
+#: inc/admin/faq.php:119
+msgid ""
+"For more information, please visit our video: <a href=\"http://www.youtube."
+"com/embed/9jDcg2f-9yM\" class=\"fancybox\">http://www.youtube.com/"
+"embed/9jDcg2f-9yM</a>."
+msgstr ""
+"Pour plus d’informations, vous pouvez consulter notre vidéo à ce propos : <a "
+"href=\"http://www.youtube.com/embed/9jDcg2f-9yM\" class=\"fancybox\">http://"
+"www.youtube.com/embed/9jDcg2f-9yM</a>."
 
 #: inc/admin/notices.php:34 inc/admin/notices.php:40
 msgid "<b>%s</b> can not be deactivated because of <code>%s</code>."
