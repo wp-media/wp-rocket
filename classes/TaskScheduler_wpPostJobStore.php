@@ -81,7 +81,7 @@ class TaskScheduler_wpPostJobStore extends TaskScheduler_JobStore {
 
 	protected function make_job_from_post( $post ) {
 		$hook = $post->post_title;
-		$args = json_decode($post->post_content);
+		$args = json_decode( $post->post_content, true );
 		$schedule = get_post_meta( $post->ID, self::SCHEDULE_META_KEY, true );
 		if ( empty($schedule) ) {
 			$schedule = new TaskScheduler_NullSchedule();
