@@ -35,6 +35,8 @@ class TaskScheduler_JobRunner {
 			$schedule = apply_filters( 'task_scheduler_run_schedule', 'hourly' );
 			wp_schedule_event( time(), $schedule, self::WP_CRON_HOOK );
 		}
+
+		add_action( self::WP_CRON_HOOK, array( &$this, 'run' ) );
 	}
 
 	public function run() {
