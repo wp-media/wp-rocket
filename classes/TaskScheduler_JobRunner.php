@@ -6,6 +6,8 @@
 class TaskScheduler_JobRunner {
 	const WP_CRON_HOOK = 'task_scheduler_run_jobs';
 
+	const WP_CRON_SCHEDULE = 'every_minute';
+
 	/** @var TaskScheduler_JobRunner  */
 	private static $runner = NULL;
 	/** @var TaskScheduler_JobStore */
@@ -31,6 +33,9 @@ class TaskScheduler_JobRunner {
 	 * @codeCoverageIgnore
 	 */
 	public function init() {
+
+		add_filter( 'cron_schedules', array( self::instance(), 'add_wp_cron_schedule' ) );
+
 		if ( !wp_next_scheduled(self::WP_CRON_HOOK) ) {
 			$schedule = apply_filters( 'task_scheduler_run_schedule', 'hourly' );
 			wp_schedule_event( time(), $schedule, self::WP_CRON_HOOK );
@@ -74,6 +79,15 @@ class TaskScheduler_JobRunner {
 		if ( $next ) {
 			$this->store->save_job( $job, $next );
 		}
+	}
+
+	public function add_wp_cron_schedule( $schedules ) {
+		$schedules['every_minute'] = array(
+			'interval' => 60, // in seconds
+			'display'  => __( 'Every minute' ),
+		);
+
+		return $schedules;
 	}
 }
  
