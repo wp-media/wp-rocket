@@ -41,7 +41,7 @@ class TaskScheduler_JobRunner {
 			wp_schedule_event( time(), $schedule, self::WP_CRON_HOOK );
 		}
 
-		add_action( self::WP_CRON_HOOK, array( &$this, 'run' ) );
+		add_action( self::WP_CRON_HOOK, array( self::instance(), 'run' ) );
 	}
 
 	public function run() {
