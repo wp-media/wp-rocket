@@ -37,7 +37,7 @@ class TaskScheduler_JobRunner {
 		add_filter( 'cron_schedules', array( self::instance(), 'add_wp_cron_schedule' ) );
 
 		if ( !wp_next_scheduled(self::WP_CRON_HOOK) ) {
-			$schedule = apply_filters( 'task_scheduler_run_schedule', 'hourly' );
+			$schedule = apply_filters( 'task_scheduler_run_schedule', self::WP_CRON_SCHEDULE );
 			wp_schedule_event( time(), $schedule, self::WP_CRON_HOOK );
 		}
 
