@@ -554,11 +554,12 @@ function rocket_mkdir_p( $target )
 /**
  * File creation based on WordPress Filesystem
  *
+ * @since 2.1 add $chmod arg
  * @since 1.3.5
  *
  */
 
-function rocket_put_content( $file, $content )
+function rocket_put_content( $file, $content, $chmod = 0644 )
 {
 
 	global $wp_filesystem;
@@ -568,7 +569,8 @@ function rocket_put_content( $file, $content )
 		require_once( ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php' );
 		$wp_filesystem = new WP_Filesystem_Direct( new StdClass() );
 	}
-	return $wp_filesystem->put_contents( $file, $content, 0644 );
+	
+	return $wp_filesystem->put_contents( $file, $content, $chmod );
 }
 
 
