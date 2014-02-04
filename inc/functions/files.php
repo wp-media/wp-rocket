@@ -163,31 +163,53 @@ function set_rocket_wp_cache_define( $turn_it_on )
 	// If WP_CACHE is already define, return to get a coffee
 	if( $turn_it_on && defined( 'WP_CACHE' ) && WP_CACHE  )
 		return;
-
-	$config_file = rocket_find_wpconfig_path();
+		
+	// Get content of the config file
+	$config_file = file(rocket_find_wpconfig_path());
 
     if ( !$config_file )
         return;
 
-	// Get content of the config file
-	$config_file_content = @file_get_contents( $config_file );
-
 	// Get the value of WP_CACHE constant
 	$turn_it_on = $turn_it_on ? 'true' : 'false';
-
-	// Get the content of the WP_CACHE constant added by WP Rocket
-	$define = "/** Enable Cache */\r\n" . "define('WP_CACHE', {$turn_it_on}); // Added by ".WP_ROCKET_PLUGIN_NAME."\r\n";
-
-	$config_file_content = preg_replace( "~\\/\\*\\* Enable Cache \\*\\*?\\/.*?\\/\\/ Added by ".WP_ROCKET_PLUGIN_NAME."(\r\n)*~s", '', $config_file_content );
-    $config_file_content = preg_replace( "~(\\/\\/\\s*)?define\\s*\\(\\s*['\"]?WP_CACHE['\"]?\\s*,.*?\\)\\s*;+\\r?\\n?~is", '', $config_file_content );
-	$config_file_content = preg_replace( '~<\?(php)?~', "\\0\r\n" . $define, $config_file_content );
 	
-	// Remove empty spacings
-	$config_file_content = str_replace( "\n\n" , "\n" , $config_file_content );
+	// Lets find out if the constant WP_CACHE is defined or not
+	$is_wp_cache_exist = false;
 	
-	// Put the constant to the beginning of wp-config.php
-	rocket_put_content( $config_file, $config_file_content );
-
+	// Get WP_CACHE constant define
+	$constant = "define('WP_CACHE', $turn_it_on); // Added by " . WP_ROCKET_PLUGIN_NAME . "\r\n";
+	
+	foreach ( $config_file as &$line ) 
+	{
+		
+		if ( !preg_match( '/^define\(\'([A-Z_]+)\',([ ]+)/', $line, $match ) )
+			continue;
+			
+		if( $match[1] == 'WP_CACHE' ) 
+		{
+			$is_wp_cache_exist = true;
+			$line = $constant;
+		}
+					
+	}
+	unset( $line );
+	
+	// If the constant does not exist, it is created
+	if( !$is_wp_cache_exist ) 
+	{
+		array_shift($config_file);
+		array_unshift( $config_file, "<?php\r\n", $constant);	
+	}
+	
+	// Insert the constant in wp-config.php file
+	$handle = fopen( rocket_find_wpconfig_path(), 'w' );
+	foreach( $config_file as $line ) 
+		fwrite( $handle, $line );
+	fclose( $handle );
+	
+	// Update the writing permissions of wp-config.php file
+	chmod( rocket_find_wpconfig_path(), 0644 );
+	
 }
 
 
@@ -215,7 +237,6 @@ function set_rocket_cookie_domain_define( $turn_it_on )
 
 	// Get content of the config file
 	$config_file_content = @file_get_contents( $config_file );
-
 
 	if( !$turn_it_on )
 	{
