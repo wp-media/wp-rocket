@@ -486,7 +486,7 @@ function rocket_display_options()
 			array( 
 				'type'			=> 'helper_warning',
 				'name'			=> 'minify',
-				'description'  => sprintf( __( 'Concatenating files can cause display errors. In case of any errors we recommend you to turn off this option or watch the following video: <a href="%1$s" class="fancybox">%1$s</a>.', 'rocket' ), 'http://www.youtube.com/embed/ziXSvZgxLk' )
+				'description'  => sprintf( __( 'Concatenating files can cause display errors. In case of any errors we recommend you to turn off this option or watch the following video: <a href="%1$s" class="fancybox">%1$s</a>.', 'rocket' ), 'http://www.youtube.com/embed/iziXSvZgxLk' )
 			),
 
 		)
