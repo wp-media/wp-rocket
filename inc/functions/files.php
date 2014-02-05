@@ -164,12 +164,18 @@ function set_rocket_wp_cache_define( $turn_it_on )
 	if( $turn_it_on && defined( 'WP_CACHE' ) && WP_CACHE  )
 		return;
 		
-	// Get content of the config file
-	$config_file = file(rocket_find_wpconfig_path());
-
-    if ( !$config_file )
+	// Get path of the config file
+	$config_file_path = rocket_find_wpconfig_path();
+	
+    if ( !$config_file_path )
         return;
-
+		
+	// Get content of the config file
+	$config_file = file( $config_file_path );
+	
+	// Get permissions of wp-config.php
+	$config_file_chmod = get_rocket_chmod( $config_file_path );
+	
 	// Get the value of WP_CACHE constant
 	$turn_it_on = $turn_it_on ? 'true' : 'false';
 	
@@ -202,13 +208,13 @@ function set_rocket_wp_cache_define( $turn_it_on )
 	}
 	
 	// Insert the constant in wp-config.php file
-	$handle = fopen( rocket_find_wpconfig_path(), 'w' );
+	$handle = fopen( $config_file_path, 'w' );
 	foreach( $config_file as $line ) 
 		fwrite( $handle, $line );
 	fclose( $handle );
 	
 	// Update the writing permissions of wp-config.php file
-	chmod( rocket_find_wpconfig_path(), 0644 );
+	chmod( $config_file_path, 0644 );
 	
 }
 
@@ -548,11 +554,12 @@ function rocket_mkdir_p( $target )
 /**
  * File creation based on WordPress Filesystem
  *
+ * @since 2.1 add $chmod arg
  * @since 1.3.5
  *
  */
 
-function rocket_put_content( $file, $content )
+function rocket_put_content( $file, $content, $chmod = 0644 )
 {
 
 	global $wp_filesystem;
@@ -562,7 +569,8 @@ function rocket_put_content( $file, $content )
 		require_once( ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php' );
 		$wp_filesystem = new WP_Filesystem_Direct( new StdClass() );
 	}
-	return $wp_filesystem->put_contents( $file, $content, 0644 );
+	
+	return $wp_filesystem->put_contents( $file, $content, octdec( $chmod ) );
 }
 
 
@@ -616,7 +624,8 @@ function rocket_fetch_and_cache_minify( $url, $pretty_url )
  *
  */
 
-function rocket_find_wpconfig_path(){
+function rocket_find_wpconfig_path()
+{
 
 	$config_file = get_home_path() . 'wp-config.php';
 	$config_file_alt = dirname( get_home_path() ) . '/wp-config.php';
@@ -626,7 +635,9 @@ function rocket_find_wpconfig_path(){
 		
 		return $config_file;
 
-	} elseif ( file_exists( $config_file_alt ) && is_writable( $config_file_alt ) && !file_exists( dirname( get_home_path() ) . '/wp-settings.php' ) ) {
+	} 
+	else if ( file_exists( $config_file_alt ) && is_writable( $config_file_alt ) && !file_exists( dirname( get_home_path() ) . '/wp-settings.php' ) ) 
+	{
 
 		return $config_file_alt;
 
@@ -635,4 +646,28 @@ function rocket_find_wpconfig_path(){
 	// No writable file found
 	return false;
 
+}
+
+
+
+/**
+ * Gets file or dir permissions 
+ *
+ * @since 2.1
+ *
+ */
+ 
+function get_rocket_chmod( $path, $octdec = false ) 
+{
+	
+	if( !file_exists( $path ) )
+		return false;
+	
+	$permissions = substr( sprintf( '%o', fileperms( $path ) ), -4 );
+	
+	if( $octdec )
+		$permissions = octdec( $permissions );
+	
+	return $permissions;
+	
 }
