@@ -559,7 +559,7 @@ function rocket_mkdir_p( $target )
  *
  */
 
-function rocket_put_content( $file, $content, $chmod = 0644 )
+function rocket_put_content( $file, $content )
 {
 
 	global $wp_filesystem;
@@ -570,7 +570,7 @@ function rocket_put_content( $file, $content, $chmod = 0644 )
 		$wp_filesystem = new WP_Filesystem_Direct( new StdClass() );
 	}
 	
-	return $wp_filesystem->put_contents( $file, $content, octdec( $chmod ) );
+	return $wp_filesystem->put_contents( $file, $content );
 }
 
 
@@ -646,28 +646,4 @@ function rocket_find_wpconfig_path()
 	// No writable file found
 	return false;
 
-}
-
-
-
-/**
- * Gets file or dir permissions 
- *
- * @since 2.1
- *
- */
- 
-function get_rocket_chmod( $path, $octdec = false ) 
-{
-	
-	if( !file_exists( $path ) )
-		return false;
-	
-	$permissions = substr( sprintf( '%o', fileperms( $path ) ), -4 );
-	
-	if( $octdec )
-		$permissions = octdec( $permissions );
-	
-	return $permissions;
-	
 }
