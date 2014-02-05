@@ -164,18 +164,12 @@ function set_rocket_wp_cache_define( $turn_it_on )
 	if( $turn_it_on && defined( 'WP_CACHE' ) && WP_CACHE  )
 		return;
 		
-	// Get path of the config file
-	$config_file_path = rocket_find_wpconfig_path();
-	
-    if ( !$config_file_path )
-        return;
-		
 	// Get content of the config file
-	$config_file = file( $config_file_path );
-	
-	// Get permissions of wp-config.php
-	$config_file_chmod = get_rocket_chmod( $config_file_path );
-	
+	$config_file = file(rocket_find_wpconfig_path());
+
+    if ( !$config_file )
+        return;
+
 	// Get the value of WP_CACHE constant
 	$turn_it_on = $turn_it_on ? 'true' : 'false';
 	
@@ -208,13 +202,13 @@ function set_rocket_wp_cache_define( $turn_it_on )
 	}
 	
 	// Insert the constant in wp-config.php file
-	$handle = fopen( $config_file_path, 'w' );
+	$handle = fopen( rocket_find_wpconfig_path(), 'w' );
 	foreach( $config_file as $line ) 
 		fwrite( $handle, $line );
 	fclose( $handle );
 	
 	// Update the writing permissions of wp-config.php file
-	chmod( $config_file_path, $config_file_chmod );
+	chmod( rocket_find_wpconfig_path(), 0644 );
 	
 }
 
@@ -641,23 +635,4 @@ function rocket_find_wpconfig_path(){
 	// No writable file found
 	return false;
 
-}
-
-
-
-/**
- * Gets file or dir permissions 
- *
- * @since 2.1
- *
- */
- 
-function get_rocket_chmod( $path ) 
-{
-	
-	if( !file_exists( $path ) )
-		return false;
-		
-	return octdec( substr( sprintf( '%o', fileperms( $path ) ), -4 ) );
-	
 }
