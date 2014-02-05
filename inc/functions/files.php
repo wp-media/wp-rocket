@@ -173,9 +173,6 @@ function set_rocket_wp_cache_define( $turn_it_on )
 	// Get content of the config file
 	$config_file = file( $config_file_path );
 	
-	// Get permissions of wp-config.php
-	$config_file_chmod = get_rocket_chmod( $config_file_path );
-	
 	// Get the value of WP_CACHE constant
 	$turn_it_on = $turn_it_on ? 'true' : 'false';
 	
