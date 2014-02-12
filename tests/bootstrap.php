@@ -2,7 +2,7 @@
 
 $GLOBALS['wp_tests_options'] = array(
 	'active_plugins' => array(
-		'scheduler/task-scheduler.php',
+		'action-scheduler/action-scheduler.php',
 	),
 	'template' => 'twentythirteen',
 	'stylesheet' => 'twentythirteen',
@@ -28,4 +28,4 @@ if( false !== getenv( 'WP_TESTS_DIR' ) ) {
 	require dirname( dirname( dirname( dirname( dirname( dirname( __FILE__ ) ) ) ) ) ) . '/tests/phpunit/includes/bootstrap.php';
 }
 
-include_once('TaskScheduler_UnitTestCase.php');
+include_once('ActionScheduler_UnitTestCase.php');

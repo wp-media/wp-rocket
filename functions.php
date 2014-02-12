@@ -1,11 +1,11 @@
 <?php
 
 /**
- * General API functions for scheduling tasks
+ * General API functions for scheduling actions
  */
 
 /**
- * Schedule a task to run one time
+ * Schedule an action to run one time
  *
  * @param int $timestamp When the job will run
  * @param string $hook The hook to trigger
@@ -14,12 +14,12 @@
  *
  * @return string The job ID
  */
-function schedule_single_task( $timestamp, $hook, $args = array(), $group = '' ) {
-	return TaskScheduler::factory()->single( $hook, $args, $timestamp, $group );
+function wc_schedule_single_action( $timestamp, $hook, $args = array(), $group = '' ) {
+	return ActionScheduler::factory()->single( $hook, $args, $timestamp, $group );
 }
 
 /**
- * Schedule a recurring task
+ * Schedule a recurring action
  *
  * @param int $timestamp When the first instance of the job will run
  * @param int $interval_in_seconds How long to wait between runs
@@ -29,12 +29,12 @@ function schedule_single_task( $timestamp, $hook, $args = array(), $group = '' )
  *
  * @return string The job ID
  */
-function schedule_recurring_task( $timestamp, $interval_in_seconds, $hook, $args = array(), $group = '' ) {
-	return TaskScheduler::factory()->recurring( $hook, $args, $timestamp, $interval_in_seconds, $group );
+function wc_schedule_recurring_action( $timestamp, $interval_in_seconds, $hook, $args = array(), $group = '' ) {
+	return ActionScheduler::factory()->recurring( $hook, $args, $timestamp, $interval_in_seconds, $group );
 }
 
 /**
- * Schedule a task that recurs on a cron-like schedule.
+ * Schedule an action that recurs on a cron-like schedule.
  *
  * @param int $timestamp The schedule will start on or after this time
  * @param string $schedule A cron-link schedule string
@@ -54,8 +54,8 @@ function schedule_recurring_task( $timestamp, $interval_in_seconds, $hook, $args
  *
  * @return string The job ID
  */
-function schedule_cron_task( $timestamp, $schedule, $hook, $args = array(), $group = '' ) {
-	return TaskScheduler::factory()->cron( $hook, $args, $timestamp, $schedule, $group );
+function wc_schedule_cron_action( $timestamp, $schedule, $hook, $args = array(), $group = '' ) {
+	return ActionScheduler::factory()->cron( $hook, $args, $timestamp, $schedule, $group );
 }
 
 /**
@@ -67,7 +67,7 @@ function schedule_cron_task( $timestamp, $schedule, $hook, $args = array(), $gro
  *
  * @return void
  */
-function unschedule_task( $hook, $args = array(), $group = '' ) {
+function wc_unschedule_action( $hook, $args = array(), $group = '' ) {
 	$params = array();
 	if ( is_array($args) ) {
 		$params['args'] = $args;
@@ -75,12 +75,12 @@ function unschedule_task( $hook, $args = array(), $group = '' ) {
 	if ( !empty($group) ) {
 		$params['group'] = $group;
 	}
-	$job_id = TaskScheduler::store()->find_job( $hook, $params );
+	$job_id = ActionScheduler::store()->find_action( $hook, $params );
 	if ( empty($job_id) ) {
 		return;
 	}
 
-	TaskScheduler::store()->cancel_job( $job_id );
+	ActionScheduler::store()->cancel_action( $job_id );
 }
 
 /**
@@ -90,7 +90,7 @@ function unschedule_task( $hook, $args = array(), $group = '' ) {
  *
  * @return int|bool The timestamp for the next occurrence, or false if nothing was found
  */
-function next_scheduled_task( $hook, $args = NULL, $group = '' ) {
+function wc_next_scheduled_action( $hook, $args = NULL, $group = '' ) {
 	$params = array();
 	if ( is_array($args) ) {
 		$params['args'] = $args;
@@ -98,11 +98,11 @@ function next_scheduled_task( $hook, $args = NULL, $group = '' ) {
 	if ( !empty($group) ) {
 		$params['group'] = $group;
 	}
-	$job_id = TaskScheduler::store()->find_job( $hook, $params );
+	$job_id = ActionScheduler::store()->find_action( $hook, $params );
 	if ( empty($job_id) ) {
 		return false;
 	}
-	$job = TaskScheduler::store()->fetch_job( $job_id );
+	$job = ActionScheduler::store()->fetch_action( $job_id );
 	$next = $job->get_schedule()->next();
 	if ( $next ) {
 		return $next->getTimestamp();

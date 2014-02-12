@@ -1,4 +1,4 @@
-Task Scheduler
+Action Scheduler
 ===========
 
-A robust task scheduling system for Wordpress
+A robust action scheduling system for Wordpress

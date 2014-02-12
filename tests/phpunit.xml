@@ -12,7 +12,7 @@
 				 bootstrap="bootstrap.php"
 		>
 	<testsuites>
-		<testsuite name="Task Scheduler">
+		<testsuite name="Action Scheduler">
 			<directory>./test_cases</directory>
 		</testsuite>
 	</testsuites>
