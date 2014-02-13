@@ -87,6 +87,7 @@ class ActionScheduler_wpCommentLogger extends ActionScheduler_Logger {
 		add_action( 'action_scheduler_before_execute', array( $this, 'log_started_action' ), 10, 1 );
 		add_action( 'action_scheduler_after_execute', array( $this, 'log_completed_action' ), 10, 1 );
 		add_action( 'action_scheduler_failed_execution', array( $this, 'log_failed_action' ), 10, 2 );
+		add_action( 'action_scheduler_reset_action', array( $this, 'log_reset_action' ), 10, 1 );
 	}
 
 	public function log_stored_action( $action_id ) {
@@ -107,6 +108,10 @@ class ActionScheduler_wpCommentLogger extends ActionScheduler_Logger {
 
 	public function log_failed_action( $action_id, Exception $exception ) {
 		$this->log( $action_id, sprintf(__('action failed: %s', 'action-scheduler'), $exception->getMessage() ));
+	}
+
+	public function log_reset_action( $action_id ) {
+		$this->log( $action_id, __('action reset', 'action_scheduler') );
 	}
 
 }

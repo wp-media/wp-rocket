@@ -100,7 +100,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	 * @param string $hook
 	 * @param array $params
 	 *
-	 * @return string or NULL if not found
+	 * @return string ID of the next action matching the criteria or NULL if not found
 	 */
 	public function find_action( $hook, $params = array() ) {
 		$params = wp_parse_args( $params, array(
@@ -140,6 +140,114 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	}
 
 	/**
+	 * @param array $query
+	 * @return array The IDs of actions matching the query
+	 */
+	public function query_actions( $query = array() ) {
+		$query = wp_parse_args( $query, array(
+			'hook' => '',
+			'args' => NULL,
+			'date' => NULL,
+			'date_compare' => '<=',
+			'modified' => NULL,
+			'modified_compare' => '<=',
+			'group' => '',
+			'status' => '',
+			'claimed' => NULL,
+			'per_page' => 5,
+			'offset' => 0,
+			'orderby' => 'date',
+			'order' => 'ASC',
+		) );
+
+		/** @var wpdb $wpdb */
+		global $wpdb;
+		$sql = "SELECT p.ID FROM {$wpdb->posts} p";
+		$sql_params = array();
+		if ( !empty($params['group']) ) {
+			$sql .= " INNER JOIN {$wpdb->term_relationships} tr ON tr.object_id=p.ID";
+			$sql .= " INNER JOIN {$wpdb->term_taxonomy} tt ON tr.term_taxonomy_id=tt.term_taxonomy_id";
+			$sql .= " INNER JOIN {$wpdb->terms} t ON tt.term_id=t.term_id AND t.slug=%s";
+			$sql_params[] = $params['group'];
+		}
+		$sql .= " WHERE post_type=%s";
+		$sql_params[] = self::POST_TYPE;
+		if ( $query['hook'] ) {
+			$sql .= " AND p.post_title=%s";
+			$sql_params[] = $query['hook'];
+		}
+		if ( !is_null($query['args']) ) {
+			$sql .= " AND p.post_content=%s";
+			$sql_params[] = json_encode($query['args']);
+		}
+
+		if ( $query['status'] == ActionScheduler_Store::STATUS_COMPLETE ) {
+			$sql .= " AND p.post_status='publish'";
+		} elseif ( $query['status'] == ActionScheduler_Store::STATUS_PENDING)  {
+			$sql .= " AND p.post_status='pending'";
+		}
+
+		if ( $query['date'] instanceof DateTime ) {
+			$date_string = $query['date']->format('Y-m-d H:i:s');
+			$comparator = $this->validate_sql_comparator($query['date_compare']);
+			$sql .= " AND p.post_date_gmt $comparator %s";
+			$sql_params[] = $date_string;
+		}
+
+		if ( $query['modified'] instanceof DateTime ) {
+			$date_string = $query['modified']->format('Y-m-d H:i:s');
+			$comparator = $this->validate_sql_comparator($query['modified_compare']);
+			$sql .= " AND p.post_modified_gmt $comparator %s";
+			$sql_params[] = $date_string;
+		}
+
+		if ( $query['claimed'] === TRUE ) {
+			$sql .= " AND p.post_password != ''";
+		} elseif ( $query['claimed'] === FALSE ) {
+			$sql .= " AND p.post_password = ''";
+		} elseif ( !is_null($query['claimed']) ) {
+			$sql .= " AND p.post_password = %s";
+			$sql_params[] = $query['claimed'];
+		}
+
+		switch ( $query['orderby'] ) {
+			case 'hook':
+				$orderby = 'p.title';
+				break;
+			case 'group':
+				$orderby = 't.name';
+				break;
+			case 'modified':
+				$orderby = 'p.post_modified_gmt';
+				break;
+			case 'date':
+			default:
+				$orderby = 'p.post_date_gmt';
+				break;
+		}
+		if ( strtoupper($query['order']) == 'ASC' ) {
+			$order = 'ASC';
+		} else {
+			$order = 'DESC';
+		}
+		$sql .= " ORDER BY $orderby $order LIMIT %d, %d";
+		$sql_params[] = $query['offset'];
+		$sql_params[] = $query['per_page'];
+
+		$sql = $wpdb->prepare( $sql, $sql_params );
+
+		$id = $wpdb->get_col($sql);
+		return $id;
+	}
+
+	private function validate_sql_comparator( $comp ) {
+		if ( in_array($comp, array('!=', '>', '>=', '<', '<=', '=')) ) {
+			return $comp;
+		}
+		return '=';
+	}
+
+	/**
 	 * @param string $action_id
 	 *
 	 * @throws InvalidArgumentException
@@ -152,6 +260,15 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		}
 		do_action( 'action_scheduler_canceled_action', $action_id );
 		wp_trash_post($action_id);
+	}
+
+	public function delete_action( $action_id ) {
+		$post = get_post($action_id);
+		if ( empty($post) || ($post->post_type != self::POST_TYPE) ) {
+			throw new InvalidArgumentException(sprintf(__('Unidentified action %s', 'action-scheduler'), $action_id));
+		}
+		do_action( 'action_scheduler_deleted_action', $action_id );
+		wp_delete_post($action_id, TRUE);
 	}
 
 
@@ -185,8 +302,8 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		global $wpdb;
 		$date = is_null($before_date) ? new DateTime() : $before_date;
 		// can't use $wpdb->update() because of the <= condition
-		$sql = "UPDATE {$wpdb->posts} SET post_password = %s WHERE post_type = %s AND post_status = %s AND post_password = '' AND post_date_gmt <= %s LIMIT %d";
-		$sql = $wpdb->prepare( $sql, array( $claim_id, self::POST_TYPE, 'pending', $date->format('Y-m-d H:i:s'), $limit ) );
+		$sql = "UPDATE {$wpdb->posts} SET post_password = %s, post_modified_gmt = %s WHERE post_type = %s AND post_status = %s AND post_password = '' AND post_date_gmt <= %s ORDER BY menu_order ASC, post_date_gmt ASC LIMIT %d";
+		$sql = $wpdb->prepare( $sql, array( $claim_id, date('Y-m-d H:i:s'), self::POST_TYPE, 'pending', $date->format('Y-m-d H:i:s'), $limit ) );
 		$rows_affected = $wpdb->query($sql);
 		if ( $rows_affected === false ) {
 			throw new RuntimeException(__('Unable to claim actions. Database error.', 'action-scheduler'));
@@ -222,6 +339,36 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 			throw new RuntimeException( sprintf( __('Unable to unlock claim %s. Database error.', 'action-scheduler'), $claim->get_id() ) );
 		}
 	}
+
+	/**
+	 * @param string $action_id
+	 *
+	 * @return void
+	 */
+	public function unclaim_action( $action_id ) {
+		/** @var wpdb $wpdb */
+		global $wpdb;
+		$sql = "UPDATE {$wpdb->posts} SET post_password = '' WHERE ID = %d AND post_type = %s";
+		$sql = $wpdb->prepare( $sql, $action_id, self::POST_TYPE );
+		$result = $wpdb->query($sql);
+		if ( $result === false ) {
+			throw new RuntimeException( sprintf( __('Unable to unlock claim on action %s. Database error.', 'action-scheduler'), $action_id ) );
+		}
+	}
+
+	/**
+	 * @param string $action_id
+	 *
+	 * @return void
+	 */
+	public function log_execution( $action_id ) {
+		/** @var wpdb $wpdb */
+		global $wpdb;
+		$sql = "UPDATE {$wpdb->posts} SET menu_order = menu_order+1 WHERE ID = %d AND post_type = %s";
+		$sql = $wpdb->prepare( $sql, $action_id, self::POST_TYPE );
+		$wpdb->query($sql);
+	}
+
 
 	public function mark_complete( $action_id ) {
 		$post = get_post($action_id);

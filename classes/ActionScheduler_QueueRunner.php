@@ -45,12 +45,22 @@ class ActionScheduler_QueueRunner {
 	}
 
 	public function run() {
+		do_action( 'action_scheduler_before_process_queue' );
+		$this->run_cleanup();
 		$count = 0;
+		$batch_size = apply_filters( 'action_scheduler_queue_runner_batch_size', 10 );
 		do {
-			$actions_run = $this->do_batch();
+			$actions_run = $this->do_batch( $batch_size );
 			$count += $actions_run;
-		} while ( $actions_run > 0 );
+		} while ( $actions_run > 0 ); // keep going until we run out of actions, time, or memory
+		do_action( 'action_scheduler_after_process_queue' );
 		return $count;
+	}
+
+	protected function run_cleanup() {
+		$cleaner = new ActionScheduler_QueueCleaner( $this->store );
+		$cleaner->delete_old_actions();
+		$cleaner->reset_timeouts();
 	}
 
 	protected function do_batch( $size = 10 ) {
@@ -65,6 +75,7 @@ class ActionScheduler_QueueRunner {
 		$action = $this->store->fetch_action( $action_id );
 		do_action( 'action_scheduler_before_execute', $action_id );
 		try {
+			$this->store->log_execution( $action_id );
 			$action->execute();
 			do_action( 'action_scheduler_after_execute', $action_id );
 		} catch ( Exception $e ) {

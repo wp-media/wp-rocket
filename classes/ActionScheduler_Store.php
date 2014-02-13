@@ -36,11 +36,24 @@ abstract class ActionScheduler_Store {
 	abstract public function find_action( $hook, $params = array() );
 
 	/**
+	 * @param array $query
+	 * @return array The IDs of actions matching the query
+	 */
+	abstract public function query_actions( $query = array() );
+
+	/**
 	 * @param string $action_id
 	 *
-*@return void
+	 * @return void
 	 */
 	abstract public function cancel_action( $action_id );
+
+	/**
+	 * @param string $action_id
+	 *
+	 * @return void
+	 */
+	abstract public function delete_action( $action_id );
 
 
 	/**
@@ -53,9 +66,22 @@ abstract class ActionScheduler_Store {
 	/**
 	 * @param ActionScheduler_ActionClaim $claim
 	 *
-	 * @return mixed
+	 * @return void
 	 */
 	abstract public function release_claim( ActionScheduler_ActionClaim $claim );
+
+	/**
+	 * @param string $action_id
+	 *
+	 * @return void
+	 */
+	abstract public function unclaim_action( $action_id );
+
+	/**
+	 * @param string $action_id
+	 * @return void
+	 */
+	abstract public function log_execution( $action_id );
 
 	/**
 	 * @param string $action_id
