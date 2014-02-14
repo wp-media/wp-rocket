@@ -164,7 +164,7 @@ function rocket_dismiss_boxes( $args )
 		$actual = get_user_meta( $current_user->ID, 'rocket_boxes', true );
 		update_user_meta( $current_user->ID, 'rocket_boxes', array_filter( array_merge( (array)$actual, array( $args['box'] ) ) ) );
 		if( 'admin-post.php'==$GLOBALS['pagenow'] ){
-			if( defined(DOING_AJAX) )
+			if( defined( 'DOING_AJAX' ) )
 			{
 				wp_send_json( array( 'error'=>0 ) );
 			}else{
