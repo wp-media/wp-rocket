@@ -170,6 +170,7 @@ function do_rocket_callback( $buffer )
 	if( strlen( $buffer ) > 255
 		&& !is_404() 	// Don't cache 404
 		&& !is_search() // Don't cache search results
+		&& !defined( 'DONOTCACHEPAGE' ) || !DONOTCACHEPAGE // Don't cache template that use this constant
 	) {
 
 		global $request_uri_path;
