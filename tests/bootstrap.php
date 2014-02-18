@@ -2,7 +2,7 @@
 
 $GLOBALS['wp_tests_options'] = array(
 	'active_plugins' => array(
-		'action-scheduler/action-scheduler.php',
+		basename(dirname(dirname(__FILE__))).'/action-scheduler.php',
 	),
 	'template' => 'twentythirteen',
 	'stylesheet' => 'twentythirteen',
