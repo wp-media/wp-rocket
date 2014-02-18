@@ -96,9 +96,10 @@ class ActionScheduler_QueueRunner_Test extends ActionScheduler_UnitTestCase {
 		$this->assertCount(0, $claim->get_actions());
 
 		$claim = $store->stake_claim(10, new DateTime(DAY_IN_SECONDS.' seconds'));
-		$this->assertCount(1, $claim->get_actions());
+		$actions = $claim->get_actions();
+		$this->assertCount(1, $actions);
 
-		$action_id = reset($claim->get_actions());
+		$action_id = reset($actions);
 		$new_action = $store->fetch_action($action_id);
 
 

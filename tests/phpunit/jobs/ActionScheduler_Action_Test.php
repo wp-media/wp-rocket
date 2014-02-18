@@ -47,7 +47,8 @@ class ActionScheduler_Action_Test extends ActionScheduler_UnitTestCase {
 		remove_action( $random, array( $mock, 'action' ) );
 
 		$this->assertEquals( 1, $mock->get_call_count() );
-		$event = reset($mock->get_events());
+		$events = $mock->get_events();
+		$event = reset($events);
 		$this->assertEquals( $random, reset($event['args']) );
 	}
 }
