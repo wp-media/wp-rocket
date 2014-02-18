@@ -58,10 +58,11 @@ abstract class ActionScheduler_Store {
 
 	/**
 	 * @param int $max_actions
+	 * @param DateTime $before_date Claim only actions schedule before the given date. Defaults to now.
 	 *
 	 * @return ActionScheduler_ActionClaim
 	 */
-	abstract public function stake_claim( $max_actions );
+	abstract public function stake_claim( $max_actions, DateTime $before_date = NULL );
 
 	/**
 	 * @param ActionScheduler_ActionClaim $claim
