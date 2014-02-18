@@ -62,7 +62,7 @@ abstract class ActionScheduler_Store {
 	 *
 	 * @return ActionScheduler_ActionClaim
 	 */
-	abstract public function stake_claim( $max_actions, DateTime $before_date = NULL );
+	abstract public function stake_claim( $max_actions = 10, DateTime $before_date = NULL );
 
 	/**
 	 * @param ActionScheduler_ActionClaim $claim
