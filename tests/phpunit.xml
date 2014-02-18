@@ -13,7 +13,7 @@
 		>
 	<testsuites>
 		<testsuite name="Action Scheduler">
-			<directory>./test_cases</directory>
+			<directory>./phpunit</directory>
 		</testsuite>
 	</testsuites>
 	<groups>
