@@ -15,9 +15,9 @@ class ActionScheduler_IntervalSchedule_Test extends ActionScheduler_UnitTestCase
 		$now = time();
 		$start = $now - 30;
 		$schedule = new ActionScheduler_IntervalSchedule( new DateTime("@$start"), MINUTE_IN_SECONDS );
-		$this->assertEquals( $start, $schedule->next()->getTimestamp() );
-		$this->assertEquals( $now + MINUTE_IN_SECONDS, $schedule->next(new DateTime())->getTimestamp() );
-		$this->assertEquals( $start, $schedule->next(new DateTime("@$start"))->getTimestamp() );
+		$this->assertEquals( $start, $schedule->next()->format('U') );
+		$this->assertEquals( $now + MINUTE_IN_SECONDS, $schedule->next(new DateTime())->format('U') );
+		$this->assertEquals( $start, $schedule->next(new DateTime("@$start"))->format('U') );
 	}
 }
  

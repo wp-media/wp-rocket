@@ -105,7 +105,7 @@ function wc_next_scheduled_action( $hook, $args = NULL, $group = '' ) {
 	$job = ActionScheduler::store()->fetch_action( $job_id );
 	$next = $job->get_schedule()->next();
 	if ( $next ) {
-		return $next->getTimestamp();
+		return (int)($next->format('U'));
 	}
 	return false;
 }
