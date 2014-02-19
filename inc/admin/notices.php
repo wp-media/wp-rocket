@@ -131,7 +131,8 @@ function rocket_plugins_to_deactivate()
 		'hyper-cache/plugin.php',
 		'hyper-cache-extended/plugin.php',
 		'wp-fast-cache/wp-fast-cache.php',
-		'flexicache/wp-plugin.php'
+		'flexicache/wp-plugin.php',
+		'wp-fastest-cache/wpFastestCache.php'
 	);
 
 	if( get_rocket_option( 'lazyload' ) )
@@ -147,6 +148,7 @@ function rocket_plugins_to_deactivate()
 		$plugins[] = 'bwp-minify/bwp-minify.php';
 		$plugins[] = 'wp-minify/wp-minify.php';
 		$plugins[] = 'wp-html-compression/wp-html-compression.php';
+		$plugins[] = 'wp-compress-html/wp_compress_html.php';
 		$plugins[] = 'scripts-gzip/scripts_gzip.php';
 		$plugins[] = 'autoptimize/autoptimize.php';
 		$plugins[] = 'wp-js/wp-js.php';
@@ -415,8 +417,7 @@ function rocket_warning_config_dir_permissions()
 		if( !in_array( __FUNCTION__, (array)$boxes ) )
 		{
 			?>
-			<div class="error">
-
+			<div class="error">			
 				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>" class="rkt-cross"><?php _e('Ignore', 'rocket'); ?></a>
 
 				<p><b><?php echo WP_ROCKET_PLUGIN_NAME; ?></b>: <?php echo sprintf ( __('Be careful, you don\'t have <a href="%1$s" target="_blank">writing permissions</a> on <b>%3$s</b> domain configuration folder (<code>%2$s</code>). For <b>%3$s</b> works properly, please CHMOD <code>755</code> or <code>775</code> or <code>777</code> this folder.<br/>When the problem is solved, thank you to save the %3$s options to generate the configuration file.', 'rocket' ), 'http://codex.wordpress.org/Changing_File_Permissions', trim( str_replace( ABSPATH, '', WP_ROCKET_CONFIG_PATH ), '/' ), WP_ROCKET_PLUGIN_NAME ); ?></p>
