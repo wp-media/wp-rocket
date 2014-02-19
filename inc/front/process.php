@@ -34,12 +34,14 @@ if( $_SERVER['REQUEST_METHOD'] != 'GET' )
 
 // Don't cache with variables
 // but the cache is enabled if the visitor comes from an RSS feed or an Facebook action
-// @since 2.1 Compatible with WordPress Landing Pages (permalink_name and lp-variation-id)
+// @since 2.1 Add compatibilty with WordPress Landing Pages (permalink_name and lp-variation-id)
+// @since 2.1 Add compabitiliy with qTranslate and translation plugin with query string "lang"
 if( !empty( $_GET )
 	&& ( !isset( $_GET['utm_source'], $_GET['utm_medium'], $_GET['utm_campaign'] ) )
 	&& ( !isset( $_GET['fb_action_ids'], $_GET['fb_action_types'], $_GET['fb_source'] ) )
 	&& ( !isset( $_GET['permalink_name'] ) )
 	&& ( !isset( $_GET['lp-variation-id'] ) )
+	&& ( !isset( $_GET['lang'] ) )
 )
 	return;
 
