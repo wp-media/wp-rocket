@@ -68,6 +68,7 @@ class ActionScheduler_QueueRunner {
 		foreach ( $claim->get_actions() as $action_id ) {
 			$this->process_action( $action_id );
 		}
+		$this->store->release_claim($claim);
 		return count($claim->get_actions());
 	}
 
