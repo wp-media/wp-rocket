@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Class ActionScheduler_Test
+ * Class procedural_api_Test
  */
-class ActionScheduler_Test extends ActionScheduler_UnitTestCase {
+class procedural_api_Test extends ActionScheduler_UnitTestCase {
 
 	public function test_schedule_action() {
 		$time = time();

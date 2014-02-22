@@ -28,6 +28,18 @@ abstract class ActionScheduler {
 		return ActionScheduler_QueueRunner::instance();
 	}
 
+	public static function get_datetime_object( $when ) {
+		$when = empty($when) ? time() : $when;
+		if ( is_object($when) && $when instanceof DateTime ) {
+			$date = $when;
+		} elseif ( is_numeric( $when ) ) {
+			$date = new DateTime( '@'.$when );
+		} else {
+			$date = new DateTime( $when );
+		}
+		return $date;
+	}
+
 	/**
 	 * Get the absolute system path to the plugin directory, or a file therein
 	 * @static

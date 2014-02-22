@@ -164,11 +164,11 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		global $wpdb;
 		$sql = "SELECT p.ID FROM {$wpdb->posts} p";
 		$sql_params = array();
-		if ( !empty($params['group']) ) {
+		if ( !empty($query['group']) ) {
 			$sql .= " INNER JOIN {$wpdb->term_relationships} tr ON tr.object_id=p.ID";
 			$sql .= " INNER JOIN {$wpdb->term_taxonomy} tt ON tr.term_taxonomy_id=tt.term_taxonomy_id";
 			$sql .= " INNER JOIN {$wpdb->terms} t ON tt.term_id=t.term_id AND t.slug=%s";
-			$sql_params[] = $params['group'];
+			$sql_params[] = $query['group'];
 		}
 		$sql .= " WHERE post_type=%s";
 		$sql_params[] = self::POST_TYPE;
@@ -230,9 +230,12 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		} else {
 			$order = 'DESC';
 		}
-		$sql .= " ORDER BY $orderby $order LIMIT %d, %d";
-		$sql_params[] = $query['offset'];
-		$sql_params[] = $query['per_page'];
+		$sql .= " ORDER BY $orderby $order";
+		if ( $query['per_page'] > 0 ) {
+			$sql .= " LIMIT %d, %d";
+			$sql_params[] = $query['offset'];
+			$sql_params[] = $query['per_page'];
+		}
 
 		$sql = $wpdb->prepare( $sql, $sql_params );
 
