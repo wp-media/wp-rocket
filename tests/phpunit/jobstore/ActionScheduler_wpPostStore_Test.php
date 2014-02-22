@@ -26,7 +26,7 @@ class ActionScheduler_wpPostStore_Test extends ActionScheduler_UnitTestCase {
 		$retrieved = $store->fetch_action($action_id);
 		$this->assertEquals($action->get_hook(), $retrieved->get_hook());
 		$this->assertEqualSets($action->get_args(), $retrieved->get_args());
-		$this->assertEquals($action->get_schedule()->next(), $retrieved->get_schedule()->next());
+		$this->assertEquals($action->get_schedule()->next()->format('U'), $retrieved->get_schedule()->next()->format('U'));
 		$this->assertEquals($action->get_group(), $retrieved->get_group());
 	}
 
