@@ -4,6 +4,7 @@
  * Class ActionScheduler_QueueCleaner_Test
  */
 class ActionScheduler_QueueCleaner_Test extends ActionScheduler_UnitTestCase {
+
 	public function test_delete_old_actions() {
 		$store = new ActionScheduler_wpPostStore();
 		$runner = new ActionScheduler_QueueRunner( $store );

@@ -17,7 +17,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 			do_action( 'action_scheduler_stored_action', $post_id );
 			return $post_id;
 		} catch ( Exception $e ) {
-			throw new RuntimeException( __('Error saving action', 'action-scheduler'), 0, $e );
+			throw new RuntimeException( __('Error saving action', 'action-scheduler'), 0 );
 		}
 	}
 

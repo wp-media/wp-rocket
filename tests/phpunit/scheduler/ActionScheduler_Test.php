@@ -4,6 +4,7 @@
  * Class ActionScheduler_Test
  */
 class ActionScheduler_Test extends ActionScheduler_UnitTestCase {
+
 	public function test_schedule_action() {
 		$time = time();
 		$hook = md5(rand());

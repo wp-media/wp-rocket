@@ -31,10 +31,14 @@ class CronExpression_MonthField extends CronExpression_AbstractField
     public function increment(DateTime $date, $invert = false)
     {
         if ($invert) {
-            $date->modify('last day of previous month');
+            // $date->modify('last day of previous month'); // remove for php 5.2 compat
+            $date->modify('previous month');
+            $date->modify($date->format('Y-m-t'));
             $date->setTime(23, 59);
         } else {
-            $date->modify('first day of next month');
+            //$date->modify('first day of next month'); // remove for php 5.2 compat
+            $date->modify('next month');
+            $date->modify($date->format('Y-m-01'));
             $date->setTime(0, 0);
         }
 

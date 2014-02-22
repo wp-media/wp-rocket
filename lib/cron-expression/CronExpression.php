@@ -69,7 +69,7 @@ class CronExpression
             $expression = $mappings[$expression];
         }
 
-        return new self($expression, $fieldFactory ?: new CronExpression_FieldFactory());
+        return new self($expression, $fieldFactory ? $fieldFactory : new CronExpression_FieldFactory());
     }
 
     /**
@@ -263,7 +263,7 @@ class CronExpression
         if ($currentTime instanceof DateTime) {
             $currentDate = $currentTime;
         } else {
-            $currentDate = new DateTime($currentTime ?: 'now');
+            $currentDate = new DateTime($currentTime ? $currentTime : 'now');
             $currentDate->setTimezone(new DateTimeZone(date_default_timezone_get()));
         }
 
