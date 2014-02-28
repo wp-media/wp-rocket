@@ -97,10 +97,17 @@ class ActionScheduler_QueueRunner {
 	/**
 	 * Running large batches can eat up memory, as WP adds data to its object cache.
 	 *
+	 * If using a persistent object store, this has the side effect of flushing that
+	 * as well. If this behavior is undesired, use:
+	 *
+	 * add_filter( 'action_scheduler_queue_runner_flush_cache', '__return_false' );
+	 *
 	 * @return void
 	 */
 	protected function clear_caches() {
-		wp_cache_flush();
+		if ( wp_using_ext_object_cache() && !apply_filters( 'action_scheduler_queue_runner_flush_cache', TRUE ) ) {
+			wp_cache_flush();
+		}
 	}
 
 	public function add_wp_cron_schedule( $schedules ) {
