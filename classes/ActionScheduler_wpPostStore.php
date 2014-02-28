@@ -8,6 +8,9 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	const GROUP_TAXONOMY = 'action-group';
 	const SCHEDULE_META_KEY = '_action_manager_schedule';
 
+	/** @var DateTimeZone */
+	protected $local_timezone = NULL;
+
 	public function save_action( ActionScheduler_Action $action, DateTime $date = NULL ){
 		try {
 			$post_array = $this->create_post_array( $action, $date );
@@ -28,6 +31,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 			'post_content' => json_encode($action->get_args()),
 			'post_status' => ( $action->is_finished() ? 'publish' : 'pending' ),
 			'post_date_gmt' => $this->get_timestamp($action, $date),
+			'post_date' => $this->get_local_timestamp($action, $date),
 		);
 		return $post;
 	}
@@ -37,7 +41,21 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		if ( !$next ) {
 			throw new InvalidArgumentException(__('Invalid schedule. Cannot save action.', 'action-scheduler'));
 		}
+		$next->setTimezone(new DateTimeZone('UTC'));
 		return $next->format('Y-m-d H:i:s');
+	}
+
+	protected function get_local_timestamp( ActionScheduler_Action $action, DateTime $date = NULL ) {
+		$next = is_null($date) ? $action->get_schedule()->next() : $date;
+		if ( !$next ) {
+			throw new InvalidArgumentException(__('Invalid schedule. Cannot save action.', 'action-scheduler'));
+		}
+		$next->setTimezone($this->get_local_timezone());
+		return $next->format('Y-m-d H:i:s');
+	}
+
+	protected function get_local_timezone() {
+		return ActionScheduler_TimezoneHelper::get_local_timezone();
 	}
 
 	protected function save_post_array( $post_array ) {
@@ -188,16 +206,20 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		}
 
 		if ( $query['date'] instanceof DateTime ) {
-			$date_string = $query['date']->format('Y-m-d H:i:s');
+			$date = clone( $query['date'] );
+			$date->setTimezone( $this->get_local_timezone() );
+			$date_string = $date->format('Y-m-d H:i:s');
 			$comparator = $this->validate_sql_comparator($query['date_compare']);
-			$sql .= " AND p.post_date_gmt $comparator %s";
+			$sql .= " AND p.post_date $comparator %s";
 			$sql_params[] = $date_string;
 		}
 
 		if ( $query['modified'] instanceof DateTime ) {
-			$date_string = $query['modified']->format('Y-m-d H:i:s');
+			$modified = clone( $query['modified'] );
+			$modified->setTimezone( $this->get_local_timezone() );
+			$date_string = $modified->format('Y-m-d H:i:s');
 			$comparator = $this->validate_sql_comparator($query['modified_compare']);
-			$sql .= " AND p.post_modified_gmt $comparator %s";
+			$sql .= " AND p.post_modified $comparator %s";
 			$sql_params[] = $date_string;
 		}
 
@@ -218,11 +240,11 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 				$orderby = 't.name';
 				break;
 			case 'modified':
-				$orderby = 'p.post_modified_gmt';
+				$orderby = 'p.post_modified';
 				break;
 			case 'date':
 			default:
-				$orderby = 'p.post_date_gmt';
+				$orderby = 'p.post_date';
 				break;
 		}
 		if ( strtoupper($query['order']) == 'ASC' ) {
@@ -303,10 +325,11 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	protected function claim_actions( $claim_id, $limit, DateTime $before_date = NULL ) {
 		/** @var wpdb $wpdb */
 		global $wpdb;
-		$date = is_null($before_date) ? new DateTime() : $before_date;
+		$date = is_null($before_date) ? new DateTime() : clone( $before_date );
+		$date->setTimezone( $this->get_local_timezone() ); // using post_modified to take advantage of indexes
 		// can't use $wpdb->update() because of the <= condition
-		$sql = "UPDATE {$wpdb->posts} SET post_password = %s, post_modified_gmt = %s WHERE post_type = %s AND post_status = %s AND post_password = '' AND post_date_gmt <= %s ORDER BY menu_order ASC, post_date_gmt ASC LIMIT %d";
-		$sql = $wpdb->prepare( $sql, array( $claim_id, date('Y-m-d H:i:s'), self::POST_TYPE, 'pending', $date->format('Y-m-d H:i:s'), $limit ) );
+		$sql = "UPDATE {$wpdb->posts} SET post_password = %s, post_modified_gmt = %s, post_modified = %s WHERE post_type = %s AND post_status = %s AND post_password = '' AND post_date <= %s ORDER BY menu_order ASC, post_date ASC LIMIT %d";
+		$sql = $wpdb->prepare( $sql, array( $claim_id, current_time('mysql', true), current_time('mysql'), self::POST_TYPE, 'pending', $date->format('Y-m-d H:i:s'), $limit ) );
 		$rows_affected = $wpdb->query($sql);
 		if ( $rows_affected === false ) {
 			throw new RuntimeException(__('Unable to claim actions. Database error.', 'action-scheduler'));
