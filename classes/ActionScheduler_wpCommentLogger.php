@@ -85,12 +85,21 @@ class ActionScheduler_wpCommentLogger extends ActionScheduler_Logger {
 	 * @codeCoverageIgnore
 	 */
 	public function init() {
+		add_action( 'action_scheduler_before_process_queue', array( $this, 'disable_comment_counting' ), 10, 0 );
+		add_action( 'action_scheduler_after_process_queue', array( $this, 'enable_comment_counting' ), 10, 0 );
 		add_action( 'action_scheduler_stored_action', array( $this, 'log_stored_action' ), 10, 1 );
 		add_action( 'action_scheduler_canceled_action', array( $this, 'log_canceled_action' ), 10, 1 );
 		add_action( 'action_scheduler_before_execute', array( $this, 'log_started_action' ), 10, 1 );
 		add_action( 'action_scheduler_after_execute', array( $this, 'log_completed_action' ), 10, 1 );
 		add_action( 'action_scheduler_failed_execution', array( $this, 'log_failed_action' ), 10, 2 );
 		add_action( 'action_scheduler_reset_action', array( $this, 'log_reset_action' ), 10, 1 );
+	}
+
+	public function disable_comment_counting() {
+		wp_defer_comment_counting(true);
+	}
+	public function enable_comment_counting() {
+		wp_defer_comment_counting(false);
 	}
 
 	public function log_stored_action( $action_id ) {

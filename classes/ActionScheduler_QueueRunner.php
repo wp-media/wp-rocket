@@ -48,7 +48,7 @@ class ActionScheduler_QueueRunner {
 		do_action( 'action_scheduler_before_process_queue' );
 		$this->run_cleanup();
 		$count = 0;
-		$batch_size = apply_filters( 'action_scheduler_queue_runner_batch_size', 10 );
+		$batch_size = apply_filters( 'action_scheduler_queue_runner_batch_size', 100 );
 		do {
 			$actions_run = $this->do_batch( $batch_size );
 			$count += $actions_run;
@@ -63,12 +63,13 @@ class ActionScheduler_QueueRunner {
 		$cleaner->reset_timeouts();
 	}
 
-	protected function do_batch( $size = 10 ) {
+	protected function do_batch( $size = 100 ) {
 		$claim = $this->store->stake_claim($size);
 		foreach ( $claim->get_actions() as $action_id ) {
 			$this->process_action( $action_id );
 		}
 		$this->store->release_claim($claim);
+		$this->clear_caches();
 		return count($claim->get_actions());
 	}
 
@@ -91,6 +92,15 @@ class ActionScheduler_QueueRunner {
 		if ( $next ) {
 			$this->store->save_action( $action, $next );
 		}
+	}
+
+	/**
+	 * Running large batches can eat up memory, as WP adds data to its object cache.
+	 *
+	 * @return void
+	 */
+	protected function clear_caches() {
+		wp_cache_flush();
 	}
 
 	public function add_wp_cron_schedule( $schedules ) {
