@@ -64,7 +64,7 @@ function get_rocket_purge_cron_interval()
 
 
 /**
- * Get all pages we don't cache
+ * Get all uri we don't cache
  *
  * @since 2.0
  *
@@ -73,24 +73,19 @@ function get_rocket_purge_cron_interval()
 function get_rocket_cache_reject_uri()
 {
 
-	global $wp_rewrite;
-	$pages = array( '.*/' . $wp_rewrite->feed_base . '/' );
-	$cache_reject_uri = get_rocket_option( 'cache_reject_uri', array() );
-
-	if( count( $cache_reject_uri ) )
-	{
-		$pages = array_filter( array_merge( $pages, $cache_reject_uri ) );
-	}
+	$uri = get_rocket_option( 'cache_reject_uri', array() );
+	$uri[] = '.*/' . $GLOBALS['wp_rewrite']->feed_base . '/';
 
 	/**
-	 * Filter the rejected pages
+	 * Filter the rejected uri
 	 *
-	 * @param array $pages
+	 * @param array $uri
 	 * @since 2.1
 	*/
-	$pages = apply_filters( 'rocket_cache_reject_uri', $pages );
+	$uri = apply_filters( 'rocket_cache_reject_uri', $uri );
 
-	return implode( '|', (array)$pages );
+	$uri = implode( '|', (array)array_filter( $uri ) );
+	return $uri;
 
 }
 
@@ -105,20 +100,13 @@ function get_rocket_cache_reject_uri()
 
 function get_rocket_cache_reject_cookies()
 {
-
-	$cookies = array( 
-		str_replace( COOKIEHASH, '', LOGGED_IN_COOKIE ), 
-		'wp-postpass_', 
-		'wptouch_switch_toggle', 
-		'comment_author_', 
-		'comment_author_email_' 
-	);
-	$cache_reject_cookies = get_rocket_option( 'cache_reject_cookies', array() );
-
-	if( count( $cache_reject_cookies ) )
-	{
-		$cookies = array_filter( array_merge( $cookies, $cache_reject_cookies ) );
-	}
+	
+	$cookies = get_rocket_option( 'cache_reject_cookies', array() );
+	$cookies[] = str_replace( COOKIEHASH, '', LOGGED_IN_COOKIE );
+	$cookies[] = 'wp-postpass_';
+	$cookies[] = 'wptouch_switch_toggle';
+	$cookies[] = 'comment_author_';
+	$cookies[] = 'comment_author_email_';
 
 	/**
 	 * Filter the rejected cookies
@@ -127,8 +115,9 @@ function get_rocket_cache_reject_cookies()
 	 * @since 2.1
 	*/
 	$cookies = apply_filters( 'rocket_cache_reject_cookies', $cookies );
-
-	return implode( '|', (array)$cookies );
+	
+	$cookies = implode( '|', (array)array_filter( $cookies ) );
+	return $cookies;
 
 }
 

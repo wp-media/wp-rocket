@@ -105,14 +105,30 @@ function get_rocket_htaccess_mod_rewrite()
 	$rules .= 'RewriteBase ' . $home_root . "\n";
 	$rules .= 'RewriteCond %{REQUEST_METHOD} GET' . "\n";
 	$rules .= 'RewriteCond %{QUERY_STRING} =""' . "\n";
-	$rules .= 'RewriteCond %{HTTP:Cookie} !(' . get_rocket_cache_reject_cookies() . ') [NC]' . "\n";
-	$rules .= 'RewriteCond %{REQUEST_URI} !^(' . get_rocket_cache_reject_uri() . ')$ [NC]' . "\n";
+	
+	if( $cookies = get_rocket_cache_reject_cookies() ) 
+	{
+		$rules .= 'RewriteCond %{HTTP:Cookie} !(' . $cookies . ') [NC]' . "\n";
+	}
+	
+	if( $uri = get_rocket_cache_reject_uri() ) 
+	{
+		$rules .= 'RewriteCond %{REQUEST_URI} !^(' . $uri . ')$ [NC]' . "\n";
+	}
+	
 	$rules .= !is_rocket_cache_mobile() ? get_rocket_htaccess_mobile_rewritecond() : '';
 	$rules .= !is_rocket_cache_ssl() ? get_rocket_htaccess_ssl_rewritecond() : '';
-	if( $is_1and1_or_force )
+	
+	if( $is_1and1_or_force ) 
+	{
+		
 		$rules .= 'RewriteCond "' . str_replace( '/kunden/', '/', WP_ROCKET_CACHE_PATH ) . $HTTP_HOST . '%{REQUEST_URI}/index.html" -f' . "\n";
-	else
+	}
+	else 
+	{
 		$rules .= 'RewriteCond "%{DOCUMENT_ROOT}/' . ltrim( $cache_root, '/' ) . $HTTP_HOST . '%{REQUEST_URI}/index.html" -f' . "\n";
+	}
+	
 	$rules .= 'RewriteRule .* "' . $cache_root . $HTTP_HOST . '%{REQUEST_URI}/index.html" [L]' . "\n";
 	$rules .= '</IfModule>' . "\n";
 	$rules = apply_filters( 'rocket_htaccess_mod_rewrite', $rules );
