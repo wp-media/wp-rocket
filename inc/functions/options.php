@@ -84,7 +84,7 @@ function get_rocket_cache_reject_uri()
 	*/
 	$uri = apply_filters( 'rocket_cache_reject_uri', $uri );
 
-	$uri = implode( '|', (array)array_filter( $uri ) );
+	$uri = implode( '|', array_filter( $uri ) );
 	return $uri;
 
 }
@@ -116,7 +116,7 @@ function get_rocket_cache_reject_cookies()
 	*/
 	$cookies = apply_filters( 'rocket_cache_reject_cookies', $cookies );
 	
-	$cookies = implode( '|', (array)array_filter( $cookies ) );
+	$cookies = implode( '|', array_filter( $cookies ) );
 	return $cookies;
 
 }
