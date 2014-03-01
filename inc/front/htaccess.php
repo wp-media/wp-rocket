@@ -104,7 +104,7 @@ function get_rocket_htaccess_mod_rewrite()
 	$rules .= 'RewriteEngine On' . "\n";
 	$rules .= 'RewriteBase ' . $home_root . "\n";
 	$rules .= 'RewriteCond %{REQUEST_METHOD} GET' . "\n";
-	$rules .= 'RewriteCond %{QUERY_STRING} !.*=.*' . "\n";
+	$rules .= 'RewriteCond %{QUERY_STRING} =""' . "\n";
 	$rules .= 'RewriteCond %{HTTP:Cookie} !(' . get_rocket_cache_reject_cookies() . ') [NC]' . "\n";
 	$rules .= 'RewriteCond %{REQUEST_URI} !^(' . get_rocket_cache_reject_uri() . ')$ [NC]' . "\n";
 	$rules .= !is_rocket_cache_mobile() ? get_rocket_htaccess_mobile_rewritecond() : '';
