@@ -64,7 +64,7 @@ function get_rocket_purge_cron_interval()
 
 
 /**
- * Get all pages we don't cache (string)
+ * Get all pages we don't cache
  *
  * @since 2.0
  *
@@ -72,38 +72,64 @@ function get_rocket_purge_cron_interval()
 
 function get_rocket_cache_reject_uri()
 {
+
 	global $wp_rewrite;
 	$pages = array( '.*/' . $wp_rewrite->feed_base . '/' );
 	$cache_reject_uri = get_rocket_option( 'cache_reject_uri', array() );
 
 	if( count( $cache_reject_uri ) )
-		$pages =  array_filter( array_merge( $pages, $cache_reject_uri ) );
+	{
+		$pages = array_filter( array_merge( $pages, $cache_reject_uri ) );
+	}
 
-	return implode( '|', $pages );
+	/**
+	 * Filter the rejected pages
+	 *
+	 * @param array $pages
+	 * @since 2.1
+	*/
+	$pages = apply_filters( 'rocket_cache_reject_uri', $pages );
+
+	return implode( '|', (array)$pages );
+
 }
 
 
 
 /**
- * Get all cookie names we don't cache (string)
+ * Get all cookie names we don't cache
  *
- * since 1.0
+ * @since 2.0
  *
  */
 
 function get_rocket_cache_reject_cookies()
 {
-	
-	$cookies = array(
-		str_replace( COOKIEHASH, '', LOGGED_IN_COOKIE ),
-		'wp-postpass_',
-		'wptouch_switch_toggle',
-		'comment_author_',
-		'comment_author_email_'
-	);
 
-	return implode( '|', array_filter( array_merge( $cookies, get_rocket_option( 'cache_reject_cookies', array() ) ) ) );
-	
+	$cookies = array( 
+		str_replace( COOKIEHASH, '', LOGGED_IN_COOKIE ), 
+		'wp-postpass_', 
+		'wptouch_switch_toggle', 
+		'comment_author_', 
+		'comment_author_email_' 
+	);
+	$cache_reject_cookies = get_rocket_option( 'cache_reject_cookies', array() );
+
+	if( count( $cache_reject_cookies ) )
+	{
+		$cookies = array_filter( array_merge( $cookies, $cache_reject_cookies ) );
+	}
+
+	/**
+	 * Filter the rejected cookies
+	 *
+	 * @param array $cookies
+	 * @since 2.1
+	*/
+	$cookies = apply_filters( 'rocket_cache_reject_cookies', $cookies );
+
+	return implode( '|', (array)$cookies );
+
 }
 
 
