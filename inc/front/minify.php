@@ -159,7 +159,7 @@ function rocket_minify_css( $buffer )
         // or the file is already minify by get_rocket_minify_files
         // or the file is rejected to the process
         if ( ( !strpos( $tag, 'media=' ) || preg_match('/media=["\'](?:["\']|[^"\']*?(all|screen)[^"\']*?["\'])/', $tag ) )
-             && !strpos( $tag, 'data-pretty-minify=' )
+             && !strpos( $tag, 'data-minify=' )
              && !strpos( $tag, 'data-no-minify=' )
         ) {
 
@@ -245,7 +245,7 @@ function rocket_minify_js( $buffer )
 
         // Chek if the file is already minify by get_rocket_minify_files
         // or the file is rejected to the process
-        if ( !strpos( $tag, 'data-pretty-minify=' ) && !strpos( $tag, 'data-no-minify=' ) ) 
+        if ( !strpos( $tag, 'data-minify=' ) && !strpos( $tag, 'data-no-minify=' ) ) 
         {
        
 	        // Get URLs infos
