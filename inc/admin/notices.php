@@ -282,7 +282,7 @@ function rocket_warning_wp_config_permissions()
 
 				<p><?php printf( __( '<b>%s</b>: It seems we don\'t have <a href="%s" target="_blank">writing permissions</a> on <code>wp-config.php</code> file or the value of the constant <code>WP_CACHE</code> is set to <code>false</code>.<br>'.
 									 'To fix this you have to give write rights on <code>wp-config.php</code> and then save again this settings.<br>'.
-									 'If this message persists, you have to put this following code in your <code>wp-config.php</code> file so that it works correctly. Click on the field and press Ctrl-A to select all.', 'rocket' ), 'http://codex.wordpress.org/Changing_File_Permissions', WP_ROCKET_PLUGIN_NAME ); ?></p>
+									 'If this message persists, you have to put this following code in your <code>wp-config.php</code> file so that it works correctly. Click on the field and press Ctrl-A to select all.', 'rocket' ), WP_ROCKET_PLUGIN_NAME, 'http://codex.wordpress.org/Changing_File_Permissions' ); ?></p>
 
 				<?php
 
@@ -485,7 +485,7 @@ function rocket_warning_minify_cache_dir_permissions()
 
 	if( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
 	    && ( !is_writable( WP_ROCKET_MINIFY_CACHE_PATH ) )
-	    && ( get_rocket_option( 'minify_pretty_url_css', false ) || get_rocket_option( 'minify_pretty_url_js', false ) )
+	    && ( get_rocket_option( 'minify_css_pretty_url', false ) || get_rocket_option( 'minify_js_pretty_url', false ) )
 	    && rocket_valid_key()
 	) {
 

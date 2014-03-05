@@ -607,7 +607,7 @@ function rocket_display_options()
 				'description'  => sprintf( __( 'To learn more about this option and how to use it correctly, we advise you to watch the following video: <a href="%1$s" class="fancybox">%1$s</a>.', 'rocket' ), 'http://www.youtube.com/embed/ElJCtUidLwc' ),				
 				),
 			array( 
-				'type'         => 'helper_warning',
+				'type'         => 'helper_help',
 				'name'         => 'dns_prefetch',
 				'description'  => __( 'Enter the domain names without their protocol, for example: <code>//ajax.googleapis.com</code> without <code>http:</code> (one per line).', 'rocket' ),
 				),
@@ -632,7 +632,7 @@ function rocket_display_options()
 									  __( 'It\'s possible to use regular expressions (regex).', 'rocket' ),
 			),
 			array( 
-				'type'         => 'helper_warning',
+				'type'         => 'helper_help',
 				'name'         => 'purge_pages',
 				'description'  => __( 'When you update a post or when a comment is posted, the homepage, categories, and tags associated with this post are automatically removed from the cache and then, recreated by our bot.', 'rocket' ),
 			),
