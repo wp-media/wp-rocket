@@ -102,6 +102,7 @@ function rocket_init()
     require WP_ROCKET_FUNCTIONS_PATH . '/bots.php';
     require WP_ROCKET_INC_PATH       . '/deprecated.php';
     require WP_ROCKET_FRONT_PATH     . '/htaccess.php';
+    require WP_ROCKET_FRONT_PATH     . '/override-plugins.php';
     require WP_ROCKET_INC_PATH       . '/headers.php';
 
     if( rocket_valid_key() )
