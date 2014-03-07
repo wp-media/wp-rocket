@@ -209,6 +209,13 @@ function rocket_deactivation()
     // Delete content of advanced-cache.php file
     rocket_put_content( WP_CONTENT_DIR . '/advanced-cache.php', '' );
 	
+	// Delete config file
+	list( $config_files_path ) = get_rocket_config_file();
+	foreach( $config_files_path as $config_file ) 
+	{
+		unlink( $config_file );
+	}
+	
 }
 
 
