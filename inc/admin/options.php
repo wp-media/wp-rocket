@@ -750,10 +750,17 @@ function rocket_display_options()
 		'cdn',
 		'rocket_display_cdn_options',
 		array(
-			'type'         => 'checkbox',
-			'label'        => __('Enable Content Delivery Network.', 'rocket' ),
-			'label_for'    => 'cdn',
-			'label_screen' => __( 'CDN:', 'rocket' )
+			array(
+				'type'         => 'checkbox',
+				'label'        => __('Enable Content Delivery Network.', 'rocket' ),
+				'label_for'    => 'cdn',
+				'label_screen' => __( 'CDN:', 'rocket' )
+			),
+			array(
+				'type' 		  => 'helper_description',
+				'name' 		  => 'cdn',
+				'description' => __( 'La fonction de CDN remplace toutes les urls de vos fichiers statiques et media (CSS, JS, Images) avec l’url indiquez ci-dessous. De cette façon tout votre contenu sera copié vers un hébergement dédié ou vers un système de CDN comme <a href="http://www.maxcdn.com/" target="_blank">maxCDN</a>.', 'rocket' )
+			)
 		)
 	);
 	add_settings_field(
