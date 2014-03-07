@@ -9,13 +9,28 @@ defined( 'ABSPATH' ) or	die( __( 'Cheatin&#8217; uh?', 'rocket' ) );
  *
  */
 
-add_action( 'init', '__deactivate_rocket_lazyload_in_wptouch' );
-function __deactivate_rocket_lazyload_in_wptouch()
+add_action( 'init', '__deactivate_rocket_lazyload_with_wptouch' );
+function __deactivate_rocket_lazyload_with_wptouch()
 {
 
     if( function_exists( 'wptouch_is_mobile_theme_showing' ) && wptouch_is_mobile_theme_showing() )
     {
 		add_filter( 'do_rocket_lazyload', '__return_false' );
     }
+
+}
+
+/**
+ * Conflict with LayerSlider : don't add width and height attributes on all images
+ *
+ * @since 2.1
+ *
+ */
+ 
+add_action( 'layerslider_ready', '__deactivate_rocket_specify_image_dimensions_with_layerslider' );
+function __deactivate_rocket_specify_image_dimensions_with_layerslider() 
+{
+
+	remove_filter( 'rocket_buffer', 'rocket_specify_image_dimensions' );
 
 }
