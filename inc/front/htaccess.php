@@ -81,7 +81,8 @@ function get_rocket_htaccess_marker()
 
 function get_rocket_htaccess_mod_rewrite()
 {
-
+	
+	// No rewrite rules for multisite
 	if( is_multisite() )
 		return;
 
@@ -93,7 +94,14 @@ function get_rocket_htaccess_mod_rewrite()
 	$site_root = isset( $site_root['path'] ) ? trailingslashit($site_root['path']) : '';
 
 	// Get cache root
-	$cache_root = $site_root . str_replace( ABSPATH, '', WP_ROCKET_CACHE_PATH );
+	if( strpos( ABSPATH, WP_ROCKET_CACHE_PATH ) === false ) 
+	{
+		$cache_root = str_replace( $_SERVER['DOCUMENT_ROOT'] , '', WP_ROCKET_CACHE_PATH);
+	}
+	else 
+	{
+		$cache_root = $site_root . str_replace( ABSPATH, '', WP_ROCKET_CACHE_PATH );
+	}
 
 	// Set correct HOST depending on hook (not multisite compatible!)
 	$HTTP_HOST = apply_filters( 'rocket_url_no_dots', false ) ? rocket_remove_url_protocol( home_url() ) : '%{HTTP_HOST}';
