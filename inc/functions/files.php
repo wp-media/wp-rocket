@@ -551,7 +551,6 @@ function rocket_mkdir_p( $target )
 /**
  * File creation based on WordPress Filesystem
  *
- * @since 2.1 add $chmod arg
  * @since 1.3.5
  *
  */

@@ -457,24 +457,12 @@ function rocket_display_options()
 				'name'         => 'minify_css',
 				'label_screen' => __( 'CSS Files minification', 'rocket' )
 			),
-				array(
-					'type'         => 'checkbox',
-					'label'        => __( 'Use "Pretty URL"', 'rocket' ),
-					'name'         => 'minify_css_pretty_url',
-					'label_screen' => __( 'CSS pretty URL', 'rocket' )
-				),
 			array(
 				'type'		   => 'checkbox',
 				'label'		   => 'JS',
 				'name'		   => 'minify_js',
 				'label_screen' => __( 'JS Files minification', 'rocket' ),
 			),
-				array(
-					'type'         => 'checkbox',
-					'label'        => __( 'Use "Pretty URL"', 'rocket' ),
-					'name'         => 'minify_js_pretty_url',
-					'label_screen' => __( 'JS pretty URL', 'rocket' )
-				),
 			array( 
 				'type'			=> 'helper_description',
 				'name'			=> 'minify',

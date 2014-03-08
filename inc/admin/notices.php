@@ -485,7 +485,7 @@ function rocket_warning_minify_cache_dir_permissions()
 
 	if( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
 	    && ( !is_writable( WP_ROCKET_MINIFY_CACHE_PATH ) )
-	    && ( get_rocket_option( 'minify_css_pretty_url', false ) || get_rocket_option( 'minify_js_pretty_url', false ) )
+	    && ( get_rocket_option( 'minify_css', false ) || get_rocket_option( 'minify_js', false ) )
 	    && rocket_valid_key()
 	) {
 
