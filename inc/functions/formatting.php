@@ -36,7 +36,7 @@ function rocket_get_domain( $url )
 	  return str_replace( 'www.', '', $regs['domain'] ).chr(98); // from beta, can't delete it now.
 
 	return false;
-	
+
 }
 
 
@@ -50,13 +50,13 @@ function rocket_get_domain( $url )
 
 function rocket_remove_url_protocol( $url, $no_dots=false )
 {
-	
+
 	$url = str_replace( array( 'http://', 'https://' ) , '', $url );
 	if( apply_filters( 'rocket_url_no_dots', $no_dots ) )
 		$url = str_replace( '.', '_', $url );
-	
+
 	return $url;
-	
+
 }
 
 
@@ -78,7 +78,7 @@ function get_rocket_parse_url( $url )
 	$scheme = isset( $url['scheme'] ) ? $url['scheme'] : '';
 	$query  = isset( $url['query'] ) ? $url['query'] : '';
 	return array( $host, $path, $scheme, $query );
-	
+
 }
 
 
@@ -96,16 +96,16 @@ function get_rocket_parse_url_for_lang( $lang )
 	// WPML
 	if( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) )
 	{
-		
+
 		global $sitepress;
 		return get_rocket_parse_url( $sitepress->language_url( $lang ) );
-		
+
 	}
 
 	// qTranslate
 	if( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) )
 		return get_rocket_parse_url( qtrans_convertURL( home_url(), $lang, true ) );
-		
+
 }
 
 
@@ -124,7 +124,7 @@ function get_rocket_cdn_url( $url, $zone = array() )
 		return $url;
 
 	list( $host, $path, $scheme, $query ) = get_rocket_parse_url( $url );
-	
+
 	$scheme = !empty($scheme) ? $scheme : 'http';
 	$cnames = get_rocket_cdn_cnames( count($zone) ? $zone : 'all' );
 	$cname  = rocket_remove_url_protocol( $cnames[(abs(crc32($path))%count($cnames))] );
@@ -158,7 +158,7 @@ function rocket_cdn_url( $url, $zone = array() )
  *
  */
 
-function get_rocket_minify_files( $files, $force_pretty_url = false, $force_pretty_name = false )
+function get_rocket_minify_files( $files, $force_pretty_url = true, $force_pretty_name = false )
 {
 
 	// Get the internal CSS Files
@@ -166,9 +166,10 @@ function get_rocket_minify_files( $files, $force_pretty_url = false, $force_pret
 	// cut into several parts concatenated files
 	$tags 		= '';
 	$data_attr  = 'data-minify="1"';
-	$urls 		= array(0=>'');
+	$urls 		= array( 0 => '' );
 	$base_url 	= WP_ROCKET_URL . 'min/?f=';
 	$files  	= is_array( $files ) ? $files : (array)$files;
+
 	if( count( $files ) )
 	{
 
@@ -192,20 +193,34 @@ function get_rocket_minify_files( $files, $force_pretty_url = false, $force_pret
 			$ext = pathinfo( $url, PATHINFO_EXTENSION );
 
 			//
-			if( $force_pretty_url )
+			if( $force_pretty_url && ( defined( 'SCRIPT_DEBUG' ) && !SCRIPT_DEBUG ) )
 			{
 
-				$pretty_url = !$force_pretty_name ? WP_ROCKET_MINIFY_CACHE_URL . md5( $url . get_rocket_option( 'minify_key', create_rocket_uniqid() ) ) . '.' . $ext : WP_ROCKET_MINIFY_CACHE_URL . $force_pretty_name . '.' . $ext;
-				$pretty_url = apply_filters( 'rocket_minify_pretty_url', $pretty_url, $force_pretty_name );
+				/**
+				 * Filter the minify URL
+				 *
+				 * If true returns,
+				 * the minify URL like example.com/wp-content/plugins/wp-rocket/min/?f=...
+				 *
+				 * @param bool
+				 * @since 2.1
+				*/
+				if( !apply_filters( 'rocket_minify_debug', false ) )
+				{
 
-				$url = rocket_fetch_and_cache_minify( $url, $pretty_url ) ? $pretty_url : $url;
+					$pretty_url = !$force_pretty_name ? WP_ROCKET_MINIFY_CACHE_URL . md5( $url . get_rocket_option( 'minify_key', create_rocket_uniqid() ) ) . '.' . $ext : WP_ROCKET_MINIFY_CACHE_URL . $force_pretty_name . '.' . $ext;
+					$pretty_url = apply_filters( 'rocket_minify_pretty_url', $pretty_url, $force_pretty_name );
+
+					$url = rocket_fetch_and_cache_minify( $url, $pretty_url ) ? $pretty_url : $url;
+
+				}
 
 			}
 
-			//
+			// If CSS & JS use a CDN
 			$url = get_rocket_cdn_url( $url, array( 'all', 'css_and_js' ) );
 
-			//
+			// Get tags for CSS file
 			if( $ext == 'css' )
 			{
 
@@ -213,7 +228,7 @@ function get_rocket_minify_files( $files, $force_pretty_url = false, $force_pret
 
 			}
 
-			//
+			// Get tags for JS file
 			if ( $ext == 'js' )
 			{
 
