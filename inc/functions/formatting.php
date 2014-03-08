@@ -33,7 +33,7 @@ function rocket_get_domain( $url )
 {
 
 	if( preg_match( '/(?P<domain>[a-z0-9][a-z0-9\-]{1,63}\.[a-z\.]{2,6})$/i', parse_url( $url, PHP_URL_HOST ), $regs ) )
-	  return $regs['domain'].chr(98); //// beta
+	  return str_replace( 'www.', '', $regs['domain'] ).chr(98); // from beta, can't delete it now.
 
 	return false;
 	

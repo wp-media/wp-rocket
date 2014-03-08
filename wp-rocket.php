@@ -207,14 +207,15 @@ function rocket_deactivation()
     // Remove WP_CACHE constant in wp-config.php
     set_rocket_wp_cache_define( false );
 
-    // Delete content of advanced-cache.php file
+    // Delete content of advanced-cache.php + file
     rocket_put_content( WP_CONTENT_DIR . '/advanced-cache.php', '' );
+    @unlink( WP_CONTENT_DIR . '/advanced-cache.php' );
 	
 	// Delete config file
 	list( $config_files_path ) = get_rocket_config_file();
 	foreach( $config_files_path as $config_file ) 
 	{
-		unlink( $config_file );
+		@unlink( $config_file );
 	}
 	
 }

@@ -320,12 +320,12 @@ function rocket_white_label( $plugins )
 	$plugins['wp-rocket/wp-rocket.php'] = array(
 	      'Name' => get_rocket_option( 'wl_plugin_name' ),
 	      'PluginURI' => get_rocket_option( 'wl_plugin_URI' ),
-	      'Version' => $plugins['wp-rocket/wp-rocket.php']['Version'],
+	      'Version' => isset( $plugins['wp-rocket/wp-rocket.php']['Version'] ) ? $plugins['wp-rocket/wp-rocket.php']['Version'] : '',
 	      'Description' => reset( ( get_rocket_option( 'wl_description' ) ) ),
 	      'Author' => get_rocket_option( 'wl_author' ),
 	      'AuthorURI' => get_rocket_option( 'wl_author_URI' ),
-	      'TextDomain' => $plugins['wp-rocket/wp-rocket.php']['TextDomain'],
-	      'Domain Path' => $plugins['wp-rocket/wp-rocket.php']['Domain Path'],
+	      'TextDomain' => isset( $plugins['wp-rocket/wp-rocket.php']['TextDomain'] ) ? $plugins['wp-rocket/wp-rocket.php']['TextDomain'] : '',
+	      'DomainPath' => isset( $plugins['wp-rocket/wp-rocket.php']['DomainPath'] ) ? $plugins['wp-rocket/wp-rocket.php']['DomainPath'] : '',
 	      );
 
 	// if white label, remove our names from contributors
