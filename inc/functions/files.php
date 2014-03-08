@@ -205,13 +205,14 @@ function set_rocket_wp_cache_define( $turn_it_on )
 	}
 	
 	// Insert the constant in wp-config.php file
-	$handle = fopen( $config_file_path, 'w' );
+	$handle = @fopen( $config_file_path, 'w' );
 	foreach( $config_file as $line ) 
-		fwrite( $handle, $line );
-	fclose( $handle );
+		@fwrite( $handle, $line );
+	@fclose( $handle );
 	
 	// Update the writing permissions of wp-config.php file
-	chmod( $config_file_path, 0644 );
+	$chmod = defined( 'FS_CHMOD_FILE' ) ? FS_CHMOD_FILE : 0644;
+	@chmod( $config_file_path, $chmod );
 	
 }
 
@@ -566,7 +567,9 @@ function rocket_put_content( $file, $content )
 		$wp_filesystem = new WP_Filesystem_Direct( new StdClass() );
 	}
 	
-	return $wp_filesystem->put_contents( $file, $content );
+	$chmod = defined( 'FS_CHMOD_FILE' ) ? FS_CHMOD_FILE : 0644;
+	return $wp_filesystem->put_contents( $file, $content, $chmod );
+	
 }
 
 
