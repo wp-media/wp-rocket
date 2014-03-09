@@ -91,8 +91,14 @@ function get_rocket_config_file()
 
 
 	$config_files_path = array();
-	$urls = rocket_has_translation_plugin_active() ? get_rocket_subdomains_langs() : array( home_url() );
-
+	$urls = array( home_url() );	
+	
+	// Check if a translation plugin is activated and this configuration is in subdomain
+	if( $subdomains = get_rocket_subdomains_langs() ) 
+	{
+		$urls = $subdomains;
+	}
+	
 	foreach( $urls as $url )
 	{
 
@@ -142,9 +148,10 @@ function rocket_generate_config_file()
 {
 
 	list( $config_files_path, $buffer ) = get_rocket_config_file();
-
-	foreach( $config_files_path as $file )
-		rocket_put_content( $file , $buffer );
+	foreach( $config_files_path as $file ) 
+	{
+		rocket_put_content( $file , $buffer );	
+	}
 
 }
 

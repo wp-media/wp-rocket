@@ -185,13 +185,16 @@ function get_rocket_langs_to_preserve( $current_lang )
 function get_rocket_subdomains_langs()
 {
 
+	// Check if a translation plugin is activated
+	if( !rocket_has_translation_plugin_active() ) 
+		return false;
+	
 	$urls = array();
 
 	// WPML
 	if( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) )
 	{
 
-		global $sitepress;
 		$option = get_option( 'icl_sitepress_settings' );
 
 		// Check if WPML set to serve subdomains URL
