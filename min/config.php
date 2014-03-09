@@ -5,13 +5,7 @@
  * 
  * @package Minify
  */
-
-
-/**
- * Allow use of the Minify URI Builder app. Only set this to true while you need it.
- **/
-$min_enableBuilder = false;
-
+ 
 
 /**
  * Set to true to log messages to FirePHP (Firefox Firebug addon).

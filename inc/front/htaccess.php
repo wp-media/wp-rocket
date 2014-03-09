@@ -20,23 +20,24 @@ function flush_rocket_htaccess( $force = false, $wp_rocket_plugin_name = WP_ROCK
 	$rules = '';
 	$htaccess_file =  get_home_path() . '.htaccess';
 
+	
 	if( is_writable( $htaccess_file ) )
 	{
 
 		// Get content of .htaccess file
 		$ftmp = file_get_contents( $htaccess_file );
-
+		
 		// Remove the WP Rocket marker
 		$ftmp = preg_replace( '/# BEGIN '.$wp_rocket_plugin_name.'(.*)# END '.$wp_rocket_plugin_name.'(.*)#/isUe', '', $ftmp );
 
 		// Remove empty spacings
 		$ftmp = str_replace( "\n\n" , "\n" , $ftmp );
-
+		
 		if( $force === false )
 		{
 			$rules = get_rocket_htaccess_marker();
 		}
-
+		
 		// Update the .htacces file
 		rocket_put_content( $htaccess_file , $rules . $ftmp );
 

@@ -158,7 +158,7 @@ function rocket_cdn_url( $url, $zone = array() )
  *
  */
 
-function get_rocket_minify_files( $files, $force_pretty_url = true, $force_pretty_name = false )
+function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_filename = null )
 {
 
 	// Get the internal CSS Files
@@ -167,7 +167,8 @@ function get_rocket_minify_files( $files, $force_pretty_url = true, $force_prett
 	$tags 		= '';
 	$data_attr  = 'data-minify="1"';
 	$urls 		= array( 0 => '' );
-	$base_url 	= WP_ROCKET_URL . 'min/?f=';
+	$bubble     = is_child_theme() ? $url . 'bubbleCssImports=1&' : '';
+	$base_url 	= WP_ROCKET_URL . 'min/?' . $bubble . 'f=';
 	$files  	= is_array( $files ) ? $files : (array)$files;
 
 	if( count( $files ) )
@@ -208,8 +209,17 @@ function get_rocket_minify_files( $files, $force_pretty_url = true, $force_prett
 				if( !apply_filters( 'rocket_minify_debug', false ) )
 				{
 
-					$pretty_url = !$force_pretty_name ? WP_ROCKET_MINIFY_CACHE_URL . md5( $url . get_rocket_option( 'minify_key', create_rocket_uniqid() ) ) . '.' . $ext : WP_ROCKET_MINIFY_CACHE_URL . $force_pretty_name . '.' . $ext;
-					$pretty_url = apply_filters( 'rocket_minify_pretty_url', $pretty_url, $force_pretty_name );
+					$pretty_url = !$pretty_filename ? WP_ROCKET_MINIFY_CACHE_URL . md5( $url . get_rocket_option( 'minify_key', create_rocket_uniqid() ) ) . '.' . $ext : WP_ROCKET_MINIFY_CACHE_URL . $pretty_filename . '.' . $ext;
+					
+					
+					/**
+					 * Filter the pretty minify URL
+					 *
+					 * @param string $pretty_url
+					 * @param string $pretty_filename
+					 * @since 2.1
+					*/
+					$pretty_url = apply_filters( 'rocket_minify_pretty_url', $pretty_url, $pretty_filename );
 
 					$url = rocket_fetch_and_cache_minify( $url, $pretty_url ) ? $pretty_url : $url;
 
@@ -253,9 +263,9 @@ function get_rocket_minify_files( $files, $force_pretty_url = true, $force_prett
  *
  */
 
-function rocket_minify_files( $files, $force_pretty_url = false, $force_pretty_name = false )
+function rocket_minify_files( $files, $force_pretty_url = true, $pretty_filename = null )
 {
 
-	echo get_rocket_minify_files( $files, $force_pretty_url, $force_pretty_name );
+	echo get_rocket_minify_files( $files, $force_pretty_url, $pretty_filename );
 
 }

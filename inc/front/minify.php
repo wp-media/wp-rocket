@@ -212,7 +212,7 @@ function rocket_minify_css( $buffer )
 	}
 
 	// Insert the minify css file below <head>
-	return array( $buffer, $fonts_tags . $external_tags . get_rocket_minify_files( $internal_files, true ) . $excluded_tags );
+	return array( $buffer, $fonts_tags . $external_tags . get_rocket_minify_files( $internal_files ) . $excluded_tags );
 
 }
 
@@ -284,7 +284,7 @@ function rocket_minify_js( $buffer )
 
 	}
     // Insert the minify JS file
-    return array( $buffer, $external_tags . get_rocket_minify_files( $internal_files, true ) . $excluded_tags );
+    return array( $buffer, $external_tags . get_rocket_minify_files( $internal_files ) . $excluded_tags );
 
 }
 
