@@ -158,7 +158,7 @@ function rocket_init()
 		/**
 		 * Fires when WP Rocket is correctly loaded
 		 *
-		 * @since 2.1
+		 * @since 1.0
 		*/
 		do_action( 'wp_rocket_loaded' );
     }
