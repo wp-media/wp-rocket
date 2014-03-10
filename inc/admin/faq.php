@@ -1,10 +1,8 @@
 <?php defined( 'ABSPATH' ) or	die( __( 'Cheatin&#8217; uh?', 'rocket' ) ); ?>
 
 <h2><?php _e( 'My key does not work', 'rocket' );?></h2>
-<p><?php _e( 'Check the spelling of your site in your profile on the WP Rocket\'s site.', 'rocket' );?></p>
-<p><?php _e( 'If it\'s correct, check if the entered website is the same as the one in the WordPress options and not a redirection.', 'rocket' );?></p>
-<p><?php _e( 'Example with the site example.com in the WordPress setup: if it redirects on .fr, and you would have entered the .fr in your WP Rocket account, then there is a problem.', 'rocket' );?></p>
-<p><?php _e( 'The two values are different, the key is not valid for the .com but for .fr', 'rocket' );?></p>
+<p><?php _e( 'Check the spelling of your website in your profile on the WP Rocket\'s site.', 'rocket' );?></p>
+<p><?php _e( 'If the spelling is correct, check if the entered website is the same as the one in the WordPress options and not a redirection.', 'rocket' );?></p>
 
 <h2><?php _e( 'For how many sites my key is valid for?', 'rocket' );?></h2>
 <p><?php _e( 'A key is valid for 1 domain name. If you have example.com, that makes 1 key.', 'rocket' );?></p>
@@ -51,9 +49,10 @@
 	<li><a href="http://tools.pingdom.com/fpt/" target="_blank">Pingdom Tools</a></li>
 	<li><a href="http://gtmetrix.com/" target="_blank">GT Metrix</a></li>
 	<li><a href="http://www.webpagetest.org/" target="_blank">Webpagetest</a></li>
+	<li><a href="https://www.dareboost.com/en/home" target="_blank">Dareboost</a></li>
 </ul>
 
-<p><?php _e( 'These last 2 give two indications:', 'rocket' );?></p>
+<p><?php _e( 'These tools give you two indications:', 'rocket' );?></p>
 <ul>
 	<li><?php _e( 'a global note of good practices to apply', 'rocket' );?></li>
 	<li><?php _e( 'a loading time', 'rocket' );?></li>
@@ -61,7 +60,7 @@
 
 <p><?php _e( 'These data are indicative and do not necessarily reflect the actual display speed of your website', 'rocket' );?>.</p>
 
-<p><?php _e( 'For tests closest to reality load time we recommend using <a href="http://tools.pingdom.com/fpt/" target="_blank">Pingdom Tools</a> with <code>Amsterdam</code> setup as server.', 'rocket' );?></p>
+<p><?php _e( 'For tests closest to reality load time we recommend using <a href="http://tools.pingdom.com/fpt/" target="_blank">Pingdom Tools</a>.', 'rocket' );?></p>
 
 <h2><?php _e( 'WP Rocket work with default permalinks?', 'rocket' );?></h2>
 <p><?php _e( 'No.', 'rocket' );?></p>
@@ -69,7 +68,7 @@
 <p><?php _e( 'It\'s necessary to have custom permalinks of the type <code>http://example.com/mon-article/</code> rather than <code>http://example.com/?p=1234</code>.', 'rocket' );?></p>
 
 <h2><?php _e( 'Which web servers WP Rocket is compatible with?', 'rocket' );?></h2>
-<p><?php _e( 'WP Rocket is compatible with <strong>Apache</strong> web servers. For the moment, WP Rocket is therefore not compatible with NGINX and Litepseed web servers.', 'rocket' );?></p>
+<p><?php _e( 'WP Rocket is compatible with <strong>Apache, NGINX, Microsoft IIS et Litepseed</strong> web servers.', 'rocket' );?></p>
 
 <h2><?php _e( 'Reports from PageSpeed and YSlow tells me that the content is not gziped and/or did not expire, what should I do?', 'rocket' );?></h2>
 
@@ -114,6 +113,6 @@ __( '/checkout/(.*)', 'rocket' );?></code></p>
 <h2><?php _e( 'How does the robots of preloading the cache files work?', 'rocket' );?></h2>
 <p><?php _e( 'To cache a page, it must be a first visitor. To avoid that a first visitor to do so, we have developed two robots (in python) that crawl the pages of your website.', 'rocket' );?></p>
 
-<p><?php _e( 'The first will visit your site when using the button "Preload the cache". The second will automatically visit your site as soon as you are going to create/edit/delete an article.', 'rocket' );?></p>
+<p><?php _e( 'The first visits your site when using the button "Preload the cache". The second will automatically visit your site as soon as you are going to create/edit/delete an article.', 'rocket' );?></p>
 
 <p><?php _e( 'For more information, please visit our video: <a href="http://www.youtube.com/embed/9jDcg2f-9yM" class="fancybox">http://www.youtube.com/embed/9jDcg2f-9yM</a>.', 'rocket' );?></p>
