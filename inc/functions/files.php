@@ -226,55 +226,6 @@ function set_rocket_wp_cache_define( $turn_it_on )
 
 
 /**
- * Added or set the value of the COOKIE_DOMAIN constant
- *
- * @since 2.0
- *
- */
-
-function set_rocket_cookie_domain_define( $turn_it_on )
-{
-
-	if( is_multisite() )
-		return false;
-
-	// If COOKIE_DOMAIN is already defined, return to get a coffee
-	if( $turn_it_on && defined( 'COOKIE_DOMAIN' ) && COOKIE_DOMAIN  )
-		return;
-
-	$config_file = rocket_find_wpconfig_path();
-    if ( !$config_file )
-        return;
-
-	// Get content of the config file
-	$config_file_content = @file_get_contents( $config_file );
-
-	if( !$turn_it_on )
-	{
-
-		$config_file_content = preg_replace( "~\\/\\*\\* Enable Cookie domain \\*\\*?\\/.*?\\/\\/ Added by ".WP_ROCKET_PLUGIN_NAME."(\r\n)*~s", '', $config_file_content );
-		$config_file_content = preg_replace( "~(\\/\\/\\s*)?define\\s*\\(\\s*['\"]?COOKIE_DOMAIN['\"]?\\s*,.*?\\)\\s*;+\\r?\\n?~is", '', $config_file_content );
-
-	}
-	else
-	{
-
-		// Get the content of the COOKIE_DOMAIN constant added by WP Rocket
-		$host = parse_url( home_url(), PHP_URL_HOST );
-		$define = "/** Enable Cookie domain */\r\n" . "define('COOKIE_DOMAIN', '$host'); // Added by ".WP_ROCKET_PLUGIN_NAME."\r\n";
-
-		$config_file_content = preg_replace( '~<\?(php)?~', "\\0\r\n" . $define, $config_file_content );
-
-	}
-
-	// Put the constant to the beginning of wp-config.php
-	rocket_put_content( rocket_find_wpconfig_path(), $config_file_content );
-
-}
-
-
-
-/**
  * Delete all minify cache files
  *
  * @since 2.1
