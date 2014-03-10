@@ -33,7 +33,7 @@ define( 'WP_ROCKET_ADMIN_PATH'          , realpath( WP_ROCKET_INC_PATH . 'admin'
 define( 'WP_ROCKET_FUNCTIONS_PATH'      , realpath( WP_ROCKET_INC_PATH . 'functions' ) . '/' );
 define( 'WP_ROCKET_CONFIG_PATH'         , WP_CONTENT_DIR . '/wp-rocket-config/' );
 define( 'WP_ROCKET_CACHE_PATH'          , WP_CONTENT_DIR . '/cache/wp-rocket/' );
-define( 'WP_ROCKET_MINIFY_CACHE_PATH'   , WP_CONTENT_DIR . '/cache/minify/' );
+define( 'WP_ROCKET_MINIFY_CACHE_PATH'   , WP_CONTENT_DIR . '/cache/min/' );
 define( 'WP_ROCKET_URL'                 , plugin_dir_url( WP_ROCKET_FILE ) );
 define( 'WP_ROCKET_INC_URL'             , WP_ROCKET_URL . 'inc/' );
 define( 'WP_ROCKET_FRONT_URL'           , WP_ROCKET_INC_URL . 'front/' );
@@ -44,7 +44,7 @@ define( 'WP_ROCKET_ADMIN_JS_URL'        , WP_ROCKET_ADMIN_URL . 'js/' );
 define( 'WP_ROCKET_ADMIN_CSS_URL'       , WP_ROCKET_ADMIN_URL . 'css/' );
 define( 'WP_ROCKET_ADMIN_IMG_URL'       , WP_ROCKET_ADMIN_URL . 'img/' );
 define( 'WP_ROCKET_CACHE_URL'           , WP_CONTENT_URL . '/cache/wp-rocket/' );
-define( 'WP_ROCKET_MINIFY_CACHE_URL'    , WP_CONTENT_URL . '/cache/minify/' );
+define( 'WP_ROCKET_MINIFY_CACHE_URL'    , WP_CONTENT_URL . '/cache/min/' );
 if( !defined( 'CHMOD_WP_ROCKET_CACHE_DIRS' ) )
     define( 'CHMOD_WP_ROCKET_CACHE_DIRS', 0755 );
 
@@ -72,7 +72,7 @@ if( !defined( 'YEAR_IN_SECONDS' ) )
 add_action( 'plugins_loaded', 'rocket_init' );
 function rocket_init()
 {
-    
+
     // Load translations
     load_plugin_textdomain( 'rocket', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 
@@ -94,7 +94,7 @@ function rocket_init()
     define( 'WP_ROCKET_PLUGIN_SLUG', sanitize_key( WP_ROCKET_PLUGIN_NAME ) );
 
     // Call defines,  classes and functions
-    require WP_ROCKET_FUNCTIONS_PATH . '/files.php';
+	require WP_ROCKET_FUNCTIONS_PATH . '/files.php';
     require WP_ROCKET_FUNCTIONS_PATH . '/posts.php';
     require WP_ROCKET_FUNCTIONS_PATH . '/admin.php';
     require WP_ROCKET_FUNCTIONS_PATH . '/formatting.php';
@@ -114,7 +114,7 @@ function rocket_init()
         {
             require  WP_ROCKET_INC_PATH . '/cron.php';
         }
-            
+
         if( (int)get_rocket_option( 'cdn' ) > 0 )
         {
         	require  WP_ROCKET_FRONT_PATH . '/cdn.php';
@@ -132,25 +132,37 @@ function rocket_init()
     }
     elseif( rocket_valid_key() )
     {
-        
+
         require WP_ROCKET_FRONT_PATH . '/minify.php';
         require WP_ROCKET_FRONT_PATH . '/cookie.php';
         require WP_ROCKET_FRONT_PATH . '/images.php';
         require WP_ROCKET_FRONT_PATH . '/enqueue.php';
         require WP_ROCKET_FRONT_PATH . '/dns-prefetch.php';
 
-        if( get_rocket_option( 'deferred_js_files' ) )
-            require WP_ROCKET_FRONT_PATH . '/deferred-js.php';
+        if( get_rocket_option( 'deferred_js_files' ) ) 
+        {
+	       require WP_ROCKET_FRONT_PATH . '/deferred-js.php'; 
+        }
+            
 
-        if( get_rocket_option( 'lazyload' ) == '1' )
-			require WP_ROCKET_FRONT_PATH . '/lazyload.php';
+        if( get_rocket_option( 'lazyload' ) == '1' ) 
+        {
+	       require WP_ROCKET_FRONT_PATH . '/lazyload.php'; 
+        }
+			
     }
-	
+
     // You can hook this to trigger any action when WP Rocket is correctly loaded, so, not in AUTOSAVE mode
-    if( rocket_valid_key() )
+	if( rocket_valid_key() )
     {
+		/**
+		 * Fires when WP Rocket is correctly loaded
+		 *
+		 * @since 2.1
+		*/
 		do_action( 'wp_rocket_loaded' );
     }
+    
 }
 
 
@@ -174,32 +186,32 @@ function rocket_deactivation()
     {
 
         $causes = array();
-       
+
         // .htaccess problem
         global $is_apache;
         if( $is_apache && !is_writable( $htaccess_file ) )
         {
             $causes[] = 'htaccess';
         }
-       
+
         // wp-config problem
         if( !is_writable( $config_file ) )
         {
             $causes[] = 'wpconfig';
         }
-		
-		if( count( $causes ) ) 
+
+		if( count( $causes ) )
 		{
-			
+
 			global $current_user;
 	        set_transient( $current_user->ID . '_donotdeactivaterocket', $causes );
 	        wp_safe_redirect( wp_get_referer() );
 	        die();
-	        
-		}    
-        
+
+		}
+
     }
-    
+
     // Delete All WP Rocket rules of the .htaccess file
     flush_rocket_htaccess( true );
     flush_rewrite_rules();
@@ -207,17 +219,16 @@ function rocket_deactivation()
     // Remove WP_CACHE constant in wp-config.php
     set_rocket_wp_cache_define( false );
 
-    // Delete content of advanced-cache.php + file
+    // Delete content of advanced-cache.php
     rocket_put_content( WP_CONTENT_DIR . '/advanced-cache.php', '' );
-    @unlink( WP_CONTENT_DIR . '/advanced-cache.php' );
-	
-	// Delete config file
+
+	// Delete config files
 	list( $config_files_path ) = get_rocket_config_file();
-	foreach( $config_files_path as $config_file ) 
+	foreach( $config_files_path as $config_file )
 	{
 		@unlink( $config_file );
 	}
-	
+
 }
 
 
@@ -233,7 +244,7 @@ register_activation_hook( __FILE__, 'rocket_activation' );
 function rocket_activation()
 {
 
-    // Last constants
+	// Last constants
     define( 'WP_ROCKET_PLUGIN_NAME', 'WP Rocket' );
     define( 'WP_ROCKET_PLUGIN_SLUG', sanitize_key( WP_ROCKET_PLUGIN_NAME ) );
 
@@ -246,15 +257,19 @@ function rocket_activation()
     // Add All WP Rocket rules of the .htaccess file
     flush_rocket_htaccess();
     flush_rewrite_rules();
-		
+
 	// Create cache folder if not exist
-    if( !is_dir( WP_ROCKET_CACHE_PATH ) )
-	    rocket_mkdir_p( WP_ROCKET_CACHE_PATH );
-	
+    if( !is_dir( WP_ROCKET_CACHE_PATH ) ) 
+    {
+	   rocket_mkdir_p( WP_ROCKET_CACHE_PATH ); 
+    }
+	    
 	// Create minify cache folder if not exist
-    if( !is_dir( WP_ROCKET_MINIFY_CACHE_PATH ) )
-	    rocket_mkdir_p( WP_ROCKET_MINIFY_CACHE_PATH );
-	
+    if( !is_dir( WP_ROCKET_MINIFY_CACHE_PATH ) ) 
+    {
+		rocket_mkdir_p( WP_ROCKET_MINIFY_CACHE_PATH );
+    }
+
 	// Add WP_CACHE constant in wp-config.php
 	set_rocket_wp_cache_define( true );
 
@@ -263,4 +278,5 @@ function rocket_activation()
 
 	// Create config file
 	rocket_generate_config_file();
+
 }
