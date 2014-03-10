@@ -38,7 +38,9 @@ function rocket_purge_cron_scheduled()
 {
 
 	if( !wp_next_scheduled( 'rocket_purge_time_event' ) )
+	{
 		wp_schedule_event( time() + get_rocket_purge_cron_interval(), 'rocket_purge', 'rocket_purge_time_event' );
+	}
 
 }
 
@@ -59,7 +61,6 @@ function do_rocket_purge_cron()
 
 	if( rocket_has_translation_plugin_active() )
 	{
-
 		// Purge files
 		rocket_clean_domain_for_all_langs();
 
@@ -68,7 +69,6 @@ function do_rocket_purge_cron()
 	}
 	else
 	{
-
 		// Purge files
 		rocket_clean_domain();
 
