@@ -1285,10 +1285,7 @@ function rocket_after_save_options( $oldvalue, $value )
 
 	// Update config file
 	rocket_generate_config_file();
-
-	// Set COOKIE_DOMAIN constant in wp-config.php
-	set_rocket_cookie_domain_define( get_rocket_option( 'cdn', false ) );
-
+	
 	// Set WP_CACHE constant in wp-config.php
 	set_rocket_wp_cache_define( true );
 

@@ -174,7 +174,6 @@ function get_rocket_langs_to_preserve( $current_lang )
 }
 
 
-
 /**
  * Get subdomains URL of all languages
  *
