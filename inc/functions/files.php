@@ -341,22 +341,28 @@ function rocket_clean_files( $urls )
 
 function rocket_clean_home()
 {
-	$root = WP_ROCKET_CACHE_PATH . rocket_remove_url_protocol( home_url() );
 
+	list( $host, $path ) = get_rocket_parse_url( home_url() );
+	$root = WP_ROCKET_CACHE_PATH . $host . '*' . $path;
+	
 	do_action( 'before_rocket_clean_home', $root );
 
 	// Delete homepage
 	if( $files = glob( $root . '*/index.html' ) )
 	{
-		foreach( $files as $file )
+		foreach( $files as $file ) 
+		{
 			@unlink( $file );
+		}
 	}
 
 	// Delete homepage pagination
 	if( $dirs = glob( $root . '*/' . $GLOBALS['wp_rewrite']->pagination_base ) )
 	{
-		foreach( $dirs as $dir )
+		foreach( $dirs as $dir ) 
+		{
 			rocket_rrmdir( $dir );
+		}
 	}
 
     do_action( 'after_rocket_clean_home', $root );
@@ -374,8 +380,10 @@ function rocket_clean_home()
 
 function rocket_clean_domain()
 {
-	$domain = WP_ROCKET_CACHE_PATH . rocket_remove_url_protocol( home_url() );
 
+	list( $host, $path ) = get_rocket_parse_url( home_url() );
+	$domain = WP_ROCKET_CACHE_PATH . $host . '*' . $path;
+		
 	do_action( 'before_rocket_clean_domain', $domain );
 
 	// Delete cache domain files

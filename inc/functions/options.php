@@ -176,7 +176,7 @@ function get_rocket_cdn_cnames( $_zone = 'all' )
 
 function rocket_valid_key()
 {
-
+	
 	if( !get_rocket_option( 'consumer_key' ) || !get_rocket_option( 'secret_key' ) )
 		return false;
 

@@ -130,24 +130,26 @@ function rocket_clean_post( $post_id )
 	if( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) )
 	{
 
-		global $sitepress;
-
-		$domain = $sitepress->language_url( $sitepress->get_language_for_element( $post_id, 'post_' . get_post_type( $post_id ) ) );
-		$host   = parse_url( $domain, PHP_URL_HOST );
-		$root   = WP_ROCKET_CACHE_PATH . str_replace( $host, $host . '*', rocket_remove_url_protocol( $domain ) );
-
+		$domain = $GLOBALS['sitepress']->language_url( $GLOBALS['sitepress']->get_language_for_element( $post_id, 'post_' . get_post_type( $post_id ) ) );
+		list( $host, $path ) = get_rocket_parse_url( $domain );
+		$root = WP_ROCKET_CACHE_PATH . $host . '*' . $path;
+		
 		// Delete homepage file
 		if( $files = glob( $root . '/index.html' ) )
 		{
-			foreach( $files as $file )
+			foreach( $files as $file ) 
+			{
 				@unlink( $file );
+			}	
 		}
 
 		// Delete homepage pagination
 		if( $dirs = glob( $root . '/' . $GLOBALS['wp_rewrite']->pagination_base ) )
 		{
 			foreach( $dirs as $dir )
-				rocket_rrmdir( $dir );
+			{
+				rocket_rrmdir( $dir );	
+			}	
 		}
 
 	}
@@ -160,9 +162,10 @@ function rocket_clean_post( $post_id )
 	$parents = get_post_ancestors( $post_id );
 	if( count( $parents ) )
 	{
-
-		foreach( $parents as $parent_id )
-			rocket_clean_post( $parent_id );
+		foreach( $parents as $parent_id ) 
+		{
+			rocket_clean_post( $parent_id );	
+		}
 	}
 
 	do_action( 'after_rocket_clean_post', $post, $purge_urls );
@@ -182,9 +185,14 @@ function rocket_clean_files_users( $urls )
 {
 	$pattern_urls = array();
 
-	foreach( $urls as $url )
-		$pattern_urls[] = str_replace( home_url() , home_url() . '*', $url );
-
+	foreach( $urls as $url ) 
+	{
+		
+		list( $host, $path, $scheme ) = get_rocket_parse_url( $url );
+		$pattern_urls[] = $scheme . '://' . $host . '*' . $path;
+			
+	}
+		
 	return $pattern_urls;
 }
 
@@ -216,8 +224,10 @@ function rocket_post_purge_urls_for_qtranslate( $urls )
 		// Add translate URLs
 		foreach( $urls as $url )
 		{
-			foreach( $enabled_languages as $lang )
-				$urls[] = qtrans_convertURL( $url, $lang, true );
+			foreach( $enabled_languages as $lang ) 
+			{
+				$urls[] = qtrans_convertURL( $url, $lang, true );	
+			}
 		}
 	}
 
@@ -275,8 +285,10 @@ add_action( 'shutdown', 'do_rocket_bot_cache_json' );
 function do_rocket_bot_cache_json()
 {
 	global $do_rocket_bot_cache_json;
-	if( $do_rocket_bot_cache_json )
+	if( $do_rocket_bot_cache_json ) 
+	{
 		run_rocket_bot( 'cache-json' );
+	}
 }
 
 
@@ -292,7 +304,8 @@ function do_rocket_bot_cache_json()
 add_action( 'admin_post_purge_cache', 'rocket_purge_cache' );
 function rocket_purge_cache()
 {
-	if( isset( $_GET['type'], $_GET['_wpnonce'] ) ) {
+	if( isset( $_GET['type'], $_GET['_wpnonce'] ) ) 
+	{
 
 		$_type = explode( '-', $_GET['type'] );
 		$_type = reset( $_type );
@@ -329,12 +342,13 @@ function rocket_purge_cache()
 					// If WPML or qTranslate aren't activated, you can purge your domain normally
 					rocket_clean_domain();
 				}
-
+				
 				// Generate a new random key for minify cache file
 				$options = get_option( WP_ROCKET_SLUG );
 				$options['minify_key'] = create_rocket_uniqid();
-				update_option( WP_ROCKET_SLUG, $options );				
-
+				remove_all_actions( 'update_option_' . WP_ROCKET_SLUG );
+				update_option( WP_ROCKET_SLUG, $options );
+	
 				rocket_dismiss_box( 'rocket_warning_plugin_modification' );
 				break;
 
