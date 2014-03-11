@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 2.1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/wp-rocket\n"
-"POT-Creation-Date: 2014-03-11 08:44:05+00:00\n"
+"POT-Creation-Date: 2014-03-11 14:53:52+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -439,9 +439,9 @@ msgid "You can still force the deactivation by clicking here."
 msgstr ""
 
 #: inc/admin/notices.php:98 inc/admin/notices.php:216
-#: inc/admin/notices.php:281 inc/admin/notices.php:331
-#: inc/admin/notices.php:381 inc/admin/notices.php:421
-#: inc/admin/notices.php:460 inc/admin/notices.php:500
+#: inc/admin/notices.php:281 inc/admin/notices.php:337
+#: inc/admin/notices.php:387 inc/admin/notices.php:427
+#: inc/admin/notices.php:466 inc/admin/notices.php:506
 msgid "Ignore"
 msgstr ""
 
@@ -473,27 +473,27 @@ msgid ""
 "go to <a href=\"%s\">Permalink</a> to configure them."
 msgstr ""
 
-#: inc/admin/notices.php:283
+#: inc/admin/notices.php:285
 msgid ""
 "<b>%s</b>: It seems we don't have <a href=\"%s\" target=\"_blank\">writing "
 "permissions</a> on <code>wp-config.php</code> file or the value of the "
 "constant <code>WP_CACHE</code> is set to <code>false</code>"
 msgstr ""
 
-#: inc/admin/notices.php:284
+#: inc/admin/notices.php:287
 msgid ""
 "To fix this you have to give write rights on <code>wp-config.php</code> and "
 "then save again this settings."
 msgstr ""
 
-#: inc/admin/notices.php:285
+#: inc/admin/notices.php:289
 msgid ""
 "If the message persists, you have to put this following code in your "
 "<code>wp-config.php</code> file so that it works correctly. Click on the "
 "field and press Ctrl-A to select all."
 msgstr ""
 
-#: inc/admin/notices.php:333
+#: inc/admin/notices.php:339
 msgid ""
 "If you had <a href=\"%1$s\" target=\"_blank\">writing permissions</a> on "
 "<code>%2$s</code> file, <b>%4$s</b> could do this automatically. This is not "
@@ -501,7 +501,7 @@ msgid ""
 "file for <b>%$4s</b> works correctly."
 msgstr ""
 
-#: inc/admin/notices.php:383
+#: inc/admin/notices.php:389
 msgid ""
 "If you had <a href=\"%1$s\" target=\"_blank\">writing permissions</a> on "
 "<code>.htaccess</code> file, <b>%2$s</b> could do this automatically. This "
@@ -510,13 +510,13 @@ msgid ""
 "field and press Ctrl-A to select all."
 msgstr ""
 
-#: inc/admin/notices.php:383
+#: inc/admin/notices.php:389
 msgid ""
 "<strong>Warning:</strong> This message will popup again and its content may "
 "be updated when saving WP Rocket options"
 msgstr ""
 
-#: inc/admin/notices.php:423
+#: inc/admin/notices.php:429
 msgid ""
 "Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
 "permissions</a> on <b>%3$s</b> domain configuration folder (<code>%2$s</"
@@ -526,7 +526,7 @@ msgid ""
 "file."
 msgstr ""
 
-#: inc/admin/notices.php:462
+#: inc/admin/notices.php:468
 msgid ""
 "Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
 "permissions</a> on <b>%3$s</b> cache folder (<code>%2$s</code>). For <b>"
@@ -534,7 +534,7 @@ msgid ""
 "or <code>777</code> this folder."
 msgstr ""
 
-#: inc/admin/notices.php:502
+#: inc/admin/notices.php:508
 msgid ""
 "Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
 "permissions</a> on <b>%3$s</b> minify cache folder (<code>%2$s</code>). For "
@@ -542,7 +542,7 @@ msgid ""
 "code> or <code>777</code> this folder."
 msgstr ""
 
-#: inc/admin/notices.php:526
+#: inc/admin/notices.php:532
 msgid ""
 "To finish the install and take advantage of high performance provided by our "
 "plugin, thank you to <a href=\"%s\">Enter you API key</a>."
@@ -984,7 +984,7 @@ msgstr ""
 msgid "Go to Support"
 msgstr ""
 
-#: inc/admin/options.php:1296
+#: inc/admin/options.php:1307
 msgid "Settings saved."
 msgstr ""
 
