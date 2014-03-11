@@ -26,15 +26,18 @@ $wpdb->query( 'DELETE FROM '.$wpdb->usermeta.' WHERE meta_key="rocket_boxes"' );
 function __rocket_rrmdir( $dir )
 {
 
-	if( !is_dir( $dir ) ):
+	if( !is_dir( $dir ) ) 
+	{
 		@unlink( $dir );
-		return;
-	endif;
+		return;	
+	}
 
-    if( $globs = glob( $dir . '/*' ) ) {
-
-	    foreach( $globs as $file )
-	        is_dir( $file ) ? __rocket_rrmdir($file) : @unlink( $file );
+    if( $globs = glob( $dir . '/*' ) ) 
+    {
+	    foreach( $globs as $file ) 
+	    {
+			is_dir( $file ) ? __rocket_rrmdir($file) : @unlink( $file );
+	    }
 	}
 
     @rmdir($dir);
@@ -42,4 +45,5 @@ function __rocket_rrmdir( $dir )
 }
 
 __rocket_rrmdir( WP_CONTENT_DIR . '/cache/wp-rocket/' );
-__rocket_rrmdir( WP_CONTENT_DIR . '/cache/minify/' );
+__rocket_rrmdir( WP_CONTENT_DIR . '/cache/min/' );
+__rocket_rrmdir( WP_CONTENT_DIR . '/wp-rocket-config/' );
