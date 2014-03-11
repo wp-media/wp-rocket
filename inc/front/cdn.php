@@ -18,28 +18,30 @@ add_filter( 'wp_minify_js_url'		, 'rocket_cdn_file', PHP_INT_MAX );
 add_filter( 'bwp_get_minify_src'	, 'rocket_cdn_file', PHP_INT_MAX );
 function rocket_cdn_file( $url )
 {
-	
+
 	$filter = current_filter();
-	switch( $filter ) 
+	switch( $filter )
 	{
 		case 'wp_get_attachment_url':
 		case 'smilies_src':
-			
+
 			$zone = array( 'all', 'images' );
 			break;
-		
+
 		case 'stylesheet_uri':
 		case 'wp_minify_css_url':
 		case 'wp_minify_js_url':
 		case 'bwp_get_minify_src':
-			
+
 			$zone = array( 'all', 'css_and_js' );
 			break;
 
 	}
-	
+
 	if( !is_admin() && $cnames = get_rocket_cdn_cnames( $zone ) )
+	{
 		$url = get_rocket_cdn_url( $url, $zone );
+	}
 
 	return $url;
 
@@ -59,9 +61,11 @@ add_filter( 'widget_text', 'rocket_cdn_images', PHP_INT_MAX );
 function rocket_cdn_images( $html )
 {
 
-	// Don't use CDN if the image is in a feed or in a post preview
-	if( is_admin() && is_feed() || is_preview() || empty( $html ) )
+	// Don't use CDN if the image is in admin, a feed or in a post preview
+	if( is_admin() || is_feed() || is_preview() || empty( $html ) )
+	{
 		return $html;
+	}
 
 	$zone = array( 'all', 'images' );
 	if( $cnames = get_rocket_cdn_cnames( $zone ) )
@@ -115,9 +119,11 @@ add_filter( 'script_loader_src', 'rocket_cdn_enqueue', PHP_INT_MAX );
 function rocket_cdn_enqueue( $src )
 {
 
-	// Don't use CDN if in admin
-	if( is_admin() )
+	// Don't use CDN if in admin or in a post preview
+	if( is_admin()|| is_preview() )
+	{
 		return $src;
+	}
 
 	$zone = array( 'all', 'css_and_js' );
 	if( $cnames = get_rocket_cdn_cnames( $zone ) )

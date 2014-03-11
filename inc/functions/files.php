@@ -200,19 +200,20 @@ function set_rocket_wp_cache_define( $turn_it_on )
 		return;
     }
 
-	/**
-	 * Fires before WP_CACHE set in wp-config.php
-	 *
-	 * @since 2.1
-	*/
-	do_action( 'before_set_rocket_wp_cache_define' );
-
 	// Get content of the config file
 	$config_file = file( $config_file_path );
 
 	// Get the value of WP_CACHE constant
 	$turn_it_on = $turn_it_on ? 'true' : 'false';
-
+	
+	/**
+	 * Filter allow to change the value of WP_CACHE constant
+	 *
+	 * @since 2.1
+	 * @param string $turn_it_on The value of WP_CACHE constant
+	*/
+	apply_filters( 'set_rocket_wp_cache_define', $turn_it_on );
+	
 	// Lets find out if the constant WP_CACHE is defined or not
 	$is_wp_cache_exist = false;
 
@@ -255,13 +256,6 @@ function set_rocket_wp_cache_define( $turn_it_on )
 	// Update the writing permissions of wp-config.php file
 	$chmod = defined( 'FS_CHMOD_FILE' ) ? FS_CHMOD_FILE : 0644;
 	@chmod( $config_file_path, $chmod );
-
-	/**
-	 * Fires after WP_CACHE set in wp-config.php
-	 *
-	 * @since 2.1
-	*/
-	do_action( 'after_set_rocket_wp_cache_define' );
 
 }
 

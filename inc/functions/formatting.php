@@ -52,8 +52,10 @@ function rocket_remove_url_protocol( $url, $no_dots=false )
 {
 
 	$url = str_replace( array( 'http://', 'https://' ) , '', $url );
-	if( apply_filters( 'rocket_url_no_dots', $no_dots ) )
-		$url = str_replace( '.', '_', $url );
+	if( apply_filters( 'rocket_url_no_dots', $no_dots ) ) 
+	{
+		$url = str_replace( '.', '_', $url );	
+	}
 
 	return $url;
 
@@ -117,19 +119,25 @@ function get_rocket_parse_url_for_lang( $lang )
  *
  */
 
-function get_rocket_cdn_url( $url, $zone = array() )
+function get_rocket_cdn_url( $url, $zone = array( 'all' ) )
 {
 
-	if( (int)get_rocket_option( 'cdn' ) == 0 )
+	if( (int)get_rocket_option( 'cdn' ) == 0 ) 
+	{
 		return $url;
+	}
 
 	list( $host, $path, $scheme, $query ) = get_rocket_parse_url( $url );
-
 	$scheme = !empty($scheme) ? $scheme : 'http';
-	$cnames = get_rocket_cdn_cnames( count($zone) ? $zone : 'all' );
-	$cname  = rocket_remove_url_protocol( $cnames[(abs(crc32($path))%count($cnames))] );
-
-	return $scheme . '://' . rtrim( $cname , '/' ) . $path . $query;
+	$cnames = get_rocket_cdn_cnames( $zone );
+	
+	if( !empty($cnames) ) 
+	{
+		$cname  = rocket_remove_url_protocol( $cnames[(abs(crc32($path))%count($cnames))] );
+		$url = $scheme . '://' . rtrim( $cname , '/' ) . $path . $query;
+	}
+	
+	return $url;
 
 }
 
@@ -142,7 +150,7 @@ function get_rocket_cdn_url( $url, $zone = array() )
  *
  */
 
-function rocket_cdn_url( $url, $zone = array() )
+function rocket_cdn_url( $url, $zone = array( 'all' ) )
 {
 
 	echo get_rocket_cdn_url( $url, $zone );
@@ -180,8 +188,10 @@ function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_file
 
 			$file = parse_url( $file, PHP_URL_PATH );
 
-			if( strlen( $urls[$i] . $base_url . $file )+1>=255 ) // +1 : we count the extra comma
-				$i++;
+			if( strlen( $urls[$i] . $base_url . $file )+1>=255 ) // +1 : we count the extra comma 
+			{
+				$i++;	
+			} 
 
 			$urls[$i] .= $file.',';
 
@@ -193,7 +203,6 @@ function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_file
 			$url = $base_url . rtrim( $url, ',' );
 			$ext = pathinfo( $url, PATHINFO_EXTENSION );
 
-			//
 			if( $force_pretty_url && ( defined( 'SCRIPT_DEBUG' ) && !SCRIPT_DEBUG ) )
 			{
 

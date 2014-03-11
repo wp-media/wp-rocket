@@ -1158,7 +1158,9 @@ function rocket_settings_callback( $inputs )
 	if( isset( $inputs['deferred_js_files'] ) )
 	{
 		$inputs['deferred_js_files'] = array_filter( array_map( 'rocket_sanitize_js', array_unique( $inputs['deferred_js_files'] ) ) );
-	}else{
+	}
+	else
+	{
 		$inputs['deferred_js_files'] = array();
 	}
 
@@ -1166,14 +1168,19 @@ function rocket_settings_callback( $inputs )
 	if( !$inputs['deferred_js_files'] )
 	{
 		$inputs['deferred_js_wait'] = array();
-	}else{
+	}
+	else
+	{
 
 		for( $i=0; $i<=max(array_keys($inputs['deferred_js_files'])); $i++ )
 		{
 
-			if( !isset( $inputs['deferred_js_files'][$i] ) ){
+			if( !isset( $inputs['deferred_js_files'][$i] ) )
+			{
 				unset( $inputs['deferred_js_wait'][$i] );
-			}else{
+			}
+			else
+			{
 				$inputs['deferred_js_wait'][$i] = isset( $inputs['deferred_js_wait'][$i] ) ? '1' : '0';
 			}
 
@@ -1207,16 +1214,20 @@ function rocket_settings_callback( $inputs )
 	if( !$inputs['cdn_cnames'] )
 	{
 		$inputs['cdn_zone'] = array();
-	}else{
+	}
+	else
+	{
 
-		for( $i=0; $i<=max( array_keys( $inputs['cdn_cnames'] ) ); $i++ )
+		for( $i=0; $i<=max(array_keys($inputs['cdn_cnames'])); $i++ )
 		{
 
 			if( !isset( $inputs['cdn_cnames'][$i] ) )
 			{
 				unset( $inputs['cdn_zone'][$i] );
-			}else{
-				$inputs['cdn_zone'][$i] = isset( $inputs['cdn_zone'][$i] ) ? '1' : '0';
+			}
+			else
+			{
+				$inputs['cdn_zone'][$i] = isset( $inputs['cdn_zone'][$i] ) ? $inputs['cdn_zone'][$i] : 'all';
 			}
 
 		}

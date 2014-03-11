@@ -133,12 +133,13 @@ function get_rocket_cache_reject_cookies()
 function get_rocket_cdn_cnames( $_zone = 'all' )
 {
 
-	if( (int)get_rocket_option( 'cdn' ) == 0 )
-		return array();
+	if( (int)get_rocket_option( 'cdn' ) == 0 ) 
+	{
+		return array();	
+	}
 
-
-	$hosts               = array();
-	$cnames              = get_rocket_option( 'cdn_cnames', array() );
+	$hosts       = array();
+	$cnames      = get_rocket_option( 'cdn_cnames', array() );
 	$cnames_zone = get_rocket_option( 'cdn_zone', array() );
 	$_zone 		 = is_array( $_zone ) ? $_zone : (array)$_zone;
 
@@ -154,8 +155,10 @@ function get_rocket_cdn_cnames( $_zone = 'all' )
 			$_urls = array_map( 'trim' , $_urls );
 
 			//
-			foreach( $_urls as $url )
+			foreach( $_urls as $url ) 
+			{
 				$hosts[] = $url;
+			}
 
 		}
 

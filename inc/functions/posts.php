@@ -22,7 +22,9 @@ function get_rocket_post_terms_urls( $post_ID )
 		if ( !empty( $terms ) )
 		{
 			foreach ( $terms as $term )
+			{
 				$urls[] = get_term_link( $term->slug, $taxonomy );
+			}
 		}
 
 	}
