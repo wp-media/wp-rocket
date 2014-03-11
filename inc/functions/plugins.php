@@ -86,7 +86,6 @@ function get_rocket_all_active_langs()
 	}
 
 	return false;
-
 }
 
 
@@ -110,7 +109,9 @@ function get_rocket_all_active_langs_uri()
 
 		global $sitepress;
 		foreach ( array_keys( $langs ) as $lang )
+		{
 			$urls[] = $sitepress->language_url( $lang );
+		}
 
 	}
 	// qTranslate
@@ -118,12 +119,13 @@ function get_rocket_all_active_langs_uri()
 	{
 
 		foreach ( $langs as $lang )
+		{
 			$urls[] = qtrans_convertURL( home_url(), $lang, true );
+		}
 
 	}
 
 	return $urls;
-
 }
 
 
@@ -185,9 +187,11 @@ function get_rocket_subdomains_langs()
 {
 
 	// Check if a translation plugin is activated
-	if( !rocket_has_translation_plugin_active() ) 
+	if( !rocket_has_translation_plugin_active() )
+	{
 		return false;
-	
+	}
+
 	$urls = array();
 
 	// WPML
@@ -198,9 +202,12 @@ function get_rocket_subdomains_langs()
 
 		// Check if WPML set to serve subdomains URL
 		if( (int)$option['language_negotiation_type'] == 2 )
+		{
 			$urls = get_rocket_all_active_langs_uri();
+		}
 
 	}
+
 	// qTranslate
 	if( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) )
 	{
@@ -209,10 +216,11 @@ function get_rocket_subdomains_langs()
 
 		// Check if qTranslate set to serve subdomains URL
 		if( (int)$q_config['url_mode'] == 3 )
+		{
 			$urls = get_rocket_all_active_langs_uri();
+		}
 
 	}
 
 	return $urls;
-
 }
