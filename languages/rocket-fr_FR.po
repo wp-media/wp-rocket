@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/wp-rocket\n"
-"POT-Creation-Date: 2014-03-10 16:56:09+00:00\n"
-"PO-Revision-Date: 2014-03-10 17:58+0100\n"
+"POT-Creation-Date: 2014-03-11 08:44:05+00:00\n"
+"PO-Revision-Date: 2014-03-11 09:45+0100\n"
 "Last-Translator: fxbenard | FxB <fx@fxbenard.com>\n"
 "Language-Team:  <contact@wp-rocket.me>\n"
 "Language: fr\n"
@@ -553,9 +553,9 @@ msgid "You can still force the deactivation by clicking here."
 msgstr "Vous pouvez forcer la désactivation en cliquant ici."
 
 #: inc/admin/notices.php:98 inc/admin/notices.php:216
-#: inc/admin/notices.php:281 inc/admin/notices.php:329
-#: inc/admin/notices.php:379 inc/admin/notices.php:419
-#: inc/admin/notices.php:458 inc/admin/notices.php:498
+#: inc/admin/notices.php:281 inc/admin/notices.php:331
+#: inc/admin/notices.php:381 inc/admin/notices.php:421
+#: inc/admin/notices.php:460 inc/admin/notices.php:500
 msgid "Ignore"
 msgstr "Ignorer"
 
@@ -608,7 +608,7 @@ msgstr ""
 "ou que la valeur de la constante de  <code>WP_CACHE</code> soit réglée sur "
 "<code>false</code>"
 
-#: inc/admin/notices.php:283
+#: inc/admin/notices.php:284
 msgid ""
 "To fix this you have to give write rights on <code>wp-config.php</code> and "
 "then save again this settings."
@@ -616,9 +616,9 @@ msgstr ""
 "Pour corriger cela, vous devez donner les droits en écriture sur le fichier "
 "<code> wp-config.php</code> et enregistrez à nouveau les réglages."
 
-#: inc/admin/notices.php:283
+#: inc/admin/notices.php:285
 msgid ""
-"If this message persists, you have to put this following code in your "
+"If the message persists, you have to put this following code in your "
 "<code>wp-config.php</code> file so that it works correctly. Click on the "
 "field and press Ctrl-A to select all."
 msgstr ""
@@ -626,7 +626,7 @@ msgstr ""
 "fichier<code> wp-config.php </code> pour qu'il fonctionne correctement. "
 "Cliquez sur le champ et appuyez sur Ctrl-A pour tout sélectionner."
 
-#: inc/admin/notices.php:331
+#: inc/admin/notices.php:333
 msgid ""
 "If you had <a href=\"%1$s\" target=\"_blank\">writing permissions</a> on "
 "<code>%2$s</code> file, <b>%4$s</b> could do this automatically. This is not "
@@ -639,7 +639,7 @@ msgstr ""
 "que vous devrez insérer au début de votre fichier <code>%3$s</code> pour que "
 "<b>%4$s</b> fonctionne correctement."
 
-#: inc/admin/notices.php:381
+#: inc/admin/notices.php:383
 msgid ""
 "If you had <a href=\"%1$s\" target=\"_blank\">writing permissions</a> on "
 "<code>.htaccess</code> file, <b>%2$s</b> could do this automatically. This "
@@ -654,7 +654,7 @@ msgstr ""
 "pour que <b>%2$s</b> fonctionne correctement. Cliquez sur le champ et "
 "appuyez sur Ctrl-A pour tout sélectionner."
 
-#: inc/admin/notices.php:381
+#: inc/admin/notices.php:383
 msgid ""
 "<strong>Warning:</strong> This message will popup again and its content may "
 "be updated when saving WP Rocket options"
@@ -662,7 +662,7 @@ msgstr ""
 "<strong>Attention :</strong> Ce message réapparaîtra et son contenu est "
 "susceptible d'être mis à jour lors de la sauvegarde des options de WP Rocket."
 
-#: inc/admin/notices.php:421
+#: inc/admin/notices.php:423
 msgid ""
 "Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
 "permissions</a> on <b>%3$s</b> domain configuration folder (<code>%2$s</"
@@ -678,7 +678,7 @@ msgstr ""
 "code> sur ce dossier.<br/>Quand le problème est résolu, merci de sauvegarder "
 "les options de %3$s pour générer le fichier de configuration."
 
-#: inc/admin/notices.php:460
+#: inc/admin/notices.php:462
 msgid ""
 "Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
 "permissions</a> on <b>%3$s</b> cache folder (<code>%2$s</code>). For <b>"
@@ -690,7 +690,7 @@ msgstr ""
 "Pour que <b>%3$s</b> fonctionne correctement, veuillez indiquer un CHMOD de "
 "<code>755</code> ou <code>775</code> ou <code>777</code> sur ce dossier."
 
-#: inc/admin/notices.php:500
+#: inc/admin/notices.php:502
 msgid ""
 "Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
 "permissions</a> on <b>%3$s</b> minify cache folder (<code>%2$s</code>). For "
@@ -703,7 +703,7 @@ msgstr ""
 "indiquer un CHMOD de <code>755</code> ou <code>775</code> ou <code>777</"
 "code> sur ce dossier."
 
-#: inc/admin/notices.php:524
+#: inc/admin/notices.php:526
 msgid ""
 "To finish the install and take advantage of high performance provided by our "
 "plugin, thank you to <a href=\"%s\">Enter you API key</a>."
