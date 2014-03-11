@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/wp-rocket\n"
 "POT-Creation-Date: 2014-03-11 08:44:05+00:00\n"
-"PO-Revision-Date: 2014-03-11 09:45+0100\n"
+"PO-Revision-Date: 2014-03-11 13:54+0100\n"
 "Last-Translator: fxbenard | FxB <fx@fxbenard.com>\n"
 "Language-Team:  <contact@wp-rocket.me>\n"
 "Language: fr\n"
@@ -80,7 +80,7 @@ msgstr ""
 
 #: inc/admin/faq.php:7
 msgid "For how many sites my key is valid for?"
-msgstr "Pour combien de sites ma clé est-elle valide ?"
+msgstr "Pour combien de sites ma clé est-elle valide&nbsp;?"
 
 #: inc/admin/faq.php:8
 msgid ""
@@ -109,13 +109,13 @@ msgstr ""
 
 #: inc/admin/faq.php:12
 msgid "What exactly do WP Rocket?"
-msgstr "Que fait exactement WP Rocket ?"
+msgstr "Que fait exactement WP Rocket&nbsp;?"
 
 #: inc/admin/faq.php:13
 msgid "WP Rocket is a full cache plugin that comes with many features:"
 msgstr ""
 "WP Rocket est une extension de cache complète qui embarque de nombreuses "
-"fonctionnalités :"
+"fonctionnalités&nbsp;:"
 
 #: inc/admin/faq.php:15 inc/admin/faq.php:31
 msgid "Caching of all the pages for quick viewing"
@@ -158,7 +158,8 @@ msgstr "Optimisation des images"
 #: inc/admin/faq.php:26
 msgid "I have turned any of the basic options on, does WP Rocket work?"
 msgstr ""
-"Je n'ai activé aucune des options de base, est-ce que WP Rocket fonctionne ?"
+"Je n'ai activé aucune des options de base, est-ce que WP Rocket "
+"fonctionne&nbsp;?"
 
 #: inc/admin/faq.php:27 inc/admin/faq.php:85 inc/admin/faq.php:89
 #: inc/admin/faq.php:96
@@ -191,7 +192,7 @@ msgstr "Diminution de la bande passante grâce à la compression GZIP"
 msgid "What should I do in case of problem with WP Rocket that I can't solve?"
 msgstr ""
 "Que dois-je faire en cas de problème lié à WP Rocket que je n’arrive pas à "
-"résoudre ?"
+"résoudre&nbsp;?"
 
 #: inc/admin/faq.php:38
 msgid ""
@@ -206,7 +207,7 @@ msgstr ""
 
 #: inc/admin/faq.php:40
 msgid "My licence has expired, what should I do?"
-msgstr "Ma licence est expirée, que dois-je faire ?"
+msgstr "Ma licence est expirée, que dois-je faire&nbsp;?"
 
 #: inc/admin/faq.php:41
 msgid ""
@@ -225,7 +226,7 @@ msgid ""
 "I do?"
 msgstr ""
 "Je souhaite modifier l'URL de mon site associé à ma licence, que dois-je "
-"faire ?"
+"faire&nbsp;?"
 
 #: inc/admin/faq.php:44
 msgid ""
@@ -252,7 +253,7 @@ msgstr ""
 
 #: inc/admin/faq.php:55
 msgid "These tools give you two indications:"
-msgstr "Ces outils vous donnent deux indications :"
+msgstr "Ces outils vous donnent deux indications&nbsp;:"
 
 #: inc/admin/faq.php:57
 msgid "a global note of good practices to apply"
@@ -282,7 +283,7 @@ msgstr ""
 
 #: inc/admin/faq.php:65
 msgid "WP Rocket work with default permalinks?"
-msgstr "WP Rocket fonctionne-t-il avec les permaliens par défaut ?"
+msgstr "WP Rocket fonctionne-t-il avec les permaliens par défaut&nbsp;?"
 
 #: inc/admin/faq.php:66 inc/admin/faq.php:80
 msgid "No."
@@ -299,15 +300,15 @@ msgstr ""
 
 #: inc/admin/faq.php:70
 msgid "Which web servers WP Rocket is compatible with?"
-msgstr "Avec quels serveurs Web WP Rocket est-il compatible ?"
+msgstr "Avec quels serveurs Web WP Rocket est-il compatible&nbsp;?"
 
 #: inc/admin/faq.php:71
 msgid ""
 "WP Rocket is compatible with <strong>Apache, NGINX, Microsoft IIS et "
 "Litepseed</strong> web servers."
 msgstr ""
-"WP Rocket est compatible avec les serveurs Web : <strong> Apache, NGINX, "
-"Microsoft IIS et Litepseed.</strong>"
+"WP Rocket est compatible avec les serveurs Web&nbsp;: <strong> Apache, "
+"NGINX, Microsoft IIS et Litepseed.</strong>"
 
 #: inc/admin/faq.php:73
 msgid ""
@@ -315,7 +316,7 @@ msgid ""
 "or did not expire, what should I do?"
 msgstr ""
 "Les rapports de PageSpeed ou de YSlow m’indiquent que mon contenu n’est pas "
-"gzipé et/ou n’a pas d’expiration, que dois-je faire ?"
+"gzipé et/ou n’a pas d’expiration, que dois-je faire&nbsp;?"
 
 #: inc/admin/faq.php:75
 msgid ""
@@ -346,7 +347,7 @@ msgid ""
 "Total Cache?"
 msgstr ""
 "WP Rocket est-il compatible avec les autres extensions de cache, tels que WP "
-"Super Cache ou W3 Total Cache ?"
+"Super Cache ou W3 Total Cache&nbsp;?"
 
 #: inc/admin/faq.php:82
 msgid ""
@@ -363,7 +364,7 @@ msgid ""
 "Detector?"
 msgstr ""
 "WP Rocket est-il compatible avec WP Touch, WordPress Mobile Pack et WP "
-"Mobile Detector ?"
+"Mobile Detector&nbsp;?"
 
 #: inc/admin/faq.php:86
 msgid ""
@@ -375,7 +376,7 @@ msgstr ""
 
 #: inc/admin/faq.php:88
 msgid "Is WP Rocket compatible with WooCommerce?"
-msgstr "WP Rocket est-il compatible avec WooCommerce ?"
+msgstr "WP Rocket est-il compatible avec WooCommerce&nbsp;?"
 
 #: inc/admin/faq.php:91
 msgid ""
@@ -385,7 +386,7 @@ msgid ""
 msgstr ""
 "Cependant, il faut exclure les pages panier et commande de la mise en cache. "
 "Cela se fait à partir de l’option avancée <code>Ne jamais mettre en cache "
-"les pages suivantes</code> et en ajoutant les valeurs suivantes :"
+"les pages suivantes</code> et en ajoutant les valeurs suivantes&nbsp;:"
 
 #: inc/admin/faq.php:92
 msgid "/basket/"
@@ -397,7 +398,7 @@ msgstr "/commande/(.*)"
 
 #: inc/admin/faq.php:95
 msgid "Is WP Rocket compatible with WPML?"
-msgstr "WP Rocket est-il compatible avec WPML ?"
+msgstr "WP Rocket est-il compatible avec WPML&nbsp;?"
 
 #: inc/admin/faq.php:97
 msgid ""
@@ -409,7 +410,7 @@ msgstr ""
 
 #: inc/admin/faq.php:99
 msgid "What is the minification and concatenation of files?"
-msgstr "En quoi consiste la minification et concaténation des fichiers ?"
+msgstr "En quoi consiste la minification et concaténation des fichiers&nbsp;?"
 
 #: inc/admin/faq.php:100
 msgid ""
@@ -432,7 +433,7 @@ msgstr ""
 
 #: inc/admin/faq.php:103
 msgid "What should I do if WP Rocket distorts my site display?"
-msgstr "Que dois-je faire si WP Rocket déforme l’affichage de mon site ?"
+msgstr "Que dois-je faire si WP Rocket déforme l’affichage de mon site&nbsp;?"
 
 #: inc/admin/faq.php:104
 msgid ""
@@ -449,7 +450,7 @@ msgstr ""
 
 #: inc/admin/faq.php:106
 msgid "How often the cache is updated?"
-msgstr "À quel intervalle le cache est-il mis à jour ?"
+msgstr "À quel intervalle le cache est-il mis à jour&nbsp;?"
 
 #: inc/admin/faq.php:107
 msgid ""
@@ -470,7 +471,7 @@ msgstr ""
 
 #: inc/admin/faq.php:110
 msgid "How not to cache a particular page?"
-msgstr "Comment ne pas mettre en cache une page particulière ?"
+msgstr "Comment ne pas mettre en cache une page particulière&nbsp;?"
 
 #: inc/admin/faq.php:111
 msgid ""
@@ -484,7 +485,8 @@ msgstr ""
 
 #: inc/admin/faq.php:113
 msgid "How does the robots of preloading the cache files work?"
-msgstr "Comment fonctionne les robots de préchargement des fichiers de cache ?"
+msgstr ""
+"Comment fonctionne les robots de préchargement des fichiers de cache&nbsp;?"
 
 #: inc/admin/faq.php:114
 msgid ""
@@ -603,10 +605,10 @@ msgid ""
 "permissions</a> on <code>wp-config.php</code> file or the value of the "
 "constant <code>WP_CACHE</code> is set to <code>false</code>"
 msgstr ""
-"<b>%s</b>: Il semblerait que nous n'ayons pas les <a href=\"%s\" target="
-"\"_blank\">droits en écriture</a> sur le fichier <code>wp-config.php</code> "
-"ou que la valeur de la constante de  <code>WP_CACHE</code> soit réglée sur "
-"<code>false</code>"
+"<b>%s</b>&nbsp;: Il semblerait que nous n'ayons pas les <a href=\"%s\" "
+"target=\"_blank\">droits en écriture</a> sur le fichier <code>wp-config.php</"
+"code> ou que la valeur de la constante de  <code>WP_CACHE</code> soit réglée "
+"sur <code>false</code>"
 
 #: inc/admin/notices.php:284
 msgid ""
@@ -624,7 +626,7 @@ msgid ""
 msgstr ""
 "Si le message persiste, vous devez mettre le code ci-dessous dans votre "
 "fichier<code> wp-config.php </code> pour qu'il fonctionne correctement. "
-"Cliquez sur le champ et appuyez sur Ctrl-A pour tout sélectionner."
+"Cliquez sur le champ et appuyez sur Ctrl+A pour tout sélectionner."
 
 #: inc/admin/notices.php:333
 msgid ""
@@ -659,7 +661,7 @@ msgid ""
 "<strong>Warning:</strong> This message will popup again and its content may "
 "be updated when saving WP Rocket options"
 msgstr ""
-"<strong>Attention :</strong> Ce message réapparaîtra et son contenu est "
+"<strong>Attention&nbsp;:</strong> Ce message réapparaîtra et son contenu est "
 "susceptible d'être mis à jour lors de la sauvegarde des options de WP Rocket."
 
 #: inc/admin/notices.php:423
@@ -781,7 +783,7 @@ msgstr "Clé API"
 #: inc/admin/options.php:400
 msgid "API Key:<br/><span class=\"description\">(Licence validation)</span>"
 msgstr ""
-"Clé API&nbsp;:<br /><span class=\"description\">(Validation de WP Rocket)</"
+"Clé API&nbsp;:<br/><span class=\"description\">(Validation de WP Rocket)</"
 "span>"
 
 #: inc/admin/options.php:408
@@ -798,7 +800,7 @@ msgstr "Options de base"
 
 #: inc/admin/options.php:422 inc/admin/options.php:431
 msgid "Lazyload:"
-msgstr "Chargement différé des images : "
+msgstr "Chargement différé des images&nbsp;: "
 
 #: inc/admin/options.php:429
 msgid "Enable Lazy loading images."
@@ -873,7 +875,8 @@ msgid ""
 msgstr ""
 "La concaténation de fichiers peut provoquer des erreurs d'affichage. Si cela "
 "se produisait, nous vous recommandons de désactiver cette option ou de "
-"regarder la vidéo suivante : <a href=\"%1$s\" class=\"fancybox\">%1$s</a>."
+"regarder la vidéo suivante&nbsp;: <a href=\"%1$s\" class=\"fancybox\">%1$s</"
+"a>."
 
 #: inc/admin/options.php:490 inc/admin/options.php:499
 msgid "Mobile cache:"
@@ -991,9 +994,9 @@ msgid ""
 "example: <code>//ajax.googleapis.com</code> without <code>http:</code> (one "
 "per line)."
 msgstr ""
-"<strong>NB :</strong> Entrez les noms de domaine sans leur protocole, par "
-"exemple : <code>//ajax.googleapis.com</code> sans <code>http:</code> (un par "
-"ligne)."
+"<strong>NB&nbsp;:</strong> Entrez les noms de domaine sans leur protocole, "
+"par exemple : <code>//ajax.googleapis.com</code> sans <code>http:</code> (un "
+"par ligne)."
 
 #: inc/admin/options.php:606 inc/admin/options.php:614
 msgid "Empty the cache of the following pages when updating a post:"
@@ -1018,7 +1021,7 @@ msgid ""
 "homepage, categories, and tags associated with this post are automatically "
 "removed from the cache and then, recreated by our bot."
 msgstr ""
-"<strong>NB :</strong> Lorsque vous mettez à jour un article ou qu’un "
+"<strong>NB&nbsp;:</strong> Lorsque vous mettez à jour un article ou qu’un "
 "commentaire est publié, la page d'accueil, les catégories et les mots-clefs "
 "associés à cet article sont automatiquement supprimés du cache puis recréés "
 "grâce à notre propre robot."
@@ -1308,217 +1311,3 @@ msgstr "WP Rocket"
 #. Author URI of the plugin/theme
 msgid "http://www.wp-rocket.me"
 msgstr "http://www.wp-rocket.me"
-
-#, fuzzy
-#~ msgid ""
-#~ "<b>%s</b>: It seems we don't have <a href=\"%s\" target=\"_blank"
-#~ "\">writing permissions</a> on <code>wp-config.php</code> file or the "
-#~ "value of the constant <code>WP_CACHE</code> is set to <code>false</code>."
-#~ "<br>To fix this you have to give write rights on <code>wp-config.php</"
-#~ "code> and then save again this settings.<br>If this message persists, you "
-#~ "have to put this following code in your <code>wp-config.php</code> file "
-#~ "so that it works correctly. Click on the field and press Ctrl-A to select "
-#~ "all."
-#~ msgstr ""
-#~ "Attention, si ce message ne disparaît pas après avoir rafraîchit cette "
-#~ "page, c'est que vous n'avez pas <a href=\"%s\" target=\"_blank\">les "
-#~ "droits en écriture</a> sur le fichier <code>wp-config.php</code> ou que "
-#~ "la valeur de la constante <code>WP_CACHE</code> est défine à <code>false</"
-#~ "code>.<br/><br/>Si ce message persiste, vous devrez insérer ce code dans "
-#~ "votre fichier <code>wp-config.php</code> pour que WP Rocket fonctionne "
-#~ "correctement. Cliquez sur le champ et appuyez sur Ctrl-A pour tout "
-#~ "sélectionner. "
-
-#~ msgid "Use \"Pretty URL\""
-#~ msgstr "Utiliser \"Pretty URL\""
-
-#~ msgid "CSS pretty URL"
-#~ msgstr "CSS pretty URL"
-
-#~ msgid "JS pretty URL"
-#~ msgstr "JS pretty URL"
-
-#, fuzzy
-#~ msgid ""
-#~ "If you use one of these plugins: %l, you should not turn on this option."
-#~ msgstr ""
-#~ "Si vous utilisez une de ces extensions : %l, vous ne devriez pas activer "
-#~ "cette option."
-
-#~ msgid ""
-#~ "Example with the site example.com in the WordPress setup: if it redirects "
-#~ "on .fr, and you would have entered the .fr in your WP Rocket account, "
-#~ "then there is a problem."
-#~ msgstr ""
-#~ "Par exemple avec le site exemple.com dans le paramétrage WordPress : S'il "
-#~ "redirige sur le .fr, et que vous auriez entré le .fr dans votre compte WP "
-#~ "Rocket, alors il y a un soucis."
-
-#~ msgid ""
-#~ "The two values are different, the key is not valid for the .com but for ."
-#~ "fr"
-#~ msgstr ""
-#~ "Les deux valeurs étant différentes, la clé n'est pas valide pour le .com "
-#~ "mais uniquement pour le .fr"
-
-#~ msgid ""
-#~ "WP Rocket is compatible with <strong>Apache</strong> web servers. For the "
-#~ "moment, WP Rocket is therefore not compatible with NGINX and Litepseed "
-#~ "web servers."
-#~ msgstr ""
-#~ "WP Rocket est compatible avec les serveurs Web <strong>Apache</strong>. "
-#~ "Pour le moment, WP Rocket n’est donc pas compatible avec les serveurs Web "
-#~ "NGINX et Litepseed."
-
-#~ msgid "Purge this cache"
-#~ msgstr "Purger cet article"
-
-#~ msgid "Purge cache"
-#~ msgstr "Purger le cache"
-
-#~ msgid "Purge delay"
-#~ msgstr "Délai de Purge :"
-
-#~ msgid "Missing TYPE ! "
-#~ msgstr "Type manquant"
-
-#~ msgid ""
-#~ "Minification removes any space and comments present in the CSS and "
-#~ "Javascript files.<br/>This mechanism reduces the weight of each file and "
-#~ "allows a faster reading of browsers and search engines.<br/>Concatenation "
-#~ "combines all CSS and Javascript files.<br/>This reduces the number of "
-#~ "HTTP requests and improves the loading time.<br/><strong style=\"color:"
-#~ "#FF0000;\">Warning: concatenating files can cause display errors. In case "
-#~ "of any errors we recommend that you disable this option or watch the "
-#~ "following videos: <a href=\"%s\" class=\"fancybox\">%s</a></strong>."
-#~ msgstr ""
-#~ "La minification supprime tout espace, retour à la ligne et commentaires "
-#~ "présents dans les fichiers CSS et JavaScript. <br/>Ce mécanisme réduit le "
-#~ "poids de chaque fichier et permet une lecture plus rapide par les "
-#~ "navigateurs et les moteurs de recherche. <br/> La concaténation combine "
-#~ "tous les fichiers CSS et JavaScript afin de n'en faire plus qu'un seul "
-#~ "par type. <br/>Ce mécanisme réduit le nombre de requêtes HTTP et améliore "
-#~ "le temps de chargement des pages.<br /><strong style=\"color:#FF0000;"
-#~ "\">Attention : la concaténation des fichiers peut générer des problèmes "
-#~ "d'affichage, en cas d'erreur nous vous conseillons de le désactiver ou de "
-#~ "regarder la vidéo suivante : <a href=\"%s\" class=\"fancybox\">%s</a></"
-#~ "strong>."
-
-#~ msgid ""
-#~ "<strong style=\"color:#FF0000;\">Warning: if you use the plugin <a target="
-#~ "\"_blank\" href=\"http://wordpress.org/plugins/wptouch/\">WP Touch</a>, "
-#~ "<a href=\"http://wordpress.org/plugins/wp-mobile-detector/\" target="
-#~ "\"_blank\">WP Mobile Detector</a>, <a href=\"http://wordpress.org/plugins/"
-#~ "wiziapp-create-your-own-native-iphone-app\" target=\"_blank\">wiziApp</a> "
-#~ "or <a href=\"http://wordpress.org/plugins/wordpress-mobile-pack/\" target="
-#~ "\"_blank\">WordPress Mobile Pack</a>, you should not enable this option.</"
-#~ "strong>"
-#~ msgstr ""
-#~ "<strong style=\"color:#FF0000;\">Attention : si vous utilisez le plugin "
-#~ "<a href=\"http://wordpress.org/plugins/wptouch/\" target=\"_blank\">WP "
-#~ "Touch</a>, <a href=\"http://wordpress.org/plugins/wp-mobile-detector/\" "
-#~ "target=\"_blank\">WP Mobile Detector</a>, <a href=\"http://wordpress.org/"
-#~ "plugins/wiziapp-create-your-own-native-iphone-app/\" target=\"_blank"
-#~ "\">WiziApp</a> ou <a href=\"http://wordpress.org/plugins/wordpress-mobile-"
-#~ "pack/\" target=\"_blank\">WordPress Mobile Pack</a>, vous ne devez pas "
-#~ "activer cette option.</strong>"
-
-#~ msgid ""
-#~ "DNS prefetching is a way for browsers to anticipate the DNS resolution of "
-#~ "external domains from your site.<br/>This mechanism reduces the latency "
-#~ "of some external files.<br/>To Learn more about this option and how to "
-#~ "use it correctly, we advise you to watch the following video: <a href=\"%s"
-#~ "\" class=\"fancybox\">%s</a><br/><strong>Warning:</strong> Enter the "
-#~ "domain names without their protocol, for example: <code>//ajax.googleapis."
-#~ "com</code> without <code>http:</code> (one per line)."
-#~ msgstr ""
-#~ "Le DNS prefetching est une méthode permettant aux navigateurs d’anticiper "
-#~ "la résolution DNS des noms de domaines externes présents sur votre site."
-#~ "<br/>Ce mécanisme permet de diminuer les temps de latence de certains "
-#~ "fichiers externes bloquants.<br/>Pour en savoir plus sur cette option et "
-#~ "apprendre à l'utiliser correctement, nous vous conseillons de regarder la "
-#~ "vidéo suivante : <a href=\"%s\" class=\"\fancybox\">%s</a><br/"
-#~ "><strong>Attention :</strong> Indiquez les noms de domaines sans leur "
-#~ "protocole, par exemple : <code>//ajax.googleapis.com</code> sans le "
-#~ "<code>http:</code>  (un par ligne)."
-
-#~ msgid "Empty the cache of the following pages when updating an article:"
-#~ msgstr ""
-#~ "Vider le cache des pages suivantes lors de la mise à jour d'un article :"
-
-#~ msgid ""
-#~ "Enter the URL of pages to reject (one per line). <br/> You can use "
-#~ "regular expressions (regex)."
-#~ msgstr ""
-#~ "Indiquez l'URL des pages à rejeter (une par ligne).<br/>Il est possible "
-#~ "d'utiliser des expressions régulières (REGEX)"
-
-#~ msgid "<strong>CSS</strong> files to exclude of the minification:"
-#~ msgstr "Fichiers <strong>CSS</strong> à exclure lors de la minification :"
-
-#~ msgid "<strong>JS</strong> files to exclude of the minification:"
-#~ msgstr "Fichiers <strong>JS</strong> à exclure lors de la minification : "
-
-#~ msgid ""
-#~ "Be careful, you don't have <a href=\"%s\" target=\"_blank\">writing "
-#~ "permissions</a> on <strong>WP Rocket</strong> cache folder (<code>%s</"
-#~ "code>). For <strong>WP Rocket</strong> works properly, please give CHMOD "
-#~ "<code>755</code> or <code>775</code> on this folder."
-#~ msgstr ""
-#~ "Attention, vous n'avez pas les <a href=\"%s\" target=\"_blank\">droits en "
-#~ "écriture (en)</a> sur le dossier de cache de <strong>WP Rocket</strong> "
-#~ "(<code>%s</code>). Pour que <strong>WP Rocket</strong> fonctionne "
-#~ "correctement, veuillez indiquer un CHMOD de <code>755</code> ou de "
-#~ "<code>775</code> sur ce dossier."
-
-#~ msgid ""
-#~ "<strong>WP Rocket</strong> can not be deactivated because the "
-#~ "<code>WP_CACHE</code> constant is still defined.<br>Maybe we do not have "
-#~ "the write rights on <code>wp-config.php</code>.<br>Please give us rigths "
-#~ "or remove this constant. Then retry deactivation."
-#~ msgstr ""
-#~ "<strong>WP Rocket</strong> ne peut pas être désactivé à cause de la "
-#~ "constante <code>WP_CACHE</code> qui est encore définie.<br/>Peut-être que "
-#~ "nous n'avez pas les droits d'écriture sur le fichier <code>wp-config.php</"
-#~ "code>.<br/>S'il vous plaît, merci de rétablir les bons droits ou de "
-#~ "supprimer cette constante. Relancez ensuite la désactivation."
-
-#~ msgid ""
-#~ "<strong>WP Rocket</strong> can not be deactivated because the <code>."
-#~ "htaccess</code> file is not writable.<br>Please give us rigths or remove "
-#~ "our block of code. Then retry deactivation."
-#~ msgstr ""
-#~ "<strong>WP Rocket</strong> ne peut pas être désactivé à cause du fichier "
-#~ "<code>.htaccess</code> qui n'est pas accessible en écriture.<br/>S'il "
-#~ "vous plaît, merci de rétablier les bons droits ou de supprimer notre bloc "
-#~ "de code. Relancez ensuite la désactivation."
-
-#~ msgid "Attendre le chargement de ce fichier ?"
-#~ msgstr "Wait until this file is loaded ? "
-
-#~ msgid "Cache SSL:"
-#~ msgstr "SSL Cache : "
-
-#~ msgid "Ignore until next time"
-#~ msgstr "Toutes les langues"
-
-#, fuzzy
-#~ msgid "Vider le cache"
-#~ msgstr "Vider le cache"
-
-#, fuzzy
-#~ msgid "Précharger le cache"
-#~ msgstr "Purger le cache"
-
-#~ msgid "Lazy Load"
-#~ msgstr "Chargement différé des images"
-
-#~ msgid "Never cache the following pages"
-#~ msgstr "Ne jamais mettre en cache les pages suivantes"
-
-#~ msgid "Do not cache pages that use the following cookies"
-#~ msgstr ""
-#~ "Ne jamais mettre en cache les pages qui utilisent les cookies suivants :"
-
-#~ msgid "Preload the cache"
-#~ msgstr "Préchargement des fichiers de cach"
