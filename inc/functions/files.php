@@ -268,7 +268,7 @@ function set_rocket_wp_cache_define( $turn_it_on )
  *
  */
 
-function rocket_clean_minify()
+function rocket_clean_minify( $extensions = array( 'js', 'css' ) )
 {
 
 	/**
@@ -278,8 +278,7 @@ function rocket_clean_minify()
 	*/
 	do_action( 'before_rocket_clean_minify' );
 
-	$extensions = apply_filters( 'rocket_clean_minify_ext', array( 'js', 'css' ) );
-	$files = @glob( WP_ROCKET_MINIFY_CACHE_PATH . '/*.{' . implode( ',', $extensions ) . '}', GLOB_BRACE );
+	$files = @glob( WP_ROCKET_MINIFY_CACHE_PATH . '/*.{' . implode( ',', (array)$extensions ) . '}', GLOB_BRACE );
 	@array_map( 'unlink' , $files );
 
 	/**
@@ -681,7 +680,7 @@ function rocket_fetch_and_cache_minify( $url, $pretty_url )
 	// If minify cache file is already exist, return to get a coffee :)
 	if( file_exists( $pretty_path ) )
 	{
-		return false;
+		return true;
 	}
 
 	$ch = curl_init();

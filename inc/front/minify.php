@@ -251,7 +251,6 @@ function rocket_minify_js( $buffer )
 	        // Get URLs infos
 	        $js_url = parse_url( $tags_match[1][$i] );
 
-
 	        // Check if the link isn't external
 	        // Insert the relative path to the array without query string
 	        if( $js_url['host'] == parse_url( home_url(), PHP_URL_HOST )

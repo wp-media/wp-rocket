@@ -919,6 +919,8 @@ function rocket_display_options()
 		<?php settings_fields( 'wp_rocket' ); ?>
 		<input type="hidden" name="wp_rocket_settings[consumer_key]" value="<?php esc_attr_e( get_rocket_option( 'consumer_key' ) ); ?>" />
 		<input type="hidden" name="wp_rocket_settings[secret_cache_key]" value="<?php echo esc_attr( get_rocket_option( 'secret_cache_key' ) ) ;?>" />
+		<input type="hidden" name="wp_rocket_settings[minify_css_key]" value="<?php echo esc_attr( get_rocket_option( 'minify_css_key' ) ) ;?>" />
+		<input type="hidden" name="wp_rocket_settings[minify_js_key]" value="<?php echo esc_attr( get_rocket_option( 'minify_js_key' ) ) ;?>" />
 		<?php submit_button(); ?>
 		<h2 class="nav-tab-wrapper hide-if-no-js">
 			<?php if( rocket_valid_key() ) { ?>
@@ -1252,7 +1254,9 @@ function rocket_settings_callback( $inputs )
 			$inputs['secret_key'] = $response['body'];
 		}
 
-	}else{
+	}
+	else
+	{
 		unset( $inputs['secret_key'] );
 	}
 
@@ -1281,16 +1285,27 @@ function rocket_after_save_options( $oldvalue, $value )
 {
 	// Purge all cache files
 	rocket_clean_domain();
-
+	
 	// Purge all minify cache files
-	rocket_clean_minify();
+	if( !empty( $_POST ) && ( $oldvalue['minify_css'] != $value['minify_css'] || $oldvalue['exclude_css'] != $value['exclude_css'] ) 
+	) {
+		rocket_clean_minify('css');	
+	}
+	
+	if( !empty( $_POST ) && ( $oldvalue['minify_js'] != $value['minify_js'] || $oldvalue['exclude_js']  != $value['exclude_js'] ) 
+	) {
+		rocket_clean_minify( 'js' );	
+	}
+
 
 	// Update .htaccess file rules
 	if( !empty( $_POST ) && $oldvalue['wl_plugin_name'] != $value['wl_plugin_name'] &&
 		isset( $_POST['option_page'], $_POST['action'] ) && 'wp_rocket'==$_POST['option_page'] && 'update'==$_POST['action'] )
 	{
 		flush_rocket_htaccess( true, $oldvalue['wl_plugin_name'] );
-	}else{
+	}
+	else
+	{
 		flush_rocket_htaccess( !rocket_valid_key(), $value['wl_plugin_name'] );
 	}
 
@@ -1335,10 +1350,16 @@ function rocket_pre_main_option( $newvalue, $oldvalue )
 
 	}
 
-	// Regenerate the minify key if JS or CS files have been modified
-	if( ( $newvalue['exclude_css'] != $oldvalue['exclude_css'] ) || ( $newvalue['exclude_js']!=$oldvalue['exclude_js'] ) )
-	{
-		$newvalue['minify_key'] = create_rocket_uniqid();
+	// Regenerate the minify key if CSS files have been modified
+	if( $newvalue['minify_css'] != $oldvalue['minify_css'] || $newvalue['exclude_css'] != $oldvalue['exclude_css']
+	) {
+		$newvalue['minify_css_key'] = create_rocket_uniqid();
+	}
+	
+	// Regenerate the minify key if JS files have been modified
+	if( $newvalue['minify_js']	!= $oldvalue['minify_js'] || $newvalue['exclude_js'] != $oldvalue['exclude_js']
+	) {
+		$newvalue['minify_js_key'] = create_rocket_uniqid();
 	}
 
 	return $newvalue;

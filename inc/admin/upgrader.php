@@ -75,7 +75,8 @@ function rocket_first_install()
 	$secret_cache_key = create_rocket_uniqid();
 
 	// Generate an random key for minify md5 filename
-	$minify_key = create_rocket_uniqid();
+	$minify_css_key = create_rocket_uniqid();
+	$minify_js_key = create_rocket_uniqid();
 
 	// Create Option
 	add_option( WP_ROCKET_SLUG,
@@ -95,9 +96,10 @@ function rocket_first_install()
 			'deferred_js_wait'	   	=> array(),
 			'lazyload'			   	=> 0,
 			'minify_css'		   	=> 0,
+			'minify_css_key'		=> $minify_css_key,
 			'minify_js'			   	=> 0,
+			'minify_js_key'			=> $minify_js_key,
 			'minify_html'			=> 0,
-			'minify_key'			=> $minify_key,
 			'dns_prefetch'			=> 0,
 			'cdn'					=> 0,
 			'cdn_cnames'			=> array(),

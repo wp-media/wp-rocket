@@ -343,9 +343,13 @@ function rocket_purge_cache()
 					rocket_clean_domain();
 				}
 				
+				// Remove all minify cache files
+				rocket_clean_minify();
+				
 				// Generate a new random key for minify cache file
 				$options = get_option( WP_ROCKET_SLUG );
-				$options['minify_key'] = create_rocket_uniqid();
+				$options['minify_css_key'] = create_rocket_uniqid();
+				$options['minify_js_key'] = create_rocket_uniqid();
 				remove_all_actions( 'update_option_' . WP_ROCKET_SLUG );
 				update_option( WP_ROCKET_SLUG, $options );
 	
