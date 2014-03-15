@@ -592,11 +592,8 @@ function rocket_mkdir( $dir )
 {
 
 	global $wp_filesystem;
-    if( !$wp_filesystem )
-    {
-		require_once( ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php' );
-		require_once( ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php' );
-		$wp_filesystem = new WP_Filesystem_Direct( new StdClass() );
+    if( !$wp_filesystem ) {
+		WP_Filesystem();
 	}
 	return $wp_filesystem->mkdir( $dir, CHMOD_WP_ROCKET_CACHE_DIRS );
 }
@@ -618,11 +615,13 @@ function rocket_mkdir_p( $target )
 
 	// safe mode fails with a trailing slash under certain PHP versions.
 	$target = rtrim($target, '/'); // Use rtrim() instead of untrailingslashit to avoid formatting.php dependency.
-	if ( empty($target) )
+	if ( empty($target) ) {
 		$target = '/';
+	}
 
-	if ( file_exists( $target ) )
+	if ( file_exists( $target ) ) {
 		return @is_dir( $target );
+	}
 
 	// Attempting to create the directory may clutter up our display.
 	if ( rocket_mkdir( $target ) ) {
@@ -632,8 +631,9 @@ function rocket_mkdir_p( $target )
 	}
 
 	// If the above failed, attempt to create the parent node, then try again.
-	if ( ( $target != '/' ) && ( rocket_mkdir_p( dirname( $target ) ) ) )
+	if ( ( $target != '/' ) && ( rocket_mkdir_p( dirname( $target ) ) ) ) {
 		return rocket_mkdir_p( $target );
+	}
 
 	return false;
 }
@@ -651,11 +651,8 @@ function rocket_put_content( $file, $content )
 {
 
 	global $wp_filesystem;
-    if( !$wp_filesystem )
-    {
-		require_once( ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php' );
-		require_once( ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php' );
-		$wp_filesystem = new WP_Filesystem_Direct( new StdClass() );
+    if( !$wp_filesystem ) {
+		WP_Filesystem();
 	}
 
 	$chmod = defined( 'FS_CHMOD_FILE' ) ? FS_CHMOD_FILE : 0644;

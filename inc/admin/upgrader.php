@@ -82,22 +82,22 @@ function rocket_first_install()
 	add_option( WP_ROCKET_SLUG,
 		array(
 			'secret_cache_key'		=> $secret_cache_key,
-			'cache_mobile'         	=> 0,
-			'cache_logged_user'     => 0,
-			'cache_ssl'         	=> 0,
-			'cache_reject_uri'     	=> array(),
-			'cache_reject_cookies' 	=> array(),
-			'cache_purge_pages'  	=> array(),
-			'purge_cron_interval'  	=> 24,
-			'purge_cron_unit'  		=> 'HOUR_IN_SECONDS',
-			'exclude_css'		   	=> array(),
-			'exclude_js'		   	=> array(),
-			'deferred_js_files'	   	=> array(),
-			'deferred_js_wait'	   	=> array(),
-			'lazyload'			   	=> 0,
-			'minify_css'		   	=> 0,
+			'cache_mobile'			=> 0,
+			'cache_logged_user'		=> 0,
+			'cache_ssl'				=> 0,
+			'cache_reject_uri'		=> array(),
+			'cache_reject_cookies'	=> array(),
+			'cache_purge_pages'		=> array(),
+			'purge_cron_interval'	=> 24,
+			'purge_cron_unit'		=> 'HOUR_IN_SECONDS',
+			'exclude_css'			=> array(),
+			'exclude_js'			=> array(),
+			'deferred_js_files'		=> array(),
+			'deferred_js_wait'		=> array(),
+			'lazyload'				=> 0,
+			'minify_css'			=> 0,
 			'minify_css_key'		=> $minify_css_key,
-			'minify_js'			   	=> 0,
+			'minify_js'				=> 0,
 			'minify_js_key'			=> $minify_js_key,
 			'minify_html'			=> 0,
 			'dns_prefetch'			=> 0,
@@ -107,6 +107,7 @@ function rocket_first_install()
 		)
 	);
 	rocket_dismiss_box( 'rocket_warning_plugin_modification' );
+	rocket_reset_white_label_values( false );
 
 }
 

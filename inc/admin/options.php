@@ -887,7 +887,7 @@ function rocket_display_options()
 	        	'description'  => __( 'Allows you to request a bot crawl to preload the cache (homepage and its internal links).', 'rocket' )
 			),
 		)
-    );
+    );	
     if( !rocket_is_white_label() )
     {
 		add_settings_field(
@@ -918,6 +918,7 @@ function rocket_display_options()
 	<form action="options.php" method="post">
 		<?php settings_fields( 'wp_rocket' ); ?>
 		<input type="hidden" name="wp_rocket_settings[consumer_key]" value="<?php esc_attr_e( get_rocket_option( 'consumer_key' ) ); ?>" />
+		<input type="hidden" name="wp_rocket_settings[secret_key]" value="<?php esc_attr_e( get_rocket_option( 'secret_key' ) ); ?>" />
 		<input type="hidden" name="wp_rocket_settings[secret_cache_key]" value="<?php echo esc_attr( get_rocket_option( 'secret_cache_key' ) ) ;?>" />
 		<input type="hidden" name="wp_rocket_settings[minify_css_key]" value="<?php echo esc_attr( get_rocket_option( 'minify_css_key' ) ) ;?>" />
 		<input type="hidden" name="wp_rocket_settings[minify_js_key]" value="<?php echo esc_attr( get_rocket_option( 'minify_js_key' ) ) ;?>" />
@@ -935,7 +936,7 @@ function rocket_display_options()
 					<a href="#tab_tutos" class="nav-tab"><?php _e( 'Tutorials', 'rocket' ); ?></a>
 					<a href="#tab_faq" class="nav-tab"><?php _e( 'FAQ', 'rocket' ); ?></a>
 					<a href="#tab_support" class="nav-tab file-error"><?php _e( 'Support', 'rocket' ); ?></a>
-			<?php } ?>
+				<?php } ?>
 			<?php }else{ ?>
 				<a href="#tab_apikey" class="nav-tab"><?php _e( 'API KEY', 'rocket' ); ?></a>
 				<a href="#tab_faq" class="nav-tab"><?php _e( 'FAQ', 'rocket' ); ?></a>
@@ -1045,8 +1046,7 @@ function rocket_sanitize_js( $file )
 
 function rocket_clean_exclude_file( $file )
 {
-	if( !$file )
-	{
+	if( !$file ) {
 		return false;
 	}
 
@@ -1070,7 +1070,6 @@ function rocket_settings_callback( $inputs )
 	{
 		return $inputs;
 	}
-
 
 	/*
 	 * Option : Purge delay
@@ -1259,7 +1258,6 @@ function rocket_settings_callback( $inputs )
 	{
 		unset( $inputs['secret_key'] );
 	}
-
 	rocket_renew_box( 'file-error_logged_users' );
 
 	return $inputs;
@@ -1351,13 +1349,15 @@ function rocket_pre_main_option( $newvalue, $oldvalue )
 	}
 
 	// Regenerate the minify key if CSS files have been modified
-	if( $newvalue['minify_css'] != $oldvalue['minify_css'] || $newvalue['exclude_css'] != $oldvalue['exclude_css']
+	if( ( isset( $newvalue['minify_css'], $oldvalue['minify_css'] ) && $newvalue['minify_css'] != $oldvalue['minify_css'] )
+		|| ( isset( $newvalue['exclude_css'], $oldvalue['exclude_css'] ) && $newvalue['exclude_css'] != $oldvalue['exclude_css'] )
 	) {
 		$newvalue['minify_css_key'] = create_rocket_uniqid();
 	}
 	
 	// Regenerate the minify key if JS files have been modified
-	if( $newvalue['minify_js']	!= $oldvalue['minify_js'] || $newvalue['exclude_js'] != $oldvalue['exclude_js']
+	if( ( isset( $newvalue['minify_js'], $oldvalue['minify_js'] ) && $newvalue['minify_js'] != $oldvalue['minify_js'] )
+		|| ( isset( $newvalue['exclude_js'], $oldvalue['exclude_js'] ) && $newvalue['exclude_js'] != $oldvalue['exclude_js'] )
 	) {
 		$newvalue['minify_js_key'] = create_rocket_uniqid();
 	}
