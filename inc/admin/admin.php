@@ -32,11 +32,7 @@ function rocket_plugin_row_meta( $plugin_meta, $plugin_file )
 		$last = end( $plugin_meta );
 		$plugin_meta = array_slice( $plugin_meta, 0, -2 );
 		$a = array();
-		$authors = array(// array(	'name'=>'WP Rocket', 'url'=>'http://wp-rocket.me' ),
-			array( 	'name'=>'Jonathan Buttigieg', 'url'=>'http://www.geekpress.fr' ),
-			array( 	'name'=>'Julio Potier', 'url'=>'http://www.boiteaweb.fr' ),
-			array( 	'name'=>'Jean-Baptiste Marchand-Arvier', 'url'=>'http://jbma.me/blog/' ),
-		);
+		$authors = array(array(	'name'=>'WP Rocket', 'url'=>'http://wp-rocket.me' ));
 		foreach( $authors as $author )
 			$a[] = '<a href="' . $author['url'] . '" title="' . esc_attr__( 'Visit author homepage' ) . '">' . $author['name'] . '</a>';
 		$a = sprintf( __( 'By %s' ), wp_sprintf( '%l', $a ) );
