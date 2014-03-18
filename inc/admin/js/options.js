@@ -61,7 +61,7 @@ jQuery( document ).ready( function($){
 	var sup_html5st = 'sessionStorage' in window && window['sessionStorage'] !== undefined;
 	if( sup_html5st ) {
 		var tab = unescape( sessionStorage.getItem( 'rocket_tab' ) );
-		if( tab!='null' && tab!=null && tab!=undefined ) {
+		if( tab!='null' && tab!=null && tab!=undefined && $('h2.nav-tab-wrapper a[href="'+tab+'"]').length==1 ) {
 			$('#rockettabs .nav-tab').hide();
 			$('h2.nav-tab-wrapper a[href="'+tab+'"]').addClass('nav-tab-active');
 			$(tab).show();
