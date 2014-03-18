@@ -15,26 +15,26 @@ function rocket_exclude_deferred_js( $buffer )
 {
 
 	// Get all JS files with this regex
-    preg_match_all( '#<script.*src=[\'|"]([^\'|"]+\.js?.+)[\'|"].*></script>#iU', $buffer, $tags_match );
+	preg_match_all( '#<script.*src=[\'|"]([^\'|"]+\.js?.+)[\'|"].*></script>#iU', $buffer, $tags_match );
 	
-	$i=0;
-    foreach ( $tags_match[0] as $tag ) 
-    {
-
-		// Get link of the file
-		$url = preg_replace( '#\?.*$#', '', $tags_match[1][$i] );
-		
-		// Get all js files to remove
-		$deferred_js_files = apply_filters( 'rocket_minify_deferred_js', get_rocket_option( 'deferred_js_files' ) );
-
-    	// Check if this file is deferred loading
-		if( in_array( $url, $deferred_js_files ) ) 
+	if( isset( $tags_match[0] ) )
+	{
+	    foreach ( $tags_match[0] as $i=>$tag ) 
 		{
-			$buffer = str_replace( $tag, '', $buffer );
-		}
+
+			// Get link of the file
+			$url = preg_replace( '#\?.*$#', '', $tags_match[1][$i] );
 			
-		$i++;
-    }
+			// Get all js files to remove
+			$deferred_js_files = apply_filters( 'rocket_minify_deferred_js', get_rocket_option( 'deferred_js_files' ) );
+
+			// Check if this file is deferred loading
+			if( in_array( $url, $deferred_js_files ) ) {
+				$buffer = str_replace( $tag, '', $buffer );
+			}
+				
+		}
+	}
 
 	return $buffer;
 }
@@ -63,8 +63,7 @@ function rocket_insert_deferred_js( $buffer )
 	
 	// Set LABjs options
 	// All options is available in http://labjs.com/documentation.php#optionsobject
-	if( count( $labjs_options ) ) 
-	{
+	if( count( $labjs_options ) ) {
 		$defer .= '.setOptions(' . json_encode( $labjs_options ) . ')';	
 	}
 
