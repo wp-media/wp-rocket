@@ -48,9 +48,9 @@ add_action( 'post_submitbox_start', 'rocket_post_submitbox_start' );
 function rocket_post_submitbox_start()
 {
 	global $post;
-	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) )
+	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
 		echo '<div id="purge-action"><a class="button-secondary" href="'.wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=post-' . $post->ID ), 'purge_cache_post-' . $post->ID ).'">'.__( 'Clear cache', 'rocket' ).'</a></div>';
-}
+	}
 
 
 
@@ -120,10 +120,8 @@ function rocket_dismiss_boxes( $args )
 	$args = empty( $args ) ? $_GET : $args;
 	if( isset( $args['box'], $args['_wpnonce'] ) ) {
 
-		if( !wp_verify_nonce( $args['_wpnonce'], $args['action'] . '_' . $args['box'] ) )
-		{
-			if( defined( 'DOING_AJAX' ) )
-			{
+		if( !wp_verify_nonce( $args['_wpnonce'], $args['action'] . '_' . $args['box'] ) ) {
+			if( defined( 'DOING_AJAX' ) ) {
 				wp_send_json( array( 'error'=>1 ) );
 			}else{
 				wp_nonce_ays( '' );
@@ -132,9 +130,8 @@ function rocket_dismiss_boxes( $args )
 		global $current_user;
 		$actual = get_user_meta( $current_user->ID, 'rocket_boxes', true );
 		update_user_meta( $current_user->ID, 'rocket_boxes', array_filter( array_merge( (array)$actual, array( $args['box'] ) ) ) );
-		if( 'admin-post.php'==$GLOBALS['pagenow'] ){
-			if( defined( 'DOING_AJAX' ) )
-			{
+		if( 'admin-post.php'==$GLOBALS['pagenow'] ) {
+			if( defined( 'DOING_AJAX' ) ) {
 				wp_send_json( array( 'error'=>0 ) );
 			}else{
 				wp_safe_redirect( wp_get_referer() );
@@ -176,8 +173,7 @@ add_action( 'activated_plugin', 'rocket_dismiss_plugin_box' );
 add_action( 'deactivated_plugin', 'rocket_dismiss_plugin_box' );
 function rocket_dismiss_plugin_box( $plugin )
 {
-	if( $plugin != plugin_basename( WP_ROCKET_FILE ) )
-	{
+	if( $plugin != plugin_basename( WP_ROCKET_FILE ) ) {
 		rocket_renew_box( 'rocket_warning_plugin_modification' );
 	}
 }
@@ -197,8 +193,9 @@ function rocket_deactivate_plugin()
 
 	$_plugin = $_GET['plugin'];
 
-	if( !wp_verify_nonce( $_GET['_wpnonce'], 'deactivate_plugin' ) )
-			wp_nonce_ays( '' );
+	if( !wp_verify_nonce( $_GET['_wpnonce'], 'deactivate_plugin' ) ) {
+		wp_nonce_ays( '' );
+	}
 
 	deactivate_plugins( $_plugin );
 
@@ -215,24 +212,23 @@ function rocket_deactivate_plugin()
  *
  */
 
-add_action( 'admin_post_rocketeer', 'send_rocketeer_infos' );
-function send_rocketeer_infos()
+add_action( 'admin_post_rocketeer', '__send_rocketeer_infos' );
+function __send_rocketeer_infos()
 {
-	if( isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'rocketeer' ) )
-	{
-		require( 'rocketeer.php' );
+	if( isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'rocketeer' ) ) {
+		require( dirname( __FILE__ ) . '/rocketeer.php' );
 	}
-
+	add_settings_error( 'rocket', 'rocketeer_infos', __( 'Thank you, you may now add a <a href="http://support.wp-rocket.me/forums/" target="_blank">support post</a>.', 'rocket' ), 'updated' );
+	set_transient( 'settings_errors', get_settings_errors(), 30 );
 	wp_safe_redirect( wp_get_referer() );
 	die();
 }
 
 
-
 /**
- * What to do when Rocket is updated, depending on versions
+ * Reset white label options
  *
- * since 1.0
+ * since 2.1
  *
  */
 
@@ -241,14 +237,14 @@ function rocket_reset_white_label_values( $hack_post )
 
 		// White Label default values - !!! DO NOT TRANSLATE !!!
 		$options = get_option( WP_ROCKET_SLUG );
-		$options['wl_plugin_name']        = 'WP Rocket';
-		$options['wl_plugin_slug']        = 'wprocket';
-		$options['wl_plugin_URI']         = 'http://www.wp-rocket.me';
-		$options['wl_description']        = array( __( 'The best WordPress performance plugin.', 'rocket' ) ); // !!! but this !!!
-		$options['wl_author']             = 'WP Rocket';
-		$options['wl_author_URI']         = 'http://www.wp-rocket.me';
-		if( $hack_post )
-		{// hack $_POST to force refresh of files, sorry
+		$options['wl_plugin_name']	= 'WP Rocket';
+		$options['wl_plugin_slug']	= 'wprocket';
+		$options['wl_plugin_URI']	= 'http://www.wp-rocket.me';
+		$options['wl_description']	= array( 'The best WordPress performance plugin.' );
+		$options['wl_author']		= 'WP Rocket';
+		$options['wl_author_URI']	= 'http://www.wp-rocket.me';
+		if( $hack_post ) {
+			// hack $_POST to force refresh of files, sorry
 			$_POST['page'] = 'wprocket';
 		}
 		update_option( WP_ROCKET_SLUG, $options );
@@ -262,11 +258,10 @@ function rocket_reset_white_label_values( $hack_post )
  *
  */
 
-add_action( 'admin_post_resetwl', 'rocket_reset_white_label_values_action' );
-function rocket_reset_white_label_values_action()
+add_action( 'admin_post_resetwl', '__rocket_reset_white_label_values_action' );
+function __rocket_reset_white_label_values_action()
 {
-	if( isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'resetwl' ) )
-	{
+	if( isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'resetwl' ) ) {
 		rocket_reset_white_label_values( true );
 	}
 	wp_safe_redirect( add_query_arg( 'page', 'wprocket', remove_query_arg( 'page', wp_get_referer() ) ) );
@@ -281,8 +276,8 @@ function rocket_reset_white_label_values_action()
  *
  */
 
-add_filter( 'all_plugins', 'rocket_white_label' );
-function rocket_white_label( $plugins )
+add_filter( 'all_plugins', '__rocket_white_label' );
+function __rocket_white_label( $plugins )
 {
 
 	// We change the plugin's header
@@ -298,8 +293,7 @@ function rocket_white_label( $plugins )
 	      );
 
 	// if white label, remove our names from contributors
-	if( rocket_is_white_label() )
-	{
+	if( rocket_is_white_label() ) {
 		remove_filter( 'plugin_row_meta', 'rocket_plugin_row_meta', 10, 2 );
 	}
 
@@ -318,25 +312,9 @@ add_action( 'admin_init', '__rocket_check_no_empty_name', 11 );
 function __rocket_check_no_empty_name()
 {
 	$wl_plugin_name = trim( get_rocket_option( 'wl_plugin_name' ) );
-	if( empty( $wl_plugin_name ) )
-	{
+	if( empty( $wl_plugin_name ) ) {
 		rocket_reset_white_label_values( false );
 		wp_safe_redirect( $_SERVER['REQUEST_URI'] );
 		die();		
 	}
-}
-
-
-
-/**
- * Just return the define for WL
- *
- * @since 2.1
- *
- */
-
-add_filter( 'rocket_pointer_whitelabel', '__return_rocket_is_white_label' );
-function __return_rocket_is_white_label() 
-{
-	return defined( 'WP_RWL' );
 }
