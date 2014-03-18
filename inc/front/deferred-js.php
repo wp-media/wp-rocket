@@ -15,21 +15,25 @@ function rocket_exclude_deferred_js( $buffer )
 {
 
 	// Get all JS files with this regex
-    preg_match_all( '/<script.+src=.+(\.js).+><\/script>/iU', $buffer, $tags_match );
+    preg_match_all( '#<script.*src=[\'|"]([^\'|"]+\.js?.+)[\'|"].*></script>#iU', $buffer, $tags_match );
 	
-    foreach ( $tags_match[0] as $tag ) {
+	$i=0;
+    foreach ( $tags_match[0] as $tag ) 
+    {
 
 		// Get link of the file
-        preg_match('/src=[\'"]([^\'"]+)/', $tag, $src_match );
-		$url = preg_replace( '#\?.*$#', '', $src_match[1] );
+		$url = preg_replace( '#\?.*$#', '', $tags_match[1][$i] );
 		
 		// Get all js files to remove
 		$deferred_js_files = apply_filters( 'rocket_minify_deferred_js', get_rocket_option( 'deferred_js_files' ) );
 
     	// Check if this file is deferred loading
-		if( in_array( $url, $deferred_js_files ) )
+		if( in_array( $url, $deferred_js_files ) ) 
+		{
 			$buffer = str_replace( $tag, '', $buffer );
-
+		}
+			
+		$i++;
     }
 
 	return $buffer;
