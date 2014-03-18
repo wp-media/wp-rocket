@@ -17,34 +17,6 @@ function rocket_settings_action_links( $actions )
 }
 
 
-
-/**
- * Add some informations about authors in plugins list area
- *
- * Since 1.0
- *
- */
-
-add_filter( 'plugin_row_meta', 'rocket_plugin_row_meta', 10, 2 );
-function rocket_plugin_row_meta( $plugin_meta, $plugin_file )
-{
-	
-	if( plugin_basename( WP_ROCKET_FILE ) == $plugin_file ) 
-	{
-		
-		$last = end( $plugin_meta );
-		$plugin_meta = array_slice( $plugin_meta, 0, -2 );
-		$a = sprintf( __( 'By %s' ), '<a href="http://wp-rocket.me" title="' . esc_attr__( 'Visit author homepage' ) . '">WP Rocket</a>' );
-		$plugin_meta[] = $a;
-		$plugin_meta[] = $last;
-			
-	}
-		
-	return $plugin_meta;
-}
-
-
-
 /**
  * Add a link "Purge this cache" in the post edit area
  *
