@@ -51,6 +51,7 @@ function rocket_post_submitbox_start()
 	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
 		echo '<div id="purge-action"><a class="button-secondary" href="'.wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=post-' . $post->ID ), 'purge_cache_post-' . $post->ID ).'">'.__( 'Clear cache', 'rocket' ).'</a></div>';
 	}
+}
 
 
 
@@ -206,7 +207,7 @@ function rocket_deactivate_plugin()
 
 
 /**
- * Send various informations from your installation to the support team
+ * Send various informations from your installation to the support team, if and when YOU want to do it
  *
  * since 1.4.0
  *
