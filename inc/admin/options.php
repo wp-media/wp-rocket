@@ -917,11 +917,7 @@ function rocket_display_options()
 
 	<form action="options.php" method="post">
 		<?php settings_fields( 'wp_rocket' ); ?>
-		<input type="hidden" name="wp_rocket_settings[consumer_key]" value="<?php esc_attr_e( get_rocket_option( 'consumer_key' ) ); ?>" />
-		<input type="hidden" name="wp_rocket_settings[secret_key]" value="<?php esc_attr_e( get_rocket_option( 'secret_key' ) ); ?>" />
-		<input type="hidden" name="wp_rocket_settings[secret_cache_key]" value="<?php echo esc_attr( get_rocket_option( 'secret_cache_key' ) ) ;?>" />
-		<input type="hidden" name="wp_rocket_settings[minify_css_key]" value="<?php echo esc_attr( get_rocket_option( 'minify_css_key' ) ) ;?>" />
-		<input type="hidden" name="wp_rocket_settings[minify_js_key]" value="<?php echo esc_attr( get_rocket_option( 'minify_js_key' ) ) ;?>" />
+		<?php rocket_hidden_fields( array( 'consumer_key', 'secret_key', 'secret_cache_key', 'minify_css_key', 'minify_js_key', 'version' ) ); ?>
 		<?php submit_button(); ?>
 		<h2 class="nav-tab-wrapper hide-if-no-js">
 			<?php if( rocket_valid_key() ) { ?>
@@ -1254,10 +1250,7 @@ function rocket_settings_callback( $inputs )
 		}
 
 	}
-	else
-	{
-		unset( $inputs['secret_key'] );
-	}
+
 	rocket_renew_box( 'file-error_logged_users' );
 
 	return $inputs;
@@ -1364,4 +1357,21 @@ function rocket_pre_main_option( $newvalue, $oldvalue )
 
 	return $newvalue;
 
+}
+
+/**
+ * Function used to print all hidden fields from rocket to avoid the loss of these.
+ *
+ * @since 2.1
+ *
+ */
+
+function rocket_hidden_fields( $fields )
+{
+	if( !is_array( $fields ) ) {
+		return;
+	}
+	foreach( $fields as $field ) {
+		echo '<input type="hidden" name="wp_rocket_settings['.$field.']" value="' . esc_attr( get_rocket_option( $field ) ) . '" />';
+	}
 }

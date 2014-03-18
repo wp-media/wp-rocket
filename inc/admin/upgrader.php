@@ -41,10 +41,6 @@ function rocket_upgrader()
 			if( !is_a($response, 'WP_Error') && strlen( $response['body'] )==32 )
 				$options['secret_key'] = $response['body'];
 		}
-		else
-		{
-			unset( $options['secret_key'] );
-		}
 
 		update_option( WP_ROCKET_SLUG, $options );
 
