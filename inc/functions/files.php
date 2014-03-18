@@ -594,11 +594,12 @@ function rocket_mkdir( $dir )
 	global $wp_filesystem;
     if( !$wp_filesystem )
     {
-		require_once( ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php' );
+		WP_Filesystem();
 		require_once( ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php' );
-		$wp_filesystem = new WP_Filesystem_Direct( new StdClass() );
+		$wp_filesystem_direct = new WP_Filesystem_Direct( new StdClass() );
 	}
-	return $wp_filesystem->mkdir( $dir, CHMOD_WP_ROCKET_CACHE_DIRS );
+
+	return $wp_filesystem_direct->mkdir( $dir, FS_CHMOD_DIR );
 }
 
 
@@ -655,14 +656,13 @@ function rocket_put_content( $file, $content )
 
 	global $wp_filesystem;
     if( !$wp_filesystem )
-    {
-		require_once( ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php' );
+	{
+		WP_Filesystem();
 		require_once( ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php' );
-		$wp_filesystem = new WP_Filesystem_Direct( new StdClass() );
+		$wp_filesystem_direct = new WP_Filesystem_Direct( new StdClass() );
 	}
 
-	$chmod = defined( 'FS_CHMOD_FILE' ) ? FS_CHMOD_FILE : 0644;
-	return $wp_filesystem->put_contents( $file, $content, $chmod );
+	return $wp_filesystem_direct->put_contents( $file, $content, FS_CHMOD_FILE );
 
 }
 
