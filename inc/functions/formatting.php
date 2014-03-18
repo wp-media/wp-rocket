@@ -194,7 +194,7 @@ function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_file
 			 * @since 2.1
 			 * @param string The maximum number of characters in a URL
 			*/
-			$filename_length = apply_filters( 'rocket_minify_filename_length', 255 );
+			$filename_length = apply_filters( 'rocket_minify_' . pathinfo( $file, PATHINFO_EXTENSION ) . '_filename_length', 255 );
 			
 			// +1 : we count the extra comma 
 			if( strlen( $urls[$i] . $base_url . $file )+1>=$filename_length ) 
