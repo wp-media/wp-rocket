@@ -1066,7 +1066,14 @@ function rocket_settings_callback( $inputs )
 	{
 		return $inputs;
 	}
-
+	
+	/*
+	 * Option : Minification CSS & JS
+	 */
+	
+	$inputs['minify_css'] = isset( $inputs['minify_css'] ) ? 1 : 0;
+	$inputs['minify_js'] = isset( $inputs['minify_js'] ) ? 1 : 0;
+	
 	/*
 	 * Option : Purge delay
 	 */
