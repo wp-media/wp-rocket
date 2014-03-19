@@ -47,10 +47,10 @@ function rocket_row_actions( $actions, $post )
 
 add_action( 'post_submitbox_start', 'rocket_post_submitbox_start' );
 function rocket_post_submitbox_start()
-{
-	global $post;
+
 	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) )
 	{
+		global $post;
 		echo '<div id="purge-action"><a class="button-secondary" href="'.wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=post-' . $post->ID ), 'purge_cache_post-' . $post->ID ).'">'.__( 'Clear cache', 'rocket' ).'</a></div>';
 	}
 }

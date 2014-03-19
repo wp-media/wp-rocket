@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/wp-rocket\n"
-"POT-Creation-Date: 2014-03-18 16:09+0100\n"
-"PO-Revision-Date: 2014-03-18 16:11+0100\n"
+"POT-Creation-Date: 2014-03-19 16:37+0100\n"
+"PO-Revision-Date: 2014-03-19 16:37+0100\n"
 "Last-Translator: Julio Potier <julio@boiteaweb.fr>\n"
 "Language-Team:  <contact@wp-rocket.me>\n"
 "Language: fr\n"
@@ -34,7 +34,7 @@ msgid "Cheatin&#8217; uh?"
 msgstr "Alors on triche&nbsp;?"
 
 #: ../inc/admin-bar.php:39 ../inc/admin-bar.php:67 ../inc/admin-bar.php:99
-#: ../inc/admin/admin.php:52 ../inc/admin/notices.php:100
+#: ../inc/admin/admin.php:54 ../inc/admin/notices.php:100
 #: ../inc/admin/options.php:859 ../inc/admin/options.php:865
 msgid "Clear cache"
 msgstr "Vider le cache"
@@ -67,9 +67,17 @@ msgstr "Support"
 msgid "Settings"
 msgstr "Réglages"
 
-#: ../inc/admin/admin.php:33
+#: ../inc/admin/admin.php:34
 msgid "Clear this cache"
 msgstr "Vider ce cache"
+
+#: ../inc/admin/admin.php:240
+msgid ""
+"Thank you, you may now add a <a href=\"http://support.wp-rocket.me/forums/\" "
+"target=\"_blank\">support post</a>."
+msgstr ""
+"Merci, vous pouvez maintenant créer un <a href=\"http://support.wp-rocket.me/"
+"forums/\" target=\"_blank\">tocket de support</a>."
 
 #: ../inc/admin/faq.php:3
 msgid "My key does not work"
@@ -1229,7 +1237,7 @@ msgstr ""
 msgid "Go to Support"
 msgstr "Aller sur le support"
 
-#: ../inc/admin/options.php:1313
+#: ../inc/admin/options.php:1320
 msgid "Settings saved."
 msgstr "Réglages sauvegardés."
 
