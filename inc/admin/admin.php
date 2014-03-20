@@ -241,12 +241,12 @@ function rocket_reset_white_label_values( $hack_post )
 
 		// White Label default values - !!! DO NOT TRANSLATE !!!
 		$options = get_option( WP_ROCKET_SLUG );
-		$options['wl_plugin_name']        = 'WP Rocket';
-		$options['wl_plugin_slug']        = 'wprocket';
-		$options['wl_plugin_URI']         = 'http://www.wp-rocket.me';
-		$options['wl_description']        = array( __( 'The best WordPress performance plugin.', 'rocket' ) ); // !!! but this !!!
-		$options['wl_author']             = 'WP Rocket';
-		$options['wl_author_URI']         = 'http://www.wp-rocket.me';
+		$options['wl_plugin_name']	= 'WP Rocket';
+		$options['wl_plugin_slug']	= 'wprocket';
+		$options['wl_plugin_URI']	= 'http://www.wp-rocket.me';
+		$options['wl_description']	= array( 'The best WordPress performance plugin.' );
+		$options['wl_author']		= 'WP Rocket';
+		$options['wl_author_URI']	= 'http://www.wp-rocket.me';
 		if ( $hack_post ) {
 			// hack $_POST to force refresh of files, sorry
 			$_POST['page'] = 'wprocket';
