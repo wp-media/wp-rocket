@@ -567,7 +567,7 @@ function rocket_mkdir( $dir )
 		$wp_filesystem = new WP_Filesystem_Direct( new StdClass() );
 	}
 
-	$chmod = defined( 'FS_CHMOD_DIR' ) ? FS_CHMOD_DIR : fileperms( WP_CONTENT_DIR ) & 0777 | 0755 );
+	$chmod = defined( 'FS_CHMOD_DIR' ) ? FS_CHMOD_DIR : ( fileperms( WP_CONTENT_DIR ) & 0777 | 0755 );
 	return $wp_filesystem_direct->mkdir( $dir, $chmod );
 }
 
