@@ -168,9 +168,10 @@ function rocket_generate_config_file()
 {
 
 	list( $config_files_path, $buffer ) = get_rocket_config_file();
-	foreach( $config_files_path as $file )
-	{
-		rocket_put_content( $file , $buffer );
+	if ( count( $config_files_path ) ) {
+		foreach ( $config_files_path as $file ) {
+			rocket_put_content( $file , $buffer );
+		}
 	}
 
 }
