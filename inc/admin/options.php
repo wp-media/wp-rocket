@@ -1086,9 +1086,9 @@ function rocket_settings_callback( $inputs )
 	 * Option : Prefetch DNS requests
 	 */
 
-	if( isset( $inputs['dns_prefetch'] ) )
+	if ( ! empty( $inputs['dns_prefetch'] ) )
 	{
-		$inputs['dns_prefetch'] = array_unique( array_filter( array_map( 'esc_url', array_map( 'trim', explode( "\n", $inputs['dns_prefetch'] ) ) ) ) );
+		$inputs['dns_prefetch'] = array_unique( (array) array_filter( array_map( 'esc_url', array_map( 'trim', explode( "\n", $inputs['dns_prefetch'] ) ) ) ) );
 	}else{
 		$inputs['dns_prefetch'] = array();
 	}
@@ -1098,9 +1098,9 @@ function rocket_settings_callback( $inputs )
 	 * Option : Empty the cache of the following pages when updating an article
 	 */
 
-	if( isset( $inputs['cache_purge_pages'] ) )
+	if ( ! empty( $inputs['cache_purge_pages'] ) )
 	{
-		$inputs['cache_purge_pages'] = array_unique( array_filter( array_map( 'rocket_clean_exclude_file', array_map( 'esc_url', array_map( 'trim', explode( "\n", $inputs['cache_purge_pages'] ) ) ) ) ) );
+		$inputs['cache_purge_pages'] = array_unique( (array) array_filter( array_map( 'rocket_clean_exclude_file', array_map( 'esc_url', array_map( 'trim', explode( "\n", $inputs['cache_purge_pages'] ) ) ) ) ) );
 	}else{
 		$inputs['cache_purge_pages'] = array();
 	}
@@ -1110,9 +1110,9 @@ function rocket_settings_callback( $inputs )
 	 * Option : Never cache the following pages
 	 */
 
-	if( isset( $inputs['cache_reject_uri'] ) )
+	if ( ! empty( $inputs['cache_reject_uri'] ) )
 	{
-		$inputs['cache_reject_uri'] = array_unique( array_filter( array_map( 'rocket_clean_exclude_file', array_map( 'esc_url', array_map( 'trim', explode( "\n", $inputs['cache_reject_uri'] ) ) ) ) ) );
+		$inputs['cache_reject_uri'] = array_unique( (array) array_filter( array_map( 'rocket_clean_exclude_file', array_map( 'esc_url', array_map( 'trim', explode( "\n", $inputs['cache_reject_uri'] ) ) ) ) ) );
 	}else{
 		$inputs['cache_reject_uri'] = array();
 	}
@@ -1122,9 +1122,9 @@ function rocket_settings_callback( $inputs )
 	 * Option : Don't cache pages that use the following cookies
 	 */
 
-	if( isset( $inputs['cache_reject_cookies'] ) )
+	if ( ! empty( $inputs['cache_reject_cookies'] ) )
 	{
-		$inputs['cache_reject_cookies'] = array_unique( array_filter( array_map( 'sanitize_key', array_map( 'trim', explode( "\n", $inputs['cache_reject_cookies'] ) ) ) ) );
+		$inputs['cache_reject_cookies'] = array_unique( (array) array_filter( array_map( 'sanitize_key', array_map( 'trim', explode( "\n", $inputs['cache_reject_cookies'] ) ) ) ) );
 	}else{
 		$inputs['cache_reject_cookies'] = array();
 	}
@@ -1134,9 +1134,9 @@ function rocket_settings_callback( $inputs )
 	 * Option : CSS files to exclude of the minification
 	 */
 
-	if( isset( $inputs['exclude_css'] ) )
+	if ( ! empty( $inputs['exclude_css'] ) )
 	{
-		$inputs['exclude_css'] = array_unique( array_filter( array_map( 'rocket_sanitize_css', array_map( 'rocket_clean_exclude_file',	array_map( 'trim', explode( "\n", $inputs['exclude_css'] ) ) ) ) ) );
+		$inputs['exclude_css'] = array_unique( (array) array_filter( array_map( 'rocket_sanitize_css', array_map( 'rocket_clean_exclude_file',	array_map( 'trim', explode( "\n", $inputs['exclude_css'] ) ) ) ) ) );
 	}else{
 		$inputs['exclude_css'] = array();
 	}
@@ -1146,9 +1146,9 @@ function rocket_settings_callback( $inputs )
 	 * Option : JS files to exclude of the minification
 	 */
 
-	if( isset( $inputs['exclude_js'] ) )
+	if ( ! empty( $inputs['exclude_js'] ) )
 	{
-		$inputs['exclude_js'] = array_unique( array_filter( array_map( 'rocket_sanitize_js', array_map( 'rocket_clean_exclude_file',	array_map( 'trim', explode( "\n", $inputs['exclude_js']) ) ) ) ) );
+		$inputs['exclude_js'] = array_unique( (array) array_filter( array_map( 'rocket_sanitize_js', array_map( 'rocket_clean_exclude_file',	array_map( 'trim', explode( "\n", $inputs['exclude_js']) ) ) ) ) );
 	}else{
 		$inputs['exclude_js'] = array();
 	}
@@ -1158,7 +1158,7 @@ function rocket_settings_callback( $inputs )
 	 * Option : JS files with deferred loading
 	 */
 
-	if( isset( $inputs['deferred_js_files'] ) )
+	if ( ! empty( $inputs['deferred_js_files'] ) )
 	{
 		$inputs['deferred_js_files'] = array_filter( array_map( 'rocket_sanitize_js', array_unique( $inputs['deferred_js_files'] ) ) );
 	}
@@ -1168,14 +1168,14 @@ function rocket_settings_callback( $inputs )
 	}
 
 
-	if( !$inputs['deferred_js_files'] )
+	if ( ! $inputs['deferred_js_files'] )
 	{
 		$inputs['deferred_js_wait'] = array();
 	}
 	else
 	{
 
-		for( $i=0; $i<=max(array_keys($inputs['deferred_js_files'])); $i++ )
+		for ( $i=0; $i<=max( array_keys( $inputs['deferred_js_files'] ) ); $i++ )
 		{
 
 			if( !isset( $inputs['deferred_js_files'][$i] ) )
@@ -1214,7 +1214,7 @@ function rocket_settings_callback( $inputs )
 	$inputs['cdn_cnames'] = isset( $inputs['cdn_cnames'] ) ? array_unique( array_filter( $inputs['cdn_cnames'] ) ) : array();
 
 
-	if( !$inputs['cdn_cnames'] )
+	if( ! $inputs['cdn_cnames'] )
 	{
 		$inputs['cdn_zone'] = array();
 	}
