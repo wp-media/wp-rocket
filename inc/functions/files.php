@@ -568,7 +568,7 @@ function rocket_mkdir( $dir )
 	}
 
 	$chmod = defined( 'FS_CHMOD_DIR' ) ? FS_CHMOD_DIR : ( fileperms( WP_CONTENT_DIR ) & 0777 | 0755 );
-	return $wp_filesystem_direct->mkdir( $dir, $chmod );
+	return $wp_filesystem->mkdir( $dir, $chmod );
 }
 
 
@@ -631,7 +631,7 @@ function rocket_put_content( $file, $content )
 	}
 
 	$chmod = defined( 'FS_CHMOD_FILE' ) ? FS_CHMOD_FILE : 0644;
-	return $wp_filesystem_direct->put_contents( $file, $content, $chmod );
+	return $wp_filesystem->put_contents( $file, $content, $chmod );
 
 }
 
