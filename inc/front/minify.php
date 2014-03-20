@@ -27,12 +27,14 @@ function rocket_minify_process( $buffer )
 		list( $buffer, $conditionals ) = rocket_extract_ie_conditionals( $buffer );
 
 		// Minify CSS
-	    if( $enable_css )
+	    if( $enable_css ) {
 	    	list( $buffer, $css ) = rocket_minify_css( $buffer );
+		}
 
 	    // Minify JavaScript
-	    if( $enable_js )
+	    if( $enable_js ) {
 	    	list( $buffer, $js ) = rocket_minify_js( $buffer );
+		}
 
 	    $buffer = rocket_inject_ie_conditionals( $buffer, $conditionals );
 
@@ -42,8 +44,9 @@ function rocket_minify_process( $buffer )
 	}
 
 	// Minify HTML
-	if( get_rocket_option( 'minify_html' ) )
+	if( get_rocket_option( 'minify_html' ) ) {
 	    $buffer = rocket_minify_html( $buffer );
+	}
 
 	return $buffer;
 
@@ -62,32 +65,22 @@ function rocket_minify_html( $buffer )
 {
 
 	// Check if Minify_HTML is enable
-    if( !class_exists( 'Minify_HTML' ) )
-    {
+    if( !class_exists( 'Minify_HTML' ) ) {
 
-	    $html_options = array(
-	    	'ignoredComments' => array( 'google_ad_', 'RSPEAK_' ),
-	    	'stripCrlf'       => true
-	    );
+	    $html_options = array();
 
 	    require( WP_ROCKET_PATH . 'min/lib/Minify/HTML.php' );
 
 		// Check if Minify_CSS_Compressor is enable
-		if( !class_exists( 'Minify_CSS_Compressor' ) )
-		{
-
+		if( !class_exists( 'Minify_CSS_Compressor' ) ) {
 			require( WP_ROCKET_PATH . 'min/lib/Minify/CSS/Compressor.php' );
 			$html_options['cssMinifier'] = 'rocket_minify_inline_css';
-
 		}
 
 		// Check if JSMin is enable
-		if( !class_exists( 'JSMin' ) )
-		{
-
+		if( !class_exists( 'JSMin' ) ) {
 			require( WP_ROCKET_PATH . 'min/lib/JSMin.php' );
 			$html_options['jsMinifier'] = 	'rocket_minify_inline_js';
-
 		}
 
 		$html_options = apply_filters( 'rocket_minify_html_options', $html_options );
@@ -152,8 +145,7 @@ function rocket_minify_css( $buffer )
     preg_match_all( '/<link.+href=[\'|"]([^\'|"]+\.css?.+)[\'|"].+>/iU', $buffer, $tags_match );
 
 	$i=0;
-    foreach ( $tags_match[0] as $tag )
-    {
+    foreach ( $tags_match[0] as $tag ) {
 
         // Check css media type
         // or the file is already minify by get_rocket_minify_files
@@ -162,7 +154,10 @@ function rocket_minify_css( $buffer )
              && !strpos( $tag, 'data-minify=' )
              && !strpos( $tag, 'data-no-minify=' )
         ) {
-
+			
+			// To check if a tag is to exclude of the minify process
+            $excluded_tag = false;
+            
             // Get URLs infos
 			$css_url  = parse_url( $tags_match[1][$i] );
 
@@ -179,20 +174,19 @@ function rocket_minify_css( $buffer )
 				) {
 					$internal_files[] = $css_url['path'];
 				}
-				else
-				{
-					$excluded_tags .= $tag;
-
+				else {
+					$excluded_tag = true;
 				}
 
 			}
-			else
-			{
+			else {
 				$external_tags .= $tag;
 			}
 
             // Remove the tag
-            $buffer = str_replace( $tag, '', $buffer );
+            if( $excluded_tag === false ) {
+            	$buffer = str_replace( $tag, '', $buffer );
+            }
 
         }
 
@@ -201,8 +195,7 @@ function rocket_minify_css( $buffer )
 
 	// Get all Google Fonts CSS files
 	preg_match_all( '/<link.+href=.+(fonts\.googleapis\.com\/css).+>/iU', $buffer, $matches );
-	foreach ( $matches[0] as $tag )
-	{
+	foreach ( $matches[0] as $tag ) {
 
         $fonts_tags .= $tag;
 
@@ -212,7 +205,7 @@ function rocket_minify_css( $buffer )
 	}
 
 	// Insert the minify css file below <head>
-	return array( $buffer, $fonts_tags . $external_tags . get_rocket_minify_files( $internal_files ) . $excluded_tags );
+	return array( $buffer, $fonts_tags . $external_tags . get_rocket_minify_files( $internal_files ) );
 
 }
 
@@ -240,22 +233,22 @@ function rocket_minify_js( $buffer )
     preg_match_all( '#<script.*src=[\'|"]([^\'|"]+\.js?.+)[\'|"].*></script>#iU', $buffer, $tags_match );
 
 	$i=0;
-    foreach ( $tags_match[0] as $tag )
-    {
+    foreach ( $tags_match[0] as $tag ) {
 
         // Chek if the file is already minify by get_rocket_minify_files
         // or the file is rejected to the process
-        if ( !strpos( $tag, 'data-minify=' ) && !strpos( $tag, 'data-no-minify=' ) )
-        {
-
+        if ( !strpos( $tag, 'data-minify=' ) && !strpos( $tag, 'data-no-minify=' ) ) {
+			
+			// To check if a tag is to exclude of the minify process
+            $excluded_tag = false;
+            
 	        // Get URLs infos
 	        $js_url = parse_url( $tags_match[1][$i] );
 
 	        // Check if the link isn't external
 	        // Insert the relative path to the array without query string
 	        if( $js_url['host'] == parse_url( home_url(), PHP_URL_HOST )
-	        	|| in_array( $js_url['host'], get_rocket_cdn_cnames( array( 'all', 'css_and_js' ) ) ) )
-	        {
+	        	|| in_array( $js_url['host'], get_rocket_cdn_cnames( array( 'all', 'css_and_js' ) ) ) ) {
 
 		        // Check if it isn't a file to exclude
 		        if( !in_array( $js_url['path'], get_rocket_option( 'exclude_js', array() ) )
@@ -263,19 +256,19 @@ function rocket_minify_js( $buffer )
 		        ) {
 			        $internal_files[] = $js_url['path'];
 		        }
-		        else
-		        {
-			        $excluded_tags .= $tag;
+		        else {
+			        $excluded_tag = true;
 		        }
 
 	        }
-	        else
-	        {
+	        else {
 		        $external_tags .= $tag;
 	        }
 
 			// Remove the tag
-	        $buffer = str_replace( $tag, '', $buffer );
+            if( $excluded_tag === false ) {
+            	$buffer = str_replace( $tag, '', $buffer );
+            }
 
 			$i++;
 
@@ -283,7 +276,7 @@ function rocket_minify_js( $buffer )
 
 	}
     // Insert the minify JS file
-    return array( $buffer, $external_tags . get_rocket_minify_files( $internal_files ) . $excluded_tags );
+    return array( $buffer, $external_tags . get_rocket_minify_files( $internal_files ) );
 
 }
 
