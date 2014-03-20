@@ -1061,7 +1061,6 @@ function rocket_clean_exclude_file( $file )
 
 function rocket_settings_callback( $inputs )
 {
-
 	if( isset( $_GET['action'] ) && $_GET['action'] == 'purge_cache' )
 	{
 		return $inputs;
@@ -1247,18 +1246,16 @@ function rocket_settings_callback( $inputs )
 	 * Option : Consumer Key
 	 */
 
-	if( $inputs['consumer_key']==hash( 'crc32', rocket_get_domain( home_url() ) ) )
-	{
+	if ( $inputs['consumer_key'] == hash( 'crc32', rocket_get_domain( home_url() ) ) ) {
 
 		$response = wp_remote_get( WP_ROCKET_WEB_VALID, array( 'timeout'=>30 ) );
-		if( !is_a($response, 'WP_Error') && strlen( $response['body'] )==32 )
-		{
+		if ( ! is_a( $response, 'WP_Error' ) && 32 == strlen( $response['body'] ) ) {
 			$inputs['secret_key'] = $response['body'];
 		}
 
 	}
 
-	rocket_renew_box( 'file-error_logged_users' );
+	rocket_renew_box( 'rocket_warning_logged_users' );
 
 	return $inputs;
 
