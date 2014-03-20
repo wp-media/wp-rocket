@@ -123,11 +123,10 @@ function rocket_dismiss_boxes( $args )
 	$args = empty( $args ) ? $_GET : $args;
 	if ( isset( $args['box'], $args['_wpnonce'] ) ) {
 
-		if ( ! wp_verify_nonce( $args['_wpnonce'], $args['action'] . '_' . $args['box'] ) )
-		{
+		if ( ! wp_verify_nonce( $args['_wpnonce'], $args['action'] . '_' . $args['box'] ) ) {
 			if ( defined( 'DOING_AJAX' ) ) {
 				wp_send_json( array( 'error'=>1 ) );
-			} else{ 
+			} else { 
 				wp_nonce_ays( '' );
 			}
 		}
@@ -137,7 +136,7 @@ function rocket_dismiss_boxes( $args )
 		if( 'admin-post.php'==$GLOBALS['pagenow'] ){
 			if ( defined( 'DOING_AJAX' ) ) {
 				wp_send_json( array( 'error'=>0 ) );
-			} else{ 
+			} else { 
 				wp_safe_redirect( wp_get_referer() );
 				die();
 			}
@@ -226,6 +225,7 @@ function send_rocketeer_infos()
 	set_transient( 'settings_errors', get_settings_errors(), 30 );
 	wp_safe_redirect( wp_get_referer() );
 	die();
+}
 
 
 
@@ -247,8 +247,8 @@ function rocket_reset_white_label_values( $hack_post )
 		$options['wl_description']        = array( __( 'The best WordPress performance plugin.', 'rocket' ) ); // !!! but this !!!
 		$options['wl_author']             = 'WP Rocket';
 		$options['wl_author_URI']         = 'http://www.wp-rocket.me';
-		if ( $hack_post )
-		{// hack $_POST to force refresh of files, sorry
+		if ( $hack_post ) {
+			// hack $_POST to force refresh of files, sorry
 			$_POST['page'] = 'wprocket';
 		}
 		update_option( WP_ROCKET_SLUG, $options );
@@ -316,10 +316,12 @@ add_action( 'admin_init', '__rocket_check_no_empty_name', 11 );
 function __rocket_check_no_empty_name()
 {
 	$wl_plugin_name = trim( get_rocket_option( 'wl_plugin_name' ) );
-	if( empty( $wl_plugin_name ) )
-	{
+	if( empty( $wl_plugin_name ) ) {
+
 		rocket_reset_white_label_values( false );
+		
 		wp_safe_redirect( $_SERVER['REQUEST_URI'] );
+
 		die();		
 	}
 }
