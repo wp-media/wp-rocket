@@ -587,18 +587,19 @@ function rocket_rrmdir( $dir, $dirs_to_preserve = array() )
  *
  * @since 1.3.4
  *
+ * @param
+ *
  */
 
 function rocket_mkdir( $dir )
 {
 
 	global $wp_filesystem;
-    if( !$wp_filesystem )
-    {
+    if ( ! $wp_filesystem ) {
 		WP_Filesystem();
-		require_once( ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php' );
-		$wp_filesystem_direct = new WP_Filesystem_Direct( new StdClass() );
 	}
+	require_once( ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php' );
+	$wp_filesystem_direct = new WP_Filesystem_Direct( new StdClass() );
 
 	return $wp_filesystem_direct->mkdir( $dir, FS_CHMOD_DIR );
 }
@@ -656,12 +657,11 @@ function rocket_put_content( $file, $content )
 {
 
 	global $wp_filesystem;
-    if( !$wp_filesystem )
-	{
+    if ( ! $wp_filesystem ) {
 		WP_Filesystem();
-		require_once( ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php' );
-		$wp_filesystem_direct = new WP_Filesystem_Direct( new StdClass() );
 	}
+	require_once( ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php' );
+	$wp_filesystem_direct = new WP_Filesystem_Direct( new StdClass() );
 
 	return $wp_filesystem_direct->put_contents( $file, $content, FS_CHMOD_FILE );
 
@@ -674,6 +674,9 @@ function rocket_put_content( $file, $content )
  *
  * @since 2.1
  *
+ * @param
+ * @param
+ *
  */
 
 function rocket_fetch_and_cache_minify( $url, $pretty_url )
@@ -682,8 +685,7 @@ function rocket_fetch_and_cache_minify( $url, $pretty_url )
 	$pretty_path = str_replace( WP_ROCKET_MINIFY_CACHE_URL, WP_ROCKET_MINIFY_CACHE_PATH, $pretty_url );
 
 	// If minify cache file is already exist, return to get a coffee :)
-	if( file_exists( $pretty_path ) )
-	{
+	if ( file_exists( $pretty_path ) ) {
 		return true;
 	}
 

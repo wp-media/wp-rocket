@@ -155,29 +155,3 @@ function rocket_pointer_apikey( $pointers )
 	
 	return $pointers;
 }
-
-/**
- * Add White Label pointer
- *
- * @since 2.1
- *
- */
-
-add_filter( 'rocket_pointer_actions', 'rocket_pointer_whitelabel' );
-function rocket_pointer_whitelabel( $pointers )
-{
-	
-	$pointers['whitelabel'] = array(
-		'anchor_id'	=> array( 
-			'options-general.php' 	 => 'ul.wp-submenu li a[href$="page='.WP_ROCKET_PLUGIN_SLUG.'"]', 
-			'settings_page_'.WP_ROCKET_PLUGIN_SLUG => 'a[href="#tab_whitelabel"]',
-			'all'					 =>'#menu-settings' 
-		),
-		'edge' 		=> 'bottom',
-		'align'		=> 'left',
-		'action'	=> 'dismiss-wp-pointer',
-		'content'	=> __( 'This is your new functionnality: White Label. Enjoy!', 'rocket' ),
-	);
-	
-	return $pointers;
-}

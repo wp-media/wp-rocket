@@ -42,6 +42,7 @@ function rocket_upgrader()
 				$options['secret_key'] = $response['body'];
 		}
 
+
 		update_option( WP_ROCKET_SLUG, $options );
 
 	}

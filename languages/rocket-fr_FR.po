@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/wp-rocket\n"
-"POT-Creation-Date: 2014-03-20 04:07+0100\n"
-"PO-Revision-Date: 2014-03-20 04:07+0100\n"
+"POT-Creation-Date: 2014-03-20 12:48+0100\n"
+"PO-Revision-Date: 2014-03-20 12:50+0100\n"
 "Last-Translator: Julio Potier <julio@boiteaweb.fr>\n"
 "Language-Team:  <contact@wp-rocket.me>\n"
 "Language: fr\n"
@@ -59,7 +59,7 @@ msgid "Preload cache"
 msgstr "Précharger le cache"
 
 #: ../inc/admin-bar.php:210 ../inc/admin/options.php:895
-#: ../inc/admin/options.php:938 ../inc/admin/options.php:943
+#: ../inc/admin/options.php:934 ../inc/admin/options.php:939
 msgid "Support"
 msgstr "Support"
 
@@ -70,6 +70,14 @@ msgstr "Réglages"
 #: ../inc/admin/admin.php:34
 msgid "Clear this cache"
 msgstr "Vider ce cache"
+
+#: ../inc/admin/admin.php:225
+msgid ""
+"Thank you, you may now add a <a href=\"http://support.wp-rocket.me/forums/\" "
+"target=\"_blank\">support post</a>."
+msgstr ""
+"Merci, vous pouvez maintenant créer <a href=\"http://support.wp-rocket.me/"
+"forums/\" target=\"_blank\">un ticket de support</a>."
 
 #: ../inc/admin/admin.php:247
 msgid "The best WordPress performance plugin."
@@ -804,7 +812,7 @@ msgstr "Images"
 msgid "Add CNAME"
 msgstr "Ajouter un CNAME"
 
-#: ../inc/admin/options.php:397 ../inc/admin/options.php:941
+#: ../inc/admin/options.php:397 ../inc/admin/options.php:937
 msgid "API KEY"
 msgstr "Clé API"
 
@@ -822,7 +830,7 @@ msgstr "Clé API"
 msgid "Thank you to enter the API key obtained after your purchase."
 msgstr "Merci d'entrer la clé API obtenue lors de votre achat."
 
-#: ../inc/admin/options.php:419 ../inc/admin/options.php:928
+#: ../inc/admin/options.php:419 ../inc/admin/options.php:924
 msgid "Basic options"
 msgstr "Options de base"
 
@@ -984,7 +992,7 @@ msgstr ""
 msgid "Specify 0 for unlimited lifetime."
 msgstr "Iindiquez la valeur 0 pour une durée de vie illimitée."
 
-#: ../inc/admin/options.php:573 ../inc/admin/options.php:929
+#: ../inc/admin/options.php:573 ../inc/admin/options.php:925
 msgid "Advanced options"
 msgstr "Options avancées"
 
@@ -1139,7 +1147,7 @@ msgstr ""
 "votre contenu sera copié vers un hébergement dédié ou vers un système de CDN "
 "comme <a href=\"http://www.maxcdn.com/\" target=\"_blank\">maxCDN</a>."
 
-#: ../inc/admin/options.php:762 ../inc/admin/options.php:932
+#: ../inc/admin/options.php:762 ../inc/admin/options.php:928
 msgid "White Label"
 msgstr "Marque blanche"
 
@@ -1174,7 +1182,7 @@ msgstr ""
 "Si vous changez quoi que ce soit, les onglets Tutoriels + FAQ + Support "
 "seront masqués."
 
-#: ../inc/admin/options.php:856 ../inc/admin/options.php:934
+#: ../inc/admin/options.php:856 ../inc/admin/options.php:930
 msgid "Tools"
 msgstr "Outils"
 
@@ -1206,19 +1214,19 @@ msgstr ""
 "aider à comprendre et régler votre problème. Les informations collectées ne "
 "seront ni revendues, ni utilisées pour d'autres choses que notre support."
 
-#: ../inc/admin/options.php:930
+#: ../inc/admin/options.php:926
 msgid "CDN"
 msgstr "CDN"
 
-#: ../inc/admin/options.php:936
+#: ../inc/admin/options.php:932
 msgid "Tutorials"
 msgstr "Tutoriels"
 
-#: ../inc/admin/options.php:937 ../inc/admin/options.php:942
+#: ../inc/admin/options.php:933 ../inc/admin/options.php:938
 msgid "FAQ"
 msgstr "FAQ"
 
-#: ../inc/admin/options.php:965 ../inc/admin/options.php:975
+#: ../inc/admin/options.php:961 ../inc/admin/options.php:971
 msgid ""
 "If none of the FAQ answers resolves your problem, you can tell us your issue "
 "on our <a href=\"http://support.wp-rocket.me/\" target=\"_blank\">Support</"
@@ -1229,7 +1237,7 @@ msgstr ""
 "target=\"_blank\">support</a>. Nous vous répondrons dans les plus brefs "
 "délais."
 
-#: ../inc/admin/options.php:966 ../inc/admin/options.php:976
+#: ../inc/admin/options.php:962 ../inc/admin/options.php:972
 msgid "Go to Support"
 msgstr "Aller sur le support"
 
@@ -1246,12 +1254,6 @@ msgstr ""
 "Pour finaliser l'installation et profiter des performances apportées par "
 "notre extension, merci de <a href=\"%s\">renseigner votre clé API</a>"
 
-#: ../inc/admin/pointers.php:179
-msgid "This is your new functionnality: White Label. Enjoy!"
-msgstr ""
-"Il s'agit de votre nouvelle fonctionnalité : la Marque blanche. Faites vous "
-"plaisir&nbsp;!"
-
 #: ../inc/admin/tutorials.php:4
 msgid ""
 "This video gives some explanations about our two crawler robots. They "
@@ -1262,7 +1264,7 @@ msgstr ""
 "en quelques secondes."
 
 #: ../inc/admin/tutorials.php:5 ../inc/admin/tutorials.php:9
-#: ../inc/admin/tutorials.php:13
+#: ../inc/admin/tutorials.php:13 ../inc/admin/tutorials.php:17
 msgid "Watch the video"
 msgstr "Voir la vidéo"
 
@@ -1291,6 +1293,14 @@ msgstr ""
 "l'option avancée du \"Pré-chargement des requêtes DNS\" et de l'utilisation "
 "du filtre <code>rocket_dns_prefetch</code>."
 
+#: ../inc/admin/tutorials.php:15
+msgid "How to use the \"White Label\" functionnality?"
+msgstr "Comment utiliser la fonctionalité \"Marque Blanche\" ?"
+
+#: ../inc/admin/tutorials.php:16
+msgid "This video helps to set up a White Label version of WP Rocket."
+msgstr "Cette video aide à paramétrer une version Marque Blanche de WP Rocket."
+
 #: ../inc/admin/updater.php:142 ../inc/admin/updater.php:149
 #, php-format
 msgid ""
@@ -1307,9 +1317,13 @@ msgstr ""
 msgid "%s clear"
 msgstr "%s vidé"
 
-#: ../inc/functions/admin.php:85
-msgid "a509cac94e0cd8238b250074fe802b90"
-msgstr "4924d5ab5bc429308e0c79e62c6cf612"
+#~ msgid "This is your new functionnality: White Label. Enjoy!"
+#~ msgstr ""
+#~ "Il s'agit de votre nouvelle fonctionnalité : la Marque blanche. Faites "
+#~ "vous plaisir&nbsp;!"
+
+#~ msgid "a509cac94e0cd8238b250074fe802b90"
+#~ msgstr "4924d5ab5bc429308e0c79e62c6cf612"
 
 #~ msgid "Visit author homepage"
 #~ msgstr "Visiter la page de l'auteur"

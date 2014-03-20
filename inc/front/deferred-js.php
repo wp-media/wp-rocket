@@ -34,7 +34,7 @@ function rocket_exclude_deferred_js( $buffer )
 			}
 				
 		}
-	}
+    }
 
 	return $buffer;
 }
@@ -63,7 +63,7 @@ function rocket_insert_deferred_js( $buffer )
 	
 	// Set LABjs options
 	// All options is available in http://labjs.com/documentation.php#optionsobject
-	if( count( $labjs_options ) ) {
+	if ( count( $labjs_options ) ) {
 		$defer .= '.setOptions(' . json_encode( $labjs_options ) . ')';	
 	}
 

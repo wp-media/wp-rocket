@@ -1066,7 +1066,7 @@ function rocket_settings_callback( $inputs )
 	{
 		return $inputs;
 	}
-	
+
 	/*
 	 * Option : Minification CSS & JS
 	 */

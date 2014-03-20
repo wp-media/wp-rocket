@@ -6,39 +6,28 @@ defined( 'ABSPATH' ) or	die( __( 'Cheatin&#8217; uh?', 'rocket' ) );
  * Renew all boxes for everyone if $uid is missing
  *
  * @since 1.1.10
+ * @modified 2.1 : 
+ *	- Better usage of delete_user_meta into delete_metadata
  *
+ * @param (int|null)$uid : a User id, can be null, null = all users
+ * @param (string|array)$keep_this : which box have to be kept
  */
 
-function rocket_renew_all_boxes( $uid=0, $keep_this=array() )
+function rocket_renew_all_boxes( $uid = null, $keep_this = array() )
 {
-	if( (int)$uid>0 )
-	{
-		delete_user_meta( $uid, 'rocket_boxes' );
-	}
-	else
-	{
-		global $wpdb;
-		$query = 'DELETE FROM ' . $wpdb->usermeta . ' WHERE meta_key="rocket_boxes"';
-		// do not use $wpdb->delete because WP 3.4 is required!
-		$wpdb->query( $query );
-	}
+
+	// Delete a user meta for 1 user or all at a time
+	delete_metadata( 'user', $uid, 'rocket_boxes', null == $uid );
 
 	// $keep_this works only for the current user
-	if( !empty( $keep_this ) )
-	{
-		if( is_array( $keep_this ) )
-		{
-			foreach( $keep_this as $kt )
-			{
+	if ( ! empty( $keep_this ) && null != $uid ) {
+		if ( is_array( $keep_this ) ) {
+			foreach ( $keep_this as $kt ) {
 				rocket_dismiss_box( $kt );
 			}
-
-		}
-		else
-		{
+		} else {
 			rocket_dismiss_box( $keep_this );
 		}
-
 	}
 
 }
@@ -52,15 +41,14 @@ function rocket_renew_all_boxes( $uid=0, $keep_this=array() )
  *
  */
 
-function rocket_renew_box( $function, $uid=0 )
+function rocket_renew_box( $function, $uid = 0 )
 {
 	global $current_user;
-	$uid = $uid==0 ? $current_user->ID : $uid;
+	$uid = $uid == 0 ? $current_user->ID : $uid;
 	$actual = get_user_meta( $uid, 'rocket_boxes', true );
 
-	if( $actual )
-	{
-		unset( $actual[array_search( $function, $actual )] );
+	if ( $actual ) {
+		unset( $actual[ array_search( $function, $actual ) ] );
 		update_user_meta( $uid, 'rocket_boxes', $actual );
 	}
 
