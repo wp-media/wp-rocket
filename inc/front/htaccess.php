@@ -20,24 +20,22 @@ function flush_rocket_htaccess( $force = false )
 	$rules = '';
 	$htaccess_file =  get_home_path() . '.htaccess';
 
-	
-	if( is_writable( $htaccess_file ) )
-	{
+
+	if ( is_writable( $htaccess_file ) ) {
 
 		// Get content of .htaccess file
 		$ftmp = file_get_contents( $htaccess_file );
-		
+
 		// Remove the WP Rocket marker
 		$ftmp = preg_replace( '/# BEGIN WP Rocket(.*)# END WP Rocket/isUe', '', $ftmp );
 
 		// Remove empty spacings
 		$ftmp = str_replace( "\n\n" , "\n" , $ftmp );
-		
-		if( $force === false )
-		{
+
+		if ( $force === false ) {
 			$rules = get_rocket_htaccess_marker();
 		}
-		
+
 		// Update the .htacces file
 		rocket_put_content( $htaccess_file , $rules . $ftmp );
 
@@ -82,10 +80,11 @@ function get_rocket_htaccess_marker()
 
 function get_rocket_htaccess_mod_rewrite()
 {
-	
+
 	// No rewrite rules for multisite
-	if( is_multisite() )
+	if ( is_multisite() ) {
 		return;
+	}
 
 	// Get root base
 	$home_root = parse_url( home_url() );
@@ -95,12 +94,9 @@ function get_rocket_htaccess_mod_rewrite()
 	$site_root = isset( $site_root['path'] ) ? trailingslashit($site_root['path']) : '';
 
 	// Get cache root
-	if( strpos( ABSPATH, WP_ROCKET_CACHE_PATH ) === false ) 
-	{
+	if ( strpos( ABSPATH, WP_ROCKET_CACHE_PATH ) === false ) {
 		$cache_root = str_replace( $_SERVER['DOCUMENT_ROOT'] , '', WP_ROCKET_CACHE_PATH);
-	}
-	else 
-	{
+	} else {
 		$cache_root = $site_root . str_replace( ABSPATH, '', WP_ROCKET_CACHE_PATH );
 	}
 
@@ -114,30 +110,28 @@ function get_rocket_htaccess_mod_rewrite()
 	$rules .= 'RewriteBase ' . $home_root . "\n";
 	$rules .= 'RewriteCond %{REQUEST_METHOD} GET' . "\n";
 	$rules .= 'RewriteCond %{QUERY_STRING} =""' . "\n";
-	
-	if( $cookies = get_rocket_cache_reject_cookies() ) 
-	{
+
+	if ( $cookies = get_rocket_cache_reject_cookies() ) {
 		$rules .= 'RewriteCond %{HTTP:Cookie} !(' . $cookies . ') [NC]' . "\n";
 	}
-	
-	if( $uri = get_rocket_cache_reject_uri() ) 
-	{
+
+	if ( $uri = get_rocket_cache_reject_uri() ) {
 		$rules .= 'RewriteCond %{REQUEST_URI} !^(' . $uri . ')$ [NC]' . "\n";
 	}
-	
+
 	$rules .= !is_rocket_cache_mobile() ? get_rocket_htaccess_mobile_rewritecond() : '';
 	$rules .= !is_rocket_cache_ssl() ? get_rocket_htaccess_ssl_rewritecond() : '';
-	
-	if( $is_1and1_or_force ) 
-	{
-		
+
+	if ( $is_1and1_or_force ) {
+
 		$rules .= 'RewriteCond "' . str_replace( '/kunden/', '/', WP_ROCKET_CACHE_PATH ) . $HTTP_HOST . '%{REQUEST_URI}/index.html" -f' . "\n";
-	}
-	else 
-	{
+
+	} else  {
+
 		$rules .= 'RewriteCond "%{DOCUMENT_ROOT}/' . ltrim( $cache_root, '/' ) . $HTTP_HOST . '%{REQUEST_URI}/index.html" -f' . "\n";
+
 	}
-	
+
 	$rules .= 'RewriteRule .* "' . $cache_root . $HTTP_HOST . '%{REQUEST_URI}/index.html" [L]' . "\n";
 	$rules .= '</IfModule>' . "\n";
 	$rules = apply_filters( 'rocket_htaccess_mod_rewrite', $rules );
@@ -157,6 +151,11 @@ function get_rocket_htaccess_mod_rewrite()
 
 function get_rocket_htaccess_mobile_rewritecond()
 {
+
+	// No rewrite rules for multisite
+	if ( is_multisite() ) {
+		return;
+	}
 
 	$rules = 'RewriteCond %{HTTP:X-Wap-Profile} !^[a-z0-9\"]+ [NC]' . "\n";
 	$rules .= 'RewriteCond %{HTTP:Profile} !^[a-z0-9\"]+ [NC]' . "\n";
