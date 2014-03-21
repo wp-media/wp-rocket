@@ -73,8 +73,8 @@ if( $htaccess_contents = @file_get_contents( $htaccess_file ) ) {
 	$infos['htaccess']['content'] = $htaccess_contents;
 	$htaccess_contents = explode( "\n", $htaccess_contents );
 	foreach( $htaccess_contents as $hc )
-		if( strstr( $hc, '# BEGIN '.WP_ROCKET_PLUGIN_NAME.' v' ) ){
-			$infos['htaccess']['ht_version'] = trim( str_replace( '# BEGIN '.WP_ROCKET_PLUGIN_NAME.' v', '', $hc ) );
+		if( strstr( $hc, '# BEGIN WP Rocket v' ) ){
+			$infos['htaccess']['ht_version'] = trim( str_replace( '# BEGIN WP Rocket v', '', $hc ) );
 			break;
 		}
 

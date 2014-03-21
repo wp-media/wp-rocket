@@ -5,12 +5,12 @@ defined( 'ABSPATH' ) or	die( __( 'Cheatin&#8217; uh?', 'rocket' ) );
 /**
  * Used to flush the .htaccess file
  *
- * @since 1.1.0 Remove empty spacings then .htaccess is generated
+ * @since 1.1.0 Remove empty spacings when .htaccess is generated
  * @since 1.0
  *
  */
 
-function flush_rocket_htaccess( $force = false, $wp_rocket_plugin_name = WP_ROCKET_PLUGIN_NAME )
+function flush_rocket_htaccess( $force = false )
 {
 
 	global $is_apache;
@@ -28,7 +28,7 @@ function flush_rocket_htaccess( $force = false, $wp_rocket_plugin_name = WP_ROCK
 		$ftmp = file_get_contents( $htaccess_file );
 		
 		// Remove the WP Rocket marker
-		$ftmp = preg_replace( '/# BEGIN '.$wp_rocket_plugin_name.'(.*)# END '.$wp_rocket_plugin_name.'(.*)#/isUe', '', $ftmp );
+		$ftmp = preg_replace( '/# BEGIN WP Rocket(.*)# END WP Rocket/isUe', '', $ftmp );
 
 		// Remove empty spacings
 		$ftmp = str_replace( "\n\n" , "\n" , $ftmp );
@@ -58,14 +58,14 @@ function get_rocket_htaccess_marker()
 {
 
 	// Recreate WP Rocket marker
-	$marker  = '# BEGIN ' . WP_ROCKET_PLUGIN_NAME . ' v' . WP_ROCKET_VERSION ."\n";
+	$marker  = '# BEGIN WP Rocket v' . WP_ROCKET_VERSION ."\n";
 	$marker .= get_rocket_htaccess_charset();
 	$marker .= get_rocket_htaccess_etag();
 	$marker .= get_rocket_htaccess_files_match();
 	$marker .= get_rocket_htaccess_mod_expires();
 	$marker .= get_rocket_htaccess_mod_deflate();
 	$marker .= get_rocket_htaccess_mod_rewrite();
-	$marker .= '# END ' . WP_ROCKET_PLUGIN_NAME . '#' . "\n";
+	$marker .= '# END WP Rocket' . "\n";
 
 	return $marker;
 
