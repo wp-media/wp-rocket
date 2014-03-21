@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/wp-rocket\n"
-"POT-Creation-Date: 2014-03-20 12:48+0100\n"
-"PO-Revision-Date: 2014-03-20 12:50+0100\n"
+"POT-Creation-Date: 2014-03-21 01:41+0100\n"
+"PO-Revision-Date: 2014-03-21 01:41+0100\n"
 "Last-Translator: Julio Potier <julio@boiteaweb.fr>\n"
 "Language-Team:  <contact@wp-rocket.me>\n"
 "Language: fr\n"
@@ -35,7 +35,7 @@ msgstr "Alors on triche&nbsp;?"
 
 #: ../inc/admin-bar.php:39 ../inc/admin-bar.php:67 ../inc/admin-bar.php:99
 #: ../inc/admin/admin.php:54 ../inc/admin/notices.php:100
-#: ../inc/admin/options.php:859 ../inc/admin/options.php:865
+#: ../inc/admin/options.php:862 ../inc/admin/options.php:868
 msgid "Clear cache"
 msgstr "Vider le cache"
 
@@ -53,13 +53,13 @@ msgid "Purge this URL"
 msgstr "Purger cette URL"
 
 #: ../inc/admin-bar.php:145 ../inc/admin-bar.php:170 ../inc/admin-bar.php:198
-#: ../inc/admin/options.php:876 ../inc/admin/options.php:882
+#: ../inc/admin/options.php:879 ../inc/admin/options.php:885
 #: ../inc/admin/tutorials.php:3
 msgid "Preload cache"
 msgstr "Précharger le cache"
 
-#: ../inc/admin-bar.php:210 ../inc/admin/options.php:895
-#: ../inc/admin/options.php:934 ../inc/admin/options.php:939
+#: ../inc/admin-bar.php:210 ../inc/admin/options.php:898
+#: ../inc/admin/options.php:937 ../inc/admin/options.php:942
 msgid "Support"
 msgstr "Support"
 
@@ -71,17 +71,13 @@ msgstr "Réglages"
 msgid "Clear this cache"
 msgstr "Vider ce cache"
 
-#: ../inc/admin/admin.php:225
+#: ../inc/admin/admin.php:224
 msgid ""
 "Thank you, you may now add a <a href=\"http://support.wp-rocket.me/forums/\" "
 "target=\"_blank\">support post</a>."
 msgstr ""
 "Merci, vous pouvez maintenant créer <a href=\"http://support.wp-rocket.me/"
 "forums/\" target=\"_blank\">un ticket de support</a>."
-
-#: ../inc/admin/admin.php:247
-msgid "The best WordPress performance plugin."
-msgstr "Simplement la meilleure extension pour optimiser votre site."
 
 #: ../inc/admin/faq.php:3
 msgid "My key does not work"
@@ -749,47 +745,47 @@ msgstr ""
 "Pour finaliser l'installation et profiter des performances apportées par "
 "notre extension, merci de <a href=\"%s\">renseigner votre clé API</a>"
 
-#: ../inc/admin/options.php:74
+#: ../inc/admin/options.php:70
 msgid "Key is not valid"
 msgstr "La clé n'est pas valide"
 
-#: ../inc/admin/options.php:76
+#: ../inc/admin/options.php:72
 msgid "Key is valid"
 msgstr "La clé est valide"
 
-#: ../inc/admin/options.php:136 ../inc/admin/options.php:369
+#: ../inc/admin/options.php:138 ../inc/admin/options.php:369
 msgid "Warning: "
 msgstr "Attention&nbsp;:&nbsp; "
 
-#: ../inc/admin/options.php:165
+#: ../inc/admin/options.php:167
 msgid "<b>JS</b> files with Deferred Loading JavaScript"
 msgstr ""
 "Fichiers <strong>JS</strong> en chargement différé (Deferred Loading "
 "JavaScript)."
 
-#: ../inc/admin/options.php:185 ../inc/admin/options.php:206
-#: ../inc/admin/options.php:226
+#: ../inc/admin/options.php:187 ../inc/admin/options.php:208
+#: ../inc/admin/options.php:228
 msgid "Move"
 msgstr "Déplacer"
 
-#: ../inc/admin/options.php:190 ../inc/admin/options.php:211
-msgid "Wait until this file is loaded ?"
+#: ../inc/admin/options.php:192 ../inc/admin/options.php:233
+msgid "Wait until this file is loaded?"
 msgstr "Attendre le chargement de ce fichier&nbsp;?"
 
-#: ../inc/admin/options.php:192 ../inc/admin/options.php:233
+#: ../inc/admin/options.php:194 ../inc/admin/options.php:235
 #: ../inc/admin/options.php:285 ../inc/admin/options.php:331
 msgid "Delete"
 msgstr "Supprimer"
 
-#: ../inc/admin/options.php:231
-msgid "Wait until this file is loaded?"
+#: ../inc/admin/options.php:213
+msgid "Wait until this file is loaded ?"
 msgstr "Attendre le chargement de ce fichier&nbsp;?"
 
-#: ../inc/admin/options.php:238
+#: ../inc/admin/options.php:240
 msgid "Add an URL"
 msgstr "Ajouter une URL"
 
-#: ../inc/admin/options.php:258 ../inc/admin/options.php:756
+#: ../inc/admin/options.php:258 ../inc/admin/options.php:759
 msgid "Replace site's hostname with:"
 msgstr "Remplacer le nom d'hôte du site par :"
 
@@ -812,7 +808,7 @@ msgstr "Images"
 msgid "Add CNAME"
 msgstr "Ajouter un CNAME"
 
-#: ../inc/admin/options.php:397 ../inc/admin/options.php:937
+#: ../inc/admin/options.php:397 ../inc/admin/options.php:940
 msgid "API KEY"
 msgstr "Clé API"
 
@@ -830,7 +826,7 @@ msgstr "Clé API"
 msgid "Thank you to enter the API key obtained after your purchase."
 msgstr "Merci d'entrer la clé API obtenue lors de votre achat."
 
-#: ../inc/admin/options.php:419 ../inc/admin/options.php:924
+#: ../inc/admin/options.php:419 ../inc/admin/options.php:927
 msgid "Basic options"
 msgstr "Options de base"
 
@@ -992,7 +988,7 @@ msgstr ""
 msgid "Specify 0 for unlimited lifetime."
 msgstr "Iindiquez la valeur 0 pour une durée de vie illimitée."
 
-#: ../inc/admin/options.php:573 ../inc/admin/options.php:925
+#: ../inc/admin/options.php:573 ../inc/admin/options.php:928
 msgid "Advanced options"
 msgstr "Options avancées"
 
@@ -1107,7 +1103,7 @@ msgstr ""
 msgid "<b>JS</b> files with deferred loading:"
 msgstr "Fichiers <strong>JS</strong> en chargement différé&nbsp;:"
 
-#: ../inc/admin/options.php:716
+#: ../inc/admin/options.php:719
 msgid ""
 "You can add JavaScript files that will be loaded asynchronously at the same "
 "time as the page loads."
@@ -1115,27 +1111,27 @@ msgstr ""
 "Vous avez la possibilité d’ajouter des fichiers Javascript qui seront "
 "chargés de manière asynchrone en même temps que le chargement de la page."
 
-#: ../inc/admin/options.php:721
+#: ../inc/admin/options.php:724
 msgid "Empty the field to remove it."
 msgstr "Videz le contenu d'un champ pour le supprimer."
 
-#: ../inc/admin/options.php:727
+#: ../inc/admin/options.php:730
 msgid "You must specify the complete URL of the files."
 msgstr "Vous devez indiquer l'URL complète des fichiers."
 
-#: ../inc/admin/options.php:733
+#: ../inc/admin/options.php:736
 msgid "Content Delivery Network options"
 msgstr "Options du Content Delivery Network"
 
-#: ../inc/admin/options.php:736 ../inc/admin/options.php:745
+#: ../inc/admin/options.php:739 ../inc/admin/options.php:748
 msgid "CDN:"
 msgstr "CDN&nbsp;:"
 
-#: ../inc/admin/options.php:743
+#: ../inc/admin/options.php:746
 msgid "Enable Content Delivery Network."
 msgstr "Activer le Content Delivery Network."
 
-#: ../inc/admin/options.php:750
+#: ../inc/admin/options.php:753
 msgid ""
 "CDN function replaces all urls of your static files and media (CSS, JS, "
 "Images) with the url entered below. This way all your content will be copied "
@@ -1147,50 +1143,50 @@ msgstr ""
 "votre contenu sera copié vers un hébergement dédié ou vers un système de CDN "
 "comme <a href=\"http://www.maxcdn.com/\" target=\"_blank\">maxCDN</a>."
 
-#: ../inc/admin/options.php:762 ../inc/admin/options.php:928
+#: ../inc/admin/options.php:765 ../inc/admin/options.php:931
 msgid "White Label"
 msgstr "Marque blanche"
 
-#: ../inc/admin/options.php:765 ../inc/admin/options.php:774
+#: ../inc/admin/options.php:768 ../inc/admin/options.php:777
 msgid "Plugin Name:"
 msgstr "Nom de l'extension&nbsp;:"
 
-#: ../inc/admin/options.php:780 ../inc/admin/options.php:789
+#: ../inc/admin/options.php:783 ../inc/admin/options.php:792
 msgid "Plugin URI:"
 msgstr "URI de l'extension&nbsp;:"
 
-#: ../inc/admin/options.php:795 ../inc/admin/options.php:804
+#: ../inc/admin/options.php:798 ../inc/admin/options.php:807
 msgid "Description:"
 msgstr "Description&nbsp;:"
 
-#: ../inc/admin/options.php:810 ../inc/admin/options.php:819
+#: ../inc/admin/options.php:813 ../inc/admin/options.php:822
 msgid "Author:"
 msgstr "Auteur&nbsp;:"
 
-#: ../inc/admin/options.php:825 ../inc/admin/options.php:834
+#: ../inc/admin/options.php:828 ../inc/admin/options.php:837
 msgid "Author URI:"
 msgstr "URI de l'auteur&nbsp;:"
 
-#: ../inc/admin/options.php:846
+#: ../inc/admin/options.php:849
 msgid "Reset White Label values to default"
 msgstr "Réinitialiser la Marque blanche aux valeurs par défaut"
 
-#: ../inc/admin/options.php:851
+#: ../inc/admin/options.php:854
 msgid ""
 "If you change anything, the tutorial + FAQ + Support tabs will be hidden."
 msgstr ""
 "Si vous changez quoi que ce soit, les onglets Tutoriels + FAQ + Support "
 "seront masqués."
 
-#: ../inc/admin/options.php:856 ../inc/admin/options.php:930
+#: ../inc/admin/options.php:859 ../inc/admin/options.php:933
 msgid "Tools"
 msgstr "Outils"
 
-#: ../inc/admin/options.php:870
+#: ../inc/admin/options.php:873
 msgid "Clear the cache for the whole site."
 msgstr "Vous permet de vider le cache de l'ensemble du site."
 
-#: ../inc/admin/options.php:887
+#: ../inc/admin/options.php:890
 msgid ""
 "Allows you to request a bot crawl to preload the cache (homepage and its "
 "internal links)."
@@ -1198,11 +1194,11 @@ msgstr ""
 "Vous permet de demander le passage du robot pour précharger le cache (Page "
 "d'accueil et les liens internes de cette page)."
 
-#: ../inc/admin/options.php:901
+#: ../inc/admin/options.php:904
 msgid "Send my configuration to the support"
 msgstr "Envoyer ma configuration au support"
 
-#: ../inc/admin/options.php:906
+#: ../inc/admin/options.php:909
 msgid ""
 "When posting a support request, thank you to click on this button. We "
 "receive information regarding your installation to help us understand and "
@@ -1214,19 +1210,19 @@ msgstr ""
 "aider à comprendre et régler votre problème. Les informations collectées ne "
 "seront ni revendues, ni utilisées pour d'autres choses que notre support."
 
-#: ../inc/admin/options.php:926
+#: ../inc/admin/options.php:929
 msgid "CDN"
 msgstr "CDN"
 
-#: ../inc/admin/options.php:932
+#: ../inc/admin/options.php:935
 msgid "Tutorials"
 msgstr "Tutoriels"
 
-#: ../inc/admin/options.php:933 ../inc/admin/options.php:938
+#: ../inc/admin/options.php:936 ../inc/admin/options.php:941
 msgid "FAQ"
 msgstr "FAQ"
 
-#: ../inc/admin/options.php:961 ../inc/admin/options.php:971
+#: ../inc/admin/options.php:964 ../inc/admin/options.php:974
 msgid ""
 "If none of the FAQ answers resolves your problem, you can tell us your issue "
 "on our <a href=\"http://support.wp-rocket.me/\" target=\"_blank\">Support</"
@@ -1237,7 +1233,7 @@ msgstr ""
 "target=\"_blank\">support</a>. Nous vous répondrons dans les plus brefs "
 "délais."
 
-#: ../inc/admin/options.php:962 ../inc/admin/options.php:972
+#: ../inc/admin/options.php:965 ../inc/admin/options.php:975
 msgid "Go to Support"
 msgstr "Aller sur le support"
 
@@ -1316,6 +1312,9 @@ msgstr ""
 #, php-format
 msgid "%s clear"
 msgstr "%s vidé"
+
+#~ msgid "The best WordPress performance plugin."
+#~ msgstr "Simplement la meilleure extension pour optimiser votre site."
 
 #~ msgid "This is your new functionnality: White Label. Enjoy!"
 #~ msgstr ""

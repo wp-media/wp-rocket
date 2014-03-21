@@ -32,29 +32,25 @@ function rocket_admin_menu()
 
 function rocket_field( $args )
 {
-	if( !is_array( reset( $args ) ) )
-	{
+	if( ! is_array( reset( $args ) ) ) {
 		$args = array( $args );
 	}
 
 	$full = $args;
 
-	foreach ( $full as $args )
-	{
+	foreach ( $full as $args ) {
 		$args['label_for'] = isset( $args['label_for'] ) ? $args['label_for'] : '';
 		$args['name'] 	= isset( $args['name'] ) ? $args['name'] : $args['label_for'];
-		$class			= isset( $args['name'] ) ? sanitize_html_class( $args['name'] ) : '';
+		$class			= isset( $args['class'] ) ? sanitize_html_class( $args['class'] ) : sanitize_html_class( $args['name'] ) ;
 		$placeholder 	= isset( $args['placeholder'] ) ? 'placeholder="'. $args['placeholder'].'" ' : '';
 		$label 			= isset( $args['label'] ) ? $args['label'] : '';
 		$readonly 		= $args['name'] == 'consumer_key' && rocket_valid_key() ? ' readonly="readonly"' : '';
 
-		if( !isset( $args['fieldset'] ) || $args['fieldset']=='start' )
-		{
+		if( ! isset( $args['fieldset'] ) || 'start' == $args['fieldset'] ){
 			echo '<fieldset class="fieldname-'.sanitize_html_class( $args['name'] ).' fieldtype-'.sanitize_html_class( $args['type'] ).'">';
 		}
 
-		switch( $args['type'] )
-		{
+		switch( $args['type'] ) {
 			case 'number' :
 			case 'text' :
 
@@ -117,6 +113,12 @@ function rocket_field( $args )
 			<?php
 			break;
 
+			case 'rocket_defered_module' :
+
+					rocket_defered_module();
+
+			break;
+
 			case 'helper_description' :
 
 				$description = isset( $args['description'] ) ? '<p class="description desc '.$class.'">'.$args['description'].'</p>' : '';
@@ -139,12 +141,13 @@ function rocket_field( $args )
 			break;
 
 			default : 'Type manquant ou incorrect'; // ne pas traduire
+
 		}
 
-		if( !isset( $args['fieldset'] ) || $args['fieldset']=='end' )
-		{
+		if( ! isset( $args['fieldset'] ) || 'end' == $args['fieldset'] ) {
 			echo '</fieldset>';
 		}
+
 	}
 
 }
@@ -161,7 +164,6 @@ function rocket_field( $args )
 function rocket_defered_module()
 { ?>
 
-	<fieldset>
 		<legend class="screen-reader-text"><span><?php _e( '<b>JS</b> files with Deferred Loading JavaScript', 'rocket' ); ?></span></legend>
 
 		<div id="rkt-drop-deferred">
@@ -187,7 +189,7 @@ function rocket_defered_module()
 					<input style="width: 32em" type="text" placeholder="http://" class="deferred_js regular-text" name="wp_rocket_settings[deferred_js_files][<?php echo $k; ?>]" value="<?php echo esc_url( $_url ); ?>" />
 
 					<label>
-						<input type="checkbox" class="deferred_js" name="wp_rocket_settings[deferred_js_wait][<?php echo $k; ?>]" value="1" <?php echo $checked; ?>/> <?php _e( 'Wait until this file is loaded ?', 'rocket' ); ?>
+						<input type="checkbox" class="deferred_js" name="wp_rocket_settings[deferred_js_wait][<?php echo $k; ?>]" value="1" <?php echo $checked; ?>/> <?php _e( 'Wait until this file is loaded?', 'rocket' ); ?>
 					</label>
 					<span class="rkt-delete-deferred hide-if-no-js rkt-cross"><?php _e( 'Delete' ); ?></span>
 
@@ -236,8 +238,6 @@ function rocket_defered_module()
 		<!-- .rkt-model-deferred-->
 
 		<p><a href="javascript:void(0)" id="rkt-clone-deferred" class="hide-if-no-js button-secondary"><?php _e( 'Add an URL', 'rocket' ); ?></a></p>
-
-	</fieldset>
 
 <?php
 }
@@ -706,10 +706,13 @@ function rocket_display_options()
 	add_settings_field(
 		'rocket_deferred_js',
 		__( '<b>JS</b> files with deferred loading:', 'rocket' ),
-		'rocket_defered_module',
+		'rocket_field',
 		'advanced',
 		'rocket_display_imp_options',
 		array(
+			array(
+				'type'         => 'rocket_defered_module',
+				),
 			array(
 				'type'         => 'helper_help',
 				'name'         => 'deferred_js',
