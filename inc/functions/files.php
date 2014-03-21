@@ -89,7 +89,15 @@ function get_rocket_config_file()
 
 		if( $option == 'cache_reject_cookies' ) {
 			$cookies = get_rocket_cache_reject_cookies();
-			$cookies = get_rocket_option( 'cache_logged_user' ) ? trim( str_replace( 'wordpress_logged_in_', '', $cookies ), '|' ) : $cookies;
+			
+			if ( get_rocket_option( 'cache_logged_user' ) ) {
+				
+				$logged_in_cookie = str_replace( COOKIEHASH, '', LOGGED_IN_COOKIE );
+				$cookies = str_replace( $logged_in_cookie . '|', '', $cookies );
+				$cookies = trim( $cookies, '|' );
+				
+			}
+			
 			$buffer .= '$rocket_' . $option . ' = \'' . $cookies . '\';' . "\n";
 		}
 	}
