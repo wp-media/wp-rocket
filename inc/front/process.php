@@ -71,21 +71,21 @@ else
 		{
 			static $dir;
 
-			if( file_exists( $rocket_config_path . $url['host'] . '/' . $p . '.php' ) )
+			if( file_exists( $rocket_config_path . $url['host'] . '.' . $p . '.php' ) )
 			{
-				include( $rocket_config_path . $url['host'] . '/' . $p .'.php' );
+				include( $rocket_config_path . $url['host'] . '.' . $p .'.php' );
 				$continue = true;
 				break;
 			}
 
-			if( file_exists( $rocket_config_path . $url['host'] . '/' . $dir . $p . '.php' ) )
+			if( file_exists( $rocket_config_path . $url['host'] . '.' . $dir . $p . '.php' ) )
 			{
-				include( $rocket_config_path . $url['host'] . '/' . $dir. $p . '.php' );
+				include( $rocket_config_path . $url['host'] . '.' . $dir. $p . '.php' );
 				$continue = true;
 				break;
 			}
 
-			$dir .= $p . '/';
+			$dir .= $p . '.';
 		}
 
 	}

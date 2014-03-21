@@ -116,22 +116,7 @@ function get_rocket_config_file()
 		}
 		else {
 
-			$home_url_path       = explode( '/', trim( $url['path'], '/' ) );
-			$home_url_start_path = reset( ( $home_url_path ) );
-			$home_url_end_path   = end  ( ( $home_url_path ) );
-
-			$config_dir_path     = WP_ROCKET_CONFIG_PATH . $url['host'];
-
-			if( $home_url_start_path != $home_url_end_path ) {
-				$config_dir_path = $config_dir_path . '/' . trim( str_replace( $home_url_end_path , '', $url['path'] ), '/' );
-			}
-
-			if( !is_dir( $config_dir_path ) ) {
-				rocket_mkdir_p( $config_dir_path );
-			}
-
-			$config_file_name = $home_url_end_path . '.php';
-			$config_files_path[] = $config_dir_path . '/' . $config_file_name;
+			$config_files_path[] = WP_ROCKET_CONFIG_PATH . $url['host'] . str_replace( '/', '.', rtrim( $url['path'], '/' ) ) . '.php';
 
 		}
 
