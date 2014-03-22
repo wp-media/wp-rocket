@@ -17,19 +17,18 @@ function rocket_exclude_deferred_js( $buffer )
 	// Get all JS files with this regex
 	preg_match_all( '#<script.*src=[\'|"]([^\'|"]+\.js?.+)[\'|"].*></script>#iU', $buffer, $tags_match );
 	
-	if( isset( $tags_match[0] ) )
-	{
-	    foreach ( $tags_match[0] as $i=>$tag ) 
-		{
+	if ( isset( $tags_match[0] ) ) {
+	   
+	    foreach ( $tags_match[0] as $i=>$tag ) {
 
-			// Get link of the file
-			$url = preg_replace( '#\?.*$#', '', $tags_match[1][$i] );
+			// Strip query args.
+			$url = strtok( , '?' );
 			
 			// Get all js files to remove
 			$deferred_js_files = apply_filters( 'rocket_minify_deferred_js', get_rocket_option( 'deferred_js_files' ) );
 
 			// Check if this file is deferred loading
-			if( in_array( $url, $deferred_js_files ) ) {
+			if ( in_array( $url, $deferred_js_files ) ) {
 				$buffer = str_replace( $tag, '', $buffer );
 			}
 				
@@ -67,8 +66,7 @@ function rocket_insert_deferred_js( $buffer )
 		$defer .= '.setOptions(' . json_encode( $labjs_options ) . ')';	
 	}
 
-	foreach( $deferred_js_files as $k => $js )
-	{
+	foreach( $deferred_js_files as $k => $js ) {
 		$wait 	= $deferred_js_wait[$k] == '1' ? '.wait(' . esc_js( apply_filters( 'rocket_labjs_wait_callback', false, $js ) ) . ')' : '';
 		$defer .= '.script("' . esc_js( $js ) . '")' . $wait;
 	}
