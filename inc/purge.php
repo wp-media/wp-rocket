@@ -319,26 +319,20 @@ function rocket_purge_cache()
 					if( $_GET['lang'] != 'all' ) {
 						// Remove only cache files of selected lang
 						rocket_clean_domain_for_selected_lang( sanitize_key( $_GET['lang'] ) );
-						
-						// Remove only minify cache files of selected lang
-						rocket_clean_minify_for_selected_lang( sanitize_key( $_GET['lang'] ) );
 					}
 					else {
 						// Remove all cache langs
 						rocket_clean_domain_for_all_langs();
-						
-						// Remove all minify cache langs
-						rocket_clean_minify_for_all_langs();
 					}
 
 				}
 				else {
 					// If WPML or qTranslate aren't activated, you can purge your domain normally
 					rocket_clean_domain();
-					
-					// Remove all minify cache files
-					rocket_clean_minify();
 				}
+				
+				// Remove all minify cache files
+				rocket_clean_minify();
 					
 				// Generate a new random key for minify cache file
 				$options = get_option( WP_ROCKET_SLUG );

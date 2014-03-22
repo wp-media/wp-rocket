@@ -27,12 +27,14 @@ function rocket_is_plugin_active( $plugin )
 
 function rocket_is_plugin_active_for_network( $plugin )
 {
-	if ( !is_multisite() )
+	if ( !is_multisite() ) {
 		return false;
+	}
 
 	$plugins = get_site_option( 'active_sitewide_plugins');
-	if ( isset($plugins[$plugin]) )
+	if ( isset($plugins[$plugin]) ) {
 		return true;
+	}
 
 	return false;
 
@@ -50,9 +52,8 @@ function rocket_is_plugin_active_for_network( $plugin )
 function rocket_has_translation_plugin_active()
 {
 
-	if( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) // WPML
-		|| rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) // qTranslate
-	{
+	if ( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) // WPML
+		|| rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) { // qTranslate 
 		return true;
 	}
 
@@ -72,15 +73,13 @@ function get_rocket_all_active_langs()
 {
 
 	// WPML
-	if( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) )
-	{
+	if ( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
 		global $sitepress;
 		return $sitepress->get_active_languages();
 	}
 
 	// qTranslate
-	if( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) )
-	{
+	if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
 		global $q_config;
 		return $q_config['enabled_languages'];
 	}
@@ -104,22 +103,18 @@ function get_rocket_all_active_langs_uri()
 	$langs = get_rocket_all_active_langs();
 
 	// WPML
-	if( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) )
-	{
+	if ( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
 
 		global $sitepress;
-		foreach ( array_keys( $langs ) as $lang )
-		{
+		foreach ( array_keys( $langs ) as $lang ) {
 			$urls[] = $sitepress->language_url( $lang );
 		}
 
-	}
+	} 
 	// qTranslate
-	else if( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) )
-	{
+	elseif ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) { 
 
-		foreach ( $langs as $lang )
-		{
+		foreach ( $langs as $lang ) {
 			$urls[] = qtrans_convertURL( home_url(), $lang, true );
 		}
 
@@ -149,23 +144,20 @@ function get_rocket_langs_to_preserve( $current_lang )
 	// Unset current lang to the preserve dirs
 
 	// WPML
-	if( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) )
-	{
+	if ( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
 		unset( $langs[$current_lang] );
 		$langs = array_keys( $langs );
 	}
 
 	// qTranslate
-	if( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) )
-	{
+	if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
 		$langs = array_flip( $langs );
 		unset( $langs[$current_lang] );
 		$langs = array_flip( $langs );
 	}
 
 	// Stock all URLs of langs to preserve
-	foreach ( $langs as $lang )
-	{
+	foreach ( $langs as $lang ) {
 		list( $host, $path ) = get_rocket_parse_url_for_lang( $lang );
 		$langs_to_preserve[] = WP_ROCKET_CACHE_PATH . $host . '(.*)/' . trim( $path, '/' );
 	}
@@ -187,40 +179,35 @@ function get_rocket_subdomains_langs()
 {
 
 	// Check if a translation plugin is activated
-	if( !rocket_has_translation_plugin_active() )
-	{
+	if ( ! rocket_has_translation_plugin_active() ) {
 		return false;
 	}
 
 	$urls = array();
 
 	// WPML
-	if( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) )
-	{
+	if ( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
 
 		$option = get_option( 'icl_sitepress_settings' );
 
 		// Check if WPML set to serve subdomains URL
-		if( (int)$option['language_negotiation_type'] == 2 )
-		{
+		if ( (int) $option['language_negotiation_type'] == 2 ) {
 			$urls = get_rocket_all_active_langs_uri();
 		}
 
 	}
 
 	// qTranslate
-	if( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) )
-	{
+	if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
 
 		global $q_config;
 
 		// Check if qTranslate set to serve subdomains URL
-		if( (int)$q_config['url_mode'] == 3 )
-		{
+		if( (int) $q_config['url_mode'] == 3 ) {
 			$urls = get_rocket_all_active_langs_uri();
 		}
 
 	}
-
+	
 	return $urls;
 }

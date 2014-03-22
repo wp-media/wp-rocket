@@ -89,15 +89,15 @@ function get_rocket_config_file()
 
 		if( $option == 'cache_reject_cookies' ) {
 			$cookies = get_rocket_cache_reject_cookies();
-			
+
 			if ( get_rocket_option( 'cache_logged_user' ) ) {
-				
+
 				$logged_in_cookie = str_replace( COOKIEHASH, '', LOGGED_IN_COOKIE );
 				$cookies = str_replace( $logged_in_cookie . '|', '', $cookies );
 				$cookies = trim( $cookies, '|' );
-				
+
 			}
-			
+
 			$buffer .= '$rocket_' . $option . ' = \'' . $cookies . '\';' . "\n";
 		}
 	}
@@ -259,7 +259,7 @@ function rocket_clean_minify( $extensions = array( 'js', 'css' ) )
 	*/
 	do_action( 'before_rocket_clean_minify' );
 
-	$files = @glob( WP_ROCKET_MINIFY_CACHE_PATH . rocket_remove_url_protocol( home_url() ) . '/*.{' . implode( ',', (array)$extensions ) . '}', GLOB_BRACE );
+	$files = @glob( WP_ROCKET_MINIFY_CACHE_PATH . get_current_blog_id() . '/*.{' . implode( ',', (array)$extensions ) . '}', GLOB_BRACE );
 	@array_map( 'unlink' , $files );
 
 	/**
@@ -269,83 +269,6 @@ function rocket_clean_minify( $extensions = array( 'js', 'css' ) )
 	*/
 	do_action( 'after_rocket_clean_minify' );
 
-}
-
-
-
-/**
- * Remove only minify cache files of selected lang
- *
- * @since 2.1
- *
- */
-
-function rocket_clean_minify_for_selected_lang( $lang, $extensions = array( 'js', 'css' ) )
-{
-
-	/**
-	 * Fires before all minify cache files to be deleted for a specific lang
-	 *
-	 * @since 2.1
-	 * @param string The code lang (ex: en, fr, de, etc...)
-	*/
-	do_action( 'before_purge_minify_cache_for_selected_lang' , $lang );
-
-	list( $host, $path ) = get_rocket_parse_url_for_lang( $lang );
-	$files = @glob( WP_ROCKET_MINIFY_CACHE_PATH . $host . rtrim($path) . '/*.{' . implode( ',', (array)$extensions ) . '}', GLOB_BRACE );
-	@array_map( 'unlink' , $files );
-
-	/**
-	 * Fires after all minify cache files was deleted for a specific lang
-	 *
-	 * @since 2.0
-	 * @param string The code lang (ex: en, fr, de, etc...)
-	*/
-	do_action( 'after_purge_minify_cache_for_selected_lang' , $lang );
-}
-
-
-
-/**
- * Remove minify cache files of all langs
- *
- * @since 2.1
- *
- */
-
-function rocket_clean_minify_for_all_langs( $extensions = array( 'js', 'css' ) )
-{
-
-	$langs = get_rocket_all_active_langs();
-
-	if( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
-		$langs = array_keys( $langs );
-	}
-
-	/**
-	 * Fires before all minify cache files to be deleted for all langs
-	 *
-	 * @since 2.1
-	 * @param array The code of all langs (ex: en, fr, de, etc...)
-	*/
-	do_action( 'before_rocket_clean_minify_for_all_langs' , $langs );
-
-	// Remove all cache langs
-	foreach ( $langs as $lang ) {
-			
-		list( $host, $path ) = get_rocket_parse_url_for_lang( $lang );
-		$files = @glob( WP_ROCKET_MINIFY_CACHE_PATH . $host . rtrim($path) . '/*.{' . implode( ',', (array)$extensions ) . '}', GLOB_BRACE );
-		@array_map( 'unlink' , $files );
-			
-	}
-
-	/**
-	 * Fires after all minify cache files was deleted for all langs
-	 *
-	 * @since 2.1
-	 * @param array The code of all langs (ex: en, fr, de, etc...)
-	*/
-	do_action( 'after_rocket_clean_minify_for_all_langs' , $langs );
 }
 
 
@@ -718,7 +641,7 @@ function rocket_fetch_and_cache_minify( $url, $pretty_url )
 {
 
 	$pretty_path = str_replace( WP_ROCKET_MINIFY_CACHE_URL, WP_ROCKET_MINIFY_CACHE_PATH, $pretty_url );
-	
+
 	// If minify cache file is already exist, return to get a coffee :)
 	if ( file_exists( $pretty_path ) ) {
 		return true;
@@ -738,13 +661,13 @@ function rocket_fetch_and_cache_minify( $url, $pretty_url )
 		if ( is_array( $content ) ) {
 			$content = implode( $content );
 		}
-		
+
 		// Create cache folders of the request uri
-		$cache_path = WP_ROCKET_MINIFY_CACHE_PATH . rocket_remove_url_protocol( home_url() ) . '/';
+		$cache_path = WP_ROCKET_MINIFY_CACHE_PATH . get_current_blog_id() . '/';
 		if( !is_dir($cache_path) ) {
 			rocket_mkdir_p( $cache_path );
 		}
-		
+
 		// Save cache file
 		if( rocket_put_content( $pretty_path, $content ) ) {
 			return $content;

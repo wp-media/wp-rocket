@@ -1281,20 +1281,24 @@ function rocket_settings_callback( $inputs )
 add_action( 'update_option_' . WP_ROCKET_SLUG, 'rocket_after_save_options', 10, 2 );
 function rocket_after_save_options( $oldvalue, $value )
 {
-	// Purge all cache files
-	rocket_clean_domain();
+	
+	// Check if a plugin translation is activated
+	if ( rocket_has_translation_plugin_active() ) {
+		// Purge all cache files
+		rocket_clean_domain_for_all_langs();
+	} else {
+		// Purge all cache files
+		rocket_clean_domain();	
+	}
 	
 	// Purge all minify cache files
-	if( !empty( $_POST ) && ( $oldvalue['minify_css'] != $value['minify_css'] || $oldvalue['exclude_css'] != $value['exclude_css'] ) 
-	) {
+	if( !empty( $_POST ) && ( $oldvalue['minify_css'] != $value['minify_css'] || $oldvalue['exclude_css'] != $value['exclude_css'] ) ) {
 		rocket_clean_minify('css');	
 	}
 	
-	if( !empty( $_POST ) && ( $oldvalue['minify_js'] != $value['minify_js'] || $oldvalue['exclude_js']  != $value['exclude_js'] ) 
-	) {
+	if( !empty( $_POST ) && ( $oldvalue['minify_js'] != $value['minify_js'] || $oldvalue['exclude_js']  != $value['exclude_js'] ) ) {
 		rocket_clean_minify( 'js' );	
 	}
-
 
 	// Update .htaccess file rules
 	if( !empty( $_POST ) && $oldvalue['wl_plugin_name'] != $value['wl_plugin_name'] &&

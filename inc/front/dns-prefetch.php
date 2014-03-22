@@ -20,10 +20,12 @@ function rocket_dns_prefetch( $buffer )
 	$domains = array_merge( get_rocket_cdn_cnames( array( 'all' ) ), get_rocket_option( 'dns_prefetch', array() ) );
 	$domains = apply_filters( 'rocket_dns_prefetch', $domains );
 
-	if( count( $domains ) )
-	{
-		foreach( $domains as $domain )
+	if ( count( $domains ) ) {
+		
+		foreach ( $domains as $domain ) {
 			$dns_link_tags .= '<link rel="dns-prefetch" href="' . esc_url( $domain ) . '" />';
+		}
+			
 	}
 
 	// Insert all DNS prefecth tags in head

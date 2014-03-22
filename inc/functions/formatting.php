@@ -217,8 +217,8 @@ function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_file
 				*/
 				if ( ! apply_filters( 'rocket_minify_debug', false ) ) {
 
-					$root = rocket_remove_url_protocol( home_url() ) . '/';
-					$pretty_url = !$pretty_filename ? WP_ROCKET_MINIFY_CACHE_URL . $root . md5( $url . get_rocket_option( 'minify_' . $ext . '_key', create_rocket_uniqid() ) ) . '.' . $ext : WP_ROCKET_MINIFY_CACHE_URL . $root . $pretty_filename . '.' . $ext;
+					$blog_id = get_current_blog_id();
+					$pretty_url = !$pretty_filename ? WP_ROCKET_MINIFY_CACHE_URL . $blog_id . '/' . md5( $url . get_rocket_option( 'minify_' . $ext . '_key', create_rocket_uniqid() ) ) . '.' . $ext : WP_ROCKET_MINIFY_CACHE_URL . $blog_id . '/' . $pretty_filename . '.' . $ext;
 
 
 					/**

@@ -19,22 +19,17 @@ function run_rocket_bot( $spider = 'cache-preload', $start_url = '' )
 	 * @param bool Do the job or not 
 	 * @param string $spider The spider name
 	*/
-	if( !apply_filters( 'do_run_rocket_bot', true, $spider ) ) 
-	{
+	if ( ! apply_filters( 'do_run_rocket_bot', true, $spider ) ) {
 		return false;
 	}
 	
-	if( $spider == 'cache-preload' && empty( $start_url ) )
-	{
-		$start_url = home_url();
-	}
-	else if( $spider == 'cache-json' )
-	{
+	if ( $spider == 'cache-preload' && empty( $start_url ) ) {		
+		$start_url = home_url();		
+	} elseif ( $spider == 'cache-json' ) {	
 		$start_url = WP_ROCKET_URL . 'cache.json';
 	}
 
-	if( empty( $start_url ) )
-	{
+	if ( empty( $start_url ) ) {
 		return false;
 	}
 
@@ -73,13 +68,14 @@ function run_rocket_bot_for_selected_lang( $lang )
 {
 
 	// Check if WPML is activated
-	if( rocket_is_plugin_active('sitepress-multilingual-cms/sitepress.php') )
-	{
+	if ( rocket_is_plugin_active('sitepress-multilingual-cms/sitepress.php') ) {
+		
 		$url = $GLOBALS['sitepress']->language_url( $lang );
-	}
-	else if( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) )
-	{
+		
+	} elseif ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
+		
 		$url = qtrans_convertURL( home_url(), $lang, true );
+		
 	}
 
 	run_rocket_bot( 'cache-preload', $url );
@@ -99,8 +95,7 @@ function run_rocket_bot_for_all_langs()
 {
 
 	$langs = get_rocket_all_active_langs_uri();
-	foreach ( $langs as $lang )
-	{
+	foreach ( $langs as $lang ) {
 		run_rocket_bot( 'cache-preload', $lang );
 	}
 

@@ -101,7 +101,7 @@ function get_rocket_cache_reject_uri()
 function get_rocket_cache_reject_cookies()
 {
 	
-	$cookies = get_rocket_option( 'cache_reject_cookies', array() );
+	$cookies   = get_rocket_option( 'cache_reject_cookies', array() );
 	$cookies[] = str_replace( COOKIEHASH, '', LOGGED_IN_COOKIE );
 	$cookies[] = 'wp-postpass_';
 	$cookies[] = 'wptouch_switch_toggle';
