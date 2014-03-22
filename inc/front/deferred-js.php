@@ -22,7 +22,7 @@ function rocket_exclude_deferred_js( $buffer )
 	    foreach ( $tags_match[0] as $i=>$tag ) {
 
 			// Strip query args.
-			$url = strtok( , '?' );
+			$url = strtok( $tags_match[1][$i] , '?' );
 			
 			// Get all js files to remove
 			$deferred_js_files = apply_filters( 'rocket_minify_deferred_js', get_rocket_option( 'deferred_js_files' ) );
