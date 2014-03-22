@@ -169,12 +169,17 @@ function rocket_minify_css( $buffer )
 					$langs_host[] = parse_url( $lang, PHP_URL_HOST );
 				}
 				
-			}			
+			}
+			
+			// Get host of CNAMES
+			if ( $cnames = get_rocket_cdn_cnames( array( 'all', 'css_and_js' ) ) ) {
+				$cnames = array_map( 'rocket_remove_url_protocol' , $cnames );
+			}		
 			
             // Check if the file isn't external
             // Insert the relative path to the array without query string
 			if( $css_url['host'] == parse_url( home_url(), PHP_URL_HOST )
-			    || in_array( $css_url['host'], get_rocket_cdn_cnames( array( 'all', 'css_and_js' ) ) ) 
+			    || in_array( $css_url['host'], $cnames ) 
 			    || in_array( $css_url['host'], $langs_host ) ) {
 
 				// Check if it isn't a file to exclude
@@ -264,10 +269,15 @@ function rocket_minify_js( $buffer )
 				
 			}
 			
+			// Get host of CNAMES
+			if ( $cnames = get_rocket_cdn_cnames( array( 'all', 'css_and_js' ) ) ) {
+				$cnames = array_map( 'rocket_remove_url_protocol' , $cnames );
+			}	
+			
 	        // Check if the link isn't external
 	        // Insert the relative path to the array without query string
 	        if( $js_url['host'] == parse_url( home_url(), PHP_URL_HOST )
-	        	|| in_array( $js_url['host'], get_rocket_cdn_cnames( array( 'all', 'css_and_js' ) ) ) 
+	        	|| in_array( $js_url['host'], $cnames ) 
 	        	|| in_array( $js_url['host'], $langs_host ) ) {
 
 		        // Check if it isn't a file to exclude
