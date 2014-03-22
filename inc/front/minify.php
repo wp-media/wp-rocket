@@ -160,13 +160,22 @@ function rocket_minify_css( $buffer )
             
             // Get URLs infos
 			$css_url  = parse_url( $tags_match[1][$i] );
-
-
+			
+			// Get host for all langs
+			if ( $langs = get_rocket_all_active_langs_uri() ) {
+				
+				$langs_host = array();
+				foreach ( $langs as $lang ) {
+					$langs_host[] = parse_url( $lang, PHP_URL_HOST );
+				}
+				
+			}			
+			
             // Check if the file isn't external
             // Insert the relative path to the array without query string
 			if( $css_url['host'] == parse_url( home_url(), PHP_URL_HOST )
-			    || in_array( $css_url['host'], get_rocket_cdn_cnames( array( 'all', 'css_and_js' ) ) ) )
-			{
+			    || in_array( $css_url['host'], get_rocket_cdn_cnames( array( 'all', 'css_and_js' ) ) ) 
+			    || in_array( $css_url['host'], $langs_host ) ) {
 
 				// Check if it isn't a file to exclude
 				if( !in_array( $css_url['path'], get_rocket_option( 'exclude_css', array() ) )
@@ -184,7 +193,7 @@ function rocket_minify_css( $buffer )
 			}
 
             // Remove the tag
-            if( $excluded_tag === false ) {
+            if( !$excluded_tag ) {
             	$buffer = str_replace( $tag, '', $buffer );
             }
 
@@ -244,11 +253,22 @@ function rocket_minify_js( $buffer )
             
 	        // Get URLs infos
 	        $js_url = parse_url( $tags_match[1][$i] );
-
+			
+			// Get host for all langs
+			if ( $langs = get_rocket_all_active_langs_uri() ) {
+				
+				$langs_host = array();
+				foreach ( $langs as $lang ) {
+					$langs_host[] = parse_url( $lang, PHP_URL_HOST );
+				}
+				
+			}
+			
 	        // Check if the link isn't external
 	        // Insert the relative path to the array without query string
 	        if( $js_url['host'] == parse_url( home_url(), PHP_URL_HOST )
-	        	|| in_array( $js_url['host'], get_rocket_cdn_cnames( array( 'all', 'css_and_js' ) ) ) ) {
+	        	|| in_array( $js_url['host'], get_rocket_cdn_cnames( array( 'all', 'css_and_js' ) ) ) 
+	        	|| in_array( $js_url['host'], $langs_host ) ) {
 
 		        // Check if it isn't a file to exclude
 		        if( !in_array( $js_url['path'], get_rocket_option( 'exclude_js', array() ) )
@@ -266,7 +286,7 @@ function rocket_minify_js( $buffer )
 	        }
 
 			// Remove the tag
-            if( $excluded_tag === false ) {
+            if( !$excluded_tag ) {
             	$buffer = str_replace( $tag, '', $buffer );
             }
 
