@@ -13,13 +13,12 @@ defined( 'ABSPATH' ) or	die( __( 'Cheatin&#8217; uh?', 'rocket' ) );
 function flush_rocket_htaccess( $force = false )
 {
 
-	global $is_apache;
-	if( !$is_apache )
+	if ( ! $GLOBALS['is_apache'] ) {
 		return false;
+	}
 
 	$rules = '';
 	$htaccess_file =  get_home_path() . '.htaccess';
-
 
 	if ( is_writable( $htaccess_file ) ) {
 
@@ -37,7 +36,7 @@ function flush_rocket_htaccess( $force = false )
 		}
 
 		// Update the .htacces file
-		rocket_put_content( $htaccess_file , $rules . $ftmp );
+		rocket_put_content( $htaccess_file, $rules . $ftmp );
 
 	}
 
@@ -54,7 +53,7 @@ function flush_rocket_htaccess( $force = false )
 
 function get_rocket_htaccess_marker()
 {
-
+	
 	// Recreate WP Rocket marker
 	$marker  = '# BEGIN WP Rocket v' . WP_ROCKET_VERSION ."\n";
 	$marker .= get_rocket_htaccess_charset();
@@ -64,7 +63,16 @@ function get_rocket_htaccess_marker()
 	$marker .= get_rocket_htaccess_mod_deflate();
 	$marker .= get_rocket_htaccess_mod_rewrite();
 	$marker .= '# END WP Rocket' . "\n";
-
+	
+	/**
+	 * Filter rules added by WP Rocket in .htaccess
+	 *
+	 * @since 2.1
+	 *
+	 * @param string $pretty_url $marker The content of all rules 
+	*/
+	$marker = apply_filters( 'rocket_htaccess_marker', $marker );
+	
 	return $marker;
 
 }
