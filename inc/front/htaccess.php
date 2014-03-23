@@ -69,7 +69,7 @@ function get_rocket_htaccess_marker()
 	 *
 	 * @since 2.1
 	 *
-	 * @param string $pretty_url $marker The content of all rules 
+	 * @param string $marker The content of all rules 
 	*/
 	$marker = apply_filters( 'rocket_htaccess_marker', $marker );
 	
