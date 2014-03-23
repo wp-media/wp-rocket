@@ -114,8 +114,10 @@ add_filter( 'script_loader_src', 'rocket_cdn_enqueue', PHP_INT_MAX );
 function rocket_cdn_enqueue( $src )
 {
 
+	global $pagenow;
+	
 	// Don't use CDN if in admin, in login page, in register page or in a post preview
-	if ( is_admin() || is_preview() || in_array($GLOBALS['pagenow'], array('wp-login.php', 'wp-register.php') ) ) {
+	if ( is_admin() || is_preview() || in_array( $pagenow, array('wp-login.php', 'wp-register.php' ) ) ) {
 		return $src;
 	}
 
