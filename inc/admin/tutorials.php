@@ -12,14 +12,14 @@
 <p><?php _e( 'This video helps to understand easily the advanced option of "Preloading DNS queries" and the use of the filter <code>rocket_dns_prefetch</code>.', 'rocket' ); ?></p>
 <p><a href="http://www.youtube.com/embed/ElJCtUidLwc?autoplay=1" class="button-primary fancybox"><?php _e( 'Watch the video', 'rocket' ); ?></a></p>
 
-<h2><?php _e( 'How to use the "White Label" functionnality?', 'rocket' ); ?></h2>
+<h2><?php _e( 'How to use the White Label functionnality?', 'rocket' ); ?></h2>
 <p><?php _e( 'This video helps to set up a White Label version of WP Rocket.', 'rocket' ); ?></p>
 <p><a href="http://www.youtube.com/embed/3rDpaom6kSc?autoplay=1" class="button-primary fancybox"><?php _e( 'Watch the video', 'rocket' ); ?></a></p>
 
-<h2><?php _e( 'What is the CDN functionality?', 'rocket' ); ?></h2>
+<h2><?php _e( 'How to use the CDN functionality?', 'rocket' ); ?></h2>
 <p><?php _e( 'This video helps to understand what is the CDN functionnality included since WP Rocket 2.1.', 'rocket' ); ?></p>
 <p><a href="http://www.youtube.com/embed/JIamaNM8yp4?autoplay=1" class="button-primary fancybox"><?php _e( 'Watch the video', 'rocket' ); ?></a></p>
 
-<h2><?php _e( 'How to use the "CDN API"?', 'rocket' ); ?></h2>
+<h2><?php _e( 'How to use the CDN API?', 'rocket' ); ?></h2>
 <p><?php _e( 'This video helps you to use the 2 functions <code>get_rocket_cdn_url()</code> and <code>rocket_cdn_url()</code>.', 'rocket' ); ?></p>
 <p><a href="http://www.youtube.com/embed/qfcGBoVdYKI?autoplay=1" class="button-primary fancybox"><?php _e( 'Watch the video', 'rocket' ); ?></a></p>

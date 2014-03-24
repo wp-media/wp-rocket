@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/wp-rocket\n"
-"POT-Creation-Date: 2014-03-24 22:09+0100\n"
-"PO-Revision-Date: 2014-03-24 22:20+0100\n"
+"POT-Creation-Date: 2014-03-24 22:50+0100\n"
+"PO-Revision-Date: 2014-03-24 22:51+0100\n"
 "Last-Translator: Julio Potier <julio@boiteaweb.fr>\n"
 "Language-Team:  <contact@wp-rocket.me>\n"
 "Language: fr\n"
@@ -1291,16 +1291,16 @@ msgstr ""
 "du filtre <code>rocket_dns_prefetch</code>."
 
 #: ../inc/admin/tutorials.php:15
-msgid "How to use the \"White Label\" functionnality?"
-msgstr "Comment utiliser la fonctionnalité \"Marque Blanche\" ?"
+msgid "How to use the White Label functionnality?"
+msgstr "Comment utiliser la fonctionnalité Marque Blanche ?"
 
 #: ../inc/admin/tutorials.php:16
 msgid "This video helps to set up a White Label version of WP Rocket."
 msgstr "Cette video aide à paramétrer une version Marque Blanche de WP Rocket."
 
 #: ../inc/admin/tutorials.php:19
-msgid "What is the CDN functionality?"
-msgstr "Qu'est ce que la fonctionnalité CDN ?"
+msgid "How to use the CDN functionality?"
+msgstr "Comment utiliser la fonctionnalité CDN ?"
 
 #: ../inc/admin/tutorials.php:20
 msgid ""
@@ -1311,8 +1311,8 @@ msgstr ""
 "WP Rocket 2.1."
 
 #: ../inc/admin/tutorials.php:23
-msgid "How to use the \"CDN API\"?"
-msgstr "Comment utiliser \"l'API CDN\" ?"
+msgid "How to use the CDN API?"
+msgstr "Comment utiliser l'API CDN ?"
 
 #: ../inc/admin/tutorials.php:24
 msgid ""
