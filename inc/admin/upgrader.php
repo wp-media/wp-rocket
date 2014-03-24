@@ -194,7 +194,20 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version )
 	{
 
 		rocket_reset_white_label_values( false );
-
+		
+		// Create minify cache folder if not exist
+	    if( !is_dir( WP_ROCKET_MINIFY_CACHE_PATH ) ) {
+			rocket_mkdir_p( WP_ROCKET_MINIFY_CACHE_PATH );
+	    }
+		
+		// Create config domain folder if not exist
+	    if( !is_dir( WP_ROCKET_CONFIG_PATH ) ) {
+			rocket_mkdir_p( WP_ROCKET_CONFIG_PATH );
+	    }
+	    
+	    // Create config file
+		rocket_generate_config_file();
+		
 	}
 
 }
