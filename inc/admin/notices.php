@@ -132,7 +132,8 @@ function rocket_plugins_to_deactivate()
 		'hyper-cache-extended/plugin.php',
 		'wp-fast-cache/wp-fast-cache.php',
 		'flexicache/wp-plugin.php',
-		'wp-fastest-cache/wpFastestCache.php'
+		'wp-fastest-cache/wpFastestCache.php',
+		'wp-http-compression/wp-http-compression.php'
 	);
 
 	if( get_rocket_option( 'lazyload' ) )
