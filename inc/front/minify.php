@@ -178,9 +178,7 @@ function rocket_minify_css( $buffer )
 			
             // Check if the file isn't external
             // Insert the relative path to the array without query string
-			if( $css_url['host'] == parse_url( home_url(), PHP_URL_HOST )
-			    || in_array( $css_url['host'], $cnames ) 
-			    || in_array( $css_url['host'], $langs_host ) ) {
+			if ( isset( $css_url['host'] ) && ( $css_url['host'] == parse_url( home_url(), PHP_URL_HOST ) || in_array( $css_url['host'], $cnames ) || in_array( $css_url['host'], $langs_host ) ) ) {
 
 				// Check if it isn't a file to exclude
 				if( !in_array( $css_url['path'], get_rocket_option( 'exclude_css', array() ) )
@@ -276,9 +274,7 @@ function rocket_minify_js( $buffer )
 			
 	        // Check if the link isn't external
 	        // Insert the relative path to the array without query string
-	        if( $js_url['host'] == parse_url( home_url(), PHP_URL_HOST )
-	        	|| in_array( $js_url['host'], $cnames ) 
-	        	|| in_array( $js_url['host'], $langs_host ) ) {
+	        if ( isset( $js_url['host'] ) && ( $js_url['host'] == parse_url( home_url(), PHP_URL_HOST ) || in_array( $js_url['host'], $cnames ) || in_array( $js_url['host'], $langs_host ) ) ) {
 
 		        // Check if it isn't a file to exclude
 		        if( !in_array( $js_url['path'], get_rocket_option( 'exclude_js', array() ) )
