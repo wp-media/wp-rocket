@@ -205,6 +205,9 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version )
 			rocket_mkdir_p( WP_ROCKET_CONFIG_PATH );
 	    }
 	    
+	    // Create advanced-cache.php file
+		rocket_generate_advanced_cache_file();
+	    
 	    // Create config file
 		rocket_generate_config_file();
 		

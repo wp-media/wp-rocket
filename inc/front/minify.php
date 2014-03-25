@@ -21,8 +21,8 @@ function rocket_minify_process( $buffer )
 	if( $enable_css || $enable_js )
 	{
 
-		$css 	 = '';
-		$js = '';
+		$css = '';
+		$js  = '';
 
 		list( $buffer, $conditionals ) = rocket_extract_ie_conditionals( $buffer );
 

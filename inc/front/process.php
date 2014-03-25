@@ -53,10 +53,10 @@ if ( ! empty( $_GET )
 
 
 // Get the correct config file
+$rocket_config_path = WP_CONTENT_DIR . '/wp-rocket-config/';
 $protocol = rocket_is_ssl() ? 'https://' : 'http://';
 $host 	  = trim( strtolower( $_SERVER['HTTP_HOST'] ), '.' );
 $url 	  = parse_url( $protocol . $host . rtrim( $_SERVER['REQUEST_URI'], '/' ) );
-
 
 $continue = false;
 if ( file_exists( $rocket_config_path . $url['host'] . '.php' ) ) {

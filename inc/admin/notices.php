@@ -133,6 +133,7 @@ function rocket_plugins_to_deactivate()
 		'wp-fast-cache/wp-fast-cache.php',
 		'flexicache/wp-plugin.php',
 		'wp-fastest-cache/wpFastestCache.php',
+		'gator-cache/gator-cache.php',
 		'wp-http-compression/wp-http-compression.php'
 	);
 
@@ -153,6 +154,7 @@ function rocket_plugins_to_deactivate()
 		$plugins[] = 'scripts-gzip/scripts_gzip.php';
 		$plugins[] = 'autoptimize/autoptimize.php';
 		$plugins[] = 'wp-js/wp-js.php';
+		$plugins[] = 'minqueue/plugin.php';
 	}
 
 	foreach ( $plugins as $plugin )
