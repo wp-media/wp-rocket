@@ -18,10 +18,10 @@ function get_rocket_advanced_cache_file()
 
 	// Get cache path
 	$buffer .= '$rocket_cache_path = \'' . WP_ROCKET_CACHE_PATH . '\'' . ";\n";
-
+	
 	// Get config path
 	$buffer .= '$rocket_config_path = \'' . WP_ROCKET_CONFIG_PATH . '\'' . ";\n";
-
+	
 	// Include the process file in buffer
 	$buffer .= 'include( \''. WP_ROCKET_FRONT_PATH . 'process.php' . '\' );';
 
@@ -639,7 +639,12 @@ function rocket_put_content( $file, $content )
 
 function rocket_fetch_and_cache_minify( $url, $pretty_url )
 {
-
+	
+	// Check if php-curl is enabled
+	if ( ! function_exists( 'curl_init' ) || ! function_exists( 'curl_exec' ) ) {
+		return false;
+	}
+	
 	$pretty_path = str_replace( WP_ROCKET_MINIFY_CACHE_URL, WP_ROCKET_MINIFY_CACHE_PATH, $pretty_url );
 
 	// If minify cache file is already exist, return to get a coffee :)
