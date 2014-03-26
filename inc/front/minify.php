@@ -162,9 +162,9 @@ function rocket_minify_css( $buffer )
 			$css_url  = parse_url( $tags_match[1][$i] );
 			
 			// Get host for all langs
+			$langs_host = array();
 			if ( $langs = get_rocket_all_active_langs_uri() ) {
 				
-				$langs_host = array();
 				foreach ( $langs as $lang ) {
 					$langs_host[] = parse_url( $lang, PHP_URL_HOST );
 				}
@@ -172,17 +172,20 @@ function rocket_minify_css( $buffer )
 			}
 			
 			// Get host of CNAMES
+			$cnames = array();
 			if ( $cnames = get_rocket_cdn_cnames( array( 'all', 'css_and_js' ) ) ) {
 				$cnames = array_map( 'rocket_remove_url_protocol' , $cnames );
 			}		
 			
             // Check if the file isn't external
             // Insert the relative path to the array without query string
-			if ( isset( $css_url['host'] ) && ( $css_url['host'] == parse_url( home_url(), PHP_URL_HOST ) || in_array( $css_url['host'], $cnames ) || in_array( $css_url['host'], $langs_host ) ) ) {
+			if ( isset( $css_url['host'] ) && ( $css_url['host'] == parse_url( home_url(), PHP_URL_HOST ) 
+				|| in_array( $css_url['host'], $cnames ) || in_array( $css_url['host'], $langs_host ) )
+				) {
 
 				// Check if it isn't a file to exclude
-				if( !in_array( $css_url['path'], get_rocket_option( 'exclude_css', array() ) )
-					&& pathinfo( $css_url['path'], PATHINFO_EXTENSION ) == 'css'
+				if ( ! in_array( $css_url['path'], get_rocket_option( 'exclude_css', array() ) )
+					&& 'css' == pathinfo( $css_url['path'], PATHINFO_EXTENSION )
 				) {
 					$internal_files[] = $css_url['path'];
 				}
