@@ -129,7 +129,7 @@ function get_rocket_cdn_url( $url, $zone = array( 'all' ) )
 	$cnames = get_rocket_cdn_cnames( $zone );
 	$query  = ! empty( $query ) ? '?'.$query : '';
 
-	if ( ! empty($cnames) )  {
+	if ( ! empty($cnames) ) {
 		$cname  = rocket_remove_url_protocol( $cnames[(abs(crc32($path))%count($cnames))] );
 		$url = $scheme . '://' . rtrim( $cname , '/' ) . $path . $query;
 	}
@@ -194,8 +194,8 @@ function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_file
 			if ( strlen( $urls[$i] . $base_url . $file )+1>=$filename_length ) {
 				$i++;
 			}
-
-			$urls[$i] .= $file.',';
+			
+			$urls[$i] .= $file.',';	
 
 		}
 

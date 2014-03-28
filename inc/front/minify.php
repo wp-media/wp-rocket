@@ -18,8 +18,7 @@ function rocket_minify_process( $buffer )
 	$enable_js 		 = get_rocket_option( 'minify_js' );
 	$enable_css 	 = get_rocket_option( 'minify_css' );
 
-	if( $enable_css || $enable_js )
-	{
+	if( $enable_css || $enable_js ) {
 
 		$css = '';
 		$js  = '';
@@ -139,8 +138,6 @@ function rocket_minify_css( $buffer )
     $excluded_tags       = '';
     $fonts_tags 		 = '';
 
-
-
     // Get all css files with this regex
     preg_match_all( '/<link.+href=[\'|"]([^\'|"]+\.css?.+)[\'|"].+>/iU', $buffer, $tags_match );
 
@@ -154,38 +151,40 @@ function rocket_minify_css( $buffer )
              && !strpos( $tag, 'data-minify=' )
              && !strpos( $tag, 'data-no-minify=' )
         ) {
-			
+
 			// To check if a tag is to exclude of the minify process
             $excluded_tag = false;
-            
+
             // Get URLs infos
 			$css_url  = parse_url( $tags_match[1][$i] );
-			
+
 			// Get host for all langs
 			$langs_host = array();
 			if ( $langs = get_rocket_all_active_langs_uri() ) {
-				
+
 				foreach ( $langs as $lang ) {
 					$langs_host[] = parse_url( $lang, PHP_URL_HOST );
 				}
-				
+
 			}
-			
+
 			// Get host of CNAMES
-			$cnames = array();
+			$cnames_host = array();
 			if ( $cnames = get_rocket_cdn_cnames( array( 'all', 'css_and_js' ) ) ) {
-				$cnames = array_map( 'rocket_remove_url_protocol' , $cnames );
-			}		
-			
+
+				foreach ( $cnames as $cname ) {
+					$cnames_host[] = parse_url( $cname, PHP_URL_HOST );
+				}
+
+			}
+
             // Check if the file isn't external
             // Insert the relative path to the array without query string
-			if ( isset( $css_url['host'] ) && ( $css_url['host'] == parse_url( home_url(), PHP_URL_HOST ) 
-				|| in_array( $css_url['host'], $cnames ) || in_array( $css_url['host'], $langs_host ) )
-				) {
+			if ( isset( $css_url['host'] ) && ( $css_url['host'] == parse_url( home_url(), PHP_URL_HOST ) || in_array( $css_url['host'], $cnames_host ) || in_array( $css_url['host'], $langs_host ) ) ) {
 
 				// Check if it isn't a file to exclude
-				if ( ! in_array( $css_url['path'], get_rocket_option( 'exclude_css', array() ) )
-					&& 'css' == pathinfo( $css_url['path'], PATHINFO_EXTENSION )
+				if( !in_array( $css_url['path'], get_rocket_option( 'exclude_css', array() ) )
+					&& pathinfo( $css_url['path'], PATHINFO_EXTENSION ) == 'css'
 				) {
 					$internal_files[] = $css_url['path'];
 				}
@@ -242,8 +241,6 @@ function rocket_minify_js( $buffer )
     $external_tags       = '';
     $excluded_tags       = '';
 
-
-
     // Get all JS files with this regex
     preg_match_all( '#<script.*src=[\'|"]([^\'|"]+\.js?.+)[\'|"].*></script>#iU', $buffer, $tags_match );
 
@@ -253,31 +250,36 @@ function rocket_minify_js( $buffer )
         // Chek if the file is already minify by get_rocket_minify_files
         // or the file is rejected to the process
         if ( !strpos( $tag, 'data-minify=' ) && !strpos( $tag, 'data-no-minify=' ) ) {
-			
+
 			// To check if a tag is to exclude of the minify process
             $excluded_tag = false;
-            
+
 	        // Get URLs infos
 	        $js_url = parse_url( $tags_match[1][$i] );
-			
+
 			// Get host for all langs
+			$langs_host = array();
 			if ( $langs = get_rocket_all_active_langs_uri() ) {
-				
-				$langs_host = array();
+
 				foreach ( $langs as $lang ) {
 					$langs_host[] = parse_url( $lang, PHP_URL_HOST );
 				}
-				
+
 			}
-			
+
 			// Get host of CNAMES
+			$cnames_host = array();
 			if ( $cnames = get_rocket_cdn_cnames( array( 'all', 'css_and_js' ) ) ) {
-				$cnames = array_map( 'rocket_remove_url_protocol' , $cnames );
-			}	
-			
+
+				foreach ( $cnames as $cname ) {
+					$cnames_host[] = parse_url( $cname, PHP_URL_HOST );
+				}
+
+			}
+
 	        // Check if the link isn't external
 	        // Insert the relative path to the array without query string
-	        if ( isset( $js_url['host'] ) && ( $js_url['host'] == parse_url( home_url(), PHP_URL_HOST ) || in_array( $js_url['host'], $cnames ) || in_array( $js_url['host'], $langs_host ) ) ) {
+	        if ( isset( $js_url['host'] ) && ( $js_url['host'] == parse_url( home_url(), PHP_URL_HOST ) || in_array( $js_url['host'], $cnames_host ) || in_array( $js_url['host'], $langs_host ) ) ) {
 
 		        // Check if it isn't a file to exclude
 		        if( !in_array( $js_url['path'], get_rocket_option( 'exclude_js', array() ) )
