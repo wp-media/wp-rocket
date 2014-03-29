@@ -81,6 +81,37 @@ class ActionScheduler_wpCommentLogger extends ActionScheduler_Logger {
 		return get_comment( $comment_id );
 	}
 
+
+
+	/**
+	 * @param WP_Comment_Query $query
+	 *
+	 * @return void
+	 */
+	public function filter_comment_queries( $query ) {
+		foreach ( array('ID', 'parent', 'post_author', 'post_name', 'post_parent', 'type', 'post_type', 'post_id', 'post_ID') as $key ) {
+			if ( !empty($query->query_vars[$key]) ) {
+				return; // don't slow down queries that wouldn't include action_log comments anyway
+			}
+		}
+		$query->query_vars['action_log_filter'] = TRUE;
+		add_filter( 'comments_clauses', array( $this, 'filter_comment_query_clauses' ), 10, 2 );
+	}
+
+	/**
+	 * @param array $clauses
+	 * @param WP_Comment_Query $query
+	 *
+	 * @return array
+	 */
+	public function filter_comment_query_clauses( $clauses, $query ) {
+		if ( !empty($query->query_vars['action_log_filter']) ) {
+			global $wpdb;
+			$clauses['where'] .= sprintf(" AND {$wpdb->comments}.comment_type != '%s'", self::TYPE);
+		}
+		return $clauses;
+	}
+
 	/**
 	 * @codeCoverageIgnore
 	 */
@@ -93,6 +124,7 @@ class ActionScheduler_wpCommentLogger extends ActionScheduler_Logger {
 		add_action( 'action_scheduler_after_execute', array( $this, 'log_completed_action' ), 10, 1 );
 		add_action( 'action_scheduler_failed_execution', array( $this, 'log_failed_action' ), 10, 2 );
 		add_action( 'action_scheduler_reset_action', array( $this, 'log_reset_action' ), 10, 1 );
+		add_action( 'pre_get_comments', array( $this, 'filter_comment_queries' ), 10, 1 );
 	}
 
 	public function disable_comment_counting() {
