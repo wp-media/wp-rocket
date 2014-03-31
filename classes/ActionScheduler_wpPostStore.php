@@ -138,6 +138,8 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		}
 		$query .= " WHERE p.post_title=%s";
 		$args[] = $hook;
+		$query .= " AND p.post_type=%s";
+		$args[] = self::POST_TYPE;
 		if ( !is_null($params['args']) ) {
 			$query .= " AND p.post_content=%s";
 			$args[] = json_encode($params['args']);
