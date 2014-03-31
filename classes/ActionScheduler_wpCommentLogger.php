@@ -127,4 +127,3 @@ class ActionScheduler_wpCommentLogger extends ActionScheduler_Logger {
 	}
 
 }
- 
