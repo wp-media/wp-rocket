@@ -40,7 +40,7 @@ class ActionScheduler_wpCommentLogger extends ActionScheduler_Logger {
 	/**
 	 * @param string $entry_id
 	 *
-*@return ActionScheduler_LogEntry
+	 * @return ActionScheduler_LogEntry
 	 */
 	public function get_entry( $entry_id ) {
 		$comment = $this->get_comment( $entry_id );
@@ -53,7 +53,7 @@ class ActionScheduler_wpCommentLogger extends ActionScheduler_Logger {
 	/**
 	 * @param string $action_id
 	 *
-*@return ActionScheduler_LogEntry[]
+	 * @return ActionScheduler_LogEntry[]
 	 */
 	public function get_logs( $action_id ) {
 		$status = 'all';

@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Action Scheduler
-Plugin URI: https://github.com/flightless/delayed-job
+Plugin URI: https://github.com/flightless/action-scheduler
 Description: A robust action scheduler for WordPress
 Author: Flightless
 Author URI: http://flightless.us/
