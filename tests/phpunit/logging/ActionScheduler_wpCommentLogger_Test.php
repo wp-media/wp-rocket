@@ -93,5 +93,41 @@ class ActionScheduler_wpCommentLogger_Test extends ActionScheduler_UnitTestCase 
 	public function _a_hook_callback_that_throws_an_exception() {
 		throw new RuntimeException('Execution failed');
 	}
+
+	public function test_filtering_of_get_comments() {
+		$post_id = $this->factory->post->create_object(array(
+			'post_title' => __FUNCTION__,
+		));
+		$comment_id = $this->factory->comment->create_object(array(
+			'comment_post_ID' => $post_id,
+			'comment_author' => __CLASS__,
+			'comment_content' => __FUNCTION__,
+		));
+
+		// Verify that we're getting the expected comment before we add logging comments
+		$comments = get_comments();
+		$this->assertCount( 1, $comments );
+		$this->assertEquals( $comment_id, $comments[0]->comment_ID );
+
+
+		$action_id = wc_schedule_single_action( time(), 'a hook' );
+		$logger = ActionScheduler::logger();
+		$message = 'Logging that something happened';
+		$log_id = $logger->log( $action_id, $message );
+
+
+		// Verify that logging comments are excluded from general comment queries
+		$comments = get_comments();
+		$this->assertCount( 1, $comments );
+		$this->assertEquals( $comment_id, $comments[0]->comment_ID );
+
+		// Verify that logging comments are returned when asking for them specifically
+		$comments = get_comments(array(
+			'type' => ActionScheduler_wpCommentLogger::TYPE,
+		));
+		// Expecting two: one when the action is created, another when we added our custom log
+		$this->assertCount( 2, $comments );
+		$this->assertEquals( $log_id, $comments[1]->comment_ID );
+	}
 }
  
