@@ -68,7 +68,7 @@
 <p><?php _e( 'It\'s necessary to have custom permalinks of the type <code>http://example.com/mon-article/</code> rather than <code>http://example.com/?p=1234</code>.', 'rocket' );?></p>
 
 <h2><?php _e( 'Which web servers WP Rocket is compatible with?', 'rocket' );?></h2>
-<p><?php _e( 'WP Rocket is compatible with <strong>Apache, NGINX, Microsoft IIS et Litepseed</strong> web servers.', 'rocket' );?></p>
+<p><?php _e( 'WP Rocket is compatible with <strong>Apache, NGINX, Microsoft IIS, and LiteSpeed</strong> web servers.', 'rocket' );?></p>
 
 <h2><?php _e( 'Reports from PageSpeed and YSlow tells me that the content is not gziped and/or did not expire, what should I do?', 'rocket' );?></h2>
 

@@ -39,6 +39,9 @@ function rocket_field( $args )
 	$full = $args;
 
 	foreach ( $full as $args ) {
+		if ( isset( $args['display'] ) && !$args['display'] ) {
+			continue;
+		}
 		$args['label_for'] = isset( $args['label_for'] ) ? $args['label_for'] : '';
 		$args['name'] 	= isset( $args['name'] ) ? $args['name'] : $args['label_for'];
 		$class			= isset( $args['class'] ) ? sanitize_html_class( $args['class'] ) : sanitize_html_class( $args['name'] ) ;
@@ -473,8 +476,14 @@ function rocket_display_options()
 			),
 			array(
 				'type'			=> 'helper_warning',
-				'name'			=> 'minify',
-				'description'  => sprintf( __( 'Concatenating files can cause display errors. In case of any errors we recommend you to turn off this option or watch the following video: <a href="%1$s" class="fancybox">%1$s</a>.', 'rocket' ), 'http://www.youtube.com/embed/5-Llh0ivyjs' )
+				'name'			=> 'minify_help1',
+				'description'  => __( 'Concatenating files can cause display errors.', 'rocket' ),
+			),
+			array(
+				'display'		=> !rocket_is_white_label(),
+				'type'			=> 'helper_warning',
+				'name'			=> 'minify_help2',
+				'description'  => sprintf( __( 'In case of any errors we recommend you to turn off this option or watch the following video: <a href="%1$s" class="fancybox">%1$s</a>.', 'rocket' ), 'http://www.youtube.com/embed/5-Llh0ivyjs' )
 			),
 
 		)
@@ -750,7 +759,7 @@ function rocket_display_options()
 			array(
 				'type' 		  => 'helper_description',
 				'name' 		  => 'cdn',
-				'description' => __( 'CDN function replaces all urls of your static files and media (CSS, JS, Images) with the url entered below. This way all your content will be copied to a dedicated hosting or a CDN system <a href="http://www.maxcdn.com/" target="_blank">maxCDN</a>.', 'rocket' )
+				'description' => __( 'CDN function replaces all URLs of your static files and media (CSS, JS, Images) with the url entered below. This way all your content will be copied to a dedicated hosting or a CDN system <a href="http://www.maxcdn.com/" target="_blank">maxCDN</a>.', 'rocket' )
 			)
 		)
 	);
@@ -890,27 +899,7 @@ function rocket_display_options()
 	        	'description'  => __( 'Allows you to request a bot crawl to preload the cache (homepage and its internal links).', 'rocket' )
 			),
 		)
-    );	
-    if( !rocket_is_white_label() )
-    {
-		add_settings_field(
-			'rocketeer',
-			__( 'Support', 'rocket' ),
-			'rocket_button',
-			'tools',
-			'rocket_display_tools',
-			array(
-		        'button'=>array(
-		        	'button_label' => __( 'Send my configuration to the support', 'rocket' ),
-		        	'url'		   => wp_nonce_url( admin_url( 'admin-post.php?action=rocketeer' ), 'rocketeer' ),
-		        	),
-				'helper_help'=>array(
-					'name'         => 'support',
-		        	'description'  => __( 'When posting a support request, thank you to click on this button. We receive information regarding your installation to help us understand and solve your problem. The information collected will not be sold or used for other purpose than support.', 'rocket' )
-				),
-			)
-	    );
-	}
+    );
 ?>
 	<div class="wrap">
 	<?php if( version_compare( $GLOBALS['wp_version'], '3.8' )<0 || !rocket_is_white_label() ) { ?>

@@ -109,6 +109,26 @@ function rocket_admin_print_styles()
 
 
 /**
+ // copied from core to reduct backcompat to 3.1 and not 3.5
+ * Send a JSON response back to an Ajax request.
+ *
+ * @since WordPress 3.5.0
+ *
+ * @param mixed $response Variable (usually an array or object) to encode as JSON, then print and die.
+ */
+
+if ( ! function_exists( 'wp_send_json' ) ) {
+	function wp_send_json( $response ) {
+		@header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
+		echo json_encode( $response );
+		if ( defined( 'DOING_AJAX' ) && DOING_AJAX )
+			wp_die();
+		else
+			die;
+	}
+}
+
+/**
  * Manage the dismissed boxes
  *
  * since 1.3.0 $args can replace $_GET when called internaly
@@ -204,29 +224,6 @@ function rocket_deactivate_plugin()
 	wp_safe_redirect( wp_get_referer() );
 	die();
 }
-
-
-
-/**
- * Send various informations from your installation to the support team, if and when YOU want to do it
- *
- * since 1.4.0
- *
- */
-
-add_action( 'admin_post_rocketeer', 'send_rocketeer_infos' );
-function send_rocketeer_infos()
-{
-	if ( isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'rocketeer' ) ) {
-		require( dirname( __FILE__ ) . '/rocketeer.php' );
-	}
-
-	add_settings_error( 'rocket', 'rocketeer_infos', __( 'Thank you, you may now add a <a href="http://support.wp-rocket.me/forums/" target="_blank">support post</a>.', 'rocket' ), 'updated' );
-	set_transient( 'settings_errors', get_settings_errors(), 30 );
-	wp_safe_redirect( wp_get_referer() );
-	die();
-}
-
 
 
 /**
