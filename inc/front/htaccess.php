@@ -343,7 +343,7 @@ function get_rocket_htaccess_files_match()
 	$rules = '<IfModule mod_alias.c>' . "\n";
 		$rules .= '<FilesMatch "\.(html|htm|rtf|rtx|svg|svgz|txt|xsd|xsl|xml)$">' . "\n";
 		    $rules .= '<IfModule mod_headers.c>' . "\n";
-		         $rules .= 'Header set X-Powered-By WP Rocket/' . WP_ROCKET_VERSION . '"' . "\n";
+		         $rules .= 'Header set X-Powered-By "WP Rocket/' . WP_ROCKET_VERSION . '"' . "\n";
 		         $rules .= 'Header unset Pragma' . "\n";
 		         $rules .= 'Header append Cache-Control "public"' . "\n";
 		         $rules .= 'Header unset Last-Modified' . "\n";
