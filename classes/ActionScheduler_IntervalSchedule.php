@@ -29,6 +29,15 @@ class ActionScheduler_IntervalSchedule implements ActionScheduler_Schedule {
 	}
 
 	/**
+	 * @param DateTime $after
+	 *
+	 * @return DateTime|null
+	 */
+	public function interval_in_seconds() {
+		return $this->interval_in_seconds;
+	}
+
+	/**
 	 * For PHP 5.2 compat, since DateTime objects can't be serialized
 	 * @return array
 	 */
