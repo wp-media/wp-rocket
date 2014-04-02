@@ -73,7 +73,7 @@ class ActionScheduler_QueueRunner {
 		return count($claim->get_actions());
 	}
 
-	protected function process_action( $action_id ) {
+	public function process_action( $action_id ) {
 		$action = $this->store->fetch_action( $action_id );
 		do_action( 'action_scheduler_before_execute', $action_id );
 		try {
