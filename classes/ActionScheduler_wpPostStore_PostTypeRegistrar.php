@@ -18,6 +18,9 @@ class ActionScheduler_wpPostStore_PostTypeRegistrar {
 		$args = array(
 			'label' => __( 'Scheduled Actions', 'action-scheduler' ),
 			'public' => false,
+			'show_ui' => true,
+			'show_in_menu' => 'tools.php',
+			'show_in_admin_bar' => false,
 			'map_meta_cap' => true,
 			'hierarchical' => false,
 			'supports' => array('title', 'editor'),
