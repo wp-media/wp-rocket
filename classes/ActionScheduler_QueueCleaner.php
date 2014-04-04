@@ -32,6 +32,9 @@ class ActionScheduler_QueueCleaner {
 
 	public function reset_timeouts() {
 		$timeout = apply_filters( 'action_scheduler_timeout_period', $this->five_minutes );
+		if ( $timeout < 1 ) {
+			return;
+		}
 		$cutoff = new DateTime($timeout.' seconds ago');
 		$actions_to_reset = $this->store->query_actions( array(
 			'status' => ActionScheduler_Store::STATUS_PENDING,
