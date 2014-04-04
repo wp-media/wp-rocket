@@ -59,11 +59,21 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	}
 
 	protected function save_post_array( $post_array ) {
+		add_filter( 'wp_insert_post_data', array( $this, 'set_post_author_to_zero' ), 10, 1 );
 		$post_id = wp_insert_post($post_array);
+		remove_filter( 'wp_insert_post_data', array( $this, 'set_post_author_to_zero' ), 10, 1 );
+
 		if ( is_wp_error($post_id) || empty($post_id) ) {
 			throw new RuntimeException(__('Unable to save action.', 'action-scheduler'));
 		}
 		return $post_id;
+	}
+
+	public function set_post_author_to_zero( $postdata ) {
+		if ( $postdata['post_type'] == self::POST_TYPE ) {
+			$postdata['post_author'] = 0;
+		}
+		return $postdata;
 	}
 
 	protected function save_post_schedule( $post_id, $schedule ) {

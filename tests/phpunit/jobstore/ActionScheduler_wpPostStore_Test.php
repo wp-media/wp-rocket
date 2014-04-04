@@ -124,5 +124,33 @@ class ActionScheduler_wpPostStore_Test extends ActionScheduler_UnitTestCase {
 		$this->assertEquals( $def, $store->find_action('my_hook', array('group' => 'def')));
 		$this->assertEquals( $ghi, $store->find_action('my_hook', array('group' => 'ghi')));
 	}
+
+	public function test_post_author() {
+		$current_user = get_current_user_id();
+
+		$time = new DateTime();
+		$schedule = new ActionScheduler_SimpleSchedule($time);
+		$action = new ActionScheduler_Action('my_hook', array(), $schedule);
+		$store = new ActionScheduler_wpPostStore();
+		$action_id = $store->save_action($action);
+
+		$post = get_post($action_id);
+		$this->assertEquals(0, $post->post_author);
+
+		$new_user = $this->factory->user->create_object(array(
+			'user_login' => __FUNCTION__,
+			'user_pass' => md5(rand()),
+		));
+		wp_set_current_user( $new_user );
+
+
+		$schedule = new ActionScheduler_SimpleSchedule($time);
+		$action = new ActionScheduler_Action('my_hook', array(), $schedule);
+		$action_id = $store->save_action($action);
+		$post = get_post($action_id);
+		$this->assertEquals(0, $post->post_author);
+
+		wp_set_current_user($current_user);
+	}
 }
  
