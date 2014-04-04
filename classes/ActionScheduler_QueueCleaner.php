@@ -32,7 +32,7 @@ class ActionScheduler_QueueCleaner {
 
 	public function reset_timeouts() {
 		$timeout = apply_filters( 'action_scheduler_timeout_period', $this->five_minutes );
-		if ( $timeout < 1 ) {
+		if ( $timeout < 0 ) {
 			return;
 		}
 		$cutoff = new DateTime($timeout.' seconds ago');
