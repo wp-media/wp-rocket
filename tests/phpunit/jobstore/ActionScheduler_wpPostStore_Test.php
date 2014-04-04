@@ -152,5 +152,26 @@ class ActionScheduler_wpPostStore_Test extends ActionScheduler_UnitTestCase {
 
 		wp_set_current_user($current_user);
 	}
+
+	/**
+	 * @issue 13
+	 */
+	function test_post_status_for_recurring_action() {
+		$time = new DateTime('10 minutes');
+		$schedule = new ActionScheduler_IntervalSchedule($time, HOUR_IN_SECONDS);
+		$action = new ActionScheduler_Action('my_hook', array(), $schedule);
+		$store = new ActionScheduler_wpPostStore();
+		$action_id = $store->save_action($action);
+
+		$action = $store->fetch_action($action_id);
+		$action->execute();
+		$store->mark_complete( $action_id );
+
+		$next = $action->get_schedule()->next( new DateTime() );
+		$new_action_id = $store->save_action( $action, $next );
+
+		$this->assertEquals('publish', get_post_status($action_id));
+		$this->assertEquals('pending', get_post_status($new_action_id));
+	}
 }
  
