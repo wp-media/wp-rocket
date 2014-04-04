@@ -140,7 +140,7 @@ class ActionScheduler_AdminView {
 		$action         = ActionScheduler::store()->fetch_action( $post_id );
 		$action_title   = ( 'trash' == $post->post_status ) ? $post->post_title : $action->get_hook();
 		$schedule       = ( 'trash' == $post->post_status ) ? 0 : $action->get_schedule();
-		$next_timestamp = ( 'trash' == $post->post_status ) ? 0 : $schedule->next()->format('U');
+		$next_timestamp = ( 'trash' == $post->post_status ) ? 0 : get_the_time( 'U', $post_id );
 		$status         = get_post_status( $post_id );
 
 		switch ( $column_name ) {
