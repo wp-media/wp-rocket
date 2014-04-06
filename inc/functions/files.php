@@ -510,27 +510,28 @@ function rocket_rrmdir( $dir, $dirs_to_preserve = array() )
 
 	do_action( 'before_rocket_rrmdir', $dir, $dirs_to_preserve );
 
-	if( !is_dir( $dir ) ) {
+	if ( ! is_dir( $dir ) ) {
 		@unlink( $dir );
 		return;
 	};
 
-    if( $dirs = glob( $dir . '/*' ) ) {
+    if( $dirs = glob( $dir . '/*', GLOB_NOSORT ) ) {
 
 		$keys = array();
-		foreach( $dirs_to_preserve as $dir_to_preserve ) {
+		foreach ( $dirs_to_preserve as $dir_to_preserve ) {
 			$matches = preg_grep( "#^$dir_to_preserve$#" , $dirs );
 			$keys[] = reset( $matches );
 		}
 
 		$dirs = array_diff( $dirs, array_filter( $keys ) );
-		foreach( $dirs as $dir ) {
-			if( is_dir( $dir ) ) {
+		foreach ( $dirs as $dir ) {
+			
+			if ( is_dir( $dir ) ) {
 				rocket_rrmdir( $dir, $dirs_to_preserve );
-			}
-			else {
+			} else {
 				@unlink( $dir );
 			}
+			
 		}
 	}
 
