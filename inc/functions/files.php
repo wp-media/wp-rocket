@@ -653,23 +653,19 @@ function rocket_fetch_and_cache_minify( $url, $pretty_url )
 	}
 
 	$ch = curl_init();
-	$timeout = 5; // set to zero for no timeout
 	curl_setopt ($ch, CURLOPT_URL, $url);
 	curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
-	curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+	curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, 5);
 	curl_setopt ($ch, CURLOPT_USERAGENT, 'WP-Rocket-Minify');
 
 	$content = curl_exec($ch);
 	curl_close($ch);
 
 	if ( $content ) {
-		if ( is_array( $content ) ) {
-			$content = implode( $content );
-		}
 
 		// Create cache folders of the request uri
 		$cache_path = WP_ROCKET_MINIFY_CACHE_PATH . get_current_blog_id() . '/';
-		if( !is_dir($cache_path) ) {
+		if( ! is_dir( $cache_path ) ) {
 			rocket_mkdir_p( $cache_path );
 		}
 
