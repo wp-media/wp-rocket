@@ -54,7 +54,6 @@ if ( ! empty( $_GET )
 
 // Get the correct config file
 $rocket_config_path = WP_CONTENT_DIR . '/wp-rocket-config/';
-$protocol = rocket_is_ssl() ? 'https://' : 'http://';
 $host = trim( strtolower( $_SERVER['HTTP_HOST'] ), '.' );
 $request_uri = isset( $_GET['lp-variation-id'] ) || isset( $_GET['lang'] ) ? $_SERVER['REQUEST_URI'] : reset(( explode( '?', $_SERVER['REQUEST_URI'] ) ));
 
@@ -66,32 +65,29 @@ if ( file_exists( $rocket_config_path . $host . '.php' ) ) {
 
 } else {
 
-	if( isset( $request_uri ) ) {
+	$path = explode( '/' , trim( $_SERVER['REQUEST_URI'], '/' ) );
 
-		$path = explode( '/' , trim( $request_uri, '/' ) );
+	foreach ( $path as $p ) {
+		
+		static $dir;
 
-		foreach ( $path as $p ) {
-			static $dir;
+		if ( file_exists( $rocket_config_path . $host . '.' . $p . '.php' ) ) {
 
-			if ( file_exists( $rocket_config_path . $host . '.' . $p . '.php' ) ) {
+			include( $rocket_config_path . $host . '.' . $p .'.php' );
+			$continue = true;
+			break;
 
-				include( $rocket_config_path . $host . '.' . $p .'.php' );
-				$continue = true;
-				break;
-
-			}
-
-			if( file_exists( $rocket_config_path . $host . '.' . $dir . $p . '.php' ) ) {
-
-				include( $rocket_config_path . $host . '.' . $dir. $p . '.php' );
-				$continue = true;
-				break;
-
-			}
-
-			$dir .= $p . '.';
 		}
 
+		if( file_exists( $rocket_config_path . $host . '.' . $dir . $p . '.php' ) ) {
+
+			include( $rocket_config_path . $host . '.' . $dir. $p . '.php' );
+			$continue = true;
+			break;
+
+		}
+
+		$dir .= $p . '.';
 	}
 
 }
