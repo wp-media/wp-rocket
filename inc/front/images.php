@@ -19,12 +19,12 @@ function rocket_specify_image_dimensions( $buffer )
 	// Get all images without width or height attribute
 	preg_match_all( '/<img(?:[^>](?!(height|width)=))*+>/i' , $buffer, $images_match );
 
-	foreach( $images_match[0] as $image )
-	{
+	foreach ( $images_match[0] as $image ) {
 
 		// Don't touch lazy-load file (no conflit with Photon (Jetpack))
-		if ( strpos( $image, 'data-lazy-original' ) || strpos( $image, 'data-no-image-dimensions' ) )
+		if ( strpos( $image, 'data-lazy-original' ) || strpos( $image, 'data-no-image-dimensions' ) ) {
 			continue;
+		}
 
 		$tmp = $image;
 
@@ -35,19 +35,20 @@ function rocket_specify_image_dimensions( $buffer )
 		$image_url = parse_url( $src_match[1] );
 
 		// Check if the link isn't external
-		if( empty( $image_url['host'] ) || $image_url['host'] == rocket_remove_url_protocol( home_url() ) )
-		{
+		if( empty( $image_url['host'] ) || $image_url['host'] == rocket_remove_url_protocol( home_url() ) ) {
 
 			// Get image attributes
 			$sizes = getimagesize( ABSPATH . $image_url['path'] );
 
-		}
-		else
-		{
+		} else { // if link is external, check if allow_url_fopen is On in php.ini
 
-			// if link is external, check if allow_url_fopen is On in php.ini
-			if( ini_get('allow_url_fopen') )
-			{
+			/**
+			 * Filter distant images dimensions attributes
+			 *
+			 * @since 2.2
+			 * @param bool Do the job or not
+			 */
+			if ( ini_get('allow_url_fopen') && apply_filters( 'rocket_specify_image_dimensions_for_distant', false ) ) {
 
 				// Get image attributes
 				$sizes = getimagesize( $image_url['scheme'] . '://' . $image_url['host'] . $image_url['path'] );
@@ -56,7 +57,7 @@ function rocket_specify_image_dimensions( $buffer )
 
 		}
 
-		if( !empty($sizes) )
+		if ( ! empty( $sizes ) )
 		{
 
 			// Add width and width attribute
