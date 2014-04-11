@@ -18,10 +18,10 @@ function get_rocket_advanced_cache_file()
 
 	// Get cache path
 	$buffer .= '$rocket_cache_path = \'' . WP_ROCKET_CACHE_PATH . '\'' . ";\n";
-	
+
 	// Get config path
 	$buffer .= '$rocket_config_path = \'' . WP_ROCKET_CONFIG_PATH . '\'' . ";\n";
-	
+
 	// Include the process file in buffer
 	$buffer .= 'include( \''. WP_ROCKET_FRONT_PATH . 'process.php' . '\' );';
 
@@ -525,13 +525,13 @@ function rocket_rrmdir( $dir, $dirs_to_preserve = array() )
 
 		$dirs = array_diff( $dirs, array_filter( $keys ) );
 		foreach ( $dirs as $dir ) {
-			
+
 			if ( is_dir( $dir ) ) {
 				rocket_rrmdir( $dir, $dirs_to_preserve );
 			} else {
 				@unlink( $dir );
 			}
-			
+
 		}
 	}
 
@@ -640,12 +640,12 @@ function rocket_put_content( $file, $content )
 
 function rocket_fetch_and_cache_minify( $url, $pretty_url )
 {
-	
+
 	// Check if php-curl is enabled
 	if ( ! function_exists( 'curl_init' ) || ! function_exists( 'curl_exec' ) ) {
 		return false;
 	}
-	
+
 	$pretty_path = str_replace( WP_ROCKET_MINIFY_CACHE_URL, WP_ROCKET_MINIFY_CACHE_PATH, $pretty_url );
 
 	// If minify cache file is already exist, return to get a coffee :)
@@ -704,4 +704,25 @@ function rocket_find_wpconfig_path()
 	// No writable file found
 	return false;
 
+}
+
+
+
+/**
+ * Get WP Rocket footprint
+ *
+ * @since 2.0
+ *
+ */
+
+function get_rocket_footprint( $debug = true )
+{
+	$footprint = !rocket_is_white_label() ?
+					"\n" . '<!-- This website is like a Rocket, isn\'t ? Performance optimized by WP Rocket. Learn more: http://wp-rocket.me' :
+					"\n" . '<!-- Cached page for great performance';
+	if ( $debug ) {
+		$footprint .= ' - Debug: cached@' . time();
+	}
+	$footprint .= ' -->';
+	return $footprint;
 }

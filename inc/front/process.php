@@ -55,35 +55,35 @@ if ( ! empty( $_GET )
 // Get the correct config file
 $rocket_config_path = WP_CONTENT_DIR . '/wp-rocket-config/';
 $protocol = rocket_is_ssl() ? 'https://' : 'http://';
-$host 	  = trim( strtolower( $_SERVER['HTTP_HOST'] ), '.' );
-$url 	  = parse_url( $protocol . $host . rtrim( $_SERVER['REQUEST_URI'], '/' ) );
+$host = trim( strtolower( $_SERVER['HTTP_HOST'] ), '.' );
+$request_uri = isset( $_GET['lp-variation-id'] ) || isset( $_GET['lang'] ) ? $_SERVER['REQUEST_URI'] : reset(( explode( '?', $_SERVER['REQUEST_URI'] ) ));
 
 $continue = false;
-if ( file_exists( $rocket_config_path . $url['host'] . '.php' ) ) {
+if ( file_exists( $rocket_config_path . $host . '.php' ) ) {
 
-	include( $rocket_config_path . $url['host'] . '.php' );
+	include( $rocket_config_path . $host . '.php' );
 	$continue = true;
 
 } else {
 
-	if( isset( $url['path'] ) ) {
+	if( isset( $request_uri ) ) {
 
-		$path = explode( '/' , trim( $url['path'], '/') );
+		$path = explode( '/' , trim( $request_uri, '/' ) );
 
 		foreach ( $path as $p ) {
 			static $dir;
 
-			if ( file_exists( $rocket_config_path . $url['host'] . '.' . $p . '.php' ) ) {
+			if ( file_exists( $rocket_config_path . $host . '.' . $p . '.php' ) ) {
 
-				include( $rocket_config_path . $url['host'] . '.' . $p .'.php' );
+				include( $rocket_config_path . $host . '.' . $p .'.php' );
 				$continue = true;
 				break;
 
 			}
 
-			if( file_exists( $rocket_config_path . $url['host'] . '.' . $dir . $p . '.php' ) ) {
+			if( file_exists( $rocket_config_path . $host . '.' . $dir . $p . '.php' ) ) {
 
-				include( $rocket_config_path . $url['host'] . '.' . $dir. $p . '.php' );
+				include( $rocket_config_path . $host . '.' . $dir. $p . '.php' );
 				$continue = true;
 				break;
 
@@ -113,7 +113,7 @@ if ( ! isset( $rocket_cache_ssl ) && rocket_is_ssl() ) {
 
 
 // Don't cache this pages
-if ( isset( $rocket_cache_reject_uri ) && preg_match( '#^(' . $rocket_cache_reject_uri . ')$#', $_SERVER['REQUEST_URI'] ) ) {
+if ( isset( $rocket_cache_reject_uri ) && preg_match( '#^(' . $rocket_cache_reject_uri . ')$#', $request_uri ) ) {
 	return;
 }
 
@@ -148,10 +148,10 @@ if ( isset( $rocket_cookie_hash )
 	$user_key = reset( ( explode( '|', $_COOKIE[ 'wordpress_logged_in_' . $rocket_cookie_hash ]) ) ) . '-' . $rocket_secret_cache_key;
 
 	// Get cache folder of host name
-	$request_uri_path = $rocket_cache_path . $host . '-' . $user_key . rtrim( $_SERVER['REQUEST_URI'], '/' );
+	$request_uri_path = $rocket_cache_path . $host . '-' . $user_key . rtrim( $request_uri, '/' );
 }
 else {
-	$request_uri_path = $rocket_cache_path . $host . rtrim( $_SERVER['REQUEST_URI'], '/' );
+	$request_uri_path = $rocket_cache_path . $host . rtrim( $request_uri, '/' );
 }
 
 
@@ -245,27 +245,6 @@ function rocket_serve_cache_file( $request_uri_path )
 	   readfile( $filename );
 	   exit;
 	}
-}
-
-
-
-/**
- * Get WP Rocket footprint
- *
- * @since 2.0
- *
- */
-
-function get_rocket_footprint( $debug = true )
-{
-	$footprint = !rocket_is_white_label() ?
-					"\n" . '<!-- This website is like a Rocket, isn\'t ? Performance optimized by WP Rocket. Learn more: http://wp-rocket.me' :
-					"\n" . '<!-- Cached page for great performance';
-	if ( $debug ) {
-		$footprint .= ' - Debug: cached@' . time();
-	}
-	$footprint .= ' -->';
-	return $footprint;
 }
 
 
