@@ -156,7 +156,7 @@ class ActionScheduler_wpPostStore_Test extends ActionScheduler_UnitTestCase {
 	/**
 	 * @issue 13
 	 */
-	function test_post_status_for_recurring_action() {
+	public function test_post_status_for_recurring_action() {
 		$time = new DateTime('10 minutes');
 		$schedule = new ActionScheduler_IntervalSchedule($time, HOUR_IN_SECONDS);
 		$action = new ActionScheduler_Action('my_hook', array(), $schedule);
@@ -172,6 +172,28 @@ class ActionScheduler_wpPostStore_Test extends ActionScheduler_UnitTestCase {
 
 		$this->assertEquals('publish', get_post_status($action_id));
 		$this->assertEquals('pending', get_post_status($new_action_id));
+	}
+
+	public function test_get_run_date() {
+		$time = new DateTime('-10 minutes');
+		$schedule = new ActionScheduler_IntervalSchedule($time, HOUR_IN_SECONDS);
+		$action = new ActionScheduler_Action('my_hook', array(), $schedule);
+		$store = new ActionScheduler_wpPostStore();
+		$action_id = $store->save_action($action);
+
+		$this->assertEquals( $store->get_date($action_id)->format('U'), $time->format('U') );
+
+		$action = $store->fetch_action($action_id);
+		$action->execute();
+		$now = new DateTime();
+		$store->mark_complete( $action_id );
+
+		$this->assertEquals( $store->get_date($action_id)->format('U'), $now->format('U') );
+
+		$next = $action->get_schedule()->next( $now );
+		$new_action_id = $store->save_action( $action, $next );
+
+		$this->assertEquals( (int)($now->format('U')) + HOUR_IN_SECONDS, $store->get_date($new_action_id)->format('U') );
 	}
 }
  

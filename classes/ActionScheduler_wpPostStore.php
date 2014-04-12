@@ -311,6 +311,24 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		wp_delete_post($action_id, TRUE);
 	}
 
+	/**
+	 * @param string $action_id
+	 *
+	 * @throws InvalidArgumentException
+	 * @return DateTime The date the action is schedule to run, or the date that it ran.
+	 */
+	public function get_date( $action_id ) {
+		$post = get_post($action_id);
+		if ( empty($post) || ($post->post_type != self::POST_TYPE) ) {
+			throw new InvalidArgumentException(sprintf(__('Unidentified action %s', 'action-scheduler'), $action_id));
+		}
+		if ( $post->post_status == 'publish' ) {
+			return new DateTime($post->post_modified, ActionScheduler_TimezoneHelper::get_local_timezone());
+		} else {
+			return new DateTime($post->post_date, ActionScheduler_TimezoneHelper::get_local_timezone());
+		}
+	}
+
 
 	/**
 	 * @param int $max_actions
