@@ -75,7 +75,7 @@ function get_rocket_parse_url( $url )
 {
 
 	$url    = parse_url( $url );
-	$host   = $url['host'];
+	$host   = isset( $url['host'] ) ? $url['host'] : '';
 	$path   = isset( $url['path'] ) ? $url['path'] : '';
 	$scheme = isset( $url['scheme'] ) ? $url['scheme'] : '';
 	$query  = isset( $url['query'] ) ? $url['query'] : '';
@@ -120,20 +120,29 @@ function get_rocket_parse_url_for_lang( $lang )
 function get_rocket_cdn_url( $url, $zone = array( 'all' ) )
 {
 
-	if ( (int) get_rocket_option('cdn') == 0 ) {
+	$cnames = get_rocket_cdn_cnames( $zone );
+	
+	if ( (int) get_rocket_option('cdn') == 0 || empty( $cnames ) ) {
 		return $url;
 	}
 
 	list( $host, $path, $scheme, $query ) = get_rocket_parse_url( $url );
-	$scheme = ! empty($scheme) ? $scheme : 'http';
-	$cnames = get_rocket_cdn_cnames( $zone );
-	$query  = ! empty( $query ) ? '?'.$query : '';
-
-	if ( ! empty($cnames) ) {
-		$cname  = rocket_remove_url_protocol( $cnames[(abs(crc32($path))%count($cnames))] );
-		$url = $scheme . '://' . rtrim( $cname , '/' ) . $path . $query;
+	$query = ! empty( $query ) ? '?' . $query : '';
+	
+	if ( empty( $scheme ) ) {
+		
+		$home = rocket_remove_url_protocol( home_url() );
+		
+		// Check if URL is external
+		if ( strpos( $path, $home ) === false ) {
+			return $url;
+		} else {
+			$path = str_replace( $home, '', ltrim( $path, '//' ) );
+		}
+		
 	}
-
+		
+	$url = rtrim( $cnames[(abs(crc32($path))%count($cnames))] , '/' ) . $path . $query;
 	return $url;
 
 }
