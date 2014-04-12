@@ -9,6 +9,7 @@ class ActionScheduler_QueueCleaner {
 
 	private $month_in_seconds = 2678400; // 31 days
 	private $five_minutes = 300;
+	private $thirty_minutes = 1800;
 
 	public function __construct( ActionScheduler_Store $store = NULL ) {
 		$this->store = $store ? $store : ActionScheduler_Store::instance();
@@ -47,6 +48,26 @@ class ActionScheduler_QueueCleaner {
 		foreach ( $actions_to_reset as $action_id ) {
 			$this->store->unclaim_action( $action_id );
 			do_action( 'action_scheduler_reset_action', $action_id );
+		}
+	}
+
+	public function mark_failures() {
+		$timeout = apply_filters( 'action_scheduler_failure_period', $this->thirty_minutes );
+		if ( $timeout < 0 ) {
+			return;
+		}
+		$cutoff = new DateTime($timeout.' seconds ago');
+		$actions_to_reset = $this->store->query_actions( array(
+			'status' => ActionScheduler_Store::STATUS_RUNNING,
+			'modified' => $cutoff,
+			'modified_compare' => '<=',
+			'claimed' => TRUE,
+			'per_page' => apply_filters( 'action_scheduler_cleanup_batch_size', 10 ),
+		) );
+
+		foreach ( $actions_to_reset as $action_id ) {
+			$this->store->mark_failure( $action_id );
+			do_action( 'action_scheduler_failed_action', $action_id );
 		}
 	}
 }
