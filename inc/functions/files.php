@@ -285,8 +285,7 @@ function rocket_clean_minify( $extensions = array( 'js', 'css' ) )
 function rocket_clean_files( $urls )
 {
 
-	if( is_string( $urls ) )
-	{
+	if ( is_string( $urls ) ) {
 		$urls = (array)$urls;
 	}
 
@@ -298,7 +297,7 @@ function rocket_clean_files( $urls )
 	*/
 	$urls = apply_filters( 'rocket_clean_files', $urls );
 
-    foreach( array_filter($urls) as $url ) {
+    foreach ( array_filter($urls) as $url ) {
 
 		/**
 		 * Fires before the cache file is deleted
@@ -308,8 +307,8 @@ function rocket_clean_files( $urls )
 		*/
 		do_action( 'before_rocket_clean_file', $url );
 
-		if( $dirs = glob( WP_ROCKET_CACHE_PATH . rocket_remove_url_protocol( $url ) ) ) {
-			foreach( $dirs as $dir ) {
+		if ( $dirs = glob( WP_ROCKET_CACHE_PATH . rocket_remove_url_protocol( $url ), GLOB_NOSORT ) ) {
+			foreach ( $dirs as $dir ) {
 				rocket_rrmdir( $dir );
 			}
 		}
@@ -351,14 +350,14 @@ function rocket_clean_home()
 	do_action( 'before_rocket_clean_home', $root );
 
 	// Delete homepage
-	if( $files = glob( $root . '*/index.html' ) ) {
+	if( $files = glob( $root . '*/index.html', GLOB_NOSORT ) ) {
 		foreach( $files as $file ) {
 			@unlink( $file );
 		}
 	}
 
 	// Delete homepage pagination
-	if( $dirs = glob( $root . '*/' . $GLOBALS['wp_rewrite']->pagination_base ) ) {
+	if( $dirs = glob( $root . '*/' . $GLOBALS['wp_rewrite']->pagination_base, GLOB_NOSORT ) ) {
 		foreach( $dirs as $dir ) {
 			rocket_rrmdir( $dir );
 		}
@@ -398,7 +397,7 @@ function rocket_clean_domain()
 	do_action( 'before_rocket_clean_domain', $domain );
 
 	// Delete cache domain files
-	if( $dirs = glob( $domain . '*' ) ) {
+	if( $dirs = glob( $domain . '*', GLOB_NOSORT ) ) {
 		foreach( $dirs as $dir ) {
 			rocket_rrmdir( $dir );
 		}
@@ -434,7 +433,7 @@ function rocket_clean_domain_for_selected_lang( $lang )
 	do_action( 'before_purge_cache_for_selected_lang' , $lang );
 
 	list( $host, $path ) = get_rocket_parse_url_for_lang( $lang );
-	if( $dirs = glob( WP_ROCKET_CACHE_PATH . $host . '*/' . $path ) ) {
+	if( $dirs = glob( WP_ROCKET_CACHE_PATH . $host . '*/' . $path, GLOB_NOSORT ) ) {
 		foreach( $dirs as $dir ) {
 			rocket_rrmdir( $dir, get_rocket_langs_to_preserve( $lang ) );
 		}
@@ -478,7 +477,7 @@ function rocket_clean_domain_for_all_langs()
 	// Remove all cache langs
 	foreach ( $langs as $lang ) {
 		list( $host ) = get_rocket_parse_url_for_lang( $lang );
-		if( $dirs = glob( WP_ROCKET_CACHE_PATH . $host . '*' ) ) {
+		if( $dirs = glob( WP_ROCKET_CACHE_PATH . $host . '*', GLOB_NOSORT ) ) {
 			foreach( $dirs as $dir ) {
 				rocket_rrmdir( $dir );
 			}
