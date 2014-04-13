@@ -55,14 +55,14 @@ function get_rocket_htaccess_marker()
 {
 	
 	// Recreate WP Rocket marker
-	$marker  = '# BEGIN WP Rocket v' . WP_ROCKET_VERSION ."\n";
+	$marker  = '# BEGIN WP Rocket v' . WP_ROCKET_VERSION . PHP_EOL;
 	$marker .= get_rocket_htaccess_charset();
 	$marker .= get_rocket_htaccess_etag();
 	$marker .= get_rocket_htaccess_files_match();
 	$marker .= get_rocket_htaccess_mod_expires();
 	$marker .= get_rocket_htaccess_mod_deflate();
 	$marker .= get_rocket_htaccess_mod_rewrite();
-	$marker .= '# END WP Rocket' . "\n";
+	$marker .= '# END WP Rocket' . PHP_EOL;
 	
 	/**
 	 * Filter rules added by WP Rocket in .htaccess
@@ -113,18 +113,18 @@ function get_rocket_htaccess_mod_rewrite()
 
 	$is_1and1_or_force = apply_filters( 'rocket_force_full_path', strpos( $_SERVER['DOCUMENT_ROOT'], '/kunden/' ) === 0 );
 
-	$rules  = '<IfModule mod_rewrite.c>' . "\n";
-	$rules .= 'RewriteEngine On' . "\n";
-	$rules .= 'RewriteBase ' . $home_root . "\n";
-	$rules .= 'RewriteCond %{REQUEST_METHOD} GET' . "\n";
-	$rules .= 'RewriteCond %{QUERY_STRING} =""' . "\n";
+	$rules  = '<IfModule mod_rewrite.c>' . PHP_EOL;
+	$rules .= 'RewriteEngine On' . PHP_EOL;
+	$rules .= 'RewriteBase ' . $home_root . PHP_EOL;
+	$rules .= 'RewriteCond %{REQUEST_METHOD} GET' . PHP_EOL;
+	$rules .= 'RewriteCond %{QUERY_STRING} =""' . PHP_EOL;
 
 	if ( $cookies = get_rocket_cache_reject_cookies() ) {
-		$rules .= 'RewriteCond %{HTTP:Cookie} !(' . $cookies . ') [NC]' . "\n";
+		$rules .= 'RewriteCond %{HTTP:Cookie} !(' . $cookies . ') [NC]' . PHP_EOL;
 	}
 
 	if ( $uri = get_rocket_cache_reject_uri() ) {
-		$rules .= 'RewriteCond %{REQUEST_URI} !^(' . $uri . ')$ [NC]' . "\n";
+		$rules .= 'RewriteCond %{REQUEST_URI} !^(' . $uri . ')$ [NC]' . PHP_EOL;
 	}
 
 	$rules .= !is_rocket_cache_mobile() ? get_rocket_htaccess_mobile_rewritecond() : '';
@@ -132,16 +132,16 @@ function get_rocket_htaccess_mod_rewrite()
 
 	if ( $is_1and1_or_force ) {
 
-		$rules .= 'RewriteCond "' . str_replace( '/kunden/', '/', WP_ROCKET_CACHE_PATH ) . $HTTP_HOST . '%{REQUEST_URI}/index.html" -f' . "\n";
+		$rules .= 'RewriteCond "' . str_replace( '/kunden/', '/', WP_ROCKET_CACHE_PATH ) . $HTTP_HOST . '%{REQUEST_URI}/index.html" -f' . PHP_EOL;
 
 	} else  {
 
-		$rules .= 'RewriteCond "%{DOCUMENT_ROOT}/' . ltrim( $cache_root, '/' ) . $HTTP_HOST . '%{REQUEST_URI}/index.html" -f' . "\n";
+		$rules .= 'RewriteCond "%{DOCUMENT_ROOT}/' . ltrim( $cache_root, '/' ) . $HTTP_HOST . '%{REQUEST_URI}/index.html" -f' . PHP_EOL;
 
 	}
 
-	$rules .= 'RewriteRule .* "' . $cache_root . $HTTP_HOST . '%{REQUEST_URI}/index.html" [L]' . "\n";
-	$rules .= '</IfModule>' . "\n";
+	$rules .= 'RewriteRule .* "' . $cache_root . $HTTP_HOST . '%{REQUEST_URI}/index.html" [L]' . PHP_EOL;
+	$rules .= '</IfModule>' . PHP_EOL;
 	$rules = apply_filters( 'rocket_htaccess_mod_rewrite', $rules );
 
 	return $rules;
@@ -165,10 +165,10 @@ function get_rocket_htaccess_mobile_rewritecond()
 		return;
 	}
 
-	$rules = 'RewriteCond %{HTTP:X-Wap-Profile} !^[a-z0-9\"]+ [NC]' . "\n";
-	$rules .= 'RewriteCond %{HTTP:Profile} !^[a-z0-9\"]+ [NC]' . "\n";
-	$rules .= 'RewriteCond %{HTTP_USER_AGENT} !^.*(2.0\ MMP|240x320|400X240|AvantGo|BlackBerry|Blazer|Cellphone|Danger|DoCoMo|Elaine/3.0|EudoraWeb|Googlebot-Mobile|hiptop|IEMobile|KYOCERA/WX310K|LG/U990|MIDP-2.|MMEF20|MOT-V|NetFront|Newt|Nintendo\ Wii|Nitro|Nokia|Opera\ Mini|Palm|PlayStation\ Portable|portalmmm|Proxinet|ProxiNet|SHARP-TQ-GX10|SHG-i900|Small|SonyEricsson|Symbian\ OS|SymbianOS|TS21i-10|UP.Browser|UP.Link|webOS|Windows\ CE|WinWAP|YahooSeeker/M1A1-R2D2|iPhone|iPod|Android|BlackBerry9530|LG-TU915\ Obigo|LGE\ VX|webOS|Nokia5800).* [NC]' . "\n";
-	$rules .= 'RewriteCond %{HTTP_USER_AGENT} !^(w3c\ |w3c-|acs-|alav|alca|amoi|audi|avan|benq|bird|blac|blaz|brew|cell|cldc|cmd-|dang|doco|eric|hipt|htc_|inno|ipaq|ipod|jigs|kddi|keji|leno|lg-c|lg-d|lg-g|lge-|lg/u|maui|maxo|midp|mits|mmef|mobi|mot-|moto|mwbp|nec-|newt|noki|palm|pana|pant|phil|play|port|prox|qwap|sage|sams|sany|sch-|sec-|send|seri|sgh-|shar|sie-|siem|smal|smar|sony|sph-|symb|t-mo|teli|tim-|tosh|tsm-|upg1|upsi|vk-v|voda|wap-|wapa|wapi|wapp|wapr|webc|winw|winw|xda\ |xda-).* [NC]' . "\n";
+	$rules = 'RewriteCond %{HTTP:X-Wap-Profile} !^[a-z0-9\"]+ [NC]' . PHP_EOL;
+	$rules .= 'RewriteCond %{HTTP:Profile} !^[a-z0-9\"]+ [NC]' . PHP_EOL;
+	$rules .= 'RewriteCond %{HTTP_USER_AGENT} !^.*(2.0\ MMP|240x320|400X240|AvantGo|BlackBerry|Blazer|Cellphone|Danger|DoCoMo|Elaine/3.0|EudoraWeb|Googlebot-Mobile|hiptop|IEMobile|KYOCERA/WX310K|LG/U990|MIDP-2.|MMEF20|MOT-V|NetFront|Newt|Nintendo\ Wii|Nitro|Nokia|Opera\ Mini|Palm|PlayStation\ Portable|portalmmm|Proxinet|ProxiNet|SHARP-TQ-GX10|SHG-i900|Small|SonyEricsson|Symbian\ OS|SymbianOS|TS21i-10|UP.Browser|UP.Link|webOS|Windows\ CE|WinWAP|YahooSeeker/M1A1-R2D2|iPhone|iPod|Android|BlackBerry9530|LG-TU915\ Obigo|LGE\ VX|webOS|Nokia5800).* [NC]' . PHP_EOL;
+	$rules .= 'RewriteCond %{HTTP_USER_AGENT} !^(w3c\ |w3c-|acs-|alav|alca|amoi|audi|avan|benq|bird|blac|blaz|brew|cell|cldc|cmd-|dang|doco|eric|hipt|htc_|inno|ipaq|ipod|jigs|kddi|keji|leno|lg-c|lg-d|lg-g|lge-|lg/u|maui|maxo|midp|mits|mmef|mobi|mot-|moto|mwbp|nec-|newt|noki|palm|pana|pant|phil|play|port|prox|qwap|sage|sams|sany|sch-|sec-|send|seri|sgh-|shar|sie-|siem|smal|smar|sony|sph-|symb|t-mo|teli|tim-|tosh|tsm-|upg1|upsi|vk-v|voda|wap-|wapa|wapi|wapp|wapr|webc|winw|winw|xda\ |xda-).* [NC]' . PHP_EOL;
 	$rules = apply_filters( 'rocket_htaccess_mobile_rewritecond', $rules );
 
 	return $rules;
@@ -187,7 +187,7 @@ function get_rocket_htaccess_mobile_rewritecond()
 function get_rocket_htaccess_ssl_rewritecond()
 {
 
-	$rules = 'RewriteCond %{HTTPS} off' . "\n";
+	$rules = 'RewriteCond %{HTTPS} off' . PHP_EOL;
 	$rules = apply_filters( 'rocket_htaccess_ssl_rewritecond', $rules );
 
 	return $rules;
@@ -206,19 +206,19 @@ function get_rocket_htaccess_ssl_rewritecond()
 function get_rocket_htaccess_mod_deflate()
 {
 
-	$rules = '# Gzip compression' . "\n";
-	$rules .= '<IfModule mod_deflate.c>' . "\n";
-		$rules .= '# Active compression' . "\n";
-		$rules .= 'SetOutputFilter DEFLATE' . "\n";
-		$rules .= '# Force deflate for mangled headers developer.yahoo.com/blogs/ydn/posts/2010/12/pushing-beyond-gzipping/' . "\n";
-		$rules .= '<IfModule mod_setenvif.c>' . "\n";
-			$rules .= '<IfModule mod_headers.c>' . "\n";
-			$rules .= 'SetEnvIfNoCase ^(Accept-EncodXng|X-cept-Encoding|X{15}|~{15}|-{15})$ ^((gzip|deflate)\s*,?\s*)+|[X~-]{4,13}$ HAVE_Accept-Encoding' . "\n";
-			$rules .= 'RequestHeader append Accept-Encoding "gzip,deflate" env=HAVE_Accept-Encoding' . "\n";
-			$rules .= '</IfModule>' . "\n";
-		$rules .= '</IfModule>' . "\n\n";
-		$rules .= '# Compress all output labeled with one of the following MIME-types' . "\n";
-		$rules .= '<IfModule mod_filter.c>' . "\n";
+	$rules = '# Gzip compression' . PHP_EOL;
+	$rules .= '<IfModule mod_deflate.c>' . PHP_EOL;
+		$rules .= '# Active compression' . PHP_EOL;
+		$rules .= 'SetOutputFilter DEFLATE' . PHP_EOL;
+		$rules .= '# Force deflate for mangled headers developer.yahoo.com/blogs/ydn/posts/2010/12/pushing-beyond-gzipping/' . PHP_EOL;
+		$rules .= '<IfModule mod_setenvif.c>' . PHP_EOL;
+			$rules .= '<IfModule mod_headers.c>' . PHP_EOL;
+			$rules .= 'SetEnvIfNoCase ^(Accept-EncodXng|X-cept-Encoding|X{15}|~{15}|-{15})$ ^((gzip|deflate)\s*,?\s*)+|[X~-]{4,13}$ HAVE_Accept-Encoding' . PHP_EOL;
+			$rules .= 'RequestHeader append Accept-Encoding "gzip,deflate" env=HAVE_Accept-Encoding' . PHP_EOL;
+			$rules .= '</IfModule>' . PHP_EOL;
+		$rules .= '</IfModule>' . PHP_EOL . PHP_EOL;
+		$rules .= '# Compress all output labeled with one of the following MIME-types' . PHP_EOL;
+		$rules .= '<IfModule mod_filter.c>' . PHP_EOL;
 		$rules .= 'AddOutputFilterByType DEFLATE application/atom+xml \
 		                          application/javascript \
 		                          application/json \
@@ -234,12 +234,12 @@ function get_rocket_htaccess_mod_deflate()
 		                          text/html \
 		                          text/plain \
 		                          text/x-component \
-		                          text/xml' . "\n";
-		$rules .= '</IfModule>' . "\n";
-		$rules .= '<IfModule mod_headers.c>' . "\n";
-             $rules .= 'Header append Vary User-Agent env=!dont-vary' . "\n";
-       $rules .= '</IfModule>' . "\n";
-	$rules .= '</IfModule>' . "\n\n";
+		                          text/xml' . PHP_EOL;
+		$rules .= '</IfModule>' . PHP_EOL;
+		$rules .= '<IfModule mod_headers.c>' . PHP_EOL;
+             $rules .= 'Header append Vary User-Agent env=!dont-vary' . PHP_EOL;
+       $rules .= '</IfModule>' . PHP_EOL;
+	$rules .= '</IfModule>'  . PHP_EOL . PHP_EOL;
 	$rules = apply_filters( 'rocket_htaccess_mod_deflate', $rules );
 
 	return $rules;
@@ -258,44 +258,44 @@ function get_rocket_htaccess_mod_deflate()
 function get_rocket_htaccess_mod_expires()
 {
 
-	$rules = '# Expires headers (for better cache control)' . "\n";
-	$rules .= '<IfModule mod_expires.c>' . "\n";
-	  $rules .= 'ExpiresActive on' . "\n\n";
-	  $rules .= '# Perhaps better to whitelist expires rules? Perhaps.' . "\n";
-	  $rules .= 'ExpiresDefault                          "access plus 1 month"' . "\n\n";
-	  $rules .= '# cache.appcache needs re-requests in FF 3.6 (thanks Remy ~Introducing HTML5)' . "\n";
-	  $rules .= 'ExpiresByType text/cache-manifest       "access plus 0 seconds"' . "\n\n";
-	  $rules .= '# Your document html' . "\n";
-	  $rules .= 'ExpiresByType text/html                 "access plus 0 seconds"' . "\n\n";
-	  $rules .= '# Data' . "\n";
-	  $rules .= 'ExpiresByType text/xml                  "access plus 0 seconds"' . "\n";
-	  $rules .= 'ExpiresByType application/xml           "access plus 0 seconds"' . "\n";
-	  $rules .= 'ExpiresByType application/json          "access plus 0 seconds"' . "\n\n";
-	  $rules .= '# Feed' . "\n";
-	  $rules .= 'ExpiresByType application/rss+xml       "access plus 1 hour"' . "\n";
-	  $rules .= 'ExpiresByType application/atom+xml      "access plus 1 hour"' . "\n\n";
-	  $rules .= '# Favicon (cannot be renamed)' . "\n";
-	  $rules .= 'ExpiresByType image/x-icon              "access plus 1 week"' . "\n\n";
-	  $rules .= '# Media: images, video, audio' . "\n";
-	  $rules .= 'ExpiresByType image/gif                 "access plus 1 month"' . "\n";
-	  $rules .= 'ExpiresByType image/png                 "access plus 1 month"' . "\n";
-	  $rules .= 'ExpiresByType image/jpeg                "access plus 1 month"' . "\n";
-	  $rules .= 'ExpiresByType video/ogg                 "access plus 1 month"' . "\n";
-	  $rules .= 'ExpiresByType audio/ogg                 "access plus 1 month"' . "\n";
-	  $rules .= 'ExpiresByType video/mp4                 "access plus 1 month"' . "\n";
-	  $rules .= 'ExpiresByType video/webm                "access plus 1 month"' . "\n\n";
-	  $rules .= '# HTC files  (css3pie)' . "\n";
-	  $rules .= 'ExpiresByType text/x-component          "access plus 1 month"' . "\n\n";
-	  $rules .= '# Webfonts' . "\n";
-	  $rules .= 'ExpiresByType application/x-font-ttf    "access plus 1 month"' . "\n";
-	  $rules .= 'ExpiresByType font/opentype             "access plus 1 month"' . "\n";
-	  $rules .= 'ExpiresByType application/x-font-woff   "access plus 1 month"' . "\n";
-	  $rules .= 'ExpiresByType image/svg+xml             "access plus 1 month"' . "\n";
-	  $rules .= 'ExpiresByType application/vnd.ms-fontobject "access plus 1 month"' . "\n\n";
-	  $rules .= '# CSS and JavaScript' . "\n";
-	  $rules .= 'ExpiresByType text/css                  "access plus 1 year"' . "\n";
-	  $rules .= 'ExpiresByType application/javascript    "access plus 1 year"'  . "\n\n";
-	$rules .= '</IfModule>' . "\n\n";
+	$rules = '# Expires headers (for better cache control)' . PHP_EOL;
+	$rules .= '<IfModule mod_expires.c>' . PHP_EOL;
+	  $rules .= 'ExpiresActive on' . PHP_EOL . PHP_EOL;
+	  $rules .= '# Perhaps better to whitelist expires rules? Perhaps.' . PHP_EOL;
+	  $rules .= 'ExpiresDefault                          "access plus 1 month"' . PHP_EOL . PHP_EOL;
+	  $rules .= '# cache.appcache needs re-requests in FF 3.6 (thanks Remy ~Introducing HTML5)' . PHP_EOL;
+	  $rules .= 'ExpiresByType text/cache-manifest       "access plus 0 seconds"' . PHP_EOL . PHP_EOL;
+	  $rules .= '# Your document html' . PHP_EOL;
+	  $rules .= 'ExpiresByType text/html                 "access plus 0 seconds"' . PHP_EOL . PHP_EOL;
+	  $rules .= '# Data' . PHP_EOL;
+	  $rules .= 'ExpiresByType text/xml                  "access plus 0 seconds"' . PHP_EOL;
+	  $rules .= 'ExpiresByType application/xml           "access plus 0 seconds"' . PHP_EOL;
+	  $rules .= 'ExpiresByType application/json          "access plus 0 seconds"' . PHP_EOL . PHP_EOL;
+	  $rules .= '# Feed' . PHP_EOL;
+	  $rules .= 'ExpiresByType application/rss+xml       "access plus 1 hour"' . PHP_EOL;
+	  $rules .= 'ExpiresByType application/atom+xml      "access plus 1 hour"' . PHP_EOL . PHP_EOL;
+	  $rules .= '# Favicon (cannot be renamed)' . PHP_EOL;
+	  $rules .= 'ExpiresByType image/x-icon              "access plus 1 week"' . PHP_EOL . PHP_EOL;
+	  $rules .= '# Media: images, video, audio' . PHP_EOL;
+	  $rules .= 'ExpiresByType image/gif                 "access plus 1 month"' . PHP_EOL;
+	  $rules .= 'ExpiresByType image/png                 "access plus 1 month"' . PHP_EOL;
+	  $rules .= 'ExpiresByType image/jpeg                "access plus 1 month"' . PHP_EOL;
+	  $rules .= 'ExpiresByType video/ogg                 "access plus 1 month"' . PHP_EOL;
+	  $rules .= 'ExpiresByType audio/ogg                 "access plus 1 month"' . PHP_EOL;
+	  $rules .= 'ExpiresByType video/mp4                 "access plus 1 month"' . PHP_EOL;
+	  $rules .= 'ExpiresByType video/webm                "access plus 1 month"' . PHP_EOL . PHP_EOL;
+	  $rules .= '# HTC files  (css3pie)' . PHP_EOL;
+	  $rules .= 'ExpiresByType text/x-component          "access plus 1 month"' . PHP_EOL . PHP_EOL;
+	  $rules .= '# Webfonts' . PHP_EOL;
+	  $rules .= 'ExpiresByType application/x-font-ttf    "access plus 1 month"' . PHP_EOL;
+	  $rules .= 'ExpiresByType font/opentype             "access plus 1 month"' . PHP_EOL;
+	  $rules .= 'ExpiresByType application/x-font-woff   "access plus 1 month"' . PHP_EOL;
+	  $rules .= 'ExpiresByType image/svg+xml             "access plus 1 month"' . PHP_EOL;
+	  $rules .= 'ExpiresByType application/vnd.ms-fontobject "access plus 1 month"' . PHP_EOL . PHP_EOL;
+	  $rules .= '# CSS and JavaScript' . PHP_EOL;
+	  $rules .= 'ExpiresByType text/css                  "access plus 1 year"' . PHP_EOL;
+	  $rules .= 'ExpiresByType application/javascript    "access plus 1 year"' . PHP_EOL . PHP_EOL;
+	$rules .= '</IfModule>' . PHP_EOL . PHP_EOL;
 	$rules = apply_filters( 'rocket_htaccess_mod_expires', $rules );
 
 	return $rules;
@@ -317,12 +317,12 @@ function get_rocket_htaccess_charset()
 	// Get charset of the blog
 	$charset = preg_replace( '/[^a-zA-Z0-9_\-\.:]+/', '', get_bloginfo( 'charset', 'display' ) );
 
-	$rules = "# Use $charset encoding for anything served text/plain or text/html\n";
-	$rules .= "AddDefaultCharset $charset\n";
-	$rules .= "# Force $charset for a number of file formats\n";
-	$rules .= "<IfModule mod_mime.c>\n";
-		$rules .= "AddCharset $charset .atom .css .js .json .rss .vtt .xml\n";
-	$rules .= "</IfModule>\n\n";
+	$rules = "# Use $charset encoding for anything served text/plain or text/html" . PHP_EOL;
+	$rules .= "AddDefaultCharset $charset" . PHP_EOL;
+	$rules .= "# Force $charset for a number of file formats" . PHP_EOL;
+	$rules .= "<IfModule mod_mime.c>" . PHP_EOL;
+		$rules .= "AddCharset $charset .atom .css .js .json .rss .vtt .xml" . PHP_EOL;
+	$rules .= "</IfModule>" . PHP_EOL  . PHP_EOL;
 	$rules = apply_filters( 'rocket_htaccess_charset', $rules );
 
 	return $rules;
@@ -340,22 +340,22 @@ function get_rocket_htaccess_charset()
 function get_rocket_htaccess_files_match()
 {
 
-	$rules = '<IfModule mod_alias.c>' . "\n";
-		$rules .= '<FilesMatch "\.(html|htm|rtf|rtx|svg|svgz|txt|xsd|xsl|xml)$">' . "\n";
-		    $rules .= '<IfModule mod_headers.c>' . "\n";
-		         $rules .= 'Header set X-Powered-By "WP Rocket/' . WP_ROCKET_VERSION . '"' . "\n";
-		         $rules .= 'Header unset Pragma' . "\n";
-		         $rules .= 'Header append Cache-Control "public"' . "\n";
-		         $rules .= 'Header unset Last-Modified' . "\n";
-		    $rules .= '</IfModule>' . "\n";
-		$rules .= '</FilesMatch>' . "\n\n";
-		$rules .= '<FilesMatch "\.(css|htc|js|asf|asx|wax|wmv|wmx|avi|bmp|class|divx|doc|docx|eot|exe|gif|gz|gzip|ico|jpg|jpeg|jpe|json|mdb|mid|midi|mov|qt|mp3|m4a|mp4|m4v|mpeg|mpg|mpe|mpp|otf|odb|odc|odf|odg|odp|ods|odt|ogg|pdf|png|pot|pps|ppt|pptx|ra|ram|svg|svgz|swf|tar|tif|tiff|ttf|ttc|wav|wma|wri|xla|xls|xlsx|xlt|xlw|zip)$">' . "\n";
-		    $rules .= '<IfModule mod_headers.c>' . "\n";
-		        $rules .= 'Header unset Pragma' . "\n";
-		        $rules .= 'Header append Cache-Control "public"' . "\n";
-		    $rules .= '</IfModule>' . "\n";
-		$rules .= '</FilesMatch>' . "\n";
-	$rules .= '</IfModule>' . "\n\n";
+	$rules = '<IfModule mod_alias.c>' . PHP_EOL;
+		$rules .= '<FilesMatch "\.(html|htm|rtf|rtx|svg|svgz|txt|xsd|xsl|xml)$">' . PHP_EOL;
+		    $rules .= '<IfModule mod_headers.c>' . PHP_EOL;
+		         $rules .= 'Header set X-Powered-By "WP Rocket/' . WP_ROCKET_VERSION . '"' . PHP_EOL;
+		         $rules .= 'Header unset Pragma' . PHP_EOL;
+		         $rules .= 'Header append Cache-Control "public"' . PHP_EOL;
+		         $rules .= 'Header unset Last-Modified' . PHP_EOL;
+		    $rules .= '</IfModule>' . PHP_EOL;
+		$rules .= '</FilesMatch>' . PHP_EOL . PHP_EOL;
+		$rules .= '<FilesMatch "\.(css|htc|js|asf|asx|wax|wmv|wmx|avi|bmp|class|divx|doc|docx|eot|exe|gif|gz|gzip|ico|jpg|jpeg|jpe|json|mdb|mid|midi|mov|qt|mp3|m4a|mp4|m4v|mpeg|mpg|mpe|mpp|otf|odb|odc|odf|odg|odp|ods|odt|ogg|pdf|png|pot|pps|ppt|pptx|ra|ram|svg|svgz|swf|tar|tif|tiff|ttf|ttc|wav|wma|wri|xla|xls|xlsx|xlt|xlw|zip)$">' . PHP_EOL;
+		    $rules .= '<IfModule mod_headers.c>' . PHP_EOL;
+		        $rules .= 'Header unset Pragma' . PHP_EOL;
+		        $rules .= 'Header append Cache-Control "public"' . PHP_EOL;
+		    $rules .= '</IfModule>' . PHP_EOL;
+		$rules .= '</FilesMatch>' . PHP_EOL;
+	$rules .= '</IfModule>' . PHP_EOL . PHP_EOL;
 	$rules = apply_filters( 'rocket_htaccess_files_match', $rules );
 
 	return $rules;
@@ -374,14 +374,13 @@ function get_rocket_htaccess_files_match()
 function get_rocket_htaccess_etag()
 {
 
-	$rules = "# FileETag None is not enough for every server.\n";
-    $rules .= "<IfModule mod_headers.c>\n";
-    $rules .= "Header unset ETag\n";
-    $rules .= "</IfModule>\n\n";
-    $rules .= "# Since we're sending far-future expires, we don't need ETags for\n";
-    $rules .= "# static content.\n";
-    $rules .= "# developer.yahoo.com/performance/rules.html#etags\n";
-    $rules .= "FileETag None\n\n";
+	$rules  = '# FileETag None is not enough for every server.' . PHP_EOL;
+    $rules .= '<IfModule mod_headers.c>' . PHP_EOL;
+    $rules .= 'Header unset ETag' . PHP_EOL;
+    $rules .= '</IfModule>' . PHP_EOL . PHP_EOL;
+    $rules .= '# Since we\'re sending far-future expires, we don\'t need ETags for static content.' . PHP_EOL;
+    $rules .= '# developer.yahoo.com/performance/rules.html#etags' . PHP_EOL;
+    $rules .= 'FileETag None' . PHP_EOL . PHP_EOL;
     $rules = apply_filters( 'rocket_htaccess_etag', $rules );
 
 	return $rules;
