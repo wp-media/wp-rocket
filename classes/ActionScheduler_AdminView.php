@@ -46,7 +46,7 @@ class ActionScheduler_AdminView {
 
 		add_filter( 'post_row_actions', array( self::instance(), 'row_actions' ), 10, 2 );
 
-		add_action( 'admin_init', array( self::instance(), 'maybe_execute_action' ) );
+		add_action( 'admin_init', array( self::instance(), 'maybe_execute_action' ), 20 );
 
 		add_action( 'admin_notices', array( self::instance(), 'admin_notices' ) );
 
