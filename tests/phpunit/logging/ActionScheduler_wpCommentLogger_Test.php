@@ -127,7 +127,7 @@ class ActionScheduler_wpCommentLogger_Test extends ActionScheduler_UnitTestCase 
 		));
 		// Expecting two: one when the action is created, another when we added our custom log
 		$this->assertCount( 2, $comments );
-		$this->assertEquals( $log_id, $comments[1]->comment_ID );
+		$this->assertContains( $log_id, wp_list_pluck($comments, 'comment_ID'));
 	}
 }
  

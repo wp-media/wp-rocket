@@ -61,6 +61,7 @@ class ActionScheduler_QueueRunner {
 		$cleaner = new ActionScheduler_QueueCleaner( $this->store );
 		$cleaner->delete_old_actions();
 		$cleaner->reset_timeouts();
+		$cleaner->mark_failures();
 	}
 
 	protected function do_batch( $size = 100 ) {
@@ -80,10 +81,11 @@ class ActionScheduler_QueueRunner {
 			$this->store->log_execution( $action_id );
 			$action->execute();
 			do_action( 'action_scheduler_after_execute', $action_id );
+			$this->store->mark_complete( $action_id );
 		} catch ( Exception $e ) {
+			$this->store->mark_failure( $action_id );
 			do_action( 'action_scheduler_failed_execution', $action_id, $e );
 		}
-		$this->store->mark_complete( $action_id );
 		$this->schedule_next_instance( $action );
 	}
 

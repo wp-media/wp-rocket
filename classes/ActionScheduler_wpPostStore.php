@@ -59,11 +59,24 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	}
 
 	protected function save_post_array( $post_array ) {
+		add_filter( 'wp_insert_post_data', array( $this, 'filter_insert_post_data' ), 10, 1 );
 		$post_id = wp_insert_post($post_array);
+		remove_filter( 'wp_insert_post_data', array( $this, 'filter_insert_post_data' ), 10, 1 );
+
 		if ( is_wp_error($post_id) || empty($post_id) ) {
 			throw new RuntimeException(__('Unable to save action.', 'action-scheduler'));
 		}
 		return $post_id;
+	}
+
+	public function filter_insert_post_data( $postdata ) {
+		if ( $postdata['post_type'] == self::POST_TYPE ) {
+			$postdata['post_author'] = 0;
+			if ( $postdata['post_status'] == 'future' ) {
+				$postdata['post_status'] = 'publish';
+			}
+		}
+		return $postdata;
 	}
 
 	protected function save_post_schedule( $post_id, $schedule ) {
@@ -106,10 +119,10 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		}
 		$group = wp_get_object_terms( $post->ID, self::GROUP_TAXONOMY, array('fields' => 'names') );
 		$group = empty( $group ) ? '' : reset($group);
-		if ( $post->post_status == 'publish' ) {
-			$action = new ActionScheduler_FinishedAction( $hook, $args, $schedule, $group );
-		} else {
+		if ( $post->post_status == 'pending' ) {
 			$action = new ActionScheduler_Action( $hook, $args, $schedule, $group );
+		} else {
+			$action = new ActionScheduler_FinishedAction( $hook, $args, $schedule, $group );
 		}
 		return $action;
 	}
@@ -144,12 +157,24 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 			$query .= " AND p.post_content=%s";
 			$args[] = json_encode($params['args']);
 		}
-		if ( $params['status'] == ActionScheduler_Store::STATUS_COMPLETE ) {
-			$query .= " AND p.post_status='publish'";
-			$order = 'DESC'; // Find the most recent action that matches
-		} else {
-			$query .= " AND p.post_status='pending'";
-			$order = 'ASC'; // Find the next action that matches
+		switch ( $params['status'] ) {
+			case self::STATUS_COMPLETE:
+				$query .= " AND p.post_status='publish'";
+				$order = 'DESC'; // Find the most recent action that matches
+				break;
+			case self::STATUS_PENDING:
+				$query .= " AND p.post_status='pending'";
+				$order = 'ASC'; // Find the next action that matches
+				break;
+			case self::STATUS_RUNNING:
+			case self::STATUS_FAILED:
+				$query .= " AND p.post_status=%s";
+				$args[] = $params['status'];
+				$order = 'DESC'; // Find the most recent action that matches
+				break;
+			default:
+				$order = 'ASC';
+				break;
 		}
 		$query .= " ORDER BY post_date $order LIMIT 1";
 
@@ -201,10 +226,16 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 			$sql_params[] = json_encode($query['args']);
 		}
 
-		if ( $query['status'] == ActionScheduler_Store::STATUS_COMPLETE ) {
-			$sql .= " AND p.post_status='publish'";
-		} elseif ( $query['status'] == ActionScheduler_Store::STATUS_PENDING)  {
-			$sql .= " AND p.post_status='pending'";
+		switch ( $query['status'] ) {
+			case self::STATUS_COMPLETE:
+				$sql .= " AND p.post_status='publish'";
+				break;
+			case self::STATUS_PENDING:
+			case self::STATUS_RUNNING:
+			case self::STATUS_FAILED:
+				$sql .= " AND p.post_status=%s";
+				$sql_params[] = $query['status'];
+				break;
 		}
 
 		if ( $query['date'] instanceof DateTime ) {
@@ -298,6 +329,24 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		wp_delete_post($action_id, TRUE);
 	}
 
+	/**
+	 * @param string $action_id
+	 *
+	 * @throws InvalidArgumentException
+	 * @return DateTime The date the action is schedule to run, or the date that it ran.
+	 */
+	public function get_date( $action_id ) {
+		$post = get_post($action_id);
+		if ( empty($post) || ($post->post_type != self::POST_TYPE) ) {
+			throw new InvalidArgumentException(sprintf(__('Unidentified action %s', 'action-scheduler'), $action_id));
+		}
+		if ( $post->post_status == 'publish' ) {
+			return new DateTime($post->post_modified, ActionScheduler_TimezoneHelper::get_local_timezone());
+		} else {
+			return new DateTime($post->post_date, ActionScheduler_TimezoneHelper::get_local_timezone());
+		}
+	}
+
 
 	/**
 	 * @param int $max_actions
@@ -384,6 +433,17 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		}
 	}
 
+	public function mark_failure( $action_id ) {
+		/** @var wpdb $wpdb */
+		global $wpdb;
+		$sql = "UPDATE {$wpdb->posts} SET post_status = %s WHERE ID = %d AND post_type = %s";
+		$sql = $wpdb->prepare( $sql, self::STATUS_FAILED, $action_id, self::POST_TYPE );
+		$result = $wpdb->query($sql);
+		if ( $result === false ) {
+			throw new RuntimeException( sprintf( __('Unable to mark failure on action %s. Database error.', 'action-scheduler'), $action_id ) );
+		}
+	}
+
 	/**
 	 * @param string $action_id
 	 *
@@ -392,8 +452,8 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	public function log_execution( $action_id ) {
 		/** @var wpdb $wpdb */
 		global $wpdb;
-		$sql = "UPDATE {$wpdb->posts} SET menu_order = menu_order+1 WHERE ID = %d AND post_type = %s";
-		$sql = $wpdb->prepare( $sql, $action_id, self::POST_TYPE );
+		$sql = "UPDATE {$wpdb->posts} SET menu_order = menu_order+1, post_status=%s WHERE ID = %d AND post_type = %s";
+		$sql = $wpdb->prepare( $sql, self::STATUS_RUNNING, $action_id, self::POST_TYPE );
 		$wpdb->query($sql);
 	}
 
@@ -403,10 +463,12 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		if ( empty($post) || ($post->post_type != self::POST_TYPE) ) {
 			throw new InvalidArgumentException(sprintf(__('Unidentified action %s', 'action-scheduler'), $action_id));
 		}
+		add_filter( 'wp_insert_post_data', array( $this, 'filter_insert_post_data' ), 10, 1 );
 		$result = wp_update_post(array(
 			'ID' => $action_id,
 			'post_status' => 'publish',
 		), TRUE);
+		remove_filter( 'wp_insert_post_data', array( $this, 'filter_insert_post_data' ), 10, 1 );
 		if ( is_wp_error($result) ) {
 			throw new RuntimeException($result->get_error_message());
 		}

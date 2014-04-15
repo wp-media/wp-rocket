@@ -7,6 +7,8 @@
 abstract class ActionScheduler_Store {
 	const STATUS_COMPLETE = 'complete';
 	const STATUS_PENDING = 'pending';
+	const STATUS_RUNNING = 'in-progress';
+	const STATUS_FAILED = 'failed';
 
 	/** @var ActionScheduler_Store */
 	private static $store = NULL;
@@ -55,6 +57,13 @@ abstract class ActionScheduler_Store {
 	 */
 	abstract public function delete_action( $action_id );
 
+	/**
+	 * @param string $action_id
+	 *
+	 * @return DateTime The date the action is schedule to run, or the date that it ran.
+	 */
+	abstract public function get_date( $action_id );
+
 
 	/**
 	 * @param int $max_actions
@@ -77,6 +86,13 @@ abstract class ActionScheduler_Store {
 	 * @return void
 	 */
 	abstract public function unclaim_action( $action_id );
+
+	/**
+	 * @param string $action_id
+	 *
+	 * @return void
+	 */
+	abstract public function mark_failure( $action_id );
 
 	/**
 	 * @param string $action_id

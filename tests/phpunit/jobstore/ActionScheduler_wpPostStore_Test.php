@@ -124,5 +124,76 @@ class ActionScheduler_wpPostStore_Test extends ActionScheduler_UnitTestCase {
 		$this->assertEquals( $def, $store->find_action('my_hook', array('group' => 'def')));
 		$this->assertEquals( $ghi, $store->find_action('my_hook', array('group' => 'ghi')));
 	}
+
+	public function test_post_author() {
+		$current_user = get_current_user_id();
+
+		$time = new DateTime();
+		$schedule = new ActionScheduler_SimpleSchedule($time);
+		$action = new ActionScheduler_Action('my_hook', array(), $schedule);
+		$store = new ActionScheduler_wpPostStore();
+		$action_id = $store->save_action($action);
+
+		$post = get_post($action_id);
+		$this->assertEquals(0, $post->post_author);
+
+		$new_user = $this->factory->user->create_object(array(
+			'user_login' => __FUNCTION__,
+			'user_pass' => md5(rand()),
+		));
+		wp_set_current_user( $new_user );
+
+
+		$schedule = new ActionScheduler_SimpleSchedule($time);
+		$action = new ActionScheduler_Action('my_hook', array(), $schedule);
+		$action_id = $store->save_action($action);
+		$post = get_post($action_id);
+		$this->assertEquals(0, $post->post_author);
+
+		wp_set_current_user($current_user);
+	}
+
+	/**
+	 * @issue 13
+	 */
+	public function test_post_status_for_recurring_action() {
+		$time = new DateTime('10 minutes');
+		$schedule = new ActionScheduler_IntervalSchedule($time, HOUR_IN_SECONDS);
+		$action = new ActionScheduler_Action('my_hook', array(), $schedule);
+		$store = new ActionScheduler_wpPostStore();
+		$action_id = $store->save_action($action);
+
+		$action = $store->fetch_action($action_id);
+		$action->execute();
+		$store->mark_complete( $action_id );
+
+		$next = $action->get_schedule()->next( new DateTime() );
+		$new_action_id = $store->save_action( $action, $next );
+
+		$this->assertEquals('publish', get_post_status($action_id));
+		$this->assertEquals('pending', get_post_status($new_action_id));
+	}
+
+	public function test_get_run_date() {
+		$time = new DateTime('-10 minutes');
+		$schedule = new ActionScheduler_IntervalSchedule($time, HOUR_IN_SECONDS);
+		$action = new ActionScheduler_Action('my_hook', array(), $schedule);
+		$store = new ActionScheduler_wpPostStore();
+		$action_id = $store->save_action($action);
+
+		$this->assertEquals( $store->get_date($action_id)->format('U'), $time->format('U') );
+
+		$action = $store->fetch_action($action_id);
+		$action->execute();
+		$now = new DateTime();
+		$store->mark_complete( $action_id );
+
+		$this->assertEquals( $store->get_date($action_id)->format('U'), $now->format('U') );
+
+		$next = $action->get_schedule()->next( $now );
+		$new_action_id = $store->save_action( $action, $next );
+
+		$this->assertEquals( (int)($now->format('U')) + HOUR_IN_SECONDS, $store->get_date($new_action_id)->format('U') );
+	}
 }
  
