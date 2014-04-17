@@ -481,6 +481,9 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		$post_type_registrar = new ActionScheduler_wpPostStore_PostTypeRegistrar();
 		$post_type_registrar->register();
 
+		$post_status_registrar = new ActionScheduler_wpPostStore_PostStatusRegistrar();
+		$post_status_registrar->register();
+
 		$taxonomy_registrar = new ActionScheduler_wpPostStore_TaxonomyRegistrar();
 		$taxonomy_registrar->register();
 	}
