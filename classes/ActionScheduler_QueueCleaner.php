@@ -67,7 +67,7 @@ class ActionScheduler_QueueCleaner {
 
 		foreach ( $actions_to_reset as $action_id ) {
 			$this->store->mark_failure( $action_id );
-			do_action( 'action_scheduler_failed_action', $action_id );
+			do_action( 'action_scheduler_failed_action', $action_id, $timeout );
 		}
 	}
 }
