@@ -452,8 +452,9 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	public function log_execution( $action_id ) {
 		/** @var wpdb $wpdb */
 		global $wpdb;
-		$sql = "UPDATE {$wpdb->posts} SET menu_order = menu_order+1, post_status=%s WHERE ID = %d AND post_type = %s";
-		$sql = $wpdb->prepare( $sql, self::STATUS_RUNNING, $action_id, self::POST_TYPE );
+
+		$sql = "UPDATE {$wpdb->posts} SET menu_order = menu_order+1, post_status=%s, post_modified_gmt = %s, post_modified = %s WHERE ID = %d AND post_type = %s";
+		$sql = $wpdb->prepare( $sql, self::STATUS_RUNNING, current_time('mysql', true), current_time('mysql'), $action_id, self::POST_TYPE );
 		$wpdb->query($sql);
 	}
 
