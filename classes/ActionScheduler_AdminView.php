@@ -108,7 +108,7 @@ class ActionScheduler_AdminView {
 			'taxonomy-action-group' => __( 'Group', 'action-scheduler' ),
 			'recurrence'            => __( 'Recurrence', 'action-scheduler' ),
 			'scheduled'             => __( 'Scheduled Date', 'action-scheduler' ), // because we want to customise how the date is displayed
-			'comments'              => $columns['comments'],
+			'comments'              => __( 'Log', 'action-scheduler' ),
 		);
 
 		return $custom_columns;
