@@ -112,7 +112,6 @@ class ActionScheduler_AdminView {
 			'taxonomy-action-group' => __( 'Group', 'action-scheduler' ),
 			'recurrence'            => __( 'Recurrence', 'action-scheduler' ),
 			'scheduled'             => __( 'Scheduled Date', 'action-scheduler' ), // because we want to customise how the date is displayed
-			'comments'              => __( 'Log', 'action-scheduler' ),
 		);
 
 		if ( isset( $_REQUEST['post_status'] ) ) {
@@ -123,7 +122,8 @@ class ActionScheduler_AdminView {
 			}
 		}
 
-		$custom_columns['claim'] = __( 'Claim ID', 'action-scheduler' );
+		$custom_columns['claim']    = __( 'Claim ID', 'action-scheduler' );
+		$custom_columns['comments'] = __( 'Log', 'action-scheduler' );
 
 		return $custom_columns;
 	}
