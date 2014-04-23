@@ -139,9 +139,10 @@ class ActionScheduler_AdminView {
 		global $post;
 
 		$action         = ActionScheduler::store()->fetch_action( $post_id );
+
 		$action_title   = ( 'trash' == $post->post_status ) ? $post->post_title : $action->get_hook();
-		$schedule       = ( 'trash' == $post->post_status ) ? 0 : $action->get_schedule();
-		$next_timestamp = ( 'trash' == $post->post_status ) ? 0 : get_post_time( 'U', true, $post_id );
+		$recurrence     = ( 'trash' == $post->post_status ) ? 0 : $action->get_schedule();
+		$next_timestamp = get_post_time( 'U', true, $post_id );
 		$status         = get_post_status( $post_id );
 
 		switch ( $column_name ) {
@@ -189,25 +190,22 @@ class ActionScheduler_AdminView {
 				}
 				break;
 			case 'args':
-				print_r( $action->get_args() );
+				$action_args = ( 'trash' == $post->post_status ) ? $post->post_content : $action->get_args();
+				printf( '<pre>%s</pre>', print_r( $action_args, true ) );
 				break;
 			case 'recurrence':
-				if ( method_exists( $schedule, 'interval_in_seconds' ) ) {
-					echo self::human_interval( $schedule->interval_in_seconds() );
+				if ( method_exists( $recurrence, 'interval_in_seconds' ) ) {
+					echo self::human_interval( $recurrence->interval_in_seconds() );
 				} else {
 					_e( 'Non-repeating', 'action-scheduler' );
 				}
 				break;
 			case 'scheduled':
-				if ( 'trash' == $post->post_status ) {
-					echo '-';
+				echo get_date_from_gmt( date( 'Y-m-d H:i:s', $next_timestamp ), 'Y-m-d H:i:s' );
+				if ( gmdate( 'U' ) > $next_timestamp ) {
+					printf( __( ' (%s ago)', 'action-scheduler' ), human_time_diff( gmdate( 'U' ), $next_timestamp ) );
 				} else {
-					echo get_date_from_gmt( date( 'Y-m-d H:i:s', $next_timestamp ), 'Y-m-d H:i:s' );
-					if ( gmdate( 'U' ) > $next_timestamp ) {
-						printf( __( ' (%s ago)', 'action-scheduler' ), human_time_diff( gmdate( 'U' ), $next_timestamp ) );
-					} else {
-						echo ' (' . human_time_diff( gmdate( 'U' ), $next_timestamp ) . ')';
-					}
+					echo ' (' . human_time_diff( gmdate( 'U' ), $next_timestamp ) . ')';
 				}
 				break;
 		}
