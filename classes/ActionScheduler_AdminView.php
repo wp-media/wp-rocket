@@ -51,6 +51,10 @@ class ActionScheduler_AdminView {
 		add_action( 'admin_notices', array( self::instance(), 'admin_notices' ) );
 
 		add_filter( 'post_updated_messages', array( self::instance(), 'post_updated_messages' ) );
+
+		add_filter( 'posts_orderby', array( self::instance(), 'custom_orderby' ), 10, 2 );
+
+		add_filter( 'posts_search', array( self::instance(), 'search_post_password' ), 10, 2 );
 	}
 
 	/**
@@ -119,6 +123,8 @@ class ActionScheduler_AdminView {
 			}
 		}
 
+		$custom_columns['claim'] = __( 'Claim ID', 'action-scheduler' );
+
 		return $custom_columns;
 	}
 
@@ -133,6 +139,7 @@ class ActionScheduler_AdminView {
 		$columns['hook']      = 'title';
 		$columns['scheduled'] = array( 'date', true );
 		$columns['modified']  = 'modified';
+		$columns['claim']     = 'post_password';
 
 		return $columns;
 	}
@@ -225,6 +232,9 @@ class ActionScheduler_AdminView {
 				} else {
 					echo ' (' . human_time_diff( gmdate( 'U' ), $modified_timestamp ) . ')';
 				}
+				break;
+			case 'claim':
+				echo $post->post_password;
 				break;
 		}
 	}
@@ -378,6 +388,53 @@ class ActionScheduler_AdminView {
 		return $output;
 	}
 
+	/**
+	 * Filter search queries to allow searching by Claim ID (i.e. post_password).
+	 *
+	 * @param string $orderby MySQL orderby string.
+	 * @param WP_Query $query Instance of a WP_Query object
+	 * @return string MySQL orderby string.
+	 */
+	public function custom_orderby( $orderby, $query ){
+		global $wpdb;
+
+		if ( self::is_admin_page() && ! empty( $query->query['orderby'] ) && 'post_password' == $query->query['orderby'] ) {
+			$orderby = "$wpdb->posts.post_password " . $query->query['order'];
+		}
+
+		return $orderby;
+	}
+
+	/**
+	 * Filter search queries to allow searching by Claim ID (i.e. post_password).
+	 *
+	 * @param string $search MySQL search string.
+	 * @param WP_Query $query Instance of a WP_Query object
+	 * @return string MySQL search string.
+	 */
+	public function search_post_password( $search, $query ) {
+		global $wpdb;
+
+		if ( self::is_admin_page() && ! empty( $search ) ) {
+
+			$search = '';
+
+			$searchand = '';
+			$n = ! empty( $query->query_vars['exact'] ) ? '' : '%';
+			foreach ( $query->query_vars['search_terms'] as $term ) {
+				$term = like_escape( esc_sql( $term ) );
+				$search .= "{$searchand}(($wpdb->posts.post_title LIKE '{$n}{$term}{$n}') OR ($wpdb->posts.post_content LIKE '{$n}{$term}{$n}') OR ($wpdb->posts.post_password LIKE '{$n}{$term}{$n}'))";
+				$searchand = ' AND ';
+			}
+
+			if ( ! empty( $search ) ) {
+				$search = " AND ({$search}) ";
+			}
+
+		}
+
+		return $search;
+	}
 
 	/**
 	 * Change messages when a scheduled action is updated.
