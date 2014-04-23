@@ -388,4 +388,17 @@ class ActionScheduler_AdminView {
 
 		return $messages;
 	}
+
+	/**
+	 * Check if the current request is for the Schedul Actions administration screen.
+	 *
+	 * @return bool
+	 */
+	private static function is_admin_page() {
+		if ( is_admin() && isset( $_GET['post_type'] ) && $_GET['post_type'] == ActionScheduler_wpPostStore::POST_TYPE ) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
