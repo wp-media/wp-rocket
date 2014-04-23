@@ -111,6 +111,14 @@ class ActionScheduler_AdminView {
 			'comments'              => __( 'Log', 'action-scheduler' ),
 		);
 
+		if ( isset( $_REQUEST['post_status'] ) ) {
+			if ( in_array( $_REQUEST['post_status'], array( 'failed', 'in-progress' ) ) ) {
+				$custom_columns['modified'] = __( 'Started', 'action-scheduler' );
+			} elseif ( 'publish' == $_REQUEST['post_status'] ) {
+				$custom_columns['modified'] = __( 'Completed', 'action-scheduler' );
+			}
+		}
+
 		return $custom_columns;
 	}
 
@@ -124,6 +132,7 @@ class ActionScheduler_AdminView {
 
 		$columns['hook']      = 'title';
 		$columns['scheduled'] = array( 'date', true );
+		$columns['modified']  = 'modified';
 
 		return $columns;
 	}
@@ -206,6 +215,15 @@ class ActionScheduler_AdminView {
 					printf( __( ' (%s ago)', 'action-scheduler' ), human_time_diff( gmdate( 'U' ), $next_timestamp ) );
 				} else {
 					echo ' (' . human_time_diff( gmdate( 'U' ), $next_timestamp ) . ')';
+				}
+				break;
+			case 'modified':
+				echo get_post_modified_time( 'Y-m-d H:i:s' );
+				$modified_timestamp = get_post_modified_time( 'U', true );
+				if ( gmdate( 'U' ) > $modified_timestamp ) {
+					printf( __( ' (%s ago)', 'action-scheduler' ), human_time_diff( gmdate( 'U' ), $modified_timestamp ) );
+				} else {
+					echo ' (' . human_time_diff( gmdate( 'U' ), $modified_timestamp ) . ')';
 				}
 				break;
 		}
