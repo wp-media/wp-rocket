@@ -48,11 +48,14 @@ class ActionScheduler_QueueRunner {
 		do_action( 'action_scheduler_before_process_queue' );
 		$this->run_cleanup();
 		$count = 0;
-		$batch_size = apply_filters( 'action_scheduler_queue_runner_batch_size', 100 );
-		do {
-			$actions_run = $this->do_batch( $batch_size );
-			$count += $actions_run;
-		} while ( $actions_run > 0 ); // keep going until we run out of actions, time, or memory
+		if ( $this->store->get_claim_count() < apply_filters( 'action_scheduler_queue_runner_concurrent_batches', 5 ) ) {
+			$batch_size = apply_filters( 'action_scheduler_queue_runner_batch_size', 100 );
+			do {
+				$actions_run = $this->do_batch( $batch_size );
+				$count += $actions_run;
+			} while ( $actions_run > 0 ); // keep going until we run out of actions, time, or memory
+		}
+
 		do_action( 'action_scheduler_after_process_queue' );
 		return $count;
 	}
@@ -66,12 +69,18 @@ class ActionScheduler_QueueRunner {
 
 	protected function do_batch( $size = 100 ) {
 		$claim = $this->store->stake_claim($size);
+		$processed_actions = 0;
 		foreach ( $claim->get_actions() as $action_id ) {
+			// bail if we lost the claim
+			if ( ! in_array( $action_id, $this->store->find_actions_by_claim_id( $claim->get_id() ) ) ) {
+				break;
+			}
 			$this->process_action( $action_id );
+			$processed_actions++;
 		}
 		$this->store->release_claim($claim);
 		$this->clear_caches();
-		return count($claim->get_actions());
+		return $processed_actions;
 	}
 
 	protected function process_action( $action_id ) {
