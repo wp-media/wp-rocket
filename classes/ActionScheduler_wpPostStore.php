@@ -404,7 +404,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	 * @param string $claim_id
 	 * @return array
 	 */
-	protected function find_actions_by_claim_id( $claim_id ) {
+	public function find_actions_by_claim_id( $claim_id ) {
 		/** @var wpdb $wpdb */
 		global $wpdb;
 		$sql = "SELECT ID FROM {$wpdb->posts} WHERE post_type = %s AND post_password = %s";

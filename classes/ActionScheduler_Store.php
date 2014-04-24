@@ -83,6 +83,13 @@ abstract class ActionScheduler_Store {
 	 *
 	 * @return void
 	 */
+	abstract public function find_actions_by_claim_id( $claim_id );
+
+	/**
+	 * @param ActionScheduler_ActionClaim $claim
+	 *
+	 * @return void
+	 */
 	abstract public function release_claim( ActionScheduler_ActionClaim $claim );
 
 	/**

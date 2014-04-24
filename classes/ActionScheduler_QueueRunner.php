@@ -69,12 +69,18 @@ class ActionScheduler_QueueRunner {
 
 	protected function do_batch( $size = 100 ) {
 		$claim = $this->store->stake_claim($size);
+		$processed_actions = 0;
 		foreach ( $claim->get_actions() as $action_id ) {
+			// bail if we lost the claim
+			if ( ! in_array( $action_id, $this->store->find_actions_by_claim_id( $claim->get_id() ) ) ) {
+				break;
+			}
 			$this->process_action( $action_id );
+			$processed_actions++;
 		}
 		$this->store->release_claim($claim);
 		$this->clear_caches();
-		return count($claim->get_actions());
+		return $processed_actions;
 	}
 
 	protected function process_action( $action_id ) {
