@@ -320,18 +320,28 @@ class ActionScheduler_AdminView {
 	 * @return string A human friendly string representation of the interval.
 	 */
 	public static function admin_notices() {
-		if ( isset( $_GET['executed'] ) && isset( $_GET['ids'] ) ) {
-			$action = ActionScheduler::store()->fetch_action( $_GET['ids'] );
-			$action_hook_html = '<strong>' . $action->get_hook() . '</strong>';
-			if ( 1 == $_GET['executed'] ) : ?>
+
+		if ( self::is_admin_page() ) {
+
+			if ( ActionScheduler_Store::instance()->get_claim_count() >= apply_filters( 'action_scheduler_queue_runner_concurrent_batches', 5 ) ) : ?>
+<div id="message" class="updated">
+	<p><?php printf( __( 'Maximum simulatenous batches already in progress (%s queues). No actions will be processed until the current batches are complete.', 'action-scheduler' ), ActionScheduler_Store::instance()->get_claim_count() ); ?></p>
+</div>
+			<?php endif;
+
+			if ( isset( $_GET['executed'] ) && isset( $_GET['ids'] ) ) {
+				$action = ActionScheduler::store()->fetch_action( $_GET['ids'] );
+				$action_hook_html = '<strong>' . $action->get_hook() . '</strong>';
+				if ( 1 == $_GET['executed'] ) : ?>
 <div id="message" class="updated">
 	<p><?php printf( __( 'Successfully executed the action: %s', 'action-scheduler' ), $action_hook_html ); ?></p>
 </div>
-		<?php else : ?>
+			<?php else : ?>
 <div id="message" class="error">
 	<p><?php printf( __( 'Could not execute the action: %s', 'action-scheduler' ), $action_hook_html ); ?></p>
 </div>
-		<?php endif;
+			<?php endif;
+			}
 		}
 	}
 
