@@ -48,11 +48,14 @@ class ActionScheduler_QueueRunner {
 		do_action( 'action_scheduler_before_process_queue' );
 		$this->run_cleanup();
 		$count = 0;
-		$batch_size = apply_filters( 'action_scheduler_queue_runner_batch_size', 100 );
-		do {
-			$actions_run = $this->do_batch( $batch_size );
-			$count += $actions_run;
-		} while ( $actions_run > 0 ); // keep going until we run out of actions, time, or memory
+		if ( $this->store->get_claim_count() < apply_filters( 'action_scheduler_queue_runner_concurrent_batches', 5 ) ) {
+			$batch_size = apply_filters( 'action_scheduler_queue_runner_batch_size', 100 );
+			do {
+				$actions_run = $this->do_batch( $batch_size );
+				$count += $actions_run;
+			} while ( $actions_run > 0 ); // keep going until we run out of actions, time, or memory
+		}
+
 		do_action( 'action_scheduler_after_process_queue' );
 		return $count;
 	}
