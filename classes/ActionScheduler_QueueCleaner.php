@@ -42,7 +42,7 @@ class ActionScheduler_QueueCleaner {
 			'modified' => $cutoff,
 			'modified_compare' => '<=',
 			'claimed' => TRUE,
-			'per_page' => apply_filters( 'action_scheduler_cleanup_batch_size', 10 ),
+			'per_page' => apply_filters( 'action_scheduler_cleanup_batch_size', 100 ),
 		) );
 
 		foreach ( $actions_to_reset as $action_id ) {
