@@ -168,7 +168,7 @@ class ActionScheduler_AdminView {
 
 				$actions = array();
 
-				if ( current_user_can( 'edit_post', $post->ID ) && ! in_array( $post->post_status, array( 'publish', 'trash' ) ) ) {
+				if ( current_user_can( 'edit_post', $post->ID ) && ! in_array( $post->post_status, array( 'publish', 'in-progress', 'trash' ) ) ) {
 					$actions['execute'] = "<a title='" . esc_attr( __( 'Execute the action now' ) ) . "' href='" . self::get_run_action_link( $post->ID ) . "'>" . __( 'Run', 'action-scheduler' ) . "</a>";
 					$actions['process'] = "<a title='" . esc_attr( __( 'Process the action now as if it were run as part of a queue' ) ) . "' href='" . self::get_run_action_link( $post->ID, 'process' ) . "'>" . __( 'Process', 'action-scheduler' ) . "</a>";
 				}
