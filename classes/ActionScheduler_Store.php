@@ -79,7 +79,7 @@ abstract class ActionScheduler_Store {
 	abstract public function get_claim_count();
 
 	/**
-	 * @param ActionScheduler_ActionClaim $claim
+	 * @param int
 	 *
 	 * @return void
 	 */
