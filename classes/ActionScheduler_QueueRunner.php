@@ -45,6 +45,7 @@ class ActionScheduler_QueueRunner {
 	}
 
 	public function run() {
+		@ini_set( 'memory_limit', apply_filters( 'admin_memory_limit', WP_MAX_MEMORY_LIMIT ) );
 		do_action( 'action_scheduler_before_process_queue' );
 		$this->run_cleanup();
 		$count = 0;
