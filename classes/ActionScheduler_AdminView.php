@@ -207,7 +207,6 @@ class ActionScheduler_AdminView {
 				break;
 			case 'args':
 				$action_args = ( 'trash' == $post->post_status ) ? $post->post_content : $action->get_args();
-				printf( '<pre>%s</pre>', print_r( $action_args, true ) );
 				foreach( $action_args as $key => $value ) {
 					printf( "<code>%s => %s</code><br/>", $key, $value );
 				}
