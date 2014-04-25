@@ -50,7 +50,7 @@ class ActionScheduler_QueueRunner {
 		$this->run_cleanup();
 		$count = 0;
 		if ( $this->store->get_claim_count() < apply_filters( 'action_scheduler_queue_runner_concurrent_batches', 5 ) ) {
-			$batch_size = apply_filters( 'action_scheduler_queue_runner_batch_size', 100 );
+			$batch_size = apply_filters( 'action_scheduler_queue_runner_batch_size', 20 );
 			do {
 				$actions_run = $this->do_batch( $batch_size );
 				$count += $actions_run;
