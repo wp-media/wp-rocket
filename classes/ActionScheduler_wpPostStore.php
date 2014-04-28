@@ -369,10 +369,11 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		/** @var wpdb $wpdb */
 		global $wpdb;
 
-		$sql = "SELECT COUNT(DISTINCT post_parent) FROM {$wpdb->posts} WHERE post_parent != 0 AND post_type = %s AND post_status IN ('in-progress','pending')";
-		$sql = $wpdb->prepare( $sql, array( self::POST_TYPE ) );
+		$sql = "SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type=%s";
+		$sql = $wpdb->prepare( $sql, self::CLAIM_POST_TYPE );
 
-		return $wpdb->get_var( $sql );
+		$count = $wpdb->get_var( $sql );
+		return $count;
 	}
 
 	protected function generate_claim_id() {
@@ -434,12 +435,14 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		if ( $result === false ) {
 			throw new RuntimeException( sprintf( __('Unable to unlock claim %s. Database error.', 'action-scheduler'), $claim->get_id() ) );
 		}
+		wp_delete_post( $claim->get_id(), TRUE );
 	}
 
 	/**
 	 * @param string $action_id
 	 *
 	 * @return void
+	 * @throws RuntimeException
 	 */
 	public function unclaim_action( $action_id ) {
 		/** @var wpdb $wpdb */
