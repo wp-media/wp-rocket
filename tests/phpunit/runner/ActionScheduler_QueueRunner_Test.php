@@ -111,5 +111,41 @@ class ActionScheduler_QueueRunner_Test extends ActionScheduler_UnitTestCase {
 		$next = wp_next_scheduled( ActionScheduler_QueueRunner::WP_CRON_HOOK );
 		$this->assertNotEmpty($next);
 	}
+
+	public function test_batch_count_limit() {
+		$store = new ActionScheduler_wpPostStore();
+		$runner = new ActionScheduler_QueueRunner( $store );
+
+		$mock = new MockAction();
+		$random = md5(rand());
+		add_action( $random, array( $mock, 'action' ) );
+		$schedule = new ActionScheduler_SimpleSchedule(new DateTime('1 day ago'));
+
+		for ( $i = 0 ; $i < 30 ; $i++ ) {
+			$action = new ActionScheduler_Action( $random, array($random), $schedule );
+			$store->save_action( $action );
+		}
+
+		$claims = array();
+
+		for ( $i = 0 ; $i < 5 ; $i++ ) {
+			$claims[] = $store->stake_claim( 5 );
+		}
+
+		$actions_run = $runner->run();
+
+
+		$this->assertEquals( 0, $mock->get_call_count() );
+		$this->assertEquals( 0, $actions_run );
+
+		$first = reset($claims);
+		$store->release_claim( $first );
+
+		$actions_run = $runner->run();
+		$this->assertEquals( 10, $mock->get_call_count() );
+		$this->assertEquals( 10, $actions_run );
+
+		remove_action( $random, array( $mock, 'action' ) );
+	}
 }
  
