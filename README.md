@@ -7,15 +7,15 @@ A robust scheduling system for WordPress.
 
 Action Scheduler uses a WordPress [custom post type](http://codex.wordpress.org/Post_Types), creatively named `scheduled-action`, to store the hook name, arguments and scheduled date for an action that should be triggered at some time in the future.
 
-The scheduler will run every minute by attached itself as a callback to the `'action_scheduler_run_schedule'` hook, which is scheduled with using WordPress's built-in [WP-Cron](http://codex.wordpress.org/Function_Reference/wp_cron) system to run every minute.
+The scheduler will run every minute by attaching itself as a callback to the `'action_scheduler_run_schedule'` hook, which is scheduled using WordPress's built-in [WP-Cron](http://codex.wordpress.org/Function_Reference/wp_cron) system.
 
-When triggered, Action Scheduler will check the stored `scheduled-action` posts to see if any actions were scheduled to run before the current time.
+When triggered, Action Scheduler will check for posts of the `scheduled-action` type that have a `post_date` at or before this point in time i.e. actions scheduled to run now or at sometime in the past.
 
 #### Batch Processing
 
 If there are actions to be processed, Action Scheduler will stake a unique claim for a batch of 20 actions and begin processing that batch. The PHP process spawned to run the batch will then continue processing batches of 20 actions until it times out or exhausts available memory.
 
-If your site has a large number of actions scheduled to run at the same time, Action Scheduler will process more than one batch at a time. Specifically, when the `'action_scheduler_run_schedule'` hook is triggered approximately one minute after the first batch begins processing, a new PHP process will stake a claim to a batch of actions which were not claimed by the previous process. It will then begin to process this batch.
+If your site has a large number of actions scheduled to run at the same time, Action Scheduler will process more than one batch at a time. Specifically, when the `'action_scheduler_run_schedule'` hook is triggered approximately one minute after the first batch began processing, a new PHP process will stake a new claim to a batch of actions which were not claimed by the previous process. It will then begin to process that batch.
 
 This will continue until all actions are processed using a maximum of 5 concurrent queues.
 
@@ -23,9 +23,9 @@ This will continue until all actions are processed using a maximum of 5 concurre
 
 Before procesing a batch, the scheduler will remove any existing claims on actions which have been sitting in a queue for more than five minutes.
 
-Action Scheduled will also trash any actions which were completed more than a month ago.
+Action Scheduler will also trash any actions which were completed more than a month ago.
 
-If an action runs for more than 5 minutes, Action Scheduler will assume the action has timed out and will mark it as failed. However, if all callbacks attached to the action were to successfully complete sometime after that 5 minute timeout, its status would be correctly updated to completed.
+If an action runs for more than 5 minutes, Action Scheduler will assume the action has timed out and will mark it as failed. However, if all callbacks attached to the action were to successfully complete sometime after that 5 minute timeout, its status would later be updated to completed.
 
 #### Record Keeping
 
@@ -50,7 +50,7 @@ To enable the interface:
 
 ![](http://f.cl.ly/items/1v2C161c2i230K0F1J3A/Screen%20Shot%202014-04-25%20at%203.33.26%20pm.png)
 
-Amoung other tasks, from the admin screen you can:
+Among other tasks, from the admin screen you can:
 
 * view the scheduled actions with a specific status, like the all actions which have failed or are in-progress (http://cl.ly/image/3A3C1b1p0702).
 * view the log entries (comments) for a specific action to find out why it failed (http://cl.ly/image/3h1E0c23081U).
@@ -64,7 +64,7 @@ Amoung other tasks, from the admin screen you can:
 
 The Action Scheduler API functions are designed to mirror the WordPress [WP-Cron API functions](http://codex.wordpress.org/Category:WP-Cron_Functions).
 
-Functions return similar values and accept similar argument lists to their WP-Cron counterparts. The notable differences are:
+Functions return similar values and accept similar arguments to their WP-Cron counterparts. The notable differences are:
 
 * `wc_schedule_single_action()` & `wc_schedule_recurring_action()` will return the post ID of the scheduled action rather than boolean indicating whether the event was scheduled
 * `wc_schedule_recurring_action()` takes an interval in seconds as the recurring interval rather than an arbitrary string
@@ -252,13 +252,13 @@ add_filter( 'action_scheduler_queue_runner_batch_size', 'eg_increase_action_sche
 
 ### Increasing Concurrent Batches
 
-By default, Action Scheduler will run up to 5 concurrent batches of actions. This is to prevent consuming all the available connects or processes on your webserver.
+By default, Action Scheduler will run up to 5 concurrent batches of actions. This is to prevent consuming all the available connections or processes on your webserver.
 
 However, your server may allow a large number of connection, for example, because it has a high value for Apache's `MaxClients` setting or PHP-FPM's `pm.max_children` setting.
 
-If this is the case, you can use the `'action_scheduler_queue_runner_concurrent_batches'` filter to increase the number of conncurrent batches allowed, and therefore speed in processing large numbers of actions scheduled to be processed simultaneously.
+If this is the case, you can use the `'action_scheduler_queue_runner_concurrent_batches'` filter to increase the number of conncurrent batches allowed, and therefore speed up processing large numbers of actions scheduled to be processed simultaneously.
 
-For example, to increase the batch size to 25, we can use the following function:
+For example, to increase the allowed number of concurrent queues to 25, we can use the following code:
 
 ```
 <?php
