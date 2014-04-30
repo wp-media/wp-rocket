@@ -12,6 +12,10 @@ class ActionScheduler_QueueRunner {
 	private static $runner = NULL;
 	/** @var ActionScheduler_Store */
 	private $store = NULL;
+	/** @var int */
+	private $action_id = NULL;
+	/** @var ActionScheduler_ActionClaim */
+	private $claim = NULL;
 
 	/**
 	 * @return ActionScheduler_QueueRunner
@@ -69,7 +73,8 @@ class ActionScheduler_QueueRunner {
 	}
 
 	protected function do_batch( $size = 100 ) {
-		$claim = $this->store->stake_claim($size);
+		$claim = $this->claim = $this->store->stake_claim($size);
+		add_action( 'shutdown', array( $this, 'handle_claim_unexpected_shutdown' ) );
 		$processed_actions = 0;
 		foreach ( $claim->get_actions() as $action_id ) {
 			// bail if we lost the claim
@@ -79,12 +84,15 @@ class ActionScheduler_QueueRunner {
 			$this->process_action( $action_id );
 			$processed_actions++;
 		}
+		remove_action( 'shutdown', array( $this, 'handle_claim_unexpected_shutdown' ) );
 		$this->store->release_claim($claim);
 		$this->clear_caches();
 		return $processed_actions;
 	}
 
 	public function process_action( $action_id ) {
+		$this->action_id = $action_id;
+		add_action( 'shutdown', array( $this, 'handle_action_unexpected_shutdown' ) );
 		$action = $this->store->fetch_action( $action_id );
 		do_action( 'action_scheduler_before_execute', $action_id );
 		try {
@@ -97,6 +105,8 @@ class ActionScheduler_QueueRunner {
 			do_action( 'action_scheduler_failed_execution', $action_id, $e );
 		}
 		$this->schedule_next_instance( $action );
+		remove_action( 'shutdown', array( $this, 'handle_action_unexpected_shutdown' ) );
+		$this->action_id = NULL;
 	}
 
 	protected function schedule_next_instance( ActionScheduler_Action $action ) {
@@ -130,5 +140,17 @@ class ActionScheduler_QueueRunner {
 
 		return $schedules;
 	}
+
+	public function handle_action_unexpected_shutdown() {
+		if ( $error = error_get_last() ) {
+			$this->store->mark_failure( $this->action_id );
+			do_action( 'action_scheduler_failed_execution_unexpected_shutdown', $this->action_id, $error );
+		}
+	}
+
+	public function handle_claim_unexpected_shutdown() {
+		if ( $error = error_get_last() ) {
+			$this->store->release_claim($this->claim);
+		}
+	}
 }
- 
