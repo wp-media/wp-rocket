@@ -81,6 +81,27 @@ class ActionScheduler_wpCommentLogger_Test extends ActionScheduler_UnitTestCase 
 		$this->assertTrue( in_array( $failed, $logs ) );
 	}
 
+	public function test_fatal_error_comments() {
+		$hook = md5(rand());
+		$action_id = wc_schedule_single_action( time(), $hook );
+		$logger = ActionScheduler::logger();
+		do_action( 'action_scheduler_unexpected_shutdown', $action_id, array(
+			'type' => E_ERROR,
+			'message' => 'Test error',
+			'file' => __FILE__,
+			'line' => __LINE__,
+		));
+
+		$logs = $logger->get_logs( $action_id );
+		$found_log = FALSE;
+		foreach ( $logs as $l ) {
+			if ( strpos( $l->get_message(), 'unexpected shutdown' ) === 0 ) {
+				$found_log = TRUE;
+			}
+		}
+		$this->assertTrue( $found_log, 'Unexpected shutdown log not found' );
+	}
+
 	public function test_canceled_action_comments() {
 		$action_id = wc_schedule_single_action( time(), 'a hook' );
 		wc_unschedule_action( 'a hook' );

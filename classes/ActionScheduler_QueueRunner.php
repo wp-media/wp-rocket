@@ -13,6 +13,9 @@ class ActionScheduler_QueueRunner {
 	/** @var ActionScheduler_Store */
 	private $store = NULL;
 
+	/** @var ActionScheduler_FatalErrorMonitor */
+	private $monitor = NULL;
+
 	/**
 	 * @return ActionScheduler_QueueRunner
 	 * @codeCoverageIgnore
@@ -51,10 +54,12 @@ class ActionScheduler_QueueRunner {
 		$count = 0;
 		if ( $this->store->get_claim_count() < apply_filters( 'action_scheduler_queue_runner_concurrent_batches', 5 ) ) {
 			$batch_size = apply_filters( 'action_scheduler_queue_runner_batch_size', 20 );
+			$this->monitor = new ActionScheduler_FatalErrorMonitor( $this->store );
 			do {
 				$actions_run = $this->do_batch( $batch_size );
 				$count += $actions_run;
 			} while ( $actions_run > 0 ); // keep going until we run out of actions, time, or memory
+			unset( $this->monitor );
 		}
 
 		do_action( 'action_scheduler_after_process_queue' );
@@ -70,6 +75,7 @@ class ActionScheduler_QueueRunner {
 
 	protected function do_batch( $size = 100 ) {
 		$claim = $this->store->stake_claim($size);
+		$this->monitor->attach($claim);
 		$processed_actions = 0;
 		foreach ( $claim->get_actions() as $action_id ) {
 			// bail if we lost the claim
@@ -80,6 +86,7 @@ class ActionScheduler_QueueRunner {
 			$processed_actions++;
 		}
 		$this->store->release_claim($claim);
+		$this->monitor->detach();
 		$this->clear_caches();
 		return $processed_actions;
 	}
