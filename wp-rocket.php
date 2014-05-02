@@ -3,7 +3,7 @@
 Plugin Name: WP Rocket
 Plugin URI: http://www.wp-rocket.me
 Description: The best WordPress performance plugin.
-Version: 2.1.1
+Version: 2.2
 Author: WP Rocket
 Contributors: Jonathan Buttigieg, Julio Potier
 Author URI: http://www.wp-rocket.me
@@ -17,7 +17,7 @@ Copyright 2013-2014 WP Rocket
 defined( 'ABSPATH' ) or die( __( 'Cheatin&#8217; uh?', 'rocket' ) );
 
 // Rocket defines
-define( 'WP_ROCKET_VERSION'             , '2.1.1');
+define( 'WP_ROCKET_VERSION'             , '2.2');
 define( 'WP_ROCKET_SLUG'                , 'wp_rocket_settings');
 define( 'WP_ROCKET_WEB_MAIN'            , 'http://support.wp-rocket.me/');
 define( 'WP_ROCKET_WEB_CHECK'           , WP_ROCKET_WEB_MAIN.'check_update.php');
@@ -108,12 +108,16 @@ function rocket_init()
         require WP_ROCKET_INC_PATH . '/purge.php';
         require WP_ROCKET_INC_PATH . '/admin-bar.php';
 
-        if( (int)get_rocket_option( 'purge_cron_interval' ) > 0 ) {
+        if ( (int)get_rocket_option( 'purge_cron_interval' ) > 0 ) {
             require  WP_ROCKET_INC_PATH . '/cron.php';
         }
 
-        if( (int)get_rocket_option( 'cdn' ) > 0 ) {
+        if ( (int)get_rocket_option( 'cdn' ) > 0 ) {
         	require  WP_ROCKET_FRONT_PATH . '/cdn.php';
+        }
+        
+        if ( defined( 'SUNRISE' ) && SUNRISE == 'on' && function_exists( 'domain_mapping_siteurl' ) ) {
+	        require WP_ROCKET_INC_PATH . '/domain-mapping.php';
         }
     }
 

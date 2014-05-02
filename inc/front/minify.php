@@ -15,8 +15,8 @@ add_filter( 'rocket_buffer', 'rocket_minify_process', 13 );
 function rocket_minify_process( $buffer )
 {
 
-	$enable_js 		 = get_rocket_option( 'minify_js' );
-	$enable_css 	 = get_rocket_option( 'minify_css' );
+	$enable_js  = get_rocket_option( 'minify_js' );
+	$enable_css = get_rocket_option( 'minify_css' );
 
 	if( $enable_css || $enable_js ) {
 
@@ -133,10 +133,12 @@ function rocket_minify_inline_js( $js )
 function rocket_minify_css( $buffer )
 {
 
-    $internal_files      = array();
-    $external_tags       = '';
-    $excluded_tags       = '';
-    $fonts_tags 		 = '';
+    $home_host		= parse_url( home_url(), PHP_URL_HOST );
+    $internal_files = array();
+    $external_tags  = '';
+    $excluded_tags  = '';
+    $fonts_tags 	= '';
+    $excluded_css	= get_rocket_option( 'exclude_css', array() );
 
     // Get all css files with this regex
     preg_match_all( '/<link.+href=[\'|"]([^\'|"]+\.css?.+)[\'|"].+>/iU', $buffer, $tags_match );
@@ -147,10 +149,7 @@ function rocket_minify_css( $buffer )
         // Check css media type
         // or the file is already minify by get_rocket_minify_files
         // or the file is rejected to the process
-        if ( ( !strpos( $tag, 'media=' ) || preg_match('/media=["\'](?:["\']|[^"\']*?(all|screen)[^"\']*?["\'])/', $tag ) )
-             && !strpos( $tag, 'data-minify=' )
-             && !strpos( $tag, 'data-no-minify=' )
-        ) {
+        if ( ( !strpos( $tag, 'media=' ) || preg_match('/media=["\'](?:["\']|[^"\']*?(all|screen)[^"\']*?["\'])/', $tag ) ) && !strpos( $tag, 'data-minify=' ) && !strpos( $tag, 'data-no-minify=' ) ) {
 
 			// To check if a tag is to exclude of the minify process
             $excluded_tag = false;
@@ -180,25 +179,21 @@ function rocket_minify_css( $buffer )
 
             // Check if the file isn't external
             // Insert the relative path to the array without query string
-			if ( isset( $css_url['host'] ) && ( $css_url['host'] == parse_url( home_url(), PHP_URL_HOST ) || in_array( $css_url['host'], $cnames_host ) || in_array( $css_url['host'], $langs_host ) ) ) {
+			if ( isset( $css_url['host'] ) && ( $css_url['host'] == $home_host || in_array( $css_url['host'], $cnames_host ) || in_array( $css_url['host'], $langs_host ) ) ) {
 
 				// Check if it isn't a file to exclude
-				if( !in_array( $css_url['path'], get_rocket_option( 'exclude_css', array() ) )
-					&& pathinfo( $css_url['path'], PATHINFO_EXTENSION ) == 'css'
-				) {
+				if( !in_array( $css_url['path'], $excluded_css ) && pathinfo( $css_url['path'], PATHINFO_EXTENSION ) == 'css' ) {
 					$internal_files[] = $css_url['path'];
-				}
-				else {
+				} else {
 					$excluded_tag = true;
 				}
 
-			}
-			else {
+			} else {
 				$external_tags .= $tag;
 			}
 
             // Remove the tag
-            if( !$excluded_tag ) {
+            if ( ! $excluded_tag ) {
             	$buffer = str_replace( $tag, '', $buffer );
             }
 
@@ -237,9 +232,11 @@ function rocket_minify_css( $buffer )
 function rocket_minify_js( $buffer )
 {
 
-    $internal_files      = array();
-    $external_tags       = '';
-    $excluded_tags       = '';
+	$home_host		= parse_url( home_url(), PHP_URL_HOST );
+    $internal_files = array();
+    $external_tags  = '';
+    $excluded_tags  = '';
+    $excluded_js	= get_rocket_option( 'exclude_js', array() );
 
     // Get all JS files with this regex
     preg_match_all( '#<script.*src=[\'|"]([^\'|"]+\.js?.+)[\'|"].*></script>#iU', $buffer, $tags_match );
@@ -279,25 +276,21 @@ function rocket_minify_js( $buffer )
 
 	        // Check if the link isn't external
 	        // Insert the relative path to the array without query string
-	        if ( isset( $js_url['host'] ) && ( $js_url['host'] == parse_url( home_url(), PHP_URL_HOST ) || in_array( $js_url['host'], $cnames_host ) || in_array( $js_url['host'], $langs_host ) ) ) {
+	        if ( isset( $js_url['host'] ) && ( $js_url['host'] == $home_host || in_array( $js_url['host'], $cnames_host ) || in_array( $js_url['host'], $langs_host ) ) ) {
 
 		        // Check if it isn't a file to exclude
-		        if( !in_array( $js_url['path'], get_rocket_option( 'exclude_js', array() ) )
-		        	&& pathinfo( $js_url['path'], PATHINFO_EXTENSION ) == 'js'
-		        ) {
+		        if ( ! in_array( $js_url['path'], $excluded_js ) && pathinfo( $js_url['path'], PATHINFO_EXTENSION ) == 'js') {
 			        $internal_files[] = $js_url['path'];
-		        }
-		        else {
+		        } else {
 			        $excluded_tag = true;
 		        }
 
-	        }
-	        else {
+	        } else {
 		        $external_tags .= $tag;
 	        }
 
 			// Remove the tag
-            if( !$excluded_tag ) {
+            if ( ! $excluded_tag ) {
             	$buffer = str_replace( $tag, '', $buffer );
             }
 
