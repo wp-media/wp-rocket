@@ -18,6 +18,12 @@ abstract class ActionScheduler_TimezoneHelper {
 					$tzstring = 'UTC';
 				} else {
 					$tzstring = timezone_name_from_abbr('', $gmt_offset * HOUR_IN_SECONDS);
+					if ( empty( $tzstring ) ) {
+						$tzstring = timezone_name_from_abbr('', $gmt_offset * HOUR_IN_SECONDS, false);
+						if ( empty( $tzstring ) ) {
+							$tzstring = 'UTC'; // we can't find a timezone, default to UTC
+						}
+					}
 				}
 			}
 
