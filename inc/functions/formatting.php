@@ -246,19 +246,19 @@ function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_file
 			}
 
 			// If CSS & JS use a CDN
-			$url = get_rocket_cdn_url( $url, array( 'all', 'css_and_js' ) );
+			$url = get_rocket_cdn_url( $url, array( 'all', 'css_and_js', $ext ) );
 
 			// Get tags for CSS file
 			if ( $ext == 'css' ) {
-
-				$tags .= '<link rel="stylesheet" href="' . apply_filters( 'rocket_css_url', $url ) . '" ' . $data_attr . '/>';
+				
+				$tags  .= '<link rel="stylesheet" href="' . apply_filters( 'rocket_css_url', $url ) . '" ' . $data_attr . '/>';
 
 			}
 
 			// Get tags for JS file
 			if ( $ext == 'js' ) {
 
-				$tags .= '<script src="' . apply_filters( 'rocket_js_url', $url ) . '" ' . $data_attr . '></script>';
+				$tags  .= '<script src="' . apply_filters( 'rocket_js_url', $url ) . '" ' . $data_attr . '></script>';
 
 			}
 

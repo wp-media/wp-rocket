@@ -283,6 +283,8 @@ function rocket_cnames_module()
 								<option value="all" <?php selected( $cnames_zone[$k], 'all' ); ?>><?php _e( 'All files', 'rocket' ); ?></option>
 								<option value="images" <?php selected( $cnames_zone[$k], 'images' ); ?>><?php _e( 'Images', 'rocket' ); ?></option>
 								<option value="css_and_js" <?php selected( $cnames_zone[$k], 'css_and_js' ); ?>>CSS & JavaScript</option>
+								<option value="js" <?php selected( $cnames_zone[$k], 'js' ); ?>>JavaScript</option>
+								<option value="css" <?php selected( $cnames_zone[$k], 'css' ); ?>>CSS</option>
 							</select>
 						</label>
 						<span class="rkt-delete-cname hide-if-no-js rkt-cross"><?php _e( 'Delete' ); ?></span>
@@ -309,6 +311,8 @@ function rocket_cnames_module()
 							<option value="all"><?php _e( 'All files', 'rocket' ); ?></option>
 							<option value="images"><?php _e( 'Images', 'rocket' ); ?></option>
 							<option value="css_and_js">CSS & JavaScript</option>
+							<option value="js">JavaScript</option>
+							<option value="css">CSS</option>
 						</select>
 					</label>
 
@@ -329,6 +333,8 @@ function rocket_cnames_module()
 					<option value="all"><?php _e( 'All files', 'rocket' ); ?></option>
 					<option value="images"><?php _e( 'Images', 'rocket' ); ?></option>
 					<option value="css_and_js">CSS & JavaScript</option>
+					<option value="js">JavaScript</option>
+					<option value="css">CSS</option>
 				</select>
 			</label>
 			<span class="rkt-delete-cname hide-if-no-js rkt-cross"><?php _e( 'Delete' ); ?></span>

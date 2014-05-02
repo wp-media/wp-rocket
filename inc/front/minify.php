@@ -170,7 +170,7 @@ function rocket_minify_css( $buffer )
 
 			// Get host of CNAMES
 			$cnames_host = array();
-			if ( $cnames = get_rocket_cdn_cnames( array( 'all', 'css_and_js' ) ) ) {
+			if ( $cnames = get_rocket_cdn_cnames( array( 'all', 'css_and_js', 'css' ) ) ) {
 
 				foreach ( $cnames as $cname ) {
 					$cnames_host[] = parse_url( $cname, PHP_URL_HOST );
@@ -279,7 +279,7 @@ function rocket_minify_js( $buffer )
 
 			// Get host of CNAMES
 			$cnames_host = array();
-			if ( $cnames = get_rocket_cdn_cnames( array( 'all', 'css_and_js' ) ) ) {
+			if ( $cnames = get_rocket_cdn_cnames( array( 'all', 'css_and_js', 'js' ) ) ) {
 
 				foreach ( $cnames as $cname ) {
 					$cnames_host[] = parse_url( $cname, PHP_URL_HOST );

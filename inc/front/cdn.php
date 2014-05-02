@@ -19,9 +19,13 @@ add_filter( 'bwp_get_minify_src'	, 'rocket_cdn_file', PHP_INT_MAX );
 function rocket_cdn_file( $url )
 {
 
+	if( is_admin() ) {
+		return $url;
+	}
+
 	$filter = current_filter();
 	switch ( $filter ) {
-		
+
 		case 'wp_get_attachment_url':
 		case 'smilies_src':
 
@@ -32,13 +36,13 @@ function rocket_cdn_file( $url )
 		case 'wp_minify_css_url':
 		case 'wp_minify_js_url':
 		case 'bwp_get_minify_src':
-
-			$zone = array( 'all', 'css_and_js' );
+			
+			$zone = array( 'all', 'css_and_js', pathinfo( $url, PATHINFO_EXTENSION ) );
 			break;
 
 	}
 
-	if ( ! is_admin() && $cnames = get_rocket_cdn_cnames( $zone ) ) {
+	if ( $cnames = get_rocket_cdn_cnames( $zone ) ) {
 		$url = get_rocket_cdn_url( $url, $zone );
 	}
 
@@ -115,13 +119,24 @@ function rocket_cdn_enqueue( $src )
 {
 
 	global $pagenow;
-	
+
 	// Don't use CDN if in admin, in login page, in register page or in a post preview
 	if ( is_admin() || is_preview() || in_array( $pagenow, array('wp-login.php', 'wp-register.php' ) ) ) {
 		return $src;
 	}
 
 	$zone = array( 'all', 'css_and_js' );
+
+	// Add only CSS zone
+	if( current_filter() == 'style_loader_src' ) {
+		$zone[] = 'css';
+	}
+
+	// Add only JS zone
+	if( current_filter() == 'script_loader_src' ) {
+		$zone[] = 'js';
+	}
+
 	if ( $cnames = get_rocket_cdn_cnames( $zone ) ) {
 
 		// Get host of the URL
