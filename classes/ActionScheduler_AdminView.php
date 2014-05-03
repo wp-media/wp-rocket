@@ -207,8 +207,10 @@ class ActionScheduler_AdminView {
 				break;
 			case 'args':
 				$action_args = ( 'trash' == $post->post_status ) ? $post->post_content : $action->get_args();
-				foreach( $action_args as $key => $value ) {
-					printf( "<code>%s => %s</code><br/>", $key, $value );
+				if ( is_array( $action_args ) ) {
+					foreach( $action_args as $key => $value ) {
+						printf( "<code>%s => %s</code><br/>", $key, $value );
+					}
 				}
 				break;
 			case 'recurrence':
