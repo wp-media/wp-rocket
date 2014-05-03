@@ -55,10 +55,7 @@ class ActionScheduler_QueueRunner {
 		if ( $this->store->get_claim_count() < apply_filters( 'action_scheduler_queue_runner_concurrent_batches', 5 ) ) {
 			$batch_size = apply_filters( 'action_scheduler_queue_runner_batch_size', 20 );
 			$this->monitor = new ActionScheduler_FatalErrorMonitor( $this->store );
-			do {
-				$actions_run = $this->do_batch( $batch_size );
-				$count += $actions_run;
-			} while ( $actions_run > 0 ); // keep going until we run out of actions, time, or memory
+			$actions_run = $this->do_batch( $batch_size );
 			unset( $this->monitor );
 		}
 
