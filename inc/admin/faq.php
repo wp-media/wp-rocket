@@ -1,4 +1,4 @@
-<?php defined( 'ABSPATH' ) or	die( __( 'Cheatin&#8217; uh?', 'rocket' ) ); ?>
+<?php defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' ); ?>
 
 <h2><?php _e( 'My key does not work', 'rocket' );?></h2>
 <p><?php _e( 'Check the spelling of your website in your profile on the WP Rocket\'s site.', 'rocket' );?></p>

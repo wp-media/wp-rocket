@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or	die( __( 'Cheatin&#8217; uh?', 'rocket' ) );
+defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 
 /**
  * By default, the lifetime of the cookie comment is one year.

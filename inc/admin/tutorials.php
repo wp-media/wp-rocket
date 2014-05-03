@@ -1,4 +1,4 @@
-<?php defined( 'ABSPATH' ) or	die( __( 'Cheatin&#8217; uh?', 'rocket' ) ); ?>
+<?php defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' ); ?>
 
 <h2><?php _e( 'Preload cache', 'rocket' ); ?></h2>
 <p><?php _e ( 'This video gives some explanations about our two crawler robots. They generate several cache files in a few seconds.', 'rocket' ); ?></p>
