@@ -17,7 +17,22 @@ abstract class ActionScheduler_TimezoneHelper {
 				if ( $gmt_offset == 0 ) {
 					$tzstring = 'UTC';
 				} else {
-					$tzstring = timezone_name_from_abbr('', $gmt_offset * HOUR_IN_SECONDS);
+					$gmt_offset *= HOUR_IN_SECONDS;
+					$tzstring = timezone_name_from_abbr('', $gmt_offset);
+					if ( false === $tzstring ) {
+						$is_dst = date( 'I' );
+						foreach ( timezone_abbreviations_list() as $abbr ) {
+							foreach ( $abbr as $city ) {
+								if ( $city['dst'] == $is_dst && $city['offset'] == $gmt_offset ) {
+									$tzstring = $city['timezone_id'];
+									break 2;
+								}
+							}
+						}
+					}
+					if ( false === $tzstring ) {
+						$tzstring = 'UTC';
+					}
 				}
 			}
 
