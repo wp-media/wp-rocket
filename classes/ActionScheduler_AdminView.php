@@ -76,10 +76,9 @@ class ActionScheduler_AdminView {
 	public function list_table_views( $views ) {
 
 		foreach ( $views as $view_key => $view ) {
-			switch ( $view_key ) {
-				case 'publish':
-					$views[ $view_key ] = str_replace( __( 'Published', 'action-scheduler' ), __( 'Complete', 'action-scheduler' ), $view );
-					break;
+			if ( 'publish' == $view_key ) {
+				$views[ $view_key ] = str_replace( __( 'Published', 'action-scheduler' ), __( 'Complete', 'action-scheduler' ), $view );
+				break;
 			}
 		}
 
