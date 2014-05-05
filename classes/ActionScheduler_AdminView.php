@@ -29,10 +29,12 @@ class ActionScheduler_AdminView {
 	 */
 	public function init() {
 
-		if ( ! defined( 'WP_DEBUG' ) || true !== WP_DEBUG )
+		if ( ! defined( 'WP_DEBUG' ) || true !== WP_DEBUG || ! is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) )
 			return;
 
 		self::$admin_url = admin_url( 'edit.php?post_type=' . ActionScheduler_wpPostStore::POST_TYPE );
+
+		add_filter( 'action_scheduler_post_type_args', array( self::instance(), 'action_scheduler_post_type_args' ) );
 
 		add_filter( 'views_edit-' . ActionScheduler_wpPostStore::POST_TYPE, array( self::instance(), 'list_table_views' ) );
 
@@ -55,6 +57,14 @@ class ActionScheduler_AdminView {
 		add_filter( 'posts_orderby', array( self::instance(), 'custom_orderby' ), 10, 2 );
 
 		add_filter( 'posts_search', array( self::instance(), 'search_post_password' ), 10, 2 );
+	}
+
+	public function action_scheduler_post_type_args( $args ) {
+		return array_merge( $args, array(
+			'show_ui' => true,
+			'show_in_menu' => 'tools.php',
+			'show_in_admin_bar' => false,
+		));
 	}
 
 	/**
