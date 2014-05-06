@@ -88,8 +88,8 @@
 <h2><?php _e( 'Is WP Rocket compatible with WooCommerce?', 'rocket' );?></h2>
 <p><?php _e( 'Yes.', 'rocket' );?></p>
 
-<p><?php _e( 'However, you should exclude basket and checkout pages from caching. This is done from the advanced option <code>never to cache pages</code> and adding the following values:', 'rocket' );?></p>
-<p><code><?php echo __( '/basket/', 'rocket' ) . '<br/>' .
+<p><?php _e( 'However, you should exclude cart and checkout pages from caching. This is done from the advanced option <code>never to cache pages</code> and adding the following values:', 'rocket' );?></p>
+<p><code><?php echo __( '/cart/', 'rocket' ) . '<br/>' .
 __( '/checkout/(.*)', 'rocket' );?></code></p>
 
 <h2><?php _e( 'Is WP Rocket compatible with WPML?', 'rocket' );?></h2>
