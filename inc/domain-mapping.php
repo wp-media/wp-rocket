@@ -9,7 +9,7 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
  */
 
 add_filter( 'rocket_parse_url', '__rocket_replace_domain_mapping_siteurl' );
-function __rocket_replace_domain_mapping_siteurl( $url ) {
+function rocket_replace_domain_mapping_siteurl( $url ) {
 
 	$url = str_replace( get_original_url( 'siteurl' ), domain_mapping_siteurl( false ), $url );
 	return $url;
@@ -28,7 +28,7 @@ function __rocket_replace_domain_mapping_siteurl( $url ) {
 add_filter( 'rocket_clean_files', '__rocket_clean_files_domain_mapping' );
 function __rocket_clean_files_domain_mapping( $urls ) {
 
-	$urls = array_map( '__rocket_replace_domain_mapping_siteurl' , $urls );
+	$urls = array_map( 'rocket_replace_domain_mapping_siteurl' , $urls );
 	return $urls;
 
 }

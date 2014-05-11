@@ -44,7 +44,7 @@ function rocket_field( $args )
 		}
 		$args['label_for'] = isset( $args['label_for'] ) ? $args['label_for'] : '';
 		$args['name'] 	= isset( $args['name'] ) ? $args['name'] : $args['label_for'];
-		$class			= isset( $args['class'] ) ? sanitize_html_class( $args['class'] ) : sanitize_html_class( $args['name'] ) ;
+		$class			= isset( $args['class'] ) ? sanitize_html_class( $args['class'] ) : sanitize_html_class( $args['name'] );
 		$placeholder 	= isset( $args['placeholder'] ) ? 'placeholder="'. $args['placeholder'].'" ' : '';
 		$label 			= isset( $args['label'] ) ? $args['label'] : '';
 		$readonly 		= $args['name'] == 'consumer_key' && rocket_valid_key() ? ' readonly="readonly"' : '';
@@ -66,12 +66,11 @@ function rocket_field( $args )
 					<label><input<?php if( $args['name'] == 'consumer_key' ){ echo ' autocomplete="off"'; } ?> type="<?php echo $args['type']; ?>"<?php echo $number_options; ?> id="<?php echo $args['label_for']; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]" value="<?php echo $value; ?>" <?php echo $placeholder; ?><?php echo $readonly; ?>/> <?php echo $label; ?></label>
 
 				<?php
-				if( $args['name'] == 'consumer_key' ){
+				if ( $args['name'] == 'consumer_key' ) {
 
-					if( !rocket_valid_key() )
-					{
+					if( !rocket_valid_key() ) {
 						echo '<span style="font-weight:bold;color:red">'. __('Key is not valid', 'rocket') .'</span>';
-					}else{
+					} else {
 						echo '<span style="font-weight:bold;color:green">'. __('Key is valid', 'rocket') .'</span>';
 					}
 
@@ -116,9 +115,16 @@ function rocket_field( $args )
 			<?php
 			break;
 
+			case 'repeater' :
+
+				$fields = new WP_Rocket_Repeater_Field( $args );
+				$fields->render();
+
+				break;
+
 			case 'rocket_defered_module' :
 
-					rocket_defered_module();
+				rocket_defered_module();
 
 			break;
 
@@ -167,80 +173,82 @@ function rocket_field( $args )
 function rocket_defered_module()
 { ?>
 
-		<legend class="screen-reader-text"><span><?php _e( '<b>JS</b> files with Deferred Loading JavaScript', 'rocket' ); ?></span></legend>
+	<legend class="screen-reader-text"><span><?php _e( '<b>JS</b> files with Deferred Loading JavaScript', 'rocket' ); ?></span></legend>
 
-		<div id="rkt-drop-deferred">
+	<div id="rkt-drop-deferred" class="rkt-module rkt-module-drop">
+
+		<?php
+
+		$deferred_js_files = get_rocket_option( 'deferred_js_files' );
+		$deferred_js_wait = get_rocket_option( 'deferred_js_wait' );
+
+		if( $deferred_js_files ) {
+
+			foreach( $deferred_js_files as $k=>$_url ) {
+
+				$checked = isset( $deferred_js_wait[$k] ) ? checked( $deferred_js_wait[$k], '1', false ) : ''; ?>
+
+			<p class="rkt-module-drag">
+
+				<img class="rkt-module-move hide-if-no-js" src="<?php echo WP_ROCKET_ADMIN_IMG_URL . 'icon-move.png'; ?>" width="16" heigth="16" alt="<?php _e( 'Move' ); ?>" />
+
+				<input style="width: 32em" type="text" placeholder="http://" class="deferred_js regular-text" name="wp_rocket_settings[deferred_js_files][<?php echo $k; ?>]" value="<?php echo esc_url( $_url ); ?>" />
+
+				<label>
+					<input type="checkbox" class="deferred_js" name="wp_rocket_settings[deferred_js_wait][<?php echo $k; ?>]" value="1" <?php echo $checked; ?>/> <?php _e( 'Wait until this file is loaded?', 'rocket' ); ?>
+				</label>
+				<span class="rkt-module-remove hide-if-no-js"><?php _e( 'Delete' ); ?></span>
+
+			</p>
+			<!-- .rkt-module-drag -->
 
 			<?php
-
-			$deferred_js_files = get_rocket_option( 'deferred_js_files' );
-			$deferred_js_wait = get_rocket_option( 'deferred_js_wait' );
-
-			if( $deferred_js_files )
-			{
-
-				foreach( $deferred_js_files as $k=>$_url )
-				{
-					$checked = isset( $deferred_js_wait[$k] ) ? checked( $deferred_js_wait[$k], '1', false ) : '';
-					// The loop on files
-				?>
-
-				<div class="rkt-drag-deferred">
-
-					<img class="rkt-move-deferred hide-if-no-js" src="<?php echo WP_ROCKET_ADMIN_IMG_URL . 'icon-move.png'; ?>" width="16" heigth="16" alt="<?php _e( 'Move' ); ?>" title="<?php _e( 'Move' ); ?>" />
-
-					<input style="width: 32em" type="text" placeholder="http://" class="deferred_js regular-text" name="wp_rocket_settings[deferred_js_files][<?php echo $k; ?>]" value="<?php echo esc_url( $_url ); ?>" />
-
-					<label>
-						<input type="checkbox" class="deferred_js" name="wp_rocket_settings[deferred_js_wait][<?php echo $k; ?>]" value="1" <?php echo $checked; ?>/> <?php _e( 'Wait until this file is loaded?', 'rocket' ); ?>
-					</label>
-					<span class="rkt-delete-deferred hide-if-no-js rkt-cross"><?php _e( 'Delete' ); ?></span>
-
-				</div>
-				<!-- .rkt-drag-deferred -->
-
-				<?php }
 			}
-			else
-			{
-				// If no files yet, use this template inside #rkt-drop-deferred
-				?>
 
-				<div class="rkt-drag-deferred">
+		} else {
+			// If no files yet, use this template inside #rkt-drop-deferred
+			?>
 
-					<img class="rkt-move-deferred hide-if-no-js" src="<?php echo WP_ROCKET_ADMIN_IMG_URL . 'icon-move.png'; ?>" width="16" heigth="16" alt="<?php _e( 'Move' ); ?>" title="<?php _e( 'Move' ); ?>" />
+			<p class="rkt-module-drag">
 
-					<input style="width: 32em" type="text" placeholder="http://" class="deferred_js regular-text" name="wp_rocket_settings[deferred_js_files][0]" value="" />
+				<img class="rkt-module-move hide-if-no-js" src="<?php echo WP_ROCKET_ADMIN_IMG_URL . 'icon-move.png'; ?>" width="16" heigth="16" alt="<?php _e( 'Move' ); ?>" />
 
-					<label>
-						<input type="checkbox" class="deferred_js" name="wp_rocket_settings[deferred_js_wait][0]" value="1" /> <?php _e( 'Wait until this file is loaded ?', 'rocket' ); ?>
-					</label>
+				<input style="width: 32em" type="text" placeholder="http://" class="deferred_js regular-text" name="wp_rocket_settings[deferred_js_files][0]" value="" />
 
-				</div>
-				<!-- .rkt-drag-deferred -->
+				<label>
+					<input type="checkbox" class="deferred_js" name="wp_rocket_settings[deferred_js_wait][0]" value="1" /> <?php _e( 'Wait until this file is loaded ?', 'rocket' ); ?>
+				</label>
 
-			<?php } ?>
+			</p>
+			<!-- .rkt-module-drag -->
 
-		</div>
-		<!-- .rkt-drop-deferred -->
+		<?php } ?>
 
-		<?php // Clone Template ?>
+	</div>
+	<!-- .rkt-drop-deferred -->
 
-		<div class="rkt-model-deferred rkt-drag-deferred hide-if-js">
+	<?php // Clone Template ?>
 
-			<img class="rkt-move-deferred hide-if-no-js" src="<?php echo WP_ROCKET_ADMIN_IMG_URL . 'icon-move.png'; ?>" width="16" heigth="16" alt="<?php _e( 'Move' ); ?>" title="<?php _e( 'Move' ); ?>" />
+	<div class="rkt-module-model hide-if-js">
+
+		<p class="rkt-module-drag">
+
+			<img class="rkt-module-move hide-if-no-js" src="<?php echo WP_ROCKET_ADMIN_IMG_URL . 'icon-move.png'; ?>" width="16" heigth="16" alt="<?php _e( 'Move' ); ?>" />
 
 			<input style="width: 32em" type="text" placeholder="http://" class="deferred_js regular-text" name="wp_rocket_settings[deferred_js_files][]" value="" />
 
 			<label>
 				<input type="checkbox" class="deferred_js" name="wp_rocket_settings[deferred_js_wait][]" value="1" /> <?php _e( 'Wait until this file is loaded?', 'rocket' ); ?>
 			</label>
-			<span class="rkt-delete-deferred hide-if-no-js rkt-cross"><?php _e( 'Delete' ); ?></span>
+			<span class="rkt-module-remove hide-if-no-js"><?php _e( 'Delete' ); ?></span>
 
-		</div>
-		<!-- .rkt-model-deferred-->
+		</p>
+		<!-- .rkt-module-drag -->
 
-		<p><a href="javascript:void(0)" id="rkt-clone-deferred" class="hide-if-no-js button-secondary"><?php _e( 'Add an URL', 'rocket' ); ?></a></p>
+	</div>
+	<!-- .rkt-model-deferred-->
+
+	<p><a href="javascript:void(0)" class="rkt-module-clone hide-if-no-js button-secondary"><?php _e( 'Add an URL', 'rocket' ); ?></a></p>
 
 <?php
 }
@@ -260,48 +268,44 @@ function rocket_cnames_module()
 	<fieldset>
 		<legend class="screen-reader-text"><span><?php _e( 'Replace site\'s hostname with:', 'rocket' ); ?></span></legend>
 
-		<div id="rkt-cnames">
+		<div id="rkt-cnames" class="rkt-module">
 
 			<?php
 
 			$cnames = get_rocket_option( 'cdn_cnames' );
 			$cnames_zone = get_rocket_option( 'cdn_zone' );
 
-			if( $cnames )
-			{
+			if( $cnames ) {
 
-				foreach( $cnames as $k=>$_url )
-				{ ?>
+				foreach( $cnames as $k=>$_url ) { ?>
 
-					<div class="rkt-cname">
+				<p>
 
-						<input style="width: 32em" type="text" placeholder="http://" class="regular-text" name="wp_rocket_settings[cdn_cnames][<?php echo $k; ?>]" value="<?php echo esc_attr( $_url ); ?>" />
+					<input style="width: 32em" type="text" placeholder="http://" class="regular-text" name="wp_rocket_settings[cdn_cnames][<?php echo $k; ?>]" value="<?php echo esc_attr( $_url ); ?>" />
 
-						<label>
-							<?php _e( 'reserved for', 'rocket' ); ?>
-							<select name="wp_rocket_settings[cdn_zone][<?php echo $k; ?>]">
-								<option value="all" <?php selected( $cnames_zone[$k], 'all' ); ?>><?php _e( 'All files', 'rocket' ); ?></option>
-								<option value="images" <?php selected( $cnames_zone[$k], 'images' ); ?>><?php _e( 'Images', 'rocket' ); ?></option>
-								<option value="css_and_js" <?php selected( $cnames_zone[$k], 'css_and_js' ); ?>>CSS & JavaScript</option>
-								<option value="js" <?php selected( $cnames_zone[$k], 'js' ); ?>>JavaScript</option>
-								<option value="css" <?php selected( $cnames_zone[$k], 'css' ); ?>>CSS</option>
-							</select>
-						</label>
-						<span class="rkt-delete-cname hide-if-no-js rkt-cross"><?php _e( 'Delete' ); ?></span>
+					<label>
+						<?php _e( 'reserved for', 'rocket' ); ?>
+						<select name="wp_rocket_settings[cdn_zone][<?php echo $k; ?>]">
+							<option value="all" <?php selected( $cnames_zone[$k], 'all' ); ?>><?php _e( 'All files', 'rocket' ); ?></option>
+							<option value="images" <?php selected( $cnames_zone[$k], 'images' ); ?>><?php _e( 'Images', 'rocket' ); ?></option>
+							<option value="css_and_js" <?php selected( $cnames_zone[$k], 'css_and_js' ); ?>>CSS & JavaScript</option>
+							<option value="js" <?php selected( $cnames_zone[$k], 'js' ); ?>>JavaScript</option>
+							<option value="css" <?php selected( $cnames_zone[$k], 'css' ); ?>>CSS</option>
+						</select>
+					</label>
+					<span class="rkt-module-remove hide-if-no-js"><?php _e( 'Delete' ); ?></span>
 
-					</div>
+				</p>
 
 				<?php
 				}
 
-			}
-			else
-			{
+			} else {
 
 				// If no files yet, use this template inside #rkt-cnames
 				?>
 
-				<div class="rkt-cname">
+				<p>
 
 					<input style="width: 32em" type="text" placeholder="http://" class="regular-text" name="wp_rocket_settings[cdn_cnames][]" value="" />
 
@@ -316,37 +320,42 @@ function rocket_cnames_module()
 						</select>
 					</label>
 
-				</div>
+				</p>
 
 			<?php } ?>
 
 		</div>
 
 		<?php // Clone Template ?>
-		<div class="rkt-model-cname rkt-cname hide-if-js">
+		<div class="rkt-module-model hide-if-js">
 
-			<input style="width: 32em" type="text" placeholder="http://" class="regular-text" name="wp_rocket_settings[cdn_cnames][]" value="" />
+			<p>
 
-			<label>
-				<?php _e( 'reserved for', 'rocket' ); ?>
-				<select name="wp_rocket_settings[cdn_zone][]">
-					<option value="all"><?php _e( 'All files', 'rocket' ); ?></option>
-					<option value="images"><?php _e( 'Images', 'rocket' ); ?></option>
-					<option value="css_and_js">CSS & JavaScript</option>
-					<option value="js">JavaScript</option>
-					<option value="css">CSS</option>
-				</select>
-			</label>
-			<span class="rkt-delete-cname hide-if-no-js rkt-cross"><?php _e( 'Delete' ); ?></span>
+				<input style="width: 32em" type="text" placeholder="http://" class="regular-text" name="wp_rocket_settings[cdn_cnames][]" value="" />
+
+				<label>
+					<?php _e( 'reserved for', 'rocket' ); ?>
+					<select name="wp_rocket_settings[cdn_zone][]">
+						<option value="all"><?php _e( 'All files', 'rocket' ); ?></option>
+						<option value="images"><?php _e( 'Images', 'rocket' ); ?></option>
+						<option value="css_and_js">CSS & JavaScript</option>
+						<option value="js">JavaScript</option>
+						<option value="css">CSS</option>
+					</select>
+				</label>
+				<span class="rkt-module-remove hide-if-no-js"><?php _e( 'Delete' ); ?></span>
+
+			</p>
 
 		</div>
 
-		<p><a href="javascript:void(0)" id="rkt-clone-cname" class="hide-if-no-js button-secondary"><?php _e( 'Add CNAME', 'rocket' ); ?></a></p>
+		<p><a href="javascript:void(0)" class="rkt-module-clone hide-if-no-js button-secondary"><?php _e( 'Add CNAME', 'rocket' ); ?></a></p>
 
 	</fieldset>
 
 <?php
 }
+
 
 
 /**
@@ -358,23 +367,20 @@ function rocket_cnames_module()
 
 function rocket_button( $args )
 {
-	$button = $args['button'];
-	$desc = isset( $args['helper_description'] ) ? $args['helper_description'] : null;
-	$help = isset( $args['helper_help'] ) ? $args['helper_help'] : null;
+	$button  = $args['button'];
+	$desc    = isset( $args['helper_description'] ) ? $args['helper_description'] : null;
+	$help    = isset( $args['helper_help'] ) ? $args['helper_help'] : null;
 	$warning = isset( $args['helper_warning'] ) ? $args['helper_warning'] : null;
-	$class = sanitize_html_class( strip_tags( $button['button_label'] ) );
+	$class   = sanitize_html_class( strip_tags( $button['button_label'] ) );
 
 
-	if( !empty( $help ) )
-	{
+	if( ! empty( $help ) ) {
 		$help = '<p class="description help '.$class.'">'.$help['description'].'</p>';
 	}
-	if( !empty( $desc ) )
-	{
+	if( ! empty( $desc ) ) {
 		$desc = '<p class="description desc '.$class.'">'.$desc['description'].'</p>';
 	}
-	if( !empty( $warning ) )
-	{
+	if( ! empty( $warning ) ) {
 		$warning = '<p class="description warning file-error '.$class.'"><b>'.__( 'Warning: ', 'rocket' ) . '</b>' . $warning['description'].'</p>';
 	}
 ?>
@@ -719,6 +725,34 @@ function rocket_display_options()
 		)
 	);
 	add_settings_field(
+		'minify_js_in_footer',
+		__( 'Fichiers <b>JS</b> à inclure dans le footer lors du processus de minification :', 'rocket' ),
+		'rocket_field',
+		'advanced',
+		'rocket_display_imp_options',
+		array(
+			array(
+				'type'                     => 'repeater',
+				'label_screen'             => __( 'Fichiers <b>JS</b> à inclure dans le footer lors du processus de minification :', 'rocket' ),
+				'name'                     => 'minify_js_in_footer',
+				'placeholder'              => 'http://',
+				'repeater_drag_n_drop'     => true,
+				'repeater_label_add_field' => __( 'Add an URL', 'rocket' )
+			),
+			array(
+				'type'         => 'helper_help',
+				'name'         => 'minify_js_in_footer',
+				'description'  => __( 'Empty the field to remove it.', 'rocket' ),
+				'class'	       => 'hide-if-js'
+			),
+			array(
+				'type'         => 'helper_warning',
+				'name'         => 'minify_js_in_footer',
+				'description'  => __( 'You must specify the complete URL of the files.', 'rocket' )
+			)
+		)
+	);
+	add_settings_field(
 		'rocket_deferred_js',
 		__( '<b>JS</b> files with deferred loading:', 'rocket' ),
 		'rocket_field',
@@ -727,23 +761,23 @@ function rocket_display_options()
 		array(
 			array(
 				'type'         => 'rocket_defered_module',
-				),
+			),
 			array(
 				'type'         => 'helper_help',
 				'name'         => 'deferred_js',
 				'description'  => __( 'You can add JavaScript files that will be loaded asynchronously at the same time as the page loads.', 'rocket' )
-				),
+			),
 			array(
 				'type'         => 'helper_help',
 				'name'         => 'deferred_js',
 				'description'  => __( 'Empty the field to remove it.', 'rocket' ),
 				'class'	       => 'hide-if-js'
-				),
+			),
 			array(
 				'type'         => 'helper_warning',
 				'name'         => 'deferred_js',
 				'description'  => __( 'You must specify the complete URL of the files.', 'rocket' )
-				),
+			)
 		)
 	);
 
@@ -1067,10 +1101,10 @@ function rocket_settings_callback( $inputs )
 	/*
 	 * Option : Minification CSS & JS
 	 */
-	
+
 	$inputs['minify_css'] = isset( $inputs['minify_css'] );
 	$inputs['minify_js'] = isset( $inputs['minify_js'] );
-	
+
 	/*
 	 * Option : Purge delay
 	 */
@@ -1147,41 +1181,32 @@ function rocket_settings_callback( $inputs )
 	if ( ! empty( $inputs['exclude_js'] ) )
 	{
 		$inputs['exclude_js'] = array_unique( (array) array_filter( array_map( 'rocket_sanitize_js', array_map( 'rocket_clean_exclude_file',	array_map( 'trim', explode( "\n", $inputs['exclude_js']) ) ) ) ) );
-	}else{
+	} else {
 		$inputs['exclude_js'] = array();
 	}
+
 
 
 	/*
 	 * Option : JS files with deferred loading
 	 */
 
-	if ( ! empty( $inputs['deferred_js_files'] ) )
-	{
+	if ( ! empty( $inputs['deferred_js_files'] ) ) {
 		$inputs['deferred_js_files'] = array_filter( array_map( 'rocket_sanitize_js', array_unique( $inputs['deferred_js_files'] ) ) );
-	}
-	else
-	{
+	} else {
 		$inputs['deferred_js_files'] = array();
 	}
 
 
-	if ( ! $inputs['deferred_js_files'] )
-	{
+	if ( ! $inputs['deferred_js_files'] ) {
 		$inputs['deferred_js_wait'] = array();
-	}
-	else
-	{
+	} else {
 
-		for ( $i=0; $i<=max( array_keys( $inputs['deferred_js_files'] ) ); $i++ )
-		{
+		for ( $i=0; $i<=max( array_keys( $inputs['deferred_js_files'] ) ); $i++ ) {
 
-			if( !isset( $inputs['deferred_js_files'][$i] ) )
-			{
+			if( !isset( $inputs['deferred_js_files'][$i] ) ) {
 				unset( $inputs['deferred_js_wait'][$i] );
-			}
-			else
-			{
+			} else {
 				$inputs['deferred_js_wait'][$i] = isset( $inputs['deferred_js_wait'][$i] ) ? '1' : '0';
 			}
 
@@ -1192,6 +1217,29 @@ function rocket_settings_callback( $inputs )
 		$inputs['deferred_js_wait'] = array_values( $inputs['deferred_js_wait'] );
 
 	}
+
+
+
+	/*
+	 * Option : JS files of the minification to insert in footer
+	 */
+
+	if ( ! empty( $inputs['minify_js_in_footer'] ) ) {
+
+		foreach( $inputs['minify_js_in_footer'] as $k=>$url ) {
+
+			if( in_array( $url, $inputs['deferred_js_files'] ) ) {
+				unset( $inputs['minify_js_in_footer'][$k] );
+			}
+
+		}
+
+		$inputs['minify_js_in_footer'] = array_filter( array_map( 'rocket_sanitize_js', array_unique( $inputs['minify_js_in_footer'] ) ) );
+
+	} else {
+		$inputs['minify_js_in_footer'] = array();
+	}
+
 
 
 	/*
@@ -1276,23 +1324,23 @@ function rocket_settings_callback( $inputs )
 add_action( 'update_option_' . WP_ROCKET_SLUG, 'rocket_after_save_options', 10, 2 );
 function rocket_after_save_options( $oldvalue, $value )
 {
-	
+
 	// Check if a plugin translation is activated
 	if ( rocket_has_translation_plugin_active() ) {
 		// Purge all cache files
 		rocket_clean_domain_for_all_langs();
 	} else {
 		// Purge all cache files
-		rocket_clean_domain();	
+		rocket_clean_domain();
 	}
-	
+
 	// Purge all minify cache files
 	if( !empty( $_POST ) && ( $oldvalue['minify_css'] != $value['minify_css'] || $oldvalue['exclude_css'] != $value['exclude_css'] ) ) {
-		rocket_clean_minify('css');	
+		rocket_clean_minify('css');
 	}
-	
-	if( !empty( $_POST ) && ( $oldvalue['minify_js'] != $value['minify_js'] || $oldvalue['exclude_js']  != $value['exclude_js'] ) ) {
-		rocket_clean_minify( 'js' );	
+
+	if( !empty( $_POST ) && ( $oldvalue['minify_js'] != $value['minify_js'] || $oldvalue['exclude_js'] != $value['exclude_js'] || $oldvalue['minify_js_in_footer'] != $value['minify_js_in_footer'] ) ) {
+		rocket_clean_minify( 'js' );
 	}
 
 	// Update .htaccess file rules
@@ -1353,10 +1401,11 @@ function rocket_pre_main_option( $newvalue, $oldvalue )
 	) {
 		$newvalue['minify_css_key'] = create_rocket_uniqid();
 	}
-	
+
 	// Regenerate the minify key if JS files have been modified
 	if( ( isset( $newvalue['minify_js'], $oldvalue['minify_js'] ) && $newvalue['minify_js'] != $oldvalue['minify_js'] )
 		|| ( isset( $newvalue['exclude_js'], $oldvalue['exclude_js'] ) && $newvalue['exclude_js'] != $oldvalue['exclude_js'] )
+		|| ( isset( $newvalue['minify_js_in_footer'], $oldvalue['minify_js_in_footer'] ) && $newvalue['minify_js_in_footer'] != $oldvalue['minify_js_in_footer'] )
 	) {
 		$newvalue['minify_js_key'] = create_rocket_uniqid();
 	}
@@ -1377,6 +1426,7 @@ function rocket_hidden_fields( $fields )
 	if( !is_array( $fields ) ) {
 		return;
 	}
+
 	foreach( $fields as $field ) {
 		echo '<input type="hidden" name="wp_rocket_settings['.$field.']" value="' . esc_attr( get_rocket_option( $field ) ) . '" />';
 	}
