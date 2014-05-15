@@ -64,7 +64,7 @@ add_action( 'wp_footer', '__rocket_insert_minify_js_in_footer', PHP_INT_MAX );
 function __rocket_insert_minify_js_in_footer() {
 
 	if( get_rocket_option( 'minify_js' ) ) {
-		
+
 		$home_host     = parse_url( home_url(), PHP_URL_HOST );
 		$files         = get_rocket_option( 'minify_js_in_footer', array() );
 		$ordered_files = array();
@@ -90,10 +90,10 @@ function __rocket_insert_minify_js_in_footer() {
 			}
 
 		}
-		
+
 		// Print tags
 		foreach( $ordered_files as $files ) {
-			
+
 			// Check if its an external file
 			if( is_string( $files ) ) {
 				echo '<script src="' . $files . '" data-minify="1"></script>';
@@ -189,13 +189,13 @@ function rocket_minify_inline_js( $js )
 function rocket_minify_css( $buffer )
 {
 
-    $home_host          = parse_url( home_url(), PHP_URL_HOST );
-    $internal_files     = array();
-    $external_tags      = '';
-    $excluded_tags      = '';
-    $fonts_tags         = '';
-    $excluded_css       = get_rocket_option( 'exclude_css', array() );
-    $wp_content_dirname = ltrim( str_replace( home_url(), '', WP_CONTENT_URL ), '/' ) . '/';
+    $home_host            = parse_url( home_url(), PHP_URL_HOST );
+    $internal_files       = array();
+    $external_tags        = '';
+    $excluded_tags        = '';
+    $fonts_tags           = '';
+    $excluded_css         = get_rocket_option( 'exclude_css', array() );
+    $wp_content_dirname   = ltrim( str_replace( home_url(), '', WP_CONTENT_URL ), '/' ) . '/';
 
     // Get all css files with this regex
     preg_match_all( '/<link.+href=[\'|"]([^\'|"]+\.css?.+)[\'|"].+>/iU', $buffer, $tags_match );
@@ -300,13 +300,21 @@ function rocket_minify_css( $buffer )
 function rocket_minify_js( $buffer )
 {
 
-	$home_host          = parse_url( home_url(), PHP_URL_HOST );
-    $internal_files     = array();
-    $external_tags      = '';
-    $excluded_tags      = '';
-    $excluded_js        = get_rocket_option( 'exclude_js', array() );
-    $js_in_footer       = get_rocket_option( 'minify_js_in_footer', array() );
-    $wp_content_dirname = ltrim( str_replace( home_url(), '', WP_CONTENT_URL ), '/' ) . '/';
+	$home_host            = parse_url( home_url(), PHP_URL_HOST );
+    $internal_files       = array();
+    $external_tags        = '';
+    $excluded_tags        = '';
+    $excluded_js          = get_rocket_option( 'exclude_js', array() );
+    $js_in_footer         = get_rocket_option( 'minify_js_in_footer', array() );
+    $wp_content_dirname   = ltrim( str_replace( home_url(), '', WP_CONTENT_URL ), '/' ) . '/';
+
+	/**
+	 * Filter JS externals files to exclude of the minification process (do not move into the header)
+	 *
+	 * @since 2.2
+	 * @param array Hostname of JS files to exclude
+	 */
+	$excluded_external_js = apply_filters( 'rocket_minify_excluded_external_js', array( 'forms.aweber.com', 'video.unrulymedia.com' ) );
 
     // Get all JS files with this regex
     preg_match_all( '#<script.*src=[\'|"]([^\'|"]+\.js?.+)[\'|"].*></script>#iU', $buffer, $tags_match );
@@ -365,6 +373,11 @@ function rocket_minify_js( $buffer )
 					$excluded_tag = true;
 				}
 
+			// If it is an excluded external file
+			} else if ( in_array( $js_url['host'], $excluded_external_js ) ) {
+
+				$excluded_tag = true;
+
 			// If it is an external file
 			} else {
 				$external_tags .= $tag;
@@ -380,7 +393,7 @@ function rocket_minify_js( $buffer )
 		}
 
 	}
-	
+
 	// Exclude JS files to insert in footer
 	foreach( $internal_files as $k=>$url ) {
 
