@@ -147,5 +147,64 @@ class ActionScheduler_QueueRunner_Test extends ActionScheduler_UnitTestCase {
 
 		remove_action( $random, array( $mock, 'action' ) );
 	}
+
+	public function test_changing_batch_count_limit() {
+		$store = new ActionScheduler_wpPostStore();
+		$runner = new ActionScheduler_QueueRunner( $store );
+
+		$random = md5(rand());
+		$schedule = new ActionScheduler_SimpleSchedule(new DateTime('1 day ago'));
+
+		for ( $i = 0 ; $i < 30 ; $i++ ) {
+			$action = new ActionScheduler_Action( $random, array($random), $schedule );
+			$store->save_action( $action );
+		}
+
+		$claims = array();
+
+		for ( $i = 0 ; $i < 5 ; $i++ ) {
+			$claims[] = $store->stake_claim( 5 );
+		}
+
+		$mock1 = new MockAction();
+		add_action( $random, array( $mock1, 'action' ) );
+		$actions_run = $runner->run();
+		remove_action( $random, array( $mock1, 'action' ) );
+
+		$this->assertEquals( 0, $mock1->get_call_count() );
+		$this->assertEquals( 0, $actions_run );
+
+
+		add_filter( 'action_scheduler_max_claims', array( $this, 'return_6' ) );
+
+		$mock2 = new MockAction();
+		add_action( $random, array( $mock2, 'action' ) );
+		$actions_run = $runner->run();
+		remove_action( $random, array( $mock2, 'action' ) );
+
+		$this->assertEquals( 5, $mock2->get_call_count() );
+		$this->assertEquals( 5, $actions_run );
+
+		remove_filter( 'action_scheduler_max_claims', array( $this, 'return_6' ) );
+
+		for ( $i = 0 ; $i < 5 ; $i++ ) { // to make up for the actions we just processed
+			$action = new ActionScheduler_Action( $random, array($random), $schedule );
+			$store->save_action( $action );
+		}
+
+		$mock3 = new MockAction();
+		add_action( $random, array( $mock3, 'action' ) );
+		$actions_run = $runner->run();
+		remove_action( $random, array( $mock3, 'action' ) );
+
+		$this->assertEquals( 0, $mock3->get_call_count() );
+		$this->assertEquals( 0, $actions_run );
+
+		remove_filter( 'action_scheduler_max_claims', array( $this, 'return_6' ) );
+	}
+
+	public function return_6() {
+		return 6;
+	}
 }
  
