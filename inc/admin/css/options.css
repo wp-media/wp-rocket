@@ -1,6 +1,14 @@
-#icon-rocket.icon32 {background: url('../img/logo-wp-rocket.png') no-repeat}
-#rockettabs{background-color: #fff}
-.rkt-tab {padding: 0 10px;}
-.rkt-tab-txt h2 {font-size: 20px}
-.rkt-tab-txt ul {list-style-type: disc; padding-left: 1em}
+input[type=number].small-text{height:28px}
+#rockettabs{background-color:#fff}
+.rkt-tab{padding:0 10px}
+.rkt-tab-txt h2{font-size:20px}
+.rkt-tab-txt ul{list-style-type:disc;padding-left:1em}
+#tab_faq th{display:none}
+.rkt-move-deferred{cursor:move}
+.button-link:after,.rocketicon:before{vertical-align:middle;padding-right:5px;display:inline-block;-webkit-font-smoothing:antialiased;font:normal 1.5em/1 'dashicons'}
+.rocketicon-video:before{content: "\f236";color:#B80303}
+.rkt-tab-txt ol li{line-height:0.5em}
+.rkt-tab-txt ol li h2{line-height:0.5em}
+.rkt-tab-txt ol li h2 a{font-size:0.8em}
+.button-link:after{content:" \f310";font-size:1.1em;padding-left:3px}
 .rkt-module-drag{cursor: move;}

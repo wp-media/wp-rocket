@@ -16,14 +16,17 @@ function get_rocket_advanced_cache_file()
 	$buffer = '<?php' . "\n";
 	$buffer .= 'defined( \'ABSPATH\' ) or die( \'Cheatin\\\' uh?\' );' . "\n\n";
 
+	// Add a constant to be sure this is our file
+	$buffer .= 'define( \'WP_ROCKET_ADVANCED_CACHE\', true );' . "\n";
+	
 	// Get cache path
-	$buffer .= '$rocket_cache_path = \'' . WP_ROCKET_CACHE_PATH . '\'' . ";\n";
-
+	$buffer .= '$rocket_cache_path = \'' . WP_ROCKET_CACHE_PATH . '\';' . "\n";
+	
 	// Get config path
-	$buffer .= '$rocket_config_path = \'' . WP_ROCKET_CONFIG_PATH . '\'' . ";\n";
-
-	// Include the process file in buffer
-	$buffer .= 'include( \''. WP_ROCKET_FRONT_PATH . 'process.php' . '\' );';
+	$buffer .= '$rocket_config_path = \'' . WP_ROCKET_CONFIG_PATH . '\';' . "\n";
+	
+	// Include the process file in buffer 
+	$buffer .= 'include( \''. WP_ROCKET_FRONT_PATH . 'process.php' . '\' );' . "\n";
 
 	/**
 	 * Filter the content of advanced-cache.php file
@@ -178,7 +181,7 @@ function set_rocket_wp_cache_define( $turn_it_on )
 {
 
 	// If WP_CACHE is already define, return to get a coffee
-	if( $turn_it_on && defined( 'WP_CACHE' ) && WP_CACHE  ) {
+	if( ! rocket_valid_key() || ( $turn_it_on && defined( 'WP_CACHE' ) && WP_CACHE ) ) {
 		return;
 	}
 
@@ -206,7 +209,7 @@ function set_rocket_wp_cache_define( $turn_it_on )
 	$is_wp_cache_exist = false;
 
 	// Get WP_CACHE constant define
-	$constant = "define('WP_CACHE', $turn_it_on); // Added by " . WP_ROCKET_PLUGIN_NAME . "\r\n";
+	$constant = "define('WP_CACHE', $turn_it_on); // Added by WP Rocket". "\r\n";
 
 	foreach ( $config_file as &$line ) {
 		if ( !preg_match( '/^define\(\'([A-Z_]+)\',([ ]+)/', $line, $match ) ) {
@@ -285,7 +288,8 @@ function rocket_clean_minify( $extensions = array( 'js', 'css' ) )
 function rocket_clean_files( $urls )
 {
 
-	if ( is_string( $urls ) ) {
+	if( is_string( $urls ) )
+	{
 		$urls = (array)$urls;
 	}
 
@@ -297,7 +301,7 @@ function rocket_clean_files( $urls )
 	*/
 	$urls = apply_filters( 'rocket_clean_files', $urls );
 
-    foreach ( array_filter($urls) as $url ) {
+    foreach( array_filter($urls) as $url ) {
 
 		/**
 		 * Fires before the cache file is deleted
@@ -308,7 +312,7 @@ function rocket_clean_files( $urls )
 		do_action( 'before_rocket_clean_file', $url );
 
 		if ( $dirs = glob( WP_ROCKET_CACHE_PATH . rocket_remove_url_protocol( $url ), GLOB_NOSORT ) ) {
-			foreach ( $dirs as $dir ) {
+			foreach( $dirs as $dir ) {
 				rocket_rrmdir( $dir );
 			}
 		}
@@ -509,7 +513,7 @@ function rocket_rrmdir( $dir, $dirs_to_preserve = array() )
 
 	do_action( 'before_rocket_rrmdir', $dir, $dirs_to_preserve );
 
-	if ( ! is_dir( $dir ) ) {
+	if( !is_dir( $dir ) ) {
 		@unlink( $dir );
 		return;
 	};
@@ -517,20 +521,19 @@ function rocket_rrmdir( $dir, $dirs_to_preserve = array() )
     if( $dirs = glob( $dir . '/*', GLOB_NOSORT ) ) {
 
 		$keys = array();
-		foreach ( $dirs_to_preserve as $dir_to_preserve ) {
+		foreach( $dirs_to_preserve as $dir_to_preserve ) {
 			$matches = preg_grep( "#^$dir_to_preserve$#" , $dirs );
 			$keys[] = reset( $matches );
 		}
 
 		$dirs = array_diff( $dirs, array_filter( $keys ) );
-		foreach ( $dirs as $dir ) {
-
-			if ( is_dir( $dir ) ) {
+		foreach( $dirs as $dir ) {
+			if( is_dir( $dir ) ) {
 				rocket_rrmdir( $dir, $dirs_to_preserve );
-			} else {
+			}
+			else {
 				@unlink( $dir );
 			}
-
 		}
 	}
 
@@ -639,12 +642,12 @@ function rocket_put_content( $file, $content )
 
 function rocket_fetch_and_cache_minify( $url, $pretty_url )
 {
-
+	
 	// Check if php-curl is enabled
 	if ( ! function_exists( 'curl_init' ) || ! function_exists( 'curl_exec' ) ) {
 		return false;
 	}
-
+	
 	$pretty_path = str_replace( WP_ROCKET_MINIFY_CACHE_URL, WP_ROCKET_MINIFY_CACHE_PATH, $pretty_url );
 
 	// If minify cache file is already exist, return to get a coffee :)

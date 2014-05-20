@@ -44,11 +44,12 @@ function rocket_renew_all_boxes( $uid = null, $keep_this = array() )
 function rocket_renew_box( $function, $uid = 0 )
 {
 	global $current_user;
-	$uid = $uid == 0 ? $current_user->ID : $uid;
+	$uid = $uid==0 ? $current_user->ID : $uid;
 	$actual = get_user_meta( $uid, 'rocket_boxes', true );
 
-	if ( $actual ) {
-		unset( $actual[ array_search( $function, $actual ) ] );
+	if( $actual && false !== array_search( $function, $actual ) )
+	{
+		unset( $actual[array_search( $function, $actual )] );
 		update_user_meta( $uid, 'rocket_boxes', $actual );
 	}
 

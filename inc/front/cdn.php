@@ -25,7 +25,7 @@ function rocket_cdn_file( $url )
 
 	$filter = current_filter();
 	switch ( $filter ) {
-
+		
 		case 'wp_get_attachment_url':
 		case 'smilies_src':
 
@@ -36,7 +36,7 @@ function rocket_cdn_file( $url )
 		case 'wp_minify_css_url':
 		case 'wp_minify_js_url':
 		case 'bwp_get_minify_src':
-			
+
 			$zone = array( 'all', 'css_and_js', pathinfo( $url, PATHINFO_EXTENSION ) );
 			break;
 
@@ -119,9 +119,9 @@ function rocket_cdn_enqueue( $src )
 {
 
 	global $pagenow;
-
+	
 	// Don't use CDN if in admin, in login page, in register page or in a post preview
-	if ( is_admin() || is_preview() || in_array( $pagenow, array('wp-login.php', 'wp-register.php' ) ) ) {
+	if ( is_admin() || is_preview() || in_array( $pagenow, array( 'wp-login.php', 'wp-register.php' ) ) ) {
 		return $src;
 	}
 

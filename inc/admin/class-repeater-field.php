@@ -78,7 +78,7 @@ class WP_Rocket_Repeater_Field {
 
 		if ( $this->is_drag_n_drop ) { ?>
 
-			<img class="rkt-module-move hide-if-no-js" src="<?php echo WP_ROCKET_ADMIN_IMG_URL . 'icon-move.png'; ?>" width="16" heigth="16" alt="<?php _e( 'Move' ); ?>" />
+			<span class="dashicons dashicons-sort rkt-module-move hide-if-no-js"></span>
 
 		<?php
 		}
@@ -143,7 +143,7 @@ class WP_Rocket_Repeater_Field {
 			<input style="width: 32em" type="text" <?php echo $this->placeholder; ?> class="<?php echo $this->option; ?> regular-text" name="wp_rocket_settings[<?php echo $this->option; ?>][<?php echo $key; ?>]" value="<?php echo $value; ?>" />
 
 			<?php if( $remove_button ) { ?>
-				<span class="rkt-module-remove hide-if-no-js"><?php _e( 'Delete' ); ?></span>
+				<span class="dashicons dashicons-no rkt-module-remove hide-if-no-js "></span>
 			<?php } ?>
 
 			<?php

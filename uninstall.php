@@ -1,8 +1,7 @@
 <?php
 
 // If uninstall not called from WordPress exit
-if( !defined( 'WP_UNINSTALL_PLUGIN' ) )
-	exit();
+defined( 'WP_UNINSTALL_PLUGIN' ) or die( 'Cheatin&#8217; uh?' );
 
 /**
  * Delete option and transient from option table
@@ -13,8 +12,7 @@ if( !defined( 'WP_UNINSTALL_PLUGIN' ) )
 
 delete_site_transient( 'update_wprocket' );
 delete_option( 'wp_rocket_settings' );
-global $wpdb;
-$wpdb->query( 'DELETE FROM '.$wpdb->usermeta.' WHERE meta_key="rocket_boxes"' );
+delete_metadata( 'user', '', 'rocket_boxes', '', true ); // magical true
 
 
 /**
@@ -32,10 +30,8 @@ function __rocket_rrmdir( $dir )
 		return;	
 	}
 
-    if( $globs = glob( $dir . '/*' ) ) 
-    {
-	    foreach( $globs as $file ) 
-	    {
+    if( $globs = glob( $dir . '/*', GLOB_NOSORT ) ) {
+	    foreach( $globs as $file ) {
 			is_dir( $file ) ? __rocket_rrmdir($file) : @unlink( $file );
 	    }
 	}

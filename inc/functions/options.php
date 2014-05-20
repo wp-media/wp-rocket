@@ -5,7 +5,7 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 /**
  * A wrapper to easily get rocket option
  *
- * @since 2.0 Use get_site_option "à la place de" get_option
+ * @since 2.0 Use get_site_option in place of get_option //// euh non ?
  * @since 1.3.0
  *
  */
@@ -13,7 +13,12 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 function get_rocket_option( $option, $default=false )
 {
 	$options = get_option( WP_ROCKET_SLUG );
-	return isset( $options[$option] ) ? $options[$option] : $default;
+	if ( 'consumer_key' == $option && defined( 'WP_ROCKET_KEY' ) ) {
+		return WP_ROCKET_KEY;
+	} elseif( 'consumer_email' == $option && defined( 'WP_ROCKET_EMAIL' ) ) {
+		return WP_ROCKET_EMAIL;
+	}
+	return isset( $options[$option] ) && ! empty( $options[$option] ) ? $options[$option] : $default;
 }
 
 
@@ -27,7 +32,7 @@ function get_rocket_option( $option, $default=false )
 
 function is_rocket_cache_mobile()
 {
-	return get_rocket_option( 'cache_mobile', 0 );
+	return get_rocket_option( 'cache_mobile', false );
 }
 
 
@@ -41,7 +46,7 @@ function is_rocket_cache_mobile()
 
 function is_rocket_cache_ssl()
 {
-	return get_rocket_option( 'cache_ssl', 0 );
+	return get_rocket_option( 'cache_ssl', false );
 }
 
 
@@ -56,9 +61,10 @@ function is_rocket_cache_ssl()
 
 function get_rocket_purge_cron_interval()
 {
-	if( !get_rocket_option( 'purge_cron_interval' ) || !get_rocket_option( 'purge_cron_unit' ) )
+	if ( ! get_rocket_option( 'purge_cron_interval' ) || ! get_rocket_option( 'purge_cron_unit' ) ) {
 		return 0;
-	return (int)( get_rocket_option( 'purge_cron_interval' ) * constant( get_rocket_option( 'purge_cron_unit' ) ) );
+	}
+	return (int) ( get_rocket_option( 'purge_cron_interval' ) * constant( get_rocket_option( 'purge_cron_unit' ) ) );
 }
 
 
@@ -179,10 +185,78 @@ function get_rocket_cdn_cnames( $_zone = 'all' )
 
 function rocket_valid_key()
 {
-	
-	if( !get_rocket_option( 'consumer_key' ) || !get_rocket_option( 'secret_key' ) )
-		return false;
 
-	return get_rocket_option( 'consumer_key' )==hash( 'crc32', rocket_get_domain( home_url() ) ) && get_rocket_option( 'secret_key' )==md5( get_rocket_option( 'consumer_key' ) );
+	return 8 == strlen( get_rocket_option( 'consumer_key' ) ) && get_rocket_option( 'secret_key' ) == hash( 'crc32', get_rocket_option( 'consumer_email' ) );
+
+}
+
+
+/**
+ * Determine if the key is valid
+ *
+ * @since 2.2 The function do the live check and update the option
+ *
+ */
+
+function rocket_check_key( $type = 'transient_1', $data = null )
+{
+
+	// Recheck the license
+	$return = rocket_valid_key();
+
+	if ( ! rocket_valid_key()
+		|| ( 'transient_1' == $type && ! get_transient( 'rocket_check_licence_1' ) ) 
+		|| ( 'transient_30' == $type && ! get_transient( 'rocket_check_licence_30' ) ) 
+		|| 'live' == $type ) {
+
+		if ( 'live' != $type ) {
+			if ( 'transient_1' == $type ) {
+				set_transient( 'rocket_check_licence_1', true, DAY_IN_SECONDS );
+			} elseif ( 'transient_30' == $type ) {
+				set_transient( 'rocket_check_licence_30', true, DAY_IN_SECONDS*30 );
+			}
+		}
+
+		add_filter( 'http_headers_useragent', 'rocket_user_agent' );
+		$response = wp_remote_get( WP_ROCKET_WEB_VALID, array( 'timeout'=>30 ) );
+		remove_filter( 'http_headers_useragent', 'rocket_user_agent' );
+
+		$json = json_decode( $response['body'] );
+		$rocket_options = array();
+
+		if ( ! is_wp_error( $response ) && $json ) {
+
+			$rocket_options['consumer_key'] 	= $json->data->consumer_key;
+			$rocket_options['consumer_email']	= $json->data->consumer_email;
+
+			if( $json->success ) {
+
+				$rocket_options['secret_key'] 		= $json->data->secret_key;
+				if ( ! get_rocket_option( 'license' ) && rocket_valid_key() ) {
+					add_settings_error( 'general', 'settings_updated', rocket_thank_you_license(), 'updated' );
+					$rocket_options['license'] 		= time();
+				}
+
+			} else {
+
+				$messages = array( 	'BAD_LICENSE'	=> __( 'Your license is not correct.', 'rocket' ), 
+									'BAD_NUMBER'	=> __( 'You cannot add more websites. Upgrade your account.', 'rocket' ),
+									'BAD_SITE'		=> __( 'This site is not allowed.', 'rocket' ),
+									'BAD_KEY'		=> __( 'This key is not accepted.', 'rocket' ),
+								);
+				$rocket_options['secret_key']		= '';
+
+				add_settings_error( 'general', 'settings_updated', $messages[ $json->data->reason ], 'error' );
+
+			}
+
+			set_transient( WP_ROCKET_SLUG, $rocket_options );
+
+			$return = (array) $rocket_options;
+
+		}
+	}
+
+	return $return;
 
 }

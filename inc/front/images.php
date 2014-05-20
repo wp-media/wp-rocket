@@ -57,8 +57,7 @@ function rocket_specify_image_dimensions( $buffer )
 
 		}
 
-		if ( ! empty( $sizes ) )
-		{
+		if ( ! empty( $sizes ) ) {
 
 			// Add width and width attribute
 			$image = str_replace( '<img', '<img ' . $sizes[3], $image );

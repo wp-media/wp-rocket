@@ -16,44 +16,48 @@ function rocket_upgrader()
 	$actual_version = get_rocket_option( 'version' );
 	// You can hook the upgrader to trigger any action when WP Rocket is upgraded
 	// first install
-	if( !$actual_version )
-	{
+	if ( ! $actual_version ){
 		do_action( 'wp_rocket_first_install' );
 	}
 	// already installed but got updated
-	elseif( WP_ROCKET_VERSION != $actual_version )
+	elseif ( WP_ROCKET_VERSION != $actual_version )
 	{
 		do_action( 'wp_rocket_upgrade', WP_ROCKET_VERSION, $actual_version );
 	}
 
 	// If any upgrade has been done, we flush and update version #
-	if( did_action( 'wp_rocket_first_install' ) || did_action( 'wp_rocket_upgrade' ) )
+	if ( did_action( 'wp_rocket_first_install' ) || did_action( 'wp_rocket_upgrade' ) )
 	{
+
 		flush_rocket_htaccess();
 		flush_rewrite_rules();
+
 		rocket_renew_all_boxes( 0, 'rocket_warning_plugin_modification' );
+
 		$options = get_option( WP_ROCKET_SLUG ); // do not use get_rocket_option() here
 		$options['version'] = WP_ROCKET_VERSION;
 
-		if( isset( $options['consumer_key'] ) && $options['consumer_key']==hash( 'crc32', rocket_get_domain( home_url() ) ) )
-		{
-			$response = wp_remote_get( WP_ROCKET_WEB_VALID, array( 'timeout'=>30 ) );
-			if( !is_a($response, 'WP_Error') && strlen( $response['body'] )==32 )
-				$options['secret_key'] = $response['body'];
+		$keys = rocket_check_key( 'live' );
+		if ( $keys ) {
+			$options = array_merge( $keys, $options );
 		}
-
 
 		update_option( WP_ROCKET_SLUG, $options );
 
-	}
+	} else {
 
-	if( !rocket_valid_key() && current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) )
-	{
+		if ( empty( $_POST ) && rocket_valid_key() ) {
+			rocket_check_key( 'transient_30' );
+		}
+
+	}
+	if ( ! rocket_valid_key() && current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) && 
+		( ! isset( $_GET['page'] ) || 'wprocket' != $_GET['page'] ) ) {
 		add_action( 'admin_notices', 'rocket_need_api_key' );
-		add_filter( 'rocket_pointer_apikey', '__return_true' );
 	}
 
 }
+
 
 /* BEGIN UPGRADER'S HOOKS */
 
@@ -96,12 +100,12 @@ function rocket_first_install()
 			'minify_css_key'		=> $minify_css_key,
 			'minify_js'				=> 0,
 			'minify_js_key'			=> $minify_js_key,
-			'minify_js_in_footer'   => array(),
+			'minify_js_in_footer'		=> array(),
 			'minify_html'			=> 0,
 			'dns_prefetch'			=> 0,
 			'cdn'					=> 0,
 			'cdn_cnames'			=> array(),
-			'cdn_zone'		=> array()
+			'cdn_zone'				=> array()
 		)
 	);
 	rocket_dismiss_box( 'rocket_warning_plugin_modification' );
@@ -139,7 +143,7 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version )
 
 	if( version_compare( $actual_version, '1.3.0', '<' ) )
 	{
-		rocket_dismiss_boxes( array( 'box'=>'rocket_warning_plugin_modification', '_wpnonce'=>wp_create_nonce( 'rocket_ignore_rocket_warning_plugin_modification' ), 'action'=>'rocket_ignore' ) );
+		rocket_dismiss_box( 'rocket_warning_plugin_modification' );
 	}
 
 	if( version_compare( $actual_version, '1.3.3', '<' ) )

@@ -150,22 +150,22 @@ function rocket_force_info_result( $res, $action, $args )
 
 		}
 
-	}
-	if ( rocket_is_white_label() ) {
-		$res = (array) $res;
-		$res['name'] = get_rocket_option( 'wl_plugin_name' );
-		$res['slug'] = sanitize_key( $res['name'] );	
-		$res['wl_plugin_URI']  = get_rocket_option( 'wl_plugin_URI' );
-		$res['author']      = get_rocket_option( 'wl_author' );
-		$res['author_profile']  = get_rocket_option( 'wl_author_URI' );
-		$res['homepage']  = get_rocket_option( 'wl_author_URI' );
-		$res['sections']['description'] = implode( "\n", get_rocket_option( 'wl_description' ) );
-		$res['sections']['changelog'] = str_replace( array( 'wp-rocket', 'rocket_' ), array( $res['slug'], $res['slug'] . '_' ), $res['sections']['changelog'] );
-		$res['sections']['changelog'] = str_replace( array( 'WP Rocket', 'WP&nbsp;Rocket', 'WP-Rocket' ), $res['name'], $res['sections']['changelog'] );
-		unset( $res['sections']['installation'] );
-		unset( $res['sections']['faq'] );
-		unset( $res['contributors'] );
-		$res = (object) $res;
+		if ( rocket_is_white_label() ) {
+			$res = (array) $res;
+			$res['name'] = get_rocket_option( 'wl_plugin_name' );
+			$res['slug'] = sanitize_key( $res['name'] );	
+			$res['wl_plugin_URI']  = get_rocket_option( 'wl_plugin_URI' );
+			$res['author']      = get_rocket_option( 'wl_author' );
+			$res['author_profile']  = get_rocket_option( 'wl_author_URI' );
+			$res['homepage']  = get_rocket_option( 'wl_author_URI' );
+			$res['sections']['description'] = implode( "\n", get_rocket_option( 'wl_description' ) );
+			$res['sections']['changelog'] = str_replace( array( 'wp-rocket', 'rocket_' ), array( $res['slug'], $res['slug'] . '_' ), $res['sections']['changelog'] );
+			$res['sections']['changelog'] = str_replace( array( 'WP Rocket', 'WP&nbsp;Rocket', 'WP-Rocket' ), $res['name'], $res['sections']['changelog'] );
+			unset( $res['sections']['installation'] );
+			unset( $res['sections']['faq'] );
+			unset( $res['contributors'] );
+			$res = (object) $res;
+		}
 	}
 
 	return $res;
