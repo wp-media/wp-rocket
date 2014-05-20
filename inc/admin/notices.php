@@ -352,6 +352,7 @@ function rocket_warning_advanced_cache_not_ours()
 
 	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
 		&& ! defined( 'WP_ROCKET_ADVANCED_CACHE' )
+		&& get_rocket_option( 'version' ) == WP_ROCKET_VERSION
 	    && rocket_valid_key()
 	) {
 
