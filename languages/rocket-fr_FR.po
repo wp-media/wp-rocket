@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/wp-rocket\n"
-"POT-Creation-Date: 2014-05-19 19:32+0100\n"
-"PO-Revision-Date: 2014-05-19 19:33+0100\n"
+"POT-Creation-Date: 2014-05-20 16:21+0100\n"
+"PO-Revision-Date: 2014-05-20 16:21+0100\n"
 "Last-Translator: Julio Potier <julio@boiteaweb.fr>\n"
 "Language-Team:  <contact@wp-rocket.me>\n"
 "Language: fr\n"
@@ -100,15 +100,15 @@ msgid "What tools should I use to measure the performance of my site?"
 msgstr ""
 "Quels outils dois-je utiliser pour mesurer les performances de mon site ?"
 
-#: ../inc/admin/faq.inc.php:12 ../inc/admin/faq.inc.php:89
+#: ../inc/admin/faq.inc.php:12 ../inc/admin/faq.inc.php:86
 msgid "WP Rocket work with default permalinks?"
 msgstr "WP Rocket fonctionne-t-il avec les permaliens par défaut&nbsp;?"
 
-#: ../inc/admin/faq.inc.php:13 ../inc/admin/faq.inc.php:94
+#: ../inc/admin/faq.inc.php:13 ../inc/admin/faq.inc.php:90
 msgid "Which web servers WP Rocket is compatible with?"
 msgstr "Avec quels serveurs Web WP Rocket est-il compatible&nbsp;?"
 
-#: ../inc/admin/faq.inc.php:14 ../inc/admin/faq.inc.php:97
+#: ../inc/admin/faq.inc.php:14 ../inc/admin/faq.inc.php:93
 msgid ""
 "Reports from PageSpeed and YSlow tells me that the content is not gziped and/"
 "or did not expire, what should I do?"
@@ -116,7 +116,7 @@ msgstr ""
 "Les rapports de PageSpeed ou de YSlow m’indiquent que mon contenu n’est pas "
 "gzipé et/ou n’a pas d’expiration, que dois-je faire&nbsp;?"
 
-#: ../inc/admin/faq.inc.php:15 ../inc/admin/faq.inc.php:103
+#: ../inc/admin/faq.inc.php:15 ../inc/admin/faq.inc.php:97
 msgid ""
 "Is WP Rocket compatible with others cache plugins like WP Super Cache or W3 "
 "Total Cache?"
@@ -124,7 +124,7 @@ msgstr ""
 "WP Rocket est-il compatible avec les autres extensions de cache, tels que WP "
 "Super Cache ou W3 Total Cache&nbsp;?"
 
-#: ../inc/admin/faq.inc.php:16 ../inc/admin/faq.inc.php:108
+#: ../inc/admin/faq.inc.php:16 ../inc/admin/faq.inc.php:101
 msgid ""
 "Is WP Rocket compatible with WP Touch, WordPress Mobile Pack and WP Mobile "
 "Detector?"
@@ -132,31 +132,31 @@ msgstr ""
 "WP Rocket est-il compatible avec WP Touch, WordPress Mobile Pack et WP "
 "Mobile Detector&nbsp;?"
 
-#: ../inc/admin/faq.inc.php:17 ../inc/admin/faq.inc.php:112
+#: ../inc/admin/faq.inc.php:17 ../inc/admin/faq.inc.php:105
 msgid "Is WP Rocket compatible with WooCommerce?"
 msgstr "WP Rocket est-il compatible avec WooCommerce&nbsp;?"
 
-#: ../inc/admin/faq.inc.php:18 ../inc/admin/faq.inc.php:119
+#: ../inc/admin/faq.inc.php:18 ../inc/admin/faq.inc.php:111
 msgid "Is WP Rocket compatible with WPML or qTranslate?"
 msgstr "WP Rocket est-il compatible avec WPML ou qTranslate&nbsp;?"
 
-#: ../inc/admin/faq.inc.php:19 ../inc/admin/faq.inc.php:123
+#: ../inc/admin/faq.inc.php:19 ../inc/admin/faq.inc.php:115
 msgid "What is the minification and concatenation of files?"
 msgstr "En quoi consiste la minification et concaténation des fichiers&nbsp;?"
 
-#: ../inc/admin/faq.inc.php:20 ../inc/admin/faq.inc.php:128
+#: ../inc/admin/faq.inc.php:20 ../inc/admin/faq.inc.php:119
 msgid "What should I do if WP Rocket distorts my site display?"
 msgstr "Que dois-je faire si WP Rocket déforme l’affichage de mon site&nbsp;?"
 
-#: ../inc/admin/faq.inc.php:21 ../inc/admin/faq.inc.php:131
+#: ../inc/admin/faq.inc.php:21 ../inc/admin/faq.inc.php:122
 msgid "How often the cache is updated?"
 msgstr "À quel intervalle le cache est-il mis à jour&nbsp;?"
 
-#: ../inc/admin/faq.inc.php:22 ../inc/admin/faq.inc.php:135
+#: ../inc/admin/faq.inc.php:22 ../inc/admin/faq.inc.php:126
 msgid "How not to cache a particular page?"
 msgstr "Comment ne pas mettre en cache une page particulière&nbsp;?"
 
-#: ../inc/admin/faq.inc.php:23 ../inc/admin/faq.inc.php:138
+#: ../inc/admin/faq.inc.php:23 ../inc/admin/faq.inc.php:129
 msgid "How does work the robots of preloading files cache?"
 msgstr ""
 "Comment fonctionnent les robots de préchargement des fichiers de cache&nbsp;?"
@@ -245,8 +245,8 @@ msgstr "Chargement différé des fichiers JavaScript"
 msgid "Images Optimisation"
 msgstr "Optimisation des images"
 
-#: ../inc/admin/faq.inc.php:51 ../inc/admin/faq.inc.php:109
-#: ../inc/admin/faq.inc.php:113 ../inc/admin/faq.inc.php:120
+#: ../inc/admin/faq.inc.php:51 ../inc/admin/faq.inc.php:102
+#: ../inc/admin/faq.inc.php:106 ../inc/admin/faq.inc.php:112
 msgid "Yes."
 msgstr "Oui."
 
@@ -312,19 +312,19 @@ msgstr ""
 "Vous pouvez mesurer les performances de votre site Internet à l’aide des "
 "outils suivants :"
 
-#: ../inc/admin/faq.inc.php:79
+#: ../inc/admin/faq.inc.php:78
 msgid "These tools give you two indications:"
 msgstr "Ces outils vous donnent deux indications&nbsp;:"
 
-#: ../inc/admin/faq.inc.php:81
+#: ../inc/admin/faq.inc.php:80
 msgid "a global note of good practices to apply"
 msgstr "une note globale des bonnes pratiques à appliquer"
 
-#: ../inc/admin/faq.inc.php:82
+#: ../inc/admin/faq.inc.php:81
 msgid "a loading time"
 msgstr "un temps de chargement"
 
-#: ../inc/admin/faq.inc.php:85
+#: ../inc/admin/faq.inc.php:83
 msgid ""
 "These data are indicative and do not necessarily reflect the actual display "
 "speed of your website"
@@ -332,7 +332,7 @@ msgstr ""
 "Ces données sont indicatives et ne reflètent pas forcément la vitesse "
 "d’affichage réelle de votre site Internet"
 
-#: ../inc/admin/faq.inc.php:87
+#: ../inc/admin/faq.inc.php:84
 msgid ""
 "For tests closest to reality load time we recommend using <a href=\"http://"
 "tools.pingdom.com/fpt/\" target=\"_blank\">Pingdom Tools</a>."
@@ -342,11 +342,11 @@ msgstr ""
 "\"_blank\">Pingdom Tools</a> avec l’option <code>Amsterdam</code> comme "
 "serveur."
 
-#: ../inc/admin/faq.inc.php:90 ../inc/admin/faq.inc.php:104
+#: ../inc/admin/faq.inc.php:87 ../inc/admin/faq.inc.php:98
 msgid "No."
 msgstr "Non."
 
-#: ../inc/admin/faq.inc.php:92
+#: ../inc/admin/faq.inc.php:88
 msgid ""
 "It's necessary to have custom permalinks of the type <code>http://example."
 "com/mon-article/</code> rather than <code>http://example.com/?p=1234</code>."
@@ -355,7 +355,7 @@ msgstr ""
 "exemple.com/mon-article/</code> plutôt que <code>http://exemple.com/?p=1234</"
 "code>."
 
-#: ../inc/admin/faq.inc.php:95
+#: ../inc/admin/faq.inc.php:91
 msgid ""
 "WP Rocket is compatible with <strong>Apache, NGINX, Microsoft IIS et "
 "Litepseed</strong> web servers."
@@ -363,7 +363,7 @@ msgstr ""
 "WP Rocket est compatible avec les serveurs web <strong>Apache, NGINX, "
 "Microsoft IIS, et LiteSpeed</strong>."
 
-#: ../inc/admin/faq.inc.php:99
+#: ../inc/admin/faq.inc.php:94
 msgid ""
 "WP Rocket automatically adds good rules timeouts and gzip for static files. "
 "If they are not applied, it is possible that there is a plugin conflict "
@@ -378,7 +378,7 @@ msgstr ""
 "désactiver temporairement toutes les extensions, excepté WP Rocket et de "
 "refaire le test."
 
-#: ../inc/admin/faq.inc.php:101
+#: ../inc/admin/faq.inc.php:95
 msgid ""
 "If this is not conclusive, this means that the <code>mod_expire</code> and/"
 "or <code>mod_deflate</code> is not enabled on your server."
@@ -386,7 +386,7 @@ msgstr ""
 "Si cela n’est pas concluant, cela signifie que le <code>mod_expire</code> et/"
 "ou <code>mod_deflate</code> n’est pas activé sur votre serveur."
 
-#: ../inc/admin/faq.inc.php:106
+#: ../inc/admin/faq.inc.php:99
 msgid ""
 "It's imperative to <strong>remove all other optimization plugins</strong> "
 "(cache, minification, LazyLoad) PRIOR to the activation of WP Rocket."
@@ -395,7 +395,7 @@ msgstr ""
 "d'optimisation</strong> (cache, minification, LazyLoad) AVANT l’activation "
 "de WP Rocket."
 
-#: ../inc/admin/faq.inc.php:110
+#: ../inc/admin/faq.inc.php:103
 msgid ""
 "On the other hand, in the basic options, you must uncheck the <code>enable "
 "caching for mobile devices</code>."
@@ -403,25 +403,25 @@ msgstr ""
 "Par contre, dans les options de base, vous devez décocher la case "
 "<code>Activer la mise en cache pour les appareils mobiles</code>."
 
-#: ../inc/admin/faq.inc.php:115
+#: ../inc/admin/faq.inc.php:107
 msgid ""
-"However, you should exclude basket and checkout pages from caching. This is "
-"done from the advanced option <code>never to cache pages</code> and adding "
+"However, you should exclude cart and checkout pages from caching. This is "
+"done from the advanced option <code>Never to cache pages</code> by adding "
 "the following values:"
 msgstr ""
 "Cependant, il faut exclure les pages panier et commande de la mise en cache. "
 "Cela se fait à partir de l’option avancée <code>Ne jamais mettre en cache "
-"les pages suivantes</code> et en ajoutant les valeurs suivantes&nbsp;:"
+"les pages suivantes</code> en ajoutant les valeurs suivantes&nbsp;:"
 
-#: ../inc/admin/faq.inc.php:116
-msgid "/basket/"
+#: ../inc/admin/faq.inc.php:108
+msgid "/cart/"
 msgstr "/panier/"
 
-#: ../inc/admin/faq.inc.php:117
+#: ../inc/admin/faq.inc.php:109
 msgid "/checkout/(.*)"
 msgstr "/commande/(.*)"
 
-#: ../inc/admin/faq.inc.php:121
+#: ../inc/admin/faq.inc.php:113
 msgid ""
 "You have even the possibility of empty/preload the cache for a specific "
 "language or for all languages at the same time."
@@ -429,7 +429,7 @@ msgstr ""
 "Vous avez même la possibilité de vider/précharger le cache d'une langue "
 "précise ou de toutes les langues en même temps."
 
-#: ../inc/admin/faq.inc.php:124
+#: ../inc/admin/faq.inc.php:116
 msgid ""
 "The minification is the process to remove all unnecessary items in a HTML, "
 "CSS or JavaScript file: spaces, comments, etc... This allows to reduce the "
@@ -440,7 +440,7 @@ msgstr ""
 "de diminuer la taille des fichiers. Ainsi, les navigateurs lisent plus "
 "rapidement les fichiers."
 
-#: ../inc/admin/faq.inc.php:126
+#: ../inc/admin/faq.inc.php:117
 msgid ""
 "The concatenation is to consolidate into one, a set of files. This has the "
 "effect of reducing the number of HTTP requests."
@@ -448,7 +448,7 @@ msgstr ""
 "La concaténation consiste à regrouper en un seul, un ensemble de fichiers. "
 "Cela a pour effet de diminuer le nombre de requêtes HTTP."
 
-#: ../inc/admin/faq.inc.php:129
+#: ../inc/admin/faq.inc.php:120
 msgid ""
 "There are good chances that the deformation is caused by the minification of "
 "HTML, CSS or JavaScript files. To resolve the problem, we recommend watching "
@@ -461,7 +461,7 @@ msgstr ""
 "www.youtube.com/embed/iziXSvZgxLk\" class=\"fancybox\">http://www.youtube."
 "com/embed/iziXSvZgxLk</a>."
 
-#: ../inc/admin/faq.inc.php:132
+#: ../inc/admin/faq.inc.php:123
 msgid ""
 "The cache is automatically refreshed at every update of your content (add/"
 "edit/delete of an article, publication of a comment, etc..)."
@@ -470,7 +470,7 @@ msgstr ""
 "(ajout/édition/suppression d’un article, publication d’un commentaire, "
 "etc..)."
 
-#: ../inc/admin/faq.inc.php:133
+#: ../inc/admin/faq.inc.php:124
 msgid ""
 "In the basic options, you can also specify a period of automatic cleaning of "
 "the cache."
@@ -478,17 +478,17 @@ msgstr ""
 "Dans les options de base, vous pouvez aussi spécifier un délai de nettoyage "
 "automatique du cache."
 
-#: ../inc/admin/faq.inc.php:136
+#: ../inc/admin/faq.inc.php:127
 msgid ""
 "In advanced options, it's possible to specify URLs to not cache. For this, "
-"you must add in the input field <code>should never be cached pages</code> "
+"you must add in the input field <code>Should never be cached pages</code> "
 "the URLs to exclude."
 msgstr ""
 "Dans les options avancées, il est possible de spécifier des URLs à ne pas "
 "mettre en cache. Pour cela, il faut ajouter dans le champ de saisie <code>Ne "
 "jamais mettre en cache les pages suivantes</code> les URLs à exclure."
 
-#: ../inc/admin/faq.inc.php:139
+#: ../inc/admin/faq.inc.php:130
 msgid ""
 "To cache a page, it must be a first visitor. To avoid that a first visitor "
 "to do so, we have developed two robots (in python) that crawl the pages of "
@@ -498,7 +498,7 @@ msgstr ""
 "qu’un premier visiteur le fasse, nous avons développé deux robots (en "
 "python) qui crawl les pages de votre site Internet."
 
-#: ../inc/admin/faq.inc.php:141
+#: ../inc/admin/faq.inc.php:131
 msgid ""
 "The first visits your site when using the button \"Preload the cache\". The "
 "second will automatically visit your site as soon as you are going to create/"
@@ -508,9 +508,9 @@ msgstr ""
 "“Précharger le cache”. Le second va automatiquement visiter votre site dès "
 "que vous allez créer/modifier/supprimer un article."
 
-#: ../inc/admin/faq.inc.php:143
+#: ../inc/admin/faq.inc.php:132
 msgid ""
-"For more information, please visit our video: <a href=\"http://www.youtube."
+"For more information, please watch this video: <a href=\"http://www.youtube."
 "com/embed/9jDcg2f-9yM\" class=\"fancybox\">http://www.youtube.com/"
 "embed/9jDcg2f-9yM</a>."
 msgstr ""
@@ -770,7 +770,7 @@ msgid "Wait until this file is loaded ?"
 msgstr "Attendre le chargement de ce fichier&nbsp;?"
 
 #: ../inc/admin/options.php:265 ../inc/admin/options.php:810
-msgid "Add a URL"
+msgid "Add URL"
 msgstr "Ajouter une URL"
 
 #: ../inc/admin/options.php:283 ../inc/admin/options.php:878
@@ -1370,6 +1370,9 @@ msgstr "Ce site n'est pas autorisé."
 #: ../inc/functions/options.php:245
 msgid "This key is not accepted."
 msgstr "Cette clé n'est pas acceptée."
+
+#~ msgid "/basket/"
+#~ msgstr "/panier/"
 
 #~ msgid "Cheatin&#8217; uh?"
 #~ msgstr "Alors on triche&nbsp;?"

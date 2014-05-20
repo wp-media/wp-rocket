@@ -26,7 +26,7 @@ define( 'WP_ROCKET_WEB_VALID'           , WP_ROCKET_WEB_MAIN.'valid_key2.php');
 define( 'WP_ROCKET_WEB_INFO'            , WP_ROCKET_WEB_MAIN.'plugin_information2.php');
 define( 'WP_ROCKET_WEB_SUPPORT'         , WP_ROCKET_WEB_MAIN.'forums/');
 define( 'WP_ROCKET_BOT_URL'             , 'http://bot.wp-rocket.me/launch.php');
-define( 'WP_ROCKET_ACCOUNT_URL'         , 'http://support.wp-rocket.me/my-profile/');
+define( 'WP_ROCKET_ACCOUNT_URL'         , 'http://support.wp-rocket.me/my-account/');
 define( 'WP_ROCKET_FILE'                , __FILE__ );
 define( 'WP_ROCKET_PATH'                , realpath( plugin_dir_path( WP_ROCKET_FILE ) ).'/' );
 define( 'WP_ROCKET_INC_PATH'            , realpath( WP_ROCKET_PATH . 'inc/' ) . '/' );
@@ -103,7 +103,6 @@ function rocket_init()
     require( WP_ROCKET_INC_PATH			. '/deprecated.php' );
     require( WP_ROCKET_FRONT_PATH		. '/htaccess.php' );
     require( WP_ROCKET_FRONT_PATH		. '/override-plugins.php' );
-    require( WP_ROCKET_INC_PATH			. '/headers.php' );
     require( WP_ROCKET_INC_PATH			. '/admin-bar.php' );
 	require( dirname( __FILE__ )		. '/licence-data.php' );
 

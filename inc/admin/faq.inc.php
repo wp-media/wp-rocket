@@ -75,34 +75,27 @@
 		<li><a href="http://www.webpagetest.org/" target="_blank">Webpagetest</a></li>
 		<li><a href="https://www.dareboost.com/en/home" target="_blank">Dareboost</a></li>
 	</ul>
-
 	<p><?php _e( 'These tools give you two indications:', 'rocket' );?></p>
 	<ul>
 		<li><?php _e( 'a global note of good practices to apply', 'rocket' );?></li>
 		<li><?php _e( 'a loading time', 'rocket' );?></li>
 	</ul>
-
 	<p><?php _e( 'These data are indicative and do not necessarily reflect the actual display speed of your website', 'rocket' );?>.</p>
-
 	<p><?php _e( 'For tests closest to reality load time we recommend using <a href="http://tools.pingdom.com/fpt/" target="_blank">Pingdom Tools</a>.', 'rocket' );?></p>
 
 	<h2><span id="Q9">&#160;</span><?php _e( 'WP Rocket work with default permalinks?', 'rocket' );?></h2>
 	<p><?php _e( 'No.', 'rocket' );?></p>
-
 	<p><?php _e( 'It\'s necessary to have custom permalinks of the type <code>http://example.com/mon-article/</code> rather than <code>http://example.com/?p=1234</code>.', 'rocket' );?></p>
 
 	<h2><span id="Q10">&#160;</span><?php _e( 'Which web servers WP Rocket is compatible with?', 'rocket' );?></h2>
 	<p><?php _e( 'WP Rocket is compatible with <strong>Apache, NGINX, Microsoft IIS et Litepseed</strong> web servers.', 'rocket' );?></p>
 
 	<h2><span id="Q11">&#160;</span><?php _e( 'Reports from PageSpeed and YSlow tells me that the content is not gziped and/or did not expire, what should I do?', 'rocket' );?></h2>
-
 	<p><?php _e( 'WP Rocket automatically adds good rules timeouts and gzip for static files. If they are not applied, it is possible that there is a plugin conflict (exemple: <a href="http://wordpress.org/plugins/wp-retina-2x/" target="_blank">WP Retina 2x</a>). Try temporarily disabling all plugins except WP Rocket and retest.', 'rocket' );?></p>
-
 	<p><?php _e( 'If this is not conclusive, this means that the <code>mod_expire</code> and/or <code>mod_deflate</code> is not enabled on your server.', 'rocket' );?></p>
 
 	<h2><span id="Q12">&#160;</span><?php _e( 'Is WP Rocket compatible with others cache plugins like WP Super Cache or W3 Total Cache?', 'rocket' );?></h2>
 	<p><?php _e( 'No.', 'rocket' );?></p>
-
 	<p><?php _e( 'It\'s imperative to <strong>remove all other optimization plugins</strong> (cache, minification, LazyLoad) PRIOR to the activation of WP Rocket.', 'rocket' );?></p>
 
 	<h2><span id="Q13">&#160;</span><?php _e( 'Is WP Rocket compatible with WP Touch, WordPress Mobile Pack and WP Mobile Detector?', 'rocket' );?></h2>
@@ -111,10 +104,9 @@
 
 	<h2><span id="Q14">&#160;</span><?php _e( 'Is WP Rocket compatible with WooCommerce?', 'rocket' );?></h2>
 	<p><?php _e( 'Yes.', 'rocket' );?></p>
-
-	<p><?php _e( 'However, you should exclude basket and checkout pages from caching. This is done from the advanced option <code>never to cache pages</code> and adding the following values:', 'rocket' );?></p>
-	<p><code><?php echo __( '/basket/', 'rocket' ) . '<br/>' .
-	__( '/checkout/(.*)', 'rocket' );?></code></p>
+	<p><?php _e( 'However, you should exclude cart and checkout pages from caching. This is done from the advanced option <code>Never to cache pages</code> by adding the following values:', 'rocket' );?></p>
+	<p><code><?php _e( '/cart/', 'rocket' ); ?></code></p>
+	<p><code><?php _e( '/checkout/(.*)', 'rocket' );?></code></p>
 
 	<h2><span id="Q15">&#160;</span><?php _e( 'Is WP Rocket compatible with WPML or qTranslate?', 'rocket' );?></h2>
 	<p><?php _e( 'Yes.', 'rocket' );?></p>
@@ -122,7 +114,6 @@
 
 	<h2><span id="Q16">&#160;</span><?php _e( 'What is the minification and concatenation of files?', 'rocket' );?></h2>
 	<p><?php _e( 'The minification is the process to remove all unnecessary items in a HTML, CSS or JavaScript file: spaces, comments, etc... This allows to reduce the size of the files. Thus, browsers read files faster.', 'rocket' );?></p>
-
 	<p><?php _e( 'The concatenation is to consolidate into one, a set of files. This has the effect of reducing the number of HTTP requests.', 'rocket' );?></p>
 
 	<h2><span id="Q17">&#160;</span><?php _e( 'What should I do if WP Rocket distorts my site display?', 'rocket' );?></h2>
@@ -133,12 +124,10 @@
 	<p><?php _e( 'In the basic options, you can also specify a period of automatic cleaning of the cache.', 'rocket' );?></p>
 
 	<h2><span id="Q19">&#160;</span><?php _e( 'How not to cache a particular page?', 'rocket' );?></h2>
-	<p><?php _e( 'In advanced options, it\'s possible to specify URLs to not cache. For this, you must add in the input field <code>should never be cached pages</code> the URLs to exclude.', 'rocket' );?></p>
+	<p><?php _e( 'In advanced options, it\'s possible to specify URLs to not cache. For this, you must add in the input field <code>Should never be cached pages</code> the URLs to exclude.', 'rocket' );?></p>
 
 	<h2><span id="Q20">&#160;</span><?php _e( 'How does work the robots of preloading files cache?', 'rocket' );?></h2>
 	<p><?php _e( 'To cache a page, it must be a first visitor. To avoid that a first visitor to do so, we have developed two robots (in python) that crawl the pages of your website.', 'rocket' );?></p>
-
 	<p><?php _e( 'The first visits your site when using the button "Preload the cache". The second will automatically visit your site as soon as you are going to create/edit/delete an article.', 'rocket' );?></p>
-
-	<p><?php _e( 'For more information, please visit our video: <a href="http://www.youtube.com/embed/9jDcg2f-9yM" class="fancybox">http://www.youtube.com/embed/9jDcg2f-9yM</a>.', 'rocket' );?></p>
+	<p><?php _e( 'For more information, please watch this video: <a href="http://www.youtube.com/embed/9jDcg2f-9yM" class="fancybox">http://www.youtube.com/embed/9jDcg2f-9yM</a>.', 'rocket' );?></p>
 </div>

@@ -5,12 +5,11 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 /**
  * A wrapper to easily get rocket option
  *
- * @since 2.0 Use get_site_option in place of get_option //// euh non ?
  * @since 1.3.0
  *
  */
 
-function get_rocket_option( $option, $default=false )
+function get_rocket_option( $option, $default = false )
 {
 	$options = get_option( WP_ROCKET_SLUG );
 	if ( 'consumer_key' == $option && defined( 'WP_ROCKET_KEY' ) ) {
@@ -18,7 +17,7 @@ function get_rocket_option( $option, $default=false )
 	} elseif( 'consumer_email' == $option && defined( 'WP_ROCKET_EMAIL' ) ) {
 		return WP_ROCKET_EMAIL;
 	}
-	return isset( $options[$option] ) && ! empty( $options[$option] ) ? $options[$option] : $default;
+	return isset( $options[ $option ] ) && ! empty( $options[ $option ] ) ? $options[ $option ] : $default;
 }
 
 
