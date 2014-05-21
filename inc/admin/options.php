@@ -262,7 +262,7 @@ function rocket_defered_module()
 	</div>
 	<!-- .rkt-model-deferred-->
 
-	<p><a href="javascript:void(0)" class="rkt-module-clone hide-if-no-js button-secondary"><?php _e( 'Add a URL', 'rocket' ); ?></a></p>
+	<p><a href="javascript:void(0)" class="rkt-module-clone hide-if-no-js button-secondary"><?php _e( 'Add URL', 'rocket' ); ?></a></p>
 
 <?php
 }
@@ -807,7 +807,7 @@ function rocket_display_options()
 				'name'                     => 'minify_js_in_footer',
 				'placeholder'              => 'http://',
 				'repeater_drag_n_drop'     => true,
-				'repeater_label_add_field' => __( 'Add a URL', 'rocket' )
+				'repeater_label_add_field' => __( 'Add URL', 'rocket' )
 			),
 			array(
 				'type'         => 'helper_help',

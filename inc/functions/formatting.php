@@ -79,7 +79,7 @@ function get_rocket_parse_url( $url )
 	$path   = isset( $url['path'] ) ? $url['path'] : '';
 	$scheme = isset( $url['scheme'] ) ? $url['scheme'] : '';
 	$query  = isset( $url['query'] ) ? $url['query'] : '';
-	return array( $host, $path, $scheme, $query );
+	return apply_filters( 'rocket_parse_url', array( $host, $path, $scheme, $query ) );
 
 }
 

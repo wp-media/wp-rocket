@@ -1,7 +1,11 @@
-#wpadminbar #wp-admin-bar-support a {color: #FF0000}
-.rkt-cross,.rkt-module-remove{display:inline-block;width:14px;height:14px;text-indent:-9999px;background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAMAAAAolt3jAAAABGdBTUEAALGPC/xhBQAAAHhQTFRFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFchIiAAAACd0Uk5Ts5u0sLG8taW6EQeuBcrMAre+BAi2DseyzcXGmqMNBsTCvbsMCQoA2fO6RQAAAIFJREFUCNc1j1cSwzAIREl1Yidx77bcJLj/DQNI5oPlDczOAkX0tKjlqksKE9FL2W1EIzyIaHOe6Ap2Z+nreWG5G8Bj5eE7cNstAqLuuVqDgnj8hHo28NgJNgHfnT9eZkG1Wk+ruuEh+ZhW95CzVHGIARIyKzVkLiGL6VaGF7Ix/QNQwRkGPYzdrAAAAABJRU5ErkJggg==) no-repeat}
-.updated .rkt-cross,
-.error .rkt-cross{float:right;margin-top:10px}
-.rocket-plugins-error {overflow:hidden; padding-left: 20px;list-style-type:disc}
-.rocket-plugins-error li{width:250px; line-height: 25px}
-.rocketbox:checked ~ .rocketboxpanel{display: block;}
+.updated .rkt-cross,.error .rkt-cross{float:right;margin-top:8px}
+.rocket-plugins-error{overflow:hidden;padding-left:20px;list-style-type:disc}
+.rocket-plugins-error li{width:250px;line-height:25px}
+.rocketbox:checked ~ .rocketboxpanel{display:block}
+#wp-admin-bar-purge-all-all .dashicons{font:normal 1.5em/1 'dashicons';-webkit-font-smoothing:antialiased;vertical-align:middle;padding-right:3px;display:inline-block}
+.dashicons, .dashicons *{display:inline;text-decoration:none;vertical-align:text-bottom}
+.branch-3-1 .dashicons-no:before, .branch-3-2 .dashicons-no:before, .branch-3-3 .dashicons-no:before, .branch-3-4 .dashicons-no:before, .branch-3-5 .dashicons-no:before, .branch-3-6 .dashicons-no:before, .branch-3-7 .dashicons-no:before {content:"\00D7";font-weight:bold;font-size:2em;vertical-align:-7px}
+.branch-3-1 .dashicons-sort:before, .branch-3-2 .dashicons-sort:before, .branch-3-3 .dashicons-sort:before, .branch-3-4 .dashicons-sort:before, .branch-3-5 .dashicons-sort:before, .branch-3-6 .dashicons-sort:before, .branch-3-7 .dashicons-sort:before {content:"\25BC\25B2";font-size:1.2em;letter-spacing:-5px;padding-right:4px}
+#insidefaq h2 span{top:-40px;position:relative}
+#insidefaq h2{margin-left:-7px}
+p.description.file-error{color:#F00}
