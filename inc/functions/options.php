@@ -105,7 +105,7 @@ function get_rocket_cache_reject_uri()
 
 function get_rocket_cache_reject_cookies()
 {
-	
+
 	$cookies   = get_rocket_option( 'cache_reject_cookies', array() );
 	$cookies[] = str_replace( COOKIEHASH, '', LOGGED_IN_COOKIE );
 	$cookies[] = 'wp-postpass_';
@@ -120,7 +120,7 @@ function get_rocket_cache_reject_cookies()
 	 * @since 2.1
 	*/
 	$cookies = apply_filters( 'rocket_cache_reject_cookies', $cookies );
-	
+
 	$cookies = implode( '|', array_filter( $cookies ) );
 	return $cookies;
 
@@ -138,9 +138,9 @@ function get_rocket_cache_reject_cookies()
 function get_rocket_cdn_cnames( $_zone = 'all' )
 {
 
-	if( (int)get_rocket_option( 'cdn' ) == 0 ) 
+	if( (int)get_rocket_option( 'cdn' ) == 0 )
 	{
-		return array();	
+		return array();
 	}
 
 	$hosts       = array();
@@ -160,7 +160,7 @@ function get_rocket_cdn_cnames( $_zone = 'all' )
 			$_urls = array_map( 'trim' , $_urls );
 
 			//
-			foreach( $_urls as $url ) 
+			foreach( $_urls as $url )
 			{
 				$hosts[] = $url;
 			}
@@ -204,8 +204,8 @@ function rocket_check_key( $type = 'transient_1', $data = null )
 	$return = rocket_valid_key();
 
 	if ( ! rocket_valid_key()
-		|| ( 'transient_1' == $type && ! get_transient( 'rocket_check_licence_1' ) ) 
-		|| ( 'transient_30' == $type && ! get_transient( 'rocket_check_licence_30' ) ) 
+		|| ( 'transient_1' == $type && ! get_transient( 'rocket_check_licence_1' ) )
+		|| ( 'transient_30' == $type && ! get_transient( 'rocket_check_licence_30' ) )
 		|| 'live' == $type ) {
 
 		if ( 'live' != $type ) {
@@ -238,10 +238,10 @@ function rocket_check_key( $type = 'transient_1', $data = null )
 
 			} else {
 
-				$messages = array( 	'BAD_LICENSE'	=> __( 'Your license is not correct.', 'rocket' ), 
+				$messages = array( 	'BAD_LICENSE'	=> __( 'Your license is not valid.', 'rocket' ),
 									'BAD_NUMBER'	=> __( 'You cannot add more websites. Upgrade your account.', 'rocket' ),
-									'BAD_SITE'		=> __( 'This site is not allowed.', 'rocket' ),
-									'BAD_KEY'		=> __( 'This key is not accepted.', 'rocket' ),
+									'BAD_SITE'		=> __( 'This website is not allowed.', 'rocket' ),
+									'BAD_KEY'		=> __( 'This license key is not accepted.', 'rocket' ),
 								);
 				$rocket_options['secret_key']		= '';
 

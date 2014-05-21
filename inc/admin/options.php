@@ -279,7 +279,7 @@ function rocket_defered_module()
 function rocket_cnames_module()
 { ?>
 
-	
+
 		<legend class="screen-reader-text"><span><?php _e( 'Replace site\'s hostname with:', 'rocket' ); ?></span></legend>
 
 		<div id="rkt-cnames" class="rkt-module">
@@ -452,7 +452,7 @@ function rocket_include( $args )
  *
  * Add tabs, tools tab and change options severity
  * @since 1.1.0
-
+ *
  *
  */
 
@@ -481,7 +481,7 @@ function rocket_display_options()
 	);
 	add_settings_field(
 		'rocket_email',
-		__( 'E-mail Address' ),
+		__( 'E-mail Address', 'rocket' ),
 		'rocket_field',
 		'apikey',
 		'rocket_display_apikey_options',
@@ -1009,7 +1009,7 @@ function rocket_display_options()
 	        	'description'  => __( 'Allows you to request a bot crawl to preload the cache (homepage and its internal links).', 'rocket' )
 			),
 		)
-    );	
+    );
 
     add_settings_field(
 		'rocket_export_options',
@@ -1043,7 +1043,7 @@ function rocket_display_options()
 			'url'			=> 'http://www.youtube.com/embed/9jDcg2f-9yM',
 			'name'			=> 'tuto_preload_cache',
 		)
-	);	
+	);
 	add_settings_field(
 		'css_javascript_minification',
 		__( 'CSS and JavaScript minification', 'rocket' ),
@@ -1055,7 +1055,7 @@ function rocket_display_options()
 			'url'			=> 'http://www.youtube.com/embed/iziXSvZgxLk',
 			'name'			=> 'css_javascript_minification',
 		)
-	);	
+	);
 	add_settings_field(
 		'tuto_preload_dns_queries',
 		__( 'Preloading DNS queries', 'rocket' ),
@@ -1094,7 +1094,7 @@ function rocket_display_options()
 					),
 				'helper_help'=>array(
 					'name'			=> 'support',
-					'description'	=> __( 'If none of the FAQ answers resolves your problem, you can share us your issue on our free support. We will reply as soon as possible.', 'rocket')
+					'description'	=> __( 'If none of the FAQ answers resolves your problem, you can send your issue to our free support. We will reply as soon as possible.', 'rocket')
 				),
 		)
 	);
@@ -1243,10 +1243,10 @@ function rocket_settings_callback( $inputs )
 	/*
 	 * Option : Minification CSS & JS
 	 */
-	
+
 	$inputs['minify_css'] 	= isset( $inputs['minify_css'] );
 	$inputs['minify_js'] 	= isset( $inputs['minify_js'] );
-	
+
 	/*
 	 * Option : Purge delay
 	 */
@@ -1480,7 +1480,7 @@ function rocket_settings_callback( $inputs )
 	}
 
 	if ( isset( $_FILES['import'] )
-		&& preg_match( '/wp-rocket-settings-20\d{2}-\d{2}-\d{2}-[a-f0-9]{13}\.dat/', $_FILES['import']['name'] ) 
+		&& preg_match( '/wp-rocket-settings-20\d{2}-\d{2}-\d{2}-[a-f0-9]{13}\.dat/', $_FILES['import']['name'] )
 		&& 'text/plain' == $_FILES['import']['type'] )
 	{
 		$file_name 			= $_FILES['import']['name'];
@@ -1548,7 +1548,7 @@ function rocket_after_save_options( $oldvalue, $value )
 {
 	// This values do not need to clean the cache domain
 	$removed = array( 'purge_cron_interval' => true, 'purge_cron_unit' => true, 'wl_plugin_name' => true, 'wl_plugin_URI' => true, 'wl_author' => true, 'wl_author_URI' => true, 'wl_description' => true, 'wl_plugin_slug' => true );
-	
+
 	// Create 2 arrays to compare
 	$oldvalue_diff 	= array_diff_key( $oldvalue, $removed );
 	$value_diff 	= array_diff_key( $value, $removed );
@@ -1564,14 +1564,14 @@ function rocket_after_save_options( $oldvalue, $value )
 			rocket_clean_domain();
 		}
 	}
-	
+
 	// Purge all minify cache files
 	if ( ! empty( $_POST ) && ( $oldvalue['minify_css'] != $value['minify_css'] || $oldvalue['exclude_css'] != $value['exclude_css'] ) ) {
-		rocket_clean_minify('css');	
+		rocket_clean_minify('css');
 	}
-	
+
 	if ( ! empty( $_POST ) && ( $oldvalue['minify_js'] != $value['minify_js'] || $oldvalue['exclude_js']  != $value['exclude_js'] ) ) {
-		rocket_clean_minify( 'js' );	
+		rocket_clean_minify( 'js' );
 	}
 
 	// Update .htaccess file rules
@@ -1626,7 +1626,7 @@ function rocket_pre_main_option( $newvalue, $oldvalue )
 	) {
 		$newvalue['minify_css_key'] = create_rocket_uniqid();
 	}
-	
+
 	// Regenerate the minify key if JS files have been modified
 	if ( ( isset( $newvalue['minify_js'], $oldvalue['minify_js'] ) && $newvalue['minify_js'] != $oldvalue['minify_js'] )
 		|| ( isset( $newvalue['exclude_js'], $oldvalue['exclude_js'] ) && $newvalue['exclude_js'] != $oldvalue['exclude_js'] )
@@ -1697,6 +1697,6 @@ function rocket_import_upload_form() {
 		<label for="upload"><?php echo apply_filters( 'rocket_help', __( 'Choose a file from your computer:' ) . ' (' . sprintf( __('Maximum size: %s' ), $size ) . ')', 'upload', 'help' ); ?></label>
 		<input type="hidden" name="max_file_size" value="<?php echo $bytes; ?>" />
 		</p>
-		<?php submit_button( __( 'Upload file and import settings', 'rocket' ), 'button', 'import' ); 
+		<?php submit_button( __( 'Upload file and import settings', 'rocket' ), 'button', 'import' );
 	}
 }

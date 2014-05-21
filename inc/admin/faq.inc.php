@@ -1,15 +1,15 @@
 <?php defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' ); ?>
-<h1 class="hide-if-no-js"><?php _e( 'FAQ\'s table of content', 'rocket' ); ?></h1>
+<h1 class="hide-if-no-js"><?php _e( 'FAQ\'s Table of Content', 'rocket' ); ?></h1>
 <ol class="hide-if-no-js">
 	<li><h2><a href="#Q1"><?php _e( 'My key does not work', 'rocket' );?></a></h2></li>
-	<li><h2><a href="#Q2"><?php _e( 'For how many sites my key is valid for?', 'rocket' );?></a></h2></li>
-	<li><h2><a href="#Q3"><?php _e( 'What exactly does WP Rocket?', 'rocket' );?></a></h2></li>
+	<li><h2><a href="#Q2"><?php _e( 'For how many websites my key is valid for?', 'rocket' );?></a></h2></li>
+	<li><h2><a href="#Q3"><?php _e( 'What exactly does WP Rocket do?', 'rocket' );?></a></h2></li>
 	<li><h2><a href="#Q4"><?php _e( 'I have turned any of the basic options on, does WP Rocket work?', 'rocket' );?></a></h2></li>
-	<li><h2><a href="#Q5"><?php _e( 'What should I do in case of problem with WP Rocket that I can\'t solve?', 'rocket' );?></a></h2></li>
+	<li><h2><a href="#Q5"><?php _e( 'What should I do in case of a problem with WP Rocket that I can\'t solve?', 'rocket' );?></a></h2></li>
 	<li><h2><a href="#Q6"><?php _e( 'My license has expired, what should I do?', 'rocket' );?></a></h2></li>
-	<li><h2><a href="#Q7"><?php _e( 'I want to change the URL of my site associated with my license, what should I do?', 'rocket' );?></a></h2></li>
-	<li><h2><a href="#Q8"><?php _e( 'What tools should I use to measure the performance of my site?', 'rocket' );?></a></h2></li>
-	<li><h2><a href="#Q9"><?php _e( 'WP Rocket work with default permalinks?', 'rocket' );?></a></h2></li>
+	<li><h2><a href="#Q7"><?php _e( 'I want to change the URL of my website associated with my license, what should I do?', 'rocket' );?></a></h2></li>
+	<li><h2><a href="#Q8"><?php _e( 'What tools should I use to measure the performance of my website?', 'rocket' );?></a></h2></li>
+	<li><h2><a href="#Q9"><?php _e( 'Does WP Rocket work with default permalinks?', 'rocket' );?></a></h2></li>
 	<li><h2><a href="#Q10"><?php _e( 'Which web servers WP Rocket is compatible with?', 'rocket' );?></a></h2></li>
 	<li><h2><a href="#Q11"><?php _e( 'Reports from PageSpeed and YSlow tells me that the content is not gziped and/or did not expire, what should I do?', 'rocket' );?></a></h2></li>
 	<li><h2><a href="#Q12"><?php _e( 'Is WP Rocket compatible with others cache plugins like WP Super Cache or W3 Total Cache?', 'rocket' );?></a></h2></li>
@@ -17,10 +17,10 @@
 	<li><h2><a href="#Q14"><?php _e( 'Is WP Rocket compatible with WooCommerce?', 'rocket' );?></a></h2></li>
 	<li><h2><a href="#Q15"><?php _e( 'Is WP Rocket compatible with WPML or qTranslate?', 'rocket' );?></a></h2></li>
 	<li><h2><a href="#Q16"><?php _e( 'What is the minification and concatenation of files?', 'rocket' );?></a></h2></li>
-	<li><h2><a href="#Q17"><?php _e( 'What should I do if WP Rocket distorts my site display?', 'rocket' );?></a></h2></li>
+	<li><h2><a href="#Q17"><?php _e( 'What should I do if WP Rocket distorts my website display?', 'rocket' );?></a></h2></li>
 	<li><h2><a href="#Q18"><?php _e( 'How often the cache is updated?', 'rocket' );?></a></h2></li>
 	<li><h2><a href="#Q19"><?php _e( 'How not to cache a particular page?', 'rocket' );?></a></h2></li>
-	<li><h2><a href="#Q20"><?php _e( 'How does work the robots of preloading files cache?', 'rocket' );?></a></h2></li>
+	<li><h2><a href="#Q20"><?php _e( 'How does the robots of preloading files cache work?', 'rocket' );?></a></h2></li>
 </ol>
 <hr>
 <div id="insidefaq">
