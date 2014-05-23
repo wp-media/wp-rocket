@@ -310,7 +310,12 @@ function rocket_clean_files( $urls )
 		 * @param string The URL that the cache file to be deleted
 		*/
 		do_action( 'before_rocket_clean_file', $url );
-
+		
+		// Set correct HOST depending on hook (not multisite compatible!)
+		if( apply_filters( 'rocket_url_no_dots', true ) ) {
+			$url = str_replace( '.' , '_', $url );
+		}
+		
 		if ( $dirs = glob( WP_ROCKET_CACHE_PATH . rocket_remove_url_protocol( $url ), GLOB_NOSORT ) ) {
 			foreach( $dirs as $dir ) {
 				rocket_rrmdir( $dir );
@@ -343,6 +348,12 @@ function rocket_clean_home()
 {
 
 	list( $host, $path ) = get_rocket_parse_url( home_url() );
+	
+	// Set correct HOST depending on hook (not multisite compatible!)
+	if( apply_filters( 'rocket_url_no_dots', true ) ) {
+		$host = str_replace( '.' , '_', $host );
+	}
+	
 	$root = WP_ROCKET_CACHE_PATH . $host . '*' . $path;
 
 	/**
@@ -390,6 +401,12 @@ function rocket_clean_domain()
 {
 
 	list( $host, $path ) = get_rocket_parse_url( home_url() );
+	
+	// Set correct HOST depending on hook (not multisite compatible!)
+	if( apply_filters( 'rocket_url_no_dots', true ) ) {
+		$host = str_replace( '.' , '_', $host );
+	}
+	
 	$domain = WP_ROCKET_CACHE_PATH . $host . '*' . $path;
 
 	/**
@@ -437,6 +454,12 @@ function rocket_clean_domain_for_selected_lang( $lang )
 	do_action( 'before_purge_cache_for_selected_lang' , $lang );
 
 	list( $host, $path ) = get_rocket_parse_url_for_lang( $lang );
+	
+	// Set correct HOST depending on hook (not multisite compatible!)
+	if( apply_filters( 'rocket_url_no_dots', true ) ) {
+		$host = str_replace( '.' , '_', $host );
+	}
+	
 	if( $dirs = glob( WP_ROCKET_CACHE_PATH . $host . '*/' . $path, GLOB_NOSORT ) ) {
 		foreach( $dirs as $dir ) {
 			rocket_rrmdir( $dir, get_rocket_langs_to_preserve( $lang ) );
@@ -481,6 +504,12 @@ function rocket_clean_domain_for_all_langs()
 	// Remove all cache langs
 	foreach ( $langs as $lang ) {
 		list( $host ) = get_rocket_parse_url_for_lang( $lang );
+		
+		// Set correct HOST depending on hook (not multisite compatible!)
+		if( apply_filters( 'rocket_url_no_dots', true ) ) {
+			$host = str_replace( '.' , '_', $host );
+		}
+		
 		if( $dirs = glob( WP_ROCKET_CACHE_PATH . $host . '*', GLOB_NOSORT ) ) {
 			foreach( $dirs as $dir ) {
 				rocket_rrmdir( $dir );
