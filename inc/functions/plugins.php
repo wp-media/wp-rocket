@@ -52,8 +52,9 @@ function rocket_is_plugin_active_for_network( $plugin )
 function rocket_has_translation_plugin_active()
 {
 
-	if ( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) // WPML
-		|| rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) { // qTranslate 
+	if ( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' )  // WPML
+		|| rocket_is_plugin_active( 'qtranslate/qtranslate.php' )  				// qTranslate
+		|| rocket_is_plugin_active( 'polylang/polylang.php' ) ) { 				// Polylang
 		return true;
 	}
 
@@ -81,7 +82,7 @@ function get_rocket_all_active_langs()
 	if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
 		return $GLOBALS['q_config']['enabled_languages'];
 	}
-	
+
 	// Polylang
 	if ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
 		return wp_list_pluck( $GLOBALS['polylang']->model->get_languages_list(), 'slug' );
@@ -106,25 +107,25 @@ function get_rocket_all_active_langs_uri()
 
 	// WPML
 	if ( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
-		
+
 		$langs = array_keys( get_rocket_all_active_langs() );
 		foreach ( $langs as $lang ) {
 			$urls[] = $GLOBALS['sitepress']->language_url( $lang );
 		}
 
-	} 
+	}
 	// qTranslate
-	else if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) { 
-		
+	else if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
+
 		$langs = get_rocket_all_active_langs();
 		foreach ( $langs as $lang ) {
 			$urls[] = qtrans_convertURL( home_url(), $lang, true );
 		}
 
-	} 
+	}
 	// Polylang
 	else if ( 'polylang/polylang.php' ) {
-		$urls = wp_list_pluck( $polylang->model->get_languages_list(), 'home_url' );
+		$urls = wp_list_pluck( $GLOBALS['polylang']->model->get_languages_list(), 'home_url' );
 	}
 
 	return $urls;
@@ -168,7 +169,7 @@ function get_rocket_langs_to_preserve( $current_lang )
 		list( $host, $path ) = get_rocket_parse_url_for_lang( $lang );
 		$langs_to_preserve[] = WP_ROCKET_CACHE_PATH . $host . '(.*)/' . trim( $path, '/' );
 	}
-	
+
 	$langs_to_preserve = apply_filters( 'rocket_langs_to_preserve', $langs_to_preserve );
 	return $langs_to_preserve;
 
@@ -213,15 +214,44 @@ function get_rocket_subdomains_langs()
 		}
 
 	}
-	
+
 	// Polylang
 	if ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
-		
+
 		if ( (int) $GLOBALS['polylang']->options['force_lang'] == 2 ) {
 			$urls = get_rocket_all_active_langs_uri();
 		}
-		
+
+	}
+
+	return $urls;
+}
+
+
+
+/**
+ * Get home URL of a specific lang
+ *
+ * @since 2.2
+ *
+ */
+ 
+function get_rocket_home_url_lang( $lang ) {
+	
+	$url = home_url();
+	
+	// WPML
+	if ( rocket_is_plugin_active('sitepress-multilingual-cms/sitepress.php') ) {
+		$url = $GLOBALS['sitepress']->language_url( $lang );
+	
+	// qTranslate
+	} else if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
+		$url = qtrans_convertURL( home_url(), $lang, true );
+	
+	// Polylang
+	} else if ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
+		$url = pll_home_url( $lang );
 	}
 	
-	return $urls;
+	return $url;
 }

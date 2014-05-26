@@ -350,26 +350,7 @@ function rocket_clean_files( $urls )
 function rocket_clean_home( $lang = false )
 {
 
-	$home_url = home_url();
-
-	if( ! empty( $lang ) ) {
-
-		// WPML
-		if( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
-			$home_url = $GLOBALS['sitepress']->language_url( $lang );
-		
-		// qTranslate
-		} else if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
-			$home_url = qtrans_convertURL( $home_url, $lang, true );
-		
-		// Polylang
-		} else if( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
-			$home_url = pll_home_url( $lang );
-		}
-
-	}
-
-	list( $host, $path ) = get_rocket_parse_url( $home_url );
+	list( $host, $path ) = get_rocket_parse_url( get_rocket_home_url_lang( $lang ) );
 
 	// Set correct HOST depending on hook (not multisite compatible!)
 	if( apply_filters( 'rocket_url_no_dots', false ) ) {

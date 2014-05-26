@@ -63,16 +63,14 @@ function do_rocket_purge_cron()
 	{
 		// Purge files
 		rocket_clean_domain_for_all_langs();
-
-		// Run WP Rocket Bot for preload cache files
-		run_rocket_bot_for_all_langs();
 	}
 	else
 	{
 		// Purge files
 		rocket_clean_domain();
-
-		// Run WP Rocket Bot for preload cache files
-	    run_rocket_bot( 'cache-preload' );
 	}
+	
+	// Run WP Rocket Bot for preload cache files
+	run_rocket_bot( 'cache-preload' );
+	
 }

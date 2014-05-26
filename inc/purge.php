@@ -134,17 +134,17 @@ function rocket_clean_post( $post_id )
 
 	// Purge all files
 	rocket_clean_files( apply_filters( 'rocket_post_purge_urls', $purge_urls ) );
-	
+
 	// Never forget to purge homepage and their pagination
 	$lang = false;
-	
+
 	// WPML
-	if( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {	
+	if( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
 		$lang = $GLOBALS['sitepress']->get_language_for_element( $post_id, 'post_' . get_post_type( $post_id ) );
-	
-	// Polylang	
-	} else if ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {	
-		$lang = $polylang->get_post_language( $post_id )->slug;	
+
+	// Polylang
+	} else if ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
+		$lang = $polylang->get_post_language( $post_id )->slug;
 	}
 	rocket_clean_home( $lang );
 
@@ -317,10 +317,10 @@ function rocket_purge_cache()
 					// If WPML, qTranslate or Polylang aren't activated, you can purge your domain normally
 					rocket_clean_domain();
 				}
-				
+
 				// Remove all minify cache files
 				rocket_clean_minify();
-					
+
 				// Generate a new random key for minify cache file
 				$options = get_option( WP_ROCKET_SLUG );
 				$options['minify_css_key'] = create_rocket_uniqid();
@@ -368,23 +368,13 @@ function rocket_preload_cache()
 {
     if( isset( $_GET['_wpnonce'] ) ) {
 
-        if( !wp_verify_nonce( $_GET['_wpnonce'], 'preload' ) ) {
-                wp_nonce_ays( '' );
+        if( ! wp_verify_nonce( $_GET['_wpnonce'], 'preload' ) ) {
+			wp_nonce_ays( '' );
         }
 
 		// Check if a plugin translation is activated
-		if( isset( $_GET['lang'] ) && rocket_has_translation_plugin_active() )
-		{
-
-			if( $_GET['lang'] != 'all' ) {
-				// Run Rocket Bot on only selected lang
-				run_rocket_bot_for_selected_lang( sanitize_key( $_GET['lang'] ) );
-			}
-			else {
-				// Run Rocket Bot on all langs
-				run_rocket_bot_for_all_langs();
-			}
-
+		if ( isset( $_GET['lang'] ) && $_GET['lang'] != 'all' && rocket_has_translation_plugin_active() ) {
+			run_rocket_bot( 'cache-preload', sanitize_key( $_GET['lang'] ) );
 		}
 		else {
 			run_rocket_bot( 'cache-preload' );
