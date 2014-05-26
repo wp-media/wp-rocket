@@ -72,10 +72,12 @@ function run_rocket_bot_for_selected_lang( $lang )
 		
 		$url = $GLOBALS['sitepress']->language_url( $lang );
 		
-	} elseif ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
+	} else if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
 		
 		$url = qtrans_convertURL( home_url(), $lang, true );
 		
+	} else if ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
+		$url = pll_home_url( $lang );
 	}
 
 	run_rocket_bot( 'cache-preload', $url );

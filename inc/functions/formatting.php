@@ -97,13 +97,17 @@ function get_rocket_parse_url_for_lang( $lang )
 
 	// WPML
 	if ( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
-		global $sitepress;
-		return get_rocket_parse_url( $sitepress->language_url( $lang ) );
+		return get_rocket_parse_url( $GLOBALS['sitepress']->language_url( $lang ) );
 	}
 
 	// qTranslate
 	if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
 		return get_rocket_parse_url( qtrans_convertURL( home_url(), $lang, true ) );
+	}
+	
+	// Polylang
+	if ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
+		return get_rocket_parse_url( pll_home_url( $lang ) );
 	}
 
 }

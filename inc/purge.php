@@ -8,7 +8,7 @@ add_action( 'user_register'				, 'rocket_clean_domain' );		// When a user is add
 add_action( 'profile_update'			, 'rocket_clean_domain' );		// When a user is updated
 add_action( 'deleted_user'				, 'rocket_clean_domain' );		// When a user is deleted
 add_action( 'wp_update_nav_menu'		, 'rocket_clean_domain' );		// When a custom menu is update
-add_action( 'update_option_theme_mods_' . get_option( 'stylesheet' ), 'rocket_clean_domain' ); // When location af a menu is updated
+add_action( 'update_option_theme_mods_' . get_option( 'stylesheet' ), 'rocket_clean_domain' ); // When location of a menu is updated
 add_action( 'update_option_sidebars_widgets', 'rocket_clean_domain' );	// When you change the order of widgets
 add_action( 'update_option_category_base', 'rocket_clean_domain' );		// When category permalink prefix is update
 add_action( 'update_option_tag_base'	, 'rocket_clean_domain' ); 		// When tag permalink prefix is update
@@ -140,6 +140,12 @@ function rocket_clean_post( $post_id )
 
 		$domain = $GLOBALS['sitepress']->language_url( $GLOBALS['sitepress']->get_language_for_element( $post_id, 'post_' . get_post_type( $post_id ) ) );
 		list( $host, $path ) = get_rocket_parse_url( $domain );
+		
+		// Set correct HOST depending on hook (not multisite compatible!)
+		if( apply_filters( 'rocket_url_no_dots', false ) ) {
+			$host = str_replace( '.' , '_', $host );
+		}
+		
 		$root = WP_ROCKET_CACHE_PATH . $host . '*' . $path;
 
 		// Delete homepage file
@@ -327,7 +333,7 @@ function rocket_purge_cache()
 
 				}
 				else {
-					// If WPML or qTranslate aren't activated, you can purge your domain normally
+					// If WPML, qTranslate or Polylang aren't activated, you can purge your domain normally
 					rocket_clean_domain();
 				}
 				

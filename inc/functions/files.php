@@ -120,28 +120,29 @@ function get_rocket_config_file()
 
 	foreach( $urls as $url ) {
 
-		$url = parse_url( rtrim( $url, '/' ) );
-
-		if( !isset( $url['path'] ) ) {
-			$config_files_path[] = WP_ROCKET_CONFIG_PATH . $url['host'] . '.php';
+		list( $host, $path ) = get_rocket_parse_url( rtrim( $url, '/' ) );
+		
+		if( !isset( $path ) ) {
+			$config_files_path[] = WP_ROCKET_CONFIG_PATH . $host . '.php';
 		}
 		else {
 
-			$config_files_path[] = WP_ROCKET_CONFIG_PATH . $url['host'] . str_replace( '/', '.', rtrim( $url['path'], '/' ) ) . '.php';
+			$config_files_path[] = WP_ROCKET_CONFIG_PATH . $host . str_replace( '/', '.', rtrim( $path, '/' ) ) . '.php';
 
 		}
 
 	}
-
+	
+	
 	/**
 	 * Filter the content of all config files
 	 *
 	 * @since 2.1
 	 * @param string The content that will be printed
-	 * @param array Names of config files
+	 * @param array Names of all config files
 	*/
-	$buffer = apply_filters( 'rocket_advanced_cache_file', $buffer, $config_files_path );
-
+	$buffer = apply_filters( 'rocket_config_file', $buffer, $config_files_path );
+	
 	return array( $config_files_path, $buffer );
 
 }
@@ -160,6 +161,7 @@ function rocket_generate_config_file()
 {
 
 	list( $config_files_path, $buffer ) = get_rocket_config_file();
+	
 	if ( count( $config_files_path ) ) {
 		foreach ( $config_files_path as $file ) {
 			rocket_put_content( $file , $buffer );
@@ -288,8 +290,7 @@ function rocket_clean_minify( $extensions = array( 'js', 'css' ) )
 function rocket_clean_files( $urls )
 {
 
-	if( is_string( $urls ) )
-	{
+	if ( is_string( $urls ) ) {
 		$urls = (array)$urls;
 	}
 
@@ -300,8 +301,9 @@ function rocket_clean_files( $urls )
 	 * @param array URLs that will be returned.
 	*/
 	$urls = apply_filters( 'rocket_clean_files', $urls );
-
-    foreach( array_filter($urls) as $url ) {
+	$urls = array_filter( $urls );
+	
+    foreach( $urls as $url ) {
 
 		/**
 		 * Fires before the cache file is deleted
@@ -312,7 +314,7 @@ function rocket_clean_files( $urls )
 		do_action( 'before_rocket_clean_file', $url );
 		
 		// Set correct HOST depending on hook (not multisite compatible!)
-		if( apply_filters( 'rocket_url_no_dots', true ) ) {
+		if( apply_filters( 'rocket_url_no_dots', false ) ) {
 			$url = str_replace( '.' , '_', $url );
 		}
 		
@@ -350,7 +352,7 @@ function rocket_clean_home()
 	list( $host, $path ) = get_rocket_parse_url( home_url() );
 	
 	// Set correct HOST depending on hook (not multisite compatible!)
-	if( apply_filters( 'rocket_url_no_dots', true ) ) {
+	if( apply_filters( 'rocket_url_no_dots', false ) ) {
 		$host = str_replace( '.' , '_', $host );
 	}
 	
@@ -403,7 +405,7 @@ function rocket_clean_domain()
 	list( $host, $path ) = get_rocket_parse_url( home_url() );
 	
 	// Set correct HOST depending on hook (not multisite compatible!)
-	if( apply_filters( 'rocket_url_no_dots', true ) ) {
+	if( apply_filters( 'rocket_url_no_dots', false ) ) {
 		$host = str_replace( '.' , '_', $host );
 	}
 	
@@ -456,7 +458,7 @@ function rocket_clean_domain_for_selected_lang( $lang )
 	list( $host, $path ) = get_rocket_parse_url_for_lang( $lang );
 	
 	// Set correct HOST depending on hook (not multisite compatible!)
-	if( apply_filters( 'rocket_url_no_dots', true ) ) {
+	if( apply_filters( 'rocket_url_no_dots', false ) ) {
 		$host = str_replace( '.' , '_', $host );
 	}
 	
@@ -506,7 +508,7 @@ function rocket_clean_domain_for_all_langs()
 		list( $host ) = get_rocket_parse_url_for_lang( $lang );
 		
 		// Set correct HOST depending on hook (not multisite compatible!)
-		if( apply_filters( 'rocket_url_no_dots', true ) ) {
+		if( apply_filters( 'rocket_url_no_dots', false ) ) {
 			$host = str_replace( '.' , '_', $host );
 		}
 		

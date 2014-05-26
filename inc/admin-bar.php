@@ -16,7 +16,7 @@ add_action( 'admin_bar_menu', 'rocket_admin_bar', PHP_INT_MAX );
 function rocket_admin_bar( $wp_admin_bar )
 {
 	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) )  {
-		return;	
+		return;
 	}
 
 	$action = 'purge_cache';
@@ -61,8 +61,8 @@ function rocket_admin_bar( $wp_admin_bar )
 			}
 
 		}
-		// Compatibility with qTranslate
-		else if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
+		// Compatibility with qTranslate & Polylang
+		else if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) || rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
 
 			// Purge All
 			$wp_admin_bar->add_menu( array(
@@ -72,8 +72,13 @@ function rocket_admin_bar( $wp_admin_bar )
 				'href' 		=> '#',
 			));
 
-			// Add submen for each active langs
-			$langlinks = get_rocket_qtranslate_langs_for_admin_bar();
+			// Add submenu for each active langs
+			if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
+				$langlinks = get_rocket_qtranslate_langs_for_admin_bar();
+			} else if ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
+				$langlinks = get_rocket_polylang_langs_for_admin_bar();
+			}
+
 			foreach( $langlinks as $lang ) {
 	            $wp_admin_bar->add_menu( array(
 	                'parent' => 'purge-all',
@@ -87,7 +92,7 @@ function rocket_admin_bar( $wp_admin_bar )
 	        $wp_admin_bar->add_menu( array(
 	            'parent' => 'purge-all',
 	            'id' 	 => 'purge-all-all',
-	            'title'  =>  '<div class="dashicons dashicons-admin-site"></div> ' . __( 'All languages', 'rocket' ),
+	            'title'  =>  '<div class="dashicons-before dashicons-admin-site" style="line-height:1.5"> ' . __( 'All languages', 'rocket' ) . '</div>',
 	            'href'   => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . '&type=all&lang=all' ), $action . '_all' ),
 	        ));
 
@@ -157,7 +162,8 @@ function rocket_admin_bar( $wp_admin_bar )
 			}
 
 		}
-		else if( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) )
+		// Compatibility with qTranslate & Polylang
+		else if( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) || rocket_is_plugin_active( 'polylang/polylang.php' )  )
 		{
 
 			$wp_admin_bar->add_menu( array(
@@ -167,7 +173,12 @@ function rocket_admin_bar( $wp_admin_bar )
 	            'href' 	 => '#'
 	        ));
 
-	        $langlinks = get_rocket_qtranslate_langs_for_admin_bar();
+			if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
+				$langlinks = get_rocket_qtranslate_langs_for_admin_bar();
+			} else if ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
+				$langlinks = get_rocket_polylang_langs_for_admin_bar();
+			}
+
 			foreach( $langlinks as $lang ) {
 	            $wp_admin_bar->add_menu( array(
 	                'parent' => 'preload-cache',
@@ -180,7 +191,7 @@ function rocket_admin_bar( $wp_admin_bar )
 	        $wp_admin_bar->add_menu( array(
 	            'parent' => 'preload-cache',
 	            'id' 	 => 'preload-cache-all',
-	            'title'  =>  '<div class="dashicons dashicons-admin-site"></div> ' . __( 'All languages', 'rocket' ),
+	            'title'  =>  '<div class="dashicons-before dashicons-admin-site" style="line-height:1.5;"> ' . __( 'All languages', 'rocket' ) . '</div>',
 	            'href' 	 => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . '&lang=all' ), $action ),
 	        ));
 
@@ -271,6 +282,9 @@ function get_rocket_qtranslate_langs_for_admin_bar()
 
 	global $q_config;
 
+	$langlinks   = array();
+	$currentlang = array();
+
 	foreach( $q_config['enabled_languages'] as $lang ) {
 
 		$langlinks[$lang] = array(
@@ -288,4 +302,49 @@ function get_rocket_qtranslate_langs_for_admin_bar()
 	}
 
 	return $langlinks;
+}
+
+
+
+/**
+ * Get all langs to display in admin bar for Polylang
+ *
+ * @since 2.2
+ *
+ */
+
+function get_rocket_polylang_langs_for_admin_bar()
+{
+
+	global $polylang;
+
+	$langlinks   = array();
+	$currentlang = array();
+	$langs       = $polylang->model->get_languages_list();
+
+	foreach ( $langs as $lang ) {
+
+		$img = empty($lang->flag) ? '' : (false !== strpos($lang->flag, 'img') ? $lang->flag . '&nbsp;' : $lang->flag);
+
+		if( isset( $polylang->curlang->slug ) && $lang->slug == $polylang->curlang->slug ) {
+
+			$currentlang[$lang->slug] = array(
+				'code'	 => $lang->slug,
+	            'anchor' => $lang->name,
+	            'flag'   => $img
+			);
+
+		} else {
+
+			$langlinks[$lang->slug] = array(
+	            'code'	 => $lang->slug,
+	            'anchor' => $lang->name,
+	            'flag'   => $img
+	        );
+
+		}
+
+	}
+
+	return $currentlang + $langlinks;
 }

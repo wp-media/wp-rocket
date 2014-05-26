@@ -116,6 +116,7 @@ function rocket_init()
         if ( 0 < (int) get_rocket_option( 'cdn' ) ) {
         	require  WP_ROCKET_FRONT_PATH . '/cdn.php';
         }
+        
         if ( defined( 'SUNRISE' ) && SUNRISE == 'on' && function_exists( 'domain_mapping_siteurl' ) ) {
 	        require( WP_ROCKET_INC_PATH . '/domain-mapping.php' );
         }
@@ -235,7 +236,11 @@ function rocket_activation()
 	// Last constants
     define( 'WP_ROCKET_PLUGIN_NAME', 'WP Rocket' );
     define( 'WP_ROCKET_PLUGIN_SLUG', sanitize_key( WP_ROCKET_PLUGIN_NAME ) );
-
+	
+	if ( defined( 'SUNRISE' ) && SUNRISE == 'on' && function_exists( 'domain_mapping_siteurl' ) ) {
+        require( WP_ROCKET_INC_PATH . '/domain-mapping.php' );
+    }
+	
     require( WP_ROCKET_FUNCTIONS_PATH . '/options.php' );
     require( WP_ROCKET_FUNCTIONS_PATH . '/files.php' );
     require( WP_ROCKET_FUNCTIONS_PATH . '/formatting.php' );
