@@ -184,7 +184,6 @@ function get_rocket_cdn_cnames( $_zone = 'all' )
 
 function rocket_valid_key()
 {
-
 	return 8 == strlen( get_rocket_option( 'consumer_key' ) ) && get_rocket_option( 'secret_key' ) == hash( 'crc32', get_rocket_option( 'consumer_email' ) );
 
 }

@@ -18,14 +18,14 @@ function get_rocket_advanced_cache_file()
 
 	// Add a constant to be sure this is our file
 	$buffer .= 'define( \'WP_ROCKET_ADVANCED_CACHE\', true );' . "\n";
-	
+
 	// Get cache path
 	$buffer .= '$rocket_cache_path = \'' . WP_ROCKET_CACHE_PATH . '\';' . "\n";
-	
+
 	// Get config path
 	$buffer .= '$rocket_config_path = \'' . WP_ROCKET_CONFIG_PATH . '\';' . "\n";
-	
-	// Include the process file in buffer 
+
+	// Include the process file in buffer
 	$buffer .= 'include( \''. WP_ROCKET_FRONT_PATH . 'process.php' . '\' );' . "\n";
 
 	/**
@@ -121,7 +121,7 @@ function get_rocket_config_file()
 	foreach( $urls as $url ) {
 
 		list( $host, $path ) = get_rocket_parse_url( rtrim( $url, '/' ) );
-		
+
 		if( !isset( $path ) ) {
 			$config_files_path[] = WP_ROCKET_CONFIG_PATH . $host . '.php';
 		}
@@ -132,8 +132,8 @@ function get_rocket_config_file()
 		}
 
 	}
-	
-	
+
+
 	/**
 	 * Filter the content of all config files
 	 *
@@ -142,7 +142,7 @@ function get_rocket_config_file()
 	 * @param array Names of all config files
 	*/
 	$buffer = apply_filters( 'rocket_config_file', $buffer, $config_files_path );
-	
+
 	return array( $config_files_path, $buffer );
 
 }
@@ -161,7 +161,7 @@ function rocket_generate_config_file()
 {
 
 	list( $config_files_path, $buffer ) = get_rocket_config_file();
-	
+
 	if ( count( $config_files_path ) ) {
 		foreach ( $config_files_path as $file ) {
 			rocket_put_content( $file , $buffer );
@@ -302,7 +302,7 @@ function rocket_clean_files( $urls )
 	*/
 	$urls = apply_filters( 'rocket_clean_files', $urls );
 	$urls = array_filter( $urls );
-	
+
     foreach( $urls as $url ) {
 
 		/**
@@ -312,12 +312,12 @@ function rocket_clean_files( $urls )
 		 * @param string The URL that the cache file to be deleted
 		*/
 		do_action( 'before_rocket_clean_file', $url );
-		
+
 		// Set correct HOST depending on hook (not multisite compatible!)
 		if( apply_filters( 'rocket_url_no_dots', false ) ) {
 			$url = str_replace( '.' , '_', $url );
 		}
-		
+
 		if ( $dirs = glob( WP_ROCKET_CACHE_PATH . rocket_remove_url_protocol( $url ), GLOB_NOSORT ) ) {
 			foreach( $dirs as $dir ) {
 				rocket_rrmdir( $dir );
@@ -341,33 +341,54 @@ function rocket_clean_files( $urls )
 /**
  * Remove the home cache file and pagination
  *
+ * $since 2.2 Add $lang argument
  * @since 2.0 Delete cache files for all users
  * @since 1.0
  *
  */
 
-function rocket_clean_home()
+function rocket_clean_home( $lang = false )
 {
 
-	list( $host, $path ) = get_rocket_parse_url( home_url() );
-	
+	$home_url = home_url();
+
+	if( ! empty( $lang ) ) {
+
+		// WPML
+		if( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
+			$home_url = $GLOBALS['sitepress']->language_url( $lang );
+		
+		// qTranslate
+		} else if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
+			$home_url = qtrans_convertURL( $home_url, $lang, true );
+		
+		// Polylang
+		} else if( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
+			$home_url = pll_home_url( $lang );
+		}
+
+	}
+
+	list( $host, $path ) = get_rocket_parse_url( $home_url );
+
 	// Set correct HOST depending on hook (not multisite compatible!)
 	if( apply_filters( 'rocket_url_no_dots', false ) ) {
 		$host = str_replace( '.' , '_', $host );
 	}
-	
-	$root = WP_ROCKET_CACHE_PATH . $host . '*' . $path;
+
+	$root = WP_ROCKET_CACHE_PATH . $host . '*' . rtrim( $path, '/' );
 
 	/**
 	 * Fires before the home cache file is deleted
 	 *
 	 * @since 1.0
-	 * @param string The path of home cache file
+	 * @param string $root The path of home cache file
+	 * @param string $lang The current lang to purge
 	*/
-	do_action( 'before_rocket_clean_home', $root );
+	do_action( 'before_rocket_clean_home', $root, $lang );
 
 	// Delete homepage
-	if( $files = glob( $root . '*/index.html', GLOB_NOSORT ) ) {
+	if( $files = glob( $root . '/index.html', GLOB_NOSORT ) ) {
 		foreach( $files as $file ) {
 			@unlink( $file );
 		}
@@ -384,9 +405,10 @@ function rocket_clean_home()
 	 * Fires after the home cache file was deleted
 	 *
 	 * @since 1.0
-	 * @param string The path of home cache file
+	 * @param string $root The path of home cache file
+	 * @param string $lang The current lang to purge
 	*/
-    do_action( 'after_rocket_clean_home', $root );
+    do_action( 'after_rocket_clean_home', $root, $lang );
 }
 
 
@@ -403,12 +425,12 @@ function rocket_clean_domain()
 {
 
 	list( $host, $path ) = get_rocket_parse_url( home_url() );
-	
+
 	// Set correct HOST depending on hook (not multisite compatible!)
 	if( apply_filters( 'rocket_url_no_dots', false ) ) {
 		$host = str_replace( '.' , '_', $host );
 	}
-	
+
 	$domain = WP_ROCKET_CACHE_PATH . $host . '*' . $path;
 
 	/**
@@ -456,12 +478,12 @@ function rocket_clean_domain_for_selected_lang( $lang )
 	do_action( 'before_purge_cache_for_selected_lang' , $lang );
 
 	list( $host, $path ) = get_rocket_parse_url_for_lang( $lang );
-	
+
 	// Set correct HOST depending on hook (not multisite compatible!)
 	if( apply_filters( 'rocket_url_no_dots', false ) ) {
 		$host = str_replace( '.' , '_', $host );
 	}
-	
+
 	if( $dirs = glob( WP_ROCKET_CACHE_PATH . $host . '*/' . $path, GLOB_NOSORT ) ) {
 		foreach( $dirs as $dir ) {
 			rocket_rrmdir( $dir, get_rocket_langs_to_preserve( $lang ) );
@@ -506,12 +528,12 @@ function rocket_clean_domain_for_all_langs()
 	// Remove all cache langs
 	foreach ( $langs as $lang ) {
 		list( $host ) = get_rocket_parse_url_for_lang( $lang );
-		
+
 		// Set correct HOST depending on hook (not multisite compatible!)
 		if( apply_filters( 'rocket_url_no_dots', false ) ) {
 			$host = str_replace( '.' , '_', $host );
 		}
-		
+
 		if( $dirs = glob( WP_ROCKET_CACHE_PATH . $host . '*', GLOB_NOSORT ) ) {
 			foreach( $dirs as $dir ) {
 				rocket_rrmdir( $dir );
@@ -673,12 +695,12 @@ function rocket_put_content( $file, $content )
 
 function rocket_fetch_and_cache_minify( $url, $pretty_url )
 {
-	
+
 	// Check if php-curl is enabled
 	if ( ! function_exists( 'curl_init' ) || ! function_exists( 'curl_exec' ) ) {
 		return false;
 	}
-	
+
 	$pretty_path = str_replace( WP_ROCKET_MINIFY_CACHE_URL, WP_ROCKET_MINIFY_CACHE_PATH, $pretty_url );
 
 	// If minify cache file is already exist, return to get a coffee :)

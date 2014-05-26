@@ -134,38 +134,19 @@ function rocket_clean_post( $post_id )
 
 	// Purge all files
 	rocket_clean_files( apply_filters( 'rocket_post_purge_urls', $purge_urls ) );
-
+	
 	// Never forget to purge homepage and their pagination
-	if( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
-
-		$domain = $GLOBALS['sitepress']->language_url( $GLOBALS['sitepress']->get_language_for_element( $post_id, 'post_' . get_post_type( $post_id ) ) );
-		list( $host, $path ) = get_rocket_parse_url( $domain );
-		
-		// Set correct HOST depending on hook (not multisite compatible!)
-		if( apply_filters( 'rocket_url_no_dots', false ) ) {
-			$host = str_replace( '.' , '_', $host );
-		}
-		
-		$root = WP_ROCKET_CACHE_PATH . $host . '*' . $path;
-
-		// Delete homepage file
-		if( $files = glob( $root . '/index.html' ) ) {
-			foreach( $files as $file ) {
-				@unlink( $file );
-			}
-		}
-
-		// Delete homepage pagination
-		if( $dirs = glob( $root . '/' . $GLOBALS['wp_rewrite']->pagination_base ) ) {
-			foreach( $dirs as $dir ) {
-				rocket_rrmdir( $dir );
-			}
-		}
-
+	$lang = false;
+	
+	// WPML
+	if( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {	
+		$lang = $GLOBALS['sitepress']->get_language_for_element( $post_id, 'post_' . get_post_type( $post_id ) );
+	
+	// Polylang	
+	} else if ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {	
+		$lang = $polylang->get_post_language( $post_id )->slug;	
 	}
-	else {
-		rocket_clean_home();
-	}
+	rocket_clean_home( $lang );
 
 	// Purge all parents
 	$parents = get_post_ancestors( $post_id );
@@ -181,7 +162,7 @@ function rocket_clean_post( $post_id )
 
 
 /**
- * TO DO
+ * Add pattern to clean files of connected users
  *
  * @since 2.0
  *
