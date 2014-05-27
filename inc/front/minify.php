@@ -216,7 +216,7 @@ function rocket_minify_css( $buffer )
 
 			// Get host for all langs
 			$langs_host = array();
-			if ( $langs = get_rocket_all_active_langs_uri() ) {
+			if ( $langs = get_rocket_i18n_uri() ) {
 
 				foreach ( $langs as $lang ) {
 					$langs_host[] = parse_url( $lang, PHP_URL_HOST );
@@ -334,7 +334,7 @@ function rocket_minify_js( $buffer )
 
 			// Get host for all langs
 			$langs_host = array();
-			if ( $langs = get_rocket_all_active_langs_uri() ) {
+			if ( $langs = get_rocket_i18n_uri() ) {
 
 				foreach ( $langs as $lang ) {
 					$langs_host[] = parse_url( $lang, PHP_URL_HOST );

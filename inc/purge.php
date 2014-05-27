@@ -301,7 +301,7 @@ function rocket_purge_cache()
 			case 'all':
 
 				// Check if a plugin translation is activated
-				if( isset( $_GET['lang'] ) && rocket_has_translation_plugin_active() ) {
+				if( isset( $_GET['lang'] ) && rocket_has_i18n() ) {
 
 					if( $_GET['lang'] != 'all' ) {
 						// Remove only cache files of selected lang
@@ -372,13 +372,8 @@ function rocket_preload_cache()
 			wp_nonce_ays( '' );
         }
 
-		// Check if a plugin translation is activated
-		if ( isset( $_GET['lang'] ) && $_GET['lang'] != 'all' && rocket_has_translation_plugin_active() ) {
-			run_rocket_bot( 'cache-preload', sanitize_key( $_GET['lang'] ) );
-		}
-		else {
-			run_rocket_bot( 'cache-preload' );
-		}
+		$lang = isset( $_GET['lang'] ) && $_GET['lang'] != 'all' ? sanitize_key( $_GET['lang'] ) : '';
+		run_rocket_bot( 'cache-preload', $lang );
 
         wp_redirect( wp_get_referer() );
         die();

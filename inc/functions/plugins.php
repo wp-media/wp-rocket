@@ -49,7 +49,7 @@ function rocket_is_plugin_active_for_network( $plugin )
  *
  */
 
-function rocket_has_translation_plugin_active()
+function rocket_has_i18n()
 {
 
 	if ( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' )  // WPML
@@ -97,10 +97,11 @@ function get_rocket_all_active_langs()
  * Get URI all of active languages
  *
  * @since 2.0
- *
+ * @access public
+ * @return array $urls
  */
 
-function get_rocket_all_active_langs_uri()
+function get_rocket_i18n_uri()
 {
 
 	$urls  = array();
@@ -187,7 +188,7 @@ function get_rocket_subdomains_langs()
 {
 
 	// Check if a translation plugin is activated
-	if ( ! rocket_has_translation_plugin_active() ) {
+	if ( ! rocket_has_i18n() ) {
 		return false;
 	}
 
@@ -200,7 +201,7 @@ function get_rocket_subdomains_langs()
 
 		// Check if WPML set to serve subdomains URL
 		if ( (int) $option['language_negotiation_type'] == 2 ) {
-			$urls = get_rocket_all_active_langs_uri();
+			$urls = get_rocket_i18n_uri();
 		}
 
 	}
@@ -210,7 +211,7 @@ function get_rocket_subdomains_langs()
 
 		// Check if qTranslate set to serve subdomains URL
 		if( (int) $GLOBALS['q_config']['url_mode'] == 3 ) {
-			$urls = get_rocket_all_active_langs_uri();
+			$urls = get_rocket_i18n_uri();
 		}
 
 	}
@@ -219,7 +220,7 @@ function get_rocket_subdomains_langs()
 	if ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
 
 		if ( (int) $GLOBALS['polylang']->options['force_lang'] == 2 ) {
-			$urls = get_rocket_all_active_langs_uri();
+			$urls = get_rocket_i18n_uri();
 		}
 
 	}
@@ -233,25 +234,25 @@ function get_rocket_subdomains_langs()
  * Get home URL of a specific lang
  *
  * @since 2.2
- *
+ * @access public
+ * @param string $lang (default: '') The language code
+ * @return string $url
  */
- 
-function get_rocket_home_url_lang( $lang ) {
-	
+
+function get_rocket_i18n_home_url( $lang = '' ) {
+
 	$url = home_url();
+	if( ! rocket_has_i18n() ) {
+		return $url;
+	}
 	
-	// WPML
 	if ( rocket_is_plugin_active('sitepress-multilingual-cms/sitepress.php') ) {
 		$url = $GLOBALS['sitepress']->language_url( $lang );
-	
-	// qTranslate
 	} else if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
 		$url = qtrans_convertURL( home_url(), $lang, true );
-	
-	// Polylang
 	} else if ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
 		$url = pll_home_url( $lang );
 	}
-	
+
 	return $url;
 }

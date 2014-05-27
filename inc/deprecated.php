@@ -95,3 +95,31 @@ function get_rocket_home_url( $url = null ) {
 	return false;
 }
 endif;
+
+if ( ! function_exists( 'rocket_has_translation_plugin_active' ) ) :
+/**
+ * Check if a translation plugin is activated (WPML or qTranslate)
+ *
+ * @since 2.0
+ * @deprecated 2.2
+ *
+ */
+function rocket_has_translation_plugin_active() {
+	_deprecated_function( __FUNCTION__, '2.2', 'rocket_has_i18n()' );
+	return rocket_has_i18n();
+}
+endif;
+
+if ( ! function_exists( 'get_rocket_all_active_langs_uri' ) ) :
+/**
+ * Get URI all of active languages
+ *
+ * @since 2.0
+ * @deprecated 2.2
+ *
+ */
+function get_rocket_all_active_langs_uri() {
+	_deprecated_function( __FUNCTION__, '2.2', 'get_rocket_i18n_uri()' );
+	return get_rocket_i18n_uri();
+}
+endif;

@@ -350,7 +350,7 @@ function rocket_clean_files( $urls )
 function rocket_clean_home( $lang = false )
 {
 
-	list( $host, $path ) = get_rocket_parse_url( get_rocket_home_url_lang( $lang ) );
+	list( $host, $path ) = get_rocket_parse_url( get_rocket_i18n_home_url( $lang ) );
 
 	// Set correct HOST depending on hook (not multisite compatible!)
 	if( apply_filters( 'rocket_url_no_dots', false ) ) {

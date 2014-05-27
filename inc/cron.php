@@ -59,13 +59,10 @@ add_action( 'rocket_purge_time_event', 'do_rocket_purge_cron' );
 function do_rocket_purge_cron()
 {
 
-	if( rocket_has_translation_plugin_active() )
-	{
+	if( rocket_has_i18n() ) {
 		// Purge files
 		rocket_clean_domain_for_all_langs();
-	}
-	else
-	{
+	} else {
 		// Purge files
 		rocket_clean_domain();
 	}
