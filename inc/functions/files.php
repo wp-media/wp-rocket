@@ -344,10 +344,12 @@ function rocket_clean_files( $urls )
  * $since 2.2 Add $lang argument
  * @since 2.0 Delete cache files for all users
  * @since 1.0
- *
+ * @access public
+ * @param string $lang (default: '') The language code
+ * @return void
  */
 
-function rocket_clean_home( $lang = false )
+function rocket_clean_home( $lang = '' )
 {
 
 	list( $host, $path ) = get_rocket_parse_url( get_rocket_i18n_home_url( $lang ) );
@@ -399,13 +401,15 @@ function rocket_clean_home( $lang = false )
  *
  * @since 2.0 Delete domain cache files for all users
  * @since 1.0
- *
+ * @access public
+ * @param string $lang (default: '') The language code
+ * @return void
  */
 
-function rocket_clean_domain()
+function rocket_clean_domain( $lang = '' )
 {
 
-	list( $host, $path ) = get_rocket_parse_url( home_url() );
+	list( $host, $path ) = get_rocket_parse_url( get_rocket_i18n_home_url( $lang ) );
 
 	// Set correct HOST depending on hook (not multisite compatible!)
 	if( apply_filters( 'rocket_url_no_dots', false ) ) {
@@ -425,7 +429,7 @@ function rocket_clean_domain()
 	// Delete cache domain files
 	if( $dirs = glob( $domain . '*', GLOB_NOSORT ) ) {
 		foreach( $dirs as $dir ) {
-			rocket_rrmdir( $dir );
+			rocket_rrmdir( $dir, get_rocket_i18n_to_preserve( $lang ) );
 		}
 	}
 
@@ -441,52 +445,11 @@ function rocket_clean_domain()
 
 
 /**
- * Remove only cache files of selected lang
- *
- * @since 2.0
- *
- */
-
-function rocket_clean_domain_for_selected_lang( $lang )
-{
-
-	/**
-	 * Fires before all cache files to be deleted for a specific lang
-	 *
-	 * @since 2.0
-	 * @param string The code lang (ex: en, fr, de, etc...)
-	*/
-	do_action( 'before_purge_cache_for_selected_lang' , $lang );
-
-	list( $host, $path ) = get_rocket_parse_url_for_lang( $lang );
-
-	// Set correct HOST depending on hook (not multisite compatible!)
-	if( apply_filters( 'rocket_url_no_dots', false ) ) {
-		$host = str_replace( '.' , '_', $host );
-	}
-
-	if( $dirs = glob( WP_ROCKET_CACHE_PATH . $host . '*/' . $path, GLOB_NOSORT ) ) {
-		foreach( $dirs as $dir ) {
-			rocket_rrmdir( $dir, get_rocket_langs_to_preserve( $lang ) );
-		}
-	}
-
-	/**
-	 * Fires after all cache files was deleted for a specific lang
-	 *
-	 * @since 2.0
-	 * @param string The code lang (ex: en, fr, de, etc...)
-	*/
-	do_action( 'after_purge_cache_for_selected_lang' , $lang );
-}
-
-
-
-/**
  * Remove cache files of all langs
  *
  * @since 2.0
- *
+ * @access public
+ * @return void
  */
 
 function rocket_clean_domain_for_all_langs()
@@ -508,7 +471,7 @@ function rocket_clean_domain_for_all_langs()
 
 	// Remove all cache langs
 	foreach ( $langs as $lang ) {
-		list( $host ) = get_rocket_parse_url_for_lang( $lang );
+		list( $host ) = get_rocket_parse_url( get_rocket_i18n_home_url( $lang ) );
 
 		// Set correct HOST depending on hook (not multisite compatible!)
 		if( apply_filters( 'rocket_url_no_dots', false ) ) {

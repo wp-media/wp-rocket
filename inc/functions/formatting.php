@@ -66,35 +66,6 @@ function get_rocket_parse_url( $url )
 
 
 
-/**
- * Extract and return host, path and scheme for a specific lang
- *
- * @since 2.0
- *
- */
-
-function get_rocket_parse_url_for_lang( $lang )
-{
-
-	// WPML
-	if ( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
-		return get_rocket_parse_url( $GLOBALS['sitepress']->language_url( $lang ) );
-	}
-
-	// qTranslate
-	if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
-		return get_rocket_parse_url( qtrans_convertURL( home_url(), $lang, true ) );
-	}
-	
-	// Polylang
-	if ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
-		return get_rocket_parse_url( pll_home_url( $lang ) );
-	}
-
-}
-
-
-
 /*
  * Get an URL with one of CNAMES added in options
  *
@@ -106,27 +77,27 @@ function get_rocket_cdn_url( $url, $zone = array( 'all' ) )
 {
 
 	$cnames = get_rocket_cdn_cnames( $zone );
-	
+
 	if ( (int) get_rocket_option('cdn') == 0 || empty( $cnames ) ) {
 		return $url;
 	}
 
 	list( $host, $path, $scheme, $query ) = get_rocket_parse_url( $url );
 	$query = ! empty( $query ) ? '?' . $query : '';
-	
+
 	if ( empty( $scheme ) ) {
-		
+
 		$home = rocket_remove_url_protocol( home_url() );
-		
+
 		// Check if URL is external
 		if ( strpos( $path, $home ) === false ) {
 			return $url;
 		} else {
 			$path = str_replace( $home, '', ltrim( $path, '//' ) );
 		}
-		
+
 	}
-		
+
 	$url = rtrim( $cnames[(abs(crc32($path))%count($cnames))] , '/' ) . $path . $query;
 	return $url;
 
@@ -188,8 +159,8 @@ function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_file
 			if ( strlen( $urls[$i] . $base_url . $file )+1>=$filename_length ) {
 				$i++;
 			}
-			
-			$urls[$i] .= $file.',';	
+
+			$urls[$i] .= $file.',';
 
 		}
 

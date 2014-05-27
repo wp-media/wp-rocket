@@ -43,7 +43,7 @@ function rocket_is_plugin_active_for_network( $plugin )
 
 
 /**
- * Check if a translation plugin is activated (WPML or qTranslate)
+ * Check if a translation plugin is activated
  *
  * @since 2.0
  *
@@ -141,25 +141,26 @@ function get_rocket_i18n_uri()
  * But, if you have a domain for your english and german websites with example.com/en/ and example.com/de/, you want to keep the /en/ and /de/ directory when the french domain is cleared.
  *
  * @since 2.0
- *
+ * @access public
+ * @param string $current_lang
+ * @return array $langs_to_preserve
  */
 
-function get_rocket_langs_to_preserve( $current_lang )
+function get_rocket_i18n_to_preserve( $current_lang )
 {
-
-	$langs = get_rocket_all_active_langs();
+	
 	$langs_to_preserve = array();
-
+	if( ! rocket_has_i18n() ) {
+		return $langs_to_preserve;
+	}
+	
+	$langs = get_rocket_all_active_langs();
+	
 	// Unset current lang to the preserve dirs
-
-	// WPML
 	if ( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
 		unset( $langs[$current_lang] );
 		$langs = array_keys( $langs );
-	}
-
-	// qTranslate OR Polylang
-	if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) || rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
+	} else if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) || rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
 		$langs = array_flip( $langs );
 		unset( $langs[$current_lang] );
 		$langs = array_flip( $langs );
@@ -167,7 +168,7 @@ function get_rocket_langs_to_preserve( $current_lang )
 
 	// Stock all URLs of langs to preserve
 	foreach ( $langs as $lang ) {
-		list( $host, $path ) = get_rocket_parse_url_for_lang( $lang );
+		list( $host, $path ) = get_rocket_parse_url( get_rocket_i18n_home_url( $lang ) );
 		$langs_to_preserve[] = WP_ROCKET_CACHE_PATH . $host . '(.*)/' . trim( $path, '/' );
 	}
 

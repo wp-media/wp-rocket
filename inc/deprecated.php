@@ -102,6 +102,7 @@ if ( ! function_exists( 'rocket_has_translation_plugin_active' ) ) :
  *
  * @since 2.0
  * @deprecated 2.2
+ * @deprecated Use rocket_has_i18n()
  *
  */
 function rocket_has_translation_plugin_active() {
@@ -116,10 +117,59 @@ if ( ! function_exists( 'get_rocket_all_active_langs_uri' ) ) :
  *
  * @since 2.0
  * @deprecated 2.2
+ * @deprecated Use get_rocket_i18n_uri()
  *
  */
 function get_rocket_all_active_langs_uri() {
 	_deprecated_function( __FUNCTION__, '2.2', 'get_rocket_i18n_uri()' );
 	return get_rocket_i18n_uri();
+}
+endif;
+
+if ( ! function_exists( 'get_rocket_parse_url_for_lang' ) ) :
+/**
+ * Extract and return host, path and scheme for a specific lang
+ *
+ * @since 2.0
+ * @deprecated 2.2
+ * @deprecated Use get_rocket_parse_url()
+ *
+ */
+function get_rocket_parse_url_for_lang( $lang ) {
+	_deprecated_function( __FUNCTION__, '2.2', 'get_rocket_parse_url()' );
+	return get_rocket_parse_url( get_rocket_i18n_home_url( $lang ) );
+}
+endif;
+
+if ( ! function_exists( 'rocket_clean_domain_for_selected_lang' ) ) :
+/**
+ * Remove only cache files of selected lang
+ *
+ * @since 2.0
+ * @deprecated 2.2
+ * @deprecated Use rocket_clean_domain()
+ *
+ */
+function rocket_clean_domain_for_selected_lang( $lang ) {
+	_deprecated_function( __FUNCTION__, '2.2', 'rocket_clean_domain()' );
+	return rocket_clean_domain( $lang );
+}
+endif;
+
+if ( ! function_exists( 'get_rocket_langs_to_preserve' ) ) :
+/**
+ * Get folder paths to preserve languages ​​when purging a domain
+ * This function is required when the domains of languages (​​other than the default) are managed by subfolders
+ * By default, when you clear the cache of the french website with the domain example.com, all subdirectory like /en/ and /de/ are deleted.
+ * But, if you have a domain for your english and german websites with example.com/en/ and example.com/de/, you want to keep the /en/ and /de/ directory when the french domain is cleared.
+ *
+ * @since 2.0
+ * @deprecated 2.2
+ * @deprecated Use get_rocket_i18n_to_preserve()
+ *
+ */
+function get_rocket_langs_to_preserve( $current_lang ) {
+	_deprecated_function( __FUNCTION__, '2.2', 'get_rocket_i18n_to_preserve()' );
+	return get_rocket_i18n_to_preserve( $current_lang );
 }
 endif;
