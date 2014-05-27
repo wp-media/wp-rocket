@@ -81,3 +81,17 @@ function run_rocket_bot_for_selected_lang( $lang ) {
 	return run_rocket_bot( 'cache-preload', $lang );
 }
 endif;
+
+if ( ! function_exists( 'get_rocket_home_url' ) ) :
+/**
+ * Returns a full and correct home_url without subdmain, see rocket_get_domain()
+ *
+ * @since 1.0
+ * @deprecated 2.2
+ *
+ */
+function get_rocket_home_url( $url = null ) {
+	_deprecated_function( __FUNCTION__, '2.2' );
+	return false;
+}
+endif;

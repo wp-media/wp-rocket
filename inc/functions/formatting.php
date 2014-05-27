@@ -1,25 +1,6 @@
 <?php
 defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 
-
-/**
- * Returns a full and correct home_url without subdmain, see rocket_get_domain()
- *
- * @since 1.0
- *
- */
-
-function get_rocket_home_url( $url=null )
-{
-
-	$url = is_null( $url ) ? home_url( '/' ) : $url;
-	$s = is_ssl() ? 's' : '';
-	return 'http' . $s . '://' . rocket_get_domain( $url );
-
-}
-
-
-
 /**
  * Get the domain of an URL without subdomain
  * (ex: rocket_get_domain( 'http://www.geekpress.fr' ) return geekpress.fr
