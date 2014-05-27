@@ -300,24 +300,10 @@ function rocket_purge_cache()
 			// Clear all cache domain
 			case 'all':
 
-				// Check if a plugin translation is activated
-				if( isset( $_GET['lang'] ) && rocket_has_i18n() ) {
-
-					if( $_GET['lang'] != 'all' ) {
-						// Remove only cache files of selected lang
-						rocket_clean_domain_for_selected_lang( sanitize_key( $_GET['lang'] ) );
-					}
-					else {
-						// Remove all cache langs
-						rocket_clean_domain_for_all_langs();
-					}
-
-				}
-				else {
-					// If WPML, qTranslate or Polylang aren't activated, you can purge your domain normally
-					rocket_clean_domain();
-				}
-
+				// Remove all cache files
+				$lang = isset( $_GET['lang'] ) && $_GET['lang'] != 'all' ? sanitize_key( $_GET['lang'] ) : '';
+				rocket_clean_domain( $lang );
+				
 				// Remove all minify cache files
 				rocket_clean_minify();
 

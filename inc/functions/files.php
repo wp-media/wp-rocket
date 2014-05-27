@@ -409,89 +409,51 @@ function rocket_clean_home( $lang = '' )
 function rocket_clean_domain( $lang = '' )
 {
 
-	list( $host, $path ) = get_rocket_parse_url( get_rocket_i18n_home_url( $lang ) );
-
-	// Set correct HOST depending on hook (not multisite compatible!)
-	if( apply_filters( 'rocket_url_no_dots', false ) ) {
-		$host = str_replace( '.' , '_', $host );
+	$urls = array();
+	if ( ! $lang ) {
+		$urls = get_rocket_i18n_uri();
+	} else {
+		$urls[] = get_rocket_i18n_home_url( $lang );
 	}
 
-	$domain = WP_ROCKET_CACHE_PATH . $host . '*' . $path;
+	foreach( $urls as $url ) {
 
-	/**
-	 * Fires before all cache files are deleted
-	 *
-	 * @since 1.0
-	 * @param string The path of home cache file
-	*/
-	do_action( 'before_rocket_clean_domain', $domain );
-
-	// Delete cache domain files
-	if( $dirs = glob( $domain . '*', GLOB_NOSORT ) ) {
-		foreach( $dirs as $dir ) {
-			rocket_rrmdir( $dir, get_rocket_i18n_to_preserve( $lang ) );
-		}
-	}
-
-	/**
-	 * Fires after all cache files was deleted
-	 *
-	 * @since 1.0
-	 * @param string The path of home cache file
-	*/
-    do_action( 'after_rocket_clean_domain', $domain );
-}
-
-
-
-/**
- * Remove cache files of all langs
- *
- * @since 2.0
- * @access public
- * @return void
- */
-
-function rocket_clean_domain_for_all_langs()
-{
-
-	$langs = get_rocket_all_active_langs();
-
-	if( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
-		$langs = array_keys( $langs );
-	}
-
-	/**
-	 * Fires before all cache files to be deleted for all langs
-	 *
-	 * @since 2.0
-	 * @param array The code of all langs (ex: en, fr, de, etc...)
-	*/
-	do_action( 'before_rocket_clean_domain_for_all_langs' , $langs );
-
-	// Remove all cache langs
-	foreach ( $langs as $lang ) {
-		list( $host ) = get_rocket_parse_url( get_rocket_i18n_home_url( $lang ) );
+		list( $host, $path ) = get_rocket_parse_url( $url );
 
 		// Set correct HOST depending on hook (not multisite compatible!)
 		if( apply_filters( 'rocket_url_no_dots', false ) ) {
 			$host = str_replace( '.' , '_', $host );
 		}
 
-		if( $dirs = glob( WP_ROCKET_CACHE_PATH . $host . '*', GLOB_NOSORT ) ) {
+		$root = WP_ROCKET_CACHE_PATH . $host . '*' . $path;
+
+		/**
+		 * Fires before all cache files are deleted
+		 *
+		 * @since 1.0
+		 * @param string $root The path of home cache file
+		 * @param string $lang The current lang to purge
+		*/
+		do_action( 'before_rocket_clean_domain', $root, $lang );
+
+		// Delete cache domain files
+		if( $dirs = glob( $root . '*', GLOB_NOSORT ) ) {
 			foreach( $dirs as $dir ) {
-				rocket_rrmdir( $dir );
+				rocket_rrmdir( $dir, get_rocket_i18n_to_preserve( $lang ) );
 			}
 		}
+
+		/**
+		 * Fires after all cache files was deleted
+		 *
+		 * @since 1.0
+		 * @param string $root The path of home cache file
+		 * @param string $lang The current lang to purge
+		*/
+	    do_action( 'after_rocket_clean_domain', $root, $lang );
+
 	}
 
-	/**
-	 * Fires after all cache files was deleted for all langs
-	 *
-	 * @since 2.0
-	 * @param array The code of all langs (ex: en, fr, de, etc...)
-	*/
-	do_action( 'after_rocket_clean_domain_for_all_langs' , $langs );
 }
 
 

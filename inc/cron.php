@@ -59,13 +59,8 @@ add_action( 'rocket_purge_time_event', 'do_rocket_purge_cron' );
 function do_rocket_purge_cron()
 {
 
-	if( rocket_has_i18n() ) {
-		// Purge files
-		rocket_clean_domain_for_all_langs();
-	} else {
-		// Purge files
-		rocket_clean_domain();
-	}
+	// Purge files
+	rocket_clean_domain();
 	
 	// Run WP Rocket Bot for preload cache files
 	run_rocket_bot( 'cache-preload' );

@@ -111,6 +111,21 @@ function rocket_has_translation_plugin_active() {
 }
 endif;
 
+if ( ! function_exists( 'get_rocket_all_active_langs' ) ) :
+/**
+ * Get URI all of active languages
+ *
+ * @since 2.0
+ * @deprecated 2.2
+ * @deprecated Use get_rocket_i18n_code()
+ *
+ */
+function get_rocket_all_active_langs() {
+	_deprecated_function( __FUNCTION__, '2.2', 'get_rocket_i18n_code()' );
+	return get_rocket_i18n_code();
+}
+endif;
+
 if ( ! function_exists( 'get_rocket_all_active_langs_uri' ) ) :
 /**
  * Get URI all of active languages
@@ -153,6 +168,21 @@ if ( ! function_exists( 'rocket_clean_domain_for_selected_lang' ) ) :
 function rocket_clean_domain_for_selected_lang( $lang ) {
 	_deprecated_function( __FUNCTION__, '2.2', 'rocket_clean_domain()' );
 	return rocket_clean_domain( $lang );
+}
+endif;
+
+if ( ! function_exists( 'rocket_clean_domain_for_all_langs' ) ) :
+/**
+ * Remove cache files of all langs
+ *
+ * @since 2.0
+ * @deprecated 2.2
+ * @deprecated Use rocket_clean_domain()
+ *
+ */
+function rocket_clean_domain_for_all_langs() {
+	_deprecated_function( __FUNCTION__, '2.2', 'rocket_clean_domain()' );
+	return rocket_clean_domain();
 }
 endif;
 

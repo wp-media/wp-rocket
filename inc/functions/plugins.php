@@ -70,12 +70,16 @@ function rocket_has_i18n()
  *
  */
 
-function get_rocket_all_active_langs()
+function get_rocket_i18n_code()
 {
 
+	if( ! rocket_has_i18n() ) {
+		return false;
+	}
+	
 	// WPML
 	if ( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
-		return $GLOBALS['sitepress']->get_active_languages();
+		return array_keys( $GLOBALS['sitepress']->get_active_languages() );
 	}
 
 	// qTranslate
@@ -88,7 +92,6 @@ function get_rocket_all_active_langs()
 		return wp_list_pluck( $GLOBALS['polylang']->model->get_languages_list(), 'slug' );
 	}
 
-	return false;
 }
 
 
@@ -104,12 +107,12 @@ function get_rocket_all_active_langs()
 function get_rocket_i18n_uri()
 {
 
-	$urls  = array();
+	$urls = array();
 
 	// WPML
 	if ( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
 
-		$langs = array_keys( get_rocket_all_active_langs() );
+		$langs = get_rocket_i18n_code();
 		foreach ( $langs as $lang ) {
 			$urls[] = $GLOBALS['sitepress']->language_url( $lang );
 		}
@@ -118,7 +121,7 @@ function get_rocket_i18n_uri()
 	// qTranslate
 	else if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
 
-		$langs = get_rocket_all_active_langs();
+		$langs = get_rocket_i18n_code();
 		foreach ( $langs as $lang ) {
 			$urls[] = qtrans_convertURL( home_url(), $lang, true );
 		}
@@ -154,17 +157,12 @@ function get_rocket_i18n_to_preserve( $current_lang )
 		return $langs_to_preserve;
 	}
 	
-	$langs = get_rocket_all_active_langs();
+	$langs = get_rocket_i18n_code();
 	
 	// Unset current lang to the preserve dirs
-	if ( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
-		unset( $langs[$current_lang] );
-		$langs = array_keys( $langs );
-	} else if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) || rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
-		$langs = array_flip( $langs );
-		unset( $langs[$current_lang] );
-		$langs = array_flip( $langs );
-	}
+	$langs = array_flip( $langs );
+	unset( $langs[$current_lang] );
+	$langs = array_flip( $langs );
 
 	// Stock all URLs of langs to preserve
 	foreach ( $langs as $lang ) {
