@@ -29,12 +29,11 @@ class ActionScheduler_AdminView {
 	 */
 	public function init() {
 
-		if ( ! defined( 'WP_DEBUG' ) || true !== WP_DEBUG || ! is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) )
-			return;
+		if ( defined( 'WP_DEBUG' ) && true !== WP_DEBUG && is_admin() && ( ! defined( 'DOING_AJAX' ) || false != DOING_AJAX ) ) {
+			add_filter( 'action_scheduler_post_type_args', array( self::instance(), 'action_scheduler_post_type_args' ) );
+		}
 
 		self::$admin_url = admin_url( 'edit.php?post_type=' . ActionScheduler_wpPostStore::POST_TYPE );
-
-		add_filter( 'action_scheduler_post_type_args', array( self::instance(), 'action_scheduler_post_type_args' ) );
 
 		add_filter( 'views_edit-' . ActionScheduler_wpPostStore::POST_TYPE, array( self::instance(), 'list_table_views' ) );
 
