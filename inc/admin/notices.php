@@ -502,10 +502,7 @@ function rocket_thank_you_license()
 	return 	'</strong><b>' . WP_ROCKET_PLUGIN_NAME . '</b>:
 			' . __( 'Thank you. Your license has been validated by our servers for you.', 'rocket' ) . '
 			<br>
-			' . sprintf( __( 'Key: <code>%s</code><br>Email: <i>%s</i>', 'rocket' ), get_rocket_option( 'consumer_key' ), get_rocket_option( 'consumer_email' ) ) .'
-			<br>
-			' . sprintf( __( 'Also, the site <b>%s</b> has been automatically added to <a href="%s">your account</a>. We just sent you a mail about that.', 'rocket' ), home_url(), WP_ROCKET_ACCOUNT_URL );
-
+			' . sprintf( __( 'Key: <code>%s</code><br>Email: <i>%s</i>', 'rocket' ), get_rocket_option( 'consumer_key' ), get_rocket_option( 'consumer_email' ) );
 }
 
 

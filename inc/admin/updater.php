@@ -52,15 +52,18 @@ function rocket_check_update()
 	$plugin_file      = basename( WP_ROCKET_FILE );
 	$version          = true;
 	$plugin_transient = null;
-	$response 		  = wp_remote_get( WP_ROCKET_WEB_CHECK, array( 'timeout'=>30 ) );
+	add_filter( 'http_headers_useragent', 'rocket_user_agent' );
+	$response = wp_remote_get( WP_ROCKET_WEB_CHECK, array( 'timeout'=>30 ) );
+	remove_filter( 'http_headers_useragent', 'rocket_user_agent' );
 	set_site_transient( 'update_wprocket', time() );
 
 	if( !is_a( $response, 'WP_Error' ) && strlen( $response['body'] )>32 )
 	{
 
-		list($version, $url) = explode( '|', $response['body'] );
-		if( version_compare( $version, WP_ROCKET_VERSION, '<=' ) )
+		list( $version, $url ) = explode( '|', $response['body'] );
+		if ( version_compare( $version, WP_ROCKET_VERSION, '<=' ) ) {
 			return false;
+		}
 
 		$plugin_transient = get_site_transient( 'update_plugins' );
 		$temp_array = array(
@@ -79,8 +82,8 @@ function rocket_check_update()
 	if( $plugin_transient )
 	{
 
-		$temp_object = (object)$temp_array;
-		$plugin_transient->response[$plugin_folder.'/'.$plugin_file] = $temp_object;
+		$temp_object = (object) $temp_array;
+		$plugin_transient->response[ $plugin_folder . '/' . $plugin_file ] = $temp_object;
 		set_site_transient( 'update_plugins', $plugin_transient );
 
 	}
@@ -135,7 +138,10 @@ function rocket_force_info_result( $res, $action, $args )
 {
 	if( $action=='plugin_information' && $args->slug=='wp-rocket' && isset( $res->external ) && $res->external )
 	{
+		
+		add_filter( 'http_headers_useragent', 'rocket_user_agent' );
 		$request = wp_remote_post( WP_ROCKET_WEB_INFO, array( 'timeout' => 30, 'action' => 'plugin_information', 'request' => serialize($args) ) );
+		remove_filter( 'http_headers_useragent', 'rocket_user_agent' );
 
 		if ( is_wp_error( $request ) )
 		{
