@@ -1,14 +1,15 @@
 <?php
 defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 
-
 /**
  * A wrapper to easily get rocket option
  *
  * @since 1.3.0
- *
+ * @access public
+ * @param string $option The option name
+ * @param bool $default (default: false) The default value of option
+ * @return mixed
  */
-
 function get_rocket_option( $option, $default = false )
 {
 	$options = get_option( WP_ROCKET_SLUG );
@@ -20,44 +21,38 @@ function get_rocket_option( $option, $default = false )
 	return isset( $options[ $option ] ) && ! empty( $options[ $option ] ) ? $options[ $option ] : $default;
 }
 
-
-
 /**
  * Check if we need to cache the mobile version of the website (if available)
  *
- * since 1.0
- *
+ * @since 1.0
+ * @access public
+ * @return bool
  */
-
 function is_rocket_cache_mobile()
 {
 	return get_rocket_option( 'cache_mobile', false );
 }
 
-
-
 /**
  * Check if we need to cache SSL requests of the website (if available)
  *
- * since 1.0
- *
+ * @since 1.0
+ * @access public
+ * @return bool
  */
-
 function is_rocket_cache_ssl()
 {
 	return get_rocket_option( 'cache_ssl', false );
 }
-
-
 
 /**
  * Get the interval task cron purge in seconds
  * This setting can be changed from the options page of the plugin
  *
  * @since 1.0
- *
+ * @access public
+ * @return int
  */
-
 function get_rocket_purge_cron_interval()
 {
 	if ( ! get_rocket_option( 'purge_cron_interval' ) || ! get_rocket_option( 'purge_cron_unit' ) ) {
@@ -66,18 +61,13 @@ function get_rocket_purge_cron_interval()
 	return (int) ( get_rocket_option( 'purge_cron_interval' ) * constant( get_rocket_option( 'purge_cron_unit' ) ) );
 }
 
-
-
 /**
  * Get all uri we don't cache
  *
  * @since 2.0
- *
  */
-
 function get_rocket_cache_reject_uri()
 {
-
 	$uri = get_rocket_option( 'cache_reject_uri', array() );
 	$uri[] = '.*/' . $GLOBALS['wp_rewrite']->feed_base . '/';
 
@@ -91,21 +81,15 @@ function get_rocket_cache_reject_uri()
 
 	$uri = implode( '|', array_filter( $uri ) );
 	return $uri;
-
 }
-
-
 
 /**
  * Get all cookie names we don't cache
  *
  * @since 2.0
- *
  */
-
 function get_rocket_cache_reject_cookies()
 {
-
 	$cookies   = get_rocket_option( 'cache_reject_cookies', array() );
 	$cookies[] = str_replace( COOKIEHASH, '', LOGGED_IN_COOKIE );
 	$cookies[] = 'wp-postpass_';
@@ -123,23 +107,17 @@ function get_rocket_cache_reject_cookies()
 
 	$cookies = implode( '|', array_filter( $cookies ) );
 	return $cookies;
-
 }
 
-
-
 /*
- * TO DO
+ * Get all CNAMES
  *
  * @since 2.1
- *
  */
-
 function get_rocket_cdn_cnames( $_zone = 'all' )
 {
 
-	if( (int)get_rocket_option( 'cdn' ) == 0 )
-	{
+	if ( (int) get_rocket_option( 'cdn' ) == 0 ) {
 		return array();
 	}
 
@@ -148,57 +126,39 @@ function get_rocket_cdn_cnames( $_zone = 'all' )
 	$cnames_zone = get_rocket_option( 'cdn_zone', array() );
 	$_zone 		 = is_array( $_zone ) ? $_zone : (array)$_zone;
 
-	//
-	foreach( $cnames as $k=>$_urls )
-	{
+	foreach( $cnames as $k=>$_urls ) {
 
-		//
-		if( in_array( $cnames_zone[$k], $_zone ) )
-		{
+		if ( in_array( $cnames_zone[$k], $_zone ) ) {
 
 			$_urls = explode( ',' , $_urls );
 			$_urls = array_map( 'trim' , $_urls );
 
-			//
-			foreach( $_urls as $url )
-			{
+			foreach( $_urls as $url ) {
 				$hosts[] = $url;
 			}
-
 		}
 
 	}
-
 	return $hosts;
-
 }
-
-
 
 /**
  * Determine if the key is valid
  *
  * @since 1.0
- *
  */
-
 function rocket_valid_key()
 {
 	return 8 == strlen( get_rocket_option( 'consumer_key' ) ) && get_rocket_option( 'secret_key' ) == hash( 'crc32', get_rocket_option( 'consumer_email' ) );
-
 }
-
 
 /**
  * Determine if the key is valid
  *
  * @since 2.2 The function do the live check and update the option
- *
  */
-
 function rocket_check_key( $type = 'transient_1', $data = null )
 {
-
 	// Recheck the license
 	$return = rocket_valid_key();
 
@@ -229,10 +189,10 @@ function rocket_check_key( $type = 'transient_1', $data = null )
 
 			if( $json->success ) {
 
-				$rocket_options['secret_key'] 		= $json->data->secret_key;
+				$rocket_options['secret_key'] = $json->data->secret_key;
 				if ( ! get_rocket_option( 'license' ) && rocket_valid_key() ) {
 					add_settings_error( 'general', 'settings_updated', rocket_thank_you_license(), 'updated' );
-					$rocket_options['license'] 		= time();
+					$rocket_options['license'] = time();
 				}
 
 			} else {
@@ -242,19 +202,17 @@ function rocket_check_key( $type = 'transient_1', $data = null )
 									'BAD_SITE'		=> __( 'This website is not allowed.', 'rocket' ),
 									'BAD_KEY'		=> __( 'This license key is not accepted.', 'rocket' ),
 								);
-				$rocket_options['secret_key']		= '';
+				$rocket_options['secret_key'] = '';
 
 				add_settings_error( 'general', 'settings_updated', $messages[ $json->data->reason ], 'error' );
 
 			}
 
 			set_transient( WP_ROCKET_SLUG, $rocket_options );
-
 			$return = (array) $rocket_options;
 
 		}
 	}
 
 	return $return;
-
 }

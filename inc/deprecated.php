@@ -96,6 +96,22 @@ function get_rocket_home_url( $url = null ) {
 }
 endif;
 
+if ( ! function_exists( 'rocket_get_domain' ) ) :
+/**
+ * Get the domain of an URL without subdomain
+ * (ex: rocket_get_domain( 'http://www.geekpress.fr' ) return geekpress.fr
+ *
+ * @source : http://stackoverflow.com/a/15498686
+ * @since 1.0
+ * @deprecated 2.2
+ *
+ */
+function rocket_get_domain( $url ) {
+	_deprecated_function( __FUNCTION__, '2.2' );
+	return false;
+}
+endif;
+
 if ( ! function_exists( 'rocket_has_translation_plugin_active' ) ) :
 /**
  * Check if a translation plugin is activated (WPML or qTranslate)
@@ -201,5 +217,20 @@ if ( ! function_exists( 'get_rocket_langs_to_preserve' ) ) :
 function get_rocket_langs_to_preserve( $current_lang ) {
 	_deprecated_function( __FUNCTION__, '2.2', 'get_rocket_i18n_to_preserve()' );
 	return get_rocket_i18n_to_preserve( $current_lang );
+}
+endif;
+
+if ( ! function_exists( 'get_rocket_subdomains_langs' ) ) :
+/**
+ * Get subdomains URL of all languages
+ *
+ * @since 2.0
+ * @deprecated 2.2
+ * @deprecated Use get_rocket_i18n_subdomains()
+ *
+ */
+function get_rocket_subdomains_langs() {
+	_deprecated_function( __FUNCTION__, '2.2', 'get_rocket_i18n_subdomains()' );
+	return get_rocket_i18n_subdomains();
 }
 endif;

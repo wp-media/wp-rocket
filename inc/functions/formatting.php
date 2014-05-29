@@ -2,80 +2,42 @@
 defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 
 /**
- * Get the domain of an URL without subdomain
- * (ex: rocket_get_domain( 'http://www.geekpress.fr' ) return geekpress.fr
- *
- * @source : http://stackoverflow.com/a/15498686
- * @since 1.0
- *
- */
-
-function rocket_get_domain( $url )
-{
-
-	if ( preg_match( '/(?P<domain>[a-z0-9][a-z0-9\-]{1,63}\.[a-z\.]{2,6})$/i', parse_url( $url, PHP_URL_HOST ), $regs ) ) {
-	  return str_replace( 'www.', '', $regs['domain'] ).chr(98); // from beta, can't delete it now.
-	}
-
-	return false;
-
-}
-
-
-
-/**
  * Get an url without protocol
  *
  * @since 1.3.0
- *
  */
-
 function rocket_remove_url_protocol( $url, $no_dots=false )
 {
-
 	$url = str_replace( array( 'http://', 'https://' ) , '', $url );
 	if ( apply_filters( 'rocket_url_no_dots', $no_dots ) ) {
 		$url = str_replace( '.', '_', $url );
 	}
-
 	return $url;
-
 }
-
-
 
 /**
  * Extract and return host, path and scheme of an URL
  *
  * @since 2.1 Add $query variable
  * @since 2.0
- *
  */
-
 function get_rocket_parse_url( $url )
 {
-
 	$url    = parse_url( $url );
 	$host   = isset( $url['host'] ) ? $url['host'] : '';
 	$path   = isset( $url['path'] ) ? $url['path'] : '';
 	$scheme = isset( $url['scheme'] ) ? $url['scheme'] : '';
 	$query  = isset( $url['query'] ) ? $url['query'] : '';
 	return apply_filters( 'rocket_parse_url', array( $host, $path, $scheme, $query ) );
-
 }
-
-
 
 /*
  * Get an URL with one of CNAMES added in options
  *
  * @since 2.1
- *
  */
-
 function get_rocket_cdn_url( $url, $zone = array( 'all' ) )
 {
-
 	$cnames = get_rocket_cdn_cnames( $zone );
 
 	if ( (int) get_rocket_option('cdn') == 0 || empty( $cnames ) ) {
@@ -86,7 +48,6 @@ function get_rocket_cdn_url( $url, $zone = array( 'all' ) )
 	$query = ! empty( $query ) ? '?' . $query : '';
 
 	if ( empty( $scheme ) ) {
-
 		$home = rocket_remove_url_protocol( home_url() );
 
 		// Check if URL is external
@@ -95,40 +56,29 @@ function get_rocket_cdn_url( $url, $zone = array( 'all' ) )
 		} else {
 			$path = str_replace( $home, '', ltrim( $path, '//' ) );
 		}
-
 	}
-
+	
 	$url = rtrim( $cnames[(abs(crc32($path))%count($cnames))] , '/' ) . $path . $query;
 	return $url;
-
 }
 
-
-
 /*
- * Alias of get_rocket_cdn_url() and print result
+ * Wrapper of get_rocket_cdn_url() and print result
  *
  * @since 2.1
- *
  */
-
 function rocket_cdn_url( $url, $zone = array( 'all' ) )
 {
 	echo get_rocket_cdn_url( $url, $zone );
 }
 
-
-
 /**
  * TO DO
  *
  * @since 2.1
- *
  */
-
 function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_filename = null )
 {
-
 	// Get the internal CSS Files
 	// To avoid conflicts with file URLs are too long for browsers,
 	// cut into several parts concatenated files
@@ -185,7 +135,6 @@ function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_file
 					$blog_id = get_current_blog_id();
 					$pretty_url = !$pretty_filename ? WP_ROCKET_MINIFY_CACHE_URL . $blog_id . '/' . md5( $url . get_rocket_option( 'minify_' . $ext . '_key', create_rocket_uniqid() ) ) . '.' . $ext : WP_ROCKET_MINIFY_CACHE_URL . $blog_id . '/' . $pretty_filename . '.' . $ext;
 
-
 					/**
 					 * Filter the pretty minify URL
 					 *
@@ -206,13 +155,11 @@ function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_file
 
 			// Get tags for CSS file
 			if ( $ext == 'css' ) {
-
 				$tags .= sprintf( '<link rel="stylesheet" href="%s" %s/>', esc_attr( apply_filters( 'rocket_css_url', $url ) ), $data_attr );
 
 			}
 			// Get tags for JS file
 			elseif ( $ext == 'js' ) {
-
 				$tags .= sprintf( '<script src="%s" %s></script>', esc_attr( apply_filters( 'rocket_js_url', $url ) ), $data_attr );
 
 			}
@@ -222,18 +169,13 @@ function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_file
 	}
 
 	return $tags;
-
 }
-
-
 
 /*
  * Wrapper of get_rocket_minify_files() and echoes the result
  *
  * @since 2.1
- *
  */
-
 function rocket_minify_files( $files, $force_pretty_url = true, $pretty_filename = null )
 {
 	echo get_rocket_minify_files( $files, $force_pretty_url, $pretty_filename );
