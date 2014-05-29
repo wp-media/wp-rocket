@@ -58,7 +58,7 @@ function get_rocket_cdn_url( $url, $zone = array( 'all' ) )
 		}
 	}
 	
-	$url = rtrim( $cnames[(abs(crc32($path))%count($cnames))] , '/' ) . $path . $query
+	$url = rtrim( $cnames[(abs(crc32($path))%count($cnames))] , '/' ) . $path . $query;
 	return $url;
 }
 
