@@ -7,22 +7,16 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
  * By default, the interval is 4 hours
  *
  * @since 1.0
- *
  */
-
 add_filter( 'cron_schedules', 'rocket_purge_cron_schedule' );
 function rocket_purge_cron_schedule( $schedules )
 {
-
 	$schedules['rocket_purge'] = array(
 		'interval'	=> get_rocket_purge_cron_interval(),
 		'display' 	=> sprintf( __( '%s clear', 'rocket' ), WP_ROCKET_PLUGIN_NAME )
 	);
-
 	return $schedules;
 }
-
-
 
 /**
  * Planning cron
@@ -30,21 +24,14 @@ function rocket_purge_cron_schedule( $schedules )
  *
  * @since 1.3.2 Use "init" hook up to "wp"
  * @since 1.0
- *
  */
-
 add_action( 'wp', 'rocket_purge_cron_scheduled' );
 function rocket_purge_cron_scheduled()
 {
-
-	if( !wp_next_scheduled( 'rocket_purge_time_event' ) )
-	{
+	if ( ! wp_next_scheduled( 'rocket_purge_time_event' ) ) {
 		wp_schedule_event( time() + get_rocket_purge_cron_interval(), 'rocket_purge', 'rocket_purge_time_event' );
 	}
-
 }
-
-
 
 /**
  * This event is launched when the cron is triggered
@@ -52,17 +39,13 @@ function rocket_purge_cron_scheduled()
  *
  * @since 2.0 Clear cache files for all langs when a plugin translation is activated
  * @since 1.0
- *
  */
-
 add_action( 'rocket_purge_time_event', 'do_rocket_purge_cron' );
 function do_rocket_purge_cron()
 {
-
 	// Purge files
 	rocket_clean_domain();
 
 	// Run WP Rocket Bot for preload cache files
 	run_rocket_bot( 'cache-preload' );
-
 }

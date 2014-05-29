@@ -1,7 +1,6 @@
 <?php
 defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 
-
 // Launch hooks that deletes all the cache domain
 add_action( 'switch_theme'				, 'rocket_clean_domain' );		// When user change theme
 add_action( 'user_register'				, 'rocket_clean_domain' );		// When a user is added
@@ -24,14 +23,10 @@ add_action( 'delete_link'				, 'rocket_clean_domain' );		// When a link is delet
 add_filter( 'widget_update_callback'	, 'rocket_widget_update_callback' ); // When a widget is update
 function rocket_widget_update_callback( $instance ) { rocket_clean_domain(); return $instance; }
 
-
-
 /* @since 1.3.3
  * For not conflit with WooCommerce when clean_post_cache is called
 */
 add_filter( 'delete_transient_wc_products_onsale', 'wp_suspend_cache_invalidation' );
-
-
 
 /**
  * Update cache when a post is updated or commented
@@ -45,15 +40,13 @@ add_filter( 'delete_transient_wc_products_onsale', 'wp_suspend_cache_invalidatio
  * @since 1.0
  *
  */
-
 add_action( 'wp_trash_post', 'rocket_clean_post' );
 add_action( 'delete_post', 'rocket_clean_post' );
 add_action( 'clean_post_cache', 'rocket_clean_post' );
 add_action( 'wp_update_comment_count', 'rocket_clean_post' );
 function rocket_clean_post( $post_id )
 {
-
-	if( defined( 'DOING_AUTOSAVE' ) ) {
+	if ( defined( 'DOING_AUTOSAVE' ) ) {
 		return;
 	}
 
@@ -62,10 +55,8 @@ function rocket_clean_post( $post_id )
 	// Get all post infos
 	$post = get_post( $post_id );
 
-	do_action( 'before_rocket_clean_post', $post );
-
 	// No purge for specifics conditions
-	if( empty($post->post_type) || $post->post_type == 'nav_menu_item' ) {
+	if ( empty($post->post_type) || $post->post_type == 'nav_menu_item' ) {
 		return;
 	}
 
@@ -80,37 +71,37 @@ function rocket_clean_post( $post_id )
 
 	// Add Post Type archive
 	$post_type_archive = get_post_type_archive_link( get_post_type( $post_id ) );
-	if( $post_type_archive ) {
+	if ( $post_type_archive ) {
 		array_push( $purge_urls, $post_type_archive );
 	}
 
 	// Add next post
 	$next_post = get_adjacent_post( false, '', false );
-	if( $next_post ) {
+	if ( $next_post ) {
 		array_push( $purge_urls, get_permalink( $next_post ) );
 	}
 
 	// Add next post in same category
 	$next_in_same_cat_post = get_adjacent_post( true, '', false );
-	if( $next_in_same_cat_post && $next_in_same_cat_post != $next_post ) {
+	if ( $next_in_same_cat_post && $next_in_same_cat_post != $next_post ) {
 		array_push( $purge_urls, get_permalink( $next_in_same_cat_post ) );
 	}
 
 	// Add previous post
 	$previous_post = get_adjacent_post( false, '', true );
-	if( $previous_post ) {
+	if ( $previous_post ) {
 		array_push( $purge_urls, get_permalink( $previous_post ) );
 	}
 
 	// Add previous post in same category
 	$previous_in_same_cat_post = get_adjacent_post( true, '', true );
-	if( $previous_in_same_cat_post && $previous_in_same_cat_post != $previous_post ) {
+	if ( $previous_in_same_cat_post && $previous_in_same_cat_post != $previous_post ) {
 		array_push( $purge_urls, get_permalink( $previous_in_same_cat_post ) );
 	}
 
 	// Add urls page to purge every time a post is save
 	$cache_purge_pages = get_rocket_option( 'cache_purge_pages' );
-	if( $cache_purge_pages ) {
+	if ( $cache_purge_pages ) {
 		foreach( $cache_purge_pages as $page ) {
 			array_push( $purge_urls, home_url( $page ) );
 		}
@@ -118,19 +109,28 @@ function rocket_clean_post( $post_id )
 
 	// Add all terms archive page to purge
 	$purge_terms = get_rocket_post_terms_urls( $post_id );
-	if( count($purge_terms) ) {
+	if ( count($purge_terms) ) {
 		$purge_urls = array_merge( $purge_urls, $purge_terms );
 	}
 
 	// Add all dates archive page to purge
 	$purge_dates = get_rocket_post_dates_urls( $post_id );
-	if( count($purge_dates) ) {
+	if ( count($purge_dates) ) {
 		$purge_urls = array_merge( $purge_urls, $purge_dates );
 	}
 
 	// Add the author page
 	$purge_author = array( get_author_posts_url( $post->post_author ) );
 	$purge_urls = array_merge( $purge_urls, $purge_author );
+
+	/**
+	 * Fires before cache files related with the post are deleted
+	 *
+	 * @since 1.3.0
+	 * @param obj $post The post object
+	 * @param array $purge_urls URLs cache files to remove
+	*/
+	do_action( 'before_rocket_clean_post', $post, $purge_urls );
 
 	// Purge all files
 	rocket_clean_files( apply_filters( 'rocket_post_purge_urls', $purge_urls ) );
@@ -139,7 +139,7 @@ function rocket_clean_post( $post_id )
 	$lang = false;
 
 	// WPML
-	if( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
+	if ( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
 		$lang = $GLOBALS['sitepress']->get_language_for_element( $post_id, 'post_' . get_post_type( $post_id ) );
 
 	// Polylang
@@ -150,52 +150,48 @@ function rocket_clean_post( $post_id )
 
 	// Purge all parents
 	$parents = get_post_ancestors( $post_id );
-	if( count( $parents ) ) {
+	if ( count( $parents ) ) {
 		foreach( $parents as $parent_id ) {
 			rocket_clean_post( $parent_id );
 		}
 	}
 
+	/**
+	 * Fires after cache files related with the post are deleted
+	 *
+	 * @since 1.3.0
+	 * @param obj $post The post object
+	 * @param array $purge_urls URLs cache files to remove
+	*/
 	do_action( 'after_rocket_clean_post', $post, $purge_urls );
 }
-
-
 
 /**
  * Add pattern to clean files of connected users
  *
  * @since 2.0
- *
  */
-
 add_filter( 'rocket_clean_files', 'rocket_clean_files_users' );
 function rocket_clean_files_users( $urls )
 {
 	$pattern_urls = array();
-
 	foreach( $urls as $url ) {
 		list( $host, $path, $scheme ) = get_rocket_parse_url( $url );
 		$pattern_urls[] = $scheme . '://' . $host . '*' . $path;
 	}
-
 	return $pattern_urls;
 }
-
-
 
 /**
  * Return all translated version of a post when qTranslate is used.
  * Use the "rocket_post_purge_urls" filter to insert URLs of traduction post
  *
  * @since 1.3.5
- *
  */
-
 add_filter( 'rocket_post_purge_urls', 'rocket_post_purge_urls_for_qtranslate' );
 function rocket_post_purge_urls_for_qtranslate( $urls )
 {
-
-	if( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
+	if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
 
 		global $q_config;
 
@@ -216,22 +212,19 @@ function rocket_post_purge_urls_for_qtranslate( $urls )
 	return $urls;
 }
 
-
-
 /**
  * Actions to be done after the purge cache files of a post
  * By Default, this hook call the WP Rocket Bot (cache json)
  *
  * @since 1.3.0
- *
  */
-
 add_action( 'after_rocket_clean_post', 'run_rocket_bot_after_clean_post', 10, 2 );
 function run_rocket_bot_after_clean_post( $post, $purge_urls )
 {
 	// Run robot only if post is published
-	if( $post->post_status != 'publish' )
+	if ( $post->post_status != 'publish' ) {
 		return false;
+	}
 
 	// Add Homepage URL to $purge_urls for bot crawl
 	array_push( $purge_urls, home_url() );
@@ -247,51 +240,42 @@ function run_rocket_bot_after_clean_post( $post, $purge_urls )
 
 	// Create json file and run WP Rocket Bot
 	$json_encode_urls = '["' . implode( '","', array_filter( $purge_urls ) ) . '"]';
-	if( rocket_put_content( WP_ROCKET_PATH . 'cache.json', $json_encode_urls ) ) {
+	if ( rocket_put_content( WP_ROCKET_PATH . 'cache.json', $json_encode_urls ) ) {
 		global $do_rocket_bot_cache_json;
 		$do_rocket_bot_cache_json = true;
 	}
 }
 
-
-
 /**
  * Run WP Rocket Bot when a post is added, updated or deleted
  *
  * @since 1.3.2
- *
  */
-
 add_action( 'shutdown', 'do_rocket_bot_cache_json' );
 function do_rocket_bot_cache_json()
 {
-	global $do_rocket_bot_cache_json;
-	if( $do_rocket_bot_cache_json ) {
+	if ( $GLOBALS['do_rocket_bot_cache_json'] ) {
 		run_rocket_bot( 'cache-json' );
 	}
 }
-
-
 
 /**
  * Purge Cache file System in Admin Bar
  *
  * @since 1.3.0 Compatibility with WPML
  * @since 1.0
- *
  */
-
 add_action( 'admin_post_purge_cache', 'rocket_purge_cache' );
 function rocket_purge_cache()
 {
-	if( isset( $_GET['type'], $_GET['_wpnonce'] ) ) {
+	if ( isset( $_GET['type'], $_GET['_wpnonce'] ) ) {
 
 		$_type = explode( '-', $_GET['type'] );
 		$_type = reset( $_type );
 		$_id = explode( '-', $_GET['type'] );
 		$_id = end( $_id );
 
-		if( !wp_verify_nonce( $_GET['_wpnonce'], 'purge_cache_' . $_GET['type'] ) ) {
+		if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'purge_cache_' . $_GET['type'] ) ) {
 			wp_nonce_ays( '' );
 		}
 
@@ -302,8 +286,9 @@ function rocket_purge_cache()
 
 				// Remove all cache files
 				$lang = isset( $_GET['lang'] ) && $_GET['lang'] != 'all' ? sanitize_key( $_GET['lang'] ) : '';
+				// Remove all cache files
 				rocket_clean_domain( $lang );
-				
+
 				// Remove all minify cache files
 				rocket_clean_minify();
 
@@ -337,24 +322,20 @@ function rocket_purge_cache()
 	}
 }
 
-
-
 /**
  * Preload cache system in Admin Bar
  * It launch the WP Rocket Bot
  *
  * @since 1.3.0 Compatibility with WPML
  * @since 1.0 (delete in 1.1.6 and re-add in 1.1.9)
- *
  */
-
 add_action( 'admin_post_preload', 'rocket_preload_cache' );
 add_action( 'admin_post_nopriv_preload', 'rocket_preload_cache' );
 function rocket_preload_cache()
 {
-    if( isset( $_GET['_wpnonce'] ) ) {
+    if ( isset( $_GET['_wpnonce'] ) ) {
 
-        if( ! wp_verify_nonce( $_GET['_wpnonce'], 'preload' ) ) {
+        if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'preload' ) ) {
 			wp_nonce_ays( '' );
         }
 

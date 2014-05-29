@@ -1,7 +1,6 @@
 <?php
 defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 
-
 /**
  * Add menu in admin bar
  * From this menu, you can preload the cache files, clear entire domain cache or post cache (front & back-end)
@@ -9,9 +8,7 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
  * @since 1.3.5 Compatibility with qTranslate
  * @since 1.3.0 Compatibility with WPML
  * @since 1.0
- *
  */
-
 add_action( 'admin_bar_menu', 'rocket_admin_bar', PHP_INT_MAX );
 function rocket_admin_bar( $wp_admin_bar )
 {
@@ -36,7 +33,7 @@ function rocket_admin_bar( $wp_admin_bar )
 	));
 
     if ( rocket_valid_key() ) {
-		// Compatibility with WPML
+
 		if ( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) )  {
 
 			// Purge All
@@ -60,9 +57,7 @@ function rocket_admin_bar( $wp_admin_bar )
 
 			}
 
-		}
-		// Compatibility with qTranslate & Polylang
-		else if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) || rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
+		} else if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) || rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
 
 			// Purge All
 			$wp_admin_bar->add_menu( array(
@@ -96,9 +91,7 @@ function rocket_admin_bar( $wp_admin_bar )
 	            'href'   => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . '&type=all&lang=all' ), $action . '_all' ),
 	        ));
 
-		}
-		else
-		{
+		} else {
 
 			// Purge All
 			$wp_admin_bar->add_menu(array(
@@ -111,6 +104,7 @@ function rocket_admin_bar( $wp_admin_bar )
 		}
 
 		if ( is_admin() ) {
+			
 			// Purge a post
 			global $pagenow, $post;
 			if( $post && 'post.php' == $pagenow && isset( $_GET['action'], $_GET['post'] ) ) {
@@ -139,7 +133,6 @@ function rocket_admin_bar( $wp_admin_bar )
 		$action = 'preload';
 	    // Go robot gogo !
 
-	    // Compatibility with WPML
 		if ( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
 
 			$wp_admin_bar->add_menu( array(
@@ -161,10 +154,7 @@ function rocket_admin_bar( $wp_admin_bar )
 
 			}
 
-		}
-		// Compatibility with qTranslate & Polylang
-		else if( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) || rocket_is_plugin_active( 'polylang/polylang.php' )  )
-		{
+		} else if( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) || rocket_is_plugin_active( 'polylang/polylang.php' )  ) {
 
 			$wp_admin_bar->add_menu( array(
 	            'parent' => 'wp-rocket',
@@ -217,15 +207,11 @@ function rocket_admin_bar( $wp_admin_bar )
 	}
 }
 
-
-
 /**
  * Get all langs to display in admin bar for WPML
  *
  * @since 1.3.0
- *
  */
-
 function get_rocket_wpml_langs_for_admin_bar() {
 
 	global $sitepress;
@@ -234,7 +220,7 @@ function get_rocket_wpml_langs_for_admin_bar() {
 	foreach ( $sitepress->get_active_languages() as $lang ) {
 		// Get flag
 		$flag = $sitepress->get_flag($lang['code']);
-        if( $flag->from_template ) {
+        if ( $flag->from_template ) {
             $wp_upload_dir = wp_upload_dir();
             $flag_url = $wp_upload_dir['baseurl'] . '/flags/' . $flag->flag;
         } else {
@@ -268,20 +254,14 @@ function get_rocket_wpml_langs_for_admin_bar() {
     return $langlinks;
 }
 
-
-
 /**
  * Get all langs to display in admin bar for qTranslate
  *
  * @since 1.3.5
- *
  */
-
 function get_rocket_qtranslate_langs_for_admin_bar()
 {
-
 	global $q_config;
-
 	$langlinks   = array();
 	$currentlang = array();
 
@@ -304,20 +284,14 @@ function get_rocket_qtranslate_langs_for_admin_bar()
 	return $langlinks;
 }
 
-
-
 /**
  * Get all langs to display in admin bar for Polylang
  *
  * @since 2.2
- *
  */
-
 function get_rocket_polylang_langs_for_admin_bar()
 {
-
 	global $polylang;
-
 	$langlinks   = array();
 	$currentlang = array();
 	$langs       = $polylang->model->get_languages_list();
@@ -327,21 +301,17 @@ function get_rocket_polylang_langs_for_admin_bar()
 		$img = empty($lang->flag) ? '' : (false !== strpos($lang->flag, 'img') ? $lang->flag . '&nbsp;' : $lang->flag);
 
 		if( isset( $polylang->curlang->slug ) && $lang->slug == $polylang->curlang->slug ) {
-
 			$currentlang[$lang->slug] = array(
 				'code'	 => $lang->slug,
 	            'anchor' => $lang->name,
 	            'flag'   => $img
 			);
-
 		} else {
-
 			$langlinks[$lang->slug] = array(
 	            'code'	 => $lang->slug,
 	            'anchor' => $lang->name,
 	            'flag'   => $img
 	        );
-
 		}
 
 	}
