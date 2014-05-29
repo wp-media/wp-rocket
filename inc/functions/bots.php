@@ -1,7 +1,6 @@
 <?php
 defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 
-
 /**
  * Launch the Robot
  *
@@ -11,7 +10,6 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
  * @param string $lang (default: '') The language code to preload
  * @return void
  */
-
 function run_rocket_bot( $spider = 'cache-preload', $lang = '' )
 {
 
@@ -54,7 +52,7 @@ function run_rocket_bot( $spider = 'cache-preload', $lang = '' )
 		 * @param string $start_url URL that crawl by the bot
 		*/
 		do_action( 'before_run_rocket_bot', $spider, $start_url );
-
+		
 		add_filter( 'http_headers_useragent', 'rocket_user_agent' );
 		wp_remote_get( WP_ROCKET_BOT_URL . '?spider=' . $spider . '&start_url=' . $start_url );
 		remove_filter( 'http_headers_useragent', 'rocket_user_agent' );
