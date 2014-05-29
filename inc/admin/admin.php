@@ -384,3 +384,21 @@ function __rocket_do_options_export()
 	echo $options;
 	exit();
 }
+
+
+/**
+ * This function will add the correct User Agent when updating WP Rocket
+ *
+ * @since 2.2
+ *
+ */
+
+add_filter( 'load-update.php', '__rocket_add_headers_on_plugin_update', PHP_INT_MAX );
+function __rocket_add_headers_on_plugin_update() {
+	if ( isset( $_GET['action'], $_GET['plugin'], $_GET['_wpnonce'] ) 
+		&& 'upgrade-plugin' == $_GET['action'] 
+		&& wp_verify_nonce( $_GET['_wpnonce'], 'upgrade-plugin_' . $_GET['plugin'] )
+	) {
+		add_filter( 'http_headers_useragent', 'rocket_user_agent' );
+	}
+}
