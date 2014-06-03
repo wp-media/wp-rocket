@@ -17,18 +17,17 @@ Copyright 2013-2014 WP Rocket
 defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
 
 // Rocket defines
-define( 'WP_ROCKET_VERSION'             , '2.2');
+define( 'WP_ROCKET_VERSION'             , '2.2' );
 define( 'WP_ROCKET_PRIVATE_KEY'         , false );
-define( 'WP_ROCKET_SLUG'                , 'wp_rocket_settings');
-define( 'WP_ROCKET_WEB_MAIN'            , 'http://support.wp-rocket.me/');
-define( 'WP_ROCKET_WEB_CHECK'           , WP_ROCKET_WEB_MAIN.'check_update2.php');
-define( 'WP_ROCKET_WEB_VALID'           , WP_ROCKET_WEB_MAIN.'valid_key2.php');
-define( 'WP_ROCKET_WEB_INFO'            , WP_ROCKET_WEB_MAIN.'plugin_information2.php');
-define( 'WP_ROCKET_WEB_SUPPORT'         , WP_ROCKET_WEB_MAIN.'forums/');
-define( 'WP_ROCKET_BOT_URL'             , 'http://bot.wp-rocket.me/launch.php');
-define( 'WP_ROCKET_ACCOUNT_URL'         , 'http://support.wp-rocket.me/my-account/');
+define( 'WP_ROCKET_SLUG'                , 'wp_rocket_settings' );
+define( 'WP_ROCKET_WEB_MAIN'            , 'http://support.wp-rocket.me/' );
+define( 'WP_ROCKET_WEB_CHECK'           , WP_ROCKET_WEB_MAIN . 'check_update.php' );
+define( 'WP_ROCKET_WEB_VALID'           , WP_ROCKET_WEB_MAIN . 'valid_key.php' );
+define( 'WP_ROCKET_WEB_INFO'            , WP_ROCKET_WEB_MAIN . 'plugin_information.php' );
+define( 'WP_ROCKET_WEB_SUPPORT'         , WP_ROCKET_WEB_MAIN . 'forums/' );
+define( 'WP_ROCKET_BOT_URL'             , 'http://bot.wp-rocket.me/launch.php' );
 define( 'WP_ROCKET_FILE'                , __FILE__ );
-define( 'WP_ROCKET_PATH'                , realpath( plugin_dir_path( WP_ROCKET_FILE ) ).'/' );
+define( 'WP_ROCKET_PATH'                , realpath( plugin_dir_path( WP_ROCKET_FILE ) ) . '/' );
 define( 'WP_ROCKET_INC_PATH'            , realpath( WP_ROCKET_PATH . 'inc/' ) . '/' );
 define( 'WP_ROCKET_FRONT_PATH'          , realpath( WP_ROCKET_INC_PATH . 'front/' ) . '/' );
 define( 'WP_ROCKET_ADMIN_PATH'          , realpath( WP_ROCKET_INC_PATH . 'admin' ) . '/' );
@@ -46,22 +45,29 @@ define( 'WP_ROCKET_ADMIN_JS_URL'        , WP_ROCKET_ADMIN_URL . 'js/' );
 define( 'WP_ROCKET_ADMIN_CSS_URL'       , WP_ROCKET_ADMIN_URL . 'css/' );
 define( 'WP_ROCKET_CACHE_URL'           , WP_CONTENT_URL . '/cache/wp-rocket/' );
 define( 'WP_ROCKET_MINIFY_CACHE_URL'    , WP_CONTENT_URL . '/cache/min/' );
-if( !defined( 'CHMOD_WP_ROCKET_CACHE_DIRS' ) )
+if ( ! defined( 'CHMOD_WP_ROCKET_CACHE_DIRS' ) ) {
     define( 'CHMOD_WP_ROCKET_CACHE_DIRS', 0755 );
+}
 
 // WP <3.5 defines
-if( !defined( 'SECOND_IN_SECONDS' ) )
+if ( ! defined( 'SECOND_IN_SECONDS' ) ) {
     define( 'SECOND_IN_SECONDS', 1 );
-if( !defined( 'MINUTE_IN_SECONDS' ) )
+}
+if ( ! defined( 'MINUTE_IN_SECONDS' ) ) {
     define( 'MINUTE_IN_SECONDS', SECOND_IN_SECONDS*60 );
-if( !defined( 'HOUR_IN_SECONDS' ) )
+}
+if ( ! defined( 'HOUR_IN_SECONDS' ) ) {
     define( 'HOUR_IN_SECONDS', 60 * MINUTE_IN_SECONDS );
-if( !defined( 'DAY_IN_SECONDS' ) )
+}
+if ( ! defined( 'DAY_IN_SECONDS' ) ) {
     define( 'DAY_IN_SECONDS', 24 * HOUR_IN_SECONDS);
-if( !defined( 'WEEK_IN_SECONDS' ) )
+}
+if ( ! defined( 'WEEK_IN_SECONDS' ) ) {
     define( 'WEEK_IN_SECONDS', 7 * DAY_IN_SECONDS );
-if( !defined( 'YEAR_IN_SECONDS' ) )
+}
+if ( ! defined( 'YEAR_IN_SECONDS' ) ) {
     define( 'YEAR_IN_SECONDS', 365 * DAY_IN_SECONDS );
+}
 
 /*
  * Tell WP what to do when plugin is loaded
