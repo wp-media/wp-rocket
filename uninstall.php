@@ -11,7 +11,7 @@ defined( 'WP_UNINSTALL_PLUGIN' ) or die( 'Cheatin&#8217; uh?' );
  */
 
 delete_site_transient( 'update_wprocket' );
-delete_transient( WP_ROCKET_SLUG );
+delete_transient( 'wp_rocket_settings' );
 delete_transient( 'rocket_check_licence_30' );
 delete_transient( 'rocket_check_licence_1' );
 delete_option( 'wp_rocket_settings' );
