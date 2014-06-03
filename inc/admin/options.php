@@ -1480,7 +1480,7 @@ function rocket_settings_callback( $inputs )
 	}
 
 	if ( isset( $_FILES['import'] )
-		&& preg_match( '/wp-rocket-settings-20\d{2}-\d{2}-\d{2}-[a-f0-9]{13}\.dat/', $_FILES['import']['name'] )
+		&& preg_match( '/wp-rocket-settings-20\d{2}-\d{2}-\d{2}-[a-f0-9]{13}\.txt/', $_FILES['import']['name'] )
 		&& 'text/plain' == $_FILES['import']['type'] )
 	{
 		$file_name 			= $_FILES['import']['name'];

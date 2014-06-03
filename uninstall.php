@@ -4,13 +4,16 @@
 defined( 'WP_UNINSTALL_PLUGIN' ) or die( 'Cheatin&#8217; uh?' );
 
 /**
- * Delete option and transient from option table
+ * Delete options and transients from option table
  *
  * since 1.0
  *
  */
 
 delete_site_transient( 'update_wprocket' );
+delete_transient( WP_ROCKET_SLUG );
+delete_transient( 'rocket_check_licence_30' );
+delete_transient( 'rocket_check_licence_1' );
 delete_option( 'wp_rocket_settings' );
 delete_metadata( 'user', '', 'rocket_boxes', '', true ); // magical true
 

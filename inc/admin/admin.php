@@ -371,10 +371,10 @@ function __rocket_do_options_export()
 		wp_nonce_ays( '' );
 	}
 
-	$filename = sprintf( 'wp-rocket-settings-%s-%s.dat', date( 'Y-m-d' ), uniqid() );
+	$filename = sprintf( 'wp-rocket-settings-%s-%s.txt', date( 'Y-m-d' ), uniqid() );
 	$gz = 'gz' . strrev( 'etalfed' );
 	$options = $gz//;
-	( serialize( get_option( WP_ROCKET_SLUG ) ), 9 ); // do not use get_rocket_option() here
+	( serialize( get_option( WP_ROCKET_SLUG ) ), 1 ); // do not use get_rocket_option() here
 	nocache_headers();
 	@header( 'Content-Type: text/plain' );
 	@header( 'Content-Disposition: attachment; filename="' . $filename . '"' );
