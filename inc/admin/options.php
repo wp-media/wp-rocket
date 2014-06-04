@@ -976,6 +976,27 @@ function rocket_display_options()
 	);
 	// Tools
 	add_settings_section( 'rocket_display_tools', __( 'Tools', 'rocket' ), '__return_false', 'tools' );
+    add_settings_field(
+		'rocket_do_beta',
+		__( 'Beta Tester', 'rocket' ),
+		'rocket_field',
+		'tools',
+		'rocket_display_tools',
+		array(
+			array(
+				'type'         => 'checkbox',
+				'label'        => __( 'Yes i want!', 'rocket' ),
+				'label_for'    => 'do_beta',
+				'label_screen' => __( 'Beta Tester', 'rocket' )
+			),
+			array(
+				'type' 		  => 'helper_description',
+				'name' 		  => 'do_beta',
+				'description' => __( 'Check it to participate to the WP Rocket Beta Program and get the new versions earlier, thanks in advance.', 'rocket' )
+			)
+		)
+    );
+
 	add_settings_field(
 		'rocket_purge_all',
 		__( 'Clear cache', 'rocket' ),

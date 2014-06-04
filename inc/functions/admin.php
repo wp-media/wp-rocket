@@ -25,8 +25,9 @@ function rocket_user_agent( $user_agent )
 		$consumer_email = (string) get_rocket_option( 'consumer_email' );
 	}
 
-	$WL = ! rocket_is_white_label() ? '' : '*';
-    $new_ua = sprintf( ';WP-Rocket|%s%s|%s|%s|%s|;', WP_ROCKET_VERSION, $WL, $consumer_key, $consumer_email, esc_url( home_url() ) );
+	$bonus = ! rocket_is_white_label() ? '' : '*';
+	$bonus .= ! get_rocket_option( 'do_beta' ) ? '' : '+';
+	$new_ua = sprintf( ';WP-Rocket|%s%s|%s|%s|%s|;', WP_ROCKET_VERSION, $bonus, $consumer_key, $consumer_email, esc_url( home_url() ) );
 
     return $new_ua;
 }
