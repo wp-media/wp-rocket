@@ -29,7 +29,7 @@ class ActionScheduler_AdminView {
 	 */
 	public function init() {
 
-		if ( defined( 'WP_DEBUG' ) && true !== WP_DEBUG && is_admin() && ( ! defined( 'DOING_AJAX' ) || false != DOING_AJAX ) ) {
+		if ( defined( 'WP_DEBUG' ) && true == WP_DEBUG && is_admin() && ( ! defined( 'DOING_AJAX' ) || false == DOING_AJAX ) ) {
 			add_filter( 'action_scheduler_post_type_args', array( self::instance(), 'action_scheduler_post_type_args' ) );
 		}
 
