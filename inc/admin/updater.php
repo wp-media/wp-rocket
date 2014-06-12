@@ -132,7 +132,7 @@ function rocket_force_info( $bool, $action, $args )
 add_filter( 'plugins_api_result', 'rocket_force_info_result', 10, 3 );
 function rocket_force_info_result( $res, $action, $args )
 {
-	if ( 'plugin_information' == $action && 'wp-rocket' == $args->slug && isset( $res->external ) && $res->external ) {
+	if ( 'plugin_information' == $action && isset( $res->external, $args->slug ) && 'wp-rocket' == $args->slug && $res->external ) {
 		
 		add_filter( 'http_headers_useragent', 'rocket_user_agent' );
 		$request = wp_remote_post( WP_ROCKET_WEB_INFO, array( 'timeout' => 30, 'action' => 'plugin_information', 'request' => serialize( $args ) ) );
