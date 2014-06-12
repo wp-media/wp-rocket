@@ -177,8 +177,7 @@ class ActionScheduler_AdminView {
 				$actions = array();
 
 				if ( current_user_can( 'edit_post', $post->ID ) && ! in_array( $post->post_status, array( 'publish', 'in-progress', 'trash' ) ) ) {
-					$actions['execute'] = "<a title='" . esc_attr( __( 'Execute the action now' ) ) . "' href='" . self::get_run_action_link( $post->ID ) . "'>" . __( 'Run', 'action-scheduler' ) . "</a>";
-					$actions['process'] = "<a title='" . esc_attr( __( 'Process the action now as if it were run as part of a queue' ) ) . "' href='" . self::get_run_action_link( $post->ID, 'process' ) . "'>" . __( 'Process', 'action-scheduler' ) . "</a>";
+					$actions['process'] = "<a title='" . esc_attr( __( 'Process the action now as if it were run as part of a queue' ) ) . "' href='" . self::get_run_action_link( $post->ID, 'process' ) . "'>" . __( 'Run', 'action-scheduler' ) . "</a>";
 				}
 
 				if ( current_user_can( 'delete_post', $post->ID ) ) {
@@ -272,10 +271,10 @@ class ActionScheduler_AdminView {
 	 * Retrieve a URI to execute a scheduled action.
 	 *
 	 * @param int $action_id The ID for a 'scheduled-action' post.
-	 * @param string $operation Either 'execute' or 'process'. To run the action (including trigger before/after hooks), log the execution and update the action's status, use 'process', to simply trigger the action, use 'execute'. Default 'execute'.
+	 * @param string $operation To run the action (including trigger before/after hooks), log the execution and update the action's status, use 'process', to simply trigger the action, use 'execute'. Default 'execute'.
 	 * @return string The URL for running the action.
 	 */
-	private static function get_run_action_link( $action_id, $operation = 'execute' ) {
+	private static function get_run_action_link( $action_id, $operation = 'process' ) {
 
 		if ( !$post = get_post( $action_id ) )
 			return;
@@ -300,7 +299,7 @@ class ActionScheduler_AdminView {
 	 */
 	public static function maybe_execute_action() {
 
-		if ( ! isset( $_GET['action'] ) || ! in_array( $_GET['action'], array( 'execute', 'process' ) ) || ! isset( $_GET['post_id'] ) ){
+		if ( ! isset( $_GET['action'] ) || 'process' != $_GET['action'] || ! isset( $_GET['post_id'] ) ){
 			return;
 		}
 
