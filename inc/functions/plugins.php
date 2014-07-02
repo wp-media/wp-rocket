@@ -103,7 +103,7 @@ function get_rocket_i18n_uri()
 			$urls[] = qtrans_convertURL( home_url(), $lang, true );
 		}
 
-	} else if ( 'polylang/polylang.php' ) {
+	} else if ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
 		$urls = wp_list_pluck( $GLOBALS['polylang']->model->get_languages_list(), 'home_url' );
 	}
 
