@@ -104,7 +104,7 @@ function rocket_admin_bar( $wp_admin_bar )
 		}
 
 		if ( is_admin() ) {
-			
+
 			// Purge a post
 			global $pagenow, $post;
 			if( $post && 'post.php' == $pagenow && isset( $_GET['action'], $_GET['post'] ) ) {
@@ -211,6 +211,8 @@ function rocket_admin_bar( $wp_admin_bar )
  * Get all langs to display in admin bar for WPML
  *
  * @since 1.3.0
+ *
+ * @return array $langlinks List of active languages
  */
 function get_rocket_wpml_langs_for_admin_bar() {
 
@@ -258,6 +260,8 @@ function get_rocket_wpml_langs_for_admin_bar() {
  * Get all langs to display in admin bar for qTranslate
  *
  * @since 1.3.5
+ *
+ * @return array $langlinks List of active languages
  */
 function get_rocket_qtranslate_langs_for_admin_bar()
 {
@@ -288,6 +292,8 @@ function get_rocket_qtranslate_langs_for_admin_bar()
  * Get all langs to display in admin bar for Polylang
  *
  * @since 2.2
+ *
+ * @return array $langlinks List of active languages
  */
 function get_rocket_polylang_langs_for_admin_bar()
 {
