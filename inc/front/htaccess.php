@@ -1,32 +1,30 @@
 <?php
 defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 
-
 /**
  * Used to flush the .htaccess file
  *
  * @since 1.1.0 Remove empty spacings when .htaccess is generated
  * @since 1.0
  *
+ * @param bool $force (default: false)
+ * @return void
  */
-
 function flush_rocket_htaccess( $force = false )
 {
-
 	if ( ! $GLOBALS['is_apache'] ) {
-		return false;
+		return;
 	}
 
 	$rules = '';
-	$htaccess_file =  get_home_path() . '.htaccess';
+	$htaccess_file = get_home_path() . '.htaccess';
 
 	if ( is_writable( $htaccess_file ) ) {
-
 		// Get content of .htaccess file
 		$ftmp = file_get_contents( $htaccess_file );
 
 		// Remove the WP Rocket marker
-		$ftmp = preg_replace( '/# BEGIN WP Rocket(.*)# END WP Rocket/isUe', '', $ftmp );
+		$ftmp = preg_replace( '/# BEGIN WP Rocket(.*)# END WP Rocket/isU', '', $ftmp );
 
 		// Remove empty spacings
 		$ftmp = str_replace( "\n\n" , "\n" , $ftmp );
@@ -37,23 +35,18 @@ function flush_rocket_htaccess( $force = false )
 
 		// Update the .htacces file
 		rocket_put_content( $htaccess_file, $rules . $ftmp );
-
 	}
-
 }
-
-
 
 /**
  * Return the markers for htacces rules
  *
  * @since 1.0
  *
+ * @return string $marker Rules that will be printed
  */
-
 function get_rocket_htaccess_marker()
 {
-
 	// Recreate WP Rocket marker
 	$marker  = '# BEGIN WP Rocket v' . WP_ROCKET_VERSION . PHP_EOL;
 	$marker .= get_rocket_htaccess_skip_404();
@@ -75,21 +68,17 @@ function get_rocket_htaccess_marker()
 	$marker = apply_filters( 'rocket_htaccess_marker', $marker );
 
 	return $marker;
-
 }
 
-
-
 /**
- * Add somes rules need by the plugin
+ * Rewrite rules to serve the cache file
  *
  * @since 1.0
  *
+ * @return string $rules Rules that will be printed
  */
-
 function get_rocket_htaccess_mod_rewrite()
 {
-
 	// No rewrite rules for multisite
 	if ( is_multisite() ) {
 		return;
@@ -109,9 +98,22 @@ function get_rocket_htaccess_mod_rewrite()
 		$cache_root = $site_root . str_replace( ABSPATH, '', WP_ROCKET_CACHE_PATH );
 	}
 
-	// Set correct HOST depending on hook (not multisite compatible!)
+	/**
+	  * Replace the dots by underscores to avoid some bugs on some shared hosting services on filenames (not multisite compatible!)
+	  *
+	  * @since 1.3.0
+	  *
+	  * @param bool true will replace the . by _
+	 */
 	$HTTP_HOST = apply_filters( 'rocket_url_no_dots', false ) ? rocket_remove_url_protocol( home_url() ) : '%{HTTP_HOST}';
 
+	/**
+	  * Allow the path to be fully printed or dependant od %DOCUMENT_ROOT (forced for 1&1 by default)
+	  *
+	  * @since 1.3.0
+	  *
+	  * @param bool true will force the path to be full
+	 */
 	$is_1and1_or_force = apply_filters( 'rocket_force_full_path', strpos( $_SERVER['DOCUMENT_ROOT'], '/kunden/' ) === 0 );
 
 	$rules  = '<IfModule mod_rewrite.c>' . PHP_EOL;
@@ -128,39 +130,39 @@ function get_rocket_htaccess_mod_rewrite()
 		$rules .= 'RewriteCond %{REQUEST_URI} !^(' . $uri . ')$ [NC]' . PHP_EOL;
 	}
 
-	$rules .= !is_rocket_cache_mobile() ? get_rocket_htaccess_mobile_rewritecond() : '';
-	$rules .= !is_rocket_cache_ssl() ? get_rocket_htaccess_ssl_rewritecond() : '';
+	$rules .= ! is_rocket_cache_mobile() ? get_rocket_htaccess_mobile_rewritecond() : '';
+	$rules .= ! is_rocket_cache_ssl() ? get_rocket_htaccess_ssl_rewritecond() : '';
 
 	if ( $is_1and1_or_force ) {
-
 		$rules .= 'RewriteCond "' . str_replace( '/kunden/', '/', WP_ROCKET_CACHE_PATH ) . $HTTP_HOST . '%{REQUEST_URI}/index.html" -f' . PHP_EOL;
-
-	} else  {
-
+	} else {
 		$rules .= 'RewriteCond "%{DOCUMENT_ROOT}/' . ltrim( $cache_root, '/' ) . $HTTP_HOST . '%{REQUEST_URI}/index.html" -f' . PHP_EOL;
-
 	}
 
 	$rules .= 'RewriteRule .* "' . $cache_root . $HTTP_HOST . '%{REQUEST_URI}/index.html" [L]' . PHP_EOL;
 	$rules .= '</IfModule>' . PHP_EOL;
+
+	/**
+	 * Filter rewrite rules to serve the cache file
+	 *
+	 * @since 1.0
+	 *
+	 * @param string $rules Rules that will be printed
+	*/
 	$rules = apply_filters( 'rocket_htaccess_mod_rewrite', $rules );
 
 	return $rules;
-
 }
 
-
-
 /**
- * Other rules for mobile version
+ * Rules for detect mobile version
  *
  * @since 1.0
  *
+ * @return string $rules Rules that will be printed
  */
-
 function get_rocket_htaccess_mobile_rewritecond()
 {
-
 	// No rewrite rules for multisite
 	if ( is_multisite() ) {
 		return;
@@ -170,43 +172,51 @@ function get_rocket_htaccess_mobile_rewritecond()
 	$rules .= 'RewriteCond %{HTTP:Profile} !^[a-z0-9\"]+ [NC]' . PHP_EOL;
 	$rules .= 'RewriteCond %{HTTP_USER_AGENT} !^.*(2.0\ MMP|240x320|400X240|AvantGo|BlackBerry|Blazer|Cellphone|Danger|DoCoMo|Elaine/3.0|EudoraWeb|Googlebot-Mobile|hiptop|IEMobile|KYOCERA/WX310K|LG/U990|MIDP-2.|MMEF20|MOT-V|NetFront|Newt|Nintendo\ Wii|Nitro|Nokia|Opera\ Mini|Palm|PlayStation\ Portable|portalmmm|Proxinet|ProxiNet|SHARP-TQ-GX10|SHG-i900|Small|SonyEricsson|Symbian\ OS|SymbianOS|TS21i-10|UP.Browser|UP.Link|webOS|Windows\ CE|WinWAP|YahooSeeker/M1A1-R2D2|iPhone|iPod|Android|BlackBerry9530|LG-TU915\ Obigo|LGE\ VX|webOS|Nokia5800).* [NC]' . PHP_EOL;
 	$rules .= 'RewriteCond %{HTTP_USER_AGENT} !^(w3c\ |w3c-|acs-|alav|alca|amoi|audi|avan|benq|bird|blac|blaz|brew|cell|cldc|cmd-|dang|doco|eric|hipt|htc_|inno|ipaq|ipod|jigs|kddi|keji|leno|lg-c|lg-d|lg-g|lge-|lg/u|maui|maxo|midp|mits|mmef|mobi|mot-|moto|mwbp|nec-|newt|noki|palm|pana|pant|phil|play|port|prox|qwap|sage|sams|sany|sch-|sec-|send|seri|sgh-|shar|sie-|siem|smal|smar|sony|sph-|symb|t-mo|teli|tim-|tosh|tsm-|upg1|upsi|vk-v|voda|wap-|wapa|wapi|wapp|wapr|webc|winw|winw|xda\ |xda-).* [NC]' . PHP_EOL;
+
+	/**
+	 * Filter rules for detect mobile version
+	 *
+	 * @since 2.0
+	 *
+	 * @param string $rules Rules that will be printed
+	*/
 	$rules = apply_filters( 'rocket_htaccess_mobile_rewritecond', $rules );
 
 	return $rules;
-
 }
 
-
-
 /**
- * Other rules for SSL requests
+ * Rules for SSL requests
  *
  * @since 2.0
  *
+ * @return string $rules Rules that will be printed
  */
-
 function get_rocket_htaccess_ssl_rewritecond()
 {
-
 	$rules = 'RewriteCond %{HTTPS} off' . PHP_EOL;
+
+	/**
+	 * Filter rules for SSL requests
+	 *
+	 * @since 2.0
+	 *
+	 * @param string $rules Rules that will be printed
+	*/
 	$rules = apply_filters( 'rocket_htaccess_ssl_rewritecond', $rules );
 
 	return $rules;
-
 }
 
-
-
 /**
- * Other rules again to improve performances
+ * Rules to improve performances with GZIP Compression
  *
  * @since 1.0
  *
+ * @return string $rules Rules that will be printed
  */
-
 function get_rocket_htaccess_mod_deflate()
 {
-
 	$rules = '# Gzip compression' . PHP_EOL;
 	$rules .= '<IfModule mod_deflate.c>' . PHP_EOL;
 		$rules .= '# Active compression' . PHP_EOL;
@@ -241,24 +251,28 @@ function get_rocket_htaccess_mod_deflate()
              $rules .= 'Header append Vary User-Agent env=!dont-vary' . PHP_EOL;
        $rules .= '</IfModule>' . PHP_EOL;
 	$rules .= '</IfModule>'  . PHP_EOL . PHP_EOL;
+
+	/**
+	 * Filter rules to improve performances with GZIP Compression
+	 *
+	 * @since 1.0
+	 *
+	 * @param string $rules Rules that will be printed
+	*/
 	$rules = apply_filters( 'rocket_htaccess_mod_deflate', $rules );
 
 	return $rules;
-
 }
 
-
-
 /**
- * Other rules to improve performances again
+ * Rules to improve performances with Expires Headers
  *
  * @since 1.0
  *
+ * @return string $rules Rules that will be printed
  */
-
 function get_rocket_htaccess_mod_expires()
 {
-
 	$rules = '# Expires headers (for better cache control)' . PHP_EOL;
 	$rules .= '<IfModule mod_expires.c>' . PHP_EOL;
 	  $rules .= 'ExpiresActive on' . PHP_EOL . PHP_EOL;
@@ -297,24 +311,28 @@ function get_rocket_htaccess_mod_expires()
 	  $rules .= 'ExpiresByType text/css                  "access plus 1 year"' . PHP_EOL;
 	  $rules .= 'ExpiresByType application/javascript    "access plus 1 year"' . PHP_EOL . PHP_EOL;
 	$rules .= '</IfModule>' . PHP_EOL . PHP_EOL;
+
+	/**
+	 * Filter rules to improve performances with Expires Headers
+	 *
+	 * @since 1.0
+	 *
+	 * @param string $rules Rules that will be printed
+	*/
 	$rules = apply_filters( 'rocket_htaccess_mod_expires', $rules );
 
 	return $rules;
-
 }
 
-
-
 /**
- * Add default charset
+ * Rules for default charset on static files
  *
  * @since 1.0
  *
+ * @return string $rules Rules that will be printed
  */
-
 function get_rocket_htaccess_charset()
 {
-
 	// Get charset of the blog
 	$charset = preg_replace( '/[^a-zA-Z0-9_\-\.:]+/', '', get_bloginfo( 'charset', 'display' ) );
 
@@ -324,23 +342,28 @@ function get_rocket_htaccess_charset()
 	$rules .= "<IfModule mod_mime.c>" . PHP_EOL;
 		$rules .= "AddCharset $charset .atom .css .js .json .rss .vtt .xml" . PHP_EOL;
 	$rules .= "</IfModule>" . PHP_EOL  . PHP_EOL;
+
+	/**
+	 * Filter rules for default charset on static files
+	 *
+	 * @since 1.0
+	 *
+	 * @param string $rules Rules that will be printed
+	*/
 	$rules = apply_filters( 'rocket_htaccess_charset', $rules );
 
 	return $rules;
 }
 
-
-
 /**
- * Add some files match rules
+ * Rules for cache control
  *
  * @since 1.1.6
  *
+ * @return string $rules Rules that will be printed
  */
-
 function get_rocket_htaccess_files_match()
 {
-
 	$rules = '<IfModule mod_alias.c>' . PHP_EOL;
 		$rules .= '<FilesMatch "\.(html|htm|rtf|rtx|svg|svgz|txt|xsd|xsl|xml)$">' . PHP_EOL;
 		    $rules .= '<IfModule mod_headers.c>' . PHP_EOL;
@@ -357,24 +380,28 @@ function get_rocket_htaccess_files_match()
 		    $rules .= '</IfModule>' . PHP_EOL;
 		$rules .= '</FilesMatch>' . PHP_EOL;
 	$rules .= '</IfModule>' . PHP_EOL . PHP_EOL;
+
+	/**
+	 * Filter rules for cache control
+	 *
+	 * @since 1.1.6
+	 *
+	 * @param string $rules Rules that will be printed
+	*/
 	$rules = apply_filters( 'rocket_htaccess_files_match', $rules );
 
 	return $rules;
-
 }
-
-
 
 /**
  * Rules to remove the etag
  *
  * @since 1.0
  *
+ * @return string $rules Rules that will be printed
  */
-
 function get_rocket_htaccess_etag()
 {
-
 	$rules  = '# FileETag None is not enough for every server.' . PHP_EOL;
     $rules .= '<IfModule mod_headers.c>' . PHP_EOL;
     $rules .= 'Header unset ETag' . PHP_EOL;
@@ -382,10 +409,17 @@ function get_rocket_htaccess_etag()
     $rules .= '# Since we\'re sending far-future expires, we don\'t need ETags for static content.' . PHP_EOL;
     $rules .= '# developer.yahoo.com/performance/rules.html#etags' . PHP_EOL;
     $rules .= 'FileETag None' . PHP_EOL . PHP_EOL;
+
+    /**
+	 * Filter rules to remove the etag
+	 *
+	 * @since 1.0
+	 *
+	 * @param string $rules Rules that will be printed
+	*/
     $rules = apply_filters( 'rocket_htaccess_etag', $rules );
 
 	return $rules;
-
 }
 
 /**
@@ -393,10 +427,9 @@ function get_rocket_htaccess_etag()
  *
  * @since 2.2
  *
+ * @return string $rules Rules that will be printed
  */
-
 function get_rocket_htaccess_skip_404() {
-
 	$rules  = '# Skip 404 error handling by WordPress for static files' . PHP_EOL;
 	$rules .= '<IfModule mod_rewrite.c>' . PHP_EOL;
 	$rules .= 'RewriteEngine On' . PHP_EOL;
@@ -410,7 +443,7 @@ function get_rocket_htaccess_skip_404() {
 	 *
 	 * @since 2.2
 	 *
-	 * @param string $rules The content of rules
+	 * @param string $rules Rules that will be printed
 	*/
 	$rules = apply_filters( 'rocket_htaccess_handle_404', $rules );
 
