@@ -1,78 +1,87 @@
 <?php
 defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 
-
 /**
  * Get all terms archives urls associated to a specific post
  *
  * @since 1.0
  *
+ * @param int $post_ID The post ID
+ * @return array $urls List of taxonomies URLs
  */
-
 function get_rocket_post_terms_urls( $post_ID )
 {
 	$urls = array();
-
-	foreach ( get_object_taxonomies( get_post_type( $post_ID ) ) as $taxonomy )
-	{
-
+	$taxonomies = get_object_taxonomies( get_post_type( $post_ID ) );
+	
+	foreach( $taxonomies as $taxonomy ) {
 		// Get the terms related to post
 		$terms = get_the_terms( $post_ID, $taxonomy );
 
-		if ( !empty( $terms ) )
-		{
-			foreach ( $terms as $term )
-			{
+		if ( ! empty( $terms ) ) {
+			foreach ( $terms as $term ) {
 				$urls[] = get_term_link( $term->slug, $taxonomy );
 			}
 		}
-
 	}
-	return apply_filters( 'get_rocket_post_terms_urls', $urls );
+	
+	/**
+	 * Filter the list of taxonomies URLs
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param array $urls List of taxonomies URLs
+	*/
+	$urls = apply_filters( 'rocket_post_terms_urls', $urls );
+	
+	return $urls;
 }
-
-
 
 /**
  * Get all dates archives urls associated to a specific post
  *
  * @since 1.0
  *
+ * @param int $post_ID The post ID
+ * @return array $urls List of dates URLs
  */
-
 function get_rocket_post_dates_urls( $post_ID )
 {
-	global $wp_rewrite;
-
 	// Get the day and month of the post
 	$date = explode( '-', get_the_time( 'Y-m-d', $post_ID ) );
 
 	$urls = array(
 		get_year_link ( $date[0] ) . 'index.html',
-		get_year_link ( $date[0] ) . $wp_rewrite->pagination_base,
+		get_year_link ( $date[0] ) . $GLOBALS['wp_rewrite']->pagination_base,
 		get_month_link( $date[0], $date[1] ) . 'index.html',
-		get_month_link( $date[0], $date[1] ) . $wp_rewrite->pagination_base,
+		get_month_link( $date[0], $date[1] ) . $GLOBALS['wp_rewrite']->pagination_base,
 		get_day_link  ( $date[0], $date[1], $date[2] )
 	);
-
+	
+	/**
+	 * Filter the list of dates URLs
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param array $urls List of dates URLs
+	*/
+	$urls = apply_filters( 'rocket_post_dates_urls', $urls );
+	
     return $urls;
 }
-
-
 
 /**
  * Get the permalink post
  *
  * @since 1.3.1
- * @source : get_sample_permalink() in wp-admin/includes/post.php
  *
+ * @source : get_sample_permalink() in wp-admin/includes/post.php
  */
-
-function get_rocket_sample_permalink( $id )
+function get_rocket_sample_permalink($id, $title = null, $name = null)
 {
-	$post = get_post($id);
-	if ( !$post->ID )
-		return array('', '');
+	$post = get_post( $id );
+	if ( ! $post )
+		return array( '', '' );
 
 	$ptype = get_post_type_object($post->post_type);
 
@@ -85,6 +94,11 @@ function get_rocket_sample_permalink( $id )
 		$post->post_status = 'publish';
 		$post->post_name = sanitize_title($post->post_name ? $post->post_name : $post->post_title, $post->ID);
 	}
+
+	// If the user wants to set a new name -- override the current one
+	// Note: if empty name is supplied -- use the title instead, see #6072
+	if ( !is_null($name) )
+		$post->post_name = sanitize_title($name ? $name : $title, $post->ID);
 
 	$post->post_name = wp_unique_post_slug($post->post_name, $post->ID, $post->post_status, $post->post_type, $post->post_parent);
 
@@ -101,13 +115,16 @@ function get_rocket_sample_permalink( $id )
 		$uri = untrailingslashit($uri);
 		$uri = strrev( stristr( strrev( $uri ), '/' ) );
 		$uri = untrailingslashit($uri);
+
+		/** This filter is documented in wp-admin/edit-tag-form.php */
 		$uri = apply_filters( 'editable_slug', $uri );
 		if ( !empty($uri) )
 			$uri .= '/';
 		$permalink = str_replace('%pagename%', "{$uri}%pagename%", $permalink);
 	}
 
-	$permalink = array($permalink, apply_filters('editable_slug', $post->post_name));
+	/** This filter is documented in wp-admin/edit-tag-form.php */
+	$permalink = array( $permalink, apply_filters( 'editable_slug', $post->post_name ) );
 	$post->post_status = $original_status;
 	$post->post_date = $original_date;
 	$post->post_name = $original_name;
