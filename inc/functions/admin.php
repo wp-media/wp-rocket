@@ -38,6 +38,7 @@ function rocket_user_agent( $user_agent )
  *
  * @param (int|null)$uid : a User id, can be null, null = all users
  * @param (string|array)$keep_this : which box have to be kept
+ * @return void
  */
 function rocket_renew_all_boxes( $uid = null, $keep_this = array() )
 {
@@ -60,6 +61,8 @@ function rocket_renew_all_boxes( $uid = null, $keep_this = array() )
  * Renew a dismissed error box admin side
  *
  * @since 1.1.10
+ *
+ * @return void
  */
 function rocket_renew_box( $function, $uid = 0 )
 {
@@ -67,8 +70,7 @@ function rocket_renew_box( $function, $uid = 0 )
 	$uid = $uid==0 ? $current_user->ID : $uid;
 	$actual = get_user_meta( $uid, 'rocket_boxes', true );
 
-	if( $actual && false !== array_search( $function, $actual ) )
-	{
+	if( $actual && false !== array_search( $function, $actual ) ) {
 		unset( $actual[array_search( $function, $actual )] );
 		update_user_meta( $uid, 'rocket_boxes', $actual );
 	}
@@ -78,6 +80,8 @@ function rocket_renew_box( $function, $uid = 0 )
  * Dismissed 1 box, wrapper of rocket_dismiss_boxes()
  *
  * @since 1.3.0
+ *
+ * @return void
  */
 function rocket_dismiss_box( $function )
 {
@@ -110,6 +114,8 @@ function rocket_is_white_label()
  * Reset white label options
  *
  * @since 2.1
+ *
+ * @return void
  */
 function rocket_reset_white_label_values( $hack_post )
 {
