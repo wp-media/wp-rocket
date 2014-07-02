@@ -1,24 +1,20 @@
 <?php
 defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
 
-
 /**
  * Launch WP Rocket minification process (CSS and JavaScript)
  *
  * @since 1.3.0 This process is called via the new filter rocket_buffer
  * @since 1.1.6 Minify inline CSS and JavaScript
  * @since 1.0
- *
  */
-
 add_filter( 'rocket_buffer', 'rocket_minify_process', 13 );
 function rocket_minify_process( $buffer )
 {
-
 	$enable_js  = get_rocket_option( 'minify_js' );
 	$enable_css = get_rocket_option( 'minify_css' );
 
-	if( $enable_css || $enable_js ) {
+	if ( $enable_css || $enable_js ) {
 
 		$css = '';
 		$js  = '';
@@ -26,12 +22,12 @@ function rocket_minify_process( $buffer )
 		list( $buffer, $conditionals ) = rocket_extract_ie_conditionals( $buffer );
 
 		// Minify CSS
-	    if( $enable_css ) {
+	    if ( $enable_css ) {
 	    	list( $buffer, $css ) = rocket_minify_css( $buffer );
 		}
 
 	    // Minify JavaScript
-	    if( $enable_js ) {
+	    if ( $enable_js ) {
 	    	list( $buffer, $js ) = rocket_minify_js( $buffer );
 		}
 
@@ -43,27 +39,21 @@ function rocket_minify_process( $buffer )
 	}
 
 	// Minify HTML
-	if( get_rocket_option( 'minify_html' ) ) {
+	if ( get_rocket_option( 'minify_html' ) ) {
 	    $buffer = rocket_minify_html( $buffer );
 	}
 
 	return $buffer;
-
 }
-
-
 
 /**
  * Insert JS minify files in footer
  *
  * @since 2.2
- *
  */
-
 add_action( 'wp_footer', '__rocket_insert_minify_js_in_footer', PHP_INT_MAX );
 function __rocket_insert_minify_js_in_footer() {
-
-	if( get_rocket_option( 'minify_js' ) ) {
+	if ( get_rocket_option( 'minify_js' ) ) {
 
 		$home_host     = parse_url( home_url(), PHP_URL_HOST );
 		$files         = get_rocket_option( 'minify_js_in_footer', array() );
@@ -71,7 +61,6 @@ function __rocket_insert_minify_js_in_footer() {
 
 		$i=0;
 		foreach( $files as $file ) {
-
 			// Check if its an external file
 			if( $home_host != parse_url( $file, PHP_URL_HOST ) ) {
 
@@ -84,98 +73,83 @@ function __rocket_insert_minify_js_in_footer() {
 				}
 
 			} else {
-
 				$ordered_files[$i][] = $file;
-
 			}
-
 		}
 
 		// Print tags
 		foreach( $ordered_files as $files ) {
-
 			// Check if its an external file
-			if( is_string( $files ) ) {
+			if ( is_string( $files ) ) {
 				echo '<script src="' . $files . '" data-minify="1"></script>';
 			} else {
 				echo get_rocket_minify_files( $files );
 			}
-
 		}
 
 	}
-
 }
-
-
 
 /**
  * Used for minify inline HTML
  *
  * @since 1.1.12
- *
  */
-
 function rocket_minify_html( $buffer )
 {
-
 	// Check if Minify_HTML is enable
-    if( !class_exists( 'Minify_HTML' ) ) {
+    if ( ! class_exists( 'Minify_HTML' ) ) {
 
 	    $html_options = array();
 
 	    require( WP_ROCKET_PATH . 'min/lib/Minify/HTML.php' );
 
 		// Check if Minify_CSS_Compressor is enable
-		if( !class_exists( 'Minify_CSS_Compressor' ) ) {
+		if ( ! class_exists( 'Minify_CSS_Compressor' ) ) {
 			require( WP_ROCKET_PATH . 'min/lib/Minify/CSS/Compressor.php' );
 			$html_options['cssMinifier'] = 'rocket_minify_inline_css';
 		}
 
 		// Check if JSMin is enable
-		if( !class_exists( 'JSMin' ) ) {
+		if ( ! class_exists( 'JSMin' ) ) {
 			require( WP_ROCKET_PATH . 'min/lib/JSMin.php' );
-			$html_options['jsMinifier'] = 	'rocket_minify_inline_js';
+			$html_options['jsMinifier'] = 'rocket_minify_inline_js';
 		}
 
+		/**
+		 * Filter options of minify inline HTML
+		 *
+		 * @since 1.1.12
+		 *
+		 * @param array $html_options Options of minify inline HTML
+		 */
 		$html_options = apply_filters( 'rocket_minify_html_options', $html_options );
 		$buffer = Minify_HTML::minify( $buffer, $html_options );
 
     }
 
     return $buffer;
-
 }
-
-
 
 /**
  * Used for minify inline CSS
  *
  * @since 1.1.6
- *
  */
-
 function rocket_minify_inline_css( $css )
 {
 	return Minify_CSS_Compressor::process( $css );
 }
 
-
-
 /**
  * Used for minify inline JavaScript
  *
  * @since 1.1.6
- *
  */
-
 function rocket_minify_inline_js( $js )
 {
 	return JSMin::minify( $js );
 }
-
-
 
 /**
  * Used to minify and concat CSS files
@@ -188,7 +162,6 @@ function rocket_minify_inline_js( $js )
 
 function rocket_minify_css( $buffer )
 {
-
     $home_host            = parse_url( home_url(), PHP_URL_HOST );
     $internal_files       = array();
     $external_tags        = '';
@@ -202,11 +175,10 @@ function rocket_minify_css( $buffer )
 
 	$i=0;
     foreach ( $tags_match[0] as $tag ) {
-
         // Check css media type
         // or the file is already minify by get_rocket_minify_files
         // or the file is rejected to the process
-        if ( ( !strpos( $tag, 'media=' ) || preg_match('/media=["\'](?:["\']|[^"\']*?(all|screen)[^"\']*?["\'])/', $tag ) ) && !strpos( $tag, 'data-minify=' ) && !strpos( $tag, 'data-no-minify=' ) ) {
+        if ( ( ! strpos( $tag, 'media=' ) || preg_match('/media=["\'](?:["\']|[^"\']*?(all|screen)[^"\']*?["\'])/', $tag ) ) && ! strpos( $tag, 'data-minify=' ) && ! strpos( $tag, 'data-no-minify=' ) ) {
 
 			// To check if a tag is to exclude of the minify process
             $excluded_tag = false;
@@ -217,21 +189,17 @@ function rocket_minify_css( $buffer )
 			// Get host for all langs
 			$langs_host = array();
 			if ( $langs = get_rocket_i18n_uri() ) {
-
 				foreach ( $langs as $lang ) {
 					$langs_host[] = parse_url( $lang, PHP_URL_HOST );
 				}
-
 			}
 
 			// Get host of CNAMES
 			$cnames_host = array();
 			if ( $cnames = get_rocket_cdn_cnames( array( 'all', 'css_and_js', 'css' ) ) ) {
-
 				foreach ( $cnames as $cname ) {
 					$cnames_host[] = parse_url( $cname, PHP_URL_HOST );
 				}
-
 			}
 
             // Check if the file isn't external
@@ -239,7 +207,7 @@ function rocket_minify_css( $buffer )
 			if ( isset( $css_url['host'] ) && ( $css_url['host'] == $home_host || in_array( $css_url['host'], $cnames_host ) || in_array( $css_url['host'], $langs_host ) ) ) {
 
 				// Check if it isn't a file to exclude
-				if( !in_array( $css_url['path'], $excluded_css ) && pathinfo( $css_url['path'], PATHINFO_EXTENSION ) == 'css' ) {
+				if( ! in_array( $css_url['path'], $excluded_css ) && pathinfo( $css_url['path'], PATHINFO_EXTENSION ) == 'css' ) {
 					$internal_files[] = $css_url['path'];
 				} else {
 					$excluded_tag = true;
@@ -273,20 +241,15 @@ function rocket_minify_css( $buffer )
 	// Get all Google Fonts CSS files
 	preg_match_all( '/<link.+href=.+(fonts\.googleapis\.com\/css).+>/iU', $buffer, $matches );
 	foreach ( $matches[0] as $tag ) {
-
         $fonts_tags .= $tag;
 
         // Delete the link tag
         $buffer = str_replace( $tag, '', $buffer );
-
 	}
 
 	// Insert the minify css file below <head>
 	return array( $buffer, $fonts_tags . $external_tags . get_rocket_minify_files( $internal_files ) );
-
 }
-
-
 
 /**
  * Used to minify and concat JavaScript files
@@ -294,12 +257,9 @@ function rocket_minify_css( $buffer )
  * @since 1.1.0 Fix Bug with externals URLs like //ajax.google.com
  * @since 1.0.2 Remove the filter, remove the array_chunk, add an automatic way to cut strings to 255c max
  * @since 1.0
- *
  */
-
 function rocket_minify_js( $buffer )
 {
-
 	$home_host            = parse_url( home_url(), PHP_URL_HOST );
     $internal_files       = array();
     $external_tags        = '';
@@ -312,6 +272,7 @@ function rocket_minify_js( $buffer )
 	 * Filter JS externals files to exclude of the minification process (do not move into the header)
 	 *
 	 * @since 2.2
+	 *
 	 * @param array Hostname of JS files to exclude
 	 */
 	$excluded_external_js = apply_filters( 'rocket_minify_excluded_external_js', array( 'forms.aweber.com', 'video.unrulymedia.com', 'gist.github.com' ) );
@@ -324,7 +285,7 @@ function rocket_minify_js( $buffer )
 
         // Chek if the file is already minify by get_rocket_minify_files
         // or the file is rejected to the process
-        if ( !strpos( $tag, 'data-minify=' ) && !strpos( $tag, 'data-no-minify=' ) ) {
+        if ( ! strpos( $tag, 'data-minify=' ) && ! strpos( $tag, 'data-no-minify=' ) ) {
 
 			// To check if a tag is to exclude of the minify process
             $excluded_tag = false;
@@ -335,21 +296,17 @@ function rocket_minify_js( $buffer )
 			// Get host for all langs
 			$langs_host = array();
 			if ( $langs = get_rocket_i18n_uri() ) {
-
 				foreach ( $langs as $lang ) {
 					$langs_host[] = parse_url( $lang, PHP_URL_HOST );
 				}
-
 			}
 
 			// Get host of CNAMES
 			$cnames_host = array();
 			if ( $cnames = get_rocket_cdn_cnames( array( 'all', 'css_and_js', 'js' ) ) ) {
-
 				foreach ( $cnames as $cname ) {
 					$cnames_host[] = parse_url( $cname, PHP_URL_HOST );
 				}
-
 			}
 
 	        // Check if the link isn't external
@@ -396,60 +353,46 @@ function rocket_minify_js( $buffer )
 
 	// Exclude JS files to insert in footer
 	foreach( $internal_files as $k=>$url ) {
-
-		if( in_array( site_url( $url ), $js_in_footer ) ) {
+		if ( in_array( site_url( $url ), $js_in_footer ) ) {
 			unset( $internal_files[$k] );
 		}
-
 	}
 
     // Insert the minify JS file
     return array( $buffer, $external_tags . get_rocket_minify_files( $internal_files ) );
-
 }
-
-
 
 /**
  * Get all CSS ans JS files of IE conditionals tags
  *
  * @since 1.0
- * @source : WP Minify
- *
  */
-
 function rocket_extract_ie_conditionals( $buffer )
 {
-
     preg_match_all('/<!--\[if[^\]]*?\]>.*?<!\[endif\]-->/is', $buffer, $conditionals_match );
     $buffer = preg_replace( '/<!--\[if[^\]]*?\]>.*?<!\[endif\]-->/is', '{{WP_ROCKET_CONDITIONAL}}', $buffer );
 
     $conditionals = array();
-    foreach ($conditionals_match[0] as $conditional)
-      $conditionals[] = $conditional;
+    foreach ($conditionals_match[0] as $conditional) {
+		$conditionals[] = $conditional;
+    }
 
     return array( $buffer, $conditionals );
-
 }
-
-
 
 /**
  * Replace WP Rocket IE conditionals tags
  *
  * @since 1.0
- * @source : WP Minify
- *
  */
-
 function rocket_inject_ie_conditionals( $buffer, $conditionals )
 {
-
-    foreach( $conditionals as $conditional )
-      if( strpos( $buffer, '{{WP_ROCKET_CONDITIONAL}}' ) )
+    foreach( $conditionals as $conditional ) {
+      if ( strpos( $buffer, '{{WP_ROCKET_CONDITIONAL}}' ) ) {
         $buffer = preg_replace( '/{{WP_ROCKET_CONDITIONAL}}/' , $conditional, $buffer, 1 );
-      else break;
-
+      } else {
+      	break;
+      }
+	}
     return $buffer;
-
 }
