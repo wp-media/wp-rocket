@@ -40,10 +40,10 @@ add_filter( 'delete_transient_wc_products_onsale', 'wp_suspend_cache_invalidatio
  * @since 1.0
  *
  */
-add_action( 'wp_trash_post', 'rocket_clean_post' );
-add_action( 'delete_post', 'rocket_clean_post' );
-add_action( 'clean_post_cache', 'rocket_clean_post' );
-add_action( 'wp_update_comment_count', 'rocket_clean_post' );
+add_action( 'wp_trash_post'				, 'rocket_clean_post' );
+add_action( 'delete_post'				, 'rocket_clean_post' );
+add_action( 'clean_post_cache'			, 'rocket_clean_post' );
+add_action( 'wp_update_comment_count'	, 'rocket_clean_post' );
 function rocket_clean_post( $post_id )
 {
 	if ( defined( 'DOING_AUTOSAVE' ) ) {
@@ -62,7 +62,7 @@ function rocket_clean_post( $post_id )
 
 	// Get the permalink structure
     $permalink_structure = get_rocket_sample_permalink( $post_id );
-
+	
     // Get permalink
     $permalink = str_replace( array( '%postname%', '%pagename%' ), $permalink_structure[1], $permalink_structure[0] );
 
@@ -127,7 +127,8 @@ function rocket_clean_post( $post_id )
 	 * Fires before cache files related with the post are deleted
 	 *
 	 * @since 1.3.0
-	 * @param obj $post The post object
+	 *
+	 * @param obj 	$post 		The post object
 	 * @param array $purge_urls URLs cache files to remove
 	*/
 	do_action( 'before_rocket_clean_post', $post, $purge_urls );
@@ -138,11 +139,8 @@ function rocket_clean_post( $post_id )
 	// Never forget to purge homepage and their pagination
 	$lang = false;
 
-	// WPML
 	if ( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
 		$lang = $GLOBALS['sitepress']->get_language_for_element( $post_id, 'post_' . get_post_type( $post_id ) );
-
-	// Polylang
 	} else if ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
 		$lang = $polylang->get_post_language( $post_id )->slug;
 	}
@@ -160,7 +158,8 @@ function rocket_clean_post( $post_id )
 	 * Fires after cache files related with the post are deleted
 	 *
 	 * @since 1.3.0
-	 * @param obj $post The post object
+	 *
+	 * @param obj 	$post 		The post object
 	 * @param array $purge_urls URLs cache files to remove
 	*/
 	do_action( 'after_rocket_clean_post', $post, $purge_urls );
