@@ -4,10 +4,10 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 /**
  * Generate the content of advanced-cache.php file
  *
- * @since 2.1 add filter rocket_advanced_cache_file
+ * @since 2.1 	Add filter rocket_advanced_cache_file
  * @since 2.0.3
- * @access public
- * @return string $buffer The content of avanced-cache.php file
+ *
+ * @return 	string 	$buffer The content of avanced-cache.php file
  */
 function get_rocket_advanced_cache_file()
 {
@@ -30,19 +30,19 @@ function get_rocket_advanced_cache_file()
 	 * Filter the content of advanced-cache.php file
 	 *
 	 * @since 2.1
+	 *
 	 * @param string $buffer The content that will be printed in advanced-cache.php
 	*/
 	$buffer = apply_filters( 'rocket_advanced_cache_file', $buffer );
 
 	return $buffer;
-
 }
 
 /**
  * Create advanced-cache.php file
  *
  * @since 2.0
- * @access public
+ *
  * @return void
  */
 function rocket_generate_advanced_cache_file()
@@ -55,7 +55,7 @@ function rocket_generate_advanced_cache_file()
  * Generates the configuration file for the current domain based on the values ​​of options
  *
  * @since 2.0
- * @access public
+ *
  * @return array Names of all config files & The content that will be printed
  */
 function get_rocket_config_file()
@@ -92,7 +92,7 @@ function get_rocket_config_file()
 		}
 	}
 
-	// If user use the rocket_url_no_dots filter
+	/** This filter is documented in inc/front/htaccess.php */
 	if ( apply_filters( 'rocket_url_no_dots', false ) ) {
 		$buffer .= '$rocket_url_no_dots = \'1\';';
 	}
@@ -121,8 +121,9 @@ function get_rocket_config_file()
 	 * Filter the content of all config files
 	 *
 	 * @since 2.1
+	 *
 	 * @param string $buffer The content that will be printed
-	 * @param array $config_files_path Names of all config files
+	 * @param array $config_files_path 	Names of all config files
 	*/
 	$buffer = apply_filters( 'rocket_config_file', $buffer, $config_files_path );
 
@@ -134,7 +135,7 @@ function get_rocket_config_file()
  * For example, if home_url() return example.com, the config domain file will be in /config/example.com
  *
  * @since 2.0
- * @access public
+ *
  * @return void
  */
 function rocket_generate_config_file()
@@ -152,7 +153,7 @@ function rocket_generate_config_file()
  * Added or set the value of the WP_CACHE constant
  *
  * @since 2.0
- * @access public
+ *
  * @param bool $turn_it_on The value of WP_CACHE constant
  * @return void
  */
@@ -179,6 +180,7 @@ function set_rocket_wp_cache_define( $turn_it_on )
 	 * Filter allow to change the value of WP_CACHE constant
 	 *
 	 * @since 2.1
+	 *
 	 * @param string $turn_it_on The value of WP_CACHE constant
 	*/
 	apply_filters( 'set_rocket_wp_cache_define', $turn_it_on );
@@ -224,7 +226,7 @@ function set_rocket_wp_cache_define( $turn_it_on )
  * Delete all minify cache files
  *
  * @since 2.1
- * @access public
+ *
  * @param string $ext (default: array('js','css') File extensions to minify
  * @return void
  */
@@ -234,6 +236,7 @@ function rocket_clean_minify( $ext = array('js','css') )
 	 * Fires before the minify cache files are deleted
 	 *
 	 * @since 2.1
+	 *
 	 * @param string $ext File extensions to minify
 	*/
 	do_action( 'before_rocket_clean_minify', $ext );
@@ -245,6 +248,7 @@ function rocket_clean_minify( $ext = array('js','css') )
 	 * Fires after the minify cache files was deleted
 	 *
 	 * @since 2.1
+	 *
 	 * @param string $ext File extensions to minify
 	*/
 	do_action( 'after_rocket_clean_minify', $ext );
@@ -253,11 +257,11 @@ function rocket_clean_minify( $ext = array('js','css') )
 /**
  * Delete one or several cache files
  *
- * @since 2.0 Delete cache files for all users
- * @since 1.1.0 add filter rocket_clean_files
+ * @since 2.0 	Delete cache files for all users
+ * @since 1.1.0 Add filter rocket_clean_files
  * @since 1.0
- * @access public
- * @param mixed $urls URLs of cache files to be deleted
+ *
+ * @param string|array $urls URLs of cache files to be deleted
  * @return void
  */
 function rocket_clean_files( $urls )
@@ -280,11 +284,12 @@ function rocket_clean_files( $urls )
 		 * Fires before the cache file is deleted
 		 *
 		 * @since 1.0
+		 *
 		 * @param string $url The URL that the cache file to be deleted
 		*/
 		do_action( 'before_rocket_clean_file', $url );
 
-		// Set correct HOST depending on hook (not multisite compatible!)
+		/** This filter is documented in inc/front/htaccess.php */
 		if ( apply_filters( 'rocket_url_no_dots', false ) ) {
 			$url = str_replace( '.' , '_', $url );
 		}
@@ -299,6 +304,7 @@ function rocket_clean_files( $urls )
 		 * Fires after the cache file is deleted
 		 *
 		 * @since 1.0
+		 *
 		 * @param string $url The URL that the cache file was deleted
 		*/
 		do_action( 'after_rocket_clean_file', $url );
@@ -311,7 +317,7 @@ function rocket_clean_files( $urls )
  * $since 2.2 Add $lang argument
  * @since 2.0 Delete cache files for all users
  * @since 1.0
- * @access public
+ *
  * @param string $lang (default: '') The language code
  * @return void
  */
@@ -319,7 +325,7 @@ function rocket_clean_home( $lang = '' )
 {
 	list( $host, $path ) = get_rocket_parse_url( get_rocket_i18n_home_url( $lang ) );
 
-	// Set correct HOST depending on hook (not multisite compatible!)
+	/** This filter is documented in inc/front/htaccess.php */
 	if ( apply_filters( 'rocket_url_no_dots', false ) ) {
 		$host = str_replace( '.' , '_', $host );
 	}
@@ -330,6 +336,7 @@ function rocket_clean_home( $lang = '' )
 	 * Fires before the home cache file is deleted
 	 *
 	 * @since 1.0
+	 *
 	 * @param string $root The path of home cache file
 	 * @param string $lang The current lang to purge
 	*/
@@ -353,6 +360,7 @@ function rocket_clean_home( $lang = '' )
 	 * Fires after the home cache file was deleted
 	 *
 	 * @since 1.0
+	 *
 	 * @param string $root The path of home cache file
 	 * @param string $lang The current lang to purge
 	*/
@@ -364,7 +372,7 @@ function rocket_clean_home( $lang = '' )
  *
  * @since 2.0 Delete domain cache files for all users
  * @since 1.0
- * @access public
+ *
  * @param string $lang (default: '') The language code
  * @return void
  */
@@ -381,7 +389,7 @@ function rocket_clean_domain( $lang = '' )
 
 		list( $host, $path ) = get_rocket_parse_url( $url );
 
-		// Set correct HOST depending on hook (not multisite compatible!)
+		/** This filter is documented in inc/front/htaccess.php */
 		if( apply_filters( 'rocket_url_no_dots', false ) ) {
 			$host = str_replace( '.' , '_', $host );
 		}
@@ -392,6 +400,7 @@ function rocket_clean_domain( $lang = '' )
 		 * Fires before all cache files are deleted
 		 *
 		 * @since 1.0
+		 *
 		 * @param string $root The path of home cache file
 		 * @param string $lang The current lang to purge
 		*/
@@ -408,6 +417,7 @@ function rocket_clean_domain( $lang = '' )
 		 * Fires after all cache files was deleted
 		 *
 		 * @since 1.0
+		 *
 		 * @param string $root The path of home cache file
 		 * @param string $lang The current lang to purge
 		*/
@@ -420,7 +430,7 @@ function rocket_clean_domain( $lang = '' )
  * Remove a single file or a folder recursively
  *
  * @since 1.0
- * @access public
+ *
  * @param string $dir File/Directory to delete
  * @param array $dirs_to_preserve (default: array()) Dirs that should not be deleted
  * @return void
@@ -433,6 +443,7 @@ function rocket_rrmdir( $dir, $dirs_to_preserve = array() )
 	 * Fires after a file/directory cache was deleted
 	 *
 	 * @since 1.1.0
+	 *
 	 * @param string $dir File/Directory to delete
 	 * @param array $dirs_to_preserve Directories that should not be deleted
 	*/
@@ -467,6 +478,7 @@ function rocket_rrmdir( $dir, $dirs_to_preserve = array() )
 	 * Fires before a file/directory cache was deleted
 	 *
 	 * @since 1.1.0
+	 *
 	 * @param string $dir File/Directory to delete
 	 * @param array $dirs_to_preserve Dirs that should not be deleted
 	*/
@@ -477,7 +489,7 @@ function rocket_rrmdir( $dir, $dirs_to_preserve = array() )
  * Directory creation based on WordPress Filesystem
  *
  * @since 1.3.4
- * @access public
+ *
  * @param string $dir The path of directory will be created
  * @return bool
  */
@@ -497,8 +509,9 @@ function rocket_mkdir( $dir )
 /**
  * Recursive directory creation based on full path.
  *
- * @source wp_mkdir_p() in /wp-includes/functions.php
  * @since 1.3.4
+ *
+ * @source wp_mkdir_p() in /wp-includes/functions.php
  */
 function rocket_mkdir_p( $target )
 {
@@ -519,7 +532,7 @@ function rocket_mkdir_p( $target )
 	if ( rocket_mkdir( $target ) ) {
 		return true;
 	} elseif ( is_dir( dirname( $target ) ) ) {
-			return false;
+		return false;
 	}
 
 	// If the above failed, attempt to create the parent node, then try again.
@@ -534,8 +547,8 @@ function rocket_mkdir_p( $target )
  * File creation based on WordPress Filesystem
  *
  * @since 1.3.5
- * @access public
- * @param string $file The path of file will be created
+ *
+ * @param string $file 	  The path of file will be created
  * @param string $content The content that will be printed in advanced-cache.php
  * @return bool
  */
@@ -556,8 +569,8 @@ function rocket_put_content( $file, $content )
  * Check if minify cache file exist and create it if not
  *
  * @since 2.1
- * @access public
- * @param string $url The minified URL with Google Minify Code 
+ *
+ * @param string $url 		 The minified URL with Google Minify Code
  * @param string $pretty_url The minified URL cache file
  * @return bool
  */
@@ -605,8 +618,8 @@ function rocket_fetch_and_cache_minify( $url, $pretty_url )
  * Try to find the correct wp-config.php file, support one level up in filetree
  *
  * @since 2.1
- * @access public
- * @return bool\string The path of wp-config.php file
+ *
+ * @return string|bool The path of wp-config.php file or false
  */
 function rocket_find_wpconfig_path()
 {
@@ -627,9 +640,9 @@ function rocket_find_wpconfig_path()
  * Get WP Rocket footprint
  *
  * @since 2.0
- * @access public
+ *
  * @param bool $debug (default: true) If true, adds the date of generation cache file
- * @return string
+ * @return string The footprint that will be printed
  */
 function get_rocket_footprint( $debug = true )
 {
