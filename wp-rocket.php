@@ -49,25 +49,7 @@ if ( ! defined( 'CHMOD_WP_ROCKET_CACHE_DIRS' ) ) {
     define( 'CHMOD_WP_ROCKET_CACHE_DIRS', 0755 );
 }
 
-// WP <3.5 defines
-if ( ! defined( 'SECOND_IN_SECONDS' ) ) {
-    define( 'SECOND_IN_SECONDS', 1 );
-}
-if ( ! defined( 'MINUTE_IN_SECONDS' ) ) {
-    define( 'MINUTE_IN_SECONDS', SECOND_IN_SECONDS*60 );
-}
-if ( ! defined( 'HOUR_IN_SECONDS' ) ) {
-    define( 'HOUR_IN_SECONDS', 60 * MINUTE_IN_SECONDS );
-}
-if ( ! defined( 'DAY_IN_SECONDS' ) ) {
-    define( 'DAY_IN_SECONDS', 24 * HOUR_IN_SECONDS);
-}
-if ( ! defined( 'WEEK_IN_SECONDS' ) ) {
-    define( 'WEEK_IN_SECONDS', 7 * DAY_IN_SECONDS );
-}
-if ( ! defined( 'YEAR_IN_SECONDS' ) ) {
-    define( 'YEAR_IN_SECONDS', 365 * DAY_IN_SECONDS );
-}
+require( WP_ROCKET_INC_PATH	. '/compat.php' );
 
 /*
  * Tell WP what to do when plugin is loaded
