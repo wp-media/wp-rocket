@@ -69,7 +69,7 @@ function get_rocket_config_file()
 	$buffer .= 'defined( \'ABSPATH\' ) or die( \'Cheatin\\\' uh?\' );' . "\n\n";
 	$buffer .= '$rocket_cookie_hash = \'' . COOKIEHASH . '\'' . ";\n";
 
-	foreach( $options as $option => $value ) {
+	foreach ( $options as $option => $value ) {
 
 		if ( $option == 'cache_ssl' || $option == 'cache_mobile' || $option == 'secret_cache_key' ) {
 			$buffer .= '$rocket_' . $option . ' = \'' . $value . '\';' . "\n";
@@ -105,7 +105,7 @@ function get_rocket_config_file()
 		$urls = $subdomains;
 	}
 
-	foreach( $urls as $url ) {
+	foreach ( $urls as $url ) {
 
 		list( $host, $path ) = get_rocket_parse_url( rtrim( $url, '/' ) );
 
@@ -191,7 +191,7 @@ function set_rocket_wp_cache_define( $turn_it_on )
 	// Get WP_CACHE constant define
 	$constant = "define('WP_CACHE', $turn_it_on); // Added by WP Rocket". "\r\n";
 
-	foreach( $config_file as &$line ) {
+	foreach ( $config_file as &$line ) {
 		if ( ! preg_match( '/^define\(\'([A-Z_]+)\',([ ]+)/', $line, $match ) ) {
 			continue;
 		}
@@ -230,7 +230,7 @@ function set_rocket_wp_cache_define( $turn_it_on )
  * @param string $ext (default: array('js','css') File extensions to minify
  * @return void
  */
-function rocket_clean_minify( $ext = array('js','css') )
+function rocket_clean_minify( $ext = array( 'js','css' ) )
 {
 	/**
 	 * Fires before the minify cache files are deleted
@@ -279,7 +279,7 @@ function rocket_clean_files( $urls )
 	$urls = apply_filters( 'rocket_clean_files', $urls );
 	$urls = array_filter( $urls );
 
-    foreach( $urls as $url ) {
+    foreach ( $urls as $url ) {
 		/**
 		 * Fires before the cache file is deleted
 		 *
@@ -344,14 +344,14 @@ function rocket_clean_home( $lang = '' )
 
 	// Delete homepage
 	if ( $files = glob( $root . '/index.html', GLOB_NOSORT ) ) {
-		foreach( $files as $file ) {
+		foreach ( $files as $file ) {
 			@unlink( $file );
 		}
 	}
 
 	// Delete homepage pagination
 	if ( $dirs = glob( $root . '*/' . $GLOBALS['wp_rewrite']->pagination_base, GLOB_NOSORT ) ) {
-		foreach( $dirs as $dir ) {
+		foreach ( $dirs as $dir ) {
 			rocket_rrmdir( $dir );
 		}
 	}
@@ -378,14 +378,10 @@ function rocket_clean_home( $lang = '' )
  */
 function rocket_clean_domain( $lang = '' )
 {
-	$urls = array();
-	if ( ! $lang ) {
-		$urls = get_rocket_i18n_uri();
-	} else {
-		$urls[] = get_rocket_i18n_home_url( $lang );
-	}
-
-	foreach( $urls as $url ) {
+	$urls = ( ! $lang ) ? get_rocket_i18n_uri() : get_rocket_i18n_home_url( $lang );
+	$urls = (array) $urls;
+	
+	foreach ( $urls as $url ) {
 
 		list( $host, $path ) = get_rocket_parse_url( $url );
 
@@ -408,7 +404,7 @@ function rocket_clean_domain( $lang = '' )
 
 		// Delete cache domain files
 		if( $dirs = glob( $root . '*', GLOB_NOSORT ) ) {
-			foreach( $dirs as $dir ) {
+			foreach ( $dirs as $dir ) {
 				rocket_rrmdir( $dir, get_rocket_i18n_to_preserve( $lang ) );
 			}
 		}
@@ -463,7 +459,7 @@ function rocket_rrmdir( $dir, $dirs_to_preserve = array() )
 		}
 
 		$dirs = array_diff( $dirs, array_filter( $keys ) );
-		foreach( $dirs as $dir ) {
+		foreach ( $dirs as $dir ) {
 			if ( is_dir( $dir ) ) {
 				rocket_rrmdir( $dir, $dirs_to_preserve );
 			} else {
@@ -598,10 +594,9 @@ function rocket_fetch_and_cache_minify( $url, $pretty_url )
 	curl_close($ch);
 
 	if ( $content ) {
-
 		// Create cache folders of the request uri
 		$cache_path = WP_ROCKET_MINIFY_CACHE_PATH . get_current_blog_id() . '/';
-		if( ! is_dir( $cache_path ) ) {
+		if ( ! is_dir( $cache_path ) ) {
 			rocket_mkdir_p( $cache_path );
 		}
 
@@ -628,7 +623,7 @@ function rocket_find_wpconfig_path()
 
 	if ( file_exists( $config_file ) && is_writable( $config_file ) ) {
 		return $config_file;
-	} else if ( file_exists( $config_file_alt ) && is_writable( $config_file_alt ) && !file_exists( dirname( get_home_path() ) . '/wp-settings.php' ) ) {
+	} elseif ( file_exists( $config_file_alt ) && is_writable( $config_file_alt ) && !file_exists( dirname( get_home_path() ) . '/wp-settings.php' ) ) {
 		return $config_file_alt;
 	}
 

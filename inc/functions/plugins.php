@@ -88,22 +88,22 @@ function get_rocket_i18n_code()
 function get_rocket_i18n_uri()
 {
 	$urls = array();
-
+	if ( ! rocket_has_i18n() ) {
+		$urls[] = home_url();
+		return $urls;
+	}
+	
 	if ( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
-
 		$langs = get_rocket_i18n_code();
 		foreach ( $langs as $lang ) {
 			$urls[] = $GLOBALS['sitepress']->language_url( $lang );
 		}
-
-	} else if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
-
+	} elseif ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
 		$langs = get_rocket_i18n_code();
 		foreach ( $langs as $lang ) {
 			$urls[] = qtrans_convertURL( home_url(), $lang, true );
 		}
-
-	} else if ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
+	} elseif ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
 		$urls = wp_list_pluck( $GLOBALS['polylang']->model->get_languages_list(), 'home_url' );
 	}
 
@@ -136,7 +136,7 @@ function get_rocket_i18n_to_preserve( $current_lang )
 	$langs = array_flip( $langs );
 
 	// Stock all URLs of langs to preserve
-	foreach( $langs as $lang ) {
+	foreach ( $langs as $lang ) {
 		list( $host, $path ) = get_rocket_parse_url( get_rocket_i18n_home_url( $lang ) );
 		$langs_to_preserve[] = WP_ROCKET_CACHE_PATH . $host . '(.*)/' . trim( $path, '/' );
 	}
@@ -172,11 +172,11 @@ function get_rocket_i18n_subdomains()
 		if ( (int) $option['language_negotiation_type'] == 2 ) {
 			$urls = get_rocket_i18n_uri();
 		}
-	} else if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
+	} elseif ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
 		if( (int) $GLOBALS['q_config']['url_mode'] == 3 ) {
 			$urls = get_rocket_i18n_uri();
 		}
-	} else if ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
+	} elseif ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
 		if ( (int) $GLOBALS['polylang']->options['force_lang'] == 2 ) {
 			$urls = get_rocket_i18n_uri();
 		}
@@ -201,9 +201,9 @@ function get_rocket_i18n_home_url( $lang = '' ) {
 
 	if ( rocket_is_plugin_active('sitepress-multilingual-cms/sitepress.php') ) {
 		$url = $GLOBALS['sitepress']->language_url( $lang );
-	} else if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
+	} elseif ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
 		$url = qtrans_convertURL( home_url(), $lang, true );
-	} else if ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
+	} elseif ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
 		$url = pll_home_url( $lang );
 	}
 
