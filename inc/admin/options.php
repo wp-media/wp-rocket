@@ -1,14 +1,11 @@
 <?php
 defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 
-
 /**
  * Add submenu in menu "Settings"
  *
  * @since 1.0
- *
  */
-
 add_action( 'admin_menu', 'rocket_admin_menu' );
 function rocket_admin_menu()
 {
@@ -21,15 +18,11 @@ function rocket_admin_menu()
 	add_options_page( $wl_plugin_name, $wl_plugin_name, apply_filters( 'rocket_capacity', 'manage_options' ), $wl_plugin_slug, 'rocket_display_options' );
 }
 
-
-
 /**
  * Used to display fields on settings form
  *
  * @since 1.0
- *
  */
-
 function rocket_field( $args )
 {
 	if( ! is_array( reset( $args ) ) ) {
@@ -44,7 +37,7 @@ function rocket_field( $args )
 		}
 		$args['label_for'] = isset( $args['label_for'] ) ? $args['label_for'] : '';
 		$args['name'] 	= isset( $args['name'] ) ? $args['name'] : $args['label_for'];
-		$class			= isset( $args['class'] ) ? sanitize_html_class( $args['class'] ) : sanitize_html_class( $args['name'] ) ;
+		$class			= isset( $args['class'] ) ? sanitize_html_class( $args['class'] ) : sanitize_html_class( $args['name'] );
 		$placeholder 	= isset( $args['placeholder'] ) ? 'placeholder="'. $args['placeholder'].'" ' : '';
 		$label 			= isset( $args['label'] ) ? $args['label'] : '';
 		$default		= isset( $args['default'] ) ? $args['default'] : '';
@@ -170,18 +163,13 @@ function rocket_field( $args )
 
 }
 
-
-
 /**
  * Used to display the defered module on settings form
  *
  * @since 1.1.0
- *
  */
-
 function rocket_defered_module()
 { ?>
-
 	<fieldset>
 	<legend class="screen-reader-text"><span><?php _e( '<b>JS</b> files with Deferred Loading JavaScript', 'rocket' ); ?></span></legend>
 
@@ -267,19 +255,13 @@ function rocket_defered_module()
 <?php
 }
 
-
-
 /**
  * Used to display the CNAMES module on settings form
  *
  * @since 2.1
- *
  */
-
 function rocket_cnames_module()
 { ?>
-
-
 		<legend class="screen-reader-text"><span><?php _e( 'Replace site\'s hostname with:', 'rocket' ); ?></span></legend>
 
 		<div id="rkt-cnames" class="rkt-module">
@@ -370,15 +352,11 @@ function rocket_cnames_module()
 <?php
 }
 
-
-
 /**
  * Used to display buttons on settings form, tools tab
  *
  * @since 1.1.0
- *
  */
-
 function rocket_button( $args )
 {
 	$button = $args['button'];
@@ -388,17 +366,13 @@ function rocket_button( $args )
 	$class = sanitize_html_class( strip_tags( $button['button_label'] ) );
 	$button_style = isset( $button['style'] ) ? 'button-'.sanitize_html_class( $button['style'] ) : 'button-secondary';
 
-
-	if( !empty( $help ) )
-	{
+	if ( ! empty( $help ) ) {
 		$help = '<p class="description help '.$class.'">'.$help['description'].'</p>';
 	}
-	if( !empty( $desc ) )
-	{
+	if ( ! empty( $desc ) ) {
 		$desc = '<p class="description desc '.$class.'">'.$desc['description'].'</p>';
 	}
-	if( !empty( $warning ) )
-	{
+	if ( ! empty( $warning ) ) {
 		$warning = '<p class="description warning file-error '.$class.'"><b>'.__( 'Warning: ', 'rocket' ) . '</b>' . $warning['description'].'</p>';
 	}
 ?>
@@ -413,14 +387,11 @@ function rocket_button( $args )
 <?php
 }
 
-
 /**
  * Used to display videos buttons on settings form
  *
  * @since 2.2
- *
  */
-
 function rocket_video( $args )
 {
 	$desc = '<p class="description desc '.sanitize_html_class( $args['name'] ).'">'.$args['description'].'</p>';
@@ -432,30 +403,21 @@ function rocket_video( $args )
 <?php
 }
 
-
 /**
  * Used to include a file in any tab
  *
  * @since 2.2
- *
  */
-
 function rocket_include( $args )
 {
 	include_once( dirname( __FILE__ ) . '/' . str_replace( '..', '', $args['file'] ) . '.inc.php' );
 }
 
-
 /**
  * The main settings page construtor using the required functions from WP
+ * @since 1.1.0 Add tabs, tools tab and change options severity
  * @since 1.0
- *
- * Add tabs, tools tab and change options severity
- * @since 1.1.0
- *
- *
  */
-
 function rocket_display_options()
 {
 	// Clé API
@@ -1177,30 +1139,22 @@ function rocket_display_options()
 <?php
 }
 
-
-
 /**
  * Tell to WordPress to be confident with our setting, we are clean!
  *
  * @since 1.0
- *
  */
-
 add_action( 'admin_init', 'rocket_register_setting' );
 function rocket_register_setting()
 {
 	register_setting( 'wp_rocket', WP_ROCKET_SLUG, 'rocket_settings_callback' );
 }
 
-
-
 /**
  * Used with array_filter to remove files without .css extension
  *
  * @since 1.0
- *
  */
-
 function rocket_sanitize_css( $file )
 {
 	$file = preg_replace( '#\?.*$#', '', $file );
@@ -1208,15 +1162,11 @@ function rocket_sanitize_css( $file )
 	return $ext=='css' ? $file : false;
 }
 
-
-
 /**
  * Used with array_filter to remove files without .js extension
  *
  * @since 1.0
- *
  */
-
 function rocket_sanitize_js( $file )
 {
 	$file = preg_replace( '#\?.*$#', '', $file );
@@ -1224,37 +1174,11 @@ function rocket_sanitize_js( $file )
 	return $ext == 'js' ? $file : false;
 }
 
-
-
-/**
- * Get relative url
- * Clean URL file to get only the equivalent of REQUEST_URI
- * ex: rocket_clean_exclude_file( 'http://www.geekpress.fr/referencement-wordpress/') return /referencement-wordpress/
- *
- * @since 1.0
- * @since 1.3.5 Redo the function
- *
- */
-
-function rocket_clean_exclude_file( $file )
-{
-	if( !$file ) {
-		return false;
-	}
-
-	$path = parse_url( $file, PHP_URL_PATH );
-    return $path;
-}
-
-
-
 /**
  * Used to clean and sanitize the settings fields
  *
  * @since 1.0
- *
  */
-
 function rocket_settings_callback( $inputs )
 {
 	if ( isset( $_GET['action'] ) && 'purge_cache' == $_GET['action'] ) {
@@ -1264,24 +1188,19 @@ function rocket_settings_callback( $inputs )
 	/*
 	 * Option : Minification CSS & JS
 	 */
-
-	$inputs['minify_css'] 	= isset( $inputs['minify_css'] );
-	$inputs['minify_js'] 	= isset( $inputs['minify_js'] );
+	$inputs['minify_css'] = isset( $inputs['minify_css'] );
+	$inputs['minify_js']  = isset( $inputs['minify_js'] );
 
 	/*
 	 * Option : Purge delay
 	 */
-
 	$inputs['purge_cron_interval'] = isset( $inputs['purge_cron_interval'] ) ? (int)$inputs['purge_cron_interval'] : get_rocket_option( 'purge_cron_interval' );
 	$inputs['purge_cron_unit'] = isset( $inputs['purge_cron_unit'] ) ? $inputs['purge_cron_unit'] : get_rocket_option( 'purge_cron_unit' );
-
 
 	/*
 	 * Option : Prefetch DNS requests
 	 */
-
-	if ( ! empty( $inputs['dns_prefetch'] ) )
-	{
+	if ( ! empty( $inputs['dns_prefetch'] ) ) {
 		if ( ! is_array( $inputs['dns_prefetch'] ) ) {
 			$inputs['dns_prefetch'] = explode( "\n", $inputs['dns_prefetch'] );
 		}
@@ -1289,17 +1208,14 @@ function rocket_settings_callback( $inputs )
 		$inputs['dns_prefetch'] = array_map( 'esc_url', $inputs['dns_prefetch'] );
 		$inputs['dns_prefetch'] = (array) array_filter( $inputs['dns_prefetch'] );
 		$inputs['dns_prefetch'] = array_unique( $inputs['dns_prefetch'] );
-	}else{
+	} else {
 		$inputs['dns_prefetch'] = array();
 	}
-
 
 	/*
 	 * Option : Empty the cache of the following pages when updating an article
 	 */
-
-	if ( ! empty( $inputs['cache_purge_pages'] ) )
-	{
+	if ( ! empty( $inputs['cache_purge_pages'] ) ) {
 		if ( ! is_array( $inputs['cache_purge_pages'] ) ) {
 			$inputs['cache_purge_pages'] = explode( "\n", $inputs['cache_purge_pages'] );
 		}
@@ -1308,17 +1224,14 @@ function rocket_settings_callback( $inputs )
 		$inputs['cache_purge_pages'] = array_map( 'rocket_clean_exclude_file', $inputs['cache_purge_pages'] );
 		$inputs['cache_purge_pages'] = (array) array_filter( $inputs['cache_purge_pages'] );
 		$inputs['cache_purge_pages'] = array_unique( $inputs['cache_purge_pages'] );
-	}else{
+	} else {
 		$inputs['cache_purge_pages'] = array();
 	}
-
 
 	/*
 	 * Option : Never cache the following pages
 	 */
-
-	if ( ! empty( $inputs['cache_reject_uri'] ) )
-	{
+	if ( ! empty( $inputs['cache_reject_uri'] ) ) {
 		if ( ! is_array( $inputs['cache_reject_uri'] ) ) {
 			$inputs['cache_reject_uri'] = explode( "\n", $inputs['cache_reject_uri'] );
 		}
@@ -1327,17 +1240,14 @@ function rocket_settings_callback( $inputs )
 		$inputs['cache_reject_uri'] = array_map( 'rocket_clean_exclude_file', $inputs['cache_reject_uri'] );
 		$inputs['cache_reject_uri'] = (array) array_filter( $inputs['cache_reject_uri'] );
 		$inputs['cache_reject_uri'] = array_unique( $inputs['cache_reject_uri'] );
-	}else{
+	} else {
 		$inputs['cache_reject_uri'] = array();
 	}
-
 
 	/*
 	 * Option : Don't cache pages that use the following cookies
 	 */
-
-	if ( ! empty( $inputs['cache_reject_cookies'] ) )
-	{
+	if ( ! empty( $inputs['cache_reject_cookies'] ) ) {
 		if ( ! is_array( $inputs['cache_reject_cookies'] ) ) {
 			$inputs['cache_reject_cookies'] = explode( "\n", $inputs['cache_reject_cookies'] );
 		}
@@ -1345,17 +1255,14 @@ function rocket_settings_callback( $inputs )
 		$inputs['cache_reject_cookies'] = array_map( 'sanitize_key', $inputs['cache_reject_cookies'] );
 		$inputs['cache_reject_cookies'] = (array) array_filter( $inputs['cache_reject_cookies'] );
 		$inputs['cache_reject_cookies'] = array_unique( $inputs['cache_reject_cookies'] );
-	}else{
+	} else {
 		$inputs['cache_reject_cookies'] = array();
 	}
-
 
 	/*
 	 * Option : CSS files to exclude of the minification
 	 */
-
-	if ( ! empty( $inputs['exclude_css'] ) )
-	{
+	if ( ! empty( $inputs['exclude_css'] ) ) {
 		if ( ! is_array( $inputs['exclude_css'] ) ) {
 			$inputs['exclude_css'] = explode( "\n", $inputs['exclude_css'] );
 		}
@@ -1364,17 +1271,14 @@ function rocket_settings_callback( $inputs )
 		$inputs['exclude_css'] = array_map( 'rocket_sanitize_css', $inputs['exclude_css'] );
 		$inputs['exclude_css'] = (array) array_filter( $inputs['exclude_css'] );
 		$inputs['exclude_css'] = array_unique( $inputs['exclude_css'] );
-	}else{
+	} else {
 		$inputs['exclude_css'] = array();
 	}
-
 
 	/*
 	 * Option : JS files to exclude of the minification
 	 */
-
-	if ( ! empty( $inputs['exclude_js'] ) )
-	{
+	if ( ! empty( $inputs['exclude_js'] ) ) {
 		if ( ! is_array( $inputs['exclude_js'] ) ) {
 			$inputs['exclude_js'] = explode( "\n", $inputs['exclude_js'] );
 		}
@@ -1383,7 +1287,7 @@ function rocket_settings_callback( $inputs )
 		$inputs['exclude_js'] = array_map( 'rocket_sanitize_js', $inputs['exclude_js'] );
 		$inputs['exclude_js'] = (array) array_filter( $inputs['exclude_js'] );
 		$inputs['exclude_js'] = array_unique( $inputs['exclude_js'] );
-	}else{
+	} else {
 		$inputs['exclude_js'] = array();
 	}
 
@@ -1391,74 +1295,48 @@ function rocket_settings_callback( $inputs )
 	/*
 	 * Option : JS files with deferred loading
 	 */
-
-	if ( ! empty( $inputs['deferred_js_files'] ) )
-	{
+	if ( ! empty( $inputs['deferred_js_files'] ) ) {
 		$inputs['deferred_js_files'] = array_unique( $inputs['deferred_js_files'] );
 		$inputs['deferred_js_files'] = array_map( 'rocket_sanitize_js', $inputs['deferred_js_files'] );
 		$inputs['deferred_js_files'] = array_filter( $inputs['deferred_js_files'] );
-	}
-	else
-	{
+	} else {
 		$inputs['deferred_js_files'] = array();
 	}
 
-
-	if ( ! $inputs['deferred_js_files'] )
-	{
+	if ( ! $inputs['deferred_js_files'] ) {
 		$inputs['deferred_js_wait'] = array();
-	}
-	else
-	{
-
-		for ( $i=0; $i<=max( array_keys( $inputs['deferred_js_files'] ) ); $i++ )
-		{
-
-			if( !isset( $inputs['deferred_js_files'][$i] ) )
-			{
+	} else {
+		for ( $i=0; $i<=max( array_keys( $inputs['deferred_js_files'] ) ); $i++ ) {
+			if ( ! isset( $inputs['deferred_js_files'][$i] ) ) {
 				unset( $inputs['deferred_js_wait'][$i] );
-			}
-			else
-			{
+			} else {
 				$inputs['deferred_js_wait'][$i] = isset( $inputs['deferred_js_wait'][$i] ) ? '1' : '0';
 			}
-
 		}
 
 		$inputs['deferred_js_files'] = array_values( $inputs['deferred_js_files'] );
 		ksort( $inputs['deferred_js_wait'] );
 		$inputs['deferred_js_wait'] = array_values( $inputs['deferred_js_wait'] );
-
 	}
-
-
 
 	/*
 	 * Option : JS files of the minification to insert in footer
 	 */
-
 	if ( ! empty( $inputs['minify_js_in_footer'] ) ) {
-
 		foreach( $inputs['minify_js_in_footer'] as $k=>$url ) {
-
 			if( in_array( $url, $inputs['deferred_js_files'] ) ) {
 				unset( $inputs['minify_js_in_footer'][$k] );
 			}
-
 		}
 
 		$inputs['minify_js_in_footer'] = array_filter( array_map( 'rocket_sanitize_js', array_unique( $inputs['minify_js_in_footer'] ) ) );
-
 	} else {
 		$inputs['minify_js_in_footer'] = array();
 	}
 
-
-
 	/*
 	 * Option : WL
 	 */
-
 	$inputs['wl_plugin_name'] = isset( $inputs['wl_plugin_name'] ) ? wp_strip_all_tags( $inputs['wl_plugin_name'] ) : get_rocket_option( 'wl_plugin_name' );
 	$inputs['wl_plugin_URI']  = isset( $inputs['wl_plugin_URI'] )  ? esc_url( $inputs['wl_plugin_URI'] )            : get_rocket_option( 'wl_plugin_URI' );
 	$inputs['wl_author']      = isset( $inputs['wl_author'] )      ? wp_strip_all_tags( $inputs['wl_author'] )      : get_rocket_option( 'wl_author' );
@@ -1472,38 +1350,25 @@ function rocket_settings_callback( $inputs )
 
 	$inputs['cdn_cnames'] = isset( $inputs['cdn_cnames'] ) ? array_unique( array_filter( $inputs['cdn_cnames'] ) ) : array();
 
-
-	if( ! $inputs['cdn_cnames'] )
-	{
+	if ( ! $inputs['cdn_cnames'] ) {
 		$inputs['cdn_zone'] = array();
-	}
-	else
-	{
-
-		for ( $i = 0; $i <= max( array_keys( $inputs['cdn_cnames'] ) ); $i++ )
-		{
-
-			if ( ! isset( $inputs['cdn_cnames'][ $i ] ) )
-			{
+	} else {
+		for ( $i = 0; $i <= max( array_keys( $inputs['cdn_cnames'] ) ); $i++ ) {
+			if ( ! isset( $inputs['cdn_cnames'][ $i ] ) ) {
 				unset( $inputs['cdn_zone'][ $i ] );
-			}
-			else
-			{
+			} else {
 				$inputs['cdn_zone'][ $i ] = isset( $inputs['cdn_zone'][ $i ] ) ? $inputs['cdn_zone'][ $i ] : 'all';
 			}
-
 		}
 
 		$inputs['cdn_cnames'] 	= array_values( $inputs['cdn_cnames'] );
 		ksort( $inputs['cdn_zone'] );
 		$inputs['cdn_zone'] 	= array_values( $inputs['cdn_zone'] );
-
 	}
 
 	if ( isset( $_FILES['import'] )
 		&& preg_match( '/wp-rocket-settings-20\d{2}-\d{2}-\d{2}-[a-f0-9]{13}\.txt/', $_FILES['import']['name'] )
-		&& 'text/plain' == $_FILES['import']['type'] )
-	{
+		&& 'text/plain' == $_FILES['import']['type'] ) {
 		$file_name 			= $_FILES['import']['name'];
 		$_POST_action 		= $_POST['action'];
 		$_POST['action'] 	= 'wp_handle_sideload';
@@ -1547,10 +1412,7 @@ function rocket_settings_callback( $inputs )
 	}
 
 	return $inputs;
-
 }
-
-
 
 /**
  * When our settings are saved: purge, flush, preload!
@@ -1617,28 +1479,19 @@ function rocket_after_save_options( $oldvalue, $value )
 	}
 }
 
-
-
 /**
  * When purge settings are saved we change the scheduled purge
  *
  * @since 1.0
- *
  */
-
 add_filter( 'pre_update_option_'.WP_ROCKET_SLUG, 'rocket_pre_main_option', 10, 2 );
 function rocket_pre_main_option( $newvalue, $oldvalue )
 {
-
-
-	if ( ( $newvalue['purge_cron_interval'] != $oldvalue['purge_cron_interval'] ) || ( $newvalue['purge_cron_unit'] != $oldvalue['purge_cron_unit'] ) )
-	{
-
+	if ( ( $newvalue['purge_cron_interval'] != $oldvalue['purge_cron_interval'] ) || ( $newvalue['purge_cron_unit'] != $oldvalue['purge_cron_unit'] ) ) {
 		// Clear WP Rocket cron
 		if ( wp_next_scheduled( 'rocket_purge_time_event' ) ) {
 			wp_clear_scheduled_hook( 'rocket_purge_time_event' );
 		}
-
 	}
 
 	// Regenerate the minify key if CSS files have been modified
@@ -1666,16 +1519,13 @@ function rocket_pre_main_option( $newvalue, $oldvalue )
 	}
 
 	return $newvalue;
-
 }
 
 /**
  * Function used to print all hidden fields from rocket to avoid the loss of these.
  *
  * @since 2.1
- *
  */
-
 function rocket_hidden_fields( $fields )
 {
 	if ( ! is_array( $fields ) ) {
@@ -1691,7 +1541,6 @@ function rocket_hidden_fields( $fields )
  * Outputs the form used by the importers to accept the data to be imported
  *
  * @since 2.2
- *
  */
 function rocket_import_upload_form() {
 

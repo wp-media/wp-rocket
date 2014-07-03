@@ -2,6 +2,24 @@
 defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 
 /**
+ * Get relative url
+ * Clean URL file to get only the equivalent of REQUEST_URI
+ * ex: rocket_clean_exclude_file( 'http://www.geekpress.fr/referencement-wordpress/') return /referencement-wordpress/
+ *
+ * @since 1.3.5 Redo the function
+ * @since 1.0
+ */
+function rocket_clean_exclude_file( $file )
+{
+	if ( ! $file ) {
+		return false;
+	}
+
+	$path = parse_url( $file, PHP_URL_PATH );
+    return $path;
+}
+
+/**
  * Get an url without protocol
  *
  * @since 1.3.0
