@@ -1,55 +1,209 @@
 <?php
-defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
+defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 
-/**
- * Catch the pages contents if needed, then, starts an Output Buffer (ob_start) with a callback
- *
- * since 1.0
- *
- */
-
-add_action( 'template_redirect', 'ob_rocket_callback', -1 );
-function ob_rocket_callback()
-{
-	// Don't cache without GET method 		// Don't cache with variables 	// Don't cache 404
-	if( $_SERVER['REQUEST_METHOD'] != 'GET'	|| !empty($_GET) 				|| is_404() ||
-	// Don't cache page with this cookie
-		preg_match('#(' . get_rocket_cookies_not_cached() . ')#', var_export($_COOKIE, true)) ||
-	// Don't cache this pages
-		preg_match('#^(' . get_rocket_pages_not_cached() . ')$#', $_SERVER['REQUEST_URI']) ||
-	// Don't cache if mobile detection is activated
-		!is_rocket_cache_mobile() && (preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i', $_SERVER['HTTP_USER_AGENT']) || preg_match('/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i', substr($_SERVER['HTTP_USER_AGENT'], 0, 4)))
-	)
-		return;
-	else
-		ob_start( 'do_rocket_process' );
+// Don't cache WP javascript generators
+if ( strstr( $_SERVER['SCRIPT_FILENAME'], 'wp-includes/js' ) ) {
+	return;
 }
 
+// Don't cache robots.txt
+if ( strstr( $_SERVER['REQUEST_URI'], 'robots.txt') ) {
+	return;
+}
+
+// Don't cache not allowed extensions
+if ( strtolower( $_SERVER['REQUEST_URI'] ) != '/index.php' && in_array( pathinfo( $_SERVER['REQUEST_URI'], PATHINFO_EXTENSION ), array( 'php', 'xml', 'xsl' ) ) ) {
+	return;
+}
+
+// Don't cache if user is in admin
+if ( is_admin() ) {
+	return;
+}
+
+// Don't cache without GET method
+if ( $_SERVER['REQUEST_METHOD'] != 'GET' ) {
+	return;
+}
+
+// Don't cache with variables
+// but the cache is enabled if the visitor comes from an RSS feed or an Facebook action
+// @since 2.1 Add compatibilty with WordPress Landing Pages (permalink_name and lp-variation-id)
+// @since 2.1 Add compabitiliy with qTranslate and translation plugin with query string "lang"
+if ( ! empty( $_GET )
+	&& ( ! isset( $_GET['utm_source'], $_GET['utm_medium'], $_GET['utm_campaign'] ) )
+	&& ( ! isset( $_GET['fb_action_ids'], $_GET['fb_action_types'], $_GET['fb_source'] ) )
+	&& ( ! isset( $_GET['permalink_name'] ) )
+	&& ( ! isset( $_GET['lp-variation-id'] ) )
+	&& ( ! isset( $_GET['lang'] ) )
+)
+	return;
+
+// Get the correct config file
+$rocket_config_path = WP_CONTENT_DIR . '/wp-rocket-config/';
+$host = trim( strtolower( $_SERVER['HTTP_HOST'] ), '.' );
+$request_uri = isset( $_GET['lp-variation-id'] ) || isset( $_GET['lang'] ) ? $_SERVER['REQUEST_URI'] : reset(( explode( '?', $_SERVER['REQUEST_URI'] ) ));
+
+$continue = false;
+if ( file_exists( $rocket_config_path . $host . '.php' ) ) {
+	include( $rocket_config_path . $host . '.php' );
+	$continue = true;
+} else {
+	$path = explode( '/' , trim( $_SERVER['REQUEST_URI'], '/' ) );
+
+	foreach ( $path as $p ) {		
+		static $dir;
+
+		if ( file_exists( $rocket_config_path . $host . '.' . $p . '.php' ) ) {
+			include( $rocket_config_path . $host . '.' . $p .'.php' );
+			$continue = true;
+			break;
+		}
+
+		if( file_exists( $rocket_config_path . $host . '.' . $dir . $p . '.php' ) ) {
+			include( $rocket_config_path . $host . '.' . $dir. $p . '.php' );
+			$continue = true;
+			break;
+		}
+
+		$dir .= $p . '.';
+	}
+}
+
+// Exit if no config file is exist
+if ( ! $continue ) {
+	return;
+}
+
+// Don't cache SSL
+if ( ! isset( $rocket_cache_ssl ) && rocket_is_ssl() ) {
+	return;
+}
+
+// Don't cache this pages
+if ( isset( $rocket_cache_reject_uri ) && preg_match( '#^(' . $rocket_cache_reject_uri . ')$#', $request_uri ) ) {
+	return;
+}
+
+// Don't cache page with this cookie
+if ( isset( $rocket_cache_reject_cookies ) && preg_match( '#(' . $rocket_cache_reject_cookies . ')#', var_export( $_COOKIE, true ) ) ) {
+	return;
+}
+
+// Don't cache if mobile detection is activated
+if ( ! isset( $rocket_cache_mobile ) && (preg_match('#^.*(2.0\ MMP|240x320|400X240|AvantGo|BlackBerry|Blazer|Cellphone|Danger|DoCoMo|Elaine/3.0|EudoraWeb|Googlebot-Mobile|hiptop|IEMobile|KYOCERA/WX310K|LG/U990|MIDP-2.|MMEF20|MOT-V|NetFront|Newt|Nintendo\ Wii|Nitro|Nokia|Opera\ Mini|Palm|PlayStation\ Portable|portalmmm|Proxinet|ProxiNet|SHARP-TQ-GX10|SHG-i900|Small|SonyEricsson|Symbian\ OS|SymbianOS|TS21i-10|UP.Browser|UP.Link|webOS|Windows\ CE|WinWAP|YahooSeeker/M1A1-R2D2|iPhone|iPod|Android|BlackBerry9530|LG-TU915\ Obigo|LGE\ VX|webOS|Nokia5800).*#i', $_SERVER['HTTP_USER_AGENT']) || preg_match('#^(w3c\ |w3c-|acs-|alav|alca|amoi|audi|avan|benq|bird|blac|blaz|brew|cell|cldc|cmd-|dang|doco|eric|hipt|htc_|inno|ipaq|ipod|jigs|kddi|keji|leno|lg-c|lg-d|lg-g|lge-|lg/u|maui|maxo|midp|mits|mmef|mobi|mot-|moto|mwbp|nec-|newt|noki|palm|pana|pant|phil|play|port|prox|qwap|sage|sams|sany|sch-|sec-|send|seri|sgh-|shar|sie-|siem|smal|smar|sony|sph-|symb|t-mo|teli|tim-|tosh|tsm-|upg1|upsi|vk-v|voda|wap-|wapa|wapi|wapp|wapr|webc|winw|winw|xda\ |xda-).*#i', substr($_SERVER['HTTP_USER_AGENT'], 0, 4))) ) {
+	return;
+}
+
+// Check if dots should be replace by underscores
+$host = isset( $rocket_url_no_dots ) ? str_replace( '.', '_', $host ) : $host;
+
+// Get cache folder of host name
+if ( isset( $rocket_cookie_hash )
+	&& isset( $_COOKIE[ 'wordpress_logged_in_' . $rocket_cookie_hash ] )
+	&& isset( $rocket_cache_reject_cookies )
+	&& !strstr( $rocket_cache_reject_cookies, 'wordpress_logged_in_' )
+) {
+	$user_key = reset( ( explode( '|', $_COOKIE[ 'wordpress_logged_in_' . $rocket_cookie_hash ]) ) ) . '-' . $rocket_secret_cache_key;
+
+	// Get cache folder of host name
+	$request_uri_path = $rocket_cache_path . $host . '-' . $user_key . rtrim( $request_uri, '/' );
+}
+else {
+	$request_uri_path = $rocket_cache_path . $host . rtrim( $request_uri, '/' );
+}
+
+// Serve the cache file if exist
+rocket_serve_cache_file( $request_uri_path );
+
+ob_start( 'do_rocket_callback' );
 
 /**
  * The famous callback, it puts contents in a cache file if buffer length > 255 (IE do not read pages under 255 c. )
  *
- * since 1.0
- *
+ * @since 1.3.0 Add filter rocket_buffer
+ * @since 1.0
  */
-
-function do_rocket_process( $buffer )
+function do_rocket_callback( $buffer )
 {
+	if ( strlen( $buffer ) > 255
+		&& !is_404() 	// Don't cache 404
+		&& !is_search() // Don't cache search results
+		&& !defined( 'DONOTCACHEPAGE' ) || !DONOTCACHEPAGE // Don't cache template that use this constant
+	) {
+		global $request_uri_path;
 
-	// Minification HTML/CSS/JavaScript
-	$buffer = rocket_minify_process( $buffer );
+		// This hook is used for :
+		// - Add width and height attributes on images
+		// - Deferred JavaScript files
+		// - DNS Prefechting
+		// - Minification HTML/CSS/JavaScript
+		$buffer = apply_filters( 'rocket_buffer', $buffer );
 
-	// Get root cache dir
-	if( strlen( $buffer ) > 255 ){
-	    $cache_dir = WP_ROCKET_CACHE_PATH  . '/' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-
-		// Create cache folder if not already exist
-	    if( !is_dir( $cache_dir ) )
-	    	mkdir( $cache_dir, CHMOD_WP_ROCKET_CACHE_DIRS, true );
+		// Create cache folders of the request uri
+		rocket_mkdir_p( $request_uri_path );
 
 		// Save the cache file
-	    	file_put_contents( $cache_dir . '/index.html', $buffer . "\n" . '<!-- This website is like a Rocket, isn\'t ? Performance optimized by WP Rocket . Learn more: http://wp-rocket.me -->' );
-    }
+		rocket_put_content( $request_uri_path . '/index.html', $buffer . get_rocket_footprint() );
 
-	return $buffer;
+		// Send headers with the last modified time of the cache file
+		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s', filemtime( $request_uri_path . '/index.html' ) ) . ' GMT' );
+	}
+
+	return $buffer . get_rocket_footprint(false);
+}
+
+/**
+ * Serve the cache file if exist
+ *
+ * @since 2.0
+ */
+function rocket_serve_cache_file( $request_uri_path )
+{
+	$filename = $request_uri_path . '/index.html';
+
+	// Check if cache file exist
+	if ( file_exists( $filename ) && is_readable( $filename ) ) {
+
+		// Getting If-Modified-Since headers sent by the client.
+		if ( function_exists( 'apache_request_headers' ) ) {			
+			$headers = apache_request_headers();
+			$http_if_modified_since = isset( $headers[ 'If-Modified-Since' ] ) ? $headers[ 'If-Modified-Since' ] : '';			
+		} else {
+			$http_if_modified_since = $_SERVER[ 'HTTP_IF_MODIFIED_SINCE' ];
+		}
+
+		// Checking if the client is validating his cache and if it is current.
+	    if ( isset( $http_if_modified_since ) && ( strtotime( $http_if_modified_since ) == filemtime( $filename ) ) ) {        
+	        // Client's cache is current, so we just respond '304 Not Modified'.
+	        header( $_SERVER['SERVER_PROTOCOL'] . ' 304 Not Modified' );
+	        exit;	        
+	    }
+
+	   // Serve the cache if file isn't store in the client browser cache
+	   readfile( $filename );
+	   exit;
+	}
+}
+
+/**
+ * Determine if SSL is used
+ *
+ * @since 2.0
+ *
+ * @source is_ssl() in /wp-includes/functions.php
+ */
+function rocket_is_ssl()
+{
+	if ( isset($_SERVER['HTTPS']) ) {
+		if ( 'on' == strtolower($_SERVER['HTTPS']) ) {
+			return true;
+		}
+		if ( '1' == $_SERVER['HTTPS'] ) {
+			return true;
+		}
+	} elseif ( isset($_SERVER['SERVER_PORT']) && ( '443' == $_SERVER['SERVER_PORT'] ) ) {
+		return true;
+	}
+	return false;
 }

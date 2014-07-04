@@ -5,13 +5,7 @@
  * 
  * @package Minify
  */
-
-
-/**
- * Allow use of the Minify URI Builder app. Only set this to true while you need it.
- **/
-$min_enableBuilder = true;
-
+ 
 
 /**
  * Set to true to log messages to FirePHP (Firefox Firebug addon).
@@ -96,7 +90,7 @@ $min_serveOptions['bubbleCssImports'] = false;
  * Note: Despite this setting, if you include a number at the end of the
  * querystring, maxAge will be set to one year. E.g. /min/f=hello.css&123456
  */
-$min_serveOptions['maxAge'] = 1800;
+$min_serveOptions['maxAge'] = 31536000;
 
 
 /**
@@ -135,7 +129,7 @@ $min_serveOptions['minApp']['groupsOnly'] = false;
  * To minify all files, set this option to null. You could also specify your
  * own pattern that is matched against the filename.
  */
-//$min_serveOptions['minApp']['noMinPattern'] = '@[-\\.]min\\.(?:js|css)$@i';
+$min_serveOptions['minApp']['noMinPattern'] = null;
 
 
 /**
