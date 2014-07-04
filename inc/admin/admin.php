@@ -169,13 +169,11 @@ function __rocket_deactivate_plugin()
 add_action( 'admin_post_rocket_resetwl', '__rocket_reset_white_label_values_action' );
 function __rocket_reset_white_label_values_action()
 {
-
 	if ( isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'rocket_resetwl' ) ) {
 		rocket_reset_white_label_values( true );
 	}
 	wp_safe_redirect( add_query_arg( 'page', 'wprocket', remove_query_arg( 'page', wp_get_referer() ) ) );
 	die();
-
 }
 
 /**
@@ -257,7 +255,6 @@ function __rocket_do_options_export()
  */
 add_filter( 'admin_action_upgrade-plugin', '__rocket_before_plugin_update', PHP_INT_MAX );
 function __rocket_before_plugin_update() {
-
 	if ( ! rocket_valid_key() ) {
 		wp_die( sprintf( '<h1>WP Rocket</h1><p>%s</p>', __( 'Your licence key is not valid, please set it up correctly before trying to update the plugin, thank you.', 'rocket' ) ), __( 'WP Rocket error', 'rocket' ), array( 'back_link' => true ) );
 	} elseif ( isset( $_GET['plugin'], $_GET['_wpnonce'] )

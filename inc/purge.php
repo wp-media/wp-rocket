@@ -131,9 +131,17 @@ function rocket_clean_post( $post_id )
 	 * @param array $purge_urls URLs cache files to remove
 	*/
 	do_action( 'before_rocket_clean_post', $post, $purge_urls );
-
+	
+	/**
+	 * Filter URLs cache files to remove
+	 *
+	 * @since 1.0
+	 * @param array $purge_urls List of URLs cache files to remove
+	*/
+	$purge_urls = apply_filters( 'rocket_post_purge_urls', $purge_urls );
+	
 	// Purge all files
-	rocket_clean_files( apply_filters( 'rocket_post_purge_urls', $purge_urls ) );
+	rocket_clean_files( $purge_urls );
 
 	// Never forget to purge homepage and their pagination
 	$lang = false;

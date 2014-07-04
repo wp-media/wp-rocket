@@ -5,10 +5,10 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
  * A wrapper to easily get rocket option
  *
  * @since 1.3.0
- * @access public
- * @param string $option The option name
- * @param bool $default (default: false) The default value of option
- * @return mixed
+ *
+ * @param string $option  The option name
+ * @param bool   $default (default: false) The default value of option
+ * @return mixed The option value
  */
 function get_rocket_option( $option, $default = false )
 {
@@ -25,8 +25,8 @@ function get_rocket_option( $option, $default = false )
  * Check if we need to cache the mobile version of the website (if available)
  *
  * @since 1.0
- * @access public
- * @return bool
+ *
+ * @return bool True if option is activated
  */
 function is_rocket_cache_mobile()
 {
@@ -38,7 +38,7 @@ function is_rocket_cache_mobile()
  *
  * @since 1.0
  * @access public
- * @return bool
+ * @return bool True if option is activated
  */
 function is_rocket_cache_ssl()
 {
@@ -50,8 +50,8 @@ function is_rocket_cache_ssl()
  * This setting can be changed from the options page of the plugin
  *
  * @since 1.0
- * @access public
- * @return int
+ *
+ * @return int The interval task cron purge in seconds
  */
 function get_rocket_purge_cron_interval()
 {
@@ -65,6 +65,8 @@ function get_rocket_purge_cron_interval()
  * Get all uri we don't cache
  *
  * @since 2.0
+ *
+ * @return array List of rejected uri
  */
 function get_rocket_cache_reject_uri()
 {
@@ -74,8 +76,9 @@ function get_rocket_cache_reject_uri()
 	/**
 	 * Filter the rejected uri
 	 *
-	 * @param array $uri
 	 * @since 2.1
+	 *
+	 * @param array $uri List of rejected uri
 	*/
 	$uri = apply_filters( 'rocket_cache_reject_uri', $uri );
 
@@ -87,6 +90,8 @@ function get_rocket_cache_reject_uri()
  * Get all cookie names we don't cache
  *
  * @since 2.0
+ *
+ * @return array List of rejected cookies
  */
 function get_rocket_cache_reject_cookies()
 {
@@ -100,8 +105,9 @@ function get_rocket_cache_reject_cookies()
 	/**
 	 * Filter the rejected cookies
 	 *
-	 * @param array $cookies
 	 * @since 2.1
+	 *
+	 * @param array $cookies List of rejected cookies
 	*/
 	$cookies = apply_filters( 'rocket_cache_reject_cookies', $cookies );
 
@@ -113,10 +119,12 @@ function get_rocket_cache_reject_cookies()
  * Get all CNAMES
  *
  * @since 2.1
+ *
+ * @param string $zone (default: 'all') List of zones
+ * @return array List of CNAMES
  */
-function get_rocket_cdn_cnames( $_zone = 'all' )
+function get_rocket_cdn_cnames( $zone = 'all' )
 {
-
 	if ( (int) get_rocket_option( 'cdn' ) == 0 ) {
 		return array();
 	}
@@ -124,11 +132,11 @@ function get_rocket_cdn_cnames( $_zone = 'all' )
 	$hosts       = array();
 	$cnames      = get_rocket_option( 'cdn_cnames', array() );
 	$cnames_zone = get_rocket_option( 'cdn_zone', array() );
-	$_zone 		 = is_array( $_zone ) ? $_zone : (array)$_zone;
+	$zone 		 = is_array( $zone ) ? $zone : (array) $zone;
 
 	foreach( $cnames as $k=>$_urls ) {
 
-		if ( in_array( $cnames_zone[$k], $_zone ) ) {
+		if ( in_array( $cnames_zone[$k], $zone ) ) {
 
 			$_urls = explode( ',' , $_urls );
 			$_urls = array_map( 'trim' , $_urls );

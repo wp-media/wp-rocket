@@ -2,6 +2,21 @@
 defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 
 /**
+ * This warning is displayed when the API KEY isn't already set or not valid
+ *
+ * @since 1.0
+ */
+function rocket_need_api_key()
+{ ?>
+
+	<div class="updated">
+		<p><b><?php echo WP_ROCKET_PLUGIN_NAME; ?></b> : <?php echo sprintf ( __('To finish the install and take advantage of high performance provided by our plugin, thank you to <a href="%s">Enter you API key</a>.', 'rocket' ), admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG ) ) ;?></p>
+	</div>
+
+<?php
+}
+
+/**
  * Add Rocket informations into USER_AGENT
  *
  * @since 1.1.0
@@ -38,6 +53,7 @@ function rocket_user_agent( $user_agent )
  *
  * @param (int|null)$uid : a User id, can be null, null = all users
  * @param (string|array)$keep_this : which box have to be kept
+ * @return void
  */
 function rocket_renew_all_boxes( $uid = null, $keep_this = array() )
 {
@@ -60,6 +76,8 @@ function rocket_renew_all_boxes( $uid = null, $keep_this = array() )
  * Renew a dismissed error box admin side
  *
  * @since 1.1.10
+ *
+ * @return void
  */
 function rocket_renew_box( $function, $uid = 0 )
 {
@@ -67,8 +85,7 @@ function rocket_renew_box( $function, $uid = 0 )
 	$uid = $uid==0 ? $current_user->ID : $uid;
 	$actual = get_user_meta( $uid, 'rocket_boxes', true );
 
-	if( $actual && false !== array_search( $function, $actual ) )
-	{
+	if( $actual && false !== array_search( $function, $actual ) ) {
 		unset( $actual[array_search( $function, $actual )] );
 		update_user_meta( $uid, 'rocket_boxes', $actual );
 	}
@@ -78,6 +95,8 @@ function rocket_renew_box( $function, $uid = 0 )
  * Dismissed 1 box, wrapper of rocket_dismiss_boxes()
  *
  * @since 1.3.0
+ *
+ * @return void
  */
 function rocket_dismiss_box( $function )
 {
@@ -110,6 +129,8 @@ function rocket_is_white_label()
  * Reset white label options
  *
  * @since 2.1
+ *
+ * @return void
  */
 function rocket_reset_white_label_values( $hack_post )
 {
@@ -137,4 +158,29 @@ function rocket_reset_white_label_values( $hack_post )
 function create_rocket_uniqid()
 {
 	return str_replace( '.', '', uniqid( '', true ) );
+}
+
+/**
+ * This warning is displayed to inform the user that the plugin can not be tested in connected mode
+ *
+ * @since 2.2 Only returns a string on demand, no more hook
+ * @since 1.1.10
+ */
+function rocket_warning_logged_users()
+{
+	return	'</strong><b>' . WP_ROCKET_PLUGIN_NAME . '</b>: ' .
+			__( 'Connected users don\'t have the cached version of the website. We recommend you, to browse your website disconnected.', 'rocket' );
+}
+
+/**
+ * This thankful message is displayed when the site has been added
+ *
+ * @since 2.2 On demand display, no hook
+ */
+function rocket_thank_you_license()
+{
+	return 	'</strong><b>' . WP_ROCKET_PLUGIN_NAME . '</b>:
+			' . __( 'Thank you. Your license has been validated by our servers for you.', 'rocket' ) . '
+			<br>
+			' . sprintf( __( 'Key: <code>%s</code><br>Email: <i>%s</i>', 'rocket' ), get_rocket_option( 'consumer_key' ), get_rocket_option( 'consumer_email' ) );
 }
