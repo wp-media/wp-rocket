@@ -4,35 +4,46 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 2.2\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2014-05-21 13:41:07+00:00\n"
+"POT-Creation-Date: 2014-07-02 16:56:19+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2014-MO-DA HO:MI+ZONE\n"
 "Last-Translator: WP Media (http://wp-rocket.me/)\n"
 "Language-Team: WP Media (http://www.transifex.com/projects/p/wp-media/)\n"
+"X-Generator: grunt-wp-i18n 0.4.5\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Poedit-Basepath: .\n"
 "X-Poedit-Language: English\n"
 "X-Poedit-Country: UNITED STATES\n"
-"X-Poedit-Sourcecharset: utf-8\n"
-"X-Poedit-Keywordslist: __;_e;__ngettext:1,2;_n:1,2;__ngettext_  "
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_  "
 "noop:1,2;_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1"
 ",2;\n"
 "X-Textdomain-Support: yes\n"
 
-#: inc/admin/admin.php:16 inc/admin-bar.php:34
+#: inc/admin/admin.php:12 inc/admin-bar.php:31
 msgid "Settings"
 msgstr ""
 
-#: inc/admin/admin.php:38
+#: inc/admin/admin.php:29
 msgid "Clear this cache"
 msgstr ""
 
-#: inc/admin/admin.php:62 inc/admin/notices.php:99 inc/admin/options.php:981
-#: inc/admin/options.php:987 inc/admin-bar.php:46 inc/admin-bar.php:71
-#: inc/admin-bar.php:102
+#: inc/admin/admin.php:48 inc/admin/notices.php:99 inc/admin/options.php:1002
+#: inc/admin/options.php:1008 inc/admin-bar.php:43 inc/admin-bar.php:66
+#: inc/admin-bar.php:100
 msgid "Clear cache"
+msgstr ""
+
+#: inc/admin/admin.php:262
+msgid ""
+"Your licence key is not valid, please set it up correctly before trying to "
+"update the plugin, thank you."
+msgstr ""
+
+#: inc/admin/admin.php:262
+msgid "WP Rocket error"
 msgstr ""
 
 #: inc/admin/faq.inc.php:2
@@ -560,13 +571,7 @@ msgstr ""
 msgid "Key: <code>%s</code><br>Email: <i>%s</i>"
 msgstr ""
 
-#: inc/admin/notices.php:507
-msgid ""
-"Also, the site <b>%s</b> has been automatically added to <a "
-"href=\"%s\">your account</a>. We just sent you a mail about that."
-msgstr ""
-
-#: inc/admin/notices.php:539
+#: inc/admin/notices.php:536
 msgid ""
 "Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
 "permissions</a> on <b>%3$s</b> minify cache folder (<code>%2$s</code>). To "
@@ -574,7 +579,7 @@ msgid ""
 "<code>775</code> or <code>777</code> this folder."
 msgstr ""
 
-#: inc/admin/notices.php:563
+#: inc/admin/notices.php:560
 msgid ""
 "To finish the install and take advantage of high performance provided by "
 "our plugin, thank you to <a href=\"%s\">Enter you API key</a>."
@@ -658,7 +663,7 @@ msgstr ""
 msgid "The one used for the purchase, in your support account."
 msgstr ""
 
-#: inc/admin/options.php:503 inc/admin/options.php:1111
+#: inc/admin/options.php:503 inc/admin/options.php:1132
 msgid "Basic options"
 msgstr ""
 
@@ -796,7 +801,7 @@ msgstr ""
 msgid "Specify 0 for unlimited lifetime."
 msgstr ""
 
-#: inc/admin/options.php:663 inc/admin/options.php:1112
+#: inc/admin/options.php:663 inc/admin/options.php:1133
 msgid "Advanced options"
 msgstr ""
 
@@ -932,7 +937,7 @@ msgid ""
 "href=\"http://www.maxcdn.com/\" target=\"_blank\">maxCDN</a>."
 msgstr ""
 
-#: inc/admin/options.php:884 inc/admin/options.php:1115
+#: inc/admin/options.php:884 inc/admin/options.php:1136
 msgid "White Label"
 msgstr ""
 
@@ -964,115 +969,129 @@ msgstr ""
 msgid "If you change anything, the tutorial + FAQ + Support tabs will be hidden."
 msgstr ""
 
-#: inc/admin/options.php:978 inc/admin/options.php:1117
+#: inc/admin/options.php:978 inc/admin/options.php:1138
 msgid "Tools"
 msgstr ""
 
-#: inc/admin/options.php:992
+#: inc/admin/options.php:981 inc/admin/options.php:990
+msgid "Beta Tester"
+msgstr ""
+
+#: inc/admin/options.php:988
+msgid "Yes i want!"
+msgstr ""
+
+#: inc/admin/options.php:995
+msgid ""
+"Check it to participate to the WP Rocket Beta Program and get the new "
+"versions earlier, thanks in advance."
+msgstr ""
+
+#: inc/admin/options.php:1013
 msgid "Clear the cache for the whole site."
 msgstr ""
 
-#: inc/admin/options.php:998 inc/admin/options.php:1004
-#: inc/admin/options.php:1037 inc/admin/tutorials.php:3 inc/admin-bar.php:143
-#: inc/admin-bar.php:166 inc/admin-bar.php:192
+#: inc/admin/options.php:1019 inc/admin/options.php:1025
+#: inc/admin/options.php:1058 inc/admin/tutorials.php:3 inc/admin-bar.php:141
+#: inc/admin-bar.php:162 inc/admin-bar.php:193
 msgid "Preload cache"
 msgstr ""
 
-#: inc/admin/options.php:1009
+#: inc/admin/options.php:1030
 msgid ""
 "Allows you to request a bot crawl to preload the cache (homepage and its "
 "internal links)."
 msgstr ""
 
-#: inc/admin/options.php:1016
+#: inc/admin/options.php:1037
 msgid "Settings Exporter"
 msgstr ""
 
-#: inc/admin/options.php:1026
+#: inc/admin/options.php:1047
 msgid "Settings Importer"
 msgstr ""
 
-#: inc/admin/options.php:1034 inc/admin/options.php:1119
+#: inc/admin/options.php:1055 inc/admin/options.php:1140
 msgid "Tutorials"
 msgstr ""
 
-#: inc/admin/options.php:1042 inc/admin/tutorials.php:4
+#: inc/admin/options.php:1063 inc/admin/tutorials.php:4
 msgid ""
 "This video gives some explanations about our two crawler robots. They "
 "generate several cache files in a few seconds."
 msgstr ""
 
-#: inc/admin/options.php:1049 inc/admin/tutorials.php:7
+#: inc/admin/options.php:1070 inc/admin/tutorials.php:7
 msgid "CSS and JavaScript minification"
 msgstr ""
 
-#: inc/admin/options.php:1054 inc/admin/tutorials.php:8
+#: inc/admin/options.php:1075 inc/admin/tutorials.php:8
 msgid ""
 "This video gives some explanations about how to use the advanced process of "
 "minification and concatenation of CSS and JavaScript files."
 msgstr ""
 
-#: inc/admin/options.php:1061 inc/admin/tutorials.php:11
+#: inc/admin/options.php:1082 inc/admin/tutorials.php:11
 msgid "Preloading DNS queries"
 msgstr ""
 
-#: inc/admin/options.php:1066 inc/admin/tutorials.php:12
+#: inc/admin/options.php:1087 inc/admin/tutorials.php:12
 msgid ""
 "This video helps to understand easily the advanced option of \"Preloading "
 "DNS queries\" and the use of the filter <code>rocket_dns_prefetch</code>."
 msgstr ""
 
-#: inc/admin/options.php:1071 inc/admin/options.php:1074
-#: inc/admin/options.php:1120 inc/admin/options.php:1125
+#: inc/admin/options.php:1092 inc/admin/options.php:1095
+#: inc/admin/options.php:1141 inc/admin/options.php:1146
 msgid "FAQ"
 msgstr ""
 
-#: inc/admin/options.php:1082 inc/admin/options.php:1085
-#: inc/admin/options.php:1121 inc/admin/options.php:1126 inc/admin-bar.php:203
+#: inc/admin/options.php:1103 inc/admin/options.php:1106
+#: inc/admin/options.php:1142 inc/admin/options.php:1147 inc/admin-bar.php:204
 msgid "Support"
 msgstr ""
 
-#: inc/admin/options.php:1091
+#: inc/admin/options.php:1112
 msgid "Visit the Support"
 msgstr ""
 
-#: inc/admin/options.php:1097
+#: inc/admin/options.php:1118
 msgid ""
 "If none of the FAQ answers resolves your problem, you can send your issue "
 "to our free support. We will reply as soon as possible."
 msgstr ""
 
-#: inc/admin/options.php:1113
+#: inc/admin/options.php:1134
 msgid "CDN"
 msgstr ""
 
-#: inc/admin/options.php:1124
+#: inc/admin/options.php:1145
 msgid "License"
 msgstr ""
 
-#: inc/admin/options.php:1507
+#: inc/admin/options.php:1528
 msgid "Settings imported and saved."
 msgstr ""
 
-#: inc/admin/options.php:1525 inc/admin/options.php:1592
+#: inc/admin/options.php:1546 inc/admin/options.php:1613
 msgid "Settings saved."
 msgstr ""
 
-#: inc/admin/options.php:1690
+#: inc/admin/options.php:1711
 msgid ""
 "Before you can upload your import file, you will need to fix the following "
 "error:"
 msgstr ""
 
-#: inc/admin/options.php:1697
+#: inc/admin/options.php:1718
 msgid "Choose a file from your computer:"
 msgstr ""
 
-#: inc/admin/options.php:1697
+#: inc/admin/options.php:1718
 msgid "Maximum size: %s"
 msgstr ""
 
-#: inc/admin/options.php:1700
+#: inc/admin/options.php:1721
 msgid "Upload file and import settings"
 msgstr ""
 
@@ -1104,43 +1123,43 @@ msgid ""
 "<code>get_rocket_cdn_url()</code> and <code>rocket_cdn_url()</code>."
 msgstr ""
 
-#: inc/admin/updater.php:142 inc/admin/updater.php:149
+#: inc/admin/updater.php:142 inc/admin/updater.php:146
 msgid ""
 "An unexpected error occurred. Something may be wrong with WP-Rocket.me or "
 "this server&#8217;s configuration. If you continue to have problems, please "
 "try the <a href=\"%s\">support forums</a>."
 msgstr ""
 
-#: inc/admin-bar.php:90 inc/admin-bar.php:183 inc/admin-bar.php:245
-#: inc/admin-bar.php:252
+#: inc/admin-bar.php:90 inc/admin-bar.php:184 inc/admin-bar.php:244
+#: inc/admin-bar.php:251
 msgid "All languages"
 msgstr ""
 
-#: inc/admin-bar.php:116
+#: inc/admin-bar.php:115
 msgid "Clear this post"
 msgstr ""
 
-#: inc/admin-bar.php:128
+#: inc/admin-bar.php:127
 msgid "Purge this URL"
 msgstr ""
 
-#: inc/cron.php:19
+#: inc/cron.php:16
 msgid "%s clear"
 msgstr ""
 
-#: inc/functions/options.php:241
+#: inc/functions/options.php:200
 msgid "Your license is not valid."
 msgstr ""
 
-#: inc/functions/options.php:242
+#: inc/functions/options.php:201
 msgid "You cannot add more websites. Upgrade your account."
 msgstr ""
 
-#: inc/functions/options.php:243
+#: inc/functions/options.php:202
 msgid "This website is not allowed."
 msgstr ""
 
-#: inc/functions/options.php:244
+#: inc/functions/options.php:203
 msgid "This license key is not accepted."
 msgstr ""
 
