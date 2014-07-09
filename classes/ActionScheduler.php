@@ -97,13 +97,13 @@ abstract class ActionScheduler {
 		spl_autoload_register( array( __CLASS__, 'autoload' ) );
 
 		$store = self::store();
-		add_action( 'init', array( $store, 'init' ), 10, 0 );
+		add_action( 'init', array( $store, 'init' ), 1, 0 );
 
 		$logger = self::logger();
-		add_action( 'init', array( $logger, 'init' ), 10, 0 );
+		add_action( 'init', array( $logger, 'init' ), 1, 0 );
 
 		$runner = self::runner();
-		add_action( 'init', array( $runner, 'init' ), 10, 0 );
+		add_action( 'init', array( $runner, 'init' ), 1, 0 );
 
 		$admin_view = self::admin_view();
 		add_action( 'init', array( $admin_view, 'init' ), 9, 0 ); // run before $store::init()
