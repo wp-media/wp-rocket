@@ -4,6 +4,7 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 /*
  * Add width and height attributes on all images
  *
+ * @since 2.2.2 This feature is enabled by a hook
  * @since 1.3.0 This process is called via the new filter rocket_buffer
  * @since 1.3.0 It's possible to not specify dimensions of an image with data-no-image-dimensions attribute
  * @since 1.1.2 Fix Bug : No conflit with Photon Plugin (Jetpack)
@@ -12,6 +13,17 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 add_filter( 'rocket_buffer', 'rocket_specify_image_dimensions', 10 );
 function rocket_specify_image_dimensions( $buffer )
 {
+	/**
+	 * Filter images dimensions attributes
+	 *
+	 * @since 2.2
+	 *
+	 * @param bool Do the job or not
+	 */
+	if ( ! apply_filters( 'rocket_specify_image_dimensions', true ) ) {
+		return $buffer;
+	}
+	
 	// Get all images without width or height attribute
 	preg_match_all( '/<img(?:[^>](?!(height|width)=))*+>/i' , $buffer, $images_match );
 
