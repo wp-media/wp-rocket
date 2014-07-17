@@ -34,7 +34,7 @@ add_filter( 'widget_text', 'rocket_lazyload_images', PHP_INT_MAX );
 add_filter( 'post_thumbnail_html', 'rocket_lazyload_images', PHP_INT_MAX );
 function rocket_lazyload_images( $html ) {
 	// Don't LazyLoad if the thumbnail is in a feed or in a post preview
-	if ( is_feed() || is_preview() || empty( $html ) ) {
+	if ( is_feed() || is_preview() || empty( $html ) || ( defined( 'DONOTLAZYLOAD' ) && DONOTLAZYLOAD ) ) {
 		return $html;
 	}
 
@@ -158,7 +158,7 @@ function rocket_translate_smiley( $matches ) {
 	$src_url = apply_filters( 'smilies_src', includes_url( "images/smilies/$img" ), $img, site_url() );
 
 	// Don't lazy-load if process is stopped with a hook
-	if ( apply_filters( 'do_rocket_lazyload', true ) ) {
+	if ( apply_filters( 'do_rocket_lazyload', true ) && ( defined( 'DONOTLAZYLOAD' ) && ! DONOTLAZYLOAD ) ) {
 
 		return sprintf( ' <img src="data:image/gif;base64,R0lGODdhAQABAPAAAP///wAAACwAAAAAAQABAEACAkQBADs=" data-lazy-original="%s" alt="%s" class="wp-smiley" /> ', esc_url( $src_url ), esc_attr( $smiley ) );
 
