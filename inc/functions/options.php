@@ -198,7 +198,7 @@ function rocket_check_key( $type = 'transient_1', $data = null )
 			if( $json->success ) {
 
 				$rocket_options['secret_key'] = $json->data->secret_key;
-				if ( ! get_rocket_option( 'license' ) && rocket_valid_key() ) {
+				if ( ! get_rocket_option( 'license' ) ) {
 					add_settings_error( 'general', 'settings_updated', rocket_thank_you_license(), 'updated' );
 					$rocket_options['license'] = time();
 				}
