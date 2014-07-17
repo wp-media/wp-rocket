@@ -11,7 +11,7 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
  */
 add_action( 'wp_head', 'rocket_lazyload_script', PHP_INT_MAX );
 function rocket_lazyload_script() {
-	if ( ! apply_filters( 'do_rocket_lazyload' ) ) {
+	if ( ! apply_filters( 'do_rocket_lazyload', true ) ) {
 		return;
 	}
 
