@@ -5,14 +5,13 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
  * Add Lazy Load JavaScript in the header
  * No jQuery or other library is required !!
  *
- * @since 2.2 More hook parameters
  * @since 1.3.5 It's possible to exclude LazyLoad process by used do_rocket_lazyload filter
  * @since 1.1.0 This code is insert in head with inline script for more performance
  * @since 1.0
  */
 add_action( 'wp_head', 'rocket_lazyload_script', PHP_INT_MAX );
 function rocket_lazyload_script() {
-	if ( ! apply_filters( 'do_rocket_lazyload', true, 'script', null, null ) ) {
+	if ( ! apply_filters( 'do_rocket_lazyload' ) ) {
 		return;
 	}
 
@@ -22,7 +21,7 @@ function rocket_lazyload_script() {
 /**
  * Replace Gravatar, thumbnails, images in post content and in widget text by LazyLoad
  *
- * @since 2.2 Better regex pattern in a replace_callback + more hook parameters
+ * @since 2.2 Better regex pattern in a replace_callback
  * @since 1.3.5 It's possible to exclude LazyLoad process by used do_rocket_lazyload filter
  * @since 1.2.0 It's possible to not lazy load an image with data-no-lazy attribute
  * @since 1.1.0 Don't lazy-load if the thumbnail has already been run through previously
@@ -40,7 +39,7 @@ function rocket_lazyload_images( $html ) {
 	}
 
 	// Don't LazyLoad if the thumbnail has already been run through previously or stop process with a hook
-	if ( ! apply_filters( 'do_rocket_lazyload', true, 'content', $html, null ) ) {
+	if ( ! apply_filters( 'do_rocket_lazyload', true ) ) {
 		return $html;
 	}
 
@@ -134,7 +133,6 @@ function rocket_convert_smilies( $text ) {
  * Convert one smiley code to the icon graphic file equivalent.
  *
  * @source translate_smiley() in /wp-includes/formattings.php
- * @since 2.2 More hook parameters
  * @since 2.0
  */
 function rocket_translate_smiley( $matches ) {
@@ -160,7 +158,7 @@ function rocket_translate_smiley( $matches ) {
 	$src_url = apply_filters( 'smilies_src', includes_url( "images/smilies/$img" ), $img, site_url() );
 
 	// Don't lazy-load if process is stopped with a hook
-	if ( apply_filters( 'do_rocket_lazyload', true, 'smiley', $src_url, $smiley ) ) {
+	if ( apply_filters( 'do_rocket_lazyload', true ) ) {
 
 		return sprintf( ' <img src="data:image/gif;base64,R0lGODdhAQABAPAAAP///wAAACwAAAAAAQABAEACAkQBADs=" data-lazy-original="%s" alt="%s" class="wp-smiley" /> ', esc_url( $src_url ), esc_attr( $smiley ) );
 
