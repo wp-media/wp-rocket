@@ -1186,12 +1186,6 @@ function rocket_settings_callback( $inputs )
 	}
 
 	/*
-	 * Option : Minification CSS & JS
-	 */
-	$inputs['minify_css'] = isset( $inputs['minify_css'] );
-	$inputs['minify_js']  = isset( $inputs['minify_js'] );
-
-	/*
 	 * Option : Purge delay
 	 */
 	$inputs['purge_cron_interval'] = isset( $inputs['purge_cron_interval'] ) ? (int)$inputs['purge_cron_interval'] : get_rocket_option( 'purge_cron_interval' );
