@@ -203,7 +203,8 @@ function rocket_warning_wp_config_permissions()
 	$config_file = rocket_find_wpconfig_path();
 
 	/** This filter is documented in inc/admin-bar.php */
-	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
+	if ( ! ( 'plugins.php' == $GLOBALS['pagenow'] && isset( $_GET['activate'] ) ) 
+		&& current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
 		&& ( ! is_writable( $config_file ) || ! defined( 'WP_CACHE' ) || ! WP_CACHE )
 	    && rocket_valid_key() ) {
 
@@ -284,7 +285,8 @@ add_action( 'admin_notices', 'rocket_warning_advanced_cache_not_ours' );
 function rocket_warning_advanced_cache_not_ours()
 {
 	/** This filter is documented in inc/admin-bar.php */
-	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
+	if ( ! ( 'plugins.php' == $GLOBALS['pagenow'] && isset( $_GET['activate'] ) ) 
+		&& current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
 		&& ! defined( 'WP_ROCKET_ADVANCED_CACHE' )
 		&& get_rocket_option( 'version' ) == WP_ROCKET_VERSION
 	    && rocket_valid_key()) { ?>
@@ -411,5 +413,29 @@ function rocket_warning_minify_cache_dir_permissions()
 		<?php
 		}
 
+	}
+}
+
+/**
+ * This thankful message is displayed when the site has been added
+ *
+ * @since 2.2
+ */
+add_action( 'admin_notices', 'rocket_thank_you_license' );
+function rocket_thank_you_license()
+{
+	if ( '1' == get_rocket_option( 'license' ) ) {
+		$options = get_option( WP_ROCKET_SLUG );
+		$options['license'] = time();
+		$options['ignore'] = true;
+		update_option( WP_ROCKET_SLUG, $options );
+	?>
+		<div class="updated">
+			<p>
+				<b><?php echo WP_ROCKET_PLUGIN_NAME; ?></b>: <?php _e( 'Thank you. Your license has been validated by our servers for you.', 'rocket' ); ?><br />
+				<?php printf( __( 'Key: <code>%s</code><br>Email: <i>%s</i>', 'rocket' ), get_rocket_option( 'consumer_key' ), get_rocket_option( 'consumer_email' ) ); ?>
+			</p>
+		</div>
+	<?php
 	}
 }

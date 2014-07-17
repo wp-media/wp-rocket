@@ -203,9 +203,9 @@ function set_rocket_wp_cache_define( $turn_it_on )
 	}
 	unset( $line );
 
-	// If the constant does not exist, it is created
+	// If the constant does not exist, create it
 	if ( ! $is_wp_cache_exist ) {
-		array_shift($config_file);
+		array_shift( $config_file );
 		array_unshift( $config_file, "<?php\r\n", $constant);
 	}
 

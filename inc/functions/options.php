@@ -187,10 +187,12 @@ function rocket_check_key( $type = 'transient_1', $data = null )
 		$response = wp_remote_get( WP_ROCKET_WEB_VALID, array( 'timeout'=>30 ) );
 		remove_filter( 'http_headers_useragent', 'rocket_user_agent' );
 
-		$json = json_decode( $response['body'] );
+
+
+		$json = ! is_wp_error( $response ) ? json_decode( $response['body'] ) : false;
 		$rocket_options = array();
 
-		if ( ! is_wp_error( $response ) && $json ) {
+		if ( $json ) {
 
 			$rocket_options['consumer_key'] 	= $json->data->consumer_key;
 			$rocket_options['consumer_email']	= $json->data->consumer_email;
@@ -199,8 +201,7 @@ function rocket_check_key( $type = 'transient_1', $data = null )
 
 				$rocket_options['secret_key'] = $json->data->secret_key;
 				if ( ! get_rocket_option( 'license' ) ) {
-					add_settings_error( 'general', 'settings_updated', rocket_thank_you_license(), 'updated' );
-					$rocket_options['license'] = time();
+					$rocket_options['license'] = '1';
 				}
 
 			} else {

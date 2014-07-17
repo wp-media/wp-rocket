@@ -1406,7 +1406,8 @@ function rocket_settings_callback( $inputs )
 		$inputs['secret_key'] = $checked['secret_key'];
 	}
 
-	if ( rocket_valid_key() && ! empty( $inputs['secret_key'] ) ) {
+	if ( rocket_valid_key() && ! empty( $inputs['secret_key'] ) && ! isset( $inputs['ignore'] ) ) {
+		unset( $inputs['ignore'] );
 		add_settings_error( 'general', 'settings_updated', rocket_warning_logged_users(), 'updated' );
 		add_settings_error( 'general', 'settings_updated', __( 'Settings saved.' ), 'updated' );
 	}

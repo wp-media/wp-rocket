@@ -171,16 +171,3 @@ function rocket_warning_logged_users()
 	return	'</strong><b>' . WP_ROCKET_PLUGIN_NAME . '</b>: ' .
 			__( 'Connected users don\'t have the cached version of the website. We recommend you, to browse your website disconnected.', 'rocket' );
 }
-
-/**
- * This thankful message is displayed when the site has been added
- *
- * @since 2.2 On demand display, no hook
- */
-function rocket_thank_you_license()
-{
-	return 	'</strong><b>' . WP_ROCKET_PLUGIN_NAME . '</b>:
-			' . __( 'Thank you. Your license has been validated by our servers for you.', 'rocket' ) . '
-			<br>
-			' . sprintf( __( 'Key: <code>%s</code><br>Email: <i>%s</i>', 'rocket' ), get_rocket_option( 'consumer_key' ), get_rocket_option( 'consumer_email' ) );
-}
