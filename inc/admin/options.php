@@ -1438,7 +1438,7 @@ function rocket_after_save_options( $oldvalue, $value )
 	$value_diff 	= array_diff_key( $value, $removed );
 
 	// If it's different, clean the domain
-	if ( md5( serialize( $oldvalue_diff ) ) !== md5( serialize( $oldvalue_diff ) ) ) { // !== ant not != because type juggling possible!
+	if ( md5( serialize( $oldvalue_diff ) ) !== md5( serialize( $value_diff ) ) ) {
 		// Check if a plugin translation is activated
 		if ( rocket_has_i18n() ) {
 			// Purge all cache files
