@@ -158,7 +158,7 @@ function rocket_translate_smiley( $matches ) {
 	$src_url = apply_filters( 'smilies_src', includes_url( "images/smilies/$img" ), $img, site_url() );
 
 	// Don't lazy-load if process is stopped with a hook
-	if ( apply_filters( 'do_rocket_lazyload', true ) && ( defined( 'DONOTLAZYLOAD' ) && ! DONOTLAZYLOAD ) ) {
+	 if ( apply_filters( 'do_rocket_lazyload', true ) && ( ! defined( 'DONOTLAZYLOAD' ) || ! DONOTLAZYLOAD ) ) {
 
 		return sprintf( ' <img src="data:image/gif;base64,R0lGODdhAQABAPAAAP///wAAACwAAAAAAQABAEACAkQBADs=" data-lazy-original="%s" alt="%s" class="wp-smiley" /> ', esc_url( $src_url ), esc_attr( $smiley ) );
 
