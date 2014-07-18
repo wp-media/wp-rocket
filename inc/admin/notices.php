@@ -432,7 +432,7 @@ function rocket_thank_you_license()
 	?>
 		<div class="updated">
 			<p>
-				<b><?php echo WP_ROCKET_PLUGIN_NAME; ?></b>: <?php _e( 'Thank you. Your license has been validated by our servers for you.', 'rocket' ); ?><br />
+				<b><?php echo WP_ROCKET_PLUGIN_NAME; ?></b>: <?php _e( 'Thank you. Your license has been successfully validated!', 'rocket' ); ?><br />
 				<?php printf( __( 'Key: <code>%s</code><br>Email: <i>%s</i>', 'rocket' ), get_rocket_option( 'consumer_key' ), get_rocket_option( 'consumer_email' ) ); ?>
 			</p>
 		</div>
