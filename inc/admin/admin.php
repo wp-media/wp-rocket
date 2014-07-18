@@ -13,6 +13,33 @@ function __rocket_settings_action_links( $actions )
     return $actions;
 }
 
+
+/**
+ * Add a link "Renew your licence" when ou can't do it automatically (expired licence but new version available)
+ *
+ * @since 2.2
+ *
+ */
+
+add_action( 'plugin_row_meta', '__rocket_plugin_row_meta', 10, 3 );
+function __rocket_plugin_row_meta( $plugin_meta, $plugin_file, $plugin_data ) {
+
+	if ( 'wp-rocket/wp-rocket.php' == $plugin_file ) {
+
+		$update_plugins = get_site_transient( 'update_plugins' );
+
+		if ( $update_plugins != false && isset( $update_plugins->response[ $plugin_file ] ) && empty( $update_plugins->response[ $plugin_file ]->package ) ) {
+
+			$link =	'<span class="dashicons dashicons-update rocket-dashicons"></span> ' .
+					'<span class="rocket-renew">Renew your licence of WP Rocket to receive access to automatic upgrades and support.</span> ' .
+					'<a href="http://wp-rocket.me" target="_blank" class="rocket-purchase">Purchase now</a>.';
+
+			$plugin_meta = array_merge( (array) $link, $plugin_meta );
+		}
+	}
+
+	return $plugin_meta;
+}
 /**
  * Add a link "Purge this cache" in the post edit area
  *
