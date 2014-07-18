@@ -202,10 +202,10 @@ function rocket_warning_wp_config_permissions()
 {
 	$config_file = rocket_find_wpconfig_path();
 
-	/** This filter is documented in inc/admin-bar.php */
 	if ( ! ( 'plugins.php' == $GLOBALS['pagenow'] && isset( $_GET['activate'] ) ) 
+		/** This filter is documented in inc/admin-bar.php */
 		&& current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
-		&& ( ! is_writable( $config_file ) || ! defined( 'WP_CACHE' ) || ! WP_CACHE )
+		&& ( ! is_writable( $config_file ) && ( ! defined( 'WP_CACHE' ) || ! WP_CACHE ) )
 	    && rocket_valid_key() ) {
 
 		$boxes = get_user_meta( $GLOBALS['current_user']->ID, 'rocket_boxes', true );
