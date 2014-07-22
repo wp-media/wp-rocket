@@ -278,7 +278,7 @@ function rocket_cnames_module()
 							<option value="css" <?php selected( $cnames_zone[$k], 'css' ); ?>>CSS</option>
 						</select>
 					</label>
-					<span class="rkt-module-remove hide-if-no-js"><?php _e( 'Delete' ); ?></span>
+					<span class="dashicons dashicons-no rkt-module-remove hide-if-no-js"></span>
 
 				</p>
 
@@ -328,7 +328,7 @@ function rocket_cnames_module()
 						<option value="css">CSS</option>
 					</select>
 				</label>
-				<span class="rkt-module-remove hide-if-no-js"><?php _e( 'Delete' ); ?></span>
+				<span class="dashicons dashicons-no rkt-module-remove hide-if-no-js"></span>
 
 			</p>
 
