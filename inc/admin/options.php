@@ -176,7 +176,6 @@ function rocket_defered_module()
 	<div id="rkt-drop-deferred" class="rkt-module rkt-module-drop">
 
 		<?php
-
 		$deferred_js_files = get_rocket_option( 'deferred_js_files' );
 		$deferred_js_wait = get_rocket_option( 'deferred_js_wait' );
 
@@ -184,25 +183,20 @@ function rocket_defered_module()
 
 			foreach( $deferred_js_files as $k=>$_url ) {
 
-				$checked = isset( $deferred_js_wait[$k] ) ? checked( $deferred_js_wait[$k], '1', false ) : '';
-                ?>
+				$checked = isset( $deferred_js_wait[$k] ) ? checked( $deferred_js_wait[$k], '1', false ) : ''; ?>
 
+				<p class="rkt-module-drag">
+					<span class="dashicons dashicons-sort rkt-module-move hide-if-no-js"></span>
 
+					<input style="width: 32em" type="text" placeholder="http://" class="deferred_js regular-text" name="wp_rocket_settings[deferred_js_files][<?php echo $k; ?>]" value="<?php echo esc_url( $_url ); ?>" />
 
-			<p class="rkt-module-drag">
+					<label>
+						<input type="checkbox" class="deferred_js" name="wp_rocket_settings[deferred_js_wait][<?php echo $k; ?>]" value="1" <?php echo $checked; ?>/> <?php _e( 'Wait until this file is loaded?', 'rocket' ); ?>
+					</label>
 
-				<span class="dashicons dashicons-sort rkt-module-move hide-if-no-js"></span>
-
-				<input style="width: 32em" type="text" placeholder="http://" class="deferred_js regular-text" name="wp_rocket_settings[deferred_js_files][<?php echo $k; ?>]" value="<?php echo esc_url( $_url ); ?>" />
-
-				<label>
-					<input type="checkbox" class="deferred_js" name="wp_rocket_settings[deferred_js_wait][<?php echo $k; ?>]" value="1" <?php echo $checked; ?>/> <?php _e( 'Wait until this file is loaded?', 'rocket' ); ?>
-				</label>
-
-				<span class="dashicons dashicons-no rkt-module-remove hide-if-no-js"></span>
-
-			</p>
-			<!-- .rkt-module-drag -->
+					<span class="dashicons dashicons-no rkt-module-remove hide-if-no-js"></span>
+				</p>
+				<!-- .rkt-module-drag -->
 
 			<?php
 			}
@@ -212,15 +206,13 @@ function rocket_defered_module()
 			?>
 
 			<p class="rkt-module-drag">
-
-					<div class="dashicons dashicons-sort rkt-move-deferred hide-if-no-js"></div>
+				<span class="dashicons dashicons-sort rkt-module-move hide-if-no-js"></span>
 
 				<input style="width: 32em" type="text" placeholder="http://" class="deferred_js regular-text" name="wp_rocket_settings[deferred_js_files][0]" value="" />
 
 				<label>
 					<input type="checkbox" class="deferred_js" name="wp_rocket_settings[deferred_js_wait][0]" value="1" /> <?php _e( 'Wait until this file is loaded ?', 'rocket' ); ?>
 				</label>
-
 			</p>
 			<!-- .rkt-module-drag -->
 
@@ -234,19 +226,16 @@ function rocket_defered_module()
 	<div class="rkt-module-model hide-if-js">
 
 		<p class="rkt-module-drag">
-
-			<div class="dashicons dashicons-sort rkt-move-deferred hide-if-no-js"></div>
+			<span class="dashicons dashicons-sort rkt-module-move hide-if-no-js"></span>
 
 			<input style="width: 32em" type="text" placeholder="http://" class="deferred_js regular-text" name="wp_rocket_settings[deferred_js_files][]" value="" />
 
 			<label>
 				<input type="checkbox" class="deferred_js" name="wp_rocket_settings[deferred_js_wait][]" value="1" /> <?php _e( 'Wait until this file is loaded?', 'rocket' ); ?>
 			</label>
-			<div class="dashicons dashicons-no rkt-delete-deferred hide-if-no-js "></div>
-
+			<span class="dashicons dashicons-no rkt-module-remove hide-if-no-js"></span>
 		</p>
 		<!-- .rkt-module-drag -->
-
 	</div>
 	<!-- .rkt-model-deferred-->
 
@@ -1184,13 +1173,13 @@ function rocket_settings_callback( $inputs )
 	if ( isset( $_GET['action'] ) && 'purge_cache' == $_GET['action'] ) {
 		return $inputs;
 	}
-	
+
 	/*
 	 * Option : Minification CSS & JS
 	 */
 	$inputs['minify_css'] = ! empty( $inputs['minify_css'] ) ? 1 : 0;
 	$inputs['minify_js']  = ! empty( $inputs['minify_js'] ) ? 1 : 0;
-	
+
 	/*
 	 * Option : Purge delay
 	 */
