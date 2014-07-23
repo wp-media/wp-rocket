@@ -129,7 +129,7 @@ function rocket_init()
 	       require( WP_ROCKET_FRONT_PATH . '/deferred-js.php' );
         }
 
-        if ( get_rocket_option( 'lazyload' ) ) {
+        if ( get_rocket_option( 'lazyload' ) && ! rocket_is_plugin_active( 'rocket-lazy-load/rocket-lazy-load.php' ) ) {
 	       require( WP_ROCKET_FRONT_PATH . '/lazyload.php' );
         }
     }
