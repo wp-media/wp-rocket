@@ -533,7 +533,7 @@ msgid ""
 "It seems that the <code>%s</code> file is not ours. Save the settings, we "
 "will automatically recreate the correct one. If it's still not working, "
 "please delete it and save again."
-msgstr "Il semblerait que le code de <code>%s</code> n'est pas le nôtre. Sauvez les réglages de nouveau, cela va recréer le fichier. Si cela ne fonctionne pas, supprimez le et sauvez de nouveau."
+msgstr "Il semblerait que le code de <code>%s</code> ne soit pas le nôtre. Essayez de sauvegarder les options afin de recréer le fichier. Si cela ne fonctionne pas, supprimez le et sauvegardez de nouveau les options."
 
 #: inc/admin/notices.php:401
 msgid ""
