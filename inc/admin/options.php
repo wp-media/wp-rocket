@@ -1428,14 +1428,8 @@ function rocket_after_save_options( $oldvalue, $value )
 
 	// If it's different, clean the domain
 	if ( md5( serialize( $oldvalue_diff ) ) !== md5( serialize( $value_diff ) ) ) {
-		// Check if a plugin translation is activated
-		if ( rocket_has_i18n() ) {
-			// Purge all cache files
-			rocket_clean_domain_for_all_langs();
-		} else {
-			// Purge all cache files
-			rocket_clean_domain();
-		}
+		// Purge all cache files
+		rocket_clean_domain();
 	}
 
 	// Purge all minify cache files
