@@ -23,11 +23,11 @@ function rocket_bad_deactivations()
 
 				switch( $msg ) {
 					case 'wpconfig' :
-						$errors['wpconfig'] = 	'<p>' . sprintf( __( '<b>%s</b> can not be deactivated because of <code>%s</code>.', 'rocket' ), WP_ROCKET_PLUGIN_NAME, 'WP_CACHE' ) . '<br>' . __( 'This constant is still defined in <code>wp-config.php</code> file and its value must be set to <code>false</code>.', 'rocket' ) . ' ' . sprintf( __( 'Maybe we do not have the write rights on <code>%s</code>.', 'rocket' ), 'wp-config.php' ) . '<br>' . __( 'Please give us rigths or resolve the problem yourself. Then retry deactivation.', 'rocket' ) . '</p>';
+						$errors['wpconfig'] = 	'<p>' . sprintf( __( '<b>%s</b> can not be deactivated because of <code>%s</code>.', 'rocket' ), WP_ROCKET_PLUGIN_NAME, 'WP_CACHE' ) . '<br>' . __( 'This constant is still defined in <code>wp-config.php</code> file and its value must be set to <code>false</code>.', 'rocket' ) . ' ' . sprintf( __( 'Maybe we do not have the writing permissions for <code>%s</code>.', 'rocket' ), 'wp-config.php' ) . '<br>' . __( 'Please give us permissions or resolve the problem yourself. Then retry deactivation.', 'rocket' ) . '</p>';
 						break;
 
 					case 'htaccess' :
-						$errors['htaccess'] = '<p>' . sprintf( __( '<b>%s</b> can not be deactivated because of <code>%s</code>.', 'rocket' ), WP_ROCKET_PLUGIN_NAME, '.htaccess' ) . '<br>' . __( 'This file is not writable and we can not remove these directives.', 'rocket' ) . ' ' . sprintf( __( 'Maybe we do not have the write rights on <code>%s</code>.', 'rocket' ), '.htaccess' ) . '<br>' . __( 'Please give us rigths or resolve the problem yourself. Then retry deactivation.', 'rocket' ) . '</p>';
+						$errors['htaccess'] = '<p>' . sprintf( __( '<b>%s</b> can not be deactivated because of <code>%s</code>.', 'rocket' ), WP_ROCKET_PLUGIN_NAME, '.htaccess' ) . '<br>' . __( 'This file is not writable and we can not remove these directives.', 'rocket' ) . ' ' . sprintf( __( 'Maybe we do not have writing permissions for <code>%s</code>.', 'rocket' ), '.htaccess' ) . '<br>' . __( 'Please give us permissions or resolve the problem yourself. Then retry deactivation.', 'rocket' ) . '</p>';
 						break;
 				}
 

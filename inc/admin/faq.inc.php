@@ -33,7 +33,7 @@
 	<p><?php _e( 'If you have example.com, www.example.com, dev.example.com, demo.example.com, example.com/dev/, example.com/demo/ all these sites depend on the same WP Rocket key.', 'rocket' );?></p>
 	<p><?php _e( 'You will need an additional key for each other different example.com domain name', 'rocket' );?></p>
 
-	<h2><span id="Q3">&#160;</span><?php _e( 'What exactly does WP Rocket?', 'rocket' );?></h2>
+	<h2><span id="Q3">&#160;</span><?php _e( 'What exactly does WP Rocket do?', 'rocket' );?></h2>
 	<p><?php _e( 'WP Rocket is a full cache plugin that comes with many features:', 'rocket' );?></p>
 	<ul>
 		<li><?php _e( 'Caching of all the pages for quick viewing', 'rocket' );?></li>
@@ -83,7 +83,7 @@
 	<p><?php _e( 'These data are indicative and do not necessarily reflect the actual display speed of your website', 'rocket' );?>.</p>
 	<p><?php _e( 'For tests closest to reality load time we recommend using <a href="http://tools.pingdom.com/fpt/" target="_blank">Pingdom Tools</a>.', 'rocket' );?></p>
 
-	<h2><span id="Q9">&#160;</span><?php _e( 'WP Rocket work with default permalinks?', 'rocket' );?></h2>
+	<h2><span id="Q9">&#160;</span><?php _e( 'Does WP Rocket work with default permalinks?', 'rocket' );?></h2>
 	<p><?php _e( 'No.', 'rocket' );?></p>
 	<p><?php _e( 'It\'s necessary to have custom permalinks of the type <code>http://example.com/mon-article/</code> rather than <code>http://example.com/?p=1234</code>.', 'rocket' );?></p>
 
