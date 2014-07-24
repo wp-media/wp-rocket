@@ -2,7 +2,7 @@
 <h1 class="hide-if-no-js"><?php _e( 'FAQ\'s Table of Content', 'rocket' ); ?></h1>
 <ol class="hide-if-no-js">
 	<li><h2><a href="#Q1"><?php _e( 'My key does not work', 'rocket' );?></a></h2></li>
-	<li><h2><a href="#Q2"><?php _e( 'For how many websites my key is valid for?', 'rocket' );?></a></h2></li>
+	<li><h2><a href="#Q2"><?php _e( 'How many sites is my key valid for?', 'rocket' );?></a></h2></li>
 	<li><h2><a href="#Q3"><?php _e( 'What exactly does WP Rocket do?', 'rocket' );?></a></h2></li>
 	<li><h2><a href="#Q4"><?php _e( 'I have turned any of the basic options on, does WP Rocket work?', 'rocket' );?></a></h2></li>
 	<li><h2><a href="#Q5"><?php _e( 'What should I do in case of a problem with WP Rocket that I can\'t solve?', 'rocket' );?></a></h2></li>
@@ -28,7 +28,7 @@
 	<p><?php _e( 'Check the spelling of your website in your profile on the WP Rocket\'s site.', 'rocket' );?></p>
 	<p><?php _e( 'If the spelling is correct, check if the entered website is the same as the one in the WordPress options and not a redirection.', 'rocket' );?></p>
 
-	<h2><span id="Q2">&#160;</span><?php _e( 'For how many sites my key is valid for?', 'rocket' );?></h2>
+	<h2><span id="Q2">&#160;</span><?php _e( 'How many sites is my key valid for?', 'rocket' );?></h2>
 	<p><?php _e( 'A key is valid for 1 domain name. If you have example.com, that makes 1 key.', 'rocket' );?></p>
 	<p><?php _e( 'If you have example.com, www.example.com, dev.example.com, demo.example.com, example.com/dev/, example.com/demo/ all these sites depend on the same WP Rocket key.', 'rocket' );?></p>
 	<p><?php _e( 'You will need an additional key for each other different example.com domain name', 'rocket' );?></p>
@@ -67,7 +67,7 @@
 	<h2><span id="Q7">&#160;</span><?php _e( 'I want to change the URL of my site associated with my license, what should I do?', 'rocket' );?></h2>
 	<p><?php _e( 'You must contact us by email (<a href="mailto:contact@wp-rocket.me">contact@wp-rocket.me</a>) indicating the reason for your change. If accepted, the amendment will be carried out by the WP Rocket team.', 'rocket' );?></p>
 
-	<h2><span id="Q8">&#160;</span><?php _e( 'What tools should I use to measure the performance of my site?', 'rocket' );?></h2>
+	<h2><span id="Q8">&#160;</span><?php _e( 'which tools should I use to measure the performance of my site?', 'rocket' );?></h2>
 	<p><?php _e( 'You can measure the performance of your website using the following tools:', 'rocket' );?></p>
 	<ul>
 		<li><a href="http://tools.pingdom.com/fpt/" target="_blank">Pingdom Tools</a></li>
@@ -87,7 +87,7 @@
 	<p><?php _e( 'No.', 'rocket' );?></p>
 	<p><?php _e( 'It\'s necessary to have custom permalinks of the type <code>http://example.com/mon-article/</code> rather than <code>http://example.com/?p=1234</code>.', 'rocket' );?></p>
 
-	<h2><span id="Q10">&#160;</span><?php _e( 'Which web servers WP Rocket is compatible with?', 'rocket' );?></h2>
+	<h2><span id="Q10">&#160;</span><?php _e( 'Which web servers is WP Rocket compatible with?', 'rocket' );?></h2>
 	<p><?php _e( 'WP Rocket is compatible with <strong>Apache, NGINX, Microsoft IIS et Litepseed</strong> web servers.', 'rocket' );?></p>
 
 	<h2><span id="Q11">&#160;</span><?php _e( 'Reports from PageSpeed and YSlow tells me that the content is not gziped and/or did not expire, what should I do?', 'rocket' );?></h2>
@@ -112,14 +112,14 @@
 	<p><?php _e( 'Yes.', 'rocket' );?></p>
 	<p><?php _e( 'You have even the possibility of empty/preload the cache for a specific language or for all languages at the same time.', 'rocket' );?></p>
 
-	<h2><span id="Q16">&#160;</span><?php _e( 'What is the minification and concatenation of files?', 'rocket' );?></h2>
+	<h2><span id="Q16">&#160;</span><?php _e( 'What are the minification and concatenation of files?', 'rocket' );?></h2>
 	<p><?php _e( 'The minification is the process to remove all unnecessary items in a HTML, CSS or JavaScript file: spaces, comments, etc... This allows to reduce the size of the files. Thus, browsers read files faster.', 'rocket' );?></p>
 	<p><?php _e( 'The concatenation is to consolidate into one, a set of files. This has the effect of reducing the number of HTTP requests.', 'rocket' );?></p>
 
 	<h2><span id="Q17">&#160;</span><?php _e( 'What should I do if WP Rocket distorts my site display?', 'rocket' );?></h2>
 	<p><?php _e( 'There are good chances that the deformation is caused by the minification of HTML, CSS or JavaScript files. To resolve the problem, we recommend watching the following video: <a href="http://www.youtube.com/embed/iziXSvZgxLk" class="fancybox">http://www.youtube.com/embed/iziXSvZgxLk</a>.', 'rocket' );?></p>
 
-	<h2><span id="Q18">&#160;</span><?php _e( 'How often the cache is updated?', 'rocket' );?></h2>
+	<h2><span id="Q18">&#160;</span><?php _e( 'How often is the cache updated?', 'rocket' );?></h2>
 	<p><?php _e( 'The cache is automatically refreshed at every update of your content (add/edit/delete of an article, publication of a comment, etc..).', 'rocket' );?></p>
 	<p><?php _e( 'In the basic options, you can also specify a period of automatic cleaning of the cache.', 'rocket' );?></p>
 
