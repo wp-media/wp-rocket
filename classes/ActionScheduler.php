@@ -106,7 +106,7 @@ abstract class ActionScheduler {
 		add_action( 'init', array( $runner, 'init' ), 1, 0 );
 
 		$admin_view = self::admin_view();
-		add_action( 'init', array( $admin_view, 'init' ), 9, 0 ); // run before $store::init()
+		add_action( 'init', array( $admin_view, 'init' ), 0, 0 ); // run before $store::init()
 
 		require_once( self::plugin_path('functions.php') );
 	}
