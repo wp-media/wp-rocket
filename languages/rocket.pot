@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 2.2\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2014-07-24 20:57:41+00:00\n"
+"POT-Creation-Date: 2014-07-25 16:58:51+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -261,7 +261,7 @@ msgid ""
 msgstr ""
 
 #: inc/admin/faq.inc.php:70
-msgid "which tools should I use to measure the performance of my site?"
+msgid "Which tools should I use to measure the performance of my site?"
 msgstr ""
 
 #: inc/admin/faq.inc.php:71

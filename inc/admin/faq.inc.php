@@ -67,7 +67,7 @@
 	<h2><span id="Q7">&#160;</span><?php _e( 'I want to change the URL of my site associated with my license, what should I do?', 'rocket' );?></h2>
 	<p><?php _e( 'You must contact us by email (<a href="mailto:contact@wp-rocket.me">contact@wp-rocket.me</a>) indicating the reason for your change. If accepted, the amendment will be carried out by the WP Rocket team.', 'rocket' );?></p>
 
-	<h2><span id="Q8">&#160;</span><?php _e( 'which tools should I use to measure the performance of my site?', 'rocket' );?></h2>
+	<h2><span id="Q8">&#160;</span><?php _e( 'Which tools should I use to measure the performance of my site?', 'rocket' );?></h2>
 	<p><?php _e( 'You can measure the performance of your website using the following tools:', 'rocket' );?></p>
 	<ul>
 		<li><a href="http://tools.pingdom.com/fpt/" target="_blank">Pingdom Tools</a></li>
