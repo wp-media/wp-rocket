@@ -504,7 +504,7 @@ function rocket_display_options()
 				'description'  => __( 'Minification removes any spaces and comments present in the CSS and JavaScript files.', 'rocket' ) . '<br/>' .
 									  __( 'This mechanism reduces the weight of each file and allows a faster reading of browsers and search engines.', 'rocket' ) . '<br/>' .
 									  __( 'Concatenation combines all CSS and JavaScript files.', 'rocket' ) . '<br/>' .
-									  __( 'This reduces the number of HTTP requests and improves the loading time.', 'rocket' )
+									  __( 'This reduces the number of HTTP requests mechanism and improves the loading time.', 'rocket' )
 			),
 			array(
 				'type'			=> 'helper_warning',

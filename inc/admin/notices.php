@@ -185,7 +185,7 @@ function rocket_warning_using_permalinks()
 	) { ?>
 
 		<div class="error">
-			<p><?php printf( __( '<b>%s</b>: A custom permalink structure is required to work properly. Please go to <a href="%s">Permalink</a> to configure them.', 'rocket'), WP_ROCKET_PLUGIN_NAME, admin_url( 'options-permalink.php' ) ); ?></p>
+			<p><?php printf( __( '<b>%s</b>: A custom permalink structure is required for the plugin to work properly. Please go to <a href="%s">Permalink</a> to configure it.', 'rocket'), WP_ROCKET_PLUGIN_NAME, admin_url( 'options-permalink.php' ) ); ?></p>
 		</div>
 
 	<?php
@@ -218,9 +218,9 @@ function rocket_warning_wp_config_permissions()
 				<?php
 					printf( __( '<b>%s</b>: It seems we don\'t have <a href="%s" target="_blank">writing permissions</a> on <code>wp-config.php</code> file or the value of the constant <code>WP_CACHE</code> is set to <code>false</code>', 'rocket'), WP_ROCKET_PLUGIN_NAME, "http://codex.wordpress.org/Changing_File_Permissions" );
 					echo '<br>';
-					_e( 'To fix this you have to give write rights on <code>wp-config.php</code> and then save again this settings.', 'rocket' );
+					_e( 'To fix this you have to set writing permissions for <code>wp-config.php</code> and then save these settings/this setting again.', 'rocket' );
 					echo '<br>';
-					_e( 'If the message persists, you have to put this following code in your <code>wp-config.php</code> file so that it works correctly. Click on the field and press Ctrl-A to select all.', 'rocket' );
+					_e( 'If the message persists, you have to put the following code in your <code>wp-config.php</code> file so that it works correctly. Click on the field and press Ctrl-A to select all.', 'rocket' );
 				?>
 				</p>
 
