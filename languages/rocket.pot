@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 2.2\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2014-07-25 16:58:51+00:00\n"
+"POT-Creation-Date: 2014-07-26 21:01:14+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -224,7 +224,7 @@ msgid ""
 msgstr ""
 
 #: inc/admin/faq.inc.php:56
-msgid "Decrease of the bandwidth with our GZIP compression"
+msgid "Decrease bandwidth usage with our GZIP compression"
 msgstr ""
 
 #: inc/admin/faq.inc.php:61
@@ -324,8 +324,8 @@ msgstr ""
 
 #: inc/admin/faq.inc.php:95
 msgid ""
-"If this is not conclusive, this means that the <code>mod_expire</code> "
-"and/or <code>mod_deflate</code> is not enabled on your server."
+"If this is not conclusive, it means that <code>mod_expire</code> and/or "
+"<code>mod_deflate</code> are not enabled on your server."
 msgstr ""
 
 #: inc/admin/faq.inc.php:99
@@ -367,14 +367,14 @@ msgstr ""
 
 #: inc/admin/faq.inc.php:116
 msgid ""
-"The minification is the process to remove all unnecessary items in a HTML, "
-"CSS or JavaScript file: spaces, comments, etc... This allows to reduce the "
-"size of the files. Thus, browsers read files faster."
+"Minification is the process of removing all unnecessary characters in HTML, "
+"CSS or JavaScript files: spaces, comments, etc... This reduces the size of "
+"the files. Thus, browsers read these files faster."
 msgstr ""
 
 #: inc/admin/faq.inc.php:117
 msgid ""
-"The concatenation is to consolidate into one, a set of files. This has the "
+"The concatenation is to consolidate a set of files into one. This has the "
 "effect of reducing the number of HTTP requests."
 msgstr ""
 
@@ -415,14 +415,13 @@ msgid ""
 msgstr ""
 
 #: inc/admin/faq.inc.php:129
-msgid "How does work the robots of preloading files cache?"
+msgid "How do the robots preload files from the cache?"
 msgstr ""
 
 #: inc/admin/faq.inc.php:130
 msgid ""
-"To cache a page, it must be a first visitor. To avoid that a first visitor "
-"to do so, we have developed two robots (in python) that crawl the pages of "
-"your website."
+"A page is only cached on its first visit. To bypass this, we have developed "
+"two robots (in python) that crawl the pages of your website."
 msgstr ""
 
 #: inc/admin/faq.inc.php:131
@@ -489,8 +488,8 @@ msgstr ""
 
 #: inc/admin/notices.php:188
 msgid ""
-"<b>%s</b>: A custom permalink structure is required to work properly. "
-"Please go to <a href=\"%s\">Permalink</a> to configure them."
+"<b>%s</b>: A custom permalink structure is required for the plugin to work "
+"properly. Please go to <a href=\"%s\">Permalink</a> to configure it."
 msgstr ""
 
 #: inc/admin/notices.php:219
@@ -502,13 +501,13 @@ msgstr ""
 
 #: inc/admin/notices.php:221
 msgid ""
-"To fix this you have to give write rights on <code>wp-config.php</code> and "
-"then save again this settings."
+"To fix this you have to set writing permissions for "
+"<code>wp-config.php</code> and then save these settings/this setting again."
 msgstr ""
 
 #: inc/admin/notices.php:223
 msgid ""
-"If the message persists, you have to put this following code in your "
+"If the message persists, you have to put the following code in your "
 "<code>wp-config.php</code> file so that it works correctly. Click on the "
 "field and press Ctrl-A to select all."
 msgstr ""
@@ -667,7 +666,7 @@ msgstr ""
 msgid "LazyLoad displays images on a page only when they are visible to the user."
 msgstr ""
 
-#: inc/admin/options.php:472
+#: inc/admin/options.php:472 inc/admin/options.php:507
 msgid ""
 "This reduces the number of HTTP requests mechanism and improves the loading "
 "time."
@@ -705,10 +704,6 @@ msgstr ""
 
 #: inc/admin/options.php:506
 msgid "Concatenation combines all CSS and JavaScript files."
-msgstr ""
-
-#: inc/admin/options.php:507
-msgid "This reduces the number of HTTP requests and improves the loading time."
 msgstr ""
 
 #: inc/admin/options.php:512
@@ -1137,8 +1132,8 @@ msgstr ""
 
 #: inc/functions/admin.php:13
 msgid ""
-"To finish the install and take advantage of high performance provided by "
-"our plugin, thank you to <a href=\"%s\">Enter you API key</a>."
+"Last step before enjoying the high performances of our plugin, please <a "
+"href=\"%s\">Enter you API key</a> here."
 msgstr ""
 
 #: inc/functions/admin.php:172
