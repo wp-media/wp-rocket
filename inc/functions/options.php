@@ -175,13 +175,6 @@ function rocket_check_key( $type = 'transient_1', $data = null )
 		|| ( 'transient_30' == $type && ! get_transient( 'rocket_check_licence_30' ) )
 		|| 'live' == $type ) {
 
-		if ( 'live' != $type ) {
-			if ( 'transient_1' == $type ) {
-				set_transient( 'rocket_check_licence_1', true, DAY_IN_SECONDS );
-			} elseif ( 'transient_30' == $type ) {
-				set_transient( 'rocket_check_licence_30', true, DAY_IN_SECONDS*30 );
-			}
-		}
 
 		add_filter( 'http_headers_useragent', 'rocket_user_agent' );
 		$response = wp_remote_get( WP_ROCKET_WEB_VALID, array( 'timeout'=>30 ) );
@@ -202,6 +195,14 @@ function rocket_check_key( $type = 'transient_1', $data = null )
 				$rocket_options['secret_key'] = $json->data->secret_key;
 				if ( ! get_rocket_option( 'license' ) ) {
 					$rocket_options['license'] = '1';
+				}
+				
+				if ( 'live' != $type ) {
+					if ( 'transient_1' == $type ) {
+						set_transient( 'rocket_check_licence_1', true, DAY_IN_SECONDS );
+					} elseif ( 'transient_30' == $type ) {
+						set_transient( 'rocket_check_licence_30', true, DAY_IN_SECONDS*30 );
+					}
 				}
 
 			} else {
