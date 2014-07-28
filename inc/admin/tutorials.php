@@ -9,7 +9,7 @@
 <p><a href="http://www.youtube.com/embed/iziXSvZgxLk?autoplay=1" class="button-primary fancybox"><?php _e( 'Watch the video', 'rocket' ); ?></a></p>
 
 <h2><?php _e( 'Preloading DNS queries', 'rocket' ); ?></h2>
-<p><?php _e( 'This video helps to understand easily the advanced option of "Preloading DNS queries" and the use of the filter <code>rocket_dns_prefetch</code>.', 'rocket' ); ?></p>
+<p><?php _e( 'This video helps to easily understand the advanced option of "Preloading DNS queries" and the use of the filter <code>rocket_dns_prefetch</code>.', 'rocket' ); ?></p>
 <p><a href="http://www.youtube.com/embed/ElJCtUidLwc?autoplay=1" class="button-primary fancybox"><?php _e( 'Watch the video', 'rocket' ); ?></a></p>
 
 <h2><?php _e( 'How to use the White Label functionnality?', 'rocket' ); ?></h2>

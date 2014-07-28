@@ -1035,7 +1035,7 @@ function rocket_display_options()
 		'tutorials',
 		'rocket_display_tutorials',
 		array(
-			'description'	=> __( 'This video helps to understand easily the advanced option of "Preloading DNS queries" and the use of the filter <code>rocket_dns_prefetch</code>.', 'rocket' ),
+			'description'	=> __( 'This video helps to easily understand the advanced option of "Preloading DNS queries" and the use of the filter <code>rocket_dns_prefetch</code>.', 'rocket' ),
 			'url'			=> 'http://www.youtube.com/embed/9jDcg2f-9yM',
 			'name'			=> 'tuto_preload_dns_queries',
 		)
