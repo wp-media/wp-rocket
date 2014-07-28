@@ -1,7 +1,6 @@
 <?php defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' ); ?>
 <h1 class="hide-if-no-js"><?php _e( 'FAQ\'s Table of Content', 'rocket' ); ?></h1>
 <ol class="hide-if-no-js">
-	<li><h2><a href="#Q1"><?php _e( 'My key does not work', 'rocket' );?></a></h2></li>
 	<li><h2><a href="#Q2"><?php _e( 'How many sites is my key valid for?', 'rocket' );?></a></h2></li>
 	<li><h2><a href="#Q3"><?php _e( 'What exactly does WP Rocket do?', 'rocket' );?></a></h2></li>
 	<li><h2><a href="#Q4"><?php _e( 'I have turned any of the basic options on, does WP Rocket work?', 'rocket' );?></a></h2></li>
@@ -24,10 +23,6 @@
 </ol>
 <hr>
 <div id="insidefaq">
-	<h2><span id="Q1">&#160;</span><?php _e( 'My key does not work', 'rocket' );?></h2>
-	<p><?php _e( 'Check the spelling of your website in your profile on the WP Rocket\'s site.', 'rocket' );?></p>
-	<p><?php _e( 'If the spelling is correct, check if the entered website is the same as the one in the WordPress options and not a redirection.', 'rocket' );?></p>
-
 	<h2><span id="Q2">&#160;</span><?php _e( 'How many sites is my key valid for?', 'rocket' );?></h2>
 	<p><?php _e( 'A key is valid for 1 domain name. If you have example.com, that makes 1 key.', 'rocket' );?></p>
 	<p><?php _e( 'If you have example.com, www.example.com, dev.example.com, demo.example.com, example.com/dev/, example.com/demo/ all these sites depend on the same WP Rocket key.', 'rocket' );?></p>
