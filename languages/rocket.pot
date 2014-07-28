@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 2.2\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2014-07-26 21:01:14+00:00\n"
+"POT-Creation-Date: 2014-07-28 21:03:08+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -50,188 +50,174 @@ msgstr ""
 msgid "FAQ's Table of Content"
 msgstr ""
 
-#: inc/admin/faq.inc.php:4 inc/admin/faq.inc.php:27
-msgid "My key does not work"
-msgstr ""
-
-#: inc/admin/faq.inc.php:5 inc/admin/faq.inc.php:31
+#: inc/admin/faq.inc.php:4 inc/admin/faq.inc.php:26
 msgid "How many sites is my key valid for?"
 msgstr ""
 
-#: inc/admin/faq.inc.php:6 inc/admin/faq.inc.php:36
+#: inc/admin/faq.inc.php:5 inc/admin/faq.inc.php:31
 msgid "What exactly does WP Rocket do?"
 msgstr ""
 
-#: inc/admin/faq.inc.php:7 inc/admin/faq.inc.php:50
+#: inc/admin/faq.inc.php:6 inc/admin/faq.inc.php:45
 msgid "I have turned any of the basic options on, does WP Rocket work?"
 msgstr ""
 
-#: inc/admin/faq.inc.php:8
+#: inc/admin/faq.inc.php:7
 msgid "What should I do in case of a problem with WP Rocket that I can't solve?"
 msgstr ""
 
-#: inc/admin/faq.inc.php:9 inc/admin/faq.inc.php:64
+#: inc/admin/faq.inc.php:8 inc/admin/faq.inc.php:59
 msgid "My license has expired, what should I do?"
 msgstr ""
 
-#: inc/admin/faq.inc.php:10
+#: inc/admin/faq.inc.php:9
 msgid ""
 "I want to change the URL of my website associated with my license, what "
 "should I do?"
 msgstr ""
 
-#: inc/admin/faq.inc.php:11
+#: inc/admin/faq.inc.php:10
 msgid "What tools should I use to measure the performance of my website?"
 msgstr ""
 
-#: inc/admin/faq.inc.php:12 inc/admin/faq.inc.php:86
+#: inc/admin/faq.inc.php:11 inc/admin/faq.inc.php:81
 msgid "Does WP Rocket work with default permalinks?"
 msgstr ""
 
-#: inc/admin/faq.inc.php:13
+#: inc/admin/faq.inc.php:12
 msgid "Which web servers WP Rocket is compatible with?"
 msgstr ""
 
-#: inc/admin/faq.inc.php:14 inc/admin/faq.inc.php:93
+#: inc/admin/faq.inc.php:13 inc/admin/faq.inc.php:88
 msgid ""
 "Reports from PageSpeed and YSlow tells me that the content is not gziped "
 "and/or did not expire, what should I do?"
 msgstr ""
 
-#: inc/admin/faq.inc.php:15 inc/admin/faq.inc.php:97
+#: inc/admin/faq.inc.php:14 inc/admin/faq.inc.php:92
 msgid ""
 "Is WP Rocket compatible with others cache plugins like WP Super Cache or W3 "
 "Total Cache?"
 msgstr ""
 
-#: inc/admin/faq.inc.php:16 inc/admin/faq.inc.php:101
+#: inc/admin/faq.inc.php:15 inc/admin/faq.inc.php:96
 msgid ""
 "Is WP Rocket compatible with WP Touch, WordPress Mobile Pack and WP Mobile "
 "Detector?"
 msgstr ""
 
-#: inc/admin/faq.inc.php:17 inc/admin/faq.inc.php:105
+#: inc/admin/faq.inc.php:16 inc/admin/faq.inc.php:100
 msgid "Is WP Rocket compatible with WooCommerce?"
 msgstr ""
 
-#: inc/admin/faq.inc.php:18 inc/admin/faq.inc.php:111
+#: inc/admin/faq.inc.php:17 inc/admin/faq.inc.php:106
 msgid "Is WP Rocket compatible with WPML or qTranslate?"
 msgstr ""
 
-#: inc/admin/faq.inc.php:19
+#: inc/admin/faq.inc.php:18
 msgid "What is the minification and concatenation of files?"
 msgstr ""
 
-#: inc/admin/faq.inc.php:20
+#: inc/admin/faq.inc.php:19
 msgid "What should I do if WP Rocket distorts my website display?"
 msgstr ""
 
-#: inc/admin/faq.inc.php:21
+#: inc/admin/faq.inc.php:20
 msgid "How often the cache is updated?"
 msgstr ""
 
-#: inc/admin/faq.inc.php:22 inc/admin/faq.inc.php:126
+#: inc/admin/faq.inc.php:21 inc/admin/faq.inc.php:121
 msgid "How not to cache a particular page?"
 msgstr ""
 
-#: inc/admin/faq.inc.php:23
+#: inc/admin/faq.inc.php:22
 msgid "How does the robots of preloading files cache work?"
 msgstr ""
 
-#: inc/admin/faq.inc.php:28
-msgid "Check the spelling of your website in your profile on the WP Rocket's site."
-msgstr ""
-
-#: inc/admin/faq.inc.php:29
-msgid ""
-"If the spelling is correct, check if the entered website is the same as the "
-"one in the WordPress options and not a redirection."
-msgstr ""
-
-#: inc/admin/faq.inc.php:32
+#: inc/admin/faq.inc.php:27
 msgid "A key is valid for 1 domain name. If you have example.com, that makes 1 key."
 msgstr ""
 
-#: inc/admin/faq.inc.php:33
+#: inc/admin/faq.inc.php:28
 msgid ""
 "If you have example.com, www.example.com, dev.example.com, "
 "demo.example.com, example.com/dev/, example.com/demo/ all these sites "
 "depend on the same WP Rocket key."
 msgstr ""
 
-#: inc/admin/faq.inc.php:34
+#: inc/admin/faq.inc.php:29
 msgid ""
 "You will need an additional key for each other different example.com domain "
 "name"
 msgstr ""
 
-#: inc/admin/faq.inc.php:37
+#: inc/admin/faq.inc.php:32
 msgid "WP Rocket is a full cache plugin that comes with many features:"
 msgstr ""
 
-#: inc/admin/faq.inc.php:39 inc/admin/faq.inc.php:55
+#: inc/admin/faq.inc.php:34 inc/admin/faq.inc.php:50
 msgid "Caching of all the pages for quick viewing"
 msgstr ""
 
-#: inc/admin/faq.inc.php:40
+#: inc/admin/faq.inc.php:35
 msgid "Preloading the cache of files using 2 bots in Python"
 msgstr ""
 
-#: inc/admin/faq.inc.php:41
+#: inc/admin/faq.inc.php:36
 msgid "Reduction of numbers of HTTP requests to reduce the load time"
 msgstr ""
 
-#: inc/admin/faq.inc.php:42
+#: inc/admin/faq.inc.php:37
 msgid "Decrease of the bandwidth with GZIP compression"
 msgstr ""
 
-#: inc/admin/faq.inc.php:43 inc/admin/faq.inc.php:57
+#: inc/admin/faq.inc.php:38 inc/admin/faq.inc.php:52
 msgid "Management of the headers (expires, etags...)"
 msgstr ""
 
-#: inc/admin/faq.inc.php:44
+#: inc/admin/faq.inc.php:39
 msgid "Minification and concatenation of the JS and CSS files"
 msgstr ""
 
-#: inc/admin/faq.inc.php:45
+#: inc/admin/faq.inc.php:40
 msgid "Loading delay of images (LazyLoad)"
 msgstr ""
 
-#: inc/admin/faq.inc.php:46
+#: inc/admin/faq.inc.php:41
 msgid "Loading deferred of JavaScript files"
 msgstr ""
 
-#: inc/admin/faq.inc.php:47 inc/admin/faq.inc.php:58
+#: inc/admin/faq.inc.php:42 inc/admin/faq.inc.php:53
 msgid "Images Optimisation"
 msgstr ""
 
-#: inc/admin/faq.inc.php:51 inc/admin/faq.inc.php:102 inc/admin/faq.inc.php:106
-#: inc/admin/faq.inc.php:112
+#: inc/admin/faq.inc.php:46 inc/admin/faq.inc.php:97 inc/admin/faq.inc.php:101
+#: inc/admin/faq.inc.php:107
 msgid "Yes."
 msgstr ""
 
-#: inc/admin/faq.inc.php:52
+#: inc/admin/faq.inc.php:47
 msgid ""
 "The basic options are additional optimizations that could be described as "
 "bonuses. These options are not essential to improve the loading time of "
 "your website."
 msgstr ""
 
-#: inc/admin/faq.inc.php:53
+#: inc/admin/faq.inc.php:48
 msgid ""
 "Whatever is your WP Rocket configuration, the following features will be "
 "still active:"
 msgstr ""
 
-#: inc/admin/faq.inc.php:56
+#: inc/admin/faq.inc.php:51
 msgid "Decrease bandwidth usage with our GZIP compression"
 msgstr ""
 
-#: inc/admin/faq.inc.php:61
+#: inc/admin/faq.inc.php:56
 msgid "What should I do in case of problem with WP Rocket that I can't solve?"
 msgstr ""
 
-#: inc/admin/faq.inc.php:62
+#: inc/admin/faq.inc.php:57
 msgid ""
 "If none of the answers from our FAQ give an answer to your problem, you can "
 "let us know about your problem on our <a "
@@ -239,20 +225,20 @@ msgid ""
 "will answer you as soon as possible."
 msgstr ""
 
-#: inc/admin/faq.inc.php:65
+#: inc/admin/faq.inc.php:60
 msgid ""
 "Don't panic, WP Rocket will continue to operate without a problem. You will "
 "receive an email telling you that your license will soon expire. You will "
 "find a renewal link which will be active even after the expiration."
 msgstr ""
 
-#: inc/admin/faq.inc.php:67
+#: inc/admin/faq.inc.php:62
 msgid ""
 "I want to change the URL of my site associated with my license, what should "
 "I do?"
 msgstr ""
 
-#: inc/admin/faq.inc.php:68
+#: inc/admin/faq.inc.php:63
 msgid ""
 "You must contact us by email (<a "
 "href=\"mailto:contact@wp-rocket.me\">contact@wp-rocket.me</a>) indicating "
@@ -260,60 +246,60 @@ msgid ""
 "by the WP Rocket team."
 msgstr ""
 
-#: inc/admin/faq.inc.php:70
+#: inc/admin/faq.inc.php:65
 msgid "Which tools should I use to measure the performance of my site?"
 msgstr ""
 
-#: inc/admin/faq.inc.php:71
+#: inc/admin/faq.inc.php:66
 msgid "You can measure the performance of your website using the following tools:"
 msgstr ""
 
-#: inc/admin/faq.inc.php:78
+#: inc/admin/faq.inc.php:73
 msgid "These tools give you two indications:"
 msgstr ""
 
-#: inc/admin/faq.inc.php:80
+#: inc/admin/faq.inc.php:75
 msgid "a global note of good practices to apply"
 msgstr ""
 
-#: inc/admin/faq.inc.php:81
+#: inc/admin/faq.inc.php:76
 msgid "a loading time"
 msgstr ""
 
-#: inc/admin/faq.inc.php:83
+#: inc/admin/faq.inc.php:78
 msgid ""
 "These data are indicative and do not necessarily reflect the actual display "
 "speed of your website"
 msgstr ""
 
-#: inc/admin/faq.inc.php:84
+#: inc/admin/faq.inc.php:79
 msgid ""
 "For tests closest to reality load time we recommend using <a "
 "href=\"http://tools.pingdom.com/fpt/\" target=\"_blank\">Pingdom Tools</a>."
 msgstr ""
 
-#: inc/admin/faq.inc.php:87 inc/admin/faq.inc.php:98
+#: inc/admin/faq.inc.php:82 inc/admin/faq.inc.php:93
 msgid "No."
 msgstr ""
 
-#: inc/admin/faq.inc.php:88
+#: inc/admin/faq.inc.php:83
 msgid ""
 "It's necessary to have custom permalinks of the type "
 "<code>http://example.com/mon-article/</code> rather than "
 "<code>http://example.com/?p=1234</code>."
 msgstr ""
 
-#: inc/admin/faq.inc.php:90
+#: inc/admin/faq.inc.php:85
 msgid "Which web servers is WP Rocket compatible with?"
 msgstr ""
 
-#: inc/admin/faq.inc.php:91
+#: inc/admin/faq.inc.php:86
 msgid ""
 "WP Rocket is compatible with <strong>Apache, NGINX, Microsoft IIS et "
 "Litepseed</strong> web servers."
 msgstr ""
 
-#: inc/admin/faq.inc.php:94
+#: inc/admin/faq.inc.php:89
 msgid ""
 "WP Rocket automatically adds good rules timeouts and gzip for static files. "
 "If they are not applied, it is possible that there is a plugin conflict "
@@ -322,67 +308,67 @@ msgid ""
 "except WP Rocket and retest."
 msgstr ""
 
-#: inc/admin/faq.inc.php:95
+#: inc/admin/faq.inc.php:90
 msgid ""
 "If this is not conclusive, it means that <code>mod_expire</code> and/or "
 "<code>mod_deflate</code> are not enabled on your server."
 msgstr ""
 
-#: inc/admin/faq.inc.php:99
+#: inc/admin/faq.inc.php:94
 msgid ""
 "It's imperative to <strong>remove all other optimization plugins</strong> "
 "(cache, minification, LazyLoad) PRIOR to the activation of WP Rocket."
 msgstr ""
 
-#: inc/admin/faq.inc.php:103
+#: inc/admin/faq.inc.php:98
 msgid ""
 "On the other hand, in the basic options, you must uncheck the <code>enable "
 "caching for mobile devices</code>."
 msgstr ""
 
-#: inc/admin/faq.inc.php:107
+#: inc/admin/faq.inc.php:102
 msgid ""
 "However, you should exclude cart and checkout pages from caching. This is "
 "done from the advanced option <code>Never to cache pages</code> by adding "
 "the following values:"
 msgstr ""
 
-#: inc/admin/faq.inc.php:108
+#: inc/admin/faq.inc.php:103
 msgid "/cart/"
 msgstr ""
 
-#: inc/admin/faq.inc.php:109
+#: inc/admin/faq.inc.php:104
 msgid "/checkout/(.*)"
 msgstr ""
 
-#: inc/admin/faq.inc.php:113
+#: inc/admin/faq.inc.php:108
 msgid ""
 "You have even the possibility of empty/preload the cache for a specific "
 "language or for all languages at the same time."
 msgstr ""
 
-#: inc/admin/faq.inc.php:115
+#: inc/admin/faq.inc.php:110
 msgid "What are the minification and concatenation of files?"
 msgstr ""
 
-#: inc/admin/faq.inc.php:116
+#: inc/admin/faq.inc.php:111
 msgid ""
 "Minification is the process of removing all unnecessary characters in HTML, "
 "CSS or JavaScript files: spaces, comments, etc... This reduces the size of "
 "the files. Thus, browsers read these files faster."
 msgstr ""
 
-#: inc/admin/faq.inc.php:117
+#: inc/admin/faq.inc.php:112
 msgid ""
 "The concatenation is to consolidate a set of files into one. This has the "
 "effect of reducing the number of HTTP requests."
 msgstr ""
 
-#: inc/admin/faq.inc.php:119
+#: inc/admin/faq.inc.php:114
 msgid "What should I do if WP Rocket distorts my site display?"
 msgstr ""
 
-#: inc/admin/faq.inc.php:120
+#: inc/admin/faq.inc.php:115
 msgid ""
 "There are good chances that the deformation is caused by the minification "
 "of HTML, CSS or JavaScript files. To resolve the problem, we recommend "
@@ -391,47 +377,47 @@ msgid ""
 "class=\"fancybox\">http://www.youtube.com/embed/iziXSvZgxLk</a>."
 msgstr ""
 
-#: inc/admin/faq.inc.php:122
+#: inc/admin/faq.inc.php:117
 msgid "How often is the cache updated?"
 msgstr ""
 
-#: inc/admin/faq.inc.php:123
+#: inc/admin/faq.inc.php:118
 msgid ""
 "The cache is automatically refreshed at every update of your content "
 "(add/edit/delete of an article, publication of a comment, etc..)."
 msgstr ""
 
-#: inc/admin/faq.inc.php:124
+#: inc/admin/faq.inc.php:119
 msgid ""
 "In the basic options, you can also specify a period of automatic cleaning "
 "of the cache."
 msgstr ""
 
-#: inc/admin/faq.inc.php:127
+#: inc/admin/faq.inc.php:122
 msgid ""
 "In advanced options, it's possible to specify URLs to not cache. For this, "
 "you must add in the input field <code>Should never be cached pages</code> "
 "the URLs to exclude."
 msgstr ""
 
-#: inc/admin/faq.inc.php:129
+#: inc/admin/faq.inc.php:124
 msgid "How do the robots preload files from the cache?"
 msgstr ""
 
-#: inc/admin/faq.inc.php:130
+#: inc/admin/faq.inc.php:125
 msgid ""
 "A page is only cached on its first visit. To bypass this, we have developed "
 "two robots (in python) that crawl the pages of your website."
 msgstr ""
 
-#: inc/admin/faq.inc.php:131
+#: inc/admin/faq.inc.php:126
 msgid ""
 "The first visits your site when using the button \"Preload the cache\". The "
 "second will automatically visit your site as soon as you are going to "
 "create/edit/delete an article."
 msgstr ""
 
-#: inc/admin/faq.inc.php:132
+#: inc/admin/faq.inc.php:127
 msgid ""
 "For more information, please watch this video: <a "
 "href=\"http://www.youtube.com/embed/9jDcg2f-9yM\" "
@@ -1020,7 +1006,7 @@ msgstr ""
 
 #: inc/admin/options.php:1038 inc/admin/tutorials.php:12
 msgid ""
-"This video helps to understand easily the advanced option of \"Preloading "
+"This video helps to easily understand the advanced option of \"Preloading "
 "DNS queries\" and the use of the filter <code>rocket_dns_prefetch</code>."
 msgstr ""
 
@@ -1142,19 +1128,19 @@ msgid ""
 "you, to browse your website disconnected."
 msgstr ""
 
-#: inc/functions/options.php:209
+#: inc/functions/options.php:210
 msgid "Your license is not valid."
 msgstr ""
 
-#: inc/functions/options.php:210
+#: inc/functions/options.php:211
 msgid "You cannot add more websites. Upgrade your account."
 msgstr ""
 
-#: inc/functions/options.php:211
+#: inc/functions/options.php:212
 msgid "This website is not allowed."
 msgstr ""
 
-#: inc/functions/options.php:212
+#: inc/functions/options.php:213
 msgid "This license key is not accepted."
 msgstr ""
 
