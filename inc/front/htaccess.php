@@ -430,6 +430,11 @@ function get_rocket_htaccess_etag()
  * @return string $rules Rules that will be printed
  */
 function get_rocket_htaccess_skip_404() {
+	// To prevent conflicts in multsite configuration
+	if ( is_multisite() ) {
+		return;
+	}
+	
 	$rules  = '# Skip 404 error handling by WordPress for static files' . PHP_EOL;
 	$rules .= '<IfModule mod_rewrite.c>' . PHP_EOL;
 	$rules .= 'RewriteEngine On' . PHP_EOL;
