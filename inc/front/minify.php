@@ -198,6 +198,7 @@ function rocket_minify_css( $buffer )
 			$cnames_host = array();
 			if ( $cnames = get_rocket_cdn_cnames( array( 'all', 'css_and_js', 'css' ) ) ) {
 				foreach ( $cnames as $cname ) {
+					$cname = rocket_add_url_protocol( $cname );
 					$cnames_host[] = parse_url( $cname, PHP_URL_HOST );
 				}
 			}
@@ -213,7 +214,7 @@ function rocket_minify_css( $buffer )
 					$excluded_tag = true;
 				}
 
-			// If it is an internal file without host
+			// If it's an internal file without host
 			} else if( ! isset( $css_url['host'] ) && strpos( $css_url['path'], $wp_content_dirname ) ) {
 
 				// Check if it isn't a file to exclude
@@ -305,6 +306,7 @@ function rocket_minify_js( $buffer )
 			$cnames_host = array();
 			if ( $cnames = get_rocket_cdn_cnames( array( 'all', 'css_and_js', 'js' ) ) ) {
 				foreach ( $cnames as $cname ) {
+					$cname = rocket_add_url_protocol( $cname );
 					$cnames_host[] = parse_url( $cname, PHP_URL_HOST );
 				}
 			}
