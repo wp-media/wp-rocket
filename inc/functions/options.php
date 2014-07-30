@@ -18,7 +18,7 @@ function get_rocket_option( $option, $default = false )
 	} elseif( 'consumer_email' == $option && defined( 'WP_ROCKET_EMAIL' ) ) {
 		return WP_ROCKET_EMAIL;
 	}
-	return isset( $options[ $option ] ) && ! empty( $options[ $option ] ) ? $options[ $option ] : $default;
+	return isset( $options[ $option ] ) && $options[ $option ] !== '' ? $options[ $option ] : $default;
 }
 
 /**

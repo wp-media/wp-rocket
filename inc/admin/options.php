@@ -51,11 +51,12 @@ function rocket_field( $args )
 			case 'number' :
 			case 'email' :
 			case 'text' :
-
-				$value = esc_attr( get_rocket_option( $args['name'], '' ) );
-				if ( ! $value ){
+				
+				$value = esc_attr( get_rocket_option( $args['name'] ) );
+				if ( $value === false ) {
 					$value = $default;
 				}
+				
 				$number_options = $args['type']=='number' ? ' min="0" class="small-text"' : '';
 				$autocomplete = in_array( $args['name'], array( 'consumer_key', 'consumer_email' ) ) ? ' autocomplete="off"' : '';
 				$disabled = ( 'consumer_key' == $args['name'] && defined( 'WP_ROCKET_KEY' ) ) || ( 'consumer_email' == $args['name'] && defined( 'WP_ROCKET_EMAIL' ) ) ? ' disabled="disabled"' : '';
