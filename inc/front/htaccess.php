@@ -438,7 +438,7 @@ function get_rocket_htaccess_skip_404() {
 	$rules  = '# Skip 404 error handling by WordPress for static files' . PHP_EOL;
 	$rules .= '<IfModule mod_rewrite.c>' . PHP_EOL;
 	$rules .= 'RewriteEngine On' . PHP_EOL;
-	$rules .= 'RewriteCond %{REQUEST_URI} \.(css|eot|gif|ico|jpe?g|js|json|otf|pdf|png|svg|swf|ttf|woff)$ [NC]' . PHP_EOL;
+	$rules .= 'RewriteCond %{REQUEST_URI} \.(css|eot|gif|ico|jpe?g|js|json|otf|png|svg|swf|ttf|woff)$ [NC]' . PHP_EOL;
 	$rules .= 'RewriteCond %{REQUEST_FILENAME} !-f' . PHP_EOL;
 	$rules .= 'RewriteRule ^.*$ default [R=404,L]' . PHP_EOL;
 	$rules .= '</IfModule>' . PHP_EOL . PHP_EOL;
