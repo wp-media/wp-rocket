@@ -1018,7 +1018,7 @@ function rocket_display_options()
 		)
 	);
 	add_settings_field(
-		'css_javascript_minification',
+		'tuto_css_javascript_minification',
 		__( 'CSS and JavaScript minification', 'rocket' ),
 		'rocket_video',
 		'tutorials',
@@ -1037,8 +1037,44 @@ function rocket_display_options()
 		'rocket_display_tutorials',
 		array(
 			'description'	=> __( 'This video helps to easily understand the advanced option of "Preloading DNS queries" and the use of the filter <code>rocket_dns_prefetch</code>.', 'rocket' ),
-			'url'			=> 'http://www.youtube.com/embed/9jDcg2f-9yM',
+			'url'			=> 'http://www.youtube.com/embed/ElJCtUidLwc',
 			'name'			=> 'tuto_preload_dns_queries',
+		)
+	);
+	add_settings_field(
+		'tuto_white_label',
+		__( 'How to use the White Label functionnality?', 'rocket' ),
+		'rocket_video',
+		'tutorials',
+		'rocket_display_tutorials',
+		array(
+			'description'	=> __( 'This video helps to set up a White Label version of WP Rocket.', 'rocket' ),
+			'url'			=> 'http://www.youtube.com/embed/3rDpaom6kSc',
+			'name'			=> 'tuto_white_label',
+		)
+	);
+	add_settings_field(
+		'tuto_cdn',
+		__( 'How to use the CDN functionality?', 'rocket' ),
+		'rocket_video',
+		'tutorials',
+		'rocket_display_tutorials',
+		array(
+			'description'	=> __( 'This video helps to understand what is the CDN functionnality included since WP Rocket 2.1.', 'rocket' ),
+			'url'			=> 'http://www.youtube.com/embed/JIamaNM8yp4',
+			'name'			=> 'tuto_cdn',
+		)
+	);
+	add_settings_field(
+		'tuto_cdn_api',
+		__( 'How to use the CDN API?', 'rocket' ),
+		'rocket_video',
+		'tutorials',
+		'rocket_display_tutorials',
+		array(
+			'description'	=> __( 'This video helps you to use the 2 functions <code>get_rocket_cdn_url()</code> and <code>rocket_cdn_url()</code>.', 'rocket' ),
+			'url'			=> 'http://www.youtube.com/embed/qfcGBoVdYKI',
+			'name'			=> 'tuto_cdn_api',
 		)
 	);
 	add_settings_section( 'rocket_display_faq', __( 'FAQ', 'rocket' ), '__return_false', 'faq' );
