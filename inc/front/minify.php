@@ -51,10 +51,14 @@ function rocket_minify_process( $buffer )
  *
  * @since 2.2
  */
-add_action( 'wp_footer', '__rocket_insert_minify_js_in_footer', PHP_INT_MAX );
+add_action( 'wp_footer', '__rocket_insert_minify_js_in_footer', 12 );
 function __rocket_insert_minify_js_in_footer() {
 	if ( get_rocket_option( 'minify_js' ) ) {
-
+		
+		if ( is_user_logged_in() && ! get_rocket_option( 'cache_logged_user' ) ) {
+			return;
+		}
+		
 		$home_host     = parse_url( home_url(), PHP_URL_HOST );
 		$files         = get_rocket_option( 'minify_js_in_footer', array() );
 		$ordered_files = array();
