@@ -7,7 +7,7 @@
 	<li><h2><a href="#Q5"><?php _e( 'What should I do in case of a problem with WP Rocket that I can\'t solve?', 'rocket' );?></a></h2></li>
 	<li><h2><a href="#Q6"><?php _e( 'My license has expired, what should I do?', 'rocket' );?></a></h2></li>
 	<li><h2><a href="#Q7"><?php _e( 'I want to change the URL of my website associated with my license, what should I do?', 'rocket' );?></a></h2></li>
-	<li><h2><a href="#Q8"><?php _e( 'What tools should I use to measure the performance of my website?', 'rocket' );?></a></h2></li>
+	<li><h2><a href="#Q8"><?php _e( 'Which tools should I use to measure the performance of my website?', 'rocket' );?></a></h2></li>
 	<li><h2><a href="#Q9"><?php _e( 'Does WP Rocket work with default permalinks?', 'rocket' );?></a></h2></li>
 	<li><h2><a href="#Q10"><?php _e( 'Which web servers WP Rocket is compatible with?', 'rocket' );?></a></h2></li>
 	<li><h2><a href="#Q11"><?php _e( 'Reports from PageSpeed and YSlow tells me that the content is not gziped and/or did not expire, what should I do?', 'rocket' );?></a></h2></li>
@@ -15,10 +15,10 @@
 	<li><h2><a href="#Q13"><?php _e( 'Is WP Rocket compatible with WP Touch, WordPress Mobile Pack and WP Mobile Detector?', 'rocket' );?></a></h2></li>
 	<li><h2><a href="#Q14"><?php _e( 'Is WP Rocket compatible with WooCommerce?', 'rocket' );?></a></h2></li>
 	<li><h2><a href="#Q15"><?php _e( 'Is WP Rocket compatible with WPML or qTranslate?', 'rocket' );?></a></h2></li>
-	<li><h2><a href="#Q16"><?php _e( 'What is the minification and concatenation of files?', 'rocket' );?></a></h2></li>
+	<li><h2><a href="#Q16"><?php _e( 'What are the minification and concatenation of files?', 'rocket' );?></a></h2></li>
 	<li><h2><a href="#Q17"><?php _e( 'What should I do if WP Rocket distorts my website display?', 'rocket' );?></a></h2></li>
 	<li><h2><a href="#Q18"><?php _e( 'How often the cache is updated?', 'rocket' );?></a></h2></li>
-	<li><h2><a href="#Q19"><?php _e( 'How not to cache a particular page?', 'rocket' );?></a></h2></li>
+	<li><h2><a href="#Q19"><?php _e( 'How to exclude a particular page from caching?', 'rocket' );?></a></h2></li>
 	<li><h2><a href="#Q20"><?php _e( 'How does the robots of preloading files cache work?', 'rocket' );?></a></h2></li>
 </ol>
 <hr>
@@ -33,13 +33,13 @@
 	<ul>
 		<li><?php _e( 'Caching of all the pages for quick viewing', 'rocket' );?></li>
 		<li><?php _e( 'Preloading the cache of files using 2 bots in Python', 'rocket' );?></li>
-		<li><?php _e( 'Reduction of numbers of HTTP requests to reduce the load time', 'rocket' );?></li>
+		<li><?php _e( 'Reduction of the number of HTTP requests to reduce the load time', 'rocket' );?></li>
 		<li><?php _e( 'Decrease of the bandwidth with GZIP compression', 'rocket' );?></li>
 		<li><?php _e( 'Management of the headers (expires, etags...)', 'rocket' );?></li>
 		<li><?php _e( 'Minification and concatenation of the JS and CSS files', 'rocket' );?></li>
 		<li><?php _e( 'Loading delay of images (LazyLoad)', 'rocket' );?></li>
-		<li><?php _e( 'Loading deferred of JavaScript files', 'rocket' );?></li>
-		<li><?php _e( 'Images Optimisation', 'rocket' );?></li>
+		<li><?php _e( 'Deferred loading of JavaScript files', 'rocket' );?></li>
+		<li><?php _e( 'Image Optimisation', 'rocket' );?></li>
 	</ul>
 
 	<h2><span id="Q4">&#160;</span><?php _e( 'I have turned any of the basic options on, does WP Rocket work?', 'rocket' );?></h2>
@@ -50,10 +50,10 @@
 		<li><?php _e( 'Caching of all the pages for quick viewing', 'rocket' );?></li>
 		<li><?php _e( 'Decrease bandwidth usage with our GZIP compression', 'rocket' );?></li>
 		<li><?php _e( 'Management of the headers (expires, etags...)', 'rocket' );?></li>
-		<li><?php _e( 'Images Optimisation', 'rocket' );?></li>
+		<li><?php _e( 'Image Optimisation', 'rocket' );?></li>
 	</ul>
 
-	<h2><span id="Q5">&#160;</span><?php _e( 'What should I do in case of problem with WP Rocket that I can\'t solve?', 'rocket' );?></h2>
+	<h2><span id="Q5">&#160;</span><?php _e( 'What should I do in case of a problem with WP Rocket that I can\'t solve?', 'rocket' );?></h2>
 	<p><?php _e( 'If none of the answers from our FAQ give an answer to your problem, you can let us know about your problem on our <a href="http://support.wp-rocket.me" target="_blank"> support</a>. We will answer you as soon as possible.', 'rocket' );?></p>
 
 	<h2><span id="Q6">&#160;</span><?php _e( 'My license has expired, what should I do?', 'rocket' );?></h2>
@@ -99,30 +99,30 @@
 
 	<h2><span id="Q14">&#160;</span><?php _e( 'Is WP Rocket compatible with WooCommerce?', 'rocket' );?></h2>
 	<p><?php _e( 'Yes.', 'rocket' );?></p>
-	<p><?php _e( 'However, you should exclude cart and checkout pages from caching. This is done from the advanced option <code>Never to cache pages</code> by adding the following values:', 'rocket' );?></p>
+	<p><?php _e( 'However, you should exclude cart and checkout pages from caching. This is done from the advanced option <code>Never cache the following pages</code> by adding the following values:', 'rocket' );?></p>
 	<p><code><?php _e( '/cart/', 'rocket' ); ?></code></p>
 	<p><code><?php _e( '/checkout/(.*)', 'rocket' );?></code></p>
 
 	<h2><span id="Q15">&#160;</span><?php _e( 'Is WP Rocket compatible with WPML or qTranslate?', 'rocket' );?></h2>
 	<p><?php _e( 'Yes.', 'rocket' );?></p>
-	<p><?php _e( 'You have even the possibility of empty/preload the cache for a specific language or for all languages at the same time.', 'rocket' );?></p>
+	<p><?php _e( 'You even have the possibility of empty/preload the cache for a specific language or for all languages at the same time.', 'rocket' );?></p>
 
 	<h2><span id="Q16">&#160;</span><?php _e( 'What are the minification and concatenation of files?', 'rocket' );?></h2>
 	<p><?php _e( 'Minification is the process of removing all unnecessary characters in HTML, CSS or JavaScript files: spaces, comments, etc... This reduces the size of the files. Thus, browsers read these files faster.', 'rocket' );?></p>
-	<p><?php _e( 'The concatenation is to consolidate a set of files into one. This has the effect of reducing the number of HTTP requests.', 'rocket' );?></p>
+	<p><?php _e( 'Concatenation is to consolidate a set of files into one. This has the effect of reducing the number of HTTP requests.', 'rocket' );?></p>
 
 	<h2><span id="Q17">&#160;</span><?php _e( 'What should I do if WP Rocket distorts my site display?', 'rocket' );?></h2>
-	<p><?php _e( 'There are good chances that the deformation is caused by the minification of HTML, CSS or JavaScript files. To resolve the problem, we recommend watching the following video: <a href="http://www.youtube.com/embed/iziXSvZgxLk" class="fancybox">http://www.youtube.com/embed/iziXSvZgxLk</a>.', 'rocket' );?></p>
+	<p><?php _e( 'There is a good chance that the deformation is caused by the minification of HTML, CSS or JavaScript files. To resolve the problem, we recommend watching the following video: <a href="http://www.youtube.com/embed/iziXSvZgxLk" class="fancybox">http://www.youtube.com/embed/iziXSvZgxLk</a>.', 'rocket' );?></p>
 
 	<h2><span id="Q18">&#160;</span><?php _e( 'How often is the cache updated?', 'rocket' );?></h2>
 	<p><?php _e( 'The cache is automatically refreshed at every update of your content (add/edit/delete of an article, publication of a comment, etc..).', 'rocket' );?></p>
 	<p><?php _e( 'In the basic options, you can also specify a period of automatic cleaning of the cache.', 'rocket' );?></p>
 
-	<h2><span id="Q19">&#160;</span><?php _e( 'How not to cache a particular page?', 'rocket' );?></h2>
+	<h2><span id="Q19">&#160;</span><?php _e( 'How to exclude a particular page from caching?', 'rocket' );?></h2>
 	<p><?php _e( 'In advanced options, it\'s possible to specify URLs to not cache. For this, you must add in the input field <code>Should never be cached pages</code> the URLs to exclude.', 'rocket' );?></p>
 
 	<h2><span id="Q20">&#160;</span><?php _e( 'How do the robots preload files from the cache?', 'rocket' );?></h2>
-	<p><?php _e( 'A page is only cached on its first visit. To bypass this, we have developed two robots (in python) that crawl the pages of your website.', 'rocket' );?></p>
+	<p><?php _e( 'A page is only cached on its first visit. To bypass this, we have developed two robots (in Python) that crawl the pages of your website.', 'rocket' );?></p>
 	<p><?php _e( 'The first visits your site when using the button "Preload the cache". The second will automatically visit your site as soon as you are going to create/edit/delete an article.', 'rocket' );?></p>
 	<p><?php _e( 'For more information, please watch this video: <a href="http://www.youtube.com/embed/9jDcg2f-9yM" class="fancybox">http://www.youtube.com/embed/9jDcg2f-9yM</a>.', 'rocket' );?></p>
 </div>

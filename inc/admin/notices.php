@@ -218,7 +218,7 @@ function rocket_warning_wp_config_permissions()
 				<?php
 					printf( __( '<b>%s</b>: It seems we don\'t have <a href="%s" target="_blank">writing permissions</a> on <code>wp-config.php</code> file or the value of the constant <code>WP_CACHE</code> is set to <code>false</code>', 'rocket'), WP_ROCKET_PLUGIN_NAME, "http://codex.wordpress.org/Changing_File_Permissions" );
 					echo '<br>';
-					_e( 'To fix this you have to set writing permissions for <code>wp-config.php</code> and then save these settings/this setting again.', 'rocket' );
+					_e( 'To fix this you have to set writing permissions for <code>wp-config.php</code> and then save the settings again.', 'rocket' );
 					echo '<br>';
 					_e( 'If the message persists, you have to put the following code in your <code>wp-config.php</code> file so that it works correctly. Click on the field and press Ctrl-A to select all.', 'rocket' );
 				?>

@@ -426,7 +426,7 @@ function rocket_display_options()
 			array(
 				'type'			=> 'helper_help',
 				'name'			=> 'consumer_key',
-				'description'	=> __( 'Thank you to enter the API key obtained after your purchase.', 'rocket' )
+				'description'	=> __( 'Please enter the API key obtained after your purchase.', 'rocket' )
 			),
 		)
 	);
@@ -709,7 +709,7 @@ function rocket_display_options()
 	);
 	add_settings_field(
 		'rocket_exclude_css',
-		__( '<b>CSS</b> files to exclude of the minification:', 'rocket' ),
+		__( '<b>CSS</b> files to exclude from minification:', 'rocket' ),
 		'rocket_field',
 		'advanced',
 		'rocket_display_imp_options',
@@ -717,7 +717,7 @@ function rocket_display_options()
 			array(
 				'type'         => 'textarea',
 				'label_for'    => 'exclude_css',
-				'label_screen' => __( '<b>CSS</b> files to exclude of the minification:', 'rocket' ),
+				'label_screen' => __( '<b>CSS</b> files to exclude from minification:', 'rocket' ),
 			),
 			array(
 				'type'         => 'helper_help',
@@ -728,7 +728,7 @@ function rocket_display_options()
 	);
 	add_settings_field(
 		'rocket_exclude_js',
-		__( '<b>JS</b> files to exclude of the minification:', 'rocket' ),
+		__( '<b>JS</b> files to exclude from minification:', 'rocket' ),
 		'rocket_field',
 		'advanced',
 		'rocket_display_imp_options',
@@ -736,7 +736,7 @@ function rocket_display_options()
 			array(
 				'type'         => 'textarea',
 				'label_for'    => 'exclude_js',
-				'label_screen' => __( '<b>JS</b> files to exclude of the minification:', 'rocket' ),
+				'label_screen' => __( '<b>JS</b> files to exclude from minification:', 'rocket' ),
 			),
 			array(
 				'type'         => 'helper_help',
@@ -936,14 +936,14 @@ function rocket_display_options()
 		array(
 			array(
 				'type'         => 'checkbox',
-				'label'        => __( 'Yes i want!', 'rocket' ),
+				'label'        => __( 'Yes i do!', 'rocket' ),
 				'label_for'    => 'do_beta',
 				'label_screen' => __( 'Beta Tester', 'rocket' )
 			),
 			array(
 				'type' 		  => 'helper_description',
 				'name' 		  => 'do_beta',
-				'description' => __( 'Check it to participate to the WP Rocket Beta Program and get the new versions earlier, thanks in advance.', 'rocket' )
+				'description' => __( 'Check it to participate to the WP Rocket Beta Program and get access to earlier new versions, thanks in advance.', 'rocket' )
 			)
 		)
     );
