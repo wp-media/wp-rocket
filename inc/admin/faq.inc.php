@@ -10,7 +10,7 @@
 	<li><h2><a href="#Q8"><?php _e( 'Which tools should I use to measure the performance of my website?', 'rocket' );?></a></h2></li>
 	<li><h2><a href="#Q9"><?php _e( 'Does WP Rocket work with default permalinks?', 'rocket' );?></a></h2></li>
 	<li><h2><a href="#Q10"><?php _e( 'Which web servers WP Rocket is compatible with?', 'rocket' );?></a></h2></li>
-	<li><h2><a href="#Q11"><?php _e( 'Reports from PageSpeed and YSlow tells me that the content is not gziped and/or did not expire, what should I do?', 'rocket' );?></a></h2></li>
+	<li><h2><a href="#Q11"><?php _e( 'Reports from PageSpeed and YSlow tell me that the content is not gziped and/or did not expire, what should I do?', 'rocket' );?></a></h2></li>
 	<li><h2><a href="#Q12"><?php _e( 'Is WP Rocket compatible with others cache plugins like WP Super Cache or W3 Total Cache?', 'rocket' );?></a></h2></li>
 	<li><h2><a href="#Q13"><?php _e( 'Is WP Rocket compatible with WP Touch, WordPress Mobile Pack and WP Mobile Detector?', 'rocket' );?></a></h2></li>
 	<li><h2><a href="#Q14"><?php _e( 'Is WP Rocket compatible with WooCommerce?', 'rocket' );?></a></h2></li>
@@ -26,7 +26,7 @@
 	<h2><span id="Q2">&#160;</span><?php _e( 'How many sites is my key valid for?', 'rocket' );?></h2>
 	<p><?php _e( 'A key is valid for 1 domain name. If you have example.com, that makes 1 key.', 'rocket' );?></p>
 	<p><?php _e( 'If you have example.com, www.example.com, dev.example.com, demo.example.com, example.com/dev/, example.com/demo/ all these sites depend on the same WP Rocket key.', 'rocket' );?></p>
-	<p><?php _e( 'You will need an additional key for each other different example.com domain name', 'rocket' );?></p>
+	<p><?php _e( 'However, a different base domain name, like example.org or example2.com, would require an additional key each.', 'rocket' );?></p>
 
 	<h2><span id="Q3">&#160;</span><?php _e( 'What exactly does WP Rocket do?', 'rocket' );?></h2>
 	<p><?php _e( 'WP Rocket is a full cache plugin that comes with many features:', 'rocket' );?></p>
@@ -54,7 +54,7 @@
 	</ul>
 
 	<h2><span id="Q5">&#160;</span><?php _e( 'What should I do in case of a problem with WP Rocket that I can\'t solve?', 'rocket' );?></h2>
-	<p><?php _e( 'If none of the answers from our FAQ give an answer to your problem, you can let us know about your problem on our <a href="http://support.wp-rocket.me" target="_blank"> support</a>. We will answer you as soon as possible.', 'rocket' );?></p>
+	<p><?php _e( 'If none of the answers from our FAQ provide a solution to your problem, you can let us know about your problem on our <a href="http://support.wp-rocket.me" target="_blank"> support</a>. We will answer you as soon as possible.', 'rocket' );?></p>
 
 	<h2><span id="Q6">&#160;</span><?php _e( 'My license has expired, what should I do?', 'rocket' );?></h2>
 	<p><?php _e( 'Don\'t panic, WP Rocket will continue to operate without a problem. You will receive an email telling you that your license will soon expire. You will find a renewal link which will be active even after the expiration.', 'rocket' );?></p>
@@ -105,7 +105,7 @@
 
 	<h2><span id="Q15">&#160;</span><?php _e( 'Is WP Rocket compatible with WPML or qTranslate?', 'rocket' );?></h2>
 	<p><?php _e( 'Yes.', 'rocket' );?></p>
-	<p><?php _e( 'You even have the possibility of empty/preload the cache for a specific language or for all languages at the same time.', 'rocket' );?></p>
+	<p><?php _e( 'You even have the possibility to empty/preload the cache for a specific language or for all languages at the same time.', 'rocket' );?></p>
 
 	<h2><span id="Q16">&#160;</span><?php _e( 'What are the minification and concatenation of files?', 'rocket' );?></h2>
 	<p><?php _e( 'Minification is the process of removing all unnecessary characters in HTML, CSS or JavaScript files: spaces, comments, etc... This reduces the size of the files. Thus, browsers read these files faster.', 'rocket' );?></p>
