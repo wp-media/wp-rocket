@@ -937,7 +937,7 @@ function rocket_display_options()
 		array(
 			array(
 				'type'         => 'checkbox',
-				'label'        => __( 'Yes i do!', 'rocket' ),
+				'label'        => __( 'Yes I do!', 'rocket' ),
 				'label_for'    => 'do_beta',
 				'label_screen' => __( 'Beta Tester', 'rocket' )
 			),

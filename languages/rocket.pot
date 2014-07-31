@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 2.2.1\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2014-07-30 10:54:57+00:00\n"
+"POT-Creation-Date: 2014-07-30 21:12:21+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -215,8 +215,8 @@ msgstr ""
 
 #: inc/admin/faq.inc.php:57
 msgid ""
-"If none of the answers from our FAQ give an answer to your problem, you can "
-"let us know about your problem on our <a "
+"If none of the answers from our FAQ provide a solution to your problem, you "
+"can let us know about your problem on our <a "
 "href=\"http://support.wp-rocket.me\" target=\"_blank\"> support</a>. We "
 "will answer you as soon as possible."
 msgstr ""
@@ -945,7 +945,7 @@ msgid "Beta Tester"
 msgstr ""
 
 #: inc/admin/options.php:939
-msgid "Yes i do!"
+msgid "Yes I do!"
 msgstr ""
 
 #: inc/admin/options.php:946
