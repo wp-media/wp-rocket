@@ -25,3 +25,15 @@ function __deactivate_rocket_specify_image_dimensions_with_layerslider()
 {
 	remove_filter( 'rocket_buffer', 'rocket_specify_image_dimensions' );
 }
+
+/**
+ * Conflict with WP-Filebase Download Manager & Download Monitor : don't add rules to skip 404 handling by WordPress on static files
+ *
+ * @since 2.2.1
+ */
+add_action( 'init', '__disable_htaccess_skip_404' );
+function __disable_htaccess_skip_404() {
+	if ( ( defined( 'WPFB' ) && WPFB ) || defined( 'DLM_VERSION' ) && DLM_VERSION ) {
+		add_filter( 'rocket_htaccess_handle_404', '__return_false' );
+	}
+}
