@@ -54,7 +54,7 @@
 	</ul>
 
 	<h2><span id="Q5">&#160;</span><?php _e( 'What should I do in case of a problem with WP Rocket that I can\'t solve?', 'rocket' );?></h2>
-	<p><?php _e( 'If none of the answers from our FAQ provide a solution to your problem, you can let us know about your problem on our <a href="http://support.wp-rocket.me" target="_blank"> support</a>. We will answer you as soon as possible.', 'rocket' );?></p>
+	<p><?php echo sprintf( __( 'If none of the answers from our FAQ provide a solution to your problem, you can let us know about your problem on our <a href="%s" target="_blank">support</a>. We will answer you as soon as possible.', 'rocket' ), 'http://support.wp-rocket.me' );?></p>
 
 	<h2><span id="Q6">&#160;</span><?php _e( 'My license has expired, what should I do?', 'rocket' );?></h2>
 	<p><?php _e( 'Don\'t panic, WP Rocket will continue to operate without a problem. You will receive an email telling you that your license will soon expire. You will find a renewal link which will be active even after the expiration.', 'rocket' );?></p>
@@ -76,17 +76,17 @@
 		<li><?php _e( 'a loading time', 'rocket' );?></li>
 	</ul>
 	<p><?php _e( 'These data are indicative and do not necessarily reflect the actual display speed of your website', 'rocket' );?>.</p>
-	<p><?php _e( 'For tests closest to reality load time we recommend using <a href="http://tools.pingdom.com/fpt/" target="_blank">Pingdom Tools</a>.', 'rocket' );?></p>
+	<p><?php echo sprintf( __( 'For tests closest to reality load time we recommend using <a href="%s" target="_blank">Pingdom Tools</a>.', 'rocket' ), 'http://tools.pingdom.com/fpt/' );?></p>
 
 	<h2><span id="Q9">&#160;</span><?php _e( 'Does WP Rocket work with default permalinks?', 'rocket' );?></h2>
 	<p><?php _e( 'No.', 'rocket' );?></p>
-	<p><?php _e( 'It\'s necessary to have custom permalinks of the type <code>http://example.com/mon-article/</code> rather than <code>http://example.com/?p=1234</code>.', 'rocket' );?></p>
+	<p><?php echo sprintf( __( 'It\'s necessary to have custom permalinks of the type <code>%s</code> rather than <code>%s</code>.', 'rocket' ), 'http://example.com/mon-article/', 'http://example.com/?p=1234' );?></p>
 
 	<h2><span id="Q10">&#160;</span><?php _e( 'Which web servers is WP Rocket compatible with?', 'rocket' );?></h2>
 	<p><?php _e( 'WP Rocket is compatible with <strong>Apache, NGINX, Microsoft IIS et Litepseed</strong> web servers.', 'rocket' );?></p>
 
 	<h2><span id="Q11">&#160;</span><?php _e( 'Reports from PageSpeed and YSlow tells me that the content is not gziped and/or did not expire, what should I do?', 'rocket' );?></h2>
-	<p><?php _e( 'WP Rocket automatically adds good rules timeouts and gzip for static files. If they are not applied, it is possible that there is a plugin conflict (exemple: <a href="http://wordpress.org/plugins/wp-retina-2x/" target="_blank">WP Retina 2x</a>). Try temporarily disabling all plugins except WP Rocket and retest.', 'rocket' );?></p>
+	<p><?php echo sprintf( __( 'WP Rocket automatically adds good rules timeouts and gzip for static files. If they are not applied, it is possible that there is a plugin conflict (exemple: <a href="%s" target="_blank">WP Retina 2x</a>). Try temporarily disabling all plugins except WP Rocket and retest.', 'rocket' ), 'http://wordpress.org/plugins/wp-retina-2x/' );?></p>
 	<p><?php _e( 'If this is not conclusive, it means that <code>mod_expire</code> and/or <code>mod_deflate</code> are not enabled on your server.', 'rocket' );?></p>
 
 	<h2><span id="Q12">&#160;</span><?php _e( 'Is WP Rocket compatible with others cache plugins like WP Super Cache or W3 Total Cache?', 'rocket' );?></h2>
@@ -124,5 +124,5 @@
 	<h2><span id="Q20">&#160;</span><?php _e( 'How do the robots preload files from the cache?', 'rocket' );?></h2>
 	<p><?php _e( 'A page is only cached on its first visit. To bypass this, we have developed two robots (in Python) that crawl the pages of your website.', 'rocket' );?></p>
 	<p><?php _e( 'The first visits your site when using the button "Preload the cache". The second will automatically visit your site as soon as you are going to create/edit/delete an article.', 'rocket' );?></p>
-	<p><?php _e( 'For more information, please watch this video: <a href="http://www.youtube.com/embed/9jDcg2f-9yM" class="fancybox">http://www.youtube.com/embed/9jDcg2f-9yM</a>.', 'rocket' );?></p>
+	<p><?php echo sprintf( __( 'For more information, please watch this video: <a href="%s" class="fancybox">%s</a>.', 'rocket' ), 'http://www.youtube.com/embed/9jDcg2f-9yM', 'http://www.youtube.com/embed/9jDcg2f-9yM' );?></p>
 </div>
