@@ -51,7 +51,7 @@ function rocket_minify_process( $buffer )
  *
  * @since 2.2
  */
-add_action( 'wp_footer', '__rocket_insert_minify_js_in_footer', 12 );
+add_action( 'wp_footer', '__rocket_insert_minify_js_in_footer', 11 );
 function __rocket_insert_minify_js_in_footer() {
 	if ( get_rocket_option( 'minify_js' ) ) {
 		
