@@ -421,36 +421,3 @@ function get_rocket_htaccess_etag()
 
 	return $rules;
 }
-
-/**
- * Rules to skip 404 handling by WordPress
- *
- * @since 2.2
- *
- * @return string $rules Rules that will be printed
- */
-function get_rocket_htaccess_skip_404() {
-	// To prevent conflicts in multsite configuration
-	if ( is_multisite() ) {
-		return;
-	}
-	
-	$rules  = '# Skip 404 error handling by WordPress for static files' . PHP_EOL;
-	$rules .= '<IfModule mod_rewrite.c>' . PHP_EOL;
-	$rules .= 'RewriteEngine On' . PHP_EOL;
-	$rules .= 'RewriteCond %{REQUEST_URI} \.(css|eot|gif|ico|jpe?g|js|json|otf|png|svg|swf|ttf|woff)$ [NC]' . PHP_EOL;
-	$rules .= 'RewriteCond %{REQUEST_FILENAME} !-f' . PHP_EOL;
-	$rules .= 'RewriteRule ^.*$ default [R=404,L]' . PHP_EOL;
-	$rules .= '</IfModule>' . PHP_EOL . PHP_EOL;
-
-	/**
-	 * Filter rules to skip 404 handling by WordPress
-	 *
-	 * @since 2.2
-	 *
-	 * @param string $rules Rules that will be printed
-	*/
-	$rules = apply_filters( 'rocket_htaccess_handle_404', $rules );
-
-	return $rules;
-}
