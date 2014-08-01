@@ -49,7 +49,6 @@ function get_rocket_htaccess_marker()
 {
 	// Recreate WP Rocket marker
 	$marker  = '# BEGIN WP Rocket v' . WP_ROCKET_VERSION . PHP_EOL;
-	$marker .= get_rocket_htaccess_skip_404();
 	$marker .= get_rocket_htaccess_charset();
 	$marker .= get_rocket_htaccess_etag();
 	$marker .= get_rocket_htaccess_files_match();
