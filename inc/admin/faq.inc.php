@@ -17,14 +17,14 @@
 	<li><h2><a href="#Q15"><?php _e( 'Is WP Rocket compatible with WPML or qTranslate?', 'rocket' );?></a></h2></li>
 	<li><h2><a href="#Q16"><?php _e( 'What are the minification and concatenation of files?', 'rocket' );?></a></h2></li>
 	<li><h2><a href="#Q17"><?php _e( 'What should I do if WP Rocket distorts my website display?', 'rocket' );?></a></h2></li>
-	<li><h2><a href="#Q18"><?php _e( 'How often the cache is updated?', 'rocket' );?></a></h2></li>
+	<li><h2><a href="#Q18"><?php _e( 'How often is the cache updated?', 'rocket' );?></a></h2></li>
 	<li><h2><a href="#Q19"><?php _e( 'How to exclude a particular page from caching?', 'rocket' );?></a></h2></li>
-	<li><h2><a href="#Q20"><?php _e( 'How does the robots of preloading files cache work?', 'rocket' );?></a></h2></li>
+	<li><h2><a href="#Q20"><?php _e( 'How do the robots preload files from the cache?', 'rocket' );?></a></h2></li>
 </ol>
 <hr>
 <div id="insidefaq">
 	<h2><span id="Q2">&#160;</span><?php _e( 'How many sites is my key valid for?', 'rocket' );?></h2>
-	<p><?php _e( 'A key is valid for 1 domain name. If you have example.com, that makes 1 key.', 'rocket' );?></p>
+	<p><?php _e( 'A key is valid for one domain name. If you have example.com, that makes one key.', 'rocket' );?></p>
 	<p><?php _e( 'If you have example.com, www.example.com, dev.example.com, demo.example.com, example.com/dev/, example.com/demo/ all these sites depend on the same WP Rocket key.', 'rocket' );?></p>
 	<p><?php _e( 'However, a different base domain name, like example.org or example2.com, would require an additional key each.', 'rocket' );?></p>
 
@@ -32,12 +32,12 @@
 	<p><?php _e( 'WP Rocket is a full cache plugin that comes with many features:', 'rocket' );?></p>
 	<ul>
 		<li><?php _e( 'Caching of all the pages for quick viewing', 'rocket' );?></li>
-		<li><?php _e( 'Preloading the cache of files using 2 bots in Python', 'rocket' );?></li>
-		<li><?php _e( 'Reduction of the number of HTTP requests to reduce the load time', 'rocket' );?></li>
-		<li><?php _e( 'Decrease of the bandwidth with GZIP compression', 'rocket' );?></li>
+		<li><?php _e( 'Preloading the cache of files using two bots in Python', 'rocket' );?></li>
+		<li><?php _e( 'Reduction of the number of HTTP requests to reduce loading time', 'rocket' );?></li>
+		<li><?php _e( 'Decreasing bandwidth usage with GZIP compression', 'rocket' );?></li>
 		<li><?php _e( 'Management of the headers (expires, etags...)', 'rocket' );?></li>
-		<li><?php _e( 'Minification and concatenation of the JS and CSS files', 'rocket' );?></li>
-		<li><?php _e( 'Loading delay of images (LazyLoad)', 'rocket' );?></li>
+		<li><?php _e( 'Minification and concatenation of JS and CSS files', 'rocket' );?></li>
+		<li><?php _e( 'Deferred loading of images (LazyLoad)', 'rocket' );?></li>
 		<li><?php _e( 'Deferred loading of JavaScript files', 'rocket' );?></li>
 		<li><?php _e( 'Image Optimisation', 'rocket' );?></li>
 	</ul>
@@ -45,7 +45,7 @@
 	<h2><span id="Q4">&#160;</span><?php _e( 'I have turned any of the basic options on, does WP Rocket work?', 'rocket' );?></h2>
 	<p><?php _e( 'Yes.', 'rocket' );?></p>
 	<p><?php _e( 'The basic options are additional optimizations that could be described as bonuses. These options are not essential to improve the loading time of your website.', 'rocket' );?></p>
-	<p><?php _e( 'Whatever is your WP Rocket configuration, the following features will be still active:', 'rocket' );?></p>
+	<p><?php _e( 'Whatever your WP Rocket configuration is, the following features will still be active:', 'rocket' );?></p>
 	<ul>
 		<li><?php _e( 'Caching of all the pages for quick viewing', 'rocket' );?></li>
 		<li><?php _e( 'Decrease bandwidth usage with our GZIP compression', 'rocket' );?></li>

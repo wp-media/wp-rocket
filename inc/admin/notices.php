@@ -159,7 +159,7 @@ function rocket_plugins_to_deactivate()
 			foreach ( $plugins_to_deactivate as $plugin ) {
 
 				$plugin_data = get_plugin_data( WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . $plugin);
-				echo '<li>' . $plugin_data['Name'] . '</span> <a href="' . wp_nonce_url( admin_url( 'admin-post.php?action=deactivate_plugin&plugin=' . urlencode($plugin) ), 'deactivate_plugin' ) . '" class="button-secondary alignright">' . __( 'Desactivate', 'rocket' ) . '</a></li>';
+				echo '<li>' . $plugin_data['Name'] . '</span> <a href="' . wp_nonce_url( admin_url( 'admin-post.php?action=deactivate_plugin&plugin=' . urlencode($plugin) ), 'deactivate_plugin' ) . '" class="button-secondary alignright">' . __( 'Deactivate', 'rocket' ) . '</a></li>';
 
 			}
 			?>
@@ -409,7 +409,7 @@ function rocket_warning_minify_cache_dir_permissions()
 
 			<div class="error">
 				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>" class="rkt-cross"><div class="dashicons dashicons-no"></div></a>
-				<p><b><?php echo WP_ROCKET_PLUGIN_NAME; ?></b>: <?php printf( __('Be careful, you don\'t have <a href="%1$s" target="_blank">writing permissions</a> on <b>%3$s</b> minify cache folder (<code>%2$s</code>). To make <b>%3$s</b> work properly, please CHMOD <code>755</code> or <code>775</code> or <code>777</code> this folder.', 'rocket' ), 'http://codex.wordpress.org/Changing_File_Permissions', trim( str_replace( ABSPATH, '', WP_ROCKET_MINIFY_CACHE_PATH ), '/' ), WP_ROCKET_PLUGIN_NAME ); ?></p>
+				<p><b><?php echo WP_ROCKET_PLUGIN_NAME; ?></b>: <?php printf( __('Be careful, you don\'t have <a href="%1$s" target="_blank">writing permissions</a> on <b>%3$s</b> minified cache folder (<code>%2$s</code>). To make <b>%3$s</b> work properly, please CHMOD <code>755</code> or <code>775</code> or <code>777</code> this folder.', 'rocket' ), 'http://codex.wordpress.org/Changing_File_Permissions', trim( str_replace( ABSPATH, '', WP_ROCKET_MINIFY_CACHE_PATH ), '/' ), WP_ROCKET_PLUGIN_NAME ); ?></p>
 			</div>
 
 		<?php
