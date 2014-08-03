@@ -470,7 +470,7 @@ function rocket_display_options()
 				'type'         => 'helper_description',
 				'name'         => 'lazyload',
 				'description'  => __( 'LazyLoad displays images on a page only when they are visible to the user.', 'rocket') . '<br/>' .
-									  __('This reduces the number of HTTP requests mechanism and improves the loading time.', 'rocket' )
+									  __('This mechanism reduces the number of HTTP requests and improves the loading time.', 'rocket' )
 			),
 		)
 	);
@@ -505,7 +505,7 @@ function rocket_display_options()
 				'description'  => __( 'Minification removes any spaces and comments present in the CSS and JavaScript files.', 'rocket' ) . '<br/>' .
 									  __( 'This mechanism reduces the weight of each file and allows a faster reading of browsers and search engines.', 'rocket' ) . '<br/>' .
 									  __( 'Concatenation combines all CSS and JavaScript files.', 'rocket' ) . '<br/>' .
-									  __( 'This reduces the number of HTTP requests mechanism and improves the loading time.', 'rocket' )
+									  __( 'This mechanism reduces the number of HTTP requests and improves the loading time.', 'rocket' )
 			),
 			array(
 				'type'			=> 'helper_warning',
@@ -600,7 +600,7 @@ function rocket_display_options()
 			array(
 				'type'         => 'helper_description',
 				'name'         => 'purge',
-				'description'  => __( 'By default, clear cache time is 24 hours, this means that once created, the cache files are automatically removed after 24 hours before being recreated.', 'rocket' ). '<br/>' .
+				'description'  => __( 'By default, cache lifespan is 24 hours. This means that once created, the cache files are automatically removed after 24 hours before being recreated.', 'rocket' ). '<br/>' .
 									  __('This can be useful if you display your latest tweets or rss feeds in your sidebar, for example.', 'rocket' ),
 				),
 			array(
@@ -623,7 +623,7 @@ function rocket_display_options()
 			array(
 				'type'         => 'textarea',
 				'label_for'    => 'dns_prefetch',
-				'label_screen' => __('Prefetch DNS requests', 'rocket' ),
+				'label_screen' => __('Prefetch DNS requests:', 'rocket' ),
 			),
 			array(
 				'type'         => 'helper_description',
@@ -640,7 +640,7 @@ function rocket_display_options()
 			array(
 				'type'         => 'helper_help',
 				'name'         => 'dns_prefetch',
-				'description'  => __( '<strong>NB:</strong> Enter the domain names without their protocol, for example: <code>//ajax.googleapis.com</code> without <code>http:</code> (one per line).', 'rocket' ),
+				'description'  => __( '<strong>Note:</strong> Enter the domain names without their protocol, for example: <code>//ajax.googleapis.com</code> without <code>http:</code> (one per line).', 'rocket' ),
 				),
 		)
 	);
@@ -660,12 +660,12 @@ function rocket_display_options()
 				'type'         => 'helper_help',
 				'name'         => 'purge_pages',
 				'description'  => __( 'Enter the URL of additionnal pages to purge when updating a post (one per line).', 'rocket' ) . '<br/>' .
-									  __( 'It\'s possible to use regular expressions (regex).', 'rocket' ),
+									  __( 'You can use regular expressions (regex).', 'rocket' ),
 			),
 			array(
 				'type'         => 'helper_help',
 				'name'         => 'purge_pages',
-				'description'  => __( '<strong>NB:</strong> When you update a post or when a comment is posted, the homepage, categories, and tags associated with this post are automatically removed from the cache and then, recreated by our bot.', 'rocket' ),
+				'description'  => __( '<strong>Note:</strong> When you update a post or when a comment is posted, the homepage, categories and tags associated with this post are automatically removed from the cache and then recreated by our bot.', 'rocket' ),
 			),
 		)
 	);
@@ -944,7 +944,7 @@ function rocket_display_options()
 			array(
 				'type' 		  => 'helper_description',
 				'name' 		  => 'do_beta',
-				'description' => __( 'Check it to participate to the WP Rocket Beta Program and get access to earlier new versions, thanks in advance.', 'rocket' )
+				'description' => __( 'Check it to participate in the WP Rocket Beta Program and get earlier access to new versions, thanks in advance.', 'rocket' )
 			)
 		)
     );
@@ -1024,7 +1024,7 @@ function rocket_display_options()
 		'tutorials',
 		'rocket_display_tutorials',
 		array(
-			'description'	=> __( 'This video gives some explanations about how to use the advanced process of minification and concatenation of CSS and JavaScript files.', 'rocket' ),
+			'description'	=> __( 'This video gives some explanations about how to use the advanced processes of minification and concatenation of CSS and JavaScript files.', 'rocket' ),
 			'url'			=> 'http://www.youtube.com/embed/iziXSvZgxLk',
 			'name'			=> 'css_javascript_minification',
 		)
@@ -1043,7 +1043,7 @@ function rocket_display_options()
 	);
 	add_settings_field(
 		'tuto_white_label',
-		__( 'How to use the White Label functionnality?', 'rocket' ),
+		__( 'How to use the White Label functionality?', 'rocket' ),
 		'rocket_video',
 		'tutorials',
 		'rocket_display_tutorials',
@@ -1060,7 +1060,7 @@ function rocket_display_options()
 		'tutorials',
 		'rocket_display_tutorials',
 		array(
-			'description'	=> __( 'This video helps to understand what is the CDN functionnality included since WP Rocket 2.1.', 'rocket' ),
+			'description'	=> __( 'This video helps to understand what is the CDN functionality included since WP Rocket 2.1.', 'rocket' ),
 			'url'			=> 'http://www.youtube.com/embed/JIamaNM8yp4',
 			'name'			=> 'tuto_cdn',
 		)
@@ -1072,7 +1072,7 @@ function rocket_display_options()
 		'tutorials',
 		'rocket_display_tutorials',
 		array(
-			'description'	=> __( 'This video helps you to use the 2 functions <code>get_rocket_cdn_url()</code> and <code>rocket_cdn_url()</code>.', 'rocket' ),
+			'description'	=> __( 'This video helps to set up the 2 functions <code>get_rocket_cdn_url()</code> and <code>rocket_cdn_url()</code>.', 'rocket' ),
 			'url'			=> 'http://www.youtube.com/embed/qfcGBoVdYKI',
 			'name'			=> 'tuto_cdn_api',
 		)

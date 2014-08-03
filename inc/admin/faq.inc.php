@@ -85,8 +85,8 @@
 	<h2><span id="Q10">&#160;</span><?php _e( 'Which web servers is WP Rocket compatible with?', 'rocket' );?></h2>
 	<p><?php _e( 'WP Rocket is compatible with <strong>Apache, NGINX, Microsoft IIS et Litepseed</strong> web servers.', 'rocket' );?></p>
 
-	<h2><span id="Q11">&#160;</span><?php _e( 'Reports from PageSpeed and YSlow tells me that the content is not gziped and/or did not expire, what should I do?', 'rocket' );?></h2>
-	<p><?php echo sprintf( __( 'WP Rocket automatically adds good rules timeouts and gzip for static files. If they are not applied, it is possible that there is a plugin conflict (exemple: <a href="%s" target="_blank">WP Retina 2x</a>). Try temporarily disabling all plugins except WP Rocket and retest.', 'rocket' ), 'http://wordpress.org/plugins/wp-retina-2x/' );?></p>
+	<h2><span id="Q11">&#160;</span><?php _e( 'Reports from PageSpeed and YSlow tell me that the content is not gziped and/or did not expire, what should I do?', 'rocket' );?></h2>
+	<p><?php echo sprintf( __( 'WP Rocket automatically adds optimal timeout rules for static files and compresses them using gzip. If they are not applied, it is possible that there is a plugin conflict (exemple: <a href="%s" target="_blank">WP Retina 2x</a>). Try temporarily disabling all plugins except WP Rocket and retest.', 'rocket' ), 'http://wordpress.org/plugins/wp-retina-2x/' );?></p>
 	<p><?php _e( 'If this is not conclusive, it means that <code>mod_expire</code> and/or <code>mod_deflate</code> are not enabled on your server.', 'rocket' );?></p>
 
 	<h2><span id="Q12">&#160;</span><?php _e( 'Is WP Rocket compatible with others cache plugins like WP Super Cache or W3 Total Cache?', 'rocket' );?></h2>
@@ -119,7 +119,7 @@
 	<p><?php _e( 'In the basic options, you can also specify a period of automatic cleaning of the cache.', 'rocket' );?></p>
 
 	<h2><span id="Q19">&#160;</span><?php _e( 'How to exclude a particular page from caching?', 'rocket' );?></h2>
-	<p><?php _e( 'In advanced options, it\'s possible to specify URLs to not cache. For this, you must add in the input field <code>Should never be cached pages</code> the URLs to exclude.', 'rocket' );?></p>
+	<p><?php _e( 'In advanced options, it\'s possible to specify URLs to not cache. For this, you must add the URLs to exclude in the input field <code>Never cache the following pages</code>.', 'rocket' );?></p>
 
 	<h2><span id="Q20">&#160;</span><?php _e( 'How do the robots preload files from the cache?', 'rocket' );?></h2>
 	<p><?php _e( 'A page is only cached on its first visit. To bypass this, we have developed two robots (in Python) that crawl the pages of your website.', 'rocket' );?></p>
