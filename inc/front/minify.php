@@ -53,45 +53,62 @@ function rocket_minify_process( $buffer )
  */
 add_action( 'wp_footer', '__rocket_insert_minify_js_in_footer', PHP_INT_MAX );
 function __rocket_insert_minify_js_in_footer() {
-	if ( get_rocket_option( 'minify_js' ) ) {
-		
-		if ( is_user_logged_in() && ! get_rocket_option( 'cache_logged_user' ) ) {
-			return;
-		}
-		
-		$home_host     = parse_url( home_url(), PHP_URL_HOST );
-		$files         = get_rocket_option( 'minify_js_in_footer', array() );
-		$ordered_files = array();
-
-		$i=0;
-		foreach( $files as $file ) {
-			// Check if its an external file
-			if( $home_host != parse_url( $file, PHP_URL_HOST ) ) {
-
-				if( isset( $ordered_files[$i] ) ) {
-					$i++;
-					$ordered_files[$i++] = $file;
-				} else {
-					$ordered_files[$i] = $file;
-					$i++;
-				}
-
-			} else {
-				$ordered_files[$i][] = $file;
-			}
-		}
-
-		// Print tags
-		foreach( $ordered_files as $files ) {
-			// Check if its an external file
-			if ( is_string( $files ) ) {
-				echo '<script src="' . $files . '" data-minify="1"></script>';
-			} else {
-				echo get_rocket_minify_files( $files );
-			}
-		}
-
+	if ( ! empty( $_GET )
+		&& ( ! isset( $_GET['utm_source'], $_GET['utm_medium'], $_GET['utm_campaign'] ) )
+		&& ( ! isset( $_GET['fb_action_ids'], $_GET['fb_action_types'], $_GET['fb_source'] ) )
+		&& ( ! isset( $_GET['permalink_name'] ) )
+		&& ( ! isset( $_GET['lp-variation-id'] ) )
+		&& ( ! isset( $_GET['lang'] ) )
+	) {
+		return;
 	}
+	
+	if ( get_rocket_option( 'minify_js' ) && ( is_user_logged_in() && ! get_rocket_option( 'cache_logged_user' ) ) ) {
+		return;
+	}
+	
+	$home_host     = parse_url( home_url(), PHP_URL_HOST );
+	$files         = get_rocket_option( 'minify_js_in_footer', array() );
+	$ordered_files = array();
+	
+	// Get host of CNAMES
+	$cnames_host = array();
+	if ( $cnames = get_rocket_cdn_cnames( array( 'all', 'css_and_js', 'js' ) ) ) {
+		foreach ( $cnames as $cname ) {
+			$cname = rocket_add_url_protocol( $cname );
+			$cnames_host[] = parse_url( $cname, PHP_URL_HOST );
+		}
+	}
+	
+	$i=0;
+	foreach( $files as $file ) {
+		$file_host = parse_url( $file, PHP_URL_HOST );
+		
+		// Check if its an external file
+		if( $home_host != $file_host && ! in_array( $file_host, $cnames_host ) ) {
+
+			if( isset( $ordered_files[$i] ) ) {
+				$i++;
+				$ordered_files[$i++] = $file;
+			} else {
+				$ordered_files[$i] = $file;
+				$i++;
+			}
+
+		} else {
+			$ordered_files[$i][] = $file;
+		}
+	}
+
+	// Print tags
+	foreach( $ordered_files as $files ) {
+		// Check if its an external file
+		if ( is_string( $files ) ) {
+			echo '<script src="' . $files . '" data-minify="1"></script>';
+		} else {
+			echo get_rocket_minify_files( $files );
+		}
+	}	
 }
 
 /**
