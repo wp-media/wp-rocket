@@ -20,7 +20,7 @@ function rocket_specify_image_dimensions( $buffer )
 	 *
 	 * @param bool Do the job or not
 	 */
-	if ( ! apply_filters( 'rocket_specify_image_dimensions', true ) ) {
+	if ( ! apply_filters( 'rocket_specify_image_dimensions', false ) ) {
 		return $buffer;
 	}
 	
