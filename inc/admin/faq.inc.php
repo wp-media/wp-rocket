@@ -112,7 +112,7 @@
 	<p><?php _e( 'Concatenation is to consolidate a set of files into one. This has the effect of reducing the number of HTTP requests.', 'rocket' );?></p>
 
 	<h2><span id="Q17">&#160;</span><?php _e( 'What should I do if WP Rocket distorts my site display?', 'rocket' );?></h2>
-	<p><?php _e( 'There is a good chance that the deformation is caused by the minification of HTML, CSS or JavaScript files. To resolve the problem, we recommend watching the following video: <a href="http://www.youtube.com/embed/iziXSvZgxLk" class="fancybox">http://www.youtube.com/embed/iziXSvZgxLk</a>.', 'rocket' );?></p>
+	<p><?php echo sprintf( __( 'There is a good chance that the deformation is caused by the minification of HTML, CSS or JavaScript files. To resolve the problem, we recommend watching the following video: <a href="%1$s" class="fancybox">%1$s</a>.', 'rocket' ), 'http://www.youtube.com/embed/iziXSvZgxLk' );?></p>
 
 	<h2><span id="Q18">&#160;</span><?php _e( 'How often is the cache updated?', 'rocket' );?></h2>
 	<p><?php _e( 'The cache is automatically refreshed at every update of your content (add/edit/delete of an article, publication of a comment, etc..).', 'rocket' );?></p>
