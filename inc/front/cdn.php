@@ -24,9 +24,6 @@ function rocket_cdn_file( $url )
 
 	$filter = current_filter();
 	switch ( $filter ) {
-		case 'template_directory_uri':
-			$zone = array( 'all' );
-			break;
 		case 'wp_get_attachment_url':
 		case 'smilies_src':
 			$zone = array( 'all', 'images' );
@@ -36,6 +33,9 @@ function rocket_cdn_file( $url )
 		case 'wp_minify_js_url':
 		case 'bwp_get_minify_src':
 			$zone = array( 'all', 'css_and_js', $ext );
+			break;
+		default:
+			$zone = array( 'all' );
 			break;
 	}
 
