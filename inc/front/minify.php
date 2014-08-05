@@ -282,14 +282,14 @@ function rocket_minify_css( $buffer )
  */
 function rocket_minify_js( $buffer )
 {
-	$home_host            = parse_url( home_url(), PHP_URL_HOST );
     $internal_files       = array();
     $external_tags        = '';
     $excluded_tags        = '';
     $excluded_js          = get_rocket_option( 'exclude_js', array() );
     $js_in_footer         = get_rocket_option( 'minify_js_in_footer', array() );
     $wp_content_dirname   = ltrim( str_replace( home_url(), '', WP_CONTENT_URL ), '/' ) . '/';
-
+	list( $home_host, $home_path, $home_scheme ) = get_rocket_parse_url( home_url() );
+	
 	/**
 	 * Filter JS externals files to exclude of the minification process (do not move into the header)
 	 *
@@ -376,7 +376,7 @@ function rocket_minify_js( $buffer )
 
 	// Exclude JS files to insert in footer
 	foreach( $internal_files as $k=>$url ) {
-		if ( in_array( site_url( $url ), $js_in_footer ) ) {
+		if ( in_array( $home_scheme . '://' . $home_host . $url , $js_in_footer ) ) {
 			unset( $internal_files[$k] );
 		}
 	}
