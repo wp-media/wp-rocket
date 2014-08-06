@@ -51,12 +51,12 @@ function rocket_field( $args )
 			case 'number' :
 			case 'email' :
 			case 'text' :
-				
+
 				$value = esc_attr( get_rocket_option( $args['name'] ) );
 				if ( $value === false ) {
 					$value = $default;
 				}
-				
+
 				$number_options = $args['type']=='number' ? ' min="0" class="small-text"' : '';
 				$autocomplete = in_array( $args['name'], array( 'consumer_key', 'consumer_email' ) ) ? ' autocomplete="off"' : '';
 				$disabled = ( 'consumer_key' == $args['name'] && defined( 'WP_ROCKET_KEY' ) ) || ( 'consumer_email' == $args['name'] && defined( 'WP_ROCKET_EMAIL' ) ) ? ' disabled="disabled"' : '';
@@ -928,26 +928,29 @@ function rocket_display_options()
 	);
 	// Tools
 	add_settings_section( 'rocket_display_tools', __( 'Tools', 'rocket' ), '__return_false', 'tools' );
-    add_settings_field(
-		'rocket_do_beta',
-		__( 'Beta Tester', 'rocket' ),
-		'rocket_field',
-		'tools',
-		'rocket_display_tools',
-		array(
+
+    if ( false == rocket_is_white_label() ) {
+		add_settings_field(
+			'rocket_do_beta',
+			__( 'Beta Tester', 'rocket' ),
+			'rocket_field',
+			'tools',
+			'rocket_display_tools',
 			array(
-				'type'         => 'checkbox',
-				'label'        => __( 'Yes I do!', 'rocket' ),
-				'label_for'    => 'do_beta',
-				'label_screen' => __( 'Beta Tester', 'rocket' )
-			),
-			array(
-				'type' 		  => 'helper_description',
-				'name' 		  => 'do_beta',
-				'description' => __( 'Check it to participate in the WP Rocket Beta Program and get earlier access to new versions, thanks in advance.', 'rocket' )
+				array(
+					'type'         => 'checkbox',
+					'label'        => __( 'Yes I do!', 'rocket' ),
+					'label_for'    => 'do_beta',
+					'label_screen' => __( 'Beta Tester', 'rocket' )
+				),
+				array(
+					'type' 		  => 'helper_description',
+					'name' 		  => 'do_beta',
+					'description' => __( 'Check it to participate in the WP Rocket Beta Program and get earlier access to new versions, thanks in advance.', 'rocket' )
+				)
 			)
-		)
-    );
+	    );
+    }
 
 	add_settings_field(
 		'rocket_purge_all',
