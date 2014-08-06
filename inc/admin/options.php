@@ -574,7 +574,7 @@ function rocket_display_options()
 	);
 	add_settings_field(
 		'rocket_purge',
-		__( 'Clear cache delay', 'rocket' ),
+		__( 'Clear Cache Lifespan', 'rocket' ),
 		'rocket_field',
 		'basic',
 		'rocket_display_main_options',
@@ -582,7 +582,7 @@ function rocket_display_options()
 			array(
 				'type'         => 'number',
 				'label_for'    => 'purge_cron_interval',
-				'label_screen' => __( 'Clear cache delay', 'rocket' ),
+				'label_screen' => __( 'Clear Cache Lifespan', 'rocket' ),
 				'fieldset'     => 'start'
 			),
 			array(
@@ -723,7 +723,7 @@ function rocket_display_options()
 			array(
 				'type'         => 'helper_help',
 				'name'         => 'exclude_css',
-				'description'  => __( 'Specify the URL of <b>CSS</b> files to reject (one per line).', 'rocket' )
+				'description'  => __( 'Enter the URL of <b>CSS</b> files to reject (one per line).', 'rocket' )
 				),
 		)
 	);
@@ -742,7 +742,7 @@ function rocket_display_options()
 			array(
 				'type'         => 'helper_help',
 				'name'         => 'exclude_js',
-				'description'  => __( 'Specify the URL of <b>JS</b> files to reject (one per line).', 'rocket' )
+				'description'  => __( 'Enter the URL of <b>JS</b> files to reject (one per line).', 'rocket' )
 				),
 		)
 	);
