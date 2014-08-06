@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2014-07-31 10:24:48+00:00\n"
-"PO-Revision-Date: 2014-07-31 10:24+0000\n"
+"POT-Creation-Date: 2014-08-05 10:44:24+00:00\n"
+"PO-Revision-Date: 2014-08-05 10:44+0000\n"
 "Last-Translator: FxB <fxb@wp-translations.org>\n"
 "Language-Team: Italian (Italy) (http://www.transifex.com/projects/p/wp-rocket/language/it_IT/)\n"
 "MIME-Version: 1.0\n"
@@ -53,7 +53,7 @@ msgstr "Indice dei contenuti della FAQ"
 
 #: inc/admin/faq.inc.php:4 inc/admin/faq.inc.php:26
 msgid "How many sites is my key valid for?"
-msgstr ""
+msgstr "Per quanti siti è valida la mia chiave?"
 
 #: inc/admin/faq.inc.php:5 inc/admin/faq.inc.php:31
 msgid "What exactly does WP Rocket do?"
@@ -80,7 +80,7 @@ msgstr "Voglio cambiare la URL del mio sito web associata alla mia licenza, cosa
 
 #: inc/admin/faq.inc.php:10
 msgid "Which tools should I use to measure the performance of my website?"
-msgstr ""
+msgstr "Quali strumenti dovrei usare per misurare le performance del mio sito web?"
 
 #: inc/admin/faq.inc.php:11 inc/admin/faq.inc.php:81
 msgid "Does WP Rocket work with default permalinks?"
@@ -90,11 +90,11 @@ msgstr "WP Rocket funziona con i permalink predefiniti?"
 msgid "Which web servers WP Rocket is compatible with?"
 msgstr "Con quali server web è compatibile WP Rocket?"
 
-#: inc/admin/faq.inc.php:13
+#: inc/admin/faq.inc.php:13 inc/admin/faq.inc.php:88
 msgid ""
 "Reports from PageSpeed and YSlow tell me that the content is not gziped "
 "and/or did not expire, what should I do?"
-msgstr ""
+msgstr "I report di PageSpeed e YSlow mi dicono che il contenuto non è gziped e o non ha scadenza, cosa dovrei fare?"
 
 #: inc/admin/faq.inc.php:14 inc/admin/faq.inc.php:92
 msgid ""
@@ -118,28 +118,29 @@ msgstr "WP Rocket è compatibile con WPML o qTranslate?"
 
 #: inc/admin/faq.inc.php:18 inc/admin/faq.inc.php:110
 msgid "What are the minification and concatenation of files?"
-msgstr ""
+msgstr "Cos'è la minificazione e concatenazione dei files?"
 
 #: inc/admin/faq.inc.php:19
 msgid "What should I do if WP Rocket distorts my website display?"
 msgstr "Cosa dovrei fare se WP Rocket distorce la visualizzazione del mio sito web?"
 
-#: inc/admin/faq.inc.php:20
-msgid "How often the cache is updated?"
+#: inc/admin/faq.inc.php:20 inc/admin/faq.inc.php:117
+msgid "How often is the cache updated?"
 msgstr "Ogni quanto viene aggiornata la cache?"
 
 #: inc/admin/faq.inc.php:21 inc/admin/faq.inc.php:121
 msgid "How to exclude a particular page from caching?"
-msgstr ""
+msgstr "Come escludere dalla cache una particolare pagina?"
 
-#: inc/admin/faq.inc.php:22
-msgid "How does the robots of preloading files cache work?"
+#: inc/admin/faq.inc.php:22 inc/admin/faq.inc.php:124
+msgid "How do the robots preload files from the cache?"
 msgstr "Come funzionano i robots per il precaricamento delle pagine?"
 
 #: inc/admin/faq.inc.php:27
 msgid ""
-"A key is valid for 1 domain name. If you have example.com, that makes 1 key."
-msgstr "Una chiave è valida per 1 nome a dominio. Se hai esempio.com, quello conta per 1 chiave."
+"A key is valid for one domain name. If you have example.com, that makes one "
+"key."
+msgstr ""
 
 #: inc/admin/faq.inc.php:28
 msgid ""
@@ -152,7 +153,7 @@ msgstr "Se hai esempio.com, www.esempio.com, dev.esempio.com. demo.esempio.com, 
 msgid ""
 "However, a different base domain name, like example.org or example2.com, "
 "would require an additional key each."
-msgstr ""
+msgstr "Comunque, un diverso dominio di base, come example.org o example2.com, richiede una chiave addizionale per ciascuno."
 
 #: inc/admin/faq.inc.php:32
 msgid "WP Rocket is a full cache plugin that comes with many features:"
@@ -163,36 +164,36 @@ msgid "Caching of all the pages for quick viewing"
 msgstr "Caching di tutte le pagine per la visualizzazione rapida"
 
 #: inc/admin/faq.inc.php:35
-msgid "Preloading the cache of files using 2 bots in Python"
-msgstr "Precarico la cache dei files utilizzando 2 bot in Python"
+msgid "Preloading the cache of files using two bots in Python"
+msgstr ""
 
 #: inc/admin/faq.inc.php:36
-msgid "Reduction of the number of HTTP requests to reduce the load time"
+msgid "Reduction of the number of HTTP requests to reduce loading time"
 msgstr ""
 
 #: inc/admin/faq.inc.php:37
-msgid "Decrease of the bandwidth with GZIP compression"
-msgstr "Riduzione della larghezza di banda con compressione GZIP"
+msgid "Decreasing bandwidth usage with GZIP compression"
+msgstr ""
 
 #: inc/admin/faq.inc.php:38 inc/admin/faq.inc.php:52
 msgid "Management of the headers (expires, etags...)"
 msgstr "Gestione degli headers (scadenze, etags...)"
 
 #: inc/admin/faq.inc.php:39
-msgid "Minification and concatenation of the JS and CSS files"
-msgstr "Minificazione e concatenazione dei files JS e CSS"
+msgid "Minification and concatenation of JS and CSS files"
+msgstr ""
 
 #: inc/admin/faq.inc.php:40
-msgid "Loading delay of images (LazyLoad)"
-msgstr "Caricamento posticipato delle immagini (LazyLoad)"
+msgid "Deferred loading of images (LazyLoad)"
+msgstr ""
 
 #: inc/admin/faq.inc.php:41
 msgid "Deferred loading of JavaScript files"
-msgstr ""
+msgstr "Caricamento differito dei files Javascript"
 
 #: inc/admin/faq.inc.php:42 inc/admin/faq.inc.php:53
 msgid "Image Optimisation"
-msgstr ""
+msgstr "Ottimizzazione delle Immagini"
 
 #: inc/admin/faq.inc.php:46 inc/admin/faq.inc.php:97 inc/admin/faq.inc.php:101
 #: inc/admin/faq.inc.php:107
@@ -208,20 +209,20 @@ msgstr "Le opzioni base sono ottimizzazioni addizionali che possono essere descr
 
 #: inc/admin/faq.inc.php:48
 msgid ""
-"Whatever is your WP Rocket configuration, the following features will be "
-"still active:"
-msgstr "Qualunque sia la tua configurazione di WP Rocket, le seguenti funzionalià saranno sempre attive:"
+"Whatever your WP Rocket configuration is, the following features will still "
+"be active:"
+msgstr ""
 
 #: inc/admin/faq.inc.php:51
 msgid "Decrease bandwidth usage with our GZIP compression"
-msgstr ""
+msgstr "Diminuisci la larghezza di banda con la nostra compressione GZIP"
 
 #: inc/admin/faq.inc.php:57
 msgid ""
 "If none of the answers from our FAQ provide a solution to your problem, you "
 "can let us know about your problem on our <a href=\"%s\" "
 "target=\"_blank\">support</a>. We will answer you as soon as possible."
-msgstr ""
+msgstr "Se nessuna delle risposte dalla nostra FAQ fornisce una risposta la tuo problema, puoi farcelo sapere al nostro <a href=\"%s\" target=\"_blank\"> supporto</a>. Ti risponderemo il prima possibile."
 
 #: inc/admin/faq.inc.php:60
 msgid ""
@@ -245,7 +246,7 @@ msgstr "Ci devi contattare per email (<a href=\"mailto:contact@wp-rocket.me\">co
 
 #: inc/admin/faq.inc.php:65
 msgid "Which tools should I use to measure the performance of my site?"
-msgstr ""
+msgstr "Quali strumenti dovrei usare per misurare le performance del mio sito?"
 
 #: inc/admin/faq.inc.php:66
 msgid ""
@@ -274,7 +275,7 @@ msgstr "Questi dati sono indicativi e non riflettono necessariamente la velocit�
 msgid ""
 "For tests closest to reality load time we recommend using <a href=\"%s\" "
 "target=\"_blank\">Pingdom Tools</a>."
-msgstr ""
+msgstr "Per test vicini al tempo di caricamento reale ti raccomandiamo di usare i <a href=\"%s\" target=\"_blank\">Pingdom Tools</a>."
 
 #: inc/admin/faq.inc.php:82 inc/admin/faq.inc.php:93
 msgid "No."
@@ -284,11 +285,11 @@ msgstr "No."
 msgid ""
 "It's necessary to have custom permalinks of the type <code>%s</code> rather "
 "than <code>%s</code>."
-msgstr ""
+msgstr "E' necessario avere permalink personalizzati del tipo <code>%s</code> invece di <code>%s</code>."
 
 #: inc/admin/faq.inc.php:85
 msgid "Which web servers is WP Rocket compatible with?"
-msgstr ""
+msgstr "Con quali server web è compatibile WP Rocket?"
 
 #: inc/admin/faq.inc.php:86
 msgid ""
@@ -296,25 +297,20 @@ msgid ""
 "Litepseed</strong> web servers."
 msgstr "WP Rocket è compatibile con i web servers <strong>Apache, NGINX, Microsoft IIS e Litepseed</strong>."
 
-#: inc/admin/faq.inc.php:88
-msgid ""
-"Reports from PageSpeed and YSlow tells me that the content is not gziped "
-"and/or did not expire, what should I do?"
-msgstr "I report di PageSpeed e YSlow mi dicono che il contenuto non è gziped e o non ha scadenza, cosa dovrei fare?"
-
 #: inc/admin/faq.inc.php:89
 msgid ""
-"WP Rocket automatically adds good rules timeouts and gzip for static files. "
-"If they are not applied, it is possible that there is a plugin conflict "
-"(exemple: <a href=\"%s\" target=\"_blank\">WP Retina 2x</a>). Try "
-"temporarily disabling all plugins except WP Rocket and retest."
+"WP Rocket automatically adds optimal timeout rules for static files and "
+"compresses them using gzip. If they are not applied, it is possible that "
+"there is a plugin conflict (exemple: <a href=\"%s\" target=\"_blank\">WP "
+"Retina 2x</a>). Try temporarily disabling all plugins except WP Rocket and "
+"retest."
 msgstr ""
 
 #: inc/admin/faq.inc.php:90
 msgid ""
 "If this is not conclusive, it means that <code>mod_expire</code> and/or "
 "<code>mod_deflate</code> are not enabled on your server."
-msgstr ""
+msgstr "Se ciò non ha effetto, questo significa che <code>mod_expire</code> e/o <code>mod_deflate</code> non sono abilitati sul tuo server."
 
 #: inc/admin/faq.inc.php:94
 msgid ""
@@ -333,7 +329,7 @@ msgid ""
 "However, you should exclude cart and checkout pages from caching. This is "
 "done from the advanced option <code>Never cache the following pages</code> "
 "by adding the following values:"
-msgstr ""
+msgstr "Tuttavia, si devono escludere le pagine cart e checkout dal caching. Si può farlo nell'opzione avanzata <code>Pagine da escludere dalla cache</code> aggiungendo i seguenti valori:"
 
 #: inc/admin/faq.inc.php:103
 msgid "/cart/"
@@ -347,20 +343,20 @@ msgstr "/checkout/(.*)"
 msgid ""
 "You even have the possibility to empty/preload the cache for a specific "
 "language or for all languages at the same time."
-msgstr ""
+msgstr "Hai anche la possibilità di svuotare/precaricare la cache per uno specifico linguaggio o per tutti i linguaggi contemporaneamente."
 
 #: inc/admin/faq.inc.php:111
 msgid ""
 "Minification is the process of removing all unnecessary characters in HTML, "
 "CSS or JavaScript files: spaces, comments, etc... This reduces the size of "
 "the files. Thus, browsers read these files faster."
-msgstr ""
+msgstr "La minificazione è il processo di rimozione di tutti gli elementi non necessari in un file HTML, CSS o Javascript: spazi, commenti, ecc... Questo permette di ridurre la dimensione dei files. Quindi, i browser leggono i files più velocemente."
 
 #: inc/admin/faq.inc.php:112
 msgid ""
 "Concatenation is to consolidate a set of files into one. This has the effect"
 " of reducing the number of HTTP requests."
-msgstr ""
+msgstr "La concatenazione è per consolidare un insieme di files in uno. Questo ha l'effetto di ridurre il numero di richieste HTTP."
 
 #: inc/admin/faq.inc.php:114
 msgid "What should I do if WP Rocket distorts my site display?"
@@ -370,13 +366,7 @@ msgstr "Cosa dovrei fare se WP Rocket distorce la visualizzazione del mio sito?"
 msgid ""
 "There is a good chance that the deformation is caused by the minification of"
 " HTML, CSS or JavaScript files. To resolve the problem, we recommend "
-"watching the following video: <a "
-"href=\"http://www.youtube.com/embed/iziXSvZgxLk\" "
-"class=\"fancybox\">http://www.youtube.com/embed/iziXSvZgxLk</a>."
-msgstr ""
-
-#: inc/admin/faq.inc.php:117
-msgid "How often is the cache updated?"
+"watching the following video: <a href=\"%1$s\" class=\"fancybox\">%1$s</a>."
 msgstr ""
 
 #: inc/admin/faq.inc.php:118
@@ -394,19 +384,15 @@ msgstr "Nelle opzioni di base, puoi anche specificare un periodo di pulizia auto
 #: inc/admin/faq.inc.php:122
 msgid ""
 "In advanced options, it's possible to specify URLs to not cache. For this, "
-"you must add in the input field <code>Should never be cached pages</code> "
-"the URLs to exclude."
-msgstr "Nelle opzioni avanzate, è possibile specificare URLs da non includere nella cache. Per farlo, devi aggiungere le URLs da escludere nel campo <code>Pagine da escludere dalla cache</code> "
-
-#: inc/admin/faq.inc.php:124
-msgid "How do the robots preload files from the cache?"
+"you must add the URLs to exclude in the input field <code>Never cache the "
+"following pages</code>."
 msgstr ""
 
 #: inc/admin/faq.inc.php:125
 msgid ""
 "A page is only cached on its first visit. To bypass this, we have developed "
 "two robots (in Python) that crawl the pages of your website."
-msgstr ""
+msgstr "Una pagina è inserita nella cache alla sua prima visita. Per aggirare questo, abbiamo sviluppato due robots (in Python) che scansionano le pagine del tuo sito."
 
 #: inc/admin/faq.inc.php:126
 msgid ""
@@ -419,7 +405,7 @@ msgstr "Il primo visita il tuo sito quando si utilizza il bottone \"Precarica la
 msgid ""
 "For more information, please watch this video: <a href=\"%s\" "
 "class=\"fancybox\">%s</a>."
-msgstr ""
+msgstr "Per ulteriori informazioni, per favore guarda questo video: <a href=\"%s\" class=\"fancybox\">%s</a>."
 
 #: inc/admin/notices.php:26 inc/admin/notices.php:30
 msgid "<b>%s</b> can not be deactivated because of <code>%s</code>."
@@ -433,13 +419,13 @@ msgstr "Questa costante è ancora definita nel file <code>wp-config.php</code> e
 
 #: inc/admin/notices.php:26
 msgid "Maybe we do not have the writing permissions for <code>%s</code>."
-msgstr ""
+msgstr "Forse non abbiamo i permessi di scrittura su <code>%s</code>."
 
 #: inc/admin/notices.php:26 inc/admin/notices.php:30
 msgid ""
 "Please give us permissions or resolve the problem yourself. Then retry "
 "deactivation."
-msgstr ""
+msgstr "Per favore dacci i permessi o risolvi il problema. Quindi riprova la disattivazione."
 
 #: inc/admin/notices.php:30
 msgid "This file is not writable and we can not remove these directives."
@@ -447,7 +433,7 @@ msgstr "Questo file non è scrivibile e non possiamo rimuovere queste direttive.
 
 #: inc/admin/notices.php:30
 msgid "Maybe we do not have writing permissions for <code>%s</code>."
-msgstr ""
+msgstr "Forse non abbiamo i permessi di scrittura su <code>%s</code>."
 
 #: inc/admin/notices.php:66
 msgid "You can still force the deactivation by clicking here."
@@ -466,14 +452,14 @@ msgid ""
 msgstr "<b>%s</b>: I seguenti plugins non sono compatibili con questo plugin e possono causare risultati indesiderati:"
 
 #: inc/admin/notices.php:162
-msgid "Desactivate"
-msgstr "Disattiva"
+msgid "Deactivate"
+msgstr ""
 
 #: inc/admin/notices.php:188
 msgid ""
 "<b>%s</b>: A custom permalink structure is required for the plugin to work "
 "properly. Please go to <a href=\"%s\">Permalink</a> to configure it."
-msgstr ""
+msgstr "<b>%s</b>: Per funzionare correttamente è richiesta una struttura personalizzata dei permalink. Per favore vai su <a href=\"%s\">Permalink</a> per configurarli."
 
 #: inc/admin/notices.php:219
 msgid ""
@@ -486,14 +472,14 @@ msgstr "<b>%s</b>: Sembra che non abbiamo <a href=\"%s\" target=\"_blank\">perme
 msgid ""
 "To fix this you have to set writing permissions for <code>wp-"
 "config.php</code> and then save the settings again."
-msgstr ""
+msgstr "Per correggere questo devi dare permessi di scrittura a <code>wp-config.php</code> e quindi salvare di nuovo le impostazioni."
 
 #: inc/admin/notices.php:223
 msgid ""
 "If the message persists, you have to put the following code in your <code"
 ">wp-config.php</code> file so that it works correctly. Click on the field "
 "and press Ctrl-A to select all."
-msgstr ""
+msgstr "Se il messaggio persiste, devi mettere il seguente codice nel tuo file <code>wp-config.php</code> in modo da farlo funzionare correttamente. Clicca sul campo e premi Ctrl-A per selezionare tutto."
 
 #: inc/admin/notices.php:264
 msgid ""
@@ -546,14 +532,14 @@ msgstr "Attenzione, non hai <a href=\"%1$s\" target=\"_blank\">permessi di scrit
 #: inc/admin/notices.php:412
 msgid ""
 "Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
-"permissions</a> on <b>%3$s</b> minify cache folder (<code>%2$s</code>). To "
-"make <b>%3$s</b> work properly, please CHMOD <code>755</code> or "
+"permissions</a> on <b>%3$s</b> minified cache folder (<code>%2$s</code>). To"
+" make <b>%3$s</b> work properly, please CHMOD <code>755</code> or "
 "<code>775</code> or <code>777</code> this folder."
-msgstr "Attenzione, non hai <a href=\"%1$s\" target=\"_blank\">permessi di scrittura</a> sulla cartella della cache di minificazione <b>%3$s</b>  (<code>%2$s</code>). Per far funzionare correttamente <b>%3$s</b>, per favore modifica i permessi  di questa cartella su CHMOD <code>755</code> o <code>775</code> o <code>777</code>."
+msgstr ""
 
 #: inc/admin/notices.php:437
 msgid "Thank you. Your license has been successfully validated!"
-msgstr ""
+msgstr "Grazie. La tua licenza è stata convalidata con successo!"
 
 #: inc/admin/notices.php:438
 msgid "Key: <code>%s</code><br>Email: <i>%s</i>"
@@ -571,13 +557,10 @@ msgstr "Scarica opzioni"
 msgid "<b>JS</b> files with Deferred Loading JavaScript"
 msgstr "Files <b>JS</b> con Caricamento Javascript Differito"
 
-#: inc/admin/options.php:195 inc/admin/options.php:235
+#: inc/admin/options.php:195 inc/admin/options.php:215
+#: inc/admin/options.php:235
 msgid "Wait until this file is loaded?"
 msgstr "Attendi finchè questo file è caricato?"
-
-#: inc/admin/options.php:215
-msgid "Wait until this file is loaded ?"
-msgstr "Attendi finchè questo file è caricato ?"
 
 #: inc/admin/options.php:243 inc/admin/options.php:762
 msgid "Add URL"
@@ -620,7 +603,7 @@ msgstr "Chiave API"
 
 #: inc/admin/options.php:430
 msgid "Please enter the API key obtained after your purchase."
-msgstr ""
+msgstr "Per favore inserisci la chiave API che hai ottenuto con il tuo acquisto."
 
 #: inc/admin/options.php:436 inc/admin/options.php:444
 msgid "E-mail Address"
@@ -649,9 +632,9 @@ msgstr "Il LazyLoad mostra le immagini su una pagina solo quando sono visibili a
 
 #: inc/admin/options.php:473 inc/admin/options.php:508
 msgid ""
-"This reduces the number of HTTP requests mechanism and improves the loading "
+"This mechanism reduces the number of HTTP requests and improves the loading "
 "time."
-msgstr "Questo riduce il numero di richieste HTTP e migliora il tempo di caricamento."
+msgstr ""
 
 #: inc/admin/options.php:479
 msgid ""
@@ -726,8 +709,8 @@ msgid "Enable caching for pages with SSL protocol (<code>https://</code>)."
 msgstr "Abilita il caching per le pagine con protocollo SSL (<code>https://</code>)."
 
 #: inc/admin/options.php:577 inc/admin/options.php:585
-msgid "Clear cache delay"
-msgstr "Ritardo cancellazione cache"
+msgid "Clear Cache Lifespan"
+msgstr ""
 
 #: inc/admin/options.php:591
 msgid "Unit of time"
@@ -751,9 +734,9 @@ msgstr "giorno(i)"
 
 #: inc/admin/options.php:603
 msgid ""
-"By default, clear cache time is 24 hours, this means that once created, the "
+"By default, cache lifespan is 24 hours. This means that once created, the "
 "cache files are automatically removed after 24 hours before being recreated."
-msgstr "Per impostazione predefinita, il tempo di cancellazione della cache è 24 ore, questo significa che una volta creati, i files in cache sono automaticamente rimossi dopo 24 ore prima di essere ricreati."
+msgstr ""
 
 #: inc/admin/options.php:604
 msgid ""
@@ -769,13 +752,9 @@ msgstr "Specifica 0 per tempo illimitato."
 msgid "Advanced options"
 msgstr "Opzioni avanzate"
 
-#: inc/admin/options.php:618
+#: inc/admin/options.php:618 inc/admin/options.php:626
 msgid "Prefetch DNS requests:"
 msgstr "Precarica richieste DNS:"
-
-#: inc/admin/options.php:626
-msgid "Prefetch DNS requests"
-msgstr "Precarica richieste DNS"
 
 #: inc/admin/options.php:631
 msgid ""
@@ -795,10 +774,10 @@ msgstr "Per apprendere altro riguardo a questa opzione e come utilizzarla corret
 
 #: inc/admin/options.php:643
 msgid ""
-"<strong>NB:</strong> Enter the domain names without their protocol, for "
+"<strong>Note:</strong> Enter the domain names without their protocol, for "
 "example: <code>//ajax.googleapis.com</code> without <code>http:</code> (one "
 "per line)."
-msgstr "<strong>NB:</strong> Inserisci i nomi a dominio senza il loro protocollo, per esempio: <code>//ajax.googleapis.com</code> senza <code>http:</code> (uno per linea)."
+msgstr ""
 
 #: inc/admin/options.php:649 inc/admin/options.php:657
 msgid "Empty the cache of the following pages when updating a post:"
@@ -810,16 +789,16 @@ msgid ""
 "line)."
 msgstr "Inserisci la URL di pagine addizionali da rimuovere dalla cache quando si aggiorna un articolo (una per riga)."
 
-#: inc/admin/options.php:663
-msgid "It's possible to use regular expressions (regex)."
-msgstr "E' possibile usare le espressioni regolari (regex)."
+#: inc/admin/options.php:663 inc/admin/options.php:688
+msgid "You can use regular expressions (regex)."
+msgstr "Puoi usare le espressioni regolari (regex)."
 
 #: inc/admin/options.php:668
 msgid ""
-"<strong>NB:</strong> When you update a post or when a comment is posted, the"
-" homepage, categories, and tags associated with this post are automatically "
-"removed from the cache and then, recreated by our bot."
-msgstr "<strong>NB:</strong> Quando aggiorni un articolo o quando viene inviato un commento, la homepage, le categorie, e le tag associate con questo articolo sono automaticamente rimosse dalla cache e quindi ricreate dal nostro bot."
+"<strong>Note:</strong> When you update a post or when a comment is posted, "
+"the homepage, categories and tags associated with this post are "
+"automatically removed from the cache and then recreated by our bot."
+msgstr ""
 
 #: inc/admin/options.php:674 inc/admin/options.php:682
 msgid "Never cache the following pages:"
@@ -828,10 +807,6 @@ msgstr "Escludi le seguenti pagine dalla cache:"
 #: inc/admin/options.php:687
 msgid "Enter the URL of pages to reject (one per line)."
 msgstr "Inserisci le URL delle pagine da rigettare (una per linea)."
-
-#: inc/admin/options.php:688
-msgid "You can use regular expressions (regex)."
-msgstr "Puoi usare le espressioni regolari (regex)."
 
 #: inc/admin/options.php:694 inc/admin/options.php:702
 msgid "Don't cache pages that use the following cookies:"
@@ -843,19 +818,19 @@ msgstr "Inserisci i nomi dei cookies (uno per riga)."
 
 #: inc/admin/options.php:713 inc/admin/options.php:721
 msgid "<b>CSS</b> files to exclude from minification:"
-msgstr ""
+msgstr "Files <b>CSS</b> da escludere dalla minificazione:"
 
 #: inc/admin/options.php:726
-msgid "Specify the URL of <b>CSS</b> files to reject (one per line)."
-msgstr "Specifica la URL di files <b>CSS</b> da rigettare (uno per riga)."
+msgid "Enter the URL of <b>CSS</b> files to reject (one per line)."
+msgstr ""
 
 #: inc/admin/options.php:732 inc/admin/options.php:740
 msgid "<b>JS</b> files to exclude from minification:"
-msgstr ""
+msgstr "Files <b>JS</b> da escludere dalla minificazione:"
 
 #: inc/admin/options.php:745
-msgid "Specify the URL of <b>JS</b> files to reject (one per line)."
-msgstr "Specifica la URL di files <b>JS</b> da rigettare (uno per riga)."
+msgid "Enter the URL of <b>JS</b> files to reject (one per line)."
+msgstr ""
 
 #: inc/admin/options.php:751 inc/admin/options.php:758
 msgid ""
@@ -944,12 +919,12 @@ msgstr "Beta Tester"
 
 #: inc/admin/options.php:940
 msgid "Yes I do!"
-msgstr ""
+msgstr "Si, lo voglio!"
 
 #: inc/admin/options.php:947
 msgid ""
-"Check it to participate to the WP Rocket Beta Program and get access to "
-"earlier new versions, thanks in advance."
+"Check it to participate in the WP Rocket Beta Program and get earlier access"
+" to new versions, thanks in advance."
 msgstr ""
 
 #: inc/admin/options.php:965
@@ -992,9 +967,9 @@ msgstr "Minimizzazione CSS e Javascript"
 
 #: inc/admin/options.php:1027
 msgid ""
-"This video gives some explanations about how to use the advanced process of "
-"minification and concatenation of CSS and JavaScript files."
-msgstr "Questo video fornisce alcune spiegazioni su come usare il processo avanzato di minificazione e concatenazione del files CSS e Javascript."
+"This video gives some explanations about how to use the advanced processes "
+"of minification and concatenation of CSS and JavaScript files."
+msgstr ""
 
 #: inc/admin/options.php:1034
 msgid "Preloading DNS queries"
@@ -1004,11 +979,11 @@ msgstr "Precaricamento delle query DNS"
 msgid ""
 "This video helps to easily understand the advanced option of \"Preloading "
 "DNS queries\" and the use of the filter <code>rocket_dns_prefetch</code>."
-msgstr ""
+msgstr "Questo video aiuta a comprendere facilmente le opzioni avanzate di \"Precaricamento delle query DNS\" e l'uso del filtro <code>rocket_dns_prefetch</code>."
 
 #: inc/admin/options.php:1046
-msgid "How to use the White Label functionnality?"
-msgstr "Come usare la funzionalità Etichetta Bianca?"
+msgid "How to use the White Label functionality?"
+msgstr ""
 
 #: inc/admin/options.php:1051
 msgid "This video helps to set up a White Label version of WP Rocket."
@@ -1020,9 +995,9 @@ msgstr "Come usare la funzionalità CDN?"
 
 #: inc/admin/options.php:1063
 msgid ""
-"This video helps to understand what is the CDN functionnality included since"
-" WP Rocket 2.1."
-msgstr "Questo video aiuta a comprendere cos'è la funzionalità CDN inclusa a partire da WP Rocket 2.1."
+"This video helps to understand what is the CDN functionality included since "
+"WP Rocket 2.1."
+msgstr ""
 
 #: inc/admin/options.php:1070
 msgid "How to use the CDN API?"
@@ -1030,9 +1005,9 @@ msgstr "Come usare la API CDN?"
 
 #: inc/admin/options.php:1075
 msgid ""
-"This video helps you to use the 2 functions "
+"This video helps to set up the two functions "
 "<code>get_rocket_cdn_url()</code> and <code>rocket_cdn_url()</code>."
-msgstr "Questo video ti aiuta ad usare le 2 funzioni <code>get_rocket_cdn_url()</code> e <code>rocket_cdn_url()</code>."
+msgstr ""
 
 #: inc/admin/options.php:1080 inc/admin/options.php:1083
 #: inc/admin/options.php:1129 inc/admin/options.php:1134
@@ -1116,7 +1091,7 @@ msgstr "%s cancellato"
 msgid ""
 "Last step before enjoying the high performances of our plugin, please <a "
 "href=\"%s\">Enter you API key</a> here."
-msgstr ""
+msgstr "L'ultimo passo prima di goderti le alte prestazioni del nostro plugin, per favore <a href=\"%s\">Inserisci la tua chiave API</a> qui."
 
 #: inc/functions/admin.php:172
 msgid ""

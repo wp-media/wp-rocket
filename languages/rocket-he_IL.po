@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2014-07-31 10:24:48+00:00\n"
-"PO-Revision-Date: 2014-07-31 16:00+0000\n"
-"Last-Translator: Seggev Shoresh\n"
+"POT-Creation-Date: 2014-08-05 10:44:24+00:00\n"
+"PO-Revision-Date: 2014-08-05 10:44+0000\n"
+"Last-Translator: FxB <fxb@wp-translations.org>\n"
 "Language-Team: Hebrew (Israel) (http://www.transifex.com/projects/p/wp-rocket/language/he_IL/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -91,7 +91,7 @@ msgstr "האם WP Rocket עובד עם ברירת המחדל של מבנה קי�
 msgid "Which web servers WP Rocket is compatible with?"
 msgstr "אילו שרתים נתמכים על-ידי WP Rocket?"
 
-#: inc/admin/faq.inc.php:13
+#: inc/admin/faq.inc.php:13 inc/admin/faq.inc.php:88
 msgid ""
 "Reports from PageSpeed and YSlow tell me that the content is not gziped "
 "and/or did not expire, what should I do?"
@@ -119,28 +119,29 @@ msgstr "האם WP Rocket תואם את WPML או qTranslate?"
 
 #: inc/admin/faq.inc.php:18 inc/admin/faq.inc.php:110
 msgid "What are the minification and concatenation of files?"
-msgstr "מהם כיווץ ושרשור קבצים?"
+msgstr "מהם צמצום ושרשור קבצים?"
 
 #: inc/admin/faq.inc.php:19
 msgid "What should I do if WP Rocket distorts my website display?"
 msgstr "מה עליי לעשות אם WP Rocket מעוות את תצוגת האתר שלי?"
 
-#: inc/admin/faq.inc.php:20
-msgid "How often the cache is updated?"
+#: inc/admin/faq.inc.php:20 inc/admin/faq.inc.php:117
+msgid "How often is the cache updated?"
 msgstr "באיזו תדירות זיכרון המטמון מעודכן?"
 
 #: inc/admin/faq.inc.php:21 inc/admin/faq.inc.php:121
 msgid "How to exclude a particular page from caching?"
 msgstr "כיצד לא להכליל עמוד מסוים בהטמנה בזיכרון?"
 
-#: inc/admin/faq.inc.php:22
-msgid "How does the robots of preloading files cache work?"
-msgstr ""
+#: inc/admin/faq.inc.php:22 inc/admin/faq.inc.php:124
+msgid "How do the robots preload files from the cache?"
+msgstr "כיצד הרובוטים טוענים מראש קבצים מזיכרון המטמון?"
 
 #: inc/admin/faq.inc.php:27
 msgid ""
-"A key is valid for 1 domain name. If you have example.com, that makes 1 key."
-msgstr "מפתח תקף עבור שם דומיין אחד. אם יש לך מפתח עבור example.com, זה מפתח אחד."
+"A key is valid for one domain name. If you have example.com, that makes one "
+"key."
+msgstr "מפתח תקף עבור שם דומיין אחד. אם ברשותך example.com, זה מפתח אחד."
 
 #: inc/admin/faq.inc.php:28
 msgid ""
@@ -157,35 +158,35 @@ msgstr "אולם, שם דומיין בסיסי שונה, כגון example.org א
 
 #: inc/admin/faq.inc.php:32
 msgid "WP Rocket is a full cache plugin that comes with many features:"
-msgstr "WP Rocket הוא תוסף זיכרון מטמון מלא אשר מגיע עם תכונות רבות:"
+msgstr "WP Rocket הוא תוסף זיכרון מטמון מלא אשר מגיע עם שלל תכונות:"
 
 #: inc/admin/faq.inc.php:34 inc/admin/faq.inc.php:50
 msgid "Caching of all the pages for quick viewing"
 msgstr "הטמנת כל העמודים בזיכרון לצפייה מהירה"
 
 #: inc/admin/faq.inc.php:35
-msgid "Preloading the cache of files using 2 bots in Python"
-msgstr "טעינה מראש של זיכרון המטמון של קבצים באמצעות שני בוטים בPython"
+msgid "Preloading the cache of files using two bots in Python"
+msgstr "טעינה מראש של קבצים מוטמנים באמצעות שני רובוטים ב-Python"
 
 #: inc/admin/faq.inc.php:36
-msgid "Reduction of the number of HTTP requests to reduce the load time"
-msgstr "צמצום מספר פניות HTTP כדי להקטין את זמן הטעינה"
+msgid "Reduction of the number of HTTP requests to reduce loading time"
+msgstr "צמצום מספר פניות HTTP להקטנת זמן טעינה"
 
 #: inc/admin/faq.inc.php:37
-msgid "Decrease of the bandwidth with GZIP compression"
-msgstr "הקטנת רוחב הפס עם דחיסת GZIP"
+msgid "Decreasing bandwidth usage with GZIP compression"
+msgstr "צמצום שימוש ברוחב פס באמצעות דחיסת GZIP"
 
 #: inc/admin/faq.inc.php:38 inc/admin/faq.inc.php:52
 msgid "Management of the headers (expires, etags...)"
 msgstr "ניהול של הheaders (expires, etags...)"
 
 #: inc/admin/faq.inc.php:39
-msgid "Minification and concatenation of the JS and CSS files"
-msgstr "צמצום ושרשור של קבצי הCSS והJS"
+msgid "Minification and concatenation of JS and CSS files"
+msgstr "צמצום ושרשור של קבצי JS ו-CSS"
 
 #: inc/admin/faq.inc.php:40
-msgid "Loading delay of images (LazyLoad)"
-msgstr "דיחוי טעינת תמונות (Lazyload)"
+msgid "Deferred loading of images (LazyLoad)"
+msgstr "טעינה דחויה של תמונות (LazyLoad)"
 
 #: inc/admin/faq.inc.php:41
 msgid "Deferred loading of JavaScript files"
@@ -193,7 +194,7 @@ msgstr "טעינה דחויה של קבצי JavaScript"
 
 #: inc/admin/faq.inc.php:42 inc/admin/faq.inc.php:53
 msgid "Image Optimisation"
-msgstr "ייעול תמונות"
+msgstr "אופטימיזציית תמונות"
 
 #: inc/admin/faq.inc.php:46 inc/admin/faq.inc.php:97 inc/admin/faq.inc.php:101
 #: inc/admin/faq.inc.php:107
@@ -209,9 +210,9 @@ msgstr "האפשרויות הבסיסיות הן תהליכי ייעול בסי�
 
 #: inc/admin/faq.inc.php:48
 msgid ""
-"Whatever is your WP Rocket configuration, the following features will be "
-"still active:"
-msgstr "לא משנה מהן הגדרות WP Rocket שלך, האפשרויות הבאות יישארו פעילות:"
+"Whatever your WP Rocket configuration is, the following features will still "
+"be active:"
+msgstr "לא משנה מה תהיה הגדרת WP Rocket שלך, התכונות הבאות  עדיין יישארו פעילות:"
 
 #: inc/admin/faq.inc.php:51
 msgid "Decrease bandwidth usage with our GZIP compression"
@@ -255,7 +256,7 @@ msgstr "באפשרותך למדוד את ביצועי האתר שלך בעזרת
 
 #: inc/admin/faq.inc.php:73
 msgid "These tools give you two indications:"
-msgstr "כלים אלו נותנים לך שתי התראות:"
+msgstr "כלים אלו נותנים לך שתי אינדיקציות:"
 
 #: inc/admin/faq.inc.php:75
 msgid "a global note of good practices to apply"
@@ -289,7 +290,7 @@ msgstr "זה הכרחי להגדיר מבנה קישורים מסוג <code>%s</
 
 #: inc/admin/faq.inc.php:85
 msgid "Which web servers is WP Rocket compatible with?"
-msgstr "אילו שרתים נתמכים ע&quot;י WP Rocket?"
+msgstr "אילו שרתים תומכים ב-WP Rocket?"
 
 #: inc/admin/faq.inc.php:86
 msgid ""
@@ -297,19 +298,14 @@ msgid ""
 "Litepseed</strong> web servers."
 msgstr "WP Rocket תואם שרתי <strong>Apache, NGINX, Microsoft IIS et Litepseed</strong>."
 
-#: inc/admin/faq.inc.php:88
-msgid ""
-"Reports from PageSpeed and YSlow tells me that the content is not gziped "
-"and/or did not expire, what should I do?"
-msgstr ""
-
 #: inc/admin/faq.inc.php:89
 msgid ""
-"WP Rocket automatically adds good rules timeouts and gzip for static files. "
-"If they are not applied, it is possible that there is a plugin conflict "
-"(exemple: <a href=\"%s\" target=\"_blank\">WP Retina 2x</a>). Try "
-"temporarily disabling all plugins except WP Rocket and retest."
-msgstr ""
+"WP Rocket automatically adds optimal timeout rules for static files and "
+"compresses them using gzip. If they are not applied, it is possible that "
+"there is a plugin conflict (exemple: <a href=\"%s\" target=\"_blank\">WP "
+"Retina 2x</a>). Try temporarily disabling all plugins except WP Rocket and "
+"retest."
+msgstr "WP Rocket מוסיף אוטומטית חוקי תפוגה אופטימלים לקבצים סטטיים ומכווץ אותם באמצעות gzip. אם הם אינם מיושמים, ייתכן כי ישנו קונפליקט בין תוספים (לדוגמא: <a href=\"%s\" target=\"_blank\">WP Retina 2x</a>). נסה לכבות באופן זמני את כל התוספים מלבד WP Rocket ובדוק שוב."
 
 #: inc/admin/faq.inc.php:90
 msgid ""
@@ -321,7 +317,7 @@ msgstr "אם זה לא חד-משמעתי, משמעות הדבר היא ש<code>m
 msgid ""
 "It's imperative to <strong>remove all other optimization plugins</strong> "
 "(cache, minification, LazyLoad) PRIOR to the activation of WP Rocket."
-msgstr "זה הכרחי <strong>להסיר את כל תוספי האופטימיזציה</strong> (זיכרון מטמון, כיווץ, LazyLoad) <b>לפני</b> הפעלת WP Rocket."
+msgstr "זה הכרחי <strong>להסיר את כל תוספי האופטימיזציה</strong> (זיכרון מטמון, צמצום, LazyLoad) <b>לפני</b> הפעלת WP Rocket."
 
 #: inc/admin/faq.inc.php:98
 msgid ""
@@ -355,13 +351,13 @@ msgid ""
 "Minification is the process of removing all unnecessary characters in HTML, "
 "CSS or JavaScript files: spaces, comments, etc... This reduces the size of "
 "the files. Thus, browsers read these files faster."
-msgstr "כיווץ הוא תהליך של הסרת כל התווים הלא נחוצים בקבצי HTML, CSS או JavaScript: רווחים, הערות וכו'. גודל הקבצים קטן, ולכן דפדפנים קוראים אותם מהר יותר."
+msgstr "צמצום הוא תהליך של הסרת כל התווים הלא נחוצים בקבצי HTML, CSS או JavaScript: רווחים, הערות וכו'. תהליך זה מקטין את גודל הקבצים, ולכן דפדפנים קוראים אותם מהר יותר."
 
 #: inc/admin/faq.inc.php:112
 msgid ""
 "Concatenation is to consolidate a set of files into one. This has the effect"
 " of reducing the number of HTTP requests."
-msgstr "שרשור הוא איחוד מספר קבצים לקובץ בודד. תהליך זה מצמצם את מספר פניות הHTTP."
+msgstr "שרשור הוא איחוד מספר קבצים לקובץ בודד. תהליך זה מצמצם את מספר פניות ה-HTTP."
 
 #: inc/admin/faq.inc.php:114
 msgid "What should I do if WP Rocket distorts my site display?"
@@ -371,20 +367,14 @@ msgstr "מה עליי לעשות אם WP Rocket מעוות את תצוגת הא�
 msgid ""
 "There is a good chance that the deformation is caused by the minification of"
 " HTML, CSS or JavaScript files. To resolve the problem, we recommend "
-"watching the following video: <a "
-"href=\"http://www.youtube.com/embed/iziXSvZgxLk\" "
-"class=\"fancybox\">http://www.youtube.com/embed/iziXSvZgxLk</a>."
-msgstr ""
-
-#: inc/admin/faq.inc.php:117
-msgid "How often is the cache updated?"
-msgstr "באיזו תדירות זיכרון המטמון מעודכן?"
+"watching the following video: <a href=\"%1$s\" class=\"fancybox\">%1$s</a>."
+msgstr "ישנו סיכוי טוב שהעיוות נגרם ע\"י הצמצום של קבצי HTML, CSS, או JavaScript. כדי לפתור בעיה זו, אנו ממליצים לצפות בוידאו הבא: <a href=\"%1$s\" class=\"fancybox\">%1$s</a>."
 
 #: inc/admin/faq.inc.php:118
 msgid ""
 "The cache is automatically refreshed at every update of your content "
 "(add/edit/delete of an article, publication of a comment, etc..)."
-msgstr "זיכרון המטמון מרוענן באופן אוטומטי בכל עדכון של התוכן שלך (הוספה/עריכה/מחיקה/ של מאמר, תגובה וכו')."
+msgstr "זיכרון המטמון מרוענן באופן אוטומטי בכל עדכון של התוכן שלך (הוספה/עריכה/מחיקה/ של מאמר, פרסום תגובה וכו')."
 
 #: inc/admin/faq.inc.php:119
 msgid ""
@@ -395,13 +385,9 @@ msgstr "באפשרויות הבסיסיות, באפשרותך גם לציין פ
 #: inc/admin/faq.inc.php:122
 msgid ""
 "In advanced options, it's possible to specify URLs to not cache. For this, "
-"you must add in the input field <code>Should never be cached pages</code> "
-"the URLs to exclude."
-msgstr ""
-
-#: inc/admin/faq.inc.php:124
-msgid "How do the robots preload files from the cache?"
-msgstr "כיצד הרובוטים טוענים מראש קבצים מזיכרון המטמון?"
+"you must add the URLs to exclude in the input field <code>Never cache the "
+"following pages</code>."
+msgstr "באפשרויות המתקדמות ניתן לציין כתובות URL שלא להטמין בזיכרון. לשם כך, עליך להוסיף את כתובות ה-URL להוציא מן הכלל בשדה <code>לעולם אל תטמין בזיכרון את העמודים הבאים</code>."
 
 #: inc/admin/faq.inc.php:125
 msgid ""
@@ -467,8 +453,8 @@ msgid ""
 msgstr "<b>%s</b>: התוספים הבאים אינם תואמים את התוסף הזה ועלולים לגרום לתוצאות בלתי-צפויות:"
 
 #: inc/admin/notices.php:162
-msgid "Desactivate"
-msgstr "כבה"
+msgid "Deactivate"
+msgstr "כיבוי"
 
 #: inc/admin/notices.php:188
 msgid ""
@@ -534,7 +520,7 @@ msgid ""
 "<code>755</code> or <code>775</code> or <code>777</code> this "
 "folder.<br/>When the problem is solved, thank you to save the %3$s options "
 "to generate the configuration file."
-msgstr ""
+msgstr "זהירות, אין לך <a href=\"%1$s\" target=\"_blank\">הרשאות כתיבה</a> עבור תיקיית הגדרת דומיין <b>%3$s</b>  (<code>%2$s</code>). כדי ש<b>%3$s</b> יעבוד כראוי, אנא הפעל את פונקציית CHMOD עם קוד <code>775</code>, <code>755</code> או <code>777</code> על תיקייה זו.<br/>כאשר הבעיה נפתרה, נודה לך אם תשמור את אפשרויות %3$s כדי לייצר את קובץ ההגדרות."
 
 #: inc/admin/notices.php:383
 msgid ""
@@ -542,19 +528,19 @@ msgid ""
 "permissions</a> on <b>%3$s</b> cache folder (<code>%2$s</code>). For "
 "<b>%3$s</b> works properly, please CHMOD <code>755</code> or "
 "<code>775</code> or <code>777</code> this folder."
-msgstr ""
+msgstr "זהירות, אין לך <a href=\"%1$s\" target=\"_blank\">הרשאות כתיבה</a> עבור תיקיית זיכרון מטמון <b>%3$s</b>  (<code>%2$s</code>). כדי ש<b>%3$s</b> יעבוד כראוי, אנא הפעל את פונקציית CHMOD עם קוד <code>775</code>, <code>755</code> או <code>777</code> על תיקייה זו."
 
 #: inc/admin/notices.php:412
 msgid ""
 "Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
-"permissions</a> on <b>%3$s</b> minify cache folder (<code>%2$s</code>). To "
-"make <b>%3$s</b> work properly, please CHMOD <code>755</code> or "
+"permissions</a> on <b>%3$s</b> minified cache folder (<code>%2$s</code>). To"
+" make <b>%3$s</b> work properly, please CHMOD <code>755</code> or "
 "<code>775</code> or <code>777</code> this folder."
-msgstr ""
+msgstr "זהירות, אין לך <a href=\"%1$s\" target=\"_blank\">הרשאות כתיבה</a> עבור תיקיית קבצי המטמון המצומצמים <b>%3$s</b>  (<code>%2$s</code>). כדי ש<b>%3$s</b> יעבוד כראוי, אנא הפעל את פונקציית CHMOD עם קוד <code>775</code>, <code>755</code> או <code>777</code> על תיקייה זו."
 
 #: inc/admin/notices.php:437
 msgid "Thank you. Your license has been successfully validated!"
-msgstr "תודה רבה. רישיונך עבר ווידוא בהצלחה!"
+msgstr "תודה רבה. רישיונך אומת בהצלחה!"
 
 #: inc/admin/notices.php:438
 msgid "Key: <code>%s</code><br>Email: <i>%s</i>"
@@ -572,12 +558,9 @@ msgstr "אפשרויות הורדה"
 msgid "<b>JS</b> files with Deferred Loading JavaScript"
 msgstr "קבצי <b>JS</b> עם טעינת JavaScript דחויה"
 
-#: inc/admin/options.php:195 inc/admin/options.php:235
+#: inc/admin/options.php:195 inc/admin/options.php:215
+#: inc/admin/options.php:235
 msgid "Wait until this file is loaded?"
-msgstr "לחכות עד שקובץ זה נטען?"
-
-#: inc/admin/options.php:215
-msgid "Wait until this file is loaded ?"
 msgstr "לחכות עד שקובץ זה נטען?"
 
 #: inc/admin/options.php:243 inc/admin/options.php:762
@@ -613,7 +596,7 @@ msgstr "צפה בוידיאו"
 
 #: inc/admin/options.php:414
 msgid "License validation"
-msgstr "וידוא רישיון"
+msgstr "אימות רישיון"
 
 #: inc/admin/options.php:417 inc/admin/options.php:425
 msgid "API Key"
@@ -629,7 +612,7 @@ msgstr "כתובת אימייל"
 
 #: inc/admin/options.php:449
 msgid "The one used for the purchase, in your support account."
-msgstr ""
+msgstr "הכתובת בה השתמשת בעת הרכישה, בחשבון התמיכה שלך."
 
 #: inc/admin/options.php:455 inc/admin/options.php:1120
 msgid "Basic options"
@@ -650,9 +633,9 @@ msgstr "LazyLoad מציג למשתמש תמונות בעמודים רק כאשר
 
 #: inc/admin/options.php:473 inc/admin/options.php:508
 msgid ""
-"This reduces the number of HTTP requests mechanism and improves the loading "
+"This mechanism reduces the number of HTTP requests and improves the loading "
 "time."
-msgstr ""
+msgstr "מנגנון זה מצמצם את מספר פניות ה-HTTP ומשפר את זמן הטעינה."
 
 #: inc/admin/options.php:479
 msgid ""
@@ -686,7 +669,7 @@ msgstr "מנגנון זה מקטין את המשקל של כל קובץ ומאפ
 
 #: inc/admin/options.php:507
 msgid "Concatenation combines all CSS and JavaScript files."
-msgstr "שרשור מאגד את כל קבצי הCSS ו-JavaScript."
+msgstr "שרשור מאגד את כל קבצי הCSS וה-JavaScript."
 
 #: inc/admin/options.php:513
 msgid "Concatenating files can cause display errors."
@@ -727,8 +710,8 @@ msgid "Enable caching for pages with SSL protocol (<code>https://</code>)."
 msgstr "אפשר הטמנה בזיגעבור עמודים עם פרוטוקול SSL (<code>https://</code>)."
 
 #: inc/admin/options.php:577 inc/admin/options.php:585
-msgid "Clear cache delay"
-msgstr "נקה השהיית זיכרון מטמון"
+msgid "Clear Cache Lifespan"
+msgstr ""
 
 #: inc/admin/options.php:591
 msgid "Unit of time"
@@ -752,9 +735,9 @@ msgstr "יום/ימים"
 
 #: inc/admin/options.php:603
 msgid ""
-"By default, clear cache time is 24 hours, this means that once created, the "
+"By default, cache lifespan is 24 hours. This means that once created, the "
 "cache files are automatically removed after 24 hours before being recreated."
-msgstr ""
+msgstr "כברירת מחדל, תוקף זיכרון המטמון הוא 24 שעות. זה אומר שברגע שנוצרו, קבצי המטמון מוסרים אוטומטית לאחר 24 שעות לפני שהם נוצרים מחדש."
 
 #: inc/admin/options.php:604
 msgid ""
@@ -770,19 +753,15 @@ msgstr "הזן 0 עבור תוקף בלתי מוגבל."
 msgid "Advanced options"
 msgstr "אפשרויות מתקדמות"
 
-#: inc/admin/options.php:618
+#: inc/admin/options.php:618 inc/admin/options.php:626
 msgid "Prefetch DNS requests:"
-msgstr ""
-
-#: inc/admin/options.php:626
-msgid "Prefetch DNS requests"
-msgstr "שלוף מראש פניות DNS"
+msgstr "שליפה מראש של פניות DNS:"
 
 #: inc/admin/options.php:631
 msgid ""
 "DNS prefetching is a way for browsers to anticipate the DNS resolution of "
 "external domains from your site."
-msgstr "שליפה מראש של פניות DNS היא דרך עבור דפדפנים לצפות מראש את אבחנת הדומיינים החיצוניים של הDNS מהשרת שלך."
+msgstr "שליפה מראש של פניות DNS היא דרך עבור דפדפנים לצפות מראש את אבחנת הדומיינים החיצוניים של ה-DNS מהשרת שלך."
 
 #: inc/admin/options.php:632
 msgid "This mechanism reduces the latency of some external files."
@@ -796,10 +775,10 @@ msgstr "כדי ללמוד עוד על האפשרות הזו וכיצד להשת�
 
 #: inc/admin/options.php:643
 msgid ""
-"<strong>NB:</strong> Enter the domain names without their protocol, for "
+"<strong>Note:</strong> Enter the domain names without their protocol, for "
 "example: <code>//ajax.googleapis.com</code> without <code>http:</code> (one "
 "per line)."
-msgstr "<strong>NB:</strong>: הזן את שמות הדומיינים ללא הפרוטוקול שלהם, לדוגמא: <code>//ajax.googleapis.com</code> ללא<code>http:</code> (אחד לשורה)."
+msgstr "<strong>הערה:</strong> הזן את שמות הדומיין ללא הפרוטוקול שלהם, לדוגמא: <code>//ajax.googleapis.com</code> ללא <code>http:</code> (אחד לשורה)."
 
 #: inc/admin/options.php:649 inc/admin/options.php:657
 msgid "Empty the cache of the following pages when updating a post:"
@@ -811,16 +790,16 @@ msgid ""
 "line)."
 msgstr "הזן URL של עמודים נוספים לטהר בעת עדכון פוסט (אחד לשורה)."
 
-#: inc/admin/options.php:663
-msgid "It's possible to use regular expressions (regex)."
-msgstr "ניתן להשתמש בביטויים רגולרים (regex)."
+#: inc/admin/options.php:663 inc/admin/options.php:688
+msgid "You can use regular expressions (regex)."
+msgstr "באפשרותך להשתמש בביטויים רגולריים (regex)."
 
 #: inc/admin/options.php:668
 msgid ""
-"<strong>NB:</strong> When you update a post or when a comment is posted, the"
-" homepage, categories, and tags associated with this post are automatically "
-"removed from the cache and then, recreated by our bot."
-msgstr ""
+"<strong>Note:</strong> When you update a post or when a comment is posted, "
+"the homepage, categories and tags associated with this post are "
+"automatically removed from the cache and then recreated by our bot."
+msgstr "<strong>הערה:</strong> כאשר אתה מעדכן פוסט או כאשר תגובה מתפרסמת, דף הבית, קטגוריות, ותגיות המשויכים לפוסט זה מוסרים אוטומטית מזיכרון המטמון ולאחר מכן נוצרים מחדש ע&quot;י הרובוט שלנו."
 
 #: inc/admin/options.php:674 inc/admin/options.php:682
 msgid "Never cache the following pages:"
@@ -828,11 +807,7 @@ msgstr "לעולם אל תטמין בזיכרון את העמודים הבאים
 
 #: inc/admin/options.php:687
 msgid "Enter the URL of pages to reject (one per line)."
-msgstr "הזן את הURL של עמודים לדחות (אחד לשורה)."
-
-#: inc/admin/options.php:688
-msgid "You can use regular expressions (regex)."
-msgstr "באפשרותך להשתמש בביטויים רגולריים (regex)."
+msgstr "הזן את כתובות ה-URL של עמודים לדחות (אחת לשורה)."
 
 #: inc/admin/options.php:694 inc/admin/options.php:702
 msgid "Don't cache pages that use the following cookies:"
@@ -844,25 +819,25 @@ msgstr "ציין את שמות העוגיות (אחד לשורה)."
 
 #: inc/admin/options.php:713 inc/admin/options.php:721
 msgid "<b>CSS</b> files to exclude from minification:"
-msgstr "קבצי <b>CSS</b> שלא להכליל בהטמנה בזיכרון:"
+msgstr "קבצי <b>CSS</b> שלא לצמצם:"
 
 #: inc/admin/options.php:726
-msgid "Specify the URL of <b>CSS</b> files to reject (one per line)."
-msgstr "פרט את הURL של קבצי <b>CSS</b> שלא לקבל (אחד לשורה)."
+msgid "Enter the URL of <b>CSS</b> files to reject (one per line)."
+msgstr "הזן את כתובות ה-URL של קבצי <b>CSS</b> לדחות (אחת לשורה)."
 
 #: inc/admin/options.php:732 inc/admin/options.php:740
 msgid "<b>JS</b> files to exclude from minification:"
-msgstr "קבצי <b>JS</b> שלא להכליל בהטמנה בזיכרון:"
+msgstr "קבצי <b>JS</b> שלא לצמצם:"
 
 #: inc/admin/options.php:745
-msgid "Specify the URL of <b>JS</b> files to reject (one per line)."
-msgstr "פרט את הURL של קבצי <b>JS</b> שלא לקבל (אחד לשורה)."
+msgid "Enter the URL of <b>JS</b> files to reject (one per line)."
+msgstr "הזן את כתובות ה-URL של קבצי <b>JS</b> לדחות (אחת לשורה)."
 
 #: inc/admin/options.php:751 inc/admin/options.php:758
 msgid ""
 "<b>JS</b> files to be included in the footer during the minification "
 "process:"
-msgstr "קבצי <b>JS</b> להכליל בתחתית העמוד (footer) במהלך תהליך הכיווץ:"
+msgstr "קבצי <b>JS</b> להכליל בתחתית העמוד (footer) במהלך תהליך הצמצום:"
 
 #: inc/admin/options.php:767 inc/admin/options.php:795
 msgid "Empty the field to remove it."
@@ -870,7 +845,7 @@ msgstr "רוקן את השדה להסרתו."
 
 #: inc/admin/options.php:773 inc/admin/options.php:801
 msgid "You must specify the complete URL of the files."
-msgstr "עליך לפרט את הURL המלא של הקבצים."
+msgstr "עליך לפרט את כתובות ה-URL המלאות של הקבצים."
 
 #: inc/admin/options.php:779
 msgid "<b>JS</b> files with deferred loading:"
@@ -900,7 +875,7 @@ msgid ""
 "Images) with the url entered below. This way all your content will be copied"
 " to a dedicated hosting or a CDN system <a href=\"http://www.maxcdn.com/\" "
 "target=\"_blank\">maxCDN</a>."
-msgstr ""
+msgstr "פונקציונליות CDN מחליפה את כל כתובות הURL של הקבצים הסטטיים והמדיה שלך (CSS, JS ותמונות) עם הURL שהוזן למטה. בצורה זו כל התוכן שלך יועתק למערכת אחסון או CDN ייעודית <a href=\"http://www.maxcdn.com/\" target=\"_blank\">maxCDN</a>."
 
 #: inc/admin/options.php:836 inc/admin/options.php:1124
 msgid "White Label"
@@ -949,9 +924,9 @@ msgstr "כן אני רוצה!"
 
 #: inc/admin/options.php:947
 msgid ""
-"Check it to participate to the WP Rocket Beta Program and get access to "
-"earlier new versions, thanks in advance."
-msgstr "סמן וי כדי להשתתף בתוכנית הבטא של WP Rocket ולקבל גישה מוקדמת לגרסאות חדשות. תודה מראש."
+"Check it to participate in the WP Rocket Beta Program and get earlier access"
+" to new versions, thanks in advance."
+msgstr "סמן וי להשתתפות בתוכנית הבטא של WP Rocket ולקבל גישה מוקדמת לגרסאות חדשות. תודה מראש."
 
 #: inc/admin/options.php:965
 msgid "Clear the cache for the whole site."
@@ -989,13 +964,13 @@ msgstr "וידאו זה נותן כמה הסברים לגבי שני רובוט�
 
 #: inc/admin/options.php:1022
 msgid "CSS and JavaScript minification"
-msgstr "כיווץ CSS וJavaScript "
+msgstr "צמצום CSS ו-JavaScript "
 
 #: inc/admin/options.php:1027
 msgid ""
-"This video gives some explanations about how to use the advanced process of "
-"minification and concatenation of CSS and JavaScript files."
-msgstr ""
+"This video gives some explanations about how to use the advanced processes "
+"of minification and concatenation of CSS and JavaScript files."
+msgstr "וידאו זה נותן מספר הסברים לגבי כיצד להשתמש בתהליכים המתקדמים של צמצום ושרשור קבצי CSS ו-JavaScript."
 
 #: inc/admin/options.php:1034
 msgid "Preloading DNS queries"
@@ -1005,10 +980,10 @@ msgstr "טעינת שאילתות DNS מראש"
 msgid ""
 "This video helps to easily understand the advanced option of \"Preloading "
 "DNS queries\" and the use of the filter <code>rocket_dns_prefetch</code>."
-msgstr ""
+msgstr "וידאו זה עוזר להבין את האפשרות המתקדמת של \"טעינת שאילתות DNS מראש\" והשימוש בפילטר <code>rocket_dns_prefetch</code>."
 
 #: inc/admin/options.php:1046
-msgid "How to use the White Label functionnality?"
+msgid "How to use the White Label functionality?"
 msgstr "כיצד להשתמש בפונקציונליות \"תווית לבנה\"?"
 
 #: inc/admin/options.php:1051
@@ -1021,9 +996,9 @@ msgstr "כיצד להשתמש בפונקציונליות ה-CDN?"
 
 #: inc/admin/options.php:1063
 msgid ""
-"This video helps to understand what is the CDN functionnality included since"
-" WP Rocket 2.1."
-msgstr "וידאו זה עוזר להבין מהי פונקציונליות הCDN הכלולה מאז WP Rocket 2.1."
+"This video helps to understand what is the CDN functionality included since "
+"WP Rocket 2.1."
+msgstr "וידאו זה עוזר להבין מהי פונקציונליות ה-CDN הכלולה מאז WP Rocket 2.1."
 
 #: inc/admin/options.php:1070
 msgid "How to use the CDN API?"
@@ -1031,9 +1006,9 @@ msgstr "כיצד להשתמש בAPI של CDN?"
 
 #: inc/admin/options.php:1075
 msgid ""
-"This video helps you to use the 2 functions "
+"This video helps to set up the two functions "
 "<code>get_rocket_cdn_url()</code> and <code>rocket_cdn_url()</code>."
-msgstr "וידאו זה עוזר לך להשתמש בשתי הפונקציות <code>get_rocket_cdn_url()</code> ו-<code>rocket_cdn_url()</code>."
+msgstr "וידאו זה עוזר להגדיר את שתי הפונקציות <code>get_rocket_cdn_url()</code> ו-<code>rocket_cdn_url()</code>."
 
 #: inc/admin/options.php:1080 inc/admin/options.php:1083
 #: inc/admin/options.php:1129 inc/admin/options.php:1134
