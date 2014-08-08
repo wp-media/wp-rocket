@@ -152,7 +152,7 @@ function rocket_clean_post( $post_id )
 
 	// Polylang
 	} else if ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
-		$lang = $polylang->get_post_language( $post_id )->slug;
+		$lang = $GLOBALS['polylang']->get_post_language( $post_id )->slug;
 	}
 	rocket_clean_home( $lang );
 
