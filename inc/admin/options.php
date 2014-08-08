@@ -516,7 +516,7 @@ function rocket_display_options()
 				'display'		=> ! rocket_is_white_label(),
 				'type'			=> 'helper_warning',
 				'name'			=> 'minify_help2',
-				'description'  => sprintf( __( 'In case of any errors we recommend you to turn off this option or watch the following video: <a href="%1$s" class="fancybox">%1$s</a>.', 'rocket' ), 'http://www.youtube.com/embed/5-Llh0ivyjs' )
+				'description'  => sprintf( __( 'In case of any errors we recommend you to turn off this option or watch the following video: <a href="%1$s" class="fancybox">%1$s</a>.', 'rocket' ), ( defined( 'WPLANG' ) && WPLANG == 'fr_FR' ) ? 'http://www.youtube.com/embed/5-Llh0ivyjs' : 'http://www.youtube.com/embed/kymoxCwW03c' )
 			),
 
 		)
@@ -600,8 +600,7 @@ function rocket_display_options()
 			array(
 				'type'         => 'helper_description',
 				'name'         => 'purge',
-				'description'  => __( 'By default, cache lifespan is 24 hours. This means that once created, the cache files are automatically removed after 24 hours before being recreated.', 'rocket' ). '<br/>' .
-									  __('This can be useful if you display your latest tweets or rss feeds in your sidebar, for example.', 'rocket' ),
+				'description'  => __( 'By default, cache lifespan is 24 hours. This means that once created, the cache files are automatically removed after 24 hours before being recreated.', 'rocket' ). '<br/>' . __('This can be useful if you display your latest tweets or rss feeds in your sidebar, for example.', 'rocket' ),
 				),
 			array(
 				'type'         => 'helper_help',
@@ -628,14 +627,13 @@ function rocket_display_options()
 			array(
 				'type'         => 'helper_description',
 				'name'         => 'dns_prefetch',
-				'description'  => __( 'DNS prefetching is a way for browsers to anticipate the DNS resolution of external domains from your site.', 'rocket' ) . '<br/>' .
-									  __( 'This mechanism reduces the latency of some external files.', 'rocket' ),
+				'description'  => __( 'DNS prefetching is a way for browsers to anticipate the DNS resolution of external domains from your site.', 'rocket' ) . '<br/>' . __( 'This mechanism reduces the latency of some external files.', 'rocket' ),
 				),
 			array(
 				'display'      => ! rocket_is_white_label(),
 				'type'         => 'helper_help',
 				'name'         => 'dns_prefetch',
-				'description'  => sprintf( __( 'To learn more about this option and how to use it correctly, we advise you to watch the following video: <a href="%1$s" class="fancybox">%1$s</a>.', 'rocket' ), 'http://www.youtube.com/embed/ElJCtUidLwc' ),
+				'description'  => sprintf( __( 'To learn more about this option and how to use it correctly, we advise you to watch the following video: <a href="%1$s" class="fancybox">%1$s</a>.', 'rocket' ), ( defined( 'WPLANG' ) && WPLANG == 'fr_FR' ) ? 'http://www.youtube.com/embed/ElJCtUidLwc' : 'http://www.youtube.com/embed/jKMU6HgMMrA' ),
 				),
 			array(
 				'type'         => 'helper_help',
