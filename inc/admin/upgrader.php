@@ -91,8 +91,6 @@ function rocket_first_install()
 			'minify_html'			=> 0,
 			'dns_prefetch'			=> 0,
 			'cdn'					=> 0,
-			'do_beta'				=> 0,
-			'ajax_saves'			=> 1,
 			'cdn_cnames'			=> array(),
 			'cdn_zone'				=> array()
 		)
@@ -189,12 +187,6 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version )
 
 	    // Create config file
 		rocket_generate_config_file();
-	}
-
-	if ( version_compare( $actual_version, '2.2.3', '<' ) ) {
-		$options = get_option( WP_ROCKET_SLUG );
-		$options['ajax_saves'] = 1;
-		update_option( WP_ROCKET_SLUG, $options );
 	}
 }
 /* END UPGRADER'S HOOKS */
