@@ -119,7 +119,8 @@ function rocket_plugins_to_deactivate()
 		'flexicache/wp-plugin.php',
 		'wp-fastest-cache/wpFastestCache.php',
 		'gator-cache/gator-cache.php',
-		'wp-http-compression/wp-http-compression.php'
+		'wp-http-compression/wp-http-compression.php',
+		'speed-booster-pack/speed-booster-pack.php'
 	);
 
 	if ( get_rocket_option( 'lazyload' ) ) {
