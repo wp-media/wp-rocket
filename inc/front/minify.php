@@ -243,7 +243,7 @@ function rocket_minify_css( $buffer )
 
 				// Check if it isn't a file to exclude
 				if ( ! in_array( $css_url['path'], $excluded_css ) && pathinfo( $css_url['path'], PATHINFO_EXTENSION ) == 'css' ) {
-					$internal_files[] = $css_url['path'];
+					$internal_files[] = str_replace( '//' . $home_host , '', $css_url['path'] );
 				} else {
 					$excluded_tag = true;
 				}
@@ -350,7 +350,7 @@ function rocket_minify_js( $buffer )
 
 				// Check if it isn't a file to exclude
 				if ( ! in_array( $js_url['path'], $excluded_js ) && pathinfo( $js_url['path'], PATHINFO_EXTENSION ) == 'js' ) {
-					$internal_files[] = $js_url['path'];
+					$internal_files[] = str_replace( '//' . $home_host , '', $js_url['path'] );
 				} else {
 					$excluded_tag = true;
 				}
