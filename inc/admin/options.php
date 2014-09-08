@@ -455,7 +455,7 @@ function rocket_display_options()
 	add_settings_section( 'rocket_display_main_options', __( 'Basic options', 'rocket' ), '__return_false', 'basic' );
 	add_settings_field(
 		'rocket_lazyload',
-		__( 'Lazyload', 'rocket' ),
+		__( 'Lazyload:', 'rocket' ),
 		'rocket_field',
 		'basic',
 		'rocket_display_main_options',
@@ -464,7 +464,7 @@ function rocket_display_options()
 				'type'         => 'checkbox',
 				'label'        => __('Enable Lazy loading images.', 'rocket' ),
 				'label_for'    => 'lazyload',
-				'label_screen' => __( 'Lazyload', 'rocket' ),
+				'label_screen' => __( 'Lazyload:', 'rocket' ),
 			),
 			array(
 				'type'         => 'helper_description',
@@ -476,7 +476,7 @@ function rocket_display_options()
 	);
 	add_settings_field(
 		'rocket_minify',
-		 __( 'Files optimisation<br/><span class="description">(Minification & Concatenation)</span>', 'rocket' ),
+		 __( 'Files optimisation:<br/><span class="description">(Minification & Concatenation)</span>', 'rocket' ),
 		'rocket_field',
 		'basic',
 		'rocket_display_main_options',
@@ -538,7 +538,7 @@ function rocket_display_options()
 				'type'		   => 'checkbox',
 				'label'		   => __( 'Enable caching for mobile devices.', 'rocket' ),
 				'label_for'	   => 'cache_mobile',
-				'label_screen' => __( 'Mobile cache', 'rocket' ),
+				'label_screen' => __( 'Mobile cache:', 'rocket' ),
 			),
 			array(
 				'type'         => 'helper_warning',
@@ -549,19 +549,19 @@ function rocket_display_options()
 	);
 	add_settings_field(
 		'rocket_logged_user',
-		__( 'Logged in user cache', 'rocket' ),
+		__( 'Logged in user cache:', 'rocket' ),
 		'rocket_field', 'basic',
 		'rocket_display_main_options',
 		array(
 			'type'         => 'checkbox',
 			'label'        => __('Enable caching for logged in users.', 'rocket' ),
 			'label_for'    => 'cache_logged_user',
-			'label_screen' =>__( 'Logged in user cache', 'rocket' ),
+			'label_screen' =>__( 'Logged in user cache:', 'rocket' ),
 		)
 	);
 	add_settings_field(
 		'rocket_ssl',
-		__( 'SSL cache', 'rocket' ),
+		__( 'SSL cache:', 'rocket' ),
 		'rocket_field',
 		'basic',
 		'rocket_display_main_options',
@@ -569,7 +569,7 @@ function rocket_display_options()
 			'type'         => 'checkbox',
 			'label'        => __('Enable caching for pages with SSL protocol (<code>https://</code>).', 'rocket' ),
 			'label_for'    => 'cache_ssl',
-			'label_screen' => __( 'SSL cache', 'rocket' ),
+			'label_screen' => __( 'SSL cache:', 'rocket' ),
 		)
 	);
 	add_settings_field(
@@ -614,7 +614,7 @@ function rocket_display_options()
 	add_settings_section( 'rocket_display_imp_options', __( 'Advanced options', 'rocket' ), '__return_false', 'advanced' );
 	add_settings_field(
 		'rocket_dns_prefetch',
-		__( 'Prefetch DNS requests', 'rocket' ),
+		__( 'Prefetch DNS requests:', 'rocket' ),
 		'rocket_field',
 		'advanced',
 		'rocket_display_imp_options',
@@ -622,7 +622,7 @@ function rocket_display_options()
 			array(
 				'type'         => 'textarea',
 				'label_for'    => 'dns_prefetch',
-				'label_screen' => __('Prefetch DNS requests', 'rocket' ),
+				'label_screen' => __('Prefetch DNS requests:', 'rocket' ),
 			),
 			array(
 				'type'         => 'helper_description',
@@ -644,7 +644,7 @@ function rocket_display_options()
 	);
 	add_settings_field(
 		'rocket_purge_pages',
-		__( 'Empty the cache of the following pages when updating a post', 'rocket' ),
+		__( 'Empty the cache of the following pages when updating a post:', 'rocket' ),
 		'rocket_field',
 		'advanced',
 		'rocket_display_imp_options',
@@ -652,7 +652,7 @@ function rocket_display_options()
 			array(
 				'type'         => 'textarea',
 				'label_for'    => 'cache_purge_pages',
-				'label_screen' => __( 'Empty the cache of the following pages when updating a post', 'rocket' ),
+				'label_screen' => __( 'Empty the cache of the following pages when updating a post:', 'rocket' ),
 			),
 			array(
 				'type'         => 'helper_help',
@@ -669,7 +669,7 @@ function rocket_display_options()
 	);
 	add_settings_field(
 		'rocket_reject_uri',
-		__( 'Never cache the following pages', 'rocket' ),
+		__( 'Never cache the following pages:', 'rocket' ),
 		'rocket_field',
 		'advanced',
 		'rocket_display_imp_options',
@@ -677,7 +677,7 @@ function rocket_display_options()
 			array(
 				'type'         => 'textarea',
 				'label_for'    => 'cache_reject_uri',
-				'label_screen' => __( 'Never cache the following pages', 'rocket' ),
+				'label_screen' => __( 'Never cache the following pages:', 'rocket' ),
 			),
 			array(
 				'type'         => 'helper_help',
@@ -689,7 +689,7 @@ function rocket_display_options()
 	);
 	add_settings_field(
 		'rocket_reject_cookies',
-		__( 'Don\'t cache pages that use the following cookies', 'rocket' ),
+		__( 'Don\'t cache pages that use the following cookies:', 'rocket' ),
 		'rocket_field',
 		'advanced',
 		'rocket_display_imp_options',
@@ -697,7 +697,7 @@ function rocket_display_options()
 			array(
 				'type'         => 'textarea',
 				'label_for'    => 'cache_reject_cookies',
-				'label_screen' => __( 'Don\'t cache pages that use the following cookies', 'rocket' ),
+				'label_screen' => __( 'Don\'t cache pages that use the following cookies:', 'rocket' ),
 			),
 			array(
 				'type'         => 'helper_help',
@@ -708,7 +708,7 @@ function rocket_display_options()
 	);
 	add_settings_field(
 		'rocket_exclude_css',
-		__( '<b>CSS</b> files to exclude from minification', 'rocket' ),
+		__( '<b>CSS</b> files to exclude from minification:', 'rocket' ),
 		'rocket_field',
 		'advanced',
 		'rocket_display_imp_options',
@@ -716,7 +716,7 @@ function rocket_display_options()
 			array(
 				'type'         => 'textarea',
 				'label_for'    => 'exclude_css',
-				'label_screen' => __( '<b>CSS</b> files to exclude from minification', 'rocket' ),
+				'label_screen' => __( '<b>CSS</b> files to exclude from minification:', 'rocket' ),
 			),
 			array(
 				'type'         => 'helper_help',
@@ -727,7 +727,7 @@ function rocket_display_options()
 	);
 	add_settings_field(
 		'rocket_exclude_js',
-		__( '<b>JS</b> files to exclude from minification', 'rocket' ),
+		__( '<b>JS</b> files to exclude from minification:', 'rocket' ),
 		'rocket_field',
 		'advanced',
 		'rocket_display_imp_options',
@@ -735,7 +735,7 @@ function rocket_display_options()
 			array(
 				'type'         => 'textarea',
 				'label_for'    => 'exclude_js',
-				'label_screen' => __( '<b>JS</b> files to exclude from minification', 'rocket' ),
+				'label_screen' => __( '<b>JS</b> files to exclude from minification:', 'rocket' ),
 			),
 			array(
 				'type'         => 'helper_help',
@@ -746,14 +746,14 @@ function rocket_display_options()
 	);
 	add_settings_field(
 		'minify_js_in_footer',
-		__( '<b>JS</b> files to be included in the footer during the minification process', 'rocket' ),
+		__( '<b>JS</b> files to be included in the footer during the minification process:', 'rocket' ),
 		'rocket_field',
 		'advanced',
 		'rocket_display_imp_options',
 		array(
 			array(
 				'type'                     => 'repeater',
-				'label_screen'             => __( '<b>JS</b> files to be included in the footer during the minification process', 'rocket' ),
+				'label_screen'             => __( '<b>JS</b> files to be included in the footer during the minification process:', 'rocket' ),
 				'name'                     => 'minify_js_in_footer',
 				'placeholder'              => 'http://',
 				'repeater_drag_n_drop'     => true,
@@ -774,7 +774,7 @@ function rocket_display_options()
 	);
 	add_settings_field(
 		'rocket_deferred_js',
-		__( '<b>JS</b> files with deferred loading', 'rocket' ),
+		__( '<b>JS</b> files with deferred loading:', 'rocket' ),
 		'rocket_field',
 		'advanced',
 		'rocket_display_imp_options',
@@ -805,7 +805,7 @@ function rocket_display_options()
 	add_settings_section( 'rocket_display_cdn_options', __( 'Content Delivery Network options', 'rocket' ), '__return_false', 'cdn' );
 	add_settings_field(
 		'rocket_cdn',
-		__( 'CDN', 'rocket' ),
+		__( 'CDN:', 'rocket' ),
 		'rocket_field',
 		'cdn',
 		'rocket_display_cdn_options',
@@ -814,7 +814,7 @@ function rocket_display_options()
 				'type'         => 'checkbox',
 				'label'        => __('Enable Content Delivery Network.', 'rocket' ),
 				'label_for'    => 'cdn',
-				'label_screen' => __( 'CDN', 'rocket' )
+				'label_screen' => __( 'CDN:', 'rocket' )
 			),
 			array(
 				'type' 		  => 'helper_description',
@@ -834,7 +834,7 @@ function rocket_display_options()
 	add_settings_section( 'rocket_display_white_label', __( 'White Label', 'rocket' ), '__return_false', 'white_label' );
 	add_settings_field(
 		'rocket_wl_plugin_name',
-		__( 'Plugin Name', 'rocket' ),
+		__( 'Plugin Name:', 'rocket' ),
 		'rocket_field',
 		'white_label',
 		'rocket_display_white_label',
@@ -843,13 +843,13 @@ function rocket_display_options()
 				'type'         => 'text',
 				'name'         => 'wl_plugin_name',
 				'label_for'    => 'wl_plugin_name',
-				'label_screen' => __( 'Plugin Name', 'rocket' ),
+				'label_screen' => __( 'Plugin Name:', 'rocket' ),
 			),
 		)
 	);
 	add_settings_field(
 		'rocket_wl_plugin_URI',
-		__( 'Plugin URI', 'rocket' ),
+		__( 'Plugin URI:', 'rocket' ),
 		'rocket_field',
 		'white_label',
 		'rocket_display_white_label',
@@ -858,13 +858,13 @@ function rocket_display_options()
 				'type'         => 'text',
 				'name'         => 'wl_plugin_URI',
 				'label_for'    => 'wl_plugin_URI',
-				'label_screen' => __( 'Plugin URI', 'rocket' ),
+				'label_screen' => __( 'Plugin URI:', 'rocket' ),
 			),
 		)
 	);
 	add_settings_field(
 		'rocket_wl_description',
-		__( 'Description', 'rocket' ),
+		__( 'Description:', 'rocket' ),
 		'rocket_field',
 		'white_label',
 		'rocket_display_white_label',
@@ -873,13 +873,13 @@ function rocket_display_options()
 				'type'         => 'textarea',
 				'name'         => 'wl_description',
 				'label_for'    => 'wl_description',
-				'label_screen' => __( 'Description', 'rocket' ),
+				'label_screen' => __( 'Description:', 'rocket' ),
 			),
 		)
 	);
 	add_settings_field(
 		'rocket_wl_author',
-		__( 'Author', 'rocket' ),
+		__( 'Author:', 'rocket' ),
 		'rocket_field',
 		'white_label',
 		'rocket_display_white_label',
@@ -888,13 +888,13 @@ function rocket_display_options()
 				'type'         => 'text',
 				'name'         => 'wl_author',
 				'label_for'    => 'wl_author',
-				'label_screen' => __( 'Author', 'rocket' ),
+				'label_screen' => __( 'Author:', 'rocket' ),
 			),
 		)
 	);
 	add_settings_field(
 		'rocket_wl_author_URI',
-		__( 'Author URI', 'rocket' ),
+		__( 'Author URI:', 'rocket' ),
 		'rocket_field',
 		'white_label',
 		'rocket_display_white_label',
@@ -903,7 +903,7 @@ function rocket_display_options()
 				'type'         => 'text',
 				'name'         => 'wl_author_URI',
 				'label_for'    => 'wl_author_URI',
-				'label_screen' => __( 'Author URI', 'rocket' ),
+				'label_screen' => __( 'Author URI:', 'rocket' ),
 			),
 		)
 	);
