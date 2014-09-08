@@ -16,7 +16,8 @@ delete_transient( 'rocket_check_licence_30' );
 delete_transient( 'rocket_check_licence_1' );
 delete_option( 'wp_rocket_settings' );
 delete_metadata( 'user', '', 'rocket_boxes', '', true ); // magical true
-
+add_filter( 'http_headers_useragent', 'rocket_user_agent' );
+wp_remote_get( WP_ROCKET_WEB_MAIN . '/pause_licence.php', array( 'timeout' => 30 ) );
 
 /**
  * Remove all cache files
