@@ -22,6 +22,7 @@ define( 'WP_ROCKET_VERSION'             , '2.2.4' );
 define( 'WP_ROCKET_PRIVATE_KEY'         , false );
 define( 'WP_ROCKET_SLUG'                , 'wp_rocket_settings' );
 define( 'WP_ROCKET_WEB_MAIN'            , 'http://support.wp-rocket.me/' );
+define( 'WP_ROCKET_WEB_API'             , WP_ROCKET_WEB_MAIN . 'api/wp-rocket/' );
 define( 'WP_ROCKET_WEB_CHECK'           , WP_ROCKET_WEB_MAIN . 'check_update.php' );
 define( 'WP_ROCKET_WEB_VALID'           , WP_ROCKET_WEB_MAIN . 'valid_key.php' );
 define( 'WP_ROCKET_WEB_INFO'            , WP_ROCKET_WEB_MAIN . 'plugin_information.php' );
@@ -196,6 +197,11 @@ function rocket_deactivation()
 	    // Delete content of advanced-cache.php
 	    rocket_put_content( WP_CONTENT_DIR . '/advanced-cache.php', '' );
 	}
+	
+	// Update customer key & licence.
+	add_filter( 'http_headers_useragent', 'rocket_user_agent' );
+	wp_remote_get( WP_ROCKET_WEB_API . '/pause-licence.php' );
+	remove_filter( 'http_headers_useragent', 'rocket_user_agent' );
 }
 
 /*
