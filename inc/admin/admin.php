@@ -276,17 +276,19 @@ function __rocket_do_options_export()
 
 /**
  * This function will add the correct User Agent when updating WP Rocket
- * And "die" if the licence is not valid
  *
  * @since 2.2
+ * @since 2.3 Better managment for bulk plugins
  */
 add_filter( 'admin_action_upgrade-plugin', '__rocket_before_plugin_update', PHP_INT_MAX );
+add_filter( 'admin_action_update-selected', '__rocket_before_plugin_update', PHP_INT_MAX );
 function __rocket_before_plugin_update() {
-	if ( ! rocket_valid_key() ) {
-		wp_die( sprintf( '<h1>WP Rocket</h1><p>%s</p>', __( 'Your licence key is not valid, please set it up correctly before trying to update the plugin, thank you.', 'rocket' ) ), __( 'WP Rocket error', 'rocket' ), array( 'back_link' => true ) );
-	} elseif ( isset( $_GET['plugin'], $_GET['_wpnonce'] )
+	if ( ( isset( $_GET['plugin'], $_GET['_wpnonce'] )
 		&& 'wp-rocket/wp-rocket.php' == $_GET['plugin']
-		&& wp_verify_nonce( $_GET['_wpnonce'], 'upgrade-plugin_' . $_GET['plugin'] )
+		&& wp_verify_nonce( $_GET['_wpnonce'], 'upgrade-plugin_' . $_GET['plugin'] ) )
+		|| ( isset( $_GET['plugins'], $_GET['_wpnonce'] ) 
+		&& strpos( $_GET['plugins'], 'wp-rocket/wp-rocket.php' ) !== false
+		&& wp_verify_nonce( $_GET['_wpnonce'], 'bulk-update-plugins' ) )
 	) {
 		add_filter( 'http_headers_useragent', 'rocket_user_agent' );
 	}
