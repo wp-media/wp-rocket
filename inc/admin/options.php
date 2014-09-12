@@ -1120,7 +1120,7 @@ function rocket_display_options()
 		array(
 				'button'=>array(
 					'button_label'	=> __( 'Visit the Support', 'rocket' ),
-					'url'			=> 'http://support.wp-rocket.me/',
+					'url'			=> 'http://wp-rocket.me/support/',
 					'style'			=> 'link',
 					),
 				'helper_help'=>array(

@@ -202,7 +202,7 @@ function rocket_admin_bar( $wp_admin_bar )
 			'parent' => 'wp-rocket',
 			'id'     => 'support',
 			'title'  => __( 'Support', 'rocket' ),
-			'href'   => 'http://support.wp-rocket.me',
+			'href'   => 'http://wp-rocket.me/support/',
 		));
 	}
 }
