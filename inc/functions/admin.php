@@ -159,15 +159,3 @@ function create_rocket_uniqid()
 {
 	return str_replace( '.', '', uniqid( '', true ) );
 }
-
-/**
- * This warning is displayed to inform the user that the plugin can not be tested in connected mode
- *
- * @since 2.2 Only returns a string on demand, no more hook
- * @since 1.1.10
- */
-function rocket_warning_logged_users()
-{
-	return	'</strong><b>' . WP_ROCKET_PLUGIN_NAME . '</b>: ' .
-			__( 'Connected users don\'t have the cached version of the website. We recommend you, to browse your website disconnected.', 'rocket' );
-}
