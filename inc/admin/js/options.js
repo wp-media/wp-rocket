@@ -82,26 +82,8 @@ jQuery( document ).ready( function($){
 				$('#tab_basic').show();
 		}
 	}
-	var rocket_modified = false;
-	$( '#rocket_options input' ).bind( 'change focus blur click', function(){ rocket_modified = true; } );
 	$( 'h2.nav-tab-wrapper .nav-tab' ).on( 'click', function(e){
 		e.preventDefault();
-		if ( $( '#ajax_saves' ).is( ':checked' ) ) {
-			$( '#rocket_ajax_txt' ).hide();
-			$( '#setting-error-settings_updated' ).hide();
-			if ( rocket_modified ) {
-				$( '#rocket_options input[type=submit]' ).prop( 'disabled', true );
-				$( '#rocket_ajax_img' ).show();
-				$.post( $('#rocket_options').attr( 'action' ) + '?ajax=1', $('#rocket_options').serialize(), 
-						function(){ 
-							$( '#rocket_ajax_img' ).hide(); 
-							$( '#rocket_ajax_txt' ).show();
-							$( '#rocket_options input[type=submit]' ).prop( 'disabled', false );
-							rocket_modified = false;
-						}
-					);
-			}
-		}
 		tab = $(this).attr( 'href' );
 		if( sup_html5st ) sessionStorage.setItem( 'rocket_tab', tab );
 		$('#rockettabs .rkt-tab').hide();

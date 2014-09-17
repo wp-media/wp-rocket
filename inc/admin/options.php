@@ -951,27 +951,6 @@ function rocket_display_options()
     }
 
 	add_settings_field(
-		'rocket_ajax_save',
-		__( 'AJAX Saves', 'rocket' ),
-		'rocket_field',
-		'tools',
-		'rocket_display_tools',
-		array(
-			array(
-				'type'         => 'checkbox',
-				'label'        => __( 'Save settings on tab switch.', 'rocket' ),
-				'label_for'    => 'ajax_saves',
-				'label_screen' => __( 'AJAX Saves', 'rocket' )
-			),
-			array(
-				'type' 		  => 'helper_description',
-				'name' 		  => 'ajax_saves',
-				'description' => __( 'When you switch tabs, settings will be auto saved using AJAX.', 'rocket' )
-			)
-		)
-    );
-
-	add_settings_field(
 		'rocket_purge_all',
 		__( 'Clear cache', 'rocket' ),
 		'rocket_button',
@@ -1159,8 +1138,6 @@ function rocket_display_options()
 			<?php
 			do_action( 'rocket_tab', rocket_valid_key() );
 			?>
-			<img src="<?php echo admin_url( '/images/spinner.gif' ); ?>" id="rocket_ajax_img" class="hidden" />
-			<div id="rocket_ajax_txt" class="hidden updated ajax"><p><strong><?php _e( 'Settings saved.' ); ?></strong></p></div>
 		</h2>
 		<div id="rockettabs">
 			<?php if( rocket_valid_key() ) { ?>
@@ -1512,10 +1489,6 @@ function rocket_after_save_options( $oldvalue, $value )
 	// Set WP_CACHE constant in wp-config.php
 	if ( ! defined( 'WP_CACHE' ) || ! WP_CACHE ) {
 		set_rocket_wp_cache_define( true );
-	}
-
-	if ( isset( $_GET['ajax'] ) ) {
-		die( 'ajax' );
 	}
 
 	// Redirect on the correct page slug name to avoid false negative error message
