@@ -127,9 +127,9 @@ ob_start( 'do_rocket_callback' );
 function do_rocket_callback( $buffer )
 {
 	if ( strlen( $buffer ) > 255
-		&& !is_404() 	// Don't cache 404
-		&& !is_search() // Don't cache search results
-		&& !defined( 'DONOTCACHEPAGE' ) || !DONOTCACHEPAGE // Don't cache template that use this constant
+		&& ( function_exists( 'is_404' ) && ! is_404() ) // Don't cache 404
+		&& ( function_exists( 'is_search' ) && ! is_search() ) // Don't cache search results
+		&& ( ! defined( 'DONOTCACHEPAGE' ) || ! DONOTCACHEPAGE ) // Don't cache template that use this constant
 	) {
 		global $request_uri_path;
 
@@ -148,9 +148,11 @@ function do_rocket_callback( $buffer )
 
 		// Send headers with the last modified time of the cache file
 		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s', filemtime( $request_uri_path . '/index.html' ) ) . ' GMT' );
+		
+		$buffer = $buffer . get_rocket_footprint(false);
 	}
 
-	return $buffer . get_rocket_footprint(false);
+	return $buffer;
 }
 
 /**
