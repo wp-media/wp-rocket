@@ -356,7 +356,7 @@ function rocket_minify_js( $buffer )
 				}
 
 			// If it's an excluded external file
-			} else if ( in_array( $js_url['host'], $excluded_external_js ) ) {
+			} else if ( isset( $js_url['host'] ) && in_array( $js_url['host'], $excluded_external_js ) ) {
 
 				$excluded_tag = true;
 
