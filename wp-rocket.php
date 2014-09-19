@@ -7,7 +7,6 @@ Version: 2.2.4
 Author: WP Rocket
 Contributors: Jonathan Buttigieg, Julio Potier
 Author URI: http://www.wp-rocket.me
-Licence: GPLv2
 
 Text Domain: rocket
 Domain Path: languages
@@ -129,7 +128,7 @@ function rocket_init()
         if ( get_rocket_option( 'deferred_js_files' ) ) {
 	       require( WP_ROCKET_FRONT_PATH . '/deferred-js.php' );
         }
-
+        
         if ( get_rocket_option( 'lazyload' ) && ! rocket_is_plugin_active( 'rocket-lazy-load/rocket-lazy-load.php' ) ) {
 	       require( WP_ROCKET_FRONT_PATH . '/lazyload.php' );
         }
