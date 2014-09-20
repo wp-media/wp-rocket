@@ -122,7 +122,9 @@ function rocket_plugins_to_deactivate()
 		'wp-http-compression/wp-http-compression.php',
 		'speed-booster-pack/speed-booster-pack.php',
 		'remove-query-strings-from-static-resources/remove-query-strings.php',
-		'query-strings-remover/query-strings-remover.php'
+		'query-strings-remover/query-strings-remover.php',
+		'wp-ffpc/wp-ffpc.php',
+		'far-future-expiry-header/far-future-expiration.php'
 	);
 
 	if ( get_rocket_option( 'lazyload' ) ) {
