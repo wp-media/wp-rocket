@@ -52,7 +52,9 @@ function rocket_insert_deferred_js( $buffer )
 	 *
 	 * @param string LABjs file URL
 	 */
-	$labjs_src = apply_filters( 'rocket_labjs_src', WP_ROCKET_FRONT_JS_URL . 'LAB.' . WP_ROCKET_LAB_JS_VERSION . '.min.js' );
+	$labjs_src = WP_ROCKET_FRONT_JS_URL . 'LAB.' . WP_ROCKET_LAB_JS_VERSION . '.min.js';
+	$labjs_src = get_rocket_cdn_url( $labjs_src, array( 'all', 'css_js', 'js' ) );
+	$labjs_src = apply_filters( 'rocket_labjs_src', $labjs_src );
 
 	/**
 	 * Filter list of LABjs options
