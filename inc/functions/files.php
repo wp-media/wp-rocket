@@ -343,7 +343,7 @@ function rocket_clean_home( $lang = '' )
 	do_action( 'before_rocket_clean_home', $root, $lang );
 
 	// Delete homepage
-	if ( $files = glob( $root . '/index.html', GLOB_NOSORT ) ) {
+	if ( $files = glob( $root . '/index.{html,html_gzip}', GLOB_BRACE|GLOB_NOSORT ) ) {
 		foreach ( $files as $file ) {
 			@unlink( $file );
 		}

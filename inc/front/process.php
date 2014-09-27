@@ -145,7 +145,11 @@ function do_rocket_callback( $buffer )
 
 		// Save the cache file
 		rocket_put_content( $request_uri_path . '/index.html', $buffer . get_rocket_footprint() );
-
+		
+		if ( function_exists( 'gzencode' ) ) {
+			rocket_put_content( $request_uri_path . '/index.html_gzip', gzencode ( $buffer . get_rocket_footprint(), apply_filters( 'rocket_gzencode_level_compression', 3 ) ) );
+		}
+		
 		// Send headers with the last modified time of the cache file
 		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s', filemtime( $request_uri_path . '/index.html' ) ) . ' GMT' );
 		

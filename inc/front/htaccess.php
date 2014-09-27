@@ -115,11 +115,32 @@ function get_rocket_htaccess_mod_rewrite()
 	 */
 	$is_1and1_or_force = apply_filters( 'rocket_force_full_path', strpos( $_SERVER['DOCUMENT_ROOT'], '/kunden/' ) === 0 );
 
-	$rules  = '<IfModule mod_rewrite.c>' . PHP_EOL;
+
+	$rules = '';
+	$gzip_rules = '';
+	$enc = '';
+	
+	if ( function_exists( 'gzencode' ) ) {
+		$rules = '<IfModule mod_mime.c>' . PHP_EOL;
+			$rules .= 'AddType text/html .html_gzip' . PHP_EOL;
+			$rules .= 'AddEncoding gzip .html_gzip' . PHP_EOL;
+		$rules .= '</IfModule>' . PHP_EOL;
+		$rules .= '<IfModule mod_setenvif.c>' . PHP_EOL;
+			$rules .= 'SetEnvIfNoCase Request_URI \.html_gzip$ no-gzip' . PHP_EOL;
+		$rules .= '</IfModule>' . PHP_EOL . PHP_EOL;
+
+		$gzip_rules .= 'RewriteCond %{HTTP:Accept-Encoding} gzip' . PHP_EOL;
+		$gzip_rules .= 'RewriteRule .* - [E=WPR_ENC:_gzip]' . PHP_EOL;
+
+		$enc = '%{ENV:WPR_ENC}';
+	}
+
+	$rules .= '<IfModule mod_rewrite.c>' . PHP_EOL;
 	$rules .= 'RewriteEngine On' . PHP_EOL;
 	$rules .= 'RewriteBase ' . $home_root . PHP_EOL;
 	$rules .= 'RewriteCond %{REQUEST_METHOD} GET' . PHP_EOL;
 	$rules .= 'RewriteCond %{QUERY_STRING} =""' . PHP_EOL;
+	$rules .= $gzip_rules;
 
 	if ( $cookies = get_rocket_cache_reject_cookies() ) {
 		$rules .= 'RewriteCond %{HTTP:Cookie} !(' . $cookies . ') [NC]' . PHP_EOL;
@@ -138,7 +159,7 @@ function get_rocket_htaccess_mod_rewrite()
 		$rules .= 'RewriteCond "%{DOCUMENT_ROOT}/' . ltrim( $cache_root, '/' ) . $HTTP_HOST . '%{REQUEST_URI}/index.html" -f' . PHP_EOL;
 	}
 
-	$rules .= 'RewriteRule .* "' . $cache_root . $HTTP_HOST . '%{REQUEST_URI}/index.html" [L]' . PHP_EOL;
+	$rules .= 'RewriteRule .* "' . $cache_root . $HTTP_HOST . '%{REQUEST_URI}/index.html' . $enc . '" [L]' . PHP_EOL;
 	$rules .= '</IfModule>' . PHP_EOL;
 
 	/**
