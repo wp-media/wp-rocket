@@ -13,11 +13,13 @@ function rocket_minify_process( $buffer )
 {
 	$enable_js  = get_rocket_option( 'minify_js' );
 	$enable_css = get_rocket_option( 'minify_css' );
+	$enable_google_fonts = get_rocket_option( 'minify_google_fonts' );
 
-	if ( $enable_css || $enable_js ) {
+	if ( $enable_css || $enable_js || $enable_google_fonts ) {
 
 		$css = '';
 		$js  = '';
+		$google_fonts  = '';
 
 		list( $buffer, $conditionals ) = rocket_extract_ie_conditionals( $buffer );
 
@@ -31,10 +33,15 @@ function rocket_minify_process( $buffer )
 	    	list( $buffer, $js ) = rocket_minify_js( $buffer );
 		}
 
+		// Concatenate Google Fonts
+	    if ( $enable_google_fonts ) {
+	    	list( $buffer, $google_fonts ) = __rocket_concatenate_google_fonts( $buffer );
+		}
+
 	    $buffer = rocket_inject_ie_conditionals( $buffer, $conditionals );
 
 		// Insert all CSS and JS files in head
-		$buffer = preg_replace( '/<head(.*)>/', '<head$1>' . $css . $js, $buffer, 1 );
+		$buffer = preg_replace( '/<head(.*)>/', '<head$1>' . $google_fonts . $css . $js, $buffer, 1 );
 
 	}
 
@@ -115,6 +122,42 @@ function __rocket_insert_minify_js_in_footer() {
 }
 
 /**
+ * Used for concatenate Google Fonts tags (http://fonts.googleapis.com/css?...)
+ *
+ * @since 2.3
+ */
+function __rocket_concatenate_google_fonts( $buffer ) {
+	// Get all Google Fonts CSS files
+	preg_match_all( '/<link.+href=[\'|"](.+fonts\.googleapis\.com.+)(\'|")/iU', $buffer, $matches );
+
+	$i = 0;
+	$fonts = array();
+
+	if ( ! $matches[1] ) {
+		return array( $buffer, $fonts );
+	}
+	
+	foreach ( $matches[1] as $font ) {
+		// Get fonts name
+	    $font = str_replace( 'family=' , '', parse_url( $font, PHP_URL_QUERY ) );
+	
+		// Add fonts to the collection
+	    $fonts[] = $font;
+	
+	    // Delete the Google Fonts tag
+	    $buffer = str_replace( $matches[0][$i], '', $buffer );
+	
+	    $i++;
+	}
+	
+	// Generate new fonts tag
+	$fonts = implode( '|' , array_unique( $fonts ) );
+	$fonts = '<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=' . $fonts . '" />';
+	
+	return array( $buffer, $fonts );
+}
+
+/**
  * Used for minify inline HTML
  *
  * @since 1.1.12
@@ -149,7 +192,6 @@ function rocket_minify_html( $buffer )
 		 */
 		$html_options = apply_filters( 'rocket_minify_html_options', $html_options );
 		$buffer = Minify_HTML::minify( $buffer, $html_options );
-
     }
 
     return $buffer;
@@ -262,17 +304,8 @@ function rocket_minify_css( $buffer )
 		$i++;
     }
 
-	// Get all Google Fonts CSS files
-	preg_match_all( '/<link.+href=.+(fonts\.googleapis\.com\/css).+>/iU', $buffer, $matches );
-	foreach ( $matches[0] as $tag ) {
-        $fonts_tags .= $tag;
-
-        // Delete the link tag
-        $buffer = str_replace( $tag, '', $buffer );
-	}
-	
 	// Insert the minify css file below <head>
-	return array( $buffer, $fonts_tags . $external_tags . get_rocket_minify_files( $internal_files ) );
+	return array( $buffer, $external_tags . get_rocket_minify_files( $internal_files ) );
 }
 
 /**

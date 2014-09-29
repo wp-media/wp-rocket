@@ -487,6 +487,12 @@ function rocket_display_options()
 				'name'         => 'minify_html',
 				'label_screen' => __( 'HTML Files minification', 'rocket' )
 			),
+						array(
+				'type'		   => 'checkbox',
+				'label'		   => 'Google Fonts',
+				'name'		   => 'minify_google_fonts',
+				'label_screen' => __( 'Google Fonts minification', 'rocket' ),
+			),
 			array(
 				'type'         => 'checkbox',
 				'label'        => 'CSS',
