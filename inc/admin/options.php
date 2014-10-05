@@ -528,11 +528,12 @@ function rocket_display_options()
 		)
 	);
 	// Mobile plugins list
-	$mobile_plugins = array( 	'<a href="http://wordpress.org/plugins/wptouch/" target="_blank">WP Touch</a>',
-								'<a href="http://wordpress.org/plugins/wp-mobile-detector/" target="_blank">WP Mobile Detector</a>',
-								'<a href="http://wordpress.org/plugins/wiziapp-create-your-own-native-iphone-app" target="_blank">wiziApp</a>',
-								'<a href="http://wordpress.org/plugins/wordpress-mobile-pack/" target="_blank">WordPress Mobile Pack</a>'
-								);
+	$mobile_plugins = array(
+		'<a href="http://wordpress.org/plugins/wptouch/" target="_blank">WP Touch</a>',
+		'<a href="http://wordpress.org/plugins/wp-mobile-detector/" target="_blank">WP Mobile Detector</a>',
+		'<a href="http://wordpress.org/plugins/wiziapp-create-your-own-native-iphone-app" target="_blank">wiziApp</a>',
+		'<a href="http://wordpress.org/plugins/wordpress-mobile-pack/" target="_blank">WordPress Mobile Pack</a>'
+	);
 	add_settings_field(
 		'rocket_mobile',
 		__( 'Mobile cache:', 'rocket' ),
@@ -597,11 +598,11 @@ function rocket_display_options()
 				'label_screen' => __( 'Unit of time', 'rocket' ),
 				'fieldset'	   => 'end',
 				'options' => array(
-								'SECOND_IN_SECONDS' => __( 'second(s)', 'rocket' ),
-								'MINUTE_IN_SECONDS' => __( 'minute(s)', 'rocket' ),
-								'HOUR_IN_SECONDS'   => __( 'hour(s)', 'rocket' ),
-								'DAY_IN_SECONDS'    => __( 'day(s)', 'rocket' )
-							)
+					'SECOND_IN_SECONDS' => __( 'second(s)', 'rocket' ),
+					'MINUTE_IN_SECONDS' => __( 'minute(s)', 'rocket' ),
+					'HOUR_IN_SECONDS'   => __( 'hour(s)', 'rocket' ),
+					'DAY_IN_SECONDS'    => __( 'day(s)', 'rocket' )
+				)
 				),
 			array(
 				'type'         => 'helper_description',
@@ -688,8 +689,7 @@ function rocket_display_options()
 			array(
 				'type'         => 'helper_help',
 				'name'         => 'reject_uri',
-				'description'  => __( 'Enter the URL of pages to reject (one per line).', 'rocket' ) . '<br/>' .
-									  __( 'You can use regular expressions (regex).', 'rocket' )
+				'description'  => __( 'Enter the URL of pages to reject (one per line).', 'rocket' ) . '<br/>' . __( 'You can use regular expressions (regex).', 'rocket' )
 			),
 		)
 	);
@@ -709,6 +709,25 @@ function rocket_display_options()
 				'type'         => 'helper_help',
 				'name'         => 'reject_cookies',
 				'description'  => __( 'List the names of the cookies (one per line).', 'rocket' )
+				),
+		)
+	);
+	add_settings_field(
+		'rocket_query_strings',
+		__( 'Cache pages that use the following query strings (GET parameters):', 'rocket' ),
+		'rocket_field',
+		'advanced',
+		'rocket_display_imp_options',
+		array(
+			array(
+				'type'         => 'textarea',
+				'label_for'    => 'cache_query_strings',
+				'label_screen' => __( 'Cache pages that use the following query strings (GET parameters):', 'rocket' ),
+			),
+			array(
+				'type'         => 'helper_help',
+				'name'         => 'query_strings',
+				'description'  => __( 'List of query strings which can be cached (one per line).', 'rocket' )
 				),
 		)
 	);
@@ -1294,6 +1313,21 @@ function rocket_settings_callback( $inputs )
 	}
 
 	/*
+	 * Option : Cache pages that use the following query strings (GET parameters)
+	 */
+	if ( ! empty( $inputs['cache_query_strings'] ) ) {
+		if ( ! is_array( $inputs['cache_query_strings'] ) ) {
+			$inputs['cache_query_strings'] = explode( "\n", $inputs['cache_query_strings'] );
+		}
+		$inputs['cache_query_strings'] = array_map( 'trim', $inputs['cache_query_strings'] );
+		$inputs['cache_query_strings'] = array_map( 'sanitize_key', $inputs['cache_query_strings'] );
+		$inputs['cache_query_strings'] = (array) array_filter( $inputs['cache_query_strings'] );
+		$inputs['cache_query_strings'] = array_unique( $inputs['cache_query_strings'] );
+	} else {
+		$inputs['cache_query_strings'] = array();
+	}
+
+	/*
 	 * Option : CSS files to exclude of the minification
 	 */
 	if ( ! empty( $inputs['exclude_css'] ) ) {
@@ -1381,7 +1415,6 @@ function rocket_settings_callback( $inputs )
 	/*
 	 * Option : CDN
 	 */
-
 	$inputs['cdn_cnames'] = isset( $inputs['cdn_cnames'] ) ? array_unique( array_filter( $inputs['cdn_cnames'] ) ) : array();
 
 	if ( ! $inputs['cdn_cnames'] ) {

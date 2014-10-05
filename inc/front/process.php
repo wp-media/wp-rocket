@@ -26,23 +26,9 @@ if ( $_SERVER['REQUEST_METHOD'] != 'GET' ) {
 	return;
 }
 
-// Don't cache with variables
-// but the cache is enabled if the visitor comes from an RSS feed or an Facebook action
-// @since 2.1 Add compatibilty with WordPress Landing Pages (permalink_name and lp-variation-id)
-// @since 2.1 Add compabitiliy with qTranslate and translation plugin with query string "lang"
-if ( ! empty( $_GET )
-	&& ( ! isset( $_GET['utm_source'], $_GET['utm_medium'], $_GET['utm_campaign'] ) )
-	&& ( ! isset( $_GET['fb_action_ids'], $_GET['fb_action_types'], $_GET['fb_source'] ) )
-	&& ( ! isset( $_GET['permalink_name'] ) )
-	&& ( ! isset( $_GET['lp-variation-id'] ) )
-	&& ( ! isset( $_GET['lang'] ) )
-)
-	return;
-
 // Get the correct config file
 $rocket_config_path = WP_CONTENT_DIR . '/wp-rocket-config/';
 $host = trim( strtolower( $_SERVER['HTTP_HOST'] ), '.' );
-$request_uri = isset( $_GET['lp-variation-id'] ) || isset( $_GET['lang'] ) ? $_SERVER['REQUEST_URI'] : reset(( explode( '?', $_SERVER['REQUEST_URI'] ) ));
 
 $continue = false;
 if ( file_exists( $rocket_config_path . $host . '.php' ) ) {
@@ -74,6 +60,23 @@ if ( file_exists( $rocket_config_path . $host . '.php' ) ) {
 if ( ! $continue ) {
 	return;
 }
+
+$request_uri = ( isset( $rocket_cache_query_strings ) && array_intersect( array_keys( $_GET ), $rocket_cache_query_strings ) ) || isset( $_GET['lp-variation-id'] ) || isset( $_GET['lang'] ) ? $_SERVER['REQUEST_URI'] : reset(( explode( '?', $_SERVER['REQUEST_URI'] ) ));
+
+// Don't cache with variables
+// but the cache is enabled if the visitor comes from an RSS feed or an Facebook action
+// @since 2.3 Add query strings which can be cached via the options page.
+// @since 2.1 Add compatibilty with WordPress Landing Pages (permalink_name and lp-variation-id)
+// @since 2.1 Add compabitiliy with qTranslate and translation plugin with query string "lang"
+if ( ! empty( $_GET )
+	&& ( ! isset( $_GET['utm_source'], $_GET['utm_medium'], $_GET['utm_campaign'] ) )
+	&& ( ! isset( $_GET['fb_action_ids'], $_GET['fb_action_types'], $_GET['fb_source'] ) )
+	&& ( ! isset( $_GET['permalink_name'] ) )
+	&& ( ! isset( $_GET['lp-variation-id'] ) )
+	&& ( ! isset( $_GET['lang'] ) )
+	&& ( ! isset( $rocket_cache_query_strings ) || ! array_intersect( array_keys( $_GET ), $rocket_cache_query_strings ) )
+)
+	return;
 
 // Don't cache SSL
 if ( ! isset( $rocket_cache_ssl ) && rocket_is_ssl() ) {

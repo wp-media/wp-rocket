@@ -151,6 +151,28 @@ function get_rocket_cdn_cnames( $zone = 'all' )
 }
 
 /**
+ * Get all query strings which can be cached.
+ *
+ * @since 2.3
+ *
+ * @return array List of query strings which can be cached.
+ */
+function get_rocket_cache_query_string() {
+	$query_strings = get_rocket_option( 'cache_query_strings', array() );
+	
+	/**
+	 * Filter query strings which can be cached.
+	 *
+	 * @since 2.3
+	 *
+	 * @param array $query_strings List of query strings which can be cached.
+	*/
+	$query_strings = apply_filters( 'rocket_cache_query_strings', $query_strings );
+
+	return $query_strings;
+}
+
+/**
  * Determine if the key is valid
  *
  * @since 1.0
