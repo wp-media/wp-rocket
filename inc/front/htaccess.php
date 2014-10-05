@@ -241,11 +241,14 @@ function get_rocket_htaccess_mod_deflate()
 	$rules .= '<IfModule mod_deflate.c>' . PHP_EOL;
 		$rules .= '# Active compression' . PHP_EOL;
 		$rules .= 'SetOutputFilter DEFLATE' . PHP_EOL;
-		$rules .= '# Force deflate for mangled headers developer.yahoo.com/blogs/ydn/posts/2010/12/pushing-beyond-gzipping/' . PHP_EOL;
+		$rules .= '# Force deflate for mangled headers' . PHP_EOL;
 		$rules .= '<IfModule mod_setenvif.c>' . PHP_EOL;
 			$rules .= '<IfModule mod_headers.c>' . PHP_EOL;
 			$rules .= 'SetEnvIfNoCase ^(Accept-EncodXng|X-cept-Encoding|X{15}|~{15}|-{15})$ ^((gzip|deflate)\s*,?\s*)+|[X~-]{4,13}$ HAVE_Accept-Encoding' . PHP_EOL;
 			$rules .= 'RequestHeader append Accept-Encoding "gzip,deflate" env=HAVE_Accept-Encoding' . PHP_EOL;
+			$rules .= '# Don\'t compress images and other uncompressible content' . PHP_EOL;
+			$rules .= 'SetEnvIfNoCase Request_URI \\' . PHP_EOL;
+			$rules .= '\\.(?:gif|jpe?g|png|rar|zip|exe|flv|mov|wma|mp3|avi|swf|mp?g)$ no-gzip dont-vary' . PHP_EOL;
 			$rules .= '</IfModule>' . PHP_EOL;
 		$rules .= '</IfModule>' . PHP_EOL . PHP_EOL;
 		$rules .= '# Compress all output labeled with one of the following MIME-types' . PHP_EOL;
