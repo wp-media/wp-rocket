@@ -81,6 +81,27 @@ function get_rocket_parse_url( $url )
 	return apply_filters( 'rocket_parse_url', array( $host, $path, $scheme, $query ) );
 }
 
+/**
+ * Get CNAMES hosts
+ * 
+ * @since 2.3
+ *
+ * @param string $zones CNAMES zones
+ * @return array $hosts CNAMES hosts
+ */
+function get_rocket_cnames_host( $zones = array( 'all' ) ) {
+	$hosts = array();
+	
+	if ( $cnames = get_rocket_cdn_cnames( $zones ) ) {
+		foreach ( $cnames as $cname ) {
+			$cname = rocket_add_url_protocol( $cname );
+			$hosts[] = parse_url( $cname, PHP_URL_HOST );
+		}
+	}
+	
+	return $hosts;
+}
+
 /*
  * Get an URL with one of CNAMES added in options
  *
@@ -239,7 +260,6 @@ function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_file
 				$url = apply_filters( 'rocket_js_url', $url );
 
 				$tags .= sprintf( '<script src="%s" %s></script>', esc_attr( $url ), $data_attr );
-
 			}
 
 		}

@@ -261,13 +261,7 @@ function rocket_minify_css( $buffer )
 			}
 
 			// Get host of CNAMES
-			$cnames_host = array();
-			if ( $cnames = get_rocket_cdn_cnames( array( 'all', 'css_and_js', 'css' ) ) ) {
-				foreach ( $cnames as $cname ) {
-					$cname = rocket_add_url_protocol( $cname );
-					$cnames_host[] = parse_url( $cname, PHP_URL_HOST );
-				}
-			}
+			$cnames_host = get_rocket_cnames_host( array( 'all', 'css_and_js', 'css' ) );
 
             // Check if the file isn't external
             // Insert the relative path to the array without query string
@@ -359,13 +353,7 @@ function rocket_minify_js( $buffer )
 			}
 
 			// Get host of CNAMES
-			$cnames_host = array();
-			if ( $cnames = get_rocket_cdn_cnames( array( 'all', 'css_and_js', 'js' ) ) ) {
-				foreach ( $cnames as $cname ) {
-					$cname = rocket_add_url_protocol( $cname );
-					$cnames_host[] = parse_url( $cname, PHP_URL_HOST );
-				}
-			}
+			$cnames_host = get_rocket_cnames_host( array( 'all', 'css_and_js', 'js' ) );
 
 	        // Check if the link isn't external
 	        // Insert the relative path to the array without query string
@@ -452,4 +440,19 @@ function rocket_inject_ie_conditionals( $buffer, $conditionals )
       }
 	}
     return $buffer;
+}
+
+/**
+ * Fix issue with SSL and minification
+ *
+ * @since 2.3
+ */
+add_filter( 'rocket_css_url', '__rocket_fix_ssl_minify' );
+add_filter( 'rocket_js_url', '__rocket_fix_ssl_minify' );
+function __rocket_fix_ssl_minify( $url ) {
+	if ( is_ssl() && false === strpos( get_option( 'home' ), 'https://' ) && ! in_array( parse_url( $url, PHP_URL_HOST ), get_rocket_cnames_host( array( 'all', 'css_js', 'css', 'js' ) ) ) ) {
+		$url = str_replace( 'http://', 'https://', $url );
+	}
+	
+	return $url;
 }
