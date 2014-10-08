@@ -450,7 +450,7 @@ function rocket_inject_ie_conditionals( $buffer, $conditionals )
 add_filter( 'rocket_css_url', '__rocket_fix_ssl_minify' );
 add_filter( 'rocket_js_url', '__rocket_fix_ssl_minify' );
 function __rocket_fix_ssl_minify( $url ) {
-	if ( is_ssl() && false === strpos( get_option( 'home' ), 'https://' ) && ! in_array( parse_url( $url, PHP_URL_HOST ), get_rocket_cnames_host( array( 'all', 'css_js', 'css', 'js' ) ) ) ) {
+	if ( is_ssl() && false === strpos( $url, 'https://' ) && ! in_array( parse_url( $url, PHP_URL_HOST ), get_rocket_cnames_host( array( 'all', 'css_js', 'css', 'js' ) ) ) ) {
 		$url = str_replace( 'http://', 'https://', $url );
 	}
 	
