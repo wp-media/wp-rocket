@@ -42,7 +42,7 @@ function rocket_remove_url_protocol( $url, $no_dots=false )
 /**
  * Add HTTP protocol to an url that does not have
  *
- * @since 1.3.0
+ * @since 2.2.1
  *
  * @param string $url The URL to parse
  * @return string $url The URL with protocol
