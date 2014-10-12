@@ -1,0 +1,1125 @@
+# Copyright (C) 2014 WP Rocket
+# This file is distributed under the same license as the WP Rocket package.
+# Translators:
+# Ciomîrtan Andrei <refuonline@gmail.com>, 2014
+msgid ""
+msgstr ""
+"Project-Id-Version: WP Rocket\n"
+"Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
+"POT-Creation-Date: 2014-10-06 14:18:51+00:00\n"
+"PO-Revision-Date: 2014-10-08 08:31+0000\n"
+"Last-Translator: Ciomîrtan Andrei <refuonline@gmail.com>\n"
+"Language-Team: Romanian (Romania) (http://www.transifex.com/projects/p/wp-rocket/language/ro_RO/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ro_RO\n"
+"Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));\n"
+"X-Generator: grunt-wp-i18n 0.4.8\n"
+"X-Poedit-Basepath: ../\n"
+"X-Poedit-Bookmarks: \n"
+"X-Poedit-Country: United States\n"
+"X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c;\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Textdomain-Support: yes\n"
+
+#: inc/admin/admin.php:12 inc/admin-bar.php:31
+msgid "Settings"
+msgstr "Setări"
+
+#: inc/admin/admin.php:56
+msgid "Clear this cache"
+msgstr "Goliţi acest cache"
+
+#: inc/admin/admin.php:75 inc/admin/notices.php:92 inc/admin/options.php:980
+#: inc/admin/options.php:986 inc/admin-bar.php:43 inc/admin-bar.php:66
+#: inc/admin-bar.php:100
+msgid "Clear cache"
+msgstr "Goliţi cache"
+
+#: inc/admin/faq.inc.php:2
+msgid "FAQ's Table of Content"
+msgstr "Cuprins întrebări şi răspunsuri"
+
+#: inc/admin/faq.inc.php:4 inc/admin/faq.inc.php:26
+msgid "How many sites is my key valid for?"
+msgstr "Pentru câte pagini web este cheia validă?"
+
+#: inc/admin/faq.inc.php:5 inc/admin/faq.inc.php:31
+msgid "What exactly does WP Rocket do?"
+msgstr "Ce face mai exact WP Rocket?"
+
+#: inc/admin/faq.inc.php:6 inc/admin/faq.inc.php:45
+msgid "I have turned any of the basic options on, does WP Rocket work?"
+msgstr "Am activat din opţiunile standard, WP Rocket funcţionează?"
+
+#: inc/admin/faq.inc.php:7 inc/admin/faq.inc.php:56
+msgid ""
+"What should I do in case of a problem with WP Rocket that I can't solve?"
+msgstr "Ce ar trebui să fac în caz că am o problemă cu WP Rocket pe care nu o pot rezolva?"
+
+#: inc/admin/faq.inc.php:8 inc/admin/faq.inc.php:59
+msgid "My license has expired, what should I do?"
+msgstr "Licenţa mea a expirat, ce pot face?"
+
+#: inc/admin/faq.inc.php:9
+msgid ""
+"I want to change the URL of my website associated with my license, what "
+"should I do?"
+msgstr "Vreau să schimb adresa URL a paginii web asociată cu licienţă mea, ce pot face?"
+
+#: inc/admin/faq.inc.php:10
+msgid "Which tools should I use to measure the performance of my website?"
+msgstr "Care unelte le pot folosi pentru a măsura performanţa paginei web?"
+
+#: inc/admin/faq.inc.php:11 inc/admin/faq.inc.php:81
+msgid "Does WP Rocket work with default permalinks?"
+msgstr "WP Rocket funcţionează cu permalink-urile standard?"
+
+#: inc/admin/faq.inc.php:12
+msgid "Which web servers WP Rocket is compatible with?"
+msgstr "Ce server web este compatibil cu WP Rocket?"
+
+#: inc/admin/faq.inc.php:13 inc/admin/faq.inc.php:88
+msgid ""
+"Reports from PageSpeed and YSlow tell me that the content is not gziped "
+"and/or did not expire, what should I do?"
+msgstr "Rapoartele de la PageSpeed şi YSlow îmi zic că conţinutul nu este arhivat gzip şi/sau nu a expirat. Ce ar trebui să fac?"
+
+#: inc/admin/faq.inc.php:14 inc/admin/faq.inc.php:92
+msgid ""
+"Is WP Rocket compatible with others cache plugins like WP Super Cache or W3 "
+"Total Cache?"
+msgstr "Este WP Rocket compatibil cu alte pluginuri de cache asemănător cu WP Super Cache sau W3 Total Cache?"
+
+#: inc/admin/faq.inc.php:15 inc/admin/faq.inc.php:96
+msgid ""
+"Is WP Rocket compatible with WP Touch, WordPress Mobile Pack and WP Mobile "
+"Detector?"
+msgstr "Este WP Rocket compatibil cu WP Touch, Wordpress Mobile Pack sau WP Mobile Detector?"
+
+#: inc/admin/faq.inc.php:16 inc/admin/faq.inc.php:100
+msgid "Is WP Rocket compatible with WooCommerce?"
+msgstr "Este WP Rocket compatibil cu WooCommerce?"
+
+#: inc/admin/faq.inc.php:17 inc/admin/faq.inc.php:106
+msgid "Is WP Rocket compatible with WPML or qTranslate?"
+msgstr "Este WP Rocket compatibil cu WPML sau qTranslate?"
+
+#: inc/admin/faq.inc.php:18 inc/admin/faq.inc.php:110
+msgid "What are the minification and concatenation of files?"
+msgstr "Care sunt minificările şi înlăntuirirle fişierelor?"
+
+#: inc/admin/faq.inc.php:19
+msgid "What should I do if WP Rocket distorts my website display?"
+msgstr "Ce ar trebui să fac dacă WP Rocket deformează modul cum este afişată pagina web."
+
+#: inc/admin/faq.inc.php:20 inc/admin/faq.inc.php:117
+msgid "How often is the cache updated?"
+msgstr "Cât de des este cache-ul actualizat?"
+
+#: inc/admin/faq.inc.php:21 inc/admin/faq.inc.php:121
+msgid "How to exclude a particular page from caching?"
+msgstr "Cum să excluzi o anumită pagina din cache?"
+
+#: inc/admin/faq.inc.php:22 inc/admin/faq.inc.php:124
+msgid "How do the robots preload files from the cache?"
+msgstr "Cum preîncarcă roboţii fişierele din cache?"
+
+#: inc/admin/faq.inc.php:27
+msgid ""
+"A key is valid for one domain name. If you have example.com, that makes one "
+"key."
+msgstr "O cheie este validă doar pentru un nume de domeniu, Dacă ai example.com, asta înseamnă o cheie."
+
+#: inc/admin/faq.inc.php:28
+msgid ""
+"If you have example.com, www.example.com, dev.example.com, demo.example.com,"
+" example.com/dev/, example.com/demo/ all these sites depend on the same WP "
+"Rocket key."
+msgstr "Dacă ai example.com, www.example.com, dev.example.com, demo.example.com, example.com/dev/, example.com/demo/ toate acestea depind de o singură cheie WP Rocket."
+
+#: inc/admin/faq.inc.php:29
+msgid ""
+"However, a different base domain name, like example.org or example2.com, "
+"would require an additional key each."
+msgstr "Oricum, un nume diferit de domeniu, ca example.org sau example2.com, va fi necesar achiziţionarea unei chei pentru fiecare."
+
+#: inc/admin/faq.inc.php:32
+msgid "WP Rocket is a full cache plugin that comes with many features:"
+msgstr "WP Rocket este un plugin complet pentru cache care vine cu multe caracteristici:"
+
+#: inc/admin/faq.inc.php:34 inc/admin/faq.inc.php:50
+msgid "Caching of all the pages for quick viewing"
+msgstr "Permite caching la toate paginile pentru o vizualizare rapidă."
+
+#: inc/admin/faq.inc.php:35
+msgid "Preloading the cache of files using two bots in Python"
+msgstr "Preîncărcaţi fişierele cache folosind doi roboţi în Python"
+
+#: inc/admin/faq.inc.php:36
+msgid "Reduction of the number of HTTP requests to reduce loading time"
+msgstr "Reducerea numărului de solicitări de tip HTTP pentru reducerea timpului de încarcare"
+
+#: inc/admin/faq.inc.php:37
+msgid "Decreasing bandwidth usage with GZIP compression"
+msgstr "Reducerea traficului folosind compresie GZIP"
+
+#: inc/admin/faq.inc.php:38 inc/admin/faq.inc.php:52
+msgid "Management of the headers (expires, etags...)"
+msgstr "Administrarea header-ului (expirare, taguri etc.)"
+
+#: inc/admin/faq.inc.php:39
+msgid "Minification and concatenation of JS and CSS files"
+msgstr "Minificările şi înlăntuirirle pentru JavaScript şi fişierele CSS"
+
+#: inc/admin/faq.inc.php:40
+msgid "Deferred loading of images (LazyLoad)"
+msgstr "Amânarea afişării imaginilor (LazyLoad)"
+
+#: inc/admin/faq.inc.php:41
+msgid "Deferred loading of JavaScript files"
+msgstr "Amânarea afişării fişierelor JavaScript"
+
+#: inc/admin/faq.inc.php:42 inc/admin/faq.inc.php:53
+msgid "Image Optimisation"
+msgstr "Optimizarea imaginii"
+
+#: inc/admin/faq.inc.php:46 inc/admin/faq.inc.php:97 inc/admin/faq.inc.php:101
+#: inc/admin/faq.inc.php:107
+msgid "Yes."
+msgstr "Da."
+
+#: inc/admin/faq.inc.php:47
+msgid ""
+"The basic options are additional optimizations that could be described as "
+"bonuses. These options are not essential to improve the loading time of your"
+" website."
+msgstr "Opţiunile standard sunt optimizări adiţionale care pot fi descrise ca bonusuri. Aceste opţiuni nu sunt esenţiale pentru îmbunătăţirea timpului de încărcare a site-ului web."
+
+#: inc/admin/faq.inc.php:48
+msgid ""
+"Whatever your WP Rocket configuration is, the following features will still "
+"be active:"
+msgstr "Oricare ar fi configurarea pentru WP Rocket, aceste caracteristici vor rămâne active:"
+
+#: inc/admin/faq.inc.php:51
+msgid "Decrease bandwidth usage with our GZIP compression"
+msgstr "Reducerea traficului folosind compresia noastră GZIP"
+
+#: inc/admin/faq.inc.php:57
+msgid ""
+"If none of the answers from our FAQ provide a solution to your problem, you "
+"can let us know about your problem on our <a href=\"%s\" "
+"target=\"_blank\">support</a>. We will answer you as soon as possible."
+msgstr "Dacă nici unul din răspunsurile de la Întrebări şi răspunsuri nu a oferit o soluţie problemei tale, poţi să ne trimiţi problema ta pe site-ul nostru de <a href=\"%s\" target=\"_blank\">suport</a>. Vom răspunde cât mai curând posibil."
+
+#: inc/admin/faq.inc.php:60
+msgid ""
+"Don't panic, WP Rocket will continue to operate without a problem. You will "
+"receive an email telling you that your license will soon expire. You will "
+"find a renewal link which will be active even after the expiration."
+msgstr "Nu te panica, WP Rocket va continua să funcţioneze fără nicio problemă. Tu o să primeşti un email atunci când licenţa urmează să expire. Găseşti un link de reînoire care poate fi activat chiar şi după ce expiră."
+
+#: inc/admin/faq.inc.php:62
+msgid ""
+"I want to change the URL of my site associated with my license, what should "
+"I do?"
+msgstr "Vreau să schimb adresa URL a site-ului asociat cu licenţa mea, ce pot face?"
+
+#: inc/admin/faq.inc.php:63
+msgid ""
+"You must contact us by email (<a href=\"mailto:contact@wp-"
+"rocket.me\">contact@wp-rocket.me</a>) indicating the reason for your change."
+" If accepted, the amendment will be carried out by the WP Rocket team."
+msgstr "Trebuie să ne contactezi prin email (<a href=\"mailto:contact@wp-rocket.me\">contact@wp-rocket.me</a>) indicând motivul pentru schimbare. Dacă este acceptat, modificarea va fi efectuată de echipa WP Rocket."
+
+#: inc/admin/faq.inc.php:65
+msgid "Which tools should I use to measure the performance of my site?"
+msgstr "Ce unelte ar trebui să folosesc pentru a măsura performanţa site-ului meu?"
+
+#: inc/admin/faq.inc.php:66
+msgid ""
+"You can measure the performance of your website using the following tools:"
+msgstr "Poţi să masori performanţa site-ului tău folosind următoarele unelte:"
+
+#: inc/admin/faq.inc.php:73
+msgid "These tools give you two indications:"
+msgstr "Acest unelte îţi dau două indicaţii:"
+
+#: inc/admin/faq.inc.php:75
+msgid "a global note of good practices to apply"
+msgstr "O notă globală de bune practici pentru a aplica"
+
+#: inc/admin/faq.inc.php:76
+msgid "a loading time"
+msgstr "un timp de încărcare"
+
+#: inc/admin/faq.inc.php:78
+msgid ""
+"These data are indicative and do not necessarily reflect the actual display "
+"speed of your website"
+msgstr "Aceste informaţii sunt indicative şi nu reflectă neapărat viteza actuală a site-ului tău."
+
+#: inc/admin/faq.inc.php:79
+msgid ""
+"For tests closest to reality load time we recommend using <a href=\"%s\" "
+"target=\"_blank\">Pingdom Tools</a>."
+msgstr "Pentru teste apropiate de realitatea timpului de încărcare, vă recomandăm să folosiţi <a href=\"%s\" target=\"_blank\">Pingdom Tools</a>."
+
+#: inc/admin/faq.inc.php:82 inc/admin/faq.inc.php:93
+msgid "No."
+msgstr "Nu."
+
+#: inc/admin/faq.inc.php:83
+msgid ""
+"It's necessary to have custom permalinks of the type <code>%s</code> rather "
+"than <code>%s</code>."
+msgstr "Este necesar să aveţi permalink-uri modificate de tipul <code>%s</code> decât să folosiţi <code>%s</code>."
+
+#: inc/admin/faq.inc.php:85
+msgid "Which web servers is WP Rocket compatible with?"
+msgstr "Care servere web sunt compatibile cu WP Rocket?"
+
+#: inc/admin/faq.inc.php:86
+msgid ""
+"WP Rocket is compatible with <strong>Apache, NGINX, Microsoft IIS et "
+"Litepseed</strong> web servers."
+msgstr "WP Rocket este compatibil cu serverele web <strong>Apache, NGINX, Microsoft IIS et Litepseed</strong>."
+
+#: inc/admin/faq.inc.php:89
+msgid ""
+"WP Rocket automatically adds optimal timeout rules for static files and "
+"compresses them using gzip. If they are not applied, it is possible that "
+"there is a plugin conflict (exemple: <a href=\"%s\" target=\"_blank\">WP "
+"Retina 2x</a>). Try temporarily disabling all plugins except WP Rocket and "
+"retest."
+msgstr "WP Rocket adaugă automat cea mai optimă regulă de timeout pentru fişierele statice şi sunt compresate folosind gzip. Dacă nu este aplicată regula, este posibil să existe un conflict cu un alt plugin (exemplu: <a href=\"%s\" target=\"_blank\">WP Retina 2x</a>). Încearcă dezactivarea temporară a plugin-urilor în afară de WP Rocket şi retestează."
+
+#: inc/admin/faq.inc.php:90
+msgid ""
+"If this is not conclusive, it means that <code>mod_expire</code> and/or "
+"<code>mod_deflate</code> are not enabled on your server."
+msgstr "Dacă nu este concludent, înseamnă că <code>mod_expire</code> şi/sau <code>mod_deflate</code> nu este activat pe serverul tău."
+
+#: inc/admin/faq.inc.php:94
+msgid ""
+"It's imperative to <strong>remove all other optimization plugins</strong> "
+"(cache, minification, LazyLoad) PRIOR to the activation of WP Rocket."
+msgstr "Este imperativ să <strong>ştergi toate pluginurile de optimizare</strong> (cache, minification, LazyLoad) ÎNAINTE de a activa WP Rocket."
+
+#: inc/admin/faq.inc.php:98
+msgid ""
+"On the other hand, in the basic options, you must uncheck the <code>enable "
+"caching for mobile devices</code>."
+msgstr "Pe de altă parte, în opţiunile standard trebuie să debifezi <code>activare caching pentru terminalele mobile</code>."
+
+#: inc/admin/faq.inc.php:102
+msgid ""
+"However, you should exclude cart and checkout pages from caching. This is "
+"done from the advanced option <code>Never cache the following pages</code> "
+"by adding the following values:"
+msgstr "În orice caz, trebuie să excluzi paginile coşului de cumpărături şi cea de plată. Acest lucruri este posibil din opţiunea avansată <code>Nu folosi cache pentru paginile următoare</code>"
+
+#: inc/admin/faq.inc.php:103
+msgid "/cart/"
+msgstr "/cart/"
+
+#: inc/admin/faq.inc.php:104
+msgid "/checkout/(.*)"
+msgstr "/checkout/(.*)"
+
+#: inc/admin/faq.inc.php:108
+msgid ""
+"You even have the possibility to empty/preload the cache for a specific "
+"language or for all languages at the same time."
+msgstr "Ai chiar şi posibilitatea de a goli/preîncărca cache-ul pentru o limbă anume sau pentru toate limbile în acelaşi moment."
+
+#: inc/admin/faq.inc.php:111
+msgid ""
+"Minification is the process of removing all unnecessary characters in HTML, "
+"CSS or JavaScript files: spaces, comments, etc... This reduces the size of "
+"the files. Thus, browsers read these files faster."
+msgstr "Minificarea este procesul de eliminare a caracterelelor care nu sunt necesare din fişierele HTML, CSS sau JavaScript: spaţii, comentarii etc... Acest lucru reduce mărimea fişierului, Aşadar, browserele citesc mai rapid fişierele."
+
+#: inc/admin/faq.inc.php:112
+msgid ""
+"Concatenation is to consolidate a set of files into one. This has the effect"
+" of reducing the number of HTTP requests."
+msgstr "Înlăntuirea este pentru a consolida un set de fişiere într-un singur fişier. Acest lucru are efectul de a reduce numărului de cereri HTTP."
+
+#: inc/admin/faq.inc.php:114
+msgid "What should I do if WP Rocket distorts my site display?"
+msgstr "Ce ar trebui să fac dacă WP Rocket deformează modul cum este afişat site-ul."
+
+#: inc/admin/faq.inc.php:115
+msgid ""
+"There is a good chance that the deformation is caused by the minification of"
+" HTML, CSS or JavaScript files. To resolve the problem, we recommend "
+"watching the following video: <a href=\"%1$s\" class=\"fancybox\">%1$s</a>."
+msgstr "Există o bună sansă ca deformarea să fie cauzată de minificarea fişierelor HTML, CSS sau JavaScript. Pentru a rezolva problema vă recomandăm să urmăriţi următorul video: <a href=\"%1$s\" class=\"fancybox\">%1$s</a>."
+
+#: inc/admin/faq.inc.php:118
+msgid ""
+"The cache is automatically refreshed at every update of your content "
+"(add/edit/delete of an article, publication of a comment, etc..)."
+msgstr "Cache-ul este reîmprospătat automat la fiecare modificare a conţinutului tău (adăugare/editare/ştergere a unui articol, publicarea unui comentariu, etc..)."
+
+#: inc/admin/faq.inc.php:119
+msgid ""
+"In the basic options, you can also specify a period of automatic cleaning of"
+" the cache."
+msgstr "În opţiunile standard poţi să specfici o perioadă pentru a curaţa automat cache-ul."
+
+#: inc/admin/faq.inc.php:122
+msgid ""
+"In advanced options, it's possible to specify URLs to not cache. For this, "
+"you must add the URLs to exclude in the input field <code>Never cache the "
+"following pages</code>."
+msgstr "În setările avansate, este posibil să specifici URL-urile pe care le vrei să nu foloseşti cache-ul. Pentru asta, trebuie să adaugi URL-urile dorite în câmpul: <code>Nu folosi cache pentru paginile următoare</code>."
+
+#: inc/admin/faq.inc.php:125
+msgid ""
+"A page is only cached on its first visit. To bypass this, we have developed "
+"two robots (in Python) that crawl the pages of your website."
+msgstr "O pagină foloseşte cache-ul doar de la prima vizită. Pentru a sări peste, am dezvoltat doi roboţi (în Python) care indexează paginile site-ului."
+
+#: inc/admin/faq.inc.php:126
+msgid ""
+"The first visits your site when using the button \"Preload the cache\". The "
+"second will automatically visit your site as soon as you are going to "
+"create/edit/delete an article."
+msgstr "Primele vizite sunt atunci când foloseşti butonul \"Preîncarcă cache-ul\". Al 2-lea vizitează automat site-ul tău atunci când ai de gând să creezi/editezi/stergi un articol."
+
+#: inc/admin/faq.inc.php:127
+msgid ""
+"For more information, please watch this video: <a href=\"%s\" "
+"class=\"fancybox\">%s</a>."
+msgstr "Pentru mai multe informaţii, te rugăm să urmăreşti acest video: <a href=\"%s\" class=\"fancybox\">%s</a>."
+
+#: inc/admin/notices.php:26 inc/admin/notices.php:30
+msgid "<b>%s</b> can not be deactivated because of <code>%s</code>."
+msgstr "<b>%s</b> nu poate fi dezactivat din cauză că <code>%s</code>."
+
+#: inc/admin/notices.php:26
+msgid ""
+"This constant is still defined in <code>wp-config.php</code> file and its "
+"value must be set to <code>false</code>."
+msgstr "Această constantă este în continuare definită în fişierul <code>wp-config.php</code> şi valoarea ei trebuie setată <code>false</code>"
+
+#: inc/admin/notices.php:26
+msgid "Maybe we do not have the writing permissions for <code>%s</code>."
+msgstr "Poate nu sunt permisii de scriere pentru <code>%s</code>."
+
+#: inc/admin/notices.php:26 inc/admin/notices.php:30
+msgid ""
+"Please give us permissions or resolve the problem yourself. Then retry "
+"deactivation."
+msgstr "Vă rugăm daţi-ne permisiune sau rezolvaţi singur problema. Apoi încercaţi dezactivarea."
+
+#: inc/admin/notices.php:30
+msgid "This file is not writable and we can not remove these directives."
+msgstr "Acest fişier nu poate fi scris, şi nu putem elimina acele directive."
+
+#: inc/admin/notices.php:30
+msgid "Maybe we do not have writing permissions for <code>%s</code>."
+msgstr "Poate nu sunt permisii de scriere pentru <code>%s</code>."
+
+#: inc/admin/notices.php:66
+msgid "You can still force the deactivation by clicking here."
+msgstr "Poţi încerca dezactivarea forţată printr-un click aici"
+
+#: inc/admin/notices.php:92
+msgid ""
+"<b>%s</b>: One or more extensions have been enabled or disabled, do not "
+"forget to clear the cache if necessary."
+msgstr "<b>%s</b>: Una sau mai multe extensii au fost activate sau dezactivate, nu uita să cureţi cache-ul dacă este necesar."
+
+#: inc/admin/notices.php:162
+msgid ""
+"<b>%s</b>: The following plugins are not compatible with this plugin and may"
+" cause unexpected results:"
+msgstr "<b>%s</b>: Aceste plugin-uri nu sunt compatibile cu acest plugin şi poate cauza rezultate neaşteptate."
+
+#: inc/admin/notices.php:168
+msgid "Deactivate"
+msgstr "Dezactivat"
+
+#: inc/admin/notices.php:194
+msgid ""
+"<b>%s</b>: A custom permalink structure is required for the plugin to work "
+"properly. Please go to <a href=\"%s\">Permalink</a> to configure it."
+msgstr "<b>%s</b>: O structură de permalink modificat este necesar pentru plugin ca să functioneze corespunzător. Vă rugăm să accesaţi <a href=\"%s\">Permalink</a> pentru a configura."
+
+#: inc/admin/notices.php:225
+msgid ""
+"<b>%s</b>: It seems we don't have <a href=\"%s\" target=\"_blank\">writing "
+"permissions</a> on <code>wp-config.php</code> file or the value of the "
+"constant <code>WP_CACHE</code> is set to <code>false</code>"
+msgstr "<b>%s</b>: Se pare că nu sunt <a href=\"%s\" target=\"_blank\">permisii de scriere</a> în fişierul <code>wp-config.php</code> sau valoarea contantă <code>WP_CACHE</code> este setată <code>false</code>"
+
+#: inc/admin/notices.php:227
+msgid ""
+"To fix this you have to set writing permissions for <code>wp-"
+"config.php</code> and then save the settings again."
+msgstr "Pentru a rezolva, trebuie să setezi permisii de scriere pentru <code>wp-config.php</code> apoi salvează setările din nou."
+
+#: inc/admin/notices.php:229
+msgid ""
+"If the message persists, you have to put the following code in your <code"
+">wp-config.php</code> file so that it works correctly. Click on the field "
+"and press Ctrl-A to select all."
+msgstr "Dacă mesajul persistă, trebuie să adaugi următorul cod în fişierul <code>wp-config.php</code> pentru a funcţiona corect. Click într-un câmp şi apasă Ctrl+A pentru selectare totală."
+
+#: inc/admin/notices.php:270
+msgid ""
+"If you had <a href=\"%1$s\" target=\"_blank\">writing permissions</a> on "
+"<code>%2$s</code> file, <b>%3$s</b> could do this automatically. This is not"
+" the case, here is the code you should add in your <code>%2$s</code> file "
+"for <b>%3$s</b> to work properly."
+msgstr "Dacă ai <a href=\"%1$s\" target=\"_blank\">permisie de scriere</a> în fişierul <code>%2$s</code>, <b>%3$s</b> poate face asta automat.\nDacă nu este cazul, aici este codul pe care trebuie să-l adaugi în fişierul <code>%2$s</code> pentru <b>%3$s</b> a funcţiona corespunzător."
+
+#: inc/admin/notices.php:303
+msgid ""
+"It seems that the <code>%s</code> file is not ours. Save the settings, we "
+"will automatically recreate the correct one. If it's still not working, "
+"please delete it and save again."
+msgstr "Se pare că fişierul <code>%s</code> nu este al nostru. Salvează setările, se va crea unul corect. Dacă tot nu funcţionează, te rugam să îl stergi şi să salvezi din nou."
+
+#: inc/admin/notices.php:332
+msgid ""
+"If you had <a href=\"%1$s\" target=\"_blank\">writing permissions</a> on "
+"<code>.htaccess</code> file, <b>%2$s</b> could do this automatically. This "
+"is not the case, so here are the rewrite rules you have to put in your "
+"<code>.htaccess</code> file for <b>%2$s</b> to work correctly. Click on the "
+"field and press Ctrl-A to select all."
+msgstr "Dacă ai <a href=\"%1$s\" target=\"_blank\">permisie de scriere</a> în fişierul <code>.htaccess</code>,  <b>%2$s</b> poate face asta automat. \nDacă nu este cazul, aici este regula de scriere care trebuie să o pui în fişierul <code>.htaccess</code>pentru <b>%2$s</b> a funcţiona corespunzător, Click în camp şi apasă Ctrl+A pentru selecţie totală."
+
+#: inc/admin/notices.php:332
+msgid ""
+"<strong>Warning:</strong> This message will popup again and its content may "
+"be updated when saving the options"
+msgstr "<strong>Avertizare:</strong> Acest mesaj va fi afişat din nou şi conţinutul poate fi modificat atunci când salvezi opţiunile."
+
+#: inc/admin/notices.php:361
+msgid ""
+"Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
+"permissions</a> on <b>%3$s</b> domain configuration folder "
+"(<code>%2$s</code>). To make <b>%3$s</b> work properly, please CHMOD "
+"<code>755</code> or <code>775</code> or <code>777</code> this "
+"folder.<br/>When the problem is solved, thank you to save the %3$s options "
+"to generate the configuration file."
+msgstr "Fii atent, nu ai <a href=\"%1$s\" target=\"_blank\">permisie de scriere</a> în <b>%3$s</b> folderul pentru configurarea domeniului (<code>%2$s</code>). Pentru a funcţiona <b>%3$s</b> corect, te rog setează CHMOD<code>755</code> sau <code>775</code> sau <code>777</code> acest folder.<br/>Când problema s-a rezolvat, salvează optiunea %3$s pentru a genera fişierul de configurare."
+
+#: inc/admin/notices.php:389
+msgid ""
+"Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
+"permissions</a> on <b>%3$s</b> cache folder (<code>%2$s</code>). For "
+"<b>%3$s</b> works properly, please CHMOD <code>755</code> or "
+"<code>775</code> or <code>777</code> this folder."
+msgstr "Fii atent, nu ai <a href=\"%1$s\" target=\"_blank\">permisie de scriere</a> în <b>%3$s</b>folderul cache (<code>%2$s</code>). Pentru a funcţiona <b>%3$s</b> corect, te rog setează CHMOD<code>755</code> sau <code>775</code> sau <code>777</code> acest folder."
+
+#: inc/admin/notices.php:418
+msgid ""
+"Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
+"permissions</a> on <b>%3$s</b> minified cache folder (<code>%2$s</code>). To"
+" make <b>%3$s</b> work properly, please CHMOD <code>755</code> or "
+"<code>775</code> or <code>777</code> this folder."
+msgstr "Fii atent, nu ai <a href=\"%1$s\" target=\"_blank\">permisie de scriere</a> în <b>%3$s</b>folderul cache minificat (<code>%2$s</code>). Pentru a funcţiona <b>%3$s</b> corect, te rog setează CHMOD<code>755</code> sau <code>775</code> sau <code>777</code> acest folder."
+
+#: inc/admin/notices.php:443
+msgid "Thank you. Your license has been successfully validated!"
+msgstr "Mulţumim. Licenţa ta a fost validată cu succes!"
+
+#: inc/admin/notices.php:444
+msgid "Key: <code>%s</code><br>Email: <i>%s</i>"
+msgstr "Cheie: <code>%s</code><br>Email: <i>%s</i>"
+
+#: inc/admin/options.php:139 inc/admin/options.php:366
+msgid "Warning: "
+msgstr "Avertisment:"
+
+#: inc/admin/options.php:146
+msgid "Download options"
+msgstr "Opţiuni de download"
+
+#: inc/admin/options.php:175
+msgid "<b>JS</b> files with Deferred Loading JavaScript"
+msgstr "Fişiere <b>JS</b> ccu încărcare amânată JavaScript"
+
+#: inc/admin/options.php:195 inc/admin/options.php:215
+#: inc/admin/options.php:235
+msgid "Wait until this file is loaded?"
+msgstr "Aştepţi până când fişierul este încarcat?"
+
+#: inc/admin/options.php:243 inc/admin/options.php:785
+msgid "Add URL"
+msgstr "Adaugă URL"
+
+#: inc/admin/options.php:255 inc/admin/options.php:853
+msgid "Replace site's hostname with:"
+msgstr "Înlocuieşte numele de gazdă a site-ului cu:"
+
+#: inc/admin/options.php:273 inc/admin/options.php:299
+#: inc/admin/options.php:323
+msgid "reserved for"
+msgstr "rezervat pentru"
+
+#: inc/admin/options.php:275 inc/admin/options.php:301
+#: inc/admin/options.php:325
+msgid "All files"
+msgstr "Toate fişierele"
+
+#: inc/admin/options.php:276 inc/admin/options.php:302
+#: inc/admin/options.php:326
+msgid "Images"
+msgstr "Imagini"
+
+#: inc/admin/options.php:338
+msgid "Add CNAME"
+msgstr "Adaugă CNAME"
+
+#: inc/admin/options.php:390
+msgid "Watch the video"
+msgstr "Urmareşte video-ul"
+
+#: inc/admin/options.php:414
+msgid "License validation"
+msgstr "Validarea pentru licenţă"
+
+#: inc/admin/options.php:417 inc/admin/options.php:425
+msgid "API Key"
+msgstr "Cheie API"
+
+#: inc/admin/options.php:430
+msgid "Please enter the API key obtained after your purchase."
+msgstr "Te rugăm să adaugi cheia API obţinută la achiziţionare."
+
+#: inc/admin/options.php:436 inc/admin/options.php:444
+msgid "E-mail Address"
+msgstr "Adresă E-mail"
+
+#: inc/admin/options.php:449
+msgid "The one used for the purchase, in your support account."
+msgstr "Aceasta a fost folosită pentru cumpărare, în contul tău de suport."
+
+#: inc/admin/options.php:455 inc/admin/options.php:1146
+msgid "Basic options"
+msgstr "Opţiuni standard"
+
+#: inc/admin/options.php:458 inc/admin/options.php:467
+msgid "Lazyload:"
+msgstr "Lazyload:"
+
+#: inc/admin/options.php:465
+msgid "Enable Lazy loading images."
+msgstr "Activează imaginile Lazy loading."
+
+#: inc/admin/options.php:472
+msgid ""
+"LazyLoad displays images on a page only when they are visible to the user."
+msgstr "LazyLoad afişează imagini într-o pagină numai când sunt vizibile către utilizator."
+
+#: inc/admin/options.php:473 inc/admin/options.php:514
+msgid ""
+"This mechanism reduces the number of HTTP requests and improves the loading "
+"time."
+msgstr "Acest mecanism reduce numărului de solicitări de tip HTTP şi îîmbunătăţeşte timpul de încărcare."
+
+#: inc/admin/options.php:479
+msgid ""
+"Files optimisation:<br/><span class=\"description\">(Minification & "
+"Concatenation)</span>"
+msgstr "Optimiyarea fisierelor: <br/><span class=\"description\">(Minificare & Înlănţuire)</span> "
+
+#: inc/admin/options.php:488
+msgid "HTML Files minification"
+msgstr "Minificare fişiere HTML"
+
+#: inc/admin/options.php:494
+msgid "Google Fonts minification"
+msgstr "Minificare fonturi Google"
+
+#: inc/admin/options.php:500
+msgid "CSS Files minification"
+msgstr "Minificare fişier CSS"
+
+#: inc/admin/options.php:506
+msgid "JS Files minification"
+msgstr "Minificare fişier JS"
+
+#: inc/admin/options.php:511
+msgid ""
+"Minification removes any spaces and comments present in the CSS and "
+"JavaScript files."
+msgstr "Minificarea şterge orice spaţiu şi comentariu prezent în fişierele CSS şi JavaScript."
+
+#: inc/admin/options.php:512
+msgid ""
+"This mechanism reduces the weight of each file and allows a faster reading "
+"of browsers and search engines."
+msgstr "Acest mecanism reduce greutatea fiecărui fişier, şi permite o viteză de citire a browser-elor sau a motoarelor de căutare."
+
+#: inc/admin/options.php:513
+msgid "Concatenation combines all CSS and JavaScript files."
+msgstr "Înlănţuirea combină toate fişierele CSS şi JavaScript."
+
+#: inc/admin/options.php:519
+msgid "Concatenating files can cause display errors."
+msgstr "Fişierele înlănţuite pot cauza erori de afişare."
+
+#: inc/admin/options.php:525
+msgid ""
+"In case of any errors we recommend you to turn off this option or watch the "
+"following video: <a href=\"%1$s\" class=\"fancybox\">%1$s</a>."
+msgstr "În caz de orice eroare, vă recomandăm să opriţi această opţiune sau urmăriţi acest video: a href=\"%1$s\" class=\"fancybox\">%1$s</a>."
+
+#: inc/admin/options.php:539 inc/admin/options.php:548
+msgid "Mobile cache:"
+msgstr "Cache pentru mobil"
+
+#: inc/admin/options.php:546
+msgid "Enable caching for mobile devices."
+msgstr "Activează cache pentru telefoanele mobile."
+
+#: inc/admin/options.php:553
+msgid "Don't turn on this option if you use one of these plugins: %l."
+msgstr "Nu activa această opţiune dacă foloseşti unul dintre aceste plugin-uri: %l."
+
+#: inc/admin/options.php:559 inc/admin/options.php:566
+msgid "Logged in user cache:"
+msgstr "Cache memorat pentru utilizator:"
+
+#: inc/admin/options.php:564
+msgid "Enable caching for logged in users."
+msgstr "Activează cache pentru utilizatori logaţi."
+
+#: inc/admin/options.php:571 inc/admin/options.php:579
+msgid "SSL cache:"
+msgstr "Cache SSL"
+
+#: inc/admin/options.php:577
+msgid "Enable caching for pages with SSL protocol (<code>https://</code>)."
+msgstr "Activează cache pentru paginii cu protocol SSL (<code>https://</code>)."
+
+#: inc/admin/options.php:584 inc/admin/options.php:592
+msgid "Clear Cache Lifespan"
+msgstr "Goleşte durata de viaţă pentru cache"
+
+#: inc/admin/options.php:598
+msgid "Unit of time"
+msgstr "Unitate de timp"
+
+#: inc/admin/options.php:601
+msgid "second(s)"
+msgstr "secundă(e)"
+
+#: inc/admin/options.php:602
+msgid "minute(s)"
+msgstr "minut(e)"
+
+#: inc/admin/options.php:603
+msgid "hour(s)"
+msgstr "oră(e)"
+
+#: inc/admin/options.php:604
+msgid "day(s)"
+msgstr "zi(le)"
+
+#: inc/admin/options.php:610
+msgid ""
+"By default, cache lifespan is 24 hours. This means that once created, the "
+"cache files are automatically removed after 24 hours before being recreated."
+msgstr "Standard, durata de viaţa pentru cache este de 24 de ore. Asta înseamnă că odată creat, fişierele cache sunt şterse automat după 24 de ore, înainte de a recrea alte fişiere."
+
+#: inc/admin/options.php:610
+msgid ""
+"This can be useful if you display your latest tweets or rss feeds in your "
+"sidebar, for example."
+msgstr "Acesta poate fi folositor dacă afişezi ultimele tweet-uri sau feed-ul rss în sidebar, ca exemplu."
+
+#: inc/admin/options.php:615
+msgid "Specify 0 for unlimited lifetime."
+msgstr "Specifica 0 pentru nelimitat."
+
+#: inc/admin/options.php:621 inc/admin/options.php:1147
+msgid "Advanced options"
+msgstr "Opţiuni avansate"
+
+#: inc/admin/options.php:624 inc/admin/options.php:632
+msgid "Prefetch DNS requests:"
+msgstr "Cereri Prefetch DNS:"
+
+#: inc/admin/options.php:637
+msgid ""
+"DNS prefetching is a way for browsers to anticipate the DNS resolution of "
+"external domains from your site."
+msgstr "DNS prefetching este o modalitate pentru browsere de a anticipa rezoluția DNS de domenii externe de la site-ul tau."
+
+#: inc/admin/options.php:637
+msgid "This mechanism reduces the latency of some external files."
+msgstr "Acest mecanism reduce latenţa la unele fişiere externe."
+
+#: inc/admin/options.php:643
+msgid ""
+"To learn more about this option and how to use it correctly, we advise you "
+"to watch the following video: <a href=\"%1$s\" class=\"fancybox\">%1$s</a>."
+msgstr "Pentru a învăţa mai multe despre această opţiune, şi cum se foloseşte corect, îţi recomandăm să urmăreşti următorul video: <a href=\"%1$s\" class=\"fancybox\">%1$s</a>."
+
+#: inc/admin/options.php:648
+msgid ""
+"<strong>Note:</strong> Enter the domain names without their protocol, for "
+"example: <code>//ajax.googleapis.com</code> without <code>http:</code> (one "
+"per line)."
+msgstr "<strong>Notă:</strong> Introduce numele de domeniu fără protocol, de exemplu: <code>//ajax.googleapis.com</code> fără <code>http:</code> (unul pe linie)."
+
+#: inc/admin/options.php:654 inc/admin/options.php:662
+msgid "Empty the cache of the following pages when updating a post:"
+msgstr "Goleşte cache pentru următoarele pagini atunci când se actualizează un articol:"
+
+#: inc/admin/options.php:667
+msgid ""
+"Enter the URL of additionnal pages to purge when updating a post (one per "
+"line)."
+msgstr "Introduce URL-ul pentru paginile suplimentare pentru a curaţa la actualizarea articolului (unul pe linie)."
+
+#: inc/admin/options.php:668 inc/admin/options.php:692
+msgid "You can use regular expressions (regex)."
+msgstr "Poţi să foloseşti expresii normale (regex)."
+
+#: inc/admin/options.php:673
+msgid ""
+"<strong>Note:</strong> When you update a post or when a comment is posted, "
+"the homepage, categories and tags associated with this post are "
+"automatically removed from the cache and then recreated by our bot."
+msgstr "<strong>Notă:</strong> Când modifici un articol sau un comentariu este adăugat, prima pagină, categoriile şi tagurile asociate cu acest articol sunt automatic şterse din cache şi apoi recreat de botul nostru."
+
+#: inc/admin/options.php:679 inc/admin/options.php:687
+msgid "Never cache the following pages:"
+msgstr "Nu folosi cache pentru următoarele pagini:"
+
+#: inc/admin/options.php:692
+msgid "Enter the URL of pages to reject (one per line)."
+msgstr "Adaugă URL-urile paginilor pentru respingere (una pe linie)."
+
+#: inc/admin/options.php:698 inc/admin/options.php:706
+msgid "Don't cache pages that use the following cookies:"
+msgstr "Nu folosi cache pentru paginile care folosesc următoarele cookies:"
+
+#: inc/admin/options.php:711
+msgid "List the names of the cookies (one per line)."
+msgstr "Lista de numle pentru cookies (una pe linie)."
+
+#: inc/admin/options.php:717 inc/admin/options.php:725
+msgid "Cache pages that use the following query strings (GET parameters):"
+msgstr "Cache pentru paginile care folosesc următoarele query strings (GET parameters):"
+
+#: inc/admin/options.php:730
+msgid "List of query strings which can be cached (one per line)."
+msgstr "Query strings care pot fi folosite pentru cache (una pe linie)."
+
+#: inc/admin/options.php:736 inc/admin/options.php:744
+msgid "<b>CSS</b> files to exclude from minification:"
+msgstr "Fişiere <b>CSS</b> de exclus pentru minificare:"
+
+#: inc/admin/options.php:749
+msgid "Enter the URL of <b>CSS</b> files to reject (one per line)."
+msgstr "Adaugă URL-urile fişierelor <b>CSS</b> pentru respingere (una pe linie)."
+
+#: inc/admin/options.php:755 inc/admin/options.php:763
+msgid "<b>JS</b> files to exclude from minification:"
+msgstr "Fişiere <b>JS</b> de exclus pentru minificare:"
+
+#: inc/admin/options.php:768
+msgid "Enter the URL of <b>JS</b> files to reject (one per line)."
+msgstr "Adaugă URL-urile fişierelor <b>JS</b> pentru respingere (una pe linie)."
+
+#: inc/admin/options.php:774 inc/admin/options.php:781
+msgid ""
+"<b>JS</b> files to be included in the footer during the minification "
+"process:"
+msgstr "Fişiere <b>JS</b> pentru a fi incluse în footer pe durata procesului de minificare:"
+
+#: inc/admin/options.php:790 inc/admin/options.php:818
+msgid "Empty the field to remove it."
+msgstr "Goleşte câmpul pentru a fi şters."
+
+#: inc/admin/options.php:796 inc/admin/options.php:824
+msgid "You must specify the complete URL of the files."
+msgstr "Trebuie să specifici adresa URL completă a fişierelor."
+
+#: inc/admin/options.php:802
+msgid "<b>JS</b> files with deferred loading:"
+msgstr "Fişierele <b>JS</b>cu încărcare amânată:"
+
+#: inc/admin/options.php:813
+msgid ""
+"You can add JavaScript files that will be loaded asynchronously at the same "
+"time as the page loads."
+msgstr "Poţi să adaugi fişiere JavaScript care pot fi încărcate asincron în acelaşi timp cu pagina care se încarcă."
+
+#: inc/admin/options.php:830
+msgid "Content Delivery Network options"
+msgstr "Opţiuni Content Delivery Network"
+
+#: inc/admin/options.php:833 inc/admin/options.php:842
+msgid "CDN:"
+msgstr "CDN:"
+
+#: inc/admin/options.php:840
+msgid "Enable Content Delivery Network."
+msgstr "Activează Content Delivery Network."
+
+#: inc/admin/options.php:847
+msgid ""
+"CDN function replaces all URLs of your static files and media (CSS, JS, "
+"Images) with the url entered below. This way all your content will be copied"
+" to a dedicated hosting or a CDN system <a href=\"http://www.maxcdn.com/\" "
+"target=\"_blank\">maxCDN</a>."
+msgstr "Funcţia CDN înlocuieşte toate URL-urile fişierelor statice şi media (CSS, JS, imagini) cu url-ul notat mai jos. În acest fel tot conţinutul va fi copiat pe un server dedicat sau pe un sistem CDN <a href=\"http://www.maxcdn.com/\" target=\"_blank\">maxCDN</a>."
+
+#: inc/admin/options.php:859 inc/admin/options.php:1150
+msgid "White Label"
+msgstr "White Label"
+
+#: inc/admin/options.php:862 inc/admin/options.php:871
+msgid "Plugin Name:"
+msgstr "Numele plugin-ului:"
+
+#: inc/admin/options.php:877 inc/admin/options.php:886
+msgid "Plugin URI:"
+msgstr "URL-ul pluginului:"
+
+#: inc/admin/options.php:892 inc/admin/options.php:901
+msgid "Description:"
+msgstr "Descriere:"
+
+#: inc/admin/options.php:907 inc/admin/options.php:916
+msgid "Author:"
+msgstr "Autor:"
+
+#: inc/admin/options.php:922 inc/admin/options.php:931
+msgid "Author URI:"
+msgstr "URL Autor:"
+
+#: inc/admin/options.php:943
+msgid "Reset White Label values to default"
+msgstr "Resetează valoarea standard pentru White Label"
+
+#: inc/admin/options.php:948
+msgid ""
+"If you change anything, the tutorial + FAQ + Support tabs will be hidden."
+msgstr "În caz de schimbi ceva. Taburile Tutorialul + Întrebări şi răspunsuri + Suportul Tehnic vor fi ascunse."
+
+#: inc/admin/options.php:953 inc/admin/options.php:1152
+msgid "Tools"
+msgstr "Unelte"
+
+#: inc/admin/options.php:958 inc/admin/options.php:967
+msgid "Beta Tester"
+msgstr "Tester Beta"
+
+#: inc/admin/options.php:965
+msgid "Yes I do!"
+msgstr "Da, vreau!"
+
+#: inc/admin/options.php:972
+msgid ""
+"Check it to participate in the WP Rocket Beta Program and get earlier access"
+" to new versions, thanks in advance."
+msgstr "Verifică pentru a participa în programul WP Rocket Beta şi obţine acces mai devreme pentru noile versiuni, mulţumim anticipat."
+
+#: inc/admin/options.php:991
+msgid "Clear the cache for the whole site."
+msgstr "Goleşte cache pentru întreaga pagină web."
+
+#: inc/admin/options.php:997 inc/admin/options.php:1003
+#: inc/admin/options.php:1036 inc/admin-bar.php:141 inc/admin-bar.php:162
+#: inc/admin-bar.php:193
+msgid "Preload cache"
+msgstr "Preîncarcă cache"
+
+#: inc/admin/options.php:1008
+msgid ""
+"Allows you to request a bot crawl to preload the cache (homepage and its "
+"internal links)."
+msgstr "Îţi permite să ceri unui bot de tip crawl să preîncarce cache (prima pagină şi link-urile interne)"
+
+#: inc/admin/options.php:1015
+msgid "Settings Exporter"
+msgstr "Setări pentru export"
+
+#: inc/admin/options.php:1025
+msgid "Settings Importer"
+msgstr "Setări pentru import"
+
+#: inc/admin/options.php:1033 inc/admin/options.php:1154
+msgid "Tutorials"
+msgstr "Tutoriale"
+
+#: inc/admin/options.php:1041
+msgid ""
+"This video gives some explanations about our two crawler robots. They "
+"generate several cache files in a few seconds."
+msgstr "Acest video oferă câteva explicaţii despre roboţii tip crawler. Ei generează mai multe fişiere cache în câteva secunde."
+
+#: inc/admin/options.php:1048
+msgid "CSS and JavaScript minification"
+msgstr "Minificare CSS si JavaScript."
+
+#: inc/admin/options.php:1053
+msgid ""
+"This video gives some explanations about how to use the advanced processes "
+"of minification and concatenation of CSS and JavaScript files."
+msgstr "Acest video oferă câteva explicaţii despre modul cum să foloseşti procesele avansate de minificare şi înlăntuirirle fişierelor CSS şi JavaScript."
+
+#: inc/admin/options.php:1060
+msgid "Preloading DNS queries"
+msgstr "Pre-încărcare interogări DNS"
+
+#: inc/admin/options.php:1065
+msgid ""
+"This video helps to easily understand the advanced option of \"Preloading "
+"DNS queries\" and the use of the filter <code>rocket_dns_prefetch</code>."
+msgstr "Acest video vă ajută să întelegeţi cu uşurinţă avantajele opţiunii de \"pre-încărcare interogări DNS\" şi folosirea filtrului <code>rocket_dns_prefetch</code>."
+
+#: inc/admin/options.php:1072
+msgid "How to use the White Label functionality?"
+msgstr "Cum să foloseşti funcţionalitatea White Label?"
+
+#: inc/admin/options.php:1077
+msgid "This video helps to set up a White Label version of WP Rocket."
+msgstr "Acest video vă ajută să setaţi versiunea White Label a pluginului WP Rocket."
+
+#: inc/admin/options.php:1084
+msgid "How to use the CDN functionality?"
+msgstr "Cum să foloseşti funcţionaliteatea CDN?"
+
+#: inc/admin/options.php:1089
+msgid ""
+"This video helps to understand what is the CDN functionality included since "
+"WP Rocket 2.1."
+msgstr "Acest video vă ajută să întelegeţi care este funcţionalitatea CDN inclusă din WP Rocket 2.1"
+
+#: inc/admin/options.php:1096
+msgid "How to use the CDN API?"
+msgstr "Cum să foloseşti API pentru CDN?"
+
+#: inc/admin/options.php:1101
+msgid ""
+"This video helps to set up the two functions "
+"<code>get_rocket_cdn_url()</code> and <code>rocket_cdn_url()</code>."
+msgstr "Acest video vă ajută să setaţi două funcţii <code>get_rocket_cdn_url()</code> şi <code>rocket_cdn_url()</code>."
+
+#: inc/admin/options.php:1106 inc/admin/options.php:1109
+#: inc/admin/options.php:1155 inc/admin/options.php:1160
+msgid "FAQ"
+msgstr "Întrebări şi răspunsuri"
+
+#: inc/admin/options.php:1117 inc/admin/options.php:1120
+#: inc/admin/options.php:1156 inc/admin/options.php:1161 inc/admin-bar.php:204
+msgid "Support"
+msgstr "Suport Tehnic"
+
+#: inc/admin/options.php:1126
+msgid "Visit the Support"
+msgstr "Vizitează Suportul Tehnic"
+
+#: inc/admin/options.php:1132
+msgid ""
+"If none of the FAQ answers resolves your problem, you can send your issue to"
+" our free support. We will reply as soon as possible."
+msgstr "Dacă nici unul din răspunsurile de la Întrebări şi răspunsuri nu rezolvă problema dumneavoastră, puteţi trimite problema către suportul nostru gratuit. Vom răspunde cât mai rapid posibil."
+
+#: inc/admin/options.php:1148
+msgid "CDN"
+msgstr "CDN"
+
+#: inc/admin/options.php:1159
+msgid "License"
+msgstr "Licenţa"
+
+#: inc/admin/options.php:1460
+msgid "Settings imported and saved."
+msgstr "Setările au fost importate şi salvate."
+
+#: inc/admin/options.php:1478 inc/admin/options.php:1537
+msgid "Settings saved."
+msgstr "Setări salvate."
+
+#: inc/admin/options.php:1622
+msgid ""
+"Before you can upload your import file, you will need to fix the following "
+"error:"
+msgstr "Înainte de a încărca fişierul de import, este necesar să rezolvaţi următoarea eroare:"
+
+#: inc/admin/options.php:1629
+msgid "Choose a file from your computer:"
+msgstr "Alege un fişier din calculatorul tău:"
+
+#: inc/admin/options.php:1629
+msgid "Maximum size: %s"
+msgstr "Mărimea maximă: %s"
+
+#: inc/admin/options.php:1632
+msgid "Upload file and import settings"
+msgstr "Încarcă fişierul şi importă setările."
+
+#: inc/admin/updater.php:120 inc/admin/updater.php:127
+msgid ""
+"An unexpected error occurred. Something may be wrong with WP-Rocket.me or "
+"this server&#8217;s configuration. If you continue to have problems, please "
+"try the <a href=\"%s\">support forums</a>."
+msgstr "O eroare neaşteptată. Este posibil să fie ceva cu WP-Rocket.me sau configuraţia serverului. În caz că problemele persistă, vă rugam să accesaţi <a href=\"%s\">suportul tehnic de pe forum</a>."
+
+#: inc/admin-bar.php:90 inc/admin-bar.php:184 inc/admin-bar.php:244
+#: inc/admin-bar.php:251
+msgid "All languages"
+msgstr "Toate limbile."
+
+#: inc/admin-bar.php:115
+msgid "Clear this post"
+msgstr "Goleşte acest articol."
+
+#: inc/admin-bar.php:127
+msgid "Purge this URL"
+msgstr "Curaţă acest URL."
+
+#: inc/cron.php:16
+msgid "%s clear"
+msgstr "%s gol"
+
+#: inc/functions/admin.php:13
+msgid ""
+"Last step before enjoying the high performances of our plugin, please <a "
+"href=\"%s\">Enter you API key</a> here."
+msgstr "Ultimul pas înainte de a beneficia de performanţa înaltă a pluginului nostru, vă rugam <a href=\"%s\">Adăugaţi cheia API</a> aici."
+
+#: inc/functions/options.php:232
+msgid "Your license is not valid."
+msgstr "Cheia de licenţă nu este corectă."
+
+#: inc/functions/options.php:233
+msgid "You cannot add more websites. Upgrade your account."
+msgstr "Nu poţi adăuga mai multe pagini web, contul necesită upgrade."
+
+#: inc/functions/options.php:234
+msgid "This website is not allowed."
+msgstr "Această pagină web nu este permisă."
+
+#: inc/functions/options.php:235
+msgid "This license key is not accepted."
+msgstr "Cheia de licenţă nu este acceptată."
+
+#. Author of the plugin/theme
+msgid "WP Rocket"
+msgstr "WP Rocket"
+
+#. Author URI of the plugin/theme
+msgid "http://www.wp-rocket.me"
+msgstr "http://www.wp-rocket.me"
+
+#. Description of the plugin/theme
+msgid "The best WordPress performance plugin."
+msgstr "Cel mai performant plugin pentru Wordpress."

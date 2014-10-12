@@ -1,0 +1,1125 @@
+# Copyright (C) 2014 WP Rocket
+# This file is distributed under the same license as the WP Rocket package.
+# Translators:
+# Anders Eriksson <eriksson021@gmail.com>, 2014
+msgid ""
+msgstr ""
+"Project-Id-Version: WP Rocket\n"
+"Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
+"POT-Creation-Date: 2014-10-06 14:18:51+00:00\n"
+"PO-Revision-Date: 2014-10-09 20:14+0000\n"
+"Last-Translator: Anders Eriksson <eriksson021@gmail.com>\n"
+"Language-Team: Swedish (Sweden) (http://www.transifex.com/projects/p/wp-rocket/language/sv_SE/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: sv_SE\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: grunt-wp-i18n 0.4.8\n"
+"X-Poedit-Basepath: ../\n"
+"X-Poedit-Bookmarks: \n"
+"X-Poedit-Country: United States\n"
+"X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c;\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Textdomain-Support: yes\n"
+
+#: inc/admin/admin.php:12 inc/admin-bar.php:31
+msgid "Settings"
+msgstr "Inställningar"
+
+#: inc/admin/admin.php:56
+msgid "Clear this cache"
+msgstr "Radera denna cache"
+
+#: inc/admin/admin.php:75 inc/admin/notices.php:92 inc/admin/options.php:980
+#: inc/admin/options.php:986 inc/admin-bar.php:43 inc/admin-bar.php:66
+#: inc/admin-bar.php:100
+msgid "Clear cache"
+msgstr "Radera cache"
+
+#: inc/admin/faq.inc.php:2
+msgid "FAQ's Table of Content"
+msgstr "Frågor och svar, innehållsförteckning"
+
+#: inc/admin/faq.inc.php:4 inc/admin/faq.inc.php:26
+msgid "How many sites is my key valid for?"
+msgstr "Hur många webbplatser gäller min licens för?"
+
+#: inc/admin/faq.inc.php:5 inc/admin/faq.inc.php:31
+msgid "What exactly does WP Rocket do?"
+msgstr "Exakt vad är det WP Rocket gör?"
+
+#: inc/admin/faq.inc.php:6 inc/admin/faq.inc.php:45
+msgid "I have turned any of the basic options on, does WP Rocket work?"
+msgstr "Jag har aktiverat någon av standardinställningarna, funkar WP Rocket?"
+
+#: inc/admin/faq.inc.php:7 inc/admin/faq.inc.php:56
+msgid ""
+"What should I do in case of a problem with WP Rocket that I can't solve?"
+msgstr "Vad ska jag göra om jag får problem med WP Rocket som jag inte kan lösa?"
+
+#: inc/admin/faq.inc.php:8 inc/admin/faq.inc.php:59
+msgid "My license has expired, what should I do?"
+msgstr "Min licens har gått ut, vad ska jag göra?"
+
+#: inc/admin/faq.inc.php:9
+msgid ""
+"I want to change the URL of my website associated with my license, what "
+"should I do?"
+msgstr "Jag vill ändra URL:en till min webbplats som min licens är ansluten till, vad ska jag göra?"
+
+#: inc/admin/faq.inc.php:10
+msgid "Which tools should I use to measure the performance of my website?"
+msgstr "Vilka verktyg ska jag använda för att mäta min webbplats prestanda?"
+
+#: inc/admin/faq.inc.php:11 inc/admin/faq.inc.php:81
+msgid "Does WP Rocket work with default permalinks?"
+msgstr "Fungerar WP Rocket med standard permalänkarna?"
+
+#: inc/admin/faq.inc.php:12
+msgid "Which web servers WP Rocket is compatible with?"
+msgstr "Vilka webbservrar är WP Rocket kompatibel med?"
+
+#: inc/admin/faq.inc.php:13 inc/admin/faq.inc.php:88
+msgid ""
+"Reports from PageSpeed and YSlow tell me that the content is not gziped "
+"and/or did not expire, what should I do?"
+msgstr "Rapporter från Pagespeed och YSlow anger att innehållet inte är komprimerat (gzip) och/eller inte har någon utgångstid, vad ska jag göra då?"
+
+#: inc/admin/faq.inc.php:14 inc/admin/faq.inc.php:92
+msgid ""
+"Is WP Rocket compatible with others cache plugins like WP Super Cache or W3 "
+"Total Cache?"
+msgstr "Är WP Rocket kompatibelt med cacheprogram som WP Super Cache eller W3 Total Cache?"
+
+#: inc/admin/faq.inc.php:15 inc/admin/faq.inc.php:96
+msgid ""
+"Is WP Rocket compatible with WP Touch, WordPress Mobile Pack and WP Mobile "
+"Detector?"
+msgstr "Är Wp Rocket kompatibelt med WP Touch, WordPress Mobile Pack och WP Mobile Detector?"
+
+#: inc/admin/faq.inc.php:16 inc/admin/faq.inc.php:100
+msgid "Is WP Rocket compatible with WooCommerce?"
+msgstr "Är WP Rocket kompatibelt med WooCommerce?"
+
+#: inc/admin/faq.inc.php:17 inc/admin/faq.inc.php:106
+msgid "Is WP Rocket compatible with WPML or qTranslate?"
+msgstr "Är WP Rocket kompatibelt med WPML eller qTranslate?"
+
+#: inc/admin/faq.inc.php:18 inc/admin/faq.inc.php:110
+msgid "What are the minification and concatenation of files?"
+msgstr "Vad är minifiering av filstorleken och sammanlänkning av filer?"
+
+#: inc/admin/faq.inc.php:19
+msgid "What should I do if WP Rocket distorts my website display?"
+msgstr "Vad ska jag göra om WP Rocket förvränger min webbplats utseende?"
+
+#: inc/admin/faq.inc.php:20 inc/admin/faq.inc.php:117
+msgid "How often is the cache updated?"
+msgstr "Hur ofta uppdateras cachen?"
+
+#: inc/admin/faq.inc.php:21 inc/admin/faq.inc.php:121
+msgid "How to exclude a particular page from caching?"
+msgstr "Hur exkluderas en speciell sida från att cachas?"
+
+#: inc/admin/faq.inc.php:22 inc/admin/faq.inc.php:124
+msgid "How do the robots preload files from the cache?"
+msgstr "Hur gör roboten för att förladda filer från cachen?"
+
+#: inc/admin/faq.inc.php:27
+msgid ""
+"A key is valid for one domain name. If you have example.com, that makes one "
+"key."
+msgstr "En licens är giltig för en webbplats. Om du har exempel.com, så är det en licens."
+
+#: inc/admin/faq.inc.php:28
+msgid ""
+"If you have example.com, www.example.com, dev.example.com, demo.example.com,"
+" example.com/dev/, example.com/demo/ all these sites depend on the same WP "
+"Rocket key."
+msgstr "Om du har exempel.com, www.exempel.com, dev.exempel.com, demo.exempel.com, exempel.com/dev/, exempel.com/demo/ så använder alla samma WP Rocket licens."
+
+#: inc/admin/faq.inc.php:29
+msgid ""
+"However, a different base domain name, like example.org or example2.com, "
+"would require an additional key each."
+msgstr "Men, för en annan webbplats, såsom exempel.org eller exempel2.com, krävs en licens för varje."
+
+#: inc/admin/faq.inc.php:32
+msgid "WP Rocket is a full cache plugin that comes with many features:"
+msgstr "WP Rocket är ett fullspäckat cacheprogram som kommer med många funktioner:"
+
+#: inc/admin/faq.inc.php:34 inc/admin/faq.inc.php:50
+msgid "Caching of all the pages for quick viewing"
+msgstr "Cachning av alla sidor för snabb visning"
+
+#: inc/admin/faq.inc.php:35
+msgid "Preloading the cache of files using two bots in Python"
+msgstr "Förladdning av cachade filer görs med två robotar i Python"
+
+#: inc/admin/faq.inc.php:36
+msgid "Reduction of the number of HTTP requests to reduce loading time"
+msgstr "Minskning av antalet HTTP-förfrågningar för att minska laddningstiden"
+
+#: inc/admin/faq.inc.php:37
+msgid "Decreasing bandwidth usage with GZIP compression"
+msgstr "Minskad bandbredd med GZIP komprimering"
+
+#: inc/admin/faq.inc.php:38 inc/admin/faq.inc.php:52
+msgid "Management of the headers (expires, etags...)"
+msgstr "Hantering av rubrikerna (expires, etags ... )"
+
+#: inc/admin/faq.inc.php:39
+msgid "Minification and concatenation of JS and CSS files"
+msgstr "Minifiering av filstorleken och sammanslagning av JS och CSS filer"
+
+#: inc/admin/faq.inc.php:40
+msgid "Deferred loading of images (LazyLoad)"
+msgstr "Senarelagd laddning av bilder  (LazyLoad)"
+
+#: inc/admin/faq.inc.php:41
+msgid "Deferred loading of JavaScript files"
+msgstr "Senarelagd laddning av JavaScriptfiler"
+
+#: inc/admin/faq.inc.php:42 inc/admin/faq.inc.php:53
+msgid "Image Optimisation"
+msgstr "Bildoptimering"
+
+#: inc/admin/faq.inc.php:46 inc/admin/faq.inc.php:97 inc/admin/faq.inc.php:101
+#: inc/admin/faq.inc.php:107
+msgid "Yes."
+msgstr "Ja."
+
+#: inc/admin/faq.inc.php:47
+msgid ""
+"The basic options are additional optimizations that could be described as "
+"bonuses. These options are not essential to improve the loading time of your"
+" website."
+msgstr "De grundläggande alternativen är ytterligare optimeringar som kan beskrivas som bonus. Dessa alternativ är inte nödvändiga för att förbättra laddtiden på din webbplats ."
+
+#: inc/admin/faq.inc.php:48
+msgid ""
+"Whatever your WP Rocket configuration is, the following features will still "
+"be active:"
+msgstr "Oavsett hur din WP Rocket är konfigurerad, kommer följande funktioner fortfarande vara aktiva:"
+
+#: inc/admin/faq.inc.php:51
+msgid "Decrease bandwidth usage with our GZIP compression"
+msgstr "Minska bandbredden med vår GZIP komprimering"
+
+#: inc/admin/faq.inc.php:57
+msgid ""
+"If none of the answers from our FAQ provide a solution to your problem, you "
+"can let us know about your problem on our <a href=\"%s\" "
+"target=\"_blank\">support</a>. We will answer you as soon as possible."
+msgstr "Om inget av svaren i Frågor och svar erbjuder en lösning på ditt problem så kan du kontakta oss på <a href=\"%s\" target=\"_blank\">support</a>. Vi svarar så snart som möjligt."
+
+#: inc/admin/faq.inc.php:60
+msgid ""
+"Don't panic, WP Rocket will continue to operate without a problem. You will "
+"receive an email telling you that your license will soon expire. You will "
+"find a renewal link which will be active even after the expiration."
+msgstr "Ingen panik, WP Rocket kommer att fortsätta fungera utan problem. Du kommer att få ett mail som talar om att din licens snart går ut. Du kommer att hitta en förnyelselänk som kommer att vara aktiv även efter utgången."
+
+#: inc/admin/faq.inc.php:62
+msgid ""
+"I want to change the URL of my site associated with my license, what should "
+"I do?"
+msgstr "Jag vill ändra adressen till min webblats som är kopplad till min licens, vad ska jag göra?"
+
+#: inc/admin/faq.inc.php:63
+msgid ""
+"You must contact us by email (<a href=\"mailto:contact@wp-"
+"rocket.me\">contact@wp-rocket.me</a>) indicating the reason for your change."
+" If accepted, the amendment will be carried out by the WP Rocket team."
+msgstr "Du måste kontakta oss via e-post (<a href=\"mailto:contact@wp-rocket.me\">contact@wp-rocket.me</a>) och ange skälet för ändringen. Om den accepteras, kommer ändringen att genomföras av WP Rocket."
+
+#: inc/admin/faq.inc.php:65
+msgid "Which tools should I use to measure the performance of my site?"
+msgstr "Vilka verktyg ska jag använda för att mäta prestandan på min webbplats?"
+
+#: inc/admin/faq.inc.php:66
+msgid ""
+"You can measure the performance of your website using the following tools:"
+msgstr "Du kan mäta resultatet för din webbplats med hjälp av följande verktyg:"
+
+#: inc/admin/faq.inc.php:73
+msgid "These tools give you two indications:"
+msgstr "Dessa verktyg ger dig två indikationer:"
+
+#: inc/admin/faq.inc.php:75
+msgid "a global note of good practices to apply"
+msgstr "en notering av god praxis att tillämpa"
+
+#: inc/admin/faq.inc.php:76
+msgid "a loading time"
+msgstr "en laddningstid"
+
+#: inc/admin/faq.inc.php:78
+msgid ""
+"These data are indicative and do not necessarily reflect the actual display "
+"speed of your website"
+msgstr "Dessa data är indikativa och återspeglar inte nödvändigtvis den verkliga hastigheten på din webbplats"
+
+#: inc/admin/faq.inc.php:79
+msgid ""
+"For tests closest to reality load time we recommend using <a href=\"%s\" "
+"target=\"_blank\">Pingdom Tools</a>."
+msgstr "För tester närmast verklig laddningstid rekommenderar vi <a href=\"%s\" target=\"_blank\">Pingdom Tools</a>."
+
+#: inc/admin/faq.inc.php:82 inc/admin/faq.inc.php:93
+msgid "No."
+msgstr "Nej."
+
+#: inc/admin/faq.inc.php:83
+msgid ""
+"It's necessary to have custom permalinks of the type <code>%s</code> rather "
+"than <code>%s</code>."
+msgstr "Det är nödvändigt att ha anpassade permalänkar av typen  <code>%s</code> istället för <code>%s</code>."
+
+#: inc/admin/faq.inc.php:85
+msgid "Which web servers is WP Rocket compatible with?"
+msgstr "Vilka webbservrar är WP Rocket kompatibel med?"
+
+#: inc/admin/faq.inc.php:86
+msgid ""
+"WP Rocket is compatible with <strong>Apache, NGINX, Microsoft IIS et "
+"Litepseed</strong> web servers."
+msgstr "WP Rocket är kompatibel med <strong>Apache, NGINX, Microsoft IIS et Litepseed</strong> webbservrar."
+
+#: inc/admin/faq.inc.php:89
+msgid ""
+"WP Rocket automatically adds optimal timeout rules for static files and "
+"compresses them using gzip. If they are not applied, it is possible that "
+"there is a plugin conflict (exemple: <a href=\"%s\" target=\"_blank\">WP "
+"Retina 2x</a>). Try temporarily disabling all plugins except WP Rocket and "
+"retest."
+msgstr "WP Rocket lägger till automatiskt optimala timeout regler för statiska filer och komprimerar dem med gzip. Om de inte tillämpas, är det möjligt att det finns en konflikt med ett tillägg (exempel: <a href=\"%s\" target=\"_blank\">WP Retina 2x </a>). Försök att tillfälligt inaktivera alla tillägg utom WP Rocket och testa igen."
+
+#: inc/admin/faq.inc.php:90
+msgid ""
+"If this is not conclusive, it means that <code>mod_expire</code> and/or "
+"<code>mod_deflate</code> are not enabled on your server."
+msgstr "Om det är inte avgörande, betyder det att <code>mod_expire</code> och/eller <code>mod_deflate</code> inte är aktiverade på din server."
+
+#: inc/admin/faq.inc.php:94
+msgid ""
+"It's imperative to <strong>remove all other optimization plugins</strong> "
+"(cache, minification, LazyLoad) PRIOR to the activation of WP Rocket."
+msgstr "Det är absolut nödvändigt att <strong>ta bort alla andra optimerings program</strong> (cache, minification, LazyLoad) INNAN aktivering av WP Rocket."
+
+#: inc/admin/faq.inc.php:98
+msgid ""
+"On the other hand, in the basic options, you must uncheck the <code>enable "
+"caching for mobile devices</code>."
+msgstr "Å andra sidan, i de grundläggande alternativen, måste du avmarkera <code>aktivera caching för mobila enheter</code>."
+
+#: inc/admin/faq.inc.php:102
+msgid ""
+"However, you should exclude cart and checkout pages from caching. This is "
+"done from the advanced option <code>Never cache the following pages</code> "
+"by adding the following values:"
+msgstr "Du bör dock utesluta kundvagnen och kassasidan från att cachas. Detta görs från det avancerade alternativet <code>cacha aldrig följande sidor</code> genom att lägga till följande värden:"
+
+#: inc/admin/faq.inc.php:103
+msgid "/cart/"
+msgstr "/cart/"
+
+#: inc/admin/faq.inc.php:104
+msgid "/checkout/(.*)"
+msgstr "/checkout/(.*)"
+
+#: inc/admin/faq.inc.php:108
+msgid ""
+"You even have the possibility to empty/preload the cache for a specific "
+"language or for all languages at the same time."
+msgstr "Du har även möjlighet att tömma/förladda cachen för ett visst språk eller för alla språk samtidigt."
+
+#: inc/admin/faq.inc.php:111
+msgid ""
+"Minification is the process of removing all unnecessary characters in HTML, "
+"CSS or JavaScript files: spaces, comments, etc... This reduces the size of "
+"the files. Thus, browsers read these files faster."
+msgstr "Minifering, dvs minskning av filstorlek,  är processen för att rensa bort alla onödiga tecken i HTML, CSS och JavaScript-filer: utrymmen, kommentarer, osv ... Detta minskar storleken på filerna. Således kan webbläsare läsa dessa filer snabbare."
+
+#: inc/admin/faq.inc.php:112
+msgid ""
+"Concatenation is to consolidate a set of files into one. This has the effect"
+" of reducing the number of HTTP requests."
+msgstr "Sammanfogning är att packa en uppsättning filer till en. Detta har effekten att antalet HTTP-förfrågningar minskar."
+
+#: inc/admin/faq.inc.php:114
+msgid "What should I do if WP Rocket distorts my site display?"
+msgstr "Vad ska jag göra om WP Rocket förvränger min wepplats utseende?"
+
+#: inc/admin/faq.inc.php:115
+msgid ""
+"There is a good chance that the deformation is caused by the minification of"
+" HTML, CSS or JavaScript files. To resolve the problem, we recommend "
+"watching the following video: <a href=\"%1$s\" class=\"fancybox\">%1$s</a>."
+msgstr "Det finns en god chans att deformationen orsakas av minification, av HTML, CSS och JavaScript-filer. För att lösa problemet rekommenderar vi att titta på följande video: <a href=\"%1$s\" class=\"fancybox\">%1$s</a>."
+
+#: inc/admin/faq.inc.php:118
+msgid ""
+"The cache is automatically refreshed at every update of your content "
+"(add/edit/delete of an article, publication of a comment, etc..)."
+msgstr "Cachen uppdateras automatiskt vid varje uppdatering av ditt innehåll (lägga till/redigera/ ta bort en artikel, publicering av en kommentar, etc..)."
+
+#: inc/admin/faq.inc.php:119
+msgid ""
+"In the basic options, you can also specify a period of automatic cleaning of"
+" the cache."
+msgstr "I grundläggande alternativ , kan du även ange en period av automatisk rensning av cachen."
+
+#: inc/admin/faq.inc.php:122
+msgid ""
+"In advanced options, it's possible to specify URLs to not cache. For this, "
+"you must add the URLs to exclude in the input field <code>Never cache the "
+"following pages</code>."
+msgstr "I avancerade alternativ, är det möjligt att ange webbadresser som inte ska cachas. För att göra detta, måste du lägga till webbadresserna i inmatningsfältet <code>cacha aldrig följande sidor</code>."
+
+#: inc/admin/faq.inc.php:125
+msgid ""
+"A page is only cached on its first visit. To bypass this, we have developed "
+"two robots (in Python) that crawl the pages of your website."
+msgstr "En sida är bara cachad på sitt första besök. För att kringgå detta har vi utvecklat två robotar (i Python) som spindlar sidorna på din webbplats."
+
+#: inc/admin/faq.inc.php:126
+msgid ""
+"The first visits your site when using the button \"Preload the cache\". The "
+"second will automatically visit your site as soon as you are going to "
+"create/edit/delete an article."
+msgstr "Det första besöket på din webbplats görs när du använder knappen \" Förladda cache \". Det andra kommer automatiskt att besöka din webbplats så fort du ska skapa/redigera/ta bort en artikel."
+
+#: inc/admin/faq.inc.php:127
+msgid ""
+"For more information, please watch this video: <a href=\"%s\" "
+"class=\"fancybox\">%s</a>."
+msgstr "För mer information titta på den här videon: <a href=\"%s\" class=\"fancybox\">%s</a>."
+
+#: inc/admin/notices.php:26 inc/admin/notices.php:30
+msgid "<b>%s</b> can not be deactivated because of <code>%s</code>."
+msgstr "<b>%s</b> kan inte avaktiveras på grund av <code>%s</code>."
+
+#: inc/admin/notices.php:26
+msgid ""
+"This constant is still defined in <code>wp-config.php</code> file and its "
+"value must be set to <code>false</code>."
+msgstr "Denna konstant definieras fortfarande i <code>wp-config.php</code> filen och dess värde måste ställas in på <code>false</code>."
+
+#: inc/admin/notices.php:26
+msgid "Maybe we do not have the writing permissions for <code>%s</code>."
+msgstr "Vi kanske inte har skrivbehörighet för <code>%s</code>."
+
+#: inc/admin/notices.php:26 inc/admin/notices.php:30
+msgid ""
+"Please give us permissions or resolve the problem yourself. Then retry "
+"deactivation."
+msgstr "Vänligen ge oss tillstånd eller lös problemet själv . Försök sen med avaktivering."
+
+#: inc/admin/notices.php:30
+msgid "This file is not writable and we can not remove these directives."
+msgstr "Filen är inte skrivbar och vi kan inte ta bort dessa direktiv."
+
+#: inc/admin/notices.php:30
+msgid "Maybe we do not have writing permissions for <code>%s</code>."
+msgstr "Vi kanske inte har skrivrättigheter för <code>%s</code>."
+
+#: inc/admin/notices.php:66
+msgid "You can still force the deactivation by clicking here."
+msgstr "Du kan fortfarande tvinga avaktivering genom att klicka här."
+
+#: inc/admin/notices.php:92
+msgid ""
+"<b>%s</b>: One or more extensions have been enabled or disabled, do not "
+"forget to clear the cache if necessary."
+msgstr "<b>%s</b>: Ett eller flera tillägg har aktiveras eller inaktiveras, glöm inte att rensa cachen om det behövs ."
+
+#: inc/admin/notices.php:162
+msgid ""
+"<b>%s</b>: The following plugins are not compatible with this plugin and may"
+" cause unexpected results:"
+msgstr "<b>%s</b>: Följande tillägg är inte kompatibla med detta tillägg och kan orsaka oväntade resultat:"
+
+#: inc/admin/notices.php:168
+msgid "Deactivate"
+msgstr "Inaktivera"
+
+#: inc/admin/notices.php:194
+msgid ""
+"<b>%s</b>: A custom permalink structure is required for the plugin to work "
+"properly. Please go to <a href=\"%s\">Permalink</a> to configure it."
+msgstr "<b>%s</b>: En anpassad permalänkstruktur krävs för pluginet för att fungera korrekt. Gå till<a href=\"%s\">Permalänkar</a> för att konfigurera den."
+
+#: inc/admin/notices.php:225
+msgid ""
+"<b>%s</b>: It seems we don't have <a href=\"%s\" target=\"_blank\">writing "
+"permissions</a> on <code>wp-config.php</code> file or the value of the "
+"constant <code>WP_CACHE</code> is set to <code>false</code>"
+msgstr "<b>%s</b>: Det verkar som vi inte har <a href=\"%s\" target=\"_blank\">skrivrättigheter</a> på <code>wp-config.php</code> fil eller så är värdet på konstanten <code>WP_CACHE</code> inställt på <code>false</code>"
+
+#: inc/admin/notices.php:227
+msgid ""
+"To fix this you have to set writing permissions for <code>wp-"
+"config.php</code> and then save the settings again."
+msgstr "För att åtgärda detta måste du ange skrivbehörighet för <code>wp-config.php</code> och sedan spara inställningarna igen."
+
+#: inc/admin/notices.php:229
+msgid ""
+"If the message persists, you have to put the following code in your <code"
+">wp-config.php</code> file so that it works correctly. Click on the field "
+"and press Ctrl-A to select all."
+msgstr "Om meddelandet kvarstår, måste du placera följande kod i <code>wp-config.php</code> fil så att den fungerar på rätt sätt . Klicka på fältet och tryck Ctrl-A för att markera alla."
+
+#: inc/admin/notices.php:270
+msgid ""
+"If you had <a href=\"%1$s\" target=\"_blank\">writing permissions</a> on "
+"<code>%2$s</code> file, <b>%3$s</b> could do this automatically. This is not"
+" the case, here is the code you should add in your <code>%2$s</code> file "
+"for <b>%3$s</b> to work properly."
+msgstr "Om du hade <a href=\"%1$s\" target=\"_blank\">skrivbehörighet</a> på <code>%2$s</code> fil, <b>%3$s</b> kunde göra detta automatiskt. Detta är inte fallet, här är den kod som du ska lägga in i din <code>%2$s</code> fil för <b>%3$s</b> att fungera korrekt."
+
+#: inc/admin/notices.php:303
+msgid ""
+"It seems that the <code>%s</code> file is not ours. Save the settings, we "
+"will automatically recreate the correct one. If it's still not working, "
+"please delete it and save again."
+msgstr "Det verkar som om <code>%s</code> filen inte är vår. Spara inställningarna,  vi  kommer automatiskt att återskapa den rätta. Om det fortfarande inte fungerar, vänligen ta bort den och spara igen."
+
+#: inc/admin/notices.php:332
+msgid ""
+"If you had <a href=\"%1$s\" target=\"_blank\">writing permissions</a> on "
+"<code>.htaccess</code> file, <b>%2$s</b> could do this automatically. This "
+"is not the case, so here are the rewrite rules you have to put in your "
+"<code>.htaccess</code> file for <b>%2$s</b> to work correctly. Click on the "
+"field and press Ctrl-A to select all."
+msgstr "Om du hade<a href=\"%1$s\" target=\"_blank\"> skrivbehörighet</a> på <code>.htaccess</code> filen, <b>%2$s</b> kan göra detta automatiskt . Detta är inte fallet, så här är omskrivningsreglerna som du måste lägga till i din <code>.htaccess</code> fil för  <b>%2$s</b> ska fungera korrekt . Klicka på fältet och tryck Ctrl-A för att markera alla ."
+
+#: inc/admin/notices.php:332
+msgid ""
+"<strong>Warning:</strong> This message will popup again and its content may "
+"be updated when saving the options"
+msgstr "<strong>Varning:</strong>  Detta meddelande kommer att visas igen och dess innehåll kan uppdateras när du väljer spara-alternativet."
+
+#: inc/admin/notices.php:361
+msgid ""
+"Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
+"permissions</a> on <b>%3$s</b> domain configuration folder "
+"(<code>%2$s</code>). To make <b>%3$s</b> work properly, please CHMOD "
+"<code>755</code> or <code>775</code> or <code>777</code> this "
+"folder.<br/>When the problem is solved, thank you to save the %3$s options "
+"to generate the configuration file."
+msgstr "Var försiktig, du har inte <a href=\"%1$s\" target=\"_blank\">skrivbehörighet </a> på <b>%3$s</b>domän mapp-konfiguration (<code>%2$s</code>).  För att <b>%3$s</b> ska fungera korrekt, ange CHMOD <code> 755</code> eller <code>775</code> eller <code>777</code> för denna mapp. <br/>När problemet är löst, kom ihåg att spara %3$s alternativet för att generera konfigurationsfilen."
+
+#: inc/admin/notices.php:389
+msgid ""
+"Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
+"permissions</a> on <b>%3$s</b> cache folder (<code>%2$s</code>). For "
+"<b>%3$s</b> works properly, please CHMOD <code>755</code> or "
+"<code>775</code> or <code>777</code> this folder."
+msgstr "Var försiktig , du har inte <a href=\"%1$s\" target=\"_blank\">skrivbehörighet</a> på <b>%3$s</b> cachemappen (<code>%2$s</code>). För att<b>%3$s</b> ska fungera korrekt, vänligen ange CHMOD <code>755</code> eller <code>775</code> eller<code>777</code> för mappen."
+
+#: inc/admin/notices.php:418
+msgid ""
+"Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
+"permissions</a> on <b>%3$s</b> minified cache folder (<code>%2$s</code>). To"
+" make <b>%3$s</b> work properly, please CHMOD <code>755</code> or "
+"<code>775</code> or <code>777</code> this folder."
+msgstr "Var försiktig , du har inte <a href=\"%1$s\" target=\"_blank\">skrivbehörighet</a>på<b>%3$s</b> mappen minifierad cache (<code>%2$s</code>). För att <b>%3$s</b> ska fungera korrekt, vänligen ange CHMOD <code>755</code> eller <code>775</code> eller<code>777</code> här mappen."
+
+#: inc/admin/notices.php:443
+msgid "Thank you. Your license has been successfully validated!"
+msgstr "Tack . Din licens har framgångsrikt validerats!"
+
+#: inc/admin/notices.php:444
+msgid "Key: <code>%s</code><br>Email: <i>%s</i>"
+msgstr "Licens: <code>%s</code><br>Email: <i>%s</i>"
+
+#: inc/admin/options.php:139 inc/admin/options.php:366
+msgid "Warning: "
+msgstr "Varning:"
+
+#: inc/admin/options.php:146
+msgid "Download options"
+msgstr "Nerladdnings alternativ"
+
+#: inc/admin/options.php:175
+msgid "<b>JS</b> files with Deferred Loading JavaScript"
+msgstr "<b>JS</b> filer med senarelagd laddning av Javascript"
+
+#: inc/admin/options.php:195 inc/admin/options.php:215
+#: inc/admin/options.php:235
+msgid "Wait until this file is loaded?"
+msgstr "Vänta tills filen är laddad?"
+
+#: inc/admin/options.php:243 inc/admin/options.php:785
+msgid "Add URL"
+msgstr "Ange URL"
+
+#: inc/admin/options.php:255 inc/admin/options.php:853
+msgid "Replace site's hostname with:"
+msgstr "Byt domänens värdnamn med:"
+
+#: inc/admin/options.php:273 inc/admin/options.php:299
+#: inc/admin/options.php:323
+msgid "reserved for"
+msgstr "reserverad för"
+
+#: inc/admin/options.php:275 inc/admin/options.php:301
+#: inc/admin/options.php:325
+msgid "All files"
+msgstr "Alla filer"
+
+#: inc/admin/options.php:276 inc/admin/options.php:302
+#: inc/admin/options.php:326
+msgid "Images"
+msgstr "Bilder"
+
+#: inc/admin/options.php:338
+msgid "Add CNAME"
+msgstr "Ange CNAME"
+
+#: inc/admin/options.php:390
+msgid "Watch the video"
+msgstr "Titta på videon"
+
+#: inc/admin/options.php:414
+msgid "License validation"
+msgstr "Licens validering"
+
+#: inc/admin/options.php:417 inc/admin/options.php:425
+msgid "API Key"
+msgstr "API-nyckel"
+
+#: inc/admin/options.php:430
+msgid "Please enter the API key obtained after your purchase."
+msgstr "Ange API-nyckel som erhålls efter ditt köp."
+
+#: inc/admin/options.php:436 inc/admin/options.php:444
+msgid "E-mail Address"
+msgstr "E-post adress"
+
+#: inc/admin/options.php:449
+msgid "The one used for the purchase, in your support account."
+msgstr "Den som användes för inköpet, i ert supportkonto ."
+
+#: inc/admin/options.php:455 inc/admin/options.php:1146
+msgid "Basic options"
+msgstr "Grundläggande alternativ"
+
+#: inc/admin/options.php:458 inc/admin/options.php:467
+msgid "Lazyload:"
+msgstr "Lazyload:"
+
+#: inc/admin/options.php:465
+msgid "Enable Lazy loading images."
+msgstr "Aktivera Lazy laddning av bilder."
+
+#: inc/admin/options.php:472
+msgid ""
+"LazyLoad displays images on a page only when they are visible to the user."
+msgstr "LazyLoad visar bilder på en sida endast när de är synliga för användaren."
+
+#: inc/admin/options.php:473 inc/admin/options.php:514
+msgid ""
+"This mechanism reduces the number of HTTP requests and improves the loading "
+"time."
+msgstr "Denna mekanism minskar antalet HTTP-förfrågningar och förbättrar laddningstiden."
+
+#: inc/admin/options.php:479
+msgid ""
+"Files optimisation:<br/><span class=\"description\">(Minification & "
+"Concatenation)</span>"
+msgstr "Filoptimering:<br/><span class=\"description\">(Minifiering & Sammanlänkning)</span>"
+
+#: inc/admin/options.php:488
+msgid "HTML Files minification"
+msgstr "HTML-fils minifiering"
+
+#: inc/admin/options.php:494
+msgid "Google Fonts minification"
+msgstr "Google Fonts minifiering"
+
+#: inc/admin/options.php:500
+msgid "CSS Files minification"
+msgstr "CSS-fils minifiering"
+
+#: inc/admin/options.php:506
+msgid "JS Files minification"
+msgstr "JS-fils minifiering"
+
+#: inc/admin/options.php:511
+msgid ""
+"Minification removes any spaces and comments present in the CSS and "
+"JavaScript files."
+msgstr "Minifiering tar bort alla mellanslag och kommentarer som finns i CSS och JavaScript-filer."
+
+#: inc/admin/options.php:512
+msgid ""
+"This mechanism reduces the weight of each file and allows a faster reading "
+"of browsers and search engines."
+msgstr "Denna funktion minskar storleken på varje fil och möjliggör en snabbare läsning av webbläsare och sökmotorer."
+
+#: inc/admin/options.php:513
+msgid "Concatenation combines all CSS and JavaScript files."
+msgstr "Sammanlänkning kombinerar alla CSS och JavaScript-filer."
+
+#: inc/admin/options.php:519
+msgid "Concatenating files can cause display errors."
+msgstr "Sammanfogade filer kan orsaka visnings fel."
+
+#: inc/admin/options.php:525
+msgid ""
+"In case of any errors we recommend you to turn off this option or watch the "
+"following video: <a href=\"%1$s\" class=\"fancybox\">%1$s</a>."
+msgstr "Vid eventuella fel rekommenderar vi att du stänger av det här alternativet eller tittar på följande video: <a href=\"%1$s\" class=\"fancybox\">%1$s</a>."
+
+#: inc/admin/options.php:539 inc/admin/options.php:548
+msgid "Mobile cache:"
+msgstr "Mobil cache:"
+
+#: inc/admin/options.php:546
+msgid "Enable caching for mobile devices."
+msgstr "Aktivera cachelagring för mobila enheter."
+
+#: inc/admin/options.php:553
+msgid "Don't turn on this option if you use one of these plugins: %l."
+msgstr "Slå inte på det här alternativet om du använder ett av dessa tillägg: %l."
+
+#: inc/admin/options.php:559 inc/admin/options.php:566
+msgid "Logged in user cache:"
+msgstr "Inloggad användar-cache :"
+
+#: inc/admin/options.php:564
+msgid "Enable caching for logged in users."
+msgstr "Aktivera cachelagring för inloggade användare."
+
+#: inc/admin/options.php:571 inc/admin/options.php:579
+msgid "SSL cache:"
+msgstr "SSL cache:"
+
+#: inc/admin/options.php:577
+msgid "Enable caching for pages with SSL protocol (<code>https://</code>)."
+msgstr "Aktivera caching för sidor med SSL protokoll (<code>https://</code>)."
+
+#: inc/admin/options.php:584 inc/admin/options.php:592
+msgid "Clear Cache Lifespan"
+msgstr "Rensa cachens utgångstid"
+
+#: inc/admin/options.php:598
+msgid "Unit of time"
+msgstr "Tidsenhet"
+
+#: inc/admin/options.php:601
+msgid "second(s)"
+msgstr "sekund(er)"
+
+#: inc/admin/options.php:602
+msgid "minute(s)"
+msgstr "minut(er)"
+
+#: inc/admin/options.php:603
+msgid "hour(s)"
+msgstr "timme(ar)"
+
+#: inc/admin/options.php:604
+msgid "day(s)"
+msgstr "dag(ar)"
+
+#: inc/admin/options.php:610
+msgid ""
+"By default, cache lifespan is 24 hours. This means that once created, the "
+"cache files are automatically removed after 24 hours before being recreated."
+msgstr "Som standard är cachens utgångstid 24 timmar. Detta innebär att när den har skapats, är cache-filerna automatiskt rensade efter 24 timmar innan de återskapas."
+
+#: inc/admin/options.php:610
+msgid ""
+"This can be useful if you display your latest tweets or rss feeds in your "
+"sidebar, for example."
+msgstr "Detta kan vara användbart om du visar dina senaste tweets eller rss -flöden i sidomenyn, till exempel."
+
+#: inc/admin/options.php:615
+msgid "Specify 0 for unlimited lifetime."
+msgstr "Ange 0 för obegränsad livslängd."
+
+#: inc/admin/options.php:621 inc/admin/options.php:1147
+msgid "Advanced options"
+msgstr "Avancerade alternativ."
+
+#: inc/admin/options.php:624 inc/admin/options.php:632
+msgid "Prefetch DNS requests:"
+msgstr "Prefetch DNS förfrågningar:"
+
+#: inc/admin/options.php:637
+msgid ""
+"DNS prefetching is a way for browsers to anticipate the DNS resolution of "
+"external domains from your site."
+msgstr "DNS prefetching är ett sätt för webbläsare att förutse DNS upplösning på externa domäner från din webbplats."
+
+#: inc/admin/options.php:637
+msgid "This mechanism reduces the latency of some external files."
+msgstr "Denna funktion minskar latensen i vissa externa filer."
+
+#: inc/admin/options.php:643
+msgid ""
+"To learn more about this option and how to use it correctly, we advise you "
+"to watch the following video: <a href=\"%1$s\" class=\"fancybox\">%1$s</a>."
+msgstr "Om du vill veta mer om detta alternativ och hur man använder det på rätt sätt, råder vi dig att titta på följande video: <a href=\"%1$s\" class=\"fancybox\">%1$s</a>."
+
+#: inc/admin/options.php:648
+msgid ""
+"<strong>Note:</strong> Enter the domain names without their protocol, for "
+"example: <code>//ajax.googleapis.com</code> without <code>http:</code> (one "
+"per line)."
+msgstr "<strong>Obs</strong> Ange domännamn utan deras protokoll, till exempel: <code>//ajax.googleapis.com</code> utan <code>http:</code> (en per rad)."
+
+#: inc/admin/options.php:654 inc/admin/options.php:662
+msgid "Empty the cache of the following pages when updating a post:"
+msgstr "Töm cachen av följande sidor när du uppdaterar ett inlägg:"
+
+#: inc/admin/options.php:667
+msgid ""
+"Enter the URL of additionnal pages to purge when updating a post (one per "
+"line)."
+msgstr "Ange webbadressen till fler sidor för att rensa vid uppdatering ett inlägg ( en per rad )."
+
+#: inc/admin/options.php:668 inc/admin/options.php:692
+msgid "You can use regular expressions (regex)."
+msgstr "Du kan använda reguljära uttryck (regex)."
+
+#: inc/admin/options.php:673
+msgid ""
+"<strong>Note:</strong> When you update a post or when a comment is posted, "
+"the homepage, categories and tags associated with this post are "
+"automatically removed from the cache and then recreated by our bot."
+msgstr "<strong>Obs!</strong> När du uppdaterar ett inlägg eller när en kommentar postas, så kommer hemsidan, kategorier och taggar kopplade till detta automatiskt tas bort från cachen och sedan återskapas på nytt av vår robot."
+
+#: inc/admin/options.php:679 inc/admin/options.php:687
+msgid "Never cache the following pages:"
+msgstr "Cacha aldrig följande sidor:"
+
+#: inc/admin/options.php:692
+msgid "Enter the URL of pages to reject (one per line)."
+msgstr "Skriv in webbadressen till sidor att avvisa (en per rad)."
+
+#: inc/admin/options.php:698 inc/admin/options.php:706
+msgid "Don't cache pages that use the following cookies:"
+msgstr "Cacha inte sidor som använder följande cookies:"
+
+#: inc/admin/options.php:711
+msgid "List the names of the cookies (one per line)."
+msgstr "Lista namnen på de cookies (en per rad)."
+
+#: inc/admin/options.php:717 inc/admin/options.php:725
+msgid "Cache pages that use the following query strings (GET parameters):"
+msgstr "Cacha sidor som använder följande query strings (GET parametrar):"
+
+#: inc/admin/options.php:730
+msgid "List of query strings which can be cached (one per line)."
+msgstr "Lista över query strings som kan cachas (en per rad)."
+
+#: inc/admin/options.php:736 inc/admin/options.php:744
+msgid "<b>CSS</b> files to exclude from minification:"
+msgstr "<b>CSS</b> filer som ej ska ingå i minifieringen:"
+
+#: inc/admin/options.php:749
+msgid "Enter the URL of <b>CSS</b> files to reject (one per line)."
+msgstr "Ange webbadressen för <b>CSS</b>filer att avvisa (en per rad)."
+
+#: inc/admin/options.php:755 inc/admin/options.php:763
+msgid "<b>JS</b> files to exclude from minification:"
+msgstr "<b>JS</b> filer att undanta från minifiering:"
+
+#: inc/admin/options.php:768
+msgid "Enter the URL of <b>JS</b> files to reject (one per line)."
+msgstr "Ange webbadressen för <b>JS</b> filer att avvisa (en per rad)."
+
+#: inc/admin/options.php:774 inc/admin/options.php:781
+msgid ""
+"<b>JS</b> files to be included in the footer during the minification "
+"process:"
+msgstr "<b>JS</b> -filer som ska ingå i sidfoten under minifieringsprocessen:"
+
+#: inc/admin/options.php:790 inc/admin/options.php:818
+msgid "Empty the field to remove it."
+msgstr "Töm fältet för att ta bort den."
+
+#: inc/admin/options.php:796 inc/admin/options.php:824
+msgid "You must specify the complete URL of the files."
+msgstr "Du måste ange den fullständiga webbadressen till filerna."
+
+#: inc/admin/options.php:802
+msgid "<b>JS</b> files with deferred loading:"
+msgstr "<b>JS</b> filer med senarelagd laddning:"
+
+#: inc/admin/options.php:813
+msgid ""
+"You can add JavaScript files that will be loaded asynchronously at the same "
+"time as the page loads."
+msgstr "Du kan lägga till JavaScript-filer som ska laddas asynkront samtidigt som sidan laddas."
+
+#: inc/admin/options.php:830
+msgid "Content Delivery Network options"
+msgstr "Content Delivery Network alternativ"
+
+#: inc/admin/options.php:833 inc/admin/options.php:842
+msgid "CDN:"
+msgstr "CDN:"
+
+#: inc/admin/options.php:840
+msgid "Enable Content Delivery Network."
+msgstr "Aktivera Content Delivery Network."
+
+#: inc/admin/options.php:847
+msgid ""
+"CDN function replaces all URLs of your static files and media (CSS, JS, "
+"Images) with the url entered below. This way all your content will be copied"
+" to a dedicated hosting or a CDN system <a href=\"http://www.maxcdn.com/\" "
+"target=\"_blank\">maxCDN</a>."
+msgstr "CDN -funktion ersätter alla webbadresser i dina statiska filer och media (CSS, JS, Images) med webbadressen som anges nedan. På så sätt kommer allt innehåll att kopieras till en dedikerad hosting eller ett CDN-system <a href=\"http://www.maxcdn.com/\" target=\"_blank\">maxCDN</a>."
+
+#: inc/admin/options.php:859 inc/admin/options.php:1150
+msgid "White Label"
+msgstr "White Label"
+
+#: inc/admin/options.php:862 inc/admin/options.php:871
+msgid "Plugin Name:"
+msgstr "Tilläggs-namn:"
+
+#: inc/admin/options.php:877 inc/admin/options.php:886
+msgid "Plugin URI:"
+msgstr "Tillägg URL:"
+
+#: inc/admin/options.php:892 inc/admin/options.php:901
+msgid "Description:"
+msgstr "Beskrivning:"
+
+#: inc/admin/options.php:907 inc/admin/options.php:916
+msgid "Author:"
+msgstr "Författare:"
+
+#: inc/admin/options.php:922 inc/admin/options.php:931
+msgid "Author URI:"
+msgstr "Författare URL:"
+
+#: inc/admin/options.php:943
+msgid "Reset White Label values to default"
+msgstr "Återställ White Label värderna till standard"
+
+#: inc/admin/options.php:948
+msgid ""
+"If you change anything, the tutorial + FAQ + Support tabs will be hidden."
+msgstr "Om du ändrar något, handledningen + Frågor och svar + support-flikarna kommer att döljas."
+
+#: inc/admin/options.php:953 inc/admin/options.php:1152
+msgid "Tools"
+msgstr "Verktyg"
+
+#: inc/admin/options.php:958 inc/admin/options.php:967
+msgid "Beta Tester"
+msgstr "Beta-tester"
+
+#: inc/admin/options.php:965
+msgid "Yes I do!"
+msgstr "Ja det gör jag!"
+
+#: inc/admin/options.php:972
+msgid ""
+"Check it to participate in the WP Rocket Beta Program and get earlier access"
+" to new versions, thanks in advance."
+msgstr "Kolla in det för att delta i WP Rocket Beta Program och få tidigare tillgång till nya versioner, tack på förhand."
+
+#: inc/admin/options.php:991
+msgid "Clear the cache for the whole site."
+msgstr "Rensa cachen för hela webbplatsen."
+
+#: inc/admin/options.php:997 inc/admin/options.php:1003
+#: inc/admin/options.php:1036 inc/admin-bar.php:141 inc/admin-bar.php:162
+#: inc/admin-bar.php:193
+msgid "Preload cache"
+msgstr "Förladda cache"
+
+#: inc/admin/options.php:1008
+msgid ""
+"Allows you to request a bot crawl to preload the cache (homepage and its "
+"internal links)."
+msgstr "Gör det möjligt att begära att en sökrobot ska förladda cachen (hemsida och dess interna länkar)."
+
+#: inc/admin/options.php:1015
+msgid "Settings Exporter"
+msgstr "Inställningar Exportera."
+
+#: inc/admin/options.php:1025
+msgid "Settings Importer"
+msgstr "Inställningar Importera."
+
+#: inc/admin/options.php:1033 inc/admin/options.php:1154
+msgid "Tutorials"
+msgstr "Instruktioner"
+
+#: inc/admin/options.php:1041
+msgid ""
+"This video gives some explanations about our two crawler robots. They "
+"generate several cache files in a few seconds."
+msgstr "Denna video ger några förklaringar om våra två sökroboater. De genererar flera cache-filer på ett par sekunder ."
+
+#: inc/admin/options.php:1048
+msgid "CSS and JavaScript minification"
+msgstr "CSS och JavaScript minifieringar"
+
+#: inc/admin/options.php:1053
+msgid ""
+"This video gives some explanations about how to use the advanced processes "
+"of minification and concatenation of CSS and JavaScript files."
+msgstr "Denna video ger några förklaringar om hur man använder de avancerade processerna, minifiering och sammanlänkning av CSS och JavaScript-filer."
+
+#: inc/admin/options.php:1060
+msgid "Preloading DNS queries"
+msgstr "Förladda DNS-queries"
+
+#: inc/admin/options.php:1065
+msgid ""
+"This video helps to easily understand the advanced option of \"Preloading "
+"DNS queries\" and the use of the filter <code>rocket_dns_prefetch</code>."
+msgstr "Denna video hjälper dig att enkelt förstå det avancerade alternativet \" förladdning DNS-förfrågningar\" och användningen av filtret <code>rocket_dns_prefetch</code>."
+
+#: inc/admin/options.php:1072
+msgid "How to use the White Label functionality?"
+msgstr "Hur kan man använda White Label funktionen?"
+
+#: inc/admin/options.php:1077
+msgid "This video helps to set up a White Label version of WP Rocket."
+msgstr "Denna video visar hur man skapar en White Label version av WP Rocket."
+
+#: inc/admin/options.php:1084
+msgid "How to use the CDN functionality?"
+msgstr "Hur använder man CDN funktionen?"
+
+#: inc/admin/options.php:1089
+msgid ""
+"This video helps to understand what is the CDN functionality included since "
+"WP Rocket 2.1."
+msgstr "Denna video hjälper till att förstå vad som är CDN funktionaliteten som ingår sedan WP Rocket 2.1 ."
+
+#: inc/admin/options.php:1096
+msgid "How to use the CDN API?"
+msgstr "Hur använder man CDN API?"
+
+#: inc/admin/options.php:1101
+msgid ""
+"This video helps to set up the two functions "
+"<code>get_rocket_cdn_url()</code> and <code>rocket_cdn_url()</code>."
+msgstr "Denna video hjälper till att ställa in de två funktionerna <code>get_rocket_cdn_url()</code> och <code>rocket_cdn_url()</code>."
+
+#: inc/admin/options.php:1106 inc/admin/options.php:1109
+#: inc/admin/options.php:1155 inc/admin/options.php:1160
+msgid "FAQ"
+msgstr "Frågor och svar"
+
+#: inc/admin/options.php:1117 inc/admin/options.php:1120
+#: inc/admin/options.php:1156 inc/admin/options.php:1161 inc/admin-bar.php:204
+msgid "Support"
+msgstr "Support"
+
+#: inc/admin/options.php:1126
+msgid "Visit the Support"
+msgstr "Besök supporten"
+
+#: inc/admin/options.php:1132
+msgid ""
+"If none of the FAQ answers resolves your problem, you can send your issue to"
+" our free support. We will reply as soon as possible."
+msgstr "Om du inte hittar svaret i Frågor och Svar som löser ditt problem, kan du skicka din fråga till vår support. Vi kommer att svara så fort som möjligt."
+
+#: inc/admin/options.php:1148
+msgid "CDN"
+msgstr "CDN"
+
+#: inc/admin/options.php:1159
+msgid "License"
+msgstr "Licens"
+
+#: inc/admin/options.php:1460
+msgid "Settings imported and saved."
+msgstr "Inställningar importerade och sparade."
+
+#: inc/admin/options.php:1478 inc/admin/options.php:1537
+msgid "Settings saved."
+msgstr "Inställningar sparade."
+
+#: inc/admin/options.php:1622
+msgid ""
+"Before you can upload your import file, you will need to fix the following "
+"error:"
+msgstr "Innan du kan ladda upp din importfil, måste du åtgärda följande fel:"
+
+#: inc/admin/options.php:1629
+msgid "Choose a file from your computer:"
+msgstr "Välj en fil från din dator:"
+
+#: inc/admin/options.php:1629
+msgid "Maximum size: %s"
+msgstr "Maximal storlek: %s"
+
+#: inc/admin/options.php:1632
+msgid "Upload file and import settings"
+msgstr "Ladda upp fil och importera inställningar"
+
+#: inc/admin/updater.php:120 inc/admin/updater.php:127
+msgid ""
+"An unexpected error occurred. Something may be wrong with WP-Rocket.me or "
+"this server&#8217;s configuration. If you continue to have problems, please "
+"try the <a href=\"%s\">support forums</a>."
+msgstr "Ett oväntat fel inträffade. Något kan vara fel med WP - Rocket.me eller denna &#8217;s konfiguration. Om du fortfarande har problem kan du prova <a href=\"%s\">support forum</a>."
+
+#: inc/admin-bar.php:90 inc/admin-bar.php:184 inc/admin-bar.php:244
+#: inc/admin-bar.php:251
+msgid "All languages"
+msgstr "Alla språk"
+
+#: inc/admin-bar.php:115
+msgid "Clear this post"
+msgstr "Rensa det här inlägget"
+
+#: inc/admin-bar.php:127
+msgid "Purge this URL"
+msgstr "Rensa webbadressen"
+
+#: inc/cron.php:16
+msgid "%s clear"
+msgstr "%s klart"
+
+#: inc/functions/admin.php:13
+msgid ""
+"Last step before enjoying the high performances of our plugin, please <a "
+"href=\"%s\">Enter you API key</a> here."
+msgstr "Sista steget innan du kan njuta av den höga prestandan med vårt tillägg, är att <a href=\"%s\">Mata in din API-nyckel</a> här."
+
+#: inc/functions/options.php:232
+msgid "Your license is not valid."
+msgstr "Din licens är inte giltig."
+
+#: inc/functions/options.php:233
+msgid "You cannot add more websites. Upgrade your account."
+msgstr "Du kan inte lägga till fler webbplatser. Uppgradera ditt konto."
+
+#: inc/functions/options.php:234
+msgid "This website is not allowed."
+msgstr "Denna webbplats är inte tillåten."
+
+#: inc/functions/options.php:235
+msgid "This license key is not accepted."
+msgstr "Denna licensnyckel accepteras inte."
+
+#. Author of the plugin/theme
+msgid "WP Rocket"
+msgstr "WP Rocket"
+
+#. Author URI of the plugin/theme
+msgid "http://www.wp-rocket.me"
+msgstr "http://www.wp-rocket.me"
+
+#. Description of the plugin/theme
+msgid "The best WordPress performance plugin."
+msgstr "Det bästa Wordpress prestanda-tillägget."
