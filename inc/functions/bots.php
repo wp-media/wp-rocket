@@ -53,9 +53,9 @@ function run_rocket_bot( $spider = 'cache-preload', $lang = '' )
 		*/
 		do_action( 'before_run_rocket_bot', $spider, $start_url );
 
-		add_filter( 'http_headers_useragent', 'rocket_user_agent' );
+		add_filter( 'http_headers_useragent', 'rocket_user_agent', PHP_INT_MAX );
 		wp_remote_get( WP_ROCKET_BOT_URL . '?spider=' . $spider . '&start_url=' . $start_url );
-		remove_filter( 'http_headers_useragent', 'rocket_user_agent' );
+		remove_filter( 'http_headers_useragent', 'rocket_user_agent', PHP_INT_MAX );
 
 		/**
 		 * Fires after WP Rocket Bot was called

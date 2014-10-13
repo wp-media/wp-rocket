@@ -43,9 +43,9 @@ function rocket_check_update()
 	$plugin_file      = basename( WP_ROCKET_FILE );
 	$version          = true;
 	$plugin_transient = null;
-	add_filter( 'http_headers_useragent', 'rocket_user_agent' );
+	add_filter( 'http_headers_useragent', 'rocket_user_agent', PHP_INT_MAX );
 	$response = wp_remote_get( WP_ROCKET_WEB_CHECK, array( 'timeout' => 30 ) );
-	remove_filter( 'http_headers_useragent', 'rocket_user_agent' );
+	remove_filter( 'http_headers_useragent', 'rocket_user_agent', PHP_INT_MAX );
 	set_site_transient( 'update_wprocket', time() );
 
 	if ( ! is_a( $response, 'WP_Error' ) && strlen( $response['body'] ) > 32 ) {

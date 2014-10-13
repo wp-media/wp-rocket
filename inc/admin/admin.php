@@ -290,6 +290,6 @@ function __rocket_before_plugin_update() {
 		&& strpos( $_GET['plugins'], 'wp-rocket/wp-rocket.php' ) !== false
 		&& wp_verify_nonce( $_GET['_wpnonce'], 'bulk-update-plugins' ) )
 	) {
-		add_filter( 'http_headers_useragent', 'rocket_user_agent' );
+		add_filter( 'http_headers_useragent', 'rocket_user_agent', PHP_INT_MAX );
 	}
 }

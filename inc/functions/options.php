@@ -198,9 +198,9 @@ function rocket_check_key( $type = 'transient_1', $data = null )
 		|| 'live' == $type ) {
 
 
-		add_filter( 'http_headers_useragent', 'rocket_user_agent' );
+		add_filter( 'http_headers_useragent', 'rocket_user_agent', PHP_INT_MAX );
 		$response = wp_remote_get( WP_ROCKET_WEB_VALID, array( 'timeout'=>30 ) );
-		remove_filter( 'http_headers_useragent', 'rocket_user_agent' );
+		remove_filter( 'http_headers_useragent', 'rocket_user_agent', PHP_INT_MAX );
 
 
 

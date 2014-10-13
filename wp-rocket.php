@@ -128,7 +128,7 @@ function rocket_init()
         if ( get_rocket_option( 'deferred_js_files' ) ) {
 	       require( WP_ROCKET_FRONT_PATH . '/deferred-js.php' );
         }
-        
+
         if ( get_rocket_option( 'lazyload' ) && ! rocket_is_plugin_active( 'rocket-lazy-load/rocket-lazy-load.php' ) ) {
 	       require( WP_ROCKET_FRONT_PATH . '/lazyload.php' );
         }
@@ -198,9 +198,9 @@ function rocket_deactivation()
 	}
 	
 	// Update customer key & licence.
-	add_filter( 'http_headers_useragent', 'rocket_user_agent' );
+	add_filter( 'http_headers_useragent', 'rocket_user_agent', PHP_INT_MAX );
 	wp_remote_get( WP_ROCKET_WEB_API . '/pause-licence.php' );
-	remove_filter( 'http_headers_useragent', 'rocket_user_agent' );
+	remove_filter( 'http_headers_useragent', 'rocket_user_agent', PHP_INT_MAX );
 }
 
 /*
