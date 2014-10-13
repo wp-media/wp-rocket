@@ -593,6 +593,7 @@ function rocket_fetch_and_cache_minify( $url, $pretty_url )
 	curl_setopt ($ch, CURLOPT_URL, $url);
 	curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
 	curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, 5);
+	curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, false);
 	curl_setopt ($ch, CURLOPT_USERAGENT, 'WP-Rocket-Minify');
 
 	$content = curl_exec($ch);
