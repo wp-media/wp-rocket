@@ -35,6 +35,17 @@ function rocket_is_plugin_active_for_network( $plugin )
 }
 
 /**
+ * Call the cache server to purge the cache with SuperCacher (SiteGround) Pretty good hosting!
+ * 
+ * @return void
+ */
+function rocket_clean_supercacher() {
+	if ( isset( $GLOBALS['sg_cachepress_supercacher'] ) && is_a( $GLOBALS['sg_cachepress_supercacher'], 'SG_CachePress_Supercacher' ) ) {
+		$sg_cachepress_supercacher->purge_cache();
+	}
+}
+
+/**
  * Check if a translation plugin is activated
  *
  * @since 2.0
