@@ -201,6 +201,9 @@ function rocket_deactivation()
 	add_filter( 'http_headers_useragent', 'rocket_user_agent', PHP_INT_MAX );
 	wp_remote_get( WP_ROCKET_WEB_API . '/pause-licence.php' );
 	remove_filter( 'http_headers_useragent', 'rocket_user_agent', PHP_INT_MAX );
+	
+	delete_transient( 'rocket_check_licence_30' );
+	delete_transient( 'rocket_check_licence_1' );
 }
 
 /*
