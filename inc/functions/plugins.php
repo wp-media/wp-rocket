@@ -41,7 +41,7 @@ function rocket_is_plugin_active_for_network( $plugin )
  */
 function rocket_clean_supercacher() {
 	if ( isset( $GLOBALS['sg_cachepress_supercacher'] ) && is_a( $GLOBALS['sg_cachepress_supercacher'], 'SG_CachePress_Supercacher' ) ) {
-		$sg_cachepress_supercacher->purge_cache();
+		$GLOBALS['sg_cachepress_supercacher']->purge_cache();
 	}
 }
 
