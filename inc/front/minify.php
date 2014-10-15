@@ -128,13 +128,13 @@ function __rocket_insert_minify_js_in_footer() {
  */
 function __rocket_concatenate_google_fonts( $buffer ) {
 	// Get all Google Fonts CSS files
-	preg_match_all( '/<link.+href=[\'|"](.+fonts\.googleapis\.com.+)(\'|").+>/iU', $buffer, $matches );
+	preg_match_all( '/<link\s*.+href=[\'|"](.+fonts\.googleapis\.com.+)(\'|").+>/iU', $buffer, $matches );
 
 	$i = 0;
 	$fonts = array();
 
 	if ( ! $matches[1] ) {
-		return array( $buffer, $fonts );
+		return array( $buffer, '' );
 	}
 	
 	foreach ( $matches[1] as $font ) {
