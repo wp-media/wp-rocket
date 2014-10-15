@@ -191,6 +191,13 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version )
 	    // Create config file
 		rocket_generate_config_file();
 	}
+	
+	if ( version_compare( $actual_version, '2.3.3', '<' ) ) {
+		// Clean cache
+		rocket_clean_domain();
 
+		// Create cache files
+		run_rocket_bot( 'cache-preload' );
+	}
 }
 /* END UPGRADER'S HOOKS */
