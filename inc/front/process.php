@@ -16,6 +16,11 @@ if ( strtolower( $_SERVER['REQUEST_URI'] ) != '/index.php' && in_array( pathinfo
 	return;
 }
 
+// Don't cache WooCommerce API
+if ( strpos( $_SERVER['REQUEST_URI'], 'wc-api/v' ) ) {
+	return;
+}
+
 // Don't cache if user is in admin
 if ( is_admin() ) {
 	return;
