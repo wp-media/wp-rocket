@@ -121,6 +121,7 @@ function rocket_plugins_to_deactivate()
 		'gator-cache/gator-cache.php',
 		'wp-http-compression/wp-http-compression.php',
 		'speed-booster-pack/speed-booster-pack.php',
+		'wp-performance-score-booster/wp-performance-score-booster.php',
 		'remove-query-strings-from-static-resources/remove-query-strings.php',
 		'query-strings-remover/query-strings-remover.php',
 		'wp-ffpc/wp-ffpc.php',
