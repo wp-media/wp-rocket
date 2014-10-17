@@ -149,6 +149,7 @@ function rocket_plugins_to_deactivate()
 		$plugins[] = 'wp-js/wp-js.php';
 		$plugins[] = 'minqueue/plugin.php';
 		$plugins[] = 'dependency-minification/dependency-minification.php';
+		$plugins[] = 'combine-js/combine-js.php';
 	}
 
 	foreach ( $plugins as $plugin ) {
