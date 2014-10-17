@@ -118,6 +118,7 @@ function rocket_plugins_to_deactivate()
 		'wp-fast-cache/wp-fast-cache.php',
 		'flexicache/wp-plugin.php',
 		'wp-fastest-cache/wpFastestCache.php',
+		'lite-cache/plugin.php',
 		'gator-cache/gator-cache.php',
 		'wp-http-compression/wp-http-compression.php',
 		'wordpress-gzip-compression/ezgz.php',
