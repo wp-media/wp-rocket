@@ -35,7 +35,7 @@ function rocket_minify_process( $buffer )
 
 		// Concatenate Google Fonts
 	    if ( $enable_google_fonts ) {
-	    	list( $buffer, $google_fonts ) = __rocket_concatenate_google_fonts( $buffer );
+	    	list( $buffer, $google_fonts ) = rocket_concatenate_google_fonts( $buffer );
 		}
 
 	    $buffer = rocket_inject_ie_conditionals( $buffer, $conditionals );
@@ -126,12 +126,14 @@ function __rocket_insert_minify_js_in_footer() {
  *
  * @since 2.3
  */
-function __rocket_concatenate_google_fonts( $buffer ) {
+function rocket_concatenate_google_fonts( $buffer ) {
 	// Get all Google Fonts CSS files
-	preg_match_all( '/<link\s*.+href=[\'|"](.+fonts\.googleapis\.com.+)(\'|").+>/iU', $buffer, $matches );
-
+	$buffer_without_comments = preg_replace('/<!--(.*)-->/Uis', '', $buffer );
+	preg_match_all( '/<link\s*.+href=[\'|"](.+fonts\.googleapis\.com.+)(\'|").+>/iU', $buffer_without_comments, $matches );
+	
 	$i = 0;
-	$fonts = array();
+	$fonts   = array();
+	$subsets = array();
 
 	if ( ! $matches[1] ) {
 		return array( $buffer, '' );
@@ -139,20 +141,29 @@ function __rocket_concatenate_google_fonts( $buffer ) {
 	
 	foreach ( $matches[1] as $font ) {
 		// Get fonts name
-	    $font = str_replace( 'family=' , '', parse_url( $font, PHP_URL_QUERY ) );
-	
-		// Add fonts to the collection
-	    $fonts[] = $font;
-	
+		$font = explode( 'family=', $font );
+		$font = explode( '&', $font[1] );
+		
+		// Add font to the collection
+	    $fonts[] = reset( $font );
+
+	    // Add subset to collection
+		$subset = end( $font );
+	    if ( false !== strpos( $subset, 'subset=' ) ) {
+			$subset  = explode( 'subset=', $subset );
+			$subsets = array_merge( $subsets, explode( ',' , $subset[1] ) );   
+	    }
+
 	    // Delete the Google Fonts tag
-	    $buffer = str_replace( $matches[0][$i], '', $buffer );
-	
+	    $buffer = str_replace( $matches[0][$i], '', $buffer );	
+
 	    $i++;
 	}
-	
-	// Generate new fonts tag
-	$fonts = implode( '|' , array_unique( $fonts ) );
-	$fonts = '<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=' . $fonts . '" />';
+
+	// Concatenate fonts tag
+	$subsets = ( $subsets ) ? '&subset=' . implode( ',', array_unique( $subsets ) ) : '';
+	$fonts   = implode( '|' , array_unique( $fonts ) );
+	$fonts   = '<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=' . $fonts . $subsets . '" />';
 	
 	return array( $buffer, $fonts );
 }
