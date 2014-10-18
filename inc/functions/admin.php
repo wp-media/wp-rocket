@@ -10,7 +10,7 @@ function rocket_need_api_key()
 { ?>
 
 	<div class="updated">
-		<p><b><?php echo WP_ROCKET_PLUGIN_NAME; ?></b> : <?php echo sprintf ( __('To finish the install and take advantage of high performance provided by our plugin, thank you to <a href="%s">Enter you API key</a>.', 'rocket' ), admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG ) ) ;?></p>
+		<p><b><?php echo WP_ROCKET_PLUGIN_NAME; ?></b> : <?php echo sprintf ( __('Last step before enjoying the high performances of our plugin, please <a href="%s">Enter you API key</a> here.', 'rocket' ), admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG ) ) ;?></p>
 	</div>
 
 <?php
@@ -158,29 +158,4 @@ function rocket_reset_white_label_values( $hack_post )
 function create_rocket_uniqid()
 {
 	return str_replace( '.', '', uniqid( '', true ) );
-}
-
-/**
- * This warning is displayed to inform the user that the plugin can not be tested in connected mode
- *
- * @since 2.2 Only returns a string on demand, no more hook
- * @since 1.1.10
- */
-function rocket_warning_logged_users()
-{
-	return	'</strong><b>' . WP_ROCKET_PLUGIN_NAME . '</b>: ' .
-			__( 'Connected users don\'t have the cached version of the website. We recommend you, to browse your website disconnected.', 'rocket' );
-}
-
-/**
- * This thankful message is displayed when the site has been added
- *
- * @since 2.2 On demand display, no hook
- */
-function rocket_thank_you_license()
-{
-	return 	'</strong><b>' . WP_ROCKET_PLUGIN_NAME . '</b>:
-			' . __( 'Thank you. Your license has been validated by our servers for you.', 'rocket' ) . '
-			<br>
-			' . sprintf( __( 'Key: <code>%s</code><br>Email: <i>%s</i>', 'rocket' ), get_rocket_option( 'consumer_key' ), get_rocket_option( 'consumer_email' ) );
 }

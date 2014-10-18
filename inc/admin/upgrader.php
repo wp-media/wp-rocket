@@ -75,6 +75,7 @@ function rocket_first_install()
 			'cache_ssl'				=> 0,
 			'cache_reject_uri'		=> array(),
 			'cache_reject_cookies'	=> array(),
+			'cache_query_strings'	=> array(),
 			'cache_purge_pages'		=> array(),
 			'purge_cron_interval'	=> 24,
 			'purge_cron_unit'		=> 'HOUR_IN_SECONDS',
@@ -88,9 +89,11 @@ function rocket_first_install()
 			'minify_js'				=> 0,
 			'minify_js_key'			=> $minify_js_key,
 			'minify_js_in_footer'	=> array(),
+			'minify_google_fonts'	=> 0,
 			'minify_html'			=> 0,
 			'dns_prefetch'			=> 0,
 			'cdn'					=> 0,
+			'do_beta'				=> 0,
 			'cdn_cnames'			=> array(),
 			'cdn_zone'				=> array()
 		)
@@ -187,6 +190,14 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version )
 
 	    // Create config file
 		rocket_generate_config_file();
+	}
+	
+	if ( version_compare( $actual_version, '2.3.3', '<' ) ) {
+		// Clean cache
+		rocket_clean_domain();
+
+		// Create cache files
+		run_rocket_bot( 'cache-preload' );
 	}
 }
 /* END UPGRADER'S HOOKS */

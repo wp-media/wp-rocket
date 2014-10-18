@@ -10,9 +10,8 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
  * @since 1.0
  */
 add_action( 'wp_head', 'rocket_lazyload_script', PHP_INT_MAX );
-function rocket_lazyload_script()
-{
-	if( ! apply_filters( 'do_rocket_lazyload', true ) ) {
+function rocket_lazyload_script() {
+	if ( ! apply_filters( 'do_rocket_lazyload', true ) ) {
 		return;
 	}
 
@@ -22,6 +21,7 @@ function rocket_lazyload_script()
 /**
  * Replace Gravatar, thumbnails, images in post content and in widget text by LazyLoad
  *
+ * @since 2.2 Better regex pattern in a replace_callback
  * @since 1.3.5 It's possible to exclude LazyLoad process by used do_rocket_lazyload filter
  * @since 1.2.0 It's possible to not lazy load an image with data-no-lazy attribute
  * @since 1.1.0 Don't lazy-load if the thumbnail has already been run through previously
@@ -29,26 +29,43 @@ function rocket_lazyload_script()
  * @since 1.0
  */
 add_filter( 'get_avatar', 'rocket_lazyload_images', PHP_INT_MAX );
-add_filter( 'post_thumbnail_html', 'rocket_lazyload_images', PHP_INT_MAX );
 add_filter( 'the_content', 'rocket_lazyload_images', PHP_INT_MAX );
 add_filter( 'widget_text', 'rocket_lazyload_images', PHP_INT_MAX );
-function rocket_lazyload_images( $html )
-{
+add_filter( 'post_thumbnail_html', 'rocket_lazyload_images', PHP_INT_MAX );
+function rocket_lazyload_images( $html ) {
 	// Don't LazyLoad if the thumbnail is in a feed or in a post preview
-	if ( is_feed() || is_preview() || empty( $html ) ) {
+	if ( is_feed() || is_preview() || empty( $html ) || ( defined( 'DONOTLAZYLOAD' ) && DONOTLAZYLOAD ) ) {
 		return $html;
 	}
 
 	// Don't LazyLoad if the thumbnail has already been run through previously or stop process with a hook
-	if ( strpos( $html, 'data-lazy-original' ) || strpos( $html, 'data-no-lazy' ) || !apply_filters( 'do_rocket_lazyload', true ) ) {
+	if ( ! apply_filters( 'do_rocket_lazyload', true ) ) {
 		return $html;
 	}
 
-	$html = preg_replace( '#<img([^>]+?)src=[\'"]?([^\'"\s>]+)[\'"]?([^>]*)>#', '<img${1}src="data:image/gif;base64,R0lGODdhAQABAPAAAP///wAAACwAAAAAAQABAEACAkQBADs=" data-lazy-original="${2}"${3}><noscript><img${1}src="${2}"${3}></noscript>', $html );
+	$html = preg_replace_callback( '#<img([^>]*) src=("(?:[^"]+)"|\'(?:[^\']+)\'|(?:[^ >]+))([^>]*)>#', '__rocket_lazyload_replace_callback', $html );
 
 	return $html;
 }
 
+
+/**
+ * Used to check if we have to LazyLoad this or not
+ *
+ * @since 2.2
+ *
+ */
+
+function __rocket_lazyload_replace_callback( $matches ) {
+
+	if ( strpos( $matches[1] . $matches[3], 'data-no-lazy=' ) === false && strpos( $matches[1] . $matches[3], 'data-lazy-original=' ) === false ) {
+		return sprintf( '<img%1$s src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-lazy-original=%2$s%3$s><noscript><img%1$s src=%2$s%3$s></noscript>',
+						$matches[1], $matches[2], $matches[3] );
+	} else {
+		return $matches[0];
+	}
+
+}
 /**
  * Replace WordPress smilies by Lazy Load
  *
@@ -86,7 +103,7 @@ function rocket_convert_smilies( $text ) {
 		$ignore_block_element = '';
 
 		for ( $i = 0; $i < $stop; $i++ ) {
-			$content = $textarr[$i];
+			$content = $textarr[ $i ];
 
 			// If we're in an ignore block, wait until we find its closing tag
 			if ( '' == $ignore_block_element && preg_match( '/^<(' . $tags_to_ignore . ')>/', $content, $matches ) )  {
@@ -119,10 +136,12 @@ function rocket_convert_smilies( $text ) {
  * @since 2.0
  */
 function rocket_translate_smiley( $matches ) {
+	
 	global $wpsmiliestrans;
 
-	if ( count( $matches ) == 0 )
+	if ( ! count( $matches ) ) {
 		return '';
+	}
 
 	$smiley = trim( reset( $matches ) );
 	$img = $wpsmiliestrans[ $smiley ];
@@ -139,7 +158,7 @@ function rocket_translate_smiley( $matches ) {
 	$src_url = apply_filters( 'smilies_src', includes_url( "images/smilies/$img" ), $img, site_url() );
 
 	// Don't lazy-load if process is stopped with a hook
-	if ( apply_filters( 'do_rocket_lazyload', true ) ) {
+	 if ( apply_filters( 'do_rocket_lazyload', true ) && ( ! defined( 'DONOTLAZYLOAD' ) || ! DONOTLAZYLOAD ) ) {
 
 		return sprintf( ' <img src="data:image/gif;base64,R0lGODdhAQABAPAAAP///wAAACwAAAAAAQABAEACAkQBADs=" data-lazy-original="%s" alt="%s" class="wp-smiley" /> ', esc_url( $src_url ), esc_attr( $smiley ) );
 

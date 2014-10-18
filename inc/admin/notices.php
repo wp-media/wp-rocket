@@ -23,11 +23,11 @@ function rocket_bad_deactivations()
 
 				switch( $msg ) {
 					case 'wpconfig' :
-						$errors['wpconfig'] = 	'<p>' . sprintf( __( '<b>%s</b> can not be deactivated because of <code>%s</code>.', 'rocket' ), WP_ROCKET_PLUGIN_NAME, 'WP_CACHE' ) . '<br>' . __( 'This constant is still defined in <code>wp-config.php</code> file and its value must be set to <code>false</code>.', 'rocket' ) . ' ' . sprintf( __( 'Maybe we do not have the write rights on <code>%s</code>.', 'rocket' ), 'wp-config.php' ) . '<br>' . __( 'Please give us rigths or resolve the problem yourself. Then retry deactivation.', 'rocket' ) . '</p>';
+						$errors['wpconfig'] = 	'<p>' . sprintf( __( '<b>%s</b> can not be deactivated because of <code>%s</code>.', 'rocket' ), WP_ROCKET_PLUGIN_NAME, 'WP_CACHE' ) . '<br>' . __( 'This constant is still defined in <code>wp-config.php</code> file and its value must be set to <code>false</code>.', 'rocket' ) . ' ' . sprintf( __( 'Maybe we do not have the writing permissions for <code>%s</code>.', 'rocket' ), 'wp-config.php' ) . '<br>' . __( 'Please give us permissions or resolve the problem yourself. Then retry deactivation.', 'rocket' ) . '</p>';
 						break;
 
 					case 'htaccess' :
-						$errors['htaccess'] = '<p>' . sprintf( __( '<b>%s</b> can not be deactivated because of <code>%s</code>.', 'rocket' ), WP_ROCKET_PLUGIN_NAME, '.htaccess' ) . '<br>' . __( 'This file is not writable and we can not remove these directives.', 'rocket' ) . ' ' . sprintf( __( 'Maybe we do not have the write rights on <code>%s</code>.', 'rocket' ), '.htaccess' ) . '<br>' . __( 'Please give us rigths or resolve the problem yourself. Then retry deactivation.', 'rocket' ) . '</p>';
+						$errors['htaccess'] = '<p>' . sprintf( __( '<b>%s</b> can not be deactivated because of <code>%s</code>.', 'rocket' ), WP_ROCKET_PLUGIN_NAME, '.htaccess' ) . '<br>' . __( 'This file is not writable and we can not remove these directives.', 'rocket' ) . ' ' . sprintf( __( 'Maybe we do not have writing permissions for <code>%s</code>.', 'rocket' ), '.htaccess' ) . '<br>' . __( 'Please give us permissions or resolve the problem yourself. Then retry deactivation.', 'rocket' ) . '</p>';
 						break;
 				}
 
@@ -118,8 +118,18 @@ function rocket_plugins_to_deactivate()
 		'wp-fast-cache/wp-fast-cache.php',
 		'flexicache/wp-plugin.php',
 		'wp-fastest-cache/wpFastestCache.php',
+		'lite-cache/plugin.php',
 		'gator-cache/gator-cache.php',
-		'wp-http-compression/wp-http-compression.php'
+		'wp-http-compression/wp-http-compression.php',
+		'wordpress-gzip-compression/ezgz.php',
+		'gzip-ninja-speed-compression/gzip-ninja-speed.php',
+		'speed-booster-pack/speed-booster-pack.php',
+		'wp-performance-score-booster/wp-performance-score-booster.php',
+		'remove-query-strings-from-static-resources/remove-query-strings.php',
+		'query-strings-remover/query-strings-remover.php',
+		'wp-ffpc/wp-ffpc.php',
+		'far-future-expiry-header/far-future-expiration.php',
+		'combine-css/combine-css.php'
 	);
 
 	if ( get_rocket_option( 'lazyload' ) ) {
@@ -138,6 +148,8 @@ function rocket_plugins_to_deactivate()
 		$plugins[] = 'autoptimize/autoptimize.php';
 		$plugins[] = 'wp-js/wp-js.php';
 		$plugins[] = 'minqueue/plugin.php';
+		$plugins[] = 'dependency-minification/dependency-minification.php';
+		$plugins[] = 'combine-js/combine-js.php';
 	}
 
 	foreach ( $plugins as $plugin ) {
@@ -159,7 +171,7 @@ function rocket_plugins_to_deactivate()
 			foreach ( $plugins_to_deactivate as $plugin ) {
 
 				$plugin_data = get_plugin_data( WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . $plugin);
-				echo '<li>' . $plugin_data['Name'] . '</span> <a href="' . wp_nonce_url( admin_url( 'admin-post.php?action=deactivate_plugin&plugin=' . urlencode($plugin) ), 'deactivate_plugin' ) . '" class="button-secondary alignright">' . __( 'Desactivate', 'rocket' ) . '</a></li>';
+				echo '<li>' . $plugin_data['Name'] . '</span> <a href="' . wp_nonce_url( admin_url( 'admin-post.php?action=deactivate_plugin&plugin=' . urlencode($plugin) ), 'deactivate_plugin' ) . '" class="button-secondary alignright">' . __( 'Deactivate', 'rocket' ) . '</a></li>';
 
 			}
 			?>
@@ -185,7 +197,7 @@ function rocket_warning_using_permalinks()
 	) { ?>
 
 		<div class="error">
-			<p><?php printf( __( '<b>%s</b>: A custom permalink structure is required to work properly. Please go to <a href="%s">Permalink</a> to configure them.', 'rocket'), WP_ROCKET_PLUGIN_NAME, admin_url( 'options-permalink.php' ) ); ?></p>
+			<p><?php printf( __( '<b>%s</b>: A custom permalink structure is required for the plugin to work properly. Please go to <a href="%s">Permalink</a> to configure it.', 'rocket'), WP_ROCKET_PLUGIN_NAME, admin_url( 'options-permalink.php' ) ); ?></p>
 		</div>
 
 	<?php
@@ -202,9 +214,10 @@ function rocket_warning_wp_config_permissions()
 {
 	$config_file = rocket_find_wpconfig_path();
 
-	/** This filter is documented in inc/admin-bar.php */
-	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
-		&& ( ! is_writable( $config_file ) || ! defined( 'WP_CACHE' ) || ! WP_CACHE )
+	if ( ! ( 'plugins.php' == $GLOBALS['pagenow'] && isset( $_GET['activate'] ) ) 
+		/** This filter is documented in inc/admin-bar.php */
+		&& current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
+		&& ( ! is_writable( $config_file ) && ( ! defined( 'WP_CACHE' ) || ! WP_CACHE ) )
 	    && rocket_valid_key() ) {
 
 		$boxes = get_user_meta( $GLOBALS['current_user']->ID, 'rocket_boxes', true );
@@ -217,9 +230,9 @@ function rocket_warning_wp_config_permissions()
 				<?php
 					printf( __( '<b>%s</b>: It seems we don\'t have <a href="%s" target="_blank">writing permissions</a> on <code>wp-config.php</code> file or the value of the constant <code>WP_CACHE</code> is set to <code>false</code>', 'rocket'), WP_ROCKET_PLUGIN_NAME, "http://codex.wordpress.org/Changing_File_Permissions" );
 					echo '<br>';
-					_e( 'To fix this you have to give write rights on <code>wp-config.php</code> and then save again this settings.', 'rocket' );
+					_e( 'To fix this you have to set writing permissions for <code>wp-config.php</code> and then save the settings again.', 'rocket' );
 					echo '<br>';
-					_e( 'If the message persists, you have to put this following code in your <code>wp-config.php</code> file so that it works correctly. Click on the field and press Ctrl-A to select all.', 'rocket' );
+					_e( 'If the message persists, you have to put the following code in your <code>wp-config.php</code> file so that it works correctly. Click on the field and press Ctrl-A to select all.', 'rocket' );
 				?>
 				</p>
 
@@ -250,7 +263,8 @@ function rocket_warning_advanced_cache_permissions()
 
 	/** This filter is documented in inc/admin-bar.php */
 	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
-		&& ( ! is_writable( $advanced_cache_file ) )
+		&& ! is_writable( $advanced_cache_file )
+		&& ( ! defined( 'WP_ROCKET_ADVANCED_CACHE' ) || ! WP_ROCKET_ADVANCED_CACHE )
 	    && rocket_valid_key() ) {
 
 		$boxes = get_user_meta( $GLOBALS['current_user']->ID, 'rocket_boxes', true );
@@ -284,8 +298,10 @@ add_action( 'admin_notices', 'rocket_warning_advanced_cache_not_ours' );
 function rocket_warning_advanced_cache_not_ours()
 {
 	/** This filter is documented in inc/admin-bar.php */
-	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
+	if ( ! ( 'plugins.php' == $GLOBALS['pagenow'] && isset( $_GET['activate'] ) ) 
+		&& current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
 		&& ! defined( 'WP_ROCKET_ADVANCED_CACHE' )
+		&& ( defined( 'WP_CACHE' ) && WP_CACHE )
 		&& get_rocket_option( 'version' ) == WP_ROCKET_VERSION
 	    && rocket_valid_key()) { ?>
 
@@ -405,11 +421,35 @@ function rocket_warning_minify_cache_dir_permissions()
 
 			<div class="error">
 				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>" class="rkt-cross"><div class="dashicons dashicons-no"></div></a>
-				<p><b><?php echo WP_ROCKET_PLUGIN_NAME; ?></b>: <?php printf( __('Be careful, you don\'t have <a href="%1$s" target="_blank">writing permissions</a> on <b>%3$s</b> minify cache folder (<code>%2$s</code>). To make <b>%3$s</b> work properly, please CHMOD <code>755</code> or <code>775</code> or <code>777</code> this folder.', 'rocket' ), 'http://codex.wordpress.org/Changing_File_Permissions', trim( str_replace( ABSPATH, '', WP_ROCKET_MINIFY_CACHE_PATH ), '/' ), WP_ROCKET_PLUGIN_NAME ); ?></p>
+				<p><b><?php echo WP_ROCKET_PLUGIN_NAME; ?></b>: <?php printf( __('Be careful, you don\'t have <a href="%1$s" target="_blank">writing permissions</a> on <b>%3$s</b> minified cache folder (<code>%2$s</code>). To make <b>%3$s</b> work properly, please CHMOD <code>755</code> or <code>775</code> or <code>777</code> this folder.', 'rocket' ), 'http://codex.wordpress.org/Changing_File_Permissions', trim( str_replace( ABSPATH, '', WP_ROCKET_MINIFY_CACHE_PATH ), '/' ), WP_ROCKET_PLUGIN_NAME ); ?></p>
 			</div>
 
 		<?php
 		}
 
+	}
+}
+
+/**
+ * This thankful message is displayed when the site has been added
+ *
+ * @since 2.2
+ */
+add_action( 'admin_notices', 'rocket_thank_you_license' );
+function rocket_thank_you_license()
+{
+	if ( '1' == get_rocket_option( 'license' ) ) {
+		$options = get_option( WP_ROCKET_SLUG );
+		$options['license'] = time();
+		$options['ignore'] = true;
+		update_option( WP_ROCKET_SLUG, $options );
+	?>
+		<div class="updated">
+			<p>
+				<b><?php echo WP_ROCKET_PLUGIN_NAME; ?></b>: <?php _e( 'Thank you. Your license has been successfully validated!', 'rocket' ); ?><br />
+				<?php printf( __( 'Key: <code>%s</code><br>Email: <i>%s</i>', 'rocket' ), get_rocket_option( 'consumer_key' ), get_rocket_option( 'consumer_email' ) ); ?>
+			</p>
+		</div>
+	<?php
 	}
 }

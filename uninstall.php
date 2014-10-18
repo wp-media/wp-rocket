@@ -17,7 +17,6 @@ delete_transient( 'rocket_check_licence_1' );
 delete_option( 'wp_rocket_settings' );
 delete_metadata( 'user', '', 'rocket_boxes', '', true ); // magical true
 
-
 /**
  * Remove all cache files
  *

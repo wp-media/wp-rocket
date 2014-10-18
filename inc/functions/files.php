@@ -78,6 +78,11 @@ function get_rocket_config_file()
 		if ( $option == 'cache_reject_uri' ) {
 			$buffer .= '$rocket_' . $option . ' = \'' . get_rocket_cache_reject_uri() . '\';' . "\n";
 		}
+		
+		if ( $option == 'cache_query_strings' ) {
+			$buffer .= '$rocket_' . $option . ' = ' . var_export( get_rocket_cache_query_string(), true ) . ';' . "\n";
+		}
+
 
 		if ( $option == 'cache_reject_cookies' ) {
 			$cookies = get_rocket_cache_reject_cookies();
@@ -203,9 +208,9 @@ function set_rocket_wp_cache_define( $turn_it_on )
 	}
 	unset( $line );
 
-	// If the constant does not exist, it is created
+	// If the constant does not exist, create it
 	if ( ! $is_wp_cache_exist ) {
-		array_shift($config_file);
+		array_shift( $config_file );
 		array_unshift( $config_file, "<?php\r\n", $constant);
 	}
 
@@ -343,7 +348,7 @@ function rocket_clean_home( $lang = '' )
 	do_action( 'before_rocket_clean_home', $root, $lang );
 
 	// Delete homepage
-	if ( $files = glob( $root . '/index.html', GLOB_NOSORT ) ) {
+	if ( $files = glob( $root . '/index.{html,html_gzip}', GLOB_BRACE|GLOB_NOSORT ) ) {
 		foreach ( $files as $file ) {
 			@unlink( $file );
 		}
@@ -588,6 +593,7 @@ function rocket_fetch_and_cache_minify( $url, $pretty_url )
 	curl_setopt ($ch, CURLOPT_URL, $url);
 	curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
 	curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, 5);
+	curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, false);
 	curl_setopt ($ch, CURLOPT_USERAGENT, 'WP-Rocket-Minify');
 
 	$content = curl_exec($ch);
@@ -623,7 +629,7 @@ function rocket_find_wpconfig_path()
 
 	if ( file_exists( $config_file ) && is_writable( $config_file ) ) {
 		return $config_file;
-	} elseif ( file_exists( $config_file_alt ) && is_writable( $config_file_alt ) && !file_exists( dirname( get_home_path() ) . '/wp-settings.php' ) ) {
+	} elseif ( @file_exists( $config_file_alt ) && is_writable( $config_file_alt ) && !file_exists( dirname( get_home_path() ) . '/wp-settings.php' ) ) {
 		return $config_file_alt;
 	}
 

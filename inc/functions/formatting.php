@@ -20,7 +20,7 @@ function rocket_clean_exclude_file( $file )
 }
 
 /**
- * Get an url without protocol
+ * Get an url without HTTP protocol
  *
  * @since 1.3.0
  *
@@ -35,6 +35,21 @@ function rocket_remove_url_protocol( $url, $no_dots=false )
 	/** This filter is documented in inc/front/htaccess.php */
 	if ( apply_filters( 'rocket_url_no_dots', $no_dots ) ) {
 		$url = str_replace( '.', '_', $url );
+	}
+	return $url;
+}
+
+/**
+ * Add HTTP protocol to an url that does not have
+ *
+ * @since 2.2.1
+ *
+ * @param string $url The URL to parse
+ * @return string $url The URL with protocol
+ */
+function rocket_add_url_protocol( $url ) {
+	if ( strpos( $url, 'http://' ) === false && strpos( $url, 'https://' ) === false ) {
+		$url = 'http://' . $url;
 	}
 	return $url;
 }
@@ -64,6 +79,27 @@ function get_rocket_parse_url( $url )
 	 * @param array Components of an URL
 	*/
 	return apply_filters( 'rocket_parse_url', array( $host, $path, $scheme, $query ) );
+}
+
+/**
+ * Get CNAMES hosts
+ * 
+ * @since 2.3
+ *
+ * @param string $zones CNAMES zones
+ * @return array $hosts CNAMES hosts
+ */
+function get_rocket_cnames_host( $zones = array( 'all' ) ) {
+	$hosts = array();
+	
+	if ( $cnames = get_rocket_cdn_cnames( $zones ) ) {
+		foreach ( $cnames as $cname ) {
+			$cname = rocket_add_url_protocol( $cname );
+			$hosts[] = parse_url( $cname, PHP_URL_HOST );
+		}
+	}
+	
+	return $hosts;
 }
 
 /*
@@ -97,7 +133,8 @@ function get_rocket_cdn_url( $url, $zone = array( 'all' ) )
 		}
 	}
 
-	$url = rtrim( $cnames[(abs(crc32($path))%count($cnames))] , '/' ) . $path . $query;
+	$url = rtrim( $cnames[(abs(crc32($path))%count($cnames))], '/' ) . '/' . ltrim( $path, '/' ) . $query;
+	$url = rocket_add_url_protocol( $url );
 	return $url;
 }
 
@@ -223,7 +260,6 @@ function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_file
 				$url = apply_filters( 'rocket_js_url', $url );
 
 				$tags .= sprintf( '<script src="%s" %s></script>', esc_attr( $url ), $data_attr );
-
 			}
 
 		}

@@ -28,6 +28,11 @@ function rocket_widget_update_callback( $instance ) { rocket_clean_domain(); ret
 */
 add_filter( 'delete_transient_wc_products_onsale', 'wp_suspend_cache_invalidation' );
 
+/* @since 2.3
+ * For not conflit with SuperCacher (SiteGround) Pretty good hosting!
+*/
+add_action( 'after_rocket_clean_domain', 'rocket_clean_supercacher' );
+
 /**
  * Update cache when a post is updated or commented
  *
@@ -152,7 +157,7 @@ function rocket_clean_post( $post_id )
 
 	// Polylang
 	} else if ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
-		$lang = $polylang->get_post_language( $post_id )->slug;
+		$lang = $GLOBALS['polylang']->get_post_language( $post_id )->slug;
 	}
 	rocket_clean_home( $lang );
 

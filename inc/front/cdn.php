@@ -6,16 +6,19 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
  *
  * @since 2.1
  */
-add_filter( 'wp_get_attachment_url'	, 'rocket_cdn_file', PHP_INT_MAX );
-add_filter( 'smilies_src'			, 'rocket_cdn_file', PHP_INT_MAX );
-add_filter( 'stylesheet_uri'		, 'rocket_cdn_file', PHP_INT_MAX );
+add_filter( 'template_directory_uri'	, 'rocket_cdn_file', PHP_INT_MAX );
+add_filter( 'wp_get_attachment_url'		, 'rocket_cdn_file', PHP_INT_MAX );
+add_filter( 'smilies_src'				, 'rocket_cdn_file', PHP_INT_MAX );
+add_filter( 'stylesheet_uri'			, 'rocket_cdn_file', PHP_INT_MAX );
 // If for some completely unknown reason the user is using WP Minify or Better WordPress Minify instead of the WP Rocket minification
-add_filter( 'wp_minify_css_url'		, 'rocket_cdn_file', PHP_INT_MAX );
-add_filter( 'wp_minify_js_url'		, 'rocket_cdn_file', PHP_INT_MAX );
-add_filter( 'bwp_get_minify_src'	, 'rocket_cdn_file', PHP_INT_MAX );
+add_filter( 'wp_minify_css_url'			, 'rocket_cdn_file', PHP_INT_MAX );
+add_filter( 'wp_minify_js_url'			, 'rocket_cdn_file', PHP_INT_MAX );
+add_filter( 'bwp_get_minify_src'		, 'rocket_cdn_file', PHP_INT_MAX );
 function rocket_cdn_file( $url )
 {
-	if ( is_admin() ) {
+	$ext = pathinfo( $url, PATHINFO_EXTENSION );
+	
+	if ( is_admin() && $ext != 'php' ) {
 		return $url;
 	}
 
@@ -29,7 +32,10 @@ function rocket_cdn_file( $url )
 		case 'wp_minify_css_url':
 		case 'wp_minify_js_url':
 		case 'bwp_get_minify_src':
-			$zone = array( 'all', 'css_and_js', pathinfo( $url, PATHINFO_EXTENSION ) );
+			$zone = array( 'all', 'css_and_js', $ext );
+			break;
+		default:
+			$zone = array( 'all' );
 			break;
 	}
 

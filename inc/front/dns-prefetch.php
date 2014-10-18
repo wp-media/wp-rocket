@@ -11,7 +11,7 @@ add_filter( 'rocket_buffer', 'rocket_dns_prefetch', 12 );
 function rocket_dns_prefetch( $buffer )
 {
 	$dns_link_tags = '';
-	$domains = array_merge( get_rocket_cdn_cnames(), get_rocket_option( 'dns_prefetch', array() ) );
+	$domains = array_merge( get_rocket_cdn_cnames(), (array) get_rocket_option( 'dns_prefetch' ) );
 
 	/**
 	 * Filter list of domains to prefetch DNS

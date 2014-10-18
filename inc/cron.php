@@ -22,10 +22,9 @@ function rocket_purge_cron_schedule( $schedules )
  * Planning cron
  * If the task is not programmed, it is automatically triggered
  *
- * @since 1.3.2 Use "init" hook up to "wp"
  * @since 1.0
  */
-add_action( 'wp', 'rocket_purge_cron_scheduled' );
+add_action( 'init', 'rocket_purge_cron_scheduled' );
 function rocket_purge_cron_scheduled()
 {
 	if ( ! wp_next_scheduled( 'rocket_purge_time_event' ) ) {
@@ -43,8 +42,11 @@ function rocket_purge_cron_scheduled()
 add_action( 'rocket_purge_time_event', 'do_rocket_purge_cron' );
 function do_rocket_purge_cron()
 {
-	// Purge files
+	// Purge domain cache files
 	rocket_clean_domain();
+
+	// Purge minify cache files
+	rocket_clean_minify();
 
 	// Run WP Rocket Bot for preload cache files
 	run_rocket_bot( 'cache-preload' );

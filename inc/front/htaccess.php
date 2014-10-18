@@ -49,7 +49,6 @@ function get_rocket_htaccess_marker()
 {
 	// Recreate WP Rocket marker
 	$marker  = '# BEGIN WP Rocket v' . WP_ROCKET_VERSION . PHP_EOL;
-	$marker .= get_rocket_htaccess_skip_404();
 	$marker .= get_rocket_htaccess_charset();
 	$marker .= get_rocket_htaccess_etag();
 	$marker .= get_rocket_htaccess_files_match();
@@ -116,9 +115,30 @@ function get_rocket_htaccess_mod_rewrite()
 	 */
 	$is_1and1_or_force = apply_filters( 'rocket_force_full_path', strpos( $_SERVER['DOCUMENT_ROOT'], '/kunden/' ) === 0 );
 
-	$rules  = '<IfModule mod_rewrite.c>' . PHP_EOL;
+
+	$rules = '';
+	$gzip_rules = '';
+	$enc = '';
+	
+	if ( function_exists( 'gzencode' ) ) {
+		$rules = '<IfModule mod_mime.c>' . PHP_EOL;
+			$rules .= 'AddType text/html .html_gzip' . PHP_EOL;
+			$rules .= 'AddEncoding gzip .html_gzip' . PHP_EOL;
+		$rules .= '</IfModule>' . PHP_EOL;
+		$rules .= '<IfModule mod_setenvif.c>' . PHP_EOL;
+			$rules .= 'SetEnvIfNoCase Request_URI \.html_gzip$ no-gzip' . PHP_EOL;
+		$rules .= '</IfModule>' . PHP_EOL . PHP_EOL;
+
+		$gzip_rules .= 'RewriteCond %{HTTP:Accept-Encoding} gzip' . PHP_EOL;
+		$gzip_rules .= 'RewriteRule .* - [E=WPR_ENC:_gzip]' . PHP_EOL;
+
+		$enc = '%{ENV:WPR_ENC}';
+	}
+
+	$rules .= '<IfModule mod_rewrite.c>' . PHP_EOL;
 	$rules .= 'RewriteEngine On' . PHP_EOL;
 	$rules .= 'RewriteBase ' . $home_root . PHP_EOL;
+	$rules .= $gzip_rules;
 	$rules .= 'RewriteCond %{REQUEST_METHOD} GET' . PHP_EOL;
 	$rules .= 'RewriteCond %{QUERY_STRING} =""' . PHP_EOL;
 
@@ -134,12 +154,12 @@ function get_rocket_htaccess_mod_rewrite()
 	$rules .= ! is_rocket_cache_ssl() ? get_rocket_htaccess_ssl_rewritecond() : '';
 
 	if ( $is_1and1_or_force ) {
-		$rules .= 'RewriteCond "' . str_replace( '/kunden/', '/', WP_ROCKET_CACHE_PATH ) . $HTTP_HOST . '%{REQUEST_URI}/index.html" -f' . PHP_EOL;
+		$rules .= 'RewriteCond "' . str_replace( '/kunden/', '/', WP_ROCKET_CACHE_PATH ) . $HTTP_HOST . '%{REQUEST_URI}/index.html' . $enc . '" -f' . PHP_EOL;
 	} else {
-		$rules .= 'RewriteCond "%{DOCUMENT_ROOT}/' . ltrim( $cache_root, '/' ) . $HTTP_HOST . '%{REQUEST_URI}/index.html" -f' . PHP_EOL;
+		$rules .= 'RewriteCond "%{DOCUMENT_ROOT}/' . ltrim( $cache_root, '/' ) . $HTTP_HOST . '%{REQUEST_URI}/index.html' . $enc . '" -f' . PHP_EOL;
 	}
 
-	$rules .= 'RewriteRule .* "' . $cache_root . $HTTP_HOST . '%{REQUEST_URI}/index.html" [L]' . PHP_EOL;
+	$rules .= 'RewriteRule .* "' . $cache_root . $HTTP_HOST . '%{REQUEST_URI}/index.html' . $enc . '" [L]' . PHP_EOL;
 	$rules .= '</IfModule>' . PHP_EOL;
 
 	/**
@@ -221,11 +241,14 @@ function get_rocket_htaccess_mod_deflate()
 	$rules .= '<IfModule mod_deflate.c>' . PHP_EOL;
 		$rules .= '# Active compression' . PHP_EOL;
 		$rules .= 'SetOutputFilter DEFLATE' . PHP_EOL;
-		$rules .= '# Force deflate for mangled headers developer.yahoo.com/blogs/ydn/posts/2010/12/pushing-beyond-gzipping/' . PHP_EOL;
+		$rules .= '# Force deflate for mangled headers' . PHP_EOL;
 		$rules .= '<IfModule mod_setenvif.c>' . PHP_EOL;
 			$rules .= '<IfModule mod_headers.c>' . PHP_EOL;
 			$rules .= 'SetEnvIfNoCase ^(Accept-EncodXng|X-cept-Encoding|X{15}|~{15}|-{15})$ ^((gzip|deflate)\s*,?\s*)+|[X~-]{4,13}$ HAVE_Accept-Encoding' . PHP_EOL;
 			$rules .= 'RequestHeader append Accept-Encoding "gzip,deflate" env=HAVE_Accept-Encoding' . PHP_EOL;
+			$rules .= '# Don\'t compress images and other uncompressible content' . PHP_EOL;
+			$rules .= 'SetEnvIfNoCase Request_URI \\' . PHP_EOL;
+			$rules .= '\\.(?:gif|jpe?g|png|rar|zip|exe|flv|mov|wma|mp3|avi|swf|mp?g)$ no-gzip dont-vary' . PHP_EOL;
 			$rules .= '</IfModule>' . PHP_EOL;
 		$rules .= '</IfModule>' . PHP_EOL . PHP_EOL;
 		$rules .= '# Compress all output labeled with one of the following MIME-types' . PHP_EOL;
@@ -418,34 +441,6 @@ function get_rocket_htaccess_etag()
 	 * @param string $rules Rules that will be printed
 	*/
     $rules = apply_filters( 'rocket_htaccess_etag', $rules );
-
-	return $rules;
-}
-
-/**
- * Rules to skip 404 handling by WordPress
- *
- * @since 2.2
- *
- * @return string $rules Rules that will be printed
- */
-function get_rocket_htaccess_skip_404() {
-	$rules  = '# Skip 404 error handling by WordPress for static files' . PHP_EOL;
-	$rules .= '<IfModule mod_rewrite.c>' . PHP_EOL;
-	$rules .= 'RewriteEngine On' . PHP_EOL;
-	$rules .= 'RewriteCond %{REQUEST_URI} \.(css|eot|gif|ico|jpe?g|js|json|otf|pdf|png|svg|swf|ttf|woff)$ [NC]' . PHP_EOL;
-	$rules .= 'RewriteCond %{REQUEST_FILENAME} !-f' . PHP_EOL;
-	$rules .= 'RewriteRule ^.*$ default [R=404,L]' . PHP_EOL;
-	$rules .= '</IfModule>' . PHP_EOL . PHP_EOL;
-
-	/**
-	 * Filter rules to skip 404 handling by WordPress
-	 *
-	 * @since 2.2
-	 *
-	 * @param string $rules Rules that will be printed
-	*/
-	$rules = apply_filters( 'rocket_htaccess_handle_404', $rules );
 
 	return $rules;
 }

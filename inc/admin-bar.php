@@ -28,7 +28,7 @@ function rocket_admin_bar( $wp_admin_bar )
 	$wp_admin_bar->add_menu(array(
 		'parent'	=> 'wp-rocket',
 		'id' 		=> 'rocket-settings',
-		'title' 	=> __( 'Settings' ),
+		'title' 	=> __( 'Settings', 'rocket' ),
 	    'href'  => admin_url( 'options-general.php?page='.WP_ROCKET_PLUGIN_SLUG ),
 	));
 
@@ -202,7 +202,7 @@ function rocket_admin_bar( $wp_admin_bar )
 			'parent' => 'wp-rocket',
 			'id'     => 'support',
 			'title'  => __( 'Support', 'rocket' ),
-			'href'   => 'http://support.wp-rocket.me',
+			'href'   => 'http://wp-rocket.me/support/',
 		));
 	}
 }
