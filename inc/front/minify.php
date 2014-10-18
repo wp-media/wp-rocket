@@ -163,7 +163,7 @@ function rocket_concatenate_google_fonts( $buffer ) {
 	// Concatenate fonts tag
 	$subsets = ( $subsets ) ? '&subset=' . implode( ',', array_unique( $subsets ) ) : '';
 	$fonts   = implode( '|' , array_unique( $fonts ) );
-	$fonts   = '<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=' . $fonts . $subsets . '" />';
+	$fonts   = '<link rel="stylesheet" href="//fonts.googleapis.com/css?family=' . $fonts . $subsets . '" />';
 	
 	return array( $buffer, $fonts );
 }
