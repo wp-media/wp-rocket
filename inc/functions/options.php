@@ -115,6 +115,30 @@ function get_rocket_cache_reject_cookies()
 	return $cookies;
 }
 
+/**
+ * Get all User-Agent we don't allow to get cache files
+ *
+ * @since 2.3.5
+ *
+ * @return array List of rejected User-Agent
+ */
+function get_rocket_cache_reject_ua() {
+	$ua = array();
+	$ua[] = 'facebookexternalhit';
+
+	/**
+	 * Filter the rejected User-Agent
+	 *
+	 * @since 2.3.5
+	 *
+	 * @param array $ua List of rejected User-Agent
+	*/
+	$ua = apply_filters( 'rocket_cache_reject_ua', $ua );
+
+	$ua = implode( '|', array_filter( $ua ) );
+	return $ua;
+}
+
 /*
  * Get all CNAMES
  *
