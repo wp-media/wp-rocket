@@ -115,7 +115,6 @@ function get_rocket_htaccess_mod_rewrite()
 	 */
 	$is_1and1_or_force = apply_filters( 'rocket_force_full_path', strpos( $_SERVER['DOCUMENT_ROOT'], '/kunden/' ) === 0 );
 
-
 	$rules = '';
 	$gzip_rules = '';
 	$enc = '';
@@ -151,8 +150,13 @@ function get_rocket_htaccess_mod_rewrite()
 	}
 
 	$rules .= ! is_rocket_cache_mobile() ? get_rocket_htaccess_mobile_rewritecond() : '';
+	
+	if ( $ua = get_rocket_cache_reject_ua() ) {
+		$rules .= 'RewriteCond %{HTTP_USER_AGENT} !^(' . $ua . ').* [NC]' . PHP_EOL;
+	}
+	
 	$rules .= ! is_rocket_cache_ssl() ? get_rocket_htaccess_ssl_rewritecond() : '';
-
+	
 	if ( $is_1and1_or_force ) {
 		$rules .= 'RewriteCond "' . str_replace( '/kunden/', '/', WP_ROCKET_CACHE_PATH ) . $HTTP_HOST . '%{REQUEST_URI}/index.html' . $enc . '" -f' . PHP_EOL;
 	} else {

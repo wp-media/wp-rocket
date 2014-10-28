@@ -529,10 +529,11 @@ function rocket_display_options()
 	);
 	// Mobile plugins list
 	$mobile_plugins = array(
-		'<a href="http://wordpress.org/plugins/wptouch/" target="_blank">WP Touch</a>',
-		'<a href="http://wordpress.org/plugins/wp-mobile-detector/" target="_blank">WP Mobile Detector</a>',
-		'<a href="http://wordpress.org/plugins/wiziapp-create-your-own-native-iphone-app" target="_blank">wiziApp</a>',
-		'<a href="http://wordpress.org/plugins/wordpress-mobile-pack/" target="_blank">WordPress Mobile Pack</a>'
+		'<a href="https://wordpress.org/plugins/wptouch/" target="_blank">WP Touch</a>',
+		'<a href="https://wordpress.org/plugins/wp-mobile-detector/" target="_blank">WP Mobile Detector</a>',
+		'<a href="https://wordpress.org/plugins/wiziapp-create-your-own-native-iphone-app" target="_blank">wiziApp</a>',
+		'<a href="https://wordpress.org/plugins/wordpress-mobile-pack/" target="_blank">WordPress Mobile Pack</a>',
+		'<a href="https://wordpress.org/plugins/wp-mobilizer/" target="_blank">WP-Mobilizer</a>'
 	);
 	add_settings_field(
 		'rocket_mobile',
