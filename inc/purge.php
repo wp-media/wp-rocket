@@ -19,6 +19,9 @@ add_action( 'add_link'					, 'rocket_clean_domain' );   	// When a link is added
 add_action( 'edit_link'					, 'rocket_clean_domain' );		// When a link is updated
 add_action( 'delete_link'				, 'rocket_clean_domain' );		// When a link is deleted
 
+/* @since 2.3.5 */
+add_action( 'wp_ajax_sg-cachepress-purge', 'rocket_clean_domain', PHP_INT_MAX ); // When SuperCacher (SiteGround) is purged
+
 /* @since 1.1.1 */
 add_filter( 'widget_update_callback'	, 'rocket_widget_update_callback' ); // When a widget is update
 function rocket_widget_update_callback( $instance ) { rocket_clean_domain(); return $instance; }
