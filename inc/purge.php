@@ -18,6 +18,7 @@ add_action( 'delete_term'				, 'rocket_clean_domain' ); 		// When a term is dele
 add_action( 'add_link'					, 'rocket_clean_domain' );   	// When a link is added
 add_action( 'edit_link'					, 'rocket_clean_domain' );		// When a link is updated
 add_action( 'delete_link'				, 'rocket_clean_domain' );		// When a link is deleted
+add_action( 'customize_save'			, 'rocket_clean_domain' );		// When customizer is saved
 
 /* @since 2.3.5 */
 add_action( 'wp_ajax_sg-cachepress-purge', 'rocket_clean_domain', PHP_INT_MAX ); // When SuperCacher (SiteGround) is purged
