@@ -296,6 +296,18 @@ function get_rocket_ecommerce_exclude_pages() {
 		$checkout_urls = get_rocket_i18n_translated_post_urls( $edd_settings['purchase_page'], 'page', '(.*)' );
 		$urls = array_merge( $urls, $checkout_urls );
 	}
+	
+	// Jigoshop
+	if ( function_exists( 'jigoshop_get_page_id' ) ) {
+		if ( jigoshop_get_page_id( 'checkout' ) ) {
+			$checkout_urls = get_rocket_i18n_translated_post_urls( jigoshop_get_page_id( 'checkout' ), 'page', '(.*)' );
+			$urls = array_merge( $urls, $checkout_urls );
+		}
+		if ( jigoshop_get_page_id( 'cart' ) ) {
+			$cart_urls = get_rocket_i18n_translated_post_urls( jigoshop_get_page_id( 'cart' ) );
+			$urls = array_merge( $urls, $cart_urls );
+		}
+	}
 
 	return $urls;
 }
