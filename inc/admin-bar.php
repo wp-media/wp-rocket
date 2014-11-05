@@ -26,10 +26,10 @@ function rocket_admin_bar( $wp_admin_bar )
 
 	// Settings
 	$wp_admin_bar->add_menu(array(
-		'parent'	=> 'wp-rocket',
-		'id' 		=> 'rocket-settings',
-		'title' 	=> __( 'Settings', 'rocket' ),
-	    'href'  => admin_url( 'options-general.php?page='.WP_ROCKET_PLUGIN_SLUG ),
+		'parent' => 'wp-rocket',
+		'id' 	 => 'rocket-settings',
+		'title'  => __( 'Settings', 'rocket' ),
+	    'href'   => admin_url( 'options-general.php?page='.WP_ROCKET_PLUGIN_SLUG ),
 	));
 
     if ( rocket_valid_key() ) {
@@ -197,6 +197,14 @@ function rocket_admin_bar( $wp_admin_bar )
 		}
 	}
 	if ( ! rocket_is_white_label() ) {
+		// Go to WP Rocket Documentation
+		$wp_admin_bar->add_menu( array(
+			'parent' => 'wp-rocket',
+			'id'     => 'docs',
+			'title'  => __( 'Documentation', 'rocket' ),
+			'href'   => 'http://docs.wp-rocket.me',
+		));
+		
 		// Go to WP Rocket Support
 		$wp_admin_bar->add_menu( array(
 			'parent' => 'wp-rocket',
