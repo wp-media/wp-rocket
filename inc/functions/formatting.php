@@ -166,9 +166,9 @@ function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_file
 	$tags 		= '';
 	$data_attr  = 'data-minify="1"';
 	$urls 		= array( 0 => '' );
-	$bubble     = is_child_theme() ? $url . 'bubbleCssImports=1&' : '';
+	$bubble     = is_child_theme() ? 'bubbleCssImports=1&' : '';
 	$base_url 	= WP_ROCKET_URL . 'min/?' . $bubble . 'f=';
-	$files  	= is_array( $files ) ? $files : (array)$files;
+	$files  	= is_array( $files ) ? $files : (array) $files;
 
 	if ( count( $files ) ) {
 
