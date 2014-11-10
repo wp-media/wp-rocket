@@ -91,8 +91,8 @@ class ActionScheduler_QueueRunner {
 
 	protected function process_action( $action_id ) {
 		try {
-			$action = $this->store->fetch_action( $action_id );
 			do_action( 'action_scheduler_before_execute', $action_id );
+			$action = $this->store->fetch_action( $action_id );
 			$this->store->log_execution( $action_id );
 			$action->execute();
 			do_action( 'action_scheduler_after_execute', $action_id );
