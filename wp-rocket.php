@@ -203,7 +203,7 @@ function rocket_deactivation()
 
 	delete_transient( 'rocket_check_licence_30' );
 	delete_transient( 'rocket_check_licence_1' );
-	delete_transient( 'rocket_warning_plugin_modification' );
+	delete_transient( 'rocket_warning_autoupdate' );
 }
 
 /*

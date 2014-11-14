@@ -80,7 +80,7 @@ add_action( 'admin_init', '_maybe_update_rocket', PHP_INT_MAX );
 function _maybe_update_rocket()
 {
 	$current = get_site_transient( 'update_wprocket' );
-	if ( isset( $current ) && apply_filters( 'rocket_check_update', 12 * HOUR_IN_SECONDS ) > ( time() - $current ) ) {
+	if ( false !== $current && apply_filters( 'rocket_check_update', 12 * HOUR_IN_SECONDS ) > ( time() - $current ) ) {
 		return;
 	}
 
@@ -149,4 +149,41 @@ function rocket_force_info_result( $res, $action, $args )
 	}
 
 	return $res;
+}
+/**
+ * If we already know that an udate is available, try to autoupdate it.
+ *
+ * @since 2.4
+ */
+add_action( 'admin_footer', 'rkt_autoupdate', PHP_INT_MAX );
+function rkt_autoupdate() {
+
+	$plugin_transient = get_site_transient( 'update_plugins' );
+	$c_key = get_rocket_option( 'consumer_key' );
+	$transient = get_transient( 'rocket_warning_autoupdate' );
+	if ( false === $transient && 
+		isset( $plugin_transient->response['wp-rocket/wp-rocket.php']->package, $plugin_transient->response['wp-rocket/wp-rocket.php']->new_version ) && 
+		sprintf( 'http://support.wp-rocket.me/%s/wp-rocket_%s.zip', $c_key, $plugin_transient->response['wp-rocket/wp-rocket.php']->new_version ) == $plugin_transient->response['wp-rocket/wp-rocket.php']->package
+		)
+	{
+		require_once( ABSPATH . 'wp-admin/includes/class-wp-upgrader.php' );
+		echo '<div style="display:none">'; // Avoid to display the update notifications from WordPress, this will change soon in WordPress core, wait and see.
+			$title = __( 'Update Plugin' );
+			$plugin = 'wp-rocket/wp-rocket.php';
+			$nonce = 'upgrade-plugin_' . $plugin;
+			$url = 'update.php?action=upgrade-plugin&plugin=' . urlencode( $plugin ); 			
+			$upgrader = new Plugin_Upgrader( new Plugin_Upgrader_Skin( compact( 'title', 'nonce', 'url', 'plugin' ) ) );
+			if ( $upgrader->upgrade( $plugin ) ) {
+				$text = __( 'An autoupdate has been performed from v%1$s to v%2$s.', 'rocket' );
+				$class = 'updated';
+			} else {
+				$text = __( 'We tried to autoupdate from v%1$s to v%2$s, but an error occured.', 'rocket' );
+				$class = 'error';
+			}
+			$msg = sprintf( $text, WP_ROCKET_VERSION, $plugin_transient->response['wp-rocket/wp-rocket.php']->new_version );
+			set_transient( 'rocket_warning_autoupdate', array( 'class' => $class, 'msg' => $msg ) );
+			rocket_renew_box( 'rocket_warning_autoupdate' );
+			$upgrader->after();
+		echo '</div>';
+	}
 }

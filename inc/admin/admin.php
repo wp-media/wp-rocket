@@ -127,6 +127,7 @@ function __rocket_admin_print_styles()
 /**
  * Manage the dismissed boxes
  *
+ * @since 2.4 Add a delete_transient on function name (box name)
  * @since 1.3.0 $args can replace $_GET when called internaly
  * @since 1.1.10
  */
@@ -150,7 +151,9 @@ function rocket_dismiss_boxes( $args )
 		$actual = get_user_meta( $current_user->ID, 'rocket_boxes', true );
 		$actual = array_merge( (array) $actual, array( $args['box'] ) );
 		$actual = array_filter( $actual );
+		$actual = array_unique( $actual );
 		update_user_meta( $current_user->ID, 'rocket_boxes', $actual );
+		delete_transient( $args['box'] );
 
 		if ( 'admin-post.php' == $GLOBALS['pagenow'] ){
 			if ( defined( 'DOING_AJAX' ) ) {
@@ -279,4 +282,26 @@ function __rocket_do_options_export()
 	@header( 'Connection: close' );
 	echo $options;
 	exit();
+}
+
+/**
+ * Activate the auto-update feature from the admin notice
+ *
+ * @since 2.4
+ */
+add_action( 'admin_post_rocket_autoupdate_ok', '__rocket_activate_autoupdate' );
+function __rocket_activate_autoupdate()
+{
+	if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'rocket_autoupdate_ok' ) ) {
+		wp_nonce_ays( '' );
+	}
+
+	$options = get_option( WP_ROCKET_SLUG );
+	$options['autoupdate'] = 1;
+	update_option( WP_ROCKET_SLUG, $options);
+	rocket_dismiss_box( 'rocket_ask_for_autoupdate' );
+
+	wp_safe_redirect( wp_get_referer() );
+	die();
+
 }

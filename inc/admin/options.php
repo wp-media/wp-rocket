@@ -953,7 +953,33 @@ function rocket_display_options()
 	// Tools
 	add_settings_section( 'rocket_display_tools', __( 'Tools', 'rocket' ), '__return_false', 'tools' );
 
-    if ( false == rocket_is_white_label() ) {
+	add_settings_field(
+		'rocket_autoupdate',
+		__( 'Auto-update', 'rocket' ),
+		'rocket_field',
+		'tools',
+		'rocket_display_tools',
+		array(
+			array(
+				'type'         => 'checkbox',
+				'label'        => __( 'Yes, please update the plugins for <b>Minor</b> & <b>Fix Bugs</b> versions.', 'rocket' ),
+				'label_for'    => 'autoupdate',
+				'label_screen' => __( 'Auto-update', 'rocket' )
+			),
+			array(
+				'type' 		  => 'helper_description',
+				'name' 		  => 'autoupdate',
+				'description' => __( 'Like WordPress do for its minor versions, you can also let us auto-update the plugin automatically.', 'rocket' )
+			),
+			array(
+				'type' 		  => 'helper_warning',
+				'name' 		  => 'autoupdate2',
+				'description' => __( 'We will <b>never</b> update a Major version using this feature.', 'rocket' )
+			)
+		)
+    );
+
+    if ( ! rocket_is_white_label() ) {
 		add_settings_field(
 			'rocket_do_beta',
 			__( 'Beta Tester', 'rocket' ),

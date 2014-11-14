@@ -453,3 +453,65 @@ function rocket_thank_you_license()
 	<?php
 	}
 }
+
+/**
+ * Ask the user if he wants to use the autoupdate feature
+ *
+ * @since 2.4
+ */
+add_action( 'admin_notices', 'rocket_ask_for_autoupdate' );
+function rocket_ask_for_autoupdate()
+{
+	/** This filter is documented in inc/admin-bar.php */
+	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
+	    && rocket_valid_key() ) {
+
+		$boxes = get_user_meta( $GLOBALS['current_user']->ID, 'rocket_boxes', true );
+
+		if ( ! in_array( __FUNCTION__, (array) $boxes ) ) { ?>
+
+			<div class="error">
+				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>" class="rkt-cross"><div class="dashicons dashicons-no"></div></a>
+				<p><b><?php echo WP_ROCKET_PLUGIN_NAME; ?></b>: <?php printf( __( 'Do you want %s to update itself in the future <i>(More info in the <a href="%s">tools tab</a>)</i>? ', 'rocket' ), WP_ROCKET_PLUGIN_NAME, admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '#tab_tools' ) );
+				printf( __( '<a href="%s" class="button button-secondary"><b>Yes</b>, of course</a>', 'rocket' ), wp_nonce_url( admin_url( 'admin-post.php?action=rocket_autoupdate_ok' ), 'rocket_autoupdate_ok' ) );
+				printf( __( ' or <a href="%s">No, thank you</a>.', 'rocket' ), wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ) );
+				?>
+				</p>
+			</div>
+
+		<?php
+		}
+
+	}
+}
+
+/**
+ * This warning is displayed when an autoupdate has been done, well or not.
+ *
+ * @since 2.4
+ */
+add_action( 'admin_notices', 'rocket_warning_autoupdate' );
+function rocket_warning_autoupdate()
+{
+	/** This filter is documented in inc/admin-bar.php */
+	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
+	    && false !== ( $msg = get_transient( 'rocket_warning_autoupdate' ) )
+	    && rocket_valid_key() ) {
+
+		$boxes = get_user_meta( $GLOBALS['current_user']->ID, 'rocket_boxes', true );
+		// var_dump( $boxes );
+		if ( ! in_array( __FUNCTION__, (array) $boxes ) ) { 
+			$class = $msg['class'];
+			$text = $msg['msg'];
+			?>
+
+			<div class="<?php echo sanitize_html_class( $class ); ?>">
+				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>" class="rkt-cross"><div class="dashicons dashicons-no"></div></a>
+				<p><b><?php echo WP_ROCKET_PLUGIN_NAME; ?></b>: <?php echo esc_html( wp_strip_all_tags( $text ) ); ?></p>
+			</div>
+
+		<?php
+		}
+
+	}
+}
