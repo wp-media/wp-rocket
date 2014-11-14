@@ -39,7 +39,7 @@ function rocket_user_agent( $user_agent )
 
 	$bonus = ! rocket_is_white_label() ? '' : '*';
 	$bonus .= ! get_rocket_option( 'do_beta' ) ? '' : '+';
-	$new_ua = sprintf( ';WP-Rocket|%s%s|%s|%s|%s|;', WP_ROCKET_VERSION, $bonus, $consumer_key, $consumer_email, esc_url( home_url() ) );
+	$new_ua = sprintf( '%s;WP-Rocket|%s%s|%s|%s|%s|;', $user_agent, WP_ROCKET_VERSION, $bonus, $consumer_key, $consumer_email, esc_url( home_url() ) );
 
     return $new_ua;
 }
@@ -158,4 +158,17 @@ function rocket_reset_white_label_values( $hack_post )
 function create_rocket_uniqid()
 {
 	return str_replace( '.', '', uniqid( '', true ) );
+}
+
+/**
+ * Force our user agent header when we hit our urls
+ *
+ * @since 2.4
+ */
+add_filter( 'http_request_args', '__rocket_add_own_ua', 10, 3 );
+function __rocket_add_own_ua( $r, $url ) {
+	if ( strpos( $url, 'wp-rocket.me' ) !== false ) {
+		$r['user-agent'] = rocket_user_agent( $r['user-agent'] );
+	}
+	return $r;
 }

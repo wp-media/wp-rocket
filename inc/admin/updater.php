@@ -43,9 +43,9 @@ function rocket_check_update()
 	$plugin_file      = basename( WP_ROCKET_FILE );
 	$version          = true;
 	$plugin_transient = null;
-	add_filter( 'http_headers_useragent', 'rocket_user_agent', PHP_INT_MAX );
+
 	$response = wp_remote_get( WP_ROCKET_WEB_CHECK, array( 'timeout' => 30 ) );
-	remove_filter( 'http_headers_useragent', 'rocket_user_agent', PHP_INT_MAX );
+
 	set_site_transient( 'update_wprocket', time() );
 
 	if ( ! is_a( $response, 'WP_Error' ) && strlen( $response['body'] ) > 32 ) {
@@ -111,9 +111,7 @@ function rocket_force_info_result( $res, $action, $args )
 {
 	if ( 'plugin_information' == $action && isset( $args->slug ) && 'wp-rocket' == $args->slug && isset( $res->external ) && $res->external ) {
 
-		add_filter( 'http_headers_useragent', 'rocket_user_agent' );
 		$request = wp_remote_post( WP_ROCKET_WEB_INFO, array( 'timeout' => 30, 'action' => 'plugin_information', 'request' => serialize( $args ) ) );
-		remove_filter( 'http_headers_useragent', 'rocket_user_agent' );
 
 		if ( is_wp_error( $request ) ) {
 
