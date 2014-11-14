@@ -18,7 +18,7 @@ function get_rocket_option( $option, $default = false )
 	$suff = $blog_id == 1 ? '' : '_' . $blog_id;
 	if ( 'consumer_key' == $option && defined( 'WP_ROCKET_KEY' . $suff ) ) {
 		return WP_ROCKET_KEY . $suff;
-	elseif ( 'consumer_key' == $option && defined( 'WP_ROCKET_KEY' ) ) {
+	} elseif ( 'consumer_key' == $option && defined( 'WP_ROCKET_KEY' ) ) {
 		return WP_ROCKET_KEY;
 	} elseif( 'consumer_email' == $option && defined( 'WP_ROCKET_EMAIL' . $suff ) ) {
 		return WP_ROCKET_EMAIL . $suff;
