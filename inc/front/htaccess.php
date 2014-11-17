@@ -119,7 +119,14 @@ function get_rocket_htaccess_mod_rewrite()
 	$gzip_rules = '';
 	$enc = '';
 	
-	if ( function_exists( 'gzencode' ) ) {
+	/**
+	  * Allow to serve gzip cache file
+	  *
+	  * @since 2.4
+	  *
+	  * @param bool true will force to serve gzip cache file
+	 */
+	if ( function_exists( 'gzencode' ) && apply_filters( 'rocket_force_gzip_htaccess_rules', true ) ) {
 		$rules = '<IfModule mod_mime.c>' . PHP_EOL;
 			$rules .= 'AddType text/html .html_gzip' . PHP_EOL;
 			$rules .= 'AddEncoding gzip .html_gzip' . PHP_EOL;
