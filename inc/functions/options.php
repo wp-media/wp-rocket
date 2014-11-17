@@ -4,7 +4,6 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 /**
  * A wrapper to easily get rocket option
  *
- * @since 2.4 Management for multi licence en multisite, define WP_ROCKET_KEY_2 and WP_ROCKET_EMAIL_2 for blog 2, etc.
  * @since 1.3.0
  *
  * @param string $option  The option name
@@ -14,14 +13,8 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 function get_rocket_option( $option, $default = false )
 {
 	$options = get_option( WP_ROCKET_SLUG );
-	global $blog_id;
-	$suff = $blog_id == 1 ? '' : '_' . $blog_id;
-	if ( 'consumer_key' == $option && defined( 'WP_ROCKET_KEY' . $suff ) ) {
-		return WP_ROCKET_KEY . $suff;
-	} elseif ( 'consumer_key' == $option && defined( 'WP_ROCKET_KEY' ) ) {
+	if ( 'consumer_key' == $option && defined( 'WP_ROCKET_KEY' ) ) {
 		return WP_ROCKET_KEY;
-	} elseif( 'consumer_email' == $option && defined( 'WP_ROCKET_EMAIL' . $suff ) ) {
-		return WP_ROCKET_EMAIL . $suff;
 	} elseif( 'consumer_email' == $option && defined( 'WP_ROCKET_EMAIL' ) ) {
 		return WP_ROCKET_EMAIL;
 	}
