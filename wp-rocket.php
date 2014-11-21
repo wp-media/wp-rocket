@@ -49,6 +49,9 @@ define( 'WP_ROCKET_MINIFY_CACHE_URL'    , WP_CONTENT_URL . '/cache/min/' );
 if ( ! defined( 'CHMOD_WP_ROCKET_CACHE_DIRS' ) ) {
     define( 'CHMOD_WP_ROCKET_CACHE_DIRS', 0755 );
 }
+if ( ! defined( 'WP_ROCKET_LASTVERSION' ) ) {
+    define( 'WP_ROCKET_LASTVERSION'         , '2.3.7' );
+}
 
 require( WP_ROCKET_INC_PATH	. '/compat.php' );
 

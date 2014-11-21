@@ -499,7 +499,6 @@ function rocket_warning_autoupdate()
 	    && rocket_valid_key() ) {
 
 		$boxes = get_user_meta( $GLOBALS['current_user']->ID, 'rocket_boxes', true );
-		// var_dump( $boxes );
 		if ( ! in_array( __FUNCTION__, (array) $boxes ) ) { 
 			$class = $msg['class'];
 			$text = $msg['msg'];

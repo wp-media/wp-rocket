@@ -305,3 +305,61 @@ function __rocket_activate_autoupdate()
 	die();
 
 }
+
+/**
+ * Do the rollback
+ *
+ * @since 2.4
+ */
+add_action( 'admin_post_rocket_rollback', '__rocket_rollback' );
+function __rocket_rollback()
+{
+	if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'rocket_rollback' ) ) {
+		wp_nonce_ays( '' );
+	}
+	$plugin_transient 	= get_site_transient( 'update_plugins' );
+	$plugin_folder    	= plugin_basename( dirname( WP_ROCKET_FILE ) );
+	$plugin_file      	= basename( WP_ROCKET_FILE );
+	$version          	= WP_ROCKET_LASTVERSION;
+	$c_key 				= get_rocket_option( 'consumer_key' );
+	$url 				= sprintf( 'http://support.wp-rocket.me/%s/wp-rocket_%s.zip', $c_key, $version );
+	$temp_array 		= array(
+		'slug'        => $plugin_folder,
+		'new_version' => $version,
+		'url'         => 'http://wp-rocket.me',
+		'package'     => $url
+	);
+
+	$temp_object = (object) $temp_array;
+	$plugin_transient->response[ $plugin_folder . '/' . $plugin_file ] = $temp_object;
+	set_site_transient( 'update_plugins', $plugin_transient );
+
+	$c_key = get_rocket_option( 'consumer_key' );
+	$transient = get_transient( 'rocket_warning_rollback' );
+
+	if ( false == $transient )	{
+
+		require_once( ABSPATH . 'wp-admin/includes/class-wp-upgrader.php' );
+		$actual_version = WP_ROCKET_VERSION;
+		$title = sprintf( __( '%s Update Rollback', 'rocket' ), WP_ROCKET_PLUGIN_NAME );
+		$plugin = 'wp-rocket/wp-rocket.php';
+		$nonce = 'upgrade-plugin_' . $plugin;
+		$url = 'update.php?action=upgrade-plugin&plugin=' . urlencode( $plugin ); 			
+		$upgrader = new Plugin_Upgrader( new Plugin_Upgrader_Skin( compact( 'title', 'nonce', 'url', 'plugin' ) ) );
+		if ( $upgrader->upgrade( $plugin ) ) {
+			$text = __( 'A rollback has been performed from v%1$s to v%2$s.', 'rocket' );
+			$options = get_option( WP_ROCKET_SLUG );
+			$options['last_version'] = WP_ROCKET_VERSION;
+			$options['version'] = $version;
+			unset( $options['autoupdate'] );
+			update_option( WP_ROCKET_SLUG, $options );
+		} else {
+			$text = __( 'We tried to rollback from v%1$s to v%2$s, but an error occured.', 'rocket' );
+		}
+		$msg = sprintf( $text, $actual_version, $version );
+	}
+
+	wp_die( $msg, sprintf( __( '%s Update Rollback', 'rocket' ), WP_ROCKET_PLUGIN_NAME ), array( 'response' => 200 ) );
+
+}
+
