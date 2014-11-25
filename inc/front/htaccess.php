@@ -49,7 +49,6 @@ function get_rocket_htaccess_marker()
 {
 	// Recreate WP Rocket marker
 	$marker  = '# BEGIN WP Rocket v' . WP_ROCKET_VERSION . PHP_EOL;
-	$marker .= get_rocket_htaccess_force_ssl_redirect();
 	$marker .= get_rocket_htaccess_charset();
 	$marker .= get_rocket_htaccess_etag();
 	$marker .= get_rocket_htaccess_cors();
@@ -238,40 +237,6 @@ function get_rocket_htaccess_ssl_rewritecond()
 	*/
 	$rules = apply_filters( 'rocket_htaccess_ssl_rewritecond', $rules );
 
-	return $rules;
-}
-
-/**
- * Rules to force redirect HTTP to HTTPS when SSL is activated on all the domain
- *
- * @since 2.3.8
- *
- * @return string $rules Rules that will be printed
- */
-function get_rocket_htaccess_force_ssl_redirect() {
-	$home = rtrim( home_url(), '/' );
-	$host = str_replace( '.', '\.', parse_url( $home, PHP_URL_HOST ) );
-	
-	// No rewrite rules for non SSL website
-	if ( false === strpos( $home , 'https' ) ) {
-		return;
-	}
-	
-	$rules = '# Force Redirect HTTP to HTTPS when SSL is activated' . PHP_EOL;
-	$rules .= 'RewriteEngine On' . PHP_EOL;
-	$rules .= 'RewriteCond %{HTTPS} !on' . PHP_EOL;
-	$rules .= 'RewriteCond %{HTTP_HOST} ^' . $host . '$ [NC]' . PHP_EOL;
-	$rules .= 'RewriteRule ^(.*)$ ' . $home . '/$1 [L,R=301]' . PHP_EOL . PHP_EOL;
-	
-	/**
-	 * Filter rules to force redirect HTTP to HTTPS
-	 *
-	 * @since 2.3.8
-	 *
-	 * @param string $rules Rules that will be printed
-	*/
-	$rules = apply_filters( 'get_rocket_htaccess_force_ssl_redirect', $rules );
-	
 	return $rules;
 }
 
