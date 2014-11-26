@@ -964,7 +964,7 @@ function rocket_display_options()
 				'type'         => 'checkbox',
 				'label'        => 	apply_filters( 'rocket_autoupdate_only_minor_versions', false ) ? 
 									__( 'Yes, please update this plugin automatically for next available <b>Minor</b> & <b>Fix Bugs</b> versions.', 'rocket' ) :
-									__( 'Yes, please update this plugin for next available <b>all</b> versions.', 'rocket' ),
+									__( 'Yes, please update this plugin for all next available versions.', 'rocket' ),
 				'label_for'    => 'autoupdate',
 				'label_screen' => __( 'Auto-update', 'rocket' )
 			),
