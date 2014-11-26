@@ -10,18 +10,25 @@ defined( 'WP_UNINSTALL_PLUGIN' ) or die( 'Cheatin&#8217; uh?' );
  *
  */
 
+// Delete all transients
 delete_site_transient( 'update_wprocket' );
 delete_transient( 'wp_rocket_settings' );
 delete_transient( 'rocket_check_licence_30' );
 delete_transient( 'rocket_check_licence_1' );
+
+// Delete WP Rocket options
 delete_option( 'wp_rocket_settings' );
-delete_metadata( 'user', '', 'rocket_boxes', '', true ); // magical true
+
+// Delete all user meta related to WP Rocket
+delete_metadata( 'user', '', 'rocket_boxes', '', true );
+
+// Clear scheduled WP Rocket Cron
+wp_clear_scheduled_hook( 'rocket_purge_time_event' );
 
 /**
  * Remove all cache files
  *
  * @since 1.2.0
- *
  */
 function __rocket_rrmdir( $dir )
 {
