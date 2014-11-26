@@ -3,13 +3,6 @@
 // If uninstall not called from WordPress exit
 defined( 'WP_UNINSTALL_PLUGIN' ) or die( 'Cheatin&#8217; uh?' );
 
-/**
- * Delete options and transients from option table
- *
- * since 1.0
- *
- */
-
 // Delete all transients
 delete_site_transient( 'update_wprocket' );
 delete_transient( 'wp_rocket_settings' );
