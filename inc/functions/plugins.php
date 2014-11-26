@@ -278,7 +278,7 @@ function get_rocket_ecommerce_exclude_pages() {
 	$urls = array();
 	
 	// WooCommerce
-	if ( function_exists( 'wc_get_page_id' ) ) {
+	if ( function_exists( 'WC' ) && function_exists( 'wc_get_page_id' ) ) {
 		if( wc_get_page_id( 'checkout' ) ) {
 			$checkout_urls = get_rocket_i18n_translated_post_urls( wc_get_page_id( 'checkout' ), 'page', '(.*)' );
 			$urls = array_merge( $urls, $checkout_urls );
@@ -297,8 +297,26 @@ function get_rocket_ecommerce_exclude_pages() {
 		$urls = array_merge( $urls, $checkout_urls );
 	}
 	
+	// iThemes Exchange
+	if ( function_exists( 'it_exchange_get_page_type' ) && function_exists( 'it_exchange_get_page_url' ) ) {
+		$pages = array(
+			'purchases',
+			'confirmation'
+		);
+		
+		foreach( $pages as $page ) {
+			if ( it_exchange_get_page_type( $page ) == 'wordpress' ) {
+				$exchange_urls = get_rocket_i18n_translated_post_urls( it_exchange_get_page_wpid( $page ) );
+			} else {
+				$exchange_urls = array( parse_url( it_exchange_get_page_url( $page ), PHP_URL_PATH ) );
+			}
+			
+			$urls = array_merge( $urls, $exchange_urls );
+		}
+	}
+	
 	// Jigoshop
-	if ( function_exists( 'jigoshop_get_page_id' ) ) {
+	if ( defined( 'JIGOSHOP_VERSION' ) && function_exists( 'jigoshop_get_page_id' ) ) {
 		if ( jigoshop_get_page_id( 'checkout' ) ) {
 			$checkout_urls = get_rocket_i18n_translated_post_urls( jigoshop_get_page_id( 'checkout' ), 'page', '(.*)' );
 			$urls = array_merge( $urls, $checkout_urls );
@@ -306,6 +324,22 @@ function get_rocket_ecommerce_exclude_pages() {
 		if ( jigoshop_get_page_id( 'cart' ) ) {
 			$cart_urls = get_rocket_i18n_translated_post_urls( jigoshop_get_page_id( 'cart' ) );
 			$urls = array_merge( $urls, $cart_urls );
+		}
+	}
+	
+	// WP Shop
+	if ( defined( 'WPSHOP_VERSION' ) && class_exists( 'wpshop_tools' ) && method_exists( 'wpshop_tools','get_page_id' ) ) {	
+		$pages = array(
+			'wpshop_cart_page_id',
+			'wpshop_checkout_page_id',
+			'wpshop_payment_return_page_id',
+			'wpshop_payment_return_nok_page_id'
+		);
+		
+		foreach( $pages as $page ) {
+			if ( $page_id = wpshop_tools::get_page_id( get_option( $page ) ) ) {
+				$urls = array_merge( $urls, get_rocket_i18n_translated_post_urls( $page_id ) );
+			}
 		}
 	}
 
