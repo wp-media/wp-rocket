@@ -1057,7 +1057,7 @@ function rocket_display_options()
     if ( current_user_can( 'update_plugins' ) ) {
 		$temp_description = __( 'Please backup you settings before, use the "Download options" button above.', 'rocket' );
 		if ( get_rocket_option( 'autoupdate' ) ) {
-			$temp_description .= __( '<br>Also, the "Auto-update" feature will be deactivated, do not activate it again if ou don\'t want to upgrade.', 'rocket' );
+			$temp_description .= __( '<br>Also, the "Auto-update" feature will be deactivated, do not activate it again if you don\'t want to upgrade.', 'rocket' );
 		}
 	    add_settings_field(
 			'rocket_rollback',
