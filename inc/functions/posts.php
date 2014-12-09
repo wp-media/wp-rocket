@@ -20,7 +20,11 @@ function get_rocket_post_terms_urls( $post_ID )
 
 		if ( ! empty( $terms ) ) {
 			foreach ( $terms as $term ) {
-				$urls[] = get_term_link( $term->slug, $taxonomy );
+				$term_url = get_term_link( $term->slug, $taxonomy );
+				
+				if ( ! is_wp_error( $term_url ) ) {
+					$urls[] = $term_url;	
+				}
 			}
 		}
 	}
