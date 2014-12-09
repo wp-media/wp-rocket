@@ -65,6 +65,10 @@ function rocket_add_url_protocol( $url ) {
  */
 function get_rocket_parse_url( $url )
 {
+	if ( ! is_string( $url ) ) {
+		return;
+	}
+	
 	$url    = parse_url( $url );
 	$host   = isset( $url['host'] ) ? $url['host'] : '';
 	$path   = isset( $url['path'] ) ? $url['path'] : '';
