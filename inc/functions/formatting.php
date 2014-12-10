@@ -65,6 +65,10 @@ function rocket_add_url_protocol( $url ) {
  */
 function get_rocket_parse_url( $url )
 {
+	if ( ! is_string( $url ) ) {
+		return;
+	}
+	
 	$url    = parse_url( $url );
 	$host   = isset( $url['host'] ) ? $url['host'] : '';
 	$path   = isset( $url['path'] ) ? $url['path'] : '';
@@ -168,7 +172,7 @@ function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_file
 	$urls 		= array( 0 => '' );
 	$bubble     = is_child_theme() ? 'bubbleCssImports=1&' : '';
 	$base_url 	= WP_ROCKET_URL . 'min/?' . $bubble . 'f=';
-	$files  	= is_array( $files ) ? $files : (array)$files;
+	$files  	= is_array( $files ) ? $files : (array) $files;
 
 	if ( count( $files ) ) {
 
