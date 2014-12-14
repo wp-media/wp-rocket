@@ -140,23 +140,25 @@ function rocket_concatenate_google_fonts( $buffer ) {
 	}
 	
 	foreach ( $matches[1] as $font ) {
-		// Get fonts name
-		$font = explode( 'family=', $font );
-		$font = explode( '&', $font[1] );
+		if ( ! preg_match('/rel=["\']dns-prefetch["\']/', $matches[0][$i] ) ) {
+			// Get fonts name
+			$font = explode( 'family=', $font );
+			$font = explode( '&', $font[1] );
+			
+			// Add font to the collection
+		    $fonts[] = reset( $font );
+	
+		    // Add subset to collection
+			$subset = end( $font );
+		    if ( false !== strpos( $subset, 'subset=' ) ) {
+				$subset  = explode( 'subset=', $subset );
+				$subsets = array_merge( $subsets, explode( ',' , $subset[1] ) );   
+		    }
+	
+		    // Delete the Google Fonts tag
+		    $buffer = str_replace( $matches[0][$i], '', $buffer );	
+		}
 		
-		// Add font to the collection
-	    $fonts[] = reset( $font );
-
-	    // Add subset to collection
-		$subset = end( $font );
-	    if ( false !== strpos( $subset, 'subset=' ) ) {
-			$subset  = explode( 'subset=', $subset );
-			$subsets = array_merge( $subsets, explode( ',' , $subset[1] ) );   
-	    }
-
-	    // Delete the Google Fonts tag
-	    $buffer = str_replace( $matches[0][$i], '', $buffer );	
-
 	    $i++;
 	}
 
