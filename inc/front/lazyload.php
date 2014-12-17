@@ -59,8 +59,9 @@ function rocket_lazyload_images( $html ) {
 function __rocket_lazyload_replace_callback( $matches ) {
 
 	if ( strpos( $matches[1] . $matches[3], 'data-no-lazy=' ) === false && strpos( $matches[1] . $matches[3], 'data-lazy-original=' ) === false ) {
-		return sprintf( '<img%1$s src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-lazy-original=%2$s%3$s><noscript><img%1$s src=%2$s%3$s></noscript>',
+		$content = sprintf( '<img%1$s src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-lazy-original=%2$s%3$s><noscript><img%1$s src=%2$s%3$s></noscript>',
 						$matches[1], $matches[2], $matches[3] );
+		return apply_filters( 'rocket_lazyload_return', $content, true );
 	} else {
 		return $matches[0];
 	}
