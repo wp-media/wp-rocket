@@ -115,9 +115,9 @@ function get_rocket_config_file()
 		list( $host, $path ) = get_rocket_parse_url( rtrim( $url, '/' ) );
 
 		if ( ! isset( $path ) ) {
-			$config_files_path[] = WP_ROCKET_CONFIG_PATH . $host . '.php';
+			$config_files_path[] = WP_ROCKET_CONFIG_PATH . strtolower( $host ) . '.php';
 		} else {
-			$config_files_path[] = WP_ROCKET_CONFIG_PATH . $host . str_replace( '/', '.', rtrim( $path, '/' ) ) . '.php';
+			$config_files_path[] = WP_ROCKET_CONFIG_PATH . strtolower( $host ) . str_replace( '/', '.', rtrim( $path, '/' ) ) . '.php';
 		}
 
 	}
