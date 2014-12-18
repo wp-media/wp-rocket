@@ -6,8 +6,8 @@ if ( strstr( $_SERVER['SCRIPT_FILENAME'], 'wp-includes/js' ) ) {
 	return;
 }
 
-// Don't cache robots.txt
-if ( strstr( $_SERVER['REQUEST_URI'], 'robots.txt') ) {
+// Don't cache robots.txt && .htaccess directory (it's happened sometimes with weird server configuration)
+if ( strstr( $_SERVER['REQUEST_URI'], 'robots.txt' ) || strstr( $_SERVER['REQUEST_URI'], '.htaccess' ) ) {
 	return;
 }
 
@@ -42,7 +42,7 @@ if ( file_exists( $rocket_config_path . $host . '.php' ) ) {
 } else {
 	$path = explode( '/' , trim( $_SERVER['REQUEST_URI'], '/' ) );
 
-	foreach ( $path as $p ) {		
+	foreach ( $path as $p ) {
 		static $dir;
 
 		if ( file_exists( $rocket_config_path . $host . '.' . $p . '.php' ) ) {
@@ -66,20 +66,23 @@ if ( ! $continue ) {
 	return;
 }
 
-$request_uri = ( isset( $rocket_cache_query_strings ) && array_intersect( array_keys( $_GET ), $rocket_cache_query_strings ) ) || isset( $_GET['lp-variation-id'] ) || isset( $_GET['lang'] ) ? $_SERVER['REQUEST_URI'] : reset(( explode( '?', $_SERVER['REQUEST_URI'] ) ));
+$request_uri = ( isset( $rocket_cache_query_strings ) && array_intersect( array_keys( $_GET ), $rocket_cache_query_strings ) ) || isset( $_GET['lp-variation-id'] ) || isset( $_GET['lang'] ) || isset( $_GET['s'] ) ? $_SERVER['REQUEST_URI'] : reset(( explode( '?', $_SERVER['REQUEST_URI'] ) ));
 
 // Don't cache with variables
 // but the cache is enabled if the visitor comes from an RSS feed or an Facebook action
-// @since 2.3 Add query strings which can be cached via the options page.
-// @since 2.1 Add compatibilty with WordPress Landing Pages (permalink_name and lp-variation-id)
-// @since 2.1 Add compabitiliy with qTranslate and translation plugin with query string "lang"
+// @since 2.3.8	Add NGINX compatibility with some configuration includes a "q" in query strings
+// @since 2.3 	Add query strings which can be cached via the options page.
+// @since 2.1 	Add compatibilty with WordPress Landing Pages (permalink_name and lp-variation-id)
+// @since 2.1 	Add compabitiliy with qTranslate and translation plugin with query string "lang"
 if ( ! empty( $_GET )
 	&& ( ! isset( $_GET['utm_source'], $_GET['utm_medium'], $_GET['utm_campaign'] ) )
 	&& ( ! isset( $_GET['fb_action_ids'], $_GET['fb_action_types'], $_GET['fb_source'] ) )
 	&& ( ! isset( $_GET['permalink_name'] ) )
 	&& ( ! isset( $_GET['lp-variation-id'] ) )
 	&& ( ! isset( $_GET['lang'] ) )
+	&& ( ! isset( $_GET['s'] ) )
 	&& ( ! isset( $rocket_cache_query_strings ) || ! array_intersect( array_keys( $_GET ), $rocket_cache_query_strings ) )
+	&& ( strpos($_SERVER['SERVER_SOFTWARE'], 'nginx') !== false && ! isset( $_GET['q'] ) )
 )
 	return;
 
@@ -134,14 +137,23 @@ ob_start( 'do_rocket_callback' );
  */
 function do_rocket_callback( $buffer )
 {
+	/**
+	  * Allow to cache search results
+	  *
+	  * @since 2.3.8
+	  *
+	  * @param bool true will force caching search results
+	 */
+	$rocket_cache_search = apply_filters( 'rocket_cache_search', false );
+
 	if ( strlen( $buffer ) > 255
 		&& ( function_exists( 'is_404' ) && ! is_404() ) // Don't cache 404
-		&& ( function_exists( 'is_search' ) && ! is_search() ) // Don't cache search results
+		&& ( function_exists( 'is_search' ) && ! is_search() || $rocket_cache_search ) // Don't cache search results
 		&& ( ! defined( 'DONOTCACHEPAGE' ) || ! DONOTCACHEPAGE ) // Don't cache template that use this constant
 	) {
 		global $request_uri_path;
 
-		// This hook is used for :
+		// This hook is used for:
 		// - Add width and height attributes on images
 		// - Deferred JavaScript files
 		// - DNS Prefechting
@@ -153,14 +165,14 @@ function do_rocket_callback( $buffer )
 
 		// Save the cache file
 		rocket_put_content( $request_uri_path . '/index.html', $buffer . get_rocket_footprint() );
-		
+
 		if ( function_exists( 'gzencode' ) ) {
 			rocket_put_content( $request_uri_path . '/index.html_gzip', gzencode ( $buffer . get_rocket_footprint(), apply_filters( 'rocket_gzencode_level_compression', 3 ) ) );
 		}
-		
+
 		// Send headers with the last modified time of the cache file
 		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s', filemtime( $request_uri_path . '/index.html' ) ) . ' GMT' );
-		
+
 		$buffer = $buffer . get_rocket_footprint(false);
 	}
 
@@ -180,18 +192,18 @@ function rocket_serve_cache_file( $request_uri_path )
 	if ( file_exists( $filename ) && is_readable( $filename ) ) {
 
 		// Getting If-Modified-Since headers sent by the client.
-		if ( function_exists( 'apache_request_headers' ) ) {			
+		if ( function_exists( 'apache_request_headers' ) ) {
 			$headers = apache_request_headers();
-			$http_if_modified_since = ( isset( $headers[ 'If-Modified-Since' ] ) ) ? $headers[ 'If-Modified-Since' ] : '';			
+			$http_if_modified_since = ( isset( $headers[ 'If-Modified-Since' ] ) ) ? $headers[ 'If-Modified-Since' ] : '';
 		} else {
 			$http_if_modified_since = ( isset( $_SERVER[ 'HTTP_IF_MODIFIED_SINCE' ] ) ) ?$_SERVER[ 'HTTP_IF_MODIFIED_SINCE' ] : '';
 		}
 
 		// Checking if the client is validating his cache and if it is current.
-	    if ( $http_if_modified_since && ( strtotime( $http_if_modified_since ) == filemtime( $filename ) ) ) {        
+	    if ( $http_if_modified_since && ( strtotime( $http_if_modified_since ) == filemtime( $filename ) ) ) {
 	        // Client's cache is current, so we just respond '304 Not Modified'.
 	        header( $_SERVER['SERVER_PROTOCOL'] . ' 304 Not Modified' );
-	        exit;	        
+	        exit;
 	    }
 
 	   // Serve the cache if file isn't store in the client browser cache

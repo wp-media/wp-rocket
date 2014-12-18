@@ -140,23 +140,25 @@ function rocket_concatenate_google_fonts( $buffer ) {
 	}
 	
 	foreach ( $matches[1] as $font ) {
-		// Get fonts name
-		$font = explode( 'family=', $font );
-		$font = explode( '&', $font[1] );
+		if ( ! preg_match('/rel=["\']dns-prefetch["\']/', $matches[0][$i] ) ) {
+			// Get fonts name
+			$font = explode( 'family=', $font );
+			$font = explode( '&', $font[1] );
+			
+			// Add font to the collection
+		    $fonts[] = reset( $font );
+	
+		    // Add subset to collection
+			$subset = end( $font );
+		    if ( false !== strpos( $subset, 'subset=' ) ) {
+				$subset  = explode( 'subset=', $subset );
+				$subsets = array_merge( $subsets, explode( ',' , $subset[1] ) );   
+		    }
+	
+		    // Delete the Google Fonts tag
+		    $buffer = str_replace( $matches[0][$i], '', $buffer );	
+		}
 		
-		// Add font to the collection
-	    $fonts[] = reset( $font );
-
-	    // Add subset to collection
-		$subset = end( $font );
-	    if ( false !== strpos( $subset, 'subset=' ) ) {
-			$subset  = explode( 'subset=', $subset );
-			$subsets = array_merge( $subsets, explode( ',' , $subset[1] ) );   
-	    }
-
-	    // Delete the Google Fonts tag
-	    $buffer = str_replace( $matches[0][$i], '', $buffer );	
-
 	    $i++;
 	}
 
@@ -337,7 +339,7 @@ function rocket_minify_js( $buffer )
 	 *
 	 * @param array Hostname of JS files to exclude
 	 */
-	$excluded_external_js = apply_filters( 'rocket_minify_excluded_external_js', array( 'forms.aweber.com', 'video.unrulymedia.com', 'gist.github.com', 'stats.wp.com', 'stats.wordpress.com', 'www.statcounter.com', 'widget.rafflecopter.com', 'widget.supercounters.com', 'releases.flowplayer.org', 'tools.meetaffiliate.com', 'c.ad6media.fr', 'cdn.stickyadstv.com', 'www.smava.de', 'contextual.media.net', 'app.getresponse.com' ) );
+	$excluded_external_js = apply_filters( 'rocket_minify_excluded_external_js', array( 'forms.aweber.com', 'video.unrulymedia.com', 'gist.github.com', 'stats.wp.com', 'stats.wordpress.com', 'www.statcounter.com', 'widget.rafflecopter.com', 'widget.supercounters.com', 'releases.flowplayer.org', 'tools.meetaffiliate.com', 'c.ad6media.fr', 'cdn.stickyadstv.com', 'www.smava.de', 'contextual.media.net', 'app.getresponse.com', 'ap.lijit.com', 'adserver.reklamstore.com', 's0.wp.com' ) );
 
     // Get all JS files with this regex
     preg_match_all( '#<script.*src=[\'|"]([^\'|"]+\.js?.+)[\'|"].*></script>#iU', $buffer, $tags_match );
