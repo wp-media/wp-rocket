@@ -3,7 +3,7 @@
 Plugin Name: WP Rocket
 Plugin URI: http://www.wp-rocket.me
 Description: The best WordPress performance plugin.
-Version: 2.3.8
+Version: 2.3.9
 Author: WP Rocket
 Contributors: Jonathan Buttigieg, Julio Potier
 Author URI: http://www.wp-rocket.me
@@ -17,7 +17,7 @@ Copyright 2013-2014 WP Rocket
 defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
 
 // Rocket defines
-define( 'WP_ROCKET_VERSION'             , '2.3.8' );
+define( 'WP_ROCKET_VERSION'             , '2.3.9' );
 define( 'WP_ROCKET_PRIVATE_KEY'         , false );
 define( 'WP_ROCKET_SLUG'                , 'wp_rocket_settings' );
 define( 'WP_ROCKET_WEB_MAIN'            , 'http://support.wp-rocket.me/' );
@@ -116,6 +116,7 @@ function rocket_init()
         require( WP_ROCKET_ADMIN_PATH . '/options.php' );
         require( WP_ROCKET_ADMIN_PATH . '/notices.php' );
         require( WP_ROCKET_ADMIN_PATH . '/admin.php' );
+        require( WP_ROCKET_ADMIN_PATH . '/plugin-compatibility.php' );
 
     } else if ( rocket_valid_key() ) {
 
