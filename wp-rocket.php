@@ -116,6 +116,7 @@ function rocket_init()
         require( WP_ROCKET_ADMIN_PATH . '/options.php' );
         require( WP_ROCKET_ADMIN_PATH . '/notices.php' );
         require( WP_ROCKET_ADMIN_PATH . '/admin.php' );
+        require( WP_ROCKET_ADMIN_PATH . '/plugin-compatibility.php' );
 
     } else if ( rocket_valid_key() ) {
 

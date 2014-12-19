@@ -82,7 +82,6 @@ if ( ! empty( $_GET )
 	&& ( ! isset( $_GET['lang'] ) )
 	&& ( ! isset( $_GET['s'] ) )
 	&& ( ! isset( $rocket_cache_query_strings ) || ! array_intersect( array_keys( $_GET ), $rocket_cache_query_strings ) )
-	&& ( strpos($_SERVER['SERVER_SOFTWARE'], 'nginx') !== false && ! isset( $_GET['q'] ) )
 )
 	return;
 
