@@ -70,7 +70,6 @@ $request_uri = ( isset( $rocket_cache_query_strings ) && array_intersect( array_
 
 // Don't cache with variables
 // but the cache is enabled if the visitor comes from an RSS feed or an Facebook action
-// @since 2.3.8	Add NGINX compatibility with some configuration includes a "q" in query strings
 // @since 2.3 	Add query strings which can be cached via the options page.
 // @since 2.1 	Add compatibilty with WordPress Landing Pages (permalink_name and lp-variation-id)
 // @since 2.1 	Add compabitiliy with qTranslate and translation plugin with query string "lang"
@@ -82,7 +81,6 @@ if ( ! empty( $_GET )
 	&& ( ! isset( $_GET['lang'] ) )
 	&& ( ! isset( $_GET['s'] ) )
 	&& ( ! isset( $rocket_cache_query_strings ) || ! array_intersect( array_keys( $_GET ), $rocket_cache_query_strings ) )
-	&& ( strpos($_SERVER['SERVER_SOFTWARE'], 'nginx') !== false && ! isset( $_GET['q'] ) )
 )
 	return;
 
