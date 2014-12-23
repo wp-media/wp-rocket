@@ -22,7 +22,7 @@ function get_rocket_advanced_cache_file()
 
 	// Get config path
 	$buffer .= '$rocket_config_path = \'' . WP_ROCKET_CONFIG_PATH . '\';' . "\n";
-
+	
 	// Include the process file in buffer
 	$buffer .= 'include( \''. WP_ROCKET_FRONT_PATH . 'process.php' . '\' );' . "\n";
 
@@ -67,6 +67,12 @@ function get_rocket_config_file()
 
 	$buffer = '<?php' . "\n";
 	$buffer .= 'defined( \'ABSPATH\' ) or die( \'Cheatin\\\' uh?\' );' . "\n\n";
+	
+	// Temporary fix until to find an automatic solution !!
+	if ( apply_filters( 'rocket_override_min_documentRoot', false ) ) {
+		$buffer .= '$min_documentRoot = \'' . ABSPATH . '\';' . "\n";
+	}
+		
 	$buffer .= '$rocket_cookie_hash = \'' . COOKIEHASH . '\'' . ";\n";
 
 	foreach ( $options as $option => $value ) {
@@ -121,7 +127,7 @@ function get_rocket_config_file()
 		}
 
 	}
-
+	
 	/**
 	 * Filter the content of all config files
 	 *
