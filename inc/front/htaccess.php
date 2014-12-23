@@ -51,7 +51,7 @@ function get_rocket_htaccess_marker()
 	$marker  = '# BEGIN WP Rocket v' . WP_ROCKET_VERSION . PHP_EOL;
 	$marker .= get_rocket_htaccess_charset();
 	$marker .= get_rocket_htaccess_etag();
-	$marker .= get_rocket_htaccess_cors();
+	$marker .= get_rocket_htaccess_web_fonts_access();
 	$marker .= get_rocket_htaccess_files_match();
 	$marker .= get_rocket_htaccess_mod_expires();
 	$marker .= get_rocket_htaccess_mod_deflate();
@@ -458,32 +458,32 @@ function get_rocket_htaccess_etag()
 }
 
 /**
- * Rules to Cross-origin resource sharing when CDN is used
+ * Rules to Cross-origin fonts sharing when CDN is used
  *
  * @since 2.4
  *
  * @return string $rules Rules that will be printed
  */
-function get_rocket_htaccess_cors() {
+function get_rocket_htaccess_web_fonts_access() {
 	if ( false === get_rocket_option( 'cdn', false ) ) {
 		return;
 	}
 
-	$rules  = '# Allow cross-origin requests.' . PHP_EOL;
-	$rules  .= '<FilesMatch "\.(ttf|ttc|otf|eot|woff|font.css)$">' . PHP_EOL;
+	$rules  = '# Allow access to web fonts from all domains.' . PHP_EOL;
+	$rules  .= '<FilesMatch "\.(eot|otf|tt[cf]|woff)$">' . PHP_EOL;
 		$rules .= '<IfModule mod_headers.c>' . PHP_EOL;
 			$rules .= 'Header set Access-Control-Allow-Origin "*"' . PHP_EOL;
 		$rules .= '</IfModule>' . PHP_EOL;
 	$rules .= '</FilesMatch>' . PHP_EOL . PHP_EOL;
 
 	/**
-	 * Filter rules to Cross-origin resource sharing
+	 * Filter rules to Cross-origin fonts sharing
 	 *
 	 * @since 1.0
 	 *
 	 * @param string $rules Rules that will be printed
 	*/
-    $rules = apply_filters( 'rocket_htaccess_cross_origin_domain', $rules );
+    $rules = apply_filters( 'rocket_htaccess_web_fonts_access', $rules );
 
 	return $rules;
 }
