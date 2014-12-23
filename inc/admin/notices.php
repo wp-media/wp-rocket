@@ -472,7 +472,7 @@ function rocket_ask_for_autoupdate()
 
 			<div class="error">
 				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>" class="rkt-cross"><div class="dashicons dashicons-no"></div></a>
-				<p><b><?php echo WP_ROCKET_PLUGIN_NAME; ?></b>: <?php printf( __( 'Do you want %s to update itself in the future <i>(More info in the <a href="%s">tools tab</a>)</i>? ', 'rocket' ), WP_ROCKET_PLUGIN_NAME, admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '#tab_tools' ) );
+				<p><b><?php echo WP_ROCKET_PLUGIN_NAME; ?></b>: <?php printf( __( 'Do you want %s to update itself in the future? ', 'rocket' ), WP_ROCKET_PLUGIN_NAME, admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '#tab_tools' ) );
 				printf( __( '<a href="%s" class="button button-secondary"><b>Yes</b>, of course</a>', 'rocket' ), wp_nonce_url( admin_url( 'admin-post.php?action=rocket_autoupdate_ok' ), 'rocket_autoupdate_ok' ) );
 				printf( __( ' or <a href="%s">No, thank you</a>.', 'rocket' ), wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ) );
 				?>
