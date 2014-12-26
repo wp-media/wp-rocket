@@ -13,7 +13,7 @@
 	<li><h2><a href="#Q11"><?php _e( 'Reports from PageSpeed and YSlow tell me that the content is not gziped and/or did not expire, what should I do?', 'rocket' );?></a></h2></li>
 	<li><h2><a href="#Q12"><?php _e( 'Is WP Rocket compatible with others cache plugins like WP Super Cache or W3 Total Cache?', 'rocket' );?></a></h2></li>
 	<li><h2><a href="#Q13"><?php _e( 'Is WP Rocket compatible with WP Touch, WordPress Mobile Pack and WP Mobile Detector?', 'rocket' );?></a></h2></li>
-	<li><h2><a href="#Q14"><?php _e( 'Is WP Rocket compatible with WooCommerce?', 'rocket' );?></a></h2></li>
+	<li><h2><a href="#Q14"><?php _e( 'Is WP Rocket compatible with e-commerce plugins?', 'rocket' );?></a></h2></li>
 	<li><h2><a href="#Q15"><?php _e( 'Is WP Rocket compatible with WPML or qTranslate?', 'rocket' );?></a></h2></li>
 	<li><h2><a href="#Q16"><?php _e( 'What are the minification and concatenation of files?', 'rocket' );?></a></h2></li>
 	<li><h2><a href="#Q17"><?php _e( 'What should I do if WP Rocket distorts my website display?', 'rocket' );?></a></h2></li>
@@ -97,11 +97,12 @@
 	<p><?php _e( 'Yes.', 'rocket' );?></p>
 	<p><?php _e( 'On the other hand, in the basic options, you must uncheck the <code>enable caching for mobile devices</code>.', 'rocket' );?></p>
 
-	<h2><span id="Q14">&#160;</span><?php _e( 'Is WP Rocket compatible with WooCommerce?', 'rocket' );?></h2>
-	<p><?php _e( 'Yes.', 'rocket' );?></p>
-	<p><?php _e( 'However, you should exclude cart and checkout pages from caching. This is done from the advanced option <code>Never cache the following pages</code> by adding the following values:', 'rocket' );?></p>
-	<p><code><?php _e( '/cart/', 'rocket' ); ?></code></p>
-	<p><code><?php _e( '/checkout/(.*)', 'rocket' );?></code></p>
+	<h2><span id="Q14">&#160;</span><?php _e( 'Is WP Rocket compatible with e-commerce plugins?', 'rocket' );?></h2>
+	<p>
+		<?php echo wp_sprintf( __( 'Yes, WP Rocket automatically excludes "View Cart" and "Checkout" pages from the cache if you use one of these plugins: %l.', 'rocket' ), array( 'WooCommerce', 'Easy Digital Download', 'Jigoshop', 'iThemes Exchange', 'WP-Shop' ) );?>
+		<br/><br/>
+		<?php printf( __( 'If you don\'t use one of them, you must follow these instructions: <a href="%s">How To Use WP Rocket On Your Ecommerce Site (EN)</a>.', 'rocket' ), 'http://docs.wp-rocket.me/article/27-how-to-use-wp-rocket-on-your-ecommerce-site' );?>
+	</p>
 
 	<h2><span id="Q15">&#160;</span><?php _e( 'Is WP Rocket compatible with WPML or qTranslate?', 'rocket' );?></h2>
 	<p><?php _e( 'Yes.', 'rocket' );?></p>
