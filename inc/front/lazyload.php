@@ -61,7 +61,7 @@ function __rocket_lazyload_replace_callback( $matches ) {
 	if ( strpos( $matches[1] . $matches[3], 'data-no-lazy=' ) === false && strpos( $matches[1] . $matches[3], 'data-lazy-original=' ) === false && strpos( $matches[1] . $matches[3], 'data-bgposition=' ) === false && strpos( $matches[2], '/wpcf7_captcha/' ) === false && ( class_exists( 'JustifiedImageGrid' ) && strpos( $matches[2], '/timthumb.php?src' ) === false ) ) {
 		$html = sprintf( '<img%1$s src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-lazy-original=%2$s%3$s><noscript><img%1$s src=%2$s%3$s></noscript>',
 						$matches[1], $matches[2], $matches[3] );
-		
+
 		/**
 		 * Filter the LazyLoad HTML output
 		 *
@@ -70,7 +70,7 @@ function __rocket_lazyload_replace_callback( $matches ) {
 		 * @param array $html Output that will be printed
 		*/
 		$html = apply_filters( 'rocket_lazyload_html', $html, true );
-		
+
 		return $html;
 	} else {
 		return $matches[0];
@@ -147,7 +147,6 @@ function rocket_convert_smilies( $text ) {
  * @since 2.0
  */
 function rocket_translate_smiley( $matches ) {
-
 	global $wpsmiliestrans;
 
 	if ( ! count( $matches ) ) {
@@ -178,5 +177,4 @@ function rocket_translate_smiley( $matches ) {
 		return sprintf( ' <img src="%s" alt="%s" class="wp-smiley" /> ', esc_url( $src_url ), esc_attr( $smiley ) );
 
 	}
-
 }
