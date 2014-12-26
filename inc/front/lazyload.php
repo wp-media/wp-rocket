@@ -48,7 +48,6 @@ function rocket_lazyload_images( $html ) {
 	return $html;
 }
 
-
 /**
  * Used to check if we have to LazyLoad this or not
  *
@@ -56,9 +55,8 @@ function rocket_lazyload_images( $html ) {
  * @since 2.3.8  Don't apply LazyLoad on captcha from Really Simple CAPTCHA
  * @since 2.2
  */
-
 function __rocket_lazyload_replace_callback( $matches ) {
-	if ( strpos( $matches[1] . $matches[3], 'data-no-lazy=' ) === false && strpos( $matches[1] . $matches[3], 'data-lazy-original=' ) === false && strpos( $matches[1] . $matches[3], 'data-bgposition=' ) === false && strpos( $matches[2], '/wpcf7_captcha/' ) === false && ( class_exists( 'JustifiedImageGrid' ) && strpos( $matches[2], '/timthumb.php?src' ) === false ) ) {
+	if ( strpos( $matches[1] . $matches[3], 'data-no-lazy=' ) === false && strpos( $matches[1] . $matches[3], 'data-lazy-original=' ) === false && strpos( $matches[1] . $matches[3], 'data-bgposition=' ) === false && strpos( $matches[2], '/wpcf7_captcha/' ) === false && strpos( $matches[2], '/justified-image-grid/timthumb.php?src' ) === false ) {
 		$html = sprintf( '<img%1$s src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-lazy-original=%2$s%3$s><noscript><img%1$s src=%2$s%3$s></noscript>',
 						$matches[1], $matches[2], $matches[3] );
 
@@ -77,6 +75,7 @@ function __rocket_lazyload_replace_callback( $matches ) {
 	}
 
 }
+
 /**
  * Replace WordPress smilies by Lazy Load
  *
