@@ -38,3 +38,13 @@ function __deactivate_jsMinifier_with_appbanner( $html_options ) {
 	 }
 	 return $html_options;
 }
+
+/**
+ * Conflict with Envira Gallery: don't apply LazyLoad on all images
+ *
+ * @since 2.3.10
+ */
+add_filter( 'envira_gallery_output_image_attr', '__deactivate_lazyload_on_envira_gallery', PHP_INT_MAX );
+function __deactivate_lazyload_on_envira_gallery( $attr ) {
+	return $attr . ' data-no-lazy="1"';
+}
