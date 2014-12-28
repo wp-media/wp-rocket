@@ -11,12 +11,12 @@ function __rocket_settings_action_links( $actions )
 {
 	if ( ! rocket_is_white_label() ) {
 		array_unshift( $actions, sprintf( '<a href="%s">%s</a>', 'http://wp-rocket.me/support/', __( 'Support', 'rocket' ) ) );
-		
+
 		array_unshift( $actions, sprintf( '<a href="%s">%s</a>', 'http://docs.wp-rocket.me', __( 'Docs', 'rocket' ) ) );
 	}
-	
+
 	array_unshift( $actions, sprintf( '<a href="%s">%s</a>', admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG ), __( 'Settings' ) ) );
-	
+
     return $actions;
 }
 
@@ -344,7 +344,7 @@ function __rocket_rollback()
 		$title = sprintf( __( '%s Update Rollback', 'rocket' ), WP_ROCKET_PLUGIN_NAME );
 		$plugin = 'wp-rocket/wp-rocket.php';
 		$nonce = 'upgrade-plugin_' . $plugin;
-		$url = 'update.php?action=upgrade-plugin&plugin=' . urlencode( $plugin ); 			
+		$url = 'update.php?action=upgrade-plugin&plugin=' . urlencode( $plugin );
 		$upgrader = new Plugin_Upgrader( new Plugin_Upgrader_Skin( compact( 'title', 'nonce', 'url', 'plugin' ) ) );
 		if ( $upgrader->upgrade( $plugin ) ) {
 			$text = __( 'A rollback has been performed from v%1$s to v%2$s.', 'rocket' );
@@ -354,7 +354,7 @@ function __rocket_rollback()
 			unset( $options['autoupdate'] );
 			update_option( WP_ROCKET_SLUG, $options );
 		} else {
-			$text = __( 'We tried to rollback from v%1$s to v%2$s, but an error occured.', 'rocket' );
+			$text = __( 'We tried to rollback from v%1$s to v%2$s, but an error occurred.', 'rocket' );
 		}
 		$msg = sprintf( $text, $actual_version, $version );
 	}
