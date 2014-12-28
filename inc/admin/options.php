@@ -962,7 +962,7 @@ function rocket_display_options()
 		array(
 			array(
 				'type'         => 'checkbox',
-				'label'        => 	apply_filters( 'rocket_autoupdate_only_minor_versions', false ) ? 
+				'label'        => 	apply_filters( 'rocket_autoupdate_only_minor_versions', false ) ?
 									__( 'Yes, please update this plugin automatically for next available <b>Minor</b> & <b>Fix Bugs</b> versions.', 'rocket' ) :
 									__( 'Yes, please update this plugin for all next available versions.', 'rocket' ),
 				'label_for'    => 'autoupdate',
@@ -1055,7 +1055,7 @@ function rocket_display_options()
     );
 
     if ( current_user_can( 'update_plugins' ) ) {
-		$temp_description = __( 'Please backup you settings before, use the "Download options" button above.', 'rocket' );
+		$temp_description = __( 'Please backup your settings before, use the "Download options" button above.', 'rocket' );
 		if ( get_rocket_option( 'autoupdate' ) ) {
 			$temp_description .= __( '<br>Also, the "Auto-update" feature will be deactivated, do not activate it again if you don\'t want to upgrade.', 'rocket' );
 		}
