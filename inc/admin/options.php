@@ -1072,7 +1072,7 @@ function rocket_display_options()
 		        ),
 				'helper_description'=>array(
 					'name'         => 'rollback',
-		        	'description'  => sprintf( __( 'The version %s is causing you some issues? You can ask for a rollback and reinstall the last version you used before.', 'rocket' ), WP_ROCKET_VERSION )
+		        	'description'  => sprintf( __( 'Is the version %s causing you some issues? You can ask for a rollback and reinstall the last version you used before.', 'rocket' ), WP_ROCKET_VERSION )
 				),
 				'helper_warning'=>array(
 					'name'         => 'rollback2',
