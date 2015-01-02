@@ -70,7 +70,7 @@ function rocket_cdn_images( $html )
 			$image_host = parse_url( $image_url, PHP_URL_HOST );
 
 			// Check if the link isn't external
-			if( empty( $image_host ) || $image_host == rocket_remove_url_protocol( home_url() ) ) {
+			if( ( empty( $image_host ) && strpos( $image_url, 'data:image' ) === false ) || $image_host == rocket_remove_url_protocol( home_url() ) ) {
 
 				$html = str_replace(
 					$images_match[0][$k],
