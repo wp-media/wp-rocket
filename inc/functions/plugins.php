@@ -279,12 +279,12 @@ function get_rocket_ecommerce_exclude_pages() {
 	
 	// WooCommerce
 	if ( function_exists( 'WC' ) && function_exists( 'wc_get_page_id' ) ) {
-		if( wc_get_page_id( 'checkout' ) ) {
+		if( wc_get_page_id( 'checkout' ) != '-1' ) {
 			$checkout_urls = get_rocket_i18n_translated_post_urls( wc_get_page_id( 'checkout' ), 'page', '(.*)' );
 			$urls = array_merge( $urls, $checkout_urls );
 		}
 
-		if ( wc_get_page_id( 'cart' ) ) {
+		if ( wc_get_page_id( 'cart' ) != '-1' ) {
 			$cart_urls = get_rocket_i18n_translated_post_urls( wc_get_page_id( 'cart' ) );
 			$urls = array_merge( $urls, $cart_urls );
 		}
