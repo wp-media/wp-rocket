@@ -971,7 +971,7 @@ function rocket_display_options()
 			array(
 				'type' 		  => 'helper_description',
 				'name' 		  => 'autoupdate',
-				'description' => __( 'Like WordPress do for its versions, you can also let us auto-update the plugin automatically.', 'rocket' )
+				'description' => __( 'Like WordPress do for its versions, you can also let us auto-update the plugin.', 'rocket' )
 			),
 		)
     );
