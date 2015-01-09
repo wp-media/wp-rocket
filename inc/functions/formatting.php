@@ -198,8 +198,17 @@ function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_file
 			if ( strlen( $urls[$i] . $base_url . $file )+1>=$filename_length ) {
 				$i++;
 			}
-
-			$urls[$i] .= $file.',';
+			
+			/**
+			 * Filter file to add in minification process
+			 *
+			 * @since 2.4
+			 *
+			 * @param string $file The file path
+			*/
+			$file = apply_filters( 'rocket_pre_minify_path', $file );
+			
+			$urls[$i] .= $file . ',';
 
 		}
 
