@@ -1,0 +1,8 @@
+[main]
+host = https://www.transifex.com
+
+[wp-rocket.rocket]
+file_filter = languages/rocket-<lang>.po
+source_file = languages/rocket.pot
+source_lang = en_US
+type = PO
