@@ -953,7 +953,30 @@ function rocket_display_options()
 	// Tools
 	add_settings_section( 'rocket_display_tools', __( 'Tools', 'rocket' ), '__return_false', 'tools' );
 
-    if ( false == rocket_is_white_label() ) {
+	add_settings_field(
+		'rocket_autoupdate',
+		__( 'Auto-update', 'rocket' ),
+		'rocket_field',
+		'tools',
+		'rocket_display_tools',
+		array(
+			array(
+				'type'         => 'checkbox',
+				'label'        => 	apply_filters( 'rocket_autoupdate_only_minor_versions', false ) ?
+									__( 'Yes, please update this plugin automatically for next available <b>Minor</b> & <b>Fix Bugs</b> versions.', 'rocket' ) :
+									__( 'Yes, please update this plugin for all next available versions.', 'rocket' ),
+				'label_for'    => 'autoupdate',
+				'label_screen' => __( 'Auto-update', 'rocket' )
+			),
+			array(
+				'type' 		  => 'helper_description',
+				'name' 		  => 'autoupdate',
+				'description' => __( 'Like WordPress do for its versions, you can also let us auto-update the plugin.', 'rocket' )
+			),
+		)
+    );
+
+    if ( ! rocket_is_white_label() ) {
 		add_settings_field(
 			'rocket_do_beta',
 			__( 'Beta Tester', 'rocket' ),
@@ -1030,6 +1053,37 @@ function rocket_display_options()
 		array( 'type'=>'rocket_import_upload_form' )
 
     );
+
+    if ( current_user_can( 'update_plugins' ) ) {
+		$temp_description = __( 'Please backup your settings before, use the "Download options" button above.', 'rocket' );
+		if ( get_rocket_option( 'autoupdate' ) ) {
+			$temp_description .= __( '<br>Also, the "Auto-update" feature will be deactivated, do not activate it again if you don\'t want to upgrade.', 'rocket' );
+		}
+	    add_settings_field(
+			'rocket_rollback',
+			__( 'Update Rollback', 'rocket' ),
+			'rocket_button',
+			'tools',
+			'rocket_display_tools',
+			array(
+		        'button'=>array(
+		        	'button_label' => sprintf( __( 'Reinstall v%s', 'rocket' ), WP_ROCKET_LASTVERSION ),
+		        	'url'		   => wp_nonce_url( admin_url( 'admin-post.php?action=rocket_rollback' ), 'rocket_rollback' ),
+		        ),
+				'helper_description'=>array(
+					'name'         => 'rollback',
+		        	'description'  => sprintf( __( 'Is the version %s causing you some issues? You can ask for a rollback and reinstall the last version you used before.', 'rocket' ), WP_ROCKET_VERSION )
+				),
+				'helper_warning'=>array(
+					'name'         => 'rollback2',
+		        	'description'  => $temp_description,
+				),
+			)
+
+	    );
+	}
+	unset( $temp_description );
+
 
 	add_settings_section( 'rocket_display_tutorials', __( 'Tutorials', 'rocket' ), '__return_false', 'tutorials' );
 	add_settings_field(

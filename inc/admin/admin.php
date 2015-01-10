@@ -9,7 +9,14 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 add_filter( 'plugin_action_links_' . plugin_basename( WP_ROCKET_FILE ), '__rocket_settings_action_links' );
 function __rocket_settings_action_links( $actions )
 {
+	if ( ! rocket_is_white_label() ) {
+		array_unshift( $actions, sprintf( '<a href="%s">%s</a>', 'http://wp-rocket.me/support/', __( 'Support', 'rocket' ) ) );
+
+		array_unshift( $actions, sprintf( '<a href="%s">%s</a>', 'http://docs.wp-rocket.me', __( 'Docs', 'rocket' ) ) );
+	}
+
 	array_unshift( $actions, sprintf( '<a href="%s">%s</a>', admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG ), __( 'Settings' ) ) );
+
     return $actions;
 }
 
@@ -120,6 +127,7 @@ function __rocket_admin_print_styles()
 /**
  * Manage the dismissed boxes
  *
+ * @since 2.4 Add a delete_transient on function name (box name)
  * @since 1.3.0 $args can replace $_GET when called internaly
  * @since 1.1.10
  */
@@ -143,7 +151,9 @@ function rocket_dismiss_boxes( $args )
 		$actual = get_user_meta( $current_user->ID, 'rocket_boxes', true );
 		$actual = array_merge( (array) $actual, array( $args['box'] ) );
 		$actual = array_filter( $actual );
+		$actual = array_unique( $actual );
 		update_user_meta( $current_user->ID, 'rocket_boxes', $actual );
+		delete_transient( $args['box'] );
 
 		if ( 'admin-post.php' == $GLOBALS['pagenow'] ){
 			if ( defined( 'DOING_AJAX' ) ) {
@@ -275,21 +285,81 @@ function __rocket_do_options_export()
 }
 
 /**
- * This function will add the correct User Agent when updating WP Rocket
+ * Activate the auto-update feature from the admin notice
  *
- * @since 2.2
- * @since 2.3 Better managment for bulk plugins
+ * @since 2.4
  */
-add_filter( 'admin_action_upgrade-plugin', '__rocket_before_plugin_update', PHP_INT_MAX );
-add_filter( 'admin_action_update-selected', '__rocket_before_plugin_update', PHP_INT_MAX );
-function __rocket_before_plugin_update() {
-	if ( ( isset( $_GET['plugin'], $_GET['_wpnonce'] )
-		&& 'wp-rocket/wp-rocket.php' == $_GET['plugin']
-		&& wp_verify_nonce( $_GET['_wpnonce'], 'upgrade-plugin_' . $_GET['plugin'] ) )
-		|| ( isset( $_GET['plugins'], $_GET['_wpnonce'] ) 
-		&& strpos( $_GET['plugins'], 'wp-rocket/wp-rocket.php' ) !== false
-		&& wp_verify_nonce( $_GET['_wpnonce'], 'bulk-update-plugins' ) )
-	) {
-		add_filter( 'http_headers_useragent', 'rocket_user_agent', PHP_INT_MAX );
+add_action( 'admin_post_rocket_autoupdate_ok', '__rocket_activate_autoupdate' );
+function __rocket_activate_autoupdate()
+{
+	if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'rocket_autoupdate_ok' ) ) {
+		wp_nonce_ays( '' );
 	}
+
+	$options = get_option( WP_ROCKET_SLUG );
+	$options['autoupdate'] = 1;
+	update_option( WP_ROCKET_SLUG, $options);
+	rocket_dismiss_box( 'rocket_ask_for_autoupdate' );
+
+	wp_safe_redirect( wp_get_referer() );
+	die();
+
 }
+
+/**
+ * Do the rollback
+ *
+ * @since 2.4
+ */
+add_action( 'admin_post_rocket_rollback', '__rocket_rollback' );
+function __rocket_rollback()
+{
+	if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'rocket_rollback' ) ) {
+		wp_nonce_ays( '' );
+	}
+	$plugin_transient 	= get_site_transient( 'update_plugins' );
+	$plugin_folder    	= plugin_basename( dirname( WP_ROCKET_FILE ) );
+	$plugin_file      	= basename( WP_ROCKET_FILE );
+	$version          	= WP_ROCKET_LASTVERSION;
+	$c_key 				= get_rocket_option( 'consumer_key' );
+	$url 				= sprintf( 'http://support.wp-rocket.me/%s/wp-rocket_%s.zip', $c_key, $version );
+	$temp_array 		= array(
+		'slug'        => $plugin_folder,
+		'new_version' => $version,
+		'url'         => 'http://wp-rocket.me',
+		'package'     => $url
+	);
+
+	$temp_object = (object) $temp_array;
+	$plugin_transient->response[ $plugin_folder . '/' . $plugin_file ] = $temp_object;
+	set_site_transient( 'update_plugins', $plugin_transient );
+
+	$c_key = get_rocket_option( 'consumer_key' );
+	$transient = get_transient( 'rocket_warning_rollback' );
+
+	if ( false == $transient )	{
+
+		require_once( ABSPATH . 'wp-admin/includes/class-wp-upgrader.php' );
+		$actual_version = WP_ROCKET_VERSION;
+		$title = sprintf( __( '%s Update Rollback', 'rocket' ), WP_ROCKET_PLUGIN_NAME );
+		$plugin = 'wp-rocket/wp-rocket.php';
+		$nonce = 'upgrade-plugin_' . $plugin;
+		$url = 'update.php?action=upgrade-plugin&plugin=' . urlencode( $plugin );
+		$upgrader = new Plugin_Upgrader( new Plugin_Upgrader_Skin( compact( 'title', 'nonce', 'url', 'plugin' ) ) );
+		if ( $upgrader->upgrade( $plugin ) ) {
+			$text = __( 'A rollback has been performed from v%1$s to v%2$s.', 'rocket' );
+			$options = get_option( WP_ROCKET_SLUG );
+			$options['last_version'] = WP_ROCKET_VERSION;
+			$options['version'] = $version;
+			unset( $options['autoupdate'] );
+			update_option( WP_ROCKET_SLUG, $options );
+		} else {
+			$text = __( 'We tried to rollback from v%1$s to v%2$s, but an error occurred.', 'rocket' );
+		}
+		$msg = sprintf( $text, $actual_version, $version );
+	}
+
+	wp_die( $msg, sprintf( __( '%s Update Rollback', 'rocket' ), WP_ROCKET_PLUGIN_NAME ), array( 'response' => 200 ) );
+
+}
+

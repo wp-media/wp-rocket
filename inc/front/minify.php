@@ -324,10 +324,13 @@ function rocket_minify_css( $buffer )
  */
 function rocket_minify_js( $buffer )
 {
+    global $rocket_auto_excluded_js;
+    $rocket_auto_excluded_js = array_map( 'rocket_clean_exclude_file', (array) $rocket_auto_excluded_js );
     $internal_files       = array();
-    $external_tags        = '';
+    $external_tags        = array();
     $excluded_tags        = '';
     $excluded_js          = get_rocket_option( 'exclude_js', array() );
+    $excluded_js		  = array_merge( $excluded_js, $rocket_auto_excluded_js );
     $js_in_footer         = get_rocket_option( 'minify_js_in_footer', array() );
     $wp_content_dirname   = ltrim( str_replace( home_url(), '', WP_CONTENT_URL ), '/' ) . '/';
 	list( $home_host, $home_path, $home_scheme ) = get_rocket_parse_url( home_url() );
@@ -339,8 +342,8 @@ function rocket_minify_js( $buffer )
 	 *
 	 * @param array Hostname of JS files to exclude
 	 */
-	$excluded_external_js = apply_filters( 'rocket_minify_excluded_external_js', array( 'forms.aweber.com', 'video.unrulymedia.com', 'gist.github.com', 'stats.wp.com', 'stats.wordpress.com', 'www.statcounter.com', 'widget.rafflecopter.com', 'widget.supercounters.com', 'releases.flowplayer.org', 'tools.meetaffiliate.com', 'c.ad6media.fr', 'cdn.stickyadstv.com', 'www.smava.de', 'contextual.media.net', 'app.getresponse.com', 'ap.lijit.com', 'adserver.reklamstore.com', 's0.wp.com' ) );
-
+	$excluded_external_js = apply_filters( 'rocket_minify_excluded_external_js', array( 'forms.aweber.com', 'video.unrulymedia.com', 'gist.github.com', 'stats.wp.com', 'stats.wordpress.com', 'www.statcounter.com', 'widget.rafflecopter.com', 'widget-prime.rafflecopter.com', 'widget.supercounters.com', 'releases.flowplayer.org', 'tools.meetaffiliate.com', 'c.ad6media.fr', 'cdn.stickyadstv.com', 'www.smava.de', 'contextual.media.net', 'app.getresponse.com', 'ap.lijit.com', 'adserver.reklamstore.com', 's0.wp.com', 'wprp.zemanta.com' ) );
+	
     // Get all JS files with this regex
     preg_match_all( '#<script.*src=[\'|"]([^\'|"]+\.js?.+)[\'|"].*></script>#iU', $buffer, $tags_match );
 
@@ -397,7 +400,7 @@ function rocket_minify_js( $buffer )
 			// If it's an external file
 			} else {
 				if ( ! in_array( $tags_match[1][$i], $js_in_footer ) ) {
-					$external_tags .= $tag;
+					$external_tags[] = $tag;
 				}
 			}
 
@@ -408,7 +411,10 @@ function rocket_minify_js( $buffer )
 		}
 		$i++;
 	}
-
+	
+	// Get external JS tags and remove duplicate scripts
+	$external_tags = implode( '', array_unique( $external_tags ) );
+	
 	// Exclude JS files to insert in footer
 	foreach( $internal_files as $k=>$url ) {
 		if ( in_array( $home_scheme . '://' . $home_host . $url , $js_in_footer ) ) {
@@ -468,4 +474,37 @@ function __rocket_fix_ssl_minify( $url ) {
 	}
 	
 	return $url;
+}
+
+/**
+ * Fix issue with JS files which can cause issue with minification
+ *
+ * @since 2.4
+ */
+add_action( 'wp_print_scripts', '__rocket_auto_excluded_js_files' );
+add_action( 'wp_print_footer_scripts', '__rocket_auto_excluded_js_files' );
+function __rocket_auto_excluded_js_files() {
+	global $rocket_auto_excluded_js, $wp_scripts;
+	
+	$excluded_handle = array( 
+		'dynamic-to-top', 		// Dynamic To Top (https://wordpress.org/plugins/dynamic-to-top/)
+		'wp-postviews-cache', 	// WP-PostViews (https://wordpress.org/plugins/wp-postviews/)
+		'wp-postratings'		// WP-PostRatings (https://wordpress.org/plugins/wp-postratings/)
+	);
+	
+	foreach( $wp_scripts->queue as $handle ) {
+		if ( in_array( $handle, $excluded_handle ) ) {
+			$rocket_auto_excluded_js[] = $wp_scripts->registered[$handle]->src;
+		}
+	}
+	
+	// Digg Digg (https://wordpress.org/plugins/digg-digg/)
+	if ( defined( 'DD_PLUGIN_URL' ) ) {
+		$rocket_auto_excluded_js[] = DD_PLUGIN_URL . '/js/diggdigg-floating-bar.js';
+	}
+	
+	// nrelate Flyout (https://wordpress.org/plugins/nrelate-flyout/)
+	if ( defined( 'NRELATE_PLUGIN_VERSION' ) ) {
+		$rocket_auto_excluded_js[] = ( NRELATE_JS_DEBUG ) ? 'http://staticrepo.nrelate.com/common_wp/'. NRELATE_PLUGIN_VERSION . '/nrelate_js.js' : NRELATE_ADMIN_URL . '/nrelate_js.min.js';
+	}
 }

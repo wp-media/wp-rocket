@@ -51,6 +51,7 @@ function get_rocket_htaccess_marker()
 	$marker  = '# BEGIN WP Rocket v' . WP_ROCKET_VERSION . PHP_EOL;
 	$marker .= get_rocket_htaccess_charset();
 	$marker .= get_rocket_htaccess_etag();
+	$marker .= get_rocket_htaccess_web_fonts_access();
 	$marker .= get_rocket_htaccess_files_match();
 	$marker .= get_rocket_htaccess_mod_expires();
 	$marker .= get_rocket_htaccess_mod_deflate();
@@ -157,13 +158,13 @@ function get_rocket_htaccess_mod_rewrite()
 	}
 
 	$rules .= ! is_rocket_cache_mobile() ? get_rocket_htaccess_mobile_rewritecond() : '';
-	
+
 	if ( $ua = get_rocket_cache_reject_ua() ) {
 		$rules .= 'RewriteCond %{HTTP_USER_AGENT} !^(' . $ua . ').* [NC]' . PHP_EOL;
 	}
-	
+
 	$rules .= ! is_rocket_cache_ssl() ? get_rocket_htaccess_ssl_rewritecond() : '';
-	
+
 	if ( $is_1and1_or_force ) {
 		$rules .= 'RewriteCond "' . str_replace( '/kunden/', '/', WP_ROCKET_CACHE_PATH ) . $HTTP_HOST . '%{REQUEST_URI}/index.html' . $enc . '" -f' . PHP_EOL;
 	} else {
@@ -452,6 +453,37 @@ function get_rocket_htaccess_etag()
 	 * @param string $rules Rules that will be printed
 	*/
     $rules = apply_filters( 'rocket_htaccess_etag', $rules );
+
+	return $rules;
+}
+
+/**
+ * Rules to Cross-origin fonts sharing when CDN is used
+ *
+ * @since 2.4
+ *
+ * @return string $rules Rules that will be printed
+ */
+function get_rocket_htaccess_web_fonts_access() {
+	if ( false === get_rocket_option( 'cdn', false ) ) {
+		return;
+	}
+
+	$rules  = '# Allow access to web fonts from all domains.' . PHP_EOL;
+	$rules  .= '<FilesMatch "\.(eot|otf|tt[cf]|woff)$">' . PHP_EOL;
+		$rules .= '<IfModule mod_headers.c>' . PHP_EOL;
+			$rules .= 'Header set Access-Control-Allow-Origin "*"' . PHP_EOL;
+		$rules .= '</IfModule>' . PHP_EOL;
+	$rules .= '</FilesMatch>' . PHP_EOL . PHP_EOL;
+
+	/**
+	 * Filter rules to Cross-origin fonts sharing
+	 *
+	 * @since 1.0
+	 *
+	 * @param string $rules Rules that will be printed
+	*/
+    $rules = apply_filters( 'rocket_htaccess_web_fonts_access', $rules );
 
 	return $rules;
 }
