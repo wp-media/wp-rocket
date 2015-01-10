@@ -2,8 +2,6 @@
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 /**
-<<<<<<< HEAD
-=======
  * When Woocommerce, EDD, iThemes Exchange, Jigoshop & WP-Shop options are saved or deleted,
  * we update .htaccess & config file to get the right checkout page to exclude to the cache.
  *
@@ -39,7 +37,6 @@ function __rocket_after_update_edd_options( $old_value, $value ) {
 }
 
 /**
->>>>>>> remotes/origin/2.4-beta1
  * Compatibility with an usual NGINX configuration which include 
  * try_files $uri $uri/ /index.php?q=$uri&$args
  *
