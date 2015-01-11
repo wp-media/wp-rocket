@@ -74,7 +74,6 @@ function __rocket_lazyload_replace_callback( $matches ) {
 	} else {
 		return $matches[0];
 	}
-
 }
 
 /**
