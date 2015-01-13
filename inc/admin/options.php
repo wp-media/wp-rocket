@@ -962,17 +962,12 @@ function rocket_display_options()
 		array(
 			array(
 				'type'         => 'checkbox',
-				'label'        => 	apply_filters( 'rocket_autoupdate_only_minor_versions', false ) ?
+				'label'        => 	apply_filters( 'rocket_autoupdate_only_minor_versions', false ) ? 
 									__( 'Yes, please update this plugin automatically for next available <b>Minor</b> & <b>Fix Bugs</b> versions.', 'rocket' ) :
 									__( 'Yes, please update this plugin for all next available versions.', 'rocket' ),
 				'label_for'    => 'autoupdate',
 				'label_screen' => __( 'Auto-update', 'rocket' )
-			),
-			array(
-				'type' 		  => 'helper_description',
-				'name' 		  => 'autoupdate',
-				'description' => __( 'Like WordPress do for its versions, you can also let us auto-update the plugin.', 'rocket' )
-			),
+			)
 		)
     );
 
