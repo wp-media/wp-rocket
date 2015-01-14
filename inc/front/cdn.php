@@ -16,6 +16,10 @@ add_filter( 'wp_minify_js_url'			, 'rocket_cdn_file', PHP_INT_MAX );
 add_filter( 'bwp_get_minify_src'		, 'rocket_cdn_file', PHP_INT_MAX );
 function rocket_cdn_file( $url )
 {
+	if ( ( defined( 'DONOTCDN' ) && DONOTCDN ) ) {
+		return $url;
+	}
+	
 	$ext = pathinfo( $url, PATHINFO_EXTENSION );
 	
 	if ( is_admin() && $ext != 'php' ) {
@@ -55,6 +59,10 @@ add_filter( 'the_content', 'rocket_cdn_images', PHP_INT_MAX );
 add_filter( 'widget_text', 'rocket_cdn_images', PHP_INT_MAX );
 function rocket_cdn_images( $html )
 {
+	if ( ( defined( 'DONOTCDN' ) && DONOTCDN ) ) {
+		return $html;
+	}
+	
 	// Don't use CDN if the image is in admin, a feed or in a post preview
 	if ( is_admin() || is_feed() || is_preview() || empty( $html ) ) {
 		return $html;
@@ -98,6 +106,10 @@ add_filter( 'style_loader_src', 'rocket_cdn_enqueue', PHP_INT_MAX );
 add_filter( 'script_loader_src', 'rocket_cdn_enqueue', PHP_INT_MAX );
 function rocket_cdn_enqueue( $src )
 {
+	if ( ( defined( 'DONOTCDN' ) && DONOTCDN ) ) {
+		return $src;
+	}
+	
 	// Don't use CDN if in admin, in login page, in register page or in a post preview
 	if ( is_admin() || is_preview() || in_array( $GLOBALS['pagenow'], array( 'wp-login.php', 'wp-register.php' ) ) ) {
 		return $src;
