@@ -324,13 +324,10 @@ function rocket_minify_css( $buffer )
  */
 function rocket_minify_js( $buffer )
 {
-    global $rocket_auto_excluded_js;
-    $rocket_auto_excluded_js = array_map( 'rocket_clean_exclude_file', (array) $rocket_auto_excluded_js );
     $internal_files       = array();
     $external_tags        = array();
     $excluded_tags        = '';
     $excluded_js          = get_rocket_option( 'exclude_js', array() );
-    $excluded_js		  = array_merge( $excluded_js, $rocket_auto_excluded_js );
     $js_in_footer         = get_rocket_option( 'minify_js_in_footer', array() );
     $wp_content_dirname   = ltrim( str_replace( home_url(), '', WP_CONTENT_URL ), '/' ) . '/';
 	list( $home_host, $home_path, $home_scheme ) = get_rocket_parse_url( home_url() );
@@ -474,37 +471,4 @@ function __rocket_fix_ssl_minify( $url ) {
 	}
 	
 	return $url;
-}
-
-/**
- * Fix issue with JS files which can cause issue with minification
- *
- * @since 2.4
- */
-add_action( 'wp_print_scripts', '__rocket_auto_excluded_js_files' );
-add_action( 'wp_print_footer_scripts', '__rocket_auto_excluded_js_files' );
-function __rocket_auto_excluded_js_files() {
-	global $rocket_auto_excluded_js, $wp_scripts;
-	
-	$excluded_handle = array( 
-		'dynamic-to-top', 		// Dynamic To Top (https://wordpress.org/plugins/dynamic-to-top/)
-		'wp-postviews-cache', 	// WP-PostViews (https://wordpress.org/plugins/wp-postviews/)
-		'wp-postratings'		// WP-PostRatings (https://wordpress.org/plugins/wp-postratings/)
-	);
-	
-	foreach( $wp_scripts->queue as $handle ) {
-		if ( in_array( $handle, $excluded_handle ) ) {
-			$rocket_auto_excluded_js[] = $wp_scripts->registered[$handle]->src;
-		}
-	}
-	
-	// Digg Digg (https://wordpress.org/plugins/digg-digg/)
-	if ( defined( 'DD_PLUGIN_URL' ) ) {
-		$rocket_auto_excluded_js[] = DD_PLUGIN_URL . '/js/diggdigg-floating-bar.js';
-	}
-	
-	// nrelate Flyout (https://wordpress.org/plugins/nrelate-flyout/)
-	if ( defined( 'NRELATE_PLUGIN_VERSION' ) ) {
-		$rocket_auto_excluded_js[] = ( NRELATE_JS_DEBUG ) ? 'http://staticrepo.nrelate.com/common_wp/'. NRELATE_PLUGIN_VERSION . '/nrelate_js.js' : NRELATE_ADMIN_URL . '/nrelate_js.min.js';
-	}
 }
