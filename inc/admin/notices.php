@@ -484,33 +484,3 @@ function rocket_ask_for_autoupdate()
 
 	}
 }
-
-/**
- * This warning is displayed when an autoupdate has been done, well or not.
- *
- * @since 2.4
- */
-add_action( 'admin_notices', 'rocket_warning_autoupdate' );
-function rocket_warning_autoupdate()
-{
-	/** This filter is documented in inc/admin-bar.php */
-	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
-	    && false !== ( $msg = get_transient( 'rocket_warning_autoupdate' ) )
-	    && rocket_valid_key() ) {
-
-		$boxes = get_user_meta( $GLOBALS['current_user']->ID, 'rocket_boxes', true );
-		if ( ! in_array( __FUNCTION__, (array) $boxes ) ) { 
-			$class = $msg['class'];
-			$text = $msg['msg'];
-			?>
-
-			<div class="<?php echo sanitize_html_class( $class ); ?>">
-				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>" class="rkt-cross"><div class="dashicons dashicons-no"></div></a>
-				<p><b><?php echo WP_ROCKET_PLUGIN_NAME; ?></b>: <?php echo esc_html( wp_strip_all_tags( $text ) ); ?></p>
-			</div>
-
-		<?php
-		}
-
-	}
-}

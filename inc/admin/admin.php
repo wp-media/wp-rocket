@@ -317,6 +317,7 @@ function __rocket_rollback()
 	if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'rocket_rollback' ) ) {
 		wp_nonce_ays( '' );
 	}
+
 	$plugin_transient 	= get_site_transient( 'update_plugins' );
 	$plugin_folder    	= plugin_basename( dirname( WP_ROCKET_FILE ) );
 	$plugin_file      	= basename( WP_ROCKET_FILE );
@@ -340,16 +341,17 @@ function __rocket_rollback()
 	if ( false == $transient )	{
 
 		require_once( ABSPATH . 'wp-admin/includes/class-wp-upgrader.php' );
-		$actual_version = WP_ROCKET_VERSION;
 		$title = sprintf( __( '%s Update Rollback', 'rocket' ), WP_ROCKET_PLUGIN_NAME );
 		$plugin = 'wp-rocket/wp-rocket.php';
 		$nonce = 'upgrade-plugin_' . $plugin;
 		$url = 'update.php?action=upgrade-plugin&plugin=' . urlencode( $plugin );
 		$upgrader = new Plugin_Upgrader( new Plugin_Upgrader_Skin( compact( 'title', 'nonce', 'url', 'plugin' ) ) );
 		$upgrader->upgrade( $plugin );
+
+		wp_die( '', sprintf( __( '%s Update Rollback', 'rocket' ), WP_ROCKET_PLUGIN_NAME ), array( 'response' => 200 ) );
+
 	}
 
-	wp_die( '', sprintf( __( '%s Update Rollback', 'rocket' ), WP_ROCKET_PLUGIN_NAME ), array( 'response' => 200 ) );
 
 }
 

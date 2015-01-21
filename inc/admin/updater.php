@@ -176,18 +176,7 @@ function rocket_autoupdate() {
 			$nonce = 'upgrade-plugin_' . $plugin;
 			$url = 'update.php?action=upgrade-plugin&plugin=' . urlencode( $plugin ); 			
 			$upgrader = new Plugin_Upgrader( new Plugin_Upgrader_Skin( compact( 'title', 'nonce', 'url', 'plugin' ) ) );
-			
-			if ( $upgrader->upgrade( $plugin ) ) {
-				$text = __( 'An autoupdate has been performed from v%1$s to v%2$s.', 'rocket' );
-				$class = 'updated';
-			} else {
-				$text = __( 'We tried to autoupdate from v%1$s to v%2$s, but an error occured.', 'rocket' );
-				$class = 'error';
-			}
-			
-			$msg = sprintf( $text, WP_ROCKET_VERSION, $plugin_transient->response['wp-rocket/wp-rocket.php']->new_version );
-			set_transient( 'rocket_warning_autoupdate', array( 'class' => $class, 'msg' => $msg ) );
-			rocket_renew_box( 'rocket_warning_autoupdate' );
+			$upgrader->upgrade( $plugin );
 			$upgrader->after();
 			
 		echo '</div>';
