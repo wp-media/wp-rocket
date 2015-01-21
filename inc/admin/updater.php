@@ -174,10 +174,11 @@ function rocket_autoupdate() {
 			$title = __( 'Update Plugin' );
 			$plugin = 'wp-rocket/wp-rocket.php';
 			$nonce = 'upgrade-plugin_' . $plugin;
+			$actual_version = WP_ROCKET_VERSION;
 			$url = 'update.php?action=upgrade-plugin&plugin=' . urlencode( $plugin ); 			
 			$upgrader = new Plugin_Upgrader( new Plugin_Upgrader_Skin( compact( 'title', 'nonce', 'url', 'plugin' ) ) );
-			
-			if ( $upgrader->upgrade( $plugin ) ) {
+			$upgrader->upgrade( $plugin );
+			if ( WP_ROCKET_VERSION != $actual_version )
 				$text = __( 'An autoupdate has been performed from v%1$s to v%2$s.', 'rocket' );
 				$class = 'updated';
 			} else {
