@@ -122,7 +122,7 @@ class ActionScheduler_QueueRunner {
 	 * @return void
 	 */
 	protected function clear_caches() {
-		if ( wp_using_ext_object_cache() && !apply_filters( 'action_scheduler_queue_runner_flush_cache', false ) ) {
+		if ( ! wp_using_ext_object_cache() || apply_filters( 'action_scheduler_queue_runner_flush_cache', false ) ) {
 			wp_cache_flush();
 		}
 	}
