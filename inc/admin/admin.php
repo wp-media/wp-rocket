@@ -346,20 +346,10 @@ function __rocket_rollback()
 		$nonce = 'upgrade-plugin_' . $plugin;
 		$url = 'update.php?action=upgrade-plugin&plugin=' . urlencode( $plugin );
 		$upgrader = new Plugin_Upgrader( new Plugin_Upgrader_Skin( compact( 'title', 'nonce', 'url', 'plugin' ) ) );
-		if ( $upgrader->upgrade( $plugin ) ) {
-			$text = __( 'A rollback has been performed from v%1$s to v%2$s.', 'rocket' );
-			$options = get_option( WP_ROCKET_SLUG );
-			$options['last_version'] = WP_ROCKET_VERSION;
-			$options['version'] = $version;
-			unset( $options['autoupdate'] );
-			update_option( WP_ROCKET_SLUG, $options );
-		} else {
-			$text = __( 'We tried to rollback from v%1$s to v%2$s, but an error occurred.', 'rocket' );
-		}
-		$msg = sprintf( $text, $actual_version, $version );
+		$upgrader->upgrade( $plugin );
 	}
 
-	wp_die( $msg, sprintf( __( '%s Update Rollback', 'rocket' ), WP_ROCKET_PLUGIN_NAME ), array( 'response' => 200 ) );
+	wp_die( '', sprintf( __( '%s Update Rollback', 'rocket' ), WP_ROCKET_PLUGIN_NAME ), array( 'response' => 200 ) );
 
 }
 
