@@ -343,14 +343,13 @@ function __rocket_rollback()
 
 		require_once( ABSPATH . 'wp-admin/includes/class-wp-upgrader.php' );
 		$actual_version = WP_ROCKET_VERSION;
-		$old_version = WP_ROCKET_VERSION;
 		$title = sprintf( __( '%s Update Rollback', 'rocket' ), WP_ROCKET_PLUGIN_NAME );
 		$plugin = 'wp-rocket/wp-rocket.php';
 		$nonce = 'upgrade-plugin_' . $plugin;
 		$url = 'update.php?action=upgrade-plugin&plugin=' . urlencode( $plugin );
 		$upgrader = new Plugin_Upgrader( new Plugin_Upgrader_Skin( compact( 'title', 'nonce', 'url', 'plugin' ) ) );
 		$upgrader->upgrade( $plugin );
-		if ( $old_version == WP_ROCKET_VERSION ) {
+		if ( $actual_version == WP_ROCKET_VERSION ) {
 			$msg = sprintf( __( 'We tried to autoupdate from v%1$s to v%2$s, but an error occured.', 'rocket' ), WP_ROCKET_VERSION, $version );
 		}
 
