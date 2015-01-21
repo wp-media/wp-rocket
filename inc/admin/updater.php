@@ -163,7 +163,7 @@ function rocket_autoupdate() {
 	$c_key = get_rocket_option( 'consumer_key' );
 	$transient = get_transient( 'rocket_warning_autoupdate' );
 	
-	if ( false === $transient && 
+	if ( false === $transient && get_rocket_option( 'autoupdate' ) &&
 		isset( $plugin_transient->response['wp-rocket/wp-rocket.php']->package, $plugin_transient->response['wp-rocket/wp-rocket.php']->new_version ) && 
 		sprintf( 'http://support.wp-rocket.me/%s/wp-rocket_%s.zip', $c_key, $plugin_transient->response['wp-rocket/wp-rocket.php']->new_version ) == $plugin_transient->response['wp-rocket/wp-rocket.php']->package
 		)
