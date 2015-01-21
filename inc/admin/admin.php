@@ -337,23 +337,18 @@ function __rocket_rollback()
 
 	$c_key = get_rocket_option( 'consumer_key' );
 	$transient = get_transient( 'rocket_warning_rollback' );
-	$msg = '';
 
 	if ( false == $transient )	{
 
 		require_once( ABSPATH . 'wp-admin/includes/class-wp-upgrader.php' );
-		$actual_version = WP_ROCKET_VERSION;
 		$title = sprintf( __( '%s Update Rollback', 'rocket' ), WP_ROCKET_PLUGIN_NAME );
 		$plugin = 'wp-rocket/wp-rocket.php';
 		$nonce = 'upgrade-plugin_' . $plugin;
 		$url = 'update.php?action=upgrade-plugin&plugin=' . urlencode( $plugin );
 		$upgrader = new Plugin_Upgrader( new Plugin_Upgrader_Skin( compact( 'title', 'nonce', 'url', 'plugin' ) ) );
 		$upgrader->upgrade( $plugin );
-		if ( $actual_version == WP_ROCKET_VERSION ) {
-			$msg = sprintf( __( 'We tried to autoupdate from v%1$s to v%2$s, but an error occured.', 'rocket' ), WP_ROCKET_VERSION, $version );
-		}
 
-		wp_die( $msg, sprintf( __( '%s Update Rollback', 'rocket' ), WP_ROCKET_PLUGIN_NAME ), array( 'response' => 200 ) );
+		wp_die( '', sprintf( __( '%s Update Rollback', 'rocket' ), WP_ROCKET_PLUGIN_NAME ), array( 'response' => 200 ) );
 
 	}
 
