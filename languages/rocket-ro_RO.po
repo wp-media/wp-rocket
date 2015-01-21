@@ -1,14 +1,14 @@
 # Copyright (C) 2015 WP Rocket
 # This file is distributed under the same license as the WP Rocket package.
 # Translators:
-# Ciomîrtan Andrei <refuonline@gmail.com>, 2014
+# Ciomîrtan Andrei <refuonline@gmail.com>, 2014-2015
 msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
 "POT-Creation-Date: 2015-01-06 16:32:17+00:00\n"
-"PO-Revision-Date: 2015-01-06 16:32+0000\n"
-"Last-Translator: FxB <fxb@wp-translations.org>\n"
+"PO-Revision-Date: 2015-01-11 18:20+0000\n"
+"Last-Translator: Ciomîrtan Andrei <refuonline@gmail.com>\n"
 "Language-Team: Romanian (Romania) (http://www.transifex.com/projects/p/wp-rocket/language/ro_RO/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -32,7 +32,7 @@ msgstr "Suport Tehnic"
 
 #: inc/admin/admin.php:15
 msgid "Docs"
-msgstr ""
+msgstr "Documentaţie"
 
 #: inc/admin/admin.php:18 inc/admin-bar.php:31
 msgid "Settings"
@@ -50,15 +50,15 @@ msgstr "Goliţi cache"
 
 #: inc/admin/admin.php:344 inc/admin/admin.php:362
 msgid "%s Update Rollback"
-msgstr ""
+msgstr "%s Actualizare Rollback"
 
 #: inc/admin/admin.php:350
 msgid "A rollback has been performed from v%1$s to v%2$s."
-msgstr ""
+msgstr "O revenire a fost efectuată de la v%1$s la v%2$s."
 
 #: inc/admin/admin.php:357
 msgid "We tried to rollback from v%1$s to v%2$s, but an error occurred."
-msgstr ""
+msgstr "S-a încercat un rollback de la v%1$s la v%2$s, dar a apărut o eroare."
 
 #: inc/admin/faq.inc.php:2
 msgid "FAQ's Table of Content"
@@ -556,15 +556,15 @@ msgstr "Cheie: <code>%s</code><br>Email: <i>%s</i>"
 
 #: inc/admin/notices.php:475
 msgid "Do you want %s to update itself in the future? "
-msgstr ""
+msgstr "Vrei ca %s să se actualizeze singur în viitor?"
 
 #: inc/admin/notices.php:476
 msgid "<a href=\"%s\" class=\"button button-secondary\"><b>Yes</b>, of course</a>"
-msgstr ""
+msgstr "<a href=\"%s\" class=\"button button-secondary\"><b>Da</b>, bineînteles</a>"
 
 #: inc/admin/notices.php:477
 msgid " or <a href=\"%s\">No, thank you</a>."
-msgstr ""
+msgstr "sau <a href=\"%s\">Nu, mulţumesc</a>."
 
 #: inc/admin/options.php:139 inc/admin/options.php:366
 msgid "Warning: "
@@ -948,23 +948,23 @@ msgstr "Unelte"
 
 #: inc/admin/options.php:958 inc/admin/options.php:969
 msgid "Auto-update"
-msgstr ""
+msgstr "Auto-actualizare"
 
 #: inc/admin/options.php:966
 msgid ""
 "Yes, please update this plugin automatically for next available <b>Minor</b>"
 " & <b>Fix Bugs</b> versions."
-msgstr ""
+msgstr "Da, vă rugăm să actualizați acest plugin automat pentru update-uri<b> minore </ b> şi <b> rezolvarea anumitor bug-uri </ b>."
 
 #: inc/admin/options.php:967
 msgid "Yes, please update this plugin for all next available versions."
-msgstr ""
+msgstr "Da, vă rugăm să actualizați acest plug-in pentru toate versiunile viitoare."
 
 #: inc/admin/options.php:974
 msgid ""
 "Like WordPress do for its versions, you can also let us auto-update the "
 "plugin."
-msgstr ""
+msgstr "WordPress face update pentru versiunile sale, puteți de asemenea să setaţi acest plugin să se auto-actualizeze."
 
 #: inc/admin/options.php:982 inc/admin/options.php:991
 msgid "Beta Tester"
@@ -1008,21 +1008,21 @@ msgstr "Setări pentru import"
 msgid ""
 "Please backup your settings before, use the \"Download options\" button "
 "above."
-msgstr ""
+msgstr "Vă rugăm să faceţi o copie de rezervă a setărilor înainte, folosiţi butonul \"Download options\" de mai sus."
 
 #: inc/admin/options.php:1060
 msgid ""
 "<br>Also, the \"Auto-update\" feature will be deactivated, do not activate "
 "it again if you don't want to upgrade."
-msgstr ""
+msgstr "<br> De asemenea, \"Auto-actualizarea\" va fi dezactivată, nu-l activaţi din nou dacă nu doriți să faceți upgrade."
 
 #: inc/admin/options.php:1064
 msgid "Update Rollback"
-msgstr ""
+msgstr "%s Actualizare Rollback"
 
 #: inc/admin/options.php:1070
 msgid "Reinstall v%s"
-msgstr ""
+msgstr "Reinstalare v%s"
 
 #: inc/admin/options.php:1075
 msgid ""
