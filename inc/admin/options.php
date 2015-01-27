@@ -1463,6 +1463,13 @@ function rocket_settings_callback( $inputs )
 	$inputs['wl_plugin_slug'] = sanitize_key( $inputs['wl_plugin_name'] );
 
 	/*
+	 * Autoupdate
+	 */
+	if ( isset( $inputs['autoupdate'] ) && 1 == $inputs['autoupdate'] ) {
+		rocket_dismiss_box( 'rocket_ask_for_autoupdate' );
+	}
+
+	/*
 	 * Option : CDN
 	 */
 	$inputs['cdn_cnames'] = isset( $inputs['cdn_cnames'] ) ? array_unique( array_filter( $inputs['cdn_cnames'] ) ) : array();

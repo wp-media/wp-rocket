@@ -168,6 +168,9 @@ function rocket_autoupdate() {
 		sprintf( 'http://support.wp-rocket.me/%s/wp-rocket_%s.zip', $c_key, $plugin_transient->response['wp-rocket/wp-rocket.php']->new_version ) == $plugin_transient->response['wp-rocket/wp-rocket.php']->package
 		)
 	{
+		// Set a transient to avoid 2 update attempts at the same sime. 5 mn delay if not working
+		set_transient( 'rocket_warning_autoupdate', 5 * MINUTE_IN_SECONDS );
+
 		require_once( ABSPATH . 'wp-admin/includes/class-wp-upgrader.php' );
 		echo '<div style="display:none">'; // Avoid to display the update notifications from WordPress, this will change soon in WordPress core, wait and see.
 			
@@ -180,5 +183,8 @@ function rocket_autoupdate() {
 			$upgrader->after();
 			
 		echo '</div>';
+
+		// Delete the transient if OK, no need to keep this in DB.
+		delete_transient( 'rocket_warning_autoupdate' );
 	}
 }
