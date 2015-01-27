@@ -64,6 +64,7 @@ function get_rocket_purge_cron_interval()
 /**
  * Get all uri we don't cache
  *
+ * @since 2.4.1 Auto-exclude WordPress JSON API
  * @since 2.0
  *
  * @return array List of rejected uri
@@ -72,6 +73,7 @@ function get_rocket_cache_reject_uri()
 {
 	$uri = get_rocket_option( 'cache_reject_uri', array() );
 	$uri = array_merge( $uri, get_rocket_ecommerce_exclude_pages() );
+	$uri[] = '/wp-json/*';
 	$uri[] = '.*/' . $GLOBALS['wp_rewrite']->feed_base . '/';
 	
 	/**
