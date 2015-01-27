@@ -143,7 +143,9 @@ function get_rocket_i18n_to_preserve( $current_lang )
 
 	// Unset current lang to the preserve dirs
 	$langs = array_flip( $langs );
-	unset( $langs[$current_lang] );
+	if( isset( $langs[$current_lang] ) ) {
+		unset( $langs[$current_lang] );	
+	}
 	$langs = array_flip( $langs );
 
 	// Stock all URLs of langs to preserve
@@ -233,8 +235,13 @@ function get_rocket_i18n_home_url( $lang = '' ) {
  */
 function get_rocket_i18n_translated_post_urls( $post_id, $post_type = 'page', $regex = null ) {
 	$urls  = array();
+	$path  = parse_url( get_permalink( $post_id ), PHP_URL_PATH );
 	$langs = get_rocket_i18n_code();
-
+	
+	if ( empty( $path ) ) {
+		return $urls;
+	}
+	
 	// WPML
 	if ( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
 		foreach( $langs as $lang ) {
@@ -261,7 +268,7 @@ function get_rocket_i18n_translated_post_urls( $post_id, $post_type = 'page', $r
 		}
 	}
 
-	$urls[] = parse_url( get_permalink( $post_id ), PHP_URL_PATH ) . $regex;
+	$urls[] = $path . $regex;
 	$urls   = array_unique( $urls );
 
 	return $urls;
@@ -279,12 +286,12 @@ function get_rocket_ecommerce_exclude_pages() {
 	
 	// WooCommerce
 	if ( function_exists( 'WC' ) && function_exists( 'wc_get_page_id' ) ) {
-		if( wc_get_page_id( 'checkout' ) != '-1' ) {
+		if( wc_get_page_id( 'checkout' ) && wc_get_page_id( 'checkout' ) != '-1' ) {
 			$checkout_urls = get_rocket_i18n_translated_post_urls( wc_get_page_id( 'checkout' ), 'page', '(.*)' );
 			$urls = array_merge( $urls, $checkout_urls );
 		}
 
-		if ( wc_get_page_id( 'cart' ) != '-1' ) {
+		if ( wc_get_page_id( 'cart' ) && wc_get_page_id( 'cart' ) != '-1' ) {
 			$cart_urls = get_rocket_i18n_translated_post_urls( wc_get_page_id( 'cart' ) );
 			$urls = array_merge( $urls, $cart_urls );
 		}
@@ -317,11 +324,11 @@ function get_rocket_ecommerce_exclude_pages() {
 	
 	// Jigoshop
 	if ( defined( 'JIGOSHOP_VERSION' ) && function_exists( 'jigoshop_get_page_id' ) ) {
-		if ( jigoshop_get_page_id( 'checkout' ) != '-1' ) {
+		if ( jigoshop_get_page_id( 'checkout' ) && jigoshop_get_page_id( 'checkout' ) != '-1' ) {
 			$checkout_urls = get_rocket_i18n_translated_post_urls( jigoshop_get_page_id( 'checkout' ), 'page', '(.*)' );
 			$urls = array_merge( $urls, $checkout_urls );
 		}
-		if ( jigoshop_get_page_id( 'cart' ) != '-1' ) {
+		if ( jigoshop_get_page_id( 'cart' ) && jigoshop_get_page_id( 'cart' ) != '-1' ) {
 			$cart_urls = get_rocket_i18n_translated_post_urls( jigoshop_get_page_id( 'cart' ) );
 			$urls = array_merge( $urls, $cart_urls );
 		}

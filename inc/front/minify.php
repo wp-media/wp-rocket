@@ -165,7 +165,10 @@ function rocket_concatenate_google_fonts( $buffer ) {
 	// Concatenate fonts tag
 	$subsets = ( $subsets ) ? '&subset=' . implode( ',', array_filter( array_unique( $subsets ) ) ) : '';
 	$fonts   = trim( implode( '|' , $fonts ), '|' );
-	$fonts   = '<link rel="stylesheet" href="//fonts.googleapis.com/css?family=' . $fonts . $subsets . '" />';
+	
+	if( ! empty( $fonts ) ) {
+		$fonts   = '<link rel="stylesheet" href="//fonts.googleapis.com/css?family=' . $fonts . $subsets . '" />';	
+	}
 	
 	return array( $buffer, $fonts );
 }
