@@ -6,16 +6,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2015-01-06 16:32:17+00:00\n"
-"PO-Revision-Date: 2015-01-06 19:50+0000\n"
-"Last-Translator: timoleinio <tjlein@gmail.com>\n"
+"POT-Creation-Date: 2015-01-27 14:55:53+00:00\n"
+"PO-Revision-Date: 2015-01-27 14:57+0000\n"
+"Last-Translator: FxB <fxb@wp-translations.org>\n"
 "Language-Team: Finnish (http://www.transifex.com/projects/p/wp-rocket/language/fi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: fi\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: grunt-wp-i18n 0.4.8\n"
+"X-Generator: grunt-wp-i18n 0.4.9\n"
 "X-Poedit-Basepath: ../\n"
 "X-Poedit-Bookmarks: \n"
 "X-Poedit-Country: United States\n"
@@ -24,9 +24,9 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Textdomain-Support: yes\n"
 
-#: inc/admin/admin.php:13 inc/admin/options.php:1172
-#: inc/admin/options.php:1175 inc/admin/options.php:1211
-#: inc/admin/options.php:1216 inc/admin-bar.php:212
+#: inc/admin/admin.php:13 inc/admin/options.php:1167
+#: inc/admin/options.php:1170 inc/admin/options.php:1206
+#: inc/admin/options.php:1211 inc/admin-bar.php:212
 msgid "Support"
 msgstr "Tuki"
 
@@ -42,23 +42,15 @@ msgstr "Asetukset"
 msgid "Clear this cache"
 msgstr "Tyhjennä välimuisti"
 
-#: inc/admin/admin.php:82 inc/admin/notices.php:92 inc/admin/options.php:1004
-#: inc/admin/options.php:1010 inc/admin-bar.php:43 inc/admin-bar.php:66
+#: inc/admin/admin.php:82 inc/admin/notices.php:92 inc/admin/options.php:999
+#: inc/admin/options.php:1005 inc/admin-bar.php:43 inc/admin-bar.php:66
 #: inc/admin-bar.php:100
 msgid "Clear cache"
 msgstr "Tyhjennä välimuisti"
 
-#: inc/admin/admin.php:344 inc/admin/admin.php:362
+#: inc/admin/admin.php:344 inc/admin/admin.php:351
 msgid "%s Update Rollback"
 msgstr "%s päivityksen palautus"
-
-#: inc/admin/admin.php:350
-msgid "A rollback has been performed from v%1$s to v%2$s."
-msgstr "Palautus on tehty versiosta v%1$s versioon v%2$s."
-
-#: inc/admin/admin.php:357
-msgid "We tried to rollback from v%1$s to v%2$s, but an error occurred."
-msgstr "Yritimme palauttaa versiosta v%1$s versioon v%2$s, mutta virhe tapahtui."
 
 #: inc/admin/faq.inc.php:2
 msgid "FAQ's Table of Content"
@@ -634,7 +626,7 @@ msgstr "Sähköposti"
 msgid "The one used for the purchase, in your support account."
 msgstr "Se, jota käytit oston yhteydessä."
 
-#: inc/admin/options.php:455 inc/admin/options.php:1201
+#: inc/admin/options.php:455 inc/admin/options.php:1196
 msgid "Basic options"
 msgstr "Perusasetukset"
 
@@ -773,7 +765,7 @@ msgstr "Tämä on hyödyllistä, jos näytät esimerkiksi viimeisimpiä tweettej
 msgid "Specify 0 for unlimited lifetime."
 msgstr "Määritä 0, jos et halua välimuistin tyhjentyvän ollenkaan."
 
-#: inc/admin/options.php:622 inc/admin/options.php:1202
+#: inc/admin/options.php:622 inc/admin/options.php:1197
 msgid "Advanced options"
 msgstr "Edistyneet asetukset"
 
@@ -909,7 +901,7 @@ msgid ""
 "target=\"_blank\">maxCDN</a>."
 msgstr "CDN-toiminto korvaa staattisten tiedostojen (CSS, JS, kuvat) osoitteet alla olevilla osoitteilla. Tällä tavoin sisältö kopioidaan dedikoituun CDN-palveluun kuten <a href=\"http://www.maxcdn.com/\" target=\"_blank\">maxCDN</a>."
 
-#: inc/admin/options.php:860 inc/admin/options.php:1205
+#: inc/admin/options.php:860 inc/admin/options.php:1200
 msgid "White Label"
 msgstr "White Label"
 
@@ -942,7 +934,7 @@ msgid ""
 "If you change anything, the tutorial + FAQ + Support tabs will be hidden."
 msgstr "Jos muutat jotakin, Ohjeet + UKK + Tuki välilehdet piilotetaan."
 
-#: inc/admin/options.php:954 inc/admin/options.php:1207
+#: inc/admin/options.php:954 inc/admin/options.php:1202
 msgid "Tools"
 msgstr "Työkalut"
 
@@ -960,180 +952,174 @@ msgstr "Kyllä, kiitos. Aja lisäosan <b>pienet</b> päivitykset ja <b>bugipäiv
 msgid "Yes, please update this plugin for all next available versions."
 msgstr "Kyllä, kiitos. Päivitä lisäosan kaikki tulevat versiot."
 
-#: inc/admin/options.php:974
-msgid ""
-"Like WordPress do for its versions, you can also let us auto-update the "
-"plugin."
-msgstr "Voit antaa lisäosan päivittää itsensä automaattisesti samalla tavalla kuin WordPresskin päivittää itsensä."
-
-#: inc/admin/options.php:982 inc/admin/options.php:991
+#: inc/admin/options.php:977 inc/admin/options.php:986
 msgid "Beta Tester"
 msgstr "Beta testaa"
 
-#: inc/admin/options.php:989
+#: inc/admin/options.php:984
 msgid "Yes I do!"
 msgstr "Kyllä kiitos!"
 
-#: inc/admin/options.php:996
+#: inc/admin/options.php:991
 msgid ""
 "Check it to participate in the WP Rocket Beta Program and get earlier access"
 " to new versions, thanks in advance."
 msgstr "Täppää osallistuaksesi WP Rocketin beta-ohjelmaan, pääset samalla käsiksi uudempiin versioihin aiemmin. Kiitos etukäteen."
 
-#: inc/admin/options.php:1015
+#: inc/admin/options.php:1010
 msgid "Clear the cache for the whole site."
 msgstr "Tyhjennä koko sivuston välimuisti."
 
-#: inc/admin/options.php:1021 inc/admin/options.php:1027
-#: inc/admin/options.php:1091 inc/admin-bar.php:141 inc/admin-bar.php:162
+#: inc/admin/options.php:1016 inc/admin/options.php:1022
+#: inc/admin/options.php:1086 inc/admin-bar.php:141 inc/admin-bar.php:162
 #: inc/admin-bar.php:193
 msgid "Preload cache"
 msgstr "Esilataa välimuisti"
 
-#: inc/admin/options.php:1032
+#: inc/admin/options.php:1027
 msgid ""
 "Allows you to request a bot crawl to preload the cache (homepage and its "
 "internal links)."
 msgstr "Voit pyytää bottia esilataamaan välimuistin (etusivu ja sen sisäiset linkit)."
 
-#: inc/admin/options.php:1039
+#: inc/admin/options.php:1034
 msgid "Settings Exporter"
 msgstr "Vie asetukset"
 
-#: inc/admin/options.php:1049
+#: inc/admin/options.php:1044
 msgid "Settings Importer"
 msgstr "Tuo asetukset"
 
-#: inc/admin/options.php:1058
+#: inc/admin/options.php:1053
 msgid ""
 "Please backup your settings before, use the \"Download options\" button "
 "above."
 msgstr "Varmuuskopioi asetukset ensin ylläolevasta \"Lataa asetukset\" -napista."
 
-#: inc/admin/options.php:1060
+#: inc/admin/options.php:1055
 msgid ""
 "<br>Also, the \"Auto-update\" feature will be deactivated, do not activate "
 "it again if you don't want to upgrade."
 msgstr "<br>\"Automaattipäivitykset\" otetaan pois päältä. Älä ota sitä uudestaan käyttöön ellet halua päivityksiä."
 
-#: inc/admin/options.php:1064
+#: inc/admin/options.php:1059
 msgid "Update Rollback"
 msgstr "Päivityksen palautus"
 
-#: inc/admin/options.php:1070
+#: inc/admin/options.php:1065
 msgid "Reinstall v%s"
 msgstr "Asenna uudestaan v%s"
 
-#: inc/admin/options.php:1075
+#: inc/admin/options.php:1070
 msgid ""
 "Is the version %s causing you some issues? You can ask for a rollback and "
 "reinstall the last version you used before."
 msgstr "Aiheuttaako versio %s ongelmia? Voit palauttaa edellisen käytössä olleen version."
 
-#: inc/admin/options.php:1088 inc/admin/options.php:1209
+#: inc/admin/options.php:1083 inc/admin/options.php:1204
 msgid "Tutorials"
 msgstr "Ohjeet"
 
-#: inc/admin/options.php:1096
+#: inc/admin/options.php:1091
 msgid ""
 "This video gives some explanations about our two crawler robots. They "
 "generate several cache files in a few seconds."
 msgstr "Video kertoo, miten robottimme toimivat. Ne luovat useita välimuistitiedostoja sekunneissa."
 
-#: inc/admin/options.php:1103
+#: inc/admin/options.php:1098
 msgid "CSS and JavaScript minification"
 msgstr "CSS ja JavaScript pienentäminen"
 
-#: inc/admin/options.php:1108
+#: inc/admin/options.php:1103
 msgid ""
 "This video gives some explanations about how to use the advanced processes "
 "of minification and concatenation of CSS and JavaScript files."
 msgstr "Video kertoo, miten käyttää CSS ja JavaScript -tiedostojen edistyneitä pienennys- ja yhdistystoimintoja."
 
-#: inc/admin/options.php:1115
+#: inc/admin/options.php:1110
 msgid "Preloading DNS queries"
 msgstr "DNS-kutsujen esilataus"
 
-#: inc/admin/options.php:1120
+#: inc/admin/options.php:1115
 msgid ""
 "This video helps to easily understand the advanced option of \"Preloading "
 "DNS queries\" and the use of the filter <code>rocket_dns_prefetch</code>."
 msgstr "Video kertoo, miten \"DNS-kutsujen esilataus\" toimii ja miten käyttää <code>rocket_dns_prefetch</code>-filtteriä."
 
-#: inc/admin/options.php:1127
+#: inc/admin/options.php:1122
 msgid "How to use the White Label functionality?"
 msgstr "Kuinka käyttää White Label -toiminnallisuutta?"
 
-#: inc/admin/options.php:1132
+#: inc/admin/options.php:1127
 msgid "This video helps to set up a White Label version of WP Rocket."
 msgstr "Video kertoo, miten tehdä White Label -versio WP Rocketista."
 
-#: inc/admin/options.php:1139
+#: inc/admin/options.php:1134
 msgid "How to use the CDN functionality?"
 msgstr "Kuinka käyttää CDN-toiminnallisuutta?"
 
-#: inc/admin/options.php:1144
+#: inc/admin/options.php:1139
 msgid ""
 "This video helps to understand what is the CDN functionality included since "
 "WP Rocket 2.1."
 msgstr "Video kertoo, mikä CDN-toiminnallisuus on."
 
-#: inc/admin/options.php:1151
+#: inc/admin/options.php:1146
 msgid "How to use the CDN API?"
 msgstr "Kuinka käyttää CND APIa?"
 
-#: inc/admin/options.php:1156
+#: inc/admin/options.php:1151
 msgid ""
 "This video helps to set up the two functions "
 "<code>get_rocket_cdn_url()</code> and <code>rocket_cdn_url()</code>."
 msgstr "Video kertoo, miten käyttää funktioita <code>get_rocket_cdn_url()</code> ja <code>rocket_cdn_url()</code>."
 
-#: inc/admin/options.php:1161 inc/admin/options.php:1164
-#: inc/admin/options.php:1210 inc/admin/options.php:1215
+#: inc/admin/options.php:1156 inc/admin/options.php:1159
+#: inc/admin/options.php:1205 inc/admin/options.php:1210
 msgid "FAQ"
 msgstr "UKK"
 
-#: inc/admin/options.php:1181
+#: inc/admin/options.php:1176
 msgid "Visit the Support"
 msgstr "Vieraile tuessa"
 
-#: inc/admin/options.php:1187
+#: inc/admin/options.php:1182
 msgid ""
 "If none of the FAQ answers resolves your problem, you can send your issue to"
 " our free support. We will reply as soon as possible."
 msgstr "Jos mikään UKK:n vastauksista ei ratkaise ongelmaasi, voit lähettää viestin ilmaiseen tukeemme. Vastaamme mahdollisimman pian."
 
-#: inc/admin/options.php:1203
+#: inc/admin/options.php:1198
 msgid "CDN"
 msgstr "CDN"
 
-#: inc/admin/options.php:1214
+#: inc/admin/options.php:1209
 msgid "License"
 msgstr "Lisenssi"
 
-#: inc/admin/options.php:1515
+#: inc/admin/options.php:1510
 msgid "Settings imported and saved."
 msgstr "Asetukset tuotu ja tallennettu."
 
-#: inc/admin/options.php:1533 inc/admin/options.php:1592
+#: inc/admin/options.php:1528 inc/admin/options.php:1587
 msgid "Settings saved."
 msgstr "Asetukset tallennettu."
 
-#: inc/admin/options.php:1677
+#: inc/admin/options.php:1672
 msgid ""
 "Before you can upload your import file, you will need to fix the following "
 "error:"
 msgstr "Ennen kuin voit tallentaa tuontitiedoston, sinun pitää korjata seuraavat virheet:"
 
-#: inc/admin/options.php:1684
+#: inc/admin/options.php:1679
 msgid "Choose a file from your computer:"
 msgstr "Valitse tiedosto koneeltasi:"
 
-#: inc/admin/options.php:1684
+#: inc/admin/options.php:1679
 msgid "Maximum size: %s"
 msgstr "Maksimikoko: %s"
 
-#: inc/admin/options.php:1687
+#: inc/admin/options.php:1682
 msgid "Upload file and import settings"
 msgstr "Tallenna tiedosto ja tuo asetukset"
 
@@ -1144,17 +1130,9 @@ msgid ""
 "try the <a href=\"%s\">support forums</a>."
 msgstr "Odottamaton virhe tapahtui. Ongelma saattaa johtua WP-Rocket.me osoitteen ongelmasta tai tämän palvelimen asetuksista. Jos ongelma jatkuu, ota yhteyttä <a href=\"%s\">tukeen</a>."
 
-#: inc/admin/updater.php:173
+#: inc/admin/updater.php:174
 msgid "Update Plugin"
 msgstr "Päivitä lisäosa"
-
-#: inc/admin/updater.php:180
-msgid "An autoupdate has been performed from v%1$s to v%2$s."
-msgstr "Automaattinen päivitys versiosta v%1$s versioon v%2$s on suoritettu."
-
-#: inc/admin/updater.php:183
-msgid "We tried to autoupdate from v%1$s to v%2$s, but an error occured."
-msgstr "Yritimme päivittää automaattisesti versiosta v%1$s versioon v%2$s, mutta virhe tapahtui."
 
 #: inc/admin-bar.php:90 inc/admin-bar.php:184 inc/admin-bar.php:252
 #: inc/admin-bar.php:259
@@ -1183,19 +1161,19 @@ msgid ""
 "href=\"%s\">Enter you API key</a> here."
 msgstr "Viimeinen askel ennen kuin voit nauttia lisäosan tuomasta suorituskyvystä. <a href=\"%s\">Syötä API-avain</a> tähän."
 
-#: inc/functions/options.php:252
+#: inc/functions/options.php:254
 msgid "Your license is not valid."
 msgstr "Lisenssi ei ole validi."
 
-#: inc/functions/options.php:253
+#: inc/functions/options.php:255
 msgid "You cannot add more websites. Upgrade your account."
 msgstr "Et voi lisätä enempää verkkosivustoja. Päivitä tiliäsi."
 
-#: inc/functions/options.php:254
+#: inc/functions/options.php:256
 msgid "This website is not allowed."
 msgstr "Verkkosivusto ei ole sallittu."
 
-#: inc/functions/options.php:255
+#: inc/functions/options.php:257
 msgid "This license key is not accepted."
 msgstr "Lisenssiavain ei kelpaa."
 

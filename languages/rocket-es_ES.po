@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2015-01-06 16:32:17+00:00\n"
-"PO-Revision-Date: 2015-01-06 16:32+0000\n"
+"POT-Creation-Date: 2015-01-27 14:55:53+00:00\n"
+"PO-Revision-Date: 2015-01-27 14:57+0000\n"
 "Last-Translator: FxB <fxb@wp-translations.org>\n"
 "Language-Team: Spanish (Spain) (http://www.transifex.com/projects/p/wp-rocket/language/es_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: es_ES\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: grunt-wp-i18n 0.4.8\n"
+"X-Generator: grunt-wp-i18n 0.4.9\n"
 "X-Poedit-Basepath: ../\n"
 "X-Poedit-Bookmarks: \n"
 "X-Poedit-Country: United States\n"
@@ -26,9 +26,9 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Textdomain-Support: yes\n"
 
-#: inc/admin/admin.php:13 inc/admin/options.php:1172
-#: inc/admin/options.php:1175 inc/admin/options.php:1211
-#: inc/admin/options.php:1216 inc/admin-bar.php:212
+#: inc/admin/admin.php:13 inc/admin/options.php:1167
+#: inc/admin/options.php:1170 inc/admin/options.php:1206
+#: inc/admin/options.php:1211 inc/admin-bar.php:212
 msgid "Support"
 msgstr "Soporte"
 
@@ -44,23 +44,15 @@ msgstr "Ajustes"
 msgid "Clear this cache"
 msgstr "Vaciar este caché"
 
-#: inc/admin/admin.php:82 inc/admin/notices.php:92 inc/admin/options.php:1004
-#: inc/admin/options.php:1010 inc/admin-bar.php:43 inc/admin-bar.php:66
+#: inc/admin/admin.php:82 inc/admin/notices.php:92 inc/admin/options.php:999
+#: inc/admin/options.php:1005 inc/admin-bar.php:43 inc/admin-bar.php:66
 #: inc/admin-bar.php:100
 msgid "Clear cache"
 msgstr "Vaciar la caché"
 
-#: inc/admin/admin.php:344 inc/admin/admin.php:362
+#: inc/admin/admin.php:344 inc/admin/admin.php:351
 msgid "%s Update Rollback"
 msgstr "%s actualizó el <em>rollback</em>"
-
-#: inc/admin/admin.php:350
-msgid "A rollback has been performed from v%1$s to v%2$s."
-msgstr "Se realizó un <em>rollback</em> de  v%1$s a v%2$s."
-
-#: inc/admin/admin.php:357
-msgid "We tried to rollback from v%1$s to v%2$s, but an error occurred."
-msgstr "Hemos intentado hacer un <em>rollback</em> de v%1$s to v%2$s pero ocurrió un error."
 
 #: inc/admin/faq.inc.php:2
 msgid "FAQ's Table of Content"
@@ -636,7 +628,7 @@ msgstr "Dirección Mail"
 msgid "The one used for the purchase, in your support account."
 msgstr "El que se utilizó en la compra, en su cuenta de soporte."
 
-#: inc/admin/options.php:455 inc/admin/options.php:1201
+#: inc/admin/options.php:455 inc/admin/options.php:1196
 msgid "Basic options"
 msgstr "Opciones básicas"
 
@@ -775,7 +767,7 @@ msgstr "Puede ser útil si muestra sus últimos tweets o flujos RSS en su barra 
 msgid "Specify 0 for unlimited lifetime."
 msgstr "0 = vida ilimitada."
 
-#: inc/admin/options.php:622 inc/admin/options.php:1202
+#: inc/admin/options.php:622 inc/admin/options.php:1197
 msgid "Advanced options"
 msgstr "Opciones avanzadas"
 
@@ -911,7 +903,7 @@ msgid ""
 "target=\"_blank\">maxCDN</a>."
 msgstr "La función CDN reemplaza todas las URLs de sus archivos estáticos y medios (CSS, JS, Imagenes) por la URL introducida a continuación. De este modo, todo su contenido se copiará en un hosting dedicado o en un sistema CDN <a href=\"http://www.maxcdn.com/\" target=\"_blank\">maxCDN</a>."
 
-#: inc/admin/options.php:860 inc/admin/options.php:1205
+#: inc/admin/options.php:860 inc/admin/options.php:1200
 msgid "White Label"
 msgstr "Marca Blanca"
 
@@ -944,7 +936,7 @@ msgid ""
 "If you change anything, the tutorial + FAQ + Support tabs will be hidden."
 msgstr "Si cambia algo, las pestañas tutoriales + Preguntas Frecuentes + Soporte se ocultarán."
 
-#: inc/admin/options.php:954 inc/admin/options.php:1207
+#: inc/admin/options.php:954 inc/admin/options.php:1202
 msgid "Tools"
 msgstr "Herramientas"
 
@@ -962,180 +954,174 @@ msgstr "Si por favor, actualice el plugin por versiones <b>menores</b> & de <b>'
 msgid "Yes, please update this plugin for all next available versions."
 msgstr "Si por favor, actualice este plugin por todas las siguientes versiones disponibles."
 
-#: inc/admin/options.php:974
-msgid ""
-"Like WordPress do for its versions, you can also let us auto-update the "
-"plugin."
-msgstr ""
-
-#: inc/admin/options.php:982 inc/admin/options.php:991
+#: inc/admin/options.php:977 inc/admin/options.php:986
 msgid "Beta Tester"
 msgstr "Beta Tester"
 
-#: inc/admin/options.php:989
+#: inc/admin/options.php:984
 msgid "Yes I do!"
 msgstr "Sí!"
 
-#: inc/admin/options.php:996
+#: inc/admin/options.php:991
 msgid ""
 "Check it to participate in the WP Rocket Beta Program and get earlier access"
 " to new versions, thanks in advance."
 msgstr ".... para participar al programa de Beta Tester de WP Rocket y tener acceso de forma anticipada a nuevas versiones, gracias."
 
-#: inc/admin/options.php:1015
+#: inc/admin/options.php:1010
 msgid "Clear the cache for the whole site."
 msgstr "Vaciar la caché de toda la página web."
 
-#: inc/admin/options.php:1021 inc/admin/options.php:1027
-#: inc/admin/options.php:1091 inc/admin-bar.php:141 inc/admin-bar.php:162
+#: inc/admin/options.php:1016 inc/admin/options.php:1022
+#: inc/admin/options.php:1086 inc/admin-bar.php:141 inc/admin-bar.php:162
 #: inc/admin-bar.php:193
 msgid "Preload cache"
 msgstr "Precargar la caché"
 
-#: inc/admin/options.php:1032
+#: inc/admin/options.php:1027
 msgid ""
 "Allows you to request a bot crawl to preload the cache (homepage and its "
 "internal links)."
 msgstr "Le permite solicitar un rastreo de nuestro robot para precargar la caché (página principal y sus enlaces internos)."
 
-#: inc/admin/options.php:1039
+#: inc/admin/options.php:1034
 msgid "Settings Exporter"
 msgstr "Exportador de ajustes"
 
-#: inc/admin/options.php:1049
+#: inc/admin/options.php:1044
 msgid "Settings Importer"
 msgstr "Importador de ajustes"
 
-#: inc/admin/options.php:1058
+#: inc/admin/options.php:1053
 msgid ""
 "Please backup your settings before, use the \"Download options\" button "
 "above."
 msgstr "Por favor, hace un backup de sus ajustes antes, haga clic en el botón \"descargar opciones\" arriba. "
 
-#: inc/admin/options.php:1060
+#: inc/admin/options.php:1055
 msgid ""
 "<br>Also, the \"Auto-update\" feature will be deactivated, do not activate "
 "it again if you don't want to upgrade."
 msgstr "<br>También, el \"auto-actualizar\" sera desactivado, no lo active si no quiere actualizar su versión. "
 
-#: inc/admin/options.php:1064
+#: inc/admin/options.php:1059
 msgid "Update Rollback"
 msgstr "Actualizar <em>rollback</em>"
 
-#: inc/admin/options.php:1070
+#: inc/admin/options.php:1065
 msgid "Reinstall v%s"
 msgstr "Reinstalar v%s"
 
-#: inc/admin/options.php:1075
+#: inc/admin/options.php:1070
 msgid ""
 "Is the version %s causing you some issues? You can ask for a rollback and "
 "reinstall the last version you used before."
 msgstr ""
 
-#: inc/admin/options.php:1088 inc/admin/options.php:1209
+#: inc/admin/options.php:1083 inc/admin/options.php:1204
 msgid "Tutorials"
 msgstr "Tutoriales"
 
-#: inc/admin/options.php:1096
+#: inc/admin/options.php:1091
 msgid ""
 "This video gives some explanations about our two crawler robots. They "
 "generate several cache files in a few seconds."
 msgstr "Este vídeo da algunas explicaciones sobre nuestros dos robots rastreadores. Generan varios archivos de caché en unos segundos."
 
-#: inc/admin/options.php:1103
+#: inc/admin/options.php:1098
 msgid "CSS and JavaScript minification"
 msgstr "Minificación de CSS y JavaScript"
 
-#: inc/admin/options.php:1108
+#: inc/admin/options.php:1103
 msgid ""
 "This video gives some explanations about how to use the advanced processes "
 "of minification and concatenation of CSS and JavaScript files."
 msgstr "Este vídeo da algunas explicaciones sobre cómo utilizar el proceso avanzado de minificación y concatenación de archivos CSS y JavaScript. "
 
-#: inc/admin/options.php:1115
+#: inc/admin/options.php:1110
 msgid "Preloading DNS queries"
 msgstr "Precarga de consultas DNS"
 
-#: inc/admin/options.php:1120
+#: inc/admin/options.php:1115
 msgid ""
 "This video helps to easily understand the advanced option of \"Preloading "
 "DNS queries\" and the use of the filter <code>rocket_dns_prefetch</code>."
 msgstr "Este vídeo ayuda a entender fácilmente la opción avanzada de \"precarga de consultas DNS\" y el uso del filtro <code>rocket_dns_prefetch</code>."
 
-#: inc/admin/options.php:1127
+#: inc/admin/options.php:1122
 msgid "How to use the White Label functionality?"
 msgstr "Cómo utilizar la Funcionalidad Marca Blanca?"
 
-#: inc/admin/options.php:1132
+#: inc/admin/options.php:1127
 msgid "This video helps to set up a White Label version of WP Rocket."
 msgstr "Este vídeo ayuda a crear una versión de Marca Blanca de WP Rocket."
 
-#: inc/admin/options.php:1139
+#: inc/admin/options.php:1134
 msgid "How to use the CDN functionality?"
 msgstr "Cómo utilizar la funcionalidad CDN?"
 
-#: inc/admin/options.php:1144
+#: inc/admin/options.php:1139
 msgid ""
 "This video helps to understand what is the CDN functionality included since "
 "WP Rocket 2.1."
 msgstr "Este vídeo ayuda a entender que es la funcionalidad CDN incluida desde la versión 2.1 de WP Rocket."
 
-#: inc/admin/options.php:1151
+#: inc/admin/options.php:1146
 msgid "How to use the CDN API?"
 msgstr "Cómo utilizar el API CDN?"
 
-#: inc/admin/options.php:1156
+#: inc/admin/options.php:1151
 msgid ""
 "This video helps to set up the two functions "
 "<code>get_rocket_cdn_url()</code> and <code>rocket_cdn_url()</code>."
 msgstr "Este vídeo ayuda a utilizar las 2 funciones <code>get_rocket_cdn_url()</code> and <code>rocket_cdn_url()</code>."
 
-#: inc/admin/options.php:1161 inc/admin/options.php:1164
-#: inc/admin/options.php:1210 inc/admin/options.php:1215
+#: inc/admin/options.php:1156 inc/admin/options.php:1159
+#: inc/admin/options.php:1205 inc/admin/options.php:1210
 msgid "FAQ"
 msgstr "Preguntas Frecuentes"
 
-#: inc/admin/options.php:1181
+#: inc/admin/options.php:1176
 msgid "Visit the Support"
 msgstr "Visitar el soporte"
 
-#: inc/admin/options.php:1187
+#: inc/admin/options.php:1182
 msgid ""
 "If none of the FAQ answers resolves your problem, you can send your issue to"
 " our free support. We will reply as soon as possible."
 msgstr "Si ninguna de las respuestas de Preguntas Frecuentes resuelve su problema, puede enviar su pregunta a nuestro soporte gratuito. Le contestaremos tan pronto como sea posible. "
 
-#: inc/admin/options.php:1203
+#: inc/admin/options.php:1198
 msgid "CDN"
 msgstr "CDN"
 
-#: inc/admin/options.php:1214
+#: inc/admin/options.php:1209
 msgid "License"
 msgstr "Licencia"
 
-#: inc/admin/options.php:1515
+#: inc/admin/options.php:1510
 msgid "Settings imported and saved."
 msgstr "Ajustes importados y guardados."
 
-#: inc/admin/options.php:1533 inc/admin/options.php:1592
+#: inc/admin/options.php:1528 inc/admin/options.php:1587
 msgid "Settings saved."
 msgstr "Ajustes guardados."
 
-#: inc/admin/options.php:1677
+#: inc/admin/options.php:1672
 msgid ""
 "Before you can upload your import file, you will need to fix the following "
 "error:"
 msgstr "Antes de poder cargar su archivo de importación, necesitará resolver el siguiente error:"
 
-#: inc/admin/options.php:1684
+#: inc/admin/options.php:1679
 msgid "Choose a file from your computer:"
 msgstr "Elija un archivo de su ordenador:"
 
-#: inc/admin/options.php:1684
+#: inc/admin/options.php:1679
 msgid "Maximum size: %s"
 msgstr "Tamaño máximo: %s"
 
-#: inc/admin/options.php:1687
+#: inc/admin/options.php:1682
 msgid "Upload file and import settings"
 msgstr "Cargar archivo e importar ajustes"
 
@@ -1146,17 +1132,9 @@ msgid ""
 "try the <a href=\"%s\">support forums</a>."
 msgstr "Se ha producido un error inesperado. Algo puede estar mal con WP-Rocket.me o con la configuración de este servidor &#8217;s. Si continúa teniendo problemas, por favor intente contactar a través del <a href=\"%s\">foro del soporte</a>."
 
-#: inc/admin/updater.php:173
+#: inc/admin/updater.php:174
 msgid "Update Plugin"
 msgstr "Actualizar plugin"
-
-#: inc/admin/updater.php:180
-msgid "An autoupdate has been performed from v%1$s to v%2$s."
-msgstr "Una actualización automática ha sido realizada de v%1$s a v%2$s."
-
-#: inc/admin/updater.php:183
-msgid "We tried to autoupdate from v%1$s to v%2$s, but an error occured."
-msgstr "Hemos intentado actualizar de  v%1$s a v%2$s pero ocurrió un problema. "
 
 #: inc/admin-bar.php:90 inc/admin-bar.php:184 inc/admin-bar.php:252
 #: inc/admin-bar.php:259
@@ -1185,19 +1163,19 @@ msgid ""
 "href=\"%s\">Enter you API key</a> here."
 msgstr "Ultima etapa antes de disfrutar del alto rendimiento de nuestro plugin, por favor, <a href=\"%s\">Entre su clave API</a> aquí."
 
-#: inc/functions/options.php:252
+#: inc/functions/options.php:254
 msgid "Your license is not valid."
 msgstr "Su licencia no es válida."
 
-#: inc/functions/options.php:253
+#: inc/functions/options.php:255
 msgid "You cannot add more websites. Upgrade your account."
 msgstr "No puede añadir otra página web. Actualice su cuenta."
 
-#: inc/functions/options.php:254
+#: inc/functions/options.php:256
 msgid "This website is not allowed."
 msgstr "Esta página web no está autorizada."
 
-#: inc/functions/options.php:255
+#: inc/functions/options.php:257
 msgid "This license key is not accepted."
 msgstr "Esta licencia no es aceptada."
 
