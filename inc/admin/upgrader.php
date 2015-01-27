@@ -208,6 +208,7 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version )
 	if ( version_compare( $actual_version, '2.4.1', '<' ) ) {
 		// Regenerate advanced-cache.php file
 		rocket_generate_advanced_cache_file();
+		delete_transient( 'rocket_ask_for_update' );
 	}
 }
 /* END UPGRADER'S HOOKS */
