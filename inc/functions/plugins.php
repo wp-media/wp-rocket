@@ -143,7 +143,9 @@ function get_rocket_i18n_to_preserve( $current_lang )
 
 	// Unset current lang to the preserve dirs
 	$langs = array_flip( $langs );
-	unset( $langs[$current_lang] );
+	if( isset( $langs[$current_lang] ) ) {
+		unset( $langs[$current_lang] );	
+	}
 	$langs = array_flip( $langs );
 
 	// Stock all URLs of langs to preserve
