@@ -443,7 +443,7 @@ class ActionScheduler_AdminView {
 			$searchand = '';
 			$n = ! empty( $query->query_vars['exact'] ) ? '' : '%';
 			foreach ( $query->query_vars['search_terms'] as $term ) {
-				$term = like_escape( esc_sql( $term ) );
+				$term = $wpdb->esc_like( esc_sql( $term ) );
 				$search .= "{$searchand}(($wpdb->posts.post_title LIKE '{$n}{$term}{$n}') OR ($wpdb->posts.post_content LIKE '{$n}{$term}{$n}') OR ($wpdb->posts.post_password LIKE '{$n}{$term}{$n}'))";
 				$searchand = ' AND ';
 			}
