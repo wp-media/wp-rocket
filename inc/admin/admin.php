@@ -159,7 +159,7 @@ function rocket_dismiss_boxes( $args )
 			if ( defined( 'DOING_AJAX' ) ) {
 				wp_send_json( array( 'error' => 0 ) );
 			} else {
-				if ( ! defined( 'ROCKET_NO_REDIRECT' ) ) {
+				if ( ! defined( 'WP_ROCKET_NO_REDIRECT' ) ) {
 					wp_safe_redirect( wp_get_referer() );
 					die();
 				}
@@ -300,7 +300,7 @@ function __rocket_activate_autoupdate()
 
 	$options = get_option( WP_ROCKET_SLUG );
 	$options['autoupdate'] = 1;
-	define( 'ROCKET_NO_REDIRECT', true );
+	define( 'WP_ROCKET_NO_REDIRECT', true ); // internal, do not define it yourself, thanks
 	update_option( WP_ROCKET_SLUG, $options );
 	rocket_dismiss_box( 'rocket_ask_for_autoupdate' );
 
