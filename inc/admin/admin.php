@@ -159,8 +159,10 @@ function rocket_dismiss_boxes( $args )
 			if ( defined( 'DOING_AJAX' ) ) {
 				wp_send_json( array( 'error' => 0 ) );
 			} else {
-				wp_safe_redirect( wp_get_referer() );
-				die();
+				if ( ! defined( 'ROCKET_NO_REDIRECT' ) ) {
+					wp_safe_redirect( wp_get_referer() );
+					die();
+				}
 			}
 		}
 	}
@@ -298,7 +300,8 @@ function __rocket_activate_autoupdate()
 
 	$options = get_option( WP_ROCKET_SLUG );
 	$options['autoupdate'] = 1;
-	update_option( WP_ROCKET_SLUG, $options);
+	define( 'ROCKET_NO_REDIRECT', true );
+	update_option( WP_ROCKET_SLUG, $options );
 	rocket_dismiss_box( 'rocket_ask_for_autoupdate' );
 
 	wp_safe_redirect( wp_get_referer() );
