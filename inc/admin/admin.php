@@ -357,7 +357,7 @@ function __rocket_rollback()
 		if ( isset( $options['autoupdate'] ) ) {
 			unset( $options['autoupdate'] );
 		}
-		define( 'ROCKET_NO_REDIRECT', true );
+		define( 'WP_ROCKET_NO_REDIRECT', true );
 		update_option( WP_ROCKET_SLUG, $options );
 
 		wp_die( '', sprintf( __( '%s Update Rollback', 'rocket' ), WP_ROCKET_PLUGIN_NAME ), array( 'response' => 200 ) );
