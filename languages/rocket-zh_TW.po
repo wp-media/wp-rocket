@@ -1,13 +1,14 @@
 # Copyright (C) 2015 WP Rocket
 # This file is distributed under the same license as the WP Rocket package.
 # Translators:
+# Pseric Lin <pserics@gmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
 "POT-Creation-Date: 2015-01-27 14:55:53+00:00\n"
-"PO-Revision-Date: 2015-01-27 14:57+0000\n"
-"Last-Translator: FxB <fxb@wp-translations.org>\n"
+"PO-Revision-Date: 2015-01-31 18:21+0000\n"
+"Last-Translator: Pseric Lin <pserics@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/wp-rocket/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,278 +28,278 @@ msgstr ""
 #: inc/admin/options.php:1170 inc/admin/options.php:1206
 #: inc/admin/options.php:1211 inc/admin-bar.php:212
 msgid "Support"
-msgstr ""
+msgstr "支援"
 
 #: inc/admin/admin.php:15
 msgid "Docs"
-msgstr ""
+msgstr "說明文件"
 
 #: inc/admin/admin.php:18 inc/admin-bar.php:31
 msgid "Settings"
-msgstr ""
+msgstr "設定"
 
 #: inc/admin/admin.php:63
 msgid "Clear this cache"
-msgstr ""
+msgstr "清除快取"
 
 #: inc/admin/admin.php:82 inc/admin/notices.php:92 inc/admin/options.php:999
 #: inc/admin/options.php:1005 inc/admin-bar.php:43 inc/admin-bar.php:66
 #: inc/admin-bar.php:100
 msgid "Clear cache"
-msgstr ""
+msgstr "清除快取"
 
 #: inc/admin/admin.php:344 inc/admin/admin.php:351
 msgid "%s Update Rollback"
-msgstr ""
+msgstr "%s 更新還原"
 
 #: inc/admin/faq.inc.php:2
 msgid "FAQ's Table of Content"
-msgstr ""
+msgstr "常見問題目錄"
 
 #: inc/admin/faq.inc.php:4 inc/admin/faq.inc.php:26
 msgid "How many sites is my key valid for?"
-msgstr ""
+msgstr "我的金鑰可以使用於幾個網站？"
 
 #: inc/admin/faq.inc.php:5 inc/admin/faq.inc.php:31
 msgid "What exactly does WP Rocket do?"
-msgstr ""
+msgstr "WP Rocket 究竟是什麼？"
 
 #: inc/admin/faq.inc.php:6 inc/admin/faq.inc.php:45
 msgid "I have turned any of the basic options on, does WP Rocket work?"
-msgstr ""
+msgstr "我已經將基本選項開啟，WP Rocket 可以運作了嗎？"
 
 #: inc/admin/faq.inc.php:7 inc/admin/faq.inc.php:56
 msgid ""
 "What should I do in case of a problem with WP Rocket that I can't solve?"
-msgstr ""
+msgstr "假如我遇到了一個 WP Rocket 的問題無法解決時該怎麼做？"
 
 #: inc/admin/faq.inc.php:8 inc/admin/faq.inc.php:59
 msgid "My license has expired, what should I do?"
-msgstr ""
+msgstr "我的註冊碼過期了，我該怎麼做？"
 
 #: inc/admin/faq.inc.php:9
 msgid ""
 "I want to change the URL of my website associated with my license, what "
 "should I do?"
-msgstr ""
+msgstr "我想要變更與我註冊碼相關的網站網址，我該怎麼做？"
 
 #: inc/admin/faq.inc.php:10
 msgid "Which tools should I use to measure the performance of my website?"
-msgstr ""
+msgstr "我應該使用那些工具來檢測我的網站效能？"
 
 #: inc/admin/faq.inc.php:11 inc/admin/faq.inc.php:81
 msgid "Does WP Rocket work with default permalinks?"
-msgstr ""
+msgstr "WP Rocket 能在預設的固定網址下運作嗎？"
 
 #: inc/admin/faq.inc.php:12
 msgid "Which web servers WP Rocket is compatible with?"
-msgstr ""
+msgstr "WP Rocket 相容於那些網頁伺服器？"
 
 #: inc/admin/faq.inc.php:13 inc/admin/faq.inc.php:88
 msgid ""
 "Reports from PageSpeed and YSlow tell me that the content is not gziped "
 "and/or did not expire, what should I do?"
-msgstr ""
+msgstr "從 PageSpeed 和 YSlow 的報告得知，內容沒有 Gzip 壓縮和（或）沒有過期，我該怎麼做？"
 
 #: inc/admin/faq.inc.php:14 inc/admin/faq.inc.php:92
 msgid ""
 "Is WP Rocket compatible with others cache plugins like WP Super Cache or W3 "
 "Total Cache?"
-msgstr ""
+msgstr "WP Rocket 相容於其他外掛像是 WP Super Cache 或 W3 Total Cache 嗎？"
 
 #: inc/admin/faq.inc.php:15 inc/admin/faq.inc.php:96
 msgid ""
 "Is WP Rocket compatible with WP Touch, WordPress Mobile Pack and WP Mobile "
 "Detector?"
-msgstr ""
+msgstr "WP Rocket 相容於 WP Touch、WordPress Mobile Pack 和 WP Mobile Detector 嗎？"
 
 #: inc/admin/faq.inc.php:16 inc/admin/faq.inc.php:100
 msgid "Is WP Rocket compatible with e-commerce plugins?"
-msgstr ""
+msgstr "WP Rocket 相容於 E-Commerce 外掛嗎？"
 
 #: inc/admin/faq.inc.php:17 inc/admin/faq.inc.php:107
 msgid "Is WP Rocket compatible with WPML or qTranslate?"
-msgstr ""
+msgstr "WP Rocket 相容於 WPML 或 qTranslate 嗎？"
 
 #: inc/admin/faq.inc.php:18 inc/admin/faq.inc.php:111
 msgid "What are the minification and concatenation of files?"
-msgstr ""
+msgstr "什麼是最小化和合併檔案？"
 
 #: inc/admin/faq.inc.php:19
 msgid "What should I do if WP Rocket distorts my website display?"
-msgstr ""
+msgstr "如果 WP Rocket 破壞了我的網站樣式該怎麼做？"
 
 #: inc/admin/faq.inc.php:20 inc/admin/faq.inc.php:118
 msgid "How often is the cache updated?"
-msgstr ""
+msgstr "快取更新的頻率是？"
 
 #: inc/admin/faq.inc.php:21 inc/admin/faq.inc.php:122
 msgid "How to exclude a particular page from caching?"
-msgstr ""
+msgstr "如何從快取中排除一個特定頁面？"
 
 #: inc/admin/faq.inc.php:22 inc/admin/faq.inc.php:125
 msgid "How do the robots preload files from the cache?"
-msgstr ""
+msgstr "機器人從快取預先載入檔案是如何運作？"
 
 #: inc/admin/faq.inc.php:27
 msgid ""
 "A key is valid for one domain name. If you have example.com, that makes one "
 "key."
-msgstr ""
+msgstr "一組金鑰只能用於一個網域名稱。如果你有 example.com，那使用一組金鑰。"
 
 #: inc/admin/faq.inc.php:28
 msgid ""
 "If you have example.com, www.example.com, dev.example.com, demo.example.com,"
 " example.com/dev/, example.com/demo/ all these sites depend on the same WP "
 "Rocket key."
-msgstr ""
+msgstr "如果你有 example.com、www.example.com、dev.example.com、demo.example.com、example.com/dev/、example.com/demo/ ，所有網站可使用同一組 WP Rocket 金鑰。"
 
 #: inc/admin/faq.inc.php:29
 msgid ""
 "However, a different base domain name, like example.org or example2.com, "
 "would require an additional key each."
-msgstr ""
+msgstr "然而，不同的網域名稱或後綴，像是 example.org 或 example2.com 則需要一組額外的金鑰。"
 
 #: inc/admin/faq.inc.php:32
 msgid "WP Rocket is a full cache plugin that comes with many features:"
-msgstr ""
+msgstr "WP Rocket 是一個完整的快取外掛，並且包含以下功能："
 
 #: inc/admin/faq.inc.php:34 inc/admin/faq.inc.php:50
 msgid "Caching of all the pages for quick viewing"
-msgstr ""
+msgstr "快取所有頁面為網頁加速"
 
 #: inc/admin/faq.inc.php:35
 msgid "Preloading the cache of files using two bots in Python"
-msgstr ""
+msgstr "使用兩個 Python 機器人來預先載入快取檔案"
 
 #: inc/admin/faq.inc.php:36
 msgid "Reduction of the number of HTTP requests to reduce loading time"
-msgstr ""
+msgstr "減少 HTTP 請求數量，以降低載入時間"
 
 #: inc/admin/faq.inc.php:37
 msgid "Decreasing bandwidth usage with GZIP compression"
-msgstr ""
+msgstr "使用 GZIP 壓縮來減少流量"
 
 #: inc/admin/faq.inc.php:38 inc/admin/faq.inc.php:52
 msgid "Management of the headers (expires, etags...)"
-msgstr ""
+msgstr "頁首管理（expires, etags 等等...）"
 
 #: inc/admin/faq.inc.php:39
 msgid "Minification and concatenation of JS and CSS files"
-msgstr ""
+msgstr "JS 和 CSS 檔案最小化和合併"
 
 #: inc/admin/faq.inc.php:40
 msgid "Deferred loading of images (LazyLoad)"
-msgstr ""
+msgstr "圖片延遲載入（LazyLoad）"
 
 #: inc/admin/faq.inc.php:41
 msgid "Deferred loading of JavaScript files"
-msgstr ""
+msgstr "JavaScript 檔案延遲載入"
 
 #: inc/admin/faq.inc.php:42 inc/admin/faq.inc.php:53
 msgid "Image Optimisation"
-msgstr ""
+msgstr "圖片最佳化"
 
 #: inc/admin/faq.inc.php:46 inc/admin/faq.inc.php:97 inc/admin/faq.inc.php:108
 msgid "Yes."
-msgstr ""
+msgstr "是的。"
 
 #: inc/admin/faq.inc.php:47
 msgid ""
 "The basic options are additional optimizations that could be described as "
 "bonuses. These options are not essential to improve the loading time of your"
 " website."
-msgstr ""
+msgstr "基本選項會有額外最佳化的效果。但對於改善你的網站載入時間不是必須的。"
 
 #: inc/admin/faq.inc.php:48
 msgid ""
 "Whatever your WP Rocket configuration is, the following features will still "
 "be active:"
-msgstr ""
+msgstr "無論你的 WP Rocket 設定為何，以下功能仍會啟用："
 
 #: inc/admin/faq.inc.php:51
 msgid "Decrease bandwidth usage with our GZIP compression"
-msgstr ""
+msgstr "使用我們 GZIP 壓縮來減少流量"
 
 #: inc/admin/faq.inc.php:57
 msgid ""
 "If none of the answers from our FAQ provide a solution to your problem, you "
 "can let us know about your problem on our <a href=\"%s\" "
 "target=\"_blank\">support</a>. We will answer you as soon as possible."
-msgstr ""
+msgstr "如果常見問題裡沒有提供你所需要的問題解答，你可以在<a href=\"%s\" target=\"_blank\">支援</a>讓我們知道你的問題。我們將盡快給你答覆。"
 
 #: inc/admin/faq.inc.php:60
 msgid ""
 "Don't panic, WP Rocket will continue to operate without a problem. You will "
 "receive an email telling you that your license will soon expire. You will "
 "find a renewal link which will be active even after the expiration."
-msgstr ""
+msgstr "別擔心，WP Rocket 將持續運作而不會有任何問題。你將收到一封郵件提醒你註冊碼即將過期。即使在過期後，續費鏈結依然可以使用。"
 
 #: inc/admin/faq.inc.php:62
 msgid ""
 "I want to change the URL of my site associated with my license, what should "
 "I do?"
-msgstr ""
+msgstr "我想要變更與我註冊碼相關的網站網址，我該怎麼做？"
 
 #: inc/admin/faq.inc.php:63
 msgid ""
 "You must contact us by email (<a href=\"mailto:contact@wp-"
 "rocket.me\">contact@wp-rocket.me</a>) indicating the reason for your change."
 " If accepted, the amendment will be carried out by the WP Rocket team."
-msgstr ""
+msgstr "你必須透過 Email（<a href=\"mailto:contact@wp-rocket.me\">contact@wp-rocket.me</a>）與我們聯繫並說明你要變更的原因。如被接受，WP Rocket 團隊將會做修改。"
 
 #: inc/admin/faq.inc.php:65
 msgid "Which tools should I use to measure the performance of my site?"
-msgstr ""
+msgstr "我應該使用那些工具來檢測我的網站效能？"
 
 #: inc/admin/faq.inc.php:66
 msgid ""
 "You can measure the performance of your website using the following tools:"
-msgstr ""
+msgstr "你可以使用以下工具來檢測你的網站效能："
 
 #: inc/admin/faq.inc.php:73
 msgid "These tools give you two indications:"
-msgstr ""
+msgstr "這些工具給你兩個指示："
 
 #: inc/admin/faq.inc.php:75
 msgid "a global note of good practices to apply"
-msgstr ""
+msgstr "一個可供參考的泛用說明"
 
 #: inc/admin/faq.inc.php:76
 msgid "a loading time"
-msgstr ""
+msgstr "一個載入時間"
 
 #: inc/admin/faq.inc.php:78
 msgid ""
 "These data are indicative and do not necessarily reflect the actual display "
 "speed of your website"
-msgstr ""
+msgstr "這些資料僅供參考，並不全然反映你的網站實際顯示速度"
 
 #: inc/admin/faq.inc.php:79
 msgid ""
 "For tests closest to reality load time we recommend using <a href=\"%s\" "
 "target=\"_blank\">Pingdom Tools</a>."
-msgstr ""
+msgstr "對於最接近真實的載入時間，我們推薦使用 <a href=\"%s\" target=\"_blank\">Pingdom Tools</a>。"
 
 #: inc/admin/faq.inc.php:82 inc/admin/faq.inc.php:93
 msgid "No."
-msgstr ""
+msgstr "不。"
 
 #: inc/admin/faq.inc.php:83
 msgid ""
 "It's necessary to have custom permalinks of the type <code>%s</code> rather "
 "than <code>%s</code>."
-msgstr ""
+msgstr "使用自訂固定網址格式 <code>%s</code> 取代 <code>%s</code> 是必要的。"
 
 #: inc/admin/faq.inc.php:85
 msgid "Which web servers is WP Rocket compatible with?"
-msgstr ""
+msgstr "WP Rocket 相容於那些網頁伺服器？"
 
 #: inc/admin/faq.inc.php:86
 msgid ""
 "WP Rocket is compatible with <strong>Apache, NGINX, Microsoft IIS et "
 "Litepseed</strong> web servers."
-msgstr ""
+msgstr "WP Rocket 相容於 <strong>Apache、NGINX、Microsoft IIS 和 Litepseed</strong> 網頁伺服器。"
 
 #: inc/admin/faq.inc.php:89
 msgid ""
@@ -307,179 +308,179 @@ msgid ""
 "there is a plugin conflict (exemple: <a href=\"%s\" target=\"_blank\">WP "
 "Retina 2x</a>). Try temporarily disabling all plugins except WP Rocket and "
 "retest."
-msgstr ""
+msgstr "WP Rocket 會自動為靜態檔案加入最佳逾時規則，並使用 Gzip 進行壓縮。如果它們無法使用，可能是與其他外掛衝突（例如：<a href=\"%s\" target=\"_blank\">WP Retina 2x</a>）。試著暫時停用 WP Rocket 以外的所有外掛並重新測試。"
 
 #: inc/admin/faq.inc.php:90
 msgid ""
 "If this is not conclusive, it means that <code>mod_expire</code> and/or "
 "<code>mod_deflate</code> are not enabled on your server."
-msgstr ""
+msgstr "如果這不是問題來源，可能意味著 <code>mod_expire</code> 和（或） <code>mod_deflate</code> 尚未在你的伺服器啟用。"
 
 #: inc/admin/faq.inc.php:94
 msgid ""
 "It's imperative to <strong>remove all other optimization plugins</strong> "
 "(cache, minification, LazyLoad) PRIOR to the activation of WP Rocket."
-msgstr ""
+msgstr "在啟用 WP Rocket 前必須<strong>移除所有其他最佳化外掛</strong>（快取、最小化、LazyLoad）。"
 
 #: inc/admin/faq.inc.php:98
 msgid ""
 "On the other hand, in the basic options, you must uncheck the <code>enable "
 "caching for mobile devices</code>."
-msgstr ""
+msgstr "另一方面，在基本選項裡，你必須取消勾選<code>啟用行動裝置快取</code>。"
 
 #: inc/admin/faq.inc.php:102
 msgid ""
 "Yes, WP Rocket automatically excludes \"View Cart\" and \"Checkout\" pages "
 "from the cache if you use one of these plugins: %l."
-msgstr ""
+msgstr "可以，WP Rocket 會自動排除「檢視購物車」和「結帳」頁面，如果你使用這些外掛的其中一個：%l 。"
 
 #: inc/admin/faq.inc.php:104
 msgid ""
 "If you don't use one of them, you must follow these instructions: <a "
 "href=\"%s\">How To Use WP Rocket On Your Ecommerce Site (EN)</a>."
-msgstr ""
+msgstr "如果你不是使用它們，你必須遵循這個說明：<a href=\"%s\">如何在你的購物車網站使用 WP Rocket 外掛（英文）</a>。"
 
 #: inc/admin/faq.inc.php:109
 msgid ""
 "You even have the possibility to empty/preload the cache for a specific "
 "language or for all languages at the same time."
-msgstr ""
+msgstr "你甚至可以清空／預先載入特定語言的快取，或同時在所有語言。"
 
 #: inc/admin/faq.inc.php:112
 msgid ""
 "Minification is the process of removing all unnecessary characters in HTML, "
 "CSS or JavaScript files: spaces, comments, etc... This reduces the size of "
 "the files. Thus, browsers read these files faster."
-msgstr ""
+msgstr "最小化是移除 HTML、CSS 或 JavaScript 檔案裡所有不必要的字元：空白、註解等等... 這減少了檔案的大小，也因此瀏覽器讀取這些檔案速度更快。"
 
 #: inc/admin/faq.inc.php:113
 msgid ""
 "Concatenation is to consolidate a set of files into one. This has the effect"
 " of reducing the number of HTTP requests."
-msgstr ""
+msgstr "合併是將一組檔案合而為一。這具有減少 HTTP 請求數量的效果。"
 
 #: inc/admin/faq.inc.php:115
 msgid "What should I do if WP Rocket distorts my site display?"
-msgstr ""
+msgstr "如果 WP Rocket 破壞了我的網站樣式該怎麼做？"
 
 #: inc/admin/faq.inc.php:116
 msgid ""
 "There is a good chance that the deformation is caused by the minification of"
 " HTML, CSS or JavaScript files. To resolve the problem, we recommend "
 "watching the following video: <a href=\"%1$s\" class=\"fancybox\">%1$s</a>."
-msgstr ""
+msgstr "這有很大的機率是因 HTML、CSS 或 JavaScript 檔案最小化所造成。解決這個問題，我們建議觀看以下影片：<a href=\"%1$s\" class=\"fancybox\">%1$s</a>。"
 
 #: inc/admin/faq.inc.php:119
 msgid ""
 "The cache is automatically refreshed at every update of your content "
 "(add/edit/delete of an article, publication of a comment, etc..)."
-msgstr ""
+msgstr "快取會在每次你更新內容時自動重新整理（新增、編輯、刪除一篇文章，或是發表迴響等等...）。"
 
 #: inc/admin/faq.inc.php:120
 msgid ""
 "In the basic options, you can also specify a period of automatic cleaning of"
 " the cache."
-msgstr ""
+msgstr "你也可以基本選項中設定自動清理快取的週期。"
 
 #: inc/admin/faq.inc.php:123
 msgid ""
 "In advanced options, it's possible to specify URLs to not cache. For this, "
 "you must add the URLs to exclude in the input field <code>Never cache the "
 "following pages</code>."
-msgstr ""
+msgstr "在進階選項中，可以設定特定網址不做快取。如要這麼做，你必須在<code>從不快取以下頁面</code>欄位加入網址來予以排除。"
 
 #: inc/admin/faq.inc.php:126
 msgid ""
 "A page is only cached on its first visit. To bypass this, we have developed "
 "two robots (in Python) that crawl the pages of your website."
-msgstr ""
+msgstr "一個頁面只會在第一次訪問時被快取。為此我們已開發兩個機器人（以 Python 語言）來爬行你的網站頁面。"
 
 #: inc/admin/faq.inc.php:127
 msgid ""
 "The first visits your site when using the button \"Preload the cache\". The "
 "second will automatically visit your site as soon as you are going to "
 "create/edit/delete an article."
-msgstr ""
+msgstr "當使用「預先載入快取」按鈕時第一個機器人會訪問你的網站。在你建立、編輯、刪除一篇文章後，第二個機器人會在短時間內自動訪問你的網站。"
 
 #: inc/admin/faq.inc.php:128
 msgid ""
 "For more information, please watch this video: <a href=\"%s\" "
 "class=\"fancybox\">%s</a>."
-msgstr ""
+msgstr "取得更多資訊，請觀看這段影片：<a href=\"%s\" class=\"fancybox\">%s</a>。"
 
 #: inc/admin/notices.php:26 inc/admin/notices.php:30
 msgid "<b>%s</b> can not be deactivated because of <code>%s</code>."
-msgstr ""
+msgstr "<b>%s</b> 無法啟用，因為 <code>%s</code>。"
 
 #: inc/admin/notices.php:26
 msgid ""
 "This constant is still defined in <code>wp-config.php</code> file and its "
 "value must be set to <code>false</code>."
-msgstr ""
+msgstr "這個常數仍然定義於 <code>wp-config.php</code> 檔案，且其值必須設為 <code>false</code>。"
 
 #: inc/admin/notices.php:26
 msgid "Maybe we do not have the writing permissions for <code>%s</code>."
-msgstr ""
+msgstr "也許我們沒有權限寫入 <code>%s</code>。"
 
 #: inc/admin/notices.php:26 inc/admin/notices.php:30
 msgid ""
 "Please give us permissions or resolve the problem yourself. Then retry "
 "deactivation."
-msgstr ""
+msgstr "請給我們權限或由你自行解決問題。然後重試停用。"
 
 #: inc/admin/notices.php:30
 msgid "This file is not writable and we can not remove these directives."
-msgstr ""
+msgstr "這個檔案無法寫入，且我們無法移除這個指令。"
 
 #: inc/admin/notices.php:30
 msgid "Maybe we do not have writing permissions for <code>%s</code>."
-msgstr ""
+msgstr "也許我們沒有權限寫入 <code>%s</code>。"
 
 #: inc/admin/notices.php:66
 msgid "You can still force the deactivation by clicking here."
-msgstr ""
+msgstr "你仍然可以點選這裡來強制停用。"
 
 #: inc/admin/notices.php:92
 msgid ""
 "<b>%s</b>: One or more extensions have been enabled or disabled, do not "
 "forget to clear the cache if necessary."
-msgstr ""
+msgstr "<b>%s</b>：一個或多個外掛已啟用或停用，如果必要時別忘了清除快取。"
 
 #: inc/admin/notices.php:168
 msgid ""
 "<b>%s</b>: The following plugins are not compatible with this plugin and may"
 " cause unexpected results:"
-msgstr ""
+msgstr "<b>%s</b>：以下外掛與此外掛不相容，且可能造成意外結果："
 
 #: inc/admin/notices.php:174
 msgid "Deactivate"
-msgstr ""
+msgstr "停用"
 
 #: inc/admin/notices.php:200
 msgid ""
 "<b>%s</b>: A custom permalink structure is required for the plugin to work "
 "properly. Please go to <a href=\"%s\">Permalink</a> to configure it."
-msgstr ""
+msgstr "<b>%s</b>：為了使外掛能正常運作，自訂固定網址結構是必須的。請前往<a href=\"%s\">固定網址</a>來進行設定。"
 
 #: inc/admin/notices.php:231
 msgid ""
 "<b>%s</b>: It seems we don't have <a href=\"%s\" target=\"_blank\">writing "
 "permissions</a> on <code>wp-config.php</code> file or the value of the "
 "constant <code>WP_CACHE</code> is set to <code>false</code>"
-msgstr ""
+msgstr "<b>%s</b>：看起來我們沒有 <code>wp-config.php</code> 檔案的<a href=\"%s\" target=\"_blank\">寫入權限</a>，或者 <code>WP_CACHE</code> 常數值為 <code>false</code>"
 
 #: inc/admin/notices.php:233
 msgid ""
 "To fix this you have to set writing permissions for <code>wp-"
 "config.php</code> and then save the settings again."
-msgstr ""
+msgstr "修復此問題你必須為 <code>wp-config.php</code> 設定寫入權限，然後再次儲存設定。"
 
 #: inc/admin/notices.php:235
 msgid ""
 "If the message persists, you have to put the following code in your <code"
 ">wp-config.php</code> file so that it works correctly. Click on the field "
 "and press Ctrl-A to select all."
-msgstr ""
+msgstr "如果該訊息仍然存在，你必須在你的 <code>wp-config.php</code> 檔案加入以下程式碼，讓它可以正常運作。點選欄位後按下 Ctrl-A 來全選。"
 
 #: inc/admin/notices.php:276
 msgid ""
@@ -487,14 +488,14 @@ msgid ""
 "<code>%2$s</code> file, <b>%3$s</b> could do this automatically. This is not"
 " the case, here is the code you should add in your <code>%2$s</code> file "
 "for <b>%3$s</b> to work properly."
-msgstr ""
+msgstr "如果你有 <code>%2$s</code> 檔案的<a href=\"%1$s\" target=\"_blank\">寫入權限</a>，<b>%3$s</b> 可以自動進行。若不是如此，為了使 <b>%3$s</b> 能正常運作，你應該在你的 <code>%2$s</code> 檔案加入程式碼。"
 
 #: inc/admin/notices.php:309
 msgid ""
 "It seems that the <code>%s</code> file is not ours. Save the settings, we "
 "will automatically recreate the correct one. If it's still not working, "
 "please delete it and save again."
-msgstr ""
+msgstr "看起來 <code>%s</code> 檔案不是我們的。儲存設定，我們將自動重新建立一個正確的。如果它仍然無法運作，請刪除然後再次儲存。"
 
 #: inc/admin/notices.php:338
 msgid ""
@@ -503,13 +504,13 @@ msgid ""
 "is not the case, so here are the rewrite rules you have to put in your "
 "<code>.htaccess</code> file for <b>%2$s</b> to work correctly. Click on the "
 "field and press Ctrl-A to select all."
-msgstr ""
+msgstr "如果你有 <code>.htaccess</code> 檔案的<a href=\"%1$s\" target=\"_blank\">寫入權限</a>，<b>%2$s</b> 可以自動進行。若不是如此，為了使 <b>%2$s</b> 能正常運作，你必須將重寫規則加入你的 <code>.htaccess</code> 檔案。點選欄位後按下 Ctrl-A 來全選。"
 
 #: inc/admin/notices.php:338
 msgid ""
 "<strong>Warning:</strong> This message will popup again and its content may "
 "be updated when saving the options"
-msgstr ""
+msgstr "<strong>警告：</strong>這個訊息將再次跳出，當儲存選項時，內容可能更新。"
 
 #: inc/admin/notices.php:367
 msgid ""
@@ -519,7 +520,7 @@ msgid ""
 "<code>755</code> or <code>775</code> or <code>777</code> this "
 "folder.<br/>When the problem is solved, thank you to save the %3$s options "
 "to generate the configuration file."
-msgstr ""
+msgstr "請注意，你沒有 <b>%3$s</b> 網域設定資料夾（<code>%2$s</code>）的<a href=\"%1$s\" target=\"_blank\">寫入權限</a>。為了使 <b>%3$s</b> 能正常運作，請將資料夾權限調整為 <code>755</code> 或 <code>775</code> 或 <code>777</code>。<br/>當問題解決後，儲存 %3$s 選項來產生設定檔。"
 
 #: inc/admin/notices.php:395
 msgid ""
@@ -527,7 +528,7 @@ msgid ""
 "permissions</a> on <b>%3$s</b> cache folder (<code>%2$s</code>). For "
 "<b>%3$s</b> works properly, please CHMOD <code>755</code> or "
 "<code>775</code> or <code>777</code> this folder."
-msgstr ""
+msgstr "請注意，你沒有 <b>%3$s</b> 快取資料夾（<code>%2$s</code>）的<a href=\"%1$s\" target=\"_blank\">寫入權限</a>。為了使 <b>%3$s</b> 能正常運作，請將資料夾權限調整為 <code>755</code> 或 <code>775</code> 或 <code>777</code>。"
 
 #: inc/admin/notices.php:424
 msgid ""
@@ -535,362 +536,362 @@ msgid ""
 "permissions</a> on <b>%3$s</b> minified cache folder (<code>%2$s</code>). To"
 " make <b>%3$s</b> work properly, please CHMOD <code>755</code> or "
 "<code>775</code> or <code>777</code> this folder."
-msgstr ""
+msgstr "請注意，你沒有 <b>%3$s</b> 最小化快取資料夾（<code>%2$s</code>）的<a href=\"%1$s\" target=\"_blank\">寫入權限</a>。為了使 <b>%3$s</b> 能正常運作，請將資料夾權限調整為 <code>755</code> 或 <code>775</code> 或 <code>777</code>。"
 
 #: inc/admin/notices.php:449
 msgid "Thank you. Your license has been successfully validated!"
-msgstr ""
+msgstr "謝謝你。你的註冊碼已驗證成功！"
 
 #: inc/admin/notices.php:450
 msgid "Key: <code>%s</code><br>Email: <i>%s</i>"
-msgstr ""
+msgstr "金鑰：<code>%s</code><br>Email：<i>%s</i>"
 
 #: inc/admin/notices.php:475
 msgid "Do you want %s to update itself in the future? "
-msgstr ""
+msgstr "你想在未來讓 %s 自動更新嗎？"
 
 #: inc/admin/notices.php:476
 msgid "<a href=\"%s\" class=\"button button-secondary\"><b>Yes</b>, of course</a>"
-msgstr ""
+msgstr "<a href=\"%s\" class=\"button button-secondary\"><b>是</b>，當然</a>"
 
 #: inc/admin/notices.php:477
 msgid " or <a href=\"%s\">No, thank you</a>."
-msgstr ""
+msgstr "或 <a href=\"%s\">不了，謝謝你</a>。"
 
 #: inc/admin/options.php:139 inc/admin/options.php:366
 msgid "Warning: "
-msgstr ""
+msgstr "警告："
 
 #: inc/admin/options.php:146
 msgid "Download options"
-msgstr ""
+msgstr "下載設定"
 
 #: inc/admin/options.php:175
 msgid "<b>JS</b> files with Deferred Loading JavaScript"
-msgstr ""
+msgstr "延遲載入 JavaScript 的 <b>JS</b> 檔案"
 
 #: inc/admin/options.php:195 inc/admin/options.php:215
 #: inc/admin/options.php:235
 msgid "Wait until this file is loaded?"
-msgstr ""
+msgstr "等待至這個檔案被載入？"
 
 #: inc/admin/options.php:243 inc/admin/options.php:786
 msgid "Add URL"
-msgstr ""
+msgstr "新增網址"
 
 #: inc/admin/options.php:255 inc/admin/options.php:854
 msgid "Replace site's hostname with:"
-msgstr ""
+msgstr "將網站網址重新設定為："
 
 #: inc/admin/options.php:273 inc/admin/options.php:299
 #: inc/admin/options.php:323
 msgid "reserved for"
-msgstr ""
+msgstr "套用到"
 
 #: inc/admin/options.php:275 inc/admin/options.php:301
 #: inc/admin/options.php:325
 msgid "All files"
-msgstr ""
+msgstr "所有檔案"
 
 #: inc/admin/options.php:276 inc/admin/options.php:302
 #: inc/admin/options.php:326
 msgid "Images"
-msgstr ""
+msgstr "圖片"
 
 #: inc/admin/options.php:338
 msgid "Add CNAME"
-msgstr ""
+msgstr "新增 CNAME"
 
 #: inc/admin/options.php:390
 msgid "Watch the video"
-msgstr ""
+msgstr "觀看影片"
 
 #: inc/admin/options.php:414
 msgid "License validation"
-msgstr ""
+msgstr "註冊碼驗證"
 
 #: inc/admin/options.php:417 inc/admin/options.php:425
 msgid "API Key"
-msgstr ""
+msgstr "API 金鑰"
 
 #: inc/admin/options.php:430
 msgid "Please enter the API key obtained after your purchase."
-msgstr ""
+msgstr "請輸入你在購買後獲得的 API 金鑰。"
 
 #: inc/admin/options.php:436 inc/admin/options.php:444
 msgid "E-mail Address"
-msgstr ""
+msgstr "電子郵件地址"
 
 #: inc/admin/options.php:449
 msgid "The one used for the purchase, in your support account."
-msgstr ""
+msgstr "這一個用於購買，在你的支援帳戶。"
 
 #: inc/admin/options.php:455 inc/admin/options.php:1196
 msgid "Basic options"
-msgstr ""
+msgstr "基本選項"
 
 #: inc/admin/options.php:458 inc/admin/options.php:467
 msgid "Lazyload:"
-msgstr ""
+msgstr "延遲載入："
 
 #: inc/admin/options.php:465
 msgid "Enable Lazy loading images."
-msgstr ""
+msgstr "啟用圖片延遲載入。"
 
 #: inc/admin/options.php:472
 msgid ""
 "LazyLoad displays images on a page only when they are visible to the user."
-msgstr ""
+msgstr "延遲載入只在畫面被使用者看到時才顯示圖片。"
 
 #: inc/admin/options.php:473 inc/admin/options.php:514
 msgid ""
 "This mechanism reduces the number of HTTP requests and improves the loading "
 "time."
-msgstr ""
+msgstr "這個機制能減少 HTTP 請求數並改善載入時間。"
 
 #: inc/admin/options.php:479
 msgid ""
 "Files optimisation:<br/><span class=\"description\">(Minification & "
 "Concatenation)</span>"
-msgstr ""
+msgstr "檔案最佳化：<br/><span class=\"description\">（最小化和合併）</span>"
 
 #: inc/admin/options.php:488
 msgid "HTML Files minification"
-msgstr ""
+msgstr "HTML 檔案最小化"
 
 #: inc/admin/options.php:494
 msgid "Google Fonts minification"
-msgstr ""
+msgstr "Google 字型最小化"
 
 #: inc/admin/options.php:500
 msgid "CSS Files minification"
-msgstr ""
+msgstr "CSS 檔案最小化"
 
 #: inc/admin/options.php:506
 msgid "JS Files minification"
-msgstr ""
+msgstr "JS 檔案最小化"
 
 #: inc/admin/options.php:511
 msgid ""
 "Minification removes any spaces and comments present in the CSS and "
 "JavaScript files."
-msgstr ""
+msgstr "最小化會移除 CSS 和 JavaScript 檔案裡所有空白和註解。"
 
 #: inc/admin/options.php:512
 msgid ""
 "This mechanism reduces the weight of each file and allows a faster reading "
 "of browsers and search engines."
-msgstr ""
+msgstr "這個機制能減少各個檔案的大小，讓瀏覽器和搜尋引擎能更快讀取。"
 
 #: inc/admin/options.php:513
 msgid "Concatenation combines all CSS and JavaScript files."
-msgstr ""
+msgstr "合併所有 CSS 和 JavaScript 檔案。"
 
 #: inc/admin/options.php:519
 msgid "Concatenating files can cause display errors."
-msgstr ""
+msgstr "合併檔案可能造成顯示錯誤。"
 
 #: inc/admin/options.php:525
 msgid ""
 "In case of any errors we recommend you to turn off this option or watch the "
 "following video: <a href=\"%1$s\" class=\"fancybox\">%1$s</a>."
-msgstr ""
+msgstr "在發生任何錯誤時，我們建議你關閉這個選項，或觀看以下影片：<a href=\"%1$s\" class=\"fancybox\">%1$s</a>。"
 
 #: inc/admin/options.php:540 inc/admin/options.php:549
 msgid "Mobile cache:"
-msgstr ""
+msgstr "行動裝置快取："
 
 #: inc/admin/options.php:547
 msgid "Enable caching for mobile devices."
-msgstr ""
+msgstr "啟用行動裝置快取。"
 
 #: inc/admin/options.php:554
 msgid "Don't turn on this option if you use one of these plugins: %l."
-msgstr ""
+msgstr "別啟用這個選項，如果你使用以下任何一個外掛：%l 。"
 
 #: inc/admin/options.php:560 inc/admin/options.php:567
 msgid "Logged in user cache:"
-msgstr ""
+msgstr "登入使用者快取："
 
 #: inc/admin/options.php:565
 msgid "Enable caching for logged in users."
-msgstr ""
+msgstr "為登入使用者建立快取。"
 
 #: inc/admin/options.php:572 inc/admin/options.php:580
 msgid "SSL cache:"
-msgstr ""
+msgstr "SSL 快取："
 
 #: inc/admin/options.php:578
 msgid "Enable caching for pages with SSL protocol (<code>https://</code>)."
-msgstr ""
+msgstr "為使用 SSL 協定（<code>https://</code>）的頁面建立快取。"
 
 #: inc/admin/options.php:585 inc/admin/options.php:593
 msgid "Clear Cache Lifespan"
-msgstr ""
+msgstr "快取清理週期"
 
 #: inc/admin/options.php:599
 msgid "Unit of time"
-msgstr ""
+msgstr "時間單位"
 
 #: inc/admin/options.php:602
 msgid "second(s)"
-msgstr ""
+msgstr "秒"
 
 #: inc/admin/options.php:603
 msgid "minute(s)"
-msgstr ""
+msgstr "分"
 
 #: inc/admin/options.php:604
 msgid "hour(s)"
-msgstr ""
+msgstr "小時"
 
 #: inc/admin/options.php:605
 msgid "day(s)"
-msgstr ""
+msgstr "天"
 
 #: inc/admin/options.php:611
 msgid ""
 "By default, cache lifespan is 24 hours. This means that once created, the "
 "cache files are automatically removed after 24 hours before being recreated."
-msgstr ""
+msgstr "在預設情況下，快取週期為 24 小時。這意味著一旦建立快取，24 小時後快取檔案會自動清除並重新建立。"
 
 #: inc/admin/options.php:611
 msgid ""
 "This can be useful if you display your latest tweets or rss feeds in your "
 "sidebar, for example."
-msgstr ""
+msgstr "舉例來說，如果你在你的側邊欄顯示你的最新推特訊息或 RSS Feeds，那麼這個選項會很有用。"
 
 #: inc/admin/options.php:616
 msgid "Specify 0 for unlimited lifetime."
-msgstr ""
+msgstr "設定為 0 則週期無限長。"
 
 #: inc/admin/options.php:622 inc/admin/options.php:1197
 msgid "Advanced options"
-msgstr ""
+msgstr "進階選項"
 
 #: inc/admin/options.php:625 inc/admin/options.php:633
 msgid "Prefetch DNS requests:"
-msgstr ""
+msgstr "預先取得 DNS 請求："
 
 #: inc/admin/options.php:638
 msgid ""
 "DNS prefetching is a way for browsers to anticipate the DNS resolution of "
 "external domains from your site."
-msgstr ""
+msgstr "這是一個從你網站中外部網址預先取得 DNS 紀錄的方法。"
 
 #: inc/admin/options.php:638
 msgid "This mechanism reduces the latency of some external files."
-msgstr ""
+msgstr "這個機制降低一些外部檔案造成的延遲。"
 
 #: inc/admin/options.php:644
 msgid ""
 "To learn more about this option and how to use it correctly, we advise you "
 "to watch the following video: <a href=\"%1$s\" class=\"fancybox\">%1$s</a>."
-msgstr ""
+msgstr "取得更多關於這個選項的說明，以及如何正確使用它，我們建議你觀看以下影片：<a href=\"%1$s\" class=\"fancybox\">%1$s</a>。"
 
 #: inc/admin/options.php:649
 msgid ""
 "<strong>Note:</strong> Enter the domain names without their protocol, for "
 "example: <code>//ajax.googleapis.com</code> without <code>http:</code> (one "
 "per line)."
-msgstr ""
+msgstr "<strong>注意：</strong> 輸入網域名稱但不包括它們的協定，舉例來說： <code>//ajax.googleapis.com</code> 而沒有 <code>http:</code> （每行一個）。"
 
 #: inc/admin/options.php:655 inc/admin/options.php:663
 msgid "Empty the cache of the following pages when updating a post:"
-msgstr ""
+msgstr "當更新文章時，清除以下頁面快取："
 
 #: inc/admin/options.php:668
 msgid ""
 "Enter the URL of additionnal pages to purge when updating a post (one per "
 "line)."
-msgstr ""
+msgstr "輸入你想在更新文章時清除快取的額外頁面網址（每行一個）。"
 
 #: inc/admin/options.php:669 inc/admin/options.php:693
 msgid "You can use regular expressions (regex)."
-msgstr ""
+msgstr "你可以使用正規表達式（regex）。"
 
 #: inc/admin/options.php:674
 msgid ""
 "<strong>Note:</strong> When you update a post or when a comment is posted, "
 "the homepage, categories and tags associated with this post are "
 "automatically removed from the cache and then recreated by our bot."
-msgstr ""
+msgstr "<strong>注意：</strong> 當你更新文章或有新迴響發佈時，和這篇文章相關連的首頁、分類和標籤將自動從快取移除，然後由我們的機器人重新建立。"
 
 #: inc/admin/options.php:680 inc/admin/options.php:688
 msgid "Never cache the following pages:"
-msgstr ""
+msgstr "永不快取以下頁面："
 
 #: inc/admin/options.php:693
 msgid "Enter the URL of pages to reject (one per line)."
-msgstr ""
+msgstr "輸入拒絕快取的頁面網址（每行一個）。"
 
 #: inc/admin/options.php:699 inc/admin/options.php:707
 msgid "Don't cache pages that use the following cookies:"
-msgstr ""
+msgstr "不快取使用以下 cookies 的頁面："
 
 #: inc/admin/options.php:712
 msgid "List the names of the cookies (one per line)."
-msgstr ""
+msgstr "列出 cookies 的名稱（每行一個）。"
 
 #: inc/admin/options.php:718 inc/admin/options.php:726
 msgid "Cache pages that use the following query strings (GET parameters):"
-msgstr ""
+msgstr "快取使用以下查詢字串的頁面（GET 參數）："
 
 #: inc/admin/options.php:731
 msgid "List of query strings which can be cached (one per line)."
-msgstr ""
+msgstr "列出可以被快取的查詢字串（每行一個）。"
 
 #: inc/admin/options.php:737 inc/admin/options.php:745
 msgid "<b>CSS</b> files to exclude from minification:"
-msgstr ""
+msgstr "從最小化排除的 <b>CSS</b> 檔案："
 
 #: inc/admin/options.php:750
 msgid "Enter the URL of <b>CSS</b> files to reject (one per line)."
-msgstr ""
+msgstr "輸入拒絕的 <b>CSS</b> 檔案網址（每行一個）。"
 
 #: inc/admin/options.php:756 inc/admin/options.php:764
 msgid "<b>JS</b> files to exclude from minification:"
-msgstr ""
+msgstr "從最小化排除的 <b>JS</b> 檔案："
 
 #: inc/admin/options.php:769
 msgid "Enter the URL of <b>JS</b> files to reject (one per line)."
-msgstr ""
+msgstr "輸入拒絕的 <b>JS</b> 檔案網址（每行一個）。"
 
 #: inc/admin/options.php:775 inc/admin/options.php:782
 msgid ""
 "<b>JS</b> files to be included in the footer during the minification "
 "process:"
-msgstr ""
+msgstr "最小化時放置網頁底部的 <b>JS</b> 檔案："
 
 #: inc/admin/options.php:791 inc/admin/options.php:819
 msgid "Empty the field to remove it."
-msgstr ""
+msgstr "清除欄位來移除它。"
 
 #: inc/admin/options.php:797 inc/admin/options.php:825
 msgid "You must specify the complete URL of the files."
-msgstr ""
+msgstr "你必須設定檔案的完整網址。"
 
 #: inc/admin/options.php:803
 msgid "<b>JS</b> files with deferred loading:"
-msgstr ""
+msgstr "延遲載入的 <b>JS</b> 檔案："
 
 #: inc/admin/options.php:814
 msgid ""
 "You can add JavaScript files that will be loaded asynchronously at the same "
 "time as the page loads."
-msgstr ""
+msgstr "你可以加入在頁面讀取時不同步載入的 JavaScript 檔案。"
 
 #: inc/admin/options.php:831
 msgid "Content Delivery Network options"
-msgstr ""
+msgstr "內容傳遞網路選項"
 
 #: inc/admin/options.php:834 inc/admin/options.php:843
 msgid "CDN:"
-msgstr ""
+msgstr "CDN："
 
 #: inc/admin/options.php:841
 msgid "Enable Content Delivery Network."
-msgstr ""
+msgstr "啟用內容傳遞網路。"
 
 #: inc/admin/options.php:848
 msgid ""
@@ -898,292 +899,292 @@ msgid ""
 "Images) with the url entered below. This way all your content will be copied"
 " to a dedicated hosting or a CDN system <a href=\"http://www.maxcdn.com/\" "
 "target=\"_blank\">maxCDN</a>."
-msgstr ""
+msgstr "CDN 功能會使用你輸入在下方的網址來取代靜態檔案和媒體（CSS、JS、圖片）網址。所有你的內容必須複製到一個獨立主機或 CDN 系統（例如：<a href=\"http://www.maxcdn.com/\" target=\"_blank\">maxCDN</a>）。"
 
 #: inc/admin/options.php:860 inc/admin/options.php:1200
 msgid "White Label"
-msgstr ""
+msgstr "白標"
 
 #: inc/admin/options.php:863 inc/admin/options.php:872
 msgid "Plugin Name:"
-msgstr ""
+msgstr "外掛名稱："
 
 #: inc/admin/options.php:878 inc/admin/options.php:887
 msgid "Plugin URI:"
-msgstr ""
+msgstr "外掛網址："
 
 #: inc/admin/options.php:893 inc/admin/options.php:902
 msgid "Description:"
-msgstr ""
+msgstr "內容說明："
 
 #: inc/admin/options.php:908 inc/admin/options.php:917
 msgid "Author:"
-msgstr ""
+msgstr "作者："
 
 #: inc/admin/options.php:923 inc/admin/options.php:932
 msgid "Author URI:"
-msgstr ""
+msgstr "作者網址："
 
 #: inc/admin/options.php:944
 msgid "Reset White Label values to default"
-msgstr ""
+msgstr "將白標重設為預設值"
 
 #: inc/admin/options.php:949
 msgid ""
 "If you change anything, the tutorial + FAQ + Support tabs will be hidden."
-msgstr ""
+msgstr "如果你變更任何內容，說明、常見問題和支援標籤將被隱藏。"
 
 #: inc/admin/options.php:954 inc/admin/options.php:1202
 msgid "Tools"
-msgstr ""
+msgstr "工具"
 
 #: inc/admin/options.php:958 inc/admin/options.php:969
 msgid "Auto-update"
-msgstr ""
+msgstr "自動更新"
 
 #: inc/admin/options.php:966
 msgid ""
 "Yes, please update this plugin automatically for next available <b>Minor</b>"
 " & <b>Fix Bugs</b> versions."
-msgstr ""
+msgstr "是的，請在下一次可用的 <b>主要</b> 及 <b>臭蟲修復</b> 版本釋出時自動更新此外掛。"
 
 #: inc/admin/options.php:967
 msgid "Yes, please update this plugin for all next available versions."
-msgstr ""
+msgstr "是的，在接下來所有可用版本釋出時更新此外掛。"
 
 #: inc/admin/options.php:977 inc/admin/options.php:986
 msgid "Beta Tester"
-msgstr ""
+msgstr "Beta 測試員"
 
 #: inc/admin/options.php:984
 msgid "Yes I do!"
-msgstr ""
+msgstr "是的，我願意！"
 
 #: inc/admin/options.php:991
 msgid ""
 "Check it to participate in the WP Rocket Beta Program and get earlier access"
 " to new versions, thanks in advance."
-msgstr ""
+msgstr "勾選參加 WP Rocket 測試資格並提前使用最新版本，感謝你的貢獻。"
 
 #: inc/admin/options.php:1010
 msgid "Clear the cache for the whole site."
-msgstr ""
+msgstr "清除整個網站快取。"
 
 #: inc/admin/options.php:1016 inc/admin/options.php:1022
 #: inc/admin/options.php:1086 inc/admin-bar.php:141 inc/admin-bar.php:162
 #: inc/admin-bar.php:193
 msgid "Preload cache"
-msgstr ""
+msgstr "預先載入快取"
 
 #: inc/admin/options.php:1027
 msgid ""
 "Allows you to request a bot crawl to preload the cache (homepage and its "
 "internal links)."
-msgstr ""
+msgstr "讓你請求一個機器人爬行預先載入快取（首頁和內部鏈結）。"
 
 #: inc/admin/options.php:1034
 msgid "Settings Exporter"
-msgstr ""
+msgstr "匯出設定"
 
 #: inc/admin/options.php:1044
 msgid "Settings Importer"
-msgstr ""
+msgstr "匯入設定"
 
 #: inc/admin/options.php:1053
 msgid ""
 "Please backup your settings before, use the \"Download options\" button "
 "above."
-msgstr ""
+msgstr "請先備份你的設定，使用上方「下載設定」按鈕。"
 
 #: inc/admin/options.php:1055
 msgid ""
 "<br>Also, the \"Auto-update\" feature will be deactivated, do not activate "
 "it again if you don't want to upgrade."
-msgstr ""
+msgstr "<br>此外，「自動更新」功能將被停用，如果你不想升級，請不要重新啟用它。"
 
 #: inc/admin/options.php:1059
 msgid "Update Rollback"
-msgstr ""
+msgstr "更新還原"
 
 #: inc/admin/options.php:1065
 msgid "Reinstall v%s"
-msgstr ""
+msgstr "重新安裝 v%s"
 
 #: inc/admin/options.php:1070
 msgid ""
 "Is the version %s causing you some issues? You can ask for a rollback and "
 "reinstall the last version you used before."
-msgstr ""
+msgstr "在 %s 版發生問題嗎？你可以還原更新並重新安裝之前使用的最後一個版本。"
 
 #: inc/admin/options.php:1083 inc/admin/options.php:1204
 msgid "Tutorials"
-msgstr ""
+msgstr "說明"
 
 #: inc/admin/options.php:1091
 msgid ""
 "This video gives some explanations about our two crawler robots. They "
 "generate several cache files in a few seconds."
-msgstr ""
+msgstr "這段影片是有關我們兩個爬蟲機器人的說明。它們能在幾秒鐘內產生數個快取檔案。"
 
 #: inc/admin/options.php:1098
 msgid "CSS and JavaScript minification"
-msgstr ""
+msgstr "CSS 和 JavaScript "
 
 #: inc/admin/options.php:1103
 msgid ""
 "This video gives some explanations about how to use the advanced processes "
 "of minification and concatenation of CSS and JavaScript files."
-msgstr ""
+msgstr "這段影片是介紹如何使用進階功能來最小化及串聯 CSS 和 JavaScript 檔案。"
 
 #: inc/admin/options.php:1110
 msgid "Preloading DNS queries"
-msgstr ""
+msgstr "預先載入 DNS 查詢"
 
 #: inc/admin/options.php:1115
 msgid ""
 "This video helps to easily understand the advanced option of \"Preloading "
 "DNS queries\" and the use of the filter <code>rocket_dns_prefetch</code>."
-msgstr ""
+msgstr "這段影片幫助你更簡單地了解進階選項中「預先載入 DNS 查詢」功能及 <code>rocket_dns_prefetch</code> 過濾器使用。"
 
 #: inc/admin/options.php:1122
 msgid "How to use the White Label functionality?"
-msgstr ""
+msgstr "如何使用「白標」功能？"
 
 #: inc/admin/options.php:1127
 msgid "This video helps to set up a White Label version of WP Rocket."
-msgstr ""
+msgstr "這段影片幫助你設定 WP Rocket 白標版本。"
 
 #: inc/admin/options.php:1134
 msgid "How to use the CDN functionality?"
-msgstr ""
+msgstr "如何使用 CDN 功能？"
 
 #: inc/admin/options.php:1139
 msgid ""
 "This video helps to understand what is the CDN functionality included since "
 "WP Rocket 2.1."
-msgstr ""
+msgstr "這段影片幫助你了解什麼是 WP Rocket 2.1 版後加入的 CDN 功能。"
 
 #: inc/admin/options.php:1146
 msgid "How to use the CDN API?"
-msgstr ""
+msgstr "如何使用 CDN API"
 
 #: inc/admin/options.php:1151
 msgid ""
 "This video helps to set up the two functions "
 "<code>get_rocket_cdn_url()</code> and <code>rocket_cdn_url()</code>."
-msgstr ""
+msgstr "這段影片幫助你設定兩個函式 <code>get_rocket_cdn_url()</code> 和 <code>rocket_cdn_url()</code>。"
 
 #: inc/admin/options.php:1156 inc/admin/options.php:1159
 #: inc/admin/options.php:1205 inc/admin/options.php:1210
 msgid "FAQ"
-msgstr ""
+msgstr "常見問題"
 
 #: inc/admin/options.php:1176
 msgid "Visit the Support"
-msgstr ""
+msgstr "前往支援頁面"
 
 #: inc/admin/options.php:1182
 msgid ""
 "If none of the FAQ answers resolves your problem, you can send your issue to"
 " our free support. We will reply as soon as possible."
-msgstr ""
+msgstr "如果常見問題的解答無法解決你的問題，你可以將你的問題寄到我們的免費支援。我們將盡快給你答覆。"
 
 #: inc/admin/options.php:1198
 msgid "CDN"
-msgstr ""
+msgstr "CDN"
 
 #: inc/admin/options.php:1209
 msgid "License"
-msgstr ""
+msgstr "註冊碼"
 
 #: inc/admin/options.php:1510
 msgid "Settings imported and saved."
-msgstr ""
+msgstr "已匯入設定並儲存。"
 
 #: inc/admin/options.php:1528 inc/admin/options.php:1587
 msgid "Settings saved."
-msgstr ""
+msgstr "設定已儲存。"
 
 #: inc/admin/options.php:1672
 msgid ""
 "Before you can upload your import file, you will need to fix the following "
 "error:"
-msgstr ""
+msgstr "在上傳你的設定檔前，你必須先修復以下問題："
 
 #: inc/admin/options.php:1679
 msgid "Choose a file from your computer:"
-msgstr ""
+msgstr "從你的電腦選擇一個檔案："
 
 #: inc/admin/options.php:1679
 msgid "Maximum size: %s"
-msgstr ""
+msgstr "檔案最大為：%s"
 
 #: inc/admin/options.php:1682
 msgid "Upload file and import settings"
-msgstr ""
+msgstr "上傳檔案並匯入設定"
 
 #: inc/admin/updater.php:118 inc/admin/updater.php:125
 msgid ""
 "An unexpected error occurred. Something may be wrong with WP-Rocket.me or "
 "this server&#8217;s configuration. If you continue to have problems, please "
 "try the <a href=\"%s\">support forums</a>."
-msgstr ""
+msgstr "發生意外錯誤。某些 WP-Rocket.me 檔案或伺服器設定發生錯誤。如果你持續遭遇問題，請嘗試<a href=\"%s\">支援論壇</a>。"
 
 #: inc/admin/updater.php:174
 msgid "Update Plugin"
-msgstr ""
+msgstr "更新外掛"
 
 #: inc/admin-bar.php:90 inc/admin-bar.php:184 inc/admin-bar.php:252
 #: inc/admin-bar.php:259
 msgid "All languages"
-msgstr ""
+msgstr "所有語言"
 
 #: inc/admin-bar.php:115
 msgid "Clear this post"
-msgstr ""
+msgstr "清除這篇文章"
 
 #: inc/admin-bar.php:127
 msgid "Purge this URL"
-msgstr ""
+msgstr "清除這個網址"
 
 #: inc/admin-bar.php:204
 msgid "Documentation"
-msgstr ""
+msgstr "說明文件"
 
 #: inc/cron.php:16
 msgid "%s clear"
-msgstr ""
+msgstr "%s 清除"
 
 #: inc/functions/admin.php:13
 msgid ""
 "Last step before enjoying the high performances of our plugin, please <a "
 "href=\"%s\">Enter you API key</a> here."
-msgstr ""
+msgstr "在開始享受我們高效能的外掛前，請在這裡<a href=\"%s\">輸入你的 API 金鑰</a>。"
 
 #: inc/functions/options.php:254
 msgid "Your license is not valid."
-msgstr ""
+msgstr "你的註冊碼無效。"
 
 #: inc/functions/options.php:255
 msgid "You cannot add more websites. Upgrade your account."
-msgstr ""
+msgstr "你無法新增更多網站。升級你的帳戶。"
 
 #: inc/functions/options.php:256
 msgid "This website is not allowed."
-msgstr ""
+msgstr "這個網站是不允許的。"
 
 #: inc/functions/options.php:257
 msgid "This license key is not accepted."
-msgstr ""
+msgstr "這個註冊金鑰不被接受。"
 
 #. Author of the plugin/theme
 msgid "WP Rocket"
-msgstr ""
+msgstr "WP Rocket"
 
 #. Author URI of the plugin/theme
 msgid "http://www.wp-rocket.me"
-msgstr ""
+msgstr "http://www.wp-rocket.me"
 
 #. Description of the plugin/theme
 msgid "The best WordPress performance plugin."
-msgstr ""
+msgstr "最棒的 WordPress 效能外掛。"

@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
 "POT-Creation-Date: 2015-01-27 14:55:53+00:00\n"
-"PO-Revision-Date: 2015-01-27 14:57+0000\n"
-"Last-Translator: FxB <fxb@wp-translations.org>\n"
+"PO-Revision-Date: 2015-01-28 10:18+0000\n"
+"Last-Translator: Seggev Shoresh\n"
 "Language-Team: Hebrew (Israel) (http://www.transifex.com/projects/p/wp-rocket/language/he_IL/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -427,7 +427,7 @@ msgstr "ייתכן ואין לנו הרשאות כתיבה עבור  <code>%s</c
 msgid ""
 "Please give us permissions or resolve the problem yourself. Then retry "
 "deactivation."
-msgstr "אנא תן לנו הרשאות או פתור את הבעיה בעצמך. לאחר מכן נסה בשנית לכבות."
+msgstr "אנא תן לנו הרשאות או פתור את הבעיה בעצמך. לאחר מכן נסה שוב לכבות."
 
 #: inc/admin/notices.php:30
 msgid "This file is not writable and we can not remove these directives."
@@ -549,7 +549,7 @@ msgstr "מפתח: <code>%s</code><br>אימייל: <i>%s</i>"
 
 #: inc/admin/notices.php:475
 msgid "Do you want %s to update itself in the future? "
-msgstr "האם אתה מעוניין ש-%s יעדכן את עצמו בעתיד?"
+msgstr "האם אתה מעוניין ש%s יעדכן את עצמו בעתיד?"
 
 #: inc/admin/notices.php:476
 msgid "<a href=\"%s\" class=\"button button-secondary\"><b>Yes</b>, of course</a>"
@@ -682,7 +682,7 @@ msgstr "צמצום מסיר את כל הרווחים וההערות בקבצי �
 msgid ""
 "This mechanism reduces the weight of each file and allows a faster reading "
 "of browsers and search engines."
-msgstr "מנגנון זה מקטין את המשקל של כל קובץ ומאפשר טעינה מהירה יותר עבור שרתים ומנועי חיפוש."
+msgstr "מנגנון זה מקטין את המשקל של כל קובץ ומאפשר טעינה מהירה יותר עבור דפדפנים ומנועי חיפוש."
 
 #: inc/admin/options.php:513
 msgid "Concatenation combines all CSS and JavaScript files."
@@ -985,7 +985,7 @@ msgstr "מאפשר לך לבקש סריקת רובוט לטעינה מראש ש�
 
 #: inc/admin/options.php:1034
 msgid "Settings Exporter"
-msgstr "מייצא הגדרות"
+msgstr "מייצא ההגדרות"
 
 #: inc/admin/options.php:1044
 msgid "Settings Importer"

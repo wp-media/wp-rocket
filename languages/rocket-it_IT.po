@@ -1,14 +1,14 @@
 # Copyright (C) 2015 WP Rocket
 # This file is distributed under the same license as the WP Rocket package.
 # Translators:
-# Alessandro Curci <hantarex@gmail.com>, 2014
+# Alessandro Curci <hantarex@gmail.com>, 2014-2015
 msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
 "POT-Creation-Date: 2015-01-27 14:55:53+00:00\n"
-"PO-Revision-Date: 2015-01-27 14:57+0000\n"
-"Last-Translator: FxB <fxb@wp-translations.org>\n"
+"PO-Revision-Date: 2015-02-04 17:28+0000\n"
+"Last-Translator: Alessandro Curci <hantarex@gmail.com>\n"
 "Language-Team: Italian (Italy) (http://www.transifex.com/projects/p/wp-rocket/language/it_IT/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -444,7 +444,7 @@ msgstr "È comunque possibile forzare la disattivazione cliccando qui."
 msgid ""
 "<b>%s</b>: One or more extensions have been enabled or disabled, do not "
 "forget to clear the cache if necessary."
-msgstr "<b>%s</b>: Ona o più estensioni sono state abilitate o disabilitate, non dimenticare di cancellare la cache se necessario."
+msgstr "<b>%s</b>: Una o più estensioni sono state abilitate o disabilitate, non dimenticare di cancellare la cache se necessario."
 
 #: inc/admin/notices.php:168
 msgid ""
@@ -727,7 +727,7 @@ msgstr "Abilita il caching per le pagine con protocollo SSL (<code>https://</cod
 
 #: inc/admin/options.php:585 inc/admin/options.php:593
 msgid "Clear Cache Lifespan"
-msgstr "Cancella la durata della cache"
+msgstr "Ritardo cancellazione cache"
 
 #: inc/admin/options.php:599
 msgid "Unit of time"
@@ -1014,7 +1014,7 @@ msgstr "Reinstalla v%s"
 msgid ""
 "Is the version %s causing you some issues? You can ask for a rollback and "
 "reinstall the last version you used before."
-msgstr ""
+msgstr "La versione %s ti stà causando qualche problema? Puoi chiedere un rollback e reinstallare l'ultima versione che hai usato."
 
 #: inc/admin/options.php:1083 inc/admin/options.php:1204
 msgid "Tutorials"
