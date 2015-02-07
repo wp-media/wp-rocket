@@ -1261,7 +1261,7 @@ function rocket_sanitize_css( $file )
 {
 	$file = preg_replace( '#\?.*$#', '', $file );
 	$ext = strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
-	return $ext=='css' ? $file : false;
+	return $ext=='css' ? trim( $file ) : false;
 }
 
 /**
@@ -1273,7 +1273,7 @@ function rocket_sanitize_js( $file )
 {
 	$file = preg_replace( '#\?.*$#', '', $file );
 	$ext  = strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
-	return $ext == 'js' ? $file : false;
+	return $ext == 'js' ? trim( $file ) : false;
 }
 
 /**

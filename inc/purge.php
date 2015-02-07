@@ -313,7 +313,7 @@ function rocket_purge_cache()
 				$options = get_option( WP_ROCKET_SLUG );
 				$options['minify_css_key'] = create_rocket_uniqid();
 				$options['minify_js_key'] = create_rocket_uniqid();
-				remove_all_actions( 'update_option_' . WP_ROCKET_SLUG );
+				remove_all_filters( 'update_option_' . WP_ROCKET_SLUG );
 				update_option( WP_ROCKET_SLUG, $options );
 
 				rocket_dismiss_box( 'rocket_warning_plugin_modification' );

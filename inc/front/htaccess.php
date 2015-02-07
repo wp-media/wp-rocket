@@ -468,8 +468,19 @@ function get_rocket_htaccess_web_fonts_access() {
 	if ( false === get_rocket_option( 'cdn', false ) ) {
 		return;
 	}
-
-	$rules  = '# Allow access to web fonts from all domains.' . PHP_EOL;
+	
+	$rules  = '# Send CORS headers if browsers request them; enabled by default for images.' . PHP_EOL;
+	$rules  .= '<IfModule mod_setenvif.c>' . PHP_EOL;
+	  $rules  .= '<IfModule mod_headers.c>' . PHP_EOL;
+	    $rules  .= '# mod_headers, y u no match by Content-Type?!' . PHP_EOL;
+	    $rules  .= '<FilesMatch "\.(gif|png|jpe?g|svg|svgz|ico|webp)$">' . PHP_EOL;
+	      $rules  .= 'SetEnvIf Origin ":" IS_CORS' . PHP_EOL;
+	      $rules  .= 'Header set Access-Control-Allow-Origin "*" env=IS_CORS' . PHP_EOL;
+	    $rules  .= '</FilesMatch>' . PHP_EOL;
+	  $rules  .= '</IfModule>' . PHP_EOL;
+	$rules  .= '</IfModule>' . PHP_EOL . PHP_EOL;
+	
+	$rules  .= '# Allow access to web fonts from all domains.' . PHP_EOL;
 	$rules  .= '<FilesMatch "\.(eot|otf|tt[cf]|woff)$">' . PHP_EOL;
 		$rules .= '<IfModule mod_headers.c>' . PHP_EOL;
 			$rules .= 'Header set Access-Control-Allow-Origin "*"' . PHP_EOL;

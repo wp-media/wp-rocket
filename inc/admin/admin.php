@@ -159,8 +159,10 @@ function rocket_dismiss_boxes( $args )
 			if ( defined( 'DOING_AJAX' ) ) {
 				wp_send_json( array( 'error' => 0 ) );
 			} else {
-				wp_safe_redirect( wp_get_referer() );
-				die();
+				if ( ! defined( 'WP_ROCKET_NO_REDIRECT' ) ) {
+					wp_safe_redirect( wp_get_referer() );
+					die();
+				}
 			}
 		}
 	}
@@ -298,7 +300,8 @@ function __rocket_activate_autoupdate()
 
 	$options = get_option( WP_ROCKET_SLUG );
 	$options['autoupdate'] = 1;
-	update_option( WP_ROCKET_SLUG, $options);
+	define( 'WP_ROCKET_NO_REDIRECT', true ); // internal, do not define it yourself, thanks
+	update_option( WP_ROCKET_SLUG, $options );
 	rocket_dismiss_box( 'rocket_ask_for_autoupdate' );
 
 	wp_safe_redirect( wp_get_referer() );
@@ -345,8 +348,17 @@ function __rocket_rollback()
 		$plugin = 'wp-rocket/wp-rocket.php';
 		$nonce = 'upgrade-plugin_' . $plugin;
 		$url = 'update.php?action=upgrade-plugin&plugin=' . urlencode( $plugin );
-		$upgrader = new Plugin_Upgrader( new Plugin_Upgrader_Skin( compact( 'title', 'nonce', 'url', 'plugin' ) ) );
+		$upgrader_skin = new Plugin_Upgrader_Skin( compact( 'title', 'nonce', 'url', 'plugin' ) );
+		$upgrader = new Plugin_Upgrader( $upgrader_skin );
 		$upgrader->upgrade( $plugin );
+
+		// Uncheck the autoupdate option to avoid an infinite update loop
+		$options = get_option( WP_ROCKET_SLUG );
+		if ( isset( $options['autoupdate'] ) ) {
+			unset( $options['autoupdate'] );
+		}
+		define( 'WP_ROCKET_NO_REDIRECT', true );
+		update_option( WP_ROCKET_SLUG, $options );
 
 		wp_die( '', sprintf( __( '%s Update Rollback', 'rocket' ), WP_ROCKET_PLUGIN_NAME ), array( 'response' => 200 ) );
 

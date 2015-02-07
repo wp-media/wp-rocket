@@ -19,9 +19,9 @@ function rocket_cdn_file( $url )
 	if ( ( defined( 'DONOTCDN' ) && DONOTCDN ) ) {
 		return $url;
 	}
-	
+
 	$ext = pathinfo( $url, PATHINFO_EXTENSION );
-	
+
 	if ( is_admin() && $ext != 'php' ) {
 		return $url;
 	}
@@ -62,7 +62,7 @@ function rocket_cdn_images( $html )
 	if ( ( defined( 'DONOTCDN' ) && DONOTCDN ) ) {
 		return $html;
 	}
-	
+
 	// Don't use CDN if the image is in admin, a feed or in a post preview
 	if ( is_admin() || is_feed() || is_preview() || empty( $html ) ) {
 		return $html;
@@ -83,7 +83,7 @@ function rocket_cdn_images( $html )
 				$html = str_replace(
 					$images_match[0][$k],
 					sprintf(
-						'<img %1$s %2$s %3$s />',
+						'<img %1$s %2$s %3$s>',
 						$images_match[1][$k],
 						'src="' . get_rocket_cdn_url( $image_url, $zone ) .'"',
 						$images_match[3][$k]
@@ -109,7 +109,7 @@ function rocket_cdn_enqueue( $src )
 	if ( ( defined( 'DONOTCDN' ) && DONOTCDN ) ) {
 		return $src;
 	}
-	
+
 	// Don't use CDN if in admin, in login page, in register page or in a post preview
 	if ( is_admin() || is_preview() || in_array( $GLOBALS['pagenow'], array( 'wp-login.php', 'wp-register.php' ) ) ) {
 		return $src;
