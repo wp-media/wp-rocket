@@ -53,6 +53,7 @@ function rocket_cdn_file( $url )
  */
 add_filter( 'the_content', 'rocket_cdn_images', PHP_INT_MAX );
 add_filter( 'widget_text', 'rocket_cdn_images', PHP_INT_MAX );
+add_filter( 'rocket_buffer', 'rocket_cdn_images', PHP_INT_MAX );
 function rocket_cdn_images( $html )
 {
 	// Don't use CDN if the image is in admin, a feed or in a post preview
