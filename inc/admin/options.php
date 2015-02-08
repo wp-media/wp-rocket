@@ -734,6 +734,25 @@ function rocket_display_options()
 		)
 	);
 	add_settings_field(
+		'rocket_reject_ua',
+		__( 'Never send cache pages for these user agents:', 'rocket' ),
+		'rocket_field',
+		'advanced',
+		'rocket_display_imp_options',
+		array(
+			array(
+				'type'         => 'textarea',
+				'label_for'    => 'cache_reject_ua',
+				'label_screen' => __( 'Never send cache pages for these user agents:', 'rocket' ),
+			),
+			array(
+				'type'         => 'helper_help',
+				'name'         => 'cache_reject_ua',
+				'description'  => __( 'Enter the user agents name to reject (one per line).', 'rocket' ) . '<br/>'  . __( 'You can use regular expressions (regex).', 'rocket' )
+			),
+		)
+	);
+	add_settings_field(
 		'rocket_exclude_css',
 		__( '<b>CSS</b> files to exclude from minification:', 'rocket' ),
 		'rocket_field',
@@ -1409,6 +1428,21 @@ function rocket_settings_callback( $inputs )
 		$inputs['cache_query_strings'] = array_unique( $inputs['cache_query_strings'] );
 	} else {
 		$inputs['cache_query_strings'] = array();
+	}
+	
+	/*
+	 * Option : Never send cache pages for these user agents
+	 */
+	if ( ! empty( $inputs['cache_reject_ua'] ) ) {
+		if ( ! is_array( $inputs['cache_reject_ua'] ) ) {
+			$inputs['cache_reject_ua'] = explode( "\n", $inputs['cache_reject_ua'] );
+		}
+		$inputs['cache_reject_ua'] = array_map( 'trim', $inputs['cache_reject_ua'] );
+		$inputs['cache_reject_ua'] = array_map( 'esc_textarea', $inputs['cache_reject_ua'] );
+		$inputs['cache_reject_ua'] = (array) array_filter( $inputs['cache_reject_ua'] );
+		$inputs['cache_reject_ua'] = array_unique( $inputs['cache_reject_ua'] );
+	} else {
+		$inputs['cache_reject_ua'] = array();
 	}
 
 	/*

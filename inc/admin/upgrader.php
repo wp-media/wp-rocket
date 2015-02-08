@@ -75,6 +75,7 @@ function rocket_first_install()
 			'cache_ssl'				=> 0,
 			'cache_reject_uri'		=> array(),
 			'cache_reject_cookies'	=> array(),
+			'cache_reject_ua'		=> array(),
 			'cache_query_strings'	=> array(),
 			'cache_purge_pages'		=> array(),
 			'purge_cron_interval'	=> 24,

@@ -137,7 +137,7 @@ function get_rocket_cache_reject_cookies()
  * @return array List of rejected User-Agent
  */
 function get_rocket_cache_reject_ua() {
-	$ua = array();
+	$ua   = get_rocket_option( 'cache_reject_ua', array() );
 	$ua[] = 'facebookexternalhit';
 
 	/**
