@@ -160,7 +160,7 @@ function get_rocket_cache_reject_ua() {
  *
  * @return array List of rejected files
  */
-function get_rocket_cdn_reject_files( $regex = false ) {
+function get_rocket_cdn_reject_files() {
 	$files = get_rocket_option( 'cdn_reject_files', array() );
 	
 	/**
@@ -172,9 +172,7 @@ function get_rocket_cdn_reject_files( $regex = false ) {
 	*/
 	$files = apply_filters( 'rocket_cdn_reject_files', $files );
 	
-	if ( $regex ) {
-		$files = implode( '|', array_filter( $files ) );	
-	}
+	$files = implode( '|', array_filter( $files ) );	
 	
 	return $files;
 }

@@ -127,7 +127,7 @@ function get_rocket_cdn_url( $url, $zone = array( 'all' ) )
 	$query = ! empty( $query ) ? '?' . $query : '';
 
 	// Exclude rejected files from CDN
-	if( preg_match( '#(' . get_rocket_cdn_reject_files(true) . ')#', $path ) ) {
+	if( preg_match( '#(' . get_rocket_cdn_reject_files() . ')#', $path ) ) {
 		return $url;
 	}
 
