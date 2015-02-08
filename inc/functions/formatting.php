@@ -125,12 +125,7 @@ function get_rocket_cdn_url( $url, $zone = array( 'all' ) )
 
 	list( $host, $path, $scheme, $query ) = get_rocket_parse_url( $url );
 	$query = ! empty( $query ) ? '?' . $query : '';
-	
-	// Exclude rejected files from CDN
-	if( preg_match( '#(' . get_rocket_cdn_reject_files(true) . ')#', $path ) ) {
-		return $url;
-	}
-	
+
 	if ( empty( $scheme ) ) {
 		$home = rocket_remove_url_protocol( home_url() );
 
@@ -141,6 +136,7 @@ function get_rocket_cdn_url( $url, $zone = array( 'all' ) )
 			$path = str_replace( $home, '', ltrim( $path, '//' ) );
 		}
 	}
+
 	$url = rtrim( $cnames[(abs(crc32($path))%count($cnames))], '/' ) . '/' . ltrim( $path, '/' ) . $query;
 	$url = rocket_add_url_protocol( $url );
 	return $url;

@@ -96,7 +96,6 @@ function rocket_first_install()
 			'cdn_cnames'			=> array(),
 			'cdn_zone'				=> array(),
 			'cdn_ssl'				=> 0,
-			'cdn_reject_files'		=> array(),
 			'do_beta'				=> 0,
 		)
 	);

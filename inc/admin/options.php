@@ -872,25 +872,6 @@ function rocket_display_options()
 		'cdn',
 		'rocket_display_cdn_options'
 	);
-	add_settings_field(
-		'rocket_cdn_reject_files',
-		__( 'Rejected files:', 'rocket' ),
-		'rocket_field',
-		'cdn',
-		'rocket_display_cdn_options',
-		array(
-			array(
-				'type'         => 'textarea',
-				'label_for'    => 'cdn_reject_files',
-				'label_screen' => __( 'Rejected files:', 'rocket' ),
-			),
-			array(
-				'type'         => 'helper_help',
-				'name'         => 'cdn_reject_files',
-				'description'  => __( 'Specify the URL files that should not use the CDN. (one per line).', 'rocket' )
-			),
-		)
-	);
 	add_settings_section( 'rocket_display_white_label', __( 'White Label', 'rocket' ), '__return_false', 'white_label' );
 	add_settings_field(
 		'rocket_wl_plugin_name',
@@ -1523,22 +1504,7 @@ function rocket_settings_callback( $inputs )
 		ksort( $inputs['cdn_zone'] );
 		$inputs['cdn_zone'] 	= array_values( $inputs['cdn_zone'] );
 	}
-	
-	/*
-	 * Option : Files to exclude of the CDN process
-	 */
-	if ( ! empty( $inputs['cdn_reject_files'] ) ) {
-		if ( ! is_array( $inputs['cdn_reject_files'] ) ) {
-			$inputs['cdn_reject_files'] = explode( "\n", $inputs['cdn_reject_files'] );
-		}
-		$inputs['cdn_reject_files'] = array_map( 'trim', $inputs['cdn_reject_files'] );
-		$inputs['cdn_reject_files'] = array_map( 'rocket_clean_exclude_file', $inputs['cdn_reject_files'] );
-		$inputs['cdn_reject_files'] = (array) array_filter( $inputs['cdn_reject_files'] );
-		$inputs['cdn_reject_files'] = array_unique( $inputs['cdn_reject_files'] );
-	} else {
-		$inputs['cdn_reject_files'] = array();
-	}
-	
+
 	if ( isset( $_FILES['import'] )
 		&& preg_match( '/wp-rocket-settings-20\d{2}-\d{2}-\d{2}-[a-f0-9]{13}\.txt/', $_FILES['import']['name'] )
 		&& 'text/plain' == $_FILES['import']['type'] ) {
