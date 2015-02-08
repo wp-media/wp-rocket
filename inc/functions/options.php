@@ -153,6 +153,32 @@ function get_rocket_cache_reject_ua() {
 	return $ua;
 }
 
+/**
+ * Get all files we don't allow to get in CDN
+ *
+ * @since 2.5
+ *
+ * @return array List of rejected files
+ */
+function get_rocket_cdn_reject_files( $regex = false ) {
+	$files = get_rocket_option( 'cdn_reject_files', array() );
+	
+	/**
+	 * Filter the rejected files
+	 *
+	 * @since 2.5
+	 *
+	 * @param array $files List of rejected files
+	*/
+	$files = apply_filters( 'rocket_cdn_reject_files', $files );
+	
+	if ( $regex ) {
+		$files = implode( '|', array_filter( $files ) );	
+	}
+	
+	return $files;
+}
+
 /*
  * Get all CNAMES
  *
