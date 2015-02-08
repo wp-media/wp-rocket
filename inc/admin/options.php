@@ -533,7 +533,8 @@ function rocket_display_options()
 		'<a href="https://wordpress.org/plugins/wp-mobile-detector/" target="_blank">WP Mobile Detector</a>',
 		'<a href="https://wordpress.org/plugins/wiziapp-create-your-own-native-iphone-app" target="_blank">wiziApp</a>',
 		'<a href="https://wordpress.org/plugins/wordpress-mobile-pack/" target="_blank">WordPress Mobile Pack</a>',
-		'<a href="https://wordpress.org/plugins/wp-mobilizer/" target="_blank">WP-Mobilizer</a>'
+		'<a href="https://wordpress.org/plugins/wp-mobilizer/" target="_blank">WP-Mobilizer</a>',
+		'<a href="https://wordpress.org/plugins/wp-mobile-edition/" target="_blank">WP Mobile Edition</a>'
 	);
 	add_settings_field(
 		'rocket_mobile',
@@ -850,13 +851,27 @@ function rocket_display_options()
 		)
 	);
 	add_settings_field(
+		'rocket_cdn_on_ssl',
+		__( 'CDN & SSL:', 'rocket' ),
+		'rocket_field',
+		'cdn',
+		'rocket_display_cdn_options',
+		array(
+			array(
+				'type'         => 'checkbox',
+				'label'        => __('Disable CDN on HTTPS pages.', 'rocket' ),
+				'label_for'    => 'cdn_ssl',
+				'label_screen' => __( 'CDN & SSL:', 'rocket' ),
+			)
+		)
+	);
+	add_settings_field(
 		'rocket_cdn_cnames',
 		__( 'Replace site\'s hostname with:', 'rocket' ),
 		'rocket_cnames_module',
 		'cdn',
 		'rocket_display_cdn_options'
 	);
-
 	add_settings_section( 'rocket_display_white_label', __( 'White Label', 'rocket' ), '__return_false', 'white_label' );
 	add_settings_field(
 		'rocket_wl_plugin_name',

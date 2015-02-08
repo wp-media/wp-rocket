@@ -46,6 +46,17 @@ function is_rocket_cache_ssl()
 }
 
 /**
+ * Check if we need to disable CDN on SSL pages
+ *
+ * @since 2.5
+ * @access public
+ * @return bool True if option is activated
+ */
+function is_rocket_cdn_on_ssl() {
+	return is_ssl() && get_rocket_option( 'cdn_ssl', 0 ) ? false : true;
+}
+
+/**
  * Get the interval task cron purge in seconds
  * This setting can be changed from the options page of the plugin
  *

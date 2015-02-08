@@ -11,7 +11,14 @@ add_filter( 'rocket_buffer', 'rocket_dns_prefetch', 12 );
 function rocket_dns_prefetch( $buffer )
 {
 	$dns_link_tags = '';
-	$domains = array_merge( get_rocket_cdn_cnames( array( 'all', 'images', 'css_and_js', 'css', 'js' ) ), (array) get_rocket_option( 'dns_prefetch' ) );
+	$cdn_cnames    = get_rocket_cdn_cnames( array( 'all', 'images', 'css_and_js', 'css', 'js' ) );
+	
+	// Don't add CNAMES if CDN is disabled HTTPS pages 
+	if( ! is_rocket_cdn_on_ssl() ) {
+		$cdn_cnames = array();
+	}
+	
+	$domains = array_merge( $cdn_cnames, (array) get_rocket_option( 'dns_prefetch' ) );
 
 	/**
 	 * Filter list of domains to prefetch DNS

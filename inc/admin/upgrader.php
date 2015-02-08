@@ -93,9 +93,10 @@ function rocket_first_install()
 			'minify_html'			=> 0,
 			'dns_prefetch'			=> 0,
 			'cdn'					=> 0,
-			'do_beta'				=> 0,
 			'cdn_cnames'			=> array(),
-			'cdn_zone'				=> array()
+			'cdn_zone'				=> array(),
+			'cdn_ssl'				=> 0,
+			'do_beta'				=> 0,
 		)
 	);
 	rocket_dismiss_box( 'rocket_warning_plugin_modification' );

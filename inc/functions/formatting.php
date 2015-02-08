@@ -119,7 +119,7 @@ function get_rocket_cdn_url( $url, $zone = array( 'all' ) )
 {
 	$cnames = get_rocket_cdn_cnames( $zone );
 
-	if ( (int) get_rocket_option('cdn') == 0 || empty( $cnames ) ) {
+	if ( (int) get_rocket_option('cdn') == 0 || empty( $cnames ) || ! is_rocket_cdn_on_ssl() ) {
 		return $url;
 	}
 
@@ -190,7 +190,7 @@ function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_file
 			 * @since 2.1
 			 *
 			 * @param string The maximum number of characters in a URL
-			 * @param string The file's extention
+			 * @param string The file's extension
 			*/
 			$filename_length = apply_filters( 'rocket_minify_filename_length', 255, pathinfo( $file, PATHINFO_EXTENSION ) );
 
