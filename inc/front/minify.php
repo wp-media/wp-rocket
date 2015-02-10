@@ -342,7 +342,7 @@ function rocket_minify_js( $buffer )
 	 *
 	 * @param array Hostname of JS files to exclude
 	 */
-	$excluded_external_js = apply_filters( 'rocket_minify_excluded_external_js', array( 'forms.aweber.com', 'video.unrulymedia.com', 'gist.github.com', 'stats.wp.com', 'stats.wordpress.com', 'www.statcounter.com', 'widget.rafflecopter.com', 'widget-prime.rafflecopter.com', 'widget.supercounters.com', 'releases.flowplayer.org', 'tools.meetaffiliate.com', 'c.ad6media.fr', 'cdn.stickyadstv.com', 'www.smava.de', 'contextual.media.net', 'app.getresponse.com', 'ap.lijit.com', 'adserver.reklamstore.com', 's0.wp.com', 'wprp.zemanta.com', 'files.bannersnack.com' ) );
+	$excluded_external_js = apply_filters( 'rocket_minify_excluded_external_js', array( 'forms.aweber.com', 'video.unrulymedia.com', 'gist.github.com', 'stats.wp.com', 'stats.wordpress.com', 'www.statcounter.com', 'widget.rafflecopter.com', 'widget-prime.rafflecopter.com', 'widget.supercounters.com', 'releases.flowplayer.org', 'tools.meetaffiliate.com', 'c.ad6media.fr', 'cdn.stickyadstv.com', 'www.smava.de', 'contextual.media.net', 'app.getresponse.com', 'ap.lijit.com', 'adserver.reklamstore.com', 's0.wp.com', 'wprp.zemanta.com', 'files.bannersnack.com', 'smarticon.geotrust.com' ) );
 	
     // Get all JS files with this regex
     preg_match_all( '#<script\s*.+src=[\'|"]([^\'|"]+\.js?.+)[\'|"]?(.+)></script>#iU', $buffer, $tags_match );
