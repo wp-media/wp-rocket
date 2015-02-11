@@ -63,19 +63,17 @@ function rocket_launch_autoupdate() {
 	require_once( ABSPATH . 'wp-admin/includes/file.php' );
 	require_once( ABSPATH . 'wp-admin/includes/misc.php' );
 	require_once( ABSPATH . 'wp-admin/includes/class-wp-upgrader.php' );
-		
+	if ( ! function_exists( 'screen_icon' ) ) { // retrocompat <3.8
+		function screen_icon(){}
+	}
 	$title = __( 'Update Plugin' );
 	$plugin = 'wp-rocket/wp-rocket.php';
 	$nonce = 'upgrade-plugin_' . $plugin;
 	$url = 'update.php?action=upgrade-plugin&plugin=' . urlencode( $plugin ); 			
 	$upgrader_skin = new Plugin_Upgrader_Skin( compact( 'title', 'nonce', 'url', 'plugin' ) );
 	$upgrader = new Plugin_Upgrader( $upgrader_skin );
-	$wp_upgrader = new WP_Upgrader();
-	$wp_upgrader->fs_connect();
-	$wp_upgrader->maintenance_mode( true );
 	$upgrader->upgrade( $plugin );
-	$wp_upgrader->maintenance_mode( false );
-	$upgrader_skin->after();
+	activate_plugin( $plugin, '', false, true );
 }
 
 /*
