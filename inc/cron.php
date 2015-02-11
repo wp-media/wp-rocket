@@ -11,10 +11,12 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 add_filter( 'cron_schedules', 'rocket_purge_cron_schedule' );
 function rocket_purge_cron_schedule( $schedules )
 {
-	$schedules['rocket_purge'] = array(
-		'interval'	=> get_rocket_purge_cron_interval(),
-		'display' 	=> sprintf( __( '%s clear', 'rocket' ), WP_ROCKET_PLUGIN_NAME )
-	);
+	if ( 0 < (int) get_rocket_option( 'purge_cron_interval' ) ) {
+		$schedules['rocket_purge'] = array(
+			'interval'	=> get_rocket_purge_cron_interval(),
+			'display' 	=> sprintf( __( '%s clear', 'rocket' ), WP_ROCKET_PLUGIN_NAME )
+		);
+	}
 	return $schedules;
 }
 
@@ -27,7 +29,7 @@ function rocket_purge_cron_schedule( $schedules )
 add_action( 'init', 'rocket_purge_cron_scheduled' );
 function rocket_purge_cron_scheduled()
 {
-	if ( ! wp_next_scheduled( 'rocket_purge_time_event' ) ) {
+	if ( 0 < (int) get_rocket_option( 'purge_cron_interval' ) && ! wp_next_scheduled( 'rocket_purge_time_event' ) ) {
 		wp_schedule_event( time() + get_rocket_purge_cron_interval(), 'rocket_purge', 'rocket_purge_time_event' );
 	}
 }
