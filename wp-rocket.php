@@ -97,11 +97,8 @@ function rocket_init()
 
     if( rocket_valid_key() ) {
         require( WP_ROCKET_INC_PATH . '/purge.php' );
-
-        if ( 0 < (int) get_rocket_option( 'purge_cron_interval' ) ) {
-            require( WP_ROCKET_INC_PATH . '/cron.php' );
-        }
-
+        require( WP_ROCKET_INC_PATH . '/cron.php' );
+        
         if ( 0 < (int) get_rocket_option( 'cdn' ) ) {
         	require  WP_ROCKET_FRONT_PATH . '/cdn.php';
         }
