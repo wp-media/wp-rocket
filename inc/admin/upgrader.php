@@ -85,6 +85,7 @@ function rocket_first_install()
 			'deferred_js_files'        => array(),
 			'deferred_js_wait'         => array(),
 			'lazyload'                 => 0,
+			'lazyload_reject_posts'    => 0,
 			'minify_css'               => 0,
 			'minify_css_key'           => $minify_css_key,
 			'minify_css_reject_posts'  => array(),
