@@ -363,7 +363,37 @@ function __rocket_rollback()
 		wp_die( '', sprintf( __( '%s Update Rollback', 'rocket' ), WP_ROCKET_PLUGIN_NAME ), array( 'response' => 200 ) );
 
 	}
-
-
 }
 
+/**
+ * Add "Cache options" metabox
+ *
+ * @since 2.5
+ *
+ */
+add_action( 'add_meta_boxes', '__rocket_cache_options_meta_boxes' );
+function __rocket_cache_options_meta_boxes() {
+	$screens = array( 'post', 'page' );
+	
+	foreach( $screens as $screen ) {
+		add_meta_box( 'rocket_post_exclude', __( 'Cache Options', 'rocket' ), '__rocket_display_cache_options_meta_boxes', $screen, 'side', 'high' );		
+	}
+}
+
+function __rocket_display_cache_options_meta_boxes() {
+	/** This filter is documented in inc/admin-bar.php */
+	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) { ?>
+	
+		<div class="misc-pub-section">
+			<input id="rocket_post_exclude_cache" name="rocket_post_exclude_cache" type="checkbox"><label for="rocket_post_exclude_cache"><?php _e( 'Don\'t cache this page', 'rocket' ) ;?></label><br>
+			<p><?php _e( 'Don\'t activate these options on this page:', 'rocket' ) ;?></p>
+			<input id="rocket_post_exclude_lazyload" name="rocket_post_exclude_lazyload" type="checkbox"><label for="rocket_post_exclude_lazyload"><?php _e( 'LazyLoad', 'rocket' ); ?></label><br>
+			<input id="rocket_post_exclude_html_minification" name="rocket_post_exclude_html_minification" type="checkbox"><label for="rocket_post_exclude_html_minification"><?php _e( 'HTML Minification', 'rocket' ); ?></label><br>
+			<input id="rocket_post_exclude_css_minification" name="rocket_post_exclude_css_minification" type="checkbox"><label for="rocket_post_exclude_css_minification"><?php _e( 'CSS Minification', 'rocket' ); ?></label><br>
+			<input id="rocket_post_exclude_js_minification" name="rocket_post_exclude_js_minification" type="checkbox"><label for="rocket_post_exclude_js_minification"><?php _e( 'JS Minification', 'rocket' ); ?></label><br>
+			<input id="rocket_post_exclude_cdn" name="rocket_post_exclude_cdn" type="checkbox"><label for="rocket_post_exclude_cdn"><?php _e( 'CDN', 'rocket' ); ?></label>
+		</div>
+	
+	<?php
+	}
+}
