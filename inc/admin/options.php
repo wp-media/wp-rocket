@@ -1553,7 +1553,10 @@ function rocket_settings_callback( $inputs )
 add_action( 'update_option_' . WP_ROCKET_SLUG, 'rocket_after_save_options', 10, 2 );
 function rocket_after_save_options( $oldvalue, $value )
 {
-
+	if ( ! ( is_array( $oldvalue ) && is_array( $value ) ) ) {
+		return;
+	}
+	
 	// This values do not need to clean the cache domain
 	$removed = array( 'purge_cron_interval' => true, 'purge_cron_unit' => true, 'wl_plugin_name' => true, 'wl_plugin_URI' => true, 'wl_author' => true, 'wl_author_URI' => true, 'wl_description' => true, 'wl_plugin_slug' => true );
 
