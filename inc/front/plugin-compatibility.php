@@ -46,12 +46,12 @@ function __deactivate_jsMinifier_with_appbanner( $html_options ) {
  */
 add_filter( 'envira_gallery_output_image_attr', '__deactivate_lazyload_on_envira_gallery', PHP_INT_MAX );
 function __deactivate_lazyload_on_envira_gallery( $attr ) {
-	return $attr . ' data-no-lazy="1"';
+	return $attr . ' data-no-lazy="1" ';
 }
 
 add_filter( 'envira_gallery_indexable_images', '__deactivate_lazyload_on_envira_gallery_indexable_images', PHP_INT_MAX );
 function __deactivate_lazyload_on_envira_gallery_indexable_images( $images ) {
-	$images = str_replace( '<img' , '<img data-no-lazy="1"', $images );
+	$images = str_replace( '<img' , '<img data-no-lazy="1" ', $images );
 	
 	return $images;
 }
@@ -74,12 +74,12 @@ function __deactivate_rocket_lazyload_on_metaslider( $slide ) {
  */
 add_filter( 'soliloquy_output_image_attr', '__deactivate_lazyload_on_soliloquy', PHP_INT_MAX );
 function __deactivate_lazyload_on_soliloquy( $attr ) {
-	return $attr . ' data-no-lazy="1"';
+	return $attr . ' data-no-lazy="1" ';
 }
 
 add_filter( 'soliloquy_indexable_images', '__deactivate_lazyload_on_soliloquy_indexable_images', PHP_INT_MAX );
 function __deactivate_lazyload_on_soliloquy_indexable_images( $images ) {
-	$images = str_replace( '<img' , '<img data-no-lazy="1"', $images );
+	$images = str_replace( '<img' , '<img data-no-lazy="1" ', $images );
 	
 	return $images;
 }
