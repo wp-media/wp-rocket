@@ -32,7 +32,7 @@ function rocket_upgrader()
 		$options['version'] = WP_ROCKET_VERSION;
 
 		$keys = rocket_check_key( 'live' );
-		if ( $keys ) {
+		if ( is_array( $keys ) ) {
 			$options = array_merge( $keys, $options );
 		}
 
