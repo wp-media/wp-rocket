@@ -1553,7 +1553,10 @@ function rocket_settings_callback( $inputs )
 add_action( 'update_option_' . WP_ROCKET_SLUG, 'rocket_after_save_options', 10, 2 );
 function rocket_after_save_options( $oldvalue, $value )
 {
-
+	if ( ! ( is_array( $oldvalue ) && is_array( $value ) ) ) {
+		return;
+	}
+	
 	// This values do not need to clean the cache domain
 	$removed = array( 'purge_cron_interval' => true, 'purge_cron_unit' => true, 'wl_plugin_name' => true, 'wl_plugin_URI' => true, 'wl_author' => true, 'wl_author_URI' => true, 'wl_description' => true, 'wl_plugin_slug' => true );
 
@@ -1606,7 +1609,7 @@ function rocket_after_save_options( $oldvalue, $value )
 add_filter( 'pre_update_option_' . WP_ROCKET_SLUG, 'rocket_pre_main_option', 10, 2 );
 function rocket_pre_main_option( $newvalue, $oldvalue )
 {
-	if ( ( $newvalue['purge_cron_interval'] != $oldvalue['purge_cron_interval'] ) || ( $newvalue['purge_cron_unit'] != $oldvalue['purge_cron_unit'] ) ) {
+	if ( ( isset( $newvalue['purge_cron_interval'], $oldvalue['purge_cron_interval'] ) && $newvalue['purge_cron_interval'] != $oldvalue['purge_cron_interval'] ) || 	( isset( $newvalue['purge_cron_unit'], $oldvalue['purge_cron_unit'] ) && $newvalue['purge_cron_unit'] != $oldvalue['purge_cron_unit'] ) ) {
 		// Clear WP Rocket cron
 		if ( wp_next_scheduled( 'rocket_purge_time_event' ) ) {
 			wp_clear_scheduled_hook( 'rocket_purge_time_event' );
