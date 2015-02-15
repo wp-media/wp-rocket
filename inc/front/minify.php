@@ -253,7 +253,7 @@ function rocket_minify_css( $buffer )
     $wp_content_dirname   = ltrim( str_replace( home_url(), '', WP_CONTENT_URL ), '/' ) . '/';
 
     // Get all css files with this regex
-    preg_match_all( '/<link\s*.+href=[\'|"]([^\'|"]+\.css?.+)[\'|"]?(.+)>/iU', $buffer, $tags_match );
+    preg_match_all( apply_filters( 'rocket_minify_css_regex_pattern', '/<link\s*.+href=[\'|"]([^\'|"]+\.css?.+)[\'|"]?(.+)>/iU' ), $buffer, $tags_match );
 
 	$i=0;
     foreach ( $tags_match[0] as $tag ) {
@@ -368,7 +368,7 @@ function rocket_minify_js( $buffer )
 	) );
 	
     // Get all JS files with this regex
-    preg_match_all( '#<script\s*.+src=[\'|"]([^\'|"]+\.js?.+)[\'|"]?(.+)></script>#iU', $buffer, $tags_match );
+    preg_match_all( apply_filters( 'rocket_minify_js_regex_pattern', '#<script\s*.+src=[\'|"]([^\'|"]+\.js?.+)[\'|"]?(.+)></script>#iU' ), $buffer, $tags_match );
 
 	$i=0;
     foreach ( $tags_match[0] as $tag ) {
