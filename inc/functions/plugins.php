@@ -267,9 +267,12 @@ function get_rocket_i18n_translated_post_urls( $post_id, $post_type = 'page', $r
 			$urls[] = parse_url( get_permalink( $post_id ), PHP_URL_PATH ) . $regex;
 		}
 	}
-
-	$urls[] = $path . $regex;
-	$urls   = array_unique( $urls );
+	
+	if ( ! empty( $path ) ) {
+		$urls[] = $path . $regex;	
+	}
+	
+	$urls = array_unique( $urls );
 
 	return $urls;
 }
