@@ -163,14 +163,23 @@ function do_rocket_callback( $buffer )
 		// - Minification HTML/CSS/JavaScript
 		$buffer = apply_filters( 'rocket_buffer', $buffer );
 
-		// Create cache folders of the request uri
-		rocket_mkdir_p( $request_uri_path );
+		/**
+		  * Allow to the generate the caching file
+		  *
+		  * @since 2.5
+		  *
+		  * @param bool true will force the caching file generation
+		 */
+		if ( apply_filters( 'do_rocket_generate_caching_files', true ) ) {
+			// Create cache folders of the request uri
+			rocket_mkdir_p( $request_uri_path );
 
-		// Save the cache file
-		rocket_put_content( $request_uri_path . '/index.html', $buffer . get_rocket_footprint() );
+			// Save the cache file
+			rocket_put_content( $request_uri_path . '/index.html', $buffer . get_rocket_footprint() );
 
-		if ( function_exists( 'gzencode' ) ) {
-			rocket_put_content( $request_uri_path . '/index.html_gzip', gzencode ( $buffer . get_rocket_footprint(), apply_filters( 'rocket_gzencode_level_compression', 3 ) ) );
+			if ( function_exists( 'gzencode' ) ) {
+				rocket_put_content( $request_uri_path . '/index.html_gzip', gzencode ( $buffer . get_rocket_footprint(), apply_filters( 'rocket_gzencode_level_compression', 3 ) ) );
+			}
 		}
 
 		// Send headers with the last modified time of the cache file
