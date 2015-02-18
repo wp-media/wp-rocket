@@ -365,6 +365,18 @@ function __rocket_rollback()
 	}
 }
 
+
+/*
+ * Check if the WP updater is available
+ * @ Since 2.5
+ */
+function rocket_automatic_updater_disabled() {
+	return ( defined( 'AUTOMATIC_UPDATER_DISABLED' ) && AUTOMATIC_UPDATER_DISABLED ) ||
+			( defined( 'DISALLOW_FILE_MODS' ) && DISALLOW_FILE_MODS ) ||
+			apply_filters( 'automatic_updater_disabled', false ) ||
+			! apply_filters( 'auto_update_plugin', true );
+}
+
 /**
  * Add "Cache options" metabox
  *

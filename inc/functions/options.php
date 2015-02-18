@@ -12,13 +12,32 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
  */
 function get_rocket_option( $option, $default = false )
 {
+	/**
+	 * Pre-filter any WP Rocket option before read
+	 *
+	 * @since 2.5
+	 *
+	 * @param variant $default The default value
+	*/
+	$value = apply_filters( 'pre_get_rocket_option_' . $option, NULL, $default );
+	if ( NULL !== $value ) {
+		return $value;
+	}
 	$options = get_option( WP_ROCKET_SLUG );
 	if ( 'consumer_key' == $option && defined( 'WP_ROCKET_KEY' ) ) {
 		return WP_ROCKET_KEY;
 	} elseif( 'consumer_email' == $option && defined( 'WP_ROCKET_EMAIL' ) ) {
 		return WP_ROCKET_EMAIL;
 	}
-	return isset( $options[ $option ] ) && $options[ $option ] !== '' ? $options[ $option ] : $default;
+	$value = isset( $options[ $option ] ) && $options[ $option ] !== '' ? $options[ $option ] : $default;
+	/**
+	 * Filter any WP Rocket option after read
+	 *
+	 * @since 2.5
+	 *
+	 * @param variant $default The default value
+	*/
+	return apply_filters( 'get_rocket_option_' . $option, $value, $default );
 }
 
 /**

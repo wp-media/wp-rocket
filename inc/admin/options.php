@@ -41,7 +41,7 @@ function rocket_field( $args )
 		$placeholder 		= isset( $args['placeholder'] ) ? 'placeholder="'. $args['placeholder'].'" ' : '';
 		$label 				= isset( $args['label'] ) ? $args['label'] : '';
 		$default			= isset( $args['default'] ) ? $args['default'] : '';
-		$readonly			= isset( $args['readonly'] ) ? ' readonly="readonly"' : '';
+		$readonly			= isset( $args['readonly'] ) && $args['readonly'] ? ' readonly="readonly" disabled="disabled"' : '';
 
 		if( ! isset( $args['fieldset'] ) || 'start' == $args['fieldset'] ){
 			echo '<fieldset class="fieldname-'.sanitize_html_class( $args['name'] ).' fieldtype-'.sanitize_html_class( $args['type'] ).'">';
@@ -59,7 +59,7 @@ function rocket_field( $args )
 
 				$number_options = $args['type']=='number' ? ' min="0" class="small-text"' : '';
 				$autocomplete = in_array( $args['name'], array( 'consumer_key', 'consumer_email' ) ) ? ' autocomplete="off"' : '';
-				$disabled = ( 'consumer_key' == $args['name'] && defined( 'WP_ROCKET_KEY' ) ) || ( 'consumer_email' == $args['name'] && defined( 'WP_ROCKET_EMAIL' ) ) ? ' disabled="disabled"' : '';
+				$disabled = ( 'consumer_key' == $args['name'] && defined( 'WP_ROCKET_KEY' ) ) || ( 'consumer_email' == $args['name'] && defined( 'WP_ROCKET_EMAIL' ) ) ? ' disabled="disabled"' : $readonly;
 				?>
 
 					<legend class="screen-reader-text"><span><?php echo $args['label_screen']; ?></span></legend>
@@ -78,7 +78,7 @@ function rocket_field( $args )
 				?>
 
 					<legend class="screen-reader-text"><span><?php echo $args['label_screen']; ?></span></legend>
-					<label><textarea id="<?php echo $args['label_for']; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]" cols="50" rows="5"><?php echo $value; ?></textarea>
+					<label><textarea id="<?php echo $args['label_for']; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]" cols="50" rows="5"<?php echo $readonly; ?>><?php echo $value; ?></textarea>
 					</label>
 
 				<?php
@@ -87,7 +87,7 @@ function rocket_field( $args )
 			case 'checkbox' : ?>
 
 					<legend class="screen-reader-text"><span><?php echo $args['label_screen']; ?></span></legend>
-					<label><input type="checkbox" id="<?php echo $args['name']; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]" value="1" <?php checked( get_rocket_option( $args['name'], 0 ), 1 ); ?>/> <?php echo $args['label']; ?>
+					<label><input type="checkbox" id="<?php echo $args['name']; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]" value="1"<?php echo $readonly; ?> <?php checked( get_rocket_option( $args['name'], 0 ), 1 ); ?>/> <?php echo $args['label']; ?>
 					</label>
 
 			<?php
@@ -96,7 +96,7 @@ function rocket_field( $args )
 			case 'select' : ?>
 
 					<legend class="screen-reader-text"><span><?php echo $args['label_screen']; ?></span></legend>
-					<label>	<select id="<?php echo $args['name']; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]">
+					<label>	<select id="<?php echo $args['name']; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]"<?php echo $readonly; ?>>
 							<?php foreach( $args['options'] as $val => $title) { ?>
 								<option value="<?php echo $val; ?>" <?php selected( get_rocket_option( $args['name'] ), $val ); ?>><?php echo $title; ?></option>
 							<?php } ?>
@@ -1011,23 +1011,39 @@ function rocket_display_options()
 	// Tools
 	add_settings_section( 'rocket_display_tools', __( 'Tools', 'rocket' ), '__return_false', 'tools' );
 
-	add_settings_field(
-		'rocket_autoupdate',
-		__( 'Auto-update', 'rocket' ),
-		'rocket_field',
-		'tools',
-		'rocket_display_tools',
-		array(
+	// Use this var to check the WP version, < 0 -> 3.7 or less, >= 0 -> 3.7 or higher
+	$correct_wp_version = version_compare( $GLOBALS['wp_version'], '3.7' );
+
+	if ( current_user_can( 'update_plugins' ) ) {
+		add_settings_field(
+			'rocket_autoupdate',
+			__( 'Auto-update', 'rocket' ),
+			'rocket_field',
+			'tools',
+			'rocket_display_tools',
 			array(
-				'type'         => 'checkbox',
-				'label'        => 	apply_filters( 'rocket_autoupdate_only_minor_versions', false ) ?
-									__( 'Yes, please update this plugin automatically for next available <b>Minor</b> & <b>Fix Bugs</b> versions.', 'rocket' ) :
-									__( 'Yes, please update this plugin for all next available versions.', 'rocket' ),
-				'label_for'    => 'autoupdate',
-				'label_screen' => __( 'Auto-update', 'rocket' )
+				array(
+					'type'         => 'checkbox',
+					'readonly'     => $correct_wp_version < 0 || rocket_automatic_updater_disabled(),
+					'label'        => $correct_wp_version >= 0 && ! rocket_automatic_updater_disabled() ? 
+										__( 'Yes, please update this plugin for all next available versions.', 'rocket' ) :
+										'<span class="rkt-disabled">' . __( 'Yes, please update this plugin for all next available versions.', 'rocket' ) . '</span>',
+					'label_for'    => 'autoupdate',
+					'label_screen' => __( 'Auto-update', 'rocket' )
+				),
+				array(
+					'type' 		  => $correct_wp_version >= 0 ? '' : 'helper_warning',
+					'name' 		  => $correct_wp_version >= 0 ? '' : 'no_autoupdate',
+					'description' => $correct_wp_version >= 0 ? '' : __( 'This option is available for WordPress 3.7 and more.', 'rocket' )
+				),
+				array(
+					'type' 		  => $correct_wp_version < 0 || ( $correct_wp_version >= 0 && ! rocket_automatic_updater_disabled() ) ? '' : 'helper_warning',
+					'name' 		  => $correct_wp_version < 0 || ( $correct_wp_version >= 0 && ! rocket_automatic_updater_disabled() )  ? '' : 'no_autoupdate2',
+					'description' => $correct_wp_version < 0 || ( $correct_wp_version >= 0 && ! rocket_automatic_updater_disabled() )  ? '' : __( 'The WP update feature is disabled on this website, check <a href="http://codex.wordpress.org/Configuring_Automatic_Background_Updates">Configuring Automatic Background Updates</a> for more information.', 'rocket' )
+				)
 			)
-		)
-    );
+	    );
+	}
 
     if ( ! rocket_is_white_label() ) {
 		add_settings_field(
@@ -1259,7 +1275,7 @@ function rocket_display_options()
 				<?php } ?>
 				<a href="#tab_tools" class="nav-tab"><?php _e( 'Tools', 'rocket' ); ?></a>
 				<?php if ( ! rocket_is_white_label() ) { ?>
-					<?php if( defined( 'WPLANG' ) && WPLANG == 'fr_FR' ) { ?>
+					<?php if( defined( 'WPLANG' ) && 'fr_FR' == WPLANG || 'fr_FR' == get_locale() ) { ?>
 						<a href="#tab_tutorials" class="nav-tab"><?php _e( 'Tutorials', 'rocket' ); ?></a>
 					<?php } ?>
 					<a href="#tab_faq" class="nav-tab"><?php _e( 'FAQ', 'rocket' ); ?></a>
@@ -1540,6 +1556,10 @@ function rocket_settings_callback( $inputs )
 	/*
 	 * Autoupdate
 	 */
+	if ( ! current_user_can( 'update_plugins' ) ) {
+		unset( $inputs['autoupdate'] );
+	}
+
 	if ( isset( $inputs['autoupdate'] ) && 1 == $inputs['autoupdate'] ) {
 		rocket_dismiss_box( 'rocket_ask_for_autoupdate' );
 	}
@@ -1780,5 +1800,16 @@ function rocket_import_upload_form() {
 		<input type="hidden" name="max_file_size" value="<?php echo $bytes; ?>" />
 		</p>
 		<?php submit_button( __( 'Upload file and import settings', 'rocket' ), 'button', 'import' );
+	}
+}
+
+/*
+ * Force the autoupdate checkbox option to be uncheck
+ * @since 2.5
+ */
+add_action( 'wp_rocket_loaded', '__pre_get_rocket_option_autoupdate' );
+function __pre_get_rocket_option_autoupdate() {
+	if ( version_compare( $GLOBALS['wp_version'], '3.7' ) < 0 || rocket_automatic_updater_disabled() ) {
+		add_filter( 'pre_get_rocket_option_autoupdate', '__return_zero' );
 	}
 }

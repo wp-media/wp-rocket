@@ -58,6 +58,7 @@ function rocket_check_update()
 		$plugin_transient = get_site_transient( 'update_plugins' );
 		$temp_array = array(
 			'slug'        => $plugin_folder,
+			'plugin'      => $plugin_folder . '/wp-rocket.php',
 			'new_version' => $version,
 			'url'         => 'http://wp-rocket.me',
 			'package'     => $url

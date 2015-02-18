@@ -79,19 +79,54 @@ function rocket_launch_autoupdate() {
 }
 
 /*
-* Set up the cron on single event if a zip is available and the option activated
+* Will allow WordPress core to update our plugin automatically
 *
-* @since 2.4.2
+* @since 2.5
+*/
+add_filter( 'auto_update_plugin', 'rocket_set_auto_update_plugin', 9, 2 );
+function rocket_set_auto_update_plugin( $update, $item ) {
+	$plugin_transient = get_site_transient( 'update_plugins' );
+	$c_key = get_rocket_option( 'consumer_key' );
+	if ( version_compare( $GLOBALS['wp_version'], '3.7' ) >= 0 && ! $update && 'wp-rocket/wp-rocket.php' == $item->plugin && get_rocket_option( 'autoupdate' ) &&
+		isset( $plugin_transient->response['wp-rocket/wp-rocket.php']->package, $plugin_transient->response['wp-rocket/wp-rocket.php']->new_version ) && 
+		sprintf( 'http://support.wp-rocket.me/%s/wp-rocket_%s.zip', $c_key, $plugin_transient->response['wp-rocket/wp-rocket.php']->new_version ) == $plugin_transient->response['wp-rocket/wp-rocket.php']->package
+		)
+	{
+		return true;
+	}
+	return $update;
+}
+
+/*
+* Set up the cron on single event if a zip is available, WP 3.7> and the option activated
+*
+* @since 2.5
 */
 add_action( 'init', 'rocket_set_autoupdate_cron' );
 function rocket_set_autoupdate_cron() {
 	$plugin_transient = get_site_transient( 'update_plugins' );
 	$c_key = get_rocket_option( 'consumer_key' );
-	if ( ! wp_next_scheduled( 'rocket_cron_auto_update' ) && get_rocket_option( 'autoupdate' ) &&
+	if ( version_compare( $GLOBALS['wp_version'], '3.7' ) >= 0 && ! wp_next_scheduled( 'rocket_cron_auto_update' ) && get_rocket_option( 'autoupdate' ) &&
 		isset( $plugin_transient->response['wp-rocket/wp-rocket.php']->package, $plugin_transient->response['wp-rocket/wp-rocket.php']->new_version ) && 
 		sprintf( 'http://support.wp-rocket.me/%s/wp-rocket_%s.zip', $c_key, $plugin_transient->response['wp-rocket/wp-rocket.php']->new_version ) == $plugin_transient->response['wp-rocket/wp-rocket.php']->package
 		)
 	{
-		wp_schedule_single_event( time()+1, 'rocket_cron_auto_update' );
+		wp_schedule_single_event( time() + 10 * MINUTE_IN_SECONDS, 'rocket_cron_auto_update' );
+	} else {
+		if ( wp_next_scheduled( 'rocket_cron_auto_update' ) ) {
+			wp_clear_scheduled_hook( 'rocket_cron_auto_update' );
+		}
+	}
+}
+
+/*
+* Triggers by cron, this will launch the possible autoupdate
+*
+* @since 2.5
+*/
+function rocket_cron_auto_update() {
+	if ( function_exists( 'wp_maybe_auto_update') ) {
+		delete_site_transient( 'update_rocket' );
+		wp_maybe_auto_update();
 	}
 }
