@@ -693,6 +693,11 @@ function rocket_display_options()
 				'name'         => 'reject_uri',
 				'description'  => __( 'Enter the URL of pages to reject (one per line).', 'rocket' ) . '<br/>' . __( 'You can use regular expressions (regex).', 'rocket' )
 			),
+			array(
+				'type'         => 'helper_help',
+				'name'         => 'cache_reject_ua',
+				'description'  => __( '<strong>Note:</strong> The cart and checkout pages are auto-excluded from the cache for WooCommerce, Easy Digital Download, iThemes Exchange, Jigoshop & WP-Shop.', 'rocket' )
+			),
 		)
 	);
 	add_settings_field(
@@ -749,7 +754,7 @@ function rocket_display_options()
 				'type'         => 'helper_help',
 				'name'         => 'cache_reject_ua',
 				'description'  => __( 'Enter the user agents name to reject (one per line).', 'rocket' ) . '<br/>'  . __( 'You can use regular expressions (regex).', 'rocket' )
-			),
+			)
 		)
 	);
 	add_settings_field(
