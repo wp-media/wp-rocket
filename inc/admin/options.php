@@ -1015,7 +1015,7 @@ function rocket_display_options()
 		array(
 			array(
 				'type'         => 'checkbox',
-				'label'        => 	apply_filters( 'rocket_autoupdate_only_minor_versions', false ) ? 
+				'label'        => 	apply_filters( 'rocket_autoupdate_only_minor_versions', false ) ?
 									__( 'Yes, please update this plugin automatically for next available <b>Minor</b> & <b>Fix Bugs</b> versions.', 'rocket' ) :
 									__( 'Yes, please update this plugin for all next available versions.', 'rocket' ),
 				'label_for'    => 'autoupdate',
@@ -1254,7 +1254,9 @@ function rocket_display_options()
 				<?php } ?>
 				<a href="#tab_tools" class="nav-tab"><?php _e( 'Tools', 'rocket' ); ?></a>
 				<?php if ( ! rocket_is_white_label() ) { ?>
-					<a href="#tab_tutorials" class="nav-tab"><?php _e( 'Tutorials', 'rocket' ); ?></a>
+					<?php if( defined( 'WPLANG' ) && WPLANG == 'fr_FR' ) { ?>
+						<a href="#tab_tutorials" class="nav-tab"><?php _e( 'Tutorials', 'rocket' ); ?></a>
+					<?php } ?>
 					<a href="#tab_faq" class="nav-tab"><?php _e( 'FAQ', 'rocket' ); ?></a>
 					<a href="#tab_support" class="nav-tab file-error"><?php _e( 'Support', 'rocket' ); ?></a>
 				<?php } ?>
@@ -1429,7 +1431,7 @@ function rocket_settings_callback( $inputs )
 	} else {
 		$inputs['cache_query_strings'] = array();
 	}
-	
+
 	/*
 	 * Option : Never send cache pages for these user agents
 	 */
@@ -1557,7 +1559,7 @@ function rocket_settings_callback( $inputs )
 		ksort( $inputs['cdn_zone'] );
 		$inputs['cdn_zone'] 	= array_values( $inputs['cdn_zone'] );
 	}
-	
+
 	/*
 	 * Option : Files to exclude of the CDN process
 	 */
@@ -1572,7 +1574,7 @@ function rocket_settings_callback( $inputs )
 	} else {
 		$inputs['cdn_reject_files'] = array();
 	}
-	
+
 	if ( isset( $_FILES['import'] )
 		&& preg_match( '/wp-rocket-settings-20\d{2}-\d{2}-\d{2}-[a-f0-9]{13}\.txt/', $_FILES['import']['name'] )
 		&& 'text/plain' == $_FILES['import']['type'] ) {
@@ -1639,6 +1641,7 @@ function rocket_after_save_options( $oldvalue, $value )
 	if ( ! ( is_array( $oldvalue ) && is_array( $value ) ) ) {
 		return;
 	}
+	
 	// This values do not need to clean the cache domain
 	$removed = array( 'purge_cron_interval' => true, 'purge_cron_unit' => true, 'wl_plugin_name' => true, 'wl_plugin_URI' => true, 'wl_author' => true, 'wl_author_URI' => true, 'wl_description' => true, 'wl_plugin_slug' => true );
 
@@ -1691,9 +1694,7 @@ function rocket_after_save_options( $oldvalue, $value )
 add_filter( 'pre_update_option_' . WP_ROCKET_SLUG, 'rocket_pre_main_option', 10, 2 );
 function rocket_pre_main_option( $newvalue, $oldvalue )
 {
-	if ( 	( isset( $newvalue['purge_cron_interval'], $oldvalue['purge_cron_interval'] ) && $newvalue['purge_cron_interval'] != $oldvalue['purge_cron_interval'] )
-		|| 	( isset( $newvalue['purge_cron_unit'], $oldvalue['purge_cron_unit'] ) && $newvalue['purge_cron_unit'] != $oldvalue['purge_cron_unit'] )
-		) {
+	if ( ( isset( $newvalue['purge_cron_interval'], $oldvalue['purge_cron_interval'] ) && $newvalue['purge_cron_interval'] != $oldvalue['purge_cron_interval'] ) || 	( isset( $newvalue['purge_cron_unit'], $oldvalue['purge_cron_unit'] ) && $newvalue['purge_cron_unit'] != $oldvalue['purge_cron_unit'] ) ) {
 		// Clear WP Rocket cron
 		if ( wp_next_scheduled( 'rocket_purge_time_event' ) ) {
 			wp_clear_scheduled_hook( 'rocket_purge_time_event' );
