@@ -385,27 +385,84 @@ function rocket_automatic_updater_disabled() {
  */
 add_action( 'add_meta_boxes', '__rocket_cache_options_meta_boxes' );
 function __rocket_cache_options_meta_boxes() {
-	$screens = array( 'post', 'page' );
-	
-	foreach( $screens as $screen ) {
-		add_meta_box( 'rocket_post_exclude', __( 'Cache Options', 'rocket' ), '__rocket_display_cache_options_meta_boxes', $screen, 'side', 'high' );		
+	$cpts = get_post_types( array( 'public'=>true ), 'objects' );
+
+	foreach( $cpts as $cpt => $cpt_object ) {
+		$label = $cpt_object->labels->singular_name;
+		add_meta_box( 'rocket_post_exclude', sprintf( __( 'Cache Options for this %s', 'rocket' ), $label ), '__rocket_display_cache_options_meta_boxes', $cpt, 'side', 'core' );		
 	}
+
 }
 
+/*
+ * Displays some checkbox to de/activate some cache options
+ *
+ * @since 2.5
+ */
 function __rocket_display_cache_options_meta_boxes() {
-	/** This filter is documented in inc/admin-bar.php */
-	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) { ?>
+						/** This filter is documented in inc/admin-bar.php */
+	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) { 
+		global $post;
+		wp_nonce_field( 'rocket_box_option_' . $post->ID, '_rocketnonce', false, true );
+		?>
 	
 		<div class="misc-pub-section">
-			<input id="rocket_post_exclude_cache" name="rocket_post_exclude_cache" type="checkbox"><label for="rocket_post_exclude_cache"><?php _e( 'Don\'t cache this page', 'rocket' ) ;?></label><br>
-			<p><?php _e( 'Don\'t activate these options on this page:', 'rocket' ) ;?></p>
-			<input id="rocket_post_exclude_lazyload" name="rocket_post_exclude_lazyload" type="checkbox"><label for="rocket_post_exclude_lazyload"><?php _e( 'LazyLoad', 'rocket' ); ?></label><br>
-			<input id="rocket_post_exclude_html_minification" name="rocket_post_exclude_html_minification" type="checkbox"><label for="rocket_post_exclude_html_minification"><?php _e( 'HTML Minification', 'rocket' ); ?></label><br>
-			<input id="rocket_post_exclude_css_minification" name="rocket_post_exclude_css_minification" type="checkbox"><label for="rocket_post_exclude_css_minification"><?php _e( 'CSS Minification', 'rocket' ); ?></label><br>
-			<input id="rocket_post_exclude_js_minification" name="rocket_post_exclude_js_minification" type="checkbox"><label for="rocket_post_exclude_js_minification"><?php _e( 'JS Minification', 'rocket' ); ?></label><br>
-			<input id="rocket_post_exclude_cdn" name="rocket_post_exclude_cdn" type="checkbox"><label for="rocket_post_exclude_cdn"><?php _e( 'CDN', 'rocket' ); ?></label>
+			<?php
+			$fields = array( 
+							'lazyload' 		=> __( 'LazyLoad', 'rocket' ), 
+							'minify_html'	=> __( 'HTML Minification', 'rocket' ), 
+							'minify_css'	=> __( 'CSS Minification', 'rocket' ), 
+							'minify_js' 	=> __( 'JS Minification', 'rocket' ), 
+							'cdn'			=> __( 'CDN', 'rocket' ),
+						);
+
+			foreach ( $fields as $field => $label ) {
+				$disabled = disabled( ! get_rocket_option( $field ), true, false );
+				$title = $disabled ? ' title="' . sprintf( __( 'Activate first the %s option.', 'rocket' ), esc_attr( $label ) ) . '"' : '';
+				$class = $disabled ? ' class="rkt-disabled"' : '';
+				$checked = ! $disabled ? checked( ! get_post_meta( $post->ID, '_rocket_exclude_' . $field, true ), true, false ) : '';
+ 				?>
+				<input name="rocket_post_exclude_hidden[<?php echo $field; ?>]" type="hidden" value="on">
+				<input name="rocket_post_exclude[<?php echo $field; ?>]" id="rocket_post_exclude_<?php echo $field; ?>" type="checkbox"<?php echo $title; ?><?php echo $checked; ?><?php echo $disabled; ?>>
+				<label for="rocket_post_exclude_<?php echo $field; ?>"<?php echo $title; ?><?php echo $class; ?>><?php echo $label; ?></label><br>
+				<?php
+			}
+			?>
+			<p class="rkt-note"><?php _e( 'Note: Minification and CDN options only works for cached page.', 'rocket' ); ?></p>
 		</div>
 	
 	<?php
 	}
+}
+
+/*
+ * Manage the cache options from the metabox.
+ *
+ * @since 2.5
+ */
+add_action( 'save_post', '__rocket_save_metabox_options' );
+function __rocket_save_metabox_options() {
+
+	if ( isset( $_POST['post_ID'], $_POST['rocket_post_exclude_hidden'], $_POST['_rocketnonce'] ) ) {
+		
+		check_admin_referer( 'rocket_box_option_' . $_POST['post_ID'], '_rocketnonce' );
+
+		$fields = array( 'lazyload', 'minify_html', 'minify_css', 'minify_js', 'cdn' );
+
+		foreach ( $fields as $field ) {
+
+			if ( isset( $_POST['rocket_post_exclude_hidden'][ $field ] ) && $_POST['rocket_post_exclude_hidden'][ $field ] ) {
+				if ( isset( $_POST['rocket_post_exclude'][ $field ] ) ) {
+					delete_post_meta( $_POST['post_ID'], '_rocket_exclude_' . $field );
+				} else {
+					if ( get_rocket_option( $field ) ) {
+						update_post_meta( $_POST['post_ID'], '_rocket_exclude_' . $field, true );
+					}
+				}
+			}
+
+		}
+
+	}
+
 }
