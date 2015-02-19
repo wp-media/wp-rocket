@@ -119,7 +119,7 @@ function get_rocket_cdn_url( $url, $zone = array( 'all' ) )
 {
 	$cnames = get_rocket_cdn_cnames( $zone );
 
-	if ( ( defined( 'DONOTCDN' ) && DONOTCDN ) || (int) get_rocket_option('cdn') == 0 || empty( $cnames ) || ! is_rocket_cdn_on_ssl() ) {
+	if ( ( defined( 'DONOTCDN' ) && DONOTCDN ) || (int) get_rocket_option('cdn') == 0 || empty( $cnames ) || ! is_rocket_cdn_on_ssl() || is_rocket_post_excluded_option( 'cdn' ) ) {
 		return $url;
 	}
 
