@@ -19,17 +19,17 @@ function rocket_minify_process( $buffer )
 
 		$css = '';
 		$js  = '';
-		$google_fonts = '';
+		$google_fonts  = '';
 
 		list( $buffer, $conditionals ) = rocket_extract_ie_conditionals( $buffer );
 
 		// Minify CSS
-	    if ( $enable_css && ( ! defined( 'DONOTMINIFYCSS' ) || ! DONOTMINIFYCSS ) && ! is_rocket_post_excluded_option( 'minify_css' ) ) {
+	    if ( $enable_css ) {
 	    	list( $buffer, $css ) = rocket_minify_css( $buffer );
 		}
 
 	    // Minify JavaScript
-	    if ( $enable_js && ( ! defined( 'DONOTMINIFYJS' ) || ! DONOTMINIFYJS ) && ! is_rocket_post_excluded_option( 'minify_js' ) ) {
+	    if ( $enable_js ) {
 	    	list( $buffer, $js ) = rocket_minify_js( $buffer );
 		}
 
@@ -46,7 +46,7 @@ function rocket_minify_process( $buffer )
 	}
 
 	// Minify HTML
-	if ( get_rocket_option( 'minify_html' ) && ! is_rocket_post_excluded_option( 'minify_html' ) ) {
+	if ( get_rocket_option( 'minify_html' ) ) {
 	    $buffer = rocket_minify_html( $buffer );
 	}
 
@@ -70,7 +70,7 @@ function __rocket_insert_minify_js_in_footer() {
 		return;
 	}
 
-	if ( get_rocket_option( 'minify_js' ) && ( ! defined( 'DONOTMINIFYJS' ) || ! DONOTMINIFYJS ) && && ! is_rocket_post_excluded_option( 'minify_js' ) ) {
+	if ( get_rocket_option( 'minify_js' ) ) {
 
 		if ( is_user_logged_in() && ! get_rocket_option( 'cache_logged_user' ) ) {
 			return;
