@@ -178,3 +178,16 @@ function rocket_translate_smiley( $matches ) {
 
 	}
 }
+
+/**
+ * Check if we need to exclude LazyLoad on specific posts
+ *
+ * @since 2.5
+ */
+add_filter( 'do_rocket_lazyload', '__rocket_deactivate_lazyload_on_specific_posts' );
+function __rocket_deactivate_lazyload_on_specific_posts() {
+	if ( is_rocket_post_excluded_option( 'lazyload' ) ) {
+		return false;
+	}
+	return true;
+}
