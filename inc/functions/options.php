@@ -41,6 +41,22 @@ function get_rocket_option( $option, $default = false )
 }
 
 /**
+ * Is we need to exclude some specifics options on a post.
+ *
+ * @since 2.5
+ *
+ * @param  string $option  The option name (lazyload, css, js, cdn)
+ * @return bool 		   True if the option is deactivated
+ */
+function is_rocket_post_excluded_option( $option ) {
+	if ( is_singular() ) {
+		global $post;
+		return get_post_meta( $post->ID, '_rocket_exclude_' . $option, true );
+	}
+	return false;
+}
+
+/**
  * Check if we need to cache the mobile version of the website (if available)
  *
  * @since 1.0
