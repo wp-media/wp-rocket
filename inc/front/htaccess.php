@@ -55,7 +55,12 @@ function get_rocket_htaccess_marker()
 	$marker .= get_rocket_htaccess_files_match();
 	$marker .= get_rocket_htaccess_mod_expires();
 	$marker .= get_rocket_htaccess_mod_deflate();
-	$marker .= get_rocket_htaccess_mod_rewrite();
+	
+	/** This filter is documented in inc/front/process.php */
+	if ( apply_filters( 'do_rocket_generate_caching_files', true ) ) {
+		$marker .= get_rocket_htaccess_mod_rewrite();	
+	}
+	
 	$marker .= '# END WP Rocket' . PHP_EOL;
 
 	/**

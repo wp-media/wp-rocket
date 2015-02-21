@@ -12,15 +12,19 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 function get_rocket_post_terms_urls( $post_ID )
 {
 	$urls = array();
-	$taxonomies = get_object_taxonomies( get_post_type( $post_ID ) );
+	$taxonomies = get_object_taxonomies( get_post_type( $post_ID ), 'objects' );
 	
 	foreach( $taxonomies as $taxonomy ) {
+		if( ! $taxonomy->public ) {
+			continue;
+		}
+		
 		// Get the terms related to post
-		$terms = get_the_terms( $post_ID, $taxonomy );
-
+		$terms = get_the_terms( $post_ID, $taxonomy->name );
+		
 		if ( ! empty( $terms ) ) {
 			foreach ( $terms as $term ) {
-				$term_url = get_term_link( $term->slug, $taxonomy );
+				$term_url = get_term_link( $term->slug, $taxonomy->name );
 				
 				if ( ! is_wp_error( $term_url ) ) {
 					$urls[] = $term_url;	
@@ -37,7 +41,7 @@ function get_rocket_post_terms_urls( $post_ID )
 	 * @param array $urls List of taxonomies URLs
 	*/
 	$urls = apply_filters( 'rocket_post_terms_urls', $urls );
-	
+
 	return $urls;
 }
 

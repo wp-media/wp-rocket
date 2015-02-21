@@ -4,6 +4,7 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 /**
  * Launch DNS Prefetching process
  *
+ * @since 2.5 Don't add CNAMES if CDN is disabled HTTPS pages or on specific posts
  * @since 2.1 Adding CNAMES fo CDN automatically in DNS Prefetch process
  * @since 2.0
  */
@@ -11,7 +12,14 @@ add_filter( 'rocket_buffer', 'rocket_dns_prefetch', 12 );
 function rocket_dns_prefetch( $buffer )
 {
 	$dns_link_tags = '';
-	$domains = array_merge( get_rocket_cdn_cnames( array( 'all', 'images', 'css_and_js', 'css', 'js' ) ), (array) get_rocket_option( 'dns_prefetch' ) );
+	$cdn_cnames    = get_rocket_cdn_cnames( array( 'all', 'images', 'css_and_js', 'css', 'js' ) );
+
+	// Don't add CNAMES if CDN is disabled HTTPS pages or on specific posts
+	if( ! is_rocket_cdn_on_ssl() || is_rocket_post_excluded_option( 'cdn' ) ) {
+		$cdn_cnames = array();
+	}
+
+	$domains = array_merge( $cdn_cnames, (array) get_rocket_option( 'dns_prefetch' ) );
 
 	/**
 	 * Filter list of domains to prefetch DNS

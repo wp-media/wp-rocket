@@ -12,13 +12,48 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
  */
 function get_rocket_option( $option, $default = false )
 {
+	/**
+	 * Pre-filter any WP Rocket option before read
+	 *
+	 * @since 2.5
+	 *
+	 * @param variant $default The default value
+	*/
+	$value = apply_filters( 'pre_get_rocket_option_' . $option, NULL, $default );
+	if ( NULL !== $value ) {
+		return $value;
+	}
 	$options = get_option( WP_ROCKET_SLUG );
 	if ( 'consumer_key' == $option && defined( 'WP_ROCKET_KEY' ) ) {
 		return WP_ROCKET_KEY;
 	} elseif( 'consumer_email' == $option && defined( 'WP_ROCKET_EMAIL' ) ) {
 		return WP_ROCKET_EMAIL;
 	}
-	return isset( $options[ $option ] ) && $options[ $option ] !== '' ? $options[ $option ] : $default;
+	$value = isset( $options[ $option ] ) && $options[ $option ] !== '' ? $options[ $option ] : $default;
+	/**
+	 * Filter any WP Rocket option after read
+	 *
+	 * @since 2.5
+	 *
+	 * @param variant $default The default value
+	*/
+	return apply_filters( 'get_rocket_option_' . $option, $value, $default );
+}
+
+/**
+ * Is we need to exclude some specifics options on a post.
+ *
+ * @since 2.5
+ *
+ * @param  string $option  The option name (lazyload, css, js, cdn)
+ * @return bool 		   True if the option is deactivated
+ */
+function is_rocket_post_excluded_option( $option ) {
+	if ( is_singular() ) {
+		global $post;
+		return get_post_meta( $post->ID, '_rocket_exclude_' . $option, true );
+	}
+	return false;
 }
 
 /**
@@ -43,6 +78,17 @@ function is_rocket_cache_mobile()
 function is_rocket_cache_ssl()
 {
 	return get_rocket_option( 'cache_ssl', false );
+}
+
+/**
+ * Check if we need to disable CDN on SSL pages
+ *
+ * @since 2.5
+ * @access public
+ * @return bool True if option is activated
+ */
+function is_rocket_cdn_on_ssl() {
+	return is_ssl() && get_rocket_option( 'cdn_ssl', 0 ) ? false : true;
 }
 
 /**
@@ -126,7 +172,7 @@ function get_rocket_cache_reject_cookies()
  * @return array List of rejected User-Agent
  */
 function get_rocket_cache_reject_ua() {
-	$ua = array();
+	$ua   = get_rocket_option( 'cache_reject_ua', array() );
 	$ua[] = 'facebookexternalhit';
 
 	/**
@@ -140,6 +186,30 @@ function get_rocket_cache_reject_ua() {
 
 	$ua = implode( '|', array_filter( $ua ) );
 	return $ua;
+}
+
+/**
+ * Get all files we don't allow to get in CDN
+ *
+ * @since 2.5
+ *
+ * @return array List of rejected files
+ */
+function get_rocket_cdn_reject_files() {
+	$files = get_rocket_option( 'cdn_reject_files', array() );
+	
+	/**
+	 * Filter the rejected files
+	 *
+	 * @since 2.5
+	 *
+	 * @param array $files List of rejected files
+	*/
+	$files = apply_filters( 'rocket_cdn_reject_files', $files );
+	
+	$files = implode( '|', array_filter( $files ) );	
+	
+	return $files;
 }
 
 /*

@@ -19,17 +19,17 @@ function rocket_minify_process( $buffer )
 
 		$css = '';
 		$js  = '';
-		$google_fonts  = '';
+		$google_fonts = '';
 
 		list( $buffer, $conditionals ) = rocket_extract_ie_conditionals( $buffer );
 
 		// Minify CSS
-	    if ( $enable_css ) {
+	    if ( $enable_css && ( ! defined( 'DONOTMINIFYCSS' ) || ! DONOTMINIFYCSS ) && ! is_rocket_post_excluded_option( 'minify_css' ) ) {
 	    	list( $buffer, $css ) = rocket_minify_css( $buffer );
 		}
 
 	    // Minify JavaScript
-	    if ( $enable_js ) {
+	    if ( $enable_js && ( ! defined( 'DONOTMINIFYJS' ) || ! DONOTMINIFYJS ) && ! is_rocket_post_excluded_option( 'minify_js' ) ) {
 	    	list( $buffer, $js ) = rocket_minify_js( $buffer );
 		}
 
@@ -46,7 +46,7 @@ function rocket_minify_process( $buffer )
 	}
 
 	// Minify HTML
-	if ( get_rocket_option( 'minify_html' ) ) {
+	if ( get_rocket_option( 'minify_html' ) && ! is_rocket_post_excluded_option( 'minify_html' ) ) {
 	    $buffer = rocket_minify_html( $buffer );
 	}
 
@@ -70,7 +70,7 @@ function __rocket_insert_minify_js_in_footer() {
 		return;
 	}
 
-	if ( get_rocket_option( 'minify_js' ) ) {
+	if ( get_rocket_option( 'minify_js' ) && ( ! defined( 'DONOTMINIFYJS' ) || ! DONOTMINIFYJS ) && ! is_rocket_post_excluded_option( 'minify_js' ) ) {
 
 		if ( is_user_logged_in() && ! get_rocket_option( 'cache_logged_user' ) ) {
 			return;
@@ -253,7 +253,7 @@ function rocket_minify_css( $buffer )
     $wp_content_dirname   = ltrim( str_replace( home_url(), '', WP_CONTENT_URL ), '/' ) . '/';
 
     // Get all css files with this regex
-    preg_match_all( '/<link\s*.+href=[\'|"]([^\'|"]+\.css?.+)[\'|"]?(.+)>/iU', $buffer, $tags_match );
+    preg_match_all( apply_filters( 'rocket_minify_css_regex_pattern', '/<link\s*.+href=[\'|"]([^\'|"]+\.css?.+)[\'|"]?(.+)>/iU' ), $buffer, $tags_match );
 
 	$i=0;
     foreach ( $tags_match[0] as $tag ) {
@@ -342,10 +342,33 @@ function rocket_minify_js( $buffer )
 	 *
 	 * @param array Hostname of JS files to exclude
 	 */
-	$excluded_external_js = apply_filters( 'rocket_minify_excluded_external_js', array( 'forms.aweber.com', 'video.unrulymedia.com', 'gist.github.com', 'stats.wp.com', 'stats.wordpress.com', 'www.statcounter.com', 'widget.rafflecopter.com', 'widget-prime.rafflecopter.com', 'widget.supercounters.com', 'releases.flowplayer.org', 'tools.meetaffiliate.com', 'c.ad6media.fr', 'cdn.stickyadstv.com', 'www.smava.de', 'contextual.media.net', 'app.getresponse.com', 'ap.lijit.com', 'adserver.reklamstore.com', 's0.wp.com', 'wprp.zemanta.com', 'files.bannersnack.com', 'smarticon.geotrust.com' ) );
+	$excluded_external_js = apply_filters( 'rocket_minify_excluded_external_js', array( 
+		'forms.aweber.com', 
+		'video.unrulymedia.com', 
+		'gist.github.com', 
+		'stats.wp.com', 
+		'stats.wordpress.com', 
+		'www.statcounter.com', 
+		'widget.rafflecopter.com', 
+		'widget-prime.rafflecopter.com', 
+		'widget.supercounters.com', 
+		'releases.flowplayer.org', 
+		'tools.meetaffiliate.com', 
+		'c.ad6media.fr', 
+		'cdn.stickyadstv.com', 
+		'www.smava.de', 
+		'contextual.media.net', 
+		'app.getresponse.com', 
+		'ap.lijit.com', 
+		'adserver.reklamstore.com', 
+		's0.wp.com', 
+		'wprp.zemanta.com', 
+		'files.bannersnack.com', 
+		'smarticon.geotrust.com' 
+	) );
 	
     // Get all JS files with this regex
-    preg_match_all( '#<script\s*.+src=[\'|"]([^\'|"]+\.js?.+)[\'|"]?(.+)></script>#iU', $buffer, $tags_match );
+    preg_match_all( apply_filters( 'rocket_minify_js_regex_pattern', '#<script\s*.+src=[\'|"]([^\'|"]+\.js?.+)[\'|"]?(.+)></script>#iU' ), $buffer, $tags_match );
 
 	$i=0;
     foreach ( $tags_match[0] as $tag ) {

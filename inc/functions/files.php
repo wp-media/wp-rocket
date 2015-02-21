@@ -91,7 +91,6 @@ function get_rocket_config_file()
 			$buffer .= '$rocket_' . $option . ' = ' . var_export( get_rocket_cache_query_string(), true ) . ';' . "\n";
 		}
 
-
 		if ( $option == 'cache_reject_cookies' ) {
 			$cookies = get_rocket_cache_reject_cookies();
 
@@ -102,6 +101,10 @@ function get_rocket_config_file()
 			}
 
 			$buffer .= '$rocket_' . $option . ' = \'' . $cookies . '\';' . "\n";
+		}
+		
+		if ( $option == 'cache_reject_ua' ) {
+			$buffer .= '$rocket_' . $option . ' = \'' . get_rocket_cache_reject_ua() . '\';' . "\n";
 		}
 	}
 

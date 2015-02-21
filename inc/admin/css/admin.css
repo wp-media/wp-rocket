@@ -12,3 +12,5 @@ p.description.file-error{color:#F00}
 .rocket-purchase,.dashicons.dashicons-update.rocket-dashicons:before{color:#D54E21}
 .rocket-purchase{font-weight:900}
 .rocket-renew{font-weight:400}
+.rkt-disabled{color:#CCC}
+.rkt-note{font-style:italic;font-weight:bold;font-size:smaller}
