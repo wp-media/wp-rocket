@@ -96,9 +96,20 @@ function __rocket_add_admin_css_js()
 	wp_enqueue_script( 'jquery-ui-droppable', null, array( 'jquery', 'jquery-ui-core' ), null, true );
 	wp_enqueue_script( 'options-wp-rocket', WP_ROCKET_ADMIN_JS_URL . 'options.js', array( 'jquery', 'jquery-ui-core' ), WP_ROCKET_VERSION, true );
 	wp_enqueue_script( 'fancybox-wp-rocket', WP_ROCKET_ADMIN_JS_URL . 'vendors/jquery.fancybox.pack.js', array( 'options-wp-rocket' ), WP_ROCKET_VERSION, true );
+	wp_enqueue_script( 'sweet-alert-wp-rocket', WP_ROCKET_ADMIN_JS_URL . 'vendors/sweet-alert.min.js', array( 'options-wp-rocket' ), WP_ROCKET_VERSION, true );
 
 	wp_enqueue_style( 'options-wp-rocket', WP_ROCKET_ADMIN_CSS_URL . 'options.css', array(), WP_ROCKET_VERSION );
 	wp_enqueue_style( 'fancybox-wp-rocket', WP_ROCKET_ADMIN_CSS_URL . 'fancybox/jquery.fancybox.css', array( 'options-wp-rocket' ), WP_ROCKET_VERSION );
+	
+	// Sweet Alert
+	$translation_array = array(
+		'title' => __( 'Are you sure?', 'rocket' ),
+		'text'  => __( 'In case of any display errors we recommend following our documentation: http://docs.wp-rocket.me/article/19-resolving-issues-with-minification/ You can also contact our support if you need help implementing that.', 'rocket' ),
+		'confirmButtonText' => __( 'Yes, I\'m sure!', 'rocket' ),
+		'cancelButtonText' 	=> __( 'Cancel', 'rocket' )
+	);
+	wp_localize_script( 'sweet-alert-wp-rocket', 'sawpr', $translation_array );
+	wp_enqueue_style( 'sweet-alert-wp-rocket', WP_ROCKET_ADMIN_CSS_URL . 'sweet-alert.css', array( 'options-wp-rocket' ), WP_ROCKET_VERSION );
 }
 
 /**

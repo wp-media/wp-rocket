@@ -1,5 +1,4 @@
 jQuery( document ).ready( function($){
-	
 	// Fancybox
 	$(".fancybox").fancybox({'type' : 'iframe'});
 
@@ -13,7 +12,7 @@ jQuery( document ).ready( function($){
 			$($item_c_input).attr( 'name', 'wp_rocket_settings[deferred_js_wait]['+i+']' );
 		});
 	}
-	
+
 	// Minify JS in footer
 	function rocket_minify_js_rename() {
 		$('#rkt-drop-minify_js_in_footer .rkt-module-drag').each( function(i){
@@ -21,15 +20,15 @@ jQuery( document ).ready( function($){
 			$($item_t_input).attr( 'name', 'wp_rocket_settings[minify_js_in_footer]['+i+']' );
 		});
 	}
-	
+
 	$('.rkt-module-drop').sortable({
-		update : function() { 
+		update : function() {
 			if ( $(this).attr('id') == 'rkt-drop-deferred' ) {
-				rocket_deferred_rename(); 	
+				rocket_deferred_rename();
 			}
-			
+
 			if ( $(this).attr('id') == 'rkt-drop-minify_js_in_footer' ) {
-				rocket_minify_js_rename(); 	
+				rocket_minify_js_rename();
 			}
 		},
 		axis: "y",
@@ -43,27 +42,27 @@ jQuery( document ).ready( function($){
 		tolerance: 'pointer',
 		revert: true,
 	});
-	
+
 	// Remove input
 	$('.rkt-module-remove').css('cursor','pointer').live('click', function(e){
 		e.preventDefault();
 		$(this).parent().css('background-color','red' ).slideUp( 'slow' , function(){$(this).remove(); } );
 	} );
-	
+
 	// CNAMES
 	$('.rkt-module-clone').on('click', function(e)
 	{
 		var moduleID = $(this).parent().siblings('.rkt-module').attr('id');
-		
-		e.preventDefault();	
+
+		e.preventDefault();
 		$($('#' + moduleID ).siblings('.rkt-module-model:last')[0].innerHTML).appendTo('#' + moduleID);
-		
+
 		if( moduleID == '' ) {
 			rocket_deferred_rename();
 		}
-		
+
 	});
-	
+
 	// Tabs
 	$('#rockettabs').css({padding: '5px', border: '1px solid #ccc', borderTop: '0px'});
 	$('.nav-tab-wrapper a').css({outline: '0px'});
@@ -97,5 +96,32 @@ jQuery( document ).ready( function($){
 		$('#tab_basic').show();
 		if( sup_html5st ) sessionStorage.setItem( 'rocket_tab', null );
 	}
-	
+
+	// Sweet Alert for CSS & JS minification
+	$( '#minify_css, #minify_js' ).click(function() {
+		doSweetAlert($(this));
+	});
+
 } );
+
+function doSweetAlert( obj ) {
+	if ( obj.is( ':checked' ) ) {
+		swal(
+		{
+			title: sawpr.title,
+			text: sawpr.text,
+			type: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#A5DC86",
+			confirmButtonText: sawpr.confirmButtonText,
+			cancelButtonText: sawpr.cancelButtonText,
+			closeOnConfirm: true,
+			closeOnCancel: true
+		},
+		function(isConfirm){
+			if (!isConfirm) {
+				obj.attr('checked', false);
+			}
+		});
+	}
+}
