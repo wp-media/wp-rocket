@@ -99,29 +99,35 @@ jQuery( document ).ready( function($){
 
 	// Sweet Alert for CSS & JS minification
 	$( '#minify_css, #minify_js' ).click(function() {
-		doSweetAlert($(this));
+		if ( $(this).is( ':checked' ) ) {
+			swal(
+			{
+				title: sawpr.warning_title,
+				text: sawpr.minify_text,
+				type: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#A5DC86",
+				confirmButtonText: sawpr.confirmButtonTextBis,
+				cancelButtonText: sawpr.cancelButtonText,
+				closeOnConfirm: true,
+				closeOnCancel: true
+			},
+			function(isConfirm){
+				if (!isConfirm) {
+					obj.attr('checked', false);
+				}
+			});
+		}
 	});
-
+	
+	// Sweet Alert for CloudFlare activation
+	$( '#do_cloudflare' ).click(function() {
+		if ( $(this).is( ':checked' ) ) {
+			swal({   
+				title: sawpr.cloudflare_title,   
+				text: sawpr.cloudflare_text,   
+				timer: 5000 
+			});
+		}
+	});
 } );
-
-function doSweetAlert( obj ) {
-	if ( obj.is( ':checked' ) ) {
-		swal(
-		{
-			title: sawpr.title,
-			text: sawpr.text,
-			type: "warning",
-			showCancelButton: true,
-			confirmButtonColor: "#A5DC86",
-			confirmButtonText: sawpr.confirmButtonText,
-			cancelButtonText: sawpr.cancelButtonText,
-			closeOnConfirm: true,
-			closeOnCancel: true
-		},
-		function(isConfirm){
-			if (!isConfirm) {
-				obj.attr('checked', false);
-			}
-		});
-	}
-}

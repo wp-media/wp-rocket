@@ -98,6 +98,13 @@ function rocket_first_install()
 			'cdn_zone'                 => array(),
 			'cdn_ssl'                  => 0,
 			'cdn_reject_files'         => array(),
+			'do_cloudflare'		   	   => 0,
+			'cloudflare_email'		   => '',
+			'cloudflare_api_key'	   => '',
+			'cloudflare_domain'	   	   => '',
+			'cloudflare_devmode'	   => 0,
+			'cloudflare_auto_settings' => 0,
+			'cloudflare_old_settings'  => 0,
 			'do_beta'                  => 0,
 		)
 	);

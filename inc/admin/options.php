@@ -851,9 +851,155 @@ function rocket_display_options()
 				),
 		)
 	);
-
+	
+	// CloudFlare
+	add_settings_section( 'rocket_display_cloudflare_options', __( 'CloudFlare', 'rocket' ), '__return_false', 'cloudflare' );
+	add_settings_field(
+		'rocket_cloudflare_email',
+		__( 'CloudFlare Account Email', 'rocket' ),
+		'rocket_field',
+		'cloudflare',
+		'rocket_display_cloudflare_options',
+		array(
+			array(
+				'type'         => 'text',
+				'label_for'    => 'cloudflare_email',
+				'label_screen' => __( 'CloudFlare Account Email', 'rocket' ),
+			)
+		)
+	);
+	add_settings_field(
+		'rocket_cloudflare_api_key',
+		__( 'API Key', 'rocket' ),
+		'rocket_field',
+		'cloudflare',
+		'rocket_display_cloudflare_options',
+		array(
+			array(
+				'type'         => 'text',
+				'label_for'    => 'cloudflare_api_key',
+				'label_screen' => __( 'API Key', 'rocket' ),
+			),
+			array(
+				'type' 		   => 'helper_description',
+				'name'         => 'cloudflare_api_key',
+				'description'  => sprintf( __( '<strong>Note:</strong> Where do I find my CloudFlare API key? <a href=%s"">Learn more</a>', 'rocket' ), 'https://support.cloudflare.com/hc/en-us/articles/200167836-Where-do-I-find-my-CloudFlare-API-key-' ),
+			)
+		)
+	);
+	add_settings_field(
+		'rocket_cloudflare_domain',
+		__( 'Domain', 'rocket' ),
+		'rocket_field',
+		'cloudflare',
+		'rocket_display_cloudflare_options',
+		array(
+			array(
+				'type'         => 'text',
+				'label_for'    => 'cloudflare_domain',
+				'label_screen' => __( 'Domain', 'rocket' ),
+			)
+		)
+	);
+	add_settings_field(
+		'rocket_cloudflare_devmode',
+		__( 'Development Mode', 'rocket' ),
+		'rocket_field',
+		'cloudflare',
+		'rocket_display_cloudflare_options',
+		array(
+			array(
+				'type'         => 'select',
+				'label_for'    => 'cloudflare_devmode',
+				'label_screen' => __( 'Development Mode', 'rocket' ),
+				'options'	   => array(
+					0 => __( 'Off', 'rocket' ),
+					1 => __( 'On', 'rocket' )
+				),
+			),
+			array(
+				'type' 		   => 'helper_description',
+				'name'         => 'cloudflare_devmode',
+				'description'  => sprintf( __( 'Temporarily enter development mode on your website. <a href=%s"">Learn more</a>', 'rocket' ), 'https://support.cloudflare.com/hc/en-us/articles/200168246' ),
+			)
+		)
+	);
+	add_settings_field(
+		'rocket_cloudflare_auto_settings',
+		__( 'Auto enable the optimal CloudFlare settings (props WP Rocket)', 'rocket' ),
+		'rocket_field',
+		'cloudflare',
+		'rocket_display_cloudflare_options',
+		array(
+			array(
+				'type'         => 'select',
+				'label_for'    => 'cloudflare_auto_settings',
+				'label_screen' => __( 'Auto enable the optimal CloudFlare settings (props WP Rocket)', 'rocket' ),
+				'options'	   => array(
+					0 => __( 'No', 'rocket' ),
+					1 => __( 'Yes', 'rocket' )
+				),
+			),
+			array(
+				'type' 		   => 'helper_description',
+				'name'         => 'cloudflare_auto_settings',
+				'description'  => __( 'We select the best CloudFlare configuration for speed, performance grade and compatibility.', 'rocket' ),
+			)
+		)
+	);
+	add_settings_field(
+		'rocket_purge_cloudflare',
+		__( 'Cache Purge', 'rocket' ),
+		'rocket_button',
+		'cloudflare',
+		'rocket_display_cloudflare_options',
+		array(
+			'button'=>array(
+				'button_label' => __( 'Purge cache', 'rocket' ),
+				'url'		   => wp_nonce_url( admin_url( 'admin-post.php?action=rocket_purge_cloudflare' ), 'rocket_purge_cloudflare' ),
+			),
+			'helper_description'=>array(
+				'name'         => 'purge_cloudflare',
+				'description'  => sprintf(__( 'Immediately purge cached resources for your website. <a href="%s" target="_blank">Learn more</a>', 'rocket' ), 'https://support.cloudflare.com/hc/en-us/articles/200169246' )
+			),
+		)
+	);
+	
 	// Content Delivery Network
 	add_settings_section( 'rocket_display_cdn_options', __( 'Content Delivery Network options', 'rocket' ), '__return_false', 'cdn' );
+	add_settings_field(
+		'rocket_do_cloudflare',
+		__( 'Cloudflare', 'rocket' ),
+		'rocket_field',
+		'cdn',
+		'rocket_display_cdn_options',
+		array(
+			array(
+				'type'         => 'checkbox',
+				'readonly'     => ! rocket_has_cloudflare(),
+				'label'        => rocket_has_cloudflare() ? 
+									__( 'Enable CloudFlare settings tab.', 'rocket' ) :
+									'<span class="rkt-disabled">' . __( 'Enable CloudFlare settings tab.', 'rocket' ) . '</span>',
+				'label_for'    => 'do_cloudflare',
+				'label_screen' => __( 'Cloudflare', 'rocket' )
+			),
+			array(
+				'type' 		  => ! rocket_has_cloudflare() ? '' : 'helper_description',
+				'name' 		  => ! rocket_has_cloudflare() ? '' : 'rocket_do_cloudflare',
+				'description' => ! rocket_has_cloudflare() ? '' : __( 'This option allows you to configure some CloudFlare settings like development mode, purge cache and a recommended configuration.', 'rocket' )
+			),
+			array(
+				'type' 		  => ! rocket_has_cloudflare() ? '' : 'helper_description',
+				'name' 		  => ! rocket_has_cloudflare() ? '' : 'rocket_do_cloudflare',
+				'description' => ! rocket_has_cloudflare() ? '' : __( '<strong>Note:</strong> If you are using CloudFlare, configure the options in the CloudFlare tab. The CDN settings below <strong>do not apply</strong> to CloudFlare.', 'rocket' )
+			),
+			array(
+				'type' 		  => rocket_has_cloudflare() ? '' : 'helper_warning',
+				'name' 		  => rocket_has_cloudflare() ? '' : 'rocket_do_cloudflare',
+				'description' => rocket_has_cloudflare() ? '' : sprintf( __( 'This option is available for websites using <a href="%s" target="_blank">CloudFlare</a>.', 'rocket' ), 'https://www.cloudflare.com' )
+			)
+		)
+    );
 	add_settings_field(
 		'rocket_cdn',
 		__( 'CDN:', 'rocket' ),
@@ -915,6 +1061,8 @@ function rocket_display_options()
 			),
 		)
 	);
+	
+	// White Label
 	add_settings_section( 'rocket_display_white_label', __( 'White Label', 'rocket' ), '__return_false', 'white_label' );
 	add_settings_field(
 		'rocket_wl_plugin_name',
@@ -1263,12 +1411,15 @@ function rocket_display_options()
 	<h2><?php echo WP_ROCKET_PLUGIN_NAME; ?> <small><sup><?php echo WP_ROCKET_VERSION; ?></sup></small></h2>
 	<form action="options.php" id="rocket_options" method="post" enctype="multipart/form-data">
 		<?php settings_fields( 'wp_rocket' ); ?>
-		<?php rocket_hidden_fields( array( 'consumer_key', 'consumer_email', 'secret_key', 'license', 'secret_cache_key', 'minify_css_key', 'minify_js_key', 'version' ) ); ?>
+		<?php rocket_hidden_fields( array( 'consumer_key', 'consumer_email', 'secret_key', 'license', 'secret_cache_key', 'minify_css_key', 'minify_js_key', 'version', 'cloudflare_old_settings' ) ); ?>
 		<?php submit_button(); ?>
 		<h2 class="nav-tab-wrapper hide-if-no-js">
 			<?php if( rocket_valid_key() ) { ?>
 				<a href="#tab_basic" class="nav-tab"><?php _e( 'Basic options', 'rocket' ); ?></a>
 				<a href="#tab_advanced" class="nav-tab"><?php _e( 'Advanced options', 'rocket' ); ?></a>
+				<?php if ( get_rocket_option( 'do_cloudflare' ) && rocket_has_cloudflare() ) { ?>
+					<a href="#tab_cloudflare" class="nav-tab"><?php _e( 'CloudFlare', 'rocket' ); ?></a>
+				<?php } ?>
 				<a href="#tab_cdn" class="nav-tab"><?php _e( 'CDN', 'rocket' ); ?></a>
 				<?php if( defined( 'WP_RWL' ) ) { ?>
 					<a href="#tab_whitelabel" class="nav-tab"><?php _e( 'White Label', 'rocket' ); ?></a>
@@ -1294,6 +1445,7 @@ function rocket_display_options()
 			<?php if( rocket_valid_key() ) { ?>
 				<div class="rkt-tab" id="tab_basic"><?php do_settings_sections( 'basic' ); ?></div>
 				<div class="rkt-tab" id="tab_advanced"><?php do_settings_sections( 'advanced' ); ?></div>
+				<div class="rkt-tab" id="tab_cloudflare" <?php echo get_rocket_option( 'do_cloudflare' ) && rocket_has_cloudflare() ? '' : 'style="display:none"'; ?>><?php do_settings_sections( 'cloudflare' ); ?></div>
 				<div class="rkt-tab" id="tab_cdn"><?php do_settings_sections( 'cdn' ); ?></div>
 				<?php $class_hidden = !defined( 'WP_RWL' ) ? ' hidden' : ''; ?>
 				<div class="rkt-tab<?php echo $class_hidden; ?>" id="tab_whitelabel"><?php do_settings_sections( 'white_label' ); ?></div>
@@ -1563,7 +1715,7 @@ function rocket_settings_callback( $inputs )
 	if ( isset( $inputs['autoupdate'] ) && 1 == $inputs['autoupdate'] ) {
 		rocket_dismiss_box( 'rocket_ask_for_autoupdate' );
 	}
-
+		
 	/*
 	 * Option : CDN
 	 */
@@ -1688,7 +1840,29 @@ function rocket_after_save_options( $oldvalue, $value )
 	if ( ! empty( $_POST ) && ( $oldvalue['minify_js'] != $value['minify_js'] || $oldvalue['exclude_js']  != $value['exclude_js'] ) ) {
 		rocket_clean_minify( 'js' );
 	}
-
+	
+	// Update CloudFlare Development Mode
+	if ( ! empty( $_POST ) && ( $oldvalue['cloudflare_devmode'] != $value['cloudflare_devmode'] ) ) {
+		set_rocket_cloudflare_devmode( (bool) $value['cloudflare_devmode'] );
+	}
+	
+	// Update CloudFlare settings
+	if ( ! empty( $_POST ) && ( $oldvalue['cloudflare_auto_settings'] != $value['cloudflare_auto_settings'] ) ) {		
+		$cf_old_settings = explode( ',', $value['cloudflare_old_settings'] );
+		
+		// Set Cache Level to Aggressive 
+		$cf_cache_lvl = ( isset( $cf_old_settings[0] ) && $value['cloudflare_auto_settings'] == 0 ) ? $cf_old_settings[0] : 'agg';
+		set_rocket_cloudflare_cache_lvl( $cf_cache_lvl );
+		
+		// Active Minification for HTML, CSS & JS
+		$cf_minify = ( isset( $cf_old_settings[1] ) && $value['cloudflare_auto_settings'] == 0 ) ? $cf_old_settings[1] : 7;
+		set_rocket_cloudflare_minify( $cf_minify );
+		
+		// Deactive Rocket Loader to prevent conflicts
+		$cf_async = ( isset( $cf_old_settings[2] ) && $value['cloudflare_auto_settings'] == 0 ) ? $cf_old_settings[2] : false;
+		set_rocket_cloudflare_async( $cf_async );
+	}
+	
 	// Update .htaccess file rules
 	flush_rocket_htaccess( ! rocket_valid_key() );
 
@@ -1699,7 +1873,7 @@ function rocket_after_save_options( $oldvalue, $value )
 	if ( ! defined( 'WP_CACHE' ) || ! WP_CACHE ) {
 		set_rocket_wp_cache_define( true );
 	}
-
+	
 	// Redirect on the correct page slug name to avoid false negative error message
 	if ( ! empty( $_POST ) && $oldvalue['wl_plugin_name'] != $value['wl_plugin_name'] &&
 		isset( $_POST['option_page'], $_POST['action'] ) && 'wp_rocket' == $_POST['option_page'] && 'update' == $_POST['action'] )
@@ -1739,6 +1913,15 @@ function rocket_pre_main_option( $newvalue, $oldvalue )
 		|| ( isset( $newvalue['minify_js_in_footer'], $oldvalue['minify_js_in_footer'] ) && $newvalue['minify_js_in_footer'] != $oldvalue['minify_js_in_footer'] )
 	) {
 		$newvalue['minify_js_key'] = create_rocket_uniqid();
+	}
+
+	// Save old CloudFlare settings
+	if ( ( isset( $newvalue['cloudflare_auto_settings'], $oldvalue['cloudflare_auto_settings'] ) && $newvalue['cloudflare_auto_settings'] != $oldvalue['cloudflare_auto_settings'] && $newvalue['cloudflare_auto_settings'] == 1 ) ) {
+		$cf_settings = get_rocket_cloudflare_settings();
+		$cf_settings = array( $cf_settings->cache_lvl, (int) $cf_settings->minify, ! is_string( $cf_settings->async ) ? (int) $cf_settings->async : $cf_settings->async );
+		$cf_settings = array_filter( $cf_settings );
+		
+		$newvalue['cloudflare_old_settings'] = ( isset ( $cf_settings ) ) ? implode( ',' , $cf_settings ) : '';
 	}
 
 	if ( ! defined( 'WP_ROCKET_ADVANCED_CACHE' ) ) {

@@ -27,10 +27,8 @@ function __rocket_settings_action_links( $actions )
  * @since 2.2
  *
  */
-
 add_action( 'plugin_row_meta', '__rocket_plugin_row_meta', 10, 3 );
 function __rocket_plugin_row_meta( $plugin_meta, $plugin_file, $plugin_data ) {
-
 	if ( 'wp-rocket/wp-rocket.php' == $plugin_file ) {
 
 		$update_plugins = get_site_transient( 'update_plugins' );
@@ -103,12 +101,14 @@ function __rocket_add_admin_css_js()
 	
 	// Sweet Alert
 	$translation_array = array(
-		'title' => __( 'Are you sure?', 'rocket' ),
-		'text'  => __( 'In case of any display errors we recommend following our documentation: http://docs.wp-rocket.me/article/19-resolving-issues-with-minification/ You can also contact our support if you need help implementing that.', 'rocket' ),
-		'confirmButtonText' => __( 'Yes, I\'m sure!', 'rocket' ),
-		'cancelButtonText' 	=> __( 'Cancel', 'rocket' )
+		'warning_title'  	 => __( 'Are you sure?', 'rocket' ),
+		'cloudflare_title'   => __( 'CloudFlare Settings', 'rocket' ),
+		'minify_text'  		 => __( 'In case of any display errors we recommend following our documentation: http://docs.wp-rocket.me/article/19-resolving-issues-with-minification/ You can also contact our support if you need help implementing that.', 'rocket' ),
+		'cloudflare_text'    => __( 'Click "Save Changes" to activate the Cloudflare tab.', 'rocket' ),
+		'confirmButtonText'  => __( 'Yes, I\'m sure!', 'rocket' ),
+		'cancelButtonText' 	 => __( 'Cancel', 'rocket' )
 	);
-	wp_localize_script( 'sweet-alert-wp-rocket', 'sawpr', $translation_array );
+	wp_localize_script( 'options-wp-rocket', 'sawpr', $translation_array );
 	wp_enqueue_style( 'sweet-alert-wp-rocket', WP_ROCKET_ADMIN_CSS_URL . 'sweet-alert.css', array( 'options-wp-rocket' ), WP_ROCKET_VERSION );
 }
 
