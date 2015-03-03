@@ -71,8 +71,13 @@ function __rocket_insert_minify_js_in_footer() {
 	}
 
 	if ( get_rocket_option( 'minify_js' ) && ( ! defined( 'DONOTMINIFYJS' ) || ! DONOTMINIFYJS ) && ! is_rocket_post_excluded_option( 'minify_js' ) ) {
-
+		// Don't apply for logged users if the option is turned off.
 		if ( is_user_logged_in() && ! get_rocket_option( 'cache_logged_user' ) ) {
+			return;
+		}
+		
+		// Don't apply on excluded pages.
+		if ( in_array( $_SERVER['REQUEST_URI'] , get_rocket_option( 'cache_reject_uri' , array() ) ) ) {
 			return;
 		}
 
