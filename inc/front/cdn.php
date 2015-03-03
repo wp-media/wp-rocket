@@ -7,8 +7,10 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
  * @since 2.1
  */
 add_filter( 'template_directory_uri'	, 'rocket_cdn_file', PHP_INT_MAX );
-add_filter( 'wp_get_attachment_url'		, 'rocket_cdn_file', PHP_INT_MAX );
-add_filter( 'smilies_src'				, 'rocket_cdn_file', PHP_INT_MAX );
+if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+	add_filter( 'wp_get_attachment_url'		, 'rocket_cdn_file', PHP_INT_MAX );
+	add_filter( 'smilies_src'				, 'rocket_cdn_file', PHP_INT_MAX );
+}
 add_filter( 'stylesheet_uri'			, 'rocket_cdn_file', PHP_INT_MAX );
 // If for some completely unknown reason the user is using WP Minify or Better WordPress Minify instead of the WP Rocket minification
 add_filter( 'wp_minify_css_url'			, 'rocket_cdn_file', PHP_INT_MAX );
@@ -58,7 +60,6 @@ if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 add_filter( 'rocket_buffer', 'rocket_cdn_images', PHP_INT_MAX );
 function rocket_cdn_images( $html )
 {
-	
 	// Don't use CDN if the image is in admin, a feed or in a post preview
 	if ( is_admin() || is_feed() || is_preview() || empty( $html ) ) {
 		return $html;
@@ -68,25 +69,28 @@ function rocket_cdn_images( $html )
 	if ( $cnames = get_rocket_cdn_cnames( $zone ) ) {
 		// Get all images of the content
 		preg_match_all( '#<img([^>]+?)src=[\'"]?([^\'"\s>]+)[\'"]?([^>]*)>#i', $html, $images_match );
-
+		
 		foreach ( $images_match[2] as $k=>$image_url ) {
-			// Get host of the URL
-			$image_host = parse_url( $image_url, PHP_URL_HOST );
-
 			// Check if the link isn't external
-			if( ( empty( $image_host ) && strpos( $image_url, 'data:image' ) === false ) || $image_host == rocket_remove_url_protocol( home_url() ) ) {
-
-				$html = str_replace(
-					$images_match[0][$k],
-					sprintf(
-						'<img %1$s %2$s %3$s>',
-						$images_match[1][$k],
-						'src="' . get_rocket_cdn_url( $image_url, $zone ) .'"',
-						$images_match[3][$k]
-					),
-					$html
-				);
+			if( parse_url( rocket_add_url_protocol( $image_url ), PHP_URL_HOST ) != parse_url( home_url(), PHP_URL_HOST ) ) {
+				continue;
 			}
+			
+			// Check if the URL isn't a DATA-URI
+			if( false !== strpos( $image_url, 'data:image' ) ) {
+				continue;
+			}
+			
+			$html = str_replace(
+				$images_match[0][$k],
+				sprintf(
+					'<img %1$s %2$s %3$s>',
+					$images_match[1][$k],
+					'src="' . get_rocket_cdn_url( $image_url, $zone ) .'"',
+					$images_match[3][$k]
+				),
+				$html
+			);
 		}
 	}
 
@@ -120,12 +124,8 @@ function rocket_cdn_enqueue( $src )
 	}
 
 	if ( $cnames = get_rocket_cdn_cnames( $zone ) ) {
-
-		// Get host of the URL
-		$src_host = parse_url( $src, PHP_URL_HOST );
-
 		// Check if the link isn't external
-		if ( empty( $src_host ) || $src_host == rocket_remove_url_protocol( home_url() ) ) {
+		if ( parse_url( rocket_add_url_protocol( $src ), PHP_URL_HOST ) == parse_url( home_url(), PHP_URL_HOST ) ) {
 			$src = get_rocket_cdn_url( $src, $zone );
 		}
 	}
