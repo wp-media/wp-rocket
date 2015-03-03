@@ -86,13 +86,7 @@ function __rocket_insert_minify_js_in_footer() {
 		$ordered_files = array();
 
 		// Get host of CNAMES
-		$cnames_host = array();
-		if ( $cnames = get_rocket_cdn_cnames( array( 'all', 'css_and_js', 'js' ) ) ) {
-			foreach ( $cnames as $cname ) {
-				$cname = rocket_add_url_protocol( $cname );
-				$cnames_host[] = parse_url( $cname, PHP_URL_HOST );
-			}
-		}
+		$cnames_host = get_rocket_cnames_host( array( 'all', 'css_and_js', 'js' ) );
 
 		$i=0;
 		foreach( $files as $file ) {
