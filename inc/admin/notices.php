@@ -129,7 +129,8 @@ function rocket_plugins_to_deactivate()
 		'query-strings-remover/query-strings-remover.php',
 		'wp-ffpc/wp-ffpc.php',
 		'far-future-expiry-header/far-future-expiration.php',
-		'combine-css/combine-css.php'
+		'combine-css/combine-css.php',
+		'super-static-cache/super-static-cache.php'
 	);
 
 	if ( get_rocket_option( 'lazyload' ) ) {
