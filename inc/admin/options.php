@@ -1159,40 +1159,6 @@ function rocket_display_options()
 	// Tools
 	add_settings_section( 'rocket_display_tools', __( 'Tools', 'rocket' ), '__return_false', 'tools' );
 
-	// Use this var to check the WP version, < 0 -> 3.7 or less, >= 0 -> 3.7 or higher
-	$correct_wp_version = version_compare( $GLOBALS['wp_version'], '3.7' );
-
-	if ( current_user_can( 'update_plugins' ) ) {
-		add_settings_field(
-			'rocket_autoupdate',
-			__( 'Auto-update', 'rocket' ),
-			'rocket_field',
-			'tools',
-			'rocket_display_tools',
-			array(
-				array(
-					'type'         => 'checkbox',
-					'readonly'     => $correct_wp_version < 0 || rocket_automatic_updater_disabled(),
-					'label'        => $correct_wp_version >= 0 && ! rocket_automatic_updater_disabled() ? 
-										__( 'Yes, please update this plugin for all next available versions.', 'rocket' ) :
-										'<span class="rkt-disabled">' . __( 'Yes, please update this plugin for all next available versions.', 'rocket' ) . '</span>',
-					'label_for'    => 'autoupdate',
-					'label_screen' => __( 'Auto-update', 'rocket' )
-				),
-				array(
-					'type' 		  => $correct_wp_version >= 0 ? '' : 'helper_warning',
-					'name' 		  => $correct_wp_version >= 0 ? '' : 'no_autoupdate',
-					'description' => $correct_wp_version >= 0 ? '' : __( 'This option is available for WordPress 3.7 and more.', 'rocket' )
-				),
-				array(
-					'type' 		  => $correct_wp_version < 0 || ( $correct_wp_version >= 0 && ! rocket_automatic_updater_disabled() ) ? '' : 'helper_warning',
-					'name' 		  => $correct_wp_version < 0 || ( $correct_wp_version >= 0 && ! rocket_automatic_updater_disabled() )  ? '' : 'no_autoupdate2',
-					'description' => $correct_wp_version < 0 || ( $correct_wp_version >= 0 && ! rocket_automatic_updater_disabled() )  ? '' : __( 'The WP update feature is disabled on this website, check <a href="http://codex.wordpress.org/Configuring_Automatic_Background_Updates">Configuring Automatic Background Updates</a> for more information.', 'rocket' )
-				)
-			)
-	    );
-	}
-
     if ( ! rocket_is_white_label() ) {
 		add_settings_field(
 			'rocket_do_beta',
@@ -1273,9 +1239,6 @@ function rocket_display_options()
 
     if ( current_user_can( 'update_plugins' ) ) {
 		$temp_description = __( 'Please backup your settings before, use the "Download options" button above.', 'rocket' );
-		if ( get_rocket_option( 'autoupdate' ) ) {
-			$temp_description .= __( '<br>Also, the "Auto-update" feature will be deactivated, do not activate it again if you don\'t want to upgrade.', 'rocket' );
-		}
 	    add_settings_field(
 			'rocket_rollback',
 			__( 'Update Rollback', 'rocket' ),
@@ -1706,17 +1669,6 @@ function rocket_settings_callback( $inputs )
 	$inputs['wl_plugin_slug'] = sanitize_key( $inputs['wl_plugin_name'] );
 
 	/*
-	 * Autoupdate
-	 */
-	if ( ! current_user_can( 'update_plugins' ) ) {
-		unset( $inputs['autoupdate'] );
-	}
-
-	if ( isset( $inputs['autoupdate'] ) && 1 == $inputs['autoupdate'] ) {
-		rocket_dismiss_box( 'rocket_ask_for_autoupdate' );
-	}
-		
-	/*
 	 * Option : CDN
 	 */
 	$inputs['cdn_cnames'] = isset( $inputs['cdn_cnames'] ) ? array_unique( array_filter( $inputs['cdn_cnames'] ) ) : array();
@@ -1967,16 +1919,5 @@ function rocket_import_upload_form() {
 		<input type="hidden" name="max_file_size" value="<?php echo $bytes; ?>" />
 		</p>
 		<?php submit_button( __( 'Upload file and import settings', 'rocket' ), 'button', 'import' );
-	}
-}
-
-/*
- * Force the autoupdate checkbox option to be uncheck
- * @since 2.5
- */
-add_action( 'wp_rocket_loaded', '__pre_get_rocket_option_autoupdate' );
-function __pre_get_rocket_option_autoupdate() {
-	if ( version_compare( $GLOBALS['wp_version'], '3.7' ) < 0 || rocket_automatic_updater_disabled() ) {
-		add_filter( 'pre_get_rocket_option_autoupdate', '__return_zero' );
 	}
 }

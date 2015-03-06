@@ -454,34 +454,3 @@ function rocket_thank_you_license()
 	<?php
 	}
 }
-
-/**
- * Ask the user if he wants to use the autoupdate feature
- *
- * @since 2.4
- */
-add_action( 'admin_notices', 'rocket_ask_for_autoupdate' );
-function rocket_ask_for_autoupdate()
-{
-	/** This filter is documented in inc/admin-bar.php */
-	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
-	    && rocket_valid_key() ) {
-
-		$boxes = get_user_meta( $GLOBALS['current_user']->ID, 'rocket_boxes', true );
-
-		if ( ! in_array( __FUNCTION__, (array) $boxes ) ) { ?>
-
-			<div class="updated settings-error">
-				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>" class="rkt-cross"><div class="dashicons dashicons-no"></div></a>
-				<p><b><?php echo WP_ROCKET_PLUGIN_NAME; ?></b>: <?php printf( __( 'Do you want %s to update itself in the future? ', 'rocket' ), WP_ROCKET_PLUGIN_NAME, admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '#tab_tools' ) );
-				printf( __( '<a href="%s" class="button button-secondary"><b>Yes</b>, of course</a>', 'rocket' ), wp_nonce_url( admin_url( 'admin-post.php?action=rocket_autoupdate_ok' ), 'rocket_autoupdate_ok' ) );
-				printf( __( ' or <a href="%s">No, thank you</a>.', 'rocket' ), wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ) );
-				?>
-				</p>
-			</div>
-
-		<?php
-		}
-
-	}
-}

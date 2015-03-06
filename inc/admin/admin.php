@@ -298,29 +298,6 @@ function __rocket_do_options_export()
 }
 
 /**
- * Activate the auto-update feature from the admin notice
- *
- * @since 2.4
- */
-add_action( 'admin_post_rocket_autoupdate_ok', '__rocket_activate_autoupdate' );
-function __rocket_activate_autoupdate()
-{
-	if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'rocket_autoupdate_ok' ) ) {
-		wp_nonce_ays( '' );
-	}
-
-	$options = get_option( WP_ROCKET_SLUG );
-	$options['autoupdate'] = 1;
-	define( 'WP_ROCKET_NO_REDIRECT', true ); // internal, do not define it yourself, thanks
-	update_option( WP_ROCKET_SLUG, $options );
-	rocket_dismiss_box( 'rocket_ask_for_autoupdate' );
-
-	wp_safe_redirect( wp_get_referer() );
-	die();
-
-}
-
-/**
  * Do the rollback
  *
  * @since 2.4
@@ -374,18 +351,6 @@ function __rocket_rollback()
 		wp_die( '', sprintf( __( '%s Update Rollback', 'rocket' ), WP_ROCKET_PLUGIN_NAME ), array( 'response' => 200 ) );
 
 	}
-}
-
-
-/*
- * Check if the WP updater is available
- * @ Since 2.5
- */
-function rocket_automatic_updater_disabled() {
-	return ( defined( 'AUTOMATIC_UPDATER_DISABLED' ) && AUTOMATIC_UPDATER_DISABLED ) ||
-			( defined( 'DISALLOW_FILE_MODS' ) && DISALLOW_FILE_MODS ) ||
-			apply_filters( 'automatic_updater_disabled', false ) ||
-			! apply_filters( 'auto_update_plugin', true );
 }
 
 /**
