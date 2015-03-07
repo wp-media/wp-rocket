@@ -138,6 +138,7 @@ function rocket_plugins_to_deactivate()
 		$plugins[] = 'lazy-load/lazy-load.php';
 		$plugins[] = 'jquery-image-lazy-loading/jq_img_lazy_load.php';
 		$plugins[] = 'advanced-lazy-load/advanced_lazyload.php';
+		$plugins[] = 'crazy-lazy/crazy-lazy.php';
 	}
 
 	if ( get_rocket_option( 'minify_css' ) || get_rocket_option( 'minify_js' ) || get_rocket_option( 'minify_html' ) ) {
