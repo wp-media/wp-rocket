@@ -148,11 +148,21 @@ function do_rocket_callback( $buffer )
 	  * @param bool true will force caching search results
 	 */
 	$rocket_cache_search = apply_filters( 'rocket_cache_search', false );
-
+	
+	/**
+	  * Allow to override the DONOTCACHEPAGE behavior.
+	  * To warn conflict with some plugins like Thrive Leads.
+	  *
+	  * @since 2.5
+	  *
+	  * @param bool true will force the override
+	 */
+	$rocket_override_donotcachepage = apply_filters( 'rocket_override_donotcachepage', false );
+	
 	if ( strlen( $buffer ) > 255
 		&& ( function_exists( 'is_404' ) && ! is_404() ) // Don't cache 404
 		&& ( function_exists( 'is_search' ) && ! is_search() || $rocket_cache_search ) // Don't cache search results
-		&& ( ! defined( 'DONOTCACHEPAGE' ) || ! DONOTCACHEPAGE ) // Don't cache template that use this constant
+		&& ( ! defined( 'DONOTCACHEPAGE' ) || ! DONOTCACHEPAGE || $rocket_override_donotcachepage ) // Don't cache template that use this constant
 	) {
 		global $request_uri_path;
 
