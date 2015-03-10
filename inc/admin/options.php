@@ -853,7 +853,7 @@ function rocket_display_options()
 	);
 	
 	// CloudFlare
-	add_settings_section( 'rocket_display_cloudflare_options', __( 'CloudFlare', 'rocket' ), '__return_false', 'cloudflare' );
+	add_settings_section( 'rocket_display_cloudflare_options', 'CloudFlare', '__return_false', 'cloudflare' );
 	add_settings_field(
 		'rocket_cloudflare_email',
 		__( 'CloudFlare Account Email', 'rocket' ),
@@ -949,13 +949,13 @@ function rocket_display_options()
 	);
 	add_settings_field(
 		'rocket_purge_cloudflare',
-		__( 'Clear Cache', 'rocket' ),
+		__( 'Clear cache', 'rocket' ),
 		'rocket_button',
 		'cloudflare',
 		'rocket_display_cloudflare_options',
 		array(
 			'button'=>array(
-				'button_label' => __( 'Clear Cache', 'rocket' ),
+				'button_label' => __( 'Clear cache', 'rocket' ),
 				'url'		   => wp_nonce_url( admin_url( 'admin-post.php?action=rocket_purge_cloudflare' ), 'rocket_purge_cloudflare' ),
 			),
 			'helper_description'=>array(
