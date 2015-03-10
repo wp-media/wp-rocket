@@ -33,6 +33,7 @@ define( 'WP_ROCKET_INC_PATH'            , realpath( WP_ROCKET_PATH . 'inc/' ) . 
 define( 'WP_ROCKET_FRONT_PATH'          , realpath( WP_ROCKET_INC_PATH . 'front/' ) . '/' );
 define( 'WP_ROCKET_ADMIN_PATH'          , realpath( WP_ROCKET_INC_PATH . 'admin' ) . '/' );
 define( 'WP_ROCKET_FUNCTIONS_PATH'      , realpath( WP_ROCKET_INC_PATH . 'functions' ) . '/' );
+define( 'WP_ROCKET_API_PATH'      		, realpath( WP_ROCKET_INC_PATH . 'api' ) . '/' );
 define( 'WP_ROCKET_CONFIG_PATH'         , WP_CONTENT_DIR . '/wp-rocket-config/' );
 define( 'WP_ROCKET_CACHE_PATH'          , WP_CONTENT_DIR . '/cache/wp-rocket/' );
 define( 'WP_ROCKET_MINIFY_CACHE_PATH'   , WP_CONTENT_DIR . '/cache/min/' );
@@ -76,6 +77,7 @@ function rocket_init()
     $do_rocket_bot_cache_json = false;
 
     // Call defines,  classes and functions
+    require( WP_ROCKET_API_PATH . '/cloudflare.php' );
     require WP_ROCKET_FUNCTIONS_PATH . '/options.php';
 
     // Last constants
@@ -89,6 +91,7 @@ function rocket_init()
     require( WP_ROCKET_FUNCTIONS_PATH	. '/formatting.php' );
     require( WP_ROCKET_FUNCTIONS_PATH	. '/plugins.php' );
     require( WP_ROCKET_FUNCTIONS_PATH	. '/bots.php' );
+    require( WP_ROCKET_FUNCTIONS_PATH	. '/cloudflare.php' );
     require( WP_ROCKET_INC_PATH			. '/deprecated.php' );
     require( WP_ROCKET_FRONT_PATH		. '/htaccess.php' );
     require( WP_ROCKET_FRONT_PATH		. '/plugin-compatibility.php' );
@@ -203,7 +206,6 @@ function rocket_deactivation()
 
 	delete_transient( 'rocket_check_licence_30' );
 	delete_transient( 'rocket_check_licence_1' );
-	delete_transient( 'rocket_warning_autoupdate' );
 }
 
 /*

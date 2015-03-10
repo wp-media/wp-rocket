@@ -49,10 +49,10 @@ add_action( 'after_rocket_clean_domain', 'rocket_clean_supercacher' );
  * @since 1.0
  *
  */
-add_action( 'wp_trash_post', 'rocket_clean_post' );
-add_action( 'delete_post', 'rocket_clean_post' );
-add_action( 'clean_post_cache', 'rocket_clean_post' );
-add_action( 'wp_update_comment_count', 'rocket_clean_post' );
+add_action( 'wp_trash_post'				, 'rocket_clean_post' );
+add_action( 'delete_post'				, 'rocket_clean_post' );
+add_action( 'clean_post_cache'			, 'rocket_clean_post' );
+add_action( 'wp_update_comment_count'	, 'rocket_clean_post' );
 function rocket_clean_post( $post_id )
 {
 	if ( defined( 'DOING_AUTOSAVE' ) ) {
@@ -140,7 +140,7 @@ function rocket_clean_post( $post_id )
 	 * @param array $purge_urls URLs cache files to remove
 	*/
 	do_action( 'before_rocket_clean_post', $post, $purge_urls );
-	
+
 	/**
 	 * Filter URLs cache files to remove
 	 *
@@ -148,7 +148,7 @@ function rocket_clean_post( $post_id )
 	 * @param array $purge_urls List of URLs cache files to remove
 	*/
 	$purge_urls = apply_filters( 'rocket_post_purge_urls', $purge_urls );
-	
+
 	// Purge all files
 	rocket_clean_files( $purge_urls );
 
@@ -362,4 +362,23 @@ function rocket_preload_cache()
         wp_redirect( wp_get_referer() );
         die();
     }
+}
+
+/**
+ * Purge CloudFlare cache
+ *
+ * @since 2.5
+ */
+add_action( 'admin_post_rocket_purge_cloudflare', 'admin_post_rocket_purge_cloudflare' );
+function admin_post_rocket_purge_cloudflare()
+{
+	if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'rocket_purge_cloudflare' ) ) {
+		wp_nonce_ays( '' );
+	}
+
+	// Purge CloudFlare
+	rocket_purge_cloudflare();
+
+	wp_redirect( wp_get_referer() );
+	die();
 }

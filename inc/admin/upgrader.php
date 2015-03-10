@@ -26,7 +26,7 @@ function rocket_upgrader()
 		flush_rocket_htaccess();
 		flush_rewrite_rules();
 
-		rocket_renew_all_boxes( 0, array( 'rocket_warning_plugin_modification', 'rocket_ask_for_autoupdate' ) );
+		rocket_renew_all_boxes( 0, array( 'rocket_warning_plugin_modification' ) );
 
 		$options = get_option( WP_ROCKET_SLUG ); // do not use get_rocket_option() here
 		$options['version'] = WP_ROCKET_VERSION;
@@ -98,6 +98,13 @@ function rocket_first_install()
 			'cdn_zone'                 => array(),
 			'cdn_ssl'                  => 0,
 			'cdn_reject_files'         => array(),
+			'do_cloudflare'		   	   => 0,
+			'cloudflare_email'		   => '',
+			'cloudflare_api_key'	   => '',
+			'cloudflare_domain'	   	   => '',
+			'cloudflare_devmode'	   => 0,
+			'cloudflare_auto_settings' => 0,
+			'cloudflare_old_settings'  => 0,
 			'do_beta'                  => 0,
 		)
 	);

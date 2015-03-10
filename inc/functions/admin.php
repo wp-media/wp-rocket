@@ -172,3 +172,19 @@ function __rocket_add_own_ua( $r, $url ) {
 	}
 	return $r;
 }
+
+/**
+ * Function used to print all hidden fields from rocket to avoid the loss of these.
+ *
+ * @since 2.1
+ */
+function rocket_hidden_fields( $fields )
+{
+	if ( ! is_array( $fields ) ) {
+		return;
+	}
+
+	foreach ( $fields as $field ) {
+		echo '<input type="hidden" name="wp_rocket_settings[' . $field . ']" value="' . esc_attr( get_rocket_option( $field ) ) . '" />';
+	}
+}

@@ -27,10 +27,8 @@ function __rocket_settings_action_links( $actions )
  * @since 2.2
  *
  */
-
 add_action( 'plugin_row_meta', '__rocket_plugin_row_meta', 10, 3 );
 function __rocket_plugin_row_meta( $plugin_meta, $plugin_file, $plugin_data ) {
-
 	if ( 'wp-rocket/wp-rocket.php' == $plugin_file ) {
 
 		$update_plugins = get_site_transient( 'update_plugins' );
@@ -103,12 +101,14 @@ function __rocket_add_admin_css_js()
 	
 	// Sweet Alert
 	$translation_array = array(
-		'title' => __( 'Are you sure?', 'rocket' ),
-		'text'  => __( 'In case of any display errors we recommend following our documentation: http://docs.wp-rocket.me/article/19-resolving-issues-with-minification/ You can also contact our support if you need help implementing that.', 'rocket' ),
-		'confirmButtonText' => __( 'Yes, I\'m sure!', 'rocket' ),
-		'cancelButtonText' 	=> __( 'Cancel', 'rocket' )
+		'warning_title'  	 => __( 'Are you sure?', 'rocket' ),
+		'cloudflare_title'   => __( 'CloudFlare Settings', 'rocket' ),
+		'minify_text'  		 => __( 'In case of any display errors we recommend following our documentation: http://docs.wp-rocket.me/article/19-resolving-issues-with-minification/ You can also contact our support if you need help implementing that.', 'rocket' ),
+		'cloudflare_text'    => __( 'Click "Save Changes" to activate the Cloudflare tab.', 'rocket' ),
+		'confirmButtonText'  => __( 'Yes, I\'m sure!', 'rocket' ),
+		'cancelButtonText' 	 => __( 'Cancel', 'rocket' )
 	);
-	wp_localize_script( 'sweet-alert-wp-rocket', 'sawpr', $translation_array );
+	wp_localize_script( 'options-wp-rocket', 'sawpr', $translation_array );
 	wp_enqueue_style( 'sweet-alert-wp-rocket', WP_ROCKET_ADMIN_CSS_URL . 'sweet-alert.css', array( 'options-wp-rocket' ), WP_ROCKET_VERSION );
 }
 
@@ -298,29 +298,6 @@ function __rocket_do_options_export()
 }
 
 /**
- * Activate the auto-update feature from the admin notice
- *
- * @since 2.4
- */
-add_action( 'admin_post_rocket_autoupdate_ok', '__rocket_activate_autoupdate' );
-function __rocket_activate_autoupdate()
-{
-	if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'rocket_autoupdate_ok' ) ) {
-		wp_nonce_ays( '' );
-	}
-
-	$options = get_option( WP_ROCKET_SLUG );
-	$options['autoupdate'] = 1;
-	define( 'WP_ROCKET_NO_REDIRECT', true ); // internal, do not define it yourself, thanks
-	update_option( WP_ROCKET_SLUG, $options );
-	rocket_dismiss_box( 'rocket_ask_for_autoupdate' );
-
-	wp_safe_redirect( wp_get_referer() );
-	die();
-
-}
-
-/**
  * Do the rollback
  *
  * @since 2.4
@@ -374,18 +351,6 @@ function __rocket_rollback()
 		wp_die( '', sprintf( __( '%s Update Rollback', 'rocket' ), WP_ROCKET_PLUGIN_NAME ), array( 'response' => 200 ) );
 
 	}
-}
-
-
-/*
- * Check if the WP updater is available
- * @ Since 2.5
- */
-function rocket_automatic_updater_disabled() {
-	return ( defined( 'AUTOMATIC_UPDATER_DISABLED' ) && AUTOMATIC_UPDATER_DISABLED ) ||
-			( defined( 'DISALLOW_FILE_MODS' ) && DISALLOW_FILE_MODS ) ||
-			apply_filters( 'automatic_updater_disabled', false ) ||
-			! apply_filters( 'auto_update_plugin', true );
 }
 
 /**
