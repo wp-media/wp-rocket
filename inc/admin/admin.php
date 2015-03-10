@@ -103,7 +103,7 @@ function __rocket_add_admin_css_js()
 	$translation_array = array(
 		'warning_title'  	 => __( 'Are you sure?', 'rocket' ),
 		'cloudflare_title'   => __( 'CloudFlare Settings', 'rocket' ),
-		'minify_text'  		 => __( 'In case of any display errors we recommend following our documentation: http://docs.wp-rocket.me/article/19-resolving-issues-with-minification/ You can also contact our support if you need help implementing that.', 'rocket' ),
+		'minify_text'  		 => sprintf( __( 'In case of any display errors we recommend following our documentation: %s You can also contact our support if you need help implementing that.', 'rocket' ), 'http://docs.wp-rocket.me/article/19-resolving-issues-with-minification/' ),
 		'cloudflare_text'    => __( 'Click "Save Changes" to activate the Cloudflare tab.', 'rocket' ),
 		'confirmButtonText'  => __( 'Yes, I\'m sure!', 'rocket' ),
 		'cancelButtonText' 	 => __( 'Cancel', 'rocket' )
@@ -386,7 +386,7 @@ function __rocket_display_cache_options_meta_boxes() {
 			<p><?php _e( 'Activate these options on this post:', 'rocket' ) ;?></p>
 			<?php
 			$fields = array(
-				'lazyload' 		=> __( 'LazyLoad', 'rocket' ),
+				'lazyload' 		=> 'LazyLoad',
 				'minify_html'	=> __( 'HTML Minification', 'rocket' ),
 				'minify_css'	=> __( 'CSS Minification', 'rocket' ),
 				'minify_js' 	=> __( 'JS Minification', 'rocket' ),

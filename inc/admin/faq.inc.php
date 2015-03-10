@@ -60,8 +60,7 @@
 	<p><?php _e( 'Don\'t panic, WP Rocket will continue to operate without a problem. You will receive an email telling you that your license will soon expire. You will find a renewal link which will be active even after the expiration.', 'rocket' );?></p>
 
 	<h2><span id="Q7">&#160;</span><?php _e( 'I want to change the URL of my site associated with my license, what should I do?', 'rocket' );?></h2>
-	<p><?php echo sprintf( __( 'It\'s easy to transfer your license to another site. Follow the steps here: 
-<a href="%1$s">%1$s</a>', 'rocket' ), 'http://docs.wp-rocket.me/article/28-transfering-your-license-to-another-site' ); ?></p>
+	<p><?php echo sprintf( __( 'It\'s easy to transfer your license to another site. Follow the steps here: <a href="%1$s">%1$s</a>', 'rocket' ), 'http://docs.wp-rocket.me/article/28-transfering-your-license-to-another-site' ); ?></p>
 
 	<h2><span id="Q8">&#160;</span><?php _e( 'Which tools should I use to measure the performance of my site?', 'rocket' );?></h2>
 	<p><?php _e( 'You can measure the performance of your website using the following tools:', 'rocket' );?></p>
