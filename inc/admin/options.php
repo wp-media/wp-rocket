@@ -1746,7 +1746,7 @@ function rocket_settings_callback( $inputs )
 
 	if ( rocket_valid_key() && ! empty( $inputs['secret_key'] ) && ! isset( $inputs['ignore'] ) ) {
 		unset( $inputs['ignore'] );
-		add_settings_error( 'general', 'settings_updated', __( 'Settings saved.' ), 'updated' );
+		add_settings_error( 'general', 'settings_updated', __( 'Settings saved.', 'rocket' ), 'updated' );
 	}
 
 	return $inputs;
@@ -1830,7 +1830,7 @@ function rocket_after_save_options( $oldvalue, $value )
 	if ( ! empty( $_POST ) && $oldvalue['wl_plugin_name'] != $value['wl_plugin_name'] &&
 		isset( $_POST['option_page'], $_POST['action'] ) && 'wp_rocket' == $_POST['option_page'] && 'update' == $_POST['action'] )
 	{
-		add_settings_error( 'general', 'settings_updated', __( 'Settings saved.' ), 'updated' );
+		add_settings_error( 'general', 'settings_updated', __( 'Settings saved.', 'rocket' ), 'updated' );
 		set_transient( 'settings_errors', get_settings_errors(), 30 );
 		wp_redirect( admin_url( 'options-general.php?page=' . sanitize_key( $value['wl_plugin_name'] ) . '&settings-updated=true' ) );
 		die();
@@ -1907,14 +1907,14 @@ function rocket_import_upload_form() {
 	$size = size_format( $bytes );
 	$upload_dir = wp_upload_dir();
 	if ( ! empty( $upload_dir['error'] ) ) {
-		?><div class="error"><p><?php _e('Before you can upload your import file, you will need to fix the following error:'); ?></p>
+		?><div class="error"><p><?php _e( 'Before you can upload your import file, you will need to fix the following error:', 'rocket' ); ?></p>
 		<p><strong><?php echo $upload_dir['error']; ?></strong></p></div><?php
-	}else{
+	} else {
 		?>
 		<p>
 		<input type="file" id="upload" name="import" size="25" />
 		<br />
-		<label for="upload"><?php echo apply_filters( 'rocket_help', __( 'Choose a file from your computer:' ) . ' (' . sprintf( __('Maximum size: %s' ), $size ) . ')', 'upload', 'help' ); ?></label>
+		<label for="upload"><?php echo apply_filters( 'rocket_help', __( 'Choose a file from your computer:', 'rocket' ) . ' (' . sprintf( __( 'Maximum size: %s', 'rocket' ), $size ) . ')', 'upload', 'help' ); ?></label>
 		<input type="hidden" name="max_file_size" value="<?php echo $bytes; ?>" />
 		</p>
 		<?php submit_button( __( 'Upload file and import settings', 'rocket' ), 'button', 'import' );
