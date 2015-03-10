@@ -102,7 +102,7 @@ function rocket_admin_bar( $wp_admin_bar )
 			));
 
 		}
-
+		
 		if ( is_admin() ) {
 
 			// Purge a post
@@ -249,14 +249,14 @@ function get_rocket_wpml_langs_for_admin_bar() {
         array_unshift( $langlinks, array(
             'code'		=> 'all',
             'current'   => 'all' == $sitepress->get_current_language(),
-            'anchor'    => __( 'All languages', 'sitepress' ),
+            'anchor'    => __( 'All languages', 'rocket' ),
             'flag'      => '<img class="icl_als_iclflag" src="' . ICL_PLUGIN_URL . '/res/img/icon16.png" alt="all" width="16" height="16" />'
         ));
     } else {
         array_push( $langlinks, array(
             'code'		=> 'all',
             'current'   => 'all' == $sitepress->get_current_language(),
-            'anchor'    => __( 'All languages', 'sitepress' ),
+            'anchor'    => __( 'All languages', 'rocket' ),
             'flag'      => '<img class="icl_als_iclflag" src="' . ICL_PLUGIN_URL . '/res/img/icon16.png" alt="all" width="16" height="16" />'
         ));
     }
