@@ -91,5 +91,5 @@ function __deactivate_rocket_lazyload_on_soliloquy_indexable_images( $images ) {
  */
 add_filter( 'rocket_override_donotcachepage', '__override_rocket_donotcachepage_on_thrive_leads' );
 function __override_rocket_donotcachepage_on_thrive_leads() {
-	return defined( 'TVE_LEADS_VERSION' ) > 0;
+	return defined( 'TVE_LEADS_VERSION' ) && TVE_LEADS_VERSION > 0;
 }
