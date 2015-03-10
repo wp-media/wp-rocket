@@ -99,7 +99,8 @@ jQuery( document ).ready( function($){
 
 	// Sweet Alert for CSS & JS minification
 	$( '#minify_css, #minify_js' ).click(function() {
-		if ( $(this).is( ':checked' ) ) {
+		obj = $(this);
+		if ( obj.is( ':checked' ) ) {
 			swal(
 			{
 				title: sawpr.warning_title,
