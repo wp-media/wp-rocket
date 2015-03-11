@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2015-01-27 14:55:53+00:00\n"
-"PO-Revision-Date: 2015-01-27 14:57+0000\n"
+"POT-Creation-Date: 2015-03-10 13:16:51+00:00\n"
+"PO-Revision-Date: 2015-03-10 13:16+0000\n"
 "Last-Translator: FxB <fxb@wp-translations.org>\n"
 "Language-Team: Bulgarian (Bulgaria) (http://www.transifex.com/projects/p/wp-rocket/language/bg_BG/)\n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: bg_BG\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: grunt-wp-i18n 0.4.9\n"
+"X-Generator: grunt-wp-i18n 0.5.0\n"
 "X-Poedit-Basepath: ../\n"
 "X-Poedit-Bookmarks: \n"
 "X-Poedit-Country: United States\n"
@@ -25,9 +25,9 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Textdomain-Support: yes\n"
 
-#: inc/admin/admin.php:13 inc/admin/options.php:1167
-#: inc/admin/options.php:1170 inc/admin/options.php:1206
-#: inc/admin/options.php:1211 inc/admin-bar.php:212
+#: inc/admin/admin.php:13 inc/admin/options.php:1352
+#: inc/admin/options.php:1355 inc/admin/options.php:1396
+#: inc/admin/options.php:1401 inc/admin-bar.php:212
 msgid "Support"
 msgstr "Поддръжка"
 
@@ -39,19 +39,80 @@ msgstr "Документи"
 msgid "Settings"
 msgstr "Настройки"
 
-#: inc/admin/admin.php:63
+#: inc/admin/admin.php:61
 msgid "Clear this cache"
 msgstr "Изчистете този кеш"
 
-#: inc/admin/admin.php:82 inc/admin/notices.php:92 inc/admin/options.php:999
-#: inc/admin/options.php:1005 inc/admin-bar.php:43 inc/admin-bar.php:66
+#: inc/admin/admin.php:80 inc/admin/notices.php:92 inc/admin/options.php:952
+#: inc/admin/options.php:958 inc/admin/options.php:1187
+#: inc/admin/options.php:1193 inc/admin-bar.php:43 inc/admin-bar.php:66
 #: inc/admin-bar.php:100
 msgid "Clear cache"
 msgstr "Изчистете кеша"
 
-#: inc/admin/admin.php:344 inc/admin/admin.php:351
+#: inc/admin/admin.php:104
+msgid "Are you sure?"
+msgstr ""
+
+#: inc/admin/admin.php:105
+msgid "CloudFlare Settings"
+msgstr ""
+
+#: inc/admin/admin.php:106
+msgid ""
+"In case of any display errors we recommend following our documentation: %s "
+"You can also contact our support if you need help implementing that."
+msgstr ""
+
+#: inc/admin/admin.php:107
+msgid "Click \"Save Changes\" to activate the Cloudflare tab."
+msgstr ""
+
+#: inc/admin/admin.php:108
+msgid "Yes, I'm sure!"
+msgstr ""
+
+#: inc/admin/admin.php:109
+msgid "Cancel"
+msgstr ""
+
+#: inc/admin/admin.php:335 inc/admin/admin.php:351
 msgid "%s Update Rollback"
 msgstr "%s Връщания на обновяване"
+
+#: inc/admin/admin.php:368
+msgid "Cache Options"
+msgstr ""
+
+#: inc/admin/admin.php:386
+msgid "Activate these options on this post:"
+msgstr ""
+
+#: inc/admin/admin.php:390
+msgid "HTML Minification"
+msgstr ""
+
+#: inc/admin/admin.php:391
+msgid "CSS Minification"
+msgstr ""
+
+#: inc/admin/admin.php:392
+msgid "JS Minification"
+msgstr ""
+
+#: inc/admin/admin.php:393 inc/admin/options.php:1386
+msgid "CDN"
+msgstr "CDN"
+
+#: inc/admin/admin.php:398
+msgid "Activate first the %s option."
+msgstr ""
+
+#: inc/admin/admin.php:411
+msgid ""
+"<strong>Note:</strong> These options aren't applied if you added this post "
+"in the \"Never cache the following pages\" option."
+msgstr ""
 
 #: inc/admin/faq.inc.php:2
 msgid "FAQ's Table of Content"
@@ -244,10 +305,9 @@ msgstr "Аз искам да подменя URL-а на моя сайт, кой�
 
 #: inc/admin/faq.inc.php:63
 msgid ""
-"You must contact us by email (<a href=\"mailto:contact@wp-"
-"rocket.me\">contact@wp-rocket.me</a>) indicating the reason for your change."
-" If accepted, the amendment will be carried out by the WP Rocket team."
-msgstr "Вие трябва да се свържете с нас, чрез email (<a href=\"mailto:contact@wp-rocket.me\">contact@wp-rocket.me</a>), като ни поясните причината за подмяната. Ако искането Ви бъде прието, преместването ще стане от екипа на WP Rocket."
+"It's easy to transfer your license to another site. Follow the steps here: "
+"<a href=\"%1$s\">%1$s</a>"
+msgstr ""
 
 #: inc/admin/faq.inc.php:65
 msgid "Which tools should I use to measure the performance of my site?"
@@ -447,43 +507,43 @@ msgid ""
 "forget to clear the cache if necessary."
 msgstr "<b>%s</b>: Една или повече разширения са били разрешени или забранени, не забравяйте да изчистите кеша, ако е необходимо."
 
-#: inc/admin/notices.php:168
+#: inc/admin/notices.php:170
 msgid ""
 "<b>%s</b>: The following plugins are not compatible with this plugin and may"
 " cause unexpected results:"
 msgstr "<b>%s</b>: Следните плъгини не са съвместими с този плъгин и може да неочаквани резултати:"
 
-#: inc/admin/notices.php:174
+#: inc/admin/notices.php:176
 msgid "Deactivate"
 msgstr "Деактивиране"
 
-#: inc/admin/notices.php:200
+#: inc/admin/notices.php:202
 msgid ""
 "<b>%s</b>: A custom permalink structure is required for the plugin to work "
 "properly. Please go to <a href=\"%s\">Permalink</a> to configure it."
 msgstr "<b>%s</b>: Изисква се потребителска структура на постоянните връзки за да може плъгина да работи нормално. Моля отидете на <a href=\"%s\">Permalink</a> за да я конфигурирате."
 
-#: inc/admin/notices.php:231
+#: inc/admin/notices.php:233
 msgid ""
 "<b>%s</b>: It seems we don't have <a href=\"%s\" target=\"_blank\">writing "
 "permissions</a> on <code>wp-config.php</code> file or the value of the "
 "constant <code>WP_CACHE</code> is set to <code>false</code>"
 msgstr "<b>%s</b>: Изглежда, че ние нямаме <a href=\"%s\" target=\"_blank\">права за писане</a> на <code>wp-config.php</code> файла или стойността е на константата <code>WP_CACHE</code> е зададена на <code>false</code>"
 
-#: inc/admin/notices.php:233
+#: inc/admin/notices.php:235
 msgid ""
 "To fix this you have to set writing permissions for <code>wp-"
 "config.php</code> and then save the settings again."
 msgstr "За да разрешите това Вие трябва да зададете права за писане за <code>wp-config.php</code> и след това да запаметите настройките отново."
 
-#: inc/admin/notices.php:235
+#: inc/admin/notices.php:237
 msgid ""
 "If the message persists, you have to put the following code in your <code"
 ">wp-config.php</code> file so that it works correctly. Click on the field "
 "and press Ctrl-A to select all."
 msgstr "Ако съобщението остава, Вие трябва да добавите следния код във Вашия <code>wp-config.php</code> файл за да може това да работи коректно. Натиснете на полето и натиснете Ctrl-A за да изберете всички."
 
-#: inc/admin/notices.php:276
+#: inc/admin/notices.php:278
 msgid ""
 "If you had <a href=\"%1$s\" target=\"_blank\">writing permissions</a> on "
 "<code>%2$s</code> file, <b>%3$s</b> could do this automatically. This is not"
@@ -491,14 +551,14 @@ msgid ""
 "for <b>%3$s</b> to work properly."
 msgstr "Ако имате <a href=\"%1$s\" target=\"_blank\">права за писане</a> на <code>%2$s</code> файла, <b>%3$s</b> може да направи това автоматично. Това не е случая, ето кода, който Вие трябва да добавите в Вашия <code>%2$s</code> файл за да може <b>%3$s</b> да работи коректно."
 
-#: inc/admin/notices.php:309
+#: inc/admin/notices.php:311
 msgid ""
 "It seems that the <code>%s</code> file is not ours. Save the settings, we "
 "will automatically recreate the correct one. If it's still not working, "
 "please delete it and save again."
 msgstr "Изглежда, че файла <code>%s</code> не е наш. Запазете настройките, ние автоматично ще създадем коректния такъв. Ако все още не работи моля изтрийте го и запазете отново."
 
-#: inc/admin/notices.php:338
+#: inc/admin/notices.php:340
 msgid ""
 "If you had <a href=\"%1$s\" target=\"_blank\">writing permissions</a> on "
 "<code>.htaccess</code> file, <b>%2$s</b> could do this automatically. This "
@@ -507,13 +567,13 @@ msgid ""
 "field and press Ctrl-A to select all."
 msgstr "Ако имате <a href=\"%1$s\" target=\"_blank\">права за писане</a> на <code>.htaccess</code> файла, <b>%2$s</b> може да направи това автоматично. Това не е случая, за това трябва да добавите права за презаписване във Вашия <code>.htaccess</code> файл за да може <b>%2$s</b> да работи коректно. Натиснете Ctrl-A за да изберете всички."
 
-#: inc/admin/notices.php:338
+#: inc/admin/notices.php:340
 msgid ""
 "<strong>Warning:</strong> This message will popup again and its content may "
 "be updated when saving the options"
 msgstr "<strong>Внимание:</strong> Това съобщение ще излезе в изкачащ прозорец отново и неговото съдържание ще се обнови при запазването на опциите"
 
-#: inc/admin/notices.php:367
+#: inc/admin/notices.php:369
 msgid ""
 "Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
 "permissions</a> on <b>%3$s</b> domain configuration folder "
@@ -523,7 +583,7 @@ msgid ""
 "to generate the configuration file."
 msgstr "Внимавайте, Вие нямате <a href=\"%1$s\" target=\"_blank\">права за писане</a> на <b>%3$s</b> папката за конфигурация на домейна (<code>%2$s</code>). За да направите <b>%3$s</b> да работи коректно, моля CHMOD <code>755</code> или <code>775</code> или <code>777</code> тази папка.<br/>Когато проблема е разрешен, трябва да запазите %3$s опциите за да се генерира конфигурационен файл."
 
-#: inc/admin/notices.php:395
+#: inc/admin/notices.php:397
 msgid ""
 "Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
 "permissions</a> on <b>%3$s</b> cache folder (<code>%2$s</code>). For "
@@ -531,7 +591,7 @@ msgid ""
 "<code>775</code> or <code>777</code> this folder."
 msgstr "Внимавайте, Вие нямате <a href=\"%1$s\" target=\"_blank\">права за писане</a> на <b>%3$s</b> кеш папката (<code>%2$s</code>). За да може <b>%3$s</b> да работи коректно, молим задайте CHMOD <code>755</code> или <code>775</code> или <code>777</code> на тази папка."
 
-#: inc/admin/notices.php:424
+#: inc/admin/notices.php:426
 msgid ""
 "Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
 "permissions</a> on <b>%3$s</b> minified cache folder (<code>%2$s</code>). To"
@@ -539,25 +599,13 @@ msgid ""
 "<code>775</code> or <code>777</code> this folder."
 msgstr "Внимавайте, Вие нямате <a href=\"%1$s\" target=\"_blank\">права за писане</a> на <b>%3$s</b> папката за минифициран кеш (<code>%2$s</code>). За да направите <b>%3$s</b> да работи коректно, молим задайте CHMOD <code>755</code> или <code>775</code> или <code>777</code> на тази папка."
 
-#: inc/admin/notices.php:449
+#: inc/admin/notices.php:451
 msgid "Thank you. Your license has been successfully validated!"
 msgstr "Благодарим Ви. Вашият лиценз е валидиран автоматично!"
 
-#: inc/admin/notices.php:450
+#: inc/admin/notices.php:452
 msgid "Key: <code>%s</code><br>Email: <i>%s</i>"
 msgstr "Ключ: <code>%s</code><br>Email: <i>%s</i>"
-
-#: inc/admin/notices.php:475
-msgid "Do you want %s to update itself in the future? "
-msgstr "Искате ли %s да се обновява сам за в бъдеще?"
-
-#: inc/admin/notices.php:476
-msgid "<a href=\"%s\" class=\"button button-secondary\"><b>Yes</b>, of course</a>"
-msgstr "<a href=\"%s\" class=\"button button-secondary\"><b>Да</b>, разбира се</a>"
-
-#: inc/admin/notices.php:477
-msgid " or <a href=\"%s\">No, thank you</a>."
-msgstr "или <a href=\"%s\">Не благодаря Ви</a>."
 
 #: inc/admin/options.php:139 inc/admin/options.php:366
 msgid "Warning: "
@@ -576,11 +624,11 @@ msgstr "<b>JS</b> файловете с различно зареждане на
 msgid "Wait until this file is loaded?"
 msgstr "Изчакване докато този файл се зареди?"
 
-#: inc/admin/options.php:243 inc/admin/options.php:786
+#: inc/admin/options.php:243 inc/admin/options.php:811
 msgid "Add URL"
 msgstr "Добавяне на URL"
 
-#: inc/admin/options.php:255 inc/admin/options.php:854
+#: inc/admin/options.php:255 inc/admin/options.php:1040
 msgid "Replace site's hostname with:"
 msgstr "Заменете hostname на сайтовете с:"
 
@@ -612,6 +660,7 @@ msgid "License validation"
 msgstr "Валидация на лиценза"
 
 #: inc/admin/options.php:417 inc/admin/options.php:425
+#: inc/admin/options.php:873 inc/admin/options.php:881
 msgid "API Key"
 msgstr "API ключ"
 
@@ -627,7 +676,7 @@ msgstr "E-mail адрес"
 msgid "The one used for the purchase, in your support account."
 msgstr "Този, който се използва за покупката, във Вашият акаунт за поддръжка."
 
-#: inc/admin/options.php:455 inc/admin/options.php:1196
+#: inc/admin/options.php:455 inc/admin/options.php:1381
 msgid "Basic options"
 msgstr "Основни опции"
 
@@ -698,203 +747,299 @@ msgid ""
 "following video: <a href=\"%1$s\" class=\"fancybox\">%1$s</a>."
 msgstr "В случай на грешки ние Ви препоръчваме да изключите тази опция и да прегледате следното видео: <a href=\"%1$s\" class=\"fancybox\">%1$s</a>."
 
-#: inc/admin/options.php:540 inc/admin/options.php:549
+#: inc/admin/options.php:541 inc/admin/options.php:550
 msgid "Mobile cache:"
 msgstr "Мобилен кеш:"
 
-#: inc/admin/options.php:547
+#: inc/admin/options.php:548
 msgid "Enable caching for mobile devices."
 msgstr "Разрешаване на кеширането за мобилни устройства."
 
-#: inc/admin/options.php:554
+#: inc/admin/options.php:555
 msgid "Don't turn on this option if you use one of these plugins: %l."
 msgstr "Не включвайте тази опция, ако използвате тези плъгини: %l."
 
-#: inc/admin/options.php:560 inc/admin/options.php:567
+#: inc/admin/options.php:561 inc/admin/options.php:568
 msgid "Logged in user cache:"
 msgstr "Кеширане за вписан потребител:"
 
-#: inc/admin/options.php:565
+#: inc/admin/options.php:566
 msgid "Enable caching for logged in users."
 msgstr "Разрешаване на кеширането за вписаните потребители."
 
-#: inc/admin/options.php:572 inc/admin/options.php:580
+#: inc/admin/options.php:573 inc/admin/options.php:581
 msgid "SSL cache:"
 msgstr "SSL кеш:"
 
-#: inc/admin/options.php:578
+#: inc/admin/options.php:579
 msgid "Enable caching for pages with SSL protocol (<code>https://</code>)."
 msgstr "Разрешаване на кеширането на страници със SSL протокол (<code>https://</code>)."
 
-#: inc/admin/options.php:585 inc/admin/options.php:593
+#: inc/admin/options.php:586 inc/admin/options.php:594
 msgid "Clear Cache Lifespan"
 msgstr "Изчистване на живота на кеша"
 
-#: inc/admin/options.php:599
+#: inc/admin/options.php:600
 msgid "Unit of time"
 msgstr "Единица за време"
 
-#: inc/admin/options.php:602
+#: inc/admin/options.php:603
 msgid "second(s)"
 msgstr "Секунда(и)"
 
-#: inc/admin/options.php:603
+#: inc/admin/options.php:604
 msgid "minute(s)"
 msgstr "Минута(и)"
 
-#: inc/admin/options.php:604
+#: inc/admin/options.php:605
 msgid "hour(s)"
 msgstr "часове(а)"
 
-#: inc/admin/options.php:605
+#: inc/admin/options.php:606
 msgid "day(s)"
 msgstr "ден(ни)"
 
-#: inc/admin/options.php:611
+#: inc/admin/options.php:612
 msgid ""
 "By default, cache lifespan is 24 hours. This means that once created, the "
 "cache files are automatically removed after 24 hours before being recreated."
 msgstr "По подразбиране, живота на кеша е 24 часа. Това означава, че веднъж създаден, кеш файловете автоматично ще се премахнат след 24 часа преди да се пресъздадат."
 
-#: inc/admin/options.php:611
+#: inc/admin/options.php:612
 msgid ""
 "This can be useful if you display your latest tweets or rss feeds in your "
 "sidebar, for example."
 msgstr "Това може да е полезно, ако показвате последните си туитове или RSS хранилища в странична лента, например."
 
-#: inc/admin/options.php:616
+#: inc/admin/options.php:617
 msgid "Specify 0 for unlimited lifetime."
 msgstr "Задайте 0 за неограничено време."
 
-#: inc/admin/options.php:622 inc/admin/options.php:1197
+#: inc/admin/options.php:623 inc/admin/options.php:1382
 msgid "Advanced options"
 msgstr "Допълнителни опции"
 
-#: inc/admin/options.php:625 inc/admin/options.php:633
+#: inc/admin/options.php:626 inc/admin/options.php:634
 msgid "Prefetch DNS requests:"
 msgstr "Предварително извличане на DNS заявките:"
 
-#: inc/admin/options.php:638
+#: inc/admin/options.php:639
 msgid ""
 "DNS prefetching is a way for browsers to anticipate the DNS resolution of "
 "external domains from your site."
 msgstr "DNS предварителното зареждане е начин за браузерите предварително да резолват външни домейни от Вашия сайт."
 
-#: inc/admin/options.php:638
+#: inc/admin/options.php:639
 msgid "This mechanism reduces the latency of some external files."
 msgstr "Механизмът намалява латенцията на някой външни файлове."
 
-#: inc/admin/options.php:644
+#: inc/admin/options.php:645
 msgid ""
 "To learn more about this option and how to use it correctly, we advise you "
 "to watch the following video: <a href=\"%1$s\" class=\"fancybox\">%1$s</a>."
 msgstr "За да научите повече за тази опция и как да я използвате коректно, ние Ви съветваме да прегледате следното видео: <a href=\"%1$s\" class=\"fancybox\">%1$s</a>."
 
-#: inc/admin/options.php:649
+#: inc/admin/options.php:650
 msgid ""
 "<strong>Note:</strong> Enter the domain names without their protocol, for "
 "example: <code>//ajax.googleapis.com</code> without <code>http:</code> (one "
 "per line)."
 msgstr "<strong>Забележка:</strong> Въведете имената на домейни без техния протокол, на пример: <code>//ajax.googleapis.com</code> без <code>http:</code> (по един на ред)."
 
-#: inc/admin/options.php:655 inc/admin/options.php:663
+#: inc/admin/options.php:656 inc/admin/options.php:664
 msgid "Empty the cache of the following pages when updating a post:"
 msgstr "Изчистване на кеша за следните страници, когато се обновява публикация:"
 
-#: inc/admin/options.php:668
+#: inc/admin/options.php:669
 msgid ""
 "Enter the URL of additionnal pages to purge when updating a post (one per "
 "line)."
 msgstr "Въведете URL-а на допълнителните страници за изчистване, когато се обновява публикация (по една на ред)."
 
-#: inc/admin/options.php:669 inc/admin/options.php:693
+#: inc/admin/options.php:670 inc/admin/options.php:694
+#: inc/admin/options.php:756 inc/admin/options.php:775
+#: inc/admin/options.php:794 inc/admin/options.php:1060
 msgid "You can use regular expressions (regex)."
 msgstr "Вие можете да използвате регулярни изрази (regex)."
 
-#: inc/admin/options.php:674
+#: inc/admin/options.php:675
 msgid ""
 "<strong>Note:</strong> When you update a post or when a comment is posted, "
 "the homepage, categories and tags associated with this post are "
 "automatically removed from the cache and then recreated by our bot."
 msgstr "<strong>Забележка:</strong> Когато Вие обновявате публикация или когато е публикуван коментар, началната страница, категориите и етикетите свързани с тази публикация автоматично ще се премахнат от кеша и след това ще се пресъздадат от нашия робот."
 
-#: inc/admin/options.php:680 inc/admin/options.php:688
+#: inc/admin/options.php:681 inc/admin/options.php:689
 msgid "Never cache the following pages:"
 msgstr "Никога да не се кешират следните страници:"
 
-#: inc/admin/options.php:693
+#: inc/admin/options.php:694
 msgid "Enter the URL of pages to reject (one per line)."
 msgstr "Въведете URL-и на страници за отхвърляне (по една на ред)."
 
-#: inc/admin/options.php:699 inc/admin/options.php:707
+#: inc/admin/options.php:699
+msgid ""
+"<strong>Note:</strong> The cart and checkout pages are auto-excluded from "
+"the cache for WooCommerce, Easy Digital Download, iThemes Exchange, Jigoshop"
+" & WP-Shop."
+msgstr ""
+
+#: inc/admin/options.php:705 inc/admin/options.php:713
 msgid "Don't cache pages that use the following cookies:"
 msgstr "Да не се кешират страници, които използват следните кукита:"
 
-#: inc/admin/options.php:712
+#: inc/admin/options.php:718
 msgid "List the names of the cookies (one per line)."
 msgstr "Списък с имена на кукитата (по едно на ред)."
 
-#: inc/admin/options.php:718 inc/admin/options.php:726
+#: inc/admin/options.php:724 inc/admin/options.php:732
 msgid "Cache pages that use the following query strings (GET parameters):"
 msgstr "Кеш параметри, които използват следните query strings (Вземете параметрите)"
 
-#: inc/admin/options.php:731
+#: inc/admin/options.php:737
 msgid "List of query strings which can be cached (one per line)."
 msgstr "Списъка със query strings, които могат да бъдат кеширани (по един на ред)."
 
-#: inc/admin/options.php:737 inc/admin/options.php:745
+#: inc/admin/options.php:743 inc/admin/options.php:751
+msgid "Never send cache pages for these user agents:"
+msgstr ""
+
+#: inc/admin/options.php:756
+msgid "Enter the user agents name to reject (one per line)."
+msgstr ""
+
+#: inc/admin/options.php:762 inc/admin/options.php:770
 msgid "<b>CSS</b> files to exclude from minification:"
 msgstr "<b>CSS</b> файлове който да не се минифицират:"
 
-#: inc/admin/options.php:750
+#: inc/admin/options.php:775
 msgid "Enter the URL of <b>CSS</b> files to reject (one per line)."
 msgstr "Въведете URL-ът на <b>CSS</b> файловете за отказ (по един на ред)."
 
-#: inc/admin/options.php:756 inc/admin/options.php:764
+#: inc/admin/options.php:781 inc/admin/options.php:789
 msgid "<b>JS</b> files to exclude from minification:"
 msgstr "<b>JS</b> файлове, които няма да се минифицират:"
 
-#: inc/admin/options.php:769
+#: inc/admin/options.php:794
 msgid "Enter the URL of <b>JS</b> files to reject (one per line)."
 msgstr "Въведете URL на <b>JS</b> файловете за отказ (по един на ред)"
 
-#: inc/admin/options.php:775 inc/admin/options.php:782
+#: inc/admin/options.php:800 inc/admin/options.php:807
 msgid ""
 "<b>JS</b> files to be included in the footer during the minification "
 "process:"
 msgstr "<b>JS</b> файлове, които да се включват във футъра по време на процеса на минификация:"
 
-#: inc/admin/options.php:791 inc/admin/options.php:819
+#: inc/admin/options.php:816 inc/admin/options.php:844
 msgid "Empty the field to remove it."
 msgstr "Изпразнете реда за да го премахнете."
 
-#: inc/admin/options.php:797 inc/admin/options.php:825
+#: inc/admin/options.php:822 inc/admin/options.php:850
 msgid "You must specify the complete URL of the files."
 msgstr "Вие трябва да зададете пълните URL-и на файловете."
 
-#: inc/admin/options.php:803
+#: inc/admin/options.php:828
 msgid "<b>JS</b> files with deferred loading:"
 msgstr "<b>JS</b> файловете с различно зареждане:"
 
-#: inc/admin/options.php:814
+#: inc/admin/options.php:839
 msgid ""
 "You can add JavaScript files that will be loaded asynchronously at the same "
 "time as the page loads."
 msgstr "Вие можете да добавите JavaScript файлове, които ще се зареждат асинхронно в същото време по време на зареждането на страницата."
 
-#: inc/admin/options.php:831
+#: inc/admin/options.php:859 inc/admin/options.php:867
+msgid "CloudFlare Account Email"
+msgstr ""
+
+#: inc/admin/options.php:886
+msgid ""
+"<strong>Note:</strong> Where do I find my CloudFlare API key? <a "
+"href=%s\"\">Learn more</a>"
+msgstr ""
+
+#: inc/admin/options.php:892 inc/admin/options.php:900
+msgid "Domain"
+msgstr ""
+
+#: inc/admin/options.php:906 inc/admin/options.php:914
+msgid "Development Mode"
+msgstr ""
+
+#: inc/admin/options.php:916
+msgid "Off"
+msgstr ""
+
+#: inc/admin/options.php:917
+msgid "On"
+msgstr ""
+
+#: inc/admin/options.php:923
+msgid ""
+"Temporarily enter development mode on your website. <a href=%s\"\">Learn "
+"more</a>"
+msgstr ""
+
+#: inc/admin/options.php:929 inc/admin/options.php:937
+msgid "Auto enable the optimal CloudFlare settings (props WP Rocket)"
+msgstr ""
+
+#: inc/admin/options.php:939
+msgid "No"
+msgstr ""
+
+#: inc/admin/options.php:940
+msgid "Yes"
+msgstr ""
+
+#: inc/admin/options.php:946
+msgid ""
+"We select the best CloudFlare configuration for speed, performance grade and"
+" compatibility."
+msgstr ""
+
+#: inc/admin/options.php:963
+msgid ""
+"Immediately purge cached resources for your website. <a href=\"%s\" "
+"target=\"_blank\">Learn more</a>"
+msgstr ""
+
+#: inc/admin/options.php:969
 msgid "Content Delivery Network options"
 msgstr "Опции за мрежа на доставката на съдържание"
 
-#: inc/admin/options.php:834 inc/admin/options.php:843
+#: inc/admin/options.php:981 inc/admin/options.php:982
+msgid "Enable CloudFlare settings tab."
+msgstr ""
+
+#: inc/admin/options.php:989
+msgid ""
+"This option allows you to configure some CloudFlare settings like "
+"development mode, purge cache and a recommended configuration."
+msgstr ""
+
+#: inc/admin/options.php:994
+msgid ""
+"<strong>Note:</strong> If you are using CloudFlare, configure the options in"
+" the CloudFlare tab. The CDN settings below <strong>do not apply</strong> to"
+" CloudFlare."
+msgstr ""
+
+#: inc/admin/options.php:999
+msgid ""
+"This option is available for websites using <a href=\"%s\" "
+"target=\"_blank\">CloudFlare</a>."
+msgstr ""
+
+#: inc/admin/options.php:1005 inc/admin/options.php:1014
 msgid "CDN:"
 msgstr "CDN:"
 
-#: inc/admin/options.php:841
+#: inc/admin/options.php:1012
 msgid "Enable Content Delivery Network."
 msgstr "Разрешаване на мрежа за доставка на съдържание."
 
-#: inc/admin/options.php:848
+#: inc/admin/options.php:1019
 msgid ""
 "CDN function replaces all URLs of your static files and media (CSS, JS, "
 "Images) with the url entered below. This way all your content will be copied"
@@ -902,238 +1047,222 @@ msgid ""
 "target=\"_blank\">maxCDN</a>."
 msgstr "CDN функцията заменя всички URL-и на Вашите статични файлове и медия (CSS, JS, изображения) с url въведен отдолу. По този начин цялото съдържание ще бъде копирано на специален хостинг или на CDN система <a href=\"http://www.maxcdn.com/\" target=\"_blank\">maxCDN</a>."
 
-#: inc/admin/options.php:860 inc/admin/options.php:1200
+#: inc/admin/options.php:1032
+msgid "Disable CDN on HTTPS pages."
+msgstr ""
+
+#: inc/admin/options.php:1047 inc/admin/options.php:1055
+msgid "Rejected files:"
+msgstr ""
+
+#: inc/admin/options.php:1060
+msgid "Specify the URL files that should not use the CDN. (one per line)."
+msgstr ""
+
+#: inc/admin/options.php:1066 inc/admin/options.php:1388
 msgid "White Label"
 msgstr "Дебрандиране"
 
-#: inc/admin/options.php:863 inc/admin/options.php:872
+#: inc/admin/options.php:1069 inc/admin/options.php:1078
 msgid "Plugin Name:"
 msgstr "Име на плъгина:"
 
-#: inc/admin/options.php:878 inc/admin/options.php:887
+#: inc/admin/options.php:1084 inc/admin/options.php:1093
 msgid "Plugin URI:"
 msgstr "URL на плъгина:"
 
-#: inc/admin/options.php:893 inc/admin/options.php:902
+#: inc/admin/options.php:1099 inc/admin/options.php:1108
 msgid "Description:"
 msgstr "Описание:"
 
-#: inc/admin/options.php:908 inc/admin/options.php:917
+#: inc/admin/options.php:1114 inc/admin/options.php:1123
 msgid "Author:"
 msgstr "Автор:"
 
-#: inc/admin/options.php:923 inc/admin/options.php:932
+#: inc/admin/options.php:1129 inc/admin/options.php:1138
 msgid "Author URI:"
 msgstr "URL на автора:"
 
-#: inc/admin/options.php:944
+#: inc/admin/options.php:1150
 msgid "Reset White Label values to default"
 msgstr "Връщане на стойностите за дебрандиране по подразбиране"
 
-#: inc/admin/options.php:949
+#: inc/admin/options.php:1155
 msgid ""
 "If you change anything, the tutorial + FAQ + Support tabs will be hidden."
 msgstr "Ако промените нещо, урока за обучение + ЧЗВ + разделите за поддръжка ще бъдат скрити."
 
-#: inc/admin/options.php:954 inc/admin/options.php:1202
+#: inc/admin/options.php:1160 inc/admin/options.php:1390
 msgid "Tools"
 msgstr "Инструменти"
 
-#: inc/admin/options.php:958 inc/admin/options.php:969
-msgid "Auto-update"
-msgstr "Автоматично обновяване"
-
-#: inc/admin/options.php:966
-msgid ""
-"Yes, please update this plugin automatically for next available <b>Minor</b>"
-" & <b>Fix Bugs</b> versions."
-msgstr "Да, моля обновявайте този плъгин автоматично при следваща <b>Минимална</b> & <b>Оправяща бъгове</b> версия."
-
-#: inc/admin/options.php:967
-msgid "Yes, please update this plugin for all next available versions."
-msgstr "Да, моля обновете този плъгин за всичките следващи версии."
-
-#: inc/admin/options.php:977 inc/admin/options.php:986
+#: inc/admin/options.php:1165 inc/admin/options.php:1174
 msgid "Beta Tester"
 msgstr "Бета тестер"
 
-#: inc/admin/options.php:984
+#: inc/admin/options.php:1172
 msgid "Yes I do!"
 msgstr "Да ще го направя!"
 
-#: inc/admin/options.php:991
+#: inc/admin/options.php:1179
 msgid ""
 "Check it to participate in the WP Rocket Beta Program and get earlier access"
 " to new versions, thanks in advance."
 msgstr "Маркирайте за да се присъедините към бета програмата на WP Rocket и да получите достъп по-рано към новите версии, благодарим Ви предварително."
 
-#: inc/admin/options.php:1010
+#: inc/admin/options.php:1198
 msgid "Clear the cache for the whole site."
 msgstr "Изчистете кеша на целия сайт."
 
-#: inc/admin/options.php:1016 inc/admin/options.php:1022
-#: inc/admin/options.php:1086 inc/admin-bar.php:141 inc/admin-bar.php:162
+#: inc/admin/options.php:1204 inc/admin/options.php:1210
+#: inc/admin/options.php:1271 inc/admin-bar.php:141 inc/admin-bar.php:162
 #: inc/admin-bar.php:193
 msgid "Preload cache"
 msgstr "Презареждане на кеша"
 
-#: inc/admin/options.php:1027
+#: inc/admin/options.php:1215
 msgid ""
 "Allows you to request a bot crawl to preload the cache (homepage and its "
 "internal links)."
 msgstr "Позволява Ви да изискате от робота за обхождане да презареди кеша (началната страница и нейните вътрешни линкове)."
 
-#: inc/admin/options.php:1034
+#: inc/admin/options.php:1222
 msgid "Settings Exporter"
 msgstr "Експортер на настройки"
 
-#: inc/admin/options.php:1044
+#: inc/admin/options.php:1232
 msgid "Settings Importer"
 msgstr "Импортер на настройки"
 
-#: inc/admin/options.php:1053
+#: inc/admin/options.php:1241
 msgid ""
 "Please backup your settings before, use the \"Download options\" button "
 "above."
 msgstr "Моля направете резервно копие на настройките си преди да използвате бутона \"Опции за даунлоад\" отгоре."
 
-#: inc/admin/options.php:1055
-msgid ""
-"<br>Also, the \"Auto-update\" feature will be deactivated, do not activate "
-"it again if you don't want to upgrade."
-msgstr "<br>Също, функцията за Автоматично обновяване\" ще бъде деактивирана, не я активирайте отново, ако не желаете да ъпгрейднете."
-
-#: inc/admin/options.php:1059
+#: inc/admin/options.php:1244
 msgid "Update Rollback"
 msgstr "Връщане на обновяването"
 
-#: inc/admin/options.php:1065
+#: inc/admin/options.php:1250
 msgid "Reinstall v%s"
 msgstr "Преинсталиране v%s"
 
-#: inc/admin/options.php:1070
+#: inc/admin/options.php:1255
 msgid ""
 "Is the version %s causing you some issues? You can ask for a rollback and "
 "reinstall the last version you used before."
 msgstr "Придизвиква ли версията %s някакви проблеми? Вие можете да поискате връщане и преинсталиране на последната версия, която сте използвали преди."
 
-#: inc/admin/options.php:1083 inc/admin/options.php:1204
+#: inc/admin/options.php:1268 inc/admin/options.php:1393
 msgid "Tutorials"
 msgstr "Уроци за обучения"
 
-#: inc/admin/options.php:1091
+#: inc/admin/options.php:1276
 msgid ""
 "This video gives some explanations about our two crawler robots. They "
 "generate several cache files in a few seconds."
 msgstr "Това видео Ви дава обяснения относно нашите два робота за обхождане. Те генерират няколко кеш файла за няколко секунди."
 
-#: inc/admin/options.php:1098
+#: inc/admin/options.php:1283
 msgid "CSS and JavaScript minification"
 msgstr "CSS и JavaScript минификации"
 
-#: inc/admin/options.php:1103
+#: inc/admin/options.php:1288
 msgid ""
 "This video gives some explanations about how to use the advanced processes "
 "of minification and concatenation of CSS and JavaScript files."
 msgstr "Това видео Ви дава обяснения относно как да използвате сложния процес на минификация и събиране на CSS и JavaScript файлове."
 
-#: inc/admin/options.php:1110
+#: inc/admin/options.php:1295
 msgid "Preloading DNS queries"
 msgstr "Презареждане на DNS заявките"
 
-#: inc/admin/options.php:1115
+#: inc/admin/options.php:1300
 msgid ""
 "This video helps to easily understand the advanced option of \"Preloading "
 "DNS queries\" and the use of the filter <code>rocket_dns_prefetch</code>."
 msgstr "Това видео помага за лесно разбиране на допълнителната опция \"Презареждане на DNS заявките\" и използването на филтъра <code>rocket_dns_prefetch</code>."
 
-#: inc/admin/options.php:1122
+#: inc/admin/options.php:1307
 msgid "How to use the White Label functionality?"
 msgstr "Как се използва функционалността за дебрандиране?"
 
-#: inc/admin/options.php:1127
+#: inc/admin/options.php:1312
 msgid "This video helps to set up a White Label version of WP Rocket."
 msgstr "Това видео помага да се настрои версията за дебрандиране на WP Rocket."
 
-#: inc/admin/options.php:1134
+#: inc/admin/options.php:1319
 msgid "How to use the CDN functionality?"
 msgstr "Как се използва функционалността CDN?"
 
-#: inc/admin/options.php:1139
+#: inc/admin/options.php:1324
 msgid ""
 "This video helps to understand what is the CDN functionality included since "
 "WP Rocket 2.1."
 msgstr "Това видео помага да се разбере каква е CDN функционалността включена в WP Rocket 2.1."
 
-#: inc/admin/options.php:1146
+#: inc/admin/options.php:1331
 msgid "How to use the CDN API?"
 msgstr "Как се използва CDN API?"
 
-#: inc/admin/options.php:1151
+#: inc/admin/options.php:1336
 msgid ""
 "This video helps to set up the two functions "
 "<code>get_rocket_cdn_url()</code> and <code>rocket_cdn_url()</code>."
 msgstr "Това видео помага да се настроят двете функции <code>get_rocket_cdn_url()</code> и <code>rocket_cdn_url()</code>."
 
-#: inc/admin/options.php:1156 inc/admin/options.php:1159
-#: inc/admin/options.php:1205 inc/admin/options.php:1210
+#: inc/admin/options.php:1341 inc/admin/options.php:1344
+#: inc/admin/options.php:1395 inc/admin/options.php:1400
 msgid "FAQ"
 msgstr "ЧЗВ"
 
-#: inc/admin/options.php:1176
+#: inc/admin/options.php:1361
 msgid "Visit the Support"
 msgstr "Посетете поддръжката"
 
-#: inc/admin/options.php:1182
+#: inc/admin/options.php:1367
 msgid ""
 "If none of the FAQ answers resolves your problem, you can send your issue to"
 " our free support. We will reply as soon as possible."
 msgstr "Ако никой от ЧЗВ отговорите не разрешава Вашият проблем, Вие можете да изпратите Вашият проблем на нашата безплатна поддръжка. Ние ще Ви отговорим възможно най-скоро."
 
-#: inc/admin/options.php:1198
-msgid "CDN"
-msgstr "CDN"
-
-#: inc/admin/options.php:1209
+#: inc/admin/options.php:1399
 msgid "License"
 msgstr "Лиценз"
 
-#: inc/admin/options.php:1510
+#: inc/admin/options.php:1731
 msgid "Settings imported and saved."
 msgstr "Настройките са импортнати и запазени."
 
-#: inc/admin/options.php:1528 inc/admin/options.php:1587
+#: inc/admin/options.php:1749 inc/admin/options.php:1833
 msgid "Settings saved."
 msgstr "Настройките са запазени."
 
-#: inc/admin/options.php:1672
+#: inc/admin/options.php:1910
 msgid ""
 "Before you can upload your import file, you will need to fix the following "
 "error:"
 msgstr "Преди да можете да качите и импортнете файла, Вие трябва да решите следната грешка:"
 
-#: inc/admin/options.php:1679
+#: inc/admin/options.php:1917
 msgid "Choose a file from your computer:"
 msgstr "Изберете файл от Вашият компютър:"
 
-#: inc/admin/options.php:1679
+#: inc/admin/options.php:1917
 msgid "Maximum size: %s"
 msgstr "Максимален размер: %s"
 
-#: inc/admin/options.php:1682
+#: inc/admin/options.php:1920
 msgid "Upload file and import settings"
 msgstr "Качване на файла и импортване на настройките"
 
-#: inc/admin/updater.php:118 inc/admin/updater.php:125
+#: inc/admin/updater.php:119 inc/admin/updater.php:126
 msgid ""
 "An unexpected error occurred. Something may be wrong with WP-Rocket.me or "
 "this server&#8217;s configuration. If you continue to have problems, please "
 "try the <a href=\"%s\">support forums</a>."
 msgstr "Възникна неочаквана грешка. Нещо може би се обърка с WP-Rocket.me или конфигурацията на този сървър&#8217;s. Ако продължите да имате проблеми опитайте със <a href=\"%s\">форумите за поддръжка</a>."
-
-#: inc/admin/updater.php:174
-msgid "Update Plugin"
-msgstr "Обновяване на плъгина"
 
 #: inc/admin-bar.php:90 inc/admin-bar.php:184 inc/admin-bar.php:252
 #: inc/admin-bar.php:259
@@ -1152,7 +1281,7 @@ msgstr "Изчистете този URL"
 msgid "Documentation"
 msgstr "Документация"
 
-#: inc/cron.php:16
+#: inc/cron.php:17
 msgid "%s clear"
 msgstr "%s изчистване"
 
@@ -1162,29 +1291,21 @@ msgid ""
 "href=\"%s\">Enter you API key</a> here."
 msgstr "Последна стъпка преди да се насладите на високата производителност на нашия плъгин, моля <a href=\"%s\">Въведете Вашия API ключ</a> тук."
 
-#: inc/functions/options.php:254
+#: inc/functions/options.php:324
 msgid "Your license is not valid."
 msgstr "Вашият лиценз не е валиден."
 
-#: inc/functions/options.php:255
+#: inc/functions/options.php:325
 msgid "You cannot add more websites. Upgrade your account."
 msgstr "Вие не можете да добавяте повече уебсайта. Ъпгрейднете Вашият акаунт."
 
-#: inc/functions/options.php:256
+#: inc/functions/options.php:326
 msgid "This website is not allowed."
 msgstr "Този уебсайт не е позволен."
 
-#: inc/functions/options.php:257
+#: inc/functions/options.php:327
 msgid "This license key is not accepted."
 msgstr "Този лицензен ключ не е приет."
-
-#. Author of the plugin/theme
-msgid "WP Rocket"
-msgstr "WP Rocket"
-
-#. Author URI of the plugin/theme
-msgid "http://www.wp-rocket.me"
-msgstr "http://www.wp-rocket.me"
 
 #. Description of the plugin/theme
 msgid "The best WordPress performance plugin."

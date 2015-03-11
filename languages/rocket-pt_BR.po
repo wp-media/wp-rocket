@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2015-01-27 14:55:53+00:00\n"
-"PO-Revision-Date: 2015-01-27 14:57+0000\n"
+"POT-Creation-Date: 2015-03-10 13:16:51+00:00\n"
+"PO-Revision-Date: 2015-03-10 13:16+0000\n"
 "Last-Translator: FxB <fxb@wp-translations.org>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/wp-rocket/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: grunt-wp-i18n 0.4.9\n"
+"X-Generator: grunt-wp-i18n 0.5.0\n"
 "X-Poedit-Basepath: ../\n"
 "X-Poedit-Bookmarks: \n"
 "X-Poedit-Country: United States\n"
@@ -25,9 +25,9 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Textdomain-Support: yes\n"
 
-#: inc/admin/admin.php:13 inc/admin/options.php:1167
-#: inc/admin/options.php:1170 inc/admin/options.php:1206
-#: inc/admin/options.php:1211 inc/admin-bar.php:212
+#: inc/admin/admin.php:13 inc/admin/options.php:1352
+#: inc/admin/options.php:1355 inc/admin/options.php:1396
+#: inc/admin/options.php:1401 inc/admin-bar.php:212
 msgid "Support"
 msgstr "Suporte"
 
@@ -39,18 +39,79 @@ msgstr ""
 msgid "Settings"
 msgstr "Configurações"
 
-#: inc/admin/admin.php:63
+#: inc/admin/admin.php:61
 msgid "Clear this cache"
 msgstr "Limpar cache"
 
-#: inc/admin/admin.php:82 inc/admin/notices.php:92 inc/admin/options.php:999
-#: inc/admin/options.php:1005 inc/admin-bar.php:43 inc/admin-bar.php:66
+#: inc/admin/admin.php:80 inc/admin/notices.php:92 inc/admin/options.php:952
+#: inc/admin/options.php:958 inc/admin/options.php:1187
+#: inc/admin/options.php:1193 inc/admin-bar.php:43 inc/admin-bar.php:66
 #: inc/admin-bar.php:100
 msgid "Clear cache"
 msgstr "Limpar cache"
 
-#: inc/admin/admin.php:344 inc/admin/admin.php:351
+#: inc/admin/admin.php:104
+msgid "Are you sure?"
+msgstr ""
+
+#: inc/admin/admin.php:105
+msgid "CloudFlare Settings"
+msgstr ""
+
+#: inc/admin/admin.php:106
+msgid ""
+"In case of any display errors we recommend following our documentation: %s "
+"You can also contact our support if you need help implementing that."
+msgstr ""
+
+#: inc/admin/admin.php:107
+msgid "Click \"Save Changes\" to activate the Cloudflare tab."
+msgstr ""
+
+#: inc/admin/admin.php:108
+msgid "Yes, I'm sure!"
+msgstr ""
+
+#: inc/admin/admin.php:109
+msgid "Cancel"
+msgstr ""
+
+#: inc/admin/admin.php:335 inc/admin/admin.php:351
 msgid "%s Update Rollback"
+msgstr ""
+
+#: inc/admin/admin.php:368
+msgid "Cache Options"
+msgstr ""
+
+#: inc/admin/admin.php:386
+msgid "Activate these options on this post:"
+msgstr ""
+
+#: inc/admin/admin.php:390
+msgid "HTML Minification"
+msgstr ""
+
+#: inc/admin/admin.php:391
+msgid "CSS Minification"
+msgstr ""
+
+#: inc/admin/admin.php:392
+msgid "JS Minification"
+msgstr ""
+
+#: inc/admin/admin.php:393 inc/admin/options.php:1386
+msgid "CDN"
+msgstr "CDN"
+
+#: inc/admin/admin.php:398
+msgid "Activate first the %s option."
+msgstr ""
+
+#: inc/admin/admin.php:411
+msgid ""
+"<strong>Note:</strong> These options aren't applied if you added this post "
+"in the \"Never cache the following pages\" option."
 msgstr ""
 
 #: inc/admin/faq.inc.php:2
@@ -244,10 +305,9 @@ msgstr "Eu quero mudar a URL do meu site que está associada a minha licença, o
 
 #: inc/admin/faq.inc.php:63
 msgid ""
-"You must contact us by email (<a href=\"mailto:contact@wp-"
-"rocket.me\">contact@wp-rocket.me</a>) indicating the reason for your change."
-" If accepted, the amendment will be carried out by the WP Rocket team."
-msgstr "Você pode entrar em contato conosco por email (<a href=\"mailto:contact@wp-rocket.me\">contact@wp-rocket.me</a>) informando o motivo da mudança. Se for aceita, a mudança será feita pela própria equipe do WP Rocket."
+"It's easy to transfer your license to another site. Follow the steps here: "
+"<a href=\"%1$s\">%1$s</a>"
+msgstr ""
 
 #: inc/admin/faq.inc.php:65
 msgid "Which tools should I use to measure the performance of my site?"
@@ -447,43 +507,43 @@ msgid ""
 "forget to clear the cache if necessary."
 msgstr "<b>%s</b>: Uma ou mais extensões foram ativadas ou desativadas, não se esqueça de limpar o cache se necessário."
 
-#: inc/admin/notices.php:168
+#: inc/admin/notices.php:170
 msgid ""
 "<b>%s</b>: The following plugins are not compatible with this plugin and may"
 " cause unexpected results:"
 msgstr "<b>%s</b>: O seguintes plugins não são compatíveis com esse plugin e podem causar resultados inesperados."
 
-#: inc/admin/notices.php:174
+#: inc/admin/notices.php:176
 msgid "Deactivate"
 msgstr "Desativar"
 
-#: inc/admin/notices.php:200
+#: inc/admin/notices.php:202
 msgid ""
 "<b>%s</b>: A custom permalink structure is required for the plugin to work "
 "properly. Please go to <a href=\"%s\">Permalink</a> to configure it."
 msgstr "<b>%s</b>: Uma estrutura de links permanentes customizados é necessária para o plugin funcionar corretamente. Por favor acesse <a href=\"%s\">Links Permanentes</a> para configurar."
 
-#: inc/admin/notices.php:231
+#: inc/admin/notices.php:233
 msgid ""
 "<b>%s</b>: It seems we don't have <a href=\"%s\" target=\"_blank\">writing "
 "permissions</a> on <code>wp-config.php</code> file or the value of the "
 "constant <code>WP_CACHE</code> is set to <code>false</code>"
 msgstr "<b>%s</b>: Parece que nós não tempos <a href=\"%s\" target=\"_blank\">permissão de escrita</a> no arquivo <code>wp-config.php</code> ou o valor da constante <code>WP_CACHE</code> deve estar configurado como <code>false</code>"
 
-#: inc/admin/notices.php:233
+#: inc/admin/notices.php:235
 msgid ""
 "To fix this you have to set writing permissions for <code>wp-"
 "config.php</code> and then save the settings again."
 msgstr "Para corrigir isso você deve configurar permissões de escrita para <code>wp-config.php</code> e depois salvar os ajustes novamente."
 
-#: inc/admin/notices.php:235
+#: inc/admin/notices.php:237
 msgid ""
 "If the message persists, you have to put the following code in your <code"
 ">wp-config.php</code> file so that it works correctly. Click on the field "
 "and press Ctrl-A to select all."
 msgstr "Se a mensagem persistir, você deve colocar o código abaixo em seu arquivo <code>wp-config.php</code> para que isso funcione corretamente. Click no arquivo e pressione Ctrl-A para selecionar tudo."
 
-#: inc/admin/notices.php:276
+#: inc/admin/notices.php:278
 msgid ""
 "If you had <a href=\"%1$s\" target=\"_blank\">writing permissions</a> on "
 "<code>%2$s</code> file, <b>%3$s</b> could do this automatically. This is not"
@@ -491,14 +551,14 @@ msgid ""
 "for <b>%3$s</b> to work properly."
 msgstr "Se você tiver <a href=\"%1$s\" target=\"_blank\">permissão de escrita</a> no arquivo <code>%2$s</code>, isso será feito automaticamente. Caso contrário, aqui está o código que você deve adicionar em seu arquivo <code>%2$s</code> para que <b>%3$s</b> funcione corretamente."
 
-#: inc/admin/notices.php:309
+#: inc/admin/notices.php:311
 msgid ""
 "It seems that the <code>%s</code> file is not ours. Save the settings, we "
 "will automatically recreate the correct one. If it's still not working, "
 "please delete it and save again."
 msgstr "Parece que o arquivo <code>%s</code> não é nosso. Salve os ajustes, nós vamos automaticamente recriar o arquivo correto. Se isso não funcionar, por favor delete o arquivo e salve novamente."
 
-#: inc/admin/notices.php:338
+#: inc/admin/notices.php:340
 msgid ""
 "If you had <a href=\"%1$s\" target=\"_blank\">writing permissions</a> on "
 "<code>.htaccess</code> file, <b>%2$s</b> could do this automatically. This "
@@ -507,13 +567,13 @@ msgid ""
 "field and press Ctrl-A to select all."
 msgstr "Se você tiver <a href=\"%1$s\" target=\"_blank\">permissão de escrita</a> no arquivo <code>.htaccess</code>, <b>%2$s</b> será feito automaticamente. Se não for o caso, então aqui estão as regras de rewrite que você deve colocar em seu arquivo <code>.htaccess</code> para que <b>%2$s</b> funcione corretamente. Click no campo e pressione Ctrl-A para selecionar tudo."
 
-#: inc/admin/notices.php:338
+#: inc/admin/notices.php:340
 msgid ""
 "<strong>Warning:</strong> This message will popup again and its content may "
 "be updated when saving the options"
 msgstr "<strong>Atenção:</strong> essa mensagem será mostrada novamente e seu conteúdo pode ser atualizado na opção salvar"
 
-#: inc/admin/notices.php:367
+#: inc/admin/notices.php:369
 msgid ""
 "Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
 "permissions</a> on <b>%3$s</b> domain configuration folder "
@@ -523,7 +583,7 @@ msgid ""
 "to generate the configuration file."
 msgstr "Atenção, você não possui <a href=\"%1$s\" target=\"_blank\">permissão de escrita</a> na <b>%3$s</b> pasta de configuração do domínio(<code>%2$s</code>). Para fazer <b>%3$s</b> funcionar corretamente, por favor dê um CHMOD <code>755</code> ou <code>775</code> ou <code>777</code> na pasta.<br/>Quando o problema estiver resolvido o %3$s irá gerar o arquivo de configuração."
 
-#: inc/admin/notices.php:395
+#: inc/admin/notices.php:397
 msgid ""
 "Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
 "permissions</a> on <b>%3$s</b> cache folder (<code>%2$s</code>). For "
@@ -531,7 +591,7 @@ msgid ""
 "<code>775</code> or <code>777</code> this folder."
 msgstr "Atenção, você não possui <a href=\"%1$s\" target=\"_blank\">permissão de escrita</a> para <b>%3$s</b> na pasta de cache (<code>%2$s</code>). Para <b>%3$s</b> funcionar, por favor dê um CHMOD <code>755</code> ou <code>775</code> ou <code>777</code> nesta pasta."
 
-#: inc/admin/notices.php:424
+#: inc/admin/notices.php:426
 msgid ""
 "Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
 "permissions</a> on <b>%3$s</b> minified cache folder (<code>%2$s</code>). To"
@@ -539,25 +599,13 @@ msgid ""
 "<code>775</code> or <code>777</code> this folder."
 msgstr "Atenção, você não possui <a href=\"%1$s\" target=\"_blank\">permissão de escrita</a> para <b>%3$s</b> na pasta de cache minificado (<code>%2$s</code>). Para <b>%3$s</b> funcionar, por favor dê um CHMOD <code>755</code> ou <code>775</code> ou <code>777</code> nesta pasta."
 
-#: inc/admin/notices.php:449
+#: inc/admin/notices.php:451
 msgid "Thank you. Your license has been successfully validated!"
 msgstr "Obrigado. Sua licença foi validada com sucesso!"
 
-#: inc/admin/notices.php:450
+#: inc/admin/notices.php:452
 msgid "Key: <code>%s</code><br>Email: <i>%s</i>"
 msgstr "Chave: <code>%s</code><br>Email:: <i>%s</i>"
-
-#: inc/admin/notices.php:475
-msgid "Do you want %s to update itself in the future? "
-msgstr ""
-
-#: inc/admin/notices.php:476
-msgid "<a href=\"%s\" class=\"button button-secondary\"><b>Yes</b>, of course</a>"
-msgstr ""
-
-#: inc/admin/notices.php:477
-msgid " or <a href=\"%s\">No, thank you</a>."
-msgstr ""
 
 #: inc/admin/options.php:139 inc/admin/options.php:366
 msgid "Warning: "
@@ -576,11 +624,11 @@ msgstr "Arquivos <b>JS</b> com JavaScript Deferred"
 msgid "Wait until this file is loaded?"
 msgstr "Esperar até este arquivo ser carregado?"
 
-#: inc/admin/options.php:243 inc/admin/options.php:786
+#: inc/admin/options.php:243 inc/admin/options.php:811
 msgid "Add URL"
 msgstr "Adicionar URL"
 
-#: inc/admin/options.php:255 inc/admin/options.php:854
+#: inc/admin/options.php:255 inc/admin/options.php:1040
 msgid "Replace site's hostname with:"
 msgstr "Substituir o nome do site por:"
 
@@ -612,6 +660,7 @@ msgid "License validation"
 msgstr "Validação da licença"
 
 #: inc/admin/options.php:417 inc/admin/options.php:425
+#: inc/admin/options.php:873 inc/admin/options.php:881
 msgid "API Key"
 msgstr "Chave da API"
 
@@ -627,7 +676,7 @@ msgstr "Endereço de E-mail"
 msgid "The one used for the purchase, in your support account."
 msgstr "A única usada em sua compra, em sua conta de suporte."
 
-#: inc/admin/options.php:455 inc/admin/options.php:1196
+#: inc/admin/options.php:455 inc/admin/options.php:1381
 msgid "Basic options"
 msgstr "Opções básicas"
 
@@ -698,203 +747,299 @@ msgid ""
 "following video: <a href=\"%1$s\" class=\"fancybox\">%1$s</a>."
 msgstr "No caso de erros nós recomendamos que você desative essa opção ou assista ao vídeo: <a href=\"%1$s\" class=\"fancybox\">%1$s</a>."
 
-#: inc/admin/options.php:540 inc/admin/options.php:549
+#: inc/admin/options.php:541 inc/admin/options.php:550
 msgid "Mobile cache:"
 msgstr "Cache mobile:"
 
-#: inc/admin/options.php:547
+#: inc/admin/options.php:548
 msgid "Enable caching for mobile devices."
 msgstr "Habilitar cache para dispositivos móveis"
 
-#: inc/admin/options.php:554
+#: inc/admin/options.php:555
 msgid "Don't turn on this option if you use one of these plugins: %l."
 msgstr "Não ative essa opção se você usa algum dos seguinte plugins: %I."
 
-#: inc/admin/options.php:560 inc/admin/options.php:567
+#: inc/admin/options.php:561 inc/admin/options.php:568
 msgid "Logged in user cache:"
 msgstr "Cache com usuário autenticado:"
 
-#: inc/admin/options.php:565
+#: inc/admin/options.php:566
 msgid "Enable caching for logged in users."
 msgstr "Habilitar cache para usuários autenticados."
 
-#: inc/admin/options.php:572 inc/admin/options.php:580
+#: inc/admin/options.php:573 inc/admin/options.php:581
 msgid "SSL cache:"
 msgstr "Cache SSL:"
 
-#: inc/admin/options.php:578
+#: inc/admin/options.php:579
 msgid "Enable caching for pages with SSL protocol (<code>https://</code>)."
 msgstr "Habilitar cache para páginas com protocolo SSL (<code>https://</code>)."
 
-#: inc/admin/options.php:585 inc/admin/options.php:593
+#: inc/admin/options.php:586 inc/admin/options.php:594
 msgid "Clear Cache Lifespan"
 msgstr "Limpar Cache Lifespan"
 
-#: inc/admin/options.php:599
+#: inc/admin/options.php:600
 msgid "Unit of time"
 msgstr "Unidade de tempo"
 
-#: inc/admin/options.php:602
+#: inc/admin/options.php:603
 msgid "second(s)"
 msgstr "segundo(s)"
 
-#: inc/admin/options.php:603
+#: inc/admin/options.php:604
 msgid "minute(s)"
 msgstr "minuto(s)"
 
-#: inc/admin/options.php:604
+#: inc/admin/options.php:605
 msgid "hour(s)"
 msgstr "hora(s)"
 
-#: inc/admin/options.php:605
+#: inc/admin/options.php:606
 msgid "day(s)"
 msgstr "dia(s)"
 
-#: inc/admin/options.php:611
+#: inc/admin/options.php:612
 msgid ""
 "By default, cache lifespan is 24 hours. This means that once created, the "
 "cache files are automatically removed after 24 hours before being recreated."
 msgstr "Por padrão, o cache lifespan dura 24 horas. Isso significa que uma vez criado, os arquivos de cache são automaticamente removidos depois de 24 horas antes de serem re-criados."
 
-#: inc/admin/options.php:611
+#: inc/admin/options.php:612
 msgid ""
 "This can be useful if you display your latest tweets or rss feeds in your "
 "sidebar, for example."
 msgstr "Isso pode ser útil se você exibe seus últimos tuítes ou feed rss em sua barra lateral, por exemplo."
 
-#: inc/admin/options.php:616
+#: inc/admin/options.php:617
 msgid "Specify 0 for unlimited lifetime."
 msgstr "Defina 0 para tempo de vida ilimitado."
 
-#: inc/admin/options.php:622 inc/admin/options.php:1197
+#: inc/admin/options.php:623 inc/admin/options.php:1382
 msgid "Advanced options"
 msgstr "Opções Avançadas"
 
-#: inc/admin/options.php:625 inc/admin/options.php:633
+#: inc/admin/options.php:626 inc/admin/options.php:634
 msgid "Prefetch DNS requests:"
 msgstr "Solicitar requisições de DNS Prefetch:"
 
-#: inc/admin/options.php:638
+#: inc/admin/options.php:639
 msgid ""
 "DNS prefetching is a way for browsers to anticipate the DNS resolution of "
 "external domains from your site."
 msgstr "Prefetch de DNS é uma forma para os navegadores anteciparem o endereço DNS de domínios."
 
-#: inc/admin/options.php:638
+#: inc/admin/options.php:639
 msgid "This mechanism reduces the latency of some external files."
 msgstr "Esse mecanismo reduz a latência de alguns arquivos externos."
 
-#: inc/admin/options.php:644
+#: inc/admin/options.php:645
 msgid ""
 "To learn more about this option and how to use it correctly, we advise you "
 "to watch the following video: <a href=\"%1$s\" class=\"fancybox\">%1$s</a>."
 msgstr "Para saber mais a respeito e como usar corretamente, nós recomendamos que você assista ao vídeo: <a href=\"%1$s\" class=\"fancybox\">%1$s</a>."
 
-#: inc/admin/options.php:649
+#: inc/admin/options.php:650
 msgid ""
 "<strong>Note:</strong> Enter the domain names without their protocol, for "
 "example: <code>//ajax.googleapis.com</code> without <code>http:</code> (one "
 "per line)."
 msgstr "<strong>Nota:</strong> Insira o domínio sem o protocolo, por exemplo:\n<code>//ajax.googleapis.com</code> sem <code>http://</code> (um por linha)."
 
-#: inc/admin/options.php:655 inc/admin/options.php:663
+#: inc/admin/options.php:656 inc/admin/options.php:664
 msgid "Empty the cache of the following pages when updating a post:"
 msgstr "Limpar o cache das seguintes páginas quando atualizar um post:"
 
-#: inc/admin/options.php:668
+#: inc/admin/options.php:669
 msgid ""
 "Enter the URL of additionnal pages to purge when updating a post (one per "
 "line)."
 msgstr "Insira a URL de páginas adicionais que terão o purge quando um post for atualizado (uma por linha). "
 
-#: inc/admin/options.php:669 inc/admin/options.php:693
+#: inc/admin/options.php:670 inc/admin/options.php:694
+#: inc/admin/options.php:756 inc/admin/options.php:775
+#: inc/admin/options.php:794 inc/admin/options.php:1060
 msgid "You can use regular expressions (regex)."
 msgstr "Você pode usar expressões regulares (regex)."
 
-#: inc/admin/options.php:674
+#: inc/admin/options.php:675
 msgid ""
 "<strong>Note:</strong> When you update a post or when a comment is posted, "
 "the homepage, categories and tags associated with this post are "
 "automatically removed from the cache and then recreated by our bot."
 msgstr "<strong>Nota:</strong> Quando você atualizar um post ou quando receber um comentário, a página principal, categorias e tags relacionadas com esse post serão automaticamente removidas do cache  re-criadas pelo nosso bot."
 
-#: inc/admin/options.php:680 inc/admin/options.php:688
+#: inc/admin/options.php:681 inc/admin/options.php:689
 msgid "Never cache the following pages:"
 msgstr "Nunca fazer cache das seguintes páginas:"
 
-#: inc/admin/options.php:693
+#: inc/admin/options.php:694
 msgid "Enter the URL of pages to reject (one per line)."
 msgstr "Insira a URL das páginas a serem rejeitadas (uma por linha)."
 
-#: inc/admin/options.php:699 inc/admin/options.php:707
+#: inc/admin/options.php:699
+msgid ""
+"<strong>Note:</strong> The cart and checkout pages are auto-excluded from "
+"the cache for WooCommerce, Easy Digital Download, iThemes Exchange, Jigoshop"
+" & WP-Shop."
+msgstr ""
+
+#: inc/admin/options.php:705 inc/admin/options.php:713
 msgid "Don't cache pages that use the following cookies:"
 msgstr "Não faça cache das páginas que estiverem com os seguintes cookies:"
 
-#: inc/admin/options.php:712
+#: inc/admin/options.php:718
 msgid "List the names of the cookies (one per line)."
 msgstr "Listar o nome dos cookies (um por linha)."
 
-#: inc/admin/options.php:718 inc/admin/options.php:726
+#: inc/admin/options.php:724 inc/admin/options.php:732
 msgid "Cache pages that use the following query strings (GET parameters):"
 msgstr "Páginas de cache usam as seguintes query strings (GET parameters)"
 
-#: inc/admin/options.php:731
+#: inc/admin/options.php:737
 msgid "List of query strings which can be cached (one per line)."
 msgstr "Lista de query strings que podem ser cacheadas (uma por linha)."
 
-#: inc/admin/options.php:737 inc/admin/options.php:745
+#: inc/admin/options.php:743 inc/admin/options.php:751
+msgid "Never send cache pages for these user agents:"
+msgstr ""
+
+#: inc/admin/options.php:756
+msgid "Enter the user agents name to reject (one per line)."
+msgstr ""
+
+#: inc/admin/options.php:762 inc/admin/options.php:770
 msgid "<b>CSS</b> files to exclude from minification:"
 msgstr "<b>CSS</b> arquivos para excluir da minificação:"
 
-#: inc/admin/options.php:750
+#: inc/admin/options.php:775
 msgid "Enter the URL of <b>CSS</b> files to reject (one per line)."
 msgstr "Insira a URL dos arquivos <b>CSS</b> que serão rejeitados (um por linha)."
 
-#: inc/admin/options.php:756 inc/admin/options.php:764
+#: inc/admin/options.php:781 inc/admin/options.php:789
 msgid "<b>JS</b> files to exclude from minification:"
 msgstr "Arquivos <b>JS</b> para excluir da minificação:"
 
-#: inc/admin/options.php:769
+#: inc/admin/options.php:794
 msgid "Enter the URL of <b>JS</b> files to reject (one per line)."
 msgstr "Insira a URL dos arquivos <b>JS</b> que serão rejeitados (um por linha)."
 
-#: inc/admin/options.php:775 inc/admin/options.php:782
+#: inc/admin/options.php:800 inc/admin/options.php:807
 msgid ""
 "<b>JS</b> files to be included in the footer during the minification "
 "process:"
 msgstr "Arquivos <b>JS</b> para serem incluídos no rodapé durante o processo de minificação:"
 
-#: inc/admin/options.php:791 inc/admin/options.php:819
+#: inc/admin/options.php:816 inc/admin/options.php:844
 msgid "Empty the field to remove it."
 msgstr "Esvaziar o arquivo para removê-lo"
 
-#: inc/admin/options.php:797 inc/admin/options.php:825
+#: inc/admin/options.php:822 inc/admin/options.php:850
 msgid "You must specify the complete URL of the files."
 msgstr "Você precisa informar a URL completa dos arquivos."
 
-#: inc/admin/options.php:803
+#: inc/admin/options.php:828
 msgid "<b>JS</b> files with deferred loading:"
 msgstr "Arquivos <b>JS</b> com carregamento deferred:"
 
-#: inc/admin/options.php:814
+#: inc/admin/options.php:839
 msgid ""
 "You can add JavaScript files that will be loaded asynchronously at the same "
 "time as the page loads."
 msgstr "Você pode adicionar arquivos JavaScript que serão carregados assincronamente enquanto a página carrega."
 
-#: inc/admin/options.php:831
+#: inc/admin/options.php:859 inc/admin/options.php:867
+msgid "CloudFlare Account Email"
+msgstr ""
+
+#: inc/admin/options.php:886
+msgid ""
+"<strong>Note:</strong> Where do I find my CloudFlare API key? <a "
+"href=%s\"\">Learn more</a>"
+msgstr ""
+
+#: inc/admin/options.php:892 inc/admin/options.php:900
+msgid "Domain"
+msgstr ""
+
+#: inc/admin/options.php:906 inc/admin/options.php:914
+msgid "Development Mode"
+msgstr ""
+
+#: inc/admin/options.php:916
+msgid "Off"
+msgstr ""
+
+#: inc/admin/options.php:917
+msgid "On"
+msgstr ""
+
+#: inc/admin/options.php:923
+msgid ""
+"Temporarily enter development mode on your website. <a href=%s\"\">Learn "
+"more</a>"
+msgstr ""
+
+#: inc/admin/options.php:929 inc/admin/options.php:937
+msgid "Auto enable the optimal CloudFlare settings (props WP Rocket)"
+msgstr ""
+
+#: inc/admin/options.php:939
+msgid "No"
+msgstr ""
+
+#: inc/admin/options.php:940
+msgid "Yes"
+msgstr ""
+
+#: inc/admin/options.php:946
+msgid ""
+"We select the best CloudFlare configuration for speed, performance grade and"
+" compatibility."
+msgstr ""
+
+#: inc/admin/options.php:963
+msgid ""
+"Immediately purge cached resources for your website. <a href=\"%s\" "
+"target=\"_blank\">Learn more</a>"
+msgstr ""
+
+#: inc/admin/options.php:969
 msgid "Content Delivery Network options"
 msgstr "Opções de entrega de conteúdo pela rede"
 
-#: inc/admin/options.php:834 inc/admin/options.php:843
+#: inc/admin/options.php:981 inc/admin/options.php:982
+msgid "Enable CloudFlare settings tab."
+msgstr ""
+
+#: inc/admin/options.php:989
+msgid ""
+"This option allows you to configure some CloudFlare settings like "
+"development mode, purge cache and a recommended configuration."
+msgstr ""
+
+#: inc/admin/options.php:994
+msgid ""
+"<strong>Note:</strong> If you are using CloudFlare, configure the options in"
+" the CloudFlare tab. The CDN settings below <strong>do not apply</strong> to"
+" CloudFlare."
+msgstr ""
+
+#: inc/admin/options.php:999
+msgid ""
+"This option is available for websites using <a href=\"%s\" "
+"target=\"_blank\">CloudFlare</a>."
+msgstr ""
+
+#: inc/admin/options.php:1005 inc/admin/options.php:1014
 msgid "CDN:"
 msgstr "CDN:"
 
-#: inc/admin/options.php:841
+#: inc/admin/options.php:1012
 msgid "Enable Content Delivery Network."
 msgstr "Habilitar entrega de conteúdo pela rede."
 
-#: inc/admin/options.php:848
+#: inc/admin/options.php:1019
 msgid ""
 "CDN function replaces all URLs of your static files and media (CSS, JS, "
 "Images) with the url entered below. This way all your content will be copied"
@@ -902,238 +1047,222 @@ msgid ""
 "target=\"_blank\">maxCDN</a>."
 msgstr "A função do CDN é substituir todas as URLs de seus arquivos estáticos e mídias (CSS, JS, Imagens) com a url inserida abaixo. Essa forma todo o seu conteúdo será copiado para um servidor dedicado ou um sistema de CDN <a href=\"http://www.maxcdn.com/\" target=\"_blank\">maxCDN</a>."
 
-#: inc/admin/options.php:860 inc/admin/options.php:1200
+#: inc/admin/options.php:1032
+msgid "Disable CDN on HTTPS pages."
+msgstr ""
+
+#: inc/admin/options.php:1047 inc/admin/options.php:1055
+msgid "Rejected files:"
+msgstr ""
+
+#: inc/admin/options.php:1060
+msgid "Specify the URL files that should not use the CDN. (one per line)."
+msgstr ""
+
+#: inc/admin/options.php:1066 inc/admin/options.php:1388
 msgid "White Label"
 msgstr "Etiqueta em branco"
 
-#: inc/admin/options.php:863 inc/admin/options.php:872
+#: inc/admin/options.php:1069 inc/admin/options.php:1078
 msgid "Plugin Name:"
 msgstr "Nome do Plugin:"
 
-#: inc/admin/options.php:878 inc/admin/options.php:887
+#: inc/admin/options.php:1084 inc/admin/options.php:1093
 msgid "Plugin URI:"
 msgstr "URI do Plugin:"
 
-#: inc/admin/options.php:893 inc/admin/options.php:902
+#: inc/admin/options.php:1099 inc/admin/options.php:1108
 msgid "Description:"
 msgstr "Descrição:"
 
-#: inc/admin/options.php:908 inc/admin/options.php:917
+#: inc/admin/options.php:1114 inc/admin/options.php:1123
 msgid "Author:"
 msgstr "Autor:"
 
-#: inc/admin/options.php:923 inc/admin/options.php:932
+#: inc/admin/options.php:1129 inc/admin/options.php:1138
 msgid "Author URI:"
 msgstr "URI do Autor:"
 
-#: inc/admin/options.php:944
+#: inc/admin/options.php:1150
 msgid "Reset White Label values to default"
 msgstr "Restaurar etiquetas brancas para o valor padrão"
 
-#: inc/admin/options.php:949
+#: inc/admin/options.php:1155
 msgid ""
 "If you change anything, the tutorial + FAQ + Support tabs will be hidden."
 msgstr "Se você alterar alguma coisa, o tutorial + FAQ + abas do Suporte ficarão escondidas."
 
-#: inc/admin/options.php:954 inc/admin/options.php:1202
+#: inc/admin/options.php:1160 inc/admin/options.php:1390
 msgid "Tools"
 msgstr "Ferramentas"
 
-#: inc/admin/options.php:958 inc/admin/options.php:969
-msgid "Auto-update"
-msgstr ""
-
-#: inc/admin/options.php:966
-msgid ""
-"Yes, please update this plugin automatically for next available <b>Minor</b>"
-" & <b>Fix Bugs</b> versions."
-msgstr ""
-
-#: inc/admin/options.php:967
-msgid "Yes, please update this plugin for all next available versions."
-msgstr ""
-
-#: inc/admin/options.php:977 inc/admin/options.php:986
+#: inc/admin/options.php:1165 inc/admin/options.php:1174
 msgid "Beta Tester"
 msgstr "Beta Tester"
 
-#: inc/admin/options.php:984
+#: inc/admin/options.php:1172
 msgid "Yes I do!"
 msgstr "Sim eu quero!"
 
-#: inc/admin/options.php:991
+#: inc/admin/options.php:1179
 msgid ""
 "Check it to participate in the WP Rocket Beta Program and get earlier access"
 " to new versions, thanks in advance."
 msgstr "Marque para participar do WP Rocket Beta Program e tenha acesso à novas versões, agradecemos a colaboração."
 
-#: inc/admin/options.php:1010
+#: inc/admin/options.php:1198
 msgid "Clear the cache for the whole site."
 msgstr "Limpar o cache do site todo."
 
-#: inc/admin/options.php:1016 inc/admin/options.php:1022
-#: inc/admin/options.php:1086 inc/admin-bar.php:141 inc/admin-bar.php:162
+#: inc/admin/options.php:1204 inc/admin/options.php:1210
+#: inc/admin/options.php:1271 inc/admin-bar.php:141 inc/admin-bar.php:162
 #: inc/admin-bar.php:193
 msgid "Preload cache"
 msgstr "Pré-carregar o cache"
 
-#: inc/admin/options.php:1027
+#: inc/admin/options.php:1215
 msgid ""
 "Allows you to request a bot crawl to preload the cache (homepage and its "
 "internal links)."
 msgstr "Permite a você solicitar um crawler bot para pré-carregar o cache (página inicial e seus links internos)."
 
-#: inc/admin/options.php:1034
+#: inc/admin/options.php:1222
 msgid "Settings Exporter"
 msgstr "Exportar Ajustes"
 
-#: inc/admin/options.php:1044
+#: inc/admin/options.php:1232
 msgid "Settings Importer"
 msgstr "Importar Ajustes"
 
-#: inc/admin/options.php:1053
+#: inc/admin/options.php:1241
 msgid ""
 "Please backup your settings before, use the \"Download options\" button "
 "above."
 msgstr ""
 
-#: inc/admin/options.php:1055
-msgid ""
-"<br>Also, the \"Auto-update\" feature will be deactivated, do not activate "
-"it again if you don't want to upgrade."
-msgstr ""
-
-#: inc/admin/options.php:1059
+#: inc/admin/options.php:1244
 msgid "Update Rollback"
 msgstr ""
 
-#: inc/admin/options.php:1065
+#: inc/admin/options.php:1250
 msgid "Reinstall v%s"
 msgstr ""
 
-#: inc/admin/options.php:1070
+#: inc/admin/options.php:1255
 msgid ""
 "Is the version %s causing you some issues? You can ask for a rollback and "
 "reinstall the last version you used before."
 msgstr ""
 
-#: inc/admin/options.php:1083 inc/admin/options.php:1204
+#: inc/admin/options.php:1268 inc/admin/options.php:1393
 msgid "Tutorials"
 msgstr "Tutoriais"
 
-#: inc/admin/options.php:1091
+#: inc/admin/options.php:1276
 msgid ""
 "This video gives some explanations about our two crawler robots. They "
 "generate several cache files in a few seconds."
 msgstr "Esse vídeo contém algumas explicações sobre nossos dois robôs crawler. Eles geram diversos arquivos de cache em segundos."
 
-#: inc/admin/options.php:1098
+#: inc/admin/options.php:1283
 msgid "CSS and JavaScript minification"
 msgstr "Minificação de CSS e JavaScript"
 
-#: inc/admin/options.php:1103
+#: inc/admin/options.php:1288
 msgid ""
 "This video gives some explanations about how to use the advanced processes "
 "of minification and concatenation of CSS and JavaScript files."
 msgstr "Este vídeo contém explicações sobre como usar o processo avançado de minificação e concatenação de arquivos CSS e JavaScript."
 
-#: inc/admin/options.php:1110
+#: inc/admin/options.php:1295
 msgid "Preloading DNS queries"
 msgstr "Pré-carregar solicitações de DNS"
 
-#: inc/admin/options.php:1115
+#: inc/admin/options.php:1300
 msgid ""
 "This video helps to easily understand the advanced option of \"Preloading "
 "DNS queries\" and the use of the filter <code>rocket_dns_prefetch</code>."
 msgstr "Este vídeo irá ajudá-lo a entender facilmente a opção avançada de \"Pré-carregar solicitações de DNS\" e usar o filtro <code>rocket_dns_prefetch</code>."
 
-#: inc/admin/options.php:1122
+#: inc/admin/options.php:1307
 msgid "How to use the White Label functionality?"
 msgstr "Como usar a funcionalidade de Etiquetas Brancas?"
 
-#: inc/admin/options.php:1127
+#: inc/admin/options.php:1312
 msgid "This video helps to set up a White Label version of WP Rocket."
 msgstr "Esse vídeo irá ajudá-lo a configurar as Etiquetas Brancas do WP Rocket."
 
-#: inc/admin/options.php:1134
+#: inc/admin/options.php:1319
 msgid "How to use the CDN functionality?"
 msgstr "Como usar a funcionalidade de CDN?"
 
-#: inc/admin/options.php:1139
+#: inc/admin/options.php:1324
 msgid ""
 "This video helps to understand what is the CDN functionality included since "
 "WP Rocket 2.1."
 msgstr "Este vídeo irá ajudá-lo a entender o que é a funcionalidade de CDN existente desde o WP Rocket 2.1."
 
-#: inc/admin/options.php:1146
+#: inc/admin/options.php:1331
 msgid "How to use the CDN API?"
 msgstr "Como usar a CDN API?"
 
-#: inc/admin/options.php:1151
+#: inc/admin/options.php:1336
 msgid ""
 "This video helps to set up the two functions "
 "<code>get_rocket_cdn_url()</code> and <code>rocket_cdn_url()</code>."
 msgstr "Este vídeo irá ajudá-lo a configurar as duas funções <code>get_rocket_cdn_url()</code> e <code>rocket_cdn_url()</code>."
 
-#: inc/admin/options.php:1156 inc/admin/options.php:1159
-#: inc/admin/options.php:1205 inc/admin/options.php:1210
+#: inc/admin/options.php:1341 inc/admin/options.php:1344
+#: inc/admin/options.php:1395 inc/admin/options.php:1400
 msgid "FAQ"
 msgstr "FAQ"
 
-#: inc/admin/options.php:1176
+#: inc/admin/options.php:1361
 msgid "Visit the Support"
 msgstr "Visite o Suporte"
 
-#: inc/admin/options.php:1182
+#: inc/admin/options.php:1367
 msgid ""
 "If none of the FAQ answers resolves your problem, you can send your issue to"
 " our free support. We will reply as soon as possible."
 msgstr "Se nenhuma resposta no FAQ resolver seu problema, você pode enviar-nos sua questão. Nós vamos responder assim que possível."
 
-#: inc/admin/options.php:1198
-msgid "CDN"
-msgstr "CDN"
-
-#: inc/admin/options.php:1209
+#: inc/admin/options.php:1399
 msgid "License"
 msgstr "Licença"
 
-#: inc/admin/options.php:1510
+#: inc/admin/options.php:1731
 msgid "Settings imported and saved."
 msgstr "Ajustes importados e salvos."
 
-#: inc/admin/options.php:1528 inc/admin/options.php:1587
+#: inc/admin/options.php:1749 inc/admin/options.php:1833
 msgid "Settings saved."
 msgstr "Ajustes salvos."
 
-#: inc/admin/options.php:1672
+#: inc/admin/options.php:1910
 msgid ""
 "Before you can upload your import file, you will need to fix the following "
 "error:"
 msgstr "Antes de subir e importar seu arquivo, você precisa corrigir o seguinte erro:"
 
-#: inc/admin/options.php:1679
+#: inc/admin/options.php:1917
 msgid "Choose a file from your computer:"
 msgstr "Escolha um arquivo em seu computador:"
 
-#: inc/admin/options.php:1679
+#: inc/admin/options.php:1917
 msgid "Maximum size: %s"
 msgstr "Tamanho máximo: %s"
 
-#: inc/admin/options.php:1682
+#: inc/admin/options.php:1920
 msgid "Upload file and import settings"
 msgstr "Subir arquivo e importar ajustes"
 
-#: inc/admin/updater.php:118 inc/admin/updater.php:125
+#: inc/admin/updater.php:119 inc/admin/updater.php:126
 msgid ""
 "An unexpected error occurred. Something may be wrong with WP-Rocket.me or "
 "this server&#8217;s configuration. If you continue to have problems, please "
 "try the <a href=\"%s\">support forums</a>."
 msgstr "Um erro inesperado ocorreu. Alguma coisa deu errado com o WP-Rocket.me ou com a configuração servidor&#8217;s. Se você continuar tendo problemas, por favor tente nosso <a href=\"%s\">fórum de suporte</a>."
-
-#: inc/admin/updater.php:174
-msgid "Update Plugin"
-msgstr ""
 
 #: inc/admin-bar.php:90 inc/admin-bar.php:184 inc/admin-bar.php:252
 #: inc/admin-bar.php:259
@@ -1152,7 +1281,7 @@ msgstr "Remover esta URL"
 msgid "Documentation"
 msgstr ""
 
-#: inc/cron.php:16
+#: inc/cron.php:17
 msgid "%s clear"
 msgstr "%s limpar"
 
@@ -1162,29 +1291,21 @@ msgid ""
 "href=\"%s\">Enter you API key</a> here."
 msgstr "Último passo antes de desfrutar de alta performance de nosso plugin, por favor <a href=\"%s\">informe sua chave da API</a> aqui."
 
-#: inc/functions/options.php:254
+#: inc/functions/options.php:324
 msgid "Your license is not valid."
 msgstr "Sua licença não é válida. "
 
-#: inc/functions/options.php:255
+#: inc/functions/options.php:325
 msgid "You cannot add more websites. Upgrade your account."
 msgstr "Você não pode adicionar mais sites. Faça um upgrade em sua conta."
 
-#: inc/functions/options.php:256
+#: inc/functions/options.php:326
 msgid "This website is not allowed."
 msgstr "Este site não é permitido."
 
-#: inc/functions/options.php:257
+#: inc/functions/options.php:327
 msgid "This license key is not accepted."
 msgstr "Essa chave não é aceita."
-
-#. Author of the plugin/theme
-msgid "WP Rocket"
-msgstr "WP Rocket"
-
-#. Author URI of the plugin/theme
-msgid "http://www.wp-rocket.me"
-msgstr "http://www.wp-rocket.me"
 
 #. Description of the plugin/theme
 msgid "The best WordPress performance plugin."
