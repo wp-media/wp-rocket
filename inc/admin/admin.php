@@ -361,13 +361,14 @@ function __rocket_rollback()
  */
 add_action( 'add_meta_boxes', '__rocket_cache_options_meta_boxes' );
 function __rocket_cache_options_meta_boxes() {
-	$cpts = get_post_types( array( 'public'=>true ), 'objects' );
+	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		$cpts = get_post_types( array( 'public'=>true ), 'objects' );
 
-	foreach( $cpts as $cpt => $cpt_object ) {
-		$label = $cpt_object->labels->singular_name;
-		add_meta_box( 'rocket_post_exclude', sprintf( __( 'Cache Options', 'rocket' ), $label ), '__rocket_display_cache_options_meta_boxes', $cpt, 'side', 'core' );
+		foreach( $cpts as $cpt => $cpt_object ) {
+			$label = $cpt_object->labels->singular_name;
+			add_meta_box( 'rocket_post_exclude', sprintf( __( 'Cache Options', 'rocket' ), $label ), '__rocket_display_cache_options_meta_boxes', $cpt, 'side', 'core' );
+		}
 	}
-
 }
 
 /*
@@ -422,7 +423,8 @@ function __rocket_display_cache_options_meta_boxes() {
  */
 add_action( 'save_post', '__rocket_save_metabox_options' );
 function __rocket_save_metabox_options() {
-	if ( isset( $_POST['post_ID'], $_POST['rocket_post_exclude_hidden'], $_POST['_rocketnonce'] ) ) {
+	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) &&
+		isset( $_POST['post_ID'], $_POST['rocket_post_exclude_hidden'], $_POST['_rocketnonce'] ) ) {
 
 		check_admin_referer( 'rocket_box_option_' . $_POST['post_ID'], '_rocketnonce' );
 
