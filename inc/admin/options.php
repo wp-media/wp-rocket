@@ -976,27 +976,19 @@ function rocket_display_options()
 		array(
 			array(
 				'type'         => 'checkbox',
-				'readonly'     => ! rocket_has_cloudflare(),
-				'label'        => rocket_has_cloudflare() ? 
-									__( 'Enable CloudFlare settings tab.', 'rocket' ) :
-									'<span class="rkt-disabled">' . __( 'Enable CloudFlare settings tab.', 'rocket' ) . '</span>',
+				'label'        => __( 'Enable CloudFlare settings tab.', 'rocket' ),
 				'label_for'    => 'do_cloudflare',
 				'label_screen' => 'CloudFlare'
 			),
 			array(
-				'type' 		  => ! rocket_has_cloudflare() ? '' : 'helper_description',
-				'name' 		  => ! rocket_has_cloudflare() ? '' : 'rocket_do_cloudflare',
-				'description' => ! rocket_has_cloudflare() ? '' : __( 'This option allows you to configure some CloudFlare settings like development mode, purge cache and a recommended configuration.', 'rocket' )
+				'type' 		  => 'helper_description',
+				'name' 		  => 'rocket_do_cloudflare',
+				'description' => __( 'This option allows you to configure some CloudFlare settings like development mode, purge cache and a recommended configuration.', 'rocket' )
 			),
 			array(
-				'type' 		  => ! rocket_has_cloudflare() ? '' : 'helper_description',
-				'name' 		  => ! rocket_has_cloudflare() ? '' : 'rocket_do_cloudflare',
-				'description' => ! rocket_has_cloudflare() ? '' : __( '<strong>Note:</strong> If you are using CloudFlare, configure the options in the CloudFlare tab. The CDN settings below <strong>do not apply</strong> to CloudFlare.', 'rocket' )
-			),
-			array(
-				'type' 		  => rocket_has_cloudflare() ? '' : 'helper_warning',
-				'name' 		  => rocket_has_cloudflare() ? '' : 'rocket_do_cloudflare',
-				'description' => rocket_has_cloudflare() ? '' : sprintf( __( 'This option is available for websites using <a href="%s" target="_blank">CloudFlare</a>.', 'rocket' ), 'https://www.cloudflare.com' )
+				'type' 		  => 'helper_description',
+				'name' 		  => 'rocket_do_cloudflare',
+				'description' => __( '<strong>Note:</strong> If you are using CloudFlare, configure the options in the CloudFlare tab. The CDN settings below <strong>do not apply</strong> to CloudFlare.', 'rocket' )
 			)
 		)
     );
@@ -1380,7 +1372,7 @@ function rocket_display_options()
 			<?php if( rocket_valid_key() ) { ?>
 				<a href="#tab_basic" class="nav-tab"><?php _e( 'Basic options', 'rocket' ); ?></a>
 				<a href="#tab_advanced" class="nav-tab"><?php _e( 'Advanced options', 'rocket' ); ?></a>
-				<?php if ( get_rocket_option( 'do_cloudflare' ) && rocket_has_cloudflare() ) { ?>
+				<?php if ( get_rocket_option( 'do_cloudflare' ) ) { ?>
 					<a href="#tab_cloudflare" class="nav-tab">CloudFlare</a>
 				<?php } ?>
 				<a href="#tab_cdn" class="nav-tab"><?php _e( 'CDN', 'rocket' ); ?></a>
@@ -1408,7 +1400,7 @@ function rocket_display_options()
 			<?php if( rocket_valid_key() ) { ?>
 				<div class="rkt-tab" id="tab_basic"><?php do_settings_sections( 'basic' ); ?></div>
 				<div class="rkt-tab" id="tab_advanced"><?php do_settings_sections( 'advanced' ); ?></div>
-				<div class="rkt-tab" id="tab_cloudflare" <?php echo get_rocket_option( 'do_cloudflare' ) && rocket_has_cloudflare() ? '' : 'style="display:none"'; ?>><?php do_settings_sections( 'cloudflare' ); ?></div>
+				<div class="rkt-tab" id="tab_cloudflare" <?php echo get_rocket_option( 'do_cloudflare' ) ? '' : 'style="display:none"'; ?>><?php do_settings_sections( 'cloudflare' ); ?></div>
 				<div class="rkt-tab" id="tab_cdn"><?php do_settings_sections( 'cdn' ); ?></div>
 				<?php $class_hidden = !defined( 'WP_RWL' ) ? ' hidden' : ''; ?>
 				<div class="rkt-tab<?php echo $class_hidden; ?>" id="tab_whitelabel"><?php do_settings_sections( 'white_label' ); ?></div>
