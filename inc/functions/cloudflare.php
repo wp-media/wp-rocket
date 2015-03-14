@@ -2,33 +2,6 @@
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 /**
- * To know if CloudFlare is running on the website
- *
- * @since 2.5
- *
- * @return bool True if CloudFlare is detected
- */
-function rocket_has_cloudflare() {
-	$response = wp_remote_get( 'http://api.wp-rocket.me/cloudflare/' . home_url(), array(
-		'timeout'     => 5,
-		'headers'     => array(),
-		'cookies'     => array()
-	));
-
-    if ( is_wp_error( $response ) ) {
-    	return false;
-    }
-
-    $data = json_decode( wp_remote_retrieve_body( $response ) );
-
-    if ( is_wp_error( $data ) ) {
-    	return false;
-    }
-
- 	return $data->has_cloudflare > 0;
-}
-
-/**
  * Get a WP_Rocket_CloudFlareAPI instance
  *
  * @since 2.5

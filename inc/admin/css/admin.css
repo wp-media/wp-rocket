@@ -3,7 +3,7 @@
 .rocket-plugins-error li{width:280px;line-height:25px}
 .rocketbox:checked ~ .rocketboxpanel{display:block}
 #wp-admin-bar-purge-all-all .dashicons{font:normal 1.5em/1 'dashicons';-webkit-font-smoothing:antialiased;vertical-align:middle;padding-right:3px;display:inline-block}
-.dashicons, .dashicons *{display:inline;text-decoration:none;vertical-align:text-bottom}
+.rkt-cross .dashicons, .rkt-cross .dashicons *{display:inline;text-decoration:none;vertical-align:text-bottom}
 .branch-3-1 .dashicons-no:before, .branch-3-2 .dashicons-no:before, .branch-3-3 .dashicons-no:before, .branch-3-4 .dashicons-no:before, .branch-3-5 .dashicons-no:before, .branch-3-6 .dashicons-no:before, .branch-3-7 .dashicons-no:before {content:"\00D7";font-weight:bold;font-size:2em;vertical-align:-7px}
 .branch-3-1 .dashicons-sort:before, .branch-3-2 .dashicons-sort:before, .branch-3-3 .dashicons-sort:before, .branch-3-4 .dashicons-sort:before, .branch-3-5 .dashicons-sort:before, .branch-3-6 .dashicons-sort:before, .branch-3-7 .dashicons-sort:before {content:"\25BC\25B2";font-size:1.2em;letter-spacing:-5px;padding-right:4px}
 #insidefaq h2 span{top:-40px;position:relative}

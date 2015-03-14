@@ -144,14 +144,22 @@ function rocket_plugins_to_deactivate()
 	if ( get_rocket_option( 'minify_css' ) || get_rocket_option( 'minify_js' ) || get_rocket_option( 'minify_html' ) ) {
 		$plugins[] = 'bwp-minify/bwp-minify.php';
 		$plugins[] = 'wp-minify/wp-minify.php';
-		$plugins[] = 'wp-html-compression/wp-html-compression.php';
-		$plugins[] = 'wp-compress-html/wp_compress_html.php';
 		$plugins[] = 'scripts-gzip/scripts_gzip.php';
 		$plugins[] = 'autoptimize/autoptimize.php';
-		$plugins[] = 'wp-js/wp-js.php';
 		$plugins[] = 'minqueue/plugin.php';
 		$plugins[] = 'dependency-minification/dependency-minification.php';
+	}
+	
+	if( get_rocket_option( 'minify_html' ) ) {
+		$plugins[] = 'wp-html-compression/wp-html-compression.php';
+		$plugins[] = 'wp-compress-html/wp_compress_html.php';
+	}
+	
+	if( get_rocket_option( 'minify_js' ) ) {
+		$plugins[] = 'wp-js/wp-js.php';
 		$plugins[] = 'combine-js/combine-js.php';
+		$plugins[] = 'footer-javascript/footer-javascript.php';
+		$plugins[] = 'scripts-to-footerphp/scripts-to-footer.php';
 	}
 
 	foreach ( $plugins as $plugin ) {

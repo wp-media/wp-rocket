@@ -51,10 +51,8 @@ function rocket_cdn_file( $url )
  *
  * @since 2.1
  */
-if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-	add_filter( 'the_content', 'rocket_cdn_images', PHP_INT_MAX );
-	add_filter( 'widget_text', 'rocket_cdn_images', PHP_INT_MAX );	
-}
+add_filter( 'the_content', 'rocket_cdn_images', PHP_INT_MAX );
+add_filter( 'widget_text', 'rocket_cdn_images', PHP_INT_MAX );	
 add_filter( 'rocket_buffer', 'rocket_cdn_images', PHP_INT_MAX );
 function rocket_cdn_images( $html )
 {
