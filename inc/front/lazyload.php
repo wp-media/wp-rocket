@@ -59,7 +59,8 @@ function rocket_lazyload_images( $html ) {
  * @since 2.2
  */
 function __rocket_lazyload_replace_callback( $matches ) {
-	if ( strpos( $matches[1] . $matches[3], 'data-no-lazy=' ) === false && strpos( $matches[1] . $matches[3], 'data-lazy-original=' ) === false && strpos( $matches[1] . $matches[3], 'data-lazy-src=' ) === false && strpos( $matches[1] . $matches[3], 'data-src=' ) === false && strpos( $matches[1] . $matches[3], 'data-bgposition=' ) === false && strpos( $matches[2], '/wpcf7_captcha/' ) === false && strpos( $matches[2], 'timthumb.php?src' ) === false && strpos( $matches[1] . $matches[3], 'data-envira-src=' ) === false && strpos( $matches[1] . $matches[3], 'fullurl=' ) === false && strpos( $matches[1] . $matches[3], 'lazy-slider-img=' ) === false ) {
+	$data_atts = array( 'data-no-lazy=', 'data-lazy-original=', 'data-lazy-src=', 'data-src=', 'data-bgposition=', '\/wpcf7_captcha\/', 'timthumb.php?src', 'data-envira-src=', 'fullurl=', 'lazy-slider-img=' );
+	if ( preg_match( '/' . implode( '|', $data_atts )  . '/i', $matches[1] . $matches[3] ) === 0 ) {
 		$html = sprintf( '<img%1$s src="data:image/gif;base64,R0lGODdhAQABAPAAAP///wAAACwAAAAAAQABAEACAkQBADs=" data-lazy-original=%2$s%3$s><noscript><img%1$s src=%2$s%3$s></noscript>',
 						$matches[1], $matches[2], $matches[3] );
 
