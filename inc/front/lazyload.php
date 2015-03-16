@@ -59,8 +59,10 @@ function rocket_lazyload_images( $html ) {
  * @since 2.2
  */
 function __rocket_lazyload_replace_callback( $matches ) {
-	$data_atts = array( 'data-no-lazy=', 'data-lazy-original=', 'data-lazy-src=', 'data-src=', 'data-bgposition=', '\/wpcf7_captcha\/', 'timthumb.php?src', 'data-envira-src=', 'fullurl=', 'lazy-slider-img=' );
-	if ( preg_match( '/' . implode( '|', $data_atts )  . '/i', $matches[1] . $matches[3] ) === 0 ) {
+
+	$data_atts_1_3 = array( 'data-no-lazy=', 'data-lazy-original=', 'data-lazy-src=', 'data-src=', 'data-bgposition=', 'data-envira-src=', 'fullurl=', 'lazy-slider-img=' );
+	$data_atts_2 = array( '\/wpcf7_captcha\/', 'timthumb\.php\?src' );
+	if ( preg_match( '/' . implode( '|', $data_atts_1_3 )  . '/i', $matches[1] . $matches[3] ) === 0 && preg_match( '/' . implode( '|', $data_atts_2 )  . '/i', $matches[2] ) ) {
 		$html = sprintf( '<img%1$s src="data:image/gif;base64,R0lGODdhAQABAPAAAP///wAAACwAAAAAAQABAEACAkQBADs=" data-lazy-original=%2$s%3$s><noscript><img%1$s src=%2$s%3$s></noscript>',
 						$matches[1], $matches[2], $matches[3] );
 
