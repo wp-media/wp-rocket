@@ -268,7 +268,7 @@ function get_rocket_i18n_translated_post_urls( $post_id, $post_type = 'page', $r
 		}
 	}
 	
-	if ( ! empty( $path ) ) {
+	if ( trim( $path, '/' ) != '' ) {
 		$urls[] = $path . $regex;	
 	}
 	
