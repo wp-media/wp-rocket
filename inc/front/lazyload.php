@@ -186,7 +186,7 @@ function rocket_translate_smiley( $matches ) {
  *
  * @since 2.5
  */
-add_filter( 'do_rocket_lazyload', '__rocket_deactivate_lazyload_on_specific_posts', 11 );
+add_filter( 'do_rocket_lazyload', '__rocket_deactivate_lazyload_on_specific_posts', 9 );
 function __rocket_deactivate_lazyload_on_specific_posts() {
 	if ( is_rocket_post_excluded_option( 'lazyload' ) ) {
 		return false;
