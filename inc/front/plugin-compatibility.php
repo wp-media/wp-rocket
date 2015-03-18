@@ -93,3 +93,13 @@ add_filter( 'rocket_override_donotcachepage', '__override_rocket_donotcachepage_
 function __override_rocket_donotcachepage_on_thrive_leads() {
 	return defined( 'TVE_LEADS_VERSION' ) && TVE_LEADS_VERSION > 0;
 }
+
+/**
+ * Conflict with KK Star Rating: Clear the cache when a post gets rated.
+ *
+ * @since 2.5.3
+ */
+add_action( 'kksr_rate', '__rocket_clear_cache_on_kksr_rate' );
+function __rocket_clear_cache_on_kksr_rate( $post_id ) {
+	rocket_clean_post( $post_id );	
+}

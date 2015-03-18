@@ -161,6 +161,10 @@ function rocket_plugins_to_deactivate()
 		$plugins[] = 'footer-javascript/footer-javascript.php';
 		$plugins[] = 'scripts-to-footerphp/scripts-to-footer.php';
 	}
+	
+	if( get_rocket_option( 'do_cloudflare' ) ) {
+		$plugins[] = 'cloudflare/cloudflare.php';
+	}
 
 	foreach ( $plugins as $plugin ) {
 		if ( is_plugin_active( $plugin ) ) {
