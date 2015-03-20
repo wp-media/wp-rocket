@@ -380,7 +380,7 @@ function __rocket_display_cache_options_meta_boxes() {
 	/** This filter is documented in inc/admin-bar.php */
 	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
 		global $post;
-		wp_nonce_field( 'rocket_box_option_' . $post->ID, '_rocketnonce', false, true );
+		wp_nonce_field( 'rocket_box_option', '_rocketnonce', false, true );
 		?>
 
 		<div class="misc-pub-section">
@@ -426,7 +426,7 @@ function __rocket_save_metabox_options() {
 	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) &&
 		isset( $_POST['post_ID'], $_POST['rocket_post_exclude_hidden'], $_POST['_rocketnonce'] ) ) {
 
-		check_admin_referer( 'rocket_box_option_' . $_POST['post_ID'], '_rocketnonce' );
+		check_admin_referer( 'rocket_box_option', '_rocketnonce' );
 
 		$fields = array( 'lazyload', 'minify_html', 'minify_css', 'minify_js', 'cdn' );
 
