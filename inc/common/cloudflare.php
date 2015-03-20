@@ -47,3 +47,28 @@ function __rocket_set_real_ip_cloudflare() {
         header( "X-CF-Powered-By: WP Rocket " . WP_ROCKET_VERSION );
     }
 }
+
+/**
+ * Reporting Spam IP to CloudFlare
+ *
+ * @since 2.5.4
+ */
+add_action( 'wp_set_comment_status', '__rocket_reporting_spam_ip_to_cloudflare', 1, 2 );
+function __rocket_reporting_spam_ip_to_cloudflare( $id, $status ) {
+	if ( $status == 'spam' ) {
+		$comment = get_comment( $id );
+
+		if ( !is_null( $comment ) ) {
+			$payload = array(
+				"a" 	=> $comment->comment_author,
+				"am" 	=> $comment->comment_author_email,
+				"ip" 	=> $comment->comment_author_IP,
+				"con" 	=> substr( $comment->comment_content, 0, 100 )
+			);
+
+			$payload = urlencode( json_encode( $payload ) );
+
+			$GLOBALS['rocket_cloudflare']->reporting_spam_ip( $payload );
+		}
+	}
+}
