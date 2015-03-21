@@ -3,7 +3,7 @@
 <ol class="hide-if-no-js">
 	<li><h2><a href="#Q2"><?php _e( 'How many sites is my key valid for?', 'rocket' );?></a></h2></li>
 	<li><h2><a href="#Q3"><?php _e( 'What exactly does WP Rocket do?', 'rocket' );?></a></h2></li>
-	<li><h2><a href="#Q4"><?php _e( 'I have turned any of the basic options on, does WP Rocket work?', 'rocket' );?></a></h2></li>
+	<li><h2><a href="#Q4"><?php _e( 'I haven\'t turned any of the basic options on, does WP Rocket work?', 'rocket' );?></a></h2></li>
 	<li><h2><a href="#Q5"><?php _e( 'What should I do in case of a problem with WP Rocket that I can\'t solve?', 'rocket' );?></a></h2></li>
 	<li><h2><a href="#Q6"><?php _e( 'My license has expired, what should I do?', 'rocket' );?></a></h2></li>
 	<li><h2><a href="#Q7"><?php _e( 'I want to change the URL of my website associated with my license, what should I do?', 'rocket' );?></a></h2></li>
