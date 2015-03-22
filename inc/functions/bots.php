@@ -53,7 +53,14 @@ function run_rocket_bot( $spider = 'cache-preload', $lang = '' )
 		*/
 		do_action( 'before_run_rocket_bot', $spider, $start_url );
 
-		wp_remote_get( WP_ROCKET_BOT_URL . '?spider=' . $spider . '&start_url=' . $start_url );
+		wp_remote_get( 
+			WP_ROCKET_BOT_URL . '?spider=' . $spider . '&start_url=' . $start_url,
+			array(
+				'timeout'   => 2,
+				'blocking'  => false,
+				'sslverify' => false,
+			) 
+		);
 
 		/**
 		 * Fires after WP Rocket Bot was called

@@ -3,7 +3,7 @@
 Plugin Name: WP Rocket
 Plugin URI: http://www.wp-rocket.me
 Description: The best WordPress performance plugin.
-Version: 2.5.3
+Version: 2.5.4
 Author: WP Rocket
 Contributors: Jonathan Buttigieg, Julio Potier
 Author URI: http://www.wp-rocket.me
@@ -17,7 +17,7 @@ Copyright 2013-2015 WP Rocket
 defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
 
 // Rocket defines
-define( 'WP_ROCKET_VERSION'             , '2.5.3' );
+define( 'WP_ROCKET_VERSION'             , '2.5.4' );
 define( 'WP_ROCKET_PRIVATE_KEY'         , false );
 define( 'WP_ROCKET_SLUG'                , 'wp_rocket_settings' );
 define( 'WP_ROCKET_WEB_MAIN'            , 'http://support.wp-rocket.me/' );
@@ -32,8 +32,10 @@ define( 'WP_ROCKET_PATH'                , realpath( plugin_dir_path( WP_ROCKET_F
 define( 'WP_ROCKET_INC_PATH'            , realpath( WP_ROCKET_PATH . 'inc/' ) . '/' );
 define( 'WP_ROCKET_FRONT_PATH'          , realpath( WP_ROCKET_INC_PATH . 'front/' ) . '/' );
 define( 'WP_ROCKET_ADMIN_PATH'          , realpath( WP_ROCKET_INC_PATH . 'admin' ) . '/' );
+define( 'WP_ROCKET_COMMON_PATH'         , realpath( WP_ROCKET_INC_PATH . 'common' ) . '/' );
 define( 'WP_ROCKET_FUNCTIONS_PATH'      , realpath( WP_ROCKET_INC_PATH . 'functions' ) . '/' );
 define( 'WP_ROCKET_API_PATH'      		, realpath( WP_ROCKET_INC_PATH . 'api' ) . '/' );
+define( 'WP_ROCKET_VENDORS_PATH'      	, realpath( WP_ROCKET_INC_PATH . 'vendors' ) . '/' );
 define( 'WP_ROCKET_CONFIG_PATH'         , WP_CONTENT_DIR . '/wp-rocket-config/' );
 define( 'WP_ROCKET_CACHE_PATH'          , WP_CONTENT_DIR . '/cache/wp-rocket/' );
 define( 'WP_ROCKET_MINIFY_CACHE_PATH'   , WP_CONTENT_DIR . '/cache/min/' );
@@ -51,7 +53,7 @@ if ( ! defined( 'CHMOD_WP_ROCKET_CACHE_DIRS' ) ) {
     define( 'CHMOD_WP_ROCKET_CACHE_DIRS', 0755 );
 }
 if ( ! defined( 'WP_ROCKET_LASTVERSION' ) ) {
-    define( 'WP_ROCKET_LASTVERSION', '2.5.2' );
+    define( 'WP_ROCKET_LASTVERSION', '2.5.3' );
 }
 
 require( WP_ROCKET_INC_PATH	. '/compat.php' );
@@ -101,11 +103,16 @@ function rocket_init()
     if( rocket_valid_key() ) {
         require( WP_ROCKET_INC_PATH . '/purge.php' );
         require( WP_ROCKET_INC_PATH . '/cron.php' );
-
+      
         if ( 0 < (int) get_rocket_option( 'cdn' ) ) {
-        	require  WP_ROCKET_FRONT_PATH . '/cdn.php';
+        	require( WP_ROCKET_FRONT_PATH . '/cdn.php' );
         }
-
+		
+		if ( 0 < (int) get_rocket_option( 'do_cloudflare' ) ) {
+			require( WP_ROCKET_VENDORS_PATH	. '/ip_in_range.php' );
+			require( WP_ROCKET_COMMON_PATH . '/cloudflare.php' );
+		}
+		
         if ( defined( 'SUNRISE' ) && SUNRISE == 'on' && function_exists( 'domain_mapping_siteurl' ) ) {
 	        require( WP_ROCKET_INC_PATH . '/domain-mapping.php' );
         }
@@ -248,7 +255,7 @@ function rocket_activation()
     if ( ! is_dir( WP_ROCKET_MINIFY_CACHE_PATH ) ) {
 		rocket_mkdir_p( WP_ROCKET_MINIFY_CACHE_PATH );
     }
-
+    
 	// Create config domain folder if not exist
     if ( ! is_dir( WP_ROCKET_CONFIG_PATH ) ) {
 		rocket_mkdir_p( WP_ROCKET_CONFIG_PATH );

@@ -7,8 +7,11 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 class WP_Rocket_CloudFlareAPI
 {
     // The URL of the API
-    private $api_endpoint = 'https://www.cloudflare.com/api_json.html';
-
+    private $api_endpoint  = 'https://www.cloudflare.com/api_json.html';
+	
+	// The URL of Spam API
+	private $spam_endpoint = 'https://www.cloudflare.com/ajax/external-event.html';
+	
     // Timeout for the API requests in seconds
     const TIMEOUT = 5;
 
@@ -178,6 +181,25 @@ class WP_Rocket_CloudFlareAPI
 		));
 
         if ( is_wp_error( $response ) ) {
+            return $response->get_error_message();
+        } else {
+            return json_decode( wp_remote_retrieve_body( $response ) );
+        }
+    }
+    
+    // Reporting Spam IP to CloudFlare
+    public function reporting_spam_ip( $payload ) {
+		$response = wp_remote_get(
+			sprintf( '%s?evnt_v=%s&u=%s&tkn=%s&evnt_t=%s', $this->spam_endpoint, $payload, $this->email, $this->api_key, 'WP_SPAM' ), 
+			array(
+				'method'		=> 'GET',
+				'timeout' 		=> self::TIMEOUT,
+				'sslverify'		=> true,
+				'user-agent'	=> 'CloudFlare/WordPress/' . WP_ROCKET_VERSION,
+			) 
+		);
+		
+		if ( is_wp_error( $response ) ) {
             return $response->get_error_message();
         } else {
             return json_decode( wp_remote_retrieve_body( $response ) );
