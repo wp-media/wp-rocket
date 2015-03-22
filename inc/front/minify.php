@@ -250,6 +250,7 @@ function rocket_minify_css( $buffer )
     $fonts_tags           = '';
     $excluded_css		  = implode( '|' , get_rocket_option( 'exclude_css', array() ) );
     $excluded_css 		  = str_replace( '//' . $home_host , '', $excluded_css );
+    $wp_content_dirname   = ltrim( str_replace( home_url(), '', WP_CONTENT_URL ), '/' ) . '/';
 	
     // Get all css files with this regex
     preg_match_all( apply_filters( 'rocket_minify_css_regex_pattern', '/<link\s*.+href=[\'|"]([^\'|"]+\.css?.+)[\'|"]?(.+)>/iU' ), $buffer, $tags_match );
@@ -265,7 +266,7 @@ function rocket_minify_css( $buffer )
             $excluded_tag = false;
 
             // Get URLs infos
-			$css_url  = parse_url( rocket_add_url_protocol( $tags_match[1][$i] ) );
+			$css_url  = parse_url( set_url_scheme( $tags_match[1][$i] ) );
 
 			// Get host for all langs
 			$langs_host = array();
@@ -280,7 +281,7 @@ function rocket_minify_css( $buffer )
 
             // Check if the file isn't external
             // Insert the relative path to the array without query string
-			if ( isset( $css_url['host'] ) && ( $css_url['host'] == $home_host || in_array( $css_url['host'], $cnames_host ) || in_array( $css_url['host'], $langs_host ) ) ) {
+			if ( ( isset( $css_url['host'] ) && ( $css_url['host'] == $home_host || in_array( $css_url['host'], $cnames_host ) || in_array( $css_url['host'], $langs_host ) ) ) || ( ! isset( $css_url['host'] ) && preg_match( '#(' . $wp_content_dirname . '|wp-includes)#', $css_url['path'] ) ) ) {
 
 				// Check if it isn't a file to exclude
 				if( ! preg_match( '#^(' . $excluded_css . ')$#', $css_url['path'] ) && pathinfo( $css_url['path'], PATHINFO_EXTENSION ) == 'css' ) {
@@ -372,7 +373,7 @@ function rocket_minify_js( $buffer )
             $excluded_tag = false;
 
 	        // Get URLs infos
-	        $js_url = parse_url( rocket_add_url_protocol( $tags_match[1][$i] ) );
+	        $js_url = parse_url( set_url_scheme( $tags_match[1][$i] ) );
 
 			// Get host for all langs
 			$langs_host = array();
@@ -387,7 +388,7 @@ function rocket_minify_js( $buffer )
 
 	        // Check if the link isn't external
 	        // Insert the relative path to the array without query string
-	        if ( isset( $js_url['host'] ) && ( $js_url['host'] == $home_host || in_array( $js_url['host'], $cnames_host ) || in_array( $js_url['host'], $langs_host ) ) ) {
+	        if ( ( isset( $js_url['host'] ) && ( $js_url['host'] == $home_host || in_array( $js_url['host'], $cnames_host ) || in_array( $js_url['host'], $langs_host ) ) ) || ( ! isset( $js_url['host'] ) && preg_match( '#(' . $wp_content_dirname . '|wp-includes)#', $js_url['path'] ) ) ) {
 
 		        // Check if it isn't a file to exclude
 		        if ( ! preg_match( '#^(' . $excluded_js . ')$#', $js_url['path'] ) && pathinfo( $js_url['path'], PATHINFO_EXTENSION ) == 'js' ) {
