@@ -1,5 +1,4 @@
-Action Scheduler [![Build Status](https://travis-ci.org/flightless/action-scheduler.png?branch=master)](https://travis-ci.org/flightless/action-scheduler)
-===========
+Action Scheduler [![Build Status](https://travis-ci.org/Prospress/action-scheduler.png?branch=master)](https://travis-ci.org/Prospress/action-scheduler)
 
 A robust scheduling system for WordPress.
 
