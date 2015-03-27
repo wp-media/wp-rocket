@@ -120,8 +120,9 @@ function rocket_cdn_enqueue( $src )
 	}
 
 	if ( $cnames = get_rocket_cdn_cnames( $zone ) ) {
+		list( $src_host, $src_path ) = get_rocket_parse_url( set_url_scheme( $src ) );
 		// Check if the link isn't external
-		if ( parse_url( rocket_add_url_protocol( $src ), PHP_URL_HOST ) == parse_url( home_url(), PHP_URL_HOST ) ) {
+		if ( $src_host == parse_url( home_url(), PHP_URL_HOST ) && trim( $src_path, '/' ) != '' ) {
 			$src = get_rocket_cdn_url( $src, $zone );
 		}
 	}
