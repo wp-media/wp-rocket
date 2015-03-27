@@ -69,13 +69,14 @@ if ( ! $continue ) {
 $request_uri = ( isset( $rocket_cache_query_strings ) && array_intersect( array_keys( $_GET ), $rocket_cache_query_strings ) ) || isset( $_GET['lp-variation-id'] ) || isset( $_GET['lang'] ) || isset( $_GET['s'] ) ? $_SERVER['REQUEST_URI'] : reset(( explode( '?', $_SERVER['REQUEST_URI'] ) ));
 
 // Don't cache with variables
-// but the cache is enabled if the visitor comes from an RSS feed or an Facebook action
+// but the cache is enabled if the visitor comes from an RSS feed, an Facebook action or Google Adsence tracking
 // @since 2.3 	Add query strings which can be cached via the options page.
 // @since 2.1 	Add compatibilty with WordPress Landing Pages (permalink_name and lp-variation-id)
 // @since 2.1 	Add compabitiliy with qTranslate and translation plugin with query string "lang"
 if ( ! empty( $_GET )
 	&& ( ! isset( $_GET['utm_source'], $_GET['utm_medium'], $_GET['utm_campaign'] ) )
 	&& ( ! isset( $_GET['fb_action_ids'], $_GET['fb_action_types'], $_GET['fb_source'] ) )
+	&& ( ! isset( $_GET['gclid'] ) )
 	&& ( ! isset( $_GET['permalink_name'] ) )
 	&& ( ! isset( $_GET['lp-variation-id'] ) )
 	&& ( ! isset( $_GET['lang'] ) )
