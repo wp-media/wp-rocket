@@ -3,7 +3,7 @@
 Plugin Name: WP Rocket
 Plugin URI: http://www.wp-rocket.me
 Description: The best WordPress performance plugin.
-Version: 2.5.4
+Version: 2.5.5
 Author: WP Rocket
 Contributors: Jonathan Buttigieg, Julio Potier
 Author URI: http://www.wp-rocket.me
@@ -17,7 +17,7 @@ Copyright 2013-2015 WP Rocket
 defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
 
 // Rocket defines
-define( 'WP_ROCKET_VERSION'             , '2.5.4' );
+define( 'WP_ROCKET_VERSION'             , '2.5.5' );
 define( 'WP_ROCKET_PRIVATE_KEY'         , false );
 define( 'WP_ROCKET_SLUG'                , 'wp_rocket_settings' );
 define( 'WP_ROCKET_WEB_MAIN'            , 'http://support.wp-rocket.me/' );
@@ -53,7 +53,7 @@ if ( ! defined( 'CHMOD_WP_ROCKET_CACHE_DIRS' ) ) {
     define( 'CHMOD_WP_ROCKET_CACHE_DIRS', 0755 );
 }
 if ( ! defined( 'WP_ROCKET_LASTVERSION' ) ) {
-    define( 'WP_ROCKET_LASTVERSION', '2.5.3' );
+    define( 'WP_ROCKET_LASTVERSION', '2.5.4' );
 }
 
 require( WP_ROCKET_INC_PATH	. '/compat.php' );
@@ -110,7 +110,7 @@ function rocket_init()
 		
 		if ( 0 < (int) get_rocket_option( 'do_cloudflare' ) ) {
 			require( WP_ROCKET_VENDORS_PATH	. '/ip_in_range.php' );
-			require( WP_ROCKET_COMMON_PATH . '/cloudflare.php' );
+			require( WP_ROCKET_COMMON_PATH 	. '/cloudflare.php' );
 		}
 		
         if ( defined( 'SUNRISE' ) && SUNRISE == 'on' && function_exists( 'domain_mapping_siteurl' ) ) {
