@@ -150,6 +150,10 @@ function rocket_plugins_to_deactivate()
 		$plugins[] = 'dependency-minification/dependency-minification.php';
 	}
 	
+	if ( get_rocket_option( 'minify_css' ) || get_rocket_option( 'minify_js' ) ) {
+		$plugins[] = 'async-js-and-css/asyncJSandCSS.php';
+	}
+	
 	if( get_rocket_option( 'minify_html' ) ) {
 		$plugins[] = 'wp-html-compression/wp-html-compression.php';
 		$plugins[] = 'wp-compress-html/wp_compress_html.php';
