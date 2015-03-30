@@ -111,7 +111,8 @@ jQuery( document ).ready( function($){
 				confirmButtonText: sawpr.confirmButtonTextBis,
 				cancelButtonText: sawpr.cancelButtonText,
 				closeOnConfirm: true,
-				closeOnCancel: true
+				closeOnCancel: true,
+				html: true
 			},
 			function(isConfirm){
 				if (!isConfirm) {

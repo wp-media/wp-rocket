@@ -98,12 +98,12 @@ function __rocket_add_admin_css_js()
 
 	wp_enqueue_style( 'options-wp-rocket', WP_ROCKET_ADMIN_CSS_URL . 'options.css', array(), WP_ROCKET_VERSION );
 	wp_enqueue_style( 'fancybox-wp-rocket', WP_ROCKET_ADMIN_CSS_URL . 'fancybox/jquery.fancybox.css', array( 'options-wp-rocket' ), WP_ROCKET_VERSION );
-	
+
 	// Sweet Alert
 	$translation_array = array(
 		'warning_title'  	 => __( 'Are you sure?', 'rocket' ),
 		'cloudflare_title'   => __( 'CloudFlare Settings', 'rocket' ),
-		'minify_text'  		 => sprintf( __( 'In case of any display errors we recommend following our documentation: %s You can also contact our support if you need help implementing that.', 'rocket' ), 'http://docs.wp-rocket.me/article/19-resolving-issues-with-minification/' ),
+		'minify_text'  		 => __( 'In case of any display errors we recommend following our documentation: ', 'rocket' ) . '<a href="http://docs.wp-rocket.me/article/19-resolving-issues-with-minification/?utm_source=wp-rocket&utm_medium=wp-admin&utm_term=doc-minification&utm_campaign=plugin">Resolving Issues with Minification</a>.<br/><br/>' . sprintf(  __( 'You can also <a href="%s">contact our support</a> if you need help implementing that.', 'rocket' ), 'http://wp-rocket.me/support/?utm_source=wp-rocket&utm_medium=wp-admin&utm_term=support-minification&utm_campaign=plugin' ),
 		'cloudflare_text'    => __( 'Click "Save Changes" to activate the Cloudflare tab.', 'rocket' ),
 		'confirmButtonText'  => __( 'Yes, I\'m sure!', 'rocket' ),
 		'cancelButtonText' 	 => __( 'Cancel', 'rocket' )
