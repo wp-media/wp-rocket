@@ -356,7 +356,8 @@ function rocket_minify_js( $buffer )
 		'wprp.zemanta.com', 
 		'files.bannersnack.com', 
 		'smarticon.geotrust.com',
-		'js.gleam.io'
+		'js.gleam.io',
+		'script.ioam.de'
 	) );
 	
     // Get all JS files with this regex
