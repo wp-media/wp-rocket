@@ -49,11 +49,15 @@ function get_rocket_option( $option, $default = false )
  * @return bool 		   True if the option is deactivated
  */
 function is_rocket_post_excluded_option( $option ) {
-	if ( is_singular() ) {
-		global $post;
-		return get_post_meta( $post->ID, '_rocket_exclude_' . $option, true );
+	if( is_home() ) {
+		$post_id = $GLOBALS['wp_query']->queried_object->ID;
 	}
-	return false;
+	
+	if ( is_singular() ) {
+		$post_id = $GLOBALS['post']->ID;	
+	}
+	
+	return ( isset( $post_id ) ) ? get_post_meta( $post_id, '_rocket_exclude_' . $option, true ) : false;
 }
 
 /**
