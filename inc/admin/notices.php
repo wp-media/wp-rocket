@@ -130,7 +130,8 @@ function rocket_plugins_to_deactivate()
 		'wp-ffpc/wp-ffpc.php',
 		'far-future-expiry-header/far-future-expiration.php',
 		'combine-css/combine-css.php',
-		'super-static-cache/super-static-cache.php'
+		'super-static-cache/super-static-cache.php',
+		'wpcompressor/wpcompressor.php'
 	);
 
 	if ( get_rocket_option( 'lazyload' ) ) {
