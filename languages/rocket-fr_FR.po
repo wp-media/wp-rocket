@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
 "POT-Creation-Date: 2015-03-10 13:16:51+00:00\n"
-"PO-Revision-Date: 2015-03-10 13:51+0000\n"
+"PO-Revision-Date: 2015-03-23 17:16+0000\n"
 "Last-Translator: wpmedia <contact@wp-media.me>\n"
 "Language-Team: French (France) (http://www.transifex.com/projects/p/wp-rocket/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -774,7 +774,7 @@ msgstr "Cache SSL&nbsp;:"
 
 #: inc/admin/options.php:579
 msgid "Enable caching for pages with SSL protocol (<code>https://</code>)."
-msgstr "Activer la mise en cache pour les pages utilisants le protocole SSL (<code>https://</code>)."
+msgstr "Activer la mise en cache pour les pages utilisant le protocole SSL (<code>https://</code>)."
 
 #: inc/admin/options.php:586 inc/admin/options.php:594
 msgid "Clear Cache Lifespan"

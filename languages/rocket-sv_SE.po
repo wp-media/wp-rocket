@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
 "POT-Creation-Date: 2015-03-10 13:16:51+00:00\n"
-"PO-Revision-Date: 2015-03-10 23:15+0000\n"
+"PO-Revision-Date: 2015-03-14 21:17+0000\n"
 "Last-Translator: Anders Eriksson <eriksson021@gmail.com>\n"
 "Language-Team: Swedish (Sweden) (http://www.transifex.com/projects/p/wp-rocket/language/sv_SE/)\n"
 "MIME-Version: 1.0\n"
@@ -61,7 +61,7 @@ msgstr "CloudFlare inställningar"
 msgid ""
 "In case of any display errors we recommend following our documentation: %s "
 "You can also contact our support if you need help implementing that."
-msgstr ""
+msgstr "Vid eventuella visningsfel rekommenderar vi vår dokumentation: %s Du kan också kontakta vår support om du behöver hjälp att ordna detta."
 
 #: inc/admin/admin.php:107
 msgid "Click \"Save Changes\" to activate the Cloudflare tab."
@@ -89,15 +89,15 @@ msgstr "Aktivera följande alternativ för detta inlägg:"
 
 #: inc/admin/admin.php:390
 msgid "HTML Minification"
-msgstr ""
+msgstr "HTML minifiering"
 
 #: inc/admin/admin.php:391
 msgid "CSS Minification"
-msgstr ""
+msgstr "CSS  minifiering"
 
 #: inc/admin/admin.php:392
 msgid "JS Minification"
-msgstr ""
+msgstr "JS minifiering"
 
 #: inc/admin/admin.php:393 inc/admin/options.php:1386
 msgid "CDN"
@@ -111,7 +111,7 @@ msgstr "Aktivera först %s alternativet."
 msgid ""
 "<strong>Note:</strong> These options aren't applied if you added this post "
 "in the \"Never cache the following pages\" option."
-msgstr ""
+msgstr "<strong>Obs!</strong> De här alternativen tillämpas inte om du lagt till inlägget i \"cacha aldrig följande sidor\" alternativet."
 
 #: inc/admin/faq.inc.php:2
 msgid "FAQ's Table of Content"
@@ -306,7 +306,7 @@ msgstr "Jag vill ändra adressen till min webblats som är kopplad till min lice
 msgid ""
 "It's easy to transfer your license to another site. Follow the steps here: "
 "<a href=\"%1$s\">%1$s</a>"
-msgstr ""
+msgstr "Det är enkelt att överföra din licens till en annan domän. Följ stegen här: <a href=\"%1$s\">%1$s</a>"
 
 #: inc/admin/faq.inc.php:65
 msgid "Which tools should I use to measure the performance of my site?"
@@ -881,7 +881,7 @@ msgid ""
 "<strong>Note:</strong> The cart and checkout pages are auto-excluded from "
 "the cache for WooCommerce, Easy Digital Download, iThemes Exchange, Jigoshop"
 " & WP-Shop."
-msgstr ""
+msgstr "<strong>Obs!:</strong> Varukorgen och kassasidor är automatiskt uteslutna från cachen för WooCommerce, Easy Digital hämtning, iThemes Exchange, Jigoshop och WP-Shop."
 
 #: inc/admin/options.php:705 inc/admin/options.php:713
 msgid "Don't cache pages that use the following cookies:"
@@ -955,7 +955,7 @@ msgstr "CloudFlare Epost-konto "
 msgid ""
 "<strong>Note:</strong> Where do I find my CloudFlare API key? <a "
 "href=%s\"\">Learn more</a>"
-msgstr ""
+msgstr "<strong>Obs!:</strong> Var hittar jag min CloudFlare API-nyckel? <a href=%s\"\">Läs mer</a>"
 
 #: inc/admin/options.php:892 inc/admin/options.php:900
 msgid "Domain"
@@ -977,11 +977,11 @@ msgstr "På"
 msgid ""
 "Temporarily enter development mode on your website. <a href=%s\"\">Learn "
 "more</a>"
-msgstr ""
+msgstr "Ange Tillfälligt underhållsläge på din webbplats. <a href=%s\"\"> Läs mer</a>"
 
 #: inc/admin/options.php:929 inc/admin/options.php:937
 msgid "Auto enable the optimal CloudFlare settings (props WP Rocket)"
-msgstr ""
+msgstr "Auto aktiverar optimala CloudFlare-inställningar (enligt WP Rocket)"
 
 #: inc/admin/options.php:939
 msgid "No"
@@ -995,13 +995,13 @@ msgstr "Ja"
 msgid ""
 "We select the best CloudFlare configuration for speed, performance grade and"
 " compatibility."
-msgstr ""
+msgstr "Vi väljer den bästa CloudFlare-konfigurationen för hastighet, prestanda-kvalitet och kompatibilitet."
 
 #: inc/admin/options.php:963
 msgid ""
 "Immediately purge cached resources for your website. <a href=\"%s\" "
 "target=\"_blank\">Learn more</a>"
-msgstr ""
+msgstr "Rensa omedelbart cachade resurser för din webbplats. <a href=\"%s\" target=\"_blank\"> Läs mer </a>"
 
 #: inc/admin/options.php:969
 msgid "Content Delivery Network options"
@@ -1009,26 +1009,26 @@ msgstr "Content Delivery Network alternativ"
 
 #: inc/admin/options.php:981 inc/admin/options.php:982
 msgid "Enable CloudFlare settings tab."
-msgstr ""
+msgstr "Aktivera CloudFlare-fliken Inställningar."
 
 #: inc/admin/options.php:989
 msgid ""
 "This option allows you to configure some CloudFlare settings like "
 "development mode, purge cache and a recommended configuration."
-msgstr ""
+msgstr "Detta alternativ låter dig konfigurera vissa CloudFlare-inställningar i \"Tillfälligt underhåll\"-läget, rensning cache och en rekommenderad konfiguration."
 
 #: inc/admin/options.php:994
 msgid ""
 "<strong>Note:</strong> If you are using CloudFlare, configure the options in"
 " the CloudFlare tab. The CDN settings below <strong>do not apply</strong> to"
 " CloudFlare."
-msgstr ""
+msgstr "<strong>Obs!:</strong> Om du använder CloudFlare, konfigurera alternativen i fliken CloudFlare. CDN inställningarna nedan <strong>använd inte</strong> till CloudFlare."
 
 #: inc/admin/options.php:999
 msgid ""
 "This option is available for websites using <a href=\"%s\" "
 "target=\"_blank\">CloudFlare</a>."
-msgstr ""
+msgstr "Det här alternativet är tillgängligt för webbplatser som använder <a href=\"%s\" target=\"_blank\">CloudFlare </a>."
 
 #: inc/admin/options.php:1005 inc/admin/options.php:1014
 msgid "CDN:"
@@ -1048,7 +1048,7 @@ msgstr "CDN -funktion ersätter alla webbadresser i dina statiska filer och medi
 
 #: inc/admin/options.php:1032
 msgid "Disable CDN on HTTPS pages."
-msgstr ""
+msgstr "Inaktivera CDN på HTTPS sidor."
 
 #: inc/admin/options.php:1047 inc/admin/options.php:1055
 msgid "Rejected files:"
@@ -1056,7 +1056,7 @@ msgstr "Avvisade filerna:"
 
 #: inc/admin/options.php:1060
 msgid "Specify the URL files that should not use the CDN. (one per line)."
-msgstr ""
+msgstr "Ange URL-filer som inte ska använda CDN. ( en per rad )."
 
 #: inc/admin/options.php:1066 inc/admin/options.php:1388
 msgid "White Label"
@@ -1308,4 +1308,4 @@ msgstr "Denna licensnyckel accepteras inte."
 
 #. Description of the plugin/theme
 msgid "The best WordPress performance plugin."
-msgstr "Det bästa Wordpress prestanda-tillägget."
+msgstr "Det bästa Wordpress cache-programmet."

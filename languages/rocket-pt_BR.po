@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the WP Rocket package.
 # Translators:
 # Deblyn Prado, 2014
-# Rafael Funchal <rafaelfunchal@gmail.com>, 2014
+# Rafael Funchal <rafaelfunchal@gmail.com>, 2014-2015
 msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
 "POT-Creation-Date: 2015-03-10 13:16:51+00:00\n"
-"PO-Revision-Date: 2015-03-10 13:16+0000\n"
-"Last-Translator: FxB <fxb@wp-translations.org>\n"
+"PO-Revision-Date: 2015-03-13 03:39+0000\n"
+"Last-Translator: Rafael Funchal <rafaelfunchal@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/wp-rocket/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -33,7 +33,7 @@ msgstr "Suporte"
 
 #: inc/admin/admin.php:15
 msgid "Docs"
-msgstr ""
+msgstr "Documentação"
 
 #: inc/admin/admin.php:18 inc/admin-bar.php:31
 msgid "Settings"
@@ -52,29 +52,29 @@ msgstr "Limpar cache"
 
 #: inc/admin/admin.php:104
 msgid "Are you sure?"
-msgstr ""
+msgstr "Você tem certeza?"
 
 #: inc/admin/admin.php:105
 msgid "CloudFlare Settings"
-msgstr ""
+msgstr "Configurações do CloudFlare"
 
 #: inc/admin/admin.php:106
 msgid ""
 "In case of any display errors we recommend following our documentation: %s "
 "You can also contact our support if you need help implementing that."
-msgstr ""
+msgstr "Caso algum erro seja exibido, nós recomendamos que você siga nossa documentação: %s . Você também pode entrar em contato com nosso suporte caso precise de ajuda na implementação."
 
 #: inc/admin/admin.php:107
 msgid "Click \"Save Changes\" to activate the Cloudflare tab."
-msgstr ""
+msgstr "Clique em \"Salvar alterações\" para ativar a aba CloudFlare."
 
 #: inc/admin/admin.php:108
 msgid "Yes, I'm sure!"
-msgstr ""
+msgstr "Sim, eu tenho certeza!"
 
 #: inc/admin/admin.php:109
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #: inc/admin/admin.php:335 inc/admin/admin.php:351
 msgid "%s Update Rollback"
@@ -82,23 +82,23 @@ msgstr ""
 
 #: inc/admin/admin.php:368
 msgid "Cache Options"
-msgstr ""
+msgstr "Opções de cache"
 
 #: inc/admin/admin.php:386
 msgid "Activate these options on this post:"
-msgstr ""
+msgstr "Ativar essas opções nesse post:"
 
 #: inc/admin/admin.php:390
 msgid "HTML Minification"
-msgstr ""
+msgstr "Minificação de HTML"
 
 #: inc/admin/admin.php:391
 msgid "CSS Minification"
-msgstr ""
+msgstr "Minificação de CSS"
 
 #: inc/admin/admin.php:392
 msgid "JS Minification"
-msgstr ""
+msgstr "Minificação de JS"
 
 #: inc/admin/admin.php:393 inc/admin/options.php:1386
 msgid "CDN"
@@ -106,13 +106,13 @@ msgstr "CDN"
 
 #: inc/admin/admin.php:398
 msgid "Activate first the %s option."
-msgstr ""
+msgstr "Primeiro ative a opção %s."
 
 #: inc/admin/admin.php:411
 msgid ""
 "<strong>Note:</strong> These options aren't applied if you added this post "
 "in the \"Never cache the following pages\" option."
-msgstr ""
+msgstr "<strong>Nota:</strong> Essas opções não serão aplicadas se você adicionar esse post na opção \"Nunca cacheie as seguintes páginas\"."
 
 #: inc/admin/faq.inc.php:2
 msgid "FAQ's Table of Content"
@@ -177,7 +177,7 @@ msgstr "O WP Rocket é compatível com WP Touch, WordPress Mobile Pack e WP Mobi
 
 #: inc/admin/faq.inc.php:16 inc/admin/faq.inc.php:100
 msgid "Is WP Rocket compatible with e-commerce plugins?"
-msgstr ""
+msgstr "WP Rocket é compatível com plugins de e-commerce?"
 
 #: inc/admin/faq.inc.php:17 inc/admin/faq.inc.php:107
 msgid "Is WP Rocket compatible with WPML or qTranslate?"
@@ -307,7 +307,7 @@ msgstr "Eu quero mudar a URL do meu site que está associada a minha licença, o
 msgid ""
 "It's easy to transfer your license to another site. Follow the steps here: "
 "<a href=\"%1$s\">%1$s</a>"
-msgstr ""
+msgstr "É fácil transferir sua licença para outro site. Siga esses passos: <a href=\"%1$s\">%1$s</a>"
 
 #: inc/admin/faq.inc.php:65
 msgid "Which tools should I use to measure the performance of my site?"
@@ -393,13 +393,13 @@ msgstr "Por outro lado, nas opções básicas, você deve desmarcar <code>habili
 msgid ""
 "Yes, WP Rocket automatically excludes \"View Cart\" and \"Checkout\" pages "
 "from the cache if you use one of these plugins: %l."
-msgstr ""
+msgstr "Sim, WP Rocket remove automaticamente as páginas \"Carrinho\" e \"Finalização\" do cache se você estiver usando um desses plugins: %l."
 
 #: inc/admin/faq.inc.php:104
 msgid ""
 "If you don't use one of them, you must follow these instructions: <a "
 "href=\"%s\">How To Use WP Rocket On Your Ecommerce Site (EN)</a>."
-msgstr ""
+msgstr "Se você não usa nenhum deles, você precisará seguir essas instruções: <a href=\"%s\">How To Use WP Rocket On Your Ecommerce Site</a> (somente em Inglês)."
 
 #: inc/admin/faq.inc.php:109
 msgid ""
@@ -882,7 +882,7 @@ msgid ""
 "<strong>Note:</strong> The cart and checkout pages are auto-excluded from "
 "the cache for WooCommerce, Easy Digital Download, iThemes Exchange, Jigoshop"
 " & WP-Shop."
-msgstr ""
+msgstr "<strong>Nota:</strong> As páginas \"Carrinho\" e \"Finalização\" são removidas do cache automaticamente para os plugins WooCommerce, Easy Digital Download, iThemes Exchange, Jigoshop & WP-Shop."
 
 #: inc/admin/options.php:705 inc/admin/options.php:713
 msgid "Don't cache pages that use the following cookies:"
@@ -902,11 +902,11 @@ msgstr "Lista de query strings que podem ser cacheadas (uma por linha)."
 
 #: inc/admin/options.php:743 inc/admin/options.php:751
 msgid "Never send cache pages for these user agents:"
-msgstr ""
+msgstr "Nunca envie páginas em cache para esses user agents:"
 
 #: inc/admin/options.php:756
 msgid "Enter the user agents name to reject (one per line)."
-msgstr ""
+msgstr "Insira o nome dos user agents a ignorar (1 por linha)."
 
 #: inc/admin/options.php:762 inc/admin/options.php:770
 msgid "<b>CSS</b> files to exclude from minification:"
@@ -950,29 +950,29 @@ msgstr "Você pode adicionar arquivos JavaScript que serão carregados assincron
 
 #: inc/admin/options.php:859 inc/admin/options.php:867
 msgid "CloudFlare Account Email"
-msgstr ""
+msgstr "Email da conta do CloudFlare"
 
 #: inc/admin/options.php:886
 msgid ""
 "<strong>Note:</strong> Where do I find my CloudFlare API key? <a "
 "href=%s\"\">Learn more</a>"
-msgstr ""
+msgstr "<strong>NotA:</strong> Onde eu encontro minha Chave de API do CloudFlare? <a href=%s\"\">Veja aqui</a>"
 
 #: inc/admin/options.php:892 inc/admin/options.php:900
 msgid "Domain"
-msgstr ""
+msgstr "Domínio"
 
 #: inc/admin/options.php:906 inc/admin/options.php:914
 msgid "Development Mode"
-msgstr ""
+msgstr "Modo de desenvolvimento"
 
 #: inc/admin/options.php:916
 msgid "Off"
-msgstr ""
+msgstr "Desligado"
 
 #: inc/admin/options.php:917
 msgid "On"
-msgstr ""
+msgstr "Ligado"
 
 #: inc/admin/options.php:923
 msgid ""
@@ -982,21 +982,21 @@ msgstr ""
 
 #: inc/admin/options.php:929 inc/admin/options.php:937
 msgid "Auto enable the optimal CloudFlare settings (props WP Rocket)"
-msgstr ""
+msgstr "Habilitar configurações otimizadas do CloudFlare (na opinião da equipe WP Rocket)"
 
 #: inc/admin/options.php:939
 msgid "No"
-msgstr ""
+msgstr "Não"
 
 #: inc/admin/options.php:940
 msgid "Yes"
-msgstr ""
+msgstr "Sim"
 
 #: inc/admin/options.php:946
 msgid ""
 "We select the best CloudFlare configuration for speed, performance grade and"
 " compatibility."
-msgstr ""
+msgstr "Nós selecionamos as melhores configurações do CloudFlare para melhorar a velocidade, performance e compatibilidade."
 
 #: inc/admin/options.php:963
 msgid ""
@@ -1010,7 +1010,7 @@ msgstr "Opções de entrega de conteúdo pela rede"
 
 #: inc/admin/options.php:981 inc/admin/options.php:982
 msgid "Enable CloudFlare settings tab."
-msgstr ""
+msgstr "Habilitar aba de configurações do CloudFlare."
 
 #: inc/admin/options.php:989
 msgid ""
@@ -1029,7 +1029,7 @@ msgstr ""
 msgid ""
 "This option is available for websites using <a href=\"%s\" "
 "target=\"_blank\">CloudFlare</a>."
-msgstr ""
+msgstr "Essa opção está disponível para sites que usam <a href=\"%s\" target=\"_blank\">CloudFlare</a>."
 
 #: inc/admin/options.php:1005 inc/admin/options.php:1014
 msgid "CDN:"
@@ -1049,11 +1049,11 @@ msgstr "A função do CDN é substituir todas as URLs de seus arquivos estático
 
 #: inc/admin/options.php:1032
 msgid "Disable CDN on HTTPS pages."
-msgstr ""
+msgstr "Desabilitar CDN em páginas HTTPS."
 
 #: inc/admin/options.php:1047 inc/admin/options.php:1055
 msgid "Rejected files:"
-msgstr ""
+msgstr "Arquivos rejeitados:"
 
 #: inc/admin/options.php:1060
 msgid "Specify the URL files that should not use the CDN. (one per line)."
@@ -1146,7 +1146,7 @@ msgstr ""
 
 #: inc/admin/options.php:1250
 msgid "Reinstall v%s"
-msgstr ""
+msgstr "Reinstalar v%s"
 
 #: inc/admin/options.php:1255
 msgid ""
@@ -1279,7 +1279,7 @@ msgstr "Remover esta URL"
 
 #: inc/admin-bar.php:204
 msgid "Documentation"
-msgstr ""
+msgstr "Documentação"
 
 #: inc/cron.php:17
 msgid "%s clear"

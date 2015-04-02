@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
 "POT-Creation-Date: 2015-03-10 13:16:51+00:00\n"
-"PO-Revision-Date: 2015-03-10 13:16+0000\n"
-"Last-Translator: FxB <fxb@wp-translations.org>\n"
+"PO-Revision-Date: 2015-03-12 17:12+0000\n"
+"Last-Translator: Ben_Mew <benjaminmewes@web.de>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/projects/p/wp-rocket/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -52,29 +52,29 @@ msgstr "Cache leeren"
 
 #: inc/admin/admin.php:104
 msgid "Are you sure?"
-msgstr ""
+msgstr "Bist du sicher?"
 
 #: inc/admin/admin.php:105
 msgid "CloudFlare Settings"
-msgstr ""
+msgstr "CloudFlare Einstellungen"
 
 #: inc/admin/admin.php:106
 msgid ""
 "In case of any display errors we recommend following our documentation: %s "
 "You can also contact our support if you need help implementing that."
-msgstr ""
+msgstr "Sollte es zu Fehlern in der Darstellung kommen, empfehlen wir unsere Dokumentation: %s. Du kannst ebenfalls unseren Support kontaktieren, falls Du Hilfe bei der Implementierung brauchst."
 
 #: inc/admin/admin.php:107
 msgid "Click \"Save Changes\" to activate the Cloudflare tab."
-msgstr ""
+msgstr "Klicke auf \"Änderungen speichern\" um den Cloudflare Reiter zu aktivieren."
 
 #: inc/admin/admin.php:108
 msgid "Yes, I'm sure!"
-msgstr ""
+msgstr "Ja, ich bin sicher!"
 
 #: inc/admin/admin.php:109
 msgid "Cancel"
-msgstr ""
+msgstr "Abbrechen"
 
 #: inc/admin/admin.php:335 inc/admin/admin.php:351
 msgid "%s Update Rollback"
@@ -82,23 +82,23 @@ msgstr "%s Update Rollback"
 
 #: inc/admin/admin.php:368
 msgid "Cache Options"
-msgstr ""
+msgstr "Cache Optionen"
 
 #: inc/admin/admin.php:386
 msgid "Activate these options on this post:"
-msgstr ""
+msgstr "Aktiviere diese Optionen bei diesem Beitrag:"
 
 #: inc/admin/admin.php:390
 msgid "HTML Minification"
-msgstr ""
+msgstr "HTML Minimierung"
 
 #: inc/admin/admin.php:391
 msgid "CSS Minification"
-msgstr ""
+msgstr "CSS Minimierung"
 
 #: inc/admin/admin.php:392
 msgid "JS Minification"
-msgstr ""
+msgstr "JS Minimierung"
 
 #: inc/admin/admin.php:393 inc/admin/options.php:1386
 msgid "CDN"
@@ -106,13 +106,13 @@ msgstr "CDN"
 
 #: inc/admin/admin.php:398
 msgid "Activate first the %s option."
-msgstr ""
+msgstr "Aktiviere die %s Option."
 
 #: inc/admin/admin.php:411
 msgid ""
 "<strong>Note:</strong> These options aren't applied if you added this post "
 "in the \"Never cache the following pages\" option."
-msgstr ""
+msgstr "<strong>Hinweis:</strong> Diese Optionen werden nicht genutzt, wenn dieser Beitrag unter \"Folgende Seiten niemals speichern\" angegeben wurde."
 
 #: inc/admin/faq.inc.php:2
 msgid "FAQ's Table of Content"
@@ -307,7 +307,7 @@ msgstr "Ich möchte die URL der Webseite die mit meiner Lizenz assoziiert ist ä
 msgid ""
 "It's easy to transfer your license to another site. Follow the steps here: "
 "<a href=\"%1$s\">%1$s</a>"
-msgstr ""
+msgstr "Es ist einfach deine Lizenz auf eine andere Seite zu transferieren. Folge der Anleitung hier: <a href=\"%1$s\">%1$s</a>"
 
 #: inc/admin/faq.inc.php:65
 msgid "Which tools should I use to measure the performance of my site?"
@@ -882,7 +882,7 @@ msgid ""
 "<strong>Note:</strong> The cart and checkout pages are auto-excluded from "
 "the cache for WooCommerce, Easy Digital Download, iThemes Exchange, Jigoshop"
 " & WP-Shop."
-msgstr ""
+msgstr "<strong>Hinweis:</strong> Der Einkaufswagen und die Checkout Seiten von WooCommerce, Easy Digital Download, iThemes Exchange, Jigoshop sowie WP-Shop werden automatisch vom Cache ausgeschlossen."
 
 #: inc/admin/options.php:705 inc/admin/options.php:713
 msgid "Don't cache pages that use the following cookies:"
@@ -902,11 +902,11 @@ msgstr "Liste der Query-String-Parameter, die im Cache gespeichert werden könne
 
 #: inc/admin/options.php:743 inc/admin/options.php:751
 msgid "Never send cache pages for these user agents:"
-msgstr ""
+msgstr "Sende niemals Seiten aus dem Cache bei folgenden Nutzerprofilen:"
 
 #: inc/admin/options.php:756
 msgid "Enter the user agents name to reject (one per line)."
-msgstr ""
+msgstr "Gib den Nutzernamen ein, der vom Cache ausgeschlossen sein soll (ein Eintrag pro Reihe)."
 
 #: inc/admin/options.php:762 inc/admin/options.php:770
 msgid "<b>CSS</b> files to exclude from minification:"
@@ -950,59 +950,59 @@ msgstr "Du kannst JavaScript Dateien angeben, die asynchron geladen werden, wäh
 
 #: inc/admin/options.php:859 inc/admin/options.php:867
 msgid "CloudFlare Account Email"
-msgstr ""
+msgstr "CloudFlare Account eMail"
 
 #: inc/admin/options.php:886
 msgid ""
 "<strong>Note:</strong> Where do I find my CloudFlare API key? <a "
 "href=%s\"\">Learn more</a>"
-msgstr ""
+msgstr "<strong>Hinweis:</strong> Wo finde ich meinen CloudFlare API Schlüssel? <a href=%s\"\">Lern mehr darüber</a>"
 
 #: inc/admin/options.php:892 inc/admin/options.php:900
 msgid "Domain"
-msgstr ""
+msgstr "Domain"
 
 #: inc/admin/options.php:906 inc/admin/options.php:914
 msgid "Development Mode"
-msgstr ""
+msgstr "Entwicklermodus"
 
 #: inc/admin/options.php:916
 msgid "Off"
-msgstr ""
+msgstr "Aus"
 
 #: inc/admin/options.php:917
 msgid "On"
-msgstr ""
+msgstr "An"
 
 #: inc/admin/options.php:923
 msgid ""
 "Temporarily enter development mode on your website. <a href=%s\"\">Learn "
 "more</a>"
-msgstr ""
+msgstr "Stell deine Seite zeitweise in den Entwicklermodus. <a href=%s\"\">Lern mehr darüber</a>"
 
 #: inc/admin/options.php:929 inc/admin/options.php:937
 msgid "Auto enable the optimal CloudFlare settings (props WP Rocket)"
-msgstr ""
+msgstr "Aktiviere automatisch die besten CloudFlare Einstellungen (für WP Rocket)"
 
 #: inc/admin/options.php:939
 msgid "No"
-msgstr ""
+msgstr "Nein"
 
 #: inc/admin/options.php:940
 msgid "Yes"
-msgstr ""
+msgstr "Ja"
 
 #: inc/admin/options.php:946
 msgid ""
 "We select the best CloudFlare configuration for speed, performance grade and"
 " compatibility."
-msgstr ""
+msgstr "Wir haben die beste CloudFlare Einstellung hinsichtlich Geschwindigkeit, Leistungsfähigkeit und Kompatibilität gewählt."
 
 #: inc/admin/options.php:963
 msgid ""
 "Immediately purge cached resources for your website. <a href=\"%s\" "
 "target=\"_blank\">Learn more</a>"
-msgstr ""
+msgstr "Lösche sofort alle zwischengespeicherten Inhalten deiner Webseite <a href=\"%s\" target=\"_blank\">Lern mehr darüber</a>"
 
 #: inc/admin/options.php:969
 msgid "Content Delivery Network options"
@@ -1010,26 +1010,26 @@ msgstr "Content Delivery Network Einstellungen"
 
 #: inc/admin/options.php:981 inc/admin/options.php:982
 msgid "Enable CloudFlare settings tab."
-msgstr ""
+msgstr "Aktiviere den CloudFlare Einstellungsreiter."
 
 #: inc/admin/options.php:989
 msgid ""
 "This option allows you to configure some CloudFlare settings like "
 "development mode, purge cache and a recommended configuration."
-msgstr ""
+msgstr "Diese Option ermöglicht es einige CloudFlare Einstellungen am Entwicklermodus, dem sofortigen Löschen aller zwischengespeicherten Inhalte und der empfohlenen Konfiguration vorzunehmen."
 
 #: inc/admin/options.php:994
 msgid ""
 "<strong>Note:</strong> If you are using CloudFlare, configure the options in"
 " the CloudFlare tab. The CDN settings below <strong>do not apply</strong> to"
 " CloudFlare."
-msgstr ""
+msgstr "<strong>Hinweis:</strong>Falls Du CloudFlare nutzt, nutze die Einstellungen im CloudFlare Reiter. Die CDN Einstellungen unten <strong>haben keinen Einfluss</strong> auf CloudFlare."
 
 #: inc/admin/options.php:999
 msgid ""
 "This option is available for websites using <a href=\"%s\" "
 "target=\"_blank\">CloudFlare</a>."
-msgstr ""
+msgstr "Diese Option ist auf Webseiten verfügbar, die <a href=\"%s\" target=\"_blank\">CloudFlare</a> nutzen."
 
 #: inc/admin/options.php:1005 inc/admin/options.php:1014
 msgid "CDN:"
@@ -1049,15 +1049,15 @@ msgstr "Die CDN-Funktion ersetzt alle URLs deiner statischen Seiten und Inhalte 
 
 #: inc/admin/options.php:1032
 msgid "Disable CDN on HTTPS pages."
-msgstr ""
+msgstr "Deaktiviere CDN auf HTTPS Seiten."
 
 #: inc/admin/options.php:1047 inc/admin/options.php:1055
 msgid "Rejected files:"
-msgstr ""
+msgstr "Abgewiesene Dateien:"
 
 #: inc/admin/options.php:1060
 msgid "Specify the URL files that should not use the CDN. (one per line)."
-msgstr ""
+msgstr "Gib die URL der Dateien an, die nicht mit einem CDN genutzt weden sollen (eine pro Reihe)."
 
 #: inc/admin/options.php:1066 inc/admin/options.php:1388
 msgid "White Label"
