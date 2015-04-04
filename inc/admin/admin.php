@@ -362,8 +362,7 @@ function __rocket_rollback()
 add_action( 'add_meta_boxes', '__rocket_cache_options_meta_boxes' );
 function __rocket_cache_options_meta_boxes() {
 	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
-		$cpts = get_post_types( array( 'public' => true ), 'objects' );
-		unset( $cpts['attachment'] );
+		$cpts = get_post_types( array( 'public'=>true ), 'objects' );
 
 		foreach( $cpts as $cpt => $cpt_object ) {
 			$label = $cpt_object->labels->singular_name;
