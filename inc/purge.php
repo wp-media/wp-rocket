@@ -37,6 +37,11 @@ add_filter( 'delete_transient_wc_products_onsale', 'wp_suspend_cache_invalidatio
 */
 add_action( 'after_rocket_clean_domain', 'rocket_clean_supercacher' );
 
+/* @since 2.5.5
+ * For not conflit with StudioPress Accelerator
+*/
+add_action( 'after_rocket_clean_domain', 'rocket_clean_studiopress_accelerator' );
+
 /**
  * Update cache when a post is updated or commented
  *
