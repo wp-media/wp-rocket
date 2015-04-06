@@ -103,3 +103,24 @@ add_action( 'kksr_rate', '__rocket_clear_cache_on_kksr_rate' );
 function __rocket_clear_cache_on_kksr_rate( $post_id ) {
 	rocket_clean_post( $post_id );	
 }
+
+/**
+ * Conflict with Aqua Resizer: Apply CDN without blank src!!
+ *
+ * @since 2.5.5
+ */
+add_action( 'init', '__rocket_cdn_on_aqua_resizer' );
+function __rocket_cdn_on_aqua_resizer() {
+	if( function_exists( 'aq_resize' ) ) {
+		remove_filter( 'wp_get_attachment_url' , 'rocket_cdn_file', PHP_INT_MAX );
+		add_filter( 'rocket_lazyload_html', '__rocket_cdn_on_data_lazy_src_attr' );
+	}
+}
+
+function __rocket_cdn_on_data_lazy_src_attr( $html ) {
+	if( preg_match( '/data-lazy-src=[\'"]?([^\'"\s>]+)[\'"]/i', $html, $matches ) ) {
+		$html = str_replace( $matches[1], get_rocket_cdn_url( $matches[1], array( 'all', 'images' ) ), $html );
+	}
+	
+	return $html;
+}
