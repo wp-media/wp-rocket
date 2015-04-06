@@ -42,6 +42,11 @@ add_action( 'after_rocket_clean_domain', 'rocket_clean_supercacher' );
 */
 add_action( 'after_rocket_clean_domain', 'rocket_clean_studiopress_accelerator' );
 
+/* @since 2.5.5
+ * For not conflit with Varnish HTTP Purge
+*/
+add_action( 'after_rocket_clean_domain', 'rocket_clean_varnish_http_purge' );
+
 /**
  * Update cache when a post is updated or commented
  *

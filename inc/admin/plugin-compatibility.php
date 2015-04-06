@@ -80,3 +80,21 @@ function __rocket_clear_cache_after_studiopress_accelerator() {
 		}
 	}
 }
+
+/**
+ * Clear WP Rocket cache after purged the Varnish cache via Varnish HTTP Purge plugin
+ *
+ * @since 2.5.5
+ *
+ * @return void
+ */
+add_action( 'admin_init', '__rocket_clear_cache_after_varnish_http_purge' );
+function __rocket_clear_cache_after_varnish_http_purge() {
+	if ( class_exists( 'VarnishPurger' ) && isset( $_GET['vhp_flush_all'] ) && current_user_can( 'manage_options' ) && check_admin_referer( 'varnish-http-purge' ) ) {
+		// Clear all caching files
+		rocket_clean_domain();
+		
+		// Preload cache
+		run_rocket_bot( 'cache-preload' );
+	}
+}

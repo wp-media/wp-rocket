@@ -61,6 +61,20 @@ function rocket_clean_studiopress_accelerator() {
 }
 
 /**
+ * Call the cache server to purge the cache with Varnish HTTP Purge.
+ *
+ * @since 2.5.5
+ *
+ * @return void
+ */
+function rocket_clean_varnish_http_purge() {
+	if ( class_exists( 'VarnishPurger' ) ) {
+		$purger = new VarnishPurger();
+		$purger->executePurge();
+	}
+}
+
+/**
  * Check if a translation plugin is activated
  *
  * @since 2.0
