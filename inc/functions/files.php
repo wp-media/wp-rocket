@@ -208,7 +208,7 @@ function set_rocket_wp_cache_define( $turn_it_on )
 	$constant = "define('WP_CACHE', $turn_it_on); // Added by WP Rocket". "\r\n";
 
 	foreach ( $config_file as &$line ) {
-		if ( ! preg_match( '/^define\(\'([A-Z_]+)\',([ ]+)/', $line, $match ) ) {
+		if ( ! preg_match( '/^define\(\s*\'([A-Z_]+)\',(.*)\)/', $line, $match ) ) {
 			continue;
 		}
 
