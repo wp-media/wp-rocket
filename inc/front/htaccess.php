@@ -88,7 +88,12 @@ function get_rocket_htaccess_mod_rewrite()
 	if ( is_multisite() ) {
 		return;
 	}
-
+	
+	// No rewrite rules for Korean
+	if( defined( 'WPLANG' ) && 'ko_KR' == WPLANG || 'ko_KR' == get_locale() ) {
+		return;
+	}
+	
 	// Get root base
 	$home_root = parse_url( home_url() );
 	$home_root = isset( $home_root['path'] ) ? trailingslashit($home_root['path']) : '/';
