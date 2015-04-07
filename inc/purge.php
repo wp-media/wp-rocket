@@ -50,6 +50,7 @@ add_action( 'after_rocket_clean_domain', 'rocket_clean_varnish_http_purge' );
 /**
  * Update cache when a post is updated or commented
  *
+ * @since 2.5.5 Don't cache for auto-draft post status
  * @since 1.3.2 Add wp_update_comment_count to purge cache when a comment is added/updated/deleted
  * @since 1.3.0 Compatibility with WPML
  * @since 1.3.0 Add 2 hooks : before_rocket_clean_post, after_rocket_clean_post
@@ -73,9 +74,9 @@ function rocket_clean_post( $post_id )
 
 	// Get all post infos
 	$post = get_post( $post_id );
-
+	
 	// No purge for specifics conditions
-	if ( empty($post->post_type) || $post->post_type == 'nav_menu_item' ) {
+	if ( $post->post_status == 'auto-draft' || empty( $post->post_type ) || $post->post_type == 'nav_menu_item' ) {
 		return;
 	}
 
