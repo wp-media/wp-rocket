@@ -87,7 +87,9 @@ function rocket_clean_post( $post_id )
     $permalink = str_replace( array( '%postname%', '%pagename%' ), $permalink_structure[1], $permalink_structure[0] );
 
 	// Add permalink
-	array_push( $purge_urls, $permalink );
+	if( parse_url( $permalink, PHP_URL_PATH ) != '/' ) {
+		array_push( $purge_urls, $permalink );	
+	}
 
 	// Add Post Type archive
 	$post_type_archive = get_post_type_archive_link( get_post_type( $post_id ) );
@@ -159,7 +161,7 @@ function rocket_clean_post( $post_id )
 	 * @param array $purge_urls List of URLs cache files to remove
 	*/
 	$purge_urls = apply_filters( 'rocket_post_purge_urls', $purge_urls );
-
+	
 	// Purge all files
 	rocket_clean_files( $purge_urls );
 
