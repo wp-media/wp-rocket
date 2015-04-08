@@ -79,17 +79,24 @@ function rocket_cdn_images( $html )
 			
 			$html = str_replace(
 				$images_match[0][$k],
-				sprintf(
+				/**
+				 * Filter the image HTML output with the CDN link
+				 *
+				 * @since 2.5.5
+				 *
+				 * @param array $html Output that will be printed
+				*/
+				apply_filters( 'rocket_cdn_images_html', sprintf(
 					'<img %1$s %2$s %3$s>',
 					$images_match[1][$k],
 					'src="' . get_rocket_cdn_url( $image_url, $zone ) .'"',
 					$images_match[3][$k]
-				),
+				)),
 				$html
 			);
 		}
 	}
-
+		
 	return $html;
 }
 

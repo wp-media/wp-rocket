@@ -113,14 +113,18 @@ add_action( 'init', '__rocket_cdn_on_aqua_resizer' );
 function __rocket_cdn_on_aqua_resizer() {
 	if( function_exists( 'aq_resize' ) ) {
 		remove_filter( 'wp_get_attachment_url' , 'rocket_cdn_file', PHP_INT_MAX );
-		add_filter( 'rocket_lazyload_html', '__rocket_cdn_on_data_lazy_src_attr' );
+		add_filter( 'rocket_lazyload_html', 'rocket_add_cdn_on_custom_attr' );
 	}
 }
 
-function __rocket_cdn_on_data_lazy_src_attr( $html ) {
-	if( preg_match( '/data-lazy-src=[\'"]?([^\'"\s>]+)[\'"]/i', $html, $matches ) ) {
-		$html = str_replace( $matches[1], get_rocket_cdn_url( $matches[1], array( 'all', 'images' ) ), $html );
+/**
+ * Conflict with Revolution Slider & Master Slider: Apply CDN on data-lazyload|data-src attribute.
+ *
+ * @since 2.5.5
+ */
+add_action( 'init', '__rocket_cdn_on_sliders_with_lazyload' );
+function __rocket_cdn_on_sliders_with_lazyload() {
+	if( class_exists( 'RevSliderFront' ) || class_exists( 'Master_Slider' ) ) {
+		add_filter( 'rocket_cdn_images_html', 'rocket_add_cdn_on_custom_attr' );
 	}
-	
-	return $html;
 }
