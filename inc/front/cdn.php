@@ -64,7 +64,7 @@ function rocket_cdn_images( $html )
 	$zone = array( 'all', 'images' );
 	if ( $cnames = get_rocket_cdn_cnames( $zone ) ) {
 		// Get all images of the content
-		preg_match_all( '#<img([^>]+?)src=[\'"]?([^\'"\s>]+)[\'"]?([^>]*)>#i', $html, $images_match );
+		preg_match_all( '#<img([^>]*) src=("(?:[^"]+)"|\'(?:[^\']+)\'|(?:[^ >]+))([^>]*)>#i', $html, $images_match );
 		
 		foreach ( $images_match[2] as $k=>$image_url ) {
 			// Check if the link isn't external
