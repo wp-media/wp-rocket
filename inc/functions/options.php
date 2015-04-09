@@ -49,7 +49,7 @@ function get_rocket_option( $option, $default = false )
  * @return bool 		   True if the option is deactivated
  */
 function is_rocket_post_excluded_option( $option ) {
-	if( is_home() ) {
+	if( is_home() && isset( $GLOBALS['wp_query']->queried_object ) ) {
 		$post_id = $GLOBALS['wp_query']->queried_object->ID;
 	}
 	
