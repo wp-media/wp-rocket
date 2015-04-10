@@ -103,3 +103,46 @@ add_action( 'kksr_rate', '__rocket_clear_cache_on_kksr_rate' );
 function __rocket_clear_cache_on_kksr_rate( $post_id ) {
 	rocket_clean_post( $post_id );	
 }
+
+/**
+ * Conflict with Aqua Resizer: Apply CDN without blank src!!
+ *
+ * @since 2.5.5
+ */
+add_action( 'init', '__rocket_cdn_on_aqua_resizer' );
+function __rocket_cdn_on_aqua_resizer() {
+	if( function_exists( 'aq_resize' ) ) {
+		remove_filter( 'wp_get_attachment_url' , 'rocket_cdn_file', PHP_INT_MAX );
+		add_filter( 'rocket_lazyload_html', 'rocket_add_cdn_on_custom_attr' );
+	}
+}
+
+/**
+ * Conflict with Revolution Slider & Master Slider: Apply CDN on data-lazyload|data-src attribute.
+ *
+ * @since 2.5.5
+ */
+add_action( 'init', '__rocket_cdn_on_sliders_with_lazyload' );
+function __rocket_cdn_on_sliders_with_lazyload() {
+	if( class_exists( 'RevSliderFront' ) || class_exists( 'Master_Slider' ) ) {
+		add_filter( 'rocket_cdn_images_html', 'rocket_add_cdn_on_custom_attr' );
+	}
+}
+
+/**
+ * Conflict with WP Retina x2: Apply CDN on srcset attribute.
+ *
+ * @since 2.5.5
+ */
+add_filter( 'wr2x_img_retina_url', '__rocket_cdn_on_images_from_wp_retina_x2' );
+add_filter( 'wr2x_img_url', '__rocket_cdn_on_images_from_wp_retina_x2' );
+function __rocket_cdn_on_images_from_wp_retina_x2( $url ) {
+	if ( wr2x_is_pro() ) {
+		$cdn_domain = wr2x_getoption( "cdn_domain", "wr2x_advanced", "" );
+	}
+	if ( empty( $cdn_domain ) ) {
+		return get_rocket_cdn_url( $url, array( 'all', 'images' ) );
+	}
+	
+	return $url;
+}

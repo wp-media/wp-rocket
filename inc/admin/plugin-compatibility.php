@@ -52,3 +52,49 @@ function __rocket_better_nginx_compatibility( $query_strings ) {
 	
 	return $query_strings;
 }
+
+/**
+ * Clear WP Rocket cache after purged the StudioPress Accelerator cache 
+ *
+ * @since 2.5.5
+ *
+ * @return void
+ */
+add_action( 'admin_init', '__rocket_clear_cache_after_studiopress_accelerator' );
+function __rocket_clear_cache_after_studiopress_accelerator() {
+	if ( isset( $GLOBALS['sp_accel_nginx_proxy_cache_purge'] ) && is_a( $GLOBALS['sp_accel_nginx_proxy_cache_purge'], 'SP_Accel_Nginx_Proxy_Cache_Purge' ) ) {
+		if (isset($_REQUEST['_wpnonce'])) {
+			$nonce = $_REQUEST['_wpnonce'];
+			if (wp_verify_nonce($nonce, 'sp-accel-purge-url') && !empty($_REQUEST['cache-purge-url'])) {
+				$submitted_url = $_REQUEST['cache-purge-url'];
+				
+				// Clear the URL
+				rocket_clean_files( array( $submitted_url ) );
+			} else if (wp_verify_nonce($nonce, 'sp-accel-purge-theme')) {
+				// Clear all caching files
+				rocket_clean_domain();
+				
+				// Preload cache
+				run_rocket_bot( 'cache-preload' );
+			}
+		}
+	}
+}
+
+/**
+ * Clear WP Rocket cache after purged the Varnish cache via Varnish HTTP Purge plugin
+ *
+ * @since 2.5.5
+ *
+ * @return void
+ */
+add_action( 'admin_init', '__rocket_clear_cache_after_varnish_http_purge' );
+function __rocket_clear_cache_after_varnish_http_purge() {
+	if ( class_exists( 'VarnishPurger' ) && isset( $_GET['vhp_flush_all'] ) && current_user_can( 'manage_options' ) && check_admin_referer( 'varnish-http-purge' ) ) {
+		// Clear all caching files
+		rocket_clean_domain();
+		
+		// Preload cache
+		run_rocket_bot( 'cache-preload' );
+	}
+}

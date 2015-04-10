@@ -64,7 +64,7 @@ function rocket_cdn_images( $html )
 	$zone = array( 'all', 'images' );
 	if ( $cnames = get_rocket_cdn_cnames( $zone ) ) {
 		// Get all images of the content
-		preg_match_all( '#<img([^>]+?)src=[\'"]?([^\'"\s>]+)[\'"]?([^>]*)>#i', $html, $images_match );
+		preg_match_all( '#<img([^>]*) src=("(?:[^"]+)"|\'(?:[^\']+)\'|(?:[^ >]+))([^>]*)>#i', $html, $images_match );
 		
 		foreach ( $images_match[2] as $k=>$image_url ) {
 			// Check if the link isn't external
@@ -79,17 +79,24 @@ function rocket_cdn_images( $html )
 			
 			$html = str_replace(
 				$images_match[0][$k],
-				sprintf(
+				/**
+				 * Filter the image HTML output with the CDN link
+				 *
+				 * @since 2.5.5
+				 *
+				 * @param array $html Output that will be printed
+				*/
+				apply_filters( 'rocket_cdn_images_html', sprintf(
 					'<img %1$s %2$s %3$s>',
-					$images_match[1][$k],
+					trim($images_match[1][$k]),
 					'src="' . get_rocket_cdn_url( $image_url, $zone ) .'"',
-					$images_match[3][$k]
-				),
+					trim($images_match[3][$k])
+				)),
 				$html
 			);
 		}
 	}
-
+		
 	return $html;
 }
 
@@ -120,8 +127,9 @@ function rocket_cdn_enqueue( $src )
 	}
 
 	if ( $cnames = get_rocket_cdn_cnames( $zone ) ) {
+		list( $src_host, $src_path ) = get_rocket_parse_url( set_url_scheme( $src ) );
 		// Check if the link isn't external
-		if ( parse_url( rocket_add_url_protocol( $src ), PHP_URL_HOST ) == parse_url( home_url(), PHP_URL_HOST ) ) {
+		if ( $src_host == parse_url( home_url(), PHP_URL_HOST ) && trim( $src_path, '/' ) != '' ) {
 			$src = get_rocket_cdn_url( $src, $zone );
 		}
 	}

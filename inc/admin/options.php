@@ -1702,7 +1702,7 @@ function rocket_settings_callback( $inputs )
 		$file_name 			= $_FILES['import']['name'];
 		$_POST_action 		= $_POST['action'];
 		$_POST['action'] 	= 'wp_handle_sideload';
-		$file 				= wp_handle_sideload( $_FILES['import'] );
+		$file 				= wp_handle_sideload( $_FILES['import'], array( 'mimes' => array( 'txt' => 'text/plain' ) ) );
 		$_POST['action'] 	= $_POST_action;
 		$gz 				= 'gz'.strrev( 'etalfni' );
 		$settings 			= @file_get_contents( $file['file'] );

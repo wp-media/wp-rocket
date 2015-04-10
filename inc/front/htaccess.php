@@ -88,7 +88,12 @@ function get_rocket_htaccess_mod_rewrite()
 	if ( is_multisite() ) {
 		return;
 	}
-
+	
+	// No rewrite rules for Korean
+	if( defined( 'WPLANG' ) && 'ko_KR' == WPLANG || 'ko_KR' == get_locale() ) {
+		return;
+	}
+	
 	// Get root base
 	$home_root = parse_url( home_url() );
 	$home_root = isset( $home_root['path'] ) ? trailingslashit($home_root['path']) : '/';
@@ -150,6 +155,7 @@ function get_rocket_htaccess_mod_rewrite()
 	$rules .= '<IfModule mod_rewrite.c>' . PHP_EOL;
 	$rules .= 'RewriteEngine On' . PHP_EOL;
 	$rules .= 'RewriteBase ' . $home_root . PHP_EOL;
+	$rules .= get_rocket_htaccess_ssl_rewritecond();
 	$rules .= $gzip_rules;
 	$rules .= 'RewriteCond %{REQUEST_METHOD} GET' . PHP_EOL;
 	$rules .= 'RewriteCond %{QUERY_STRING} =""' . PHP_EOL;
@@ -168,15 +174,13 @@ function get_rocket_htaccess_mod_rewrite()
 		$rules .= 'RewriteCond %{HTTP_USER_AGENT} !^(' . $ua . ').* [NC]' . PHP_EOL;
 	}
 
-	$rules .= ! is_rocket_cache_ssl() ? get_rocket_htaccess_ssl_rewritecond() : '';
-
 	if ( $is_1and1_or_force ) {
-		$rules .= 'RewriteCond "' . str_replace( '/kunden/', '/', WP_ROCKET_CACHE_PATH ) . $HTTP_HOST . '%{REQUEST_URI}/index.html' . $enc . '" -f' . PHP_EOL;
+		$rules .= 'RewriteCond "' . str_replace( '/kunden/', '/', WP_ROCKET_CACHE_PATH ) . $HTTP_HOST . '%{REQUEST_URI}/index%{ENV:WPR_SSL}.html' . $enc . '" -f' . PHP_EOL;
 	} else {
-		$rules .= 'RewriteCond "%{DOCUMENT_ROOT}/' . ltrim( $cache_root, '/' ) . $HTTP_HOST . '%{REQUEST_URI}/index.html' . $enc . '" -f' . PHP_EOL;
+		$rules .= 'RewriteCond "%{DOCUMENT_ROOT}/' . ltrim( $cache_root, '/' ) . $HTTP_HOST . '%{REQUEST_URI}/index%{ENV:WPR_SSL}.html' . $enc . '" -f' . PHP_EOL;
 	}
 
-	$rules .= 'RewriteRule .* "' . $cache_root . $HTTP_HOST . '%{REQUEST_URI}/index.html' . $enc . '" [L]' . PHP_EOL;
+	$rules .= 'RewriteRule .* "' . $cache_root . $HTTP_HOST . '%{REQUEST_URI}/index%{ENV:WPR_SSL}.html' . $enc . '" [L]' . PHP_EOL;
 	$rules .= '</IfModule>' . PHP_EOL;
 
 	/**
@@ -231,7 +235,10 @@ function get_rocket_htaccess_mobile_rewritecond()
  */
 function get_rocket_htaccess_ssl_rewritecond()
 {
-	$rules = 'RewriteCond %{HTTPS} off' . PHP_EOL;
+	$rules = 'RewriteCond %{HTTPS} on' . PHP_EOL;
+	$rules .= 'RewriteRule .* - [E=WPR_SSL:-https]' . PHP_EOL;
+	$rules .= 'RewriteCond %{SERVER_PORT} ^443$' . PHP_EOL;
+	$rules .= 'RewriteRule .* - [E=WPR_SSL:-https]' . PHP_EOL;
 
 	/**
 	 * Filter rules for SSL requests

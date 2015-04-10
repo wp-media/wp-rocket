@@ -37,9 +37,20 @@ add_filter( 'delete_transient_wc_products_onsale', 'wp_suspend_cache_invalidatio
 */
 add_action( 'after_rocket_clean_domain', 'rocket_clean_supercacher' );
 
+/* @since 2.5.5
+ * For not conflit with StudioPress Accelerator
+*/
+add_action( 'after_rocket_clean_domain', 'rocket_clean_studiopress_accelerator' );
+
+/* @since 2.5.5
+ * For not conflit with Varnish HTTP Purge
+*/
+add_action( 'after_rocket_clean_domain', 'rocket_clean_varnish_http_purge' );
+
 /**
  * Update cache when a post is updated or commented
  *
+ * @since 2.5.5 Don't cache for auto-draft post status
  * @since 1.3.2 Add wp_update_comment_count to purge cache when a comment is added/updated/deleted
  * @since 1.3.0 Compatibility with WPML
  * @since 1.3.0 Add 2 hooks : before_rocket_clean_post, after_rocket_clean_post
@@ -63,9 +74,9 @@ function rocket_clean_post( $post_id )
 
 	// Get all post infos
 	$post = get_post( $post_id );
-
+	
 	// No purge for specifics conditions
-	if ( empty($post->post_type) || $post->post_type == 'nav_menu_item' ) {
+	if ( $post->post_status == 'auto-draft' || empty( $post->post_type ) || $post->post_type == 'nav_menu_item' ) {
 		return;
 	}
 
@@ -76,7 +87,9 @@ function rocket_clean_post( $post_id )
     $permalink = str_replace( array( '%postname%', '%pagename%' ), $permalink_structure[1], $permalink_structure[0] );
 
 	// Add permalink
-	array_push( $purge_urls, $permalink );
+	if( parse_url( $permalink, PHP_URL_PATH ) != '/' ) {
+		array_push( $purge_urls, $permalink );	
+	}
 
 	// Add Post Type archive
 	$post_type_archive = get_post_type_archive_link( get_post_type( $post_id ) );
@@ -148,7 +161,7 @@ function rocket_clean_post( $post_id )
 	 * @param array $purge_urls List of URLs cache files to remove
 	*/
 	$purge_urls = apply_filters( 'rocket_post_purge_urls', $purge_urls );
-
+	
 	// Purge all files
 	rocket_clean_files( $purge_urls );
 

@@ -69,13 +69,14 @@ if ( ! $continue ) {
 $request_uri = ( isset( $rocket_cache_query_strings ) && array_intersect( array_keys( $_GET ), $rocket_cache_query_strings ) ) || isset( $_GET['lp-variation-id'] ) || isset( $_GET['lang'] ) || isset( $_GET['s'] ) ? $_SERVER['REQUEST_URI'] : reset(( explode( '?', $_SERVER['REQUEST_URI'] ) ));
 
 // Don't cache with variables
-// but the cache is enabled if the visitor comes from an RSS feed or an Facebook action
+// but the cache is enabled if the visitor comes from an RSS feed, an Facebook action or Google Adsence tracking
 // @since 2.3 	Add query strings which can be cached via the options page.
 // @since 2.1 	Add compatibilty with WordPress Landing Pages (permalink_name and lp-variation-id)
 // @since 2.1 	Add compabitiliy with qTranslate and translation plugin with query string "lang"
 if ( ! empty( $_GET )
 	&& ( ! isset( $_GET['utm_source'], $_GET['utm_medium'], $_GET['utm_campaign'] ) )
 	&& ( ! isset( $_GET['fb_action_ids'], $_GET['fb_action_types'], $_GET['fb_source'] ) )
+	&& ( ! isset( $_GET['gclid'] ) )
 	&& ( ! isset( $_GET['permalink_name'] ) )
 	&& ( ! isset( $_GET['lp-variation-id'] ) )
 	&& ( ! isset( $_GET['lang'] ) )
@@ -127,6 +128,13 @@ else {
 	$request_uri_path = $rocket_cache_path . $host . rtrim( $request_uri, '/' );
 }
 
+// Caching file path
+$rocket_cache_filepath = $request_uri_path . '/index.html';
+
+if ( ( rocket_is_ssl() && ! empty( $rocket_cache_ssl ) ) ) {
+	$rocket_cache_filepath = $request_uri_path . '/index-https.html';
+}
+
 // Serve the cache file if exist
 rocket_serve_cache_file( $request_uri_path );
 
@@ -164,7 +172,7 @@ function do_rocket_callback( $buffer )
 		&& ( function_exists( 'is_search' ) && ! is_search() || $rocket_cache_search ) // Don't cache search results
 		&& ( ! defined( 'DONOTCACHEPAGE' ) || ! DONOTCACHEPAGE || $rocket_override_donotcachepage ) // Don't cache template that use this constant
 	) {
-		global $request_uri_path;
+		global $request_uri_path, $rocket_cache_filepath;
 
 		// This hook is used for:
 		// - Add width and height attributes on images
@@ -185,15 +193,15 @@ function do_rocket_callback( $buffer )
 			rocket_mkdir_p( $request_uri_path );
 
 			// Save the cache file
-			rocket_put_content( $request_uri_path . '/index.html', $buffer . get_rocket_footprint() );
+			rocket_put_content( $rocket_cache_filepath, $buffer . get_rocket_footprint() );
 
 			if ( function_exists( 'gzencode' ) ) {
-				rocket_put_content( $request_uri_path . '/index.html_gzip', gzencode ( $buffer . get_rocket_footprint(), apply_filters( 'rocket_gzencode_level_compression', 3 ) ) );
+				rocket_put_content( $rocket_cache_filepath . '_gzip', gzencode ( $buffer . get_rocket_footprint(), apply_filters( 'rocket_gzencode_level_compression', 3 ) ) );
 			}
 		}
 
 		// Send headers with the last modified time of the cache file
-		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s', filemtime( $request_uri_path . '/index.html' ) ) . ' GMT' );
+		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s', filemtime( $rocket_cache_filepath ) ) . ' GMT' );
 
 		$buffer = $buffer . get_rocket_footprint(false);
 	}
@@ -208,10 +216,10 @@ function do_rocket_callback( $buffer )
  */
 function rocket_serve_cache_file( $request_uri_path )
 {
-	$filename = $request_uri_path . '/index.html';
-
+	global $rocket_cache_filepath;
+	
 	// Check if cache file exist
-	if ( file_exists( $filename ) && is_readable( $filename ) ) {
+	if ( file_exists( $rocket_cache_filepath ) && is_readable( $rocket_cache_filepath ) ) {
 
 		// Getting If-Modified-Since headers sent by the client.
 		if ( function_exists( 'apache_request_headers' ) ) {
@@ -222,14 +230,14 @@ function rocket_serve_cache_file( $request_uri_path )
 		}
 
 		// Checking if the client is validating his cache and if it is current.
-	    if ( $http_if_modified_since && ( strtotime( $http_if_modified_since ) == filemtime( $filename ) ) ) {
+	    if ( $http_if_modified_since && ( strtotime( $http_if_modified_since ) == filemtime( $rocket_cache_filepath ) ) ) {
 	        // Client's cache is current, so we just respond '304 Not Modified'.
 	        header( $_SERVER['SERVER_PROTOCOL'] . ' 304 Not Modified' );
 	        exit;
 	    }
 
 	   // Serve the cache if file isn't store in the client browser cache
-	   readfile( $filename );
+	   readfile( $rocket_cache_filepath );
 	   exit;
 	}
 }

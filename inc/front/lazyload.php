@@ -51,6 +51,7 @@ function rocket_lazyload_images( $html ) {
 /**
  * Used to check if we have to LazyLoad this or not
  *
+ * @since 2.5.5	 Don't apply LazyLoad on images from WP Retina x2
  * @since 2.5	 Don't apply LazyLoad on all images from LayerSlider
  * @since 2.4.2	 Don't apply LazyLoad on all images from Media Grid
  * @since 2.3.11 Don't apply LazyLoad on all images from Timthumb
@@ -59,8 +60,15 @@ function rocket_lazyload_images( $html ) {
  * @since 2.2
  */
 function __rocket_lazyload_replace_callback( $matches ) {
-	// TO DO - improve this code with a preg_match
-	if ( strpos( $matches[1] . $matches[3], 'data-no-lazy=' ) === false && strpos( $matches[1] . $matches[3], 'data-lazy-original=' ) === false && strpos( $matches[1] . $matches[3], 'data-lazy-src=' ) === false && strpos( $matches[1] . $matches[3], 'data-src=' ) === false && strpos( $matches[1] . $matches[3], 'data-bgposition=' ) === false && strpos( $matches[2], '/wpcf7_captcha/' ) === false && strpos( $matches[2], 'timthumb.php?src' ) === false && strpos( $matches[1] . $matches[3], 'data-envira-src=' ) === false && strpos( $matches[1] . $matches[3], 'fullurl=' ) === false && strpos( $matches[1] . $matches[3], 'lazy-slider-img=' ) === false ) {
+	// Don't apply LazyLoad on images from WP Retina x2
+	if( function_exists( 'wr2x_picture_rewrite' ) ) {
+		if( wr2x_get_retina( trailingslashit( ABSPATH ) . wr2x_get_pathinfo_from_image_src( trim( $matches[2], '"' ) ) ) ) {
+			return $matches[0];
+		}
+	}
+	
+	// TO DO - improve this code with a preg_match - it's ugly!!!!
+	if ( strpos( $matches[1] . $matches[3], 'data-no-lazy=' ) === false && strpos( $matches[1] . $matches[3], 'data-lazy-original=' ) === false && strpos( $matches[1] . $matches[3], 'data-lazy-src=' ) === false && strpos( $matches[1] . $matches[3], 'data-src=' ) === false && strpos( $matches[1] . $matches[3], 'data-lazyload=' ) === false && strpos( $matches[1] . $matches[3], 'data-bgposition=' ) === false && strpos( $matches[2], '/wpcf7_captcha/' ) === false && strpos( $matches[2], 'timthumb.php?src' ) === false && strpos( $matches[1] . $matches[3], 'data-envira-src=' ) === false && strpos( $matches[1] . $matches[3], 'fullurl=' ) === false && strpos( $matches[1] . $matches[3], 'lazy-slider-img=' ) === false && strpos( $matches[1] . $matches[3], 'srcset=' ) === false ) {
 		$html = sprintf( '<img%1$s src="data:image/gif;base64,R0lGODdhAQABAPAAAP///wAAACwAAAAAAQABAEACAkQBADs=" data-lazy-src=%2$s%3$s><noscript><img%1$s src=%2$s%3$s></noscript>',
 						$matches[1], $matches[2], $matches[3] );
 

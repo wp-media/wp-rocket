@@ -37,11 +37,40 @@ function rocket_is_plugin_active_for_network( $plugin )
 /**
  * Call the cache server to purge the cache with SuperCacher (SiteGround) Pretty good hosting!
  *
+ * @since 2.3
+ *
  * @return void
  */
 function rocket_clean_supercacher() {
 	if ( isset( $GLOBALS['sg_cachepress_supercacher'] ) && is_a( $GLOBALS['sg_cachepress_supercacher'], 'SG_CachePress_Supercacher' ) ) {
 		$GLOBALS['sg_cachepress_supercacher']->purge_cache();
+	}
+}
+
+/**
+ * Call the cache server to purge the cache with StudioPress Accelerator.
+ *
+ * @since 2.5.5
+ *
+ * @return void
+ */
+function rocket_clean_studiopress_accelerator() {
+	if ( isset( $GLOBALS['sp_accel_nginx_proxy_cache_purge'] ) && is_a( $GLOBALS['sp_accel_nginx_proxy_cache_purge'], 'SP_Accel_Nginx_Proxy_Cache_Purge' ) ) {
+		$GLOBALS['sp_accel_nginx_proxy_cache_purge']->cache_flush_theme();
+	}
+}
+
+/**
+ * Call the cache server to purge the cache with Varnish HTTP Purge.
+ *
+ * @since 2.5.5
+ *
+ * @return void
+ */
+function rocket_clean_varnish_http_purge() {
+	if ( class_exists( 'VarnishPurger' ) ) {
+		$purger = new VarnishPurger();
+		$purger->executePurge();
 	}
 }
 

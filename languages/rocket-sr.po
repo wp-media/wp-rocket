@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2015-03-10 13:16:51+00:00\n"
-"PO-Revision-Date: 2015-03-10 16:32+0000\n"
+"POT-Creation-Date: 2015-04-02 20:59:52+00:00\n"
+"PO-Revision-Date: 2015-04-03 09:32+0000\n"
 "Last-Translator: Marko Nikolic <markoni.efc@gmail.com>\n"
 "Language-Team: Serbian (http://www.transifex.com/projects/p/wp-rocket/language/sr/)\n"
 "MIME-Version: 1.0\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: sr\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: grunt-wp-i18n 0.5.0\n"
+"X-Generator: grunt-wp-i18n 0.5.1\n"
 "X-Poedit-Basepath: ../\n"
 "X-Poedit-Bookmarks: \n"
 "X-Poedit-Country: United States\n"
@@ -24,9 +24,9 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Textdomain-Support: yes\n"
 
-#: inc/admin/admin.php:13 inc/admin/options.php:1352
-#: inc/admin/options.php:1355 inc/admin/options.php:1396
-#: inc/admin/options.php:1401 inc/admin-bar.php:212
+#: inc/admin/admin.php:13 inc/admin/options.php:1344
+#: inc/admin/options.php:1347 inc/admin/options.php:1388
+#: inc/admin/options.php:1393 inc/admin-bar.php:212
 msgid "Support"
 msgstr "Podrška"
 
@@ -43,8 +43,8 @@ msgid "Clear this cache"
 msgstr "Očisti ovu keš memoriju"
 
 #: inc/admin/admin.php:80 inc/admin/notices.php:92 inc/admin/options.php:952
-#: inc/admin/options.php:958 inc/admin/options.php:1187
-#: inc/admin/options.php:1193 inc/admin-bar.php:43 inc/admin-bar.php:66
+#: inc/admin/options.php:958 inc/admin/options.php:1179
+#: inc/admin/options.php:1185 inc/admin-bar.php:43 inc/admin-bar.php:66
 #: inc/admin-bar.php:100
 msgid "Clear cache"
 msgstr "Očisti keš memoriju"
@@ -59,9 +59,14 @@ msgstr "CloudFlare Podešavanja"
 
 #: inc/admin/admin.php:106
 msgid ""
-"In case of any display errors we recommend following our documentation: %s "
-"You can also contact our support if you need help implementing that."
-msgstr "U slučaju javljanja greške, preporučujemo da pratite našu dokumentaciju: %s Takođe možete da kontaktirate Podršku ukoliko Vam je potrebna dodatna pomoć."
+"In case of any display errors we recommend following our documentation: "
+msgstr "U slučaju javljanja greške, preporučujemo da pogledate dokumentaciju:"
+
+#: inc/admin/admin.php:106
+msgid ""
+"You can also <a href=\"%s\">contact our support</a> if you need help "
+"implementing that."
+msgstr "Takođe možete <a href=\"%s\">da kontaktirate podršku</a> ukoliko Vam je potrebna pomoć u implementaciji."
 
 #: inc/admin/admin.php:107
 msgid "Click \"Save Changes\" to activate the Cloudflare tab."
@@ -79,35 +84,35 @@ msgstr "Otkaži"
 msgid "%s Update Rollback"
 msgstr "%s Vraćanje Ažuriranja"
 
-#: inc/admin/admin.php:368
+#: inc/admin/admin.php:369
 msgid "Cache Options"
 msgstr "Opcije keširanja"
 
-#: inc/admin/admin.php:386
+#: inc/admin/admin.php:387
 msgid "Activate these options on this post:"
 msgstr "Aktiviraj sledeće opcije na ovom postu:"
 
-#: inc/admin/admin.php:390
+#: inc/admin/admin.php:391
 msgid "HTML Minification"
 msgstr "HTML Minifikacija"
 
-#: inc/admin/admin.php:391
+#: inc/admin/admin.php:392
 msgid "CSS Minification"
 msgstr "CSS Minifikacija"
 
-#: inc/admin/admin.php:392
+#: inc/admin/admin.php:393
 msgid "JS Minification"
 msgstr "JS Minifikacija"
 
-#: inc/admin/admin.php:393 inc/admin/options.php:1386
+#: inc/admin/admin.php:394 inc/admin/options.php:1378
 msgid "CDN"
 msgstr "CDN"
 
-#: inc/admin/admin.php:398
+#: inc/admin/admin.php:399
 msgid "Activate first the %s option."
 msgstr "Prvo aktiviraj %s opciju."
 
-#: inc/admin/admin.php:411
+#: inc/admin/admin.php:412
 msgid ""
 "<strong>Note:</strong> These options aren't applied if you added this post "
 "in the \"Never cache the following pages\" option."
@@ -125,9 +130,9 @@ msgstr "Za koliko sajtova važi moja licenca?"
 msgid "What exactly does WP Rocket do?"
 msgstr "Šta konkretno radi WP Rocket?"
 
-#: inc/admin/faq.inc.php:6 inc/admin/faq.inc.php:45
-msgid "I have turned any of the basic options on, does WP Rocket work?"
-msgstr "Uključio sam sve osnovne opcije, da li WP Rocket radi?"
+#: inc/admin/faq.inc.php:6
+msgid "I haven't turned any of the basic options on, does WP Rocket work?"
+msgstr "Nisam uključio/la nijednu od osnovnih opcija, da li će WP Rocket da radi?"
 
 #: inc/admin/faq.inc.php:7 inc/admin/faq.inc.php:56
 msgid ""
@@ -260,6 +265,10 @@ msgstr "Odloženo učitavanje JavaScript datoteka"
 #: inc/admin/faq.inc.php:42 inc/admin/faq.inc.php:53
 msgid "Image Optimisation"
 msgstr "Optimizacija slika"
+
+#: inc/admin/faq.inc.php:45
+msgid "I have turned any of the basic options on, does WP Rocket work?"
+msgstr "Uključio sam sve osnovne opcije, da li WP Rocket radi?"
 
 #: inc/admin/faq.inc.php:46 inc/admin/faq.inc.php:97 inc/admin/faq.inc.php:108
 msgid "Yes."
@@ -506,43 +515,43 @@ msgid ""
 "forget to clear the cache if necessary."
 msgstr "<b>%s</b>: Jedan ili više dodataka je omogućeno ili onemogućeno, ne zaboravite da očistite keš memoriju ako je to potrebno."
 
-#: inc/admin/notices.php:170
+#: inc/admin/notices.php:187
 msgid ""
 "<b>%s</b>: The following plugins are not compatible with this plugin and may"
 " cause unexpected results:"
 msgstr "<b>%s </b>: Sledeći dodaci nisu kompatibilni s ovim pluginom i to može izazvati neočekivane rezultate:"
 
-#: inc/admin/notices.php:176
+#: inc/admin/notices.php:193
 msgid "Deactivate"
 msgstr "Deaktiviraj"
 
-#: inc/admin/notices.php:202
+#: inc/admin/notices.php:219
 msgid ""
 "<b>%s</b>: A custom permalink structure is required for the plugin to work "
 "properly. Please go to <a href=\"%s\">Permalink</a> to configure it."
 msgstr "<b>% s </b>: potrebno je prilagoditi permalink strukturu da bi dodatak radio ispravno. Molimo idite na <a href=\"%s\"> Permalink</a> da ga konfigurišete."
 
-#: inc/admin/notices.php:233
+#: inc/admin/notices.php:250
 msgid ""
 "<b>%s</b>: It seems we don't have <a href=\"%s\" target=\"_blank\">writing "
 "permissions</a> on <code>wp-config.php</code> file or the value of the "
 "constant <code>WP_CACHE</code> is set to <code>false</code>"
 msgstr "<b>% s </b>: Čini se da mi nemamo <a href=\"%s\" target=\"_blank\"> dozvolu za pisanje</a> na <code>wp-config.php </code> datoteci ili je vrednost konstante <code> WP_CACHE </code> postavljena na <code> false</code>"
 
-#: inc/admin/notices.php:235
+#: inc/admin/notices.php:252
 msgid ""
 "To fix this you have to set writing permissions for <code>wp-"
 "config.php</code> and then save the settings again."
 msgstr "Da bi ovo popravili treba da postavite dozvolu za pisanje <code>wp-config.php</code> i onda ponovno snimiti podešavanja."
 
-#: inc/admin/notices.php:237
+#: inc/admin/notices.php:254
 msgid ""
 "If the message persists, you have to put the following code in your <code"
 ">wp-config.php</code> file so that it works correctly. Click on the field "
 "and press Ctrl-A to select all."
 msgstr "Ako ova poruka već postoji, morate staviti sledeći kod u <code>wp-config.php</code> datoteku da bi radila ispravno. Kliknite na polje i onda pritisnite Ctrl-A da odaberete kompletan sadržaj."
 
-#: inc/admin/notices.php:278
+#: inc/admin/notices.php:295
 msgid ""
 "If you had <a href=\"%1$s\" target=\"_blank\">writing permissions</a> on "
 "<code>%2$s</code> file, <b>%3$s</b> could do this automatically. This is not"
@@ -550,14 +559,14 @@ msgid ""
 "for <b>%3$s</b> to work properly."
 msgstr "Ako imate <a href=\"%1$s\" target=\"_blank\">dozvole za pisanje</a>za<code>%2$s</code> datoteku, <b>%3$s</b> bi ovo mogla učiniti automatski. To nije slučaj, ovde je kod koji bi trebali dodati u vašu <code>%2$s </code> datoteku da <b>%3$s</b> bi radila ispravno."
 
-#: inc/admin/notices.php:311
+#: inc/admin/notices.php:328
 msgid ""
 "It seems that the <code>%s</code> file is not ours. Save the settings, we "
 "will automatically recreate the correct one. If it's still not working, "
 "please delete it and save again."
 msgstr "Čini se da <code>%s</code> datoteka nije naša. Snimite podešavanja, automatski ćemo rekreirati ispravan. Ako to još uvek ne radi, molimo vas da ga izbrišete i ponovo snimite."
 
-#: inc/admin/notices.php:340
+#: inc/admin/notices.php:357
 msgid ""
 "If you had <a href=\"%1$s\" target=\"_blank\">writing permissions</a> on "
 "<code>.htaccess</code> file, <b>%2$s</b> could do this automatically. This "
@@ -566,13 +575,13 @@ msgid ""
 "field and press Ctrl-A to select all."
 msgstr "Ako imate <a href=\"%1$s\" target=\"_blank\"> dozvolu pisanja </a> na <code> .htaccess </code> datoteku, <b>%2$s </b> bi mogao to učiniti automatski. To ovde nije slučaj, pa dole imate rewrite pravila koja morate staviti u svoju <code>.htaccess</code> datoteku da <b>%2$s</b> ispravno radi. Kliknite na polje i pritisnite Ctrl-A za odabir teksta."
 
-#: inc/admin/notices.php:340
+#: inc/admin/notices.php:357
 msgid ""
 "<strong>Warning:</strong> This message will popup again and its content may "
 "be updated when saving the options"
 msgstr "<strong> Upozorenje: </strong> Ova poruka će se opet pojaviti i njen sadržaj može biti ažuriran prilikom snimanja opcija"
 
-#: inc/admin/notices.php:369
+#: inc/admin/notices.php:386
 msgid ""
 "Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
 "permissions</a> on <b>%3$s</b> domain configuration folder "
@@ -582,7 +591,7 @@ msgid ""
 "to generate the configuration file."
 msgstr "Budite oprezni, nemate <a href=\"%1$s\" target=\"_blank\">dozvolu pisanja </a> na <b>%3$s</b> konfiguracijski folder domena (<code>%2$s</code>). Da bi <b>%3$s</b>ispravno radila, podesite CHMOD na <code>755</code> ili <code>775</code> ili <code>777</code> za ovu mapu.<br/>Kad se problem reši, molimo vas snimite %3$s opcije da bi generisali konfiguracijsku datoteku."
 
-#: inc/admin/notices.php:397
+#: inc/admin/notices.php:414
 msgid ""
 "Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
 "permissions</a> on <b>%3$s</b> cache folder (<code>%2$s</code>). For "
@@ -590,7 +599,7 @@ msgid ""
 "<code>775</code> or <code>777</code> this folder."
 msgstr "Budite oprezni, nemate <a href=\"%1$s\" target=\"_blank\">dozvolu pisanja</a> na <b>%3$s</b>cache mapu (<code>%2$s</code>). Da bi <b>%3$s</b>ispravno radila, molimo podesite CHMOD na <code>755</code> ili <code>775</code> ili <code>777</code> na ovoj mapi."
 
-#: inc/admin/notices.php:426
+#: inc/admin/notices.php:443
 msgid ""
 "Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
 "permissions</a> on <b>%3$s</b> minified cache folder (<code>%2$s</code>). To"
@@ -598,11 +607,11 @@ msgid ""
 "<code>775</code> or <code>777</code> this folder."
 msgstr "Budite oprezni, nemate <a href=\"%1$s\" target=\"_blank\">dozvolu pisanja </a> na <b>%3$s</b> minimizovanu keš mapu (<code>%2$s</code>). Da bi <b>%3$s</b>ispravno radila, molimo podesite CHMOD na <code>755</code> ili <code>775</code> ili <code>777</code> na ovoj mapi."
 
-#: inc/admin/notices.php:451
+#: inc/admin/notices.php:468
 msgid "Thank you. Your license has been successfully validated!"
 msgstr "Hvala vam. Vaša licenca je uspešno provjerena - validirana!"
 
-#: inc/admin/notices.php:452
+#: inc/admin/notices.php:469
 msgid "Key: <code>%s</code><br>Email: <i>%s</i>"
 msgstr "Ključ: <code>%s</code><br>Email: <i>%s</i>"
 
@@ -627,7 +636,7 @@ msgstr "Pričekati dok se ova datoteka ne učita?"
 msgid "Add URL"
 msgstr "Dodaj URL"
 
-#: inc/admin/options.php:255 inc/admin/options.php:1040
+#: inc/admin/options.php:255 inc/admin/options.php:1032
 msgid "Replace site's hostname with:"
 msgstr "Zamenite hostname naziv stranice sa:"
 
@@ -675,7 +684,7 @@ msgstr "E-mail adresa"
 msgid "The one used for the purchase, in your support account."
 msgstr "Onaj korišten za kupovinu, na vašem nalogu za podršku."
 
-#: inc/admin/options.php:455 inc/admin/options.php:1381
+#: inc/admin/options.php:455 inc/admin/options.php:1373
 msgid "Basic options"
 msgstr "Osnovne opcije"
 
@@ -814,7 +823,7 @@ msgstr "Ovo može biti korisno ako prikazujete najnovije tweet-ove ili RSS feed-
 msgid "Specify 0 for unlimited lifetime."
 msgstr "Navedite 0 za neograničen vek trajanja."
 
-#: inc/admin/options.php:623 inc/admin/options.php:1382
+#: inc/admin/options.php:623 inc/admin/options.php:1374
 msgid "Advanced options"
 msgstr "Napredne opcije"
 
@@ -857,7 +866,7 @@ msgstr "Unesite URL dodatnih stranica da se očiste prilikom ažuriranja posta (
 
 #: inc/admin/options.php:670 inc/admin/options.php:694
 #: inc/admin/options.php:756 inc/admin/options.php:775
-#: inc/admin/options.php:794 inc/admin/options.php:1060
+#: inc/admin/options.php:794 inc/admin/options.php:1052
 msgid "You can use regular expressions (regex)."
 msgstr "Možete koristiti uobičajene izraze (regex)."
 
@@ -1007,38 +1016,32 @@ msgstr "Odmah očisti keširane resurse svog sajta. <a href=\"%s\" target=\"_bla
 msgid "Content Delivery Network options"
 msgstr "CDN opcije"
 
-#: inc/admin/options.php:981 inc/admin/options.php:982
+#: inc/admin/options.php:979
 msgid "Enable CloudFlare settings tab."
 msgstr "Omogući tablicu CloudFlare podešavanja."
 
-#: inc/admin/options.php:989
+#: inc/admin/options.php:986
 msgid ""
 "This option allows you to configure some CloudFlare settings like "
 "development mode, purge cache and a recommended configuration."
 msgstr "Ova opcija Vam omogućava da konfigurišete neka CloudFlare podešavanja, poput razvojnog moda, brisanja keš memorije i preporučenih postavki."
 
-#: inc/admin/options.php:994
+#: inc/admin/options.php:991
 msgid ""
 "<strong>Note:</strong> If you are using CloudFlare, configure the options in"
 " the CloudFlare tab. The CDN settings below <strong>do not apply</strong> to"
 " CloudFlare."
 msgstr "<strong>Važno:</strong> Ukoliko koristite CloudFlare, konfigurišite podešavanja u CloudFlare tablici. CDN podešavanja ispod <strong>ne obuhvataju</strong> CloudFlare."
 
-#: inc/admin/options.php:999
-msgid ""
-"This option is available for websites using <a href=\"%s\" "
-"target=\"_blank\">CloudFlare</a>."
-msgstr "Ova opcija je dostupna za sajtove koji koriste <a href=\"%s\" target=\"_blank\">CloudFlare</a>."
-
-#: inc/admin/options.php:1005 inc/admin/options.php:1014
+#: inc/admin/options.php:997 inc/admin/options.php:1006
 msgid "CDN:"
 msgstr "CDN:"
 
-#: inc/admin/options.php:1012
+#: inc/admin/options.php:1004
 msgid "Enable Content Delivery Network."
 msgstr "Omogućite CDN"
 
-#: inc/admin/options.php:1019
+#: inc/admin/options.php:1011
 msgid ""
 "CDN function replaces all URLs of your static files and media (CSS, JS, "
 "Images) with the url entered below. This way all your content will be copied"
@@ -1046,213 +1049,213 @@ msgid ""
 "target=\"_blank\">maxCDN</a>."
 msgstr "CDN funkcija zamenjuje sve URL-ove vaših statičkih datoteka i medija (CSS, JS, slika) s ovim dole unesenim URL-om . Na taj način Vaš sadržaji će biti kopiran na prilagođeni hosting ili CDN sistem <a href=\"http://www.maxcdn.com/\" target=\"_blank\"> maxCDN </a>."
 
-#: inc/admin/options.php:1032
+#: inc/admin/options.php:1024
 msgid "Disable CDN on HTTPS pages."
 msgstr "Onemogući CDN na HTTPS stranama."
 
-#: inc/admin/options.php:1047 inc/admin/options.php:1055
+#: inc/admin/options.php:1039 inc/admin/options.php:1047
 msgid "Rejected files:"
 msgstr "Odbijeni fajlovi:"
 
-#: inc/admin/options.php:1060
+#: inc/admin/options.php:1052
 msgid "Specify the URL files that should not use the CDN. (one per line)."
 msgstr "Navedite URL datoteke koje ne bi trebalo da koriste CDN. (jedan po liniji)."
 
-#: inc/admin/options.php:1066 inc/admin/options.php:1388
+#: inc/admin/options.php:1058 inc/admin/options.php:1380
 msgid "White Label"
 msgstr "White Label"
 
-#: inc/admin/options.php:1069 inc/admin/options.php:1078
+#: inc/admin/options.php:1061 inc/admin/options.php:1070
 msgid "Plugin Name:"
 msgstr "Ime dodatka:"
 
-#: inc/admin/options.php:1084 inc/admin/options.php:1093
+#: inc/admin/options.php:1076 inc/admin/options.php:1085
 msgid "Plugin URI:"
 msgstr "URL dodatka:"
 
-#: inc/admin/options.php:1099 inc/admin/options.php:1108
+#: inc/admin/options.php:1091 inc/admin/options.php:1100
 msgid "Description:"
 msgstr "Opis:"
 
-#: inc/admin/options.php:1114 inc/admin/options.php:1123
+#: inc/admin/options.php:1106 inc/admin/options.php:1115
 msgid "Author:"
 msgstr "Autor:"
 
-#: inc/admin/options.php:1129 inc/admin/options.php:1138
+#: inc/admin/options.php:1121 inc/admin/options.php:1130
 msgid "Author URI:"
 msgstr "URL autora:"
 
-#: inc/admin/options.php:1150
+#: inc/admin/options.php:1142
 msgid "Reset White Label values to default"
 msgstr "Vratite vrednosti White Label na podrazumevane vrednosti"
 
-#: inc/admin/options.php:1155
+#: inc/admin/options.php:1147
 msgid ""
 "If you change anything, the tutorial + FAQ + Support tabs will be hidden."
 msgstr "Ako nešto promenite, tutorijal + FAQ + Podrška će biti sakriveni."
 
-#: inc/admin/options.php:1160 inc/admin/options.php:1390
+#: inc/admin/options.php:1152 inc/admin/options.php:1382
 msgid "Tools"
 msgstr "Alati"
 
-#: inc/admin/options.php:1165 inc/admin/options.php:1174
+#: inc/admin/options.php:1157 inc/admin/options.php:1166
 msgid "Beta Tester"
 msgstr "Beta Tester"
 
-#: inc/admin/options.php:1172
+#: inc/admin/options.php:1164
 msgid "Yes I do!"
 msgstr "Da, hoću!"
 
-#: inc/admin/options.php:1179
+#: inc/admin/options.php:1171
 msgid ""
 "Check it to participate in the WP Rocket Beta Program and get earlier access"
 " to new versions, thanks in advance."
 msgstr "Označite da biste učestvovaliu u WP Rocket beta programu i dobili što pre pristup novim verzijama, hvala unapred."
 
-#: inc/admin/options.php:1198
+#: inc/admin/options.php:1190
 msgid "Clear the cache for the whole site."
 msgstr "Ukloni keš sa celog sajta."
 
-#: inc/admin/options.php:1204 inc/admin/options.php:1210
-#: inc/admin/options.php:1271 inc/admin-bar.php:141 inc/admin-bar.php:162
+#: inc/admin/options.php:1196 inc/admin/options.php:1202
+#: inc/admin/options.php:1263 inc/admin-bar.php:141 inc/admin-bar.php:162
 #: inc/admin-bar.php:193
 msgid "Preload cache"
 msgstr "Preloading keš-a"
 
-#: inc/admin/options.php:1215
+#: inc/admin/options.php:1207
 msgid ""
 "Allows you to request a bot crawl to preload the cache (homepage and its "
 "internal links)."
 msgstr "Omogućuje vam da zatražite od bota da ponovo učita keš (početnu stranicu i njene unutrašnje veze)."
 
-#: inc/admin/options.php:1222
+#: inc/admin/options.php:1214
 msgid "Settings Exporter"
 msgstr "Eksport podešavanja"
 
-#: inc/admin/options.php:1232
+#: inc/admin/options.php:1224
 msgid "Settings Importer"
 msgstr "Uvoz podešavanja"
 
-#: inc/admin/options.php:1241
+#: inc/admin/options.php:1233
 msgid ""
 "Please backup your settings before, use the \"Download options\" button "
 "above."
 msgstr "Molimo uradite backup vaših podešavanja, koristite \"Preuzimanje opcija\" dugme iznad."
 
-#: inc/admin/options.php:1244
+#: inc/admin/options.php:1236
 msgid "Update Rollback"
 msgstr "Ažuriranje za vraćanje"
 
-#: inc/admin/options.php:1250
+#: inc/admin/options.php:1242
 msgid "Reinstall v%s"
 msgstr "Ponovo instalirajte v%s"
 
-#: inc/admin/options.php:1255
+#: inc/admin/options.php:1247
 msgid ""
 "Is the version %s causing you some issues? You can ask for a rollback and "
 "reinstall the last version you used before."
 msgstr "Uzrokuje li vam verzija %s određene probleme? Možete tražiti povratak na staro i ponovo instalirati poslednju verziju koju ste prethodno koristili."
 
-#: inc/admin/options.php:1268 inc/admin/options.php:1393
+#: inc/admin/options.php:1260 inc/admin/options.php:1385
 msgid "Tutorials"
 msgstr "Uputstva"
 
-#: inc/admin/options.php:1276
+#: inc/admin/options.php:1268
 msgid ""
 "This video gives some explanations about our two crawler robots. They "
 "generate several cache files in a few seconds."
 msgstr "Ovaj video daje neka objašnjenja u vezi naša dva robota. Oni stvaraju nekoliko cache datoteka u nekoliko sekundi."
 
-#: inc/admin/options.php:1283
+#: inc/admin/options.php:1275
 msgid "CSS and JavaScript minification"
 msgstr "CSS i JavaScript minifikacija"
 
-#: inc/admin/options.php:1288
+#: inc/admin/options.php:1280
 msgid ""
 "This video gives some explanations about how to use the advanced processes "
 "of minification and concatenation of CSS and JavaScript files."
 msgstr "Ovaj video daje neka objašnjenja o tome kako koristiti napredne procese minifikacije i povezivanje CSS i JavaScript datoteka."
 
-#: inc/admin/options.php:1295
+#: inc/admin/options.php:1287
 msgid "Preloading DNS queries"
 msgstr "Preloding DNS upita"
 
-#: inc/admin/options.php:1300
+#: inc/admin/options.php:1292
 msgid ""
 "This video helps to easily understand the advanced option of \"Preloading "
 "DNS queries\" and the use of the filter <code>rocket_dns_prefetch</code>."
 msgstr "Ovaj video će vam pomoći da lakše shvatite napredne opcije \"Preloding DNS upita\" i upotrebu filtera <code>rocket_dns_prefetch</code>."
 
-#: inc/admin/options.php:1307
+#: inc/admin/options.php:1299
 msgid "How to use the White Label functionality?"
 msgstr "Kako koristiti funkcionalnosti White Label?"
 
-#: inc/admin/options.php:1312
+#: inc/admin/options.php:1304
 msgid "This video helps to set up a White Label version of WP Rocket."
 msgstr "Ovaj video pomaže u postavljanju White Label verzije WP Rocket."
 
-#: inc/admin/options.php:1319
+#: inc/admin/options.php:1311
 msgid "How to use the CDN functionality?"
 msgstr "Kako koristiti funkcionalnosti CDN-a?"
 
-#: inc/admin/options.php:1324
+#: inc/admin/options.php:1316
 msgid ""
 "This video helps to understand what is the CDN functionality included since "
 "WP Rocket 2.1."
 msgstr "Ovaj video će vam pomoći da shvatite koje su funkcionalnost CDN uključene od WP Rocket 2.1."
 
-#: inc/admin/options.php:1331
+#: inc/admin/options.php:1323
 msgid "How to use the CDN API?"
 msgstr "Kako koristiti CDN API?"
 
-#: inc/admin/options.php:1336
+#: inc/admin/options.php:1328
 msgid ""
 "This video helps to set up the two functions "
 "<code>get_rocket_cdn_url()</code> and <code>rocket_cdn_url()</code>."
 msgstr "Ovaj video pomaže da postavite dve funkcije <code> get_rocket_cdn_url () </code> i <code>rocket_cdn_url ()</code>."
 
-#: inc/admin/options.php:1341 inc/admin/options.php:1344
-#: inc/admin/options.php:1395 inc/admin/options.php:1400
+#: inc/admin/options.php:1333 inc/admin/options.php:1336
+#: inc/admin/options.php:1387 inc/admin/options.php:1392
 msgid "FAQ"
 msgstr "Česta pitanja"
 
-#: inc/admin/options.php:1361
+#: inc/admin/options.php:1353
 msgid "Visit the Support"
 msgstr "Kontaktirajte Podršku"
 
-#: inc/admin/options.php:1367
+#: inc/admin/options.php:1359
 msgid ""
 "If none of the FAQ answers resolves your problem, you can send your issue to"
 " our free support. We will reply as soon as possible."
 msgstr "Ako ni jedan od FAQ odgovora ne rešava vaš problem, možete poslati svoj problem na našu besplatnu podršku. Odgovorićemo vam u najkraćem mogućem roku."
 
-#: inc/admin/options.php:1399
+#: inc/admin/options.php:1391
 msgid "License"
 msgstr "Licenca"
 
-#: inc/admin/options.php:1731
+#: inc/admin/options.php:1723
 msgid "Settings imported and saved."
 msgstr "Podešavanja su uvezena i snimljena."
 
-#: inc/admin/options.php:1749 inc/admin/options.php:1833
+#: inc/admin/options.php:1741 inc/admin/options.php:1825
 msgid "Settings saved."
 msgstr "Podešavanja snimljena."
 
-#: inc/admin/options.php:1910
+#: inc/admin/options.php:1902
 msgid ""
 "Before you can upload your import file, you will need to fix the following "
 "error:"
 msgstr "Pre nego što možete otpremiti svoju datoteku za uvoz, trebate popraviti sledeću grešku:"
 
-#: inc/admin/options.php:1917
+#: inc/admin/options.php:1909
 msgid "Choose a file from your computer:"
 msgstr "Odaberite datoteku s vašeg računara:"
 
-#: inc/admin/options.php:1917
+#: inc/admin/options.php:1909
 msgid "Maximum size: %s"
 msgstr "Maksimalna veličina: %s"
 
-#: inc/admin/options.php:1920
+#: inc/admin/options.php:1912
 msgid "Upload file and import settings"
 msgstr "Upload datoteke i uvoz podešavanja"
 
@@ -1290,19 +1293,19 @@ msgid ""
 "href=\"%s\">Enter you API key</a> here."
 msgstr "Poslednji korak pre uživanja u rezultatima ubrzanja našeg plugina, <a href=\"%s\"> Unesite vaš API ključ </a> ovdje."
 
-#: inc/functions/options.php:324
+#: inc/functions/options.php:328
 msgid "Your license is not valid."
 msgstr "Vaša licenca nije validna."
 
-#: inc/functions/options.php:325
+#: inc/functions/options.php:329
 msgid "You cannot add more websites. Upgrade your account."
 msgstr "Ne možete dodati više web stranica. Nadogradite svoj nalog."
 
-#: inc/functions/options.php:326
+#: inc/functions/options.php:330
 msgid "This website is not allowed."
 msgstr "Ova web stranica nije dozvoljena."
 
-#: inc/functions/options.php:327
+#: inc/functions/options.php:331
 msgid "This license key is not accepted."
 msgstr "Ovaj licencni ključ nije prihvaćen."
 

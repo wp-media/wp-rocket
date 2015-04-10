@@ -208,7 +208,7 @@ function set_rocket_wp_cache_define( $turn_it_on )
 	$constant = "define('WP_CACHE', $turn_it_on); // Added by WP Rocket". "\r\n";
 
 	foreach ( $config_file as &$line ) {
-		if ( ! preg_match( '/^define\(\'([A-Z_]+)\',([ ]+)/', $line, $match ) ) {
+		if ( ! preg_match( '/^define\(\s*\'([A-Z_]+)\',(.*)\)/', $line, $match ) ) {
 			continue;
 		}
 
@@ -359,7 +359,7 @@ function rocket_clean_home( $lang = '' )
 	do_action( 'before_rocket_clean_home', $root, $lang );
 
 	// Delete homepage
-	if ( $files = glob( $root . '/index.{html,html_gzip}', GLOB_BRACE|GLOB_NOSORT ) ) {
+	if ( $files = glob( $root . '/{index,index-https}.{html,html_gzip}', GLOB_BRACE|GLOB_NOSORT ) ) {
 		foreach ( $files as $file ) {
 			@unlink( $file );
 		}
