@@ -88,9 +88,9 @@ function rocket_cdn_images( $html )
 				*/
 				apply_filters( 'rocket_cdn_images_html', sprintf(
 					'<img %1$s %2$s %3$s>',
-					$images_match[1][$k],
+					trim($images_match[1][$k]),
 					'src="' . get_rocket_cdn_url( $image_url, $zone ) .'"',
-					$images_match[3][$k]
+					trim($images_match[3][$k])
 				)),
 				$html
 			);
