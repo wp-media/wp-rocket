@@ -103,7 +103,7 @@ function __rocket_add_admin_css_js()
 	$translation_array = array(
 		'warning_title'  	 => __( 'Are you sure?', 'rocket' ),
 		'cloudflare_title'   => __( 'CloudFlare Settings', 'rocket' ),
-		'minify_text'  		 => __( 'In case of any display errors we recommend following our documentation: ', 'rocket' ) . '<a href="http://docs.wp-rocket.me/article/19-resolving-issues-with-minification/?utm_source=wp-rocket&utm_medium=wp-admin&utm_term=doc-minification&utm_campaign=plugin">Resolving Issues with Minification</a>.<br/><br/>' . sprintf(  __( 'You can also <a href="%s">contact our support</a> if you need help implementing that.', 'rocket' ), 'http://wp-rocket.me/support/?utm_source=wp-rocket&utm_medium=wp-admin&utm_term=support-minification&utm_campaign=plugin' ),
+		'minify_text'  		 => __( 'In case of any display errors we recommend following our documentation: ', 'rocket' ) . ' <a href="http://docs.wp-rocket.me/article/19-resolving-issues-with-minification/?utm_source=wp-rocket&utm_medium=wp-admin&utm_term=doc-minification&utm_campaign=plugin">Resolving Issues with Minification</a>.<br/><br/>' . sprintf(  __( 'You can also <a href="%s">contact our support</a> if you need help implementing that.', 'rocket' ), 'http://wp-rocket.me/support/?utm_source=wp-rocket&utm_medium=wp-admin&utm_term=support-minification&utm_campaign=plugin' ),
 		'cloudflare_text'    => __( 'Click "Save Changes" to activate the Cloudflare tab.', 'rocket' ),
 		'confirmButtonText'  => __( 'Yes, I\'m sure!', 'rocket' ),
 		'cancelButtonText' 	 => __( 'Cancel', 'rocket' )
@@ -364,7 +364,7 @@ function __rocket_cache_options_meta_boxes() {
 	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
 		$cpts = get_post_types( array( 'public' => true ), 'objects' );
 		unset( $cpts['attachment'] );
-
+		
 		foreach( $cpts as $cpt => $cpt_object ) {
 			$label = $cpt_object->labels->singular_name;
 			add_meta_box( 'rocket_post_exclude', sprintf( __( 'Cache Options', 'rocket' ), $label ), '__rocket_display_cache_options_meta_boxes', $cpt, 'side', 'core' );
