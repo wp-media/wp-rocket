@@ -64,11 +64,11 @@ function rocket_cdn_images( $html )
 	$zone = array( 'all', 'images' );
 	if ( $cnames = get_rocket_cdn_cnames( $zone ) ) {
 		// Get all images of the content
-		preg_match_all( '#<img([^>]*) src=("(?:[^"]+)"|\'(?:[^\']+)\'|(?:[^ >]+))([^>]*)>#i', $html, $images_match );
+		preg_match_all( '#<img([^>]+?)src=[\'"]?([^\'"\s>]+)[\'"]?([^>]*)>#i', $html, $images_match );
 		
 		foreach ( $images_match[2] as $k=>$image_url ) {
 			// Check if the link isn't external
-			if( parse_url( rocket_add_url_protocol( $image_url ), PHP_URL_HOST ) != parse_url( home_url(), PHP_URL_HOST ) ) {
+			if( parse_url( set_url_scheme( $image_url ), PHP_URL_HOST ) != parse_url( home_url(), PHP_URL_HOST ) ) {
 				continue;
 			}
 			
