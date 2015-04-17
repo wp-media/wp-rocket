@@ -96,3 +96,19 @@ function __rocket_clear_cache_after_varnish_http_purge() {
 		run_rocket_bot( 'cache-preload' );
 	}
 }
+
+/**
+ * Clear WP Rocket cache after purged the Varnish cache via Pagely hosting
+ *
+ * @since 2.5.7
+ *
+ * @return void
+ */
+add_action( 'pagely_page_purge-cache', '__rocket_clear_cache_after_pagely' );
+function __rocket_clear_cache_after_pagely() {
+	// Clear all caching files
+	rocket_clean_domain();
+		
+	// Preload cache
+	run_rocket_bot( 'cache-preload' );
+}

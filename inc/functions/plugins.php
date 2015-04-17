@@ -75,6 +75,20 @@ function rocket_clean_varnish_http_purge() {
 }
 
 /**
+ * Call the cache server to purge the cache with Pagely hosting.
+ *
+ * @since 2.5.7
+ *
+ * @return void
+ */
+function rocket_clean_pagely() {	
+	if ( class_exists( 'HCSVarnish' ) ) {
+		$varnish = new HCSVarnish();
+		$varnish->HCSVarnishPurgeAll();		
+	}
+}
+
+/**
  * Check if a translation plugin is activated
  *
  * @since 2.0

@@ -113,7 +113,8 @@ function rocket_cdn_enqueue( $src )
 	if ( is_admin() || is_preview() || in_array( $GLOBALS['pagenow'], array( 'wp-login.php', 'wp-register.php' ) ) ) {
 		return $src;
 	}
-
+	
+	$src  = set_url_scheme( $src );
 	$zone = array( 'all', 'css_and_js' );
 
 	// Add only CSS zone
@@ -127,7 +128,7 @@ function rocket_cdn_enqueue( $src )
 	}
 
 	if ( $cnames = get_rocket_cdn_cnames( $zone ) ) {
-		list( $src_host, $src_path ) = get_rocket_parse_url( set_url_scheme( $src ) );
+		list( $src_host, $src_path ) = get_rocket_parse_url( $src );
 		// Check if the link isn't external
 		if ( $src_host == parse_url( home_url(), PHP_URL_HOST ) && trim( $src_path, '/' ) != '' ) {
 			$src = get_rocket_cdn_url( $src, $zone );
