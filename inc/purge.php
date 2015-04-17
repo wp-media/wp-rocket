@@ -47,6 +47,11 @@ add_action( 'after_rocket_clean_domain', 'rocket_clean_studiopress_accelerator' 
 */
 add_action( 'after_rocket_clean_domain', 'rocket_clean_varnish_http_purge' );
 
+/* @since 2.5.7
+ * For not conflit with Pagely Hosting
+*/
+add_action( 'after_rocket_clean_domain', 'rocket_clean_pagely' );
+
 /**
  * Update cache when a post is updated or commented
  *
