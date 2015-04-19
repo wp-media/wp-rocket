@@ -44,6 +44,7 @@ define( 'WP_ROCKET_INC_URL'             , WP_ROCKET_URL . 'inc/' );
 define( 'WP_ROCKET_FRONT_URL'           , WP_ROCKET_INC_URL . 'front/' );
 define( 'WP_ROCKET_FRONT_JS_URL'        , WP_ROCKET_FRONT_URL . 'js/' );
 define( 'WP_ROCKET_LAB_JS_VERSION'      , '2.0.3' );
+define( 'WP_ROCKET_LAZYLOAD_JS_VERSION' , '1.0' );
 define( 'WP_ROCKET_ADMIN_URL'           , WP_ROCKET_INC_URL . 'admin/' );
 define( 'WP_ROCKET_ADMIN_JS_URL'        , WP_ROCKET_ADMIN_URL . 'js/' );
 define( 'WP_ROCKET_ADMIN_CSS_URL'       , WP_ROCKET_ADMIN_URL . 'css/' );
@@ -139,8 +140,9 @@ function rocket_init()
         if ( get_rocket_option( 'deferred_js_files' ) ) {
 	       require( WP_ROCKET_FRONT_PATH . '/deferred-js.php' );
         }
-
-        if ( get_rocket_option( 'lazyload' ) && ! rocket_is_plugin_active( 'rocket-lazy-load/rocket-lazy-load.php' ) ) {
+		
+		// Don't insert the LazyLoad file if Rocket LazyLoad is activated
+        if ( ! rocket_is_plugin_active( 'rocket-lazy-load/rocket-lazy-load.php' ) ) {
 	       require( WP_ROCKET_FRONT_PATH . '/lazyload.php' );
         }
     }

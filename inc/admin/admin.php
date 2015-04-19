@@ -388,11 +388,12 @@ function __rocket_display_cache_options_meta_boxes() {
 			<p><?php _e( 'Activate these options on this post:', 'rocket' ) ;?></p>
 			<?php
 			$fields = array(
-				'lazyload' 		=> 'LazyLoad',
-				'minify_html'	=> __( 'HTML Minification', 'rocket' ),
-				'minify_css'	=> __( 'CSS Minification', 'rocket' ),
-				'minify_js' 	=> __( 'JS Minification', 'rocket' ),
-				'cdn'			=> __( 'CDN', 'rocket' ),
+				'lazyload'  	   => __( 'Images LazyLoad', 'rocket' ),
+				'lazyload_iframes' => __( 'Iframes & Videos LazyLoad', 'rocket' ),
+				'minify_html'      => __( 'HTML Minification', 'rocket' ),
+				'minify_css'       => __( 'CSS Minification', 'rocket' ),
+				'minify_js'        => __( 'JS Minification', 'rocket' ),
+				'cdn'              => __( 'CDN', 'rocket' ),
 			);
 
 			foreach ( $fields as $field => $label ) {
@@ -429,7 +430,7 @@ function __rocket_save_metabox_options() {
 
 		check_admin_referer( 'rocket_box_option', '_rocketnonce' );
 
-		$fields = array( 'lazyload', 'minify_html', 'minify_css', 'minify_js', 'cdn' );
+		$fields = array( 'lazyload', 'lazyload_iframes', 'minify_html', 'minify_css', 'minify_js', 'cdn' );
 
 		foreach ( $fields as $field ) {
 			if ( isset( $_POST['rocket_post_exclude_hidden'][ $field ] ) && $_POST['rocket_post_exclude_hidden'][ $field ] ) {

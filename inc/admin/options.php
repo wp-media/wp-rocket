@@ -462,14 +462,20 @@ function rocket_display_options()
 		array(
 			array(
 				'type'         => 'checkbox',
-				'label'        => __('Enable Lazy loading images.', 'rocket' ),
+				'label'        => __('Images', 'rocket' ),
 				'label_for'    => 'lazyload',
-				'label_screen' => __( 'Lazyload:', 'rocket' ),
+				'label_screen' => __( 'Lazyload on images', 'rocket' ),
+			),
+			array(
+				'type'         => 'checkbox',
+				'label'        => __('Iframes & Videos', 'rocket' ),
+				'label_for'    => 'lazyload_iframes',
+				'label_screen' => __( 'Lazyload on iframes and videos', 'rocket' ),
 			),
 			array(
 				'type'         => 'helper_description',
 				'name'         => 'lazyload',
-				'description'  => __( 'LazyLoad displays images on a page only when they are visible to the user.', 'rocket') . '<br/>' .
+				'description'  => __( 'LazyLoad displays images, iframes and videos on a page only when they are visible to the user.', 'rocket') . '<br/>' .
 									  __('This mechanism reduces the number of HTTP requests and improves the loading time.', 'rocket' )
 			),
 		)
