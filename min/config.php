@@ -7,7 +7,7 @@
  */
 
 // load WP Rocket config file
-$host = $_SERVER['SERVER_NAME'];
+$host = $_SERVER['HTTP_HOST'];
 $host = str_replace( array( '..', chr(0) ), '', $host );
 $wp_rocket_config_file = dirname( dirname( dirname( dirname( __FILE__ ) ) ) ) . '/wp-rocket-config/' . $host . '.php';
 
