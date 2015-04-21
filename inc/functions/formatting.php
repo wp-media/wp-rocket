@@ -166,7 +166,7 @@ function rocket_cdn_url( $url, $zone = array( 'all' ) )
  * @return 	string $html Output that will be printed
  */
 function rocket_add_cdn_on_custom_attr( $html ) {
-	if( preg_match( '/(data-lazy-src|data-lazyload|data-src)=[\'"]?([^\'"\s>]+)[\'"]/i', $html, $matches ) ) {
+	if( preg_match( '/(data-lazy-src|data-lazyload|data-src|data-retina)=[\'"]?([^\'"\s>]+)[\'"]/i', $html, $matches ) ) {
 		$html = str_replace( $matches[2], get_rocket_cdn_url( $matches[2], array( 'all', 'images' ) ), $html );
 	}
 	
