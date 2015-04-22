@@ -114,6 +114,7 @@ function get_rocket_purge_cron_interval()
 /**
  * Get all uri we don't cache
  *
+ * @since 2.6	Using json_get_url_prefix() to auto-exclude the WordPress JSON API
  * @since 2.4.1 Auto-exclude WordPress JSON API
  * @since 2.0
  *
@@ -122,8 +123,16 @@ function get_rocket_purge_cron_interval()
 function get_rocket_cache_reject_uri()
 {
 	$uri = get_rocket_option( 'cache_reject_uri', array() );
+	
+	// Exclude cart & checkout pages from e-commerce plugins
 	$uri = array_merge( $uri, get_rocket_ecommerce_exclude_pages() );
-	$uri[] = '/wp-json/*';
+	
+	// Exclude WP JSON API
+	if( function_exists( 'json_get_url_prefix' ) ) {
+		$uri[] = '/' . json_get_url_prefix() . '/*';	
+	}
+	
+	// Exclude feeds
 	$uri[] = '.*/' . $GLOBALS['wp_rewrite']->feed_base . '/';
 	
 	/**
