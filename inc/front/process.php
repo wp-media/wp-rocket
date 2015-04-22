@@ -34,6 +34,7 @@ if ( $_SERVER['REQUEST_METHOD'] != 'GET' ) {
 // Get the correct config file
 $rocket_config_path = WP_CONTENT_DIR . '/wp-rocket-config/';
 $host = trim( strtolower( $_SERVER['HTTP_HOST'] ), '.' );
+$host = str_replace( array( '..', chr(0) ), '', $host );
 
 $continue = false;
 if ( file_exists( $rocket_config_path . $host . '.php' ) ) {

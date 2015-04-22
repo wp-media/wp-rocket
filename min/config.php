@@ -7,7 +7,9 @@
  */
 
 // load WP Rocket config file
-$wp_rocket_config_file = dirname( dirname( dirname( dirname( __FILE__ ) ) ) ) . '/wp-rocket-config/' . $_SERVER['HTTP_HOST'] . '.php';
+$host = $_SERVER['HTTP_HOST'];
+$host = str_replace( array( '..', chr(0) ), '', $host );
+$wp_rocket_config_file = dirname( dirname( dirname( dirname( __FILE__ ) ) ) ) . '/wp-rocket-config/' . $host . '.php';
 
 if ( file_exists( $wp_rocket_config_file ) && ! defined( 'ABSPATH' ) ) {
 	// Create fake ABSPATH
