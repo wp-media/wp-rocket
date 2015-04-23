@@ -93,13 +93,13 @@ abstract class ActionScheduler {
 		spl_autoload_register( array( __CLASS__, 'autoload' ) );
 
 		$store = self::store();
-		add_action( 'init', array( $store, 'init' ), 10, 0 );
+		add_action( 'init', array( $store, 'init' ), 1, 0 );
 
 		$logger = self::logger();
-		add_action( 'init', array( $logger, 'init' ), 10, 0 );
+		add_action( 'init', array( $logger, 'init' ), 1, 0 );
 
 		$runner = self::runner();
-		add_action( 'init', array( $runner, 'init' ), 10, 0 );
+		add_action( 'init', array( $runner, 'init' ), 1, 0 );
 
 		require_once( self::plugin_path('functions.php') );
 	}
