@@ -98,10 +98,10 @@ function rocket_init()
     require( WP_ROCKET_INC_PATH			. '/deprecated.php' );
     require( WP_ROCKET_FRONT_PATH		. '/htaccess.php' );
     require( WP_ROCKET_FRONT_PATH		. '/plugin-compatibility.php' );
+    require( WP_ROCKET_COMMON_PATH		. '/admin-bar.php' );
 	require( dirname( __FILE__ )		. '/licence-data.php' );
 
     if( rocket_valid_key() ) {
-        require( WP_ROCKET_COMMON_PATH . '/admin-bar.php' );
         require( WP_ROCKET_COMMON_PATH . '/purge.php' );
         require( WP_ROCKET_COMMON_PATH . '/cron.php' );
       
