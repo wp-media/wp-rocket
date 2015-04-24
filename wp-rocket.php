@@ -102,7 +102,7 @@ function rocket_init()
 	require( dirname( __FILE__ )		. '/licence-data.php' );
 
     if( rocket_valid_key() ) {
-        require( WP_ROCKET_INC_PATH . '/purge.php' );
+        require( WP_ROCKET_COMMON_PATH . '/purge.php' );
         require( WP_ROCKET_COMMON_PATH . '/cron.php' );
       
         if ( 0 < (int) get_rocket_option( 'cdn' ) ) {
