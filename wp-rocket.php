@@ -121,7 +121,6 @@ function rocket_init()
     }
 
     if ( is_admin() ) {
-
         require( WP_ROCKET_ADMIN_PATH . '/upgrader.php' );
         require( WP_ROCKET_ADMIN_PATH . '/updater.php' );
         require( WP_ROCKET_ADMIN_PATH . '/class-repeater-field.php' );
@@ -130,9 +129,7 @@ function rocket_init()
         require( WP_ROCKET_ADMIN_PATH . '/admin.php' );
         require( WP_ROCKET_ADMIN_PATH . '/meta-boxes.php' );
         require( WP_ROCKET_ADMIN_PATH . '/plugin-compatibility.php' );
-
     } else if ( rocket_valid_key() ) {
-
         require( WP_ROCKET_FRONT_PATH . '/minify.php' );
         require( WP_ROCKET_FRONT_PATH . '/cookie.php' );
         require( WP_ROCKET_FRONT_PATH . '/images.php' );
