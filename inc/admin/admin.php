@@ -358,19 +358,6 @@ function __rocket_rollback()
  *
  * @since 2.5.5
  */
-add_action( 'admin_init', '__rocket_maybe_create_cache_folders' );
-function __rocket_maybe_create_cache_folders() {
-	if ( defined( 'DOING_AJAX' ) || defined( 'DOING_AUTOSAVE' ) ) {
-		return;
-	}
-	
-	// Create cache folder if not exist
-    if ( ! is_dir( WP_ROCKET_CACHE_PATH ) ) {
-	   rocket_mkdir_p( WP_ROCKET_CACHE_PATH );
-    }
-
-	// Create minify cache folder if not exist
-    if ( ! is_dir( WP_ROCKET_MINIFY_CACHE_PATH ) ) {
-		rocket_mkdir_p( WP_ROCKET_MINIFY_CACHE_PATH );
-    }
+if ( ! defined( 'DOING_AJAX' ) && ! defined( 'DOING_AUTOSAVE' ) ) {
+    add_action( 'admin_init', 'rocket_init_cache_dir' );
 }

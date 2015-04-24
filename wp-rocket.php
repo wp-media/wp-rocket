@@ -57,7 +57,7 @@ if ( ! defined( 'WP_ROCKET_LASTVERSION' ) ) {
     define( 'WP_ROCKET_LASTVERSION', '2.5.7' );
 }
 
-require( WP_ROCKET_INC_PATH	. '/compat.php' );
+require( WP_ROCKET_INC_PATH	. 'compat.php' );
 
 /*
  * Tell WP what to do when plugin is loaded
@@ -79,9 +79,9 @@ function rocket_init()
     global $do_rocket_bot_cache_json;
     $do_rocket_bot_cache_json = false;
 
-    // Call defines,  classes and functions
-    require( WP_ROCKET_API_PATH . '/cloudflare.php' );
-    require( WP_ROCKET_FUNCTIONS_PATH . '/options.php' );
+    // Call defines, classes and functions
+    require( WP_ROCKET_API_PATH . 'cloudflare.php' );
+    require( WP_ROCKET_FUNCTIONS_PATH . 'options.php' );
 
     // Last constants
     define( 'WP_ROCKET_PLUGIN_NAME', get_rocket_option( 'wl_plugin_name', 'WP Rocket' ) );
@@ -165,21 +165,16 @@ function rocket_init()
 register_deactivation_hook( __FILE__, 'rocket_deactivation' );
 function rocket_deactivation()
 {
-    // Check if all the job can be done
-    $htaccess_file = get_home_path() . '.htaccess';
-    $config_file   = rocket_find_wpconfig_path();
-
     if ( ! isset( $_GET['rocket_nonce'] ) || ! wp_verify_nonce( $_GET['rocket_nonce'], 'force_deactivation' ) ) {
-
         $causes = array();
 
         // .htaccess problem
-        if ( $GLOBALS['is_apache'] && !is_writable( $htaccess_file ) ) {
+        if ( $GLOBALS['is_apache'] && ! is_writable( get_home_path() . '.htaccess' ) ) {
             $causes[] = 'htaccess';
         }
 
         // wp-config problem
-        if ( ! is_writable( $config_file ) ) {
+        if ( ! is_writable( rocket_find_wpconfig_path() ) ) {
             $causes[] = 'wpconfig';
         }
 
@@ -188,7 +183,6 @@ function rocket_deactivation()
 	        wp_safe_redirect( wp_get_referer() );
 	        die();
 		}
-
     }
 
 	// Delete config files
@@ -225,7 +219,7 @@ function rocket_activation()
     define( 'WP_ROCKET_PLUGIN_SLUG', sanitize_key( WP_ROCKET_PLUGIN_NAME ) );
 
 	if ( defined( 'SUNRISE' ) && SUNRISE == 'on' && function_exists( 'domain_mapping_siteurl' ) ) {
-        require( WP_ROCKET_INC_PATH . '/domain-mapping.php' );
+        require( WP_ROCKET_INC_PATH . 'domain-mapping.php' );
     }
 
     require( WP_ROCKET_FUNCTIONS_PATH . 'options.php' );
@@ -242,21 +236,12 @@ function rocket_activation()
 	    // Add WP_CACHE constant in wp-config.php
 		set_rocket_wp_cache_define( true );
 	}
-
-	// Create cache folder if not exist
-    if ( ! is_dir( WP_ROCKET_CACHE_PATH ) ) {
-	   rocket_mkdir_p( WP_ROCKET_CACHE_PATH );
-    }
-
-	// Create minify cache folder if not exist
-    if ( ! is_dir( WP_ROCKET_MINIFY_CACHE_PATH ) ) {
-		rocket_mkdir_p( WP_ROCKET_MINIFY_CACHE_PATH );
-    }
-    
-	// Create config domain folder if not exist
-    if ( ! is_dir( WP_ROCKET_CONFIG_PATH ) ) {
-		rocket_mkdir_p( WP_ROCKET_CONFIG_PATH );
-    }
+	
+	// Create the cache folders (wp-rocket & min)
+	rocket_init_cache_dir();
+	
+	// Create the config folder (wp-rocket-config)
+    rocket_init_config_dir();
 
 	// Create advanced-cache.php file
 	rocket_generate_advanced_cache_file();

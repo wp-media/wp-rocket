@@ -181,6 +181,39 @@ function rocket_delete_config_file()
 }
 
 /**
+ * Create all cache folders (wp-rocket & min)
+ *
+ * @since 2.6
+ *
+ * @return void
+ */
+function rocket_init_cache_dir() {
+	// Create cache folder if not exist
+    if ( ! is_dir( WP_ROCKET_CACHE_PATH ) ) {
+	   rocket_mkdir_p( WP_ROCKET_CACHE_PATH );
+    }
+
+	// Create minify cache folder if not exist
+    if ( ! is_dir( WP_ROCKET_MINIFY_CACHE_PATH ) ) {
+		rocket_mkdir_p( WP_ROCKET_MINIFY_CACHE_PATH );
+    }
+}
+
+/**
+ * Create the config folder (wp-rocket-config)
+ *
+ * @since 2.6
+ *
+ * @return void
+ */
+function rocket_init_config_dir() {
+	// Create config domain folder if not exist
+    if ( ! is_dir( WP_ROCKET_CONFIG_PATH ) ) {
+		rocket_mkdir_p( WP_ROCKET_CONFIG_PATH );
+    }
+}
+
+/**
  * Added or set the value of the WP_CACHE constant
  *
  * @since 2.0
