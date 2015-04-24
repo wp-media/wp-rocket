@@ -122,7 +122,6 @@ function get_rocket_config_file()
 	}
 
 	foreach ( $urls as $url ) {
-
 		list( $host, $path ) = get_rocket_parse_url( rtrim( $url, '/' ) );
 
 		if ( ! isset( $path ) ) {
@@ -130,7 +129,6 @@ function get_rocket_config_file()
 		} else {
 			$config_files_path[] = WP_ROCKET_CONFIG_PATH . strtolower( $host ) . str_replace( '/', '.', rtrim( $path, '/' ) ) . '.php';
 		}
-
 	}
 	
 	/**
@@ -270,7 +268,7 @@ function set_rocket_wp_cache_define( $turn_it_on )
 	// If the constant does not exist, create it
 	if ( ! $is_wp_cache_exist ) {
 		array_shift( $config_file );
-		array_unshift( $config_file, "<?php\r\n", $constant);
+		array_unshift( $config_file, "<?php\r\n", $constant );
 	}
 
 	// Insert the constant in wp-config.php file
@@ -446,7 +444,6 @@ function rocket_clean_domain( $lang = '' )
 	$urls = (array) $urls;
 	
 	foreach ( $urls as $url ) {
-
 		list( $host, $path ) = get_rocket_parse_url( $url );
 
 		/** This filter is documented in inc/front/htaccess.php */
@@ -482,7 +479,6 @@ function rocket_clean_domain( $lang = '' )
 		 * @param string $lang The current lang to purge
 		*/
 	    do_action( 'after_rocket_clean_domain', $root, $lang );
-
 	}
 }
 
