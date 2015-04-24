@@ -81,7 +81,7 @@ function rocket_init()
 
     // Call defines,  classes and functions
     require( WP_ROCKET_API_PATH . '/cloudflare.php' );
-    require WP_ROCKET_FUNCTIONS_PATH . '/options.php';
+    require( WP_ROCKET_FUNCTIONS_PATH . '/options.php' );
 
     // Last constants
     define( 'WP_ROCKET_PLUGIN_NAME', get_rocket_option( 'wl_plugin_name', 'WP Rocket' ) );
