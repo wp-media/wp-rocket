@@ -321,11 +321,6 @@ function __rocket_rollback()
 		$upgrader = new Plugin_Upgrader( $upgrader_skin );
 		$upgrader->upgrade( $plugin );
 
-		// Uncheck the autoupdate option to avoid an infinite update loop
-		$options = get_option( WP_ROCKET_SLUG );
-		if ( isset( $options['autoupdate'] ) ) {
-			unset( $options['autoupdate'] );
-		}
 		define( 'WP_ROCKET_NO_REDIRECT', true );
 		update_option( WP_ROCKET_SLUG, $options );
 
