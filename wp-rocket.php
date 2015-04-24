@@ -105,16 +105,16 @@ function rocket_init()
     if( rocket_valid_key() ) {
         require( WP_ROCKET_COMMON_PATH . 'purge.php' );
         require( WP_ROCKET_COMMON_PATH . 'cron.php' );
-      
+
         if ( 0 < (int) get_rocket_option( 'cdn' ) ) {
         	require( WP_ROCKET_FRONT_PATH . 'cdn.php' );
         }
-		
+
 		if ( 0 < (int) get_rocket_option( 'do_cloudflare' ) ) {
 			require( WP_ROCKET_VENDORS_PATH	. 'ip_in_range.php' );
 			require( WP_ROCKET_COMMON_PATH 	. 'cloudflare.php' );
 		}
-		
+
         if ( defined( 'SUNRISE' ) && SUNRISE == 'on' && function_exists( 'domain_mapping_siteurl' ) ) {
 	        require( WP_ROCKET_INC_PATH . '/domain-mapping.php' );
         }
@@ -139,7 +139,7 @@ function rocket_init()
         if ( get_rocket_option( 'deferred_js_files' ) ) {
 	       require( WP_ROCKET_FRONT_PATH . 'deferred-js.php' );
         }
-		
+
 		// Don't insert the LazyLoad file if Rocket LazyLoad is activated
         if ( ! rocket_is_plugin_active( 'rocket-lazy-load/rocket-lazy-load.php' ) ) {
 	       require( WP_ROCKET_FRONT_PATH . 'lazyload.php' );
@@ -200,7 +200,7 @@ function rocket_deactivation()
 	}
 
 	// Update customer key & licence.
-	wp_remote_get( WP_ROCKET_WEB_API . 'pause-licence.php' );
+	wp_remote_get( WP_ROCKET_WEB_API . 'pause-licence.php', array( 'blocking' => false ) );
 
 	delete_transient( 'rocket_check_licence_30' );
 	delete_transient( 'rocket_check_licence_1' );
@@ -236,10 +236,10 @@ function rocket_activation()
 	    // Add WP_CACHE constant in wp-config.php
 		set_rocket_wp_cache_define( true );
 	}
-	
+
 	// Create the cache folders (wp-rocket & min)
 	rocket_init_cache_dir();
-	
+
 	// Create the config folder (wp-rocket-config)
     rocket_init_config_dir();
 
