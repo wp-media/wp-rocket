@@ -166,6 +166,21 @@ function rocket_generate_config_file()
 }
 
 /**
+ * Remove the current config domain file
+ *
+ * @since 2.6
+ *
+ * @return void
+ */
+function rocket_delete_config_file()
+{
+	list( $config_files_path ) = get_rocket_config_file();
+	foreach( $config_files_path as $config_file ) {
+		@unlink( $config_file );
+	}
+}
+
+/**
  * Added or set the value of the WP_CACHE constant
  *
  * @since 2.0
