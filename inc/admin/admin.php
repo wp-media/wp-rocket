@@ -64,24 +64,6 @@ function __rocket_row_actions( $actions, $post )
 }
 
 /**
- * Add a link "Purge cache" in the post submit area
- *
- * @since 1.0
- * @todo manage all CPTs
- *
- */
-add_action( 'post_submitbox_start', '__rocket_post_submitbox_start' );
-function __rocket_post_submitbox_start()
-{
-	/** This filter is documented in inc/admin-bar.php */
-	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
-		global $post;
-		$url = wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=post-' . $post->ID ), 'purge_cache_post-' . $post->ID );
-		printf( '<div id="purge-action"><a class="button-secondary" href="%s">%s</a></div>', $url, __( 'Clear cache', 'rocket' ) );
-	}
-}
-
-/**
  * Add the CSS and JS files for WP Rocket options page
  *
  * @since 1.0.0
@@ -330,7 +312,6 @@ function __rocket_rollback()
 	$transient = get_transient( 'rocket_warning_rollback' );
 
 	if ( false == $transient )	{
-
 		require_once( ABSPATH . 'wp-admin/includes/class-wp-upgrader.php' );
 		$title = sprintf( __( '%s Update Rollback', 'rocket' ), WP_ROCKET_PLUGIN_NAME );
 		$plugin = 'wp-rocket/wp-rocket.php';
@@ -349,7 +330,6 @@ function __rocket_rollback()
 		update_option( WP_ROCKET_SLUG, $options );
 
 		wp_die( '', sprintf( __( '%s Update Rollback', 'rocket' ), WP_ROCKET_PLUGIN_NAME ), array( 'response' => 200 ) );
-
 	}
 }
 

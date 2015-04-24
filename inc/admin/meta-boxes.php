@@ -2,6 +2,24 @@
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 /**
+ * Add a link "Purge cache" in the post submit area
+ *
+ * @since 1.0
+ * @todo manage all CPTs
+ *
+ */
+add_action( 'post_submitbox_start', '__rocket_post_submitbox_start' );
+function __rocket_post_submitbox_start()
+{
+	/** This filter is documented in inc/admin-bar.php */
+	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		global $post;
+		$url = wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=post-' . $post->ID ), 'purge_cache_post-' . $post->ID );
+		printf( '<div id="purge-action"><a class="button-secondary" href="%s">%s</a></div>', $url, __( 'Clear cache', 'rocket' ) );
+	}
+}
+
+/**
  * Add "Cache options" metabox
  *
  * @since 2.5
