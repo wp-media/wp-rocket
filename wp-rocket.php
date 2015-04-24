@@ -236,6 +236,7 @@ function rocket_activation()
     require( WP_ROCKET_FUNCTIONS_PATH . '/files.php' );
     require( WP_ROCKET_FUNCTIONS_PATH . '/formatting.php' );
     require( WP_ROCKET_FUNCTIONS_PATH . '/plugins.php' );
+    require( WP_ROCKET_FUNCTIONS_PATH . '/i18n.php' );
     require( WP_ROCKET_FRONT_PATH . '/htaccess.php' );
 
 	if ( rocket_valid_key() ) {
