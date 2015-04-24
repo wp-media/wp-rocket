@@ -197,7 +197,6 @@ function rocket_deactivation()
 	if ( ! count( glob( WP_ROCKET_CONFIG_PATH . '*.php' ) ) ) {
 		// Delete All WP Rocket rules of the .htaccess file
 	    flush_rocket_htaccess( true );
-	    flush_rewrite_rules();
 
 	    // Remove WP_CACHE constant in wp-config.php
 	    set_rocket_wp_cache_define( false );
@@ -239,7 +238,6 @@ function rocket_activation()
 	if ( rocket_valid_key() ) {
 	    // Add All WP Rocket rules of the .htaccess file
 	    flush_rocket_htaccess();
-	    flush_rewrite_rules();
 
 	    // Add WP_CACHE constant in wp-config.php
 		set_rocket_wp_cache_define( true );
