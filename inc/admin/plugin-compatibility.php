@@ -112,3 +112,21 @@ function __rocket_clear_cache_after_pagely() {
 	// Preload cache
 	run_rocket_bot( 'cache-preload' );
 }
+
+/**
+ * Clear WP Rocket cache after purged the Varnish cache via Pressidium Hosting
+ *
+ * @since 2.5.11
+ *
+ * @return void
+ */
+add_action( 'admin_init', '__rocket_clear_cache_after_pressidium' );
+function __rocket_clear_cache_after_pressidium() {
+	if ( isset( $_POST['purge-all'] ) && current_user_can( 'manage_options' ) && defined( 'WP_NINUKIS_WP_NAME' ) && check_admin_referer( WP_NINUKIS_WP_NAME . '-caching' ) ) {
+		// Clear all caching files
+		rocket_clean_domain();
+		
+		// Preload cache
+		run_rocket_bot( 'cache-preload' );
+	}
+}

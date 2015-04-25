@@ -24,7 +24,6 @@ function rocket_upgrader()
 	// If any upgrade has been done, we flush and update version #
 	if ( did_action( 'wp_rocket_first_install' ) || did_action( 'wp_rocket_upgrade' ) ) {
 		flush_rocket_htaccess();
-		flush_rewrite_rules();
 
 		rocket_renew_all_boxes( 0, array( 'rocket_warning_plugin_modification' ) );
 

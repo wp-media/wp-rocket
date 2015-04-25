@@ -3,7 +3,7 @@
 Plugin Name: WP Rocket
 Plugin URI: http://www.wp-rocket.me
 Description: The best WordPress performance plugin.
-Version: 2.5.10
+Version: 2.5.11
 Author: WP Rocket
 Contributors: Jonathan Buttigieg, Julio Potier
 Author URI: http://www.wp-rocket.me
@@ -17,7 +17,7 @@ Copyright 2013-2015 WP Rocket
 defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
 
 // Rocket defines
-define( 'WP_ROCKET_VERSION'             , '2.5.10' );
+define( 'WP_ROCKET_VERSION'             , '2.5.11' );
 define( 'WP_ROCKET_PRIVATE_KEY'         , false );
 define( 'WP_ROCKET_SLUG'                , 'wp_rocket_settings' );
 define( 'WP_ROCKET_WEB_MAIN'            , 'http://support.wp-rocket.me/' );
@@ -53,7 +53,7 @@ if ( ! defined( 'CHMOD_WP_ROCKET_CACHE_DIRS' ) ) {
     define( 'CHMOD_WP_ROCKET_CACHE_DIRS', 0755 );
 }
 if ( ! defined( 'WP_ROCKET_LASTVERSION' ) ) {
-    define( 'WP_ROCKET_LASTVERSION', '2.5.7' );
+    define( 'WP_ROCKET_LASTVERSION', '2.5.10' );
 }
 
 require( WP_ROCKET_INC_PATH	. '/compat.php' );
@@ -199,7 +199,6 @@ function rocket_deactivation()
 	if ( ! count( glob( WP_ROCKET_CONFIG_PATH . '*.php' ) ) ) {
 		// Delete All WP Rocket rules of the .htaccess file
 	    flush_rocket_htaccess( true );
-	    flush_rewrite_rules();
 
 	    // Remove WP_CACHE constant in wp-config.php
 	    set_rocket_wp_cache_define( false );
@@ -209,7 +208,7 @@ function rocket_deactivation()
 	}
 
 	// Update customer key & licence.
-	wp_remote_get( WP_ROCKET_WEB_API . '/pause-licence.php' );
+	wp_remote_get( WP_ROCKET_WEB_API . 'pause-licence.php', array( 'blocking' => false ) );
 
 	delete_transient( 'rocket_check_licence_30' );
 	delete_transient( 'rocket_check_licence_1' );
@@ -240,7 +239,6 @@ function rocket_activation()
 	if ( rocket_valid_key() ) {
 	    // Add All WP Rocket rules of the .htaccess file
 	    flush_rocket_htaccess();
-	    flush_rewrite_rules();
 
 	    // Add WP_CACHE constant in wp-config.php
 		set_rocket_wp_cache_define( true );

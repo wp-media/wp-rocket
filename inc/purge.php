@@ -52,6 +52,11 @@ add_action( 'after_rocket_clean_domain', 'rocket_clean_varnish_http_purge' );
 */
 add_action( 'after_rocket_clean_domain', 'rocket_clean_pagely' );
 
+/* @since 2.5.11
+ * For not conflit with Pressidium Hosting
+*/
+add_action( 'after_rocket_clean_domain', 'rocket_clean_pressidium' );
+
 /**
  * Update cache when a post is updated or commented
  *
@@ -95,7 +100,12 @@ function rocket_clean_post( $post_id )
 	if( parse_url( $permalink, PHP_URL_PATH ) != '/' ) {
 		array_push( $purge_urls, $permalink );	
 	}
-
+	
+	// Add Posts page
+	if( $post->post_type == 'post' && (int) get_option( 'page_for_posts' ) > 0 ) {
+		array_push( $purge_urls, get_permalink( get_option( 'page_for_posts' ) ) );
+	}
+	
 	// Add Post Type archive
 	$post_type_archive = get_post_type_archive_link( get_post_type( $post_id ) );
 	if ( $post_type_archive ) {

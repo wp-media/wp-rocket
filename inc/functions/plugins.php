@@ -89,6 +89,20 @@ function rocket_clean_pagely() {
 }
 
 /**
+ * Call the cache server to purge the cache with Pagely hosting.
+ *
+ * @since 2.5.11
+ *
+ * @return void
+ */
+function rocket_clean_pressidium() {	
+	if ( class_exists( 'Ninukis_Plugin' ) ) {
+		$plugin = Ninukis_Plugin::get_instance();
+		$plugin->purgeAllCaches();		
+	}
+}
+
+/**
  * Check if a translation plugin is activated
  *
  * @since 2.0
