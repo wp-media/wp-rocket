@@ -208,7 +208,7 @@ function rocket_deactivation()
 	}
 
 	// Update customer key & licence.
-	wp_remote_get( WP_ROCKET_WEB_API . '/pause-licence.php' );
+	wp_remote_get( WP_ROCKET_WEB_API . 'pause-licence.php', array( 'blocking' => false ) );
 
 	delete_transient( 'rocket_check_licence_30' );
 	delete_transient( 'rocket_check_licence_1' );
