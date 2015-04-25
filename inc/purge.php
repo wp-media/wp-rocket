@@ -52,6 +52,11 @@ add_action( 'after_rocket_clean_domain', 'rocket_clean_varnish_http_purge' );
 */
 add_action( 'after_rocket_clean_domain', 'rocket_clean_pagely' );
 
+/* @since 2.5.11
+ * For not conflit with Pressidium Hosting
+*/
+add_action( 'after_rocket_clean_domain', 'rocket_clean_pressidium' );
+
 /**
  * Update cache when a post is updated or commented
  *
