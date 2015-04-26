@@ -330,9 +330,26 @@ function __rocket_rollback()
 
 /*
  * Create cache folders if not exists.
+ * Regenerate the advanced-cache.php file if an issue is detected.
+ * Define WP_CACHE to true if it's not defined yet.
  *
+ * @since 2.6	Check WP_CACHE & advanced-cache.php issues
  * @since 2.5.5
  */
 if ( ! defined( 'DOING_AJAX' ) && ! defined( 'DOING_AUTOSAVE' ) ) {
     add_action( 'admin_init', 'rocket_init_cache_dir' );
+    add_action( 'admin_init', '__rocket_maybe_generate_advanced_cache_file' );
+    add_action( 'admin_init', '__rocket_maybe_set_wp_cache_define' );
+}
+
+function __rocket_maybe_generate_advanced_cache_file() {
+	if ( ! defined( 'WP_ROCKET_ADVANCED_CACHE' ) || ( defined( 'WP_ROCKET_ADVANCED_CACHE_PROBLEM' ) && WP_ROCKET_ADVANCED_CACHE_PROBLEM ) ) {
+		rocket_generate_advanced_cache_file();
+	}
+}
+
+function __rocket_maybe_set_wp_cache_define() {
+	if( defined( 'WP_CACHE' ) && ! WP_CACHE ) {
+		set_rocket_wp_cache_define( true );
+	}
 }

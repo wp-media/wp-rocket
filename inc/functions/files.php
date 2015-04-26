@@ -25,7 +25,10 @@ function get_rocket_advanced_cache_file()
 	
 	// Include the process file in buffer
 	$buffer .= 'if ( file_exists( \''. WP_ROCKET_FRONT_PATH . 'process.php' . '\' ) ) {' . "\n";
-		$buffer .= 'include( \''. WP_ROCKET_FRONT_PATH . 'process.php' . '\' );' . "\n";
+		$buffer .= "\t" . 'include( \''. WP_ROCKET_FRONT_PATH . 'process.php' . '\' );' . "\n";
+	$buffer .= '} else {' . "\n";
+		// Add a constant to provent include issue
+		$buffer .= "\t" . 'define( \'WP_ROCKET_ADVANCED_CACHE_PROBLEM\', true );' . "\n";
 	$buffer .= '}';
 	
 	/**
