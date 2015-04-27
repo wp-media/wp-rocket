@@ -32,6 +32,8 @@ define( 'WP_ROCKET_PATH'                , realpath( plugin_dir_path( WP_ROCKET_F
 define( 'WP_ROCKET_INC_PATH'            , realpath( WP_ROCKET_PATH . 'inc/' ) . '/' );
 define( 'WP_ROCKET_FRONT_PATH'          , realpath( WP_ROCKET_INC_PATH . 'front/' ) . '/' );
 define( 'WP_ROCKET_ADMIN_PATH'          , realpath( WP_ROCKET_INC_PATH . 'admin' ) . '/' );
+define( 'WP_ROCKET_ADMIN_UI_PATH'       , realpath( WP_ROCKET_ADMIN_PATH . 'ui' ) . '/' );
+define( 'WP_ROCKET_ADMIN_UI_MODULES_PATH', realpath( WP_ROCKET_ADMIN_UI_PATH . 'modules' ) . '/' );
 define( 'WP_ROCKET_COMMON_PATH'         , realpath( WP_ROCKET_INC_PATH . 'common' ) . '/' );
 define( 'WP_ROCKET_FUNCTIONS_PATH'      , realpath( WP_ROCKET_INC_PATH . 'functions' ) . '/' );
 define( 'WP_ROCKET_API_PATH'      		, realpath( WP_ROCKET_INC_PATH . 'api' ) . '/' );
@@ -125,10 +127,10 @@ function rocket_init()
         require( WP_ROCKET_ADMIN_PATH . 'updater.php' );
         require( WP_ROCKET_ADMIN_PATH . 'class-repeater-field.php' );
         require( WP_ROCKET_ADMIN_PATH . 'options.php' );
-        require( WP_ROCKET_ADMIN_PATH . 'notices.php' );
         require( WP_ROCKET_ADMIN_PATH . 'admin.php' );
-        require( WP_ROCKET_ADMIN_PATH . 'meta-boxes.php' );
         require( WP_ROCKET_ADMIN_PATH . 'plugin-compatibility.php' );
+        require( WP_ROCKET_ADMIN_UI_PATH . 'notices.php' );
+        require( WP_ROCKET_ADMIN_UI_PATH . 'meta-boxes.php' );
     } else if ( rocket_valid_key() ) {
         require( WP_ROCKET_FRONT_PATH . 'minify.php' );
         require( WP_ROCKET_FRONT_PATH . 'cookie.php' );
