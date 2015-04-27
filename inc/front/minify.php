@@ -81,8 +81,8 @@ function __rocket_insert_minify_js_in_footer() {
 			return;
 		}
 
-		$home_host     = parse_url( home_url(), PHP_URL_HOST );
-		$files         = get_rocket_option( 'minify_js_in_footer', array() );
+		$home_host = parse_url( home_url(), PHP_URL_HOST );
+		$files = get_rocket_minify_js_in_footer();
 		$ordered_files = array();
 
 		// Get host of CNAMES
@@ -316,14 +316,14 @@ function rocket_minify_css( $buffer )
  * @since 1.0
  */
 function rocket_minify_js( $buffer )
-{
-    list( $home_host, $home_path, $home_scheme ) = get_rocket_parse_url( home_url() );
+{	
+    $home_host            = parse_url( home_url(), PHP_URL_HOST );
     $internal_files       = array();
     $external_tags        = array();
     $excluded_tags        = '';
     $excluded_js		  = implode( '|' , get_rocket_option( 'exclude_js', array() ) );
-    $excluded_js 		  = str_replace( '//' . $home_host , '', $excluded_js );
-    $js_in_footer         = get_rocket_option( 'minify_js_in_footer', array() );
+    $excluded_js 		  = str_replace( '//' . $home_host , '', $excluded_js ); 
+    $js_in_footer		  = get_rocket_minify_js_in_footer();
     $wp_content_dirname   = ltrim( str_replace( home_url(), '', WP_CONTENT_URL ), '/' ) . '/';
 
 	/**
@@ -422,7 +422,7 @@ function rocket_minify_js( $buffer )
 	
 	// Exclude JS files to insert in footer
 	foreach( $internal_files as $k=>$url ) {
-		if ( in_array( $home_scheme . '://' . $home_host . $url , $js_in_footer ) ) {
+		if ( in_array( set_url_scheme( '//' . $home_host . $url ), $js_in_footer ) ) {
 			unset( $internal_files[$k] );
 		}
 	}
@@ -479,4 +479,30 @@ function __rocket_fix_ssl_minify( $url ) {
 	}
 	
 	return $url;
+}
+
+/**
+ * Extract all enqueued JS files which should be insert in the footer
+ *
+ * @since 2.6
+ */
+add_action( 'wp_print_footer_scripts', '__rocket_extract_js_files_from_footer' );
+function __rocket_extract_js_files_from_footer() {
+	global $rocket_enqueue_js_in_footer, $wp_scripts;
+	
+	// Digg Digg (https://wordpress.org/plugins/digg-digg/)
+	if ( defined( 'DD_PLUGIN_URL' ) ) {
+		$rocket_enqueue_js_in_footer[] = DD_PLUGIN_URL . '/js/diggdigg-floating-bar.js';
+	}
+	
+	// nrelate Flyout (https://wordpress.org/plugins/nrelate-flyout/)
+	if ( defined( 'NRELATE_PLUGIN_VERSION' ) ) {
+		$rocket_enqueue_js_in_footer[] = ( NRELATE_JS_DEBUG ) ? 'http://staticrepo.nrelate.com/common_wp/'. NRELATE_PLUGIN_VERSION . '/nrelate_js.js' : NRELATE_ADMIN_URL . '/nrelate_js.min.js';
+	}
+	
+	foreach( $wp_scripts->in_footer as $handle ) {
+		if( in_array( $handle, $wp_scripts->done ) ) {
+			$rocket_enqueue_js_in_footer[] = set_url_scheme( $wp_scripts->registered[$handle]->src );
+		}
+	}
 }

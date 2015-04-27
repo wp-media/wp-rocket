@@ -114,8 +114,8 @@ function get_rocket_purge_cron_interval()
 /**
  * Get all uri we don't cache
  *
- * @since 2.6	Using json_get_url_prefix() to auto-exclude the WordPress JSON API
- * @since 2.4.1 Auto-exclude WordPress JSON API
+ * @since 2.6	Using json_get_url_prefix() to auto-exclude the WordPress REST API
+ * @since 2.4.1 Auto-exclude WordPress REST API
  * @since 2.0
  *
  * @return array List of rejected uri
@@ -127,7 +127,7 @@ function get_rocket_cache_reject_uri()
 	// Exclude cart & checkout pages from e-commerce plugins
 	$uri = array_merge( $uri, get_rocket_ecommerce_exclude_pages() );
 	
-	// Exclude WP JSON API
+	// Exclude WP REST API
 	if( function_exists( 'json_get_url_prefix' ) ) {
 		$uri[] = '/' . json_get_url_prefix() . '/*';	
 	}
@@ -280,6 +280,31 @@ function get_rocket_cache_query_string() {
 	$query_strings = apply_filters( 'rocket_cache_query_strings', $query_strings );
 
 	return $query_strings;
+}
+
+/**
+ * Get all JS files to move in the footer during the minification.
+ *
+ * @since 2.6
+ *
+ * @return array List of JS files.
+ */
+function get_rocket_minify_js_in_footer() {
+	global $rocket_enqueue_js_in_footer;
+	
+	$js_files = get_rocket_option( 'minify_js_in_footer', array() );
+	$js_files = array_map( 'rocket_set_internal_url_scheme', $js_files );
+	$js_files = array_unique( array_merge( $js_files, $rocket_enqueue_js_in_footer ) );
+	
+	/**
+	 * Filter JS files to move in the footer during the minification.
+	 *
+	 * @since 2.6
+	 *
+	 * @param array $js_files List of JS files.
+	*/
+	$js_files = apply_filters( 'rocket_minify_js_in_footer', $js_files );
+	return $js_files;
 }
 
 /**

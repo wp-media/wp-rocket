@@ -55,6 +55,22 @@ function rocket_add_url_protocol( $url ) {
 }
 
 /**
+ * Set the scheme for a internal URL
+ *
+ * @since 2.6
+ *
+ * @param 	string $url Absolute url that includes a scheme
+ * @return 	string $url URL with a scheme.
+ */
+function rocket_set_internal_url_scheme( $url ) {
+	if( parse_url( set_url_scheme( $url ), PHP_URL_HOST ) == parse_url( home_url(), PHP_URL_HOST ) ) {
+		$url = set_url_scheme( $url );
+	}
+
+	return $url;
+}
+
+/**
  * Extract and return host, path, query and scheme of an URL
  *
  * @since 2.1 Add $query variable
