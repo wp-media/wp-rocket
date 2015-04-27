@@ -129,6 +129,7 @@ function rocket_init()
         require( WP_ROCKET_ADMIN_PATH . 'options.php' );
         require( WP_ROCKET_ADMIN_PATH . 'admin.php' );
         require( WP_ROCKET_ADMIN_PATH . 'plugin-compatibility.php' );
+        require( WP_ROCKET_ADMIN_UI_PATH . 'enqueue.php' );
         require( WP_ROCKET_ADMIN_UI_PATH . 'notices.php' );
         require( WP_ROCKET_ADMIN_UI_PATH . 'meta-boxes.php' );
     } else if ( rocket_valid_key() ) {
