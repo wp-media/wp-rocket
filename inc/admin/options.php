@@ -503,30 +503,6 @@ function rocket_register_setting()
 }
 
 /**
- * Used with array_filter to remove files without .css extension
- *
- * @since 1.0
- */
-function rocket_sanitize_css( $file )
-{
-	$file = preg_replace( '#\?.*$#', '', $file );
-	$ext = strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
-	return $ext=='css' ? trim( $file ) : false;
-}
-
-/**
- * Used with array_filter to remove files without .js extension
- *
- * @since 1.0
- */
-function rocket_sanitize_js( $file )
-{
-	$file = preg_replace( '#\?.*$#', '', $file );
-	$ext  = strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
-	return $ext == 'js' ? trim( $file ) : false;
-}
-
-/**
  * Used to clean and sanitize the settings fields
  *
  * @since 1.0

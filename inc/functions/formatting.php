@@ -20,6 +20,30 @@ function rocket_clean_exclude_file( $file )
 }
 
 /**
+ * Used with array_filter to remove files without .css extension
+ *
+ * @since 1.0
+ */
+function rocket_sanitize_css( $file )
+{
+	$file = preg_replace( '#\?.*$#', '', $file );
+	$ext = strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
+	return $ext=='css' ? trim( $file ) : false;
+}
+
+/**
+ * Used with array_filter to remove files without .js extension
+ *
+ * @since 1.0
+ */
+function rocket_sanitize_js( $file )
+{
+	$file = preg_replace( '#\?.*$#', '', $file );
+	$ext  = strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
+	return $ext == 'js' ? trim( $file ) : false;
+}
+
+/**
  * Get an url without HTTP protocol
  *
  * @since 1.3.0
