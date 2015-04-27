@@ -48,8 +48,9 @@ define( 'WP_ROCKET_FRONT_JS_URL'        , WP_ROCKET_FRONT_URL . 'js/' );
 define( 'WP_ROCKET_LAB_JS_VERSION'      , '2.0.3' );
 define( 'WP_ROCKET_LAZYLOAD_JS_VERSION' , '1.0' );
 define( 'WP_ROCKET_ADMIN_URL'           , WP_ROCKET_INC_URL . 'admin/' );
-define( 'WP_ROCKET_ADMIN_JS_URL'        , WP_ROCKET_ADMIN_URL . 'js/' );
-define( 'WP_ROCKET_ADMIN_CSS_URL'       , WP_ROCKET_ADMIN_URL . 'css/' );
+define( 'WP_ROCKET_ADMIN_UI_URL'        , WP_ROCKET_ADMIN_URL . 'ui/' );
+define( 'WP_ROCKET_ADMIN_UI_JS_URL'     , WP_ROCKET_ADMIN_UI_URL . 'js/' );
+define( 'WP_ROCKET_ADMIN_UI_CSS_URL'    , WP_ROCKET_ADMIN_UI_URL . 'css/' );
 define( 'WP_ROCKET_CACHE_URL'           , WP_CONTENT_URL . '/cache/wp-rocket/' );
 define( 'WP_ROCKET_MINIFY_CACHE_URL'    , WP_CONTENT_URL . '/cache/min/' );
 if ( ! defined( 'CHMOD_WP_ROCKET_CACHE_DIRS' ) ) {
