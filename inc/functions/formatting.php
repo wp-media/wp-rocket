@@ -87,11 +87,13 @@ function rocket_add_url_protocol( $url ) {
  * @return 	string $url URL with a scheme.
  */
 function rocket_set_internal_url_scheme( $url ) {
-	if( parse_url( set_url_scheme( $url ), PHP_URL_HOST ) == parse_url( home_url(), PHP_URL_HOST ) ) {
-		$url = set_url_scheme( $url );
-	}
+	$tmp_url = set_url_scheme( $url );
+    
+    if( parse_url( $tmp_url, PHP_URL_HOST ) == parse_url( home_url(), PHP_URL_HOST ) ) {
+            $url = $tmp_url;
+    }
 
-	return $url;
+    return $url;
 }
 
 /**
