@@ -9,8 +9,8 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
  * @return obj WP_Rocket_CloudFlareAPI instance
  */
 function get_rocket_cloudflare_instance() {
-	$cf_email   = get_rocket_option( 'cloudflare_email' );
-	$cf_api_key = get_rocket_option( 'cloudflare_api_key' );
+	$cf_email   = get_rocket_option( 'cloudflare_email', null );
+	$cf_api_key = get_rocket_option( 'cloudflare_api_key', null );
 
 	if( isset( $cf_email, $cf_api_key ) ) {
 		return WP_Rocket_CloudFlareAPI::instance( $cf_email, $cf_api_key );
