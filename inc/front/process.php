@@ -181,7 +181,14 @@ function do_rocket_callback( $buffer )
 		// - DNS Prefechting
 		// - Minification HTML/CSS/JavaScript
 		$buffer = apply_filters( 'rocket_buffer', $buffer );
-
+		
+		$footprint = '';
+		$is_html   = true;
+		
+		if( ! preg_match( '/(<\/html>)/i', $buffer ) ) {
+			$is_html = false;
+		}
+		
 		/**
 		  * Allow to the generate the caching file
 		  *
@@ -192,9 +199,13 @@ function do_rocket_callback( $buffer )
 		if ( apply_filters( 'do_rocket_generate_caching_files', true ) ) {
 			// Create cache folders of the request uri
 			rocket_mkdir_p( $request_uri_path );
-
+			
+			if( $is_html ) {
+				$footprint = get_rocket_footprint();
+			}
+			
 			// Save the cache file
-			rocket_put_content( $rocket_cache_filepath, $buffer . get_rocket_footprint() );
+			rocket_put_content( $rocket_cache_filepath, $buffer . $footprint );
 
 			if ( function_exists( 'gzencode' ) ) {
 				rocket_put_content( $rocket_cache_filepath . '_gzip', gzencode ( $buffer . get_rocket_footprint(), apply_filters( 'rocket_gzencode_level_compression', 3 ) ) );
@@ -203,8 +214,12 @@ function do_rocket_callback( $buffer )
 
 		// Send headers with the last modified time of the cache file
 		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s', filemtime( $rocket_cache_filepath ) ) . ' GMT' );
-
-		$buffer = $buffer . get_rocket_footprint(false);
+		
+		if( $is_html ) {
+			$footprint = get_rocket_footprint(false);
+		}
+		
+		$buffer = $buffer . $footprint;
 	}
 
 	return $buffer;
