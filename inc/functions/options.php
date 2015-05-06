@@ -49,14 +49,14 @@ function get_rocket_option( $option, $default = false )
  * @return bool 		   True if the option is deactivated
  */
 function is_rocket_post_excluded_option( $option ) {
-	if( is_home() && isset( $GLOBALS['wp_query']->queried_object ) ) {
-		$post_id = $GLOBALS['wp_query']->queried_object->ID;
+	if( is_home() ) {
+		$post_id = get_queried_object_id();
 	}
-	
+
 	if ( is_singular() ) {
-		$post_id = $GLOBALS['post']->ID;	
+		$post_id = $GLOBALS['post']->ID;
 	}
-	
+
 	return ( isset( $post_id ) ) ? get_post_meta( $post_id, '_rocket_exclude_' . $option, true ) : false;
 }
 
@@ -123,9 +123,9 @@ function get_rocket_cache_reject_uri()
 {
 	$uri = get_rocket_option( 'cache_reject_uri', array() );
 	$uri = array_merge( $uri, get_rocket_ecommerce_exclude_pages() );
-	$uri[] = '/wp-json/*';
+	$uri[] = '/wp-json/(.*)';
 	$uri[] = '.*/' . $GLOBALS['wp_rewrite']->feed_base . '/';
-	
+
 	/**
 	 * Filter the rejected uri
 	 *
@@ -201,7 +201,7 @@ function get_rocket_cache_reject_ua() {
  */
 function get_rocket_cdn_reject_files() {
 	$files = get_rocket_option( 'cdn_reject_files', array() );
-	
+
 	/**
 	 * Filter the rejected files
 	 *
@@ -210,9 +210,9 @@ function get_rocket_cdn_reject_files() {
 	 * @param array $files List of rejected files
 	*/
 	$files = apply_filters( 'rocket_cdn_reject_files', $files );
-	
-	$files = implode( '|', array_filter( $files ) );	
-	
+
+	$files = implode( '|', array_filter( $files ) );
+
 	return $files;
 }
 
@@ -260,7 +260,7 @@ function get_rocket_cdn_cnames( $zone = 'all' )
  */
 function get_rocket_cache_query_string() {
 	$query_strings = get_rocket_option( 'cache_query_strings', array() );
-	
+
 	/**
 	 * Filter query strings which can be cached.
 	 *
@@ -314,7 +314,7 @@ function rocket_check_key( $type = 'transient_1', $data = null )
 				if ( ! get_rocket_option( 'license' ) ) {
 					$rocket_options['license'] = '1';
 				}
-				
+
 				if ( 'live' != $type ) {
 					if ( 'transient_1' == $type ) {
 						set_transient( 'rocket_check_licence_1', true, DAY_IN_SECONDS );
