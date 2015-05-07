@@ -45,6 +45,11 @@ function rocket_exclude_deferred_js( $buffer )
 add_action( 'wp_footer', 'rocket_insert_deferred_js', PHP_INT_MAX );
 function rocket_insert_deferred_js( $buffer )
 {
+	// Don't add anything on 404 page
+	if( is_404() ) {
+		return;
+	}
+	
 	/**
 	 * Filter LABjs file URL
 	 *
