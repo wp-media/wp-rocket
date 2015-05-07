@@ -211,7 +211,7 @@ function rocket_add_cdn_on_custom_attr( $html ) {
 	if( preg_match( '/(data-lazy-src|data-lazyload|data-src|data-retina)=[\'"]?([^\'"\s>]+)[\'"]/i', $html, $matches ) ) {
 		$html = str_replace( $matches[2], get_rocket_cdn_url( $matches[2], array( 'all', 'images' ) ), $html );
 	}
-	
+
 	return $html;
 }
 
@@ -233,15 +233,12 @@ function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_file
 	$tags 		= '';
 	$data_attr  = 'data-minify="1"';
 	$urls 		= array( 0 => '' );
-	$bubble     = is_child_theme() ? 'bubbleCssImports=1&' : '';
-	$base_url 	= WP_ROCKET_URL . 'min/?' . $bubble . 'f=';
+	$base_url 	= WP_ROCKET_URL . 'min/?f=';
 	$files  	= is_array( $files ) ? $files : (array) $files;
 
 	if ( count( $files ) ) {
-
 		$i=0;
 		foreach ( $files as $file ) {
-
 			$file = parse_url( $file, PHP_URL_PATH );
 
 			// Replace "//" by "/" because it cause an issue with Google Code Minify!
@@ -272,11 +269,9 @@ function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_file
 			$file = apply_filters( 'rocket_pre_minify_path', $file );
 
 			$urls[$i] .= $file . ',';
-
 		}
 
 		foreach ( $urls as $url ) {
-
 			$url = $base_url . rtrim( $url, ',' );
 			$ext = pathinfo( $url, PATHINFO_EXTENSION );
 
@@ -293,7 +288,6 @@ function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_file
 				 * @param bool
 				*/
 				if ( ! apply_filters( 'rocket_minify_debug', false ) ) {
-
 					$blog_id = get_current_blog_id();
 					$pretty_url = !$pretty_filename ? WP_ROCKET_MINIFY_CACHE_URL . $blog_id . '/' . md5( $url . get_rocket_option( 'minify_' . $ext . '_key', create_rocket_uniqid() ) ) . '.' . $ext : WP_ROCKET_MINIFY_CACHE_URL . $blog_id . '/' . $pretty_filename . '.' . $ext;
 
@@ -308,9 +302,7 @@ function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_file
 					$pretty_url = apply_filters( 'rocket_minify_pretty_url', $pretty_url, $pretty_filename );
 
 					$url = rocket_fetch_and_cache_minify( $url, $pretty_url ) ? $pretty_url : $url;
-
 				}
-
 			}
 
 			// If CSS & JS use a CDN
@@ -340,9 +332,7 @@ function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_file
 
 				$tags .= sprintf( '<script src="%s" %s></script>', esc_attr( $url ), $data_attr );
 			}
-
 		}
-
 	}
 
 	return $tags;
