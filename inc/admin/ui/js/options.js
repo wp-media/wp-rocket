@@ -103,8 +103,8 @@ jQuery( document ).ready( function($){
 		if ( obj.is( ':checked' ) ) {
 			swal(
 			{
-				title: sawpr.warning_title,
-				text: sawpr.minify_text,
+				title: sawpr.warningTitle,
+				text: sawpr.minifyText,
 				type: "warning",
 				showCancelButton: true,
 				confirmButtonColor: "#A5DC86",
@@ -121,15 +121,110 @@ jQuery( document ).ready( function($){
 			});
 		}
 	});
-	
+
 	// Sweet Alert for CloudFlare activation
 	$( '#do_cloudflare' ).click(function() {
 		if ( $(this).is( ':checked' ) ) {
-			swal({   
-				title: sawpr.cloudflare_title,   
-				text: sawpr.cloudflare_text,   
-				timer: 5000 
+			swal({
+				title: sawpr.cloudflareTitle,
+				text: sawpr.cloudflareText,
+				timer: 5000
 			});
+		}
+	});
+
+	// Support form
+	$( '#submit-support-button' ).click( function(e) {
+		e.preventDefault();
+
+		var summary 	= $('#support_summary').val().trim(),
+			description = $('#support_description').val().trim(),
+			validation  = $('#support_documentation_validation');
+
+		if ( ! validation.is( ':checked' ) ) {
+			swal({
+				title : sawpr.warningSupportTitle,
+				text  : sawpr.warningSupportText,
+				type  : "warning",
+				html  : true
+			});
+		}
+
+		if ( summary != '' && description != '' && validation.is( ':checked' ) ) {
+
+			swal({
+				title: sawpr.preloaderTitle,
+				showCancelButton: false,
+				showConfirmButton: false,
+				imageUrl: sawpr.preloaderImg,
+			});
+
+			$.post(
+				ajaxurl,
+				{
+					action: 'rocket_new_ticket_support',
+					summary: summary,
+					description: description,
+				},
+				function(response) {
+					response = JSON.parse(response);
+					var title, text, type, confirmButtonText, confirmButtonColor;
+					if( response.msg == 'BAD_EMAIL' ) {
+						title              = sawpr.badSupportTitle;
+						text               = sawpr.badSupportText;
+						confirmButtonText  = sawpr.badConfirmButtonText;
+						confirmButtonColor = "#f7a933";
+						type               = "error";
+					}
+
+					if( response.msg == 'BAD_LICENCE' ) {
+						title = sawpr.expiredSupportTitle;
+						text  = sawpr.expiredSupportText;
+						confirmButtonText  = sawpr.expiredConfirmButtonText;
+						confirmButtonColor = "#f7a933";
+						type  = "warning";
+					}
+					
+					if( response.msg == 'BAD_CONNECTION' ) {
+						title = sawpr.badServerConnectionTitle;
+						text  = sawpr.badServerConnectionText;
+						confirmButtonText  = sawpr.badServerConnectionConfirmButtonText;
+						confirmButtonColor = "#f7a933";
+						type  = "error";
+					}
+					
+					if( response.msg == 'SUCCESS' ) {
+						title = sawpr.successSupportTitle;
+						text  = sawpr.successSupportText;
+						type  = "success";
+
+						// Reset the values
+						$('#support_summary, #support_description, #support_documentation_validation').val('');
+					}
+
+					swal({
+						title : title,
+						text  : text,
+						type  : type,
+						confirmButtonText : confirmButtonText,
+						confirmButtonColor : confirmButtonColor,
+						html  : true
+					},
+					function() {
+						if( response.msg == 'BAD_EMAIL' ) {
+							window.open(response.order_url);
+						}
+
+						if( response.msg == 'BAD_LICENCE' ) {
+							window.open(response.renew_url);
+						}
+						
+						if( response.msg == 'BAD_CONNECTION' ) {
+							window.open('http://wp-rocket.me/support/');
+						}
+					});
+				}
+			);
 		}
 	});
 } );

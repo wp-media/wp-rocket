@@ -20,7 +20,6 @@ function __rocket_settings_action_links( $actions )
     return $actions;
 }
 
-
 /**
  * Add a link "Renew your licence" when ou can't do it automatically (expired licence but new version available)
  *

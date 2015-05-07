@@ -42,6 +42,8 @@ function rocket_field( $args )
 		$label 				= isset( $args['label'] ) ? $args['label'] : '';
 		$default			= isset( $args['default'] ) ? $args['default'] : '';
 		$readonly			= isset( $args['readonly'] ) && $args['readonly'] ? ' readonly="readonly" disabled="disabled"' : '';
+		$cols 				= isset( $args['cols'] ) ? (int) $args['cols'] : 50;
+		$rows 				= isset( $args['rows'] ) ? (int) $args['rows'] : 5;
 
 		if( ! isset( $args['fieldset'] ) || 'start' == $args['fieldset'] ){
 			echo '<fieldset class="fieldname-'.sanitize_html_class( $args['name'] ).' fieldtype-'.sanitize_html_class( $args['type'] ).'">';
@@ -78,7 +80,7 @@ function rocket_field( $args )
 				?>
 
 					<legend class="screen-reader-text"><span><?php echo $args['label_screen']; ?></span></legend>
-					<label><textarea id="<?php echo $args['label_for']; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]" cols="50" rows="5"<?php echo $readonly; ?>><?php echo $value; ?></textarea>
+					<label><textarea id="<?php echo $args['label_for']; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]" cols="<?php echo $cols; ?>" rows="<?php echo $rows; ?>"<?php echo $readonly; ?>><?php echo $value; ?></textarea>
 					</label>
 
 				<?php
@@ -349,11 +351,12 @@ function rocket_cnames_module()
  */
 function rocket_button( $args )
 {
-	$button = $args['button'];
-	$desc = isset( $args['helper_description'] ) ? $args['helper_description'] : null;
-	$help = isset( $args['helper_help'] ) ? $args['helper_help'] : null;
-	$warning = isset( $args['helper_warning'] ) ? $args['helper_warning'] : null;
-	$class = sanitize_html_class( strip_tags( $button['button_label'] ) );
+	$button       = $args['button'];
+	$desc         = isset( $args['helper_description'] ) ? $args['helper_description'] : null;
+	$help         = isset( $args['helper_help'] ) ? $args['helper_help'] : null;
+	$warning      = isset( $args['helper_warning'] ) ? $args['helper_warning'] : null;
+	$id           = sanitize_html_class( $button['button_id'] );
+	$class        = sanitize_html_class( strip_tags( $button['button_label'] ) );
 	$button_style = isset( $button['style'] ) ? 'button-'.sanitize_html_class( $button['style'] ) : 'button-secondary';
 
 	if ( ! empty( $help ) ) {
@@ -367,7 +370,7 @@ function rocket_button( $args )
 	}
 ?>
 	<fieldset class="fieldname-<?php echo $class; ?> fieldtype-button">
-		<a href="<?php echo esc_url( $button['url'] ); ?>" class="<?php echo $button_style; ?> rocketicon rocketicon-<?php echo $class; ?>"><?php echo wp_kses_post( $button['button_label'] ); ?></a>
+		<a href="<?php echo esc_url( $button['url'] ); ?>" id="<?php echo $id; ?>" class="<?php echo $button_style; ?> rocketicon rocketicon-<?php echo $class; ?>"><?php echo wp_kses_post( $button['button_label'] ); ?></a>
 
 		<?php echo apply_filters( 'rocket_help', $desc, sanitize_key( strip_tags( $button['button_label'] ) ), 'description' ); ?>
 		<?php echo apply_filters( 'rocket_help', $help, sanitize_key( strip_tags( $button['button_label'] ) ), 'help' ); ?>
@@ -426,15 +429,31 @@ function rocket_display_options()
 	foreach( $modules as $module ) {
 		require( WP_ROCKET_ADMIN_UI_MODULES_PATH . $module . '.php' );
 	}
-
-?>
+	?>
+	
 	<div class="wrap">
 
 	<h2><?php echo WP_ROCKET_PLUGIN_NAME; ?> <small><sup><?php echo WP_ROCKET_VERSION; ?></sup></small></h2>
 	<form action="options.php" id="rocket_options" method="post" enctype="multipart/form-data">
-		<?php settings_fields( 'wp_rocket' ); ?>
-		<?php rocket_hidden_fields( array( 'consumer_key', 'consumer_email', 'secret_key', 'license', 'secret_cache_key', 'minify_css_key', 'minify_js_key', 'version', 'cloudflare_old_settings' ) ); ?>
-		<?php submit_button(); ?>
+		<?php 
+		settings_fields( 'wp_rocket' );
+		
+		rocket_hidden_fields( 
+			array( 
+				'consumer_key', 
+				'consumer_email', 
+				'secret_key', 
+				'license', 
+				'secret_cache_key',
+				'minify_css_key', 
+				'minify_js_key', 
+				'version', 
+				'cloudflare_old_settings' 
+			)
+		); 
+				
+		submit_button(); 
+		?>
 		<h2 class="nav-tab-wrapper hide-if-no-js">
 			<?php if( rocket_valid_key() ) { ?>
 				<a href="#tab_basic" class="nav-tab"><?php _e( 'Basic options', 'rocket' ); ?></a>
@@ -738,7 +757,22 @@ function rocket_settings_callback( $inputs )
 	} else {
 		$inputs['cdn_reject_files'] = array();
 	}
-
+	
+	/*
+	 * Option: Support
+	 */
+	$fake_options = array( 
+		'support_summary',
+		'support_description',
+		'support_documentation_validation'
+	);
+	
+	foreach ( $fake_options as $option ) {
+		 if( isset( $inputs[$option] ) ) {
+			 unset($inputs[$option]);
+		 }
+	}
+	 
 	if ( isset( $_FILES['import'] )
 		&& preg_match( '/wp-rocket-settings-20\d{2}-\d{2}-\d{2}-[a-f0-9]{13}\.txt/', $_FILES['import']['name'] )
 		&& 'text/plain' == $_FILES['import']['type'] ) {

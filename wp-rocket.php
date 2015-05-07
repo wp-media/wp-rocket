@@ -51,13 +51,14 @@ define( 'WP_ROCKET_ADMIN_URL'           , WP_ROCKET_INC_URL . 'admin/' );
 define( 'WP_ROCKET_ADMIN_UI_URL'        , WP_ROCKET_ADMIN_URL . 'ui/' );
 define( 'WP_ROCKET_ADMIN_UI_JS_URL'     , WP_ROCKET_ADMIN_UI_URL . 'js/' );
 define( 'WP_ROCKET_ADMIN_UI_CSS_URL'    , WP_ROCKET_ADMIN_UI_URL . 'css/' );
+define( 'WP_ROCKET_ADMIN_UI_IMG_URL'    , WP_ROCKET_ADMIN_UI_URL . 'img/' );
 define( 'WP_ROCKET_CACHE_URL'           , WP_CONTENT_URL . '/cache/wp-rocket/' );
 define( 'WP_ROCKET_MINIFY_CACHE_URL'    , WP_CONTENT_URL . '/cache/min/' );
 if ( ! defined( 'CHMOD_WP_ROCKET_CACHE_DIRS' ) ) {
     define( 'CHMOD_WP_ROCKET_CACHE_DIRS', 0755 );
 }
 if ( ! defined( 'WP_ROCKET_LASTVERSION' ) ) {
-    define( 'WP_ROCKET_LASTVERSION', '2.5.7' );
+    define( 'WP_ROCKET_LASTVERSION', '2.5.12' );
 }
 
 require( WP_ROCKET_INC_PATH	. 'compat.php' );
@@ -124,6 +125,7 @@ function rocket_init()
     }
 
     if ( is_admin() ) {
+        require( WP_ROCKET_ADMIN_PATH . 'ajax.php' );
         require( WP_ROCKET_ADMIN_PATH . 'upgrader.php' );
         require( WP_ROCKET_ADMIN_PATH . 'updater.php' );
         require( WP_ROCKET_ADMIN_PATH . 'class-repeater-field.php' );
