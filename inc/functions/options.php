@@ -127,9 +127,18 @@ function get_rocket_cache_reject_uri()
 	// Exclude cart & checkout pages from e-commerce plugins
 	$uri = array_merge( $uri, get_rocket_ecommerce_exclude_pages() );
 	
+	/**
+	  * By default, don't cache the WP REST API.
+	  *
+	  * @since 2.5.12
+	  *
+	  * @param bool false will force to cache the WP REST API
+	 */
+	$rocket_cache_reject_wp_rest_api = apply_filters( 'rocket_cache_reject_wp_rest_api', true );
+	
 	// Exclude WP REST API
-	if( function_exists( 'json_get_url_prefix' ) ) {
-		$uri[] = '/' . json_get_url_prefix() . '/*';	
+	if( function_exists( 'json_get_url_prefix' ) && $rocket_cache_reject_wp_rest_api ) {
+		$uri[] = '/' . json_get_url_prefix() . '/(.*)';	
 	}
 	
 	// Exclude feeds
@@ -245,9 +254,7 @@ function get_rocket_cdn_cnames( $zone = 'all' )
 	$zone 		 = is_array( $zone ) ? $zone : (array) $zone;
 
 	foreach( $cnames as $k=>$_urls ) {
-
 		if ( in_array( $cnames_zone[$k], $zone ) ) {
-
 			$_urls = explode( ',' , $_urls );
 			$_urls = array_map( 'trim' , $_urls );
 
@@ -255,7 +262,6 @@ function get_rocket_cdn_cnames( $zone = 'all' )
 				$hosts[] = $url;
 			}
 		}
-
 	}
 	return $hosts;
 }
