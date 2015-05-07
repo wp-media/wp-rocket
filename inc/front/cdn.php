@@ -17,11 +17,11 @@ add_filter( 'bwp_get_minify_src'		, 'rocket_cdn_file', PHP_INT_MAX );
 function rocket_cdn_file( $url )
 {
 	$ext = pathinfo( $url, PATHINFO_EXTENSION );
-
-	if ( is_admin() && $ext != 'php' ) {
+	
+	if ( is_admin() || $ext == 'php' ) {
 		return $url;
 	}
-
+	
 	$filter = current_filter();
 	switch ( $filter ) {
 		case 'wp_get_attachment_url':
