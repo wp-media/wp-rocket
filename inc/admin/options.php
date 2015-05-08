@@ -355,7 +355,7 @@ function rocket_button( $args )
 	$desc         = isset( $args['helper_description'] ) ? $args['helper_description'] : null;
 	$help         = isset( $args['helper_help'] ) ? $args['helper_help'] : null;
 	$warning      = isset( $args['helper_warning'] ) ? $args['helper_warning'] : null;
-	$id           = sanitize_html_class( $button['button_id'] );
+	$id           = isset( $button['button_id'] ) ? sanitize_html_class( $button['button_id'] ) : null;
 	$class        = sanitize_html_class( strip_tags( $button['button_label'] ) );
 	$button_style = isset( $button['style'] ) ? 'button-'.sanitize_html_class( $button['style'] ) : 'button-secondary';
 
