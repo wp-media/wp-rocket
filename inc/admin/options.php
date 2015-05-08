@@ -88,7 +88,7 @@ function rocket_field( $args )
 
 			case 'checkbox' : ?>
 
-					<legend class="screen-reader-text"><span><?php echo $args['label_screen']; ?></span></legend>
+					<legend class="screen-reader-text"><span><?php echo isset( $args['label_screen'] ) ? $args['label_screen'] : null; ?></span></legend>
 					<label><input type="checkbox" id="<?php echo $args['name']; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]" value="1"<?php echo $readonly; ?> <?php checked( get_rocket_option( $args['name'], 0 ), 1 ); ?>/> <?php echo $args['label']; ?>
 					</label>
 
