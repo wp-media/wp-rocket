@@ -16,7 +16,6 @@ function rocket_minify_process( $buffer )
 	$enable_google_fonts = get_rocket_option( 'minify_google_fonts' );
 
 	if ( $enable_css || $enable_js || $enable_google_fonts ) {
-
 		$css = '';
 		$js  = '';
 		$google_fonts = '';
@@ -42,7 +41,6 @@ function rocket_minify_process( $buffer )
 
 		// Insert all CSS and JS files in head
 		$buffer = preg_replace( '/<head(.*)>/', '<head$1>' . $google_fonts . $css . $js, $buffer, 1 );
-
 	}
 
 	// Minify HTML
@@ -63,6 +61,7 @@ function __rocket_insert_minify_js_in_footer() {
 	if ( ! empty( $_GET )
 		&& ( ! isset( $_GET['utm_source'], $_GET['utm_medium'], $_GET['utm_campaign'] ) )
 		&& ( ! isset( $_GET['fb_action_ids'], $_GET['fb_action_types'], $_GET['fb_source'] ) )
+		&& ( ! isset( $_GET['gclid'] ) )
 		&& ( ! isset( $_GET['permalink_name'] ) )
 		&& ( ! isset( $_GET['lp-variation-id'] ) )
 		&& ( ! isset( $_GET['lang'] ) )
@@ -248,7 +247,7 @@ function rocket_minify_css( $buffer )
     $external_tags        = '';
     $excluded_tags        = '';
     $fonts_tags           = '';
-    $excluded_css		  = implode( '|' , get_rocket_option( 'exclude_css', array() ) );
+    $excluded_css		  = implode( '|' , get_rocket_exclude_css() );
     $excluded_css 		  = str_replace( '//' . $home_host , '', $excluded_css );
     $wp_content_dirname   = ltrim( str_replace( home_url(), '', WP_CONTENT_URL ), '/' ) . '/';
 	
@@ -482,6 +481,26 @@ function __rocket_fix_ssl_minify( $url ) {
 }
 
 /**
+ * Extract all enqueued CSS files which should be exclude to the minification
+ *
+ * @since 2.6
+ */
+add_action( 'wp_print_styles', '__rocket_extract_excluded_css_files' );
+function __rocket_extract_excluded_css_files() {
+	global $rocket_excluded_enqueue_css, $wp_styles;
+	
+	$excluded_handle = array( 
+		// None for the moment
+	);
+	
+	foreach( $wp_styles->queue as $handle ) {
+		if ( in_array( $handle, $excluded_handle ) || strstr( $wp_styles->registered[$handle]->args, 'only screen and' ) ) {
+			$rocket_excluded_enqueue_css[] = rocket_clean_exclude_file( rocket_set_internal_url_scheme( $wp_styles->registered[$handle]->src ) );
+		}
+	}
+}
+
+/**
  * Extract all enqueued JS files which should be insert in the footer
  *
  * @since 2.6
@@ -502,7 +521,7 @@ function __rocket_extract_js_files_from_footer() {
 	
 	foreach( $wp_scripts->in_footer as $handle ) {
 		if( in_array( $handle, $wp_scripts->done ) ) {
-			$rocket_enqueue_js_in_footer[] = set_url_scheme( $wp_scripts->registered[$handle]->src );
+			$rocket_enqueue_js_in_footer[] = rocket_set_internal_url_scheme( $wp_scripts->registered[$handle]->src );
 		}
 	}
 }

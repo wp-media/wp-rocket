@@ -289,6 +289,32 @@ function get_rocket_cache_query_string() {
 }
 
 /**
+ * Get all CSS files to exclude to the minification.
+ *
+ * @since 2.6
+ *
+ * @return array List of excluded CSS files.
+ */
+function get_rocket_exclude_css() {
+	global $rocket_excluded_enqueue_css;
+	
+	$css_files = get_rocket_option( 'exclude_css', array() );
+	$css_files = array_map( 'rocket_set_internal_url_scheme', $css_files );
+	$css_files = array_unique( array_merge( $css_files, (array) $rocket_excluded_enqueue_css ) );
+	
+	/**
+	 * Filter CSS files to exclude to the minification.
+	 *
+	 * @since 2.6
+	 *
+	 * @param array $css_files List of excluded CSS files.
+	*/
+	$css_files = apply_filters( 'rocket_exclude_css', $css_files );
+	
+	return $css_files;
+}
+
+/**
  * Get all JS files to move in the footer during the minification.
  *
  * @since 2.6
@@ -300,7 +326,7 @@ function get_rocket_minify_js_in_footer() {
 	
 	$js_files = get_rocket_option( 'minify_js_in_footer', array() );
 	$js_files = array_map( 'rocket_set_internal_url_scheme', $js_files );
-	$js_files = array_unique( array_merge( $js_files, $rocket_enqueue_js_in_footer ) );
+	$js_files = array_unique( array_merge( $js_files, (array) $rocket_enqueue_js_in_footer ) );
 	
 	/**
 	 * Filter JS files to move in the footer during the minification.
@@ -310,6 +336,7 @@ function get_rocket_minify_js_in_footer() {
 	 * @param array $js_files List of JS files.
 	*/
 	$js_files = apply_filters( 'rocket_minify_js_in_footer', $js_files );
+	
 	return $js_files;
 }
 
