@@ -370,7 +370,14 @@ function rocket_button( $args )
 	}
 ?>
 	<fieldset class="fieldname-<?php echo $class; ?> fieldtype-button">
-		<a href="<?php echo esc_url( $button['url'] ); ?>" id="<?php echo $id; ?>" class="<?php echo $button_style; ?> rocketicon rocketicon-<?php echo $class; ?>"><?php echo wp_kses_post( $button['button_label'] ); ?></a>
+		<?php
+		if ( isset( $button['url'] ) ) {
+			echo '<a href="' . esc_url( $button['url'] ) . '" id="' . $id . '" class="' . $button_style . ' rocketicon rocketicon-'. $class . '">' . wp_kses_post( $button['button_label'] ) . '</a>';
+		} else {
+			echo '<button id="' . $id . '" class="' . $button_style . ' rocketicon rocketicon-'. $class . '">' . wp_kses_post( $button['button_label'] ) . '</button>';
+		}
+		?>
+		
 
 		<?php echo apply_filters( 'rocket_help', $desc, sanitize_key( strip_tags( $button['button_label'] ) ), 'description' ); ?>
 		<?php echo apply_filters( 'rocket_help', $help, sanitize_key( strip_tags( $button['button_label'] ) ), 'help' ); ?>
