@@ -45,8 +45,15 @@ function rocket_exclude_deferred_js( $buffer )
 add_action( 'wp_footer', 'rocket_insert_deferred_js', PHP_INT_MAX );
 function rocket_insert_deferred_js( $buffer )
 {
-	// Don't add anything on 404 page
-	if( is_404() ) {
+	// Don't add anything on 404 page or on a page without these query strings
+	if ( is_404() || ( ! empty( $_GET )
+		&& ( ! isset( $_GET['utm_source'], $_GET['utm_medium'], $_GET['utm_campaign'] ) )
+		&& ( ! isset( $_GET['fb_action_ids'], $_GET['fb_action_types'], $_GET['fb_source'] ) )
+		&& ( ! isset( $_GET['gclid'] ) )
+		&& ( ! isset( $_GET['permalink_name'] ) )
+		&& ( ! isset( $_GET['lp-variation-id'] ) )
+		&& ( ! isset( $_GET['lang'] ) ) )
+	) {
 		return;
 	}
 	
