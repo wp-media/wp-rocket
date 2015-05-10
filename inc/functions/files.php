@@ -662,7 +662,10 @@ function rocket_fetch_and_cache_minify( $url, $pretty_url )
 		if ( ! is_dir( $cache_path ) ) {
 			rocket_mkdir_p( $cache_path );
 		}
-
+		
+		// Apply CDN on CSS properties
+		$content = rocket_cdn_css_properties( $content );
+		
 		// Save cache file
 		if( rocket_put_content( $pretty_path, $content ) ) {
 			return true;

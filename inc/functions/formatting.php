@@ -88,7 +88,7 @@ function rocket_add_url_protocol( $url ) {
  */
 function rocket_set_internal_url_scheme( $url ) {
 	$tmp_url = set_url_scheme( $url );
-    
+
     if( parse_url( $tmp_url, PHP_URL_HOST ) == parse_url( home_url(), PHP_URL_HOST ) ) {
             $url = $tmp_url;
     }
@@ -159,7 +159,8 @@ function get_rocket_cnames_host( $zones = array( 'all' ) ) {
  */
 function get_rocket_cdn_url( $url, $zone = array( 'all' ) )
 {
-	$cnames = get_rocket_cdn_cnames( $zone );
+	$cnames             = get_rocket_cdn_cnames( $zone );
+	$wp_content_dirname = ltrim( str_replace( home_url(), '', WP_CONTENT_URL ), '/' ) . '/';
 
 	if ( ( defined( 'DONOTCDN' ) && DONOTCDN ) || (int) get_rocket_option('cdn') == 0 || empty( $cnames ) || ! is_rocket_cdn_on_ssl() || is_rocket_post_excluded_option( 'cdn' ) ) {
 		return $url;
@@ -178,12 +179,13 @@ function get_rocket_cdn_url( $url, $zone = array( 'all' ) )
 		$home = rocket_remove_url_protocol( home_url() );
 
 		// Check if URL is external
-		if ( strpos( $path, $home ) === false ) {
+		if ( strpos( $path, $home ) === false && ! preg_match( '#(' . $wp_content_dirname . '|wp-includes)#', $path ) ) {
 			return $url;
 		} else {
 			$path = str_replace( $home, '', ltrim( $path, '//' ) );
 		}
 	}
+
 	$url = rtrim( $cnames[(abs(crc32($path))%count($cnames))], '/' ) . '/' . ltrim( $path, '/' ) . $query;
 	$url = rocket_add_url_protocol( $url );
 	return $url;
@@ -200,7 +202,46 @@ function rocket_cdn_url( $url, $zone = array( 'all' ) )
 }
 
 /*
- * Wrapper of get_rocket_minify_files() and echoes the result
+ * Apply CDN on CSS properties (background, background-image, @import, src:url (fonts))
+ *
+ * @since 2.6
+ */
+function rocket_cdn_css_properties( $buffer ) {
+	$zone   = array( 'all', 'css_and_js', 'css' );
+	$cnames = get_rocket_cdn_cnames( $zone );
+	
+	/**
+	  * Allow a "force deactivation" link to be printed, use at your own risks
+	  *
+	  * @since 2.0.0
+	  *
+	  * @param bool true will print the link
+	 */
+	$do_rocket_cdn_css_properties = apply_filters( 'do_rocket_cdn_css_properties', true );
+	
+	if ( ! get_rocket_option( 'cdn' ) || ! $cnames || ! $do_rocket_cdn_css_properties ) {
+		return $buffer;
+	}
+
+	preg_match_all( '/url\(([^)]+)\)/i', $buffer, $matches );
+
+	if( is_array( $matches ) ) {
+		$i=0;
+		foreach( $matches[1] as $url ) {
+			$url      = trim( $url," \t\n\r\0\x0B\"'" );
+			$url      = get_rocket_cdn_url( $url, $zone );
+			$property = str_replace( $matches[1][$i], $url, $matches[0][$i] );
+			$buffer   = str_replace( $matches[0][$i], $property, $buffer );
+			
+			$i++;
+		}
+	}
+
+	return $buffer;
+}
+
+/*
+ * Apply CDN on custom data attributes.
  *
  * @since 2.5.5
  *
