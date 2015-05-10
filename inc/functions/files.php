@@ -664,7 +664,9 @@ function rocket_fetch_and_cache_minify( $url, $pretty_url )
 		}
 		
 		// Apply CDN on CSS properties
-		$content = rocket_cdn_css_properties( $content );
+		if( strrpos( $pretty_path, '.css' ) ) {
+			$content = rocket_cdn_css_properties( $content );	
+		}
 		
 		// Save cache file
 		if( rocket_put_content( $pretty_path, $content ) ) {
