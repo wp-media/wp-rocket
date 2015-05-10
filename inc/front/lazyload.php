@@ -66,7 +66,17 @@ function __rocket_lazyload_replace_callback( $matches ) {
 
 	// TO DO - improve this code with a preg_match - it's ugly!!!!
 	if ( strpos( $matches[1] . $matches[3], 'data-no-lazy=' ) === false && strpos( $matches[1] . $matches[3], 'data-lazy-original=' ) === false && strpos( $matches[1] . $matches[3], 'data-lazy-src=' ) === false && strpos( $matches[1] . $matches[3], 'data-src=' ) === false && strpos( $matches[1] . $matches[3], 'data-lazyload=' ) === false && strpos( $matches[1] . $matches[3], 'data-bgposition=' ) === false && strpos( $matches[2], '/wpcf7_captcha/' ) === false && strpos( $matches[2], 'timthumb.php?src' ) === false && strpos( $matches[1] . $matches[3], 'data-envira-src=' ) === false && strpos( $matches[1] . $matches[3], 'fullurl=' ) === false && strpos( $matches[1] . $matches[3], 'lazy-slider-img=' ) === false && strpos( $matches[1] . $matches[3], 'srcset=' ) === false ) {
-		$html = sprintf( '<img%1$s src="data:image/gif;base64,R0lGODdhAQABAPAAAP///wAAACwAAAAAAQABAEACAkQBADs=" data-lazy-src=%2$s%3$s><noscript><img%1$s src=%2$s%3$s></noscript>',
+		
+		/**
+		 * Filter the LazyLoad placeholder on src attribute
+		 *
+		 * @since 2.6
+		 *
+		 * @param string Output that will be printed
+		*/
+		$placeholder = apply_filters( 'rocket_lazyload_placeholder', 'data:image/gif;base64,R0lGODdhAQABAPAAAP///wAAACwAAAAAAQABAEACAkQBADs=' );
+		
+		$html = sprintf( '<img%1$s src="' . $placeholder . '" data-lazy-src=%2$s%3$s><noscript><img%1$s src=%2$s%3$s></noscript>',
 						$matches[1], $matches[2], $matches[3] );
 
 		/**
@@ -74,7 +84,7 @@ function __rocket_lazyload_replace_callback( $matches ) {
 		 *
 		 * @since 2.3.8
 		 *
-		 * @param array $html Output that will be printed
+		 * @param string $html Output that will be printed
 		*/
 		$html = apply_filters( 'rocket_lazyload_html', $html, true );
 
@@ -184,8 +194,11 @@ function rocket_translate_smiley( $matches ) {
 
 	// Don't LazyLoad if process is stopped for these reasons
 	if ( get_rocket_option( 'lazyload' ) && apply_filters( 'do_rocket_lazyload', true ) && ! is_feed() && ! is_preview() && ( ! defined( 'DONOTLAZYLOAD' ) || ! DONOTLAZYLOAD ) ) {
-
-		return sprintf( ' <img src="data:image/gif;base64,R0lGODdhAQABAPAAAP///wAAACwAAAAAAQABAEACAkQBADs=" data-lazy-src="%s" alt="%s" class="wp-smiley" /> ', esc_url( $src_url ), esc_attr( $smiley ) );
+		
+		/** This filter is documented in inc/front/lazyload.php */
+		$placeholder = apply_filters( 'rocket_lazyload_placeholder', 'data:image/gif;base64,R0lGODdhAQABAPAAAP///wAAACwAAAAAAQABAEACAkQBADs=' );
+		
+		return sprintf( ' <img src="' . $placeholder . '" data-lazy-src="%s" alt="%s" class="wp-smiley" /> ', esc_url( $src_url ), esc_attr( $smiley ) );
 
 	} else {
 
@@ -215,8 +228,11 @@ function rocket_lazyload_iframes( $html ) {
 		if ( strpos( $iframe, 'gform_ajax_frame' ) ) {
 			continue;
 		}
-
-		$iframe = preg_replace( '/<iframe(.*?)src=/is', '<iframe$1src="data:image/gif;base64,R0lGODdhAQABAPAAAP///wAAACwAAAAAAQABAEACAkQBADs=" data-lazy-src=', $iframe );
+		
+		/** This filter is documented in inc/front/lazyload.php */
+		$placeholder = apply_filters( 'rocket_lazyload_placeholder', 'data:image/gif;base64,R0lGODdhAQABAPAAAP///wAAACwAAAAAAQABAEACAkQBADs=' );
+		
+		$iframe = preg_replace( '/<iframe(.*?)src=/is', '<iframe$1src="' . $placeholder . '" data-lazy-src=', $iframe );
 
 		$html = str_replace( $matches[0][$k], $iframe, $html );
 		
