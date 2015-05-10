@@ -12,3 +12,4 @@ input[type=number].small-text{height:28px}
 .rkt-tab-txt ol li h2 a{font-size:0.8em}
 .button-link:after{content:" \f310";font-size:1.1em;padding-left:3px}
 .rkt-module-drag{cursor: move;}
+.settings_page_wprocket input.has-parent{margin-left: 20px;}

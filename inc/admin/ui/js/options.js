@@ -62,7 +62,25 @@ jQuery( document ).ready( function($){
 		}
 
 	});
-
+	
+	// Inputs with parent
+	$('input[data-parent]').each( function() {
+		var input  = $(this),
+			parent = $('#'+$(this).data('parent'));
+		
+		parent.change( function() {
+			if( $(this).is(':checked') ) {
+				input.parents('fieldset').show(200);
+			} else {
+				input.parents('fieldset').hide(200);
+			}
+		});
+		
+		if( ! parent.is(':checked') ) {
+			$(this).parents('fieldset').hide();
+		}
+	});
+	
 	// Tabs
 	$('#rockettabs').css({padding: '5px', border: '1px solid #ccc', borderTop: '0px'});
 	$('.nav-tab-wrapper a').css({outline: '0px'});

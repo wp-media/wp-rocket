@@ -186,13 +186,13 @@ function rocket_minify_html( $buffer )
 	    require( WP_ROCKET_PATH . 'min/lib/Minify/HTML.php' );
 
 		// Check if Minify_CSS_Compressor is enable
-		if ( ! class_exists( 'Minify_CSS_Compressor' ) ) {
+		if ( ! class_exists( 'Minify_CSS_Compressor' ) && get_rocket_option( 'minify_html_inline_css', false ) ) {
 			require( WP_ROCKET_PATH . 'min/lib/Minify/CSS/Compressor.php' );
 			$html_options['cssMinifier'] = 'rocket_minify_inline_css';
 		}
 
 		// Check if JSMin is enable
-		if ( ! class_exists( 'JSMin' ) ) {
+		if ( ! class_exists( 'JSMin' ) && get_rocket_option( 'minify_html_inline_js', false ) ) {
 			require( WP_ROCKET_PATH . 'min/lib/JSMin.php' );
 			$html_options['jsMinifier'] = 'rocket_minify_inline_js';
 		}

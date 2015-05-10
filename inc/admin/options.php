@@ -37,14 +37,16 @@ function rocket_field( $args )
 		}
 		$args['label_for'] 	= isset( $args['label_for'] ) ? $args['label_for'] : '';
 		$args['name'] 		= isset( $args['name'] ) ? $args['name'] : $args['label_for'];
-		$class				= isset( $args['class'] ) ? sanitize_html_class( $args['class'] ) : sanitize_html_class( $args['name'] );
+		$parent 			= isset( $args['parent'] ) ? 'data-parent="' . $args['parent' ]. '"' : null;
 		$placeholder 		= isset( $args['placeholder'] ) ? 'placeholder="'. $args['placeholder'].'" ' : '';
+		$class				= isset( $args['class'] ) ? sanitize_html_class( $args['class'] ) : sanitize_html_class( $args['name'] );
+		$class 				.= ( $parent ) ? ' has-parent' : null;
 		$label 				= isset( $args['label'] ) ? $args['label'] : '';
 		$default			= isset( $args['default'] ) ? $args['default'] : '';
 		$readonly			= isset( $args['readonly'] ) && $args['readonly'] ? ' readonly="readonly" disabled="disabled"' : '';
 		$cols 				= isset( $args['cols'] ) ? (int) $args['cols'] : 50;
 		$rows 				= isset( $args['rows'] ) ? (int) $args['rows'] : 5;
-
+		
 		if( ! isset( $args['fieldset'] ) || 'start' == $args['fieldset'] ){
 			echo '<fieldset class="fieldname-'.sanitize_html_class( $args['name'] ).' fieldtype-'.sanitize_html_class( $args['type'] ).'">';
 		}
@@ -89,7 +91,7 @@ function rocket_field( $args )
 			case 'checkbox' : ?>
 
 					<legend class="screen-reader-text"><span><?php echo isset( $args['label_screen'] ) ? $args['label_screen'] : null; ?></span></legend>
-					<label><input type="checkbox" id="<?php echo $args['name']; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]" value="1"<?php echo $readonly; ?> <?php checked( get_rocket_option( $args['name'], 0 ), 1 ); ?>/> <?php echo $args['label']; ?>
+					<label><input type="checkbox" id="<?php echo $args['name']; ?>" class="<?php echo $class; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]" value="1"<?php echo $readonly; ?> <?php checked( get_rocket_option( $args['name'], 0 ), 1 ); ?> <?php echo $parent; ?>/> <?php echo $args['label']; ?>
 					</label>
 
 			<?php
@@ -478,7 +480,7 @@ function rocket_display_options()
 						<a href="#tab_tutorials" class="nav-tab"><?php _e( 'Tutorials', 'rocket' ); ?></a>
 					<?php } ?>
 					<a href="#tab_faq" class="nav-tab"><?php _e( 'FAQ', 'rocket' ); ?></a>
-					<a href="#tab_support" class="nav-tab file-error"><?php _e( 'Support', 'rocket' ); ?></a>
+					<a href="#tab_support" class="nav-tab"><?php _e( 'Support', 'rocket' ); ?></a>
 				<?php } ?>
 			<?php }else{ ?>
 				<a href="#tab_apikey" class="nav-tab"><?php _e( 'License', 'rocket' ); ?></a>

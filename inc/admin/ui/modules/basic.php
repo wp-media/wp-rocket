@@ -42,7 +42,21 @@ add_settings_field(
 			'name'         => 'minify_html',
 			'label_screen' => __( 'HTML Files minification', 'rocket' )
 		),
-					array(
+		array(
+			'parent'	   => 'minify_html',
+			'type'         => 'checkbox',
+			'label'        => 'Inline CSS',
+			'name'         => 'minify_html_inline_css',
+			'label_screen' => 'Inline CSS minification',
+		),
+		array(
+			'parent'	   => 'minify_html',
+			'type'         => 'checkbox',
+			'label'        => 'Inline JS',
+			'name'         => 'minify_html_inline_js',
+			'label_screen' => 'Inline JS minification'
+		),
+		array(
 			'type'		   => 'checkbox',
 			'label'		   => 'Google Fonts',
 			'name'		   => 'minify_google_fonts',
@@ -63,10 +77,7 @@ add_settings_field(
 		array(
 			'type'			=> 'helper_description',
 			'name'			=> 'minify',
-			'description'  => __( 'Minification removes any spaces and comments present in the CSS and JavaScript files.', 'rocket' ) . '<br/>' .
-								  __( 'This mechanism reduces the weight of each file and allows a faster reading of browsers and search engines.', 'rocket' ) . '<br/>' .
-								  __( 'Concatenation combines all CSS and JavaScript files.', 'rocket' ) . '<br/>' .
-								  __( 'This mechanism reduces the number of HTTP requests and improves the loading time.', 'rocket' )
+			'description'  => __( 'Minification removes any spaces and comments present in the CSS and JavaScript files.', 'rocket' ) . '<br/>' . __( 'This mechanism reduces the weight of each file and allows a faster reading of browsers and search engines.', 'rocket' ) . '<br/>' . __( 'Concatenation combines all CSS and JavaScript files.', 'rocket' ) . '<br/>' . __( 'This mechanism reduces the number of HTTP requests and improves the loading time.', 'rocket' )
 		),
 		array(
 			'type'			=> 'helper_warning',
@@ -160,12 +171,12 @@ add_settings_field(
 				'HOUR_IN_SECONDS'   => __( 'hour(s)', 'rocket' ),
 				'DAY_IN_SECONDS'    => __( 'day(s)', 'rocket' )
 			)
-			),
+		),
 		array(
 			'type'         => 'helper_description',
 			'name'         => 'purge',
 			'description'  => __( 'By default, cache lifespan is 24 hours. This means that once created, the cache files are automatically removed after 24 hours before being recreated.', 'rocket' ). '<br/>' . __('This can be useful if you display your latest tweets or rss feeds in your sidebar, for example.', 'rocket' ),
-			),
+		),
 		array(
 			'type'         => 'helper_help',
 			'name'         => 'purge',

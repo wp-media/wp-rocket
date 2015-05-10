@@ -92,6 +92,8 @@ function rocket_first_install()
 			'minify_js_in_footer'      => array(),
 			'minify_google_fonts'      => 0,
 			'minify_html'              => 0,
+			'minify_html_inline_css'   => 0,
+			'minify_html_inline_js'    => 0,
 			'dns_prefetch'             => 0,
 			'cdn'                      => 0,
 			'cdn_cnames'               => array(),
