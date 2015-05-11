@@ -49,6 +49,16 @@ function get_rocket_htaccess_marker()
 {
 	// Recreate WP Rocket marker
 	$marker  = '# BEGIN WP Rocket v' . WP_ROCKET_VERSION . PHP_EOL;
+	
+	/**
+	 * Add custom rules before rules added by WP Rocket
+	 *
+	 * @since 2.6
+	 *
+	 * @param string $before_marker The content of all rules
+	*/
+	$marker .= apply_filters( 'before_rocket_htaccess_rules', null );
+	
 	$marker .= get_rocket_htaccess_charset();
 	$marker .= get_rocket_htaccess_etag();
 	$marker .= get_rocket_htaccess_web_fonts_access();
@@ -61,8 +71,17 @@ function get_rocket_htaccess_marker()
 		$marker .= get_rocket_htaccess_mod_rewrite();	
 	}
 	
+	/**
+	 * Add custom rules after rules added by WP Rocket
+	 *
+	 * @since 2.6
+	 *
+	 * @param string $after_marker The content of all rules
+	*/
+	$marker .= apply_filters( 'after_rocket_htaccess_rules', null );
+	
 	$marker .= '# END WP Rocket' . PHP_EOL;
-
+	
 	/**
 	 * Filter rules added by WP Rocket in .htaccess
 	 *
@@ -71,7 +90,7 @@ function get_rocket_htaccess_marker()
 	 * @param string $marker The content of all rules
 	*/
 	$marker = apply_filters( 'rocket_htaccess_marker', $marker );
-
+	
 	return $marker;
 }
 
