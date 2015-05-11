@@ -324,40 +324,7 @@ function rocket_minify_js( $buffer )
     $excluded_js 		  = str_replace( '//' . $home_host , '', $excluded_js ); 
     $js_in_footer		  = get_rocket_minify_js_in_footer();
     $wp_content_dirname   = ltrim( str_replace( home_url(), '', WP_CONTENT_URL ), '/' ) . '/';
-
-	/**
-	 * Filter JS externals files to exclude of the minification process (do not move into the header)
-	 *
-	 * @since 2.2
-	 *
-	 * @param array Hostname of JS files to exclude
-	 */
-	$excluded_external_js = apply_filters( 'rocket_minify_excluded_external_js', array( 
-		'forms.aweber.com', 
-		'video.unrulymedia.com', 
-		'gist.github.com', 
-		'stats.wp.com', 
-		'stats.wordpress.com', 
-		'www.statcounter.com', 
-		'widget.rafflecopter.com', 
-		'widget-prime.rafflecopter.com', 
-		'widget.supercounters.com', 
-		'releases.flowplayer.org', 
-		'tools.meetaffiliate.com', 
-		'c.ad6media.fr', 
-		'cdn.stickyadstv.com', 
-		'www.smava.de', 
-		'contextual.media.net', 
-		'app.getresponse.com', 
-		'ap.lijit.com', 
-		'adserver.reklamstore.com', 
-		's0.wp.com', 
-		'wprp.zemanta.com', 
-		'files.bannersnack.com', 
-		'smarticon.geotrust.com',
-		'js.gleam.io',
-		'script.ioam.de'
-	) );
+	$excluded_external_js = get_rocket_minify_excluded_external_js();
 	
     // Get all JS files with this regex
     preg_match_all( apply_filters( 'rocket_minify_js_regex_pattern', '#<script\s*.+src=[\'|"]([^\'|"]+\.js?.+)[\'|"]?(.+)></script>#iU' ), $buffer, $tags_match );
@@ -518,7 +485,7 @@ function __rocket_extract_js_files_from_footer() {
 	if ( defined( 'NRELATE_PLUGIN_VERSION' ) ) {
 		$rocket_enqueue_js_in_footer[] = ( NRELATE_JS_DEBUG ) ? 'http://staticrepo.nrelate.com/common_wp/'. NRELATE_PLUGIN_VERSION . '/nrelate_js.js' : NRELATE_ADMIN_URL . '/nrelate_js.min.js';
 	}
-	
+		
 	foreach( $wp_scripts->in_footer as $handle ) {
 		if( in_array( $handle, $wp_scripts->done ) ) {
 			$rocket_enqueue_js_in_footer[] = rocket_set_internal_url_scheme( $wp_scripts->registered[$handle]->src );

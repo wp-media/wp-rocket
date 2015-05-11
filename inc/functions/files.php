@@ -624,60 +624,6 @@ function rocket_put_content( $file, $content )
 }
 
 /**
- * Check if minify cache file exist and create it if not
- *
- * @since 2.1
- *
- * @param string $url 		 The minified URL with Google Minify Code
- * @param string $pretty_url The minified URL cache file
- * @return bool
- */
-function rocket_fetch_and_cache_minify( $url, $pretty_url )
-{
-	// Check if php-curl is enabled
-	if ( ! function_exists( 'curl_init' ) || ! function_exists( 'curl_exec' ) ) {
-		return false;
-	}
-
-	$pretty_path = str_replace( WP_ROCKET_MINIFY_CACHE_URL, WP_ROCKET_MINIFY_CACHE_PATH, $pretty_url );
-
-	// If minify cache file is already exist, return to get a coffee :)
-	if ( file_exists( $pretty_path ) ) {
-		return true;
-	}
-
-	$ch = curl_init();
-	curl_setopt ($ch, CURLOPT_URL, $url);
-	curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
-	curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, 5);
-	curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, false);
-	curl_setopt ($ch, CURLOPT_USERAGENT, 'WP-Rocket-Minify');
-
-	$content = curl_exec($ch);
-	curl_close($ch);
-
-	if ( $content ) {
-		// Create cache folders of the request uri
-		$cache_path = WP_ROCKET_MINIFY_CACHE_PATH . get_current_blog_id() . '/';
-		if ( ! is_dir( $cache_path ) ) {
-			rocket_mkdir_p( $cache_path );
-		}
-		
-		// Apply CDN on CSS properties
-		if( strrpos( $pretty_path, '.css' ) ) {
-			$content = rocket_cdn_css_properties( $content );	
-		}
-		
-		// Save cache file
-		if( rocket_put_content( $pretty_path, $content ) ) {
-			return true;
-		}
-	}
-
-	return false;
-}
-
-/**
  * Try to find the correct wp-config.php file, support one level up in filetree
  *
  * @since 2.1
