@@ -139,6 +139,37 @@ add_settings_field(
 	)
 );
 add_settings_field(
+	'rocket_minify_combine_all',
+	 __( 'Reducing the number of minified files in one file on:', 'rocket' ),
+	'rocket_field',
+	'advanced',
+	'rocket_display_imp_options',
+	array(
+		array(
+			'type'         => 'checkbox',
+			'label'        => 'CSS',
+			'name'         => 'minify_css_combine_all',
+			'label_screen' => __( 'CSS Files Minification', 'rocket' )
+		),
+		array(
+			'type'		   => 'checkbox',
+			'label'		   => 'JS',
+			'name'		   => 'minify_js_combine_all',
+			'label_screen' => __( 'JS Files minification', 'rocket' ),
+		),
+		array(
+			'type'			=> 'helper_description',
+			'name'			=> 'rocket_minify_combine_all',
+			'description'  => __( '<strong>Note:</strong> We combine the minified files in little groups <strong>to ensure the best compatibility and better performance</strong>.', 'rocket' ) . '<br/>' . __( 'However <strong>you can force the minification to create only 1 file</strong> by activating this option.', 'rocket' ) . '<br/>' . __( 'But it\'s not recommended to do that because <strong>you won\'t take advantage of the parallelization of the download</strong>: it\'s faster to download 4 files in parallel rather than one big file.', 'rocket' )
+		),
+		array(
+			'type'			=> 'helper_warning',
+			'name'			=> 'rocket_minify_combine_all',
+			'description'  => __( 'Depending to your server configuration, these options can break your website. If you have any issues, you must deactivate it!', 'rocket' ),
+		),
+	)
+);
+add_settings_field(
 	'rocket_exclude_css',
 	__( '<b>CSS</b> files to exclude from minification:', 'rocket' ),
 	'rocket_field',
