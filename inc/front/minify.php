@@ -507,7 +507,7 @@ function __rocket_extract_js_files_from_footer() {
 	foreach( $wp_scripts->in_footer as $handle ) {
 		$script_src = $wp_scripts->registered[$handle]->src;
 		
-		if( in_array( $handle, $wp_scripts->done ) && ! in_array( $handle, $excluded_handle ) && ! in_array( parse_url( $script_src, PHP_URL_HOST ), get_rocket_minify_excluded_external_js() ) ) {
+		if( in_array( $handle, $wp_scripts->done ) && ! in_array( parse_url( $script_src, PHP_URL_HOST ), get_rocket_minify_excluded_external_js() ) ) {
 			$rocket_enqueue_js_in_footer[] = rocket_set_internal_url_scheme( $script_src );
 		}
 	}
