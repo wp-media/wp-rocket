@@ -231,7 +231,7 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version )
 
 		if ( !empty( $options['minify_html'] ) ) {
 			$options['minify_html_inline_css'] = 1;
-			$options['minify_html_inline_css'] = 1;
+			$options['minify_html_inline_js']  = 1;
 		}
 		
 		update_option( WP_ROCKET_SLUG, $options );
