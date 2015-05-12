@@ -57,7 +57,7 @@ function get_rocket_htaccess_marker()
 	 *
 	 * @param string $before_marker The content of all rules
 	*/
-	$marker .= apply_filters( 'before_rocket_htaccess_rules', null );
+	$marker .= apply_filters( 'before_rocket_htaccess_rules', '' );
 	
 	$marker .= get_rocket_htaccess_charset();
 	$marker .= get_rocket_htaccess_etag();
@@ -78,7 +78,7 @@ function get_rocket_htaccess_marker()
 	 *
 	 * @param string $after_marker The content of all rules
 	*/
-	$marker .= apply_filters( 'after_rocket_htaccess_rules', null );
+	$marker .= apply_filters( 'after_rocket_htaccess_rules', '' );
 	
 	$marker .= '# END WP Rocket' . PHP_EOL;
 	
