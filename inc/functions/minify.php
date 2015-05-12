@@ -1,4 +1,4 @@
-<?php
+<?php 
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 /**
@@ -40,13 +40,12 @@ function rocket_fetch_and_cache_minify( $url, $pretty_url )
 		if ( ! is_dir( $cache_path ) ) {
 			rocket_mkdir_p( $cache_path );
 		}
-
+		
 		// Apply CDN on CSS properties
-		$do_rocket_cdn_css_properties = apply_filters( 'do_rocket_cdn_css_properties', true );
-		if( strrpos( $pretty_path, '.css' ) && $do_rocket_cdn_css_properties ) {
-			$content = rocket_cdn_css_properties( $content );
+		if( strrpos( $pretty_path, '.css' ) ) {
+			$content = rocket_cdn_css_properties( $content );	
 		}
-
+		
 		// Save cache file
 		if( rocket_put_content( $pretty_path, $content ) ) {
 			return true;
@@ -202,32 +201,32 @@ function get_rocket_minify_excluded_external_js() {
 	 *
 	 * @param array Hostname of JS files to exclude
 	 */
-	$excluded_external_js = apply_filters( 'rocket_minify_excluded_external_js', array(
-		'forms.aweber.com',
-		'video.unrulymedia.com',
-		'gist.github.com',
-		'stats.wp.com',
-		'stats.wordpress.com',
-		'www.statcounter.com',
-		'widget.rafflecopter.com',
-		'widget-prime.rafflecopter.com',
-		'widget.supercounters.com',
-		'releases.flowplayer.org',
-		'tools.meetaffiliate.com',
-		'c.ad6media.fr',
-		'cdn.stickyadstv.com',
-		'www.smava.de',
-		'contextual.media.net',
-		'app.getresponse.com',
-		'ap.lijit.com',
-		'adserver.reklamstore.com',
-		's0.wp.com',
-		'wprp.zemanta.com',
-		'files.bannersnack.com',
+	$excluded_external_js = apply_filters( 'rocket_minify_excluded_external_js', array( 
+		'forms.aweber.com', 
+		'video.unrulymedia.com', 
+		'gist.github.com', 
+		'stats.wp.com', 
+		'stats.wordpress.com', 
+		'www.statcounter.com', 
+		'widget.rafflecopter.com', 
+		'widget-prime.rafflecopter.com', 
+		'widget.supercounters.com', 
+		'releases.flowplayer.org', 
+		'tools.meetaffiliate.com', 
+		'c.ad6media.fr', 
+		'cdn.stickyadstv.com', 
+		'www.smava.de', 
+		'contextual.media.net', 
+		'app.getresponse.com', 
+		'ap.lijit.com', 
+		'adserver.reklamstore.com', 
+		's0.wp.com', 
+		'wprp.zemanta.com', 
+		'files.bannersnack.com', 
 		'smarticon.geotrust.com',
 		'js.gleam.io',
 		'script.ioam.de'
 	) );
-
-	return $excluded_external_js;
+	
+	return $excluded_external_js;		
 }
