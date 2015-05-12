@@ -169,12 +169,12 @@ function __rocket_fix_mailchimp_main_css() {
 		rocket_mkdir_p( $cache_path );
 	}
 	
-	ob_start();
-	mailchimpSF_main_css();
-	$content = ob_get_contents();
-	ob_end_clean();
-	
 	if( ! file_exists( $css_path ) ) {
+		ob_start();
+		mailchimpSF_main_css();
+		$content = ob_get_contents();
+		ob_end_clean();
+		
 		rocket_put_content( $css_path, $content );
 	}
 	
