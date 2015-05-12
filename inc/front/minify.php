@@ -472,6 +472,10 @@ add_action( 'wp_print_styles', '__rocket_extract_excluded_css_files' );
 function __rocket_extract_excluded_css_files() {
 	global $rocket_excluded_enqueue_css, $wp_styles;
 	
+	if( ! is_array( $wp_styles->queue ) || ! get_rocket_option( 'minify_css', false ) ) {
+		return;
+	}
+	
 	$excluded_handle = array( 
 		// None for the moment
 	);
@@ -491,6 +495,10 @@ function __rocket_extract_excluded_css_files() {
 add_action( 'wp_print_footer_scripts', '__rocket_extract_js_files_from_footer' );
 function __rocket_extract_js_files_from_footer() {
 	global $rocket_enqueue_js_in_footer, $wp_scripts;
+	
+	if( ! is_array( $wp_scripts->in_footer ) || ! get_rocket_option( 'minify_js', false ) ) {
+		return;
+	}
 	
 	// Digg Digg (https://wordpress.org/plugins/digg-digg/)
 	if ( defined( 'DD_PLUGIN_URL' ) ) {
