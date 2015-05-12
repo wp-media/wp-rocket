@@ -37,7 +37,7 @@ function rocket_field( $args )
 		}
 		$args['label_for'] 	= isset( $args['label_for'] ) ? $args['label_for'] : '';
 		$args['name'] 		= isset( $args['name'] ) ? $args['name'] : $args['label_for'];
-		$parent 			= isset( $args['parent'] ) ? 'data-parent="' . $args['parent' ]. '"' : null;
+		$parent 			= isset( $args['parent'] ) ? 'data-parent="' . sanitize_html_class( $args['parent' ] ). '"' : null;
 		$placeholder 		= isset( $args['placeholder'] ) ? 'placeholder="'. $args['placeholder'].'" ' : '';
 		$class				= isset( $args['class'] ) ? sanitize_html_class( $args['class'] ) : sanitize_html_class( $args['name'] );
 		$class 				.= ( $parent ) ? ' has-parent' : null;
