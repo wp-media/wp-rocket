@@ -136,7 +136,7 @@ function rocket_concatenate_google_fonts( $buffer ) {
 	}
 	
 	foreach ( $matches[1] as $font ) {
-		if ( ! preg_match('/rel=["\']dns-prefetch["\']/', $matches[0][$i] ) ) {
+		if ( ! preg_match('/rel=["\']dns-prefetch["\']/', $matches[0][ $i ] ) ) {
 			// Get fonts name
 			$font = explode( 'family=', $font );
 			$font = explode( '&', $font[1] );
@@ -152,7 +152,7 @@ function rocket_concatenate_google_fonts( $buffer ) {
 		    }
 	
 		    // Delete the Google Fonts tag
-		    $buffer = str_replace( $matches[0][$i], '', $buffer );	
+		    $buffer = str_replace( $matches[0][ $i ], '', $buffer );	
 		}
 		
 	    $i++;
@@ -263,7 +263,7 @@ function rocket_minify_css( $buffer )
             $excluded_tag = false;
 
             // Get URLs infos
-			$css_url  = parse_url( set_url_scheme( $tags_match[1][$i] ) );
+			$css_url  = parse_url( set_url_scheme( $tags_match[1][ $i ] ) );
 
 			// Get host for all langs
 			$langs_host = array();
@@ -338,7 +338,7 @@ function rocket_minify_js( $buffer )
             $excluded_tag = false;
 
 	        // Get URLs infos
-	        $js_url = parse_url( set_url_scheme( $tags_match[1][$i] ) );
+	        $js_url = parse_url( set_url_scheme( $tags_match[1][ $i ] ) );
 
 			// Get host for all langs
 			$langs_host = array();
@@ -368,7 +368,7 @@ function rocket_minify_js( $buffer )
 
 			// If it's an external file
 			} else {
-				if ( ! in_array( $tags_match[1][$i], $js_in_footer ) ) {
+				if ( ! in_array( $tags_match[1][ $i ], $js_in_footer ) ) {
 					$external_tags[] = $tag;
 				}
 			}
@@ -387,7 +387,7 @@ function rocket_minify_js( $buffer )
 	// Exclude JS files to insert in footer
 	foreach( $internal_files as $k=>$url ) {
 		if ( in_array( set_url_scheme( '//' . $home_host . $url ), $js_in_footer ) ) {
-			unset( $internal_files[$k] );
+			unset( $internal_files[ $k ] );
 		}
 	}
 
@@ -477,8 +477,8 @@ function __rocket_extract_excluded_css_files() {
 	);
 	
 	foreach( $wp_styles->queue as $handle ) {
-		if ( in_array( $handle, $excluded_handle ) || strstr( $wp_styles->registered[$handle]->args, 'only screen and' ) ) {
-			$rocket_excluded_enqueue_css[] = rocket_clean_exclude_file( rocket_set_internal_url_scheme( $wp_styles->registered[$handle]->src ) );
+		if ( in_array( $handle, $excluded_handle ) || strstr( $wp_styles->registered[ $handle ]->args, 'only screen and' ) ) {
+			$rocket_excluded_enqueue_css[] = rocket_clean_exclude_file( rocket_set_internal_url_scheme( $wp_styles->registered[ $handle ]->src ) );
 		}
 	}
 }
