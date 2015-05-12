@@ -205,7 +205,7 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version )
 	    // Create config file
 		rocket_generate_config_file();
 	}
-	
+
 	if ( version_compare( $actual_version, '2.3.3', '<' ) ) {
 		// Clean cache
 		rocket_clean_domain();
@@ -213,19 +213,29 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version )
 		// Create cache files
 		run_rocket_bot( 'cache-preload' );
 	}
-	
+
 	if ( version_compare( $actual_version, '2.3.9', '<' ) ) {
 		// Regenerate config file
 		rocket_generate_config_file();
 	}
-	
+
 	if ( version_compare( $actual_version, '2.4.1', '<' ) ) {
 		// Regenerate advanced-cache.php file
 		rocket_generate_advanced_cache_file();
 		delete_transient( 'rocket_ask_for_update' );
 	}
-	
+
 	if ( version_compare( $actual_version, '2.6', '<' ) ) {
+		// Activate Inline CSS & JS minification if HTML minification is activated
+		$options = get_option( WP_ROCKET_SLUG );
+
+		if ( !empty( $options['minify_html'] ) ) {
+			$options['minify_html_inline_css'] = 1;
+			$options['minify_html_inline_css'] = 1;
+		}
+		
+		update_option( WP_ROCKET_SLUG, $options );
+
 		// Regenerate advanced-cache.php file
 		rocket_generate_advanced_cache_file();
 	}
