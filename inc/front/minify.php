@@ -502,11 +502,13 @@ function __rocket_extract_js_files_from_footer() {
 		$rocket_enqueue_js_in_footer[] = ( NRELATE_JS_DEBUG ) ? 'http://staticrepo.nrelate.com/common_wp/'. NRELATE_PLUGIN_VERSION . '/nrelate_js.js' : NRELATE_ADMIN_URL . '/nrelate_js.min.js';
 	}
 		
-	$get_rocket_minify_excluded_external_js = get_rocket_minify_excluded_external_js();
+	$deferred_js_files    = get_rocket_deferred_js_files();
+	$excluded_external_js = get_rocket_minify_excluded_external_js();
+	
 	foreach( $wp_scripts->in_footer as $handle ) {
 		$script_src = $wp_scripts->registered[ $handle ]->src;
 		
-		if( in_array( $handle, $wp_scripts->done ) && ! in_array( parse_url( $script_src, PHP_URL_HOST ), $get_rocket_minify_excluded_external_js ) ) {
+		if( in_array( $handle, $wp_scripts->done ) && ! in_array( parse_url( $script_src, PHP_URL_HOST ), $excluded_external_js ) && ! in_array( $script_src, $deferred_js_files ) ) {
 			$rocket_enqueue_js_in_footer[] = rocket_set_internal_url_scheme( $script_src );
 		}
 	}

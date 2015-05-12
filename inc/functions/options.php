@@ -341,6 +341,26 @@ function get_rocket_minify_js_in_footer() {
 }
 
 /**
+ * Get list of JS files to deferred.
+ *
+ * @since 2.6
+ *
+ * @return array List of JS files.
+ */
+function get_rocket_deferred_js_files() {
+	/**
+	 * Filter list of Deferred JavaScript files
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param array List of Deferred JavaScript files
+	 */
+	$deferred_js_files = apply_filters( 'rocket_minify_deferred_js', get_rocket_option( 'deferred_js_files', array() ) );
+	
+	return $deferred_js_files;
+}
+
+/**
  * Determine if the key is valid
  *
  * @since 1.0
