@@ -157,7 +157,8 @@ jQuery( document ).ready( function($){
 
 		var summary 	= $('#support_summary').val().trim(),
 			description = $('#support_description').val().trim(),
-			validation  = $('#support_documentation_validation');
+			validation  = $('#support_documentation_validation'),
+			wpnonce		= $('#_wpnonce').val();
 
 		if ( ! validation.is( ':checked' ) ) {
 			swal({
@@ -183,6 +184,7 @@ jQuery( document ).ready( function($){
 					action: 'rocket_new_ticket_support',
 					summary: summary,
 					description: description,
+					_wpnonce: wpnonce,
 				},
 				function(response) {
 					response = JSON.parse(response);

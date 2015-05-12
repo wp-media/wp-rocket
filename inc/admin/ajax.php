@@ -8,20 +8,20 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
  */
 add_action( 'wp_ajax_rocket_new_ticket_support', '__wp_ajax_rocket_new_ticket_support' );
 function __wp_ajax_rocket_new_ticket_support() {
-	if( ! current_user_can( 'manage_options' ) ) {
+	if( ! isset( $_POST['_wpnonce'], $_POST['summary'], $_POST['description'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'wp_rocket-options' ) || 
+		! current_user_can( apply_filters( 'rocket_capability', 'manage_options' ) ) 
+		) {
 		return;
 	}
 
 	$response = wp_remote_post(
 		WP_ROCKET_WEB_API . 'support/new-ticket.php',
 		array(
-			'method'  => 'POST',
 			'timeout' => 10,
-			'headers' => array(),
 			'body'    => array(
 				'data' => array(
-					'user_email' 		   => sanitize_email(WP_ROCKET_EMAIL),
-					'user_key' 		   	   => sanitize_key(WP_ROCKET_KEY),
+					'user_email' 		   => defined( 'WP_ROCKET_EMAIL' ) ? sanitize_email( WP_ROCKET_EMAIL ) : '',
+					'user_key' 		   	   => defined( 'WP_ROCKET_KEY' ) ? sanitize_key( WP_ROCKET_KEY ) : '',
 					'user_website'		   => home_url(),
 					'wp_version'           => $GLOBALS['wp_version'],
 					'wp_active_plugins'    => rocket_get_active_plugins(),
@@ -31,7 +31,6 @@ function __wp_ajax_rocket_new_ticket_support() {
 					'support_description'  => $_POST['description']
 				)
 			),
-			'cookies' => array()
 		)
 	);
 
