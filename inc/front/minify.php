@@ -87,23 +87,21 @@ function __rocket_insert_minify_js_in_footer() {
 		// Get host of CNAMES
 		$cnames_host = get_rocket_cnames_host( array( 'all', 'css_and_js', 'js' ) );
 
-		$i=0;
+		$i = 0;
 		foreach( $files as $file ) {
 			$file_host = parse_url( $file, PHP_URL_HOST );
 
 			// Check if its an external file
 			if( $home_host != $file_host && ! in_array( $file_host, $cnames_host ) ) {
 
-				if( isset( $ordered_files[$i] ) ) {
+				if( isset( $ordered_files[ $i ] ) ) {
 					$i++;
-					$ordered_files[$i++] = $file;
+					$ordered_files[ $i++ ] = $file;
 				} else {
-					$ordered_files[$i] = $file;
-					$i++;
+					$ordered_files[ $i++ ] = $file;
 				}
-
 			} else {
-				$ordered_files[$i][] = $file;
+				$ordered_files[ $i ][] = $file;
 			}
 		}
 
@@ -504,10 +502,11 @@ function __rocket_extract_js_files_from_footer() {
 		$rocket_enqueue_js_in_footer[] = ( NRELATE_JS_DEBUG ) ? 'http://staticrepo.nrelate.com/common_wp/'. NRELATE_PLUGIN_VERSION . '/nrelate_js.js' : NRELATE_ADMIN_URL . '/nrelate_js.min.js';
 	}
 		
+	$get_rocket_minify_excluded_external_js = get_rocket_minify_excluded_external_js();
 	foreach( $wp_scripts->in_footer as $handle ) {
-		$script_src = $wp_scripts->registered[$handle]->src;
+		$script_src = $wp_scripts->registered[ $handle ]->src;
 		
-		if( in_array( $handle, $wp_scripts->done ) && ! in_array( parse_url( $script_src, PHP_URL_HOST ), get_rocket_minify_excluded_external_js() ) ) {
+		if( in_array( $handle, $wp_scripts->done ) && ! in_array( parse_url( $script_src, PHP_URL_HOST ), $get_rocket_minify_excluded_external_js ) ) {
 			$rocket_enqueue_js_in_footer[] = rocket_set_internal_url_scheme( $script_src );
 		}
 	}
