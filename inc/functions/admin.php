@@ -198,7 +198,7 @@ function rocket_get_active_plugins() {
 	$active_plugins = array_intersect_key( get_plugins(), array_flip( array_filter( array_keys( get_plugins() ), 'is_plugin_active' ) ) );
 	
 	foreach ( $active_plugins as $plugin ) { 
-		$plugins[] = $plugin[Name] . ' ' . $plugin[Version];
+		$plugins[] = $plugin['Name'] . ' ' . $plugin['Version'];
 	}
 	
 	return $plugins;
