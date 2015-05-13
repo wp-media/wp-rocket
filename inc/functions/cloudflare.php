@@ -31,6 +31,10 @@ $GLOBALS['rocket_cloudflare'] = get_rocket_cloudflare_instance();
  * @return void
  */
 function get_rocket_cloudflare_settings() {
+	if( ! is_object( $GLOBALS['rocket_cloudflare'] ) ) {
+		return false;
+	}
+	
 	$domain 	 = get_rocket_option( 'cloudflare_domain' );
 	$cf_settings = (array) $GLOBALS['rocket_cloudflare']->zone_settings( $domain )->response->result->objs;
 	return reset(( $cf_settings ));
@@ -44,6 +48,10 @@ function get_rocket_cloudflare_settings() {
  * @return void
  */
 function set_rocket_cloudflare_cache_lvl( $mode ) {
+	if( ! is_object( $GLOBALS['rocket_cloudflare'] ) ) {
+		return false;
+	}
+	
 	$domain = get_rocket_option( 'cloudflare_domain' );
 	$GLOBALS['rocket_cloudflare']->cache_lvl( $domain, $mode );
 }
@@ -57,6 +65,10 @@ function set_rocket_cloudflare_cache_lvl( $mode ) {
  * @return void
  */
 function set_rocket_cloudflare_devmode( $mode ) {
+	if( ! is_object( $GLOBALS['rocket_cloudflare'] ) ) {
+		return false;
+	}
+	
 	$domain = get_rocket_option( 'cloudflare_domain' );
 	$GLOBALS['rocket_cloudflare']->devmode( $domain, $mode );
 }
@@ -69,6 +81,10 @@ function set_rocket_cloudflare_devmode( $mode ) {
  * @return void
  */
 function set_rocket_cloudflare_async( $mode ) {
+	if( ! is_object( $GLOBALS['rocket_cloudflare'] ) ) {
+		return false;
+	}
+	
 	$domain = get_rocket_option( 'cloudflare_domain' );
 	$GLOBALS['rocket_cloudflare']->async( $domain, $mode );
 }
@@ -81,6 +97,10 @@ function set_rocket_cloudflare_async( $mode ) {
  * @return void
  */
 function set_rocket_cloudflare_minify( $mode ) {
+	if( ! is_object( $GLOBALS['rocket_cloudflare'] ) ) {
+		return false;
+	}
+	
 	$domain = get_rocket_option( 'cloudflare_domain' );
 	$GLOBALS['rocket_cloudflare']->minify( $domain, $mode );
 }
@@ -93,6 +113,10 @@ function set_rocket_cloudflare_minify( $mode ) {
  * @return void
  */
 function rocket_purge_cloudflare() {
+	if( ! is_object( $GLOBALS['rocket_cloudflare'] ) ) {
+		return false;
+	}
+	
 	$domain = get_rocket_option( 'cloudflare_domain' );
 	$GLOBALS['rocket_cloudflare']->fpurge_ts( $domain );
 }
