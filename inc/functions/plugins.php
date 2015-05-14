@@ -192,13 +192,8 @@ function get_rocket_logins_exclude_pages() {
 	$urls = array();
 	
 	// SF Move Login
-	if ( defined( 'SFML_VERSION' ) && function_exists( 'sfml_init' ) ) {
-		$sfmovelogin_options = get_option( 'sfml' );
-		$urls[] = $sfmovelogin_options['slugs.login'];
-		$urls[] = $sfmovelogin_options['slugs.logout'];
-		$urls[] = $sfmovelogin_options['slugs.register'];
-		$urls[] = $sfmovelogin_options['slugs.lostpassword'];
-		$urls[] = $sfmovelogin_options['slugs.resetpass'];
+	if ( defined( 'SFML_VERSION' ) && class_exists( 'SFML_Options' ) ) {
+		$urls = array_merge( $urls, SFML_Options::get_slugs() );
 	}
 	
 	// WPS Hide Login
