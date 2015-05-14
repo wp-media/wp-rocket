@@ -180,3 +180,32 @@ function get_rocket_ecommerce_exclude_pages() {
 
 	return $urls;
 }
+
+/**
+ * Get hide login pages to automatically exclude them to the cache.
+ *
+ * @since 2.6
+ *
+ * @return array $urls
+ */
+function get_rocket_logins_exclude_pages() {
+	$urls = array();
+	
+	// SF Move Login
+	if ( defined( 'SFML_VERSION' ) && function_exists( 'sfml_init' ) ) {
+		$sfmovelogin_options = get_option( 'sfml' );
+		$urls[] = $sfmovelogin_options['slugs.login'];
+		$urls[] = $sfmovelogin_options['slugs.logout'];
+		$urls[] = $sfmovelogin_options['slugs.register'];
+		$urls[] = $sfmovelogin_options['slugs.lostpassword'];
+		$urls[] = $sfmovelogin_options['slugs.resetpass'];
+	}
+	
+	// WPS Hide Login
+	if ( class_exists( 'WPS_Hide_Login' ) ) {
+		$urls[] = get_option( 'whl_page' );
+		$urls[] = user_trailingslashit( str_repeat( '-/', 10 ) );
+	}
+
+	return $urls;
+}
