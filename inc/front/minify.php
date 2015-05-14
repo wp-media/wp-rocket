@@ -325,7 +325,7 @@ function rocket_minify_js( $buffer )
 	$excluded_external_js = get_rocket_minify_excluded_external_js();
 	
     // Get all JS files with this regex
-    preg_match_all( apply_filters( 'rocket_minify_js_regex_pattern', '#<script\s*.+src=[\'|"]([^\'|"]+\.js?.+)[\'|"]?(.+)></script>#iU' ), $buffer, $tags_match );
+    preg_match_all( apply_filters( 'rocket_minify_js_regex_pattern', '#<script[^>]+?src=[\'|"]([^\'|"]+\.js?)[\'|"]?.*>(?:<\/script>)#i' ), $buffer, $tags_match );
 
 	$i=0;
     foreach ( $tags_match[0] as $tag ) {
