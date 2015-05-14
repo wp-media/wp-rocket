@@ -496,7 +496,7 @@ add_action( 'wp_print_footer_scripts', '__rocket_extract_js_files_from_footer' )
 function __rocket_extract_js_files_from_footer() {
 	global $rocket_enqueue_js_in_footer, $wp_scripts;
 	
-	if( ! is_array( $wp_scripts->in_footer ) || ! get_rocket_option( 'minify_js', false ) ) {
+	if( ( isset( $wp_scripts->in_footer ) && ! is_array( $wp_scripts->in_footer ) ) || ! get_rocket_option( 'minify_js', false ) ) {
 		return;
 	}
 	
