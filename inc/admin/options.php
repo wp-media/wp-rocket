@@ -2,6 +2,17 @@
 defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 
 /**
+ * Fix the capability for our capacity filter hook
+ *
+ * @since 2.6
+ */
+
+add_filter( 'option_page_capability_wp_rocket', 'rocket_correct_capability_for_options_page' );
+function rocket_correct_capability_for_options_page( $capability ) {
+	return apply_filters( 'rocket_capacity', 'manage_options' );
+}
+
+/**
  * Add submenu in menu "Settings"
  *
  * @since 1.0
