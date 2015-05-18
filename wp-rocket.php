@@ -257,4 +257,7 @@ function rocket_activation()
 
 	// Create config file
 	rocket_generate_config_file();
+	
+	// Update customer key & licence.
+	wp_remote_get( WP_ROCKET_WEB_API . 'activate-licence.php', array( 'blocking' => false ) );
 }
