@@ -5,6 +5,7 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
  * When Woocommerce, EDD, iThemes Exchange, Jigoshop & WP-Shop options are saved or deleted,
  * we update .htaccess & config file to get the right checkout page to exclude to the cache.
  *
+ * @since 2.6 Add support with SF Move Login & WPS Hide Login to exclude login pages
  * @since 2.4
  */
 add_action( 'update_option_woocommerce_cart_page_id'     	 , '__rocket_after_update_wc_options', 10, 2 );
@@ -14,6 +15,8 @@ add_action( 'update_option_wpshop_checkout_page_id'		 	 , '__rocket_after_update
 add_action( 'update_option_wpshop_payment_return_page_id'	 , '__rocket_after_update_wc_options', 10, 2 );
 add_action( 'update_option_wpshop_payment_return_nok_page_id', '__rocket_after_update_wc_options', 10, 2 );
 add_action( 'update_option_it-storage-exchange_settings_pages', '__rocket_after_update_wc_options', 10, 2 );
+add_action( 'update_option_sfml'	, '__rocket_after_update_wc_options', 10, 2 );
+add_action( 'update_option_whl_page', '__rocket_after_update_wc_options', 10, 2 );
 function __rocket_after_update_wc_options( $old_value, $value ) {
 	if ( $old_value != $value ) {
 		// Update .htaccess file rules
@@ -116,7 +119,7 @@ function __rocket_clear_cache_after_pagely() {
 /**
  * Clear WP Rocket cache after purged the Varnish cache via Pressidium Hosting
  *
- * @since 2.6
+ * @since 2.5.11
  *
  * @return void
  */

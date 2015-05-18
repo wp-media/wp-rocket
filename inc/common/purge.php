@@ -21,7 +21,9 @@ add_action( 'delete_link'				, 'rocket_clean_domain' );		// When a link is delet
 add_action( 'customize_save'			, 'rocket_clean_domain' );		// When customizer is saved
 
 /* @since 2.3.5 */
-add_action( 'wp_ajax_sg-cachepress-purge', 'rocket_clean_domain', PHP_INT_MAX ); // When SuperCacher (SiteGround) is purged
+// When SuperCacher (SiteGround) is purged
+add_action( 'wp_ajax_sg-cachepress-purge', 'rocket_clean_domain', 0 );
+add_action( 'admin_post_sg-cachepress-purge', 'rocket_clean_domain', 0 );
 
 /* @since 1.1.1 */
 add_filter( 'widget_update_callback'	, 'rocket_widget_update_callback' ); // When a widget is update
@@ -52,14 +54,15 @@ add_action( 'after_rocket_clean_domain', 'rocket_clean_varnish_http_purge' );
 */
 add_action( 'after_rocket_clean_domain', 'rocket_clean_pagely' );
 
-/* @since 2.6
- * For not conflit with Pagely Hosting
+/* @since 2.5.11
+ * For not conflit with Pressidium Hosting
 */
 add_action( 'after_rocket_clean_domain', 'rocket_clean_pressidium' );
 
 /**
  * Update cache when a post is updated or commented
  *
+ * @since 2.6 	Purge the page defined in "Posts page" option
  * @since 2.5.5 Don't cache for auto-draft post status
  * @since 1.3.2 Add wp_update_comment_count to purge cache when a comment is added/updated/deleted
  * @since 1.3.0 Compatibility with WPML

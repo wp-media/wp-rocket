@@ -126,6 +126,9 @@ function get_rocket_cache_reject_uri()
 	
 	// Exclude cart & checkout pages from e-commerce plugins
 	$uri = array_merge( $uri, get_rocket_ecommerce_exclude_pages() );
+		
+	// Exclude hide login plugins
+	$uri = array_merge( $uri, get_rocket_logins_exclude_pages() );
 	
 	/**
 	  * By default, don't cache the WP REST API.
