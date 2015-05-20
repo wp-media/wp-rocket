@@ -472,7 +472,7 @@ add_action( 'wp_print_styles', '__rocket_extract_excluded_css_files' );
 function __rocket_extract_excluded_css_files() {
 	global $rocket_excluded_enqueue_css, $wp_styles;
 	
-	if( ! is_array( $wp_styles->queue ) || ! get_rocket_option( 'minify_css', false ) || in_array( $GLOBALS['pagenow'], array( 'wp-login.php', 'wp-register.php' ) ) ) {
+	if( ! isset( $wp_styles->queue ) || ! is_array( $wp_styles->queue ) || ! get_rocket_option( 'minify_css', false ) || in_array( $GLOBALS['pagenow'], array( 'wp-login.php', 'wp-register.php' ) ) ) {
 		return;
 	}
 	
