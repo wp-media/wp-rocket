@@ -302,7 +302,6 @@ function get_rocket_exclude_css() {
 	global $rocket_excluded_enqueue_css;
 	
 	$css_files = get_rocket_option( 'exclude_css', array() );
-	$css_files = array_map( 'rocket_set_internal_url_scheme', $css_files );
 	$css_files = array_unique( array_merge( $css_files, (array) $rocket_excluded_enqueue_css ) );
 	
 	/**
@@ -315,6 +314,28 @@ function get_rocket_exclude_css() {
 	$css_files = apply_filters( 'rocket_exclude_css', $css_files );
 	
 	return $css_files;
+}
+
+/**
+ * Get all JS files to exclude to the minification.
+ *
+ * @since 2.6
+ *
+ * @return array List of excluded JS files.
+ */
+function get_rocket_exclude_js() {	
+	$js_files = get_rocket_option( 'exclude_js', array() );
+	
+	/**
+	 * Filter JS files to exclude to the minification.
+	 *
+	 * @since 2.6
+	 *
+	 * @param array $css_files List of excluded JS files.
+	*/
+	$js_files = apply_filters( 'rocket_exclude_js', $js_files );
+	
+	return $js_files;
 }
 
 /**
