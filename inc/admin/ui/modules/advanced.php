@@ -149,7 +149,7 @@ add_settings_field(
 			'type'         => 'checkbox',
 			'label'        => 'CSS',
 			'name'         => 'minify_css_combine_all',
-			'label_screen' => __( 'CSS Files Minification', 'rocket' )
+			'label_screen' => __( 'CSS Files minification', 'rocket' )
 		),
 		array(
 			'type'		   => 'checkbox',
