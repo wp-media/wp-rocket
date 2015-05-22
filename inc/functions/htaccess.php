@@ -371,6 +371,7 @@ function get_rocket_htaccess_mod_expires()
 	  $rules .= 'ExpiresByType application/x-font-ttf    "access plus 1 month"' . PHP_EOL;
 	  $rules .= 'ExpiresByType font/opentype             "access plus 1 month"' . PHP_EOL;
 	  $rules .= 'ExpiresByType application/x-font-woff   "access plus 1 month"' . PHP_EOL;
+	  $rules .= 'ExpiresByType application/x-font-woff2  "access plus 1 month"' . PHP_EOL;
 	  $rules .= 'ExpiresByType image/svg+xml             "access plus 1 month"' . PHP_EOL;
 	  $rules .= 'ExpiresByType application/vnd.ms-fontobject "access plus 1 month"' . PHP_EOL . PHP_EOL;
 	  $rules .= '# CSS and JavaScript' . PHP_EOL;
