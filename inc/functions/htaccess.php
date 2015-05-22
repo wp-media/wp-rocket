@@ -512,7 +512,7 @@ function get_rocket_htaccess_web_fonts_access() {
 	$rules  .= '</IfModule>' . PHP_EOL . PHP_EOL;
 	
 	$rules  .= '# Allow access to web fonts from all domains.' . PHP_EOL;
-	$rules  .= '<FilesMatch "\.(eot|otf|tt[cf]|woff)$">' . PHP_EOL;
+	$rules  .= '<FilesMatch "\.(eot|otf|tt[cf]|woff2?)$">' . PHP_EOL;
 		$rules .= '<IfModule mod_headers.c>' . PHP_EOL;
 			$rules .= 'Header set Access-Control-Allow-Origin "*"' . PHP_EOL;
 		$rules .= '</IfModule>' . PHP_EOL;
