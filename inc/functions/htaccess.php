@@ -504,7 +504,7 @@ function get_rocket_htaccess_web_fonts_access() {
 	$rules  .= '<IfModule mod_setenvif.c>' . PHP_EOL;
 	  $rules  .= '<IfModule mod_headers.c>' . PHP_EOL;
 	    $rules  .= '# mod_headers, y u no match by Content-Type?!' . PHP_EOL;
-	    $rules  .= '<FilesMatch "\.(gif|png|jpe?g|svgz?|ico|webp)$">' . PHP_EOL;
+	    $rules  .= '<FilesMatch "\.(cur|gif|png|jpe?g|svgz?|ico|webp)$">' . PHP_EOL;
 	      $rules  .= 'SetEnvIf Origin ":" IS_CORS' . PHP_EOL;
 	      $rules  .= 'Header set Access-Control-Allow-Origin "*" env=IS_CORS' . PHP_EOL;
 	    $rules  .= '</FilesMatch>' . PHP_EOL;
