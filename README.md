@@ -21,7 +21,7 @@ This will continue until all actions are processed using a maximum of 5 concurre
 
 #### Housekeeping
 
-Before procesing a batch, the scheduler will remove any existing claims on actions which have been sitting in a queue for more than five minutes.
+Before processing a batch, the scheduler will remove any existing claims on actions which have been sitting in a queue for more than five minutes.
 
 Action Scheduler will also trash any actions which were completed more than a month ago.
 
