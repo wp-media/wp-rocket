@@ -40,3 +40,26 @@ function __wp_ajax_rocket_new_ticket_support() {
 	    wp_send_json( array( 'msg' => 'BAD_SERVER' ) );
     }
 }
+
+/**
+ * Documentation suggestions based on the summary input from the new ticket support form.
+ *
+ * @since 2.6
+ */
+add_action( 'wp_ajax_rocket_helpscout_live_search', '__wp_ajax_rocket_helpscout_live_search' );
+function __wp_ajax_rocket_helpscout_live_search() {
+	$response = wp_remote_post( 
+		WP_ROCKET_WEB_MAIN . 'tools/wp-rocket/helpscout/livesearch.php',
+		array(
+			'method'    => 'POST',
+			'timeout'   => 10,
+			'headers'   => array(),
+			'body' 		=> array( 'query' => $_POST['query'] ),
+			'cookies'   => array()
+		)
+	);
+	
+	if ( ! is_wp_error( $response ) ) {
+        wp_send_json( wp_remote_retrieve_body( $response ) );
+    }
+}

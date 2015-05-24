@@ -247,4 +247,49 @@ jQuery( document ).ready( function($){
 			);
 		}
 	});
+	
+	$('#support_summary').parents('fieldset').append( '<div id="support_searchbox" style="display:none;"> <p><strong>These articles should help you resolving your issue:</strong></p><div id="support_searchbox-suggestions"><ul></ul></div></div>' );
+	
+	 //Listen for the event
+    $( "#support_summary" ).live( "keyup", function(e) {
+        // Set Timeout
+        clearTimeout($.data(this, 'timer'));
+		
+        // Set Search String
+        var search_string = $(this).val();
+
+        // Do Search
+        if (search_string == '') {
+            $("#support_searchbox").fadeOut();
+            $(this).parents('fieldset').attr( 'data-loading', "false" );
+        } else {
+            $(this).parents('fieldset').attr( 'data-loading', "true" );
+            $(this).data('timer', setTimeout(search, 200));
+        };
+    });
+    
+    // Live Search
+    // On Search Submit and Get Results
+    function search() {
+        var query_value = $('#support_summary').val();
+        if( query_value !== '' ) {
+            $.ajax({
+                type: "POST",
+                url: ajaxurl,
+                data: {
+	                action : 'rocket_helpscout_live_search',
+	                query  : query_value
+	            },
+                success: function(html) {
+	                html = JSON.parse(html);
+                    if ( html ) {
+	                    $("#support_searchbox-suggestions ul").html(html);
+						$("#support_searchbox").fadeIn();
+                    }
+                    $('#support_summary').parents('fieldset').attr( 'data-loading', "false" );
+                }
+            });
+        }
+        return false;
+    }
 } );

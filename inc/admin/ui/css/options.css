@@ -13,3 +13,4 @@ input[type=number].small-text{height:28px}
 .button-link:after{content:" \f310";font-size:1.1em;padding-left:3px}
 .rkt-module-drag{cursor: move;}
 .settings_page_wprocket input.has-parent{margin-left: 20px;}
+[data-loading="true"] input {background: transparent url('../img/wpspin.gif') 99% 50% no-repeat; background-size: 16px 16px;}
