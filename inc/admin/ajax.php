@@ -48,18 +48,17 @@ function __wp_ajax_rocket_new_ticket_support() {
  */
 add_action( 'wp_ajax_rocket_helpscout_live_search', '__wp_ajax_rocket_helpscout_live_search' );
 function __wp_ajax_rocket_helpscout_live_search() {
-	$response = wp_remote_post( 
-		WP_ROCKET_WEB_MAIN . 'tools/wp-rocket/helpscout/livesearch.php',
-		array(
-			'method'    => 'POST',
-			'timeout'   => 10,
-			'headers'   => array(),
-			'body' 		=> array( 'query' => $_POST['query'] ),
-			'cookies'   => array()
-		)
-	);
-	
-	if ( ! is_wp_error( $response ) ) {
-        wp_send_json( wp_remote_retrieve_body( $response ) );
-    }
+	if ( current_user_can( apply_filters( 'rocket_capability', 'manage_options' ) ) ) {
+		$response = wp_remote_post( 
+			WP_ROCKET_WEB_MAIN . 'tools/wp-rocket/helpscout/livesearch.php',
+			array(
+				'timeout'   => 10,
+				'body' 		=> array( 'query' => esc_html( wp_strip_all_tags( $_POST['query'] , true ) ) ),
+			)
+		);
+		
+		if ( ! is_wp_error( $response ) ) {
+			wp_send_json( wp_remote_retrieve_body( $response ) );
+		}
+	}
 }
