@@ -247,4 +247,59 @@ jQuery( document ).ready( function($){
 			);
 		}
 	});
+	
+	$('#support_summary').parents('fieldset').append( '<div id="support_searchbox" class="hidden"><p><strong>These articles should help you resolving your issue (EN):</strong></p><div id="support_searchbox-suggestions"><ul></ul></div></div>' );
+	
+    // Live Search Cached Results
+    last_search_results = new Array();
+    
+	 //Listen for the event
+	$( "#support_summary" ).on( "keyup", function(e) {
+		// Set Search String
+		var query_value = $(this).val();
+		// Set Timeout
+		clearTimeout($.data(this, 'timer'));
+
+		if ( query_value.length < 3 ) {
+			$("#support_searchbox").fadeOut();
+			$(this).parents('fieldset').attr( 'data-loading', "false" );
+			return;
+		}
+
+		if ( last_search_results[ query_value ] != undefined ) {
+			$(this).parents('fieldset').attr( 'data-loading', "false" );
+			$("#support_searchbox-suggestions ul").html(last_search_results[ query_value ]);
+			$("#support_searchbox").fadeIn();
+			return;
+		}
+		// Do Search
+		$(this).parents('fieldset').attr( 'data-loading', "true" );
+		$(this).data('timer', setTimeout(search, 200));
+	});
+    
+    // Live Search
+    // On Search Submit and Get Results
+    function search() {
+        var query_value = $('#support_summary').val();
+        if( query_value !== '' ) {
+            $.ajax({
+                type: "POST",
+                url: ajaxurl,
+                data: {
+	                action : 'rocket_helpscout_live_search',
+	                query  : query_value
+	            },
+                success: function(html) {
+	                html = JSON.parse(html);
+                    if ( html ) {
+	                	last_search_results[ query_value ] = html;
+	                	$("#support_searchbox-suggestions ul").html(html);
+						$("#support_searchbox").fadeIn();
+					}
+                    $('#support_summary').parents('fieldset').attr( 'data-loading', "false" );
+                }
+            });
+        }
+        return false;
+    }
 } );

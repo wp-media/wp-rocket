@@ -371,6 +371,7 @@ function get_rocket_htaccess_mod_expires()
 	  $rules .= 'ExpiresByType application/x-font-ttf    "access plus 1 month"' . PHP_EOL;
 	  $rules .= 'ExpiresByType font/opentype             "access plus 1 month"' . PHP_EOL;
 	  $rules .= 'ExpiresByType application/x-font-woff   "access plus 1 month"' . PHP_EOL;
+	  $rules .= 'ExpiresByType application/x-font-woff2  "access plus 1 month"' . PHP_EOL;
 	  $rules .= 'ExpiresByType image/svg+xml             "access plus 1 month"' . PHP_EOL;
 	  $rules .= 'ExpiresByType application/vnd.ms-fontobject "access plus 1 month"' . PHP_EOL . PHP_EOL;
 	  $rules .= '# CSS and JavaScript' . PHP_EOL;
@@ -504,7 +505,7 @@ function get_rocket_htaccess_web_fonts_access() {
 	$rules  .= '<IfModule mod_setenvif.c>' . PHP_EOL;
 	  $rules  .= '<IfModule mod_headers.c>' . PHP_EOL;
 	    $rules  .= '# mod_headers, y u no match by Content-Type?!' . PHP_EOL;
-	    $rules  .= '<FilesMatch "\.(gif|png|jpe?g|svg|svgz|ico|webp)$">' . PHP_EOL;
+	    $rules  .= '<FilesMatch "\.(cur|gif|png|jpe?g|svgz?|ico|webp)$">' . PHP_EOL;
 	      $rules  .= 'SetEnvIf Origin ":" IS_CORS' . PHP_EOL;
 	      $rules  .= 'Header set Access-Control-Allow-Origin "*" env=IS_CORS' . PHP_EOL;
 	    $rules  .= '</FilesMatch>' . PHP_EOL;
@@ -512,7 +513,7 @@ function get_rocket_htaccess_web_fonts_access() {
 	$rules  .= '</IfModule>' . PHP_EOL . PHP_EOL;
 	
 	$rules  .= '# Allow access to web fonts from all domains.' . PHP_EOL;
-	$rules  .= '<FilesMatch "\.(eot|otf|tt[cf]|woff)$">' . PHP_EOL;
+	$rules  .= '<FilesMatch "\.(eot|otf|tt[cf]|woff2?)$">' . PHP_EOL;
 		$rules .= '<IfModule mod_headers.c>' . PHP_EOL;
 			$rules .= 'Header set Access-Control-Allow-Origin "*"' . PHP_EOL;
 		$rules .= '</IfModule>' . PHP_EOL;

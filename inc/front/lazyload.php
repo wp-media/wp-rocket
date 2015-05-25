@@ -15,7 +15,7 @@ function rocket_lazyload_script() {
 		return;
 	}
 
-	echo '<script data-no-minify="1">(function(w,d){function a(){var b=d.createElement("script");b.async=!0;b.src="' . get_rocket_cdn_url( WP_ROCKET_FRONT_JS_URL . 'lazyload.' . WP_ROCKET_LAZYLOAD_JS_VERSION . '.min.js' ) .'";var a=d.getElementsByTagName("script")[0];a.parentNode.insertBefore(b,a)}w.attachEvent?w.attachEvent("onload",a):w.addEventListener("load",a,!1)})(window,document);</script>';
+	echo '<script data-no-minify="1">(function(w,d){function a(){var b=d.createElement("script");b.async=!0;b.src="' . get_rocket_cdn_url( WP_ROCKET_FRONT_JS_URL . 'lazyload.' . WP_ROCKET_LAZYLOAD_JS_VERSION . '.js' ) .'";var a=d.getElementsByTagName("script")[0];a.parentNode.insertBefore(b,a)}w.attachEvent?w.attachEvent("onload",a):w.addEventListener("load",a,!1)})(window,document);</script>';
 }
 
 /**
