@@ -34,7 +34,7 @@ function __rocket_add_admin_css_js()
 		'badServerConnectionConfirmButtonText' => __( 'Get help from a rocket scientist', 'rocket' ),
 
 		'warningSupportTitle' => __( 'Last steps before contacting us', 'rocket' ),
-		'warningSupportText'  => sprintf( __( 'You have to read the <a href="" target="_blank">documentation</a> and to agree to send informations relative to your website to submit a support ticket.', 'rocket' ), 'http://docs.wp-rocket.me/?utm_source=wp-rocket&utm_medium=wp-admin&utm_term=doc-support&utm_campaign=plugin' ),
+		'warningSupportText'  => sprintf( __( 'You have to read the <a href="%s" target="_blank">documentation</a> and to agree to send informations relative to your website to submit a support ticket.', 'rocket' ), 'http://docs.wp-rocket.me/?utm_source=wp-rocket&utm_medium=wp-admin&utm_term=doc-support&utm_campaign=plugin' ),
 
 		'successSupportTitle' => __( 'Transmission Received!', 'rocket' ),
 		'successSupportText'  => __( 'We\'ve received your ticket and will reply back within a few hours!', 'rocket' ) . '<br/>' . __( 'We answer every ticket so check your spam if you don\'t hear from us.', 'rocket' ),
