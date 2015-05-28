@@ -6,7 +6,6 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
  *
  * @since 2.6
  */
-
 add_filter( 'option_page_capability_wp_rocket', 'rocket_correct_capability_for_options_page' );
 function rocket_correct_capability_for_options_page( $capability ) {
 	return apply_filters( 'rocket_capacity', 'manage_options' );
@@ -876,14 +875,14 @@ function rocket_after_save_options( $oldvalue, $value )
 	}
 
 	// Purge all minify cache files
-	if ( ! empty( $_POST ) && ( $oldvalue['minify_css'] != $value['minify_css'] || $oldvalue['exclude_css'] != $value['exclude_css'] ) ) {
-		rocket_clean_minify('css');
+	if ( ! empty( $_POST ) && ( $oldvalue['minify_css'] != $value['minify_css'] || $oldvalue['exclude_css'] != $value['exclude_css'] ) || ( isset( $oldvalue['cdn'] ) && ! isset( $value['cdn'] ) || ! isset( $oldvalue['cdn'] ) && isset( $value['cdn'] ) ) ) {
+		rocket_clean_minify( 'css' );
 	}
 
-	if ( ! empty( $_POST ) && ( $oldvalue['minify_js'] != $value['minify_js'] || $oldvalue['exclude_js']  != $value['exclude_js'] ) ) {
+	if ( ! empty( $_POST ) && ( $oldvalue['minify_js'] != $value['minify_js'] || $oldvalue['exclude_js']  != $value['exclude_js'] ) || ( isset( $oldvalue['cdn'] ) && ! isset( $value['cdn'] ) || ! isset( $oldvalue['cdn'] ) && isset( $value['cdn'] ) ) ) {
 		rocket_clean_minify( 'js' );
 	}
-	
+		
 	// Update CloudFlare Development Mode
 	if ( ! empty( $_POST ) && ( $oldvalue['cloudflare_devmode'] != $value['cloudflare_devmode'] ) ) {
 		set_rocket_cloudflare_devmode( (bool) $value['cloudflare_devmode'] );
