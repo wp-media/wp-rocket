@@ -49,6 +49,16 @@ function get_rocket_htaccess_marker()
 {
 	// Recreate WP Rocket marker
 	$marker  = '# BEGIN WP Rocket v' . WP_ROCKET_VERSION . PHP_EOL;
+	
+	/**
+	 * Add custom rules before rules added by WP Rocket
+	 *
+	 * @since 2.6
+	 *
+	 * @param string $before_marker The content of all rules
+	*/
+	$marker .= apply_filters( 'before_rocket_htaccess_rules', '' );
+	
 	$marker .= get_rocket_htaccess_charset();
 	$marker .= get_rocket_htaccess_etag();
 	$marker .= get_rocket_htaccess_web_fonts_access();
@@ -61,8 +71,17 @@ function get_rocket_htaccess_marker()
 		$marker .= get_rocket_htaccess_mod_rewrite();	
 	}
 	
+	/**
+	 * Add custom rules after rules added by WP Rocket
+	 *
+	 * @since 2.6
+	 *
+	 * @param string $after_marker The content of all rules
+	*/
+	$marker .= apply_filters( 'after_rocket_htaccess_rules', '' );
+	
 	$marker .= '# END WP Rocket' . PHP_EOL;
-
+	
 	/**
 	 * Filter rules added by WP Rocket in .htaccess
 	 *
@@ -71,7 +90,7 @@ function get_rocket_htaccess_marker()
 	 * @param string $marker The content of all rules
 	*/
 	$marker = apply_filters( 'rocket_htaccess_marker', $marker );
-
+	
 	return $marker;
 }
 
@@ -352,6 +371,7 @@ function get_rocket_htaccess_mod_expires()
 	  $rules .= 'ExpiresByType application/x-font-ttf    "access plus 1 month"' . PHP_EOL;
 	  $rules .= 'ExpiresByType font/opentype             "access plus 1 month"' . PHP_EOL;
 	  $rules .= 'ExpiresByType application/x-font-woff   "access plus 1 month"' . PHP_EOL;
+	  $rules .= 'ExpiresByType application/x-font-woff2  "access plus 1 month"' . PHP_EOL;
 	  $rules .= 'ExpiresByType image/svg+xml             "access plus 1 month"' . PHP_EOL;
 	  $rules .= 'ExpiresByType application/vnd.ms-fontobject "access plus 1 month"' . PHP_EOL . PHP_EOL;
 	  $rules .= '# CSS and JavaScript' . PHP_EOL;
@@ -485,7 +505,7 @@ function get_rocket_htaccess_web_fonts_access() {
 	$rules  .= '<IfModule mod_setenvif.c>' . PHP_EOL;
 	  $rules  .= '<IfModule mod_headers.c>' . PHP_EOL;
 	    $rules  .= '# mod_headers, y u no match by Content-Type?!' . PHP_EOL;
-	    $rules  .= '<FilesMatch "\.(gif|png|jpe?g|svg|svgz|ico|webp)$">' . PHP_EOL;
+	    $rules  .= '<FilesMatch "\.(cur|gif|png|jpe?g|svgz?|ico|webp)$">' . PHP_EOL;
 	      $rules  .= 'SetEnvIf Origin ":" IS_CORS' . PHP_EOL;
 	      $rules  .= 'Header set Access-Control-Allow-Origin "*" env=IS_CORS' . PHP_EOL;
 	    $rules  .= '</FilesMatch>' . PHP_EOL;
@@ -493,7 +513,7 @@ function get_rocket_htaccess_web_fonts_access() {
 	$rules  .= '</IfModule>' . PHP_EOL . PHP_EOL;
 	
 	$rules  .= '# Allow access to web fonts from all domains.' . PHP_EOL;
-	$rules  .= '<FilesMatch "\.(eot|otf|tt[cf]|woff)$">' . PHP_EOL;
+	$rules  .= '<FilesMatch "\.(eot|otf|tt[cf]|woff2?)$">' . PHP_EOL;
 		$rules .= '<IfModule mod_headers.c>' . PHP_EOL;
 			$rules .= 'Header set Access-Control-Allow-Origin "*"' . PHP_EOL;
 		$rules .= '</IfModule>' . PHP_EOL;

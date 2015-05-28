@@ -18,7 +18,7 @@ function rocket_cdn_file( $url )
 {
 	$ext = pathinfo( $url, PATHINFO_EXTENSION );
 
-	if ( is_admin() && $ext != 'php' ) {
+	if ( is_admin() || $ext == 'php' ) {
 		return $url;
 	}
 
@@ -52,7 +52,7 @@ function rocket_cdn_file( $url )
  * @since 2.1
  */
 add_filter( 'the_content', 'rocket_cdn_images', PHP_INT_MAX );
-add_filter( 'widget_text', 'rocket_cdn_images', PHP_INT_MAX );	
+add_filter( 'widget_text', 'rocket_cdn_images', PHP_INT_MAX );
 add_filter( 'rocket_buffer', 'rocket_cdn_images', PHP_INT_MAX );
 function rocket_cdn_images( $html )
 {
@@ -65,18 +65,18 @@ function rocket_cdn_images( $html )
 	if ( $cnames = get_rocket_cdn_cnames( $zone ) ) {
 		// Get all images of the content
 		preg_match_all( '#<img([^>]+?)src=[\'"]?([^\'"\s>]+)[\'"]?([^>]*)>#i', $html, $images_match );
-		
+
 		foreach ( $images_match[2] as $k=>$image_url ) {
 			// Check if the link isn't external
 			if( parse_url( set_url_scheme( $image_url ), PHP_URL_HOST ) != parse_url( home_url(), PHP_URL_HOST ) ) {
 				continue;
 			}
-			
+
 			// Check if the URL isn't a DATA-URI
 			if( false !== strpos( $image_url, 'data:image' ) ) {
 				continue;
 			}
-			
+
 			$html = str_replace(
 				$images_match[0][$k],
 				/**
@@ -96,7 +96,7 @@ function rocket_cdn_images( $html )
 			);
 		}
 	}
-		
+
 	return $html;
 }
 
@@ -113,7 +113,7 @@ function rocket_cdn_enqueue( $src )
 	if ( is_admin() || is_preview() || in_array( $GLOBALS['pagenow'], array( 'wp-login.php', 'wp-register.php' ) ) ) {
 		return $src;
 	}
-	
+
 	$src  = set_url_scheme( $src );
 	$zone = array( 'all', 'css_and_js' );
 

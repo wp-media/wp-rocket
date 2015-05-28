@@ -26,14 +26,14 @@ function rocket_user_agent( $user_agent )
 	$consumer_key = '';
 	if ( isset( $_POST[ WP_ROCKET_SLUG ]['consumer_key'] ) ) {
 		$consumer_key = $_POST[ WP_ROCKET_SLUG ]['consumer_key'];
-	} elseif ( '' != (string) get_rocket_option( 'consumer_key' ) ) {
+	} else if ( '' != (string) get_rocket_option( 'consumer_key' ) ) {
 		$consumer_key = (string) get_rocket_option( 'consumer_key' );
 	}
 
 	$consumer_email = '';
 	if ( isset( $_POST[ WP_ROCKET_SLUG ]['consumer_email'] ) ) {
 		$consumer_email = $_POST[ WP_ROCKET_SLUG ]['consumer_email'];
-	} elseif ( '' != (string) get_rocket_option( 'consumer_email' ) ) {
+	} else if ( '' != (string) get_rocket_option( 'consumer_email' ) ) {
 		$consumer_email = (string) get_rocket_option( 'consumer_email' );
 	}
 
@@ -149,7 +149,6 @@ function rocket_reset_white_label_values( $hack_post )
 	update_option( WP_ROCKET_SLUG, $options );
 }
 
-
 /**
  * Create a unique id for some Rocket options and functions
  *
@@ -187,4 +186,20 @@ function rocket_hidden_fields( $fields )
 	foreach ( $fields as $field ) {
 		echo '<input type="hidden" name="wp_rocket_settings[' . $field . ']" value="' . esc_attr( get_rocket_option( $field ) ) . '" />';
 	}
+}
+
+/**
+ * Get name & version of all active plugins.
+ *
+ * @since 2.6
+ */
+function rocket_get_active_plugins() {
+	$plugins 		= array();
+	$active_plugins = array_intersect_key( get_plugins(), array_flip( array_filter( array_keys( get_plugins() ), 'is_plugin_active' ) ) );
+	
+	foreach ( $active_plugins as $plugin ) { 
+		$plugins[] = $plugin['Name'] . ' ' . $plugin['Version'];
+	}
+	
+	return $plugins;
 }

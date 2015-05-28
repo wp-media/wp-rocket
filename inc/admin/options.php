@@ -2,6 +2,17 @@
 defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 
 /**
+ * Fix the capability for our capacity filter hook
+ *
+ * @since 2.6
+ */
+
+add_filter( 'option_page_capability_wp_rocket', 'rocket_correct_capability_for_options_page' );
+function rocket_correct_capability_for_options_page( $capability ) {
+	return apply_filters( 'rocket_capacity', 'manage_options' );
+}
+
+/**
  * Add submenu in menu "Settings"
  *
  * @since 1.0
@@ -37,12 +48,16 @@ function rocket_field( $args )
 		}
 		$args['label_for'] 	= isset( $args['label_for'] ) ? $args['label_for'] : '';
 		$args['name'] 		= isset( $args['name'] ) ? $args['name'] : $args['label_for'];
-		$class				= isset( $args['class'] ) ? sanitize_html_class( $args['class'] ) : sanitize_html_class( $args['name'] );
+		$parent 			= isset( $args['parent'] ) ? 'data-parent="' . sanitize_html_class( $args['parent' ] ). '"' : null;
 		$placeholder 		= isset( $args['placeholder'] ) ? 'placeholder="'. $args['placeholder'].'" ' : '';
+		$class				= isset( $args['class'] ) ? sanitize_html_class( $args['class'] ) : sanitize_html_class( $args['name'] );
+		$class 				.= ( $parent ) ? ' has-parent' : null;
 		$label 				= isset( $args['label'] ) ? $args['label'] : '';
 		$default			= isset( $args['default'] ) ? $args['default'] : '';
 		$readonly			= isset( $args['readonly'] ) && $args['readonly'] ? ' readonly="readonly" disabled="disabled"' : '';
-
+		$cols 				= isset( $args['cols'] ) ? (int) $args['cols'] : 50;
+		$rows 				= isset( $args['rows'] ) ? (int) $args['rows'] : 5;
+		
 		if( ! isset( $args['fieldset'] ) || 'start' == $args['fieldset'] ){
 			echo '<fieldset class="fieldname-'.sanitize_html_class( $args['name'] ).' fieldtype-'.sanitize_html_class( $args['type'] ).'">';
 		}
@@ -78,16 +93,18 @@ function rocket_field( $args )
 				?>
 
 					<legend class="screen-reader-text"><span><?php echo $args['label_screen']; ?></span></legend>
-					<label><textarea id="<?php echo $args['label_for']; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]" cols="50" rows="5"<?php echo $readonly; ?>><?php echo $value; ?></textarea>
+					<label><textarea id="<?php echo $args['label_for']; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]" cols="<?php echo $cols; ?>" rows="<?php echo $rows; ?>"<?php echo $readonly; ?>><?php echo $value; ?></textarea>
 					</label>
 
 				<?php
 			break;
 
-			case 'checkbox' : ?>
-
-					<legend class="screen-reader-text"><span><?php echo $args['label_screen']; ?></span></legend>
-					<label><input type="checkbox" id="<?php echo $args['name']; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]" value="1"<?php echo $readonly; ?> <?php checked( get_rocket_option( $args['name'], 0 ), 1 ); ?>/> <?php echo $args['label']; ?>
+			case 'checkbox' : 
+					if ( isset( $args['label_screen'] ) ) {
+					?>
+						<legend class="screen-reader-text"><span><?php echo $args['label_screen']; ?></span></legend>
+					<?php } ?>
+					<label><input type="checkbox" id="<?php echo $args['name']; ?>" class="<?php echo $class; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]" value="1"<?php echo $readonly; ?> <?php checked( get_rocket_option( $args['name'], 0 ), 1 ); ?> <?php echo $parent; ?>/> <?php echo $args['label']; ?>
 					</label>
 
 			<?php
@@ -349,11 +366,12 @@ function rocket_cnames_module()
  */
 function rocket_button( $args )
 {
-	$button = $args['button'];
-	$desc = isset( $args['helper_description'] ) ? $args['helper_description'] : null;
-	$help = isset( $args['helper_help'] ) ? $args['helper_help'] : null;
-	$warning = isset( $args['helper_warning'] ) ? $args['helper_warning'] : null;
-	$class = sanitize_html_class( strip_tags( $button['button_label'] ) );
+	$button       = $args['button'];
+	$desc         = isset( $args['helper_description'] ) ? $args['helper_description'] : null;
+	$help         = isset( $args['helper_help'] ) ? $args['helper_help'] : null;
+	$warning      = isset( $args['helper_warning'] ) ? $args['helper_warning'] : null;
+	$id           = isset( $button['button_id'] ) ? sanitize_html_class( $button['button_id'] ) : null;
+	$class        = sanitize_html_class( strip_tags( $button['button_label'] ) );
 	$button_style = isset( $button['style'] ) ? 'button-'.sanitize_html_class( $button['style'] ) : 'button-secondary';
 
 	if ( ! empty( $help ) ) {
@@ -367,7 +385,14 @@ function rocket_button( $args )
 	}
 ?>
 	<fieldset class="fieldname-<?php echo $class; ?> fieldtype-button">
-		<a href="<?php echo esc_url( $button['url'] ); ?>" class="<?php echo $button_style; ?> rocketicon rocketicon-<?php echo $class; ?>"><?php echo wp_kses_post( $button['button_label'] ); ?></a>
+		<?php
+		if ( isset( $button['url'] ) ) {
+			echo '<a href="' . esc_url( $button['url'] ) . '" id="' . $id . '" class="' . $button_style . ' rocketicon rocketicon-'. $class . '">' . wp_kses_post( $button['button_label'] ) . '</a>';
+		} else {
+			echo '<button id="' . $id . '" class="' . $button_style . ' rocketicon rocketicon-'. $class . '">' . wp_kses_post( $button['button_label'] ) . '</button>';
+		}
+		?>
+		
 
 		<?php echo apply_filters( 'rocket_help', $desc, sanitize_key( strip_tags( $button['button_label'] ) ), 'description' ); ?>
 		<?php echo apply_filters( 'rocket_help', $help, sanitize_key( strip_tags( $button['button_label'] ) ), 'help' ); ?>
@@ -410,964 +435,47 @@ function rocket_include( $args )
  */
 function rocket_display_options()
 {
-	// Clé API
-	add_settings_section( 'rocket_display_apikey_options', __( 'License validation', 'rocket' ), '__return_false', 'apikey' );
-	add_settings_field(
-		'rocket_api_key',
-		__( 'API Key', 'rocket' ),
-		'rocket_field',
-		'apikey',
-		'rocket_display_apikey_options',
-		array(
-			array(
-				'type'			=> 'text',
-				'label_for'		=> 'consumer_key',
-				'label_screen'	=> __( 'API Key', 'rocket' ),
-			),
-			array(
-				'type'			=> 'helper_help',
-				'name'			=> 'consumer_key',
-				'description'	=> __( 'Please enter the API key obtained after your purchase.', 'rocket' )
-			),
-		)
-	);
-	add_settings_field(
-		'rocket_email',
-		__( 'E-mail Address', 'rocket' ),
-		'rocket_field',
-		'apikey',
-		'rocket_display_apikey_options',
-		array(
-			array(
-				'type'         => 'email',
-				'label_for'    => 'consumer_email',
-				'label_screen' => __( 'E-mail Address', 'rocket' ),
-			),
-			array(
-				'type'         => 'helper_help',
-				'name'         => 'consumer_email',
-				'description'  => __( 'The one used for the purchase, in your support account.', 'rocket' )
-			),
-		)
-	);
-
-	// Basic
-	add_settings_section( 'rocket_display_main_options', __( 'Basic options', 'rocket' ), '__return_false', 'basic' );
-	add_settings_field(
-		'rocket_lazyload',
-		__( 'Lazyload:', 'rocket' ),
-		'rocket_field',
+	$modules = array(
+		'api-key',
 		'basic',
-		'rocket_display_main_options',
-		array(
-			array(
-				'type'         => 'checkbox',
-				'label'        => __('Enable Lazy loading images.', 'rocket' ),
-				'label_for'    => 'lazyload',
-				'label_screen' => __( 'Lazyload:', 'rocket' ),
-			),
-			array(
-				'type'         => 'helper_description',
-				'name'         => 'lazyload',
-				'description'  => __( 'LazyLoad displays images on a page only when they are visible to the user.', 'rocket') . '<br/>' .
-									  __('This mechanism reduces the number of HTTP requests and improves the loading time.', 'rocket' )
-			),
-		)
-	);
-	add_settings_field(
-		'rocket_minify',
-		 __( 'Files optimisation:<br/><span class="description">(Minification & Concatenation)</span>', 'rocket' ),
-		'rocket_field',
-		'basic',
-		'rocket_display_main_options',
-		array(
-			array(
-				'type'         => 'checkbox',
-				'label'        => 'HTML',
-				'name'         => 'minify_html',
-				'label_screen' => __( 'HTML Files minification', 'rocket' )
-			),
-						array(
-				'type'		   => 'checkbox',
-				'label'		   => 'Google Fonts',
-				'name'		   => 'minify_google_fonts',
-				'label_screen' => __( 'Google Fonts minification', 'rocket' ),
-			),
-			array(
-				'type'         => 'checkbox',
-				'label'        => 'CSS',
-				'name'         => 'minify_css',
-				'label_screen' => __( 'CSS Files minification', 'rocket' )
-			),
-			array(
-				'type'		   => 'checkbox',
-				'label'		   => 'JS',
-				'name'		   => 'minify_js',
-				'label_screen' => __( 'JS Files minification', 'rocket' ),
-			),
-			array(
-				'type'			=> 'helper_description',
-				'name'			=> 'minify',
-				'description'  => __( 'Minification removes any spaces and comments present in the CSS and JavaScript files.', 'rocket' ) . '<br/>' .
-									  __( 'This mechanism reduces the weight of each file and allows a faster reading of browsers and search engines.', 'rocket' ) . '<br/>' .
-									  __( 'Concatenation combines all CSS and JavaScript files.', 'rocket' ) . '<br/>' .
-									  __( 'This mechanism reduces the number of HTTP requests and improves the loading time.', 'rocket' )
-			),
-			array(
-				'type'			=> 'helper_warning',
-				'name'			=> 'minify_help1',
-				'description'  => __( 'Concatenating files can cause display errors.', 'rocket' ),
-			),
-			array(
-				'display'		=> ! rocket_is_white_label(),
-				'type'			=> 'helper_warning',
-				'name'			=> 'minify_help2',
-				'description'  => sprintf( __( 'In case of any errors we recommend you to turn off this option or watch the following video: <a href="%1$s" class="fancybox">%1$s</a>.', 'rocket' ), ( defined( 'WPLANG' ) && WPLANG == 'fr_FR' ) ? 'http://www.youtube.com/embed/5-Llh0ivyjs' : 'http://www.youtube.com/embed/kymoxCwW03c' )
-			),
-
-		)
-	);
-	// Mobile plugins list
-	$mobile_plugins = array(
-		'<a href="https://wordpress.org/plugins/wptouch/" target="_blank">WP Touch</a>',
-		'<a href="https://wordpress.org/plugins/wp-mobile-detector/" target="_blank">WP Mobile Detector</a>',
-		'<a href="https://wordpress.org/plugins/wiziapp-create-your-own-native-iphone-app" target="_blank">wiziApp</a>',
-		'<a href="https://wordpress.org/plugins/wordpress-mobile-pack/" target="_blank">WordPress Mobile Pack</a>',
-		'<a href="https://wordpress.org/plugins/wp-mobilizer/" target="_blank">WP-Mobilizer</a>',
-		'<a href="https://wordpress.org/plugins/wp-mobile-edition/" target="_blank">WP Mobile Edition</a>'
-	);
-	add_settings_field(
-		'rocket_mobile',
-		__( 'Mobile cache:', 'rocket' ),
-		'rocket_field',
-		'basic',
-		'rocket_display_main_options',
-		array(
-			array(
-				'type'		   => 'checkbox',
-				'label'		   => __( 'Enable caching for mobile devices.', 'rocket' ),
-				'label_for'	   => 'cache_mobile',
-				'label_screen' => __( 'Mobile cache:', 'rocket' ),
-			),
-			array(
-				'type'         => 'helper_warning',
-				'name'         => 'mobile',
-				'description'  => wp_sprintf( __( 'Don\'t turn on this option if you use one of these plugins: %l.', 'rocket' ), $mobile_plugins ),
-			),
-		)
-	);
-	add_settings_field(
-		'rocket_logged_user',
-		__( 'Logged in user cache:', 'rocket' ),
-		'rocket_field', 'basic',
-		'rocket_display_main_options',
-		array(
-			'type'         => 'checkbox',
-			'label'        => __('Enable caching for logged in users.', 'rocket' ),
-			'label_for'    => 'cache_logged_user',
-			'label_screen' =>__( 'Logged in user cache:', 'rocket' ),
-		)
-	);
-	add_settings_field(
-		'rocket_ssl',
-		__( 'SSL cache:', 'rocket' ),
-		'rocket_field',
-		'basic',
-		'rocket_display_main_options',
-		array(
-			'type'         => 'checkbox',
-			'label'        => __('Enable caching for pages with SSL protocol (<code>https://</code>).', 'rocket' ),
-			'label_for'    => 'cache_ssl',
-			'label_screen' => __( 'SSL cache:', 'rocket' ),
-		)
-	);
-	add_settings_field(
-		'rocket_purge',
-		__( 'Clear Cache Lifespan', 'rocket' ),
-		'rocket_field',
-		'basic',
-		'rocket_display_main_options',
-		array(
-			array(
-				'type'         => 'number',
-				'label_for'    => 'purge_cron_interval',
-				'label_screen' => __( 'Clear Cache Lifespan', 'rocket' ),
-				'fieldset'     => 'start'
-			),
-			array(
-				'type'		   => 'select',
-				'label_for'	   => 'purge_cron_unit',
-				'label_screen' => __( 'Unit of time', 'rocket' ),
-				'fieldset'	   => 'end',
-				'options' => array(
-					'SECOND_IN_SECONDS' => __( 'second(s)', 'rocket' ),
-					'MINUTE_IN_SECONDS' => __( 'minute(s)', 'rocket' ),
-					'HOUR_IN_SECONDS'   => __( 'hour(s)', 'rocket' ),
-					'DAY_IN_SECONDS'    => __( 'day(s)', 'rocket' )
-				)
-				),
-			array(
-				'type'         => 'helper_description',
-				'name'         => 'purge',
-				'description'  => __( 'By default, cache lifespan is 24 hours. This means that once created, the cache files are automatically removed after 24 hours before being recreated.', 'rocket' ). '<br/>' . __('This can be useful if you display your latest tweets or rss feeds in your sidebar, for example.', 'rocket' ),
-				),
-			array(
-				'type'         => 'helper_help',
-				'name'         => 'purge',
-				'description'  => __( 'Specify 0 for unlimited lifetime.', 'rocket' ),
-				),
-			)
-	);
-
-	// Advanced
-	add_settings_section( 'rocket_display_imp_options', __( 'Advanced options', 'rocket' ), '__return_false', 'advanced' );
-	add_settings_field(
-		'rocket_dns_prefetch',
-		__( 'Prefetch DNS requests:', 'rocket' ),
-		'rocket_field',
 		'advanced',
-		'rocket_display_imp_options',
-		array(
-			array(
-				'type'         => 'textarea',
-				'label_for'    => 'dns_prefetch',
-				'label_screen' => __('Prefetch DNS requests:', 'rocket' ),
-			),
-			array(
-				'type'         => 'helper_description',
-				'name'         => 'dns_prefetch',
-				'description'  => __( 'DNS prefetching is a way for browsers to anticipate the DNS resolution of external domains from your site.', 'rocket' ) . '<br/>' . __( 'This mechanism reduces the latency of some external files.', 'rocket' ),
-				),
-			array(
-				'display'      => ! rocket_is_white_label(),
-				'type'         => 'helper_help',
-				'name'         => 'dns_prefetch',
-				'description'  => sprintf( __( 'To learn more about this option and how to use it correctly, we advise you to watch the following video: <a href="%1$s" class="fancybox">%1$s</a>.', 'rocket' ), ( defined( 'WPLANG' ) && WPLANG == 'fr_FR' ) ? 'http://www.youtube.com/embed/ElJCtUidLwc' : 'http://www.youtube.com/embed/jKMU6HgMMrA' ),
-				),
-			array(
-				'type'         => 'helper_help',
-				'name'         => 'dns_prefetch',
-				'description'  => __( '<strong>Note:</strong> Enter the domain names without their protocol, for example: <code>//ajax.googleapis.com</code> without <code>http:</code> (one per line).', 'rocket' ),
-				),
-		)
-	);
-	add_settings_field(
-		'rocket_purge_pages',
-		__( 'Empty the cache of the following pages when updating a post:', 'rocket' ),
-		'rocket_field',
-		'advanced',
-		'rocket_display_imp_options',
-		array(
-			array(
-				'type'         => 'textarea',
-				'label_for'    => 'cache_purge_pages',
-				'label_screen' => __( 'Empty the cache of the following pages when updating a post:', 'rocket' ),
-			),
-			array(
-				'type'         => 'helper_help',
-				'name'         => 'purge_pages',
-				'description'  => __( 'Enter the URL of additionnal pages to purge when updating a post (one per line).', 'rocket' ) . '<br/>' .
-									  __( 'You can use regular expressions (regex).', 'rocket' ),
-			),
-			array(
-				'type'         => 'helper_help',
-				'name'         => 'purge_pages',
-				'description'  => __( '<strong>Note:</strong> When you update a post or when a comment is posted, the homepage, categories and tags associated with this post are automatically removed from the cache and then recreated by our bot.', 'rocket' ),
-			),
-		)
-	);
-	add_settings_field(
-		'rocket_reject_uri',
-		__( 'Never cache the following pages:', 'rocket' ),
-		'rocket_field',
-		'advanced',
-		'rocket_display_imp_options',
-		array(
-			array(
-				'type'         => 'textarea',
-				'label_for'    => 'cache_reject_uri',
-				'label_screen' => __( 'Never cache the following pages:', 'rocket' ),
-			),
-			array(
-				'type'         => 'helper_help',
-				'name'         => 'reject_uri',
-				'description'  => __( 'Enter the URL of pages to reject (one per line).', 'rocket' ) . '<br/>' . __( 'You can use regular expressions (regex).', 'rocket' )
-			),
-			array(
-				'type'         => 'helper_help',
-				'name'         => 'cache_reject_ua',
-				'description'  => __( '<strong>Note:</strong> The cart and checkout pages are auto-excluded from the cache for WooCommerce, Easy Digital Download, iThemes Exchange, Jigoshop & WP-Shop.', 'rocket' )
-			),
-		)
-	);
-	add_settings_field(
-		'rocket_reject_cookies',
-		__( 'Don\'t cache pages that use the following cookies:', 'rocket' ),
-		'rocket_field',
-		'advanced',
-		'rocket_display_imp_options',
-		array(
-			array(
-				'type'         => 'textarea',
-				'label_for'    => 'cache_reject_cookies',
-				'label_screen' => __( 'Don\'t cache pages that use the following cookies:', 'rocket' ),
-			),
-			array(
-				'type'         => 'helper_help',
-				'name'         => 'reject_cookies',
-				'description'  => __( 'List the names of the cookies (one per line).', 'rocket' )
-				),
-		)
-	);
-	add_settings_field(
-		'rocket_query_strings',
-		__( 'Cache pages that use the following query strings (GET parameters):', 'rocket' ),
-		'rocket_field',
-		'advanced',
-		'rocket_display_imp_options',
-		array(
-			array(
-				'type'         => 'textarea',
-				'label_for'    => 'cache_query_strings',
-				'label_screen' => __( 'Cache pages that use the following query strings (GET parameters):', 'rocket' ),
-			),
-			array(
-				'type'         => 'helper_help',
-				'name'         => 'query_strings',
-				'description'  => __( 'List of query strings which can be cached (one per line).', 'rocket' )
-				),
-		)
-	);
-	add_settings_field(
-		'rocket_reject_ua',
-		__( 'Never send cache pages for these user agents:', 'rocket' ),
-		'rocket_field',
-		'advanced',
-		'rocket_display_imp_options',
-		array(
-			array(
-				'type'         => 'textarea',
-				'label_for'    => 'cache_reject_ua',
-				'label_screen' => __( 'Never send cache pages for these user agents:', 'rocket' ),
-			),
-			array(
-				'type'         => 'helper_help',
-				'name'         => 'cache_reject_ua',
-				'description'  => __( 'Enter the user agents name to reject (one per line).', 'rocket' ) . '<br/>'  . __( 'You can use regular expressions (regex).', 'rocket' )
-			)
-		)
-	);
-	add_settings_field(
-		'rocket_exclude_css',
-		__( '<b>CSS</b> files to exclude from minification:', 'rocket' ),
-		'rocket_field',
-		'advanced',
-		'rocket_display_imp_options',
-		array(
-			array(
-				'type'         => 'textarea',
-				'label_for'    => 'exclude_css',
-				'label_screen' => __( '<b>CSS</b> files to exclude from minification:', 'rocket' ),
-			),
-			array(
-				'type'         => 'helper_help',
-				'name'         => 'exclude_css',
-				'description'  => __( 'Enter the URL of <b>CSS</b> files to reject (one per line).', 'rocket' ) . '<br/>' . __( 'You can use regular expressions (regex).', 'rocket' )
-				),
-		)
-	);
-	add_settings_field(
-		'rocket_exclude_js',
-		__( '<b>JS</b> files to exclude from minification:', 'rocket' ),
-		'rocket_field',
-		'advanced',
-		'rocket_display_imp_options',
-		array(
-			array(
-				'type'         => 'textarea',
-				'label_for'    => 'exclude_js',
-				'label_screen' => __( '<b>JS</b> files to exclude from minification:', 'rocket' ),
-			),
-			array(
-				'type'         => 'helper_help',
-				'name'         => 'exclude_js',
-				'description'  => __( 'Enter the URL of <b>JS</b> files to reject (one per line).', 'rocket' ) . '<br/>' . __( 'You can use regular expressions (regex).', 'rocket' )
-				),
-		)
-	);
-	add_settings_field(
-		'minify_js_in_footer',
-		__( '<b>JS</b> files to be included in the footer during the minification process:', 'rocket' ),
-		'rocket_field',
-		'advanced',
-		'rocket_display_imp_options',
-		array(
-			array(
-				'type'                     => 'repeater',
-				'label_screen'             => __( '<b>JS</b> files to be included in the footer during the minification process:', 'rocket' ),
-				'name'                     => 'minify_js_in_footer',
-				'placeholder'              => 'http://',
-				'repeater_drag_n_drop'     => true,
-				'repeater_label_add_field' => __( 'Add URL', 'rocket' )
-			),
-			array(
-				'type'         => 'helper_help',
-				'name'         => 'minify_js_in_footer',
-				'description'  => __( 'Empty the field to remove it.', 'rocket' ),
-				'class'	       => 'hide-if-js'
-			),
-			array(
-				'type'         => 'helper_warning',
-				'name'         => 'minify_js_in_footer',
-				'description'  => __( 'You must specify the complete URL of the files.', 'rocket' )
-			)
-		)
-	);
-	add_settings_field(
-		'rocket_deferred_js',
-		__( '<b>JS</b> files with deferred loading:', 'rocket' ),
-		'rocket_field',
-		'advanced',
-		'rocket_display_imp_options',
-		array(
-			array(
-				'type'         => 'rocket_defered_module',
-				),
-			array(
-				'type'         => 'helper_help',
-				'name'         => 'deferred_js',
-				'description'  => __( 'You can add JavaScript files that will be loaded asynchronously at the same time as the page loads.', 'rocket' )
-				),
-			array(
-				'type'         => 'helper_help',
-				'name'         => 'deferred_js',
-				'description'  => __( 'Empty the field to remove it.', 'rocket' ),
-				'class'	       => 'hide-if-js'
-				),
-			array(
-				'type'         => 'helper_warning',
-				'name'         => 'deferred_js',
-				'description'  => __( 'You must specify the complete URL of the files.', 'rocket' )
-				),
-		)
+		'cloudflare',
+		'cdn',
+		'white-label',
+		'tools',
+		'tutorials',
+		'faq',
+		'support'
 	);
 	
-	// CloudFlare
-	add_settings_section( 'rocket_display_cloudflare_options', 'CloudFlare', '__return_false', 'cloudflare' );
-	add_settings_field(
-		'rocket_cloudflare_email',
-		__( 'CloudFlare Account Email', 'rocket' ),
-		'rocket_field',
-		'cloudflare',
-		'rocket_display_cloudflare_options',
-		array(
-			array(
-				'type'         => 'text',
-				'label_for'    => 'cloudflare_email',
-				'label_screen' => __( 'CloudFlare Account Email', 'rocket' ),
-			)
-		)
-	);
-	add_settings_field(
-		'rocket_cloudflare_api_key',
-		__( 'API Key', 'rocket' ),
-		'rocket_field',
-		'cloudflare',
-		'rocket_display_cloudflare_options',
-		array(
-			array(
-				'type'         => 'text',
-				'label_for'    => 'cloudflare_api_key',
-				'label_screen' => __( 'API Key', 'rocket' ),
-			),
-			array(
-				'type' 		   => 'helper_description',
-				'name'         => 'cloudflare_api_key',
-				'description'  => sprintf( __( '<strong>Note:</strong> Where do I find my CloudFlare API key? <a href=%s"">Learn more</a>', 'rocket' ), 'https://support.cloudflare.com/hc/en-us/articles/200167836-Where-do-I-find-my-CloudFlare-API-key-' ),
-			)
-		)
-	);
-	add_settings_field(
-		'rocket_cloudflare_domain',
-		__( 'Domain', 'rocket' ),
-		'rocket_field',
-		'cloudflare',
-		'rocket_display_cloudflare_options',
-		array(
-			array(
-				'type'         => 'text',
-				'label_for'    => 'cloudflare_domain',
-				'label_screen' => __( 'Domain', 'rocket' ),
-			)
-		)
-	);
-	add_settings_field(
-		'rocket_cloudflare_devmode',
-		__( 'Development Mode', 'rocket' ),
-		'rocket_field',
-		'cloudflare',
-		'rocket_display_cloudflare_options',
-		array(
-			array(
-				'type'         => 'select',
-				'label_for'    => 'cloudflare_devmode',
-				'label_screen' => __( 'Development Mode', 'rocket' ),
-				'options'	   => array(
-					0 => __( 'Off', 'rocket' ),
-					1 => __( 'On', 'rocket' )
-				),
-			),
-			array(
-				'type' 		   => 'helper_description',
-				'name'         => 'cloudflare_devmode',
-				'description'  => sprintf( __( 'Temporarily enter development mode on your website. <a href=%s"">Learn more</a>', 'rocket' ), 'https://support.cloudflare.com/hc/en-us/articles/200168246' ),
-			)
-		)
-	);
-	add_settings_field(
-		'rocket_cloudflare_auto_settings',
-		__( 'Auto enable the optimal CloudFlare settings (props WP Rocket)', 'rocket' ),
-		'rocket_field',
-		'cloudflare',
-		'rocket_display_cloudflare_options',
-		array(
-			array(
-				'type'         => 'select',
-				'label_for'    => 'cloudflare_auto_settings',
-				'label_screen' => __( 'Auto enable the optimal CloudFlare settings (props WP Rocket)', 'rocket' ),
-				'options'	   => array(
-					0 => __( 'No', 'rocket' ),
-					1 => __( 'Yes', 'rocket' )
-				),
-			),
-			array(
-				'type' 		   => 'helper_description',
-				'name'         => 'cloudflare_auto_settings',
-				'description'  => __( 'We select the best CloudFlare configuration for speed, performance grade and compatibility.', 'rocket' ),
-			)
-		)
-	);
-	add_settings_field(
-		'rocket_purge_cloudflare',
-		__( 'Clear cache', 'rocket' ),
-		'rocket_button',
-		'cloudflare',
-		'rocket_display_cloudflare_options',
-		array(
-			'button'=>array(
-				'button_label' => __( 'Clear cache', 'rocket' ),
-				'url'		   => wp_nonce_url( admin_url( 'admin-post.php?action=rocket_purge_cloudflare' ), 'rocket_purge_cloudflare' ),
-			),
-			'helper_description'=>array(
-				'name'         => 'purge_cloudflare',
-				'description'  => sprintf(__( 'Immediately purge cached resources for your website. <a href="%s" target="_blank">Learn more</a>', 'rocket' ), 'https://support.cloudflare.com/hc/en-us/articles/200169246' )
-			),
-		)
-	);
-	
-	// Content Delivery Network
-	add_settings_section( 'rocket_display_cdn_options', __( 'Content Delivery Network options', 'rocket' ), '__return_false', 'cdn' );
-	add_settings_field(
-		'rocket_do_cloudflare',
-		'CloudFlare',
-		'rocket_field',
-		'cdn',
-		'rocket_display_cdn_options',
-		array(
-			array(
-				'type'         => 'checkbox',
-				'label'        => __( 'Enable CloudFlare settings tab.', 'rocket' ),
-				'label_for'    => 'do_cloudflare',
-				'label_screen' => 'CloudFlare'
-			),
-			array(
-				'type' 		  => 'helper_description',
-				'name' 		  => 'rocket_do_cloudflare',
-				'description' => __( 'This option allows you to configure some CloudFlare settings like development mode, purge cache and a recommended configuration.', 'rocket' )
-			),
-			array(
-				'type' 		  => 'helper_description',
-				'name' 		  => 'rocket_do_cloudflare',
-				'description' => __( '<strong>Note:</strong> If you are using CloudFlare, configure the options in the CloudFlare tab. The CDN settings below <strong>do not apply</strong> to CloudFlare.', 'rocket' )
-			)
-		)
-    );
-	add_settings_field(
-		'rocket_cdn',
-		__( 'CDN:', 'rocket' ),
-		'rocket_field',
-		'cdn',
-		'rocket_display_cdn_options',
-		array(
-			array(
-				'type'         => 'checkbox',
-				'label'        => __('Enable Content Delivery Network.', 'rocket' ),
-				'label_for'    => 'cdn',
-				'label_screen' => __( 'CDN:', 'rocket' )
-			),
-			array(
-				'type' 		  => 'helper_description',
-				'name' 		  => 'cdn',
-				'description' => __( 'CDN function replaces all URLs of your static files and media (CSS, JS, Images) with the url entered below. This way all your content will be copied to a dedicated hosting or a CDN system <a href="http://www.maxcdn.com/" target="_blank">maxCDN</a>.', 'rocket' )
-			)
-		)
-	);
-	add_settings_field(
-		'rocket_cdn_on_ssl',
-		'CDN & SSL:',
-		'rocket_field',
-		'cdn',
-		'rocket_display_cdn_options',
-		array(
-			array(
-				'type'         => 'checkbox',
-				'label'        => __('Disable CDN on HTTPS pages.', 'rocket' ),
-				'label_for'    => 'cdn_ssl',
-				'label_screen' => 'CDN & SSL:',
-			)
-		)
-	);
-	add_settings_field(
-		'rocket_cdn_cnames',
-		__( 'Replace site\'s hostname with:', 'rocket' ),
-		'rocket_cnames_module',
-		'cdn',
-		'rocket_display_cdn_options'
-	);
-	add_settings_field(
-		'rocket_cdn_reject_files',
-		__( 'Rejected files:', 'rocket' ),
-		'rocket_field',
-		'cdn',
-		'rocket_display_cdn_options',
-		array(
-			array(
-				'type'         => 'textarea',
-				'label_for'    => 'cdn_reject_files',
-				'label_screen' => __( 'Rejected files:', 'rocket' ),
-			),
-			array(
-				'type'         => 'helper_help',
-				'name'         => 'cdn_reject_files',
-				'description'  => __( 'Specify the URL files that should not use the CDN. (one per line).', 'rocket' ) . '<br/>' . __( 'You can use regular expressions (regex).', 'rocket' )
-			),
-		)
-	);
-	
-	// White Label
-	add_settings_section( 'rocket_display_white_label', __( 'White Label', 'rocket' ), '__return_false', 'white_label' );
-	add_settings_field(
-		'rocket_wl_plugin_name',
-		__( 'Plugin Name:', 'rocket' ),
-		'rocket_field',
-		'white_label',
-		'rocket_display_white_label',
-		array(
-			array(
-				'type'         => 'text',
-				'name'         => 'wl_plugin_name',
-				'label_for'    => 'wl_plugin_name',
-				'label_screen' => __( 'Plugin Name:', 'rocket' ),
-			),
-		)
-	);
-	add_settings_field(
-		'rocket_wl_plugin_URI',
-		__( 'Plugin URI:', 'rocket' ),
-		'rocket_field',
-		'white_label',
-		'rocket_display_white_label',
-		array(
-			array(
-				'type'         => 'text',
-				'name'         => 'wl_plugin_URI',
-				'label_for'    => 'wl_plugin_URI',
-				'label_screen' => __( 'Plugin URI:', 'rocket' ),
-			),
-		)
-	);
-	add_settings_field(
-		'rocket_wl_description',
-		__( 'Description:', 'rocket' ),
-		'rocket_field',
-		'white_label',
-		'rocket_display_white_label',
-		array(
-			array(
-				'type'         => 'textarea',
-				'name'         => 'wl_description',
-				'label_for'    => 'wl_description',
-				'label_screen' => __( 'Description:', 'rocket' ),
-			),
-		)
-	);
-	add_settings_field(
-		'rocket_wl_author',
-		__( 'Author:', 'rocket' ),
-		'rocket_field',
-		'white_label',
-		'rocket_display_white_label',
-		array(
-			array(
-				'type'         => 'text',
-				'name'         => 'wl_author',
-				'label_for'    => 'wl_author',
-				'label_screen' => __( 'Author:', 'rocket' ),
-			),
-		)
-	);
-	add_settings_field(
-		'rocket_wl_author_URI',
-		__( 'Author URI:', 'rocket' ),
-		'rocket_field',
-		'white_label',
-		'rocket_display_white_label',
-		array(
-			array(
-				'type'         => 'text',
-				'name'         => 'wl_author_URI',
-				'label_for'    => 'wl_author_URI',
-				'label_screen' => __( 'Author URI:', 'rocket' ),
-			),
-		)
-	);
-	add_settings_field(
-		'rocket_wl_warning',
-		'',
-		'rocket_button',
-		'white_label',
-		'rocket_display_white_label',
-		array(
-	        'button'=>array(
-	        	'button_label' => __( 'Reset White Label values to default', 'rocket' ),
-	        	'url'		   => wp_nonce_url( admin_url( 'admin-post.php?action=rocket_resetwl' ), 'rocket_resetwl' ),
-	        ),
-			'helper_warning'=>array(
-				'name'         => 'wl_warning',
-				'description'  => __( 'If you change anything, the tutorial + FAQ + Support tabs will be hidden.', 'rocket' ),
-			),
-		)
-	);
-	// Tools
-	add_settings_section( 'rocket_display_tools', __( 'Tools', 'rocket' ), '__return_false', 'tools' );
-
-    if ( ! rocket_is_white_label() ) {
-		add_settings_field(
-			'rocket_do_beta',
-			__( 'Beta Tester', 'rocket' ),
-			'rocket_field',
-			'tools',
-			'rocket_display_tools',
-			array(
-				array(
-					'type'         => 'checkbox',
-					'label'        => __( 'Yes I do!', 'rocket' ),
-					'label_for'    => 'do_beta',
-					'label_screen' => __( 'Beta Tester', 'rocket' )
-				),
-				array(
-					'type' 		  => 'helper_description',
-					'name' 		  => 'do_beta',
-					'description' => __( 'Check it to participate in the WP Rocket Beta Program and get earlier access to new versions, thanks in advance.', 'rocket' )
-				)
-			)
-	    );
-    }
-
-	add_settings_field(
-		'rocket_purge_all',
-		__( 'Clear cache', 'rocket' ),
-		'rocket_button',
-		'tools',
-		'rocket_display_tools',
-		array(
-			'button'=>array(
-				'button_label' => __( 'Clear cache', 'rocket' ),
-				'url'		   => wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=all' ), 'purge_cache_all' ),
-			),
-			'helper_description'=>array(
-				'name'         => 'purge_all',
-				'description'  => __( 'Clear the cache for the whole site.', 'rocket' )
-			),
-		)
-	);
-	add_settings_field(
-		'rocket_preload',
-		__( 'Preload cache', 'rocket' ),
-		'rocket_button',
-		'tools',
-		'rocket_display_tools',
-		array(
-	        'button'=>array(
-	        	'button_label' => __( 'Preload cache', 'rocket' ),
-	        	'url'		   => wp_nonce_url( admin_url( 'admin-post.php?action=preload' ), 'preload' ),
-	        ),
-			'helper_description'=>array(
-				'name'         => 'preload',
-	        	'description'  => __( 'Allows you to request a bot crawl to preload the cache (homepage and its internal links).', 'rocket' )
-			),
-		)
-    );
-
-    add_settings_field(
-		'rocket_export_options',
-		__( 'Settings Exporter', 'rocket' ),
-		'rocket_field',
-		'tools',
-		'rocket_display_tools',
-		array( 'type'=>'rocket_export_form', 'name'=>'export' )
-
-    );
-
-    add_settings_field(
-		'rocket_import_options',
-		__( 'Settings Importer', 'rocket' ),
-		'rocket_field',
-		'tools',
-		'rocket_display_tools',
-		array( 'type'=>'rocket_import_upload_form' )
-
-    );
-
-    if ( current_user_can( 'update_plugins' ) ) {
-		$temp_description = __( 'Please backup your settings before, use the "Download options" button above.', 'rocket' );
-	    add_settings_field(
-			'rocket_rollback',
-			__( 'Update Rollback', 'rocket' ),
-			'rocket_button',
-			'tools',
-			'rocket_display_tools',
-			array(
-		        'button'=>array(
-		        	'button_label' => sprintf( __( 'Reinstall v%s', 'rocket' ), WP_ROCKET_LASTVERSION ),
-		        	'url'		   => wp_nonce_url( admin_url( 'admin-post.php?action=rocket_rollback' ), 'rocket_rollback' ),
-		        ),
-				'helper_description'=>array(
-					'name'         => 'rollback',
-		        	'description'  => sprintf( __( 'Is the version %s causing you some issues? You can ask for a rollback and reinstall the last version you used before.', 'rocket' ), WP_ROCKET_VERSION )
-				),
-				'helper_warning'=>array(
-					'name'         => 'rollback2',
-		        	'description'  => $temp_description,
-				),
-			)
-
-	    );
+	foreach( $modules as $module ) {
+		require( WP_ROCKET_ADMIN_UI_MODULES_PATH . $module . '.php' );
 	}
-	unset( $temp_description );
-
-
-	add_settings_section( 'rocket_display_tutorials', __( 'Tutorials', 'rocket' ), '__return_false', 'tutorials' );
-	add_settings_field(
-		'tuto_preload_cache',
-		__( 'Preload cache', 'rocket' ),
-		'rocket_video',
-		'tutorials',
-		'rocket_display_tutorials',
-		array(
-			'description'	=> __( 'This video gives some explanations about our two crawler robots. They generate several cache files in a few seconds.', 'rocket' ),
-			'url'			=> 'http://www.youtube.com/embed/9jDcg2f-9yM',
-			'name'			=> 'tuto_preload_cache',
-		)
-	);
-	add_settings_field(
-		'tuto_css_javascript_minification',
-		__( 'CSS and JavaScript minification', 'rocket' ),
-		'rocket_video',
-		'tutorials',
-		'rocket_display_tutorials',
-		array(
-			'description'	=> __( 'This video gives some explanations about how to use the advanced processes of minification and concatenation of CSS and JavaScript files.', 'rocket' ),
-			'url'			=> 'http://www.youtube.com/embed/iziXSvZgxLk',
-			'name'			=> 'css_javascript_minification',
-		)
-	);
-	add_settings_field(
-		'tuto_preload_dns_queries',
-		__( 'Preloading DNS queries', 'rocket' ),
-		'rocket_video',
-		'tutorials',
-		'rocket_display_tutorials',
-		array(
-			'description'	=> __( 'This video helps to easily understand the advanced option of "Preloading DNS queries" and the use of the filter <code>rocket_dns_prefetch</code>.', 'rocket' ),
-			'url'			=> 'http://www.youtube.com/embed/ElJCtUidLwc',
-			'name'			=> 'tuto_preload_dns_queries',
-		)
-	);
-	add_settings_field(
-		'tuto_white_label',
-		__( 'How to use the White Label functionality?', 'rocket' ),
-		'rocket_video',
-		'tutorials',
-		'rocket_display_tutorials',
-		array(
-			'description'	=> __( 'This video helps to set up a White Label version of WP Rocket.', 'rocket' ),
-			'url'			=> 'http://www.youtube.com/embed/3rDpaom6kSc',
-			'name'			=> 'tuto_white_label',
-		)
-	);
-	add_settings_field(
-		'tuto_cdn',
-		__( 'How to use the CDN functionality?', 'rocket' ),
-		'rocket_video',
-		'tutorials',
-		'rocket_display_tutorials',
-		array(
-			'description'	=> __( 'This video helps to understand what is the CDN functionality included since WP Rocket 2.1.', 'rocket' ),
-			'url'			=> 'http://www.youtube.com/embed/JIamaNM8yp4',
-			'name'			=> 'tuto_cdn',
-		)
-	);
-	add_settings_field(
-		'tuto_cdn_api',
-		__( 'How to use the CDN API?', 'rocket' ),
-		'rocket_video',
-		'tutorials',
-		'rocket_display_tutorials',
-		array(
-			'description'	=> __( 'This video helps to set up the two functions <code>get_rocket_cdn_url()</code> and <code>rocket_cdn_url()</code>.', 'rocket' ),
-			'url'			=> 'http://www.youtube.com/embed/qfcGBoVdYKI',
-			'name'			=> 'tuto_cdn_api',
-		)
-	);
-	add_settings_section( 'rocket_display_faq', __( 'FAQ', 'rocket' ), '__return_false', 'faq' );
-	add_settings_field(
-		'faq',
-		__( 'FAQ', 'rocket' ),
-		'rocket_include',
-		'faq',
-		'rocket_display_faq',
-		array(
-			'file'	=> 'faq',
-		)
-	);
-	add_settings_section( 'rocket_display_support', __( 'Support', 'rocket' ), '__return_false', 'support' );
-	add_settings_field(
-		'support',
-		__( 'Support', 'rocket' ),
-		'rocket_button',
-		'support',
-		'rocket_display_support',
-		array(
-				'button'=>array(
-					'button_label'	=> __( 'Visit the Support', 'rocket' ),
-					'url'			=> 'http://wp-rocket.me/support/',
-					'style'			=> 'link',
-					),
-				'helper_help'=>array(
-					'name'			=> 'support',
-					'description'	=> __( 'If none of the FAQ answers resolves your problem, you can send your issue to our free support. We will reply as soon as possible.', 'rocket')
-				),
-		)
-	);
-?>
+	?>
+	
 	<div class="wrap">
 
 	<h2><?php echo WP_ROCKET_PLUGIN_NAME; ?> <small><sup><?php echo WP_ROCKET_VERSION; ?></sup></small></h2>
 	<form action="options.php" id="rocket_options" method="post" enctype="multipart/form-data">
-		<?php settings_fields( 'wp_rocket' ); ?>
-		<?php rocket_hidden_fields( array( 'consumer_key', 'consumer_email', 'secret_key', 'license', 'secret_cache_key', 'minify_css_key', 'minify_js_key', 'version', 'cloudflare_old_settings' ) ); ?>
-		<?php submit_button(); ?>
+		<?php 
+		settings_fields( 'wp_rocket' );
+		
+		rocket_hidden_fields( 
+			array( 
+				'consumer_key', 
+				'consumer_email', 
+				'secret_key', 
+				'license', 
+				'secret_cache_key',
+				'minify_css_key', 
+				'minify_js_key', 
+				'version', 
+				'cloudflare_old_settings' 
+			)
+		); 
+				
+		submit_button(); 
+		?>
 		<h2 class="nav-tab-wrapper hide-if-no-js">
 			<?php if( rocket_valid_key() ) { ?>
 				<a href="#tab_basic" class="nav-tab"><?php _e( 'Basic options', 'rocket' ); ?></a>
@@ -1385,7 +493,7 @@ function rocket_display_options()
 						<a href="#tab_tutorials" class="nav-tab"><?php _e( 'Tutorials', 'rocket' ); ?></a>
 					<?php } ?>
 					<a href="#tab_faq" class="nav-tab"><?php _e( 'FAQ', 'rocket' ); ?></a>
-					<a href="#tab_support" class="nav-tab file-error"><?php _e( 'Support', 'rocket' ); ?></a>
+					<a href="#tab_support" class="nav-tab"><?php _e( 'Support', 'rocket' ); ?></a>
 				<?php } ?>
 			<?php }else{ ?>
 				<a href="#tab_apikey" class="nav-tab"><?php _e( 'License', 'rocket' ); ?></a>
@@ -1433,30 +541,6 @@ add_action( 'admin_init', 'rocket_register_setting' );
 function rocket_register_setting()
 {
 	register_setting( 'wp_rocket', WP_ROCKET_SLUG, 'rocket_settings_callback' );
-}
-
-/**
- * Used with array_filter to remove files without .css extension
- *
- * @since 1.0
- */
-function rocket_sanitize_css( $file )
-{
-	$file = preg_replace( '#\?.*$#', '', $file );
-	$ext = strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
-	return $ext=='css' ? trim( $file ) : false;
-}
-
-/**
- * Used with array_filter to remove files without .js extension
- *
- * @since 1.0
- */
-function rocket_sanitize_js( $file )
-{
-	$file = preg_replace( '#\?.*$#', '', $file );
-	$ext  = strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
-	return $ext == 'js' ? trim( $file ) : false;
 }
 
 /**
@@ -1695,7 +779,22 @@ function rocket_settings_callback( $inputs )
 	} else {
 		$inputs['cdn_reject_files'] = array();
 	}
-
+	
+	/*
+	 * Option: Support
+	 */
+	$fake_options = array( 
+		'support_summary',
+		'support_description',
+		'support_documentation_validation'
+	);
+	
+	foreach ( $fake_options as $option ) {
+		 if( isset( $inputs[$option] ) ) {
+			 unset($inputs[$option]);
+		 }
+	}
+	 
 	if ( isset( $_FILES['import'] )
 		&& preg_match( '/wp-rocket-settings-20\d{2}-\d{2}-\d{2}-[a-f0-9]{13}\.txt/', $_FILES['import']['name'] )
 		&& 'text/plain' == $_FILES['import']['type'] ) {

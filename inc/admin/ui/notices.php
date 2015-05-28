@@ -141,7 +141,11 @@ function rocket_plugins_to_deactivate()
 		$plugins[] = 'advanced-lazy-load/advanced_lazyload.php';
 		$plugins[] = 'crazy-lazy/crazy-lazy.php';
 	}
-
+	
+	if ( get_rocket_option( 'lazyload_iframes' ) ) {
+		$plugins[] = 'lazy-load-for-videos/codeispoetry.php';
+	}
+	
 	if ( get_rocket_option( 'minify_css' ) || get_rocket_option( 'minify_js' ) || get_rocket_option( 'minify_html' ) ) {
 		$plugins[] = 'bwp-minify/bwp-minify.php';
 		$plugins[] = 'wp-minify/wp-minify.php';

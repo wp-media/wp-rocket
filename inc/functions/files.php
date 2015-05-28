@@ -25,7 +25,10 @@ function get_rocket_advanced_cache_file()
 	
 	// Include the process file in buffer
 	$buffer .= 'if ( file_exists( \''. WP_ROCKET_FRONT_PATH . 'process.php' . '\' ) ) {' . "\n";
-		$buffer .= 'include( \''. WP_ROCKET_FRONT_PATH . 'process.php' . '\' );' . "\n";
+		$buffer .= "\t" . 'include( \''. WP_ROCKET_FRONT_PATH . 'process.php' . '\' );' . "\n";
+	$buffer .= '} else {' . "\n";
+		// Add a constant to provent include issue
+		$buffer .= "\t" . 'define( \'WP_ROCKET_ADVANCED_CACHE_PROBLEM\', true );' . "\n";
 	$buffer .= '}';
 	
 	/**
@@ -70,8 +73,7 @@ function get_rocket_config_file()
 	$buffer = '<?php' . "\n";
 	$buffer .= 'defined( \'ABSPATH\' ) or die( \'Cheatin\\\' uh?\' );' . "\n\n";
 	
-	// Temporary fix until to find an automatic solution !!
-	if ( apply_filters( 'rocket_override_min_documentRoot', false ) ) {
+	if ( apply_filters( 'rocket_override_min_documentRoot', false ) || $_SERVER['DOCUMENT_ROOT'] != ABSPATH ) {
 		$buffer .= '$min_documentRoot = \'' . ABSPATH . '\';' . "\n";
 	}
 		
@@ -122,7 +124,6 @@ function get_rocket_config_file()
 	}
 
 	foreach ( $urls as $url ) {
-
 		list( $host, $path ) = get_rocket_parse_url( rtrim( $url, '/' ) );
 
 		if ( ! isset( $path ) ) {
@@ -130,7 +131,6 @@ function get_rocket_config_file()
 		} else {
 			$config_files_path[] = WP_ROCKET_CONFIG_PATH . strtolower( $host ) . str_replace( '/', '.', rtrim( $path, '/' ) ) . '.php';
 		}
-
 	}
 	
 	/**
@@ -163,6 +163,54 @@ function rocket_generate_config_file()
 			rocket_put_content( $file , $buffer );
 		}
 	}
+}
+
+/**
+ * Remove the current config domain file
+ *
+ * @since 2.6
+ *
+ * @return void
+ */
+function rocket_delete_config_file()
+{
+	list( $config_files_path ) = get_rocket_config_file();
+	foreach( $config_files_path as $config_file ) {
+		@unlink( $config_file );
+	}
+}
+
+/**
+ * Create all cache folders (wp-rocket & min)
+ *
+ * @since 2.6
+ *
+ * @return void
+ */
+function rocket_init_cache_dir() {
+	// Create cache folder if not exist
+    if ( ! is_dir( WP_ROCKET_CACHE_PATH ) ) {
+	   rocket_mkdir_p( WP_ROCKET_CACHE_PATH );
+    }
+
+	// Create minify cache folder if not exist
+    if ( ! is_dir( WP_ROCKET_MINIFY_CACHE_PATH ) ) {
+		rocket_mkdir_p( WP_ROCKET_MINIFY_CACHE_PATH );
+    }
+}
+
+/**
+ * Create the config folder (wp-rocket-config)
+ *
+ * @since 2.6
+ *
+ * @return void
+ */
+function rocket_init_config_dir() {
+	// Create config domain folder if not exist
+    if ( ! is_dir( WP_ROCKET_CONFIG_PATH ) ) {
+		rocket_mkdir_p( WP_ROCKET_CONFIG_PATH );
+    }
 }
 
 /**
@@ -222,7 +270,7 @@ function set_rocket_wp_cache_define( $turn_it_on )
 	// If the constant does not exist, create it
 	if ( ! $is_wp_cache_exist ) {
 		array_shift( $config_file );
-		array_unshift( $config_file, "<?php\r\n", $constant);
+		array_unshift( $config_file, "<?php\r\n", $constant );
 	}
 
 	// Insert the constant in wp-config.php file
@@ -398,7 +446,6 @@ function rocket_clean_domain( $lang = '' )
 	$urls = (array) $urls;
 	
 	foreach ( $urls as $url ) {
-
 		list( $host, $path ) = get_rocket_parse_url( $url );
 
 		/** This filter is documented in inc/front/htaccess.php */
@@ -434,7 +481,6 @@ function rocket_clean_domain( $lang = '' )
 		 * @param string $lang The current lang to purge
 		*/
 	    do_action( 'after_rocket_clean_domain', $root, $lang );
-
 	}
 }
 
@@ -575,55 +621,6 @@ function rocket_put_content( $file, $content )
 
 	$chmod = defined( 'FS_CHMOD_FILE' ) ? FS_CHMOD_FILE : 0644;
 	return $wp_filesystem->put_contents( $file, $content, $chmod );
-}
-
-/**
- * Check if minify cache file exist and create it if not
- *
- * @since 2.1
- *
- * @param string $url 		 The minified URL with Google Minify Code
- * @param string $pretty_url The minified URL cache file
- * @return bool
- */
-function rocket_fetch_and_cache_minify( $url, $pretty_url )
-{
-	// Check if php-curl is enabled
-	if ( ! function_exists( 'curl_init' ) || ! function_exists( 'curl_exec' ) ) {
-		return false;
-	}
-
-	$pretty_path = str_replace( WP_ROCKET_MINIFY_CACHE_URL, WP_ROCKET_MINIFY_CACHE_PATH, $pretty_url );
-
-	// If minify cache file is already exist, return to get a coffee :)
-	if ( file_exists( $pretty_path ) ) {
-		return true;
-	}
-
-	$ch = curl_init();
-	curl_setopt ($ch, CURLOPT_URL, $url);
-	curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
-	curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, 5);
-	curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, false);
-	curl_setopt ($ch, CURLOPT_USERAGENT, 'WP-Rocket-Minify');
-
-	$content = curl_exec($ch);
-	curl_close($ch);
-
-	if ( $content ) {
-		// Create cache folders of the request uri
-		$cache_path = WP_ROCKET_MINIFY_CACHE_PATH . get_current_blog_id() . '/';
-		if ( ! is_dir( $cache_path ) ) {
-			rocket_mkdir_p( $cache_path );
-		}
-
-		// Save cache file
-		if( rocket_put_content( $pretty_path, $content ) ) {
-			return true;
-		}
-	}
-
-	return false;
 }
 
 /**

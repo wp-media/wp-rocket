@@ -83,14 +83,19 @@ function rocket_first_install()
 			'exclude_js'               => array(),
 			'deferred_js_files'        => array(),
 			'deferred_js_wait'         => array(),
-			'lazyload'                 => 0,
+			'lazyload'          	   => 0,
+			'lazyload_iframes'         => 0,
 			'minify_css'               => 0,
 			'minify_css_key'           => $minify_css_key,
+			'minify_css_combine_all'   => 0,
 			'minify_js'                => 0,
 			'minify_js_key'            => $minify_js_key,
 			'minify_js_in_footer'      => array(),
+			'minify_js_combine_all'    => 0,
 			'minify_google_fonts'      => 0,
 			'minify_html'              => 0,
+			'minify_html_inline_css'   => 0,
+			'minify_html_inline_js'    => 0,
 			'dns_prefetch'             => 0,
 			'cdn'                      => 0,
 			'cdn_cnames'               => array(),
@@ -200,7 +205,7 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version )
 	    // Create config file
 		rocket_generate_config_file();
 	}
-	
+
 	if ( version_compare( $actual_version, '2.3.3', '<' ) ) {
 		// Clean cache
 		rocket_clean_domain();
@@ -208,16 +213,31 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version )
 		// Create cache files
 		run_rocket_bot( 'cache-preload' );
 	}
-	
+
 	if ( version_compare( $actual_version, '2.3.9', '<' ) ) {
 		// Regenerate config file
 		rocket_generate_config_file();
 	}
-	
+
 	if ( version_compare( $actual_version, '2.4.1', '<' ) ) {
 		// Regenerate advanced-cache.php file
 		rocket_generate_advanced_cache_file();
 		delete_transient( 'rocket_ask_for_update' );
+	}
+
+	if ( version_compare( $actual_version, '2.6', '<' ) ) {
+		// Activate Inline CSS & JS minification if HTML minification is activated
+		$options = get_option( WP_ROCKET_SLUG );
+
+		if ( !empty( $options['minify_html'] ) ) {
+			$options['minify_html_inline_css'] = 1;
+			$options['minify_html_inline_js']  = 1;
+		}
+		
+		update_option( WP_ROCKET_SLUG, $options );
+
+		// Regenerate advanced-cache.php file
+		rocket_generate_advanced_cache_file();
 	}
 }
 /* END UPGRADER'S HOOKS */

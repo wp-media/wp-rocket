@@ -139,13 +139,13 @@ class Minify_HTML {
             .'|ul)\\b[^>]*>)/i', '$1', $this->_html);
         
         // remove ws outside of all elements
-        $this->_html = preg_replace(
-            '/>(\\s(?:\\s*))?([^<]+)(\\s(?:\s*))?</'
-            ,'>$1$2$3<'
+        $this->_html = preg_replace_callback(
+            '/>([^<]+)</'
+            ,array($this, '_outsideTagCB')
             ,$this->_html);
         
         // use newlines before 1st attribute in open tags (to limit line lengths)
-        $this->_html = preg_replace('/(<[a-z\\-]+)\\s+([^>]+>)/i', "$1\n$2", $this->_html);
+        //$this->_html = preg_replace('/(<[a-z\\-]+)\\s+([^>]+>)/i', "$1\n$2", $this->_html);
         
         // fill placeholders
         $this->_html = str_replace(
@@ -181,7 +181,12 @@ class Minify_HTML {
     protected $_placeholders = array();
     protected $_cssMinifier = null;
     protected $_jsMinifier = null;
-
+	
+	protected function _outsideTagCB($m)
+    {
+        return '>' . preg_replace('/^\\s+|\\s+$/', ' ', $m[1]) . '<';
+    }
+	
     protected function _removePreCB($m)
     {
         return $this->_reservePlace("<pre{$m[1]}");
