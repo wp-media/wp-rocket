@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2015-05-20 14:23:29+00:00\n"
-"PO-Revision-Date: 2015-05-20 15:01+0000\n"
+"POT-Creation-Date: 2015-05-28 16:16:27+00:00\n"
+"PO-Revision-Date: 2015-05-28 16:29+0000\n"
 "Last-Translator: wpmedia <contact@wp-media.me>\n"
 "Language-Team: French (France) (http://www.transifex.com/projects/p/wp-rocket/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -183,11 +183,11 @@ msgid ""
 "It seems that communications with Mission Control are temporarily "
 "down....please submit a support ticket while our Rocket Scientists fix the "
 "issue."
-msgstr ""
+msgstr "Il semble que la communication avec notre station de contrôle soit temporairement hors-service... vous pouvez ouvrir un ticket de support sur notre site pour obtenir l'aide de nos ingénieurs."
 
 #: inc/admin/ui/enqueue.php:34
 msgid "Get help from a rocket scientist"
-msgstr ""
+msgstr "Obtenir de l'aide de nos ingénieurs"
 
 #: inc/admin/ui/enqueue.php:36
 msgid "Last steps before contacting us"
@@ -195,10 +195,10 @@ msgstr "Dernières étapes avant de nous contacter"
 
 #: inc/admin/ui/enqueue.php:37
 msgid ""
-"You have to read the <a href=\"\" target=\"_blank\">documentation</a> and to"
-" agree to send informations relative to your website to submit a support "
+"You have to read the <a href=\"%s\" target=\"_blank\">documentation</a> and "
+"to agree to send informations relative to your website to submit a support "
 "ticket."
-msgstr ""
+msgstr "Vous devez lire la <a href=\"%s\" target=\"_blank\">documentation</a> et nous autoriser à envoyer la version de WordPress et la liste des plugins activés pour soumettre un ticket."
 
 #: inc/admin/ui/enqueue.php:39
 msgid "Transmission Received!"
@@ -214,14 +214,14 @@ msgstr "Nous répondons à tous les tickets donc vérifiez vos spams si vous n'a
 
 #: inc/admin/ui/enqueue.php:42
 msgid "Oh dear, someone's been naughty..."
-msgstr ""
+msgstr "Oh, quelqu'un n'a pas été raisonnable..."
 
 #: inc/admin/ui/enqueue.php:43
 msgid ""
 "Well, well, looks like you've got yourself a \"nulled\" version! We don't "
 "provide support to hackers or pirates, so you will need a valid license to "
 "proceed."
-msgstr ""
+msgstr "Hum, hum, il semble que vous utilisez une version \"crackée\" ! Nous ne fournissons pas de support pour les hackers, vous avez besoin d'une licence valide pour continuer."
 
 #: inc/admin/ui/enqueue.php:43
 msgid ""
@@ -234,19 +234,19 @@ msgstr "Acheter"
 
 #: inc/admin/ui/enqueue.php:46
 msgid "Uh-oh, you're out of fuel!"
-msgstr ""
+msgstr "Oh-oh, vous n'avez plus de carburant !"
 
 #: inc/admin/ui/enqueue.php:47
 msgid ""
 "To keep your Rocket running with access to support, <strong>you'll need to "
 "renew your license</strong>."
-msgstr ""
+msgstr "Pour garder votre site en orbite avec un accès à notre support, <strong>vous devez renouveler votre licence</strong>."
 
 #: inc/admin/ui/enqueue.php:47
 msgid ""
 "Click below to renew with a <strong>discount of 50%</strong> automatically "
 "applied!"
-msgstr ""
+msgstr "Cliquez ci-dessous pour renouveler votre licence en bénéficiant d'une <strong>réduction de 50%</strong> automatiquement appliquée."
 
 #: inc/admin/ui/enqueue.php:48
 msgid "I re-synchronize now!"
@@ -441,7 +441,7 @@ msgstr "Nous ne le recommandons pas car  <strong>vous ne bénéficiez pas de la 
 msgid ""
 "Depending to your server configuration, these options can break your "
 "website. If you have any issues, you must deactivate it!"
-msgstr ""
+msgstr "En fonction de votre configuration serveur, ces options peuvent \"casser\" votre site. Si vous avez un souci, vous devez les désactiver !"
 
 #: inc/admin/ui/modules/advanced.php:174 inc/admin/ui/modules/advanced.php:182
 msgid "<b>CSS</b> files to exclude from minification:"
@@ -762,19 +762,19 @@ msgstr "Description"
 msgid ""
 "Please provide the specific url(s) where we can see each issue. e.g. the "
 "gallery doesn't work on this page: domain.com/gallery-page"
-msgstr ""
+msgstr "Merci de nous fournir les URL(s) où l'on peut voir les soucis. Par exemple, la galerie ne fonctionne pas sur cette page : domain.com/gallery-page"
 
 #: inc/admin/ui/modules/support.php:32
 msgid ""
 "Please let us know how we will recognize the issue or can reproduce the "
 "issue. What is supposed to happen, and what is actually happening instead?"
-msgstr ""
+msgstr "Merci de nous indiquer comment détecter le souci ou comment nous pouvons le reproduire. Qu'est-ce qu'il est censé se produire et que se passe-t-il à la place ?"
 
 #: inc/admin/ui/modules/support.php:33
 msgid ""
 "e.g. At the bottom of the post there are related posts which are supposed to"
 " have thumbnails, but no thumbnails are displaying."
-msgstr ""
+msgstr "Par exemple : à la fin des articles, les images des \"articles en relation\" ne s'affichent plus."
 
 #: inc/admin/ui/modules/support.php:45
 msgid ""
