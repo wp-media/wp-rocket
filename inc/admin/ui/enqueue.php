@@ -22,7 +22,8 @@ function __rocket_add_admin_css_js()
 	// Sweet Alert
 	$translation_array = array(
 		'warningTitle'     => __( 'Are you sure?', 'rocket' ),
-
+		'requiredTitle'    => __( 'All fields are required!', 'rocket' ),
+		
 		'cloudflareTitle'  => __( 'CloudFlare Settings', 'rocket' ),
 		'cloudflareText'   => __( 'Click "Save Changes" to activate the Cloudflare tab.', 'rocket' ),
 
