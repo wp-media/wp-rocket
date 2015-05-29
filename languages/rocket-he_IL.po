@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2015-03-10 13:16:51+00:00\n"
-"PO-Revision-Date: 2015-03-10 13:16+0000\n"
+"POT-Creation-Date: 2015-05-28 16:16:27+00:00\n"
+"PO-Revision-Date: 2015-05-28 16:16+0000\n"
 "Last-Translator: FxB <fxb@wp-translations.org>\n"
 "Language-Team: Hebrew (Israel) (http://www.transifex.com/projects/p/wp-rocket/language/he_IL/)\n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: he_IL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: grunt-wp-i18n 0.5.0\n"
+"X-Generator: grunt-wp-i18n 0.5.2\n"
 "X-Poedit-Basepath: ../\n"
 "X-Poedit-Bookmarks: \n"
 "X-Poedit-Country: United States\n"
@@ -25,9 +25,8 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Textdomain-Support: yes\n"
 
-#: inc/admin/admin.php:13 inc/admin/options.php:1352
-#: inc/admin/options.php:1355 inc/admin/options.php:1396
-#: inc/admin/options.php:1401 inc/admin-bar.php:212
+#: inc/admin/admin.php:13 inc/admin/options.php:496 inc/admin/options.php:501
+#: inc/admin/ui/modules/support.php:4 inc/common/admin-bar.php:212
 msgid "Support"
 msgstr "תמיכה"
 
@@ -35,515 +34,979 @@ msgstr "תמיכה"
 msgid "Docs"
 msgstr "מסמכים"
 
-#: inc/admin/admin.php:18 inc/admin-bar.php:31
+#: inc/admin/admin.php:18 inc/common/admin-bar.php:31
 msgid "Settings"
 msgstr "הגדרות"
 
-#: inc/admin/admin.php:61
+#: inc/admin/admin.php:60
 msgid "Clear this cache"
 msgstr "נקה מזיכרון המטמון"
 
-#: inc/admin/admin.php:80 inc/admin/notices.php:92 inc/admin/options.php:952
-#: inc/admin/options.php:958 inc/admin/options.php:1187
-#: inc/admin/options.php:1193 inc/admin-bar.php:43 inc/admin-bar.php:66
-#: inc/admin-bar.php:100
-msgid "Clear cache"
-msgstr "נקה זיכרון מטמון"
-
-#: inc/admin/admin.php:104
-msgid "Are you sure?"
-msgstr ""
-
-#: inc/admin/admin.php:105
-msgid "CloudFlare Settings"
-msgstr ""
-
-#: inc/admin/admin.php:106
-msgid ""
-"In case of any display errors we recommend following our documentation: %s "
-"You can also contact our support if you need help implementing that."
-msgstr ""
-
-#: inc/admin/admin.php:107
-msgid "Click \"Save Changes\" to activate the Cloudflare tab."
-msgstr ""
-
-#: inc/admin/admin.php:108
-msgid "Yes, I'm sure!"
-msgstr ""
-
-#: inc/admin/admin.php:109
-msgid "Cancel"
-msgstr ""
-
-#: inc/admin/admin.php:335 inc/admin/admin.php:351
+#: inc/admin/admin.php:259 inc/admin/admin.php:267
 msgid "%s Update Rollback"
 msgstr "שחזור גרסא %s"
-
-#: inc/admin/admin.php:368
-msgid "Cache Options"
-msgstr ""
-
-#: inc/admin/admin.php:386
-msgid "Activate these options on this post:"
-msgstr ""
-
-#: inc/admin/admin.php:390
-msgid "HTML Minification"
-msgstr ""
-
-#: inc/admin/admin.php:391
-msgid "CSS Minification"
-msgstr ""
-
-#: inc/admin/admin.php:392
-msgid "JS Minification"
-msgstr ""
-
-#: inc/admin/admin.php:393 inc/admin/options.php:1386
-msgid "CDN"
-msgstr "CDN"
-
-#: inc/admin/admin.php:398
-msgid "Activate first the %s option."
-msgstr ""
-
-#: inc/admin/admin.php:411
-msgid ""
-"<strong>Note:</strong> These options aren't applied if you added this post "
-"in the \"Never cache the following pages\" option."
-msgstr ""
 
 #: inc/admin/faq.inc.php:2
 msgid "FAQ's Table of Content"
 msgstr "תוכן עניינים עבור שאלות נפוצות"
 
-#: inc/admin/faq.inc.php:4 inc/admin/faq.inc.php:26
-msgid "How many sites is my key valid for?"
-msgstr "עבור כמה אתרים המפתח שלי תקף?"
+#: inc/admin/options.php:156 inc/admin/options.php:384
+msgid "Warning: "
+msgstr "אזהרה:"
 
-#: inc/admin/faq.inc.php:5 inc/admin/faq.inc.php:31
-msgid "What exactly does WP Rocket do?"
-msgstr "מה WP Rocket עושה בדיוק?"
+#: inc/admin/options.php:163
+msgid "Download options"
+msgstr "אפשרויות הורדה"
 
-#: inc/admin/faq.inc.php:6 inc/admin/faq.inc.php:45
-msgid "I have turned any of the basic options on, does WP Rocket work?"
-msgstr "הפעלתי אחת מהאפשרויות הבסיסיות. האם WP Rocket עובד?"
+#: inc/admin/options.php:192
+msgid "<b>JS</b> files with Deferred Loading JavaScript"
+msgstr "קבצי <b>JS</b> עם טעינת JavaScript דחויה"
 
-#: inc/admin/faq.inc.php:7 inc/admin/faq.inc.php:56
+#: inc/admin/options.php:212 inc/admin/options.php:232
+#: inc/admin/options.php:252
+msgid "Wait until this file is loaded?"
+msgstr "לחכות עד שקובץ זה נטען?"
+
+#: inc/admin/options.php:260 inc/admin/ui/modules/advanced.php:223
+msgid "Add URL"
+msgstr "הוסף URL"
+
+#: inc/admin/options.php:272 inc/admin/ui/modules/cdn.php:67
+msgid "Replace site's hostname with:"
+msgstr "החלף את שם מארח האתר ב:"
+
+#: inc/admin/options.php:290 inc/admin/options.php:316
+#: inc/admin/options.php:340
+msgid "reserved for"
+msgstr "שמור עבור"
+
+#: inc/admin/options.php:292 inc/admin/options.php:318
+#: inc/admin/options.php:342
+msgid "All files"
+msgstr "כל הקבצים"
+
+#: inc/admin/options.php:293 inc/admin/options.php:319
+#: inc/admin/options.php:343 inc/admin/ui/modules/basic.php:14
+msgid "Images"
+msgstr "תמונות"
+
+#: inc/admin/options.php:355
+msgid "Add CNAME"
+msgstr "הוסף CNAME"
+
+#: inc/admin/options.php:415
+msgid "Watch the video"
+msgstr "צפה בוידיאו"
+
+#: inc/admin/options.php:481 inc/admin/ui/modules/basic.php:4
+msgid "Basic options"
+msgstr "אפשרויות בסיסיות"
+
+#: inc/admin/options.php:482 inc/admin/ui/modules/advanced.php:4
+msgid "Advanced options"
+msgstr "אפשרויות מתקדמות"
+
+#: inc/admin/options.php:486 inc/admin/ui/meta-boxes.php:62
+msgid "CDN"
+msgstr "CDN"
+
+#: inc/admin/options.php:488 inc/admin/ui/modules/white-label.php:4
+msgid "White Label"
+msgstr "תווית לבנה"
+
+#: inc/admin/options.php:490 inc/admin/ui/modules/tools.php:4
+msgid "Tools"
+msgstr "כלים"
+
+#: inc/admin/options.php:493 inc/admin/ui/modules/tutorials.php:4
+msgid "Tutorials"
+msgstr "הדרכות"
+
+#: inc/admin/options.php:495 inc/admin/options.php:500
+#: inc/admin/ui/modules/faq.php:4 inc/admin/ui/modules/faq.php:7
+msgid "FAQ"
+msgstr "שאלות נפוצות"
+
+#: inc/admin/options.php:499
+msgid "License"
+msgstr "רישיון"
+
+#: inc/admin/options.php:822
+msgid "Settings imported and saved."
+msgstr "ההגדרות יובאו ונשמרו."
+
+#: inc/admin/options.php:840 inc/admin/options.php:924
+msgid "Settings saved."
+msgstr "ההגדרות נשמרו."
+
+#: inc/admin/options.php:1001
 msgid ""
-"What should I do in case of a problem with WP Rocket that I can't solve?"
-msgstr "מה עליי לעשות במקרה של בעיה עם WP Rocket שאין ביכולתי לפתור?"
+"Before you can upload your import file, you will need to fix the following "
+"error:"
+msgstr "לפני שתוכל להעלות את קובץ הייבוא שלך, עליך לפתור את השגיאה הבאה:"
 
-#: inc/admin/faq.inc.php:8 inc/admin/faq.inc.php:59
-msgid "My license has expired, what should I do?"
-msgstr "הרישון שלי פג תוקף, מה עליי לעשות?"
+#: inc/admin/options.php:1008
+msgid "Choose a file from your computer:"
+msgstr "בחר קובץ מהמחשב שלך:"
 
-#: inc/admin/faq.inc.php:9
-msgid ""
-"I want to change the URL of my website associated with my license, what "
-"should I do?"
-msgstr "ברצוני לשנות את הURL של האתר שלי אשר משויך לרישון שלי, מה עליי לעשות?"
+#: inc/admin/options.php:1008
+msgid "Maximum size: %s"
+msgstr "גודל מקסימלי: %s"
 
-#: inc/admin/faq.inc.php:10
-msgid "Which tools should I use to measure the performance of my website?"
-msgstr "באילו כלים מומלץ לי להשתמש כדי למדוד את ביצועי האתר שלי?"
+#: inc/admin/options.php:1011
+msgid "Upload file and import settings"
+msgstr "העלה קובץ וייבא הגדרות"
 
-#: inc/admin/faq.inc.php:11 inc/admin/faq.inc.php:81
-msgid "Does WP Rocket work with default permalinks?"
-msgstr "האם WP Rocket עובד עם ברירת המחדל של מבנה קישורים?"
-
-#: inc/admin/faq.inc.php:12
-msgid "Which web servers WP Rocket is compatible with?"
-msgstr "אילו שרתים נתמכים על-ידי WP Rocket?"
-
-#: inc/admin/faq.inc.php:13 inc/admin/faq.inc.php:88
-msgid ""
-"Reports from PageSpeed and YSlow tell me that the content is not gziped "
-"and/or did not expire, what should I do?"
-msgstr "דיווחים מ-PageSpeed  ו-YSlow מודיעים לי שהתוכן לא כווץ ב-gzip ו/או לא פג תוקף. מה עליי לעשות?"
-
-#: inc/admin/faq.inc.php:14 inc/admin/faq.inc.php:92
-msgid ""
-"Is WP Rocket compatible with others cache plugins like WP Super Cache or W3 "
-"Total Cache?"
-msgstr "האם WP Rocket תואם תוספי זיכרון מטמון אחרים כגון WP Super Cache או W3 Total Cache?"
-
-#: inc/admin/faq.inc.php:15 inc/admin/faq.inc.php:96
-msgid ""
-"Is WP Rocket compatible with WP Touch, WordPress Mobile Pack and WP Mobile "
-"Detector?"
-msgstr "האם WP Rocket תואם את WP Touch, WordPress Mobile Pack ו-WP Mobile Detector?"
-
-#: inc/admin/faq.inc.php:16 inc/admin/faq.inc.php:100
-msgid "Is WP Rocket compatible with e-commerce plugins?"
-msgstr "האם WP Rocket תואם תוספי מסחר אלקטרוני?"
-
-#: inc/admin/faq.inc.php:17 inc/admin/faq.inc.php:107
-msgid "Is WP Rocket compatible with WPML or qTranslate?"
-msgstr "האם WP Rocket תואם את WPML או qTranslate?"
-
-#: inc/admin/faq.inc.php:18 inc/admin/faq.inc.php:111
-msgid "What are the minification and concatenation of files?"
-msgstr "מהם צמצום ושרשור קבצים?"
-
-#: inc/admin/faq.inc.php:19
-msgid "What should I do if WP Rocket distorts my website display?"
-msgstr "מה עליי לעשות אם WP Rocket מעוות את תצוגת האתר שלי?"
-
-#: inc/admin/faq.inc.php:20 inc/admin/faq.inc.php:118
-msgid "How often is the cache updated?"
-msgstr "באיזו תדירות זיכרון המטמון מעודכן?"
-
-#: inc/admin/faq.inc.php:21 inc/admin/faq.inc.php:122
-msgid "How to exclude a particular page from caching?"
-msgstr "כיצד לא להכליל עמוד מסוים בהטמנה בזיכרון?"
-
-#: inc/admin/faq.inc.php:22 inc/admin/faq.inc.php:125
-msgid "How do the robots preload files from the cache?"
-msgstr "כיצד הרובוטים טוענים מראש קבצים מזיכרון המטמון?"
-
-#: inc/admin/faq.inc.php:27
-msgid ""
-"A key is valid for one domain name. If you have example.com, that makes one "
-"key."
-msgstr "מפתח תקף עבור שם דומיין אחד. אם ברשותך example.com, זה מפתח אחד."
-
-#: inc/admin/faq.inc.php:28
-msgid ""
-"If you have example.com, www.example.com, dev.example.com, demo.example.com,"
-" example.com/dev/, example.com/demo/ all these sites depend on the same WP "
-"Rocket key."
-msgstr "אם ברשותך: example.com, www.example.com, dev.example.com, demo.example.com, example.com/dev/, example.com/demo/, אז כל האתרים הללו תלויים באותו מפתח WP Rocket."
-
-#: inc/admin/faq.inc.php:29
-msgid ""
-"However, a different base domain name, like example.org or example2.com, "
-"would require an additional key each."
-msgstr "אולם, שם דומיין בסיסי שונה, כגון example.org או example2.com, ידרוש מפתח נוסף עבור כל דומיין."
-
-#: inc/admin/faq.inc.php:32
-msgid "WP Rocket is a full cache plugin that comes with many features:"
-msgstr "WP Rocket הוא תוסף זיכרון מטמון מלא אשר מגיע עם שלל תכונות:"
-
-#: inc/admin/faq.inc.php:34 inc/admin/faq.inc.php:50
-msgid "Caching of all the pages for quick viewing"
-msgstr "הטמנת כל העמודים בזיכרון לצפייה מהירה"
-
-#: inc/admin/faq.inc.php:35
-msgid "Preloading the cache of files using two bots in Python"
-msgstr "טעינה מראש של קבצים מוטמנים באמצעות שני רובוטים ב-Python"
-
-#: inc/admin/faq.inc.php:36
-msgid "Reduction of the number of HTTP requests to reduce loading time"
-msgstr "צמצום מספר פניות HTTP להקטנת זמן טעינה"
-
-#: inc/admin/faq.inc.php:37
-msgid "Decreasing bandwidth usage with GZIP compression"
-msgstr "צמצום שימוש ברוחב פס באמצעות דחיסת GZIP"
-
-#: inc/admin/faq.inc.php:38 inc/admin/faq.inc.php:52
-msgid "Management of the headers (expires, etags...)"
-msgstr "ניהול של הheaders (expires, etags...)"
-
-#: inc/admin/faq.inc.php:39
-msgid "Minification and concatenation of JS and CSS files"
-msgstr "צמצום ושרשור של קבצי JS ו-CSS"
-
-#: inc/admin/faq.inc.php:40
-msgid "Deferred loading of images (LazyLoad)"
-msgstr "טעינה דחויה של תמונות (LazyLoad)"
-
-#: inc/admin/faq.inc.php:41
-msgid "Deferred loading of JavaScript files"
-msgstr "טעינה דחויה של קבצי JavaScript"
-
-#: inc/admin/faq.inc.php:42 inc/admin/faq.inc.php:53
-msgid "Image Optimisation"
-msgstr "אופטימיזציית תמונות"
-
-#: inc/admin/faq.inc.php:46 inc/admin/faq.inc.php:97 inc/admin/faq.inc.php:108
-msgid "Yes."
-msgstr "כן."
-
-#: inc/admin/faq.inc.php:47
-msgid ""
-"The basic options are additional optimizations that could be described as "
-"bonuses. These options are not essential to improve the loading time of your"
-" website."
-msgstr "האפשרויות הבסיסיות הן תהליכי ייעול בסיסיים שניתן לתאר כבונוסים. אפשרויות אלו אינן הכרחיות לשיפור זמן הטעינה של האתר שלך."
-
-#: inc/admin/faq.inc.php:48
-msgid ""
-"Whatever your WP Rocket configuration is, the following features will still "
-"be active:"
-msgstr "לא משנה מה תהיה הגדרת WP Rocket שלך, התכונות הבאות  עדיין יישארו פעילות:"
-
-#: inc/admin/faq.inc.php:51
-msgid "Decrease bandwidth usage with our GZIP compression"
-msgstr "הקטן צריכת רוחב פס עם דחיסת הGZIP שלנו"
-
-#: inc/admin/faq.inc.php:57
-msgid ""
-"If none of the answers from our FAQ provide a solution to your problem, you "
-"can let us know about your problem on our <a href=\"%s\" "
-"target=\"_blank\">support</a>. We will answer you as soon as possible."
-msgstr "אם אף אחת מהתשובות לשאלות הנפוצות שלנו מספקות פתרון לבעיה שלך, באפשרותך ליידע אותנו לגבי הבעיה <a href=\"%s\" target=\"_blank\">בתמיכה שלנו</a>. אנו נענה לך במהירות האפשרית."
-
-#: inc/admin/faq.inc.php:60
-msgid ""
-"Don't panic, WP Rocket will continue to operate without a problem. You will "
-"receive an email telling you that your license will soon expire. You will "
-"find a renewal link which will be active even after the expiration."
-msgstr "אל תילחץ, WP Rocket ימשיך לפעול בלי בעיה. אתה תקבל אימייל שהרישיון שלך עומד לפוג. אתה תמצא קישור לחידוש הרישיון שיישאר פעיל גם לאחר התפוגה."
-
-#: inc/admin/faq.inc.php:62
-msgid ""
-"I want to change the URL of my site associated with my license, what should "
-"I do?"
-msgstr "ברצוני לשנות את הURL של האתר שלי המשויך אל הרישון שלי, מה עליי לעשות?"
-
-#: inc/admin/faq.inc.php:63
-msgid ""
-"It's easy to transfer your license to another site. Follow the steps here: "
-"<a href=\"%1$s\">%1$s</a>"
+#: inc/admin/ui/enqueue.php:24
+msgid "Are you sure?"
 msgstr ""
 
-#: inc/admin/faq.inc.php:65
-msgid "Which tools should I use to measure the performance of my site?"
-msgstr "באילו כלים מומלץ לי להשתמש כדי למדוד את ביצועי האתר שלי?"
+#: inc/admin/ui/enqueue.php:26
+msgid "CloudFlare Settings"
+msgstr ""
 
-#: inc/admin/faq.inc.php:66
+#: inc/admin/ui/enqueue.php:27
+msgid "Click \"Save Changes\" to activate the Cloudflare tab."
+msgstr ""
+
+#: inc/admin/ui/enqueue.php:29
+msgid "Transmitting across the galaxy..."
+msgstr ""
+
+#: inc/admin/ui/enqueue.php:32
+msgid "Unable to transmit"
+msgstr ""
+
+#: inc/admin/ui/enqueue.php:33
 msgid ""
-"You can measure the performance of your website using the following tools:"
-msgstr "באפשרותך למדוד את ביצועי האתר שלך בעזרת הכלים הבאים:"
+"It seems that communications with Mission Control are temporarily "
+"down....please submit a support ticket while our Rocket Scientists fix the "
+"issue."
+msgstr ""
 
-#: inc/admin/faq.inc.php:73
-msgid "These tools give you two indications:"
-msgstr "כלים אלו נותנים לך שתי אינדיקציות:"
+#: inc/admin/ui/enqueue.php:34
+msgid "Get help from a rocket scientist"
+msgstr ""
 
-#: inc/admin/faq.inc.php:75
-msgid "a global note of good practices to apply"
-msgstr "הערה כללית של דרכי שימוש נכון"
+#: inc/admin/ui/enqueue.php:36
+msgid "Last steps before contacting us"
+msgstr ""
 
-#: inc/admin/faq.inc.php:76
-msgid "a loading time"
-msgstr "זמן טעינה"
-
-#: inc/admin/faq.inc.php:78
+#: inc/admin/ui/enqueue.php:37
 msgid ""
-"These data are indicative and do not necessarily reflect the actual display "
-"speed of your website"
-msgstr "נתונים אלו הם אינדיקטיביים ואינם מייצגים בהכרח את מהירות התצוגה של האתר שלך."
+"You have to read the <a href=\"%s\" target=\"_blank\">documentation</a> and "
+"to agree to send informations relative to your website to submit a support "
+"ticket."
+msgstr ""
 
-#: inc/admin/faq.inc.php:79
+#: inc/admin/ui/enqueue.php:39
+msgid "Transmission Received!"
+msgstr ""
+
+#: inc/admin/ui/enqueue.php:40
+msgid "We've received your ticket and will reply back within a few hours!"
+msgstr ""
+
+#: inc/admin/ui/enqueue.php:40
+msgid "We answer every ticket so check your spam if you don't hear from us."
+msgstr ""
+
+#: inc/admin/ui/enqueue.php:42
+msgid "Oh dear, someone's been naughty..."
+msgstr ""
+
+#: inc/admin/ui/enqueue.php:43
 msgid ""
-"For tests closest to reality load time we recommend using <a href=\"%s\" "
-"target=\"_blank\">Pingdom Tools</a>."
-msgstr "עבור בדיקות הקרובות ביותר לזמן טעינה בפועל, אנו ממליצים על <a href=\"%s\" target=\"_blank\">Pingdom Tools</a>."
+"Well, well, looks like you've got yourself a \"nulled\" version! We don't "
+"provide support to hackers or pirates, so you will need a valid license to "
+"proceed."
+msgstr ""
 
-#: inc/admin/faq.inc.php:82 inc/admin/faq.inc.php:93
-msgid "No."
-msgstr "לא."
-
-#: inc/admin/faq.inc.php:83
+#: inc/admin/ui/enqueue.php:43
 msgid ""
-"It's necessary to have custom permalinks of the type <code>%s</code> rather "
-"than <code>%s</code>."
-msgstr "זה הכרחי להגדיר מבנה קישורים מסוג <code>%s</code> במקום <code>%s</code>."
+"Click below to buy a license with a 20% discount automatically applied."
+msgstr ""
 
-#: inc/admin/faq.inc.php:85
-msgid "Which web servers is WP Rocket compatible with?"
-msgstr "אילו שרתים תומכים ב-WP Rocket?"
+#: inc/admin/ui/enqueue.php:44
+msgid "Buy It Now!"
+msgstr ""
 
-#: inc/admin/faq.inc.php:86
+#: inc/admin/ui/enqueue.php:46
+msgid "Uh-oh, you're out of fuel!"
+msgstr ""
+
+#: inc/admin/ui/enqueue.php:47
 msgid ""
-"WP Rocket is compatible with <strong>Apache, NGINX, Microsoft IIS et "
-"Litepseed</strong> web servers."
-msgstr "WP Rocket תואם שרתי <strong>Apache, NGINX, Microsoft IIS et Litepseed</strong>."
+"To keep your Rocket running with access to support, <strong>you'll need to "
+"renew your license</strong>."
+msgstr ""
 
-#: inc/admin/faq.inc.php:89
+#: inc/admin/ui/enqueue.php:47
 msgid ""
-"WP Rocket automatically adds optimal timeout rules for static files and "
-"compresses them using gzip. If they are not applied, it is possible that "
-"there is a plugin conflict (exemple: <a href=\"%s\" target=\"_blank\">WP "
-"Retina 2x</a>). Try temporarily disabling all plugins except WP Rocket and "
-"retest."
-msgstr "WP Rocket מוסיף אוטומטית חוקי תפוגה אופטימלים לקבצים סטטיים ומכווץ אותם באמצעות gzip. אם הם אינם מיושמים, ייתכן כי ישנו קונפליקט בין תוספים (לדוגמא: <a href=\"%s\" target=\"_blank\">WP Retina 2x</a>). נסה לכבות באופן זמני את כל התוספים מלבד WP Rocket ובדוק שוב."
+"Click below to renew with a <strong>discount of 50%</strong> automatically "
+"applied!"
+msgstr ""
 
-#: inc/admin/faq.inc.php:90
+#: inc/admin/ui/enqueue.php:48
+msgid "I re-synchronize now!"
+msgstr ""
+
+#: inc/admin/ui/enqueue.php:50
 msgid ""
-"If this is not conclusive, it means that <code>mod_expire</code> and/or "
-"<code>mod_deflate</code> are not enabled on your server."
-msgstr "אם זה לא חד-משמעתי, משמעות הדבר היא ש<code>mod_expire</code> ו/או <code>mod_deflate</code> אינם פעילים על השרת שלך."
+"In case of any display errors we recommend following our documentation: "
+msgstr ""
 
-#: inc/admin/faq.inc.php:94
+#: inc/admin/ui/enqueue.php:50
 msgid ""
-"It's imperative to <strong>remove all other optimization plugins</strong> "
-"(cache, minification, LazyLoad) PRIOR to the activation of WP Rocket."
-msgstr "זה הכרחי <strong>להסיר את כל תוספי האופטימיזציה האחרים</strong> (זיכרון מטמון, צמצום, LazyLoad) <b>לפני</b> הפעלת WP Rocket."
+"You can also <a href=\"%s\">contact our support</a> if you need help "
+"implementing that."
+msgstr ""
 
-#: inc/admin/faq.inc.php:98
+#: inc/admin/ui/enqueue.php:52
+msgid "Yes, I'm sure!"
+msgstr ""
+
+#: inc/admin/ui/enqueue.php:53
+msgid "Cancel"
+msgstr ""
+
+#: inc/admin/ui/meta-boxes.php:18 inc/admin/ui/modules/cloudflare.php:100
+#: inc/admin/ui/modules/cloudflare.php:106 inc/admin/ui/modules/tools.php:31
+#: inc/admin/ui/modules/tools.php:37 inc/admin/ui/notices.php:92
+#: inc/common/admin-bar.php:43 inc/common/admin-bar.php:66
+#: inc/common/admin-bar.php:100
+msgid "Clear cache"
+msgstr "נקה זיכרון מטמון"
+
+#: inc/admin/ui/meta-boxes.php:36
+msgid "Cache Options"
+msgstr ""
+
+#: inc/admin/ui/meta-boxes.php:54
+msgid "Activate these options on this post:"
+msgstr ""
+
+#: inc/admin/ui/meta-boxes.php:57
+msgid "Images LazyLoad"
+msgstr ""
+
+#: inc/admin/ui/meta-boxes.php:58
+msgid "Iframes & Videos LazyLoad"
+msgstr ""
+
+#: inc/admin/ui/meta-boxes.php:59
+msgid "HTML Minification"
+msgstr ""
+
+#: inc/admin/ui/meta-boxes.php:60
+msgid "CSS Minification"
+msgstr ""
+
+#: inc/admin/ui/meta-boxes.php:61
+msgid "JS Minification"
+msgstr ""
+
+#: inc/admin/ui/meta-boxes.php:67
+msgid "Activate first the %s option."
+msgstr ""
+
+#: inc/admin/ui/meta-boxes.php:80
 msgid ""
-"On the other hand, in the basic options, you must uncheck the <code>enable "
-"caching for mobile devices</code>."
-msgstr "מצד שני, באפשרויות הבסיסיות, עליך לבטל את <code>אפשר הטמנה בזיכרון למכשירים ניידים</code>."
+"<strong>Note:</strong> These options aren't applied if you added this post "
+"in the \"Never cache the following pages\" option."
+msgstr ""
 
-#: inc/admin/faq.inc.php:102
+#: inc/admin/ui/modules/advanced.php:7 inc/admin/ui/modules/advanced.php:15
+msgid "Prefetch DNS requests:"
+msgstr "שליפה מראש של פניות DNS:"
+
+#: inc/admin/ui/modules/advanced.php:20
 msgid ""
-"Yes, WP Rocket automatically excludes \"View Cart\" and \"Checkout\" pages "
-"from the cache if you use one of these plugins: %l."
-msgstr "כן, WP Rocket מחסיר אוטומטית עמודי \"צפה בעגלת קניות\" ו\"תשלום/קופה\" מזיכרון המטמון אם אתה משתמש בתוספים הבאים: %l."
+"DNS prefetching is a way for browsers to anticipate the DNS resolution of "
+"external domains from your site."
+msgstr "שליפה מראש של פניות DNS היא דרך עבור דפדפנים לצפות מראש את אבחנת הדומיינים החיצוניים של ה-DNS מהשרת שלך."
 
-#: inc/admin/faq.inc.php:104
+#: inc/admin/ui/modules/advanced.php:20
+msgid "This mechanism reduces the latency of some external files."
+msgstr "מנגנון זה מקטין את זמן התגובה של קבצים חיצוניים מסוימים."
+
+#: inc/admin/ui/modules/advanced.php:26
 msgid ""
-"If you don't use one of them, you must follow these instructions: <a "
-"href=\"%s\">How To Use WP Rocket On Your Ecommerce Site (EN)</a>."
-msgstr "אם אינך משתמש באחד מהם, עליך לעקוב אחר ההוראות הבאות: <a href=\"%s\">כיצד להשתמש ב-WP Rocket באתר המסחר האלקטרוני שלך (EN)</a>."
+"To learn more about this option and how to use it correctly, we advise you "
+"to watch the following video: <a href=\"%1$s\" class=\"fancybox\">%1$s</a>."
+msgstr "כדי ללמוד עוד על האפשרות הזו וכיצד להשתמש בה נכון, אנו ממליצים לצפות בוידאו הבא: <a href=\"%1$s\" class=\"fancybox\">%1$s</a>."
 
-#: inc/admin/faq.inc.php:109
+#: inc/admin/ui/modules/advanced.php:31
 msgid ""
-"You even have the possibility to empty/preload the cache for a specific "
-"language or for all languages at the same time."
-msgstr "באפשרותך אפילו לרוקן/לטעון מראש את זיכרון המטמון עבור שפה מסוימת או עבור כל השפות בו-זמנית."
+"<strong>Note:</strong> Enter the domain names without their protocol, for "
+"example: <code>//ajax.googleapis.com</code> without <code>http:</code> (one "
+"per line)."
+msgstr "<strong>הערה:</strong> הזן את שמות הדומיין ללא הפרוטוקול שלהם, לדוגמא: <code>//ajax.googleapis.com</code> ללא <code>http:</code> (אחד לשורה)."
 
-#: inc/admin/faq.inc.php:112
+#: inc/admin/ui/modules/advanced.php:37 inc/admin/ui/modules/advanced.php:45
+msgid "Empty the cache of the following pages when updating a post:"
+msgstr "רוקן את זיכרון המטמון של העמודים הבאים בעת עדכון פוסט:"
+
+#: inc/admin/ui/modules/advanced.php:50
 msgid ""
-"Minification is the process of removing all unnecessary characters in HTML, "
-"CSS or JavaScript files: spaces, comments, etc... This reduces the size of "
-"the files. Thus, browsers read these files faster."
-msgstr "צמצום הוא תהליך של הסרת כל התווים הלא נחוצים בקבצי HTML, CSS או JavaScript: רווחים, הערות וכו'. תהליך זה מקטין את גודל הקבצים, ולכן דפדפנים קוראים אותם מהר יותר."
+"Enter the URL of additionnal pages to purge when updating a post (one per "
+"line)."
+msgstr "הזן URL של עמודים נוספים לטהר בעת עדכון פוסט (אחד לשורה)."
 
-#: inc/admin/faq.inc.php:113
+#: inc/admin/ui/modules/advanced.php:51 inc/admin/ui/modules/advanced.php:75
+#: inc/admin/ui/modules/advanced.php:137 inc/admin/ui/modules/advanced.php:187
+#: inc/admin/ui/modules/advanced.php:206 inc/admin/ui/modules/cdn.php:87
+msgid "You can use regular expressions (regex)."
+msgstr "באפשרותך להשתמש בביטויים רגולריים (regex)."
+
+#: inc/admin/ui/modules/advanced.php:56
 msgid ""
-"Concatenation is to consolidate a set of files into one. This has the effect"
-" of reducing the number of HTTP requests."
-msgstr "שרשור הוא איחוד מספר קבצים לקובץ בודד. תהליך זה מצמצם את מספר פניות ה-HTTP."
+"<strong>Note:</strong> When you update a post or when a comment is posted, "
+"the homepage, categories and tags associated with this post are "
+"automatically removed from the cache and then recreated by our bot."
+msgstr "<strong>הערה:</strong> כאשר אתה מעדכן פוסט או כאשר תגובה מתפרסמת, דף הבית, קטגוריות, ותגיות המשויכים לפוסט זה מוסרים אוטומטית מזיכרון המטמון ולאחר מכן נוצרים מחדש ע&quot;י הרובוט שלנו."
 
-#: inc/admin/faq.inc.php:115
-msgid "What should I do if WP Rocket distorts my site display?"
-msgstr "מה עליי לעשות אם WP Rocket מעוות את תצוגת האתר שלי?"
+#: inc/admin/ui/modules/advanced.php:62 inc/admin/ui/modules/advanced.php:70
+msgid "Never cache the following pages:"
+msgstr "לעולם אל תטמין בזיכרון את העמודים הבאים:"
 
-#: inc/admin/faq.inc.php:116
+#: inc/admin/ui/modules/advanced.php:75
+msgid "Enter the URL of pages to reject (one per line)."
+msgstr "הזן את כתובות ה-URL של עמודים לדחות (אחת לשורה)."
+
+#: inc/admin/ui/modules/advanced.php:80
 msgid ""
-"There is a good chance that the deformation is caused by the minification of"
-" HTML, CSS or JavaScript files. To resolve the problem, we recommend "
-"watching the following video: <a href=\"%1$s\" class=\"fancybox\">%1$s</a>."
-msgstr "ישנו סיכוי טוב שהעיוות נגרם ע\"י הצמצום של קבצי HTML, CSS, או JavaScript. כדי לפתור בעיה זו, אנו ממליצים לצפות בוידאו הבא: <a href=\"%1$s\" class=\"fancybox\">%1$s</a>."
+"<strong>Note:</strong> The cart and checkout pages are auto-excluded from "
+"the cache for WooCommerce, Easy Digital Download, iThemes Exchange, Jigoshop"
+" & WP-Shop."
+msgstr ""
 
-#: inc/admin/faq.inc.php:119
+#: inc/admin/ui/modules/advanced.php:86 inc/admin/ui/modules/advanced.php:94
+msgid "Don't cache pages that use the following cookies:"
+msgstr "אל תטמין בזיכרון עמודים אשר עושים שימוש ב\"עוגיות\" (cookies) הבאות:"
+
+#: inc/admin/ui/modules/advanced.php:99
+msgid "List the names of the cookies (one per line)."
+msgstr "ציין את שמות העוגיות (אחד לשורה)."
+
+#: inc/admin/ui/modules/advanced.php:105 inc/admin/ui/modules/advanced.php:113
+msgid "Cache pages that use the following query strings (GET parameters):"
+msgstr "הטמן בזיכרון עמודים אשר משתמשים במחרוזות השאילתה הבאות (פרמטרי GET):"
+
+#: inc/admin/ui/modules/advanced.php:118
+msgid "List of query strings which can be cached (one per line)."
+msgstr "רשימה של מחרוזות שאילתה אשר ניתן להטמין בזיכרון (אחת לשורה)."
+
+#: inc/admin/ui/modules/advanced.php:124 inc/admin/ui/modules/advanced.php:132
+msgid "Never send cache pages for these user agents:"
+msgstr ""
+
+#: inc/admin/ui/modules/advanced.php:137
+msgid "Enter the user agents name to reject (one per line)."
+msgstr ""
+
+#: inc/admin/ui/modules/advanced.php:143
+msgid "Reducing the number of minified files in one file on:"
+msgstr ""
+
+#: inc/admin/ui/modules/advanced.php:152 inc/admin/ui/modules/basic.php:69
+msgid "CSS Files minification"
+msgstr "צמצום קבצי CSS"
+
+#: inc/admin/ui/modules/advanced.php:158 inc/admin/ui/modules/basic.php:75
+msgid "JS Files minification"
+msgstr "צמצום קבצי JS"
+
+#: inc/admin/ui/modules/advanced.php:163
 msgid ""
-"The cache is automatically refreshed at every update of your content "
-"(add/edit/delete of an article, publication of a comment, etc..)."
-msgstr "זיכרון המטמון מרוענן באופן אוטומטי בכל עדכון של התוכן שלך (הוספה/עריכה/מחיקה/ של מאמר, פרסום תגובה וכו')."
+"<strong>Note:</strong> We combine the minified files in little groups "
+"<strong>to ensure the best compatibility and better performance</strong>."
+msgstr ""
 
-#: inc/admin/faq.inc.php:120
+#: inc/admin/ui/modules/advanced.php:163
 msgid ""
-"In the basic options, you can also specify a period of automatic cleaning of"
-" the cache."
-msgstr "באפשרויות הבסיסיות, באפשרותך גם לציין פרק זמן של ניקוי אוטומטי של זיכרון המטמון."
+"However <strong>you can force the minification to create only 1 "
+"file</strong> by activating this option."
+msgstr ""
 
-#: inc/admin/faq.inc.php:123
+#: inc/admin/ui/modules/advanced.php:163
 msgid ""
-"In advanced options, it's possible to specify URLs to not cache. For this, "
-"you must add the URLs to exclude in the input field <code>Never cache the "
-"following pages</code>."
-msgstr "באפשרויות המתקדמות ניתן לציין כתובות URL שלא להטמין בזיכרון. לשם כך, עליך להוסיף את כתובות ה-URL להוציא מן הכלל בשדה <code>לעולם אל תטמין בזיכרון את העמודים הבאים</code>."
+"But it's not recommended to do that because <strong>you won't take advantage"
+" of the parallelization of the download</strong>: it's faster to download 4 "
+"files in parallel rather than one big file."
+msgstr ""
 
-#: inc/admin/faq.inc.php:126
+#: inc/admin/ui/modules/advanced.php:168
 msgid ""
-"A page is only cached on its first visit. To bypass this, we have developed "
-"two robots (in Python) that crawl the pages of your website."
-msgstr "עמוד מוטמן בזיכרון בביקור הראשון אליו בלבד. כדי לעקוף זאת פיתחנו שני רובוטים (בPython) שסורקים את עמודי האתר שלך."
+"Depending to your server configuration, these options can break your "
+"website. If you have any issues, you must deactivate it!"
+msgstr ""
 
-#: inc/admin/faq.inc.php:127
+#: inc/admin/ui/modules/advanced.php:174 inc/admin/ui/modules/advanced.php:182
+msgid "<b>CSS</b> files to exclude from minification:"
+msgstr "קבצי <b>CSS</b> שלא לצמצם:"
+
+#: inc/admin/ui/modules/advanced.php:187
+msgid "Enter the URL of <b>CSS</b> files to reject (one per line)."
+msgstr "הזן את כתובות ה-URL של קבצי <b>CSS</b> לדחות (אחת לשורה)."
+
+#: inc/admin/ui/modules/advanced.php:193 inc/admin/ui/modules/advanced.php:201
+msgid "<b>JS</b> files to exclude from minification:"
+msgstr "קבצי <b>JS</b> שלא לצמצם:"
+
+#: inc/admin/ui/modules/advanced.php:206
+msgid "Enter the URL of <b>JS</b> files to reject (one per line)."
+msgstr "הזן את כתובות ה-URL של קבצי <b>JS</b> לדחות (אחת לשורה)."
+
+#: inc/admin/ui/modules/advanced.php:212 inc/admin/ui/modules/advanced.php:219
 msgid ""
-"The first visits your site when using the button \"Preload the cache\". The "
-"second will automatically visit your site as soon as you are going to "
-"create/edit/delete an article."
-msgstr "הראשון מבקר את האתר שלך בעת לחיצה על כפתור \"טען מראש זיכרון מטמון\". השני יבקר באתר שלך אוטומטית ברגע שאתה יוצר,עורך או מוחק מאמר."
+"<b>JS</b> files to be included in the footer during the minification "
+"process:"
+msgstr "קבצי <b>JS</b> להכליל בתחתית העמוד (footer) במהלך תהליך הצמצום:"
 
-#: inc/admin/faq.inc.php:128
+#: inc/admin/ui/modules/advanced.php:228 inc/admin/ui/modules/advanced.php:256
+msgid "Empty the field to remove it."
+msgstr "רוקן את השדה להסרתו."
+
+#: inc/admin/ui/modules/advanced.php:234 inc/admin/ui/modules/advanced.php:262
+msgid "You must specify the complete URL of the files."
+msgstr "עליך לפרט את כתובות ה-URL המלאות של הקבצים."
+
+#: inc/admin/ui/modules/advanced.php:240
+msgid "<b>JS</b> files with deferred loading:"
+msgstr "קבצי <b>JS</b> עם טעינה דחויה:"
+
+#: inc/admin/ui/modules/advanced.php:251
 msgid ""
-"For more information, please watch this video: <a href=\"%s\" "
-"class=\"fancybox\">%s</a>."
-msgstr "למידע נוסף, אנא צפה בוידאו הבא: <a href=\"%s\" class=\"fancybox\">%s</a>."
+"You can add JavaScript files that will be loaded asynchronously at the same "
+"time as the page loads."
+msgstr "באפשרותך להוסיף קבצי JavaScript שייטענו בצורה אסינכרונית באותו הזמן בו נטען העמוד."
 
-#: inc/admin/notices.php:26 inc/admin/notices.php:30
+#: inc/admin/ui/modules/api-key.php:4
+msgid "License validation"
+msgstr "אימות רישיון"
+
+#: inc/admin/ui/modules/api-key.php:7 inc/admin/ui/modules/api-key.php:15
+#: inc/admin/ui/modules/cloudflare.php:21
+#: inc/admin/ui/modules/cloudflare.php:29
+msgid "API Key"
+msgstr "מפתח API"
+
+#: inc/admin/ui/modules/api-key.php:20
+msgid "Please enter the API key obtained after your purchase."
+msgstr "אנא הזן את מפתח ה-API שקיבלת לאחר הרכישה שלך. "
+
+#: inc/admin/ui/modules/api-key.php:26 inc/admin/ui/modules/api-key.php:34
+msgid "E-mail Address"
+msgstr "כתובת אימייל"
+
+#: inc/admin/ui/modules/api-key.php:39
+msgid "The one used for the purchase, in your support account."
+msgstr "הכתובת בה השתמשת בעת הרכישה, בחשבון התמיכה שלך."
+
+#: inc/admin/ui/modules/basic.php:7
+msgid "Lazyload:"
+msgstr "טעינה דחויה (Lazyload):"
+
+#: inc/admin/ui/modules/basic.php:16
+msgid "Lazyload on images"
+msgstr ""
+
+#: inc/admin/ui/modules/basic.php:20
+msgid "Iframes & Videos"
+msgstr ""
+
+#: inc/admin/ui/modules/basic.php:22
+msgid "Lazyload on iframes and videos"
+msgstr ""
+
+#: inc/admin/ui/modules/basic.php:27
+msgid ""
+"LazyLoad displays images, iframes and videos on a page only when they are "
+"visible to the user."
+msgstr ""
+
+#: inc/admin/ui/modules/basic.php:28 inc/admin/ui/modules/basic.php:80
+msgid ""
+"This mechanism reduces the number of HTTP requests and improves the loading "
+"time."
+msgstr "מנגנון זה מצמצם את מספר פניות ה-HTTP ומשפר את זמן הטעינה."
+
+#: inc/admin/ui/modules/basic.php:34
+msgid ""
+"Files optimisation:<br/><span class=\"description\">(Minification & "
+"Concatenation)</span>"
+msgstr "אופטימיזציה של קבצים:<br/><span class=\"description\">(צמצום ושרשור)</span>"
+
+#: inc/admin/ui/modules/basic.php:43
+msgid "HTML Files minification"
+msgstr "צמצום קבצי HTML"
+
+#: inc/admin/ui/modules/basic.php:63
+msgid "Google Fonts minification"
+msgstr "צמצום גופני גוגל"
+
+#: inc/admin/ui/modules/basic.php:80
+msgid ""
+"Minification removes any spaces and comments present in the CSS and "
+"JavaScript files."
+msgstr "צמצום מסיר את כל הרווחים וההערות בקבצי הCSS והJS."
+
+#: inc/admin/ui/modules/basic.php:80
+msgid ""
+"This mechanism reduces the weight of each file and allows a faster reading "
+"of browsers and search engines."
+msgstr "מנגנון זה מקטין את המשקל של כל קובץ ומאפשר טעינה מהירה יותר עבור דפדפנים ומנועי חיפוש."
+
+#: inc/admin/ui/modules/basic.php:80
+msgid "Concatenation combines all CSS and JavaScript files."
+msgstr "שרשור מאגד את כל קבצי הCSS וה-JavaScript."
+
+#: inc/admin/ui/modules/basic.php:85
+msgid "Concatenating files can cause display errors."
+msgstr "שרשור קבצים עלול לגרום לשגיאות תצוגה."
+
+#: inc/admin/ui/modules/basic.php:91
+msgid ""
+"In case of any errors we recommend you to turn off this option or watch the "
+"following video: <a href=\"%1$s\" class=\"fancybox\">%1$s</a>."
+msgstr "במקרה של שגיאות כלשהן אנו ממליצים לכבות אפשרות זו או לצפות בוידאו הבא: <a href=\"%1$s\" class=\"fancybox\">%1$s</a>."
+
+#: inc/admin/ui/modules/basic.php:107 inc/admin/ui/modules/basic.php:116
+msgid "Mobile cache:"
+msgstr "זיכרון מטמון mobile:"
+
+#: inc/admin/ui/modules/basic.php:114
+msgid "Enable caching for mobile devices."
+msgstr "אפשר הטמנה בזיכרון עבור מכשירים ניידים."
+
+#: inc/admin/ui/modules/basic.php:121
+msgid "Don't turn on this option if you use one of these plugins: %l."
+msgstr "אל תפעיל אפשרות זו אם אתה משתמש באחד מהתוספים הבאים: %l."
+
+#: inc/admin/ui/modules/basic.php:127 inc/admin/ui/modules/basic.php:134
+msgid "Logged in user cache:"
+msgstr "זיכרון מטמון משתמש מחובר:"
+
+#: inc/admin/ui/modules/basic.php:132
+msgid "Enable caching for logged in users."
+msgstr "אפשר הטמנה בזיכרון עבור משתמשים מחוברים."
+
+#: inc/admin/ui/modules/basic.php:139 inc/admin/ui/modules/basic.php:147
+msgid "SSL cache:"
+msgstr "זיכרון מטמון SSL:"
+
+#: inc/admin/ui/modules/basic.php:145
+msgid "Enable caching for pages with SSL protocol (<code>https://</code>)."
+msgstr "אפשר הטמנה בזיכרון עבור עמודים עם פרוטוקול SSL (<code>https://</code>)."
+
+#: inc/admin/ui/modules/basic.php:152 inc/admin/ui/modules/basic.php:160
+msgid "Clear Cache Lifespan"
+msgstr "תוקף זיכרון מטמון"
+
+#: inc/admin/ui/modules/basic.php:166
+msgid "Unit of time"
+msgstr "יחידת זמן"
+
+#: inc/admin/ui/modules/basic.php:169
+msgid "second(s)"
+msgstr "שניה/ות"
+
+#: inc/admin/ui/modules/basic.php:170
+msgid "minute(s)"
+msgstr "דקה/ות"
+
+#: inc/admin/ui/modules/basic.php:171
+msgid "hour(s)"
+msgstr "שעה/ות"
+
+#: inc/admin/ui/modules/basic.php:172
+msgid "day(s)"
+msgstr "יום/ימים"
+
+#: inc/admin/ui/modules/basic.php:178
+msgid ""
+"By default, cache lifespan is 24 hours. This means that once created, the "
+"cache files are automatically removed after 24 hours before being recreated."
+msgstr "כברירת מחדל, תוקף זיכרון המטמון הוא 24 שעות. זה אומר שברגע שנוצרו, קבצי המטמון מוסרים אוטומטית לאחר 24 שעות לפני שהם נוצרים מחדש."
+
+#: inc/admin/ui/modules/basic.php:178
+msgid ""
+"This can be useful if you display your latest tweets or rss feeds in your "
+"sidebar, for example."
+msgstr "זה יכול להיות שימושי אם אתה מציג את הציוצים האחרונים שלך או RSS בסרגל הצד שלך, לדוגמא."
+
+#: inc/admin/ui/modules/basic.php:183
+msgid "Specify 0 for unlimited lifetime."
+msgstr "הזן 0 עבור תוקף בלתי מוגבל."
+
+#: inc/admin/ui/modules/cdn.php:4
+msgid "Content Delivery Network options"
+msgstr "אפשרויות רשת מסירת תוכן (Content Delivery Network)"
+
+#: inc/admin/ui/modules/cdn.php:14
+msgid "Enable CloudFlare settings tab."
+msgstr ""
+
+#: inc/admin/ui/modules/cdn.php:21
+msgid ""
+"This option allows you to configure some CloudFlare settings like "
+"development mode, purge cache and a recommended configuration."
+msgstr ""
+
+#: inc/admin/ui/modules/cdn.php:26
+msgid ""
+"<strong>Note:</strong> If you are using CloudFlare, configure the options in"
+" the CloudFlare tab. The CDN settings below <strong>do not apply</strong> to"
+" CloudFlare."
+msgstr ""
+
+#: inc/admin/ui/modules/cdn.php:32 inc/admin/ui/modules/cdn.php:41
+msgid "CDN:"
+msgstr "CDN:"
+
+#: inc/admin/ui/modules/cdn.php:39
+msgid "Enable Content Delivery Network."
+msgstr "אפשר רשת מסירת תוכן (Content Delivery Network)."
+
+#: inc/admin/ui/modules/cdn.php:46
+msgid ""
+"CDN function replaces all URLs of your static files and media (CSS, JS, "
+"Images) with the url entered below. This way all your content will be copied"
+" to a dedicated hosting or a CDN system <a href=\"http://www.maxcdn.com/\" "
+"target=\"_blank\">maxCDN</a>."
+msgstr "פונקציונליות CDN מחליפה את כל כתובות הURL של הקבצים הסטטיים והמדיה שלך (CSS, JS ותמונות) עם הURL שהוזן למטה. בצורה זו כל התוכן שלך יועתק למערכת אחסון או CDN ייעודית <a href=\"http://www.maxcdn.com/\" target=\"_blank\">maxCDN</a>."
+
+#: inc/admin/ui/modules/cdn.php:59
+msgid "Disable CDN on HTTPS pages."
+msgstr ""
+
+#: inc/admin/ui/modules/cdn.php:74 inc/admin/ui/modules/cdn.php:82
+msgid "Rejected files:"
+msgstr ""
+
+#: inc/admin/ui/modules/cdn.php:87
+msgid "Specify the URL files that should not use the CDN. (one per line)."
+msgstr ""
+
+#: inc/admin/ui/modules/cloudflare.php:7
+#: inc/admin/ui/modules/cloudflare.php:15
+msgid "CloudFlare Account Email"
+msgstr ""
+
+#: inc/admin/ui/modules/cloudflare.php:34
+msgid ""
+"<strong>Note:</strong> Where do I find my CloudFlare API key? <a "
+"href=%s\"\">Learn more</a>"
+msgstr ""
+
+#: inc/admin/ui/modules/cloudflare.php:40
+#: inc/admin/ui/modules/cloudflare.php:48
+msgid "Domain"
+msgstr ""
+
+#: inc/admin/ui/modules/cloudflare.php:54
+#: inc/admin/ui/modules/cloudflare.php:62
+msgid "Development Mode"
+msgstr ""
+
+#: inc/admin/ui/modules/cloudflare.php:64
+msgid "Off"
+msgstr ""
+
+#: inc/admin/ui/modules/cloudflare.php:65
+msgid "On"
+msgstr ""
+
+#: inc/admin/ui/modules/cloudflare.php:71
+msgid ""
+"Temporarily enter development mode on your website. <a href=%s\"\">Learn "
+"more</a>"
+msgstr ""
+
+#: inc/admin/ui/modules/cloudflare.php:77
+#: inc/admin/ui/modules/cloudflare.php:85
+msgid "Auto enable the optimal CloudFlare settings (props WP Rocket)"
+msgstr ""
+
+#: inc/admin/ui/modules/cloudflare.php:87
+msgid "No"
+msgstr ""
+
+#: inc/admin/ui/modules/cloudflare.php:88
+msgid "Yes"
+msgstr ""
+
+#: inc/admin/ui/modules/cloudflare.php:94
+msgid ""
+"We select the best CloudFlare configuration for speed, performance grade and"
+" compatibility."
+msgstr ""
+
+#: inc/admin/ui/modules/cloudflare.php:111
+msgid ""
+"Immediately purge cached resources for your website. <a href=\"%s\" "
+"target=\"_blank\">Learn more</a>"
+msgstr ""
+
+#: inc/admin/ui/modules/support.php:7 inc/admin/ui/modules/support.php:15
+msgid "Summary"
+msgstr ""
+
+#: inc/admin/ui/modules/support.php:21 inc/admin/ui/modules/support.php:29
+msgid "Description"
+msgstr ""
+
+#: inc/admin/ui/modules/support.php:31
+msgid ""
+"Please provide the specific url(s) where we can see each issue. e.g. the "
+"gallery doesn't work on this page: domain.com/gallery-page"
+msgstr ""
+
+#: inc/admin/ui/modules/support.php:32
+msgid ""
+"Please let us know how we will recognize the issue or can reproduce the "
+"issue. What is supposed to happen, and what is actually happening instead?"
+msgstr ""
+
+#: inc/admin/ui/modules/support.php:33
+msgid ""
+"e.g. At the bottom of the post there are related posts which are supposed to"
+" have thumbnails, but no thumbnails are displaying."
+msgstr ""
+
+#: inc/admin/ui/modules/support.php:45
+msgid ""
+"I've read the <a href=\"%s\" target=\"_blank\">documentation</a>, and I "
+"agree to allow WP Rocket to automatically detect my WordPress version and "
+"list of enabled plugins when I submit this form."
+msgstr ""
+
+#: inc/admin/ui/modules/support.php:57
+msgid "Submit the ticket"
+msgstr ""
+
+#: inc/admin/ui/modules/tools.php:9 inc/admin/ui/modules/tools.php:18
+msgid "Beta Tester"
+msgstr "בוחן בטא"
+
+#: inc/admin/ui/modules/tools.php:16
+msgid "Yes I do!"
+msgstr "כן אני רוצה!"
+
+#: inc/admin/ui/modules/tools.php:23
+msgid ""
+"Check it to participate in the WP Rocket Beta Program and get earlier access"
+" to new versions, thanks in advance."
+msgstr "סמן וי להשתתפות בתוכנית הבטא של WP Rocket ולקבל גישה מוקדמת לגרסאות חדשות. תודה מראש."
+
+#: inc/admin/ui/modules/tools.php:42
+msgid "Clear the cache for the whole site."
+msgstr "נקה את זיכרון המטמון עבור כל האתר."
+
+#: inc/admin/ui/modules/tools.php:48 inc/admin/ui/modules/tools.php:54
+#: inc/admin/ui/modules/tutorials.php:7 inc/common/admin-bar.php:141
+#: inc/common/admin-bar.php:162 inc/common/admin-bar.php:193
+msgid "Preload cache"
+msgstr "טען זיכרון מטמון מראש"
+
+#: inc/admin/ui/modules/tools.php:59
+msgid ""
+"Allows you to request a bot crawl to preload the cache (homepage and its "
+"internal links)."
+msgstr "מאפשר לך לבקש סריקת רובוט לטעינה מראש של זיכרון המטמון (דף הבית וקישוריו הפנימיים)."
+
+#: inc/admin/ui/modules/tools.php:66
+msgid "Settings Exporter"
+msgstr "מייצא ההגדרות"
+
+#: inc/admin/ui/modules/tools.php:76
+msgid "Settings Importer"
+msgstr "מייבא הגדרות"
+
+#: inc/admin/ui/modules/tools.php:85
+msgid ""
+"Please backup your settings before, use the \"Download options\" button "
+"above."
+msgstr "אנא גבה את ההגדרות שלך לפני. השתמש בכפתור \"הורד אפשרויות\" למעלה."
+
+#: inc/admin/ui/modules/tools.php:88
+msgid "Update Rollback"
+msgstr "שחזור גרסא"
+
+#: inc/admin/ui/modules/tools.php:94
+msgid "Reinstall v%s"
+msgstr "התקן מחדש את גרסא %s"
+
+#: inc/admin/ui/modules/tools.php:99
+msgid ""
+"Is the version %s causing you some issues? You can ask for a rollback and "
+"reinstall the last version you used before."
+msgstr "האם גרסא %s גורמת לך בעיות? באפשרותך לבקש שחזור גרסא ולהתקין מחדש את הגרסא האחרונה בה השתמשת קודם לכן."
+
+#: inc/admin/ui/modules/tutorials.php:12
+msgid ""
+"This video gives some explanations about our two crawler robots. They "
+"generate several cache files in a few seconds."
+msgstr "וידאו זה נותן כמה הסברים לגבי שני רובוטי הסריקה שלנו. הם מייצרים מספר קבצי זיכרון מטמון במספר שניות בלבד."
+
+#: inc/admin/ui/modules/tutorials.php:19
+msgid "CSS and JavaScript minification"
+msgstr "צמצום CSS ו-JavaScript "
+
+#: inc/admin/ui/modules/tutorials.php:24
+msgid ""
+"This video gives some explanations about how to use the advanced processes "
+"of minification and concatenation of CSS and JavaScript files."
+msgstr "וידאו זה נותן מספר הסברים לגבי כיצד להשתמש בתהליכים המתקדמים של צמצום ושרשור קבצי CSS ו-JavaScript."
+
+#: inc/admin/ui/modules/tutorials.php:31
+msgid "Preloading DNS queries"
+msgstr "טעינת שאילתות DNS מראש"
+
+#: inc/admin/ui/modules/tutorials.php:36
+msgid ""
+"This video helps to easily understand the advanced option of \"Preloading "
+"DNS queries\" and the use of the filter <code>rocket_dns_prefetch</code>."
+msgstr "וידאו זה עוזר להבין את האפשרות המתקדמת של \"טעינת שאילתות DNS מראש\" והשימוש בפילטר <code>rocket_dns_prefetch</code>."
+
+#: inc/admin/ui/modules/tutorials.php:43
+msgid "How to use the White Label functionality?"
+msgstr "כיצד להשתמש בפונקציונליות \"תווית לבנה\"?"
+
+#: inc/admin/ui/modules/tutorials.php:48
+msgid "This video helps to set up a White Label version of WP Rocket."
+msgstr "וידאו זה יעזור להגדיר גרסת \"תווית לבנה\" של WP Rocket."
+
+#: inc/admin/ui/modules/tutorials.php:55
+msgid "How to use the CDN functionality?"
+msgstr "כיצד להשתמש בפונקציונליות ה-CDN?"
+
+#: inc/admin/ui/modules/tutorials.php:60
+msgid ""
+"This video helps to understand what is the CDN functionality included since "
+"WP Rocket 2.1."
+msgstr "וידאו זה עוזר להבין מהי פונקציונליות ה-CDN הכלולה מאז WP Rocket 2.1."
+
+#: inc/admin/ui/modules/tutorials.php:67
+msgid "How to use the CDN API?"
+msgstr "כיצד להשתמש בAPI של CDN?"
+
+#: inc/admin/ui/modules/tutorials.php:72
+msgid ""
+"This video helps to set up the two functions "
+"<code>get_rocket_cdn_url()</code> and <code>rocket_cdn_url()</code>."
+msgstr "וידאו זה עוזר להגדיר את שתי הפונקציות <code>get_rocket_cdn_url()</code> ו-<code>rocket_cdn_url()</code>."
+
+#: inc/admin/ui/modules/white-label.php:7
+#: inc/admin/ui/modules/white-label.php:16
+msgid "Plugin Name:"
+msgstr "שם תוסף:"
+
+#: inc/admin/ui/modules/white-label.php:22
+#: inc/admin/ui/modules/white-label.php:31
+msgid "Plugin URI:"
+msgstr "URI תוסף:"
+
+#: inc/admin/ui/modules/white-label.php:37
+#: inc/admin/ui/modules/white-label.php:46
+msgid "Description:"
+msgstr "תיאור:"
+
+#: inc/admin/ui/modules/white-label.php:52
+#: inc/admin/ui/modules/white-label.php:61
+msgid "Author:"
+msgstr "מחבר:"
+
+#: inc/admin/ui/modules/white-label.php:67
+#: inc/admin/ui/modules/white-label.php:76
+msgid "Author URI:"
+msgstr "URI מחבר:"
+
+#: inc/admin/ui/modules/white-label.php:88
+msgid "Reset White Label values to default"
+msgstr "אפס ערכי \"תווית לבנה\" לברירת המחדל"
+
+#: inc/admin/ui/modules/white-label.php:93
+msgid ""
+"If you change anything, the tutorial + FAQ + Support tabs will be hidden."
+msgstr "אם תשנה משהו לשוניות ההדרכות, השאלות הנפוצות והתמיכה יוסתרו."
+
+#: inc/admin/ui/notices.php:26 inc/admin/ui/notices.php:30
 msgid "<b>%s</b> can not be deactivated because of <code>%s</code>."
 msgstr "אין אפשרות לגבות את <b>%s</b> מהסיבה: <code>%s</code>."
 
-#: inc/admin/notices.php:26
+#: inc/admin/ui/notices.php:26
 msgid ""
 "This constant is still defined in <code>wp-config.php</code> file and its "
 "value must be set to <code>false</code>."
 msgstr "משתנה קבע זה עדיין מוגדר בקובץ  <code>wp-config.php</code> ויש לקבוע את ערכו ל<code>false</code>."
 
-#: inc/admin/notices.php:26
+#: inc/admin/ui/notices.php:26
 msgid "Maybe we do not have the writing permissions for <code>%s</code>."
 msgstr "ייתכן ואין לנו הרשאות כתיבה עבור  <code>%s</code>."
 
-#: inc/admin/notices.php:26 inc/admin/notices.php:30
+#: inc/admin/ui/notices.php:26 inc/admin/ui/notices.php:30
 msgid ""
 "Please give us permissions or resolve the problem yourself. Then retry "
 "deactivation."
 msgstr "אנא תן לנו הרשאות או פתור את הבעיה בעצמך. לאחר מכן נסה שוב לכבות."
 
-#: inc/admin/notices.php:30
+#: inc/admin/ui/notices.php:30
 msgid "This file is not writable and we can not remove these directives."
 msgstr "קובץ זה אינו ניתן לכתיבה ולא ניתן להסיר הנחיות אלו."
 
-#: inc/admin/notices.php:30
+#: inc/admin/ui/notices.php:30
 msgid "Maybe we do not have writing permissions for <code>%s</code>."
 msgstr "ייתכן ואין לנו הרשאות כתיבה עבור <code>%s</code>."
 
-#: inc/admin/notices.php:66
+#: inc/admin/ui/notices.php:66
 msgid "You can still force the deactivation by clicking here."
 msgstr "אתה עדיין יכול לכפות את הכיבוי ע&quot;י לחיצה כאן."
 
-#: inc/admin/notices.php:92
+#: inc/admin/ui/notices.php:92
 msgid ""
 "<b>%s</b>: One or more extensions have been enabled or disabled, do not "
 "forget to clear the cache if necessary."
 msgstr "<b>%s</b>: הרחבה אחת או יותר הופעלו או כובו. אל תשכח לנקות את זיכרון המטמון אם צריך."
 
-#: inc/admin/notices.php:170
+#: inc/admin/ui/notices.php:191
 msgid ""
 "<b>%s</b>: The following plugins are not compatible with this plugin and may"
 " cause unexpected results:"
 msgstr "<b>%s</b>: התוספים הבאים אינם תואמים את התוסף הזה ועלולים לגרום לתוצאות בלתי-צפויות:"
 
-#: inc/admin/notices.php:176
+#: inc/admin/ui/notices.php:197
 msgid "Deactivate"
 msgstr "כיבוי"
 
-#: inc/admin/notices.php:202
+#: inc/admin/ui/notices.php:223
 msgid ""
 "<b>%s</b>: A custom permalink structure is required for the plugin to work "
 "properly. Please go to <a href=\"%s\">Permalink</a> to configure it."
 msgstr "<b>%s</b>: מבנה קישורים מותאם אישית נדרש על-מנת  שתוסף זה יעבוד כראוי. אנא עברו אל <a href=\"%s\">הגדרות מבנה קישורים</a> כדי להגדיר זאת."
 
-#: inc/admin/notices.php:233
+#: inc/admin/ui/notices.php:254
 msgid ""
 "<b>%s</b>: It seems we don't have <a href=\"%s\" target=\"_blank\">writing "
 "permissions</a> on <code>wp-config.php</code> file or the value of the "
 "constant <code>WP_CACHE</code> is set to <code>false</code>"
 msgstr "<b>%s</b>: נדמה כי אין לנו <a href=\"%s\" target=\"_blank\">הרשאות כתיבה</a> עבור הקובץ  <code>wp-config.php</code> או, שהערך של המשתנה <code>WP_CACHE</code> הוא <code>false</code>"
 
-#: inc/admin/notices.php:235
+#: inc/admin/ui/notices.php:256
 msgid ""
 "To fix this you have to set writing permissions for <code>wp-"
 "config.php</code> and then save the settings again."
 msgstr "כדי לתקן זאת עליך להגדיר הרשאות כתיבה עבור <code>wp-config.php</code>ואז לשמור את ההגדרות בשנית."
 
-#: inc/admin/notices.php:237
+#: inc/admin/ui/notices.php:258
 msgid ""
 "If the message persists, you have to put the following code in your <code"
 ">wp-config.php</code> file so that it works correctly. Click on the field "
 "and press Ctrl-A to select all."
 msgstr "אם ההודעה ממשיכה להופיע, עליך להכניס את הקוד ה&quot;ל לתוך קובץ <code>wp-config.php</code> שלך כדי שזה יעבוד כראוי. לחץ על השדה ולחץ Ctrl+A כדי לבחור את הכל."
 
-#: inc/admin/notices.php:278
+#: inc/admin/ui/notices.php:299
 msgid ""
 "If you had <a href=\"%1$s\" target=\"_blank\">writing permissions</a> on "
 "<code>%2$s</code> file, <b>%3$s</b> could do this automatically. This is not"
@@ -551,14 +1014,14 @@ msgid ""
 "for <b>%3$s</b> to work properly."
 msgstr "אם היו לך <a href=\"%1$s\" target=\"_blank\">הרשאות כתיבה</a> עבור הקובץ <code>%2$s</code>, <b>%3$s</b> יכול היה לעשות זאת אוטומטית. מכיוון שאין זה המקרה, להלן הקוד שעליך להוסיף לקובץ <code>%2$s</code> שלך על מנת ש<b>%3$s</b> יעבוד כהלכה."
 
-#: inc/admin/notices.php:311
+#: inc/admin/ui/notices.php:332
 msgid ""
 "It seems that the <code>%s</code> file is not ours. Save the settings, we "
 "will automatically recreate the correct one. If it's still not working, "
 "please delete it and save again."
 msgstr "נדמה כי הקובץ <code>%s</code> אינו שלנו. שמור את ההגדרות ואנו ניצור מחדש את הקובץ הנכון אוטומטית. אם הבעיה נמשכת, אנא מחק את הקובץ ונסה שנית."
 
-#: inc/admin/notices.php:340
+#: inc/admin/ui/notices.php:361
 msgid ""
 "If you had <a href=\"%1$s\" target=\"_blank\">writing permissions</a> on "
 "<code>.htaccess</code> file, <b>%2$s</b> could do this automatically. This "
@@ -567,13 +1030,13 @@ msgid ""
 "field and press Ctrl-A to select all."
 msgstr "אם היו לך <a href=\"%1$s\" target=\"_blank\">הרשאות כתיבה</a> עבור קובץ <code>.htaccess</code> , <b>%2$s</b> היה יכול לעשות זאת אוטומטית. מכיוון שאין זה המקרה, להלן חוקי השכתוב שעליך להכניס לתוך קובץ <code>.htaccess</code> שלך כדי ש<b>%2$s</b> יעבוד כהלכה. לחץ על השדה ולחץ Ctrl+A כדי לבחור את הכל."
 
-#: inc/admin/notices.php:340
+#: inc/admin/ui/notices.php:361
 msgid ""
 "<strong>Warning:</strong> This message will popup again and its content may "
 "be updated when saving the options"
 msgstr "<strong>אזהרה:</strong> מסר זה יוקפץ שוב וייתכן ותוכנו יעודכן בעת שמירת ההגדרות"
 
-#: inc/admin/notices.php:369
+#: inc/admin/ui/notices.php:390
 msgid ""
 "Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
 "permissions</a> on <b>%3$s</b> domain configuration folder "
@@ -583,7 +1046,7 @@ msgid ""
 "to generate the configuration file."
 msgstr "זהירות, אין לך <a href=\"%1$s\" target=\"_blank\">הרשאות כתיבה</a> עבור תיקיית הגדרת דומיין <b>%3$s</b>  (<code>%2$s</code>). כדי ש<b>%3$s</b> יעבוד כראוי, אנא הפעל את פונקציית CHMOD עם קוד <code>775</code>, <code>755</code> או <code>777</code> על תיקייה זו.<br/>כאשר הבעיה נפתרה, נודה לך אם תשמור את אפשרויות %3$s כדי לייצר את קובץ ההגדרות."
 
-#: inc/admin/notices.php:397
+#: inc/admin/ui/notices.php:418
 msgid ""
 "Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
 "permissions</a> on <b>%3$s</b> cache folder (<code>%2$s</code>). For "
@@ -591,7 +1054,7 @@ msgid ""
 "<code>775</code> or <code>777</code> this folder."
 msgstr "זהירות, אין לך <a href=\"%1$s\" target=\"_blank\">הרשאות כתיבה</a> עבור תיקיית זיכרון מטמון <b>%3$s</b>  (<code>%2$s</code>). כדי ש<b>%3$s</b> יעבוד כראוי, אנא הפעל את פונקציית CHMOD עם קוד <code>775</code>, <code>755</code> או <code>777</code> על תיקייה זו."
 
-#: inc/admin/notices.php:426
+#: inc/admin/ui/notices.php:447
 msgid ""
 "Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
 "permissions</a> on <b>%3$s</b> minified cache folder (<code>%2$s</code>). To"
@@ -599,663 +1062,13 @@ msgid ""
 "<code>775</code> or <code>777</code> this folder."
 msgstr "זהירות, אין לך <a href=\"%1$s\" target=\"_blank\">הרשאות כתיבה</a> עבור תיקיית קבצי המטמון המצומצמים <b>%3$s</b>  (<code>%2$s</code>). כדי ש<b>%3$s</b> יעבוד כראוי, אנא הפעל את פונקציית CHMOD עם קוד <code>775</code>, <code>755</code> או <code>777</code> על תיקייה זו."
 
-#: inc/admin/notices.php:451
+#: inc/admin/ui/notices.php:472
 msgid "Thank you. Your license has been successfully validated!"
 msgstr "תודה רבה. רישיונך אומת בהצלחה!"
 
-#: inc/admin/notices.php:452
+#: inc/admin/ui/notices.php:473
 msgid "Key: <code>%s</code><br>Email: <i>%s</i>"
 msgstr "מפתח: <code>%s</code><br>אימייל: <i>%s</i>"
-
-#: inc/admin/options.php:139 inc/admin/options.php:366
-msgid "Warning: "
-msgstr "אזהרה:"
-
-#: inc/admin/options.php:146
-msgid "Download options"
-msgstr "אפשרויות הורדה"
-
-#: inc/admin/options.php:175
-msgid "<b>JS</b> files with Deferred Loading JavaScript"
-msgstr "קבצי <b>JS</b> עם טעינת JavaScript דחויה"
-
-#: inc/admin/options.php:195 inc/admin/options.php:215
-#: inc/admin/options.php:235
-msgid "Wait until this file is loaded?"
-msgstr "לחכות עד שקובץ זה נטען?"
-
-#: inc/admin/options.php:243 inc/admin/options.php:811
-msgid "Add URL"
-msgstr "הוסף URL"
-
-#: inc/admin/options.php:255 inc/admin/options.php:1040
-msgid "Replace site's hostname with:"
-msgstr "החלף את שם מארח האתר ב:"
-
-#: inc/admin/options.php:273 inc/admin/options.php:299
-#: inc/admin/options.php:323
-msgid "reserved for"
-msgstr "שמור עבור"
-
-#: inc/admin/options.php:275 inc/admin/options.php:301
-#: inc/admin/options.php:325
-msgid "All files"
-msgstr "כל הקבצים"
-
-#: inc/admin/options.php:276 inc/admin/options.php:302
-#: inc/admin/options.php:326
-msgid "Images"
-msgstr "תמונות"
-
-#: inc/admin/options.php:338
-msgid "Add CNAME"
-msgstr "הוסף CNAME"
-
-#: inc/admin/options.php:390
-msgid "Watch the video"
-msgstr "צפה בוידיאו"
-
-#: inc/admin/options.php:414
-msgid "License validation"
-msgstr "אימות רישיון"
-
-#: inc/admin/options.php:417 inc/admin/options.php:425
-#: inc/admin/options.php:873 inc/admin/options.php:881
-msgid "API Key"
-msgstr "מפתח API"
-
-#: inc/admin/options.php:430
-msgid "Please enter the API key obtained after your purchase."
-msgstr "אנא הזן את מפתח ה-API שקיבלת לאחר הרכישה שלך. "
-
-#: inc/admin/options.php:436 inc/admin/options.php:444
-msgid "E-mail Address"
-msgstr "כתובת אימייל"
-
-#: inc/admin/options.php:449
-msgid "The one used for the purchase, in your support account."
-msgstr "הכתובת בה השתמשת בעת הרכישה, בחשבון התמיכה שלך."
-
-#: inc/admin/options.php:455 inc/admin/options.php:1381
-msgid "Basic options"
-msgstr "אפשרויות בסיסיות"
-
-#: inc/admin/options.php:458 inc/admin/options.php:467
-msgid "Lazyload:"
-msgstr "טעינה דחויה (Lazyload):"
-
-#: inc/admin/options.php:465
-msgid "Enable Lazy loading images."
-msgstr "אפשר טעינה דחויה של תמונות."
-
-#: inc/admin/options.php:472
-msgid ""
-"LazyLoad displays images on a page only when they are visible to the user."
-msgstr "טעינה דחויה מציגה תמונות בעמודים רק כאשר הן בטווח הראייה של המשתמש."
-
-#: inc/admin/options.php:473 inc/admin/options.php:514
-msgid ""
-"This mechanism reduces the number of HTTP requests and improves the loading "
-"time."
-msgstr "מנגנון זה מצמצם את מספר פניות ה-HTTP ומשפר את זמן הטעינה."
-
-#: inc/admin/options.php:479
-msgid ""
-"Files optimisation:<br/><span class=\"description\">(Minification & "
-"Concatenation)</span>"
-msgstr "אופטימיזציה של קבצים:<br/><span class=\"description\">(צמצום ושרשור)</span>"
-
-#: inc/admin/options.php:488
-msgid "HTML Files minification"
-msgstr "צמצום קבצי HTML"
-
-#: inc/admin/options.php:494
-msgid "Google Fonts minification"
-msgstr "צמצום גופני גוגל"
-
-#: inc/admin/options.php:500
-msgid "CSS Files minification"
-msgstr "צמצום קבצי CSS"
-
-#: inc/admin/options.php:506
-msgid "JS Files minification"
-msgstr "צמצום קבצי JS"
-
-#: inc/admin/options.php:511
-msgid ""
-"Minification removes any spaces and comments present in the CSS and "
-"JavaScript files."
-msgstr "צמצום מסיר את כל הרווחים וההערות בקבצי הCSS והJS."
-
-#: inc/admin/options.php:512
-msgid ""
-"This mechanism reduces the weight of each file and allows a faster reading "
-"of browsers and search engines."
-msgstr "מנגנון זה מקטין את המשקל של כל קובץ ומאפשר טעינה מהירה יותר עבור דפדפנים ומנועי חיפוש."
-
-#: inc/admin/options.php:513
-msgid "Concatenation combines all CSS and JavaScript files."
-msgstr "שרשור מאגד את כל קבצי הCSS וה-JavaScript."
-
-#: inc/admin/options.php:519
-msgid "Concatenating files can cause display errors."
-msgstr "שרשור קבצים עלול לגרום לשגיאות תצוגה."
-
-#: inc/admin/options.php:525
-msgid ""
-"In case of any errors we recommend you to turn off this option or watch the "
-"following video: <a href=\"%1$s\" class=\"fancybox\">%1$s</a>."
-msgstr "במקרה של שגיאות כלשהן אנו ממליצים לכבות אפשרות זו או לצפות בוידאו הבא: <a href=\"%1$s\" class=\"fancybox\">%1$s</a>."
-
-#: inc/admin/options.php:541 inc/admin/options.php:550
-msgid "Mobile cache:"
-msgstr "זיכרון מטמון mobile:"
-
-#: inc/admin/options.php:548
-msgid "Enable caching for mobile devices."
-msgstr "אפשר הטמנה בזיכרון עבור מכשירים ניידים."
-
-#: inc/admin/options.php:555
-msgid "Don't turn on this option if you use one of these plugins: %l."
-msgstr "אל תפעיל אפשרות זו אם אתה משתמש באחד מהתוספים הבאים: %l."
-
-#: inc/admin/options.php:561 inc/admin/options.php:568
-msgid "Logged in user cache:"
-msgstr "זיכרון מטמון משתמש מחובר:"
-
-#: inc/admin/options.php:566
-msgid "Enable caching for logged in users."
-msgstr "אפשר הטמנה בזיכרון עבור משתמשים מחוברים."
-
-#: inc/admin/options.php:573 inc/admin/options.php:581
-msgid "SSL cache:"
-msgstr "זיכרון מטמון SSL:"
-
-#: inc/admin/options.php:579
-msgid "Enable caching for pages with SSL protocol (<code>https://</code>)."
-msgstr "אפשר הטמנה בזיכרון עבור עמודים עם פרוטוקול SSL (<code>https://</code>)."
-
-#: inc/admin/options.php:586 inc/admin/options.php:594
-msgid "Clear Cache Lifespan"
-msgstr "תוקף זיכרון מטמון"
-
-#: inc/admin/options.php:600
-msgid "Unit of time"
-msgstr "יחידת זמן"
-
-#: inc/admin/options.php:603
-msgid "second(s)"
-msgstr "שניה/ות"
-
-#: inc/admin/options.php:604
-msgid "minute(s)"
-msgstr "דקה/ות"
-
-#: inc/admin/options.php:605
-msgid "hour(s)"
-msgstr "שעה/ות"
-
-#: inc/admin/options.php:606
-msgid "day(s)"
-msgstr "יום/ימים"
-
-#: inc/admin/options.php:612
-msgid ""
-"By default, cache lifespan is 24 hours. This means that once created, the "
-"cache files are automatically removed after 24 hours before being recreated."
-msgstr "כברירת מחדל, תוקף זיכרון המטמון הוא 24 שעות. זה אומר שברגע שנוצרו, קבצי המטמון מוסרים אוטומטית לאחר 24 שעות לפני שהם נוצרים מחדש."
-
-#: inc/admin/options.php:612
-msgid ""
-"This can be useful if you display your latest tweets or rss feeds in your "
-"sidebar, for example."
-msgstr "זה יכול להיות שימושי אם אתה מציג את הציוצים האחרונים שלך או RSS בסרגל הצד שלך, לדוגמא."
-
-#: inc/admin/options.php:617
-msgid "Specify 0 for unlimited lifetime."
-msgstr "הזן 0 עבור תוקף בלתי מוגבל."
-
-#: inc/admin/options.php:623 inc/admin/options.php:1382
-msgid "Advanced options"
-msgstr "אפשרויות מתקדמות"
-
-#: inc/admin/options.php:626 inc/admin/options.php:634
-msgid "Prefetch DNS requests:"
-msgstr "שליפה מראש של פניות DNS:"
-
-#: inc/admin/options.php:639
-msgid ""
-"DNS prefetching is a way for browsers to anticipate the DNS resolution of "
-"external domains from your site."
-msgstr "שליפה מראש של פניות DNS היא דרך עבור דפדפנים לצפות מראש את אבחנת הדומיינים החיצוניים של ה-DNS מהשרת שלך."
-
-#: inc/admin/options.php:639
-msgid "This mechanism reduces the latency of some external files."
-msgstr "מנגנון זה מקטין את זמן התגובה של קבצים חיצוניים מסוימים."
-
-#: inc/admin/options.php:645
-msgid ""
-"To learn more about this option and how to use it correctly, we advise you "
-"to watch the following video: <a href=\"%1$s\" class=\"fancybox\">%1$s</a>."
-msgstr "כדי ללמוד עוד על האפשרות הזו וכיצד להשתמש בה נכון, אנו ממליצים לצפות בוידאו הבא: <a href=\"%1$s\" class=\"fancybox\">%1$s</a>."
-
-#: inc/admin/options.php:650
-msgid ""
-"<strong>Note:</strong> Enter the domain names without their protocol, for "
-"example: <code>//ajax.googleapis.com</code> without <code>http:</code> (one "
-"per line)."
-msgstr "<strong>הערה:</strong> הזן את שמות הדומיין ללא הפרוטוקול שלהם, לדוגמא: <code>//ajax.googleapis.com</code> ללא <code>http:</code> (אחד לשורה)."
-
-#: inc/admin/options.php:656 inc/admin/options.php:664
-msgid "Empty the cache of the following pages when updating a post:"
-msgstr "רוקן את זיכרון המטמון של העמודים הבאים בעת עדכון פוסט:"
-
-#: inc/admin/options.php:669
-msgid ""
-"Enter the URL of additionnal pages to purge when updating a post (one per "
-"line)."
-msgstr "הזן URL של עמודים נוספים לטהר בעת עדכון פוסט (אחד לשורה)."
-
-#: inc/admin/options.php:670 inc/admin/options.php:694
-#: inc/admin/options.php:756 inc/admin/options.php:775
-#: inc/admin/options.php:794 inc/admin/options.php:1060
-msgid "You can use regular expressions (regex)."
-msgstr "באפשרותך להשתמש בביטויים רגולריים (regex)."
-
-#: inc/admin/options.php:675
-msgid ""
-"<strong>Note:</strong> When you update a post or when a comment is posted, "
-"the homepage, categories and tags associated with this post are "
-"automatically removed from the cache and then recreated by our bot."
-msgstr "<strong>הערה:</strong> כאשר אתה מעדכן פוסט או כאשר תגובה מתפרסמת, דף הבית, קטגוריות, ותגיות המשויכים לפוסט זה מוסרים אוטומטית מזיכרון המטמון ולאחר מכן נוצרים מחדש ע&quot;י הרובוט שלנו."
-
-#: inc/admin/options.php:681 inc/admin/options.php:689
-msgid "Never cache the following pages:"
-msgstr "לעולם אל תטמין בזיכרון את העמודים הבאים:"
-
-#: inc/admin/options.php:694
-msgid "Enter the URL of pages to reject (one per line)."
-msgstr "הזן את כתובות ה-URL של עמודים לדחות (אחת לשורה)."
-
-#: inc/admin/options.php:699
-msgid ""
-"<strong>Note:</strong> The cart and checkout pages are auto-excluded from "
-"the cache for WooCommerce, Easy Digital Download, iThemes Exchange, Jigoshop"
-" & WP-Shop."
-msgstr ""
-
-#: inc/admin/options.php:705 inc/admin/options.php:713
-msgid "Don't cache pages that use the following cookies:"
-msgstr "אל תטמין בזיכרון עמודים אשר עושים שימוש ב\"עוגיות\" (cookies) הבאות:"
-
-#: inc/admin/options.php:718
-msgid "List the names of the cookies (one per line)."
-msgstr "ציין את שמות העוגיות (אחד לשורה)."
-
-#: inc/admin/options.php:724 inc/admin/options.php:732
-msgid "Cache pages that use the following query strings (GET parameters):"
-msgstr "הטמן בזיכרון עמודים אשר משתמשים במחרוזות השאילתה הבאות (פרמטרי GET):"
-
-#: inc/admin/options.php:737
-msgid "List of query strings which can be cached (one per line)."
-msgstr "רשימה של מחרוזות שאילתה אשר ניתן להטמין בזיכרון (אחת לשורה)."
-
-#: inc/admin/options.php:743 inc/admin/options.php:751
-msgid "Never send cache pages for these user agents:"
-msgstr ""
-
-#: inc/admin/options.php:756
-msgid "Enter the user agents name to reject (one per line)."
-msgstr ""
-
-#: inc/admin/options.php:762 inc/admin/options.php:770
-msgid "<b>CSS</b> files to exclude from minification:"
-msgstr "קבצי <b>CSS</b> שלא לצמצם:"
-
-#: inc/admin/options.php:775
-msgid "Enter the URL of <b>CSS</b> files to reject (one per line)."
-msgstr "הזן את כתובות ה-URL של קבצי <b>CSS</b> לדחות (אחת לשורה)."
-
-#: inc/admin/options.php:781 inc/admin/options.php:789
-msgid "<b>JS</b> files to exclude from minification:"
-msgstr "קבצי <b>JS</b> שלא לצמצם:"
-
-#: inc/admin/options.php:794
-msgid "Enter the URL of <b>JS</b> files to reject (one per line)."
-msgstr "הזן את כתובות ה-URL של קבצי <b>JS</b> לדחות (אחת לשורה)."
-
-#: inc/admin/options.php:800 inc/admin/options.php:807
-msgid ""
-"<b>JS</b> files to be included in the footer during the minification "
-"process:"
-msgstr "קבצי <b>JS</b> להכליל בתחתית העמוד (footer) במהלך תהליך הצמצום:"
-
-#: inc/admin/options.php:816 inc/admin/options.php:844
-msgid "Empty the field to remove it."
-msgstr "רוקן את השדה להסרתו."
-
-#: inc/admin/options.php:822 inc/admin/options.php:850
-msgid "You must specify the complete URL of the files."
-msgstr "עליך לפרט את כתובות ה-URL המלאות של הקבצים."
-
-#: inc/admin/options.php:828
-msgid "<b>JS</b> files with deferred loading:"
-msgstr "קבצי <b>JS</b> עם טעינה דחויה:"
-
-#: inc/admin/options.php:839
-msgid ""
-"You can add JavaScript files that will be loaded asynchronously at the same "
-"time as the page loads."
-msgstr "באפשרותך להוסיף קבצי JavaScript שייטענו בצורה אסינכרונית באותו הזמן בו נטען העמוד."
-
-#: inc/admin/options.php:859 inc/admin/options.php:867
-msgid "CloudFlare Account Email"
-msgstr ""
-
-#: inc/admin/options.php:886
-msgid ""
-"<strong>Note:</strong> Where do I find my CloudFlare API key? <a "
-"href=%s\"\">Learn more</a>"
-msgstr ""
-
-#: inc/admin/options.php:892 inc/admin/options.php:900
-msgid "Domain"
-msgstr ""
-
-#: inc/admin/options.php:906 inc/admin/options.php:914
-msgid "Development Mode"
-msgstr ""
-
-#: inc/admin/options.php:916
-msgid "Off"
-msgstr ""
-
-#: inc/admin/options.php:917
-msgid "On"
-msgstr ""
-
-#: inc/admin/options.php:923
-msgid ""
-"Temporarily enter development mode on your website. <a href=%s\"\">Learn "
-"more</a>"
-msgstr ""
-
-#: inc/admin/options.php:929 inc/admin/options.php:937
-msgid "Auto enable the optimal CloudFlare settings (props WP Rocket)"
-msgstr ""
-
-#: inc/admin/options.php:939
-msgid "No"
-msgstr ""
-
-#: inc/admin/options.php:940
-msgid "Yes"
-msgstr ""
-
-#: inc/admin/options.php:946
-msgid ""
-"We select the best CloudFlare configuration for speed, performance grade and"
-" compatibility."
-msgstr ""
-
-#: inc/admin/options.php:963
-msgid ""
-"Immediately purge cached resources for your website. <a href=\"%s\" "
-"target=\"_blank\">Learn more</a>"
-msgstr ""
-
-#: inc/admin/options.php:969
-msgid "Content Delivery Network options"
-msgstr "אפשרויות רשת מסירת תוכן (Content Delivery Network)"
-
-#: inc/admin/options.php:981 inc/admin/options.php:982
-msgid "Enable CloudFlare settings tab."
-msgstr ""
-
-#: inc/admin/options.php:989
-msgid ""
-"This option allows you to configure some CloudFlare settings like "
-"development mode, purge cache and a recommended configuration."
-msgstr ""
-
-#: inc/admin/options.php:994
-msgid ""
-"<strong>Note:</strong> If you are using CloudFlare, configure the options in"
-" the CloudFlare tab. The CDN settings below <strong>do not apply</strong> to"
-" CloudFlare."
-msgstr ""
-
-#: inc/admin/options.php:999
-msgid ""
-"This option is available for websites using <a href=\"%s\" "
-"target=\"_blank\">CloudFlare</a>."
-msgstr ""
-
-#: inc/admin/options.php:1005 inc/admin/options.php:1014
-msgid "CDN:"
-msgstr "CDN:"
-
-#: inc/admin/options.php:1012
-msgid "Enable Content Delivery Network."
-msgstr "אפשר רשת מסירת תוכן (Content Delivery Network)."
-
-#: inc/admin/options.php:1019
-msgid ""
-"CDN function replaces all URLs of your static files and media (CSS, JS, "
-"Images) with the url entered below. This way all your content will be copied"
-" to a dedicated hosting or a CDN system <a href=\"http://www.maxcdn.com/\" "
-"target=\"_blank\">maxCDN</a>."
-msgstr "פונקציונליות CDN מחליפה את כל כתובות הURL של הקבצים הסטטיים והמדיה שלך (CSS, JS ותמונות) עם הURL שהוזן למטה. בצורה זו כל התוכן שלך יועתק למערכת אחסון או CDN ייעודית <a href=\"http://www.maxcdn.com/\" target=\"_blank\">maxCDN</a>."
-
-#: inc/admin/options.php:1032
-msgid "Disable CDN on HTTPS pages."
-msgstr ""
-
-#: inc/admin/options.php:1047 inc/admin/options.php:1055
-msgid "Rejected files:"
-msgstr ""
-
-#: inc/admin/options.php:1060
-msgid "Specify the URL files that should not use the CDN. (one per line)."
-msgstr ""
-
-#: inc/admin/options.php:1066 inc/admin/options.php:1388
-msgid "White Label"
-msgstr "תווית לבנה"
-
-#: inc/admin/options.php:1069 inc/admin/options.php:1078
-msgid "Plugin Name:"
-msgstr "שם תוסף:"
-
-#: inc/admin/options.php:1084 inc/admin/options.php:1093
-msgid "Plugin URI:"
-msgstr "URI תוסף:"
-
-#: inc/admin/options.php:1099 inc/admin/options.php:1108
-msgid "Description:"
-msgstr "תיאור:"
-
-#: inc/admin/options.php:1114 inc/admin/options.php:1123
-msgid "Author:"
-msgstr "מחבר:"
-
-#: inc/admin/options.php:1129 inc/admin/options.php:1138
-msgid "Author URI:"
-msgstr "URI מחבר:"
-
-#: inc/admin/options.php:1150
-msgid "Reset White Label values to default"
-msgstr "אפס ערכי \"תווית לבנה\" לברירת המחדל"
-
-#: inc/admin/options.php:1155
-msgid ""
-"If you change anything, the tutorial + FAQ + Support tabs will be hidden."
-msgstr "אם תשנה משהו לשוניות ההדרכות, השאלות הנפוצות והתמיכה יוסתרו."
-
-#: inc/admin/options.php:1160 inc/admin/options.php:1390
-msgid "Tools"
-msgstr "כלים"
-
-#: inc/admin/options.php:1165 inc/admin/options.php:1174
-msgid "Beta Tester"
-msgstr "בוחן בטא"
-
-#: inc/admin/options.php:1172
-msgid "Yes I do!"
-msgstr "כן אני רוצה!"
-
-#: inc/admin/options.php:1179
-msgid ""
-"Check it to participate in the WP Rocket Beta Program and get earlier access"
-" to new versions, thanks in advance."
-msgstr "סמן וי להשתתפות בתוכנית הבטא של WP Rocket ולקבל גישה מוקדמת לגרסאות חדשות. תודה מראש."
-
-#: inc/admin/options.php:1198
-msgid "Clear the cache for the whole site."
-msgstr "נקה את זיכרון המטמון עבור כל האתר."
-
-#: inc/admin/options.php:1204 inc/admin/options.php:1210
-#: inc/admin/options.php:1271 inc/admin-bar.php:141 inc/admin-bar.php:162
-#: inc/admin-bar.php:193
-msgid "Preload cache"
-msgstr "טען זיכרון מטמון מראש"
-
-#: inc/admin/options.php:1215
-msgid ""
-"Allows you to request a bot crawl to preload the cache (homepage and its "
-"internal links)."
-msgstr "מאפשר לך לבקש סריקת רובוט לטעינה מראש של זיכרון המטמון (דף הבית וקישוריו הפנימיים)."
-
-#: inc/admin/options.php:1222
-msgid "Settings Exporter"
-msgstr "מייצא ההגדרות"
-
-#: inc/admin/options.php:1232
-msgid "Settings Importer"
-msgstr "מייבא הגדרות"
-
-#: inc/admin/options.php:1241
-msgid ""
-"Please backup your settings before, use the \"Download options\" button "
-"above."
-msgstr "אנא גבה את ההגדרות שלך לפני. השתמש בכפתור \"הורד אפשרויות\" למעלה."
-
-#: inc/admin/options.php:1244
-msgid "Update Rollback"
-msgstr "שחזור גרסא"
-
-#: inc/admin/options.php:1250
-msgid "Reinstall v%s"
-msgstr "התקן מחדש את גרסא %s"
-
-#: inc/admin/options.php:1255
-msgid ""
-"Is the version %s causing you some issues? You can ask for a rollback and "
-"reinstall the last version you used before."
-msgstr "האם גרסא %s גורמת לך בעיות? באפשרותך לבקש שחזור גרסא ולהתקין מחדש את הגרסא האחרונה בה השתמשת קודם לכן."
-
-#: inc/admin/options.php:1268 inc/admin/options.php:1393
-msgid "Tutorials"
-msgstr "הדרכות"
-
-#: inc/admin/options.php:1276
-msgid ""
-"This video gives some explanations about our two crawler robots. They "
-"generate several cache files in a few seconds."
-msgstr "וידאו זה נותן כמה הסברים לגבי שני רובוטי הסריקה שלנו. הם מייצרים מספר קבצי זיכרון מטמון במספר שניות בלבד."
-
-#: inc/admin/options.php:1283
-msgid "CSS and JavaScript minification"
-msgstr "צמצום CSS ו-JavaScript "
-
-#: inc/admin/options.php:1288
-msgid ""
-"This video gives some explanations about how to use the advanced processes "
-"of minification and concatenation of CSS and JavaScript files."
-msgstr "וידאו זה נותן מספר הסברים לגבי כיצד להשתמש בתהליכים המתקדמים של צמצום ושרשור קבצי CSS ו-JavaScript."
-
-#: inc/admin/options.php:1295
-msgid "Preloading DNS queries"
-msgstr "טעינת שאילתות DNS מראש"
-
-#: inc/admin/options.php:1300
-msgid ""
-"This video helps to easily understand the advanced option of \"Preloading "
-"DNS queries\" and the use of the filter <code>rocket_dns_prefetch</code>."
-msgstr "וידאו זה עוזר להבין את האפשרות המתקדמת של \"טעינת שאילתות DNS מראש\" והשימוש בפילטר <code>rocket_dns_prefetch</code>."
-
-#: inc/admin/options.php:1307
-msgid "How to use the White Label functionality?"
-msgstr "כיצד להשתמש בפונקציונליות \"תווית לבנה\"?"
-
-#: inc/admin/options.php:1312
-msgid "This video helps to set up a White Label version of WP Rocket."
-msgstr "וידאו זה יעזור להגדיר גרסת \"תווית לבנה\" של WP Rocket."
-
-#: inc/admin/options.php:1319
-msgid "How to use the CDN functionality?"
-msgstr "כיצד להשתמש בפונקציונליות ה-CDN?"
-
-#: inc/admin/options.php:1324
-msgid ""
-"This video helps to understand what is the CDN functionality included since "
-"WP Rocket 2.1."
-msgstr "וידאו זה עוזר להבין מהי פונקציונליות ה-CDN הכלולה מאז WP Rocket 2.1."
-
-#: inc/admin/options.php:1331
-msgid "How to use the CDN API?"
-msgstr "כיצד להשתמש בAPI של CDN?"
-
-#: inc/admin/options.php:1336
-msgid ""
-"This video helps to set up the two functions "
-"<code>get_rocket_cdn_url()</code> and <code>rocket_cdn_url()</code>."
-msgstr "וידאו זה עוזר להגדיר את שתי הפונקציות <code>get_rocket_cdn_url()</code> ו-<code>rocket_cdn_url()</code>."
-
-#: inc/admin/options.php:1341 inc/admin/options.php:1344
-#: inc/admin/options.php:1395 inc/admin/options.php:1400
-msgid "FAQ"
-msgstr "שאלות נפוצות"
-
-#: inc/admin/options.php:1361
-msgid "Visit the Support"
-msgstr "בקר בתמיכה"
-
-#: inc/admin/options.php:1367
-msgid ""
-"If none of the FAQ answers resolves your problem, you can send your issue to"
-" our free support. We will reply as soon as possible."
-msgstr "אם אף אחת מתשובות השאלות הנפוצות פותרת את הבעיה שלך, באפשרותך לשלוח את הנושא לתמיכה החינמית שלנו. אנו נשיב בהקדם האפשרי."
-
-#: inc/admin/options.php:1399
-msgid "License"
-msgstr "רישיון"
-
-#: inc/admin/options.php:1731
-msgid "Settings imported and saved."
-msgstr "ההגדרות יובאו ונשמרו."
-
-#: inc/admin/options.php:1749 inc/admin/options.php:1833
-msgid "Settings saved."
-msgstr "ההגדרות נשמרו."
-
-#: inc/admin/options.php:1910
-msgid ""
-"Before you can upload your import file, you will need to fix the following "
-"error:"
-msgstr "לפני שתוכל להעלות את קובץ הייבוא שלך, עליך לפתור את השגיאה הבאה:"
-
-#: inc/admin/options.php:1917
-msgid "Choose a file from your computer:"
-msgstr "בחר קובץ מהמחשב שלך:"
-
-#: inc/admin/options.php:1917
-msgid "Maximum size: %s"
-msgstr "גודל מקסימלי: %s"
-
-#: inc/admin/options.php:1920
-msgid "Upload file and import settings"
-msgstr "העלה קובץ וייבא הגדרות"
 
 #: inc/admin/updater.php:119 inc/admin/updater.php:126
 msgid ""
@@ -1264,24 +1077,24 @@ msgid ""
 "try the <a href=\"%s\">support forums</a>."
 msgstr "התרחשה שגיאה בלתי צפויה. ייתכן כי ישנה בעיה עם האתר WP-Rocket.me או עם ההגדרות של שרת זה. אם אתה ממשיך לחוות בעיות, אנא נסה את <a href=\"%s\">פורום התמיכה</a>."
 
-#: inc/admin-bar.php:90 inc/admin-bar.php:184 inc/admin-bar.php:252
-#: inc/admin-bar.php:259
+#: inc/common/admin-bar.php:90 inc/common/admin-bar.php:184
+#: inc/common/admin-bar.php:252 inc/common/admin-bar.php:259
 msgid "All languages"
 msgstr "כל השפות"
 
-#: inc/admin-bar.php:115
+#: inc/common/admin-bar.php:115
 msgid "Clear this post"
 msgstr "נקה פוסט זה"
 
-#: inc/admin-bar.php:127
+#: inc/common/admin-bar.php:127
 msgid "Purge this URL"
 msgstr "מחק URL זה"
 
-#: inc/admin-bar.php:204
+#: inc/common/admin-bar.php:204
 msgid "Documentation"
 msgstr "תיעוד"
 
-#: inc/cron.php:17
+#: inc/common/cron.php:17
 msgid "%s clear"
 msgstr "%s נוקה"
 
@@ -1291,19 +1104,19 @@ msgid ""
 "href=\"%s\">Enter you API key</a> here."
 msgstr "צעד אחרון לפני שתהנה מביצועי העל של התוסף שלנו, אנא <a href=\"%s\">הזן את מפתח הAPI שלך</a> כאן."
 
-#: inc/functions/options.php:324
+#: inc/functions/options.php:439
 msgid "Your license is not valid."
 msgstr "הרישון שלך אינו תקף."
 
-#: inc/functions/options.php:325
+#: inc/functions/options.php:440
 msgid "You cannot add more websites. Upgrade your account."
 msgstr "אין באפשרותך להוסיף עוד אתרים. שדרג את החשבון שלך."
 
-#: inc/functions/options.php:326
+#: inc/functions/options.php:441
 msgid "This website is not allowed."
 msgstr "אתר זה אינו מורשה."
 
-#: inc/functions/options.php:327
+#: inc/functions/options.php:442
 msgid "This license key is not accepted."
 msgstr "מפתח רישיון זה אינו מקובל."
 
