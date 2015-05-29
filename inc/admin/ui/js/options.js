@@ -168,6 +168,13 @@ jQuery( document ).ready( function($){
 				html  : true
 			});
 		}
+		
+		if ( validation.is( ':checked' ) && ( summary == '' || description == '' ) ) {
+			swal({
+				title : sawpr.requiredTitle,
+				type  : "warning",
+			});
+		}
 
 		if ( summary != '' && description != '' && validation.is( ':checked' ) ) {
 
