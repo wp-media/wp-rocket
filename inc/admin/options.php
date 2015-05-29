@@ -6,7 +6,6 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
  *
  * @since 2.6
  */
-
 add_filter( 'option_page_capability_wp_rocket', 'rocket_correct_capability_for_options_page' );
 function rocket_correct_capability_for_options_page( $capability ) {
 	return apply_filters( 'rocket_capacity', 'manage_options' );
@@ -876,14 +875,14 @@ function rocket_after_save_options( $oldvalue, $value )
 	}
 
 	// Purge all minify cache files
-	if ( ! empty( $_POST ) && ( $oldvalue['minify_css'] != $value['minify_css'] || $oldvalue['exclude_css'] != $value['exclude_css'] ) ) {
-		rocket_clean_minify('css');
+	if ( ! empty( $_POST ) && ( $oldvalue['minify_css'] != $value['minify_css'] || $oldvalue['exclude_css'] != $value['exclude_css'] ) || ( isset( $oldvalue['cdn'] ) && ! isset( $value['cdn'] ) || ! isset( $oldvalue['cdn'] ) && isset( $value['cdn'] ) ) ) {
+		rocket_clean_minify( 'css' );
 	}
 
-	if ( ! empty( $_POST ) && ( $oldvalue['minify_js'] != $value['minify_js'] || $oldvalue['exclude_js']  != $value['exclude_js'] ) ) {
+	if ( ! empty( $_POST ) && ( $oldvalue['minify_js'] != $value['minify_js'] || $oldvalue['exclude_js']  != $value['exclude_js'] ) || ( isset( $oldvalue['cdn'] ) && ! isset( $value['cdn'] ) || ! isset( $oldvalue['cdn'] ) && isset( $value['cdn'] ) ) ) {
 		rocket_clean_minify( 'js' );
 	}
-	
+		
 	// Update CloudFlare Development Mode
 	if ( ! empty( $_POST ) && ( $oldvalue['cloudflare_devmode'] != $value['cloudflare_devmode'] ) ) {
 		set_rocket_cloudflare_devmode( (bool) $value['cloudflare_devmode'] );
@@ -946,6 +945,7 @@ function rocket_pre_main_option( $newvalue, $oldvalue )
 	// Regenerate the minify key if CSS files have been modified
 	if ( ( isset( $newvalue['minify_css'], $oldvalue['minify_css'] ) && $newvalue['minify_css'] != $oldvalue['minify_css'] )
 		|| ( isset( $newvalue['exclude_css'], $oldvalue['exclude_css'] ) && $newvalue['exclude_css'] != $oldvalue['exclude_css'] )
+		|| ( isset( $oldvalue['cdn'] ) && ! isset( $newvalue['cdn'] ) || ! isset( $oldvalue['cdn'] ) && isset( $newvalue['cdn'] ) )
 	) {
 		$newvalue['minify_css_key'] = create_rocket_uniqid();
 	}
@@ -954,6 +954,7 @@ function rocket_pre_main_option( $newvalue, $oldvalue )
 	if ( ( isset( $newvalue['minify_js'], $oldvalue['minify_js'] ) && $newvalue['minify_js'] != $oldvalue['minify_js'] )
 		|| ( isset( $newvalue['exclude_js'], $oldvalue['exclude_js'] ) && $newvalue['exclude_js'] != $oldvalue['exclude_js'] )
 		|| ( isset( $newvalue['minify_js_in_footer'], $oldvalue['minify_js_in_footer'] ) && $newvalue['minify_js_in_footer'] != $oldvalue['minify_js_in_footer'] )
+		|| ( isset( $oldvalue['cdn'] ) && ! isset( $newvalue['cdn'] ) || ! isset( $oldvalue['cdn'] ) && isset( $newvalue['cdn'] ) )
 	) {
 		$newvalue['minify_js_key'] = create_rocket_uniqid();
 	}
