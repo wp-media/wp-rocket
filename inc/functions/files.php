@@ -73,7 +73,7 @@ function get_rocket_config_file()
 	$buffer = '<?php' . "\n";
 	$buffer .= 'defined( \'ABSPATH\' ) or die( \'Cheatin\\\' uh?\' );' . "\n\n";
 	
-	if ( apply_filters( 'rocket_override_min_documentRoot', false ) || $_SERVER['DOCUMENT_ROOT'] != ABSPATH ) {
+	if ( apply_filters( 'rocket_override_min_documentRoot', false ) ) {
 		$buffer .= '$min_documentRoot = \'' . ABSPATH . '\';' . "\n";
 	}
 		
