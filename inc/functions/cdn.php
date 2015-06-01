@@ -97,7 +97,7 @@ function rocket_cdn_css_properties( $buffer ) {
 		return $buffer;
 	}
 
-	preg_match_all( '/url\((?!data)([^)]+)\)/i', $buffer, $matches );
+	preg_match_all( '/url\((?![\'"]?data)([^\)]+)\)/i', $buffer, $matches );
 
 	if( is_array( $matches ) ) {
 		$i=0;
