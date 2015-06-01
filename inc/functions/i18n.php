@@ -2,6 +2,55 @@
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 /**
+ * Get all langs to display in admin bar for WPML
+ *
+ * @since 1.3.0
+ *
+ * @return array $langlinks List of active languages
+ */
+function get_rocket_wpml_langs_for_admin_bar() {
+
+	global $sitepress;
+	$langlinks = array();
+
+	foreach ( $sitepress->get_active_languages() as $lang ) {
+		// Get flag
+		$flag = $sitepress->get_flag($lang['code']);
+        if ( $flag->from_template ) {
+            $wp_upload_dir = wp_upload_dir();
+            $flag_url = $wp_upload_dir['baseurl'] . '/flags/' . $flag->flag;
+        } else {
+            $flag_url = ICL_PLUGIN_URL . '/res/flags/' . $flag->flag;
+        }
+
+		$langlinks[] = array(
+            'code'		=> $lang['code'],
+            'current'   => $lang['code'] == $sitepress->get_current_language(),
+            'anchor'    => $lang['display_name'],
+            'flag'      => '<img class="admin_iclflag" src="' . $flag_url . '" alt="' . $lang['code'] . '" width="18" height="12" />'
+        );
+    }
+
+    if ( isset( $_GET['lang'] ) && 'all' == $_GET['lang'] ) {
+        array_unshift( $langlinks, array(
+            'code'		=> 'all',
+            'current'   => 'all' == $sitepress->get_current_language(),
+            'anchor'    => __( 'All languages', 'rocket' ),
+            'flag'      => '<img class="icl_als_iclflag" src="' . ICL_PLUGIN_URL . '/res/img/icon16.png" alt="all" width="16" height="16" />'
+        ));
+    } else {
+        array_push( $langlinks, array(
+            'code'		=> 'all',
+            'current'   => 'all' == $sitepress->get_current_language(),
+            'anchor'    => __( 'All languages', 'rocket' ),
+            'flag'      => '<img class="icl_als_iclflag" src="' . ICL_PLUGIN_URL . '/res/img/icon16.png" alt="all" width="16" height="16" />'
+        ));
+    }
+
+    return $langlinks;
+}
+
+/**
  * Get all langs to display in admin bar for qTranslate
  *
  * @since 1.3.5
