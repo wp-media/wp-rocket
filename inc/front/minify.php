@@ -137,17 +137,18 @@ function rocket_concatenate_google_fonts( $buffer ) {
 	foreach ( $matches[1] as $font ) {
 		if ( ! preg_match('/rel=["\']dns-prefetch["\']/', $matches[0][ $i ] ) ) {
 			// Get fonts name
+			$font = str_replace( array( '%7C', '%7c' ) , '|', $font );
 			$font = explode( 'family=', $font );
-			$font = explode( '&', $font[1] );
+			$font = ( isset( $font[1] ) ) ? explode( '&', $font[1] ) : array();
 
 			// Add font to the collection
-		    $fonts[] = reset( $font );
+		    $fonts = array_merge( $fonts, explode( '|', reset( $font ) ) );
 
 		    // Add subset to collection
-			$subset = end( $font );
+			$subset = ( is_array( $font ) ) ? end( $font ) : '';
 		    if ( false !== strpos( $subset, 'subset=' ) ) {
 				$subset  = explode( 'subset=', $subset );
-				$subsets = array_merge( $subsets, explode( ',' , $subset[1] ) );
+				$subsets = array_merge( $subsets, explode( ',', $subset[1] ) );
 		    }
 
 		    // Delete the Google Fonts tag
@@ -159,7 +160,7 @@ function rocket_concatenate_google_fonts( $buffer ) {
 
 	// Concatenate fonts tag
 	$subsets = ( $subsets ) ? '&subset=' . implode( ',', array_filter( array_unique( $subsets ) ) ) : '';
-	$fonts   = trim( implode( '|' , $fonts ), '|' );
+	$fonts   = trim( implode( '|' , array_filter( array_unique( $fonts ) ) ), '|' );
 
 	if( ! empty( $fonts ) ) {
 		$fonts   = '<link rel="stylesheet" href="//fonts.googleapis.com/css?family=' . $fonts . $subsets . '" />';

@@ -19,6 +19,7 @@ add_action( 'add_link'					, 'rocket_clean_domain' );   	// When a link is added
 add_action( 'edit_link'					, 'rocket_clean_domain' );		// When a link is updated
 add_action( 'delete_link'				, 'rocket_clean_domain' );		// When a link is deleted
 add_action( 'customize_save'			, 'rocket_clean_domain' );		// When customizer is saved
+add_action( 'avada_clear_dynamic_css_cache', 'rocket_clean_domain' );	// When Avada theme purge its own cache
 
 /* @since 2.3.5 */
 // When SuperCacher (SiteGround) is purged
