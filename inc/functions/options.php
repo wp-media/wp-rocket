@@ -324,7 +324,10 @@ function get_rocket_exclude_css() {
  * @return array List of excluded JS files.
  */
 function get_rocket_exclude_js() {	
+	global $rocket_excluded_enqueue_js;
+	
 	$js_files = get_rocket_option( 'exclude_js', array() );
+	$js_files = array_unique( array_merge( $js_files, (array) $rocket_excluded_enqueue_js ) );
 	
 	/**
 	 * Filter JS files to exclude to the minification.
