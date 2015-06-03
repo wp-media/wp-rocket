@@ -187,8 +187,6 @@ function __rocket_fix_mailchimp_main_css() {
  *
  * @since 2.6.1
  */
-add_filter( 'less_vars', 'rocket_less_vars', 11, 2 );
-function rocket_less_vars( $vars, $handle ) {
 	if( $handle == 'avada-dynamic' && get_rocket_option( 'cdn' ) ) { 
 		$src = get_rocket_cdn_url( get_template_directory_uri() . '/assets/less/theme/dynamic.less' );
 		$vars['template-directory'] = sprintf( '~"%s"', dirname( dirname( dirname( dirname( $src ) ) ) ) );
