@@ -80,6 +80,7 @@ function __rocket_insert_minify_js_in_footer() {
 			return;
 		}
 		
+		global $rocket_enqueue_js_in_footer;
 		$home_host      = parse_url( home_url(), PHP_URL_HOST );
 		$files          = get_rocket_minify_js_in_footer();
 		$ordered_files  = array();
@@ -92,7 +93,7 @@ function __rocket_insert_minify_js_in_footer() {
 			list( $file_host, $file_path ) = get_rocket_parse_url( $file );
 
 			// Check if its an external file
-			if( $home_host != $file_host && ! in_array( $file_host, $cnames_host ) && ! in_array( $file_path, $GLOBALS['rocket_enqueue_js_in_footer'] ) ) {
+			if( $home_host != $file_host && ! in_array( $file_host, $cnames_host ) && ! in_array( $file_path, $rocket_enqueue_js_in_footer ) ) {
 				if( isset( $ordered_files[ $i ] ) ) {
 					$i++;
 					$ordered_files[ $i++ ] = $file;
