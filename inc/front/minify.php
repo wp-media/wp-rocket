@@ -471,16 +471,16 @@ function __rocket_force_minify_combine_all( $length, $ext )  {
  */
 add_action( 'wp_print_styles', '__rocket_extract_excluded_css_files' );
 function __rocket_extract_excluded_css_files() {
-	global $rocket_excluded_enqueue_css, $wp_styles;
+	global $rocket_excluded_enqueue_css, $wp_styles, $pagenow;
 
-	if( ! isset( $wp_styles->queue ) || ! is_array( $wp_styles->queue ) || ! get_rocket_option( 'minify_css', false ) || in_array( $GLOBALS['pagenow'], array( 'wp-login.php', 'wp-register.php' ) ) ) {
+	if( ! isset( $wp_styles->queue ) || ! is_array( $wp_styles->queue ) || ! get_rocket_option( 'minify_css', false ) || in_array( $pagenow, array( 'wp-login.php', 'wp-register.php' ) ) ) {
 		return;
 	}
 
 	$excluded_handle = array(
 		// None for the moment
 	);
-
+		
 	foreach( $wp_styles->queue as $handle ) {
 		if ( in_array( $handle, $excluded_handle ) || strstr( $wp_styles->registered[ $handle ]->args, 'only screen and' ) ) {
 			$rocket_excluded_enqueue_css[] = rocket_clean_exclude_file( rocket_set_internal_url_scheme( $wp_styles->registered[ $handle ]->src ) );
