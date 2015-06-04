@@ -473,7 +473,7 @@ function __rocket_extract_excluded_css_files() {
 	);
 		
 	foreach( $wp_styles->queue as $handle ) {
-		if ( in_array( $handle, $excluded_handle ) || strstr( $wp_styles->registered[ $handle ]->args, 'only screen and' ) ) {
+		if ( in_array( $handle, $excluded_handle ) || ( isset( $wp_styles->registered[ $handle ] ) && strstr( $wp_styles->registered[ $handle ]->args, 'only screen and' ) ) ) {
 			$rocket_excluded_enqueue_css[] = rocket_clean_exclude_file( rocket_set_internal_url_scheme( $wp_styles->registered[ $handle ]->src ) );
 		}
 	}
