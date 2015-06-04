@@ -489,6 +489,39 @@ function __rocket_extract_excluded_css_files() {
 }
 
 /**
+ * Extract all enqueued JS files which should be exclude to the minification
+ *
+ * @since 2.6.1
+ */
+add_action( 'wp_print_scripts', '__rocket_extract_excluded_js_files' );
+function __rocket_extract_excluded_js_files() {
+	global $rocket_excluded_enqueue_js, $wp_scripts, $pagenow;
+	
+	if( ! isset( $wp_scripts->queue ) || ! is_array( $wp_scripts->queue ) || ! get_rocket_option( 'minify_js', false ) || in_array( $pagenow, array( 'wp-login.php', 'wp-register.php' ) ) ) {
+		return;
+	}
+
+	$excluded_handle = array(
+		'admin-bar'
+	);
+	
+	/**
+	 * Filter JS enqueued files to exclude to the minification process.
+	 *
+	 * @since 2.6.1
+	 *
+	 * @param array List of script's name.
+	 */
+	$excluded_handle = apply_filters( 'rocket_excluded_handle_js', $excluded_handle );
+
+	foreach( $wp_scripts->queue as $handle ) {
+		if ( in_array( $handle, $excluded_handle ) ) {
+			$rocket_excluded_enqueue_js[] = rocket_clean_exclude_file( rocket_set_internal_url_scheme( $wp_scripts->registered[ $handle ]->src ) );
+		}
+	}
+}
+
+/**
  * Extract all enqueued JS files which should be insert in the footer
  *
  * @since 2.6
