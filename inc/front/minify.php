@@ -89,7 +89,7 @@ function __rocket_insert_minify_js_in_footer() {
 
 		$i = 0;
 		foreach( $files as $file ) {
-			list( $file_host, $file_path ) = get_rocket_parse_url( $file );
+			list( $file_host, $file_path ) = get_rocket_parse_url( set_url_scheme( $file ) );
 
 			// Check if its an external file
 			if( $home_host != $file_host && ! in_array( $file_host, $cnames_host ) && ! in_array( $file_path, $rocket_enqueue_js_in_footer ) ) {
