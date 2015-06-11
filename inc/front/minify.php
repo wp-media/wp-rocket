@@ -553,10 +553,11 @@ function __rocket_extract_js_files_from_footer() {
 
 	foreach( $wp_scripts->in_footer as $handle ) {
 		$script_src  = $wp_scripts->registered[ $handle ]->src;
+		$script_src  = ( strstr( $script_src, '/wp-includes/js/') ) ? $wp_scripts->base_url . $script_src : $script_src;
+		
 		$script_src_cleaned = str_replace( array( 'http:', 'https:', '//' . $home_host ), '', $script_src );
 
-		if( in_array( $handle, $wp_scripts->queue ) && ! in_array( parse_url( $script_src, PHP_URL_HOST ), $excluded_external_js ) && ! in_array( $script_src, $deferred_js_files ) && ! in_array( parse_url( $script_src, PHP_URL_PATH ), $excluded_js ) && ! in_array( parse_url( $script_src_cleaned, PHP_URL_PATH ), $excluded_js ) ) {
-			
+		if( in_array( $handle, $wp_scripts->queue ) && ! in_array( parse_url( $script_src, PHP_URL_HOST ), $excluded_external_js ) && ! in_array( $script_src, $deferred_js_files ) && ! in_array( parse_url( $script_src, PHP_URL_PATH ), $excluded_js ) && ! in_array( parse_url( $script_src_cleaned, PHP_URL_PATH ), $excluded_js ) ) {			
 			// Dequeue JS files without extension
 			if( pathinfo( $script_src, PATHINFO_EXTENSION ) == '' ) {
 				wp_dequeue_script( $handle );
@@ -565,7 +566,9 @@ function __rocket_extract_js_files_from_footer() {
 			// Add dependency enqueued in the footer
 			foreach( $wp_scripts->registered[ $handle ]->deps as $handle_dep ) {
 				if( in_array( $handle_dep, $wp_scripts->in_footer ) ) {
-					$rocket_enqueue_js_in_footer[ $handle_dep ] = rocket_set_internal_url_scheme( $wp_scripts->registered[ $handle_dep ]->src );
+					$src = $wp_scripts->registered[ $handle_dep ]->src;
+					$src = ( strstr( $src, '/wp-includes/js/') ) ? $wp_scripts->base_url . $src : $src;
+					$rocket_enqueue_js_in_footer[ $handle_dep ] = rocket_set_internal_url_scheme( $src );
 				}
 			}
 			
