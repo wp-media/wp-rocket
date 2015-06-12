@@ -336,9 +336,12 @@ function rocket_minify_js( $buffer )
 
 			// To check if a tag is to exclude of the minify process
             $excluded_tag = false;
-
-	        // Get URLs infos
-	        $js_url = parse_url( set_url_scheme( $tags_match[1][ $i ] ) );
+			
+			// Get JS URL with scheme
+			$js_url_with_scheme = set_url_scheme( $tags_match[1][ $i ] );
+			
+	        // Get URL infos
+	        $js_url = parse_url( $js_url_with_scheme );
 
 			// Get host for all langs
 			$langs_host = array();
@@ -368,7 +371,7 @@ function rocket_minify_js( $buffer )
 
 			// If it's an external file
 			} else {
-				if ( ! in_array( $tags_match[1][ $i ], $js_in_footer ) ) {
+				if ( ! in_array( $tags_match[1][ $i ], $js_in_footer ) && ! in_array( $js_url_with_scheme, $js_in_footer ) ) {
 					$external_tags[] = $tag;
 				}
 			}
