@@ -553,15 +553,12 @@ function rocket_rrmdir( $dir, $dirs_to_preserve = array() )
  */
 function rocket_mkdir( $dir )
 {
-	global $wp_filesystem;
-	if ( ! $wp_filesystem ) {
-		require_once( ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php' );
-		require_once( ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php' );
-		$wp_filesystem = new WP_Filesystem_Direct( new StdClass() );
-	}
+	require_once( ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php' );
+	require_once( ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php' );
+	$direct_filesystem = new WP_Filesystem_Direct( new StdClass() );
 
 	$chmod = defined( 'FS_CHMOD_DIR' ) ? FS_CHMOD_DIR : ( fileperms( WP_CONTENT_DIR ) & 0777 | 0755 );
-	return $wp_filesystem->mkdir( $dir, $chmod );
+	return $direct_filesystem->mkdir( $dir, $chmod );
 }
 
 /**
@@ -612,15 +609,12 @@ function rocket_mkdir_p( $target )
  */
 function rocket_put_content( $file, $content )
 {
-	global $wp_filesystem;
-	if ( ! $wp_filesystem ) {
-		require_once( ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php' );
-		require_once( ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php' );
-		$wp_filesystem = new WP_Filesystem_Direct( new StdClass() );
-	}
+	require_once( ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php' );
+	require_once( ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php' );
+	$direct_filesystem = new WP_Filesystem_Direct( new StdClass() );
 
 	$chmod = defined( 'FS_CHMOD_FILE' ) ? FS_CHMOD_FILE : 0644;
-	return $wp_filesystem->put_contents( $file, $content, $chmod );
+	return $direct_filesystem->put_contents( $file, $content, $chmod );
 }
 
 /**
