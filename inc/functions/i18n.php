@@ -290,7 +290,7 @@ function get_rocket_i18n_home_url( $lang = '' ) {
 		$url = $GLOBALS['sitepress']->language_url( $lang );
 	} elseif ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
 		$url = qtrans_convertURL( home_url(), $lang, true );
-	} elseif ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
+	} elseif ( rocket_is_plugin_active( 'polylang/polylang.php' ) && ! empty( $GLOBALS['polylang']->options['force_lang'] ) ) {
 		$url = pll_home_url( $lang );
 	}
 
