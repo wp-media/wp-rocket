@@ -445,6 +445,16 @@ function rocket_clean_domain( $lang = '' )
 	$urls = ( ! $lang ) ? get_rocket_i18n_uri() : get_rocket_i18n_home_url( $lang );
 	$urls = (array) $urls;
 	
+	/**
+	 * Filter URLs to delete all caching files from a domain
+	 *
+	 * @since 2.6.4
+	 * @param array 	URLs that will be returned
+	 * @param string 	The language code
+	*/
+	$urls = apply_filters( 'rocket_clean_domain_urls', $urls, $lang );
+	$urls = array_filter( $urls );
+	
 	foreach ( $urls as $url ) {
 		list( $host, $path ) = get_rocket_parse_url( $url );
 
