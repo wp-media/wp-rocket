@@ -225,7 +225,8 @@ function get_rocket_minify_excluded_external_js() {
 		'files.bannersnack.com', 
 		'smarticon.geotrust.com',
 		'js.gleam.io',
-		'script.ioam.de'
+		'script.ioam.de',
+		'ir-na.amazon-adsystem.com'
 	) );
 	
 	return $excluded_external_js;		
