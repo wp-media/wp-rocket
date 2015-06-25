@@ -210,7 +210,7 @@ function get_rocket_cache_reject_ua() {
 	$ua = apply_filters( 'rocket_cache_reject_ua', $ua );
 	
 	$ua = implode( '|', array_filter( $ua ) );
-	$ua = str_replace( ' ', '\\ ', $ua );
+	$ua = str_replace( array( ' ', '\\\\ ' ), '\\ ', $ua );
 	
 	return $ua;
 }
