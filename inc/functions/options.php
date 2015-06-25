@@ -208,8 +208,10 @@ function get_rocket_cache_reject_ua() {
 	 * @param array $ua List of rejected User-Agent
 	*/
 	$ua = apply_filters( 'rocket_cache_reject_ua', $ua );
-
+	
 	$ua = implode( '|', array_filter( $ua ) );
+	$ua = str_replace( ' ', '\\ ', $ua );
+	
 	return $ua;
 }
 

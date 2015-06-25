@@ -651,7 +651,7 @@ function rocket_settings_callback( $inputs )
 			$inputs['cache_reject_ua'] = explode( "\n", $inputs['cache_reject_ua'] );
 		}
 		$inputs['cache_reject_ua'] = array_map( 'trim', $inputs['cache_reject_ua'] );
-		$inputs['cache_reject_ua'] = array_map( 'esc_textarea', $inputs['cache_reject_ua'] );
+		$inputs['cache_reject_ua'] = array_map( 'rocket_sanitize_ua', $inputs['cache_reject_ua'] );
 		$inputs['cache_reject_ua'] = (array) array_filter( $inputs['cache_reject_ua'] );
 		$inputs['cache_reject_ua'] = array_unique( $inputs['cache_reject_ua'] );
 	} else {
