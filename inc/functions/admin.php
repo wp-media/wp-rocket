@@ -203,3 +203,13 @@ function rocket_get_active_plugins() {
 	
 	return $plugins;
 }
+
+/**
+ * Used to sanitize values of the "Don't cache pages that use the following cookies" option.
+ *
+ * @since 2.6.4
+ */
+function rocket_sanitize_cookie( $cookie ) {
+	$cookie = preg_replace( '/[^a-z0-9_\-]/i', '', $cookie );
+	return $cookie;
+}
