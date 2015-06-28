@@ -133,3 +133,18 @@ function __rocket_clear_cache_after_pressidium() {
 		run_rocket_bot( 'cache-preload' );
 	}
 }
+
+/**
+ * Run WP Rocket preload bot after purged the Varnish cache via WP Engine Hosting
+ *
+ * @since 2.6.4
+ *
+ * @return void
+ */
+add_action( 'admin_init', '__rocket_run_rocket_bot_after_wpengine' );
+function __rocket_run_rocket_bot_after_wpengine() {
+	if ( function_exists( 'wpe_param' ) && wpe_param( 'purge-all' ) && defined( 'PWP_NAME' ) && check_admin_referer( PWP_NAME . '-config' ) ) {
+		// Preload cache
+		run_rocket_bot( 'cache-preload' );
+	}
+}
