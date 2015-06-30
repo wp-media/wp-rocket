@@ -110,69 +110,69 @@ function rocket_plugins_to_deactivate()
 
 	// Deactivate all plugins who can cause conflicts with WP Rocket
 	$plugins = array(
-		'w3-total-cache/w3-total-cache.php',
-		'wp-super-cache/wp-cache.php',
-		'quick-cache/quick-cache.php',
-		'hyper-cache/plugin.php',
-		'hyper-cache-extended/plugin.php',
-		'wp-fast-cache/wp-fast-cache.php',
-		'flexicache/wp-plugin.php',
-		'wp-fastest-cache/wpFastestCache.php',
-		'lite-cache/plugin.php',
-		'gator-cache/gator-cache.php',
-		'wp-http-compression/wp-http-compression.php',
-		'wordpress-gzip-compression/ezgz.php',
-		'gzip-ninja-speed-compression/gzip-ninja-speed.php',
-		'speed-booster-pack/speed-booster-pack.php',
-		'wp-performance-score-booster/wp-performance-score-booster.php',
-		'remove-query-strings-from-static-resources/remove-query-strings.php',
-		'query-strings-remover/query-strings-remover.php',
-		'wp-ffpc/wp-ffpc.php',
-		'far-future-expiry-header/far-future-expiration.php',
-		'combine-css/combine-css.php',
-		'super-static-cache/super-static-cache.php',
-		'wpcompressor/wpcompressor.php'
+		'w3-total-cache'                             => 'w3-total-cache/w3-total-cache.php',
+		'wp-super-cache'                             => 'wp-super-cache/wp-cache.php',
+		'quick-cache'                                => 'quick-cache/quick-cache.php',
+		'hyper-cache'                                => 'hyper-cache/plugin.php',
+		'hyper-cache-extended'                       => 'hyper-cache-extended/plugin.php',
+		'wp-fast-cache'                              => 'wp-fast-cache/wp-fast-cache.php',
+		'flexicache'                                 => 'flexicache/wp-plugin.php',
+		'wp-fastest-cache'                           => 'wp-fastest-cache/wpFastestCache.php',
+		'lite-cache'                                 => 'lite-cache/plugin.php',
+		'gator-cache'                                => 'gator-cache/gator-cache.php',
+		'wp-http-compression'                        => 'wp-http-compression/wp-http-compression.php',
+		'wordpress-gzip-compression'                 => 'wordpress-gzip-compression/ezgz.php',
+		'gzip-ninja-speed-compression'               => 'gzip-ninja-speed-compression/gzip-ninja-speed.php',
+		'speed-booster-pack'                         => 'speed-booster-pack/speed-booster-pack.php',
+		'wp-performance-score-booster'               => 'wp-performance-score-booster/wp-performance-score-booster.php',
+		'remove-query-strings-from-static-resources' => 'remove-query-strings-from-static-resources/remove-query-strings.php',
+		'query-strings-remover'                      => 'query-strings-remover/query-strings-remover.php',
+		'wp-ffpc'                                    => 'wp-ffpc/wp-ffpc.php',
+		'far-future-expiry-header'                   => 'far-future-expiry-header/far-future-expiration.php',
+		'combine-css'                                => 'combine-css/combine-css.php',
+		'super-static-cache'                         => 'super-static-cache/super-static-cache.php',
+		'wpcompressor'                               => 'wpcompressor/wpcompressor.php'
 	);
 
 	if ( get_rocket_option( 'lazyload' ) ) {
-		$plugins[] = 'bj-lazy-load/bj-lazy-load.php';
-		$plugins[] = 'lazy-load/lazy-load.php';
-		$plugins[] = 'jquery-image-lazy-loading/jq_img_lazy_load.php';
-		$plugins[] = 'advanced-lazy-load/advanced_lazyload.php';
-		$plugins[] = 'crazy-lazy/crazy-lazy.php';
+		$plugins['bj-lazy-load']              = 'bj-lazy-load/bj-lazy-load.php';
+		$plugins['lazy-load']                 = 'lazy-load/lazy-load.php';
+		$plugins['jquery-image-lazy-loading'] = 'jquery-image-lazy-loading/jq_img_lazy_load.php';
+		$plugins['advanced-lazy-load']        = 'advanced-lazy-load/advanced_lazyload.php';
+		$plugins['crazy-lazy']                = 'crazy-lazy/crazy-lazy.php';
 	}
 	
 	if ( get_rocket_option( 'lazyload_iframes' ) ) {
-		$plugins[] = 'lazy-load-for-videos/codeispoetry.php';
+		$plugins['lazy-load-for-videos'] = 'lazy-load-for-videos/codeispoetry.php';
 	}
 	
 	if ( get_rocket_option( 'minify_css' ) || get_rocket_option( 'minify_js' ) || get_rocket_option( 'minify_html' ) ) {
-		$plugins[] = 'bwp-minify/bwp-minify.php';
-		$plugins[] = 'wp-minify/wp-minify.php';
-		$plugins[] = 'scripts-gzip/scripts_gzip.php';
-		$plugins[] = 'autoptimize/autoptimize.php';
-		$plugins[] = 'minqueue/plugin.php';
-		$plugins[] = 'dependency-minification/dependency-minification.php';
+		$plugins['bwp-minify']              = 'bwp-minify/bwp-minify.php';
+		$plugins['wp-minify']               = 'wp-minify/wp-minify.php';
+		$plugins['scripts-gzip']            = 'scripts-gzip/scripts_gzip.php';
+		$plugins['autoptimize']             = 'autoptimize/autoptimize.php';
+		$plugins['minqueue']                = 'minqueue/plugin.php';
+		$plugins['dependency-minification'] = 'dependency-minification/dependency-minification.php';
 	}
 	
 	if ( get_rocket_option( 'minify_css' ) || get_rocket_option( 'minify_js' ) ) {
-		$plugins[] = 'async-js-and-css/asyncJSandCSS.php';
+		$plugins['async-js-and-css'] = 'async-js-and-css/asyncJSandCSS.php';
 	}
 	
 	if( get_rocket_option( 'minify_html' ) ) {
-		$plugins[] = 'wp-html-compression/wp-html-compression.php';
-		$plugins[] = 'wp-compress-html/wp_compress_html.php';
+		$plugins['wp-html-compression'] = 'wp-html-compression/wp-html-compression.php';
+		$plugins['wp-compress-html']    = 'wp-compress-html/wp_compress_html.php';
 	}
 	
 	if( get_rocket_option( 'minify_js' ) ) {
-		$plugins[] = 'wp-js/wp-js.php';
-		$plugins[] = 'combine-js/combine-js.php';
-		$plugins[] = 'footer-javascript/footer-javascript.php';
-		$plugins[] = 'scripts-to-footerphp/scripts-to-footer.php';
+		$plugins['wp-js']                = 'wp-js/wp-js.php';
+		$plugins['combine-js']           = 'combine-js/combine-js.php';
+		$plugins['footer-javascript']    = 'footer-javascript/footer-javascript.php';
+		$plugins['scripts-to-footerphp'] = 'scripts-to-footerphp/scripts-to-footer.php';
 	}
 	
 	if( get_rocket_option( 'do_cloudflare' ) ) {
-		$plugins[] = 'cloudflare/cloudflare.php';
+		$plugins['cloudflare'] = 'cloudflare/cloudflare.php';
 	}
 	
 	/**
@@ -184,15 +184,11 @@ function rocket_plugins_to_deactivate()
 	*/
 	$plugins = apply_filters( 'rocket_plugins_to_deactivate', $plugins );
 	
-	foreach ( $plugins as $plugin ) {
-		if ( is_plugin_active( $plugin ) ) {
-			$plugins_to_deactivate[] = $plugin;
-		}
-	}
-
+	$plugins = array_filter( $plugins, 'is_plugin_active' );
+	
 	/** This filter is documented in inc/admin-bar.php */
 	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
-		&& count( $plugins_to_deactivate )
+		&& count( $plugins )
 		&& rocket_valid_key()
 	) { ?>
 
@@ -200,9 +196,8 @@ function rocket_plugins_to_deactivate()
 			<p><?php printf( __( '<b>%s</b>: The following plugins are not compatible with this plugin and may cause unexpected results:', 'rocket' ), WP_ROCKET_PLUGIN_NAME ); ?></p>
 			<ul class="rocket-plugins-error">
 			<?php
-			foreach ( $plugins_to_deactivate as $plugin ) {
-
-				$plugin_data = get_plugin_data( WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . $plugin);
+			foreach ( $plugins as $plugin ) {
+				$plugin_data = get_plugin_data( WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . $plugin );
 				echo '<li>' . $plugin_data['Name'] . '</span> <a href="' . wp_nonce_url( admin_url( 'admin-post.php?action=deactivate_plugin&plugin=' . urlencode($plugin) ), 'deactivate_plugin' ) . '" class="button-secondary alignright">' . __( 'Deactivate', 'rocket' ) . '</a></li>';
 
 			}
