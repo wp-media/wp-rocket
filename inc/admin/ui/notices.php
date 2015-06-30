@@ -174,7 +174,16 @@ function rocket_plugins_to_deactivate()
 	if( get_rocket_option( 'do_cloudflare' ) ) {
 		$plugins[] = 'cloudflare/cloudflare.php';
 	}
-
+	
+	/**
+	 * Filter the recommended plugins to deactivate to prevent conflicts
+	 *
+	 * @since 2.6.4
+	 *
+	 * @param string $plugins List of recommended plugins to deactivate
+	*/
+	$plugins = apply_filters( 'rocket_plugins_to_deactivate', $plugins );
+	
 	foreach ( $plugins as $plugin ) {
 		if ( is_plugin_active( $plugin ) ) {
 			$plugins_to_deactivate[] = $plugin;
