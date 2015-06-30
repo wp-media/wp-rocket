@@ -103,6 +103,20 @@ function rocket_clean_pressidium() {
 }
 
 /**
+ * Call the cache server to purge the cache with WP Engine hosting.
+ *
+ * @since 2.6.4
+ *
+ * @return void
+ */
+function rocket_clean_wpengine() {	
+	if ( class_exists( 'WpeCommon' ) ) {
+		WpeCommon::purge_memcached();
+		WpeCommon::purge_varnish_cache();	
+	}
+}
+
+/**
  * Get cart & checkout path with their translations to automatically exclude them to the cache.
  *
  * @since 2.4

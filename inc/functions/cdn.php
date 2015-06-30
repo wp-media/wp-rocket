@@ -42,17 +42,15 @@ function get_rocket_cdn_url( $url, $zone = array( 'all' ) )
 
 	list( $host, $path, $scheme, $query ) = get_rocket_parse_url( $url );
 	$query = ! empty( $query ) ? '?' . $query : '';
-
-	// Exclude rejected files from CDN
+	
+	// Exclude rejected & external files from CDN
 	$rejected_files = get_rocket_cdn_reject_files();
-	if( ! empty( $rejected_files ) && preg_match( '#(' . $rejected_files . ')#', $path ) ) {
+	if( ( ! empty( $rejected_files ) && preg_match( '#(' . $rejected_files . ')#', $path ) ) || ( ! empty( $scheme ) && $host != parse_url( home_url(), PHP_URL_HOST ) ) ) {
 		return $url;
 	}
 
 	if ( empty( $scheme ) ) {
-		$home = rocket_remove_url_protocol( home_url() );
-
-		// Check if URL is external
+		// Check if the URL is external
 		if ( strpos( $path, $home ) === false && ! preg_match( '#(' . $wp_content_dirname . '|wp-includes)#', $path ) ) {
 			return $url;
 		} else {
