@@ -32,25 +32,21 @@ function run_rocket_bot( $spider = 'cache-preload', $lang = '' )
 	}
 
 	$urls = array();
-	
+
 	switch ( $spider ) {
 		case 'cache-preload' :
 			if ( ! $lang ) {
 				$urls = get_rocket_i18n_uri();
 			} else {
 				$urls[] = get_rocket_i18n_home_url( $lang );
-			}				
+			}
 		break;
 		case 'cache-json' :
-			$urls[] = WP_ROCKET_URL . 'cache.json';	
+			$urls[] = WP_ROCKET_URL . 'cache.json';
 		break;
 		default :
-			return false;		
+			return false;
 		break;
-	}
-
-	if ( ! $urls ) {
-		return false;
 	}
 
 	foreach ( $urls as $start_url ) {
