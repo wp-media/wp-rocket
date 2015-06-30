@@ -4,6 +4,7 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 /**
  * Launch the Robot
  *
+ * @since 2.6.4 Don't preload localhost & .dev domains
  * @since 1.0
  *
  * @param string $spider (default: 'cache-preload') The spider name: cache-preload or cache-json
@@ -12,6 +13,11 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
  */
 function run_rocket_bot( $spider = 'cache-preload', $lang = '' )
 {
+	$domain = parse_url( home_url(), PHP_URL_HOST );
+	if ( 'localhost' == $domain || pathinfo( $domain, PATHINFO_EXTENSION ) == 'dev' ) {
+		return false;
+	}
+
 	/**
 	 * Filter to manage the bot job
 	 *
@@ -26,20 +32,21 @@ function run_rocket_bot( $spider = 'cache-preload', $lang = '' )
 	}
 
 	$urls = array();
-	if ( $spider == 'cache-preload' ) {
-		if ( ! $lang ) {
-			$urls = get_rocket_i18n_uri();
-		} else {
-			$urls[] = get_rocket_i18n_home_url( $lang );
-		}
-	} else if ( $spider == 'cache-json' ) {
-		$urls[] = WP_ROCKET_URL . 'cache.json';
-	} else {
-		return false;
-	}
 
-	if ( ! $urls ) {
-		return false;
+	switch ( $spider ) {
+		case 'cache-preload' :
+			if ( ! $lang ) {
+				$urls = get_rocket_i18n_uri();
+			} else {
+				$urls[] = get_rocket_i18n_home_url( $lang );
+			}
+		break;
+		case 'cache-json' :
+			$urls[] = WP_ROCKET_URL . 'cache.json';
+		break;
+		default :
+			return false;
+		break;
 	}
 
 	foreach ( $urls as $start_url ) {
@@ -53,13 +60,13 @@ function run_rocket_bot( $spider = 'cache-preload', $lang = '' )
 		*/
 		do_action( 'before_run_rocket_bot', $spider, $start_url );
 
-		wp_remote_get( 
+		wp_remote_get(
 			WP_ROCKET_BOT_URL . '?spider=' . $spider . '&start_url=' . $start_url,
 			array(
 				'timeout'   => 2,
 				'blocking'  => false,
 				'sslverify' => false,
-			) 
+			)
 		);
 
 		/**
