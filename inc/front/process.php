@@ -249,13 +249,13 @@ function rocket_serve_cache_file( $request_uri_path )
 			$headers = apache_request_headers();
 			$http_if_modified_since = ( isset( $headers[ 'If-Modified-Since' ] ) ) ? $headers[ 'If-Modified-Since' ] : '';
 		} else {
-			$http_if_modified_since = ( isset( $_SERVER[ 'HTTP_IF_MODIFIED_SINCE' ] ) ) ?$_SERVER[ 'HTTP_IF_MODIFIED_SINCE' ] : '';
+			$http_if_modified_since = ( isset( $_SERVER[ 'HTTP_IF_MODIFIED_SINCE' ] ) ) ? $_SERVER[ 'HTTP_IF_MODIFIED_SINCE' ] : '';
 		}
 
 		// Checking if the client is validating his cache and if it is current.
 	    if ( $http_if_modified_since && ( strtotime( $http_if_modified_since ) == filemtime( $rocket_cache_filepath ) ) ) {
 	        // Client's cache is current, so we just respond '304 Not Modified'.
-	        header( $_SERVER['SERVER_PROTOCOL'] . ' 304 Not Modified' );
+	        header( $_SERVER['SERVER_PROTOCOL'] . ' 304 Not Modified', true, 304 );
 	        exit;
 	    }
 
