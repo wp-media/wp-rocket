@@ -33,7 +33,8 @@ if ( $_SERVER['REQUEST_METHOD'] != 'GET' ) {
 
 // Get the correct config file
 $rocket_config_path = WP_CONTENT_DIR . '/wp-rocket-config/';
-$host = trim( strtolower( $_SERVER['HTTP_HOST'] ), '.' );
+$host = ( isset( $_SERVER['HTTP_HOST'] ) ) ? $_SERVER['HTTP_HOST'] : time();
+$host = trim( strtolower( $host ), '.' );
 $host = str_replace( array( '..', chr(0) ), '', $host );
 
 $continue = false;
@@ -249,7 +250,7 @@ function rocket_serve_cache_file( $request_uri_path )
 			$headers = apache_request_headers();
 			$http_if_modified_since = ( isset( $headers[ 'If-Modified-Since' ] ) ) ? $headers[ 'If-Modified-Since' ] : '';
 		} else {
-			$http_if_modified_since = ( isset( $_SERVER[ 'HTTP_IF_MODIFIED_SINCE' ] ) ) ? $_SERVER[ 'HTTP_IF_MODIFIED_SINCE' ] : '';
+			$http_if_modified_since = ( isset( $_SERVER[ 'HTTP_IF_MODIFIED_SINCE' ] ) ) ?$_SERVER[ 'HTTP_IF_MODIFIED_SINCE' ] : '';
 		}
 
 		// Checking if the client is validating his cache and if it is current.
