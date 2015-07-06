@@ -31,7 +31,7 @@ function __rocket_after_update_wc_options( $old_value, $value ) {
 add_action( 'update_option_edd_settings'	, '__rocket_after_update_edd_options', 10, 2 );
 add_action( 'update_option_jigoshop_options', '__rocket_after_update_edd_options', 10, 2 );
 function __rocket_after_update_edd_options( $old_value, $value ) {		
-	if ( ( $old_value['purchase_page'] != $value['purchase_page'] ) || $old_value['jigoshop_cart_page_id'] != $value['jigoshop_cart_page_id'] || $old_value['jigoshop_checkout_page_id'] != $value['jigoshop_checkout_page_id'] ) {
+	if ( ( $old_value['purchase_page'] != $value['purchase_page'] ) || $old_value['jigoshop_cart_page_id'] != $value['jigoshop_cart_page_id'] || $old_value['jigoshop_checkout_page_id'] != $value['jigoshop_checkout_page_id']  || $old_value['jigoshop_myaccount_page_id'] != $value['jigoshop_myaccount_page_id']) {
 		// Update .htaccess file rules
 		flush_rocket_htaccess();
 	

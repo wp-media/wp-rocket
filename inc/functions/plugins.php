@@ -181,8 +181,14 @@ function get_rocket_ecommerce_exclude_pages() {
 			$checkout_urls = get_rocket_i18n_translated_post_urls( jigoshop_get_page_id( 'checkout' ), 'page', '(.*)' );
 			$urls = array_merge( $urls, $checkout_urls );
 		}
+		
 		if ( jigoshop_get_page_id( 'cart' ) && jigoshop_get_page_id( 'cart' ) != '-1' ) {
 			$cart_urls = get_rocket_i18n_translated_post_urls( jigoshop_get_page_id( 'cart' ) );
+			$urls = array_merge( $urls, $cart_urls );
+		}
+		
+		if ( jigoshop_get_page_id( 'myaccount' ) && jigoshop_get_page_id( 'myaccount' ) != '-1' ) {
+			$cart_urls = get_rocket_i18n_translated_post_urls( jigoshop_get_page_id( 'myaccount' ), 'page', '(.*)' );
 			$urls = array_merge( $urls, $cart_urls );
 		}
 	}
