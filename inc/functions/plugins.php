@@ -137,6 +137,11 @@ function get_rocket_ecommerce_exclude_pages() {
 			$cart_urls = get_rocket_i18n_translated_post_urls( wc_get_page_id( 'cart' ) );
 			$urls = array_merge( $urls, $cart_urls );
 		}
+		
+		if ( wc_get_page_id( 'myaccount' ) && wc_get_page_id( 'myaccount' ) != '-1' ) {
+			$cart_urls = get_rocket_i18n_translated_post_urls( wc_get_page_id( 'myaccount' ), 'page', '(.*)' );
+			$urls = array_merge( $urls, $cart_urls );
+		}
 	}
 	
 	// Easy Digital Downloads

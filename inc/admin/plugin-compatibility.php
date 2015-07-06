@@ -10,6 +10,7 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
  */
 add_action( 'update_option_woocommerce_cart_page_id'     	 , '__rocket_after_update_wc_options', 10, 2 );
 add_action( 'update_option_woocommerce_checkout_page_id' 	 , '__rocket_after_update_wc_options', 10, 2 );
+add_action( 'update_option_woocommerce_myaccount_page_id' 	 , '__rocket_after_update_wc_options', 10, 2 );
 add_action( 'update_option_wpshop_cart_page_id'			 	 , '__rocket_after_update_wc_options', 10, 2 );
 add_action( 'update_option_wpshop_checkout_page_id'		 	 , '__rocket_after_update_wc_options', 10, 2 );
 add_action( 'update_option_wpshop_payment_return_page_id'	 , '__rocket_after_update_wc_options', 10, 2 );
