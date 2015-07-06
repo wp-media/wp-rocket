@@ -34,7 +34,9 @@ add_action( 'update_option_jigoshop_options',	'__rocket_after_update_array_optio
 function __rocket_after_update_array_options( $old_value, $value ) {
 	$values_for_regen = array( 'purchase_page', 'jigoshop_cart_page_id', 'jigoshop_checkout_page_id', 'jigoshop_myaccount_page_id' );
 	foreach ( $values_for_regen as $val ) {
-		if ( isset( $old_value[ $val ], $value[ $val ] ) && $old_value[ $val ] != $value[ $val ] ) {
+		if ( ( ! isset( $old_value[ $val ] ) && isset( $value[ $val ] ) ) ||
+			( isset( $old_value[ $val ], $value[ $val ] ) && $old_value[ $val ] != $value[ $val ] ) 
+		) {
 			// Update .htaccess file rules
 			flush_rocket_htaccess();
 		
