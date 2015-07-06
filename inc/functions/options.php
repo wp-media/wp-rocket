@@ -357,6 +357,10 @@ function get_rocket_minify_js_in_footer() {
 	$js_files = array_map( 'rocket_set_internal_url_scheme', $js_files );
 	$js_files = array_unique( array_merge( $js_files, (array) $rocket_enqueue_js_in_footer ) );
 	
+	if ( rocket_is_plugin_active('sitepress-multilingual-cms/sitepress.php') ) {
+		$js_files[] = $GLOBALS['wp_scripts']->registered['sitepress']->src;
+	}
+	
 	/**
 	 * Filter JS files to move in the footer during the minification.
 	 *
