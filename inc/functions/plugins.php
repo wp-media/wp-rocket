@@ -155,7 +155,13 @@ function get_rocket_ecommerce_exclude_pages() {
 	if ( function_exists( 'it_exchange_get_page_type' ) && function_exists( 'it_exchange_get_page_url' ) ) {
 		$pages = array(
 			'purchases',
-			'confirmation'
+			'confirmation',
+			'account',
+			'profile',
+			'downloads',
+			'purchases',
+			'log-in',
+			'log-out'
 		);
 		
 		foreach( $pages as $page ) {
