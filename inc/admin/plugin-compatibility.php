@@ -8,18 +8,18 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
  * @since 2.6 Add support with SF Move Login & WPS Hide Login to exclude login pages
  * @since 2.4
  */
-add_action( 'update_option_woocommerce_cart_page_id'     	 , '__rocket_after_update_wc_options', 10, 2 );
-add_action( 'update_option_woocommerce_checkout_page_id' 	 , '__rocket_after_update_wc_options', 10, 2 );
-add_action( 'update_option_woocommerce_myaccount_page_id' 	 , '__rocket_after_update_wc_options', 10, 2 );
-add_action( 'update_option_wpshop_cart_page_id'			 	 , '__rocket_after_update_wc_options', 10, 2 );
-add_action( 'update_option_wpshop_checkout_page_id'		 	 , '__rocket_after_update_wc_options', 10, 2 );
-add_action( 'update_option_wpshop_payment_return_page_id'	 , '__rocket_after_update_wc_options', 10, 2 );
-add_action( 'update_option_wpshop_payment_return_nok_page_id', '__rocket_after_update_wc_options', 10, 2 );
-add_action( 'update_option_wpshop_myaccount_page_id'		 , '__rocket_after_update_wc_options', 10, 2 );
-add_action( 'update_option_it-storage-exchange_settings_pages', '__rocket_after_update_wc_options', 10, 2 );
-add_action( 'update_option_sfml'	, '__rocket_after_update_wc_options', 10, 2 );
-add_action( 'update_option_whl_page', '__rocket_after_update_wc_options', 10, 2 );
-function __rocket_after_update_wc_options( $old_value, $value ) {
+add_action( 'update_option_woocommerce_cart_page_id',			'__rocket_after_update_single_options', 10, 2 );
+add_action( 'update_option_woocommerce_checkout_page_id',		'__rocket_after_update_single_options', 10, 2 );
+add_action( 'update_option_woocommerce_myaccount_page_id',		'__rocket_after_update_single_options', 10, 2 );
+add_action( 'update_option_wpshop_cart_page_id',				'__rocket_after_update_single_options', 10, 2 );
+add_action( 'update_option_wpshop_checkout_page_id',			'__rocket_after_update_single_options', 10, 2 );
+add_action( 'update_option_wpshop_payment_return_page_id', 		'__rocket_after_update_single_options', 10, 2 );
+add_action( 'update_option_wpshop_payment_return_nok_page_id',	'__rocket_after_update_single_options', 10, 2 );
+add_action( 'update_option_wpshop_myaccount_page_id', 			'__rocket_after_update_single_options', 10, 2 );
+add_action( 'update_option_it-storage-exchange_settings_pages', '__rocket_after_update_single_options', 10, 2 );
+add_action( 'update_option_sfml'	, 							'__rocket_after_update_single_options', 10, 2 );
+add_action( 'update_option_whl_page', 							'__rocket_after_update_single_options', 10, 2 );
+function __rocket_after_update_single_options( $old_value, $value ) {
 	if ( $old_value != $value ) {
 		// Update .htaccess file rules
 		flush_rocket_htaccess();
@@ -29,17 +29,23 @@ function __rocket_after_update_wc_options( $old_value, $value ) {
 	}
 }
 
-add_action( 'update_option_edd_settings'	, '__rocket_after_update_edd_options', 10, 2 );
-add_action( 'update_option_jigoshop_options', '__rocket_after_update_edd_options', 10, 2 );
-function __rocket_after_update_edd_options( $old_value, $value ) {		
-	if ( ( $old_value['purchase_page'] != $value['purchase_page'] ) || $old_value['jigoshop_cart_page_id'] != $value['jigoshop_cart_page_id'] || $old_value['jigoshop_checkout_page_id'] != $value['jigoshop_checkout_page_id']  || $old_value['jigoshop_myaccount_page_id'] != $value['jigoshop_myaccount_page_id']) {
-		// Update .htaccess file rules
-		flush_rocket_htaccess();
-	
-		// Update config file
-		rocket_generate_config_file();	
+add_action( 'update_option_edd_settings',		'__rocket_after_update_array_options', 10, 2 );
+add_action( 'update_option_jigoshop_options',	'__rocket_after_update_array_options', 10, 2 );
+function __rocket_after_update_array_options( $old_value, $value ) {
+	$values_for_regen = array( 'purchase_page', 'jigoshop_cart_page_id', 'jigoshop_checkout_page_id', 'jigoshop_myaccount_page_id' );
+	foreach ( $values_for_regen as $val ) {
+		if ( isset( $old_value[ $val ], $value[ $val ] ) && $old_value[ $val ] != $value[ $val ] ) {
+			// Update .htaccess file rules
+			flush_rocket_htaccess();
+		
+			// Update config file
+			rocket_generate_config_file();	
+			break;
+		}
 	}
 }
+/**/
+
 
 /**
  * Compatibility with an usual NGINX configuration which include 
