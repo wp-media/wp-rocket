@@ -199,7 +199,8 @@ function get_rocket_ecommerce_exclude_pages() {
 			'wpshop_cart_page_id',
 			'wpshop_checkout_page_id',
 			'wpshop_payment_return_page_id',
-			'wpshop_payment_return_nok_page_id'
+			'wpshop_payment_return_nok_page_id',
+			'wpshop_myaccount_page_id'
 		);
 		
 		foreach( $pages as $page ) {

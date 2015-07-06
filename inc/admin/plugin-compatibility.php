@@ -15,6 +15,7 @@ add_action( 'update_option_wpshop_cart_page_id'			 	 , '__rocket_after_update_wc
 add_action( 'update_option_wpshop_checkout_page_id'		 	 , '__rocket_after_update_wc_options', 10, 2 );
 add_action( 'update_option_wpshop_payment_return_page_id'	 , '__rocket_after_update_wc_options', 10, 2 );
 add_action( 'update_option_wpshop_payment_return_nok_page_id', '__rocket_after_update_wc_options', 10, 2 );
+add_action( 'update_option_wpshop_myaccount_page_id'		 , '__rocket_after_update_wc_options', 10, 2 );
 add_action( 'update_option_it-storage-exchange_settings_pages', '__rocket_after_update_wc_options', 10, 2 );
 add_action( 'update_option_sfml'	, '__rocket_after_update_wc_options', 10, 2 );
 add_action( 'update_option_whl_page', '__rocket_after_update_wc_options', 10, 2 );
