@@ -184,7 +184,7 @@ function rocket_clean_post( $post_id )
 	 * @since 1.0
 	 * @param array $purge_urls List of URLs cache files to remove
 	*/
-	$purge_urls = apply_filters( 'rocket_post_purge_urls', $purge_urls );
+	$purge_urls = apply_filters( 'rocket_post_purge_urls', $purge_urls, $post );
 	
 	// Purge all files
 	rocket_clean_files( $purge_urls );
