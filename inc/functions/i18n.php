@@ -307,7 +307,7 @@ function get_rocket_i18n_home_url( $lang = '' ) {
  * @param 	string 	$regex 		Regex to include at the end
  * @return 	array	$urls
  */
-function get_rocket_i18n_translated_post_paths( $post_id, $post_type = 'page', $regex = null ) {
+function get_rocket_i18n_translated_post_urls( $post_id, $post_type = 'page', $regex = null ) {
 	$urls  = array();
 	$path  = parse_url( get_permalink( $post_id ), PHP_URL_PATH );
 	$langs = get_rocket_i18n_code();

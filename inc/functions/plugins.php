@@ -129,17 +129,17 @@ function get_rocket_ecommerce_exclude_pages() {
 	// WooCommerce
 	if ( function_exists( 'WC' ) && function_exists( 'wc_get_page_id' ) ) {
 		if( wc_get_page_id( 'checkout' ) && wc_get_page_id( 'checkout' ) != '-1' ) {
-			$checkout_urls = get_rocket_i18n_translated_post_paths( wc_get_page_id( 'checkout' ), 'page', '(.*)' );
+			$checkout_urls = get_rocket_i18n_translated_post_urls( wc_get_page_id( 'checkout' ), 'page', '(.*)' );
 			$urls = array_merge( $urls, $checkout_urls );
 		}
 
 		if ( wc_get_page_id( 'cart' ) && wc_get_page_id( 'cart' ) != '-1' ) {
-			$cart_urls = get_rocket_i18n_translated_post_paths( wc_get_page_id( 'cart' ) );
+			$cart_urls = get_rocket_i18n_translated_post_urls( wc_get_page_id( 'cart' ) );
 			$urls = array_merge( $urls, $cart_urls );
 		}
 		
 		if ( wc_get_page_id( 'myaccount' ) && wc_get_page_id( 'myaccount' ) != '-1' ) {
-			$cart_urls = get_rocket_i18n_translated_post_paths( wc_get_page_id( 'myaccount' ), 'page', '(.*)' );
+			$cart_urls = get_rocket_i18n_translated_post_urls( wc_get_page_id( 'myaccount' ), 'page', '(.*)' );
 			$urls = array_merge( $urls, $cart_urls );
 		}
 	}
@@ -147,7 +147,7 @@ function get_rocket_ecommerce_exclude_pages() {
 	// Easy Digital Downloads
 	$edd_settings = get_option( 'edd_settings' );
 	if ( function_exists( 'EDD' ) && isset( $edd_settings['purchase_page'] ) ) {
-		$checkout_urls = get_rocket_i18n_translated_post_paths( $edd_settings['purchase_page'], 'page', '(.*)' );
+		$checkout_urls = get_rocket_i18n_translated_post_urls( $edd_settings['purchase_page'], 'page', '(.*)' );
 		$urls = array_merge( $urls, $checkout_urls );
 	}
 	
@@ -166,7 +166,7 @@ function get_rocket_ecommerce_exclude_pages() {
 		
 		foreach( $pages as $page ) {
 			if ( it_exchange_get_page_type( $page ) == 'wordpress' ) {
-				$exchange_urls = get_rocket_i18n_translated_post_paths( it_exchange_get_page_wpid( $page ) );
+				$exchange_urls = get_rocket_i18n_translated_post_urls( it_exchange_get_page_wpid( $page ) );
 			} else {
 				$exchange_urls = array( parse_url( it_exchange_get_page_url( $page ), PHP_URL_PATH ) );
 			}
@@ -178,17 +178,17 @@ function get_rocket_ecommerce_exclude_pages() {
 	// Jigoshop
 	if ( defined( 'JIGOSHOP_VERSION' ) && function_exists( 'jigoshop_get_page_id' ) ) {
 		if ( jigoshop_get_page_id( 'checkout' ) && jigoshop_get_page_id( 'checkout' ) != '-1' ) {
-			$checkout_urls = get_rocket_i18n_translated_post_paths( jigoshop_get_page_id( 'checkout' ), 'page', '(.*)' );
+			$checkout_urls = get_rocket_i18n_translated_post_urls( jigoshop_get_page_id( 'checkout' ), 'page', '(.*)' );
 			$urls = array_merge( $urls, $checkout_urls );
 		}
 		
 		if ( jigoshop_get_page_id( 'cart' ) && jigoshop_get_page_id( 'cart' ) != '-1' ) {
-			$cart_urls = get_rocket_i18n_translated_post_paths( jigoshop_get_page_id( 'cart' ) );
+			$cart_urls = get_rocket_i18n_translated_post_urls( jigoshop_get_page_id( 'cart' ) );
 			$urls = array_merge( $urls, $cart_urls );
 		}
 		
 		if ( jigoshop_get_page_id( 'myaccount' ) && jigoshop_get_page_id( 'myaccount' ) != '-1' ) {
-			$cart_urls = get_rocket_i18n_translated_post_paths( jigoshop_get_page_id( 'myaccount' ), 'page', '(.*)' );
+			$cart_urls = get_rocket_i18n_translated_post_urls( jigoshop_get_page_id( 'myaccount' ), 'page', '(.*)' );
 			$urls = array_merge( $urls, $cart_urls );
 		}
 	}
@@ -205,7 +205,7 @@ function get_rocket_ecommerce_exclude_pages() {
 		
 		foreach( $pages as $page ) {
 			if ( $page_id = wpshop_tools::get_page_id( get_option( $page ) ) ) {
-				$urls = array_merge( $urls, get_rocket_i18n_translated_post_paths( $page_id ) );
+				$urls = array_merge( $urls, get_rocket_i18n_translated_post_urls( $page_id ) );
 			}
 		}
 	}
