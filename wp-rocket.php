@@ -124,7 +124,7 @@ function rocket_init()
 			require( WP_ROCKET_COMMON_PATH 	. 'cloudflare.php' );
 		}
 
-        if ( defined( 'SUNRISE' ) && SUNRISE == 'on' && function_exists( 'domain_mapping_siteurl' ) ) {
+        if ( is_multisite() && defined( 'SUNRISE' ) && SUNRISE == 'on' && function_exists( 'domain_mapping_siteurl' ) ) {
 	        require( WP_ROCKET_INC_PATH . '/domain-mapping.php' );
         }
     }

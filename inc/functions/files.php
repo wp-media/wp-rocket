@@ -395,7 +395,17 @@ function rocket_clean_home( $lang = '' )
 	}
 
 	$root = WP_ROCKET_CACHE_PATH . $host . '*' . rtrim( $path, '/' );
-
+	
+	/**
+	 * Filter the homepage caching folder root
+	 *
+	 * @since 2.6.5
+	 * @param array 	$root The root that will be returned
+	 * @param string 	$host The website host
+	 * @param string 	$path The website path
+	*/
+	$root = apply_filters( 'rocket_clean_home_root', $root, $host, $path );
+	
 	/**
 	 * Fires before the home cache file is deleted
 	 *
