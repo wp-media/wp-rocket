@@ -36,8 +36,21 @@ function rocket_dns_prefetch( $buffer )
 		}
 	}
 
+	$old_ie_conditional_tag = '';
+	
+	/**
+	 * Allow to print an empty IE conditional tag to speed up old IE versions to load CSS & JS files
+	 *
+	 * @since 2.6.5
+	 *
+	 * @param bool true will print the IE conditional tag
+	 */
+	if( apply_filters( 'do_rocket_old_ie_prefetch_conditional_tag', true ) ) {
+		$old_ie_conditional_tag = '<!--[if IE]><![endif]-->';
+	}
+
 	// Insert all DNS prefecth tags in head
-	$buffer = preg_replace( '/<head(.*)>/', '<head$1><!--[if IE]><![endif]-->' . $dns_link_tags, $buffer, 1 );
+	$buffer = preg_replace( '/<head(.*)>/', '<head$1>' . $old_ie_conditional_tag . $dns_link_tags, $buffer, 1 );
 
 	return $buffer;
 }
