@@ -2,7 +2,7 @@
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 /**
- * Used to get compatibility with multidomain with get_rocket_parse_url()
+ * Used to get compatibility between multidomain and get_rocket_parse_url()
  *
  * @since 2.2
  */
@@ -17,7 +17,7 @@ function rocket_parse_url_domain_mapping( $url ) {
 }
 
 /**
- * Used to get compatibility with multidomain with rocket_clean_files() & rocket_clean_domain()
+ * Used to get compatibility between multidomain and rocket_clean_files() & rocket_clean_domain()
  *
  * @since 2.6.5 Add compatibility with rocket_clean_domain()
  * @since 2.2
@@ -29,7 +29,7 @@ if ( function_exists( 'domain_mapping_post_content' ) ) :
 endif;
 
 /**
- * Used to get compatibility with multidomain with rocket_clean_home() 
+ * Used to get compatibility between multidomain and rocket_clean_home() 
  *
  * @since 2.6.5
  */
