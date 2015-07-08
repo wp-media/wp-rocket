@@ -351,14 +351,14 @@ function get_rocket_exclude_js() {
  * @return array List of JS files.
  */
 function get_rocket_minify_js_in_footer() {
-	global $rocket_enqueue_js_in_footer;
+	global $rocket_enqueue_js_in_footer, $wp_scripts;
 	
 	$js_files = get_rocket_option( 'minify_js_in_footer', array() );
 	$js_files = array_map( 'rocket_set_internal_url_scheme', $js_files );
 	$js_files = array_unique( array_merge( $js_files, (array) $rocket_enqueue_js_in_footer ) );
 	
-	if ( rocket_is_plugin_active('sitepress-multilingual-cms/sitepress.php') ) {
-		$js_files[] = $GLOBALS['wp_scripts']->registered['sitepress']->src;
+	if ( rocket_is_plugin_active('sitepress-multilingual-cms/sitepress.php') && isset( $wp_scripts->registered['sitepress'] ) ) {
+		$js_files[] = $wp_scripts->registered['sitepress']->src;
 	}
 	
 	/**
