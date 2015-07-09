@@ -291,15 +291,10 @@ function __rocket_maybe_generate_advanced_cache_file() {
 }
 
 function __rocket_maybe_generate_config_files() {
-	list( $host, $path ) = get_rocket_parse_url( home_url() );
-	
-	if ( ! isset( $path ) ) {
-		$config_files_path = WP_ROCKET_CONFIG_PATH . strtolower( $host ) . '.php';
-	} else {
-		$config_files_path = WP_ROCKET_CONFIG_PATH . strtolower( $host ) . str_replace( '/', '.', rtrim( $path, '/' ) ) . '.php';
-	}
-	
-	if( ! file_exists( $config_files_path ) ) {
+	list( $host, $path ) = get_rocket_parse_url( home_url() );	
+	$path = ( ! empty( $path ) ) ? str_replace( '/', '.', rtrim( $path, '/' ) ) : '';
+			
+	if( ! file_exists( WP_ROCKET_CONFIG_PATH . strtolower( $host ) . $path . '.php' ) ) {
 		rocket_generate_config_file();
 	}
 }
