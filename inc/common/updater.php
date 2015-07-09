@@ -8,9 +8,11 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 add_filter( 'site_transient_update_plugins', 'rocket_check_update', 100 );
 function rocket_check_update( $value )
 {
+	global $pagenow;
 	$timer_update_wprocket = (int) get_site_transient( 'update_wprocket' );
-	if ( defined( 'WP_INSTALLING' ) || 
-		( 12 * HOUR_IN_SECONDS ) > ( time() - $timer_update_wprocket ) // retry in 12 hours
+	if ( 'plugins.php' != $pagenow && 
+		( defined( 'WP_INSTALLING' ) || 
+		 ( 12 * HOUR_IN_SECONDS ) > ( time() - $timer_update_wprocket ) ) // retry in 12 hours
 	) {
 		return false;
 	}
