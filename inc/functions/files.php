@@ -134,6 +134,15 @@ function get_rocket_config_file()
 	}
 	
 	/**
+	 * Filter all config files path
+	 *
+	 * @since 2.6.5
+	 *
+	 * @param array $config_files_path 	Path of all config files
+	*/
+	$config_files_path = apply_filters( 'rocket_config_files_path', $config_files_path );
+	
+	/**
 	 * Filter the content of all config files
 	 *
 	 * @since 2.1
