@@ -16,7 +16,7 @@ function rocket_check_update( $value )
 	) {
 		return false;
 	}
-	die('ok');
+
 	$plugin_folder	= plugin_basename( dirname( WP_ROCKET_FILE ) );
 	$plugin_file	= basename( WP_ROCKET_FILE );
 	$version		= true;
