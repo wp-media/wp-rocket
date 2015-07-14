@@ -14,7 +14,8 @@ function __rocket_post_submitbox_start()
 	/** This filter is documented in inc/admin-bar.php */
 	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
 		global $post;
-		$url = wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=post-' . $post->ID ), 'purge_cache_post-' . $post->ID );
+		$referer = rocket_get_referer_param();
+		$url = wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache' . $referer . '&type=post-' . $post->ID ), 'purge_cache_post-' . $post->ID );
 		printf( '<div id="purge-action"><a class="button-secondary" href="%s">%s</a></div>', $url, __( 'Clear cache', 'rocket' ) );
 	}
 }

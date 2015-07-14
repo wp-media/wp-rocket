@@ -223,3 +223,13 @@ function rocket_sanitize_ua( $ua ) {
 	$ua = preg_replace( '/[^a-z0-9._\-\/\s\x5c]/i', '', $ua );
 	return $ua;
 }
+
+
+/**
+ * Will return the current URL sanitized if $_SERVER['HTTP_REFERER'] is not set, else, if is set, return nothing and let wp_get_referer() use it.
+ *
+ * @since 2.6.5
+ */
+function rocket_get_referer_param() {
+	return isset( $_SERVER['HTTP_REFERER'] ) ? '' : '&_wp_http_referer=' . urlencode( esc_url( set_url_scheme( $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ) ) );
+}

@@ -1,6 +1,8 @@
 <?php 
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
+$referer = rocket_get_referer_param();
+
 add_settings_section( 'rocket_display_tools', __( 'Tools', 'rocket' ), '__return_false', 'tools' );
 
 if ( ! rocket_is_white_label() ) {
@@ -35,7 +37,7 @@ add_settings_field(
 	array(
 		'button'=>array(
 			'button_label' => __( 'Clear cache', 'rocket' ),
-			'url'		   => wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=all' ), 'purge_cache_all' ),
+			'url'		   => wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache' . $referer . '&type=all' ), 'purge_cache_all' ),
 		),
 		'helper_description'=>array(
 			'name'         => 'purge_all',
@@ -52,7 +54,7 @@ add_settings_field(
 	array(
         'button'=>array(
         	'button_label' => __( 'Preload cache', 'rocket' ),
-        	'url'		   => wp_nonce_url( admin_url( 'admin-post.php?action=preload' ), 'preload' ),
+        	'url'		   => wp_nonce_url( admin_url( 'admin-post.php?action=preload' . $referer ), 'preload' ),
         ),
 		'helper_description'=>array(
 			'name'         => 'preload',
@@ -82,7 +84,6 @@ add_settings_field(
 );
 
 if ( current_user_can( 'update_plugins' ) ) {
-	$temp_description = __( 'Please backup your settings before, use the "Download options" button above.', 'rocket' );
     add_settings_field(
 		'rocket_rollback',
 		__( 'Update Rollback', 'rocket' ),
@@ -92,7 +93,7 @@ if ( current_user_can( 'update_plugins' ) ) {
 		array(
 	        'button'=>array(
 	        	'button_label' => sprintf( __( 'Reinstall v%s', 'rocket' ), WP_ROCKET_LASTVERSION ),
-	        	'url'		   => wp_nonce_url( admin_url( 'admin-post.php?action=rocket_rollback' ), 'rocket_rollback' ),
+	        	'url'		   => wp_nonce_url( admin_url( 'admin-post.php?action=rocket_rollback' . $referer ), 'rocket_rollback' ),
 	        ),
 			'helper_description'=>array(
 				'name'         => 'rollback',
@@ -100,10 +101,9 @@ if ( current_user_can( 'update_plugins' ) ) {
 			),
 			'helper_warning'=>array(
 				'name'         => 'rollback2',
-	        	'description'  => $temp_description,
+	        	'description'  => __( 'Please backup your settings before, use the "Download options" button above.', 'rocket' ),
 			),
 		)
 
     );
 }
-unset( $temp_description );

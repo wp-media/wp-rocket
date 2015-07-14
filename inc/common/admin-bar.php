@@ -16,6 +16,8 @@ function rocket_admin_bar( $wp_admin_bar )
 		return;
 	}
 
+	$referer = rocket_get_referer_param();
+
 	$action = 'purge_cache';
 	// Parent
     $wp_admin_bar->add_menu( array(
@@ -47,13 +49,13 @@ function rocket_admin_bar( $wp_admin_bar )
 			if ( $langlinks = get_rocket_wpml_langs_for_admin_bar() ) {
 
 				foreach( $langlinks as $lang ) {
-		            $wp_admin_bar->add_menu( array(
-		                'parent' => 'purge-all',
-		                'id' 	 => 'purge-all-' . $lang['code'],
-		                'title'  => $lang['flag'] . '&nbsp;' . $lang['anchor'],
-		                'href'   => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . '&type=all&lang=' . $lang['code'] ), $action . '_all' ),
-		            ));
-		        }
+					$wp_admin_bar->add_menu( array(
+						'parent' => 'purge-all',
+						'id' 	 => 'purge-all-' . $lang['code'],
+						'title'  => $lang['flag'] . '&nbsp;' . $lang['anchor'],
+						'href'   => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . $referer . '&type=all&lang=' . $lang['code'] ), $action . '_all' ),
+					));
+				}
 
 			}
 
@@ -79,7 +81,7 @@ function rocket_admin_bar( $wp_admin_bar )
 	                'parent' => 'purge-all',
 	                'id' 	 => 'purge-all-' . $lang['code'],
 	                'title'  => $lang['flag'] . '&nbsp;' . $lang['anchor'],
-	                'href'   => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . '&type=all&lang=' . $lang['code'] ), $action . '_all' ),
+	                'href'   => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . $referer .'&type=all&lang=' . $lang['code'] ), $action . '_all' ),
 	            ));
 	        }
 
@@ -88,7 +90,7 @@ function rocket_admin_bar( $wp_admin_bar )
 	            'parent' => 'purge-all',
 	            'id' 	 => 'purge-all-all',
 	            'title'  =>  '<div class="dashicons-before dashicons-admin-site" style="line-height:1.5"> ' . __( 'All languages', 'rocket' ) . '</div>',
-	            'href'   => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . '&type=all&lang=all' ), $action . '_all' ),
+	            'href'   => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . $referer .'&type=all&lang=all' ), $action . '_all' ),
 	        ));
 
 		} else {
@@ -98,7 +100,7 @@ function rocket_admin_bar( $wp_admin_bar )
 				'parent'	=> 'wp-rocket',
 				'id' 		=> 'purge-all',
 				'title' 	=> __( 'Clear cache', 'rocket' ),
-				'href' 		=> wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . '&type=all' ), $action . '_all' ),
+				'href' 		=> wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . $referer .'&type=all' ), $action . '_all' ),
 			));
 
 		}
@@ -113,7 +115,7 @@ function rocket_admin_bar( $wp_admin_bar )
 					'parent' => 'wp-rocket',
 					'id' 	 => 'purge-post',
 					'title'  => __( 'Clear this post', 'rocket' ),
-					'href' 	 => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action.'&type=post-' . $post->ID ), $action . '_post-' . $post->ID ),
+					'href' 	 => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . $referer . '&type=post-' . $post->ID ), $action . '_post-' . $post->ID ),
 				));
 
 			}
@@ -125,7 +127,7 @@ function rocket_admin_bar( $wp_admin_bar )
 				'parent' => 'wp-rocket',
 				'id' 	 => 'purge-url',
 				'title'  => __( 'Purge this URL', 'rocket' ),
-				'href' 	 => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . '&type=url' ), $action . '_url' ),
+				'href' 	 => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . $referer . '&type=url' ), $action . '_url' ),
 			));
 
 		}
@@ -148,7 +150,7 @@ function rocket_admin_bar( $wp_admin_bar )
 		                'parent' => 'preload-cache',
 		                'id' 	 => 'preload-cache-' . $lang['code'],
 		                'title'  => $lang['flag'] . '&nbsp;' . $lang['anchor'],
-		                'href' 	 => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . '&lang=' . $lang['code'] ), $action ),
+		                'href' 	 => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . $referer . '&lang=' . $lang['code'] ), $action ),
 		            ));
 		        }
 
@@ -174,7 +176,7 @@ function rocket_admin_bar( $wp_admin_bar )
 	                'parent' => 'preload-cache',
 	                'id' 	 => 'preload-cache-' . $lang['code'],
 	                'title'  => $lang['flag'] . '&nbsp;' . $lang['anchor'],
-	                'href' 	 => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . '&lang=' . $lang['code'] ), $action ),
+	                'href' 	 => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . $referer . '&lang=' . $lang['code'] ), $action ),
 	            ));
 	        }
 
@@ -182,7 +184,7 @@ function rocket_admin_bar( $wp_admin_bar )
 	            'parent' => 'preload-cache',
 	            'id' 	 => 'preload-cache-all',
 	            'title'  =>  '<div class="dashicons-before dashicons-admin-site" style="line-height:1.5;"> ' . __( 'All languages', 'rocket' ) . '</div>',
-	            'href' 	 => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . '&lang=all' ), $action ),
+	            'href' 	 => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . $referer . '&lang=all' ), $action ),
 	        ));
 
 		} else {
@@ -191,7 +193,7 @@ function rocket_admin_bar( $wp_admin_bar )
 	            'parent' => 'wp-rocket',
 	            'id' 	 => 'preload-cache',
 	            'title'  => __( 'Preload cache', 'rocket' ),
-	            'href' 	 => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action ), $action )
+	            'href' 	 => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . $referer ), $action )
 	        ));
 
 		}
