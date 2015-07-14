@@ -10,13 +10,13 @@ function rocket_check_update( $value )
 {
 	global $pagenow;
 	$timer_update_wprocket = (int) get_site_transient( 'update_wprocket' );
-	if ( 'plugins.php' != $pagenow && 
+	if ( ( 'plugins.php' != $pagenow || ! isset( $_GET['rocket_force_update'] ) ) &&
 		( defined( 'WP_INSTALLING' ) || 
 		 ( 12 * HOUR_IN_SECONDS ) > ( time() - $timer_update_wprocket ) ) // retry in 12 hours
 	) {
 		return false;
 	}
-
+	die('ok');
 	$plugin_folder	= plugin_basename( dirname( WP_ROCKET_FILE ) );
 	$plugin_file	= basename( WP_ROCKET_FILE );
 	$version		= true;
