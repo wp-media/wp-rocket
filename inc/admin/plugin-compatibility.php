@@ -13,12 +13,12 @@ add_action( 'update_option_woocommerce_checkout_page_id',		'__rocket_after_updat
 add_action( 'update_option_woocommerce_myaccount_page_id',		'__rocket_after_update_single_options', 10, 2 );
 add_action( 'update_option_wpshop_cart_page_id',				'__rocket_after_update_single_options', 10, 2 );
 add_action( 'update_option_wpshop_checkout_page_id',			'__rocket_after_update_single_options', 10, 2 );
-add_action( 'update_option_wpshop_payment_return_page_id', 		'__rocket_after_update_single_options', 10, 2 );
+add_action( 'update_option_wpshop_payment_return_page_id',		'__rocket_after_update_single_options', 10, 2 );
 add_action( 'update_option_wpshop_payment_return_nok_page_id',	'__rocket_after_update_single_options', 10, 2 );
-add_action( 'update_option_wpshop_myaccount_page_id', 			'__rocket_after_update_single_options', 10, 2 );
-add_action( 'update_option_it-storage-exchange_settings_pages', '__rocket_after_update_single_options', 10, 2 );
-add_action( 'update_option_sfml'	, 							'__rocket_after_update_single_options', 10, 2 );
-add_action( 'update_option_whl_page', 							'__rocket_after_update_single_options', 10, 2 );
+add_action( 'update_option_wpshop_myaccount_page_id',			'__rocket_after_update_single_options', 10, 2 );
+add_action( 'update_option_it-storage-exchange_settings_pages',	'__rocket_after_update_single_options', 10, 2 );
+add_action( 'update_option_sfml'	,							'__rocket_after_update_single_options', 10, 2 );
+add_action( 'update_option_whl_page',							'__rocket_after_update_single_options', 10, 2 );
 function __rocket_after_update_single_options( $old_value, $value ) {
 	if ( $old_value != $value ) {
 		// Update .htaccess file rules
@@ -28,6 +28,16 @@ function __rocket_after_update_single_options( $old_value, $value ) {
 		rocket_generate_config_file();	
 	}
 }
+
+/**
+ * We need to regenerate the config file depending on some plugins
+ *
+ * @since 2.6.5 Add support with SF Move Login & WPS Hide Login
+ */
+add_action( 'activate_sf-move-login/sf-move-login.php', 'rocket_generate_config_file', 11 );
+add_action( 'deactivate_sf-move-login/sf-move-login.php', 'rocket_generate_config_file', 11 );
+add_action( 'activate_wps-hide-login/wps-hide-login.php', 'rocket_generate_config_file', 11 );
+add_action( 'deactivate_wps-hide-login/wps-hide-login.php', 'rocket_generate_config_file', 11 );
 
 add_action( 'update_option_edd_settings',		'__rocket_after_update_array_options', 10, 2 );
 add_action( 'update_option_jigoshop_options',	'__rocket_after_update_array_options', 10, 2 );
