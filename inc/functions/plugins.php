@@ -245,6 +245,13 @@ function get_rocket_logins_exclude_pages() {
 	return $urls;
 }
 
+/**
+ * Add a possible path in front of the $item (iteration) to be compatible with our regex
+ *
+ * @since 2.6.5
+ *
+ * @return string $item
+ */
 function __rocket_add_path_sf_move_login_slugs( $item ) {
 	$item = trim( $item );
 	$item = home_url( $item );
