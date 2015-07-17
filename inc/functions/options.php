@@ -143,6 +143,19 @@ function get_rocket_cache_reject_uri()
 	if( function_exists( 'json_get_url_prefix' ) && $rocket_cache_reject_wp_rest_api ) {
 		$uri[] = '/' . json_get_url_prefix() . '/(.*)';	
 	}
+
+	/**
+	  * By default, don't cache the WooCommerce REST API.
+	  *
+	  * @since 2.6.5
+	  *
+	  * @param bool false will force to cache the WooCommerce REST API
+	 */
+	$rocket_cache_reject_wooc_rest_api = apply_filters( 'rocket_cache_reject_wooc_rest_api', true );
+	// Exclude WooCommerce REST API
+	if( class_exists( 'WC_API' ) && $rocket_cache_reject_wooc_rest_api ) {
+		$uri[] = '/wc-api/v(.*)';
+	}
 	
 	// Exclude feeds
 	$uri[] = '.*/' . $GLOBALS['wp_rewrite']->feed_base . '/';

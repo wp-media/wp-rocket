@@ -16,11 +16,6 @@ if ( strtolower( $_SERVER['REQUEST_URI'] ) != '/index.php' && in_array( pathinfo
 	return;
 }
 
-// Don't cache WooCommerce API
-if ( strpos( $_SERVER['REQUEST_URI'], 'wc-api/v' ) ) {
-	return;
-}
-
 // Don't cache if user is in admin
 if ( is_admin() ) {
 	return;
@@ -100,7 +95,6 @@ if ( isset( $rocket_cache_reject_uri ) && preg_match( '#^(' . $rocket_cache_reje
 	rocket_define_donotminify_constants( true );
 	return;
 }
-
 // Don't cache page with this cookie
 if ( isset( $rocket_cache_reject_cookies ) && preg_match( '#(' . $rocket_cache_reject_cookies . ')#', var_export( $_COOKIE, true ) ) ) {
 	rocket_define_donotminify_constants( true );
