@@ -1,10 +1,7 @@
 <?php 
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
-$referer = rocket_get_referer_param();
-
 add_settings_section( 'rocket_display_cloudflare_options', 'CloudFlare', '__return_false', 'cloudflare' );
-
 add_settings_field(
 	'rocket_cloudflare_email',
 	__( 'CloudFlare Account Email', 'rocket' ),
@@ -19,7 +16,6 @@ add_settings_field(
 		)
 	)
 );
-
 add_settings_field(
 	'rocket_cloudflare_api_key',
 	__( 'API Key', 'rocket' ),
@@ -39,7 +35,6 @@ add_settings_field(
 		)
 	)
 );
-
 add_settings_field(
 	'rocket_cloudflare_domain',
 	__( 'Domain', 'rocket' ),
@@ -54,7 +49,6 @@ add_settings_field(
 		)
 	)
 );
-
 add_settings_field(
 	'rocket_cloudflare_devmode',
 	__( 'Development Mode', 'rocket' ),
@@ -78,7 +72,6 @@ add_settings_field(
 		)
 	)
 );
-
 add_settings_field(
 	'rocket_cloudflare_auto_settings',
 	__( 'Auto enable the optimal CloudFlare settings (props WP Rocket)', 'rocket' ),
@@ -102,7 +95,6 @@ add_settings_field(
 		)
 	)
 );
-
 add_settings_field(
 	'rocket_purge_cloudflare',
 	__( 'Clear cache', 'rocket' ),
@@ -112,7 +104,7 @@ add_settings_field(
 	array(
 		'button'=>array(
 			'button_label' => __( 'Clear cache', 'rocket' ),
-			'url'		   => wp_nonce_url( admin_url( 'admin-post.php?action=rocket_purge_cloudflare' . $referer ), 'rocket_purge_cloudflare' ),
+			'url'		   => wp_nonce_url( admin_url( 'admin-post.php?action=rocket_purge_cloudflare' ), 'rocket_purge_cloudflare' ),
 		),
 		'helper_description'=>array(
 			'name'         => 'purge_cloudflare',

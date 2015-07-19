@@ -56,8 +56,7 @@ function __rocket_row_actions( $actions, $post )
 {
 	/** This filter is documented in inc/admin-bar.php */
 	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
-		$referer = rocket_get_referer_param();
-		$url = wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache' . $referer . '&type=post-' . $post->ID ), 'purge_cache_post-' . $post->ID );
+		$url = wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=post-' . $post->ID ), 'purge_cache_post-' . $post->ID );
 		$actions['rocket_purge'] = sprintf( '<a href="%s">%s</a>', $url, __( 'Clear this cache', 'rocket' ) );
 	}
     return $actions;

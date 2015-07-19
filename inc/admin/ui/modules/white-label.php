@@ -1,10 +1,7 @@
 <?php 
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
-$referer = rocket_get_referer_param();
-
 add_settings_section( 'rocket_display_white_label', __( 'White Label', 'rocket' ), '__return_false', 'white_label' );
-
 add_settings_field(
 	'rocket_wl_plugin_name',
 	__( 'Plugin Name:', 'rocket' ),
@@ -20,7 +17,6 @@ add_settings_field(
 		),
 	)
 );
-
 add_settings_field(
 	'rocket_wl_plugin_URI',
 	__( 'Plugin URI:', 'rocket' ),
@@ -36,7 +32,6 @@ add_settings_field(
 		),
 	)
 );
-
 add_settings_field(
 	'rocket_wl_description',
 	__( 'Description:', 'rocket' ),
@@ -52,7 +47,6 @@ add_settings_field(
 		),
 	)
 );
-
 add_settings_field(
 	'rocket_wl_author',
 	__( 'Author:', 'rocket' ),
@@ -68,7 +62,6 @@ add_settings_field(
 		),
 	)
 );
-
 add_settings_field(
 	'rocket_wl_author_URI',
 	__( 'Author URI:', 'rocket' ),
@@ -84,7 +77,6 @@ add_settings_field(
 		),
 	)
 );
-
 add_settings_field(
 	'rocket_wl_warning',
 	'',
@@ -94,7 +86,7 @@ add_settings_field(
 	array(
         'button'=>array(
         	'button_label' => __( 'Reset White Label values to default', 'rocket' ),
-        	'url'		   => wp_nonce_url( admin_url( 'admin-post.php?action=rocket_resetwl' . $referer ), 'rocket_resetwl' ),
+        	'url'		   => wp_nonce_url( admin_url( 'admin-post.php?action=rocket_resetwl' ), 'rocket_resetwl' ),
         ),
 		'helper_warning'=>array(
 			'name'         => 'wl_warning',

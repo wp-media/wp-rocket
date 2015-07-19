@@ -85,13 +85,11 @@ function rocket_warning_plugin_modification()
 
 		$boxes = get_user_meta( $GLOBALS['current_user']->ID, 'rocket_boxes', true );
 
-		if ( ! in_array( __FUNCTION__, (array) $boxes ) ) { 
-			$referer = rocket_get_referer_param();
-			?>
+		if ( ! in_array( __FUNCTION__, (array) $boxes ) ) { ?>
 
 			<div class="updated">
-				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore' . $referer . '&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>" class="rkt-cross"><div class="dashicons dashicons-no"></div></a>
-				<p><?php printf( __( '<b>%s</b>: One or more extensions have been enabled or disabled, do not forget to clear the cache if necessary.', 'rocket' ), WP_ROCKET_PLUGIN_NAME ); ?> <a class="wp-core-ui button" href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache' . $referer . '&type=all' ), 'purge_cache_all' ); ?>"><?php _e('Clear cache', 'rocket') ; ?></a></p>
+				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>" class="rkt-cross"><div class="dashicons dashicons-no"></div></a>
+				<p><?php printf( __( '<b>%s</b>: One or more extensions have been enabled or disabled, do not forget to clear the cache if necessary.', 'rocket' ), WP_ROCKET_PLUGIN_NAME ); ?> <a class="wp-core-ui button" href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=all' ), 'purge_cache_all' ); ?>"><?php _e('Clear cache', 'rocket') ; ?></a></p>
 			</div>
 
 		<?php
@@ -192,10 +190,7 @@ function rocket_plugins_to_deactivate()
 	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
 		&& count( $plugins )
 		&& rocket_valid_key()
-	) { 
-		$referer = rocket_get_referer_param();
-
-		?>
+	) { ?>
 
 		<div class="error">
 			<p><?php printf( __( '<b>%s</b>: The following plugins are not compatible with this plugin and may cause unexpected results:', 'rocket' ), WP_ROCKET_PLUGIN_NAME ); ?></p>
@@ -203,7 +198,7 @@ function rocket_plugins_to_deactivate()
 			<?php
 			foreach ( $plugins as $plugin ) {
 				$plugin_data = get_plugin_data( WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . $plugin );
-				echo '<li>' . $plugin_data['Name'] . '</span> <a href="' . wp_nonce_url( admin_url( 'admin-post.php?action=deactivate_plugin' . $referer . '&plugin=' . urlencode($plugin) ), 'deactivate_plugin' ) . '" class="button-secondary alignright">' . __( 'Deactivate', 'rocket' ) . '</a></li>';
+				echo '<li>' . $plugin_data['Name'] . '</span> <a href="' . wp_nonce_url( admin_url( 'admin-post.php?action=deactivate_plugin&plugin=' . urlencode($plugin) ), 'deactivate_plugin' ) . '" class="button-secondary alignright">' . __( 'Deactivate', 'rocket' ) . '</a></li>';
 
 			}
 			?>
@@ -253,12 +248,11 @@ function rocket_warning_wp_config_permissions()
 	    && rocket_valid_key() ) {
 
 		$boxes = get_user_meta( $GLOBALS['current_user']->ID, 'rocket_boxes', true );
-		$referer = rocket_get_referer_param();
 
 		if ( ! in_array( __FUNCTION__, (array) $boxes ) ) { ?>
 
 			<div class="error">
-				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore' . $referer . '&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>" class="rkt-cross"><div class="dashicons dashicons-no"></div></a>
+				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>" class="rkt-cross"><div class="dashicons dashicons-no"></div></a>
 				<p>
 				<?php
 					printf( __( '<b>%s</b>: It seems we don\'t have <a href="%s" target="_blank">writing permissions</a> on <code>wp-config.php</code> file or the value of the constant <code>WP_CACHE</code> is set to <code>false</code>', 'rocket'), WP_ROCKET_PLUGIN_NAME, "http://codex.wordpress.org/Changing_File_Permissions" );
@@ -301,12 +295,11 @@ function rocket_warning_advanced_cache_permissions()
 	    && rocket_valid_key() ) {
 
 		$boxes = get_user_meta( $GLOBALS['current_user']->ID, 'rocket_boxes', true );
-		$referer = rocket_get_referer_param();
 
 		if ( ! in_array( __FUNCTION__, (array) $boxes ) ) { ?>
 
 			<div class="error">
-				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore' . $referer . '&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>" class="rkt-cross"><div class="dashicons dashicons-no"></div></a>
+				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>" class="rkt-cross"><div class="dashicons dashicons-no"></div></a>
 				<p><b><?php echo WP_ROCKET_PLUGIN_NAME; ?></b>: <?php printf( __( 'If you had <a href="%1$s" target="_blank">writing permissions</a> on <code>%2$s</code> file, <b>%3$s</b> could do this automatically. This is not the case, here is the code you should add in your <code>%2$s</code> file for <b>%3$s</b> to work properly.', 'rocket' ), 'http://codex.wordpress.org/Changing_File_Permissions', basename( WP_CONTENT_DIR ) . '/advanced-cache.php', WP_ROCKET_PLUGIN_NAME ); ?></p>
 
 				<?php
@@ -364,12 +357,11 @@ function rocket_warning_htaccess_permissions()
 	    && rocket_valid_key() ) {
 
 		$boxes = get_user_meta( $GLOBALS['current_user']->ID, 'rocket_boxes', true );
-		$referer = rocket_get_referer_param();
 
 		if ( ! in_array( __FUNCTION__, (array) $boxes ) ) { ?>
 
 			<div class="error">
-				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore' . $referer . '&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>" class="rkt-cross"><div class="dashicons dashicons-no"></div></a>
+				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>" class="rkt-cross"><div class="dashicons dashicons-no"></div></a>
 				<p><b><?php echo WP_ROCKET_PLUGIN_NAME; ?></b>: <?php printf( __( 'If you had <a href="%1$s" target="_blank">writing permissions</a> on <code>.htaccess</code> file, <b>%2$s</b> could do this automatically. This is not the case, so here are the rewrite rules you have to put in your <code>.htaccess</code> file for <b>%2$s</b> to work correctly. Click on the field and press Ctrl-A to select all.', 'rocket' ), 'http://codex.wordpress.org/Changing_File_Permissions', WP_ROCKET_PLUGIN_NAME ) . '<br>' . __('<strong>Warning:</strong> This message will popup again and its content may be updated when saving the options', 'rocket'); ?></p>
 				<p><textarea readonly="readonly" id="rules" name="rules" class="large-text readonly" rows="6"><?php echo esc_textarea( get_rocket_htaccess_marker() ); ?></textarea></p>
 			</div>
@@ -394,12 +386,11 @@ function rocket_warning_config_dir_permissions()
 	    && rocket_valid_key() ) {
 
 		$boxes = get_user_meta( $GLOBALS['current_user']->ID, 'rocket_boxes', true );
-		$referer = rocket_get_referer_param();
 
 		if ( ! in_array( __FUNCTION__, (array) $boxes ) ) { ?>
 
 			<div class="error">
-				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore' . $referer . '&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>" class="rkt-cross"><div class="dashicons dashicons-no"></div></a>
+				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>" class="rkt-cross"><div class="dashicons dashicons-no"></div></a>
 				<p><b><?php echo WP_ROCKET_PLUGIN_NAME; ?></b>: <?php printf( __('Be careful, you don\'t have <a href="%1$s" target="_blank">writing permissions</a> on <b>%3$s</b> domain configuration folder (<code>%2$s</code>). To make <b>%3$s</b> work properly, please CHMOD <code>755</code> or <code>775</code> or <code>777</code> this folder.<br/>When the problem is solved, thank you to save the %3$s options to generate the configuration file.', 'rocket' ), 'http://codex.wordpress.org/Changing_File_Permissions', trim( str_replace( ABSPATH, '', WP_ROCKET_CONFIG_PATH ), '/' ), WP_ROCKET_PLUGIN_NAME ); ?></p>
 			</div>
 
@@ -423,12 +414,11 @@ function rocket_warning_cache_dir_permissions()
 	    && rocket_valid_key() ) {
 
 		$boxes = get_user_meta( $GLOBALS['current_user']->ID, 'rocket_boxes', true );
-		$referer = rocket_get_referer_param();
 
 		if ( ! in_array( __FUNCTION__, (array) $boxes ) ) { ?>
 
 			<div class="error">
-				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore' . $referer . '&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>" class="rkt-cross"><div class="dashicons dashicons-no"></div></a>
+				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>" class="rkt-cross"><div class="dashicons dashicons-no"></div></a>
 				<p><b><?php echo WP_ROCKET_PLUGIN_NAME; ?></b>: <?php printf( __('Be careful, you don\'t have <a href="%1$s" target="_blank">writing permissions</a> on <b>%3$s</b> cache folder (<code>%2$s</code>). For <b>%3$s</b> works properly, please CHMOD <code>755</code> or <code>775</code> or <code>777</code> this folder.', 'rocket' ), 'http://codex.wordpress.org/Changing_File_Permissions', trim( str_replace( ABSPATH, '', WP_ROCKET_CACHE_PATH ), '/' ), WP_ROCKET_PLUGIN_NAME ); ?></p>
 			</div>
 
@@ -453,12 +443,11 @@ function rocket_warning_minify_cache_dir_permissions()
 	    && rocket_valid_key() ) {
 
 		$boxes = get_user_meta( $GLOBALS['current_user']->ID, 'rocket_boxes', true );
-		$referer = rocket_get_referer_param();
 
 		if ( ! in_array( __FUNCTION__, (array) $boxes ) ) { ?>
 
 			<div class="error">
-				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore' . $referer . '&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>" class="rkt-cross"><div class="dashicons dashicons-no"></div></a>
+				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>" class="rkt-cross"><div class="dashicons dashicons-no"></div></a>
 				<p><b><?php echo WP_ROCKET_PLUGIN_NAME; ?></b>: <?php printf( __('Be careful, you don\'t have <a href="%1$s" target="_blank">writing permissions</a> on <b>%3$s</b> minified cache folder (<code>%2$s</code>). To make <b>%3$s</b> work properly, please CHMOD <code>755</code> or <code>775</code> or <code>777</code> this folder.', 'rocket' ), 'http://codex.wordpress.org/Changing_File_Permissions', trim( str_replace( ABSPATH, '', WP_ROCKET_MINIFY_CACHE_PATH ), '/' ), WP_ROCKET_PLUGIN_NAME ); ?></p>
 			</div>
 
