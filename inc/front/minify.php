@@ -584,3 +584,23 @@ function __rocket_extract_js_files_from_footer() {
 		}
 	}
 }
+
+/**
+ * Compatibility with WordPress multisite with subfolders websites
+ *
+ * @since 2.6.5
+ */
+add_filter( 'rocket_pre_minify_path', '__rocket_fix_minify_multisite_path_issue' );
+function __rocket_fix_minify_multisite_path_issue( $url ) {
+	if ( ! is_multisite() ) {
+		return $url;
+	}
+	
+	$bloginfo = get_blog_details( (int) get_current_blog_id(), false );
+	
+	if( $bloginfo->path != '/' ) {
+		$url = str_replace( $bloginfo->path, '/', $url );	
+	}
+	
+	return $url;
+}
