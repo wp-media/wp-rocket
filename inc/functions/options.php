@@ -151,9 +151,10 @@ function get_rocket_cache_reject_uri()
 	  *
 	  * @param bool false will force to cache the WooCommerce REST API
 	 */
-	$rocket_cache_reject_wooc_rest_api = apply_filters( 'rocket_cache_reject_wooc_rest_api', true );
+	$rocket_cache_reject_wc_rest_api = apply_filters( 'rocket_cache_reject_wc_rest_api', true );
+	
 	// Exclude WooCommerce REST API
-	if( class_exists( 'WC_API' ) && $rocket_cache_reject_wooc_rest_api ) {
+	if( class_exists( 'WC_API' ) && $rocket_cache_reject_wc_rest_api ) {
 		$uri[] = '/wc-api/v(.*)';
 	}
 	
