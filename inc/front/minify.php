@@ -161,7 +161,8 @@ function rocket_concatenate_google_fonts( $buffer ) {
 	// Concatenate fonts tag
 	$subsets = ( $subsets ) ? '&subset=' . implode( ',', array_filter( array_unique( $subsets ) ) ) : '';
 	$fonts   = trim( implode( '|' , array_filter( array_unique( $fonts ) ) ), '|' );
-
+	$fonts	 = str_replace( '|', '%7C', $fonts );
+	
 	if( ! empty( $fonts ) ) {
 		$fonts   = '<link rel="stylesheet" href="//fonts.googleapis.com/css?family=' . $fonts . $subsets . '" />';
 	}
