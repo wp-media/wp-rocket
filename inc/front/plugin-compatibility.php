@@ -57,6 +57,34 @@ function __deactivate_rocket_lazyload_on_envira_gallery_indexable_images( $image
 }
 
 /**
+* Conflict with Envira Gallery: changes the URL argument if using WP Rocket CDN and Envira
+*
+* @since 2.6.5
+*/
+add_filter( 'envira_gallery_resize_image_args', '__rocket_cdn_resize_image_args_on_envira_gallery' );
+function __rocket_cdn_resize_image_args_on_envira_gallery( $args ) {
+	$cnames_host = get_rocket_cnames_host();
+    $url_host    = parse_url( $args['url'], PHP_URL_HOST );
+    $home_host   = parse_url( home_url(), PHP_URL_HOST );
+       
+    if ( in_array( $url_host, $cnames_host ) ) {
+    	$args['url'] = str_replace( $url_host, $home_host , $args['url'] );    
+    }
+    return $args;
+}
+
+/**
+* Conflict with Envira Gallery: changes the resized URL if using WP Rocket CDN and Envira
+*
+* @since 2.6.5
+*/
+add_filter( 'envira_gallery_resize_image_resized_url', '__rocket_cdn_resized_url_on_envira_gallery' );
+function __rocket_cdn_resized_url_on_envira_gallery( $url ) {
+    $url = get_rocket_cdn_url( $url, array( 'all', 'images' ) );
+    return $url;
+}
+
+/**
  * Conflict with Meta Slider (Nivo Slider): don't apply LazyLoad on all images
  *
  * @since 2.4
