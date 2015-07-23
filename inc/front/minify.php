@@ -597,9 +597,9 @@ function __rocket_fix_minify_multisite_path_issue( $url ) {
 		return $url;
 	}
 	
-	$bloginfo = get_blog_details( (int) get_current_blog_id(), false );
+	$bloginfo = get_blog_details( get_current_blog_id(), false );
 	
-	if( $bloginfo->path != '/' ) {
+	if ( $bloginfo->path != '/' ) {
 		$url = str_replace( $bloginfo->path, '/', $url );	
 	}
 	
