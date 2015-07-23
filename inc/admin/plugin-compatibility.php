@@ -29,6 +29,21 @@ function __rocket_after_update_single_options( $old_value, $value ) {
 	}
 }
 
+/**
+ * We need to regenerate the config file + htaccess depending on some plugins
+ *
+ * @since 2.6.5 Add support with SF Move Login & WPS Hide Login
+ */
+add_action( 'activate_sf-move-login/sf-move-login.php', 'rocket_generate_config_file', 11 );
+add_action( 'deactivate_sf-move-login/sf-move-login.php', 'rocket_generate_config_file', 11 );
+add_action( 'activate_wps-hide-login/wps-hide-login.php', 'rocket_generate_config_file', 11 );
+add_action( 'deactivate_wps-hide-login/wps-hide-login.php', 'rocket_generate_config_file', 11 );
+
+add_action( 'activate_sf-move-login/sf-move-login.php', 'flush_rocket_htaccess', 11 );
+add_action( 'deactivate_sf-move-login/sf-move-login.php', 'flush_rocket_htaccess', 11 );
+add_action( 'activate_wps-hide-login/wps-hide-login.php', 'flush_rocket_htaccess', 11 );
+add_action( 'deactivate_wps-hide-login/wps-hide-login.php', 'flush_rocket_htaccess', 11 );
+
 add_action( 'update_option_edd_settings', '__rocket_after_update_array_options', 10, 2 );
 add_action( 'update_option_jigoshop_options', '__rocket_after_update_array_options', 10, 2 );
 function __rocket_after_update_array_options( $old_value, $value ) {
