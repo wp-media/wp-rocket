@@ -8,6 +8,7 @@ Code Name: Yavin
 Author: WP Rocket
 Contributors: Jonathan Buttigieg, Julio Potier
 Author URI: http://www.wp-rocket.me
+Licence: GPLv2
 
 Text Domain: rocket
 Domain Path: languages
