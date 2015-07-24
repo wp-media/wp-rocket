@@ -228,7 +228,8 @@ function get_rocket_minify_excluded_external_js() {
 		'script.ioam.de',
 		'ir-na.amazon-adsystem.com',
 		'web.ventunotech.com',
-		'verify.authorize.net'
+		'verify.authorize.net',
+		'ads.themoneytizer.com'
 	) );
 	
 	return $excluded_external_js;		
