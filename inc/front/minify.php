@@ -533,6 +533,8 @@ add_action( 'wp_footer', '__rocket_extract_js_files_from_footer', 1 );
 function __rocket_extract_js_files_from_footer() {
 	global $rocket_enqueue_js_in_footer, $wp_scripts, $pagenow;
 	
+	$rocket_enqueue_js_in_footer = array();
+	
 	/** This filter is documented in inc/front/process.php */
 	$rocket_cache_search = apply_filters( 'rocket_cache_search', false );
 	
