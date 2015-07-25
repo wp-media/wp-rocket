@@ -117,6 +117,20 @@ function rocket_clean_wpengine() {
 }
 
 /**
+ * Call the cache server to purge the cache with GoDaddy hosting.
+ *
+ * @since 2.6.5
+ *
+ * @return void
+ */
+function rocket_clean_godaddy() {	
+	if ( class_exists( 'GD_System_Plugin_Cache_Purge' ) ) {
+		global $gd_cache_purge;
+		$gd_cache_purge->ban_cache();
+	}
+}
+
+/**
  * Get cart & checkout path with their translations to automatically exclude them to the cache.
  *
  * @since 2.4

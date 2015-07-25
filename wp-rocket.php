@@ -111,6 +111,7 @@ function rocket_init()
     require( WP_ROCKET_FRONT_PATH		. 'theme-compatibility.php' );
     require( WP_ROCKET_COMMON_PATH		. 'admin-bar.php' );
     require( WP_ROCKET_COMMON_PATH		. 'updater.php' );
+    require( WP_ROCKET_COMMON_PATH		. 'hosting.php' );
 	require( dirname( __FILE__ )		. '/licence-data.php' );
 
     if( rocket_valid_key() ) {

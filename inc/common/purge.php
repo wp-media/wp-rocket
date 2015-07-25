@@ -65,6 +65,11 @@ add_action( 'after_rocket_clean_domain', 'rocket_clean_pressidium' );
 */
 add_action( 'after_rocket_clean_domain', 'rocket_clean_wpengine' );
 
+/* @since 2.6.5
+ * For not conflit with GoDaddy
+*/
+add_action( 'after_rocket_clean_domain', 'rocket_clean_godaddy' );
+
 /**
  * Update cache when a post is updated or commented
  *
