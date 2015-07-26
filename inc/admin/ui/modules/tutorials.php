@@ -1,12 +1,12 @@
 <?php 
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
-add_settings_section( 'rocket_display_tutorials', __( 'Tutorials', 'rocket' ), '__return_false', 'tutorials' );
+add_settings_section( 'rocket_display_tutorials', __( 'Tutorials', 'rocket' ), '__return_false', 'tutorials_rocket' );
 add_settings_field(
 	'tuto_preload_cache',
 	__( 'Preload cache', 'rocket' ),
 	'rocket_video',
-	'tutorials',
+	'tutorials_rocket',
 	'rocket_display_tutorials',
 	array(
 		'description'	=> __( 'This video gives some explanations about our two crawler robots. They generate several cache files in a few seconds.', 'rocket' ),
@@ -18,7 +18,7 @@ add_settings_field(
 	'tuto_css_javascript_minification',
 	__( 'CSS and JavaScript minification', 'rocket' ),
 	'rocket_video',
-	'tutorials',
+	'tutorials_rocket',
 	'rocket_display_tutorials',
 	array(
 		'description'	=> __( 'This video gives some explanations about how to use the advanced processes of minification and concatenation of CSS and JavaScript files.', 'rocket' ),
@@ -30,7 +30,7 @@ add_settings_field(
 	'tuto_preload_dns_queries',
 	__( 'Preloading DNS queries', 'rocket' ),
 	'rocket_video',
-	'tutorials',
+	'tutorials_rocket',
 	'rocket_display_tutorials',
 	array(
 		'description'	=> __( 'This video helps to easily understand the advanced option of "Preloading DNS queries" and the use of the filter <code>rocket_dns_prefetch</code>.', 'rocket' ),
@@ -42,7 +42,7 @@ add_settings_field(
 	'tuto_white_label',
 	__( 'How to use the White Label functionality?', 'rocket' ),
 	'rocket_video',
-	'tutorials',
+	'tutorials_rocket',
 	'rocket_display_tutorials',
 	array(
 		'description'	=> __( 'This video helps to set up a White Label version of WP Rocket.', 'rocket' ),
@@ -54,7 +54,7 @@ add_settings_field(
 	'tuto_cdn',
 	__( 'How to use the CDN functionality?', 'rocket' ),
 	'rocket_video',
-	'tutorials',
+	'tutorials_rocket',
 	'rocket_display_tutorials',
 	array(
 		'description'	=> __( 'This video helps to understand what is the CDN functionality included since WP Rocket 2.1.', 'rocket' ),
@@ -66,7 +66,7 @@ add_settings_field(
 	'tuto_cdn_api',
 	__( 'How to use the CDN API?', 'rocket' ),
 	'rocket_video',
-	'tutorials',
+	'tutorials_rocket',
 	'rocket_display_tutorials',
 	array(
 		'description'	=> __( 'This video helps to set up the two functions <code>get_rocket_cdn_url()</code> and <code>rocket_cdn_url()</code>.', 'rocket' ),

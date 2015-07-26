@@ -1,12 +1,12 @@
 <?php 
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
-add_settings_section( 'rocket_display_cdn_options', __( 'Content Delivery Network options', 'rocket' ), '__return_false', 'cdn' );
+add_settings_section( 'rocket_display_cdn_options', __( 'Content Delivery Network options', 'rocket' ), '__return_false', 'rocket_cdn' );
 add_settings_field(
 	'rocket_do_cloudflare',
 	'CloudFlare',
 	'rocket_field',
-	'cdn',
+	'rocket_cdn',
 	'rocket_display_cdn_options',
 	array(
 		array(
@@ -31,7 +31,7 @@ add_settings_field(
 	'rocket_cdn',
 	__( 'CDN:', 'rocket' ),
 	'rocket_field',
-	'cdn',
+	'rocket_cdn',
 	'rocket_display_cdn_options',
 	array(
 		array(
@@ -51,7 +51,7 @@ add_settings_field(
 	'rocket_cdn_on_ssl',
 	'CDN & SSL:',
 	'rocket_field',
-	'cdn',
+	'rocket_cdn',
 	'rocket_display_cdn_options',
 	array(
 		array(
@@ -66,14 +66,14 @@ add_settings_field(
 	'rocket_cdn_cnames',
 	__( 'Replace site\'s hostname with:', 'rocket' ),
 	'rocket_cnames_module',
-	'cdn',
+	'rocket_cdn',
 	'rocket_display_cdn_options'
 );
 add_settings_field(
 	'rocket_cdn_reject_files',
 	__( 'Rejected files:', 'rocket' ),
 	'rocket_field',
-	'cdn',
+	'rocket_cdn',
 	'rocket_display_cdn_options',
 	array(
 		array(
