@@ -131,6 +131,20 @@ function rocket_clean_godaddy() {
 }
 
 /**
+ * Call the cache server to purge the cache with Savvii hosting.
+ *
+ * @since 2.6.5
+ *
+ * @return void
+ */
+function rocket_clean_savvii() {
+	if ( class_exists( '\\Savvii\\CacheFlusherPlugin' ) ) {
+		$plugin = new \Savvii\CacheFlusherPlugin();
+		$plugin->domainflush();
+	}
+}
+
+/**
  * Get cart & checkout path with their translations to automatically exclude them to the cache.
  *
  * @since 2.4
