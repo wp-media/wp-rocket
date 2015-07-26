@@ -155,7 +155,7 @@ function get_rocket_cache_reject_uri()
 	
 	// Exclude WooCommerce REST API
 	if( class_exists( 'WC_API' ) && $rocket_cache_reject_wc_rest_api ) {
-		$uri[] = '/wc-api/v(.*)';
+		$uri[] = rocket_clean_exclude_file( home_url( '/wc-api/v(.*)' ) );
 	}
 	
 	// Exclude feeds
