@@ -63,6 +63,10 @@ function __deactivate_rocket_lazyload_on_envira_gallery_indexable_images( $image
 */
 add_filter( 'envira_gallery_resize_image_args', '__rocket_cdn_resize_image_args_on_envira_gallery' );
 function __rocket_cdn_resize_image_args_on_envira_gallery( $args ) {
+	if ( ! isset( $args['url'] ) || (int) get_rocket_option('cdn') == 0 ) {
+		return $args;
+	}
+	
 	$cnames_host = get_rocket_cnames_host();
     $url_host    = parse_url( $args['url'], PHP_URL_HOST );
     $home_host   = parse_url( home_url(), PHP_URL_HOST );
@@ -70,6 +74,7 @@ function __rocket_cdn_resize_image_args_on_envira_gallery( $args ) {
     if ( in_array( $url_host, $cnames_host ) ) {
     	$args['url'] = str_replace( $url_host, $home_host , $args['url'] );    
     }
+    
     return $args;
 }
 
@@ -80,6 +85,10 @@ function __rocket_cdn_resize_image_args_on_envira_gallery( $args ) {
 */
 add_filter( 'envira_gallery_resize_image_resized_url', '__rocket_cdn_resized_url_on_envira_gallery' );
 function __rocket_cdn_resized_url_on_envira_gallery( $url ) {
+    if ( (int) get_rocket_option('cdn') == 0 ) {
+		return $url;
+	}
+	
     $url = get_rocket_cdn_url( $url, array( 'all', 'images' ) );
     return $url;
 }
