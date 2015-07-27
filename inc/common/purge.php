@@ -65,6 +65,16 @@ add_action( 'after_rocket_clean_domain', 'rocket_clean_pressidium' );
 */
 add_action( 'after_rocket_clean_domain', 'rocket_clean_wpengine' );
 
+/* @since 2.6.5
+ * For not conflit with GoDaddy
+*/
+add_action( 'after_rocket_clean_domain', 'rocket_clean_godaddy' );
+
+/* @since 2.6.5
+ * For not conflit with Savvii
+*/
+add_action( 'after_rocket_clean_domain', 'rocket_clean_savvii' );
+
 /**
  * Update cache when a post is updated or commented
  *
@@ -184,7 +194,7 @@ function rocket_clean_post( $post_id )
 	 * @since 1.0
 	 * @param array $purge_urls List of URLs cache files to remove
 	*/
-	$purge_urls = apply_filters( 'rocket_post_purge_urls', $purge_urls );
+	$purge_urls = apply_filters( 'rocket_post_purge_urls', $purge_urls, $post );
 	
 	// Purge all files
 	rocket_clean_files( $purge_urls );
@@ -198,7 +208,8 @@ function rocket_clean_post( $post_id )
 
 	// Polylang
 	} else if ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
-		$lang = $GLOBALS['polylang']->model->get_post_language( $post_id )->slug;
+		$post_language = $GLOBALS['polylang']->model->get_post_language( $post_id );
+		$lang = ( is_object( $post_language ) ) ? $post_language->slug : false;
 	}
 	rocket_clean_home( $lang );
 

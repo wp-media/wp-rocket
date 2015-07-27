@@ -1,12 +1,12 @@
 <?php 
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
-add_settings_section( 'rocket_display_imp_options', __( 'Advanced options', 'rocket' ), '__return_false', 'advanced' );
+add_settings_section( 'rocket_display_imp_options', __( 'Advanced options', 'rocket' ), '__return_false', 'advanced_rocket' );
 add_settings_field(
 	'rocket_dns_prefetch',
 	__( 'Prefetch DNS requests:', 'rocket' ),
 	'rocket_field',
-	'advanced',
+	'advanced_rocket',
 	'rocket_display_imp_options',
 	array(
 		array(
@@ -36,7 +36,7 @@ add_settings_field(
 	'rocket_purge_pages',
 	__( 'Empty the cache of the following pages when updating a post:', 'rocket' ),
 	'rocket_field',
-	'advanced',
+	'advanced_rocket',
 	'rocket_display_imp_options',
 	array(
 		array(
@@ -61,7 +61,7 @@ add_settings_field(
 	'rocket_reject_uri',
 	__( 'Never cache the following pages:', 'rocket' ),
 	'rocket_field',
-	'advanced',
+	'advanced_rocket',
 	'rocket_display_imp_options',
 	array(
 		array(
@@ -85,7 +85,7 @@ add_settings_field(
 	'rocket_reject_cookies',
 	__( 'Don\'t cache pages that use the following cookies:', 'rocket' ),
 	'rocket_field',
-	'advanced',
+	'advanced_rocket',
 	'rocket_display_imp_options',
 	array(
 		array(
@@ -104,7 +104,7 @@ add_settings_field(
 	'rocket_query_strings',
 	__( 'Cache pages that use the following query strings (GET parameters):', 'rocket' ),
 	'rocket_field',
-	'advanced',
+	'advanced_rocket',
 	'rocket_display_imp_options',
 	array(
 		array(
@@ -123,7 +123,7 @@ add_settings_field(
 	'rocket_reject_ua',
 	__( 'Never send cache pages for these user agents:', 'rocket' ),
 	'rocket_field',
-	'advanced',
+	'advanced_rocket',
 	'rocket_display_imp_options',
 	array(
 		array(
@@ -142,7 +142,7 @@ add_settings_field(
 	'rocket_minify_combine_all',
 	 __( 'Reducing the number of minified files in one file on:', 'rocket' ),
 	'rocket_field',
-	'advanced',
+	'advanced_rocket',
 	'rocket_display_imp_options',
 	array(
 		array(
@@ -173,7 +173,7 @@ add_settings_field(
 	'rocket_exclude_css',
 	__( '<b>CSS</b> files to exclude from minification:', 'rocket' ),
 	'rocket_field',
-	'advanced',
+	'advanced_rocket',
 	'rocket_display_imp_options',
 	array(
 		array(
@@ -192,7 +192,7 @@ add_settings_field(
 	'rocket_exclude_js',
 	__( '<b>JS</b> files to exclude from minification:', 'rocket' ),
 	'rocket_field',
-	'advanced',
+	'advanced_rocket',
 	'rocket_display_imp_options',
 	array(
 		array(
@@ -211,7 +211,7 @@ add_settings_field(
 	'minify_js_in_footer',
 	__( '<b>JS</b> files to be included in the footer during the minification process:', 'rocket' ),
 	'rocket_field',
-	'advanced',
+	'advanced_rocket',
 	'rocket_display_imp_options',
 	array(
 		array(
@@ -239,7 +239,7 @@ add_settings_field(
 	'rocket_deferred_js',
 	__( '<b>JS</b> files with deferred loading:', 'rocket' ),
 	'rocket_field',
-	'advanced',
+	'advanced_rocket',
 	'rocket_display_imp_options',
 	array(
 		array(

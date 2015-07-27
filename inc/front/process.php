@@ -16,11 +16,6 @@ if ( strtolower( $_SERVER['REQUEST_URI'] ) != '/index.php' && in_array( pathinfo
 	return;
 }
 
-// Don't cache WooCommerce API
-if ( strpos( $_SERVER['REQUEST_URI'], 'wc-api/v' ) ) {
-	return;
-}
-
 // Don't cache if user is in admin
 if ( is_admin() ) {
 	return;
@@ -33,7 +28,8 @@ if ( $_SERVER['REQUEST_METHOD'] != 'GET' ) {
 
 // Get the correct config file
 $rocket_config_path = WP_CONTENT_DIR . '/wp-rocket-config/';
-$host = trim( strtolower( $_SERVER['HTTP_HOST'] ), '.' );
+$host = ( isset( $_SERVER['HTTP_HOST'] ) ) ? $_SERVER['HTTP_HOST'] : time();
+$host = trim( strtolower( $host ), '.' );
 $host = str_replace( array( '..', chr(0) ), '', $host );
 
 $continue = false;
@@ -99,7 +95,6 @@ if ( isset( $rocket_cache_reject_uri ) && preg_match( '#^(' . $rocket_cache_reje
 	rocket_define_donotminify_constants( true );
 	return;
 }
-
 // Don't cache page with this cookie
 if ( isset( $rocket_cache_reject_cookies ) && preg_match( '#(' . $rocket_cache_reject_cookies . ')#', var_export( $_COOKIE, true ) ) ) {
 	rocket_define_donotminify_constants( true );
@@ -255,7 +250,7 @@ function rocket_serve_cache_file( $request_uri_path )
 		// Checking if the client is validating his cache and if it is current.
 	    if ( $http_if_modified_since && ( strtotime( $http_if_modified_since ) == filemtime( $rocket_cache_filepath ) ) ) {
 	        // Client's cache is current, so we just respond '304 Not Modified'.
-	        header( $_SERVER['SERVER_PROTOCOL'] . ' 304 Not Modified' );
+	        header( $_SERVER['SERVER_PROTOCOL'] . ' 304 Not Modified', true, 304 );
 	        exit;
 	    }
 

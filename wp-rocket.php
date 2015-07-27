@@ -3,11 +3,12 @@
 Plugin Name: WP Rocket
 Plugin URI: http://www.wp-rocket.me
 Description: The best WordPress performance plugin.
-Version: 2.6.4
+Version: 2.6.5
 Code Name: Yavin
 Author: WP Rocket
 Contributors: Jonathan Buttigieg, Julio Potier
 Author URI: http://www.wp-rocket.me
+Licence: GPLv2
 
 Text Domain: rocket
 Domain Path: languages
@@ -18,7 +19,7 @@ Copyright 2013-2015 WP Rocket
 defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
 
 // Rocket defines
-define( 'WP_ROCKET_VERSION'             , '2.6.4' );
+define( 'WP_ROCKET_VERSION'             , '2.6.5' );
 define( 'WP_ROCKET_PRIVATE_KEY'         , false );
 define( 'WP_ROCKET_SLUG'                , 'wp_rocket_settings' );
 define( 'WP_ROCKET_WEB_MAIN'            , 'http://support.wp-rocket.me/' );
@@ -109,6 +110,8 @@ function rocket_init()
     require( WP_ROCKET_FRONT_PATH		. 'plugin-compatibility.php' );
     require( WP_ROCKET_FRONT_PATH		. 'theme-compatibility.php' );
     require( WP_ROCKET_COMMON_PATH		. 'admin-bar.php' );
+    require( WP_ROCKET_COMMON_PATH		. 'updater.php' );
+    require( WP_ROCKET_COMMON_PATH		. 'hosting.php' );
 	require( dirname( __FILE__ )		. '/licence-data.php' );
 
     if( rocket_valid_key() ) {
@@ -124,7 +127,7 @@ function rocket_init()
 			require( WP_ROCKET_COMMON_PATH 	. 'cloudflare.php' );
 		}
 
-        if ( defined( 'SUNRISE' ) && SUNRISE == 'on' && function_exists( 'domain_mapping_siteurl' ) ) {
+        if ( is_multisite() && defined( 'SUNRISE' ) && SUNRISE == 'on' && function_exists( 'domain_mapping_siteurl' ) ) {
 	        require( WP_ROCKET_INC_PATH . '/domain-mapping.php' );
         }
     }
@@ -256,9 +259,6 @@ function rocket_activation()
 
 	// Create advanced-cache.php file
 	rocket_generate_advanced_cache_file();
-
-	// Create config file
-	rocket_generate_config_file();
 	
 	// Update customer key & licence.
 	wp_remote_get( WP_ROCKET_WEB_API . 'activate-licence.php', array( 'blocking' => false ) );

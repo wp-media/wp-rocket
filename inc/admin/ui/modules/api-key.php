@@ -1,12 +1,12 @@
 <?php 
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
-add_settings_section( 'rocket_display_apikey_options', __( 'License validation', 'rocket' ), '__return_false', 'apikey' );
+add_settings_section( 'rocket_display_apikey_options', __( 'License validation', 'rocket' ), '__return_false', 'apikey_rocket' );
 add_settings_field(
 	'rocket_api_key',
 	__( 'API Key', 'rocket' ),
 	'rocket_field',
-	'apikey',
+	'apikey_rocket',
 	'rocket_display_apikey_options',
 	array(
 		array(
@@ -25,7 +25,7 @@ add_settings_field(
 	'rocket_email',
 	__( 'E-mail Address', 'rocket' ),
 	'rocket_field',
-	'apikey',
+	'apikey_rocket',
 	'rocket_display_apikey_options',
 	array(
 		array(

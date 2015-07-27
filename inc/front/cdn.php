@@ -23,6 +23,12 @@ function rocket_cdn_file( $url )
 	}
 
 	$filter = current_filter();
+	
+	$rejected_files = get_rocket_cdn_reject_files();
+	if ( 'template_directory_uri' == $filter && ! empty( $rejected_files ) ) {
+		return $url;
+	}
+	
 	switch ( $filter ) {
 		case 'wp_get_attachment_url':
 		case 'smilies_src':
@@ -35,7 +41,7 @@ function rocket_cdn_file( $url )
 			$zone = array( 'all', 'css_and_js', $ext );
 			break;
 		default:
-			$zone = array( 'all' );
+			$zone = array( 'all', $ext );
 			break;
 	}
 

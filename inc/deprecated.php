@@ -234,3 +234,17 @@ function get_rocket_subdomains_langs() {
 	return get_rocket_i18n_subdomains();
 }
 endif;
+
+if ( ! function_exists( 'rocket_replace_domain_mapping_siteurl' ) ) :
+/**
+ * Get Domain Mapping host based on original URL
+ *
+ * @since 2.2
+ * @deprecated 2.6.5
+ *
+ */
+function rocket_replace_domain_mapping_siteurl( $url = null ) {
+	_deprecated_function( __FUNCTION__, '2.6.5' );
+	return false;
+}
+endif;

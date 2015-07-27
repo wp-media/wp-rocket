@@ -226,7 +226,10 @@ function get_rocket_minify_excluded_external_js() {
 		'smarticon.geotrust.com',
 		'js.gleam.io',
 		'script.ioam.de',
-		'ir-na.amazon-adsystem.com'
+		'ir-na.amazon-adsystem.com',
+		'web.ventunotech.com',
+		'verify.authorize.net',
+		'ads.themoneytizer.com'
 	) );
 	
 	return $excluded_external_js;		

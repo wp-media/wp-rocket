@@ -161,7 +161,8 @@ function rocket_concatenate_google_fonts( $buffer ) {
 	// Concatenate fonts tag
 	$subsets = ( $subsets ) ? '&subset=' . implode( ',', array_filter( array_unique( $subsets ) ) ) : '';
 	$fonts   = trim( implode( '|' , array_filter( array_unique( $fonts ) ) ), '|' );
-
+	$fonts	 = str_replace( '|', '%7C', $fonts );
+	
 	if( ! empty( $fonts ) ) {
 		$fonts   = '<link rel="stylesheet" href="//fonts.googleapis.com/css?family=' . $fonts . $subsets . '" />';
 	}
@@ -532,6 +533,8 @@ add_action( 'wp_footer', '__rocket_extract_js_files_from_footer', 1 );
 function __rocket_extract_js_files_from_footer() {
 	global $rocket_enqueue_js_in_footer, $wp_scripts, $pagenow;
 	
+	$rocket_enqueue_js_in_footer = array();
+	
 	/** This filter is documented in inc/front/process.php */
 	$rocket_cache_search = apply_filters( 'rocket_cache_search', false );
 	
@@ -583,4 +586,24 @@ function __rocket_extract_js_files_from_footer() {
 			$rocket_enqueue_js_in_footer[ $handle ] = rocket_set_internal_url_scheme( $script_src );
 		}
 	}
+}
+
+/**
+ * Compatibility with WordPress multisite with subfolders websites
+ *
+ * @since 2.6.5
+ */
+add_filter( 'rocket_pre_minify_path', '__rocket_fix_minify_multisite_path_issue' );
+function __rocket_fix_minify_multisite_path_issue( $url ) {
+	if ( ! is_multisite() ) {
+		return $url;
+	}
+	
+	$bloginfo = get_blog_details( get_current_blog_id(), false );
+	
+	if ( $bloginfo->path != '/' ) {
+		$url = str_replace( $bloginfo->path, '/', $url );	
+	}
+	
+	return $url;
 }

@@ -117,6 +117,34 @@ function rocket_clean_wpengine() {
 }
 
 /**
+ * Call the cache server to purge the cache with GoDaddy hosting.
+ *
+ * @since 2.6.5
+ *
+ * @return void
+ */
+function rocket_clean_godaddy() {	
+	if ( class_exists( 'GD_System_Plugin_Cache_Purge' ) ) {
+		global $gd_cache_purge;
+		$gd_cache_purge->ban_cache();
+	}
+}
+
+/**
+ * Call the cache server to purge the cache with Savvii hosting.
+ *
+ * @since 2.6.5
+ *
+ * @return void
+ */
+function rocket_clean_savvii() {
+	if ( class_exists( '\\Savvii\\CacheFlusherPlugin' ) ) {
+		$plugin = new \Savvii\CacheFlusherPlugin();
+		$plugin->domainflush();
+	}
+}
+
+/**
  * Get cart & checkout path with their translations to automatically exclude them to the cache.
  *
  * @since 2.4
@@ -137,6 +165,11 @@ function get_rocket_ecommerce_exclude_pages() {
 			$cart_urls = get_rocket_i18n_translated_post_urls( wc_get_page_id( 'cart' ) );
 			$urls = array_merge( $urls, $cart_urls );
 		}
+		
+		if ( wc_get_page_id( 'myaccount' ) && wc_get_page_id( 'myaccount' ) != '-1' ) {
+			$cart_urls = get_rocket_i18n_translated_post_urls( wc_get_page_id( 'myaccount' ), 'page', '(.*)' );
+			$urls = array_merge( $urls, $cart_urls );
+		}
 	}
 	
 	// Easy Digital Downloads
@@ -150,7 +183,13 @@ function get_rocket_ecommerce_exclude_pages() {
 	if ( function_exists( 'it_exchange_get_page_type' ) && function_exists( 'it_exchange_get_page_url' ) ) {
 		$pages = array(
 			'purchases',
-			'confirmation'
+			'confirmation',
+			'account',
+			'profile',
+			'downloads',
+			'purchases',
+			'log-in',
+			'log-out'
 		);
 		
 		foreach( $pages as $page ) {
@@ -170,8 +209,14 @@ function get_rocket_ecommerce_exclude_pages() {
 			$checkout_urls = get_rocket_i18n_translated_post_urls( jigoshop_get_page_id( 'checkout' ), 'page', '(.*)' );
 			$urls = array_merge( $urls, $checkout_urls );
 		}
+		
 		if ( jigoshop_get_page_id( 'cart' ) && jigoshop_get_page_id( 'cart' ) != '-1' ) {
 			$cart_urls = get_rocket_i18n_translated_post_urls( jigoshop_get_page_id( 'cart' ) );
+			$urls = array_merge( $urls, $cart_urls );
+		}
+		
+		if ( jigoshop_get_page_id( 'myaccount' ) && jigoshop_get_page_id( 'myaccount' ) != '-1' ) {
+			$cart_urls = get_rocket_i18n_translated_post_urls( jigoshop_get_page_id( 'myaccount' ), 'page', '(.*)' );
 			$urls = array_merge( $urls, $cart_urls );
 		}
 	}
@@ -182,7 +227,8 @@ function get_rocket_ecommerce_exclude_pages() {
 			'wpshop_cart_page_id',
 			'wpshop_checkout_page_id',
 			'wpshop_payment_return_page_id',
-			'wpshop_payment_return_nok_page_id'
+			'wpshop_payment_return_nok_page_id',
+			'wpshop_myaccount_page_id'
 		);
 		
 		foreach( $pages as $page ) {
@@ -204,16 +250,24 @@ function get_rocket_ecommerce_exclude_pages() {
  */
 function get_rocket_logins_exclude_pages() {
 	$urls = array();
-	
-	// SF Move Login
-	if ( defined( 'SFML_VERSION' ) && class_exists( 'SFML_Options' ) ) {
+
+	// SF Move Login - Don't return its slugs on deactivation
+	if ( defined( 'SFML_PLUGIN_DIR' ) && 'deactivate_sf-move-login/sf-move-login.php' != current_filter() ) { 
+		if ( ! class_exists( 'SFML_Options' ) ) {
+			include( SFML_PLUGIN_DIR . 'inc/utilities.php' );
+			include( SFML_PLUGIN_DIR . 'inc/class-sfml-options.php' );
+		}
+		
 		$urls = array_merge( $urls, SFML_Options::get_slugs() );
+		
+		foreach( $urls as $k => $url ) {
+			$urls[ $k ] = rocket_clean_exclude_file( home_url( $url ) );
+		}
 	}
-	
-	// WPS Hide Login
-	if ( class_exists( 'WPS_Hide_Login' ) ) {
-		$urls[] = get_option( 'whl_page' );
-		$urls[] = user_trailingslashit( str_repeat( '-/', 10 ) );
+
+	// WPS Hide Login - Don't return its slug on deactivation
+	if ( class_exists( 'WPS_Hide_Login' ) && 'deactivate_wps-hide-login/wps-hide-login.php' != current_filter() ) {
+		$urls[] = rocket_clean_exclude_file( home_url( trailingslashit( get_option( 'whl_page' ) ) ) );
 	}
 
 	return $urls;

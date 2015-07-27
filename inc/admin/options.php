@@ -505,22 +505,22 @@ function rocket_display_options()
 		</h2>
 		<div id="rockettabs">
 			<?php if( rocket_valid_key() ) { ?>
-				<div class="rkt-tab" id="tab_basic"><?php do_settings_sections( 'basic' ); ?></div>
-				<div class="rkt-tab" id="tab_advanced"><?php do_settings_sections( 'advanced' ); ?></div>
-				<div class="rkt-tab" id="tab_cloudflare" <?php echo get_rocket_option( 'do_cloudflare' ) ? '' : 'style="display:none"'; ?>><?php do_settings_sections( 'cloudflare' ); ?></div>
-				<div class="rkt-tab" id="tab_cdn"><?php do_settings_sections( 'cdn' ); ?></div>
+				<div class="rkt-tab" id="tab_basic"><?php do_settings_sections( 'rocket_basic' ); ?></div>
+				<div class="rkt-tab" id="tab_advanced"><?php do_settings_sections( 'rocket_advanced' ); ?></div>
+				<div class="rkt-tab" id="tab_cloudflare" <?php echo get_rocket_option( 'do_cloudflare' ) ? '' : 'style="display:none"'; ?>><?php do_settings_sections( 'rocket_cloudflare' ); ?></div>
+				<div class="rkt-tab" id="tab_cdn"><?php do_settings_sections( 'rocket_cdn' ); ?></div>
 				<?php $class_hidden = !defined( 'WP_RWL' ) ? ' hidden' : ''; ?>
-				<div class="rkt-tab<?php echo $class_hidden; ?>" id="tab_whitelabel"><?php do_settings_sections( 'white_label' ); ?></div>
-				<div class="rkt-tab" id="tab_tools"><?php do_settings_sections( 'tools' ); ?></div>
+				<div class="rkt-tab<?php echo $class_hidden; ?>" id="tab_whitelabel"><?php do_settings_sections( 'rocket_white_label' ); ?></div>
+				<div class="rkt-tab" id="tab_tools"><?php do_settings_sections( 'rocket_tools' ); ?></div>
 				<?php if ( ! rocket_is_white_label() ) { ?>
-					<div class="rkt-tab" id="tab_tutorials"><?php do_settings_sections( 'tutorials' ); ?></div>
-					<div class="rkt-tab rkt-tab-txt" id="tab_faq"><?php do_settings_sections( 'faq' ); ?></div>
-					<div class="rkt-tab rkt-tab-txt" id="tab_support"><?php do_settings_sections( 'support' ); ?></div>
+					<div class="rkt-tab" id="tab_tutorials"><?php do_settings_sections( 'rocket_tutorials' ); ?></div>
+					<div class="rkt-tab rkt-tab-txt" id="tab_faq"><?php do_settings_sections( 'rocket_faq' ); ?></div>
+					<div class="rkt-tab rkt-tab-txt" id="tab_support"><?php do_settings_sections( 'rocket_support' ); ?></div>
 				<?php } ?>
 			<?php }else{ ?>
-				<div class="rkt-tab" id="tab_apikey"><?php do_settings_sections( 'apikey' ); ?></div>
-				<div class="rkt-tab rkt-tab-txt" id="tab_faq"><?php do_settings_sections( 'faq' ); ?></div>
-				<div class="rkt-tab rkt-tab-txt" id="tab_support"><?php do_settings_sections( 'support' ); ?></div>
+				<div class="rkt-tab" id="tab_apikey"><?php do_settings_sections( 'rocket_apikey' ); ?></div>
+				<div class="rkt-tab rkt-tab-txt" id="tab_faq"><?php do_settings_sections( 'rocket_faq' ); ?></div>
+				<div class="rkt-tab rkt-tab-txt" id="tab_support"><?php do_settings_sections( 'rocket_support' ); ?></div>
 			<?php } ?>
 			<?php
 			do_action( 'rocket_tab_content', rocket_valid_key() );

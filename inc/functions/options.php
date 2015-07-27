@@ -143,6 +143,20 @@ function get_rocket_cache_reject_uri()
 	if( function_exists( 'json_get_url_prefix' ) && $rocket_cache_reject_wp_rest_api ) {
 		$uri[] = '/' . json_get_url_prefix() . '/(.*)';	
 	}
+
+	/**
+	  * By default, don't cache the WooCommerce REST API.
+	  *
+	  * @since 2.6.5
+	  *
+	  * @param bool false will force to cache the WooCommerce REST API
+	 */
+	$rocket_cache_reject_wc_rest_api = apply_filters( 'rocket_cache_reject_wc_rest_api', true );
+	
+	// Exclude WooCommerce REST API
+	if( class_exists( 'WC_API' ) && $rocket_cache_reject_wc_rest_api ) {
+		$uri[] = rocket_clean_exclude_file( home_url( '/wc-api/v(.*)' ) );
+	}
 	
 	// Exclude feeds
 	$uri[] = '.*/' . $GLOBALS['wp_rewrite']->feed_base . '/';
@@ -351,11 +365,15 @@ function get_rocket_exclude_js() {
  * @return array List of JS files.
  */
 function get_rocket_minify_js_in_footer() {
-	global $rocket_enqueue_js_in_footer;
+	global $rocket_enqueue_js_in_footer, $wp_scripts;
 	
 	$js_files = get_rocket_option( 'minify_js_in_footer', array() );
 	$js_files = array_map( 'rocket_set_internal_url_scheme', $js_files );
 	$js_files = array_unique( array_merge( $js_files, (array) $rocket_enqueue_js_in_footer ) );
+	
+	if ( rocket_is_plugin_active('sitepress-multilingual-cms/sitepress.php') && isset( $wp_scripts->registered['sitepress'] ) ) {
+		$js_files[] = $wp_scripts->registered['sitepress']->src;
+	}
 	
 	/**
 	 * Filter JS files to move in the footer during the minification.

@@ -79,7 +79,12 @@ function rocket_cdn_url( $url, $zone = array( 'all' ) )
  * @since 2.6
  */
 function rocket_cdn_css_properties( $buffer ) {
-	$zone   = array( 'all', 'css_and_js', 'css' );
+	$zone = array( 
+		'all', 
+		'images', 
+		'css_and_js', 
+		'css' 
+	);
 	$cnames = get_rocket_cdn_cnames( $zone );
 	
 	/**

@@ -9,11 +9,11 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 add_filter( 'http_request_args', 'rocket_updates_exclude', 5, 2 );
 function rocket_updates_exclude( $r, $url )
 {
-	if ( 0 !== strpos( $url, 'http://api.wordpress.org/plugins/update-check' ) ) {
+	if ( 0 !== strpos( $url, 'http://api.wordpress.org/plugins/update-check' ) || ! isset( $r['body']['plugins'] ) ) {
 		return $r; // Not a plugin update request. Stop immediately.
 	}
 
-	$plugins = unserialize( $r['body']['plugins'] );
+	$plugins = maybe_unserialize( $r['body']['plugins'] );
 
 	if ( isset( $plugins->plugins[ plugin_basename( WP_ROCKET_FILE ) ], $plugins->active[ array_search( plugin_basename( WP_ROCKET_FILE ), $plugins->active ) ] ) ) {
 		unset( $plugins->plugins[ plugin_basename( WP_ROCKET_FILE ) ] );
@@ -22,70 +22,6 @@ function rocket_updates_exclude( $r, $url )
 
 	$r['body']['plugins'] = serialize( $plugins );
 	return $r;
-}
-
-/**
- * Check Rocket updates twicedaily (like WP plugins)
- *
- * @since 1.0
- */
-add_action( 'load-plugins.php', 'rocket_check_update', PHP_INT_MAX );
-add_action( 'load-update.php', 'rocket_check_update', PHP_INT_MAX - 10 );
-add_action( 'load-update-core.php', 'rocket_check_update', PHP_INT_MAX );
-add_action( 'wp_update_plugins', 'rocket_check_update', PHP_INT_MAX );
-function rocket_check_update()
-{
-	if ( defined( 'WP_INSTALLING' ) ) {
-		return false;
-	}
-
-	$plugin_folder    = plugin_basename( dirname( WP_ROCKET_FILE ) );
-	$plugin_file      = basename( WP_ROCKET_FILE );
-	$version          = true;
-	$plugin_transient = null;
-
-	$response = wp_remote_get( WP_ROCKET_WEB_CHECK, array( 'timeout' => 30 ) );
-
-	set_site_transient( 'update_wprocket', time() );
-
-	if ( ! is_a( $response, 'WP_Error' ) && strlen( $response['body'] ) > 32 ) {
-
-		list( $version, $url ) = explode( '|', $response['body'] );
-		if ( version_compare( $version, WP_ROCKET_VERSION, '<=' ) ) {
-			return false;
-		}
-
-		$plugin_transient = get_site_transient( 'update_plugins' );
-		$temp_array = array(
-			'slug'        => $plugin_folder,
-			'plugin'      => $plugin_folder . '/wp-rocket.php',
-			'new_version' => $version,
-			'url'         => 'http://wp-rocket.me',
-			'package'     => $url
-		);
-
-	} else {
-		$temp_array = array();
-	}
-
-	if ( $plugin_transient ) {
-		$temp_object = (object) $temp_array;
-		$plugin_transient->response[ $plugin_folder . '/' . $plugin_file ] = $temp_object;
-		set_site_transient( 'update_plugins', $plugin_transient );
-	} else {
-		return false;
-	}
-}
-
-add_action( 'admin_init', '_maybe_update_rocket', PHP_INT_MAX );
-function _maybe_update_rocket()
-{
-	$current = get_site_transient( 'update_wprocket' );
-	if ( false !== $current && apply_filters( 'rocket_check_update', 12 * HOUR_IN_SECONDS ) > ( time() - $current ) ) {
-		return;
-	}
-
-	rocket_check_update();
 }
 
 /**

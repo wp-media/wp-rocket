@@ -1,12 +1,12 @@
 <?php 
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
-add_settings_section( 'rocket_display_main_options', __( 'Basic options', 'rocket' ), '__return_false', 'basic' );
+add_settings_section( 'rocket_display_main_options', __( 'Basic options', 'rocket' ), '__return_false', 'basic_rocket' );
 add_settings_field(
 	'rocket_lazyload',
 	__( 'Lazyload:', 'rocket' ),
 	'rocket_field',
-	'basic',
+	'basic_rocket',
 	'rocket_display_main_options',
 	array(
 		array(
@@ -33,7 +33,7 @@ add_settings_field(
 	'rocket_minify',
 	 __( 'Files optimisation:<br/><span class="description">(Minification & Concatenation)</span>', 'rocket' ),
 	'rocket_field',
-	'basic',
+	'basic_rocket',
 	'rocket_display_main_options',
 	array(
 		array(
@@ -100,13 +100,14 @@ $mobile_plugins = array(
 	'<a href="https://wordpress.org/plugins/wiziapp-create-your-own-native-iphone-app" target="_blank">wiziApp</a>',
 	'<a href="https://wordpress.org/plugins/wordpress-mobile-pack/" target="_blank">WordPress Mobile Pack</a>',
 	'<a href="https://wordpress.org/plugins/wp-mobilizer/" target="_blank">WP-Mobilizer</a>',
-	'<a href="https://wordpress.org/plugins/wp-mobile-edition/" target="_blank">WP Mobile Edition</a>'
+	'<a href="https://wordpress.org/plugins/wp-mobile-edition/" target="_blank">WP Mobile Edition</a>',
+	'<a href="https://wordpress.org/plugins/device-theme-switcher/" target="_blank">Device Theme Switcher</a>'
 );
 add_settings_field(
 	'rocket_mobile',
 	__( 'Mobile cache:', 'rocket' ),
 	'rocket_field',
-	'basic',
+	'basic_rocket',
 	'rocket_display_main_options',
 	array(
 		array(
@@ -125,7 +126,7 @@ add_settings_field(
 add_settings_field(
 	'rocket_logged_user',
 	__( 'Logged in user cache:', 'rocket' ),
-	'rocket_field', 'basic',
+	'rocket_field', 'basic_rocket',
 	'rocket_display_main_options',
 	array(
 		'type'         => 'checkbox',
@@ -138,7 +139,7 @@ add_settings_field(
 	'rocket_ssl',
 	__( 'SSL cache:', 'rocket' ),
 	'rocket_field',
-	'basic',
+	'basic_rocket',
 	'rocket_display_main_options',
 	array(
 		'type'         => 'checkbox',
@@ -151,7 +152,7 @@ add_settings_field(
 	'rocket_purge',
 	__( 'Clear Cache Lifespan', 'rocket' ),
 	'rocket_field',
-	'basic',
+	'basic_rocket',
 	'rocket_display_main_options',
 	array(
 		array(
