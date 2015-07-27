@@ -252,12 +252,14 @@ function get_rocket_logins_exclude_pages() {
 	$urls = array();
 
 	// SF Move Login - Don't return its slugs on deactivation
-	if ( defined( 'SFML_PLUGIN_DIR' ) && 'deactivate_sf-move-login/sf-move-login.php' != current_filter()) { 
+	if ( defined( 'SFML_PLUGIN_DIR' ) && 'deactivate_sf-move-login/sf-move-login.php' != current_filter() ) { 
 		if ( ! class_exists( 'SFML_Options' ) ) {
 			include( SFML_PLUGIN_DIR . 'inc/utilities.php' );
 			include( SFML_PLUGIN_DIR . 'inc/class-sfml-options.php' );
 		}
+		
 		$urls = array_merge( $urls, SFML_Options::get_slugs() );
+		
 		foreach( $urls as $k => $url ) {
 			$urls[ $k ] = rocket_clean_exclude_file( home_url( trim( $url ) ) );
 		}
@@ -265,7 +267,7 @@ function get_rocket_logins_exclude_pages() {
 
 	// WPS Hide Login - Don't return its slug on deactivation
 	if ( class_exists( 'WPS_Hide_Login' ) && 'deactivate_wps-hide-login/wps-hide-login.php' != current_filter() ) {
-		$urls[] = rocket_clean_exclude_file( home_url( trim( get_option( 'whl_page' ) ) ) );
+		$urls[] = rocket_clean_exclude_file( home_url( trailingslashit( get_option( 'whl_page' ) ) ) );
 	}
 
 	return $urls;
