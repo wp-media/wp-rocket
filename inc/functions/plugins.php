@@ -261,7 +261,7 @@ function get_rocket_logins_exclude_pages() {
 		$urls = array_merge( $urls, SFML_Options::get_slugs() );
 		
 		foreach( $urls as $k => $url ) {
-			$urls[ $k ] = rocket_clean_exclude_file( home_url( $url ) );
+			$urls[ $k ] = rocket_clean_exclude_file( trailingslashit( home_url( $url ) ) );
 		}
 	}
 
