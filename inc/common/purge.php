@@ -60,21 +60,6 @@ add_action( 'after_rocket_clean_domain', 'rocket_clean_pagely' );
 */
 add_action( 'after_rocket_clean_domain', 'rocket_clean_pressidium' );
 
-/* @since 2.6.4
- * For not conflit with WP Engine
-*/
-add_action( 'after_rocket_clean_domain', 'rocket_clean_wpengine' );
-
-/* @since 2.6.5
- * For not conflit with GoDaddy
-*/
-add_action( 'after_rocket_clean_domain', 'rocket_clean_godaddy' );
-
-/* @since 2.6.5
- * For not conflit with Savvii
-*/
-add_action( 'after_rocket_clean_domain', 'rocket_clean_savvii' );
-
 /**
  * Update cache when a post is updated or commented
  *
