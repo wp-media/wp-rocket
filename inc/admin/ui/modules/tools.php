@@ -1,14 +1,14 @@
 <?php 
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
-add_settings_section( 'rocket_display_tools', __( 'Tools', 'rocket' ), '__return_false', 'tools_rocket' );
+add_settings_section( 'rocket_display_tools', __( 'Tools', 'rocket' ), '__return_false', 'rocket_tools' );
 
 if ( ! rocket_is_white_label() ) {
 	add_settings_field(
 		'rocket_do_beta',
 		__( 'Beta Tester', 'rocket' ),
 		'rocket_field',
-		'tools_rocket',
+		'rocket_tools',
 		'rocket_display_tools',
 		array(
 			array(
@@ -30,7 +30,7 @@ add_settings_field(
 	'rocket_purge_all',
 	__( 'Clear cache', 'rocket' ),
 	'rocket_button',
-	'tools_rocket',
+	'rocket_tools',
 	'rocket_display_tools',
 	array(
 		'button'=>array(
@@ -47,7 +47,7 @@ add_settings_field(
 	'rocket_preload',
 	__( 'Preload cache', 'rocket' ),
 	'rocket_button',
-	'tools_rocket',
+	'rocket_tools',
 	'rocket_display_tools',
 	array(
         'button'=>array(
@@ -65,7 +65,7 @@ add_settings_field(
 	'rocket_export_options',
 	__( 'Settings Exporter', 'rocket' ),
 	'rocket_field',
-	'tools_rocket',
+	'rocket_tools',
 	'rocket_display_tools',
 	array( 'type'=>'rocket_export_form', 'name'=>'export' )
 
@@ -75,7 +75,7 @@ add_settings_field(
 	'rocket_import_options',
 	__( 'Settings Importer', 'rocket' ),
 	'rocket_field',
-	'tools_rocket',
+	'rocket_tools',
 	'rocket_display_tools',
 	array( 'type'=>'rocket_import_upload_form' )
 
@@ -87,7 +87,7 @@ if ( current_user_can( 'update_plugins' ) ) {
 		'rocket_rollback',
 		__( 'Update Rollback', 'rocket' ),
 		'rocket_button',
-		'tools_rocket',
+		'rocket_tools',
 		'rocket_display_tools',
 		array(
 	        'button'=>array(
