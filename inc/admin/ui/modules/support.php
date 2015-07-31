@@ -1,12 +1,12 @@
 <?php
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
-add_settings_section( 'rocket_display_support', __( 'Support', 'rocket' ), '__return_false', 'support_rocket' );
+add_settings_section( 'rocket_display_support', __( 'Support', 'rocket' ), '__return_false', 'rocket_support' );
 add_settings_field(
 	'rocket_support_summary',
 	__( 'Summary', 'rocket' ),
 	'rocket_field',
-	'support_rocket',
+	'rocket_support',
 	'rocket_display_support',
 	array(
 		array(
@@ -20,7 +20,7 @@ add_settings_field(
 	'rocket_support_description',
 	__( 'Description', 'rocket' ),
 	'rocket_field',
-	'support_rocket',
+	'rocket_support',
 	'rocket_display_support',
 	array(
 		array(
@@ -38,7 +38,7 @@ add_settings_field(
 	'rocket_support_documentation_validation',
 	null,
 	'rocket_field',
-	'support_rocket',
+	'rocket_support',
 	'rocket_display_support',
 	array(
 		'type'         => 'checkbox',
@@ -50,7 +50,7 @@ add_settings_field(
 	'rocket_support_submit',
 	null,
 	'rocket_button',
-	'support_rocket',
+	'rocket_support',
 	'rocket_display_support',
 	array(
 		'button' => array(

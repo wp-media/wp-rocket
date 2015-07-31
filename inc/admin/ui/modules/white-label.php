@@ -1,12 +1,12 @@
 <?php 
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
-add_settings_section( 'rocket_display_white_label', __( 'White Label', 'rocket' ), '__return_false', 'white_label_rocket' );
+add_settings_section( 'rocket_display_white_label', __( 'White Label', 'rocket' ), '__return_false', 'rocket_white_label' );
 add_settings_field(
 	'rocket_wl_plugin_name',
 	__( 'Plugin Name:', 'rocket' ),
 	'rocket_field',
-	'white_label_rocket',
+	'rocket_white_label',
 	'rocket_display_white_label',
 	array(
 		array(
@@ -21,7 +21,7 @@ add_settings_field(
 	'rocket_wl_plugin_URI',
 	__( 'Plugin URI:', 'rocket' ),
 	'rocket_field',
-	'white_label_rocket',
+	'rocket_white_label',
 	'rocket_display_white_label',
 	array(
 		array(
@@ -36,7 +36,7 @@ add_settings_field(
 	'rocket_wl_description',
 	__( 'Description:', 'rocket' ),
 	'rocket_field',
-	'white_label_rocket',
+	'rocket_white_label',
 	'rocket_display_white_label',
 	array(
 		array(
@@ -51,7 +51,7 @@ add_settings_field(
 	'rocket_wl_author',
 	__( 'Author:', 'rocket' ),
 	'rocket_field',
-	'white_label_rocket',
+	'rocket_white_label',
 	'rocket_display_white_label',
 	array(
 		array(
@@ -66,7 +66,7 @@ add_settings_field(
 	'rocket_wl_author_URI',
 	__( 'Author URI:', 'rocket' ),
 	'rocket_field',
-	'white_label_rocket',
+	'rocket_white_label',
 	'rocket_display_white_label',
 	array(
 		array(
@@ -81,7 +81,7 @@ add_settings_field(
 	'rocket_wl_warning',
 	'',
 	'rocket_button',
-	'white_label_rocket',
+	'rocket_white_label',
 	'rocket_display_white_label',
 	array(
         'button'=>array(
