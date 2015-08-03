@@ -132,16 +132,6 @@ function __override_rocket_donotcachepage_on_thrive_leads() {
 }
 
 /**
- * Conflict with KK Star Rating: Clear the cache when a post gets rated.
- *
- * @since 2.5.3
- */
-add_action( 'kksr_rate', '__rocket_clear_cache_on_kksr_rate' );
-function __rocket_clear_cache_on_kksr_rate( $post_id ) {
-	rocket_clean_post( $post_id );	
-}
-
-/**
  * Conflict with Aqua Resizer & IrishMiss Framework: Apply CDN without blank src!!
  *
  * @since 2.5.8 Add compatibility with IrishMiss Framework
