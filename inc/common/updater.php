@@ -14,7 +14,7 @@ function rocket_check_update( $value )
 		( defined( 'WP_INSTALLING' ) || 
 		 ( 12 * HOUR_IN_SECONDS ) > ( time() - $timer_update_wprocket ) ) // retry in 12 hours
 	) {
-		return false;
+		return $value;
 	}
 
 	$plugin_folder	= plugin_basename( dirname( WP_ROCKET_FILE ) );
@@ -32,7 +32,7 @@ function rocket_check_update( $value )
 		
 		list( $version, $url ) = explode( '|', $response['body'] );
 		if ( version_compare( $version, WP_ROCKET_VERSION ) <= 0 ) {
-			return false;
+			return $value;
 		}
 
 		$temp_array = array(

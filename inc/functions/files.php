@@ -650,13 +650,12 @@ function rocket_put_content( $file, $content )
  */
 function rocket_find_wpconfig_path()
 {
-	$home_path       = get_home_path();
-	$config_file     = $home_path . 'wp-config.php';
-	$config_file_alt = dirname( $home_path ) . '/wp-config.php';
+	$config_file     = ABSPATH . 'wp-config.php';
+	$config_file_alt = dirname( ABSPATH ) . '/wp-config.php';
 
 	if ( file_exists( $config_file ) && is_writable( $config_file ) ) {
 		return $config_file;
-	} elseif ( @file_exists( $config_file_alt ) && is_writable( $config_file_alt ) && !file_exists( dirname( $home_path ) . '/wp-settings.php' ) ) {
+	} elseif ( file_exists( $config_file_alt ) && is_writable( $config_file_alt ) && ! file_exists( dirname( ABSPATH ) . '/wp-settings.php' ) ) {
 		return $config_file_alt;
 	}
 
