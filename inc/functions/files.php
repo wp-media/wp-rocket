@@ -310,7 +310,9 @@ function rocket_clean_minify( $ext = array( 'js','css' ) )
 	do_action( 'before_rocket_clean_minify', $ext );
 
 	if ( $files = @glob( WP_ROCKET_MINIFY_CACHE_PATH . get_current_blog_id() . '/*.{' . implode( ',', (array)$ext ) . '}', GLOB_BRACE|GLOB_NOSORT ) ) {
-		array_map( 'unlink' , $files );
+		foreach ( $files as $file ) { // no array map to use @
+			@unlink( $file );
+		}
 	}
 
 	/**
@@ -423,7 +425,7 @@ function rocket_clean_home( $lang = '' )
 
 	// Delete homepage
 	if ( $files = glob( $root . '/{index,index-https}.{html,html_gzip}', GLOB_BRACE|GLOB_NOSORT ) ) {
-		foreach ( $files as $file ) {
+		foreach ( $files as $file ) { // no array map to use @
 			@unlink( $file );
 		}
 	}
