@@ -309,8 +309,9 @@ function rocket_clean_minify( $ext = array( 'js','css' ) )
 	*/
 	do_action( 'before_rocket_clean_minify', $ext );
 
-	$files = @glob( WP_ROCKET_MINIFY_CACHE_PATH . get_current_blog_id() . '/*.{' . implode( ',', (array)$ext ) . '}', GLOB_BRACE|GLOB_NOSORT );
-	@array_map( 'unlink' , $files );
+	if ( $files = @glob( WP_ROCKET_MINIFY_CACHE_PATH . get_current_blog_id() . '/*.{' . implode( ',', (array)$ext ) . '}', GLOB_BRACE|GLOB_NOSORT ) ) {
+		array_map( 'unlink' , $files );
+	}
 
 	/**
 	 * Fires after the minify cache files was deleted
