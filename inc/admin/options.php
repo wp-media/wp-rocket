@@ -66,14 +66,19 @@ function rocket_field( $args )
 			case 'email' :
 			case 'text' :
 
-				$value = esc_attr( get_rocket_option( $args['name'] ) );
+				$value = get_rocket_option( $args['name'] );
 				if ( $value === false ) {
 					$value = $default;
 				}
-
+				
+				if ( 'cloudflare_api_key' == $args['name'] && defined( 'WP_ROCKET_CF_API_KEY' ) ) {
+					$value = WP_ROCKET_CF_API_KEY;
+				} 
+				
+				$value 			= esc_attr( $value );
 				$number_options = $args['type']=='number' ? ' min="0" class="small-text"' : '';
-				$autocomplete = in_array( $args['name'], array( 'consumer_key', 'consumer_email' ) ) ? ' autocomplete="off"' : '';
-				$disabled = ( 'consumer_key' == $args['name'] && defined( 'WP_ROCKET_KEY' ) ) || ( 'consumer_email' == $args['name'] && defined( 'WP_ROCKET_EMAIL' ) ) ? ' disabled="disabled"' : $readonly;
+				$autocomplete 	= in_array( $args['name'], array( 'consumer_key', 'consumer_email' ) ) ? ' autocomplete="off"' : '';
+				$disabled 		= ( 'consumer_key' == $args['name'] && defined( 'WP_ROCKET_KEY' ) ) || ( 'consumer_email' == $args['name'] && defined( 'WP_ROCKET_EMAIL' ) || ( 'cloudflare_api_key' == $args['name'] && defined( 'WP_ROCKET_CF_API_KEY' ) ) ) ? ' disabled="disabled"' : $readonly;
 				?>
 
 					<legend class="screen-reader-text"><span><?php echo $args['label_screen']; ?></span></legend>
@@ -450,11 +455,13 @@ function rocket_display_options()
 	foreach( $modules as $module ) {
 		require( WP_ROCKET_ADMIN_UI_MODULES_PATH . $module . '.php' );
 	}
+	
+	$heading_tag = version_compare( $GLOBALS['wp_version'], '4.3' ) >= 0 ? 'h1' : 'h2';
 	?>
 	
 	<div class="wrap">
 
-	<h2><?php echo WP_ROCKET_PLUGIN_NAME; ?> <small><sup><?php echo WP_ROCKET_VERSION; ?></sup></small></h2>
+	<<?php echo $heading_tag; ?>><?php echo WP_ROCKET_PLUGIN_NAME; ?> <small><sup><?php echo WP_ROCKET_VERSION; ?></sup></small></<?php echo $heading_tag; ?>>
 	<form action="options.php" id="rocket_options" method="post" enctype="multipart/form-data">
 		<?php 
 		settings_fields( 'wp_rocket' );
@@ -742,6 +749,14 @@ function rocket_settings_callback( $inputs )
 	$inputs['wl_author_URI']  = isset( $inputs['wl_author_URI'] )  ? esc_url( $inputs['wl_author_URI'] )            : get_rocket_option( 'wl_author_URI' );
 	$inputs['wl_description'] = isset( $inputs['wl_description'] ) ? (array)$inputs['wl_description']               : get_rocket_option( 'wl_description' );
 	$inputs['wl_plugin_slug'] = sanitize_key( $inputs['wl_plugin_name'] );
+	
+	/*
+	 * Option : CloudFlare
+	 */
+	 
+	 if( defined( 'WP_ROCKET_CF_API_KEY' ) ) {
+		 $inputs['cloudflare_api_key'] = get_rocket_option( 'cloudflare_api_key' );
+	 }
 	
 	/*
 	 * Option : CDN

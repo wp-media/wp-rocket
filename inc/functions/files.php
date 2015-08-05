@@ -309,8 +309,11 @@ function rocket_clean_minify( $ext = array( 'js','css' ) )
 	*/
 	do_action( 'before_rocket_clean_minify', $ext );
 
-	$files = @glob( WP_ROCKET_MINIFY_CACHE_PATH . get_current_blog_id() . '/*.{' . implode( ',', (array)$ext ) . '}', GLOB_BRACE|GLOB_NOSORT );
-	@array_map( 'unlink' , $files );
+	if ( $files = @glob( WP_ROCKET_MINIFY_CACHE_PATH . get_current_blog_id() . '/*.{' . implode( ',', (array)$ext ) . '}', GLOB_BRACE|GLOB_NOSORT ) ) {
+		foreach ( $files as $file ) { // no array map to use @
+			@unlink( $file );
+		}
+	}
 
 	/**
 	 * Fires after the minify cache files was deleted
@@ -422,7 +425,7 @@ function rocket_clean_home( $lang = '' )
 
 	// Delete homepage
 	if ( $files = glob( $root . '/{index,index-https}.{html,html_gzip}', GLOB_BRACE|GLOB_NOSORT ) ) {
-		foreach ( $files as $file ) {
+		foreach ( $files as $file ) { // no array map to use @
 			@unlink( $file );
 		}
 	}
@@ -655,7 +658,7 @@ function rocket_find_wpconfig_path()
 
 	if ( file_exists( $config_file ) && is_writable( $config_file ) ) {
 		return $config_file;
-	} elseif ( file_exists( $config_file_alt ) && is_writable( $config_file_alt ) && ! file_exists( dirname( ABSPATH ) . '/wp-settings.php' ) ) {
+	} elseif ( @file_exists( $config_file_alt ) && is_writable( $config_file_alt ) && ! file_exists( dirname( ABSPATH ) . '/wp-settings.php' ) ) {
 		return $config_file_alt;
 	}
 
