@@ -450,12 +450,12 @@ function rocket_display_options()
 	foreach( $modules as $module ) {
 		require( WP_ROCKET_ADMIN_UI_MODULES_PATH . $module . '.php' );
 	}
-	$tag = version_compare( $GLOBALS['wp_version'], '4.3' ) >= 0 ? 'h1' : 'h2';
+	$heading_tag = version_compare( $GLOBALS['wp_version'], '4.3' ) >= 0 ? 'h1' : 'h2';
 	?>
 	
 	<div class="wrap">
 
-	<<?php echo $tag; ?>><?php echo WP_ROCKET_PLUGIN_NAME; ?> <small><sup><?php echo WP_ROCKET_VERSION; ?></sup></small></<?php echo $tag; ?>>
+	<<?php echo $heading_tag; ?>><?php echo WP_ROCKET_PLUGIN_NAME; ?> <small><sup><?php echo WP_ROCKET_VERSION; ?></sup></small></<?php echo $heading_tag; ?>>
 	<form action="options.php" id="rocket_options" method="post" enctype="multipart/form-data">
 		<?php 
 		settings_fields( 'wp_rocket' );
