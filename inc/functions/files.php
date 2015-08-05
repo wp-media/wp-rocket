@@ -658,7 +658,7 @@ function rocket_find_wpconfig_path()
 
 	if ( file_exists( $config_file ) && is_writable( $config_file ) ) {
 		return $config_file;
-	} elseif ( file_exists( $config_file_alt ) && is_writable( $config_file_alt ) && ! file_exists( dirname( ABSPATH ) . '/wp-settings.php' ) ) {
+	} elseif ( @file_exists( $config_file_alt ) && @is_writable( $config_file_alt ) && ! @file_exists( dirname( ABSPATH ) . '/wp-settings.php' ) ) {
 		return $config_file_alt;
 	}
 
