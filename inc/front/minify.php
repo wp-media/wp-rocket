@@ -607,3 +607,24 @@ function __rocket_fix_minify_multisite_path_issue( $url ) {
 	
 	return $url;
 }
+
+/**
+ * Compatibility with multilingual plugins & multidomain configuration
+ *
+ * @since 2.6.8
+ */
+add_filter( 'rocket_css_url', '__rocket_minify_i18n_multidomain' );
+add_filter( 'rocket_js_url'	, '__rocket_minify_i18n_multidomain' );
+function __rocket_minify_i18n_multidomain( $url ) {
+	if ( ! rocket_has_i18n() ) {
+		return $url;
+	}
+	
+	$url_host = parse_url( $url, PHP_URL_HOST );
+	
+	if ( $url_host != $_SERVER['HTTP_HOST'] && in_array( $_SERVER['HTTP_HOST'], get_rocket_i18n_host() ) ) {
+		$url = str_replace( $url_host, $_SERVER['HTTP_HOST'], $url );
+	}
+	
+	return $url;
+}
