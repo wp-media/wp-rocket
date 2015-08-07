@@ -164,6 +164,25 @@ function get_rocket_i18n_code()
 }
 
 /**
+ * Get all active languages host
+ *
+ * @since 2.6.8
+ *
+ * @return array $urls List of all active languages host
+ */
+function get_rocket_i18n_host() {
+	$langs_host = array();
+	
+	if ( $langs = get_rocket_i18n_uri() ) {
+		foreach ( $langs as $lang ) {
+			$langs_host[] = parse_url( $lang, PHP_URL_HOST );
+		}
+	}
+	
+	return $langs_host;
+}
+
+/**
  * Get all active languages URI
  *
  * @since 2.0
