@@ -17,7 +17,7 @@ if ( is_admin() ) {
 }
 
 // Don't cache without GET method
-if ( isset( $_SERVER['REQUEST_METHOD'] ) && $_SERVER['REQUEST_METHOD'] != 'GET' ) {
+if ( ! isset( $_SERVER['REQUEST_METHOD'] ) || $_SERVER['REQUEST_METHOD'] != 'GET' ) {
 	return;
 }
 
