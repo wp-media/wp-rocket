@@ -218,6 +218,7 @@ function rocket_deactivation()
 
 	delete_transient( 'rocket_check_licence_30' );
 	delete_transient( 'rocket_check_licence_1' );
+	delete_site_transient( 'update_wprocket_response' );
 }
 
 /*
