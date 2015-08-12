@@ -131,7 +131,8 @@ function rocket_plugins_to_deactivate()
 		'far-future-expiry-header'                   => 'far-future-expiry-header/far-future-expiration.php',
 		'combine-css'                                => 'combine-css/combine-css.php',
 		'super-static-cache'                         => 'super-static-cache/super-static-cache.php',
-		'wpcompressor'                               => 'wpcompressor/wpcompressor.php'
+		'wpcompressor'                               => 'wpcompressor/wpcompressor.php',
+		'check-and-enable-gzip-compression'			 => 'richards-toolbox.php'
 	);
 
 	if ( get_rocket_option( 'lazyload' ) ) {
