@@ -489,8 +489,9 @@ function rocket_clean_domain( $lang = '' )
 		 *
 		 * @param string $root The path of home cache file
 		 * @param string $lang The current lang to purge
+		 * @param string $url  The home url
 		*/
-		do_action( 'before_rocket_clean_domain', $root, $lang );
+		do_action( 'before_rocket_clean_domain', $root, $lang, $url );
 
 		// Delete cache domain files
 		if( $dirs = glob( $root . '*', GLOB_NOSORT ) ) {
@@ -506,8 +507,9 @@ function rocket_clean_domain( $lang = '' )
 		 *
 		 * @param string $root The path of home cache file
 		 * @param string $lang The current lang to purge
+		 * @param string $url  The home url
 		*/
-	    do_action( 'after_rocket_clean_domain', $root, $lang );
+	    do_action( 'after_rocket_clean_domain', $root, $lang, $url );
 	}
 }
 
