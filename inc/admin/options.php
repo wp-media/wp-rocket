@@ -899,12 +899,12 @@ function rocket_after_save_options( $oldvalue, $value )
 	}
 		
 	// Update CloudFlare Development Mode
-	if ( ! empty( $_POST ) && ( $oldvalue['cloudflare_devmode'] != $value['cloudflare_devmode'] ) ) {
+	if ( ! empty( $_POST ) && isset( $oldvalue['cloudflare_devmode'], $value['cloudflare_devmode'] ) && ( $oldvalue['cloudflare_devmode'] != $value['cloudflare_devmode'] ) ) {
 		set_rocket_cloudflare_devmode( (bool) $value['cloudflare_devmode'] );
 	}
 	
 	// Update CloudFlare settings
-	if ( ! empty( $_POST ) && ( $oldvalue['cloudflare_auto_settings'] != $value['cloudflare_auto_settings'] ) ) {		
+	if ( ! empty( $_POST ) && isset( $oldvalue['cloudflare_auto_settings'], $value['cloudflare_auto_settings'] ) && ( $oldvalue['cloudflare_auto_settings'] != $value['cloudflare_auto_settings'] ) ) {		
 		$cf_old_settings = explode( ',', $value['cloudflare_old_settings'] );
 		
 		// Set Cache Level to Aggressive 
