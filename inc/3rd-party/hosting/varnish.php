@@ -27,7 +27,7 @@ function __rocket_varnish_clean_domain( $root, $lang, $url ) {
 */
 add_action( 'before_rocket_clean_file', '__rocket_varnish_clean_file' );
 function __rocket_varnish_clean_file( $url ) {
-	rocket_varnish_http_purge( $url );
+	rocket_varnish_http_purge( trailingslashit( $url ) . '?vregex' );
 }
 
 /**
