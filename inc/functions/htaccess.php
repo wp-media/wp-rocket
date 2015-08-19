@@ -182,7 +182,7 @@ function get_rocket_htaccess_mod_rewrite()
 	if ( $cookies = get_rocket_cache_reject_cookies() ) {
 		$rules .= 'RewriteCond %{HTTP:Cookie} !(' . $cookies . ') [NC]' . PHP_EOL;
 	}
-
+	
 	if ( $uri = get_rocket_cache_reject_uri() ) {
 		$rules .= 'RewriteCond %{REQUEST_URI} !^(' . $uri . ')$ [NC]' . PHP_EOL;
 	}
@@ -314,7 +314,7 @@ function get_rocket_htaccess_mod_deflate()
 		                          text/xml' . PHP_EOL;
 		$rules .= '</IfModule>' . PHP_EOL;
 		$rules .= '<IfModule mod_headers.c>' . PHP_EOL;
-             $rules .= 'Header append Vary User-Agent env=!dont-vary' . PHP_EOL;
+             $rules .= 'Header append Vary: Accept-Encoding' . PHP_EOL;
        $rules .= '</IfModule>' . PHP_EOL;
 	$rules .= '</IfModule>'  . PHP_EOL . PHP_EOL;
 
