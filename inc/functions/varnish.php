@@ -39,7 +39,6 @@ function rocket_varnish_http_purge( $url ) {
 		$purgeme,
 		array(
 			'method'   => 'PURGE',
-			'timeout'  => 2,
 			'blocking' => false,
 			'headers'  => array(
 				'host'           => $host,
