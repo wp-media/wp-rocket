@@ -44,21 +44,42 @@ function __rocket_plugin_row_meta( $plugin_meta, $plugin_file, $plugin_data ) {
 
 	return $plugin_meta;
 }
+
 /**
  * Add a link "Purge this cache" in the post edit area
  *
  * @since 1.0
  * @todo manage all CPTs
  */
-add_filter( 'page_row_actions', '__rocket_row_actions', 10, 2 );
-add_filter( 'post_row_actions', '__rocket_row_actions', 10, 2 );
-function __rocket_row_actions( $actions, $post )
+add_filter( 'page_row_actions', '__rocket_post_row_actions', 10, 2 );
+add_filter( 'post_row_actions', '__rocket_post_row_actions', 10, 2 );
+function __rocket_post_row_actions( $actions, $post )
 {
 	/** This filter is documented in inc/admin-bar.php */
 	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
 		$url = wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=post-' . $post->ID ), 'purge_cache_post-' . $post->ID );
 		$actions['rocket_purge'] = sprintf( '<a href="%s">%s</a>', $url, __( 'Clear this cache', 'rocket' ) );
 	}
+    return $actions;
+}
+
+/**
+ * Add a link "Purge this cache" in the taxonomy edit area
+ *
+ * @since 1.0
+ * @todo manage all CPTs
+ */
+add_filter( 'tag_row_actions', '__rocket_tag_row_actions', 10, 2 );
+function __rocket_tag_row_actions( $actions, $term )
+{		
+	global $taxnow;
+	
+	/** This filter is documented in inc/admin-bar.php */
+	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		$url = wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=term-' . $term->term_id  . '&taxonomy=' . $taxnow ), 'purge_cache_term-' . $term->term_id );
+		$actions['rocket_purge'] = sprintf( '<a href="%s">%s</a>', $url, __( 'Clear this cache', 'rocket' ) );
+	}
+    
     return $actions;
 }
 
@@ -274,7 +295,7 @@ function __rocket_rollback()
  * Regenerate the advanced-cache.php file if an issue is detected.
  * Define WP_CACHE to true if it's not defined yet.
  *
- * @since 2.6.4	Check config files issues
+ * @since 2.6.5	Check config files issues
  * @since 2.6	Check WP_CACHE & advanced-cache.php issues
  * @since 2.5.5
  */
