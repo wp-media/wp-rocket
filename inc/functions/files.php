@@ -590,6 +590,36 @@ function rocket_clean_term( $term_id, $taxonomy_slug ) {
 }
 
 /**
+ * Remove all caching files in the cache folder
+ *
+ * @since 2.6.8
+ *
+ * @return void
+ */
+function rocket_clean_cache_dir() {
+	/**
+	 * Fires before deleting all caching files in the cache folder
+	 *
+	 * @since 2.6.8
+	*/
+	do_action( 'before_rocket_clean_cache_dir' );
+	
+	// Delete all caching files
+	if( $dirs = glob( WP_ROCKET_CACHE_PATH . '*', GLOB_NOSORT ) ) {
+		foreach ( $dirs as $dir ) {
+			rocket_rrmdir( $dir );
+		}
+	}
+	
+	/**
+	 * Fires after deleting all caching files in the cache folder
+	 *
+	 * @since 2.6.8
+	*/
+    do_action( 'after_rocket_clean_cache_dir' );
+}
+
+/**
  * Remove a single file or a folder recursively
  *
  * @since 1.0
