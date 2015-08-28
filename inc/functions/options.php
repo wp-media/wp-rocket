@@ -159,7 +159,7 @@ function get_rocket_cache_reject_uri()
 	}
 	
 	// Exclude feeds
-	$uri[] = '.*/' . $GLOBALS['wp_rewrite']->feed_base . '/';
+	$uri[] = '.*/' . $GLOBALS['wp_rewrite']->feed_base . '/?';
 	
 	/**
 	 * Filter the rejected uri
