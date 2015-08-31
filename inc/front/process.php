@@ -1,11 +1,6 @@
 <?php
 defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 
-// Don't cache WP javascript generators
-if ( strstr( $_SERVER['SCRIPT_FILENAME'], 'wp-includes/js' ) ) {
-	return;
-}
-
 // Don't cache robots.txt && .htaccess directory (it's happened sometimes with weird server configuration)
 if ( strstr( $_SERVER['REQUEST_URI'], 'robots.txt' ) || strstr( $_SERVER['REQUEST_URI'], '.htaccess' ) ) {
 	return;
@@ -22,7 +17,7 @@ if ( is_admin() ) {
 }
 
 // Don't cache without GET method
-if ( $_SERVER['REQUEST_METHOD'] != 'GET' ) {
+if ( ! isset( $_SERVER['REQUEST_METHOD'] ) || $_SERVER['REQUEST_METHOD'] != 'GET' ) {
 	return;
 }
 

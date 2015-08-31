@@ -16,6 +16,9 @@ add_settings_field(
 		)
 	)
 );
+
+if ( ! defined( 'WP_ROCKET_CF_API_KEY_HIDDEN' ) || ! WP_ROCKET_CF_API_KEY_HIDDEN ) :
+
 add_settings_field(
 	'rocket_cloudflare_api_key',
 	__( 'API Key', 'rocket' ),
@@ -35,6 +38,9 @@ add_settings_field(
 		)
 	)
 );
+
+endif;
+
 add_settings_field(
 	'rocket_cloudflare_domain',
 	__( 'Domain', 'rocket' ),

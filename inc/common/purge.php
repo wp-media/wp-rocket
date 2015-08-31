@@ -90,10 +90,23 @@ function rocket_clean_post( $post_id )
 	$post = get_post( $post_id );
 	
 	// No purge for specifics conditions
-	if ( $post->post_status == 'auto-draft' || empty( $post->post_type ) || $post->post_type == 'nav_menu_item' ) {
+	if ( ! is_object( $post ) || $post->post_status == 'auto-draft' || empty( $post->post_type ) || $post->post_type == 'nav_menu_item' ) {
 		return;
 	}
+	
+	// Get the post language
+	$lang = false;
 
+	// WPML
+	if ( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
+		$lang = $GLOBALS['sitepress']->get_language_for_element( $post_id, 'post_' . get_post_type( $post_id ) );
+
+	// Polylang
+	} else if ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
+		$post_language = $GLOBALS['polylang']->model->get_post_language( $post_id );
+		$lang = ( is_object( $post_language ) ) ? $post_language->slug : false;
+	}
+	
 	// Get the permalink structure
     $permalink_structure = get_rocket_sample_permalink( $post_id );
 
@@ -163,15 +176,16 @@ function rocket_clean_post( $post_id )
 	// Add the author page
 	$purge_author = array( get_author_posts_url( $post->post_author ) );
 	$purge_urls = array_merge( $purge_urls, $purge_author );
-
+	
 	/**
 	 * Fires before cache files related with the post are deleted
 	 *
 	 * @since 1.3.0
-	 * @param obj $post The post object
-	 * @param array $purge_urls URLs cache files to remove
+	 * @param obj 	 $post 		 The post object
+	 * @param array  $purge_urls URLs cache files to remove
+	 * @param string $lang 		 The post language
 	*/
-	do_action( 'before_rocket_clean_post', $post, $purge_urls );
+	do_action( 'before_rocket_clean_post', $post, $purge_urls, $lang );
 
 	/**
 	 * Filter URLs cache files to remove
@@ -183,19 +197,8 @@ function rocket_clean_post( $post_id )
 	
 	// Purge all files
 	rocket_clean_files( $purge_urls );
-
+	
 	// Never forget to purge homepage and their pagination
-	$lang = false;
-
-	// WPML
-	if ( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
-		$lang = $GLOBALS['sitepress']->get_language_for_element( $post_id, 'post_' . get_post_type( $post_id ) );
-
-	// Polylang
-	} else if ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
-		$post_language = $GLOBALS['polylang']->model->get_post_language( $post_id );
-		$lang = ( is_object( $post_language ) ) ? $post_language->slug : false;
-	}
 	rocket_clean_home( $lang );
 
 	// Purge all parents
@@ -210,10 +213,11 @@ function rocket_clean_post( $post_id )
 	 * Fires after cache files related with the post are deleted
 	 *
 	 * @since 1.3.0
-	 * @param obj $post The post object
-	 * @param array $purge_urls URLs cache files to remove
+	 * @param obj 	 $post 		 The post object
+	 * @param array  $purge_urls URLs cache files to remove
+	 * @param string $lang 		 The post language
 	*/
-	do_action( 'after_rocket_clean_post', $post, $purge_urls );
+	do_action( 'after_rocket_clean_post', $post, $purge_urls, $lang );
 }
 
 /**
@@ -268,8 +272,8 @@ function rocket_post_purge_urls_for_qtranslate( $urls )
  *
  * @since 1.3.0
  */
-add_action( 'after_rocket_clean_post', 'run_rocket_bot_after_clean_post', 10, 2 );
-function run_rocket_bot_after_clean_post( $post, $purge_urls )
+add_action( 'after_rocket_clean_post', 'run_rocket_bot_after_clean_post', 10, 3 );
+function run_rocket_bot_after_clean_post( $post, $purge_urls, $lang )
 {
 	// Run robot only if post is published
 	if ( $post->post_status != 'publish' ) {
@@ -277,7 +281,7 @@ function run_rocket_bot_after_clean_post( $post, $purge_urls )
 	}
 
 	// Add Homepage URL to $purge_urls for bot crawl
-	array_push( $purge_urls, home_url() );
+	array_push( $purge_urls, get_rocket_i18n_home_url( $lang ) );
 
 	// Get the author page
 	$purge_author = array( get_author_posts_url( $post->post_author ) );
@@ -287,6 +291,26 @@ function run_rocket_bot_after_clean_post( $post, $purge_urls )
 
 	// Remove dates archives page and author page to preload cache
 	$purge_urls = array_diff( $purge_urls, $purge_dates, $purge_author );
+
+	// Create json file and run WP Rocket Bot
+	$json_encode_urls = '["' . implode( '","', array_filter( $purge_urls ) ) . '"]';
+	if ( rocket_put_content( WP_ROCKET_PATH . 'cache.json', $json_encode_urls ) ) {
+		global $do_rocket_bot_cache_json;
+		$do_rocket_bot_cache_json = true;
+	}
+}
+
+/**
+ * Actions to be done after the purge cache files of a term
+ * By Default, this hook call the WP Rocket Bot (cache json)
+ *
+ * @since 2.6.8
+ */
+add_action( 'after_rocket_clean_term', 'run_rocket_bot_after_clean_term', 10, 3 );
+function run_rocket_bot_after_clean_term( $post, $purge_urls, $lang )
+{
+	// Add Homepage URL to $purge_urls for bot crawl
+	array_push( $purge_urls, get_rocket_i18n_home_url( $lang ) );
 
 	// Create json file and run WP Rocket Bot
 	$json_encode_urls = '["' . implode( '","', array_filter( $purge_urls ) ) . '"]';
@@ -320,10 +344,11 @@ function rocket_purge_cache()
 {
 	if ( isset( $_GET['type'], $_GET['_wpnonce'] ) ) {
 
-		$_type = explode( '-', $_GET['type'] );
-		$_type = reset( $_type );
-		$_id = explode( '-', $_GET['type'] );
-		$_id = end( $_id );
+		$_type     = explode( '-', $_GET['type'] );
+		$_type     = reset( $_type );
+		$_id       = explode( '-', $_GET['type'] );
+		$_id       = end( $_id );
+		$_taxonomy = isset( $_GET['taxonomy'] ) ? $_GET['taxonomy'] : false;
 
 		if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'purge_cache_' . $_GET['type'] ) ) {
 			wp_nonce_ays( '' );
@@ -356,7 +381,12 @@ function rocket_purge_cache()
 			case 'post':
 				rocket_clean_post( $_id );
 				break;
-
+			
+			// Clear a term specific term
+			case 'term':
+				rocket_clean_term( $_id, $_taxonomy );
+				break;
+			
 			// Clear cache file of the current page in front-end
 			case 'url':
 				rocket_clean_files( wp_get_referer() );

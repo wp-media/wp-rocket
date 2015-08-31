@@ -459,7 +459,7 @@ function rocket_clean_home( $lang = '' )
  */
 function rocket_clean_domain( $lang = '' )
 {
-	$urls = ( ! $lang ) ? get_rocket_i18n_uri() : get_rocket_i18n_home_url( $lang );
+	$urls = ( ! $lang || is_object( $lang ) ) ? get_rocket_i18n_uri() : get_rocket_i18n_home_url( $lang );
 	$urls = (array) $urls;
 
 	/**
@@ -489,8 +489,9 @@ function rocket_clean_domain( $lang = '' )
 		 *
 		 * @param string $root The path of home cache file
 		 * @param string $lang The current lang to purge
+		 * @param string $url  The home url
 		*/
-		do_action( 'before_rocket_clean_domain', $root, $lang );
+		do_action( 'before_rocket_clean_domain', $root, $lang, $url );
 
 		// Delete cache domain files
 		if( $dirs = glob( $root . '*', GLOB_NOSORT ) ) {
@@ -506,9 +507,116 @@ function rocket_clean_domain( $lang = '' )
 		 *
 		 * @param string $root The path of home cache file
 		 * @param string $lang The current lang to purge
+		 * @param string $url  The home url
 		*/
-	    do_action( 'after_rocket_clean_domain', $root, $lang );
+	    do_action( 'after_rocket_clean_domain', $root, $lang, $url );
 	}
+}
+
+/**
+ * Delete the caching files of a specific term
+ *
+ * $since 2.6.8
+ *
+ * @param int 	 $term_id 		The term ID
+ * @param string $taxonomy_name The taxonomy slug
+ * @return void
+ */
+function rocket_clean_term( $term_id, $taxonomy_slug ) {
+	if ( defined( 'DOING_AUTOSAVE' ) ) {
+		return;
+	}
+	
+	$purge_urls = array();
+	
+	// Get all term infos
+	$term = get_term_by( 'id', $term_id, $taxonomy_slug );
+	
+	// Get the term language
+	$lang = false;
+	
+	// WPML
+	if ( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
+		$lang = $GLOBALS['sitepress']->get_language_for_element( $term_id, 'tax_' . $taxonomy_slug );
+
+	// Polylang
+	} else if ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
+		$term_language = $GLOBALS['polylang']->model->get_term_language( $term_id, $taxonomy_slug );
+		$lang = ( is_object( $term_language ) ) ? $term_language->slug : false;
+	}
+	
+	// Get permalink
+	$permalink = get_term_link( $term, $taxonomy_slug );
+	
+	// Add permalink
+	if( parse_url( $permalink, PHP_URL_PATH ) != '/' ) {
+		array_push( $purge_urls, $permalink );	
+	}
+	
+	/**
+	 * Fires before deleted caching files related with the term
+	 *
+	 * @since 2.6.8
+	 * @param obj 	 $term 		 The term object
+	 * @param array  $purge_urls URLs cache files to remove
+	 * @param string $lang 		 The term language
+	*/
+	do_action( 'before_rocket_clean_term', $term, $purge_urls, $lang );
+
+	/**
+	 * Filter URLs cache files to remove
+	 *
+	 * @since 2.6.8
+	 * @param array $purge_urls List of URLs cache files to remove
+	 * @param obj 	$term 		The term object
+	*/
+	$purge_urls = apply_filters( 'rocket_term_purge_urls', $purge_urls, $term );
+	
+	// Purge all files
+	rocket_clean_files( $purge_urls );
+
+	// Never forget to purge homepage and their pagination
+	rocket_clean_home( $lang );
+	
+	/**
+	 * Fires before deleted caching files related with the term
+	 *
+	 * @since 2.6.8
+	 * @param obj 	 $term 		 The term object
+	 * @param array  $purge_urls URLs cache files to remove
+	 * @param string $lang 		 The term language
+	*/
+	do_action( 'after_rocket_clean_term', $term, $purge_urls, $lang );
+}
+
+/**
+ * Remove all caching files in the cache folder
+ *
+ * @since 2.6.8
+ *
+ * @return void
+ */
+function rocket_clean_cache_dir() {
+	/**
+	 * Fires before deleting all caching files in the cache folder
+	 *
+	 * @since 2.6.8
+	*/
+	do_action( 'before_rocket_clean_cache_dir' );
+	
+	// Delete all caching files
+	if( $dirs = glob( WP_ROCKET_CACHE_PATH . '*', GLOB_NOSORT ) ) {
+		foreach ( $dirs as $dir ) {
+			rocket_rrmdir( $dir );
+		}
+	}
+	
+	/**
+	 * Fires after deleting all caching files in the cache folder
+	 *
+	 * @since 2.6.8
+	*/
+    do_action( 'after_rocket_clean_cache_dir' );
 }
 
 /**

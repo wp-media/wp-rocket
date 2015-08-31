@@ -3,7 +3,7 @@
 Plugin Name: WP Rocket
 Plugin URI: http://www.wp-rocket.me
 Description: The best WordPress performance plugin.
-Version: 2.6.7
+Version: 2.6.8
 Code Name: Yavin
 Author: WP Rocket
 Contributors: Jonathan Buttigieg, Julio Potier
@@ -19,7 +19,7 @@ Copyright 2013-2015 WP Rocket
 defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
 
 // Rocket defines
-define( 'WP_ROCKET_VERSION'             , '2.6.7' );
+define( 'WP_ROCKET_VERSION'             , '2.6.8' );
 define( 'WP_ROCKET_PRIVATE_KEY'         , false );
 define( 'WP_ROCKET_SLUG'                , 'wp_rocket_settings' );
 define( 'WP_ROCKET_WEB_MAIN'            , 'http://support.wp-rocket.me/' );
@@ -106,12 +106,13 @@ function rocket_init()
     require( WP_ROCKET_FUNCTIONS_PATH	. 'bots.php' );
     require( WP_ROCKET_FUNCTIONS_PATH	. 'cloudflare.php' );
     require( WP_ROCKET_FUNCTIONS_PATH	. 'htaccess.php' );
+    require( WP_ROCKET_FUNCTIONS_PATH	. 'varnish.php' );
     require( WP_ROCKET_INC_PATH			. 'deprecated.php' );
     require( WP_ROCKET_FRONT_PATH		. 'plugin-compatibility.php' );
     require( WP_ROCKET_FRONT_PATH		. 'theme-compatibility.php' );
+    require( WP_ROCKET_3RD_PARTY_PATH	. '3rd-party.php' );
     require( WP_ROCKET_COMMON_PATH		. 'admin-bar.php' );
     require( WP_ROCKET_COMMON_PATH		. 'updater.php' );
-    require( WP_ROCKET_3RD_PARTY_PATH	. '3rd-party.php' );
 	require( dirname( __FILE__ )		. '/licence-data.php' );
 
     if( rocket_valid_key() ) {
@@ -218,6 +219,7 @@ function rocket_deactivation()
 
 	delete_transient( 'rocket_check_licence_30' );
 	delete_transient( 'rocket_check_licence_1' );
+	delete_site_transient( 'update_wprocket_response' );
 }
 
 /*

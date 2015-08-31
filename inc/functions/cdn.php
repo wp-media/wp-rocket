@@ -45,7 +45,7 @@ function get_rocket_cdn_url( $url, $zone = array( 'all' ) )
 	
 	// Exclude rejected & external files from CDN
 	$rejected_files = get_rocket_cdn_reject_files();
-	if( ( ! empty( $rejected_files ) && preg_match( '#(' . $rejected_files . ')#', $path ) ) || ( ! empty( $scheme ) && $host != parse_url( home_url(), PHP_URL_HOST ) ) ) {
+	if( ( ! empty( $rejected_files ) && preg_match( '#(' . $rejected_files . ')#', $path ) ) || ( ! empty( $scheme ) && $host != parse_url( home_url(), PHP_URL_HOST ) && ! in_array( $host, get_rocket_i18n_host() ) ) ) {
 		return $url;
 	}
 

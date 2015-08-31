@@ -134,9 +134,8 @@ function rocket_cdn_enqueue( $src )
 	}
 
 	if ( $cnames = get_rocket_cdn_cnames( $zone ) ) {
-		list( $src_host, $src_path ) = get_rocket_parse_url( $src );
-		// Check if the link isn't external
-		if ( $src_host == parse_url( home_url(), PHP_URL_HOST ) && trim( $src_path, '/' ) != '' ) {
+		// Check if the path isn't empty
+		if ( trim( parse_url( $src, PHP_URL_PATH ), '/' ) != '' ) {
 			$src = get_rocket_cdn_url( $src, $zone );
 		}
 	}

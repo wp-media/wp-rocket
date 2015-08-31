@@ -65,8 +65,7 @@ function rocket_fetch_and_cache_minify( $url, $pretty_url )
  * @param string $pretty_filename (default: null) The new filename if $force_pretty_url set to true
  * @return string $tags
  */
-function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_filename = null )
-{
+function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_filename = null ) {
 	// Get the internal CSS Files
 	// To avoid conflicts with file URLs are too long for browsers,
 	// cut into several parts concatenated files
@@ -77,7 +76,7 @@ function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_file
 	$files  	= is_array( $files ) ? $files : (array) $files;
 
 	if ( count( $files ) ) {
-		$i=0;
+		$i = 0;
 		foreach ( $files as $file ) {
 			$file = parse_url( $file, PHP_URL_PATH );
 
@@ -95,8 +94,9 @@ function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_file
 			$filename_length = apply_filters( 'rocket_minify_filename_length', 255, pathinfo( $file, PATHINFO_EXTENSION ) );
 
 			// +1 : we count the extra comma
-			if ( strlen( $urls[$i] . $base_url . $file )+1>=$filename_length ) {
+			if ( strlen( $urls[ $i ] . $base_url . $file ) + 1 >= $filename_length ) {
 				$i++;
+				$urls[ $i ] = '';
 			}
 
 			/**
@@ -108,7 +108,7 @@ function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_file
 			*/
 			$file = apply_filters( 'rocket_pre_minify_path', $file );
 
-			$urls[$i] .= $file . ',';
+			$urls[ $i ] .= $file . ',';
 		}
 
 		foreach ( $urls as $url ) {
@@ -129,7 +129,7 @@ function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_file
 				*/
 				if ( ! apply_filters( 'rocket_minify_debug', false ) ) {
 					$blog_id = get_current_blog_id();
-					$pretty_url = !$pretty_filename ? WP_ROCKET_MINIFY_CACHE_URL . $blog_id . '/' . md5( $url . get_rocket_option( 'minify_' . $ext . '_key', create_rocket_uniqid() ) ) . '.' . $ext : WP_ROCKET_MINIFY_CACHE_URL . $blog_id . '/' . $pretty_filename . '.' . $ext;
+					$pretty_url = ! $pretty_filename ? WP_ROCKET_MINIFY_CACHE_URL . $blog_id . '/' . md5( $url . get_rocket_option( 'minify_' . $ext . '_key', create_rocket_uniqid() ) ) . '.' . $ext : WP_ROCKET_MINIFY_CACHE_URL . $blog_id . '/' . $pretty_filename . '.' . $ext;
 
 					/**
 					 * Filter the pretty minify URL
@@ -148,7 +148,7 @@ function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_file
 			// If CSS & JS use a CDN
 			$url = get_rocket_cdn_url( $url, array( 'all', 'css_and_js', $ext ) );
 
-			if ( $ext == 'css' ) {
+			if ( 'css' == $ext ) {
 				/**
 				 * Filter CSS file URL with CDN hostname
 				 *
@@ -160,7 +160,7 @@ function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_file
 
 				$tags .= sprintf( '<link rel="stylesheet" href="%s" %s/>', esc_attr( $url ), $data_attr );
 
-			} elseif ( $ext == 'js' ) {
+			} elseif ( 'js' == $ext ) {
 				/**
 				 * Filter JavaScript file URL with CDN hostname
 				 *
