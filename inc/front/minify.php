@@ -604,6 +604,8 @@ function __rocket_fix_minify_multisite_path_issue( $url ) {
 	$bloginfo = get_blog_details( $current_blog_id, false );
 	
 	// Main blog infos
+	$main_blog_id = 1;
+	
 	if ( ! empty( $GLOBALS['current_site']->blog_id ) ) {
 		$main_blog_id = absint( $GLOBALS['current_site']->blog_id );
 	}
@@ -614,7 +616,6 @@ function __rocket_fix_minify_multisite_path_issue( $url ) {
 		$main_blog_id = absint( BLOGID_CURRENT_SITE );
 	}
 	
-	$main_blog_id  = $main_blog_id ? $main_blog_id : 1;
 	$main_bloginfo = get_blog_details( $main_blog_id, false );
 	
 	if ( $bloginfo->path != '/' ) {
