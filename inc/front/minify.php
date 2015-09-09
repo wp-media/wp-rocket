@@ -538,7 +538,7 @@ function __rocket_extract_js_files_from_footer() {
 	/** This filter is documented in inc/front/process.php */
 	$rocket_cache_search = apply_filters( 'rocket_cache_search', false );
 	
-	if( ( isset( $wp_scripts->in_footer ) && ! is_array( $wp_scripts->in_footer ) ) || ! get_rocket_option( 'minify_js', false ) || in_array( $pagenow, array( 'wp-login.php', 'wp-register.php' ) ) || ( defined( 'DONOTMINIFYJS' ) && DONOTMINIFYJS ) || ( defined( 'DONOTCACHEPAGE' ) && DONOTCACHEPAGE ) || is_rocket_post_excluded_option( 'minify_js' ) || is_404() || ( is_search() && ! $rocket_cache_search ) ) {
+	if( empty( $wp_scripts->in_footer ) || ! get_rocket_option( 'minify_js', false ) || in_array( $pagenow, array( 'wp-login.php', 'wp-register.php' ) ) || ( defined( 'DONOTMINIFYJS' ) && DONOTMINIFYJS ) || ( defined( 'DONOTCACHEPAGE' ) && DONOTCACHEPAGE ) || is_rocket_post_excluded_option( 'minify_js' ) || is_404() || ( is_search() && ! $rocket_cache_search ) ) {
 		return;
 	}
 	
