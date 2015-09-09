@@ -595,14 +595,30 @@ function __rocket_extract_js_files_from_footer() {
  */
 add_filter( 'rocket_pre_minify_path', '__rocket_fix_minify_multisite_path_issue' );
 function __rocket_fix_minify_multisite_path_issue( $url ) {
-	if ( ! is_multisite() ) {
+	if ( ! is_multisite() || is_main_site() ) {
 		return $url;
 	}
 	
-	$bloginfo = get_blog_details( get_current_blog_id(), false );
+	// Current blog infos
+	$blog_id  = get_current_blog_id();
+	$bloginfo = get_blog_details( $current_blog_id, false );
+	
+	// Main blog infos
+	if ( ! empty( $GLOBALS['current_site']->blog_id ) ) {
+		$main_blog_id = absint( $GLOBALS['current_site']->blog_id );
+	}
+	elseif ( defined( 'BLOG_ID_CURRENT_SITE' ) ) {
+		$main_blog_id = absint( BLOG_ID_CURRENT_SITE );
+	}
+	elseif ( defined( 'BLOGID_CURRENT_SITE' ) ) { // deprecated.
+		$main_blog_id = absint( BLOGID_CURRENT_SITE );
+	}
+	
+	$main_blog_id  = $main_blog_id ? $main_blog_id : 1;
+	$main_bloginfo = get_blog_details( $main_blog_id, false );
 	
 	if ( $bloginfo->path != '/' ) {
-		$url = str_replace( $bloginfo->path, '/', $url );	
+		$url = str_replace( $bloginfo->path, $main_bloginfo->path, $url );	
 	}
 	
 	return $url;
