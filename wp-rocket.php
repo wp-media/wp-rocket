@@ -92,7 +92,7 @@ function rocket_init()
 
     // Last constants
     define( 'WP_ROCKET_PLUGIN_NAME', get_rocket_option( 'wl_plugin_name', 'WP Rocket' ) );
-    define( 'WP_ROCKET_PLUGIN_SLUG', sanitize_key( WP_ROCKET_PLUGIN_NAME ) );
+    define( 'WP_ROCKET_PLUGIN_SLUG', sanitize_title( WP_ROCKET_PLUGIN_NAME ) );
 
     // Call defines,  classes and functions
 	require( WP_ROCKET_FUNCTIONS_PATH	. 'files.php' );
