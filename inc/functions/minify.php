@@ -229,7 +229,8 @@ function get_rocket_minify_excluded_external_js() {
 		'ir-na.amazon-adsystem.com',
 		'web.ventunotech.com',
 		'verify.authorize.net',
-		'ads.themoneytizer.com'
+		'ads.themoneytizer.com',
+		'embed.finanzcheck.de'
 	) );
 	
 	return $excluded_external_js;		

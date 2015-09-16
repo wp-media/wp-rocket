@@ -16,3 +16,4 @@ require( WP_ROCKET_3RD_PARTY_PATH . 'i18n/polylang.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'kk-star-ratings.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'wp-postratings.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'wp-print.php' );
+require( WP_ROCKET_3RD_PARTY_PATH . 'buddypress.php' );
