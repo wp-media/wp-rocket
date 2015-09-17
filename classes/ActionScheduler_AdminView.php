@@ -171,39 +171,7 @@ class ActionScheduler_AdminView {
 
 		switch ( $column_name ) {
 			case 'hook':
-
 				echo $action_title;
-
-				$actions = array();
-
-				if ( current_user_can( 'edit_post', $post->ID ) && ! in_array( $post->post_status, array( 'publish', 'in-progress', 'trash' ) ) ) {
-					$actions['process'] = "<a title='" . esc_attr( __( 'Process the action now as if it were run as part of a queue' ) ) . "' href='" . self::get_run_action_link( $post->ID, 'process' ) . "'>" . __( 'Run', 'action-scheduler' ) . "</a>";
-				}
-
-				if ( current_user_can( 'delete_post', $post->ID ) ) {
-					if ( 'trash' == $post->post_status ) {
-						$post_type_object = get_post_type_object( $post->post_type );
-						$actions['untrash'] = "<a title='" . esc_attr( __( 'Restore this action from the Trash' ) ) . "' href='" . wp_nonce_url( admin_url( sprintf( $post_type_object->_edit_link . '&amp;action=untrash', $post->ID ) ), 'untrash-post_' . $post->ID ) . "'>" . __( 'Restore', 'action-scheduler' ) . "</a>";
-					} elseif ( EMPTY_TRASH_DAYS ) {
-						$actions['trash'] = "<a class='submitdelete' title='" . esc_attr( __( 'Move this action to the Trash' ) ) . "' href='" . get_delete_post_link( $post->ID ) . "'>" . __( 'Trash', 'action-scheduler' ) . "</a>";
-					}
-
-					if ( 'trash' == $post->post_status || !EMPTY_TRASH_DAYS ) {
-						$actions['delete'] = "<a class='submitdelete' title='" . esc_attr( __( 'Delete this action permanently' ) ) . "' href='" . get_delete_post_link( $post->ID, '', true ) . "'>" . __( 'Delete Permanently', 'action-scheduler' ) . "</a>";
-					}
-				}
-
-				$action_count = count( $actions );
-				$i = 0;
-
-				echo '<div class="row-actions">';
-				foreach ( $actions as $a => $link ) {
-					++$i;
-					( $i == $action_count ) ? $sep = '' : $sep = ' | ';
-					echo "<span class='$a'>$link$sep</span>";
-				}
-				echo '</div>';
-
 				break;
 			case 'status':
 				if ( 'publish' == $status ) {
@@ -260,8 +228,21 @@ class ActionScheduler_AdminView {
 	 */
 	public static function row_actions( $actions, $post ) {
 
-		if ( ActionScheduler_wpPostStore::POST_TYPE == $post->post_type && isset( $actions['edit'] ) ) {
-			unset( $actions['edit'] );
+		if ( ActionScheduler_wpPostStore::POST_TYPE == $post->post_type ) {
+
+			if ( isset( $actions['edit'] ) ) {
+				unset( $actions['edit'] );
+			}
+
+			if ( isset( $actions['inline hide-if-no-js'] ) ) {
+				unset( $actions['inline hide-if-no-js'] );
+			}
+
+			if ( current_user_can( 'edit_post', $post->ID ) && ! in_array( $post->post_status, array( 'publish', 'in-progress', 'trash' ) ) ) {
+				$actions['process'] = "<a title='" . esc_attr( __( 'Process the action now as if it were run as part of a queue' ) ) . "' href='" . self::get_run_action_link( $post->ID, 'process' ) . "'>" . __( 'Run', 'action-scheduler' ) . "</a>";
+			}
+
+			ksort( $actions );
 		}
 
 		return $actions;
