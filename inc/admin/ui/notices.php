@@ -133,7 +133,8 @@ function rocket_plugins_to_deactivate()
 		'super-static-cache'                         => 'super-static-cache/super-static-cache.php',
 		'wpcompressor'                               => 'wpcompressor/wpcompressor.php',
 		'check-and-enable-gzip-compression' 		 => 'richards-toolbox.php',
-		'leverage-browser-caching-ninjas'   		 => 'leverage-browser-caching-ninjas/leverage-browser-caching-ninja.php'
+		'leverage-browser-caching-ninjas'   		 => 'leverage-browser-caching-ninjas/leverage-browser-caching-ninja.php',
+		'force-gzip'								 => 'force-gzip/force-gzip.php'
 	);
 
 	if ( get_rocket_option( 'lazyload' ) ) {
