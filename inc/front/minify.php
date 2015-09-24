@@ -601,7 +601,7 @@ function __rocket_fix_minify_multisite_path_issue( $url ) {
 	
 	// Current blog infos
 	$blog_id  = get_current_blog_id();
-	$bloginfo = get_blog_details( $current_blog_id, false );
+	$bloginfo = get_blog_details( $blog_id, false );
 	
 	// Main blog infos
 	$main_blog_id = 1;
