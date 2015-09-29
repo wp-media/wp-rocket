@@ -69,8 +69,54 @@ function rocket_clean_studiopress_accelerator() {
  */
 function rocket_clean_varnish_http_purge() {
 	if ( class_exists( 'VarnishPurger' ) ) {
-		$purger = new VarnishPurger();
-		$purger->executePurge();
+		// Parse the URL for proxy proxies
+		$p = parse_url(home_url() .'/?vhp-regex');
+
+		if ( isset($p['query']) && ( $p['query'] == 'vhp-regex' ) ) {
+			$pregex = '.*';
+			$varnish_x_purgemethod = 'regex';
+		} else {
+			$pregex = '';
+			$varnish_x_purgemethod = 'default';
+		}
+
+		// Build a varniship
+		if ( VHP_VARNISH_IP != false ) {
+			$varniship = VHP_VARNISH_IP;
+		} else {
+			$varniship = get_option('vhp_varnish_ip');
+		}
+
+		if (isset($p['path'] ) ) {
+			$path = $p['path'];
+		} else {
+			$path = '';
+		}
+
+		/**
+		 * Schema filter
+		 *
+		 * Allows default http:// schema to be changed to https
+		 * varnish_http_purge_schema()
+		 *
+		 * @since 3.7.3
+		 *
+		 */
+
+		$schema = apply_filters( 'varnish_http_purge_schema', 'http://' );
+
+		// If we made varniship, let it sail
+		if ( isset($varniship) && $varniship != null ) {
+			$purgeme = $schema.$varniship.$path.$pregex;
+		} else {
+			$purgeme = $schema.$p['host'].$path.$pregex;
+		}
+
+		// Cleanup CURL functions to be wp_remote_request and thus better
+		// http://wordpress.org/support/topic/incompatability-with-editorial-calendar-plugin
+		wp_remote_request($purgeme, array('method' => 'PURGE', 'headers' => array( 'host' => $p['host'], 'X-Purge-Method' => $varnish_x_purgemethod ) ) );
+
+		do_action('after_purge_url', $url, $purgeme);
 	}
 }
 
