@@ -1,6 +1,8 @@
 <?php 
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
+if ( defined( 'DB_HOST' ) && strpos( DB_HOST , '.wpserveur.net' ) !== false ) :
+
 /**
  * Conflict with WP Serveur hosting: don't apply inline JS on all pages
  *
@@ -13,3 +15,12 @@ function __deactivate_inline_js_on_wp_serveur( $html_options ) {
 	}
 	return $html_options;
 }
+
+/**
+  * Allow to purge Varnish on WP Serveur websites
+  *
+  * @since 2.6.11
+ */
+add_filter( 'do_rocket_varnish_http_purge', '__return_true' );
+
+endif;
