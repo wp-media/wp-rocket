@@ -103,8 +103,8 @@ function get_rocket_htaccess_marker()
  */
 function get_rocket_htaccess_mod_rewrite()
 {
-	// No rewrite rules for multisite
-	if ( is_multisite() ) {
+	// No rewrite rules when we are on a multisite and the mod_rewrite isn't activated on the server
+	if ( is_multisite() || ! got_mod_rewrite() ) {
 		return;
 	}
 	
