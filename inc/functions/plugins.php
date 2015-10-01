@@ -69,8 +69,44 @@ function rocket_clean_studiopress_accelerator() {
  */
 function rocket_clean_varnish_http_purge() {
 	if ( class_exists( 'VarnishPurger' ) ) {
-		$purger = new VarnishPurger();
-		$purger->executePurge();
+		$url    = home_url( '/?vhp-regex' );
+		$p      = parse_url( $url );
+		$path   = '';
+		$pregex = '.*';
+		
+		// Build a varniship
+		if ( defined( 'VHP_VARNISH_IP' ) && VHP_VARNISH_IP ) {
+			$varniship = VHP_VARNISH_IP;
+		} else {
+			$varniship = get_option('vhp_varnish_ip');
+		}
+
+		if ( isset($p['path'] ) ) {
+			$path = $p['path'];
+		}
+
+		$schema = apply_filters( 'varnish_http_purge_schema', 'http://' );
+
+		// If we made varniship, let it sail
+		if ( ! empty( $varniship ) ) {
+			$purgeme = $schema . $varniship . $path . $pregex;
+		} else {
+			$purgeme = $schema . $p['host'] . $path . $pregex;
+		}
+
+		wp_remote_request( 
+			$purgeme, 
+			array(	
+				'method'   => 'PURGE',
+				'blocking' => false, 
+				'headers'  => array( 
+					'host'           => $p['host'], 
+					'X-Purge-Method' => 'regex' 
+				) 
+			) 
+		);
+
+		do_action( 'after_purge_url', $url, $purgeme );
 	}
 }
 
