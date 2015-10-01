@@ -16,25 +16,21 @@ function flush_rocket_htaccess( $force = false )
 		return;
 	}
 
-	$rules = '';
-	$htaccess_file = get_home_path() . '.htaccess';
+	$rules 		   = '';
+	$home_path     = get_home_path();
+	$htaccess_file = $home_path . '.htaccess';
 
-	if ( is_writable( $htaccess_file ) ) {
-		// Get content of .htaccess file
-		$ftmp = file_get_contents( $htaccess_file );
-
-		// Remove the WP Rocket marker
-		$ftmp = preg_replace( '/# BEGIN WP Rocket(.*)# END WP Rocket/isU', '', $ftmp );
-
-		// Remove empty spacings
-		$ftmp = str_replace( "\n\n" , "\n" , $ftmp );
-
+	/*
+	 * If the file doesn't already exist check for write access to the directory.
+	 * Else check for write access to the file.
+	 */
+	if ( ( ! file_exists( $htaccess_file ) && is_writable( $home_path ) ) || is_writable( $htaccess_file ) ) {
 		if ( $force === false ) {
 			$rules = get_rocket_htaccess_marker();
+			$rules = explode( "\n", $rules );
 		}
 
-		// Update the .htacces file
-		rocket_put_content( $htaccess_file, $rules . $ftmp );
+		rocket_insert_with_markers( $htaccess_file, $rules );
 	}
 }
 
@@ -46,10 +42,7 @@ function flush_rocket_htaccess( $force = false )
  * @return string $marker Rules that will be printed
  */
 function get_rocket_htaccess_marker()
-{
-	// Recreate WP Rocket marker
-	$marker  = '# BEGIN WP Rocket v' . WP_ROCKET_VERSION . PHP_EOL;
-	
+{	
 	/**
 	 * Add custom rules before rules added by WP Rocket
 	 *
@@ -57,7 +50,7 @@ function get_rocket_htaccess_marker()
 	 *
 	 * @param string $before_marker The content of all rules
 	*/
-	$marker .= apply_filters( 'before_rocket_htaccess_rules', '' );
+	$marker  = apply_filters( 'before_rocket_htaccess_rules', '' );
 	
 	$marker .= get_rocket_htaccess_charset();
 	$marker .= get_rocket_htaccess_etag();
@@ -79,9 +72,7 @@ function get_rocket_htaccess_marker()
 	 * @param string $after_marker The content of all rules
 	*/
 	$marker .= apply_filters( 'after_rocket_htaccess_rules', '' );
-	
-	$marker .= '# END WP Rocket' . PHP_EOL;
-	
+		
 	/**
 	 * Filter rules added by WP Rocket in .htaccess
 	 *
@@ -529,4 +520,77 @@ function get_rocket_htaccess_web_fonts_access() {
     $rules = apply_filters( 'rocket_htaccess_web_fonts_access', $rules );
 
 	return $rules;
+}
+
+/**
+ * Inserts an array of strings into a file (.htaccess), placing it between
+ * BEGIN WP Rocket and END WP Rocket markers. Replaces existing marked info. Retains surrounding
+ * data. Creates file if none exists.
+ *
+ * @since 2.6.12
+ *
+ * @param  string $filename
+ * @param  string $marker
+ * @param  array  $insertion
+ * @return bool
+ */
+function rocket_insert_with_markers( $filename, $insertion ) {
+	if ( ! file_exists( $filename ) || is_writeable( $filename ) ) {
+		if ( ! file_exists( $filename ) ) {
+			$markerdata = '';
+		} else {
+			$markerdata = explode( "\n", implode( '', file( $filename ) ) );
+		}
+
+		if ( ! $f = @fopen( $filename, 'w' ) ) {
+			return false;
+		}
+
+		$foundit = false;
+		if ( $markerdata ) {
+			$marker = 'WP Rocket';
+			$state = true;
+			$add_at_bottom = "";
+			
+			foreach ( $markerdata as $n => $markerline ) {
+				if ( strpos( $markerline, '# BEGIN ' . $marker ) !== false ) {
+					$state = false;
+				}
+				if ( $state ) {
+					/* build already existing lines list */
+					if ( $n + 1 < count( $markerdata ) ) {
+						$add_at_bottom .="{$markerline}\n";
+					} else {
+						$add_at_bottom .="{$markerline}";
+					}
+				}
+				if ( strpos( $markerline, '# END ' . $marker) !== false ) {
+					fwrite( $f, "# BEGIN {$marker}\n" );
+					if ( is_array( $insertion ) ) {
+						foreach ( $insertion as $insertline ) {
+							fwrite( $f, "{$insertline}\n" );
+						}
+					}
+					fwrite( $f, "# END {$marker}\n" );
+					$state = true;
+					$foundit = true;
+				}
+			}			
+		}
+		if ( ! $foundit ) {
+			fwrite( $f, "\n# BEGIN {$marker}\n" );
+			foreach ( $insertion as $insertline ) {
+				fwrite( $f, "{$insertline}\n" );
+			}
+			fwrite( $f, "# END {$marker}\n" );
+		}
+		
+		/* add them at the bottom */
+		@fwrite( $f, $add_at_bottom );
+			
+		fclose( $f );
+		return true;
+	} else {
+		return false;
+	}
 }
