@@ -69,44 +69,54 @@ function rocket_clean_studiopress_accelerator() {
  */
 function rocket_clean_varnish_http_purge() {
 	if ( class_exists( 'VarnishPurger' ) ) {
-		$url    = home_url( '/?vhp-regex' );
-		$p      = parse_url( $url );
-		$path   = '';
-		$pregex = '.*';
-		
+		// Parse the URL for proxy proxies
+		$p = parse_url(home_url() .'/?vhp-regex');
+
+		if ( isset($p['query']) && ( $p['query'] == 'vhp-regex' ) ) {
+			$pregex = '.*';
+			$varnish_x_purgemethod = 'regex';
+		} else {
+			$pregex = '';
+			$varnish_x_purgemethod = 'default';
+		}
+
 		// Build a varniship
-		if ( defined( 'VHP_VARNISH_IP' ) && ! VHP_VARNISH_IP ) {
+		if ( VHP_VARNISH_IP != false ) {
 			$varniship = VHP_VARNISH_IP;
 		} else {
 			$varniship = get_option('vhp_varnish_ip');
 		}
 
-		if ( isset($p['path'] ) ) {
+		if (isset($p['path'] ) ) {
 			$path = $p['path'];
+		} else {
+			$path = '';
 		}
+
+		/**
+		 * Schema filter
+		 *
+		 * Allows default http:// schema to be changed to https
+		 * varnish_http_purge_schema()
+		 *
+		 * @since 3.7.3
+		 *
+		 */
 
 		$schema = apply_filters( 'varnish_http_purge_schema', 'http://' );
 
 		// If we made varniship, let it sail
-		if ( ! empty( $varniship ) ) {
-			$purgeme = $schema . $varniship . $path . $pregex;
+		if ( isset($varniship) && $varniship != null ) {
+			$purgeme = $schema.$varniship.$path.$pregex;
 		} else {
-			$purgeme = $schema . $p['host'] . $path . $pregex;
+			$purgeme = $schema.$p['host'].$path.$pregex;
 		}
 
-		wp_remote_request( 
-			$purgeme, 
-			array(	
-				'method'   => 'PURGE',
-				'blocking' => false, 
-				'headers'  => array( 
-					'host'           => $p['host'], 
-					'X-Purge-Method' => 'regex' 
-				) 
-			) 
-		);
+		// Cleanup CURL functions to be wp_remote_request and thus better
+		// http://wordpress.org/support/topic/incompatability-with-editorial-calendar-plugin
+		wp_remote_request($purgeme, array('method' => 'PURGE', 'headers' => array( 'host' => $p['host'], 'X-Purge-Method' => $varnish_x_purgemethod ) ) );
 
-		do_action( 'after_purge_url', $url, $purgeme );
+		do_action('after_purge_url', $url, $purgeme);
 	}
 }
 
