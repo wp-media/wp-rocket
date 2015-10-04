@@ -382,9 +382,14 @@ function rocket_purge_cache()
 				rocket_clean_post( $_id );
 				break;
 			
-			// Clear a term specific term
+			// Clear a specific term
 			case 'term':
 				rocket_clean_term( $_id, $_taxonomy );
+				break;
+				
+			// Clear a specific user
+			case 'user':
+				rocket_clean_user( $_id );
 				break;
 			
 			// Clear cache file of the current page in front-end
