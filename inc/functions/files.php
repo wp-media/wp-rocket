@@ -586,6 +586,68 @@ function rocket_clean_term( $term_id, $taxonomy_slug ) {
 }
 
 /**
+ * Delete the caching files of a specific user
+ *
+ * $since 2.6.12
+ *
+ * @param int 	 $user_id  The user ID
+ * @param string $lang 	   The language code
+ * @return void
+ */
+function rocket_clean_user( $user_id, $lang = '' ) {
+	$urls = ( ! $lang || is_object( $lang ) ) ? get_rocket_i18n_uri() : get_rocket_i18n_home_url( $lang );
+	$urls = (array) $urls;
+
+	/** This filter is documented in inc/functions/files.php */
+	$urls = apply_filters( 'rocket_clean_domain_urls', $urls, $lang );
+	$urls = array_filter( $urls );
+	
+	if ( ! $user = get_user_by( 'id', $user_id ) ) {
+		return;
+	}
+	
+	$user_key = $user->user_login . '-' . get_rocket_option( 'secret_cache_key' );
+	
+	foreach ( $urls as $url ) {
+		list( $host, $path ) = get_rocket_parse_url( $url );
+
+		/** This filter is documented in inc/front/htaccess.php */
+		if( apply_filters( 'rocket_url_no_dots', false ) ) {
+			$host = str_replace( '.' , '_', $host );
+		}
+
+		$root = WP_ROCKET_CACHE_PATH . $host . '-' . $user_key . '*' . $path;
+
+		/**
+		 * Fires before all caching files are deleted for a specific user
+		 *
+		 * @since 2.6.12
+		 *
+		 * @param int 	  $user_id  The path of home cache file
+		 * @param string  $lang 	The language code
+		*/
+		do_action( 'before_rocket_clean_user', $user_id, $lang );
+
+		// Delete cache domain files
+		if( $dirs = glob( $root . '*', GLOB_NOSORT ) ) {
+			foreach ( $dirs as $dir ) {
+				rocket_rrmdir( $dir, get_rocket_i18n_to_preserve( $lang ) );
+			}
+		}
+		
+		/**
+		 * Fires after all caching files are deleted for a specific user
+		 *
+		 * @since 2.6.12
+		 *
+		 * @param int 	  $user_id  The path of home cache file
+		 * @param string  $lang 	The language code
+		*/
+	    do_action( 'after_rocket_clean_user', $user_id, $lang );
+	}
+}
+
+/**
  * Remove all caching files in the cache folder
  *
  * @since 2.6.8
