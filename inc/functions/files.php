@@ -522,11 +522,7 @@ function rocket_clean_domain( $lang = '' )
  * @param string $taxonomy_name The taxonomy slug
  * @return void
  */
-function rocket_clean_term( $term_id, $taxonomy_slug ) {
-	if ( defined( 'DOING_AUTOSAVE' ) ) {
-		return;
-	}
-	
+function rocket_clean_term( $term_id, $taxonomy_slug ) {	
 	$purge_urls = array();
 	
 	// Get all term infos
