@@ -146,6 +146,8 @@ add_settings_field(
 		'label'        => __('Enable caching for pages with SSL protocol (<code>https://</code>).', 'rocket' ),
 		'label_for'    => 'cache_ssl',
 		'label_screen' => __( 'SSL cache:', 'rocket' ),
+		'default'	   => ( rocket_is_ssl_website() ) ? 1 : 0,
+		'readonly'	   => ( rocket_is_ssl_website() ) ? true : false
 	)
 );
 add_settings_field(

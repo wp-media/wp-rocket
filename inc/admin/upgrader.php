@@ -71,7 +71,7 @@ function rocket_first_install()
 			'secret_cache_key'         => $secret_cache_key,
 			'cache_mobile'             => 0,
 			'cache_logged_user'        => 0,
-			'cache_ssl'                => 0,
+			'cache_ssl'                => ( rocket_is_ssl_website() ) ? 1 : 0,
 			'cache_reject_uri'         => array(),
 			'cache_reject_cookies'     => array(),
 			'cache_reject_ua'          => array(),
