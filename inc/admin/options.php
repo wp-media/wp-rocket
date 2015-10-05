@@ -104,18 +104,12 @@ function rocket_field( $args )
 			break;
 
 			case 'checkbox' : 
-				$value = get_rocket_option( $args['name'] );
-				if ( $value === false ) {
-					$value = $default;
-				}
-
-				if ( isset( $args['label_screen'] ) ) {
-				?>
-					<legend class="screen-reader-text"><span><?php echo $args['label_screen']; ?></span></legend>
-				<?php } ?>
-				
-				<label><input type="checkbox" id="<?php echo $args['name']; ?>" class="<?php echo $class; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]" value="1" <?php echo $readonly; ?> <?php checked( $value, 1 ); ?> <?php echo $parent; ?>/> <?php echo $args['label']; ?>
-				</label>
+					if ( isset( $args['label_screen'] ) ) {
+					?>
+						<legend class="screen-reader-text"><span><?php echo $args['label_screen']; ?></span></legend>
+					<?php } ?>
+					<label><input type="checkbox" id="<?php echo $args['name']; ?>" class="<?php echo $class; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]" value="1"<?php echo $readonly; ?> <?php checked( get_rocket_option( $args['name'], 0 ), 1 ); ?> <?php echo $parent; ?>/> <?php echo $args['label']; ?>
+					</label>
 
 			<?php
 			break;
@@ -988,12 +982,7 @@ function rocket_pre_main_option( $newvalue, $oldvalue )
 		
 		$newvalue['cloudflare_old_settings'] = ( isset ( $cf_settings ) ) ? implode( ',' , $cf_settings ) : '';
 	}
-	
-	// Checked the SSL option if the whole website is on SSL
-	if( ! rocket_is_ssl_website() ) {
-		$newvalue['cache_ssl'] = 1;
-	}
-	
+
 	if ( ! defined( 'WP_ROCKET_ADVANCED_CACHE' ) ) {
 		rocket_generate_advanced_cache_file();
 	}
