@@ -388,9 +388,12 @@ function rocket_minify_js( $buffer )
 	// Get external JS tags and remove duplicate scripts
 	$external_tags = implode( '', array_unique( $external_tags ) );
 
+	// Remove domain on all JS in footer
+	$js_in_footer = array_map( 'rocket_clean_exclude_file', $js_in_footer );
+	
 	// Exclude JS files to insert in footer
 	foreach( $internal_files as $k=>$url ) {
-		if ( in_array( set_url_scheme( '//' . $home_host . $url ), $js_in_footer ) || in_array( $url, $js_in_footer ) ) {
+		if ( in_array( $url, $js_in_footer ) ) {
 			unset( $internal_files[ $k ] );
 		}
 	}
