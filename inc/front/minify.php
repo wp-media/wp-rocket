@@ -331,7 +331,7 @@ function rocket_minify_js( $buffer )
 	$i=0;
     foreach ( $tags_match[0] as $tag ) {
 
-        // Chek if the file is already minify by get_rocket_minify_files
+        // Check if the file is already minify by get_rocket_minify_files
         // or the file is rejected to the process
         if ( ! strpos( $tag, 'data-minify=' ) && ! strpos( $tag, 'data-no-minify=' ) ) {
 
@@ -428,7 +428,7 @@ function rocket_extract_ie_conditionals( $buffer )
 function rocket_inject_ie_conditionals( $buffer, $conditionals )
 {
     foreach( $conditionals as $conditional ) {
-      if ( strpos( $buffer, '{{WP_ROCKET_CONDITIONAL}}' ) ) {
+      if ( false !== strpos( $buffer, '{{WP_ROCKET_CONDITIONAL}}' ) ) {
         $buffer = preg_replace( '/{{WP_ROCKET_CONDITIONAL}}/' , $conditional, $buffer, 1 );
       } else {
       	break;
