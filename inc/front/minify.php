@@ -331,7 +331,7 @@ function rocket_minify_js( $buffer )
 	$i=0;
     foreach ( $tags_match[0] as $tag ) {
 
-        // Chek if the file is already minify by get_rocket_minify_files
+        // Check if the file is already minify by get_rocket_minify_files
         // or the file is rejected to the process
         if ( ! strpos( $tag, 'data-minify=' ) && ! strpos( $tag, 'data-no-minify=' ) ) {
 
@@ -388,9 +388,12 @@ function rocket_minify_js( $buffer )
 	// Get external JS tags and remove duplicate scripts
 	$external_tags = implode( '', array_unique( $external_tags ) );
 
+	// Remove domain on all JS in footer
+	$js_in_footer = array_map( 'rocket_clean_exclude_file', $js_in_footer );
+	
 	// Exclude JS files to insert in footer
 	foreach( $internal_files as $k=>$url ) {
-		if ( in_array( set_url_scheme( '//' . $home_host . $url ), $js_in_footer ) || in_array( $url, $js_in_footer ) ) {
+		if ( in_array( $url, $js_in_footer ) ) {
 			unset( $internal_files[ $k ] );
 		}
 	}
@@ -425,7 +428,7 @@ function rocket_extract_ie_conditionals( $buffer )
 function rocket_inject_ie_conditionals( $buffer, $conditionals )
 {
     foreach( $conditionals as $conditional ) {
-      if ( strpos( $buffer, '{{WP_ROCKET_CONDITIONAL}}' ) ) {
+      if ( false !== strpos( $buffer, '{{WP_ROCKET_CONDITIONAL}}' ) ) {
         $buffer = preg_replace( '/{{WP_ROCKET_CONDITIONAL}}/' , $conditional, $buffer, 1 );
       } else {
       	break;

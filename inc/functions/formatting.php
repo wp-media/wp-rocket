@@ -28,7 +28,7 @@ function rocket_sanitize_css( $file )
 {
 	$file = preg_replace( '#\?.*$#', '', $file );
 	$ext = strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
-	return $ext=='css' ? trim( $file ) : false;
+	return ( 'css' === $ext || 'php' === $ext ) ? trim( $file ) : false;
 }
 
 /**
@@ -40,7 +40,7 @@ function rocket_sanitize_js( $file )
 {
 	$file = preg_replace( '#\?.*$#', '', $file );
 	$ext  = strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
-	return $ext == 'js' ? trim( $file ) : false;
+	return ( 'js' === $ext || 'php' === $ext ) ? trim( $file ) : false;
 }
 
 /**
