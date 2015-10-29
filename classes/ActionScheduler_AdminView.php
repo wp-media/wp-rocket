@@ -196,7 +196,7 @@ class ActionScheduler_AdminView {
 				}
 				break;
 			case 'scheduled':
-				echo get_date_from_gmt( date( 'Y-m-d H:i:s', $next_timestamp ), 'Y-m-d H:i:s' );
+				echo get_date_from_gmt( gmdate( 'Y-m-d H:i:s', $next_timestamp ), 'Y-m-d H:i:s' );
 				if ( gmdate( 'U' ) > $next_timestamp ) {
 					printf( __( ' (%s ago)', 'action-scheduler' ), human_time_diff( gmdate( 'U' ), $next_timestamp ) );
 				} else {
