@@ -176,7 +176,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 				$order = 'ASC';
 				break;
 		}
-		$query .= " ORDER BY post_date $order LIMIT 1";
+		$query .= " ORDER BY post_date_gmt $order LIMIT 1";
 
 		$query = $wpdb->prepare( $query, $args );
 
@@ -240,19 +240,19 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 
 		if ( $query['date'] instanceof DateTime ) {
 			$date = clone( $query['date'] );
-			$date->setTimezone( $this->get_local_timezone() );
+			$date->setTimezone( new DateTimeZone('UTC') );
 			$date_string = $date->format('Y-m-d H:i:s');
 			$comparator = $this->validate_sql_comparator($query['date_compare']);
-			$sql .= " AND p.post_date $comparator %s";
+			$sql .= " AND p.post_date_gmt $comparator %s";
 			$sql_params[] = $date_string;
 		}
 
 		if ( $query['modified'] instanceof DateTime ) {
 			$modified = clone( $query['modified'] );
-			$modified->setTimezone( $this->get_local_timezone() );
+			$modified->setTimezone( new DateTimeZone('UTC') );
 			$date_string = $modified->format('Y-m-d H:i:s');
 			$comparator = $this->validate_sql_comparator($query['modified_compare']);
-			$sql .= " AND p.post_modified $comparator %s";
+			$sql .= " AND p.post_modified_gmt $comparator %s";
 			$sql_params[] = $date_string;
 		}
 
@@ -277,7 +277,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 				break;
 			case 'date':
 			default:
-				$orderby = 'p.post_date';
+				$orderby = 'p.post_date_gmt';
 				break;
 		}
 		if ( strtoupper($query['order']) == 'ASC' ) {
@@ -389,9 +389,9 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		/** @var wpdb $wpdb */
 		global $wpdb;
 		$date = is_null($before_date) ? new DateTime() : clone( $before_date );
-		$date->setTimezone( $this->get_local_timezone() ); // using post_modified to take advantage of indexes
+		$date->setTimezone( new DateTimeZone('UTC') ); // using post_modified to take advantage of indexes
 		// can't use $wpdb->update() because of the <= condition
-		$sql = "UPDATE {$wpdb->posts} SET post_password = %s, post_modified_gmt = %s, post_modified = %s WHERE post_type = %s AND post_status = %s AND post_password = '' AND post_date <= %s ORDER BY menu_order ASC, post_date ASC LIMIT %d";
+		$sql = "UPDATE {$wpdb->posts} SET post_password = %s, post_modified_gmt = %s, post_modified = %s WHERE post_type = %s AND post_status = %s AND post_password = '' AND post_date_gmt <= %s ORDER BY menu_order ASC, post_date_gmt ASC LIMIT %d";
 		$sql = $wpdb->prepare( $sql, array( $claim_id, current_time('mysql', true), current_time('mysql'), self::POST_TYPE, 'pending', $date->format('Y-m-d H:i:s'), $limit ) );
 		$rows_affected = $wpdb->query($sql);
 		if ( $rows_affected === false ) {
