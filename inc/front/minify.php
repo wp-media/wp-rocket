@@ -631,6 +631,7 @@ function __rocket_fix_minify_multisite_path_issue( $url ) {
 /**
  * Compatibility with multilingual plugins & multidomain configuration
  *
+ * @since 2.6.13 Regression Fix: Apply CDN on minified CSS and JS files by checking the CNAME host
  * @since 2.6.8
  */
 add_filter( 'rocket_css_url', '__rocket_minify_i18n_multidomain' );
@@ -641,8 +642,22 @@ function __rocket_minify_i18n_multidomain( $url ) {
 	}
 	
 	$url_host = parse_url( $url, PHP_URL_HOST );
+	$zone     = array( 'all', 'css_and_js' );
 	
-	if ( $url_host != $_SERVER['HTTP_HOST'] && in_array( $_SERVER['HTTP_HOST'], get_rocket_i18n_host() ) ) {
+	// Add only CSS zone
+	if ( current_filter() == 'rocket_css_url' ) {
+		$zone[] = 'css';
+	}
+
+	// Add only JS zone
+	if ( current_filter() == 'rocket_js_url' ) {
+		$zone[] = 'js';
+	}
+	
+	$cnames = get_rocket_cdn_cnames( $zone );
+	$cnames = array_map( 'rocket_remove_url_protocol' , $cnames );
+	
+	if ( $url_host != $_SERVER['HTTP_HOST'] && in_array( $_SERVER['HTTP_HOST'], get_rocket_i18n_host() ) && ! in_array( $url_host, $cnames ) ) {
 		$url = str_replace( $url_host, $_SERVER['HTTP_HOST'], $url );
 	}
 	
