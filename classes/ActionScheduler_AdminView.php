@@ -166,7 +166,7 @@ class ActionScheduler_AdminView {
 
 		$action_title   = ( 'trash' == $post->post_status ) ? $post->post_title : $action->get_hook();
 		$recurrence     = ( 'trash' == $post->post_status ) ? 0 : $action->get_schedule();
-		$next_timestamp = ( function_exists( 'wcs_date_to_time' ) ) ? wcs_date_to_time( $post->post_date_gmt ) : strtotime( $post->post_date_gmt . ' GMT' ); //get_post_time( 'U', true, $post_id );
+		$next_timestamp = ( function_exists( 'wcs_date_to_time' ) ) ? wcs_date_to_time( $post->post_date_gmt ) : strtotime( $post->post_date_gmt . ' GMT' );
 		$status         = get_post_status( $post_id );
 
 		switch ( $column_name ) {
