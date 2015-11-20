@@ -79,7 +79,7 @@ function __rocket_lazyload_replace_callback( $matches ) {
 		*/
 		$placeholder = apply_filters( 'rocket_lazyload_placeholder', 'data:image/gif;base64,R0lGODdhAQABAPAAAP///wAAACwAAAAAAQABAEACAkQBADs=' );
 		
-		$html = sprintf( '<img%1$s src="%4$s" data-lazy-src=%2$s%3$s><noscript><img%1$s src=%2$s%3$s></noscript>', $matches[1], $matches[2], $matches[3], $placeholder );
+		$html = sprintf( '<img%1$s src="%4$s" data-cfasync="false" data-lazy-src=%2$s%3$s><noscript><img%1$s src=%2$s%3$s></noscript>', $matches[1], $matches[2], $matches[3], $placeholder );
 
 		/**
 		 * Filter the LazyLoad HTML output on images
@@ -200,7 +200,7 @@ function rocket_translate_smiley( $matches ) {
 		/** This filter is documented in inc/front/lazyload.php */
 		$placeholder = apply_filters( 'rocket_lazyload_placeholder', 'data:image/gif;base64,R0lGODdhAQABAPAAAP///wAAACwAAAAAAQABAEACAkQBADs=' );
 		
-		return sprintf( ' <img src="%s" data-lazy-src="%s" alt="%s" class="wp-smiley" /> ', $placeholder, esc_url( $src_url ), esc_attr( $smiley ) );
+		return sprintf( ' <img src="%s" data-lazy-src="%s" alt="%s" class="wp-smiley" data-cfasync="false" /> ', $placeholder, esc_url( $src_url ), esc_attr( $smiley ) );
 
 	} else {
 
@@ -234,7 +234,7 @@ function rocket_lazyload_iframes( $html ) {
 		/** This filter is documented in inc/front/lazyload.php */
 		$placeholder = apply_filters( 'rocket_lazyload_placeholder', 'data:image/gif;base64,R0lGODdhAQABAPAAAP///wAAACwAAAAAAQABAEACAkQBADs=' );
 		
-		$iframe = preg_replace( '/<iframe(.*?)src=/is', '<iframe$1src="' . $placeholder . '" data-lazy-src=', $iframe );
+		$iframe = preg_replace( '/<iframe(.*?)src=/is', '<iframe$1src="' . $placeholder . '" data-cfasync="false" data-lazy-src=', $iframe );
 
 		$html = str_replace( $matches[0][ $k ], $iframe, $html );
 		
