@@ -7,7 +7,10 @@ if ( strstr( $_SERVER['REQUEST_URI'], 'robots.txt' ) || strstr( $_SERVER['REQUES
 }
 
 // Don't cache disallowed extensions
-if ( strtolower( $_SERVER['REQUEST_URI'] ) != '/index.php' && in_array( pathinfo( reset(( explode( '?', $_SERVER['REQUEST_URI'] ) )), PATHINFO_EXTENSION ), array( 'php', 'xml', 'xsl' ) ) ) {
+$path_extension = explode( '?', $_SERVER['REQUEST_URI'] );
+$path_extension = reset(( $path_extension ));
+$path_extension = pathinfo( $path_extension , PATHINFO_EXTENSION );
+if ( strtolower( $_SERVER['REQUEST_URI'] ) != '/index.php' && in_array( $path_extension, array( 'php', 'xml', 'xsl' ) ) ) {
 	return;
 }
 
