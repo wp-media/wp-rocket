@@ -17,22 +17,7 @@ function __rocket_set_real_ip_cloudflare() {
     if (isset($_SERVER["REMOTE_ADDR"])) {
 		if (strpos($_SERVER["REMOTE_ADDR"], ":") === FALSE) {
 
-			$cf_ip_ranges = array(
-				"199.27.128.0/21",
-				"173.245.48.0/20",
-				"103.21.244.0/22",
-				"103.22.200.0/22",
-				"103.31.4.0/22",
-				"141.101.64.0/18",
-				"108.162.192.0/18",
-				"190.93.240.0/20",
-				"188.114.96.0/20",
-				"197.234.240.0/22",
-				"198.41.128.0/17",
-				"162.158.0.0/15",
-				"104.16.0.0/12",
-				"172.64.0.0/13"
-			);
+			$cf_ip_ranges = array("199.27.128.0/21","173.245.48.0/20","103.21.244.0/22","103.22.200.0/22","103.31.4.0/22","141.101.64.0/18","108.162.192.0/18","190.93.240.0/20","188.114.96.0/20","197.234.240.0/22","198.41.128.0/17","162.158.0.0/15","104.16.0.0/12");
 			// IPV4: Update the REMOTE_ADDR value if the current REMOTE_ADDR value is in the specified range.
 			foreach ($cf_ip_ranges as $range) {
 				if (ipv4_in_range($_SERVER["REMOTE_ADDR"], $range)) {
@@ -44,13 +29,7 @@ function __rocket_set_real_ip_cloudflare() {
 			}
 		}
 		else {
-			$cf_ip_ranges = array(
-				"2400:cb00::/32",
-				"2606:4700::/32",
-				"2803:f800::/32",
-				"2405:b500::/32",
-				"2405:8100::/32"
-			);
+			$cf_ip_ranges = array("2400:cb00::/32","2606:4700::/32","2803:f800::/32","2405:b500::/32","2405:8100::/32");
 			$ipv6 = get_ipv6_full($_SERVER["REMOTE_ADDR"]);
 			foreach ($cf_ip_ranges as $range) {
 				if (ipv6_in_range($ipv6, $range)) {
