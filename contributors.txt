@@ -1,0 +1,5 @@
+This file contains a list of people who have made large contributions to WP Rocket.
+
+Developers:
+	Jonathan Buttigieg <jonathan@wp-rocket.me>
+	Julio Potier <julio@wp-rocket.me>

@@ -11,17 +11,32 @@ add_action( 'init', '__rocket_set_real_ip_cloudflare' , 1 );
 function __rocket_set_real_ip_cloudflare() {
     global $is_cf;
 
-    $is_cf = (isset($_SERVER["HTTP_CF_CONNECTING_IP"]))? TRUE: FALSE;
+    $is_cf = ( isset( $_SERVER["HTTP_CF_CONNECTING_IP"] ) ) ? true : false;
 
 	// only run this logic if the REMOTE_ADDR is populated, to avoid causing notices in CLI mode
-    if (isset($_SERVER["REMOTE_ADDR"])) {
-		if (strpos($_SERVER["REMOTE_ADDR"], ":") === FALSE) {
+    if ( isset( $_SERVER["REMOTE_ADDR"] ) ) {
+		if ( strpos( $_SERVER["REMOTE_ADDR"], ":" ) === false ) {
 
-			$cf_ip_ranges = array("199.27.128.0/21","173.245.48.0/20","103.21.244.0/22","103.22.200.0/22","103.31.4.0/22","141.101.64.0/18","108.162.192.0/18","190.93.240.0/20","188.114.96.0/20","197.234.240.0/22","198.41.128.0/17","162.158.0.0/15","104.16.0.0/12");
+			$cf_ip_ranges = array(
+				"199.27.128.0/21",
+				"173.245.48.0/20",
+				"103.21.244.0/22",
+				"103.22.200.0/22",
+				"103.31.4.0/22",
+				"141.101.64.0/18",
+				"108.162.192.0/18",
+				"190.93.240.0/20",
+				"188.114.96.0/20",
+				"197.234.240.0/22",
+				"198.41.128.0/17",
+				"162.158.0.0/15",
+				"104.16.0.0/12",
+				"172.64.0.0/13"
+			);
 			// IPV4: Update the REMOTE_ADDR value if the current REMOTE_ADDR value is in the specified range.
-			foreach ($cf_ip_ranges as $range) {
-				if (ipv4_in_range($_SERVER["REMOTE_ADDR"], $range)) {
-					if ($_SERVER["HTTP_CF_CONNECTING_IP"]) {
+			foreach ( $cf_ip_ranges as $range ) {
+				if ( rocket_ipv4_in_range( $_SERVER["REMOTE_ADDR"], $range ) ) {
+					if ( $_SERVER["HTTP_CF_CONNECTING_IP"] ) {
 						$_SERVER["REMOTE_ADDR"] = $_SERVER["HTTP_CF_CONNECTING_IP"];
 					}
 					break;
@@ -29,11 +44,17 @@ function __rocket_set_real_ip_cloudflare() {
 			}
 		}
 		else {
-			$cf_ip_ranges = array("2400:cb00::/32","2606:4700::/32","2803:f800::/32","2405:b500::/32","2405:8100::/32");
-			$ipv6 = get_ipv6_full($_SERVER["REMOTE_ADDR"]);
-			foreach ($cf_ip_ranges as $range) {
-				if (ipv6_in_range($ipv6, $range)) {
-					if ($_SERVER["HTTP_CF_CONNECTING_IP"]) {
+			$cf_ip_ranges = array(
+				"2400:cb00::/32",
+				"2606:4700::/32",
+				"2803:f800::/32",
+				"2405:b500::/32",
+				"2405:8100::/32"
+			);
+			$ipv6 = get_rocket_ipv6_full($_SERVER["REMOTE_ADDR"]);
+			foreach ( $cf_ip_ranges as $range ) {
+				if ( rocket_ipv6_in_range( $ipv6, $range ) ) {
+					if ( $_SERVER["HTTP_CF_CONNECTING_IP"]) {
 						$_SERVER["REMOTE_ADDR"] = $_SERVER["HTTP_CF_CONNECTING_IP"];
 					}
 					break;
@@ -43,7 +64,7 @@ function __rocket_set_real_ip_cloudflare() {
 	}
 
     // Let people know that the CF WP plugin is turned on.
-    if (!headers_sent()) {
+    if ( ! headers_sent() ) {
         header( "X-CF-Powered-By: WP Rocket " . WP_ROCKET_VERSION );
     }
 }
