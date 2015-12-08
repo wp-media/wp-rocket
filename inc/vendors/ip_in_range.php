@@ -33,18 +33,13 @@
 * 21 May 2012 
 */
 
-
-// decbin32
 // In order to simplify working with IP addresses (in binary) and their
 // netmasks, it is easier to ensure that the binary strings are padded
 // with zeros out to 32 characters - IP addresses are 32 bit numbers
-if( ! function_exists( 'decbin32' ) ) :
-function decbin32 ($dec) {
+function rocket_decbin32($dec) {
     return str_pad(decbin($dec), 32, '0', STR_PAD_LEFT);
 }
-endif;
 
-// ipv4_in_range
 // This function takes 2 arguments, an IP address and a "range" in several
 // different formats.
 // Network ranges can be specified as:
@@ -54,8 +49,7 @@ endif;
 // The function will return true if the supplied IP is within the range.
 // Note little validation is done on the range inputs - it expects you to
 // use one of the above 3 formats.
-if( ! function_exists( 'ipv4_in_range' ) ) :
-function ipv4_in_range($ip, $range) {
+function rocket_ipv4_in_range($ip, $range) {
     if (strpos($range, '/') !== false) {
         // $range is in IP/NETMASK format
         list($range, $netmask) = explode('/', $range, 2);
@@ -102,10 +96,8 @@ function ipv4_in_range($ip, $range) {
         return false;
     } 
 }
-endif;
 
-if( ! function_exists( 'ip2long6' ) ) :
-function ip2long6($ip) {
+function rocket_ip2long6($ip) {
     if (substr_count($ip, '::')) { 
         $ip = str_replace('::', str_repeat(':0000', 8 - substr_count($ip, ':')) . ':', $ip); 
     } 
@@ -118,12 +110,9 @@ function ip2long6($ip) {
         
     return base_convert($r_ip, 2, 10); 
 }
-endif; 
 
 // Get the ipv6 full format and return it as a decimal value.
-if( ! function_exists( 'get_ipv6_full' ) ) :
-function get_ipv6_full($ip)
-{
+function get_rocket_ipv6_full($ip) {
     $pieces = explode ("/", $ip, 2);
     $left_piece = $pieces[0];
     $right_piece = null;
@@ -163,17 +152,14 @@ function get_ipv6_full($ip)
     // Rebuild the final long form IPV6 address
     $final_ip = implode(":", $main_ip_pieces);
 
-    return ip2long6($final_ip);
+    return rocket_ip2long6($final_ip);
 }
-endif;
 
 // Determine whether the IPV6 address is within range.
 // $ip is the IPV6 address in decimal format to check if its within the IP range created by the cloudflare IPV6 address, $range_ip. 
 // $ip and $range_ip are converted to full IPV6 format.
 // Returns true if the IPV6 address, $ip,  is within the range from $range_ip.  False otherwise.
-if( ! function_exists( 'ipv6_in_range' ) ) :
-function ipv6_in_range($ip, $range_ip)
-{
+function rocket_ipv6_in_range($ip, $range_ip) {
     $pieces = explode ("/", $range_ip, 2);
     $left_piece = $pieces[0];
     $right_piece = $pieces[1];
@@ -215,10 +201,9 @@ function ipv6_in_range($ip, $range_ip)
     }
 
     // Rebuild the final long form IPV6 address
-    $first = ip2long6(implode(":", $first));
-    $last = ip2long6(implode(":", $last));
+    $first = rocket_ip2long6(implode(":", $first));
+    $last = rocket_ip2long6(implode(":", $last));
     $in_range = ($ip >= $first && $ip <= $last);
 
     return $in_range;
 }
-endif;
