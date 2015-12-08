@@ -6,8 +6,11 @@ if ( strstr( $_SERVER['REQUEST_URI'], 'robots.txt' ) || strstr( $_SERVER['REQUES
 	return;
 }
 
+$request_uri = explode( '?', $_SERVER['REQUEST_URI'] );
+$request_uri = reset(( $request_uri ));
+
 // Don't cache disallowed extensions
-if ( strtolower( $_SERVER['REQUEST_URI'] ) != '/index.php' && in_array( pathinfo( reset(( explode( '?', $_SERVER['REQUEST_URI'] ) )), PATHINFO_EXTENSION ), array( 'php', 'xml', 'xsl' ) ) ) {
+if ( strtolower( $_SERVER['REQUEST_URI'] ) != '/index.php' && in_array( pathinfo( $request_uri, PATHINFO_EXTENSION ), array( 'php', 'xml', 'xsl' ) ) ) {
 	return;
 }
 
@@ -18,7 +21,7 @@ if ( is_admin() ) {
 
 // Don't cache without GET method
 if ( ! isset( $_SERVER['REQUEST_METHOD'] ) || $_SERVER['REQUEST_METHOD'] != 'GET' ) {
-	return;
+ 	return;
 }
 
 // Get the correct config file
@@ -58,7 +61,7 @@ if ( ! $continue ) {
 	return;
 }
 
-$request_uri = ( isset( $rocket_cache_query_strings ) && array_intersect( array_keys( $_GET ), $rocket_cache_query_strings ) ) || isset( $_GET['lp-variation-id'] ) || isset( $_GET['lang'] ) || isset( $_GET['s'] ) ? $_SERVER['REQUEST_URI'] : reset(( explode( '?', $_SERVER['REQUEST_URI'] ) ));
+$request_uri = ( isset( $rocket_cache_query_strings ) && array_intersect( array_keys( $_GET ), $rocket_cache_query_strings ) ) || isset( $_GET['lp-variation-id'] ) || isset( $_GET['lang'] ) || isset( $_GET['s'] ) ? $_SERVER['REQUEST_URI'] : $request_uri;
 
 // Don't cache with variables
 // but the cache is enabled if the visitor comes from an RSS feed, an Facebook action or Google Adsence tracking
@@ -90,6 +93,7 @@ if ( isset( $rocket_cache_reject_uri ) && preg_match( '#^(' . $rocket_cache_reje
 	rocket_define_donotminify_constants( true );
 	return;
 }
+
 // Don't cache page with this cookie
 if ( isset( $rocket_cache_reject_cookies ) && preg_match( '#(' . $rocket_cache_reject_cookies . ')#', var_export( $_COOKIE, true ) ) ) {
 	rocket_define_donotminify_constants( true );
@@ -177,6 +181,8 @@ function do_rocket_callback( $buffer )
 		// - Deferred JavaScript files
 		// - DNS Prefechting
 		// - Minification HTML/CSS/JavaScript
+		// - CDN
+		// - LazyLoad
 		$buffer = apply_filters( 'rocket_buffer', $buffer );
 		
 		$footprint = '';
@@ -211,7 +217,7 @@ function do_rocket_callback( $buffer )
 			// Send headers with the last modified time of the cache file
 			header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s', filemtime( $rocket_cache_filepath ) ) . ' GMT' );
 		}
-		
+
 		if( $is_html ) {
 			$footprint = get_rocket_footprint(false);
 		}
@@ -248,7 +254,7 @@ function rocket_serve_cache_file( $request_uri_path )
 	        header( $_SERVER['SERVER_PROTOCOL'] . ' 304 Not Modified', true, 304 );
 	        exit;
 	    }
-
+				
 	   // Serve the cache if file isn't store in the client browser cache
 	   readfile( $rocket_cache_filepath );
 	   exit;

@@ -18,6 +18,9 @@ if ( file_exists( $wp_rocket_config_file ) && ! defined( 'ABSPATH' ) ) {
 	require( $wp_rocket_config_file );
 }
 
+// Remove all CSS comments
+$min_serveOptions['minifierOptions']['text/css']['preserveComments'] = false;
+
 /**
  * Set to true to log messages to FirePHP (Firefox Firebug addon).
  * Set to false for no error logging (Minify may be slightly faster).
