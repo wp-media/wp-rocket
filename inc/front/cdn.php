@@ -68,8 +68,10 @@ function rocket_cdn_file( $url )
 if ( function_exists( 'wp_calculate_image_srcset' ) ) {
     add_filter( 'wp_calculate_image_srcset', 'rocket_add_cdn_on_srcset', PHP_INT_MAX );
     function rocket_add_cdn_on_srcset( $sources ) {
-        foreach( $sources as $key => $value ) {
-            $sources[$key]['url'] = rocket_cdn_file(  $value['url'] );
+        if ( ! empty( $sources ) ) {
+            foreach ( $sources as $width => $data ) {
+                $sources[ $width ]['url'] = rocket_cdn_file( $data['url'] );
+            }
         }
         return $sources;
     }
