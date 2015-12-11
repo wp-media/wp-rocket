@@ -59,13 +59,13 @@ function rocket_cdn_file( $url )
  * Replace srcset URLs by CDN URLs for WP responsive images
  *
  * @since WP 4.4
- * @since 2.6.13
+ * @since 2.6.14
  *
  * @param array $sources multidimensional array containing srcset images urls
  * @return array $sources
  */
  */
-if ( function_exists( 'wp_calculate_image_srcset' ) ) {
+if ( function_exists( 'wp_calculate_image_srcset' ) ) :
     add_filter( 'wp_calculate_image_srcset', 'rocket_add_cdn_on_srcset', PHP_INT_MAX );
     function rocket_add_cdn_on_srcset( $sources ) {
         if ( (bool) $sources ) ) {
@@ -75,7 +75,7 @@ if ( function_exists( 'wp_calculate_image_srcset' ) ) {
         }
         return $sources;
     }
-}
+endif;
 
 /*
  * Replace URL by CDN of all images display in a post content or a widget text.
