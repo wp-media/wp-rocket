@@ -31,6 +31,9 @@ function rocket_cdn_file( $url )
 	
 	switch ( $filter ) {
 		case 'wp_get_attachment_url':
+		case 'wp_calculate_image_srcset':
+		    $zone = array( 'all', 'images' );
+		    break;
 		case 'smilies_src':
 			$zone = array( 'all', 'images' );
 			break;
@@ -51,6 +54,27 @@ function rocket_cdn_file( $url )
 
 	return $url;
 }
+
+/**
+ * Replace srcset URLs by CDN URLs for WP responsive images
+ *
+ * @since WP 4.4
+ * @since 2.6.14
+ *
+ * @param array $sources multidimensional array containing srcset images urls
+ * @return array $sources
+ */
+if ( function_exists( 'wp_calculate_image_srcset' ) ) :
+    add_filter( 'wp_calculate_image_srcset', 'rocket_add_cdn_on_srcset', PHP_INT_MAX );
+    function rocket_add_cdn_on_srcset( $sources ) {
+        if ( (bool) $sources ) {
+            foreach ( $sources as $width => $data ) {
+                $sources[ $width ]['url'] = rocket_cdn_file( $data['url'] );
+            }
+        }
+        return $sources;
+    }
+endif;
 
 /*
  * Replace URL by CDN of all images display in a post content or a widget text.
