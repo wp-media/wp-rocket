@@ -64,7 +64,6 @@ function rocket_cdn_file( $url )
  * @param array $sources multidimensional array containing srcset images urls
  * @return array $sources
  */
- */
 if ( function_exists( 'wp_calculate_image_srcset' ) ) :
     add_filter( 'wp_calculate_image_srcset', 'rocket_add_cdn_on_srcset', PHP_INT_MAX );
     function rocket_add_cdn_on_srcset( $sources ) {
