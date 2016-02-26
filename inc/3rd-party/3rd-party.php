@@ -18,3 +18,4 @@ require( WP_ROCKET_3RD_PARTY_PATH . 'kk-star-ratings.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'wp-postratings.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'wp-print.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'buddypress.php' );
+require( WP_ROCKET_3RD_PARTY_PATH . 'mobile/amp.php' );
