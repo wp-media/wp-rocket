@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 /**
@@ -9,13 +9,13 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
  * @return array $langlinks List of active languages
  */
 function get_rocket_wpml_langs_for_admin_bar() {
-
 	global $sitepress;
 	$langlinks = array();
 
 	foreach ( $sitepress->get_active_languages() as $lang ) {
 		// Get flag
-		$flag = $sitepress->get_flag($lang['code']);
+		$flag = $sitepress->get_flag( $lang['code'] );
+        
         if ( $flag->from_template ) {
             $wp_upload_dir = wp_upload_dir();
             $flag_url = $wp_upload_dir['baseurl'] . '/flags/' . $flag->flag;
@@ -53,27 +53,35 @@ function get_rocket_wpml_langs_for_admin_bar() {
 /**
  * Get all langs to display in admin bar for qTranslate
  *
+ * @since 2.7 add fork param
  * @since 1.3.5
  *
+ * @param string $fork qTranslate fork name
  * @return array $langlinks List of active languages
  */
-function get_rocket_qtranslate_langs_for_admin_bar()
-{
+function get_rocket_qtranslate_langs_for_admin_bar( $fork = '' ) {
 	global $q_config;
+
 	$langlinks   = array();
 	$currentlang = array();
 
 	foreach( $q_config['enabled_languages'] as $lang ) {
 
-		$langlinks[$lang] = array(
-            'code'		=> $lang,
-            'anchor'    => $q_config['language_name'][$lang],
-            'flag'      => '<img src="' . trailingslashit( WP_CONTENT_URL ) . $q_config['flag_location'] . $q_config['flag'][$lang] . '" alt="' . $q_config['language_name'][$lang] . '" width="18" height="12" />'
-        );
+		$langlinks[ $lang ] = array(
+			'code'   => $lang,
+			'anchor' => $q_config['language_name'][ $lang ],
+			'flag'   => '<img src="' . trailingslashit( WP_CONTENT_URL ) . $q_config['flag_location'] . $q_config['flag'][ $lang ] . '" alt="' . $q_config['language_name'][ $lang ] . '" width="18" height="12" />'
+		);
 
 	}
 
-	if ( isset( $_GET['lang'] ) && qtrans_isEnabled( $_GET['lang'] ) ) {
+	if ( $fork === 'x' ) {
+		if ( isset( $_GET['lang'] ) && qtranxf_isEnabled( $_GET['lang'] ) ) {
+			$currentlang[ $_GET['lang'] ] = $langlinks[ $_GET['lang'] ];
+			unset( $langlinks[ $_GET['lang'] ] );
+			$langlinks = $currentlang + $langlinks;
+		}
+	} else if ( isset( $_GET['lang'] ) && qtrans_isEnabled( $_GET['lang'] ) ) {
 		$currentlang[ $_GET['lang'] ] = $langlinks[ $_GET['lang'] ];
 		unset( $langlinks[ $_GET['lang'] ] );
 		$langlinks = $currentlang + $langlinks;
@@ -88,32 +96,38 @@ function get_rocket_qtranslate_langs_for_admin_bar()
  * @since 2.2
  *
  * @return array $langlinks List of active languages
- */
-function get_rocket_polylang_langs_for_admin_bar()
-{
+*/
+function get_rocket_polylang_langs_for_admin_bar() {
 	global $polylang;
+
 	$langlinks   = array();
 	$currentlang = array();
-	$langs       = $polylang->model->get_languages_list();
+	$langs       = array();
+	$img         = '';
 
-	foreach ( $langs as $lang ) {
+	$pll   = function_exists( 'PLL' ) ? PLL() : $polylang;
+	$langs = $pll->model->get_languages_list();
 
-		$img = empty($lang->flag) ? '' : (false !== strpos($lang->flag, 'img') ? $lang->flag . '&nbsp;' : $lang->flag);
+	if ( ! empty( $langs ) ) {
+		foreach ( $langs as $lang ) {
+			if ( ! empty( $lang->flag ) ) {
+				$img = false !== strpos( $lang->flag, 'img' ) ? $lang->flag . '&nbsp;' : $lang->flag;
+			}
 
-		if( isset( $polylang->curlang->slug ) && $lang->slug == $polylang->curlang->slug ) {
-			$currentlang[$lang->slug] = array(
-				'code'	 => $lang->slug,
-	            'anchor' => $lang->name,
-	            'flag'   => $img
-			);
-		} else {
-			$langlinks[$lang->slug] = array(
-	            'code'	 => $lang->slug,
-	            'anchor' => $lang->name,
-	            'flag'   => $img
-	        );
+			if( isset( $pll->curlang->slug ) && $lang->slug == $pll->curlang->slug ) {
+				$currentlang[ $lang->slug ] = array(
+					'code'   => $lang->slug,
+					'anchor' => $lang->name,
+					'flag'   => $img
+				);
+			} else {
+				$langlinks[ $lang->slug ] = array(
+					'code'   => $lang->slug,
+					'anchor' => $lang->name,
+					'flag'   => $img
+				);
+			}
 		}
-
 	}
 
 	return $currentlang + $langlinks;
@@ -126,10 +140,10 @@ function get_rocket_polylang_langs_for_admin_bar()
  *
  * @return bool True if a plugin is activated
  */
-function rocket_has_i18n()
-{
+function rocket_has_i18n() {
 	if ( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' )  // WPML
-		|| rocket_is_plugin_active( 'qtranslate/qtranslate.php' )  				// qTranslate
+		|| rocket_is_plugin_active( 'qtranslate/qtranslate.php' )               // qTranslate
+		|| rocket_is_plugin_active( 'qtranslate-x/qtranslate.php' )			    // qTranslate-x
 		|| rocket_is_plugin_active( 'polylang/polylang.php' ) ) { 				// Polylang
 		return true;
 	}
@@ -144,8 +158,7 @@ function rocket_has_i18n()
  *
  * @return array List of language code
  */
-function get_rocket_i18n_code()
-{
+function get_rocket_i18n_code() {
 	if( ! rocket_has_i18n() ) {
 		return false;
 	}
@@ -154,12 +167,12 @@ function get_rocket_i18n_code()
 		return array_keys( $GLOBALS['sitepress']->get_active_languages() );
 	}
 
-	if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
+	if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) || rocket_is_plugin_active( 'qtranslate-x/qtranslate.php' ) ) {
 		return $GLOBALS['q_config']['enabled_languages'];
 	}
 
 	if ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
-		return wp_list_pluck( $GLOBALS['polylang']->model->get_languages_list(), 'slug' );
+		return pll_languages_list();
 	}
 }
 
@@ -172,13 +185,13 @@ function get_rocket_i18n_code()
  */
 function get_rocket_i18n_host() {
 	$langs_host = array();
-	
+
 	if ( $langs = get_rocket_i18n_uri() ) {
 		foreach ( $langs as $lang ) {
 			$langs_host[] = parse_url( $lang, PHP_URL_HOST );
 		}
 	}
-	
+
 	return $langs_host;
 }
 
@@ -189,8 +202,7 @@ function get_rocket_i18n_host() {
  *
  * @return array $urls List of all active languages URI
  */
-function get_rocket_i18n_uri()
-{
+function get_rocket_i18n_uri() {
 	$urls = array();
 	if ( ! rocket_has_i18n() ) {
 		$urls[] = home_url();
@@ -202,13 +214,21 @@ function get_rocket_i18n_uri()
 		foreach ( $langs as $lang ) {
 			$urls[] = $GLOBALS['sitepress']->language_url( $lang );
 		}
-	} elseif ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
+	} elseif ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) || rocket_is_plugin_active( 'qtranslate-x/qtranslate.php' ) ) {
 		$langs = get_rocket_i18n_code();
 		foreach ( $langs as $lang ) {
-			$urls[] = qtrans_convertURL( home_url(), $lang, true );
+    		if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
+        		$urls[] = qtrans_convertURL( home_url(), $lang, true );
+    		} else if ( rocket_is_plugin_active( 'qtranslate-x/qtranslate.php' ) ) {
+        		$urls[] = qtranxf_convertURL( home_url(), $lang, true );
+    		}
 		}
-	} elseif ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
-		$urls = wp_list_pluck( $GLOBALS['polylang']->model->get_languages_list(), 'home_url' );
+    } elseif ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
+        $pll = function_exists( 'PLL' ) ? PLL() : $GLOBALS['polylang'];
+
+        if ( isset( $pll ) ) {
+		    $urls = wp_list_pluck( $pll->model->get_languages_list(), 'home_url' );
+        }
 	}
 
 	return $urls;
@@ -225,8 +245,7 @@ function get_rocket_i18n_uri()
  * @param string $current_lang The current language code
  * @return array $langs_to_preserve List of directories path to preserve
  */
-function get_rocket_i18n_to_preserve( $current_lang )
-{
+function get_rocket_i18n_to_preserve( $current_lang ) {
 	$langs_to_preserve = array();
 	if ( ! rocket_has_i18n() ) {
 		return $langs_to_preserve;
@@ -237,7 +256,7 @@ function get_rocket_i18n_to_preserve( $current_lang )
 	// Unset current lang to the preserve dirs
 	$langs = array_flip( $langs );
 	if( isset( $langs[$current_lang] ) ) {
-		unset( $langs[$current_lang] );	
+		unset( $langs[$current_lang] );
 	}
 	$langs = array_flip( $langs );
 
@@ -266,8 +285,7 @@ function get_rocket_i18n_to_preserve( $current_lang )
  *
  * @return array $urls List of languages subdomains URLs
  */
-function get_rocket_i18n_subdomains()
-{
+function get_rocket_i18n_subdomains() {
 	if ( ! rocket_has_i18n() ) {
 		return false;
 	}
@@ -282,10 +300,16 @@ function get_rocket_i18n_subdomains()
 		if( (int) $GLOBALS['q_config']['url_mode'] == 3 ) {
 			$urls = get_rocket_i18n_uri();
 		}
-	} elseif ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
-		if ( (int) $GLOBALS['polylang']->options['force_lang'] == 2 ) {
+    } elseif ( rocket_is_plugin_active( 'qtranslate-x/qtranslate.php' ) ) {
+		if( (int) $GLOBALS['q_config']['url_mode'] == 3 || (int) $GLOBALS['q_config']['url_mode'] == 4 ) {
 			$urls = get_rocket_i18n_uri();
 		}
+	} elseif ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
+    	$pll = function_exists( 'PLL' ) ? PLL() : $GLOBALS['polylang'];
+
+        if ( isset( $pll ) && (int) $pll->options['force_lang'] == 2 ) {
+            $urls = get_rocket_i18n_uri();
+        }
 	}
 
 	return $urls;
@@ -309,8 +333,14 @@ function get_rocket_i18n_home_url( $lang = '' ) {
 		$url = $GLOBALS['sitepress']->language_url( $lang );
 	} elseif ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
 		$url = qtrans_convertURL( home_url(), $lang, true );
-	} elseif ( rocket_is_plugin_active( 'polylang/polylang.php' ) && ! empty( $GLOBALS['polylang']->options['force_lang'] ) ) {
-		$url = pll_home_url( $lang );
+    } elseif ( rocket_is_plugin_active( 'qtranslate-x/qtranslate.php' ) ) {
+		$url = qtranxf_convertURL( home_url(), $lang, true );
+	} elseif ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
+    	$pll = function_exists( 'PLL' ) ? PLL() : $GLOBALS['polylang'];
+
+    	if ( ! empty( $pll->options['force_lang'] ) ) {
+		    $url = pll_home_url( $lang );
+        }
 	}
 
 	return $url;
@@ -330,11 +360,11 @@ function get_rocket_i18n_translated_post_urls( $post_id, $post_type = 'page', $r
 	$urls  = array();
 	$path  = parse_url( get_permalink( $post_id ), PHP_URL_PATH );
 	$langs = get_rocket_i18n_code();
-	
+
 	if ( empty( $path ) ) {
 		return $urls;
 	}
-	
+
 	// WPML
 	if ( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
 		foreach( $langs as $lang ) {
@@ -342,29 +372,41 @@ function get_rocket_i18n_translated_post_urls( $post_id, $post_type = 'page', $r
 		}
 	}
 
-	// qTranslate
-	if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
+	// qTranslate & qTranslate-x
+	if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) || rocket_is_plugin_active( 'qtranslate-x/qtranslate.php' ) ) {
 		$langs  = $GLOBALS['q_config']['enabled_languages'];
 		$langs  = array_diff( $langs, array( $GLOBALS['q_config']['default_language'] ) );
 		$url    = get_permalink( $post_id );
 		$urls[] = parse_url( get_permalink( $post_id ), PHP_URL_PATH ) . $regex;
 
 		foreach( $langs as $lang ) {
-			$urls[] = parse_url( qtrans_convertURL( $url, $lang, true ), PHP_URL_PATH ) . $regex;
+    		if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
+        		$urls[] = parse_url( qtrans_convertURL( $url, $lang, true ), PHP_URL_PATH ) . $regex;
+    		} else if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
+        		$urls[] = parse_url( qtranxf_convertURL( $url, $lang, true ), PHP_URL_PATH ) . $regex;
+    		}
 		}
 	}
 
 	// Polylang
-	if ( rocket_is_plugin_active( 'polylang/polylang.php' ) && is_object( $GLOBALS['polylang']->model ) && $translations = $GLOBALS['polylang']->model->get_translations( 'page', $post_id ) ) {
-		foreach ( $translations as $post_id ) {
-			$urls[] = parse_url( get_permalink( $post_id ), PHP_URL_PATH ) . $regex;
-		}
+	if ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
+    	if ( function_exists( 'PLL' ) && is_object( PLL()->model ) ) {
+            $translations = pll_get_post_translations( $post_id );
+        } else if ( is_object( $GLOBALS['polylang']->model ) ) {
+            $translations = $GLOBALS['polylang']->model->get_translations( 'page', $post_id );
+        }
+
+        if ( ! empty( $translations ) ) {
+		    foreach ( $translations as $post_id ) {
+		    	$urls[] = parse_url( get_permalink( $post_id ), PHP_URL_PATH ) . $regex;
+		    }
+        }
 	}
-	
+
 	if ( trim( $path, '/' ) != '' ) {
-		$urls[] = $path . $regex;	
+		$urls[] = $path . $regex;
 	}
-	
+
 	$urls = array_unique( $urls );
 
 	return $urls;

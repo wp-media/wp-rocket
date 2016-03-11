@@ -10,8 +10,7 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
  * @param string $pretty_url The minified URL cache file
  * @return bool
  */
-function rocket_fetch_and_cache_minify( $url, $pretty_url )
-{
+function rocket_fetch_and_cache_minify( $url, $pretty_url ) {
 	// Check if php-curl is enabled
 	if ( ! function_exists( 'curl_init' ) || ! function_exists( 'curl_exec' ) ) {
 		return false;
@@ -183,8 +182,7 @@ function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_file
  *
  * @since 2.1
  */
-function rocket_minify_files( $files, $force_pretty_url = true, $pretty_filename = null )
-{
+function rocket_minify_files( $files, $force_pretty_url = true, $pretty_filename = null ) {
 	echo get_rocket_minify_files( $files, $force_pretty_url, $pretty_filename );
 }
 
@@ -231,7 +229,10 @@ function get_rocket_minify_excluded_external_js() {
 		'verify.authorize.net',
 		'ads.themoneytizer.com',
 		'embed.finanzcheck.de',
-		'imagesrv.adition.com'
+		'imagesrv.adition.com',
+		'js.juicyads.com',
+		'form.jotformeu.com',
+		'speakerdeck.com'
 	) );
 	
 	return $excluded_external_js;		

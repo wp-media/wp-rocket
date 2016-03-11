@@ -177,8 +177,7 @@ function __rocket_add_own_ua( $r, $url ) {
  *
  * @since 2.1
  */
-function rocket_hidden_fields( $fields )
-{
+function rocket_hidden_fields( $fields ) {
 	if ( ! is_array( $fields ) ) {
 		return;
 	}
@@ -205,13 +204,13 @@ function rocket_get_active_plugins() {
 }
 
 /**
- * Used to sanitize values of the "Don't cache pages that use the following cookies" option.
+ * Sanitizes a string key like the sanitize_key() WordPress function without forcing lowercase.
  *
- * @since 2.6.4
+ * @since 2.7
  */
-function rocket_sanitize_cookie( $cookie ) {
-	$cookie = preg_replace( '/[^a-z0-9_\-]/i', '', $cookie );
-	return $cookie;
+function rocket_sanitize_key( $key ) {
+	$key = preg_replace( '/[^a-z0-9_\-]/i', '', $key );
+	return $key;
 }
 
 /**
@@ -222,4 +221,29 @@ function rocket_sanitize_cookie( $cookie ) {
 function rocket_sanitize_ua( $ua ) {
 	$ua = preg_replace( '/[^a-z0-9._\-\/\s\x5c]/i', '', $ua );
 	return $ua;
+}
+
+/**
+ * Check if the whole website is on the SSL protocol
+ *
+ * @since 2.7
+ */
+function rocket_is_ssl_website() {
+	return 'https' === parse_url( home_url(), PHP_URL_SCHEME );
+ }
+
+/**
+ * Get the WP Rocket documentation URL
+ *
+ * @since 2.7
+ */ 
+function get_rocket_documentation_url() {
+	$langs  = array( 
+		'fr_FR' => 'fr.' 
+	);
+	$lang   = get_locale();
+	$prefix = isset( $langs[ $lang ] ) ? $langs[ $lang ] : '';
+	$url    = "http://{$prefix}docs.wp-rocket.me/?utm_source=wp-rocket&utm_medium=wp-admin&utm_term=doc-support&utm_campaign=plugin";
+
+	return $url;
 }

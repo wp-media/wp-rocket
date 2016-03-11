@@ -9,8 +9,7 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
  *
  * @return 	string 	$buffer The content of avanced-cache.php file
  */
-function get_rocket_advanced_cache_file()
-{
+function get_rocket_advanced_cache_file() {
 	$buffer = '<?php' . "\n";
 	$buffer .= 'defined( \'ABSPATH\' ) or die( \'Cheatin\\\' uh?\' );' . "\n\n";
 
@@ -22,7 +21,14 @@ function get_rocket_advanced_cache_file()
 
 	// Get config path
 	$buffer .= '$rocket_config_path = \'' . WP_ROCKET_CONFIG_PATH . '\';' . "\n\n";
-
+	
+	// Include the Mobile Detect class if we have to create a different caching file for mobile
+	if ( is_rocket_generate_caching_mobile_files() ) {
+		$buffer .= 'if ( file_exists( \''. WP_ROCKET_VENDORS_PATH . 'Mobile_Detect.php' . '\' ) ) {' . "\n";
+		$buffer .= "\t" . 'include( \''. WP_ROCKET_VENDORS_PATH . 'Mobile_Detect.php' . '\' );' . "\n";
+	$buffer .= '}' . "\n";
+	}
+	
 	// Include the process file in buffer
 	$buffer .= 'if ( file_exists( \''. WP_ROCKET_FRONT_PATH . 'process.php' . '\' ) ) {' . "\n";
 		$buffer .= "\t" . 'include( \''. WP_ROCKET_FRONT_PATH . 'process.php' . '\' );' . "\n";
@@ -50,8 +56,7 @@ function get_rocket_advanced_cache_file()
  *
  * @return void
  */
-function rocket_generate_advanced_cache_file()
-{
+function rocket_generate_advanced_cache_file() {
 	rocket_put_content( WP_CONTENT_DIR . '/advanced-cache.php', get_rocket_advanced_cache_file() );
 }
 
@@ -62,10 +67,10 @@ function rocket_generate_advanced_cache_file()
  *
  * @return array Names of all config files & The content that will be printed
  */
-function get_rocket_config_file()
-{
+function get_rocket_config_file() {
 	$options = get_option( WP_ROCKET_SLUG );
-	if( ! $options ) {
+	
+	if ( ! $options ) {
 		return;
 	}
 
@@ -73,17 +78,25 @@ function get_rocket_config_file()
 	$buffer .= 'defined( \'ABSPATH\' ) or die( \'Cheatin\\\' uh?\' );' . "\n\n";
 
 	if ( apply_filters( 'rocket_override_min_documentRoot', false ) ) {
-		$buffer .= '$min_documentRoot = \'' . ABSPATH . '\';' . "\n";
+		/**
+		 * Filter the Document Root path to use during the minification
+		 *
+		 * @since 2.7
+		 *
+		 * @param string The Document Root path
+		*/
+		$min_documentRoot = apply_filters( 'rocket_min_documentRoot', ABSPATH );
+		
+		$buffer .= '$min_documentRoot = \'' . $min_documentRoot . '\';' . "\n";
 	}
 
 	$buffer .= '$rocket_cookie_hash = \'' . COOKIEHASH . '\'' . ";\n";
 
-	foreach ( $options as $option => $value ) {
-
-		if ( $option == 'cache_ssl' || $option == 'cache_mobile' || $option == 'secret_cache_key' ) {
+	foreach ( $options as $option => $value ) {	
+		if ( $option == 'cache_ssl' || $option == 'cache_mobile' || $option == 'do_caching_mobile_files' || $option == 'secret_cache_key' ) {
 			$buffer .= '$rocket_' . $option . ' = \'' . $value . '\';' . "\n";
 		}
-
+				
 		if ( $option == 'cache_reject_uri' ) {
 			$buffer .= '$rocket_' . $option . ' = \'' . get_rocket_cache_reject_uri() . '\';' . "\n";
 		}
@@ -108,7 +121,11 @@ function get_rocket_config_file()
 			$buffer .= '$rocket_' . $option . ' = \'' . get_rocket_cache_reject_ua() . '\';' . "\n";
 		}
 	}
-
+	
+	$buffer .= '$rocket_cache_mandatory_cookies = ' . var_export( get_rocket_cache_mandatory_cookies(), true ) . ';'  . "\n";
+	
+	$buffer .= '$rocket_cache_dynamic_cookies = ' . var_export( get_rocket_cache_dynamic_cookies(), true ) . ';'  . "\n";
+	
 	/** This filter is documented in inc/front/htaccess.php */
 	if ( apply_filters( 'rocket_url_no_dots', false ) ) {
 		$buffer .= '$rocket_url_no_dots = \'1\';';
@@ -123,8 +140,8 @@ function get_rocket_config_file()
 	}
 
 	foreach ( $urls as $url ) {
-		list( $host, $path ) = get_rocket_parse_url( rtrim( $url, '/' ) );
-		$path = ( ! empty( $path ) ) ? str_replace( '/', '.', rtrim( $path, '/' ) ) : '';
+		list( $host, $path ) = get_rocket_parse_url( untrailingslashit( $url ) );
+		$path = ( ! empty( $path ) ) ? str_replace( '/', '.', untrailingslashit( $path ) ) : '';
 		$config_files_path[] = WP_ROCKET_CONFIG_PATH . strtolower( $host ) . $path . '.php';
 	}
 
@@ -158,8 +175,7 @@ function get_rocket_config_file()
  *
  * @return void
  */
-function rocket_generate_config_file()
-{
+function rocket_generate_config_file() {
 	list( $config_files_path, $buffer ) = get_rocket_config_file();
 
 	if ( count( $config_files_path ) ) {
@@ -176,8 +192,7 @@ function rocket_generate_config_file()
  *
  * @return void
  */
-function rocket_delete_config_file()
-{
+function rocket_delete_config_file() {
 	list( $config_files_path ) = get_rocket_config_file();
 	foreach( $config_files_path as $config_file ) {
 		@unlink( $config_file );
@@ -225,8 +240,7 @@ function rocket_init_config_dir() {
  * @param bool $turn_it_on The value of WP_CACHE constant
  * @return void
  */
-function set_rocket_wp_cache_define( $turn_it_on )
-{
+function set_rocket_wp_cache_define( $turn_it_on ) {
 	// If WP_CACHE is already define, return to get a coffee
 	if( ! rocket_valid_key() || ( $turn_it_on && defined( 'WP_CACHE' ) && WP_CACHE ) ) {
 		return;
@@ -295,35 +309,40 @@ function set_rocket_wp_cache_define( $turn_it_on )
  *
  * @since 2.1
  *
- * @param string $ext (default: array('js','css') File extensions to minify
+ * @param  string|array $extensions (default: array('js','css') File extensions to minify
  * @return void
  */
-function rocket_clean_minify( $ext = array( 'js','css' ) )
-{
-	/**
-	 * Fires before the minify cache files are deleted
-	 *
-	 * @since 2.1
-	 *
-	 * @param string $ext File extensions to minify
-	*/
-	do_action( 'before_rocket_clean_minify', $ext );
-
-	if ( $files = @glob( WP_ROCKET_MINIFY_CACHE_PATH . get_current_blog_id() . '/*.{' . implode( ',', (array)$ext ) . '}', GLOB_BRACE|GLOB_NOSORT ) ) {
-		foreach ( $files as $file ) { // no array map to use @
-			@unlink( $file );
+function rocket_clean_minify( $extensions = array( 'js','css' ) ) {
+	$blog_id    = get_current_blog_id();
+	$extensions = is_string( $extensions ) ? (array) $extensions : $extensions;
+	
+	foreach ( $extensions as $ext ) {
+		/**
+		 * Fires before the minify cache files are deleted
+		 *
+		 * @since 2.1
+		 *
+		 * @param string $ext File extensions to minify
+		*/
+		do_action( 'before_rocket_clean_minify', $ext );
+		
+		if ( $files = @glob( WP_ROCKET_MINIFY_CACHE_PATH . $blog_id . '/*.' . $ext, GLOB_NOSORT ) ) {
+			foreach ( $files as $file ) { // no array map to use @
+				@unlink( $file );
+			}
 		}
+		
+		/**
+		 * Fires after the minify cache files was deleted
+		 *
+		 * @since 2.1
+		 *
+		 * @param string $ext File extensions to minify
+		*/
+		do_action( 'after_rocket_clean_minify', $ext );	
 	}
-
-	/**
-	 * Fires after the minify cache files was deleted
-	 *
-	 * @since 2.1
-	 *
-	 * @param string $ext File extensions to minify
-	*/
-	do_action( 'after_rocket_clean_minify', $ext );
 }
+
 
 /**
  * Delete one or several cache files
@@ -335,8 +354,7 @@ function rocket_clean_minify( $ext = array( 'js','css' ) )
  * @param string|array $urls URLs of cache files to be deleted
  * @return void
  */
-function rocket_clean_files( $urls )
-{
+function rocket_clean_files( $urls ) {
 	if ( is_string( $urls ) ) {
 		$urls = (array) $urls;
 	}
@@ -392,8 +410,7 @@ function rocket_clean_files( $urls )
  * @param string $lang (default: '') The language code
  * @return void
  */
-function rocket_clean_home( $lang = '' )
-{
+function rocket_clean_home( $lang = '' ) {
 	list( $host, $path ) = get_rocket_parse_url( get_rocket_i18n_home_url( $lang ) );
 
 	/** This filter is documented in inc/front/htaccess.php */
@@ -401,7 +418,7 @@ function rocket_clean_home( $lang = '' )
 		$host = str_replace( '.' , '_', $host );
 	}
 
-	$root = WP_ROCKET_CACHE_PATH . $host . '*' . rtrim( $path, '/' );
+	$root = WP_ROCKET_CACHE_PATH . $host . '*' . untrailingslashit( $path );
 	
 	/**
 	 * Filter the homepage caching folder root
@@ -424,7 +441,7 @@ function rocket_clean_home( $lang = '' )
 	do_action( 'before_rocket_clean_home', $root, $lang );
 
 	// Delete homepage
-	if ( $files = glob( $root . '/{index,index-https}.{html,html_gzip}', GLOB_BRACE|GLOB_NOSORT ) ) {
+	if ( $files = glob( $root . '/{index,index-*}.{html,html_gzip}', GLOB_BRACE|GLOB_NOSORT ) ) {
 		foreach ( $files as $file ) { // no array map to use @
 			@unlink( $file );
 		}
@@ -436,7 +453,7 @@ function rocket_clean_home( $lang = '' )
 			rocket_rrmdir( $dir );
 		}
 	}
-
+	
 	/**
 	 * Fires after the home cache file was deleted
 	 *
@@ -449,6 +466,48 @@ function rocket_clean_home( $lang = '' )
 }
 
 /**
+ * Remove the home cache feed
+ *
+ * @since 2.7
+ *
+ * @return void
+ */
+function rocket_clean_home_feeds() {
+
+    $urls = array();
+	$urls[] = get_feed_link();
+	$urls[] = get_feed_link( 'comments_' );
+
+    /**
+	 * Filter the home feeds urls
+	 *
+	 * @since 2.7
+	 * @param array 	$urls The urls of the home feeds
+	*/
+    $urls = apply_filters( 'rocket_clean_home_feeds', $urls );
+
+    /**
+	 * Fires before the home feeds cache is deleted
+	 *
+	 * @since 2.7
+	 *
+	 * @param array $urls The urls of the home feeds
+	*/
+    do_action( 'before_rocket_clean_home_feeds', $urls );
+
+    rocket_clean_files( $urls );
+
+    /**
+	 * Fires after the home feeds cache was deleted
+	 *
+	 * @since 2.7
+	 *
+	 * @param array $urls The urls of the home feeds
+	*/
+    do_action( 'after_rocket_clean_home_feeds', $urls );
+}
+
+/**
  * Remove all cache files of the domain
  *
  * @since 2.0 Delete domain cache files for all users
@@ -457,8 +516,7 @@ function rocket_clean_home( $lang = '' )
  * @param string $lang (default: '') The language code
  * @return void
  */
-function rocket_clean_domain( $lang = '' )
-{
+function rocket_clean_domain( $lang = '' ) {
 	$urls = ( ! $lang || is_object( $lang ) ) ? get_rocket_i18n_uri() : get_rocket_i18n_home_url( $lang );
 	$urls = (array) $urls;
 
@@ -499,7 +557,7 @@ function rocket_clean_domain( $lang = '' )
 				rocket_rrmdir( $dir, get_rocket_i18n_to_preserve( $lang ) );
 			}
 		}
-
+		
 		/**
 		 * Fires after all cache files was deleted
 		 *
@@ -537,8 +595,7 @@ function rocket_clean_term( $term_id, $taxonomy_slug ) {
 
 	// Polylang
 	} else if ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
-		$term_language = $GLOBALS['polylang']->model->get_term_language( $term_id, $taxonomy_slug );
-		$lang = ( is_object( $term_language ) ) ? $term_language->slug : false;
+		$lang = pll_get_term_language( $term_id );
 	}
 	
 	// Get permalink
@@ -686,9 +743,8 @@ function rocket_clean_cache_dir() {
  * @param array $dirs_to_preserve (default: array()) Dirs that should not be deleted
  * @return void
  */
-function rocket_rrmdir( $dir, $dirs_to_preserve = array() )
-{
-	$dir = rtrim( $dir, '/' );
+function rocket_rrmdir( $dir, $dirs_to_preserve = array() ) {
+	$dir = untrailingslashit( $dir );
 
 	/**
 	 * Fires after a file/directory cache was deleted
@@ -744,8 +800,7 @@ function rocket_rrmdir( $dir, $dirs_to_preserve = array() )
  * @param string $dir The path of directory will be created
  * @return bool
  */
-function rocket_mkdir( $dir )
-{
+function rocket_mkdir( $dir ) {
 	require_once( ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php' );
 	require_once( ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php' );
 	$direct_filesystem = new WP_Filesystem_Direct( new StdClass() );
@@ -761,14 +816,13 @@ function rocket_mkdir( $dir )
  *
  * @source wp_mkdir_p() in /wp-includes/functions.php
  */
-function rocket_mkdir_p( $target )
-{
+function rocket_mkdir_p( $target ) {
 	// from php.net/mkdir user contributed notes
 	$target = str_replace( '//', '/', $target );
 
 	// safe mode fails with a trailing slash under certain PHP versions.
-	$target = rtrim($target, '/'); // Use rtrim() instead of untrailingslashit to avoid formatting.php dependency.
-	if ( empty($target) ) {
+	$target = untrailingslashit( $target );
+	if ( empty( $target ) ) {
 		$target = '/';
 	}
 
@@ -800,8 +854,7 @@ function rocket_mkdir_p( $target )
  * @param string $content The content that will be printed in advanced-cache.php
  * @return bool
  */
-function rocket_put_content( $file, $content )
-{
+function rocket_put_content( $file, $content ) {
 	require_once( ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php' );
 	require_once( ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php' );
 	$direct_filesystem = new WP_Filesystem_Direct( new StdClass() );
@@ -817,8 +870,7 @@ function rocket_put_content( $file, $content )
  *
  * @return string|bool The path of wp-config.php file or false
  */
-function rocket_find_wpconfig_path()
-{
+function rocket_find_wpconfig_path() {
 	$config_file     = ABSPATH . 'wp-config.php';
 	$config_file_alt = dirname( ABSPATH ) . '/wp-config.php';
 
@@ -840,8 +892,7 @@ function rocket_find_wpconfig_path()
  * @param bool $debug (default: true) If true, adds the date of generation cache file
  * @return string The footprint that will be printed
  */
-function get_rocket_footprint( $debug = true )
-{
+function get_rocket_footprint( $debug = true ) {
 	$footprint = ! rocket_is_white_label() ?
 					"\n" . '<!-- This website is like a Rocket, isn\'t it ? Performance optimized by WP Rocket. Learn more: http://wp-rocket.me' :
 					"\n" . '<!-- Cached page for great performance';

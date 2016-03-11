@@ -30,7 +30,6 @@ if ( ! defined( 'YEAR_IN_SECONDS' ) ) {
  * @param mixed $response Variable (usually an array or object) to encode as JSON, then print and die.
  */
 if ( ! function_exists( 'wp_send_json' ) ) {
-
 	function wp_send_json( $response ) {
 		@header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
 		echo json_encode( $response );
@@ -40,5 +39,22 @@ if ( ! function_exists( 'wp_send_json' ) ) {
 			die();
 		}
 	}
+}
 
+/**
+ // copied from core to reduct backcompat to 3.1 and not 3.6
+ * Remove slashes from a string or array of strings.
+ *
+ * This should be used to remove slashes from data passed to core API that
+ * expects data to be unslashed.
+ *
+ * @since 3.6.0
+ *
+ * @param string|array $value String or array of strings to unslash.
+ * @return string|array Unslashed $value
+ */
+if ( ! function_exists( 'wp_unslash' ) ) {
+	function wp_unslash( $value ) {
+		return stripslashes_deep( $value );
+	}
 }

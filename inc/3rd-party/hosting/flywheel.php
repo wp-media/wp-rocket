@@ -19,5 +19,12 @@ add_filter( 'rocket_varnish_ip'	, '__rocket_varnish_ip_on_flywheel' );
 function __rocket_varnish_ip_on_flywheel() {
 	return '127.0.0.1';
 }
+
+/**
+  * Don't display the Varnish options tab for Flywheel users
+  *
+  * @since 2.7
+ */
+add_filter( 'rocket_display_varnish_options_tab', '__return_false' );
 	
 endif;

@@ -248,3 +248,18 @@ function rocket_replace_domain_mapping_siteurl( $url = null ) {
 	return false;
 }
 endif;
+
+if ( ! function_exists( 'rocket_sanitize_cookie' ) ) :
+/**
+ * Used to sanitize values of the "Don't cache pages that use the following cookies" option.
+ *
+ * @since 2.6.4
+ * @deprecated 2.7
+ * @deprecated Use rocket_sanitize_key()
+ *
+ */
+function rocket_sanitize_cookie( $cookie ) {
+	_deprecated_function( __FUNCTION__, '2.7', 'rocket_sanitize_key()' );
+	return rocket_sanitize_key( $cookie );
+}
+endif;

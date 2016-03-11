@@ -28,6 +28,49 @@ function __rocket_run_rocket_bot_after_wpengine() {
 	}
 }
 
+/**
+ * Add WP Engine CDN CNAMES to the list of allowed CNAMES
+ * Note: we need to auto-activate the CDN our CDN option
+ *
+ * @since 2.7
+ *
+ * @return void
+ */
+add_filter( 'get_rocket_option_cdn', '__rocket_auto_activate_cdn_on_wpengine' );
+function __rocket_auto_activate_cdn_on_wpengine( $value ) {
+	$wpengine = WpeCommon::instance();
+	
+	if ( $wpengine->is_cdn_enabled() ) {
+		$value = true;
+	}
+	
+	return $value;
+}
+
+add_filter( 'rocket_cdn_cnames', '__rocket_add_wpengine_cdn_cnames' );
+function __rocket_add_wpengine_cdn_cnames( $hosts ) {
+	global $wpe_netdna_domains, $wpe_netdna_domains_secure;
+	
+	$is_ssl = @$_SERVER['HTTPS'];
+    if ( preg_match( '/^[oO][fF]{2}$/', $is_ssl ) ) {
+        $is_ssl = false;  // have seen this!
+    }
+    $native_schema = $is_ssl ? "https" : "http";
+	
+	// Determine the CDN, if any
+    if ( $is_ssl ) {
+        $domains = $wpe_netdna_domains_secure;
+    } else {
+        $domains = $wpe_netdna_domains;
+    }
+	
+	$wpengine = WpeCommon::instance();
+	$cdn_domain = $wpengine->get_cdn_domain( $domains, home_url(), $is_ssl );
+	$hosts[]    = $native_schema . '://' . $cdn_domain;
+	
+	return $hosts;
+}
+
 /* @since 2.6.4
  * For not conflit with WP Engine
 */
@@ -49,5 +92,12 @@ function rocket_clean_wpengine() {
 		WpeCommon::purge_varnish_cache();
 	}
 }
+
+/**
+  * Don't display the Varnish options tab for WP Engine users
+  *
+  * @since 2.7
+ */
+add_filter( 'rocket_display_varnish_options_tab', '__return_false' );
 
 endif;

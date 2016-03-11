@@ -45,4 +45,11 @@ function rocket_clean_savvii() {
 	}
 }
 
+/**
+  * Don't display the Varnish options tab for Savvii users
+  *
+  * @since 2.7
+ */
+add_filter( 'rocket_display_varnish_options_tab', '__return_false' );
+
 endif;

@@ -9,8 +9,7 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
  * @since 1.0
  */
 add_filter( 'cron_schedules', 'rocket_purge_cron_schedule' );
-function rocket_purge_cron_schedule( $schedules )
-{
+function rocket_purge_cron_schedule( $schedules ) {
 	if ( 0 < (int) get_rocket_option( 'purge_cron_interval' ) ) {
 		$schedules['rocket_purge'] = array(
 			'interval'	=> get_rocket_purge_cron_interval(),
@@ -27,8 +26,7 @@ function rocket_purge_cron_schedule( $schedules )
  * @since 1.0
  */
 add_action( 'init', 'rocket_purge_cron_scheduled' );
-function rocket_purge_cron_scheduled()
-{
+function rocket_purge_cron_scheduled() {
 	if ( 0 < (int) get_rocket_option( 'purge_cron_interval' ) && ! wp_next_scheduled( 'rocket_purge_time_event' ) ) {
 		wp_schedule_event( time() + get_rocket_purge_cron_interval(), 'rocket_purge', 'rocket_purge_time_event' );
 	}
@@ -42,13 +40,9 @@ function rocket_purge_cron_scheduled()
  * @since 1.0
  */
 add_action( 'rocket_purge_time_event', 'do_rocket_purge_cron' );
-function do_rocket_purge_cron()
-{
+function do_rocket_purge_cron() {
 	// Purge domain cache files
 	rocket_clean_domain();
-
-	// Purge minify cache files
-	rocket_clean_minify();
 
 	// Run WP Rocket Bot for preload cache files
 	run_rocket_bot( 'cache-preload' );

@@ -112,7 +112,7 @@ function get_rocket_sample_permalink($id, $title = null, $name = null)
 
 	$post->filter = 'sample';
 
-	$permalink = get_permalink($post, true);
+	$permalink = get_permalink($post, false);
 
 	// Replace custom post_type Token with generic pagename token for ease of use.
 	$permalink = str_replace("%$post->post_type%", '%pagename%', $permalink);

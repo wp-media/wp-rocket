@@ -8,7 +8,7 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
   *
   * @param bool true will force the Varnish purge
  */
-if ( apply_filters( 'do_rocket_varnish_http_purge', false ) ) :
+if ( apply_filters( 'do_rocket_varnish_http_purge', false ) || get_rocket_option( 'varnish_auto_purge', 0 ) ) :
 
 /**
  * Purge all the domain

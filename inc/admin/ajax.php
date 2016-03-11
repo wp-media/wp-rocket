@@ -53,7 +53,10 @@ function __wp_ajax_rocket_helpscout_live_search() {
 			WP_ROCKET_WEB_MAIN . 'tools/wp-rocket/helpscout/livesearch.php',
 			array(
 				'timeout'   => 10,
-				'body' 		=> array( 'query' => esc_html( wp_strip_all_tags( $_POST['query'] , true ) ) ),
+				'body' 		=> array( 
+					'query' => esc_html( wp_strip_all_tags( $_POST['query'] , true ) ),
+					'lang'  => get_locale()
+				),
 			)
 		);
 		

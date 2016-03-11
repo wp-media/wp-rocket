@@ -1,21 +1,23 @@
-# Copyright (C) 2015 WP Rocket
+# Copyright (C) 2016 WP Rocket
 # This file is distributed under the same license as the WP Rocket package.
 # Translators:
+# wpmedia <contact@wp-media.me>, 2016
+# FX Bénard <fxb@wp-translations.org>, 2016
 # Marko Nikolic <markoni.efc@gmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2015-05-28 16:16:27+00:00\n"
-"PO-Revision-Date: 2015-05-28 16:16+0000\n"
-"Last-Translator: FxB <fxb@wp-translations.org>\n"
-"Language-Team: Serbian (http://www.transifex.com/projects/p/wp-rocket/language/sr/)\n"
+"POT-Creation-Date: 2016-03-11 07:07:23+00:00\n"
+"PO-Revision-Date: 2016-03-11 15:17+0000\n"
+"Last-Translator: FX Bénard <fxb@wp-translations.org>\n"
+"Language-Team: Serbian (http://www.transifex.com/wp-media/wp-rocket/language/sr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: sr\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: grunt-wp-i18n 0.5.2\n"
+"X-Generator: grunt-wp-i18n 0.5.4\n"
 "X-Poedit-Basepath: ../\n"
 "X-Poedit-Bookmarks: \n"
 "X-Poedit-Country: United States\n"
@@ -24,24 +26,24 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Textdomain-Support: yes\n"
 
-#: inc/admin/admin.php:13 inc/admin/options.php:496 inc/admin/options.php:501
-#: inc/admin/ui/modules/support.php:4 inc/common/admin-bar.php:212
+#: inc/admin/admin.php:12 inc/admin/options.php:500 inc/admin/options.php:505
+#: inc/admin/ui/modules/support.php:4 inc/common/admin-bar.php:232
 msgid "Support"
 msgstr "Podrška"
 
-#: inc/admin/admin.php:15
+#: inc/admin/admin.php:14
 msgid "Docs"
 msgstr "Dokumentacija"
 
-#: inc/admin/admin.php:18 inc/common/admin-bar.php:31
+#: inc/admin/admin.php:17 inc/common/admin-bar.php:33
 msgid "Settings"
 msgstr "Podešavanja"
 
-#: inc/admin/admin.php:60
+#: inc/admin/admin.php:59 inc/admin/admin.php:77 inc/admin/admin.php:93
 msgid "Clear this cache"
 msgstr "Očisti ovu keš memoriju"
 
-#: inc/admin/admin.php:259 inc/admin/admin.php:267
+#: inc/admin/admin.php:287 inc/admin/admin.php:296
 msgid "%s Update Rollback"
 msgstr "%s Vraćanje Ažuriranja"
 
@@ -49,24 +51,24 @@ msgstr "%s Vraćanje Ažuriranja"
 msgid "FAQ's Table of Content"
 msgstr "Sadržaj Često Postavljanih Pitanja (FAQ)"
 
-#: inc/admin/options.php:156 inc/admin/options.php:384
+#: inc/admin/options.php:158 inc/admin/options.php:383
 msgid "Warning: "
 msgstr "Upozorenje:"
 
-#: inc/admin/options.php:163
+#: inc/admin/options.php:165
 msgid "Download options"
 msgstr "Opcije download-a"
 
-#: inc/admin/options.php:192
+#: inc/admin/options.php:193
 msgid "<b>JS</b> files with Deferred Loading JavaScript"
 msgstr "<b>JS</b> datoteke s Odloženim Učitavanjem JavaScript-a"
 
-#: inc/admin/options.php:212 inc/admin/options.php:232
-#: inc/admin/options.php:252
+#: inc/admin/options.php:213 inc/admin/options.php:233
+#: inc/admin/options.php:253
 msgid "Wait until this file is loaded?"
 msgstr "Pričekati dok se ova datoteka ne učita?"
 
-#: inc/admin/options.php:260 inc/admin/ui/modules/advanced.php:223
+#: inc/admin/options.php:261 inc/admin/ui/modules/advanced.php:223
 msgid "Add URL"
 msgstr "Dodaj URL"
 
@@ -93,72 +95,86 @@ msgstr "Slike"
 msgid "Add CNAME"
 msgstr "Dodaj CNAME"
 
-#: inc/admin/options.php:415
+#: inc/admin/options.php:413
 msgid "Watch the video"
 msgstr "Pogledajte video"
 
-#: inc/admin/options.php:481 inc/admin/ui/modules/basic.php:4
+#: inc/admin/options.php:480 inc/admin/ui/modules/basic.php:4
 msgid "Basic options"
 msgstr "Osnovne opcije"
 
-#: inc/admin/options.php:482 inc/admin/ui/modules/advanced.php:4
+#: inc/admin/options.php:481 inc/admin/ui/modules/advanced.php:4
 msgid "Advanced options"
 msgstr "Napredne opcije"
 
-#: inc/admin/options.php:486 inc/admin/ui/meta-boxes.php:62
+#: inc/admin/options.php:485 inc/admin/ui/meta-boxes.php:62
 msgid "CDN"
 msgstr "CDN"
 
-#: inc/admin/options.php:488 inc/admin/ui/modules/white-label.php:4
+#: inc/admin/options.php:492 inc/admin/ui/modules/white-label.php:4
 msgid "White Label"
 msgstr "White Label"
 
-#: inc/admin/options.php:490 inc/admin/ui/modules/tools.php:4
+#: inc/admin/options.php:494 inc/admin/ui/modules/tools.php:4
 msgid "Tools"
 msgstr "Alati"
 
-#: inc/admin/options.php:493 inc/admin/ui/modules/tutorials.php:4
+#: inc/admin/options.php:497 inc/admin/ui/modules/tutorials.php:4
 msgid "Tutorials"
 msgstr "Uputstva"
 
-#: inc/admin/options.php:495 inc/admin/options.php:500
+#: inc/admin/options.php:499 inc/admin/options.php:504
 #: inc/admin/ui/modules/faq.php:4 inc/admin/ui/modules/faq.php:7
 msgid "FAQ"
 msgstr "Česta pitanja"
 
-#: inc/admin/options.php:499
+#: inc/admin/options.php:503
 msgid "License"
 msgstr "Licenca"
 
-#: inc/admin/options.php:822
+#: inc/admin/options.php:521
+msgid "The following options are for hosting with Varnish cache system."
+msgstr "Naredne opcije su za hosting naloge sa Varnish sistemom keširanja."
+
+#: inc/admin/options.php:522
+msgid ""
+"If you don’t know if Varnish is installed on your server, you can ignore "
+"these settings."
+msgstr "Ukoliko ne znate da li je Varnish instaliran na vašem serveru, možete da ignorišete ova podešavanja."
+
+#: inc/admin/options.php:851
 msgid "Settings imported and saved."
 msgstr "Podešavanja su uvezena i snimljena."
 
-#: inc/admin/options.php:840 inc/admin/options.php:924
+#: inc/admin/options.php:869 inc/admin/options.php:965
 msgid "Settings saved."
 msgstr "Podešavanja snimljena."
 
-#: inc/admin/options.php:1001
+#: inc/admin/options.php:1060
 msgid ""
 "Before you can upload your import file, you will need to fix the following "
 "error:"
 msgstr "Pre nego što možete otpremiti svoju datoteku za uvoz, trebate popraviti sledeću grešku:"
 
-#: inc/admin/options.php:1008
+#: inc/admin/options.php:1067
 msgid "Choose a file from your computer:"
 msgstr "Odaberite datoteku s vašeg računara:"
 
-#: inc/admin/options.php:1008
+#: inc/admin/options.php:1067
 msgid "Maximum size: %s"
 msgstr "Maksimalna veličina: %s"
 
-#: inc/admin/options.php:1011
+#: inc/admin/options.php:1070
 msgid "Upload file and import settings"
 msgstr "Upload datoteke i uvoz podešavanja"
 
-#: inc/admin/ui/enqueue.php:24
+#: inc/admin/ui/enqueue.php:23
 msgid "Are you sure?"
 msgstr "Da li ste sigurni?"
+
+#: inc/admin/ui/enqueue.php:24
+msgid "All fields are required!"
+msgstr "Sva polja su obavezna!"
 
 #: inc/admin/ui/enqueue.php:26
 msgid "CloudFlare Settings"
@@ -196,7 +212,7 @@ msgid ""
 "You have to read the <a href=\"%s\" target=\"_blank\">documentation</a> and "
 "to agree to send informations relative to your website to submit a support "
 "ticket."
-msgstr ""
+msgstr "Morate da pročitajte  <a href=\"%s\" target=\"_blank\">dokumentaciju</a> i prihvatite da pošaljete informacije vezane za vaš veb sajt kako biste mogli da pošaljete tiket."
 
 #: inc/admin/ui/enqueue.php:39
 msgid "Transmission Received!"
@@ -269,11 +285,11 @@ msgstr "Da, siguran/na sam!"
 msgid "Cancel"
 msgstr "Otkaži"
 
-#: inc/admin/ui/meta-boxes.php:18 inc/admin/ui/modules/cloudflare.php:100
-#: inc/admin/ui/modules/cloudflare.php:106 inc/admin/ui/modules/tools.php:31
-#: inc/admin/ui/modules/tools.php:37 inc/admin/ui/notices.php:92
-#: inc/common/admin-bar.php:43 inc/common/admin-bar.php:66
-#: inc/common/admin-bar.php:100
+#: inc/admin/ui/meta-boxes.php:18 inc/admin/ui/modules/cloudflare.php:135
+#: inc/admin/ui/modules/cloudflare.php:141 inc/admin/ui/modules/tools.php:31
+#: inc/admin/ui/modules/tools.php:37 inc/admin/ui/notices.php:90
+#: inc/common/admin-bar.php:45 inc/common/admin-bar.php:68
+#: inc/common/admin-bar.php:104
 msgid "Clear cache"
 msgstr "Očisti keš memoriju"
 
@@ -467,7 +483,7 @@ msgstr "<b>JS</b> datoteke koje će biti uključene u podnožju tokom procesa mi
 msgid "Empty the field to remove it."
 msgstr "Ispraznite polje kako bi ga uklonili."
 
-#: inc/admin/ui/modules/advanced.php:234 inc/admin/ui/modules/advanced.php:262
+#: inc/admin/ui/modules/advanced.php:234
 msgid "You must specify the complete URL of the files."
 msgstr "Morate navesti potpuni URL datoteke."
 
@@ -481,13 +497,19 @@ msgid ""
 "time as the page loads."
 msgstr "Možete dodati JavaScript datoteke koje će biti učitane asinhrono u isto vreme kada se i stranica učitava."
 
+#: inc/admin/ui/modules/advanced.php:262
+msgid ""
+"You must specify the complete URL of the original files. Do NOT add URLs of "
+"minified files generated by WP Rocket."
+msgstr "Morate da navedete kompletan URL originalnih fajlova. Ne dodajte URL kompresovanih fajlova napravljenih od strane WP Rocket-a."
+
 #: inc/admin/ui/modules/api-key.php:4
 msgid "License validation"
 msgstr "Provera licence"
 
 #: inc/admin/ui/modules/api-key.php:7 inc/admin/ui/modules/api-key.php:15
-#: inc/admin/ui/modules/cloudflare.php:21
-#: inc/admin/ui/modules/cloudflare.php:29
+#: inc/admin/ui/modules/cloudflare.php:24
+#: inc/admin/ui/modules/cloudflare.php:32
 msgid "API Key"
 msgstr "API ključ"
 
@@ -571,71 +593,105 @@ msgid ""
 "following video: <a href=\"%1$s\" class=\"fancybox\">%1$s</a>."
 msgstr "U slučaju bilo kakve greške preporučujemo da isključite opciju ili da pogledate sedeći video: <a href=\"%1$s\" class=\"fancybox\">%1$s</a>."
 
-#: inc/admin/ui/modules/basic.php:107 inc/admin/ui/modules/basic.php:116
+#: inc/admin/ui/modules/basic.php:109 inc/admin/ui/modules/basic.php:118
 msgid "Mobile cache:"
 msgstr "Keš za mobilne uređaje:"
 
-#: inc/admin/ui/modules/basic.php:114
+#: inc/admin/ui/modules/basic.php:116
 msgid "Enable caching for mobile devices."
 msgstr "Omogućite keširanje na mobilnim uređajima."
 
-#: inc/admin/ui/modules/basic.php:121
-msgid "Don't turn on this option if you use one of these plugins: %l."
-msgstr "Nemojte uključivati ovu opciju ako koristite jedan od ovih dodataka: %l."
+#: inc/admin/ui/modules/basic.php:123
+msgid "Create a caching file for mobile visitors."
+msgstr "Kreiraj keširanu verziju za mobilne uređaje."
 
-#: inc/admin/ui/modules/basic.php:127 inc/admin/ui/modules/basic.php:134
+#: inc/admin/ui/modules/basic.php:130
+msgid ""
+"Are you using a dedicated mobile theme or <code>wp_is_mobile()</code>? If "
+"so, you should activate this option to serve a specific caching file for "
+"your mobile visitors."
+msgstr "Da li koristite posebnu mobilnu temu ili <code>wp_is_mobile()</code> funkciju? Ukoliko je tako, trebalo bi da aktivirate ovu opciju kako biste kreirali posebnu verziju keša za mobilne uređaje."
+
+#: inc/admin/ui/modules/basic.php:136
+msgid ""
+"If you are using one of these plugins, you must activate this option: %l"
+msgstr "Ukoliko koristite jedan od ovih dodataka, morate da aktivirate ovu opciju: %l"
+
+#: inc/admin/ui/modules/basic.php:142 inc/admin/ui/modules/basic.php:151
+msgid "Feeds cache:"
+msgstr "Keširanje feed-ova:"
+
+#: inc/admin/ui/modules/basic.php:149
+msgid "Enable caching for WordPress feeds."
+msgstr "Uključi keširanje za WordPress feed-ove."
+
+#: inc/admin/ui/modules/basic.php:157 inc/admin/ui/modules/basic.php:164
 msgid "Logged in user cache:"
 msgstr "Keš za ulogovane korisnike:"
 
-#: inc/admin/ui/modules/basic.php:132
+#: inc/admin/ui/modules/basic.php:162
 msgid "Enable caching for logged in users."
 msgstr "Omogući keš za ulogovane korisnike."
 
-#: inc/admin/ui/modules/basic.php:139 inc/admin/ui/modules/basic.php:147
+#: inc/admin/ui/modules/basic.php:169 inc/admin/ui/modules/basic.php:177
 msgid "SSL cache:"
 msgstr "SSL keš:"
 
-#: inc/admin/ui/modules/basic.php:145
+#: inc/admin/ui/modules/basic.php:175
 msgid "Enable caching for pages with SSL protocol (<code>https://</code>)."
 msgstr "Omogući keširanje za stranice sa SSL protokolom (<code>https://</code>)."
 
-#: inc/admin/ui/modules/basic.php:152 inc/admin/ui/modules/basic.php:160
+#: inc/admin/ui/modules/basic.php:184 inc/admin/ui/modules/basic.php:193
+msgid "Emojis:"
+msgstr "Emojis:"
+
+#: inc/admin/ui/modules/basic.php:191
+msgid "Replace emojis with default WordPress smileys."
+msgstr "Zameni emojis ikonice podrazumevanim WordPress smajlijima."
+
+#: inc/admin/ui/modules/basic.php:198
+msgid ""
+"<strong>Note:</strong> By activating this option, you will reduce the number"
+" of external HTTP requests."
+msgstr "<strong>Napomena:</strong> Aktivirajući ovu opciju, redukovaćete broj eksternih HTTP zahteva."
+
+#: inc/admin/ui/modules/basic.php:204 inc/admin/ui/modules/basic.php:212
 msgid "Clear Cache Lifespan"
 msgstr "Trajanje čišćenja keš memorije"
 
-#: inc/admin/ui/modules/basic.php:166
+#: inc/admin/ui/modules/basic.php:218
 msgid "Unit of time"
 msgstr "Jedinica vremena"
 
-#: inc/admin/ui/modules/basic.php:169
+#: inc/admin/ui/modules/basic.php:221
 msgid "second(s)"
 msgstr "sekunda(e)"
 
-#: inc/admin/ui/modules/basic.php:170
+#: inc/admin/ui/modules/basic.php:222
 msgid "minute(s)"
 msgstr "minut(a)"
 
-#: inc/admin/ui/modules/basic.php:171
+#: inc/admin/ui/modules/basic.php:223
 msgid "hour(s)"
 msgstr "sat(i)"
 
-#: inc/admin/ui/modules/basic.php:172
+#: inc/admin/ui/modules/basic.php:224
 msgid "day(s)"
 msgstr "dan(a)"
 
-#: inc/admin/ui/modules/basic.php:178
+#: inc/admin/ui/modules/basic.php:230
 msgid ""
 "By default, cache lifespan is 24 hours. This means that once created, the "
 "cache files are automatically removed after 24 hours before being recreated."
 msgstr "Po default-u vek trajanja keš-a je 24 sata. Ovo znači da kada je jednom stvorena, keširana verzija datoteke automatski se uklanja nakon 24 sata pre nego što se ponovno kreira."
 
-#: inc/admin/ui/modules/basic.php:178
+#: inc/admin/ui/modules/basic.php:230
 msgid ""
 "This can be useful if you display your latest tweets or rss feeds in your "
 "sidebar, for example."
 msgstr "Ovo može biti korisno ako prikazujete najnovije tweet-ove ili RSS feed-ove u sidebar-u, na primer."
 
-#: inc/admin/ui/modules/basic.php:183
+#: inc/admin/ui/modules/basic.php:235
 msgid "Specify 0 for unlimited lifetime."
 msgstr "Navedite 0 za neograničen vek trajanja."
 
@@ -693,56 +749,69 @@ msgstr "Navedite URL datoteke koje ne bi trebalo da koriste CDN. (jedan po linij
 msgid "CloudFlare Account Email"
 msgstr "Email adresa CloudFlare naloga"
 
-#: inc/admin/ui/modules/cloudflare.php:34
+#: inc/admin/ui/modules/cloudflare.php:37
 msgid ""
-"<strong>Note:</strong> Where do I find my CloudFlare API key? <a "
-"href=%s\"\">Learn more</a>"
-msgstr "<strong>Napomena:</strong> Gde da pronađem CloudFlare API ključ? <a href=%s\"\"> Saznajte više</a>"
+"<strong>Note:</strong> Where do I find my CloudFlare API key? <a href=\"%s\""
+" target=\"_blank\">Learn more</a>"
+msgstr "<strong>Napomena:</strong> Gde da pronađem CloudFlare API ključ? <a href=\"%s\" target=\"_blank\">Saznajte više</a>"
 
-#: inc/admin/ui/modules/cloudflare.php:40
-#: inc/admin/ui/modules/cloudflare.php:48
+#: inc/admin/ui/modules/cloudflare.php:46
+#: inc/admin/ui/modules/cloudflare.php:54
 msgid "Domain"
 msgstr "Domen"
 
-#: inc/admin/ui/modules/cloudflare.php:54
-#: inc/admin/ui/modules/cloudflare.php:62
+#: inc/admin/ui/modules/cloudflare.php:60
+#: inc/admin/ui/modules/cloudflare.php:68
 msgid "Development Mode"
 msgstr "Razvojni mod"
 
-#: inc/admin/ui/modules/cloudflare.php:64
+#: inc/admin/ui/modules/cloudflare.php:70
+#: inc/admin/ui/modules/cloudflare.php:116
 msgid "Off"
 msgstr "Isključeno"
 
-#: inc/admin/ui/modules/cloudflare.php:65
+#: inc/admin/ui/modules/cloudflare.php:71
+#: inc/admin/ui/modules/cloudflare.php:117
 msgid "On"
 msgstr "Uključeno"
 
-#: inc/admin/ui/modules/cloudflare.php:71
-msgid ""
-"Temporarily enter development mode on your website. <a href=%s\"\">Learn "
-"more</a>"
-msgstr "Privremeno uključite razvojni mod na Vašem sajtu. <a href=%s\"\"> Saznajte više</a>"
-
 #: inc/admin/ui/modules/cloudflare.php:77
-#: inc/admin/ui/modules/cloudflare.php:85
+msgid ""
+"Temporarily enter development mode on your website. <a href=\"%s\" "
+"target=\"_blank\">Learn more</a>"
+msgstr "Privremeno uključite razvojni mod na Vašem sajtu. <a href=\"%s\" target=\"_blank\">Saznajte više</a>"
+
+#: inc/admin/ui/modules/cloudflare.php:83
+#: inc/admin/ui/modules/cloudflare.php:91
 msgid "Auto enable the optimal CloudFlare settings (props WP Rocket)"
 msgstr "Automatski uključi optimalna podešavanja CloudFlare-a (po WP Rocket-u)"
 
-#: inc/admin/ui/modules/cloudflare.php:87
+#: inc/admin/ui/modules/cloudflare.php:93
 msgid "No"
 msgstr "Ne"
 
-#: inc/admin/ui/modules/cloudflare.php:88
+#: inc/admin/ui/modules/cloudflare.php:94
 msgid "Yes"
 msgstr "Da"
 
-#: inc/admin/ui/modules/cloudflare.php:94
+#: inc/admin/ui/modules/cloudflare.php:100
 msgid ""
 "We select the best CloudFlare configuration for speed, performance grade and"
 " compatibility."
 msgstr "Mi biramo najbolja podešavanja CloudFlare-a po pitanju brzine, performansi i kompatibilnosti."
 
-#: inc/admin/ui/modules/cloudflare.php:111
+#: inc/admin/ui/modules/cloudflare.php:106
+#: inc/admin/ui/modules/cloudflare.php:114
+msgid "HTTPS Protocol Rewrite"
+msgstr "Rewrite HTTPS Protokola"
+
+#: inc/admin/ui/modules/cloudflare.php:124
+msgid ""
+"Rewrite all images, stylesheets and scripts from using either %1$s or %2$s "
+"to using just %3$s to support %4$s."
+msgstr "Prepiši -rewrite- sve slike, stilove i skripte od korišćenja bilo %1$s ili %2$s do korišćenja samo %3$s ili podrške %4$s."
+
+#: inc/admin/ui/modules/cloudflare.php:146
 msgid ""
 "Immediately purge cached resources for your website. <a href=\"%s\" "
 "target=\"_blank\">Learn more</a>"
@@ -804,8 +873,8 @@ msgid "Clear the cache for the whole site."
 msgstr "Ukloni keš sa celog sajta."
 
 #: inc/admin/ui/modules/tools.php:48 inc/admin/ui/modules/tools.php:54
-#: inc/admin/ui/modules/tutorials.php:7 inc/common/admin-bar.php:141
-#: inc/common/admin-bar.php:162 inc/common/admin-bar.php:193
+#: inc/admin/ui/modules/tutorials.php:7 inc/common/admin-bar.php:159
+#: inc/common/admin-bar.php:180 inc/common/admin-bar.php:213
 msgid "Preload cache"
 msgstr "Preloading keš-a"
 
@@ -815,29 +884,34 @@ msgid ""
 "internal links)."
 msgstr "Omogućuje vam da zatražite od bota da ponovo učita keš (početnu stranicu i njene unutrašnje veze)."
 
-#: inc/admin/ui/modules/tools.php:66
+#: inc/admin/ui/modules/tools.php:67 inc/admin/ui/modules/tools.php:73
+#: inc/common/admin-bar.php:145
+msgid "Purge OPcache"
+msgstr "Očisti OPcache"
+
+#: inc/admin/ui/modules/tools.php:82
 msgid "Settings Exporter"
 msgstr "Eksport podešavanja"
 
-#: inc/admin/ui/modules/tools.php:76
+#: inc/admin/ui/modules/tools.php:92
 msgid "Settings Importer"
 msgstr "Uvoz podešavanja"
 
-#: inc/admin/ui/modules/tools.php:85
+#: inc/admin/ui/modules/tools.php:101
 msgid ""
 "Please backup your settings before, use the \"Download options\" button "
 "above."
 msgstr "Molimo uradite backup vaših podešavanja, koristite \"Preuzimanje opcija\" dugme iznad."
 
-#: inc/admin/ui/modules/tools.php:88
+#: inc/admin/ui/modules/tools.php:104
 msgid "Update Rollback"
 msgstr "Ažuriranje za vraćanje"
 
-#: inc/admin/ui/modules/tools.php:94
+#: inc/admin/ui/modules/tools.php:110
 msgid "Reinstall v%s"
 msgstr "Ponovo instalirajte v%s"
 
-#: inc/admin/ui/modules/tools.php:99
+#: inc/admin/ui/modules/tools.php:115
 msgid ""
 "Is the version %s causing you some issues? You can ask for a rollback and "
 "reinstall the last version you used before."
@@ -897,6 +971,26 @@ msgid ""
 "<code>get_rocket_cdn_url()</code> and <code>rocket_cdn_url()</code>."
 msgstr "Ovaj video pomaže da postavite dve funkcije <code> get_rocket_cdn_url () </code> i <code>rocket_cdn_url ()</code>."
 
+#: inc/admin/ui/modules/varnish.php:17 inc/admin/ui/modules/varnish.php:26
+msgid "Varnish Caching Purge"
+msgstr "Očisti Varnish keš"
+
+#: inc/admin/ui/modules/varnish.php:24
+msgid "Enable the Varnish caching auto-purge."
+msgstr "Uključi automatsko brisanje Varnish keša."
+
+#: inc/admin/ui/modules/varnish.php:31
+msgid ""
+"The Varnish cache will be purged each time WP Rocket cache needs to be "
+"cleared to avoid conflict."
+msgstr "Varnish keš će biti obrisan u isto vreme kada i WP Rocket kako bi se izbegli konflikti."
+
+#: inc/admin/ui/modules/varnish.php:36
+msgid ""
+"<strong>Note:</strong> If your server is using %sVarnish%s, you must "
+"activate this option."
+msgstr "<strong>Napomena:</strong> Ukoliko vaš server koristi %sVarnish%s, morate da aktivirate ovu opciju."
+
 #: inc/admin/ui/modules/white-label.php:7
 #: inc/admin/ui/modules/white-label.php:16
 msgid "Plugin Name:"
@@ -931,81 +1025,81 @@ msgid ""
 "If you change anything, the tutorial + FAQ + Support tabs will be hidden."
 msgstr "Ako nešto promenite, tutorijal + FAQ + Podrška će biti sakriveni."
 
-#: inc/admin/ui/notices.php:26 inc/admin/ui/notices.php:30
+#: inc/admin/ui/notices.php:25 inc/admin/ui/notices.php:29
 msgid "<b>%s</b> can not be deactivated because of <code>%s</code>."
 msgstr "<b>%s</b> se ne može deaktivirati zbog <code>%s</code>."
 
-#: inc/admin/ui/notices.php:26
+#: inc/admin/ui/notices.php:25
 msgid ""
 "This constant is still defined in <code>wp-config.php</code> file and its "
 "value must be set to <code>false</code>."
 msgstr "Konstanta je još uvek definisana u <code>wp-config.php</code> datoteci, a njegova vrednost mora biti postavljena na <code>false</code>."
 
-#: inc/admin/ui/notices.php:26
+#: inc/admin/ui/notices.php:25
 msgid "Maybe we do not have the writing permissions for <code>%s</code>."
 msgstr "Možda nemamo dozvolu pisanja za <code>%s</code>."
 
-#: inc/admin/ui/notices.php:26 inc/admin/ui/notices.php:30
+#: inc/admin/ui/notices.php:25 inc/admin/ui/notices.php:29
 msgid ""
 "Please give us permissions or resolve the problem yourself. Then retry "
 "deactivation."
 msgstr "Molimo da nam date dozvole ili rešite problem sami. Zatim ponovno pokušajte deaktivaciju."
 
-#: inc/admin/ui/notices.php:30
+#: inc/admin/ui/notices.php:29
 msgid "This file is not writable and we can not remove these directives."
 msgstr "Na ovoj datoteci se ne može pisati, a mi ne možemo ukloniti ove smernice."
 
-#: inc/admin/ui/notices.php:30
+#: inc/admin/ui/notices.php:29
 msgid "Maybe we do not have writing permissions for <code>%s</code>."
 msgstr "Možda nemamo dozvolu za pisanje za <code>%s</code>."
 
-#: inc/admin/ui/notices.php:66
+#: inc/admin/ui/notices.php:65
 msgid "You can still force the deactivation by clicking here."
 msgstr "Još uvek možete izvršiti prisilno deaktiviranje klikom ovde."
 
-#: inc/admin/ui/notices.php:92
+#: inc/admin/ui/notices.php:90
 msgid ""
 "<b>%s</b>: One or more extensions have been enabled or disabled, do not "
 "forget to clear the cache if necessary."
 msgstr "<b>%s</b>: Jedan ili više dodataka je omogućeno ili onemogućeno, ne zaboravite da očistite keš memoriju ako je to potrebno."
 
-#: inc/admin/ui/notices.php:191
+#: inc/admin/ui/notices.php:196
 msgid ""
 "<b>%s</b>: The following plugins are not compatible with this plugin and may"
 " cause unexpected results:"
 msgstr "<b>%s </b>: Sledeći dodaci nisu kompatibilni s ovim pluginom i to može izazvati neočekivane rezultate:"
 
-#: inc/admin/ui/notices.php:197
+#: inc/admin/ui/notices.php:201
 msgid "Deactivate"
 msgstr "Deaktiviraj"
 
-#: inc/admin/ui/notices.php:223
+#: inc/admin/ui/notices.php:226
 msgid ""
 "<b>%s</b>: A custom permalink structure is required for the plugin to work "
 "properly. Please go to <a href=\"%s\">Permalink</a> to configure it."
 msgstr "<b>% s </b>: potrebno je prilagoditi permalink strukturu da bi dodatak radio ispravno. Molimo idite na <a href=\"%s\"> Permalink</a> da ga konfigurišete."
 
-#: inc/admin/ui/notices.php:254
+#: inc/admin/ui/notices.php:256
 msgid ""
 "<b>%s</b>: It seems we don't have <a href=\"%s\" target=\"_blank\">writing "
 "permissions</a> on <code>wp-config.php</code> file or the value of the "
 "constant <code>WP_CACHE</code> is set to <code>false</code>"
 msgstr "<b>% s </b>: Čini se da mi nemamo <a href=\"%s\" target=\"_blank\"> dozvolu za pisanje</a> na <code>wp-config.php </code> datoteci ili je vrednost konstante <code> WP_CACHE </code> postavljena na <code> false</code>"
 
-#: inc/admin/ui/notices.php:256
+#: inc/admin/ui/notices.php:258
 msgid ""
 "To fix this you have to set writing permissions for <code>wp-"
 "config.php</code> and then save the settings again."
 msgstr "Da bi ovo popravili treba da postavite dozvolu za pisanje <code>wp-config.php</code> i onda ponovno snimiti podešavanja."
 
-#: inc/admin/ui/notices.php:258
+#: inc/admin/ui/notices.php:260
 msgid ""
 "If the message persists, you have to put the following code in your <code"
 ">wp-config.php</code> file so that it works correctly. Click on the field "
 "and press Ctrl-A to select all."
 msgstr "Ako ova poruka već postoji, morate staviti sledeći kod u <code>wp-config.php</code> datoteku da bi radila ispravno. Kliknite na polje i onda pritisnite Ctrl-A da odaberete kompletan sadržaj."
 
-#: inc/admin/ui/notices.php:299
+#: inc/admin/ui/notices.php:300
 msgid ""
 "If you had <a href=\"%1$s\" target=\"_blank\">writing permissions</a> on "
 "<code>%2$s</code> file, <b>%3$s</b> could do this automatically. This is not"
@@ -1035,7 +1129,7 @@ msgid ""
 "be updated when saving the options"
 msgstr "<strong> Upozorenje: </strong> Ova poruka će se opet pojaviti i njen sadržaj može biti ažuriran prilikom snimanja opcija"
 
-#: inc/admin/ui/notices.php:390
+#: inc/admin/ui/notices.php:389
 msgid ""
 "Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
 "permissions</a> on <b>%3$s</b> domain configuration folder "
@@ -1045,7 +1139,7 @@ msgid ""
 "to generate the configuration file."
 msgstr "Budite oprezni, nemate <a href=\"%1$s\" target=\"_blank\">dozvolu pisanja </a> na <b>%3$s</b> konfiguracijski folder domena (<code>%2$s</code>). Da bi <b>%3$s</b>ispravno radila, podesite CHMOD na <code>755</code> ili <code>775</code> ili <code>777</code> za ovu mapu.<br/>Kad se problem reši, molimo vas snimite %3$s opcije da bi generisali konfiguracijsku datoteku."
 
-#: inc/admin/ui/notices.php:418
+#: inc/admin/ui/notices.php:416
 msgid ""
 "Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
 "permissions</a> on <b>%3$s</b> cache folder (<code>%2$s</code>). For "
@@ -1053,7 +1147,7 @@ msgid ""
 "<code>775</code> or <code>777</code> this folder."
 msgstr "Budite oprezni, nemate <a href=\"%1$s\" target=\"_blank\">dozvolu pisanja</a> na <b>%3$s</b>cache mapu (<code>%2$s</code>). Da bi <b>%3$s</b>ispravno radila, molimo podesite CHMOD na <code>755</code> ili <code>775</code> ili <code>777</code> na ovoj mapi."
 
-#: inc/admin/ui/notices.php:447
+#: inc/admin/ui/notices.php:444
 msgid ""
 "Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
 "permissions</a> on <b>%3$s</b> minified cache folder (<code>%2$s</code>). To"
@@ -1061,61 +1155,71 @@ msgid ""
 "<code>775</code> or <code>777</code> this folder."
 msgstr "Budite oprezni, nemate <a href=\"%1$s\" target=\"_blank\">dozvolu pisanja </a> na <b>%3$s</b> minimizovanu keš mapu (<code>%2$s</code>). Da bi <b>%3$s</b>ispravno radila, molimo podesite CHMOD na <code>755</code> ili <code>775</code> ili <code>777</code> na ovoj mapi."
 
-#: inc/admin/ui/notices.php:472
+#: inc/admin/ui/notices.php:468
 msgid "Thank you. Your license has been successfully validated!"
 msgstr "Hvala vam. Vaša licenca je uspešno provjerena - validirana!"
 
-#: inc/admin/ui/notices.php:473
+#: inc/admin/ui/notices.php:469
 msgid "Key: <code>%s</code><br>Email: <i>%s</i>"
 msgstr "Ključ: <code>%s</code><br>Email: <i>%s</i>"
 
-#: inc/admin/updater.php:119 inc/admin/updater.php:126
+#: inc/admin/ui/notices.php:520
+msgid ""
+"Speed up your website and boost your SEO by reducing image file sizes "
+"without loosing quality with Imagify."
+msgstr "Ubrzajte vaš sajt i pojačajte SEO tako što ćete umanjiti veličinu vaših slika bez gubljenja na kvalitetu pomoću Imagify servisa."
+
+#: inc/admin/ui/notices.php:523
+msgid "Install Imagify for Free"
+msgstr "Besplatno instaliraj Imagify"
+
+#: inc/admin/updater.php:55 inc/admin/updater.php:62
 msgid ""
 "An unexpected error occurred. Something may be wrong with WP-Rocket.me or "
 "this server&#8217;s configuration. If you continue to have problems, please "
 "try the <a href=\"%s\">support forums</a>."
 msgstr "Došlo je do neočekivane greške. Nešto nije u redu s WP-Rocket.me ili konfiguracijom servera. Ako i dalje imate problema, posetite <a href=\"%s\">forum podrške</a>."
 
-#: inc/common/admin-bar.php:90 inc/common/admin-bar.php:184
-#: inc/common/admin-bar.php:252 inc/common/admin-bar.php:259
+#: inc/common/admin-bar.php:94 inc/common/admin-bar.php:204
+#: inc/functions/i18n.php:38 inc/functions/i18n.php:45
 msgid "All languages"
 msgstr "Svi jezici"
 
-#: inc/common/admin-bar.php:115
+#: inc/common/admin-bar.php:119
 msgid "Clear this post"
 msgstr "Poništite ovaj članak"
 
-#: inc/common/admin-bar.php:127
+#: inc/common/admin-bar.php:131
 msgid "Purge this URL"
 msgstr "Očistite ovaj URL"
 
-#: inc/common/admin-bar.php:204
+#: inc/common/admin-bar.php:224
 msgid "Documentation"
 msgstr "Dokumentacija"
 
-#: inc/common/cron.php:17
+#: inc/common/cron.php:16
 msgid "%s clear"
 msgstr "%s očišćeno"
 
-#: inc/functions/admin.php:13
+#: inc/functions/admin.php:11
 msgid ""
 "Last step before enjoying the high performances of our plugin, please <a "
 "href=\"%s\">Enter you API key</a> here."
 msgstr "Poslednji korak pre uživanja u rezultatima ubrzanja našeg plugina, <a href=\"%s\"> Unesite vaš API ključ </a> ovdje."
 
-#: inc/functions/options.php:439
+#: inc/functions/options.php:552
 msgid "Your license is not valid."
 msgstr "Vaša licenca nije validna."
 
-#: inc/functions/options.php:440
+#: inc/functions/options.php:553
 msgid "You cannot add more websites. Upgrade your account."
 msgstr "Ne možete dodati više web stranica. Nadogradite svoj nalog."
 
-#: inc/functions/options.php:441
+#: inc/functions/options.php:554
 msgid "This website is not allowed."
 msgstr "Ova web stranica nije dozvoljena."
 
-#: inc/functions/options.php:442
+#: inc/functions/options.php:555
 msgid "This license key is not accepted."
 msgstr "Ovaj licencni ključ nije prihvaćen."
 

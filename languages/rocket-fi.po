@@ -1,4 +1,4 @@
-# Copyright (C) 2015 WP Rocket
+# Copyright (C) 2016 WP Rocket
 # This file is distributed under the same license as the WP Rocket package.
 # Translators:
 # timoleinio <tjlein@gmail.com>, 2014-2015
@@ -6,16 +6,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2015-05-28 16:16:27+00:00\n"
-"PO-Revision-Date: 2015-05-28 16:16+0000\n"
-"Last-Translator: FxB <fxb@wp-translations.org>\n"
-"Language-Team: Finnish (http://www.transifex.com/projects/p/wp-rocket/language/fi/)\n"
+"POT-Creation-Date: 2016-03-11 07:07:23+00:00\n"
+"PO-Revision-Date: 2016-03-11 07:06+0000\n"
+"Last-Translator: FX Bénard <fxb@wp-translations.org>\n"
+"Language-Team: Finnish (http://www.transifex.com/wp-media/wp-rocket/language/fi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: fi\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: grunt-wp-i18n 0.5.2\n"
+"X-Generator: grunt-wp-i18n 0.5.4\n"
 "X-Poedit-Basepath: ../\n"
 "X-Poedit-Bookmarks: \n"
 "X-Poedit-Country: United States\n"
@@ -24,24 +24,24 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Textdomain-Support: yes\n"
 
-#: inc/admin/admin.php:13 inc/admin/options.php:496 inc/admin/options.php:501
-#: inc/admin/ui/modules/support.php:4 inc/common/admin-bar.php:212
+#: inc/admin/admin.php:12 inc/admin/options.php:500 inc/admin/options.php:505
+#: inc/admin/ui/modules/support.php:4 inc/common/admin-bar.php:232
 msgid "Support"
 msgstr "Tuki"
 
-#: inc/admin/admin.php:15
+#: inc/admin/admin.php:14
 msgid "Docs"
 msgstr "Dokumentaatio"
 
-#: inc/admin/admin.php:18 inc/common/admin-bar.php:31
+#: inc/admin/admin.php:17 inc/common/admin-bar.php:33
 msgid "Settings"
 msgstr "Asetukset"
 
-#: inc/admin/admin.php:60
+#: inc/admin/admin.php:59 inc/admin/admin.php:77 inc/admin/admin.php:93
 msgid "Clear this cache"
 msgstr "Tyhjennä välimuisti"
 
-#: inc/admin/admin.php:259 inc/admin/admin.php:267
+#: inc/admin/admin.php:287 inc/admin/admin.php:296
 msgid "%s Update Rollback"
 msgstr "%s päivityksen palautus"
 
@@ -49,24 +49,24 @@ msgstr "%s päivityksen palautus"
 msgid "FAQ's Table of Content"
 msgstr "Usein kysytyt kysymykset"
 
-#: inc/admin/options.php:156 inc/admin/options.php:384
+#: inc/admin/options.php:158 inc/admin/options.php:383
 msgid "Warning: "
 msgstr "Varoitus:"
 
-#: inc/admin/options.php:163
+#: inc/admin/options.php:165
 msgid "Download options"
 msgstr "Lataa asetukset"
 
-#: inc/admin/options.php:192
+#: inc/admin/options.php:193
 msgid "<b>JS</b> files with Deferred Loading JavaScript"
 msgstr "<b>JS</b>-tiedostot, jotka ladataan jälkikäteen"
 
-#: inc/admin/options.php:212 inc/admin/options.php:232
-#: inc/admin/options.php:252
+#: inc/admin/options.php:213 inc/admin/options.php:233
+#: inc/admin/options.php:253
 msgid "Wait until this file is loaded?"
 msgstr "Odota kunnes tiedosto on ladattu?"
 
-#: inc/admin/options.php:260 inc/admin/ui/modules/advanced.php:223
+#: inc/admin/options.php:261 inc/admin/ui/modules/advanced.php:223
 msgid "Add URL"
 msgstr "Lisää osoite"
 
@@ -93,71 +93,85 @@ msgstr "Kuvat"
 msgid "Add CNAME"
 msgstr "Lisää CNAME"
 
-#: inc/admin/options.php:415
+#: inc/admin/options.php:413
 msgid "Watch the video"
 msgstr "Katso video"
 
-#: inc/admin/options.php:481 inc/admin/ui/modules/basic.php:4
+#: inc/admin/options.php:480 inc/admin/ui/modules/basic.php:4
 msgid "Basic options"
 msgstr "Perusasetukset"
 
-#: inc/admin/options.php:482 inc/admin/ui/modules/advanced.php:4
+#: inc/admin/options.php:481 inc/admin/ui/modules/advanced.php:4
 msgid "Advanced options"
 msgstr "Edistyneet asetukset"
 
-#: inc/admin/options.php:486 inc/admin/ui/meta-boxes.php:62
+#: inc/admin/options.php:485 inc/admin/ui/meta-boxes.php:62
 msgid "CDN"
 msgstr "CDN"
 
-#: inc/admin/options.php:488 inc/admin/ui/modules/white-label.php:4
+#: inc/admin/options.php:492 inc/admin/ui/modules/white-label.php:4
 msgid "White Label"
 msgstr "White Label"
 
-#: inc/admin/options.php:490 inc/admin/ui/modules/tools.php:4
+#: inc/admin/options.php:494 inc/admin/ui/modules/tools.php:4
 msgid "Tools"
 msgstr "Työkalut"
 
-#: inc/admin/options.php:493 inc/admin/ui/modules/tutorials.php:4
+#: inc/admin/options.php:497 inc/admin/ui/modules/tutorials.php:4
 msgid "Tutorials"
 msgstr "Ohjeet"
 
-#: inc/admin/options.php:495 inc/admin/options.php:500
+#: inc/admin/options.php:499 inc/admin/options.php:504
 #: inc/admin/ui/modules/faq.php:4 inc/admin/ui/modules/faq.php:7
 msgid "FAQ"
 msgstr "UKK"
 
-#: inc/admin/options.php:499
+#: inc/admin/options.php:503
 msgid "License"
 msgstr "Lisenssi"
 
-#: inc/admin/options.php:822
+#: inc/admin/options.php:521
+msgid "The following options are for hosting with Varnish cache system."
+msgstr ""
+
+#: inc/admin/options.php:522
+msgid ""
+"If you don’t know if Varnish is installed on your server, you can ignore "
+"these settings."
+msgstr ""
+
+#: inc/admin/options.php:851
 msgid "Settings imported and saved."
 msgstr "Asetukset tuotu ja tallennettu."
 
-#: inc/admin/options.php:840 inc/admin/options.php:924
+#: inc/admin/options.php:869 inc/admin/options.php:965
 msgid "Settings saved."
 msgstr "Asetukset tallennettu."
 
-#: inc/admin/options.php:1001
+#: inc/admin/options.php:1060
 msgid ""
 "Before you can upload your import file, you will need to fix the following "
 "error:"
 msgstr "Ennen kuin voit tallentaa tuontitiedoston, sinun pitää korjata seuraavat virheet:"
 
-#: inc/admin/options.php:1008
+#: inc/admin/options.php:1067
 msgid "Choose a file from your computer:"
 msgstr "Valitse tiedosto koneeltasi:"
 
-#: inc/admin/options.php:1008
+#: inc/admin/options.php:1067
 msgid "Maximum size: %s"
 msgstr "Maksimikoko: %s"
 
-#: inc/admin/options.php:1011
+#: inc/admin/options.php:1070
 msgid "Upload file and import settings"
 msgstr "Tallenna tiedosto ja tuo asetukset"
 
-#: inc/admin/ui/enqueue.php:24
+#: inc/admin/ui/enqueue.php:23
 msgid "Are you sure?"
+msgstr ""
+
+#: inc/admin/ui/enqueue.php:24
+msgid "All fields are required!"
 msgstr ""
 
 #: inc/admin/ui/enqueue.php:26
@@ -269,11 +283,11 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: inc/admin/ui/meta-boxes.php:18 inc/admin/ui/modules/cloudflare.php:100
-#: inc/admin/ui/modules/cloudflare.php:106 inc/admin/ui/modules/tools.php:31
-#: inc/admin/ui/modules/tools.php:37 inc/admin/ui/notices.php:92
-#: inc/common/admin-bar.php:43 inc/common/admin-bar.php:66
-#: inc/common/admin-bar.php:100
+#: inc/admin/ui/meta-boxes.php:18 inc/admin/ui/modules/cloudflare.php:135
+#: inc/admin/ui/modules/cloudflare.php:141 inc/admin/ui/modules/tools.php:31
+#: inc/admin/ui/modules/tools.php:37 inc/admin/ui/notices.php:90
+#: inc/common/admin-bar.php:45 inc/common/admin-bar.php:68
+#: inc/common/admin-bar.php:104
 msgid "Clear cache"
 msgstr "Tyhjennä välimuisti"
 
@@ -467,7 +481,7 @@ msgstr "<b>JS</b>-tiedostot, jotka siirretään sivun alatunnisteeseen pienentä
 msgid "Empty the field to remove it."
 msgstr "Tyhjennä kenttä poistaaksesi sen."
 
-#: inc/admin/ui/modules/advanced.php:234 inc/admin/ui/modules/advanced.php:262
+#: inc/admin/ui/modules/advanced.php:234
 msgid "You must specify the complete URL of the files."
 msgstr "Sinun pitää määrittää tiedostojen koko osoite."
 
@@ -481,13 +495,19 @@ msgid ""
 "time as the page loads."
 msgstr "Voit lisätä JavaScript-tiedostoja, jotka ladataan asynkronisesti samalla kun sivu latautuu."
 
+#: inc/admin/ui/modules/advanced.php:262
+msgid ""
+"You must specify the complete URL of the original files. Do NOT add URLs of "
+"minified files generated by WP Rocket."
+msgstr ""
+
 #: inc/admin/ui/modules/api-key.php:4
 msgid "License validation"
 msgstr "Lisenssin vahvistus"
 
 #: inc/admin/ui/modules/api-key.php:7 inc/admin/ui/modules/api-key.php:15
-#: inc/admin/ui/modules/cloudflare.php:21
-#: inc/admin/ui/modules/cloudflare.php:29
+#: inc/admin/ui/modules/cloudflare.php:24
+#: inc/admin/ui/modules/cloudflare.php:32
 msgid "API Key"
 msgstr "API-avain"
 
@@ -571,71 +591,105 @@ msgid ""
 "following video: <a href=\"%1$s\" class=\"fancybox\">%1$s</a>."
 msgstr "Jos havaitset ongelmia, suosittelemme ottamaan asetuksen pois päältä tai katsomaan seuraavan videon: <a href=\"%1$s\" class=\"fancybox\">%1$s</a>."
 
-#: inc/admin/ui/modules/basic.php:107 inc/admin/ui/modules/basic.php:116
+#: inc/admin/ui/modules/basic.php:109 inc/admin/ui/modules/basic.php:118
 msgid "Mobile cache:"
 msgstr "Mobiilivälimuisti:"
 
-#: inc/admin/ui/modules/basic.php:114
+#: inc/admin/ui/modules/basic.php:116
 msgid "Enable caching for mobile devices."
 msgstr "Salli välimuistitus mobiililaitteille."
 
-#: inc/admin/ui/modules/basic.php:121
-msgid "Don't turn on this option if you use one of these plugins: %l."
-msgstr "Älä ota käyttöön, jos käytät jotakin seuraavista lisäosista: %l."
+#: inc/admin/ui/modules/basic.php:123
+msgid "Create a caching file for mobile visitors."
+msgstr ""
 
-#: inc/admin/ui/modules/basic.php:127 inc/admin/ui/modules/basic.php:134
+#: inc/admin/ui/modules/basic.php:130
+msgid ""
+"Are you using a dedicated mobile theme or <code>wp_is_mobile()</code>? If "
+"so, you should activate this option to serve a specific caching file for "
+"your mobile visitors."
+msgstr ""
+
+#: inc/admin/ui/modules/basic.php:136
+msgid ""
+"If you are using one of these plugins, you must activate this option: %l"
+msgstr ""
+
+#: inc/admin/ui/modules/basic.php:142 inc/admin/ui/modules/basic.php:151
+msgid "Feeds cache:"
+msgstr ""
+
+#: inc/admin/ui/modules/basic.php:149
+msgid "Enable caching for WordPress feeds."
+msgstr ""
+
+#: inc/admin/ui/modules/basic.php:157 inc/admin/ui/modules/basic.php:164
 msgid "Logged in user cache:"
 msgstr "Kirjautuneiden käyttäjien välimuistitus:"
 
-#: inc/admin/ui/modules/basic.php:132
+#: inc/admin/ui/modules/basic.php:162
 msgid "Enable caching for logged in users."
 msgstr "Ota käyttöön kirjautuneiden käyttäjien välimuistitus."
 
-#: inc/admin/ui/modules/basic.php:139 inc/admin/ui/modules/basic.php:147
+#: inc/admin/ui/modules/basic.php:169 inc/admin/ui/modules/basic.php:177
 msgid "SSL cache:"
 msgstr "SSL-välimuisti:"
 
-#: inc/admin/ui/modules/basic.php:145
+#: inc/admin/ui/modules/basic.php:175
 msgid "Enable caching for pages with SSL protocol (<code>https://</code>)."
 msgstr "Ota käyttöön välimuistitus SSL-suojatuilla sivuilla (<code>https://</code>)."
 
-#: inc/admin/ui/modules/basic.php:152 inc/admin/ui/modules/basic.php:160
+#: inc/admin/ui/modules/basic.php:184 inc/admin/ui/modules/basic.php:193
+msgid "Emojis:"
+msgstr ""
+
+#: inc/admin/ui/modules/basic.php:191
+msgid "Replace emojis with default WordPress smileys."
+msgstr ""
+
+#: inc/admin/ui/modules/basic.php:198
+msgid ""
+"<strong>Note:</strong> By activating this option, you will reduce the number"
+" of external HTTP requests."
+msgstr ""
+
+#: inc/admin/ui/modules/basic.php:204 inc/admin/ui/modules/basic.php:212
 msgid "Clear Cache Lifespan"
 msgstr "Aikaväli välimuistin tyhjennykselle"
 
-#: inc/admin/ui/modules/basic.php:166
+#: inc/admin/ui/modules/basic.php:218
 msgid "Unit of time"
 msgstr "Aikayksikkö"
 
-#: inc/admin/ui/modules/basic.php:169
+#: inc/admin/ui/modules/basic.php:221
 msgid "second(s)"
 msgstr "sekunti(a)"
 
-#: inc/admin/ui/modules/basic.php:170
+#: inc/admin/ui/modules/basic.php:222
 msgid "minute(s)"
 msgstr "minuutti(a)"
 
-#: inc/admin/ui/modules/basic.php:171
+#: inc/admin/ui/modules/basic.php:223
 msgid "hour(s)"
 msgstr "tunti(a)"
 
-#: inc/admin/ui/modules/basic.php:172
+#: inc/admin/ui/modules/basic.php:224
 msgid "day(s)"
 msgstr "päivä(ä)"
 
-#: inc/admin/ui/modules/basic.php:178
+#: inc/admin/ui/modules/basic.php:230
 msgid ""
 "By default, cache lifespan is 24 hours. This means that once created, the "
 "cache files are automatically removed after 24 hours before being recreated."
 msgstr "Oletuksena tyhjennysaika on 24 tuntia. Välimuistin tiedostot poistetaan siis 24 tunnin jälkeen siitä kun ne on luotu."
 
-#: inc/admin/ui/modules/basic.php:178
+#: inc/admin/ui/modules/basic.php:230
 msgid ""
 "This can be useful if you display your latest tweets or rss feeds in your "
 "sidebar, for example."
 msgstr "Tämä on hyödyllistä, jos näytät esimerkiksi viimeisimpiä tweettejä tai RSS-syötteitä sivupalkissa."
 
-#: inc/admin/ui/modules/basic.php:183
+#: inc/admin/ui/modules/basic.php:235
 msgid "Specify 0 for unlimited lifetime."
 msgstr "Määritä 0, jos et halua välimuistin tyhjentyvän ollenkaan."
 
@@ -693,56 +747,69 @@ msgstr ""
 msgid "CloudFlare Account Email"
 msgstr ""
 
-#: inc/admin/ui/modules/cloudflare.php:34
+#: inc/admin/ui/modules/cloudflare.php:37
 msgid ""
-"<strong>Note:</strong> Where do I find my CloudFlare API key? <a "
-"href=%s\"\">Learn more</a>"
+"<strong>Note:</strong> Where do I find my CloudFlare API key? <a href=\"%s\""
+" target=\"_blank\">Learn more</a>"
 msgstr ""
 
-#: inc/admin/ui/modules/cloudflare.php:40
-#: inc/admin/ui/modules/cloudflare.php:48
+#: inc/admin/ui/modules/cloudflare.php:46
+#: inc/admin/ui/modules/cloudflare.php:54
 msgid "Domain"
 msgstr ""
 
-#: inc/admin/ui/modules/cloudflare.php:54
-#: inc/admin/ui/modules/cloudflare.php:62
+#: inc/admin/ui/modules/cloudflare.php:60
+#: inc/admin/ui/modules/cloudflare.php:68
 msgid "Development Mode"
 msgstr ""
 
-#: inc/admin/ui/modules/cloudflare.php:64
+#: inc/admin/ui/modules/cloudflare.php:70
+#: inc/admin/ui/modules/cloudflare.php:116
 msgid "Off"
 msgstr ""
 
-#: inc/admin/ui/modules/cloudflare.php:65
+#: inc/admin/ui/modules/cloudflare.php:71
+#: inc/admin/ui/modules/cloudflare.php:117
 msgid "On"
 msgstr ""
 
-#: inc/admin/ui/modules/cloudflare.php:71
+#: inc/admin/ui/modules/cloudflare.php:77
 msgid ""
-"Temporarily enter development mode on your website. <a href=%s\"\">Learn "
-"more</a>"
+"Temporarily enter development mode on your website. <a href=\"%s\" "
+"target=\"_blank\">Learn more</a>"
 msgstr ""
 
-#: inc/admin/ui/modules/cloudflare.php:77
-#: inc/admin/ui/modules/cloudflare.php:85
+#: inc/admin/ui/modules/cloudflare.php:83
+#: inc/admin/ui/modules/cloudflare.php:91
 msgid "Auto enable the optimal CloudFlare settings (props WP Rocket)"
 msgstr ""
 
-#: inc/admin/ui/modules/cloudflare.php:87
+#: inc/admin/ui/modules/cloudflare.php:93
 msgid "No"
 msgstr ""
 
-#: inc/admin/ui/modules/cloudflare.php:88
+#: inc/admin/ui/modules/cloudflare.php:94
 msgid "Yes"
 msgstr ""
 
-#: inc/admin/ui/modules/cloudflare.php:94
+#: inc/admin/ui/modules/cloudflare.php:100
 msgid ""
 "We select the best CloudFlare configuration for speed, performance grade and"
 " compatibility."
 msgstr ""
 
-#: inc/admin/ui/modules/cloudflare.php:111
+#: inc/admin/ui/modules/cloudflare.php:106
+#: inc/admin/ui/modules/cloudflare.php:114
+msgid "HTTPS Protocol Rewrite"
+msgstr ""
+
+#: inc/admin/ui/modules/cloudflare.php:124
+msgid ""
+"Rewrite all images, stylesheets and scripts from using either %1$s or %2$s "
+"to using just %3$s to support %4$s."
+msgstr ""
+
+#: inc/admin/ui/modules/cloudflare.php:146
 msgid ""
 "Immediately purge cached resources for your website. <a href=\"%s\" "
 "target=\"_blank\">Learn more</a>"
@@ -804,8 +871,8 @@ msgid "Clear the cache for the whole site."
 msgstr "Tyhjennä koko sivuston välimuisti."
 
 #: inc/admin/ui/modules/tools.php:48 inc/admin/ui/modules/tools.php:54
-#: inc/admin/ui/modules/tutorials.php:7 inc/common/admin-bar.php:141
-#: inc/common/admin-bar.php:162 inc/common/admin-bar.php:193
+#: inc/admin/ui/modules/tutorials.php:7 inc/common/admin-bar.php:159
+#: inc/common/admin-bar.php:180 inc/common/admin-bar.php:213
 msgid "Preload cache"
 msgstr "Esilataa välimuisti"
 
@@ -815,29 +882,34 @@ msgid ""
 "internal links)."
 msgstr "Voit pyytää bottia esilataamaan välimuistin (etusivu ja sen sisäiset linkit)."
 
-#: inc/admin/ui/modules/tools.php:66
+#: inc/admin/ui/modules/tools.php:67 inc/admin/ui/modules/tools.php:73
+#: inc/common/admin-bar.php:145
+msgid "Purge OPcache"
+msgstr ""
+
+#: inc/admin/ui/modules/tools.php:82
 msgid "Settings Exporter"
 msgstr "Vie asetukset"
 
-#: inc/admin/ui/modules/tools.php:76
+#: inc/admin/ui/modules/tools.php:92
 msgid "Settings Importer"
 msgstr "Tuo asetukset"
 
-#: inc/admin/ui/modules/tools.php:85
+#: inc/admin/ui/modules/tools.php:101
 msgid ""
 "Please backup your settings before, use the \"Download options\" button "
 "above."
 msgstr "Varmuuskopioi asetukset ensin ylläolevasta \"Lataa asetukset\" -napista."
 
-#: inc/admin/ui/modules/tools.php:88
+#: inc/admin/ui/modules/tools.php:104
 msgid "Update Rollback"
 msgstr "Päivityksen palautus"
 
-#: inc/admin/ui/modules/tools.php:94
+#: inc/admin/ui/modules/tools.php:110
 msgid "Reinstall v%s"
 msgstr "Asenna uudestaan v%s"
 
-#: inc/admin/ui/modules/tools.php:99
+#: inc/admin/ui/modules/tools.php:115
 msgid ""
 "Is the version %s causing you some issues? You can ask for a rollback and "
 "reinstall the last version you used before."
@@ -897,6 +969,26 @@ msgid ""
 "<code>get_rocket_cdn_url()</code> and <code>rocket_cdn_url()</code>."
 msgstr "Video kertoo, miten käyttää funktioita <code>get_rocket_cdn_url()</code> ja <code>rocket_cdn_url()</code>."
 
+#: inc/admin/ui/modules/varnish.php:17 inc/admin/ui/modules/varnish.php:26
+msgid "Varnish Caching Purge"
+msgstr ""
+
+#: inc/admin/ui/modules/varnish.php:24
+msgid "Enable the Varnish caching auto-purge."
+msgstr ""
+
+#: inc/admin/ui/modules/varnish.php:31
+msgid ""
+"The Varnish cache will be purged each time WP Rocket cache needs to be "
+"cleared to avoid conflict."
+msgstr ""
+
+#: inc/admin/ui/modules/varnish.php:36
+msgid ""
+"<strong>Note:</strong> If your server is using %sVarnish%s, you must "
+"activate this option."
+msgstr ""
+
 #: inc/admin/ui/modules/white-label.php:7
 #: inc/admin/ui/modules/white-label.php:16
 msgid "Plugin Name:"
@@ -931,81 +1023,81 @@ msgid ""
 "If you change anything, the tutorial + FAQ + Support tabs will be hidden."
 msgstr "Jos muutat jotakin, Ohjeet + UKK + Tuki välilehdet piilotetaan."
 
-#: inc/admin/ui/notices.php:26 inc/admin/ui/notices.php:30
+#: inc/admin/ui/notices.php:25 inc/admin/ui/notices.php:29
 msgid "<b>%s</b> can not be deactivated because of <code>%s</code>."
 msgstr "<b>%s</b> ei voida ottaa pois käytöstä, koska <code>%s</code>."
 
-#: inc/admin/ui/notices.php:26
+#: inc/admin/ui/notices.php:25
 msgid ""
 "This constant is still defined in <code>wp-config.php</code> file and its "
 "value must be set to <code>false</code>."
 msgstr "Vakio on edelleen määritetty <code>wp-config.php</code>-tiedostossa ja sen arvoksi pitäisi laittaa <code>false</code>."
 
-#: inc/admin/ui/notices.php:26
+#: inc/admin/ui/notices.php:25
 msgid "Maybe we do not have the writing permissions for <code>%s</code>."
 msgstr "Ehkä meillä ei ole kirjoitusoikeuksia <code>%s</code>."
 
-#: inc/admin/ui/notices.php:26 inc/admin/ui/notices.php:30
+#: inc/admin/ui/notices.php:25 inc/admin/ui/notices.php:29
 msgid ""
 "Please give us permissions or resolve the problem yourself. Then retry "
 "deactivation."
 msgstr "Anna meille oikeudet tai ratkaise ongelma itse. Sitten yritä deaktivointia uudestaan."
 
-#: inc/admin/ui/notices.php:30
+#: inc/admin/ui/notices.php:29
 msgid "This file is not writable and we can not remove these directives."
 msgstr "Tiedostoon ei voi kirjoittaa, emmekä pysty poistamaan asetuksia."
 
-#: inc/admin/ui/notices.php:30
+#: inc/admin/ui/notices.php:29
 msgid "Maybe we do not have writing permissions for <code>%s</code>."
 msgstr "Ehkä meillä ei ole kirjoitusoikeuksia <code>%s</code>."
 
-#: inc/admin/ui/notices.php:66
+#: inc/admin/ui/notices.php:65
 msgid "You can still force the deactivation by clicking here."
 msgstr "Voit pakottaa deaktivoinnin klikkaamalla tästä."
 
-#: inc/admin/ui/notices.php:92
+#: inc/admin/ui/notices.php:90
 msgid ""
 "<b>%s</b>: One or more extensions have been enabled or disabled, do not "
 "forget to clear the cache if necessary."
 msgstr "<b>%s</b>: Yksi tai useampi lisäosa on otettu käyttöön tai poistettu käytöstä. Tyhjennä välimuisti, jos sille on tarvetta."
 
-#: inc/admin/ui/notices.php:191
+#: inc/admin/ui/notices.php:196
 msgid ""
 "<b>%s</b>: The following plugins are not compatible with this plugin and may"
 " cause unexpected results:"
 msgstr "<b>%s</b>: Seuraavat lisäosat eivät ole yhteensopivia tämän lisäosan kanssa ja saattavat aiheuttaa odottamattomia tilanteita:"
 
-#: inc/admin/ui/notices.php:197
+#: inc/admin/ui/notices.php:201
 msgid "Deactivate"
 msgstr "Ota pois käytöstä"
 
-#: inc/admin/ui/notices.php:223
+#: inc/admin/ui/notices.php:226
 msgid ""
 "<b>%s</b>: A custom permalink structure is required for the plugin to work "
 "properly. Please go to <a href=\"%s\">Permalink</a> to configure it."
 msgstr "<b>%s</b>: Mukautettu osoiterakenne pitää olla käytössä, jotta lisäosa toimii oikein. Voit asettaa osoiterakenteen <a href=\"%s\">täällä</a>."
 
-#: inc/admin/ui/notices.php:254
+#: inc/admin/ui/notices.php:256
 msgid ""
 "<b>%s</b>: It seems we don't have <a href=\"%s\" target=\"_blank\">writing "
 "permissions</a> on <code>wp-config.php</code> file or the value of the "
 "constant <code>WP_CACHE</code> is set to <code>false</code>"
 msgstr "<b>%s</b>: Vaikuttaa siltä, ettei meillä ole <a href=\"%s\" target=\"_blank\">kirjoitusoikeuksia</a> <code>wp-config.php</code>-tiedostoon tai vakion <code>WP_CACHE</code> arvo on<code>false</code>"
 
-#: inc/admin/ui/notices.php:256
+#: inc/admin/ui/notices.php:258
 msgid ""
 "To fix this you have to set writing permissions for <code>wp-"
 "config.php</code> and then save the settings again."
 msgstr "Anna kirjoitusoikeudet <code>wp-config.php</code>-tiedostoon ja tallenna asetukset uudestaan."
 
-#: inc/admin/ui/notices.php:258
+#: inc/admin/ui/notices.php:260
 msgid ""
 "If the message persists, you have to put the following code in your <code"
 ">wp-config.php</code> file so that it works correctly. Click on the field "
 "and press Ctrl-A to select all."
 msgstr "Jos ongelma pysyy, sinun pitää kopioida seuraava koodi <code>wp-config.php</code>-tiedostoon. Klikkaa kenttää ja paina Ctrl-A valitaksesi kaikki sisältö."
 
-#: inc/admin/ui/notices.php:299
+#: inc/admin/ui/notices.php:300
 msgid ""
 "If you had <a href=\"%1$s\" target=\"_blank\">writing permissions</a> on "
 "<code>%2$s</code> file, <b>%3$s</b> could do this automatically. This is not"
@@ -1035,7 +1127,7 @@ msgid ""
 "be updated when saving the options"
 msgstr "<strong>Varoitus:</strong> Tämä viesti tulee esiin uudestaan ja sen sisältö saattaa muuttua tallennuksen aikana."
 
-#: inc/admin/ui/notices.php:390
+#: inc/admin/ui/notices.php:389
 msgid ""
 "Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
 "permissions</a> on <b>%3$s</b> domain configuration folder "
@@ -1045,7 +1137,7 @@ msgid ""
 "to generate the configuration file."
 msgstr "Verkkotunnus-asetushakemistoon (<code>%2$s</code>) ei ole <a href=\"%1$s\" target=\"_blank\">kirjoitusoikeuksia</a>. Jotta <b>%3$s</b> toimii oikein, muuta hakemiston oikeuksia CHMOD-komennolla <code>755</code> tai <code>775</code> tai <code>777</code>. Kun ongelma on ratkaistu, tallenna %3$s asetukset, jotta asetustiedosto luodaan."
 
-#: inc/admin/ui/notices.php:418
+#: inc/admin/ui/notices.php:416
 msgid ""
 "Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
 "permissions</a> on <b>%3$s</b> cache folder (<code>%2$s</code>). For "
@@ -1053,7 +1145,7 @@ msgid ""
 "<code>775</code> or <code>777</code> this folder."
 msgstr "Välimuistihakemistoon (<code>%2$s</code>) ei ole <a href=\"%1$s\" target=\"_blank\">kirjoitusoikeuksia</a>. Jotta <b>%3$s</b> toimii oikein, muuta hakemiston oikeuksia CHMOD-komennolla <code>755</code> tai <code>775</code> tai <code>777</code>."
 
-#: inc/admin/ui/notices.php:447
+#: inc/admin/ui/notices.php:444
 msgid ""
 "Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
 "permissions</a> on <b>%3$s</b> minified cache folder (<code>%2$s</code>). To"
@@ -1061,61 +1153,71 @@ msgid ""
 "<code>775</code> or <code>777</code> this folder."
 msgstr "Pienennettyjen tiedostojen välimuistihakemistoon (<code>%2$s</code>) ei ole <a href=\"%1$s\" target=\"_blank\">kirjoitusoikeuksia</a>. Jotta <b>%3$s</b> toimii oikein, muuta hakemiston oikeuksia CHMOD-komennolla <code>755</code> tai <code>775</code> tai <code>777</code>."
 
-#: inc/admin/ui/notices.php:472
+#: inc/admin/ui/notices.php:468
 msgid "Thank you. Your license has been successfully validated!"
 msgstr "Kiitos. Lisenssi vahvistettiin onnistuneesti!"
 
-#: inc/admin/ui/notices.php:473
+#: inc/admin/ui/notices.php:469
 msgid "Key: <code>%s</code><br>Email: <i>%s</i>"
 msgstr "Avain: <code>%s</code><br>Sähköposti: <i>%s</i>"
 
-#: inc/admin/updater.php:119 inc/admin/updater.php:126
+#: inc/admin/ui/notices.php:520
+msgid ""
+"Speed up your website and boost your SEO by reducing image file sizes "
+"without loosing quality with Imagify."
+msgstr ""
+
+#: inc/admin/ui/notices.php:523
+msgid "Install Imagify for Free"
+msgstr ""
+
+#: inc/admin/updater.php:55 inc/admin/updater.php:62
 msgid ""
 "An unexpected error occurred. Something may be wrong with WP-Rocket.me or "
 "this server&#8217;s configuration. If you continue to have problems, please "
 "try the <a href=\"%s\">support forums</a>."
 msgstr "Odottamaton virhe tapahtui. Ongelma saattaa johtua WP-Rocket.me osoitteen ongelmasta tai tämän palvelimen asetuksista. Jos ongelma jatkuu, ota yhteyttä <a href=\"%s\">tukeen</a>."
 
-#: inc/common/admin-bar.php:90 inc/common/admin-bar.php:184
-#: inc/common/admin-bar.php:252 inc/common/admin-bar.php:259
+#: inc/common/admin-bar.php:94 inc/common/admin-bar.php:204
+#: inc/functions/i18n.php:38 inc/functions/i18n.php:45
 msgid "All languages"
 msgstr "Kaikki kielet"
 
-#: inc/common/admin-bar.php:115
+#: inc/common/admin-bar.php:119
 msgid "Clear this post"
 msgstr "Tyhjennä tämä sivu"
 
-#: inc/common/admin-bar.php:127
+#: inc/common/admin-bar.php:131
 msgid "Purge this URL"
 msgstr "Tyhjennä tämä osoite"
 
-#: inc/common/admin-bar.php:204
+#: inc/common/admin-bar.php:224
 msgid "Documentation"
 msgstr "Dokumentaatio"
 
-#: inc/common/cron.php:17
+#: inc/common/cron.php:16
 msgid "%s clear"
 msgstr "%s tyhjennä"
 
-#: inc/functions/admin.php:13
+#: inc/functions/admin.php:11
 msgid ""
 "Last step before enjoying the high performances of our plugin, please <a "
 "href=\"%s\">Enter you API key</a> here."
 msgstr "Viimeinen askel ennen kuin voit nauttia lisäosan tuomasta suorituskyvystä. <a href=\"%s\">Syötä API-avain</a> tähän."
 
-#: inc/functions/options.php:439
+#: inc/functions/options.php:552
 msgid "Your license is not valid."
 msgstr "Lisenssi ei ole validi."
 
-#: inc/functions/options.php:440
+#: inc/functions/options.php:553
 msgid "You cannot add more websites. Upgrade your account."
 msgstr "Et voi lisätä enempää verkkosivustoja. Päivitä tiliäsi."
 
-#: inc/functions/options.php:441
+#: inc/functions/options.php:554
 msgid "This website is not allowed."
 msgstr "Verkkosivusto ei ole sallittu."
 
-#: inc/functions/options.php:442
+#: inc/functions/options.php:555
 msgid "This license key is not accepted."
 msgstr "Lisenssiavain ei kelpaa."
 

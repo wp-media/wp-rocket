@@ -81,8 +81,7 @@ add_action( 'wp_trash_post'				, 'rocket_clean_post' );
 add_action( 'delete_post'				, 'rocket_clean_post' );
 add_action( 'clean_post_cache'			, 'rocket_clean_post' );
 add_action( 'wp_update_comment_count'	, 'rocket_clean_post' );
-function rocket_clean_post( $post_id )
-{
+function rocket_clean_post( $post_id ) {
 	if ( defined( 'DOING_AUTOSAVE' ) ) {
 		return;
 	}
@@ -106,8 +105,7 @@ function rocket_clean_post( $post_id )
 
 	// Polylang
 	} else if ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
-		$post_language = $GLOBALS['polylang']->model->get_post_language( $post_id );
-		$lang = ( is_object( $post_language ) ) ? $post_language->slug : false;
+		$lang = pll_get_post_language( $post_id );
 	}
 	
 	// Get the permalink structure
@@ -204,6 +202,9 @@ function rocket_clean_post( $post_id )
 	// Never forget to purge homepage and their pagination
 	rocket_clean_home( $lang );
 
+    // Purge home feeds (blog & comments)
+    rocket_clean_home_feeds();
+
 	// Purge all parents
 	$parents = get_post_ancestors( $post_id );
 	if ( count( $parents ) ) {
@@ -229,8 +230,7 @@ function rocket_clean_post( $post_id )
  * @since 2.0
  */
 add_filter( 'rocket_clean_files', 'rocket_clean_files_users' );
-function rocket_clean_files_users( $urls )
-{
+function rocket_clean_files_users( $urls ) {
 	$pattern_urls = array();
 	foreach( $urls as $url ) {
 		list( $host, $path, $scheme ) = get_rocket_parse_url( $url );
@@ -246,9 +246,8 @@ function rocket_clean_files_users( $urls )
  * @since 1.3.5
  */
 add_filter( 'rocket_post_purge_urls', 'rocket_post_purge_urls_for_qtranslate' );
-function rocket_post_purge_urls_for_qtranslate( $urls )
-{
-	if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
+function rocket_post_purge_urls_for_qtranslate( $urls ) {
+	if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) || rocket_is_plugin_active( 'qtranslate-x/qtranslate.php' ) ) {
 
 		global $q_config;
 
@@ -261,7 +260,11 @@ function rocket_post_purge_urls_for_qtranslate( $urls )
 		// Add translate URLs
 		foreach( $urls as $url ) {
 			foreach( $enabled_languages as $lang ) {
-				$urls[] = qtrans_convertURL( $url, $lang, true );
+    			if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
+				    $urls[] = qtrans_convertURL( $url, $lang, true );
+				} elseif ( rocket_is_plugin_active( 'qtranslate-x/qtranslate.php' ) ) {
+    				$urls[] = qtranxf_convertURL( $url, $lang, true );
+				}
 			}
 		}
 	}
@@ -276,8 +279,7 @@ function rocket_post_purge_urls_for_qtranslate( $urls )
  * @since 1.3.0
  */
 add_action( 'after_rocket_clean_post', 'run_rocket_bot_after_clean_post', 10, 3 );
-function run_rocket_bot_after_clean_post( $post, $purge_urls, $lang )
-{
+function run_rocket_bot_after_clean_post( $post, $purge_urls, $lang ) {
 	// Run robot only if post is published
 	if ( 'publish' != $post->post_status ) {
 		return false;
@@ -285,7 +287,11 @@ function run_rocket_bot_after_clean_post( $post, $purge_urls, $lang )
 
 	// Add Homepage URL to $purge_urls for bot crawl
 	array_push( $purge_urls, get_rocket_i18n_home_url( $lang ) );
-
+	
+	// Add default WordPress feeds (posts & comments)
+	array_push( $purge_urls, get_feed_link() );
+	array_push( $purge_urls, get_feed_link( 'comments_' ) );
+	
 	// Get the author page
 	$purge_author = array( get_author_posts_url( $post->post_author ) );
 
@@ -310,8 +316,7 @@ function run_rocket_bot_after_clean_post( $post, $purge_urls, $lang )
  * @since 2.6.8
  */
 add_action( 'after_rocket_clean_term', 'run_rocket_bot_after_clean_term', 10, 3 );
-function run_rocket_bot_after_clean_term( $post, $purge_urls, $lang )
-{
+function run_rocket_bot_after_clean_term( $post, $purge_urls, $lang ) {
 	// Add Homepage URL to $purge_urls for bot crawl
 	array_push( $purge_urls, get_rocket_i18n_home_url( $lang ) );
 
@@ -343,8 +348,7 @@ function do_rocket_bot_cache_json() {
  * @since 1.0
  */
 add_action( 'admin_post_purge_cache', '__rocket_purge_cache' );
-function __rocket_purge_cache()
-{
+function __rocket_purge_cache() {
 	if ( isset( $_GET['type'], $_GET['_wpnonce'] ) ) {
 
 		$_type     = explode( '-', $_GET['type'] );
@@ -411,6 +415,25 @@ function __rocket_purge_cache()
 }
 
 /**
+ * Purge OPCache content in Admin Bar
+ *
+ * @since 2.7
+ */
+add_action( 'admin_post_rocket_purge_opcache', '__do_admin_post_rocket_purge_opcache' );
+function __do_admin_post_rocket_purge_opcache() {
+    if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'rocket_purge_opcache' ) ) {
+        wp_nonce_ays( '' );
+    }
+
+    if ( function_exists( 'opcache_reset' ) ) {
+        opcache_reset();
+    }
+
+    wp_redirect( wp_get_referer() );
+    die();
+}
+
+/**
  * Preload cache system in Admin Bar
  * It launch the WP Rocket Bot
  *
@@ -420,8 +443,7 @@ function __rocket_purge_cache()
 add_action( 'admin_post_preload',        '__rocket_preload_cache' );
 add_action( 'admin_post_nopriv_preload', '__rocket_preload_cache' );
 /* if you want to programmatically preload the cache, use run_rocket_bot() instead */
-function __rocket_preload_cache()
-{
+function __rocket_preload_cache() {
     if ( isset( $_GET['_wpnonce'] ) ) {
 
         if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'preload' ) ) {
@@ -443,7 +465,6 @@ function __rocket_preload_cache()
  */
 add_action( 'admin_post_rocket_purge_cloudflare', '__admin_post_rocket_purge_cloudflare' );
 function __admin_post_rocket_purge_cloudflare() {
-	
 	if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'rocket_purge_cloudflare' ) ) {
 		wp_nonce_ays( '' );
 	}

@@ -64,18 +64,18 @@ jQuery( document ).ready( function($){
 	});
 	
 	// Inputs with parent
-	$('input[data-parent]').each( function() {
+	$('.has-parent').each( function() {
 		var input  = $(this),
 			parent = $('#'+$(this).data('parent'));
 		
 		parent.change( function() {
-			if( $(this).is(':checked') ) {
+			if( parent.is(':checked') ) {
 				input.parents('fieldset').show(200);
 			} else {
 				input.parents('fieldset').hide(200);
 			}
 		});
-		
+
 		if( ! parent.is(':checked') ) {
 			$(this).parents('fieldset').hide();
 		}

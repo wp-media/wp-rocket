@@ -9,7 +9,12 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
  */
 add_filter( 'script_loader_src', 'rocket_delete_script_wp_version', 15 );
 add_filter( 'style_loader_src', 'rocket_delete_script_wp_version', 15 );
-function rocket_delete_script_wp_version( $src )
-{
-	return rtrim( str_replace( array( 'ver='.$GLOBALS['wp_version'], '?&', '&&' ), array( '', '?', '&' ), $src ), '?&' );
+function rocket_delete_script_wp_version( $src ) {
+	global $pagenow;
+	
+	if ( 'wp-login.php' !== $pagenow ) {
+		$src = rtrim( str_replace( array( 'ver='.$GLOBALS['wp_version'], '?&', '&&' ), array( '', '?', '&' ), $src ), '?&' );
+	}
+	
+	return $src;
 }

@@ -1,7 +1,8 @@
 input[type=number].small-text{height:28px}
 #rockettabs{background-color:#fff}
 .rkt-tab{padding:0 10px}
-.rkt-tab-txt h2{font-size:20px}
+.rkt-tab h2{display: none}
+.rkt-tab li h2{display: block}
 .rkt-tab-txt ul{list-style-type:disc;padding-left:1em}
 #tab_faq th{display:none}
 .rkt-move-deferred{cursor:move}
@@ -14,3 +15,5 @@ input[type=number].small-text{height:28px}
 .rkt-module-drag{cursor: move;}
 .settings_page_wprocket input.has-parent{margin-left: 20px;}
 [data-loading="true"] input {background: transparent url('../img/wpspin.gif') 99% 50% no-repeat; background-size: 16px 16px;}
+.varnish_description.varnish_description{padding: 10px; font-size: 14px;}
+.description.has-parent{margin-left:20px}

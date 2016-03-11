@@ -42,7 +42,7 @@ add_settings_field(
 	'rocket_display_support',
 	array(
 		'type'         => 'checkbox',
-		'label'        => sprintf( __( 'I\'ve read the <a href="%s" target="_blank">documentation</a>, and I agree to allow WP Rocket to automatically detect my WordPress version and list of enabled plugins when I submit this form.', 'rocket' ), 'http://docs.wp-rocket.me/?utm_source=wp-rocket&utm_medium=wp-admin&utm_term=doc-support&utm_campaign=plugin' ),
+		'label'        => sprintf( __( 'I\'ve read the <a href="%s" target="_blank">documentation</a>, and I agree to allow WP Rocket to automatically detect my WordPress version and list of enabled plugins when I submit this form.', 'rocket' ), get_rocket_documentation_url() ),
 		'label_for'    => 'support_documentation_validation'
 	)
 );

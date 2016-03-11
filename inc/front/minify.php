@@ -622,7 +622,10 @@ function __rocket_fix_minify_multisite_path_issue( $url ) {
 	$main_bloginfo = get_blog_details( $main_blog_id, false );
 	
 	if ( $bloginfo->path != '/' ) {
-		$url = str_replace( $bloginfo->path, $main_bloginfo->path, $url );	
+    	$first_path_pos = strpos( $url, $bloginfo->path );
+    	if ( $first_path_pos !== false ) {
+		    $url = substr_replace( $url, $main_bloginfo->path, $first_path_pos, strlen( $bloginfo->path ) );
+        }
 	}
 	
 	return $url;

@@ -23,4 +23,11 @@ function __deactivate_inline_js_on_wp_serveur( $html_options ) {
  */
 add_filter( 'do_rocket_varnish_http_purge', '__return_true' );
 
+/**
+  * Don't display the Varnish options tab for WP Serveur users
+  *
+  * @since 2.7
+ */
+add_filter( 'rocket_display_varnish_options_tab', '__return_false' );
+
 endif;

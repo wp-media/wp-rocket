@@ -19,6 +19,12 @@ if ( is_admin() ) {
 	return;
 }
 
+// Don't cache the customizer preview
+if ( isset( $_POST['wp_customize'] ) ) {
+    rocket_define_donotminify_constants( true );
+    return;
+}
+
 // Don't cache without GET method
 if ( ! isset( $_SERVER['REQUEST_METHOD'] ) || $_SERVER['REQUEST_METHOD'] != 'GET' ) {
  	return;
@@ -76,6 +82,7 @@ if ( ! empty( $_GET )
 	&& ( ! isset( $_GET['lp-variation-id'] ) )
 	&& ( ! isset( $_GET['lang'] ) )
 	&& ( ! isset( $_GET['s'] ) )
+	&& ( ! isset( $_GET['age-verified'] ) )
 	&& ( ! isset( $rocket_cache_query_strings ) || ! array_intersect( array_keys( $_GET ), $rocket_cache_query_strings ) )
 ) {
 	rocket_define_donotminify_constants( true );
@@ -88,14 +95,20 @@ if ( ! isset( $rocket_cache_ssl ) && rocket_is_ssl() ) {
 	return;
 }
 
-// Don't cache this pages
+// Don't cache these pages
 if ( isset( $rocket_cache_reject_uri ) && preg_match( '#^(' . $rocket_cache_reject_uri . ')$#', $request_uri ) ) {
 	rocket_define_donotminify_constants( true );
 	return;
 }
 
-// Don't cache page with this cookie
+// Don't cache page with these cookies
 if ( isset( $rocket_cache_reject_cookies ) && preg_match( '#(' . $rocket_cache_reject_cookies . ')#', var_export( $_COOKIE, true ) ) ) {
+	rocket_define_donotminify_constants( true );
+	return;
+}
+
+// Don't cache page when these cookies don't exist
+if ( isset( $rocket_cache_mandatory_cookies ) && ! preg_match( '#(' . $rocket_cache_mandatory_cookies . ')#', var_export( $_COOKIE, true ) ) ) {
 	rocket_define_donotminify_constants( true );
 	return;
 }
@@ -132,12 +145,36 @@ else {
 	$request_uri_path = $rocket_cache_path . $host . rtrim( $request_uri, '/' );
 }
 
-// Caching file path
-$rocket_cache_filepath = $request_uri_path . '/index.html';
+$filename = 'index';
 
-if ( ( rocket_is_ssl() && ! empty( $rocket_cache_ssl ) ) ) {
-	$rocket_cache_filepath = $request_uri_path . '/index-https.html';
+// Rename the caching filename for mobile
+if ( isset( $rocket_cache_mobile, $rocket_do_caching_mobile_files ) && class_exists( 'Rocket_Mobile_Detect' ) ) {
+	$detect = new Rocket_Mobile_Detect();
+	
+	if ( $detect->isMobile() ) {
+		$filename .= '-mobile';
+	}
 }
+
+// Rename the caching filename for SSL URLs
+if ( ( rocket_is_ssl() && ! empty( $rocket_cache_ssl ) ) ) {
+	$filename .= '-https';
+}
+
+// Rename the caching filename depending to dynamic cookies
+if ( ! empty( $rocket_cache_dynamic_cookies ) ) {	
+	foreach( $rocket_cache_dynamic_cookies as $cookie_name ) {
+		if( ! empty( $_COOKIE[ $cookie_name ] ) ) {
+			$cache_key = $_COOKIE[ $cookie_name ];
+			$cache_key = preg_replace( '/[^a-z0-9_\-]/i', '-', $cache_key );
+			$filename .= '-' . $cache_key;
+		}
+	}
+}
+
+// Caching file path
+$request_uri_path = preg_replace_callback( '/%[0-9A-F]{2}/', 'rocket_urlencode_lowercase', $request_uri_path );
+$rocket_cache_filepath = $request_uri_path . '/' . $filename . '.html';
 
 // Serve the cache file if exist
 rocket_serve_cache_file( $request_uri_path );
@@ -150,8 +187,7 @@ ob_start( 'do_rocket_callback' );
  * @since 1.3.0 Add filter rocket_buffer
  * @since 1.0
  */
-function do_rocket_callback( $buffer )
-{
+function do_rocket_callback( $buffer ) {
 	/**
 	  * Allow to cache search results
 	  *
@@ -175,23 +211,24 @@ function do_rocket_callback( $buffer )
 		&& ( function_exists( 'is_404' ) && ! is_404() ) // Don't cache 404
 		&& ( function_exists( 'is_search' ) && ! is_search() || $rocket_cache_search ) // Don't cache search results
 		&& ( ! defined( 'DONOTCACHEPAGE' ) || ! DONOTCACHEPAGE || $rocket_override_donotcachepage ) // Don't cache template that use this constant
+		&& function_exists( 'rocket_mkdir_p' )
 	) {
 		global $request_uri_path, $rocket_cache_filepath;
 
-		// This hook is used for:
-		// - Add width and height attributes on images
-		// - Deferred JavaScript files
-		// - DNS Prefechting
-		// - Minification HTML/CSS/JavaScript
-		// - CDN
-		// - LazyLoad
-		$buffer = apply_filters( 'rocket_buffer', $buffer );
-		
 		$footprint = '';
-		$is_html   = true;
+		$is_html   = false;
 		
-		if( ! preg_match( '/(<\/html>)/i', $buffer ) ) {
-			$is_html = false;
+		if( preg_match( '/(<\/html>)/i', $buffer ) ) {
+			// This hook is used for:
+			// - Add width and height attributes on images
+			// - Deferred JavaScript files
+			// - DNS Prefechting
+			// - Minification HTML/CSS/JavaScript
+			// - CDN
+			// - LazyLoad
+			$buffer = apply_filters( 'rocket_buffer', $buffer );
+			
+			$is_html = true;
 		}
 		
 		/**
@@ -235,8 +272,7 @@ function do_rocket_callback( $buffer )
  *
  * @since 2.0
  */
-function rocket_serve_cache_file( $request_uri_path )
-{
+function rocket_serve_cache_file( $request_uri_path ) {
 	global $rocket_cache_filepath;
 	
 	// Check if cache file exist
@@ -251,7 +287,7 @@ function rocket_serve_cache_file( $request_uri_path )
 		}
 
 		// Checking if the client is validating his cache and if it is current.
-	    if ( $http_if_modified_since && ( strtotime( $http_if_modified_since ) == filemtime( $rocket_cache_filepath ) ) ) {
+	    if ( $http_if_modified_since && ( strtotime( $http_if_modified_since ) == @filemtime( $rocket_cache_filepath ) ) ) {
 	        // Client's cache is current, so we just respond '304 Not Modified'.
 	        header( $_SERVER['SERVER_PROTOCOL'] . ' 304 Not Modified', true, 304 );
 	        exit;
@@ -270,8 +306,7 @@ function rocket_serve_cache_file( $request_uri_path )
  *
  * @source is_ssl() in /wp-includes/functions.php
  */
-function rocket_is_ssl()
-{
+function rocket_is_ssl() {
 	if ( isset($_SERVER['HTTPS']) ) {
 		if ( 'on' == strtolower($_SERVER['HTTPS']) ) {
 			return true;
@@ -293,11 +328,22 @@ function rocket_is_ssl()
  * @param bool $value
  */
 function rocket_define_donotminify_constants( $value ) {
-	if( ! defined( 'DONOTMINIFYCSS' ) ) {
+	if ( ! defined( 'DONOTMINIFYCSS' ) ) {
 		define( 'DONOTMINIFYCSS', (bool) $value );
 	}
 	
-	if( ! defined( 'DONOTMINIFYJS' ) ) {
+	if ( ! defined( 'DONOTMINIFYJS' ) ) {
 		define( 'DONOTMINIFYJS', (bool) $value );
 	}
 }
+
+/**
+ * Force lowercase on encoded url strings from different alphabets to prevent issues on some hostings
+ *
+ * @since 2.7
+ *
+ * @param string $matches
+ */
+function rocket_urlencode_lowercase( $matches ) {
+    return strtolower( $matches[0] );
+} 

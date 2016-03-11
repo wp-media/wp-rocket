@@ -1,21 +1,22 @@
-# Copyright (C) 2015 WP Rocket
+# Copyright (C) 2016 WP Rocket
 # This file is distributed under the same license as the WP Rocket package.
 # Translators:
-# Anders Eriksson <eriksson021@gmail.com>, 2014-2015
+# Malin Andersson, 2014-2015
+# Malin Andersson, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2015-05-28 16:16:27+00:00\n"
-"PO-Revision-Date: 2015-05-28 17:12+0000\n"
-"Last-Translator: Anders Eriksson <eriksson021@gmail.com>\n"
-"Language-Team: Swedish (Sweden) (http://www.transifex.com/projects/p/wp-rocket/language/sv_SE/)\n"
+"POT-Creation-Date: 2016-03-11 07:07:23+00:00\n"
+"PO-Revision-Date: 2016-03-11 07:06+0000\n"
+"Last-Translator: FX Bénard <fxb@wp-translations.org>\n"
+"Language-Team: Swedish (Sweden) (http://www.transifex.com/wp-media/wp-rocket/language/sv_SE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: sv_SE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: grunt-wp-i18n 0.5.2\n"
+"X-Generator: grunt-wp-i18n 0.5.4\n"
 "X-Poedit-Basepath: ../\n"
 "X-Poedit-Bookmarks: \n"
 "X-Poedit-Country: United States\n"
@@ -24,24 +25,24 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Textdomain-Support: yes\n"
 
-#: inc/admin/admin.php:13 inc/admin/options.php:496 inc/admin/options.php:501
-#: inc/admin/ui/modules/support.php:4 inc/common/admin-bar.php:212
+#: inc/admin/admin.php:12 inc/admin/options.php:500 inc/admin/options.php:505
+#: inc/admin/ui/modules/support.php:4 inc/common/admin-bar.php:232
 msgid "Support"
 msgstr "Support"
 
-#: inc/admin/admin.php:15
+#: inc/admin/admin.php:14
 msgid "Docs"
 msgstr "Dokument"
 
-#: inc/admin/admin.php:18 inc/common/admin-bar.php:31
+#: inc/admin/admin.php:17 inc/common/admin-bar.php:33
 msgid "Settings"
 msgstr "Inställningar"
 
-#: inc/admin/admin.php:60
+#: inc/admin/admin.php:59 inc/admin/admin.php:77 inc/admin/admin.php:93
 msgid "Clear this cache"
 msgstr "Radera denna cache"
 
-#: inc/admin/admin.php:259 inc/admin/admin.php:267
+#: inc/admin/admin.php:287 inc/admin/admin.php:296
 msgid "%s Update Rollback"
 msgstr "%s Uppdatera återställning"
 
@@ -49,24 +50,24 @@ msgstr "%s Uppdatera återställning"
 msgid "FAQ's Table of Content"
 msgstr "Frågor och svar, innehållsförteckning"
 
-#: inc/admin/options.php:156 inc/admin/options.php:384
+#: inc/admin/options.php:158 inc/admin/options.php:383
 msgid "Warning: "
 msgstr "Varning: "
 
-#: inc/admin/options.php:163
+#: inc/admin/options.php:165
 msgid "Download options"
 msgstr "Nerladdnings alternativ"
 
-#: inc/admin/options.php:192
+#: inc/admin/options.php:193
 msgid "<b>JS</b> files with Deferred Loading JavaScript"
 msgstr "<b>JS</b> filer med senarelagd laddning av Javascript"
 
-#: inc/admin/options.php:212 inc/admin/options.php:232
-#: inc/admin/options.php:252
+#: inc/admin/options.php:213 inc/admin/options.php:233
+#: inc/admin/options.php:253
 msgid "Wait until this file is loaded?"
 msgstr "Vänta tills filen är laddad?"
 
-#: inc/admin/options.php:260 inc/admin/ui/modules/advanced.php:223
+#: inc/admin/options.php:261 inc/admin/ui/modules/advanced.php:223
 msgid "Add URL"
 msgstr "Ange URL"
 
@@ -93,72 +94,86 @@ msgstr "Bilder"
 msgid "Add CNAME"
 msgstr "Ange CNAME"
 
-#: inc/admin/options.php:415
+#: inc/admin/options.php:413
 msgid "Watch the video"
 msgstr "Titta på videon"
 
-#: inc/admin/options.php:481 inc/admin/ui/modules/basic.php:4
+#: inc/admin/options.php:480 inc/admin/ui/modules/basic.php:4
 msgid "Basic options"
 msgstr "Grundläggande alternativ"
 
-#: inc/admin/options.php:482 inc/admin/ui/modules/advanced.php:4
+#: inc/admin/options.php:481 inc/admin/ui/modules/advanced.php:4
 msgid "Advanced options"
 msgstr "Avancerade alternativ"
 
-#: inc/admin/options.php:486 inc/admin/ui/meta-boxes.php:62
+#: inc/admin/options.php:485 inc/admin/ui/meta-boxes.php:62
 msgid "CDN"
 msgstr "CDN"
 
-#: inc/admin/options.php:488 inc/admin/ui/modules/white-label.php:4
+#: inc/admin/options.php:492 inc/admin/ui/modules/white-label.php:4
 msgid "White Label"
 msgstr "White Label"
 
-#: inc/admin/options.php:490 inc/admin/ui/modules/tools.php:4
+#: inc/admin/options.php:494 inc/admin/ui/modules/tools.php:4
 msgid "Tools"
 msgstr "Verktyg"
 
-#: inc/admin/options.php:493 inc/admin/ui/modules/tutorials.php:4
+#: inc/admin/options.php:497 inc/admin/ui/modules/tutorials.php:4
 msgid "Tutorials"
 msgstr "Instruktioner"
 
-#: inc/admin/options.php:495 inc/admin/options.php:500
+#: inc/admin/options.php:499 inc/admin/options.php:504
 #: inc/admin/ui/modules/faq.php:4 inc/admin/ui/modules/faq.php:7
 msgid "FAQ"
 msgstr "Frågor och svar"
 
-#: inc/admin/options.php:499
+#: inc/admin/options.php:503
 msgid "License"
 msgstr "Licens"
 
-#: inc/admin/options.php:822
+#: inc/admin/options.php:521
+msgid "The following options are for hosting with Varnish cache system."
+msgstr ""
+
+#: inc/admin/options.php:522
+msgid ""
+"If you don’t know if Varnish is installed on your server, you can ignore "
+"these settings."
+msgstr ""
+
+#: inc/admin/options.php:851
 msgid "Settings imported and saved."
 msgstr "Inställningar importerade och sparade."
 
-#: inc/admin/options.php:840 inc/admin/options.php:924
+#: inc/admin/options.php:869 inc/admin/options.php:965
 msgid "Settings saved."
 msgstr "Inställningar sparade."
 
-#: inc/admin/options.php:1001
+#: inc/admin/options.php:1060
 msgid ""
 "Before you can upload your import file, you will need to fix the following "
 "error:"
 msgstr "Innan du kan ladda upp din importfil, måste du åtgärda följande fel:"
 
-#: inc/admin/options.php:1008
+#: inc/admin/options.php:1067
 msgid "Choose a file from your computer:"
 msgstr "Välj en fil från din dator:"
 
-#: inc/admin/options.php:1008
+#: inc/admin/options.php:1067
 msgid "Maximum size: %s"
 msgstr "Maximal storlek: %s"
 
-#: inc/admin/options.php:1011
+#: inc/admin/options.php:1070
 msgid "Upload file and import settings"
 msgstr "Ladda upp fil och importera inställningar"
 
-#: inc/admin/ui/enqueue.php:24
+#: inc/admin/ui/enqueue.php:23
 msgid "Are you sure?"
 msgstr "Är du säker?"
+
+#: inc/admin/ui/enqueue.php:24
+msgid "All fields are required!"
+msgstr ""
 
 #: inc/admin/ui/enqueue.php:26
 msgid "CloudFlare Settings"
@@ -219,7 +234,7 @@ msgid ""
 "Well, well, looks like you've got yourself a \"nulled\" version! We don't "
 "provide support to hackers or pirates, so you will need a valid license to "
 "proceed."
-msgstr "Ser man på, det ser ut som du har en \"nulled\" version ! Vi ger inte support till hackare eller pirater , så du behöver en giltig licens för att fortsätta."
+msgstr "Ser man på, det ser ut som du har en \"nulled\" version ! Vi ger inte support till hackare eller pirater, så du behöver en giltig licens för att fortsätta."
 
 #: inc/admin/ui/enqueue.php:43
 msgid ""
@@ -269,11 +284,11 @@ msgstr "Ja, jag är säker!"
 msgid "Cancel"
 msgstr "Avbryt"
 
-#: inc/admin/ui/meta-boxes.php:18 inc/admin/ui/modules/cloudflare.php:100
-#: inc/admin/ui/modules/cloudflare.php:106 inc/admin/ui/modules/tools.php:31
-#: inc/admin/ui/modules/tools.php:37 inc/admin/ui/notices.php:92
-#: inc/common/admin-bar.php:43 inc/common/admin-bar.php:66
-#: inc/common/admin-bar.php:100
+#: inc/admin/ui/meta-boxes.php:18 inc/admin/ui/modules/cloudflare.php:135
+#: inc/admin/ui/modules/cloudflare.php:141 inc/admin/ui/modules/tools.php:31
+#: inc/admin/ui/modules/tools.php:37 inc/admin/ui/notices.php:90
+#: inc/common/admin-bar.php:45 inc/common/admin-bar.php:68
+#: inc/common/admin-bar.php:104
 msgid "Clear cache"
 msgstr "Radera cache"
 
@@ -420,7 +435,7 @@ msgstr "JS-fils minifiering"
 msgid ""
 "<strong>Note:</strong> We combine the minified files in little groups "
 "<strong>to ensure the best compatibility and better performance</strong>."
-msgstr "<strong> Obs! </strong> Vi kombinerar de minifierade filerna i små grupper<strong>för att säkerställa bästa kompatibilitet och bättre prestanda</strong>."
+msgstr "<strong> Obs! </strong> Vi kombinerar de minifierade filerna i små grupper <strong>för att säkerställa bästa kompatibilitet och bättre prestanda</strong>."
 
 #: inc/admin/ui/modules/advanced.php:163
 msgid ""
@@ -467,7 +482,7 @@ msgstr "<b>JS</b> -filer som ska ingå i sidfoten under minifieringsprocessen:"
 msgid "Empty the field to remove it."
 msgstr "Töm fältet för att ta bort den."
 
-#: inc/admin/ui/modules/advanced.php:234 inc/admin/ui/modules/advanced.php:262
+#: inc/admin/ui/modules/advanced.php:234
 msgid "You must specify the complete URL of the files."
 msgstr "Du måste ange den fullständiga webbadressen till filerna."
 
@@ -481,13 +496,19 @@ msgid ""
 "time as the page loads."
 msgstr "Du kan lägga till JavaScript-filer som ska laddas asynkront samtidigt som sidan laddas."
 
+#: inc/admin/ui/modules/advanced.php:262
+msgid ""
+"You must specify the complete URL of the original files. Do NOT add URLs of "
+"minified files generated by WP Rocket."
+msgstr ""
+
 #: inc/admin/ui/modules/api-key.php:4
 msgid "License validation"
 msgstr "Licens validering"
 
 #: inc/admin/ui/modules/api-key.php:7 inc/admin/ui/modules/api-key.php:15
-#: inc/admin/ui/modules/cloudflare.php:21
-#: inc/admin/ui/modules/cloudflare.php:29
+#: inc/admin/ui/modules/cloudflare.php:24
+#: inc/admin/ui/modules/cloudflare.php:32
 msgid "API Key"
 msgstr "API-nyckel"
 
@@ -571,71 +592,105 @@ msgid ""
 "following video: <a href=\"%1$s\" class=\"fancybox\">%1$s</a>."
 msgstr "Vid eventuella fel rekommenderar vi att du stänger av det här alternativet eller tittar på följande video: <a href=\"%1$s\" class=\"fancybox\">%1$s</a>."
 
-#: inc/admin/ui/modules/basic.php:107 inc/admin/ui/modules/basic.php:116
+#: inc/admin/ui/modules/basic.php:109 inc/admin/ui/modules/basic.php:118
 msgid "Mobile cache:"
 msgstr "Mobil cache:"
 
-#: inc/admin/ui/modules/basic.php:114
+#: inc/admin/ui/modules/basic.php:116
 msgid "Enable caching for mobile devices."
 msgstr "Aktivera cachelagring för mobila enheter."
 
-#: inc/admin/ui/modules/basic.php:121
-msgid "Don't turn on this option if you use one of these plugins: %l."
-msgstr "Aktivera inte det här alternativet om du använder ett av dessa tillägg: %l."
+#: inc/admin/ui/modules/basic.php:123
+msgid "Create a caching file for mobile visitors."
+msgstr ""
 
-#: inc/admin/ui/modules/basic.php:127 inc/admin/ui/modules/basic.php:134
+#: inc/admin/ui/modules/basic.php:130
+msgid ""
+"Are you using a dedicated mobile theme or <code>wp_is_mobile()</code>? If "
+"so, you should activate this option to serve a specific caching file for "
+"your mobile visitors."
+msgstr ""
+
+#: inc/admin/ui/modules/basic.php:136
+msgid ""
+"If you are using one of these plugins, you must activate this option: %l"
+msgstr ""
+
+#: inc/admin/ui/modules/basic.php:142 inc/admin/ui/modules/basic.php:151
+msgid "Feeds cache:"
+msgstr ""
+
+#: inc/admin/ui/modules/basic.php:149
+msgid "Enable caching for WordPress feeds."
+msgstr ""
+
+#: inc/admin/ui/modules/basic.php:157 inc/admin/ui/modules/basic.php:164
 msgid "Logged in user cache:"
 msgstr "Inloggad användar-cache:"
 
-#: inc/admin/ui/modules/basic.php:132
+#: inc/admin/ui/modules/basic.php:162
 msgid "Enable caching for logged in users."
 msgstr "Aktivera cachelagring för inloggade användare."
 
-#: inc/admin/ui/modules/basic.php:139 inc/admin/ui/modules/basic.php:147
+#: inc/admin/ui/modules/basic.php:169 inc/admin/ui/modules/basic.php:177
 msgid "SSL cache:"
 msgstr "SSL cache:"
 
-#: inc/admin/ui/modules/basic.php:145
+#: inc/admin/ui/modules/basic.php:175
 msgid "Enable caching for pages with SSL protocol (<code>https://</code>)."
 msgstr "Aktivera caching för sidor med SSL protokoll (<code>https://</code>)."
 
-#: inc/admin/ui/modules/basic.php:152 inc/admin/ui/modules/basic.php:160
+#: inc/admin/ui/modules/basic.php:184 inc/admin/ui/modules/basic.php:193
+msgid "Emojis:"
+msgstr ""
+
+#: inc/admin/ui/modules/basic.php:191
+msgid "Replace emojis with default WordPress smileys."
+msgstr ""
+
+#: inc/admin/ui/modules/basic.php:198
+msgid ""
+"<strong>Note:</strong> By activating this option, you will reduce the number"
+" of external HTTP requests."
+msgstr ""
+
+#: inc/admin/ui/modules/basic.php:204 inc/admin/ui/modules/basic.php:212
 msgid "Clear Cache Lifespan"
 msgstr "Rensa cachens utgångstid:"
 
-#: inc/admin/ui/modules/basic.php:166
+#: inc/admin/ui/modules/basic.php:218
 msgid "Unit of time"
 msgstr "Tidsenhet"
 
-#: inc/admin/ui/modules/basic.php:169
+#: inc/admin/ui/modules/basic.php:221
 msgid "second(s)"
 msgstr "sekund(er)"
 
-#: inc/admin/ui/modules/basic.php:170
+#: inc/admin/ui/modules/basic.php:222
 msgid "minute(s)"
 msgstr "minut(er)"
 
-#: inc/admin/ui/modules/basic.php:171
+#: inc/admin/ui/modules/basic.php:223
 msgid "hour(s)"
 msgstr "timme(ar)"
 
-#: inc/admin/ui/modules/basic.php:172
+#: inc/admin/ui/modules/basic.php:224
 msgid "day(s)"
 msgstr "dag(ar)"
 
-#: inc/admin/ui/modules/basic.php:178
+#: inc/admin/ui/modules/basic.php:230
 msgid ""
 "By default, cache lifespan is 24 hours. This means that once created, the "
 "cache files are automatically removed after 24 hours before being recreated."
 msgstr "Som standard är cachens utgångstid 24 timmar. Detta innebär att när den har skapats, är cache-filerna automatiskt rensade efter 24 timmar innan de återskapas."
 
-#: inc/admin/ui/modules/basic.php:178
+#: inc/admin/ui/modules/basic.php:230
 msgid ""
 "This can be useful if you display your latest tweets or rss feeds in your "
 "sidebar, for example."
 msgstr "Detta kan vara användbart om du visar dina senaste tweets eller rss -flöden i sidomenyn, till exempel."
 
-#: inc/admin/ui/modules/basic.php:183
+#: inc/admin/ui/modules/basic.php:235
 msgid "Specify 0 for unlimited lifetime."
 msgstr "Ange 0 för obegränsad livslängd."
 
@@ -693,56 +748,69 @@ msgstr "Ange URL-filer som inte ska använda CDN. ( en per rad )."
 msgid "CloudFlare Account Email"
 msgstr "CloudFlare Epost-konto "
 
-#: inc/admin/ui/modules/cloudflare.php:34
+#: inc/admin/ui/modules/cloudflare.php:37
 msgid ""
-"<strong>Note:</strong> Where do I find my CloudFlare API key? <a "
-"href=%s\"\">Learn more</a>"
-msgstr "<strong>Obs!:</strong> Var hittar jag min CloudFlare API-nyckel? <a href=%s\"\">Läs mer</a>"
+"<strong>Note:</strong> Where do I find my CloudFlare API key? <a href=\"%s\""
+" target=\"_blank\">Learn more</a>"
+msgstr ""
 
-#: inc/admin/ui/modules/cloudflare.php:40
-#: inc/admin/ui/modules/cloudflare.php:48
+#: inc/admin/ui/modules/cloudflare.php:46
+#: inc/admin/ui/modules/cloudflare.php:54
 msgid "Domain"
 msgstr "Domän"
 
-#: inc/admin/ui/modules/cloudflare.php:54
-#: inc/admin/ui/modules/cloudflare.php:62
+#: inc/admin/ui/modules/cloudflare.php:60
+#: inc/admin/ui/modules/cloudflare.php:68
 msgid "Development Mode"
 msgstr "Utvecklingsläge"
 
-#: inc/admin/ui/modules/cloudflare.php:64
+#: inc/admin/ui/modules/cloudflare.php:70
+#: inc/admin/ui/modules/cloudflare.php:116
 msgid "Off"
 msgstr "Av"
 
-#: inc/admin/ui/modules/cloudflare.php:65
+#: inc/admin/ui/modules/cloudflare.php:71
+#: inc/admin/ui/modules/cloudflare.php:117
 msgid "On"
 msgstr "På"
 
-#: inc/admin/ui/modules/cloudflare.php:71
-msgid ""
-"Temporarily enter development mode on your website. <a href=%s\"\">Learn "
-"more</a>"
-msgstr "Ange Tillfälligt underhållsläge på din webbplats. <a href=%s\"\"> Läs mer</a>"
-
 #: inc/admin/ui/modules/cloudflare.php:77
-#: inc/admin/ui/modules/cloudflare.php:85
+msgid ""
+"Temporarily enter development mode on your website. <a href=\"%s\" "
+"target=\"_blank\">Learn more</a>"
+msgstr ""
+
+#: inc/admin/ui/modules/cloudflare.php:83
+#: inc/admin/ui/modules/cloudflare.php:91
 msgid "Auto enable the optimal CloudFlare settings (props WP Rocket)"
 msgstr "Auto aktiverar optimala CloudFlare-inställningar (enligt WP Rocket)"
 
-#: inc/admin/ui/modules/cloudflare.php:87
+#: inc/admin/ui/modules/cloudflare.php:93
 msgid "No"
 msgstr "Nej"
 
-#: inc/admin/ui/modules/cloudflare.php:88
+#: inc/admin/ui/modules/cloudflare.php:94
 msgid "Yes"
 msgstr "Ja"
 
-#: inc/admin/ui/modules/cloudflare.php:94
+#: inc/admin/ui/modules/cloudflare.php:100
 msgid ""
 "We select the best CloudFlare configuration for speed, performance grade and"
 " compatibility."
 msgstr "Vi väljer den bästa CloudFlare-konfigurationen för hastighet, prestanda-kvalitet och kompatibilitet."
 
-#: inc/admin/ui/modules/cloudflare.php:111
+#: inc/admin/ui/modules/cloudflare.php:106
+#: inc/admin/ui/modules/cloudflare.php:114
+msgid "HTTPS Protocol Rewrite"
+msgstr ""
+
+#: inc/admin/ui/modules/cloudflare.php:124
+msgid ""
+"Rewrite all images, stylesheets and scripts from using either %1$s or %2$s "
+"to using just %3$s to support %4$s."
+msgstr ""
+
+#: inc/admin/ui/modules/cloudflare.php:146
 msgid ""
 "Immediately purge cached resources for your website. <a href=\"%s\" "
 "target=\"_blank\">Learn more</a>"
@@ -804,8 +872,8 @@ msgid "Clear the cache for the whole site."
 msgstr "Rensa cachen för hela webbplatsen."
 
 #: inc/admin/ui/modules/tools.php:48 inc/admin/ui/modules/tools.php:54
-#: inc/admin/ui/modules/tutorials.php:7 inc/common/admin-bar.php:141
-#: inc/common/admin-bar.php:162 inc/common/admin-bar.php:193
+#: inc/admin/ui/modules/tutorials.php:7 inc/common/admin-bar.php:159
+#: inc/common/admin-bar.php:180 inc/common/admin-bar.php:213
 msgid "Preload cache"
 msgstr "Förladda cache"
 
@@ -815,29 +883,34 @@ msgid ""
 "internal links)."
 msgstr "Gör det möjligt att begära att en sökrobot ska förladda cachen (hemsida och dess interna länkar)."
 
-#: inc/admin/ui/modules/tools.php:66
+#: inc/admin/ui/modules/tools.php:67 inc/admin/ui/modules/tools.php:73
+#: inc/common/admin-bar.php:145
+msgid "Purge OPcache"
+msgstr ""
+
+#: inc/admin/ui/modules/tools.php:82
 msgid "Settings Exporter"
 msgstr "Inställningar Exportera"
 
-#: inc/admin/ui/modules/tools.php:76
+#: inc/admin/ui/modules/tools.php:92
 msgid "Settings Importer"
 msgstr "Inställningar Importera"
 
-#: inc/admin/ui/modules/tools.php:85
+#: inc/admin/ui/modules/tools.php:101
 msgid ""
 "Please backup your settings before, use the \"Download options\" button "
 "above."
 msgstr "Säkerhetskopiera dina inställningar innan, använd knappen \"Ladda ner alternativ\" ovan."
 
-#: inc/admin/ui/modules/tools.php:88
+#: inc/admin/ui/modules/tools.php:104
 msgid "Update Rollback"
 msgstr "Uppdatera återställning"
 
-#: inc/admin/ui/modules/tools.php:94
+#: inc/admin/ui/modules/tools.php:110
 msgid "Reinstall v%s"
 msgstr "Ominstallation v%s"
 
-#: inc/admin/ui/modules/tools.php:99
+#: inc/admin/ui/modules/tools.php:115
 msgid ""
 "Is the version %s causing you some issues? You can ask for a rollback and "
 "reinstall the last version you used before."
@@ -897,6 +970,26 @@ msgid ""
 "<code>get_rocket_cdn_url()</code> and <code>rocket_cdn_url()</code>."
 msgstr "Denna video hjälper till att ställa in de två funktionerna <code>get_rocket_cdn_url()</code> och <code>rocket_cdn_url()</code>."
 
+#: inc/admin/ui/modules/varnish.php:17 inc/admin/ui/modules/varnish.php:26
+msgid "Varnish Caching Purge"
+msgstr ""
+
+#: inc/admin/ui/modules/varnish.php:24
+msgid "Enable the Varnish caching auto-purge."
+msgstr ""
+
+#: inc/admin/ui/modules/varnish.php:31
+msgid ""
+"The Varnish cache will be purged each time WP Rocket cache needs to be "
+"cleared to avoid conflict."
+msgstr ""
+
+#: inc/admin/ui/modules/varnish.php:36
+msgid ""
+"<strong>Note:</strong> If your server is using %sVarnish%s, you must "
+"activate this option."
+msgstr ""
+
 #: inc/admin/ui/modules/white-label.php:7
 #: inc/admin/ui/modules/white-label.php:16
 msgid "Plugin Name:"
@@ -931,81 +1024,81 @@ msgid ""
 "If you change anything, the tutorial + FAQ + Support tabs will be hidden."
 msgstr "Om du ändrar något, handledningen + Frågor och svar + support-flikarna kommer att döljas."
 
-#: inc/admin/ui/notices.php:26 inc/admin/ui/notices.php:30
+#: inc/admin/ui/notices.php:25 inc/admin/ui/notices.php:29
 msgid "<b>%s</b> can not be deactivated because of <code>%s</code>."
 msgstr "<b>%s</b> kan inte avaktiveras på grund av <code>%s</code>."
 
-#: inc/admin/ui/notices.php:26
+#: inc/admin/ui/notices.php:25
 msgid ""
 "This constant is still defined in <code>wp-config.php</code> file and its "
 "value must be set to <code>false</code>."
 msgstr "Denna konstant definieras fortfarande i <code>wp-config.php</code> filen och dess värde måste ställas in på <code>false</code>."
 
-#: inc/admin/ui/notices.php:26
+#: inc/admin/ui/notices.php:25
 msgid "Maybe we do not have the writing permissions for <code>%s</code>."
 msgstr "Vi kanske inte har skrivbehörighet för <code>%s</code>."
 
-#: inc/admin/ui/notices.php:26 inc/admin/ui/notices.php:30
+#: inc/admin/ui/notices.php:25 inc/admin/ui/notices.php:29
 msgid ""
 "Please give us permissions or resolve the problem yourself. Then retry "
 "deactivation."
 msgstr "Vänligen ge oss tillstånd eller lös problemet själv . Försök sen med avaktivering."
 
-#: inc/admin/ui/notices.php:30
+#: inc/admin/ui/notices.php:29
 msgid "This file is not writable and we can not remove these directives."
 msgstr "Filen är inte skrivbar och vi kan inte ta bort dessa direktiv."
 
-#: inc/admin/ui/notices.php:30
+#: inc/admin/ui/notices.php:29
 msgid "Maybe we do not have writing permissions for <code>%s</code>."
 msgstr "Vi kanske inte har skrivrättigheter för <code>%s</code>."
 
-#: inc/admin/ui/notices.php:66
+#: inc/admin/ui/notices.php:65
 msgid "You can still force the deactivation by clicking here."
 msgstr "Du kan fortfarande tvinga avaktivering genom att klicka här."
 
-#: inc/admin/ui/notices.php:92
+#: inc/admin/ui/notices.php:90
 msgid ""
 "<b>%s</b>: One or more extensions have been enabled or disabled, do not "
 "forget to clear the cache if necessary."
 msgstr "<b>%s</b>: Ett eller flera tillägg har aktiveras eller inaktiveras, glöm inte att rensa cachen om det behövs ."
 
-#: inc/admin/ui/notices.php:191
+#: inc/admin/ui/notices.php:196
 msgid ""
 "<b>%s</b>: The following plugins are not compatible with this plugin and may"
 " cause unexpected results:"
 msgstr "<b>%s</b>: Följande tillägg är inte kompatibla med detta tillägg och kan orsaka oväntade resultat:"
 
-#: inc/admin/ui/notices.php:197
+#: inc/admin/ui/notices.php:201
 msgid "Deactivate"
 msgstr "Inaktivera"
 
-#: inc/admin/ui/notices.php:223
+#: inc/admin/ui/notices.php:226
 msgid ""
 "<b>%s</b>: A custom permalink structure is required for the plugin to work "
 "properly. Please go to <a href=\"%s\">Permalink</a> to configure it."
 msgstr "<b>%s</b>: En anpassad permalänkstruktur krävs för pluginet för att fungera korrekt. Gå till<a href=\"%s\">Permalänkar</a> för att konfigurera den."
 
-#: inc/admin/ui/notices.php:254
+#: inc/admin/ui/notices.php:256
 msgid ""
 "<b>%s</b>: It seems we don't have <a href=\"%s\" target=\"_blank\">writing "
 "permissions</a> on <code>wp-config.php</code> file or the value of the "
 "constant <code>WP_CACHE</code> is set to <code>false</code>"
 msgstr "<b>%s</b>: Det verkar som vi inte har <a href=\"%s\" target=\"_blank\">skrivrättigheter</a> på <code>wp-config.php</code> fil eller så är värdet på konstanten <code>WP_CACHE</code> inställt på <code>false</code>"
 
-#: inc/admin/ui/notices.php:256
+#: inc/admin/ui/notices.php:258
 msgid ""
 "To fix this you have to set writing permissions for <code>wp-"
 "config.php</code> and then save the settings again."
 msgstr "För att åtgärda detta måste du ange skrivbehörighet för <code>wp-config.php</code> och sedan spara inställningarna igen."
 
-#: inc/admin/ui/notices.php:258
+#: inc/admin/ui/notices.php:260
 msgid ""
 "If the message persists, you have to put the following code in your <code"
 ">wp-config.php</code> file so that it works correctly. Click on the field "
 "and press Ctrl-A to select all."
 msgstr "Om meddelandet kvarstår, måste du placera följande kod i <code>wp-config.php</code> fil så att den fungerar på rätt sätt . Klicka på fältet och tryck Ctrl-A för att markera alla."
 
-#: inc/admin/ui/notices.php:299
+#: inc/admin/ui/notices.php:300
 msgid ""
 "If you had <a href=\"%1$s\" target=\"_blank\">writing permissions</a> on "
 "<code>%2$s</code> file, <b>%3$s</b> could do this automatically. This is not"
@@ -1035,7 +1128,7 @@ msgid ""
 "be updated when saving the options"
 msgstr "<strong>Varning:</strong>  Detta meddelande kommer att visas igen och dess innehåll kan uppdateras när du väljer spara-alternativet."
 
-#: inc/admin/ui/notices.php:390
+#: inc/admin/ui/notices.php:389
 msgid ""
 "Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
 "permissions</a> on <b>%3$s</b> domain configuration folder "
@@ -1045,7 +1138,7 @@ msgid ""
 "to generate the configuration file."
 msgstr "Var försiktig, du har inte <a href=\"%1$s\" target=\"_blank\">skrivbehörighet </a> på <b>%3$s</b>domän mapp-konfiguration (<code>%2$s</code>).  För att <b>%3$s</b> ska fungera korrekt, ange CHMOD <code> 755</code> eller <code>775</code> eller <code>777</code> för denna mapp. <br/>När problemet är löst, kom ihåg att spara %3$s alternativet för att generera konfigurationsfilen."
 
-#: inc/admin/ui/notices.php:418
+#: inc/admin/ui/notices.php:416
 msgid ""
 "Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
 "permissions</a> on <b>%3$s</b> cache folder (<code>%2$s</code>). For "
@@ -1053,7 +1146,7 @@ msgid ""
 "<code>775</code> or <code>777</code> this folder."
 msgstr "Var försiktig , du har inte <a href=\"%1$s\" target=\"_blank\">skrivbehörighet</a> på <b>%3$s</b> cachemappen (<code>%2$s</code>). För att<b>%3$s</b> ska fungera korrekt, vänligen ange CHMOD <code>755</code> eller <code>775</code> eller<code>777</code> för mappen."
 
-#: inc/admin/ui/notices.php:447
+#: inc/admin/ui/notices.php:444
 msgid ""
 "Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
 "permissions</a> on <b>%3$s</b> minified cache folder (<code>%2$s</code>). To"
@@ -1061,61 +1154,71 @@ msgid ""
 "<code>775</code> or <code>777</code> this folder."
 msgstr "Var försiktig, du har inte <a href=\"%1$s\" target=\"_blank\">skrivbehörighet</a>på<b>%3$s</b> mappen minifierad cache (<code>%2$s</code>). För att <b>%3$s</b> ska fungera korrekt, vänligen ange CHMOD <code>755</code> eller <code>775</code> eller<code>777</code> här mappen."
 
-#: inc/admin/ui/notices.php:472
+#: inc/admin/ui/notices.php:468
 msgid "Thank you. Your license has been successfully validated!"
 msgstr "Tack. Din licens har framgångsrikt validerats!"
 
-#: inc/admin/ui/notices.php:473
+#: inc/admin/ui/notices.php:469
 msgid "Key: <code>%s</code><br>Email: <i>%s</i>"
 msgstr "Licens: <code>%s</code><br>Email: <i>%s</i>"
 
-#: inc/admin/updater.php:119 inc/admin/updater.php:126
+#: inc/admin/ui/notices.php:520
+msgid ""
+"Speed up your website and boost your SEO by reducing image file sizes "
+"without loosing quality with Imagify."
+msgstr ""
+
+#: inc/admin/ui/notices.php:523
+msgid "Install Imagify for Free"
+msgstr ""
+
+#: inc/admin/updater.php:55 inc/admin/updater.php:62
 msgid ""
 "An unexpected error occurred. Something may be wrong with WP-Rocket.me or "
 "this server&#8217;s configuration. If you continue to have problems, please "
 "try the <a href=\"%s\">support forums</a>."
 msgstr "Ett oväntat fel inträffade. Något kan vara fel med WP - Rocket.me eller denna &#8217;s konfiguration. Om du fortfarande har problem kan du prova <a href=\"%s\">support forum</a>."
 
-#: inc/common/admin-bar.php:90 inc/common/admin-bar.php:184
-#: inc/common/admin-bar.php:252 inc/common/admin-bar.php:259
+#: inc/common/admin-bar.php:94 inc/common/admin-bar.php:204
+#: inc/functions/i18n.php:38 inc/functions/i18n.php:45
 msgid "All languages"
 msgstr "Alla språk"
 
-#: inc/common/admin-bar.php:115
+#: inc/common/admin-bar.php:119
 msgid "Clear this post"
 msgstr "Rensa det här inlägget"
 
-#: inc/common/admin-bar.php:127
+#: inc/common/admin-bar.php:131
 msgid "Purge this URL"
 msgstr "Rensa webbadressen"
 
-#: inc/common/admin-bar.php:204
+#: inc/common/admin-bar.php:224
 msgid "Documentation"
 msgstr "Dokumentation"
 
-#: inc/common/cron.php:17
+#: inc/common/cron.php:16
 msgid "%s clear"
 msgstr "%s klart"
 
-#: inc/functions/admin.php:13
+#: inc/functions/admin.php:11
 msgid ""
 "Last step before enjoying the high performances of our plugin, please <a "
 "href=\"%s\">Enter you API key</a> here."
 msgstr "Sista steget innan du kan njuta av den höga prestandan med vårt tillägg, är att <a href=\"%s\">Mata in din API-nyckel</a> här."
 
-#: inc/functions/options.php:439
+#: inc/functions/options.php:552
 msgid "Your license is not valid."
 msgstr "Din licens är inte giltig."
 
-#: inc/functions/options.php:440
+#: inc/functions/options.php:553
 msgid "You cannot add more websites. Upgrade your account."
 msgstr "Du kan inte lägga till fler webbplatser. Uppgradera ditt konto."
 
-#: inc/functions/options.php:441
+#: inc/functions/options.php:554
 msgid "This website is not allowed."
 msgstr "Denna webbplats är inte tillåten."
 
-#: inc/functions/options.php:442
+#: inc/functions/options.php:555
 msgid "This license key is not accepted."
 msgstr "Denna licensnyckel accepteras inte."
 

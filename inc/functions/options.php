@@ -10,8 +10,7 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
  * @param bool   $default (default: false) The default value of option
  * @return mixed The option value
  */
-function get_rocket_option( $option, $default = false )
-{
+function get_rocket_option( $option, $default = false ) {
 	/**
 	 * Pre-filter any WP Rocket option before read
 	 *
@@ -30,6 +29,7 @@ function get_rocket_option( $option, $default = false )
 		return WP_ROCKET_EMAIL;
 	}
 	$value = isset( $options[ $option ] ) && $options[ $option ] !== '' ? $options[ $option ] : $default;
+	
 	/**
 	 * Filter any WP Rocket option after read
 	 *
@@ -38,6 +38,22 @@ function get_rocket_option( $option, $default = false )
 	 * @param variant $default The default value
 	*/
 	return apply_filters( 'get_rocket_option_' . $option, $value, $default );
+}
+
+/**
+ * Update a WP Rocket option.
+ *
+ * @since 2.7
+ *
+ * @param  string  $key    The option name
+ * @param  string  $value  The value of the option
+ * @return void
+ */
+function update_rocket_option( $key, $value ) {
+	$options         = get_option( WP_ROCKET_SLUG );
+	$options[ $key ] = $value;
+	
+	update_option( WP_ROCKET_SLUG, $options );
 }
 
 /**
@@ -50,14 +66,25 @@ function get_rocket_option( $option, $default = false )
  */
 function is_rocket_post_excluded_option( $option ) {
 	if( is_home() ) {
-		$post_id = get_queried_object_id();
+		$post_id = (int) get_queried_object_id();
 	}
 	
 	if ( is_singular() ) {
-		$post_id = $GLOBALS['post']->ID;	
+		$post_id = (int) get_queried_object_id();
 	}
 	
 	return ( isset( $post_id ) ) ? get_post_meta( $post_id, '_rocket_exclude_' . $option, true ) : false;
+}
+
+/**
+ * Check if we need to cache the feeds of the website
+ *
+ * @since 2.7
+ *
+ * @return bool True if option is activated
+ */
+function is_rocket_cache_feed() {
+	return get_rocket_option( 'cache_feed', false );
 }
 
 /**
@@ -67,9 +94,19 @@ function is_rocket_post_excluded_option( $option ) {
  *
  * @return bool True if option is activated
  */
-function is_rocket_cache_mobile()
-{
+function is_rocket_cache_mobile() {
 	return get_rocket_option( 'cache_mobile', false );
+}
+
+/**
+ * Check if we need to generate a different caching file for mobile (if available)
+ *
+ * @since 2.7
+ *
+ * @return bool True if option is activated
+ */
+function is_rocket_generate_caching_mobile_files() {
+	return get_rocket_option( 'do_caching_mobile_files', false );
 }
 
 /**
@@ -79,8 +116,7 @@ function is_rocket_cache_mobile()
  * @access public
  * @return bool True if option is activated
  */
-function is_rocket_cache_ssl()
-{
+function is_rocket_cache_ssl() {
 	return get_rocket_option( 'cache_ssl', false );
 }
 
@@ -103,8 +139,7 @@ function is_rocket_cdn_on_ssl() {
  *
  * @return int The interval task cron purge in seconds
  */
-function get_rocket_purge_cron_interval()
-{
+function get_rocket_purge_cron_interval() {
 	if ( ! get_rocket_option( 'purge_cron_interval' ) || ! get_rocket_option( 'purge_cron_unit' ) ) {
 		return 0;
 	}
@@ -120,8 +155,7 @@ function get_rocket_purge_cron_interval()
  *
  * @return array List of rejected uri
  */
-function get_rocket_cache_reject_uri()
-{
+function get_rocket_cache_reject_uri() {
 	$uri = get_rocket_option( 'cache_reject_uri', array() );
 	
 	// Exclude cart & checkout pages from e-commerce plugins
@@ -143,7 +177,7 @@ function get_rocket_cache_reject_uri()
 	if( function_exists( 'json_get_url_prefix' ) && $rocket_cache_reject_wp_rest_api ) {
 		$uri[] = '/' . json_get_url_prefix() . '/(.*)';	
 	}
-
+	
 	/**
 	  * By default, don't cache the WooCommerce REST API.
 	  *
@@ -158,8 +192,10 @@ function get_rocket_cache_reject_uri()
 		$uri[] = rocket_clean_exclude_file( home_url( '/wc-api/v(.*)' ) );
 	}
 	
-	// Exclude feeds
-	$uri[] = '.*/' . $GLOBALS['wp_rewrite']->feed_base . '/?';
+	// Exclude feeds if option is not activated
+	if ( ! is_rocket_cache_feed() ) {
+	    $uri[] = '.*/' . $GLOBALS['wp_rewrite']->feed_base . '/?';
+    }
 	
 	/**
 	 * Filter the rejected uri
@@ -181,8 +217,7 @@ function get_rocket_cache_reject_uri()
  *
  * @return array List of rejected cookies
  */
-function get_rocket_cache_reject_cookies()
-{
+function get_rocket_cache_reject_cookies() {
 	$cookies   = get_rocket_option( 'cache_reject_cookies', array() );
 	$cookies[] = str_replace( COOKIEHASH, '', LOGGED_IN_COOKIE );
 	$cookies[] = 'wp-postpass_';
@@ -200,6 +235,53 @@ function get_rocket_cache_reject_cookies()
 	$cookies = apply_filters( 'rocket_cache_reject_cookies', $cookies );
 
 	$cookies = implode( '|', array_filter( $cookies ) );
+	return $cookies;
+}
+
+/**
+ * Get list of mandatory cookies to be able to cache pages.
+ *
+ * @since 2.7
+ *
+ * @return array List of mandatory cookies.
+ */
+function get_rocket_cache_mandatory_cookies() {
+	$cookies = array();
+	
+	/**
+	 * Filter list of mandatory cookies
+	 *
+	 * @since 2.7
+	 *
+	 * @param array List of mandatory cookies
+	 */
+	$cookies = apply_filters( 'rocket_cache_mandatory_cookies', $cookies );
+	$cookies = array_filter( $cookies );
+	
+	$cookies = implode( '|', $cookies );
+	return $cookies;
+}
+
+/**
+ * Get list of dynamic cookies.
+ *
+ * @since 2.7
+ *
+ * @return array List of dynamic cookies.
+ */
+function get_rocket_cache_dynamic_cookies() {
+	$cookies = array();
+		
+	/**
+	 * Filter list of dynamic cookies
+	 *
+	 * @since 2.7
+	 *
+	 * @param array List of dynamic cookies
+	 */
+	$cookies = apply_filters( 'rocket_cache_dynamic_cookies', $cookies );
+	$cookies = array_filter( $cookies );
+	
 	return $cookies;
 }
 
@@ -261,8 +343,7 @@ function get_rocket_cdn_reject_files() {
  * @param string $zone (default: 'all') List of zones
  * @return array List of CNAMES
  */
-function get_rocket_cdn_cnames( $zone = 'all' )
-{
+function get_rocket_cdn_cnames( $zone = 'all' ) {
 	if ( (int) get_rocket_option( 'cdn' ) == 0 ) {
 		return array();
 	}
@@ -282,6 +363,17 @@ function get_rocket_cdn_cnames( $zone = 'all' )
 			}
 		}
 	}
+	
+	/**
+	 * Filter all CNAMES.
+	 *
+	 * @since 2.7
+	 *
+	 * @param array $hosts List of CNAMES.
+	*/
+	$hosts = apply_filters( 'rocket_cdn_cnames', $hosts );
+	$hosts = array_filter( $hosts );
+	
 	return $hosts;
 }
 
@@ -412,8 +504,7 @@ function get_rocket_deferred_js_files() {
  *
  * @since 1.0
  */
-function rocket_valid_key()
-{
+function rocket_valid_key() {
 	return 8 == strlen( get_rocket_option( 'consumer_key' ) ) && get_rocket_option( 'secret_key' ) == hash( 'crc32', get_rocket_option( 'consumer_email' ) );
 }
 
@@ -422,8 +513,7 @@ function rocket_valid_key()
  *
  * @since 2.2 The function do the live check and update the option
  */
-function rocket_check_key( $type = 'transient_1', $data = null )
-{
+function rocket_check_key( $type = 'transient_1', $data = null ) {
 	// Recheck the license
 	$return = rocket_valid_key();
 
