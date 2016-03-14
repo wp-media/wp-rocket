@@ -489,7 +489,7 @@ function __rocket_imagify_notice() {
 	
 	$boxes = get_user_meta( $GLOBALS['current_user']->ID, 'rocket_boxes', true );
 	
-	if ( defined( 'IMAGIFY_VERSION' ) || in_array( __FUNCTION__, (array) $boxes ) ) {
+	if ( defined( 'IMAGIFY_VERSION' ) || in_array( __FUNCTION__, (array) $boxes ) || rocket_is_white_label() ) {
 		return;
 	}
 
