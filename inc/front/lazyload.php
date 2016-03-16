@@ -241,7 +241,7 @@ function rocket_lazyload_iframes( $html ) {
 		}
 
         // Don't lazyload if iframe has data-no-lazy attribute
-		if ( strpos( $iframe, 'data-no-lazy' ) ) {
+		if ( strpos( $iframe, 'data-no-lazy=' ) ) {
 			continue;
 		}
 		
