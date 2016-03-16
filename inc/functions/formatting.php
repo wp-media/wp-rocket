@@ -100,6 +100,20 @@ function rocket_set_internal_url_scheme( $url ) {
 }
 
 /**
+ * Return only the domain.tld for a given url
+ *
+ * @since 2.7.2
+ *
+ * @param 	string $url Absolute url
+ * @return 	string $domain_tld Domain name with tld
+ */
+function rocket_get_domain( $url ) { 
+    $url = rocket_add_url_protocol(  $url );
+    preg_match( "/[a-z0-9\-]{1,63}\.[a-z\.]{2,6}$/", parse_url( $url, PHP_URL_HOST ), $domain_tld );
+    return trim( $domain_tld[0] );
+}
+
+/**
  * Extract and return host, path, query and scheme of an URL
  *
  * @since 2.1 Add $query variable
