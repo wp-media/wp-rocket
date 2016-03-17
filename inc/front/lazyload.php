@@ -239,6 +239,11 @@ function rocket_lazyload_iframes( $html ) {
 		if ( strpos( $iframe, 'gform_ajax_frame' ) ) {
 			continue;
 		}
+
+        // Don't lazyload if iframe has data-no-lazy attribute
+		if ( strpos( $iframe, 'data-no-lazy=' ) ) {
+			continue;
+		}
 		
 		/** This filter is documented in inc/front/lazyload.php */
 		$placeholder = apply_filters( 'rocket_lazyload_placeholder', 'data:image/gif;base64,R0lGODdhAQABAPAAAP///wAAACwAAAAAAQABAEACAkQBADs=' );

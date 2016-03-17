@@ -65,12 +65,14 @@ function update_rocket_option( $key, $value ) {
  * @return bool 		   True if the option is deactivated
  */
 function is_rocket_post_excluded_option( $option ) {
+	global $post;
+	
 	if( is_home() ) {
-		$post_id = (int) get_queried_object_id();
+		$post_id = get_queried_object_id();
 	}
 	
-	if ( is_singular() ) {
-		$post_id = (int) get_queried_object_id();
+	if ( is_singular() && isset( $post ) ) {
+		$post_id = $post->ID;
 	}
 	
 	return ( isset( $post_id ) ) ? get_post_meta( $post_id, '_rocket_exclude_' . $option, true ) : false;
