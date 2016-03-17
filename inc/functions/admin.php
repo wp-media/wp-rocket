@@ -247,3 +247,30 @@ function get_rocket_documentation_url() {
 
 	return $url;
 }
+
+/**
+ * Get the Activation Link for a given plugin
+ *
+ * @param string $plugin the given plugin folder/file.php (e.i. "imagify/imagify.php")
+ * @since 2.7.3
+ * @author Geoffrey Crofte
+ */
+function rocket_get_plugin_activation_link( $plugin ) {
+	$activation_url = wp_nonce_url( 'plugins.php?action=activate&amp;plugin=' . $plugin . '&amp;plugin_status=all&amp;paged=1&amp;s', 'activate-plugin_' . $plugin );
+
+	return $activation_url;
+}
+
+/**
+ * Check if a given plugin is installed but not necessarily activated
+ * Note: get_plugins( $folder ) from WP Core doesn't work
+ * 
+ * @param string $plugin a plugin folder/file.php (e.i. "imagify/imagify.php")
+ * @since 2.7.3
+ * @author Geoffrey Crofte
+ */
+function rocket_is_plugin_installed( $plugin ) {
+	$installed_plugins = get_plugins();
+
+	return isset( $installed_plugins[ $plugin ] );
+}
