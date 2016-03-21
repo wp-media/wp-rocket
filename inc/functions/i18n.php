@@ -105,30 +105,33 @@ function get_rocket_polylang_langs_for_admin_bar() {
 	$langs       = array();
 	$img         = '';
 
-	$pll   = function_exists( 'PLL' ) ? PLL() : $polylang;
-	$langs = $pll->model->get_languages_list();
+	$pll = function_exists( 'PLL' ) ? PLL() : $polylang;
 
-	if ( ! empty( $langs ) ) {
-		foreach ( $langs as $lang ) {
-			if ( ! empty( $lang->flag ) ) {
-				$img = false !== strpos( $lang->flag, 'img' ) ? $lang->flag . '&nbsp;' : $lang->flag;
-			}
+	if ( isset( $pll ) ) {
+    	$langs = $pll->model->get_languages_list();
 
-			if( isset( $pll->curlang->slug ) && $lang->slug == $pll->curlang->slug ) {
-				$currentlang[ $lang->slug ] = array(
-					'code'   => $lang->slug,
-					'anchor' => $lang->name,
-					'flag'   => $img
-				);
-			} else {
-				$langlinks[ $lang->slug ] = array(
-					'code'   => $lang->slug,
-					'anchor' => $lang->name,
-					'flag'   => $img
-				);
-			}
-		}
-	}
+        if ( ! empty( $langs ) ) {
+            foreach ( $langs as $lang ) {
+            	if ( ! empty( $lang->flag ) ) {
+            		$img = false !== strpos( $lang->flag, 'img' ) ? $lang->flag . '&nbsp;' : $lang->flag;
+            	}
+        
+            	if( isset( $pll->curlang->slug ) && $lang->slug == $pll->curlang->slug ) {
+            		$currentlang[ $lang->slug ] = array(
+            			'code'   => $lang->slug,
+            			'anchor' => $lang->name,
+            			'flag'   => $img
+            		);
+            	} else {
+            		$langlinks[ $lang->slug ] = array(
+            			'code'   => $lang->slug,
+            			'anchor' => $lang->name,
+            			'flag'   => $img
+            		);
+            	}
+            }
+        }
+    }
 
 	return $currentlang + $langlinks;
 }
@@ -338,7 +341,7 @@ function get_rocket_i18n_home_url( $lang = '' ) {
 	} elseif ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
     	$pll = function_exists( 'PLL' ) ? PLL() : $GLOBALS['polylang'];
 
-    	if ( ! empty( $pll->options['force_lang'] ) ) {
+    	if ( ! empty( $pll->options['force_lang'] ) && isset( $pll->links ) ) {
 		    $url = pll_home_url( $lang );
         }
 	}
