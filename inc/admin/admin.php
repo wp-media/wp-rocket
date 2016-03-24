@@ -118,6 +118,10 @@ function rocket_dismiss_boxes( $args ) {
 			}
 		}
 
+		if ( '__rocket_imagify_notice' === $args['box'] ) {
+			update_option( 'wp_rocket_dismiss_imagify_notice', 0 );
+		}
+		
 		global $current_user;
 		$actual = get_user_meta( $current_user->ID, 'rocket_boxes', true );
 		$actual = array_merge( (array) $actual, array( $args['box'] ) );

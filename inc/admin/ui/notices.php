@@ -480,7 +480,7 @@ function rocket_thank_you_license() {
  */
 add_action( 'admin_notices', '__rocket_imagify_notice' );
 function __rocket_imagify_notice() {
-	$current_screen  = get_current_screen();
+	$current_screen = get_current_screen();
 		
 	// Add the notice only on the "WP Rocket" settings, "Media Library" & "Upload New Media" screens
 	if ( 'admin_notices' === current_filter() && ( isset( $current_screen ) && 'settings_page_wprocket' !== $current_screen->base && 'media' !== $current_screen->base ) ) {
@@ -489,7 +489,7 @@ function __rocket_imagify_notice() {
 	
 	$boxes = get_user_meta( $GLOBALS['current_user']->ID, 'rocket_boxes', true );
 
-	if ( defined( 'IMAGIFY_VERSION' ) || in_array( __FUNCTION__, (array) $boxes ) || rocket_is_white_label() || ! current_user_can( 'manage_options' ) ) {
+	if ( defined( 'IMAGIFY_VERSION' ) || in_array( __FUNCTION__, (array) $boxes ) || 1 == get_option( 'wp_rocket_dismiss_imagify_notice' ) || rocket_is_white_label() || ! current_user_can( 'manage_options' ) ) {
 		return;
 	}
 
