@@ -483,7 +483,7 @@ function __rocket_imagify_notice() {
 	$current_screen  = get_current_screen();
 		
 	// Add the notice only on the "WP Rocket" settings, "Media Library" & "Upload New Media" screens
-	if ( 'admin_notices' === current_filter() && ( isset( $current_screen ) && 'settings_page_wprocket' !== $current_screen->base && 'media' !== $current_screen->base && 'upload' !== $current_screen->base  ) ) {
+	if ( 'admin_notices' === current_filter() && ( isset( $current_screen ) && 'settings_page_wprocket' !== $current_screen->base && 'media' !== $current_screen->base ) ) {
 		return;
 	}
 	
