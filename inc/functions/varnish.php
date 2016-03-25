@@ -43,7 +43,7 @@ function rocket_varnish_http_purge( $url ) {
 	$host 	 = ( $varnish_ip ) ? $varnish_ip : $host;
 	$purgeme = $scheme . '://' . $host . $path . $regex;
 
-	$response = wp_remote_request(
+	wp_remote_request(
 		$purgeme,
 		array(
 			'method'      => 'PURGE',
