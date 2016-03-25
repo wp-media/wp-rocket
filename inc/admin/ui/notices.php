@@ -483,7 +483,7 @@ function __rocket_imagify_notice() {
 	$current_screen = get_current_screen();
 		
 	// Add the notice only on the "WP Rocket" settings, "Media Library" & "Upload New Media" screens
-	if ( 'admin_notices' === current_filter() && ( isset( $current_screen ) && 'settings_page_wprocket' !== $current_screen->base && 'media' !== $current_screen->base ) ) {
+	if ( 'admin_notices' === current_filter() && ( isset( $current_screen ) && 'settings_page_wprocket' !== $current_screen->base ) ) {
 		return;
 	}
 	
@@ -492,11 +492,7 @@ function __rocket_imagify_notice() {
 	if ( defined( 'IMAGIFY_VERSION' ) || in_array( __FUNCTION__, (array) $boxes ) || 1 == get_option( 'wp_rocket_dismiss_imagify_notice' ) || rocket_is_white_label() || ! current_user_can( 'manage_options' ) ) {
 		return;
 	}
-	
-	if ( 'media' === $current_screen->base && get_option( 'wp_rocket_imagify_notice_count_view' ) >= 5 ) {
-		return;	
-	}
-	
+		
 	$imagify_plugin = 'imagify/imagify.php';
 	$is_imagify_installed = rocket_is_plugin_installed( $imagify_plugin );
 

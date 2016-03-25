@@ -301,20 +301,6 @@ function __rocket_rollback() {
 	}
 }
 
-/**
- * Count how much time the Imagify banner is displayed
- *
- * @since 2.7.3
- */
-add_action( 'load-settings_page_wprocket', '__rocket_imagify_notice_count_view' );
-add_action( 'load-media-new.php', '__rocket_imagify_notice_count_view' );
-function __rocket_imagify_notice_count_view() {
-	$option = 'wp_rocket_imagify_notice_count_view';
-	$count  = (int) get_option( $option );
-	$count += 1;
-	update_option( $option, $count );
-}
-
 /*
  * Create cache folders if not exists.
  * Regenerate the advanced-cache.php file if an issue is detected.
