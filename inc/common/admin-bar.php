@@ -148,6 +148,19 @@ function rocket_admin_bar( $wp_admin_bar )
 
         }
 
+        //Purge CloudFlare cache if CloudFlare is active
+        if ( get_rocket_option( 'do_cloudflare' ) == 1 ) {
+
+            $action = 'rocket_purge_cloudflare';
+
+            $wp_admin_bar->add_menu( array(
+				'parent' => 'wp-rocket',
+				'id' 	 => 'purge-cloudflare',
+				'title'  => __( 'Clear CloudFlare cache', 'rocket' ),
+				'href' 	 => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . $referer ), $action ),
+			));
+        }
+
 		$action = 'preload';
 	    // Go robot gogo !
 
