@@ -748,9 +748,7 @@ function rocket_settings_callback( $inputs ) {
 	 * Option : CloudFlare Domain
 	 */
 	if ( ! empty( $inputs['cloudflare_domain'] ) ) {
-		$inputs['cloudflare_domain'] = trim( $inputs['cloudflare_domain'] );
-		$inputs['cloudflare_domain'] = rocket_remove_url_protocol( $inputs['cloudflare_domain'] );
-		$inputs['cloudflare_domain'] = str_replace( '/' , '', $inputs['cloudflare_domain'] ); 
+		$inputs['cloudflare_domain'] = rocket_get_domain( $inputs['cloudflare_domain'] );
 	} else {
 		$inputs['cloudflare_domain'] = '';
 	}

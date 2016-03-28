@@ -107,8 +107,18 @@ if ( isset( $rocket_cache_reject_cookies ) && preg_match( '#(' . $rocket_cache_r
 	return;
 }
 
+$ip	= rocket_get_ip();
+$allowed_ips = array(
+	'85.17.131.209'  => 0, // Pingdom Tools - Amsterdam
+	'173.208.58.138' => 1, // Pingdom Tools - New-York
+	'50.22.90.226'   => 2, // Pingdom Tools - Dallas
+	'209.58.131.213' => 3, // Pingdom Tools - San Jose
+	'168.1.92.52'    => 4, // Pingdom Tools - Melbourne
+	'5.178.78.78'    => 5  // Pingdom Tools - Stockholm
+);
+
 // Don't cache page when these cookies don't exist
-if ( isset( $rocket_cache_mandatory_cookies ) && ! preg_match( '#(' . $rocket_cache_mandatory_cookies . ')#', var_export( $_COOKIE, true ) ) ) {
+if ( ! isset( $allowed_ips[ $ip ] ) && isset( $rocket_cache_mandatory_cookies ) && ! preg_match( '#(' . $rocket_cache_mandatory_cookies . ')#', var_export( $_COOKIE, true ) ) ) {
 	rocket_define_donotminify_constants( true );
 	return;
 }
@@ -346,4 +356,38 @@ function rocket_define_donotminify_constants( $value ) {
  */
 function rocket_urlencode_lowercase( $matches ) {
     return strtolower( $matches[0] );
-} 
+}
+
+/**
+ * Get the IP address from which the user is viewing the current page.
+ *
+ * @since 2.7.3
+ *
+ * @param string $ip The IP address.
+ */
+function rocket_get_ip() {
+    $keys = array(
+        'HTTP_CF_CONNECTING_IP', // CF = CloudFlare
+        'HTTP_CLIENT_IP',
+        'HTTP_X_FORWARDED_FOR',
+        'HTTP_X_FORWARDED',
+        'HTTP_X_CLUSTER_CLIENT_IP',
+        'HTTP_X_REAL_IP',
+        'HTTP_FORWARDED_FOR',
+        'HTTP_FORWARDED',
+        'REMOTE_ADDR',
+    );
+
+    foreach ( $keys as $key ) {
+        if ( array_key_exists( $key, $_SERVER ) ) {
+            $ip = explode( ',', $_SERVER[ $key ] );
+            $ip = end( $ip );
+
+            if ( false !== filter_var( $ip, FILTER_VALIDATE_IP ) ) {
+                return $ip;
+            }
+        }
+    }
+
+    return '0.0.0.0';
+}

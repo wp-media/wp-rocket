@@ -32,15 +32,24 @@ function rocket_varnish_http_purge( $url ) {
 		$varnish_ip = WP_ROCKET_VARNISH_IP;
 	}
 
+	/**
+	 * Filter the HTTP protocol (scheme)
+	 *
+	 * @since 2.7.3
+	 * @param string The HTTP protocol
+	 */
+	$scheme = apply_filters( 'rocket_varnish_http_purge_scheme', 'http' );
+
 	$host 	 = ( $varnish_ip ) ? $varnish_ip : $host;
 	$purgeme = $scheme . '://' . $host . $path . $regex;
 
 	wp_remote_request(
 		$purgeme,
 		array(
-			'method'   => 'PURGE',
-			'blocking' => false,
-			'headers'  => array(
+			'method'      => 'PURGE',
+			'blocking'    => false,
+			'redirection' => 0,
+			'headers'     => array(
 				'host'           => $host,
 				'X-Purge-Method' => $varnish_x_purgemethod
 			),

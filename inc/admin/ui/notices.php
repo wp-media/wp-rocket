@@ -480,20 +480,26 @@ function rocket_thank_you_license() {
  */
 add_action( 'admin_notices', '__rocket_imagify_notice' );
 function __rocket_imagify_notice() {
-	$current_screen  = get_current_screen();
+	$current_screen = get_current_screen();
 		
 	// Add the notice only on the "WP Rocket" settings, "Media Library" & "Upload New Media" screens
-	if ( 'admin_notices' === current_filter() && ( isset( $current_screen ) && 'settings_page_wprocket' !== $current_screen->base && 'media' !== $current_screen->base && 'upload' !== $current_screen->base  ) ) {
+	if ( 'admin_notices' === current_filter() && ( isset( $current_screen ) && 'settings_page_wprocket' !== $current_screen->base ) ) {
 		return;
 	}
 	
 	$boxes = get_user_meta( $GLOBALS['current_user']->ID, 'rocket_boxes', true );
-	
-	if ( defined( 'IMAGIFY_VERSION' ) || in_array( __FUNCTION__, (array) $boxes ) || rocket_is_white_label() ) {
+
+	if ( defined( 'IMAGIFY_VERSION' ) || in_array( __FUNCTION__, (array) $boxes ) || 1 == get_option( 'wp_rocket_dismiss_imagify_notice' ) || rocket_is_white_label() || ! current_user_can( 'manage_options' ) ) {
 		return;
 	}
+		
+	$imagify_plugin = 'imagify/imagify.php';
+	$is_imagify_installed = rocket_is_plugin_installed( $imagify_plugin );
 
-	$modal_url = add_query_arg(
+	$action_url = $is_imagify_installed ?
+	rocket_get_plugin_activation_link( $imagify_plugin )
+		:
+	add_query_arg(
 		array(
 			'tab'       => 'plugin-information',
 			'plugin'    => 'imagify',
@@ -503,6 +509,9 @@ function __rocket_imagify_notice() {
 		),
 		admin_url( 'plugin-install.php' )
 	);
+
+	$classes = $is_imagify_installed ? '' : ' tgm-plugin-update-modal';
+	$cta_txt = $is_imagify_installed ? esc_html__( 'Activate Imagify', 'rocket' ) : esc_html__( 'Install Imagify for Free', 'rocket' );
 
 	$dismiss_url = wp_nonce_url(
 		admin_url( 'admin-post.php?action=rocket_ignore&box=' . __FUNCTION__ ),
@@ -520,7 +529,7 @@ function __rocket_imagify_notice() {
 			<?php _e( 'Speed up your website and boost your SEO by reducing image file sizes without loosing quality with Imagify.', 'rocket' ); ?>
 		</p>
 		<p class="rkt-imagify-cta">
-			<a href="<?php echo $modal_url; ?>" class="button button-primary tgm-plugin-update-modal"><?php esc_html_e( 'Install Imagify for Free', 'rocket' ); ?></a>
+			<a href="<?php echo $action_url; ?>" class="button button-primary<?php echo $classes; ?>"><?php echo $cta_txt; ?></a>
 		</p>
 	</div>
 

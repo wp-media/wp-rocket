@@ -96,22 +96,6 @@ function get_rocket_home_url( $url = null ) {
 }
 endif;
 
-if ( ! function_exists( 'rocket_get_domain' ) ) :
-/**
- * Get the domain of an URL without subdomain
- * (ex: rocket_get_domain( 'http://www.geekpress.fr' ) return geekpress.fr
- *
- * @source : http://stackoverflow.com/a/15498686
- * @since 1.0
- * @deprecated 2.2
- *
- */
-function rocket_get_domain( $url ) {
-	_deprecated_function( __FUNCTION__, '2.2' );
-	return false;
-}
-endif;
-
 if ( ! function_exists( 'rocket_has_translation_plugin_active' ) ) :
 /**
  * Check if a translation plugin is activated (WPML or qTranslate)
