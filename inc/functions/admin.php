@@ -239,7 +239,8 @@ function rocket_is_ssl_website() {
  */ 
 function get_rocket_documentation_url() {
 	$langs  = array( 
-		'fr_FR' => 'fr.' 
+		'fr_FR' => 'fr.' ,
+		'it_IT' => 'it.' ,
 	);
 	$lang   = get_locale();
 	$prefix = isset( $langs[ $lang ] ) ? $langs[ $lang ] : '';
