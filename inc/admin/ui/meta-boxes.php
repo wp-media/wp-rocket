@@ -50,6 +50,18 @@ function __rocket_display_cache_options_meta_boxes() {
 		wp_nonce_field( 'rocket_box_option', '_rocketnonce', false, true );
 		?>
 
+        <div class="misc-pub-section">
+            <?php
+                $reject_current_uri = false;
+                $rejected_uris = array_flip( get_rocket_option( 'cache_reject_uri' ) );
+                $path = rocket_clean_exclude_file( get_permalink( $post->ID ) );
+
+                if ( isset( $rejected_uris[ $path ] ) ) {
+                    $reject_current_uri = true;
+                } ?>
+            <input name="rocket_post_nocache" id="rocket_post_nocache" type="checkbox" title="<?php _e( 'Never cache this page', 'rocket' ); ?>" <?php checked( $reject_current_uri, true ); ?>><label for="rocket_post_nocache"><?php _e( 'Never cache this page', 'rocket' ); ?></label>
+        </div>
+
 		<div class="misc-pub-section">
 			<p><?php _e( 'Activate these options on this post:', 'rocket' ) ;?></p>
 			<?php
@@ -96,6 +108,30 @@ function __rocket_save_metabox_options() {
 
 		check_admin_referer( 'rocket_box_option', '_rocketnonce' );
 
+        // No cache field
+        if ( $_POST['post_status'] == 'publish' ) {
+            $new_cache_reject_uri = $cache_reject_uri = get_rocket_option( 'cache_reject_uri' );
+            $rejected_uris = array_flip( $cache_reject_uri );
+            $path = rocket_clean_exclude_file( get_permalink( $_POST['post_ID'] ) );
+            
+            if ( isset( $_POST['rocket_post_nocache'] ) && $_POST['rocket_post_nocache'] ) {
+                if ( ! isset( $rejected_uris[ $path ] ) ) {
+                    array_push( $new_cache_reject_uri, $path );
+                }
+            } else {
+                if ( isset( $rejected_uris[ $path ] ) ) {
+                    unset( $new_cache_reject_uri[ $rejected_uris[ $path ] ] );
+                }
+            }
+            
+            if ( $new_cache_reject_uri != $cache_reject_uri ) {
+                update_rocket_option( 'cache_reject_uri', $new_cache_reject_uri );
+                // Update config file
+                rocket_generate_config_file();
+            }
+        }
+
+        // Options fields
 		$fields = array( 'lazyload', 'lazyload_iframes', 'minify_html', 'minify_css', 'minify_js', 'cdn' );
 
 		foreach ( $fields as $field ) {
