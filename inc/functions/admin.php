@@ -241,6 +241,7 @@ function get_rocket_documentation_url() {
 	$langs  = array( 
 		'fr_FR' => 'fr.' ,
 		'it_IT' => 'it.' ,
+		'de_DE' => 'de.' ,
 	);
 	$lang   = get_locale();
 	$prefix = isset( $langs[ $lang ] ) ? $langs[ $lang ] : '';
