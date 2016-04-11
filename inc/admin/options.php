@@ -435,6 +435,7 @@ function rocket_display_options() {
 		'api-key',
 		'basic',
 		'advanced',
+		'database',
 		'cloudflare',
 		'cdn',
 		'varnish',
@@ -479,6 +480,7 @@ function rocket_display_options() {
 			<?php if( rocket_valid_key() ) { ?>
 				<a href="#tab_basic" class="nav-tab"><?php _e( 'Basic options', 'rocket' ); ?></a>
 				<a href="#tab_advanced" class="nav-tab"><?php _e( 'Advanced options', 'rocket' ); ?></a>
+				<a href="#tab_database" class="nav-tab"><?php _e( 'Database', 'rocket' ); ?></a>
 				<?php if ( get_rocket_option( 'do_cloudflare' ) ) { ?>
 					<a href="#tab_cloudflare" class="nav-tab">CloudFlare</a>
 				<?php } ?>
@@ -512,6 +514,7 @@ function rocket_display_options() {
 			<?php if( rocket_valid_key() ) { ?>
 				<div class="rkt-tab" id="tab_basic"><?php do_settings_sections( 'rocket_basic' ); ?></div>
 				<div class="rkt-tab" id="tab_advanced"><?php do_settings_sections( 'rocket_advanced' ); ?></div>
+				<div class="rkt-tab" id="tab_database"><?php do_settings_sections( 'rocket_database' ); ?></div>
 				<div class="rkt-tab" id="tab_cloudflare" <?php echo get_rocket_option( 'do_cloudflare' ) ? '' : 'style="display:none"'; ?>><?php do_settings_sections( 'rocket_cloudflare' ); ?></div>
 				<div class="rkt-tab" id="tab_cdn"><?php do_settings_sections( 'rocket_cdn' ); ?></div>
 				<?php 
