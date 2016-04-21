@@ -103,9 +103,9 @@ function rocket_field( $args ) {
 
 			case 'checkbox' : 
 				if ( isset( $args['label_screen'] ) ) {
-					?>
-						<legend class="screen-reader-text"><span><?php echo $args['label_screen']; ?></span></legend>
-					<?php } ?>
+				?>
+				    <legend class="screen-reader-text"><span><?php echo $args['label_screen']; ?></span></legend>
+				<?php } ?>
 					<label><input type="checkbox" id="<?php echo $args['name']; ?>" class="<?php echo $class; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]" value="1"<?php echo $readonly; ?> <?php checked( get_rocket_option( $args['name'], 0 ), 1 ); ?> <?php echo $parent; ?>/> <?php echo $args['label']; ?>
 					</label>
 
@@ -115,7 +115,7 @@ function rocket_field( $args ) {
 			case 'select' : ?>
 
 					<legend class="screen-reader-text"><span><?php echo $args['label_screen']; ?></span></legend>
-					<label>	<select id="<?php echo $args['name']; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]"<?php echo $readonly; ?>>
+					<label>	<select id="<?php echo $args['name']; ?>" class="<?php echo $class; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]"<?php echo $readonly; ?> <?php echo $parent; ?>>
 							<?php foreach( $args['options'] as $val => $title) { ?>
 								<option value="<?php echo $val; ?>" <?php selected( get_rocket_option( $args['name'] ), $val ); ?>><?php echo $title; ?></option>
 							<?php } ?>
@@ -125,6 +125,11 @@ function rocket_field( $args ) {
 
 			<?php
 			break;
+
+            case 'submit_optimize' : ?>
+
+            <input type="submit" name="wp_rocket_settings[submit_optimize]" id="rocket_submit_optimize" class="button button-primary" value="<?php _e( 'Save and optimize', 'rocket' ); ?>"> <a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=optimize_database' ), 'optimize_database' ); ?>" class="button button-secondary"><?php _e( 'Optimize', 'rocket' ); ?></a>
+            <?php break;
 
 			case 'repeater' :
 
@@ -514,7 +519,11 @@ function rocket_display_options() {
 			<?php if( rocket_valid_key() ) { ?>
 				<div class="rkt-tab" id="tab_basic"><?php do_settings_sections( 'rocket_basic' ); ?></div>
 				<div class="rkt-tab" id="tab_advanced"><?php do_settings_sections( 'rocket_advanced' ); ?></div>
-				<div class="rkt-tab" id="tab_database"><?php do_settings_sections( 'rocket_database' ); ?></div>
+				<div class="rkt-tab" id="tab_database">
+    				<p class="description database_description"><?php _e( 'The following options help you optimize your database.', 'rocket' ); ?></p>
+                    <p class="description warning file-error database_description"><?php _e( 'Before you do any optimization, please backup your database first because any cleanup done is irreversible!', 'rocket' ); ?></p>
+    				<?php do_settings_sections( 'rocket_database' ); ?>
+				</div>
 				<div class="rkt-tab" id="tab_cloudflare" <?php echo get_rocket_option( 'do_cloudflare' ) ? '' : 'style="display:none"'; ?>><?php do_settings_sections( 'rocket_cloudflare' ); ?></div>
 				<div class="rkt-tab" id="tab_cdn"><?php do_settings_sections( 'rocket_cdn' ); ?></div>
 				<?php 
@@ -746,6 +755,31 @@ function rocket_settings_callback( $inputs ) {
 	} else {
 		$inputs['minify_js_in_footer'] = array();
 	}
+
+    /*
+     * Database options
+     */
+    $inputs['database_revisions'] = ! empty( $inputs['database_revisions'] ) ? 1 : 0;
+    $inputs['database_auto_drafts'] = ! empty( $inputs['database_auto_drafts'] ) ? 1 : 0;
+    $inputs['database_trashed_posts'] = ! empty( $inputs['database_trashed_posts'] ) ? 1 : 0;
+    $inputs['database_unapproved_comments'] = ! empty( $inputs['database_unapproved_comments'] ) ? 1 : 0;
+    $inputs['database_spam_comments'] = ! empty( $inputs['database_spam_comments'] ) ? 1 : 0;
+    $inputs['database_trashed_comments'] = ! empty( $inputs['database_trashed_comments'] ) ? 1 : 0;
+    $inputs['database_expired_transients'] = ! empty( $inputs['database_expired_transients'] ) ? 1 : 0;
+    $inputs['database_all_transients'] = ! empty( $inputs['database_all_transients'] ) ? 1 : 0;
+    $inputs['database_optimize_tables'] = ! empty( $inputs['database_optimize_tables'] ) ? 1 : 0;
+    $inputs['schedule_automatic_cleanup'] = ! empty( $inputs['schedule_automatic_cleanup'] ) ? 1 : 0;
+
+    if ( $inputs['schedule_automatic_cleanup'] != 1 && ( 'daily' != $inputs['automatic_cleanup_frequency'] || 'weekly' != $inputs['automatic_cleanup_frequency'] || 'monthly' != $inputs['automatic_cleanup_frequency'] ) ) {
+        unset( $inputs['automatic_cleanup_frequency'] );
+    }
+
+    /*
+     * Performs the database optimization when settings are saved with the "save and optimize" submit button"
+     */
+    if ( isset( $inputs['submit_optimize'] ) ) {
+        do_rocket_database_optimization();
+    }
 	
 	/*
 	 * Option : CloudFlare Domain
@@ -996,6 +1030,13 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 		}
 	}
 
+    // Clear WP Rocket database optimize cron if the setting has been modified
+    if ( ( isset( $newvalue['schedule_automatic_cleanup'], $oldvalue['schedule_automatic_cleanup'] ) && $newvalue['schedule_automatic_cleanup'] != $oldvalue['schedule_automatic_cleanup'] ) || ( ( isset( $newvalue['automatic_cleanup_frequency'], $oldvalue['automatic_cleanup_frequency'] ) && $newvalue['automatic_cleanup_frequency'] != $oldvalue['automatic_cleanup_frequency'] ) ) ) {
+        if ( wp_next_scheduled( 'rocket_database_optimization_time_event' ) ) {
+            wp_clear_scheduled_hook( 'rocket_database_optimization_time_event' );
+        }
+    }
+
 	// Regenerate the minify key if CSS files have been modified
 	if ( ( isset( $newvalue['minify_css'], $oldvalue['minify_css'] ) && $newvalue['minify_css'] != $oldvalue['minify_css'] )
 		|| ( isset( $newvalue['exclude_css'], $oldvalue['exclude_css'] ) && $newvalue['exclude_css'] != $oldvalue['exclude_css'] )
@@ -1071,3 +1112,51 @@ function rocket_import_upload_form() {
 		<?php submit_button( __( 'Upload file and import settings', 'rocket' ), 'button', 'import' );
 	}
 }
+
+/**
+ * Count the number of items concerned by the cleanup
+ *
+ * @since 2.8
+ * @author Remy Perona
+ *
+ * @param string $type Item type to count
+ * @return int Number of items for this type
+ */
+function rocket_count_cleanup_items( $type ) {
+    global $wpdb;
+
+    $count = 0;
+
+    switch( $type ) {
+        case 'revisions':
+            $count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(ID) FROM $wpdb->posts WHERE post_type = %s", 'revision' ) );
+            break;
+        case 'auto_drafts':
+            $count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(ID) FROM $wpdb->posts WHERE post_status = %s", 'auto-draft' ) );
+            break;
+        case 'trashed_posts':
+            $count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(ID) FROM $wpdb->posts WHERE post_status = %s", 'trash' ) );
+            break;
+        case 'unapproved_comments':
+            $count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(comment_ID) FROM $wpdb->comments WHERE comment_approved = %s", '0' ) );
+            break;
+        case 'spam_comments':
+            $count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(comment_ID) FROM $wpdb->comments WHERE comment_approved = %s", 'spam' ) );
+            break;
+        case 'trashed_comments':
+            $count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(comment_ID) FROM $wpdb->comments WHERE (comment_approved = %s OR comment_approved = %s)", 'trash', 'post-trashed' ) );
+            break;
+        case 'expired_transients':
+            $time = isset( $_SERVER['REQUEST_TIME'] ) ? (int) $_SERVER['REQUEST_TIME'] : time();
+            $count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(option_name) FROM $wpdb->options WHERE option_name LIKE %s AND option_value < %d;", '_transient_timeout%', $time ) );
+            break;
+        case 'all_transients':
+            $count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(option_id) FROM $wpdb->options WHERE option_name LIKE %s", '%_transient_%' ) );
+            break;
+        case 'optimize_tables':
+            $count = $wpdb->get_var( $wpdb->prepare("SELECT COUNT(table_name) FROM information_schema.tables WHERE table_schema = %s and Engine <> 'InnoDB' and data_free > 0", DB_NAME ) );
+            break;
+    }
+
+    return $count;
+ }
