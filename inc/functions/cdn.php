@@ -35,6 +35,7 @@ function get_rocket_cdn_url( $url, $zone = array( 'all' ) )
 {
 	$cnames             = get_rocket_cdn_cnames( $zone );
 	$wp_content_dirname = ltrim( str_replace( home_url(), '', WP_CONTENT_URL ), '/' ) . '/';
+	$home               = home_url();
 
 	if ( ( defined( 'DONOTCDN' ) && DONOTCDN ) || (int) get_rocket_option('cdn') == 0 || empty( $cnames ) || ! is_rocket_cdn_on_ssl() || is_rocket_post_excluded_option( 'cdn' ) ) {
 		return $url;
