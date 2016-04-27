@@ -56,25 +56,7 @@ add_settings_field(
         ),
 		'helper_description'=>array(
 			'name'         => 'preload',
-        	'description'  => __( 'Allows you to request a bot crawl to preload the cache (homepage and its internal links).', 'rocket' )
-		),
-	)
-);
-
-add_settings_field(
-	'rocket_sitemap_preload',
-	__( 'Preload cache with sitemap', 'rocket' ),
-	'rocket_button',
-	'rocket_tools',
-	'rocket_display_tools',
-	array(
-        'button'=>array(
-        	'button_label' => __( 'Preload cache with sitemap', 'rocket' ),
-        	'url'		   => wp_nonce_url( admin_url( 'admin-post.php?action=sitemap_preload' ), 'sitemap_preload' ),
-        ),
-		'helper_description'=>array(
-			'name'         => 'sitemap_preload',
-        	'description'  => __( 'Allows you to preload the cache using an XML sitemap.', 'rocket' )
+        	'description'  => __( 'Allows you to request a bot crawl to preload the cache (homepage and its internal links) and/or to preload the cache using an XML sitemap.', 'rocket' )
 		),
 	)
 );

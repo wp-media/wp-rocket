@@ -107,6 +107,10 @@ function __rocket_clear_cache_after_studiopress_accelerator() {
 			
 			// Preload cache
 			run_rocket_bot( 'cache-preload' );
+
+            if ( get_rocket_option( 'sitemap_preload' ) ) {
+                run_rocket_sitemap_preload();
+            }
 		}	
 	}
 }
@@ -126,6 +130,10 @@ function __rocket_clear_cache_after_varnish_http_purge() {
 		
 		// Preload cache
 		run_rocket_bot( 'cache-preload' );
+
+        if ( get_rocket_option( 'sitemap_preload' ) ) {
+            run_rocket_sitemap_preload();
+        }
 	}
 }
 
@@ -143,6 +151,10 @@ function __rocket_clear_cache_after_pagely() {
 		
 	// Preload cache
 	run_rocket_bot( 'cache-preload' );
+
+    if ( get_rocket_option( 'sitemap_preload' ) ) {
+        run_rocket_sitemap_preload();
+    }
 }
 
 /**
@@ -160,5 +172,9 @@ function __rocket_clear_cache_after_pressidium() {
 		
 		// Preload cache
 		run_rocket_bot( 'cache-preload' );
+
+        if ( get_rocket_option( 'sitemap_preload' ) ) {
+            run_rocket_sitemap_preload();
+        }
 	}
 }
