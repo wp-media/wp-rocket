@@ -187,7 +187,7 @@ $request_uri_path = preg_replace_callback( '/%[0-9A-F]{2}/', 'rocket_urlencode_l
 $rocket_cache_filepath = $request_uri_path . '/' . $filename . '.html';
 
 // Serve the cache file if exist
-rocket_serve_cache_file( $request_uri_path );
+rocket_serve_cache_file( $rocket_cache_filepath );
 
 ob_start( 'do_rocket_callback' );
 
@@ -282,8 +282,7 @@ function do_rocket_callback( $buffer ) {
  *
  * @since 2.0
  */
-function rocket_serve_cache_file( $request_uri_path ) {
-	global $rocket_cache_filepath;
+function rocket_serve_cache_file( $rocket_cache_filepath ) {
 	
 	// Check if cache file exist
 	if ( file_exists( $rocket_cache_filepath ) && is_readable( $rocket_cache_filepath ) ) {
