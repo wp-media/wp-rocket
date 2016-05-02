@@ -6,11 +6,9 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
  *
  * @since 1.0
  * @todo manage all CPTs
- *
  */
 add_action( 'post_submitbox_start', '__rocket_post_submitbox_start' );
-function __rocket_post_submitbox_start()
-{
+function __rocket_post_submitbox_start() {
 	/** This filter is documented in inc/admin-bar.php */
 	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
 		global $post;
@@ -109,7 +107,7 @@ function __rocket_save_metabox_options() {
 		check_admin_referer( 'rocket_box_option', '_rocketnonce' );
 
         // No cache field
-        if ( $_POST['post_status'] == 'publish' ) {
+        if ( 'publish' == $_POST['post_status'] ) {
             $new_cache_reject_uri = $cache_reject_uri = get_rocket_option( 'cache_reject_uri' );
             $rejected_uris = array_flip( $cache_reject_uri );
             $path = rocket_clean_exclude_file( get_permalink( $_POST['post_ID'] ) );
@@ -125,14 +123,23 @@ function __rocket_save_metabox_options() {
             }
             
             if ( $new_cache_reject_uri != $cache_reject_uri ) {
+                // Update the "Never cache the following pages" option
                 update_rocket_option( 'cache_reject_uri', $new_cache_reject_uri );
+                
                 // Update config file
                 rocket_generate_config_file();
             }
         }
 
         // Options fields
-		$fields = array( 'lazyload', 'lazyload_iframes', 'minify_html', 'minify_css', 'minify_js', 'cdn' );
+		$fields = array( 
+			'lazyload', 
+			'lazyload_iframes', 
+			'minify_html', 
+			'minify_css', 
+			'minify_js', 
+			'cdn' 
+		);
 
 		foreach ( $fields as $field ) {
 			if ( isset( $_POST['rocket_post_exclude_hidden'][ $field ] ) && $_POST['rocket_post_exclude_hidden'][ $field ] ) {
