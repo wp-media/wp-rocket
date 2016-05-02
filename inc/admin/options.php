@@ -773,13 +773,6 @@ function rocket_settings_callback( $inputs ) {
     if ( $inputs['schedule_automatic_cleanup'] != 1 && ( 'daily' != $inputs['automatic_cleanup_frequency'] || 'weekly' != $inputs['automatic_cleanup_frequency'] || 'monthly' != $inputs['automatic_cleanup_frequency'] ) ) {
         unset( $inputs['automatic_cleanup_frequency'] );
     }
-
-    /*
-     * Performs the database optimization when settings are saved with the "save and optimize" submit button"
-     */
-    if ( isset( $inputs['submit_optimize'] ) ) {
-        do_rocket_database_optimization();
-    }
 	
 	/*
 	 * Option : CloudFlare Domain
@@ -954,6 +947,13 @@ function rocket_after_save_options( $oldvalue, $value ) {
 	if ( ! empty( $_POST ) && ( $oldvalue['minify_js'] != $value['minify_js'] || $oldvalue['exclude_js']  != $value['exclude_js'] ) || ( isset( $oldvalue['cdn'] ) && ! isset( $value['cdn'] ) || ! isset( $oldvalue['cdn'] ) && isset( $value['cdn'] ) ) ) {
 		rocket_clean_minify( 'js' );
 	}
+
+    /*
+     * Performs the database optimization when settings are saved with the "save and optimize" submit button"
+     */
+    if ( ! empty( $_POST ) && isset( $_POST['wp_rocket_settings']['submit_optimize'] ) ) {
+        do_rocket_database_optimization();
+    }
 		
 	// Update CloudFlare Development Mode
 	if ( ! empty( $_POST ) && ( $oldvalue['cloudflare_devmode'] != $value['cloudflare_devmode'] ) ) {
