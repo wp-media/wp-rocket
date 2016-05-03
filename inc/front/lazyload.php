@@ -39,7 +39,7 @@ add_filter( 'get_image_tag'			, 'rocket_lazyload_images', PHP_INT_MAX );
 add_filter( 'post_thumbnail_html'	, 'rocket_lazyload_images', PHP_INT_MAX );
 function rocket_lazyload_images( $html ) {
 	// Don't LazyLoad if process is stopped for these reasons
-	if ( ! get_rocket_option( 'lazyload' ) || ! apply_filters( 'do_rocket_lazyload', true ) || is_feed() || is_preview() || empty( $html ) || ( defined( 'DONOTLAZYLOAD' ) && DONOTLAZYLOAD ) ) {
+	if ( ! get_rocket_option( 'lazyload' ) || ! apply_filters( 'do_rocket_lazyload', true ) || is_feed() || is_preview() || empty( $html ) || ( defined( 'DONOTLAZYLOAD' ) && DONOTLAZYLOAD ) || wp_script_is( 'twentytwenty-twentytwenty', 'enqueued' ) ) {
 		return $html;
 	}
 
