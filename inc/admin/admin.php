@@ -344,9 +344,9 @@ function __rocket_maybe_set_wp_cache_define() {
  * @since 2.8
  * @author Remy Perona
  */
-add_action( 'admin_post_optimize_database', '__rocket_optimize_database' );
+add_action( 'admin_post_rocket_optimize_database', '__rocket_optimize_database' );
 function __rocket_optimize_database() {
-    if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'optimize_database' ) ) {
+    if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'rocket_optimize_database' ) ) {
         wp_nonce_ays( '' );
     }
 

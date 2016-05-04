@@ -128,7 +128,7 @@ function rocket_field( $args ) {
 
             case 'submit_optimize' : ?>
 
-            <input type="submit" name="wp_rocket_settings[submit_optimize]" id="rocket_submit_optimize" class="button button-primary" value="<?php _e( 'Save and optimize', 'rocket' ); ?>"> <a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=optimize_database' ), 'optimize_database' ); ?>" class="button button-secondary"><?php _e( 'Optimize', 'rocket' ); ?></a>
+            <input type="submit" name="wp_rocket_settings[submit_optimize]" id="rocket_submit_optimize" class="button button-primary" value="<?php _e( 'Save and optimize', 'rocket' ); ?>"> <a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_optimize_database' ), 'rocket_optimize_database' ); ?>" class="button button-secondary"><?php _e( 'Optimize', 'rocket' ); ?></a>
             <?php break;
 
 			case 'repeater' :
@@ -1114,7 +1114,7 @@ function rocket_import_upload_form() {
 }
 
 /**
- * Count the number of items concerned by the cleanup
+ * Count the number of items concerned by the database cleanup
  *
  * @since 2.8
  * @author Remy Perona
@@ -1122,7 +1122,7 @@ function rocket_import_upload_form() {
  * @param string $type Item type to count
  * @return int Number of items for this type
  */
-function rocket_count_cleanup_items( $type ) {
+function rocket_database_count_cleanup_items( $type ) {
     global $wpdb;
 
     $count = 0;

@@ -71,7 +71,4 @@ function rocket_database_optimization_scheduled() {
  * @since 2.8
  * @author Remy Perona
  */
-add_action( 'rocket_database_optimization_time_event', 'rocket_database_optimization_cron' );
-function rocket_database_optimization_cron() {
-    do_rocket_database_optimization();
-}
+add_action( 'rocket_database_optimization_time_event', 'do_rocket_database_optimization' );
