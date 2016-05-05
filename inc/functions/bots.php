@@ -98,11 +98,34 @@ function run_rocket_bot( $spider = 'cache-preload', $lang = '' )
  * @return void
  */
 function run_rocket_sitemap_preload() {
-    if ( ! $sitemaps = get_rocket_option( 'sitemaps' ) ) {
-        return false;
+    $jetpack_xml_sitemap = get_rocket_option( 'jetpack_xml_sitemap', false );
+    //$google_xml_sitemap  = get_rocket_option( 'google_xml_sitemap', false );
+    $yoast_xml_sitemap   = get_rocket_option( 'yoast_xml_sitemap', false );
+
+    if ( ! $sitemaps = get_rocket_option( 'sitemaps', false ) ) {
+        if ( ! $jetpack_xml_sitemap 
+            //&& ! $google_xml_sitemap
+            && ! $yoast_xml_sitemap ) {
+            return false;
+        }
     }
 
+    if ( $jetpack_xml_sitemap && function_exists( 'jetpack_sitemap_uri' ) ) {
+        $sitemaps[] = jetpack_sitemap_uri();
+    }
+
+    /*if ( $google_xml_sitemap && class_exists( 'GoogleSitemapGeneratorLoader' ) ) {
+
+    }*/
+
+    if ( $yoast_xml_sitemap && class_exists( 'WPSEO_Sitemaps_Router' ) ) {
+        $sitemaps[] = WPSEO_Sitemaps_Router::get_base_url( 'sitemap_index.xml' );
+    }
+
+    $sitemaps = array_unique( $sitemaps );
+
     $sitemap_id = 0;
+
     foreach( $sitemaps as $sitemap_url ) {
         $sitemap_id++;
         $action = 'rocket_preload_sitemap';
@@ -128,14 +151,32 @@ function rocket_process_sitemap( $sitemap_url ) {
         'sslverify' => false
     );
 
-    $xml_data = wp_remote_retrieve_body( wp_remote_get( $sitemap_url ) );
+    $sitemap = wp_remote_get( esc_url_raw( $sitemap_url ) );
+
+    if ( is_wp_error( $sitemap ) ) {
+        continue;
+    }
+
+    $xml_data = wp_remote_retrieve_body( $sitemap );
+
+    if ( empty( $xml_data ) ) {
+        continue;
+    }
+
+    libxml_use_internal_errors();
+
     $xml = simplexml_load_string( $xml_data );
+
+    if ( false === $xml ) {
+        libxml_clear_errors();
+        continue;
+    }
 	
     $url_count = count( $xml->url );
     if ( $url_count > 0 ) {
         for( $i = 0; $i < $url_count; $i++ ) {
         	$page_url = (string) $xml->url[$i]->loc;
-        	$tmp = wp_remote_get( $page_url, $args );
+        	$tmp = wp_remote_get( esc_url_raw( $page_url ), $args );
         }
     } else {
         // Sub sitemap?

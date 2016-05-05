@@ -772,9 +772,16 @@ function rocket_settings_callback( $inputs ) {
 	} else {
 		$inputs['sitemaps'] = array();
 	}
-	
+
+    /*
+     * Option: automatically detected XML sitemaps from Jetpack, Google XML sitemaps & Yoast SEO
+     */
+    $inputs['jetpack_xml_sitemap'] = ! empty( $inputs['jetpack_xml_sitemap'] ) ? 1 : 0;
+    $inputs['google_xml_sitemap'] = ! empty( $inputs['google_xml_sitemap'] ) ? 1 : 0;
+    $inputs['yoast_xml_sitemap'] = ! empty( $inputs['yoast_xml_sitemap'] ) ? 1 : 0;
+
 	/*
-	 * Option : CloudFlare Domain
+	 * Option: CloudFlare Domain
 	 */
 	if ( ! empty( $inputs['cloudflare_domain'] ) ) {
 		$inputs['cloudflare_domain'] = rocket_get_domain( $inputs['cloudflare_domain'] );
