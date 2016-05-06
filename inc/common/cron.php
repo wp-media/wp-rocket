@@ -45,9 +45,5 @@ function do_rocket_purge_cron() {
 	rocket_clean_domain();
 
 	// Run WP Rocket Bot for preload cache files
-	run_rocket_bot( 'cache-preload' );
-
-    if ( get_rocket_option( 'sitemap_preload' ) ) {
-        run_rocket_sitemap_preload();
-    }
+	run_rocket_preload_cache( 'cache-preload', true );
 }

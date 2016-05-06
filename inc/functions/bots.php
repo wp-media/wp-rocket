@@ -91,6 +91,25 @@ function run_rocket_bot( $spider = 'cache-preload', $lang = '' ) {
 }
 
 /**
+ * Launches the preload
+ *
+ * @since 2.8
+ * @author Remy Perona
+ *
+ * @param string $spider The spider name
+ * @param bool $do_sitemap_preload Do the sitemap preload
+ * @return void
+ */
+function run_rocket_preload_cache( $spider = 'cache-preload', $do_sitemap_preload = true ) {
+	// Preload cache
+ 	run_rocket_bot( $spider );
+​
+    if ( $do_sitemap_preload && get_rocket_option( 'sitemap_preload', false ) ) {
+        run_rocket_sitemap_preload();
+    }
+}
+
+/**
  * Launches the sitemap preload
  *
  * @since 2.8

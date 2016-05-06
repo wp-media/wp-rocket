@@ -337,11 +337,7 @@ add_action( 'shutdown', 'do_rocket_bot_cache_json' );
 function do_rocket_bot_cache_json() {
 	global $do_rocket_bot_cache_json;
 	if ( $do_rocket_bot_cache_json ) {
-		run_rocket_bot( 'cache-json' );
-
-		if ( get_rocket_option( 'sitemap_preload' ) ) {
-    		run_rocket_sitemap_preload();
-		}
+    	run_rocket_preload_cache( 'cache-json', true );
 	}
 }
 
