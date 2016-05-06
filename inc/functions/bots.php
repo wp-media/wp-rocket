@@ -98,12 +98,13 @@ function run_rocket_bot( $spider = 'cache-preload', $lang = '' ) {
  *
  * @param string $spider The spider name
  * @param bool $do_sitemap_preload Do the sitemap preload
+ *
  * @return void
  */
 function run_rocket_preload_cache( $spider = 'cache-preload', $do_sitemap_preload = true ) {
 	// Preload cache
  	run_rocket_bot( $spider );
-​
+
     if ( $do_sitemap_preload && get_rocket_option( 'sitemap_preload', false ) ) {
         run_rocket_sitemap_preload();
     }
@@ -118,28 +119,11 @@ function run_rocket_preload_cache( $spider = 'cache-preload', $do_sitemap_preloa
  * @return void
  */
 function run_rocket_sitemap_preload() {
-    $jetpack_xml_sitemap = get_rocket_option( 'jetpack_xml_sitemap', false );
-    //$google_xml_sitemap  = get_rocket_option( 'google_xml_sitemap', false );
-    $yoast_xml_sitemap   = get_rocket_option( 'yoast_xml_sitemap', false );
 
-    if ( ! $sitemaps = get_rocket_option( 'sitemaps', false ) ) {
-        if ( ! $jetpack_xml_sitemap 
-            //&& ! $google_xml_sitemap
-            && ! $yoast_xml_sitemap ) {
-            return false;
-        }
-    }
+    $sitemaps = apply_filters( 'rocket_sitemap_preload_list', get_rocket_option( 'sitemaps', false ) );
 
-    if ( $jetpack_xml_sitemap && function_exists( 'jetpack_sitemap_uri' ) ) {
-        $sitemaps[] = jetpack_sitemap_uri();
-    }
-
-    /*if ( $google_xml_sitemap && class_exists( 'GoogleSitemapGeneratorLoader' ) ) {
-
-    }*/
-
-    if ( $yoast_xml_sitemap && class_exists( 'WPSEO_Sitemaps_Router' ) ) {
-        $sitemaps[] = WPSEO_Sitemaps_Router::get_base_url( 'sitemap_index.xml' );
+    if ( ! $sitemaps ) {
+        return false;
     }
 
     $sitemaps   = array_unique( $sitemaps );

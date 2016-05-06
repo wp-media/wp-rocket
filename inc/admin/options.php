@@ -773,13 +773,6 @@ function rocket_settings_callback( $inputs ) {
 		$inputs['sitemaps'] = array();
 	}
 
-    /*
-     * Option: automatically detected XML sitemaps from Jetpack, Google XML sitemaps & Yoast SEO
-     */
-    $inputs['jetpack_xml_sitemap'] = ! empty( $inputs['jetpack_xml_sitemap'] ) ? 1 : 0;
-    $inputs['google_xml_sitemap'] = ! empty( $inputs['google_xml_sitemap'] ) ? 1 : 0;
-    $inputs['yoast_xml_sitemap'] = ! empty( $inputs['yoast_xml_sitemap'] ) ? 1 : 0;
-
 	/*
 	 * Option: CloudFlare Domain
 	 */
@@ -903,7 +896,7 @@ function rocket_settings_callback( $inputs ) {
 		add_settings_error( 'general', 'settings_updated', __( 'Settings saved.', 'rocket' ), 'updated' );
 	}
 
-	return $inputs;
+	return apply_filters( 'rocket_inputs_sanitize', $inputs );
 }
 
 /**

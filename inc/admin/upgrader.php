@@ -63,7 +63,7 @@ function rocket_first_install() {
 
 	// Create Option
 	add_option( WP_ROCKET_SLUG,
-		array(
+		apply_filters( 'rocket_first_install_options', array(
 			'secret_cache_key'            => $secret_cache_key,
 			'cache_mobile'                => 0,
 			'do_caching_mobile_files'     => 0,
@@ -100,9 +100,6 @@ function rocket_first_install() {
 			'sitemap_preload'             => 0,
 			'sitemap_preload_url_crawl'   => '500000',
 			'sitemaps'                    => array(),
-			'jetpack_xml_sitemap'         => 0,
-			'google_xml_sitemap'          => 0,
-			'yoast_xml_sitemap'           => 0,
 			'dns_prefetch'                => 0,
 			'cdn'                         => 0,
 			'cdn_cnames'                  => array(),
@@ -120,7 +117,7 @@ function rocket_first_install() {
 			'varnish_auto_purge'          => 0,
 			'do_beta'                     => 0,
 		)
-	);
+	) );
 	rocket_dismiss_box( 'rocket_warning_plugin_modification' );
 	rocket_reset_white_label_values( false );
 }
