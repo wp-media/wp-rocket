@@ -47,6 +47,11 @@ add_settings_field(
 	)
 );
 
+$jetpack_xml_sitemap      = array();
+$jetpack_xml_sitemap_desc = array();
+$yoast_xml_sitemap        = array();
+$yoast_xml_sitemap_desc   = array();
+
 if ( function_exists( 'jetpack_sitemap_uri' ) ) {
     $jetpack_xml_sitemap = array(
         'type'         => 'checkbox',
