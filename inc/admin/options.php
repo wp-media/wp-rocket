@@ -762,7 +762,6 @@ function rocket_settings_callback( $inputs ) {
     $inputs['database_revisions'] = ! empty( $inputs['database_revisions'] ) ? 1 : 0;
     $inputs['database_auto_drafts'] = ! empty( $inputs['database_auto_drafts'] ) ? 1 : 0;
     $inputs['database_trashed_posts'] = ! empty( $inputs['database_trashed_posts'] ) ? 1 : 0;
-    $inputs['database_unapproved_comments'] = ! empty( $inputs['database_unapproved_comments'] ) ? 1 : 0;
     $inputs['database_spam_comments'] = ! empty( $inputs['database_spam_comments'] ) ? 1 : 0;
     $inputs['database_trashed_comments'] = ! empty( $inputs['database_trashed_comments'] ) ? 1 : 0;
     $inputs['database_expired_transients'] = ! empty( $inputs['database_expired_transients'] ) ? 1 : 0;
