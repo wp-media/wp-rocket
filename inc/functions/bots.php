@@ -11,8 +11,7 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
  * @param string $lang (default: '') The language code to preload
  * @return void
  */
-function run_rocket_bot( $spider = 'cache-preload', $lang = '' )
-{
+function run_rocket_bot( $spider = 'cache-preload', $lang = '' ) {
 	$domain = parse_url( home_url(), PHP_URL_HOST );
 	if ( 'localhost' == $domain || pathinfo( $domain, PATHINFO_EXTENSION ) == 'dev' ) {
 		return false;
@@ -35,7 +34,7 @@ function run_rocket_bot( $spider = 'cache-preload', $lang = '' )
 
 	switch ( $spider ) {
 		case 'cache-preload' :
-		    if ( ! get_rocket_option( 'manual_preload' ) ) {
+		    if ( ! get_rocket_option( 'manual_preload', true ) ) {
     		    return false;
 		    }
 
@@ -45,13 +44,15 @@ function run_rocket_bot( $spider = 'cache-preload', $lang = '' )
 				$urls[] = get_rocket_i18n_home_url( $lang );
 			}
 		break;
+		
 		case 'cache-json' :
-		    if ( ! get_rocket_option( 'automatic_preload' ) ) {
+		    if ( ! get_rocket_option( 'automatic_preload', true ) ) {
     		    return false;
 		    }
 
 			$urls[] = WP_ROCKET_URL . 'cache.json';
 		break;
+		
 		default :
 			return false;
 		break;
@@ -71,7 +72,7 @@ function run_rocket_bot( $spider = 'cache-preload', $lang = '' )
 		wp_remote_get(
 			WP_ROCKET_BOT_URL . '?spider=' . $spider . '&start_url=' . $start_url,
 			array(
-				'timeout'   => 2,
+				'timeout'   => 0.01,
 				'blocking'  => false,
 				'sslverify' => false,
 			)
@@ -122,13 +123,12 @@ function run_rocket_sitemap_preload() {
         $sitemaps[] = WPSEO_Sitemaps_Router::get_base_url( 'sitemap_index.xml' );
     }
 
-    $sitemaps = array_unique( $sitemaps );
-
+    $sitemaps   = array_unique( $sitemaps );
     $sitemap_id = 0;
 
-    foreach( $sitemaps as $sitemap_url ) {
+    foreach ( $sitemaps as $sitemap_url ) {
         $sitemap_id++;
-        $action = 'rocket_preload_sitemap';
+        $action      = 'rocket_preload_sitemap';
         $_ajax_nonce = wp_create_nonce( 'preload_sitemap-' . $sitemap_id );
         
         rocket_do_async_job( compact( 'action', '_ajax_nonce', 'sitemap_url', 'sitemap_id' ) );
@@ -145,10 +145,10 @@ function run_rocket_sitemap_preload() {
  */
 function rocket_process_sitemap( $sitemap_url ) {
     $args = array(
-        'timeout' => 2,
-        'blocking' => false,
+        'timeout'    => 0.01,
+        'blocking'   => false,
         'user-agent' => 'wprocketbot',
-        'sslverify' => false
+        'sslverify'  => false
     );
 
     $sitemap = wp_remote_get( esc_url_raw( $sitemap_url ) );
@@ -173,17 +173,18 @@ function rocket_process_sitemap( $sitemap_url ) {
     }
 	
     $url_count = count( $xml->url );
+    
     if ( $url_count > 0 ) {
-        for( $i = 0; $i < $url_count; $i++ ) {
-        	$page_url = (string) $xml->url[$i]->loc;
-        	$tmp = wp_remote_get( esc_url_raw( $page_url ), $args );
+        for ( $i = 0; $i < $url_count; $i++ ) {
+        	$page_url = (string) $xml->url[ $i ]->loc;
+        	$tmp      = wp_remote_get( esc_url_raw( $page_url ), $args );
         }
     } else {
         // Sub sitemap?
         $sitemap_count = count( $xml->sitemap );
-        if( $sitemap_count > 0 )
-        {
-        	for( $i = 0; $i < $sitemap_count; $i++ ) {
+        
+        if ( $sitemap_count > 0 ) {
+        	for ( $i = 0; $i < $sitemap_count; $i++ ) {
         		$sub_sitemap_url = (string) $xml->sitemap[$i]->loc;
         		rocket_process_sitemap( $sub_sitemap_url );
         	}				
