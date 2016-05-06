@@ -259,4 +259,11 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		// Regenerate advanced-cache.php file
 		rocket_generate_advanced_cache_file();
 	}
+
+    if ( version_compare( $actual_version, '2.8', '<' ) ) {
+		$options = get_option( WP_ROCKET_SLUG );
+		$options['manual_preload'] = 1;
+		$options['automatic_preload'] = 1;
+		update_option( WP_ROCKET_SLUG, $options );
+	}
 }
