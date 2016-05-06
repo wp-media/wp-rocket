@@ -145,12 +145,32 @@ function run_rocket_sitemap_preload() {
     $sitemaps   = array_unique( $sitemaps );
     $sitemap_id = 0;
 
-    foreach ( $sitemaps as $sitemap_url ) {
+    foreach ( $sitemaps as $sitemap_type => $sitemap_url ) {
+        /**
+		 * Fires before WP Rocket sitemap preload is called for a sitemap URL
+		 *
+		 * @since 2.8
+		 *
+		 * @param string $sitemap_type 	the sitemap identifier
+		 * @param string $sitemap_url sitemap URL to be crawler
+		*/
+		do_action( 'before_run_rocket_sitemap_preload', $sitemap_type, $sitemap_url );
+
         $sitemap_id++;
         $action      = 'rocket_preload_sitemap';
         $_ajax_nonce = wp_create_nonce( 'preload_sitemap-' . $sitemap_id );
         
         rocket_do_async_job( compact( 'action', '_ajax_nonce', 'sitemap_url', 'sitemap_id' ) );
+
+        /**
+		 * Fires after WP Rocket sitemap preload was called for a sitemap URL
+		 *
+		 * @since 2.8
+		 *
+		 * @param string $sitemap_type 	the sitemap identifier
+		 * @param string $sitemap_url sitemap URL crawled
+		*/
+		do_action( 'after_run_rocket_sitemap_preload', $sitemap_type, $sitemap_url );
     }
 }
 
