@@ -54,17 +54,6 @@ add_settings_field(
 	array(
 		array(
 			'type'         => 'checkbox',
-			'label'        => __('Unapproved comments', 'rocket' ),
-			'label_for'    => 'database_unapproved_comments',
-			'label_screen' => __( 'Cleanup unapproved comments', 'rocket' ),
-		),
-		array(
-    		'type'         => 'helper_help',
-    		'name'         => 'unapproved_comments_desc',
-    		'description'  => sprintf( _n( '%d unapproved comment in your database.', '%d unapproved comments in your database.', rocket_database_count_cleanup_items( 'unapproved_comments' ), 'rocket' ), rocket_database_count_cleanup_items( 'unapproved_comments' ) )
-		),
-		array(
-			'type'         => 'checkbox',
 			'label'        => __('Spam comments', 'rocket' ),
 			'label_for'    => 'database_spam_comments',
 			'label_screen' => __( 'Cleanup spam comments', 'rocket' ),

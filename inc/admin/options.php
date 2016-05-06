@@ -1137,9 +1137,6 @@ function rocket_database_count_cleanup_items( $type ) {
         case 'trashed_posts':
             $count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(ID) FROM $wpdb->posts WHERE post_status = %s", 'trash' ) );
             break;
-        case 'unapproved_comments':
-            $count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(comment_ID) FROM $wpdb->comments WHERE comment_approved = %s", '0' ) );
-            break;
         case 'spam_comments':
             $count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(comment_ID) FROM $wpdb->comments WHERE comment_approved = %s", 'spam' ) );
             break;

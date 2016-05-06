@@ -99,7 +99,6 @@ function rocket_first_install() {
 			'database_revisions'          => 0,
 			'database_auto_drafts'        => 0,
 			'database_trashed_posts'      => 0,
-			'database_unapproved_comments'=> 0,
 			'database_spam_comments'      => 0,
 			'database_trashed_comments'   => 0,
 			'database_expired_transients' => 0,

@@ -286,7 +286,6 @@ function rocket_is_plugin_installed( $plugin ) {
        'revisions',
        'auto_drafts',
        'trashed_posts',
-       'unapproved_comments',
        'spam_comments',
        'trashed_comments',
        'expired_transients',
@@ -334,14 +333,6 @@ function rocket_database_optimize( $type ) {
             if ( $query ) {
                 foreach ( $query as $id ) {
                     wp_delete_post( $id, true );
-                }
-            }
-            break;
-        case 'unapproved_comments':
-            $query = $wpdb->get_col( $wpdb->prepare( "SELECT comment_ID FROM $wpdb->comments WHERE comment_approved = %s", '0' ) );
-            if ( $query ) {
-                foreach ( $query as $id ) {
-                    wp_delete_comment( intval( $id ), true );
                 }
             }
             break;
