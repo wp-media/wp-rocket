@@ -6,7 +6,7 @@
  */
 class ActionScheduler_Action_Test extends ActionScheduler_UnitTestCase {
 	public function test_set_schedule() {
-		$time = new DateTime();
+		$time = new DateTime(null, new DateTimeZone('UTC'));
 		$schedule = new ActionScheduler_SimpleSchedule($time);
 		$action = new ActionScheduler_Action('my_hook', array(), $schedule);
 		$this->assertEquals( $schedule, $action->get_schedule() );

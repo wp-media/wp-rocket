@@ -24,24 +24,24 @@ class procedural_api_Test extends ActionScheduler_UnitTestCase {
 		$store = ActionScheduler::store();
 		$action = $store->fetch_action($action_id);
 		$this->assertEquals( $time, $action->get_schedule()->next()->format('U') );
-		$this->assertEquals( $time + HOUR_IN_SECONDS + 2, $action->get_schedule()->next(new DateTime('@'.($time + 2)))->format('U'));
+		$this->assertEquals( $time + HOUR_IN_SECONDS + 2, $action->get_schedule()->next(new DateTime('@'.($time + 2), new DateTimeZone('UTC')))->format('U'));
 		$this->assertEquals( $hook, $action->get_hook() );
 	}
 
 	public function test_cron_schedule() {
-		$time = new DateTime('2014-01-01');
+		$time = new DateTime('2014-01-01', new DateTimeZone('UTC'));
 		$hook = md5(rand());
 		$action_id = wc_schedule_cron_action( $time->format('U'), '0 0 10 10 *', $hook );
 
 		$store = ActionScheduler::store();
 		$action = $store->fetch_action($action_id);
-		$expected_date = new DateTime('2014-10-10');
+		$expected_date = new DateTime('2014-10-10', new DateTimeZone('UTC'));
 		$this->assertEquals( $expected_date->format('U'), $action->get_schedule()->next()->format('U') );
 		$this->assertEquals( $hook, $action->get_hook() );
 	}
 
 	public function test_get_next() {
-		$time = new DateTime('tomorrow');
+		$time = new DateTime('tomorrow', new DateTimeZone('UTC'));
 		$hook = md5(rand());
 		wc_schedule_recurring_action( $time->format('U'), HOUR_IN_SECONDS, $hook );
 
