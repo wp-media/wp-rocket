@@ -47,6 +47,28 @@ add_settings_field(
 	)
 );
 
+add_settings_field(
+	'rocket_sitemap_preload_interval',
+	 __( 'URL crawl interval:', 'rocket' ),
+	'rocket_field',
+	'rocket_preload',
+	'rocket_display_preload_options',
+	array(
+        array(
+            'type'         => 'select',
+			'label'        => __('Interval between each URL crawl', 'rocket' ),
+			'label_for'    => 'sitemap_preload_url_crawl',
+			'label_screen' => __( 'Interval between each URL crawl', 'rocket' ),
+			'options'      => array(
+    			'250000'      => '250ms',
+    			'500000'      => '500ms',
+    			'750000'      => '750ms',
+    			'1000000'     => '1s'
+			)
+        ),
+	)
+);
+
 $jetpack_xml_sitemap      = array();
 $jetpack_xml_sitemap_desc = array();
 $yoast_xml_sitemap        = array();

@@ -98,6 +98,7 @@ function rocket_first_install() {
 			'manual_preload'              => 1,
 			'automatic_preload'           => 1,
 			'sitemap_preload'             => 0,
+			'sitemap_preload_url_crawl'   => '500000',
 			'sitemaps'                    => array(),
 			'jetpack_xml_sitemap'         => 0,
 			'google_xml_sitemap'          => 0,
@@ -264,6 +265,7 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		$options = get_option( WP_ROCKET_SLUG );
 		$options['manual_preload'] = 1;
 		$options['automatic_preload'] = 1;
+		$options['sitemap_preload_url_crawl'] = '500000';
 		update_option( WP_ROCKET_SLUG, $options );
 	}
 }

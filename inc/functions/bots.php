@@ -178,6 +178,7 @@ function rocket_process_sitemap( $sitemap_url ) {
         for ( $i = 0; $i < $url_count; $i++ ) {
         	$page_url = (string) $xml->url[ $i ]->loc;
         	$tmp      = wp_remote_get( esc_url_raw( $page_url ), $args );
+        	usleep( get_rocket_option( 'sitemap_preload_url_crawl', '500000' ) );
         }
     } else {
         // Sub sitemap?
