@@ -107,14 +107,14 @@ function rocket_cdn_css_properties( $buffer ) {
 		$i=0;
 		foreach( $matches[1] as $url ) {
 			$url      = trim( $url," \t\n\r\0\x0B\"'" );
-			/*
+			/**
              * Filters the URL of the CSS property
              *
              * @since 2.8
              *
              * @param string $url URL of the CSS property
              */
-			$url      = get_rocket_cdn_url( apply_filters( 'rocket_cdn_cd_properties_url', $url ), $zone );
+			$url      = get_rocket_cdn_url( apply_filters( 'rocket_cdn_css_properties_url', $url ), $zone );
 			$property = str_replace( $matches[1][$i], $url, $matches[0][$i] );
 			$buffer   = str_replace( $matches[0][$i], $property, $buffer );
 			
