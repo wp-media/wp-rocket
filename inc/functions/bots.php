@@ -101,11 +101,11 @@ function run_rocket_bot( $spider = 'cache-preload', $lang = '' ) {
  *
  * @return void
  */
-function run_rocket_preload_cache( $spider = 'cache-preload', $do_sitemap_preload = true ) {
+function run_rocket_preload_cache( $spider ) {
 	// Preload cache
  	run_rocket_bot( $spider );
 
-    if ( $do_sitemap_preload && get_rocket_option( 'sitemap_preload', false ) ) {
+    if ( get_rocket_option( 'sitemap_preload', false ) ) {
         run_rocket_sitemap_preload();
     }
 }
@@ -119,7 +119,13 @@ function run_rocket_preload_cache( $spider = 'cache-preload', $do_sitemap_preloa
  * @return void
  */
 function run_rocket_sitemap_preload() {
-
+    /*
+     * Filters the sitemaps list to preload
+     *
+     * @since 2.8
+     *
+     * @param array Array of sitemaps URL
+     */
     $sitemaps = apply_filters( 'rocket_sitemap_preload_list', get_rocket_option( 'sitemaps', false ) );
 
     if ( ! $sitemaps ) {

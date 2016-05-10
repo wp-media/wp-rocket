@@ -63,6 +63,13 @@ function rocket_first_install() {
 
 	// Create Option
 	add_option( WP_ROCKET_SLUG,
+	    /*
+         * Filters the default rocket options array
+         *
+         * @since 2.8
+         *
+         * @param array Array of default rocket options
+         */
 		apply_filters( 'rocket_first_install_options', array(
 			'secret_cache_key'            => $secret_cache_key,
 			'cache_mobile'                => 0,

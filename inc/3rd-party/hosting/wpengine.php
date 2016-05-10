@@ -24,7 +24,7 @@ add_action( 'admin_init', '__rocket_run_rocket_bot_after_wpengine' );
 function __rocket_run_rocket_bot_after_wpengine() {
 	if ( wpe_param( 'purge-all' ) && defined( 'PWP_NAME' ) && check_admin_referer( PWP_NAME . '-config' ) ) {
 		// Preload cache
-		run_rocket_preload_cache( 'cache-preload', true );
+		run_rocket_preload_cache( 'cache-preload' );
 	}
 }
 

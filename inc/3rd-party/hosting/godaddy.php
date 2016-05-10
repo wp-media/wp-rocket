@@ -21,7 +21,7 @@ function __rocket_clear_cache_after_godaddy() {
 		rocket_clean_domain();
 		
 		// Preload cache
-		run_rocket_preload_cache( 'cache-preload', true );
+		run_rocket_preload_cache( 'cache-preload' );
 	}
 }
 

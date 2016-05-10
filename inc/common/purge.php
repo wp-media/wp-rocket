@@ -337,7 +337,7 @@ add_action( 'shutdown', 'do_rocket_bot_cache_json' );
 function do_rocket_bot_cache_json() {
 	global $do_rocket_bot_cache_json;
 	if ( $do_rocket_bot_cache_json ) {
-    	run_rocket_preload_cache( 'cache-json', true );
+    	run_rocket_preload_cache( 'cache-json' );
 	}
 }
 
