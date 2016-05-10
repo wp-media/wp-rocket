@@ -385,6 +385,7 @@ function rocket_database_optimize( $type ) {
             }
             break;
     }
+}
 
 /**
  * Run an async job to preload sitemaps in background
