@@ -18,6 +18,7 @@ delete_metadata( 'user', '', 'rocket_boxes', '', true );
 
 // Clear scheduled WP Rocket Cron
 wp_clear_scheduled_hook( 'rocket_purge_time_event' );
+wp_clear_scheduled_hook( 'rocket_database_optimization_time_event' );
 
 /**
  * Remove all cache files
