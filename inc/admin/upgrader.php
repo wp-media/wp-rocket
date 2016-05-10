@@ -259,10 +259,11 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 	}
 
     if ( version_compare( $actual_version, '2.8', '<' ) ) {
-		$options = get_option( WP_ROCKET_SLUG );
-		$options['manual_preload'] = 1;
-		$options['automatic_preload'] = 1;
+		$options                              = get_option( WP_ROCKET_SLUG );
+		$options['manual_preload']            = 1;
+		$options['automatic_preload']         = 1;
 		$options['sitemap_preload_url_crawl'] = '500000';
+		
 		update_option( WP_ROCKET_SLUG, $options );
 	}
 }
