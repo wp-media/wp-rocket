@@ -337,7 +337,7 @@ add_action( 'shutdown', 'do_rocket_bot_cache_json' );
 function do_rocket_bot_cache_json() {
 	global $do_rocket_bot_cache_json;
 	if ( $do_rocket_bot_cache_json ) {
-		run_rocket_bot( 'cache-json' );
+    	run_rocket_preload_cache( 'cache-json' );
 	}
 }
 
@@ -460,6 +460,10 @@ function __rocket_preload_cache() {
 		$lang = isset( $_GET['lang'] ) && $_GET['lang'] != 'all' ? sanitize_key( $_GET['lang'] ) : '';
 		run_rocket_bot( 'cache-preload', $lang );
 
+        if ( get_rocket_option( 'sitemap_preload' ) ) {
+            run_rocket_sitemap_preload();
+        }
+
         wp_redirect( wp_get_referer() );
         die();
     }
@@ -481,4 +485,21 @@ function __admin_post_rocket_purge_cloudflare() {
 
 	wp_redirect( wp_get_referer() );
 	die();
+}
+
+/**
+ * Sitemap preload with async request
+ *
+ * @since 2.8
+ * @author Remy Perona
+ **/
+add_action( 'wp_ajax_rocket_preload_sitemap', '_do_admin_post_rocket_preload_sitemap' );
+function _do_admin_post_rocket_preload_sitemap() {
+	if ( isset( $_POST['_ajax_nonce'], $_POST['sitemap_url'], $_POST['sitemap_id'] )
+		&& check_ajax_referer( 'preload_sitemap-' . $_POST['sitemap_id'] )
+	) {		
+		rocket_process_sitemap( $_POST['sitemap_url'] );
+
+		die( 1 );
+	}
 }

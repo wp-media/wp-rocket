@@ -27,3 +27,5 @@ require( WP_ROCKET_3RD_PARTY_PATH . 'buddypress.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'give.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'custom-login.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'mobile/amp.php' );
+require( WP_ROCKET_3RD_PARTY_PATH . 'jetpack.php' );
+require( WP_ROCKET_3RD_PARTY_PATH . 'yoast-seo.php' );

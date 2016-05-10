@@ -44,6 +44,22 @@ function rocket_sanitize_js( $file )
 }
 
 /**
+ * Used with array_filter to remove files without .xml extension
+ *
+ * @since 2.8
+ * @author Remy Perona
+ *
+ * @param string $file filename
+ * @return string|boolean filename or false if not xml
+ */
+function rocket_sanitize_xml( $file )
+{
+	$file = preg_replace( '#\?.*$#', '', $file );
+	$ext  = strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
+	return ( 'xml' === $ext ) ? trim( $file ) : false;
+}
+
+/**
  * Get an url without HTTP protocol
  *
  * @since 1.3.0
