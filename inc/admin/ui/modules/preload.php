@@ -78,6 +78,16 @@ add_settings_field(
     			'1000000'     => '1s'
 			)
         ),
+        array(
+			'type'			=> 'helper_description',
+			'name'			=> 'sitemaps_preload_url_crawl_desc',
+			'description'  => __( 'You can use this option to change the interval between each URL crawl.', 'rocket' )
+		),
+		array(
+			'type'			=> 'helper_warning',
+			'name'			=> 'sitemaps_preload_url_crawl_warning',
+			'description'  => __( 'Depending on your server, it might be needed to set an higher value to prevent any overload. Default to 500ms.', 'rocket' )
+		),
 	)
 );
 
