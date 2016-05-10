@@ -89,7 +89,7 @@ function rocket_field( $args ) {
 
 				$t_temp = get_rocket_option( $args['name'], '' );
 				$value = ! empty( $t_temp ) ? esc_textarea( implode( "\n" , $t_temp ) ) : '';
-				if ( ! $value ) {
+				if ( ! $value ){
 					$value = $default;
 				}
 				?>
@@ -106,7 +106,7 @@ function rocket_field( $args ) {
 					?>
 						<legend class="screen-reader-text"><span><?php echo $args['label_screen']; ?></span></legend>
 					<?php } ?>
-					<label><input type="checkbox" id="<?php echo $args['name']; ?>" class="<?php echo $class; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]" value="1"<?php echo $readonly; ?> <?php checked( get_rocket_option( $args['name'], $default ), 1 ); ?> <?php echo $parent; ?>/> <?php echo $args['label']; ?>
+					<label><input type="checkbox" id="<?php echo $args['name']; ?>" class="<?php echo $class; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]" value="1"<?php echo $readonly; ?> <?php checked( get_rocket_option( $args['name'], 0 ), 1 ); ?> <?php echo $parent; ?>/> <?php echo $args['label']; ?>
 					</label>
 
 			<?php
@@ -435,7 +435,6 @@ function rocket_display_options() {
 		'api-key',
 		'basic',
 		'advanced',
-		'preload',
 		'cloudflare',
 		'cdn',
 		'varnish',
@@ -480,7 +479,6 @@ function rocket_display_options() {
 			<?php if( rocket_valid_key() ) { ?>
 				<a href="#tab_basic" class="nav-tab"><?php _e( 'Basic options', 'rocket' ); ?></a>
 				<a href="#tab_advanced" class="nav-tab"><?php _e( 'Advanced options', 'rocket' ); ?></a>
-				<a href="#tab_preload" class="nav-tab"><?php _e( 'Preload', 'rocket' ); ?></a>
 				<?php if ( get_rocket_option( 'do_cloudflare' ) ) { ?>
 					<a href="#tab_cloudflare" class="nav-tab">CloudFlare</a>
 				<?php } ?>
@@ -514,7 +512,6 @@ function rocket_display_options() {
 			<?php if( rocket_valid_key() ) { ?>
 				<div class="rkt-tab" id="tab_basic"><?php do_settings_sections( 'rocket_basic' ); ?></div>
 				<div class="rkt-tab" id="tab_advanced"><?php do_settings_sections( 'rocket_advanced' ); ?></div>
-				<div class="rkt-tab" id="tab_preload"><?php do_settings_sections( 'rocket_preload' ); ?></div>
 				<div class="rkt-tab" id="tab_cloudflare" <?php echo get_rocket_option( 'do_cloudflare' ) ? '' : 'style="display:none"'; ?>><?php do_settings_sections( 'rocket_cloudflare' ); ?></div>
 				<div class="rkt-tab" id="tab_cdn"><?php do_settings_sections( 'rocket_cdn' ); ?></div>
 				<?php 
@@ -746,35 +743,9 @@ function rocket_settings_callback( $inputs ) {
 	} else {
 		$inputs['minify_js_in_footer'] = array();
 	}
-
-    /*
-     * Options: Activate bot preload
-     */
-    $inputs['manual_preload'] = ! empty( $inputs['manual_preload'] ) ? 1 : 0;
-    $inputs['automatic_preload'] = ! empty( $inputs['automatic_preload'] ) ? 1 : 0;
-
-    /*
-     * Option: activate sitemap preload
-     */
-    $inputs['sitemap_preload'] = ! empty( $inputs['sitemap_preload'] ) ? 1 : 0;
-
-    /*
-     * Option : XML sitemaps URLs
-     */
-    if ( ! empty( $inputs['sitemaps'] ) ) {
-		if ( ! is_array( $inputs['sitemaps'] ) ) {
-			$inputs['sitemaps'] = explode( "\n", $inputs['sitemaps'] );
-		}
-		$inputs['sitemaps'] = array_map( 'trim', $inputs['sitemaps'] );
-		$inputs['sitemaps'] = array_map( 'rocket_sanitize_xml', $inputs['sitemaps'] );
-		$inputs['sitemaps'] = (array) array_filter( $inputs['sitemaps'] );
-		$inputs['sitemaps'] = array_unique( $inputs['sitemaps'] );
-	} else {
-		$inputs['sitemaps'] = array();
-	}
-
+	
 	/*
-	 * Option: CloudFlare Domain
+	 * Option : CloudFlare Domain
 	 */
 	if ( ! empty( $inputs['cloudflare_domain'] ) ) {
 		$inputs['cloudflare_domain'] = rocket_get_domain( $inputs['cloudflare_domain'] );
@@ -896,7 +867,7 @@ function rocket_settings_callback( $inputs ) {
 		add_settings_error( 'general', 'settings_updated', __( 'Settings saved.', 'rocket' ), 'updated' );
 	}
 
-	return apply_filters( 'rocket_inputs_sanitize', $inputs );
+	return $inputs;
 }
 
 /**
