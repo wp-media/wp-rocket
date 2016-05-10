@@ -4,9 +4,9 @@ Plugin Name: WP Rocket
 Plugin URI: http://www.wp-rocket.me
 Description: The best WordPress performance plugin.
 Version: 2.8
-Code Name: Hoth
+Code Name: Ilum
 Author: WP Rocket
-Contributors: Jonathan Buttigieg, Julio Potier
+Contributors: Jonathan Buttigieg, Julio Potier, Remy Perona
 Author URI: http://www.wp-rocket.me
 Licence: GPLv2
 
