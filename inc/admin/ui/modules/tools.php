@@ -56,7 +56,7 @@ add_settings_field(
         ),
 		'helper_description'=>array(
 			'name'         => 'preload',
-        	'description'  => __( 'Allows you to request a bot crawl to preload the cache (homepage and its internal links).', 'rocket' )
+        	'description'  => __( 'Allows you to request a bot crawl to preload the cache (homepage and its internal links) and/or to preload the cache using an XML sitemap.', 'rocket' )
 		),
 	)
 );

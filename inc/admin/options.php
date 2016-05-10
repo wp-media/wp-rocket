@@ -89,7 +89,7 @@ function rocket_field( $args ) {
 
 				$t_temp = get_rocket_option( $args['name'], '' );
 				$value = ! empty( $t_temp ) ? esc_textarea( implode( "\n" , $t_temp ) ) : '';
-				if ( ! $value ){
+				if ( ! $value ) {
 					$value = $default;
 				}
 				?>
@@ -104,9 +104,9 @@ function rocket_field( $args ) {
 			case 'checkbox' : 
 				if ( isset( $args['label_screen'] ) ) {
 				?>
-				    <legend class="screen-reader-text"><span><?php echo $args['label_screen']; ?></span></legend>
+                    <legend class="screen-reader-text"><span><?php echo $args['label_screen']; ?></span></legend>
 				<?php } ?>
-					<label><input type="checkbox" id="<?php echo $args['name']; ?>" class="<?php echo $class; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]" value="1"<?php echo $readonly; ?> <?php checked( get_rocket_option( $args['name'], 0 ), 1 ); ?> <?php echo $parent; ?>/> <?php echo $args['label']; ?>
+					<label><input type="checkbox" id="<?php echo $args['name']; ?>" class="<?php echo $class; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]" value="1"<?php echo $readonly; ?> <?php checked( get_rocket_option( $args['name'], $default ), 1 ); ?> <?php echo $parent; ?>/> <?php echo $args['label']; ?>
 					</label>
 
 			<?php
@@ -441,6 +441,7 @@ function rocket_display_options() {
 		'basic',
 		'advanced',
 		'database',
+		'preload',
 		'cloudflare',
 		'cdn',
 		'varnish',
@@ -486,6 +487,7 @@ function rocket_display_options() {
 				<a href="#tab_basic" class="nav-tab"><?php _e( 'Basic options', 'rocket' ); ?></a>
 				<a href="#tab_advanced" class="nav-tab"><?php _e( 'Advanced options', 'rocket' ); ?></a>
 				<a href="#tab_database" class="nav-tab"><?php _e( 'Database', 'rocket' ); ?></a>
+				<a href="#tab_preload" class="nav-tab"><?php _e( 'Preload', 'rocket' ); ?></a>
 				<?php if ( get_rocket_option( 'do_cloudflare' ) ) { ?>
 					<a href="#tab_cloudflare" class="nav-tab">CloudFlare</a>
 				<?php } ?>
@@ -524,6 +526,7 @@ function rocket_display_options() {
                     <p class="description warning file-error database_description"><?php _e( 'Before you do any optimization, please backup your database first because any cleanup done is irreversible!', 'rocket' ); ?></p>
     				<?php do_settings_sections( 'rocket_database' ); ?>
 				</div>
+				<div class="rkt-tab" id="tab_preload"><?php do_settings_sections( 'rocket_preload' ); ?></div>
 				<div class="rkt-tab" id="tab_cloudflare" <?php echo get_rocket_option( 'do_cloudflare' ) ? '' : 'style="display:none"'; ?>><?php do_settings_sections( 'rocket_cloudflare' ); ?></div>
 				<div class="rkt-tab" id="tab_cdn"><?php do_settings_sections( 'rocket_cdn' ); ?></div>
 				<?php 
@@ -756,25 +759,51 @@ function rocket_settings_callback( $inputs ) {
 		$inputs['minify_js_in_footer'] = array();
 	}
 
-    /*
+    /**
      * Database options
      */
-    $inputs['database_revisions'] = ! empty( $inputs['database_revisions'] ) ? 1 : 0;
-    $inputs['database_auto_drafts'] = ! empty( $inputs['database_auto_drafts'] ) ? 1 : 0;
-    $inputs['database_trashed_posts'] = ! empty( $inputs['database_trashed_posts'] ) ? 1 : 0;
-    $inputs['database_spam_comments'] = ! empty( $inputs['database_spam_comments'] ) ? 1 : 0;
-    $inputs['database_trashed_comments'] = ! empty( $inputs['database_trashed_comments'] ) ? 1 : 0;
+    $inputs['database_revisions']          = ! empty( $inputs['database_revisions'] ) ? 1 : 0;
+    $inputs['database_auto_drafts']        = ! empty( $inputs['database_auto_drafts'] ) ? 1 : 0;
+    $inputs['database_trashed_posts']      = ! empty( $inputs['database_trashed_posts'] ) ? 1 : 0;
+    $inputs['database_spam_comments']      = ! empty( $inputs['database_spam_comments'] ) ? 1 : 0;
+    $inputs['database_trashed_comments']   = ! empty( $inputs['database_trashed_comments'] ) ? 1 : 0;
     $inputs['database_expired_transients'] = ! empty( $inputs['database_expired_transients'] ) ? 1 : 0;
-    $inputs['database_all_transients'] = ! empty( $inputs['database_all_transients'] ) ? 1 : 0;
-    $inputs['database_optimize_tables'] = ! empty( $inputs['database_optimize_tables'] ) ? 1 : 0;
-    $inputs['schedule_automatic_cleanup'] = ! empty( $inputs['schedule_automatic_cleanup'] ) ? 1 : 0;
+    $inputs['database_all_transients']     = ! empty( $inputs['database_all_transients'] ) ? 1 : 0;
+    $inputs['database_optimize_tables']    = ! empty( $inputs['database_optimize_tables'] ) ? 1 : 0;
+    $inputs['schedule_automatic_cleanup']  = ! empty( $inputs['schedule_automatic_cleanup'] ) ? 1 : 0;
 
     if ( $inputs['schedule_automatic_cleanup'] != 1 && ( 'daily' != $inputs['automatic_cleanup_frequency'] || 'weekly' != $inputs['automatic_cleanup_frequency'] || 'monthly' != $inputs['automatic_cleanup_frequency'] ) ) {
         unset( $inputs['automatic_cleanup_frequency'] );
     }
 	
+    /**
+     * Options: Activate bot preload
+     */
+    $inputs['manual_preload']    = ! empty( $inputs['manual_preload'] ) ? 1 : 0;
+    $inputs['automatic_preload'] = ! empty( $inputs['automatic_preload'] ) ? 1 : 0;
+
+    /*
+     * Option: activate sitemap preload
+     */
+    $inputs['sitemap_preload'] = ! empty( $inputs['sitemap_preload'] ) ? 1 : 0;
+
+    /*
+     * Option : XML sitemaps URLs
+     */
+    if ( ! empty( $inputs['sitemaps'] ) ) {
+		if ( ! is_array( $inputs['sitemaps'] ) ) {
+			$inputs['sitemaps'] = explode( "\n", $inputs['sitemaps'] );
+		}
+		$inputs['sitemaps'] = array_map( 'trim', $inputs['sitemaps'] );
+		$inputs['sitemaps'] = array_map( 'rocket_sanitize_xml', $inputs['sitemaps'] );
+		$inputs['sitemaps'] = (array) array_filter( $inputs['sitemaps'] );
+		$inputs['sitemaps'] = array_unique( $inputs['sitemaps'] );
+	} else {
+		$inputs['sitemaps'] = array();
+	}
+
 	/*
-	 * Option : CloudFlare Domain
+	 * Option: CloudFlare Domain
 	 */
 	if ( ! empty( $inputs['cloudflare_domain'] ) ) {
 		$inputs['cloudflare_domain'] = rocket_get_domain( $inputs['cloudflare_domain'] );
@@ -896,7 +925,7 @@ function rocket_settings_callback( $inputs ) {
 		add_settings_error( 'general', 'settings_updated', __( 'Settings saved.', 'rocket' ), 'updated' );
 	}
 
-	return $inputs;
+	return apply_filters( 'rocket_inputs_sanitize', $inputs );
 }
 
 /**
