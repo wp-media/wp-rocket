@@ -66,6 +66,7 @@ add_action( 'after_rocket_clean_domain', 'rocket_clean_pressidium' );
 /**
  * Update cache when a post is updated or commented
  *
+ * @since 2.8   Only add post type archive if post type is not post
  * @since 2.6 	Purge the page defined in "Posts page" option
  * @since 2.5.5 Don't cache for auto-draft post status
  * @since 1.3.2 Add wp_update_comment_count to purge cache when a comment is added/updated/deleted
@@ -125,10 +126,12 @@ function rocket_clean_post( $post_id ) {
 	}
 	
 	// Add Post Type archive
-	$post_type_archive = get_post_type_archive_link( get_post_type( $post_id ) );
-	if ( $post_type_archive ) {
-		array_push( $purge_urls, $post_type_archive );
-	}
+	if ( $post->post_type !== 'post' ) {
+	    $post_type_archive = get_post_type_archive_link( get_post_type( $post_id ) );
+	    if ( $post_type_archive ) {
+	    	array_push( $purge_urls, $post_type_archive );
+	    }
+    }
 
 	// Add next post
 	$next_post = get_adjacent_post( false, '', false );
