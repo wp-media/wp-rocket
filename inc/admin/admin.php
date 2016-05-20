@@ -241,7 +241,9 @@ function __rocket_do_options_export() {
 		wp_nonce_ays( '' );
 	}
 
-	$filename = sprintf( 'wp-rocket-settings-%s-%s.txt', date( 'Y-m-d' ), uniqid() );
+    $filename_prefix = rocket_is_white_label() ? sanitize_title( get_rocket_option( 'wl_plugin_name' ) ) : 'wp-rocket';
+
+	$filename = sprintf( '%s-settings-%s-%s.txt', $filename_prefix, date( 'Y-m-d' ), uniqid() );
 	$gz = 'gz' . strrev( 'etalfed' );
 	$options = $gz//;
 	( serialize( get_option( WP_ROCKET_SLUG ) ), 1 ); // do not use get_rocket_option() here
