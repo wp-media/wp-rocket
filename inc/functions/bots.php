@@ -192,7 +192,7 @@ function rocket_process_sitemap( $sitemap_url ) {
         return;
     }
 
-    libxml_use_internal_errors();
+    libxml_use_internal_errors( true );
 
     $xml = simplexml_load_string( $xml_data );
 
