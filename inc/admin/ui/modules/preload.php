@@ -71,12 +71,20 @@ add_settings_field(
 			'label'        => __('Interval between each URL crawl', 'rocket' ),
 			'label_for'    => 'sitemap_preload_url_crawl',
 			'label_screen' => __( 'Interval between each URL crawl', 'rocket' ),
-			'options'      => array(
+			/*
+             * Filters the array of options interval for sitemap preload
+             *
+             * @since 2.8
+             *
+             * @param array Array of options interval defined by a $value => $label pair
+             */
+			'options'      => apply_filters( 'rocket_sitemap_preload_interval', array(
     			'250000'      => '250ms',
     			'500000'      => '500ms',
     			'750000'      => '750ms',
-    			'1000000'     => '1s'
-			)
+    			'1000000'     => '1s',
+    			'2000000'     => '2s',
+			) )
         ),
         array(
 			'type'			=> 'helper_description',
