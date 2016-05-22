@@ -101,11 +101,11 @@ function run_rocket_bot( $spider = 'cache-preload', $lang = '' ) {
  *
  * @return void
  */
-function run_rocket_preload_cache( $spider ) {
+function run_rocket_preload_cache( $spider, $do_sitemap_preload = true ) {
 	// Preload cache
  	run_rocket_bot( $spider );
 
-    if ( get_rocket_option( 'sitemap_preload', false ) ) {
+    if ( $do_sitemap_preload & get_rocket_option( 'sitemap_preload', false ) ) {
         run_rocket_sitemap_preload();
     }
 }
