@@ -109,6 +109,7 @@ function rocket_init()
     require( WP_ROCKET_FUNCTIONS_PATH	. 'minify.php' );
     require( WP_ROCKET_FUNCTIONS_PATH	. 'plugins.php' );
     require( WP_ROCKET_FUNCTIONS_PATH	. 'i18n.php' );
+    require( WP_ROCKET_FUNCTIONS_PATH   . 'background-processing.php' );
     require( WP_ROCKET_FUNCTIONS_PATH	. 'bots.php' );
     require( WP_ROCKET_FUNCTIONS_PATH	. 'cloudflare.php' );
     require( WP_ROCKET_FUNCTIONS_PATH	. 'htaccess.php' );

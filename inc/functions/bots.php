@@ -133,7 +133,8 @@ function run_rocket_sitemap_preload() {
     }
 
     $sitemaps   = array_unique( $sitemaps );
-    $sitemap_id = 0;
+
+    $rocket_background_process = $GLOBALS['rocket_sitemap_background_process'];
 
     foreach ( $sitemaps as $sitemap_type => $sitemap_url ) {
         /**
@@ -146,11 +147,7 @@ function run_rocket_sitemap_preload() {
 		*/
 		do_action( 'before_run_rocket_sitemap_preload', $sitemap_type, $sitemap_url );
 
-        $sitemap_id++;
-        $action      = 'rocket_preload_sitemap';
-        $_ajax_nonce = wp_create_nonce( 'preload_sitemap-' . $sitemap_id );
-        
-        rocket_do_async_job( compact( 'action', '_ajax_nonce', 'sitemap_url', 'sitemap_id' ) );
+        $sitemap_group = rocket_process_sitemap( $sitemap_url );
 
         /**
 		 * Fires after WP Rocket sitemap preload was called for a sitemap URL
@@ -162,6 +159,15 @@ function run_rocket_sitemap_preload() {
 		*/
 		do_action( 'after_run_rocket_sitemap_preload', $sitemap_type, $sitemap_url );
     }
+
+    foreach( $sitemap_group as $key => $values ) {
+        $values = array_unique( $values );
+        foreach( $values as $url ) {
+            $rocket_background_process->push_to_queue( $url );
+        }
+    }
+
+    $rocket_background_process->save()->dispatch();
 }
 
 /**
@@ -173,6 +179,7 @@ function run_rocket_sitemap_preload() {
  * @return void
  */
 function rocket_process_sitemap( $sitemap_url ) {
+
     $args = array(
         'timeout'    => 0.01,
         'blocking'   => false,
@@ -200,24 +207,25 @@ function rocket_process_sitemap( $sitemap_url ) {
         libxml_clear_errors();
         return;
     }
-	
+
     $url_count = count( $xml->url );
-    
+
     if ( $url_count > 0 ) {
+        $urls = array();
         for ( $i = 0; $i < $url_count; $i++ ) {
-        	$page_url = (string) $xml->url[ $i ]->loc;
-        	$tmp      = wp_remote_get( esc_url_raw( $page_url ), $args );
-        	usleep( get_rocket_option( 'sitemap_preload_url_crawl', '500000' ) );
+            $page_url = (string) $xml->url[ $i ]->loc;
+            $urls[] = $page_url;
         }
     } else {
         // Sub sitemap?
-        $sitemap_count = count( $xml->sitemap );
-        
-        if ( $sitemap_count > 0 ) {
-        	for ( $i = 0; $i < $sitemap_count; $i++ ) {
+        $sitemap_children = count( $xml->sitemap ); 
+        if ( $sitemap_children > 0 ) {
+        	for ( $i = 0; $i < $sitemap_children; $i++ ) {
         		$sub_sitemap_url = (string) $xml->sitemap[$i]->loc;
-        		rocket_process_sitemap( $sub_sitemap_url );
-        	}				
+        		$urls[ $i ]  = rocket_process_sitemap( $sub_sitemap_url );
+        	}
         }
     }
+
+    return $urls;
 }
