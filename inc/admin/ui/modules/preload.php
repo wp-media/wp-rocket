@@ -94,7 +94,7 @@ add_settings_field(
 		array(
 			'type'			=> 'helper_warning',
 			'name'			=> 'sitemaps_preload_url_crawl_warning',
-			'description'  => __( 'Depending on your server, it might be needed to set an higher value to prevent any overload. Default to 500ms.', 'rocket' )
+			'description'  => __( 'Depending on your server, it might be necessary to set a higher value to prevent any overload. Default is 500ms.', 'rocket' )
 		),
 	)
 );
