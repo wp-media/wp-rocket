@@ -178,7 +178,7 @@ add_settings_field(
             'type' => 'submit_optimize',
         ),
 		array(
-    		'type'         => 'helper_description',
+    		'type'         => 'helper_warning',
     		'name'         => 'submit_optimize_desc',
     		'description'  => __( 'If you made any change to the settings, use the save and optimize button', 'rocket' )
 		),

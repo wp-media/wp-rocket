@@ -37,9 +37,14 @@ $sitemap_preload_options = array(
 	    'label'        => __('Activate the sitemap preloading', 'rocket' ),
 	    'label_for'    => 'sitemap_preload',
 	    'name'         => 'sitemap_preload',
-	    'label_screen' => __( 'Activate sitemap preloading (from admin bar or Tools tab of WP Rocket)', 'rocket' ),
+	    'label_screen' => __( 'Activate sitemap preloading', 'rocket' ),
 	    'default'      => 0,
-    )
+    ),
+    array(
+			'type'			=> 'helper_description',
+			'name'			=> 'sitemaps_preload_desc',
+			'description'  => __( 'The sitemap preloading can be launched from the admin bar menu or the Tools tab of WP Rocket. It will also automatically run when the lifespan of the Clear Cache Lifespan option expires.', 'rocket' )
+		),
 );
         
 
