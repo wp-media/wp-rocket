@@ -132,8 +132,8 @@ function run_rocket_sitemap_preload() {
         return false;
     }
 
-    $sitemaps   = array_unique( $sitemaps );
-
+    $sitemaps                  = array_unique( $sitemaps );
+    $urls_group                = array();
     $rocket_background_process = $GLOBALS['rocket_sitemap_background_process'];
 
     foreach ( $sitemaps as $sitemap_type => $sitemap_url ) {
@@ -147,7 +147,7 @@ function run_rocket_sitemap_preload() {
 		*/
 		do_action( 'before_run_rocket_sitemap_preload', $sitemap_type, $sitemap_url );
 
-        $sitemap_group = rocket_process_sitemap( $sitemap_url );
+        $urls_group[] = rocket_process_sitemap( $sitemap_url );
 
         /**
 		 * Fires after WP Rocket sitemap preload was called for a sitemap URL
@@ -160,9 +160,9 @@ function run_rocket_sitemap_preload() {
 		do_action( 'after_run_rocket_sitemap_preload', $sitemap_type, $sitemap_url );
     }
 
-    foreach( $sitemap_group as $key => $values ) {
-        $values = array_unique( $values );
-        foreach( $values as $url ) {
+    foreach ( $urls_group as $k => $urls ) {
+        $urls = array_unique ( $urls );
+        foreach( $urls as $url ) {
             $rocket_background_process->push_to_queue( $url );
         }
     }
@@ -178,7 +178,8 @@ function run_rocket_sitemap_preload() {
  *
  * @return void
  */
-function rocket_process_sitemap( $sitemap_url ) {
+function rocket_process_sitemap( $sitemap_url, $urls = array() ) {
+    $tmp_urls = array();
 
     $args = array(
         'timeout'    => 0.01,
@@ -211,10 +212,9 @@ function rocket_process_sitemap( $sitemap_url ) {
     $url_count = count( $xml->url );
 
     if ( $url_count > 0 ) {
-        $urls = array();
         for ( $i = 0; $i < $url_count; $i++ ) {
             $page_url = (string) $xml->url[ $i ]->loc;
-            $urls[] = $page_url;
+            $tmp_urls[] = $page_url;
         }
     } else {
         // Sub sitemap?
@@ -222,10 +222,11 @@ function rocket_process_sitemap( $sitemap_url ) {
         if ( $sitemap_children > 0 ) {
         	for ( $i = 0; $i < $sitemap_children; $i++ ) {
         		$sub_sitemap_url = (string) $xml->sitemap[$i]->loc;
-        		$urls[ $i ]  = rocket_process_sitemap( $sub_sitemap_url );
+        		$urls = rocket_process_sitemap( $sub_sitemap_url, $urls );
         	}
         }
     }
 
+    $urls = array_merge( $urls, $tmp_urls );
     return $urls;
 }
