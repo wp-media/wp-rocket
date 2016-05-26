@@ -132,7 +132,7 @@ function run_rocket_sitemap_preload() {
         return false;
     }
 
-    $sitemaps                  = array_unique( $sitemaps );
+    $sitemaps                  = array_flip( array_flip( $sitemaps ) );
     $urls_group                = array();
     $rocket_background_process = $GLOBALS['rocket_sitemap_background_process'];
 
@@ -165,7 +165,7 @@ function run_rocket_sitemap_preload() {
             continue;
         }
 
-        $urls = array_unique( $urls );
+        $urls = array_flip( array_flip( $urls ) );
         foreach( $urls as $url ) {
             $rocket_background_process->push_to_queue( $url );
         }
