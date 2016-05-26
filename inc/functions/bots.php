@@ -161,7 +161,11 @@ function run_rocket_sitemap_preload() {
     }
 
     foreach ( $urls_group as $k => $urls ) {
-        $urls = array_unique ( $urls );
+        if ( empty( $urls ) ) {
+            continue;
+        }
+
+        $urls = array_unique( $urls );
         foreach( $urls as $url ) {
             $rocket_background_process->push_to_queue( $url );
         }
