@@ -241,7 +241,9 @@ function __rocket_do_options_export() {
 		wp_nonce_ays( '' );
 	}
 
-	$filename = sprintf( 'wp-rocket-settings-%s-%s.txt', date( 'Y-m-d' ), uniqid() );
+    $filename_prefix = rocket_is_white_label() ? sanitize_title( get_rocket_option( 'wl_plugin_name' ) ) : 'wp-rocket';
+
+	$filename = sprintf( '%s-settings-%s-%s.txt', $filename_prefix, date( 'Y-m-d' ), uniqid() );
 	$gz = 'gz' . strrev( 'etalfed' );
 	$options = $gz//;
 	( serialize( get_option( WP_ROCKET_SLUG ) ), 1 ); // do not use get_rocket_option() here
@@ -336,4 +338,22 @@ function __rocket_maybe_set_wp_cache_define() {
 	if( defined( 'WP_CACHE' ) && ! WP_CACHE ) {
 		set_rocket_wp_cache_define( true );
 	}
+}
+
+/**
+ * Launches the database optimization from admin
+ *
+ * @since 2.8
+ * @author Remy Perona
+ */
+add_action( 'admin_post_rocket_optimize_database', '__rocket_optimize_database' );
+function __rocket_optimize_database() {
+    if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'rocket_optimize_database' ) ) {
+        wp_nonce_ays( '' );
+    }
+
+    do_rocket_database_optimization();
+
+    wp_redirect( wp_get_referer() );
+    die();
 }

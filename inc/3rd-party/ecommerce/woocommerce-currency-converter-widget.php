@@ -11,8 +11,9 @@ if ( class_exists( 'WC_Currency_Converter' ) ) :
 
 // Add cookie to config file when WP Rocket is activated and WooCommerce Currency Converter Widget is already active
 	    add_filter( 'rocket_htaccess_mod_rewrite'	 , '__return_false' );
-	    add_filter( 'rocket_cache_dynamic_cookies'	 , '_rocket_add_woocommerce_currency_converter_dynamic_cookies' );
-	    add_filter( 'rocket_cache_mandatory_cookies' , '_rocket_add_woocommerce_currency_converter_mandatory_cookie' );
+	    add_filter( 'rocket_cache_dynamic_cookies'	 , '_rocket_add_woocommerce_currency_converter_dynamic_cookies', 11 );
+	    add_filter( 'rocket_cache_mandatory_cookies' , '_rocket_add_woocommerce_currency_converter_mandatory_cookie', 11 );
+	    add_action( 'update_option_woocommerce_default_customer_address', '__rocket_after_update_single_options', 10, 2 );
     
 endif;
 
@@ -54,7 +55,7 @@ function _rocket_add_woocommerce_currency_converter_dynamic_cookies( $cookies ) 
 function _rocket_add_woocommerce_currency_converter_mandatory_cookie( $cookies ) {
 	$widget_woocommerce_currency_converter = get_option( 'widget_woocommerce_currency_converter' );
 
-	if ( ! empty( $widget_woocommerce_currency_converter ) ) {
+	if ( ! empty( $widget_woocommerce_currency_converter ) && 'geolocation_ajax' === get_option( 'woocommerce_default_customer_address' ) ) {
 		$cookies[] = 'woocommerce_current_currency';
 	}
 

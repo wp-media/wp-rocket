@@ -35,6 +35,7 @@ function get_rocket_cdn_url( $url, $zone = array( 'all' ) )
 {
 	$cnames             = get_rocket_cdn_cnames( $zone );
 	$wp_content_dirname = ltrim( str_replace( home_url(), '', WP_CONTENT_URL ), '/' ) . '/';
+	$home               = home_url();
 
 	if ( ( defined( 'DONOTCDN' ) && DONOTCDN ) || (int) get_rocket_option('cdn') == 0 || empty( $cnames ) || ! is_rocket_cdn_on_ssl() || is_rocket_post_excluded_option( 'cdn' ) ) {
 		return $url;
@@ -106,7 +107,14 @@ function rocket_cdn_css_properties( $buffer ) {
 		$i=0;
 		foreach( $matches[1] as $url ) {
 			$url      = trim( $url," \t\n\r\0\x0B\"'" );
-			$url      = get_rocket_cdn_url( $url, $zone );
+			/**
+             * Filters the URL of the CSS property
+             *
+             * @since 2.8
+             *
+             * @param string $url URL of the CSS property
+             */
+			$url      = get_rocket_cdn_url( apply_filters( 'rocket_cdn_css_properties_url', $url ), $zone );
 			$property = str_replace( $matches[1][$i], $url, $matches[0][$i] );
 			$buffer   = str_replace( $matches[0][$i], $property, $buffer );
 			

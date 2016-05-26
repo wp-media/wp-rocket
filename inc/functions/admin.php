@@ -276,3 +276,133 @@ function rocket_is_plugin_installed( $plugin ) {
 
 	return isset( $installed_plugins[ $plugin ] );
 }
+
+/**
+ * Performs the database optimization
+ *
+ * @since 2.8
+ * @author Remy Perona
+ */
+ function do_rocket_database_optimization() {
+     $options = array(
+       'revisions',
+       'auto_drafts',
+       'trashed_posts',
+       'spam_comments',
+       'trashed_comments',
+       'expired_transients',
+       'all_transients',
+       'optimize_tables'
+     );
+
+     foreach ( $options as $option ) {
+         if ( get_rocket_option( 'database_' . $option, false ) ) {
+             rocket_database_optimize( $option );
+         }
+     }
+ }
+ 
+/*
+ * Optimizes the database depending on the option
+ *
+ * @since 2.8
+ * @author Remy Perona
+ *
+ * @param string $type Type of optimization to perform
+ */
+function rocket_database_optimize( $type ) {
+    global $wpdb;
+
+    switch( $type ) {
+        case 'revisions':
+            $query = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type = %s", 'revision' ) );
+            if ( $query ) {
+                foreach ( $query as $id ) {
+                    wp_delete_post_revision( intval( $id ) );
+                }
+            }
+            break;
+        case 'auto_drafts':
+            $query = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_status = %s", 'auto-draft' ) );
+            if ( $query ) {
+                foreach ( $query as $id ) {
+                    wp_delete_post( intval( $id ), true );
+                }
+            }
+            break;
+        case 'trashed_posts':
+            $query = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_status = %s", 'trash' ) );
+            if ( $query ) {
+                foreach ( $query as $id ) {
+                    wp_delete_post( $id, true );
+                }
+            }
+            break;
+        case 'spam_comments':
+            $query = $wpdb->get_col( $wpdb->prepare( "SELECT comment_ID FROM $wpdb->comments WHERE comment_approved = %s", 'spam' ) );
+            if ( $query ) {
+                foreach ( $query as $id ) {
+                    wp_delete_comment( intval( $id ), true );
+                }
+            }
+            break;
+        case 'trashed_comments':
+            $query = $wpdb->get_col( $wpdb->prepare( "SELECT comment_ID FROM $wpdb->comments WHERE (comment_approved = %s OR comment_approved = %s)", 'trash', 'post-trashed' ) );
+            if ( $query ) {
+                foreach ( $query as $id ) {
+                    wp_delete_comment( intval( $id ), true );
+                }
+            }
+            break;
+        case 'expired_transients':
+            $time = isset( $_SERVER['REQUEST_TIME'] ) ? (int) $_SERVER['REQUEST_TIME'] : time();
+            $query = $wpdb->get_col( $wpdb->prepare( "SELECT option_name FROM $wpdb->options WHERE option_name LIKE %s AND option_value < %s", '_transient_timeout%', $time ) );
+            
+            if ( $query ) {
+                foreach ( $query as $transient ) {
+                    $key = str_replace( '_transient_timeout_', '', $transient );
+                    delete_transient( $key );
+                }
+            }
+            break;
+        case 'all_transients':
+            $query = $wpdb->get_col( $wpdb->prepare( "SELECT option_name FROM $wpdb->options WHERE option_name LIKE %s", '%_transient_%' ) );
+            if ( $query ) {
+                foreach ( $query as $transient ) {
+                    if( strpos( $transient, '_site_transient_' ) !== false ) {
+                        delete_site_transient( str_replace( '_site_transient_', '', $transient ) );
+                    } else {
+                        delete_transient( str_replace( '_transient_', '', $transient ) );
+                    }
+                }
+            }
+            break;
+        case 'optimize_tables':
+            $query = $wpdb->get_results( $wpdb->prepare( "SELECT table_name, data_free FROM information_schema.tables WHERE table_schema = %s and Engine <> 'InnoDB' and data_free > 0", DB_NAME ) );
+            if ( $query ) {
+                foreach( $query as $table ) {
+                    $wpdb->query( 'OPTIMIZE TABLE ' . $table->table_name );
+                }
+            }
+            break;
+    }
+}
+
+/**
+ * Run an async job to preload sitemaps in background
+ *
+ * @param $body (array) Contains the usual $_POST
+ *
+ * @since 2.8
+ **/
+function rocket_do_async_job( $body ) {
+	$args = array(
+		'timeout'   => 0.01,
+		'blocking'  => false,
+		'body'      => $body,
+		'cookies'   => $_COOKIE,
+		'sslverify' => apply_filters( 'https_local_ssl_verify', false ),
+	);
+
+	wp_remote_post( admin_url( 'admin-ajax.php' ), $args );
+}

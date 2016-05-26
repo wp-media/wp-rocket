@@ -78,9 +78,16 @@ add_settings_field(
 		)
 	)
 );
+
+if ( rocket_is_white_label() ) {
+    $rocket_cloudflare_auto_settings_label = __( 'Auto enable the optimal CloudFlare settings', 'rocket' );
+} else {
+    $rocket_cloudflare_auto_settings_label = __( 'Auto enable the optimal CloudFlare settings (props WP Rocket)', 'rocket' );
+}
+
 add_settings_field(
 	'rocket_cloudflare_auto_settings',
-	__( 'Auto enable the optimal CloudFlare settings (props WP Rocket)', 'rocket' ),
+	$rocket_cloudflare_auto_settings_label,
 	'rocket_field',
 	'rocket_cloudflare',
 	'rocket_display_cloudflare_options',
@@ -88,7 +95,7 @@ add_settings_field(
 		array(
 			'type'         => 'select',
 			'label_for'    => 'cloudflare_auto_settings',
-			'label_screen' => __( 'Auto enable the optimal CloudFlare settings (props WP Rocket)', 'rocket' ),
+			'label_screen' => $rocket_cloudflare_auto_settings_label,
 			'options'	   => array(
 				0 => __( 'No', 'rocket' ),
 				1 => __( 'Yes', 'rocket' )

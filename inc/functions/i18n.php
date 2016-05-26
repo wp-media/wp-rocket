@@ -310,7 +310,7 @@ function get_rocket_i18n_subdomains() {
 	} elseif ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
     	$pll = function_exists( 'PLL' ) ? PLL() : $GLOBALS['polylang'];
 
-        if ( isset( $pll ) && (int) $pll->options['force_lang'] == 2 ) {
+        if ( isset( $pll ) && ( (int) $pll->options['force_lang'] == 2 || (int) $pll->options['force_lang'] == 3 ) ) {
             $urls = get_rocket_i18n_uri();
         }
 	}

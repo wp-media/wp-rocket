@@ -38,6 +38,11 @@ function __rocket_run_rocket_bot_after_wpengine() {
  */
 add_filter( 'get_rocket_option_cdn', '__rocket_auto_activate_cdn_on_wpengine' );
 function __rocket_auto_activate_cdn_on_wpengine( $value ) {
+    $is_ssl = @$_SERVER['HTTPS'];
+    if ( preg_match( '/^[oO][fF]{2}$/', $is_ssl ) ) {
+        $is_ssl = false;  // have seen this!
+    }
+
 	$wpengine   = WpeCommon::instance();
 	$cdn_domain = $wpengine->get_cdn_domain( $domains, home_url(), $is_ssl );
 	

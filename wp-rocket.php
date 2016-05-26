@@ -3,23 +3,23 @@
 Plugin Name: WP Rocket
 Plugin URI: http://www.wp-rocket.me
 Description: The best WordPress performance plugin.
-Version: 2.7.4
-Code Name: Hoth
+Version: 2.8
+Code Name: Ilum
 Author: WP Rocket
-Contributors: Jonathan Buttigieg, Julio Potier
+Contributors: Jonathan Buttigieg, Julio Potier, Remy Perona
 Author URI: http://www.wp-rocket.me
 Licence: GPLv2
 
 Text Domain: rocket
 Domain Path: languages
 
-Copyright 2013-2015 WP Rocket
+Copyright 2013-2016 WP Rocket
 */
 
 defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
 
 // Rocket defines
-define( 'WP_ROCKET_VERSION'             , '2.7.4' );
+define( 'WP_ROCKET_VERSION'             , '2.8' );
 define( 'WP_ROCKET_PRIVATE_KEY'         , false );
 define( 'WP_ROCKET_SLUG'                , 'wp_rocket_settings' );
 define( 'WP_ROCKET_WEB_MAIN'            , 'http://support.wp-rocket.me/' );
@@ -37,6 +37,7 @@ define( 'WP_ROCKET_ADMIN_PATH'          , realpath( WP_ROCKET_INC_PATH . 'admin'
 define( 'WP_ROCKET_ADMIN_UI_PATH'       , realpath( WP_ROCKET_ADMIN_PATH . 'ui' ) . '/' );
 define( 'WP_ROCKET_ADMIN_UI_MODULES_PATH', realpath( WP_ROCKET_ADMIN_UI_PATH . 'modules' ) . '/' );
 define( 'WP_ROCKET_COMMON_PATH'         , realpath( WP_ROCKET_INC_PATH . 'common' ) . '/' );
+define( 'WP_ROCKET_CLASSES_PATH'      , realpath( WP_ROCKET_INC_PATH . 'classes' ) . '/' );
 define( 'WP_ROCKET_FUNCTIONS_PATH'      , realpath( WP_ROCKET_INC_PATH . 'functions' ) . '/' );
 define( 'WP_ROCKET_API_PATH'      		, realpath( WP_ROCKET_INC_PATH . 'api' ) . '/' );
 define( 'WP_ROCKET_VENDORS_PATH'      	, realpath( WP_ROCKET_INC_PATH . 'vendors' ) . '/' );
@@ -61,7 +62,7 @@ if ( ! defined( 'CHMOD_WP_ROCKET_CACHE_DIRS' ) ) {
     define( 'CHMOD_WP_ROCKET_CACHE_DIRS', 0755 );
 }
 if ( ! defined( 'WP_ROCKET_LASTVERSION' ) ) {
-    define( 'WP_ROCKET_LASTVERSION', '2.6.17' );
+    define( 'WP_ROCKET_LASTVERSION', '2.7.4' );
 }
 
 require( WP_ROCKET_INC_PATH	. 'compat.php' );
@@ -101,6 +102,7 @@ function rocket_init()
     define( 'WP_ROCKET_PLUGIN_SLUG', sanitize_key( WP_ROCKET_PLUGIN_NAME ) );
 
     // Call defines,  classes and functions
+    require( WP_ROCKET_CLASSES_PATH   . 'background-processing.php' );
 	require( WP_ROCKET_FUNCTIONS_PATH	. 'files.php' );
     require( WP_ROCKET_FUNCTIONS_PATH	. 'posts.php' );
     require( WP_ROCKET_FUNCTIONS_PATH	. 'admin.php' );

@@ -232,7 +232,8 @@ function get_rocket_minify_excluded_external_js() {
 		'imagesrv.adition.com',
 		'js.juicyads.com',
 		'form.jotformeu.com',
-		'speakerdeck.com'
+		'speakerdeck.com',
+		'content.jwplatform.com'
 	) );
 	
 	return $excluded_external_js;		

@@ -18,6 +18,8 @@ function __rocket_add_admin_css_js() {
 	wp_enqueue_style( 'options-wp-rocket', WP_ROCKET_ADMIN_UI_CSS_URL . 'options.css', array(), WP_ROCKET_VERSION );
 	wp_enqueue_style( 'fancybox-wp-rocket', WP_ROCKET_ADMIN_UI_CSS_URL . 'fancybox/jquery.fancybox.css', array( 'options-wp-rocket' ), WP_ROCKET_VERSION );
 
+    $minify_text = rocket_is_white_label() ? __( 'In case of any display errors we recommend to disable the option.', 'rocket' ) : __( 'In case of any display errors we recommend following our documentation: ', 'rocket' ) . ' <a href="http://docs.wp-rocket.me/article/19-resolving-issues-with-minification/?utm_source=wp-rocket&utm_medium=wp-admin&utm_term=doc-minification&utm_campaign=plugin">Resolving Issues with Minification</a>.<br/><br/>' . sprintf(  __( 'You can also <a href="%s">contact our support</a> if you need help implementing that.', 'rocket' ), 'http://wp-rocket.me/support/?utm_source=wp-rocket&utm_medium=wp-admin&utm_term=support-minification&utm_campaign=plugin' );
+
 	// Sweet Alert
 	$translation_array = array(
 		'warningTitle'     => __( 'Are you sure?', 'rocket' ),
@@ -47,7 +49,7 @@ function __rocket_add_admin_css_js() {
 		'expiredSupportText'       => __( 'To keep your Rocket running with access to support, <strong>you\'ll need to renew your license</strong>.', 'rocket' ) . '<br/><br/>' .  __( 'Click below to renew with a <strong>discount of 50%</strong> automatically applied!', 'rocket' ),
 		'expiredConfirmButtonText' => __( 'I re-synchronize now!', 'rocket' ),
 
-		'minifyText' => __( 'In case of any display errors we recommend following our documentation: ', 'rocket' ) . ' <a href="http://docs.wp-rocket.me/article/19-resolving-issues-with-minification/?utm_source=wp-rocket&utm_medium=wp-admin&utm_term=doc-minification&utm_campaign=plugin">Resolving Issues with Minification</a>.<br/><br/>' . sprintf(  __( 'You can also <a href="%s">contact our support</a> if you need help implementing that.', 'rocket' ), 'http://wp-rocket.me/support/?utm_source=wp-rocket&utm_medium=wp-admin&utm_term=support-minification&utm_campaign=plugin' ),
+		'minifyText' => $minify_text,
 
 		'confirmButtonText' => __( 'Yes, I\'m sure!', 'rocket' ),
 		'cancelButtonText'  => __( 'Cancel', 'rocket' )

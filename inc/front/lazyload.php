@@ -39,7 +39,7 @@ add_filter( 'get_image_tag'			, 'rocket_lazyload_images', PHP_INT_MAX );
 add_filter( 'post_thumbnail_html'	, 'rocket_lazyload_images', PHP_INT_MAX );
 function rocket_lazyload_images( $html ) {
 	// Don't LazyLoad if process is stopped for these reasons
-	if ( ! get_rocket_option( 'lazyload' ) || ! apply_filters( 'do_rocket_lazyload', true ) || is_feed() || is_preview() || empty( $html ) || ( defined( 'DONOTLAZYLOAD' ) && DONOTLAZYLOAD ) ) {
+	if ( ! get_rocket_option( 'lazyload' ) || ! apply_filters( 'do_rocket_lazyload', true ) || is_feed() || is_preview() || empty( $html ) || ( defined( 'DONOTLAZYLOAD' ) && DONOTLAZYLOAD ) || wp_script_is( 'twentytwenty-twentytwenty', 'enqueued' ) ) {
 		return $html;
 	}
 
@@ -284,12 +284,20 @@ function __rocket_deactivate_lazyload_on_specific_posts() {
 /**
  * Compatibility with images with srcset attribute
  *
+ * @author Remy Perona
+ *
+ * @since 2.8 Also add sizes to the data-lazy-* attributes to prevent error in W3C validator
  * @since 2.7
+ *
  */
 add_filter( 'rocket_lazyload_html', '__rocket_lazyload_on_srcset' );
 function __rocket_lazyload_on_srcset( $html ) {
 	if( preg_match( '/srcset=("(?:[^"]+)"|\'(?:[^\']+)\'|(?:[^ >]+))/i', $html ) ) {
 		$html = str_replace( 'srcset=', 'data-lazy-srcset=', $html );
+	}
+
+    if( preg_match( '/sizes=("(?:[^"]+)"|\'(?:[^\']+)\'|(?:[^ >]+))/i', $html ) ) {
+		$html = str_replace( 'sizes=', 'data-lazy-sizes=', $html );
 	}
 	
 	return $html;
