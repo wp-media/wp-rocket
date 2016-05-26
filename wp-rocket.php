@@ -37,6 +37,7 @@ define( 'WP_ROCKET_ADMIN_PATH'          , realpath( WP_ROCKET_INC_PATH . 'admin'
 define( 'WP_ROCKET_ADMIN_UI_PATH'       , realpath( WP_ROCKET_ADMIN_PATH . 'ui' ) . '/' );
 define( 'WP_ROCKET_ADMIN_UI_MODULES_PATH', realpath( WP_ROCKET_ADMIN_UI_PATH . 'modules' ) . '/' );
 define( 'WP_ROCKET_COMMON_PATH'         , realpath( WP_ROCKET_INC_PATH . 'common' ) . '/' );
+define( 'WP_ROCKET_CLASSES_PATH'      , realpath( WP_ROCKET_INC_PATH . 'classes' ) . '/' );
 define( 'WP_ROCKET_FUNCTIONS_PATH'      , realpath( WP_ROCKET_INC_PATH . 'functions' ) . '/' );
 define( 'WP_ROCKET_API_PATH'      		, realpath( WP_ROCKET_INC_PATH . 'api' ) . '/' );
 define( 'WP_ROCKET_VENDORS_PATH'      	, realpath( WP_ROCKET_INC_PATH . 'vendors' ) . '/' );
@@ -101,6 +102,7 @@ function rocket_init()
     define( 'WP_ROCKET_PLUGIN_SLUG', sanitize_key( WP_ROCKET_PLUGIN_NAME ) );
 
     // Call defines,  classes and functions
+    require( WP_ROCKET_CLASSES_PATH   . 'background-processing.php' );
 	require( WP_ROCKET_FUNCTIONS_PATH	. 'files.php' );
     require( WP_ROCKET_FUNCTIONS_PATH	. 'posts.php' );
     require( WP_ROCKET_FUNCTIONS_PATH	. 'admin.php' );
@@ -109,7 +111,6 @@ function rocket_init()
     require( WP_ROCKET_FUNCTIONS_PATH	. 'minify.php' );
     require( WP_ROCKET_FUNCTIONS_PATH	. 'plugins.php' );
     require( WP_ROCKET_FUNCTIONS_PATH	. 'i18n.php' );
-    require( WP_ROCKET_FUNCTIONS_PATH   . 'background-processing.php' );
     require( WP_ROCKET_FUNCTIONS_PATH	. 'bots.php' );
     require( WP_ROCKET_FUNCTIONS_PATH	. 'cloudflare.php' );
     require( WP_ROCKET_FUNCTIONS_PATH	. 'htaccess.php' );
