@@ -439,11 +439,8 @@ function rocket_display_options() {
 		'api-key',
 		'basic',
 		'advanced',
-<<<<<<< HEAD
-=======
 		'database',
 		'preload',
->>>>>>> 2.8
 		'cloudflare',
 		'cdn',
 		'varnish',
@@ -488,11 +485,8 @@ function rocket_display_options() {
 			<?php if( rocket_valid_key() ) { ?>
 				<a href="#tab_basic" class="nav-tab"><?php _e( 'Basic options', 'rocket' ); ?></a>
 				<a href="#tab_advanced" class="nav-tab"><?php _e( 'Advanced options', 'rocket' ); ?></a>
-<<<<<<< HEAD
-=======
 				<a href="#tab_database" class="nav-tab"><?php _e( 'Database', 'rocket' ); ?></a>
 				<a href="#tab_preload" class="nav-tab"><?php _e( 'Preload', 'rocket' ); ?></a>
->>>>>>> 2.8
 				<?php if ( get_rocket_option( 'do_cloudflare' ) ) { ?>
 					<a href="#tab_cloudflare" class="nav-tab">CloudFlare</a>
 				<?php } ?>
@@ -526,15 +520,12 @@ function rocket_display_options() {
 			<?php if( rocket_valid_key() ) { ?>
 				<div class="rkt-tab" id="tab_basic"><?php do_settings_sections( 'rocket_basic' ); ?></div>
 				<div class="rkt-tab" id="tab_advanced"><?php do_settings_sections( 'rocket_advanced' ); ?></div>
-<<<<<<< HEAD
-=======
 				<div class="rkt-tab" id="tab_database">
     				<p class="description database_description"><?php _e( 'The following options help you optimize your database.', 'rocket' ); ?></p>
                     <p class="description warning file-error database_description"><?php _e( 'Before you do any optimization, please backup your database first because any cleanup done is irreversible!', 'rocket' ); ?></p>
     				<?php do_settings_sections( 'rocket_database' ); ?>
 				</div>
 				<div class="rkt-tab" id="tab_preload"><?php do_settings_sections( 'rocket_preload' ); ?></div>
->>>>>>> 2.8
 				<div class="rkt-tab" id="tab_cloudflare" <?php echo get_rocket_option( 'do_cloudflare' ) ? '' : 'style="display:none"'; ?>><?php do_settings_sections( 'rocket_cloudflare' ); ?></div>
 				<div class="rkt-tab" id="tab_cdn"><?php do_settings_sections( 'rocket_cdn' ); ?></div>
 				<?php 
@@ -766,9 +757,6 @@ function rocket_settings_callback( $inputs ) {
 	} else {
 		$inputs['minify_js_in_footer'] = array();
 	}
-<<<<<<< HEAD
-	
-=======
 
     /**
      * Database options
@@ -813,7 +801,6 @@ function rocket_settings_callback( $inputs ) {
 		$inputs['sitemaps'] = array();
 	}
 
->>>>>>> 2.8
 	/*
 	 * Option : CloudFlare Domain
 	 */
