@@ -9,7 +9,7 @@ if ( defined( 'JETPACK__VERSION' ) ) :
 	 * @since 2.8
 	 * @author Remy Perona
 	 */
-    if ( in_array( 'sitemaps', $jetpack_active_modules ) ) {
+    if ( is_array( $jetpack_active_modules ) && in_array( 'sitemaps', $jetpack_active_modules ) ) {
         add_filter( 'rocket_first_install_options', '__rocket_add_jetpack_sitemap_option' );
         function __rocket_add_jetpack_sitemap_option( $options ) {
             $options['jetpack_xml_sitemap'] = 0;
