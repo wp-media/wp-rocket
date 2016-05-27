@@ -924,7 +924,7 @@ function rocket_settings_callback( $inputs ) {
 		add_settings_error( 'general', 'settings_updated', __( 'Settings saved.', 'rocket' ), 'updated' );
 	}
 
-	return $inputs;
+	return apply_filters( 'rocket_inputs_sanitize', $inputs );
 }
 
 /**

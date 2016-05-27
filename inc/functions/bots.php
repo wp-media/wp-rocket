@@ -11,8 +11,7 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
  * @param string $lang (default: '') The language code to preload
  * @return void
  */
-function run_rocket_bot( $spider = 'cache-preload', $lang = '' )
-{
+function run_rocket_bot( $spider = 'cache-preload', $lang = '' ) {
 	$domain = parse_url( home_url(), PHP_URL_HOST );
 	if ( 'localhost' == $domain || pathinfo( $domain, PATHINFO_EXTENSION ) == 'dev' ) {
 		return false;
@@ -35,6 +34,10 @@ function run_rocket_bot( $spider = 'cache-preload', $lang = '' )
 
 	switch ( $spider ) {
 		case 'cache-preload' :
+		    if ( ! get_rocket_option( 'manual_preload', true ) ) {
+    		    return false;
+		    }
+
 			if ( ! $lang ) {
 				$urls = get_rocket_i18n_uri();
 			} else {
@@ -42,6 +45,10 @@ function run_rocket_bot( $spider = 'cache-preload', $lang = '' )
 			}
 		break;
 		case 'cache-json' :
+		    if ( ! get_rocket_option( 'automatic_preload', true ) ) {
+    		    return false;
+		    }
+
 			$urls[] = WP_ROCKET_URL . 'cache.json';
 		break;
 		default :
