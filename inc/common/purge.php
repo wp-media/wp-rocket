@@ -92,8 +92,13 @@ function rocket_clean_post( $post_id ) {
 	// Get all post infos
 	$post = get_post( $post_id );
 	
-	// No purge for specifics conditions
-	if ( ! is_object( $post ) || $post->post_status == 'auto-draft' || empty( $post->post_type ) || $post->post_type == 'nav_menu_item' ) {
+	// Return if $post is not an object
+	if ( ! is_object( $post ) ) {
+    	return;
+    }
+
+    // No purge for specific conditions
+    if ( $post->post_status == 'auto-draft' || empty( $post->post_type ) || $post->post_type == 'nav_menu_item' ) {
 		return;
 	}
 	
