@@ -8,22 +8,24 @@ msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
 "POT-Creation-Date: 2016-05-25 14:48:18+00:00\n"
-"PO-Revision-Date: 2016-05-26 00:51+0000\n"
-"Last-Translator: Ivica Delic <ivica.delic@gmail.com>\n"
-"Language-Team: Croatian (http://www.transifex.com/wp-media/wp-rocket/language/hr/)\n"
+"PO-Revision-Date: 2016-05-31 14:51-0500\n"
+"Last-Translator: Rémy Perona <remperona@gmail.com>\n"
+"Language-Team: Croatian (http://www.transifex.com/wp-media/wp-rocket/"
+"language/hr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: hr\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: grunt-wp-i18n 0.5.4\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Poedit 1.6.4\n"
 "X-Poedit-Basepath: ../\n"
-"X-Poedit-Bookmarks: \n"
-"X-Poedit-Country: United States\n"
-"X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c;\n"
-"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;"
+"_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;"
+"esc_html_x:1,2c\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Textdomain-Support: yes\n"
+"X-Poedit-SearchPath-0: .\n"
 
 #: inc/3rd-party/jetpack.php:41
 msgid "Jetpack XML Sitemaps"
@@ -183,7 +185,9 @@ msgstr "Sljedeće opcije su za poslužitelje s Varnish cache sustavom."
 msgid ""
 "If you don’t know if Varnish is installed on your server, you can ignore "
 "these settings."
-msgstr "Ako ne znate je li Varnish instaliran na vašem poslužitelju, možete zanemariti ove postavke."
+msgstr ""
+"Ako ne znate je li Varnish instaliran na vašem poslužitelju, možete "
+"zanemariti ove postavke."
 
 #: inc/admin/options.php:907
 msgid "Settings imported and saved."
@@ -197,7 +201,9 @@ msgstr "Settings spremljene."
 msgid ""
 "Before you can upload your import file, you will need to fix the following "
 "error:"
-msgstr "Prije nego što možete uploadati svoju datoteku za uvoz, trebat ćete popraviti sljedeću pogrešku:"
+msgstr ""
+"Prije nego što možete uploadati svoju datoteku za uvoz, trebat ćete "
+"popraviti sljedeću pogrešku:"
 
 #: inc/admin/options.php:1137
 msgid "Choose a file from your computer:"
@@ -218,13 +224,17 @@ msgstr ""
 #: inc/admin/ui/enqueue.php:21
 msgid ""
 "In case of any display errors we recommend following our documentation: "
-msgstr "U slučaju bilo kakvih problema u prikazu preporučujemo provjeru naše dokumentacije: "
+msgstr ""
+"U slučaju bilo kakvih problema u prikazu preporučujemo provjeru naše "
+"dokumentacije: "
 
 #: inc/admin/ui/enqueue.php:21
 msgid ""
 "You can also <a href=\"%s\">contact our support</a> if you need help "
 "implementing that."
-msgstr "Također možete <a href=\"%s\"> kontaktirati našu podršku </a> ako vam je potrebna pomoć u provedbi toga."
+msgstr ""
+"Također možete <a href=\"%s\"> kontaktirati našu podršku </a> ako vam je "
+"potrebna pomoć u provedbi toga."
 
 #: inc/admin/ui/enqueue.php:25
 msgid "Are you sure?"
@@ -252,10 +262,11 @@ msgstr "Ne može se poslati"
 
 #: inc/admin/ui/enqueue.php:35
 msgid ""
-"It seems that communications with Mission Control are temporarily "
-"down....please submit a support ticket while our Rocket Scientists fix the "
-"issue."
-msgstr "Čini se da je komunikacija s Kontrolom privremeno prekinuta... molimo pošaljite prijavu dok naši raketni znanstvenici rješavaju problem."
+"It seems that communications with Mission Control are temporarily down...."
+"please submit a support ticket while our Rocket Scientists fix the issue."
+msgstr ""
+"Čini se da je komunikacija s Kontrolom privremeno prekinuta... molimo "
+"pošaljite prijavu dok naši raketni znanstvenici rješavaju problem."
 
 #: inc/admin/ui/enqueue.php:36
 msgid "Get help from a rocket scientist"
@@ -270,7 +281,10 @@ msgid ""
 "You have to read the <a href=\"%s\" target=\"_blank\">documentation</a> and "
 "to agree to send informations relative to your website to submit a support "
 "ticket."
-msgstr "Morate pročitati <a href=\"%s\" target=\"_blank\">dokumentaciju</a> i suglasiti se da pošaljete informacije vezane uz vaš web sajt da bi poslali prijavu podršci."
+msgstr ""
+"Morate pročitati <a href=\"%s\" target=\"_blank\">dokumentaciju</a> i "
+"suglasiti se da pošaljete informacije vezane uz vaš web sajt da bi poslali "
+"prijavu podršci."
 
 #: inc/admin/ui/enqueue.php:41
 msgid "Transmission Received!"
@@ -282,7 +296,9 @@ msgstr "Primili smo vašu prijavu i odgovorit ćemo vam u idućih par sati!"
 
 #: inc/admin/ui/enqueue.php:42
 msgid "We answer every ticket so check your spam if you don't hear from us."
-msgstr "Odgovaramo na svaku prijavu pa provjerite vaš spam ako ne primite mail od nas."
+msgstr ""
+"Odgovaramo na svaku prijavu pa provjerite vaš spam ako ne primite mail od "
+"nas."
 
 #: inc/admin/ui/enqueue.php:44
 msgid "Oh dear, someone's been naughty..."
@@ -293,11 +309,12 @@ msgid ""
 "Well, well, looks like you've got yourself a \"nulled\" version! We don't "
 "provide support to hackers or pirates, so you will need a valid license to "
 "proceed."
-msgstr "Izgleda da koristite \"nulled\" verziju! Ne pružamo podršku hakerima ili piratima, tako da će vam trebati valjan licenca za nastavak."
+msgstr ""
+"Izgleda da koristite \"nulled\" verziju! Ne pružamo podršku hakerima ili "
+"piratima, tako da će vam trebati valjan licenca za nastavak."
 
 #: inc/admin/ui/enqueue.php:45
-msgid ""
-"Click below to buy a license with a 20% discount automatically applied."
+msgid "Click below to buy a license with a 20% discount automatically applied."
 msgstr "Kliknite ispod za kupovinu licence uz automatski popust od 20%."
 
 #: inc/admin/ui/enqueue.php:46
@@ -312,13 +329,17 @@ msgstr "Oh, vi ste bez goriva!"
 msgid ""
 "To keep your Rocket running with access to support, <strong>you'll need to "
 "renew your license</strong>."
-msgstr "Da bi vaše Rakete nastavile raditi s pristupom za podršku, <strong>morate obnoviti svoju licencu</strong>."
+msgstr ""
+"Da bi vaše Rakete nastavile raditi s pristupom za podršku, <strong>morate "
+"obnoviti svoju licencu</strong>."
 
 #: inc/admin/ui/enqueue.php:49
 msgid ""
 "Click below to renew with a <strong>discount of 50%</strong> automatically "
 "applied!"
-msgstr "Kliknite ispod kako bi obnovili licencu uz <strong>popust od 50%</strong> koji se primjenjuje automatski!"
+msgstr ""
+"Kliknite ispod kako bi obnovili licencu uz <strong>popust od 50%</strong> "
+"koji se primjenjuje automatski!"
 
 #: inc/admin/ui/enqueue.php:50
 msgid "I re-synchronize now!"
@@ -380,7 +401,9 @@ msgstr "Prvo aktivirajte %s opciju."
 msgid ""
 "<strong>Note:</strong> These options aren't applied if you added this post "
 "in the \"Never cache the following pages\" option."
-msgstr "<strong>Napomena:</strong> Ove opcije se ne primjenjuju ako ste dodali ovaj članak u opciju \"Nikada nemojte cachirati sljedeće stranice\"."
+msgstr ""
+"<strong>Napomena:</strong> Ove opcije se ne primjenjuju ako ste dodali ovaj "
+"članak u opciju \"Nikada nemojte cachirati sljedeće stranice\"."
 
 #: inc/admin/ui/modules/advanced.php:7 inc/admin/ui/modules/advanced.php:15
 msgid "Prefetch DNS requests:"
@@ -390,7 +413,9 @@ msgstr "Pretpreuzmi DNS zahtjeve:"
 msgid ""
 "DNS prefetching is a way for browsers to anticipate the DNS resolution of "
 "external domains from your site."
-msgstr "DNS prepreuzimanje je način da pretraživači predvide DNS rezoluciju vanjskih domena s vaše stranice."
+msgstr ""
+"DNS prepreuzimanje je način da pretraživači predvide DNS rezoluciju vanjskih "
+"domena s vaše stranice."
 
 #: inc/admin/ui/modules/advanced.php:20
 msgid "This mechanism reduces the latency of some external files."
@@ -400,14 +425,20 @@ msgstr "Ovaj mehanizam smanjuje latenciju od nekih vanjskih datoteka."
 msgid ""
 "To learn more about this option and how to use it correctly, we advise you "
 "to watch the following video: <a href=\"%1$s\" class=\"fancybox\">%1$s</a>."
-msgstr "Da biste saznali više o ovoj opciji i kako je koristiti ispravno, savjetujemo vam da pogledate sljedeći video: <a href=\"%1$s\" class=\"fancybox\">%1$S</a>."
+msgstr ""
+"Da biste saznali više o ovoj opciji i kako je koristiti ispravno, "
+"savjetujemo vam da pogledate sljedeći video: <a href=\"%1$s\" class="
+"\"fancybox\">%1$S</a>."
 
 #: inc/admin/ui/modules/advanced.php:31
 msgid ""
 "<strong>Note:</strong> Enter the domain names without their protocol, for "
 "example: <code>//ajax.googleapis.com</code> without <code>http:</code> (one "
 "per line)."
-msgstr "<strong> Napomena: </strong> Unesite imena domena bez njihova protokola, na primjer: <code>//ajax.googleapis.com</code> bez <code>http: </code> (jedan po retku)."
+msgstr ""
+"<strong> Napomena: </strong> Unesite imena domena bez njihova protokola, na "
+"primjer: <code>//ajax.googleapis.com</code> bez <code>http: </code> (jedan "
+"po retku)."
 
 #: inc/admin/ui/modules/advanced.php:37 inc/admin/ui/modules/advanced.php:45
 msgid "Empty the cache of the following pages when updating a post:"
@@ -417,7 +448,9 @@ msgstr "Ispraznite cache od sljedećih stranica pri ažuriranju posta:"
 msgid ""
 "Enter the URL of additionnal pages to purge when updating a post (one per "
 "line)."
-msgstr "Unesite URL dodatnih stranica da se očiste prilikom ažuriranja posta (jedan po retku)."
+msgstr ""
+"Unesite URL dodatnih stranica da se očiste prilikom ažuriranja posta (jedan "
+"po retku)."
 
 #: inc/admin/ui/modules/advanced.php:51 inc/admin/ui/modules/advanced.php:75
 #: inc/admin/ui/modules/advanced.php:137 inc/admin/ui/modules/advanced.php:187
@@ -430,7 +463,11 @@ msgid ""
 "<strong>Note:</strong> When you update a post or when a comment is posted, "
 "the homepage, categories and tags associated with this post are "
 "automatically removed from the cache and then recreated by our bot."
-msgstr "<strong> Napomena: </strong> Kada ažurirate post ili kada je komentar objavljen, na početnoj stranici, kategorije i oznake povezane s ovim postom se automatski uklanjaju iz cache-a, a zatim se ponovno kreiraju pomoću našeg bota."
+msgstr ""
+"<strong> Napomena: </strong> Kada ažurirate post ili kada je komentar "
+"objavljen, na početnoj stranici, kategorije i oznake povezane s ovim postom "
+"se automatski uklanjaju iz cache-a, a zatim se ponovno kreiraju pomoću našeg "
+"bota."
 
 #: inc/admin/ui/modules/advanced.php:62 inc/admin/ui/modules/advanced.php:70
 msgid "Never cache the following pages:"
@@ -443,9 +480,11 @@ msgstr "Unesite URL stranice koju treba odbaciti (jedan po retku)."
 #: inc/admin/ui/modules/advanced.php:80
 msgid ""
 "<strong>Note:</strong> The cart and checkout pages are auto-excluded from "
-"the cache for WooCommerce, Easy Digital Download, iThemes Exchange, Jigoshop"
-" & WP-Shop."
-msgstr "<strong>Napomena:</strong> Košarica i checkout stranica su auto-isključeni iz cache-a za WooCommerce, EDD, iThemes Exchange, Jigoshop & WP-Shop."
+"the cache for WooCommerce, Easy Digital Download, iThemes Exchange, Jigoshop "
+"& WP-Shop."
+msgstr ""
+"<strong>Napomena:</strong> Košarica i checkout stranica su auto-isključeni "
+"iz cache-a za WooCommerce, EDD, iThemes Exchange, Jigoshop & WP-Shop."
 
 #: inc/admin/ui/modules/advanced.php:86 inc/admin/ui/modules/advanced.php:94
 msgid "Don't cache pages that use the following cookies:"
@@ -487,26 +526,37 @@ msgstr "Minifikacija JF datoteka"
 msgid ""
 "<strong>Note:</strong> We combine the minified files in little groups "
 "<strong>to ensure the best compatibility and better performance</strong>."
-msgstr "<strong>Napomena:</strong> Kombiniramo minified datoteke u male grupe <strong>kako bi se osigurala optimalna kompatibilnost i bolje performanse</strong>."
+msgstr ""
+"<strong>Napomena:</strong> Kombiniramo minified datoteke u male grupe "
+"<strong>kako bi se osigurala optimalna kompatibilnost i bolje performanse</"
+"strong>."
 
 #: inc/admin/ui/modules/advanced.php:163
 msgid ""
-"However <strong>you can force the minification to create only 1 "
-"file</strong> by activating this option."
-msgstr "Međutim <strong>možete prisiliti minification radi kreiranja samo 1 datoteke</strong> aktiviranjem ove mogućnosti."
+"However <strong>you can force the minification to create only 1 file</"
+"strong> by activating this option."
+msgstr ""
+"Međutim <strong>možete prisiliti minification radi kreiranja samo 1 "
+"datoteke</strong> aktiviranjem ove mogućnosti."
 
 #: inc/admin/ui/modules/advanced.php:163
 msgid ""
-"But it's not recommended to do that because <strong>you won't take advantage"
-" of the parallelization of the download</strong>: it's faster to download 4 "
+"But it's not recommended to do that because <strong>you won't take advantage "
+"of the parallelization of the download</strong>: it's faster to download 4 "
 "files in parallel rather than one big file."
-msgstr "Ali to se ne preporuča jer <strong>nećete iskoristiti paralelizam za preuzimanje</strong>: brže je preuzimanje 4 slika paralelno, a ne jednog velikog fajla."
+msgstr ""
+"Ali to se ne preporuča jer <strong>nećete iskoristiti paralelizam za "
+"preuzimanje</strong>: brže je preuzimanje 4 slika paralelno, a ne jednog "
+"velikog fajla."
 
 #: inc/admin/ui/modules/advanced.php:168
 msgid ""
 "Depending to your server configuration, these options can break your "
 "website. If you have any issues, you must deactivate it!"
-msgstr "Ovisno o konfiguraciji vašeg poslužitelja, ove mogućnosti mogu stvoriti probleme prilikom pregleda vaše web stranice. Ako imate bilo kakvih problema, morate isključiti ove opcije!"
+msgstr ""
+"Ovisno o konfiguraciji vašeg poslužitelja, ove mogućnosti mogu stvoriti "
+"probleme prilikom pregleda vaše web stranice. Ako imate bilo kakvih "
+"problema, morate isključiti ove opcije!"
 
 #: inc/admin/ui/modules/advanced.php:174 inc/admin/ui/modules/advanced.php:182
 msgid "<b>CSS</b> files to exclude from minification:"
@@ -526,9 +576,10 @@ msgstr "Unesite URL od <b>JS</b> datoteke za odbaciti (jedan po retku)."
 
 #: inc/admin/ui/modules/advanced.php:212 inc/admin/ui/modules/advanced.php:219
 msgid ""
-"<b>JS</b> files to be included in the footer during the minification "
-"process:"
-msgstr "<b>JS</b> datoteke koje će biti uključene u podnožju tijekom procesa minifikacija:"
+"<b>JS</b> files to be included in the footer during the minification process:"
+msgstr ""
+"<b>JS</b> datoteke koje će biti uključene u podnožju tijekom procesa "
+"minifikacija:"
 
 #: inc/admin/ui/modules/advanced.php:228 inc/admin/ui/modules/advanced.php:256
 msgid "Empty the field to remove it."
@@ -546,13 +597,17 @@ msgstr "<b>JS</b> datoteke s odgodom učitavanja:"
 msgid ""
 "You can add JavaScript files that will be loaded asynchronously at the same "
 "time as the page loads."
-msgstr "Možete dodati JavaScript datoteke koje će biti učitane asinkrono u isto vrijeme kada se i stranica učitava."
+msgstr ""
+"Možete dodati JavaScript datoteke koje će biti učitane asinkrono u isto "
+"vrijeme kada se i stranica učitava."
 
 #: inc/admin/ui/modules/advanced.php:262
 msgid ""
 "You must specify the complete URL of the original files. Do NOT add URLs of "
 "minified files generated by WP Rocket."
-msgstr "Morate navesti potpuni URL izvorne datoteke. Nemojte dodavati URL-ove minificiranih datoteka koje generira WP Rocket."
+msgstr ""
+"Morate navesti potpuni URL izvorne datoteke. Nemojte dodavati URL-ove "
+"minificiranih datoteka koje generira WP Rocket."
 
 #: inc/admin/ui/modules/api-key.php:4
 msgid "License validation"
@@ -596,19 +651,24 @@ msgstr "Lazyload iframe-ova i videa"
 msgid ""
 "LazyLoad displays images, iframes and videos on a page only when they are "
 "visible to the user."
-msgstr "LazyLoad prikazuje slike, iframe-ove i videa na stranici samo kada su vidljive korisniku."
+msgstr ""
+"LazyLoad prikazuje slike, iframe-ove i videa na stranici samo kada su "
+"vidljive korisniku."
 
 #: inc/admin/ui/modules/basic.php:28 inc/admin/ui/modules/basic.php:80
 msgid ""
 "This mechanism reduces the number of HTTP requests and improves the loading "
 "time."
-msgstr "Ovaj mehanizam smanjuje broj HTTP zahtjeva i poboljšava vrijeme učitavanja."
+msgstr ""
+"Ovaj mehanizam smanjuje broj HTTP zahtjeva i poboljšava vrijeme učitavanja."
 
 #: inc/admin/ui/modules/basic.php:34
 msgid ""
 "Files optimisation:<br/><span class=\"description\">(Minification & "
 "Concatenation)</span>"
-msgstr "Optimizacija datoteka: <br/><span class = \"description\"> (minifikacija & konkatenacija) </span>"
+msgstr ""
+"Optimizacija datoteka: <br/><span class = \"description\"> (minifikacija & "
+"konkatenacija) </span>"
 
 #: inc/admin/ui/modules/basic.php:43
 msgid "HTML Files minification"
@@ -622,13 +682,17 @@ msgstr "Minifikacija Google fontova"
 msgid ""
 "Minification removes any spaces and comments present in the CSS and "
 "JavaScript files."
-msgstr "Minifikacija uklanja sve prostore i komentare prisutne u CSS i JavaScript datotekama."
+msgstr ""
+"Minifikacija uklanja sve prostore i komentare prisutne u CSS i JavaScript "
+"datotekama."
 
 #: inc/admin/ui/modules/basic.php:80
 msgid ""
 "This mechanism reduces the weight of each file and allows a faster reading "
 "of browsers and search engines."
-msgstr "Ovaj mehanizam smanjuje veličinu svake datoteke i omogućuje brže čitanje na preglednicima i tražilicama."
+msgstr ""
+"Ovaj mehanizam smanjuje veličinu svake datoteke i omogućuje brže čitanje na "
+"preglednicima i tražilicama."
 
 #: inc/admin/ui/modules/basic.php:80
 msgid "Concatenation combines all CSS and JavaScript files."
@@ -642,7 +706,9 @@ msgstr "Konkatenacija datoteka može uzrokovati probleme u prikazu stranice."
 msgid ""
 "In case of any errors we recommend you to turn off this option or watch the "
 "following video: <a href=\"%1$s\" class=\"fancybox\">%1$s</a>."
-msgstr "U slučaju bilo kakve greške preporučujemo da isključite opciju ili da pogledate sljedeći video: <a href=\"%1$s\" class=\"fancybox\">%1$s</a>."
+msgstr ""
+"U slučaju bilo kakve greške preporučujemo da isključite opciju ili da "
+"pogledate sljedeći video: <a href=\"%1$s\" class=\"fancybox\">%1$s</a>."
 
 #: inc/admin/ui/modules/basic.php:109 inc/admin/ui/modules/basic.php:118
 msgid "Mobile cache:"
@@ -661,12 +727,16 @@ msgid ""
 "Are you using a dedicated mobile theme or <code>wp_is_mobile()</code>? If "
 "so, you should activate this option to serve a specific caching file for "
 "your mobile visitors."
-msgstr "Koristite li namjensku mobilnu temu ili <code>wp_is_mobile()</code>? Ako je tako, trebali bi aktivirati ovu opciju prikazivanja određene caching datoteke za mobilne posjetitelje."
+msgstr ""
+"Koristite li namjensku mobilnu temu ili <code>wp_is_mobile()</code>? Ako je "
+"tako, trebali bi aktivirati ovu opciju prikazivanja određene caching "
+"datoteke za mobilne posjetitelje."
 
 #: inc/admin/ui/modules/basic.php:136
 msgid ""
 "If you are using one of these plugins, you must activate this option: %l"
-msgstr "Ako koristite jedan od ovih pluginova, morate aktivirati ovu opciju: %l"
+msgstr ""
+"Ako koristite jedan od ovih pluginova, morate aktivirati ovu opciju: %l"
 
 #: inc/admin/ui/modules/basic.php:142 inc/admin/ui/modules/basic.php:151
 msgid "Feeds cache:"
@@ -690,7 +760,8 @@ msgstr "SSL cache:"
 
 #: inc/admin/ui/modules/basic.php:175
 msgid "Enable caching for pages with SSL protocol (<code>https://</code>)."
-msgstr "Omogući caching za stranice sa SSL protokolom (<code>https://</code>). "
+msgstr ""
+"Omogući caching za stranice sa SSL protokolom (<code>https://</code>). "
 
 #: inc/admin/ui/modules/basic.php:184 inc/admin/ui/modules/basic.php:193
 msgid "Emojis:"
@@ -702,9 +773,11 @@ msgstr "Zamijenite emoji sa zadanim WordPress smajlijima."
 
 #: inc/admin/ui/modules/basic.php:198
 msgid ""
-"<strong>Note:</strong> By activating this option, you will reduce the number"
-" of external HTTP requests."
-msgstr "<strong>Napomena:</strong> Aktiviranjem ove opcije, smanjiti ćete broj vanjskih HTTP zahtjeva."
+"<strong>Note:</strong> By activating this option, you will reduce the number "
+"of external HTTP requests."
+msgstr ""
+"<strong>Napomena:</strong> Aktiviranjem ove opcije, smanjiti ćete broj "
+"vanjskih HTTP zahtjeva."
 
 #: inc/admin/ui/modules/basic.php:204 inc/admin/ui/modules/basic.php:212
 msgid "Clear Cache Lifespan"
@@ -734,13 +807,18 @@ msgstr "dan(i)"
 msgid ""
 "By default, cache lifespan is 24 hours. This means that once created, the "
 "cache files are automatically removed after 24 hours before being recreated."
-msgstr "Po predzadanoj vrijednosti vijek trajanja cache-a je 24 sata. Ovo znači da kada je jednom stvorena, cache datoteke automatski se uklanjaju nakon 24 sata prije nego što se ponovno kreira."
+msgstr ""
+"Po predzadanoj vrijednosti vijek trajanja cache-a je 24 sata. Ovo znači da "
+"kada je jednom stvorena, cache datoteke automatski se uklanjaju nakon 24 "
+"sata prije nego što se ponovno kreira."
 
 #: inc/admin/ui/modules/basic.php:230
 msgid ""
 "This can be useful if you display your latest tweets or rss feeds in your "
 "sidebar, for example."
-msgstr "Ovo može biti korisno ako prikazujete najnovije tweetove ili RSS feedove u sidebaru, na primjer."
+msgstr ""
+"Ovo može biti korisno ako prikazujete najnovije tweetove ili RSS feedove u "
+"sidebaru, na primjer."
 
 #: inc/admin/ui/modules/basic.php:235
 msgid "Specify 0 for unlimited lifetime."
@@ -758,14 +836,19 @@ msgstr "Omogućite CloudFlare karticu Postavke."
 msgid ""
 "This option allows you to configure some CloudFlare settings like "
 "development mode, purge cache and a recommended configuration."
-msgstr "Ova opcija omogućuje konfiguriranje nekih postavki CloudFlare poput razvojnog moda, čistenje cache memorije i preporučene konfiguracije."
+msgstr ""
+"Ova opcija omogućuje konfiguriranje nekih postavki CloudFlare poput "
+"razvojnog moda, čistenje cache memorije i preporučene konfiguracije."
 
 #: inc/admin/ui/modules/cdn.php:26
 msgid ""
-"<strong>Note:</strong> If you are using CloudFlare, configure the options in"
-" the CloudFlare tab. The CDN settings below <strong>do not apply</strong> to"
-" CloudFlare."
-msgstr "<strong>Napomena:</strong> Ako koristite CloudFlare, konfigurirajte opcije u kartici CloudFlare. CDN Postavke ispod <strong> ne primjenjujte </strong> za CloudFlare."
+"<strong>Note:</strong> If you are using CloudFlare, configure the options in "
+"the CloudFlare tab. The CDN settings below <strong>do not apply</strong> to "
+"CloudFlare."
+msgstr ""
+"<strong>Napomena:</strong> Ako koristite CloudFlare, konfigurirajte opcije u "
+"kartici CloudFlare. CDN Postavke ispod <strong> ne primjenjujte </strong> za "
+"CloudFlare."
 
 #: inc/admin/ui/modules/cdn.php:32 inc/admin/ui/modules/cdn.php:41
 msgid "CDN:"
@@ -778,10 +861,14 @@ msgstr "Omogućite CDN."
 #: inc/admin/ui/modules/cdn.php:46
 msgid ""
 "CDN function replaces all URLs of your static files and media (CSS, JS, "
-"Images) with the url entered below. This way all your content will be copied"
-" to a dedicated hosting or a CDN system <a href=\"http://www.maxcdn.com/\" "
+"Images) with the url entered below. This way all your content will be copied "
+"to a dedicated hosting or a CDN system <a href=\"http://www.maxcdn.com/\" "
 "target=\"_blank\">maxCDN</a>."
-msgstr "CDN funkcija zamjenjuje sve URL-ove vaših statičkih datoteka i medija (CSS, JS, slike) s ovim dolje unesenim URL-om . Na taj način svi Vaš sadržaji će biti kopirani na prilagođeni hosting ili CDN sustav <a href=\"http://www.maxcdn.com/\" target=\"_blank\"> maxCDN </a>."
+msgstr ""
+"CDN funkcija zamjenjuje sve URL-ove vaših statičkih datoteka i medija (CSS, "
+"JS, slike) s ovim dolje unesenim URL-om . Na taj način svi Vaš sadržaji će "
+"biti kopirani na prilagođeni hosting ili CDN sustav <a href=\"http://www."
+"maxcdn.com/\" target=\"_blank\"> maxCDN </a>."
 
 #: inc/admin/ui/modules/cdn.php:59
 msgid "Disable CDN on HTTPS pages."
@@ -793,7 +880,8 @@ msgstr "Odbijeni fajlovi"
 
 #: inc/admin/ui/modules/cdn.php:87
 msgid "Specify the URL files that should not use the CDN. (one per line)."
-msgstr "Navedite URL datoteka koje ne bi trebale koristiti CDN. (jedan po retku)."
+msgstr ""
+"Navedite URL datoteka koje ne bi trebale koristiti CDN. (jedan po retku)."
 
 #: inc/admin/ui/modules/cloudflare.php:7
 #: inc/admin/ui/modules/cloudflare.php:15
@@ -802,9 +890,11 @@ msgstr "E-mail CloudFlare računa"
 
 #: inc/admin/ui/modules/cloudflare.php:37
 msgid ""
-"<strong>Note:</strong> Where do I find my CloudFlare API key? <a href=\"%s\""
-" target=\"_blank\">Learn more</a>"
-msgstr "<strong>Napomena:</strong> Gdje mogu pronaći svoj API ključ za CloudFlar? <a href=\"%s\" target=\"_blank\">Saznajte više</a>"
+"<strong>Note:</strong> Where do I find my CloudFlare API key? <a href=\"%s\" "
+"target=\"_blank\">Learn more</a>"
+msgstr ""
+"<strong>Napomena:</strong> Gdje mogu pronaći svoj API ključ za CloudFlar? <a "
+"href=\"%s\" target=\"_blank\">Saznajte više</a>"
 
 #: inc/admin/ui/modules/cloudflare.php:46
 #: inc/admin/ui/modules/cloudflare.php:54
@@ -828,9 +918,11 @@ msgstr "Uključeno"
 
 #: inc/admin/ui/modules/cloudflare.php:77
 msgid ""
-"Temporarily enter development mode on your website. <a href=\"%s\" "
-"target=\"_blank\">Learn more</a>"
-msgstr "Privremeno pokrenite razvojni mod na vašem websajtu. <a href=\"%s\" target=\"_blank\">Saznajte više</a>"
+"Temporarily enter development mode on your website. <a href=\"%s\" target="
+"\"_blank\">Learn more</a>"
+msgstr ""
+"Privremeno pokrenite razvojni mod na vašem websajtu. <a href=\"%s\" target="
+"\"_blank\">Saznajte više</a>"
 
 #: inc/admin/ui/modules/cloudflare.php:83
 msgid "Auto enable the optimal CloudFlare settings"
@@ -838,7 +930,8 @@ msgstr ""
 
 #: inc/admin/ui/modules/cloudflare.php:85
 msgid "Auto enable the optimal CloudFlare settings (props WP Rocket)"
-msgstr "Omogućite automatski optimalne postavke CloudFlare (WP Rocket sugestija)"
+msgstr ""
+"Omogućite automatski optimalne postavke CloudFlare (WP Rocket sugestija)"
 
 #: inc/admin/ui/modules/cloudflare.php:100
 msgid "No"
@@ -850,9 +943,11 @@ msgstr "Da"
 
 #: inc/admin/ui/modules/cloudflare.php:107
 msgid ""
-"We select the best CloudFlare configuration for speed, performance grade and"
-" compatibility."
-msgstr "Mi izabiremo najbolju CloudFlare konfiguraciju za brzinu, performanse ocjenu i kompatibilnost."
+"We select the best CloudFlare configuration for speed, performance grade and "
+"compatibility."
+msgstr ""
+"Mi izabiremo najbolju CloudFlare konfiguraciju za brzinu, performanse ocjenu "
+"i kompatibilnost."
 
 #: inc/admin/ui/modules/cloudflare.php:113
 #: inc/admin/ui/modules/cloudflare.php:121
@@ -863,13 +958,17 @@ msgstr "Prepisivanje HTTPS protokola"
 msgid ""
 "Rewrite all images, stylesheets and scripts from using either %1$s or %2$s "
 "to using just %3$s to support %4$s."
-msgstr "Prepisivanje svih slika, stilova i skripti koristeći ili %1$s ili %2$s za korištenje samo %3$s za podršku %4$s."
+msgstr ""
+"Prepisivanje svih slika, stilova i skripti koristeći ili %1$s ili %2$s za "
+"korištenje samo %3$s za podršku %4$s."
 
 #: inc/admin/ui/modules/cloudflare.php:153
 msgid ""
-"Immediately purge cached resources for your website. <a href=\"%s\" "
-"target=\"_blank\">Learn more</a>"
-msgstr "Odmah očistite cachirane resurse za vašu web stranicu. <a href=\"%s\" target=\"_blank\">Saznajte više</a>"
+"Immediately purge cached resources for your website. <a href=\"%s\" target="
+"\"_blank\">Learn more</a>"
+msgstr ""
+"Odmah očistite cachirane resurse za vašu web stranicu. <a href=\"%s\" target="
+"\"_blank\">Saznajte više</a>"
 
 #: inc/admin/ui/modules/database.php:13
 msgid "Database Optimization"
@@ -1095,10 +1194,9 @@ msgstr ""
 
 #: inc/admin/ui/modules/preload.php:29
 msgid ""
-"You can read our documentation to learn more about it: <a href=\"http://docs"
-".wp-rocket.me/article/8-how-the-cache-is-preloaded\" "
-"target=\"_blank\">http://docs.wp-rocket.me/article/8-how-the-cache-is-"
-"preloaded</a>"
+"You can read our documentation to learn more about it: <a href=\"http://docs."
+"wp-rocket.me/article/8-how-the-cache-is-preloaded\" target=\"_blank\">http://"
+"docs.wp-rocket.me/article/8-how-the-cache-is-preloaded</a>"
 msgstr ""
 
 #: inc/admin/ui/modules/preload.php:37
@@ -1172,20 +1270,28 @@ msgstr ""
 msgid ""
 "Please let us know how we will recognize the issue or can reproduce the "
 "issue. What is supposed to happen, and what is actually happening instead?"
-msgstr "Molimo da nas obavijestite kako ćemo prepoznati problem ili ga reproducirati. Što bi se trebalo dogoditi, i što se zapravo događa umjesto toga?"
+msgstr ""
+"Molimo da nas obavijestite kako ćemo prepoznati problem ili ga "
+"reproducirati. Što bi se trebalo dogoditi, i što se zapravo događa umjesto "
+"toga?"
 
 #: inc/admin/ui/modules/support.php:33
 msgid ""
-"e.g. At the bottom of the post there are related posts which are supposed to"
-" have thumbnails, but no thumbnails are displaying."
-msgstr "npr. na dnu posta su povezani postovi koji bi trebali imati umanjene sličice, ali nijedna umanjena sličica se ne prikazuje."
+"e.g. At the bottom of the post there are related posts which are supposed to "
+"have thumbnails, but no thumbnails are displaying."
+msgstr ""
+"npr. na dnu posta su povezani postovi koji bi trebali imati umanjene "
+"sličice, ali nijedna umanjena sličica se ne prikazuje."
 
 #: inc/admin/ui/modules/support.php:45
 msgid ""
 "I've read the <a href=\"%s\" target=\"_blank\">documentation</a>, and I "
 "agree to allow WP Rocket to automatically detect my WordPress version and "
 "list of enabled plugins when I submit this form."
-msgstr "Pročitao sam <a href=\"%s\" target=\"_blank\"> dokumentaciju</a>, I suglasan sam da dopustim WP Rocket Timu automatsko otkrivanje moje WordPress inačice i popis aktivnih pluginova u trenutku slanja ovog obrasca."
+msgstr ""
+"Pročitao sam <a href=\"%s\" target=\"_blank\"> dokumentaciju</a>, I suglasan "
+"sam da dopustim WP Rocket Timu automatsko otkrivanje moje WordPress inačice "
+"i popis aktivnih pluginova u trenutku slanja ovog obrasca."
 
 #: inc/admin/ui/modules/support.php:57
 msgid "Submit the ticket"
@@ -1201,9 +1307,11 @@ msgstr "Da, hoću!"
 
 #: inc/admin/ui/modules/tools.php:23
 msgid ""
-"Check it to participate in the WP Rocket Beta Program and get earlier access"
-" to new versions, thanks in advance."
-msgstr "Označite da biste sudjelovali u WP Rocket beta programu i dobili što prije pristup novim verzijama, hvala unaprijed."
+"Check it to participate in the WP Rocket Beta Program and get earlier access "
+"to new versions, thanks in advance."
+msgstr ""
+"Označite da biste sudjelovali u WP Rocket beta programu i dobili što prije "
+"pristup novim verzijama, hvala unaprijed."
 
 #: inc/admin/ui/modules/tools.php:42
 msgid "Clear the cache for the whole site."
@@ -1238,7 +1346,9 @@ msgstr "Settings Uvoz"
 msgid ""
 "Please backup your settings before, use the \"Download options\" button "
 "above."
-msgstr "Molimo backupirajte vaše postavke prije, koristite \"Preuzimanje opcija\" dugme iznad."
+msgstr ""
+"Molimo backupirajte vaše postavke prije, koristite \"Preuzimanje opcija\" "
+"dugme iznad."
 
 #: inc/admin/ui/modules/tools.php:104
 msgid "Update Rollback"
@@ -1252,13 +1362,17 @@ msgstr "Ponovno instalirajte v%s"
 msgid ""
 "Is the version %s causing you some issues? You can ask for a rollback and "
 "reinstall the last version you used before."
-msgstr "Uzrokuje li vam verzija %s određene probleme? Možete tražiti povrat na staro i ponovno instalirati posljednju verziju koju ste prethodno koristili."
+msgstr ""
+"Uzrokuje li vam verzija %s određene probleme? Možete tražiti povrat na staro "
+"i ponovno instalirati posljednju verziju koju ste prethodno koristili."
 
 #: inc/admin/ui/modules/tutorials.php:12
 msgid ""
 "This video gives some explanations about our two crawler robots. They "
 "generate several cache files in a few seconds."
-msgstr "Ovaj video daje neka objašnjenja u vezi naša dva robota. Oni stvaraju nekoliko cache datoteka u nekoliko sekundi."
+msgstr ""
+"Ovaj video daje neka objašnjenja u vezi naša dva robota. Oni stvaraju "
+"nekoliko cache datoteka u nekoliko sekundi."
 
 #: inc/admin/ui/modules/tutorials.php:19
 msgid "CSS and JavaScript minification"
@@ -1268,7 +1382,9 @@ msgstr "CSS i JavaScript minifikacija"
 msgid ""
 "This video gives some explanations about how to use the advanced processes "
 "of minification and concatenation of CSS and JavaScript files."
-msgstr "Ovaj video daje neka objašnjenja o tome kako koristiti napredne procese minifikacije i povezivanje CSS i JavaScript datoteka."
+msgstr ""
+"Ovaj video daje neka objašnjenja o tome kako koristiti napredne procese "
+"minifikacije i povezivanje CSS i JavaScript datoteka."
 
 #: inc/admin/ui/modules/tutorials.php:31
 msgid "Preloading DNS queries"
@@ -1278,7 +1394,9 @@ msgstr "Preloding DNS upita"
 msgid ""
 "This video helps to easily understand the advanced option of \"Preloading "
 "DNS queries\" and the use of the filter <code>rocket_dns_prefetch</code>."
-msgstr "Ovaj video će vam pomoći da lakše shvatite napredne opcije \"Preloding DNS upita\" i uporabu filtera <code>rocket_dns_prefetch</code>."
+msgstr ""
+"Ovaj video će vam pomoći da lakše shvatite napredne opcije \"Preloding DNS "
+"upita\" i uporabu filtera <code>rocket_dns_prefetch</code>."
 
 #: inc/admin/ui/modules/tutorials.php:43
 msgid "How to use the White Label functionality?"
@@ -1296,7 +1414,9 @@ msgstr "Kako koristiti funkcionalnosti CDN-a?"
 msgid ""
 "This video helps to understand what is the CDN functionality included since "
 "WP Rocket 2.1."
-msgstr "Ovaj video će vam pomoći da shvatite koje su funkcionalnost CDN uključene od WP Rocket 2.1."
+msgstr ""
+"Ovaj video će vam pomoći da shvatite koje su funkcionalnost CDN uključene od "
+"WP Rocket 2.1."
 
 #: inc/admin/ui/modules/tutorials.php:67
 msgid "How to use the CDN API?"
@@ -1304,9 +1424,11 @@ msgstr "Kako koristiti CDN API?"
 
 #: inc/admin/ui/modules/tutorials.php:72
 msgid ""
-"This video helps to set up the two functions "
-"<code>get_rocket_cdn_url()</code> and <code>rocket_cdn_url()</code>."
-msgstr "Ovaj video pomaže postaviti dvije funkcije <code> get_rocket_cdn_url () </code> i <code>rocket_cdn_url ()</code>."
+"This video helps to set up the two functions <code>get_rocket_cdn_url()</"
+"code> and <code>rocket_cdn_url()</code>."
+msgstr ""
+"Ovaj video pomaže postaviti dvije funkcije <code> get_rocket_cdn_url () </"
+"code> i <code>rocket_cdn_url ()</code>."
 
 #: inc/admin/ui/modules/varnish.php:17 inc/admin/ui/modules/varnish.php:26
 msgid "Varnish Caching Purge"
@@ -1320,13 +1442,17 @@ msgstr "Aktivirajte automatsko čišćenje Varnish cache-a."
 msgid ""
 "The Varnish cache will be purged each time WP Rocket cache needs to be "
 "cleared to avoid conflict."
-msgstr "Varnish cache će biti očišćen svaki put kada WP Rocket cache treba osloboditi da se izbjegnu problemi."
+msgstr ""
+"Varnish cache će biti očišćen svaki put kada WP Rocket cache treba "
+"osloboditi da se izbjegnu problemi."
 
 #: inc/admin/ui/modules/varnish.php:36
 msgid ""
 "<strong>Note:</strong> If your server is using %sVarnish%s, you must "
 "activate this option."
-msgstr "<strong>Napomena:</strong>Ako vaš server koristi %sVarnish%s, morate aktivirati ovu opciju: %l"
+msgstr ""
+"<strong>Napomena:</strong>Ako vaš server koristi %sVarnish%s, morate "
+"aktivirati ovu opciju."
 
 #: inc/admin/ui/modules/white-label.php:7
 #: inc/admin/ui/modules/white-label.php:16
@@ -1370,7 +1496,9 @@ msgstr "<b>%s</b> ne može se deaktivirati zbog <code>%s</code>."
 msgid ""
 "This constant is still defined in <code>wp-config.php</code> file and its "
 "value must be set to <code>false</code>."
-msgstr "Ta konstanta se još uvijek definira u <code>wp-config.php</code> datoteci, a njegova vrijednost mora biti postavljena na <code>netočno</code>."
+msgstr ""
+"Ta konstanta se još uvijek definira u <code>wp-config.php</code> datoteci, a "
+"njegova vrijednost mora biti postavljena na <code>netočno</code>."
 
 #: inc/admin/ui/notices.php:25
 msgid "Maybe we do not have the writing permissions for <code>%s</code>."
@@ -1380,11 +1508,14 @@ msgstr "Možda nemamo dozvolu pisanja za <code>%s</code>."
 msgid ""
 "Please give us permissions or resolve the problem yourself. Then retry "
 "deactivation."
-msgstr "Molimo da nam date dozvole ili riješite problem sami. Zatim ponovno pokušajte deaktivaciju."
+msgstr ""
+"Molimo da nam date dozvole ili riješite problem sami. Zatim ponovno "
+"pokušajte deaktivaciju."
 
 #: inc/admin/ui/notices.php:29
 msgid "This file is not writable and we can not remove these directives."
-msgstr "Na ovoj datoteci se ne može pisati, a mi ne možemo ukloniti ove smjernice."
+msgstr ""
+"Na ovoj datoteci se ne može pisati, a mi ne možemo ukloniti ove smjernice."
 
 #: inc/admin/ui/notices.php:29
 msgid "Maybe we do not have writing permissions for <code>%s</code>."
@@ -1398,13 +1529,17 @@ msgstr "Još uvijek možete izvršiti prisilno deaktiviranje klikom ovdje."
 msgid ""
 "<b>%s</b>: One or more extensions have been enabled or disabled, do not "
 "forget to clear the cache if necessary."
-msgstr "<b>%s</b>: Jedan ili više dodataka je omogućeno ili onemogućeno, ne zaboravite očistiti cache ako je to potrebno."
+msgstr ""
+"<b>%s</b>: Jedan ili više dodataka je omogućeno ili onemogućeno, ne "
+"zaboravite očistiti cache ako je to potrebno."
 
 #: inc/admin/ui/notices.php:196
 msgid ""
-"<b>%s</b>: The following plugins are not compatible with this plugin and may"
-" cause unexpected results:"
-msgstr "<b>%s </b>: Sljedeći pluginovi nisu kompatibilni s ovim pluginom i to može izazvati neočekivane rezultate:"
+"<b>%s</b>: The following plugins are not compatible with this plugin and may "
+"cause unexpected results:"
+msgstr ""
+"<b>%s </b>: Sljedeći pluginovi nisu kompatibilni s ovim pluginom i to može "
+"izazvati neočekivane rezultate:"
 
 #: inc/admin/ui/notices.php:201
 msgid "Deactivate"
@@ -1414,42 +1549,59 @@ msgstr "Deaktiviraj"
 msgid ""
 "<b>%s</b>: A custom permalink structure is required for the plugin to work "
 "properly. Please go to <a href=\"%s\">Permalink</a> to configure it."
-msgstr "<b>% s </b>: potrebno je prilagoditi permalink strukturu da bi plugin radio ispravno. Molimo idite na <a href=\"%s\"> Permalink</a> da ga konfigurirate. "
+msgstr ""
+"<b>% s </b>: potrebno je prilagoditi permalink strukturu da bi plugin radio "
+"ispravno. Molimo idite na <a href=\"%s\"> Permalink</a> da ga konfigurirate. "
 
 #: inc/admin/ui/notices.php:256
 msgid ""
 "<b>%s</b>: It seems we don't have <a href=\"%s\" target=\"_blank\">writing "
 "permissions</a> on <code>wp-config.php</code> file or the value of the "
 "constant <code>WP_CACHE</code> is set to <code>false</code>"
-msgstr "<b>% s </b>: Čini se da mi nemamo <a href=\"%s\" target=\"_blank\"> pisano dopuštenje</a> na <code>wp-config.php </code> datoteci ili je vrijednost konstante <code> WP_CACHE </code> postavljena na <code> lažno</code>"
+msgstr ""
+"<b>% s </b>: Čini se da mi nemamo <a href=\"%s\" target=\"_blank\"> pisano "
+"dopuštenje</a> na <code>wp-config.php </code> datoteci ili je vrijednost "
+"konstante <code> WP_CACHE </code> postavljena na <code> lažno</code>"
 
 #: inc/admin/ui/notices.php:258
 msgid ""
-"To fix this you have to set writing permissions for <code>wp-"
-"config.php</code> and then save the settings again."
-msgstr "Da bi ovo popravili trebate postaviti dopuštenje za pisanje <code>wp-config.php</code> i onda ponovno spremiti postavke."
+"To fix this you have to set writing permissions for <code>wp-config.php</"
+"code> and then save the settings again."
+msgstr ""
+"Da bi ovo popravili trebate postaviti dopuštenje za pisanje <code>wp-config."
+"php</code> i onda ponovno spremiti postavke."
 
 #: inc/admin/ui/notices.php:260
 msgid ""
-"If the message persists, you have to put the following code in your <code"
-">wp-config.php</code> file so that it works correctly. Click on the field "
-"and press Ctrl-A to select all."
-msgstr "Ako ova poruka već postoji, morate staviti slijedeći kod <code>wp-config.php</code> u datoteku da bi radila ispravno. Kliknite na polje i onda pritisnite tipke Ctrl-A da odaberete cijeli sadržaj."
+"If the message persists, you have to put the following code in your <code>wp-"
+"config.php</code> file so that it works correctly. Click on the field and "
+"press Ctrl-A to select all."
+msgstr ""
+"Ako ova poruka već postoji, morate staviti slijedeći kod <code>wp-config."
+"php</code> u datoteku da bi radila ispravno. Kliknite na polje i onda "
+"pritisnite tipke Ctrl-A da odaberete cijeli sadržaj."
 
 #: inc/admin/ui/notices.php:300
 msgid ""
 "If you had <a href=\"%1$s\" target=\"_blank\">writing permissions</a> on "
-"<code>%2$s</code> file, <b>%3$s</b> could do this automatically. This is not"
-" the case, here is the code you should add in your <code>%2$s</code> file "
-"for <b>%3$s</b> to work properly."
-msgstr "Ako imate <a href=\"%1$s\" target=\"_blank\">pisano dopuštenje</a>za<code>%2$s</code> datoteku, <b>%3$s</b> bi ovo mogla učiniti automatski. To nije slučaj, ovdje je kod koji bi trebali dodati u vašu <code>%2$s </code> datoteku da <b>%3$s</b> bi radila ispravno."
+"<code>%2$s</code> file, <b>%3$s</b> could do this automatically. This is not "
+"the case, here is the code you should add in your <code>%2$s</code> file for "
+"<b>%3$s</b> to work properly."
+msgstr ""
+"Ako imate <a href=\"%1$s\" target=\"_blank\">pisano dopuštenje</a>za<code>"
+"%2$s</code> datoteku, <b>%3$s</b> bi ovo mogla učiniti automatski. To nije "
+"slučaj, ovdje je kod koji bi trebali dodati u vašu <code>%2$s </code> "
+"datoteku da <b>%3$s</b> bi radila ispravno."
 
 #: inc/admin/ui/notices.php:332
 msgid ""
 "It seems that the <code>%s</code> file is not ours. Save the settings, we "
 "will automatically recreate the correct one. If it's still not working, "
 "please delete it and save again."
-msgstr "Čini se da <code>%s</code> datoteke nije naš. Spremite postavke, automatski ćemo rekreirati ispravan. Ako to još uvijek ne radi, molimo vas da ga izbrišete i ponovno spremite."
+msgstr ""
+"Čini se da <code>%s</code> datoteke nije naš. Spremite postavke, automatski "
+"ćemo rekreirati ispravan. Ako to još uvijek ne radi, molimo vas da ga "
+"izbrišete i ponovno spremite."
 
 #: inc/admin/ui/notices.php:361
 msgid ""
@@ -1458,39 +1610,59 @@ msgid ""
 "is not the case, so here are the rewrite rules you have to put in your "
 "<code>.htaccess</code> file for <b>%2$s</b> to work correctly. Click on the "
 "field and press Ctrl-A to select all."
-msgstr "Ako imate <a href=\"%1$s\" target=\"_blank\"> dozvolu pisanja </a> na <code> .htaccess </code> datoteku, <b>%2$s </b> bi mogao to učiniti automatski. To ovdje nije slučaj, pa dolje imate rewrite pravila koja morate staviti u svoju <code>.htaccess</code> datoteku da <b>%2$s</b> pravilno funkcionira. Kliknite na polje i pritisnite Ctrl-A za odabir teksta."
+msgstr ""
+"Ako imate <a href=\"%1$s\" target=\"_blank\"> dozvolu pisanja </a> na "
+"<code> .htaccess </code> datoteku, <b>%2$s </b> bi mogao to učiniti "
+"automatski. To ovdje nije slučaj, pa dolje imate rewrite pravila koja morate "
+"staviti u svoju <code>.htaccess</code> datoteku da <b>%2$s</b> pravilno "
+"funkcionira. Kliknite na polje i pritisnite Ctrl-A za odabir teksta."
 
 #: inc/admin/ui/notices.php:361
 msgid ""
 "<strong>Warning:</strong> This message will popup again and its content may "
 "be updated when saving the options"
-msgstr "<strong> Upozorenje: </strong> Ova poruka će se opet pojaviti i njezin sadržaj može biti ažuriran prilikom spremanja opcija"
+msgstr ""
+"<strong> Upozorenje: </strong> Ova poruka će se opet pojaviti i njezin "
+"sadržaj može biti ažuriran prilikom spremanja opcija"
 
 #: inc/admin/ui/notices.php:389
 msgid ""
 "Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
-"permissions</a> on <b>%3$s</b> domain configuration folder "
-"(<code>%2$s</code>). To make <b>%3$s</b> work properly, please CHMOD "
-"<code>755</code> or <code>775</code> or <code>777</code> this "
-"folder.<br/>When the problem is solved, thank you to save the %3$s options "
-"to generate the configuration file."
-msgstr "Budite oprezni, nemate <a href=\"%1$s\" target=\"_blank\">dozvolu pisanja </a> na <b>%3$s</b> konfiguracijski folder domene (<code>%2$s</code>). Da bi <b>%3$s</b>ispravno radila, molimo CHMOD <code>755</code> ili <code>775</code> ili <code>777</code> ovu mapu.<br/>Kad se problem riješi, molimo vas spremite %3$s opcije da bi generirali konfiguracijsku datoteku."
+"permissions</a> on <b>%3$s</b> domain configuration folder (<code>%2$s</"
+"code>). To make <b>%3$s</b> work properly, please CHMOD <code>755</code> or "
+"<code>775</code> or <code>777</code> this folder.<br/>When the problem is "
+"solved, thank you to save the %3$s options to generate the configuration "
+"file."
+msgstr ""
+"Budite oprezni, nemate <a href=\"%1$s\" target=\"_blank\">dozvolu pisanja </"
+"a> na <b>%3$s</b> konfiguracijski folder domene (<code>%2$s</code>). Da bi "
+"<b>%3$s</b>ispravno radila, molimo CHMOD <code>755</code> ili <code>775</"
+"code> ili <code>777</code> ovu mapu.<br/>Kad se problem riješi, molimo vas "
+"spremite %3$s opcije da bi generirali konfiguracijsku datoteku."
 
 #: inc/admin/ui/notices.php:416
 msgid ""
 "Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
-"permissions</a> on <b>%3$s</b> cache folder (<code>%2$s</code>). For "
-"<b>%3$s</b> works properly, please CHMOD <code>755</code> or "
-"<code>775</code> or <code>777</code> this folder."
-msgstr "Budite oprezni, nemate <a href=\"%1$s\" target=\"_blank\">dozvolu pisanja</a> na <b>%3$s</b>cache mapu (<code>%2$s</code>). Da bi <b>%3$s</b>ispravno radila, molimo CHMOD <code>755</code> ili <code>775</code> ili <code>777</code> ovoj mapi."
+"permissions</a> on <b>%3$s</b> cache folder (<code>%2$s</code>). For <b>"
+"%3$s</b> works properly, please CHMOD <code>755</code> or <code>775</code> "
+"or <code>777</code> this folder."
+msgstr ""
+"Budite oprezni, nemate <a href=\"%1$s\" target=\"_blank\">dozvolu pisanja</"
+"a> na <b>%3$s</b>cache mapu (<code>%2$s</code>). Da bi <b>%3$s</b>ispravno "
+"radila, molimo CHMOD <code>755</code> ili <code>775</code> ili <code>777</"
+"code> ovoj mapi."
 
 #: inc/admin/ui/notices.php:444
 msgid ""
 "Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
-"permissions</a> on <b>%3$s</b> minified cache folder (<code>%2$s</code>). To"
-" make <b>%3$s</b> work properly, please CHMOD <code>755</code> or "
-"<code>775</code> or <code>777</code> this folder."
-msgstr "Budite oprezni, nemate <a href=\"%1$s\" target=\"_blank\">dozvolu pisanja </a> na <b>%3$s</b> minificiranu cache mapu (<code>%2$s</code>). Da bi <b>%3$s</b>ispravno radila, molimo CHMOD <code>755</code> ili <code>775</code> ili <code>777</code> ovoj mapi."
+"permissions</a> on <b>%3$s</b> minified cache folder (<code>%2$s</code>). To "
+"make <b>%3$s</b> work properly, please CHMOD <code>755</code> or <code>775</"
+"code> or <code>777</code> this folder."
+msgstr ""
+"Budite oprezni, nemate <a href=\"%1$s\" target=\"_blank\">dozvolu pisanja </"
+"a> na <b>%3$s</b> minificiranu cache mapu (<code>%2$s</code>). Da bi <b>"
+"%3$s</b>ispravno radila, molimo CHMOD <code>755</code> ili <code>775</code> "
+"ili <code>777</code> ovoj mapi."
 
 #: inc/admin/ui/notices.php:468
 msgid "Thank you. Your license has been successfully validated!"
@@ -1512,14 +1684,19 @@ msgstr "Instalacija besplatne verzije Imagify-a"
 msgid ""
 "Speed up your website and boost your SEO by reducing image file sizes "
 "without loosing quality with Imagify."
-msgstr "Ubrzajte svoje web stranice i podignite svoj SEO smanjivanjem veličine slika bez gubitka kvalitete koristeći Imagify."
+msgstr ""
+"Ubrzajte svoje web stranice i podignite svoj SEO smanjivanjem veličine slika "
+"bez gubitka kvalitete koristeći Imagify."
 
 #: inc/admin/updater.php:55 inc/admin/updater.php:62
 msgid ""
 "An unexpected error occurred. Something may be wrong with WP-Rocket.me or "
 "this server&#8217;s configuration. If you continue to have problems, please "
 "try the <a href=\"%s\">support forums</a>."
-msgstr "Došlo je do neočekivane pogreške. Nešto nije u redu s WP-Rocket.me ili ovog poslužitelja&#8217;s konfiguracije. Ako i dalje imate problema, posjetite <a href=\"%s\">forume podrške</a>."
+msgstr ""
+"Došlo je do neočekivane pogreške. Nešto nije u redu s WP-Rocket.me ili ovog "
+"poslužitelja&#8217;s konfiguracije. Ako i dalje imate problema, posjetite <a "
+"href=\"%s\">forume podrške</a>."
 
 #: inc/common/admin-bar.php:94 inc/common/admin-bar.php:216
 #: inc/functions/i18n.php:38 inc/functions/i18n.php:45
@@ -1550,7 +1727,9 @@ msgstr "%s jasno"
 msgid ""
 "Last step before enjoying the high performances of our plugin, please <a "
 "href=\"%s\">Enter you API key</a> here."
-msgstr "Posljednji korak prije uživanja u rezultatima ubrzanja našeg plugina, <a href=\"%s\"> Unesite vaš API ključ </a> ovdje."
+msgstr ""
+"Posljednji korak prije uživanja u rezultatima ubrzanja našeg plugina, <a "
+"href=\"%s\"> Unesite vaš API ključ </a> ovdje."
 
 #: inc/functions/options.php:554
 msgid "Your license is not valid."
