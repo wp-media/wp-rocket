@@ -76,6 +76,7 @@ $request_uri = ( isset( $rocket_cache_query_strings ) && array_intersect( array_
 // @since 2.1 	Add compabitiliy with qTranslate and translation plugin with query string "lang"
 if ( ! empty( $_GET )
 	&& ( ! isset( $_GET['utm_source'], $_GET['utm_medium'], $_GET['utm_campaign'] ) )
+	&& ( ! isset( $_GET['utm_expid'] ) )
 	&& ( ! isset( $_GET['fb_action_ids'], $_GET['fb_action_types'], $_GET['fb_source'] ) )
 	&& ( ! isset( $_GET['gclid'] ) )
 	&& ( ! isset( $_GET['permalink_name'] ) )
