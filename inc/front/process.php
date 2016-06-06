@@ -19,6 +19,10 @@ if ( is_admin() ) {
 	return;
 }
 
+if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+    return;
+}
+
 // Don't cache the customizer preview
 if ( isset( $_POST['wp_customize'] ) ) {
     rocket_define_donotminify_constants( true );
