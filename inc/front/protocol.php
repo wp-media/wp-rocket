@@ -38,7 +38,7 @@ function __rocket_protocol_rewrite( $buffer ) {
  * @since 2.7
  */
 function __rocket_protocol_rewrite_srcset( $sources ) {
-    if ( $sources ) {
+    if ( (bool)$sources ) {
         foreach ( $sources as $i => $source ) {
             $sources[ $i ]['url'] = str_replace( array( 'http:', 'https:' ), '', $source['url'] );
         }

@@ -90,6 +90,19 @@ function get_rocket_config_file() {
 		$buffer .= '$min_documentRoot = \'' . $min_documentRoot . '\';' . "\n";
 	}
 
+    if ( apply_filters( 'rocket_override_min_cachepath', false ) ) {
+		/**
+		 * Filter the temp directory path to use during the minification
+		 *
+		 * @since 2.8.3
+		 *
+		 * @param string The temp path, empty to leave Minify guessing it automatically
+		*/
+		$min_cachePath = apply_filters( 'rocket_min_cachePath', '' );
+		
+		$buffer .= '$min_cachePath = \'' . $min_cachePath . '\';' . "\n";
+	}
+
 	$buffer .= '$rocket_cookie_hash = \'' . COOKIEHASH . '\'' . ";\n";
 
 	foreach ( $options as $option => $value ) {	
