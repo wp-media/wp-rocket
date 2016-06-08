@@ -110,7 +110,7 @@ function rocket_clean_post( $post_id ) {
 		$lang = $GLOBALS['sitepress']->get_language_for_element( $post_id, 'post_' . get_post_type( $post_id ) );
 
 	// Polylang
-	} else if ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
+	} else if ( rocket_is_plugin_active( 'polylang/polylang.php' ) || rocket_is_plugin_active( 'polylang-pro/polylang.php' ) ) {
 		$lang = pll_get_post_language( $post_id );
 	}
 	

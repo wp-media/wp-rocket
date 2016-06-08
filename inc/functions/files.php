@@ -607,7 +607,7 @@ function rocket_clean_term( $term_id, $taxonomy_slug ) {
 		$lang = $GLOBALS['sitepress']->get_language_for_element( $term_id, 'tax_' . $taxonomy_slug );
 
 	// Polylang
-	} else if ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
+	} else if ( rocket_is_plugin_active( 'polylang/polylang.php' ) || rocket_is_plugin_active( 'polylang-pro/polylang.php' ) ) {
 		$lang = pll_get_term_language( $term_id );
 	}
 	

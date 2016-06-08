@@ -147,7 +147,8 @@ function rocket_has_i18n() {
 	if ( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' )  // WPML
 		|| rocket_is_plugin_active( 'qtranslate/qtranslate.php' )               // qTranslate
 		|| rocket_is_plugin_active( 'qtranslate-x/qtranslate.php' )			    // qTranslate-x
-		|| rocket_is_plugin_active( 'polylang/polylang.php' ) ) { 				// Polylang
+		|| rocket_is_plugin_active( 'polylang/polylang.php' )                   // Polylang
+        || rocket_is_plugin_active( 'polylang-pro/polylang.php' ) ) { 			// Polylang Pro
 		return true;
 	}
 
@@ -174,7 +175,7 @@ function get_rocket_i18n_code() {
 		return $GLOBALS['q_config']['enabled_languages'];
 	}
 
-	if ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
+	if ( rocket_is_plugin_active( 'polylang/polylang.php' ) || rocket_is_plugin_active( 'polylang-pro/polylang.php' ) ) {
 		return pll_languages_list();
 	}
 }
@@ -226,7 +227,7 @@ function get_rocket_i18n_uri() {
         		$urls[] = qtranxf_convertURL( home_url(), $lang, true );
     		}
 		}
-    } elseif ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
+    } elseif ( rocket_is_plugin_active( 'polylang/polylang.php' ) || rocket_is_plugin_active( 'polylang-pro/polylang.php' ) ) {
         $pll = function_exists( 'PLL' ) ? PLL() : $GLOBALS['polylang'];
 
         if ( isset( $pll ) ) {
@@ -307,7 +308,7 @@ function get_rocket_i18n_subdomains() {
 		if( (int) $GLOBALS['q_config']['url_mode'] == 3 || (int) $GLOBALS['q_config']['url_mode'] == 4 ) {
 			$urls = get_rocket_i18n_uri();
 		}
-	} elseif ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
+	} elseif ( rocket_is_plugin_active( 'polylang/polylang.php' ) || rocket_is_plugin_active( 'polylang-pro/polylang.php' ) ) {
     	$pll = function_exists( 'PLL' ) ? PLL() : $GLOBALS['polylang'];
 
         if ( isset( $pll ) && ( (int) $pll->options['force_lang'] == 2 || (int) $pll->options['force_lang'] == 3 ) ) {
@@ -338,7 +339,7 @@ function get_rocket_i18n_home_url( $lang = '' ) {
 		$url = qtrans_convertURL( home_url(), $lang, true );
     } elseif ( rocket_is_plugin_active( 'qtranslate-x/qtranslate.php' ) ) {
 		$url = qtranxf_convertURL( home_url(), $lang, true );
-	} elseif ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
+	} elseif ( rocket_is_plugin_active( 'polylang/polylang.php' ) || rocket_is_plugin_active( 'polylang-pro/polylang.php' ) ) {
     	$pll = function_exists( 'PLL' ) ? PLL() : $GLOBALS['polylang'];
 
     	if ( ! empty( $pll->options['force_lang'] ) && isset( $pll->links ) ) {
@@ -392,7 +393,7 @@ function get_rocket_i18n_translated_post_urls( $post_id, $post_type = 'page', $r
 	}
 
 	// Polylang
-	if ( rocket_is_plugin_active( 'polylang/polylang.php' ) ) {
+	if ( rocket_is_plugin_active( 'polylang/polylang.php' ) || rocket_is_plugin_active( 'polylang-pro/polylang.php' ) ) {
     	if ( function_exists( 'PLL' ) && is_object( PLL()->model ) ) {
             $translations = pll_get_post_translations( $post_id );
         } else if ( is_object( $GLOBALS['polylang']->model ) ) {
