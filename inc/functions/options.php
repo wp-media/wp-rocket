@@ -179,6 +179,10 @@ function get_rocket_cache_reject_uri() {
 	if( function_exists( 'json_get_url_prefix' ) && $rocket_cache_reject_wp_rest_api ) {
 		$uri[] = '/' . json_get_url_prefix() . '/(.*)';	
 	}
+
+    if ( class_exists( 'WP_REST_Controller' ) && $rocket_cache_reject_wp_rest_api ) {
+        $uri[] = '/wp-json/(.*)';
+    }
 	
 	/**
 	  * By default, don't cache the WooCommerce REST API.
