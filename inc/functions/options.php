@@ -165,42 +165,10 @@ function get_rocket_cache_reject_uri() {
 		
 	// Exclude hide login plugins
 	$uri = array_merge( $uri, get_rocket_logins_exclude_pages() );
-	
-	/**
-	  * By default, don't cache the WP REST API.
-	  *
-	  * @since 2.5.12
-	  *
-	  * @param bool false will force to cache the WP REST API
-	 */
-	$rocket_cache_reject_wp_rest_api = apply_filters( 'rocket_cache_reject_wp_rest_api', true );
-	
-	// Exclude WP REST API
-	if( function_exists( 'json_get_url_prefix' ) && $rocket_cache_reject_wp_rest_api ) {
-		$uri[] = '/' . json_get_url_prefix() . '/(.*)';	
-	}
 
-    if ( class_exists( 'WP_REST_Controller' ) && $rocket_cache_reject_wp_rest_api ) {
-        $uri[] = '/wp-json/(.*)';
-    }
-	
-	/**
-	  * By default, don't cache the WooCommerce REST API.
-	  *
-	  * @since 2.6.5
-	  *
-	  * @param bool false will force to cache the WooCommerce REST API
-	 */
-	$rocket_cache_reject_wc_rest_api = apply_filters( 'rocket_cache_reject_wc_rest_api', true );
-	
-	// Exclude WooCommerce REST API
-	if( class_exists( 'WC_API' ) && $rocket_cache_reject_wc_rest_api ) {
-		$uri[] = rocket_clean_exclude_file( home_url( '/wc-api/v(.*)' ) );
-	}
-	
-	// Exclude feeds if option is not activated
-	if ( ! is_rocket_cache_feed() ) {
-	    $uri[] = '.*/' . $GLOBALS['wp_rewrite']->feed_base . '/?';
+    // Exclude feeds if option is not activated
+    if ( ! is_rocket_cache_feed() ) {
+        $uri[] = '.*/' . $GLOBALS['wp_rewrite']->feed_base . '/?';
     }
 	
 	/**
