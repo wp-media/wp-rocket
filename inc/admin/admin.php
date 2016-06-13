@@ -89,7 +89,7 @@ add_filter( 'user_row_actions', '__rocket_user_row_actions', 10, 2 );
 function __rocket_user_row_actions( $actions, $user ) {			
 	/** This filter is documented in inc/admin-bar.php */
 	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) && get_rocket_option( 'cache_logged_user', false ) ) {
-		$url = wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=user-' . $user->id ), 'purge_cache_user-' . $user->id );
+		$url = wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=user-' . $user->ID ), 'purge_cache_user-' . $user->ID );
 		$actions['rocket_purge'] = sprintf( '<a href="%s">%s</a>', $url, __( 'Clear this cache', 'rocket' ) );
 	}
     

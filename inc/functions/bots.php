@@ -193,13 +193,13 @@ function rocket_process_sitemap( $sitemap_url, $urls = array() ) {
     $sitemap = wp_remote_get( esc_url_raw( $sitemap_url ) );
 
     if ( is_wp_error( $sitemap ) ) {
-        return;
+        return array();
     }
 
     $xml_data = wp_remote_retrieve_body( $sitemap );
 
     if ( empty( $xml_data ) ) {
-        return;
+        return array();
     }
 
     libxml_use_internal_errors( true );
@@ -208,7 +208,7 @@ function rocket_process_sitemap( $sitemap_url, $urls = array() ) {
 
     if ( false === $xml ) {
         libxml_clear_errors();
-        return;
+        return array();
     }
 
     $url_count = count( $xml->url );

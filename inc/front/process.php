@@ -267,7 +267,7 @@ function do_rocket_callback( $buffer ) {
 			if ( function_exists( 'gzencode' ) ) {
 				rocket_put_content( $rocket_cache_filepath . '_gzip', gzencode ( $buffer . get_rocket_footprint(), apply_filters( 'rocket_gzencode_level_compression', 3 ) ) );
 			}
-			
+
 			// Send headers with the last modified time of the cache file
 			header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s', filemtime( $rocket_cache_filepath ) ) . ' GMT' );
 		}
