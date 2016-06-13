@@ -268,10 +268,6 @@ function do_rocket_callback( $buffer ) {
 				rocket_put_content( $rocket_cache_filepath . '_gzip', gzencode ( $buffer . get_rocket_footprint(), apply_filters( 'rocket_gzencode_level_compression', 3 ) ) );
 			}
 
-            if ( false !== strpos( $rocket_cache_filepath, '/feed/' ) ) {
-                header('Content-Type: application/rss+xml');
-            }
-
 			// Send headers with the last modified time of the cache file
 			header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s', filemtime( $rocket_cache_filepath ) ) . ' GMT' );
 		}
@@ -303,10 +299,6 @@ function rocket_serve_cache_file( $rocket_cache_filepath ) {
 		} else {
 			$http_if_modified_since = ( isset( $_SERVER[ 'HTTP_IF_MODIFIED_SINCE' ] ) ) ?$_SERVER[ 'HTTP_IF_MODIFIED_SINCE' ] : '';
 		}
-
-        if ( false !== strpos( $rocket_cache_filepath, '/feed/' ) ) {
-            header('Content-Type: application/rss+xml');
-        }
 
 		// Checking if the client is validating his cache and if it is current.
 	    if ( $http_if_modified_since && ( strtotime( $http_if_modified_since ) == @filemtime( $rocket_cache_filepath ) ) ) {
