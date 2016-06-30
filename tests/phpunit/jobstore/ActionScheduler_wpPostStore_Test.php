@@ -7,7 +7,7 @@
 class ActionScheduler_wpPostStore_Test extends ActionScheduler_UnitTestCase {
 
 	public function test_create_action() {
-		$time = new DateTime(null, new DateTimeZone('UTC'));
+		$time = ActionScheduler::get_datetime_object();
 		$schedule = new ActionScheduler_SimpleSchedule($time);
 		$action = new ActionScheduler_Action('my_hook', array(), $schedule);
 		$store = new ActionScheduler_wpPostStore();
@@ -17,7 +17,7 @@ class ActionScheduler_wpPostStore_Test extends ActionScheduler_UnitTestCase {
 	}
 
 	public function test_retrieve_action() {
-		$time = new DateTime(null, new DateTimeZone('UTC'));
+		$time = ActionScheduler::get_datetime_object();
 		$schedule = new ActionScheduler_SimpleSchedule($time);
 		$action = new ActionScheduler_Action('my_hook', array(), $schedule, 'my_group');
 		$store = new ActionScheduler_wpPostStore();
@@ -31,7 +31,7 @@ class ActionScheduler_wpPostStore_Test extends ActionScheduler_UnitTestCase {
 	}
 
 	public function test_cancel_action() {
-		$time = new DateTime(null, new DateTimeZone('UTC'));
+		$time = ActionScheduler::get_datetime_object();
 		$schedule = new ActionScheduler_SimpleSchedule($time);
 		$action = new ActionScheduler_Action('my_hook', array(), $schedule, 'my_group');
 		$store = new ActionScheduler_wpPostStore();
@@ -46,7 +46,7 @@ class ActionScheduler_wpPostStore_Test extends ActionScheduler_UnitTestCase {
 		$created_actions = array();
 		$store = new ActionScheduler_wpPostStore();
 		for ( $i = 3 ; $i > -3 ; $i-- ) {
-			$time = new DateTime($i.' hours', new DateTimeZone('UTC'));
+			$time = ActionScheduler::get_datetime_object($i.' hours');
 			$schedule = new ActionScheduler_SimpleSchedule($time);
 			$action = new ActionScheduler_Action('my_hook', array($i), $schedule, 'my_group');
 			$created_actions[] = $store->save_action($action);
@@ -63,7 +63,7 @@ class ActionScheduler_wpPostStore_Test extends ActionScheduler_UnitTestCase {
 		$created_actions = array();
 		$store = new ActionScheduler_wpPostStore();
 		for ( $i = 0 ; $i > -3 ; $i-- ) {
-			$time = new DateTime($i.' hours', new DateTimeZone('UTC'));
+			$time = ActionScheduler::get_datetime_object($i.' hours');
 			$schedule = new ActionScheduler_SimpleSchedule($time);
 			$action = new ActionScheduler_Action('my_hook', array($i), $schedule, 'my_group');
 			$created_actions[] = $store->save_action($action);
@@ -79,7 +79,7 @@ class ActionScheduler_wpPostStore_Test extends ActionScheduler_UnitTestCase {
 		$created_actions = array();
 		$store = new ActionScheduler_wpPostStore();
 		for ( $i = 0 ; $i > -3 ; $i-- ) {
-			$time = new DateTime($i.' hours', new DateTimeZone('UTC'));
+			$time = ActionScheduler::get_datetime_object($i.' hours');
 			$schedule = new ActionScheduler_SimpleSchedule($time);
 			$action = new ActionScheduler_Action('my_hook', array($i), $schedule, 'my_group');
 			$created_actions[] = $store->save_action($action);
@@ -97,7 +97,7 @@ class ActionScheduler_wpPostStore_Test extends ActionScheduler_UnitTestCase {
 		$created_actions = array();
 		$store = new ActionScheduler_wpPostStore();
 		for ( $i = -3 ; $i <= 3 ; $i++ ) {
-			$time = new DateTime($i.' hours', new DateTimeZone('UTC'));
+			$time = ActionScheduler::get_datetime_object($i.' hours');
 			$schedule = new ActionScheduler_SimpleSchedule($time);
 			$action = new ActionScheduler_Action('my_hook', array($i), $schedule, 'my_group');
 			$created_actions[] = $store->save_action($action);
@@ -115,7 +115,7 @@ class ActionScheduler_wpPostStore_Test extends ActionScheduler_UnitTestCase {
 
 	public function test_search_by_group() {
 		$store = new ActionScheduler_wpPostStore();
-		$schedule = new ActionScheduler_SimpleSchedule(new DateTime('tomorrow', new DateTimeZone('UTC')));
+		$schedule = new ActionScheduler_SimpleSchedule(ActionScheduler::get_datetime_object('tomorrow'));
 		$abc = $store->save_action(new ActionScheduler_Action('my_hook', array(1), $schedule, 'abc'));
 		$def = $store->save_action(new ActionScheduler_Action('my_hook', array(1), $schedule, 'def'));
 		$ghi = $store->save_action(new ActionScheduler_Action('my_hook', array(1), $schedule, 'ghi'));
@@ -128,7 +128,7 @@ class ActionScheduler_wpPostStore_Test extends ActionScheduler_UnitTestCase {
 	public function test_post_author() {
 		$current_user = get_current_user_id();
 
-		$time = new DateTime(null, new DateTimeZone('UTC'));
+		$time = ActionScheduler::get_datetime_object();
 		$schedule = new ActionScheduler_SimpleSchedule($time);
 		$action = new ActionScheduler_Action('my_hook', array(), $schedule);
 		$store = new ActionScheduler_wpPostStore();
@@ -157,7 +157,7 @@ class ActionScheduler_wpPostStore_Test extends ActionScheduler_UnitTestCase {
 	 * @issue 13
 	 */
 	public function test_post_status_for_recurring_action() {
-		$time = new DateTime('10 minutes', new DateTimeZone('UTC'));
+		$time = ActionScheduler::get_datetime_object('10 minutes');
 		$schedule = new ActionScheduler_IntervalSchedule($time, HOUR_IN_SECONDS);
 		$action = new ActionScheduler_Action('my_hook', array(), $schedule);
 		$store = new ActionScheduler_wpPostStore();
@@ -167,7 +167,7 @@ class ActionScheduler_wpPostStore_Test extends ActionScheduler_UnitTestCase {
 		$action->execute();
 		$store->mark_complete( $action_id );
 
-		$next = $action->get_schedule()->next( new DateTime( null, new DateTimeZone( 'UTC' ) ) );
+		$next = $action->get_schedule()->next( ActionScheduler::get_datetime_object() );
 		$new_action_id = $store->save_action( $action, $next );
 
 		$this->assertEquals('publish', get_post_status($action_id));
@@ -175,7 +175,7 @@ class ActionScheduler_wpPostStore_Test extends ActionScheduler_UnitTestCase {
 	}
 
 	public function test_get_run_date() {
-		$time = new DateTime('-10 minutes', new DateTimeZone('UTC'));
+		$time = ActionScheduler::get_datetime_object('-10 minutes');
 		$schedule = new ActionScheduler_IntervalSchedule($time, HOUR_IN_SECONDS);
 		$action = new ActionScheduler_Action('my_hook', array(), $schedule);
 		$store = new ActionScheduler_wpPostStore();
@@ -185,7 +185,7 @@ class ActionScheduler_wpPostStore_Test extends ActionScheduler_UnitTestCase {
 
 		$action = $store->fetch_action($action_id);
 		$action->execute();
-		$now = new DateTime(null, new DateTimeZone('UTC'));
+		$now = ActionScheduler::get_datetime_object();
 		$store->mark_complete( $action_id );
 
 		$this->assertEquals( $store->get_date($action_id)->format('U'), $now->format('U') );

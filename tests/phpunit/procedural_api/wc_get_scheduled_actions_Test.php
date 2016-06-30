@@ -21,7 +21,7 @@ class wc_get_scheduled_actions_Test extends ActionScheduler_UnitTestCase {
 
 		for ( $i = 0 ; $i < 10 ; $i++ ) {
 			for ( $j = 0 ; $j < 10 ; $j++  ) {
-				$schedule = new ActionScheduler_SimpleSchedule( new DateTime( $j - 3 . 'days', new DateTimeZone('UTC') ) );
+				$schedule = new ActionScheduler_SimpleSchedule( ActionScheduler::get_datetime_object( $j - 3 . 'days') );
 				$group = $this->groups[ ( $i + $j ) % 10 ];
 				$action = new ActionScheduler_Action( $this->hooks[$i], array($this->args[$j]), $schedule, $group );
 				$store->save_action( $action );
@@ -31,13 +31,13 @@ class wc_get_scheduled_actions_Test extends ActionScheduler_UnitTestCase {
 
 	public function test_date_queries() {
 		$actions = wc_get_scheduled_actions(array(
-			'date' => new DateTime(date('Y-m-d 00:00:00'), new DateTimeZone('UTC')),
+			'date' => ActionScheduler::get_datetime_object(gmdate('Y-m-d 00:00:00')),
 			'per_page' => -1,
 		), 'ids');
 		$this->assertCount(30, $actions);
 
 		$actions = wc_get_scheduled_actions(array(
-			'date' => new DateTime(date('Y-m-d 00:00:00'), new DateTimeZone('UTC')),
+			'date' => ActionScheduler::get_datetime_object(gmdate('Y-m-d 00:00:00')),
 			'date_compare' => '>=',
 			'per_page' => -1,
 		), 'ids');
@@ -53,7 +53,7 @@ class wc_get_scheduled_actions_Test extends ActionScheduler_UnitTestCase {
 
 		$actions = wc_get_scheduled_actions(array(
 			'hook' => $this->hooks[2],
-			'date' => new DateTime(date('Y-m-d 00:00:00'), new DateTimeZone('UTC')),
+			'date' => ActionScheduler::get_datetime_object(gmdate('Y-m-d 00:00:00')),
 			'per_page' => -1,
 		), 'ids');
 		$this->assertCount(3, $actions);
@@ -76,7 +76,7 @@ class wc_get_scheduled_actions_Test extends ActionScheduler_UnitTestCase {
 		$actions = wc_get_scheduled_actions(array(
 			'args' => array($this->args[5]),
 			'hook' => $this->hooks[3],
-			'date' => new DateTime(date('Y-m-d 00:00:00'), new DateTimeZone('UTC')),
+			'date' => ActionScheduler::get_datetime_object(gmdate('Y-m-d 00:00:00')),
 			'per_page' => -1,
 		), 'ids');
 		$this->assertCount(0, $actions);
