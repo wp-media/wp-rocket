@@ -16,7 +16,7 @@ class ActionScheduler_wpCommentLogger extends ActionScheduler_Logger {
 	 */
 	public function log( $action_id, $message, DateTime $date = NULL ) {
 		if ( empty($date) ) {
-			$date = new DateTime();
+			$date = ActionScheduler::get_datetime_object();
 		} else {
 			$date = clone( $date );
 		}
@@ -25,10 +25,12 @@ class ActionScheduler_wpCommentLogger extends ActionScheduler_Logger {
 	}
 
 	protected function create_wp_comment( $action_id, $message, DateTime $date ) {
+		$comment_date_gmt = $date->format('Y-m-d H:i:s');
 		$date->setTimezone( ActionScheduler_TimezoneHelper::get_local_timezone() );
 		$comment_data = array(
 			'comment_post_ID' => $action_id,
 			'comment_date' => $date->format('Y-m-d H:i:s'),
+			'comment_date_gmt' => $comment_date_gmt,
 			'comment_author' => self::AGENT,
 			'comment_content' => $message,
 			'comment_agent' => self::AGENT,
