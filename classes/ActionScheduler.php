@@ -32,14 +32,30 @@ abstract class ActionScheduler {
 		return ActionScheduler_AdminView::instance();
 	}
 
-	public static function get_datetime_object( $when ) {
-		$when = empty($when) ? time() : $when;
+	/**
+	 * Helper function to create an instance of DateTime based on a given
+	 * string and timezone. By default, will return the current date/time
+	 * in the UTC timezone.
+	 *
+	 * Needed because new DateTime() called without an explicit timezone
+	 * will create a date/time in PHP's timezone, but we need to have
+	 * assurance that a date/time uses the right timezone (which we almost
+	 * always want to be UTC), which means we need to always include the
+	 * timezone when instantiating datetimes rather than leaving it up to
+	 * the PHP default.
+	 *
+	 * @param mixed $date_string A date/time string. Valid formats are explained in http://php.net/manual/en/datetime.formats.php
+	 * @param string $timezone A timezone identifier, like UTC or Europe/Lisbon. The list of valid identifiers is available http://php.net/manual/en/timezones.php
+	 *
+	 * @return DateTime
+	 */
+	public static function get_datetime_object( $when = null, $timezone = 'UTC' ) {
 		if ( is_object($when) && $when instanceof DateTime ) {
-			$date = $when;
+			$date = $when->setTimezone(new DateTimeZone( $timezone ) );
 		} elseif ( is_numeric( $when ) ) {
-			$date = new DateTime( '@'.$when );
+			$date = new DateTime( '@'.$when, new DateTimeZone( $timezone ) );
 		} else {
-			$date = new DateTime( $when );
+			$date = new DateTime( $when, new DateTimeZone( $timezone ) );
 		}
 		return $date;
 	}
