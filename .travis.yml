@@ -23,8 +23,8 @@ env:
 before_script:
     - source tests/travis/setup.sh
 
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
-
 script: phpunit --configuration tests/phpunit.xml.dist
+
+after_script:
+  - bash <(curl -s https://codecov.io/bash)
 
