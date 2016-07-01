@@ -105,7 +105,7 @@ class ActionScheduler_QueueRunner {
 	}
 
 	protected function schedule_next_instance( ActionScheduler_Action $action ) {
-		$next = $action->get_schedule()->next( ActionScheduler::get_datetime_object() );
+		$next = $action->get_schedule()->next( as_get_datetime_object() );
 		if ( $next ) {
 			$this->store->save_action( $action, $next );
 		}

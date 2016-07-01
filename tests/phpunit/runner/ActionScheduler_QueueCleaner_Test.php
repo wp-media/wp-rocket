@@ -10,7 +10,7 @@ class ActionScheduler_QueueCleaner_Test extends ActionScheduler_UnitTestCase {
 		$runner = new ActionScheduler_QueueRunner( $store );
 
 		$random = md5(rand());
-		$schedule = new ActionScheduler_SimpleSchedule(ActionScheduler::get_datetime_object('1 day ago'));
+		$schedule = new ActionScheduler_SimpleSchedule(as_get_datetime_object('1 day ago'));
 
 		$created_actions = array();
 		for ( $i = 0 ; $i < 5 ; $i++ ) {
@@ -36,7 +36,7 @@ class ActionScheduler_QueueCleaner_Test extends ActionScheduler_UnitTestCase {
 		$runner = new ActionScheduler_QueueRunner( $store );
 
 		$random = md5(rand());
-		$schedule = new ActionScheduler_SimpleSchedule(ActionScheduler::get_datetime_object('1 day ago'));
+		$schedule = new ActionScheduler_SimpleSchedule(as_get_datetime_object('1 day ago'));
 
 		$created_actions = array();
 		for ( $i = 0 ; $i < 5 ; $i++ ) {
@@ -59,7 +59,7 @@ class ActionScheduler_QueueCleaner_Test extends ActionScheduler_UnitTestCase {
 		$store = new ActionScheduler_wpPostStore();
 
 		$random = md5(rand());
-		$schedule = new ActionScheduler_SimpleSchedule(ActionScheduler::get_datetime_object('1 day ago'));
+		$schedule = new ActionScheduler_SimpleSchedule(as_get_datetime_object('1 day ago'));
 
 		$created_actions = array();
 		for ( $i = 0 ; $i < 5 ; $i++ ) {
@@ -85,7 +85,7 @@ class ActionScheduler_QueueCleaner_Test extends ActionScheduler_UnitTestCase {
 		$store = new ActionScheduler_wpPostStore();
 
 		$random = md5(rand());
-		$schedule = new ActionScheduler_SimpleSchedule(ActionScheduler::get_datetime_object('1 day ago'));
+		$schedule = new ActionScheduler_SimpleSchedule(as_get_datetime_object('1 day ago'));
 
 		$created_actions = array();
 		for ( $i = 0 ; $i < 5 ; $i++ ) {

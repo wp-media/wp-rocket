@@ -136,7 +136,7 @@ function wc_get_scheduled_actions( $args = array(), $return_format = OBJECT ) {
 	$store = ActionScheduler::store();
 	foreach ( array('date', 'modified') as $key ) {
 		if ( isset($args[$key]) ) {
-			$args[$key] = ActionScheduler::get_datetime_object($args[$key]);
+			$args[$key] = as_get_datetime_object($args[$key]);
 		}
 	}
 	$ids = $store->query_actions( $args );
@@ -157,4 +157,32 @@ function wc_get_scheduled_actions( $args = array(), $return_format = OBJECT ) {
 	}
 
 	return $actions;
+}
+
+/**
+ * Helper function to create an instance of DateTime based on a given
+ * string and timezone. By default, will return the current date/time
+ * in the UTC timezone.
+ *
+ * Needed because new DateTime() called without an explicit timezone
+ * will create a date/time in PHP's timezone, but we need to have
+ * assurance that a date/time uses the right timezone (which we almost
+ * always want to be UTC), which means we need to always include the
+ * timezone when instantiating datetimes rather than leaving it up to
+ * the PHP default.
+ *
+ * @param mixed $date_string A date/time string. Valid formats are explained in http://php.net/manual/en/datetime.formats.php
+ * @param string $timezone A timezone identifier, like UTC or Europe/Lisbon. The list of valid identifiers is available http://php.net/manual/en/timezones.php
+ *
+ * @return DateTime
+ */
+function as_get_datetime_object( $date_string = null, $timezone = 'UTC' ) {
+	if ( is_object($date_string) && $date_string instanceof DateTime ) {
+		$date = $date_string->setTimezone(new DateTimeZone( $timezone ) );
+	} elseif ( is_numeric( $date_string ) ) {
+		$date = new DateTime( '@'.$date_string, new DateTimeZone( $timezone ) );
+	} else {
+		$date = new DateTime( $date_string, new DateTimeZone( $timezone ) );
+	}
+	return $date;
 }

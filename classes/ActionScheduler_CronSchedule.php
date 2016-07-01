@@ -38,7 +38,7 @@ class ActionScheduler_CronSchedule implements ActionScheduler_Schedule {
 	}
 
 	public function __wakeup() {
-		$this->start = ActionScheduler::get_datetime_object($this->start_timestamp);
+		$this->start = as_get_datetime_object($this->start_timestamp);
 	}
 }
  

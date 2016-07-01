@@ -166,7 +166,7 @@ class ActionScheduler_AdminView {
 
 		$action_title   = ( 'trash' == $post->post_status ) ? $post->post_title : $action->get_hook();
 		$recurrence     = ( 'trash' == $post->post_status ) ? 0 : $action->get_schedule();
-		$next_timestamp = ActionScheduler::get_datetime_object( $post->post_date_gmt )->format( 'U' );
+		$next_timestamp = as_get_datetime_object( $post->post_date_gmt )->format( 'U' );
 		$status         = get_post_status( $post_id );
 
 		switch ( $column_name ) {

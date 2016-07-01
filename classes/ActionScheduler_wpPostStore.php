@@ -352,9 +352,9 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 			throw new InvalidArgumentException(sprintf(__('Unidentified action %s', 'action-scheduler'), $action_id));
 		}
 		if ( $post->post_status == 'publish' ) {
-			return ActionScheduler::get_datetime_object($post->post_modified_gmt);
+			return as_get_datetime_object($post->post_modified_gmt);
 		} else {
-			return ActionScheduler::get_datetime_object($post->post_date_gmt);
+			return as_get_datetime_object($post->post_date_gmt);
 		}
 	}
 
@@ -398,7 +398,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	protected function claim_actions( $claim_id, $limit, DateTime $before_date = NULL ) {
 		/** @var wpdb $wpdb */
 		global $wpdb;
-		$date = is_null($before_date) ? ActionScheduler::get_datetime_object() : clone( $before_date );
+		$date = is_null($before_date) ? as_get_datetime_object() : clone( $before_date );
 		// can't use $wpdb->update() because of the <= condition, using post_modified to take advantage of indexes
 		$sql = "UPDATE {$wpdb->posts} SET post_password = %s, post_modified_gmt = %s, post_modified = %s WHERE post_type = %s AND post_status = %s AND post_password = '' AND post_date_gmt <= %s ORDER BY menu_order ASC, post_date_gmt ASC LIMIT %d";
 		$sql = $wpdb->prepare( $sql, array( $claim_id, current_time('mysql', true), current_time('mysql'), self::POST_TYPE, 'pending', $date->format('Y-m-d H:i:s'), $limit ) );
