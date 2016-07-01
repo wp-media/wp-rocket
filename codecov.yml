@@ -1,3 +1,6 @@
+codecov:
+  branch: bleeding_branch
+
 coverage:
   ignore:
   - tests/.*
