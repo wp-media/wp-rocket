@@ -1,0 +1,13 @@
+codecov:
+  branch: bleeding_branch
+
+coverage:
+  ignore:
+  - tests/.*
+  - lib/.*
+  status:
+    project: false
+    patch: false
+    changes: false
+
+comment: false
