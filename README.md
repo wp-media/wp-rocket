@@ -1,4 +1,5 @@
-Action Scheduler [![Build Status](https://travis-ci.org/Prospress/action-scheduler.png?branch=master)](https://travis-ci.org/Prospress/action-scheduler)
+# Action Scheduler [![Build Status](https://travis-ci.org/Prospress/action-scheduler.png?branch=master)](https://travis-ci.org/Prospress/action-scheduler) [![codecov](https://codecov.io/gh/Prospress/action-scheduler/branch/bleeding_branch/graph/badge.svg)](https://codecov.io/gh/Prospress/action-scheduler)
+
 
 A robust scheduling system for WordPress.
 
