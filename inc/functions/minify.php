@@ -73,6 +73,7 @@ function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_file
 	$urls 		= array( 0 => '' );
 	$base_url 	= WP_ROCKET_URL . 'min/?f=';
 	$files  	= is_array( $files ) ? $files : (array) $files;
+	$files      = array_filter( $files );
 
 	if ( count( $files ) ) {
 		$i = 0;
