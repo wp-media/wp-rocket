@@ -38,13 +38,8 @@ function __rocket_run_rocket_bot_after_wpengine() {
  */
 add_filter( 'get_rocket_option_cdn', '__rocket_auto_activate_cdn_on_wpengine' );
 function __rocket_auto_activate_cdn_on_wpengine( $value ) {
-    $is_ssl = @$_SERVER['HTTPS'];
-    if ( preg_match( '/^[oO][fF]{2}$/', $is_ssl ) ) {
-        $is_ssl = false;  // have seen this!
-    }
 
-	$wpengine   = WpeCommon::instance();
-	$cdn_domain = $wpengine->get_cdn_domain( $domains, home_url(), $is_ssl );
+	$cdn_domain = rocket_get_wp_engine_cdn_domain();
 	
 	if ( ! empty( $cdn_domain ) ) {
 		$value = true;
@@ -55,23 +50,8 @@ function __rocket_auto_activate_cdn_on_wpengine( $value ) {
 
 add_filter( 'rocket_cdn_cnames', '__rocket_add_wpengine_cdn_cnames' );
 function __rocket_add_wpengine_cdn_cnames( $hosts ) {
-	global $wpe_netdna_domains, $wpe_netdna_domains_secure;
-	
-	$is_ssl = @$_SERVER['HTTPS'];
-    if ( preg_match( '/^[oO][fF]{2}$/', $is_ssl ) ) {
-        $is_ssl = false;  // have seen this!
-    }
-    $native_schema = $is_ssl ? "https" : "http";
-	
-	// Determine the CDN, if any
-    if ( $is_ssl ) {
-        $domains = $wpe_netdna_domains_secure;
-    } else {
-        $domains = $wpe_netdna_domains;
-    }
-	
-	$wpengine = WpeCommon::instance();
-	$cdn_domain = $wpengine->get_cdn_domain( $domains, home_url(), $is_ssl );
+
+	$cdn_domain = rocket_get_wp_engine_cdn_domain();
 
 	if ( ! empty( $cdn_domain ) ) {
 		$hosts[] = $native_schema . '://' . $cdn_domain;
@@ -108,5 +88,38 @@ function rocket_clean_wpengine() {
   * @since 2.7
  */
 add_filter( 'rocket_display_varnish_options_tab', '__return_false' );
+
+/**
+  * Gets WP Engine CDN Domain
+  *
+  * @since 2.8.6
+  * @author Jonathan Buttigieg
+  *
+  * return string $cdn_domain the WP Engine CDN Domain
+ */
+function rocket_get_wp_engine_cdn_domain() {
+    global $wpe_netdna_domains, $wpe_netdna_domains_secure;
+   
+    $cdn_domain = '';
+    $is_ssl     = @$_SERVER['HTTPS'];
+   
+    if ( preg_match( '/^[oO][fF]{2}$/', $is_ssl ) ) {
+        $is_ssl = false;  // have seen this!
+    }
+   
+    $native_schema = $is_ssl ? "https" : "http";
+   
+    // Determine the CDN, if any
+    if ( $is_ssl ) {
+        $domains = $wpe_netdna_domains_secure;
+    } else {
+        $domains = $wpe_netdna_domains;
+    }
+   
+    $wpengine   = WpeCommon::instance();
+    $cdn_domain = $wpengine->get_cdn_domain( $domains, home_url(), $is_ssl );
+   
+    return $cdn_domain;
+}
 
 endif;
