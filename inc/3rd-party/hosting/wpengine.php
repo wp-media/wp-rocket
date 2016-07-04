@@ -109,4 +109,11 @@ function rocket_clean_wpengine() {
  */
 add_filter( 'rocket_display_varnish_options_tab', '__return_false' );
 
+/**
+ * Always keep WP_CACHE constant to true
+ *
+ * @since 2.8.6
+ */
+add_filter( 'set_rocket_wp_cache_define', '__return_true' );
+
 endif;
