@@ -17,6 +17,6 @@
 	<li><h2><a href="http://docs.wp-rocket.me/article/76-is-wp-rocket-compatible-with-wpml-qtranslate-or-polylang?utm_source=plugin&utm_medium=faq&utm_campaign=doc" target="_blank">Is WP Rocket compatible with WPML, qTranslate or Polylang?</a></h2></li>
 	<li><h2><a href="http://docs.wp-rocket.me/article/74-is-wp-rocket-compatible-with-wp-touch-wordpress-mobile-pack-and-wp-mobile-detector?utm_source=plugin&utm_medium=faq&utm_campaign=doc" target="_blank">Is WP Rocket compatible with WP Touch, WordPress Mobile Pack and WP Mobile Detector?</a></h2></li>
 	<li><h2><a href="http://docs.wp-rocket.me/article/79-reports-from-pagespeed-and-yslow-tell-me-that-the-content-is-not-gziped-and-or-did-not-expire-what-should-i-do?utm_source=plugin&utm_medium=faq&utm_campaign=doc" target="_blank">Reports from PageSpeed and YSlow tell me that the content is not gziped and/or did not expire, what should I do?</a></h2></li>
-	<li><h2><a href="http://docs.wp-rocket.me/article/47-my-site-is-broken?utm_source=plugin&utm_medium=faq&utm_campaign=doc">What should I do if WP Rocket distorts my website display?</a></h2></li>
+	<li><h2><a href="http://docs.wp-rocket.me/article/106-my-site-is-broken?utm_source=plugin&utm_medium=faq&utm_campaign=doc">What should I do if WP Rocket distorts my website display?</a></h2></li>
 	<li><h2><a href="http://docs.wp-rocket.me/article/54-exclude-pages-from-the-cache?utm_source=plugin&utm_medium=faq&utm_campaign=doc" target="_blank">How to exclude a particular page from caching?</a></h2></li>
 </ol>
