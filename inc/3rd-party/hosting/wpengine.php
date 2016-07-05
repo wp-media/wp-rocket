@@ -122,4 +122,11 @@ function rocket_get_wp_engine_cdn_domain() {
     return $cdn_domain;
 }
 
+/**
+ * Always keep WP_CACHE constant to true
+ *
+ * @since 2.8.6
+ */
+add_filter( 'set_rocket_wp_cache_define', '__return_true' );
+
 endif;
