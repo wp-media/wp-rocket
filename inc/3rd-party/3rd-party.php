@@ -32,3 +32,4 @@ require( WP_ROCKET_3RD_PARTY_PATH . 'jetpack.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'yoast-seo.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'all-in-one-seo-pack.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'wp-rest-api.php' );
+require( WP_ROCKET_3RD_PARTY_PATH . 'page-builder/beaver-builder.php' );
