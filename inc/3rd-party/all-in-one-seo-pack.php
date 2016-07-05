@@ -7,7 +7,7 @@ if ( defined( 'AIOSEOP_VERSION' ) ) :
 	 * @since 2.8
 	 * @author Remy Perona
 	 */
-    if ( 'on' === $all_in_one_seo_xml_options['modules']['aiosp_feature_manager_options']['aiosp_feature_manager_enable_sitemap'] ) {
+    if ( isset( $all_in_one_seo_xml_options['modules']['aiosp_feature_manager_options']['aiosp_feature_manager_enable_sitemap'] ) && 'on' === $all_in_one_seo_xml_options['modules']['aiosp_feature_manager_options']['aiosp_feature_manager_enable_sitemap'] ) {
         add_filter( 'rocket_first_install_options', '__rocket_add_all_in_one_seo_sitemap_option' );
         function __rocket_add_all_in_one_seo_sitemap_option( $options ) {
             $options['all_in_one_seo_xml_sitemap'] = 0;
