@@ -144,7 +144,7 @@ function rocket_cdn_enqueue( $src )
 		return $src;
 	}
 
-	$src  = set_url_scheme( $src );
+	$src  = rocket_add_url_protocol( $src );
 	$zone = array( 'all', 'css_and_js' );
 
 	// Add only CSS zone
