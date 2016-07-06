@@ -292,7 +292,7 @@ function get_rocket_htaccess_mod_deflate()
 			$rules .= '<IfModule mod_headers.c>' . PHP_EOL;
 			$rules .= 'SetEnvIfNoCase ^(Accept-EncodXng|X-cept-Encoding|X{15}|~{15}|-{15})$ ^((gzip|deflate)\s*,?\s*)+|[X~-]{4,13}$ HAVE_Accept-Encoding' . PHP_EOL;
 			$rules .= 'RequestHeader append Accept-Encoding "gzip,deflate" env=HAVE_Accept-Encoding' . PHP_EOL;
-			$rules .= '# Don\'t compress images and other uncompressible content' . PHP_EOL;
+			$rules .= '# Don’t compress images and other uncompressible content' . PHP_EOL;
 			$rules .= 'SetEnvIfNoCase Request_URI \\' . PHP_EOL;
 			$rules .= '\\.(?:gif|jpe?g|png|rar|zip|exe|flv|mov|wma|mp3|avi|swf|mp?g)$ no-gzip dont-vary' . PHP_EOL;
 			$rules .= '</IfModule>' . PHP_EOL;
@@ -476,7 +476,7 @@ function get_rocket_htaccess_etag()
     $rules .= '<IfModule mod_headers.c>' . PHP_EOL;
     $rules .= 'Header unset ETag' . PHP_EOL;
     $rules .= '</IfModule>' . PHP_EOL . PHP_EOL;
-    $rules .= '# Since we\'re sending far-future expires, we don\'t need ETags for static content.' . PHP_EOL;
+    $rules .= '# Since we’re sending far-future expires, we don’t need ETags for static content.' . PHP_EOL;
     $rules .= '# developer.yahoo.com/performance/rules.html#etags' . PHP_EOL;
     $rules .= 'FileETag None' . PHP_EOL . PHP_EOL;
 
