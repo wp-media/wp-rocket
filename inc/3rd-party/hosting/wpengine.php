@@ -54,9 +54,9 @@ function __rocket_add_wpengine_cdn_cnames( $hosts ) {
 	$cdn_domain = rocket_get_wp_engine_cdn_domain();
 
 	if ( ! empty( $cdn_domain ) ) {
-		$hosts[] = $native_schema . '://' . $cdn_domain;
+		$hosts[] = $cdn_domain;
 	}
-	
+
 	return $hosts;
 }
 
@@ -118,6 +118,8 @@ function rocket_get_wp_engine_cdn_domain() {
    
     $wpengine   = WpeCommon::instance();
     $cdn_domain = $wpengine->get_cdn_domain( $domains, home_url(), $is_ssl );
+    
+    $cdn_domain = $native_schema . '://' . $cdn_domain;
    
     return $cdn_domain;
 }
