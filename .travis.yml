@@ -23,7 +23,8 @@ env:
 before_script:
     - source tests/travis/setup.sh
 
-script: phpunit --configuration tests/phpunit.xml.dist
+script:
+ - if [[ "$TRAVIS_PHP_VERSION" == "5.6" ]] && [[ "$WP_VERSION" == "4.5" ]] && [[ "$WP_MULTISITE" == "0" ]] && [[ "$TRAVIS_BRANCH" == "bleeding_branch" ]]; then phpunit --configuration phpunit.xml.dist --coverage-clover clover.xml; else phpunit --configuration phpunit.xml.dist; fi
 
 after_script:
   - bash <(curl -s https://codecov.io/bash)
