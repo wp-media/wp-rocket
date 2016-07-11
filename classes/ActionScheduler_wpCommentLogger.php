@@ -18,7 +18,7 @@ class ActionScheduler_wpCommentLogger extends ActionScheduler_Logger {
 		if ( empty($date) ) {
 			$date = as_get_datetime_object();
 		} else {
-			$date = clone( $date );
+			$date = clone $date;
 		}
 		$comment_id = $this->create_wp_comment( $action_id, $message, $date );
 		return $comment_id;

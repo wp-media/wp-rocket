@@ -7,7 +7,7 @@ class ActionScheduler_SimpleSchedule implements ActionScheduler_Schedule {
 	private $date = NULL;
 	private $timestamp = 0;
 	public function __construct( DateTime $date ) {
-		$this->date = clone($date);
+		$this->date = clone $date;
 	}
 
 	/**
@@ -17,7 +17,7 @@ class ActionScheduler_SimpleSchedule implements ActionScheduler_Schedule {
 	 */
 	public function next( DateTime $after = NULL ) {
 		$after = empty($after) ? as_get_datetime_object('@0') : $after;
-		return ( $after > $this->date ) ? NULL : clone( $this->date );
+		return ( $after > $this->date ) ? NULL : clone $this->date;
 	}
 
 	/**
