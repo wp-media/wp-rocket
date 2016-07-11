@@ -239,7 +239,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		}
 
 		if ( $query['date'] instanceof DateTime ) {
-			$date = clone( $query['date'] );
+			$date = clone $query['date'];
 			$date->setTimezone( $this->get_local_timezone() );
 			$date_string = $date->format('Y-m-d H:i:s');
 			$comparator = $this->validate_sql_comparator($query['date_compare']);
@@ -248,7 +248,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		}
 
 		if ( $query['modified'] instanceof DateTime ) {
-			$modified = clone( $query['modified'] );
+			$modified = clone $query['modified'];
 			$modified->setTimezone( $this->get_local_timezone() );
 			$date_string = $modified->format('Y-m-d H:i:s');
 			$comparator = $this->validate_sql_comparator($query['modified_compare']);
@@ -388,7 +388,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	protected function claim_actions( $claim_id, $limit, DateTime $before_date = NULL ) {
 		/** @var wpdb $wpdb */
 		global $wpdb;
-		$date = is_null($before_date) ? new DateTime() : clone( $before_date );
+		$date = is_null($before_date) ? new DateTime() : clone $before_date;
 		$date->setTimezone( $this->get_local_timezone() ); // using post_modified to take advantage of indexes
 		// can't use $wpdb->update() because of the <= condition
 		$sql = "UPDATE {$wpdb->posts} SET post_password = %s, post_modified_gmt = %s, post_modified = %s WHERE post_type = %s AND post_status = %s AND post_password = '' AND post_date <= %s ORDER BY menu_order ASC, post_date ASC LIMIT %d";
