@@ -8,8 +8,10 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
  */
 add_action( 'wp_ajax_rocket_new_ticket_support', '__wp_ajax_rocket_new_ticket_support' );
 function __wp_ajax_rocket_new_ticket_support() {
+    // rocket_capability is a typo (should have been rocket_capacity)
 	if( ! isset( $_POST['_wpnonce'], $_POST['summary'], $_POST['description'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'wp_rocket-options' ) || 
-		! current_user_can( apply_filters( 'rocket_capability', 'manage_options' ) ) 
+		! current_user_can( apply_filters_deprecated( 'rocket_capability', array( 'manage_options' ), '2.8.9', 'rocket_capacity' ) ) ||
+		! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
 		) {
 		return;
 	}
