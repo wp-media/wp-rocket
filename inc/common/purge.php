@@ -414,8 +414,12 @@ function __rocket_purge_cache() {
     			    list( $host, $path, $scheme, $query ) = get_rocket_parse_url( untrailingslashit( home_url() ) );
                     $referer = $scheme . '://' . $host . $referer;
                 }
-			    
-				rocket_clean_files( $referer );
+                
+                if ( home_url( '/' ) === $referer ) {
+                    rocket_clean_home();
+                } else {
+                    rocket_clean_files( $referer );
+                }
 				break;
 
 			default:
