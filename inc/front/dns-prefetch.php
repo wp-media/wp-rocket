@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 if ( function_exists( 'wp_resource_hints' ) ) {
     add_filter( 'wp_resource_hints', 'rocket_dns_prefetch', 10, 2 );
 } else {
-    add_filter( 'rocket_buffer', 'rocket_dns_prefetch_buffer', 12 );
+    add_filter( 'rocket_buffer', '__rocket_dns_prefetch_buffer', 12 );
 }
 
 /**
@@ -47,7 +47,7 @@ function rocket_dns_prefetch( $hints, $relation_type ) {
  * @param String $buffer
  * @return String Updated buffer
  */ 
-function rocket_dns_prefetch_buffer( $buffer )
+function __rocket_dns_prefetch_buffer( $buffer )
 {
 	$domains = rocket_get_dns_prefetch_domains();
 
