@@ -27,7 +27,8 @@ if ( function_exists( 'wp_resource_hints' ) ) {
  */ 
 function rocket_dns_prefetch( $hints, $relation_type ) {
     $domains = rocket_get_dns_prefetch_domains();
-    if ( (bool)$domains ) {
+    
+    if ( (bool) $domains ) {
         foreach ( $domains as $domain ) {
             if ( 'dns-prefetch' === $relation_type ) {
                 $hints[] = $domain;
@@ -47,11 +48,10 @@ function rocket_dns_prefetch( $hints, $relation_type ) {
  * @param String $buffer
  * @return String Updated buffer
  */ 
-function __rocket_dns_prefetch_buffer( $buffer )
-{
+function __rocket_dns_prefetch_buffer( $buffer ) {
 	$domains = rocket_get_dns_prefetch_domains();
 
-	if ( (bool)$domains ) {
+	if ( (bool) $domains ) {
 		foreach ( $domains as $domain ) {
 			$dns_link_tags .= '<link rel="dns-prefetch" href="' . esc_url( $domain ) . '" />';
 		}
@@ -66,7 +66,7 @@ function __rocket_dns_prefetch_buffer( $buffer )
 	 *
 	 * @param bool true will print the IE conditional tag
 	 */
-	if( apply_filters( 'do_rocket_old_ie_prefetch_conditional_tag', true ) ) {
+	if ( apply_filters( 'do_rocket_old_ie_prefetch_conditional_tag', true ) ) {
 		$old_ie_conditional_tag = '<!--[if IE]><![endif]-->';
 	}
 
@@ -82,14 +82,14 @@ function __rocket_dns_prefetch_buffer( $buffer )
  * @since 2.8.9
  * @author Remy Perona
  *
- * return Array Array of domain names to DNS prefetch
+ * return Array An array of domain names to DNS prefetch
  */
 function rocket_get_dns_prefetch_domains() {
     $dns_link_tags = '';
 	$cdn_cnames    = get_rocket_cdn_cnames( array( 'all', 'images', 'css_and_js', 'css', 'js' ) );
 
 	// Don't add CNAMES if CDN is disabled HTTPS pages or on specific posts
-	if( ! is_rocket_cdn_on_ssl() || is_rocket_post_excluded_option( 'cdn' ) ) {
+	if ( ! is_rocket_cdn_on_ssl() || is_rocket_post_excluded_option( 'cdn' ) ) {
 		$cdn_cnames = array();
 	}
 
