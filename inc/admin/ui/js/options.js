@@ -119,21 +119,17 @@ jQuery( document ).ready( function($){
 	$( '#minify_css, #minify_js' ).click(function() {
 		obj = $(this);
 		if ( obj.is( ':checked' ) ) {
-			swal(
-			{
+			swal({
 				title: sawpr.warningTitle,
-				text: sawpr.minifyText,
+				html: sawpr.minifyText,
 				type: "warning",
 				showCancelButton: true,
 				confirmButtonColor: "#A5DC86",
-				confirmButtonText: sawpr.confirmButtonTextBis,
+				confirmButtonText: sawpr.confirmButtonText,
 				cancelButtonText: sawpr.cancelButtonText,
-				closeOnConfirm: true,
-				closeOnCancel: true,
-				html: true
-			},
-			function(isConfirm){
-				if (!isConfirm) {
+			}).then( function() {
+			}, function(dismiss){
+				if ( dismiss === 'cancel' ) {
 					obj.attr('checked', false);
 				}
 			});
@@ -145,12 +141,12 @@ jQuery( document ).ready( function($){
 		if ( $(this).is( ':checked' ) ) {
 			swal({
 				title: sawpr.cloudflareTitle,
-				text: sawpr.cloudflareText,
+				html: sawpr.cloudflareText,
 				timer: 5000
 			});
 		}
 	});
-
+    
 	// Support form
 	$( '#submit-support-button' ).click( function(e) {
 		e.preventDefault();
@@ -162,17 +158,16 @@ jQuery( document ).ready( function($){
 
 		if ( ! validation.is( ':checked' ) ) {
 			swal({
-				title : sawpr.warningSupportTitle,
-				text  : sawpr.warningSupportText,
-				type  : "warning",
-				html  : true
+				title: sawpr.warningSupportTitle,
+				html: sawpr.warningSupportText,
+				type: "warning"
 			});
 		}
 		
 		if ( validation.is( ':checked' ) && ( summary == '' || description == '' ) ) {
 			swal({
-				title : sawpr.requiredTitle,
-				type  : "warning",
+				title: sawpr.requiredTitle,
+				type: "warning",
 			});
 		}
 
@@ -230,13 +225,12 @@ jQuery( document ).ready( function($){
 					}
 
 					swal({
-						title : title,
-						text  : text,
-						type  : type,
-						confirmButtonText : confirmButtonText,
-						confirmButtonColor : confirmButtonColor,
-						html  : true
-					},
+						title: title,
+						html: text,
+						type: type,
+						confirmButtonText: confirmButtonText,
+						confirmButtonColor: confirmButtonColor,
+					}).then(
 					function() {
 						if( response.msg == 'BAD_EMAIL' ) {
 							window.open(response.order_url);
