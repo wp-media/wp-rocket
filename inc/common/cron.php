@@ -2,11 +2,19 @@
 defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 
 /**
- * Customizing the time interval between automatic cache purge
- * This setting can be changed from the options page of the plugin
- * By default, the interval is 4 hours
+ * Adds new intervals for cron jobs
  *
+ * Customizes the time interval between automatic cache purge
+ * This setting can be changed from the options page of the plugin
+ * By default, the interval is 24 hours
+ *
+ * Adds a weekly/monthly interval for database optimization
+ *
+ * @since 2.8.9 Add weekly and monthly intervals
  * @since 1.0
+ *
+ * @param Array $schedules An array of intervals used by cron jobs
+ * @return Array Updated array of intervals
  */
 add_filter( 'cron_schedules', 'rocket_purge_cron_schedule' );
 function rocket_purge_cron_schedule( $schedules ) {
@@ -16,6 +24,24 @@ function rocket_purge_cron_schedule( $schedules ) {
 			'display' 	=> sprintf( __( '%s clear', 'rocket' ), WP_ROCKET_PLUGIN_NAME )
 		);
 	}
+
+    if ( get_rocket_option( 'schedule_automatic_cleanup', false ) ) {
+        switch ( get_rocket_option( 'automatic_cleanup_frequency' ) ) {
+            case 'weekly':
+                $schedules['weekly'] = array(
+                    'interval' => 604800,
+                    'display'  => __( 'weekly', 'rocket' )
+                );
+                break;
+            case 'monthly':
+                $schedules['monthly'] = array(
+                    'interval' => 2592000,
+                    'display'  => __( 'monthly', 'rocket' ) 
+                );
+                break;
+        }
+    }
+
 	return $schedules;
 }
 
