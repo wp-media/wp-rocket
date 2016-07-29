@@ -86,7 +86,6 @@ function __rocket_dns_prefetch_buffer( $buffer ) {
  * return Array An array of domain names to DNS prefetch
  */
 function rocket_get_dns_prefetch_domains() {
-    $dns_link_tags = '';
 	$cdn_cnames    = get_rocket_cdn_cnames( array( 'all', 'images', 'css_and_js', 'css', 'js' ) );
 
 	// Don't add CNAMES if CDN is disabled HTTPS pages or on specific posts
