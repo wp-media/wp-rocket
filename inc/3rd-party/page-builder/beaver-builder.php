@@ -9,7 +9,7 @@ if ( defined( 'FL_BUILDER_VERSION' ) ) :
  * @since 2.8.6
  */
 add_action( 'fl_builder_before_save_layout', '__rocket_beaver_builder_clean_domain', 10, 4 );
-function __rocket_bb_purge_minified_files() {
+function __rocket_beaver_builder_clean_domain() {
     rocket_clean_minify();
     rocket_clean_domain();
 }

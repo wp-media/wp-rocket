@@ -58,3 +58,33 @@ if ( ! function_exists( 'wp_unslash' ) ) {
 		return stripslashes_deep( $value );
 	}
 }
+
+/**
+ * Copied from core for compatibility with WP < 4.6
+ * Removed the error triggering because it relies on another WP 4.6 function
+ *
+ * Fires functions attached to a deprecated filter hook.
+ *
+ * When a filter hook is deprecated, the apply_filters() call is replaced with
+ * apply_filters_deprecated(), which triggers a deprecation notice and then fires
+ * the original filter hook.
+ *
+ * @since 4.6.0
+ *
+ * @see _deprecated_hook()
+ *
+ * @param string $tag         The name of the filter hook.
+ * @param array  $args        Array of additional function arguments to be passed to apply_filters().
+ * @param string $version     The version of WordPress that deprecated the hook.
+ * @param string $replacement Optional. The hook that should have been used.
+ * @param string $message     Optional. A message regarding the change.
+ */
+if ( ! function_exists( 'apply_filters_deprecated' ) ) {
+    function apply_filters_deprecated( $tag, $args, $version, $replacement = false, $message = null ) {
+	    if ( ! has_filter( $tag ) ) {
+	    	return $args[0];
+	    }
+        
+	    return apply_filters_ref_array( $tag, $args );
+    }
+}
