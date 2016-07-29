@@ -49,7 +49,8 @@ function rocket_dns_prefetch( $hints, $relation_type ) {
  * @return String Updated buffer
  */ 
 function __rocket_dns_prefetch_buffer( $buffer ) {
-	$domains = rocket_get_dns_prefetch_domains();
+	$dns_link_tags = '';
+	$domains       = rocket_get_dns_prefetch_domains();
 
 	if ( (bool) $domains ) {
 		foreach ( $domains as $domain ) {
