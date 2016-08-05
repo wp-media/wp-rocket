@@ -20,7 +20,7 @@ class ActionScheduler_QueueRunner_Test extends ActionScheduler_UnitTestCase {
 		$mock = new MockAction();
 		$random = md5(rand());
 		add_action( $random, array( $mock, 'action' ) );
-		$schedule = new ActionScheduler_SimpleSchedule(new DateTime('1 day ago'));
+		$schedule = new ActionScheduler_SimpleSchedule(as_get_datetime_object('1 day ago'));
 
 		for ( $i = 0 ; $i < 5 ; $i++ ) {
 			$action = new ActionScheduler_Action( $random, array($random), $schedule );
@@ -42,14 +42,14 @@ class ActionScheduler_QueueRunner_Test extends ActionScheduler_UnitTestCase {
 		$mock = new MockAction();
 		$random = md5(rand());
 		add_action( $random, array( $mock, 'action' ) );
-		$schedule = new ActionScheduler_SimpleSchedule(new DateTime('1 day ago'));
+		$schedule = new ActionScheduler_SimpleSchedule(as_get_datetime_object('1 day ago'));
 
 		for ( $i = 0 ; $i < 3 ; $i++ ) {
 			$action = new ActionScheduler_Action( $random, array($random), $schedule );
 			$store->save_action( $action );
 		}
 
-		$schedule = new ActionScheduler_SimpleSchedule(new DateTime('tomorrow'));
+		$schedule = new ActionScheduler_SimpleSchedule(as_get_datetime_object('tomorrow'));
 		for ( $i = 0 ; $i < 3 ; $i++ ) {
 			$action = new ActionScheduler_Action( $random, array($random), $schedule );
 			$store->save_action( $action );
@@ -68,7 +68,7 @@ class ActionScheduler_QueueRunner_Test extends ActionScheduler_UnitTestCase {
 		$runner = new ActionScheduler_QueueRunner( $store );
 
 		$random = md5(rand());
-		$schedule = new ActionScheduler_SimpleSchedule(new DateTime('12 hours ago'));
+		$schedule = new ActionScheduler_SimpleSchedule(as_get_datetime_object('12 hours ago'));
 
 		$action = new ActionScheduler_Action( $random, array(), $schedule );
 		$action_id = $store->save_action( $action );
@@ -85,17 +85,17 @@ class ActionScheduler_QueueRunner_Test extends ActionScheduler_UnitTestCase {
 		$runner = new ActionScheduler_QueueRunner( $store );
 
 		$random = md5(rand());
-		$schedule = new ActionScheduler_IntervalSchedule(new DateTime('12 hours ago'), DAY_IN_SECONDS);
+		$schedule = new ActionScheduler_IntervalSchedule(as_get_datetime_object('12 hours ago'), DAY_IN_SECONDS);
 
 		$action = new ActionScheduler_Action( $random, array(), $schedule );
 		$store->save_action( $action );
 
 		$runner->run();
 
-		$claim = $store->stake_claim(10, new DateTime((DAY_IN_SECONDS - 60).' seconds'));
+		$claim = $store->stake_claim(10, as_get_datetime_object((DAY_IN_SECONDS - 60).' seconds'));
 		$this->assertCount(0, $claim->get_actions());
 
-		$claim = $store->stake_claim(10, new DateTime(DAY_IN_SECONDS.' seconds'));
+		$claim = $store->stake_claim(10, as_get_datetime_object(DAY_IN_SECONDS.' seconds'));
 		$actions = $claim->get_actions();
 		$this->assertCount(1, $actions);
 
@@ -104,7 +104,7 @@ class ActionScheduler_QueueRunner_Test extends ActionScheduler_UnitTestCase {
 
 
 		$this->assertEquals( $random, $new_action->get_hook() );
-		$this->assertEquals( $schedule->next(new DateTime()), $new_action->get_schedule()->next(new DateTime()) );
+		$this->assertEquals( $schedule->next(as_get_datetime_object()), $new_action->get_schedule()->next(as_get_datetime_object()) );
 	}
 
 	public function test_hooked_into_wp_cron() {

@@ -32,18 +32,6 @@ abstract class ActionScheduler {
 		return ActionScheduler_AdminView::instance();
 	}
 
-	public static function get_datetime_object( $when ) {
-		$when = empty($when) ? time() : $when;
-		if ( is_object($when) && $when instanceof DateTime ) {
-			$date = $when;
-		} elseif ( is_numeric( $when ) ) {
-			$date = new DateTime( '@'.$when );
-		} else {
-			$date = new DateTime( $when );
-		}
-		return $date;
-	}
-
 	/**
 	 * Get the absolute system path to the plugin directory, or a file therein
 	 * @static
@@ -121,5 +109,12 @@ abstract class ActionScheduler {
 	}
 
 	final private function __construct() {}
+
+	/** Deprecated **/
+
+	public static function get_datetime_object( $when = null, $timezone = 'UTC' ) {
+		_deprecated_function( __METHOD__, '2.0', 'wcs_add_months()' );
+		return as_get_datetime_object( $when, $timezone );
+	}
 }
  

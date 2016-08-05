@@ -166,7 +166,7 @@ class ActionScheduler_AdminView {
 
 		$action_title   = ( 'trash' == $post->post_status ) ? $post->post_title : $action->get_hook();
 		$recurrence     = ( 'trash' == $post->post_status ) ? 0 : $action->get_schedule();
-		$next_timestamp = get_post_time( 'U', true, $post_id );
+		$next_timestamp = as_get_datetime_object( $post->post_date_gmt )->format( 'U' );
 		$status         = get_post_status( $post_id );
 
 		switch ( $column_name ) {
@@ -196,7 +196,7 @@ class ActionScheduler_AdminView {
 				}
 				break;
 			case 'scheduled':
-				echo get_date_from_gmt( date( 'Y-m-d H:i:s', $next_timestamp ), 'Y-m-d H:i:s' );
+				echo get_date_from_gmt( gmdate( 'Y-m-d H:i:s', $next_timestamp ), 'Y-m-d H:i:s' );
 				if ( gmdate( 'U' ) > $next_timestamp ) {
 					printf( __( ' (%s ago)', 'action-scheduler' ), human_time_diff( gmdate( 'U' ), $next_timestamp ) );
 				} else {

@@ -176,7 +176,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 				$order = 'ASC';
 				break;
 		}
-		$query .= " ORDER BY post_date $order LIMIT 1";
+		$query .= " ORDER BY post_date_gmt $order LIMIT 1";
 
 		$query = $wpdb->prepare( $query, $args );
 
@@ -240,19 +240,19 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 
 		if ( $query['date'] instanceof DateTime ) {
 			$date = clone $query['date'];
-			$date->setTimezone( $this->get_local_timezone() );
+			$date->setTimezone( new DateTimeZone('UTC') );
 			$date_string = $date->format('Y-m-d H:i:s');
 			$comparator = $this->validate_sql_comparator($query['date_compare']);
-			$sql .= " AND p.post_date $comparator %s";
+			$sql .= " AND p.post_date_gmt $comparator %s";
 			$sql_params[] = $date_string;
 		}
 
 		if ( $query['modified'] instanceof DateTime ) {
 			$modified = clone $query['modified'];
-			$modified->setTimezone( $this->get_local_timezone() );
+			$modified->setTimezone( new DateTimeZone('UTC') );
 			$date_string = $modified->format('Y-m-d H:i:s');
 			$comparator = $this->validate_sql_comparator($query['modified_compare']);
-			$sql .= " AND p.post_modified $comparator %s";
+			$sql .= " AND p.post_modified_gmt $comparator %s";
 			$sql_params[] = $date_string;
 		}
 
@@ -277,7 +277,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 				break;
 			case 'date':
 			default:
-				$orderby = 'p.post_date';
+				$orderby = 'p.post_date_gmt';
 				break;
 		}
 		if ( strtoupper($query['order']) == 'ASC' ) {
@@ -336,17 +336,27 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	 * @return DateTime The date the action is schedule to run, or the date that it ran.
 	 */
 	public function get_date( $action_id ) {
+		$date = $this->get_date_gmt( $action_id );
+		return $date->setTimezone( $this->get_local_timezone() );
+	}
+
+	/**
+	 * @param string $action_id
+	 *
+	 * @throws InvalidArgumentException
+	 * @return DateTime The date the action is schedule to run, or the date that it ran.
+	 */
+	public function get_date_gmt( $action_id ) {
 		$post = get_post($action_id);
 		if ( empty($post) || ($post->post_type != self::POST_TYPE) ) {
 			throw new InvalidArgumentException(sprintf(__('Unidentified action %s', 'action-scheduler'), $action_id));
 		}
 		if ( $post->post_status == 'publish' ) {
-			return new DateTime($post->post_modified, ActionScheduler_TimezoneHelper::get_local_timezone());
+			return as_get_datetime_object($post->post_modified_gmt);
 		} else {
-			return new DateTime($post->post_date, ActionScheduler_TimezoneHelper::get_local_timezone());
+			return as_get_datetime_object($post->post_date_gmt);
 		}
 	}
-
 
 	/**
 	 * @param int $max_actions
@@ -381,17 +391,17 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	/**
 	 * @param string $claim_id
 	 * @param int $limit
-	 * @param DateTime $before_date
+	 * @param DateTime $before_date Should use UTC timezone.
 	 * @return int The number of actions that were claimed
 	 * @throws RuntimeException
 	 */
 	protected function claim_actions( $claim_id, $limit, DateTime $before_date = NULL ) {
 		/** @var wpdb $wpdb */
 		global $wpdb;
-		$date = is_null($before_date) ? new DateTime() : clone $before_date;
-		$date->setTimezone( $this->get_local_timezone() ); // using post_modified to take advantage of indexes
-		// can't use $wpdb->update() because of the <= condition
-		$sql = "UPDATE {$wpdb->posts} SET post_password = %s, post_modified_gmt = %s, post_modified = %s WHERE post_type = %s AND post_status = %s AND post_password = '' AND post_date <= %s ORDER BY menu_order ASC, post_date ASC LIMIT %d";
+
+		$date = is_null($before_date) ? as_get_datetime_object() : clone $before_date;
+		// can't use $wpdb->update() because of the <= condition, using post_modified to take advantage of indexes
+		$sql = "UPDATE {$wpdb->posts} SET post_password = %s, post_modified_gmt = %s, post_modified = %s WHERE post_type = %s AND post_status = %s AND post_password = '' AND post_date_gmt <= %s ORDER BY menu_order ASC, post_date_gmt ASC LIMIT %d";
 		$sql = $wpdb->prepare( $sql, array( $claim_id, current_time('mysql', true), current_time('mysql'), self::POST_TYPE, 'pending', $date->format('Y-m-d H:i:s'), $limit ) );
 		$rows_affected = $wpdb->query($sql);
 		if ( $rows_affected === false ) {
