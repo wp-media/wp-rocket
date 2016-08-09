@@ -24,4 +24,11 @@ function __deactivate_rocket_lazyload_on_buddypress_profil_pages( $run_filter ) 
 	return $run_filter;
 }
 
+add_filter( 'rocket_excluded_handle_js', '__rocket_exclude_js_buddypress' );
+function __rocket_exclude_js_buddypress( $excluded_handle ) {
+    $excluded_handle[] = 'bp-plupload';
+
+    return $excluded_handle;
+}
+
 endif;
