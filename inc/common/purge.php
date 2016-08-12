@@ -166,16 +166,16 @@ function rocket_clean_post( $post_id ) {
 	if ( $cache_purge_pages ) {
         global $blog_id;
 
-        if ( empty( $blog_id ) || ! is_multisite() ) {
-            $home_url = get_option( 'home' );
-        } else {
+        $home_url = get_option( 'home' );
+
+        if ( (bool) $blog_id || is_multisite() ) {
             switch_to_blog( $blog_id );
             $home_url = get_option( 'home' );
             restore_current_blog();
         }
 
 		foreach( $cache_purge_pages as $page ) {
-    		$page = $home_url . '/' . $page;
+    		$page = trailingslashit( $home_url ) . $page;
 			array_push( $purge_urls, $page );
 		}
 	}
