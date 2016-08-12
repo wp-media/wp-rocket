@@ -168,7 +168,7 @@ function rocket_clean_post( $post_id ) {
 
         $home_url = get_option( 'home' );
 
-        if ( (bool) $blog_id || is_multisite() ) {
+        if ( ! empty( $blog_id ) && is_multisite() ) {
             switch_to_blog( $blog_id );
             $home_url = get_option( 'home' );
             restore_current_blog();
