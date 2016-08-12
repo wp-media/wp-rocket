@@ -164,8 +164,19 @@ function rocket_clean_post( $post_id ) {
 	// Add urls page to purge every time a post is save
 	$cache_purge_pages = get_rocket_option( 'cache_purge_pages' );
 	if ( $cache_purge_pages ) {
+        global $blog_id;
+
+        $home_url = get_option( 'home' );
+
+        if ( ! empty( $blog_id ) && is_multisite() ) {
+            switch_to_blog( $blog_id );
+            $home_url = get_option( 'home' );
+            restore_current_blog();
+        }
+
 		foreach( $cache_purge_pages as $page ) {
-			array_push( $purge_urls, home_url( $page ) );
+    		$page = trailingslashit( $home_url ) . $page;
+			array_push( $purge_urls, $page );
 		}
 	}
 
