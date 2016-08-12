@@ -1,8 +1,8 @@
 <?php 
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
-if ( ! function_exists( 'tve_dash_is_crawler' ) ) {
-    return;
+if ( ! function_exists( 'tve_editor_url' ) ) {
+    return;
 }
 /**
  * Forces Thrive Visual Editor’s bot detection to assume a human visitor.
