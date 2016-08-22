@@ -455,8 +455,7 @@ function rocket_clean_home( $lang = '' ) {
 
 	// Delete homepage
 	if ( $files = glob( $root . '/{index,index-*}.{html,html_gzip}', GLOB_BRACE|GLOB_NOSORT ) ) {
-		foreach ( $files as $file ) { // no array map to use @
-    		
+		foreach ( $files as $file ) { // no array map to use @	
 			@unlink( $file );
 		}
 	}
@@ -471,7 +470,6 @@ function rocket_clean_home( $lang = '' ) {
     // Remove the hidden empty file for mobile detection on NGINX with the Rocket NGINX configuration
     if ( $nginx_mobile_detect_files = glob( $root . '/.mobile-active', GLOB_BRACE|GLOB_NOSORT ) ) {
         foreach ( $nginx_mobile_detect_files as $nginx_mobile_detect_file ) { // no array map to use @
-    		
 			@unlink( $nginx_mobile_detect_file );
 		}
     }
