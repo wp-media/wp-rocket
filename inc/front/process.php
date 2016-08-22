@@ -169,6 +169,13 @@ if ( isset( $rocket_cache_mobile, $rocket_do_caching_mobile_files ) && class_exi
 	if ( $detect->isMobile() && ! $detect->isTablet() ) {
 		$filename .= '-mobile';
 	}
+
+    // Create a hidden empty file for mobile detection on NGINX with the Rocket NGINX configuration
+    $nginx_mobile_detect_file = $request_uri_path . '/.mobile-active';
+
+    if ( ! file_exists( $nginx_mobile_detect_file ) ) {
+        touch( $nginx_mobile_detect_file );
+    }
 }
 
 // Rename the caching filename for SSL URLs
