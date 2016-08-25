@@ -455,7 +455,7 @@ function rocket_clean_home( $lang = '' ) {
 
 	// Delete homepage
 	if ( $files = glob( $root . '/{index,index-*}.{html,html_gzip}', GLOB_BRACE|GLOB_NOSORT ) ) {
-		foreach ( $files as $file ) { // no array map to use @
+		foreach ( $files as $file ) { // no array map to use @	
 			@unlink( $file );
 		}
 	}
@@ -466,6 +466,13 @@ function rocket_clean_home( $lang = '' ) {
 			rocket_rrmdir( $dir );
 		}
 	}
+
+    // Remove the hidden empty file for mobile detection on NGINX with the Rocket NGINX configuration
+    if ( $nginx_mobile_detect_files = glob( $root . '/.mobile-active', GLOB_BRACE|GLOB_NOSORT ) ) {
+        foreach ( $nginx_mobile_detect_files as $nginx_mobile_detect_file ) { // no array map to use @
+			@unlink( $nginx_mobile_detect_file );
+		}
+    }
 	
 	/**
 	 * Fires after the home cache file was deleted
@@ -760,7 +767,7 @@ function rocket_rrmdir( $dir, $dirs_to_preserve = array() ) {
 	$dir = untrailingslashit( $dir );
 
 	/**
-	 * Fires after a file/directory cache was deleted
+	 * Fires before a file/directory cache is deleted
 	 *
 	 * @since 1.1.0
 	 *
@@ -768,6 +775,13 @@ function rocket_rrmdir( $dir, $dirs_to_preserve = array() ) {
 	 * @param array $dirs_to_preserve Directories that should not be deleted
 	*/
 	do_action( 'before_rocket_rrmdir', $dir, $dirs_to_preserve );
+
+    // Remove the hidden empty file for mobile detection on NGINX with the Rocket NGINX configuration
+    $nginx_mobile_detect_file = $dir . '/.mobile-active';
+
+    if ( file_exists( $nginx_mobile_detect_file ) ) {
+        @unlink( $nginx_mobile_detect_file );
+    }
 
 	if ( ! is_dir( $dir ) ) {
 		@unlink( $dir );
@@ -795,7 +809,7 @@ function rocket_rrmdir( $dir, $dirs_to_preserve = array() ) {
 	@rmdir($dir);
 
 	/**
-	 * Fires before a file/directory cache was deleted
+	 * Fires after a file/directory cache was deleted
 	 *
 	 * @since 1.1.0
 	 *

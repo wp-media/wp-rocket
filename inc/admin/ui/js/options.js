@@ -218,6 +218,8 @@ jQuery( document ).ready( function($){
 					if( response.msg == 'SUCCESS' ) {
 						title = sawpr.successSupportTitle;
 						text  = sawpr.successSupportText;
+						confirmButtonText = 'OK';
+						confirmButtonColor = '#3085d6';
 						type  = "success";
 
 						// Reset the values
