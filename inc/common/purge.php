@@ -101,6 +101,12 @@ function rocket_clean_post( $post_id ) {
     if ( $post->post_status == 'auto-draft' || empty( $post->post_type ) || $post->post_type == 'nav_menu_item' ) {
 		return;
 	}
+
+    // Don't purge if post's post type is not public or not publicly queryable
+    $post_type = get_post_type_object( $post->post_type );
+    if ( $post_type->public == 0  || $post_type->publicly_queryable == 0 ) {
+        return;
+    }
 	
 	// Get the post language
 	$lang = false;
