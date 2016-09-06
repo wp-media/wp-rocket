@@ -321,6 +321,7 @@ function rocket_minify_js( $buffer )
     $excluded_tags        = '';
     $excluded_js		  = implode( '|', get_rocket_exclude_js() );
     $excluded_js 		  = str_replace( '//' . $home_host , '', $excluded_js );
+    $excluded_js          = str_replace( '+', '\+', $excluded_js );
     $js_in_footer		  = get_rocket_minify_js_in_footer();
     $wp_content_dirname   = ltrim( str_replace( home_url(), '', WP_CONTENT_URL ), '/' ) . '/';
 	$excluded_external_js = get_rocket_minify_excluded_external_js();
