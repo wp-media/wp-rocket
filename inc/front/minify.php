@@ -89,7 +89,9 @@ function __rocket_insert_minify_js_in_footer() {
 
 		$i = 0;
 		foreach( $files as $file ) {
-			list( $file_host, $file_path ) = get_rocket_parse_url( apply_filters( 'script_loader_src', $file ) );
+    		/** This filter is documented in wp-includes/class.wp-scripts.php */
+    		$file = apply_filters( 'script_loader_src', $file );
+			list( $file_host, $file_path ) = get_rocket_parse_url( $file );
 
 			// Check if its an external file
 			if( $home_host != $file_host && ! in_array( $file_host, $cnames_host ) && ! in_array( $file_path, $rocket_enqueue_js_in_footer ) ) {
