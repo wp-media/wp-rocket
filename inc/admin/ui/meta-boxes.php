@@ -44,7 +44,7 @@ function __rocket_cache_options_meta_boxes() {
 function __rocket_display_cache_options_meta_boxes() {
 	/** This filter is documented in inc/admin-bar.php */
 	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
-		global $post;
+		global $post, $pagenow;
 		wp_nonce_field( 'rocket_box_option', '_rocketnonce', false, true );
 		?>
 
