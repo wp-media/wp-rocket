@@ -1,13 +1,13 @@
 <?php
 /*
 Plugin Name: WP Rocket
-Plugin URI: http://www.wp-rocket.me
+Plugin URI: https://wp-rocket.me
 Description: The best WordPress performance plugin.
-Version: 2.8.11
+Version: 2.8.12
 Code Name: Ilum
-Author: WP Rocket
+Author: WP Media
 Contributors: Jonathan Buttigieg, Julio Potier, Remy Perona
-Author URI: http://www.wp-rocket.me
+Author URI: http://wp-media.me
 Licence: GPLv2
 
 Text Domain: rocket
@@ -19,7 +19,7 @@ Copyright 2013-2016 WP Rocket
 defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
 
 // Rocket defines
-define( 'WP_ROCKET_VERSION'             , '2.8.11' );
+define( 'WP_ROCKET_VERSION'             , '2.8.12' );
 define( 'WP_ROCKET_PRIVATE_KEY'         , false );
 define( 'WP_ROCKET_SLUG'                , 'wp_rocket_settings' );
 define( 'WP_ROCKET_WEB_MAIN'            , 'http://support.wp-rocket.me/' );

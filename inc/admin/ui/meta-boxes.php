@@ -44,18 +44,20 @@ function __rocket_cache_options_meta_boxes() {
 function __rocket_display_cache_options_meta_boxes() {
 	/** This filter is documented in inc/admin-bar.php */
 	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
-		global $post;
+		global $post, $pagenow;
 		wp_nonce_field( 'rocket_box_option', '_rocketnonce', false, true );
 		?>
 
         <div class="misc-pub-section">
             <?php
                 $reject_current_uri = false;
-                $rejected_uris = array_flip( get_rocket_option( 'cache_reject_uri' ) );
-                $path = rocket_clean_exclude_file( get_permalink( $post->ID ) );
+                if ( $pagenow !== 'post-new.php' ) {
+                    $rejected_uris = array_flip( get_rocket_option( 'cache_reject_uri' ) );
+                    $path = rocket_clean_exclude_file( get_permalink( $post->ID ) );
 
-                if ( isset( $rejected_uris[ $path ] ) ) {
-                    $reject_current_uri = true;
+                    if ( isset( $rejected_uris[ $path ] ) ) {
+                        $reject_current_uri = true;
+                    }
                 } ?>
             <input name="rocket_post_nocache" id="rocket_post_nocache" type="checkbox" title="<?php _e( 'Never cache this page', 'rocket' ); ?>" <?php checked( $reject_current_uri, true ); ?>><label for="rocket_post_nocache"><?php _e( 'Never cache this page', 'rocket' ); ?></label>
         </div>
