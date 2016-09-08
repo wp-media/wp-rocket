@@ -1,13 +1,13 @@
 <?php
 /*
 Plugin Name: WP Rocket
-Plugin URI: http://www.wp-rocket.me
+Plugin URI: https://wp-rocket.me
 Description: The best WordPress performance plugin.
 Version: 2.8.12
 Code Name: Ilum
-Author: WP Rocket
+Author: WP Media
 Contributors: Jonathan Buttigieg, Julio Potier, Remy Perona
-Author URI: http://www.wp-rocket.me
+Author URI: http://wp-media.me
 Licence: GPLv2
 
 Text Domain: rocket
