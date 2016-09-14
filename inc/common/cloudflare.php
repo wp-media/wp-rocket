@@ -63,9 +63,15 @@ function __rocket_set_real_ip_cloudflare() {
 		}
 	}
 
-    // Let people know that the CF WP plugin is turned on.
+    // Let people know that the CF WP plugin is turned on, except if white label is active
     if ( ! headers_sent() ) {
-        header( "X-CF-Powered-By: WP Rocket " . WP_ROCKET_VERSION );
+        if ( rocket_is_white_label() ) {
+            $powered_by = get_rocket_option( 'wl_plugin_name' );
+        } else {
+            $powered_by = 'WP Rocket ' . WP_ROCKET_VERSION;
+        }
+
+        header( "X-CF-Powered-By: " . $powered_by );
     }
 }
 
