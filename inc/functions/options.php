@@ -269,6 +269,9 @@ function get_rocket_cache_dynamic_cookies() {
 function get_rocket_cache_reject_ua() {
 	$ua   = get_rocket_option( 'cache_reject_ua', array() );
 	$ua[] = 'facebookexternalhit';
+	$ua[] = 'FB_IAB';
+	$ua[] = 'FB4A';
+	$ua[] = 'FBAV';
 
 	/**
 	 * Filter the rejected User-Agent
