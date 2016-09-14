@@ -59,10 +59,10 @@ function get_rocket_post_dates_urls( $post_ID )
 	$date = explode( '-', get_the_time( 'Y-m-d', $post_ID ) );
 
 	$urls = array(
-		get_year_link ( $date[0] ) . 'index.html',
-		get_year_link ( $date[0] ) . $GLOBALS['wp_rewrite']->pagination_base,
-		get_month_link( $date[0], $date[1] ) . 'index.html',
-		get_month_link( $date[0], $date[1] ) . $GLOBALS['wp_rewrite']->pagination_base,
+		trailingslashit( get_year_link ( $date[0] ) ) . 'index.html',
+		trailingslashit( get_year_link ( $date[0] ) ) . $GLOBALS['wp_rewrite']->pagination_base,
+		trailingslashit( get_month_link( $date[0], $date[1] ) ) . 'index.html',
+		trailingslashit( get_month_link( $date[0], $date[1] ) ) . $GLOBALS['wp_rewrite']->pagination_base,
 		get_day_link  ( $date[0], $date[1], $date[2] )
 	);
 	
