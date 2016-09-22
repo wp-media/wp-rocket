@@ -879,9 +879,11 @@ function rocket_settings_callback( $inputs ) {
 			 unset($inputs[$option]);
 		 }
 	}
+	
+	$filename_prefix = rocket_is_white_label() ? sanitize_title( get_rocket_option( 'wl_plugin_name' ) ) : 'wp-rocket';
 	 
 	if ( isset( $_FILES['import'] )
-		&& preg_match( '/wp-rocket-settings-20\d{2}-\d{2}-\d{2}-[a-f0-9]{13}\.txt/', $_FILES['import']['name'] )
+		&& preg_match( '/'. $filename_prefix . '-settings-20\d{2}-\d{2}-\d{2}-[a-f0-9]{13}\.txt/', $_FILES['import']['name'] )
 		&& 'text/plain' == $_FILES['import']['type'] ) {
 		$file_name 			= $_FILES['import']['name'];
 		$_POST_action 		= $_POST['action'];
