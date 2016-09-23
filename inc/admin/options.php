@@ -846,6 +846,7 @@ function rocket_settings_callback( $inputs ) {
 		}
 
 		$inputs['cdn_cnames'] 	= array_values( $inputs['cdn_cnames'] );
+		$inputs['cdn_cnames']   = array_map( 'untrailingslashit', $inputs['cdn_cnames'] );
 		ksort( $inputs['cdn_zone'] );
 		$inputs['cdn_zone'] 	= array_values( $inputs['cdn_zone'] );
 	}
