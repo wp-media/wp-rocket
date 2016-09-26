@@ -2,7 +2,7 @@
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 /**
- * Compatibility with Aealia Currency Switcher.
+ * Compatibility with Aelia Currency Switcher.
  *
  * @since 2.7
  */
@@ -64,6 +64,7 @@ function __rocket_deactivate_aelia_currencyswitcher() {
 function _rocket_add_aelia_currencyswitcher_dynamic_cookies( $cookies ) {
 	$cookies[] = 'aelia_cs_recalculate_cart_totals';
 	$cookies[] = 'aelia_cs_selected_currency';
+	$cookies[] = 'aelia_customer_country';
 	return $cookies;
 }
 
@@ -73,6 +74,7 @@ function _rocket_add_aelia_currencyswitcher_mandatory_cookie( $cookies ) {
 
 	if ( ! empty( $acs_options['ipgeolocation_enabled'] ) ) {
 		$cookies[] = 'aelia_cs_selected_currency';
+		$cookies[] = 'aelia_customer_country';
 	}
 
 	return $cookies;
