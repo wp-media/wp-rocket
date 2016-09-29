@@ -13,7 +13,7 @@ if ( function_exists( 'bp_is_user_profile' ) ) :
     add_filter( 'do_rocket_lazyload', '__deactivate_rocket_lazyload_on_buddypress_profil_pages' );
     add_filter( 'do_rocket_lazyload_iframes', '__deactivate_rocket_lazyload_on_buddypress_profil_pages' );
     function __deactivate_rocket_lazyload_on_buddypress_profil_pages( $run_filter ) {
-    	if ( bp_is_user_profile() || bp_is_group_creation_step( 'group-avatar' ) || bp_is_group_creation_step( 'group-cover-image' ) ) {
+    	if ( bp_is_user_profile() ) {
     		return false;
     	}
     
