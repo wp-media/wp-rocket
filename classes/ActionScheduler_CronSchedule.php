@@ -21,7 +21,7 @@ class ActionScheduler_CronSchedule implements ActionScheduler_Schedule {
 	 */
 	public function next( DateTime $after = NULL ) {
 		$after = empty($after) ? clone $this->start : clone $after;
-		return $this->cron->getNextRunDate($after, 0, TRUE);
+		return $this->cron->getNextRunDate($after, 0, false);
 	}
 
 
@@ -41,4 +41,4 @@ class ActionScheduler_CronSchedule implements ActionScheduler_Schedule {
 		$this->start = as_get_datetime_object($this->start_timestamp);
 	}
 }
- 
+
