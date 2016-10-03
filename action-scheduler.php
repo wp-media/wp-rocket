@@ -1,10 +1,10 @@
 <?php
 /*
 Plugin Name: Action Scheduler
-Plugin URI: https://github.com/flightless/action-scheduler
+Plugin URI: https://github.com/prospress/action-scheduler
 Description: A robust action scheduler for WordPress
-Author: Flightless
-Author URI: http://flightless.us/
+Author: Prospress
+Author URI: http://prospress.com/
 Version: 1.4-dev
 */
 
