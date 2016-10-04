@@ -50,6 +50,12 @@ function rocket_varnish_http_purge( $url ) {
 			'blocking'    => false,
 			'redirection' => 0,
 			'headers'     => array(
+    			/**
+                 * Filters the host value passed in the request headers
+                 *
+                 * @since 2.8.15
+                 * @param string The host
+                 */
 				'host'           => apply_filters( 'rocket_varnish_purge_request_host', $host ),
 				'X-Purge-Method' => $varnish_x_purgemethod
 			),
