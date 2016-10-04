@@ -50,7 +50,7 @@ function rocket_varnish_http_purge( $url ) {
 			'blocking'    => false,
 			'redirection' => 0,
 			'headers'     => array(
-				'host'           => $host,
+				'host'           => apply_filters( 'rocket_varnish_purge_request_host', $host ),
 				'X-Purge-Method' => $varnish_x_purgemethod
 			),
 		)
