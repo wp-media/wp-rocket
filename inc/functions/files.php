@@ -779,7 +779,7 @@ function rocket_rrmdir( $dir, $dirs_to_preserve = array() ) {
     // Remove the hidden empty file for mobile detection on NGINX with the Rocket NGINX configuration
     $nginx_mobile_detect_file = $dir . '/.mobile-active';
 
-    if ( file_exists( $nginx_mobile_detect_file ) ) {
+    if ( is_dir( $dir ) && file_exists( $nginx_mobile_detect_file ) ) {
         @unlink( $nginx_mobile_detect_file );
     }
 

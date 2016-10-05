@@ -96,12 +96,12 @@ add_settings_field(
 // Mobile plugins list
 $mobile_plugins = array(
 	'<a href="https://wordpress.org/plugins/wptouch/" target="_blank">WP Touch (Free Version)</a>',
-	'<a href="https://wordpress.org/plugins/wp-mobile-detector/" target="_blank">WP Mobile Detector</a>',
 	'<a href="https://wordpress.org/plugins/wiziapp-create-your-own-native-iphone-app" target="_blank">wiziApp</a>',
 	'<a href="https://wordpress.org/plugins/wordpress-mobile-pack/" target="_blank">WordPress Mobile Pack</a>',
 	'<a href="https://wordpress.org/plugins/wp-mobilizer/" target="_blank">WP-Mobilizer</a>',
 	'<a href="https://wordpress.org/plugins/wp-mobile-edition/" target="_blank">WP Mobile Edition</a>',
-	'<a href="https://wordpress.org/plugins/device-theme-switcher/" target="_blank">Device Theme Switcher</a>'
+	'<a href="https://wordpress.org/plugins/device-theme-switcher/" target="_blank">Device Theme Switcher</a>',
+	'<a href="https://codecanyon.net/item/easy-social-share-buttons-for-wordpress/6394476" target="_blank">Easy Social Share Buttons</a>',
 );
 
 add_settings_field(

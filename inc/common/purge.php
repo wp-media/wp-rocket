@@ -461,7 +461,7 @@ function __do_admin_post_rocket_purge_opcache() {
     }
 
     if ( function_exists( 'opcache_reset' ) ) {
-        opcache_reset();
+        @opcache_reset();
     }
 
     wp_redirect( wp_get_referer() );

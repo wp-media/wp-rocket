@@ -386,7 +386,7 @@ function get_rocket_i18n_translated_post_urls( $post_id, $post_type = 'page', $r
 		foreach( $langs as $lang ) {
     		if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
         		$urls[] = parse_url( qtrans_convertURL( $url, $lang, true ), PHP_URL_PATH ) . $regex;
-    		} else if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
+    		} else if ( rocket_is_plugin_active( 'qtranslate-x/qtranslate.php' ) ) {
         		$urls[] = parse_url( qtranxf_convertURL( $url, $lang, true ), PHP_URL_PATH ) . $regex;
     		}
 		}

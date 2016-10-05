@@ -38,7 +38,7 @@ function rocket_upgrader() {
 
         // Empty OPCache to prevent issue where plugin is updated but still showing as old version in WP admin
         if ( function_exists( 'opcache_reset' ) ) {
-            opcache_reset();
+            @opcache_reset();
         }
 	} else {
 		if ( empty( $_POST ) && rocket_valid_key() ) {
