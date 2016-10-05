@@ -2,12 +2,12 @@
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 /**
- * Get a CloudFlare\Api instance
+ * Get a CloudFlare\Api instance & the zone_id corresponding to the domain
  *
  * @since 2.8.16 Update to CloudFlare API v4
  * @since 2.5
  *
- * @return obj CloudFlare\Api instance
+ * @return obj CloudFlare instance & zone_id
  */
 function get_rocket_cloudflare_instance() {
 	$cf_email   = get_rocket_option( 'cloudflare_email', null );
@@ -25,7 +25,7 @@ function get_rocket_cloudflare_instance() {
 }
 
 /**
- * Returns the main instance of CloudFlare\Api to prevent the need to use globals.
+ * Returns the main instance of CloudFlare API to prevent the need to use globals.
  */
 $GLOBALS['rocket_cloudflare'] = get_rocket_cloudflare_instance();
 
