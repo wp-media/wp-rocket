@@ -985,7 +985,7 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		
 	// Update CloudFlare Development Mode
 	if ( ! empty( $_POST ) && ( $oldvalue['cloudflare_devmode'] != $value['cloudflare_devmode'] ) ) {
-		set_rocket_cloudflare_devmode( (bool) $value['cloudflare_devmode'] );
+		set_rocket_cloudflare_devmode( $value['cloudflare_devmode'] );
 	}
 	
 	// Update CloudFlare settings
@@ -993,16 +993,16 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		$cf_old_settings = explode( ',', $value['cloudflare_old_settings'] );
 		
 		// Set Cache Level to Aggressive 
-		$cf_cache_lvl = ( isset( $cf_old_settings[0] ) && $value['cloudflare_auto_settings'] == 0 ) ? $cf_old_settings[0] : 'agg';
-		set_rocket_cloudflare_cache_lvl( $cf_cache_lvl );
+		$cf_cache_level = ( isset( $cf_old_settings[0] ) && $value['cloudflare_auto_settings'] == 0 ) ? $cf_old_settings[0] : 'aggressive';
+		set_rocket_cloudflare_cache_level( $cf_cache_level );
 		
 		// Active Minification for HTML, CSS & JS
-		$cf_minify = ( isset( $cf_old_settings[1] ) && $value['cloudflare_auto_settings'] == 0 ) ? $cf_old_settings[1] : 7;
+		$cf_minify = ( isset( $cf_old_settings[1] ) && $value['cloudflare_auto_settings'] == 0 ) ? $cf_old_settings[1] : 'on';
 		set_rocket_cloudflare_minify( $cf_minify );
 		
 		// Deactivate Rocket Loader to prevent conflicts
-		$cf_async = ( isset( $cf_old_settings[2] ) && $value['cloudflare_auto_settings'] == 0 ) ? $cf_old_settings[2] : false;
-		set_rocket_cloudflare_async( $cf_async );
+		$cf_rocket_loader = ( isset( $cf_old_settings[2] ) && $value['cloudflare_auto_settings'] == 0 ) ? $cf_old_settings[2] : 'off';
+		set_rocket_cloudflare_rocket_loader( $cf_rocket_loader );
 	}
 	
 	// Regenerate advanced-cache.php file
@@ -1085,7 +1085,6 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 	// Save old CloudFlare settings
 	if ( ( isset( $newvalue['cloudflare_auto_settings'], $oldvalue['cloudflare_auto_settings'] ) && $newvalue['cloudflare_auto_settings'] != $oldvalue['cloudflare_auto_settings'] && $newvalue['cloudflare_auto_settings'] == 1 ) ) {
 		$cf_settings = get_rocket_cloudflare_settings();
-		$cf_settings = array( $cf_settings->cache_lvl, (int) $cf_settings->minify, ! is_string( $cf_settings->async ) ? (int) $cf_settings->async : $cf_settings->async );
 		$cf_settings = array_filter( $cf_settings );
 		
 		$newvalue['cloudflare_old_settings'] = ( isset ( $cf_settings ) ) ? implode( ',' , $cf_settings ) : '';

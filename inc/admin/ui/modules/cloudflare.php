@@ -67,8 +67,8 @@ add_settings_field(
 			'label_for'    => 'cloudflare_devmode',
 			'label_screen' => __( 'Development Mode', 'rocket' ),
 			'options'	   => array(
-				0 => __( 'Off', 'rocket' ),
-				1 => __( 'On', 'rocket' )
+				'off' => __( 'Off', 'rocket' ),
+				'on' => __( 'On', 'rocket' )
 			),
 		),
 		array(

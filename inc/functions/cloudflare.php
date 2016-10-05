@@ -2,64 +2,68 @@
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 /**
- * Get a WP_Rocket_CloudFlareAPI instance
+ * Get a CloudFlare\Api instance
  *
+ * @since 2.8.16 Update to CloudFlare API v4
  * @since 2.5
  *
- * @return obj WP_Rocket_CloudFlareAPI instance
+ * @return obj CloudFlare\Api instance
  */
 function get_rocket_cloudflare_instance() {
 	$cf_email   = get_rocket_option( 'cloudflare_email', null );
 	$cf_api_key = ( defined( 'WP_ROCKET_CF_API_KEY' ) ) ? WP_ROCKET_CF_API_KEY : get_rocket_option( 'cloudflare_api_key', null );
 
-	if( isset( $cf_email, $cf_api_key ) ) {
-		return WP_Rocket_CloudFlareAPI::instance( $cf_email, $cf_api_key );
+	if ( isset( $cf_email, $cf_api_key ) ) {
+    	$cf_instance          = ( object ) [ 'auth' => new Cloudflare\Api( $cf_email, $cf_api_key ) ];
+    	$zone_instance        = new CloudFlare\Zone( $cf_instance->auth );
+    	$zone                 = $zone_instance->zones( get_rocket_option( 'cloudflare_domain' ) );
+    	$cf_instance->zone_id = $zone->result[0]->id;
+
+		return $cf_instance;
 	}
 	return false;
 }
 
 /**
- * Returns the main instance of WP_Rocket_CloudFlareAPI to prevent the need to use globals.
+ * Returns the main instance of CloudFlare\Api to prevent the need to use globals.
  */
 $GLOBALS['rocket_cloudflare'] = get_rocket_cloudflare_instance();
 
 /**
  * Get all the current CloudFlare settings for a given domain.
  *
+ * @since 2.8.16 Update to CloudFlare API v4
  * @since 2.5
  *
- * @return void
+ * @return Array 
  */
 function get_rocket_cloudflare_settings() {
 	if( ! is_object( $GLOBALS['rocket_cloudflare'] ) ) {
 		return false;
 	}
-	
-	$domain 	 = get_rocket_option( 'cloudflare_domain' );
-	$cf_settings = (array) $GLOBALS['rocket_cloudflare']->zone_settings( $domain )->response->result->objs;
-	return reset(( $cf_settings ));
-}
 
-/**
- * Set the CloudFlare Development Mode.
- *
- * @since 2.5
- *
- * @return void
- */
-function set_rocket_cloudflare_cache_lvl( $mode ) {
-	if( ! is_object( $GLOBALS['rocket_cloudflare'] ) ) {
-		return false;
+	$cf_settings_instance = new CloudFlare\Zone\Settings( $GLOBALS['rocket_cloudflare']->auth );
+	$cf_settings          = $cf_settings_instance->settings( $GLOBALS['rocket_cloudflare']->zone_id );
+	$cf_minify            = $cf_settings->result[16]->value;
+	$cf_minify_value      = 'on';
+
+	if ( $cf_minify->js === 'off' || $cf_minify->css === 'off' || $cf_minify->html === 'off' ) {
+    	$cf_minify_value = 'off';
 	}
-	
-	$domain = get_rocket_option( 'cloudflare_domain' );
-	$GLOBALS['rocket_cloudflare']->cache_lvl( $domain, $mode );
+
+	$cf_settings_array  = array(
+    	'cache_level'   => $cf_settings->result[5]->value,
+    	'minify'        => $cf_minify_value,
+    	'rocket_loader' => $cf_settings->result[25]->value
+	);
+
+	return $cf_settings_array;
 }
 
-
 /**
- * Set the CloudFlare Caching Level.
+ * Set the CloudFlare Development mode.
  *
+ * @since 2.8.16 Update to CloudFlare API v4
  * @since 2.5
  *
  * @return void
@@ -68,30 +72,38 @@ function set_rocket_cloudflare_devmode( $mode ) {
 	if( ! is_object( $GLOBALS['rocket_cloudflare'] ) ) {
 		return false;
 	}
-	
-	$domain = get_rocket_option( 'cloudflare_domain' );
-	$GLOBALS['rocket_cloudflare']->devmode( $domain, $mode );
+
+    if ( $mode === 0 ) {
+        $value = 'off';
+    } else if ( $mode === 1 ) {
+        $value = 'on';
+    }
+
+	$cf_settings = new CloudFlare\Zone\Settings( $GLOBALS['rocket_cloudflare']->auth );
+	$cf_settings->change_development_mode( $GLOBALS['rocket_cloudflare']->zone_id, $value );
 }
 
 /**
- * Set the CloudFlare Rocket Loader.
+ * Set the CloudFlare Caching level.
  *
+ * @since 2.8.16 Update to CloudFlare API v4
  * @since 2.5
  *
  * @return void
  */
-function set_rocket_cloudflare_async( $mode ) {
+function set_rocket_cloudflare_cache_level( $mode ) {
 	if( ! is_object( $GLOBALS['rocket_cloudflare'] ) ) {
 		return false;
 	}
-	
-	$domain = get_rocket_option( 'cloudflare_domain' );
-	$GLOBALS['rocket_cloudflare']->async( $domain, $mode );
+
+	$cf_settings = new CloudFlare\Zone\Settings( $GLOBALS['rocket_cloudflare']->auth );
+	$cf_settings->change_cache_level( $GLOBALS['rocket_cloudflare']->zone_id, $mode );
 }
 
 /**
  * Set the CloudFlare Minification.
  *
+ * @since 2.8.16 Update to CloudFlare API v4
  * @since 2.5
  *
  * @return void
@@ -100,14 +112,38 @@ function set_rocket_cloudflare_minify( $mode ) {
 	if( ! is_object( $GLOBALS['rocket_cloudflare'] ) ) {
 		return false;
 	}
-	
-	$domain = get_rocket_option( 'cloudflare_domain' );
-	$GLOBALS['rocket_cloudflare']->minify( $domain, $mode );
+
+    $cf_minify_settings = array(
+        'css'  => $mode,
+        'html' => $mode,
+        'js'   => $mode
+    );
+
+	$cf_settings = new CloudFlare\Zone\Settings( $GLOBALS['rocket_cloudflare']->auth );
+	$cf_settings->change_minify( $GLOBALS['rocket_cloudflare']->zone_id, $cf_minify_settings );
+}
+
+/**
+ * Set the CloudFlare Rocket Loader.
+ *
+ * @since 2.8.16 Update to CloudFlare API v4
+ * @since 2.5
+ *
+ * @return void
+ */
+function set_rocket_cloudflare_rocket_loader( $mode ) {
+	if( ! is_object( $GLOBALS['rocket_cloudflare'] ) ) {
+		return false;
+	}
+
+	$cf_settings = new CloudFlare\Zone\Settings( $GLOBALS['rocket_cloudflare']->auth );
+	$cf_settings->change_rocket_loader( $GLOBALS['rocket_cloudflare']->zone_id, $mode );
 }
 
 /**
  * Purge CloudFlare cache.
  *
+ * @since 2.8.16 Update to CloudFlare API v4
  * @since 2.5
  *
  * @return void
@@ -116,7 +152,23 @@ function rocket_purge_cloudflare() {
 	if( ! is_object( $GLOBALS['rocket_cloudflare'] ) ) {
 		return false;
 	}
-	
-	$domain = get_rocket_option( 'cloudflare_domain' );
-	$GLOBALS['rocket_cloudflare']->fpurge_ts( $domain );
+
+	$cf_cache = new CloudFlare\Zone\Cache( $GLOBALS['rocket_cloudflare']->auth );
+	$cf_cache->purge( $GLOBALS['rocket_cloudflare']->zone_id, true );
+}
+
+/**
+ * Get CloudFlare IPs.
+ *
+ * @since 2.8.16
+ *
+ * @return Object Result of API request
+ */
+function rocket_get_cloudflare_ips() {
+    if( ! is_object( $GLOBALS['rocket_cloudflare'] ) ) {
+		return false;
+	}
+
+    $cf_ips_instance = new CloudFlare\IPs( $GLOBALS['rocket_cloudflare']->auth );
+    return $cf_ips_instance->ips();
 }
