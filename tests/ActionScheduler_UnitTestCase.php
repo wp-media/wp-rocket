@@ -5,7 +5,7 @@
  */
 class ActionScheduler_UnitTestCase extends WP_UnitTestCase {
 
-	protected $exiting_timezone;
+	protected $existing_timezone;
 
 	/**
 	 * We want to run every test multiple times using a different timezone to make sure
@@ -17,7 +17,7 @@ class ActionScheduler_UnitTestCase extends WP_UnitTestCase {
 			$result = $this->createResult();
 		}
 
-		if ( 'UTC' != ( $this->exiting_timezone = date_default_timezone_get() ) ) {
+		if ( 'UTC' != ( $this->existing_timezone = date_default_timezone_get() ) ) {
 			date_default_timezone_set( 'UTC' );
 			$result->run( $this );
 		}
@@ -28,7 +28,7 @@ class ActionScheduler_UnitTestCase extends WP_UnitTestCase {
 		date_default_timezone_set( 'Pacific/Tahiti' ); // UTC-10: it's a magical place
 		$result->run( $this );
 
-		date_default_timezone_set( $this->exiting_timezone );
+		date_default_timezone_set( $this->existing_timezone );
 
 		return $result;
 	}
