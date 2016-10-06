@@ -247,3 +247,29 @@ function rocket_sanitize_cookie( $cookie ) {
 	return rocket_sanitize_key( $cookie );
 }
 endif;
+
+/**
+ * Used to set the CloudFlare Rocket Loader value
+ *
+ * @since 2.5
+ * @deprecated 2.8.16
+ * @deprecated Use set_rocket_cloudflare_rocket_loader()
+ *
+ */
+if ( ! function_exists( 'set_rocket_cloudflare_async' ) ) {
+    _deprecated_function( __FUNCTION__, '2.8.16', 'set_rocket_cloudflare_rocket_loader()' );
+    return set_rocket_cloudflare_rocket_loader();
+}
+
+/**
+ * Used to set the CloudFlare cache level
+ *
+ * @since 2.5
+ * @deprecated 2.8.16
+ * @deprecated Use set_rocket_cloudflare_cache_level()
+ *
+ */
+if ( ! function_exists( 'set_rocket_cloudflare_cache_lvl' ) ) {
+    _deprecated_function( __FUNCTION__, '2.8.16', 'set_rocket_cloudflare_cache_level()' );
+    return set_rocket_cloudflare_cache_level();
+}
