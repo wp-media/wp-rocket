@@ -1,5 +1,5 @@
 codecov:
-  branch: bleeding_branch
+  branch: master
 
 coverage:
   ignore:
