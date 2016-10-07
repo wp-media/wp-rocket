@@ -13,7 +13,7 @@ class ActionScheduler_ActionFactory {
 	 * @return string The ID of the stored action
 	 */
 	public function single( $hook, $args = array(), $when = NULL, $group = '' ) {
-		$date = ActionScheduler::get_datetime_object( $when );
+		$date = as_get_datetime_object( $when );
 		$schedule = new ActionScheduler_SimpleSchedule( $date );
 		$action = new ActionScheduler_Action( $hook, $args, $schedule, $group );
 		return $this->store( $action );
@@ -32,7 +32,7 @@ class ActionScheduler_ActionFactory {
 		if ( empty($interval) ) {
 			return $this->single( $hook, $args, $first, $group );
 		}
-		$date = ActionScheduler::get_datetime_object( $first );
+		$date = as_get_datetime_object( $first );
 		$schedule = new ActionScheduler_IntervalSchedule( $date, $interval );
 		$action = new ActionScheduler_Action( $hook, $args, $schedule, $group );
 		return $this->store( $action );
@@ -52,7 +52,7 @@ class ActionScheduler_ActionFactory {
 		if ( empty($schedule) ) {
 			return $this->single( $hook, $args, $first, $group );
 		}
-		$date = ActionScheduler::get_datetime_object( $first );
+		$date = as_get_datetime_object( $first );
 		$cron = CronExpression::factory( $schedule );
 		$schedule = new ActionScheduler_CronSchedule( $date, $cron );
 		$action = new ActionScheduler_Action( $hook, $args, $schedule, $group );

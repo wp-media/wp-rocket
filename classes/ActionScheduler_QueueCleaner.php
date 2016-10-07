@@ -16,7 +16,7 @@ class ActionScheduler_QueueCleaner {
 
 	public function delete_old_actions() {
 		$lifespan = apply_filters( 'action_scheduler_retention_period', $this->month_in_seconds );
-		$cutoff = new DateTime($lifespan.' seconds ago');
+		$cutoff = as_get_datetime_object($lifespan.' seconds ago');
 
 		$actions_to_delete = $this->store->query_actions( array(
 			'status' => ActionScheduler_Store::STATUS_COMPLETE,
@@ -35,7 +35,7 @@ class ActionScheduler_QueueCleaner {
 		if ( $timeout < 0 ) {
 			return;
 		}
-		$cutoff = new DateTime($timeout.' seconds ago');
+		$cutoff = as_get_datetime_object($timeout.' seconds ago');
 		$actions_to_reset = $this->store->query_actions( array(
 			'status' => ActionScheduler_Store::STATUS_PENDING,
 			'modified' => $cutoff,
@@ -55,18 +55,17 @@ class ActionScheduler_QueueCleaner {
 		if ( $timeout < 0 ) {
 			return;
 		}
-		$cutoff = new DateTime($timeout.' seconds ago');
+		$cutoff = as_get_datetime_object($timeout.' seconds ago');
 		$actions_to_reset = $this->store->query_actions( array(
 			'status' => ActionScheduler_Store::STATUS_RUNNING,
 			'modified' => $cutoff,
 			'modified_compare' => '<=',
-			'claimed' => TRUE,
 			'per_page' => apply_filters( 'action_scheduler_cleanup_batch_size', 20 ),
 		) );
 
 		foreach ( $actions_to_reset as $action_id ) {
 			$this->store->mark_failure( $action_id );
-			do_action( 'action_scheduler_failed_action', $action_id );
+			do_action( 'action_scheduler_failed_action', $action_id, $timeout );
 		}
 	}
 }

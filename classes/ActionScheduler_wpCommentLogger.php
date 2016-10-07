@@ -16,19 +16,21 @@ class ActionScheduler_wpCommentLogger extends ActionScheduler_Logger {
 	 */
 	public function log( $action_id, $message, DateTime $date = NULL ) {
 		if ( empty($date) ) {
-			$date = new DateTime();
+			$date = as_get_datetime_object();
 		} else {
-			$date = clone( $date );
+			$date = clone $date;
 		}
 		$comment_id = $this->create_wp_comment( $action_id, $message, $date );
 		return $comment_id;
 	}
 
 	protected function create_wp_comment( $action_id, $message, DateTime $date ) {
+		$comment_date_gmt = $date->format('Y-m-d H:i:s');
 		$date->setTimezone( ActionScheduler_TimezoneHelper::get_local_timezone() );
 		$comment_data = array(
 			'comment_post_ID' => $action_id,
 			'comment_date' => $date->format('Y-m-d H:i:s'),
+			'comment_date_gmt' => $comment_date_gmt,
 			'comment_author' => self::AGENT,
 			'comment_content' => $message,
 			'comment_agent' => self::AGENT,
@@ -171,6 +173,7 @@ class ActionScheduler_wpCommentLogger extends ActionScheduler_Logger {
 		add_action( 'action_scheduler_before_execute', array( $this, 'log_started_action' ), 10, 1 );
 		add_action( 'action_scheduler_after_execute', array( $this, 'log_completed_action' ), 10, 1 );
 		add_action( 'action_scheduler_failed_execution', array( $this, 'log_failed_action' ), 10, 2 );
+		add_action( 'action_scheduler_failed_action', array( $this, 'log_timed_out_action' ), 10, 2 );
 		add_action( 'action_scheduler_unexpected_shutdown', array( $this, 'log_unexpected_shutdown' ), 10, 2 );
 		add_action( 'action_scheduler_reset_action', array( $this, 'log_reset_action' ), 10, 1 );
 		add_action( 'pre_get_comments', array( $this, 'filter_comment_queries' ), 10, 1 );
@@ -202,6 +205,10 @@ class ActionScheduler_wpCommentLogger extends ActionScheduler_Logger {
 
 	public function log_failed_action( $action_id, Exception $exception ) {
 		$this->log( $action_id, sprintf(__('action failed: %s', 'action-scheduler'), $exception->getMessage() ));
+	}
+
+	public function log_timed_out_action( $action_id, $timeout) {
+		$this->log( $action_id, sprintf( __('action timed out after %s seconds', 'action-scheduler'), $timeout ) );
 	}
 
 	public function log_unexpected_shutdown( $action_id, $error ) {

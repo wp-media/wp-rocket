@@ -20,12 +20,21 @@ class ActionScheduler_IntervalSchedule implements ActionScheduler_Schedule {
 	 * @return DateTime|null
 	 */
 	public function next( DateTime $after = NULL ) {
-		$after = empty($after) ? new DateTime('@0') : clone($after);
+		$after = empty($after) ? as_get_datetime_object('@0') : clone $after;
 		if ( $after > $this->start ) {
 			$after->modify('+'.$this->interval_in_seconds.' seconds');
 			return $after;
 		}
-		return clone( $this->start );
+		return clone $this->start;
+	}
+
+	/**
+	 * @param DateTime $after
+	 *
+	 * @return DateTime|null
+	 */
+	public function interval_in_seconds() {
+		return $this->interval_in_seconds;
 	}
 
 	/**
@@ -41,7 +50,7 @@ class ActionScheduler_IntervalSchedule implements ActionScheduler_Schedule {
 	}
 
 	public function __wakeup() {
-		$this->start = new DateTime('@'.$this->start_timestamp);
+		$this->start = as_get_datetime_object($this->start_timestamp);
 	}
 }
  

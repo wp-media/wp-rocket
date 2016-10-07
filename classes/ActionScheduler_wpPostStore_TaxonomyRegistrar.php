@@ -14,7 +14,7 @@ class ActionScheduler_wpPostStore_TaxonomyRegistrar {
 			'label' => __('Action Group', 'action-scheduler'),
 			'public' => false,
 			'hierarchical' => false,
-			'show_admin_column' => false,
+			'show_admin_column' => true,
 			'query_var' => false,
 			'rewrite' => false,
 		);

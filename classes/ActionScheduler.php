@@ -28,16 +28,8 @@ abstract class ActionScheduler {
 		return ActionScheduler_QueueRunner::instance();
 	}
 
-	public static function get_datetime_object( $when ) {
-		$when = empty($when) ? time() : $when;
-		if ( is_object($when) && $when instanceof DateTime ) {
-			$date = $when;
-		} elseif ( is_numeric( $when ) ) {
-			$date = new DateTime( '@'.$when );
-		} else {
-			$date = new DateTime( $when );
-		}
-		return $date;
+	public static function admin_view() {
+		return ActionScheduler_AdminView::instance();
 	}
 
 	/**
@@ -101,6 +93,9 @@ abstract class ActionScheduler {
 		$runner = self::runner();
 		add_action( 'init', array( $runner, 'init' ), 1, 0 );
 
+		$admin_view = self::admin_view();
+		add_action( 'init', array( $admin_view, 'init' ), 0, 0 ); // run before $store::init()
+
 		require_once( self::plugin_path('functions.php') );
 	}
 
@@ -114,5 +109,12 @@ abstract class ActionScheduler {
 	}
 
 	final private function __construct() {}
+
+	/** Deprecated **/
+
+	public static function get_datetime_object( $when = null, $timezone = 'UTC' ) {
+		_deprecated_function( __METHOD__, '2.0', 'wcs_add_months()' );
+		return as_get_datetime_object( $when, $timezone );
+	}
 }
  

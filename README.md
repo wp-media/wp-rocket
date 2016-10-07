@@ -1,5 +1,4 @@
-Action Scheduler [![Build Status](https://travis-ci.org/Prospress/action-scheduler.png?branch=master)](https://travis-ci.org/Prospress/action-scheduler)
-===========
+# Action Scheduler [![Build Status](https://travis-ci.org/Prospress/action-scheduler.png?branch=master)](https://travis-ci.org/Prospress/action-scheduler) [![codecov](https://codecov.io/gh/Prospress/action-scheduler/branch/master/graph/badge.svg)](https://codecov.io/gh/Prospress/action-scheduler)
 
 A robust scheduling system for WordPress.
 
@@ -256,7 +255,7 @@ By default, Action Scheduler will run up to 5 concurrent batches of actions. Thi
 
 However, your server may allow a large number of connection, for example, because it has a high value for Apache's `MaxClients` setting or PHP-FPM's `pm.max_children` setting.
 
-If this is the case, you can use the `'action_scheduler_max_claims'` filter to increase the number of conncurrent batches allowed, and therefore speed up processing large numbers of actions scheduled to be processed simultaneously.
+If this is the case, you can use the `'action_scheduler_queue_runner_concurrent_batches'` filter to increase the number of conncurrent batches allowed, and therefore speed up processing large numbers of actions scheduled to be processed simultaneously.
 
 For example, to increase the allowed number of concurrent queues to 25, we can use the following code:
 
@@ -265,6 +264,6 @@ For example, to increase the allowed number of concurrent queues to 25, we can u
 function eg_increase_action_scheduler_concurrent_batches( $concurrent_batches ) {
 	return 25;
 }
-add_filter( 'action_scheduler_max_claims', 'eg_increase_action_scheduler_concurrent_batches' );
+add_filter( 'action_scheduler_queue_runner_concurrent_batches', 'eg_increase_action_scheduler_concurrent_batches' );
 ?>
 ```
