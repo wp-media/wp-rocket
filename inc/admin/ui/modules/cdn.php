@@ -32,7 +32,7 @@ if ( phpversion() < '5.4' ) {
     $rocket_do_cloudflare_settings[] = array(
         'type' => 'helper_warning',
         'name' => 'rocket_cloudflare_warning',
-        'description' => __( 'Your PHP version is inferior to 5.4, so the CloudFlare functionality is not available. We recommend upgrading to a more recent version of PHP, like 5.6 or superior.', 'rocket' )
+        'description' => __( 'Your PHP version is lower than to 5.4, so the CloudFlare functionality is not available. We recommend upgrading to a more recent version of PHP, like 5.6 or higher.', 'rocket' )
     );
 }
 
