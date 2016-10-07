@@ -103,6 +103,18 @@ function get_rocket_config_file() {
 		$buffer .= '$min_cachePath = \'' . $min_cachePath . '\';' . "\n";
 	}
 
+    /**
+     * Filters the preservation of the CSS comments during minification
+     *
+     * @author Remy Perona
+     * @since 2.9
+     *
+     * @param bool False to not preserve the comments, true to preserve
+    */
+    if ( apply_filters( 'rocket_minification_preserve_css_comments', false ) ) {
+        $buffer .= '$min_preserve_css_comments = true;' . "\n";
+    }
+
 	$buffer .= '$rocket_cookie_hash = \'' . COOKIEHASH . '\'' . ";\n";
 
 	foreach ( $options as $option => $value ) {	

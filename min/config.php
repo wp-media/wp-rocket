@@ -21,7 +21,7 @@ if ( file_exists( $wp_rocket_config_file ) && ! defined( 'ABSPATH' ) ) {
 /**
  * Remove all CSS comments
  */
-$min_serveOptions['minifierOptions']['text/css']['preserveComments'] = isset( $min_preserve_comments ) ? true : false;
+$min_serveOptions['minifierOptions']['text/css']['preserveComments'] = isset( $min_preserve_css_comments ) ? true : false;
 
 /**
  * Allow use of the Minify URI Builder app. Only set this to true while you need it.
