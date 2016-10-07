@@ -8,7 +8,7 @@ class ActionScheduler_CronSchedule_Test extends ActionScheduler_UnitTestCase {
 	public function test_creation() {
 		$time = as_get_datetime_object('tomorrow');
 		$cron = CronExpression::factory('@daily');
-		$schedule = new ActionScheduler_CronSchedule($time, $cron);
+		$schedule = new ActionScheduler_CronSchedule(as_get_datetime_object(), $cron);
 		$this->assertEquals( $time, $schedule->next() );
 	}
 
