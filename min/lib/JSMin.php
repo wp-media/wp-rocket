@@ -111,7 +111,12 @@ class JSMin {
         $this->input = str_replace("\r\n", "\n", $this->input);
         $this->inputLength = strlen($this->input);
 
-        $this->action(self::ACTION_DELETE_A_B);
+        try {
+            $this->action(self::ACTION_DELETE_A_B);
+        } catch( Exception $e ) {
+            error_log( $e->getMessage() );
+        }
+        
 
         while ($this->a !== null) {
             // determine next command
@@ -142,7 +147,12 @@ class JSMin {
                     $command = self::ACTION_DELETE_A_B;
                 }
             }
-            $this->action($command);
+            try {
+                $this->action($command);
+            } catch( Exception $e ) {
+                error_log( $e->getMessage() );
+            }
+            
         }
         $this->output = trim($this->output);
 
