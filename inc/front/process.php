@@ -144,7 +144,9 @@ if ( ! isset( $rocket_cache_mobile ) && isset( $_SERVER['HTTP_USER_AGENT'] ) && 
 $host = isset( $rocket_url_no_dots ) ? str_replace( '.', '_', $host ) : $host;
 
 // Get cache folder of host name
-if ( isset( $rocket_cookie_hash )
+if ( isset( $rocket_common_cache_logged_users ) ) {
+    $request_uri_path = $rocket_cache_path . $host . '-loggedin' . rtrim( $request_uri, '/' );
+} else if ( isset( $rocket_cookie_hash )
 	&& isset( $_COOKIE[ 'wordpress_logged_in_' . $rocket_cookie_hash ] )
 	&& isset( $rocket_cache_reject_cookies )
 	&& !strstr( $rocket_cache_reject_cookies, 'wordpress_logged_in_' )
