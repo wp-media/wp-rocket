@@ -20,7 +20,7 @@ mkdir -p $WP_CORE_DIR
 tar --strip-components=1 -zxmf /tmp/wordpress.tar.gz -C $WP_CORE_DIR
 
 # Grab testing framework
-git clone git://develop.git.wordpress.org/ /tmp/wordpress-tests
+svn co --quiet https://develop.svn.wordpress.org/tags/$WP_VERSION/ /tmp/wordpress-tests
 
 # Put various components in proper folders
 cp tests/travis/wp-tests-config.php $WP_TESTS_DIR/wp-tests-config.php
