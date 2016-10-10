@@ -52,9 +52,10 @@ function get_rocket_cloudflare_settings() {
 	}
 
 	$cf_settings_array  = array(
-    	'cache_level'   => $cf_settings->result[5]->value,
-    	'minify'        => $cf_minify_value,
-    	'rocket_loader' => $cf_settings->result[25]->value
+    	'cache_level'       => $cf_settings->result[5]->value,
+    	'minify'            => $cf_minify_value,
+    	'rocket_loader'     => $cf_settings->result[25]->value,
+    	'browser_cache_ttl' => $cf_settings->result[3]->value
 	);
 
 	return $cf_settings_array;
@@ -73,9 +74,9 @@ function set_rocket_cloudflare_devmode( $mode ) {
 		return false;
 	}
 
-    if ( $mode === 0 ) {
+    if ( ( int ) $mode === 0 ) {
         $value = 'off';
-    } else if ( $mode === 1 ) {
+    } else if ( ( int ) $mode === 1 ) {
         $value = 'on';
     }
 
@@ -138,6 +139,22 @@ function set_rocket_cloudflare_rocket_loader( $mode ) {
 
 	$cf_settings = new CloudFlare\Zone\Settings( $GLOBALS['rocket_cloudflare']->auth );
 	$cf_settings->change_rocket_loader( $GLOBALS['rocket_cloudflare']->zone_id, $mode );
+}
+
+/**
+ * Set the Browser Cache TTL in CloudFlare.
+ *
+ * @since 2.8.16
+ *
+ * @return void
+ */
+function set_rocket_cloudflare_browser_cache_ttl( $mode ) {
+	if( ! is_object( $GLOBALS['rocket_cloudflare'] ) ) {
+		return false;
+	}
+
+	$cf_settings = new CloudFlare\Zone\Settings( $GLOBALS['rocket_cloudflare']->auth );
+	$cf_settings->change_browser_cache_ttl( $GLOBALS['rocket_cloudflare']->zone_id, $mode );
 }
 
 /**
