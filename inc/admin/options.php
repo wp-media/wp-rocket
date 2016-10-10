@@ -1006,6 +1006,10 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		// Deactivate Rocket Loader to prevent conflicts
 		$cf_rocket_loader = ( isset( $cf_old_settings[2] ) && $value['cloudflare_auto_settings'] == 0 ) ? $cf_old_settings[2] : 'off';
 		set_rocket_cloudflare_rocket_loader( $cf_rocket_loader );
+
+        // Set Browser cache to 1 month
+		$cf_browser_cache_ttl = ( isset( $cf_old_settings[3] ) && $value['cloudflare_auto_settings'] == 0 ) ? $cf_old_settings[3] : '2678400';
+		set_rocket_cloudflare_browser_cache_ttl( $cf_browser_cache_ttl );
 	}
 	
 	// Regenerate advanced-cache.php file
@@ -1186,4 +1190,4 @@ function rocket_database_count_cleanup_items( $type ) {
     }
 
     return $count;
- }
+}
