@@ -2,18 +2,19 @@
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 add_settings_section( 'rocket_display_cdn_options', __( 'Content Delivery Network options', 'rocket' ), '__return_false', 'rocket_cdn' );
-add_settings_field(
-	'rocket_do_cloudflare',
-	'CloudFlare',
-	'rocket_field',
-	'rocket_cdn',
-	'rocket_display_cdn_options',
-	array(
+$cloudflare_readonly = '';
+
+if ( phpversion() < '5.4' ) {
+    $cloudflare_readonly = '1';
+}
+
+$rocket_do_cloudflare_settings = array(
 		array(
 			'type'         => 'checkbox',
 			'label'        => __( 'Enable CloudFlare settings tab.', 'rocket' ),
 			'label_for'    => 'do_cloudflare',
-			'label_screen' => 'CloudFlare'
+			'label_screen' => 'CloudFlare',
+			'readonly'     => $cloudflare_readonly,
 		),
 		array(
 			'type' 		  => 'helper_description',
@@ -24,9 +25,26 @@ add_settings_field(
 			'type' 		  => 'helper_description',
 			'name' 		  => 'rocket_do_cloudflare',
 			'description' => __( '<strong>Note:</strong> If you are using CloudFlare, configure the options in the CloudFlare tab. The CDN settings below <strong>do not apply</strong> to CloudFlare.', 'rocket' )
-		)
-	)
+		),
+	);
+
+if ( phpversion() < '5.4' ) {
+    $rocket_do_cloudflare_settings[] = array(
+        'type' => 'helper_warning',
+        'name' => 'rocket_cloudflare_warning',
+        'description' => __( 'Your PHP version is lower than to 5.4, so the CloudFlare functionality is not available. We recommend upgrading to a more recent version of PHP, like 5.6 or higher.', 'rocket' )
+    );
+}
+
+add_settings_field(
+	'rocket_do_cloudflare',
+	'CloudFlare',
+	'rocket_field',
+	'rocket_cdn',
+	'rocket_display_cdn_options',
+	$rocket_do_cloudflare_settings
 );
+
 add_settings_field(
 	'rocket_cdn',
 	__( 'CDN:', 'rocket' ),
