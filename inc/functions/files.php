@@ -118,7 +118,7 @@ function get_rocket_config_file() {
 	$buffer .= '$rocket_cookie_hash = \'' . COOKIEHASH . '\'' . ";\n";
 
 	foreach ( $options as $option => $value ) {	
-		if ( $option == 'cache_ssl' || $option == 'cache_mobile' || $option == 'do_caching_mobile_files' || $option == 'secret_cache_key' ) {
+		if ( $option == 'cache_ssl' || $option == 'cache_mobile' || $option == 'do_caching_mobile_files' || $option == 'secret_cache_key' || $option == 'common_cache_logged_users' ) {
 			$buffer .= '$rocket_' . $option . ' = \'' . $value . '\';' . "\n";
 		}
 				
