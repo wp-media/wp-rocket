@@ -39,7 +39,6 @@ define( 'WP_ROCKET_ADMIN_UI_MODULES_PATH', realpath( WP_ROCKET_ADMIN_UI_PATH . '
 define( 'WP_ROCKET_COMMON_PATH'         , realpath( WP_ROCKET_INC_PATH . 'common' ) . '/' );
 define( 'WP_ROCKET_CLASSES_PATH'      , realpath( WP_ROCKET_INC_PATH . 'classes' ) . '/' );
 define( 'WP_ROCKET_FUNCTIONS_PATH'      , realpath( WP_ROCKET_INC_PATH . 'functions' ) . '/' );
-define( 'WP_ROCKET_API_PATH'      		, realpath( WP_ROCKET_INC_PATH . 'api' ) . '/' );
 define( 'WP_ROCKET_VENDORS_PATH'      	, realpath( WP_ROCKET_INC_PATH . 'vendors' ) . '/' );
 define( 'WP_ROCKET_3RD_PARTY_PATH'   	, realpath( WP_ROCKET_INC_PATH . '3rd-party' ) . '/' );
 define( 'WP_ROCKET_CONFIG_PATH'         , WP_CONTENT_DIR . '/wp-rocket-config/' );
@@ -94,9 +93,18 @@ function rocket_init()
     $do_rocket_bot_cache_json = false;
 
     // Call defines, classes and functions
-    require( WP_ROCKET_API_PATH . 'cloudflare.php' );
     require( WP_ROCKET_FUNCTIONS_PATH . 'options.php' );
 
+    if ( phpversion() >= '5.4' ) {
+        require( WP_ROCKET_VENDORS_PATH . 'CloudFlare/Exception/AuthenticationException.php' );
+        require( WP_ROCKET_VENDORS_PATH . 'CloudFlare/Exception/UnauthorizedException.php' );
+        require( WP_ROCKET_VENDORS_PATH . 'CloudFlare/Api.php' );
+        require( WP_ROCKET_VENDORS_PATH . 'CloudFlare/IPs.php' );
+        require( WP_ROCKET_VENDORS_PATH . 'CloudFlare/Zone.php' );
+        require( WP_ROCKET_VENDORS_PATH . 'CloudFlare/Zone/Cache.php' );
+        require( WP_ROCKET_VENDORS_PATH . 'CloudFlare/Zone/Settings.php' );
+        require( WP_ROCKET_FUNCTIONS_PATH	. 'cloudflare.php' );
+    }
     // Last constants
     define( 'WP_ROCKET_PLUGIN_NAME', get_rocket_option( 'wl_plugin_name', 'WP Rocket' ) );
     define( 'WP_ROCKET_PLUGIN_SLUG', sanitize_key( WP_ROCKET_PLUGIN_NAME ) );
@@ -112,7 +120,6 @@ function rocket_init()
     require( WP_ROCKET_FUNCTIONS_PATH	. 'plugins.php' );
     require( WP_ROCKET_FUNCTIONS_PATH	. 'i18n.php' );
     require( WP_ROCKET_FUNCTIONS_PATH	. 'bots.php' );
-    require( WP_ROCKET_FUNCTIONS_PATH	. 'cloudflare.php' );
     require( WP_ROCKET_FUNCTIONS_PATH	. 'htaccess.php' );
     require( WP_ROCKET_FUNCTIONS_PATH	. 'varnish.php' );
     require( WP_ROCKET_INC_PATH			. 'deprecated.php' );

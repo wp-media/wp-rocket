@@ -29,7 +29,7 @@ add_settings_field(
 		array(
 			'type'         => 'text',
 			'label_for'    => 'cloudflare_api_key',
-			'label_screen' => __( 'API Key', 'rocket' ),
+			'label_screen' => __( 'Global API Key', 'rocket' ),
 		),
 		array(
 			'type' 		   => 'helper_description',
