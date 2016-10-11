@@ -14,14 +14,45 @@ function get_rocket_cloudflare_instance() {
 	$cf_api_key = ( defined( 'WP_ROCKET_CF_API_KEY' ) ) ? WP_ROCKET_CF_API_KEY : get_rocket_option( 'cloudflare_api_key', null );
 
 	if ( isset( $cf_email, $cf_api_key ) ) {
-    	$cf_instance          = ( object ) [ 'auth' => new Cloudflare\Api( $cf_email, $cf_api_key ) ];
-    	$zone_instance        = new CloudFlare\Zone( $cf_instance->auth );
-    	$zone                 = $zone_instance->zones( get_rocket_option( 'cloudflare_domain' ) );
-    	$cf_instance->zone_id = $zone->result[0]->id;
+    	$cf_instance = ( object ) [ 'auth' => new Cloudflare\Api( $cf_email, $cf_api_key ), 'zone_id' => get_rocket_option( 'cloudflare_domain' ) ];
 
 		return $cf_instance;
 	}
+
 	return false;
+}
+
+/**
+ * Get Zones linked to a CloudFlare account
+ *
+ * @since 2.9
+ * @author Remy Perona
+ *
+ * @return Array List of zones or default no domain
+ */
+function get_rocket_cloudflare_zones() {
+    $cf_email   = get_rocket_option( 'cloudflare_email', null );
+	$cf_api_key = ( defined( 'WP_ROCKET_CF_API_KEY' ) ) ? WP_ROCKET_CF_API_KEY : get_rocket_option( 'cloudflare_api_key', null );
+
+	if ( isset( $cf_email, $cf_api_key ) ) {
+    	$cf_instance          = new Cloudflare\Api( $cf_email, $cf_api_key );
+    	$zone_instance        = new CloudFlare\Zone( $cf_instance   );
+    	$zones                = $zone_instance->zones();
+    	$zones_list           = $zones->result;
+    	$domains = array();
+
+        if ( ! ( bool ) $zones_list ) {
+            $domains[] = __( 'No domain available in your account', 'rocket' );
+
+            return $domains;
+        }
+
+        foreach( $zones_list as $zone ) {
+            $domains[ $zone->id ] = $zone->name;
+        }
+
+        return $domains;
+	}
 }
 
 /**
