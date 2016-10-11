@@ -126,11 +126,24 @@ class ActionScheduler_wpCommentLogger extends ActionScheduler_Logger {
 		global $wpdb;
 
 		if ( 0 === $post_id ) {
+			$stats = $this->get_comment_count();
+		}
 
-			$count = wp_cache_get( 'comments-0', 'counts' );
-			if ( false !== $count ) {
-				return $count;
-			}
+		return $stats;
+	}
+
+	/**
+	 * Retrieve the comment counts from our cache, or the database if the cached version isn't set.
+	 *
+	 * @return object
+	 */
+	protected function get_comment_count() {
+		global $wpdb;
+
+		$stats = get_transient( 'as_comment_count' );
+
+		if ( ! $stats ) {
+			$stats = array();
 
 			$count = $wpdb->get_results( "SELECT comment_approved, COUNT( * ) AS num_comments FROM {$wpdb->comments} WHERE comment_type NOT IN('order_note','action_log') GROUP BY comment_approved", ARRAY_A );
 
@@ -149,6 +162,8 @@ class ActionScheduler_wpCommentLogger extends ActionScheduler_Logger {
 			}
 
 			$stats['total_comments'] = $total;
+			$stats['all']            = $total;
+
 			foreach ( $approved as $key ) {
 				if ( empty( $stats[ $key ] ) ) {
 					$stats[ $key ] = 0;
@@ -156,10 +171,20 @@ class ActionScheduler_wpCommentLogger extends ActionScheduler_Logger {
 			}
 
 			$stats = (object) $stats;
-			wp_cache_set( 'comments-0', $stats, 'counts' );
+			set_transient( 'as_comment_count', $stats );
 		}
 
 		return $stats;
+	}
+
+	/**
+	 * Delete comment count cache whenever there is new comment or the status of a comment changes. Cache
+	 * will be regenerated next time ActionScheduler_wpCommentLogger::filter_comment_count() is called.
+	 *
+	 * @return void
+	 */
+	public function delete_comment_count_cache() {
+		delete_transient( 'as_comment_count' );
 	}
 
 	/**
@@ -177,7 +202,11 @@ class ActionScheduler_wpCommentLogger extends ActionScheduler_Logger {
 		add_action( 'action_scheduler_unexpected_shutdown', array( $this, 'log_unexpected_shutdown' ), 10, 2 );
 		add_action( 'action_scheduler_reset_action', array( $this, 'log_reset_action' ), 10, 1 );
 		add_action( 'pre_get_comments', array( $this, 'filter_comment_queries' ), 10, 1 );
-		add_action( 'wp_count_comments', array( $this, 'filter_comment_count' ), 9, 2 ); // run before WC_Comments::wp_count_comments()
+		add_action( 'wp_count_comments', array( $this, 'filter_comment_count' ), 20, 2 ); // run after WC_Comments::wp_count_comments() to make sure we exclude order notes and action logs
+
+		// Delete comments count cache whenever there is a new comment or a comment status changes
+		add_action( 'wp_insert_comment', array( $this, 'delete_comment_count_cache' ) );
+		add_action( 'wp_set_comment_status', array( $this, 'delete_comment_count_cache' ) );
 	}
 
 	public function disable_comment_counting() {
