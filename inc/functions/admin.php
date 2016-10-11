@@ -8,7 +8,7 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
  */
 function rocket_need_api_key() { ?>
 	<div class="updated">
-		<p><b><?php echo WP_ROCKET_PLUGIN_NAME; ?></b> : <?php echo sprintf ( __('Last step before enjoying the high performances of our plugin, please <a href="%s">Enter you API key</a> here.', 'rocket' ), admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG ) ) ;?></p>
+		<p><b><?php echo WP_ROCKET_PLUGIN_NAME; ?></b> : <?php echo sprintf ( __('Last step before enjoying the high performances of our plugin, please <a href="%s">Enter your API key</a> here.', 'rocket' ), admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG ) ) ;?></p>
 	</div>
 <?php
 }

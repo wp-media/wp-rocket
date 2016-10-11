@@ -47,7 +47,7 @@ add_settings_field(
 		array(
 			'type'         => 'helper_help',
 			'name'         => 'purge_pages',
-			'description'  => __( 'Enter the URL of additionnal pages to purge when updating a post (one per line).', 'rocket' ) . '<br/>' .
+			'description'  => __( 'Enter the URL of additional pages to purge when updating a post (one per line).', 'rocket' ) . '<br/>' .
 								  __( 'You can use regular expressions (regex).', 'rocket' ),
 		),
 		array(
