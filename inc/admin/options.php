@@ -806,7 +806,7 @@ function rocket_settings_callback( $inputs ) {
 	 * Option : CloudFlare Domain
 	 */
 	if ( ! empty( $inputs['cloudflare_domain'] ) ) {
-		$inputs['cloudflare_domain'] = rocket_get_domain( $inputs['cloudflare_domain'] );
+		$inputs['cloudflare_domain'] = wp_strip_all_tags( $inputs['cloudflare_domain'] );
 	} else {
 		$inputs['cloudflare_domain'] = '';
 	}
@@ -825,7 +825,7 @@ function rocket_settings_callback( $inputs ) {
 	 * Option : CloudFlare
 	 */
 	 
-	 if( defined( 'WP_ROCKET_CF_API_KEY' ) ) {
+	 if ( defined( 'WP_ROCKET_CF_API_KEY' ) ) {
 		 $inputs['cloudflare_api_key'] = get_rocket_option( 'cloudflare_api_key' );
 	 }
 	
