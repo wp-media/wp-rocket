@@ -41,6 +41,7 @@ add_settings_field(
 
 endif;
 
+if ( rocket_cloudflare_valid_auth() ) {
     add_settings_field(
     	'rocket_cloudflare_domain',
     	__( 'Domain', 'rocket' ),
@@ -155,3 +156,4 @@ endif;
     		),
     	)
     );
+}
