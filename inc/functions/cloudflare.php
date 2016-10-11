@@ -16,8 +16,10 @@ function get_rocket_cloudflare_instance() {
 	if ( isset( $cf_email, $cf_api_key ) ) {
     	$cf_instance          = ( object ) [ 'auth' => new Cloudflare\Api( $cf_email, $cf_api_key ) ];
     	$zone_instance        = new CloudFlare\Zone( $cf_instance->auth );
-    	$zone                 = $zone_instance->zones( get_rocket_option( 'cloudflare_domain' ) );
-    	$cf_instance->zone_id = $zone->result[0]->id;
+    	if ( $cf_domain = get_rocket_option( 'cloudflare_domain' ) ) {
+        	$zone                 = $zone_instance->zones( get_rocket_option( 'cloudflare_domain' ) );
+            $cf_instance->zone_id = $zone->result[0]->id;
+    	}
 
 		return $cf_instance;
 	}
