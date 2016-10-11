@@ -2,25 +2,64 @@
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 /**
+ * Get a CloudFlare\Api instance
+ *
+ * @since 2.9
+ * @author Remy Perona
+ *
+ * @return mixed bool|object CloudFlare\Api instance if crendentials are set, false otherwise
+ */
+function get_rocket_cloudflare_api_instance() {
+	$cf_email   = get_rocket_option( 'cloudflare_email', null );
+	$cf_api_key = ( defined( 'WP_ROCKET_CF_API_KEY' ) ) ? WP_ROCKET_CF_API_KEY : get_rocket_option( 'cloudflare_api_key', null );
+
+	if ( isset( $cf_email, $cf_api_key ) ) {
+    	$cf_instance = new Cloudflare\Api( $cf_email, $cf_api_key );
+
+		return $cf_instance;
+	}
+
+    return false;
+}
+
+/**
  * Get a CloudFlare\Api instance & the zone_id corresponding to the domain
  *
  * @since 2.8.16 Update to CloudFlare API v4
  * @since 2.5
  *
- * @return obj CloudFlare instance & zone_id
+ * @return mixed bool|object CloudFlare instance & zone_id if instance is set, false otherwise
  */
 function get_rocket_cloudflare_instance() {
-	$cf_email   = get_rocket_option( 'cloudflare_email', null );
-	$cf_api_key = ( defined( 'WP_ROCKET_CF_API_KEY' ) ) ? WP_ROCKET_CF_API_KEY : get_rocket_option( 'cloudflare_api_key', null );
-
-	if ( isset( $cf_email, $cf_api_key ) ) {
-    	$cf_instance = ( object ) [ 'auth' => new Cloudflare\Api( $cf_email, $cf_api_key ), 'zone_id' => get_rocket_option( 'cloudflare_domain' ) ];
+	if ( false !== $cf_api_instance = get_rocket_cloudflare_api_instance() ) {
+    	$cf_instance = ( object ) [ 'auth' => $cf_api_instance, 'zone_id' => get_rocket_option( 'cloudflare_domain' ) ];
 
 		return $cf_instance;
 	}
 
 	return false;
 }
+
+/**
+ * Test the connection with CloudFlare
+ *
+ * @since 2.9
+ * @author Remy Perona
+ *
+ * @return bool True if connection is successful, false otherwise
+ */
+ function rocket_cloudflare_valid_auth() {
+    if ( false !== $cf_api_instance = get_rocket_cloudflare_api_instance() ) {
+        $cf_zone_instance = new CloudFlare\Zone( $cf_api_instance );
+    	$cf_zones         = $cf_zone_instance->zones();
+
+        if ( $cf_zones->success === true ) {
+            return true;
+        }
+    }
+
+    return false;
+ }
 
 /**
  * Get Zones linked to a CloudFlare account
@@ -31,24 +70,20 @@ function get_rocket_cloudflare_instance() {
  * @return Array List of zones or default no domain
  */
 function get_rocket_cloudflare_zones() {
-    $cf_email   = get_rocket_option( 'cloudflare_email', null );
-	$cf_api_key = ( defined( 'WP_ROCKET_CF_API_KEY' ) ) ? WP_ROCKET_CF_API_KEY : get_rocket_option( 'cloudflare_api_key', null );
-
-	if ( isset( $cf_email, $cf_api_key ) ) {
-    	$cf_instance          = new Cloudflare\Api( $cf_email, $cf_api_key );
-    	$zone_instance        = new CloudFlare\Zone( $cf_instance   );
-    	$zones                = $zone_instance->zones();
-    	$zones_list           = $zones->result;
+	if ( false !== $cf_api_instance = get_rocket_cloudflare_api_instance() ) {
+    	$cf_zone_instance        = new CloudFlare\Zone( $cf_api_instance );
+    	$cf_zones                = $cf_zone_instance->zones();
+    	$cf_zones_list           = $cf_zones->result;
     	$domains = array();
 
-        if ( ! ( bool ) $zones_list ) {
-            $domains[] = __( 'No domain available in your account', 'rocket' );
+        if ( ! ( bool ) $cf_zones_list ) {
+            $domains[] = __( 'No domain available in your CloudFlare account', 'rocket' );
 
             return $domains;
         }
 
-        foreach( $zones_list as $zone ) {
-            $domains[ $zone->id ] = $zone->name;
+        foreach( $cf_zones_list as $cf_zone ) {
+            $domains[ $cf_zone->id ] = $cf_zone->name;
         }
 
         return $domains;
@@ -213,10 +248,11 @@ function rocket_purge_cloudflare() {
  * @return Object Result of API request
  */
 function rocket_get_cloudflare_ips() {
-    if( ! is_object( $GLOBALS['rocket_cloudflare'] ) ) {
+    $cf_instance = get_rocket_cloudflare_api_instance();
+    if( ! is_object( $cf_instance ) ) {
 		return false;
 	}
 
-    $cf_ips_instance = new CloudFlare\IPs( $GLOBALS['rocket_cloudflare']->auth );
+    $cf_ips_instance = new CloudFlare\IPs( $cf_instance );
     return $cf_ips_instance->ips();
 }
