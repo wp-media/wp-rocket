@@ -136,7 +136,7 @@ function rocket_first_install() {
 			'cloudflare_devmode'          => 0,
 			'cloudflare_protocol_rewrite' => 0,
 			'cloudflare_auto_settings'    => 0,
-			'cloudflare_old_settings'     => 0,
+			'cloudflare_old_settings'     => '',
 			'varnish_auto_purge'          => 0,
 			'do_beta'                     => 0,
 		)
@@ -289,4 +289,19 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		
 		update_option( WP_ROCKET_SLUG, $options );
 	}
+
+    // Deactivate CloudFlare completely if PHP Version is lower than 5.4
+    if ( version_compare( $actual_version, '2.8.16', '<' ) && phpversion() < '5.4' ) {
+        $options                                = get_option( WP_ROCKET_SLUG );
+        $options['do_cloudflare']               = 0;
+        $options['cloudflare_email']            = '';
+		$options['cloudflare_api_key']          = '';
+		$options['cloudflare_domain']           = '';
+		$options['cloudflare_devmode']          = 0;
+		$options['cloudflare_protocol_rewrite'] = 0;
+		$options['cloudflare_auto_settings']    = 0;
+		$options['cloudflare_old_settings']     = '';
+
+        update_option( WP_ROCKET_SLUG, $options );
+    }
 }
