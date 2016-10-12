@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 function get_rocket_cloudflare_api_instance() {
 	$cf_email   = get_rocket_option( 'cloudflare_email', null );
 	$cf_api_key = ( defined( 'WP_ROCKET_CF_API_KEY' ) ) ? WP_ROCKET_CF_API_KEY : get_rocket_option( 'cloudflare_api_key', null );
-
+	
 	if ( isset( $cf_email, $cf_api_key ) ) {
     	$cf_instance = new Cloudflare\Api( $cf_email, $cf_api_key );
 
@@ -25,16 +25,28 @@ function get_rocket_cloudflare_api_instance() {
 /**
  * Get a CloudFlare\Api instance & the zone_id corresponding to the domain
  *
+ * @since 2.8.18 Add try/catch to prevent fatal error Uncaugh Exception
  * @since 2.8.16 Update to CloudFlare API v4
  * @since 2.5
  *
- * @return mixed bool|object CloudFlare instance & zone_id if instance is set, false otherwise
+ * @return mixed bool|object CloudFlare instance & zone_id if credentials are correct, false otherwise
  */
 function get_rocket_cloudflare_instance() {
 	if ( false !== $cf_api_instance = get_rocket_cloudflare_api_instance() ) {
-    	$cf_instance = ( object ) [ 'auth' => $cf_api_instance, 'zone_id' => get_rocket_option( 'cloudflare_domain' ) ];
+        $cf_instance = ( object ) [ 'auth' => $cf_api_instance ];
 
-		return $cf_instance;
+        try {
+            $zone_instance = new CloudFlare\Zone( $cf_instance->auth );
+		    $cf_domain     = get_rocket_option( 'cloudflare_domain', null );
+		    $zone          = $zone_instance->zones( $cf_domain );
+            
+            if ( isset( $zone->result[0]->id ) ) {
+                $cf_instance->zone_id = $zone->result[0]->id;         
+                return $cf_instance;
+            }
+        } catch ( Exception $e ) {}
+
+        return false;
 	}
 
 	return false;
@@ -53,6 +65,10 @@ function get_rocket_cloudflare_instance() {
         try {
             $cf_zone_instance = new CloudFlare\Zone( $cf_api_instance );
             $cf_zones         = $cf_zone_instance->zones();
+
+            if ( ! isset( $cf_zones->success ) ) {
+                return false;
+            }
 
             if ( $cf_zones->success === true ) {
                 return true;
@@ -88,7 +104,7 @@ function get_rocket_cloudflare_zones() {
             }
             
             foreach( $cf_zones_list as $cf_zone ) {
-                $domains[ $cf_zone->id ] = $cf_zone->name;
+                $domains[ $cf_zone->name ] = $cf_zone->name;
             }
             
             return $domains;

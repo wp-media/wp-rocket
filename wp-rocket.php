@@ -61,7 +61,7 @@ if ( ! defined( 'CHMOD_WP_ROCKET_CACHE_DIRS' ) ) {
     define( 'CHMOD_WP_ROCKET_CACHE_DIRS', 0755 );
 }
 if ( ! defined( 'WP_ROCKET_LASTVERSION' ) ) {
-    define( 'WP_ROCKET_LASTVERSION', '2.8.16' );
+    define( 'WP_ROCKET_LASTVERSION', '2.8.19' );
 }
 
 require( WP_ROCKET_INC_PATH	. 'compat.php' );
@@ -139,7 +139,7 @@ function rocket_init()
         	require( WP_ROCKET_FRONT_PATH . 'cdn.php' );
         }
 
-		if ( 0 < (int) get_rocket_option( 'do_cloudflare' ) ) {
+		if ( 0 < (int) get_rocket_option( 'do_cloudflare' ) && phpversion() >= '5.4' ) {
 			require( WP_ROCKET_VENDORS_PATH	. 'ip_in_range.php' );
 			require( WP_ROCKET_COMMON_PATH 	. 'cloudflare.php' );
 		}
