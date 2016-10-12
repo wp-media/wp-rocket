@@ -22,7 +22,7 @@ function get_rocket_cloudflare_instance() {
 				$cf_domain     = get_rocket_option( 'cloudflare_domain', null );
 				$zone          = $zone_instance->zones( $cf_domain );
                 
-                if ( isset( $zone->result[0] ) && is_object( $zone->result[0] ) ) {
+                if ( isset( $zone->result[0]->id ) ) {
                     $cf_instance->zone_id = $zone->result[0]->id;         
                     return $cf_instance;
                 }
