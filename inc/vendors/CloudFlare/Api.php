@@ -188,7 +188,6 @@ class Api
             CURLOPT_HEADER         => false,
             CURLOPT_TIMEOUT        => 30,
             CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_FOLLOWLOCATION => true,
         ];
 
         $curl_options = $default_curl_options;
@@ -219,7 +218,8 @@ class Api
         } else {
             $url .= '?'.http_build_query($data);
         }
-
+		
+		@curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_URL, $url);
 
