@@ -50,11 +50,15 @@ function get_rocket_cloudflare_instance() {
  */
  function rocket_cloudflare_valid_auth() {
     if ( false !== $cf_api_instance = get_rocket_cloudflare_api_instance() ) {
-        $cf_zone_instance = new CloudFlare\Zone( $cf_api_instance );
-    	$cf_zones         = $cf_zone_instance->zones();
+        try {
+            $cf_zone_instance = new CloudFlare\Zone( $cf_api_instance );
+            $cf_zones         = $cf_zone_instance->zones();
 
-        if ( $cf_zones->success === true ) {
-            return true;
+            if ( $cf_zones->success === true ) {
+                return true;
+            }
+        } catch( Exception $e ) {
+            $e->getMessage();
         }
     }
 
@@ -71,22 +75,26 @@ function get_rocket_cloudflare_instance() {
  */
 function get_rocket_cloudflare_zones() {
 	if ( false !== $cf_api_instance = get_rocket_cloudflare_api_instance() ) {
-    	$cf_zone_instance        = new CloudFlare\Zone( $cf_api_instance );
-    	$cf_zones                = $cf_zone_instance->zones();
-    	$cf_zones_list           = $cf_zones->result;
-    	$domains = array();
-
-        if ( ! ( bool ) $cf_zones_list ) {
-            $domains[] = __( 'No domain available in your CloudFlare account', 'rocket' );
-
+    	try {
+        	$cf_zone_instance        = new CloudFlare\Zone( $cf_api_instance );
+            $cf_zones                = $cf_zone_instance->zones();
+            $cf_zones_list           = $cf_zones->result;
+            $domains = array();
+            
+            if ( ! ( bool ) $cf_zones_list ) {
+                $domains[] = __( 'No domain available in your CloudFlare account', 'rocket' );
+            
+                return $domains;
+            }
+            
+            foreach( $cf_zones_list as $cf_zone ) {
+                $domains[ $cf_zone->id ] = $cf_zone->name;
+            }
+            
             return $domains;
-        }
-
-        foreach( $cf_zones_list as $cf_zone ) {
-            $domains[ $cf_zone->id ] = $cf_zone->name;
-        }
-
-        return $domains;
+        } catch( Exception $e ) {
+            $e->getMessage();
+        }	
 	}
 }
 
@@ -252,7 +260,10 @@ function rocket_get_cloudflare_ips() {
     if( ! is_object( $cf_instance ) ) {
 		return false;
 	}
-
-    $cf_ips_instance = new CloudFlare\IPs( $cf_instance );
-    return $cf_ips_instance->ips();
+    try {
+       $cf_ips_instance = new CloudFlare\IPs( $cf_instance );
+       return $cf_ips_instance->ips();
+    } catch( Exception $e ) {
+        $e->getMessage();
+    }
 }
