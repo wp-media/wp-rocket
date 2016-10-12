@@ -235,7 +235,7 @@ class Api
         $response = json_decode($http_result);
 
         curl_close($ch);
-        if (isset($response) && $response->success !== true) {
+        if (isset($response, $response->success) && $response->success !== true) {
             $response->error = $error;
             $response->http_code = $http_code;
             $response->method = $method;
