@@ -48,7 +48,7 @@ $GLOBALS['rocket_cloudflare'] = get_rocket_cloudflare_instance();
  * @return Array
  */
 function get_rocket_cloudflare_settings() {
-	if( ! is_object( $GLOBALS['rocket_cloudflare'] ) ) {
+	if ( ! is_object( $GLOBALS['rocket_cloudflare'] ) ) {
 		return false;
 	}
 	
@@ -84,7 +84,7 @@ function get_rocket_cloudflare_settings() {
  * @return void
  */
 function set_rocket_cloudflare_devmode( $mode ) {
-	if( ! is_object( $GLOBALS['rocket_cloudflare'] ) ) {
+	if ( ! is_object( $GLOBALS['rocket_cloudflare'] ) ) {
 		return false;
 	}
 
@@ -109,7 +109,7 @@ function set_rocket_cloudflare_devmode( $mode ) {
  * @return void
  */
 function set_rocket_cloudflare_cache_level( $mode ) {
-	if( ! is_object( $GLOBALS['rocket_cloudflare'] ) ) {
+	if ( ! is_object( $GLOBALS['rocket_cloudflare'] ) ) {
 		return false;
 	}
 	
@@ -128,7 +128,7 @@ function set_rocket_cloudflare_cache_level( $mode ) {
  * @return void
  */
 function set_rocket_cloudflare_minify( $mode ) {
-	if( ! is_object( $GLOBALS['rocket_cloudflare'] ) ) {
+	if ( ! is_object( $GLOBALS['rocket_cloudflare'] ) ) {
 		return false;
 	}
 
@@ -153,7 +153,7 @@ function set_rocket_cloudflare_minify( $mode ) {
  * @return void
  */
 function set_rocket_cloudflare_rocket_loader( $mode ) {
-	if( ! is_object( $GLOBALS['rocket_cloudflare'] ) ) {
+	if ( ! is_object( $GLOBALS['rocket_cloudflare'] ) ) {
 		return false;
 	}
 	
@@ -171,7 +171,7 @@ function set_rocket_cloudflare_rocket_loader( $mode ) {
  * @return void
  */
 function set_rocket_cloudflare_browser_cache_ttl( $mode ) {
-	if( ! is_object( $GLOBALS['rocket_cloudflare'] ) ) {
+	if ( ! is_object( $GLOBALS['rocket_cloudflare'] ) ) {
 		return false;
 	}
 	
@@ -190,7 +190,7 @@ function set_rocket_cloudflare_browser_cache_ttl( $mode ) {
  * @return void
  */
 function rocket_purge_cloudflare() {
-	if( ! is_object( $GLOBALS['rocket_cloudflare'] ) ) {
+	if ( ! is_object( $GLOBALS['rocket_cloudflare'] ) ) {
 		return false;
 	}
 	
