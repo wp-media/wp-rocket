@@ -234,7 +234,7 @@ function rocket_get_cloudflare_ips() {
             $cf_ips_instance = new CloudFlare\IPs( $cf_instance );
             $cf_ips = $cf_ips_instance->ips();
 
-            if ( is_object( $cf_ips ) && isset( $cf_ips->success ) && ! $cf_ips->success ) {
+            if ( isset( $cf_ips->success ) && $cf_ips->success ) {
                 set_transient(  'rocket_cloudflare_ips', $cf_ips, 2 * WEEK_IN_SECONDS );
             }
         } catch ( Exception $e ) {
