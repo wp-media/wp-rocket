@@ -21,27 +21,22 @@ if ( ! defined( 'WP_ROCKET_CF_API_KEY_HIDDEN' ) || ! WP_ROCKET_CF_API_KEY_HIDDEN
 
 add_settings_field(
 	'rocket_cloudflare_api_key',
-	__( 'API Key', 'rocket' ),
+	__( 'Global API Key', 'rocket' ),
 	'rocket_field',
 	'rocket_cloudflare',
 	'rocket_display_cloudflare_options',
 	array(
 		array(
-			'type'         => 'text',
+			'type'         => 'cloudflare_api_key',
 			'label_for'    => 'cloudflare_api_key',
 			'label_screen' => __( 'Global API Key', 'rocket' ),
 		),
-		array(
-			'type' 		   => 'helper_description',
-			'name'         => 'cloudflare_api_key',
-			'description'  => sprintf( __( '<strong>Note:</strong> Where do I find my CloudFlare API key? <a href="%s" target="_blank">Learn more</a>', 'rocket' ), 'https://support.cloudflare.com/hc/en-us/articles/200167836-Where-do-I-find-my-CloudFlare-API-key-' ),
-		)
 	)
 );
 
 endif;
 
-if ( rocket_cloudflare_valid_auth() ) {
+if ( ! is_wp_error( rocket_cloudflare_valid_auth() ) ) {
     add_settings_field(
     	'rocket_cloudflare_domain',
     	__( 'Domain', 'rocket' ),
