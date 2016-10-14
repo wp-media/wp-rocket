@@ -2,8 +2,27 @@
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 /**
+ * Get a CloudFlare\Api instance
+ *
+ * @since 2.8.21
+ * @author Remy Perona
+ *
+ * @return Object CloudFlare\Api instance if crendentials are set, WP_Error otherwise
+ */
+function get_rocket_cloudflare_api_instance() {
+	$cf_email   = get_rocket_option( 'cloudflare_email', null );
+	$cf_api_key = ( defined( 'WP_ROCKET_CF_API_KEY' ) ) ? WP_ROCKET_CF_API_KEY : get_rocket_option( 'cloudflare_api_key', null );
+	
+	if ( ! isset( $cf_email, $cf_api_key ) ) {
+    	return new WP_Error( 'cloudflare_credentials_empty', __( 'CloudFlare Email & API Key are not set', 'rocket' ) );
+	}
+    return new Cloudflare\Api( $cf_email, $cf_api_key );
+}
+
+/**
  * Get a CloudFlare\Api instance & the zone_id corresponding to the domain
  *
+ * @since 2.8.21 Get the zone ID from the options
  * @since 2.8.18 Add try/catch to prevent fatal error Uncaugh Exception
  * @since 2.8.16 Update to CloudFlare API v4
  * @since 2.5
@@ -11,27 +30,20 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
  * @return mixed bool|object CloudFlare instance & zone_id if credentials are correct, false otherwise
  */
 function get_rocket_cloudflare_instance() {
-	$cf_email   = get_rocket_option( 'cloudflare_email', null );
-	$cf_api_key = ( defined( 'WP_ROCKET_CF_API_KEY' ) ) ? WP_ROCKET_CF_API_KEY : get_rocket_option( 'cloudflare_api_key', null );
+	$cf_api_instance = get_rocket_cloudflare_api_instance();
+	if ( is_wp_error( $cf_api_instance )  ) {
+    	return false;
+    }
 
-	if ( isset( $cf_email, $cf_api_key ) ) {
-        	$cf_instance = ( object ) [ 'auth' => new Cloudflare\Api( $cf_email, $cf_api_key ) ];
+    $cf_zone_id = get_rocket_option( 'cloudflare_zone_id', null );
 
-        	try {
-                $zone_instance = new CloudFlare\Zone( $cf_instance->auth );
-				$cf_domain     = get_rocket_option( 'cloudflare_domain', null );
-				$zone          = $zone_instance->zones( $cf_domain );
+    if ( ! isset( $cf_zone_id ) ) {
+        return false;
+    }
+    
+    $cf_instance = ( object ) [ 'auth' => $cf_api_instance, 'zone_id' => $cf_zone_id ];
 
-                if ( isset( $zone->result[0]->id ) ) {
-                    $cf_instance->zone_id = $zone->result[0]->id;
-                    return $cf_instance;
-                }
-            } catch ( Exception $e ) {}
-
-            return false;
-	}
-
-	return false;
+    return $cf_instance;
 }
 
 /**
@@ -203,19 +215,28 @@ function rocket_purge_cloudflare() {
 /**
  * Get CloudFlare IPs.
  *
+ * @since 2.8.21 Save IPs in a transient to prevent calling the API everytime
  * @since 2.8.16
  *
- * @return Object Result of API request
+ * @author Remy Perona
+ *
+ * @return mixed Bool|Object Result of API request, false otherwise
  */
 function rocket_get_cloudflare_ips() {
-    if( ! is_object( $GLOBALS['rocket_cloudflare'] ) ) {
+    $cf_instance = get_rocket_cloudflare_api_instance();
+    if( ! is_wp_error( $cf_instance ) ) {
 		return false;
 	}
 
-    try {
-        $cf_ips_instance = new CloudFlare\IPs( $GLOBALS['rocket_cloudflare']->auth );
-        return $cf_ips_instance->ips();
-    } catch ( Exception $e ) {
-        return false;
+    if ( false === ( $cf_ips = get_transient( 'rocket_cloudflare_ips' ) ) ) {
+        try {
+            $cf_ips_instance = new CloudFlare\IPs( $GLOBALS['rocket_cloudflare']->auth );
+            $cf_ips = $cf_ips_instance->ips();
+            set_transient(  'rocket_cloudflare_ips', $cf_ips, 2 * WEEK_IN_SECONDS );
+        } catch ( Exception $e ) {
+            return false;
+        }
     }
+
+    return $cf_ips;
 }
