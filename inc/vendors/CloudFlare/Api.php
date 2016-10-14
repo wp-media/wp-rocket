@@ -195,7 +195,8 @@ class Api
             $curl_options = array_replace($default_curl_options, $this->curl_options);
         }
 
-        $headers = ["X-Auth-Email: {$this->email}", "X-Auth-Key: {$this->auth_key}", "User-Agent: wp-rocket/{WP_ROCKET_VERSION}"];
+        $wp_rocket_version = WP_ROCKET_VERSION;
+        $headers = ["X-Auth-Email: {$this->email}", "X-Auth-Key: {$this->auth_key}", "User-Agent: wp-rocket/{$wp_rocket_version}"];
 
         $ch = curl_init();
         curl_setopt_array($ch, $curl_options);
