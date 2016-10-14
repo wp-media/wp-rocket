@@ -1108,9 +1108,9 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 	// Save old CloudFlare settings
 	if ( ( isset( $newvalue['cloudflare_auto_settings'], $oldvalue['cloudflare_auto_settings'] ) && $newvalue['cloudflare_auto_settings'] != $oldvalue['cloudflare_auto_settings'] && $newvalue['cloudflare_auto_settings'] == 1 ) ) {
 		$cf_settings = get_rocket_cloudflare_settings();
-		$cf_settings = array_filter( $cf_settings );
-		
-		$newvalue['cloudflare_old_settings'] = ( isset ( $cf_settings ) ) ? implode( ',' , $cf_settings ) : '';
+		if ( ( bool ) $cf_settings ) {
+    		$newvalue['cloudflare_old_settings'] = ( isset ( $cf_settings ) ) ? implode( ',' , array_filter( $cf_settings ) ) : '';
+		}
 	}
 	
 	// Checked the SSL option if the whole website is on SSL
