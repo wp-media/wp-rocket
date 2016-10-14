@@ -535,3 +535,60 @@ function __rocket_imagify_notice() {
 
 	<?php
 }
+
+/**
+ * This notice is displayed after purging the CloudFlare cache
+ *
+ * @since 2.9
+ * @author Remy Perona
+ */
+add_action( 'admin_notices', 'rocket_cloudflare_purge_result' );
+function rocket_cloudflare_purge_result() {
+	global $current_user;
+	/** This filter is documented in inc/admin-bar.php */
+	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) && get_transient( $current_user->ID . '_cloudflare_purge_result' ) && is_admin() ) {
+
+        $notice = get_transient( $current_user->ID . '_cloudflare_purge_result' );
+		delete_transient( $current_user->ID . '_cloudflare_purge_result' );
+        if ( $notice['result'] == 'error' ) {
+            $notice_result = 'notice-error';
+        } else if ( $notice['result'] == 'success' ) {
+            $notice_result = 'notice-success';
+        } ?>
+        <div class="notice <?php echo $notice_result; ?> is-dismissible">
+            <p><?php echo $notice['message']; ?></p>
+		</div>
+	<?php
+	}
+}
+
+/**
+ * This notice is displayed after modifying the CloudFlare settings
+ *
+ * @since 2.9
+ * @author Remy Perona
+ */
+add_action( 'admin_notices', 'rocket_cloudflare_update_settings' );
+function rocket_cloudflare_update_settings() {
+	global $current_user;
+    $screen              = get_current_screen();
+    $rocket_wl_name      = get_rocket_option( 'wl_plugin_name', null );
+    $wp_rocket_screen_id = isset( $rocket_wl_name ) ?  'settings_page_' . sanitize_key( $rocket_wl_name ) : 'settings_page_wprocket';
+	/** This filter is documented in inc/admin-bar.php */
+	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) && get_transient( $current_user->ID . '_cloudflare_update_settings' ) && $screen->id === $wp_rocket_screen_id ) {
+
+        $notices = get_transient( $current_user->ID . '_cloudflare_update_settings' );
+		delete_transient( $current_user->ID . '_cloudflare_update_settings' );
+		foreach ( $notices as $notice ) {
+    		if ( $notice['result'] == 'error' ) {
+                $notice_result = 'notice-error';
+            } else if ( $notice['result'] == 'success' ) {
+                $notice_result = 'notice-success';
+            } ?>
+            <div class="notice <?php echo $notice_result; ?> is-dismissible">
+                <p><?php echo $notice['message']; ?></p>
+            </div>
+        <?php
+		}
+	}
+}
