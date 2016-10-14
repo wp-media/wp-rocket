@@ -1089,6 +1089,23 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 		$newvalue['minify_js_key'] = create_rocket_uniqid();
 	}
 
+    // Update CloudFlare zone ID if CloudFlare domain was changed
+    if ( ( isset( $new_value['cloudflare_domain'], $oldvalue['cloudflare_domain'] ) ) && $new_value['cloudflare_domain'] != $oldvalue['cloudflare_domain'] ) {
+        if( phpversion() >= '5.4' ) {
+            $cf_instance = get_rocket_cloudflare_api_instance();
+            if ( ! is_wp_error( $cf_instance ) ) {
+                try {
+                    $zone_instance = new CloudFlare\Zone( $cf_instance );
+                	$zone          = $zone_instance->zones( $new_value['cloudflare_domain'] );
+            
+                    if ( isset( $zone->result[0]->id ) ) {
+                        update_rocket_option( 'cloudflare_zone_id', $zone->result[0]->id );
+                    }
+                } catch ( Exception $e ) {}
+            }
+        }
+    }
+
 	// Save old CloudFlare settings
 	if ( ( isset( $newvalue['cloudflare_auto_settings'], $oldvalue['cloudflare_auto_settings'] ) && $newvalue['cloudflare_auto_settings'] != $oldvalue['cloudflare_auto_settings'] && $newvalue['cloudflare_auto_settings'] == 1 ) ) {
 		$cf_settings = get_rocket_cloudflare_settings();
