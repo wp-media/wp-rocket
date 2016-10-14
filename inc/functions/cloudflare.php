@@ -224,15 +224,19 @@ function rocket_purge_cloudflare() {
  */
 function rocket_get_cloudflare_ips() {
     $cf_instance = get_rocket_cloudflare_api_instance();
-    if( ! is_wp_error( $cf_instance ) ) {
+
+    if ( is_wp_error( $cf_instance ) ) {
 		return false;
 	}
 
     if ( false === ( $cf_ips = get_transient( 'rocket_cloudflare_ips' ) ) ) {
         try {
-            $cf_ips_instance = new CloudFlare\IPs( $GLOBALS['rocket_cloudflare']->auth );
+            $cf_ips_instance = new CloudFlare\IPs( $cf_instance );
             $cf_ips = $cf_ips_instance->ips();
-            set_transient(  'rocket_cloudflare_ips', $cf_ips, 2 * WEEK_IN_SECONDS );
+
+            if ( is_object( $cf_ips ) && isset( $cf_ips->success ) && ! $cf_ips->success ) {
+                set_transient(  'rocket_cloudflare_ips', $cf_ips, 2 * WEEK_IN_SECONDS );
+            }
         } catch ( Exception $e ) {
             return false;
         }
