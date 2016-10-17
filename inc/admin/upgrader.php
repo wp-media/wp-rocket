@@ -306,7 +306,7 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
     }
 
     // Add a value to the new CF zone_id field if the CF domain is set
-    if ( version_compare( $actual_version, '2.8.21', '<' ) && phpversion() < '5.4' ) {
+    if ( version_compare( $actual_version, '2.8.21', '<' ) && phpversion() >= '5.4' ) {
         $options = get_option( WP_ROCKET_SLUG );
         if ( 0 < $options['do_cloudflare'] && $options['cloudflare_domain'] !== '' ) {
             $cf_instance = get_rocket_cloudflare_api_instance();
