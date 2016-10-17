@@ -132,6 +132,7 @@ function rocket_first_install() {
 			'cloudflare_email'            => '',
 			'cloudflare_api_key'          => '',
 			'cloudflare_domain'           => '',
+			'cloudflare_zone_id'          => '',
 			'cloudflare_devmode'          => 0,
 			'cloudflare_protocol_rewrite' => 0,
 			'cloudflare_auto_settings'    => 0,
@@ -302,5 +303,24 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		$options['cloudflare_old_settings']     = '';
 
         update_option( WP_ROCKET_SLUG, $options );
+    }
+
+    // Add a value to the new CF zone_id field if the CF domain is set
+    if ( version_compare( $actual_version, '2.8.21', '<' ) && phpversion() < '5.4' ) {
+        $options = get_option( WP_ROCKET_SLUG );
+        if ( 0 < $options['do_cloudflare'] && $options['cloudflare_domain'] !== '' ) {
+            $cf_instance = get_rocket_cloudflare_api_instance();
+            if ( ! is_wp_error( $cf_instance ) ) {
+                try {
+                    $zone_instance = new CloudFlare\Zone( $cf_instance );
+                	$zone          = $zone_instance->zones( $options['cloudflare_domain'] );
+            
+                    if ( isset( $zone->result[0]->id ) ) {
+                        $options['cloudflare_zone_id'] = $zone->result[0]->id;
+                        update_option( WP_ROCKET_SLUG, $options );
+                    }
+                } catch ( Exception $e ) {}
+            }
+        }
     }
 }
