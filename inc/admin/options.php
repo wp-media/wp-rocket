@@ -475,7 +475,8 @@ function rocket_display_options() {
 				'minify_css_key', 
 				'minify_js_key', 
 				'version', 
-				'cloudflare_old_settings' 
+				'cloudflare_old_settings',
+				'cloudflare_zone_id'
 			)
 		); 
 				
@@ -1089,12 +1090,27 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 		$newvalue['minify_js_key'] = create_rocket_uniqid();
 	}
 
+    // Update CloudFlare zone ID if CloudFlare domain was changed
+    if ( isset( $newvalue['cloudflare_domain'], $oldvalue['cloudflare_domain'] ) && $newvalue['cloudflare_domain'] != $oldvalue['cloudflare_domain'] && phpversion() >= '5.4' ) {
+        $cf_instance = get_rocket_cloudflare_api_instance();
+        if ( ! is_wp_error( $cf_instance ) ) {
+            try {
+                $zone_instance = new CloudFlare\Zone( $cf_instance );
+            	$zone          = $zone_instance->zones( $newvalue['cloudflare_domain'] );
+        
+                if ( isset( $zone->result[0]->id ) ) {
+                    $newvalue['cloudflare_zone_id'] = $zone->result[0]->id;
+                }
+            } catch ( Exception $e ) {}
+        }
+    }
+
 	// Save old CloudFlare settings
 	if ( ( isset( $newvalue['cloudflare_auto_settings'], $oldvalue['cloudflare_auto_settings'] ) && $newvalue['cloudflare_auto_settings'] != $oldvalue['cloudflare_auto_settings'] && $newvalue['cloudflare_auto_settings'] == 1 ) ) {
 		$cf_settings = get_rocket_cloudflare_settings();
-		$cf_settings = array_filter( $cf_settings );
-		
-		$newvalue['cloudflare_old_settings'] = ( isset ( $cf_settings ) ) ? implode( ',' , $cf_settings ) : '';
+		if ( ( bool ) $cf_settings ) {
+    		$newvalue['cloudflare_old_settings'] = ( isset ( $cf_settings ) ) ? implode( ',' , array_filter( $cf_settings ) ) : '';
+		}
 	}
 	
 	// Checked the SSL option if the whole website is on SSL

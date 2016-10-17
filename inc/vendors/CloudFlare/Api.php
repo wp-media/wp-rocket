@@ -187,8 +187,7 @@ class Api
             CURLOPT_RETURNTRANSFER => 1,
             CURLOPT_HEADER         => false,
             CURLOPT_TIMEOUT        => 30,
-            CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_SSL_VERIFYPEER => true,
         ];
 
         $curl_options = $default_curl_options;
@@ -196,7 +195,8 @@ class Api
             $curl_options = array_replace($default_curl_options, $this->curl_options);
         }
 
-        $headers = ["X-Auth-Email: {$this->email}", "X-Auth-Key: {$this->auth_key}"];
+        $wp_rocket_version = WP_ROCKET_VERSION;
+        $headers = ["X-Auth-Email: {$this->email}", "X-Auth-Key: {$this->auth_key}", "User-Agent: wp-rocket/{$wp_rocket_version}"];
 
         $ch = curl_init();
         curl_setopt_array($ch, $curl_options);
@@ -219,7 +219,8 @@ class Api
         } else {
             $url .= '?'.http_build_query($data);
         }
-
+		
+		@curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_URL, $url);
 
@@ -235,7 +236,7 @@ class Api
         $response = json_decode($http_result);
 
         curl_close($ch);
-        if ($response->success !== true) {
+        if (isset($response->success) && $response->success !== true) {
             $response->error = $error;
             $response->http_code = $http_code;
             $response->method = $method;

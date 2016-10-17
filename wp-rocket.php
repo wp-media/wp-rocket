@@ -61,7 +61,7 @@ if ( ! defined( 'CHMOD_WP_ROCKET_CACHE_DIRS' ) ) {
     define( 'CHMOD_WP_ROCKET_CACHE_DIRS', 0755 );
 }
 if ( ! defined( 'WP_ROCKET_LASTVERSION' ) ) {
-    define( 'WP_ROCKET_LASTVERSION', '2.8.18' );
+    define( 'WP_ROCKET_LASTVERSION', '2.8.21' );
 }
 
 require( WP_ROCKET_INC_PATH	. 'compat.php' );
@@ -95,16 +95,6 @@ function rocket_init()
     // Call defines, classes and functions
     require( WP_ROCKET_FUNCTIONS_PATH . 'options.php' );
 
-    if ( phpversion() >= '5.4' ) {
-        require( WP_ROCKET_VENDORS_PATH . 'CloudFlare/Exception/AuthenticationException.php' );
-        require( WP_ROCKET_VENDORS_PATH . 'CloudFlare/Exception/UnauthorizedException.php' );
-        require( WP_ROCKET_VENDORS_PATH . 'CloudFlare/Api.php' );
-        require( WP_ROCKET_VENDORS_PATH . 'CloudFlare/IPs.php' );
-        require( WP_ROCKET_VENDORS_PATH . 'CloudFlare/Zone.php' );
-        require( WP_ROCKET_VENDORS_PATH . 'CloudFlare/Zone/Cache.php' );
-        require( WP_ROCKET_VENDORS_PATH . 'CloudFlare/Zone/Settings.php' );
-        require( WP_ROCKET_FUNCTIONS_PATH	. 'cloudflare.php' );
-    }
     // Last constants
     define( 'WP_ROCKET_PLUGIN_NAME', get_rocket_option( 'wl_plugin_name', 'WP Rocket' ) );
     define( 'WP_ROCKET_PLUGIN_SLUG', sanitize_key( WP_ROCKET_PLUGIN_NAME ) );
@@ -139,7 +129,15 @@ function rocket_init()
         	require( WP_ROCKET_FRONT_PATH . 'cdn.php' );
         }
 
-		if ( 0 < (int) get_rocket_option( 'do_cloudflare' ) ) {
+		if ( 0 < (int) get_rocket_option( 'do_cloudflare' ) && phpversion() >= '5.4' ) {
+    		require( WP_ROCKET_VENDORS_PATH . 'CloudFlare/Exception/AuthenticationException.php' );
+            require( WP_ROCKET_VENDORS_PATH . 'CloudFlare/Exception/UnauthorizedException.php' );
+            require( WP_ROCKET_VENDORS_PATH . 'CloudFlare/Api.php' );
+            require( WP_ROCKET_VENDORS_PATH . 'CloudFlare/IPs.php' );
+            require( WP_ROCKET_VENDORS_PATH . 'CloudFlare/Zone.php' );
+            require( WP_ROCKET_VENDORS_PATH . 'CloudFlare/Zone/Cache.php' );
+            require( WP_ROCKET_VENDORS_PATH . 'CloudFlare/Zone/Settings.php' );
+            require( WP_ROCKET_FUNCTIONS_PATH	. 'cloudflare.php' );
 			require( WP_ROCKET_VENDORS_PATH	. 'ip_in_range.php' );
 			require( WP_ROCKET_COMMON_PATH 	. 'cloudflare.php' );
 		}

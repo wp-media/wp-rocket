@@ -101,6 +101,7 @@ $mobile_plugins = array(
 	'<a href="https://wordpress.org/plugins/wp-mobilizer/" target="_blank">WP-Mobilizer</a>',
 	'<a href="https://wordpress.org/plugins/wp-mobile-edition/" target="_blank">WP Mobile Edition</a>',
 	'<a href="https://wordpress.org/plugins/device-theme-switcher/" target="_blank">Device Theme Switcher</a>',
+	'<a href="https://wordpress.org/plugins/wp-mobile-detect/" target="_blank">WP Mobile Detect</a>',
 	'<a href="https://codecanyon.net/item/easy-social-share-buttons-for-wordpress/6394476" target="_blank">Easy Social Share Buttons</a>',
 );
 
