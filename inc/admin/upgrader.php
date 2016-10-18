@@ -309,7 +309,7 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
     if ( version_compare( $actual_version, '2.8.21', '<' ) && phpversion() >= '5.4' ) {
         $options = get_option( WP_ROCKET_SLUG );
         if ( 0 < $options['do_cloudflare'] && $options['cloudflare_domain'] !== '' ) {
-            require( WP_ROCKET_ADMIN_PATH . 'upgrader.5.4.php' );
+            require( WP_ROCKET_ADMIN_PATH . 'compat/cf-upgrader-5.4.php' );
         }
     }
 }

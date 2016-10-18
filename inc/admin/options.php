@@ -1092,7 +1092,7 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 
     // Update CloudFlare zone ID if CloudFlare domain was changed
     if ( isset( $newvalue['cloudflare_domain'], $oldvalue['cloudflare_domain'] ) && $newvalue['cloudflare_domain'] != $oldvalue['cloudflare_domain'] && phpversion() >= '5.4' ) {
-        require( WP_ROCKET_ADMIN_PATH . 'options.5.4.php' );
+        require( WP_ROCKET_ADMIN_PATH . 'compat/cf-options-5.4.php' );
     }
 
 	// Save old CloudFlare settings
