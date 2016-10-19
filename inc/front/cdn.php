@@ -138,10 +138,14 @@ function rocket_cdn_images( $html ) {
  * @param string $html HTML content of the page
  * @return string modified HTML content
  */
- add_filter( 'rocket_buffer', 'rocket_cdn_inline_styles', PHP_INT_MAX );
- function rocket_cdn_inline_styles( $html ) {
-     $zone = array(
-		'all',
+add_filter( 'rocket_buffer', 'rocket_cdn_inline_styles', PHP_INT_MAX );
+function rocket_cdn_inline_styles( $html ) {
+    if ( is_preview() || empty( $html ) ) {
+		return $html;
+	}
+
+    $zone = array(
+        'all',
 		'images',
 		'css_and_js',
 		'css'
@@ -161,6 +165,53 @@ function rocket_cdn_images( $html ) {
             }
         }
 	}
+
+    return $html;
+ }
+ 
+/* Replace URL by CDN for custom files
+ *
+ * @since 2.9
+ * @author Remy Perona
+ *
+ * @param string $html HTML content of the page
+ * @return string modified HTML content
+ */
+ add_filter( 'rocket_buffer', 'rocket_cdn_custom_files', PHP_INT_MAX );
+ function rocket_cdn_custom_files( $html ) {
+     if ( is_preview() || empty( $html ) ) {
+		return $html;
+	}
+
+    $zone = array(
+        'all',
+	);
+
+    if ( $cnames = get_rocket_cdn_cnames( $zone ) ) {
+        /*
+         * Filters the filetypes allowed for the CDN
+         *
+         * @since 2.9
+         * @author Remy Perona
+         *
+         * @param array Array of file types
+         */
+        $filetypes = apply_filters( 'rocket_cdn_custom_filetypes', array( 'mp3', 'mp4', 'pdf', 'doc', 'docx' ) );
+        $filetypes = implode( '|', $filetypes );
+
+        preg_match_all( '#<a[^>]+?href=[\'"]?([^\'"\s>]+.*\.(' . $filetypes . '))[\'"]?[^>]*>#i', $html, $matches );
+
+        if ( ( bool ) $matches ) {
+            $i = 0;
+            foreach( $matches[1] as $url ) {
+            	$url  = trim( $url, " \t\n\r\0\x0B\"'" );
+            	$url  = get_rocket_cdn_url( $url, $zone );
+            	$src  = str_replace( $matches[1][$i], $url, $matches[0][$i] );
+            	$html = str_replace( $matches[0][$i], $src, $html );
+            	$i++;
+            }
+        }
+    }
 
     return $html;
  }
