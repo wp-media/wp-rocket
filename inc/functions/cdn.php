@@ -6,7 +6,7 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
  *
  * @since 2.3
  *
- * @param string $zones CNAMES zones
+ * @param  string $zones CNAMES zones
  * @return array $hosts CNAMES hosts
  */
 function get_rocket_cnames_host( $zones = array( 'all' ) ) {
@@ -27,8 +27,8 @@ function get_rocket_cnames_host( $zones = array( 'all' ) ) {
  *
  * @since 2.1
  *
- * @param string $url The URL to parse
- * @param array  $zone (default: array( 'all' ))
+ * @param  string $url The URL to parse
+ * @param  array  $zone (default: array( 'all' ))
  * @return string $url The URL with one of CNAMES
  */
 function get_rocket_cdn_url( $url, $zone = array( 'all' ) )
@@ -46,7 +46,7 @@ function get_rocket_cdn_url( $url, $zone = array( 'all' ) )
 	
 	// Exclude rejected & external files from CDN
 	$rejected_files = get_rocket_cdn_reject_files();
-	if( ( ! empty( $rejected_files ) && preg_match( '#(' . $rejected_files . ')#', $path ) ) || ( ! empty( $scheme ) && $host != parse_url( home_url(), PHP_URL_HOST ) && ! in_array( $host, get_rocket_i18n_host() ) ) ) {
+	if ( ( ! empty( $rejected_files ) && preg_match( '#(' . $rejected_files . ')#', $path ) ) || ( ! empty( $scheme ) && $host != parse_url( home_url(), PHP_URL_HOST ) && ! in_array( $host, get_rocket_i18n_host() ) ) ) {
 		return $url;
 	}
 
@@ -59,7 +59,7 @@ function get_rocket_cdn_url( $url, $zone = array( 'all' ) )
 		}
 	}
 
-	$url = untrailingslashit( $cnames[(abs(crc32($path))%count($cnames))] ) . '/' . ltrim( $path, '/' ) . $query;
+	$url = untrailingslashit( $cnames[ ( abs( crc32( $path ) ) % count( $cnames ) ) ] ) . '/' . ltrim( $path, '/' ) . $query;
 	$url = rocket_add_url_protocol( $url );
 	return $url;
 }
@@ -68,9 +68,11 @@ function get_rocket_cdn_url( $url, $zone = array( 'all' ) )
  * Wrapper of get_rocket_cdn_url() and print result
  *
  * @since 2.1
+ *
+ * @param string $url The URL to parse
+ * @param array  $zone (default: array( 'all' )) 
  */
-function rocket_cdn_url( $url, $zone = array( 'all' ) )
-{
+function rocket_cdn_url( $url, $zone = array( 'all' ) ) {
 	echo get_rocket_cdn_url( $url, $zone );
 }
 
@@ -78,6 +80,9 @@ function rocket_cdn_url( $url, $zone = array( 'all' ) )
  * Apply CDN on CSS properties (background, background-image, @import, src:url (fonts))
  *
  * @since 2.6
+ *
+ * @param  string $buffer file content
+ * @return string modified file content
  */
 function rocket_cdn_css_properties( $buffer ) {
 	$zone = array( 
@@ -89,11 +94,11 @@ function rocket_cdn_css_properties( $buffer ) {
 	$cnames = get_rocket_cdn_cnames( $zone );
 	
 	/**
-	  * Allow a "force deactivation" link to be printed, use at your own risks
+	  * Filters the application of the CDN on CSS properties
 	  *
-	  * @since 2.0.0
+	  * @since 2.6
 	  *
-	  * @param bool true will print the link
+	  * @param bool true to apply CDN to properties, false otherwise
 	 */
 	$do_rocket_cdn_css_properties = apply_filters( 'do_rocket_cdn_css_properties', true );
 	
