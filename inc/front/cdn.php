@@ -5,6 +5,9 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
  * Replace URL by CDN of all thumbnails and smilies.
  *
  * @since 2.1
+ *
+ * @param string $url URL of the file to replace the domain with the CDN
+ * @return string modified URL
  */
 add_filter( 'template_directory_uri'	, 'rocket_cdn_file', PHP_INT_MAX );
 add_filter( 'wp_get_attachment_url'		, 'rocket_cdn_file', PHP_INT_MAX );
@@ -14,8 +17,7 @@ add_filter( 'stylesheet_uri'			, 'rocket_cdn_file', PHP_INT_MAX );
 add_filter( 'wp_minify_css_url'			, 'rocket_cdn_file', PHP_INT_MAX );
 add_filter( 'wp_minify_js_url'			, 'rocket_cdn_file', PHP_INT_MAX );
 add_filter( 'bwp_get_minify_src'		, 'rocket_cdn_file', PHP_INT_MAX );
-function rocket_cdn_file( $url )
-{
+function rocket_cdn_file( $url ) {
 	$ext = pathinfo( $url, PATHINFO_EXTENSION );
 
 	if ( is_admin() || $ext == 'php' ) {
@@ -60,8 +62,9 @@ function rocket_cdn_file( $url )
  *
  * @since WP 4.4
  * @since 2.6.14
+ * @author Remy Perona
  *
- * @param array $sources multidimensional array containing srcset images urls
+ * @param  array $sources multidimensional array containing srcset images urls
  * @return array $sources
  */
 if ( function_exists( 'wp_calculate_image_srcset' ) ) :
@@ -80,6 +83,9 @@ endif;
  * Replace URL by CDN of all images display in a post content or a widget text.
  *
  * @since 2.1
+ *
+ * @param  string $html HTML content to parse
+ * @return string modified HTML content
  */
 add_filter( 'the_content', 'rocket_cdn_images', PHP_INT_MAX );
 add_filter( 'widget_text', 'rocket_cdn_images', PHP_INT_MAX );
@@ -143,7 +149,7 @@ function rocket_cdn_images( $html ) {
  * @since 2.9
  * @author Remy Perona
  *
- * @param string $html HTML content of the page
+ * @param  string $html HTML content of the page
  * @return string modified HTML content
  */
 add_filter( 'rocket_buffer', 'rocket_cdn_inline_styles', PHP_INT_MAX );
@@ -175,7 +181,7 @@ function rocket_cdn_inline_styles( $html ) {
 	}
 
     return $html;
- }
+}
  
 /* Replace URL by CDN for custom files
  *
@@ -185,8 +191,8 @@ function rocket_cdn_inline_styles( $html ) {
  * @param string $html HTML content of the page
  * @return string modified HTML content
  */
- add_filter( 'rocket_buffer', 'rocket_cdn_custom_files', PHP_INT_MAX );
- function rocket_cdn_custom_files( $html ) {
+add_filter( 'rocket_buffer', 'rocket_cdn_custom_files', PHP_INT_MAX );
+function rocket_cdn_custom_files( $html ) {
      if ( is_preview() || empty( $html ) ) {
 		return $html;
 	}
@@ -222,17 +228,19 @@ function rocket_cdn_inline_styles( $html ) {
     }
 
     return $html;
- }
+}
 
 /*
  * Replace URL by CDN of all scripts and styles enqueues with WordPress functions
  *
  * @since 2.1
+ *
+ * @param  string $src URL of the file
+ * @return string modified URL
  */
 add_filter( 'style_loader_src', 'rocket_cdn_enqueue', PHP_INT_MAX );
 add_filter( 'script_loader_src', 'rocket_cdn_enqueue', PHP_INT_MAX );
-function rocket_cdn_enqueue( $src )
-{
+function rocket_cdn_enqueue( $src ) {
 	// Don't use CDN if in admin, in login page, in register page or in a post preview
 	if ( is_admin() || is_preview() || in_array( $GLOBALS['pagenow'], array( 'wp-login.php', 'wp-register.php' ) ) ) {
 		return $src;
