@@ -1,0 +1,5 @@
+# PHPUnit files
+.travis.yml export-ignore
+bin export-ignore
+phpunit.xml export-ignore
+tests export-ignore
