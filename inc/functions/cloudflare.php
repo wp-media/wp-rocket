@@ -192,6 +192,10 @@ function set_rocket_cloudflare_devmode( $mode ) {
             throw new Exception( $errors );
         }
 
+        if ( $value === 'on' ) {
+            wp_schedule_single_event(  time() + 3 * HOUR_IN_SECONDS, 'rocket_cron_deactivate_cloudflare_devmode' );
+        }
+
         return $value;
     } catch( Exception $e ) {
         return new WP_Error( 'cloudflare_dev_mode', $e->getMessage() );
@@ -430,4 +434,17 @@ function rocket_get_cloudflare_ips() {
     }
 
     return $cf_ips;
+}
+
+/*
+ * Automatically set CloudFlare development mode value to off after 3 hours to reflect CloudFlare behaviour
+ *
+ * @since 2.9
+ * @author Remy Perona
+ */
+add_action( 'rocket_cron_deactivate_cloudflare_devmode', 'do_rocket_deactivate_cloudflare_devmode' );
+function do_rocket_deactivate_cloudflare_devmode() {
+    $options                       = get_option( WP_ROCKET_SLUG );
+    $options['cloudflare_devmode'] = 'off';
+    update_option(  WP_ROCKET_SLUG, $options );
 }
