@@ -90,16 +90,17 @@ function rocket_field( $args ) {
 			    	
 			    	$value 			= esc_attr( $value );
 			    	$disabled 		= ( 'cloudflare_api_key' == $args['name'] && defined( 'WP_ROCKET_CF_API_KEY' ) ) ? ' disabled="disabled"' : $readonly;
+			    	$cf_valid_credentials = ( ! is_wp_error( rocket_cloudflare_valid_auth() ) ? false : true;
 			    	?>
                 
 			    		<legend class="screen-reader-text"><span><?php echo $args['label_screen']; ?></span></legend>
 			    		<label>
 			    		    <input<?php echo $disabled; ?> type="text" id="<?php echo $args['label_for']; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]" value="<?php echo $value; ?>" <?php echo $placeholder; ?><?php echo $readonly; ?>/> <?php echo $label; ?>
-			    		    <?php if ( ! is_wp_error( rocket_cloudflare_valid_auth() ) ) { ?>
+			    		    <?php if ( $cf_valid_credentials ) ) { ?>
     			    		    <span id="rocket-check-cloudflare-api-container" class="rocket-cloudflare-api-valid">
 								    <span class="dashicons dashicons-yes"></span> <?php _e( 'Your CloudFlare credentials are valid.', 'rocket' ); ?>
 								</span>
-			    		    <?php } elseif ( is_wp_error( rocket_cloudflare_valid_auth() ) && $value ) { ?>
+			    		    <?php } elseif ( $cf_valid_credentials ) && $value ) { ?>
     			    		    <span id="rocket-check-cloudflare-api-container">
 								    <span class="dashicons dashicons-no"></span> <?php _e( 'Your CloudFlare credentials are invalid!', 'rocket' ); ?>
                                     </span>
