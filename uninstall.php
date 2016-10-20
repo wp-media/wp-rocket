@@ -9,6 +9,7 @@ delete_site_transient( 'update_wprocket_response' );
 delete_transient( 'wp_rocket_settings' );
 delete_transient( 'rocket_check_licence_30' );
 delete_transient( 'rocket_check_licence_1' );
+delete_transient( 'rocket_cloudflare_ips' );
 
 // Delete WP Rocket options
 delete_option( 'wp_rocket_settings' );

@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 /**
  * Get a CloudFlare\Api instance
  *
- * @since 2.9
+ * @since 2.8.21
  * @author Remy Perona
  *
  * @return Object CloudFlare\Api instance if crendentials are set, WP_Error otherwise
@@ -23,6 +23,7 @@ function get_rocket_cloudflare_api_instance() {
 /**
  * Get a CloudFlare\Api instance & the zone_id corresponding to the domain
  *
+ * @since 2.8.21 Get the zone ID from the options
  * @since 2.8.18 Add try/catch to prevent fatal error Uncaugh Exception
  * @since 2.8.16 Update to CloudFlare API v4
  * @since 2.5
@@ -36,21 +37,15 @@ function get_rocket_cloudflare_instance() {
     }
     
     $cf_instance = ( object ) [ 'auth' => $cf_api_instance ];
+    $cf_zone_id  = get_rocket_option( 'cloudflare_zone_id', null );
 
-    try {
-        $zone_instance = new CloudFlare\Zone( $cf_instance->auth );
-	    $cf_domain     = get_rocket_option( 'cloudflare_domain', null );
-	    $zone          = $zone_instance->zones( $cf_domain );
-        
-        if ( ! isset( $zone->result[0]->id ) ) {
-            throw new Exception( __( 'The domain name is invalid', 'rocket' ) );
-        }
-
-        $cf_instance->zone_id = $zone->result[0]->id;         
-        return $cf_instance;
-    } catch ( Exception $e ) {
-        return new WP_Error( 'cloudflare_credentials_invalid', $e->getMessage() );
+    if ( ! isset( $cf_zone_id ) ) {
+        return new WP_Error( 'cloudflare_no_zone_id', __( 'No Zone ID set in the WP Rocket settings', 'rocket' ) );
     }
+    
+    $cf_instance = ( object ) [ 'auth' => $cf_api_instance, 'zone_id' => $cf_zone_id ];
+
+    return $cf_instance;
 }
 
 /**
@@ -201,7 +196,6 @@ function set_rocket_cloudflare_devmode( $mode ) {
     } catch( Exception $e ) {
         return new WP_Error( 'cloudflare_dev_mode', $e->getMessage() );
     }
-	
 }
 
 /**
@@ -235,7 +229,6 @@ function set_rocket_cloudflare_cache_level( $mode ) {
     } catch( Exception $e ) {
         return new WP_Error( 'cloudflare_cache_level', $e->getMessage() );
     }
-	
 }
 
 /**
@@ -275,7 +268,6 @@ function set_rocket_cloudflare_minify( $mode ) {
     } catch( Exception $e ) {
         return new WP_Error( 'cloudflare_minification', $e->getMessage() );
     }
-	
 }
 
 /**
@@ -340,7 +332,7 @@ function set_rocket_cloudflare_browser_cache_ttl( $mode ) {
         return $mode;
     } catch( Exception $e ) {
         return new WP_Error( 'cloudflare_browser_cache', $e->getMessage() );
-    }	
+    }
 }
 
 /**
@@ -375,13 +367,15 @@ function rocket_purge_cloudflare() {
     } catch( Exception $e ) {
         return new WP_Error( 'cloudflare_purge_failed', $e->getMessage() );
     }
-	
 }
 
 /**
  * Get CloudFlare IPs.
  *
+ * @since 2.8.21 Save IPs in a transient to prevent calling the API everytime
  * @since 2.8.16
+ *
+ * @author Remy Perona
  *
  * @return Object Result of API request if successful, WP_Error otherwise
  */
@@ -391,10 +385,49 @@ function rocket_get_cloudflare_ips() {
 		return $cf_instance;
 	}
 
-    try {
-       $cf_ips_instance = new CloudFlare\IPs( $cf_instance );
-       return $cf_ips_instance->ips();
-    } catch( Exception $e ) {
-        return new WP_Error( 'Error', $e->getMessage() );
+    if ( false === ( $cf_ips = get_transient( 'rocket_cloudflare_ips' ) ) ) {
+        try {
+            $cf_ips_instance = new CloudFlare\IPs( $cf_instance );
+            $cf_ips = $cf_ips_instance->ips();
+
+            if ( isset( $cf_ips->success ) && $cf_ips->success ) {
+                set_transient(  'rocket_cloudflare_ips', $cf_ips, 2 * WEEK_IN_SECONDS );
+            } else {
+                throw new Exception( 'Error connecting to CloudFlare' );
+            }
+        } catch ( Exception $e ) {
+            $cf_ips = ( object ) [ 'success' => true, 'result' => ( object ) [] ];
+            $cf_ips->result->ipv4_cidrs = array(
+                '103.21.244.0/22',
+                '103.22.200.0/22',
+                '103.31.4.0/22',
+                '104.16.0.0/12',
+                '108.162.192.0/18',
+                '131.0.72.0/22',
+                '141.101.64.0/18',
+                '162.158.0.0/15',
+                '172.64.0.0/13',
+                '173.245.48.0/20',
+                '188.114.96.0/20',
+                '190.93.240.0/20',
+                '197.234.240.0/22',
+                '198.41.128.0/17',
+                '199.27.128.0/21',
+            );
+
+            $cf_ips->result->ipv6_cidrs = array(
+                '2400:cb00::/32',
+                '2405:8100::/32',
+                '2405:b500::/32',
+                '2606:4700::/32',
+                '2803:f800::/32',
+                '2c0f:f248::/32',
+                '2a06:98c0::/29',
+            );
+
+            return $cf_ips;
+        }
     }
+
+    return $cf_ips;
 }
