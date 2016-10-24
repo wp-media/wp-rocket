@@ -133,7 +133,6 @@ add_settings_field(
 				0 => __( 'Off', 'rocket' ),
 				1 => __( 'On', 'rocket' )
 			),
-			'readonly'     => $cf_readonly,
 		),
 		array(
 			'type' 		   => 'helper_description',
