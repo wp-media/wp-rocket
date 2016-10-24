@@ -90,7 +90,10 @@ function rocket_field( $args ) {
 			    	
 			    	$value 			= esc_attr( $value );
 			    	$disabled 		= ( 'cloudflare_api_key' == $args['name'] && defined( 'WP_ROCKET_CF_API_KEY' ) ) ? ' disabled="disabled"' : $readonly;
-			    	$cf_valid_credentials = ( is_wp_error( rocket_cloudflare_valid_auth() ) ) ? false : true;
+			    	$cf_valid_credentials = false;
+			    	if ( function_exists( 'rocket_cloudflare_valid_auth' ) ) {
+    			    	$cf_valid_credentials = ( is_wp_error( rocket_cloudflare_valid_auth() ) ) ? false : true;
+			    	}
 			    	?>
                 
 			    		<legend class="screen-reader-text"><span><?php echo $args['label_screen']; ?></span></legend>
@@ -1018,8 +1021,10 @@ function rocket_after_save_options( $oldvalue, $value ) {
     }
 		
 	// Update CloudFlare Development Mode
-	if ( ! empty( $_POST ) && ( $oldvalue['cloudflare_devmode'] != $value['cloudflare_devmode'] ) ) {
-		$cloudflare_dev_mode_return = set_rocket_cloudflare_devmode( $value['cloudflare_devmode'] );
+	$cloudflare_update_result = array();
+
+	if ( ! empty( $_POST ) && isset( $oldvalue['cloudflare_devmode'], $value['cloudflare_devmode'] ) && $oldvalue['cloudflare_devmode'] != $value['cloudflare_devmode'] ) {
+        $cloudflare_dev_mode_return = set_rocket_cloudflare_devmode( $value['cloudflare_devmode'] );
 
         if ( is_wp_error( $cloudflare_dev_mode_return ) ) {
             $cloudflare_update_result[] = array( 'result' => 'error', 'message' => sprintf( __( 'CloudFlare development mode error: %s', 'rocket' ), $cloudflare_dev_mode_return->get_error_message() ) );
@@ -1029,47 +1034,46 @@ function rocket_after_save_options( $oldvalue, $value ) {
 	}
 	
 	// Update CloudFlare settings
-	if ( ! empty( $_POST ) && ( $oldvalue['cloudflare_auto_settings'] != $value['cloudflare_auto_settings'] ) ) {		
-		$cf_old_settings = explode( ',', $value['cloudflare_old_settings'] );
-		
-		// Set Cache Level to Aggressive 
-		$cf_cache_level = ( isset( $cf_old_settings[0] ) && $value['cloudflare_auto_settings'] == 0 ) ? $cf_old_settings[0] : 'aggressive';
-		$cf_cache_level_return = set_rocket_cloudflare_cache_level( $cf_cache_level );
+	if ( ! empty( $_POST ) && isset( $oldvalue['cloudflare_auto_settings'], $value['cloudflare_auto_settings'] ) && $oldvalue['cloudflare_auto_settings'] != $value['cloudflare_auto_settings'] ) {
+        $cf_old_settings          = explode( ',', $value['cloudflare_old_settings'] );
+        // Set Cache Level to Aggressive 
+        $cf_cache_level = ( isset( $cf_old_settings[0] ) && $value['cloudflare_auto_settings'] == 0 ) ? $cf_old_settings[0] : 'aggressive';
+        $cf_cache_level_return = set_rocket_cloudflare_cache_level( $cf_cache_level );
 
         if ( is_wp_error( $cf_cache_level_return ) ) {
             $cloudflare_update_result[] = array( 'result' => 'error', 'message' => sprintf( __( 'CloudFlare cache level error: %s', 'rocket' ), $cf_cache_level_return->get_error_message() ) );
         } else {
             $cloudflare_update_result[] = array( 'result' => 'success', 'message' => sprintf( __( 'CloudFlare cache level set to %s', 'rocket' ), $cf_cache_level_return ) );
         }
-		
-		// Active Minification for HTML, CSS & JS
-		$cf_minify = ( isset( $cf_old_settings[1] ) && $value['cloudflare_auto_settings'] == 0 ) ? $cf_old_settings[1] : 'on';
-		$cf_minify_return = set_rocket_cloudflare_minify( $cf_minify );
+
+        // Active Minification for HTML, CSS & JS
+        $cf_minify        = ( isset( $cf_old_settings[1] ) && $value['cloudflare_auto_settings'] == 0 ) ? $cf_old_settings[1] : 'on';
+        $cf_minify_return = set_rocket_cloudflare_minify( $cf_minify );
 
         if ( is_wp_error( $cf_minify_return ) ) {
             $cloudflare_update_result[] = array( 'result' => 'error', 'message' => sprintf( __( 'CloudFlare minification error: %s', 'rocket' ), $cf_minify_return->get_error_message() ) );
         } else {
             $cloudflare_update_result[] = array( 'result' => 'success', 'message' => sprintf( __( 'CloudFlare minification %s', 'rocket' ), $cf_minify_return ) );
         }
-		
-		// Deactivate Rocket Loader to prevent conflicts
-		$cf_rocket_loader = ( isset( $cf_old_settings[2] ) && $value['cloudflare_auto_settings'] == 0 ) ? $cf_old_settings[2] : 'off';
-		$cf_rocket_loader_return = set_rocket_cloudflare_rocket_loader( $cf_rocket_loader );
-		
-		if ( is_wp_error( $cf_rocket_loader_return ) ) {
+
+        // Deactivate Rocket Loader to prevent conflicts
+        $cf_rocket_loader = ( isset( $cf_old_settings[2] ) && $value['cloudflare_auto_settings'] == 0 ) ? $cf_old_settings[2] : 'off';
+        $cf_rocket_loader_return = set_rocket_cloudflare_rocket_loader( $cf_rocket_loader );
+
+        if ( is_wp_error( $cf_rocket_loader_return ) ) {
             $cloudflare_update_result[] = array( 'result' => 'error', 'message' => sprintf( __( 'CloudFlare rocket loader error: %s', 'rocket' ), $cf_rocket_loader_return->get_error_message() ) );
         } else {
             $cloudflare_update_result[] = array( 'result' => 'success', 'message' => sprintf( __( 'CloudFlare rocket loader %s', 'rocket' ), $cf_rocket_loader_return ) );
         }
 
         // Set Browser cache to 1 month
-		$cf_browser_cache_ttl = ( isset( $cf_old_settings[3] ) && $value['cloudflare_auto_settings'] == 0 ) ? $cf_old_settings[3] : '2678400';
-		$cf_browser_cache_return = set_rocket_cloudflare_browser_cache_ttl( $cf_browser_cache_ttl );
-		
-		if ( is_wp_error( $cf_browser_cache_return ) ) {
+        $cf_browser_cache_ttl = ( isset( $cf_old_settings[3] ) && $value['cloudflare_auto_settings'] == 0 ) ? $cf_old_settings[3] : '2678400';
+        $cf_browser_cache_return = set_rocket_cloudflare_browser_cache_ttl( $cf_browser_cache_ttl );
+
+        if ( is_wp_error( $cf_browser_cache_return ) ) {
             $cloudflare_update_result[] = array( 'result' => 'error', 'message' => sprintf( __( 'CloudFlare browser cache error: %s', 'rocket' ), $cf_browser_cache_return->get_error_message() ) );
         } else {
-            $cloudflare_update_result[] = array( 'result' => 'success', 'message' => sprintf( __( 'CloudFlare browser cache set to %s', 'rocket' ), $cf_browser_cache_return ) );
+            $cloudflare_update_result[] = array( 'result' => 'success', 'message' => sprintf( __( 'CloudFlare browser cache set to %s seconds', 'rocket' ), $cf_browser_cache_return ) );
         }
 	}
 
