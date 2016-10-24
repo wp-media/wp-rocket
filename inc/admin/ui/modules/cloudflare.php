@@ -36,7 +36,16 @@ add_settings_field(
 
 endif;
 
-$cf_readonly   = ( is_wp_error( rocket_cloudflare_valid_auth() ) ) ? 'readonly' : '';
+$cf_readonly = '';
+$cf_zones    = array();
+
+if ( function_exists( 'rocket_cloudflare_valid_auth' ) ) {
+    $cf_readonly   = ( is_wp_error( rocket_cloudflare_valid_auth() ) ) ? 'readonly' : '';
+}
+
+if ( function_exists( 'get_rocket_cloudflare_zones' ) ) {
+    $cf_zones = get_rocket_cloudflare_zones();
+}
 
 add_settings_field(
 	'rocket_cloudflare_domain',
@@ -49,7 +58,7 @@ add_settings_field(
 			'type'         => 'select',
 			'label_for'    => 'cloudflare_domain',
 			'label_screen' => __( 'Domain', 'rocket' ),
-			'options'      => get_rocket_cloudflare_zones(),
+			'options'      => $cf_zones,
 			'readonly'     => $cf_readonly,
 		)
 	)
