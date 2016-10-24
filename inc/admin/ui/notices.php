@@ -578,17 +578,27 @@ function rocket_cloudflare_update_settings() {
 	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) && get_transient( $current_user->ID . '_cloudflare_update_settings' ) && $screen->id === $wp_rocket_screen_id ) {
 
         $notices = get_transient( $current_user->ID . '_cloudflare_update_settings' );
+        $errors = '';
+        $success = '';
 		delete_transient( $current_user->ID . '_cloudflare_update_settings' );
 		foreach ( $notices as $notice ) {
     		if ( $notice['result'] == 'error' ) {
-                $notice_result = 'notice-error';
+                $errors .= $notice['message'] . '<br>';
             } else if ( $notice['result'] == 'success' ) {
-                $notice_result = 'notice-success';
-            } ?>
-            <div class="notice <?php echo $notice_result; ?> is-dismissible">
-                <p><?php echo $notice['message']; ?></p>
-            </div>
-        <?php
-		}
+                $success .= $notice['message'] . '<br>';
+            }
+        }
+
+        if ( ! empty( $success ) ) { ?>
+        <div class="notice notice-success is-dismissible">
+            <p><?php echo $success; ?></p>
+        </div>
+        <?php }
+
+        if ( ! empty( $errors ) ) { ?>
+        <div class="notice notice-error is-dismissible">
+            <p><?php echo $errors; ?></p>
+        </div>
+        <?php }
 	}
 }
