@@ -1092,17 +1092,7 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 
     // Update CloudFlare zone ID if CloudFlare domain was changed
     if ( isset( $newvalue['cloudflare_domain'], $oldvalue['cloudflare_domain'] ) && $newvalue['cloudflare_domain'] != $oldvalue['cloudflare_domain'] && phpversion() >= '5.4' ) {
-        $cf_instance = get_rocket_cloudflare_api_instance();
-        if ( ! is_wp_error( $cf_instance ) ) {
-            try {
-                $zone_instance = new CloudFlare\Zone( $cf_instance );
-            	$zone          = $zone_instance->zones( $newvalue['cloudflare_domain'] );
-        
-                if ( isset( $zone->result[0]->id ) ) {
-                    $newvalue['cloudflare_zone_id'] = $zone->result[0]->id;
-                }
-            } catch ( Exception $e ) {}
-        }
+        require( WP_ROCKET_ADMIN_PATH . 'compat/cf-options-5.4.php' );
     }
 
 	// Save old CloudFlare settings
