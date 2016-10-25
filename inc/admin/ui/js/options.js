@@ -102,7 +102,11 @@ jQuery( document ).ready( function($){
 	$( 'h2.nav-tab-wrapper .nav-tab' ).on( 'click', function(e){
 		e.preventDefault();
 		tab = $(this).attr( 'href' );
-		if( sup_html5st ) sessionStorage.setItem( 'rocket_tab', tab );
+		if( sup_html5st ) {
+    		try {
+                sessionStorage.setItem( 'rocket_tab', tab );
+            } catch( e ) {}
+        }
 		$('#rockettabs .rkt-tab').hide();
 		$('h2.nav-tab-wrapper .nav-tab').removeClass('nav-tab-active');
 		$('h2.nav-tab-wrapper a[href="'+tab+'"]').addClass('nav-tab-active');
@@ -112,7 +116,11 @@ jQuery( document ).ready( function($){
 		$('h2.nav-tab-wrapper a:first').addClass('nav-tab-active');
 		$('#tab_apikey').show();
 		$('#tab_basic').show();
-		if( sup_html5st ) sessionStorage.setItem( 'rocket_tab', null );
+		if( sup_html5st ) {
+            try {
+                sessionStorage.setItem( 'rocket_tab', null );
+            } catch( e ) {}
+        }
 	}
 
 	// Sweet Alert for CSS & JS minification
