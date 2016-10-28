@@ -4,31 +4,32 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 /**
  * Create a cache busting file with the version in the filename
  *
- * @since 2.9 Rework the function for better cache busting
- * @since 2.0 Code improvment: "ver=$wp_version" can be at any place now
- * @since 1.1.6
+ * @since 2.9
+ * @author Remy Perona
  *
  * @param string $src CSS/JS file URL
  * @return string updated CSS/JS file URL
  */
-add_filter( 'script_loader_src', 'rocket_delete_script_wp_version', 15 );
-add_filter( 'style_loader_src', 'rocket_delete_script_wp_version', 15 );
-function rocket_delete_script_wp_version( $src ) {
+add_filter( 'script_loader_src', 'rocket_browser_cache_busting', 15 );
+add_filter( 'style_loader_src', 'rocket_browser_cache_busting', 15 );
+function rocket_browser_cache_busting( $src ) {
 	global $pagenow;
 	
 	if ( 'wp-login.php' == $pagenow ) {
     	return $src;
     }
 
-    $full_src = rocket_add_url_protocol( $src );
-    $new_path = str_replace( home_url( '/' ), '', $full_src );
-    $new_path = str_replace( '/', '-', $new_path );
-    $new_path = preg_replace( '/\.(js|css)\?ver=(.+)$/', '-$2.$1', rtrim( $new_path ) );
+    $full_src               = rocket_add_url_protocol( $src );
+    $relative_src_path      = str_replace( home_url( '/' ), '', $full_src );
+    $full_src_path          = ABSPATH . dirname( $relative_src_path );
+    $cache_busting_filename = preg_replace( '/\.(js|css)\?ver=(.+)$/', '-$2.$1', rtrim( str_replace( '/', '-', $relative_src_path ) ) );
+    
+    $blog_id                = get_current_blog_id();
+    $cache_busting_path     = WP_ROCKET_CACHE_BUSTING_PATH . $blog_id . '/';
+    $cache_busting_filepath = $cache_busting_path . $cache_busting_filename;
+    $cache_busting_url      = WP_ROCKET_CACHE_BUSTING_URL . $blog_id . '/' . $cache_busting_filename;
 
-    $cache_busting_path = WP_ROCKET_CACHE_BUSTING_PATH . $new_path;
-    $cache_busting_url  = WP_ROCKET_CACHE_BUSTING_URL . $new_path;
-
-    if ( file_exists( $cache_busting_path ) && is_readable( $cache_busting_path ) ) {
+    if ( file_exists( $cache_busting_filepath ) && is_readable( $cache_busting_filepath ) ) {
     	return $cache_busting_url;
     }
 
@@ -38,7 +39,21 @@ function rocket_delete_script_wp_version( $src ) {
         return $src;
     }
 
-    rocket_put_content( $cache_busting_path, $response['body'] );
+    if ( current_filter() == 'style_loader_src' ) {
+        if ( ! class_exists( 'Minify_CSS_UriRewriter' ) ) {
+            require( WP_ROCKET_PATH . 'min/lib/Minify/CSS/UriRewriter.php' );
+        }
+        // Rewrite import/url in CSS content to add the absolute path to the file
+        $file_content = Minify_CSS_UriRewriter::rewrite( $response['body'], $full_src_path );
+    } else {
+        $file_content = $response['body'];
+    }
+
+    if ( ! is_dir( $cache_busting_path ) ) {
+        rocket_mkdir_p( $cache_busting_path );
+    }
+
+    rocket_put_content( $cache_busting_filepath, $file_content );
 
     return $cache_busting_url;
 }
