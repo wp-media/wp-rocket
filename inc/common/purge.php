@@ -398,6 +398,9 @@ function __rocket_purge_cache() {
 				// Remove all minify cache files
 				rocket_clean_minify();
 
+                // Remove cache busting files
+                rocket_clean_cache_busting();
+
 				// Generate a new random key for minify cache file
 				$options = get_option( WP_ROCKET_SLUG );
 				$options['minify_css_key'] = create_rocket_uniqid();
