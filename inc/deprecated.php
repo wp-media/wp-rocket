@@ -277,3 +277,18 @@ function set_rocket_cloudflare_cache_lvl( $cf_cache_level ) {
     return set_rocket_cloudflare_cache_level( $cf_cache_level );
 }
 endif;
+
+if ( ! function_exists( 'rocket_delete_script_wp_version' ) ) :
+/**
+ * Used to remove version query string in CSS/JS URL
+ *
+ * @since 1.1.6
+ * @deprecated 2.9
+ * @deprecated Use rocket_browser_cache_busting()
+ *
+ */
+function rocket_delete_script_wp_version( $src ) {
+    _deprecated_function( __FUNCTION__, '2.9', 'rocket_browser_cache_busting()' );
+    return rocket_browser_cache_busting( $src );
+}
+endif;
