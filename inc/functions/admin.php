@@ -219,7 +219,7 @@ function rocket_sanitize_key( $key ) {
  * @since 2.6.4
  */
 function rocket_sanitize_ua( $ua ) {
-	$ua = preg_replace( '/[^a-z0-9._\-\/\s\x5c]/i', '', $ua );
+	$ua = preg_replace( '/[^a-z0-9._\(\)\*\-\/\s\x5c]/i', '', $ua );
 	return $ua;
 }
 
