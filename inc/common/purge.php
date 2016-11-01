@@ -127,12 +127,12 @@ function rocket_clean_post( $post_id ) {
     $permalink = str_replace( array( '%postname%', '%pagename%' ), $permalink_structure[1], $permalink_structure[0] );
 
 	// Add permalink
-	if( parse_url( $permalink, PHP_URL_PATH ) != '/' ) {
+	if ( parse_url( $permalink, PHP_URL_PATH ) != '/' ) {
 		array_push( $purge_urls, $permalink );	
 	}
 	
 	// Add Posts page
-	if( 'post' == $post->post_type && (int) get_option( 'page_for_posts' ) > 0 ) {
+	if ( 'post' == $post->post_type && (int) get_option( 'page_for_posts' ) > 0 ) {
 		array_push( $purge_urls, get_permalink( get_option( 'page_for_posts' ) ) );
 	}
 	
@@ -201,6 +201,14 @@ function rocket_clean_post( $post_id ) {
 	// Add the author page
 	$purge_author = array( get_author_posts_url( $post->post_author ) );
 	$purge_urls = array_merge( $purge_urls, $purge_author );
+
+    // Add all parents
+	$parents = get_post_ancestors( $post_id );
+	if ( ( bool ) $parents ) {
+		foreach( $parents as $parent_id ) {
+			array_push( $purge_urls, get_permalink( $parent_id ) );
+		}
+	}
 	
 	/**
 	 * Fires before cache files related with the post are deleted
@@ -228,14 +236,6 @@ function rocket_clean_post( $post_id ) {
 
     // Purge home feeds (blog & comments)
     rocket_clean_home_feeds();
-
-	// Purge all parents
-	$parents = get_post_ancestors( $post_id );
-	if ( count( $parents ) ) {
-		foreach( $parents as $parent_id ) {
-			rocket_clean_post( $parent_id );
-		}
-	}
 
 	/**
 	 * Fires after cache files related with the post are deleted
