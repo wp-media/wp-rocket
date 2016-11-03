@@ -233,6 +233,7 @@ function rocket_cdn_custom_files( $html ) {
 /*
  * Replace URL by CDN of all scripts and styles enqueues with WordPress functions
  *
+ * @since 2.9 Only add protocol if $src is an absolute url
  * @since 2.1
  *
  * @param  string $src URL of the file
@@ -246,7 +247,10 @@ function rocket_cdn_enqueue( $src ) {
 		return $src;
 	}
 
-	$src  = rocket_add_url_protocol( $src );
+    if ( parse_url( $src, PHP_URL_HOST ) !== '' ) {
+        $src  = rocket_add_url_protocol( $src );
+    }
+
 	$zone = array( 'all', 'css_and_js' );
 
 	// Add only CSS zone
