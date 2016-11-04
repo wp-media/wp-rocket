@@ -980,6 +980,12 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		rocket_clean_minify( 'js' );
 	}
 
+    // Purge all cache busting files
+    if ( ! empty( $_POST ) && ( $oldvalue['remove_query_strings'] != $value['remove_query_strings'] ) ) {
+        rocket_clean_cache_busting();
+        run_rocket_preload_cache( 'cache-preload' );
+    }
+
     /*
      * Performs the database optimization when settings are saved with the "save and optimize" submit button"
      */
