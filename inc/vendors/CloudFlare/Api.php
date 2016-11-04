@@ -167,6 +167,11 @@ class Api
      */
     protected function request($path, array $data = null, $method = null)
     {
+        // Check if php-curl is enabled
+        if ( ! function_exists( 'curl_init' ) || ! function_exists( 'curl_exec' ) ) {
+			return false;
+		}
+		
         if (!isset($this->email, $this->auth_key) || false === filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
             throw new AuthenticationException('Authentication information must be provided');
         }
