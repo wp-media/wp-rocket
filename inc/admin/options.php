@@ -592,6 +592,11 @@ function rocket_settings_callback( $inputs ) {
 	$inputs['purge_cron_interval'] = isset( $inputs['purge_cron_interval'] ) ? (int)$inputs['purge_cron_interval'] : get_rocket_option( 'purge_cron_interval' );
 	$inputs['purge_cron_unit'] = isset( $inputs['purge_cron_unit'] ) ? $inputs['purge_cron_unit'] : get_rocket_option( 'purge_cron_unit' );
 
+    /*
+	 * Option : Minification CSS & JS
+	 */
+	$inputs['remove_query_strings'] = ! empty( $inputs['remove_query_strings'] ) ? 1 : 0;
+
 	/*
 	 * Option : Prefetch DNS requests
 	 */
