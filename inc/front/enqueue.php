@@ -14,12 +14,21 @@ add_filter( 'script_loader_src', 'rocket_browser_cache_busting', 15 );
 add_filter( 'style_loader_src', 'rocket_browser_cache_busting', 15 );
 function rocket_browser_cache_busting( $src ) {
 	global $pagenow;
+
+    if ( ! get_rocket_option( 'remove_query_strings' ) ) {
+        return $src;
+    }
 	
 	if ( 'wp-login.php' == $pagenow ) {
     	return $src;
     }
 
-    $full_src               = rocket_add_url_protocol( $src );
+    $full_src = rocket_add_url_protocol( $src );
+
+    if ( parse_url( $full_src, PHP_URL_HOST ) !== '' && strpos( $full_src, home_url() ) === false ) {
+        return $src;
+    } 
+    
     $relative_src_path      = str_replace( home_url( '/' ), '', $full_src );
     $full_src_path          = ABSPATH . dirname( $relative_src_path );
     $cache_busting_filename = preg_replace( '/\.(js|css)\?ver=(.+)$/', '-$2.$1', rtrim( str_replace( '/', '-', $relative_src_path ) ) );
