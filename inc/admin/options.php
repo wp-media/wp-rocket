@@ -988,7 +988,15 @@ function rocket_after_save_options( $oldvalue, $value ) {
     // Purge all cache busting files
     if ( ! empty( $_POST ) && ( $oldvalue['remove_query_strings'] != $value['remove_query_strings'] ) ) {
         rocket_clean_cache_busting();
-        run_rocket_preload_cache( 'cache-preload' );
+        wp_remote_get(
+            home_url(),
+            array(
+                'timeout'    => 0.01,
+                'blocking'   => false,
+                'user-agent' => 'wprocketbot',
+                'sslverify'  => false
+            )
+        );
     }
 
     /*
