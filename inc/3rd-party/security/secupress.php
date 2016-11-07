@@ -1,44 +1,66 @@
 <?php 
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
-if ( defined( 'SECUPRESS_VERSION' ) ) :
+add_action( 'update_option_secupress_users-login_settings', '__rocket_after_update_single_options', 10, 2 );
 
-    add_filter( 'rocket_cache_reject_uri', '__rocket_exclude_secupress_move_login' );
-    add_action( 'update_option_secupress_users-login_settings', '__rocket_after_update_single_options', 10, 2 );
 
-endif;
+add_filter( 'rocket_cache_reject_uri', '__rocket_exclude_secupress_move_login' );
 
 function __rocket_exclude_secupress_move_login( $urls ) {
-    if ( get_option( 'secupress_active_submodule_move-login' ) ) {
-        $secupress_move_login = get_option( 'secupress_users-login_settings' );
-        $urls[] = $secupress_move_login['move-login_slug-login'];
-        $urls[] = $secupress_move_login['move-login_slug-logout'];
-        $urls[] = $secupress_move_login['move-login_slug-register'];
-        $urls[] = $secupress_move_login['move-login_slug-lostpassword'];
-        $urls[] = $secupress_move_login['move-login_slug-resetpass'];
-    }
+	if ( ! function_exists( 'secupress_move_login_get_slugs' ) ) {
+		return $urls;
+	}
 
-    return $urls;
+	$bases = secupress_get_rewrite_bases();
+	$slugs = secupress_move_login_get_slugs();
+
+	foreach ( $slugs as $slug ) {
+		$urls[] = $bases['base'] . ltrim( $bases['site_from'], '/' ) . $slug . '/?';
+	}
+
+	return $urls;
 }
 
-add_action( 'activate_secupress/secupress.php', '__rocket_activate_secupress', 11 );
-function __rocket_activate_secupress() {
-    add_filter( 'rocket_cache_reject_uri', '__rocket_exclude_secupress_move_login' );
 
-    // Update the WP Rocket rules on the .htaccess
-    flush_rocket_htaccess();
+add_action( 'secupress.plugins.activation', '__rocket_maybe_activate_secupress', 10001 );
 
-    // Regenerate the config file
-    rocket_generate_config_file();
+function __rocket_maybe_activate_secupress() {
+	if ( function_exists( 'secupress_move_login_get_slugs' ) ) {
+		__rocket_activate_secupress();
+	}
 }
 
-add_action( 'deactivate_secupress/secupress.php', '__rocket_deactivate_secupress', 11 );
+
+add_action( 'secupress.plugin.move_login.activate', '__rocket_activate_secupress' );
+
+function __rocket_maybe_activate_secupress() {
+	add_filter( 'rocket_cache_reject_uri', '__rocket_exclude_secupress_move_login' );
+
+	// Update the WP Rocket rules on the .htaccess.
+	flush_rocket_htaccess();
+
+	// Regenerate the config file.
+	rocket_generate_config_file();
+}
+
+
+add_action( 'secupress.deactivation', '__rocket_maybe_deactivate_secupress', 10001 );
+
+function __rocket_maybe_deactivate_secupress() {
+	if ( function_exists( 'secupress_move_login_get_slugs' ) ) {
+		__rocket_deactivate_secupress();
+	}
+}
+
+
+add_action( 'secupress.plugin.move_login.deactivate', '__rocket_deactivate_secupress' );
+
 function __rocket_deactivate_secupress() {
-    remove_filter( 'rocket_cache_reject_uri', '__rocket_exclude_secupress_move_login' );
+	remove_filter( 'rocket_cache_reject_uri', '__rocket_exclude_secupress_move_login' );
 
-    // Update the WP Rocket rules on the .htaccess
-    flush_rocket_htaccess();
+	// Update the WP Rocket rules on the .htaccess.
+	flush_rocket_htaccess();
 
-    // Regenerate the config file
-    rocket_generate_config_file();
+	// Regenerate the config file.
+	rocket_generate_config_file();
 }
