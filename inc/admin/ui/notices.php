@@ -451,6 +451,35 @@ function rocket_warning_minify_cache_dir_permissions() {
 }
 
 /**
+ * This warning is displayed when the busting cache dir isn't writeable
+ *
+ * @since 2.9
+ * @author Remy Perona
+ */
+add_action( 'admin_notices', 'rocket_warning_busting_cache_dir_permissions' );
+function rocket_warning_busting_cache_dir_permissions() {
+	/** This filter is documented in inc/admin-bar.php */
+	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
+	    && ( ! is_writable( WP_ROCKET_CACHE_BUSTING_PATH ) )
+	    && ( get_rocket_option( 'remove_query_strings', false ) )
+	    && rocket_valid_key() ) {
+
+		$boxes = get_user_meta( $GLOBALS['current_user']->ID, 'rocket_boxes', true );
+
+		if ( ! in_array( __FUNCTION__, (array) $boxes ) ) { ?>
+
+			<div class="error">
+				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>" class="rkt-cross"><div class="dashicons dashicons-no"></div></a>
+				<p><b><?php echo WP_ROCKET_PLUGIN_NAME; ?></b>: <?php printf( __('Be careful, you don\'t have <a href="%1$s" target="_blank">writing permissions</a> on <b>%3$s</b> cache busting folder (<code>%2$s</code>). To make <b>%3$s</b> work properly, please CHMOD <code>755</code> or <code>775</code> or <code>777</code> this folder.', 'rocket' ), 'http://codex.wordpress.org/Changing_File_Permissions', trim( str_replace( ABSPATH, '', WP_ROCKET_CACHE_BUSTING_PATH ), '/' ), WP_ROCKET_PLUGIN_NAME ); ?></p>
+			</div>
+
+		<?php
+		}
+
+	}
+}
+
+/**
  * This thankful message is displayed when the site has been added
  *
  * @since 2.2

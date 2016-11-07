@@ -625,6 +625,11 @@ function rocket_settings_callback( $inputs ) {
 	$inputs['purge_cron_interval'] = isset( $inputs['purge_cron_interval'] ) ? (int)$inputs['purge_cron_interval'] : get_rocket_option( 'purge_cron_interval' );
 	$inputs['purge_cron_unit'] = isset( $inputs['purge_cron_unit'] ) ? $inputs['purge_cron_unit'] : get_rocket_option( 'purge_cron_unit' );
 
+    /*
+	 * Option : Minification CSS & JS
+	 */
+	$inputs['remove_query_strings'] = ! empty( $inputs['remove_query_strings'] ) ? 1 : 0;
+
 	/*
 	 * Option : Prefetch DNS requests
 	 */
@@ -1012,6 +1017,20 @@ function rocket_after_save_options( $oldvalue, $value ) {
 	if ( ! empty( $_POST ) && ( $oldvalue['minify_js'] != $value['minify_js'] || $oldvalue['exclude_js']  != $value['exclude_js'] ) || ( isset( $oldvalue['cdn'] ) && ! isset( $value['cdn'] ) || ! isset( $oldvalue['cdn'] ) && isset( $value['cdn'] ) ) ) {
 		rocket_clean_minify( 'js' );
 	}
+
+    // Purge all cache busting files
+    if ( ! empty( $_POST ) && ( $oldvalue['remove_query_strings'] != $value['remove_query_strings'] ) ) {
+        rocket_clean_cache_busting();
+        wp_remote_get(
+            home_url(),
+            array(
+                'timeout'    => 0.01,
+                'blocking'   => false,
+                'user-agent' => 'wprocketbot',
+                'sslverify'  => false
+            )
+        );
+    }
 
     /*
      * Performs the database optimization when settings are saved with the "save and optimize" submit button"

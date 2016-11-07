@@ -2,6 +2,34 @@
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 add_settings_section( 'rocket_display_imp_options', __( 'Advanced options', 'rocket' ), '__return_false', 'rocket_advanced' );
+
+add_settings_field(
+	'rocket_remove_query_string_static_resources',
+	 __( 'Static Resources:', 'rocket' ),
+	'rocket_field',
+	'rocket_advanced',
+	'rocket_display_imp_options',
+	array(
+		array(
+			'type'         => 'checkbox',
+			'label'        => __( 'Remove query strings from static resources', 'rocket' ),
+			'name'         => 'remove_query_strings',
+			'label_screen' => __( 'Remove query strings from static resources', 'rocket' )
+		),
+		array(
+			'type'			=> 'helper_description',
+			'name'			=> 'rocket_remove_query_strings_desc',
+			'description'  => __( 'This will remove the version query string from static resources and encode it in the resources filename instead. e.g. style.css?ver=1.0 will become style-1.0.css', 'rocket' )
+		),
+		array(
+			'type'         => 'helper_description',
+			'name'         => 'rocket_remove_query_strings_desc',
+			'description'  => __( '<strong>Note:</strong> By activating this option, you will improve the <code>Remove query strings from static resources</code> grade on GT Metrix.', 'rocket' ),
+		),
+
+	)
+);
+
 add_settings_field(
 	'rocket_dns_prefetch',
 	__( 'Prefetch DNS requests:', 'rocket' ),
