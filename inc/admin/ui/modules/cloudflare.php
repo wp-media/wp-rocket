@@ -27,19 +27,25 @@ add_settings_field(
 	'rocket_display_cloudflare_options',
 	array(
 		array(
-			'type'         => 'text',
+			'type'         => 'cloudflare_api_key',
 			'label_for'    => 'cloudflare_api_key',
 			'label_screen' => __( 'Global API Key', 'rocket' ),
 		),
-		array(
-			'type' 		   => 'helper_description',
-			'name'         => 'cloudflare_api_key',
-			'description'  => sprintf( __( '<strong>Note:</strong> Where do I find my CloudFlare API key? <a href="%s" target="_blank">Learn more</a>', 'rocket' ), 'https://support.cloudflare.com/hc/en-us/articles/200167836-Where-do-I-find-my-CloudFlare-API-key-' ),
-		)
 	)
 );
 
 endif;
+
+$cf_readonly = '';
+$cf_zones    = array();
+
+if ( function_exists( 'rocket_cloudflare_valid_auth' ) ) {
+    $cf_readonly   = ( is_wp_error( rocket_cloudflare_valid_auth() ) ) ? 'readonly' : '';
+}
+
+if ( function_exists( 'get_rocket_cloudflare_zones' ) ) {
+    $cf_zones = get_rocket_cloudflare_zones();
+}
 
 add_settings_field(
 	'rocket_cloudflare_domain',
@@ -49,9 +55,11 @@ add_settings_field(
 	'rocket_display_cloudflare_options',
 	array(
 		array(
-			'type'         => 'text',
+			'type'         => 'select',
 			'label_for'    => 'cloudflare_domain',
 			'label_screen' => __( 'Domain', 'rocket' ),
+			'options'      => $cf_zones,
+			'readonly'     => $cf_readonly,
 		)
 	)
 );
@@ -70,11 +78,12 @@ add_settings_field(
 				0 => __( 'Off', 'rocket' ),
 				1 => __( 'On', 'rocket' )
 			),
+			'readonly'     => $cf_readonly,
 		),
 		array(
 			'type' 		   => 'helper_description',
 			'name'         => 'cloudflare_devmode',
-			'description'  => sprintf( __( 'Temporarily enter development mode on your website. <a href="%s" target="_blank">Learn more</a>', 'rocket' ), 'https://support.cloudflare.com/hc/en-us/articles/200168246' ),
+			'description'  => sprintf( __( 'Temporarily enter development mode on your website. This setting will automatically return to off after 3 hours if not done manually. <a href="%s" target="_blank">Learn more</a>', 'rocket' ), 'https://support.cloudflare.com/hc/en-us/articles/200168246' ),
 		)
 	)
 );
@@ -100,6 +109,7 @@ add_settings_field(
 				0 => __( 'No', 'rocket' ),
 				1 => __( 'Yes', 'rocket' )
 			),
+			'readonly'     => $cf_readonly,
 		),
 		array(
 			'type' 		   => 'helper_description',
