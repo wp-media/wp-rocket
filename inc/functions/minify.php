@@ -80,7 +80,7 @@ function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_file
 		foreach ( $files as $file ) {
 			$file = parse_url( $file, PHP_URL_PATH );
 
-            if ( ! isset( $file ) ) {
+            if ( empty( trim( $file ) ) ) {
                 continue;
             }
 
