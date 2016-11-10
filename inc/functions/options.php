@@ -479,10 +479,13 @@ function get_rocket_deferred_js_files() {
 /**
  * Determine if the key is valid
  *
+ * @since 2.9 use hash_equals() to compare the hash values
  * @since 1.0
+ *
+ * @return bool true if everything is ok, false otherwise
  */
 function rocket_valid_key() {
-	return 8 == strlen( get_rocket_option( 'consumer_key' ) ) && get_rocket_option( 'secret_key' ) == hash( 'crc32', get_rocket_option( 'consumer_email' ) );
+	return 8 == strlen( get_rocket_option( 'consumer_key' ) ) && hash_equals( get_rocket_option( 'secret_key' ), hash( 'crc32', get_rocket_option( 'consumer_email' ) ) );
 }
 
 /**
