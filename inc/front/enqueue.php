@@ -29,6 +29,18 @@ function rocket_browser_cache_busting( $src ) {
     	return $src;
     }
 
+    if ( 'script_loader_src' == current_filter() ) {
+        $deferred_js_files = get_rocket_deferred_js_files();
+
+        if ( ( bool ) $deferred_js_files ) {
+            $deferred_js_files = array_flip( $deferred_js_files );
+            $clean_src         = strtok( $src, '?' );
+            if ( isset( $deferred_js_files[ $clean_src ] ) ) {
+                return $src;
+            }
+        }
+    }
+
     $full_src = ( substr( $src, 0, 2 ) === '//' ) ? rocket_add_url_protocol( $src ) : $src;
 
     if ( false !== strpos( $full_src, '://' ) && false === strpos( $full_src, home_url() ) ) {
