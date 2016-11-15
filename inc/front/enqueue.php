@@ -150,8 +150,8 @@ function rocket_cache_dynamic_resource( $src ) {
         return $src;
     }
 
-    if ( ! is_dir( $cache_dynamic_resource_filepath ) ) {
-        rocket_mkdir_p( $cache_dynamic_resource_filepath );
+    if ( ! is_dir( $cache_busting_path ) ) {
+        rocket_mkdir_p( $cache_busting_path );
     }
 
     rocket_put_content( $cache_dynamic_resource_filepath, $response['body'] );
