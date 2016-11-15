@@ -18,8 +18,7 @@ endif;
  * @param int $variation_id ID of the variation
  */
 function rocket_woocommerce_save_product_variation( $variation_id ) {
-    $product_id = wp_get_post_parent_id( $variation_id );
-    if ( $product_id ) {
+    if ( $product_id = wp_get_post_parent_id( $variation_id ) ) {
         rocket_clean_post( $product_id );
     }
 }
