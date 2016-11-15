@@ -33,7 +33,7 @@ function rocket_maybe_activate_secupress() {
 
 add_action( 'secupress.plugin.move_login.activate', 'rocket_activate_secupress' );
 
-function rocket_maybe_activate_secupress() {
+function rocket_activate_secupress() {
 	add_filter( 'rocket_cache_reject_uri', 'rocket_exclude_secupress_move_login' );
 
 	// Update the WP Rocket rules on the .htaccess.
