@@ -40,3 +40,4 @@ require( WP_ROCKET_3RD_PARTY_PATH . 'page-builder/beaver-builder.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'page-builder/thrive-visual-editor.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'page-builder/visual-composer.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'security/secupress.php' );
+require( WP_ROCKET_3RD_PARTY_PATH . 'simple-custom-css.php' );
