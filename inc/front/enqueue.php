@@ -10,8 +10,14 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
  * @param string $src CSS/JS file URL
  * @return string updated CSS/JS file URL
  */
-add_filter( 'script_loader_src', 'rocket_browser_cache_busting', 15 );
-add_filter( 'style_loader_src', 'rocket_browser_cache_busting', 15 );
+if ( ! get_rocket_option( 'minify_css' ) ) {
+    add_filter( 'style_loader_src', 'rocket_browser_cache_busting', 15 );
+}
+
+if ( ! get_rocket_option( 'minify_js' ) ) {
+    add_filter( 'script_loader_src', 'rocket_browser_cache_busting', 15 );
+}
+
 function rocket_browser_cache_busting( $src ) {
 	global $pagenow;
 
@@ -23,16 +29,37 @@ function rocket_browser_cache_busting( $src ) {
     	return $src;
     }
 
-    $full_src = rocket_add_url_protocol( $src );
-
-    if ( parse_url( $full_src, PHP_URL_HOST ) !== '' && strpos( $full_src, home_url() ) === false ) {
+    if ( false === strpos( $src, '.css' ) && false === strpos( $src, '.js' ) ) {
         return $src;
-    } 
-    
+    }
+
+    if ( 'script_loader_src' == current_filter() ) {
+        $deferred_js_files = get_rocket_deferred_js_files();
+
+        if ( ( bool ) $deferred_js_files ) {
+            $deferred_js_files = array_flip( $deferred_js_files );
+            $clean_src         = strtok( $src, '?' );
+            if ( isset( $deferred_js_files[ $clean_src ] ) ) {
+                return $src;
+            }
+        }
+    }
+
+    $full_src = ( substr( $src, 0, 2 ) === '//' ) ? rocket_add_url_protocol( $src ) : $src;
+
+    if ( false !== strpos( $full_src, '://' ) && false === strpos( $full_src, home_url() ) ) {
+        return $src;
+    }
+
+    if ( parse_url( $full_src, PHP_URL_HOST ) == '' ) {
+        $full_src = home_url() . $src;
+    }
+
     $relative_src_path      = str_replace( home_url( '/' ), '', $full_src );
     $full_src_path          = ABSPATH . dirname( $relative_src_path );
+
     $cache_busting_filename = preg_replace( '/\.(js|css)\?ver=(.+)$/', '-$2.$1', rtrim( str_replace( '/', '-', $relative_src_path ) ) );
-    
+
     $blog_id                = get_current_blog_id();
     $cache_busting_path     = WP_ROCKET_CACHE_BUSTING_PATH . $blog_id . '/';
     $cache_busting_filepath = $cache_busting_path . $cache_busting_filename;
