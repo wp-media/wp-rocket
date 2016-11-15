@@ -29,6 +29,10 @@ function rocket_browser_cache_busting( $src ) {
     	return $src;
     }
 
+    if ( false === strpos( $src, '.css' ) && false === strpos( $src, '.js' ) ) {
+        return $src;
+    }
+
     if ( 'script_loader_src' == current_filter() ) {
         $deferred_js_files = get_rocket_deferred_js_files();
 
@@ -51,8 +55,9 @@ function rocket_browser_cache_busting( $src ) {
         $full_src = home_url() . $src;
     }
 
-    $relative_src_path      = str_replace( 'http://wordpress.dev/', '', $full_src );
+    $relative_src_path      = str_replace( home_url( '/' ), '', $full_src );
     $full_src_path          = ABSPATH . dirname( $relative_src_path );
+
     $cache_busting_filename = preg_replace( '/\.(js|css)\?ver=(.+)$/', '-$2.$1', rtrim( str_replace( '/', '-', $relative_src_path ) ) );
 
     $blog_id                = get_current_blog_id();
