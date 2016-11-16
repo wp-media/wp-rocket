@@ -8,7 +8,7 @@ if ( defined( 'SCCSS_FILE' ) ) :
 endif;
 
 function rocket_cache_sccss() {
-    $sccss = rocket_sccss_get_paths();
+    $sccss = rocket_get_cache_busting_paths( 'sccss.css' );
 
     if ( ! file_exists( $sccss['filepath'] ) ) {
     	rocket_sccss_create_cache_file( $sccss['bustingpath'], $sccss['filepath'] );
@@ -19,7 +19,7 @@ function rocket_cache_sccss() {
 }
 
 function rocket_delete_sccss_cache_file() {
-    $sccss = rocket_sccss_get_paths();
+    $sccss = rocket_get_cache_busting_paths( 'sccss.css' );
 
     @unlink( $sccss['filepath'] );
     rocket_sccss_create_cache_file(  $sccss['bustingpath'], $sccss['filepath'] );
@@ -31,15 +31,6 @@ function rocket_sccss_cache_busting_filename( $filename ) {
     }
 
     return $filename;
-}
-
-function rocket_sccss_get_paths() {
-    $blog_id              = get_current_blog_id();
-    $cache_busting_path   = WP_ROCKET_CACHE_BUSTING_PATH . $blog_id . '/';
-    $cache_sccss_filepath = $cache_busting_path . 'sccss.css';
-    $cache_sccss_url      = WP_ROCKET_CACHE_BUSTING_URL . $blog_id . '/sccss.css';
-
-    return array( 'busingpath' => $cache_busting_path, 'filepath' => $cache_sccss_filepath, 'url' => $cache_sccss_url );
 }
 
 function rocket_sccss_create_cache_file( $cache_busting_path, $cache_sccss_filepath ) {
