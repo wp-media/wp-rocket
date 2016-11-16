@@ -57,7 +57,14 @@ function rocket_browser_cache_busting( $src ) {
 
     $relative_src_path      = str_replace( home_url( '/' ), '', $full_src );
     $full_src_path          = ABSPATH . dirname( $relative_src_path );
-
+    /*
+     * Filters the cache busting filename
+     *
+     * @since 2.9
+     * @author Remy Perona
+     *
+     * @param string $filename filename for the cache busting file
+     */
     $cache_busting_filename = apply_filters( 'rocket_cache_busting_filename', preg_replace( '/\.(js|css)\?ver=(.+)$/', '-$2.$1', rtrim( str_replace( '/', '-', $relative_src_path ) ) ) );
 
     $blog_id                = get_current_blog_id();
