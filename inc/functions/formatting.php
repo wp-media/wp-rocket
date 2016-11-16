@@ -178,3 +178,21 @@ function get_rocket_parse_url( $url )
 	*/
 	return apply_filters( 'rocket_parse_url', array( $host, $path, $scheme, $query ) );
 }
+
+/**
+ * Returns paths used for cache busting
+ *
+ * @since 2.9
+ * @author Remy Perona
+ *
+ * @param string $filename name of the cache busting file
+ * @return array Array of paths used for cache busting
+ */
+function rocket_get_cache_busting_paths( $filename ) {
+    $blog_id              = get_current_blog_id();
+    $cache_busting_path   = WP_ROCKET_CACHE_BUSTING_PATH . $blog_id . '/';
+    $cache_busting_filepath = $cache_busting_path . $filename;
+    $cache_busting_url      = WP_ROCKET_CACHE_BUSTING_URL . $blog_id . '/' . $filename;
+
+    return array( 'bustingpath' => $cache_busting_path, 'filepath' => $cache_busting_filepath, 'url' => $cache_busting_url );
+}
