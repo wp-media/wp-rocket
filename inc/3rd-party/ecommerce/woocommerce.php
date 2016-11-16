@@ -5,8 +5,23 @@ if ( class_exists( 'WooCommerce' ) ) :
 
     add_filter( 'rocket_cache_query_strings', '__rocket_cache_v_query_string' );
     add_filter( 'update_option_woocommerce_default_customer_address', '__rocket_after_update_single_options', 10, 2 );
+    add_action( 'woocommerce_save_product_variation', 'rocket_clean_cache_after_woocommerce_save_product_variation', 10 );
 
 endif;
+
+/**
+ * Clean product cache on variation update
+ *
+ * @since 2.9
+ * @author Remy Perona
+ *
+ * @param int $variation_id ID of the variation
+ */
+function rocket_clean_cache_after_woocommerce_save_product_variation( $variation_id ) {
+    if ( $product_id = wp_get_post_parent_id( $variation_id ) ) {
+        rocket_clean_post( $product_id );
+    }
+}
 
 /**
  * Automatically cache v query string when WooCommerce geolocation with cache compatibility option is active
