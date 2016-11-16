@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 if ( defined( 'SCCSS_FILE' ) ) :
@@ -22,12 +22,12 @@ function rocket_delete_sccss_cache_file() {
     $sccss = rocket_get_cache_busting_paths( 'sccss.css' );
 
     @unlink( $sccss['filepath'] );
-    rocket_sccss_create_cache_file(  $sccss['bustingpath'], $sccss['filepath'] );
+    rocket_sccss_create_cache_file( $sccss['bustingpath'], $sccss['filepath'] );
 }
 
 function rocket_sccss_cache_busting_filename( $filename ) {
     if ( false !== strpos( $filename, 'sccss' ) ) {
-        return 'sccss.css';        
+        return 'sccss.css';
     }
 
     return $filename;
