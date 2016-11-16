@@ -134,6 +134,14 @@ function rocket_cache_dynamic_resource( $src ) {
 
     $relative_src_path      = str_replace( home_url( '/' ), '', $full_src );
     $full_src_path          = ABSPATH . dirname( $relative_src_path );
+    /*
+     * Filters the dynamic resource cache filename
+     *
+     * @since 2.9
+     * @author Remy Perona
+     *
+     * @param string $filename filename for the cache file
+     */
     $cache_dynamic_resource_filename = apply_filters( 'rocket_dynamic_resource_cache_filename', preg_replace( '/\.(php)$/', $extension, strtok( rtrim( str_replace( '/', '-', $relative_src_path ) ), '?' ) ) );
     $blog_id                = get_current_blog_id();
     $cache_busting_path     = WP_ROCKET_CACHE_BUSTING_PATH . $blog_id . '/';
