@@ -66,6 +66,10 @@ function update_rocket_option( $key, $value ) {
  */
 function is_rocket_post_excluded_option( $option ) {
 	global $post;
+
+    if ( ! is_object( $post ) ) {
+        return false;
+    }
 	
 	if( is_home() ) {
 		$post_id = get_queried_object_id();
