@@ -46,7 +46,7 @@ function rocket_check_update( $value ) {
 	}
 
 	$response = wp_remote_get( WP_ROCKET_WEB_CHECK, array( 'timeout' => 30 ) );
-	if ( ! is_a( $response, 'WP_Error' ) && strlen( $response['body'] ) > 32 ) {
+	if ( ! is_a( $response, 'WP_Error' ) && $response['response']['code'] == '200' && strlen( $response['body'] ) > 32 ) {
 		
 		set_site_transient( 'update_wprocket', time() );
 
