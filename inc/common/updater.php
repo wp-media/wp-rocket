@@ -9,6 +9,14 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 add_filter( 'site_transient_update_plugins', 'rocket_check_update', 1 );
 function rocket_check_update( $value ) {
 
+    static $check_update = 0;
+
+    if ( 1 === $check_update ) {
+        return $value;
+    }
+    
+    $check_update = 1;
+
 	global $pagenow;
 	$timer_update_wprocket = (int) get_site_transient( 'update_wprocket' );
 	$temp_object = get_site_transient( 'update_wprocket_response' );
@@ -38,7 +46,7 @@ function rocket_check_update( $value ) {
 	}
 
 	$response = wp_remote_get( WP_ROCKET_WEB_CHECK, array( 'timeout' => 30 ) );
-	if ( ! is_a( $response, 'WP_Error' ) && strlen( $response['body'] ) > 32 ) {
+	if ( ! is_a( $response, 'WP_Error' ) && $response['response']['code'] == '200' && strlen( $response['body'] ) > 32 ) {
 		
 		set_site_transient( 'update_wprocket', time() );
 
