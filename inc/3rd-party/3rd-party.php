@@ -18,6 +18,7 @@ require( WP_ROCKET_3RD_PARTY_PATH . 'ecommerce/woocommerce.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'ecommerce/aelia-currencyswitcher.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'ecommerce/aelia-prices-by-country.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'ecommerce/aelia-tax-display-by-country.php' );
+require( WP_ROCKET_3RD_PARTY_PATH . 'ecommerce/woocommerce-multilingual.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'ecommerce/woocommerce-currency-converter-widget.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'ecommerce/edd-software-licencing.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'age-verify.php' );
