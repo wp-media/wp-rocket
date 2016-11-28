@@ -114,6 +114,22 @@ class ActionScheduler_wpCommentLogger extends ActionScheduler_Logger {
 	}
 
 	/**
+	 * Make sure Action Scheduler logs are excluded from comment feeds, which use WP_Query, not
+	 * the WP_Comment_Query class handled by @see self::filter_comment_queries().
+	 *
+	 * @param string $where
+	 * @param WP_Query $query
+	 *
+	 * @return string
+	 */
+	public function filter_comment_feed( $where, $query ) {
+		if ( is_comment_feed() ) {
+			$where .= $this->get_where_clause();
+		}
+		return $where;
+	}
+
+	/**
 	 * Return a SQL clause to exclude Action Scheduler comments.
 	 *
 	 * @return string
@@ -212,6 +228,7 @@ class ActionScheduler_wpCommentLogger extends ActionScheduler_Logger {
 		add_action( 'action_scheduler_reset_action', array( $this, 'log_reset_action' ), 10, 1 );
 		add_action( 'pre_get_comments', array( $this, 'filter_comment_queries' ), 10, 1 );
 		add_action( 'wp_count_comments', array( $this, 'filter_comment_count' ), 20, 2 ); // run after WC_Comments::wp_count_comments() to make sure we exclude order notes and action logs
+		add_action( 'comment_feed_where', array( $this, 'filter_comment_feed' ), 10, 2 );
 
 		// Delete comments count cache whenever there is a new comment or a comment status changes
 		add_action( 'wp_insert_comment', array( $this, 'delete_comment_count_cache' ) );
