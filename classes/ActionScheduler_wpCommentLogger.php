@@ -108,10 +108,19 @@ class ActionScheduler_wpCommentLogger extends ActionScheduler_Logger {
 	 */
 	public function filter_comment_query_clauses( $clauses, $query ) {
 		if ( !empty($query->query_vars['action_log_filter']) ) {
-			global $wpdb;
-			$clauses['where'] .= sprintf(" AND {$wpdb->comments}.comment_type != '%s'", self::TYPE);
+			$clauses['where'] .= $this->get_where_clause();
 		}
 		return $clauses;
+	}
+
+	/**
+	 * Return a SQL clause to exclude Action Scheduler comments.
+	 *
+	 * @return string
+	 */
+	protected function get_where_clause() {
+		global $wpdb;
+		return sprintf( " AND {$wpdb->comments}.comment_type != '%s'", self::TYPE );
 	}
 
 	/**
