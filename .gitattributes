@@ -3,3 +3,4 @@
 bin export-ignore
 phpunit.xml export-ignore
 tests export-ignore
+readme.md export-ignore
