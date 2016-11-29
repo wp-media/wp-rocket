@@ -17,7 +17,7 @@ if ( 'Divi' === $current_theme->get( 'Name' ) ) :
      */
     add_filter( 'rocket_exclude_js', 'rocket_exclude_js_divi' );
     function rocket_exclude_js_divi( $excluded_js ) {
-        $excluded_js[] = ET_BUILDER_URI . '/scripts/salvattore.min.js';
+        $excluded_js[] = str_replace( home_url(), '', ET_BUILDER_URI ) . '/scripts/salvattore.min.js';
 
         return $excluded_js;
     }
