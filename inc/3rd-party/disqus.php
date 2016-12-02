@@ -11,12 +11,12 @@ if ( defined( 'DISQUS_VERSION' ) ) :
      * @param Array $excluded_handle An array of JS handles enqueued in WordPress
      * @return Array the updated array of handles
      */
-    add_filter( 'rocket_excluded_handle_js', '__rocket_exclude_js_disqus' );
-    function __rocket_exclude_js_disqus( $excluded_handle ) {
-        $excluded_handle[] = 'dsq_embed_script';
-        $excluded_handle[] = 'dsq_count_script';
-    
-        return $excluded_handle;
+    add_filter( 'rocket_exclude_js', 'rocket_exclude_js_disqus' );
+    function rocket_exclude_js_disqus( $excluded_js ) {
+        $excluded_js[] = str_replace( home_url(), '', plugins_url( '/disqus-comment-system/media/js/disqus.js' ) );
+        $excluded_js[] = str_replace( home_url(), '', plugins_url( '/disqus-comment-system/media/js/count.js' ) );
+
+        return $excluded_js;
     }
 
 endif;
