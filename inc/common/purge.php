@@ -139,7 +139,8 @@ function rocket_clean_post( $post_id ) {
 	// Add Post Type archive
 	if ( 'post' !== $post->post_type ) {
 	    if ( $post_type_archive = get_post_type_archive_link( get_post_type( $post_id ) ) ) {
-	    	array_push( $purge_urls, $post_type_archive );
+	    	array_push( $purge_urls, $post_type_archive . 'index.html' );
+	    	array_push( $purge_urls, $post_type_archive . 'index.html_gzip' );
 	    }
     }
 
