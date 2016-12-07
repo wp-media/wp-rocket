@@ -42,7 +42,7 @@ function __rocket_add_admin_css_js() {
 		'successSupportText'  => __( 'We\'ve received your ticket and will reply back within a few hours!', 'rocket' ) . '<br/>' . __( 'We answer every ticket so check your spam if you don\'t hear from us.', 'rocket' ),
 
 		'badSupportTitle'      => __( 'Oh dear, someone\'s been naughty...', 'rocket' ),
-		'badSupportText'       => __( 'Well, well, looks like you\'ve got yourself a "nulled" version! We don\'t provide support to hackers or pirates, so you will need a valid license to proceed.', 'rocket' ) . '<br/>' . __( 'Click below to buy a license with a 20% discount automatically applied.', 'rocket' ),
+		'badSupportText'       => __( 'Well, well, looks like you\'ve got yourself a "nulled" version! We don\'t provide support to crackers or pirates, so you will need a valid license to proceed.', 'rocket' ) . '<br/>' . __( 'Click below to buy a license with a 20% discount automatically applied.', 'rocket' ),
 		'badConfirmButtonText' => __( 'Buy It Now!', 'rocket' ),
 
 		'expiredSupportTitle'      => __( 'Uh-oh, you\'re out of fuel!', 'rocket' ),
