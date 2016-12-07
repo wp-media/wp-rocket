@@ -3,7 +3,7 @@
 Plugin Name: WP Rocket
 Plugin URI: https://wp-rocket.me
 Description: The best WordPress performance plugin.
-Version: 2.8.23
+Version: 2.9
 Code Name: Ilum
 Author: WP Media
 Contributors: Jonathan Buttigieg, Julio Potier, Remy Perona
@@ -19,7 +19,7 @@ Copyright 2013-2016 WP Rocket
 defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
 
 // Rocket defines
-define( 'WP_ROCKET_VERSION'             , '2.8.23' );
+define( 'WP_ROCKET_VERSION'             , '2.9' );
 define( 'WP_ROCKET_PRIVATE_KEY'         , false );
 define( 'WP_ROCKET_SLUG'                , 'wp_rocket_settings' );
 define( 'WP_ROCKET_WEB_MAIN'            , 'http://support.wp-rocket.me/' );
@@ -173,7 +173,7 @@ function rocket_init()
         if ( ! rocket_is_plugin_active( 'rocket-lazy-load/rocket-lazy-load.php' ) ) {
 	       require( WP_ROCKET_FRONT_PATH . 'lazyload.php' );
         }
-        
+
         require( WP_ROCKET_FRONT_PATH . 'protocol.php' );
     }
 
@@ -278,7 +278,7 @@ function rocket_activation()
 
 	// Create advanced-cache.php file
 	rocket_generate_advanced_cache_file();
-	
+
 	// Update customer key & licence.
 	wp_remote_get( WP_ROCKET_WEB_API . 'activate-licence.php', array( 'blocking' => false ) );
 }
