@@ -27,11 +27,11 @@ function __rocket_settings_action_links( $actions ) {
  */
 add_action( 'plugin_row_meta', '__rocket_plugin_row_meta', 10, 3 );
 function __rocket_plugin_row_meta( $plugin_meta, $plugin_file, $plugin_data ) {
-	if ( 'wp-rocket/wp-rocket.php' == $plugin_file ) {
+	if ( 'wp-rocket/wp-rocket.php' === $plugin_file ) {
 
 		$update_plugins = get_site_transient( 'update_plugins' );
 
-		if ( $update_plugins != false && isset( $update_plugins->response[ $plugin_file ] ) && empty( $update_plugins->response[ $plugin_file ]->package ) ) {
+		if ( false !== $update_plugins && isset( $update_plugins->response[ $plugin_file ] ) && empty( $update_plugins->response[ $plugin_file ]->package ) ) {
 
 			$link =	'<span class="dashicons dashicons-update rocket-dashicons"></span> ' .
 					'<span class="rocket-renew">Renew your licence of WP Rocket to receive access to automatic upgrades and support.</span> ' .
@@ -130,7 +130,7 @@ function rocket_dismiss_boxes( $args ) {
 		update_user_meta( $current_user->ID, 'rocket_boxes', $actual );
 		delete_transient( $args['box'] );
 
-		if ( 'admin-post.php' == $GLOBALS['pagenow'] ){
+		if ( 'admin-post.php' === $GLOBALS['pagenow'] ) {
 			if ( defined( 'DOING_AJAX' ) ) {
 				wp_send_json( array( 'error' => 0 ) );
 			} else {
@@ -149,7 +149,7 @@ function rocket_dismiss_boxes( $args ) {
 add_action( 'activated_plugin', 'rocket_dismiss_plugin_box' );
 add_action( 'deactivated_plugin', 'rocket_dismiss_plugin_box' );
 function rocket_dismiss_plugin_box( $plugin ) {
-	if ( $plugin != plugin_basename( WP_ROCKET_FILE ) ) {
+	if ( plugin_basename( WP_ROCKET_FILE ) !== $plugin  ) {
 		rocket_renew_box( 'rocket_warning_plugin_modification' );
 	}
 }
@@ -288,7 +288,7 @@ function __rocket_rollback() {
 	$c_key = get_rocket_option( 'consumer_key' );
 	$transient = get_transient( 'rocket_warning_rollback' );
 
-	if ( false == $transient )	{
+	if ( false === $transient )	{
 		require_once( ABSPATH . 'wp-admin/includes/class-wp-upgrader.php' );
 		$title = sprintf( __( '%s Update Rollback', 'rocket' ), WP_ROCKET_PLUGIN_NAME );
 		$plugin = 'wp-rocket/wp-rocket.php';
