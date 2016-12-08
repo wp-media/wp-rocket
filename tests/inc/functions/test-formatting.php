@@ -62,9 +62,13 @@ class WP_Rocket_Formatting_Test extends WP_UnitTestCase {
 
 	function test_rocket_get_domain() {
 		$base_domain     = rocket_get_domain( 'http://sub.wordpress.dev' );
+		$base_domain_doubleslash     = rocket_get_domain( '//sub.wordpress.dev' );
+		$base_domain_double_subdomain    = rocket_get_domain( 'sub.sub.wordpress.dev' );
 		$incorrect_value = rocket_get_domain( 'abcdef' );
 
 		$this->assertEquals( 'wordpress.dev', $base_domain );
+		$this->assertEquals( 'wordpress.dev', $base_domain_doubleslash );
+		$this->assertEquals( 'wordpress.dev', $base_domain_double_subdomain );
 		$this->assertFalse( $incorrect_value );
 	}
 
