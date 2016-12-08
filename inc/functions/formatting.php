@@ -64,7 +64,7 @@ function rocket_sanitize_xml( $file ) {
  * @param bool 	 $no_dots (default: false)
  * @return string $url The URL without protocol
  */
-function rocket_remove_url_protocol( $url, $no_dots=false ) {
+function rocket_remove_url_protocol( $url, $no_dots = false ) {
 	$url = str_replace( array( 'http://', 'https://' ) , '', $url );
 
 	/** This filter is documented in inc/front/htaccess.php */
