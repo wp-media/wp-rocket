@@ -175,7 +175,7 @@ function rocket_init()
         if ( ! rocket_is_plugin_active( 'rocket-lazy-load/rocket-lazy-load.php' ) ) {
 	       require( WP_ROCKET_FRONT_PATH . 'lazyload.php' );
         }
-        
+
         require( WP_ROCKET_FRONT_PATH . 'protocol.php' );
     }
 
@@ -280,7 +280,7 @@ function rocket_activation()
 
 	// Create advanced-cache.php file
 	rocket_generate_advanced_cache_file();
-	
+
 	// Update customer key & licence.
 	wp_remote_get( WP_ROCKET_WEB_API . 'activate-licence.php', array( 'blocking' => false ) );
 }
