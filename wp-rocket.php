@@ -4,7 +4,7 @@ Plugin Name: WP Rocket
 Plugin URI: https://wp-rocket.me
 Description: The best WordPress performance plugin.
 Version: 2.9
-Code Name: Ilum
+Code Name: Iridonia
 Author: WP Media
 Contributors: Jonathan Buttigieg, Julio Potier, Remy Perona
 Author URI: http://wp-media.me
