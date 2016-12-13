@@ -575,9 +575,15 @@ add_action( 'admin_notices', 'rocket_cloudflare_purge_result' );
 function rocket_cloudflare_purge_result() {
 	global $current_user;
 	/** This filter is documented in inc/admin-bar.php */
-	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) && get_transient( $current_user->ID . '_cloudflare_purge_result' ) && is_admin() ) {
+	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		return;
+	}
+	
+	if ( ! is_admin() ) {
+		return;
+	}
 
-        $notice = get_transient( $current_user->ID . '_cloudflare_purge_result' );
+	if ( $notice = get_transient( $current_user->ID . '_cloudflare_purge_result' ) ) {
 		delete_transient( $current_user->ID . '_cloudflare_purge_result' );
         if ( $notice['result'] == 'error' ) {
             $notice_result = 'notice-error';
@@ -604,9 +610,15 @@ function rocket_cloudflare_update_settings() {
     $rocket_wl_name      = get_rocket_option( 'wl_plugin_name', null );
     $wp_rocket_screen_id = isset( $rocket_wl_name ) ?  'settings_page_' . sanitize_key( $rocket_wl_name ) : 'settings_page_wprocket';
 	/** This filter is documented in inc/admin-bar.php */
-	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) && get_transient( $current_user->ID . '_cloudflare_update_settings' ) && $screen->id === $wp_rocket_screen_id ) {
+	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		return;
+	}
 
-        $notices = get_transient( $current_user->ID . '_cloudflare_update_settings' );
+	if ( $screen->id !== $wp_rocket_screen_id ) {
+		return;
+	}
+
+    if ( $notices = get_transient( $current_user->ID . '_cloudflare_update_settings' ) ) {
         $errors = '';
         $success = '';
 		delete_transient( $current_user->ID . '_cloudflare_update_settings' );
