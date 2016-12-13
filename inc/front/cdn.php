@@ -166,7 +166,7 @@ function rocket_cdn_inline_styles( $html ) {
 	);
 
 	if ( $cnames = get_rocket_cdn_cnames( $zone ) ) {
-    	preg_match_all( '/url\((?![\'"]?data)([^\)]+)\)/i', $html, $matches );
+    	preg_match_all( '/url\((?![\'"]?data)[\"\']?([^\)\"\']+)[\"\']?\)/i', $html, $matches );
 
         if ( ( bool ) $matches ) {
             $i = 0;
