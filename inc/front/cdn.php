@@ -99,9 +99,9 @@ function rocket_cdn_images( $html ) {
 	$zone = array( 'all', 'images' );
 	if ( $cnames = get_rocket_cdn_cnames( $zone ) ) {
 		// Get all images of the content
-		preg_match_all( '#<img([^>]+?)src=[\'"]?([^\'"\s>]+)[\'"]?([^>]*)>#i', $html, $images_match );
+		preg_match_all( '#<img([^>]+?)src=([\'"\\\]*)([^\'"\s\\\>]+)([\'"\\\]*)([^>]*)>#i', $html, $images_match );
 
-		foreach ( $images_match[2] as $k => $image_url ) {
+		foreach ( $images_match[3] as $k => $image_url ) {
 			
 			list( $host, $path, $scheme, $query ) = get_rocket_parse_url( $image_url );
 
@@ -132,8 +132,8 @@ function rocket_cdn_images( $html ) {
 				apply_filters( 'rocket_cdn_images_html', sprintf(
 					'<img %1$s %2$s %3$s>',
 					trim( $images_match[1][$k] ),
-					'src="' . get_rocket_cdn_url( $image_url, $zone ) .'"',
-					trim( $images_match[3][$k] )
+					'src='. $images_match[2][$k] . get_rocket_cdn_url( $image_url, $zone ) . $images_match[4][$k],
+					trim( $images_match[5][$k] )
 				) ),
 				$html
 			);
