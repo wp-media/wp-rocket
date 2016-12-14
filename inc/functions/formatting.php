@@ -180,13 +180,25 @@ function get_rocket_parse_url( $url ) {
  * @author Remy Perona
  *
  * @param string $filename name of the cache busting file
+ * @param string $extension file extension
  * @return array Array of paths used for cache busting
  */
-function rocket_get_cache_busting_paths( $filename ) {
+function rocket_get_cache_busting_paths( $filename, $extension ) {
     $blog_id                = get_current_blog_id();
     $cache_busting_path     = WP_ROCKET_CACHE_BUSTING_PATH . $blog_id . '/';
     $cache_busting_filepath = $cache_busting_path . $filename;
-    $cache_busting_url      = WP_ROCKET_CACHE_BUSTING_URL . $blog_id . '/' . $filename;
+    $cache_busting_url      = get_rocket_cdn_url( WP_ROCKET_CACHE_BUSTING_URL . $blog_id . '/' . $filename, array( 'all', 'css_and_js', $extension ) );
+
+	switch ( $extension ) {
+		case 'css':
+			/** This filter is documented in inc/functions/minify.php */
+			$cache_busting_url = apply_filters( 'rocket_css_url', $cache_busting_url );
+			break;
+		case 'js':
+			/** This filter is documented in inc/functions/minify.php */
+			$cache_busting_url = apply_filters( 'rocket_js_url', $cache_busting_url );
+			break;
+	}
 
     return array(
     	'bustingpath' => $cache_busting_path,
