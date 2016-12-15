@@ -103,7 +103,7 @@ function get_rocket_cloudflare_zones() {
     
     try {
     	$cf_zone_instance        = new CloudFlare\Zone( $cf_api_instance );
-        $cf_zones                = $cf_zone_instance->zones();
+        $cf_zones                = $cf_zone_instance->zones( null, 'active', null, 50 );
         $cf_zones_list           = $cf_zones->result;
         
         
