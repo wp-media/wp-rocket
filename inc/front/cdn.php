@@ -191,7 +191,7 @@ function rocket_cdn_inline_styles( $html ) {
  * @param string $html HTML content of the page
  * @return string modified HTML content
  */
-add_filter( 'rocket_buffer', 'rocket_cdn_custom_files', PHP_INT_MAX );
+add_filter( 'rocket_buffer', 'rocket_cdn_custom_files', 12 );
 function rocket_cdn_custom_files( $html ) {
      if ( is_preview() || empty( $html ) ) {
 		return $html;
@@ -213,7 +213,7 @@ function rocket_cdn_custom_files( $html ) {
         $filetypes = apply_filters( 'rocket_cdn_custom_filetypes', array( 'mp3', 'ogg', 'mp4', 'm4v', 'avi', 'mov', 'flv', 'swf', 'webm', 'pdf', 'doc', 'docx', 'txt', 'zip', 'tar', 'bz2', 'tgz', 'rar' ) );
         $filetypes = implode( '|', $filetypes );
 
-        preg_match_all( '#<a[^>]+?href=[\'"]?([^\'"\s>]+.*\.(' . $filetypes . '))[\'"]?[^>]*>#i', $html, $matches );
+        preg_match_all( '#<a[^>]+?href=[\'"]?(.*\.(?:' . $filetypes . '))[\'"]?[^>]*>#i', $html, $matches );
 
         if ( ( bool ) $matches ) {
             $i = 0;
