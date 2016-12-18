@@ -98,6 +98,9 @@ function rocket_cdn_images( $html ) {
 
 	$zone = array( 'all', 'images' );
 	if ( $cnames = get_rocket_cdn_cnames( $zone ) ) {
+		
+		$cnames = array_flip( $cnames );
+		$home_url = home_url( '/' );
 		// Get all images of the content
 		preg_match_all( '#<img([^>]+?)src=([\'"\\\]*)([^\'"\s\\\>]+)([\'"\\\]*)([^>]*)>#i', $html, $images_match );
 
@@ -105,13 +108,17 @@ function rocket_cdn_images( $html ) {
 			
 			list( $host, $path, $scheme, $query ) = get_rocket_parse_url( $image_url );
 
+			if ( isset( $cnames[ $host ] ) ) {
+				continue;
+			}
+
             // Image path is relative, apply the host to it
 			if ( empty( $host ) ) {
-    			$image_url = home_url( '/' ) . ltrim( $image_url, '/' );
+    			$image_url = $home_url . ltrim( $image_url, '/' );
 			}
 
             // Check if the link isn't external
-			if ( parse_url( $image_url, PHP_URL_HOST ) != parse_url( home_url(), PHP_URL_HOST ) ) {
+			if ( $host != parse_url( $home_url, PHP_URL_HOST ) ) {
 				continue;
 			}
 
