@@ -5,3 +5,4 @@ phpunit.xml export-ignore
 tests export-ignore
 README.md export-ignore
 .gitattributes export-ignore
+.gitignore export-ignore
