@@ -253,7 +253,7 @@ function rocket_minify_css( $buffer )
     $wp_content_dirname   = ltrim( str_replace( home_url(), '', WP_CONTENT_URL ), '/' ) . '/';
 
     // Get all css files with this regex
-    preg_match_all( apply_filters( 'rocket_minify_css_regex_pattern', '/<link\s*.+href=[\'|"]([^\'|"]+\.css?.+)[\'|"]?(.+)>/iU' ), $buffer, $tags_match );
+    preg_match_all( apply_filters( 'rocket_minify_css_regex_pattern', '/<link\s*.+href=[\'|"]([^\'|"]+\.css?.+)[\'|"](.+)>/iU' ), $buffer, $tags_match );
 
 	$i=0;
     foreach ( $tags_match[0] as $tag ) {
@@ -300,6 +300,11 @@ function rocket_minify_css( $buffer )
             	$buffer = str_replace( $tag, '', $buffer );
             }
 
+            if ( $excluded_tag && get_rocket_option( 'remove_query_strings' ) ) {
+                $tag_cache_busting = str_replace( $tags_match[1][ $i ], rocket_browser_cache_busting( $tags_match[1][ $i ], 'style_loader_src' ), $tag );
+                $buffer = str_replace( $tag, $tag_cache_busting, $buffer );
+            }
+
         }
 		$i++;
     }
@@ -329,7 +334,7 @@ function rocket_minify_js( $buffer )
 	$excluded_external_js = get_rocket_minify_excluded_external_js();
 
     // Get all JS files with this regex
-    preg_match_all( apply_filters( 'rocket_minify_js_regex_pattern', '#<script[^>]+?src=[\'|"]([^\'|"]+\.js?)[\'|"]?.*>(?:<\/script>)#i' ), $buffer, $tags_match );
+    preg_match_all( apply_filters( 'rocket_minify_js_regex_pattern', '#<script[^>]+?src=[\'|"]([^\'|"]+\.js?.+)[\'|"].*>(?:<\/script>)#i' ), $buffer, $tags_match );
 
 	$i=0;
     foreach ( $tags_match[0] as $tag ) {
@@ -383,6 +388,11 @@ function rocket_minify_js( $buffer )
 			// Remove the tag
             if ( ! $excluded_tag ) {
             	$buffer = str_replace( $tag, '', $buffer );
+            }
+
+            if ( $excluded_tag && get_rocket_option( 'remove_query_strings' ) ) {
+                $tag_cache_busting = str_replace( $tags_match[1][ $i ], rocket_browser_cache_busting( $tags_match[1][ $i ], 'script_loader_src' ), $tag );
+                $buffer = str_replace( $tag, $tag_cache_busting, $buffer );
             }
 		}
 		$i++;

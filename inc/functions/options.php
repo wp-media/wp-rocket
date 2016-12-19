@@ -66,6 +66,10 @@ function update_rocket_option( $key, $value ) {
  */
 function is_rocket_post_excluded_option( $option ) {
 	global $post;
+
+    if ( ! is_object( $post ) ) {
+        return false;
+    }
 	
 	if( is_home() ) {
 		$post_id = get_queried_object_id();
@@ -269,9 +273,6 @@ function get_rocket_cache_dynamic_cookies() {
 function get_rocket_cache_reject_ua() {
 	$ua   = get_rocket_option( 'cache_reject_ua', array() );
 	$ua[] = 'facebookexternalhit';
-	$ua[] = 'FB_IAB';
-	$ua[] = 'FB4A';
-	$ua[] = 'FBAV';
 
 	/**
 	 * Filter the rejected User-Agent
@@ -479,10 +480,17 @@ function get_rocket_deferred_js_files() {
 /**
  * Determine if the key is valid
  *
+ * @since 2.9 use hash_equals() to compare the hash values
  * @since 1.0
+ *
+ * @return bool true if everything is ok, false otherwise
  */
 function rocket_valid_key() {
-	return 8 == strlen( get_rocket_option( 'consumer_key' ) ) && get_rocket_option( 'secret_key' ) == hash( 'crc32', get_rocket_option( 'consumer_email' ) );
+    if ( ! $rocket_secret_key = get_rocket_option( 'secret_key' ) ) {
+        return false;
+    }
+
+	return 8 == strlen( get_rocket_option( 'consumer_key' ) ) && hash_equals( $rocket_secret_key, hash( 'crc32', get_rocket_option( 'consumer_email' ) ) );
 }
 
 /**

@@ -79,6 +79,11 @@ function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_file
 		$i = 0;
 		foreach ( $files as $file ) {
 			$file = parse_url( $file, PHP_URL_PATH );
+			$file = trim( $file );
+			
+            if ( empty( $file ) ) {
+                continue;
+            }
 
 			// Replace "//" by "/" because it cause an issue with Google Code Minify!
 			$file = str_replace( '//' , '/', $file );
@@ -236,6 +241,7 @@ function get_rocket_minify_excluded_external_js() {
 		'speakerdeck.com',
 		'content.jwplatform.com',
 		'ads.investingchannel.com',
+		'app.ecwid.com'
 	) );
 	
 	return $excluded_external_js;		

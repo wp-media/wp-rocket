@@ -63,8 +63,6 @@ class Minify_HTML {
      *
      * 'xhtml' : (optional boolean) should content be treated as XHTML1.0? If
      * unset, minify will sniff for an XHTML doctype.
-     *
-     * @return null
      */
     public function __construct($html, $options = array())
     {
@@ -164,7 +162,7 @@ class Minify_HTML {
     
     protected function _commentCB($m)
     {
-        return (0 === strpos($m[1], '[') || false !== strpos($m[1], '<!['))
+        return (0 === strpos($m[1], '[') || false !== strpos($m[1], '<![') || 0 === strpos($m[1], 'esi'))
             ? $m[0]
             : '';
     }

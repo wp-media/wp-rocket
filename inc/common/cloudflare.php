@@ -18,7 +18,7 @@ function __rocket_set_real_ip_cloudflare() {
     if ( isset( $_SERVER["REMOTE_ADDR"] ) ) {
         $cf_ips_values = rocket_get_cloudflare_ips();
 
-        if ( ! is_object( $cf_ips_values ) || ! isset( $cf_ips_values->success ) || ! $cf_ips_values->success ) {
+        if ( is_wp_error( $cf_ips_values ) || ! isset( $cf_ips_values->success ) || ! $cf_ips_values->success ) {
             return;
         }
 

@@ -111,7 +111,12 @@ class JSMin {
         $this->input = str_replace("\r\n", "\n", $this->input);
         $this->inputLength = strlen($this->input);
 
-        $this->action(self::ACTION_DELETE_A_B);
+        try {
+            $this->action(self::ACTION_DELETE_A_B);
+        } catch( Exception $e ) {
+            error_log( $e->getMessage() );
+        }
+        
 
         while ($this->a !== null) {
             // determine next command
@@ -142,7 +147,12 @@ class JSMin {
                     $command = self::ACTION_DELETE_A_B;
                 }
             }
-            $this->action($command);
+            try {
+                $this->action($command);
+            } catch( Exception $e ) {
+                error_log( $e->getMessage() );
+            }
+            
         }
         $this->output = trim($this->output);
 
@@ -200,8 +210,9 @@ class JSMin {
                             break;
                         }
                         if ($this->isEOF($this->a)) {
+                            $byte = $this->inputIndex - 1;
                             throw new JSMin_UnterminatedStringException(
-                                "JSMin: Unterminated String at byte {$this->inputIndex}: {$str}");
+                                "JSMin: Unterminated String at byte {$byte}: {$str}");
                         }
                         $str .= $this->a;
                         if ($this->a === '\\') {
@@ -251,8 +262,9 @@ class JSMin {
                             $this->a = $this->get();
                             $pattern .= $this->a;
                         } elseif ($this->isEOF($this->a)) {
+                            $byte = $this->inputIndex - 1;
                             throw new JSMin_UnterminatedRegExpException(
-                                "JSMin: Unterminated RegExp at byte {$this->inputIndex}: {$pattern}");
+                                "JSMin: Unterminated RegExp at byte {$byte}: {$pattern}");
                         }
                         $this->output .= $this->a;
                         $this->lastByteOut = $this->a;
@@ -272,23 +284,33 @@ class JSMin {
             // we obviously aren't dividing
             return true;
         }
-        if ($this->a === ' ' || $this->a === "\n") {
-            $length = strlen($this->output);
-            if ($length < 2) { // weird edge case
-                return true;
+
+		// we have to check for a preceding keyword, and we don't need to pattern
+		// match over the whole output.
+		$recentOutput = substr($this->output, -10);
+
+		// check if return/typeof directly precede a pattern without a space
+		foreach (array('return', 'typeof') as $keyword) {
+            if ($this->a !== substr($keyword, -1)) {
+                // certainly wasn't keyword
+                continue;
             }
-            // you can't divide a keyword
-            if (preg_match('/(?:case|else|in|return|typeof)$/', $this->output, $m)) {
-                if ($this->output === $m[0]) { // odd but could happen
-                    return true;
-                }
-                // make sure it's a keyword, not end of an identifier
-                $charBeforeKeyword = substr($this->output, $length - strlen($m[0]) - 1, 1);
-                if (! $this->isAlphaNum($charBeforeKeyword)) {
+            if (preg_match("~(^|[\\s\\S])" . substr($keyword, 0, -1) . "$~", $recentOutput, $m)) {
+                if ($m[1] === '' || !$this->isAlphaNum($m[1])) {
                     return true;
                 }
             }
         }
+
+		// check all keywords
+		if ($this->a === ' ' || $this->a === "\n") {
+			if (preg_match('~(^|[\\s\\S])(?:case|else|in|return|typeof)$~', $recentOutput, $m)) {
+				if ($m[1] === '' || !$this->isAlphaNum($m[1])) {
+					return true;
+				}
+			}
+        }
+
         return false;
     }
 

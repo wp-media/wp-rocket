@@ -103,10 +103,22 @@ function get_rocket_config_file() {
 		$buffer .= '$min_cachePath = \'' . $min_cachePath . '\';' . "\n";
 	}
 
+    /**
+     * Filters the preservation of the CSS comments during minification
+     *
+     * @author Remy Perona
+     * @since 2.9
+     *
+     * @param bool False to not preserve the comments, true to preserve
+    */
+    if ( apply_filters( 'rocket_minification_preserve_css_comments', false ) ) {
+        $buffer .= '$min_preserve_css_comments = true;' . "\n";
+    }
+
 	$buffer .= '$rocket_cookie_hash = \'' . COOKIEHASH . '\'' . ";\n";
 
 	foreach ( $options as $option => $value ) {	
-		if ( $option == 'cache_ssl' || $option == 'cache_mobile' || $option == 'do_caching_mobile_files' || $option == 'secret_cache_key' ) {
+		if ( $option == 'cache_ssl' || $option == 'cache_mobile' || $option == 'do_caching_mobile_files' || $option == 'secret_cache_key' || $option == 'common_cache_logged_users' ) {
 			$buffer .= '$rocket_' . $option . ' = \'' . $value . '\';' . "\n";
 		}
 				
@@ -228,6 +240,11 @@ function rocket_init_cache_dir() {
 	// Create minify cache folder if not exist
     if ( ! is_dir( WP_ROCKET_MINIFY_CACHE_PATH ) ) {
 		rocket_mkdir_p( WP_ROCKET_MINIFY_CACHE_PATH );
+    }
+
+    // Create busting cache folder if not exist
+    if ( ! is_dir( WP_ROCKET_CACHE_BUSTING_PATH ) ) {
+		rocket_mkdir_p( WP_ROCKET_CACHE_BUSTING_PATH );
     }
 }
 
@@ -353,6 +370,46 @@ function rocket_clean_minify( $extensions = array( 'js','css' ) ) {
 		 * @param string $ext File extensions to minify
 		*/
 		do_action( 'after_rocket_clean_minify', $ext );	
+	}
+}
+
+/**
+ * Delete all cache busting files
+ *
+ * @since 2.9
+ * @author Remy Perona
+ *
+ * @param  string|array $extensions (default: array('js','css') File extensions to clean
+ * @return void
+ */
+function rocket_clean_cache_busting( $extensions = array( 'js','css' ) ) {
+	$blog_id    = get_current_blog_id();
+	$extensions = is_string( $extensions ) ? (array) $extensions : $extensions;
+	
+	foreach ( $extensions as $ext ) {
+		/**
+		 * Fires before the cache busting files are deleted
+		 *
+		 * @since 2.9
+		 *
+		 * @param string $ext File extensions to minify
+		*/
+		do_action( 'before_rocket_clean_cache_busting', $ext );
+		
+		if ( $files = @glob( WP_ROCKET_CACHE_BUSTING_PATH . $blog_id . '/*.' . $ext, GLOB_NOSORT ) ) {
+			foreach ( $files as $file ) { // no array map to use @
+				@unlink( $file );
+			}
+		}
+		
+		/**
+		 * Fires after the cache busting files was deleted
+		 *
+		 * @since 2.9
+		 *
+		 * @param string $ext File extensions to clean
+		*/
+		do_action( 'after_rocket_clean_cache_busting', $ext );	
 	}
 }
 

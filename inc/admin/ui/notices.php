@@ -451,6 +451,35 @@ function rocket_warning_minify_cache_dir_permissions() {
 }
 
 /**
+ * This warning is displayed when the busting cache dir isn't writeable
+ *
+ * @since 2.9
+ * @author Remy Perona
+ */
+add_action( 'admin_notices', 'rocket_warning_busting_cache_dir_permissions' );
+function rocket_warning_busting_cache_dir_permissions() {
+	/** This filter is documented in inc/admin-bar.php */
+	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
+	    && ( ! is_writable( WP_ROCKET_CACHE_BUSTING_PATH ) )
+	    && ( get_rocket_option( 'remove_query_strings', false ) )
+	    && rocket_valid_key() ) {
+
+		$boxes = get_user_meta( $GLOBALS['current_user']->ID, 'rocket_boxes', true );
+
+		if ( ! in_array( __FUNCTION__, (array) $boxes ) ) { ?>
+
+			<div class="error">
+				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box='.__FUNCTION__ ), 'rocket_ignore_'.__FUNCTION__ ); ?>" class="rkt-cross"><div class="dashicons dashicons-no"></div></a>
+				<p><b><?php echo WP_ROCKET_PLUGIN_NAME; ?></b>: <?php printf( __('Be careful, you don\'t have <a href="%1$s" target="_blank">writing permissions</a> on <b>%3$s</b> cache busting folder (<code>%2$s</code>). To make <b>%3$s</b> work properly, please CHMOD <code>755</code> or <code>775</code> or <code>777</code> this folder.', 'rocket' ), 'http://codex.wordpress.org/Changing_File_Permissions', trim( str_replace( ABSPATH, '', WP_ROCKET_CACHE_BUSTING_PATH ), '/' ), WP_ROCKET_PLUGIN_NAME ); ?></p>
+			</div>
+
+		<?php
+		}
+
+	}
+}
+
+/**
  * This thankful message is displayed when the site has been added
  *
  * @since 2.2
@@ -526,7 +555,7 @@ function __rocket_imagify_notice() {
 			<img src="<?php echo WP_ROCKET_ADMIN_UI_IMG_URL ?>logo-imagify.png" srcset="<?php echo WP_ROCKET_ADMIN_UI_IMG_URL ?>logo-imagify.svg 2x" alt="Imagify" width="150" height="18">
 		</p>
 		<p class="rkt-imagify-msg">
-			<?php _e( 'Speed up your website and boost your SEO by reducing image file sizes without loosing quality with Imagify.', 'rocket' ); ?>
+			<?php _e( 'Speed up your website and boost your SEO by reducing image file sizes without losing quality with Imagify.', 'rocket' ); ?>
 		</p>
 		<p class="rkt-imagify-cta">
 			<a href="<?php echo $action_url; ?>" class="button button-primary<?php echo $classes; ?>"><?php echo $cta_txt; ?></a>
@@ -534,4 +563,83 @@ function __rocket_imagify_notice() {
 	</div>
 
 	<?php
+}
+
+/**
+ * This notice is displayed after purging the CloudFlare cache
+ *
+ * @since 2.9
+ * @author Remy Perona
+ */
+add_action( 'admin_notices', 'rocket_cloudflare_purge_result' );
+function rocket_cloudflare_purge_result() {
+	global $current_user;
+	/** This filter is documented in inc/admin-bar.php */
+	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		return;
+	}
+	
+	if ( ! is_admin() ) {
+		return;
+	}
+
+	if ( $notice = get_transient( $current_user->ID . '_cloudflare_purge_result' ) ) {
+		delete_transient( $current_user->ID . '_cloudflare_purge_result' );
+        if ( $notice['result'] == 'error' ) {
+            $notice_result = 'notice-error';
+        } else if ( $notice['result'] == 'success' ) {
+            $notice_result = 'notice-success';
+        } ?>
+        <div class="notice <?php echo $notice_result; ?> is-dismissible">
+            <p><?php echo $notice['message']; ?></p>
+		</div>
+	<?php
+	}
+}
+
+/**
+ * This notice is displayed after modifying the CloudFlare settings
+ *
+ * @since 2.9
+ * @author Remy Perona
+ */
+add_action( 'admin_notices', 'rocket_cloudflare_update_settings' );
+function rocket_cloudflare_update_settings() {
+	global $current_user;
+    $screen              = get_current_screen();
+    $rocket_wl_name      = get_rocket_option( 'wl_plugin_name', null );
+    $wp_rocket_screen_id = isset( $rocket_wl_name ) ?  'settings_page_' . sanitize_key( $rocket_wl_name ) : 'settings_page_wprocket';
+	/** This filter is documented in inc/admin-bar.php */
+	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		return;
+	}
+
+	if ( $screen->id !== $wp_rocket_screen_id ) {
+		return;
+	}
+
+    if ( $notices = get_transient( $current_user->ID . '_cloudflare_update_settings' ) ) {
+        $errors = '';
+        $success = '';
+		delete_transient( $current_user->ID . '_cloudflare_update_settings' );
+		foreach ( $notices as $notice ) {
+    		if ( $notice['result'] == 'error' ) {
+                $errors .= $notice['message'] . '<br>';
+            } else if ( $notice['result'] == 'success' ) {
+                $success .= $notice['message'] . '<br>';
+            }
+        }
+
+        if ( ! empty( $success ) ) { ?>
+        <div class="notice notice-success is-dismissible">
+            <p><?php echo $success; ?></p>
+        </div>
+        <?php }
+
+        if ( ! empty( $errors ) ) { ?>
+        <div class="notice notice-error is-dismissible">
+            <p><?php echo $errors; ?></p>
+        </div>
+        <?php }
+	}
 }

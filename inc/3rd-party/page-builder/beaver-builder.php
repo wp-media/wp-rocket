@@ -12,6 +12,7 @@ add_action( 'fl_builder_before_save_layout', '__rocket_beaver_builder_clean_doma
 function __rocket_beaver_builder_clean_domain() {
     rocket_clean_minify();
     rocket_clean_domain();
+    rocket_clean_cache_busting();
 }
 
 endif;

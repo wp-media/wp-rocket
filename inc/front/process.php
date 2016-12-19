@@ -149,12 +149,16 @@ if ( isset( $rocket_cookie_hash )
 	&& isset( $rocket_cache_reject_cookies )
 	&& !strstr( $rocket_cache_reject_cookies, 'wordpress_logged_in_' )
 ) {
-	$user_key = explode( '|', $_COOKIE[ 'wordpress_logged_in_' . $rocket_cookie_hash ] );
-	$user_key = reset( ( $user_key ) );
-	$user_key = $user_key . '-' . $rocket_secret_cache_key;
-
-	// Get cache folder of host name
-	$request_uri_path = $rocket_cache_path . $host . '-' . $user_key . rtrim( $request_uri, '/' );
+	if ( isset( $rocket_common_cache_logged_users ) ) {
+    	$request_uri_path = $rocket_cache_path . $host . '-loggedin' . rtrim( $request_uri, '/' );
+	} else {
+		$user_key = explode( '|', $_COOKIE[ 'wordpress_logged_in_' . $rocket_cookie_hash ] );
+		$user_key = reset( ( $user_key ) );
+		$user_key = $user_key . '-' . $rocket_secret_cache_key;
+	
+		// Get cache folder of host name
+		$request_uri_path = $rocket_cache_path . $host . '-' . $user_key . rtrim( $request_uri, '/' );	
+	}
 }
 else {
 	$request_uri_path = $rocket_cache_path . $host . rtrim( $request_uri, '/' );

@@ -9,8 +9,7 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
  * @since 1.3.5 Redo the function
  * @since 1.0
  */
-function rocket_clean_exclude_file( $file )
-{
+function rocket_clean_exclude_file( $file ) {
 	if ( ! $file ) {
 		return false;
 	}
@@ -24,10 +23,9 @@ function rocket_clean_exclude_file( $file )
  *
  * @since 1.0
  */
-function rocket_sanitize_css( $file )
-{
+function rocket_sanitize_css( $file ) {
 	$file = preg_replace( '#\?.*$#', '', $file );
-	$ext = strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
+	$ext  = strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
 	return ( 'css' === $ext || 'php' === $ext ) ? trim( $file ) : false;
 }
 
@@ -36,8 +34,7 @@ function rocket_sanitize_css( $file )
  *
  * @since 1.0
  */
-function rocket_sanitize_js( $file )
-{
+function rocket_sanitize_js( $file ) {
 	$file = preg_replace( '#\?.*$#', '', $file );
 	$ext  = strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
 	return ( 'js' === $ext || 'php' === $ext ) ? trim( $file ) : false;
@@ -52,8 +49,7 @@ function rocket_sanitize_js( $file )
  * @param string $file filename
  * @return string|boolean filename or false if not xml
  */
-function rocket_sanitize_xml( $file )
-{
+function rocket_sanitize_xml( $file ) {
 	$file = preg_replace( '#\?.*$#', '', $file );
 	$ext  = strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
 	return ( 'xml' === $ext ) ? trim( $file ) : false;
@@ -68,8 +64,7 @@ function rocket_sanitize_xml( $file )
  * @param bool 	 $no_dots (default: false)
  * @return string $url The URL without protocol
  */
-function rocket_remove_url_protocol( $url, $no_dots=false )
-{
+function rocket_remove_url_protocol( $url, $no_dots=false ) {
 	$url = str_replace( array( 'http://', 'https://' ) , '', $url );
 
 	/** This filter is documented in inc/front/htaccess.php */
@@ -157,8 +152,7 @@ function rocket_get_domain( $url ) {
  * @param string $url The URL to parse
  * @return array Components of an URL
  */
-function get_rocket_parse_url( $url )
-{
+function get_rocket_parse_url( $url ) {
 	if ( ! is_string( $url ) ) {
 		return;
 	}
@@ -177,4 +171,38 @@ function get_rocket_parse_url( $url )
 	 * @param array Components of an URL
 	*/
 	return apply_filters( 'rocket_parse_url', array( $host, $path, $scheme, $query ) );
+}
+
+/**
+ * Returns paths used for cache busting
+ *
+ * @since 2.9
+ * @author Remy Perona
+ *
+ * @param string $filename name of the cache busting file
+ * @param string $extension file extension
+ * @return array Array of paths used for cache busting
+ */
+function rocket_get_cache_busting_paths( $filename, $extension ) {
+    $blog_id                = get_current_blog_id();
+    $cache_busting_path     = WP_ROCKET_CACHE_BUSTING_PATH . $blog_id . '/';
+    $cache_busting_filepath = $cache_busting_path . $filename;
+    $cache_busting_url      = get_rocket_cdn_url( WP_ROCKET_CACHE_BUSTING_URL . $blog_id . '/' . $filename, array( 'all', 'css_and_js', $extension ) );
+
+	switch ( $extension ) {
+		case 'css':
+			/** This filter is documented in inc/functions/minify.php */
+			$cache_busting_url = apply_filters( 'rocket_css_url', $cache_busting_url );
+			break;
+		case 'js':
+			/** This filter is documented in inc/functions/minify.php */
+			$cache_busting_url = apply_filters( 'rocket_js_url', $cache_busting_url );
+			break;
+	}
+
+    return array(
+    	'bustingpath' => $cache_busting_path,
+    	'filepath'    => $cache_busting_filepath,
+    	'url'         => $cache_busting_url
+    );
 }

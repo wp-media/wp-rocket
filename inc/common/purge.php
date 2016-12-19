@@ -127,19 +127,22 @@ function rocket_clean_post( $post_id ) {
     $permalink = str_replace( array( '%postname%', '%pagename%' ), $permalink_structure[1], $permalink_structure[0] );
 
 	// Add permalink
-	if( parse_url( $permalink, PHP_URL_PATH ) != '/' ) {
+	if ( parse_url( $permalink, PHP_URL_PATH ) != '/' ) {
 		array_push( $purge_urls, $permalink );	
 	}
 	
 	// Add Posts page
-	if( 'post' == $post->post_type && (int) get_option( 'page_for_posts' ) > 0 ) {
+	if ( 'post' == $post->post_type && (int) get_option( 'page_for_posts' ) > 0 ) {
 		array_push( $purge_urls, get_permalink( get_option( 'page_for_posts' ) ) );
 	}
 	
 	// Add Post Type archive
 	if ( 'post' !== $post->post_type ) {
 	    if ( $post_type_archive = get_post_type_archive_link( get_post_type( $post_id ) ) ) {
-	    	array_push( $purge_urls, $post_type_archive );
+		    $post_type_archive = trailingslashit( $post_type_archive );
+	    	array_push( $purge_urls, $post_type_archive . 'index.html' );
+	    	array_push( $purge_urls, $post_type_archive . 'index.html_gzip' );
+	    	array_push( $purge_urls, $post_type_archive . $GLOBALS['wp_rewrite']->pagination_base );
 	    }
     }
 
@@ -201,6 +204,14 @@ function rocket_clean_post( $post_id ) {
 	// Add the author page
 	$purge_author = array( get_author_posts_url( $post->post_author ) );
 	$purge_urls = array_merge( $purge_urls, $purge_author );
+
+    // Add all parents
+	$parents = get_post_ancestors( $post_id );
+	if ( ( bool ) $parents ) {
+		foreach( $parents as $parent_id ) {
+			array_push( $purge_urls, get_permalink( $parent_id ) );
+		}
+	}
 	
 	/**
 	 * Fires before cache files related with the post are deleted
@@ -228,14 +239,6 @@ function rocket_clean_post( $post_id ) {
 
     // Purge home feeds (blog & comments)
     rocket_clean_home_feeds();
-
-	// Purge all parents
-	$parents = get_post_ancestors( $post_id );
-	if ( count( $parents ) ) {
-		foreach( $parents as $parent_id ) {
-			rocket_clean_post( $parent_id );
-		}
-	}
 
 	/**
 	 * Fires after cache files related with the post are deleted
@@ -398,6 +401,9 @@ function __rocket_purge_cache() {
 				// Remove all minify cache files
 				rocket_clean_minify();
 
+                // Remove cache busting files
+                rocket_clean_cache_busting();
+
 				// Generate a new random key for minify cache file
 				$options = get_option( WP_ROCKET_SLUG );
 				$options['minify_css_key'] = create_rocket_uniqid();
@@ -505,7 +511,15 @@ function __admin_post_rocket_purge_cloudflare() {
 	}
 
 	// Purge CloudFlare
-	rocket_purge_cloudflare();
+	$cf_purge = rocket_purge_cloudflare();
+
+    if ( is_wp_error(  $cf_purge ) ) {
+        $cf_purge_result = array( 'result' => 'error', 'message' => sprintf( __( 'CloudFlare Cache purge error: %s', 'rocket' ), $cf_purge->get_error_message() ) );
+    } else {
+        $cf_purge_result = array( 'result' => 'success', 'message' => __( 'CloudFlare cache sucessfully purged', 'rocket' ) );
+    }
+
+    set_transient( $GLOBALS['current_user']->ID . '_cloudflare_purge_result', $cf_purge_result );
 
 	wp_redirect( wp_get_referer() );
 	die();
