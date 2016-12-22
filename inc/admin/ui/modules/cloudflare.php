@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 add_settings_section( 'rocket_display_cloudflare_options', 'CloudFlare', '__return_false', 'rocket_cloudflare' );
@@ -13,13 +13,13 @@ add_settings_field(
 			'type'         => 'text',
 			'label_for'    => 'cloudflare_email',
 			'label_screen' => __( 'CloudFlare Account Email', 'rocket' ),
-		)
+		),
 	)
 );
 
 if ( ! defined( 'WP_ROCKET_CF_API_KEY_HIDDEN' ) || ! WP_ROCKET_CF_API_KEY_HIDDEN ) :
 
-add_settings_field(
+	add_settings_field(
 	'rocket_cloudflare_api_key',
 	__( 'Global API Key', 'rocket' ),
 	'rocket_field',
@@ -32,7 +32,7 @@ add_settings_field(
 			'label_screen' => __( 'Global API Key', 'rocket' ),
 		),
 	)
-);
+	);
 
 endif;
 
@@ -40,11 +40,11 @@ $cf_readonly = '';
 $cf_zones    = array();
 
 if ( function_exists( 'rocket_cloudflare_valid_auth' ) ) {
-    $cf_readonly   = ( is_wp_error( rocket_cloudflare_valid_auth() ) ) ? 'readonly' : '';
+	$cf_readonly   = ( is_wp_error( rocket_cloudflare_valid_auth() ) ) ? 'readonly' : '';
 }
 
 if ( function_exists( 'get_rocket_cloudflare_zones' ) ) {
-    $cf_zones = get_rocket_cloudflare_zones();
+	$cf_zones = get_rocket_cloudflare_zones();
 }
 
 add_settings_field(
@@ -60,7 +60,7 @@ add_settings_field(
 			'label_screen' => __( 'Domain', 'rocket' ),
 			'options'      => $cf_zones,
 			'readonly'     => $cf_readonly,
-		)
+		),
 	)
 );
 add_settings_field(
@@ -76,7 +76,7 @@ add_settings_field(
 			'label_screen' => __( 'Development Mode', 'rocket' ),
 			'options'	   => array(
 				0 => __( 'Off', 'rocket' ),
-				1 => __( 'On', 'rocket' )
+				1 => __( 'On', 'rocket' ),
 			),
 			'readonly'     => $cf_readonly,
 		),
@@ -84,14 +84,14 @@ add_settings_field(
 			'type' 		   => 'helper_description',
 			'name'         => 'cloudflare_devmode',
 			'description'  => sprintf( __( 'Temporarily enter development mode on your website. This setting will automatically return to off after 3 hours if not done manually. <a href="%s" target="_blank">Learn more</a>', 'rocket' ), 'https://support.cloudflare.com/hc/en-us/articles/200168246' ),
-		)
+		),
 	)
 );
 
 if ( rocket_is_white_label() ) {
-    $rocket_cloudflare_auto_settings_label = __( 'Auto enable the optimal CloudFlare settings', 'rocket' );
+	$rocket_cloudflare_auto_settings_label = __( 'Auto enable the optimal CloudFlare settings', 'rocket' );
 } else {
-    $rocket_cloudflare_auto_settings_label = __( 'Auto enable the optimal CloudFlare settings (props WP Rocket)', 'rocket' );
+	$rocket_cloudflare_auto_settings_label = __( 'Auto enable the optimal CloudFlare settings (props WP Rocket)', 'rocket' );
 }
 
 add_settings_field(
@@ -107,7 +107,7 @@ add_settings_field(
 			'label_screen' => $rocket_cloudflare_auto_settings_label,
 			'options'	   => array(
 				0 => __( 'No', 'rocket' ),
-				1 => __( 'Yes', 'rocket' )
+				1 => __( 'Yes', 'rocket' ),
 			),
 			'readonly'     => $cf_readonly,
 		),
@@ -115,7 +115,7 @@ add_settings_field(
 			'type' 		   => 'helper_description',
 			'name'         => 'cloudflare_auto_settings',
 			'description'  => __( 'We select the best CloudFlare configuration for speed, performance grade and compatibility.', 'rocket' ),
-		)
+		),
 	)
 );
 add_settings_field(
@@ -131,20 +131,20 @@ add_settings_field(
 			'label_screen' => __( 'HTTPS Protocol Rewrite', 'rocket' ),
 			'options'	   => array(
 				0 => __( 'Off', 'rocket' ),
-				1 => __( 'On', 'rocket' )
+				1 => __( 'On', 'rocket' ),
 			),
 		),
 		array(
 			'type' 		   => 'helper_description',
 			'name'         => 'cloudflare_protocol_rewrite',
-			'description'  => sprintf( 
+			'description'  => sprintf(
 				__( 'Rewrite all images, stylesheets and scripts from using either %1$s or %2$s to using just %3$s to support %4$s.', 'rocket' ),
-				'<code>http://</code>', 
-				'<code>https://</code>', 
-				'<code>//</code>', 
+				'<code>http://</code>',
+				'<code>https://</code>',
+				'<code>//</code>',
 				'<a href="https://support.cloudflare.com/hc/en-us/articles/200170416-What-do-the-SSL-options-Off-Flexible-SSL-Full-SSL-Full-SSL-Strict-mean-" target="_blank">Flexible SSL</a>'
 			),
-		)
+		),
 	)
 );
 add_settings_field(
@@ -154,13 +154,13 @@ add_settings_field(
 	'rocket_cloudflare',
 	'rocket_display_cloudflare_options',
 	array(
-		'button'=>array(
+		'button' => array(
 			'button_label' => __( 'Clear cache', 'rocket' ),
 			'url'		   => wp_nonce_url( admin_url( 'admin-post.php?action=rocket_purge_cloudflare' ), 'rocket_purge_cloudflare' ),
 		),
-		'helper_description'=>array(
+		'helper_description' => array(
 			'name'         => 'purge_cloudflare',
-			'description'  => sprintf(__( 'Immediately purge cached resources for your website. <a href="%s" target="_blank">Learn more</a>', 'rocket' ), 'https://support.cloudflare.com/hc/en-us/articles/200169246' )
+			'description'  => sprintf( __( 'Immediately purge cached resources for your website. <a href="%s" target="_blank">Learn more</a>', 'rocket' ), 'https://support.cloudflare.com/hc/en-us/articles/200169246' ),
 		),
 	)
 );

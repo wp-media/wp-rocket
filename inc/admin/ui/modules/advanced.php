@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 add_settings_section( 'rocket_display_imp_options', __( 'Advanced options', 'rocket' ), '__return_false', 'rocket_advanced' );
@@ -14,12 +14,12 @@ add_settings_field(
 			'type'         => 'checkbox',
 			'label'        => __( 'Remove query strings from static resources', 'rocket' ),
 			'name'         => 'remove_query_strings',
-			'label_screen' => __( 'Remove query strings from static resources', 'rocket' )
+			'label_screen' => __( 'Remove query strings from static resources', 'rocket' ),
 		),
 		array(
 			'type'			=> 'helper_description',
 			'name'			=> 'rocket_remove_query_strings_desc',
-			'description'  => __( 'This will remove the version query string from static resources and encode it in the resources filename instead. e.g. style.css?ver=1.0 will become style-1.0.css', 'rocket' )
+			'description'  => __( 'This will remove the version query string from static resources and encode it in the resources filename instead. e.g. style.css?ver=1.0 will become style-1.0.css', 'rocket' ),
 		),
 		array(
 			'type'         => 'helper_description',
@@ -40,7 +40,7 @@ add_settings_field(
 		array(
 			'type'         => 'textarea',
 			'label_for'    => 'dns_prefetch',
-			'label_screen' => __('Prefetch DNS requests:', 'rocket' ),
+			'label_screen' => __( 'Prefetch DNS requests:', 'rocket' ),
 		),
 		array(
 			'type'         => 'helper_description',
@@ -51,7 +51,7 @@ add_settings_field(
 			'display'      => ! rocket_is_white_label(),
 			'type'         => 'helper_help',
 			'name'         => 'dns_prefetch',
-			'description'  => sprintf( __( 'To learn more about this option and how to use it correctly, we advise you to watch the following video: <a href="%1$s" class="fancybox">%1$s</a>.', 'rocket' ), ( defined( 'WPLANG' ) && WPLANG == 'fr_FR' ) ? 'http://www.youtube.com/embed/ElJCtUidLwc' : 'http://www.youtube.com/embed/jKMU6HgMMrA' ),
+			'description'  => sprintf( __( 'To learn more about this option and how to use it correctly, we advise you to watch the following video: <a href="%1$s" class="fancybox">%1$s</a>.', 'rocket' ), ( defined( 'WPLANG' ) && WPLANG === 'fr_FR' ) ? 'http://www.youtube.com/embed/ElJCtUidLwc' : 'http://www.youtube.com/embed/jKMU6HgMMrA' ),
 			),
 		array(
 			'type'         => 'helper_help',
@@ -100,12 +100,12 @@ add_settings_field(
 		array(
 			'type'         => 'helper_help',
 			'name'         => 'reject_uri',
-			'description'  => __( 'Enter the URL of pages to reject (one per line).', 'rocket' ) . '<br/>' . __( 'You can use regular expressions (regex).', 'rocket' )
+			'description'  => __( 'Enter the URL of pages to reject (one per line).', 'rocket' ) . '<br/>' . __( 'You can use regular expressions (regex).', 'rocket' ),
 		),
 		array(
 			'type'         => 'helper_help',
 			'name'         => 'cache_reject_ua',
-			'description'  => __( '<strong>Note:</strong> The cart and checkout pages are auto-excluded from the cache for WooCommerce, Easy Digital Download, iThemes Exchange, Jigoshop & WP-Shop.', 'rocket' )
+			'description'  => __( '<strong>Note:</strong> The cart and checkout pages are auto-excluded from the cache for WooCommerce, Easy Digital Download, iThemes Exchange, Jigoshop & WP-Shop.', 'rocket' ),
 		),
 	)
 );
@@ -124,7 +124,7 @@ add_settings_field(
 		array(
 			'type'         => 'helper_help',
 			'name'         => 'reject_cookies',
-			'description'  => __( 'List the names of the cookies (one per line).', 'rocket' )
+			'description'  => __( 'List the names of the cookies (one per line).', 'rocket' ),
 			),
 	)
 );
@@ -143,7 +143,7 @@ add_settings_field(
 		array(
 			'type'         => 'helper_help',
 			'name'         => 'query_strings',
-			'description'  => __( 'List of query strings which can be cached (one per line).', 'rocket' )
+			'description'  => __( 'List of query strings which can be cached (one per line).', 'rocket' ),
 			),
 	)
 );
@@ -162,8 +162,8 @@ add_settings_field(
 		array(
 			'type'         => 'helper_help',
 			'name'         => 'cache_reject_ua',
-			'description'  => __( 'Enter the user agents name to reject (one per line).', 'rocket' ) . '<br/>'  . __( 'You can use regular expressions (regex).', 'rocket' )
-		)
+			'description'  => __( 'Enter the user agents name to reject (one per line).', 'rocket' ) . '<br/>' . __( 'You can use regular expressions (regex).', 'rocket' ),
+		),
 	)
 );
 add_settings_field(
@@ -177,7 +177,7 @@ add_settings_field(
 			'type'         => 'checkbox',
 			'label'        => 'CSS',
 			'name'         => 'minify_css_combine_all',
-			'label_screen' => __( 'CSS Files minification', 'rocket' )
+			'label_screen' => __( 'CSS Files minification', 'rocket' ),
 		),
 		array(
 			'type'		   => 'checkbox',
@@ -188,7 +188,7 @@ add_settings_field(
 		array(
 			'type'			=> 'helper_description',
 			'name'			=> 'rocket_minify_combine_all',
-			'description'  => __( '<strong>Note:</strong> We combine the minified files in little groups <strong>to ensure the best compatibility and better performance</strong>.', 'rocket' ) . '<br/>' . __( 'However <strong>you can force the minification to create only 1 file</strong> by activating this option.', 'rocket' ) . '<br/>' . __( 'But it\'s not recommended to do that because <strong>you won\'t take advantage of the parallelization of the download</strong>: it\'s faster to download 4 files in parallel rather than one big file.', 'rocket' )
+			'description'  => __( '<strong>Note:</strong> We combine the minified files in little groups <strong>to ensure the best compatibility and better performance</strong>.', 'rocket' ) . '<br/>' . __( 'However <strong>you can force the minification to create only 1 file</strong> by activating this option.', 'rocket' ) . '<br/>' . __( 'But it\'s not recommended to do that because <strong>you won\'t take advantage of the parallelization of the download</strong>: it\'s faster to download 4 files in parallel rather than one big file.', 'rocket' ),
 		),
 		array(
 			'type'			=> 'helper_warning',
@@ -212,7 +212,7 @@ add_settings_field(
 		array(
 			'type'         => 'helper_help',
 			'name'         => 'exclude_css',
-			'description'  => __( 'Enter the URL of <b>CSS</b> files to reject (one per line).', 'rocket' ) . '<br/>' . __( 'You can use regular expressions (regex).', 'rocket' )
+			'description'  => __( 'Enter the URL of <b>CSS</b> files to reject (one per line).', 'rocket' ) . '<br/>' . __( 'You can use regular expressions (regex).', 'rocket' ),
 			),
 	)
 );
@@ -231,7 +231,7 @@ add_settings_field(
 		array(
 			'type'         => 'helper_help',
 			'name'         => 'exclude_js',
-			'description'  => __( 'Enter the URL of <b>JS</b> files to reject (one per line).', 'rocket' ) . '<br/>' . __( 'You can use regular expressions (regex).', 'rocket' )
+			'description'  => __( 'Enter the URL of <b>JS</b> files to reject (one per line).', 'rocket' ) . '<br/>' . __( 'You can use regular expressions (regex).', 'rocket' ),
 			),
 	)
 );
@@ -248,19 +248,19 @@ add_settings_field(
 			'name'                     => 'minify_js_in_footer',
 			'placeholder'              => 'http://',
 			'repeater_drag_n_drop'     => true,
-			'repeater_label_add_field' => __( 'Add URL', 'rocket' )
+			'repeater_label_add_field' => __( 'Add URL', 'rocket' ),
 		),
 		array(
 			'type'         => 'helper_help',
 			'name'         => 'minify_js_in_footer',
 			'description'  => __( 'Empty the field to remove it.', 'rocket' ),
-			'class'	       => 'hide-if-js'
+			'class'	       => 'hide-if-js',
 		),
 		array(
 			'type'         => 'helper_warning',
 			'name'         => 'minify_js_in_footer',
-			'description'  => __( 'You must specify the complete URL of the files.', 'rocket' )
-		)
+			'description'  => __( 'You must specify the complete URL of the files.', 'rocket' ),
+		),
 	)
 );
 add_settings_field(
@@ -276,18 +276,18 @@ add_settings_field(
 		array(
 			'type'         => 'helper_help',
 			'name'         => 'deferred_js',
-			'description'  => __( 'You can add JavaScript files that will be loaded asynchronously at the same time as the page loads.', 'rocket' )
+			'description'  => __( 'You can add JavaScript files that will be loaded asynchronously at the same time as the page loads.', 'rocket' ),
 			),
 		array(
 			'type'         => 'helper_help',
 			'name'         => 'deferred_js',
 			'description'  => __( 'Empty the field to remove it.', 'rocket' ),
-			'class'	       => 'hide-if-js'
+			'class'	       => 'hide-if-js',
 			),
 		array(
 			'type'         => 'helper_warning',
 			'name'         => 'deferred_js',
-			'description'  => __( 'You must specify the complete URL of the original files. Do NOT add URLs of minified files generated by WP Rocket.', 'rocket' )
+			'description'  => __( 'You must specify the complete URL of the original files. Do NOT add URLs of minified files generated by WP Rocket.', 'rocket' ),
 			),
 	)
 );

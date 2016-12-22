@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 add_settings_section( 'rocket_display_apikey_options', __( 'License validation', 'rocket' ), '__return_false', 'rocket_apikey' );
@@ -17,7 +17,7 @@ add_settings_field(
 		array(
 			'type'			=> 'helper_help',
 			'name'			=> 'consumer_key',
-			'description'	=> __( 'Please enter the API key obtained after your purchase.', 'rocket' )
+			'description'	=> __( 'Please enter the API key obtained after your purchase.', 'rocket' ),
 		),
 	)
 );
@@ -36,7 +36,7 @@ add_settings_field(
 		array(
 			'type'         => 'helper_help',
 			'name'         => 'consumer_email',
-			'description'  => __( 'The one used for the purchase, in your support account.', 'rocket' )
+			'description'  => __( 'The one used for the purchase, in your support account.', 'rocket' ),
 		),
 	)
 );

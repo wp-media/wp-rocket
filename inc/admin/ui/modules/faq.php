@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 add_settings_section( 'rocket_display_faq', __( 'FAQ', 'rocket' ), '__return_false', 'rocket_faq' );

@@ -1,32 +1,32 @@
 <?php
 defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 
-/*
+add_action( 'admin_init', 'rocket_upgrader' );
+/**
  * Tell WP what to do when admin is loaded aka upgrader
  *
  * @since 1.0
  */
-add_action( 'admin_init', 'rocket_upgrader' );
 function rocket_upgrader() {
-	// Grab some infos
+	// Grab some infos.
 	$actual_version = get_rocket_option( 'version' );
-	// You can hook the upgrader to trigger any action when WP Rocket is upgraded
-	// first install
-	if ( ! $actual_version ){
+	// You can hook the upgrader to trigger any action when WP Rocket is upgraded.
+	// first install.
+	if ( ! $actual_version ) {
 		do_action( 'wp_rocket_first_install' );
 	}
-	// already installed but got updated
-	elseif ( WP_ROCKET_VERSION != $actual_version ) {
+	// already installed but got updated.
+	elseif ( WP_ROCKET_VERSION !== $actual_version ) {
 		do_action( 'wp_rocket_upgrade', WP_ROCKET_VERSION, $actual_version );
 	}
 
-	// If any upgrade has been done, we flush and update version #
+	// If any upgrade has been done, we flush and update version number.
 	if ( did_action( 'wp_rocket_first_install' ) || did_action( 'wp_rocket_upgrade' ) ) {
 		flush_rocket_htaccess();
 
 		rocket_renew_all_boxes( 0, array( 'rocket_warning_plugin_modification' ) );
 
-		$options = get_option( WP_ROCKET_SLUG ); // do not use get_rocket_option() here
+		$options = get_option( WP_ROCKET_SLUG ); // do not use get_rocket_option() here.
 		$options['version'] = WP_ROCKET_VERSION;
 
 		$keys = rocket_check_key( 'live' );
@@ -36,10 +36,10 @@ function rocket_upgrader() {
 
 		update_option( WP_ROCKET_SLUG, $options );
 
-        // Empty OPCache to prevent issue where plugin is updated but still showing as old version in WP admin
-        if ( function_exists( 'opcache_reset' ) ) {
-            @opcache_reset();
-        }
+		// Empty OPCache to prevent issue where plugin is updated but still showing as old version in WP admin.
+		if ( function_exists( 'opcache_reset' ) ) {
+			@opcache_reset();
+		}
 	} else {
 		if ( empty( $_POST ) && rocket_valid_key() ) {
 			rocket_check_key( 'transient_30' );
@@ -47,34 +47,34 @@ function rocket_upgrader() {
 	}
 	/** This filter is documented in inc/admin-bar.php */
 	if ( ! rocket_valid_key() && current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) &&
-		( ! isset( $_GET['page'] ) || 'wprocket' != $_GET['page'] ) ) {
+		( ! isset( $_GET['page'] ) || 'wprocket' !== $_GET['page'] ) ) {
 		add_action( 'admin_notices', 'rocket_need_api_key' );
 	}
 }
 
+add_action( 'wp_rocket_first_install', 'rocket_first_install' );
 /**
  * Keeps this function up to date at each version
  *
  * @since 1.0
  */
-add_action( 'wp_rocket_first_install', 'rocket_first_install' );
 function rocket_first_install() {
-	// Generate an random key for cache dir of user
+	// Generate an random key for cache dir of user.
 	$secret_cache_key = create_rocket_uniqid();
 
-	// Generate an random key for minify md5 filename
+	// Generate an random key for minify md5 filename.
 	$minify_css_key = create_rocket_uniqid();
 	$minify_js_key = create_rocket_uniqid();
 
-	// Create Option
+	// Create Option.
 	add_option( WP_ROCKET_SLUG,
-        /*
-         * Filters the default rocket options array
-         *
-         * @since 2.8
-         *
-         * @param array Array of default rocket options
-         */
+		/**
+		 * Filters the default rocket options array
+		 *
+		 * @since 2.8
+		 *
+		 * @param array Array of default rocket options
+		 */
 		apply_filters( 'rocket_first_install_options', array(
 			'secret_cache_key'            => $secret_cache_key,
 			'cache_mobile'                => 0,
@@ -147,23 +147,26 @@ function rocket_first_install() {
 	rocket_reset_white_label_values( false );
 }
 
+add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );
 /**
  * What to do when Rocket is updated, depending on versions
  *
  * @since 1.0
+ *
+ * @param string $wp_rocket_version Latest WP Rocket version.
+ * @param string $actual_version Installed WP Rocket version.
  */
-add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );
 function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 	if ( version_compare( $actual_version, '1.0.1', '<' ) ) {
 		wp_clear_scheduled_hook( 'rocket_check_event' );
 	}
 
 	if ( version_compare( $actual_version, '1.2.0', '<' ) ) {
-		// Delete old WP Rocket cache dir
+		// Delete old WP Rocket cache dir.
 		rocket_rrmdir( WP_ROCKET_PATH . 'cache' );
 
-		// Create new WP Rocket cache dir
-		if( ! is_dir( WP_ROCKET_CACHE_PATH ) ) {
+		// Create new WP Rocket cache dir.
+		if ( ! is_dir( WP_ROCKET_CACHE_PATH ) ) {
 			mkdir( WP_ROCKET_CACHE_PATH );
 		}
 	}
@@ -173,15 +176,15 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 	}
 
 	if ( version_compare( $actual_version, '1.3.3', '<' ) ) {
-		// Clean cache
+		// Clean cache.
 		rocket_clean_domain();
 
-		// Create cache files
+		// Create cache files.
 		run_rocket_bot( 'cache-preload' );
 	}
 
 	if ( version_compare( $actual_version, '2.0', '<' ) ) {
-		// Add secret cache key
+		// Add secret cache key.
 		$options = get_option( WP_ROCKET_SLUG );
 		$options['secret_cache_key'] = create_rocket_uniqid();
 		update_option( WP_ROCKET_SLUG, $options );
@@ -193,110 +196,110 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 			$wp_filesystem = new WP_Filesystem_Direct( new StdClass() );
 		}
 
-		// Get chmod of old folder cache
+		// Get chmod of old folder cache.
 		$chmod = is_dir( WP_CONTENT_DIR . '/wp-rocket-cache' ) ? substr( sprintf( '%o', fileperms( WP_CONTENT_DIR . '/wp-rocket-cache' ) ), -4 ) : CHMOD_WP_ROCKET_CACHE_DIRS;
 
-		// Check and create cache folder in wp-content if not already exist
-		if( ! $wp_filesystem->is_dir( WP_CONTENT_DIR . '/cache' ) ) {
-			$wp_filesystem->mkdir( WP_CONTENT_DIR . '/cache' , octdec($chmod) );
+		// Check and create cache folder in wp-content if not already exist.
+		if ( ! $wp_filesystem->is_dir( WP_CONTENT_DIR . '/cache' ) ) {
+			$wp_filesystem->mkdir( WP_CONTENT_DIR . '/cache' , octdec( $chmod ) );
 		}
 
-		$wp_filesystem->mkdir( WP_CONTENT_DIR . '/cache/wp-rocket' , octdec($chmod) );
+		$wp_filesystem->mkdir( WP_CONTENT_DIR . '/cache/wp-rocket' , octdec( $chmod ) );
 
-		// Move old cache folder in new path
-		@rename( WP_CONTENT_DIR . '/wp-rocket-cache', WP_CONTENT_DIR . '/cache/wp-rocket'  );
+		// Move old cache folder in new path.
+		@rename( WP_CONTENT_DIR . '/wp-rocket-cache', WP_CONTENT_DIR . '/cache/wp-rocket' );
 
-		// Add WP_CACHE constant in wp-config.php
+		// Add WP_CACHE constant in wp-config.php.
 		set_rocket_wp_cache_define( true );
 
-		// Create advanced-cache.php file
+		// Create advanced-cache.php file.
 		rocket_generate_advanced_cache_file();
 
-		// Create config file
+		// Create config file.
 		rocket_generate_config_file();
 	}
 
 	if ( version_compare( $actual_version, '2.1', '<' ) ) {
 		rocket_reset_white_label_values( false );
 
-		// Create minify cache folder if not exist
+		// Create minify cache folder if not exist.
 	    if ( ! is_dir( WP_ROCKET_MINIFY_CACHE_PATH ) ) {
 			rocket_mkdir_p( WP_ROCKET_MINIFY_CACHE_PATH );
 	    }
 
-		// Create config domain folder if not exist
+		// Create config domain folder if not exist.
 	    if ( ! is_dir( WP_ROCKET_CONFIG_PATH ) ) {
 			rocket_mkdir_p( WP_ROCKET_CONFIG_PATH );
 	    }
 
-	    // Create advanced-cache.php file
+	    // Create advanced-cache.php file.
 		rocket_generate_advanced_cache_file();
 
-	    // Create config file
+	    // Create config file.
 		rocket_generate_config_file();
 	}
 
 	if ( version_compare( $actual_version, '2.3.3', '<' ) ) {
-		// Clean cache
+		// Clean cache.
 		rocket_clean_domain();
 
-		// Create cache files
+		// Create cache files.
 		run_rocket_bot( 'cache-preload' );
 	}
 
 	if ( version_compare( $actual_version, '2.3.9', '<' ) ) {
-		// Regenerate config file
+		// Regenerate config file.
 		rocket_generate_config_file();
 	}
 
 	if ( version_compare( $actual_version, '2.4.1', '<' ) ) {
-		// Regenerate advanced-cache.php file
+		// Regenerate advanced-cache.php file.
 		rocket_generate_advanced_cache_file();
 		delete_transient( 'rocket_ask_for_update' );
 	}
 
 	if ( version_compare( $actual_version, '2.6', '<' ) ) {
-		// Activate Inline CSS & JS minification if HTML minification is activated
+		// Activate Inline CSS & JS minification if HTML minification is activated.
 		$options = get_option( WP_ROCKET_SLUG );
 
-		if ( !empty( $options['minify_html'] ) ) {
+		if ( ! empty( $options['minify_html'] ) ) {
 			$options['minify_html_inline_css'] = 1;
 			$options['minify_html_inline_js']  = 1;
 		}
-		
+
 		update_option( WP_ROCKET_SLUG, $options );
 
-		// Regenerate advanced-cache.php file
-		rocket_generate_advanced_cache_file();
-	}
-	
-	if ( version_compare( $actual_version, '2.7', '<' ) ) {
-		// Regenerate advanced-cache.php file
-		rocket_generate_advanced_cache_file();
-		
-		// Regenerate config file
-		rocket_generate_config_file();
-	}
-	
-	if ( version_compare( $actual_version, '2.7.1', '<' ) ) {
-		// Regenerate advanced-cache.php file
+		// Regenerate advanced-cache.php file.
 		rocket_generate_advanced_cache_file();
 	}
 
-    if ( version_compare( $actual_version, '2.8', '<' ) ) {
+	if ( version_compare( $actual_version, '2.7', '<' ) ) {
+		// Regenerate advanced-cache.php file.
+		rocket_generate_advanced_cache_file();
+
+		// Regenerate config file.
+		rocket_generate_config_file();
+	}
+
+	if ( version_compare( $actual_version, '2.7.1', '<' ) ) {
+		// Regenerate advanced-cache.php file.
+		rocket_generate_advanced_cache_file();
+	}
+
+	if ( version_compare( $actual_version, '2.8', '<' ) ) {
 		$options                              = get_option( WP_ROCKET_SLUG );
 		$options['manual_preload']            = 1;
 		$options['automatic_preload']         = 1;
 		$options['sitemap_preload_url_crawl'] = '500000';
-		
+
 		update_option( WP_ROCKET_SLUG, $options );
 	}
 
-    // Deactivate CloudFlare completely if PHP Version is lower than 5.4
-    if ( version_compare( $actual_version, '2.8.16', '<' ) && phpversion() < '5.4' ) {
-        $options                                = get_option( WP_ROCKET_SLUG );
-        $options['do_cloudflare']               = 0;
-        $options['cloudflare_email']            = '';
+	// Deactivate CloudFlare completely if PHP Version is lower than 5.4.
+	if ( version_compare( $actual_version, '2.8.16', '<' ) && phpversion() < '5.4' ) {
+		$options                                = get_option( WP_ROCKET_SLUG );
+		$options['do_cloudflare']               = 0;
+		$options['cloudflare_email']            = '';
 		$options['cloudflare_api_key']          = '';
 		$options['cloudflare_domain']           = '';
 		$options['cloudflare_devmode']          = 0;
@@ -304,14 +307,14 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		$options['cloudflare_auto_settings']    = 0;
 		$options['cloudflare_old_settings']     = '';
 
-        update_option( WP_ROCKET_SLUG, $options );
-    }
+		update_option( WP_ROCKET_SLUG, $options );
+	}
 
-    // Add a value to the new CF zone_id field if the CF domain is set
-    if ( version_compare( $actual_version, '2.8.21', '<' ) && phpversion() >= '5.4' ) {
-        $options = get_option( WP_ROCKET_SLUG );
-        if ( 0 < $options['do_cloudflare'] && $options['cloudflare_domain'] !== '' ) {
-            require( WP_ROCKET_ADMIN_PATH . 'compat/cf-upgrader-5.4.php' );
-        }
-    }
+	// Add a value to the new CF zone_id field if the CF domain is set.
+	if ( version_compare( $actual_version, '2.8.21', '<' ) && phpversion() >= '5.4' ) {
+		$options = get_option( WP_ROCKET_SLUG );
+		if ( 0 < $options['do_cloudflare'] && '' !== $options['cloudflare_domain'] ) {
+			require( WP_ROCKET_ADMIN_PATH . 'compat/cf-upgrader-5.4.php' );
+		}
+	}
 }
