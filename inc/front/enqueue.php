@@ -140,7 +140,9 @@ function rocket_cache_dynamic_resource( $src ) {
 
     $full_src = ( substr( $src, 0, 2 ) === '//' ) ? rocket_add_url_protocol( $src ) : $src;
 
-	switch ( current_filter() ) {
+	$current_filter = current_filter();
+
+	switch ( $current_filter ) {
 		case 'script_loader_src':
 			$extension = '.js';
 			break;
