@@ -15,11 +15,7 @@ if ( class_exists( 'WR2X_Admin' ) ) :
 	function rocket_cdn_on_images_from_wp_retina_x2( $url ) {
 		global $wr2x_admin;
 
-		if ( ! method_exists( $wr2x_admin, 'is_pro' ) ) {
-			return $url;
-		}
-
-		if ( ! $wr2x_admin->is_pro() ) {
+		if ( ! method_exists( $wr2x_admin, 'is_pro' ) || ! $wr2x_admin->is_pro() ) {
 			return $url;
 		}
 		
