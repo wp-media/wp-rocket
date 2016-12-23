@@ -2,7 +2,7 @@
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 if ( defined( 'SCCSS_FILE' ) ) :
-	add_action( 'wp_enqueue_scripts', 'rocket_cache_sccss', 1 );
+	add_action( 'wp_enqueue_scripts', 'rocket_cache_sccss', 98 );
 	add_action( 'update_option_sccss_settings', 'rocket_delete_sccss_cache_file' );
 	add_filter( 'rocket_cache_busting_filename', 'rocket_sccss_cache_busting_filename' );
 endif;
