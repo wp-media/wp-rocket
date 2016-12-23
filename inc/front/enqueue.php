@@ -163,6 +163,7 @@ function rocket_cache_dynamic_resource( $src ) {
     }
 
     $relative_src_path = ltrim( $relative_src_path, '/' );
+    $full_src_path     = ABSPATH . dirname( $relative_src_path );
     /*
      * Filters the dynamic resource cache filename
      *
@@ -184,11 +185,21 @@ function rocket_cache_dynamic_resource( $src ) {
         return $src;
     }
 
+	if ( 'style_loader_src' === $current_filter ) {
+        if ( ! class_exists( 'Minify_CSS_UriRewriter' ) ) {
+            require( WP_ROCKET_PATH . 'min/lib/Minify/CSS/UriRewriter.php' );
+        }
+        // Rewrite import/url in CSS content to add the absolute path to the file
+        $file_content = Minify_CSS_UriRewriter::rewrite( $response['body'], $full_src_path );
+    } else {
+        $file_content = $response['body'];
+    }
+
     if ( ! is_dir( $cache_busting_paths['bustingpath'] ) ) {
         rocket_mkdir_p( $cache_busting_paths['bustingpath'] );
     }
 
-    rocket_put_content( $cache_busting_paths['filepath'], $response['body'] );
+    rocket_put_content( $cache_busting_paths['filepath'], $file_content );
 
     return $cache_busting_paths['url'];
 }
