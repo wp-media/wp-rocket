@@ -3,14 +3,15 @@
 # Translators:
 # Deblyn Prado, 2014
 # Deblyn Prado, 2014
+# Dionizio Bonfim Bach <translations@djio.com.br>, 2016
 # Rafael Funchal <rafaelfunchal@gmail.com>, 2014-2015
 msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
 "POT-Creation-Date: 2016-12-07 14:59:58+00:00\n"
-"PO-Revision-Date: 2016-12-15 00:13+0000\n"
-"Last-Translator: wpmedia <contact@wp-media.me>\n"
+"PO-Revision-Date: 2016-12-24 00:04+0000\n"
+"Last-Translator: Dionizio Bonfim Bach <translations@djio.com.br>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/wp-media/wp-rocket/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -28,12 +29,12 @@ msgstr ""
 
 #: inc/3rd-party/all-in-one-seo-pack.php:40
 msgid "All in One SEO XML sitemap"
-msgstr ""
+msgstr "Sitemap em XML do All in One SEO"
 
 #: inc/3rd-party/all-in-one-seo-pack.php:42 inc/3rd-party/jetpack.php:43
 #: inc/3rd-party/yoast-seo.php:44
 msgid "Preload the sitemap from the %s plugin"
-msgstr "Pré-carregar o mapa do site do plugin %s"
+msgstr "Pré-carregar o sitemap do plugin %s"
 
 #: inc/3rd-party/all-in-one-seo-pack.php:49 inc/3rd-party/jetpack.php:50
 #: inc/3rd-party/yoast-seo.php:51
@@ -69,7 +70,7 @@ msgstr "Limpar este cache"
 
 #: inc/admin/admin.php:293 inc/admin/admin.php:302
 msgid "%s Update Rollback"
-msgstr "Reversão de atualização de %s"
+msgstr "Reversão da atualização de %s"
 
 #: inc/admin/faq.inc.php:2
 msgid "FAQ's Table of Content"
@@ -80,21 +81,21 @@ msgid ""
 "<a href=\"http://docs.wp-rocket.me/article/67-what-exactly-does-wp-rocket-"
 "do?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
 "target=\"_blank\">What exactly does WP Rocket do?</a>"
-msgstr ""
+msgstr "<a href=\"http://docs.wp-rocket.me/article/67-what-exactly-does-wp-rocket-do?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">O que exatamente faz o WP Rocket?</a>"
 
 #: inc/admin/faq.inc.php:5
 msgid ""
 "<a href=\"http://docs.wp-rocket.me/article/77-my-license-has-expired-what-"
 "should-i-do?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
 "target=\"_blank\">My license has expired, what should I do?</a>"
-msgstr ""
+msgstr "<a href=\"http://docs.wp-rocket.me/article/77-my-license-has-expired-what-should-i-do?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">Minha licença expirou, o que devo fazer?</a>"
 
 #: inc/admin/faq.inc.php:6
 msgid ""
 "<a href=\"http://docs.wp-rocket.me/article/66-how-many-sites-is-my-key-"
 "valid-for?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
 "target=\"_blank\">How many sites is my key valid for?</a>"
-msgstr ""
+msgstr "<a href=\"http://docs.wp-rocket.me/article/66-how-many-sites-is-my-key-valid-for?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">Para quantos sites é minha chave é válida?</a>"
 
 #: inc/admin/faq.inc.php:7
 msgid ""
@@ -103,7 +104,7 @@ msgid ""
 "should-i-d?utm_source=plugin&utm_medium=faq&utm_campaign=doco\" "
 "target=\"_blank\">I want to change the URL of my website associated with my "
 "license, what should I do?</a>"
-msgstr ""
+msgstr "<a href=\"http://docs.wp-rocket.me/article/72-i-want-to-change-the-url-of-my-site-associated-with-my-license-what-should-i-d?utm_source=plugin&utm_medium=faq&utm_campaign=doco\" target=\"_blank\">Eu quero mudar o URL do meu site associado com minha licença, o que devo fazer?</a>"
 
 #: inc/admin/faq.inc.php:8
 msgid ""
@@ -111,35 +112,35 @@ msgid ""
 "basic-options-on-does-wp-rocket-"
 "work?utm_source=plugin&utm_medium=faq&utm_campaign=doc\">I haven't turned "
 "any of the basic options on, does WP Rocket work?</a>"
-msgstr ""
+msgstr "<a href=\"http://docs.wp-rocket.me/article/68-i-have-turned-any-of-the-basic-options-on-does-wp-rocket-work?utm_source=plugin&utm_medium=faq&utm_campaign=doc\">Não liguei nenhuma das opções básicas, o WP Rocket funciona?</a>"
 
 #: inc/admin/faq.inc.php:9
 msgid ""
 "<a href=\"http://docs.wp-rocket.me/article/78-how-often-is-the-cache-"
 "updated?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
 "target=\"_blank\">How often is the cache updated?</a>"
-msgstr ""
+msgstr "<a href=\"http://docs.wp-rocket.me/article/78-how-often-is-the-cache-updated?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">Com que frequência é o cache atualizado?</a>"
 
 #: inc/admin/faq.inc.php:10
 msgid ""
 "<a href=\"http://docs.wp-rocket.me/article/70-does-wp-rocket-work-with-"
 "default-permalinks?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
 "target=\"_blank\">Does WP Rocket work with default permalinks?</a>"
-msgstr ""
+msgstr "<a href=\"http://docs.wp-rocket.me/article/70-does-wp-rocket-work-with-default-permalinks?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">O WP Rocket funciona com os links permanentes padrão?</a>"
 
 #: inc/admin/faq.inc.php:11
 msgid ""
 "<a href=\"http://docs.wp-rocket.me/article/71-which-web-servers-is-wp-"
 "rocket-compatible-with?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
 "target=\"_blank\">Which web servers WP Rocket is compatible with?</a>"
-msgstr ""
+msgstr "<a href=\"http://docs.wp-rocket.me/article/71-which-web-servers-is-wp-rocket-compatible-with?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">Com quais servidores web o WP Rocket é compatível?</a>"
 
 #: inc/admin/faq.inc.php:12
 msgid ""
 "<a href=\"http://docs.wp-rocket.me/article/8-how-the-cache-is-"
 "preloaded?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
 "target=\"_blank\">How is the Cache Preloaded?</a>"
-msgstr ""
+msgstr "<a href=\"http://docs.wp-rocket.me/article/8-how-the-cache-is-preloaded?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">Como é que o cache é pré-carregado?</a>"
 
 #: inc/admin/faq.inc.php:13
 msgid ""
@@ -148,14 +149,14 @@ msgid ""
 "site?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
 "target=\"_blank\">Which tools should I use to measure the performance of my "
 "website?</a>"
-msgstr ""
+msgstr "<a href=\"http://docs.wp-rocket.me/article/69-which-tools-should-i-use-to-measure-the-performance-of-my-site?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">Quais ferramentas eu devo usar para medir o desempenho do meu site?</a>"
 
 #: inc/admin/faq.inc.php:14
 msgid ""
 "<a href=\"http://docs.wp-rocket.me/article/115-can-i-use-wp-rocket-with-"
 "sitegrounds-supercacher?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
 "target=\"_blank\">Can I Use WP Rocket With Siteground's SuperCacher?</a>"
-msgstr ""
+msgstr "<a href=\"http://docs.wp-rocket.me/article/115-can-i-use-wp-rocket-with-sitegrounds-supercacher?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">Posso usar o WP Rocket com o SuperCacher do Siteground?</a>"
 
 #: inc/admin/faq.inc.php:15
 msgid ""
@@ -164,14 +165,14 @@ msgid ""
 "cache?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
 "target=\"_blank\">Is WP Rocket compatible with others cache plugins like WP "
 "Super Cache or W3 Total Cache?</a>"
-msgstr ""
+msgstr "<a href=\"http://docs.wp-rocket.me/article/73-is-wp-rocket-compatible-with-others-cache-plugins-like-wp-super-cache-or-w3-total-cache?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">o WP Rocket é compatível com outros plugins de cache como o WP Super Cache ou W3 Total Cache?</a>"
 
 #: inc/admin/faq.inc.php:16
 msgid ""
 "<a href=\"http://docs.wp-rocket.me/article/75-is-wp-rocket-compatible-with-e"
 "-commerce-plugins?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
 "target=\"_blank\">Is WP Rocket compatible with e-commerce plugins?</a>"
-msgstr ""
+msgstr "<a href=\"http://docs.wp-rocket.me/article/75-is-wp-rocket-compatible-with-e-commerce-plugins?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">O WP Rocket é compatível com plugins de comércio eletrônico?</a>"
 
 #: inc/admin/faq.inc.php:17
 msgid ""
@@ -180,7 +181,7 @@ msgid ""
 "polylang?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
 "target=\"_blank\">Is WP Rocket compatible with WPML, qTranslate or "
 "Polylang?</a>"
-msgstr ""
+msgstr "<a href=\"http://docs.wp-rocket.me/article/76-is-wp-rocket-compatible-with-wpml-qtranslate-or-polylang?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">O WP Rocket é compatível com WPML, qTranslate ou Polylang?</a>"
 
 #: inc/admin/faq.inc.php:18
 msgid ""
@@ -189,7 +190,7 @@ msgid ""
 "detector?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
 "target=\"_blank\">Is WP Rocket compatible with WP Touch, WordPress Mobile "
 "Pack and WP Mobile Detector?</a>"
-msgstr ""
+msgstr "<a href=\"http://docs.wp-rocket.me/article/74-is-wp-rocket-compatible-with-wp-touch-wordpress-mobile-pack-and-wp-mobile-detector?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">O WP Rocket  é compatível com WP Touch, WordPress Mobile Pack e WP Mobile Detector?</a>"
 
 #: inc/admin/faq.inc.php:19
 msgid ""
@@ -198,35 +199,35 @@ msgid ""
 "should-i-do?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
 "target=\"_blank\">Reports from PageSpeed and YSlow tell me that the content "
 "is not gziped and/or did not expire, what should I do?</a>"
-msgstr ""
+msgstr "<a href=\"http://docs.wp-rocket.me/article/79-reports-from-pagespeed-and-yslow-tell-me-that-the-content-is-not-gziped-and-or-did-not-expire-what-should-i-do?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">Relatórios do PageSpeed e YSlow me dizem que o conteúdo não usa gzip e/ou não expira, o que devo fazer?</a>"
 
 #: inc/admin/faq.inc.php:20
 msgid ""
 "<a href=\"http://docs.wp-rocket.me/article/106-my-site-is-"
 "broken?utm_source=plugin&utm_medium=faq&utm_campaign=doc\">What should I do "
 "if WP Rocket distorts my website display?</a>"
-msgstr ""
+msgstr "<a href=\"http://docs.wp-rocket.me/article/106-my-site-is-broken?utm_source=plugin&utm_medium=faq&utm_campaign=doc\">O que devo fazer se o WP Rocket distorce a aparência meu site?</a>"
 
 #: inc/admin/faq.inc.php:21
 msgid ""
 "<a href=\"http://docs.wp-rocket.me/article/54-exclude-pages-from-the-"
 "cache?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
 "target=\"_blank\">How to exclude a particular page from caching?</a>"
-msgstr ""
+msgstr "<a href=\"http://docs.wp-rocket.me/article/54-exclude-pages-from-the-cache?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">Como impedir uma página específica de ficar em cache?</a>"
 
 #: inc/admin/options.php:104
 msgid "Your CloudFlare credentials are valid."
-msgstr ""
+msgstr "Suas credenciais do CloudFlare são válidas."
 
 #: inc/admin/options.php:108
 msgid "Your CloudFlare credentials are invalid!"
-msgstr ""
+msgstr "Suas credenciais do CloudFlare são inválidas!"
 
 #: inc/admin/options.php:113
 msgid ""
 "<strong>Note:</strong> Where do I find my CloudFlare API key? <a href=\"%s\""
 " target=\"_blank\">Learn more</a>"
-msgstr "<strong>Nota:</strong> Onde localizo minha chave da API CloudFlare? <a href=\"%s\" target=\"_blank\">Saiba mais</a>"
+msgstr "<strong>Nota:</strong> Onde eu localizo a minha chave de API do CloudFlare? <a href=\"%s\" target=\"_blank\">Saiba mais</a>"
 
 #: inc/admin/options.php:163
 msgid "Save and optimize"
@@ -294,7 +295,7 @@ msgstr "Opções Avançadas"
 
 #: inc/admin/options.php:522
 msgid "Database"
-msgstr "Base de dados"
+msgstr "Banco de dados"
 
 #: inc/admin/options.php:523
 msgid "Preload"
@@ -306,7 +307,7 @@ msgstr "CDN"
 
 #: inc/admin/options.php:534 inc/admin/ui/modules/white-label.php:4
 msgid "White Label"
-msgstr "Etiqueta em branco"
+msgstr "Identidade"
 
 #: inc/admin/options.php:536 inc/admin/ui/modules/tools.php:4
 msgid "Tools"
@@ -355,43 +356,43 @@ msgstr "Ajustes salvos."
 
 #: inc/admin/options.php:1049
 msgid "CloudFlare development mode error: %s"
-msgstr ""
+msgstr "Erro no modo de desenvolvimento do CloudFlare: %s"
 
 #: inc/admin/options.php:1051
 msgid "CloudFlare development mode %s"
-msgstr ""
+msgstr "O modo de desenvolvimento no CloudFlare está %s"
 
 #: inc/admin/options.php:1063
 msgid "CloudFlare cache level error: %s"
-msgstr ""
+msgstr "Erro do nível de cache no CloudFlare: %s"
 
 #: inc/admin/options.php:1065
 msgid "CloudFlare cache level set to %s"
-msgstr ""
+msgstr "O nível de cache do CloudFlare foi definido para %s"
 
 #: inc/admin/options.php:1073
 msgid "CloudFlare minification error: %s"
-msgstr ""
+msgstr "Erro de minificação do CloudFlare: %s"
 
 #: inc/admin/options.php:1075
 msgid "CloudFlare minification %s"
-msgstr ""
+msgstr "Mitificação no CloudFlare %s"
 
 #: inc/admin/options.php:1083
 msgid "CloudFlare rocket loader error: %s"
-msgstr ""
+msgstr "Erro no carregador foguete do CloudFlare: %s"
 
 #: inc/admin/options.php:1085
 msgid "CloudFlare rocket loader %s"
-msgstr ""
+msgstr "Carregador foguete do CloudFlare %s"
 
 #: inc/admin/options.php:1093
 msgid "CloudFlare browser cache error: %s"
-msgstr ""
+msgstr "Erro do cache de navegador no CloudFlare: %s"
 
 #: inc/admin/options.php:1095
 msgid "CloudFlare browser cache set to %s seconds"
-msgstr ""
+msgstr "O cache do navegador no CloudFlare foi definido para %s segundos"
 
 #: inc/admin/options.php:1227
 msgid ""
@@ -432,7 +433,7 @@ msgstr "Você tem certeza?"
 
 #: inc/admin/ui/enqueue.php:26
 msgid "All fields are required!"
-msgstr "Todos os campos são obrigatórios."
+msgstr "Todos os campos são obrigatórios!"
 
 #: inc/admin/ui/enqueue.php:28
 msgid "CloudFlare Settings"
@@ -440,7 +441,7 @@ msgstr "Configurações do CloudFlare"
 
 #: inc/admin/ui/enqueue.php:29
 msgid "Click \"Save Changes\" to activate the Cloudflare tab."
-msgstr "Clique em \"Salvar alterações\" para ativar a aba CloudFlare."
+msgstr "Clique em \"Salvar alterações\" para ativar a aba do CloudFlare."
 
 #: inc/admin/ui/enqueue.php:31
 msgid "Transmitting across the galaxy..."
@@ -493,7 +494,7 @@ msgid ""
 "Well, well, looks like you've got yourself a \"nulled\" version! We don't "
 "provide support to crackers or pirates, so you will need a valid license to "
 "proceed."
-msgstr ""
+msgstr "Pois então, parece que você tem uma versão \"irregular\" do plugin! Não fornecemos suporte para crackers ou piratas, então você precisa de uma licença válida para prosseguir."
 
 #: inc/admin/ui/enqueue.php:45
 msgid ""
@@ -550,7 +551,7 @@ msgstr "Nunca armazenar esta página em cache"
 
 #: inc/admin/ui/meta-boxes.php:66
 msgid "Activate these options on this post:"
-msgstr "Ativar essas opções nesse post:"
+msgstr "Ativar essas opções neste post:"
 
 #: inc/admin/ui/meta-boxes.php:69
 msgid "Images LazyLoad"
@@ -580,28 +581,28 @@ msgstr "Primeiro ative a opção %s."
 msgid ""
 "<strong>Note:</strong> These options aren't applied if you added this post "
 "in the \"Never cache the following pages\" option."
-msgstr "<strong>Nota:</strong> Essas opções não serão aplicadas se você adicionar esse post na opção \"Nunca cacheie as seguintes páginas\"."
+msgstr "<strong>Nota:</strong> Essas opções não serão aplicadas se você adicionar esse post na opção \"Nunca faça cache das seguintes páginas\"."
 
 #: inc/admin/ui/modules/advanced.php:8
 msgid "Static Resources:"
-msgstr ""
+msgstr "Recursos estáticos:"
 
 #: inc/admin/ui/modules/advanced.php:15 inc/admin/ui/modules/advanced.php:17
 msgid "Remove query strings from static resources"
-msgstr ""
+msgstr "Remover parâmetros de consulta dos recursos estáticos"
 
 #: inc/admin/ui/modules/advanced.php:22
 msgid ""
 "This will remove the version query string from static resources and encode "
 "it in the resources filename instead. e.g. style.css?ver=1.0 will become "
 "style-1.0.css"
-msgstr ""
+msgstr "Isto removerá os parâmetros de consulta de versão dos recursos estáticos e irá codificá-los no nome do arquivo do recurso. Por exemplo, style.css?ver=1.0 se tornará style-1.0.css"
 
 #: inc/admin/ui/modules/advanced.php:27
 msgid ""
 "<strong>Note:</strong> By activating this option, you will improve the "
 "<code>Remove query strings from static resources</code> grade on GT Metrix."
-msgstr ""
+msgstr "<strong>Nota:</strong>Ao ativar esta opção você melhorará sua nota de <code>remover parâmetros de consulta em recursos estáticos</code> no GT Metrix."
 
 #: inc/admin/ui/modules/advanced.php:35 inc/admin/ui/modules/advanced.php:43
 msgid "Prefetch DNS requests:"
@@ -638,7 +639,7 @@ msgstr "Limpar o cache das seguintes páginas quando atualizar um post:"
 msgid ""
 "Enter the URL of additional pages to purge when updating a post (one per "
 "line)."
-msgstr ""
+msgstr "Informe os URLs das páginas adicionais a eliminar quando estiver atualizando um post (um por linha)."
 
 #: inc/admin/ui/modules/advanced.php:79 inc/admin/ui/modules/advanced.php:103
 #: inc/admin/ui/modules/advanced.php:165 inc/admin/ui/modules/advanced.php:215
@@ -678,11 +679,11 @@ msgstr "Listar o nome dos cookies (um por linha)."
 
 #: inc/admin/ui/modules/advanced.php:133 inc/admin/ui/modules/advanced.php:141
 msgid "Cache pages that use the following query strings (GET parameters):"
-msgstr "Páginas de cache usam as seguintes query strings (GET parameters)"
+msgstr "Páginas de cache que usam os seguintes parâmetros de consulta (parâmetros GET):"
 
 #: inc/admin/ui/modules/advanced.php:146
 msgid "List of query strings which can be cached (one per line)."
-msgstr "Lista de query strings que podem ser cacheadas (uma por linha)."
+msgstr "Lista de parâmetros de consulta que podem ser cacheados (um por linha)."
 
 #: inc/admin/ui/modules/advanced.php:152 inc/admin/ui/modules/advanced.php:160
 msgid "Never send cache pages for these user agents:"
@@ -690,7 +691,7 @@ msgstr "Nunca envie páginas em cache para esses user agents:"
 
 #: inc/admin/ui/modules/advanced.php:165
 msgid "Enter the user agents name to reject (one per line)."
-msgstr "Insira o nome dos user agents a ignorar (1 por linha)."
+msgstr "Insira o nome dos user agents rejeitados (um por linha)."
 
 #: inc/admin/ui/modules/advanced.php:171
 msgid "Reducing the number of minified files in one file on:"
@@ -905,18 +906,18 @@ msgstr "Habilitar cache para usuários autenticados."
 
 #: inc/admin/ui/modules/basic.php:171
 msgid "Use the same cache for all logged in users."
-msgstr ""
+msgstr "Use o mesmo cache para todos os usuários registrados."
 
 #: inc/admin/ui/modules/basic.php:173
 msgid "Common cache for logged in users"
-msgstr ""
+msgstr "Cache comum para usuários logados"
 
 #: inc/admin/ui/modules/basic.php:179
 msgid ""
 "You can use this option if you want to only have one cache folder fo all "
 "logged in users, instead of creating one for each. This can be useful if you"
 " serve the same content for all users."
-msgstr ""
+msgstr "Você pode usar esta opção se quiser ter apenas uma pasta de cache para todos os usuários registrados, ao invés de criar um cache para cada usuário. Isso pode ser útil se você fornece exatamente o mesmo conteúdo para todos os usuários."
 
 #: inc/admin/ui/modules/basic.php:185 inc/admin/ui/modules/basic.php:193
 msgid "SSL cache:"
@@ -986,7 +987,7 @@ msgstr "Opções de entrega de conteúdo pela rede"
 
 #: inc/admin/ui/modules/cdn.php:14
 msgid "Enable CloudFlare settings tab."
-msgstr "Habilitar aba de configurações do CloudFlare."
+msgstr "Habilitar a aba de configurações do CloudFlare."
 
 #: inc/admin/ui/modules/cdn.php:22
 msgid ""
@@ -1006,7 +1007,7 @@ msgid ""
 "Your PHP version is lower than to 5.4, so the CloudFlare functionality is "
 "not available. We recommend upgrading to a more recent version of PHP, like "
 "5.6 or higher."
-msgstr ""
+msgstr "A sua versão do PHP é inferior à 5.4, de modo que os recursos do CloudFlare não estão disponíveis. Recomendamos a atualização para uma versão mais recente do PHP, como a 5.6 ou superior."
 
 #: inc/admin/ui/modules/cdn.php:50 inc/admin/ui/modules/cdn.php:59
 msgid "CDN:"
@@ -1044,7 +1045,7 @@ msgstr "Email da conta do CloudFlare"
 #: inc/admin/ui/modules/cloudflare.php:24
 #: inc/admin/ui/modules/cloudflare.php:32
 msgid "Global API Key"
-msgstr ""
+msgstr "Chave de API global"
 
 #: inc/admin/ui/modules/cloudflare.php:52
 #: inc/admin/ui/modules/cloudflare.php:60
@@ -1071,7 +1072,7 @@ msgid ""
 "Temporarily enter development mode on your website. This setting will "
 "automatically return to off after 3 hours if not done manually. <a "
 "href=\"%s\" target=\"_blank\">Learn more</a>"
-msgstr ""
+msgstr "Temporariamente entra em modo de desenvolvimento no seu site. Esta configuração se desligará automaticamente após 3 horas, se não for feito manualmente antes disso. <a href=\"%s\" target=\"_blank\">Saiba mais</a>"
 
 #: inc/admin/ui/modules/cloudflare.php:92
 msgid "Auto enable the optimal CloudFlare settings"
@@ -1079,7 +1080,7 @@ msgstr "Habilitar automaticamente as configurações ideais de CloudFlare"
 
 #: inc/admin/ui/modules/cloudflare.php:94
 msgid "Auto enable the optimal CloudFlare settings (props WP Rocket)"
-msgstr "Habilitar configurações otimizadas do CloudFlare (na opinião da equipe WP Rocket)"
+msgstr "Habilitar configurações otimizadas do CloudFlare (segundo WP Rocket)"
 
 #: inc/admin/ui/modules/cloudflare.php:109
 msgid "No"
@@ -1452,7 +1453,7 @@ msgstr "Pré-carregar o cache"
 msgid ""
 "Allows you to request a bot crawl to preload the cache (homepage and its "
 "internal links)."
-msgstr "Permite a você solicitar um crawler bot para pré-carregar o cache (página inicial e seus links internos)."
+msgstr "Permite que você solicite um crawler bot para pré-carregar o cache (página inicial e seus links internos)."
 
 #: inc/admin/ui/modules/tools.php:67 inc/admin/ui/modules/tools.php:73
 #: inc/common/admin-bar.php:145
@@ -1731,7 +1732,7 @@ msgid ""
 "permissions</a> on <b>%3$s</b> cache busting folder (<code>%2$s</code>). To "
 "make <b>%3$s</b> work properly, please CHMOD <code>755</code> or "
 "<code>775</code> or <code>777</code> this folder."
-msgstr ""
+msgstr "Cuidado, você não tem <a href=\"%1$s\" target=\"_blank\">permissões de escrita</a> na pasta de cache <b>%3$s</b> (<code>%2$s</code>). Para fazer com que <b>%3$s</b> funcione corretamente, use o CHMOD para <code>755</code> ou <code>775</code> ou <code>777</code> nesta pasta."
 
 #: inc/admin/ui/notices.php:497
 msgid "Thank you. Your license has been successfully validated!"
@@ -1753,7 +1754,7 @@ msgstr "Instalar o Imagify gratuitamente"
 msgid ""
 "Speed up your website and boost your SEO by reducing image file sizes "
 "without losing quality with Imagify."
-msgstr ""
+msgstr "Acelere o seu site e aumente seu SEO ao reduzir o tamanho dos arquivos de imagem sem perder qualidade com o Imagify."
 
 #: inc/admin/updater.php:55 inc/admin/updater.php:62
 msgid ""
@@ -1789,45 +1790,45 @@ msgstr "%s limpar"
 
 #: inc/common/cron.php:33
 msgid "weekly"
-msgstr ""
+msgstr "semanal"
 
 #: inc/common/cron.php:39
 msgid "monthly"
-msgstr ""
+msgstr "mensal"
 
 #: inc/common/purge.php:517
 msgid "CloudFlare Cache purge error: %s"
-msgstr ""
+msgstr "Erro na eliminação do cache no CloudFlare: %s"
 
 #: inc/common/purge.php:519
 msgid "CloudFlare cache sucessfully purged"
-msgstr ""
+msgstr "O cache do Cloudflare foi eliminado com sucesso"
 
 #: inc/functions/admin.php:11
 msgid ""
 "Last step before enjoying the high performances of our plugin, please <a "
 "href=\"%s\">Enter your API key</a> here."
-msgstr ""
+msgstr "Última etapa antes de desfrutar da alta performance de nosso plugin, <a href=\"%s\">Digite sua chave de API</a> aqui."
 
 #: inc/functions/cloudflare.php:17
 msgid "CloudFlare Email & API Key are not set"
-msgstr ""
+msgstr "O email & a chave de API do CloudFlare não estão definidos"
 
 #: inc/functions/cloudflare.php:43
 msgid "No Zone ID set in the WP Rocket settings"
-msgstr ""
+msgstr "Nenhuma identificação de zona foi definida nas configurações do WP Rocket"
 
 #: inc/functions/cloudflare.php:75
 msgid "Connection to CloudFlare failed"
-msgstr ""
+msgstr "Falha na conexão do CloudFlare"
 
 #: inc/functions/cloudflare.php:97
 msgid "Choose a domain from the list"
-msgstr ""
+msgstr "Escolha um domínio da lista"
 
 #: inc/functions/cloudflare.php:111
 msgid "No domain available in your CloudFlare account"
-msgstr ""
+msgstr "Nenhum domínio disponível na sua conta do CloudFlare"
 
 #: inc/functions/options.php:537
 msgid "Your license is not valid."
