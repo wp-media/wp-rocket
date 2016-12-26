@@ -10,7 +10,7 @@ if ( class_exists( 'WR2X_Admin' ) ) :
 	 * @since 2.5.5
 	 *
 	 * @param string $url URL of the image.
-	 * @param string Updated URL with CDN
+	 * @return string Updated URL with CDN
 	 */
 	function rocket_cdn_on_images_from_wp_retina_x2( $url ) {
 		global $wr2x_admin;
@@ -19,7 +19,7 @@ if ( class_exists( 'WR2X_Admin' ) ) :
 			return $url;
 		}
 		
-		$cdn_domain = wr2x_getoption( 'cdn_domain', 'wr2x_advanced', '' );
+		$cdn_domain = get_option( 'wr2x_cdn_domain' );
 
 		if ( ! empty( $cdn_domain ) ) {
 			return $url;
