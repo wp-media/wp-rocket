@@ -64,7 +64,7 @@ function rocket_browser_cache_busting( $src, $current_filter = '' ) {
     $hosts 		 = get_rocket_cnames_host( array( 'all', 'css_and_js', $extension ) );
     $hosts[] 	 = parse_url( home_url(), PHP_URL_HOST );
     $hosts_index = array_flip( $hosts );
-    list( $file_host, $relative_src_path ) = get_rocket_parse_url( $full_src );
+    list( $file_host, $relative_src_path, $scheme, $query ) = get_rocket_parse_url( $full_src );
 
 	if ( $file_host == '' ) {
         $full_src = home_url() . $src;
@@ -74,7 +74,7 @@ function rocket_browser_cache_busting( $src, $current_filter = '' ) {
         return $src;
     }
 
-    $relative_src_path      = ltrim( $relative_src_path, '/' );
+    $relative_src_path      = ltrim( $relative_src_path . '?' . $query, '/' );
     $full_src_path          = ABSPATH . dirname( $relative_src_path );
     /*
      * Filters the cache busting filename
@@ -154,7 +154,7 @@ function rocket_cache_dynamic_resource( $src ) {
 	$hosts 		 = get_rocket_cnames_host( array( 'all', 'css_and_js', $extension ) );
     $hosts[] 	 = parse_url( home_url(), PHP_URL_HOST );
     $hosts_index = array_flip( $hosts );
-    list( $file_host, $relative_src_path ) = get_rocket_parse_url( $full_src );
+    list( $file_host, $relative_src_path, $scheme, $query ) = get_rocket_parse_url( $full_src );
 
 	if ( $file_host == '' ) {
         $full_src = home_url() . $src;
@@ -164,7 +164,7 @@ function rocket_cache_dynamic_resource( $src ) {
         return $src;
     }
 
-    $relative_src_path = ltrim( $relative_src_path, '/' );
+    $relative_src_path = ltrim( $relative_src_path . '?' . $query, '/' );
     $full_src_path     = ABSPATH . dirname( $relative_src_path );
     /*
      * Filters the dynamic resource cache filename
