@@ -64,7 +64,7 @@ function rocket_browser_cache_busting( $src, $current_filter = '' ) {
     $hosts 		 = get_rocket_cnames_host( array( 'all', 'css_and_js', $extension ) );
     $hosts[] 	 = parse_url( home_url(), PHP_URL_HOST );
     $hosts_index = array_flip( $hosts );
-    list( $file_host, $relative_src_path ) = get_rocket_parse_url( $full_src );
+    list( $file_host, $relative_src_path, $scheme, $query ) = get_rocket_parse_url( $full_src );
 
 	if ( $file_host == '' ) {
         $full_src = home_url() . $src;
@@ -74,7 +74,7 @@ function rocket_browser_cache_busting( $src, $current_filter = '' ) {
         return $src;
     }
 
-    $relative_src_path      = ltrim( $relative_src_path, '/' );
+    $relative_src_path      = ltrim( $relative_src_path . '?' . $query, '/' );
     $full_src_path          = ABSPATH . dirname( $relative_src_path );
     /*
      * Filters the cache busting filename
@@ -140,7 +140,9 @@ function rocket_cache_dynamic_resource( $src ) {
 
     $full_src = ( substr( $src, 0, 2 ) === '//' ) ? rocket_add_url_protocol( $src ) : $src;
 
-	switch ( current_filter() ) {
+	$current_filter = current_filter();
+
+	switch ( $current_filter ) {
 		case 'script_loader_src':
 			$extension = '.js';
 			break;
@@ -152,7 +154,7 @@ function rocket_cache_dynamic_resource( $src ) {
 	$hosts 		 = get_rocket_cnames_host( array( 'all', 'css_and_js', $extension ) );
     $hosts[] 	 = parse_url( home_url(), PHP_URL_HOST );
     $hosts_index = array_flip( $hosts );
-    list( $file_host, $relative_src_path ) = get_rocket_parse_url( $full_src );
+    list( $file_host, $relative_src_path, $scheme, $query ) = get_rocket_parse_url( $full_src );
 
 	if ( $file_host == '' ) {
         $full_src = home_url() . $src;
@@ -162,7 +164,8 @@ function rocket_cache_dynamic_resource( $src ) {
         return $src;
     }
 
-    $relative_src_path = ltrim( $relative_src_path, '/' );
+    $relative_src_path = ltrim( $relative_src_path . '?' . $query, '/' );
+    $full_src_path     = ABSPATH . dirname( $relative_src_path );
     /*
      * Filters the dynamic resource cache filename
      *
@@ -184,11 +187,21 @@ function rocket_cache_dynamic_resource( $src ) {
         return $src;
     }
 
+	if ( 'style_loader_src' === $current_filter ) {
+        if ( ! class_exists( 'Minify_CSS_UriRewriter' ) ) {
+            require( WP_ROCKET_PATH . 'min/lib/Minify/CSS/UriRewriter.php' );
+        }
+        // Rewrite import/url in CSS content to add the absolute path to the file
+        $file_content = Minify_CSS_UriRewriter::rewrite( $response['body'], $full_src_path );
+    } else {
+        $file_content = $response['body'];
+    }
+
     if ( ! is_dir( $cache_busting_paths['bustingpath'] ) ) {
         rocket_mkdir_p( $cache_busting_paths['bustingpath'] );
     }
 
-    rocket_put_content( $cache_busting_paths['filepath'], $response['body'] );
+    rocket_put_content( $cache_busting_paths['filepath'], $file_content );
 
     return $cache_busting_paths['url'];
 }

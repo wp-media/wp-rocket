@@ -158,25 +158,6 @@ function __rocket_cdn_on_sliders_with_lazyload() {
 }
 
 /**
- * Conflict with WP Retina x2: Apply CDN on srcset attribute.
- *
- * @since 2.5.5
- */
-add_filter( 'wr2x_img_retina_url', '__rocket_cdn_on_images_from_wp_retina_x2' );
-add_filter( 'wr2x_img_url', '__rocket_cdn_on_images_from_wp_retina_x2' );
-function __rocket_cdn_on_images_from_wp_retina_x2( $url ) {
-	if ( wr2x_is_pro() ) {
-		$cdn_domain = wr2x_getoption( "cdn_domain", "wr2x_advanced", "" );
-	}
-	
-	if ( empty( $cdn_domain ) ) {
-		return get_rocket_cdn_url( $url, array( 'all', 'images' ) );
-	}
-	
-	return $url;
-}
-
-/**
  * Conflict with MailChimp List Subscribe Form: Enqueue style without lack of performance, grrrr!!!
  *
  * @since 2.6

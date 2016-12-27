@@ -220,7 +220,7 @@ function rocket_cdn_custom_files( $html ) {
         $filetypes = apply_filters( 'rocket_cdn_custom_filetypes', array( 'mp3', 'ogg', 'mp4', 'm4v', 'avi', 'mov', 'flv', 'swf', 'webm', 'pdf', 'doc', 'docx', 'txt', 'zip', 'tar', 'bz2', 'tgz', 'rar' ) );
         $filetypes = implode( '|', $filetypes );
 
-        preg_match_all( '#<a[^>]+?href=[\'"]?(.*\.(?:' . $filetypes . '))[\'"]?[^>]*>#i', $html, $matches );
+        preg_match_all( '#<a[^>]+?href=[\'"]?([^"\'>]+\.(?:' . $filetypes . '))[\'"]?[^>]*>#i', $html, $matches );
 
         if ( ( bool ) $matches ) {
             $i = 0;
