@@ -74,6 +74,10 @@ function rocket_browser_cache_busting( $src, $current_filter = '' ) {
         return $src;
     }
 
+	if ( empty( $query ) ) {
+		return $src;
+	}
+
     $relative_src_path      = ltrim( $relative_src_path . '?' . $query, '/' );
     $full_src_path          = ABSPATH . dirname( $relative_src_path );
     /*
