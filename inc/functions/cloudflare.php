@@ -322,7 +322,7 @@ function set_rocket_cloudflare_browser_cache_ttl( $mode ) {
 
     try {
         $cf_settings = new CloudFlare\Zone\Settings( $GLOBALS['rocket_cloudflare']->auth );
-        $cf_return = $cf_settings->change_browser_cache_ttl( $GLOBALS['rocket_cloudflare']->zone_id, $mode );
+        $cf_return = $cf_settings->change_browser_cache_ttl( $GLOBALS['rocket_cloudflare']->zone_id, (int) $mode );
 
         if ( ! isset( $cf_return->success ) || empty( $cf_return->success ) ) {
             foreach( $cf_return->errors as $error ) {
