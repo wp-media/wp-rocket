@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 /**
@@ -6,47 +6,47 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
  *
  * @since 2.1
  *
- * @param string $url 		 The minified URL with Google Minify Code
- * @param string $pretty_url The minified URL cache file
+ * @param string $url 		 The minified URL with Google Minify Code.
+ * @param string $pretty_url The minified URL cache file.
  * @return bool
  */
 function rocket_fetch_and_cache_minify( $url, $pretty_url ) {
-	// Check if php-curl is enabled
+	// Check if php-curl is enabled.
 	if ( ! function_exists( 'curl_init' ) || ! function_exists( 'curl_exec' ) ) {
 		return false;
 	}
 
 	$pretty_path = str_replace( WP_ROCKET_MINIFY_CACHE_URL, WP_ROCKET_MINIFY_CACHE_PATH, $pretty_url );
 
-	// If minify cache file is already exist, return to get a coffee :)
+	// If minify cache file is already exist, return to get a coffee.
 	if ( file_exists( $pretty_path ) ) {
 		return true;
 	}
 
 	$ch = curl_init();
-	curl_setopt ($ch, CURLOPT_URL, $url);
-	curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
-	curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, 5);
-	curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, false);
-	curl_setopt ($ch, CURLOPT_USERAGENT, 'WP-Rocket-Minify');
+	curl_setopt( $ch, CURLOPT_URL, $url );
+	curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
+	curl_setopt( $ch, CURLOPT_CONNECTTIMEOUT, 5 );
+	curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, false );
+	curl_setopt( $ch, CURLOPT_USERAGENT, 'WP-Rocket-Minify' );
 
-	$content = curl_exec($ch);
-	curl_close($ch);
+	$content = curl_exec( $ch );
+	curl_close( $ch );
 
 	if ( $content ) {
-		// Create cache folders of the request uri
+		// Create cache folders of the request uri.
 		$cache_path = WP_ROCKET_MINIFY_CACHE_PATH . get_current_blog_id() . '/';
 		if ( ! is_dir( $cache_path ) ) {
 			rocket_mkdir_p( $cache_path );
 		}
-		
-		// Apply CDN on CSS properties
-		if( strrpos( $pretty_path, '.css' ) ) {
-			$content = rocket_cdn_css_properties( $content );	
+
+		// Apply CDN on CSS properties.
+		if ( strrpos( $pretty_path, '.css' ) ) {
+			$content = rocket_cdn_css_properties( $content );
 		}
-		
-		// Save cache file
-		if( rocket_put_content( $pretty_path, $content ) ) {
+
+		// Save cache file.
+		if ( rocket_put_content( $pretty_path, $content ) ) {
 			return true;
 		}
 	}
@@ -59,15 +59,17 @@ function rocket_fetch_and_cache_minify( $url, $pretty_url ) {
  *
  * @since 2.1
  *
- * @param array  $files List of files to minify (CSS or JS)
- * @param bool   $force_pretty_url (default: true)
- * @param string $pretty_filename (default: null) The new filename if $force_pretty_url set to true
+ * @param array  $files List of files to minify (CSS or JS).
+ * @param bool   $force_pretty_url (default: true).
+ * @param string $pretty_filename (default: null) The new filename if $force_pretty_url set to true.
  * @return string $tags
  */
 function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_filename = null ) {
-	// Get the internal CSS Files
-	// To avoid conflicts with file URLs are too long for browsers,
-	// cut into several parts concatenated files
+	/**
+	 * Get the internal CSS Files
+	 * To avoid conflicts with file URLs are too long for browsers,
+	 * cut into several parts concatenated files
+	 */
 	$tags 		= '';
 	$data_attr  = 'data-minify="1"';
 	$urls 		= array( 0 => '' );
@@ -80,10 +82,10 @@ function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_file
 		foreach ( $files as $file ) {
 			$file = parse_url( $file, PHP_URL_PATH );
 			$file = trim( $file );
-			
-            if ( empty( $file ) ) {
-                continue;
-            }
+
+			if ( empty( $file ) ) {
+				continue;
+			}
 
 			// Replace "//" by "/" because it cause an issue with Google Code Minify!
 			$file = str_replace( '//' , '/', $file );
@@ -120,7 +122,7 @@ function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_file
 			$url = $base_url . rtrim( $url, ',' );
 			$ext = pathinfo( $url, PATHINFO_EXTENSION );
 
-			if ( $force_pretty_url && ( defined( 'SCRIPT_DEBUG' ) && !SCRIPT_DEBUG ) ) {
+			if ( $force_pretty_url && ( defined( 'SCRIPT_DEBUG' ) && ! SCRIPT_DEBUG ) ) {
 
 				/**
 				 * Filter the minify URL
@@ -150,10 +152,10 @@ function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_file
 				}
 			}
 
-			// If CSS & JS use a CDN
+			// If CSS & JS use a CDN.
 			$url = get_rocket_cdn_url( $url, array( 'all', 'css_and_js', $ext ) );
 
-			if ( 'css' == $ext ) {
+			if ( 'css' === $ext ) {
 				/**
 				 * Filter CSS file URL with CDN hostname
 				 *
@@ -165,7 +167,7 @@ function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_file
 
 				$tags .= sprintf( '<link rel="stylesheet" href="%s" %s/>', esc_attr( $url ), $data_attr );
 
-			} elseif ( 'js' == $ext ) {
+			} elseif ( 'js' === $ext ) {
 				/**
 				 * Filter JavaScript file URL with CDN hostname
 				 *
@@ -183,19 +185,25 @@ function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_file
 	return $tags;
 }
 
-/*
+/**
  * Wrapper of get_rocket_minify_files() and echoes the result
  *
  * @since 2.1
+ *
+ * @param array  $files List of files to minify (CSS or JS).
+ * @param bool   $force_pretty_url (default: true).
+ * @param string $pretty_filename The new filename if $force_pretty_url set to true. (default: null). 
  */
 function rocket_minify_files( $files, $force_pretty_url = true, $pretty_filename = null ) {
 	echo get_rocket_minify_files( $files, $force_pretty_url, $pretty_filename );
 }
 
-/*
+/**
  * Get all JS externals files to exclude of the minification process
  *
  * @since 2.6
+ *
+ * @return array Array of excluded external JS
  */
 function get_rocket_minify_excluded_external_js() {
 	/**
@@ -205,28 +213,28 @@ function get_rocket_minify_excluded_external_js() {
 	 *
 	 * @param array Hostname of JS files to exclude
 	 */
-	$excluded_external_js = apply_filters( 'rocket_minify_excluded_external_js', array( 
-		'forms.aweber.com', 
-		'video.unrulymedia.com', 
-		'gist.github.com', 
-		'stats.wp.com', 
-		'stats.wordpress.com', 
-		'www.statcounter.com', 
-		'widget.rafflecopter.com', 
-		'widget-prime.rafflecopter.com', 
-		'widget.supercounters.com', 
-		'releases.flowplayer.org', 
-		'tools.meetaffiliate.com', 
-		'c.ad6media.fr', 
-		'cdn.stickyadstv.com', 
-		'www.smava.de', 
-		'contextual.media.net', 
-		'app.getresponse.com', 
-		'ap.lijit.com', 
-		'adserver.reklamstore.com', 
-		's0.wp.com', 
-		'wprp.zemanta.com', 
-		'files.bannersnack.com', 
+	$excluded_external_js = apply_filters( 'rocket_minify_excluded_external_js', array(
+		'forms.aweber.com',
+		'video.unrulymedia.com',
+		'gist.github.com',
+		'stats.wp.com',
+		'stats.wordpress.com',
+		'www.statcounter.com',
+		'widget.rafflecopter.com',
+		'widget-prime.rafflecopter.com',
+		'widget.supercounters.com',
+		'releases.flowplayer.org',
+		'tools.meetaffiliate.com',
+		'c.ad6media.fr',
+		'cdn.stickyadstv.com',
+		'www.smava.de',
+		'contextual.media.net',
+		'app.getresponse.com',
+		'ap.lijit.com',
+		'adserver.reklamstore.com',
+		's0.wp.com',
+		'wprp.zemanta.com',
+		'files.bannersnack.com',
 		'smarticon.geotrust.com',
 		'js.gleam.io',
 		'script.ioam.de',
@@ -242,6 +250,6 @@ function get_rocket_minify_excluded_external_js() {
 		'content.jwplatform.com',
 		'ads.investingchannel.com',
 	) );
-	
-	return $excluded_external_js;		
+
+	return $excluded_external_js;
 }
