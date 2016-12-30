@@ -82,7 +82,7 @@ class WP_Rocket_Formatting_Test extends WP_UnitTestCase {
 	}
 
 	function test_rocket_get_cache_busting_paths() {
-		$cache_busting_paths = rocket_get_cache_busting_paths( 'wp-content-plugins-wp-rocket-js-lazyload-1.0.5.min.js' );
+		$cache_busting_paths = rocket_get_cache_busting_paths( 'wp-content-plugins-wp-rocket-js-lazyload-1.0.5.min.js', 'js' );
 		$expected_cache_busting_paths = array(
 			'bustingpath' => WP_CONTENT_DIR . '/cache/busting/1/',
 			'filepath'	  => WP_CONTENT_DIR . '/cache/busting/1/wp-content-plugins-wp-rocket-js-lazyload-1.0.5.min.js',
