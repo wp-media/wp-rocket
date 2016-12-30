@@ -10,8 +10,10 @@ add_filter( 'rocket_parse_url', 'rocket_parse_url_domain_mapping' );
 function rocket_parse_url_domain_mapping( $url ) {
 	$original_siteurl_host       = parse_url( get_original_url( 'siteurl' ), PHP_URL_HOST );
 	$domain_mapping_siteurl_host = parse_url( domain_mapping_siteurl( false ), PHP_URL_HOST );
-	
-	$url[0] = str_replace( $original_siteurl_host, $domain_mapping_siteurl_host, $url[0] );
+
+	if ( false === strpos( $domain_mapping_siteurl_host, $original_siteurl_host ) ) {
+		$url[0] = str_replace( $original_siteurl_host, $domain_mapping_siteurl_host, $url[0] );
+	}
 	
 	return $url;
 }

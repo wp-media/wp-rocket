@@ -241,6 +241,7 @@ function get_rocket_minify_excluded_external_js() {
 		'speakerdeck.com',
 		'content.jwplatform.com',
 		'ads.investingchannel.com',
+		'app.ecwid.com'
 	) );
 	
 	return $excluded_external_js;		

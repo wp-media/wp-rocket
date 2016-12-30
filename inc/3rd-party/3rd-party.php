@@ -24,6 +24,7 @@ require( WP_ROCKET_3RD_PARTY_PATH . 'ecommerce/edd-software-licencing.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'age-verify.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'autoptimize.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'eu-cookie-law.php' );
+require( WP_ROCKET_3RD_PARTY_PATH . 'weepie-cookie-allow.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'kk-star-ratings.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'wp-postratings.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'wp-print.php' );
@@ -42,5 +43,6 @@ require( WP_ROCKET_3RD_PARTY_PATH . 'page-builder/thrive-visual-editor.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'page-builder/visual-composer.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'security/secupress.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'simple-custom-css.php' );
+require( WP_ROCKET_3RD_PARTY_PATH . 'wp-retina-2x.php' );
 
 require( WP_ROCKET_3RD_PARTY_PATH . 'themes/divi.php' );
