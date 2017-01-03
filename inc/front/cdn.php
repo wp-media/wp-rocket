@@ -57,6 +57,33 @@ function rocket_cdn_file( $url ) {
 	return $url;
 }
 
+add_filter( 'wp_get_attachment_image_src', 'rocket_cdn_attachment_image_src', PHP_INT_MAX );
+/**
+ * Replace URL by CDN of images displayed using wp_get_attachment_image_src
+ *
+ * @since 2.9.2
+ * @author Remy Perona
+ * @source https://github.com/wp-media/wp-rocket/issues/271#issuecomment-269849927
+ *
+ * @param array $image An array containing the src, width and height of the image.
+ * @return array Array with updated src URL
+ */
+function rocket_cdn_attachment_image_src( $image ) {
+	if ( ! (bool) $image ) {
+		return $image;
+	}
+
+	$zones = array( 'all', 'images' );
+
+	if ( ! (bool) get_rocket_cdn_cnames( $zones ) ) {
+		return $image;
+	}
+
+	$image[0] = get_rocket_cdn_url( $image[0], $zones );
+
+	return $image;
+}
+
 /**
  * Replace srcset URLs by CDN URLs for WP responsive images
  *
