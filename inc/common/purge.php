@@ -104,7 +104,7 @@ function rocket_clean_post( $post_id ) {
 
     // Don't purge if post's post type is not public or not publicly queryable
     $post_type = get_post_type_object( $post->post_type );
-    if ( $post_type->public !== true ) {
+    if ( ! is_object( $post_type ) || $post_type->public !== true ) {
         return;
     }
 	
