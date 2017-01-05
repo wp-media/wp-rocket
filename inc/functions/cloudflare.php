@@ -429,6 +429,7 @@ function rocket_get_cloudflare_ips() {
                 '2a06:98c0::/29',
             );
 
+			set_transient(  'rocket_cloudflare_ips', $cf_ips, 2 * WEEK_IN_SECONDS );
             return $cf_ips;
         }
     }
