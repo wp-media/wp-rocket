@@ -31,6 +31,7 @@ if ( isset( $_POST['wp_customize'] ) ) {
 
 // Don't cache without GET method
 if ( ! isset( $_SERVER['REQUEST_METHOD'] ) || $_SERVER['REQUEST_METHOD'] != 'GET' ) {
+	rocket_define_donotminify_constants( true );
  	return;
 }
 

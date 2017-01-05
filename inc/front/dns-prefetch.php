@@ -76,31 +76,3 @@ function __rocket_dns_prefetch_buffer( $buffer ) {
 
 	return $buffer;
 }
-
-/**
- * Get the domain names to DNS prefetch from WP Rocket options
- * 
- * @since 2.8.9
- * @author Remy Perona
- *
- * return Array An array of domain names to DNS prefetch
- */
-function rocket_get_dns_prefetch_domains() {
-	$cdn_cnames    = get_rocket_cdn_cnames( array( 'all', 'images', 'css_and_js', 'css', 'js' ) );
-
-	// Don't add CNAMES if CDN is disabled HTTPS pages or on specific posts
-	if ( ! is_rocket_cdn_on_ssl() || is_rocket_post_excluded_option( 'cdn' ) ) {
-		$cdn_cnames = array();
-	}
-
-	$domains = array_merge( $cdn_cnames, (array) get_rocket_option( 'dns_prefetch' ) );
-
-	/**
-	 * Filter list of domains to prefetch DNS
-	 *
-	 * @since 1.1.0
-	 *
-	 * @param array $domains List of domains to prefetch DNS
-	 */
-	return apply_filters( 'rocket_dns_prefetch', $domains );
-}

@@ -25,18 +25,18 @@ wp_clear_scheduled_hook( 'rocket_database_optimization_time_event' );
  * Remove all cache files
  *
  * @since 1.2.0
+ *
+ * @param string $dir Directory path to remove.
  */
-function __rocket_rrmdir( $dir )
-{
+function __rocket_rrmdir( $dir ) {
 
-	if( !is_dir( $dir ) ) 
-	{
+	if ( ! is_dir( $dir ) ) {
 		@unlink( $dir );
 		return;	
 	}
 
-    if( $globs = glob( $dir . '/*', GLOB_NOSORT ) ) {
-	    foreach( $globs as $file ) {
+    if ( $globs = glob( $dir . '/*', GLOB_NOSORT ) ) {
+	    foreach ( $globs as $file ) {
 			is_dir( $file ) ? __rocket_rrmdir($file) : @unlink( $file );
 	    }
 	}
@@ -47,4 +47,5 @@ function __rocket_rrmdir( $dir )
 
 __rocket_rrmdir( WP_CONTENT_DIR . '/cache/wp-rocket/' );
 __rocket_rrmdir( WP_CONTENT_DIR . '/cache/min/' );
+__rocket_rrmdir( WP_CONTENT_DIR . '/cache/busting/' );
 __rocket_rrmdir( WP_CONTENT_DIR . '/wp-rocket-config/' );
