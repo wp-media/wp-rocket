@@ -19,6 +19,11 @@ class ActionScheduler_CronSchedule_Test extends ActionScheduler_UnitTestCase {
 		$this->assertEquals( as_get_datetime_object('tomorrow'), $schedule->next( as_get_datetime_object() ) );
 	}
 
+	public function test_is_recurring() {
+		$schedule = new ActionScheduler_CronSchedule(as_get_datetime_object('2013-06-14'), CronExpression::factory('@daily'));
+		$this->assertTrue( $schedule->is_recurring() );
+	}
+
 	public function test_cron_format() {
 		$time = as_get_datetime_object('2014-01-01');
 		$cron = CronExpression::factory('0 0 10 10 *');

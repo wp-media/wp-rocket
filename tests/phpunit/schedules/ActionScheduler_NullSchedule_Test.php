@@ -9,5 +9,10 @@ class ActionScheduler_NullSchedule_Test extends ActionScheduler_UnitTestCase {
 		$schedule = new ActionScheduler_NullSchedule();
 		$this->assertNull( $schedule->next() );
 	}
+
+	public function test_is_recurring() {
+		$schedule = new ActionScheduler_NullSchedule();
+		$this->assertFalse( $schedule->is_recurring() );
+	}
 }
  

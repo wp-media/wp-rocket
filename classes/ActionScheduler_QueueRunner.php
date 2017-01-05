@@ -109,7 +109,7 @@ class ActionScheduler_QueueRunner {
 		$schedule = $action->get_schedule();
 		$next     = $schedule->next( as_get_datetime_object() );
 
-		if ( ! is_a( $schedule, 'ActionScheduler_SimpleSchedule' ) && ! is_null( $next ) ) {
+		if ( ! is_null( $next ) && $schedule->is_recurring() ) {
 			$this->store->save_action( $action, $next );
 		}
 	}

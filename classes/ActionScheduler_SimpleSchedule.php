@@ -21,6 +21,13 @@ class ActionScheduler_SimpleSchedule implements ActionScheduler_Schedule {
 	}
 
 	/**
+	 * @return bool
+	 */
+	public function is_recurring() {
+		return false;
+	}
+
+	/**
 	 * For PHP 5.2 compat, since DateTime objects can't be serialized
 	 * @return array
 	 */

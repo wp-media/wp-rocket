@@ -29,6 +29,13 @@ class ActionScheduler_IntervalSchedule implements ActionScheduler_Schedule {
 	}
 
 	/**
+	 * @return bool
+	 */
+	public function is_recurring() {
+		return true;
+	}
+
+	/**
 	 * @param DateTime $after
 	 *
 	 * @return DateTime|null

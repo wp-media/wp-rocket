@@ -28,5 +28,10 @@ class ActionScheduler_SimpleSchedule_Test extends ActionScheduler_UnitTestCase {
 		$schedule = new ActionScheduler_SimpleSchedule($time);
 		$this->assertEquals( $time, $schedule->next() );
 	}
+
+	public function test_is_recurring() {
+		$schedule = new ActionScheduler_SimpleSchedule(as_get_datetime_object('+1 day'));
+		$this->assertFalse( $schedule->is_recurring() );
+	}
 }
  
