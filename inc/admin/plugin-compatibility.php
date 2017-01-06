@@ -5,6 +5,7 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
  * When Woocommerce, EDD, iThemes Exchange, Jigoshop & WP-Shop options are saved or deleted,
  * we update .htaccess & config file to get the right checkout page to exclude to the cache.
  *
+ * @since 2.9.3 Support for SF Move Login moved to 3rd party file
  * @since 2.6 Add support with SF Move Login & WPS Hide Login to exclude login pages
  * @since 2.4
  */
@@ -17,7 +18,6 @@ add_action( 'update_option_wpshop_payment_return_page_id', '__rocket_after_updat
 add_action( 'update_option_wpshop_payment_return_nok_page_id', '__rocket_after_update_single_options', 10, 2 );
 add_action( 'update_option_wpshop_myaccount_page_id'	, '__rocket_after_update_single_options', 10, 2 );
 add_action( 'update_option_it-storage-exchange_settings_pages', '__rocket_after_update_single_options', 10, 2 );
-add_action( 'update_option_sfml', '__rocket_after_update_single_options', 10, 2 );
 add_action( 'update_option_whl_page', '__rocket_after_update_single_options', 10, 2 );
 function __rocket_after_update_single_options( $old_value, $value ) {
 	if ( $old_value != $value ) {
@@ -32,15 +32,12 @@ function __rocket_after_update_single_options( $old_value, $value ) {
 /**
  * We need to regenerate the config file + htaccess depending on some plugins
  *
+ * @since 2.9.3 Support for SF Move Login moved to 3rd party file
  * @since 2.6.5 Add support with SF Move Login & WPS Hide Login
  */
-add_action( 'activate_sf-move-login/sf-move-login.php', 'rocket_generate_config_file', 11 );
-add_action( 'deactivate_sf-move-login/sf-move-login.php', 'rocket_generate_config_file', 11 );
 add_action( 'activate_wps-hide-login/wps-hide-login.php', 'rocket_generate_config_file', 11 );
 add_action( 'deactivate_wps-hide-login/wps-hide-login.php', 'rocket_generate_config_file', 11 );
 
-add_action( 'activate_sf-move-login/sf-move-login.php', 'flush_rocket_htaccess', 11 );
-add_action( 'deactivate_sf-move-login/sf-move-login.php', 'flush_rocket_htaccess', 11 );
 add_action( 'activate_wps-hide-login/wps-hide-login.php', 'flush_rocket_htaccess', 11 );
 add_action( 'deactivate_wps-hide-login/wps-hide-login.php', 'flush_rocket_htaccess', 11 );
 
