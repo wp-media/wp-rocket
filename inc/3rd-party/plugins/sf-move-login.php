@@ -16,22 +16,28 @@ endif;
  * @return array Updated array of URLs
  */
 function rocket_add_sfml_exclude_pages( $urls ) {
-	if ( defined( 'SFML_PLUGIN_DIR' ) ) { 
-		if ( ! class_exists( 'SFML_Options' ) ) {
+	if ( ! function_exists( 'sfml_get_slugs' ) ) {
+		if ( file_exists( SFML_PLUGIN_DIR . 'inc/utilities.php' ) ) {
 			include( SFML_PLUGIN_DIR . 'inc/utilities.php' );
-			include( SFML_PLUGIN_DIR . 'inc/class-sfml-options.php' );
+		} else {
+			return $urls;
 		}
-		
-		$sfml_slugs = SFML_Options::get_slugs();
-
-		foreach( $sfml_slugs as $slug ) {
-			$sfml_urls[] = rocket_clean_exclude_file( trailingslashit( home_url( $slug ) ) );
-		}
-
-		$urls = array_merge( $urls, $sfml_urls );
 	}
 
-	return $urls;
+	if ( ! class_exists( 'SFML_Options' ) && ! defined( 'SFML_NOOP_VERSION' ) ) {
+		if ( file_exists( SFML_PLUGIN_DIR . 'inc/class-sfml-options.php' ) ) {
+			include( SFML_PLUGIN_DIR . 'inc/class-sfml-options.php' );
+		} else {
+			return $urls;
+		}
+	}
+
+	$sfml_slugs = sfml_get_slugs();
+	$sfml_slugs = array_map( 'home_url', $sfml_slugs );
+	$sfml_slugs = array_map( 'trailingslashit', $sfml_slugs );
+	$sfml_slugs = array_map( 'rocket_clean_exclude_file', $sfml_slugs );
+
+	return array_merge( $urls, $sfml_slugs );
 }
 
 add_action( 'activate_sf-move-login/sf-move-login.php', 'rocket_activate_sfml', 11 );
