@@ -273,8 +273,8 @@ function rocket_cdn_custom_files( $html ) {
  * @param  string $src URL of the file
  * @return string modified URL
  */
-add_filter( 'style_loader_src', 'rocket_cdn_enqueue', PHP_INT_MAX );
-add_filter( 'script_loader_src', 'rocket_cdn_enqueue', PHP_INT_MAX );
+add_filter( 'style_loader_src', 'rocket_cdn_enqueue', PHP_INT_MAX - 1 );
+add_filter( 'script_loader_src', 'rocket_cdn_enqueue', PHP_INT_MAX - 1 );
 function rocket_cdn_enqueue( $src ) {
 	// Don't use CDN if in admin, in login page, in register page or in a post preview
 	if ( is_admin() || is_preview() || in_array( $GLOBALS['pagenow'], array( 'wp-login.php', 'wp-register.php' ) ) ) {

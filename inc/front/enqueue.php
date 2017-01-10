@@ -12,11 +12,11 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
  * @return string updated CSS/JS file URL
  */
 if ( ! get_rocket_option( 'minify_css' ) ) {
-    add_filter( 'style_loader_src', 'rocket_browser_cache_busting', 15 );
+    add_filter( 'style_loader_src', 'rocket_browser_cache_busting', PHP_INT_MAX );
 }
 
 if ( ! get_rocket_option( 'minify_js' ) ) {
-    add_filter( 'script_loader_src', 'rocket_browser_cache_busting', 15 );
+    add_filter( 'script_loader_src', 'rocket_browser_cache_busting', PHP_INT_MAX );
 }
 
 function rocket_browser_cache_busting( $src, $current_filter = '' ) {
