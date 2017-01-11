@@ -88,7 +88,7 @@ function rocket_browser_cache_busting( $src, $current_filter = '' ) {
      *
      * @param string $filename filename for the cache busting file
      */
-    $cache_busting_filename = apply_filters( 'rocket_cache_busting_filename', preg_replace( '/\.(js|css)\?ver=(.+)$/', '-$2.$1', rtrim( str_replace( array( '/', ' ', '%20' ), '-', $relative_src_path ) ) ) );
+    $cache_busting_filename = apply_filters( 'rocket_cache_busting_filename', preg_replace( '/\.(js|css)\?(?:timestamp|ver)=([^&]+)(?:.*)/', '-$2.$1', rtrim( str_replace( array( '/', ' ', '%20' ), '-', $relative_src_path ) ) ) );
     $cache_busting_paths    = rocket_get_cache_busting_paths( $cache_busting_filename, $extension );
 
     if ( file_exists( $cache_busting_paths['filepath'] ) && is_readable( $cache_busting_paths['filepath'] ) ) {
