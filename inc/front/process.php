@@ -72,14 +72,18 @@ if ( ! $continue ) {
 	return;
 }
 
-$request_uri = ( isset( $rocket_cache_query_strings ) && array_intersect( array_keys( $_GET ), $rocket_cache_query_strings ) ) || isset( $_GET['lp-variation-id'] ) || isset( $_GET['lang'] ) || isset( $_GET['s'] ) ? $_SERVER['REQUEST_URI'] : $request_uri;
+$rocket_get_variable = $_GET;
+if ( strpos( $_SERVER['SERVER_SOFTWARE'], 'nginx' ) !== false && array_key_exists( 'q', $rocket_get_variable ) ) {
+	unset( $rocket_get_variable['q'] );
+}
+$request_uri = ( isset( $rocket_cache_query_strings ) && array_intersect( array_keys( $rocket_get_variable ), $rocket_cache_query_strings ) ) || isset( $_GET['lp-variation-id'] ) || isset( $_GET['lang'] ) || isset( $_GET['s'] ) ? $_SERVER['REQUEST_URI'] : $request_uri;
 
 // Don't cache with variables
 // but the cache is enabled if the visitor comes from an RSS feed, an Facebook action or Google Adsence tracking
 // @since 2.3 	Add query strings which can be cached via the options page.
 // @since 2.1 	Add compatibilty with WordPress Landing Pages (permalink_name and lp-variation-id)
 // @since 2.1 	Add compabitiliy with qTranslate and translation plugin with query string "lang"
-if ( ! empty( $_GET )
+if ( ! empty( $rocket_get_variable )
 	&& ( ! isset( $_GET['utm_source'], $_GET['utm_medium'], $_GET['utm_campaign'] ) )
 	&& ( ! isset( $_GET['utm_expid'] ) )
 	&& ( ! isset( $_GET['fb_action_ids'], $_GET['fb_action_types'], $_GET['fb_source'] ) )
@@ -89,7 +93,7 @@ if ( ! empty( $_GET )
 	&& ( ! isset( $_GET['lang'] ) )
 	&& ( ! isset( $_GET['s'] ) )
 	&& ( ! isset( $_GET['age-verified'] ) )
-	&& ( ! isset( $rocket_cache_query_strings ) || ! array_intersect( array_keys( $_GET ), $rocket_cache_query_strings ) )
+	&& ( ! isset( $rocket_cache_query_strings ) || ! array_intersect( array_keys( $rocket_get_variable ), $rocket_cache_query_strings ) )
 ) {
 	rocket_define_donotminify_constants( true );
 	return;
