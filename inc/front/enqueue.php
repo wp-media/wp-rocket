@@ -33,6 +33,21 @@ function rocket_browser_cache_busting( $src, $current_filter = '' ) {
     if ( false === strpos( $src, '.css' ) && false === strpos( $src, '.js' ) ) {
         return $src;
     }
+
+	/**
+	 * Filters files to exclude from cache busting
+	 *
+	 * @since 2.9.3
+	 * @author Remy Perona
+	 *
+	 * @param array $excluded_files An array of filepath to exclude.
+	 */
+	$excluded_files = apply_filters(  'rocket_exclude_cache_busting', array() );
+	$excluded_files = array_flip( $excluded_files );
+
+	if ( isset( $excluded_files[ rocket_clean_exclude_file( $src ) ] ) ) {
+		return $src;
+	}
  
 	if ( empty( $current_filter ) ) {
 		$current_filter = current_filter();
@@ -141,6 +156,22 @@ function rocket_cache_dynamic_resource( $src ) {
     if ( false === strpos( $src, '.php' ) ) {
         return $src;
     }
+
+	/**
+	 * Filters files to exclude from static dynamic resources
+	 *
+	 * @since 2.9.3
+	 * @author Remy Perona
+	 *
+	 * @param array $excluded_files An array of filepath to exclude.
+	 */
+	$excluded_files   = apply_filters(  'rocket_exclude_static_dynamic_resources', array() );
+	$excluded_files[] = '/wp-admin/admin-ajax.php';
+	$excluded_files   = array_flip( $excluded_files );
+
+	if ( isset( $excluded_files[ rocket_clean_exclude_file( $src ) ] ) ) {
+		return $src;
+	}
 
     $full_src = ( substr( $src, 0, 2 ) === '//' ) ? rocket_add_url_protocol( $src ) : $src;
 
