@@ -34,6 +34,10 @@ function rocket_browser_cache_busting( $src, $current_filter = '' ) {
         return $src;
     }
 
+	if ( false !== strpos( $src, 'ver=' . $GLOBALS['wp_version'] ) ) {
+		return rtrim( str_replace( array( 'ver='.$GLOBALS['wp_version'], '?&', '&&' ), array( '', '?', '&' ), $src ), '?&' );
+	}
+
 	/**
 	 * Filters files to exclude from cache busting
 	 *
