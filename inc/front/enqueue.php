@@ -165,8 +165,9 @@ function rocket_cache_dynamic_resource( $src ) {
 	 *
 	 * @param array $excluded_files An array of filepath to exclude.
 	 */
-	$excluded_files = apply_filters(  'rocket_exclude_static_dynamic_resources', array( '/wp-admin/admin-ajax.php' ) );
-	$excluded_files = array_flip( $excluded_files );
+	$excluded_files   = apply_filters(  'rocket_exclude_static_dynamic_resources', array() );
+	$excluded_files[] = '/wp-admin/admin-ajax.php';
+	$excluded_files   = array_flip( $excluded_files );
 
 	if ( isset( $excluded_files[ rocket_clean_exclude_file( $src ) ] ) ) {
 		return $src;
