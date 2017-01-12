@@ -33,6 +33,13 @@ function rocket_browser_cache_busting( $src, $current_filter = '' ) {
     if ( false === strpos( $src, '.css' ) && false === strpos( $src, '.js' ) ) {
         return $src;
     }
+
+	$excluded_files = apply_filters(  'rocket_exclude_cache_busting', array() );
+	$excluded_files = array_flip( $excluded_files );
+
+	if ( isset( $excluded_files[ rocket_clean_exclude_file( $src ) ] ) ) {
+		return $src;
+	}
  
 	if ( empty( $current_filter ) ) {
 		$current_filter = current_filter();
@@ -141,6 +148,13 @@ function rocket_cache_dynamic_resource( $src ) {
     if ( false === strpos( $src, '.php' ) ) {
         return $src;
     }
+
+	$excluded_files = apply_filters(  'rocket_exclude_static_dynamic_resources', array( '/wp-admin/admin-ajax.php' ) );
+	$excluded_files = array_flip( $excluded_files );
+
+	if ( isset( $excluded_files[ rocket_clean_exclude_file( $src ) ] ) ) {
+		return $src;
+	}
 
     $full_src = ( substr( $src, 0, 2 ) === '//' ) ? rocket_add_url_protocol( $src ) : $src;
 
