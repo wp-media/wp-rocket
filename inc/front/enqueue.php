@@ -34,6 +34,14 @@ function rocket_browser_cache_busting( $src, $current_filter = '' ) {
         return $src;
     }
 
+	/**
+	 * Filters files to exclude from cache busting
+	 *
+	 * @since 2.9.3
+	 * @author Remy Perona
+	 *
+	 * @param array $excluded_files An array of filepath to exclude.
+	 */
 	$excluded_files = apply_filters(  'rocket_exclude_cache_busting', array() );
 	$excluded_files = array_flip( $excluded_files );
 
@@ -149,6 +157,14 @@ function rocket_cache_dynamic_resource( $src ) {
         return $src;
     }
 
+	/**
+	 * Filters files to exclude from static dynamic resources
+	 *
+	 * @since 2.9.3
+	 * @author Remy Perona
+	 *
+	 * @param array $excluded_files An array of filepath to exclude.
+	 */
 	$excluded_files = apply_filters(  'rocket_exclude_static_dynamic_resources', array( '/wp-admin/admin-ajax.php' ) );
 	$excluded_files = array_flip( $excluded_files );
 
