@@ -37,14 +37,9 @@ add_settings_field(
 endif;
 
 $cf_readonly = '';
-$cf_zones    = array();
 
 if ( function_exists( 'rocket_cloudflare_valid_auth' ) ) {
     $cf_readonly   = ( is_wp_error( rocket_cloudflare_valid_auth() ) ) ? 'readonly' : '';
-}
-
-if ( function_exists( 'get_rocket_cloudflare_zones' ) ) {
-    $cf_zones = get_rocket_cloudflare_zones();
 }
 
 add_settings_field(
@@ -55,14 +50,15 @@ add_settings_field(
 	'rocket_display_cloudflare_options',
 	array(
 		array(
-			'type'         => 'select',
+			'type'		   => 'text',
 			'label_for'    => 'cloudflare_domain',
 			'label_screen' => __( 'Domain', 'rocket' ),
-			'options'      => $cf_zones,
 			'readonly'     => $cf_readonly,
-		)
+			'default'	   => rocket_get_domain( home_url() ),
+		),
 	)
 );
+
 add_settings_field(
 	'rocket_cloudflare_devmode',
 	__( 'Development Mode', 'rocket' ),
