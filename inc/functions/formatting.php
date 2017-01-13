@@ -186,6 +186,7 @@ function get_rocket_parse_url( $url ) {
 function rocket_get_cache_busting_paths( $filename, $extension ) {
     $blog_id                = get_current_blog_id();
     $cache_busting_path     = WP_ROCKET_CACHE_BUSTING_PATH . $blog_id . '/';
+    $filename				= rtrim( str_replace( array( '/', ' ', '%20' ), '-', $filename ) );
     $cache_busting_filepath = $cache_busting_path . $filename;
     $cache_busting_url      = get_rocket_cdn_url( WP_ROCKET_CACHE_BUSTING_URL . $blog_id . '/' . $filename, array( 'all', 'css_and_js', $extension ) );
 
