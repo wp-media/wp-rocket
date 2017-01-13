@@ -12,11 +12,11 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
  * @return string updated CSS/JS file URL
  */
 if ( ! get_rocket_option( 'minify_css' ) ) {
-    add_filter( 'style_loader_src', 'rocket_browser_cache_busting', 15 );
+    add_filter( 'style_loader_src', 'rocket_browser_cache_busting', PHP_INT_MAX );
 }
 
 if ( ! get_rocket_option( 'minify_js' ) ) {
-    add_filter( 'script_loader_src', 'rocket_browser_cache_busting', 15 );
+    add_filter( 'script_loader_src', 'rocket_browser_cache_busting', PHP_INT_MAX );
 }
 
 function rocket_browser_cache_busting( $src, $current_filter = '' ) {
@@ -33,6 +33,25 @@ function rocket_browser_cache_busting( $src, $current_filter = '' ) {
     if ( false === strpos( $src, '.css' ) && false === strpos( $src, '.js' ) ) {
         return $src;
     }
+
+	if ( false !== strpos( $src, 'ver=' . $GLOBALS['wp_version'] ) ) {
+		return rtrim( str_replace( array( 'ver='.$GLOBALS['wp_version'], '?&', '&&' ), array( '', '?', '&' ), $src ), '?&' );
+	}
+
+	/**
+	 * Filters files to exclude from cache busting
+	 *
+	 * @since 2.9.3
+	 * @author Remy Perona
+	 *
+	 * @param array $excluded_files An array of filepath to exclude.
+	 */
+	$excluded_files = apply_filters(  'rocket_exclude_cache_busting', array() );
+	$excluded_files = array_flip( $excluded_files );
+
+	if ( isset( $excluded_files[ rocket_clean_exclude_file( $src ) ] ) ) {
+		return $src;
+	}
  
 	if ( empty( $current_filter ) ) {
 		$current_filter = current_filter();
@@ -88,7 +107,7 @@ function rocket_browser_cache_busting( $src, $current_filter = '' ) {
      *
      * @param string $filename filename for the cache busting file
      */
-    $cache_busting_filename = apply_filters( 'rocket_cache_busting_filename', preg_replace( '/\.(js|css)\?ver=(.+)$/', '-$2.$1', rtrim( str_replace( array( '/', ' ', '%20' ), '-', $relative_src_path ) ) ) );
+    $cache_busting_filename = apply_filters( 'rocket_cache_busting_filename', preg_replace( '/\.(js|css)\?(?:timestamp|ver)=([^&]+)(?:.*)/', '-$2.$1', rtrim( str_replace( array( '/', ' ', '%20' ), '-', $relative_src_path ) ) ) );
     $cache_busting_paths    = rocket_get_cache_busting_paths( $cache_busting_filename, $extension );
 
     if ( file_exists( $cache_busting_paths['filepath'] ) && is_readable( $cache_busting_paths['filepath'] ) ) {
@@ -141,6 +160,22 @@ function rocket_cache_dynamic_resource( $src ) {
     if ( false === strpos( $src, '.php' ) ) {
         return $src;
     }
+
+	/**
+	 * Filters files to exclude from static dynamic resources
+	 *
+	 * @since 2.9.3
+	 * @author Remy Perona
+	 *
+	 * @param array $excluded_files An array of filepath to exclude.
+	 */
+	$excluded_files   = apply_filters(  'rocket_exclude_static_dynamic_resources', array() );
+	$excluded_files[] = '/wp-admin/admin-ajax.php';
+	$excluded_files   = array_flip( $excluded_files );
+
+	if ( isset( $excluded_files[ rocket_clean_exclude_file( $src ) ] ) ) {
+		return $src;
+	}
 
     $full_src = ( substr( $src, 0, 2 ) === '//' ) ? rocket_add_url_protocol( $src ) : $src;
 

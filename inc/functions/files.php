@@ -978,7 +978,7 @@ function rocket_find_wpconfig_path() {
  */
 function get_rocket_footprint( $debug = true ) {
 	$footprint = ! rocket_is_white_label() ?
-					"\n" . '<!-- This website is like a Rocket, isn\'t it ? Performance optimized by WP Rocket. Learn more: http://wp-rocket.me' :
+					"\n" . '<!-- This website is like a Rocket, isn\'t it? Performance optimized by WP Rocket. Learn more: https://wp-rocket.me' :
 					"\n" . '<!-- Cached page for great performance';
 	if ( $debug ) {
 		$footprint .= ' - Debug: cached@' . time();
