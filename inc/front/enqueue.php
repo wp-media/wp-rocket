@@ -35,7 +35,7 @@ function rocket_browser_cache_busting( $src, $current_filter = '' ) {
     }
 
 	if ( false !== strpos( $src, 'ver=' . $GLOBALS['wp_version'] ) ) {
-		return rtrim( str_replace( array( 'ver='.$GLOBALS['wp_version'], '?&', '&&' ), array( '', '?', '&' ), $src ), '?&' );
+		$src = rtrim( str_replace( array( 'ver='.$GLOBALS['wp_version'], '?&', '&&' ), array( '', '?', '&' ), $src ), '?&' );
 	}
 
 	/**
@@ -99,6 +99,13 @@ function rocket_browser_cache_busting( $src, $current_filter = '' ) {
 
     $relative_src_path      = ltrim( $relative_src_path . '?' . $query, '/' );
     $full_src_path          = ABSPATH . dirname( $relative_src_path );
+ 
+	$cache_busting_filename = preg_replace( '/\.(js|css)\?(?:timestamp|ver)=([^&]+)(?:.*)/', '-$2.$1', $relative_src_path );
+ 
+	if (  $cache_busting_filename === $relative_src_path ) {
+		return $src;
+	}
+	
     /*
      * Filters the cache busting filename
      *
@@ -107,7 +114,7 @@ function rocket_browser_cache_busting( $src, $current_filter = '' ) {
      *
      * @param string $filename filename for the cache busting file
      */
-    $cache_busting_filename = apply_filters( 'rocket_cache_busting_filename', preg_replace( '/\.(js|css)\?(?:timestamp|ver)=([^&]+)(?:.*)/', '-$2.$1', rtrim( str_replace( array( '/', ' ', '%20' ), '-', $relative_src_path ) ) ) );
+    $cache_busting_filename = apply_filters( 'rocket_cache_busting_filename', $cache_busting_filename );
     $cache_busting_paths    = rocket_get_cache_busting_paths( $cache_busting_filename, $extension );
 
     if ( file_exists( $cache_busting_paths['filepath'] ) && is_readable( $cache_busting_paths['filepath'] ) ) {
@@ -213,7 +220,7 @@ function rocket_cache_dynamic_resource( $src ) {
      *
      * @param string $filename filename for the cache file
      */
-    $cache_dynamic_resource_filename = apply_filters( 'rocket_dynamic_resource_cache_filename', preg_replace( '/\.(php)$/', $extension, strtok( rtrim( str_replace( array( '/', ' ', '%20' ), '-', $relative_src_path ) ), '?' ) ) );
+    $cache_dynamic_resource_filename = apply_filters( 'rocket_dynamic_resource_cache_filename', preg_replace( '/\.(php)$/', $extension, strtok( $relative_src_path, '?' ) ) );
     $cache_busting_paths             = rocket_get_cache_busting_paths( $cache_dynamic_resource_filename, $extension );
 
     if ( file_exists( $cache_busting_paths['filepath'] ) && is_readable( $cache_busting_paths['filepath'] ) ) {
