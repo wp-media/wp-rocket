@@ -1,7 +1,7 @@
 <?php 
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
-if ( defined( 'SFML_VERSION' ) && version_compare( SFML_VERSION, '2.4', '<' ) ):
+if ( defined( 'SFML_VERSION' ) ):
 	add_filter( 'rocket_cache_reject_uri', 'rocket_add_sfml_exclude_pages' );
 	add_action( 'update_option_sfml', '__rocket_after_update_single_options', 10, 2 );
 endif;
@@ -47,7 +47,7 @@ add_action( 'activate_sf-move-login/sf-move-login.php', 'rocket_activate_sfml', 
  * @since 2.9.3
  */
 function rocket_activate_sfml() {
-	if ( defined( 'SFML_VERSION' ) && version_compare( SFML_VERSION, '2.4', '<' ) ) {
+	if ( defined( 'SFML_VERSION' ) ) {
 		add_filter( 'rocket_cache_reject_uri', 'rocket_add_sfml_exclude_pages' );
 		
     	// Update the WP Rocket rules on the .htaccess
@@ -65,7 +65,7 @@ add_action( 'deactivate_sf-move-login/sf-move-login.php', 'rocket_deactivate_sfm
  * @since 2.9.3
  */
 function rocket_deactivate_sfml() {
-	if ( defined( 'SFML_VERSION' ) && version_compare( SFML_VERSION, '2.4', '<' ) ) {
+	if ( defined( 'SFML_VERSION' ) ) {
 		remove_filter( 'rocket_cache_reject_uri', 'rocket_add_sfml_exclude_pages' );
 		
     	// Update the WP Rocket rules on the .htaccess
