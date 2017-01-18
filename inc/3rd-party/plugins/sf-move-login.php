@@ -33,7 +33,6 @@ function rocket_add_sfml_exclude_pages( $urls ) {
 	}
 
 	$sfml_slugs = sfml_get_slugs();
-	error_log( print_r( $sfml_slugs, true ) );
 	$sfml_slugs = array_map( 'home_url', $sfml_slugs );
 	$sfml_slugs = array_map( 'trailingslashit', $sfml_slugs );
 	$sfml_slugs = array_map( 'rocket_clean_exclude_file', $sfml_slugs );
