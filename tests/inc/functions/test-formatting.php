@@ -2,8 +2,12 @@
 class WP_Rocket_Formatting_Test extends WP_UnitTestCase {
 	function test_rocket_clean_exclude_file() {
 		$path = rocket_clean_exclude_file( 'http://www.geekpress.fr/referencement-wordpress/' );
+		$path_with_query_string = rocket_clean_exclude_file( 'http://www.geekpress.fr/referencement-wordpress/?test=toto' );
+		$path_without_scheme = rocket_clean_exclude_file( '//www.geekpress.fr/referencement-wordpress/?test=toto' );
 
 		$this->assertEquals( '/referencement-wordpress/', $path );
+		$this->assertEquals( '/referencement-wordpress/', $path_with_query_string );
+		$this->assertEquals( '/referencement-wordpress/', $path_without_scheme );
 	}
 
 	function test_rocket_sanitize_css() {
