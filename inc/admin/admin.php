@@ -273,11 +273,11 @@ function __rocket_rollback() {
 	$plugin_file      	= basename( WP_ROCKET_FILE );
 	$version          	= WP_ROCKET_LASTVERSION;
 	$c_key 				= get_rocket_option( 'consumer_key' );
-	$url 				= sprintf( 'http://support.wp-rocket.me/%s/wp-rocket_%s.zip', $c_key, $version );
+	$url 				= sprintf( 'https://wp-rocket.me/%s/wp-rocket_%s.zip', $c_key, $version );
 	$temp_array 		= array(
 		'slug'        => $plugin_folder,
 		'new_version' => $version,
-		'url'         => 'http://wp-rocket.me',
+		'url'         => 'https://wp-rocket.me',
 		'package'     => $url
 	);
 
