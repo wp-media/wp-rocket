@@ -3,7 +3,7 @@
 Plugin Name: WP Rocket
 Plugin URI: https://wp-rocket.me
 Description: The best WordPress performance plugin.
-Version: 2.9.3
+Version: 2.9.4
 Code Name: Iridonia
 Author: WP Media
 Contributors: Jonathan Buttigieg, Julio Potier, Remy Perona
@@ -19,7 +19,7 @@ Copyright 2013-2016 WP Rocket
 defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
 
 // Rocket defines
-define( 'WP_ROCKET_VERSION'             , '2.9.3' );
+define( 'WP_ROCKET_VERSION'             , '2.9.4' );
 define( 'WP_ROCKET_PRIVATE_KEY'         , false );
 define( 'WP_ROCKET_SLUG'                , 'wp_rocket_settings' );
 define( 'WP_ROCKET_WEB_MAIN'            , 'https://wp-rocket.me/' );
