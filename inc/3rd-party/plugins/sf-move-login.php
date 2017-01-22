@@ -38,7 +38,7 @@ function rocket_add_sfml_exclude_pages( $urls ) {
 	$sfml_slugs = array_map( 'rocket_clean_exclude_file', $sfml_slugs );
 	
 	foreach( $sfml_slugs as $key => $slug ) {
-		$sfml_slugs[ $key ] = $slug . '?':
+		$sfml_slugs[ $key ] = $slug . '?';
 	}
 	
 	return array_merge( $urls, $sfml_slugs );
