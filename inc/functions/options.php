@@ -57,6 +57,39 @@ function update_rocket_option( $key, $value ) {
 }
 
 /**
+ * Check whether the plugin is active by checking the active_plugins list.
+ *
+ * @since 1.3.0
+ *
+ * @source wp-admin/includes/plugin.php
+ */
+function rocket_is_plugin_active( $plugin )
+{
+	return in_array( $plugin, (array) get_option( 'active_plugins', array() ) ) || rocket_is_plugin_active_for_network( $plugin );
+}
+
+/**
+ * Check whether the plugin is active for the entire network.
+ *
+ * @since 1.3.0
+ *
+ * @source wp-admin/includes/plugin.php
+ */
+function rocket_is_plugin_active_for_network( $plugin )
+{
+	if ( !is_multisite() ) {
+		return false;
+	}
+
+	$plugins = get_site_option( 'active_sitewide_plugins');
+	if ( isset($plugins[$plugin]) ) {
+		return true;
+	}
+
+	return false;
+}
+
+/**
  * Is we need to exclude some specifics options on a post.
  *
  * @since 2.5
@@ -191,12 +224,6 @@ function get_rocket_purge_cron_interval() {
  */
 function get_rocket_cache_reject_uri() {
 	$uri = get_rocket_option( 'cache_reject_uri', array() );
-	
-	// Exclude cart & checkout pages from e-commerce plugins
-	$uri = array_merge( $uri, get_rocket_ecommerce_exclude_pages() );
-		
-	// Exclude hide login plugins
-	$uri = array_merge( $uri, get_rocket_logins_exclude_pages() );
 
     // Exclude feeds if option is not activated
     if ( ! is_rocket_cache_feed() ) {

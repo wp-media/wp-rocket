@@ -406,3 +406,35 @@ function rocket_do_async_job( $body ) {
 
 	wp_remote_post( admin_url( 'admin-ajax.php' ), $args );
 }
+
+function __rocket_after_update_single_options( $old_value, $value ) {
+	if ( $old_value != $value ) {
+		// Update .htaccess file rules
+		flush_rocket_htaccess();
+	
+		// Update config file
+		rocket_generate_config_file();	
+	}
+}
+
+function __rocket_after_update_array_options( $old_value, $value ) {
+	$options = array( 
+		'purchase_page', 
+		'jigoshop_cart_page_id', 
+		'jigoshop_checkout_page_id', 
+		'jigoshop_myaccount_page_id' 
+	);
+	
+	foreach ( $options as $val ) {
+		if ( ( ! isset( $old_value[ $val ] ) && isset( $value[ $val ] ) ) ||
+			( isset( $old_value[ $val ], $value[ $val ] ) && $old_value[ $val ] != $value[ $val ] ) 
+		) {
+			// Update .htaccess file rules
+			flush_rocket_htaccess();
+		
+			// Update config file
+			rocket_generate_config_file();	
+			break;
+		}
+	}
+}

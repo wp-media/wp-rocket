@@ -292,3 +292,33 @@ function rocket_delete_script_wp_version( $src ) {
     return rocket_browser_cache_busting( $src );
 }
 endif;
+
+if ( ! function_exists( 'get_rocket_logins_exclude_pages' ) ) :
+/**
+ * Get hide login pages to automatically exclude them to the cache.
+ *
+ * @since 2.6
+ * @deprecated 3.0
+ *
+ * @return array $urls
+ */
+function get_rocket_logins_exclude_pages() {
+	_deprecated_function( __FUNCTION__, '3.0' );
+	return array();
+}
+endif;
+
+if ( ! function_exists( 'get_rocket_ecommerce_exclude_pages' ) ) :
+/**
+ * Get cart & checkout path with their translations to automatically exclude them to the cache.
+ *
+ * @since 2.4
+ * @deprecated 3.0
+ *
+ * @return array $urls
+ */
+function get_rocket_ecommerce_exclude_pages() {
+	_deprecated_function( __FUNCTION__, '3.0' );
+	return array();
+}
+endif;
