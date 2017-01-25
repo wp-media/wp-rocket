@@ -121,6 +121,7 @@ function rocket_init()
     require( WP_ROCKET_COMMON_PATH		. 'admin-bar.php' );
     require( WP_ROCKET_COMMON_PATH		. 'updater.php' );
     require( WP_ROCKET_COMMON_PATH		. 'emoji.php' );
+    require( WP_ROCKET_COMMON_PATH		. 'embeds.php' );
 	require( dirname( __FILE__ )		. '/licence-data.php' );
 
     if( rocket_valid_key() ) {
