@@ -6,7 +6,7 @@ if ( defined( 'ELEMENTOR_VERSION' ) ) :
     /**
      * Excludes Elementor scripts from JS minification
      *
-     * @since 2.9.x
+     * @since 2.9.5
      *
      * @param Array $excluded_handle An array of JS handles enqueued in WordPress
      * @return Array the updated array of handles
