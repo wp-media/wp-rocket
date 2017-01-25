@@ -216,6 +216,26 @@ add_settings_field(
 	)
 );
 add_settings_field(
+	'rocket_embeds',
+	__( 'Embeds:', 'rocket' ),
+	'rocket_field',
+	'rocket_basic',
+	'rocket_display_main_options',
+	array(
+		array(
+			'type'         => 'checkbox',
+			'label'        => __( 'Disable enhanced embeds.', 'rocket' ),
+			'label_for'    => 'embeds',
+			'label_screen' => __( 'Embeds:', 'rocket' ),
+		),
+		array(
+			'type'         => 'helper_description',
+			'name'         => 'embeds',
+			'description'  => __( '<strong>Note:</strong> By activating this option, you will prevent others from embedding your site, prevent you from embedding other non-whitelisted sites and disables all JavaScript related to the feature.', 'rocket' ),
+		),
+	)
+);
+add_settings_field(
 	'rocket_purge',
 	__( 'Clear Cache Lifespan', 'rocket' ),
 	'rocket_field',
