@@ -283,7 +283,9 @@ function do_rocket_callback( $buffer ) {
 			}
 
 			// Send headers with the last modified time of the cache file
-			header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s', filemtime( $rocket_cache_filepath ) ) . ' GMT' );
+			if ( file_exists( $rocket_cache_filepath ) ) {
+				header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s', filemtime( $rocket_cache_filepath ) ) . ' GMT' );
+			}
 		}
 
 		if( $is_html ) {
