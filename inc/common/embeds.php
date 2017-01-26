@@ -12,7 +12,7 @@ if ( version_compare( $wp_version, '4.4' ) >= 0 && get_rocket_option( 'embeds', 
 	 * - Disables oEmbed discovery.
 	 * - Completely removes the related JavaScript.
 	 *
-	 * @since 1.0.0
+	 * @since 3.0
 	 */
 	function rocket_disable_embeds_init() {
 		/* @var WP $wp */
@@ -51,7 +51,7 @@ if ( version_compare( $wp_version, '4.4' ) >= 0 && get_rocket_option( 'embeds', 
 	/**
 	 * Removes the 'wpembed' TinyMCE plugin.
 	 *
-	 * @since 1.0.0
+	 * @since 3.0
 	 *
 	 * @param array $plugins List of TinyMCE plugins.
 	 * @return array The modified list.
@@ -63,7 +63,7 @@ if ( version_compare( $wp_version, '4.4' ) >= 0 && get_rocket_option( 'embeds', 
 	/**
 	 * Remove all rewrite rules related to embeds.
 	 *
-	 * @since 1.2.0
+	 * @since 3.0
 	 *
 	 * @param array $rules WordPress rewrite rules.
 	 * @return array Rewrite rules without embeds rules.
