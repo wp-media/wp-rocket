@@ -196,8 +196,8 @@ add_settings_field(
 	)
 );
 add_settings_field(
-	'rocket_emoji',
-	__( 'Emojis:', 'rocket' ),
+	'rocket_wordpress_features',
+	__( 'WordPress features:', 'rocket' ),
 	'rocket_field',
 	'rocket_basic',
 	'rocket_display_main_options',
@@ -213,15 +213,6 @@ add_settings_field(
 			'name'         => 'emoji',
 			'description'  => __( '<strong>Note:</strong> By activating this option, you will reduce the number of external HTTP requests.', 'rocket' ),
 		),
-	)
-);
-add_settings_field(
-	'rocket_embeds',
-	__( 'Embeds:', 'rocket' ),
-	'rocket_field',
-	'rocket_basic',
-	'rocket_display_main_options',
-	array(
 		array(
 			'type'         => 'checkbox',
 			'label'        => __( 'Disable enhanced embeds.', 'rocket' ),
@@ -233,8 +224,9 @@ add_settings_field(
 			'name'         => 'embeds',
 			'description'  => __( '<strong>Note:</strong> By activating this option, you will prevent others from embedding your site, prevent you from embedding other non-whitelisted sites and disables all JavaScript related to the feature.', 'rocket' ),
 		),
-	)
+	)	
 );
+
 add_settings_field(
 	'rocket_purge',
 	__( 'Clear Cache Lifespan', 'rocket' ),
