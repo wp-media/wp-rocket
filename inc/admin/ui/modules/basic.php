@@ -29,6 +29,34 @@ add_settings_field(
 		),
 	)
 );
+
+$rocket_maybe_disable_minify_html = array();
+if ( rocket_maybe_disable_minify_html() ) {
+	$rocket_maybe_disable_minify_html = array(
+			'type'         => 'helper_description',
+			'name'         => 'minify_html_disabled',
+			'description'  => __( 'HTML Minification is disabled because it is currently activated in Autoptimize. If you want to use WP Rocket HTML minification, disable it in Autoptimize.', 'rocket' )
+			);
+}
+
+$rocket_maybe_disable_minify_css = array();
+if ( rocket_maybe_disable_minify_css() ) {
+	$rocket_maybe_disable_minify_css = array(
+			'type'         => 'helper_description',
+			'name'         => 'minify_css_disabled',
+			'description'  => __( 'CSS Minification is disabled because it is currently activated in Autoptimize. If you want to use WP Rocket CSS minification, disable it in Autoptimize.', 'rocket' )
+			);
+}
+
+$rocket_maybe_disable_minify_js = array();
+if ( rocket_maybe_disable_minify_js() ) {
+	$rocket_maybe_disable_minify_js = array(
+			'type'         => 'helper_description',
+			'name'         => 'minify_js_disabled',
+			'description'  => __( 'JS Minification is disabled because it is currently activated in Autoptimize. If you want to use WP Rocket JS minification, disable it in Autoptimize.', 'rocket' )
+			);
+}
+
 add_settings_field(
 	'rocket_minify',
 	 __( 'Files optimisation:<br/><span class="description">(Minification & Concatenation)</span>', 'rocket' ),
@@ -40,8 +68,10 @@ add_settings_field(
 			'type'         => 'checkbox',
 			'label'        => 'HTML',
 			'name'         => 'minify_html',
-			'label_screen' => __( 'HTML Files minification', 'rocket' )
+			'label_screen' => __( 'HTML Files minification', 'rocket' ),
+			'readonly'	   => rocket_maybe_disable_minify_html(),
 		),
+		$rocket_maybe_disable_minify_html,
 		array(
 			'parent'	   => 'minify_html',
 			'type'         => 'checkbox',
@@ -66,14 +96,18 @@ add_settings_field(
 			'type'         => 'checkbox',
 			'label'        => 'CSS',
 			'name'         => 'minify_css',
-			'label_screen' => __( 'CSS Files minification', 'rocket' )
+			'label_screen' => __( 'CSS Files minification', 'rocket' ),
+			'readonly'	   => rocket_maybe_disable_minify_css(),
 		),
+		$rocket_maybe_disable_minify_css,
 		array(
 			'type'		   => 'checkbox',
 			'label'		   => 'JS',
 			'name'		   => 'minify_js',
 			'label_screen' => __( 'JS Files minification', 'rocket' ),
+			'readonly'	   => rocket_maybe_disable_minify_js(),
 		),
+		$rocket_maybe_disable_minify_js,
 		array(
 			'type'			=> 'helper_description',
 			'name'			=> 'minify',
