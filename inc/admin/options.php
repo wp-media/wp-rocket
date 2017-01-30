@@ -923,18 +923,28 @@ function rocket_settings_callback( $inputs ) {
 	$filename_prefix = rocket_is_white_label() ? sanitize_title( get_rocket_option( 'wl_plugin_name' ) ) : 'wp-rocket';
 	 
 	if ( isset( $_FILES['import'] )
-		&& preg_match( '/'. $filename_prefix . '-settings-20\d{2}-\d{2}-\d{2}-[a-f0-9]{13}\.txt/', $_FILES['import']['name'] )
-		&& 'text/plain' == $_FILES['import']['type'] ) {
+		&& preg_match( '/'. $filename_prefix . '-settings-20\d{2}-\d{2}-\d{2}-[a-f0-9]{13}\.(?:txt|json)/', $_FILES['import']['name'] )
+		&& ( 'text/plain' == $_FILES['import']['type'] || 'application/json' === $_FILES['import']['type'] ) ) {
 		$file_name 			= $_FILES['import']['name'];
+		$file_type			= $_FILES['import']['type'];
 		$_POST_action 		= $_POST['action'];
 		$_POST['action'] 	= 'wp_handle_sideload';
-		$file 				= wp_handle_sideload( $_FILES['import'], array( 'mimes' => array( 'txt' => 'text/plain' ) ) );
+		if ( 'text/plain' === $file_type ) {
+			$mimes = array( 'txt' => 'application/octet-stream' );
+		} elseif ( 'application/json' === $file_type ) {
+			$mimes = array( 'json' => 'text/plain' );
+		}
+		$file 				= wp_handle_sideload( $_FILES['import'], array( 'mimes' => $mimes ) );
 		$_POST['action'] 	= $_POST_action;
-		$gz 				= 'gz'.strrev( 'etalfni' );
 		$settings 			= @file_get_contents( $file['file'] );
-		$settings 			= $gz//;
-		( $settings );
-		$settings 			= unserialize( $settings );
+		if ( 'text/plain' === $file_type ) {
+			$gz 				= 'gz'.strrev( 'etalfni' );
+			$settings 			= $gz//;
+			( $settings );
+			$settings 			= unserialize( $settings );
+		} elseif ( 'application/json' === $file_type ) {
+			$settings = (array) json_decode( $settings );
+		}
 		file_put_contents( $file['file'], '' );
 		@unlink( $file['file'] );
 		if ( is_array( $settings ) ) {
