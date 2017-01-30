@@ -71,6 +71,8 @@ endif;
  *
  * @since 2.9.5
  * @author Remy Perona
+ *
+ * @return bool|null True if it is active
  */
 function rocket_maybe_disable_minify_html() {
 	if ( 'on' === get_option( 'autoptimize_html') ) {
@@ -83,6 +85,8 @@ function rocket_maybe_disable_minify_html() {
  *
  * @since 2.9.5
  * @author Remy Perona
+ *
+ * @return bool|null True if it is active
  */
 function rocket_maybe_disable_minify_css() {
 	if ( 'on' === get_option( 'autoptimize_css') ) {
@@ -95,6 +99,8 @@ function rocket_maybe_disable_minify_css() {
  *
  * @since 2.9.5
  * @author Remy Perona
+ *
+ * @return bool|null True if it is active
  */
 function rocket_maybe_disable_minify_js() {
 	if ( 'on' === get_option( 'autoptimize_js') ) {
