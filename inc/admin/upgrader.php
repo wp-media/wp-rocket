@@ -95,7 +95,6 @@ function rocket_first_install() {
 			'exclude_css'                 => array(),
 			'exclude_js'                  => array(),
 			'deferred_js_files'           => array(),
-			'deferred_js_wait'            => array(),
 			'lazyload'                    => 0,
 			'lazyload_iframes'            => 0,
 			'minify_css'                  => 0,
