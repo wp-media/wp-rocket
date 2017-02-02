@@ -69,10 +69,24 @@ add_settings_field(
 			'label_screen' => __( 'CSS Files minification', 'rocket' )
 		),
 		array(
+			'parent'	   => 'minify_css',
+			'type'         => 'checkbox',
+			'label'        => 'Minify without concatenation',
+			'name'         => 'minify_css_no_concat',
+			'label_screen' => 'Minify CSS without concatenation',
+		),
+		array(
 			'type'		   => 'checkbox',
 			'label'		   => 'JS',
 			'name'		   => 'minify_js',
 			'label_screen' => __( 'JS Files minification', 'rocket' ),
+		),
+		array(
+			'parent'	   => 'minify_js',
+			'type'         => 'checkbox',
+			'label'        => 'Minify without concatenation',
+			'name'         => 'minify_js_no_concat',
+			'label_screen' => 'Minify JS without concatenation',
 		),
 		array(
 			'type'			=> 'helper_description',
