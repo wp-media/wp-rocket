@@ -95,7 +95,7 @@ add_settings_field(
 );
 // Mobile plugins list
 $mobile_plugins = array(
-	'<a href="https://wordpress.org/plugins/wptouch/" target="_blank">WP Touch (Free Version)</a>',
+	'<a href="https://wordpress.org/plugins/wptouch/" target="_blank">WP Touch (Free version only)</a>',
 	'<a href="https://wordpress.org/plugins/wiziapp-create-your-own-native-iphone-app" target="_blank">wiziApp</a>',
 	'<a href="https://wordpress.org/plugins/wordpress-mobile-pack/" target="_blank">WordPress Mobile Pack</a>',
 	'<a href="https://wordpress.org/plugins/wp-mobilizer/" target="_blank">WP-Mobilizer</a>',
@@ -121,7 +121,7 @@ add_settings_field(
 		array(
 			'parent'	   => 'cache_mobile',
 			'type'         => 'checkbox',
-			'label'        => __( 'Create a caching file for mobile visitors.', 'rocket' ),
+			'label'        => __( 'Create a separate caching file for mobile visitors.', 'rocket' ),
 			'name'         => 'do_caching_mobile_files'
 		),
 		array(
