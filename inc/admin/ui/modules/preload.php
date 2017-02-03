@@ -54,13 +54,13 @@ add_settings_field(
 	'rocket_field',
 	'rocket_preload',
 	'rocket_display_preload_options',
-	/*
-     * Filters the array of options activating the sitemap preloading
-     *
-     * @since 2.8
-     *
-     * @param array $sitemap_preload_options Array of options arrays
-     */
+	/**
+	 * Filters the array of options activating the sitemap preloading
+	 *
+	 * @since 2.8
+	 *
+	 * @param array $sitemap_preload_options Array of options arrays.
+	 */
 	apply_filters( 'rocket_sitemap_preload_options', $sitemap_preload_options )
 );
 
@@ -76,13 +76,13 @@ add_settings_field(
 			'label'        => __( 'Interval between each URL crawl', 'rocket' ),
 			'label_for'    => 'sitemap_preload_url_crawl',
 			'label_screen' => __( 'Interval between each URL crawl', 'rocket' ),
-			/*
-             * Filters the array of options interval for sitemap preload
-             *
-             * @since 2.8
-             *
-             * @param array Array of options interval defined by a $value => $label pair
-             */
+			/**
+			 * Filters the array of options interval for sitemap preload
+			 *
+			 * @since 2.8
+			 *
+			 * @param array $intervals Array of options interval defined by a $value => $label pair.
+			 */
 			'options'      => apply_filters( 'rocket_sitemap_preload_interval', array(
 				'250000'      => '250ms',
 				'500000'      => '500ms',

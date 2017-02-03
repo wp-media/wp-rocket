@@ -12,19 +12,26 @@
 
 	<rule ref="WordPress">
 		<exclude name="Generic.PHP.NoSilencedErrors.Discouraged"/>
-		<exclude name="PEAR.Functions.FunctionCallSignature.Indent"/>
-		<exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterCloseBrace"/>
-		<exclude name="Squiz.Commenting.BlockComment.NoEmptyLineBefore"/>
-		<exclude name="Squiz.Commenting.BlockComment.NoNewLine"/>
-		<exclude name="Squiz.Commenting.FileComment.Missing"/>
-		<exclude name="Squiz.Commenting.FileComment.MissingPackageTag"/>
-		<exclude name="Squiz.Commenting.FileComment.WrongStyle"/>
-		<exclude name="Squiz.Commenting.InlineComment.SpacingAfter"/>
-		<exclude name="Squiz.PHP.CommentedOutCode.Found"/>
-		<exclude name="WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar"/>
-		<exclude name="WordPress.Variables.GlobalVariables.OverrideProhibited"/>
-		<exclude name="WordPress.VIP"/>
-		<exclude name="WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet"/>
-		<exclude name="WordPress.XSS.EscapeOutput"/>
+        <exclude name="PEAR.Functions.FunctionCallSignature.Indent"/>
+        <exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterCloseBrace"/>
+        <exclude name="Squiz.Commenting.FileComment.Missing"/>
+        <exclude name="Squiz.Commenting.FileComment.MissingPackageTag"/>
+        <exclude name="Squiz.PHP.CommentedOutCode.Found"/>
+        <exclude name="WordPress.VIP.AdminBarRemoval"/>
+        <exclude name="WordPress.VIP.CronInterval.ChangeDetected"/>
+        <exclude name="WordPress.VIP.DirectDatabaseQuery.DirectQuery"/>
+        <exclude name="WordPress.VIP.DirectDatabaseQuery.NoCaching"/>
+        <exclude name="WordPress.VIP.OrderByRand"/>
+        <exclude name="WordPress.VIP.PostsPerPage.posts_per_page"/>
+        <exclude name="WordPress.VIP.RestrictedFunctions"/>
+        <exclude name="WordPress.VIP.RestrictedFunctions.urlencode"/>
+        <exclude name="WordPress.VIP.RestrictedFunctions.wp_redirect"/>
+        <exclude name="WordPress.VIP.RestrictedVariables.cache_constraints"/>
+        <exclude name="WordPress.VIP.RestrictedVariables.user_meta"/>
+        <exclude name="WordPress.VIP.SlowDBQuery.slow_db_query"/>
+        <exclude name="WordPress.VIP.SuperGlobalInputUsage.AccessDetected"/>
+        <exclude name="WordPress.VIP.TimezoneChange"/>
+        <exclude name="WordPress.VIP.ValidatedSanitizedInput"/>
+        <exclude name="WordPress.XSS.EscapeOutput"/>
 	</rule>
 </ruleset>

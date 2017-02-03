@@ -1,7 +1,6 @@
 <?php
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
-add_action( 'wp_ajax_rocket_new_ticket_support', 'wp_ajax_rocket_new_ticket_support' );
 /**
  * Open a ticket support.
  *
@@ -42,8 +41,8 @@ function wp_ajax_rocket_new_ticket_support() {
 	    wp_send_json( array( 'msg' => 'BAD_SERVER' ) );
 	}
 }
+add_action( 'wp_ajax_rocket_new_ticket_support', 'wp_ajax_rocket_new_ticket_support' );
 
-add_action( 'wp_ajax_rocket_helpscout_live_search', 'wp_ajax_rocket_helpscout_live_search' );
 /**
  * Documentation suggestions based on the summary input from the new ticket support form.
  *
@@ -51,12 +50,13 @@ add_action( 'wp_ajax_rocket_helpscout_live_search', 'wp_ajax_rocket_helpscout_li
  */
 function wp_ajax_rocket_helpscout_live_search() {
 	if ( current_user_can( apply_filters( 'rocket_capability', 'manage_options' ) ) ) {
+		$query = filter_input( INPUT_POST, 'query' );
 		$response = wp_remote_post(
 			WP_ROCKET_WEB_MAIN . 'tools/wp-rocket/helpscout/livesearch.php',
 			array(
 				'timeout'   => 10,
 				'body' 		=> array(
-					'query' => esc_html( wp_strip_all_tags( $_POST['query'] , true ) ),
+					'query' => esc_html( wp_strip_all_tags( $query, true ) ),
 					'lang'  => get_locale(),
 				),
 			)
@@ -67,3 +67,4 @@ function wp_ajax_rocket_helpscout_live_search() {
 		}
 	}
 }
+add_action( 'wp_ajax_rocket_helpscout_live_search', 'wp_ajax_rocket_helpscout_live_search' );

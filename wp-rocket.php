@@ -1,20 +1,20 @@
 <?php
-/*
-Plugin Name: WP Rocket
-Plugin URI: https://wp-rocket.me
-Description: The best WordPress performance plugin.
-Version: 2.9
-Code Name: Ilum
-Author: WP Media
-Contributors: Jonathan Buttigieg, Julio Potier, Remy Perona
-Author URI: http://wp-media.me
-Licence: GPLv2
-
-Text Domain: rocket
-Domain Path: languages
-
-Copyright 2013-2016 WP Rocket
-*/
+/**
+ * Plugin Name: WP Rocket
+ * Plugin URI: https://wp-rocket.me
+ * Description: The best WordPress performance plugin.
+ * Version: 2.9
+ * Code Name: Ilum
+ * Author: WP Media
+ * Contributors: Jonathan Buttigieg, Julio Potier, Remy Perona
+ * Author URI: http://wp-media.me
+ * Licence: GPLv2
+ *
+ * Text Domain: rocket
+ * Domain Path: languages
+ *
+ * Copyright 2013-2016 WP Rocket
+ */
 
 defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
 
@@ -201,12 +201,12 @@ function rocket_deactivation() {
 		$causes = array();
 
 		// .htaccess problem.
-		if ( $is_apache && ! is_writable( get_home_path() . '.htaccess' ) ) {
+		if ( $is_apache && ! rocket_direct_filesystem()->is_writable( get_home_path() . '.htaccess' ) ) {
 			$causes[] = 'htaccess';
 		}
 
 		// wp-config problem.
-		if ( ! is_writable( rocket_find_wpconfig_path() ) ) {
+		if ( ! rocket_direct_filesystem()->is_writable( rocket_find_wpconfig_path() ) ) {
 			$causes[] = 'wpconfig';
 		}
 

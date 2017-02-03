@@ -878,6 +878,19 @@ function rocket_rrmdir( $dir, $dirs_to_preserve = array() ) {
 }
 
 /**
+ * Instanciate the filesystem class
+ *
+ * @since 3.0
+ *
+ * @return object WP_Filesystem_Direct instance
+ */
+function rocket_direct_filesystem() {
+	require_once( ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php' );
+	require_once( ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php' );
+	return new WP_Filesystem_Direct( new StdClass() );
+}
+
+/**
  * Directory creation based on WordPress Filesystem
  *
  * @since 1.3.4
@@ -886,12 +899,8 @@ function rocket_rrmdir( $dir, $dirs_to_preserve = array() ) {
  * @return bool
  */
 function rocket_mkdir( $dir ) {
-	require_once( ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php' );
-	require_once( ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php' );
-	$direct_filesystem = new WP_Filesystem_Direct( new StdClass() );
-
 	$chmod = defined( 'FS_CHMOD_DIR' ) ? FS_CHMOD_DIR : ( fileperms( WP_CONTENT_DIR ) & 0777 | 0755 );
-	return $direct_filesystem->mkdir( $dir, $chmod );
+	return rocket_direct_filesystem()->mkdir( $dir, $chmod );
 }
 
 /**
