@@ -314,4 +314,8 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
             require( WP_ROCKET_ADMIN_PATH . 'compat/cf-upgrader-5.4.php' );
         }
     }
+
+	if ( version_compare( $actual_version, '3.0', '<' ) ) {
+		rocket_clean_domain();
+	}
 }
