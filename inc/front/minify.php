@@ -2,8 +2,9 @@
 defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
 
 /**
- * Launch WP Rocket minification process (CSS and JavaScript)
+ * Launch WP Rocket minification process (HTML, CSS and JavaScript)
  *
+ * @since 3.0	New process for minification without concatenation
  * @since 1.3.0 This process is called via the new filter rocket_buffer
  * @since 1.1.6 Minify inline CSS and JavaScript
  * @since 1.0
@@ -23,12 +24,20 @@ function rocket_minify_process( $buffer ) {
 
 		// Minify CSS
 	    if ( $enable_css && ( ! defined( 'DONOTMINIFYCSS' ) || ! DONOTMINIFYCSS ) && ! is_rocket_post_excluded_option( 'minify_css' ) ) {
-	    	list( $buffer, $css ) = rocket_minify_css( $buffer );
+		    if ( get_rocket_option( 'minify_css_no_concat' ) ) {
+			    $buffer = rocket_minify_css_only( $buffer );
+		    } else {
+			    list( $buffer, $css ) = rocket_minify_css( $buffer );
+		    }
 		}
 
 	    // Minify JavaScript
 	    if ( $enable_js && ( ! defined( 'DONOTMINIFYJS' ) || ! DONOTMINIFYJS ) && ! is_rocket_post_excluded_option( 'minify_js' ) ) {
-	    	list( $buffer, $js ) = rocket_minify_js( $buffer );
+		    if ( get_rocket_option( 'minify_js_no_concat' ) ) {
+			    $buffer = rocket_minify_js_only( $buffer );
+		    } else {
+			    list( $buffer, $js ) = rocket_minify_js( $buffer );
+		    }
 		}
 
 		// Concatenate Google Fonts
@@ -58,6 +67,10 @@ function rocket_minify_process( $buffer ) {
 add_action( 'wp_footer', '__rocket_insert_minify_js_in_footer', PHP_INT_MAX );
 function __rocket_insert_minify_js_in_footer() {
 	global $pagenow;
+
+	if ( get_rocket_option( 'minify_js_no_concat' ) ) {
+		return;
+	}
 	
 	if ( get_rocket_option( 'minify_js' ) && ! in_array( $pagenow, array( 'wp-login.php', 'wp-register.php' ) ) && ( ! defined( 'DONOTMINIFYJS' ) || ! DONOTMINIFYJS ) && ( ! defined( 'DONOTCACHEPAGE' ) || ! DONOTCACHEPAGE ) && ! is_rocket_post_excluded_option( 'minify_js' ) && ! is_404() ) {
 		// Don't apply for logged users if the option is turned off.
@@ -111,7 +124,7 @@ function __rocket_insert_minify_js_in_footer() {
 			if ( is_string( $files ) ) {
 				echo '<script src="' . $files . '" data-minify="1"></script>';
 			} else {
-				echo get_rocket_minify_files( $files, true, null, 'js' );
+				echo get_rocket_minify_files( $files );
 			}
 		}
 	}
@@ -229,6 +242,73 @@ function rocket_minify_inline_js( $js ) {
 }
 
 /**
+ * Minify CSS files without concatenation.
+ *
+ * @since 3.0
+ * @author Remy Perona
+ *
+ * @param string $buffer HTML code to parse.
+ * @return string Updated HTML code
+ */
+function rocket_minify_css_only( $buffer ) {
+	// Get host of CNAMES.
+	$hosts = get_rocket_cnames_host( array( 'all', 'css_and_js', 'css' ) );
+	$home_host = parse_url( home_url(), PHP_URL_HOST );
+	$hosts[] = $home_host;
+	// Get host for all langs.
+	if ( $langs = get_rocket_i18n_uri() ) {
+		foreach ( $langs as $lang ) {
+			$hosts[] = parse_url( $lang, PHP_URL_HOST );
+		}
+	}
+
+	$hosts_index = array_flip( $hosts );
+	$excluded_css = implode( '|' , get_rocket_exclude_css() );
+    $excluded_css = str_replace( '//' . $home_host , '', $excluded_css );
+    $wp_content_dirname   = ltrim( str_replace( home_url(), '', WP_CONTENT_URL ), '/' ) . '/';
+
+	// Get all css files with this regex
+    preg_match_all( apply_filters( 'rocket_minify_css_regex_pattern', '/<link\s*.+href=[\'|"]([^\'|"]+\.css?.+)[\'|"](.+)>/iU' ), $buffer, $tags_match );
+
+	$i = -1;
+	foreach ( $tags_match[0] as $tag ) {
+		$i++;
+		if ( false !== strpos( $tag, 'media=' ) && ! preg_match('/media=["\'](?:["\']|[^"\']*?(all|screen)[^"\']*?["\'])/', $tag ) ) {
+			continue;
+		} 
+		
+		if ( false !== strpos( $tag, 'data-minify=' ) || false !== strpos( $tag, 'data-no-minify=' ) ) {
+			continue;
+		}
+
+		// Get URL info.
+		list( $css_host, $css_path ) = get_rocket_parse_url( set_url_scheme( $tags_match[1][ $i ] ) );
+
+		// Check if the file is external.
+		if ( ! isset( $css_host ) || ! isset( $hosts_index[ $css_host ] ) || ! preg_match( '#(' . $wp_content_dirname . '|wp-includes)#', $css_path ) ) {
+			continue;
+		}
+
+		// Check if it is a file to exclude.
+		if ( preg_match( '#^(' . $excluded_css . ')$#', $css_path ) || pathinfo( $css_path, PATHINFO_EXTENSION ) !== 'css' || preg_match( '/(?:-|\.)min.css/i', $css_path ) ) {
+			if ( ! get_rocket_option( 'remove_query_strings' ) ) {
+				continue;
+			}
+            
+            $tag_cache_busting = str_replace( $tags_match[1][ $i ], rocket_browser_cache_busting( $tags_match[1][ $i ], 'style_loader_src' ), $tag );
+            $buffer = str_replace( $tag, $tag_cache_busting, $buffer );
+            continue;
+		}
+
+		$tag_minified_url = str_replace( $tags_match[1][ $i ], get_rocket_minify_file( $tags_match[1][ $i ] ), $tag );
+		$tag_minified_url = str_replace( $tags_match[2][ $i ], $tags_match[2][ $i ] . ' data-minify="1"', $tag_minified_url );
+		$buffer = str_replace( $tag, $tag_minified_url, $buffer );
+	}
+
+	return $buffer;
+}
+
+/**
  * Used to minify and concat CSS files
  *
  * @since 1.1.0 Fix Bug with externals URLs like //ajax.google.com
@@ -249,7 +329,7 @@ function rocket_minify_css( $buffer ) {
     // Get all css files with this regex
     preg_match_all( apply_filters( 'rocket_minify_css_regex_pattern', '/<link\s*.+href=[\'|"]([^\'|"]+\.css?.+)[\'|"](.+)>/iU' ), $buffer, $tags_match );
 
-	$i=0;
+	$i = 0;
     foreach ( $tags_match[0] as $tag ) {
         // Check css media type
         // or the file is already minify by get_rocket_minify_files
@@ -278,7 +358,7 @@ function rocket_minify_css( $buffer ) {
 			if ( ( isset( $css_url['host'] ) && ( $css_url['host'] == $home_host || in_array( $css_url['host'], $cnames_host ) || in_array( $css_url['host'], $langs_host ) ) ) || ( ! isset( $css_url['host'] ) && preg_match( '#(' . $wp_content_dirname . '|wp-includes)#', $css_url['path'] ) ) ) {
 
 				// Check if it isn't a file to exclude
-				if ( preg_match( '#^(' . $excluded_css . ')$#', $css_url['path'] ) && pathinfo( $css_url['path'], PATHINFO_EXTENSION ) == 'css' || get_rocket_option( 'minify_css_no_concat' ) && preg_match( '/(?:-|\.)min.css/i', $css_url['path'] ) ) {
+				if ( preg_match( '#^(' . $excluded_css . ')$#', $css_url['path'] ) && pathinfo( $css_url['path'], PATHINFO_EXTENSION ) == 'css' ) {
 					$excluded_tag = true;
 				} else {
 					$internal_files[] = $css_url['path'];
@@ -303,7 +383,71 @@ function rocket_minify_css( $buffer ) {
     }
 
 	// Insert the minify css file below <head>
-	return array( $buffer, $external_tags . get_rocket_minify_files( $internal_files, true, null, 'css' ) );
+	return array( $buffer, $external_tags . get_rocket_minify_files( $internal_files ) );
+}
+
+/**
+ * Minify JS files without concatenation.
+ *
+ * @since 3.0
+ * @author Remy Perona
+ *
+ * @param string $buffer HTML code to parse.
+ * @return string Updated HTML code
+ */
+function rocket_minify_js_only( $buffer ) {
+	// Get host of CNAMES.
+	$hosts = get_rocket_cnames_host( array( 'all', 'css_and_js', 'css' ) );
+	$home_host = parse_url( home_url(), PHP_URL_HOST );
+	$hosts[] = $home_host;
+	// Get host for all langs.
+	if ( $langs = get_rocket_i18n_uri() ) {
+		foreach ( $langs as $lang ) {
+			$hosts[] = parse_url( $lang, PHP_URL_HOST );
+		}
+	}
+
+	$hosts_index = array_flip( $hosts );
+	$excluded_js = implode( '|' , get_rocket_exclude_js() );
+    $excluded_js = str_replace( '//' . $home_host , '', $excluded_js );
+    $wp_content_dirname   = ltrim( str_replace( home_url(), '', WP_CONTENT_URL ), '/' ) . '/';
+
+	// Get all js files with this regex.
+    preg_match_all( apply_filters( 'rocket_minify_js_regex_pattern', '#<script[^>]+?src=[\'|"]([^\'|"]+\.js?.+)[\'|"].*>(?:<\/script>)#i' ), $buffer, $tags_match );
+
+	$i = -1;
+	foreach ( $tags_match[0] as $tag ) {
+		$i++;
+		
+		if ( false !== strpos( $tag, 'data-minify=' ) || false !== strpos( $tag, 'data-no-minify=' ) ) {
+			continue;
+		}
+
+		// Get URL info.
+		list( $js_host, $js_path ) = get_rocket_parse_url( set_url_scheme( $tags_match[1][ $i ] ) );
+
+		// Check if the file is external.
+		if ( ! isset( $js_host ) || ! isset( $hosts_index[ $js_host ] ) || ! preg_match( '#(' . $wp_content_dirname . '|wp-includes)#', $js_path ) ) {
+			continue;
+		}
+
+		// Check if it is a file to exclude.
+		if ( preg_match( '#^(' . $excluded_js . ')$#', $js_path ) || pathinfo( $js_path, PATHINFO_EXTENSION ) !== 'js' || preg_match( '/(?:-|\.)min.js/i', $js_path ) ) {
+			if ( ! get_rocket_option( 'remove_query_strings' ) ) {
+				continue;
+			}
+            
+            $tag_cache_busting = str_replace( $tags_match[1][ $i ], rocket_browser_cache_busting( $tags_match[1][ $i ], 'script_loader_src' ), $tag );
+            $buffer = str_replace( $tag, $tag_cache_busting, $buffer );
+            continue;
+		}
+
+		$tag_minified_url = str_replace( $tags_match[1][ $i ], get_rocket_minify_file( $tags_match[1][ $i ] ), $tag );
+		$tag_minified_url = str_replace( '></script>', ' data-minify="1"></script>', $tag_minified_url );
+		$buffer = str_replace( $tag, $tag_minified_url, $buffer );
+	}
+
+	return $buffer;
 }
 
 /**
@@ -326,69 +470,70 @@ function rocket_minify_js( $buffer )
     $wp_content_dirname   = ltrim( str_replace( home_url(), '', WP_CONTENT_URL ), '/' ) . '/';
 	$excluded_external_js = get_rocket_minify_excluded_external_js();
 
-    // Get all JS files with this regex
+    // Get all JS files with this regex.
     preg_match_all( apply_filters( 'rocket_minify_js_regex_pattern', '#<script[^>]+?src=[\'|"]([^\'|"]+\.js?.+)[\'|"].*>(?:<\/script>)#i' ), $buffer, $tags_match );
 
-	$i=0;
+	$i = 0;
     foreach ( $tags_match[0] as $tag ) {
 
-        // Check if the file is already minify by get_rocket_minify_files
-        // or the file is rejected to the process
-        if ( ! strpos( $tag, 'data-minify=' ) && ! strpos( $tag, 'data-no-minify=' ) ) {
+        // Check if the file is already minify by get_rocket_minify_files.
+        // or the file is rejected to the process.
+        if ( false !== strpos( $tag, 'data-minify=' ) || false !== strpos( $tag, 'data-no-minify=' ) ) {
+	        continue;
+	    }
 
-			// To check if a tag is to exclude of the minify process
-            $excluded_tag = false;
-			
-			// Get JS URL with scheme
-			$js_url_with_scheme = set_url_scheme( $tags_match[1][ $i ] );
-			
-	        // Get URL infos
-	        $js_url = parse_url( $js_url_with_scheme );
+		// To check if a tag is to be excluded from the minify process
+        $excluded_tag = false;
+		
+		// Get JS URL with scheme
+		$js_url_with_scheme = set_url_scheme( $tags_match[1][ $i ] );
+		
+	    // Get URL infos
+	    $js_url = parse_url( $js_url_with_scheme );
 
-			// Get host for all langs
-			$langs_host = array();
-			if ( $langs = get_rocket_i18n_uri() ) {
-				foreach ( $langs as $lang ) {
-					$langs_host[] = parse_url( $lang, PHP_URL_HOST );
-				}
+		// Get host for all langs
+		$langs_host = array();
+		if ( $langs = get_rocket_i18n_uri() ) {
+			foreach ( $langs as $lang ) {
+				$langs_host[] = parse_url( $lang, PHP_URL_HOST );
 			}
-
-			// Get host of CNAMES
-			$cnames_host = get_rocket_cnames_host( array( 'all', 'css_and_js', 'js' ) );
-
-	        // Check if the link isn't external
-	        // Insert the relative path to the array without query string
-	        if ( ( isset( $js_url['host'] ) && ( $js_url['host'] == $home_host || in_array( $js_url['host'], $cnames_host ) || in_array( $js_url['host'], $langs_host ) ) ) || ( ! isset( $js_url['host'] ) && preg_match( '#(' . $wp_content_dirname . '|wp-includes)#', $js_url['path'] ) ) ) {
-
-		        // Check if it isn't a file to exclude
-		        if ( preg_match( '#^(' . $excluded_js . ')$#', $js_url['path'] ) && pathinfo( $js_url['path'], PATHINFO_EXTENSION ) == 'js' || get_rocket_option( 'minify_js_no_concat' ) && preg_match( '/(?:-|\.)min.js/i', $js_url['path'] ) ) {
-			        $excluded_tag = true;
-			    } else {
-				    $internal_files[] = $js_url['path'];
-			    }
-				
-			// If it's an excluded external file
-			} else if ( isset( $js_url['host'] ) && in_array( $js_url['host'], $excluded_external_js ) ) {
-
-				$excluded_tag = true;
-
-			// If it's an external file
-			} else {
-				if ( ! in_array( $tags_match[1][ $i ], $js_in_footer ) && ! in_array( $js_url_with_scheme, $js_in_footer ) ) {
-					$external_tags[] = $tag;
-				}
-			}
-
-			// Remove the tag
-            if ( ! $excluded_tag ) {
-            	$buffer = str_replace( $tag, '', $buffer );
-            }
-
-            if ( $excluded_tag && get_rocket_option( 'remove_query_strings' ) ) {
-                $tag_cache_busting = str_replace( $tags_match[1][ $i ], rocket_browser_cache_busting( $tags_match[1][ $i ], 'script_loader_src' ), $tag );
-                $buffer = str_replace( $tag, $tag_cache_busting, $buffer );
-            }
 		}
+
+		// Get host of CNAMES
+		$cnames_host = get_rocket_cnames_host( array( 'all', 'css_and_js', 'js' ) );
+
+	    // Check if the link isn't external
+	    // Insert the relative path to the array without query string
+	    if ( ( isset( $js_url['host'] ) && ( $js_url['host'] == $home_host || in_array( $js_url['host'], $cnames_host ) || in_array( $js_url['host'], $langs_host ) ) ) || ( ! isset( $js_url['host'] ) && preg_match( '#(' . $wp_content_dirname . '|wp-includes)#', $js_url['path'] ) ) ) {
+
+		    // Check if it isn't a file to exclude
+		    if ( preg_match( '#^(' . $excluded_js . ')$#', $js_url['path'] ) && pathinfo( $js_url['path'], PATHINFO_EXTENSION ) == 'js' ) {
+		        $excluded_tag = true;
+		    } else {
+		     $internal_files[] = $js_url['path'];
+		    }
+		 
+		// If it's an excluded external file
+		} else if ( isset( $js_url['host'] ) && in_array( $js_url['host'], $excluded_external_js ) ) {
+
+		 $excluded_tag = true;
+
+		// If it's an external file
+		} else {
+		 if ( ! in_array( $tags_match[1][ $i ], $js_in_footer ) && ! in_array( $js_url_with_scheme, $js_in_footer ) ) {
+		 	$external_tags[] = $tag;
+		 }
+		}
+
+		// Remove the tag
+        if ( ! $excluded_tag ) {
+        	$buffer = str_replace( $tag, '', $buffer );
+        }
+
+        if ( $excluded_tag && get_rocket_option( 'remove_query_strings' ) ) {
+            $tag_cache_busting = str_replace( $tags_match[1][ $i ], rocket_browser_cache_busting( $tags_match[1][ $i ], 'script_loader_src' ), $tag );
+            $buffer = str_replace( $tag, $tag_cache_busting, $buffer );
+        }
 		$i++;
 	}
 
@@ -406,7 +551,7 @@ function rocket_minify_js( $buffer )
 	}
 
     // Insert the minify JS file
-    return array( $buffer, $external_tags . get_rocket_minify_files( $internal_files, true, null, 'js' ) );
+    return array( $buffer, $external_tags . get_rocket_minify_files( $internal_files ) );
 }
 
 /**
@@ -543,6 +688,10 @@ function __rocket_extract_excluded_js_files() {
 add_action( 'wp_footer', '__rocket_extract_js_files_from_footer', PHP_INT_MAX - 1 );
 function __rocket_extract_js_files_from_footer() {
 	global $rocket_enqueue_js_in_footer, $rocket_js_enqueued_in_head, $wp_scripts, $pagenow;
+
+	if ( get_rocket_option( 'minify_js_no_concat' ) ) {
+		return;
+	}
 
 	$rocket_enqueue_js_in_footer = array();
 	
