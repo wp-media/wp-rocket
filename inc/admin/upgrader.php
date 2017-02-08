@@ -94,6 +94,8 @@ function rocket_first_install() {
 			'purge_cron_unit'             => 'HOUR_IN_SECONDS',
 			'exclude_css'                 => array(),
 			'exclude_js'                  => array(),
+			'defer_all_js'				  => 0,
+			'exclude_defer_js'			  => array(),
 			'deferred_js_files'           => array(),
 			'lazyload'                    => 0,
 			'lazyload_iframes'            => 0,
