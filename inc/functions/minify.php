@@ -277,8 +277,8 @@ function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_file
  *
  * @since 2.1
  */
-function rocket_minify_files( $files, $force_pretty_url = true, $pretty_filename = null, $file_type ) {
-	echo get_rocket_minify_files( $files, $force_pretty_url, $pretty_filename, $file_type );
+function rocket_minify_files( $files, $force_pretty_url = true, $pretty_filename = null ) {
+	echo get_rocket_minify_files( $files, $force_pretty_url, $pretty_filename );
 }
 
 /*
