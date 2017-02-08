@@ -506,6 +506,28 @@ function get_rocket_deferred_js_files() {
 }
 
 /**
+ * Get list of JS files to be excluded from defer JS.
+ *
+ * @since 3.0
+ * @author Remy Perona
+ *
+ * @return array An array of URLs for the JS files to be excluded.
+ */
+function get_rocket_exlude_defer_js() {
+	/**
+	 * Filter list of Deferred JavaScript files
+	 *
+	 * @since 3.0
+	 * @author Remy Perona
+	 *
+	 * @param array $exclude_defer_js An array of URLs for the JS files to be excluded.
+	 */
+	$exclude_defer_js = apply_filters( 'rocket_exclude_defer_js', get_rocket_option( 'exclude_defer_js', array() ) );
+	
+	return $exclude_defer_js;
+}
+
+/**
  * Determine if the key is valid
  *
  * @since 2.9 use hash_equals() to compare the hash values
