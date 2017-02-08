@@ -13,8 +13,6 @@ if ( function_exists( 'autoptimize_do_cachepurged_action' ) ) :
 endif;
 
 if ( class_exists( 'autoptimizeConfig' ) ) :
-
-	add_action( 'update_option_autoptimize_html', 'rocket_maybe_deactivate_minify_html', 10, 2 );
 	/**
 	 * Deactivate WP Rocket HTML Minification if Autoptimize HTML minification is enabled
 	 *
@@ -31,8 +29,8 @@ if ( class_exists( 'autoptimizeConfig' ) ) :
 			update_rocket_option( 'minify_html_inline_js', 0 );
 		}
 	}
+	add_action( 'update_option_autoptimize_html', 'rocket_maybe_deactivate_minify_html', 10, 2 );
 
-	add_action( 'update_option_autoptimize_css', 'rocket_maybe_deactivate_minify_css', 10, 2 );
 	/**
 	 * Deactivate WP Rocket CSS Minification if Autoptimize CSS minification is enabled
 	 *
@@ -47,8 +45,8 @@ if ( class_exists( 'autoptimizeConfig' ) ) :
 			update_rocket_option( 'minify_css', 0 );
 		}
 	}
+	add_action( 'update_option_autoptimize_css', 'rocket_maybe_deactivate_minify_css', 10, 2 );
 
-	add_action( 'update_option_autoptimize_js', 'rocket_maybe_deactivate_minify_js', 10, 2 );
 	/**
 	 * Deactivate WP Rocket JS Minification if Autoptimize JS minification is enabled
 	 *
@@ -63,8 +61,32 @@ if ( class_exists( 'autoptimizeConfig' ) ) :
 			update_rocket_option( 'minify_js', 0 );
 		}
 	}
+	add_action( 'update_option_autoptimize_js', 'rocket_maybe_deactivate_minify_js', 10, 2 );
 
 endif;
+
+/**
+ * Disable WP Rocket minification options when activating Autoptimize and values are already in the database.
+ *
+ * @since 2.9.5
+ * @author Remy Perona
+ */
+function rocket_activate_autoptimize() {
+	if ( 'on' === get_option( 'autoptimize_html') ) {
+		update_rocket_option( 'minify_html', 0 );
+		update_rocket_option( 'minify_html_inline_css', 0 );
+		update_rocket_option( 'minify_html_inline_js', 0 );
+	}
+	
+	if ( 'on' === get_option( 'autoptimize_css') ) {
+		update_rocket_option( 'minify_css', 0 );
+	}
+	
+	if ( 'on' === get_option( 'autoptimize_js') ) {
+		update_rocket_option( 'minify_js', 0 );
+	}
+}
+add_action( 'activate_autoptimize/autoptimize.php', 'rocket_activate_autoptimize', 11 );
 
 /**
  * Disable WP Rocket HTML minification field if Autoptimize HTML minification is enabled
