@@ -75,7 +75,7 @@ endif;
  * @return bool|null True if it is active
  */
 function rocket_maybe_disable_minify_html() {
-	if ( 'on' === get_option( 'autoptimize_html') ) {
+	if ( is_plugin_active( 'autoptimize/autoptimize.php' ) && 'on' === get_option( 'autoptimize_html') ) {
 		return true;
 	}
 }
@@ -89,7 +89,7 @@ function rocket_maybe_disable_minify_html() {
  * @return bool|null True if it is active
  */
 function rocket_maybe_disable_minify_css() {
-	if ( 'on' === get_option( 'autoptimize_css') ) {
+	if ( is_plugin_active( 'autoptimize/autoptimize.php' ) && 'on' === get_option( 'autoptimize_css') ) {
 		return true;
 	}
 }
@@ -103,7 +103,7 @@ function rocket_maybe_disable_minify_css() {
  * @return bool|null True if it is active
  */
 function rocket_maybe_disable_minify_js() {
-	if ( 'on' === get_option( 'autoptimize_js') ) {
+	if ( is_plugin_active( 'autoptimize/autoptimize.php' ) && 'on' === get_option( 'autoptimize_js') ) {
 		return true;
 	}
 }
