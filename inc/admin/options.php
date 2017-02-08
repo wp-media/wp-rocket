@@ -740,6 +740,21 @@ function rocket_settings_callback( $inputs ) {
 		$inputs['exclude_js'] = array();
 	}
 
+	/*
+	 * Option : JS files to exclude from defer JS
+	 */
+	if ( ! empty( $inputs['exclude_defer_js'] ) ) {
+		if ( ! is_array( $inputs['exclude_defer_js'] ) ) {
+			$inputs['exclude_defer_js'] = explode( "\n", $inputs['exclude_defer_js'] );
+		}
+		$inputs['exclude_defer_js'] = array_map( 'trim', $inputs['exclude_defer_js'] );
+		$inputs['exclude_defer_js'] = array_unique( $inputs['exclude_defer_js'] );
+		$inputs['exclude_defer_js'] = array_map( 'rocket_sanitize_js', $inputs['exclude_defer_js'] );
+		$inputs['exclude_defer_js'] = array_filter( $inputs['exclude_defer_js'] );
+	} else {
+		$inputs['exclude_defer_js'] = array();
+	}
+
 
 	/*
 	 * Option : JS files with deferred loading
