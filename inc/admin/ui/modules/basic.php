@@ -30,7 +30,11 @@ add_settings_field(
 	)
 );
 
-$rocket_maybe_disable_minify = array();
+$rocket_maybe_disable_minify = array( 
+	'type'         => 'helper_warning',
+	'name'         => 'minify_html_disabled'
+);
+
 if ( rocket_maybe_disable_minify_html() || rocket_maybe_disable_minify_css() || rocket_maybe_disable_minify_js() ) {
 	$disabled = '';
 
@@ -48,11 +52,7 @@ if ( rocket_maybe_disable_minify_html() || rocket_maybe_disable_minify_css() || 
 
 	$disabled = rtrim( $disabled, ', ' );
 
-	$rocket_maybe_disable_minify = array(
-			'type'         => 'helper_warning',
-			'name'         => 'minify_html_disabled',
-			'description'  => sprintf(__( 'These minification options are disabled because they are currently activated in Autoptimize. If you want to use WP Rocket minification, disable them there first: %s', 'rocket' ), $disabled )
-			);
+	$rocket_maybe_disable_minify['description'] = sprintf(__( 'These minification options are disabled because they are currently activated in Autoptimize. If you want to use WP Rocket minification, disable them there first: %s', 'rocket' ), $disabled );
 }
 
 add_settings_field(
