@@ -36,6 +36,7 @@ function rocket_delete_sccss_cache_file() {
 	$sccss = rocket_get_cache_busting_paths( 'sccss.css', 'css' );
 
 	array_map( 'unlink', glob( $sccss['bustingpath'] . 'sccss*.css' ) );
+	rocket_clean_domain();
 	rocket_sccss_create_cache_file( $sccss['bustingpath'], $sccss['filepath'] );
 }
 
