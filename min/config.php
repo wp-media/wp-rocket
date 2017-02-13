@@ -133,7 +133,7 @@ $min_serveOptions['maxAge'] = 31536000;
 /**
  * To use CSSmin (Túbal Martín's port of the YUI CSS compressor), uncomment the following line:
  */
-//$min_serveOptions['minifiers']['text/css'] = array('Minify_CSSmin', 'minify');
+$min_serveOptions['minifiers']['text/css'] = array('Minify_CSSmin', 'minify');
 
 
 /**
