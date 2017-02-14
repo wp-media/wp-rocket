@@ -311,7 +311,12 @@ add_settings_field(
 			'type'         => 'helper_help',
 			'name'         => 'critical_css_description',
 			'description'  => __( 'Input the critical CSS rules required for rendering your above the fold content.', 'rocket' )
-			),
+		),
+		array(
+			'type'         => 'helper_help',
+			'name'         => 'generate_critical_css_description',
+			'description'  => sprintf( __( '%1$sGet your critical CSS automatically%2$s. You\'ll find your critical CSS in the footer of the page.', 'rocket' ), '<a href="' . home_url( '/?critical_css=1' ) . '" target="_blank">', '</a>' )
+		),
 	)
 );
 
@@ -330,7 +335,7 @@ add_settings_field(
 		array(
 			'type'         => 'helper_help',
 			'name'         => 'exclude_async_css_description',
-			'description'  => __( 'Enter the URL of <b>JS</b> files to reject (one per line).', 'rocket' ) . '<br/>' . __( 'You can use regular expressions (regex).', 'rocket' )
+			'description'  => __( 'Enter the URL of <b>CSS</b> files to reject (one per line).', 'rocket' ) . '<br/>' . __( 'You can use regular expressions (regex).', 'rocket' )
 			),
 	)
 );
