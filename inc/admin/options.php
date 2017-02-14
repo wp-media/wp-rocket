@@ -121,8 +121,13 @@ function rocket_field( $args ) {
 			case 'textarea' :
 
 				$t_temp = get_rocket_option( $args['name'], '' );
-				$value = ! empty( $t_temp ) ? esc_textarea( implode( "\n" , $t_temp ) ) : '';
-				if ( ! $value ){
+
+				if ( is_array( $t_temp ) ) {
+					$t_temp = implode( "\n" , $t_temp );
+				}
+
+				$value = ! empty( $t_temp ) ? esc_textarea( $t_temp ) : '';
+				if ( ! $value ) {
 					$value = $default;
 				}
 				?>
@@ -738,6 +743,26 @@ function rocket_settings_callback( $inputs ) {
 		$inputs['exclude_js'] = array_unique( $inputs['exclude_js'] );
 	} else {
 		$inputs['exclude_js'] = array();
+	}
+
+	/*
+	 * Option : critical CSS content for async CSS
+	 */
+	//$inputs['critical_css'] = ! empty( $inputs['critical_css'] ) ? wp_kses( $inputs['critical_css'], array( '\"', "\'") ) : '';
+
+	/*
+	 * Option : CSS files to exclude from async CSS
+	 */
+	if ( ! empty( $inputs['exclude_async_css'] ) ) {
+		if ( ! is_array( $inputs['exclude_async_css'] ) ) {
+			$inputs['exclude_async_css'] = explode( "\n", $inputs['exclude_async_css'] );
+		}
+		$inputs['exclude_async_css'] = array_map( 'trim', $inputs['exclude_async_css'] );
+		$inputs['exclude_async_css'] = array_unique( $inputs['exclude_async_css'] );
+		$inputs['exclude_async_css'] = array_map( 'rocket_sanitize_css', $inputs['exclude_async_css'] );
+		$inputs['exclude_async_css'] = array_filter( $inputs['exclude_async_css'] );
+	} else {
+		$inputs['exclude_async_css'] = array();
 	}
 
 	/*
