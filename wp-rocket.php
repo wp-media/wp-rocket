@@ -171,6 +171,10 @@ function rocket_init()
         if ( get_rocket_option( 'deferred_js_files' ) || get_rocket_option( 'defer_all_js' ) ) {
 	       require( WP_ROCKET_FRONT_PATH . 'deferred-js.php' );
         }
+        
+        if ( get_rocket_option( 'async_css' ) ) {
+	        require( WP_ROCKET_FRONT_PATH . 'async-css.php' );
+        }
 
 		// Don't insert the LazyLoad file if Rocket LazyLoad is activated
         if ( ! rocket_is_plugin_active( 'rocket-lazy-load/rocket-lazy-load.php' ) ) {
