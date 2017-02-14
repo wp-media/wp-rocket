@@ -37,7 +37,7 @@ function rocket_insert_deferred_js( $buffer ) {
 
 	return $buffer;
 }
-add_action( 'rocket_buffer', 'rocket_insert_deferred_js', 11 );
+add_filter( 'rocket_buffer', 'rocket_insert_deferred_js', 11 );
 
 
 /**
@@ -55,7 +55,7 @@ function rocket_defer_js( $buffer ) {
 	}
 
 	// Get all JS files with this regex.
-	preg_match_all( '#<script.*src=[\'|"]([^\'|"]+\.js?.+)[\'|"].*></script>#iU', $buffer, $tags_match );
+	preg_match_all( '#<script(.*)src=[\'|"]([^\'|"]+\.js?.+)[\'|"](.*)></script>#iU', $buffer, $tags_match );
 
 	if ( ! isset( $tags_match[0] ) ) {
 		return $buffer;
@@ -65,10 +65,20 @@ function rocket_defer_js( $buffer ) {
 
 	foreach ( $tags_match[0] as $i => $tag ) {
 		// Strip query args.
-		$url = strtok( $tags_match[1][$i] , '?' );
+		$url = strtok( $tags_match[2][ $i ] , '?' );
 
 		// Check if this file should be deferred.
 		if ( isset( $exclude_defer_js[ $url ] ) ) {
+			continue;
+		}
+
+		// Don't add defer if already async.
+		if ( false !== strpos( $tags_match[1][ $i ], 'async' ) || false !== strpos( $tags_match[3][ $i ], 'async' ) ) {
+			continue;
+		}
+
+		// Don't add defer if already defer.
+		if ( false !== strpos( $tags_match[1][ $i ], 'defer' ) || false !== strpos( $tags_match[3][ $i ], 'defer' ) ) {
 			continue;
 		}
 
@@ -78,4 +88,4 @@ function rocket_defer_js( $buffer ) {
 
 	return $buffer;	
 }
-add_action( 'rocket_buffer', 'rocket_defer_js', 14 );
+add_filter( 'rocket_buffer', 'rocket_defer_js', 14 );
