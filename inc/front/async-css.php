@@ -53,7 +53,42 @@ add_filter( 'rocket_buffer', 'rocket_async_css', 15 );
  * @author Remy Perona
  */
 function rocket_insert_critical_css() {
+	global $pagenow;
+
 	if ( ! get_rocket_option( 'async_css' ) ) {
+		return;
+	}
+
+	// Don't apply on wp-login.php/wp-register.php
+	if ( in_array( $pagenow, array( 'wp-login.php', 'wp-register.php' ) ) ) {
+		return;
+	}
+
+	// Don't apply if DONOTCACHEPAGE is defined.
+	if ( defined( 'DONOTCACHEPAGE' ) || ! DONOTCACHEPAGE ) {
+		return;
+	}
+
+	// Don't apply if user is logged-in and cache for logged-in user is off.
+	if ( is_user_logged_in() && ! get_rocket_option( 'cache_logged_user' ) ) {
+		return;
+	}
+
+	// This filter is documented in inc/front/process.php.
+	$rocket_cache_search = apply_filters( 'rocket_cache_search', false );
+	
+	// Don't apply on search page.
+	if ( is_search() && ! $rocket_cache_search ) {
+		return;
+	}
+
+	// Don't apply on excluded pages.
+	if ( in_array( $_SERVER['REQUEST_URI'] , get_rocket_option( 'cache_reject_uri' , array() ) ) ) {
+		return;
+	}
+
+	// Don't apply on 404 page.
+	if ( is_404() ) {
 		return;
 	}
 
@@ -70,136 +105,64 @@ add_action( 'wp_head', 'rocket_insert_critical_css', 1 );
  * @author Remy Perona
  */
 function rocket_insert_load_css() {
+	global $pagenow;
+
 	if ( ! get_rocket_option( 'async_css' ) ) {
 		return;
 	}
 
+	// Don't apply on wp-login.php/wp-register.php
+	if ( in_array( $pagenow, array( 'wp-login.php', 'wp-register.php' ) ) ) {
+		return;
+	}
+
+	// Don't apply if DONOTCACHEPAGE is defined.
+	if ( defined( 'DONOTCACHEPAGE' ) || ! DONOTCACHEPAGE ) {
+		return;
+	}
+
+	// Don't apply if user is logged-in and cache for logged-in user is off.
+	if ( is_user_logged_in() && ! get_rocket_option( 'cache_logged_user' ) ) {
+		return;
+	}
+
+	// This filter is documented in inc/front/process.php.
+	$rocket_cache_search = apply_filters( 'rocket_cache_search', false );
+	
+	// Don't apply on search page.
+	if ( is_search() && ! $rocket_cache_search ) {
+		return;
+	}
+
+	// Don't apply on excluded pages.
+	if ( in_array( $_SERVER['REQUEST_URI'] , get_rocket_option( 'cache_reject_uri' , array() ) ) ) {
+		return;
+	}
+
+	// Don't apply on 404 page.
+	if ( is_404() ) {
+		return;
+	}
+
 	echo <<<JS
-	<script>
-	/*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
-(function(w){
-	"use strict";
-	/* exported loadCSS */
-	var loadCSS = function( href, before, media ){
-		// Arguments explained:
-		// `href` [REQUIRED] is the URL for your CSS file.
-		// `before` [OPTIONAL] is the element the script should use as a reference for injecting our stylesheet <link> before
-			// By default, loadCSS attempts to inject the link after the last stylesheet or script in the DOM. However, you might desire a more specific location in your document.
-		// `media` [OPTIONAL] is the media type or query of the stylesheet. By default it will be 'all'
-		var doc = w.document;
-		var ss = doc.createElement( "link" );
-		var ref;
-		if( before ){
-			ref = before;
-		}
-		else {
-			var refs = ( doc.body || doc.getElementsByTagName( "head" )[ 0 ] ).childNodes;
-			ref = refs[ refs.length - 1];
-		}
-
-		var sheets = doc.styleSheets;
-		ss.rel = "stylesheet";
-		ss.href = href;
-		// temporarily set media to something inapplicable to ensure it'll fetch without blocking render
-		ss.media = "only x";
-
-		// wait until body is defined before injecting link. This ensures a non-blocking load in IE11.
-		function ready( cb ){
-			if( doc.body ){
-				return cb();
-			}
-			setTimeout(function(){
-				ready( cb );
-			});
-		}
-		// Inject link
-			// Note: the ternary preserves the existing behavior of "before" argument, but we could choose to change the argument to "after" in a later release and standardize on ref.nextSibling for all refs
-			// Note: `insertBefore` is used instead of `appendChild`, for safety re: http://www.paulirish.com/2011/surefire-dom-element-insertion/
-		ready( function(){
-			ref.parentNode.insertBefore( ss, ( before ? ref : ref.nextSibling ) );
-		});
-		// A method (exposed on return object for external use) that mimics onload by polling document.styleSheets until it includes the new sheet.
-		var onloadcssdefined = function( cb ){
-			var resolvedHref = ss.href;
-			var i = sheets.length;
-			while( i-- ){
-				if( sheets[ i ].href === resolvedHref ){
-					return cb();
-				}
-			}
-			setTimeout(function() {
-				onloadcssdefined( cb );
-			});
-		};
-
-		function loadCB(){
-			if( ss.addEventListener ){
-				ss.removeEventListener( "load", loadCB );
-			}
-			ss.media = media || "all";
-		}
-
-		// once loaded, set link's media back to `all` so that the stylesheet applies once it loads
-		if( ss.addEventListener ){
-			ss.addEventListener( "load", loadCB);
-		}
-		ss.onloadcssdefined = onloadcssdefined;
-		onloadcssdefined( loadCB );
-		return ss;
-	};
-	// commonjs
-	if( typeof exports !== "undefined" ){
-		exports.loadCSS = loadCSS;
-	}
-	else {
-		w.loadCSS = loadCSS;
-	}
-}( typeof global !== "undefined" ? global : this ));
+<script>
+/*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+!function(a){"use strict";var b=function(b,c,d){function e(a){return h.body?a():void setTimeout(function(){e(a)})}function f(){i.addEventListener&&i.removeEventListener("load",f),i.media=d||"all"}var g,h=a.document,i=h.createElement("link");if(c)g=c;else{var j=(h.body||h.getElementsByTagName("head")[0]).childNodes;g=j[j.length-1]}var k=h.styleSheets;i.rel="stylesheet",i.href=b,i.media="only x",e(function(){g.parentNode.insertBefore(i,c?g:g.nextSibling)});var l=function(a){for(var b=i.href,c=k.length;c--;)if(k[c].href===b)return a();setTimeout(function(){l(a)})};return i.addEventListener&&i.addEventListener("load",f),i.onloadcssdefined=l,l(f),i};"undefined"!=typeof exports?exports.loadCSS=b:a.loadCSS=b}("undefined"!=typeof global?global:this);
 /*! loadCSS rel=preload polyfill. [c]2017 Filament Group, Inc. MIT License */
-(function( w ){
-  // rel=preload support test
-  if( !w.loadCSS ){
-    return;
-  }
-  var rp = loadCSS.relpreload = {};
-  rp.support = function(){
-    try {
-      return w.document.createElement( "link" ).relList.supports( "preload" );
-    } catch (e) {
-      return false;
-    }
-  };
-
-  // loop preload links and fetch using loadCSS
-  rp.poly = function(){
-    var links = w.document.getElementsByTagName( "link" );
-    for( var i = 0; i < links.length; i++ ){
-      var link = links[ i ];
-      if( link.rel === "preload" && link.getAttribute( "as" ) === "style" ){
-        w.loadCSS( link.href, link, link.getAttribute( "media" ) );
-        link.rel = null;
-      }
-    }
-  };
-
-  // if link[rel=preload] is not supported, we must fetch the CSS manually using loadCSS
-  if( !rp.support() ){
-    rp.poly();
-    var run = w.setInterval( rp.poly, 300 );
-    if( w.addEventListener ){
-      w.addEventListener( "load", function(){
-        rp.poly();
-        w.clearInterval( run );
-      } );
-    }
-    if( w.attachEvent ){
-      w.attachEvent( "onload", function(){
-        w.clearInterval( run );
-      } )
-    }
-  }
-}( this ));
+!function(a){if(a.loadCSS){var b=loadCSS.relpreload={};if(b.support=function(){try{return a.document.createElement("link").relList.supports("preload")}catch(b){return!1}},b.poly=function(){for(var b=a.document.getElementsByTagName("link"),c=0;c<b.length;c++){var d=b[c];"preload"===d.rel&&"style"===d.getAttribute("as")&&(a.loadCSS(d.href,d,d.getAttribute("media")),d.rel=null)}},!b.support()){b.poly();var c=a.setInterval(b.poly,300);a.addEventListener&&a.addEventListener("load",function(){b.poly(),a.clearInterval(c)}),a.attachEvent&&a.attachEvent("onload",function(){a.clearInterval(c)})}}}(this);
 </script>
 JS;
 }
 add_action( 'wp_head', 'rocket_insert_load_css', PHP_INT_MAX );
+
+function rocket_generate_critical_css() {
+	if ( false === strpos( $_SERVER['REQUEST_URI'], 'critical_css=1' ) ) {
+		return;
+	}
+
+	echo <<<JS
+<div id="rocket-critical-css-content"></div>
+<script>!function(){var e=function(e,t,r){var n=r||{},i={},o=function(e){!!i[e.selectorText]==!1&&(i[e.selectorText]={});for(var t=e.style.cssText.split(/;(?![A-Za-z0-9])/),r=0;r<t.length;r++)if(!!t[r]!=!1){var n=t[r].split(": ");n[0]=n[0].trim(),n[1]=n[1].trim(),i[e.selectorText][n[0]]=n[1]}},c=function(){for(var r=e.innerHeight,i=t.createTreeWalker(t,NodeFilter.SHOW_ELEMENT,function(e){return NodeFilter.FILTER_ACCEPT},!0);i.nextNode();){var c=i.currentNode,a=c.getBoundingClientRect();if(a.top<r||n.scanFullPage){var l=e.getMatchedCSSRules(c);if(l)for(var f=0;f<l.length;f++)o(l[f])}}};this.generateCSS=function(){var e="";for(var t in i){e+=t+" { ";for(var r in i[t])e+=r+": "+i[t][r]+"; ";e+="}"}return e},c()},t=new e(window,document),r=t.generateCSS();document.getElementById("rocket-critical-css-content").innerHTML=r}();</script>
+JS;
+}
+add_action( 'wp_footer', 'rocket_generate_critical_css', PHP_INT_MAX );
