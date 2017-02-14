@@ -272,6 +272,17 @@ add_settings_field(
 	array(
 		array(
 			'type'         => 'checkbox',
+			'label'        => __( 'Load CSS files asynchronously', 'rocket' ),
+			'name'         => 'async_css',
+			'label_screen' => __( 'Load CSS files asynchronously', 'rocket' )
+		),
+		array(
+			'type'			=> 'helper_description',
+			'name'			=> 'async_css_description',
+			'description'  => __( '<strong>Note:</strong> By activating this option, you will improve your score on PageSpeed.', 'rocket' )
+		),
+		array(
+			'type'         => 'checkbox',
 			'label'        => __( 'Defer loading of JS files', 'rocket' ),
 			'name'         => 'defer_all_js',
 			'label_screen' => __( 'Defer loading of JS files', 'rocket' )
@@ -283,6 +294,47 @@ add_settings_field(
 		),
 	)
 );
+
+add_settings_field(
+	'rocket_critical_css',
+	__( 'Critical CSS for above the fold rendering:', 'rocket' ),
+	'rocket_field',
+	'rocket_advanced',
+	'rocket_display_imp_options',
+	array(
+		array(
+			'type'         => 'textarea',
+			'label_for'    => 'critical_css',
+			'label_screen' => __( 'Critical CSS rules for above the fold rendering', 'rocket' ),
+		),
+		array(
+			'type'         => 'helper_help',
+			'name'         => 'critical_css_description',
+			'description'  => __( 'Input the critical CSS rules required for rendering your above the fold content.', 'rocket' )
+			),
+	)
+);
+
+add_settings_field(
+	'rocket_exclude_async_css',
+	__( '<b>CSS</b> files to exclude from async CSS:', 'rocket' ),
+	'rocket_field',
+	'rocket_advanced',
+	'rocket_display_imp_options',
+	array(
+		array(
+			'type'         => 'textarea',
+			'label_for'    => 'exclude_async_css',
+			'label_screen' => __( '<b>CSS</b> files to exclude from async CSS:', 'rocket' ),
+		),
+		array(
+			'type'         => 'helper_help',
+			'name'         => 'exclude_async_css_description',
+			'description'  => __( 'Enter the URL of <b>JS</b> files to reject (one per line).', 'rocket' ) . '<br/>' . __( 'You can use regular expressions (regex).', 'rocket' )
+			),
+	)
+);
+
 add_settings_field(
 	'rocket_exclude_defer_js',
 	__( '<b>JS</b> files to exclude from defer JS:', 'rocket' ),
