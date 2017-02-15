@@ -154,15 +154,3 @@ function rocket_insert_load_css() {
 JS;
 }
 add_action( 'wp_head', 'rocket_insert_load_css', PHP_INT_MAX );
-
-function rocket_generate_critical_css() {
-	if ( false === strpos( $_SERVER['REQUEST_URI'], 'critical_css=1' ) ) {
-		return;
-	}
-
-	echo <<<JS
-<div id="rocket-critical-css-content"></div>
-<script>!function(){var e=function(e,t,r){var n=r||{},i={},o=function(e){!!i[e.selectorText]==!1&&(i[e.selectorText]={});for(var t=e.style.cssText.split(/;(?![A-Za-z0-9])/),r=0;r<t.length;r++)if(!!t[r]!=!1){var n=t[r].split(": ");n[0]=n[0].trim(),n[1]=n[1].trim(),i[e.selectorText][n[0]]=n[1]}},c=function(){for(var r=e.innerHeight,i=t.createTreeWalker(t,NodeFilter.SHOW_ELEMENT,function(e){return NodeFilter.FILTER_ACCEPT},!0);i.nextNode();){var c=i.currentNode,a=c.getBoundingClientRect();if(a.top<r||n.scanFullPage){var l=e.getMatchedCSSRules(c);if(l)for(var f=0;f<l.length;f++)o(l[f])}}};this.generateCSS=function(){var e="";for(var t in i){e+=t+" { ";for(var r in i[t])e+=r+": "+i[t][r]+"; ";e+="}"}return e},c()},t=new e(window,document),r=t.generateCSS();document.getElementById("rocket-critical-css-content").innerHTML=r}();</script>
-JS;
-}
-add_action( 'wp_footer', 'rocket_generate_critical_css', PHP_INT_MAX );
