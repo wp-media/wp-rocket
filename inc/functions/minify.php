@@ -192,7 +192,7 @@ function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_file
  *
  * @param array  $files List of files to minify (CSS or JS).
  * @param bool   $force_pretty_url (default: true).
- * @param string $pretty_filename The new filename if $force_pretty_url set to true. (default: null). 
+ * @param string $pretty_filename The new filename if $force_pretty_url set to true (default: null).
  */
 function rocket_minify_files( $files, $force_pretty_url = true, $pretty_filename = null ) {
 	echo get_rocket_minify_files( $files, $force_pretty_url, $pretty_filename );

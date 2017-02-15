@@ -241,7 +241,7 @@ function rocket_warning_wp_config_permissions() {
 	if ( ! ( 'plugins.php' === $GLOBALS['pagenow'] && isset( $_GET['activate'] ) )
 		/** This filter is documented in inc/admin-bar.php */
 		&& current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
-		&& ( ! is_writable( $config_file ) && ( ! defined( 'WP_CACHE' ) || ! WP_CACHE ) )
+		&& ( ! rocket_direct_filesystem()->is_writable( $config_file ) && ( ! defined( 'WP_CACHE' ) || ! WP_CACHE ) )
 	    && rocket_valid_key() ) {
 
 		$boxes = get_user_meta( $GLOBALS['current_user']->ID, 'rocket_boxes', true );
@@ -284,7 +284,7 @@ function rocket_warning_advanced_cache_permissions() {
 
 	/** This filter is documented in inc/admin-bar.php */
 	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
-		&& ! is_writable( $advanced_cache_file )
+		&& ! rocket_direct_filesystem()->is_writable( $advanced_cache_file )
 		&& ( ! defined( 'WP_ROCKET_ADVANCED_CACHE' ) || ! WP_ROCKET_ADVANCED_CACHE )
 	    && rocket_valid_key() ) {
 
@@ -344,7 +344,7 @@ function rocket_warning_htaccess_permissions() {
 
 	/** This filter is documented in inc/admin-bar.php */
 	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
-	    && ( ! is_writable( $htaccess_file ) )
+	    && ( ! rocket_direct_filesystem()->is_writable( $htaccess_file ) )
 	    && $is_apache
 	    && rocket_valid_key() ) {
 
@@ -372,7 +372,7 @@ add_action( 'admin_notices', 'rocket_warning_config_dir_permissions' );
 function rocket_warning_config_dir_permissions() {
 	/** This filter is documented in inc/admin-bar.php */
 	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
-	    && ( ! is_writable( WP_ROCKET_CONFIG_PATH ) )
+	    && ( ! rocket_direct_filesystem()->is_writable( WP_ROCKET_CONFIG_PATH ) )
 	    && rocket_valid_key() ) {
 
 		$boxes = get_user_meta( $GLOBALS['current_user']->ID, 'rocket_boxes', true );
@@ -398,7 +398,7 @@ add_action( 'admin_notices', 'rocket_warning_cache_dir_permissions' );
 function rocket_warning_cache_dir_permissions() {
 	/** This filter is documented in inc/admin-bar.php */
 	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
-	    && ( ! is_writable( WP_ROCKET_CACHE_PATH ) )
+	    && ( ! rocket_direct_filesystem()->is_writable( WP_ROCKET_CACHE_PATH ) )
 	    && rocket_valid_key() ) {
 
 		$boxes = get_user_meta( $GLOBALS['current_user']->ID, 'rocket_boxes', true );
@@ -424,7 +424,7 @@ add_action( 'admin_notices', 'rocket_warning_minify_cache_dir_permissions' );
 function rocket_warning_minify_cache_dir_permissions() {
 	/** This filter is documented in inc/admin-bar.php */
 	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
-	    && ( ! is_writable( WP_ROCKET_MINIFY_CACHE_PATH ) )
+	    && ( ! rocket_direct_filesystem()->is_writable( WP_ROCKET_MINIFY_CACHE_PATH ) )
 	    && ( get_rocket_option( 'minify_css', false ) || get_rocket_option( 'minify_js', false ) )
 	    && rocket_valid_key() ) {
 
@@ -452,7 +452,7 @@ add_action( 'admin_notices', 'rocket_warning_busting_cache_dir_permissions' );
 function rocket_warning_busting_cache_dir_permissions() {
 	/** This filter is documented in inc/admin-bar.php */
 	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
-	    && ( ! is_writable( WP_ROCKET_CACHE_BUSTING_PATH ) )
+	    && ( ! rocket_direct_filesystem()->is_writable( WP_ROCKET_CACHE_BUSTING_PATH ) )
 	    && ( get_rocket_option( 'remove_query_strings', false ) )
 	    && rocket_valid_key() ) {
 

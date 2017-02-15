@@ -85,9 +85,9 @@ function get_rocket_config_file() {
 		 *
 		 * @param string The Document Root path.
 		*/
-		$min_documentRoot = apply_filters( 'rocket_min_documentRoot', ABSPATH );
+		$min_documentroot = apply_filters( 'rocket_min_documentRoot', ABSPATH );
 
-		$buffer .= '$min_documentRoot = \'' . $min_documentRoot . '\';' . "\n";
+		$buffer .= '$min_documentRoot = \'' . $min_documentroot . '\';' . "\n";
 	}
 
 	if ( apply_filters( 'rocket_override_min_cachepath', false ) ) {
@@ -98,9 +98,9 @@ function get_rocket_config_file() {
 		 *
 		 * @param string The temp path, empty to leave Minify guessing it automatically.
 		*/
-		$min_cachePath = apply_filters( 'rocket_min_cachePath', '' );
+		$min_cachepath = apply_filters( 'rocket_min_cachePath', '' );
 
-		$buffer .= '$min_cachePath = \'' . $min_cachePath . '\';' . "\n";
+		$buffer .= '$min_cachePath = \'' . $min_cachepath . '\';' . "\n";
 	}
 
 	/**
@@ -220,7 +220,7 @@ function rocket_generate_config_file() {
 function rocket_delete_config_file() {
 	list( $config_files_path ) = get_rocket_config_file();
 	foreach ( $config_files_path as $config_file ) {
-		@unlink( $config_file );
+		rocket_direct_filesystem()->delete( $config_file );
 	}
 }
 
@@ -331,7 +331,7 @@ function set_rocket_wp_cache_define( $turn_it_on ) {
 
 	// Update the writing permissions of wp-config.php file.
 	$chmod = defined( 'FS_CHMOD_FILE' ) ? FS_CHMOD_FILE : 0644;
-	@chmod( $config_file_path, $chmod );
+	rocket_direct_filesystem()->chmod( $config_file_path, $chmod );
 }
 
 /**
@@ -358,7 +358,7 @@ function rocket_clean_minify( $extensions = array( 'js', 'css' ) ) {
 
 		if ( $files = @glob( WP_ROCKET_MINIFY_CACHE_PATH . $blog_id . '/*.' . $ext, GLOB_NOSORT ) ) {
 			foreach ( $files as $file ) { // no array map to use @.
-				@unlink( $file );
+				rocket_direct_filesystem()->delete( $file );
 			}
 		}
 
@@ -398,7 +398,7 @@ function rocket_clean_cache_busting( $extensions = array( 'js', 'css' ) ) {
 
 		if ( $files = @glob( WP_ROCKET_CACHE_BUSTING_PATH . $blog_id . '/*.' . $ext, GLOB_NOSORT ) ) {
 			foreach ( $files as $file ) { // no array map to use @.
-				@unlink( $file );
+				rocket_direct_filesystem()->delete( $file );
 			}
 		}
 
@@ -514,7 +514,7 @@ function rocket_clean_home( $lang = '' ) {
 	// Delete homepage.
 	if ( $files = glob( $root . '/{index,index-*}.{html,html_gzip}', GLOB_BRACE | GLOB_NOSORT ) ) {
 		foreach ( $files as $file ) { // no array map to use @.
-			@unlink( $file );
+			rocket_direct_filesystem()->delete( $file );
 		}
 	}
 
@@ -528,7 +528,7 @@ function rocket_clean_home( $lang = '' ) {
 	// Remove the hidden empty file for mobile detection on NGINX with the Rocket NGINX configuration.
 	if ( $nginx_mobile_detect_files = glob( $root . '/.mobile-active', GLOB_BRACE | GLOB_NOSORT ) ) {
 		foreach ( $nginx_mobile_detect_files as $nginx_mobile_detect_file ) { // no array map to use @.
-			@unlink( $nginx_mobile_detect_file );
+			rocket_direct_filesystem()->delete( $nginx_mobile_detect_file );
 		}
 	}
 
@@ -838,11 +838,11 @@ function rocket_rrmdir( $dir, $dirs_to_preserve = array() ) {
 	$nginx_mobile_detect_file = $dir . '/.mobile-active';
 
 	if ( is_dir( $dir ) && file_exists( $nginx_mobile_detect_file ) ) {
-		@unlink( $nginx_mobile_detect_file );
+		rocket_direct_filesystem()->delete( $nginx_mobile_detect_file );
 	}
 
 	if ( ! is_dir( $dir ) ) {
-		@unlink( $dir );
+		rocket_direct_filesystem()->delete( $dir );
 		return;
 	};
 
@@ -859,12 +859,12 @@ function rocket_rrmdir( $dir, $dirs_to_preserve = array() ) {
 			if ( is_dir( $dir ) ) {
 				rocket_rrmdir( $dir, $dirs_to_preserve );
 			} else {
-				@unlink( $dir );
+				rocket_direct_filesystem()->delete( $dir );
 			}
 		}
 	}
 
-	@rmdir( $dir );
+	rocket_direct_filesystem()->delete( $dir );
 
 	/**
 	 * Fires after a file/directory cache was deleted
@@ -952,12 +952,8 @@ function rocket_mkdir_p( $target ) {
  * @return bool
  */
 function rocket_put_content( $file, $content ) {
-	require_once( ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php' );
-	require_once( ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php' );
-	$direct_filesystem = new WP_Filesystem_Direct( new StdClass() );
-
 	$chmod = defined( 'FS_CHMOD_FILE' ) ? FS_CHMOD_FILE : 0644;
-	return $direct_filesystem->put_contents( $file, $content, $chmod );
+	return rocket_direct_filesystem()->put_contents( $file, $content, $chmod );
 }
 
 /**
@@ -971,9 +967,9 @@ function rocket_find_wpconfig_path() {
 	$config_file     = ABSPATH . 'wp-config.php';
 	$config_file_alt = dirname( ABSPATH ) . '/wp-config.php';
 
-	if ( file_exists( $config_file ) && is_writable( $config_file ) ) {
+	if ( file_exists( $config_file ) && rocket_direct_filesystem()->is_writable( $config_file ) ) {
 		return $config_file;
-	} elseif ( @file_exists( $config_file_alt ) && is_writable( $config_file_alt ) && ! file_exists( dirname( ABSPATH ) . '/wp-settings.php' ) ) {
+	} elseif ( @file_exists( $config_file_alt ) && rocket_direct_filesystem()->is_writable( $config_file_alt ) && ! file_exists( dirname( ABSPATH ) . '/wp-settings.php' ) ) {
 		return $config_file_alt;
 	}
 

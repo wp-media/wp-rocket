@@ -75,6 +75,7 @@ $request_uri = ( isset( $rocket_cache_query_strings ) && array_intersect( array_
 
 /**
  * Don't cache with variables but the cache is enabled if the visitor comes from an RSS feed, a Facebook action or Google Adsense tracking
+ *
  * @since 2.3 Add query strings which can be cached via the options page.
  * @since 2.1 Add compatibilty with WordPress Landing Pages (permalink_name and lp-variation-id)
  * @since 2.1 Add compabitiliy with qTranslate and translation plugin with query string "lang"

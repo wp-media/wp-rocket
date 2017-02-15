@@ -949,8 +949,8 @@ function rocket_settings_callback( $inputs ) {
 		$settings 			= $gz// ;
 		( $settings );
 		$settings 			= unserialize( $settings );
-		file_put_contents( $file['file'], '' );
-		@unlink( $file['file'] );
+		rocket_direct_filesystem()->put_contents( $file['file'], '' );
+		rocket_direct_filesystem()->delete( $file['file'] );
 		if ( is_array( $settings ) ) {
 			$settings['consumer_key']		= $inputs['consumer_key'];
 			$settings['consumer_email']		= $inputs['consumer_email'];

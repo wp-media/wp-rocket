@@ -56,7 +56,8 @@ function rocket_browser_cache_busting( $src ) {
 
 	$relative_src_path      = str_replace( home_url( '/' ), '', $full_src );
 	$full_src_path          = ABSPATH . dirname( $relative_src_path );
-	/*
+
+	/**
      * Filters the cache busting filename
      *
      * @since 2.9
@@ -137,7 +138,8 @@ function rocket_cache_dynamic_resource( $src ) {
 	}
 
 	$relative_src_path = str_replace( home_url( '/' ), '', $full_src );
-	/*
+
+	/**
      * Filters the dynamic resource cache filename
      *
      * @since 2.9
