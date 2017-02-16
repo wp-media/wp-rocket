@@ -23,7 +23,7 @@ if ( class_exists( 'autoptimizeConfig' ) ) :
 	 * @param string $value New autoptimize option value.
 	 */
 	function rocket_maybe_deactivate_minify_html( $old_value, $value ) {
-		if ( $value !== $old_value && $value === 'on' ) {
+		if ( $value !== $old_value && 'on' === $value ) {
 			update_rocket_option( 'minify_html', 0 );
 			update_rocket_option( 'minify_html_inline_css', 0 );
 			update_rocket_option( 'minify_html_inline_js', 0 );
@@ -41,7 +41,7 @@ if ( class_exists( 'autoptimizeConfig' ) ) :
 	 * @param string $value New autoptimize option value.
 	 */
 	function rocket_maybe_deactivate_minify_css( $old_value, $value ) {
-		if ( $value !== $old_value && $value === 'on' ) {
+		if ( $value !== $old_value && 'on' === $value ) {
 			update_rocket_option( 'minify_css', 0 );
 		}
 	}
@@ -57,7 +57,7 @@ if ( class_exists( 'autoptimizeConfig' ) ) :
 	 * @param string $value New autoptimize option value.
 	 */
 	function rocket_maybe_deactivate_minify_js( $old_value, $value ) {
-		if ( $value !== $old_value && $value === 'on' ) {
+		if ( $value !== $old_value && 'on' === $value ) {
 			update_rocket_option( 'minify_js', 0 );
 		}
 	}
@@ -72,17 +72,17 @@ endif;
  * @author Remy Perona
  */
 function rocket_activate_autoptimize() {
-	if ( 'on' === get_option( 'autoptimize_html') ) {
+	if ( 'on' === get_option( 'autoptimize_html' ) ) {
 		update_rocket_option( 'minify_html', 0 );
 		update_rocket_option( 'minify_html_inline_css', 0 );
 		update_rocket_option( 'minify_html_inline_js', 0 );
 	}
-	
-	if ( 'on' === get_option( 'autoptimize_css') ) {
+
+	if ( 'on' === get_option( 'autoptimize_css' ) ) {
 		update_rocket_option( 'minify_css', 0 );
 	}
-	
-	if ( 'on' === get_option( 'autoptimize_js') ) {
+
+	if ( 'on' === get_option( 'autoptimize_js' ) ) {
 		update_rocket_option( 'minify_js', 0 );
 	}
 }
@@ -97,7 +97,7 @@ add_action( 'activate_autoptimize/autoptimize.php', 'rocket_activate_autoptimize
  * @return bool|null True if it is active
  */
 function rocket_maybe_disable_minify_html() {
-	if ( is_plugin_active( 'autoptimize/autoptimize.php' ) && 'on' === get_option( 'autoptimize_html') ) {
+	if ( is_plugin_active( 'autoptimize/autoptimize.php' ) && 'on' === get_option( 'autoptimize_html' ) ) {
 		return true;
 	}
 }
@@ -111,7 +111,7 @@ function rocket_maybe_disable_minify_html() {
  * @return bool|null True if it is active
  */
 function rocket_maybe_disable_minify_css() {
-	if ( is_plugin_active( 'autoptimize/autoptimize.php' ) && 'on' === get_option( 'autoptimize_css') ) {
+	if ( is_plugin_active( 'autoptimize/autoptimize.php' ) && 'on' === get_option( 'autoptimize_css' ) ) {
 		return true;
 	}
 }
@@ -125,7 +125,7 @@ function rocket_maybe_disable_minify_css() {
  * @return bool|null True if it is active
  */
 function rocket_maybe_disable_minify_js() {
-	if ( is_plugin_active( 'autoptimize/autoptimize.php' ) && 'on' === get_option( 'autoptimize_js') ) {
+	if ( is_plugin_active( 'autoptimize/autoptimize.php' ) && 'on' === get_option( 'autoptimize_js' ) ) {
 		return true;
 	}
 }

@@ -139,7 +139,7 @@ function is_rocket_cdn_on_ssl() {
 
 /**
  * Get the domain names to DNS prefetch from WP Rocket options
- * 
+ *
  * @since 2.8.9
  * @author Remy Perona
  *
@@ -148,7 +148,7 @@ function is_rocket_cdn_on_ssl() {
 function rocket_get_dns_prefetch_domains() {
 	$cdn_cnames    = get_rocket_cdn_cnames( array( 'all', 'images', 'css_and_js', 'css', 'js' ) );
 
-	// Don't add CNAMES if CDN is disabled HTTPS pages or on specific posts
+	// Don't add CNAMES if CDN is disabled HTTPS pages or on specific posts.
 	if ( ! is_rocket_cdn_on_ssl() || is_rocket_post_excluded_option( 'cdn' ) ) {
 		$cdn_cnames = array();
 	}

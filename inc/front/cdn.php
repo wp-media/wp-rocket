@@ -133,27 +133,27 @@ function rocket_cdn_images( $html ) {
 
 	$zone = array( 'all', 'images' );
 	if ( $cnames = get_rocket_cdn_cnames( $zone ) ) {
-		
+
 		$cnames = array_flip( $cnames );
 		$home_url = home_url( '/' );
-		// Get all images of the content
+		// Get all images of the content.
 		preg_match_all( '#<img([^>]+?)src=([\'"\\\]*)([^\'"\s\\\>]+)([\'"\\\]*)([^>]*)>#i', $html, $images_match );
 
 		foreach ( $images_match[3] as $k => $image_url ) {
-			
+
 			list( $host, $path, $scheme, $query ) = get_rocket_parse_url( $image_url );
 
 			if ( isset( $cnames[ $host ] ) ) {
 				continue;
 			}
 
-            // Image path is relative, apply the host to it
+			// Image path is relative, apply the host to it.
 			if ( empty( $host ) ) {
-    			$image_url = $home_url . ltrim( $image_url, '/' );
+				$image_url = $home_url . ltrim( $image_url, '/' );
 			}
 
-            // Check if the link isn't external
-			if ( $host != parse_url( $home_url, PHP_URL_HOST ) ) {
+			// Check if the link isn't external.
+			if ( parse_url( $home_url, PHP_URL_HOST ) !== $host ) {
 				continue;
 			}
 
@@ -173,9 +173,9 @@ function rocket_cdn_images( $html ) {
 				*/
 				apply_filters( 'rocket_cdn_images_html', sprintf(
 					'<img %1$s %2$s %3$s>',
-					trim( $images_match[1][$k] ),
-					'src='. $images_match[2][$k] . get_rocket_cdn_url( $image_url, $zone ) . $images_match[4][$k],
-					trim( $images_match[5][$k] )
+					trim( $images_match[1][ $k ] ),
+					'src=' . $images_match[2][ $k ] . get_rocket_cdn_url( $image_url, $zone ) . $images_match[4][ $k ],
+					trim( $images_match[5][ $k ] )
 				) ),
 				$html
 			);
@@ -210,18 +210,18 @@ function rocket_cdn_inline_styles( $html ) {
 	);
 
 	if ( $cnames = get_rocket_cdn_cnames( $zone ) ) {
-    	preg_match_all( '/url\((?![\'\"]?data)[\"\']?([^\)\"\']+)[\"\']?\)/i', $html, $matches );
+		preg_match_all( '/url\((?![\'\"]?data)[\"\']?([^\)\"\']+)[\"\']?\)/i', $html, $matches );
 
-        if ( ( bool ) $matches ) {
-            $i = 0;
-            foreach( $matches[1] as $url ) {
-            	$url      = trim( $url, " \t\n\r\0\x0B\"'&quot;#039;" );
-            	$url      = get_rocket_cdn_url( $url, $zone );
-            	$property = str_replace( $matches[1][$i], $url, $matches[0][$i] );
-            	$html     = str_replace( $matches[0][$i], $property, $html );
-            	$i++;
-            }
-        }
+		if ( (bool) $matches ) {
+			$i = 0;
+			foreach ( $matches[1] as $url ) {
+				$url      = trim( $url, " \t\n\r\0\x0B\"'&quot;#039;" );
+				$url      = get_rocket_cdn_url( $url, $zone );
+				$property = str_replace( $matches[1][ $i ], $url, $matches[0][ $i ] );
+				$html     = str_replace( $matches[0][ $i ], $property, $html );
+				$i++;
+			}
+		}
 	}
 
 	return $html;
@@ -249,31 +249,31 @@ function rocket_cdn_custom_files( $html ) {
 	if ( $cnames = get_rocket_cdn_cnames( $zone ) ) {
 
 		/**
-         * Filters the filetypes allowed for the CDN
-         *
-         * @since 2.9
-         * @author Remy Perona
-         *
-         * @param array $filetypes Array of file types.
-         */
-        $filetypes = apply_filters( 'rocket_cdn_custom_filetypes', array( 'mp3', 'ogg', 'mp4', 'm4v', 'avi', 'mov', 'flv', 'swf', 'webm', 'pdf', 'doc', 'docx', 'txt', 'zip', 'tar', 'bz2', 'tgz', 'rar' ) );
-        $filetypes = implode( '|', $filetypes );
+		 * Filters the filetypes allowed for the CDN
+		 *
+		 * @since 2.9
+		 * @author Remy Perona
+		 *
+		 * @param array $filetypes Array of file types.
+		 */
+		$filetypes = apply_filters( 'rocket_cdn_custom_filetypes', array( 'mp3', 'ogg', 'mp4', 'm4v', 'avi', 'mov', 'flv', 'swf', 'webm', 'pdf', 'doc', 'docx', 'txt', 'zip', 'tar', 'bz2', 'tgz', 'rar' ) );
+		$filetypes = implode( '|', $filetypes );
 
-        preg_match_all( '#<a[^>]+?href=[\'"]?([^"\'>]+\.(?:' . $filetypes . '))[\'"]?[^>]*>#i', $html, $matches );
+		preg_match_all( '#<a[^>]+?href=[\'"]?([^"\'>]+\.(?:' . $filetypes . '))[\'"]?[^>]*>#i', $html, $matches );
 
-        if ( ( bool ) $matches ) {
-            $i = 0;
-            foreach( $matches[1] as $url ) {
-            	$url  = trim( $url, " \t\n\r\0\x0B\"'" );
-            	$url  = get_rocket_cdn_url( $url, $zone );
-            	$src  = str_replace( $matches[1][$i], $url, $matches[0][$i] );
-            	$html = str_replace( $matches[0][$i], $src, $html );
-            	$i++;
-            }
-        }
-    }
+		if ( (bool) $matches ) {
+			$i = 0;
+			foreach ( $matches[1] as $url ) {
+				$url  = trim( $url, " \t\n\r\0\x0B\"'" );
+				$url  = get_rocket_cdn_url( $url, $zone );
+				$src  = str_replace( $matches[1][ $i ], $url, $matches[0][ $i ] );
+				$html = str_replace( $matches[0][ $i ], $src, $html );
+				$i++;
+			}
+		}
+	}
 
-    return $html;
+	return $html;
 }
 add_filter( 'rocket_buffer', 'rocket_cdn_custom_files', 12 );
 

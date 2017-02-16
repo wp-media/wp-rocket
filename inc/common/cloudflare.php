@@ -9,13 +9,13 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
  * @source cloudflare.php - https://wordpress.org/plugins/cloudflare/
  */
 function rocket_set_real_ip_cloudflare() {
-    global $is_cf;
+	global $is_cf;
 
-    $is_cf = ( isset( $_SERVER["HTTP_CF_CONNECTING_IP"] ) ) ? true : false;
+	$is_cf = ( isset( $_SERVER['HTTP_CF_CONNECTING_IP'] ) ) ? true : false;
 
-    if ( ! $is_cf ) {
+	if ( ! $is_cf ) {
 	    return;
-    }
+	}
 
 	// only run this logic if the REMOTE_ADDR is populated, to avoid causing notices in CLI mode.
 	if ( isset( $_SERVER['REMOTE_ADDR'] ) ) {
@@ -53,15 +53,15 @@ function rocket_set_real_ip_cloudflare() {
 		}
 	}
 
-    // Let people know that the CF WP plugin is turned on, except if white label is active
-    if ( ! headers_sent() ) {
-        if ( rocket_is_white_label() ) {
-            $powered_by = get_rocket_option( 'wl_plugin_name' );
-        } else {
-            $powered_by = 'WP Rocket ' . WP_ROCKET_VERSION;
-        }
+	// Let people know that the CF WP plugin is turned on, except if white label is active.
+	if ( ! headers_sent() ) {
+		if ( rocket_is_white_label() ) {
+			$powered_by = get_rocket_option( 'wl_plugin_name' );
+		} else {
+			$powered_by = 'WP Rocket ' . WP_ROCKET_VERSION;
+		}
 
-        header( "X-CF-Powered-By: " . $powered_by );
-    }
+		header( 'X-CF-Powered-By: ' . $powered_by );
+	}
 }
 add_action( 'init', 'rocket_set_real_ip_cloudflare' , 1 );

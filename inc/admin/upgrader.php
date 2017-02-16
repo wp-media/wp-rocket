@@ -315,22 +315,22 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		if ( 0 < $options['do_cloudflare'] && '' !== $options['cloudflare_domain'] ) {
 			require( WP_ROCKET_ADMIN_PATH . 'compat/cf-upgrader-5.4.php' );
 		}
-    }
+	}
 
 	// Disable minification options if they're active in Autoptimize.
 	if ( version_compare( $actual_version, '2.9.5', '<' ) ) {
 		if ( is_plugin_active( 'autoptimize/autoptimize.php' ) ) {
-			if ( 'on' === get_option( 'autoptimize_html') ) {
+			if ( 'on' === get_option( 'autoptimize_html' ) ) {
 				update_rocket_option( 'minify_html', 0 );
 				update_rocket_option( 'minify_html_inline_css', 0 );
 				update_rocket_option( 'minify_html_inline_js', 0 );
 			}
-			
-			if ( 'on' === get_option( 'autoptimize_css') ) {
+
+			if ( 'on' === get_option( 'autoptimize_css' ) ) {
 				update_rocket_option( 'minify_css', 0 );
 			}
-			
-			if ( 'on' === get_option( 'autoptimize_js') ) {
+
+			if ( 'on' === get_option( 'autoptimize_js' ) ) {
 				update_rocket_option( 'minify_js', 0 );
 			}
 		}

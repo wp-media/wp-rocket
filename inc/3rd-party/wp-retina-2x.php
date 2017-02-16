@@ -18,13 +18,13 @@ if ( class_exists( 'WR2X_Admin' ) ) :
 		if ( ! method_exists( $wr2x_admin, 'is_pro' ) || ! $wr2x_admin->is_pro() ) {
 			return $url;
 		}
-		
+
 		$cdn_domain = get_option( 'wr2x_cdn_domain' );
 
 		if ( ! empty( $cdn_domain ) ) {
 			return $url;
 		}
-		
+
 		return get_rocket_cdn_url( $url, array( 'all', 'images' ) );
 	}
 endif;

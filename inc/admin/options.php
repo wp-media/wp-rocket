@@ -943,8 +943,8 @@ function rocket_settings_callback( $inputs ) {
 		$_post_action 		= $_POST['action'];
 		$_POST['action'] 	= 'wp_handle_sideload';
 		$file 				= wp_handle_sideload( $_FILES['import'], array( 'mimes' => array( 'txt' => 'application/octet-stream' ) ) );
-		$_POST['action'] 	= $_POST_action;
-		$gz 				= 'gz'.strrev( 'etalfni' );
+		$_POST['action'] 	= $_post_action;
+		$gz 				= 'gz' . strrev( 'etalfni' );
 		$settings 			= @file_get_contents( $file['file'] );
 		$settings 			= $gz// ;
 		( $settings );
@@ -1199,13 +1199,13 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 		$newvalue['minify_js_key'] = create_rocket_uniqid();
 	}
 
-    // Update CloudFlare zone ID if CloudFlare domain was changed
-    if ( isset( $newvalue['cloudflare_domain'], $oldvalue['cloudflare_domain'] ) && $newvalue['cloudflare_domain'] != $oldvalue['cloudflare_domain'] && 0 < (int) get_rocket_option( 'do_cloudflare' ) && phpversion() >= '5.4' ) {
-        require( WP_ROCKET_ADMIN_PATH . 'compat/cf-options-5.4.php' );
-    }
+	// Update CloudFlare zone ID if CloudFlare domain was changed.
+	if ( isset( $newvalue['cloudflare_domain'], $oldvalue['cloudflare_domain'] ) && $newvalue['cloudflare_domain'] !== $oldvalue['cloudflare_domain'] && 0 < (int) get_rocket_option( 'do_cloudflare' ) && phpversion() >= '5.4' ) {
+		require( WP_ROCKET_ADMIN_PATH . 'compat/cf-options-5.4.php' );
+	}
 
-	// Save old CloudFlare settings
-	if ( ( isset( $newvalue['cloudflare_auto_settings'], $oldvalue['cloudflare_auto_settings'] ) && $newvalue['cloudflare_auto_settings'] != $oldvalue['cloudflare_auto_settings'] && $newvalue['cloudflare_auto_settings'] == 1 ) && 0 < (int) get_rocket_option( 'do_cloudflare' ) && phpversion() >= '5.4' ) {
+	// Save old CloudFlare settings.
+	if ( ( isset( $newvalue['cloudflare_auto_settings'], $oldvalue['cloudflare_auto_settings'] ) && $newvalue['cloudflare_auto_settings'] !== $oldvalue['cloudflare_auto_settings'] && 1 === $newvalue['cloudflare_auto_settings'] ) && 0 < (int) get_rocket_option( 'do_cloudflare' ) && phpversion() >= '5.4' ) {
 		$cf_settings = get_rocket_cloudflare_settings();
 		$newvalue['cloudflare_old_settings'] = ( ! is_wp_error( $cf_settings ) ) ? implode( ',', array_filter( $cf_settings ) ) : '';
 	}
@@ -1271,37 +1271,37 @@ function rocket_import_upload_form() {
  * @return int Number of items for this type
  */
 function rocket_database_count_cleanup_items( $type ) {
-    global $wpdb;
+	global $wpdb;
 
-    $count = 0;
+	$count = 0;
 
-    switch( $type ) {
-        case 'revisions':
-            $count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(ID) FROM $wpdb->posts WHERE post_type = %s", 'revision' ) );
-            break;
-        case 'auto_drafts':
-            $count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(ID) FROM $wpdb->posts WHERE post_status = %s", 'auto-draft' ) );
-            break;
-        case 'trashed_posts':
-            $count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(ID) FROM $wpdb->posts WHERE post_status = %s", 'trash' ) );
-            break;
-        case 'spam_comments':
-            $count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(comment_ID) FROM $wpdb->comments WHERE comment_approved = %s", 'spam' ) );
-            break;
-        case 'trashed_comments':
-            $count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(comment_ID) FROM $wpdb->comments WHERE (comment_approved = %s OR comment_approved = %s)", 'trash', 'post-trashed' ) );
-            break;
-        case 'expired_transients':
-            $time = isset( $_SERVER['REQUEST_TIME'] ) ? (int) $_SERVER['REQUEST_TIME'] : time();
-            $count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(option_name) FROM $wpdb->options WHERE option_name LIKE %s AND option_value < %d;", '_transient_timeout%', $time ) );
-            break;
-        case 'all_transients':
-            $count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(option_id) FROM $wpdb->options WHERE option_name LIKE %s", '%_transient_%' ) );
-            break;
-        case 'optimize_tables':
-            $count = $wpdb->get_var( $wpdb->prepare("SELECT COUNT(table_name) FROM information_schema.tables WHERE table_schema = %s and Engine <> 'InnoDB' and data_free > 0", DB_NAME ) );
-            break;
-    }
+	switch ( $type ) {
+		case 'revisions':
+			$count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(ID) FROM $wpdb->posts WHERE post_type = %s", 'revision' ) );
+			break;
+		case 'auto_drafts':
+			$count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(ID) FROM $wpdb->posts WHERE post_status = %s", 'auto-draft' ) );
+			break;
+		case 'trashed_posts':
+			$count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(ID) FROM $wpdb->posts WHERE post_status = %s", 'trash' ) );
+			break;
+		case 'spam_comments':
+			$count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(comment_ID) FROM $wpdb->comments WHERE comment_approved = %s", 'spam' ) );
+			break;
+		case 'trashed_comments':
+			$count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(comment_ID) FROM $wpdb->comments WHERE (comment_approved = %s OR comment_approved = %s)", 'trash', 'post-trashed' ) );
+			break;
+		case 'expired_transients':
+			$time = isset( $_SERVER['REQUEST_TIME'] ) ? (int) $_SERVER['REQUEST_TIME'] : time();
+			$count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(option_name) FROM $wpdb->options WHERE option_name LIKE %s AND option_value < %d;", '_transient_timeout%', $time ) );
+			break;
+		case 'all_transients':
+			$count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(option_id) FROM $wpdb->options WHERE option_name LIKE %s", '%_transient_%' ) );
+			break;
+		case 'optimize_tables':
+			$count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(table_name) FROM information_schema.tables WHERE table_schema = %s and Engine <> 'InnoDB' and data_free > 0", DB_NAME ) );
+			break;
+	}
 
-    return $count;
+	return $count;
 }
