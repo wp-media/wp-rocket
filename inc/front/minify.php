@@ -1,7 +1,6 @@
 <?php
 defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
 
-add_filter( 'rocket_buffer', 'rocket_minify_process', 13 );
 /**
  * Launch WP Rocket minification process (CSS and JavaScript)
  *
@@ -52,8 +51,8 @@ function rocket_minify_process( $buffer ) {
 
 	return $buffer;
 }
+add_filter( 'rocket_buffer', 'rocket_minify_process', 13 );
 
-add_action( 'wp_footer', 'rocket_insert_minify_js_in_footer', PHP_INT_MAX );
 /**
  * Insert JS minify files in footer
  *
@@ -119,6 +118,7 @@ function rocket_insert_minify_js_in_footer() {
 		}
 	}
 }
+add_action( 'wp_footer', 'rocket_insert_minify_js_in_footer', PHP_INT_MAX );
 
 /**
  * Used for concatenate Google Fonts tags (http://fonts.googleapis.com/css?...)
@@ -313,10 +313,10 @@ function rocket_minify_css( $buffer ) {
 				$buffer = str_replace( $tag, '', $buffer );
 			}
 
-			if ( $excluded_tag && get_rocket_option( 'remove_query_strings' ) ) {
-				$tag_cache_busting = str_replace( $tags_match[1][ $i ], rocket_browser_cache_busting( $tags_match[1][ $i ] ), $tag );
-				$buffer = str_replace( $tag, $tag_cache_busting, $buffer );
-			}
+            if ( $excluded_tag && get_rocket_option( 'remove_query_strings' ) ) {
+                $tag_cache_busting = str_replace( $tags_match[1][ $i ], rocket_browser_cache_busting( $tags_match[1][ $i ], 'style_loader_src' ), $tag );
+                $buffer = str_replace( $tag, $tag_cache_busting, $buffer );
+            }
 		}
 		$i++;
 	}
@@ -404,10 +404,10 @@ function rocket_minify_js( $buffer ) {
 				$buffer = str_replace( $tag, '', $buffer );
 			}
 
-			if ( $excluded_tag && get_rocket_option( 'remove_query_strings' ) ) {
-				$tag_cache_busting = str_replace( $tags_match[1][ $i ], rocket_browser_cache_busting( $tags_match[1][ $i ] ), $tag );
-				$buffer = str_replace( $tag, $tag_cache_busting, $buffer );
-			}
+            if ( $excluded_tag && get_rocket_option( 'remove_query_strings' ) ) {
+                $tag_cache_busting = str_replace( $tags_match[1][ $i ], rocket_browser_cache_busting( $tags_match[1][ $i ], 'script_loader_src' ), $tag );
+                $buffer = str_replace( $tag, $tag_cache_busting, $buffer );
+            }
 		}
 		$i++;
 	}
@@ -469,8 +469,6 @@ function rocket_inject_ie_conditionals( $buffer, $conditionals ) {
 	return $buffer;
 }
 
-add_filter( 'rocket_css_url', 'rocket_fix_ssl_minify' );
-add_filter( 'rocket_js_url', 'rocket_fix_ssl_minify' );
 /**
  * Fix issue with SSL and minification
  *
@@ -486,8 +484,9 @@ function rocket_fix_ssl_minify( $url ) {
 
 	return $url;
 }
+add_filter( 'rocket_css_url', 'rocket_fix_ssl_minify' );
+add_filter( 'rocket_js_url', 'rocket_fix_ssl_minify' );
 
-add_filter( 'rocket_minify_filename_length', 'rocket_force_minify_combine_all', 10, 2 );
 /**
  * Force the minification to create only 1 file.
  *
@@ -508,8 +507,8 @@ function rocket_force_minify_combine_all( $length, $ext ) {
 
 	return $length;
 }
+add_filter( 'rocket_minify_filename_length', 'rocket_force_minify_combine_all', 10, 2 );
 
-add_action( 'wp_print_styles', 'rocket_extract_excluded_css_files' );
 /**
  * Extract all enqueued CSS files which should be exclude to the minification
  *
@@ -532,8 +531,8 @@ function rocket_extract_excluded_css_files() {
 		}
 	}
 }
+add_action( 'wp_print_styles', 'rocket_extract_excluded_css_files' );
 
-add_action( 'wp_print_scripts', 'rocket_extract_excluded_js_files' );
 /**
  * Extract all enqueued JS files which should be exclude to the minification
  *
@@ -565,8 +564,8 @@ function rocket_extract_excluded_js_files() {
 		}
 	}
 }
+add_action( 'wp_print_scripts', 'rocket_extract_excluded_js_files' );
 
-add_action( 'wp_footer', 'rocket_extract_js_files_from_footer', 1 );
 /**
  * Extract all enqueued JS files which should be insert in the footer
  *
@@ -629,8 +628,8 @@ function rocket_extract_js_files_from_footer() {
 		}
 	}
 }
+add_action( 'wp_footer', 'rocket_extract_js_files_from_footer', 1 );
 
-add_filter( 'rocket_pre_minify_path', 'rocket_fix_minify_multisite_path_issue' );
 /**
  * Compatibility with WordPress multisite with subfolders websites
  *
@@ -672,9 +671,8 @@ function rocket_fix_minify_multisite_path_issue( $url ) {
 
 	return $url;
 }
+add_filter( 'rocket_pre_minify_path', 'rocket_fix_minify_multisite_path_issue' );
 
-add_filter( 'rocket_css_url', 'rocket_minify_i18n_multidomain' );
-add_filter( 'rocket_js_url'	, 'rocket_minify_i18n_multidomain' );
 /**
  * Compatibility with multilingual plugins & multidomain configuration
  *
@@ -712,3 +710,5 @@ function rocket_minify_i18n_multidomain( $url ) {
 
 	return $url;
 }
+add_filter( 'rocket_css_url', 'rocket_minify_i18n_multidomain' );
+add_filter( 'rocket_js_url'	, 'rocket_minify_i18n_multidomain' );

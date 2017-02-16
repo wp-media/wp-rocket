@@ -29,6 +29,32 @@ add_settings_field(
 		),
 	)
 );
+
+$rocket_maybe_disable_minify = array( 
+	'type'         => 'helper_warning',
+	'name'         => 'minify_html_disabled'
+);
+
+if ( rocket_maybe_disable_minify_html() || rocket_maybe_disable_minify_css() || rocket_maybe_disable_minify_js() ) {
+	$disabled = '';
+
+	if ( rocket_maybe_disable_minify_html() ) {
+		$disabled .= 'HTML, ';
+	}
+
+	if ( rocket_maybe_disable_minify_css() ) {
+		$disabled .= 'CSS, ';
+	}
+
+	if ( rocket_maybe_disable_minify_js() ) {
+		$disabled .= 'JS, ';
+	}
+
+	$disabled = rtrim( $disabled, ', ' );
+
+	$rocket_maybe_disable_minify['description'] = sprintf(__( 'These minification options are disabled because they are currently activated in Autoptimize. If you want to use WP Rocket minification, disable them there first: %s', 'rocket' ), $disabled );
+}
+
 add_settings_field(
 	'rocket_minify',
 	 __( 'Files optimisation:<br/><span class="description">(Minification & Concatenation)</span>', 'rocket' ),
@@ -41,6 +67,7 @@ add_settings_field(
 			'label'        => 'HTML',
 			'name'         => 'minify_html',
 			'label_screen' => __( 'HTML Files minification', 'rocket' ),
+			'readonly'	   => rocket_maybe_disable_minify_html(),
 		),
 		array(
 			'parent'	   => 'minify_html',
@@ -67,13 +94,16 @@ add_settings_field(
 			'label'        => 'CSS',
 			'name'         => 'minify_css',
 			'label_screen' => __( 'CSS Files minification', 'rocket' ),
+			'readonly'	   => rocket_maybe_disable_minify_css(),
 		),
 		array(
 			'type'		   => 'checkbox',
 			'label'		   => 'JS',
 			'name'		   => 'minify_js',
 			'label_screen' => __( 'JS Files minification', 'rocket' ),
+			'readonly'	   => rocket_maybe_disable_minify_js(),
 		),
+		$rocket_maybe_disable_minify,
 		array(
 			'type'			=> 'helper_description',
 			'name'			=> 'minify',

@@ -70,10 +70,6 @@ add_action( 'after_rocket_clean_domain', 'rocket_clean_pagely' );
 */
 add_action( 'after_rocket_clean_domain', 'rocket_clean_pressidium' );
 
-add_action( 'wp_trash_post'				, 'rocket_clean_post' );
-add_action( 'delete_post'				, 'rocket_clean_post' );
-add_action( 'clean_post_cache'			, 'rocket_clean_post' );
-add_action( 'wp_update_comment_count'	, 'rocket_clean_post' );
 /**
  * Update cache when a post is updated or commented
  *
@@ -112,7 +108,7 @@ function rocket_clean_post( $post_id ) {
 
 	// Don't purge if post's post type is not public or not publicly queryable.
 	$post_type = get_post_type_object( $post->post_type );
-	if ( true !== $post_type->public ) {
+	if ( ! is_object( $post_type ) || true !== $post_type->public ) {
 		return;
 	}
 
@@ -147,7 +143,10 @@ function rocket_clean_post( $post_id ) {
 	// Add Post Type archive.
 	if ( 'post' !== $post->post_type ) {
 	    if ( $post_type_archive = get_post_type_archive_link( get_post_type( $post_id ) ) ) {
-	    	array_push( $purge_urls, $post_type_archive );
+	    	$post_type_archive = trailingslashit( $post_type_archive );
+			array_push( $purge_urls, $post_type_archive . 'index.html' );
+			array_push( $purge_urls, $post_type_archive . 'index.html_gzip' );
+			array_push( $purge_urls, $post_type_archive . $GLOBALS['wp_rewrite']->pagination_base );
 	    }
 	}
 
@@ -258,8 +257,11 @@ function rocket_clean_post( $post_id ) {
 	 */
 	do_action( 'after_rocket_clean_post', $post, $purge_urls, $lang );
 }
+add_action( 'wp_trash_post'				, 'rocket_clean_post' );
+add_action( 'delete_post'				, 'rocket_clean_post' );
+add_action( 'clean_post_cache'			, 'rocket_clean_post' );
+add_action( 'wp_update_comment_count'	, 'rocket_clean_post' );
 
-add_filter( 'rocket_clean_files', 'rocket_clean_files_users' );
 /**
  * Add pattern to clean files of connected users
  *
@@ -276,8 +278,8 @@ function rocket_clean_files_users( $urls ) {
 	}
 	return $pattern_urls;
 }
+add_filter( 'rocket_clean_files', 'rocket_clean_files_users' );
 
-add_filter( 'rocket_post_purge_urls', 'rocket_post_purge_urls_for_qtranslate' );
 /**
  * Return all translated version of a post when qTranslate is used.
  * Use the "rocket_post_purge_urls" filter to insert URLs of traduction post
@@ -312,8 +314,8 @@ function rocket_post_purge_urls_for_qtranslate( $urls ) {
 
 	return $urls;
 }
+add_filter( 'rocket_post_purge_urls', 'rocket_post_purge_urls_for_qtranslate' );
 
-add_action( 'after_rocket_clean_post', 'run_rocket_bot_after_clean_post', 10, 3 );
 /**
  * Actions to be done after the purge cache files of a post
  * By Default, this hook call the WP Rocket Bot (cache json)
@@ -353,8 +355,8 @@ function run_rocket_bot_after_clean_post( $post, $purge_urls, $lang ) {
 		$do_rocket_bot_cache_json = true;
 	}
 }
+add_action( 'after_rocket_clean_post', 'run_rocket_bot_after_clean_post', 10, 3 );
 
-add_action( 'after_rocket_clean_term', 'run_rocket_bot_after_clean_term', 10, 3 );
 /**
  * Actions to be done after the purge cache files of a term
  * By Default, this hook call the WP Rocket Bot (cache json)
@@ -376,8 +378,8 @@ function run_rocket_bot_after_clean_term( $post, $purge_urls, $lang ) {
 		$do_rocket_bot_cache_json = true;
 	}
 }
+add_action( 'after_rocket_clean_term', 'run_rocket_bot_after_clean_term', 10, 3 );
 
-add_action( 'shutdown', 'do_rocket_bot_cache_json' );
 /**
  * Run WP Rocket Bot when a post is added, updated or deleted
  *
@@ -389,8 +391,8 @@ function do_rocket_bot_cache_json() {
 		run_rocket_preload_cache( 'cache-json', false );
 	}
 }
+add_action( 'shutdown', 'do_rocket_bot_cache_json' );
 
-add_action( 'admin_post_purge_cache', 'do_admin_post_rocket_purge_cache' );
 /**
  * Purge Cache file System in Admin Bar
  *
@@ -476,9 +478,8 @@ function do_admin_post_rocket_purge_cache() {
 		die();
 	}
 }
+add_action( 'admin_post_purge_cache', 'do_admin_post_rocket_purge_cache' );
 
-
-add_action( 'admin_post_rocket_purge_opcache', 'do_admin_post_rocket_purge_opcache' );
 /**
  * Purge OPCache content in Admin Bar
  *
@@ -496,10 +497,8 @@ function do_admin_post_rocket_purge_opcache() {
 	wp_redirect( wp_get_referer() );
 	die();
 }
+add_action( 'admin_post_rocket_purge_opcache', 'do_admin_post_rocket_purge_opcache' );
 
-// if you want to programmatically preload the cache, use run_rocket_bot() instead.
-add_action( 'admin_post_preload',        'do_admin_post_rocket_preload_cache' );
-add_action( 'admin_post_nopriv_preload', 'do_admin_post_rocket_preload_cache' );
 /**
  * Preload cache system in Admin Bar
  * It launch the WP Rocket Bot
@@ -521,8 +520,9 @@ function do_admin_post_rocket_preload_cache() {
 		die();
 	}
 }
+add_action( 'admin_post_preload',        'do_admin_post_rocket_preload_cache' );
+add_action( 'admin_post_nopriv_preload', 'do_admin_post_rocket_preload_cache' );
 
-add_action( 'admin_post_rocket_purge_cloudflare', 'do_admin_post_rocket_purge_cloudflare' );
 /**
  * Purge CloudFlare cache
  *
@@ -547,3 +547,4 @@ function do_admin_post_rocket_purge_cloudflare() {
 	wp_redirect( wp_get_referer() );
 	die();
 }
+add_action( 'admin_post_rocket_purge_cloudflare', 'do_admin_post_rocket_purge_cloudflare' );

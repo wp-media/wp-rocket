@@ -99,28 +99,29 @@ function get_rocket_cloudflare_zones() {
 	);
 
 	if ( is_wp_error( $cf_api_instance ) ) {
-		return $domains;
-	}
-
-	try {
-		$cf_zone_instance        = new CloudFlare\Zone( $cf_api_instance );
-		$cf_zones                = $cf_zone_instance->zones();
-		$cf_zones_list           = $cf_zones->result;
-
-		if ( ! (bool) $cf_zones_list ) {
-			$domains[] = __( 'No domain available in your CloudFlare account', 'rocket' );
-
-			return $domains;
-		}
-
-		foreach ( $cf_zones_list as $cf_zone ) {
-			$domains[ $cf_zone->name ] = $cf_zone->name;
-		}
-
-		return $domains;
-	} catch ( Exception $e ) {
-		return $domains;
-	}
+    	return $domains;
+    }
+    
+    try {
+    	$cf_zone_instance        = new CloudFlare\Zone( $cf_api_instance );
+        $cf_zones                = $cf_zone_instance->zones( null, 'active', null, 50 );
+        $cf_zones_list           = $cf_zones->result;
+        
+        
+        if ( ! ( bool ) $cf_zones_list ) {
+            $domains[] = __( 'No domain available in your CloudFlare account', 'rocket' );
+        
+            return $domains;
+        }
+        
+        foreach( $cf_zones_list as $cf_zone ) {
+            $domains[ $cf_zone->name ] = $cf_zone->name;
+        }
+        
+        return $domains;
+    } catch( Exception $e ) {
+        return $domains;
+    }	
 }
 
 /**
@@ -330,9 +331,9 @@ function set_rocket_cloudflare_browser_cache_ttl( $mode ) {
 		return $GLOBALS['rocket_cloudflare'];
 	}
 
-	try {
-		$cf_settings = new CloudFlare\Zone\Settings( $GLOBALS['rocket_cloudflare']->auth );
-		$cf_return = $cf_settings->change_browser_cache_ttl( $GLOBALS['rocket_cloudflare']->zone_id, $mode );
+    try {
+        $cf_settings = new CloudFlare\Zone\Settings( $GLOBALS['rocket_cloudflare']->auth );
+        $cf_return = $cf_settings->change_browser_cache_ttl( $GLOBALS['rocket_cloudflare']->zone_id, (int) $mode );
 
 		if ( ! isset( $cf_return->success ) || empty( $cf_return->success ) ) {
 			foreach ( $cf_return->errors as $error ) {
@@ -401,54 +402,54 @@ function rocket_get_cloudflare_ips() {
 		return $cf_instance;
 	}
 
-	if ( false === ( $cf_ips = get_transient( 'rocket_cloudflare_ips' ) ) ) {
-		try {
-			$cf_ips_instance = new CloudFlare\IPs( $cf_instance );
-			$cf_ips = $cf_ips_instance->ips();
+    if ( false === ( $cf_ips = get_transient( 'rocket_cloudflare_ips' ) ) ) {
+        try {
+            $cf_ips_instance = new CloudFlare\IPs( $cf_instance );
+            $cf_ips = $cf_ips_instance->ips();
 
-			if ( isset( $cf_ips->success ) && $cf_ips->success ) {
-				set_transient( 'rocket_cloudflare_ips', $cf_ips, 2 * WEEK_IN_SECONDS );
-			} else {
-				throw new Exception( 'Error connecting to CloudFlare' );
-			}
-		} catch ( Exception $e ) {
-			$cf_ips = (object) [ 'success' => true, 'result' => (object) [] ];
-			$cf_ips->result->ipv4_cidrs = array(
-				'103.21.244.0/22',
-				'103.22.200.0/22',
-				'103.31.4.0/22',
-				'104.16.0.0/12',
-				'108.162.192.0/18',
-				'131.0.72.0/22',
-				'141.101.64.0/18',
-				'162.158.0.0/15',
-				'172.64.0.0/13',
-				'173.245.48.0/20',
-				'188.114.96.0/20',
-				'190.93.240.0/20',
-				'197.234.240.0/22',
-				'198.41.128.0/17',
-				'199.27.128.0/21',
-			);
+            if ( isset( $cf_ips->success ) && $cf_ips->success ) {
+                set_transient(  'rocket_cloudflare_ips', $cf_ips, 2 * WEEK_IN_SECONDS );
+            } else {
+                throw new Exception( 'Error connecting to CloudFlare' );
+            }
+        } catch ( Exception $e ) {
+            $cf_ips = ( object ) [ 'success' => true, 'result' => ( object ) [] ];
+            $cf_ips->result->ipv4_cidrs = array(
+                '103.21.244.0/22',
+                '103.22.200.0/22',
+                '103.31.4.0/22',
+                '104.16.0.0/12',
+                '108.162.192.0/18',
+                '131.0.72.0/22',
+                '141.101.64.0/18',
+                '162.158.0.0/15',
+                '172.64.0.0/13',
+                '173.245.48.0/20',
+                '188.114.96.0/20',
+                '190.93.240.0/20',
+                '197.234.240.0/22',
+                '198.41.128.0/17',
+                '199.27.128.0/21',
+            );
 
-			$cf_ips->result->ipv6_cidrs = array(
-				'2400:cb00::/32',
-				'2405:8100::/32',
-				'2405:b500::/32',
-				'2606:4700::/32',
-				'2803:f800::/32',
-				'2c0f:f248::/32',
-				'2a06:98c0::/29',
-			);
+            $cf_ips->result->ipv6_cidrs = array(
+                '2400:cb00::/32',
+                '2405:8100::/32',
+                '2405:b500::/32',
+                '2606:4700::/32',
+                '2803:f800::/32',
+                '2c0f:f248::/32',
+                '2a06:98c0::/29',
+            );
 
-			return $cf_ips;
-		}
-	}
+			set_transient(  'rocket_cloudflare_ips', $cf_ips, 2 * WEEK_IN_SECONDS );
+            return $cf_ips;
+        }
+    }
 
-	return $cf_ips;
+    return $cf_ips;
 }
 
-add_action( 'rocket_cron_deactivate_cloudflare_devmode', 'do_rocket_deactivate_cloudflare_devmode' );
 /**
  * Automatically set CloudFlare development mode value to off after 3 hours to reflect CloudFlare behaviour
  *
@@ -460,3 +461,4 @@ function do_rocket_deactivate_cloudflare_devmode() {
 	$options['cloudflare_devmode'] = 'off';
 	update_option( WP_ROCKET_SLUG, $options );
 }
+add_action( 'rocket_cron_deactivate_cloudflare_devmode', 'do_rocket_deactivate_cloudflare_devmode' );

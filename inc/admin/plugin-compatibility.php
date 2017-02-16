@@ -1,21 +1,11 @@
 <?php
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
-add_action( 'update_option_woocommerce_cart_page_id'	, 'rocket_after_update_single_options', 10, 2 );
-add_action( 'update_option_woocommerce_checkout_page_id', 'rocket_after_update_single_options', 10, 2 );
-add_action( 'update_option_woocommerce_myaccount_page_id', 'rocket_after_update_single_options', 10, 2 );
-add_action( 'update_option_wpshop_cart_page_id'			, 'rocket_after_update_single_options', 10, 2 );
-add_action( 'update_option_wpshop_checkout_page_id'		, 'rocket_after_update_single_options', 10, 2 );
-add_action( 'update_option_wpshop_payment_return_page_id', 'rocket_after_update_single_options', 10, 2 );
-add_action( 'update_option_wpshop_payment_return_nok_page_id', 'rocket_after_update_single_options', 10, 2 );
-add_action( 'update_option_wpshop_myaccount_page_id'	, 'rocket_after_update_single_options', 10, 2 );
-add_action( 'update_option_it-storage-exchange_settings_pages', 'rocket_after_update_single_options', 10, 2 );
-add_action( 'update_option_sfml', 'rocket_after_update_single_options', 10, 2 );
-add_action( 'update_option_whl_page', 'rocket_after_update_single_options', 10, 2 );
 /**
  * When Woocommerce, EDD, iThemes Exchange, Jigoshop & WP-Shop options are saved or deleted,
  * we update .htaccess & config file to get the right checkout page to exclude to the cache.
  *
+ * @since 2.9.3 Support for SF Move Login moved to 3rd party file
  * @since 2.6 Add support with SF Move Login & WPS Hide Login to exclude login pages
  * @since 2.4
  *
@@ -31,22 +21,21 @@ function rocket_after_update_single_options( $old_value, $value ) {
 		rocket_generate_config_file();
 	}
 }
+add_action( 'update_option_woocommerce_cart_page_id'	, 'rocket_after_update_single_options', 10, 2 );
+add_action( 'update_option_woocommerce_checkout_page_id', 'rocket_after_update_single_options', 10, 2 );
+add_action( 'update_option_woocommerce_myaccount_page_id', 'rocket_after_update_single_options', 10, 2 );
+add_action( 'update_option_wpshop_cart_page_id'			, 'rocket_after_update_single_options', 10, 2 );
+add_action( 'update_option_wpshop_checkout_page_id'		, 'rocket_after_update_single_options', 10, 2 );
+add_action( 'update_option_wpshop_payment_return_page_id', 'rocket_after_update_single_options', 10, 2 );
+add_action( 'update_option_wpshop_payment_return_nok_page_id', 'rocket_after_update_single_options', 10, 2 );
+add_action( 'update_option_wpshop_myaccount_page_id'	, 'rocket_after_update_single_options', 10, 2 );
+add_action( 'update_option_it-storage-exchange_settings_pages', 'rocket_after_update_single_options', 10, 2 );
+add_action( 'update_option_whl_page', 'rocket_after_update_single_options', 10, 2 );
 
-add_action( 'activate_sf-move-login/sf-move-login.php', 'rocket_generate_config_file', 11 );
-add_action( 'deactivate_sf-move-login/sf-move-login.php', 'rocket_generate_config_file', 11 );
-add_action( 'activate_wps-hide-login/wps-hide-login.php', 'rocket_generate_config_file', 11 );
-add_action( 'deactivate_wps-hide-login/wps-hide-login.php', 'rocket_generate_config_file', 11 );
-
-add_action( 'activate_sf-move-login/sf-move-login.php', 'flush_rocket_htaccess', 11 );
-add_action( 'deactivate_sf-move-login/sf-move-login.php', 'flush_rocket_htaccess', 11 );
-add_action( 'activate_wps-hide-login/wps-hide-login.php', 'flush_rocket_htaccess', 11 );
-add_action( 'deactivate_wps-hide-login/wps-hide-login.php', 'flush_rocket_htaccess', 11 );
-
-add_action( 'update_option_edd_settings', 'rocket_after_update_array_options', 10, 2 );
-add_action( 'update_option_jigoshop_options', 'rocket_after_update_array_options', 10, 2 );
 /**
  * We need to regenerate the config file + htaccess depending on some plugins
  *
+ * @since 2.9.3 Support for SF Move Login moved to 3rd party file
  * @since 2.6.5 Add support with SF Move Login & WPS Hide Login
  *
  * @param array $old_value An array of previous settings values.
@@ -73,8 +62,15 @@ function rocket_after_update_array_options( $old_value, $value ) {
 		}
 	}
 }
+add_action( 'activate_wps-hide-login/wps-hide-login.php', 'rocket_generate_config_file', 11 );
+add_action( 'deactivate_wps-hide-login/wps-hide-login.php', 'rocket_generate_config_file', 11 );
 
-add_filter( 'rocket_cache_query_strings', 'rocket_better_nginx_compatibility' );
+add_action( 'activate_wps-hide-login/wps-hide-login.php', 'flush_rocket_htaccess', 11 );
+add_action( 'deactivate_wps-hide-login/wps-hide-login.php', 'flush_rocket_htaccess', 11 );
+
+add_action( 'update_option_edd_settings', 'rocket_after_update_array_options', 10, 2 );
+add_action( 'update_option_jigoshop_options', 'rocket_after_update_array_options', 10, 2 );
+
 /**
  * Compatibility with an usual NGINX configuration which include
  * try_files $uri $uri/ /index.php?q=$uri&$args
@@ -93,8 +89,8 @@ function rocket_better_nginx_compatibility( $query_strings ) {
 
 	return $query_strings;
 }
+add_filter( 'rocket_cache_query_strings', 'rocket_better_nginx_compatibility' );
 
-add_action( 'admin_init', 'rocket_clear_cache_after_studiopress_accelerator' );
 /**
  * Clear WP Rocket cache after purged the StudioPress Accelerator cache
  *
@@ -117,8 +113,8 @@ function rocket_clear_cache_after_studiopress_accelerator() {
 		}
 	}
 }
+add_action( 'admin_init', 'rocket_clear_cache_after_studiopress_accelerator' );
 
-add_action( 'admin_init', 'rocket_clear_cache_after_varnish_http_purge' );
 /**
  * Clear WP Rocket cache after purged the Varnish cache via Varnish HTTP Purge plugin
  *
@@ -133,8 +129,8 @@ function rocket_clear_cache_after_varnish_http_purge() {
 		run_rocket_preload_cache( 'cache-preload' );
 	}
 }
+add_action( 'admin_init', 'rocket_clear_cache_after_varnish_http_purge' );
 
-add_action( 'pagely_page_purge-cache', 'rocket_clear_cache_after_pagely' );
 /**
  * Clear WP Rocket cache after purged the Varnish cache via Pagely hosting
  *
@@ -147,8 +143,9 @@ function rocket_clear_cache_after_pagely() {
 	// Preload cache.
 	run_rocket_preload_cache( 'cache-preload' );
 }
+add_action( 'pagely_page_purge-cache', 'rocket_clear_cache_after_pagely' );
 
-add_action( 'admin_init', 'rocket_clear_cache_after_pressidium' );
+
 /**
  * Clear WP Rocket cache after purged the Varnish cache via Pressidium Hosting
  *
@@ -163,3 +160,4 @@ function rocket_clear_cache_after_pressidium() {
 		run_rocket_preload_cache( 'cache-preload' );
 	}
 }
+add_action( 'admin_init', 'rocket_clear_cache_after_pressidium' );

@@ -1,7 +1,6 @@
 <?php
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
-add_filter( 'site_transient_update_plugins', 'rocket_check_update', 1 );
 /**
  * When WP sets the update_plugins site transient, we set our own transient, then see rocket_add_response_to_updates
  *
@@ -10,16 +9,6 @@ add_filter( 'site_transient_update_plugins', 'rocket_check_update', 1 );
  * @param Object $value Site transient object.
  */
 function rocket_check_update( $value ) {
-
-	static $check_update = 0;
-
-	if ( 1 === $check_update ) {
-		return $value;
-	}
-
-	$check_update = 1;
-
-	global $pagenow;
 	$timer_update_wprocket = (int) get_site_transient( 'update_wprocket' );
 	$temp_object = get_site_transient( 'update_wprocket_response' );
 	if ( ( ! isset( $_GET['rocket_force_update'] ) || defined( 'WP_INSTALLING' ) ) &&
@@ -74,10 +63,8 @@ function rocket_check_update( $value ) {
 	}
 	return $value;
 }
+add_filter( 'site_transient_update_plugins', 'rocket_check_update', 1 );
 
-add_action( 'wp_update_plugins', 'rocket_reset_check_update_timer', 9 ); // WP Cron.
-add_action( 'deleted_site_transient', 'rocket_reset_check_update_timer' );
-add_action( 'setted_site_transient', 'rocket_reset_check_update_timer' );
 /**
  * When WP deletes the update_plugins site transient or updates the plugins, we delete our own transients to avoid another 12 hours waiting
  *
@@ -94,3 +81,6 @@ function rocket_reset_check_update_timer( $transient = 'update_plugins', $value 
 		}
 	}
 }
+add_action( 'wp_update_plugins', 'rocket_reset_check_update_timer', 9 ); // WP Cron.
+add_action( 'deleted_site_transient', 'rocket_reset_check_update_timer' );
+add_action( 'setted_site_transient', 'rocket_reset_check_update_timer' );

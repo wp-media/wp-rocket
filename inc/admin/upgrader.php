@@ -1,7 +1,6 @@
 <?php
 defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 
-add_action( 'admin_init', 'rocket_upgrader' );
 /**
  * Tell WP what to do when admin is loaded aka upgrader
  *
@@ -51,8 +50,8 @@ function rocket_upgrader() {
 		add_action( 'admin_notices', 'rocket_need_api_key' );
 	}
 }
+add_action( 'admin_init', 'rocket_upgrader' );
 
-add_action( 'wp_rocket_first_install', 'rocket_first_install' );
 /**
  * Keeps this function up to date at each version
  *
@@ -146,8 +145,8 @@ function rocket_first_install() {
 	rocket_dismiss_box( 'rocket_warning_plugin_modification' );
 	rocket_reset_white_label_values( false );
 }
+add_action( 'wp_rocket_first_install', 'rocket_first_install' );
 
-add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );
 /**
  * What to do when Rocket is updated, depending on versions
  *
@@ -316,5 +315,25 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		if ( 0 < $options['do_cloudflare'] && '' !== $options['cloudflare_domain'] ) {
 			require( WP_ROCKET_ADMIN_PATH . 'compat/cf-upgrader-5.4.php' );
 		}
+    }
+
+	// Disable minification options if they're active in Autoptimize.
+	if ( version_compare( $actual_version, '2.9.5', '<' ) ) {
+		if ( is_plugin_active( 'autoptimize/autoptimize.php' ) ) {
+			if ( 'on' === get_option( 'autoptimize_html') ) {
+				update_rocket_option( 'minify_html', 0 );
+				update_rocket_option( 'minify_html_inline_css', 0 );
+				update_rocket_option( 'minify_html_inline_js', 0 );
+			}
+			
+			if ( 'on' === get_option( 'autoptimize_css') ) {
+				update_rocket_option( 'minify_css', 0 );
+			}
+			
+			if ( 'on' === get_option( 'autoptimize_js') ) {
+				update_rocket_option( 'minify_js', 0 );
+			}
+		}
 	}
 }
+add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );

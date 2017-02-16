@@ -1,7 +1,6 @@
 <?php
 defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 
-add_filter( 'plugin_action_links_' . plugin_basename( WP_ROCKET_FILE ), 'rocket_settings_action_links' );
 /**
  * Link to the configuration page of the plugin, support & documentation
  *
@@ -21,8 +20,8 @@ function rocket_settings_action_links( $actions ) {
 
 	return $actions;
 }
+add_filter( 'plugin_action_links_' . plugin_basename( WP_ROCKET_FILE ), 'rocket_settings_action_links' );
 
-add_action( 'plugin_row_meta', 'rocket_plugin_row_meta', 10, 2 );
 /**
  * Add a link "Renew your licence" when ou can't do it automatically (expired licence but new version available)
  *
@@ -47,9 +46,8 @@ function rocket_plugin_row_meta( $plugin_meta, $plugin_file ) {
 
 	return $plugin_meta;
 }
+add_action( 'plugin_row_meta', 'rocket_plugin_row_meta', 10, 2 );
 
-add_filter( 'page_row_actions', 'rocket_post_row_actions', 10, 2 );
-add_filter( 'post_row_actions', 'rocket_post_row_actions', 10, 2 );
 /**
  * Add a link "Purge this cache" in the post edit area
  *
@@ -67,8 +65,9 @@ function rocket_post_row_actions( $actions, $post ) {
 	}
 	return $actions;
 }
+add_filter( 'page_row_actions', 'rocket_post_row_actions', 10, 2 );
+add_filter( 'post_row_actions', 'rocket_post_row_actions', 10, 2 );
 
-add_filter( 'tag_row_actions', 'rocket_tag_row_actions', 10, 2 );
 /**
  * Add a link "Purge this cache" in the taxonomy edit area
  *
@@ -89,8 +88,8 @@ function rocket_tag_row_actions( $actions, $term ) {
 
 	return $actions;
 }
+add_filter( 'tag_row_actions', 'rocket_tag_row_actions', 10, 2 );
 
-add_filter( 'user_row_actions', 'rocket_user_row_actions', 10, 2 );
 /**
  * Add a link "Purge this cache" in the user edit area
  *
@@ -108,9 +107,8 @@ function rocket_user_row_actions( $actions, $user ) {
 
 	return $actions;
 }
+add_filter( 'user_row_actions', 'rocket_user_row_actions', 10, 2 );
 
-add_action( 'wp_ajax_rocket_ignore', 'rocket_dismiss_boxes' );
-add_action( 'admin_post_rocket_ignore', 'rocket_dismiss_boxes' );
 /**
  * Manage the dismissed boxes
  *
@@ -155,9 +153,9 @@ function rocket_dismiss_boxes( $args ) {
 		}
 	}
 }
+add_action( 'wp_ajax_rocket_ignore', 'rocket_dismiss_boxes' );
+add_action( 'admin_post_rocket_ignore', 'rocket_dismiss_boxes' );
 
-add_action( 'activated_plugin', 'rocket_dismiss_plugin_box' );
-add_action( 'deactivated_plugin', 'rocket_dismiss_plugin_box' );
 /**
  * Renew the plugin modification warning on plugin de/activation
  *
@@ -170,8 +168,9 @@ function rocket_dismiss_plugin_box( $plugin ) {
 		rocket_renew_box( 'rocket_warning_plugin_modification' );
 	}
 }
+add_action( 'activated_plugin', 'rocket_dismiss_plugin_box' );
+add_action( 'deactivated_plugin', 'rocket_dismiss_plugin_box' );
 
-add_action( 'admin_post_deactivate_plugin', 'rocket_deactivate_plugin' );
 /**
  * Display a prevention message when enabling or disabling a plugin can be in conflict with WP Rocket
  *
@@ -187,8 +186,8 @@ function rocket_deactivate_plugin() {
 	wp_safe_redirect( wp_get_referer() );
 	die();
 }
+add_action( 'admin_post_deactivate_plugin', 'rocket_deactivate_plugin' );
 
-add_action( 'admin_post_rocket_resetwl', 'rocket_reset_white_label_values_action' );
 /**
  * Reset White Label values to WP Rocket default values
  *
@@ -201,8 +200,8 @@ function rocket_reset_white_label_values_action() {
 	wp_safe_redirect( add_query_arg( 'page', 'wprocket', remove_query_arg( 'page', wp_get_referer() ) ) );
 	die();
 }
+add_action( 'admin_post_rocket_resetwl', 'rocket_reset_white_label_values_action' );
 
-add_filter( 'all_plugins', 'rocket_white_label' );
 /**
  * White Label the plugin, if you need to
  *
@@ -232,8 +231,8 @@ function rocket_white_label( $plugins ) {
 
 	return $plugins;
 }
+add_filter( 'all_plugins', 'rocket_white_label' );
 
-add_action( 'admin_init', 'rocket_check_no_empty_name', 11 );
 /**
  * When you're doing an update, the constant does not contain yet your option or any value, reset and redirect!
  *
@@ -248,8 +247,8 @@ function rocket_check_no_empty_name() {
 		die();
 	}
 }
+add_action( 'admin_init', 'rocket_check_no_empty_name', 11 );
 
-add_action( 'admin_post_rocket_export', 'rocket_do_options_export' );
 /**
  * This function will force the direct download of the plugin's options, compressed.
  *
@@ -275,8 +274,8 @@ function rocket_do_options_export() {
 	echo $options;
 	exit();
 }
+add_action( 'admin_post_rocket_export', 'rocket_do_options_export' );
 
-add_action( 'admin_post_rocket_rollback', 'rocket_rollback' );
 /**
  * Do the rollback
  *
@@ -292,11 +291,11 @@ function rocket_rollback() {
 	$plugin_file      	= basename( WP_ROCKET_FILE );
 	$version          	= WP_ROCKET_LASTVERSION;
 	$c_key 				= get_rocket_option( 'consumer_key' );
-	$url 				= sprintf( 'http://support.wp-rocket.me/%s/wp-rocket_%s.zip', $c_key, $version );
+	$url 				= sprintf( 'https://wp-rocket.me/%s/wp-rocket_%s.zip', $c_key, $version );
 	$temp_array 		= array(
 		'slug'        => $plugin_folder,
 		'new_version' => $version,
-		'url'         => 'http://wp-rocket.me',
+		'url'         => 'https://wp-rocket.me',
 		'package'     => $url,
 	);
 
@@ -321,6 +320,7 @@ function rocket_rollback() {
 		wp_die( '', sprintf( __( '%s Update Rollback', 'rocket' ), WP_ROCKET_PLUGIN_NAME ), array( 'response' => 200 ) );
 	}
 }
+add_action( 'admin_post_rocket_rollback', 'rocket_rollback' );
 
 if ( ! defined( 'DOING_AJAX' ) && ! defined( 'DOING_AUTOSAVE' ) ) {
 	add_action( 'admin_init', 'rocket_init_cache_dir' );
@@ -365,7 +365,6 @@ function rocket_maybe_set_wp_cache_define() {
 	}
 }
 
-add_action( 'admin_post_rocket_optimize_database', 'rocket_optimize_database' );
 /**
  * Launches the database optimization from admin
  *
@@ -382,3 +381,4 @@ function rocket_optimize_database() {
 	wp_redirect( wp_get_referer() );
 	die();
 }
+add_action( 'admin_post_rocket_optimize_database', 'rocket_optimize_database' );

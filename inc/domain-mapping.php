@@ -1,7 +1,6 @@
 <?php
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
-add_filter( 'rocket_parse_url', 'rocket_parse_url_domain_mapping' );
 /**
  * Used to get compatibility between multidomain and get_rocket_parse_url()
  *
@@ -14,10 +13,13 @@ function rocket_parse_url_domain_mapping( $url ) {
 	$original_siteurl_host       = parse_url( get_original_url( 'siteurl' ), PHP_URL_HOST );
 	$domain_mapping_siteurl_host = parse_url( domain_mapping_siteurl( false ), PHP_URL_HOST );
 
-	$url[0] = str_replace( $original_siteurl_host, $domain_mapping_siteurl_host, $url[0] );
+	if ( false === strpos( $domain_mapping_siteurl_host, $original_siteurl_host ) ) {
+		$url[0] = str_replace( $original_siteurl_host, $domain_mapping_siteurl_host, $url[0] );
+	}
 
 	return $url;
 }
+add_filter( 'rocket_parse_url', 'rocket_parse_url_domain_mapping' );
 
 /**
  * Used to get compatibility between multidomain and rocket_clean_files() & rocket_clean_domain()
@@ -31,8 +33,6 @@ if ( function_exists( 'domain_mapping_post_content' ) ) :
 	add_filter( 'rocket_post_purge_urls'	, 'domain_mapping_post_content' );
 endif;
 
-
-add_filter( 'rocket_clean_home_root', 'rocket_clean_home_root_for_domain_mapping_siteurl', 10, 3 );
 /**
  * Used to get compatibility between multidomain and rocket_clean_home()
  *
@@ -53,3 +53,4 @@ function rocket_clean_home_root_for_domain_mapping_siteurl( $root, $host, $path 
 
 	return $root;
 }
+add_filter( 'rocket_clean_home_root', 'rocket_clean_home_root_for_domain_mapping_siteurl', 10, 3 );
