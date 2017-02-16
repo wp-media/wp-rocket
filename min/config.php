@@ -140,7 +140,7 @@ $min_serveOptions['minifiers']['text/css'] = array('Minify_CSSmin', 'minify');
  * To use Google's Closure Compiler API to minify Javascript (falling back to JSMin
  * on failure), uncomment the following line:
  */
-//$min_serveOptions['minifiers']['application/x-javascript'] = array('Minify_JS_ClosureCompiler', 'minify');
+$min_serveOptions['minifiers']['application/x-javascript'] = array('Minify_JS_ClosureCompiler', 'minify');
 
 
 /**
