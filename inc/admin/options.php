@@ -509,7 +509,9 @@ function rocket_display_options() {
 				'minify_js_key', 
 				'version', 
 				'cloudflare_old_settings',
-				'cloudflare_zone_id'
+				'cloudflare_zone_id',
+				'minify_css_legacy',
+				'minify_js_legacy',
 			)
 		); 
 				
@@ -1041,6 +1043,20 @@ function rocket_after_save_options( $oldvalue, $value ) {
             )
         );
     }
+
+	if ( $oldvalue['minify_css'] !== $value['minify_css'] && 0 === $value['minify_css'] ) {
+		if ( ! isset( $value['minify_css_legacy'] ) || 0 !== $value['minify_css_legacy'] ) {
+			update_rocket_option( 'minify_css_legacy', 0 );
+			rocket_generate_config_file();
+		}
+	}
+
+	if ( $oldvalue['minify_js'] !== $value['minify_js'] && 0 === $value['minify_js'] ) {
+		if ( ! isset( $value['minify_js_legacy'] ) || 0 !== $value['minify_js_legacy'] ) {
+			update_rocket_option( 'minify_js_legacy', 0 );
+			rocket_generate_config_file();
+		}
+	}
 
     /*
      * Performs the database optimization when settings are saved with the "save and optimize" submit button"
