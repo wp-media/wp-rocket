@@ -243,6 +243,7 @@ function get_rocket_minify_excluded_external_js() {
 		'ads.investingchannel.com',
 		'app.ecwid.com',
 		'www.industriejobs.de',
+		's.gravatar.com',
 	) );
 	
 	return $excluded_external_js;		
