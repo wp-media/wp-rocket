@@ -101,10 +101,12 @@ function rocket_first_install() {
 			'minify_css'                  => 0,
 			'minify_css_key'              => $minify_css_key,
 			'minify_css_combine_all'      => 0,
+			'minify_css_legacy'			  => 0,
 			'minify_js'                   => 0,
 			'minify_js_key'               => $minify_js_key,
 			'minify_js_in_footer'         => array(),
 			'minify_js_combine_all'       => 0,
+			'minify_js_legacy'			  => 0,
 			'minify_google_fonts'         => 0,
 			'minify_html'                 => 0,
 			'minify_html_inline_css'      => 0,
@@ -315,4 +317,22 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
             require( WP_ROCKET_ADMIN_PATH . 'compat/cf-upgrader-5.4.php' );
         }
     }
+
+	if ( version_compare( $actual_version, '3.0', '<' ) ) {
+		$options = get_option( WP_ROCKET_SLUG );
+
+		if ( 0 < $options['minify_css'] ) {
+			update_rocket_option( 'minify_css_legacy', 1 );
+		} else {
+			update_rocket_option( 'minify_css_legacy', 0 );
+		}
+
+		if ( 0 < $options['minify_js'] ) {
+			update_rocket_option( 'minify_js_legacy', 1 );
+		} else {
+			update_rocket_option( 'minify_js_legacy', 0 );
+		}
+
+		rocket_generate_config_file();
+	}
 }
