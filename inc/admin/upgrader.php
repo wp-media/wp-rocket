@@ -94,8 +94,9 @@ function rocket_first_install() {
 			'purge_cron_unit'             => 'HOUR_IN_SECONDS',
 			'exclude_css'                 => array(),
 			'exclude_js'                  => array(),
+			'defer_all_js'				  => 0,
+			'exclude_defer_js'			  => array(),
 			'deferred_js_files'           => array(),
-			'deferred_js_wait'            => array(),
 			'lazyload'                    => 0,
 			'lazyload_iframes'            => 0,
 			'minify_css'                  => 0,
@@ -333,5 +334,9 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 				update_rocket_option( 'minify_js', 0 );
 			}
 		}
+	}
+
+	if ( version_compare( $actual_version, '3.0', '<' ) ) {
+		rocket_clean_domain();
 	}
 }
