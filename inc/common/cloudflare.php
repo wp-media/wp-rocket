@@ -8,11 +8,13 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
  * @since 2.5.4
  * @source cloudflare.php - https://wordpress.org/plugins/cloudflare/
  */
-add_action( 'init', '__rocket_set_real_ip_cloudflare' , 1 );
 function __rocket_set_real_ip_cloudflare() {
     global $is_cf;
 
     $is_cf = ( isset( $_SERVER["HTTP_CF_CONNECTING_IP"] ) ) ? true : false;
+    if ( ! $is_cf ) {
+	    return;
+    }
 
 	// only run this logic if the REMOTE_ADDR is populated, to avoid causing notices in CLI mode
     if ( isset( $_SERVER["REMOTE_ADDR"] ) ) {
@@ -61,3 +63,4 @@ function __rocket_set_real_ip_cloudflare() {
         header( "X-CF-Powered-By: " . $powered_by );
     }
 }
+add_action( 'init', '__rocket_set_real_ip_cloudflare' , 1 );
