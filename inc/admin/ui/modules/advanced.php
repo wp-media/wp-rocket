@@ -308,9 +308,14 @@ add_settings_field(
 			'label_screen' => __( 'Critical CSS rules for above the fold rendering', 'rocket' ),
 		),
 		array(
-			'type'         => 'helper_help',
+			'type'         => 'helper_description',
 			'name'         => 'critical_css_description',
 			'description'  => __( 'Input the critical CSS rules required for rendering your above the fold content.', 'rocket' )
+		),
+		array(
+			'type'         => 'helper_help',
+			'name'         => 'critical_css_generator',
+			'description'  => sprintf( __( '<strong>Note:</strong> You can use %1$sthis tool%2$s to generate your critical CSS.', 'rocket' ), '<a href="https://jonassebastianohlsson.com/criticalpathcssgenerator/">', '</a>' ),
 		),
 	)
 );
