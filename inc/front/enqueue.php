@@ -11,11 +11,14 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
  * @param string $current_filter Current WordPress filter.
  * @return string updated CSS/JS file URL
  */
-if ( ! get_rocket_option( 'minify_css' ) ) {
+global $rocket_cache_reject_uri;
+$request_uri = parse_url( $_SERVER['REQUEST_URI'], PHP_URL_PATH );
+  
+if ( ! get_rocket_option( 'minify_css' ) || isset( $rocket_cache_reject_uri ) && preg_match( '#^(' . $rocket_cache_reject_uri . ')$#', $request_uri ) ) {
     add_filter( 'style_loader_src', 'rocket_browser_cache_busting', PHP_INT_MAX );
 }
 
-if ( ! get_rocket_option( 'minify_js' ) ) {
+if ( ! get_rocket_option( 'minify_js' ) || isset( $rocket_cache_reject_uri ) && preg_match( '#^(' . $rocket_cache_reject_uri . ')$#', $request_uri ) ) {
     add_filter( 'script_loader_src', 'rocket_browser_cache_busting', PHP_INT_MAX );
 }
 
