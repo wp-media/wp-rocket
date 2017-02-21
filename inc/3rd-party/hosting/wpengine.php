@@ -97,30 +97,33 @@ add_filter( 'rocket_display_varnish_options_tab', '__return_false' );
  */
 function rocket_get_wp_engine_cdn_domain() {
     global $wpe_netdna_domains, $wpe_netdna_domains_secure;
-   
-    $cdn_domain = '';
-    $is_ssl     = @$_SERVER['HTTPS'];
-   
-    if ( preg_match( '/^[oO][fF]{2}$/', $is_ssl ) ) {
-        $is_ssl = false;  // have seen this!
-    }
-   
-    $native_schema = $is_ssl ? "https" : "http";
-   
-    // Determine the CDN, if any
-    if ( $is_ssl ) {
-        $domains = $wpe_netdna_domains_secure;
-    } else {
-        $domains = $wpe_netdna_domains;
-    }
-   
-    $wpengine   = WpeCommon::instance();
-    $cdn_domain = $wpengine->get_cdn_domain( $domains, home_url(), $is_ssl );
-    
-    if ( ! empty( $cdn_domain ) ) {
-		$cdn_domain = $native_schema . '://' . $cdn_domain;
-    }
-   
+
+	if ( false === ( $cdn_domain = get_transient( 'rocket_wpengine_cdn' ) ) ) {
+		$cdn_domain = '';
+		$is_ssl     = @$_SERVER['HTTPS'];
+		
+		if ( preg_match( '/^[oO][fF]{2}$/', $is_ssl ) ) {
+		    $is_ssl = false;  // have seen this!
+		}
+		
+		$native_schema = $is_ssl ? "https" : "http";
+		
+		// Determine the CDN, if any
+		if ( $is_ssl ) {
+		    $domains = $wpe_netdna_domains_secure;
+		} else {
+		    $domains = $wpe_netdna_domains;
+		}
+		
+		$wpengine   = WpeCommon::instance();
+		$cdn_domain = $wpengine->get_cdn_domain( $domains, home_url(), $is_ssl );
+		
+		if ( ! empty( $cdn_domain ) ) {
+			$cdn_domain = $native_schema . '://' . $cdn_domain;
+			set_transient(  'rocket_wpengine_cdn', $cdn_domain, DAY_IN_SECONDS );
+		}
+	}
+
     return $cdn_domain;
 }
 
