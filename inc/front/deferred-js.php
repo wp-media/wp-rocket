@@ -61,7 +61,7 @@ function rocket_defer_js( $buffer ) {
 		return $buffer;
 	}
 
-	$exclude_defer_js = array_flip( get_rocket_exlude_defer_js() );
+	$exclude_defer_js = array_flip( get_rocket_exclude_defer_js() );
 
 	foreach ( $tags_match[0] as $i => $tag ) {
 		// Strip query args.

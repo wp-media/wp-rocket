@@ -513,7 +513,7 @@ function get_rocket_deferred_js_files() {
  *
  * @return array An array of URLs for the JS files to be excluded.
  */
-function get_rocket_exlude_defer_js() {
+function get_rocket_exclude_defer_js() {
 	/**
 	 * Filter list of Deferred JavaScript files
 	 *
@@ -525,6 +525,28 @@ function get_rocket_exlude_defer_js() {
 	$exclude_defer_js = apply_filters( 'rocket_exclude_defer_js', get_rocket_option( 'exclude_defer_js', array() ) );
 	
 	return $exclude_defer_js;
+}
+
+/**
+ * Get list of CSS files to be excluded from async CSS.
+ *
+ * @since 3.0
+ * @author Remy Perona
+ *
+ * @return array An array of URLs for the CSS files to be excluded.
+ */
+function get_rocket_exclude_async_css() {
+	/**
+	 * Filter list of async CSS files
+	 *
+	 * @since 3.0
+	 * @author Remy Perona
+	 *
+	 * @param array $exclude_async_css An array of URLs for the CSS files to be excluded.
+	 */
+	$exclude_async_css = apply_filters( 'rocket_exclude_async_css', get_rocket_option( 'exclude_async_css', array() ) );
+	
+	return $exclude_async_css;
 }
 
 /**
