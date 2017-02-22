@@ -159,6 +159,10 @@ add_filter( 'style_loader_src', 'rocket_cache_dynamic_resource', 16 );
 add_filter( 'script_loader_src', 'rocket_cache_dynamic_resource', 16 );
 function rocket_cache_dynamic_resource( $src ) {
     global $pagenow;
+
+    if ( ! get_rocket_option( 'cache_dynamic_resource' ) ) {
+	    return $src;
+    }
 	
 	if ( 'wp-login.php' == $pagenow ) {
     	return $src;
