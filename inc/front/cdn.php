@@ -142,6 +142,7 @@ function rocket_cdn_images( $html ) {
             // Image path is relative, apply the host to it
 			if ( empty( $host ) ) {
     			$image_url = $home_url . ltrim( $image_url, '/' );
+    			$host = parse_url( $image_url, PHP_URL_HOST );
 			}
 
             // Check if the link isn't external
