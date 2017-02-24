@@ -89,9 +89,9 @@ add_action( 'admin_print_styles-media-new.php', '__rocket_enqueue_modal_plugin' 
 add_action( 'admin_print_styles-upload.php', '__rocket_enqueue_modal_plugin' );
 add_action( 'admin_print_styles-settings_page_' . WP_ROCKET_PLUGIN_SLUG, '__rocket_enqueue_modal_plugin' );
 function __rocket_enqueue_modal_plugin() {
-    wp_enqueue_style( 'thickbox' );
     wp_enqueue_style( 'plugin-install' );
     
     wp_enqueue_script( 'plugin-install' );
-    wp_enqueue_script( 'tgm-modal-wp-rocket', WP_ROCKET_ADMIN_UI_JS_URL . 'vendors/tgm-modal.min.js', array( 'jquery' ), WP_ROCKET_VERSION, true );
+    wp_enqueue_script( 'updates' );
+    add_thickbox();
 }
