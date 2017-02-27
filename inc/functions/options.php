@@ -522,41 +522,32 @@ function rocket_valid_key() {
 }
 
 /**
- * Determine if the key is valid
+ * Determine if the key is valid.
  *
- * @since 2.2 The function do the live check and update the option
+ * @since 2.9.7 Remove arguments ($type & $data).
+ * @since 2.9.7 Stop to auto-check the validation each 1 & 30 days.
+ * @since 2.2 The function do the live check and update the option.
  */
-function rocket_check_key( $type = 'transient_1', $data = null ) {
+function rocket_check_key() {
 	// Recheck the license
 	$return = rocket_valid_key();
 
-	if ( ! rocket_valid_key() || 'live' == $type ) {
-
-		$response = wp_remote_get( WP_ROCKET_WEB_VALID, array( 'timeout'=>30 ) );
+	if ( ! rocket_valid_key() ) {
+		$response = wp_remote_get( WP_ROCKET_WEB_VALID, array( 'timeout' => 30 ) );
 
 		$json = ! is_wp_error( $response ) ? json_decode( $response['body'] ) : false;
 		$rocket_options = array();
 
 		if ( $json ) {
-
 			$rocket_options['consumer_key'] 	= $json->data->consumer_key;
 			$rocket_options['consumer_email']	= $json->data->consumer_email;
 
 			if( $json->success ) {
-
 				$rocket_options['secret_key'] = $json->data->secret_key;
+
 				if ( ! get_rocket_option( 'license' ) ) {
 					$rocket_options['license'] = '1';
 				}
-
-				if ( 'live' != $type ) {
-					if ( 'transient_1' == $type ) {
-						set_transient( 'rocket_check_licence_1', true, DAY_IN_SECONDS );
-					} elseif ( 'transient_30' == $type ) {
-						set_transient( 'rocket_check_licence_30', true, DAY_IN_SECONDS*30 );
-					}
-				}
-
 			} else {
 
 				$messages = array(
@@ -572,7 +563,6 @@ function rocket_check_key( $type = 'transient_1', $data = null ) {
 
 			set_transient( WP_ROCKET_SLUG, $rocket_options );
 			$return = (array) $rocket_options;
-
 		}
 	}
 
