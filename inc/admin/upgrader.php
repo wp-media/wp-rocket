@@ -29,7 +29,7 @@ function rocket_upgrader() {
 		$options = get_option( WP_ROCKET_SLUG ); // do not use get_rocket_option() here
 		$options['version'] = WP_ROCKET_VERSION;
 
-		$keys = rocket_check_key( 'live' );
+		$keys = rocket_check_key();
 		if ( is_array( $keys ) ) {
 			$options = array_merge( $keys, $options );
 		}
@@ -40,11 +40,8 @@ function rocket_upgrader() {
         if ( function_exists( 'opcache_reset' ) ) {
             @opcache_reset();
         }
-	} else {
-		if ( empty( $_POST ) && rocket_valid_key() ) {
-			rocket_check_key( 'transient_30' );
-		}
 	}
+
 	/** This filter is documented in inc/admin-bar.php */
 	if ( ! rocket_valid_key() && current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) &&
 		( ! isset( $_GET['page'] ) || 'wprocket' != $_GET['page'] ) ) {
@@ -263,21 +260,21 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 			$options['minify_html_inline_css'] = 1;
 			$options['minify_html_inline_js']  = 1;
 		}
-		
+
 		update_option( WP_ROCKET_SLUG, $options );
 
 		// Regenerate advanced-cache.php file
 		rocket_generate_advanced_cache_file();
 	}
-	
+
 	if ( version_compare( $actual_version, '2.7', '<' ) ) {
 		// Regenerate advanced-cache.php file
 		rocket_generate_advanced_cache_file();
-		
+
 		// Regenerate config file
 		rocket_generate_config_file();
 	}
-	
+
 	if ( version_compare( $actual_version, '2.7.1', '<' ) ) {
 		// Regenerate advanced-cache.php file
 		rocket_generate_advanced_cache_file();
@@ -288,7 +285,7 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		$options['manual_preload']            = 1;
 		$options['automatic_preload']         = 1;
 		$options['sitemap_preload_url_crawl'] = '500000';
-		
+
 		update_option( WP_ROCKET_SLUG, $options );
 	}
 
@@ -323,14 +320,20 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 				update_rocket_option( 'minify_html_inline_css', 0 );
 				update_rocket_option( 'minify_html_inline_js', 0 );
 			}
-			
+
 			if ( 'on' === get_option( 'autoptimize_css') ) {
 				update_rocket_option( 'minify_css', 0 );
 			}
-			
+
 			if ( 'on' === get_option( 'autoptimize_js') ) {
 				update_rocket_option( 'minify_js', 0 );
 			}
 		}
+	}
+
+	// Delete old transients.
+	if ( version_compare( $actual_version, '2.9.7', '<' ) ) {
+		delete_transient( 'rocket_check_licence_30' );
+		delete_transient( 'rocket_check_licence_1' );
 	}
 }
