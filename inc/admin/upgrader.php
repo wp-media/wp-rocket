@@ -330,4 +330,10 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 			}
 		}
 	}
+
+	// Delete old transients.
+	if ( version_compare( $actual_version, '2.9.7', '<' ) ) {
+		delete_transient( 'rocket_check_licence_30' );
+		delete_transient( 'rocket_check_licence_1' );
+	}
 }
