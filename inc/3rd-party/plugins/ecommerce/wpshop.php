@@ -40,7 +40,7 @@ function rocket_activate_wpshop() {
 }
 
 add_action( 'deactivate_wpshop/wpshop.php', 'rocket_deactivate_wpshop', 11 );
-function rocket_deactivate_edd() {
+function rocket_deactivate_wpshop() {
 	remove_filter( 'rocket_cache_reject_uri', 'rocket_exclude_wpshop_pages' );
 
 	// Update .htaccess file rules
