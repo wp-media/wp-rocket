@@ -116,6 +116,7 @@ function rocket_first_install() {
 			'sitemap_preload_url_crawl'   => '500000',
 			'sitemaps'                    => array(),
 			'remove_query_strings'        => 0,
+			'cache_dynamic_resource'	  => 0,
 			'dns_prefetch'                => 0,
 			'database_revisions'          => 0,
 			'database_auto_drafts'        => 0,
