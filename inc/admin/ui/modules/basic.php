@@ -29,6 +29,32 @@ add_settings_field(
 		),
 	)
 );
+
+$rocket_maybe_disable_minify = array( 
+	'type'         => 'helper_warning',
+	'name'         => 'minify_html_disabled'
+);
+
+if ( rocket_maybe_disable_minify_html() || rocket_maybe_disable_minify_css() || rocket_maybe_disable_minify_js() ) {
+	$disabled = '';
+
+	if ( rocket_maybe_disable_minify_html() ) {
+		$disabled .= 'HTML, ';
+	}
+
+	if ( rocket_maybe_disable_minify_css() ) {
+		$disabled .= 'CSS, ';
+	}
+
+	if ( rocket_maybe_disable_minify_js() ) {
+		$disabled .= 'JS, ';
+	}
+
+	$disabled = rtrim( $disabled, ', ' );
+
+	$rocket_maybe_disable_minify['description'] = sprintf(__( 'These minification options are disabled because they are currently activated in Autoptimize. If you want to use WP Rocket minification, disable them there first: %s', 'rocket' ), $disabled );
+}
+
 add_settings_field(
 	'rocket_minify',
 	 __( 'Files optimisation:<br/><span class="description">(Minification & Concatenation)</span>', 'rocket' ),
@@ -40,7 +66,8 @@ add_settings_field(
 			'type'         => 'checkbox',
 			'label'        => 'HTML',
 			'name'         => 'minify_html',
-			'label_screen' => __( 'HTML Files minification', 'rocket' )
+			'label_screen' => __( 'HTML Files minification', 'rocket' ),
+			'readonly'	   => rocket_maybe_disable_minify_html(),
 		),
 		array(
 			'parent'	   => 'minify_html',
@@ -66,7 +93,8 @@ add_settings_field(
 			'type'         => 'checkbox',
 			'label'        => 'CSS',
 			'name'         => 'minify_css',
-			'label_screen' => __( 'CSS Files minification', 'rocket' )
+			'label_screen' => __( 'CSS Files minification', 'rocket' ),
+			'readonly'	   => rocket_maybe_disable_minify_css(),
 		),
 		array(
 			'parent'	   => 'minify_css',
@@ -80,7 +108,9 @@ add_settings_field(
 			'label'		   => 'JS',
 			'name'		   => 'minify_js',
 			'label_screen' => __( 'JS Files minification', 'rocket' ),
+			'readonly'	   => rocket_maybe_disable_minify_js(),
 		),
+		$rocket_maybe_disable_minify,
 		array(
 			'parent'	   => 'minify_js',
 			'type'         => 'checkbox',
@@ -109,7 +139,7 @@ add_settings_field(
 );
 // Mobile plugins list
 $mobile_plugins = array(
-	'<a href="https://wordpress.org/plugins/wptouch/" target="_blank">WP Touch (Free Version)</a>',
+	'<a href="https://wordpress.org/plugins/wptouch/" target="_blank">WP Touch (Free version only)</a>',
 	'<a href="https://wordpress.org/plugins/wiziapp-create-your-own-native-iphone-app" target="_blank">wiziApp</a>',
 	'<a href="https://wordpress.org/plugins/wordpress-mobile-pack/" target="_blank">WordPress Mobile Pack</a>',
 	'<a href="https://wordpress.org/plugins/wp-mobilizer/" target="_blank">WP-Mobilizer</a>',
@@ -135,7 +165,7 @@ add_settings_field(
 		array(
 			'parent'	   => 'cache_mobile',
 			'type'         => 'checkbox',
-			'label'        => __( 'Create a caching file for mobile visitors.', 'rocket' ),
+			'label'        => __( 'Create a separate caching file for mobile visitors.', 'rocket' ),
 			'name'         => 'do_caching_mobile_files'
 		),
 		array(
@@ -210,8 +240,8 @@ add_settings_field(
 	)
 );
 add_settings_field(
-	'rocket_emoji',
-	__( 'Emojis:', 'rocket' ),
+	'rocket_wordpress_features',
+	__( 'WordPress features:', 'rocket' ),
 	'rocket_field',
 	'rocket_basic',
 	'rocket_display_main_options',
@@ -227,8 +257,20 @@ add_settings_field(
 			'name'         => 'emoji',
 			'description'  => __( '<strong>Note:</strong> By activating this option, you will reduce the number of external HTTP requests.', 'rocket' ),
 		),
-	)
+		array(
+			'type'         => 'checkbox',
+			'label'        => __( 'Disable enhanced embeds.', 'rocket' ),
+			'label_for'    => 'embeds',
+			'label_screen' => __( 'Embeds:', 'rocket' ),
+		),
+		array(
+			'type'         => 'helper_description',
+			'name'         => 'embeds',
+			'description'  => __( '<strong>Note:</strong> By activating this option, you will prevent others from embedding your site, prevent you from embedding other non-whitelisted sites and disables all JavaScript related to the feature.', 'rocket' ),
+		),
+	)	
 );
+
 add_settings_field(
 	'rocket_purge',
 	__( 'Clear Cache Lifespan', 'rocket' ),

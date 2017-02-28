@@ -51,11 +51,6 @@ function rocket_minify_process( $buffer ) {
 		$buffer = preg_replace( '/<head(.*)>/', '<head$1>' . $google_fonts . $css . $js, $buffer, 1 );
 	}
 
-	// Minify HTML
-	if ( get_rocket_option( 'minify_html' ) && ! is_rocket_post_excluded_option( 'minify_html' ) ) {
-	    $buffer = rocket_minify_html( $buffer );
-	}
-
 	return $buffer;
 }
 
@@ -187,9 +182,14 @@ function rocket_concatenate_google_fonts( $buffer ) {
 /**
  * Used to minify inline HTML
  *
+ * @since 3.0 Do the HTML minification independently and hook it later to prevent conflicts
  * @since 1.1.12
  */
 function rocket_minify_html( $buffer ) {
+	if ( ! get_rocket_option( 'minify_html' ) || is_rocket_post_excluded_option( 'minify_html' ) ) {
+		return $buffer;
+	}
+
 	// Check if Minify_HTML is enable
     if ( ! class_exists( 'Minify_HTML' ) ) {
 
@@ -222,6 +222,7 @@ function rocket_minify_html( $buffer ) {
 
     return $buffer;
 }
+add_filter( 'rocket_buffer', 'rocket_minify_html', 20 );
 
 /**
  * Used to minify inline CSS

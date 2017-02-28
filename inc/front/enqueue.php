@@ -159,6 +159,10 @@ add_filter( 'style_loader_src', 'rocket_cache_dynamic_resource', 16 );
 add_filter( 'script_loader_src', 'rocket_cache_dynamic_resource', 16 );
 function rocket_cache_dynamic_resource( $src ) {
     global $pagenow;
+
+    if ( ! get_rocket_option( 'cache_dynamic_resource' ) ) {
+	    return $src;
+    }
 	
 	if ( 'wp-login.php' == $pagenow ) {
     	return $src;
@@ -191,9 +195,11 @@ function rocket_cache_dynamic_resource( $src ) {
 	switch ( $current_filter ) {
 		case 'script_loader_src':
 			$extension = '.js';
+			$minify_key = get_rocket_option( 'minify_js_key' );
 			break;
 		case 'style_loader_src':
 			$extension = '.css';
+			$minify_key = get_rocket_option( 'minify_css_key' );
 			break;
 	}
 
@@ -220,7 +226,7 @@ function rocket_cache_dynamic_resource( $src ) {
      *
      * @param string $filename filename for the cache file
      */
-    $cache_dynamic_resource_filename = apply_filters( 'rocket_dynamic_resource_cache_filename', preg_replace( '/\.(php)$/', $extension, strtok( $relative_src_path, '?' ) ) );
+    $cache_dynamic_resource_filename = apply_filters( 'rocket_dynamic_resource_cache_filename', preg_replace( '/\.(php)$/', '-' . $minify_key . $extension, strtok( $relative_src_path, '?' ) ) );
     $cache_busting_paths             = rocket_get_cache_busting_paths( $cache_dynamic_resource_filename, $extension );
 
     if ( file_exists( $cache_busting_paths['filepath'] ) && is_readable( $cache_busting_paths['filepath'] ) ) {

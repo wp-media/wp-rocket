@@ -66,16 +66,20 @@ class Minify_CSS_UriRewriter {
         self::$debugText .= "\n";
         
         $css = self::_trimUrls($css);
-        
+
+        $css = self::_owlifySvgPaths($css);
+
         // rewrite
         $css = preg_replace_callback('/@import\\s+([\'"])(.*?)[\'"]/'
             ,array(self::$className, '_processUriCB'), $css);
         $css = preg_replace_callback('/url\\(\\s*([\'"](.*?)[\'"]|[^\\)\\s]+)\\s*\\)/'
             ,array(self::$className, '_processUriCB'), $css);
 
+        $css = self::_unOwlify($css);
+
         return $css;
     }
-    
+
     /**
      * In CSS content, prepend a path to relative URIs
      * 
@@ -90,12 +94,16 @@ class Minify_CSS_UriRewriter {
         self::$_prependPath = $path;
         
         $css = self::_trimUrls($css);
+
+        $css = self::_owlifySvgPaths($css);
         
         // append
         $css = preg_replace_callback('/@import\\s+([\'"])(.*?)[\'"]/'
             ,array(self::$className, '_processUriCB'), $css);
         $css = preg_replace_callback('/url\\(\\s*([\'"](.*?)[\'"]|[^\\)\\s]+)\\s*\\)/'
             ,array(self::$className, '_processUriCB'), $css);
+
+        $css = self::_unOwlify($css);
 
         self::$_prependPath = null;
         return $css;
@@ -282,6 +290,11 @@ class Minify_CSS_UriRewriter {
                 ? $m[1]
                 : substr($m[1], 1, strlen($m[1]) - 2);
         }
+
+        if ($uri === '') {
+            return $m[0];
+        }
+
         // if not root/scheme relative and not starts with scheme
         if (!preg_match('~^(/|[a-z]+\:)~', $uri)) {
             // URI is file-relative: rewrite depending on options
@@ -303,5 +316,31 @@ class Minify_CSS_UriRewriter {
         return $isImport
             ? "@import {$quoteChar}{$uri}{$quoteChar}"
             : "url({$quoteChar}{$uri}{$quoteChar})";
+    }
+
+    /**
+     * Mungs some inline SVG URL declarations so they won't be touched
+     *
+     * @link https://github.com/mrclay/minify/issues/517
+     * @see _unOwlify
+     *
+     * @param string $css
+     * @return string
+     */
+    private static function _owlifySvgPaths($css) {
+        return preg_replace('~\b((?:clip-path|mask|-webkit-mask)\s*\:\s*)url(\(\s*#\w+\s*\))~', '$1owl$2', $css);
+
+    }
+
+    /**
+     * Undo work of _owlify
+     *
+     * @see _owlifySvgPaths
+     *
+     * @param string $css
+     * @return string
+     */
+    private static function _unOwlify($css) {
+        return preg_replace('~\b((?:clip-path|mask|-webkit-mask)\s*\:\s*)owl~', '$1url', $css);
     }
 }

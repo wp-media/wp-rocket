@@ -121,6 +121,7 @@ function rocket_init()
     require( WP_ROCKET_COMMON_PATH		. 'admin-bar.php' );
     require( WP_ROCKET_COMMON_PATH		. 'updater.php' );
     require( WP_ROCKET_COMMON_PATH		. 'emoji.php' );
+    require( WP_ROCKET_COMMON_PATH		. 'embeds.php' );
 	require( dirname( __FILE__ )		. '/licence-data.php' );
 
     if( rocket_valid_key() ) {
@@ -167,8 +168,12 @@ function rocket_init()
         require( WP_ROCKET_FRONT_PATH . 'enqueue.php' );
         require( WP_ROCKET_FRONT_PATH . 'dns-prefetch.php' );
 
-        if ( get_rocket_option( 'deferred_js_files' ) ) {
+        if ( get_rocket_option( 'deferred_js_files' ) || get_rocket_option( 'defer_all_js' ) ) {
 	       require( WP_ROCKET_FRONT_PATH . 'deferred-js.php' );
+        }
+        
+        if ( get_rocket_option( 'async_css' ) ) {
+	        require( WP_ROCKET_FRONT_PATH . 'async-css.php' );
         }
 
 		// Don't insert the LazyLoad file if Rocket LazyLoad is activated
