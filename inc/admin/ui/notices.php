@@ -150,7 +150,6 @@ function rocket_plugins_to_deactivate() {
 		$plugins['bwp-minify']              = 'bwp-minify/bwp-minify.php';
 		$plugins['wp-minify']               = 'wp-minify/wp-minify.php';
 		$plugins['scripts-gzip']            = 'scripts-gzip/scripts_gzip.php';
-		$plugins['autoptimize']             = 'autoptimize/autoptimize.php';
 		$plugins['minqueue']                = 'minqueue/plugin.php';
 		$plugins['dependency-minification'] = 'dependency-minification/dependency-minification.php';
 	}

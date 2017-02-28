@@ -94,8 +94,9 @@ function rocket_first_install() {
 			'purge_cron_unit'             => 'HOUR_IN_SECONDS',
 			'exclude_css'                 => array(),
 			'exclude_js'                  => array(),
+			'defer_all_js'				  => 0,
+			'exclude_defer_js'			  => array(),
 			'deferred_js_files'           => array(),
-			'deferred_js_wait'            => array(),
 			'lazyload'                    => 0,
 			'lazyload_iframes'            => 0,
 			'minify_css'                  => 0,
@@ -117,6 +118,7 @@ function rocket_first_install() {
 			'sitemap_preload_url_crawl'   => '500000',
 			'sitemaps'                    => array(),
 			'remove_query_strings'        => 0,
+			'cache_dynamic_resource'	  => 0,
 			'dns_prefetch'                => 0,
 			'database_revisions'          => 0,
 			'database_auto_drafts'        => 0,
@@ -317,6 +319,24 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
             require( WP_ROCKET_ADMIN_PATH . 'compat/cf-upgrader-5.4.php' );
         }
     }
+	// Disable minification options if they're active in Autoptimize.
+	if ( version_compare( $actual_version, '2.9.5', '<' ) ) {
+		if ( is_plugin_active( 'autoptimize/autoptimize.php' ) ) {
+			if ( 'on' === get_option( 'autoptimize_html') ) {
+				update_rocket_option( 'minify_html', 0 );
+				update_rocket_option( 'minify_html_inline_css', 0 );
+				update_rocket_option( 'minify_html_inline_js', 0 );
+			}
+			
+			if ( 'on' === get_option( 'autoptimize_css') ) {
+				update_rocket_option( 'minify_css', 0 );
+			}
+			
+			if ( 'on' === get_option( 'autoptimize_js') ) {
+				update_rocket_option( 'minify_js', 0 );
+			}
+		}
+	}
 
 	if ( version_compare( $actual_version, '3.0', '<' ) ) {
 		$options = get_option( WP_ROCKET_SLUG );
@@ -334,5 +354,6 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		}
 
 		rocket_generate_config_file();
+		rocket_clean_domain();
 	}
 }

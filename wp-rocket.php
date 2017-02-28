@@ -168,8 +168,12 @@ function rocket_init()
         require( WP_ROCKET_FRONT_PATH . 'enqueue.php' );
         require( WP_ROCKET_FRONT_PATH . 'dns-prefetch.php' );
 
-        if ( get_rocket_option( 'deferred_js_files' ) ) {
+        if ( get_rocket_option( 'deferred_js_files' ) || get_rocket_option( 'defer_all_js' ) ) {
 	       require( WP_ROCKET_FRONT_PATH . 'deferred-js.php' );
+        }
+        
+        if ( get_rocket_option( 'async_css' ) ) {
+	        require( WP_ROCKET_FRONT_PATH . 'async-css.php' );
         }
 
 		// Don't insert the LazyLoad file if Rocket LazyLoad is activated
