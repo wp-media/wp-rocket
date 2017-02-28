@@ -37,11 +37,6 @@ add_settings_field(
 			'name'			=> 'rocket_cache_dynamic_resource_desc',
 			'description'  => __( 'This will save any CSS/JS content generated using PHP files as a static file instead.', 'rocket' )
 		),
-		array(
-			'type'         => 'helper_description',
-			'name'         => 'rocket_cache_dynamic_resource_desc',
-			'description'  => __( '<strong>Note:</strong> By activating this option, you will improve your loading time.', 'rocket' ),
-		),
 	)
 );
 
