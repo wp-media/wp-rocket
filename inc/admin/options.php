@@ -954,7 +954,7 @@ function rocket_settings_callback( $inputs ) {
 		$checked = rocket_check_key();
 	}
 
-	if ( is_array( $checked ) ) {
+	if ( isset( $checked ) && is_array( $checked ) ) {
 		$inputs['consumer_key']   = $checked['consumer_key'];
 		$inputs['consumer_email'] = $checked['consumer_email'];
 		$inputs['secret_key']     = $checked['secret_key'];
