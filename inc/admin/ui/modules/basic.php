@@ -97,6 +97,13 @@ add_settings_field(
 			'readonly'	   => rocket_maybe_disable_minify_css(),
 		),
 		array(
+			'parent'	   => 'minify_css',
+			'type'         => 'checkbox',
+			'label'        => 'Minify without concatenation',
+			'name'         => 'minify_css_no_concat',
+			'label_screen' => 'Minify CSS without concatenation',
+		),
+		array(
 			'type'		   => 'checkbox',
 			'label'		   => 'JS',
 			'name'		   => 'minify_js',
@@ -104,6 +111,13 @@ add_settings_field(
 			'readonly'	   => rocket_maybe_disable_minify_js(),
 		),
 		$rocket_maybe_disable_minify,
+		array(
+			'parent'	   => 'minify_js',
+			'type'         => 'checkbox',
+			'label'        => 'Minify without concatenation',
+			'name'         => 'minify_js_no_concat',
+			'label_screen' => 'Minify JS without concatenation',
+		),
 		array(
 			'type'			=> 'helper_description',
 			'name'			=> 'minify',
