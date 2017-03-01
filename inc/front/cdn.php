@@ -135,6 +135,10 @@ function rocket_cdn_images( $html ) {
 			
 			list( $host, $path, $scheme, $query ) = get_rocket_parse_url( $image_url );
 
+			if ( empty( trim( $path ) ) || '{href}' === $path ) {
+				continue;
+			}
+
 			if ( isset( $cnames[ $host ] ) ) {
 				continue;
 			}
