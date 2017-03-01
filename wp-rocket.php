@@ -177,7 +177,7 @@ function rocket_init()
         }
 
 		// Don't insert the LazyLoad file if Rocket LazyLoad is activated
-        if ( ! rocket_is_plugin_active( 'rocket-lazy-load/rocket-lazy-load.php' ) ) {
+        if ( ! rocket_is_plugin_active( 'rocket-lazyload/rocket-lazy-load.php' ) ) {
 	       require( WP_ROCKET_FRONT_PATH . 'lazyload.php' );
         }
 
