@@ -134,8 +134,9 @@ function rocket_cdn_images( $html ) {
 		foreach ( $images_match[3] as $k => $image_url ) {
 			
 			list( $host, $path, $scheme, $query ) = get_rocket_parse_url( $image_url );
+			$path = trim( $path );
 
-			if ( empty( trim( $path ) ) || '{href}' === $path ) {
+			if ( empty( $path ) || '{href}' === $path ) {
 				continue;
 			}
 
