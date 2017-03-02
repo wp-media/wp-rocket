@@ -157,7 +157,7 @@ function get_rocket_parse_url( $url ) {
 		return;
 	}
 
-	$url    = parse_url( $url );
+	$url    = wp_parse_url( $url );
 	$host   = isset( $url['host'] ) ? strtolower( $url['host'] ) : '';
 	$path   = isset( $url['path'] ) ? $url['path'] : '';
 	$scheme = isset( $url['scheme'] ) ? $url['scheme'] : '';
