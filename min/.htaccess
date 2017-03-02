@@ -1,11 +1,6 @@
-<FilesMatch "index.php">
-  <IfModule !mod_authz_core.c>
-    Allow from all
-  </IfModule>
-  <IfModule mod_authz_core.c>
-  Require all granted
-  </IfModule>
-</FilesMatch>
+<Files index.php>
+Allow from all
+</Files>
 
 <IfModule mod_rewrite.c>
 RewriteEngine on
