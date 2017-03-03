@@ -567,7 +567,7 @@ function __rocket_imagify_notice() {
 		<p class="rkt-imagify-cta">
 			<a data-slug="imagify" href="<?php echo $action_url; ?>" class="button button-primary<?php echo $classes; ?>"><?php echo $cta_txt; ?></a>
 			<?php if ( ! $is_imagify_installed ) : ?>
-			<a data-slug="imagify" data-name="Imagify Image Optimizer" class="thickbox open-plugin-details-modal" href="<?php echo $details_url; ?>"><?php _e( 'More details', 'rocket' ); ?></a>
+			<br><a data-slug="imagify" data-name="Imagify Image Optimizer" class="thickbox open-plugin-details-modal" href="<?php echo $details_url; ?>"><?php _e( 'More details', 'rocket' ); ?></a>
 			<?php endif; ?>
 		</p>
 	</div>
