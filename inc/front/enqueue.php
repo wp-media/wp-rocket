@@ -2,27 +2,41 @@
 defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 
 /**
- * Create a cache busting file with the version in the filename
+ * Wrapper for get_rocket_browser_cache_busting except when minification is active
  *
  * @since 2.9
+ * @author Remy Perona
+ *
+ * @param string $src CSS/JS file URL.
+ * @return string updated CSS/JS file URL
+ */
+function rocket_browser_cache_busting( $src  ) {
+	$current_filter = current_filter();
+
+	if ( 'style_loader_src' === $current_filter && get_rocket_option( 'minify_css' ) && ( ! defined( 'DONOTMINIFYCSS' ) || ! DONOTMINIFYCSS ) && ! is_rocket_post_excluded_option( 'minify_css' ) ) {
+		return $src;
+	}
+
+	if ( 'script_loader_src' === $current_filter && get_rocket_option( 'minify_js' ) && ( ! defined( 'DONOTMINIFYJS' ) || ! DONOTMINIFYJS ) && ! is_rocket_post_excluded_option( 'minify_js' ) ) {
+		return $src;
+	}
+
+	return get_rocket_browser_cache_busting( $src, $current_filter );
+}
+add_filter( 'style_loader_src', 'rocket_browser_cache_busting', PHP_INT_MAX );
+add_filter( 'script_loader_src', 'rocket_browser_cache_busting', PHP_INT_MAX );
+
+/**
+ * Create cache busting file and return the cache busting URL
+ *
+ * @since 2.9.9
  * @author Remy Perona
  *
  * @param string $src CSS/JS file URL.
  * @param string $current_filter Current WordPress filter.
  * @return string updated CSS/JS file URL
  */
-global $rocket_cache_reject_uri;
-$request_uri = parse_url( $_SERVER['REQUEST_URI'], PHP_URL_PATH );
-  
-if ( ! get_rocket_option( 'minify_css' ) || isset( $rocket_cache_reject_uri ) && preg_match( '#^(' . $rocket_cache_reject_uri . ')$#', $request_uri ) ) {
-    add_filter( 'style_loader_src', 'rocket_browser_cache_busting', PHP_INT_MAX );
-}
-
-if ( ! get_rocket_option( 'minify_js' ) || isset( $rocket_cache_reject_uri ) && preg_match( '#^(' . $rocket_cache_reject_uri . ')$#', $request_uri ) ) {
-    add_filter( 'script_loader_src', 'rocket_browser_cache_busting', PHP_INT_MAX );
-}
-
-function rocket_browser_cache_busting( $src, $current_filter = '' ) {
+function get_rocket_browser_cache_busting( $src, $current_filter = '' ) {
 	global $pagenow;
 
     if ( ! get_rocket_option( 'remove_query_strings' ) ) {
