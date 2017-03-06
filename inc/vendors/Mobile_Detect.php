@@ -25,7 +25,7 @@
  * @version     2.8.24
  */
 
-class Mobile_Detect
+class Rocket_Mobile_Detect
 {
     /**
      * Mobile detection type.
