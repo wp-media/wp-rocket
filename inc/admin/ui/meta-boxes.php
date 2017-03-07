@@ -1,7 +1,6 @@
 <?php
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
-add_action( 'post_submitbox_start', 'rocket_post_submitbox_start' );
 /**
  * Add a link "Purge cache" in the post submit area
  *
@@ -15,8 +14,8 @@ function rocket_post_submitbox_start() {
 		printf( '<div id="purge-action"><a class="button-secondary" href="%s">%s</a></div>', $url, __( 'Clear cache', 'rocket' ) );
 	}
 }
+add_action( 'post_submitbox_start', 'rocket_post_submitbox_start' );
 
-add_action( 'add_meta_boxes', 'rocket_cache_options_meta_boxes' );
 /**
  * Add "Cache options" metabox
  *
@@ -33,6 +32,7 @@ function rocket_cache_options_meta_boxes() {
 		}
 	}
 }
+add_action( 'add_meta_boxes', 'rocket_cache_options_meta_boxes' );
 
 /**
  * Displays some checkbox to de/activate some cache options
@@ -94,7 +94,6 @@ function rocket_display_cache_options_meta_boxes() {
 	}
 }
 
-add_action( 'save_post', 'rocket_save_metabox_options' );
 /**
  * Manage the cache options from the metabox.
  *
@@ -154,3 +153,4 @@ function rocket_save_metabox_options() {
 		}
 	}
 }
+add_action( 'save_post', 'rocket_save_metabox_options' );

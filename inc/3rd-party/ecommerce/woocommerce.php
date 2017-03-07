@@ -2,11 +2,9 @@
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 if ( class_exists( 'WooCommerce' ) ) :
-
 	add_filter( 'rocket_cache_query_strings', 'rocket_cache_v_query_string' );
 	add_filter( 'update_option_woocommerce_default_customer_address', 'rocket_after_update_single_options', 10, 2 );
 	add_action( 'woocommerce_save_product_variation', 'rocket_clean_cache_after_woocommerce_save_product_variation', 10 );
-
 endif;
 
 /**
@@ -40,7 +38,6 @@ function rocket_cache_v_query_string( $query_strings ) {
 	return $query_strings;
 }
 
-add_action( 'activate_woocommerce/woocommerce.php', 'rocket_activate_woocommerce', 11 );
 /**
  * Add query string to exclusion when activating the plugin
  *
@@ -53,8 +50,8 @@ function rocket_activate_woocommerce() {
 	// Regenerate the config file.
 	rocket_generate_config_file();
 }
+add_action( 'activate_woocommerce/woocommerce.php', 'rocket_activate_woocommerce', 11 );
 
-add_action( 'deactivate_woocommerce/woocommerce.php', 'rocket_deactivate_woocommerce', 11 );
 /**
  * Remove query string from exclusion when deactivating the plugin
  *
@@ -67,10 +64,9 @@ function rocket_deactivate_woocommerce() {
 	// Regenerate the config file.
 	rocket_generate_config_file();
 }
+add_action( 'deactivate_woocommerce/woocommerce.php', 'rocket_deactivate_woocommerce', 11 );
 
 if ( class_exists( 'WC_API' ) ) :
-
-	add_filter( 'rocket_cache_reject_uri', 'rocket_exclude_wc_rest_api' );
 	/**
 	 * Exclude WooCommerce REST API URL from cache
 	 *
@@ -96,5 +92,5 @@ if ( class_exists( 'WC_API' ) ) :
 
 		return $uri;
 	}
-
+	add_filter( 'rocket_cache_reject_uri', 'rocket_exclude_wc_rest_api' );
 endif;

@@ -4,7 +4,6 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 $current_theme = wp_get_theme();
 
 if ( 'Divi' === $current_theme->get( 'Name' ) ) :
-	add_filter( 'rocket_exclude_js', 'rocket_exclude_js_divi' );
 	/**
 	 * Excludes Divi's Salvatorre script from JS minification
 	 *
@@ -23,4 +22,5 @@ if ( 'Divi' === $current_theme->get( 'Name' ) ) :
 
 		return $excluded_js;
 	}
+	add_filter( 'rocket_exclude_js', 'rocket_exclude_js_divi' );
 endif;

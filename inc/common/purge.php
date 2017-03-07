@@ -29,7 +29,6 @@ add_action( 'update_option_theme_mods_' . get_option( 'stylesheet' ), 'rocket_cl
 add_action( 'wp_ajax_sg-cachepress-purge',    'rocket_clean_domain', 0 );
 add_action( 'admin_post_sg-cachepress-purge', 'rocket_clean_domain', 0 );
 
-add_filter( 'widget_update_callback'	, 'rocket_widget_update_callback' );
 /**
  * Purge cache When a widget is updated
  *
@@ -42,6 +41,7 @@ function rocket_widget_update_callback( $instance ) {
 	rocket_clean_domain();
 	return $instance;
 }
+add_filter( 'widget_update_callback'	, 'rocket_widget_update_callback' );
 
 /*
  @since 1.3.3

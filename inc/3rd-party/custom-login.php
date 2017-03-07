@@ -1,7 +1,6 @@
 <?php
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
-
 /**
  * Exclude plugin custom login page template from cache.
  *
@@ -28,7 +27,6 @@ function rocket_add_custom_login_exclude_pages( $urls ) {
 	return $urls;
 }
 
-add_action( 'activate_custom-login-page-template/custom-login-page-template.php', 'rocket_activate_custom_login_page_template', 11 );
 /**
  * Add custom login page to excluded urls array on plugin activation
  *
@@ -44,8 +42,8 @@ function rocket_activate_custom_login_page_template() {
 	// Regenerate the config file.
 	rocket_generate_config_file();
 }
+add_action( 'activate_custom-login-page-template/custom-login-page-template.php', 'rocket_activate_custom_login_page_template', 11 );
 
-add_action( 'deactivate_custom-login-page-template/custom-login-page-template.php', 'rocket_remove_custom_login_exclude_pages', 11 );
 /**
  * Remove custom login page from excluded urls array on plugin activation
  *
@@ -61,3 +59,4 @@ function rocket_remove_custom_login_exclude_pages() {
 	// Regenerate the config file.
 	rocket_generate_config_file();
 }
+add_action( 'deactivate_custom-login-page-template/custom-login-page-template.php', 'rocket_remove_custom_login_exclude_pages', 11 );

@@ -11,7 +11,6 @@ if ( defined( 'WPSEO_VERSION' ) && class_exists( 'WPSEO_Sitemaps_Router' ) ) :
 	 * @author Remy Perona
 	 */
 	if ( true === $yoast_seo_xml['enablexmlsitemap'] ) {
-		add_filter( 'rocket_first_install_options', 'rocket_add_yoast_seo_sitemap_option' );
 		/**
 		 * Add Yoast SEO sitemap option to WP Rocket default options
 		 *
@@ -26,8 +25,8 @@ if ( defined( 'WPSEO_VERSION' ) && class_exists( 'WPSEO_Sitemaps_Router' ) ) :
 
 			return $options;
 		}
+		add_filter( 'rocket_first_install_options', 'rocket_add_yoast_seo_sitemap_option' );
 
-		add_filter( 'rocket_inputs_sanitize', 'rocket_yoast_seo_sitemap_option_sanitize' );
 		/**
 		 * Sanitize Yoast SEO sitemap option value
 		 *
@@ -42,8 +41,8 @@ if ( defined( 'WPSEO_VERSION' ) && class_exists( 'WPSEO_Sitemaps_Router' ) ) :
 
 			return $inputs;
 		}
+		add_filter( 'rocket_inputs_sanitize', 'rocket_yoast_seo_sitemap_option_sanitize' );
 
-		add_filter( 'rocket_sitemap_preload_list', 'rocket_add_yoast_seo_sitemap' );
 		/**
 		 * Add Yoast SEO sitemap URL to the sitemaps to preload
 		 *
@@ -60,8 +59,8 @@ if ( defined( 'WPSEO_VERSION' ) && class_exists( 'WPSEO_Sitemaps_Router' ) ) :
 
 			return $sitemaps;
 		}
+		add_filter( 'rocket_sitemap_preload_list', 'rocket_add_yoast_seo_sitemap' );
 
-		add_filter( 'rocket_sitemap_preload_options', 'rocket_sitemap_preload_yoast_seo_option' );
 		/**
 		 * Add Yoast SEO option to WP Rocket settings
 		 *
@@ -88,5 +87,6 @@ if ( defined( 'WPSEO_VERSION' ) && class_exists( 'WPSEO_Sitemaps_Router' ) ) :
 			 );
 			return $options;
 		}
+		add_filter( 'rocket_sitemap_preload_options', 'rocket_sitemap_preload_yoast_seo_option' );
 	}
 endif;

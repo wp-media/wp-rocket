@@ -261,12 +261,11 @@ function rocket_do_options_export() {
 
 	$filename_prefix = rocket_is_white_label() ? sanitize_title( get_rocket_option( 'wl_plugin_name' ) ) : 'wp-rocket';
 
-	$filename = sprintf( '%s-settings-%s-%s.txt', $filename_prefix, date( 'Y-m-d' ), uniqid() );
+	$filename = sprintf( '%s-settings-%s-%s.json', $filename_prefix, date( 'Y-m-d' ), uniqid() );
 	$gz = 'gz' . strrev( 'etalfed' );
-	$options = $gz// ;
-	( serialize( get_option( WP_ROCKET_SLUG ) ), 1 ); // do not use get_rocket_option() here
+	$options = wp_json_encode( get_option( WP_ROCKET_SLUG ) ); // do not use get_rocket_option() here.
 	nocache_headers();
-	@header( 'Content-Type: text/plain' );
+	@header( 'Content-Type: application/json' );
 	@header( 'Content-Disposition: attachment; filename="' . $filename . '"' );
 	@header( 'Content-Transfer-Encoding: binary' );
 	@header( 'Content-Length: ' . strlen( $options ) );

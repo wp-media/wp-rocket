@@ -7,13 +7,10 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
  * @since 2.7
  */
 if ( class_exists( 'EDD_Software_Licensing' ) && defined( 'EDD_SL_VERSION' ) ) :
-
 	// Exclude EDD SL endpoint from cache on WP Rocket activation.
 	add_filter( 'rocket_cache_reject_uri'	 , 'rocket_exclude_edd_sl_endpoint' );
-
 endif;
 
-add_action( 'activate_edd-software-licensing/edd-software-licenses.php', 'rocket_activate_edd_software_licensing', 11 );
 /**
  * Exclude EDD SL endpoint from cache when activating the plugin
  *
@@ -28,8 +25,8 @@ function rocket_activate_edd_software_licensing() {
 	// Regenerate the config file.
 	rocket_generate_config_file();
 }
+add_action( 'activate_edd-software-licensing/edd-software-licenses.php', 'rocket_activate_edd_software_licensing', 11 );
 
-add_action( 'deactivate_edd-software-licensing/edd-software-licenses.php', 'rocket_deactivate_edd_software_licensing', 11 );
 /**
  * Remove exclusion of EDD SL endpoint from cache when deactivating the plugin
  *
@@ -44,6 +41,7 @@ function rocket_deactivate_edd_software_licensing() {
 	// Regenerate the config file.
 	rocket_generate_config_file();
 }
+add_action( 'deactivate_edd-software-licensing/edd-software-licenses.php', 'rocket_deactivate_edd_software_licensing', 11 );
 
 /**
  * Exclude EDD SL endpoint from caching

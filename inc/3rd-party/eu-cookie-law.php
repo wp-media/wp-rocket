@@ -9,7 +9,7 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
  */
 if ( function_exists( 'eucookie_start' ) ) :
 	add_filter( 'rocket_cache_mandatory_cookies' , 'rocket_add_eu_cookie_law_mandatory_cookie' );
-	add_action( 'update_option_peadig_eucookie', 'rocket_after_update_eu_cookie_law_options', 10, 2 );
+
 	/**
 	 * Update .htaccess & config files when the "Activate" and "Autoblock" options are turned on
 	 *
@@ -29,12 +29,12 @@ if ( function_exists( 'eucookie_start' ) ) :
 		// Update the config file.
 		rocket_generate_config_file();
 	}
+	add_action( 'update_option_peadig_eucookie', 'rocket_after_update_eu_cookie_law_options', 10, 2 );
 
 	// Don't add the WP Rocket rewrite rules to avoid issues.
 	add_filter( 'rocket_htaccess_mod_rewrite', '__return_false' );
 endif;
 
-add_action( 'activate_eu-cookie-law/eu-cookie-law.php', 'rocket_activate_eu_cookie_law', 11 );
 /**
  * Add mandatory cookie when we activate the plugin
  *
@@ -50,8 +50,8 @@ function rocket_activate_eu_cookie_law() {
 	// Regenerate the config file.
 	rocket_generate_config_file();
 }
+add_action( 'activate_eu-cookie-law/eu-cookie-law.php', 'rocket_activate_eu_cookie_law', 11 );
 
-add_action( 'deactivate_eu-cookie-law/eu-cookie-law.php', 'rocket_deactivate_eu_cookie_law', 11 );
 /**
  * Remove mandatory cookie when we deactivate the plugin
  *
@@ -67,6 +67,7 @@ function rocket_deactivate_eu_cookie_law() {
 	// Regenerate the config file.
 	rocket_generate_config_file();
 }
+add_action( 'deactivate_eu-cookie-law/eu-cookie-law.php', 'rocket_deactivate_eu_cookie_law', 11 );
 
 /**
  * Add the EU Cookie Law to the list of mandatory cookies before generating caching files.

@@ -167,7 +167,6 @@ function create_rocket_uniqid() {
 	return str_replace( '.', '', uniqid( '', true ) );
 }
 
-add_filter( 'http_request_args', 'rocket_add_own_ua', 10, 3 );
 /**
  * Force our user agent header when we hit our urls
  *
@@ -183,6 +182,7 @@ function rocket_add_own_ua( $r, $url ) {
 	}
 	return $r;
 }
+add_filter( 'http_request_args', 'rocket_add_own_ua', 10, 3 );
 
 /**
  * Function used to print all hidden fields from rocket to avoid the loss of these.

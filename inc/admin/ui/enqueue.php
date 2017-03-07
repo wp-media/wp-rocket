@@ -1,7 +1,6 @@
 <?php
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
-add_action( 'admin_print_styles-settings_page_' . WP_ROCKET_PLUGIN_SLUG, 'rocket_add_admin_css_js' );
 /**
  * Add the CSS and JS files for WP Rocket options page
  *
@@ -57,8 +56,8 @@ function rocket_add_admin_css_js() {
 	wp_localize_script( 'options-wp-rocket', 'sawpr', $translation_array );
 	wp_enqueue_style( 'sweet-alert-wp-rocket', WP_ROCKET_ADMIN_UI_CSS_URL . 'sweetalert2.min.css', array( 'options-wp-rocket' ), WP_ROCKET_VERSION );
 }
+add_action( 'admin_print_styles-settings_page_' . WP_ROCKET_PLUGIN_SLUG, 'rocket_add_admin_css_js' );
 
-add_action( 'admin_print_styles', 'rocket_add_admin_css_js_everywhere', 11 );
 /**
  * Add the CSS and JS files needed by WP Rocket everywhere on admin pages
  *
@@ -67,8 +66,8 @@ add_action( 'admin_print_styles', 'rocket_add_admin_css_js_everywhere', 11 );
 function rocket_add_admin_css_js_everywhere() {
 	wp_enqueue_script( 'all-wp-rocket', WP_ROCKET_ADMIN_UI_JS_URL . 'all.js', array( 'jquery' ), WP_ROCKET_VERSION, true );
 }
+add_action( 'admin_print_styles', 'rocket_add_admin_css_js_everywhere', 11 );
 
-add_action( 'admin_print_styles', 'rocket_admin_print_styles' );
 /**
  * Add some CSS to display the dismiss cross
  *
@@ -93,3 +92,4 @@ function rocket_enqueue_modal_plugin() {
 	wp_enqueue_script( 'plugin-install' );
 	wp_enqueue_script( 'tgm-modal-wp-rocket', WP_ROCKET_ADMIN_UI_JS_URL . 'vendors/tgm-modal.min.js', array( 'jquery' ), WP_ROCKET_VERSION, true );
 }
+add_action( 'admin_print_styles', 'rocket_admin_print_styles' );

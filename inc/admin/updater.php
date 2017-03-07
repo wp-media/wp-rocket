@@ -1,7 +1,6 @@
 <?php
 defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 
-add_filter( 'http_request_args', 'rocket_updates_exclude', 5, 2 );
 /**
  * Excludes WP Rocket from WP updates
  *
@@ -26,8 +25,8 @@ function rocket_updates_exclude( $r, $url ) {
 	$r['body']['plugins'] = serialize( $plugins );
 	return $r;
 }
+add_filter( 'http_request_args', 'rocket_updates_exclude', 5, 2 );
 
-add_filter( 'plugins_api', 'rocket_force_info', 10, 3 );
 /**
  * Hack the returned object
  *
@@ -44,8 +43,8 @@ function rocket_force_info( $bool, $action, $args ) {
 	}
 	return $bool;
 }
+add_filter( 'plugins_api', 'rocket_force_info', 10, 3 );
 
-add_filter( 'plugins_api_result', 'rocket_force_info_result', 10, 3 );
 /**
  * Hack the returned result with our content
  *
@@ -97,3 +96,4 @@ function rocket_force_info_result( $res, $action, $args ) {
 
 	return $res;
 }
+add_filter( 'plugins_api_result', 'rocket_force_info_result', 10, 3 );

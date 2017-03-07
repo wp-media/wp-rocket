@@ -7,10 +7,8 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
  * @since 2.7
  */
 if ( class_exists( 'Age_Verify' ) && defined( 'Age_Verify::SLUG' ) ) :
-
 	add_filter( 'rocket_htaccess_mod_rewrite', '__return_false' );
 	add_filter( 'rocket_cache_mandatory_cookies', 'rocket_add_cache_mandatory_cookie_for_age_verify' );
-
 endif;
 
 /**
@@ -26,7 +24,6 @@ function rocket_add_cache_mandatory_cookie_for_age_verify( $cookies ) {
 	return $cookies;
 }
 
-add_action( 'activate_age-verify/age-verify.php'	, 'rocket_activate_age_verify', 11 );
 /**
  * Add age-verified cookie when we activate the plugin
  *
@@ -42,8 +39,8 @@ function rocket_activate_age_verify() {
 	// Regenerate the config file.
 	rocket_generate_config_file();
 }
+add_action( 'activate_age-verify/age-verify.php'	, 'rocket_activate_age_verify', 11 );
 
-add_action( 'deactivate_age-verify/age-verify.php'	, 'rocket_deactivate_age_verify', 11 );
 /**
  * Remove age-verified cookie when we deactivate the plugin
  *
@@ -58,3 +55,4 @@ function rocket_deactivate_age_verify() {
 	// Regenerate the config file.
 	rocket_generate_config_file();
 }
+add_action( 'deactivate_age-verify/age-verify.php'	, 'rocket_deactivate_age_verify', 11 );

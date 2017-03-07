@@ -9,7 +9,6 @@ jQuery( document ).ready( function($){
 			var $item_t_input = $(this).find( 'input[type=text]' );
 			var $item_c_input = $(this).find( 'input[type=checkbox]' );
 			$($item_t_input).attr( 'name', 'wp_rocket_settings[deferred_js_files]['+i+']' );
-			$($item_c_input).attr( 'name', 'wp_rocket_settings[deferred_js_wait]['+i+']' );
 		});
 	}
 

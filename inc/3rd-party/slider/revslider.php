@@ -1,7 +1,6 @@
 <?php
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
-add_filter( 'rocket_minify_html_options', 'rocket_deactivate_js_minifier_with_revslider' );
 /**
  * Conflict with Revolution Slider: don't minify inline script when HTML minification is activated
  *
@@ -16,3 +15,4 @@ function rocket_deactivate_js_minifier_with_revslider( $html_options ) {
 	}
 	 return $html_options;
 }
+add_filter( 'rocket_minify_html_options', 'rocket_deactivate_js_minifier_with_revslider' );

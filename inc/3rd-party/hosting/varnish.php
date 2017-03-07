@@ -9,8 +9,6 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
  * @param bool true will force the Varnish purge
  */
 if ( apply_filters( 'do_rocket_varnish_http_purge', false ) || get_rocket_option( 'varnish_auto_purge', 0 ) ) :
-
-	add_action( 'before_rocket_clean_domain', 'rocket_varnish_clean_domain', 10, 3 );
 	/**
 	 * Purge all the domain
 	 *
@@ -23,8 +21,8 @@ if ( apply_filters( 'do_rocket_varnish_http_purge', false ) || get_rocket_option
 	function rocket_varnish_clean_domain( $root, $lang, $url ) {
 		rocket_varnish_http_purge( trailingslashit( $url ) . '?vregex' );
 	}
+	add_action( 'before_rocket_clean_domain', 'rocket_varnish_clean_domain', 10, 3 );
 
-	add_action( 'before_rocket_clean_file', 'rocket_varnish_clean_file' );
 	/**
 	 * Purge a specific page
 	 *
@@ -35,8 +33,8 @@ if ( apply_filters( 'do_rocket_varnish_http_purge', false ) || get_rocket_option
 	function rocket_varnish_clean_file( $url ) {
 		rocket_varnish_http_purge( trailingslashit( $url ) . '?vregex' );
 	}
+	add_action( 'before_rocket_clean_file', 'rocket_varnish_clean_file' );
 
-	add_action( 'before_rocket_clean_home', 'rocket_varnish_clean_home', 10, 2 );
 	/**
 	 * Purge the homepage and its pagination
 	 *
@@ -52,5 +50,5 @@ if ( apply_filters( 'do_rocket_varnish_http_purge', false ) || get_rocket_option
 		rocket_varnish_http_purge( $home_url );
 		rocket_varnish_http_purge( $home_pagination_url );
 	}
-
+	add_action( 'before_rocket_clean_home', 'rocket_varnish_clean_home', 10, 2 );
 endif;

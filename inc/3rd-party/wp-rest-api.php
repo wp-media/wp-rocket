@@ -1,7 +1,6 @@
 <?php
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
-add_filter( 'rocket_cache_reject_uri', 'rocket_exclude_wp_rest_api' );
 /**
  * Add WP REST API path to cache exclusion
  *
@@ -31,3 +30,4 @@ function rocket_exclude_wp_rest_api( $uri ) {
 
 	return $uri;
 }
+add_filter( 'rocket_cache_reject_uri', 'rocket_exclude_wp_rest_api' );

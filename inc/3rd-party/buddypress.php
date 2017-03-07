@@ -2,7 +2,6 @@
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 if ( class_exists( 'BuddyPress' ) ) :
-
 	/**
 	 * Conflict with BuddyPress: don't apply LazyLoad on BuddyPress profil pages & group creation
 	 *
@@ -10,8 +9,6 @@ if ( class_exists( 'BuddyPress' ) ) :
 	 * @since 2.6.9
 	 */
 	if ( function_exists( 'bp_is_user_profile' ) ) :
-		add_filter( 'do_rocket_lazyload', 'rocket_deactivate_lazyload_on_buddypress_profil_pages' );
-		add_filter( 'do_rocket_lazyload_iframes', 'rocket_deactivate_lazyload_on_buddypress_profil_pages' );
 		/**
 		 * Prevent lazyload if on a BuddyPress profil page
 		 *
@@ -25,11 +22,11 @@ if ( class_exists( 'BuddyPress' ) ) :
 
 			return $run_filter;
 		}
+		add_filter( 'do_rocket_lazyload', 'rocket_deactivate_lazyload_on_buddypress_profil_pages' );
+		add_filter( 'do_rocket_lazyload_iframes', 'rocket_deactivate_lazyload_on_buddypress_profil_pages' );
 	endif;
 
 	if ( function_exists( 'bp_is_group_creation_step' ) && function_exists( 'bp_is_group_admin_screen' ) ) :
-		add_filter( 'do_rocket_lazyload', 'rocket_deactivate_lazyload_on_buddypress_group_pages' );
-		add_filter( 'do_rocket_lazyload_iframes', 'rocket_deactivate_lazyload_on_buddypress_group_pages' );
 		/**
 		 * Prevent lazyload if on a BuddyPress group creation page
 		 *
@@ -43,9 +40,10 @@ if ( class_exists( 'BuddyPress' ) ) :
 
 			return $run_filter;
 		}
+		add_filter( 'do_rocket_lazyload', 'rocket_deactivate_lazyload_on_buddypress_group_pages' );
+		add_filter( 'do_rocket_lazyload_iframes', 'rocket_deactivate_lazyload_on_buddypress_group_pages' );
 	endif;
 
-	add_filter( 'rocket_excluded_handle_js', 'rocket_exclude_js_buddypress' );
 	/**
 	 * Excludes BuddyPress's plupload from JS minification
 	 *
@@ -62,5 +60,5 @@ if ( class_exists( 'BuddyPress' ) ) :
 
 		return $excluded_handle;
 	}
-
+	add_filter( 'rocket_excluded_handle_js', 'rocket_exclude_js_buddypress' );
 endif;

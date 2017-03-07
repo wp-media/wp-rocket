@@ -1,7 +1,6 @@
 <?php
 defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 
-add_action( 'init', 'rocket_deactivate_lazyload_with_wptouch' );
 /**
  * Conflict with WP Touch: deactivate LazyLoad on mobile theme
  *
@@ -12,8 +11,8 @@ function rocket_deactivate_lazyload_with_wptouch() {
 		add_filter( 'do_rocket_lazyload', '__return_false' );
 	}
 }
+add_action( 'init', 'rocket_deactivate_lazyload_with_wptouch' );
 
-add_action( 'layerslider_ready', 'rocket_deactivate_specify_image_dimensions_with_layerslider' );
 /**
  * Conflict with LayerSlider: don't add width and height attributes on all images
  *
@@ -22,8 +21,8 @@ add_action( 'layerslider_ready', 'rocket_deactivate_specify_image_dimensions_wit
 function rocket_deactivate_specify_image_dimensions_with_layerslider() {
 	remove_filter( 'rocket_buffer', 'rocket_specify_image_dimensions' );
 }
+add_action( 'layerslider_ready', 'rocket_deactivate_specify_image_dimensions_with_layerslider' );
 
-add_filter( 'rocket_minify_html_options', 'rocket_deactivate_js_minifier_with_appbanner' );
 /**
  * Conflict with AppBanners: don't minify inline script when HTML minification is activated
  *
@@ -38,8 +37,8 @@ function rocket_deactivate_js_minifier_with_appbanner( $html_options ) {
 	}
 	 return $html_options;
 }
+add_filter( 'rocket_minify_html_options', 'rocket_deactivate_js_minifier_with_appbanner' );
 
-add_filter( 'envira_gallery_output_image_attr', 'rocket_deactivate_lazyload_on_envira_gallery', PHP_INT_MAX );
 /**
  * Conflict with Envira Gallery: don't apply LazyLoad on all images
  *
@@ -51,8 +50,8 @@ add_filter( 'envira_gallery_output_image_attr', 'rocket_deactivate_lazyload_on_e
 function rocket_deactivate_lazyload_on_envira_gallery( $attr ) {
 	return $attr . ' data-no-lazy="1" ';
 }
+add_filter( 'envira_gallery_output_image_attr', 'rocket_deactivate_lazyload_on_envira_gallery', PHP_INT_MAX );
 
-add_filter( 'envira_gallery_indexable_images', 'rocket_deactivate_lazyload_on_envira_gallery_indexable_images', PHP_INT_MAX );
 /**
  * Conflict with Envira Gallery: don't apply LazyLoad on all images
  *
@@ -66,8 +65,8 @@ function rocket_deactivate_lazyload_on_envira_gallery_indexable_images( $images 
 
 	return $images;
 }
+add_filter( 'envira_gallery_indexable_images', 'rocket_deactivate_lazyload_on_envira_gallery_indexable_images', PHP_INT_MAX );
 
-add_filter( 'envira_gallery_resize_image_args', 'rocket_cdn_resize_image_args_on_envira_gallery' );
 /**
  * Conflict with Envira Gallery: changes the URL argument if using WP Rocket CDN and Envira
  *
@@ -91,8 +90,8 @@ function rocket_cdn_resize_image_args_on_envira_gallery( $args ) {
 
 	return $args;
 }
+add_filter( 'envira_gallery_resize_image_args', 'rocket_cdn_resize_image_args_on_envira_gallery' );
 
-add_filter( 'envira_gallery_resize_image_resized_url', 'rocket_cdn_resized_url_on_envira_gallery' );
 /**
  * Conflict with Envira Gallery: changes the resized URL if using WP Rocket CDN and Envira
  *
@@ -109,8 +108,8 @@ function rocket_cdn_resized_url_on_envira_gallery( $url ) {
 	$url = get_rocket_cdn_url( $url, array( 'all', 'images' ) );
 	return $url;
 }
+add_filter( 'envira_gallery_resize_image_resized_url', 'rocket_cdn_resized_url_on_envira_gallery' );
 
-add_filter( 'metaslider_nivo_slider_image_attributes', 'rocket_deactivate_lazyload_on_metaslider' );
 /**
  * Conflict with Meta Slider (Nivo Slider): don't apply LazyLoad on all images
  *
@@ -123,8 +122,8 @@ function rocket_deactivate_lazyload_on_metaslider( $slide ) {
 	$slide['data-no-lazy'] = 1;
 	return $slide;
 }
+add_filter( 'metaslider_nivo_slider_image_attributes', 'rocket_deactivate_lazyload_on_metaslider' );
 
-add_filter( 'soliloquy_output_image_attr', 'rocket_deactivate_lazyload_on_soliloquy', PHP_INT_MAX );
 /**
  * Conflict with Soliloquy: don't apply LazyLoad on all images
  *
@@ -136,8 +135,8 @@ add_filter( 'soliloquy_output_image_attr', 'rocket_deactivate_lazyload_on_solilo
 function rocket_deactivate_lazyload_on_soliloquy( $attr ) {
 	return $attr . ' data-no-lazy="1" ';
 }
+add_filter( 'soliloquy_output_image_attr', 'rocket_deactivate_lazyload_on_soliloquy', PHP_INT_MAX );
 
-add_filter( 'soliloquy_indexable_images', 'rocket_deactivate_lazyload_on_soliloquy_indexable_images', PHP_INT_MAX );
 /**
  * Conflict with Soliloquy: don't apply LazyLoad on all images
  *
@@ -151,8 +150,8 @@ function rocket_deactivate_lazyload_on_soliloquy_indexable_images( $images ) {
 
 	return $images;
 }
+add_filter( 'soliloquy_indexable_images', 'rocket_deactivate_lazyload_on_soliloquy_indexable_images', PHP_INT_MAX );
 
-add_filter( 'rocket_override_donotcachepage', 'rocket_override_donotcachepage_on_thrive_leads' );
 /**
  * Conflict with Thrive Leads: override the DONOTCACHEPAGE behavior because this plugin add this constant!
  *
@@ -161,8 +160,8 @@ add_filter( 'rocket_override_donotcachepage', 'rocket_override_donotcachepage_on
 function rocket_override_donotcachepage_on_thrive_leads() {
 	return defined( 'TVE_LEADS_VERSION' ) && TVE_LEADS_VERSION > 0;
 }
+add_filter( 'rocket_override_donotcachepage', 'rocket_override_donotcachepage_on_thrive_leads' );
 
-add_action( 'init', 'rocket_cdn_on_aqua_resizer' );
 /**
  * Conflict with Aqua Resizer & IrishMiss Framework: Apply CDN without blank src!!
  *
@@ -175,8 +174,8 @@ function rocket_cdn_on_aqua_resizer() {
 		add_filter( 'rocket_lazyload_html', 'rocket_add_cdn_on_custom_attr' );
 	}
 }
+add_action( 'init', 'rocket_cdn_on_aqua_resizer' );
 
-add_action( 'init', 'rocket_cdn_on_sliders_with_lazyload' );
 /**
  * Conflict with Revolution Slider & Master Slider: Apply CDN on data-lazyload|data-src attribute.
  *
@@ -187,6 +186,7 @@ function rocket_cdn_on_sliders_with_lazyload() {
 		add_filter( 'rocket_cdn_images_html', 'rocket_add_cdn_on_custom_attr' );
 	}
 }
+add_action( 'init', 'rocket_cdn_on_sliders_with_lazyload' );
 
 /**
  * Conflict with MailChimp List Subscribe Form: Enqueue style without lack of performance, grrrr!!!

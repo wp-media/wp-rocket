@@ -2,8 +2,6 @@
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 if ( defined( 'FL_BUILDER_VERSION' ) ) :
-
-	add_action( 'fl_builder_before_save_layout', 'rocket_beaver_builder_clean_domain', 10, 4 );
 	/**
 	 * Purge the cache when the beaver builder layout is updated to update the minified files content & URL
 	 *
@@ -15,5 +13,5 @@ if ( defined( 'FL_BUILDER_VERSION' ) ) :
 		rocket_clean_domain();
 		rocket_clean_cache_busting();
 	}
-
+	add_action( 'fl_builder_before_save_layout', 'rocket_beaver_builder_clean_domain', 10, 4 );
 endif;

@@ -1,7 +1,6 @@
 <?php
 defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 
-add_filter( 'rocket_buffer', 'rocket_specify_image_dimensions', 10 );
 /**
  * Add width and height attributes on all images
  *
@@ -73,3 +72,4 @@ function rocket_specify_image_dimensions( $buffer ) {
 
 	return $buffer;
 }
+add_filter( 'rocket_buffer', 'rocket_specify_image_dimensions', 10 );

@@ -3,8 +3,6 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 add_action( 'update_option_secupress_users-login_settings', '__rocket_after_update_single_options', 10, 2 );
 
-
-add_filter( 'rocket_cache_reject_uri', 'rocket_exclude_secupress_move_login' );
 /**
  * Add SecuPress move login pages to cache exclusion
  *
@@ -28,9 +26,8 @@ function rocket_exclude_secupress_move_login( $urls ) {
 
 	return $urls;
 }
+add_filter( 'rocket_cache_reject_uri', 'rocket_exclude_secupress_move_login' );
 
-
-add_action( 'secupress.plugins.activation', 'rocket_maybe_activate_secupress', 10001 );
 /**
  * Add SecuPress move login pages to cache exclusion when activating the plugin
  *
@@ -42,9 +39,8 @@ function rocket_maybe_activate_secupress() {
 		rocket_activate_secupress();
 	}
 }
+add_action( 'secupress.plugins.activation', 'rocket_maybe_activate_secupress', 10001 );
 
-
-add_action( 'secupress.plugin.move_login.activate', 'rocket_activate_secupress' );
 /**
  * Add SecuPress move login pages to cache exclusion when activating the move login module
  *
@@ -60,9 +56,8 @@ function rocket_activate_secupress() {
 	// Regenerate the config file.
 	rocket_generate_config_file();
 }
+add_action( 'secupress.plugin.move_login.activate', 'rocket_activate_secupress' );
 
-
-add_action( 'secupress.deactivation', 'rocket_maybe_deactivate_secupress', 10001 );
 /**
  * Remove SecuPress move login pages from cache exclusion when deactivating the plugin
  *
@@ -74,9 +69,8 @@ function rocket_maybe_deactivate_secupress() {
 		rocket_deactivate_secupress();
 	}
 }
+add_action( 'secupress.deactivation', 'rocket_maybe_deactivate_secupress', 10001 );
 
-
-add_action( 'secupress.plugin.move_login.deactivate', 'rocket_deactivate_secupress' );
 /**
  * Remove SecuPress move login pages from cache exclusion when deactivating the move login module
  *
@@ -92,3 +86,4 @@ function rocket_deactivate_secupress() {
 	// Regenerate the config file.
 	rocket_generate_config_file();
 }
+add_action( 'secupress.plugin.move_login.deactivate', 'rocket_deactivate_secupress' );

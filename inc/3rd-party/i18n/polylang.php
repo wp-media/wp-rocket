@@ -2,8 +2,6 @@
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 if ( defined( 'POLYLANG_VERSION' ) && POLYLANG_VERSION ) :
-
-	add_action( 'after_rocket_clean_domain', 'rocket_force_clean_domain_on_polylang' );
 	/**
 	 * Conflict with Polylang: Clear the whole cache when the "The language is set from content" option is activated.
 	 *
@@ -16,5 +14,5 @@ if ( defined( 'POLYLANG_VERSION' ) && POLYLANG_VERSION ) :
 			rocket_clean_cache_dir();
 		}
 	}
-
+	add_action( 'after_rocket_clean_domain', 'rocket_force_clean_domain_on_polylang' );
 endif;

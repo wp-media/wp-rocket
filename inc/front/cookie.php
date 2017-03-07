@@ -1,7 +1,6 @@
 <?php
 defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 
-add_filter( 'comment_cookie_lifetime', 'rocket_comment_cookie_lifetime' );
 /**
  * By default, the lifetime of the cookie comment is one year.
  * Life is reduced to 3 minutes so that the visitor can enjoy the cached site.
@@ -20,3 +19,4 @@ function rocket_comment_cookie_lifetime() {
 
 	return $cookie_lifetime;
 }
+add_filter( 'comment_cookie_lifetime', 'rocket_comment_cookie_lifetime' );

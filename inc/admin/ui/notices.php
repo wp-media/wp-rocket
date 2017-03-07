@@ -1,7 +1,6 @@
 <?php
 defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 
-add_action( 'admin_notices', 'rocket_bad_deactivations' );
 /**
  * This warnings are displayed when the plugin can not be deactivated correctly
  *
@@ -70,8 +69,8 @@ function rocket_bad_deactivations() {
 	<?php
 	}
 }
+add_action( 'admin_notices', 'rocket_bad_deactivations' );
 
-add_action( 'admin_notices', 'rocket_warning_plugin_modification' );
 /**
  * This warning is displayed to inform the user that a plugin de/activation can be followed by a cache purgation
  *
@@ -94,8 +93,8 @@ function rocket_warning_plugin_modification() {
 		}
 	}
 }
+add_action( 'admin_notices', 'rocket_warning_plugin_modification' );
 
-add_action( 'admin_notices', 'rocket_plugins_to_deactivate' );
 /**
  * This warning is displayed when some plugins may conflict with WP Rocket
  *
@@ -206,8 +205,8 @@ function rocket_plugins_to_deactivate() {
 	<?php
 	}
 }
+add_action( 'admin_notices', 'rocket_plugins_to_deactivate' );
 
-add_action( 'admin_notices', 'rocket_warning_using_permalinks' );
 /**
  * This warning is displayed when there is no permalink structure in the configuration.
  *
@@ -227,8 +226,8 @@ function rocket_warning_using_permalinks() {
 	<?php
 	}
 }
+add_action( 'admin_notices', 'rocket_warning_using_permalinks' );
 
-add_action( 'admin_notices', 'rocket_warning_wp_config_permissions' );
 /**
  * This warning is displayed when the wp-config.php file isn't writable
  *
@@ -271,8 +270,8 @@ function rocket_warning_wp_config_permissions() {
 		}
 	}
 }
+add_action( 'admin_notices', 'rocket_warning_wp_config_permissions' );
 
-add_action( 'admin_notices', 'rocket_warning_advanced_cache_permissions' );
 /**
  * This warning is displayed when the advanced-cache.php file isn't writeable
  *
@@ -307,8 +306,8 @@ function rocket_warning_advanced_cache_permissions() {
 		}
 	}
 }
+add_action( 'admin_notices', 'rocket_warning_advanced_cache_permissions' );
 
-add_action( 'admin_notices', 'rocket_warning_advanced_cache_not_ours' );
 /**
  * This warning is displayed when the advanced-cache.php file isn't ours
  *
@@ -330,8 +329,8 @@ function rocket_warning_advanced_cache_not_ours() {
 		<?php
 	}
 }
+add_action( 'admin_notices', 'rocket_warning_advanced_cache_not_ours' );
 
-add_action( 'admin_notices', 'rocket_warning_htaccess_permissions' );
 /**
  * This warning is displayed when the .htaccess file doesn't exist or isn't writeable
  *
@@ -361,8 +360,8 @@ function rocket_warning_htaccess_permissions() {
 		}
 	}
 }
+add_action( 'admin_notices', 'rocket_warning_htaccess_permissions' );
 
-add_action( 'admin_notices', 'rocket_warning_config_dir_permissions' );
 /**
  * This warning is displayed when the config dir isn't writeable
  *
@@ -387,8 +386,8 @@ function rocket_warning_config_dir_permissions() {
 		}
 	}
 }
+add_action( 'admin_notices', 'rocket_warning_config_dir_permissions' );
 
-add_action( 'admin_notices', 'rocket_warning_cache_dir_permissions' );
 /**
  * This warning is displayed when the cache dir isn't writeable
  *
@@ -413,8 +412,8 @@ function rocket_warning_cache_dir_permissions() {
 		}
 	}
 }
+add_action( 'admin_notices', 'rocket_warning_cache_dir_permissions' );
 
-add_action( 'admin_notices', 'rocket_warning_minify_cache_dir_permissions' );
 /**
  * This warning is displayed when the minify cache dir isn't writeable
  *
@@ -440,8 +439,8 @@ function rocket_warning_minify_cache_dir_permissions() {
 		}
 	}
 }
+add_action( 'admin_notices', 'rocket_warning_minify_cache_dir_permissions' );
 
-add_action( 'admin_notices', 'rocket_warning_busting_cache_dir_permissions' );
 /**
  * This warning is displayed when the busting cache dir isn't writeable
  *
@@ -468,8 +467,8 @@ function rocket_warning_busting_cache_dir_permissions() {
 		}
 	}
 }
+add_action( 'admin_notices', 'rocket_warning_busting_cache_dir_permissions' );
 
-add_action( 'admin_notices', 'rocket_thank_you_license' );
 /**
  * This thankful message is displayed when the site has been added
  *
@@ -491,8 +490,8 @@ function rocket_thank_you_license() {
 	<?php
 	}
 }
+add_action( 'admin_notices', 'rocket_thank_you_license' );
 
-add_action( 'admin_notices', 'rocket_imagify_notice' );
 /**
  * Add a message about Imagify on the "Upload New Media" screen and WP Rocket options page.
  *
@@ -554,8 +553,8 @@ function rocket_imagify_notice() {
 
 	<?php
 }
+add_action( 'admin_notices', 'rocket_imagify_notice' );
 
-add_action( 'admin_notices', 'rocket_cloudflare_purge_result' );
 /**
  * This notice is displayed after purging the CloudFlare cache
  *
@@ -586,8 +585,8 @@ function rocket_cloudflare_purge_result() {
 	<?php
 	}
 }
+add_action( 'admin_notices', 'rocket_cloudflare_purge_result' );
 
-add_action( 'admin_notices', 'rocket_cloudflare_update_settings' );
 /**
  * This notice is displayed after modifying the CloudFlare settings
  *
@@ -633,3 +632,4 @@ function rocket_cloudflare_update_settings() {
 		<?php }
 	}
 }
+add_action( 'admin_notices', 'rocket_cloudflare_update_settings' );

@@ -10,7 +10,6 @@ if ( defined( 'AIOSEOP_VERSION' ) ) :
 	 * @author Remy Perona
 	 */
 	if ( isset( $all_in_one_seo_xml_options['modules']['aiosp_feature_manager_options']['aiosp_feature_manager_enable_sitemap'] ) && 'on' === $all_in_one_seo_xml_options['modules']['aiosp_feature_manager_options']['aiosp_feature_manager_enable_sitemap'] ) {
-		add_filter( 'rocket_first_install_options', 'rocket_add_all_in_one_seo_sitemap_option' );
 		/**
 		 * Add All in One SEO Sitemap option to WP Rocket options
 		 *
@@ -25,8 +24,8 @@ if ( defined( 'AIOSEOP_VERSION' ) ) :
 
 			return $options;
 		}
+		add_filter( 'rocket_first_install_options', 'rocket_add_all_in_one_seo_sitemap_option' );
 
-		add_filter( 'rocket_inputs_sanitize', 'rocket_all_in_one_seo_sitemap_option_sanitize' );
 		/**
 		 * Sanitize the AIO SEO option value
 		 *
@@ -41,8 +40,8 @@ if ( defined( 'AIOSEOP_VERSION' ) ) :
 
 			return $inputs;
 		}
+		add_filter( 'rocket_inputs_sanitize', 'rocket_all_in_one_seo_sitemap_option_sanitize' );
 
-		add_filter( 'rocket_sitemap_preload_list', 'rocket_add_all_in_one_seo_sitemap' );
 		/**
 		 * Add All in One SEO Sitemap to the preload list
 		 *
@@ -60,8 +59,8 @@ if ( defined( 'AIOSEOP_VERSION' ) ) :
 
 			return $sitemaps;
 		}
+		add_filter( 'rocket_sitemap_preload_list', 'rocket_add_all_in_one_seo_sitemap' );
 
-		add_filter( 'rocket_sitemap_preload_options', 'rocket_sitemap_preload_all_in_one_seo_option' );
 		/**
 		 * Add All in One SEO Sitemap sub-option on WP Rocket settings page
 		 *
@@ -88,5 +87,6 @@ if ( defined( 'AIOSEOP_VERSION' ) ) :
 			 );
 			return $options;
 		}
+		add_filter( 'rocket_sitemap_preload_options', 'rocket_sitemap_preload_all_in_one_seo_option' );
 	}
 endif;

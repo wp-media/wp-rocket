@@ -14,7 +14,6 @@ if ( class_exists( 'Aelia\WC\PricesByCountry\WC_Aelia_Prices_By_Country' ) ) :
 	add_filter( 'rocket_cache_dynamic_cookies'	 , 'rocket_add_aelia_prices_by_country_dynamic_cookies' );
 endif;
 
-add_action( 'activate_woocommerce-prices-by-country/woocommerce-prices-by-country.php', 'rocket_activate_aelia_prices_by_country', 11 );
 /**
  * Add cookie when we activate the plugin
  *
@@ -31,8 +30,8 @@ function rocket_activate_aelia_prices_by_country() {
 	// Regenerate the config file.
 	rocket_generate_config_file();
 }
+add_action( 'activate_woocommerce-prices-by-country/woocommerce-prices-by-country.php', 'rocket_activate_aelia_prices_by_country', 11 );
 
-add_action( 'deactivate_woocommerce-prices-by-country/woocommerce-prices-by-country.php', 'rocket_deactivate_aelia_prices_by_country', 11 );
 /**
  * Remove cookies when we deactivate the plugin
  *
@@ -49,6 +48,7 @@ function rocket_deactivate_aelia_prices_by_country() {
 	// Regenerate the config file.
 	rocket_generate_config_file();
 }
+add_action( 'deactivate_woocommerce-prices-by-country/woocommerce-prices-by-country.php', 'rocket_deactivate_aelia_prices_by_country', 11 );
 
 /**
  * Add the Aelia Prices by Country cookie to generate caching files depending on its value

@@ -14,7 +14,6 @@ if ( class_exists( 'Aelia\WC\TaxDisplayByCountry\WC_Aelia_Tax_Display_By_Country
 	add_filter( 'rocket_cache_dynamic_cookies'	 , 'rocket_add_aelia_tax_display_by_country_dynamic_cookies' );
 endif;
 
-add_action( 'activate_woocommerce-tax-display-by-country/woocommerce-tax-display-by-country.php', 'rocket_activate_aelia_tax_display_by_country', 11 );
 /**
  * Add cookies when we activate the plugin
  *
@@ -31,8 +30,8 @@ function rocket_activate_aelia_tax_display_by_country() {
 	// Regenerate the config file.
 	rocket_generate_config_file();
 }
+add_action( 'activate_woocommerce-tax-display-by-country/woocommerce-tax-display-by-country.php', 'rocket_activate_aelia_tax_display_by_country', 11 );
 
-add_action( 'deactivate_woocommerce-tax-display-by-country/woocommerce-tax-display-by-country.php', 'rocket_deactivate_aelia_tax_display_by_country', 11 );
 /**
  * Remove cookies when we deactivate the plugin
  *
@@ -49,6 +48,7 @@ function rocket_deactivate_aelia_tax_display_by_country() {
 	// Regenerate the config file.
 	rocket_generate_config_file();
 }
+add_action( 'deactivate_woocommerce-tax-display-by-country/woocommerce-tax-display-by-country.php', 'rocket_deactivate_aelia_tax_display_by_country', 11 );
 
 /**
  * Add the Aelia Tax Display by Country cookies to generate caching files depending on their values

@@ -2,8 +2,6 @@
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 if ( defined( 'ICL_SITEPRESS_VERSION' ) && ICL_SITEPRESS_VERSION ) :
-
-	add_action( 'after_rocket_clean_domain', 'rocket_clean_directory_for_default_language_on_wpml' );
 	/**
 	 * Conflict with WPML: Clear the homepage when the "Use directory for default language" option is activated.
 	 *
@@ -16,5 +14,5 @@ if ( defined( 'ICL_SITEPRESS_VERSION' ) && ICL_SITEPRESS_VERSION ) :
 			rocket_clean_files( home_url() );
 		}
 	}
-
+	add_action( 'after_rocket_clean_domain', 'rocket_clean_directory_for_default_language_on_wpml' );
 endif;

@@ -29,7 +29,6 @@ function rocket_add_give_exclude_pages( $urls ) {
 	return $urls;
 }
 
-add_action( 'activate_give/give.php', 'rocket_activate_give', 11 );
 /**
  * Add give pages to the excluded pages when activating the plugin
  *
@@ -44,8 +43,8 @@ function rocket_activate_give() {
 	// Regenerate the config file.
 	rocket_generate_config_file();
 }
+add_action( 'activate_give/give.php', 'rocket_activate_give', 11 );
 
-add_action( 'deactivate_give/give.php', 'rocket_remove_give_exclude_pages', 11 );
 /**
  * Remove give pages from the excluded pages when activating the plugin
  *
@@ -60,3 +59,4 @@ function rocket_remove_give_exclude_pages() {
 	// Regenerate the config file.
 	rocket_generate_config_file();
 }
+add_action( 'deactivate_give/give.php', 'rocket_remove_give_exclude_pages', 11 );

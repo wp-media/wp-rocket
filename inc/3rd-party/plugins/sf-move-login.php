@@ -44,7 +44,6 @@ function rocket_add_sfml_exclude_pages( $urls ) {
 	return array_merge( $urls, $sfml_slugs );
 }
 
-add_action( 'activate_sf-move-login/sf-move-login.php', 'rocket_activate_sfml', 11 );
 /**
  * Add SFML custom urls to caching exclusion when activating the plugin
  *
@@ -61,8 +60,8 @@ function rocket_activate_sfml() {
 		rocket_generate_config_file();
 	}
 }
+add_action( 'activate_sf-move-login/sf-move-login.php', 'rocket_activate_sfml', 11 );
 
-add_action( 'deactivate_sf-move-login/sf-move-login.php', 'rocket_deactivate_sfml', 11 );
 /**
  * Remove SFML custom urls from caching exclusion when deactivating the plugin
  *
@@ -79,3 +78,4 @@ function rocket_deactivate_sfml() {
 		rocket_generate_config_file();
 	}
 }
+add_action( 'deactivate_sf-move-login/sf-move-login.php', 'rocket_deactivate_sfml', 11 );

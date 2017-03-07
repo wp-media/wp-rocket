@@ -101,7 +101,6 @@ function rocket_field( $args ) {
 					$cf_valid_credentials = ( is_wp_error( rocket_cloudflare_valid_auth() ) ) ? false : true;
 				}
 			    	?>
-				
 			    		<legend class="screen-reader-text"><span><?php echo $args['label_screen']; ?></span></legend>
 			    		<label>
 			    		    <input<?php echo $disabled; ?> type="text" id="<?php echo $args['label_for']; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]" value="<?php echo $value; ?>" <?php echo $placeholder; ?><?php echo $readonly; ?>/> <?php echo $label; ?>
@@ -126,7 +125,13 @@ if ( ! $value ) { ?>
 			case 'textarea' :
 
 				$t_temp = get_rocket_option( $args['name'], '' );
-				$value = ! empty( $t_temp ) ? esc_textarea( implode( "\n" , $t_temp ) ) : '';
+
+				if ( is_array( $t_temp ) ) {
+					$t_temp = implode( "\n" , $t_temp );
+				}
+
+				$value = ! empty( $t_temp ) ? esc_textarea( $t_temp ) : '';
+
 				if ( ! $value ) {
 					$value = $default;
 				}
@@ -238,22 +243,15 @@ function rocket_defered_module() {
 
 		<?php
 		$deferred_js_files = get_rocket_option( 'deferred_js_files' );
-		$deferred_js_wait = get_rocket_option( 'deferred_js_wait' );
 
 		if ( $deferred_js_files ) {
 
-			foreach ( $deferred_js_files as $k => $_url ) {
-
-				$checked = isset( $deferred_js_wait[ $k ] ) ? checked( $deferred_js_wait[ $k ], '1', false ) : ''; ?>
+			foreach( $deferred_js_files as $k => $_url ) { ?>
 
 				<p class="rkt-module-drag">
 					<span class="dashicons dashicons-sort rkt-module-move hide-if-no-js"></span>
 
 					<input style="width: 32em" type="text" placeholder="http://" class="deferred_js regular-text" name="wp_rocket_settings[deferred_js_files][<?php echo $k; ?>]" value="<?php echo esc_url( $_url ); ?>" />
-
-					<label>
-						<input type="checkbox" class="deferred_js" name="wp_rocket_settings[deferred_js_wait][<?php echo $k; ?>]" value="1" <?php echo $checked; ?>/> <?php _e( 'Wait until this file is loaded?', 'rocket' ); ?>
-					</label>
 
 					<span class="dashicons dashicons-no rkt-module-remove hide-if-no-js"></span>
 				</p>
@@ -269,10 +267,6 @@ function rocket_defered_module() {
 				<span class="dashicons dashicons-sort rkt-module-move hide-if-no-js"></span>
 
 				<input style="width: 32em" type="text" placeholder="http://" class="deferred_js regular-text" name="wp_rocket_settings[deferred_js_files][0]" value="" />
-
-				<label>
-					<input type="checkbox" class="deferred_js" name="wp_rocket_settings[deferred_js_wait][0]" value="1" /> <?php _e( 'Wait until this file is loaded?', 'rocket' ); ?>
-				</label>
 			</p>
 			<!-- .rkt-module-drag -->
 
@@ -290,9 +284,6 @@ function rocket_defered_module() {
 
 			<input style="width: 32em" type="text" placeholder="http://" class="deferred_js regular-text" name="wp_rocket_settings[deferred_js_files][]" value="" />
 
-			<label>
-				<input type="checkbox" class="deferred_js" name="wp_rocket_settings[deferred_js_wait][]" value="1" /> <?php _e( 'Wait until this file is loaded?', 'rocket' ); ?>
-			</label>
 			<span class="dashicons dashicons-no rkt-module-remove hide-if-no-js"></span>
 		</p>
 		<!-- .rkt-module-drag -->
@@ -434,7 +425,7 @@ function rocket_button( $args ) {
 			echo '<button id="' . $id . '" class="' . $button_style . ' rocketicon rocketicon-' . $class . '">' . wp_kses_post( $button['button_label'] ) . '</button>';
 		}
 		?>
-		
+
 
 		<?php echo apply_filters( 'rocket_help', $desc, sanitize_key( strip_tags( $button['button_label'] ) ), 'description' ); ?>
 		<?php echo apply_filters( 'rocket_help', $help, sanitize_key( strip_tags( $button['button_label'] ) ), 'help' ); ?>
@@ -501,7 +492,7 @@ function rocket_display_options() {
 
 	$heading_tag = version_compare( $GLOBALS['wp_version'], '4.3' ) >= 0 ? 'h1' : 'h2';
 	?>
-	
+
 	<div class="wrap">
 
 	<<?php echo $heading_tag; ?>><?php echo WP_ROCKET_PLUGIN_NAME; ?> <small><sup><?php echo WP_ROCKET_VERSION; ?></sup></small></<?php echo $heading_tag; ?>>
@@ -521,6 +512,8 @@ function rocket_display_options() {
 				'version',
 				'cloudflare_old_settings',
 				'cloudflare_zone_id',
+				'minify_css_legacy',
+				'minify_js_legacy',
 			)
 		);
 
@@ -768,6 +761,36 @@ function rocket_settings_callback( $inputs ) {
 	}
 
 	/*
+	 * Option : CSS files to exclude from async CSS
+	 */
+	if ( ! empty( $inputs['exclude_async_css'] ) ) {
+		if ( ! is_array( $inputs['exclude_async_css'] ) ) {
+			$inputs['exclude_async_css'] = explode( "\n", $inputs['exclude_async_css'] );
+		}
+		$inputs['exclude_async_css'] = array_map( 'trim', $inputs['exclude_async_css'] );
+		$inputs['exclude_async_css'] = array_unique( $inputs['exclude_async_css'] );
+		$inputs['exclude_async_css'] = array_map( 'rocket_sanitize_css', $inputs['exclude_async_css'] );
+		$inputs['exclude_async_css'] = array_filter( $inputs['exclude_async_css'] );
+	} else {
+		$inputs['exclude_async_css'] = array();
+	}
+
+	/*
+	 * Option : JS files to exclude from defer JS
+	 */
+	if ( ! empty( $inputs['exclude_defer_js'] ) ) {
+		if ( ! is_array( $inputs['exclude_defer_js'] ) ) {
+			$inputs['exclude_defer_js'] = explode( "\n", $inputs['exclude_defer_js'] );
+		}
+		$inputs['exclude_defer_js'] = array_map( 'trim', $inputs['exclude_defer_js'] );
+		$inputs['exclude_defer_js'] = array_unique( $inputs['exclude_defer_js'] );
+		$inputs['exclude_defer_js'] = array_map( 'rocket_sanitize_js', $inputs['exclude_defer_js'] );
+		$inputs['exclude_defer_js'] = array_filter( $inputs['exclude_defer_js'] );
+	} else {
+		$inputs['exclude_defer_js'] = array();
+	}
+
+	/*
 	 * Option : JS files with deferred loading
 	 */
 	if ( ! empty( $inputs['deferred_js_files'] ) ) {
@@ -776,23 +799,6 @@ function rocket_settings_callback( $inputs ) {
 		$inputs['deferred_js_files'] = array_filter( $inputs['deferred_js_files'] );
 	} else {
 		$inputs['deferred_js_files'] = array();
-	}
-
-	if ( ! $inputs['deferred_js_files'] ) {
-		$inputs['deferred_js_wait'] = array();
-	} else {
-		$total_deferred_js_files = max( array_keys( $inputs['deferred_js_files'] ) );
-		for ( $i = 0; $i <= $total_deferred_js_files; $i++ ) {
-			if ( ! isset( $inputs['deferred_js_files'][ $i ] ) ) {
-				unset( $inputs['deferred_js_wait'][ $i ] );
-			} else {
-				$inputs['deferred_js_wait'][ $i ] = isset( $inputs['deferred_js_wait'][ $i ] ) ? '1' : '0';
-			}
-		}
-
-		$inputs['deferred_js_files'] = array_values( $inputs['deferred_js_files'] );
-		ksort( $inputs['deferred_js_wait'] );
-		$inputs['deferred_js_wait'] = array_values( $inputs['deferred_js_wait'] );
 	}
 
 	/*
@@ -876,7 +882,6 @@ function rocket_settings_callback( $inputs ) {
 	/*
 	 * Option : CloudFlare
 	 */
-
 	if ( defined( 'WP_ROCKET_CF_API_KEY' ) ) {
 		$inputs['cloudflare_api_key'] = get_rocket_option( 'cloudflare_api_key' );
 	}
@@ -937,20 +942,31 @@ function rocket_settings_callback( $inputs ) {
 	$filename_prefix = rocket_is_white_label() ? sanitize_title( get_rocket_option( 'wl_plugin_name' ) ) : 'wp-rocket';
 
 	if ( isset( $_FILES['import'] )
-		&& preg_match( '/' . $filename_prefix . '-settings-20\d{2}-\d{2}-\d{2}-[a-f0-9]{13}\.txt/', $_FILES['import']['name'] )
-		&& 'text/plain' === $_FILES['import']['type'] ) {
+		&& preg_match( '/'. $filename_prefix . '-settings-20\d{2}-\d{2}-\d{2}-[a-f0-9]{13}\.(?:txt|json)/', $_FILES['import']['name'] )
+		&& ( 'text/plain' == $_FILES['import']['type'] || 'application/json' === $_FILES['import']['type'] ) ) {
 		$file_name 			= $_FILES['import']['name'];
-		$_post_action 		= $_POST['action'];
+		$file_type			= $_FILES['import']['type'];
+		$_POST_action 		= $_POST['action'];
 		$_POST['action'] 	= 'wp_handle_sideload';
-		$file 				= wp_handle_sideload( $_FILES['import'], array( 'mimes' => array( 'txt' => 'application/octet-stream' ) ) );
-		$_POST['action'] 	= $_post_action;
-		$gz 				= 'gz' . strrev( 'etalfni' );
+		if ( 'text/plain' === $file_type ) {
+			$mimes = array( 'txt' => 'application/octet-stream' );
+		} elseif ( 'application/json' === $file_type ) {
+			$mimes = array( 'json' => 'text/plain' );
+		}
+		$file 				= wp_handle_sideload( $_FILES['import'], array( 'mimes' => $mimes ) );
+		$_POST['action'] 	= $_POST_action;
 		$settings 			= @file_get_contents( $file['file'] );
-		$settings 			= $gz// ;
-		( $settings );
-		$settings 			= unserialize( $settings );
+		if ( 'text/plain' === $file_type ) {
+			$gz 				= 'gz'.strrev( 'etalfni' );
+			$settings 			= $gz//;
+			( $settings );
+			$settings 			= unserialize( $settings );
+		} elseif ( 'application/json' === $file_type ) {
+			$settings = (array) json_decode( $settings );
+		}
 		rocket_direct_filesystem()->put_contents( $file['file'], '' );
 		rocket_direct_filesystem()->delete( $file['file'] );
+
 		if ( is_array( $settings ) ) {
 			$settings['consumer_key']		= $inputs['consumer_key'];
 			$settings['consumer_email']		= $inputs['consumer_email'];
@@ -1003,7 +1019,7 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		return;
 	}
 
-	// This values do not need to clean the cache domain.
+	// These values do not need to clean the cache domain.
 	$removed = array(
 		'purge_cron_interval' => true,
 		'purge_cron_unit'     => true,
@@ -1034,26 +1050,40 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		rocket_clean_minify( 'js' );
 	}
 
-	// Purge all cache busting files.
-	if ( ! empty( $_POST ) && ( $oldvalue['remove_query_strings'] !== $value['remove_query_strings'] ) ) {
-		rocket_clean_cache_busting();
-		wp_remote_get(
-			home_url(),
-			array(
-				'timeout'    => 0.01,
-				'blocking'   => false,
-				'user-agent' => 'wprocketbot',
-				'sslverify'  => false,
-			)
-		);
+    // Purge all cache busting files.
+    if ( ! empty( $_POST ) && ( $oldvalue['remove_query_strings'] != $value['remove_query_strings'] ) ) {
+        rocket_clean_cache_busting();
+        wp_remote_get(
+            home_url(),
+            array(
+                'timeout'    => 0.01,
+                'blocking'   => false,
+                'user-agent' => 'wprocketbot',
+                'sslverify'  => false
+            )
+        );
+    }
+
+	if ( $oldvalue['minify_css'] !== $value['minify_css'] && 0 === $value['minify_css'] ) {
+		if ( ! isset( $value['minify_css_legacy'] ) || 0 !== $value['minify_css_legacy'] ) {
+			update_rocket_option( 'minify_css_legacy', 0 );
+			rocket_generate_config_file();
+		}
 	}
 
-	/**
-	 * Performs the database optimization when settings are saved with the "save and optimize" submit button"
-	 */
-	if ( ! empty( $_POST ) && isset( $_POST['wp_rocket_settings']['submit_optimize'] ) ) {
-		do_rocket_database_optimization();
+	if ( $oldvalue['minify_js'] !== $value['minify_js'] && 0 === $value['minify_js'] ) {
+		if ( ! isset( $value['minify_js_legacy'] ) || 0 !== $value['minify_js_legacy'] ) {
+			update_rocket_option( 'minify_js_legacy', 0 );
+			rocket_generate_config_file();
+		}
 	}
+
+    /*
+     * Performs the database optimization when settings are saved with the "save and optimize" submit button"
+     */
+    if ( ! empty( $_POST ) && isset( $_POST['wp_rocket_settings']['submit_optimize'] ) ) {
+        do_rocket_database_optimization();
+    }
 
 	// Update CloudFlare Development Mode.
 	$cloudflare_update_result = array();

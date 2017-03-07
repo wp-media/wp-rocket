@@ -1,7 +1,6 @@
 <?php
 defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 
-add_action( 'wp_head', 'rocket_lazyload_script', PHP_INT_MAX );
 /**
  * Add Lazy Load JavaScript in the header
  * No jQuery or other library is required !!
@@ -20,12 +19,8 @@ function rocket_lazyload_script() {
 
 	echo '<script data-no-minify="1" data-cfasync="false">(function(w,d){function a(){var b=d.createElement("script");b.async=!0;b.src="' . $lazyload_url . '";var a=d.getElementsByTagName("script")[0];a.parentNode.insertBefore(b,a)}w.attachEvent?w.attachEvent("onload",a):w.addEventListener("load",a,!1)})(window,document);</script>';
 }
+add_action( 'wp_head', 'rocket_lazyload_script', PHP_INT_MAX );
 
-add_filter( 'get_avatar'			, 'rocket_lazyload_images', PHP_INT_MAX );
-add_filter( 'the_content'			, 'rocket_lazyload_images', PHP_INT_MAX );
-add_filter( 'widget_text'			, 'rocket_lazyload_images', PHP_INT_MAX );
-add_filter( 'get_image_tag'			, 'rocket_lazyload_images', PHP_INT_MAX );
-add_filter( 'post_thumbnail_html'	, 'rocket_lazyload_images', PHP_INT_MAX );
 /**
  * Replace Gravatar, thumbnails, images in post content and in widget text by LazyLoad
  *
@@ -50,6 +45,11 @@ function rocket_lazyload_images( $html ) {
 
 	return $html;
 }
+add_filter( 'get_avatar'			, 'rocket_lazyload_images', PHP_INT_MAX );
+add_filter( 'the_content'			, 'rocket_lazyload_images', PHP_INT_MAX );
+add_filter( 'widget_text'			, 'rocket_lazyload_images', PHP_INT_MAX );
+add_filter( 'get_image_tag'			, 'rocket_lazyload_images', PHP_INT_MAX );
+add_filter( 'post_thumbnail_html'	, 'rocket_lazyload_images', PHP_INT_MAX );
 
 /**
  * Used to check if we have to LazyLoad this or not
@@ -104,7 +104,6 @@ function rocket_lazyload_replace_callback( $matches ) {
 	}
 }
 
-add_action( 'init', 'rocket_lazyload_smilies' );
 /**
  * Replace WordPress smilies by Lazy Load
  *
@@ -127,6 +126,7 @@ function rocket_lazyload_smilies() {
 	add_filter( 'the_excerpt', 'rocket_convert_smilies' );
 	add_filter( 'comment_text', 'rocket_convert_smilies', 20 );
 }
+add_action( 'init', 'rocket_lazyload_smilies' );
 
 /**
  * Convert text equivalent of smilies to images.
@@ -231,7 +231,6 @@ function rocket_translate_smiley( $matches ) {
 	}
 }
 
-add_filter( 'rocket_buffer', 'rocket_lazyload_iframes', PHP_INT_MAX );
 /**
  * Replace iframes by LazyLoad
  *
@@ -280,8 +279,8 @@ function rocket_lazyload_iframes( $html ) {
 
 	return $html;
 }
+add_filter( 'rocket_buffer', 'rocket_lazyload_iframes', PHP_INT_MAX );
 
-add_action( 'wp', 'rocket_deactivate_lazyload_on_specific_posts' );
 /**
  * Check if we need to exclude LazyLoad on specific posts
  *
@@ -296,8 +295,8 @@ function rocket_deactivate_lazyload_on_specific_posts() {
 		add_filter( 'do_rocket_lazyload_iframes', '__return_false' );
 	}
 }
+add_action( 'wp', 'rocket_deactivate_lazyload_on_specific_posts' );
 
-add_filter( 'rocket_lazyload_html', 'rocket_lazyload_on_srcset' );
 /**
  * Compatibility with images with srcset attribute
  *
@@ -320,3 +319,4 @@ function rocket_lazyload_on_srcset( $html ) {
 
 	return $html;
 }
+add_filter( 'rocket_lazyload_html', 'rocket_lazyload_on_srcset' );

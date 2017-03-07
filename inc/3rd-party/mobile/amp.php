@@ -1,7 +1,6 @@
 <?php
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
-add_action( 'wp', '_rocket_disable_options_on_amp' );
 /**
  * Removes Minification, DNS Prefetch, LazyLoad, Defer JS when on an AMP version of a post with the AMP for WordPress plugin from Auttomatic
  *
@@ -10,9 +9,9 @@ add_action( 'wp', '_rocket_disable_options_on_amp' );
  *
  * @author Remy Perona
  */
-function _rocket_disable_options_on_amp() {
-	if ( defined( 'AMP_QUERY_VAR' ) && function_exists( 'is_amp_endpoint' ) && is_amp_endpoint() ) {
-		remove_filter( 'rocket_buffer', 'rocket_exclude_deferred_js', 11 );
+function rocket_disable_options_on_amp() {
+    if ( defined( 'AMP_QUERY_VAR' ) && function_exists( 'is_amp_endpoint' ) && is_amp_endpoint() ) {
+        remove_filter( 'rocket_buffer', 'rocket_insert_deferred_js', 11 );
 
 		if ( function_exists( 'wp_resource_hints' ) ) {
 			remove_filter( 'wp_resource_hints', 'rocket_dns_prefetch', 10, 2 );
@@ -22,6 +21,7 @@ function _rocket_disable_options_on_amp() {
 
 		remove_filter( 'rocket_buffer', 'rocket_minify_process', 13 );
 
-		add_filter( 'do_rocket_lazyload', '__return_false' );
-	}
+        add_filter( 'do_rocket_lazyload', '__return_false' );
+    }
 }
+add_action( 'wp', 'rocket_disable_options_on_amp' );

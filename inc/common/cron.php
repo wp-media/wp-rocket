@@ -1,7 +1,6 @@
 <?php
 defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 
-add_filter( 'cron_schedules', 'rocket_purge_cron_schedule' );
 /**
  * Adds new intervals for cron jobs
  *
@@ -44,8 +43,8 @@ function rocket_purge_cron_schedule( $schedules ) {
 
 	return $schedules;
 }
+add_filter( 'cron_schedules', 'rocket_purge_cron_schedule' );
 
-add_action( 'init', 'rocket_purge_cron_scheduled' );
 /**
  * Planning cron
  * If the task is not programmed, it is automatically triggered
@@ -57,8 +56,8 @@ function rocket_purge_cron_scheduled() {
 		wp_schedule_event( time() + get_rocket_purge_cron_interval(), 'rocket_purge', 'rocket_purge_time_event' );
 	}
 }
+add_action( 'init', 'rocket_purge_cron_scheduled' );
 
-add_action( 'rocket_purge_time_event', 'do_rocket_purge_cron' );
 /**
  * This event is launched when the cron is triggered
  * Purge all cache files when user save options
@@ -73,8 +72,8 @@ function do_rocket_purge_cron() {
 	// Run WP Rocket Bot for preload cache files.
 	run_rocket_preload_cache( 'cache-preload' );
 }
+add_action( 'rocket_purge_time_event', 'do_rocket_purge_cron' );
 
-add_action( 'init', 'rocket_database_optimization_scheduled' );
 /**
  * Planning database optimization cron
  * If the task is not programmed, it is automatically triggered
@@ -89,6 +88,7 @@ function rocket_database_optimization_scheduled() {
 		}
 	}
 }
+add_action( 'init', 'rocket_database_optimization_scheduled' );
 
 /**
  * This event is launched when the cron is triggered

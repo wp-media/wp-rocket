@@ -7,16 +7,13 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
  * @since 2.7
  */
 if ( class_exists( 'WC_Currency_Converter' ) ) :
-
 	// Add cookie to config file when WP Rocket is activated and WooCommerce Currency Converter Widget is already active.
 	add_filter( 'rocket_htaccess_mod_rewrite'	 , '__return_false' );
 	add_filter( 'rocket_cache_dynamic_cookies'	 , 'rocket_add_woocommerce_currency_converter_dynamic_cookies', 11 );
 	add_filter( 'rocket_cache_mandatory_cookies' , 'rocket_add_woocommerce_currency_converter_mandatory_cookie', 11 );
 	add_action( 'update_option_woocommerce_default_customer_address', 'rocket_after_update_single_options', 10, 2 );
-
 endif;
 
-add_action( 'activate_woocommerce-currency-converter-widget/currency-converter.php', 'rocket_activate_woocommerce_currency_converter', 11 );
 /**
  * Add cookies when we activating the plugin
  *
@@ -33,8 +30,8 @@ function rocket_activate_woocommerce_currency_converter() {
 	// Regenerate the config file.
 	rocket_generate_config_file();
 }
+add_action( 'activate_woocommerce-currency-converter-widget/currency-converter.php', 'rocket_activate_woocommerce_currency_converter', 11 );
 
-add_action( 'deactivate_woocommerce-currency-converter-widget/currency-converter.php', 'rocket_deactivate_woocommerce_currency_converter', 11 );
 /**
  * Remove cookies when deactivating the plugin
  *
@@ -51,6 +48,7 @@ function rocket_deactivate_woocommerce_currency_converter() {
 	// Regenerate the config file.
 	rocket_generate_config_file();
 }
+add_action( 'deactivate_woocommerce-currency-converter-widget/currency-converter.php', 'rocket_deactivate_woocommerce_currency_converter', 11 );
 
 /**
  * Add the WC Currency Converter Widget cookie to generate caching files depending on its value

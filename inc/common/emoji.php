@@ -4,8 +4,6 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 global $wp_version;
 
 if ( version_compare( $wp_version, '4.2' ) >= 0 && get_rocket_option( 'emoji', 0 ) ) :
-
-	add_action( 'init', 'rocket_disable_emoji' );
 	/**
 	 * Disable the emoji functionality to reduce then number of external HTTP requests.
 	 *
@@ -18,8 +16,8 @@ if ( version_compare( $wp_version, '4.2' ) >= 0 && get_rocket_option( 'emoji', 0
 		remove_filter( 'comment_text_rss'		, 'wp_staticize_emoji' );
 		remove_filter( 'wp_mail'				, 'wp_staticize_emoji_for_email' );
 	}
+	add_action( 'init', 'rocket_disable_emoji' );
 
-	add_filter( 'tiny_mce_plugins', 'rocket_disable_emoji_tinymce' );
 	/**
 	 * Remove the tinymce emoji plugin.
 	 *
@@ -34,5 +32,5 @@ if ( version_compare( $wp_version, '4.2' ) >= 0 && get_rocket_option( 'emoji', 0
 
 		return array();
 	}
-
+	add_filter( 'tiny_mce_plugins', 'rocket_disable_emoji_tinymce' );
 endif;

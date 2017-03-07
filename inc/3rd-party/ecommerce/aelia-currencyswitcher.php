@@ -7,7 +7,6 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
  * @since 2.7
  */
 if ( class_exists( 'WC_Aelia_CurrencySwitcher' ) ) :
-	add_action( 'update_option_wc_aelia_currency_switcher', 'rocket_after_update_aelia_currencyswitcher_options', 10, 2 );
 	/**
 	 * Update .htaccess & config files when the Geolocation option is updated
 	 *
@@ -26,6 +25,7 @@ if ( class_exists( 'WC_Aelia_CurrencySwitcher' ) ) :
 			rocket_generate_config_file();
 		}
 	}
+	add_action( 'update_option_wc_aelia_currency_switcher', 'rocket_after_update_aelia_currencyswitcher_options', 10, 2 );
 
 	/**
 	 * Generate a caching file depending on the currency cookie value
@@ -35,8 +35,6 @@ if ( class_exists( 'WC_Aelia_CurrencySwitcher' ) ) :
 	add_filter( 'rocket_cache_mandatory_cookies' , 'rocket_add_aelia_currencyswitcher_mandatory_cookie' );
 endif;
 
-// Add cookies when we activate the plugin.
-add_action( 'activate_woocommerce-aelia-currencyswitcher/woocommerce-aelia-currencyswitcher.php', 'rocket_activate_aelia_currencyswitcher', 11 );
 /**
  * Add the Aelia Currency Switcher cookies when activating the plugin
  *
@@ -53,9 +51,8 @@ function rocket_activate_aelia_currencyswitcher() {
 	// Regenerate the config file.
 	rocket_generate_config_file();
 }
+add_action( 'activate_woocommerce-aelia-currencyswitcher/woocommerce-aelia-currencyswitcher.php', 'rocket_activate_aelia_currencyswitcher', 11 );
 
-
-add_action( 'deactivate_woocommerce-aelia-currencyswitcher/woocommerce-aelia-currencyswitcher.php', '__rocket_deactivate_aelia_currencyswitcher', 11 );
 /**
  * Remove the Aelia Currency Switcher cookies when deactivating the plugin
  *
@@ -72,6 +69,7 @@ function rocket_deactivate_aelia_currencyswitcher() {
 	// Regenerate the config file.
 	rocket_generate_config_file();
 }
+add_action( 'deactivate_woocommerce-aelia-currencyswitcher/woocommerce-aelia-currencyswitcher.php', '__rocket_deactivate_aelia_currencyswitcher', 11 );
 
 /**
  * Add the Aelia Currency Switcher cookies to the dynamic cookies list

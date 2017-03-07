@@ -10,7 +10,6 @@ if ( defined( 'JETPACK__VERSION' ) ) :
 	 * @author Remy Perona
 	 */
 	if ( is_array( $jetpack_active_modules ) && in_array( 'sitemaps', $jetpack_active_modules, true ) ) {
-		add_filter( 'rocket_first_install_options', 'rocket_add_jetpack_sitemap_option' );
 		/**
 		 * Add Jetpack option to WP Rocket options
 		 *
@@ -25,8 +24,8 @@ if ( defined( 'JETPACK__VERSION' ) ) :
 
 			return $options;
 		}
+		add_filter( 'rocket_first_install_options', 'rocket_add_jetpack_sitemap_option' );
 
-		add_filter( 'rocket_inputs_sanitize', 'rocket_jetpack_sitemap_option_sanitize' );
 		/**
 		 * Sanitize jetpack option value
 		 *
@@ -41,8 +40,8 @@ if ( defined( 'JETPACK__VERSION' ) ) :
 
 			return $inputs;
 		}
+		add_filter( 'rocket_inputs_sanitize', 'rocket_jetpack_sitemap_option_sanitize' );
 
-		add_filter( 'rocket_sitemap_preload_list', 'rocket_add_jetpack_sitemap' );
 		/**
 		 * Add Jetpack sitemap to preload list
 		 *
@@ -59,8 +58,8 @@ if ( defined( 'JETPACK__VERSION' ) ) :
 
 			return $sitemaps;
 		}
+		add_filter( 'rocket_sitemap_preload_list', 'rocket_add_jetpack_sitemap' );
 
-		add_filter( 'rocket_sitemap_preload_options', 'rocket_sitemap_preload_jetpack_option' );
 		/**
 		 * Add Jetpack sub-option to WP Rocket settings page
 		 *
@@ -88,5 +87,6 @@ if ( defined( 'JETPACK__VERSION' ) ) :
 
 			return $options;
 		}
+		add_filter( 'rocket_sitemap_preload_options', 'rocket_sitemap_preload_jetpack_option' );
 	}
 endif;

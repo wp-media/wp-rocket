@@ -2,8 +2,13 @@
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 if ( class_exists( '\\Savvii\\CacheFlusherPlugin' ) & class_exists( '\\Savvii\\Options' ) ) :
+	/**
+	 * Don't display the Varnish options tab for Savvii users
+	 *
+	 * @since 2.7
+	 */
+	add_filter( 'rocket_display_varnish_options_tab', '__return_false' );
 
-	add_action( 'init', 'rocket_clear_cache_after_savvii' );
 	/**
 	 * Clear WP Rocket cache after purged the Varnish cache via Savvii Hosting
 	 *
@@ -22,8 +27,7 @@ if ( class_exists( '\\Savvii\\CacheFlusherPlugin' ) & class_exists( '\\Savvii\\O
 			run_rocket_preload_cache( 'cache-preload' );
 		}
 	}
-
-	add_action( 'after_rocket_clean_domain', 'rocket_clean_savvii' );
+	add_action( 'init', 'rocket_clear_cache_after_savvii' );
 
 	/**
 	 * Call the cache server to purge the cache with Savvii hosting.
@@ -37,12 +41,5 @@ if ( class_exists( '\\Savvii\\CacheFlusherPlugin' ) & class_exists( '\\Savvii\\O
 			$plugin->domainflush();
 		}
 	}
-
-	/**
-	 * Don't display the Varnish options tab for Savvii users
-	 *
-	 * @since 2.7
-	 */
-	add_filter( 'rocket_display_varnish_options_tab', '__return_false' );
-
+	add_action( 'after_rocket_clean_domain', 'rocket_clean_savvii' );
 endif;

@@ -2,8 +2,6 @@
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 if ( function_exists( 'print_link' ) ) :
-
-	add_action( 'wp', 'rocket_deactivate_lazyload_on_print_pages' );
 	/**
 	 * Conflict with WP-Print: don't apply LazyLoad on print pages
 	 *
@@ -16,5 +14,5 @@ if ( function_exists( 'print_link' ) ) :
 			add_filter( 'do_rocket_lazyload', '__return_false' );
 		}
 	}
-
+	add_action( 'wp', 'rocket_deactivate_lazyload_on_print_pages' );
 endif;

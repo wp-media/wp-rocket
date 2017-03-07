@@ -1,7 +1,6 @@
 <?php
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
-add_filter( 'less_vars', 'rocket_fix_cdn_for_avada_theme', 11, 2 );
 /**
  * Conflict with Avada theme and WP Rocket CDN
  *
@@ -19,3 +18,4 @@ function rocket_fix_cdn_for_avada_theme( $vars, $handle ) {
 	}
 	return $vars;
 }
+add_filter( 'less_vars', 'rocket_fix_cdn_for_avada_theme', 11, 2 );

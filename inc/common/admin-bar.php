@@ -1,7 +1,6 @@
 <?php
 defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 
-add_action( 'admin_bar_menu', 'rocket_admin_bar', PHP_INT_MAX );
 /**
  * Add menu in admin bar
  * From this menu, you can preload the cache files, clear entire domain cache or post cache (front & back-end)
@@ -243,3 +242,4 @@ function rocket_admin_bar( $wp_admin_bar ) {
 		));
 	}
 }
+add_action( 'admin_bar_menu', 'rocket_admin_bar', PHP_INT_MAX );

@@ -2,7 +2,6 @@
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 if ( defined( 'DISQUS_VERSION' ) ) :
-	add_filter( 'rocket_exclude_js', 'rocket_exclude_js_disqus' );
 	/**
 	 * Excludes Disqus scripts from JS minification
 	 *
@@ -18,5 +17,5 @@ if ( defined( 'DISQUS_VERSION' ) ) :
 
 		return $excluded_js;
 	}
-
+	add_filter( 'rocket_exclude_js', 'rocket_exclude_js_disqus' );
 endif;

@@ -2,8 +2,20 @@
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 if ( class_exists( 'WpeCommon' ) && function_exists( 'wpe_param' ) ) :
+	/**
+	 * Don't display the Varnish options tab for WP Engine users
+	 *
+	 * @since 2.7
+	 */
+	add_filter( 'rocket_display_varnish_options_tab', '__return_false' );
 
-	add_action( 'init', 'rocket_stop_generate_caching_files_on_wpengine' );
+	/**
+	 * Always keep WP_CACHE constant to true
+	 *
+	 * @since 2.8.6
+	 */
+	add_filter( 'set_rocket_wp_cache_define', '__return_true' );
+
 	/**
 	 * Conflict with WP Engine caching system
 	 *
@@ -12,8 +24,8 @@ if ( class_exists( 'WpeCommon' ) && function_exists( 'wpe_param' ) ) :
 	function rocket_stop_generate_caching_files_on_wpengine() {
 		add_filter( 'do_rocket_generate_caching_files', '__return_false' );
 	}
+	add_action( 'init', 'rocket_stop_generate_caching_files_on_wpengine' );
 
-	add_action( 'admin_init', 'rocket_run_rocket_bot_after_wpengine' );
 	/**
 	 * Run WP Rocket preload bot after purged the Varnish cache via WP Engine Hosting
 	 *
@@ -27,8 +39,8 @@ if ( class_exists( 'WpeCommon' ) && function_exists( 'wpe_param' ) ) :
 			run_rocket_preload_cache( 'cache-preload' );
 		}
 	}
+	add_action( 'admin_init', 'rocket_run_rocket_bot_after_wpengine' );
 
-	add_filter( 'get_rocket_option_cdn', 'rocket_auto_activate_cdn_on_wpengine' );
 	/**
 	 * Activate the CDN option if WPEngine CDN is active
 	 *
@@ -46,8 +58,8 @@ if ( class_exists( 'WpeCommon' ) && function_exists( 'wpe_param' ) ) :
 
 		return $value;
 	}
+	add_filter( 'get_rocket_option_cdn', 'rocket_auto_activate_cdn_on_wpengine' );
 
-	add_filter( 'rocket_cdn_cnames', 'rocket_add_wpengine_cdn_cnames' );
 	/**
 	 * Add WP Engine CDN CNAMES to the list of allowed CNAMES
 	 *
@@ -65,8 +77,8 @@ if ( class_exists( 'WpeCommon' ) && function_exists( 'wpe_param' ) ) :
 
 		return $hosts;
 	}
+	add_filter( 'rocket_cdn_cnames', 'rocket_add_wpengine_cdn_cnames' );
 
-	add_action( 'after_rocket_clean_domain', 'rocket_clean_wpengine' );
 	/**
 	 * Call the cache server to purge the cache with WP Engine hosting.
 	 *
@@ -81,13 +93,7 @@ if ( class_exists( 'WpeCommon' ) && function_exists( 'wpe_param' ) ) :
 			WpeCommon::purge_varnish_cache();
 		}
 	}
-
-	/**
-	 * Don't display the Varnish options tab for WP Engine users
-	 *
-	 * @since 2.7
-	 */
-	add_filter( 'rocket_display_varnish_options_tab', '__return_false' );
+	add_action( 'after_rocket_clean_domain', 'rocket_clean_wpengine' );
 
 	/**
 	 * Gets WP Engine CDN Domain
@@ -123,14 +129,6 @@ if ( class_exists( 'WpeCommon' ) && function_exists( 'wpe_param' ) ) :
 			$cdn_domain = $native_schema . '://' . $cdn_domain;
 		}
 
-			return $cdn_domain;
+		return $cdn_domain;
 	}
-
-	/**
-	 * Always keep WP_CACHE constant to true
-	 *
-	 * @since 2.8.6
-	 */
-	add_filter( 'set_rocket_wp_cache_define', '__return_true' );
-
 endif;
