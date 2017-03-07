@@ -295,16 +295,17 @@ if ( ! function_exists( 'rocket_delete_script_wp_version' ) ) :
 endif;
 
 if ( ! function_exists( 'rocket_exclude_deferred_js' ) ) :
-/**
- * Used to remove deferred JS files from the  buffer
- *
- * @since 1.1.0
- * @deprecated 3.0
- * @deprecated Use rocket_insert_deferred_js()
- *
- */
-function rocket_exclude_deferred_js( $buffer ) {
-    _deprecated_function( __FUNCTION__, '3.0', 'rocket_insert_deferred_js()' );
-    return rocket_insert_deferred_js( $buffer );
-}
+	/**
+	 * Used to remove deferred JS files from the  buffer
+	 *
+	 * @since 1.1.0
+	 * @deprecated 3.0
+	 * @deprecated Use rocket_insert_deferred_js()
+	 *
+	 * @param string $buffer HTML code.
+	 */
+	function rocket_exclude_deferred_js( $buffer ) {
+		_deprecated_function( __FUNCTION__, '3.0', 'rocket_insert_deferred_js()' );
+		return rocket_insert_deferred_js( $buffer );
+	}
 endif;

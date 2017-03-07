@@ -26,18 +26,18 @@ function rocket_fetch_and_cache_minify( $url, $pretty_url ) {
 		return false;
 	}
 
-	$content = wp_remote_retrieve_body(  $minify_result );
+	$content = wp_remote_retrieve_body( $minify_result );
 	// Create cache folders of the request uri.
 	$cache_path = WP_ROCKET_MINIFY_CACHE_PATH . get_current_blog_id() . '/';
 	if ( ! is_dir( $cache_path ) ) {
 		rocket_mkdir_p( $cache_path );
 	}
-	
+
 	// Apply CDN on CSS properties.
 	if ( strrpos( $pretty_path, '.css' ) ) {
-		$content = rocket_cdn_css_properties( $content );	
+		$content = rocket_cdn_css_properties( $content );
 	}
-	
+
 	// Save cache file.
 	if ( rocket_put_content( $pretty_path, $content ) ) {
 		return true;
@@ -51,7 +51,7 @@ function rocket_fetch_and_cache_minify( $url, $pretty_url ) {
  *
  * @since 3.0
  *
- * @param string  $file File to minify.
+ * @param string $file File to minify.
  * @param bool   $force_pretty_url (default: true).
  * @param string $pretty_filename (default: null) The new filename if $force_pretty_url set to true.
  * @return string URL of the minified file
@@ -62,10 +62,10 @@ function get_rocket_minify_file( $file, $force_pretty_url = true, $pretty_filena
 
 	$file = parse_url( $file, PHP_URL_PATH );
 	$file = trim( $file );
-		
+
 	if ( empty( $file ) ) {
-        continue;
-    }
+		continue;
+	}
 
 	// Replace "//" by "/" because it cause an issue with Minify Library!
 	$file = str_replace( '//' , '/', $file );
@@ -164,15 +164,15 @@ function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_file
 	if ( ! (bool) $files ) {
 		return $tags;
 	}
-	
+
 	$i = 0;
 	foreach ( $files as $file ) {
 		$file = parse_url( $file, PHP_URL_PATH );
 		$file = trim( $file );
-		
-        if ( empty( $file ) ) {
-            continue;
-        }
+
+		if ( empty( $file ) ) {
+			continue;
+		}
 
 		// Replace "//" by "/" because it cause an issue with Minify Library!
 		$file = str_replace( '//' , '/', $file );
@@ -186,13 +186,13 @@ function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_file
 		 * @param string $extension The file's extension.
 		*/
 		$filename_length = apply_filters( 'rocket_minify_filename_length', 255, pathinfo( $file, PATHINFO_EXTENSION ) );
-		
+
 		// +1 : we count the extra comma
 		if ( strlen( $urls[ $i ] . $base_url . $file ) + 1 >= $filename_length ) {
 			$i++;
 			$urls[ $i ] = '';
 		}
-		
+
 		/**
 		 * Filter file to add in minification process
 		 *
@@ -201,7 +201,7 @@ function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_file
 		 * @param string $file The file path
 		*/
 		$file = apply_filters( 'rocket_pre_minify_path', $file );
-		
+
 		$urls[ $i ] .= $file . ',';
 	}
 

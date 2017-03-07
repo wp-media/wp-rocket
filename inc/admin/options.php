@@ -246,7 +246,7 @@ function rocket_defered_module() {
 
 		if ( $deferred_js_files ) {
 
-			foreach( $deferred_js_files as $k => $_url ) { ?>
+			foreach ( $deferred_js_files as $k => $_url ) { ?>
 
 				<p class="rkt-module-drag">
 					<span class="dashicons dashicons-sort rkt-module-move hide-if-no-js"></span>
@@ -942,11 +942,11 @@ function rocket_settings_callback( $inputs ) {
 	$filename_prefix = rocket_is_white_label() ? sanitize_title( get_rocket_option( 'wl_plugin_name' ) ) : 'wp-rocket';
 
 	if ( isset( $_FILES['import'] )
-		&& preg_match( '/'. $filename_prefix . '-settings-20\d{2}-\d{2}-\d{2}-[a-f0-9]{13}\.(?:txt|json)/', $_FILES['import']['name'] )
-		&& ( 'text/plain' == $_FILES['import']['type'] || 'application/json' === $_FILES['import']['type'] ) ) {
+		&& preg_match( '/' . $filename_prefix . '-settings-20\d{2}-\d{2}-\d{2}-[a-f0-9]{13}\.(?:txt|json)/', $_FILES['import']['name'] )
+		&& ( 'text/plain' === $_FILES['import']['type'] || 'application/json' === $_FILES['import']['type'] ) ) {
 		$file_name 			= $_FILES['import']['name'];
 		$file_type			= $_FILES['import']['type'];
-		$_POST_action 		= $_POST['action'];
+		$_post_action 		= $_POST['action'];
 		$_POST['action'] 	= 'wp_handle_sideload';
 		if ( 'text/plain' === $file_type ) {
 			$mimes = array( 'txt' => 'application/octet-stream' );
@@ -954,11 +954,11 @@ function rocket_settings_callback( $inputs ) {
 			$mimes = array( 'json' => 'text/plain' );
 		}
 		$file 				= wp_handle_sideload( $_FILES['import'], array( 'mimes' => $mimes ) );
-		$_POST['action'] 	= $_POST_action;
+		$_POST['action'] 	= $_post_action;
 		$settings 			= @file_get_contents( $file['file'] );
 		if ( 'text/plain' === $file_type ) {
-			$gz 				= 'gz'.strrev( 'etalfni' );
-			$settings 			= $gz//;
+			$gz 				= 'gz' . strrev( 'etalfni' );
+			$settings 			= $gz// ;
 			( $settings );
 			$settings 			= unserialize( $settings );
 		} elseif ( 'application/json' === $file_type ) {
@@ -1050,19 +1050,19 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		rocket_clean_minify( 'js' );
 	}
 
-    // Purge all cache busting files.
-    if ( ! empty( $_POST ) && ( $oldvalue['remove_query_strings'] != $value['remove_query_strings'] ) ) {
-        rocket_clean_cache_busting();
-        wp_remote_get(
-            home_url(),
-            array(
-                'timeout'    => 0.01,
-                'blocking'   => false,
-                'user-agent' => 'wprocketbot',
-                'sslverify'  => false
-            )
-        );
-    }
+	// Purge all cache busting files.
+	if ( ! empty( $_POST ) && ( $oldvalue['remove_query_strings'] !== $value['remove_query_strings'] ) ) {
+		rocket_clean_cache_busting();
+		wp_remote_get(
+			home_url(),
+			array(
+				'timeout'    => 0.01,
+				'blocking'   => false,
+				'user-agent' => 'wprocketbot',
+				'sslverify'  => false,
+			)
+		);
+	}
 
 	if ( $oldvalue['minify_css'] !== $value['minify_css'] && 0 === $value['minify_css'] ) {
 		if ( ! isset( $value['minify_css_legacy'] ) || 0 !== $value['minify_css_legacy'] ) {
@@ -1078,12 +1078,12 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		}
 	}
 
-    /*
+	/*
      * Performs the database optimization when settings are saved with the "save and optimize" submit button"
      */
-    if ( ! empty( $_POST ) && isset( $_POST['wp_rocket_settings']['submit_optimize'] ) ) {
-        do_rocket_database_optimization();
-    }
+	if ( ! empty( $_POST ) && isset( $_POST['wp_rocket_settings']['submit_optimize'] ) ) {
+		do_rocket_database_optimization();
+	}
 
 	// Update CloudFlare Development Mode.
 	$cloudflare_update_result = array();

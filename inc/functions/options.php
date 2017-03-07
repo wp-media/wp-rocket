@@ -523,7 +523,7 @@ function get_rocket_exclude_defer_js() {
 	 * @param array $exclude_defer_js An array of URLs for the JS files to be excluded.
 	 */
 	$exclude_defer_js = apply_filters( 'rocket_exclude_defer_js', get_rocket_option( 'exclude_defer_js', array() ) );
-	
+
 	return $exclude_defer_js;
 }
 
@@ -545,7 +545,7 @@ function get_rocket_exclude_async_css() {
 	 * @param array $exclude_async_css An array of URLs for the CSS files to be excluded.
 	 */
 	$exclude_async_css = apply_filters( 'rocket_exclude_async_css', get_rocket_option( 'exclude_async_css', array() ) );
-	
+
 	return $exclude_async_css;
 }
 

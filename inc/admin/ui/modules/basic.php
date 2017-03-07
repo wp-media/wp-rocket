@@ -166,7 +166,7 @@ add_settings_field(
 			'parent'	   => 'cache_mobile',
 			'type'         => 'checkbox',
 			'label'        => __( 'Create a separate caching file for mobile visitors.', 'rocket' ),
-			'name'         => 'do_caching_mobile_files'
+			'name'         => 'do_caching_mobile_files',
 		),
 		array(
 			'parent'	   => 'cache_mobile',
@@ -268,7 +268,7 @@ add_settings_field(
 			'name'         => 'embeds',
 			'description'  => __( '<strong>Note:</strong> By activating this option, you will prevent others from embedding your site, prevent you from embedding other non-whitelisted sites and disables all JavaScript related to the feature.', 'rocket' ),
 		),
-	)	
+	)
 );
 
 add_settings_field(

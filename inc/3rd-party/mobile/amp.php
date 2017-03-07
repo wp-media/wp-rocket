@@ -10,8 +10,8 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
  * @author Remy Perona
  */
 function rocket_disable_options_on_amp() {
-    if ( defined( 'AMP_QUERY_VAR' ) && function_exists( 'is_amp_endpoint' ) && is_amp_endpoint() ) {
-        remove_filter( 'rocket_buffer', 'rocket_insert_deferred_js', 11 );
+	if ( defined( 'AMP_QUERY_VAR' ) && function_exists( 'is_amp_endpoint' ) && is_amp_endpoint() ) {
+		remove_filter( 'rocket_buffer', 'rocket_insert_deferred_js', 11 );
 
 		if ( function_exists( 'wp_resource_hints' ) ) {
 			remove_filter( 'wp_resource_hints', 'rocket_dns_prefetch', 10, 2 );
@@ -21,7 +21,7 @@ function rocket_disable_options_on_amp() {
 
 		remove_filter( 'rocket_buffer', 'rocket_minify_process', 13 );
 
-        add_filter( 'do_rocket_lazyload', '__return_false' );
-    }
+		add_filter( 'do_rocket_lazyload', '__return_false' );
+	}
 }
 add_action( 'wp', 'rocket_disable_options_on_amp' );
