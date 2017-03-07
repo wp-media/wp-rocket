@@ -1,11 +1,11 @@
-<?php 
+<?php
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 if ( class_exists( 'WPaaS\Plugin' ) ) :
 
 	add_filter( 'rocket_display_varnish_options_tab', '__return_false' );
 	add_filter( 'set_rocket_wp_cache_define', '__return_true' );
-	add_filter('rocket_htaccess_mod_expires', 'rocket_remove_html_expire_goddady');
+
 	/**
 	 * Remove expiration on HTML to prevent issue with Varnish cache
 	 *
@@ -59,8 +59,8 @@ HTACCESS;
 
 		return $rules;
 	}
+	add_filter('rocket_htaccess_mod_expires', 'rocket_remove_html_expire_goddady');
 
-	add_action( 'before_rocket_clean_domain', 'rocket_clean_domain_godaddy' );
 	/**
 	 * Call the Varnish server to purge the cache with GoDaddy.
 	 *
@@ -68,11 +68,11 @@ HTACCESS;
 	 *
 	 * @return void
 	 */
-	function rocket_clean_domain_godaddy() {			
+	function rocket_clean_domain_godaddy() {
 		rocket_godaddy_request( 'BAN' );
 	}
+	add_action( 'before_rocket_clean_domain', 'rocket_clean_domain_godaddy' );
 
-	add_action( 'before_rocket_clean_file', 'rocket_clean_file_godaddy' );
 	/**
 	 * Call the Varnish server to purge a specific URL with GoDaddy.
 	 *
@@ -80,11 +80,11 @@ HTACCESS;
 	 *
 	 * @return void
 	 */
-	function rocket_clean_file_godaddy( $url ) {			
+	function rocket_clean_file_godaddy( $url ) {
 		rocket_godaddy_request( 'PURGE', home_url( $url ) );
 	}
+	add_action( 'before_rocket_clean_file', 'rocket_clean_file_godaddy' );
 
-	add_action( 'before_rocket_clean_home', 'rocket_clean_home_godaddy', 10, 2 );
 	/**
 	 * Call the Varnish server to purge the home with GoDaddy.
 	 *
@@ -94,10 +94,12 @@ HTACCESS;
 	 */
 	function rocket_clean_home_godaddy( $root, $lang ) {
 		$home_url = trailingslashit( get_rocket_i18n_home_url( $lang ) );
-		$home_pagination_url = $home_url . trailingslashit( $GLOBALS['wp_rewrite']->pagination_base );		
+		$home_pagination_url = $home_url . trailingslashit( $GLOBALS['wp_rewrite']->pagination_base );
+
 		rocket_godaddy_request( 'PURGE', $home_url );
 		rocket_godaddy_request( 'PURGE', $home_pagination_url );
 	}
+	add_action( 'before_rocket_clean_home', 'rocket_clean_home_godaddy', 10, 2 );
 
 	/**
 	 * Perform the call to the Varnish server to purge
@@ -110,7 +112,6 @@ HTACCESS;
 	 * @return void
 	 */
 	function rocket_godaddy_request( $method, $url = null ) {
-
 		$url  = empty( $url ) ? home_url() : $url;
 		$host = parse_url( $url, PHP_URL_HOST );
 		$url  = set_url_scheme( str_replace( $host, WPaas\Plugin::vip(), $url ), 'http' );
@@ -122,15 +123,14 @@ HTACCESS;
 
 		wp_remote_request(
 			esc_url_raw( $url ),
-			[
+			array(
 				'method'   => $method,
 				'blocking' => false,
-				'headers'  => [
+				'headers'  => array(
 					'Host' => $host,
-				],
-			]
+				),
+			)
 		);
-
 	}
 
 endif;
