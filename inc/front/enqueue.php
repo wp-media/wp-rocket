@@ -2,13 +2,13 @@
 defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 
 /**
- * Wrapper for get_rocket_browser_cache_busting except when minification is active
+ * Wrapper for get_rocket_browser_cache_busting except when minification is active.
  *
  * @since 2.9
  * @author Remy Perona
  *
  * @param string $src CSS/JS file URL.
- * @return string updated CSS/JS file URL
+ * @return string updated CSS/JS file URL.
  */
 function rocket_browser_cache_busting( $src  ) {
 	$current_filter = current_filter();
@@ -27,14 +27,14 @@ add_filter( 'style_loader_src', 'rocket_browser_cache_busting', PHP_INT_MAX );
 add_filter( 'script_loader_src', 'rocket_browser_cache_busting', PHP_INT_MAX );
 
 /**
- * Create cache busting file and return the cache busting URL
+ * Create cache busting file and return the cache busting URL.
  *
  * @since 2.9.9
  * @author Remy Perona
  *
  * @param string $src CSS/JS file URL.
  * @param string $current_filter Current WordPress filter.
- * @return string updated CSS/JS file URL
+ * @return string updated CSS/JS file URL.
  */
 function get_rocket_browser_cache_busting( $src, $current_filter = '' ) {
 	global $pagenow;
@@ -42,7 +42,7 @@ function get_rocket_browser_cache_busting( $src, $current_filter = '' ) {
     if ( ! get_rocket_option( 'remove_query_strings' ) ) {
         return $src;
     }
-	
+
 	if ( 'wp-login.php' == $pagenow ) {
     	return $src;
     }
@@ -56,7 +56,7 @@ function get_rocket_browser_cache_busting( $src, $current_filter = '' ) {
 	}
 
 	/**
-	 * Filters files to exclude from cache busting
+	 * Filters files to exclude from cache busting.
 	 *
 	 * @since 2.9.3
 	 * @author Remy Perona
@@ -69,7 +69,7 @@ function get_rocket_browser_cache_busting( $src, $current_filter = '' ) {
 	if ( isset( $excluded_files[ rocket_clean_exclude_file( $src ) ] ) ) {
 		return $src;
 	}
- 
+
 	if ( empty( $current_filter ) ) {
 		$current_filter = current_filter();
 	}
@@ -96,7 +96,7 @@ function get_rocket_browser_cache_busting( $src, $current_filter = '' ) {
 			$extension = 'css';
 			break;
 	}
-    
+
     $hosts 		 = get_rocket_cnames_host( array( 'all', 'css_and_js', $extension ) );
     $hosts[] 	 = parse_url( home_url(), PHP_URL_HOST );
     $hosts_index = array_flip( $hosts );
@@ -116,20 +116,20 @@ function get_rocket_browser_cache_busting( $src, $current_filter = '' ) {
 
     $relative_src_path      = ltrim( $relative_src_path . '?' . $query, '/' );
     $full_src_path          = ABSPATH . dirname( $relative_src_path );
- 
+
 	$cache_busting_filename = preg_replace( '/\.(js|css)\?(?:timestamp|ver)=([^&]+)(?:.*)/', '-$2.$1', $relative_src_path );
- 
+
 	if (  $cache_busting_filename === $relative_src_path ) {
 		return $src;
 	}
-	
+
     /*
-     * Filters the cache busting filename
+     * Filters the cache busting filename.
      *
      * @since 2.9
      * @author Remy Perona
      *
-     * @param string $filename filename for the cache busting file
+     * @param string $filename filename for the cache busting file.
      */
     $cache_busting_filename = apply_filters( 'rocket_cache_busting_filename', $cache_busting_filename );
     $cache_busting_paths    = rocket_get_cache_busting_paths( $cache_busting_filename, $extension );
@@ -143,12 +143,12 @@ function get_rocket_browser_cache_busting( $src, $current_filter = '' ) {
     if ( ! is_array( $response ) || is_wp_error(  $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
         return $src;
     }
-	
+
     if ( 'style_loader_src' === $current_filter ) {
         if ( ! class_exists( 'Minify_CSS_UriRewriter' ) ) {
             require( WP_ROCKET_PATH . 'min/lib/Minify/CSS/UriRewriter.php' );
         }
-        // Rewrite import/url in CSS content to add the absolute path to the file
+        // Rewrite import/url in CSS content to add the absolute path to the file.
         $file_content = Minify_CSS_UriRewriter::rewrite( $response['body'], $full_src_path );
     } else {
         $file_content = $response['body'];
@@ -164,7 +164,7 @@ function get_rocket_browser_cache_busting( $src, $current_filter = '' ) {
 }
 
 /**
- * Create a static file for dynamically generated CSS/JS from PHP
+ * Create a static file for dynamically generated CSS/JS from PHP.
  *
  * @since 2.9
  * @author Remy Perona
@@ -176,7 +176,7 @@ add_filter( 'style_loader_src', 'rocket_cache_dynamic_resource', 16 );
 add_filter( 'script_loader_src', 'rocket_cache_dynamic_resource', 16 );
 function rocket_cache_dynamic_resource( $src ) {
     global $pagenow;
-	
+
 	if ( 'wp-login.php' == $pagenow ) {
     	return $src;
     }
@@ -186,7 +186,7 @@ function rocket_cache_dynamic_resource( $src ) {
     }
 
 	/**
-	 * Filters files to exclude from static dynamic resources
+	 * Filters files to exclude from static dynamic resources.
 	 *
 	 * @since 2.9.3
 	 * @author Remy Perona
@@ -231,13 +231,14 @@ function rocket_cache_dynamic_resource( $src ) {
 
     $relative_src_path = ltrim( $relative_src_path . '?' . $query, '/' );
     $full_src_path     = ABSPATH . dirname( $relative_src_path );
+
     /*
-     * Filters the dynamic resource cache filename
+     * Filters the dynamic resource cache filename.
      *
      * @since 2.9
      * @author Remy Perona
      *
-     * @param string $filename filename for the cache file
+     * @param string $filename filename for the cache file.
      */
     $cache_dynamic_resource_filename = apply_filters( 'rocket_dynamic_resource_cache_filename', preg_replace( '/\.(php)$/', '-' . $minify_key . $extension, strtok( $relative_src_path, '?' ) ) );
     $cache_busting_paths             = rocket_get_cache_busting_paths( $cache_dynamic_resource_filename, $extension );
@@ -256,7 +257,7 @@ function rocket_cache_dynamic_resource( $src ) {
         if ( ! class_exists( 'Minify_CSS_UriRewriter' ) ) {
             require( WP_ROCKET_PATH . 'min/lib/Minify/CSS/UriRewriter.php' );
         }
-        // Rewrite import/url in CSS content to add the absolute path to the file
+        // Rewrite import/url in CSS content to add the absolute path to the file.
         $file_content = Minify_CSS_UriRewriter::rewrite( $response['body'], $full_src_path );
     } else {
         $file_content = $response['body'];
