@@ -136,7 +136,7 @@ function rocket_cdn_images( $html ) {
 			list( $host, $path, $scheme, $query ) = get_rocket_parse_url( $image_url );
 			$path = trim( $path );
 
-			if ( empty( $path ) || '{href}' === $path ) {
+			if ( empty( $path ) || '{href}' === $path || '+markerData[i].thumbnail+' === $path ) {
 				continue;
 			}
 
