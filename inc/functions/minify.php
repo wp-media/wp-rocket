@@ -20,7 +20,17 @@ function rocket_fetch_and_cache_minify( $url, $pretty_url ) {
 		return true;
 	}
 
-	$minify_result = wp_safe_remote_get( $url );
+	/**
+	 * Filters the request arguments
+	 *
+	 * @author Remy Perona
+	 * @since 3.0
+	 *
+	 * @param array $args Array of argument for the request.
+	 */
+	$args = apply_filters( 'rocket_fetch_minify_args', array() );
+
+	$minify_result = wp_safe_remote_get( $url, $args );
 
 	if ( 200 !== wp_remote_retrieve_response_code( $minify_result ) ) {
 		return false;
