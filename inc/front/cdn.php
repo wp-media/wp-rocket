@@ -212,6 +212,11 @@ function rocket_cdn_inline_styles( $html ) {
             $i = 0;
             foreach( $matches[1] as $url ) {
             	$url      = trim( $url, " \t\n\r\0\x0B\"'&quot;#039;" );
+
+				if ( '#' === substr( $url, 0, 1 ) ) {
+					continue;
+				}
+
             	$url      = get_rocket_cdn_url( $url, $zone );
             	$property = str_replace( $matches[1][$i], $url, $matches[0][$i] );
             	$html     = str_replace( $matches[0][$i], $property, $html );
