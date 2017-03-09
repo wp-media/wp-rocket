@@ -211,7 +211,7 @@ function rocket_cdn_inline_styles( $html ) {
         if ( ( bool ) $matches ) {
             $i = 0;
             foreach( $matches[1] as $url ) {
-            	$url      = trim( $url, " \t\n\r\0\x0B\"'&quot;#039;" );
+            	$url = str_replace( array( ' ', '\t', '\n', '\r', '\0', '\x0B', '"', "'", '&quot;', '#039;' ), '', $url );
 
 				if ( '#' === substr( $url, 0, 1 ) ) {
 					continue;
