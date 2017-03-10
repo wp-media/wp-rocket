@@ -566,64 +566,47 @@ function rocket_valid_key() {
 }
 
 /**
- * Determine if the key is valid
+ * Determine if the key is valid.
  *
- * @since 2.2 The function do the live check and update the option
- *
- * @param string $type Transient type.
- * @param string $data Data.
- * @return array WP Rocket options array
+ * @since 2.9.7 Remove arguments ($type & $data).
+ * @since 2.9.7 Stop to auto-check the validation each 1 & 30 days.
+ * @since 2.2 The function do the live check and update the option.
  */
-function rocket_check_key( $type = 'transient_1', $data = null ) {
+function rocket_check_key() {
 	// Recheck the license.
 	$return = rocket_valid_key();
 
-	if ( ! rocket_valid_key()
-		|| ( 'transient_1' === $type && ! get_transient( 'rocket_check_licence_1' ) )
-		|| ( 'transient_30' === $type && ! get_transient( 'rocket_check_licence_30' ) )
-		|| 'live' === $type ) {
-
+	if ( ! rocket_valid_key() ) {
 		$response = wp_remote_get( WP_ROCKET_WEB_VALID, array( 'timeout' => 30 ) );
 
 		$json = ! is_wp_error( $response ) ? json_decode( $response['body'] ) : false;
 		$rocket_options = array();
 
 		if ( $json ) {
-
 			$rocket_options['consumer_key'] 	= $json->data->consumer_key;
 			$rocket_options['consumer_email']	= $json->data->consumer_email;
 
 			if ( $json->success ) {
-
 				$rocket_options['secret_key'] = $json->data->secret_key;
+
 				if ( ! get_rocket_option( 'license' ) ) {
 					$rocket_options['license'] = '1';
-				}
-
-				if ( 'live' !== $type ) {
-					if ( 'transient_1' === $type ) {
-						set_transient( 'rocket_check_licence_1', true, DAY_IN_SECONDS );
-					} elseif ( 'transient_30' === $type ) {
-						set_transient( 'rocket_check_licence_30', true, DAY_IN_SECONDS * 30 );
-					}
 				}
 			} else {
 
 				$messages = array(
-				'BAD_LICENSE'	=> __( 'Your license is not valid.', 'rocket' ),
-									'BAD_NUMBER'	=> __( 'You cannot add more websites. Upgrade your account.', 'rocket' ),
-									'BAD_SITE'		=> __( 'This website is not allowed.', 'rocket' ),
-									'BAD_KEY'		=> __( 'This license key is not accepted.', 'rocket' ),
-								);
+					'BAD_LICENSE' => __( 'Your license is not valid.', 'rocket' ),
+					'BAD_NUMBER'  => __( 'You cannot add more websites. Upgrade your account.', 'rocket' ),
+					'BAD_SITE'	  => __( 'This website is not allowed.', 'rocket' ),
+					'BAD_KEY'	  => __( 'This license key is not accepted.', 'rocket' ),
+				);
 				$rocket_options['secret_key'] = '';
 
 				add_settings_error( 'general', 'settings_updated', $messages[ $json->data->reason ], 'error' );
-
 			}
 
 			set_transient( WP_ROCKET_SLUG, $rocket_options );
 			$return = (array) $rocket_options;
-
 		}
 	}
 
