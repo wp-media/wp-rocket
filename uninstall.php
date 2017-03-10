@@ -35,7 +35,7 @@ function rocket_uninstall_rrmdir( $dir ) {
 
 	if ( $globs = glob( $dir . '/*', GLOB_NOSORT ) ) {
 	    foreach ( $globs as $file ) {
-			is_dir( $file ) ? rocket_rrmdir( $file ) : rocket_direct_filesystem()->delete( $file );
+			is_dir( $file ) ? rocket_uninstall_rrmdir( $file ) : rocket_direct_filesystem()->delete( $file );
 	    }
 	}
 
