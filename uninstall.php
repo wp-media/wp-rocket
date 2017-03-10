@@ -29,17 +29,17 @@ wp_clear_scheduled_hook( 'rocket_database_optimization_time_event' );
 function rocket_uninstall_rrmdir( $dir ) {
 
 	if ( ! is_dir( $dir ) ) {
-		rocket_direct_filesystem()->delete( $dir );
+		@unlink( $dir );
 		return;
 	}
 
 	if ( $globs = glob( $dir . '/*', GLOB_NOSORT ) ) {
 	    foreach ( $globs as $file ) {
-			is_dir( $file ) ? rocket_uninstall_rrmdir( $file ) : rocket_direct_filesystem()->delete( $file );
+			is_dir( $file ) ? rocket_uninstall_rrmdir( $file ) : @unlink( $file );
 	    }
 	}
 
-	rocket_direct_filesystem()->delete( $dir );
+	@rmdir( $dir );
 
 }
 
