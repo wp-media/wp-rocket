@@ -10,8 +10,6 @@ if ( ! is_wp_error( $cf_instance ) ) {
 			$newvalue['cloudflare_zone_id'] = $zone->result[0]->id;
 		}
 	} catch ( Exception $e ) {
-		/**
-		 * Return nothing because it's not needed
-		 */
+		return false;
 	}
 }
