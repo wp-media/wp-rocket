@@ -163,39 +163,6 @@ add_action( 'wp_rocket_first_install', 'rocket_first_install' );
  * @param string $actual_version Installed WP Rocket version.
  */
 function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
-	if ( version_compare( $actual_version, '2.1', '<' ) ) {
-		rocket_reset_white_label_values( false );
-
-		// Create minify cache folder if not exist.
-	    if ( ! is_dir( WP_ROCKET_MINIFY_CACHE_PATH ) ) {
-			rocket_mkdir_p( WP_ROCKET_MINIFY_CACHE_PATH );
-	    }
-
-		// Create config domain folder if not exist.
-	    if ( ! is_dir( WP_ROCKET_CONFIG_PATH ) ) {
-			rocket_mkdir_p( WP_ROCKET_CONFIG_PATH );
-	    }
-
-	    // Create advanced-cache.php file.
-		rocket_generate_advanced_cache_file();
-
-	    // Create config file.
-		rocket_generate_config_file();
-	}
-
-	if ( version_compare( $actual_version, '2.3.3', '<' ) ) {
-		// Clean cache.
-		rocket_clean_domain();
-
-		// Create cache files.
-		run_rocket_bot( 'cache-preload' );
-	}
-
-	if ( version_compare( $actual_version, '2.3.9', '<' ) ) {
-		// Regenerate config file.
-		rocket_generate_config_file();
-	}
-
 	if ( version_compare( $actual_version, '2.4.1', '<' ) ) {
 		// Regenerate advanced-cache.php file.
 		rocket_generate_advanced_cache_file();
