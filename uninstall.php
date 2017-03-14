@@ -5,8 +5,6 @@ defined( 'WP_UNINSTALL_PLUGIN' ) or die( 'Cheatin&#8217; uh?' );
 delete_site_transient( 'update_wprocket' );
 delete_site_transient( 'update_wprocket_response' );
 delete_transient( 'wp_rocket_settings' );
-delete_transient( 'rocket_check_licence_30' );
-delete_transient( 'rocket_check_licence_1' );
 delete_transient( 'rocket_cloudflare_ips' );
 
 // Delete WP Rocket options.
@@ -45,4 +43,5 @@ function rocket_uninstall_rrmdir( $dir ) {
 
 rocket_uninstall_rrmdir( WP_CONTENT_DIR . '/cache/wp-rocket/' );
 rocket_uninstall_rrmdir( WP_CONTENT_DIR . '/cache/min/' );
+rocket_uninstall_rrmdir( WP_CONTENT_DIR . '/cache/busting/' );
 rocket_uninstall_rrmdir( WP_CONTENT_DIR . '/wp-rocket-config/' );

@@ -28,7 +28,7 @@ function rocket_upgrader() {
 		$options = get_option( WP_ROCKET_SLUG ); // do not use get_rocket_option() here.
 		$options['version'] = WP_ROCKET_VERSION;
 
-		$keys = rocket_check_key( 'live' );
+		$keys = rocket_check_key();
 		if ( is_array( $keys ) ) {
 			$options = array_merge( $keys, $options );
 		}
@@ -39,11 +39,8 @@ function rocket_upgrader() {
 		if ( function_exists( 'opcache_reset' ) ) {
 			@opcache_reset();
 		}
-	} else {
-		if ( empty( $_POST ) && rocket_valid_key() ) {
-			rocket_check_key( 'transient_30' );
-		}
 	}
+
 	/** This filter is documented in inc/admin-bar.php */
 	if ( ! rocket_valid_key() && current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) &&
 		( ! isset( $_GET['page'] ) || 'wprocket' !== $_GET['page'] ) ) {
@@ -241,6 +238,12 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 				update_rocket_option( 'minify_js', 0 );
 			}
 		}
+	}
+
+	// Delete old transients.
+	if ( version_compare( $actual_version, '2.9.7', '<' ) ) {
+		delete_transient( 'rocket_check_licence_30' );
+		delete_transient( 'rocket_check_licence_1' );
 	}
 
 	if ( version_compare( $actual_version, '3.0', '<' ) ) {

@@ -1,11 +1,14 @@
 <?php
 defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 
-if ( ! get_rocket_option( 'minify_css' ) ) {
+global $rocket_cache_reject_uri;
+$request_uri = parse_url( $_SERVER['REQUEST_URI'], PHP_URL_PATH );
+
+if ( ! get_rocket_option( 'minify_css' ) || isset( $rocket_cache_reject_uri ) && preg_match( '#^(' . $rocket_cache_reject_uri . ')$#', $request_uri ) ) {
 	add_filter( 'style_loader_src', 'rocket_browser_cache_busting', PHP_INT_MAX );
 }
 
-if ( ! get_rocket_option( 'minify_js' ) ) {
+if ( ! get_rocket_option( 'minify_js' ) || isset( $rocket_cache_reject_uri ) && preg_match( '#^(' . $rocket_cache_reject_uri . ')$#', $request_uri ) ) {
 	add_filter( 'script_loader_src', 'rocket_browser_cache_busting', PHP_INT_MAX );
 }
 
@@ -158,11 +161,7 @@ function rocket_browser_cache_busting( $src, $current_filter = '' ) {
 function rocket_cache_dynamic_resource( $src ) {
 	global $pagenow;
 
-	if ( ! get_rocket_option( 'cache_dynamic_resource' ) ) {
-	    return $src;
-	}
-
-	if ( 'wp-login.php' === $pagenow ) {
+	if ( 'wp-login.php' == $pagenow ) {
 		return $src;
 	}
 
@@ -210,21 +209,21 @@ function rocket_cache_dynamic_resource( $src ) {
 		$full_src = home_url() . $src;
 	}
 
-	if ( false !== strpos( $full_src, '://' ) && ! isset( $hosts_index[ $file_host ] ) ) {
+	if ( strpos( $full_src, '://' ) !== false && ! isset( $hosts_index[ $file_host ] ) ) {
 		return $src;
 	}
 
 	$relative_src_path = ltrim( $relative_src_path . '?' . $query, '/' );
 	$full_src_path     = ABSPATH . dirname( $relative_src_path );
 
-	/**
-	 * Filters the dynamic resource cache filename
-	 *
-	 * @since 2.9
-	 * @author Remy Perona
-	 *
-	 * @param string $filename filename for the cache file.
-	 */
+	/*
+     * Filters the dynamic resource cache filename
+     *
+     * @since 2.9
+     * @author Remy Perona
+     *
+     * @param string $filename filename for the cache file
+     */
 	$cache_dynamic_resource_filename = apply_filters( 'rocket_dynamic_resource_cache_filename', preg_replace( '/\.(php)$/', '-' . $minify_key . $extension, strtok( $relative_src_path, '?' ) ) );
 	$cache_busting_paths             = rocket_get_cache_busting_paths( $cache_dynamic_resource_filename, $extension );
 

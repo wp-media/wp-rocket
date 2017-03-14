@@ -981,15 +981,13 @@ function rocket_settings_callback( $inputs ) {
 	}
 
 	if ( ! rocket_valid_key() ) {
-		$checked = rocket_check_key( 'live' );
-	} else {
-		$checked = rocket_check_key( 'transient_1' );
+		$checked = rocket_check_key();
 	}
 
-	if ( is_array( $checked ) ) {
-		$inputs['consumer_key'] = $checked['consumer_key'];
+	if ( isset( $checked ) && is_array( $checked ) ) {
+		$inputs['consumer_key']   = $checked['consumer_key'];
 		$inputs['consumer_email'] = $checked['consumer_email'];
-		$inputs['secret_key'] = $checked['secret_key'];
+		$inputs['secret_key']     = $checked['secret_key'];
 	}
 
 	if ( rocket_valid_key() && ! empty( $inputs['secret_key'] ) && ! isset( $inputs['ignore'] ) ) {
@@ -1078,9 +1076,7 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		}
 	}
 
-	/*
-     * Performs the database optimization when settings are saved with the "save and optimize" submit button"
-     */
+	// Performs the database optimization when settings are saved with the "save and optimize" submit button".
 	if ( ! empty( $_POST ) && isset( $_POST['wp_rocket_settings']['submit_optimize'] ) ) {
 		do_rocket_database_optimization();
 	}

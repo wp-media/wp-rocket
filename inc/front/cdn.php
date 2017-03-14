@@ -142,6 +142,11 @@ function rocket_cdn_images( $html ) {
 		foreach ( $images_match[3] as $k => $image_url ) {
 
 			list( $host, $path, $scheme, $query ) = get_rocket_parse_url( $image_url );
+			$path = trim( $path );
+
+			if ( empty( $path ) || '{href}' === $path ) {
+				continue;
+			}
 
 			if ( isset( $cnames[ $host ] ) ) {
 				continue;
@@ -150,6 +155,7 @@ function rocket_cdn_images( $html ) {
 			// Image path is relative, apply the host to it.
 			if ( empty( $host ) ) {
 				$image_url = $home_url . ltrim( $image_url, '/' );
+				$host = parse_url( $image_url, PHP_URL_HOST );
 			}
 
 			// Check if the link isn't external.

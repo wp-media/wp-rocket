@@ -717,20 +717,20 @@ function rocket_extract_js_files_from_footer() {
 		$script_src  = ( strstr( $script_src, '/wp-includes/js/' ) ) ? $wp_scripts->base_url . $script_src : $script_src;
 		$script_src_cleaned = str_replace( array( 'http:', 'https:', '//' . $home_host ), '', $script_src );
 
-		if ( ! in_array( parse_url( $script_src, PHP_URL_HOST ), $excluded_external_js, true ) && ! in_array( $script_src, $deferred_js_files, true ) && ! in_array( parse_url( $script_src, PHP_URL_PATH ), $excluded_js, true ) && ! in_array( parse_url( $script_src_cleaned, PHP_URL_PATH ), $excluded_js, true ) ) {					if ( isset( $rocket_js_enqueued_in_head[ $handle ] ) ) {
+		if ( ! in_array( parse_url( $script_src, PHP_URL_HOST ), $excluded_external_js, true ) && ! in_array( $script_src, $deferred_js_files, true ) && ! in_array( parse_url( $script_src, PHP_URL_PATH ), $excluded_js, true ) && ! in_array( parse_url( $script_src_cleaned, PHP_URL_PATH ), $excluded_js, true ) ) {				if ( isset( $rocket_js_enqueued_in_head[ $handle ] ) ) {
 				continue;
-		}
+			}
 
-		// Dequeue JS files without extension.
-		if ( pathinfo( $script_src, PATHINFO_EXTENSION ) === '' ) {
-			wp_dequeue_script( $handle );
-		}
-
-		// Add protocol on external JS to prevent conflict.
-		if ( parse_url( $script_src, PHP_URL_HOST ) !== $home_host && false === strpos( $script_src, 'http://' ) && false === strpos( $script_src, 'https://' ) ) {
-			$script_src = set_url_scheme( $script_src );
-		}
-
+			// Dequeue JS files without extension.
+			if ( pathinfo( $script_src, PATHINFO_EXTENSION ) === '' ) {
+				wp_dequeue_script( $handle );
+			}
+			
+			// Add protocol on external JS to prevent conflict.
+			if ( parse_url( $script_src, PHP_URL_HOST ) !== $home_host && false === strpos( $script_src, 'http://' ) && false === strpos( $script_src, 'https://' ) ) {
+				$script_src = set_url_scheme( $script_src );
+			}
+			
 			$rocket_enqueue_js_in_footer[ $handle ] = rocket_set_internal_url_scheme( $script_src );
 		}
 	}
