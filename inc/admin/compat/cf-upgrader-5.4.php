@@ -11,8 +11,6 @@ if ( ! is_wp_error( $cf_instance ) ) {
 			update_option( WP_ROCKET_SLUG, $options );
 		}
 	} catch ( Exception $e ) {
-		/**
-		 * Return nothing because it's not needed
-		 */
+		return false;
 	}
 }
