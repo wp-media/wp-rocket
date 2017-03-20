@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 add_settings_section( 'rocket_display_main_options', __( 'Basic options', 'rocket' ), '__return_false', 'rocket_basic' );
@@ -11,28 +11,28 @@ add_settings_field(
 	array(
 		array(
 			'type'         => 'checkbox',
-			'label'        => __('Images', 'rocket' ),
+			'label'        => __( 'Images', 'rocket' ),
 			'label_for'    => 'lazyload',
 			'label_screen' => __( 'Lazyload on images', 'rocket' ),
 		),
 		array(
 			'type'         => 'checkbox',
-			'label'        => __('Iframes & Videos', 'rocket' ),
+			'label'        => __( 'Iframes & Videos', 'rocket' ),
 			'label_for'    => 'lazyload_iframes',
 			'label_screen' => __( 'Lazyload on iframes and videos', 'rocket' ),
 		),
 		array(
 			'type'         => 'helper_description',
 			'name'         => 'lazyload',
-			'description'  => __( 'LazyLoad displays images, iframes and videos on a page only when they are visible to the user.', 'rocket') . '<br/>' .
-								  __('This mechanism reduces the number of HTTP requests and improves the loading time.', 'rocket' )
+			'description'  => __( 'LazyLoad displays images, iframes and videos on a page only when they are visible to the user.', 'rocket' ) . '<br/>' .
+								  __( 'This mechanism reduces the number of HTTP requests and improves the loading time.', 'rocket' ),
 		),
 	)
 );
 
-$rocket_maybe_disable_minify = array( 
+$rocket_maybe_disable_minify = array(
 	'type'         => 'helper_warning',
-	'name'         => 'minify_html_disabled'
+	'name'         => 'minify_html_disabled',
 );
 
 if ( rocket_maybe_disable_minify_html() || rocket_maybe_disable_minify_css() || rocket_maybe_disable_minify_js() ) {
@@ -52,7 +52,7 @@ if ( rocket_maybe_disable_minify_html() || rocket_maybe_disable_minify_css() || 
 
 	$disabled = rtrim( $disabled, ', ' );
 
-	$rocket_maybe_disable_minify['description'] = sprintf(__( 'These minification options are disabled because they are currently activated in Autoptimize. If you want to use WP Rocket minification, disable them there first: %s', 'rocket' ), $disabled );
+	$rocket_maybe_disable_minify['description'] = sprintf( __( 'These minification options are disabled because they are currently activated in Autoptimize. If you want to use WP Rocket minification, disable them there first: %s', 'rocket' ), $disabled );
 }
 
 add_settings_field(
@@ -81,7 +81,7 @@ add_settings_field(
 			'type'         => 'checkbox',
 			'label'        => 'Inline JS',
 			'name'         => 'minify_html_inline_js',
-			'label_screen' => 'Inline JS minification'
+			'label_screen' => 'Inline JS minification',
 		),
 		array(
 			'type'		   => 'checkbox',
@@ -121,7 +121,7 @@ add_settings_field(
 		array(
 			'type'			=> 'helper_description',
 			'name'			=> 'minify',
-			'description'  => __( 'Minification removes any spaces and comments present in the CSS and JavaScript files.', 'rocket' ) . '<br/>' . __( 'This mechanism reduces the weight of each file and allows a faster reading of browsers and search engines.', 'rocket' ) . '<br/>' . __( 'Concatenation combines all CSS and JavaScript files.', 'rocket' ) . '<br/>' . __( 'This mechanism reduces the number of HTTP requests and improves the loading time.', 'rocket' )
+			'description'  => __( 'Minification removes any spaces and comments present in the CSS and JavaScript files.', 'rocket' ) . '<br/>' . __( 'This mechanism reduces the weight of each file and allows a faster reading of browsers and search engines.', 'rocket' ) . '<br/>' . __( 'Concatenation combines all CSS and JavaScript files.', 'rocket' ) . '<br/>' . __( 'This mechanism reduces the number of HTTP requests and improves the loading time.', 'rocket' ),
 		),
 		array(
 			'type'			=> 'helper_warning',
@@ -132,12 +132,12 @@ add_settings_field(
 			'display'		=> ! rocket_is_white_label(),
 			'type'			=> 'helper_warning',
 			'name'			=> 'minify_help2',
-			'description'  => sprintf( __( 'In case of any errors we recommend you to turn off this option or watch the following video: <a href="%1$s" class="fancybox">%1$s</a>.', 'rocket' ), ( defined( 'WPLANG' ) && WPLANG == 'fr_FR' ) ? 'http://www.youtube.com/embed/5-Llh0ivyjs' : 'http://www.youtube.com/embed/kymoxCwW03c' )
+			'description'  => sprintf( __( 'In case of any errors we recommend you to turn off this option or watch the following video: <a href="%1$s" class="fancybox">%1$s</a>.', 'rocket' ), ( defined( 'WPLANG' ) && WPLANG === 'fr_FR' ) ? 'http://www.youtube.com/embed/5-Llh0ivyjs' : 'http://www.youtube.com/embed/kymoxCwW03c' ),
 		),
 
 	)
 );
-// Mobile plugins list
+// Mobile plugins list.
 $mobile_plugins = array(
 	'<a href="https://wordpress.org/plugins/wptouch/" target="_blank">WP Touch (Free version only)</a>',
 	'<a href="https://wordpress.org/plugins/wiziapp-create-your-own-native-iphone-app" target="_blank">wiziApp</a>',
@@ -166,7 +166,7 @@ add_settings_field(
 			'parent'	   => 'cache_mobile',
 			'type'         => 'checkbox',
 			'label'        => __( 'Create a separate caching file for mobile visitors.', 'rocket' ),
-			'name'         => 'do_caching_mobile_files'
+			'name'         => 'do_caching_mobile_files',
 		),
 		array(
 			'parent'	   => 'cache_mobile',
@@ -194,7 +194,7 @@ add_settings_field(
 			'label'		   => __( 'Enable caching for WordPress feeds.', 'rocket' ),
 			'label_for'	   => 'cache_feed',
 			'label_screen' => __( 'Feeds cache:', 'rocket' ),
-		)
+		),
 	)
 );
 add_settings_field(
@@ -205,9 +205,9 @@ add_settings_field(
 	array(
 		array(
 		    'type'         => 'checkbox',
-		    'label'        => __('Enable caching for logged in users.', 'rocket' ),
+		    'label'        => __( 'Enable caching for logged in users.', 'rocket' ),
 		    'label_for'    => 'cache_logged_user',
-		    'label_screen' =>__( 'Logged in user cache:', 'rocket' ),
+		    'label_screen' => __( 'Logged in user cache:', 'rocket' ),
 		),
 		array(
 			'parent'	   => 'cache_logged_user',
@@ -232,11 +232,11 @@ add_settings_field(
 	'rocket_display_main_options',
 	array(
 		'type'         => 'checkbox',
-		'label'        => __('Enable caching for pages with SSL protocol (<code>https://</code>).', 'rocket' ),
+		'label'        => __( 'Enable caching for pages with SSL protocol (<code>https://</code>).', 'rocket' ),
 		'label_for'    => 'cache_ssl',
 		'label_screen' => __( 'SSL cache:', 'rocket' ),
 		'default'	   => ( rocket_is_ssl_website() ) ? 1 : get_rocket_option( 'ssl', 0 ),
-		'readonly'	   => rocket_is_ssl_website()
+		'readonly'	   => rocket_is_ssl_website(),
 	)
 );
 add_settings_field(
@@ -268,7 +268,7 @@ add_settings_field(
 			'name'         => 'embeds',
 			'description'  => __( '<strong>Note:</strong> By activating this option, you will prevent others from embedding your site, prevent you from embedding other non-whitelisted sites and disables all JavaScript related to the feature.', 'rocket' ),
 		),
-	)	
+	)
 );
 
 add_settings_field(
@@ -282,7 +282,7 @@ add_settings_field(
 			'type'         => 'number',
 			'label_for'    => 'purge_cron_interval',
 			'label_screen' => __( 'Clear Cache Lifespan', 'rocket' ),
-			'fieldset'     => 'start'
+			'fieldset'     => 'start',
 		),
 		array(
 			'type'		   => 'select',
@@ -293,13 +293,13 @@ add_settings_field(
 				'SECOND_IN_SECONDS' => __( 'second(s)', 'rocket' ),
 				'MINUTE_IN_SECONDS' => __( 'minute(s)', 'rocket' ),
 				'HOUR_IN_SECONDS'   => __( 'hour(s)', 'rocket' ),
-				'DAY_IN_SECONDS'    => __( 'day(s)', 'rocket' )
-			)
+				'DAY_IN_SECONDS'    => __( 'day(s)', 'rocket' ),
+			),
 		),
 		array(
 			'type'         => 'helper_description',
 			'name'         => 'purge',
-			'description'  => __( 'By default, cache lifespan is 24 hours. This means that once created, the cache files are automatically removed after 24 hours before being recreated.', 'rocket' ). '<br/>' . __('This can be useful if you display your latest tweets or rss feeds in your sidebar, for example.', 'rocket' ),
+			'description'  => __( 'By default, cache lifespan is 24 hours. This means that once created, the cache files are automatically removed after 24 hours before being recreated.', 'rocket' ) . '<br/>' . __( 'This can be useful if you display your latest tweets or rss feeds in your sidebar, for example.', 'rocket' ),
 		),
 		array(
 			'type'         => 'helper_help',

@@ -24,7 +24,7 @@ function rocket_insert_deferred_js( $buffer ) {
 
 	foreach ( $tags_match[0] as $i => $tag ) {
 		// Strip query args.
-		$url = strtok( $tags_match[1][$i] , '?' );
+		$url = strtok( $tags_match[1][ $i ] , '?' );
 
 		$deferred_js_files = array_flip( get_rocket_deferred_js_files() );
 
@@ -42,7 +42,7 @@ add_filter( 'rocket_buffer', 'rocket_insert_deferred_js', 11 );
 
 /**
  * Defer all JS files.
- * 
+ *
  * @since 3.0
  * @author Remy Perona
  *
@@ -86,6 +86,6 @@ function rocket_defer_js( $buffer ) {
 		$buffer = str_replace( $tag, $deferred_tag, $buffer );
 	}
 
-	return $buffer;	
+	return $buffer;
 }
 add_filter( 'rocket_buffer', 'rocket_defer_js', 14 );

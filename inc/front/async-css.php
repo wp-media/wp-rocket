@@ -1,7 +1,6 @@
 <?php
 defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 
-
 /**
  * Defer loading of CSS files
  *
@@ -18,14 +17,14 @@ function rocket_async_css( $buffer ) {
 
 	$excluded_css = array_flip( get_rocket_exclude_async_css() );
 
-	// Get all css files with this regex
-    preg_match_all( apply_filters( 'rocket_async_css_regex_pattern', '/<link\s*.+rel=[\'|"](stylesheet)[\'|"]\s*.+href=[\'|"]([^\'|"]+.+)[\'|"](.+)>/iU' ), $buffer, $tags_match );
+	// Get all css files with this regex.
+	preg_match_all( apply_filters( 'rocket_async_css_regex_pattern', '/<link\s*.+rel=[\'|"](stylesheet)[\'|"]\s*.+href=[\'|"]([^\'|"]+.+)[\'|"](.+)>/iU' ), $buffer, $tags_match );
 
 	if ( ! isset( $tags_match[0] ) ) {
 		return $buffer;
 	}
 
-    foreach ( $tags_match[0] as $i => $tag ) {
+	foreach ( $tags_match[0] as $i => $tag ) {
 		// Strip query args.
 		$url = strtok( $tags_match[2][ $i ] , '?' );
 
@@ -48,7 +47,7 @@ add_filter( 'rocket_buffer', 'rocket_async_css', 15 );
 
 /**
  * Insert critical CSS in the <head>
- * 
+ *
  * @since 3.0
  * @author Remy Perona
  */
@@ -59,8 +58,8 @@ function rocket_insert_critical_css() {
 		return;
 	}
 
-	// Don't apply on wp-login.php/wp-register.php
-	if ( in_array( $pagenow, array( 'wp-login.php', 'wp-register.php' ) ) ) {
+	// Don't apply on wp-login.php/wp-register.php.
+	if ( in_array( $pagenow, array( 'wp-login.php', 'wp-register.php' ), true ) ) {
 		return;
 	}
 
@@ -76,14 +75,14 @@ function rocket_insert_critical_css() {
 
 	// This filter is documented in inc/front/process.php.
 	$rocket_cache_search = apply_filters( 'rocket_cache_search', false );
-	
+
 	// Don't apply on search page.
 	if ( is_search() && ! $rocket_cache_search ) {
 		return;
 	}
 
 	// Don't apply on excluded pages.
-	if ( in_array( $_SERVER['REQUEST_URI'] , get_rocket_option( 'cache_reject_uri' , array() ) ) ) {
+	if ( in_array( $_SERVER['REQUEST_URI'] , get_rocket_option( 'cache_reject_uri' , array() ), true ) ) {
 		return;
 	}
 
@@ -92,7 +91,7 @@ function rocket_insert_critical_css() {
 		return;
 	}
 
-	$critical_css = wp_kses( get_rocket_option( 'critical_css' ), array( '\"', "\'") );
+	$critical_css = wp_kses( get_rocket_option( 'critical_css' ), array( '\"', "\'" ) );
 
 	echo '<style id="rocket-critical-css">' . $critical_css . '</style>';
 }
@@ -100,7 +99,7 @@ add_action( 'wp_head', 'rocket_insert_critical_css', 1 );
 
 /**
  * Insert loadCSS script in <head>
- * 
+ *
  * @since 3.0
  * @author Remy Perona
  */
@@ -111,8 +110,8 @@ function rocket_insert_load_css() {
 		return;
 	}
 
-	// Don't apply on wp-login.php/wp-register.php
-	if ( in_array( $pagenow, array( 'wp-login.php', 'wp-register.php' ) ) ) {
+	// Don't apply on wp-login.php/wp-register.php.
+	if ( in_array( $pagenow, array( 'wp-login.php', 'wp-register.php' ), true ) ) {
 		return;
 	}
 
@@ -128,14 +127,14 @@ function rocket_insert_load_css() {
 
 	// This filter is documented in inc/front/process.php.
 	$rocket_cache_search = apply_filters( 'rocket_cache_search', false );
-	
+
 	// Don't apply on search page.
 	if ( is_search() && ! $rocket_cache_search ) {
 		return;
 	}
 
 	// Don't apply on excluded pages.
-	if ( in_array( $_SERVER['REQUEST_URI'] , get_rocket_option( 'cache_reject_uri' , array() ) ) ) {
+	if ( in_array( $_SERVER['REQUEST_URI'] , get_rocket_option( 'cache_reject_uri' , array() ), true ) ) {
 		return;
 	}
 

@@ -7,10 +7,12 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
  * @since 1.3.0
  *
  * @source wp-admin/includes/plugin.php
+ *
+ * @param string $plugin Plugin name.
+ * @return bool True if active, false otherwise
  */
-function rocket_is_plugin_active( $plugin )
-{
-	return in_array( $plugin, (array) get_option( 'active_plugins', array() ) ) || rocket_is_plugin_active_for_network( $plugin );
+function rocket_is_plugin_active( $plugin ) {
+	return in_array( $plugin, (array) get_option( 'active_plugins', array() ), true ) || rocket_is_plugin_active_for_network( $plugin );
 }
 
 /**
@@ -19,15 +21,17 @@ function rocket_is_plugin_active( $plugin )
  * @since 1.3.0
  *
  * @source wp-admin/includes/plugin.php
+ *
+ * @param string $plugin Plugin name.
+ * @return bool True if active, false otherwise
  */
-function rocket_is_plugin_active_for_network( $plugin )
-{
-	if ( !is_multisite() ) {
+function rocket_is_plugin_active_for_network( $plugin ) {
+	if ( ! is_multisite() ) {
 		return false;
 	}
 
-	$plugins = get_site_option( 'active_sitewide_plugins');
-	if ( isset($plugins[$plugin]) ) {
+	$plugins = get_site_option( 'active_sitewide_plugins' );
+	if ( isset( $plugins[ $plugin ] ) ) {
 		return true;
 	}
 
@@ -73,37 +77,37 @@ function rocket_clean_varnish_http_purge() {
 		$p      = parse_url( $url );
 		$path   = '';
 		$pregex = '.*';
-		
-		// Build a varniship
+
+		// Build a varniship.
 		if ( defined( 'VHP_VARNISH_IP' ) && VHP_VARNISH_IP ) {
 			$varniship = VHP_VARNISH_IP;
 		} else {
-			$varniship = get_option('vhp_varnish_ip');
+			$varniship = get_option( 'vhp_varnish_ip' );
 		}
 
-		if ( isset($p['path'] ) ) {
+		if ( isset( $p['path'] ) ) {
 			$path = $p['path'];
 		}
 
 		$schema = apply_filters( 'varnish_http_purge_schema', 'http://' );
 
-		// If we made varniship, let it sail
+		// If we made varniship, let it sail.
 		if ( ! empty( $varniship ) ) {
 			$purgeme = $schema . $varniship . $path . $pregex;
 		} else {
 			$purgeme = $schema . $p['host'] . $path . $pregex;
 		}
 
-		wp_remote_request( 
-			$purgeme, 
-			array(	
+		wp_remote_request(
+			$purgeme,
+			array(
 				'method'   => 'PURGE',
-				'blocking' => false, 
-				'headers'  => array( 
-					'host'           => $p['host'], 
-					'X-Purge-Method' => 'regex' 
-				) 
-			) 
+				'blocking' => false,
+				'headers'  => array(
+					'host'           => $p['host'],
+					'X-Purge-Method' => 'regex',
+				),
+			)
 		);
 
 		do_action( 'after_purge_url', $url, $purgeme );
@@ -117,10 +121,10 @@ function rocket_clean_varnish_http_purge() {
  *
  * @return void
  */
-function rocket_clean_pagely() {	
+function rocket_clean_pagely() {
 	if ( class_exists( 'HCSVarnish' ) ) {
 		$varnish = new HCSVarnish();
-		$varnish->HCSVarnishPurgeAll();		
+		$varnish->HCSVarnishPurgeAll();
 	}
 }
 
@@ -131,10 +135,10 @@ function rocket_clean_pagely() {
  *
  * @return void
  */
-function rocket_clean_pressidium() {	
+function rocket_clean_pressidium() {
 	if ( class_exists( 'Ninukis_Plugin' ) ) {
 		$plugin = Ninukis_Plugin::get_instance();
-		$plugin->purgeAllCaches();		
+		$plugin->purgeAllCaches();
 	}
 }
 
@@ -147,33 +151,33 @@ function rocket_clean_pressidium() {
  */
 function get_rocket_ecommerce_exclude_pages() {
 	$urls = array();
-	
-	// WooCommerce
+
+	// WooCommerce.
 	if ( function_exists( 'WC' ) && function_exists( 'wc_get_page_id' ) ) {
-		if( wc_get_page_id( 'checkout' ) && wc_get_page_id( 'checkout' ) != '-1' ) {
+		if ( wc_get_page_id( 'checkout' ) && wc_get_page_id( 'checkout' ) !== -1 ) {
 			$checkout_urls = get_rocket_i18n_translated_post_urls( wc_get_page_id( 'checkout' ), 'page', '(.*)' );
 			$urls = array_merge( $urls, $checkout_urls );
 		}
 
-		if ( wc_get_page_id( 'cart' ) && wc_get_page_id( 'cart' ) != '-1' ) {
+		if ( wc_get_page_id( 'cart' ) && wc_get_page_id( 'cart' ) !== -1 ) {
 			$cart_urls = get_rocket_i18n_translated_post_urls( wc_get_page_id( 'cart' ) );
 			$urls = array_merge( $urls, $cart_urls );
 		}
-		
-		if ( wc_get_page_id( 'myaccount' ) && wc_get_page_id( 'myaccount' ) != '-1' ) {
+
+		if ( wc_get_page_id( 'myaccount' ) && wc_get_page_id( 'myaccount' ) !== -1 ) {
 			$cart_urls = get_rocket_i18n_translated_post_urls( wc_get_page_id( 'myaccount' ), 'page', '(.*)' );
 			$urls = array_merge( $urls, $cart_urls );
 		}
 	}
-	
-	// Easy Digital Downloads
+
+	// Easy Digital Downloads.
 	$edd_settings = get_option( 'edd_settings' );
 	if ( function_exists( 'EDD' ) && isset( $edd_settings['purchase_page'] ) ) {
 		$checkout_urls = get_rocket_i18n_translated_post_urls( $edd_settings['purchase_page'], 'page', '(.*)' );
 		$urls = array_merge( $urls, $checkout_urls );
 	}
-	
-	// iThemes Exchange
+
+	// iThemes Exchange.
 	if ( function_exists( 'it_exchange_get_page_type' ) && function_exists( 'it_exchange_get_page_url' ) ) {
 		$pages = array(
 			'purchases',
@@ -183,49 +187,49 @@ function get_rocket_ecommerce_exclude_pages() {
 			'downloads',
 			'purchases',
 			'log-in',
-			'log-out'
+			'log-out',
 		);
-		
-		foreach( $pages as $page ) {
-			if ( it_exchange_get_page_type( $page ) == 'wordpress' ) {
+
+		foreach ( $pages as $page ) {
+			if ( it_exchange_get_page_type( $page ) === 'wordpress' ) {
 				$exchange_urls = get_rocket_i18n_translated_post_urls( it_exchange_get_page_wpid( $page ) );
 			} else {
 				$exchange_urls = array( parse_url( it_exchange_get_page_url( $page ), PHP_URL_PATH ) );
 			}
-			
+
 			$urls = array_merge( $urls, $exchange_urls );
 		}
 	}
-	
-	// Jigoshop
+
+	// Jigoshop.
 	if ( defined( 'JIGOSHOP_VERSION' ) && function_exists( 'jigoshop_get_page_id' ) ) {
-		if ( jigoshop_get_page_id( 'checkout' ) && jigoshop_get_page_id( 'checkout' ) != '-1' ) {
+		if ( jigoshop_get_page_id( 'checkout' ) && jigoshop_get_page_id( 'checkout' ) !== -1 ) {
 			$checkout_urls = get_rocket_i18n_translated_post_urls( jigoshop_get_page_id( 'checkout' ), 'page', '(.*)' );
 			$urls = array_merge( $urls, $checkout_urls );
 		}
-		
-		if ( jigoshop_get_page_id( 'cart' ) && jigoshop_get_page_id( 'cart' ) != '-1' ) {
+
+		if ( jigoshop_get_page_id( 'cart' ) && jigoshop_get_page_id( 'cart' ) !== -1 ) {
 			$cart_urls = get_rocket_i18n_translated_post_urls( jigoshop_get_page_id( 'cart' ) );
 			$urls = array_merge( $urls, $cart_urls );
 		}
-		
-		if ( jigoshop_get_page_id( 'myaccount' ) && jigoshop_get_page_id( 'myaccount' ) != '-1' ) {
+
+		if ( jigoshop_get_page_id( 'myaccount' ) && jigoshop_get_page_id( 'myaccount' ) !== -1 ) {
 			$cart_urls = get_rocket_i18n_translated_post_urls( jigoshop_get_page_id( 'myaccount' ), 'page', '(.*)' );
 			$urls = array_merge( $urls, $cart_urls );
 		}
 	}
-	
-	// WP Shop
-	if ( defined( 'WPSHOP_VERSION' ) && class_exists( 'wpshop_tools' ) && method_exists( 'wpshop_tools','get_page_id' ) ) {	
+
+	// WP Shop.
+	if ( defined( 'WPSHOP_VERSION' ) && class_exists( 'wpshop_tools' ) && method_exists( 'wpshop_tools','get_page_id' ) ) {
 		$pages = array(
 			'wpshop_cart_page_id',
 			'wpshop_checkout_page_id',
 			'wpshop_payment_return_page_id',
 			'wpshop_payment_return_nok_page_id',
-			'wpshop_myaccount_page_id'
+			'wpshop_myaccount_page_id',
 		);
-		
-		foreach( $pages as $page ) {
+
+		foreach ( $pages as $page ) {
 			if ( $page_id = wpshop_tools::get_page_id( get_option( $page ) ) ) {
 				$urls = array_merge( $urls, get_rocket_i18n_translated_post_urls( $page_id ) );
 			}
@@ -245,8 +249,8 @@ function get_rocket_ecommerce_exclude_pages() {
 function get_rocket_logins_exclude_pages() {
 	$urls = array();
 
-	// WPS Hide Login - Don't return its slug on deactivation
-	if ( class_exists( 'WPS_Hide_Login' ) && 'deactivate_wps-hide-login/wps-hide-login.php' != current_filter() ) {
+	// WPS Hide Login - Don't return its slug on deactivation.
+	if ( class_exists( 'WPS_Hide_Login' ) && 'deactivate_wps-hide-login/wps-hide-login.php' !== current_filter() ) {
 		$urls[] = rocket_clean_exclude_file( home_url( trailingslashit( get_option( 'whl_page' ) ) ) );
 	}
 

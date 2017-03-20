@@ -2,7 +2,6 @@
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 if ( class_exists( 'WPaaS\Plugin' ) ) :
-
 	add_filter( 'rocket_display_varnish_options_tab', '__return_false' );
 	add_filter( 'set_rocket_wp_cache_define', '__return_true' );
 
@@ -59,7 +58,7 @@ HTACCESS;
 
 		return $rules;
 	}
-	add_filter('rocket_htaccess_mod_expires', 'rocket_remove_html_expire_goddady');
+	add_filter( 'rocket_htaccess_mod_expires', 'rocket_remove_html_expire_goddady' );
 
 	/**
 	 * Call the Varnish server to purge the cache with GoDaddy.
@@ -78,6 +77,7 @@ HTACCESS;
 	 *
 	 * @since 2.9.5
 	 *
+	 * @param string $url URL to purge.
 	 * @return void
 	 */
 	function rocket_clean_file_godaddy( $url ) {
@@ -90,6 +90,8 @@ HTACCESS;
 	 *
 	 * @since 2.9.5
 	 *
+	 * @param string $root root URL.
+	 * @param string $lang language code.
 	 * @return void
 	 */
 	function rocket_clean_home_godaddy( $root, $lang ) {
@@ -118,7 +120,7 @@ HTACCESS;
 
 		wp_cache_flush();
 
-		// This forces the APC cache to flush across the server
+		// This forces the APC cache to flush across the server.
 		update_option( 'gd_system_last_cache_flush', time() );
 
 		wp_remote_request(
@@ -132,5 +134,4 @@ HTACCESS;
 			)
 		);
 	}
-
 endif;
