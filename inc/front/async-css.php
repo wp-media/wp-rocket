@@ -64,7 +64,7 @@ function rocket_insert_critical_css() {
 	}
 
 	// Don't apply if DONOTCACHEPAGE is defined.
-	if ( defined( 'DONOTCACHEPAGE' ) || ! DONOTCACHEPAGE ) {
+	if ( defined( 'DONOTCACHEPAGE' ) && DONOTCACHEPAGE ) {
 		return;
 	}
 
@@ -116,7 +116,7 @@ function rocket_insert_load_css() {
 	}
 
 	// Don't apply if DONOTCACHEPAGE is defined.
-	if ( defined( 'DONOTCACHEPAGE' ) || ! DONOTCACHEPAGE ) {
+	if ( defined( 'DONOTCACHEPAGE' ) && DONOTCACHEPAGE ) {
 		return;
 	}
 
