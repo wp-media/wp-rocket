@@ -955,7 +955,7 @@ function rocket_settings_callback( $inputs ) {
 		}
 		$file 				= wp_handle_sideload( $_FILES['import'], array( 'mimes' => $mimes ) );
 		$_POST['action'] 	= $_post_action;
-		$settings 			= @file_get_contents( $file['file'] );
+		$settings 			= rocket_direct_filesystem()->get_contents( $file['file'] );
 		if ( 'text/plain' === $file_type ) {
 			$gz 				= 'gz' . strrev( 'etalfni' );
 			$settings 			= $gz// ;
