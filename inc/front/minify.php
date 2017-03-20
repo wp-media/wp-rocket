@@ -483,7 +483,7 @@ function rocket_minify_only( $buffer, $extension ) {
 		preg_match_all( apply_filters( 'rocket_minify_js_regex_pattern', '#<script[^>]+?src=[\'|"]([^\'|"]+\.js?.+)[\'|"].*>(?:<\/script>)#i' ), $buffer, $tags_match );
 	}
 
-	$wp_content_dirname   = ltrim( str_replace( home_url(), '', WP_CONTENT_URL ), '/' ) . '/';
+	$wp_content_dirname = ltrim( str_replace( home_url(), '', WP_CONTENT_URL ), '/' ) . '/';
 
 	foreach ( $tags_match[0] as $k => $tag ) {
 		if ( 'css' === $extension ) {
@@ -505,7 +505,7 @@ function rocket_minify_only( $buffer, $extension ) {
 		}
 
 		// Check if it is a file to exclude.
-		if ( preg_match( '#^(' . $excluded_files . ')$#', $file_path ) || pathinfo( $file_path, PATHINFO_EXTENSION ) !== 'css' || preg_match( '/(?:-|\.)min.' . $extension . '/i', $file_path ) ) {
+		if ( preg_match( '#^(' . $excluded_files . ')$#', $file_path ) || pathinfo( $file_path, PATHINFO_EXTENSION ) !== 'css' && pathinfo( $file_path, PATHINFO_EXTENSION ) !== 'js' || preg_match( '/(?:-|\.)min.' . $extension . '/i', $file_path ) ) {
 			if ( ! get_rocket_option( 'remove_query_strings' ) ) {
 				continue;
 			}
