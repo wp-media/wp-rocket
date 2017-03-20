@@ -40,7 +40,7 @@ if ( version_compare( $wp_version, '4.4' ) >= 0 && get_rocket_option( 'embeds', 
 		add_filter( 'tiny_mce_plugins', 'rocket_disable_embeds_tiny_mce_plugin' );
 
 		// Remove all embeds rewrite rules.
-		add_filter( 'rewrite_rules_array', 'disable_embeds_rewrites' );
+		add_filter( 'rewrite_rules_array', 'rocket_disable_embeds_rewrites' );
 
 		// Remove filter of the oEmbed result before any HTTP requests are made.
 		remove_filter( 'pre_oembed_result', 'wp_filter_pre_oembed_result', 10 );
