@@ -97,13 +97,13 @@ function rocket_first_install() {
 			'lazyload_iframes'            => 0,
 			'minify_css'                  => 0,
 			'minify_css_key'              => $minify_css_key,
-			'minify_css_no_concat'		  => 0,
+			'minify_concatenate_css'	  => 0,
 			'minify_css_combine_all'      => 0,
 			'minify_css_legacy'			  => 0,
 			'minify_js'                   => 0,
 			'minify_js_key'               => $minify_js_key,
 			'minify_js_in_footer'         => array(),
-			'minify_js_no_concat'		  => 0,
+			'minify_concatenate_js'		  => 0,
 			'minify_js_combine_all'       => 0,
 			'minify_js_legacy'			  => 0,
 			'minify_google_fonts'         => 0,
@@ -251,12 +251,14 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 
 		if ( 0 < $options['minify_css'] ) {
 			update_rocket_option( 'minify_css_legacy', 1 );
+			update_rocket_option( 'minify_concatenate_css', 1 );
 		} else {
 			update_rocket_option( 'minify_css_legacy', 0 );
 		}
 
 		if ( 0 < $options['minify_js'] ) {
 			update_rocket_option( 'minify_js_legacy', 1 );
+			update_rocket_option( 'minify_concatenate_js', 1 );
 		} else {
 			update_rocket_option( 'minify_js_legacy', 0 );
 		}
