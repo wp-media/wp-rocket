@@ -26,19 +26,19 @@ function rocket_minify_process( $buffer ) {
 
 		// Minify CSS.
 	    if ( $enable_css && ( ! defined( 'DONOTMINIFYCSS' ) || ! DONOTMINIFYCSS ) && ! is_rocket_post_excluded_option( 'minify_css' ) ) {
-		    if ( get_rocket_option( 'minify_css_no_concat' ) ) {
-			    $buffer = rocket_minify_only( $buffer, 'css' );
-		    } else {
+		    if ( get_rocket_option( 'minify_concatenate_css' ) ) {
 			    list( $buffer, $css ) = rocket_minify_css( $buffer );
+		    } else {
+			    $buffer = rocket_minify_only( $buffer, 'css' );
 		    }
 		}
 
 	    // Minify JavaScript.
 	    if ( $enable_js && ( ! defined( 'DONOTMINIFYJS' ) || ! DONOTMINIFYJS ) && ! is_rocket_post_excluded_option( 'minify_js' ) ) {
-		    if ( get_rocket_option( 'minify_js_no_concat' ) ) {
-			    $buffer = rocket_minify_only( $buffer, 'js' );
-		    } else {
+		    if ( get_rocket_option( 'minify_concatenate_js' ) ) {
 			    list( $buffer, $js ) = rocket_minify_js( $buffer );
+		    } else {
+			    $buffer = rocket_minify_only( $buffer, 'js' );
 		    }
 		}
 
