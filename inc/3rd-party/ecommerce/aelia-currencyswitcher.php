@@ -69,7 +69,7 @@ function rocket_deactivate_aelia_currencyswitcher() {
 	// Regenerate the config file.
 	rocket_generate_config_file();
 }
-add_action( 'deactivate_woocommerce-aelia-currencyswitcher/woocommerce-aelia-currencyswitcher.php', '__rocket_deactivate_aelia_currencyswitcher', 11 );
+add_action( 'deactivate_woocommerce-aelia-currencyswitcher/woocommerce-aelia-currencyswitcher.php', 'rocket_deactivate_aelia_currencyswitcher', 11 );
 
 /**
  * Add the Aelia Currency Switcher cookies to the dynamic cookies list
