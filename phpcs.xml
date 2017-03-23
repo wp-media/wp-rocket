@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<ruleset name="WPROcket">
+<ruleset name="WPRocket">
 	<description>Caching plugin for WordPress by WP Media.</description>
 
 	<arg name="extensions" value="php"/>
