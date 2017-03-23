@@ -1,7 +1,7 @@
 <?php
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
-add_action( 'update_option_secupress_users-login_settings', '__rocket_after_update_single_options', 10, 2 );
+add_action( 'update_option_secupress_users-login_settings', 'rocket_after_update_single_options', 10, 2 );
 
 /**
  * Add SecuPress move login pages to cache exclusion
