@@ -760,20 +760,8 @@ function rocket_settings_callback( $inputs ) {
 		$inputs['exclude_js'] = array();
 	}
 
-	/*
-	 * Option : CSS files to exclude from async CSS
-	 */
-	if ( ! empty( $inputs['exclude_async_css'] ) ) {
-		if ( ! is_array( $inputs['exclude_async_css'] ) ) {
-			$inputs['exclude_async_css'] = explode( "\n", $inputs['exclude_async_css'] );
-		}
-		$inputs['exclude_async_css'] = array_map( 'trim', $inputs['exclude_async_css'] );
-		$inputs['exclude_async_css'] = array_unique( $inputs['exclude_async_css'] );
-		$inputs['exclude_async_css'] = array_map( 'rocket_sanitize_css', $inputs['exclude_async_css'] );
-		$inputs['exclude_async_css'] = array_filter( $inputs['exclude_async_css'] );
-	} else {
-		$inputs['exclude_async_css'] = array();
-	}
+	// Option: Critical CSS
+	$inputs['critical_css'] = ! empty( $inputs['critical_css'] ) ? wp_filter_nohtml_kses( $inputs['critical_css'] ) : 'critical_css';
 
 	/*
 	 * Option : JS files to exclude from defer JS
