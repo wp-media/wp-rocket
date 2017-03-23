@@ -331,26 +331,6 @@ add_settings_field(
 );
 
 add_settings_field(
-	'rocket_exclude_async_css',
-	__( '<b>CSS</b> files to exclude from async CSS:', 'rocket' ),
-	'rocket_field',
-	'rocket_advanced',
-	'rocket_display_imp_options',
-	array(
-		array(
-			'type'         => 'textarea',
-			'label_for'    => 'exclude_async_css',
-			'label_screen' => __( '<b>CSS</b> files to exclude from async CSS:', 'rocket' ),
-		),
-		array(
-			'type'         => 'helper_help',
-			'name'         => 'exclude_async_css_description',
-			'description'  => __( 'Enter the URL of <b>CSS</b> files to reject (one per line).', 'rocket' ) . '<br/>' . __( 'You can use regular expressions (regex).', 'rocket' ),
-			),
-	)
-);
-
-add_settings_field(
 	'rocket_exclude_defer_js',
 	__( '<b>JS</b> files to exclude from defer JS:', 'rocket' ),
 	'rocket_field',
