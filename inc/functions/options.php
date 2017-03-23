@@ -545,7 +545,7 @@ function get_rocket_exclude_async_css() {
 	 *
 	 * @param array $exclude_async_css An array of URLs for the CSS files to be excluded.
 	 */
-	$exclude_async_css = apply_filters( 'rocket_exclude_async_css', get_rocket_option( 'exclude_async_css', array() ) );
+	$exclude_async_css = apply_filters( 'rocket_exclude_async_css', array() );
 
 	return $exclude_async_css;
 }
