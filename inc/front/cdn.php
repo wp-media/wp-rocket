@@ -219,13 +219,11 @@ function rocket_cdn_inline_styles( $html ) {
 		preg_match_all( '/url\((?![\'\"]?data)[\"\']?([^\)\"\']+)[\"\']?\)/i', $html, $matches );
 
 		if ( (bool) $matches ) {
-			$i = 0;
-			foreach ( $matches[1] as $url ) {
+			foreach ( $matches[1] as $k => $url ) {
 				$url      = trim( $url, " \t\n\r\0\x0B\"'&quot;#039;" );
 				$url      = get_rocket_cdn_url( $url, $zone );
-				$property = str_replace( $matches[1][ $i ], $url, $matches[0][ $i ] );
-				$html     = str_replace( $matches[0][ $i ], $property, $html );
-				$i++;
+				$property = str_replace( $matches[1][ $k ], $url, $matches[0][ $k ] );
+				$html     = str_replace( $matches[0][ $k ], $property, $html );
 			}
 		}
 	}
