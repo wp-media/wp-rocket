@@ -761,7 +761,7 @@ function rocket_settings_callback( $inputs ) {
 	}
 
 	// Option: Critical CSS
-	$inputs['critical_css'] = ! empty( $inputs['critical_css'] ) ? wp_filter_nohtml_kses( $inputs['critical_css'] ) : 'critical_css';
+	$inputs['critical_css'] = ! empty( $inputs['critical_css'] ) ? wp_filter_nohtml_kses( $inputs['critical_css'] ) : '';
 
 	/*
 	 * Option : JS files to exclude from defer JS
