@@ -99,9 +99,9 @@ add_settings_field(
 		array(
 			'parent'	   => 'minify_css',
 			'type'         => 'checkbox',
-			'label'        => 'Minify without concatenation',
-			'name'         => 'minify_css_no_concat',
-			'label_screen' => 'Minify CSS without concatenation',
+			'label'        => 'Minify and concatenate CSS',
+			'name'         => 'minify_concatenate_css',
+			'label_screen' => 'Concatenate CSS files',
 		),
 		array(
 			'type'		   => 'checkbox',
@@ -114,9 +114,9 @@ add_settings_field(
 		array(
 			'parent'	   => 'minify_js',
 			'type'         => 'checkbox',
-			'label'        => 'Minify without concatenation',
-			'name'         => 'minify_js_no_concat',
-			'label_screen' => 'Minify JS without concatenation',
+			'label'        => 'Minify and concatenate JS',
+			'name'         => 'minify_concatenate_js',
+			'label_screen' => 'Concatenate CSS files',
 		),
 		array(
 			'type'			=> 'helper_description',
