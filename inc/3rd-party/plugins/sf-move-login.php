@@ -3,7 +3,7 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 if ( defined( 'SFML_VERSION' ) ) :
 	add_filter( 'rocket_cache_reject_uri', 'rocket_add_sfml_exclude_pages' );
-	add_action( 'update_option_sfml', '__rocket_after_update_single_options', 10, 2 );
+	add_action( 'update_option_sfml', 'rocket_after_update_single_options', 10, 2 );
 endif;
 
 /**
