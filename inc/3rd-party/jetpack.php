@@ -1,6 +1,6 @@
 <?php
 
-if ( defined( 'JETPACK__VERSION' ) ) :
+if ( defined( 'JETPACK__VERSION' ) && function_exists( 'jetpack_sitemap_uri' ) ) :
     $jetpack_active_modules = get_option( 'jetpack_active_modules' );
 
 	/**
