@@ -223,7 +223,7 @@ add_settings_field(
 		),
 		array(
 			'type'         => 'checkbox',
-			'label'        => __( 'Disable enhanced embeds.', 'rocket' ),
+			'label'        => __( 'Disable enhanced WordPress embeds.', 'rocket' ),
 			'label_for'    => 'embeds',
 			'label_screen' => __( 'Embeds:', 'rocket' ),
 		),
@@ -254,7 +254,6 @@ add_settings_field(
 			'label_screen' => __( 'Unit of time', 'rocket' ),
 			'fieldset'	   => 'end',
 			'options' => array(
-				'SECOND_IN_SECONDS' => __( 'second(s)', 'rocket' ),
 				'MINUTE_IN_SECONDS' => __( 'minute(s)', 'rocket' ),
 				'HOUR_IN_SECONDS'   => __( 'hour(s)', 'rocket' ),
 				'DAY_IN_SECONDS'    => __( 'day(s)', 'rocket' ),
