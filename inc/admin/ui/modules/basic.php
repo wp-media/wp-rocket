@@ -180,12 +180,6 @@ add_settings_field(
 		    'label_for'    => 'cache_logged_user',
 		    'label_screen' => __( 'Logged in user cache:', 'rocket' ),
 		),
-		array(
-			'parent'	   => 'cache_logged_user',
-			'type'         => 'helper_description',
-			'name'         => 'common_cache_logged_users_description',
-			'description'  => __( 'You can use this option if you want to only have one cache folder fo all logged in users, instead of creating one for each. This can be useful if you serve the same content for all users.', 'rocket' ),
-		),
 	)
 );
 add_settings_field(
