@@ -169,21 +169,6 @@ add_settings_field(
 	)
 );
 add_settings_field(
-	'rocket_feed',
-	__( 'Feeds cache:', 'rocket' ),
-	'rocket_field',
-	'rocket_basic',
-	'rocket_display_main_options',
-	array(
-		array(
-			'type'		   => 'checkbox',
-			'label'		   => __( 'Enable caching for WordPress feeds.', 'rocket' ),
-			'label_for'	   => 'cache_feed',
-			'label_screen' => __( 'Feeds cache:', 'rocket' ),
-		),
-	)
-);
-add_settings_field(
 	'rocket_logged_user',
 	__( 'Logged in user cache:', 'rocket' ),
 	'rocket_field', 'rocket_basic',
