@@ -70,20 +70,6 @@ add_settings_field(
 			'readonly'	   => rocket_maybe_disable_minify_html(),
 		),
 		array(
-			'parent'	   => 'minify_html',
-			'type'         => 'checkbox',
-			'label'        => 'Inline CSS',
-			'name'         => 'minify_html_inline_css',
-			'label_screen' => 'Inline CSS minification',
-		),
-		array(
-			'parent'	   => 'minify_html',
-			'type'         => 'checkbox',
-			'label'        => 'Inline JS',
-			'name'         => 'minify_html_inline_js',
-			'label_screen' => 'Inline JS minification',
-		),
-		array(
 			'type'		   => 'checkbox',
 			'label'		   => 'Google Fonts',
 			'name'		   => 'minify_google_fonts',
