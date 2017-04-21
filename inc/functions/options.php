@@ -84,17 +84,6 @@ function is_rocket_post_excluded_option( $option ) {
 }
 
 /**
- * Check if we need to cache the feeds of the website
- *
- * @since 2.7
- *
- * @return bool True if option is activated
- */
-function is_rocket_cache_feed() {
-	return get_rocket_option( 'cache_feed', false );
-}
-
-/**
  * Check if we need to cache the mobile version of the website (if available)
  *
  * @since 1.0
@@ -198,11 +187,6 @@ function get_rocket_cache_reject_uri() {
 
 	// Exclude hide login plugins.
 	$uri = array_merge( $uri, get_rocket_logins_exclude_pages() );
-
-	// Exclude feeds if option is not activated.
-	if ( ! is_rocket_cache_feed() ) {
-		$uri[] = '.*/' . $GLOBALS['wp_rewrite']->feed_base . '/?';
-	}
 
 	/**
 	 * Filter the rejected uri
