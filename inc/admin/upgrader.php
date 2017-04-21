@@ -242,7 +242,7 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		delete_transient( 'rocket_check_licence_1' );
 	}
 
-	if ( version_compare( $actual_version, '3.0', '<' ) ) {
+	if ( version_compare( $actual_version, '2.10', '<' ) ) {
 		$options = get_option( WP_ROCKET_SLUG );
 
 		if ( 0 < $options['minify_css'] ) {
