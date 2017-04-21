@@ -118,8 +118,12 @@ function get_rocket_config_file() {
 	$buffer .= '$rocket_cookie_hash = \'' . COOKIEHASH . '\'' . ";\n";
 
 	foreach ( $options as $option => $value ) {
-		if ( 'cache_ssl' === $option || 'cache_mobile' === $option || 'do_caching_mobile_files' === $option || 'secret_cache_key' === $option || 'common_cache_logged_users' === $option || 'minify_css_legacy' === $option || 'minify_js_legacy' === $option ) {
+		if ( 'cache_ssl' === $option || 'cache_mobile' === $option || 'do_caching_mobile_files' === $option || 'secret_cache_key' === $option || 'minify_css_legacy' === $option || 'minify_js_legacy' === $option ) {
 			$buffer .= '$rocket_' . $option . ' = \'' . $value . '\';' . "\n";
+		}
+
+		if ( apply_filters(  'rocket_common_cache_logged_users', false ) ) {
+			$buffer .= '$rocket_common_cache_logged_users = 1;' . "\n";
 		}
 
 		if ( 'cache_reject_uri' === $option ) {
