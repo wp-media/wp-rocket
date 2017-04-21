@@ -330,26 +330,6 @@ add_settings_field(
 	)
 );
 
-add_settings_field(
-	'rocket_exclude_defer_js',
-	__( '<b>JS</b> files to exclude from defer JS:', 'rocket' ),
-	'rocket_field',
-	'rocket_advanced',
-	'rocket_display_imp_options',
-	array(
-		array(
-			'type'         => 'textarea',
-			'label_for'    => 'exclude_defer_js',
-			'label_screen' => __( '<b>JS</b> files to exclude from defer JS:', 'rocket' ),
-		),
-		array(
-			'type'         => 'helper_help',
-			'name'         => 'exclude_defer_js_description',
-			'description'  => __( 'Enter the URL of <b>JS</b> files to reject (one per line).', 'rocket' ) . '<br/>' . __( 'You can use regular expressions (regex).', 'rocket' ),
-			),
-	)
-);
-
 if ( get_rocket_option( 'deferred_js' ) ) {
 	$deferred_js_readonly = '';
 
