@@ -204,8 +204,8 @@ add_settings_field(
 	)
 );
 add_settings_field(
-	'rocket_wordpress_features',
-	__( 'WordPress features:', 'rocket' ),
+	'rocket_wordpress_emojis',
+	__( 'Emojis:', 'rocket' ),
 	'rocket_field',
 	'rocket_basic',
 	'rocket_display_main_options',
@@ -221,6 +221,15 @@ add_settings_field(
 			'name'         => 'emoji',
 			'description'  => __( '<strong>Note:</strong> By activating this option, you will reduce the number of external HTTP requests.', 'rocket' ),
 		),
+	)
+);
+add_settings_field(
+	'rocket_wordpress_embeds',
+	__( 'Embeds:', 'rocket' ),
+	'rocket_field',
+	'rocket_basic',
+	'rocket_display_main_options',
+	array(
 		array(
 			'type'         => 'checkbox',
 			'label'        => __( 'Disable enhanced WordPress embeds.', 'rocket' ),
