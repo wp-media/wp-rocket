@@ -202,21 +202,11 @@ function rocket_minify_html( $buffer ) {
 	// Check if Minify_HTML is enables.
 	if ( ! class_exists( 'Minify_HTML' ) ) {
 
-	    $html_options = array();
+	    $html_options = array(
+		    'cssMinifier' => 'rocket_minify_inline_css',
+	    );
 
 	    require( WP_ROCKET_PATH . 'min/lib/Minify/HTML.php' );
-
-		// Check if Minify_CSS_Compressor is enabled.
-		if ( ! class_exists( 'Minify_CSS_Compressor' ) && get_rocket_option( 'minify_html_inline_css', false ) ) {
-			require( WP_ROCKET_PATH . 'min/lib/Minify/CSS/Compressor.php' );
-			$html_options['cssMinifier'] = 'rocket_minify_inline_css';
-		}
-
-		// Check if JSMin is enabled.
-		if ( ! class_exists( 'JSMin' ) && get_rocket_option( 'minify_html_inline_js', false ) ) {
-			require( WP_ROCKET_PATH . 'min/lib/JSMin.php' );
-			$html_options['jsMinifier'] = 'rocket_minify_inline_js';
-		}
 
 		/**
 		 * Filter options of minify inline HTML
@@ -242,6 +232,11 @@ add_filter( 'rocket_buffer', 'rocket_minify_html', 20 );
  * @return string Updated HTML content
  */
 function rocket_minify_inline_css( $css ) {
+	// Check if Minify_CSS_Compressor is enabled.
+	if ( ! class_exists( 'Minify_CSS_Compressor' ) ) {
+		require( WP_ROCKET_PATH . 'min/lib/Minify/CSS/Compressor.php' );
+	}
+
 	return Minify_CSS_Compressor::process( $css );
 }
 
@@ -254,6 +249,11 @@ function rocket_minify_inline_css( $css ) {
  * @return string Updated HTML content
  */
 function rocket_minify_inline_js( $js ) {
+	// Check if JSMin is enabled.
+	if ( ! class_exists( 'JSMin' ) ) {
+		require( WP_ROCKET_PATH . 'min/lib/JSMin.php' );
+	}
+
 	return JSMin::minify( $js );
 }
 
