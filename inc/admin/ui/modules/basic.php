@@ -182,13 +182,6 @@ add_settings_field(
 		),
 		array(
 			'parent'	   => 'cache_logged_user',
-			'type'         => 'checkbox',
-			'label'        => __( 'Use the same cache for all logged in users.', 'rocket' ),
-			'name'         => 'common_cache_logged_users',
-			'label_screen' => __( 'Common cache for logged in users', 'rocket' ),
-		),
-		array(
-			'parent'	   => 'cache_logged_user',
 			'type'         => 'helper_description',
 			'name'         => 'common_cache_logged_users_description',
 			'description'  => __( 'You can use this option if you want to only have one cache folder fo all logged in users, instead of creating one for each. This can be useful if you serve the same content for all users.', 'rocket' ),
