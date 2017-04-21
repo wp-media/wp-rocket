@@ -73,7 +73,7 @@ function rocket_first_install() {
 		 */
 		apply_filters( 'rocket_first_install_options', array(
 			'secret_cache_key'            => $secret_cache_key,
-			'cache_mobile'                => 0,
+			'cache_mobile'                => 1,
 			'do_caching_mobile_files'     => 0,
 			'cache_feed'				  => 0,
 			'cache_logged_user'           => 0,
