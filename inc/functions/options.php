@@ -493,7 +493,7 @@ function get_rocket_deferred_js_files() {
 /**
  * Get list of JS files to be excluded from defer JS.
  *
- * @since 3.0
+ * @since 2.10
  * @author Remy Perona
  *
  * @return array An array of URLs for the JS files to be excluded.
@@ -507,7 +507,7 @@ function get_rocket_exclude_defer_js() {
 	 *
 	 * @param array $exclude_defer_js An array of URLs for the JS files to be excluded.
 	 */
-	$exclude_defer_js = apply_filters( 'rocket_exclude_defer_js', get_rocket_option( 'exclude_defer_js', array() ) );
+	$exclude_defer_js = apply_filters( 'rocket_exclude_defer_js', array() );
 
 	return $exclude_defer_js;
 }
