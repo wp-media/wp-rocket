@@ -110,7 +110,7 @@ function get_rocket_config_file() {
 	 * @since 2.9
 	 *
 	 * @param bool False to not preserve the comments, true to preserve.
-	*/
+	 */
 	if ( apply_filters( 'rocket_minification_preserve_css_comments', false ) ) {
 		$buffer .= '$min_preserve_css_comments = true;' . "\n";
 	}
@@ -122,6 +122,14 @@ function get_rocket_config_file() {
 			$buffer .= '$rocket_' . $option . ' = \'' . $value . '\';' . "\n";
 		}
 
+		/**
+		 * Filters the activation of the common cache for logged-in users.
+		 *
+		 * @since 2.10
+		 * @author Remy Perona
+		 *
+		 * @param bool True to activate the common cache, false to ignore.
+		 */
 		if ( apply_filters(  'rocket_common_cache_logged_users', false ) ) {
 			$buffer .= '$rocket_common_cache_logged_users = 1;' . "\n";
 		}
