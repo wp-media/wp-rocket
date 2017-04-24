@@ -430,3 +430,32 @@ function rocket_do_async_job( $body ) {
 
 	wp_remote_post( admin_url( 'admin-ajax.php' ), $args );
 }
+
+/**
+ * Check if a mobile plugin is active
+ *
+ * @since 2.10
+ * @author Remy Perona
+ *
+ * @return true if a mobile plugin in the list is active, false otherwise.
+ **/
+function rocket_is_mobile_plugin_active() {
+	$mobile_plugins = array(
+		'wptouch/wptouch.php',
+		'wiziapp-create-your-own-native-iphone-app/wiziapp.php',
+		'wordpress-mobile-pack/wordpress-mobile-pack.php',
+		'wp-mobilizer/wp-mobilizer.php',
+		'wp-mobile-edition/wp-mobile-edition.php',
+		'device-theme-switcher/dts_controller.php',
+		'wp-mobile-detect/wp-mobile-detect.php',
+		'easy-social-share-buttons3/easy-social-share-buttons3.php',	
+	);
+
+	foreach ( $mobile_plugins as $mobile_plugin ) {
+		if ( is_plugin_active(  $mobile_plugin ) ) {
+			return true;
+		}
+	}
+
+	return false;
+}
