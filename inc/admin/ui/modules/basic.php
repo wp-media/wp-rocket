@@ -123,6 +123,7 @@ add_settings_field(
 
 	)
 );
+
 // Mobile plugins list.
 $mobile_plugins = array(
 	'<a href="https://wordpress.org/plugins/wptouch/" target="_blank">WP Touch (Free version only)</a>',
@@ -147,12 +148,16 @@ add_settings_field(
 			'label'		   => __( 'Enable caching for mobile devices.', 'rocket' ),
 			'label_for'	   => 'cache_mobile',
 			'label_screen' => __( 'Mobile cache:', 'rocket' ),
+			'default'	   => ( rocket_is_mobile_plugin_active() ) ? 1 : get_rocket_option( 'cache_mobile', 0 ),
+			'readonly'	   => rocket_is_mobile_plugin_active(),
 		),
 		array(
 			'parent'	   => 'cache_mobile',
 			'type'         => 'checkbox',
 			'label'        => __( 'Create a separate caching file for mobile visitors.', 'rocket' ),
 			'name'         => 'do_caching_mobile_files',
+			'default'	   => ( rocket_is_mobile_plugin_active() ) ? 1 : get_rocket_option( 'do_caching_mobile_files', 0 ),
+			'readonly'	   => rocket_is_mobile_plugin_active(),
 		),
 		array(
 			'parent'	   => 'cache_mobile',
