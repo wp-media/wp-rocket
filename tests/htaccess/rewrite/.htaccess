@@ -1,0 +1,29 @@
+<IfModule mod_mime.c>
+AddType text/html .html_gzip
+AddEncoding gzip .html_gzip
+</IfModule>
+<IfModule mod_setenvif.c>
+SetEnvIfNoCase Request_URI \.html_gzip$ no-gzip
+</IfModule>
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+RewriteCond %{HTTPS} on [OR]
+RewriteCond %{SERVER_PORT} ^443$ [OR]
+RewriteCond %{HTTP:X-Forwarded-Proto} https
+RewriteRule .* - [E=WPR_SSL:-https]
+RewriteCond %{HTTP:Accept-Encoding} gzip
+RewriteRule .* - [E=WPR_ENC:_gzip]
+RewriteCond %{REQUEST_METHOD} GET
+RewriteCond %{QUERY_STRING} =""
+RewriteCond %{HTTP:Cookie} !(wordpress_logged_in_|wp-postpass_|wptouch_switch_toggle|comment_author_|comment_author_email_) [NC]
+RewriteCond %{REQUEST_URI} !^(/wp-json/(.*))$ [NC]
+RewriteCond %{HTTP:X-Wap-Profile} !^[a-z0-9\"]+ [NC]
+RewriteCond %{HTTP:Profile} !^[a-z0-9\"]+ [NC]
+RewriteCond %{HTTP_USER_AGENT} !^.*(2.0\ MMP|240x320|400X240|AvantGo|BlackBerry|Blazer|Cellphone|Danger|DoCoMo|Elaine/3.0|EudoraWeb|Googlebot-Mobile|hiptop|IEMobile|KYOCERA/WX310K|LG/U990|MIDP-2.|MMEF20|MOT-V|NetFront|Newt|Nintendo\ Wii|Nitro|Nokia|Opera\ Mini|Palm|PlayStation\ Portable|portalmmm|Proxinet|ProxiNet|SHARP-TQ-GX10|SHG-i900|Small|SonyEricsson|Symbian\ OS|SymbianOS|TS21i-10|UP.Browser|UP.Link|webOS|Windows\ CE|WinWAP|YahooSeeker/M1A1-R2D2|iPhone|iPod|Android|BlackBerry9530|LG-TU915\ Obigo|LGE\ VX|webOS|Nokia5800).* [NC]
+RewriteCond %{HTTP_USER_AGENT} !^(w3c\ |w3c-|acs-|alav|alca|amoi|audi|avan|benq|bird|blac|blaz|brew|cell|cldc|cmd-|dang|doco|eric|hipt|htc_|inno|ipaq|ipod|jigs|kddi|keji|leno|lg-c|lg-d|lg-g|lge-|lg/u|maui|maxo|midp|mits|mmef|mobi|mot-|moto|mwbp|nec-|newt|noki|palm|pana|pant|phil|play|port|prox|qwap|sage|sams|sany|sch-|sec-|send|seri|sgh-|shar|sie-|siem|smal|smar|sony|sph-|symb|t-mo|teli|tim-|tosh|tsm-|upg1|upsi|vk-v|voda|wap-|wapa|wapi|wapp|wapr|webc|winw|winw|xda\ |xda-).* [NC]
+RewriteCond %{HTTP_USER_AGENT} !^(facebookexternalhit).* [NC]
+RewriteCond "%{DOCUMENT_ROOT}/wp-content/cache/wp-rocket/%{HTTP_HOST}%{REQUEST_URI}/index%{ENV:WPR_SSL}.html%{ENV:WPR_ENC}" -f
+RewriteRule .* "/wp-content/cache/wp-rocket/%{HTTP_HOST}%{REQUEST_URI}/index%{ENV:WPR_SSL}.html%{ENV:WPR_ENC}" [L]
+</IfModule>

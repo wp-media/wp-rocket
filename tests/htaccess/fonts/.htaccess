@@ -1,0 +1,17 @@
+# Send CORS headers if browsers request them; enabled by default for images.
+<IfModule mod_setenvif.c>
+	<IfModule mod_headers.c>
+		# mod_headers, y u no match by Content-Type?!
+		<FilesMatch "\.(cur|gif|png|jpe?g|svgz?|ico|webp)$">
+			SetEnvIf Origin ":" IS_CORS
+			Header set Access-Control-Allow-Origin "*" env=IS_CORS
+		</FilesMatch>
+	</IfModule>
+</IfModule>
+
+# Allow access to web fonts from all domains.
+<FilesMatch "\.(eot|otf|tt[cf]|woff2?)$">
+	<IfModule mod_headers.c>
+		Header set Access-Control-Allow-Origin "*"
+	</IfModule>
+</FilesMatch>
