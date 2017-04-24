@@ -121,7 +121,7 @@ add_action( 'admin_init', 'rocket_clear_cache_after_studiopress_accelerator' );
  * @since 2.5.5
  */
 function rocket_clear_cache_after_varnish_http_purge() {
-	if ( class_exists( 'VarnishPurger' ) && isset( $_GET['vhp_flush_all'] ) && current_user_can( 'manage_options' ) && check_admin_referer( 'varnish-http-purge' ) ) {
+	if ( class_exists( 'VarnishPurger' ) && isset( $_GET['vhp_flush_all'] ) && current_user_can( 'manage_options' ) && check_admin_referer( 'vhp-flush-all' ) ) {
 		// Clear all caching files.
 		rocket_clean_domain();
 
