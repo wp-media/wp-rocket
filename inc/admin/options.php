@@ -625,6 +625,12 @@ function rocket_settings_callback( $inputs ) {
 	$inputs['minify_css'] = ! empty( $inputs['minify_css'] ) ? 1 : 0;
 	$inputs['minify_js']  = ! empty( $inputs['minify_js'] ) ? 1 : 0;
 
+	// Option: mobile cache
+	if ( rocket_is_mobile_plugin_active() ) {
+		$inputs['cache_mobile'] = 1;
+		$inputs['do_caching_mobile_files'] = 1;
+	}
+
 	/*
 	 * Option : Purge delay
 	 */
@@ -636,7 +642,7 @@ function rocket_settings_callback( $inputs ) {
 	}
 
 	/*
-	 * Option : Minification CSS & JS
+	 * Option : Remove query strings
 	 */
 	$inputs['remove_query_strings'] = ! empty( $inputs['remove_query_strings'] ) ? 1 : 0;
 
