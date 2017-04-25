@@ -100,8 +100,10 @@ function rocket_browser_cache_busting( $src, $current_filter = '' ) {
 		return $src;
 	}
 
-	$relative_src_path      = ltrim( $relative_src_path . '?' . $query, '/' );
-	$full_src_path          = ABSPATH . dirname( $relative_src_path );
+	$abspath  				= wp_normalize_path(  ABSPATH );
+	$site_url 				= trailingslashit( set_url_scheme( site_url() ) );
+    $relative_src_path      = ltrim( $relative_src_path . '?' . $query, '/' );
+    $full_src_path          = dirname( str_replace( $site_url, $abspath, $full_src ) );
 
 	$cache_busting_filename = preg_replace( '/\.(js|css)\?(?:timestamp|ver)=([^&]+)(?:.*)/', '-$2.$1', $relative_src_path );
 
