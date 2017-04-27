@@ -84,7 +84,7 @@ function rocket_first_install() {
 			'cache_reject_ua'             => array(),
 			'cache_query_strings'         => array(),
 			'cache_purge_pages'           => array(),
-			'purge_cron_interval'         => 24,
+			'purge_cron_interval'         => 10,
 			'purge_cron_unit'             => 'HOUR_IN_SECONDS',
 			'exclude_css'                 => array(),
 			'exclude_js'                  => array(),
