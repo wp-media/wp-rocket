@@ -3,6 +3,34 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 add_settings_section( 'rocket_display_main_options', __( 'Basic options', 'rocket' ), '__return_false', 'rocket_basic' );
 
+add_settings_field(
+	'rocket_lazyload',
+	__( 'Lazyload:', 'rocket' ),
+	'rocket_field',
+	'rocket_basic',
+	'rocket_display_main_options',
+	array(
+		array(
+			'type'         => 'checkbox',
+			'label'        => __( 'Images', 'rocket' ),
+			'label_for'    => 'lazyload',
+			'label_screen' => __( 'Lazyload on images', 'rocket' ),
+		),
+		array(
+			'type'         => 'checkbox',
+			'label'        => __( 'Iframes & Videos', 'rocket' ),
+			'label_for'    => 'lazyload_iframes',
+			'label_screen' => __( 'Lazyload on iframes and videos', 'rocket' ),
+		),
+		array(
+			'type'         => 'helper_description',
+			'name'         => 'lazyload',
+			'description'  => __( 'LazyLoad displays images, iframes and videos on a page only when they are visible to the user.', 'rocket' ) . '<br/>' .
+								  __( 'This mechanism reduces the number of HTTP requests and improves the loading time.', 'rocket' ),
+		),
+	)
+);
+
 // Mobile plugins list.
 $mobile_plugins = array(
 	'<a href="https://wordpress.org/plugins/wptouch/" target="_blank">WP Touch (Free version only)</a>',
