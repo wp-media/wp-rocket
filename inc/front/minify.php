@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
 /**
  * Launch WP Rocket minification process (HTML, CSS and JavaScript)
  *
- * @since 3.0	New process for minification without concatenation
+ * @since 2.10	New process for minification without concatenation
  * @since 1.3.0 This process is called via the new filter rocket_buffer
  * @since 1.1.6 Minify inline CSS and JavaScript
  * @since 1.0
@@ -188,7 +188,7 @@ function rocket_concatenate_google_fonts( $buffer ) {
 /**
  * Used to minify inline HTML
  *
- * @since 3.0 Do the HTML minification independently and hook it later to prevent conflicts
+ * @since 2.10 Do the HTML minification independently and hook it later to prevent conflicts
  * @since 1.1.12
  *
  * @param string $buffer HTML content.
@@ -446,7 +446,7 @@ function rocket_minify_js( $buffer ) {
 /**
  * Minify CSS/JS files without concatenation.
  *
- * @since 3.0
+ * @since 2.10
  * @author Remy Perona
  *
  * @param string $buffer HTML code to parse.
@@ -678,7 +678,7 @@ add_action( 'wp_print_scripts', 'rocket_extract_excluded_js_files' );
 /**
  * Extract all enqueued JS files which should be insert in the footer
  *
- * @since 3.0
+ * @since 2.10
  * @since 2.6
  */
 function rocket_extract_js_files_from_footer() {
@@ -741,7 +741,7 @@ add_action( 'wp_footer', 'rocket_extract_js_files_from_footer', PHP_INT_MAX - 10
 /**
  * Get all handles for JS files already enqueued in head
  *
- * @since 3.0
+ * @since 2.10
  * @author Remy Perona
  */
 function rocket_get_js_enqueued_in_head() {

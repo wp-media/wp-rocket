@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 /**
  * Defer loading of CSS files
  *
- * @since 3.0
+ * @since 2.10
  * @author Remy Perona
  *
  * @param string $buffer HTML code.
@@ -48,7 +48,7 @@ add_filter( 'rocket_buffer', 'rocket_async_css', 15 );
 /**
  * Insert critical CSS in the <head>
  *
- * @since 3.0
+ * @since 2.10
  * @author Remy Perona
  */
 function rocket_insert_critical_css() {
@@ -100,7 +100,7 @@ add_action( 'wp_head', 'rocket_insert_critical_css', 1 );
 /**
  * Insert loadCSS script in <head>
  *
- * @since 3.0
+ * @since 2.10
  * @author Remy Perona
  */
 function rocket_insert_load_css() {

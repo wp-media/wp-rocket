@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 /**
  * Check if minify cache file exist and create it if not
  *
- * @since 3.0 Use wp_safe_remote_get() instead of curl
+ * @since 2.10 Use wp_safe_remote_get() instead of curl
  * @since 2.1
  *
  * @param string $url 		 The minified URL with Minify Library.
@@ -24,7 +24,7 @@ function rocket_fetch_and_cache_minify( $url, $pretty_url ) {
 	 * Filters the request arguments
 	 *
 	 * @author Remy Perona
-	 * @since 3.0
+	 * @since 2.10
 	 *
 	 * @param array $args Array of argument for the request.
 	 */
@@ -59,7 +59,7 @@ function rocket_fetch_and_cache_minify( $url, $pretty_url ) {
 /**
  * Minify a file and return the URL
  *
- * @since 3.0
+ * @since 2.10
  *
  * @param string $file File to minify.
  * @param bool   $force_pretty_url (default: true).

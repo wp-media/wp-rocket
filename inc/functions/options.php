@@ -502,7 +502,7 @@ function get_rocket_exclude_defer_js() {
 	/**
 	 * Filter list of Deferred JavaScript files
 	 *
-	 * @since 3.0
+	 * @since 2.10
 	 * @author Remy Perona
 	 *
 	 * @param array $exclude_defer_js An array of URLs for the JS files to be excluded.
@@ -515,7 +515,7 @@ function get_rocket_exclude_defer_js() {
 /**
  * Get list of CSS files to be excluded from async CSS.
  *
- * @since 3.0
+ * @since 2.10
  * @author Remy Perona
  *
  * @return array An array of URLs for the CSS files to be excluded.
@@ -524,7 +524,7 @@ function get_rocket_exclude_async_css() {
 	/**
 	 * Filter list of async CSS files
 	 *
-	 * @since 3.0
+	 * @since 2.10
 	 * @author Remy Perona
 	 *
 	 * @param array $exclude_async_css An array of URLs for the CSS files to be excluded.

@@ -892,7 +892,7 @@ function rocket_rrmdir( $dir, $dirs_to_preserve = array() ) {
 /**
  * Instanciate the filesystem class
  *
- * @since 3.0
+ * @since 2.10
  *
  * @return object WP_Filesystem_Direct instance
  */
