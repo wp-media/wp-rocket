@@ -124,7 +124,7 @@ function rocket_browser_cache_busting( $src, $current_filter = '' ) {
 		return $cache_busting_paths['url'];
 	}
 
-	if ( rocket_fetch_and_cache_busting( $full_src, $cache_busting_paths, $full_src_path ) ) {
+	if ( rocket_fetch_and_cache_busting( $full_src, $cache_busting_paths, $full_src_path, $current_filter ) ) {
 		return $cache_busting_paths['url'];
 	} else {
 		return $src;
@@ -213,7 +213,7 @@ function rocket_cache_dynamic_resource( $src ) {
 		return $cache_busting_paths['url'];
 	}
 
-	if ( rocket_fetch_and_cache_busting( $full_src, $cache_busting_paths, $full_src_path ) ) {
+	if ( rocket_fetch_and_cache_busting( $full_src, $cache_busting_paths, $full_src_path, $current_filter ) ) {
 		return $cache_busting_paths['url'];
 	} else {
 		return $src;

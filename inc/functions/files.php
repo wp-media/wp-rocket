@@ -1017,9 +1017,10 @@ function get_rocket_footprint( $debug = true ) {
  * @param string $src Original URL of the asset.
  * @param array  $cache_busting_paths Paths used to generated the cache busting file.
  * @param string $full_src_path Absolute path to the asset.
+ * @param string $current_filter Current filter value.
  * @return bool true if successful, false otherwise
  */
-function rocket_fetch_and_cache_busting( $src, $cache_busting_paths, $absolute_src_path ) {
+function rocket_fetch_and_cache_busting( $src, $cache_busting_paths, $absolute_src_path, $current_filter ) {
 	$response = wp_remote_get( $src );
 
 	if ( ! is_array( $response ) || is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
