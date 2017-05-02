@@ -271,6 +271,27 @@ function get_rocket_documentation_url() {
 }
 
 /**
+ * Get WP Rocket FAQ URL
+ *
+ * @since 2.10
+ * @author Remy Perona
+ *
+ * @return string URL in the correct language
+ */
+function get_rocket_faq_url() {
+	$langs  = array(
+		'fr_FR' => 'fr.docs.wp-rocket.me/category/146-faq',
+		'it_IT' => 'it.docs.wp-rocket.me/category/321-domande-frequenti',
+		'de_DE' => 'de.docs.wp-rocket.me/category/285-haufig-gestellte-fragen-faq',
+	);
+	$lang   = get_locale();
+	$faq 	= isset( $langs[ $lang ] ) ? $langs[ $lang ] : 'http://docs.wp-rocket.me/category/65-faq';
+	$url    = "http://{$faq}/?utm_source=wp-rocket&utm_medium=wp-admin&utm_term=doc-faq&utm_campaign=plugin";
+
+	return $url;
+}
+
+/**
  * Get the Activation Link for a given plugin
  *
  * @since 2.7.3
