@@ -1007,3 +1007,38 @@ function get_rocket_footprint( $debug = true ) {
 	$footprint .= ' -->';
 	return $footprint;
 }
+
+/**
+ * Fetch and save the cache busting file content
+ *
+ * @since 2.10
+ * @author Remy Perona
+ *
+ * @param string $src Original URL of the asset.
+ * @param array  $cache_busting_paths Paths used to generated the cache busting file.
+ * @param string $full_src_path Absolute path to the asset.
+ * @return bool true if successful, false otherwise
+ */
+function rocket_fetch_and_cache_busting( $src, $cache_busting_paths, $absolute_src_path ) {
+	$response = wp_remote_get( $src );
+
+	if ( ! is_array( $response ) || is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
+		return $src;
+	}
+
+	if ( 'style_loader_src' === $current_filter ) {
+		if ( ! class_exists( 'Minify_CSS_UriRewriter' ) ) {
+			require( WP_ROCKET_PATH . 'min/lib/Minify/CSS/UriRewriter.php' );
+		}
+		// Rewrite import/url in CSS content to add the absolute path to the file.
+		$file_content = Minify_CSS_UriRewriter::rewrite( $response['body'], $absolute_src_path );
+	} else {
+		$file_content = $response['body'];
+	}
+
+	if ( ! is_dir( $cache_busting_paths['bustingpath'] ) ) {
+		rocket_mkdir_p( $cache_busting_paths['bustingpath'] );
+	}
+
+	return rocket_put_content( $cache_busting_paths['filepath'], $file_content );
+}
