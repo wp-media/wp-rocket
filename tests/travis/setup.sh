@@ -8,6 +8,13 @@
 export WP_CORE_DIR=/tmp/wordpress
 export WP_TESTS_DIR=/tmp/wordpress-tests/tests/phpunit
 
+if [[ "$1" == "7.0" ]]
+then
+  wget -c https://phar.phpunit.de/phpunit-5.7.phar
+  chmod +x phpunit-5.7.phar
+  mv phpunit-5.7.phar `which phpunit`
+fi
+
 plugin_slug=$(basename $(pwd))
 plugin_dir=$WP_CORE_DIR/wp-content/plugins/$plugin_slug
 
