@@ -46,6 +46,10 @@ function rocket_field( $args ) {
 	$full = $args;
 
 	foreach ( $full as $args ) {
+		if ( ! is_array( $args ) ) {
+			continue;
+		}
+
 		if ( isset( $args['display'] ) && ! $args['display'] ) {
 			continue;
 		}
