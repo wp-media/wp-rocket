@@ -134,7 +134,7 @@ jQuery( document ).ready( function($){
 	}
 
 	// Sweet Alert for CSS & JS minification
-	$( '#minify_css, #minify_js' ).click(function() {
+	$( '#minify_css, #minify_js, #minify_concatenate_css, #minify_concatenate_js' ).click(function() {
 		obj = $(this);
 		if ( obj.is( ':checked' ) ) {
 			swal({
