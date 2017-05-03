@@ -12,6 +12,17 @@ jQuery( document ).ready( function($){
 		});
 	}
 
+	var async_css 		 = $( '#async_css' );
+	var critical_css_row = $( '.critical-css-row' );
+
+	if ( ! async_css.is( ':checked' ) ) {
+		critical_css_row.hide();
+	}
+
+	async_css.change( function() {
+		critical_css_row.toggle( 'fast' );
+	});
+
 	// Minify JS in footer
 	function rocket_minify_js_rename() {
 		$('#rkt-drop-minify_js_in_footer .rkt-module-drag').each( function(i){

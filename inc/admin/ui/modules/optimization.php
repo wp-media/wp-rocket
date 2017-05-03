@@ -277,6 +277,7 @@ add_settings_field(
 			'name'         => 'critical_css_generator',
 			'description'  => sprintf( __( '<strong>Note:</strong> You can use %1$sthis tool%2$s to generate your critical CSS.', 'rocket' ), '<a href="https://www.sitelocity.com/critical-path-css-generator" target="_blank">', '</a>' ),
 		),
+		'class' => 'critical-css-row',
 	)
 );
 
