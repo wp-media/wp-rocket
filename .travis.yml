@@ -24,7 +24,7 @@ env:
 
 # Grab the setup script and execute
 before_script:
-    - source tests/travis/setup.sh
+    - source tests/travis/setup.sh $TRAVIS_PHP_VERSION
 
 script:
  - if [[ "$TRAVIS_PHP_VERSION" == "5.6" ]] && [[ "$WP_VERSION" == "4.5" ]] && [[ "$WP_MULTISITE" == "0" ]] && [[ "$TRAVIS_BRANCH" == "master" ]]; then phpunit --configuration tests/phpunit.xml.dist --coverage-clover clover.xml; else phpunit --configuration tests/phpunit.xml.dist; fi
