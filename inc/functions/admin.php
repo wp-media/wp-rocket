@@ -285,7 +285,7 @@ function get_rocket_faq_url() {
 		'de_DE' => 'de.docs.wp-rocket.me/category/285-haufig-gestellte-fragen-faq',
 	);
 	$lang   = get_locale();
-	$faq 	= isset( $langs[ $lang ] ) ? $langs[ $lang ] : 'http://docs.wp-rocket.me/category/65-faq';
+	$faq 	= isset( $langs[ $lang ] ) ? $langs[ $lang ] : 'docs.wp-rocket.me/category/65-faq';
 	$url    = "http://{$faq}/?utm_source=wp-rocket&utm_medium=wp-admin&utm_term=doc-faq&utm_campaign=plugin";
 
 	return $url;
