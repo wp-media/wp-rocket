@@ -46,6 +46,10 @@ function rocket_field( $args ) {
 	$full = $args;
 
 	foreach ( $full as $args ) {
+		if ( ! is_array( $args ) ) {
+			continue;
+		}
+
 		if ( isset( $args['display'] ) && ! $args['display'] ) {
 			continue;
 		}
@@ -474,6 +478,7 @@ function rocket_display_options() {
 		'api-key',
 		'basic',
 		'advanced',
+		'optimization',
 		'database',
 		'preload',
 		'cloudflare',
@@ -522,14 +527,14 @@ function rocket_display_options() {
 		<h2 class="nav-tab-wrapper hide-if-no-js">
 			<?php if ( rocket_valid_key() ) { ?>
 				<a href="#tab_basic" class="nav-tab"><?php _e( 'Basic options', 'rocket' ); ?></a>
+				<a href="#tab_optimization" class="nav-tab"><?php _e( 'Files optimization', 'rocket' ); ?></a>
+				<a href="#tab_cdn" class="nav-tab"><?php _e( 'CDN', 'rocket' ); ?></a>
 				<a href="#tab_advanced" class="nav-tab"><?php _e( 'Advanced options', 'rocket' ); ?></a>
 				<a href="#tab_database" class="nav-tab"><?php _e( 'Database', 'rocket' ); ?></a>
 				<a href="#tab_preload" class="nav-tab"><?php _e( 'Preload', 'rocket' ); ?></a>
 				<?php if ( get_rocket_option( 'do_cloudflare' ) ) { ?>
 					<a href="#tab_cloudflare" class="nav-tab">CloudFlare</a>
-				<?php } ?>
-				<a href="#tab_cdn" class="nav-tab"><?php _e( 'CDN', 'rocket' ); ?></a>
-				<?php
+				<?php }
 				/** This filter is documented in inc/admin/ui/modules/vanrish.php */
 				if ( apply_filters( 'rocket_display_varnish_options_tab', true ) ) { ?>
 				<a href="#tab_varnish" class="nav-tab">Varnish</a>
@@ -539,10 +544,6 @@ function rocket_display_options() {
 				<?php } ?>
 				<a href="#tab_tools" class="nav-tab"><?php _e( 'Tools', 'rocket' ); ?></a>
 				<?php if ( ! rocket_is_white_label() ) { ?>
-					<?php if ( defined( 'WPLANG' ) && 'fr_FR' === WPLANG || 'fr_FR' === get_locale() ) { ?>
-						<a href="#tab_tutorials" class="nav-tab"><?php _e( 'Tutorials', 'rocket' ); ?></a>
-					<?php } ?>
-					<a href="#tab_faq" class="nav-tab"><?php _e( 'FAQ', 'rocket' ); ?></a>
 					<a href="#tab_support" class="nav-tab"><?php _e( 'Support', 'rocket' ); ?></a>
 				<?php } ?>
 			<?php }else { ?>
@@ -557,7 +558,10 @@ function rocket_display_options() {
 		<div id="rockettabs">
 			<?php if ( rocket_valid_key() ) { ?>
 				<div class="rkt-tab" id="tab_basic"><?php do_settings_sections( 'rocket_basic' ); ?></div>
+				<div class="rkt-tab" id="tab_optimization"><?php do_settings_sections( 'rocket_optimization' ); ?></div>
+				<div class="rkt-tab" id="tab_cdn"><?php do_settings_sections( 'rocket_cdn' ); ?></div>
 				<div class="rkt-tab" id="tab_advanced"><?php do_settings_sections( 'rocket_advanced' ); ?></div>
+				
 				<div class="rkt-tab" id="tab_database">
 					<p class="description database_description"><?php _e( 'The following options help you optimize your database.', 'rocket' ); ?></p>
 					<p class="description warning file-error database_description"><?php _e( 'Before you do any optimization, please backup your database first because any cleanup done is irreversible!', 'rocket' ); ?></p>
@@ -565,7 +569,6 @@ function rocket_display_options() {
 				</div>
 				<div class="rkt-tab" id="tab_preload"><?php do_settings_sections( 'rocket_preload' ); ?></div>
 				<div class="rkt-tab" id="tab_cloudflare" <?php echo get_rocket_option( 'do_cloudflare' ) ? '' : 'style="display:none"'; ?>><?php do_settings_sections( 'rocket_cloudflare' ); ?></div>
-				<div class="rkt-tab" id="tab_cdn"><?php do_settings_sections( 'rocket_cdn' ); ?></div>
 				<?php
 				/** This filter is documented in inc/admin/ui/modules/vanrish.php */
 				if ( apply_filters( 'rocket_display_varnish_options_tab', true ) ) { ?>
@@ -579,8 +582,6 @@ function rocket_display_options() {
 				<div class="rkt-tab<?php echo $class_hidden; ?>" id="tab_whitelabel"><?php do_settings_sections( 'rocket_white_label' ); ?></div>
 				<div class="rkt-tab" id="tab_tools"><?php do_settings_sections( 'rocket_tools' ); ?></div>
 				<?php if ( ! rocket_is_white_label() ) { ?>
-					<div class="rkt-tab" id="tab_tutorials"><?php do_settings_sections( 'rocket_tutorials' ); ?></div>
-					<div class="rkt-tab rkt-tab-txt" id="tab_faq"><?php do_settings_sections( 'rocket_faq' ); ?></div>
 					<div class="rkt-tab rkt-tab-txt" id="tab_support"><?php do_settings_sections( 'rocket_support' ); ?></div>
 				<?php } ?>
 			<?php }else { ?>
@@ -625,14 +626,24 @@ function rocket_settings_callback( $inputs ) {
 	$inputs['minify_css'] = ! empty( $inputs['minify_css'] ) ? 1 : 0;
 	$inputs['minify_js']  = ! empty( $inputs['minify_js'] ) ? 1 : 0;
 
+	// Option: mobile cache
+	if ( rocket_is_mobile_plugin_active() ) {
+		$inputs['cache_mobile'] = 1;
+		$inputs['do_caching_mobile_files'] = 1;
+	}
+
 	/*
 	 * Option : Purge delay
 	 */
 	$inputs['purge_cron_interval'] = isset( $inputs['purge_cron_interval'] ) ? (int) $inputs['purge_cron_interval'] : get_rocket_option( 'purge_cron_interval' );
 	$inputs['purge_cron_unit'] = isset( $inputs['purge_cron_unit'] ) ? $inputs['purge_cron_unit'] : get_rocket_option( 'purge_cron_unit' );
 
+	if ( $inputs['purge_cron_interval'] < 10 && 'MINUTE_IN_SECONDS' === $inputs['purge_cron_unit'] ) {
+		$inputs['purge_cron_interval'] = 10;
+	}
+
 	/*
-	 * Option : Minification CSS & JS
+	 * Option : Remove query strings
 	 */
 	$inputs['remove_query_strings'] = ! empty( $inputs['remove_query_strings'] ) ? 1 : 0;
 

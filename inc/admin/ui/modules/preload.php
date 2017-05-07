@@ -2,6 +2,38 @@
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 add_settings_section( 'rocket_display_preload_options', __( 'Preload options', 'rocket' ), '__return_false', 'rocket_preload' );
+
+add_settings_field(
+	'rocket_dns_prefetch',
+	__( 'Prefetch DNS requests:', 'rocket' ),
+	'rocket_field',
+	'rocket_preload',
+	'rocket_display_preload_options',
+	array(
+		array(
+			'type'         => 'textarea',
+			'label_for'    => 'dns_prefetch',
+			'label_screen' => __( 'Prefetch DNS requests:', 'rocket' ),
+		),
+		array(
+			'type'         => 'helper_description',
+			'name'         => 'dns_prefetch',
+			'description'  => __( 'DNS prefetching is a way for browsers to anticipate the DNS resolution of external domains from your site.', 'rocket' ) . '<br/>' . __( 'This mechanism reduces the latency of some external files.', 'rocket' ),
+			),
+		array(
+			'display'      => ! rocket_is_white_label(),
+			'type'         => 'helper_help',
+			'name'         => 'dns_prefetch',
+			'description'  => sprintf( __( 'To learn more about this option and how to use it correctly, we advise you to watch the following video: <a href="%1$s" class="fancybox">%1$s</a>.', 'rocket' ), ( defined( 'WPLANG' ) && WPLANG === 'fr_FR' ) ? 'http://www.youtube.com/embed/ElJCtUidLwc' : 'http://www.youtube.com/embed/jKMU6HgMMrA' ),
+			),
+		array(
+			'type'         => 'helper_help',
+			'name'         => 'dns_prefetch',
+			'description'  => __( '<strong>Note:</strong> Enter the domain names without their protocol, for example: <code>//ajax.googleapis.com</code> without <code>http:</code> (one per line).', 'rocket' ),
+			),
+	)
+);
+
 add_settings_field(
 	'rocket_enable_bot_preload',
 	__( 'Activate preload bot:', 'rocket' ),

@@ -40,6 +40,35 @@ function flush_rocket_htaccess( $force = false ) {
 }
 
 /**
+ * Test if a server error is triggered by our rules
+ *
+ * @since 2.10
+ * @author Remy Perona
+ *
+ * @param (string) $rules_name The rules block to test.
+ *
+ * @return (object|bool) Return true if the server does not trigger an error 500, false otherwise.
+ *                       Return a WP_Error object if the sandbox creation fails or if the HTTP request fails.
+ */
+function rocket_htaccess_rules_test( $rules_name ) {
+	$request_args = array(
+		'redirection' => 0,
+		'timeout'     => 30,
+		'sslverify'   => apply_filters( 'https_local_ssl_verify', false ),
+		'user-agent'  => 'wprocketbot',
+		'cookies'     => $_COOKIE,
+	);
+		
+	$response = wp_remote_get( site_url( WP_ROCKET_URL . 'tests/' . $rules_name . '/index.html' ), $request_args );
+
+	if ( is_wp_error( $response ) ) {
+		return $response;
+	}
+
+	return 500 !== wp_remote_retrieve_response_code( $response );
+}
+
+/**
  * Return the markers for htacces rules
  *
  * @since 1.0
@@ -210,6 +239,12 @@ function get_rocket_htaccess_mod_rewrite() {
 	*/
 	$rules = apply_filters( 'rocket_htaccess_mod_rewrite', $rules );
 
+	$rules_test = rocket_htaccess_rules_test( 'rewrite' );
+
+	if ( is_wp_error(  $rules_test ) || ! $rules_test ) {
+		return;
+	}
+
 	return $rules;
 }
 
@@ -324,6 +359,12 @@ function get_rocket_htaccess_mod_deflate() {
 	*/
 	$rules = apply_filters( 'rocket_htaccess_mod_deflate', $rules );
 
+	$rules_test = rocket_htaccess_rules_test( 'deflate' );
+
+	if ( is_wp_error(  $rules_test ) || ! $rules_test ) {
+		return;
+	}
+
 	return $rules;
 }
 
@@ -384,6 +425,12 @@ function get_rocket_htaccess_mod_expires() {
 	*/
 	$rules = apply_filters( 'rocket_htaccess_mod_expires', $rules );
 
+	$rules_test = rocket_htaccess_rules_test( 'expires' );
+
+	if ( is_wp_error(  $rules_test ) || ! $rules_test ) {
+		return;
+	}
+
 	return $rules;
 }
 
@@ -413,6 +460,12 @@ function get_rocket_htaccess_charset() {
 	 * @param string $rules Rules that will be printed.
 	*/
 	$rules = apply_filters( 'rocket_htaccess_charset', $rules );
+
+	$rules_test = rocket_htaccess_rules_test( 'charset' );
+
+	if ( is_wp_error(  $rules_test ) || ! $rules_test ) {
+		return;
+	}
 
 	return $rules;
 }
@@ -451,6 +504,12 @@ function get_rocket_htaccess_files_match() {
 	*/
 	$rules = apply_filters( 'rocket_htaccess_files_match', $rules );
 
+	$rules_test = rocket_htaccess_rules_test( 'files_match' );
+
+	if ( is_wp_error(  $rules_test ) || ! $rules_test ) {
+		return;
+	}
+
 	return $rules;
 }
 
@@ -478,6 +537,12 @@ function get_rocket_htaccess_etag() {
 	 * @param string $rules Rules that will be printed.
 	*/
 	$rules = apply_filters( 'rocket_htaccess_etag', $rules );
+
+	$rules_test = rocket_htaccess_rules_test( 'etag' );
+
+	if ( is_wp_error(  $rules_test ) || ! $rules_test ) {
+		return;
+	}
 
 	return $rules;
 }
@@ -520,6 +585,12 @@ function get_rocket_htaccess_web_fonts_access() {
 	 * @param string $rules Rules that will be printed.
 	*/
 	$rules = apply_filters( 'rocket_htaccess_web_fonts_access', $rules );
+
+	$rules_test = rocket_htaccess_rules_test( 'fonts' );
+
+	if ( is_wp_error(  $rules_test ) || ! $rules_test ) {
+		return;
+	}
 
 	return $rules;
 }

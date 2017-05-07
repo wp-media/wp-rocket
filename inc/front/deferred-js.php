@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 /**
  * Add defer attribute to script that should be deferred
  *
- * @since 3.0 Use defer attribute instead of labJS
+ * @since 2.10 Use defer attribute instead of labJS
  * @since 1.1.0
  *
  * @param string $buffer HTML content in the buffer.
@@ -43,7 +43,7 @@ add_filter( 'rocket_buffer', 'rocket_insert_deferred_js', 11 );
 /**
  * Defer all JS files.
  *
- * @since 3.0
+ * @since 2.10
  * @author Remy Perona
  *
  * @param string $buffer HTML content.

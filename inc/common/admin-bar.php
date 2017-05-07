@@ -233,6 +233,14 @@ function rocket_admin_bar( $wp_admin_bar ) {
 			'href'   => get_rocket_documentation_url(),
 		));
 
+		// Go to WP Rocket FAQ.
+		$wp_admin_bar->add_menu( array(
+			'parent' => 'wp-rocket',
+			'id'     => 'faq',
+			'title'  => __( 'FAQ', 'rocket' ),
+			'href'   => get_rocket_faq_url(),
+		));
+
 		// Go to WP Rocket Support.
 		$wp_admin_bar->add_menu( array(
 			'parent' => 'wp-rocket',

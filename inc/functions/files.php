@@ -110,7 +110,7 @@ function get_rocket_config_file() {
 	 * @since 2.9
 	 *
 	 * @param bool False to not preserve the comments, true to preserve.
-	*/
+	 */
 	if ( apply_filters( 'rocket_minification_preserve_css_comments', false ) ) {
 		$buffer .= '$min_preserve_css_comments = true;' . "\n";
 	}
@@ -118,8 +118,20 @@ function get_rocket_config_file() {
 	$buffer .= '$rocket_cookie_hash = \'' . COOKIEHASH . '\'' . ";\n";
 
 	foreach ( $options as $option => $value ) {
-		if ( 'cache_ssl' === $option || 'cache_mobile' === $option || 'do_caching_mobile_files' === $option || 'secret_cache_key' === $option || 'common_cache_logged_users' === $option || 'minify_css_legacy' === $option || 'minify_js_legacy' === $option ) {
+		if ( 'cache_ssl' === $option || 'cache_mobile' === $option || 'do_caching_mobile_files' === $option || 'secret_cache_key' === $option || 'minify_css_legacy' === $option || 'minify_js_legacy' === $option ) {
 			$buffer .= '$rocket_' . $option . ' = \'' . $value . '\';' . "\n";
+		}
+
+		/**
+		 * Filters the activation of the common cache for logged-in users.
+		 *
+		 * @since 2.10
+		 * @author Remy Perona
+		 *
+		 * @param bool True to activate the common cache, false to ignore.
+		 */
+		if ( apply_filters(  'rocket_common_cache_logged_users', false ) ) {
+			$buffer .= '$rocket_common_cache_logged_users = 1;' . "\n";
 		}
 
 		if ( 'cache_reject_uri' === $option ) {
@@ -880,7 +892,7 @@ function rocket_rrmdir( $dir, $dirs_to_preserve = array() ) {
 /**
  * Instanciate the filesystem class
  *
- * @since 3.0
+ * @since 2.10
  *
  * @return object WP_Filesystem_Direct instance
  */
@@ -994,4 +1006,40 @@ function get_rocket_footprint( $debug = true ) {
 	}
 	$footprint .= ' -->';
 	return $footprint;
+}
+
+/**
+ * Fetch and save the cache busting file content
+ *
+ * @since 2.10
+ * @author Remy Perona
+ *
+ * @param string $src Original URL of the asset.
+ * @param array  $cache_busting_paths Paths used to generated the cache busting file.
+ * @param string $full_src_path Absolute path to the asset.
+ * @param string $current_filter Current filter value.
+ * @return bool true if successful, false otherwise
+ */
+function rocket_fetch_and_cache_busting( $src, $cache_busting_paths, $absolute_src_path, $current_filter ) {
+	$response = wp_remote_get( $src );
+
+	if ( ! is_array( $response ) || is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
+		return $src;
+	}
+
+	if ( 'style_loader_src' === $current_filter ) {
+		if ( ! class_exists( 'Minify_CSS_UriRewriter' ) ) {
+			require( WP_ROCKET_PATH . 'min/lib/Minify/CSS/UriRewriter.php' );
+		}
+		// Rewrite import/url in CSS content to add the absolute path to the file.
+		$file_content = Minify_CSS_UriRewriter::rewrite( $response['body'], $absolute_src_path );
+	} else {
+		$file_content = $response['body'];
+	}
+
+	if ( ! is_dir( $cache_busting_paths['bustingpath'] ) ) {
+		rocket_mkdir_p( $cache_busting_paths['bustingpath'] );
+	}
+
+	return rocket_put_content( $cache_busting_paths['filepath'], $file_content );
 }

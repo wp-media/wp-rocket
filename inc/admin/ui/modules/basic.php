@@ -2,6 +2,7 @@
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 add_settings_section( 'rocket_display_main_options', __( 'Basic options', 'rocket' ), '__return_false', 'rocket_basic' );
+
 add_settings_field(
 	'rocket_lazyload',
 	__( 'Lazyload:', 'rocket' ),
@@ -30,125 +31,6 @@ add_settings_field(
 	)
 );
 
-$rocket_maybe_disable_minify = array(
-	'type'         => 'helper_warning',
-	'name'         => 'minify_html_disabled',
-);
-
-if ( rocket_maybe_disable_minify_html() || rocket_maybe_disable_minify_css() || rocket_maybe_disable_minify_js() ) {
-	$disabled = '';
-
-	if ( rocket_maybe_disable_minify_html() ) {
-		$disabled .= 'HTML, ';
-	}
-
-	if ( rocket_maybe_disable_minify_css() ) {
-		$disabled .= 'CSS, ';
-	}
-
-	if ( rocket_maybe_disable_minify_js() ) {
-		$disabled .= 'JS, ';
-	}
-
-	$disabled = rtrim( $disabled, ', ' );
-
-	$rocket_maybe_disable_minify['description'] = sprintf( __( 'These minification options are disabled because they are currently activated in Autoptimize. If you want to use WP Rocket minification, disable them there first: %s', 'rocket' ), $disabled );
-}
-
-add_settings_field(
-	'rocket_minify',
-	 __( 'Files optimisation:<br/><span class="description">(Minification & Concatenation)</span>', 'rocket' ),
-	'rocket_field',
-	'rocket_basic',
-	'rocket_display_main_options',
-	array(
-		array(
-			'type'         => 'checkbox',
-			'label'        => 'HTML',
-			'name'         => 'minify_html',
-			'label_screen' => __( 'HTML Files minification', 'rocket' ),
-			'readonly'	   => rocket_maybe_disable_minify_html(),
-		),
-		array(
-			'parent'	   => 'minify_html',
-			'type'         => 'checkbox',
-			'label'        => 'Inline CSS',
-			'name'         => 'minify_html_inline_css',
-			'label_screen' => 'Inline CSS minification',
-		),
-		array(
-			'parent'	   => 'minify_html',
-			'type'         => 'checkbox',
-			'label'        => 'Inline JS',
-			'name'         => 'minify_html_inline_js',
-			'label_screen' => 'Inline JS minification',
-		),
-		array(
-			'type'		   => 'checkbox',
-			'label'		   => 'Google Fonts',
-			'name'		   => 'minify_google_fonts',
-			'label_screen' => __( 'Google Fonts minification', 'rocket' ),
-		),
-		array(
-			'type'         => 'checkbox',
-			'label'        => 'CSS',
-			'name'         => 'minify_css',
-			'label_screen' => __( 'CSS Files minification', 'rocket' ),
-			'readonly'	   => rocket_maybe_disable_minify_css(),
-		),
-		array(
-			'parent'	   => 'minify_css',
-			'type'         => 'checkbox',
-			'label'        => 'Minify and concatenate CSS',
-			'name'         => 'minify_concatenate_css',
-			'label_screen' => 'Concatenate CSS files',
-		),
-		array(
-			'type'		   => 'checkbox',
-			'label'		   => 'JS',
-			'name'		   => 'minify_js',
-			'label_screen' => __( 'JS Files minification', 'rocket' ),
-			'readonly'	   => rocket_maybe_disable_minify_js(),
-		),
-		$rocket_maybe_disable_minify,
-		array(
-			'parent'	   => 'minify_js',
-			'type'         => 'checkbox',
-			'label'        => 'Minify and concatenate JS',
-			'name'         => 'minify_concatenate_js',
-			'label_screen' => 'Concatenate CSS files',
-		),
-		array(
-			'type'			=> 'helper_description',
-			'name'			=> 'minify',
-			'description'  => __( 'Minification removes any spaces and comments present in the CSS and JavaScript files.', 'rocket' ) . '<br/>' . __( 'This mechanism reduces the weight of each file and allows a faster reading of browsers and search engines.', 'rocket' ) . '<br/>' . __( 'Concatenation combines all CSS and JavaScript files.', 'rocket' ) . '<br/>' . __( 'This mechanism reduces the number of HTTP requests and improves the loading time.', 'rocket' ),
-		),
-		array(
-			'type'			=> 'helper_warning',
-			'name'			=> 'minify_help1',
-			'description'  => __( 'Concatenating files can cause display errors.', 'rocket' ),
-		),
-		array(
-			'display'		=> ! rocket_is_white_label(),
-			'type'			=> 'helper_warning',
-			'name'			=> 'minify_help2',
-			'description'  => sprintf( __( 'In case of any errors we recommend you to turn off this option or watch the following video: <a href="%1$s" class="fancybox">%1$s</a>.', 'rocket' ), ( defined( 'WPLANG' ) && WPLANG === 'fr_FR' ) ? 'http://www.youtube.com/embed/5-Llh0ivyjs' : 'http://www.youtube.com/embed/kymoxCwW03c' ),
-		),
-
-	)
-);
-// Mobile plugins list.
-$mobile_plugins = array(
-	'<a href="https://wordpress.org/plugins/wptouch/" target="_blank">WP Touch (Free version only)</a>',
-	'<a href="https://wordpress.org/plugins/wiziapp-create-your-own-native-iphone-app" target="_blank">wiziApp</a>',
-	'<a href="https://wordpress.org/plugins/wordpress-mobile-pack/" target="_blank">WordPress Mobile Pack</a>',
-	'<a href="https://wordpress.org/plugins/wp-mobilizer/" target="_blank">WP-Mobilizer</a>',
-	'<a href="https://wordpress.org/plugins/wp-mobile-edition/" target="_blank">WP Mobile Edition</a>',
-	'<a href="https://wordpress.org/plugins/device-theme-switcher/" target="_blank">Device Theme Switcher</a>',
-	'<a href="https://wordpress.org/plugins/wp-mobile-detect/" target="_blank">WP Mobile Detect</a>',
-	'<a href="https://codecanyon.net/item/easy-social-share-buttons-for-wordpress/6394476" target="_blank">Easy Social Share Buttons</a>',
-);
-
 add_settings_field(
 	'rocket_mobile',
 	__( 'Mobile cache:', 'rocket' ),
@@ -161,39 +43,22 @@ add_settings_field(
 			'label'		   => __( 'Enable caching for mobile devices.', 'rocket' ),
 			'label_for'	   => 'cache_mobile',
 			'label_screen' => __( 'Mobile cache:', 'rocket' ),
+			'default'	   => ( rocket_is_mobile_plugin_active() ) ? 1 : get_rocket_option( 'cache_mobile', 0 ),
+			'readonly'	   => rocket_is_mobile_plugin_active(),
 		),
 		array(
 			'parent'	   => 'cache_mobile',
 			'type'         => 'checkbox',
 			'label'        => __( 'Create a separate caching file for mobile visitors.', 'rocket' ),
 			'name'         => 'do_caching_mobile_files',
+			'default'	   => ( rocket_is_mobile_plugin_active() ) ? 1 : get_rocket_option( 'do_caching_mobile_files', 0 ),
+			'readonly'	   => rocket_is_mobile_plugin_active(),
 		),
 		array(
 			'parent'	   => 'cache_mobile',
 			'type'         => 'helper_description',
 			'name'         => 'mobile',
 			'description'  => __( 'Are you using a dedicated mobile theme or <code>wp_is_mobile()</code>? If so, you should activate this option to serve a specific caching file for your mobile visitors.', 'rocket' ),
-		),
-		array(
-			'parent'	   => 'cache_mobile',
-			'type'         => 'helper_warning',
-			'name'         => 'mobile',
-			'description'  => wp_sprintf( __( 'If you are using one of these plugins, you must activate this option: %l', 'rocket' ), $mobile_plugins ),
-		),
-	)
-);
-add_settings_field(
-	'rocket_feed',
-	__( 'Feeds cache:', 'rocket' ),
-	'rocket_field',
-	'rocket_basic',
-	'rocket_display_main_options',
-	array(
-		array(
-			'type'		   => 'checkbox',
-			'label'		   => __( 'Enable caching for WordPress feeds.', 'rocket' ),
-			'label_for'	   => 'cache_feed',
-			'label_screen' => __( 'Feeds cache:', 'rocket' ),
 		),
 	)
 );
@@ -208,19 +73,6 @@ add_settings_field(
 		    'label'        => __( 'Enable caching for logged in users.', 'rocket' ),
 		    'label_for'    => 'cache_logged_user',
 		    'label_screen' => __( 'Logged in user cache:', 'rocket' ),
-		),
-		array(
-			'parent'	   => 'cache_logged_user',
-			'type'         => 'checkbox',
-			'label'        => __( 'Use the same cache for all logged in users.', 'rocket' ),
-			'name'         => 'common_cache_logged_users',
-			'label_screen' => __( 'Common cache for logged in users', 'rocket' ),
-		),
-		array(
-			'parent'	   => 'cache_logged_user',
-			'type'         => 'helper_description',
-			'name'         => 'common_cache_logged_users_description',
-			'description'  => __( 'You can use this option if you want to only have one cache folder fo all logged in users, instead of creating one for each. This can be useful if you serve the same content for all users.', 'rocket' ),
 		),
 	)
 );
@@ -240,8 +92,8 @@ add_settings_field(
 	)
 );
 add_settings_field(
-	'rocket_wordpress_features',
-	__( 'WordPress features:', 'rocket' ),
+	'rocket_wordpress_emojis',
+	__( 'Emojis:', 'rocket' ),
 	'rocket_field',
 	'rocket_basic',
 	'rocket_display_main_options',
@@ -257,9 +109,18 @@ add_settings_field(
 			'name'         => 'emoji',
 			'description'  => __( '<strong>Note:</strong> By activating this option, you will reduce the number of external HTTP requests.', 'rocket' ),
 		),
+	)
+);
+add_settings_field(
+	'rocket_wordpress_embeds',
+	__( 'Embeds:', 'rocket' ),
+	'rocket_field',
+	'rocket_basic',
+	'rocket_display_main_options',
+	array(
 		array(
 			'type'         => 'checkbox',
-			'label'        => __( 'Disable enhanced embeds.', 'rocket' ),
+			'label'        => __( 'Disable enhanced WordPress embeds.', 'rocket' ),
 			'label_for'    => 'embeds',
 			'label_screen' => __( 'Embeds:', 'rocket' ),
 		),
@@ -290,7 +151,6 @@ add_settings_field(
 			'label_screen' => __( 'Unit of time', 'rocket' ),
 			'fieldset'	   => 'end',
 			'options' => array(
-				'SECOND_IN_SECONDS' => __( 'second(s)', 'rocket' ),
 				'MINUTE_IN_SECONDS' => __( 'minute(s)', 'rocket' ),
 				'HOUR_IN_SECONDS'   => __( 'hour(s)', 'rocket' ),
 				'DAY_IN_SECONDS'    => __( 'day(s)', 'rocket' ),

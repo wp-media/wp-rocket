@@ -23,8 +23,6 @@ if ( class_exists( 'autoptimizeConfig' ) ) :
 	function rocket_maybe_deactivate_minify_html( $old_value, $value ) {
 		if ( $value !== $old_value && 'on' === $value ) {
 			update_rocket_option( 'minify_html', 0 );
-			update_rocket_option( 'minify_html_inline_css', 0 );
-			update_rocket_option( 'minify_html_inline_js', 0 );
 		}
 	}
 	add_action( 'update_option_autoptimize_html', 'rocket_maybe_deactivate_minify_html', 10, 2 );
@@ -41,6 +39,7 @@ if ( class_exists( 'autoptimizeConfig' ) ) :
 	function rocket_maybe_deactivate_minify_css( $old_value, $value ) {
 		if ( $value !== $old_value && 'on' === $value ) {
 			update_rocket_option( 'minify_css', 0 );
+			update_rocket_option( 'minify_concatenate_css', 0 );
 		}
 	}
 	add_action( 'update_option_autoptimize_css', 'rocket_maybe_deactivate_minify_css', 10, 2 );
@@ -57,9 +56,26 @@ if ( class_exists( 'autoptimizeConfig' ) ) :
 	function rocket_maybe_deactivate_minify_js( $old_value, $value ) {
 		if ( $value !== $old_value && 'on' === $value ) {
 			update_rocket_option( 'minify_js', 0 );
+			update_rocket_option( 'minify_concatenate_js', 0 );
 		}
 	}
 	add_action( 'update_option_autoptimize_js', 'rocket_maybe_deactivate_minify_js', 10, 2 );
+
+	/**
+	 * Deactivate WP Rocket async CSS if Autoptimize async CSS is enabled
+	 *
+	 * @since 2.10
+	 * @author Remy Perona
+	 *
+	 * @param string $old_value Previous autoptimize option value.
+	 * @param string $value New autoptimize option value.
+	 */
+	function rocket_maybe_deactivate_css_defer( $old_value, $value ) {
+		if ( $value !== $old_value && 'on' === $value ) {
+			update_rocket_option( 'autoptimize_css_defer', 0 );
+		}
+	}
+	add_action( 'update_option_autoptimize_css_defer', 'rocket_maybe_deactivate_css_defer', 10, 2 );
 
 endif;
 
@@ -72,16 +88,20 @@ endif;
 function rocket_activate_autoptimize() {
 	if ( 'on' === get_option( 'autoptimize_html' ) ) {
 		update_rocket_option( 'minify_html', 0 );
-		update_rocket_option( 'minify_html_inline_css', 0 );
-		update_rocket_option( 'minify_html_inline_js', 0 );
 	}
 
 	if ( 'on' === get_option( 'autoptimize_css' ) ) {
 		update_rocket_option( 'minify_css', 0 );
+		update_rocket_option( 'minify_concatenate_css', 0 );
 	}
 
 	if ( 'on' === get_option( 'autoptimize_js' ) ) {
 		update_rocket_option( 'minify_js', 0 );
+		update_rocket_option( 'minify_concatenate_js', 0 );
+	}
+
+	if ( 'on' === get_option( 'autoptimize_css_defer' ) ) {
+		update_rocket_option( 'async_css', 0 );
 	}
 }
 add_action( 'activate_autoptimize/autoptimize.php', 'rocket_activate_autoptimize', 11 );
@@ -124,6 +144,20 @@ function rocket_maybe_disable_minify_css() {
  */
 function rocket_maybe_disable_minify_js() {
 	if ( is_plugin_active( 'autoptimize/autoptimize.php' ) && 'on' === get_option( 'autoptimize_js' ) ) {
+		return true;
+	}
+}
+
+/**
+ * Disable WP Rocket async CSS field if Autoptimize async CSS is enabled
+ *
+ * @since 2.10
+ * @author Remy Perona
+ *
+ * @return bool|null True if it is active
+ */
+function rocket_maybe_disable_async_css() {
+	if ( is_plugin_active( 'autoptimize/autoptimize.php' ) && 'on' === get_option( 'autoptimize_css_defer' ) ) {
 		return true;
 	}
 }

@@ -126,29 +126,11 @@ function rocket_browser_cache_busting( $src, $current_filter = '' ) {
 		return $cache_busting_paths['url'];
 	}
 
-	$response = wp_remote_get( $full_src );
-
-	if ( ! is_array( $response ) || is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
+	if ( rocket_fetch_and_cache_busting( $full_src, $cache_busting_paths, $full_src_path, $current_filter ) ) {
+		return $cache_busting_paths['url'];
+	} else {
 		return $src;
 	}
-
-	if ( 'style_loader_src' === $current_filter ) {
-		if ( ! class_exists( 'Minify_CSS_UriRewriter' ) ) {
-			require( WP_ROCKET_PATH . 'min/lib/Minify/CSS/UriRewriter.php' );
-		}
-		// Rewrite import/url in CSS content to add the absolute path to the file.
-		$file_content = Minify_CSS_UriRewriter::rewrite( $response['body'], $full_src_path );
-	} else {
-		$file_content = $response['body'];
-	}
-
-	if ( ! is_dir( $cache_busting_paths['bustingpath'] ) ) {
-		rocket_mkdir_p( $cache_busting_paths['bustingpath'] );
-	}
-
-	rocket_put_content( $cache_busting_paths['filepath'], $file_content );
-
-	return $cache_busting_paths['url'];
 }
 
 /**
@@ -233,29 +215,11 @@ function rocket_cache_dynamic_resource( $src ) {
 		return $cache_busting_paths['url'];
 	}
 
-	$response = wp_remote_get( $full_src );
-
-	if ( ! is_array( $response ) || is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
+	if ( rocket_fetch_and_cache_busting( $full_src, $cache_busting_paths, $full_src_path, $current_filter ) ) {
+		return $cache_busting_paths['url'];
+	} else {
 		return $src;
 	}
-
-	if ( 'style_loader_src' === $current_filter ) {
-		if ( ! class_exists( 'Minify_CSS_UriRewriter' ) ) {
-			require( WP_ROCKET_PATH . 'min/lib/Minify/CSS/UriRewriter.php' );
-		}
-		// Rewrite import/url in CSS content to add the absolute path to the file.
-		$file_content = Minify_CSS_UriRewriter::rewrite( $response['body'], $full_src_path );
-	} else {
-		$file_content = $response['body'];
-	}
-
-	if ( ! is_dir( $cache_busting_paths['bustingpath'] ) ) {
-		rocket_mkdir_p( $cache_busting_paths['bustingpath'] );
-	}
-
-	rocket_put_content( $cache_busting_paths['filepath'], $file_content );
-
-	return $cache_busting_paths['url'];
 }
 add_filter( 'style_loader_src', 'rocket_cache_dynamic_resource', 16 );
 add_filter( 'script_loader_src', 'rocket_cache_dynamic_resource', 16 );

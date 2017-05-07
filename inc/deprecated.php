@@ -299,13 +299,28 @@ if ( ! function_exists( 'rocket_exclude_deferred_js' ) ) :
 	 * Used to remove deferred JS files from the  buffer
 	 *
 	 * @since 1.1.0
-	 * @deprecated 3.0
+	 * @deprecated 2.10
 	 * @deprecated Use rocket_insert_deferred_js()
 	 *
 	 * @param string $buffer HTML code.
 	 */
 	function rocket_exclude_deferred_js( $buffer ) {
-		_deprecated_function( __FUNCTION__, '3.0', 'rocket_insert_deferred_js()' );
+		_deprecated_function( __FUNCTION__, '2.10', 'rocket_insert_deferred_js()' );
 		return rocket_insert_deferred_js( $buffer );
+	}
+endif;
+
+if ( ! function_exists( 'is_rocket_cache_feed' ) ) :
+	/**
+	 * Check if we need to cache the feeds of the website
+	 *
+	 * @since 2.7
+	 * @deprecated 2.10
+	 *
+	 * @return bool True if option is activated
+	 */
+	function is_rocket_cache_feed() {
+		_deprecated_function( __FUNCTION__, '2.10' );
+		return get_rocket_option( 'cache_feed', false );
 	}
 endif;

@@ -73,25 +73,22 @@ function rocket_first_install() {
 		 */
 		apply_filters( 'rocket_first_install_options', array(
 			'secret_cache_key'            => $secret_cache_key,
-			'cache_mobile'                => 0,
+			'cache_mobile'                => 1,
 			'do_caching_mobile_files'     => 0,
-			'cache_feed'				  => 0,
 			'cache_logged_user'           => 0,
-			'common_cache_logged_users'   => 0,
 			'cache_ssl'                   => ( rocket_is_ssl_website() ) ? 1 : 0,
-			'emoji'					  	  => 0,
-			'embeds'					  => 0,
+			'emoji'					  	  => 1,
+			'embeds'					  => 1,
 			'cache_reject_uri'            => array(),
 			'cache_reject_cookies'        => array(),
 			'cache_reject_ua'             => array(),
 			'cache_query_strings'         => array(),
 			'cache_purge_pages'           => array(),
-			'purge_cron_interval'         => 24,
+			'purge_cron_interval'         => 10,
 			'purge_cron_unit'             => 'HOUR_IN_SECONDS',
 			'exclude_css'                 => array(),
 			'exclude_js'                  => array(),
 			'defer_all_js'				  => 0,
-			'exclude_defer_js'			  => array(),
 			'deferred_js_files'           => array(),
 			'lazyload'                    => 0,
 			'lazyload_iframes'            => 0,
@@ -108,15 +105,12 @@ function rocket_first_install() {
 			'minify_js_legacy'			  => 0,
 			'minify_google_fonts'         => 0,
 			'minify_html'                 => 0,
-			'minify_html_inline_css'      => 0,
-			'minify_html_inline_js'       => 0,
 			'manual_preload'              => 0,
 			'automatic_preload'           => 0,
 			'sitemap_preload'             => 0,
 			'sitemap_preload_url_crawl'   => '500000',
 			'sitemaps'                    => array(),
 			'remove_query_strings'        => 0,
-			'cache_dynamic_resource'	  => 0,
 			'dns_prefetch'                => 0,
 			'database_revisions'          => 0,
 			'database_auto_drafts'        => 0,
@@ -246,7 +240,7 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		delete_transient( 'rocket_check_licence_1' );
 	}
 
-	if ( version_compare( $actual_version, '3.0', '<' ) ) {
+	if ( version_compare( $actual_version, '2.10', '<' ) ) {
 		$options = get_option( WP_ROCKET_SLUG );
 
 		if ( 0 < $options['minify_css'] ) {

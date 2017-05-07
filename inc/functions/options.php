@@ -84,17 +84,6 @@ function is_rocket_post_excluded_option( $option ) {
 }
 
 /**
- * Check if we need to cache the feeds of the website
- *
- * @since 2.7
- *
- * @return bool True if option is activated
- */
-function is_rocket_cache_feed() {
-	return get_rocket_option( 'cache_feed', false );
-}
-
-/**
  * Check if we need to cache the mobile version of the website (if available)
  *
  * @since 1.0
@@ -198,11 +187,6 @@ function get_rocket_cache_reject_uri() {
 
 	// Exclude hide login plugins.
 	$uri = array_merge( $uri, get_rocket_logins_exclude_pages() );
-
-	// Exclude feeds if option is not activated.
-	if ( ! is_rocket_cache_feed() ) {
-		$uri[] = '.*/' . $GLOBALS['wp_rewrite']->feed_base . '/?';
-	}
 
 	/**
 	 * Filter the rejected uri
@@ -509,7 +493,7 @@ function get_rocket_deferred_js_files() {
 /**
  * Get list of JS files to be excluded from defer JS.
  *
- * @since 3.0
+ * @since 2.10
  * @author Remy Perona
  *
  * @return array An array of URLs for the JS files to be excluded.
@@ -518,12 +502,12 @@ function get_rocket_exclude_defer_js() {
 	/**
 	 * Filter list of Deferred JavaScript files
 	 *
-	 * @since 3.0
+	 * @since 2.10
 	 * @author Remy Perona
 	 *
 	 * @param array $exclude_defer_js An array of URLs for the JS files to be excluded.
 	 */
-	$exclude_defer_js = apply_filters( 'rocket_exclude_defer_js', get_rocket_option( 'exclude_defer_js', array() ) );
+	$exclude_defer_js = apply_filters( 'rocket_exclude_defer_js', array() );
 
 	return $exclude_defer_js;
 }
@@ -531,7 +515,7 @@ function get_rocket_exclude_defer_js() {
 /**
  * Get list of CSS files to be excluded from async CSS.
  *
- * @since 3.0
+ * @since 2.10
  * @author Remy Perona
  *
  * @return array An array of URLs for the CSS files to be excluded.
@@ -540,7 +524,7 @@ function get_rocket_exclude_async_css() {
 	/**
 	 * Filter list of async CSS files
 	 *
-	 * @since 3.0
+	 * @since 2.10
 	 * @author Remy Perona
 	 *
 	 * @param array $exclude_async_css An array of URLs for the CSS files to be excluded.

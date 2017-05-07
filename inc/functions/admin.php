@@ -271,6 +271,27 @@ function get_rocket_documentation_url() {
 }
 
 /**
+ * Get WP Rocket FAQ URL
+ *
+ * @since 2.10
+ * @author Remy Perona
+ *
+ * @return string URL in the correct language
+ */
+function get_rocket_faq_url() {
+	$langs  = array(
+		'fr_FR' => 'fr.docs.wp-rocket.me/category/146-faq',
+		'it_IT' => 'it.docs.wp-rocket.me/category/321-domande-frequenti',
+		'de_DE' => 'de.docs.wp-rocket.me/category/285-haufig-gestellte-fragen-faq',
+	);
+	$lang   = get_locale();
+	$faq 	= isset( $langs[ $lang ] ) ? $langs[ $lang ] : 'docs.wp-rocket.me/category/65-faq';
+	$url    = "http://{$faq}/?utm_source=wp-rocket&utm_medium=wp-admin&utm_term=doc-faq&utm_campaign=plugin";
+
+	return $url;
+}
+
+/**
  * Get the Activation Link for a given plugin
  *
  * @since 2.7.3
@@ -429,4 +450,33 @@ function rocket_do_async_job( $body ) {
 	);
 
 	wp_remote_post( admin_url( 'admin-ajax.php' ), $args );
+}
+
+/**
+ * Check if a mobile plugin is active
+ *
+ * @since 2.10
+ * @author Remy Perona
+ *
+ * @return true if a mobile plugin in the list is active, false otherwise.
+ **/
+function rocket_is_mobile_plugin_active() {
+	$mobile_plugins = array(
+		'wptouch/wptouch.php',
+		'wiziapp-create-your-own-native-iphone-app/wiziapp.php',
+		'wordpress-mobile-pack/wordpress-mobile-pack.php',
+		'wp-mobilizer/wp-mobilizer.php',
+		'wp-mobile-edition/wp-mobile-edition.php',
+		'device-theme-switcher/dts_controller.php',
+		'wp-mobile-detect/wp-mobile-detect.php',
+		'easy-social-share-buttons3/easy-social-share-buttons3.php',	
+	);
+
+	foreach ( $mobile_plugins as $mobile_plugin ) {
+		if ( is_plugin_active(  $mobile_plugin ) ) {
+			return true;
+		}
+	}
+
+	return false;
 }
