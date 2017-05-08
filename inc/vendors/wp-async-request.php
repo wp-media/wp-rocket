@@ -131,7 +131,7 @@ if ( ! class_exists( 'WP_Async_Request' ) ) {
 				'blocking'  => false,
 				'body'      => $this->data,
 				'cookies'   => $_COOKIE,
-				'sslverify' => apply_filters( 'https_local_ssl_verify', false ),
+				'sslverify' => apply_filters( 'https_local_ssl_verify', true ),
 			);
 		}
 

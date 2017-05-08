@@ -72,7 +72,7 @@ function run_rocket_bot( $spider = 'cache-preload', $lang = '' ) {
 			array(
 				'timeout'   => 2,
 				'blocking'  => false,
-				'sslverify' => false,
+				'sslverify' => apply_filters( 'https_local_ssl_verify', true ),
 			)
 		);
 
@@ -189,7 +189,7 @@ function rocket_process_sitemap( $sitemap_url, $urls = array() ) {
 		'timeout'    => 0.01,
 		'blocking'   => false,
 		'user-agent' => 'wprocketbot',
-		'sslverify'  => false,
+		'sslverify'  => apply_filters( 'https_local_ssl_verify', true ),
 	);
 
 	$sitemap = wp_remote_get( esc_url_raw( $sitemap_url ) );

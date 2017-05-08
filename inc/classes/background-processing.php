@@ -34,7 +34,7 @@ class Rocket_Sitemap_Preload_Process extends WP_Background_Process {
 			'timeout'    => 0.01,
 			'blocking'   => false,
 			'user-agent' => 'wprocketbot',
-			'sslverify'  => false,
+			'sslverify'  => apply_filters( 'https_local_ssl_verify', true ),
 		);
 
 		$tmp = wp_remote_get( esc_url_raw( $item ), $args );
