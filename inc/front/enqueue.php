@@ -29,6 +29,10 @@ function rocket_browser_cache_busting( $src, $current_filter = '' ) {
 		return $src;
 	}
 
+	if ( is_user_logged_in() && ! get_rocket_option( 'cache_logged_user', 0 ) ) {
+		return $src;
+	}
+
 	if ( 'wp-login.php' === $pagenow ) {
 		return $src;
 	}
@@ -144,6 +148,10 @@ function rocket_browser_cache_busting( $src, $current_filter = '' ) {
  */
 function rocket_cache_dynamic_resource( $src ) {
 	global $pagenow;
+
+	if ( is_user_logged_in() && ! get_rocket_option( 'cache_logged_user' ) ) {
+		return $src;
+	}
 
 	if ( 'wp-login.php' == $pagenow ) {
 		return $src;
