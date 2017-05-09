@@ -423,10 +423,14 @@ function get_rocket_exclude_css() {
  * @return array List of excluded JS files.
  */
 function get_rocket_exclude_js() {
-	global $rocket_excluded_enqueue_js;
+	global $wp_scripts, $rocket_excluded_enqueue_js;
 
 	$js_files = get_rocket_option( 'exclude_js', array() );
 	$js_files = array_unique( array_merge( $js_files, (array) $rocket_excluded_enqueue_js ) );
+
+	if ( get_rocket_option( 'defer_all_js', 0 ) ) {
+		$js_files[] = $wp_scripts->registered['jquery-core']->src;
+	}
 
 	/**
 	 * Filter JS files to exclude to the minification.
@@ -499,6 +503,10 @@ function get_rocket_deferred_js_files() {
  * @return array An array of URLs for the JS files to be excluded.
  */
 function get_rocket_exclude_defer_js() {
+	global $wp_scripts;
+
+	$exclude_defer_js[] = $wp_scripts->registered['jquery-core']->src;
+
 	/**
 	 * Filter list of Deferred JavaScript files
 	 *
@@ -507,7 +515,7 @@ function get_rocket_exclude_defer_js() {
 	 *
 	 * @param array $exclude_defer_js An array of URLs for the JS files to be excluded.
 	 */
-	$exclude_defer_js = apply_filters( 'rocket_exclude_defer_js', array() );
+	$exclude_defer_js = apply_filters( 'rocket_exclude_defer_js', $exclude_defer_js );
 
 	return $exclude_defer_js;
 }

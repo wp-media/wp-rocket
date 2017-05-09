@@ -65,10 +65,10 @@ function rocket_defer_js( $buffer ) {
 
 	foreach ( $tags_match[0] as $i => $tag ) {
 		// Strip query args.
-		$url = strtok( $tags_match[2][ $i ] , '?' );
+		$path = parse_url( $tags_match[2][ $i ] , PHP_URL_PATH );
 
 		// Check if this file should be deferred.
-		if ( isset( $exclude_defer_js[ $url ] ) ) {
+		if ( isset( $exclude_defer_js[ $path ] ) ) {
 			continue;
 		}
 
