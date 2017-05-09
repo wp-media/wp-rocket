@@ -166,7 +166,8 @@ add_settings_field(
 			'type'         => 'helper_help',
 			'name'         => 'exclude_css',
 			'description'  => __( 'Enter the URL of <b>CSS</b> files to reject (one per line).', 'rocket' ) . '<br/>' . __( 'You can use regular expressions (regex).', 'rocket' ),
-			),
+		),
+		'class' => 'exclude-css-row',
 	)
 );
 add_settings_field(
@@ -185,7 +186,8 @@ add_settings_field(
 			'type'         => 'helper_help',
 			'name'         => 'exclude_js',
 			'description'  => __( 'Enter the URL of <b>JS</b> files to reject (one per line).', 'rocket' ) . '<br/>' . __( 'You can use regular expressions (regex).', 'rocket' ),
-			),
+		),
+		'class' => 'exclude-js-row',
 	)
 );
 

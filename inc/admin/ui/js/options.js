@@ -23,6 +23,44 @@ jQuery( document ).ready( function($){
 		critical_css_row.toggle( 'fast' );
 	});
 
+	var minify_css 		= $( '#minify_css' );
+	var concatenate_css	= $( '.fieldname-minify_concatenate_css' );
+	var exclude_css_row = $( '.exclude-css-row' );
+
+	if ( ! minify_css.is( ':checked' ) ) {
+		concatenate_css.hide();
+		exclude_css_row.hide();
+	}
+
+	minify_css.change( function() {
+		if ( ! minify_css.is( ':checked' ) ) {
+			concatenate_css.find( '#minify_concatenate_css' ).prop( 'checked', false );
+			$( '.fieldname-minify_css_combine_all' ).hide();
+		}
+
+		concatenate_css.toggle( 'fast' );
+		exclude_css_row.toggle( 'fast' );
+	});
+
+	var minify_js	   = $( '#minify_js' );
+	var concatenate_js = $( '.fieldname-minify_concatenate_js' );
+	var exclude_js_row = $( '.exclude-js-row' );
+
+	if ( ! minify_js.is( ':checked' ) ) {
+		concatenate_js.hide();
+		exclude_js_row.hide();
+	}
+
+	minify_js.change( function() {
+		if ( ! minify_js.is( ':checked' ) ) {
+			concatenate_js.find( '#minify_concatenate_js' ).prop( 'checked', false );
+			$( '.fieldname-minify_js_combine_all' ).hide();
+		}
+
+		concatenate_js.toggle( 'fast' );
+		exclude_js_row.toggle( 'fast' );
+	});
+
 	// Minify JS in footer
 	function rocket_minify_js_rename() {
 		$('#rkt-drop-minify_js_in_footer .rkt-module-drag').each( function(i){
