@@ -142,7 +142,7 @@ if ( ! $value ) { ?>
 				?>
 
 					<legend class="screen-reader-text"><span><?php echo $args['label_screen']; ?></span></legend>
-					<label><textarea id="<?php echo $args['label_for']; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]" cols="<?php echo $cols; ?>" rows="<?php echo $rows; ?>"<?php echo $readonly; ?>><?php echo $value; ?></textarea>
+					<label><textarea id="<?php echo $args['label_for']; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]" cols="<?php echo $cols; ?>" rows="<?php echo $rows; ?>"<?php echo $readonly; echo $placeholder; ?>><?php echo $value; ?></textarea>
 					</label>
 
 				<?php
@@ -192,21 +192,21 @@ if ( ! $value ) { ?>
 
 			case 'helper_description' :
 
-				$description = isset( $args['description'] ) ? '<p class="description desc ' . $class . '" ' . $parent . '>' . $args['description'] . '</p>' : '';
+				$description = isset( $args['description'] ) ? sprintf( '<p class="description help %1$s" %2$s><span class="dashicons dashicons-info" aria-hidden="true"></span> %3$s</p>', $class, $parent, $args['description'] ) : '';
 				echo apply_filters( 'rocket_help', $description, $args['name'], 'description' );
 
 			break;
 
 			case 'helper_help' :
 
-				$description = isset( $args['description'] ) ? '<p class="description help ' . $class . '" ' . $parent . '>' . $args['description'] . '</p>' : '';
+				$description = isset( $args['description'] ) ? sprintf( '<p class="description help %1$s" %2$s>%3$s</p>', $class, $parent, $args['description'] ) : '';
 				echo apply_filters( 'rocket_help', $description, $args['name'], 'help' );
 
 			break;
 
 			case 'helper_warning' :
 
-				$description = isset( $args['description'] ) ? '<p class="description warning file-error ' . $class . '" ' . $parent . '><b>' . __( 'Warning: ', 'rocket' ) . '</b>' . $args['description'] . '</p>' : '';
+				$description = isset( $args['description'] ) ? sprintf( '<p class="description warning file-error %1$s" %2$s><span class="dashicons dashicons-warning" aria-hidden="true"></span>&#160;<strong class="screen-reader-text">%3$s</strong>%4$s</p>', $class, $parent, __( 'Warning: ', 'rocket' ), $args['description'] ) : '';
 				echo apply_filters( 'rocket_help', $description, $args['name'], 'warning' );
 
 			break;
@@ -241,7 +241,7 @@ if ( ! $value ) { ?>
 function rocket_defered_module() {
 	?>
 	<fieldset>
-	<legend class="screen-reader-text"><span><?php _e( '<b>JS</b> files with Deferred Loading JavaScript', 'rocket' ); ?></span></legend>
+	<legend class="screen-reader-text"><span><?php _e( '<strong>JS</strong> files with Deferred Loading JavaScript', 'rocket' ); ?></span></legend>
 
 	<div id="rkt-drop-deferred" class="rkt-module rkt-module-drop">
 
@@ -418,7 +418,7 @@ function rocket_button( $args ) {
 		$desc = '<p class="description desc ' . $class . '">' . $desc['description'] . '</p>';
 	}
 	if ( ! empty( $warning ) ) {
-		$warning = '<p class="description warning file-error ' . $class . '"><b>' . __( 'Warning: ', 'rocket' ) . '</b>' . $warning['description'] . '</p>';
+		$warning = '<p class="description warning file-error ' . $class . '"><strong>' . __( 'Warning: ', 'rocket' ) . '</strong>' . $warning['description'] . '</p>';
 	}
 ?>
 	<fieldset class="fieldname-<?php echo $class; ?> fieldtype-button">
@@ -561,7 +561,7 @@ function rocket_display_options() {
 				<div class="rkt-tab" id="tab_optimization"><?php do_settings_sections( 'rocket_optimization' ); ?></div>
 				<div class="rkt-tab" id="tab_cdn"><?php do_settings_sections( 'rocket_cdn' ); ?></div>
 				<div class="rkt-tab" id="tab_advanced"><?php do_settings_sections( 'rocket_advanced' ); ?></div>
-				
+
 				<div class="rkt-tab" id="tab_database">
 					<p class="description database_description"><?php _e( 'The following options help you optimize your database.', 'rocket' ); ?></p>
 					<p class="description warning file-error database_description"><?php _e( 'Before you do any optimization, please backup your database first because any cleanup done is irreversible!', 'rocket' ); ?></p>
