@@ -18,7 +18,7 @@ function rocket_async_css( $buffer ) {
 	$excluded_css = array_flip( get_rocket_exclude_async_css() );
 
 	// Get all css files with this regex.
-	preg_match_all( apply_filters( 'rocket_async_css_regex_pattern', '/<link\s*.+rel=[\'|"](stylesheet)[\'|"]\s*.+href=[\'|"]([^\'|"]+.+)[\'|"](.+)>/iU' ), $buffer, $tags_match );
+	preg_match_all( apply_filters( 'rocket_async_css_regex_pattern', '/<link\s*.+href=[\'|"]([^\'|"]+\.css?.+)[\'|"](.+)>/iU' ), $buffer, $tags_match );
 
 	if ( ! isset( $tags_match[0] ) ) {
 		return $buffer;
@@ -26,19 +26,15 @@ function rocket_async_css( $buffer ) {
 
 	foreach ( $tags_match[0] as $i => $tag ) {
 		// Strip query args.
-		$url = strtok( $tags_match[2][ $i ] , '?' );
+		$path = parse_url( $tags_match[1][ $i ] , PHP_URL_PATH );
 
 		// Check if this file should be deferred.
-		if ( isset( $excluded_css[ $url ] ) ) {
+		if ( isset( $excluded_css[ $path ] ) ) {
 			continue;
 		}
 
-	    $preload = str_replace( 'stylesheet', 'preload', $tags_match[1][ $i ] );
-	    $onload = str_replace( $tags_match[3][ $i ], ' as="style" onload="this.rel=\'stylesheet\'"' . $tags_match[3][ $i ], $tags_match[3][ $i ] );
-	    $tag = str_replace( $tags_match[1][ $i ], $preload, $tag );
-	    $tag = str_replace( $tags_match[3][ $i ], $onload, $tag );
-	    $tag .= '<noscript>' . $tags_match[0][ $i ] . '</noscript>';
-	    $buffer = str_replace( $tags_match[0][ $i ], $tag, $buffer );
+		$tag = '<noscript class="async-styles">' . $tags_match[0][ $i ] . '</noscript>';
+		$buffer = str_replace( $tags_match[0][ $i ], $tag, $buffer );
 	}
 	return $buffer;
 }
@@ -144,11 +140,20 @@ function rocket_insert_load_css() {
 	}
 
 	echo <<<JS
-<script>
-/*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
-!function(a){"use strict";var b=function(b,c,d){function e(a){return h.body?a():void setTimeout(function(){e(a)})}function f(){i.addEventListener&&i.removeEventListener("load",f),i.media=d||"all"}var g,h=a.document,i=h.createElement("link");if(c)g=c;else{var j=(h.body||h.getElementsByTagName("head")[0]).childNodes;g=j[j.length-1]}var k=h.styleSheets;i.rel="stylesheet",i.href=b,i.media="only x",e(function(){g.parentNode.insertBefore(i,c?g:g.nextSibling)});var l=function(a){for(var b=i.href,c=k.length;c--;)if(k[c].href===b)return a();setTimeout(function(){l(a)})};return i.addEventListener&&i.addEventListener("load",f),i.onloadcssdefined=l,l(f),i};"undefined"!=typeof exports?exports.loadCSS=b:a.loadCSS=b}("undefined"!=typeof global?global:this);
-/*! loadCSS rel=preload polyfill. [c]2017 Filament Group, Inc. MIT License */
-!function(a){if(a.loadCSS){var b=loadCSS.relpreload={};if(b.support=function(){try{return a.document.createElement("link").relList.supports("preload")}catch(b){return!1}},b.poly=function(){for(var b=a.document.getElementsByTagName("link"),c=0;c<b.length;c++){var d=b[c];"preload"===d.rel&&"style"===d.getAttribute("as")&&(a.loadCSS(d.href,d,d.getAttribute("media")),d.rel=null)}},!b.support()){b.poly();var c=a.setInterval(b.poly,300);a.addEventListener&&a.addEventListener("load",function(){b.poly(),a.clearInterval(c)}),a.attachEvent&&a.attachEvent("onload",function(){a.clearInterval(c)})}}}(this);
+<script data-no-minify="1" data-cf-async="false">
+var loadDeferredStyles = function() {
+    var addStylesNode = document.getElementsByClassName("async-styles");
+    for ( var i = addStylesNode.length; i--; ) {
+    	var replacement = document.createElement("div");
+		replacement.innerHTML = addStylesNode[i].textContent;
+		document.body.appendChild(replacement)
+		addStylesNode[i].parentElement.removeChild(addStylesNode[i]);
+	}
+};
+var raf = requestAnimationFrame || mozRequestAnimationFrame ||
+	webkitRequestAnimationFrame || msRequestAnimationFrame;
+if (raf) raf(function() { window.setTimeout(loadDeferredStyles, 0); });
+else window.addEventListener('load', loadDeferredStyles);
 </script>
 JS;
 }
