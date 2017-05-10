@@ -297,7 +297,7 @@ function get_rocket_i18n_subdomains() {
 	$urls = array();
 	if ( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
 		$option = get_option( 'icl_sitepress_settings' );
-		if ( 2 === (int) $option['language_negotiation_type'] ) {
+		if ( 2 === (int) $option['language_negotiation_type'] || (int) $option['language_negotiation_type'] == 1 && $option['urls']['directory_for_default_language'] == true ) {
 			$urls = get_rocket_i18n_uri();
 		}
 	} elseif ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
