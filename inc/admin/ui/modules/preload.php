@@ -12,7 +12,7 @@ add_settings_field(
 	array(
 		array(
 			'type'         => 'helper_help',
-			'name'         => 'dns_prefetch',
+			'name'         => 'dns_prefetch_tip',
 			'description'  => __( 'Specify external hosts to be prefetched (no <code>http:</code>, one per line)', 'rocket' ),
 			),
 			array(
