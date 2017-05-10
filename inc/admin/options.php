@@ -66,7 +66,11 @@ function rocket_field( $args ) {
 		$rows 				= isset( $args['rows'] ) ? (int) $args['rows'] : 5;
 
 		if ( ! isset( $args['fieldset'] ) || 'start' === $args['fieldset'] ) {
-			echo '<fieldset class="fieldname-' . sanitize_html_class( $args['name'] ) . ' fieldtype-' . sanitize_html_class( $args['type'] ) . '">';
+			printf( '<fieldset class="fieldname-%1$s fieldtype-%2$s %3$s">',
+				sanitize_html_class( $args['name'] ),
+				sanitize_html_class( $args['type'] ),
+				isset( $args['parent'] ) ? 'fieldparent-' . sanitize_html_class( $args['parent'] ) : ''
+			);
 		}
 
 		switch ( $args['type'] ) {
@@ -197,6 +201,13 @@ if ( ! $value ) { ?>
 
 			break;
 
+			case 'helper_performance' :
+
+				$description = isset( $args['description'] ) ? sprintf( '<p class="description help %1$s" %2$s><span class="dashicons dashicons-performance" aria-hidden="true"></span> <strong>%3$s</strong></p>', $class, $parent, $args['description'] ) : '';
+				echo apply_filters( 'rocket_help', $description, $args['name'], 'description' );
+
+			break;
+
 			case 'helper_help' :
 
 				$description = isset( $args['description'] ) ? sprintf( '<p class="description help %1$s" %2$s>%3$s</p>', $class, $parent, $args['description'] ) : '';
@@ -208,6 +219,13 @@ if ( ! $value ) { ?>
 
 				$description = isset( $args['description'] ) ? sprintf( '<p class="description warning file-error %1$s" %2$s><span class="dashicons dashicons-warning" aria-hidden="true"></span>&#160;<strong class="screen-reader-text">%3$s</strong>%4$s</p>', $class, $parent, __( 'Warning: ', 'rocket' ), $args['description'] ) : '';
 				echo apply_filters( 'rocket_help', $description, $args['name'], 'warning' );
+
+			break;
+
+			case 'helper_panel_description' :
+
+				$description = isset( $args['description'] ) ? sprintf( '<div class="rocket-panel-description"><p class="%1$s" %2$s>%3$s</p></div>', $class, $parent, $args['description'] ) : '';
+				echo $description;
 
 			break;
 
@@ -526,10 +544,10 @@ function rocket_display_options() {
 		?>
 		<h2 class="nav-tab-wrapper hide-if-no-js">
 			<?php if ( rocket_valid_key() ) { ?>
-				<a href="#tab_basic" class="nav-tab"><?php _e( 'Basic options', 'rocket' ); ?></a>
-				<a href="#tab_optimization" class="nav-tab"><?php _e( 'Files optimization', 'rocket' ); ?></a>
+				<a href="#tab_basic" class="nav-tab"><?php _e( 'Basic', 'rocket' ); ?></a>
+				<a href="#tab_optimization" class="nav-tab"><?php _e( 'Files', 'rocket' ); ?></a>
 				<a href="#tab_cdn" class="nav-tab"><?php _e( 'CDN', 'rocket' ); ?></a>
-				<a href="#tab_advanced" class="nav-tab"><?php _e( 'Advanced options', 'rocket' ); ?></a>
+				<a href="#tab_advanced" class="nav-tab"><?php _e( 'Advanced', 'rocket' ); ?></a>
 				<a href="#tab_database" class="nav-tab"><?php _e( 'Database', 'rocket' ); ?></a>
 				<a href="#tab_preload" class="nav-tab"><?php _e( 'Preload', 'rocket' ); ?></a>
 				<?php if ( get_rocket_option( 'do_cloudflare' ) ) { ?>

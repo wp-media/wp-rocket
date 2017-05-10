@@ -18,3 +18,8 @@ input[type=number].small-text{height:28px}
 .varnish_description.varnish_description{padding: 10px; font-size: 14px;}
 .description.has-parent{margin-left:20px}
 .rkt-tab textarea{resize:auto;}
+#rocket_options .nav-tab-active, #rocket_options .nav-tab-active:focus, #rocket_options .nav-tab-active:focus:active, #rocket_options .nav-tab-active:hover {border-bottom: 1px solid #fff;background: #fff;}
+.rocket-panel-description {background: #fff;border-bottom: 2px solid #fd7300;padding: 0.75em 0 1em 1.5em}
+.rocket-panel-description span.dashicons {color:#fd7300;margin-left:-1.25em;margin-right: 0.25em}
+fieldset[class*="fieldparent-"]:not([class*="fieldtype-helper"]) {margin-top:12px;}
+fieldset[class*="fieldparent-"][class*="fieldtype-helper"] {margin-bottom:12px;}
