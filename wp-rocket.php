@@ -271,6 +271,10 @@ function rocket_activation() {
 	require( WP_ROCKET_FUNCTIONS_PATH . 'htaccess.php' );
 	require( WP_ROCKET_3RD_PARTY_PATH . 'hosting/godaddy.php' );
 
+    if ( version_compare( phpversion(), '5.3.0', '>=' ) ) {
+    	require( WP_ROCKET_3RD_PARTY_PATH . 'hosting/godaddy.php' );
+    }
+
 	if ( rocket_valid_key() ) {
 	    // Add All WP Rocket rules of the .htaccess file.
 	    flush_rocket_htaccess();

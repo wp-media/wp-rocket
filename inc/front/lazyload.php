@@ -261,7 +261,7 @@ function rocket_lazyload_iframes( $html ) {
 		}
 
 		/** This filter is documented in inc/front/lazyload.php */
-		$placeholder = apply_filters( 'rocket_lazyload_placeholder', 'data:image/gif;base64,R0lGODdhAQABAPAAAP///wAAACwAAAAAAQABAEACAkQBADs=' );
+		$placeholder = apply_filters( 'rocket_iframe_lazyload_placeholder', get_rocket_cdn_url( WP_ROCKET_FRONT_URL . 'img/blank.gif' ) );
 
 		$iframe = preg_replace( '/<iframe(.*?)src=/is', '<iframe$1src="' . $placeholder . '" data-lazy-src=', $iframe );
 

@@ -76,20 +76,20 @@ add_action( 'admin_print_styles', 'rocket_add_admin_css_js_everywhere', 11 );
 function rocket_admin_print_styles() {
 	wp_enqueue_style( 'admin-wp-rocket', WP_ROCKET_ADMIN_UI_CSS_URL . 'admin.css', array(), WP_ROCKET_VERSION );
 }
+add_action( 'admin_print_styles', 'rocket_admin_print_styles' );
 
-add_action( 'admin_print_styles-media-new.php', 'rocket_enqueue_modal_plugin' );
-add_action( 'admin_print_styles-upload.php', 'rocket_enqueue_modal_plugin' );
-add_action( 'admin_print_styles-settings_page_' . WP_ROCKET_PLUGIN_SLUG, 'rocket_enqueue_modal_plugin' );
 /**
  * Add CSS & JS files for the Imagify installation call to action
  *
  * @since 2.7
  */
 function rocket_enqueue_modal_plugin() {
-	wp_enqueue_style( 'thickbox' );
 	wp_enqueue_style( 'plugin-install' );
-
-	wp_enqueue_script( 'plugin-install' );
-	wp_enqueue_script( 'tgm-modal-wp-rocket', WP_ROCKET_ADMIN_UI_JS_URL . 'vendors/tgm-modal.min.js', array( 'jquery' ), WP_ROCKET_VERSION, true );
+    
+    wp_enqueue_script( 'plugin-install' );
+    wp_enqueue_script( 'updates' );
+    add_thickbox();
 }
-add_action( 'admin_print_styles', 'rocket_admin_print_styles' );
+add_action( 'admin_print_styles-media-new.php', 'rocket_enqueue_modal_plugin' );
+add_action( 'admin_print_styles-upload.php', 'rocket_enqueue_modal_plugin' );
+add_action( 'admin_print_styles-settings_page_' . WP_ROCKET_PLUGIN_SLUG, 'rocket_enqueue_modal_plugin' );

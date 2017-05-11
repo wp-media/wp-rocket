@@ -144,7 +144,7 @@ function rocket_cdn_images( $html ) {
 			list( $host, $path, $scheme, $query ) = get_rocket_parse_url( $image_url );
 			$path = trim( $path );
 
-			if ( empty( $path ) || '{href}' === $path ) {
+			if ( empty( $path ) || '{href}' === $path || '+markerData[i].thumbnail+' === $path ) {
 				continue;
 			}
 
@@ -216,16 +216,21 @@ function rocket_cdn_inline_styles( $html ) {
 	);
 
 	if ( $cnames = get_rocket_cdn_cnames( $zone ) ) {
-		preg_match_all( '/url\((?![\'\"]?data)[\"\']?([^\)\"\']+)[\"\']?\)/i', $html, $matches );
+    	preg_match_all( '/url\((?![\'\"]?data)[\"\']?([^\)\"\']+)[\"\']?\)/i', $html, $matches );
 
-		if ( (bool) $matches ) {
-			foreach ( $matches[1] as $k => $url ) {
-				$url      = trim( $url, " \t\n\r\0\x0B\"'&quot;&#039;" );
-				$url      = get_rocket_cdn_url( $url, $zone );
-				$property = str_replace( $matches[1][ $k ], $url, $matches[0][ $k ] );
-				$html     = str_replace( $matches[0][ $k ], $property, $html );
-			}
-		}
+        if ( ( bool ) $matches ) {
+            foreach( $matches[1] as $k => $url ) {
+            	$url = str_replace( array( ' ', '\t', '\n', '\r', '\0', '\x0B', '"', "'", '&quot;', '#039;' ), '', $url );
+
+				if ( '#' === substr( $url, 0, 1 ) ) {
+					continue;
+				}
+
+            	$url      = get_rocket_cdn_url( $url, $zone );
+            	$property = str_replace( $matches[1][ $k ], $url, $matches[0][ $k ] );
+            	$html     = str_replace( $matches[0][ $k ], $property, $html );
+            }
+        }
 	}
 
 	return $html;

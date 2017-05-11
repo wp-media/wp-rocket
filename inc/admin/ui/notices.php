@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?php
 defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
 
@@ -517,7 +518,15 @@ function rocket_imagify_notice() {
 	$action_url = $is_imagify_installed ?
 	rocket_get_plugin_activation_link( $imagify_plugin )
 		:
-	add_query_arg(
+	wp_nonce_url( add_query_arg(
+		array(
+			'action'       => 'install-plugin',
+			'plugin'    => 'imagify',
+		),
+		admin_url( 'update.php' )
+	), 'install-plugin_imagify' );
+
+	$details_url = add_query_arg(
 		array(
 			'tab'       => 'plugin-information',
 			'plugin'    => 'imagify',
@@ -528,7 +537,7 @@ function rocket_imagify_notice() {
 		admin_url( 'plugin-install.php' )
 	);
 
-	$classes = $is_imagify_installed ? '' : ' tgm-plugin-update-modal';
+	$classes = $is_imagify_installed ? '' : ' install-now';
 	$cta_txt = $is_imagify_installed ? esc_html__( 'Activate Imagify', 'rocket' ) : esc_html__( 'Install Imagify for Free', 'rocket' );
 
 	$dismiss_url = wp_nonce_url(
@@ -537,7 +546,7 @@ function rocket_imagify_notice() {
 	);
 	?>
 
-	<div class="updated rkt-imagify-notice">
+	<div id="plugin-filter" class="updated plugin-card plugin-card-imagify rkt-imagify-notice">
 		<a href="<?php echo $dismiss_url; ?>" class="rkt-cross"><span class="dashicons dashicons-no"></span></a>
 		
 		<p class="rkt-imagify-logo">
@@ -547,7 +556,10 @@ function rocket_imagify_notice() {
 			<?php _e( 'Speed up your website and boost your SEO by reducing image file sizes without losing quality with Imagify.', 'rocket' ); ?>
 		</p>
 		<p class="rkt-imagify-cta">
-			<a href="<?php echo $action_url; ?>" class="button button-primary<?php echo $classes; ?>"><?php echo $cta_txt; ?></a>
+			<a data-slug="imagify" href="<?php echo $action_url; ?>" class="button button-primary<?php echo $classes; ?>"><?php echo $cta_txt; ?></a>
+			<?php if ( ! $is_imagify_installed ) : ?>
+			<br><a data-slug="imagify" data-name="Imagify Image Optimizer" class="thickbox open-plugin-details-modal" href="<?php echo $details_url; ?>"><?php _e( 'More details', 'rocket' ); ?></a>
+			<?php endif; ?>
 		</p>
 	</div>
 

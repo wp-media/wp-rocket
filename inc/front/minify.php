@@ -327,10 +327,10 @@ function rocket_minify_css( $buffer ) {
 				$buffer = str_replace( $tag, '', $buffer );
 			}
 
-			if ( $excluded_tag && get_rocket_option( 'remove_query_strings' ) ) {
-				$tag_cache_busting = str_replace( $tags_match[1][ $i ], rocket_browser_cache_busting( $tags_match[1][ $i ], 'style_loader_src' ), $tag );
-				$buffer = str_replace( $tag, $tag_cache_busting, $buffer );
-			}
+            if ( $excluded_tag && get_rocket_option( 'remove_query_strings' ) ) {
+                $tag_cache_busting = str_replace( $tags_match[1][ $i ], get_rocket_browser_cache_busting( $tags_match[1][ $i ], 'style_loader_src' ), $tag );
+                $buffer = str_replace( $tag, $tag_cache_busting, $buffer );
+            }
 		}
 		$i++;
 	}
@@ -418,10 +418,10 @@ function rocket_minify_js( $buffer ) {
 				$buffer = str_replace( $tag, '', $buffer );
 			}
 
-			if ( $excluded_tag && get_rocket_option( 'remove_query_strings' ) ) {
-				$tag_cache_busting = str_replace( $tags_match[1][ $i ], rocket_browser_cache_busting( $tags_match[1][ $i ], 'script_loader_src' ), $tag );
-				$buffer = str_replace( $tag, $tag_cache_busting, $buffer );
-			}
+            if ( $excluded_tag && get_rocket_option( 'remove_query_strings' ) ) {
+                $tag_cache_busting = str_replace( $tags_match[1][ $i ], get_rocket_browser_cache_busting( $tags_match[1][ $i ], 'script_loader_src' ), $tag );
+                $buffer = str_replace( $tag, $tag_cache_busting, $buffer );
+            }
 		}
 		$i++;
 	}

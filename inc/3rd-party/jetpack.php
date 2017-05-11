@@ -9,7 +9,7 @@ if ( defined( 'JETPACK__VERSION' ) ) :
 	 * @since 2.8
 	 * @author Remy Perona
 	 */
-	if ( is_array( $jetpack_active_modules ) && in_array( 'sitemaps', $jetpack_active_modules, true ) ) {
+	if ( is_array( $jetpack_active_modules ) && in_array( 'sitemaps', $jetpack_active_modules, true ) && function_exists( 'jetpack_sitemap_uri' ) ) {
 		/**
 		 * Add Jetpack option to WP Rocket options
 		 *

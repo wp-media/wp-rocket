@@ -91,6 +91,7 @@ if ( ! empty( $_GET )
 	&& ( ! isset( $_GET['lang'] ) )
 	&& ( ! isset( $_GET['s'] ) )
 	&& ( ! isset( $_GET['age-verified'] ) )
+	&& ( ! isset( $_GET['ao_noptimize'] ) )
 	&& ( ! isset( $rocket_cache_query_strings ) || ! array_intersect( array_keys( $_GET ), $rocket_cache_query_strings ) )
 ) {
 	rocket_define_donotminify_constants( true );
@@ -132,7 +133,7 @@ if ( ! isset( $allowed_ips[ $ip ] ) && isset( $rocket_cache_mandatory_cookies ) 
 }
 
 // Don't cache page with these user agents.
-if ( isset( $rocket_cache_reject_ua, $_SERVER['HTTP_USER_AGENT'] ) && preg_match( '#(' . $rocket_cache_reject_ua . ')#', $_SERVER['HTTP_USER_AGENT'] ) ) {
+if ( isset( $rocket_cache_reject_ua, $_SERVER['HTTP_USER_AGENT'] ) && ! empty( $rocket_cache_reject_ua ) && preg_match( '#(' . $rocket_cache_reject_ua . ')#', $_SERVER['HTTP_USER_AGENT'] ) ) {
 	rocket_define_donotminify_constants( true );
 	return;
 }
@@ -418,4 +419,3 @@ function rocket_get_ip() {
 	}
 
 	return '0.0.0.0';
-}
