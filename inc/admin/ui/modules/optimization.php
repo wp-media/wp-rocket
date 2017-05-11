@@ -3,34 +3,8 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 add_settings_section( 'rocket_display_optimization_options', __( 'Files optimization', 'rocket' ), '__return_false', 'rocket_optimization' );
 
-add_settings_field(
-	'rocket_remove_query_string_static_resources',
-	 __( 'Static Resources:', 'rocket' ),
-	'rocket_field',
-	'rocket_optimization',
-	'rocket_display_optimization_options',
-	array(
-		array(
-			'type'         => 'checkbox',
-			'label'        => __( 'Remove query strings from static resources', 'rocket' ),
-			'name'         => 'remove_query_strings',
-			'label_screen' => __( 'Remove query strings from static resources', 'rocket' ),
-		),
-		array(
-			'type'			=> 'helper_description',
-			'name'			=> 'rocket_remove_query_strings_desc',
-			'description'  => __( 'This will remove the version query string from static resources and encode it in the resources filename instead. e.g. style.css?ver=1.0 will become style-1.0.css', 'rocket' ),
-		),
-		array(
-			'type'         => 'helper_description',
-			'name'         => 'rocket_remove_query_strings_desc',
-			'description'  => __( '<strong>Note:</strong> By activating this option, you will improve the <code>Remove query strings from static resources</code> grade on GT Metrix.', 'rocket' ),
-		),
-	)
-);
-
 $rocket_maybe_disable_minify = array(
-	'type'         => 'helper_warning',
+	'type'         => 'helper_detection',
 	'name'         => 'minify_html_disabled',
 );
 
@@ -51,8 +25,56 @@ if ( rocket_maybe_disable_minify_html() || rocket_maybe_disable_minify_css() || 
 
 	$disabled = rtrim( $disabled, ', ' );
 
-	$rocket_maybe_disable_minify['description'] = sprintf( __( 'These minification options are disabled because they are currently activated in Autoptimize. If you want to use WP Rocket minification, disable them there first: %s', 'rocket' ), $disabled );
+	$rocket_maybe_disable_minify['description'] = sprintf( __( '<strong>Third-party feature detected:</strong> Minification (%s) is currently activated in <strong>Autoptimize</strong>. If you want to use WP Rocket’s minification, disable those options in Autoptimize.', 'rocket' ), $disabled );
 }
+
+$rocket_minify_fields = array();
+
+// get_rocket_option() might return a boolean or integer, so let’s be safe.
+if (
+	   0 !== absint( get_rocket_option( 'minify_html' ) )
+	|| 0 !== absint( get_rocket_option( 'minify_css' ) )
+	|| 0 !== absint( get_rocket_option( 'minify_js' ) )
+) {
+	$rocket_minify_fields[] = array(
+			'type'        => 'helper_warning',
+			'name'        => 'minify_warning',
+			'description' => __( 'Deactivate in case you notice any visually broken items on your website. <a href="http://docs.wp-rocket.me/article/19-resolving-issues-with-minification" target="_blank">Why?</a>', 'rocket' ),
+	);
+}
+
+$rocket_minify_fields[] = array(
+	'type'         => 'checkbox',
+	'label'        => 'HTML',
+	'name'         => 'minify_html',
+	'label_screen' => __( 'HTML Files minification', 'rocket' ),
+	'readonly'	   => rocket_maybe_disable_minify_html(),
+);
+$rocket_minify_fields[] = array(
+	'type'         => 'checkbox',
+	'label'        => 'CSS',
+	'name'         => 'minify_css',
+	'label_screen' => __( 'CSS Files minification', 'rocket' ),
+	'readonly'	   => rocket_maybe_disable_minify_css(),
+);
+$rocket_minify_fields[] = array(
+	'type'         => 'checkbox',
+	'label'        => 'JS',
+	'name'         => 'minify_js',
+	'label_screen' => __( 'JS Files minification', 'rocket' ),
+	'readonly'     => rocket_maybe_disable_minify_js(),
+);
+$rocket_minify_fields[] = $rocket_maybe_disable_minify;
+$rocket_minify_fields[] = array(
+	'type'         => 'helper_performance',
+	'name'         => 'minify_perf_tip',
+	'description'  => __( 'Reduces file size, can improve loading time.', 'rocket' ),
+);
+$rocket_minify_fields[] = array(
+	'type'         => 'helper_description',
+	'name'         => 'minify',
+	'description'  => __( 'Removes spaces and comments from static files, enables browsers and search engines to faster process HTML, CSS, and JavaScript files.', 'rocket' ),
+);
 
 add_settings_field(
 	'rocket_minify',
@@ -60,35 +82,66 @@ add_settings_field(
 	'rocket_field',
 	'rocket_optimization',
 	'rocket_display_optimization_options',
-	array(
-		array(
-			'type'         => 'checkbox',
-			'label'        => 'HTML',
-			'name'         => 'minify_html',
-			'label_screen' => __( 'HTML Files minification', 'rocket' ),
-			'readonly'	   => rocket_maybe_disable_minify_html(),
-		),
-		array(
-			'type'         => 'checkbox',
-			'label'        => 'CSS',
-			'name'         => 'minify_css',
-			'label_screen' => __( 'CSS Files minification', 'rocket' ),
-			'readonly'	   => rocket_maybe_disable_minify_css(),
-		),
-		array(
-			'type'		   => 'checkbox',
-			'label'		   => 'JS',
-			'name'		   => 'minify_js',
-			'label_screen' => __( 'JS Files minification', 'rocket' ),
-			'readonly'	   => rocket_maybe_disable_minify_js(),
-		),
-		$rocket_maybe_disable_minify,
-		array(
-			'type'			=> 'helper_description',
-			'name'			=> 'minify',
-			'description'  => __( 'Minification removes any spaces and comments present in the CSS and JavaScript files.', 'rocket' ) . '<br/>' . __( 'This mechanism reduces the weight of each file and allows a faster reading of browsers and search engines.', 'rocket' ),
-		),
-	)
+	$rocket_minify_fields
+);
+
+$rocket_concatenate_fields = array();
+
+// get_rocket_option() might return a boolean or integer, so let’s be safe.
+if (
+	   0 !== absint( get_rocket_option( 'minify_google_fonts' ) )
+	|| 0 !== absint( get_rocket_option( 'minify_concatenate_css' ) )
+	|| 0 !== absint( get_rocket_option( 'minify_concatenate_js' ) )
+) {
+	$rocket_concatenate_fields[] = array(
+			'type'        => 'helper_warning',
+			'name'        => 'minify_concatenate_warning',
+			'description' => __( 'Deactivate in case you notice any visually broken items on your website. <a href="http://docs.wp-rocket.me/article/19-resolving-issues-with-minification" target="_blank">Why?</a>', 'rocket' ),
+	);
+}
+$rocket_concatenate_fields[] = array(
+	'type'		   => 'checkbox',
+	'label'		   => 'Google Fonts',
+	'name'		   => 'minify_google_fonts',
+	'label_screen' => __( 'Google Fonts minification', 'rocket' ),
+);
+$rocket_concatenate_fields[] = array(
+	'type'         => 'checkbox',
+	'label'        => 'CSS',
+	'name'         => 'minify_concatenate_css',
+	'label_screen' => 'Concatenate CSS files',
+	'readonly'	   => rocket_maybe_disable_minify_css(),
+);
+$rocket_concatenate_fields[] = array(
+	'parent'	   => 'minify_concatenate_css',
+	'type'         => 'checkbox',
+	'label'        => 'Concatenate all CSS files into 1 file <em>(test thoroughly!)</em>',
+	'name'         => 'minify_css_combine_all',
+	'label_screen' => __( 'CSS Files concatenation', 'rocket' ),
+);
+$rocket_concatenate_fields[] = array(
+	'type'         => 'checkbox',
+	'label'        => 'JS',
+	'name'         => 'minify_concatenate_js',
+	'label_screen' => 'Concatenate JS files',
+	'readonly'	   => rocket_maybe_disable_minify_js(),
+);
+$rocket_concatenate_fields[] = array(
+	'parent'	   => 'minify_concatenate_js',
+	'type'		   => 'checkbox',
+	'label'		   => 'Concatenate all JavaScript files into 1 file <em>(test thoroughly!)</em>',
+	'name'		   => 'minify_js_combine_all',
+	'label_screen' => __( 'JS Files concatenation', 'rocket' ),
+);
+$rocket_concatenate_fields[] = array(
+	'type'			=> 'helper_performance',
+	'name'			=> 'minify_concatenate_perf_tip',
+	'description'  => __( 'Reduces the number of HTTP requests, can improve loading time.', 'rocket' ),
+);
+$rocket_concatenate_fields[] = array(
+	'type'			=> 'helper_description',
+	'name'			=> 'rocket_minify_combine_all',
+	'description'  => __( 'Files get concatenated into small groups in order to <a href="http://docs.wp-rocket.me/article/17-reducing-the-number-of-minified-files" target="_blank">ensure theme/plugin compatibility and better performance</a>. Forcing concatenation into 1 file is not recommended, because browsers are faster downloading up to 6 smaller files in parallel than 1-2 large files.', 'rocket' ),
 );
 
 add_settings_field(
@@ -97,58 +150,7 @@ add_settings_field(
 	'rocket_field',
 	'rocket_optimization',
 	'rocket_display_optimization_options',
-	array(
-		array(
-			'type'		   => 'checkbox',
-			'label'		   => 'Google Fonts',
-			'name'		   => 'minify_google_fonts',
-			'label_screen' => __( 'Google Fonts minification', 'rocket' ),
-		),
-		array(
-			'type'         => 'checkbox',
-			'label'        => 'CSS',
-			'name'         => 'minify_concatenate_css',
-			'label_screen' => 'Concatenate CSS files',
-			'readonly'	   => rocket_maybe_disable_minify_css(),
-		),
-		array(
-			'parent'	   => 'minify_concatenate_css',
-			'type'         => 'checkbox',
-			'label'        => 'Concatenate in one file',
-			'name'         => 'minify_css_combine_all',
-			'label_screen' => __( 'CSS Files concatenation', 'rocket' ),
-		),
-		array(
-			'type'         => 'checkbox',
-			'label'        => 'JS',
-			'name'         => 'minify_concatenate_js',
-			'label_screen' => 'Concatenate JS files',
-			'readonly'	   => rocket_maybe_disable_minify_js(),
-		),
-		array(
-			'parent'	   => 'minify_concatenate_js',
-			'type'		   => 'checkbox',
-			'label'		   => 'Concatenate in one file',
-			'name'		   => 'minify_js_combine_all',
-			'label_screen' => __( 'JS Files concatenation', 'rocket' ),
-		),
-		array(
-			'type'			=> 'helper_description',
-			'name'			=> 'minify',
-			'description'  => __( 'Concatenation combines all CSS and JavaScript files.', 'rocket' ) . '<br/>' . __( 'This mechanism reduces the number of HTTP requests and improves the loading time.', 'rocket' ),
-		),
-		array(
-			'display'		=> ! rocket_is_white_label(),
-			'type'			=> 'helper_warning',
-			'name'			=> 'minify_help2',
-			'description'  => sprintf( __( 'In case of any errors we recommend you to turn off this option or watch the following video: <a href="%1$s" class="fancybox">%1$s</a>.', 'rocket' ), ( defined( 'WPLANG' ) && WPLANG === 'fr_FR' ) ? 'http://www.youtube.com/embed/5-Llh0ivyjs' : 'http://www.youtube.com/embed/kymoxCwW03c' ),
-		),
-		array(
-			'type'			=> 'helper_description',
-			'name'			=> 'rocket_minify_combine_all',
-			'description'  => __( '<strong>Note:</strong> We combine the minified files in little groups <strong>to ensure the best compatibility and better performance</strong>.', 'rocket' ) . '<br/>' . __( 'However <strong>you can force the minification to create only 1 file</strong> by activating the sub-option.', 'rocket' ) . '<br/>' . __( 'But it\'s not recommended to do that because <strong>you won\'t take advantage of the parallelization of the download</strong>: it\'s faster to download 4 files in parallel rather than one big file.', 'rocket' ),
-		),
-	)
+	$rocket_concatenate_fields
 );
 add_settings_field(
 	'rocket_exclude_css',
@@ -224,6 +226,36 @@ if ( get_rocket_option( 'minify_js_in_footer' ) ) {
 		)
 	);
 }
+
+add_settings_field(
+	'rocket_remove_query_string_static_resources',
+	 __( 'Remove query strings:', 'rocket' ),
+	'rocket_field',
+	'rocket_optimization',
+	'rocket_display_optimization_options',
+	array(
+		array(
+			'type'         => 'checkbox',
+			'label'        => __( 'Remove query strings from static resources', 'rocket' ),
+			'name'         => 'remove_query_strings',
+			'label_screen' => __( 'Remove query strings from static resources', 'rocket' ),
+		),
+		array(
+			'type'			=> 'helper_performance',
+			'name'			=> 'rocket_remove_query_strings_perf_tip',
+			'description'   => sprintf(
+				/* translators: %s = https://gtmetrix.com/remove-query-strings-from-static-resources.html */
+				__( 'Can improve the performance grade on <a href="%s" target="_blank">GT Metrix</a>.', 'rocket' ),
+			'https://gtmetrix.com/remove-query-strings-from-static-resources.html'
+			),
+		),
+		array(
+			'type'         => 'helper_description',
+			'name'         => 'rocket_remove_query_strings_desc',
+			'description'  => __( 'Removes the version query string from static files (e.g. style.css?ver=1.0) and encodes it into the file name instead (e.g. style-1.0.css).', 'rocket' ),
+		),
+	)
+);
 
 add_settings_field(
 	'rocket_render_blocking',
