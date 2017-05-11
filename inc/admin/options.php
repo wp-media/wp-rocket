@@ -203,14 +203,21 @@ if ( ! $value ) { ?>
 
 			case 'helper_performance' :
 
-				$description = isset( $args['description'] ) ? sprintf( '<p class="description help %1$s" %2$s><span class="dashicons dashicons-performance" aria-hidden="true"></span> <strong>%3$s</strong></p>', $class, $parent, $args['description'] ) : '';
+				$description = isset( $args['description'] ) ? sprintf( '<p class="description help tip--perf %1$s" %2$s><span class="dashicons dashicons-performance" aria-hidden="true"></span> <strong>%3$s</strong></p>', $class, $parent, $args['description'] ) : '';
+				echo apply_filters( 'rocket_help', $description, $args['name'], 'description' );
+
+			break;
+
+			case 'helper_detection' :
+
+				$description = isset( $args['description'] ) ? sprintf( '<p class="description help tip--detect %1$s" %2$s><span class="dashicons dashicons-visibility" aria-hidden="true"></span> %3$s</p>', $class, $parent, $args['description'] ) : '';
 				echo apply_filters( 'rocket_help', $description, $args['name'], 'description' );
 
 			break;
 
 			case 'helper_help' :
 
-				$description = isset( $args['description'] ) ? sprintf( '<p class="description help %1$s" %2$s>%3$s</p>', $class, $parent, $args['description'] ) : '';
+				$description = isset( $args['description'] ) ? sprintf( '<p class="description help tip--use %1$s" %2$s>%3$s</p>', $class, $parent, $args['description'] ) : '';
 				echo apply_filters( 'rocket_help', $description, $args['name'], 'help' );
 
 			break;

@@ -22,52 +22,42 @@ add_settings_field(
 	)
 );
 
-$rocket_lazyload_fields = array(
-	array(
-		'type'         => 'checkbox',
-		'label'        => __( 'Load images “lazily”', 'rocket' ),
-		'label_for'    => 'lazyload',
-		'label_screen' => __( 'Enable LazyLoad for images', 'rocket' ),
-	),
-	array(
-		'parent'      => 'lazyload',
+$rocket_lazyload_fields = array();
+
+// get_rocket_option() might return a boolean or integer, so let’s be safe.
+if (
+	   0 !== absint( get_rocket_option( 'lazyload' ) )
+	|| 0 !== absint( get_rocket_option( 'lazyload_iframes' ) )
+) {
+	$rocket_lazyload_fields[] = array(
 		'type'        => 'helper_warning',
 		'name'        => 'lazyload_common_issues',
 		'description' => __( 'Deactivate in case you notice any visually broken items on your website. <a href="http://docs.wp-rocket.me/article/278-common-issues-with-lazyload" target="_blank">Why?</a>', 'rocket' ),
-	),
-	array(
-		'type'         => 'checkbox',
-		'label'        => __( 'Load iframes and videos “lazily”', 'rocket' ),
-		'label_for'    => 'lazyload_iframes',
-		'label_screen' => __( 'Enable LazyLoad for iframes and videos', 'rocket' ),
-	),
-	array(
-		'parent'      => 'lazyload_iframes',
-		'type'        => 'helper_warning',
-		'name'        => 'lazyload_common_issues_iframes',
-		'description' => __( 'Deactivate in case you notice any visually broken items on your website. <a href="http://docs.wp-rocket.me/article/278-common-issues-with-lazyload" target="_blank">Why?</a>', 'rocket' ),
-	),
-	array(
-		'type'         => 'helper_performance',
-		'name'         => 'lazyload_perf_tip',
-		'description'  => __( 'Reduces the number of HTTP requests, can improve loading time.', 'rocket' )
-	),
-	array(
-		'type'         => 'helper_description',
-		'name'         => 'lazyload',
-		'description'  => __( 'Images, iframes, and videos will be loaded only as they enter (or are about to enter) the viewport.', 'rocket' )
-	),
+	);
+}
+
+$rocket_lazyload_fields[] =	array(
+	'type'         => 'checkbox',
+	'label'        => __( 'Load images “lazily”', 'rocket' ),
+	'label_for'    => 'lazyload',
+	'label_screen' => __( 'Enable LazyLoad for images', 'rocket' ),
 );
-
-// if ( 1 === absint( get_rocket_option( 'lazyload' ) ) || 1 === absint( get_rocket_option( 'lazyload_iframes' ) ) ) {
-
-	// $rocket_lazyload_fields[] = array(
-	// 	'parent'      => 'lazyload',
-	// 	'type'        => 'helper_warning',
-	// 	'name'        => 'lazyload_common_issues',
-	// 	'description' => __( 'Deactivate LazyLoad in case you notice any visually broken items on your website. <a href="http://docs.wp-rocket.me/article/278-common-issues-with-lazyload" target="_blank">Why?</a>', 'rocket' ),
-	// );
-// }
+$rocket_lazyload_fields[] = array(
+	'type'         => 'checkbox',
+	'label'        => __( 'Load iframes and videos “lazily”', 'rocket' ),
+	'label_for'    => 'lazyload_iframes',
+	'label_screen' => __( 'Enable LazyLoad for iframes and videos', 'rocket' ),
+);
+$rocket_lazyload_fields[] = array(
+	'type'         => 'helper_performance',
+	'name'         => 'lazyload_perf_tip',
+	'description'  => __( 'Reduces the number of HTTP requests, can improve loading time.', 'rocket' )
+);
+$rocket_lazyload_fields[] = array(
+	'type'         => 'helper_description',
+	'name'         => 'lazyload',
+	'description'  => __( 'Images, iframes, and videos will be loaded only as they enter (or are about to enter) the viewport.', 'rocket' )
+);
 
 add_settings_field(
 	'rocket_lazyload',
