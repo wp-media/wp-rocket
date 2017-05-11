@@ -38,13 +38,13 @@ if (
 
 $rocket_lazyload_fields[] =	array(
 	'type'         => 'checkbox',
-	'label'        => __( 'Load images “lazily”', 'rocket' ),
+	'label'        => __( 'Enable for images', 'rocket' ),
 	'label_for'    => 'lazyload',
 	'label_screen' => __( 'Enable LazyLoad for images', 'rocket' ),
 );
 $rocket_lazyload_fields[] = array(
 	'type'         => 'checkbox',
-	'label'        => __( 'Load iframes and videos “lazily”', 'rocket' ),
+	'label'        => __( 'Enable for iframes and videos', 'rocket' ),
 	'label_for'    => 'lazyload_iframes',
 	'label_screen' => __( 'Enable LazyLoad for iframes and videos', 'rocket' ),
 );
