@@ -552,7 +552,7 @@ function rocket_display_options() {
 		<h2 class="nav-tab-wrapper hide-if-no-js">
 			<?php if ( rocket_valid_key() ) { ?>
 				<a href="#tab_basic" class="nav-tab"><?php _e( 'Basic', 'rocket' ); ?></a>
-				<a href="#tab_optimization" class="nav-tab"><?php _e( 'Files', 'rocket' ); ?></a>
+				<a href="#tab_optimization" class="nav-tab"><?php _e( 'Static Files', 'rocket' ); ?></a>
 				<a href="#tab_cdn" class="nav-tab"><?php _e( 'CDN', 'rocket' ); ?></a>
 				<a href="#tab_advanced" class="nav-tab"><?php _e( 'Advanced', 'rocket' ); ?></a>
 				<a href="#tab_database" class="nav-tab"><?php _e( 'Database', 'rocket' ); ?></a>
