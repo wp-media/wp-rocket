@@ -110,12 +110,12 @@ jQuery( document ).ready( function($){
 		}
 
 	});
-	
+
 	// Inputs with parent
 	$('.has-parent').each( function() {
 		var input  = $(this),
 			parent = $('#'+$(this).data('parent'));
-		
+
 		parent.change( function() {
 			if( parent.is(':checked') ) {
 				input.parents('fieldset').show(200);
@@ -128,7 +128,7 @@ jQuery( document ).ready( function($){
 			$(this).parents('fieldset').hide();
 		}
 	});
-	
+
 	// Tabs
 	$('#rockettabs').css({padding: '5px', border: '1px solid #ccc', borderTop: '0px'});
 	$('.nav-tab-wrapper a').css({outline: '0px'});
@@ -147,7 +147,7 @@ jQuery( document ).ready( function($){
 				$('#tab_basic').show();
 		}
 	}
-	$( 'h2.nav-tab-wrapper .nav-tab' ).on( 'click', function(e){
+	$( 'h2.nav-tab-wrapper .nav-tab, a[href^="#tab_"]', '#rocket_options' ).on( 'click', function(e){
 		e.preventDefault();
 		tab = $(this).attr( 'href' );
 		if( sup_html5st ) {
@@ -202,7 +202,7 @@ jQuery( document ).ready( function($){
 			});
 		}
 	});
-    
+
 	// Support form
 	$( '#submit-support-button' ).click( function(e) {
 		e.preventDefault();
@@ -219,7 +219,7 @@ jQuery( document ).ready( function($){
 				type: "warning"
 			});
 		}
-		
+
 		if ( validation.is( ':checked' ) && ( summary == '' || description == '' ) ) {
 			swal({
 				title: sawpr.requiredTitle,
@@ -262,7 +262,7 @@ jQuery( document ).ready( function($){
 						confirmButtonColor = "#f7a933";
 						type  = "warning";
 					}
-					
+
 					if( response.msg == 'BAD_CONNECTION' ) {
 						title = sawpr.badServerConnectionTitle;
 						text  = sawpr.badServerConnectionText;
@@ -270,7 +270,7 @@ jQuery( document ).ready( function($){
 						confirmButtonColor = "#f7a933";
 						type  = "error";
 					}
-					
+
 					if( response.msg == 'SUCCESS' ) {
 						title = sawpr.successSupportTitle;
 						text  = sawpr.successSupportText;
@@ -297,7 +297,7 @@ jQuery( document ).ready( function($){
 						if( response.msg == 'BAD_LICENCE' ) {
 							window.open(response.renew_url);
 						}
-						
+
 						if( response.msg == 'BAD_CONNECTION' ) {
 							window.open('http://wp-rocket.me/support/');
 						}
@@ -306,12 +306,12 @@ jQuery( document ).ready( function($){
 			);
 		}
 	});
-	
+
 	$('#support_summary').parents('fieldset').append( '<div id="support_searchbox" class="hidden"><p><strong>These articles should help you resolving your issue (EN):</strong></p><div id="support_searchbox-suggestions"><ul></ul></div></div>' );
-	
+
     // Live Search Cached Results
     last_search_results = new Array();
-    
+
 	 //Listen for the event
 	$( "#support_summary" ).on( "keyup", function(e) {
 		// Set Search String
@@ -335,7 +335,7 @@ jQuery( document ).ready( function($){
 		$(this).parents('fieldset').attr( 'data-loading', "true" );
 		$(this).data('timer', setTimeout(search, 200));
 	});
-    
+
     // Live Search
     // On Search Submit and Get Results
     function search() {

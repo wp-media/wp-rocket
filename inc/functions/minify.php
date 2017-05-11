@@ -74,7 +74,7 @@ function get_rocket_minify_file( $file, $force_pretty_url = true, $pretty_filena
 	$file = trim( $file );
 
 	if ( empty( $file ) ) {
-		continue;
+		return false;
 	}
 
 	// Replace "//" by "/" because it cause an issue with Minify Library!

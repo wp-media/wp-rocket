@@ -17,3 +17,11 @@ input[type=number].small-text{height:28px}
 [data-loading="true"] input {background: transparent url('../img/wpspin.gif') 99% 50% no-repeat; background-size: 16px 16px;}
 .varnish_description.varnish_description{padding: 10px; font-size: 14px;}
 .description.has-parent{margin-left:20px}
+.rkt-tab textarea{resize:auto;}
+#rocket_options .nav-tab-active, #rocket_options .nav-tab-active:focus, #rocket_options .nav-tab-active:focus:active, #rocket_options .nav-tab-active:hover {border-bottom: 1px solid #fff;background: #fff;}
+.rocket-panel-description {background: #fff;border-bottom: 2px solid #fd7300;padding: 0.75em 0 1em 1.5em}
+.rocket-panel-description span.dashicons {color:#fd7300;margin-left:-1.25em;margin-right:0.25em}
+.description.tip--detect {color:#826eb4}
+fieldset[class*="fieldparent-"]:not([class*="fieldtype-helper"]) {margin-top:0.5em;}
+fieldset[class*="fieldparent-"][class*="fieldtype-helper"] {margin-bottom:0.5em;}
+.fieldtype-helper_warning + fieldset:not(.fieldtype-helper_warning) {margin-top:0.5em}
