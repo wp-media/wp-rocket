@@ -3,6 +3,9 @@ defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
 
 add_settings_section( 'rocket_display_preload_options', __( 'Preload options', 'rocket' ), '__return_false', 'rocket_preload' );
 
+/**
+ * DNS Prefetch
+ */
 add_settings_field(
 	'rocket_dns_prefetch',
 	__( 'Prefetch DNS requests:', 'rocket' ),
@@ -29,23 +32,24 @@ add_settings_field(
 	)
 );
 
-
+/**
+ * Sitemap preload
+ */
 $sitemap_preload_options = array(
 	array(
 		'type'         => 'checkbox',
-	    'label'        => __( 'Activate sitemap-based cache preloading', 'rocket' ),
-	    'label_for'    => 'sitemap_preload',
-	    'name'         => 'sitemap_preload',
-	    'label_screen' => __( 'Activate sitemap-based cache preloading', 'rocket' ),
-	    'default'      => 0,
+		'label'        => __( 'Activate sitemap-based cache preloading', 'rocket' ),
+		'label_for'    => 'sitemap_preload',
+		'name'         => 'sitemap_preload',
+		'label_screen' => __( 'Activate sitemap-based cache preloading', 'rocket' ),
+		'default'      => 0,
 	),
 	array(
-			'type'			=> 'helper_description',
-			'name'			=> 'sitemaps_preload_desc',
-			'description'  => __( '<a href="http://docs.wp-rocket.me/article/8-how-the-cache-is-preloaded" target="_blank">Sitemap preloading</a> runs automatically when the cache lifespan expires. You can also launch it manually from the upper toolbar menu, or from the Tools tab.', 'rocket' ),
+			'type'          => 'helper_description',
+			'name'          => 'sitemaps_preload_desc',
+			'description'   => __( '<a href="http://docs.wp-rocket.me/article/8-how-the-cache-is-preloaded" target="_blank">Sitemap preloading</a> runs automatically when the cache lifespan expires. You can also launch it manually from the upper toolbar menu, or from the Tools tab.', 'rocket' ),
 		),
 );
-
 
 add_settings_field(
 	'rocket_sitemap_preload_activate',
@@ -63,6 +67,9 @@ add_settings_field(
 	apply_filters( 'rocket_sitemap_preload_options', $sitemap_preload_options )
 );
 
+/**
+ * Sitemap preload interval
+ */
 add_settings_field(
 	'rocket_sitemap_preload_interval',
 	 __( 'Sitemap crawl interval:', 'rocket' ),
@@ -83,26 +90,29 @@ add_settings_field(
 			 * @param array $intervals Array of options interval defined by a $value => $label pair.
 			 */
 			'options'      => apply_filters( 'rocket_sitemap_preload_interval', array(
-				'250000'      => '250ms',
-				'500000'      => '500ms',
-				'750000'      => '750ms',
-				'1000000'     => '1s',
-				'2000000'     => '2s',
+				'250000'  => '250ms',
+				'500000'  => '500ms',
+				'750000'  => '750ms',
+				'1000000' => '1s',
+				'2000000' => '2s',
 			) ),
 		),
 		array(
-			'type'			=> 'helper_description',
-			'name'			=> 'sitemaps_preload_url_crawl_desc',
-			// 'description'  => __( 'You can use this option to change the interval between each URL crawl.', 'rocket' ),
+			'type'        => 'helper_description',
+			'name'        => 'sitemaps_preload_url_crawl_desc',
+//			'description' => __( 'You can use this option to change the interval between each URL crawl.', 'rocket' ),
 		),
 		array(
-			'type'			=> 'helper_warning',
-			'name'			=> 'sitemaps_preload_url_crawl_warning',
-			'description'  => __( 'Set a higher value in case you notice any overload on your server!', 'rocket' ),
+			'type'        => 'helper_warning',
+			'name'        => 'sitemaps_preload_url_crawl_warning',
+			'description' => __( 'Set a higher value in case you notice any overload on your server!', 'rocket' ),
 		),
 	)
 );
 
+/**
+ * Sitemaps for preloading
+ */
 add_settings_field(
 	'rocket_sitemap_preload_files',
 	 __( 'Sitemaps for preloading:', 'rocket' ),
@@ -111,9 +121,9 @@ add_settings_field(
 	'rocket_display_preload_options',
 	array(
 		array(
-			'type'			=> 'helper_help',
-			'name'			=> 'sitemaps_list_desc',
-			'description'  => __( 'Specify XML sitemap(s) to be used for preloading (one per line)', 'rocket' ),
+			'type'        => 'helper_help',
+			'name'        => 'sitemaps_list_desc',
+			'description' => __( 'Specify XML sitemap(s) to be used for preloading (one per line)', 'rocket' ),
 		),
 		array(
 			'type'         => 'textarea',
@@ -125,7 +135,9 @@ add_settings_field(
 	)
 );
 
-
+/**
+ * Preload bot
+ */
 add_settings_field(
 	'rocket_enable_bot_preload',
 	__( 'Preload bot:', 'rocket' ),
@@ -148,14 +160,14 @@ add_settings_field(
 			'default'      => 1,
 		),
 		array(
-			'type'         => 'helper_description',
-			'name'         => 'bot_preload',
-			'description'  => __( '<a href="http://docs.wp-rocket.me/article/8-how-the-cache-is-preloaded" target="_blank">Bot-based preloading</a> should only be used on well-performaning servers. Once activated, it gets triggered automatically after you add or update content on your website. You can also launch it manually from the upper toolbar menu, or from the Tools tab.', 'rocket' ),
+			'type'        => 'helper_description',
+			'name'        => 'bot_preload',
+			'description' => __( '<a href="http://docs.wp-rocket.me/article/8-how-the-cache-is-preloaded" target="_blank">Bot-based preloading</a> should only be used on well-performaning servers. Once activated, it gets triggered automatically after you add or update content on your website. You can also launch it manually from the upper toolbar menu, or from the Tools tab.', 'rocket' ),
 		),
 		array(
-			'type'			=> 'helper_warning',
-			'name'			=> 'bot_preload_warning',
-			'description'  => __( 'Deactivate these options in case you notice any overload on your server!', 'rocket' ),
+			'type'        => 'helper_warning',
+			'name'        => 'bot_preload_warning',
+			'description' => __( 'Deactivate these options in case you notice any overload on your server!', 'rocket' ),
 		),
 	)
 );
