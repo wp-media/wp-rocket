@@ -27,7 +27,7 @@ add_settings_field(
 			array(
 				'type'         => 'helper_description',
 				'name'         => 'dns_prefetch',
-				'description'  => __( '<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-DNS-Prefetch-Control" target="_blank">DNS prefetching</a> can make external files load faster, but it can also slow down overall loading time. Use sparingly!', 'rocket' ),
+				'description'  => __( '<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-DNS-Prefetch-Control" target="_blank">DNS prefetching</a> can make external files load faster, especially on mobile networks.', 'rocket' ),
 			),
 	)
 );
