@@ -15,7 +15,7 @@ add_settings_field(
 	array(
 		array(
 			'type'         => 'helper_panel_description',
-			'name'         => 'basic_options_panel',
+			'name'         => 'basic_options_panel_caption',
 			'description'  => sprintf(
 				'<span class="dashicons dashicons-performance" aria-hidden="true"></span><strong>%1$s</strong>',
 				/* translators: line break is recommended, but not mandatory  */
