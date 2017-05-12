@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or	die( 'Cheatin\' uh?' );
+defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 
 /**
  * This warnings are displayed when the plugin can not be deactivated correctly

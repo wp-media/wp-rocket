@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
+defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
 
 $total_revisions          = rocket_database_count_cleanup_items( 'revisions' );
 $total_auto_draft         = rocket_database_count_cleanup_items( 'auto_drafts' );

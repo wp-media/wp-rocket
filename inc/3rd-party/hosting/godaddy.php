@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
+defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
 
 if ( class_exists( 'WPaaS\Plugin' ) ) :
 	add_filter( 'rocket_display_varnish_options_tab', '__return_false' );
