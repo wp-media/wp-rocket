@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
+defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
 
 /**
  * Compatibility with Aelia Tax Display by Country.

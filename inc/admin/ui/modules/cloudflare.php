@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
+defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
 
 add_settings_section( 'rocket_display_cloudflare_options', 'CloudFlare', '__return_false', 'rocket_cloudflare' );
 add_settings_field(

@@ -1,13 +1,39 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
+defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
 
 add_settings_section( 'rocket_display_optimization_options', __( 'Files optimization', 'rocket' ), '__return_false', 'rocket_optimization' );
 
+/**
+ * Panel caption
+ */
+add_settings_field(
+	'rocket_optimization_options_panel',
+	false,
+	'rocket_field',
+	'rocket_optimization',
+	'rocket_display_optimization_options',
+	array(
+		array(
+			'type'         => 'helper_panel_description',
+			'name'         => 'optimization_options_panel_caption',
+			'description'  => sprintf(
+				'<span class="dashicons dashicons-admin-tools" aria-hidden="true"></span><strong>%1$s</strong>',
+				/* translators: line break is recommended, but not mandatory  */
+				__( 'Heads up! These options are not equally suitable for all WordPress setups.<br>In case you notice any visual issues on your site, just turn off the last option(s) you had activated here. <br>Read the documentation on <a href="http://docs.wp-rocket.me/article/19-resolving-issues-with-minification" target="_blank">troubleshooting file optimization</a>.', 'rocket' )
+			),
+		),
+	)
+);
+
+/**
+ * Minification
+ */
 $rocket_maybe_disable_minify = array(
 	'type'         => 'helper_detection',
 	'name'         => 'minify_html_disabled',
 );
 
+/* Autoptimize? */
 if ( rocket_maybe_disable_minify_html() || rocket_maybe_disable_minify_css() || rocket_maybe_disable_minify_js() ) {
 	$disabled = '';
 
@@ -28,6 +54,7 @@ if ( rocket_maybe_disable_minify_html() || rocket_maybe_disable_minify_css() || 
 	$rocket_maybe_disable_minify['description'] = sprintf( __( '<strong>Third-party feature detected:</strong> Minification (%s) is currently activated in <strong>Autoptimize</strong>. If you want to use WP Rocket’s minification, disable those options in Autoptimize.', 'rocket' ), $disabled );
 }
 
+/* Dynamic warning */
 $rocket_minify_fields = array();
 
 // get_rocket_option() might return a boolean or integer, so let’s be safe.
@@ -43,6 +70,7 @@ if (
 	);
 }
 
+/* Minify options */
 $rocket_minify_fields[] = array(
 	'type'         => 'checkbox',
 	'label'        => 'HTML',
@@ -85,6 +113,11 @@ add_settings_field(
 	$rocket_minify_fields
 );
 
+/**
+ * Concatenation
+ */
+
+/* Dynamic warning */
 $rocket_concatenate_fields = array();
 
 // get_rocket_option() might return a boolean or integer, so let’s be safe.
@@ -99,6 +132,8 @@ if (
 			'description' => __( 'Deactivate in case you notice any visually broken items on your website. <a href="http://docs.wp-rocket.me/article/19-resolving-issues-with-minification" target="_blank">Why?</a>', 'rocket' ),
 	);
 }
+
+/* Concatenation options */
 $rocket_concatenate_fields[] = array(
 	'type'		   => 'checkbox',
 	'label'		   => 'Google Fonts',
@@ -152,9 +187,13 @@ add_settings_field(
 	'rocket_display_optimization_options',
 	$rocket_concatenate_fields
 );
+
+/**
+ * Exclusion (CSS)
+ */
 add_settings_field(
 	'rocket_exclude_css',
-	__( '<b>CSS</b> files to exclude:', 'rocket' ),
+	__( '<strong>CSS</strong> files to exclude:', 'rocket' ),
 	'rocket_field',
 	'rocket_optimization',
 	'rocket_display_optimization_options',
@@ -162,19 +201,23 @@ add_settings_field(
 		array(
 			'type'         => 'textarea',
 			'label_for'    => 'exclude_css',
-			'label_screen' => __( '<b>CSS</b> files to exclude from minification:', 'rocket' ),
+			'label_screen' => __( '<strong>CSS</strong> files to exclude from minification:', 'rocket' ),
 		),
 		array(
 			'type'         => 'helper_help',
 			'name'         => 'exclude_css',
-			'description'  => __( 'Enter the URL of <b>CSS</b> files to reject (one per line).', 'rocket' ) . '<br/>' . __( 'You can use regular expressions (regex).', 'rocket' ),
+			'description'  => __( 'Enter the URL of <strong>CSS</strong> files to reject (one per line).', 'rocket' ) . '<br/>' . __( 'You can use regular expressions (regex).', 'rocket' ),
 		),
 		'class' => 'exclude-css-row',
 	)
 );
+
+/**
+ * Exclusion (JS)
+ */
 add_settings_field(
 	'rocket_exclude_js',
-	__( '<b>JS</b> files to exclude:', 'rocket' ),
+	__( '<strong>JS</strong> files to exclude:', 'rocket' ),
 	'rocket_field',
 	'rocket_optimization',
 	'rocket_display_optimization_options',
@@ -182,28 +225,31 @@ add_settings_field(
 		array(
 			'type'         => 'textarea',
 			'label_for'    => 'exclude_js',
-			'label_screen' => __( '<b>JS</b> files to exclude from minification:', 'rocket' ),
+			'label_screen' => __( '<strong>JS</strong> files to exclude from minification:', 'rocket' ),
 		),
 		array(
 			'type'         => 'helper_help',
 			'name'         => 'exclude_js',
-			'description'  => __( 'Enter the URL of <b>JS</b> files to reject (one per line).', 'rocket' ) . '<br/>' . __( 'You can use regular expressions (regex).', 'rocket' ),
+			'description'  => __( 'Enter the URL of <strong>JS</strong> files to reject (one per line).', 'rocket' ) . '<br/>' . __( 'You can use regular expressions (regex).', 'rocket' ),
 		),
 		'class' => 'exclude-js-row',
 	)
 );
 
+/**
+ * Legacy: JS to footer
+ */
 if ( get_rocket_option( 'minify_js_in_footer' ) ) {
 	add_settings_field(
 		'minify_js_in_footer',
-		__( '<b>JS</b> files to be included in the footer during the minification process:', 'rocket' ),
+		__( '<strong>JS</strong> files to be included in the footer during the minification process:', 'rocket' ),
 		'rocket_field',
 		'rocket_optimization',
 		'rocket_display_optimization_options',
 		array(
 			array(
 				'type'                     => 'repeater',
-				'label_screen'             => __( '<b>JS</b> files to be included in the footer during the minification process:', 'rocket' ),
+				'label_screen'             => __( '<strong>JS</strong> files to be included in the footer during the minification process:', 'rocket' ),
 				'name'                     => 'minify_js_in_footer',
 				'placeholder'              => 'http://',
 				'repeater_drag_n_drop'     => true,
@@ -229,6 +275,9 @@ if ( get_rocket_option( 'minify_js_in_footer' ) ) {
 	);
 }
 
+/**
+ * Remove query strings
+ */
 add_settings_field(
 	'rocket_remove_query_string_static_resources',
 	 __( 'Remove query strings:', 'rocket' ),
@@ -259,6 +308,9 @@ add_settings_field(
 	)
 );
 
+/**
+ * Async CSS
+ */
 add_settings_field(
 	'rocket_render_blocking',
 	 __( 'Render blocking JavaScript & CSS above the fold:', 'rocket' ),
@@ -287,6 +339,9 @@ add_settings_field(
 	)
 );
 
+/**
+ * Above the fold CSS
+ */
 add_settings_field(
 	'rocket_critical_css',
 	__( 'Critical CSS for above the fold rendering:', 'rocket' ),
@@ -313,6 +368,9 @@ add_settings_field(
 	)
 );
 
+/**
+ * Legacy: Deferred JS
+ */
 if ( get_rocket_option( 'deferred_js' ) ) {
 	$deferred_js_readonly = '';
 
@@ -322,7 +380,7 @@ if ( get_rocket_option( 'deferred_js' ) ) {
 
 	add_settings_field(
 		'rocket_deferred_js',
-		__( '<b>JS</b> files with deferred loading:', 'rocket' ),
+		__( '<strong>JS</strong> files with deferred loading:', 'rocket' ),
 		'rocket_field',
 		'rocket_optimization',
 		'rocket_display_optimization_options',

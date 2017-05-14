@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
+defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
 
 add_settings_section( 'rocket_display_white_label', __( 'White Label', 'rocket' ), '__return_false', 'rocket_white_label' );
 add_settings_field(

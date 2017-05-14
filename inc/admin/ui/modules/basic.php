@@ -1,8 +1,11 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
+defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
 
 add_settings_section( 'rocket_display_main_options', __( 'Basic options', 'rocket' ), '__return_false', 'rocket_basic' );
 
+/**
+ * Panel caption
+ */
 add_settings_field(
 	'rocket_basic_options_panel',
 	false,
@@ -12,7 +15,7 @@ add_settings_field(
 	array(
 		array(
 			'type'         => 'helper_panel_description',
-			'name'         => 'basic_options_panel',
+			'name'         => 'basic_options_panel_caption',
 			'description'  => sprintf(
 				'<span class="dashicons dashicons-performance" aria-hidden="true"></span><strong>%1$s</strong>',
 				/* translators: line break is recommended, but not mandatory  */
@@ -22,6 +25,11 @@ add_settings_field(
 	)
 );
 
+/**
+ * LazyLoad
+ */
+
+/* Dynamic warning */
 $rocket_lazyload_fields = array();
 
 // get_rocket_option() might return a boolean or integer, so let’s be safe.
@@ -36,6 +44,7 @@ if (
 	);
 }
 
+/* LazyLoad options */
 $rocket_lazyload_fields[] =	array(
 	'type'         => 'checkbox',
 	'label'        => __( 'Enable for images', 'rocket' ),
@@ -68,6 +77,9 @@ add_settings_field(
 	$rocket_lazyload_fields
 );
 
+/**
+ * Mobile cache
+ */
 add_settings_field(
 	'rocket_mobile',
 	__( 'Mobile cache:', 'rocket' ),
@@ -76,8 +88,8 @@ add_settings_field(
 	'rocket_display_main_options',
 	array(
 		array(
-			'type'		   => 'checkbox',
-			'label'		   => __( 'Enable caching for mobile devices', 'rocket' ),
+			'type'         => 'checkbox',
+			'label'        => __( 'Enable caching for mobile devices', 'rocket' ),
 			'label_for'	   => 'cache_mobile',
 			'label_screen' => __( 'Mobile cache:', 'rocket' ),
 			'default'	   => ( rocket_is_mobile_plugin_active() ) ? 1 : get_rocket_option( 'cache_mobile', 0 ),
@@ -89,7 +101,7 @@ add_settings_field(
 			'description'  => __( 'Makes your website mobile-friendlier.', 'rocket' ),
 		),
 		array(
-			'parent'	   => 'cache_mobile',
+			'parent'       => 'cache_mobile',
 			'type'         => 'checkbox',
 			'label'        => __( 'Separate cache files for mobile devices', 'rocket' ),
 			'name'         => 'do_caching_mobile_files',
@@ -97,13 +109,17 @@ add_settings_field(
 			'readonly'	   => rocket_is_mobile_plugin_active(),
 		),
 		array(
-			'parent'	   => 'cache_mobile',
+			'parent'       => 'cache_mobile',
 			'type'         => 'helper_description',
 			'name'         => 'mobile',
 			'description'  => __( '<a href="http://docs.wp-rocket.me/article/708-mobile-caching" target="_blank">Mobile cache</a> works safest with both options enabled. When in doubt, keep both.', 'rocket' ),
 		),
 	)
 );
+
+/**
+ * User cache
+ */
 add_settings_field(
 	'rocket_logged_user',
 	__( 'User cache:', 'rocket' ),
@@ -111,10 +127,10 @@ add_settings_field(
 	'rocket_display_main_options',
 	array(
 		array(
-		    'type'         => 'checkbox',
-		    'label'        => __( 'Enable caching for logged-in WordPress users', 'rocket' ),
-		    'label_for'    => 'cache_logged_user',
-		    'label_screen' => __( 'User cache:', 'rocket' ),
+			'type'         => 'checkbox',
+			'label'        => __( 'Enable caching for logged-in WordPress users', 'rocket' ),
+			'label_for'    => 'cache_logged_user',
+			'label_screen' => __( 'User cache:', 'rocket' ),
 		),
 		array(
 			'type'         => 'helper_description',
@@ -125,6 +141,10 @@ add_settings_field(
 		),
 	)
 );
+
+/**
+ * SSL cache
+ */
 add_settings_field(
 	'rocket_ssl',
 	__( 'SSL cache:', 'rocket' ),
@@ -149,6 +169,10 @@ add_settings_field(
 		),
 	)
 );
+
+/**
+ * Emoji cache
+ */
 add_settings_field(
 	'rocket_wordpress_emojis',
 	__( 'Emoji cache:', 'rocket' ),
@@ -169,6 +193,10 @@ add_settings_field(
 		),
 	)
 );
+
+/**
+ * Disable Embeds
+ */
 add_settings_field(
 	'rocket_wordpress_embeds',
 	__( 'Embeds:', 'rocket' ),
@@ -190,6 +218,9 @@ add_settings_field(
 	)
 );
 
+/**
+ * Cache lifespan
+ */
 $rocket_purge_fields = array(
 	array(
 		'type'         => 'helper_help',
@@ -203,11 +234,11 @@ $rocket_purge_fields = array(
 		'fieldset'     => 'start',
 	),
 	array(
-		'type'		   => 'select',
-		'label_for'	   => 'purge_cron_unit',
+		'type'         => 'select',
+		'label_for'    => 'purge_cron_unit',
 		'label_screen' => __( 'Unit of time', 'rocket' ),
-		'fieldset'	   => 'end',
-		'options' => array(
+		'fieldset'     => 'end',
+		'options'      => array(
 			'MINUTE_IN_SECONDS' => __( 'minute(s)', 'rocket' ),
 			'HOUR_IN_SECONDS'   => __( 'hour(s)', 'rocket' ),
 			'DAY_IN_SECONDS'    => __( 'day(s)', 'rocket' ),
@@ -224,6 +255,7 @@ $rocket_purge_fields = array(
 	),
 );
 
+/* Dynamic warnings */
 if (
 	   'DAY_IN_SECONDS' === get_rocket_option( 'purge_cron_unit' )
 	|| ( 8 < get_rocket_option( 'purge_cron_interval' ) && 'HOUR_IN_SECONDS' === get_rocket_option( 'purge_cron_unit' ) )
@@ -249,6 +281,7 @@ if (
 	);
 }
 
+/* Cache lifespan option */
 add_settings_field(
 	'rocket_purge',
 	__( 'Cache lifespan', 'rocket' ),

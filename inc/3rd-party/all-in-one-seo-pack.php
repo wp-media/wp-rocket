@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
+defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
 
 if ( defined( 'AIOSEOP_VERSION' ) ) :
 	$all_in_one_seo_xml_options = get_option( 'aioseop_options' );
