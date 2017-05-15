@@ -68,6 +68,10 @@ function rocket_insert_critical_css() {
 		return;
 	}
 
+	if ( defined( 'DONOTMASYNCCSS' ) && DONOTMASYNCCSS ) {
+		return;
+	}
+
 	// Don't apply if user is logged-in and cache for logged-in user is off.
 	if ( is_user_logged_in() && ! get_rocket_option( 'cache_logged_user' ) ) {
 		return;
@@ -117,6 +121,10 @@ function rocket_insert_load_css() {
 
 	// Don't apply if DONOTCACHEPAGE is defined.
 	if ( defined( 'DONOTCACHEPAGE' ) && DONOTCACHEPAGE ) {
+		return;
+	}
+
+	if ( defined( 'DONOTMASYNCCSS' ) && DONOTMASYNCCSS ) {
 		return;
 	}
 
