@@ -146,7 +146,7 @@ if ( ! $value ) { ?>
 				?>
 
 					<legend class="screen-reader-text"><span><?php echo $args['label_screen']; ?></span></legend>
-					<label><textarea id="<?php echo $args['label_for']; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]" cols="<?php echo $cols; ?>" rows="<?php echo $rows; ?>"<?php echo $readonly; echo $placeholder; ?>><?php echo $value; ?></textarea>
+					<label><textarea id="<?php echo $args['label_for']; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]" cols="<?php echo $cols; ?>" rows="<?php echo $rows; ?>"<?php echo $readonly; echo $placeholder; ?>><?php echo stripslashes( $value ); ?></textarea>
 					</label>
 
 				<?php
