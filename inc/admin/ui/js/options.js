@@ -2,6 +2,63 @@ jQuery( document ).ready( function($){
 	// Fancybox
 	$(".fancybox").fancybox({'type' : 'iframe'});
 
+	var $info = $('.fieldname-lazyload_common_issues'),
+    	$inputs = $('input[id^="lazyload"]'),
+		is_lazy_checked = function(){
+		return $inputs.filter(':checked').length > 0 ? true : false;
+    	},
+		check_lazy = function(){
+			if( is_lazy_checked() ) {
+				$info.fadeIn( 275 ).attr('aria-hidden', 'false' );
+      		} else {
+	  			$info.fadeOut( 275 ).attr('aria-hidden', 'true' );
+      		}
+    	};
+
+	check_lazy();
+
+	$inputs.on('change.wprocket', check_lazy);
+
+	var $info_minify = $('.fieldname-minify_warning'),
+    	$inputs_minify = $('input[id^="minify"]'),
+		is_minify_checked = function(){
+		return $inputs_minify.filter(':checked').length > 0 ? true : false;
+    	},
+		check_minify = function(){
+			if( is_minify_checked() ) {
+				$info_minify.fadeIn( 275 ).attr('aria-hidden', 'false' );
+      		} else {
+	  			$info_minify.fadeOut( 275 ).attr('aria-hidden', 'true' );
+      		}
+    	};
+
+	check_minify();
+
+	$inputs_minify.on('change.wprocket', check_minify);
+
+	var $info_lifespan_less = $('.fieldname-purge_warning_less'),
+		$info_lifespan_more = $('.fieldname-purge_warning_more'),
+    	$input_cron_interval = $('#purge_cron_interval'),
+    	$input_cron_unit = $('#purge_cron_unit'),
+
+		check_purge_cron = function(){
+			if( 'DAY_IN_SECONDS' === $input_cron_unit.val() || 'HOUR_IN_SECONDS' === $input_cron_unit.val() && 10 < $input_cron_interval.val() ) {
+				$info_lifespan_less.fadeIn( 275 ).attr('aria-hidden', 'false' );
+				$info_lifespan_more.fadeOut( 275 ).attr('aria-hidden', 'true' );
+      		} else if ( 'MINUTE_IN_SECONDS' === $input_cron_unit.val() && 300 > $input_cron_interval.val() ) {
+	  			$info_lifespan_less.fadeOut( 275 ).attr('aria-hidden', 'true' );
+	  			$info_lifespan_more.fadeIn( 275 ).attr('aria-hidden', 'false' );
+      		} else {
+	      		$info_lifespan_less.fadeOut( 275 ).attr('aria-hidden', 'true' );
+	  			$info_lifespan_more.fadeOut( 275 ).attr('aria-hidden', 'true' );
+      		}
+    	};
+
+	check_purge_cron();
+
+	$input_cron_interval.on('change.wprocket', check_purge_cron);
+	$input_cron_unit.on('change.wprocket', check_purge_cron);
+
 	// Deferred JS
 	function rocket_deferred_rename()
 	{
