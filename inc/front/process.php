@@ -395,8 +395,8 @@ function rocket_define_donotminify_constants( $value ) {
  * @param bool $value true or false.
  */
 function rocket_define_donotasync_css_constant( $value ) {
-	if ( ! defined( 'DONOTMASYNCCSS' ) ) {
-		define( 'DONOTMASYNCCSS', (bool) $value );
+	if ( ! defined( 'DONOTASYNCCSS' ) ) {
+		define( 'DONOTASYNCCSS', (bool) $value );
 	}
 }
 
