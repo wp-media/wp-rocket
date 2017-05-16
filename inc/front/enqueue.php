@@ -88,17 +88,6 @@ function get_rocket_browser_cache_busting( $src, $current_filter = '' ) {
 				return $src;
 			}
 		}
-
-		$defer_excluded_files = get_rocket_exclude_defer_js();
-
-		if ( (bool) $defer_excluded_files && get_rocket_option( 'defer_all_js', 0 ) ) {
-			$defer_excluded_files = array_flip( $defer_excluded_files );
-			$path = parse_url( $src, PHP_URL_PATH );
-
-			if ( isset( $defer_excluded_files[ $path ] ) ) {
-				return $src;
-			}
-		}
 	}
 
 	$full_src = ( substr( $src, 0, 2 ) === '//' ) ? rocket_add_url_protocol( $src ) : $src;
