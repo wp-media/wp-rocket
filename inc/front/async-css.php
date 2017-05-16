@@ -68,7 +68,7 @@ function rocket_insert_critical_css() {
 		return;
 	}
 
-	if ( defined( 'DONOTMASYNCCSS' ) && DONOTMASYNCCSS ) {
+	if ( defined( 'DONOTASYNCCSS' ) && DONOTASYNCCSS ) {
 		return;
 	}
 
@@ -124,7 +124,7 @@ function rocket_insert_load_css() {
 		return;
 	}
 
-	if ( defined( 'DONOTMASYNCCSS' ) && DONOTMASYNCCSS ) {
+	if ( defined( 'DONOTASYNCCSS' ) && DONOTASYNCCSS ) {
 		return;
 	}
 
