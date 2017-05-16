@@ -15,6 +15,10 @@ function rocket_async_css( $buffer ) {
 		return $buffer;
 	}
 
+	if ( is_rocket_post_excluded_option( 'async_css' ) ) {
+		return $buffer;
+	}
+
 	$excluded_css = array_flip( get_rocket_exclude_async_css() );
 
 	// Get all css files with this regex.
@@ -55,6 +59,10 @@ function rocket_insert_critical_css() {
 	global $pagenow;
 
 	if ( ! get_rocket_option( 'async_css' ) ) {
+		return;
+	}
+
+	if ( is_rocket_post_excluded_option( 'async_css' ) ) {
 		return;
 	}
 
@@ -111,6 +119,10 @@ function rocket_insert_load_css() {
 	global $pagenow;
 
 	if ( ! get_rocket_option( 'async_css' ) ) {
+		return;
+	}
+
+	if ( is_rocket_post_excluded_option( 'async_css' ) ) {
 		return;
 	}
 

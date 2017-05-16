@@ -70,6 +70,8 @@ function rocket_display_cache_options_meta_boxes() {
 				'minify_css'       => __( 'CSS Minification', 'rocket' ),
 				'minify_js'        => __( 'JS Minification', 'rocket' ),
 				'cdn'              => __( 'CDN', 'rocket' ),
+				'async_css'		   => __( 'Async CSS', 'rocket' ),
+				'defer_all_js'	   => __( 'Defer JS', 'rocket' ),
 			);
 
 			foreach ( $fields as $field => $label ) {
@@ -138,6 +140,8 @@ function rocket_save_metabox_options() {
 			'minify_css',
 			'minify_js',
 			'cdn',
+			'async_css',
+			'defer_all_js',
 		);
 
 		foreach ( $fields as $field ) {
