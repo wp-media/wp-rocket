@@ -1,10 +1,10 @@
 <?php
 defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
 
-add_settings_section( 'rocket_display_cloudflare_options', 'CloudFlare', '__return_false', 'rocket_cloudflare' );
+add_settings_section( 'rocket_display_cloudflare_options', 'Cloudflare', '__return_false', 'rocket_cloudflare' );
 add_settings_field(
 	'rocket_cloudflare_email',
-	__( 'CloudFlare Account Email', 'rocket' ),
+	__( 'Cloudflare Account Email', 'rocket' ),
 	'rocket_field',
 	'rocket_cloudflare',
 	'rocket_display_cloudflare_options',
@@ -12,7 +12,7 @@ add_settings_field(
 		array(
 			'type'         => 'text',
 			'label_for'    => 'cloudflare_email',
-			'label_screen' => __( 'CloudFlare Account Email', 'rocket' ),
+			'label_screen' => __( 'Cloudflare Account Email', 'rocket' ),
 		),
 	)
 );
@@ -85,9 +85,9 @@ add_settings_field(
 );
 
 if ( rocket_is_white_label() ) {
-	$rocket_cloudflare_auto_settings_label = __( 'Auto enable the optimal CloudFlare settings', 'rocket' );
+	$rocket_cloudflare_auto_settings_label = __( 'Auto enable the optimal Cloudflare settings', 'rocket' );
 } else {
-	$rocket_cloudflare_auto_settings_label = __( 'Auto enable the optimal CloudFlare settings (props WP Rocket)', 'rocket' );
+	$rocket_cloudflare_auto_settings_label = __( 'Auto enable the optimal Cloudflare settings (props WP Rocket)', 'rocket' );
 }
 
 add_settings_field(
@@ -110,7 +110,7 @@ add_settings_field(
 		array(
 			'type' 		   => 'helper_description',
 			'name'         => 'cloudflare_auto_settings',
-			'description'  => __( 'We select the best CloudFlare configuration for speed, performance grade and compatibility.', 'rocket' ),
+			'description'  => __( 'We select the best Cloudflare configuration for speed, performance grade and compatibility.', 'rocket' ),
 		),
 	)
 );

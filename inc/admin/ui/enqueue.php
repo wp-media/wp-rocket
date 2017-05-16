@@ -24,7 +24,7 @@ function rocket_add_admin_css_js() {
 		'warningTitle'     => __( 'Are you sure?', 'rocket' ),
 		'requiredTitle'    => __( 'All fields are required!', 'rocket' ),
 
-		'cloudflareTitle'  => __( 'CloudFlare Settings', 'rocket' ),
+		'cloudflareTitle'  => __( 'Cloudflare Settings', 'rocket' ),
 		'cloudflareText'   => __( 'Click "Save Changes" to activate the Cloudflare tab.', 'rocket' ),
 
 		'preloaderTitle' => __( 'Transmitting across the galaxy...', 'rocket' ),
@@ -85,7 +85,7 @@ add_action( 'admin_print_styles', 'rocket_admin_print_styles' );
  */
 function rocket_enqueue_modal_plugin() {
 	wp_enqueue_style( 'plugin-install' );
-    
+
     wp_enqueue_script( 'plugin-install' );
     wp_enqueue_script( 'updates' );
     add_thickbox();

@@ -14,7 +14,7 @@ function get_rocket_cloudflare_api_instance() {
 	$cf_api_key = ( defined( 'WP_ROCKET_CF_API_KEY' ) ) ? WP_ROCKET_CF_API_KEY : get_rocket_option( 'cloudflare_api_key', null );
 
 	if ( ! isset( $cf_email, $cf_api_key ) ) {
-		return new WP_Error( 'cloudflare_credentials_empty', __( 'CloudFlare Email & API Key are not set', 'rocket' ) );
+		return new WP_Error( 'cloudflare_credentials_empty', __( 'Cloudflare Email and API key are not set', 'rocket' ) );
 	}
 
 	return new Cloudflare\Api( $cf_email, $cf_api_key );
@@ -73,7 +73,7 @@ function rocket_cloudflare_valid_auth() {
 		$cf_zones         = $cf_zone_instance->zones();
 
 		if ( ! isset( $cf_zones->success ) || empty( $cf_zones->success ) ) {
-			throw new Exception( __( 'Connection to CloudFlare failed', 'rocket' ) );
+			throw new Exception( __( 'Connection to Cloudflare failed', 'rocket' ) );
 		}
 
 		if ( true === $cf_zones->success ) {
@@ -108,7 +108,7 @@ function get_rocket_cloudflare_zones() {
 		$cf_zones_list           = $cf_zones->result;
 
 		if ( ! (bool) $cf_zones_list ) {
-			$domains[] = __( 'No domain available in your CloudFlare account', 'rocket' );
+			$domains[] = __( 'No domain available in your Cloudflare account', 'rocket' );
 
 			return $domains;
 		}
