@@ -32,17 +32,11 @@ add_settings_field(
 /* Dynamic warning */
 $rocket_lazyload_fields = array();
 
-// get_rocket_option() might return a boolean or integer, so let’s be safe.
-if (
-	   0 !== absint( get_rocket_option( 'lazyload' ) )
-	|| 0 !== absint( get_rocket_option( 'lazyload_iframes' ) )
-) {
-	$rocket_lazyload_fields[] = array(
-		'type'        => 'helper_warning',
-		'name'        => 'lazyload_common_issues',
-		'description' => __( 'Deactivate in case you notice any visually broken items on your website. <a href="http://docs.wp-rocket.me/article/278-common-issues-with-lazyload" target="_blank">Why?</a>', 'rocket' ),
-	);
-}
+$rocket_lazyload_fields[] = array(
+	'type'        => 'helper_warning',
+	'name'        => 'lazyload_common_issues',
+	'description' => __( 'Deactivate in case you notice any visually broken items on your website. <a href="http://docs.wp-rocket.me/article/278-common-issues-with-lazyload" target="_blank">Why?</a>', 'rocket' ),
+);
 
 /* LazyLoad options */
 $rocket_lazyload_fields[] =	array(
@@ -255,31 +249,19 @@ $rocket_purge_fields = array(
 	),
 );
 
-/* Dynamic warnings */
-if (
-	   'DAY_IN_SECONDS' === get_rocket_option( 'purge_cron_unit' )
-	|| ( 8 < get_rocket_option( 'purge_cron_interval' ) && 'HOUR_IN_SECONDS' === get_rocket_option( 'purge_cron_unit' ) )
-) {
-
-	$rocket_purge_fields[] = array(
-		'type'         => 'helper_warning',
-		'name'         => 'purge_warning',
+$rocket_purge_fields[] = array(
+	'type'         => 'helper_warning',
+	'name'         => 'purge_warning_less',
 // @todo Replace link with one from our documentation!
-		'description'  => __( 'Reduce lifespan to less hours in case you notice issues that seem to appear only frequently. <a href="https://joshpress.net/wordpress-nonces-and-wordpress-caching/" target="_blank">Why?</a>', 'rocket' ),
-	);
-}
+	'description'  => __( 'Reduce lifespan to less hours in case you notice issues that seem to appear only frequently. <a href="https://joshpress.net/wordpress-nonces-and-wordpress-caching/" target="_blank">Why?</a>', 'rocket' ),
+);
 
-if (
-	   'MINUTE_IN_SECONDS' === get_rocket_option( 'purge_cron_unit' )
-	&& 300 > get_rocket_option( 'purge_cron_interval' )
-) {
 
-	$rocket_purge_fields[] = array(
+$rocket_purge_fields[] = array(
 		'type'         => 'helper_warning',
-		'name'         => 'purge_warning',
+		'name'         => 'purge_warning_more',
 		'description'  => __( 'Increase lifespan to a few hours in case you notice server issues with this setting.', 'rocket' ),
 	);
-}
 
 /* Cache lifespan option */
 add_settings_field(

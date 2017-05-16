@@ -4,35 +4,6 @@ defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
 add_settings_section( 'rocket_display_preload_options', __( 'Preload options', 'rocket' ), '__return_false', 'rocket_preload' );
 
 /**
- * DNS Prefetch
- */
-add_settings_field(
-	'rocket_dns_prefetch',
-	__( 'Prefetch DNS requests:', 'rocket' ),
-	'rocket_field',
-	'rocket_preload',
-	'rocket_display_preload_options',
-	array(
-		array(
-			'type'         => 'helper_help',
-			'name'         => 'dns_prefetch_tip',
-			'description'  => __( 'Specify external hosts to be prefetched (no <code>http:</code>, one per line)', 'rocket' ),
-			),
-			array(
-				'type'         => 'textarea',
-				'label_for'    => 'dns_prefetch',
-				'label_screen' => __( 'Prefetch DNS requests:', 'rocket' ),
-				'placeholder'  => "e.g. //example.com\ne.g. //host.example.com",
-			),
-			array(
-				'type'         => 'helper_description',
-				'name'         => 'dns_prefetch',
-				'description'  => __( '<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-DNS-Prefetch-Control" target="_blank">DNS prefetching</a> can make external files load faster, especially on mobile networks.', 'rocket' ),
-			),
-	)
-);
-
-/**
  * Sitemap preload
  */
 $sitemap_preload_options = array(
@@ -169,5 +140,34 @@ add_settings_field(
 			'name'        => 'bot_preload_warning',
 			'description' => __( 'Deactivate these options in case you notice any overload on your server!', 'rocket' ),
 		),
+	)
+);
+
+/**
+ * DNS Prefetch
+ */
+add_settings_field(
+	'rocket_dns_prefetch',
+	__( 'Prefetch DNS requests:', 'rocket' ),
+	'rocket_field',
+	'rocket_preload',
+	'rocket_display_preload_options',
+	array(
+		array(
+			'type'         => 'helper_help',
+			'name'         => 'dns_prefetch_tip',
+			'description'  => __( 'Specify external hosts to be prefetched (no <code>http:</code>, one per line)', 'rocket' ),
+			),
+			array(
+				'type'         => 'textarea',
+				'label_for'    => 'dns_prefetch',
+				'label_screen' => __( 'Prefetch DNS requests:', 'rocket' ),
+				'placeholder'  => "e.g. //example.com\ne.g. //host.example.com",
+			),
+			array(
+				'type'         => 'helper_description',
+				'name'         => 'dns_prefetch',
+				'description'  => __( '<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-DNS-Prefetch-Control" target="_blank">DNS prefetching</a> can make external files load faster, especially on mobile networks.', 'rocket' ),
+			),
 	)
 );

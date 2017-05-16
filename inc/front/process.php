@@ -26,12 +26,14 @@ if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 // Don't cache the customizer preview.
 if ( isset( $_POST['wp_customize'] ) ) {
 	rocket_define_donotminify_constants( true );
+	rocket_define_donotasync_css_constant( true );
 	return;
 }
 
 // Don't cache without GET method.
 if ( ! isset( $_SERVER['REQUEST_METHOD'] ) || 'GET' !== $_SERVER['REQUEST_METHOD'] ) {
 		rocket_define_donotminify_constants( true );
+		rocket_define_donotasync_css_constant( true );
 		return;
 }
 
@@ -95,24 +97,28 @@ if ( ! empty( $_GET )
 	&& ( ! isset( $rocket_cache_query_strings ) || ! array_intersect( array_keys( $_GET ), $rocket_cache_query_strings ) )
 ) {
 	rocket_define_donotminify_constants( true );
+	rocket_define_donotasync_css_constant( true );
 	return;
 }
 
 // Don't cache SSL.
 if ( ! isset( $rocket_cache_ssl ) && rocket_is_ssl() ) {
 	rocket_define_donotminify_constants( true );
+	rocket_define_donotasync_css_constant( true );
 	return;
 }
 
 // Don't cache these pages.
 if ( isset( $rocket_cache_reject_uri ) && preg_match( '#^(' . $rocket_cache_reject_uri . ')$#', $request_uri ) ) {
 	rocket_define_donotminify_constants( true );
+	rocket_define_donotasync_css_constant( true );
 	return;
 }
 
 // Don't cache page with these cookies.
 if ( isset( $rocket_cache_reject_cookies ) && preg_match( '#(' . $rocket_cache_reject_cookies . ')#', var_export( $_COOKIE, true ) ) ) {
 	rocket_define_donotminify_constants( true );
+	rocket_define_donotasync_css_constant( true );
 	return;
 }
 
@@ -129,18 +135,21 @@ $allowed_ips = array(
 // Don't cache page when these cookies don't exist.
 if ( ! isset( $allowed_ips[ $ip ] ) && isset( $rocket_cache_mandatory_cookies ) && ! preg_match( '#(' . $rocket_cache_mandatory_cookies . ')#', var_export( $_COOKIE, true ) ) ) {
 	rocket_define_donotminify_constants( true );
+	rocket_define_donotasync_css_constant( true );
 	return;
 }
 
 // Don't cache page with these user agents.
 if ( isset( $rocket_cache_reject_ua, $_SERVER['HTTP_USER_AGENT'] ) && ! empty( $rocket_cache_reject_ua ) && preg_match( '#(' . $rocket_cache_reject_ua . ')#', $_SERVER['HTTP_USER_AGENT'] ) ) {
 	rocket_define_donotminify_constants( true );
+	rocket_define_donotasync_css_constant( true );
 	return;
 }
 
 // Don't cache if mobile detection is activated.
 if ( ! isset( $rocket_cache_mobile ) && isset( $_SERVER['HTTP_USER_AGENT'] ) && (preg_match( '#^.*(2.0\ MMP|240x320|400X240|AvantGo|BlackBerry|Blazer|Cellphone|Danger|DoCoMo|Elaine/3.0|EudoraWeb|Googlebot-Mobile|hiptop|IEMobile|KYOCERA/WX310K|LG/U990|MIDP-2.|MMEF20|MOT-V|NetFront|Newt|Nintendo\ Wii|Nitro|Nokia|Opera\ Mini|Palm|PlayStation\ Portable|portalmmm|Proxinet|ProxiNet|SHARP-TQ-GX10|SHG-i900|Small|SonyEricsson|Symbian\ OS|SymbianOS|TS21i-10|UP.Browser|UP.Link|webOS|Windows\ CE|WinWAP|YahooSeeker/M1A1-R2D2|iPhone|iPod|Android|BlackBerry9530|LG-TU915\ Obigo|LGE\ VX|webOS|Nokia5800).*#i', $_SERVER['HTTP_USER_AGENT'] ) || preg_match( '#^(w3c\ |w3c-|acs-|alav|alca|amoi|audi|avan|benq|bird|blac|blaz|brew|cell|cldc|cmd-|dang|doco|eric|hipt|htc_|inno|ipaq|ipod|jigs|kddi|keji|leno|lg-c|lg-d|lg-g|lge-|lg/u|maui|maxo|midp|mits|mmef|mobi|mot-|moto|mwbp|nec-|newt|noki|palm|pana|pant|phil|play|port|prox|qwap|sage|sams|sany|sch-|sec-|send|seri|sgh-|shar|sie-|siem|smal|smar|sony|sph-|symb|t-mo|teli|tim-|tosh|tsm-|upg1|upsi|vk-v|voda|wap-|wapa|wapi|wapp|wapr|webc|winw|winw|xda\ |xda-).*#i', substr( $_SERVER['HTTP_USER_AGENT'], 0, 4 ) )) ) {
 	rocket_define_donotminify_constants( true );
+	rocket_define_donotasync_css_constant( true );
 	return;
 }
 
@@ -374,6 +383,20 @@ function rocket_define_donotminify_constants( $value ) {
 
 	if ( ! defined( 'DONOTMINIFYJS' ) ) {
 		define( 'DONOTMINIFYJS', (bool) $value );
+	}
+}
+
+/**
+ * Declare and set value to DONOTMASYNCCSS constant
+ *
+ * @since 2.10
+ * @author Remy Perona
+ *
+ * @param bool $value true or false.
+ */
+function rocket_define_donotasync_css_constant( $value ) {
+	if ( ! defined( 'DONOTASYNCCSS' ) ) {
+		define( 'DONOTASYNCCSS', (bool) $value );
 	}
 }
 

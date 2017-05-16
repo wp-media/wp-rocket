@@ -68,6 +68,10 @@ function rocket_insert_critical_css() {
 		return;
 	}
 
+	if ( defined( 'DONOTASYNCCSS' ) && DONOTASYNCCSS ) {
+		return;
+	}
+
 	// Don't apply if user is logged-in and cache for logged-in user is off.
 	if ( is_user_logged_in() && ! get_rocket_option( 'cache_logged_user' ) ) {
 		return;
@@ -93,7 +97,7 @@ function rocket_insert_critical_css() {
 
 	$critical_css = wp_filter_nohtml_kses( get_rocket_option( 'critical_css' ) );
 
-	echo '<style id="rocket-critical-css">' . $critical_css . '</style>';
+	echo '<style id="rocket-critical-css">' . stripslashes( $critical_css ) . '</style>';
 }
 add_action( 'wp_head', 'rocket_insert_critical_css', 1 );
 
@@ -117,6 +121,10 @@ function rocket_insert_load_css() {
 
 	// Don't apply if DONOTCACHEPAGE is defined.
 	if ( defined( 'DONOTCACHEPAGE' ) && DONOTCACHEPAGE ) {
+		return;
+	}
+
+	if ( defined( 'DONOTASYNCCSS' ) && DONOTASYNCCSS ) {
 		return;
 	}
 

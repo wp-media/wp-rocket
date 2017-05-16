@@ -505,7 +505,14 @@ function get_rocket_deferred_js_files() {
 function get_rocket_exclude_defer_js() {
 	global $wp_scripts;
 
-	$exclude_defer_js[] = $wp_scripts->registered['jquery-core']->src;
+	$jquery = $wp_scripts->registered['jquery-core']->src;
+
+	if ( get_rocket_option( 'remove_query_strings', 0 ) ) {
+		$jquery = site_url( $jquery . '?ver=' . $wp_scripts->registered['jquery-core']->ver );
+		$exclude_defer_js[] = rocket_clean_exclude_file( get_rocket_browser_cache_busting( $jquery, 'script_loader_src' ) );
+	} else {
+		$exclude_defer_js[] = $jquery;
+	}
 
 	/**
 	 * Filter list of Deferred JavaScript files

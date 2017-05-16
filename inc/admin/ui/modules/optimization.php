@@ -57,20 +57,11 @@ if ( rocket_maybe_disable_minify_html() || rocket_maybe_disable_minify_css() || 
 /* Dynamic warning */
 $rocket_minify_fields = array();
 
-// get_rocket_option() might return a boolean or integer, so let’s be safe.
-if (
-	   0 !== absint( get_rocket_option( 'minify_html' ) )
-	|| 0 !== absint( get_rocket_option( 'minify_css' ) )
-	|| 0 !== absint( get_rocket_option( 'minify_js' ) )
-) {
-	$rocket_minify_fields[] = array(
-			'type'        => 'helper_warning',
-			'name'        => 'minify_warning',
-			'description' =>
-			/* translators: use URL of localised document if available in your language */
-			__( 'Deactivate in case you notice any visually broken items on your website. <a href="http://docs.wp-rocket.me/article/19-resolving-issues-with-minification" target="_blank">Why?</a>', 'rocket' ),
-	);
-}
+$rocket_minify_fields[] = array(
+		'type'        => 'helper_warning',
+		'name'        => 'minify_warning',
+		'description' => __( 'Deactivate in case you notice any visually broken items on your website. <a href="http://docs.wp-rocket.me/article/19-resolving-issues-with-minification" target="_blank">Why?</a>', 'rocket' ),
+);
 
 /* Minify options */
 $rocket_minify_fields[] = array(
