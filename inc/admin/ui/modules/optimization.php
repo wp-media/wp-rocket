@@ -18,7 +18,7 @@ add_settings_field(
 			'name'         => 'optimization_options_panel_caption',
 			'description'  => sprintf(
 				'<span class="dashicons dashicons-admin-tools" aria-hidden="true"></span><strong>%1$s</strong>',
-				/* translators: line-break recommended, but not mandatory  */
+				/* translators: line-break recommended, but not mandatory; use URL of localised document if available in your language  */
 				__( 'Heads up! These options are not equally suitable for all WordPress setups.<br>In case you notice any visual issues on your site, just turn off the last option(s) you had activated here. <br>Read the documentation on <a href="http://docs.wp-rocket.me/article/19-resolving-issues-with-minification" target="_blank">troubleshooting file optimization</a>.', 'rocket' )
 			),
 		),
@@ -166,20 +166,20 @@ $rocket_concatenate_fields[] = array(
 	'readonly'	   => rocket_maybe_disable_minify_js(),
 );
 $rocket_concatenate_fields[] = array(
-	'parent'	   => 'minify_concatenate_js',
-	'type'		   => 'checkbox',
-	'label'		   => 'Concatenate all JavaScript files into 1 file <em>(test thoroughly!)</em>',
-	'name'		   => 'minify_js_combine_all',
+	'parent'       => 'minify_concatenate_js',
+	'type'         => 'checkbox',
+	'label'        => 'Concatenate all JavaScript files into 1 file <em>(test thoroughly!)</em>',
+	'name'         => 'minify_js_combine_all',
 	'label_screen' => __( 'JS Files concatenation', 'rocket' ),
 );
 $rocket_concatenate_fields[] = array(
-	'type'			=> 'helper_performance',
-	'name'			=> 'minify_concatenate_perf_tip',
+	'type'         => 'helper_performance',
+	'name'         => 'minify_concatenate_perf_tip',
 	'description'  => __( 'Reduces the number of HTTP requests, can improve loading time.', 'rocket' ),
 );
 $rocket_concatenate_fields[] = array(
-	'type'			=> 'helper_description',
-	'name'			=> 'rocket_minify_combine_all',
+	'type'         => 'helper_description',
+	'name'         => 'rocket_minify_combine_all',
 	'description'  => __( 'Files get concatenated into small groups in order to <a href="http://docs.wp-rocket.me/article/17-reducing-the-number-of-minified-files" target="_blank">ensure theme/plugin compatibility and better performance</a>. Forcing concatenation into 1 file is not recommended, because browsers are faster downloading up to 6 smaller files in parallel than 1-2 large files.', 'rocket' ),
 );
 
@@ -211,10 +211,10 @@ add_settings_field(
 			'type'         => 'textarea',
 			'label_for'    => 'exclude_css',
 			'label_screen' => __( 'CSS files to be excluded from minification and concatenation:', 'rocket' ),
-			'placeholder' => "e.g. /wp-content/themes/some-theme/style.css\ne.g. /wp-content/plugins/some-plugin/(.*).css",
+			'placeholder'  => "e.g. /wp-content/themes/some-theme/style.css\ne.g. /wp-content/plugins/some-plugin/(.*).css",
 		),
 		array(
-			'type'			=> 'helper_description',
+			'type'         => 'helper_description',
 			'description'  =>
 			/* translators: line-break recommended; %s = code sample  */
 			sprintf( __( 'The domain part of the URL will be stripped automatically.<br>Use %s wildcards to exclude all CSS files located at a specific path.', 'rocket' ), '<code>(.*).css</code>' ),
@@ -242,10 +242,10 @@ add_settings_field(
 			'type'         => 'textarea',
 			'label_for'    => 'exclude_js',
 			'label_screen' => __( 'JS files to be excludeded from minification and concatenation:', 'rocket' ),
-			'placeholder' => "e.g. /wp-content/themes/some-theme/(.*).js\ne.g. /wp-content/plugins/some-plugin/script.js",
+			'placeholder'  => "e.g. /wp-content/themes/some-theme/(.*).js\ne.g. /wp-content/plugins/some-plugin/script.js",
 		),
 		array(
-			'type'			=> 'helper_description',
+			'type'         => 'helper_description',
 			'description'  =>
 			/* translators: line-break recommended; %s = code sample  */
 			sprintf( __( 'The domain part of the URL will be stripped automatically.<br>Use %s wildcards to exclude all JS files located at a specific path.', 'rocket' ), '<code>(.*).js</code>' ),
@@ -271,9 +271,9 @@ add_settings_field(
 			'label_screen' => __( 'Remove query strings from static resources', 'rocket' ),
 		),
 		array(
-			'type'			=> 'helper_performance',
-			'name'			=> 'rocket_remove_query_strings_perf_tip',
-			'description'   => sprintf(
+			'type'         => 'helper_performance',
+			'name'         => 'rocket_remove_query_strings_perf_tip',
+			'description'  => sprintf(
 				/* translators: %s = https://gtmetrix.com/remove-query-strings-from-static-resources.html */
 				__( 'Can improve the performance grade on <a href="%s" target="_blank">GT Metrix</a>.', 'rocket' ),
 			'https://gtmetrix.com/remove-query-strings-from-static-resources.html'
