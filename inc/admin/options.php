@@ -114,16 +114,12 @@ function rocket_field( $args ) {
 			    		    <input<?php echo $disabled; ?> type="text" id="<?php echo $args['label_for']; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]" value="<?php echo $value; ?>" <?php echo $placeholder; ?><?php echo $readonly; ?>/> <?php echo $label; ?>
 			    		    <?php if ( $cf_valid_credentials ) { ?>
 				    		    <span id="rocket-check-cloudflare-api-container" class="rocket-cloudflare-api-valid">
-								    <span class="dashicons dashicons-yes"></span> <?php _e( 'Your Cloudflare credentials are valid.', 'rocket' ); ?>
+								    <span class="dashicons dashicons-yes" aria-hidden="true"></span> <?php _e( 'Your Cloudflare credentials are valid.', 'rocket' ); ?>
 								</span>
 			    		    <?php } elseif ( ! $cf_valid_credentials && $value ) { ?>
 				    		    <span id="rocket-check-cloudflare-api-container">
-								    <span class="dashicons dashicons-no"></span> <?php _e( 'Your Cloudflare credentials are invalid!', 'rocket' ); ?>
+								    <span class="dashicons dashicons-no" aria-hidden="true"></span> <?php _e( 'Your Cloudflare credentials are invalid!', 'rocket' ); ?>
 									</span>
-			    		    <?php }
-
-if ( ! $value ) { ?>
-				    		    <p class="description"><?php printf( __( '<strong>Note:</strong> Where do I find my Cloudflare API key? <a href="%s" target="_blank">Learn more</a>', 'rocket' ), 'https://support.cloudflare.com/hc/en-us/articles/200167836-Where-do-I-find-my-CloudFlare-API-key-' ); ?></p>
 			    		    <?php } ?>
 						</label>
 
