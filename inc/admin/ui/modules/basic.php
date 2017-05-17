@@ -18,7 +18,7 @@ add_settings_field(
 			'name'         => 'basic_options_panel_caption',
 			'description'  => sprintf(
 				'<span class="dashicons dashicons-performance" aria-hidden="true"></span><strong>%1$s</strong>',
-				/* translators: line break is recommended, but not mandatory  */
+				/* translators: line break recommended, but not mandatory  */
 				__( 'Caching has been activated automatically, your website should load fast!<br>How about <a href="https://wp-rocket.me/blog/correctly-measure-websites-page-load-time/" target="_blank">testing your loading time</a>? Maybe you don’t even need to configure all these options.', 'rocket' )
 			),
 		),
@@ -130,7 +130,7 @@ add_settings_field(
 			'type'         => 'helper_description',
 			'name'         => 'user_cache_desc',
 			'description'  =>
-			/* translators: line break is recommended, but not mandatory  */
+			/* translators: line break recommended, but not mandatory  */
 			__( '<a href="http://docs.wp-rocket.me/article/313-logged-in-user-cache" target="_blank">User cache</a> is great when you have user-specific or restricted content on your website.', 'rocket' ),
 		),
 	)
@@ -158,7 +158,7 @@ add_settings_field(
 			'type'         => 'helper_description',
 			'name'         => 'ssl_cache_desc',
 			'description'  =>
-			/* translators: line break is recommended, but not mandatory  */
+			/* translators: line break recommended, but not mandatory  */
 			__( '<a href="http://docs.wp-rocket.me/article/314-using-ssl-with-wp-rocket" target="_blank">SSL cache</a> works best when your entire website runs on HTTPS.', 'rocket' ),
 		),
 	)

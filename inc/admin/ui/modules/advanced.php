@@ -18,7 +18,7 @@ add_settings_field(
 			'name'         => 'advanced_options_panel_caption',
 			'description'  => sprintf(
 				'<span class="dashicons dashicons-admin-tools" aria-hidden="true"></span><strong>%1$s</strong>',
-				/* translators: line break is recommended, but not mandatory; use URL of localised document if available in your language  */
+				/* translators: line break recommended, but not mandatory; use URL of localised document if available in your language  */
 				__( 'These settings are for advanced cache management. Caching itself works automatically.<br>Read the <a href="http://docs.wp-rocket.me/article/78-how-often-is-the-cache-updated" target="_blank">documentation on automatic cache management</a> to better understand how caching works.', 'rocket' )
 			),
 		),

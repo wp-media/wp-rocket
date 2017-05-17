@@ -27,7 +27,7 @@ add_settings_field(
 			'name'         => 'database_options_panel_caption',
 			'description'  => sprintf(
 				'<span class="dashicons dashicons-backup" aria-hidden="true"></span><strong>%1$s</strong>',
-				/* translators: line break is recommended, but not mandatory */
+				/* translators: line break recommended, but not mandatory */
 				__( 'Backup your database before you run a cleanup!<br>Once a database optimization has been performed, there is no way to undo it.', 'rocket' )
 			),
 		),
