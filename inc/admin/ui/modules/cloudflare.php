@@ -193,7 +193,7 @@ add_settings_field(
 		),
 		'helper_description' => array(
 			'name'         => 'purge_cloudflare',
-			'description'  => '<span class="dashicons dashicons-info" aria-hidden="true"></span> ' . sprintf( __( 'Purges cached resources for your website. <a href="%s" target="_blank">Learn more</a>', 'rocket' ), 'https://support.cloudflare.com/hc/en-us/articles/200169246' ),
+			'description'  => sprintf( __( 'Purges cached resources for your website. <a href="%s" target="_blank">Learn more</a>', 'rocket' ), 'https://support.cloudflare.com/hc/en-us/articles/200169246' ),
 		),
 	)
 );
