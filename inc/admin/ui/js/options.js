@@ -2,6 +2,7 @@ jQuery( document ).ready( function($){
 	// Fancybox
 	$(".fancybox").fancybox({'type' : 'iframe'});
 
+	// Display warning message if lazyload options are checked
 	var $info = $('.fieldname-lazyload_common_issues'),
     	$inputs = $('input[id^="lazyload"]'),
 		is_lazy_checked = function(){
@@ -19,6 +20,7 @@ jQuery( document ).ready( function($){
 
 	$inputs.on('change.wprocket', check_lazy);
 
+	// Display warning message if minification options are checked
 	var $info_minify = $('.fieldname-minify_warning'),
     	$inputs_minify = $('input[id^="minify"]'),
 		is_minify_checked = function(){
@@ -36,6 +38,7 @@ jQuery( document ).ready( function($){
 
 	$inputs_minify.on('change.wprocket', check_minify);
 
+	// Display warning message if purge interval is too low or too high
 	var $info_lifespan_less = $('.fieldname-purge_warning_less'),
 		$info_lifespan_more = $('.fieldname-purge_warning_more'),
     	$input_cron_interval = $('#purge_cron_interval'),
@@ -58,6 +61,24 @@ jQuery( document ).ready( function($){
 
 	$input_cron_interval.on('change.wprocket', check_purge_cron);
 	$input_cron_unit.on('change.wprocket', check_purge_cron);
+
+	// Display warning message if render blocking options are checked
+	var $info_render_blocking = $('.fieldname-render_blocking_warning '),
+    	$inputs_render_blocking = $('#async_css, #defer_all_js'),
+		is_render_blocking_checked = function(){
+		return $inputs_render_blocking.filter(':checked').length > 0 ? true : false;
+    	},
+		check_minify = function(){
+			if( is_render_blocking_checked() ) {
+				$info_render_blocking.fadeIn( 275 ).attr('aria-hidden', 'false' );
+      		} else {
+	  			$info_render_blocking.fadeOut( 275 ).attr('aria-hidden', 'true' );
+      		}
+    	};
+
+	check_minify();
+
+	$inputs_render_blocking.on('change.wprocket', check_minify);
 
 	// Deferred JS
 	function rocket_deferred_rename()

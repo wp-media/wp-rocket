@@ -281,21 +281,16 @@ add_settings_field(
 /**
  * Async CSS
  */
-/* Dynamic warning */
 $rocket_render_blocking = array();
 
-// get_rocket_option() might return a boolean or integer, so let’s be safe.
-if (
-	   0 !== absint( get_rocket_option( 'async_css' ) )
-	|| 0 !== absint( get_rocket_option( 'defer_all_js' ) )
-) {
-	$rocket_render_blocking[] = array(
-			'type'        => 'helper_warning',
-			'description' =>
-			/* translators: use URL of localised document if available in your language */
-			__( 'Deactivate in case you notice any visually broken items on your website. <a href="http://docs.wp-rocket.me/article/108-render-blocking-javascript-and-css-pagespeed" target="_blank">Why?</a>', 'rocket' ),
-	);
-}
+$rocket_render_blocking[] = array(
+	'type'        => 'helper_warning',
+	'name'		  => 'render_blocking_warning',
+	'description' =>
+	/* translators: use URL of localised document if available in your language */
+	__( 'Deactivate in case you notice any visually broken items on your website. <a href="http://docs.wp-rocket.me/article/108-render-blocking-javascript-and-css-pagespeed" target="_blank">Why?</a>', 'rocket' ),
+);
+
 $rocket_render_blocking[] = array(
 	'type'         => 'checkbox',
 	'label'        => __( 'Load CSS files asynchronously', 'rocket' ),
@@ -364,23 +359,25 @@ add_settings_field(
 /**
  * Deprecated options panel caption
  */
-add_settings_field(
-	'rocket_optimization_deprected_options',
-	false,
-	'rocket_field',
-	'rocket_optimization',
-	'rocket_display_optimization_options',
-	array(
+if ( get_rocket_option( 'minify_js_in_footer') || get_rocket_option( 'deferred_js' ) ) {
+	add_settings_field(
+		'rocket_optimization_deprected_options',
+		false,
+		'rocket_field',
+		'rocket_optimization',
+		'rocket_display_optimization_options',
 		array(
-			'type'         => 'helper_panel_description',
-			'description'  => sprintf(
-				'<span class="dashicons dashicons-warning" aria-hidden="true"></span><strong>%1$s</strong>',
-				/* translators: line-break recommended, but not mandatory  */
-				__( 'The options below will be deprecated in WP Rocket 3.0, in favor of the new options for render-blocking CSS/JS above. If you use those new options, the deprecated one for deferred JS gets ignored already.', 'rocket' )
+			array(
+				'type'         => 'helper_panel_description',
+				'description'  => sprintf(
+					'<span class="dashicons dashicons-warning" aria-hidden="true"></span><strong>%1$s</strong>',
+					/* translators: line-break recommended, but not mandatory  */
+					__( 'The options below will be deprecated in WP Rocket 3.0, in favor of the new options for render-blocking CSS/JS above. If you use those new options, the deprecated one for deferred JS gets ignored already.', 'rocket' )
+				),
 			),
-		),
-	)
-);
+		)
+	);
+}
 
 /**
  * Legacy: JS to footer
