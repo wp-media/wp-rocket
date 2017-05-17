@@ -192,21 +192,21 @@ function rocket_field( $args ) {
 
 			case 'helper_description' :
 
-				$description = isset( $args['description'] ) ? sprintf( '<p class="description help %1$s" %2$s><span class="dashicons dashicons-info" aria-hidden="true"></span> %3$s</p>', $class, $parent, $args['description'] ) : '';
+				$description = isset( $args['description'] ) ? sprintf( '<p class="description help %1$s" %2$s><span class="dashicons dashicons-info" aria-hidden="true"></span><strong class="screen-reader-text">%3$s</strong> %4$s</p>', $class, $parent, _x( 'Note:', 'screen-reader-text', 'rocket' ), $args['description'] ) : '';
 				echo apply_filters( 'rocket_help', $description, $args['name'], 'description' );
 
 			break;
 
 			case 'helper_performance' :
 
-				$description = isset( $args['description'] ) ? sprintf( '<p class="description help tip--perf %1$s" %2$s><span class="dashicons dashicons-performance" aria-hidden="true"></span> <strong>%3$s</strong></p>', $class, $parent, $args['description'] ) : '';
+				$description = isset( $args['description'] ) ? sprintf( '<p class="description help tip--perf %1$s" %2$s><span class="dashicons dashicons-performance" aria-hidden="true"></span><strong class="screen-reader-text">%3$s</strong> <strong>%4$s</strong></p>', $class, $parent, _x( 'Performance tip:', 'screen-reader-text', 'rocket' ), $args['description'] ) : '';
 				echo apply_filters( 'rocket_help', $description, $args['name'], 'description' );
 
 			break;
 
 			case 'helper_detection' :
 
-				$description = isset( $args['description'] ) ? sprintf( '<p class="description help tip--detect %1$s" %2$s><span class="dashicons dashicons-visibility" aria-hidden="true"></span><strong class="screen-reader-text">%3$s</strong> %4$s</p>', $class, $parent, _x( 'Third-party feature detected:', 'screen reader text', 'rocket' ), $args['description'] ) : '';
+				$description = isset( $args['description'] ) ? sprintf( '<p class="description help tip--detect %1$s" %2$s><span class="dashicons dashicons-visibility" aria-hidden="true"></span><strong class="screen-reader-text">%3$s</strong> %4$s</p>', $class, $parent, _x( 'Third-party feature detected:', 'screen-reader-text', 'rocket' ), $args['description'] ) : '';
 				echo apply_filters( 'rocket_help', $description, $args['name'], 'description' );
 
 			break;
@@ -220,7 +220,7 @@ function rocket_field( $args ) {
 
 			case 'helper_warning' :
 
-				$description = isset( $args['description'] ) ? sprintf( '<p class="description warning file-error %1$s" %2$s><span class="dashicons dashicons-warning" aria-hidden="true"></span>&#160;<strong class="screen-reader-text">%3$s</strong>%4$s</p>', $class, $parent, __( 'Warning: ', 'rocket' ), $args['description'] ) : '';
+				$description = isset( $args['description'] ) ? sprintf( '<p class="description warning file-error %1$s" %2$s><span class="dashicons dashicons-warning" aria-hidden="true"></span><strong class="screen-reader-text">%3$s</strong> %4$s</p>', $class, $parent, _x( 'Warning:', 'screen-reader-text', 'rocket' ), $args['description'] ) : '';
 				echo apply_filters( 'rocket_help', $description, $args['name'], 'warning' );
 
 			break;
@@ -234,7 +234,7 @@ function rocket_field( $args ) {
 
 			case 'rocket_export_form' :
 				?>
-				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_export' ), 'rocket_export' ); ?>" id="export" class="button button-secondary rocketicon"><?php _e( 'Download options', 'rocket' ); ?></a>
+				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_export' ), 'rocket_export' ); ?>" id="export" class="button button-secondary rocketicon"><?php _ex( 'Download settings', 'button text', 'rocket' ); ?></a>
 				<?php
 			break;
 
@@ -436,10 +436,15 @@ function rocket_button( $args ) {
 		$help = '<p class="description help ' . $class . '">' . $help['description'] . '</p>';
 	}
 	if ( ! empty( $desc ) ) {
-		$desc = '<p class="description desc ' . $class . '">' . $desc['description'] . '</p>';
+		$desc = sprintf( '<p class="description help %1$s"><span class="dashicons dashicons-info" aria-hidden="true"></span><strong class="screen-reader-text">%2$s</strong> %3$s</p>', $class, _x( 'Note:', 'screen-reader-text', 'rocket' ), $desc['description'] );
 	}
 	if ( ! empty( $warning ) ) {
-		$warning = '<p class="description warning file-error ' . $class . '"><strong>' . __( 'Warning: ', 'rocket' ) . '</strong>' . $warning['description'] . '</p>';
+		$warning = sprintf(
+			'<p class="description warning file-error %1$s"><span class="dashicons dashicons-warning" aria-hidden="true"></span><strong class="screen-reader-text">%2$s</strong> %3$s</p>',
+			$class,
+			_x( 'Warning:', 'screen-reader-text', 'rocket' ),
+			$warning['description']
+		);
 	}
 ?>
 	<fieldset class="fieldname-<?php echo $class; ?> fieldtype-button">
@@ -1291,7 +1296,7 @@ function rocket_import_upload_form() {
 		<p>
 		<input type="file" id="upload" name="import" size="25" />
 		<br />
-		<label for="upload"><?php echo apply_filters( 'rocket_help', __( 'Choose a file from your computer:', 'rocket' ) . ' (' . sprintf( __( 'Maximum size: %s', 'rocket' ), $size ) . ')', 'upload', 'help' ); ?></label>
+		<label for="upload"><?php echo apply_filters( 'rocket_help', sprintf( __( 'Choose a file from your computer (maximum size: %s)', 'rocket' ), $size ), 'upload', 'help' ); ?></label>
 		<input type="hidden" name="max_file_size" value="<?php echo $bytes; ?>" />
 		</p>
 		<?php submit_button( __( 'Upload file and import settings', 'rocket' ), 'button', 'import' );
