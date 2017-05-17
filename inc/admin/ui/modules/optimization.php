@@ -51,7 +51,7 @@ if ( rocket_maybe_disable_minify_html() || rocket_maybe_disable_minify_css() || 
 
 	$disabled = rtrim( $disabled, ', ' );
 
-	$rocket_maybe_disable_minify['description'] = sprintf( __( '<strong>Third-party feature detected:</strong> Minification (%s) is currently activated in <strong>Autoptimize</strong>. If you want to use WP Rocket’s minification, disable those options in Autoptimize.', 'rocket' ), $disabled );
+	$rocket_maybe_disable_minify['description'] = sprintf( __( 'Minification (%s) is currently activated in <strong>Autoptimize</strong>. If you want to use WP Rocket’s minification, disable those options in Autoptimize.', 'rocket' ), $disabled );
 }
 
 /* Dynamic warning */

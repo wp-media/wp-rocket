@@ -206,7 +206,7 @@ function rocket_field( $args ) {
 
 			case 'helper_detection' :
 
-				$description = isset( $args['description'] ) ? sprintf( '<p class="description help tip--detect %1$s" %2$s><span class="dashicons dashicons-visibility" aria-hidden="true"></span> %3$s</p>', $class, $parent, $args['description'] ) : '';
+				$description = isset( $args['description'] ) ? sprintf( '<p class="description help tip--detect %1$s" %2$s><span class="dashicons dashicons-visibility" aria-hidden="true"></span><strong class="screen-reader-text">%3$s</strong> %4$s</p>', $class, $parent, _x( 'Third-party feature detected:', 'screen reader text', 'rocket' ), $args['description'] ) : '';
 				echo apply_filters( 'rocket_help', $description, $args['name'], 'description' );
 
 			break;
