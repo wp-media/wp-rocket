@@ -71,7 +71,6 @@ add_settings_field(
 		array(
 			'type'        => 'helper_description',
 			'name'        => 'sitemaps_preload_url_crawl_desc',
-//			'description' => __( 'You can use this option to change the interval between each URL crawl.', 'rocket' ),
 		),
 		array(
 			'type'        => 'helper_warning',
