@@ -131,7 +131,7 @@ add_settings_field(
 		array(
 			'type'         => 'helper_help',
 			'name'         => 'cdn_reject_files',
-			'description'  => __( 'Specify URL(s) of files that should not get served via CDN (one per line)', 'rocket' ) . '<br/>' . __( 'You can use regular expressions (regex).', 'rocket' ),
+			'description'  => __( 'Specify URL(s) of files that should not get served via CDN (one per line)', 'rocket' ),
 		),
 		array(
 			'type'         => 'textarea',
