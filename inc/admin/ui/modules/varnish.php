@@ -8,8 +8,9 @@ defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
 	*
 	* @param bool true will display the "Varnish" tab
  */
-if ( ! apply_filters( 'rocket_display_varnish_options_tab', true ) )
+if ( ! apply_filters( 'rocket_display_varnish_options_tab', true ) ) {
 	return false;
+}
 
 add_settings_section( 'rocket_display_main_options', 'Varnish', '__return_false', 'rocket_varnish' );
 
