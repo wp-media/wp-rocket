@@ -426,7 +426,6 @@ function rocket_minify_js( $buffer ) {
 
 			// Remove the tag.
 			if ( ! $excluded_tag ) {
-				error_log( $tag );
 				$buffer = str_replace( $tag, '', $buffer );
 			}
 
