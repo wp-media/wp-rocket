@@ -401,13 +401,14 @@ function rocket_minify_js( $buffer ) {
 
 			        if ( get_rocket_option( 'defer_all_js', 0 ) && false !== strpos( $js_url['path'], $wp_scripts->registered['jquery-core']->src ) ) {
 				        if ( get_rocket_option( 'remove_query_strings', 0 ) ) {
-					        $tag = str_replace( $tags_match[1][ $i ], get_rocket_browser_cache_busting( $tags_match[1][ $i ], 'script_loader_src' ), $tag );
+					        $tag_cache_busting = str_replace( $tags_match[1][ $i ], get_rocket_browser_cache_busting( $tags_match[1][ $i ], 'script_loader_src' ), $tag );
+					        $external_tags[] = $tag_cache_busting;
+				        } else {
+					        $external_tags[] = $tag;
 				        }
-
-				        $external_tags[] = $tag;
-			        } else {
+					} else {
 				        $excluded_tag = true;
-			        }
+					}
 			    } else {
 			    	$internal_files[] = $js_url['path'];
 			    }
@@ -425,6 +426,7 @@ function rocket_minify_js( $buffer ) {
 
 			// Remove the tag.
 			if ( ! $excluded_tag ) {
+				error_log( $tag );
 				$buffer = str_replace( $tag, '', $buffer );
 			}
 
