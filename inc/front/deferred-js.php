@@ -54,6 +54,10 @@ function rocket_defer_js( $buffer ) {
 		return $buffer;
 	}
 
+	if ( is_rocket_post_excluded_option( 'defer_all_js' ) ) {
+		return $buffer;
+	}
+
 	// Get all JS files with this regex.
 	preg_match_all( '#<script(.*)src=[\'|"]([^\'|"]+\.js?.+)[\'|"](.*)></script>#iU', $buffer, $tags_match );
 

@@ -397,7 +397,18 @@ function rocket_minify_js( $buffer ) {
 
 		        // Check if it isn't a file to exclude.
 		        if ( preg_match( '#^(' . $excluded_js . ')$#', $js_url['path'] ) && pathinfo( $js_url['path'], PATHINFO_EXTENSION ) === 'js' ) {
-			        $excluded_tag = true;
+			        global $wp_scripts;
+
+			        if ( get_rocket_option( 'defer_all_js', 0 ) && false !== strpos( $js_url['path'], $wp_scripts->registered['jquery-core']->src ) ) {
+				        if ( get_rocket_option( 'remove_query_strings', 0 ) ) {
+					        $tag_cache_busting = str_replace( $tags_match[1][ $i ], get_rocket_browser_cache_busting( $tags_match[1][ $i ], 'script_loader_src' ), $tag );
+					        $external_tags[] = $tag_cache_busting;
+				        } else {
+					        $external_tags[] = $tag;
+				        }
+					} else {
+				        $excluded_tag = true;
+					}
 			    } else {
 			    	$internal_files[] = $js_url['path'];
 			    }
