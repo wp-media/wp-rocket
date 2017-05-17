@@ -8,34 +8,56 @@ defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
 	*
 	* @param bool true will display the "Varnish" tab
  */
-if ( apply_filters( 'rocket_display_varnish_options_tab', true ) ) :
+if ( ! apply_filters( 'rocket_display_varnish_options_tab', true ) )
+	return false;
 
-	add_settings_section( 'rocket_display_main_options', 'Varnish', '__return_false', 'rocket_varnish' );
+add_settings_section( 'rocket_display_main_options', 'Varnish', '__return_false', 'rocket_varnish' );
 
-	add_settings_field(
+/**
+ * Panel caption
+ */
+add_settings_field(
+	'rocket_varnish_options_panel',
+	false,
+	'rocket_field',
+	'rocket_varnish',
+	'rocket_display_main_options',
+	array(
+		array(
+			'type'         => 'helper_panel_description',
+			'name'         => 'varnish_options_panel_caption',
+			'description'  => sprintf(
+				'<span class="dashicons dashicons-editor-help" aria-hidden="true"></span><strong>%1$s</strong>',
+				sprintf(
+					/* translators: line break recommended, but not mandatory */
+					__( 'If <a href="%s" target="_blank">Varnish</a> runs on your server, you must activate the option below.<br>You would know if Varnish is active. If you don’t know, you can safely ignore this setting.', 'rocket' ),
+					'https://www.varnish-cache.org/'
+				)
+			),
+		),
+	)
+);
+
+/**
+ * Varnish on/off
+ */
+add_settings_field(
 	'rocket_varnish_auto_purge',
-	__( 'Varnish Caching Purge', 'rocket' ),
+	__( 'Sync Varnish cache:', 'rocket' ),
 	'rocket_field',
 	'rocket_varnish',
 	'rocket_display_main_options',
 	array(
 		array(
 			'type'         => 'checkbox',
-			'label'        => __( 'Enable the Varnish caching auto-purge.', 'rocket' ),
+			'label'        => __( 'Purge Varnish cache automatically', 'rocket' ),
 			'label_for'    => 'varnish_auto_purge',
-			'label_screen' => __( 'Varnish Caching Purge', 'rocket' ),
+			'label_screen' => __( 'Sync Varnish cache with plugin cache', 'rocket' ),
 		),
 		array(
 			'type'         => 'helper_description',
 			'name'         => 'varnish_auto_purge',
-			'description'  => __( 'The Varnish cache will be purged each time WP Rocket cache needs to be cleared to avoid conflict.', 'rocket' ),
-		),
-		array(
-			'type'         => 'helper_description',
-			'name'         => 'mobile',
-			'description'  => sprintf( __( '<strong>Note:</strong> If your server is using %1$sVarnish%1$s, you must activate this option.', 'rocket' ), '<a href="https://www.varnish-cache.org/" target="_blank">', '</a>' ),
+			'description'  => __( 'Varnish cache will be purged each time WP Rocket clears its cache to ensure content is always up to date.', 'rocket' ),
 		),
 	)
-	);
-
-endif;
+);
