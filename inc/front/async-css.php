@@ -38,11 +38,12 @@ function rocket_async_css( $buffer ) {
 		}
 
 	    $preload = str_replace( 'stylesheet', 'preload', $tags_match[1][ $i ] );
-	    $onload = str_replace( $tags_match[3][ $i ], ' as="style" onload="this.rel=\'stylesheet\'"' . $tags_match[3][ $i ], $tags_match[3][ $i ] );
-	    $tag = str_replace( $tags_match[3][ $i ], $onload, $tag );
-	    $tag = str_replace( $tags_match[1][ $i ], $preload, $tag );
-	    $tag .= '<noscript>' . $tags_match[0][ $i ] . '</noscript>';
-	    $buffer = str_replace( $tags_match[0][ $i ], $tag, $buffer );
+	    $onload  = str_replace( $tags_match[3][ $i ], ' as="style" onload=""' . $tags_match[3][ $i ], $tags_match[3][ $i ] );
+	    $tag	 = str_replace( $tags_match[3][ $i ], $onload, $tag );
+	    $tag	 = str_replace( $tags_match[1][ $i ], $preload, $tag );
+	    $tag 	 = str_replace( 'onload=""', 'onload="this.rel=\'stylesheet\'"', $tag );
+	    $tag 	.= '<noscript>' . $tags_match[0][ $i ] . '</noscript>';
+	    $buffer  = str_replace( $tags_match[0][ $i ], $tag, $buffer );
 	}
 	return $buffer;
 }
