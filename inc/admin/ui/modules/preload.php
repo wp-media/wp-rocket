@@ -161,7 +161,7 @@ add_settings_field(
 				'type'         => 'textarea',
 				'label_for'    => 'dns_prefetch',
 				'label_screen' => __( 'Prefetch DNS requests:', 'rocket' ),
-				'placeholder'  => "e.g. //example.com\ne.g. //host.example.com",
+				'placeholder'  => 'e.g. //example.com',
 			),
 			array(
 				'type'         => 'helper_description',
