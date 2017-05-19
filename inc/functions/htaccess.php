@@ -51,6 +51,14 @@ function flush_rocket_htaccess( $force = false ) {
  *                       Return a WP_Error object if the sandbox creation fails or if the HTTP request fails.
  */
 function rocket_htaccess_rules_test( $rules_name ) {
+	/**
+	 * Filters the request arguments
+	 *
+	 * @author Remy Perona
+	 * @since 2.10
+	 *
+	 * @param array $args Array of argument for the request.
+	 */
 	$request_args = apply_filters( 'rocket_htaccess_rules_test_args', array(
 		'redirection' => 0,
 		'timeout'     => 5,
