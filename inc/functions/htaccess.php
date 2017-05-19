@@ -247,12 +247,6 @@ function get_rocket_htaccess_mod_rewrite() {
 	*/
 	$rules = apply_filters( 'rocket_htaccess_mod_rewrite', $rules );
 
-	$rules_test = rocket_htaccess_rules_test( 'rewrite' );
-
-	if ( is_wp_error(  $rules_test ) || ! $rules_test ) {
-		return;
-	}
-
 	return $rules;
 }
 
@@ -367,12 +361,6 @@ function get_rocket_htaccess_mod_deflate() {
 	*/
 	$rules = apply_filters( 'rocket_htaccess_mod_deflate', $rules );
 
-	$rules_test = rocket_htaccess_rules_test( 'deflate' );
-
-	if ( is_wp_error(  $rules_test ) || ! $rules_test ) {
-		return;
-	}
-
 	return $rules;
 }
 
@@ -433,12 +421,6 @@ function get_rocket_htaccess_mod_expires() {
 	*/
 	$rules = apply_filters( 'rocket_htaccess_mod_expires', $rules );
 
-	$rules_test = rocket_htaccess_rules_test( 'expires' );
-
-	if ( is_wp_error(  $rules_test ) || ! $rules_test ) {
-		return;
-	}
-
 	return $rules;
 }
 
@@ -468,12 +450,6 @@ function get_rocket_htaccess_charset() {
 	 * @param string $rules Rules that will be printed.
 	*/
 	$rules = apply_filters( 'rocket_htaccess_charset', $rules );
-
-	$rules_test = rocket_htaccess_rules_test( 'charset' );
-
-	if ( is_wp_error(  $rules_test ) || ! $rules_test ) {
-		return;
-	}
 
 	return $rules;
 }
@@ -512,12 +488,6 @@ function get_rocket_htaccess_files_match() {
 	*/
 	$rules = apply_filters( 'rocket_htaccess_files_match', $rules );
 
-	$rules_test = rocket_htaccess_rules_test( 'files_match' );
-
-	if ( is_wp_error(  $rules_test ) || ! $rules_test ) {
-		return;
-	}
-
 	return $rules;
 }
 
@@ -545,12 +515,6 @@ function get_rocket_htaccess_etag() {
 	 * @param string $rules Rules that will be printed.
 	*/
 	$rules = apply_filters( 'rocket_htaccess_etag', $rules );
-
-	$rules_test = rocket_htaccess_rules_test( 'etag' );
-
-	if ( is_wp_error(  $rules_test ) || ! $rules_test ) {
-		return;
-	}
 
 	return $rules;
 }
@@ -593,12 +557,6 @@ function get_rocket_htaccess_web_fonts_access() {
 	 * @param string $rules Rules that will be printed.
 	*/
 	$rules = apply_filters( 'rocket_htaccess_web_fonts_access', $rules );
-
-	$rules_test = rocket_htaccess_rules_test( 'fonts' );
-
-	if ( is_wp_error(  $rules_test ) || ! $rules_test ) {
-		return;
-	}
 
 	return $rules;
 }
