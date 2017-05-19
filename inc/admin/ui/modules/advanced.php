@@ -43,7 +43,8 @@ $rocket_reject_uri[] = array(
 );
 
 /* Check for installed e-commerce plugins. */
-if ( ! empty( get_rocket_ecommerce_exclude_pages() ) ) {
+$ecommerce_excluded_pages = get_rocket_ecommerce_exclude_pages();
+if ( ! empty( $ecommerce_excluded_pages ) ) {
 
 	$ecommerce_plugin_name = '';
 

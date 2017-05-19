@@ -43,8 +43,8 @@ if ( ! defined( 'WP_ROCKET_CF_API_KEY_HIDDEN' ) || ! WP_ROCKET_CF_API_KEY_HIDDEN
 		'label_screen' => __( 'Global API key', 'rocket' ),
 	);
 
-	if ( empty( get_rocket_option( 'cloudflare_api_key' ) ) ) {
-
+	$cf_api_key = get_rocket_option( 'cloudflare_api_key' );
+	if ( empty( $cf_api_key ) ) {
 		$rocket_cloudflare_api_key[] = array(
 			'type'         => 'helper_description',
 			'description'  => sprintf( __( '<a href="%s" target="_blank">Retrieve your API key</a>', 'rocket' ), 'https://support.cloudflare.com/hc/en-us/articles/200168246' ),
