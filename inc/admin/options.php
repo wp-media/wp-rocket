@@ -142,7 +142,7 @@ function rocket_field( $args ) {
 				?>
 
 					<legend class="screen-reader-text"><span><?php echo $args['label_screen']; ?></span></legend>
-					<label><textarea id="<?php echo $args['label_for']; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]" cols="<?php echo $cols; ?>" rows="<?php echo $rows; ?>"<?php echo $readonly; echo $placeholder; ?>><?php echo stripslashes( $value ); ?></textarea>
+					<label><textarea id="<?php echo $args['label_for']; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]" cols="<?php echo $cols; ?>" rows="<?php echo $rows; ?>"<?php echo $readonly; echo $placeholder; ?>><?php echo esc_html( $value ); ?></textarea>
 					</label>
 
 				<?php
@@ -789,7 +789,7 @@ function rocket_settings_callback( $inputs ) {
 	}
 
 	// Option: Critical CSS
-	$inputs['critical_css'] = ! empty( $inputs['critical_css'] ) ? wp_filter_nohtml_kses( $inputs['critical_css'] ) : '';
+	$inputs['critical_css'] = ! empty( $inputs['critical_css'] ) ? $inputs['critical_css'] : '';
 
 	/*
 	 * Option : JS files to exclude from defer JS

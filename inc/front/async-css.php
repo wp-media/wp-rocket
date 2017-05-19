@@ -104,9 +104,10 @@ function rocket_insert_critical_css() {
 		return;
 	}
 
-	$critical_css = wp_filter_nohtml_kses( get_rocket_option( 'critical_css' ) );
+	$critical_css = wp_kses( get_rocket_option( 'critical_css' ), array( '\'', '\"' ) );
+	$critical_css = str_replace( '&gt;', '>', $critical_css );
 
-	echo '<style id="rocket-critical-css">' . stripslashes( $critical_css ) . '</style>';
+	echo '<style id="rocket-critical-css">' . $critical_css . '</style>';
 }
 add_action( 'wp_head', 'rocket_insert_critical_css', 1 );
 
