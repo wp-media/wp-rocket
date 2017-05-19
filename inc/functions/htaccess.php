@@ -53,7 +53,7 @@ function flush_rocket_htaccess( $force = false ) {
 function rocket_htaccess_rules_test( $rules_name ) {
 	$request_args = array(
 		'redirection' => 0,
-		'timeout'     => 30,
+		'timeout'     => 5,
 		'sslverify'   => apply_filters( 'https_local_ssl_verify', false ),
 		'user-agent'  => 'wprocketbot',
 		'cookies'     => $_COOKIE,
