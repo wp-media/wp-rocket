@@ -51,13 +51,13 @@ function flush_rocket_htaccess( $force = false ) {
  *                       Return a WP_Error object if the sandbox creation fails or if the HTTP request fails.
  */
 function rocket_htaccess_rules_test( $rules_name ) {
-	$request_args = array(
+	$request_args = apply_filters( 'rocket_htaccess_rules_test_args', array(
 		'redirection' => 0,
 		'timeout'     => 5,
 		'sslverify'   => apply_filters( 'https_local_ssl_verify', false ),
 		'user-agent'  => 'wprocketbot',
 		'cookies'     => $_COOKIE,
-	);
+	) );
 		
 	$response = wp_remote_get( site_url( WP_ROCKET_URL . 'tests/' . $rules_name . '/index.html' ), $request_args );
 
