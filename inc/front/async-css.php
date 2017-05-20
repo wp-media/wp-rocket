@@ -22,7 +22,7 @@ function rocket_async_css( $buffer ) {
 	$excluded_css = array_flip( get_rocket_exclude_async_css() );
 
 	// Get all css files with this regex.
-	preg_match_all( apply_filters( 'rocket_async_css_regex_pattern', '/(?=<link[^>]*\s(rel\s*=\s*[\'"]stylesheet["\']))<link[^>]*\shref\s*=\s*[\'"]([^\'"]+)[\'"](.+)>/iU' ), $buffer, $tags_match );
+	preg_match_all( apply_filters( 'rocket_async_css_regex_pattern', '/(?=<link[^>]*\s(rel\s*=\s*[\'"]stylesheet["\']))<link[^>]*\shref\s*=\s*[\'"]([^\'"]+)[\'"](.*)>/iU' ), $buffer, $tags_match );
 
 	if ( ! isset( $tags_match[0] ) ) {
 		return $buffer;
@@ -38,8 +38,8 @@ function rocket_async_css( $buffer ) {
 		}
 
 	    $preload = str_replace( 'stylesheet', 'preload', $tags_match[1][ $i ] );
-	    $onload  = str_replace( $tags_match[3][ $i ], ' as="style" onload=""' . $tags_match[3][ $i ], $tags_match[3][ $i ] );
-	    $tag	 = str_replace( $tags_match[3][ $i ], $onload, $tag );
+	    $onload  = str_replace( $tags_match[3][ $i ], ' as="style" onload=""' . $tags_match[3][ $i ] . '>', $tags_match[3][ $i ] );
+	    $tag	 = str_replace( $tags_match[3][ $i ] . '>', $onload, $tag );
 	    $tag	 = str_replace( $tags_match[1][ $i ], $preload, $tag );
 	    $tag 	 = str_replace( 'onload=""', 'onload="this.rel=\'stylesheet\'"', $tag );
 	    $tag 	.= '<noscript>' . $tags_match[0][ $i ] . '</noscript>';
