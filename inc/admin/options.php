@@ -885,6 +885,9 @@ function rocket_settings_callback( $inputs ) {
 		$inputs['cloudflare_domain'] = '';
 	}
 
+	$inputs['cloudflare_devmode'] = ( is_numeric( $inputs['cloudflare_devmode'] ) ) ? (int) $inputs['cloudflare_devmode'] : 0;
+	$inputs['cloudflare_auto_settings'] = ( is_numeric( $inputs['cloudflare_auto_settings'] ) ) ? (int) $inputs['cloudflare_auto_settings'] : 0;
+
 	/*
 	 * Option : WL
 	 */
