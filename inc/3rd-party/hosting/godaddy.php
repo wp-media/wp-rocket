@@ -89,31 +89,6 @@ HTACCESS;
 	 *
 	 * @since 2.9.5
 	 *
-	 * @return void
-	 */
-	function rocket_clean_domain_godaddy() {
-		rocket_godaddy_request( 'BAN' );
-	}
-	add_action( 'before_rocket_clean_domain', 'rocket_clean_domain_godaddy' );
-
-	/**
-	 * Call the Varnish server to purge a specific URL with GoDaddy.
-	 *
-	 * @since 2.9.5
-	 *
-	 * @param string $url URL to purge.
-	 * @return void
-	 */
-	function rocket_clean_file_godaddy( $url ) {
-		rocket_godaddy_request( 'PURGE', home_url( $url ) );
-	}
-	add_action( 'before_rocket_clean_file', 'rocket_clean_file_godaddy' );
-
-	/**
-	 * Call the Varnish server to purge the home with GoDaddy.
-	 *
-	 * @since 2.9.5
-	 *
 	 * @param string $root root URL.
 	 * @param string $lang language code.
 	 * @return void
