@@ -1,12 +1,15 @@
 <?php
 defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
 
+// Are we white-labeled?
+$rwl = rocket_is_white_label();
+
 add_settings_section( 'rocket_display_tools', __( 'Tools', 'rocket' ), '__return_false', 'rocket_tools' );
 
 /**
  * Beta testing
  */
-if ( ! rocket_is_white_label() ) {
+if ( ! $rwl ) {
 
 	add_settings_field(
 		'rocket_do_beta',
