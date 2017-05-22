@@ -27,7 +27,7 @@ function rocket_add_admin_css_js() {
 		'cloudflareTitle'  => __( 'Cloudflare Settings', 'rocket' ),
 		'cloudflareText'   => __( 'Click "Save Changes" to activate the Cloudflare tab.', 'rocket' ),
 
-		'preloaderTitle' => __( 'Transmitting across the galaxy...', 'rocket' ),
+		'preloaderTitle' => __( 'Transmitting your message …', 'rocket' ),
 		'preloaderImg'	 => WP_ROCKET_ADMIN_UI_IMG_URL . 'preloader.gif',
 
 		'badServerConnectionTitle'             => __( 'Unable to transmit', 'rocket' ),
