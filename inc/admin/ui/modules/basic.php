@@ -1,29 +1,35 @@
 <?php
 defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
 
+// Are we white-labeled?
+$rwl = rocket_is_white_label();
+
 add_settings_section( 'rocket_display_main_options', __( 'Basic options', 'rocket' ), '__return_false', 'rocket_basic' );
 
 /**
  * Panel caption
  */
-add_settings_field(
-	'rocket_basic_options_panel',
-	false,
-	'rocket_field',
-	'rocket_basic',
-	'rocket_display_main_options',
-	array(
+if ( ! $rwl ) {
+
+	add_settings_field(
+		'rocket_basic_options_panel',
+		false,
+		'rocket_field',
+		'rocket_basic',
+		'rocket_display_main_options',
 		array(
-			'type'         => 'helper_panel_description',
-			'name'         => 'basic_options_panel_caption',
-			'description'  => sprintf(
-				'<span class="dashicons dashicons-performance" aria-hidden="true"></span><strong>%1$s</strong>',
-				/* translators: line break recommended, but not mandatory  */
-				__( 'Caching has been activated automatically, your website should load fast!<br>How about <a href="https://wp-rocket.me/blog/correctly-measure-websites-page-load-time/" target="_blank">testing your loading time</a>? Maybe you don’t even need to configure all these options.', 'rocket' )
+			array(
+				'type'         => 'helper_panel_description',
+				'name'         => 'basic_options_panel_caption',
+				'description'  => sprintf(
+					'<span class="dashicons dashicons-performance" aria-hidden="true"></span><strong>%1$s</strong>',
+					/* translators: line break recommended, but not mandatory  */
+					__( 'Caching has been activated automatically, your website should load fast!<br>How about <a href="https://wp-rocket.me/blog/correctly-measure-websites-page-load-time/" target="_blank">testing your loading time</a>? Maybe you don’t even need to configure all these options.', 'rocket' )
+				),
 			),
-		),
-	)
-);
+		)
+	);
+}
 
 /**
  * LazyLoad

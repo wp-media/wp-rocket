@@ -1,29 +1,35 @@
 <?php
 defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
 
+// Are we white-labeled?
+$rwl = rocket_is_white_label();
+
 add_settings_section( 'rocket_display_optimization_options', __( 'Files optimization', 'rocket' ), '__return_false', 'rocket_optimization' );
 
 /**
  * Panel caption
  */
-add_settings_field(
-	'rocket_optimization_options_panel',
-	false,
-	'rocket_field',
-	'rocket_optimization',
-	'rocket_display_optimization_options',
-	array(
+if ( ! $rwl ) {
+
+	add_settings_field(
+		'rocket_optimization_options_panel',
+		false,
+		'rocket_field',
+		'rocket_optimization',
+		'rocket_display_optimization_options',
 		array(
-			'type'         => 'helper_panel_description',
-			'name'         => 'optimization_options_panel_caption',
-			'description'  => sprintf(
-				'<span class="dashicons dashicons-admin-tools" aria-hidden="true"></span><strong>%1$s</strong>',
-				/* translators: line-break recommended, but not mandatory; use URL of localised document if available in your language  */
-				__( 'Heads up! These options are not equally suitable for all WordPress setups.<br>In case you notice any visual issues on your site, just turn off the last option(s) you had activated here. <br>Read the documentation on <a href="http://docs.wp-rocket.me/article/19-resolving-issues-with-minification" target="_blank">troubleshooting file optimization</a>.', 'rocket' )
+			array(
+				'type'         => 'helper_panel_description',
+				'name'         => 'optimization_options_panel_caption',
+				'description'  => sprintf(
+					'<span class="dashicons dashicons-admin-tools" aria-hidden="true"></span><strong>%1$s</strong>',
+					/* translators: line-break recommended, but not mandatory; use URL of localised document if available in your language  */
+					__( 'Heads up! These options are not equally suitable for all WordPress setups.<br>In case you notice any visual issues on your site, just turn off the last option(s) you had activated here. <br>Read the documentation on <a href="http://docs.wp-rocket.me/article/19-resolving-issues-with-minification" target="_blank">troubleshooting file optimization</a>.', 'rocket' )
+				),
 			),
-		),
-	)
-);
+		)
+	);
+}
 
 /**
  * Minification

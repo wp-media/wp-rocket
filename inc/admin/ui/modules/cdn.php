@@ -1,6 +1,9 @@
 <?php
 defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
 
+// Are we white-labeled?
+$rwl = rocket_is_white_label();
+
 add_settings_section( 'rocket_display_cdn_options', __( 'Content Delivery Network options', 'rocket' ), '__return_false', 'rocket_cdn' );
 $cloudflare_readonly = '';
 
@@ -40,7 +43,7 @@ add_settings_field(
 );
 
 /* Conditional panel caption if CF option is active */
-if ( 0 !== absint( get_rocket_option('do_cloudflare') ) ) {
+if ( 0 !== absint( get_rocket_option('do_cloudflare') ) && ! $rwl ) {
 
 	add_settings_field(
 		'rocket_cdn_options_panel',
