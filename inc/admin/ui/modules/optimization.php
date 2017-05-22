@@ -57,7 +57,9 @@ if ( rocket_maybe_disable_minify_html() || rocket_maybe_disable_minify_css() || 
 
 	$disabled = rtrim( $disabled, ', ' );
 
-	$rocket_maybe_disable_minify['description'] = sprintf( __( 'Minification (%s) is currently activated in <strong>Autoptimize</strong>. If you want to use WP Rocket’s minification, disable those options in Autoptimize.', 'rocket' ), $disabled );
+	$rocket_maybe_disable_minify['description'] = sprintf(
+		/* translators: %1$s = file types (CSS, JS, HTML); %2$s = “WP Rocket” or white-label plugin name */
+		__( 'Minification (%1$s) is currently activated in <strong>Autoptimize</strong>. If you want to use %2$s’s minification, disable those options in Autoptimize.', 'rocket' ), $disabled, WP_ROCKET_PLUGIN_NAME );
 }
 
 /* Dynamic warning */
@@ -66,7 +68,11 @@ $rocket_minify_fields = array();
 $rocket_minify_fields[] = array(
 		'type'        => 'helper_warning',
 		'name'        => 'minify_warning',
-		'description' => __( 'Deactivate in case you notice any visually broken items on your website. <a href="http://docs.wp-rocket.me/article/19-resolving-issues-with-minification" target="_blank">Why?</a>', 'rocket' ),
+		'description' => sprintf(
+			/* translators: %s = docs link, or nothing if white-label is enabled */
+			__( 'Deactivate in case you notice any visually broken items on your website.%s', 'rocket' ),
+			$rwl ? '' : ' ' . __( '<a href="http://docs.wp-rocket.me/article/19-resolving-issues-with-minification" target="_blank">Why?</a>', 'rocket-docs' )
+		),
 );
 
 /* Minify options */
@@ -128,9 +134,11 @@ if (
 	$rocket_concatenate_fields[] = array(
 			'type'        => 'helper_warning',
 			'name'        => 'minify_concatenate_warning',
-			'description' =>
-			/* translators: use URL of localised document if available in your language */
-			__( 'Deactivate in case you notice any visually broken items on your website. <a href="http://docs.wp-rocket.me/article/19-resolving-issues-with-minification" target="_blank">Why?</a>', 'rocket' ),
+			'description' => sprintf(
+				/* translators: %s = docs link, or nothing if white-label is enabled */
+				__( 'Deactivate in case you notice any visually broken items on your website.%s', 'rocket' ),
+				$rwl ? '' : ' ' . __( '<a href="http://docs.wp-rocket.me/article/19-resolving-issues-with-minification" target="_blank">Why?</a>', 'rocket-docs' )
+			),
 	);
 }
 
@@ -177,7 +185,7 @@ $rocket_concatenate_fields[] = array(
 $rocket_concatenate_fields[] = array(
 	'type'         => 'helper_description',
 	'name'         => 'rocket_minify_combine_all',
-	'description'  => __( 'Files get concatenated into small groups in order to <a href="http://docs.wp-rocket.me/article/17-reducing-the-number-of-minified-files" target="_blank">ensure theme/plugin compatibility and better performance</a>. Forcing concatenation into 1 file is not recommended, because browsers are faster downloading up to 6 smaller files in parallel than 1-2 large files.', 'rocket' ),
+	'description'  => $rwl ? __( 'Files get concatenated into small groups in order to ensure theme/plugin compatibility and better performance. Forcing concatenation into 1 file is not recommended, because browsers are faster downloading up to 6 smaller files in parallel than 1-2 large files.', 'rocket' ) : __( 'Files get concatenated into small groups in order to <a href="http://docs.wp-rocket.me/article/17-reducing-the-number-of-minified-files" target="_blank">ensure theme/plugin compatibility and better performance</a>. Forcing concatenation into 1 file is not recommended, because browsers are faster downloading up to 6 smaller files in parallel than 1-2 large files.', 'rocket' ),
 );
 
 add_settings_field(
@@ -208,7 +216,7 @@ add_settings_field(
 			'type'         => 'textarea',
 			'label_for'    => 'exclude_css',
 			'label_screen' => __( 'CSS files to be excluded from minification and concatenation:', 'rocket' ),
-			'placeholder'  => "e.g. /wp-content/themes/some-theme/style.css\ne.g. /wp-content/plugins/some-plugin/(.*).css",
+			'placeholder'  => "/wp-content/themes/some-theme/style.css\n/wp-content/plugins/some-plugin/(.*).css",
 		),
 		array(
 			'type'         => 'helper_description',
@@ -239,7 +247,7 @@ add_settings_field(
 			'type'         => 'textarea',
 			'label_for'    => 'exclude_js',
 			'label_screen' => __( 'JS files to be excludeded from minification and concatenation:', 'rocket' ),
-			'placeholder'  => "e.g. /wp-content/themes/some-theme/(.*).js\ne.g. /wp-content/plugins/some-plugin/script.js",
+			'placeholder'  => "/wp-content/themes/some-theme/(.*).js\n/wp-content/plugins/some-plugin/script.js",
 		),
 		array(
 			'type'         => 'helper_description',
@@ -292,9 +300,11 @@ $rocket_render_blocking = array();
 $rocket_render_blocking[] = array(
 	'type'        => 'helper_warning',
 	'name'		  => 'render_blocking_warning',
-	'description' =>
-	/* translators: use URL of localised document if available in your language */
-	__( 'Deactivate in case you notice any visually broken items on your website. <a href="http://docs.wp-rocket.me/article/108-render-blocking-javascript-and-css-pagespeed" target="_blank">Why?</a>', 'rocket' ),
+	'description' => sprintf(
+		/* translators: %s = docs link, or nothing if white-label is enabled */
+		__( 'Deactivate in case you notice any visually broken items on your website.%s', 'rocket' ),
+		$rwl ? '' : ' ' . __( '<a href="http://docs.wp-rocket.me/article/108-render-blocking-javascript-and-css-pagespeed" target="_blank">Why?</a>', 'rocket-docs' )
+	),
 );
 
 $rocket_render_blocking[] = array(
@@ -365,7 +375,7 @@ add_settings_field(
 /**
  * Deprecated options panel caption
  */
-if ( get_rocket_option( 'minify_js_in_footer') || get_rocket_option( 'deferred_js' ) ) {
+if ( ! $rwl && ( get_rocket_option( 'minify_js_in_footer') || get_rocket_option( 'deferred_js' ) ) ) {
 	add_settings_field(
 		'rocket_optimization_deprected_options',
 		false,

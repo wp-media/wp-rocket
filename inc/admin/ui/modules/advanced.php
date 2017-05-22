@@ -218,9 +218,7 @@ add_settings_field(
 		array(
 			'type'         => 'helper_description',
 			'name'         => 'query_strings',
-			'description'  =>
-				/* translators: use URL of localised document if available in your language  */
-				__( '<a href="http://docs.wp-rocket.me/article/971-caching-query-strings" target="_blank">Cache for query strings</a> enables you to force caching for specific GET parameters.', 'rocket' ),
+			'description'  => $rwl ? __( 'Cache for query strings enables you to force caching for specific GET parameters.', 'rocket' ) : __( '<a href="http://docs.wp-rocket.me/article/971-caching-query-strings" target="_blank">Cache for query strings</a> enables you to force caching for specific GET parameters.', 'rocket' ),
 		),
 	)
 );

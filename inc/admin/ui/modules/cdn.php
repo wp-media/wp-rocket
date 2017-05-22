@@ -84,7 +84,8 @@ add_settings_field(
 		array(
 			'type' 		  => 'helper_description',
 			'name' 		  => 'cdn',
-			'description' =>
+			'description' => $rwl ?
+			__( 'All URLs of static files (CSS, JS, images) will be rewritten to the CNAME(s) entered below.', 'rocket' ) :
 			/* translators: line-break recommended, but not mandatory; use URL of localised document if available in your language  */
 			__( 'All URLs of static files (CSS, JS, images) will be rewritten to the CNAME(s) entered below.<br>Read the documentation on <a href="http://docs.wp-rocket.me/article/42-using-wp-rocket-with-a-cdn" target="_blank">using WP Rocket with a CDN</a>.', 'rocket' ),
 		),
@@ -140,7 +141,7 @@ add_settings_field(
 			'type'         => 'textarea',
 			'label_for'    => 'cdn_reject_files',
 			'label_screen' => __( 'Exclude files:', 'rocket' ),
-			'placeholder'  => "e.g. /wp-content/themes/some-theme/style.css\ne.g. /wp-content/plugins/some-plugin/(.*).css"
+			'placeholder'  => "/wp-content/themes/some-theme/style.css\n/wp-content/plugins/some-plugin/(.*).css"
 		),
 		array(
 			'type'         => 'helper_description',

@@ -64,7 +64,11 @@ add_settings_field(
 		array(
 			'type'         => 'helper_description',
 			'name'         => 'varnish_auto_purge',
-			'description'  => __( 'Varnish cache will be purged each time WP Rocket clears its cache to ensure content is always up to date.', 'rocket' ),
+			'description'  => sprintf(
+				/* translators: %s = “WP Rocket” or white-label plugin name */
+				__( 'Varnish cache will be purged each time %s clears its cache to ensure content is always up to date.', 'rocket' ),
+				WP_ROCKET_PLUGIN_NAME
+			)
 		),
 	)
 );
