@@ -8,8 +8,15 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
  */
 function rocket_need_api_key() {
 	?>
-	<div class="updated">
-		<p><b><?php echo WP_ROCKET_PLUGIN_NAME; ?></b> : <?php echo sprintf( __( 'Last step before enjoying the high performances of our plugin, please <a href="%s">Enter your API key</a> here.', 'rocket' ), admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG ) );?></p>
+	<div class="notice notice-warning">
+		<p><strong><?php echo WP_ROCKET_PLUGIN_NAME; ?></strong> : <?php
+
+		printf(
+			__( '<a href="%s">Enter your API key here</a> to fully activate this plugin and give the performance of your website a boost.', 'rocket' ),
+			admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG )
+		);
+
+		?></p>
 	</div>
 <?php
 }
@@ -469,7 +476,7 @@ function rocket_is_mobile_plugin_active() {
 		'wp-mobile-edition/wp-mobile-edition.php',
 		'device-theme-switcher/dts_controller.php',
 		'wp-mobile-detect/wp-mobile-detect.php',
-		'easy-social-share-buttons3/easy-social-share-buttons3.php',	
+		'easy-social-share-buttons3/easy-social-share-buttons3.php',
 	);
 
 	foreach ( $mobile_plugins as $mobile_plugin ) {
