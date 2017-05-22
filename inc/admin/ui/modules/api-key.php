@@ -24,7 +24,7 @@ if ( ! $rwl ) {
 				'description'  => sprintf(
 					'<span class="dashicons dashicons-lock" aria-hidden="true"></span><strong>%1$s</strong>',
 					/* translators: line break recommended, but not mandatory  */
-					__( 'WP Rocket was not able to automatically validate your license.<br>Follow <a href="http://docs.wp-rocket.me/article/100-resolving-problems-with-license-validation" target="_blank">this tutorial</a>, or contact <a href="https://wp-rocket.me/support/" target="_blank">support</a>.', 'rocket' )
+					__( 'WP Rocket was not able to automatically validate your license.<br>Follow <a href="http://docs.wp-rocket.me/article/100-resolving-problems-with-license-validation" target="_blank">this tutorial</a>, or contact <a href="https://wp-rocket.me/support/" target="_blank">support</a> to get this engine started.', 'rocket' )
 				),
 			),
 		)
@@ -42,16 +42,11 @@ add_settings_field(
 	'rocket_display_apikey_options',
 	array(
 		array(
-			'type'         => 'helper_help',
-			'name'         => 'consumer_key_help',
-			'description'  => __( 'Enter the API key from your license account', 'rocket' ),
-		),
-		array(
 			'type'         => 'text',
 			'label_for'    => 'consumer_key',
 			'label_screen' => __( 'API key', 'rocket' ),
 			'name'         => 'consumer_key',
-			'placeholder'  => '0987654321abcdfghi',
+			'placeholder'  => '123ab45c',
 		),
 	)
 );
@@ -66,11 +61,6 @@ add_settings_field(
 	'rocket_apikey',
 	'rocket_display_apikey_options',
 	array(
-		array(
-			'type'         => 'helper_help',
-			'name'         => 'consumer_email_help',
-			'description'  => __( 'Enter the email address registered with your license account', 'rocket' ),
-		),
 		array(
 			'type'         => 'email',
 			'label_for'    => 'consumer_email',
