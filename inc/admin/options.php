@@ -572,10 +572,8 @@ function rocket_display_options() {
 				<?php if ( ! rocket_is_white_label() ) { ?>
 					<a href="#tab_support" class="nav-tab"><?php _e( 'Support', 'rocket' ); ?></a>
 				<?php } ?>
-			<?php }else { ?>
+			<?php } else { ?>
 				<a href="#tab_apikey" class="nav-tab"><?php _e( 'License', 'rocket' ); ?></a>
-				<a href="#tab_faq" class="nav-tab"><?php _e( 'FAQ', 'rocket' ); ?></a>
-				<a href="#tab_support" class="nav-tab file-error"><?php _e( 'Support', 'rocket' ); ?></a>
 			<?php }  ?>
 			<?php
 			do_action( 'rocket_tab', rocket_valid_key() );
