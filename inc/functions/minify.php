@@ -21,6 +21,16 @@ function rocket_fetch_and_cache_minify( $url, $pretty_url ) {
 	}
 
 	/**
+	 * Filters the minify URL
+	 *
+	 * @since 2.10
+	 * @author Remy Perona
+	 *
+	 * @param string $url The minify URL.
+	 */
+	$url = apply_filters(  'rocket_minify_bypass_varnish', $url );
+
+	/**
 	 * Filters the request arguments
 	 *
 	 * @author Remy Perona
