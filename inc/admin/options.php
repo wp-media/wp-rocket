@@ -599,10 +599,8 @@ function rocket_display_options() {
 				<?php if ( ! rocket_is_white_label() ) { ?>
 					<div class="rkt-tab rkt-tab-txt" id="tab_support"><?php do_settings_sections( 'rocket_support' ); ?></div>
 				<?php } ?>
-			<?php }else { ?>
+			<?php } else { ?>
 				<div class="rkt-tab" id="tab_apikey"><?php do_settings_sections( 'rocket_apikey' ); ?></div>
-				<div class="rkt-tab rkt-tab-txt" id="tab_faq"><?php do_settings_sections( 'rocket_faq' ); ?></div>
-				<div class="rkt-tab rkt-tab-txt" id="tab_support"><?php do_settings_sections( 'rocket_support' ); ?></div>
 			<?php } ?>
 			<?php
 			do_action( 'rocket_tab_content', rocket_valid_key() );
