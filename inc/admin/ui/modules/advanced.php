@@ -45,7 +45,7 @@ $rocket_reject_uri[] = array(
 	'type'         => 'textarea',
 	'label_for'    => 'cache_reject_uri',
 	'label_screen' => __( 'Never cache (URLs):', 'rocket' ),
-	'placeholder'  => "/members\n/members/(.*)"
+	'placeholder'  => '/members/(.*)',
 );
 
 /* Check for installed e-commerce plugins. */

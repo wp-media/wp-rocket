@@ -216,7 +216,7 @@ add_settings_field(
 			'type'         => 'textarea',
 			'label_for'    => 'exclude_css',
 			'label_screen' => __( 'CSS files to be excluded from minification and concatenation:', 'rocket' ),
-			'placeholder'  => "/wp-content/themes/some-theme/style.css\n/wp-content/plugins/some-plugin/(.*).css",
+			'placeholder'  => '/wp-content/plugins/some-plugin/(.*).css',
 		),
 		array(
 			'type'         => 'helper_description',
@@ -247,7 +247,7 @@ add_settings_field(
 			'type'         => 'textarea',
 			'label_for'    => 'exclude_js',
 			'label_screen' => __( 'JS files to be excludeded from minification and concatenation:', 'rocket' ),
-			'placeholder'  => "/wp-content/themes/some-theme/(.*).js\n/wp-content/plugins/some-plugin/script.js",
+			'placeholder'  => '/wp-content/themes/some-theme/(.*).js',
 		),
 		array(
 			'type'         => 'helper_description',

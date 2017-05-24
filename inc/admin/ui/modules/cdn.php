@@ -141,7 +141,7 @@ add_settings_field(
 			'type'         => 'textarea',
 			'label_for'    => 'cdn_reject_files',
 			'label_screen' => __( 'Exclude files:', 'rocket' ),
-			'placeholder'  => "/wp-content/themes/some-theme/style.css\n/wp-content/plugins/some-plugin/(.*).css"
+			'placeholder'  => '/wp-content/plugins/some-plugin/(.*).css',
 		),
 		array(
 			'type'         => 'helper_description',
