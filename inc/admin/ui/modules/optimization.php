@@ -80,21 +80,21 @@ $rocket_minify_fields[] = array(
 	'type'         => 'checkbox',
 	'label'        => 'HTML',
 	'name'         => 'minify_html',
-	'label_screen' => __( 'HTML Files minification', 'rocket' ),
+	'label_screen' => __( 'Minify HTML files', 'rocket' ),
 	'readonly'	   => rocket_maybe_disable_minify_html(),
 );
 $rocket_minify_fields[] = array(
 	'type'         => 'checkbox',
 	'label'        => 'CSS',
 	'name'         => 'minify_css',
-	'label_screen' => __( 'CSS Files minification', 'rocket' ),
+	'label_screen' => __( 'Minify CSS files', 'rocket' ),
 	'readonly'	   => rocket_maybe_disable_minify_css(),
 );
 $rocket_minify_fields[] = array(
 	'type'         => 'checkbox',
 	'label'        => 'JS',
 	'name'         => 'minify_js',
-	'label_screen' => __( 'JS Files minification', 'rocket' ),
+	'label_screen' => __( 'Minify JS files', 'rocket' ),
 	'readonly'     => rocket_maybe_disable_minify_js(),
 );
 $rocket_minify_fields[] = $rocket_maybe_disable_minify;
@@ -111,7 +111,7 @@ $rocket_minify_fields[] = array(
 
 add_settings_field(
 	'rocket_minify',
-	 __( 'Minification:', 'rocket' ),
+	 __( 'Minify files:', 'rocket' ),
 	'rocket_field',
 	'rocket_optimization',
 	'rocket_display_optimization_options',
@@ -147,7 +147,7 @@ $rocket_concatenate_fields[] = array(
 	'type'		   => 'checkbox',
 	'label'		   => 'Google Fonts',
 	'name'		   => 'minify_google_fonts',
-	'label_screen' => __( 'Google Fonts minification', 'rocket' ),
+	'label_screen' => __( 'Concatenate Google Fonts', 'rocket' ),
 );
 $rocket_concatenate_fields[] = array(
 	'type'         => 'checkbox',
@@ -159,7 +159,7 @@ $rocket_concatenate_fields[] = array(
 $rocket_concatenate_fields[] = array(
 	'parent'	   => 'minify_concatenate_css',
 	'type'         => 'checkbox',
-	'label'        => 'Concatenate all CSS files into 1 file <em>(test thoroughly!)</em>',
+	'label'        => 'Combine all CSS files into as few files as possible <em>(test thoroughly!)</em>',
 	'name'         => 'minify_css_combine_all',
 	'label_screen' => __( 'CSS Files concatenation', 'rocket' ),
 );
@@ -173,7 +173,7 @@ $rocket_concatenate_fields[] = array(
 $rocket_concatenate_fields[] = array(
 	'parent'       => 'minify_concatenate_js',
 	'type'         => 'checkbox',
-	'label'        => 'Concatenate all JavaScript files into 1 file <em>(test thoroughly!)</em>',
+	'label'        => 'Combine all JavaScript files into as few files as possible <em>(test thoroughly!)</em>',
 	'name'         => 'minify_js_combine_all',
 	'label_screen' => __( 'JS Files concatenation', 'rocket' ),
 );
@@ -190,7 +190,7 @@ $rocket_concatenate_fields[] = array(
 
 add_settings_field(
 	'rocket_concatenate',
-	 __( 'Concatenation:', 'rocket' ),
+	 __( 'Combine files:', 'rocket' ),
 	'rocket_field',
 	'rocket_optimization',
 	'rocket_display_optimization_options',
