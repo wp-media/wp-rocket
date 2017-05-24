@@ -366,7 +366,7 @@ add_settings_field(
 		array(
 			'type'         => 'helper_description',
 			'name'         => 'critical_css_generator',
-			'description'  => sprintf( __( 'Use the <a href="%s" target="_blank">Critical Path CSS Generator</a> to specify required CSS rules.', 'rocket' ), 'https://www.sitelocity.com/critical-path-css-generator' ),
+			'description'  => sprintf( __( 'Use the <a href="%s" target="_blank">Critical Path CSS Generator</a> to specify required CSS rules.', 'rocket' ), 'http://docs.wp-rocket.me/article/108-render-blocking-javascript-and-css-pagespeed#critical-path-css' ),
 		),
 		'class' => 'critical-css-row',
 	)
