@@ -90,7 +90,7 @@ add_settings_field(
 		),
 		'helper_warning' => array(
 			'name'         => 'wl_warning',
-			'description'  => __( 'If you change anything, the tutorial + FAQ + Support tabs will be hidden.', 'rocket' ),
+			'description'  => __( 'The Support tab and all links to WP Rocket’s documentation will be hidden when you customize these fields.', 'rocket' ),
 		),
 	)
 );

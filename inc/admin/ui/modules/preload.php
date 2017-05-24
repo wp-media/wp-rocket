@@ -1,6 +1,9 @@
 <?php
 defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
 
+// Are we white-labeled?
+$rwl = rocket_is_white_label();
+
 add_settings_section( 'rocket_display_preload_options', __( 'Preload options', 'rocket' ), '__return_false', 'rocket_preload' );
 
 /**
@@ -18,7 +21,7 @@ $sitemap_preload_options = array(
 	array(
 			'type'          => 'helper_description',
 			'name'          => 'sitemaps_preload_desc',
-			'description'   => __( '<a href="http://docs.wp-rocket.me/article/8-how-the-cache-is-preloaded" target="_blank">Sitemap preloading</a> runs automatically when the cache lifespan expires. You can also launch it manually from the upper toolbar menu, or from the Tools tab.', 'rocket' ),
+			'description'   => $rwl ? __( 'Sitemap preloading runs automatically when the cache lifespan expires. You can also launch it manually from the upper toolbar menu, or from the Tools tab.', 'rocket' ) : __( '<a href="http://docs.wp-rocket.me/article/8-how-the-cache-is-preloaded" target="_blank">Sitemap preloading</a> runs automatically when the cache lifespan expires. You can also launch it manually from the upper toolbar menu, or from the Tools tab.', 'rocket' ),
 		),
 );
 
@@ -100,7 +103,7 @@ add_settings_field(
 			'label'        => __( 'Sitemap files to use for preloading', 'rocket' ),
 			'name'         => 'sitemaps',
 			'label_screen' => __( 'The sitemap files to use for preloading the cache', 'rocket' ),
-			'placeholder'  => sprintf( 'e.g. %s/sitemap.xml', get_home_url() ),
+			'placeholder'  => sprintf( '%s/sitemap.xml', get_home_url() ),
 		),
 	)
 );
@@ -132,7 +135,7 @@ add_settings_field(
 		array(
 			'type'        => 'helper_description',
 			'name'        => 'bot_preload',
-			'description' => __( '<a href="http://docs.wp-rocket.me/article/8-how-the-cache-is-preloaded" target="_blank">Bot-based preloading</a> should only be used on well-performaning servers. Once activated, it gets triggered automatically after you add or update content on your website. You can also launch it manually from the upper toolbar menu, or from the Tools tab.', 'rocket' ),
+			'description' => $rwl ? __( 'Bot-based preloading should only be used on well-performaning servers. Once activated, it gets triggered automatically after you add or update content on your website. You can also launch it manually from the upper toolbar menu, or from the Tools tab.', 'rocket' ) : __( '<a href="http://docs.wp-rocket.me/article/8-how-the-cache-is-preloaded" target="_blank">Bot-based preloading</a> should only be used on well-performaning servers. Once activated, it gets triggered automatically after you add or update content on your website. You can also launch it manually from the upper toolbar menu, or from the Tools tab.', 'rocket' ),
 		),
 		array(
 			'type'        => 'helper_warning',
@@ -161,7 +164,7 @@ add_settings_field(
 				'type'         => 'textarea',
 				'label_for'    => 'dns_prefetch',
 				'label_screen' => __( 'Prefetch DNS requests:', 'rocket' ),
-				'placeholder'  => 'e.g. //example.com',
+				'placeholder'  => '//example.com',
 			),
 			array(
 				'type'         => 'helper_description',

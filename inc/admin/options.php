@@ -572,10 +572,8 @@ function rocket_display_options() {
 				<?php if ( ! rocket_is_white_label() ) { ?>
 					<a href="#tab_support" class="nav-tab"><?php _e( 'Support', 'rocket' ); ?></a>
 				<?php } ?>
-			<?php }else { ?>
+			<?php } else { ?>
 				<a href="#tab_apikey" class="nav-tab"><?php _e( 'License', 'rocket' ); ?></a>
-				<a href="#tab_faq" class="nav-tab"><?php _e( 'FAQ', 'rocket' ); ?></a>
-				<a href="#tab_support" class="nav-tab file-error"><?php _e( 'Support', 'rocket' ); ?></a>
 			<?php }  ?>
 			<?php
 			do_action( 'rocket_tab', rocket_valid_key() );
@@ -601,10 +599,8 @@ function rocket_display_options() {
 				<?php if ( ! rocket_is_white_label() ) { ?>
 					<div class="rkt-tab rkt-tab-txt" id="tab_support"><?php do_settings_sections( 'rocket_support' ); ?></div>
 				<?php } ?>
-			<?php }else { ?>
+			<?php } else { ?>
 				<div class="rkt-tab" id="tab_apikey"><?php do_settings_sections( 'rocket_apikey' ); ?></div>
-				<div class="rkt-tab rkt-tab-txt" id="tab_faq"><?php do_settings_sections( 'rocket_faq' ); ?></div>
-				<div class="rkt-tab rkt-tab-txt" id="tab_support"><?php do_settings_sections( 'rocket_support' ); ?></div>
 			<?php } ?>
 			<?php
 			do_action( 'rocket_tab_content', rocket_valid_key() );
@@ -885,8 +881,8 @@ function rocket_settings_callback( $inputs ) {
 		$inputs['cloudflare_domain'] = '';
 	}
 
-	$inputs['cloudflare_devmode'] = ( is_numeric( $inputs['cloudflare_devmode'] ) ) ? (int) $inputs['cloudflare_devmode'] : 0;
-	$inputs['cloudflare_auto_settings'] = ( is_numeric( $inputs['cloudflare_auto_settings'] ) ) ? (int) $inputs['cloudflare_auto_settings'] : 0;
+	$inputs['cloudflare_devmode'] = ( isset( $inputs['cloudflare_devmode'] ) && is_numeric( $inputs['cloudflare_devmode'] ) ) ? (int) $inputs['cloudflare_devmode'] : 0;
+	$inputs['cloudflare_auto_settings'] = ( isset( $inputs['cloudflare_auto_settings'] ) && is_numeric( $inputs['cloudflare_auto_settings'] ) ) ? (int) $inputs['cloudflare_auto_settings'] : 0;
 
 	/*
 	 * Option : WL

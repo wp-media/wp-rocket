@@ -1,29 +1,35 @@
 <?php
 defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
 
+// Are we white-labeled?
+$rwl = rocket_is_white_label();
+
 add_settings_section( 'rocket_display_main_options', __( 'Basic options', 'rocket' ), '__return_false', 'rocket_basic' );
 
 /**
  * Panel caption
  */
-add_settings_field(
-	'rocket_basic_options_panel',
-	false,
-	'rocket_field',
-	'rocket_basic',
-	'rocket_display_main_options',
-	array(
+if ( ! $rwl ) {
+
+	add_settings_field(
+		'rocket_basic_options_panel',
+		false,
+		'rocket_field',
+		'rocket_basic',
+		'rocket_display_main_options',
 		array(
-			'type'         => 'helper_panel_description',
-			'name'         => 'basic_options_panel_caption',
-			'description'  => sprintf(
-				'<span class="dashicons dashicons-performance" aria-hidden="true"></span><strong>%1$s</strong>',
-				/* translators: line break recommended, but not mandatory  */
-				__( 'Caching has been activated automatically, your website should load fast!<br>How about <a href="https://wp-rocket.me/blog/correctly-measure-websites-page-load-time/" target="_blank">testing your loading time</a>? Maybe you don’t even need to configure all these options.', 'rocket' )
+			array(
+				'type'         => 'helper_panel_description',
+				'name'         => 'basic_options_panel_caption',
+				'description'  => sprintf(
+					'<span class="dashicons dashicons-performance" aria-hidden="true"></span><strong>%1$s</strong>',
+					/* translators: line break recommended, but not mandatory  */
+					__( 'Caching has been activated automatically, your website should load fast!<br>How about <a href="https://wp-rocket.me/blog/correctly-measure-websites-page-load-time/" target="_blank">testing your loading time</a>? Maybe you don’t even need to configure all these options.', 'rocket' )
+				),
 			),
-		),
-	)
-);
+		)
+	);
+}
 
 /**
  * LazyLoad
@@ -35,7 +41,11 @@ $rocket_lazyload_fields = array();
 $rocket_lazyload_fields[] = array(
 	'type'        => 'helper_warning',
 	'name'        => 'lazyload_common_issues',
-	'description' => __( 'Deactivate in case you notice any visually broken items on your website. <a href="http://docs.wp-rocket.me/article/278-common-issues-with-lazyload" target="_blank">Why?</a>', 'rocket' ),
+	'description' => sprintf(
+		/* translators: %s = docs link, or nothing if white-label is enabled */
+		__( 'Deactivate in case you notice any visually broken items on your website.%s', 'rocket' ),
+		$rwl ? '' : ' ' . __( '<a href="http://docs.wp-rocket.me/article/278-common-issues-with-lazyload" target="_blank">Why?</a>', 'rocket-docs' )
+	)
 );
 
 /* LazyLoad options */
@@ -106,7 +116,7 @@ add_settings_field(
 			'parent'       => 'cache_mobile',
 			'type'         => 'helper_description',
 			'name'         => 'mobile',
-			'description'  => __( '<a href="http://docs.wp-rocket.me/article/708-mobile-caching" target="_blank">Mobile cache</a> works safest with both options enabled. When in doubt, keep both.', 'rocket' ),
+			'description'  => $rwl ? __( 'Mobile cache works safest with both options enabled. When in doubt, keep both.', 'rocket' ) : __( '<a href="http://docs.wp-rocket.me/article/708-mobile-caching" target="_blank">Mobile cache</a> works safest with both options enabled. When in doubt, keep both.', 'rocket' ),
 		),
 	)
 );
@@ -117,11 +127,13 @@ add_settings_field(
 add_settings_field(
 	'rocket_logged_user',
 	__( 'User cache:', 'rocket' ),
-	'rocket_field', 'rocket_basic',
+	'rocket_field',
+	'rocket_basic',
 	'rocket_display_main_options',
 	array(
 		array(
 			'type'         => 'checkbox',
+			'name'         => 'user_cache',
 			'label'        => __( 'Enable caching for logged-in WordPress users', 'rocket' ),
 			'label_for'    => 'cache_logged_user',
 			'label_screen' => __( 'User cache:', 'rocket' ),
@@ -129,9 +141,7 @@ add_settings_field(
 		array(
 			'type'         => 'helper_description',
 			'name'         => 'user_cache_desc',
-			'description'  =>
-			/* translators: line break recommended, but not mandatory  */
-			__( '<a href="http://docs.wp-rocket.me/article/313-logged-in-user-cache" target="_blank">User cache</a> is great when you have user-specific or restricted content on your website.', 'rocket' ),
+			'description'  => $rwl ? __( 'User cache is great when you have user-specific or restricted content on your website.', 'rocket' ) : __( '<a href="http://docs.wp-rocket.me/article/313-logged-in-user-cache" target="_blank">User cache</a> is great when you have user-specific or restricted content on your website.', 'rocket' ),
 		),
 	)
 );
@@ -151,15 +161,14 @@ add_settings_field(
 			'label'        => __( 'Enable caching for pages with <code>https://</code>', 'rocket' ),
 			'label_for'    => 'cache_ssl',
 			'label_screen' => __( 'SSL cache:', 'rocket' ),
+			'name'         => 'ssl_cache',
 			'default'	   => ( rocket_is_ssl_website() ) ? 1 : get_rocket_option( 'ssl', 0 ),
 			'readonly'	   => rocket_is_ssl_website(),
 		),
 		array(
 			'type'         => 'helper_description',
 			'name'         => 'ssl_cache_desc',
-			'description'  =>
-			/* translators: line break recommended, but not mandatory  */
-			__( '<a href="http://docs.wp-rocket.me/article/314-using-ssl-with-wp-rocket" target="_blank">SSL cache</a> works best when your entire website runs on HTTPS.', 'rocket' ),
+			'description'  => $rwl ? __( 'SSL cache works best when your entire website runs on HTTPS.', 'rocket' ) : __( '<a href="http://docs.wp-rocket.me/article/314-using-ssl-with-wp-rocket" target="_blank">SSL cache</a> works best when your entire website runs on HTTPS.', 'rocket' ),
 		),
 	)
 );
@@ -179,10 +188,11 @@ add_settings_field(
 			'label'        => __( 'Use default emoji of visitors’ browser instead of loading emoji from WordPress.org', 'rocket' ),
 			'label_for'    => 'emoji',
 			'label_screen' => __( 'Emoji cache:', 'rocket' ),
+			'name'         => 'emoji_cache',
 		),
 		array(
 			'type'         => 'helper_performance',
-			'name'         => 'emoji_perf_tip',
+			'name'         => 'emoji_cache_perf_tip',
 			'description'  => __( 'Reduces the number of HTTP requests, can improve loading time.', 'rocket' )
 		),
 	)
@@ -252,8 +262,11 @@ $rocket_purge_fields = array(
 $rocket_purge_fields[] = array(
 	'type'         => 'helper_warning',
 	'name'         => 'purge_warning_less',
-// @todo Replace link with one from our documentation!
-	'description'  => __( 'Reduce lifespan to less hours in case you notice issues that seem to appear only frequently. <a href="https://joshpress.net/wordpress-nonces-and-wordpress-caching/" target="_blank">Why?</a>', 'rocket' ),
+	'description'  => sprintf(
+		/* translators: %s = docs link, or nothing if white-label is enabled */
+		__( 'Reduce lifespan to 10 hours or less in case you notice issues that seem to appear only frequently.%s', 'rocket' ),
+		$rwl ? '' : ' ' . __( '<a href="http://docs.wp-rocket.me/article/975-nonces-and-cache-lifespan" target="_blank">Why?</a>', 'rocket' )
+	),
 );
 
 

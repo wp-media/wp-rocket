@@ -1,12 +1,15 @@
 <?php
 defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
 
+// Are we white-labeled?
+$rwl = rocket_is_white_label();
+
 add_settings_section( 'rocket_display_tools', __( 'Tools', 'rocket' ), '__return_false', 'rocket_tools' );
 
 /**
  * Beta testing
  */
-if ( ! rocket_is_white_label() ) {
+if ( ! $rwl ) {
 
 	add_settings_field(
 		'rocket_do_beta',
@@ -141,7 +144,11 @@ if ( current_user_can( 'update_plugins' ) ) {
 			),
 			'helper_description' => array(
 				'name'         => 'rollback',
-				'description'  => sprintf(
+				'description'  => $rwl ? sprintf(
+					/* translators: %s = version number */
+					__( 'Has version %1$s caused an issue on your website? You can roll back to the previous major version here.', 'rocket' ),
+					WP_ROCKET_VERSION
+				) : sprintf(
 					/* translators: %1$s = version number; %2$s = tab anchor */
 					__( 'Has version %1$s caused an issue on your website?<br>You can roll back to the previous major version here. Then <a href="%2$s">send us a support request</a>.', 'rocket' ),
 					WP_ROCKET_VERSION,
