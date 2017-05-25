@@ -90,19 +90,33 @@ if ( class_exists( 'Jetpack' ) ) :
 		add_filter( 'rocket_htaccess_mod_rewrite', '__return_false' );
 
 		/**
-		 * Add cookies when we activate the plugin.
+		 * Add Jetpack cookie when:
+		 * 	- Jetpack is active.
+		 * 	- Jetpack's Extra Sidebar Widgets module is active.
+		 * 	- The widget is active.
+		 *	- the rocket_jetpack_eu_cookie_widget option is empty or not set.
 		 */
 		function rocket_activate_jetpack_cookie_law() {
-			add_filter( 'rocket_htaccess_mod_rewrite'    , '__return_false' );
-			add_filter( 'rocket_cache_mandatory_cookies' , 'rocket_add_jetpack_cookie_law_mandatory_cookie' );
+			$rocket_jp_eu_cookie_widget = get_option( 'rocket_jetpack_eu_cookie_widget' );
 
-			// Update the WP Rocket rules on the .htaccess file.
-			flush_rocket_htaccess();
+			if (
+				is_active_widget( false, false, 'eu_cookie_law_widget' )
+				&& empty( $rocket_jp_eu_cookie_widget )
+			) {
+				add_filter( 'rocket_htaccess_mod_rewrite'    , '__return_false' );
+				add_filter( 'rocket_cache_mandatory_cookies' , 'rocket_add_jetpack_cookie_law_mandatory_cookie' );
 
-			// Regenerate the config file.
-			rocket_generate_config_file();
+				// Update the WP Rocket rules on the .htaccess file.
+				flush_rocket_htaccess();
+
+				// Regenerate the config file.
+				rocket_generate_config_file();
+
+				// Set the option, so this is not triggered again.
+				update_option( 'rocket_jetpack_eu_cookie_widget', 1, true );
+			}
 		}
-		add_action( 'activate_jetpack/jetpack.php', 'rocket_activate_jetpack_cookie_law' );
+		add_action( 'admin_init', 'rocket_activate_jetpack_cookie_law' );
 
 	endif; // End if Widgets module is active check.
 
@@ -120,5 +134,8 @@ function rocket_remove_jetpack_cookie_law_mandatory_cookie() {
 
 	// Regenerate the config file.
 	rocket_generate_config_file();
+
+	// Delete our option.
+	delete_option( 'rocket_jetpack_eu_cookie_widget' );
 }
 add_action( 'deactivate_jetpack/jetpack.php', 'rocket_remove_jetpack_cookie_law_mandatory_cookie', 11 );
