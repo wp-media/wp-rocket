@@ -71,11 +71,15 @@ if ( class_exists( 'Jetpack' ) ) :
 	 * @see https://jetpack.com/support/extra-sidebar-widgets/eu-cookie-law-widget/
 	 *
 	 * @since 2.9.12
+	 * @author Jeremy Herve
 	 */
 	if ( Jetpack::is_module_active( 'widgets' ) ) :
 
 		/**
 		 * Add the EU Cookie Law to the list of mandatory cookies before generating caching files.
+		 *
+		 * @since 2.9.12
+		 * @author Jeremy Herve
 		 *
 		 * @param array $cookies List of mandatory cookies.
 		 */
@@ -95,6 +99,9 @@ if ( class_exists( 'Jetpack' ) ) :
 		 * 	- Jetpack's Extra Sidebar Widgets module is active.
 		 * 	- The widget is active.
 		 *	- the rocket_jetpack_eu_cookie_widget option is empty or not set.
+		 *
+		 * @since 2.9.12
+		 * @author Jeremy Herve
 		 */
 		function rocket_activate_jetpack_cookie_law() {
 			$rocket_jp_eu_cookie_widget = get_option( 'rocket_jetpack_eu_cookie_widget' );
@@ -124,6 +131,9 @@ endif; // End if Jetpack is active check.
 
 /**
  * Remove cookies if Jetpack gets deactivated.
+ *
+ * @since 2.9.12
+ * @author Jeremy Herve
  */
 function rocket_remove_jetpack_cookie_law_mandatory_cookie() {
 	remove_filter( 'rocket_htaccess_mod_rewrite' , '__return_false' );
