@@ -21,22 +21,22 @@ if ( class_exists( 'Jetpack' ) ) :
 		Jetpack::is_module_active( 'sitemaps' )
 		&& function_exists( 'jetpack_sitemap_uri' )
 	) {
-		add_filter( 'rocket_first_install_options', '__rocket_add_jetpack_sitemap_option' );
-		function __rocket_add_jetpack_sitemap_option( $options ) {
+		add_filter( 'rocket_first_install_options', 'rocket_add_jetpack_sitemap_option' );
+		function rocket_add_jetpack_sitemap_option( $options ) {
 			$options['jetpack_xml_sitemap'] = 0;
 
 			return $options;
 		}
 
-		add_filter( 'rocket_inputs_sanitize', '__rocket_jetpack_sitemap_option_sanitize' );
-		function __rocket_jetpack_sitemap_option_sanitize( $inputs ) {
+		add_filter( 'rocket_inputs_sanitize', 'rocket_jetpack_sitemap_option_sanitize' );
+		function rocket_jetpack_sitemap_option_sanitize( $inputs ) {
 			$inputs['jetpack_xml_sitemap'] = ! empty( $inputs['jetpack_xml_sitemap'] ) ? 1 : 0;
 
 			return $inputs;
 		}
 
-		add_filter( 'rocket_sitemap_preload_list', '__rocket_add_jetpack_sitemap' );
-		function __rocket_add_jetpack_sitemap( $sitemaps ) {
+		add_filter( 'rocket_sitemap_preload_list', 'rocket_add_jetpack_sitemap' );
+		function rocket_add_jetpack_sitemap( $sitemaps ) {
 			if ( get_rocket_option( 'jetpack_xml_sitemap', false ) ) {
 				$sitemaps['jetpack'] = jetpack_sitemap_uri();
 			}
@@ -44,8 +44,8 @@ if ( class_exists( 'Jetpack' ) ) :
 			return $sitemaps;
 		}
 
-		add_filter( 'rocket_sitemap_preload_options', '__rocket_sitemap_preload_jetpack_option' );
-		function __rocket_sitemap_preload_jetpack_option( $options ) {
+		add_filter( 'rocket_sitemap_preload_options', 'rocket_sitemap_preload_jetpack_option' );
+		function rocket_sitemap_preload_jetpack_option( $options ) {
 			$options[] = array(
 				'parent'       => 'sitemap_preload',
 				'type'         => 'checkbox',
