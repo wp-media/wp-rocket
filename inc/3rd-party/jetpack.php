@@ -104,21 +104,21 @@ if ( class_exists( 'Jetpack' ) ) :
 		}
 		add_action( 'activate_jetpack/jetpack.php', 'rocket_activate_jetpack_cookie_law' );
 
-		/**
-		 * Remove cookies if Jetpack gets deactivated.
-		 */
-		function rocket_remove_jetpack_cookie_law_mandatory_cookie() {
-			remove_filter( 'rocket_htaccess_mod_rewrite' , '__return_false' );
-			remove_filter( 'rocket_cache_mandatory_cookies', '_rocket_add_eu_cookie_law_mandatory_cookie' );
-
-			// Update the WP Rocket rules on the .htaccess file.
-			flush_rocket_htaccess();
-
-			// Regenerate the config file.
-			rocket_generate_config_file();
-		}
-		add_action( 'deactivate_jetpack/jetpack.php', 'rocket_remove_jetpack_cookie_law_mandatory_cookie', 11 );
-
 	endif; // End if Widgets module is active check.
 
 endif; // End if Jetpack is active check.
+
+/**
+ * Remove cookies if Jetpack gets deactivated.
+ */
+function rocket_remove_jetpack_cookie_law_mandatory_cookie() {
+	remove_filter( 'rocket_htaccess_mod_rewrite' , '__return_false' );
+	remove_filter( 'rocket_cache_mandatory_cookies', '_rocket_add_eu_cookie_law_mandatory_cookie' );
+
+	// Update the WP Rocket rules on the .htaccess file.
+	flush_rocket_htaccess();
+
+	// Regenerate the config file.
+	rocket_generate_config_file();
+}
+add_action( 'deactivate_jetpack/jetpack.php', 'rocket_remove_jetpack_cookie_law_mandatory_cookie', 11 );
