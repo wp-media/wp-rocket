@@ -329,6 +329,19 @@ $rocket_render_blocking[] = array(
 	'label_screen' => __( 'Load JS files deferred', 'rocket' ),
 );
 $rocket_render_blocking[] = array(
+	'parent'	   => 'defer_all_js',
+	'type'         => 'checkbox',
+	'label'        => __( 'Safe mode (recommended)', 'rocket' ),
+	'name'         => 'defer_all_js_safe',
+	'label_screen' => __( 'Defer JS files safely', 'rocket' ),
+);
+$rocket_render_blocking[] = array(
+	'parent'	   => 'defer_all_js',
+	'type'         => 'helper_description',
+	'name'         => 'defer_js_safe_description',
+	'description'  => __( 'Safe mode for deferred JS ensures support for inline jQuery references from themes and plugins by loading jQuery at the top of the document as a render-blocking script. Deactivating may result in broken functionality, test thoroughly!', 'rocket' ),
+);
+$rocket_render_blocking[] = array(
 	'type'         => 'helper_performance',
 	'name'         => 'render_blocking_perf_tip',
 	'description'  => __( 'Reduces the number of initial HTTP requests, can improve loading time and performance grade.', 'rocket' ),

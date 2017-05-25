@@ -428,7 +428,7 @@ function get_rocket_exclude_js() {
 	$js_files = get_rocket_option( 'exclude_js', array() );
 	$js_files = array_unique( array_merge( $js_files, (array) $rocket_excluded_enqueue_js ) );
 
-	if ( get_rocket_option( 'defer_all_js', 0 ) ) {
+	if ( get_rocket_option( 'defer_all_js', 0 ) && get_rocket_option( 'defer_all_js_safe', 0 ) ) {
 		$js_files[] = $wp_scripts->registered['jquery-core']->src;
 	}
 
@@ -505,13 +505,15 @@ function get_rocket_deferred_js_files() {
 function get_rocket_exclude_defer_js() {
 	global $wp_scripts;
 
-	$jquery = $wp_scripts->registered['jquery-core']->src;
-
-	if ( get_rocket_option( 'remove_query_strings', 0 ) ) {
-		$jquery = site_url( $jquery . '?ver=' . $wp_scripts->registered['jquery-core']->ver );
-		$exclude_defer_js[] = rocket_clean_exclude_file( get_rocket_browser_cache_busting( $jquery, 'script_loader_src' ) );
-	} else {
-		$exclude_defer_js[] = $jquery;
+	if ( get_rocket_option( 'defer_all_js_safe', 0 ) ) {
+		$jquery = $wp_scripts->registered['jquery-core']->src;
+		
+		if ( get_rocket_option( 'remove_query_strings', 0 ) ) {
+			$jquery = site_url( $jquery . '?ver=' . $wp_scripts->registered['jquery-core']->ver );
+			$exclude_defer_js[] = rocket_clean_exclude_file( get_rocket_browser_cache_busting( $jquery, 'script_loader_src' ) );
+		} else {
+			$exclude_defer_js[] = $jquery;
+		}
 	}
 
 	/**
