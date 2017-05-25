@@ -28,6 +28,8 @@ function rocket_async_css( $buffer ) {
 		return $buffer;
 	}
 
+	$noscripts = '';
+
 	foreach ( $tags_match[0] as $i => $tag ) {
 		// Strip query args.
 		$path = parse_url( $tags_match[2][ $i ] , PHP_URL_PATH );
@@ -42,9 +44,13 @@ function rocket_async_css( $buffer ) {
 	    $tag	 = str_replace( $tags_match[3][ $i ] . '>', $onload, $tag );
 	    $tag	 = str_replace( $tags_match[1][ $i ], $preload, $tag );
 	    $tag 	 = str_replace( 'onload=""', 'onload="this.rel=\'stylesheet\'"', $tag );
-	    $tag 	.= '<noscript>' . $tags_match[0][ $i ] . '</noscript>';
 	    $buffer  = str_replace( $tags_match[0][ $i ], $tag, $buffer );
+
+		$noscripts .= '<noscript>' . $tags_match[0][ $i ] . '</noscript>';
 	}
+
+	$buffer = str_replace( '</html>', $noscripts . '</html>', $buffer );	
+
 	return $buffer;
 }
 add_filter( 'rocket_buffer', 'rocket_async_css', 15 );
