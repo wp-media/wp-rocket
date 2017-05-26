@@ -505,6 +505,8 @@ function get_rocket_deferred_js_files() {
 function get_rocket_exclude_defer_js() {
 	global $wp_scripts;
 
+	$exclude_defer_js = array();
+
 	if ( get_rocket_option( 'defer_all_js_safe', 0 ) ) {
 		$jquery = $wp_scripts->registered['jquery-core']->src;
 		
