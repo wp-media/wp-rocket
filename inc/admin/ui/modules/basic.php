@@ -133,7 +133,7 @@ add_settings_field(
 	array(
 		array(
 			'type'         => 'checkbox',
-			'name'         => 'user_cache',
+			'name'         => 'cache_logged_user',
 			'label'        => __( 'Enable caching for logged-in WordPress users', 'rocket' ),
 			'label_for'    => 'cache_logged_user',
 			'label_screen' => __( 'User cache:', 'rocket' ),
@@ -161,7 +161,7 @@ add_settings_field(
 			'label'        => __( 'Enable caching for pages with <code>https://</code>', 'rocket' ),
 			'label_for'    => 'cache_ssl',
 			'label_screen' => __( 'SSL cache:', 'rocket' ),
-			'name'         => 'ssl_cache',
+			'name'         => 'cache_ssl',
 			'default'	   => ( rocket_is_ssl_website() ) ? 1 : get_rocket_option( 'ssl', 0 ),
 			'readonly'	   => rocket_is_ssl_website(),
 		),
@@ -188,7 +188,7 @@ add_settings_field(
 			'label'        => __( 'Use default emoji of visitors’ browser instead of loading emoji from WordPress.org', 'rocket' ),
 			'label_for'    => 'emoji',
 			'label_screen' => __( 'Emoji cache:', 'rocket' ),
-			'name'         => 'emoji_cache',
+			'name'         => 'emoji',
 		),
 		array(
 			'type'         => 'helper_performance',
