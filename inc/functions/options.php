@@ -507,7 +507,7 @@ function get_rocket_exclude_defer_js() {
 
 	$exclude_defer_js = array();
 
-	if ( get_rocket_option( 'defer_all_js_safe', 0 ) ) {
+	if ( get_rocket_option( 'defer_all_js', 0 ) && get_rocket_option( 'defer_all_js_safe', 0 ) ) {
 		$jquery = $wp_scripts->registered['jquery-core']->src;
 		
 		if ( get_rocket_option( 'remove_query_strings', 0 ) ) {
