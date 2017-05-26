@@ -1099,7 +1099,7 @@ function rocket_after_save_options( $oldvalue, $value ) {
 	// Update CloudFlare Development Mode.
 	$cloudflare_update_result = array();
 
-	if ( ! empty( $_POST ) && isset( $oldvalue['cloudflare_devmode'], $value['cloudflare_devmode'] ) && $oldvalue['cloudflare_devmode'] !== $value['cloudflare_devmode'] ) {
+	if ( ! empty( $_POST ) && isset( $oldvalue['cloudflare_devmode'], $value['cloudflare_devmode'] ) && (int) $oldvalue['cloudflare_devmode'] !== (int) $value['cloudflare_devmode'] ) {
 		$cloudflare_dev_mode_return = set_rocket_cloudflare_devmode( $value['cloudflare_devmode'] );
 
 		if ( is_wp_error( $cloudflare_dev_mode_return ) ) {
@@ -1110,7 +1110,7 @@ function rocket_after_save_options( $oldvalue, $value ) {
 	}
 
 	// Update CloudFlare settings.
-	if ( ! empty( $_POST ) && isset( $oldvalue['cloudflare_auto_settings'], $value['cloudflare_auto_settings'] ) && $oldvalue['cloudflare_auto_settings'] !== $value['cloudflare_auto_settings'] ) {
+	if ( ! empty( $_POST ) && isset( $oldvalue['cloudflare_auto_settings'], $value['cloudflare_auto_settings'] ) && (int) $oldvalue['cloudflare_auto_settings'] !== (int) $value['cloudflare_auto_settings'] ) {
 		$cf_old_settings          = explode( ',', $value['cloudflare_old_settings'] );
 		// Set Cache Level to Aggressive.
 		$cf_cache_level = ( isset( $cf_old_settings[0] ) && 0 === $value['cloudflare_auto_settings'] ) ? $cf_old_settings[0] : 'aggressive';
