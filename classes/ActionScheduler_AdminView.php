@@ -186,6 +186,8 @@ class ActionScheduler_AdminView {
 					foreach( $action_args as $key => $value ) {
 						printf( "<code>%s => %s</code><br/>", $key, $value );
 					}
+				} else {
+					printf( "<code>%s</code><br/>", $action_args );
 				}
 				break;
 			case 'recurrence':
