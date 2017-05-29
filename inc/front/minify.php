@@ -65,11 +65,11 @@ add_filter( 'rocket_buffer', 'rocket_minify_process', 13 );
 function rocket_insert_minify_js_in_footer() {
 	global $pagenow;
 
-	if ( get_rocket_option( 'minify_js_no_concat' ) ) {
+	if ( get_rocket_option( 'minify_js' ) ) {
 		return;
 	}
 
-	if ( get_rocket_option( 'minify_js' ) && ! in_array( $pagenow, array( 'wp-login.php', 'wp-register.php' ), true ) && ( ! defined( 'DONOTMINIFYJS' ) || ! DONOTMINIFYJS ) && ( ! defined( 'DONOTCACHEPAGE' ) || ! DONOTCACHEPAGE ) && ! is_rocket_post_excluded_option( 'minify_js' ) && ! is_404() ) {
+	if ( get_rocket_option( 'minify_concatenate_js' ) && ! in_array( $pagenow, array( 'wp-login.php', 'wp-register.php' ), true ) && ( ! defined( 'DONOTMINIFYJS' ) || ! DONOTMINIFYJS ) && ( ! defined( 'DONOTCACHEPAGE' ) || ! DONOTCACHEPAGE ) && ! is_rocket_post_excluded_option( 'minify_js' ) && ! is_404() ) {
 		// Don't apply for logged users if the option is turned off.
 		if ( is_user_logged_in() && ! get_rocket_option( 'cache_logged_user' ) ) {
 			return;
@@ -103,7 +103,7 @@ function rocket_insert_minify_js_in_footer() {
 			list( $file_host, $file_path ) = get_rocket_parse_url( $file );
 
 			// Check if its an external file.
-			if ( $home_host !== $file_host && ! in_array( $file_host, $cnames_host, true ) && ! in_array( $file_path, $rocket_enqueue_js_in_footer, true ) || get_rocket_option( 'minify_js_no_concat' ) && preg_match( '/(?:-|\.)min.js/i', $file ) ) {
+			if ( $home_host !== $file_host && ! in_array( $file_host, $cnames_host, true ) && ! in_array( $file_path, $rocket_enqueue_js_in_footer, true ) || get_rocket_option( 'minify_js' ) && preg_match( '/(?:-|\.)min.js/i', $file ) ) {
 				if ( isset( $ordered_files[ $i ] ) ) {
 					$i++;
 					$ordered_files[ $i++ ] = $file;
@@ -522,11 +522,11 @@ function rocket_minify_only( $buffer, $extension ) {
 			}
 
 			if ( 'css' === $extension ) {
-				$tag_cache_busting = str_replace( $tags_match[1][ $k ], rocket_browser_cache_busting( $tags_match[1][ $k ], 'style_loader_src' ), $tag );
+				$tag_cache_busting = str_replace( $tags_match[1][ $k ], get_rocket_browser_cache_busting( $tags_match[1][ $k ], 'style_loader_src' ), $tag );
 			}
 
 			if ( 'js' === $extension ) {
-				$tag_cache_busting = str_replace( $tags_match[1][ $k ], rocket_browser_cache_busting( $tags_match[1][ $k ], 'script_loader_src' ), $tag );
+				$tag_cache_busting = str_replace( $tags_match[1][ $k ], get_rocket_browser_cache_busting( $tags_match[1][ $k ], 'script_loader_src' ), $tag );
 			}
 
 			$buffer = str_replace( $tag, $tag_cache_busting, $buffer );
@@ -695,7 +695,7 @@ add_action( 'wp_print_scripts', 'rocket_extract_excluded_js_files' );
 function rocket_extract_js_files_from_footer() {
 	global $rocket_enqueue_js_in_footer, $rocket_js_enqueued_in_head, $wp_scripts, $pagenow;
 
-	if ( get_rocket_option( 'minify_js_no_concat' ) ) {
+	if ( get_rocket_option( 'minify_js' ) ) {
 		return;
 	}
 
@@ -704,7 +704,7 @@ function rocket_extract_js_files_from_footer() {
 	// This filter is documented in inc/front/process.php
 	$rocket_cache_search = apply_filters( 'rocket_cache_search', false );
 
-	if ( empty( $wp_scripts->done ) || ! get_rocket_option( 'minify_js', false ) || in_array( $pagenow, array( 'wp-login.php', 'wp-register.php' ), true ) || ( defined( 'DONOTMINIFYJS' ) && DONOTMINIFYJS ) || ( defined( 'DONOTCACHEPAGE' ) && DONOTCACHEPAGE ) || is_rocket_post_excluded_option( 'minify_js' ) || is_404() || ( is_search() && ! $rocket_cache_search ) ) {
+	if ( empty( $wp_scripts->done ) || ! get_rocket_option( 'minify_concatenate_js', false ) || in_array( $pagenow, array( 'wp-login.php', 'wp-register.php' ), true ) || ( defined( 'DONOTMINIFYJS' ) && DONOTMINIFYJS ) || ( defined( 'DONOTCACHEPAGE' ) && DONOTCACHEPAGE ) || is_rocket_post_excluded_option( 'minify_js' ) || is_404() || ( is_search() && ! $rocket_cache_search ) ) {
 		return;
 	}
 
