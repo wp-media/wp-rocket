@@ -10,7 +10,7 @@ The scheduler will run every minute by attaching itself as a callback to the `'a
 
 When triggered, Action Scheduler will check for posts of the `scheduled-action` type that have a `post_date` at or before this point in time i.e. actions scheduled to run now or at sometime in the past.
 
-#### Batch Processing
+### Batch Processing
 
 If there are actions to be processed, Action Scheduler will stake a unique claim for a batch of 20 actions and begin processing that batch. The PHP process spawned to run the batch will then continue processing batches of 20 actions until it times out or exhausts available memory.
 
@@ -18,7 +18,7 @@ If your site has a large number of actions scheduled to run at the same time, Ac
 
 This will continue until all actions are processed using a maximum of 5 concurrent queues.
 
-#### Housekeeping
+### Housekeeping
 
 Before processing a batch, the scheduler will remove any existing claims on actions which have been sitting in a queue for more than five minutes.
 
@@ -26,7 +26,7 @@ Action Scheduler will also trash any actions which were completed more than a mo
 
 If an action runs for more than 5 minutes, Action Scheduler will assume the action has timed out and will mark it as failed. However, if all callbacks attached to the action were to successfully complete sometime after that 5 minute timeout, its status would later be updated to completed.
 
-#### Record Keeping
+### Record Keeping
 
 Events for each action will be also logged in the [comments table](http://codex.wordpress.org/Database_Description#Table_Overview).
 
@@ -38,7 +38,7 @@ The events logged by default include when an action:
 
 Actions can also be grouped together using a custom taxonomy named `action-group`.
 
-#### Managing Scheduled Actions
+## Managing Scheduled Actions
 
 Action Scheduler has a built in administration screen for monitoring, debugging and manually triggering scheduled actions.
 
