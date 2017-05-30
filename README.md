@@ -267,3 +267,15 @@ function eg_increase_action_scheduler_concurrent_batches( $concurrent_batches ) 
 add_filter( 'action_scheduler_queue_runner_concurrent_batches', 'eg_increase_action_scheduler_concurrent_batches' );
 ?>
 ```
+
+## Credits
+
+This extension is developed and maintained as a collaboration between the teams at [Prospress](http://prospress.com/) and [Flightless](https://flightless.us/).
+
+Collaboration is cool. We'd love to work with you to improve Action Scheduler. Pull Requests welcome.
+
+---
+
+<p align="center">
+<img src="https://cloud.githubusercontent.com/assets/235523/11986380/bb6a0958-a983-11e5-8e9b-b9781d37c64a.png" width="160">
+</p>
