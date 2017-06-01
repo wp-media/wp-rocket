@@ -38,7 +38,7 @@ function rocket_add_admin_css_js() {
 		'warningSupportText'  => sprintf( __( 'You have to read the <a href="%s" target="_blank">documentation</a> and to agree to send informations relative to your website to submit a support ticket.', 'rocket' ), get_rocket_documentation_url() . '?utm_source=wp-rocket&utm_medium=wp-admin&utm_term=doc-support&utm_campaign=plugin' ),
 
 		'successSupportTitle' => __( 'Transmission Received!', 'rocket' ),
-		'successSupportText'  => __( 'We have ve received your ticket and will reply back within a few hours!', 'rocket' ) . '<br/>' . __( 'We answer every ticket, so please check your spam folder in case you do not hear from us.', 'rocket' ),
+		'successSupportText'  => __( 'We have received your ticket and will reply back within a few hours!', 'rocket' ) . '<br/>' . __( 'We answer every ticket, so please check your spam folder in case you do not hear from us.', 'rocket' ),
 
 		'badSupportTitle'      => __( 'Oh dear, someone’s been naughty…', 'rocket' ),
 		'badSupportText'       => __( 'Well, well, looks like you have got yourself a "nulled" version! We don’t provide support to crackers or pirates, so you will need a valid license to proceed.', 'rocket' ) . '<br/>' . __( 'Click below to buy a license with a 20% discount automatically applied.', 'rocket' ),
