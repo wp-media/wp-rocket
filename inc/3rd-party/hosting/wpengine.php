@@ -36,7 +36,9 @@ if ( class_exists( 'WpeCommon' ) && function_exists( 'wpe_param' ) ) :
 	function rocket_run_rocket_bot_after_wpengine() {
 		if ( wpe_param( 'purge-all' ) && defined( 'PWP_NAME' ) && check_admin_referer( PWP_NAME . '-config' ) ) {
 			// Preload cache.
-			run_rocket_preload_cache( 'cache-preload' );
+			if ( get_rocket_option( 'sitemap_preload', 0 ) ) {
+				run_rocket_sitemap_preload();
+			}
 		}
 	}
 	add_action( 'admin_init', 'rocket_run_rocket_bot_after_wpengine' );
