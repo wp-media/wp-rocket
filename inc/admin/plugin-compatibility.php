@@ -109,7 +109,9 @@ function rocket_clear_cache_after_studiopress_accelerator() {
 			rocket_clean_domain();
 
 			// Preload cache.
-			run_rocket_preload_cache( 'cache-preload' );
+			if ( get_rocket_option( 'sitemap_preload', 0 ) ) {
+				run_rocket_sitemap_preload();
+			}
 		}
 	}
 }
@@ -126,7 +128,9 @@ function rocket_clear_cache_after_varnish_http_purge() {
 		rocket_clean_domain();
 
 		// Preload cache.
-		run_rocket_preload_cache( 'cache-preload' );
+		if ( get_rocket_option( 'sitemap_preload', 0 ) ) {
+			run_rocket_sitemap_preload();
+		}
 	}
 }
 add_action( 'admin_init', 'rocket_clear_cache_after_varnish_http_purge' );
@@ -141,7 +145,9 @@ function rocket_clear_cache_after_pagely() {
 	rocket_clean_domain();
 
 	// Preload cache.
-	run_rocket_preload_cache( 'cache-preload' );
+	if ( get_rocket_option( 'sitemap_preload', 0 ) ) {
+		run_rocket_sitemap_preload();
+	}
 }
 add_action( 'pagely_page_purge-cache', 'rocket_clear_cache_after_pagely' );
 
@@ -157,7 +163,9 @@ function rocket_clear_cache_after_pressidium() {
 		rocket_clean_domain();
 
 		// Preload cache.
-		run_rocket_preload_cache( 'cache-preload' );
+		if ( get_rocket_option( 'sitemap_preload', 0 ) ) {
+			run_rocket_sitemap_preload();
+		}
 	}
 }
 add_action( 'admin_init', 'rocket_clear_cache_after_pressidium' );
