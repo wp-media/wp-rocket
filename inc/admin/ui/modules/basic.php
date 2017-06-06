@@ -217,7 +217,7 @@ add_settings_field(
 		array(
 			'type'         => 'helper_description',
 			'name'         => 'embeds',
-			'description'  => __( 'Prevents others from embedding content from your site, prevents you from embedding content from other (non-whitelisted) sites, and removes JavaScript requests related to <a href="https://wordpress.org/news/2015/12/clifford/" target="_blank">WordPress Embeds</a>.', 'rocket' ),
+			'description'  => __( 'Prevents others from embedding content from your site, prevents you from embedding content from other (non-whitelisted) sites, and removes JavaScript requests related to <a href="https://wordpress.org/news/2015/12/clifford/">WordPress Embeds</a>.', 'rocket' ),
 		),
 	)
 );
