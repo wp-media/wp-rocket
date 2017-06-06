@@ -644,3 +644,63 @@ function rocket_cloudflare_update_settings() {
 	}
 }
 add_action( 'admin_notices', 'rocket_cloudflare_update_settings' );
+
+/**
+ * This notice is displayed after the sitemap preload is complete
+ *
+ * @since 3.0
+ * @author Remy Perona
+ */
+function rocket_sitemap_preload_result() {
+	global $current_user;
+	$screen              = get_current_screen();
+	$rocket_wl_name      = get_rocket_option( 'wl_plugin_name', null );
+	$wp_rocket_screen_id = isset( $rocket_wl_name ) ?  'settings_page_' . sanitize_key( $rocket_wl_name ) : 'settings_page_wprocket';
+	/** This filter is documented in inc/admin-bar.php */
+	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		return;
+	}
+
+	if ( $screen->id !== $wp_rocket_screen_id ) {
+		return;
+	}
+
+	if ( $result = get_transient( 'rocket_sitemap_preload_complete' ) ) {
+		delete_transient( 'rocket_sitemap_preload_complete' ); ?>
+		<div class="notice notice-success is-dismissible">
+			<p><?php echo sprintf( __( 'Sitemap preload complete: %d pages not yet cached have been preloaded.', 'rocket' ), $result ); ?></p>
+		</div>
+	<?php
+	}
+}
+add_action( 'admin_notices', 'rocket_sitemap_preload_result' );
+
+/**
+ * This notice is displayed after the automatic partial preload is complete
+ *
+ * @since 3.0
+ * @author Remy Perona
+ */
+function rocket_automatic_preload_result() {
+	global $current_user;
+	$screen              = get_current_screen();
+	$rocket_wl_name      = get_rocket_option( 'wl_plugin_name', null );
+	$wp_rocket_screen_id = isset( $rocket_wl_name ) ?  'settings_page_' . sanitize_key( $rocket_wl_name ) : 'settings_page_wprocket';
+	/** This filter is documented in inc/admin-bar.php */
+	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		return;
+	}
+
+	if ( $screen->id !== $wp_rocket_screen_id ) {
+		return;
+	}
+
+	if ( $result = get_transient( 'rocket_automatic_preload_complete' ) ) {
+		delete_transient( 'rocket_automatic_preload_complete' ); ?>
+		<div class="notice notice-success is-dismissible">
+			<p><?php echo sprintf( __( 'Partial preload complete: %d pages not yet cached have been preloaded.', 'rocket' ), $result ); ?></p>
+		</div>
+	<?php
+	}
+}
+add_action( 'admin_notices', 'rocket_automatic_preload_result' );
