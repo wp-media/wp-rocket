@@ -357,12 +357,8 @@ function run_rocket_bot_after_clean_post( $post, $purge_urls, $lang ) {
 	// Remove dates archives page and author page to preload cache.
 	$purge_urls = array_diff( $purge_urls, $purge_dates, $purge_author );
 
-	// Create json file and run WP Rocket Bot.
-	$json_encode_urls = '["' . implode( '","', array_filter( $purge_urls ) ) . '"]';
-	if ( rocket_put_content( WP_ROCKET_PATH . 'cache.json', $json_encode_urls ) ) {
-		global $do_rocket_bot_cache_json;
-		$do_rocket_bot_cache_json = true;
-	}
+	// Run automatic preload.
+	run_rocket_automatic_preload( array_filter( $purge_urls ) );
 }
 add_action( 'after_rocket_clean_post', 'run_rocket_bot_after_clean_post', 10, 3 );
 
@@ -380,27 +376,10 @@ function run_rocket_bot_after_clean_term( $post, $purge_urls, $lang ) {
 	// Add Homepage URL to $purge_urls for bot crawl.
 	array_push( $purge_urls, get_rocket_i18n_home_url( $lang ) );
 
-	// Create json file and run WP Rocket Bot.
-	$json_encode_urls = '["' . implode( '","', array_filter( $purge_urls ) ) . '"]';
-	if ( rocket_put_content( WP_ROCKET_PATH . 'cache.json', $json_encode_urls ) ) {
-		global $do_rocket_bot_cache_json;
-		$do_rocket_bot_cache_json = true;
-	}
+	// Run automatic preload.
+	run_rocket_automatic_preload( array_filter( $purge_urls ) );
 }
 add_action( 'after_rocket_clean_term', 'run_rocket_bot_after_clean_term', 10, 3 );
-
-/**
- * Run WP Rocket Bot when a post is added, updated or deleted
- *
- * @since 1.3.2
- */
-function do_rocket_bot_cache_json() {
-	global $do_rocket_bot_cache_json;
-	if ( $do_rocket_bot_cache_json ) {
-		run_rocket_preload_cache( 'cache-json', false );
-	}
-}
-add_action( 'shutdown', 'do_rocket_bot_cache_json' );
 
 /**
  * Purge Cache file System in Admin Bar
@@ -523,7 +502,9 @@ function do_admin_post_rocket_preload_cache() {
 		}
 
 		$lang = isset( $_GET['lang'] ) && 'all' !== $_GET['lang'] ? sanitize_key( $_GET['lang'] ) : '';
-		run_rocket_preload_cache( 'cache-preload' );
+		if ( get_rocket_option( 'sitemap_preload', 0 ) ) {
+			run_rocket_sitemap_preload();
+		}
 
 		wp_redirect( wp_get_referer() );
 		die();
