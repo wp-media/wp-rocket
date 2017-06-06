@@ -93,10 +93,6 @@ function rocket_init() {
 		return;
 	}
 
-	// Necessary to call correctly WP Rocket Bot for cache json.
-	global $do_rocket_bot_cache_json;
-	$do_rocket_bot_cache_json = false;
-
 	// Call defines, classes and functions.
 	require( WP_ROCKET_FUNCTIONS_PATH . 'options.php' );
 
@@ -105,7 +101,10 @@ function rocket_init() {
 	define( 'WP_ROCKET_PLUGIN_SLUG', sanitize_key( WP_ROCKET_PLUGIN_NAME ) );
 
 	// Call defines,  classes and functions.
-	require( WP_ROCKET_CLASSES_PATH . 'background-processing.php' );
+	require( WP_ROCKET_VENDORS_PATH . 'wp-async-request.php' );
+	require( WP_ROCKET_VENDORS_PATH . 'wp-background-process.php' );
+	require( WP_ROCKET_CLASSES_PATH . 'class-rocket-sitemap-background-preload.php' );
+	require( WP_ROCKET_CLASSES_PATH . 'class-rocket-partial-background-preload.php' );
 	require( WP_ROCKET_FUNCTIONS_PATH . 'files.php' );
 	require( WP_ROCKET_FUNCTIONS_PATH . 'posts.php' );
 	require( WP_ROCKET_FUNCTIONS_PATH . 'admin.php' );
@@ -114,7 +113,7 @@ function rocket_init() {
 	require( WP_ROCKET_FUNCTIONS_PATH . 'minify.php' );
 	require( WP_ROCKET_FUNCTIONS_PATH . 'plugins.php' );
 	require( WP_ROCKET_FUNCTIONS_PATH . 'i18n.php' );
-	require( WP_ROCKET_FUNCTIONS_PATH . 'bots.php' );
+	require( WP_ROCKET_FUNCTIONS_PATH . 'preload.php' );
 	require( WP_ROCKET_FUNCTIONS_PATH . 'htaccess.php' );
 	require( WP_ROCKET_FUNCTIONS_PATH . 'varnish.php' );
 	require( WP_ROCKET_INC_PATH . 'deprecated.php' );
@@ -186,6 +185,12 @@ function rocket_init() {
 
 		require( WP_ROCKET_FRONT_PATH . 'protocol.php' );
 	}
+
+	global $rocket_sitemap_preload_process;
+	$rocket_sitemap_preload_process = new Rocket_Sitemap_Background_Preload();
+
+	global $rocket_partial_preload_process;
+	$rocket_partial_preload_process = new Rocket_Partial_Background_Preload();
 
 	// You can hook this to trigger any action when WP Rocket is correctly loaded, so, not in AUTOSAVE mode.
 	if ( rocket_valid_key() ) {
