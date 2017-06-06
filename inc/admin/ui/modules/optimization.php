@@ -71,7 +71,7 @@ $rocket_minify_fields[] = array(
 		'description' => sprintf(
 			/* translators: %s = docs link, or nothing if white-label is enabled */
 			__( 'Deactivate in case you notice any visually broken items on your website.%s', 'rocket' ),
-			$rwl ? '' : ' ' . __( '<a href="http://docs.wp-rocket.me/article/19-resolving-issues-with-minification" target="_blank">Why?</a>', 'rocket' )
+			$rwl ? '' : ' ' . __( '<a href="http://docs.wp-rocket.me/article/19-resolving-issues-with-minification" target="_blank">Why?</a>', 'rocket-docs' )
 		),
 );
 
@@ -137,7 +137,7 @@ if (
 			'description' => sprintf(
 				/* translators: %s = docs link, or nothing if white-label is enabled */
 				__( 'Deactivate in case you notice any visually broken items on your website.%s', 'rocket' ),
-				$rwl ? '' : ' ' . __( '<a href="http://docs.wp-rocket.me/article/19-resolving-issues-with-minification" target="_blank">Why?</a>', 'rocket' )
+				$rwl ? '' : ' ' . __( '<a href="http://docs.wp-rocket.me/article/19-resolving-issues-with-minification" target="_blank">Why?</a>', 'rocket-docs' )
 			),
 	);
 }
@@ -153,13 +153,13 @@ $rocket_concatenate_fields[] = array(
 	'type'         => 'checkbox',
 	'label'        => 'CSS',
 	'name'         => 'minify_concatenate_css',
-	'label_screen' => __( 'Concatenate CSS files', 'rocket' ),
+	'label_screen' => 'Concatenate CSS files',
 	'readonly'	   => rocket_maybe_disable_minify_css(),
 );
 $rocket_concatenate_fields[] = array(
 	'parent'	   => 'minify_concatenate_css',
 	'type'         => 'checkbox',
-	'label'        => __( 'Combine all CSS files into as few files as possible <em>(test thoroughly!)</em>', 'rocket' ),
+	'label'        => 'Combine all CSS files into as few files as possible <em>(test thoroughly!)</em>',
 	'name'         => 'minify_css_combine_all',
 	'label_screen' => __( 'CSS Files concatenation', 'rocket' ),
 );
@@ -167,13 +167,13 @@ $rocket_concatenate_fields[] = array(
 	'type'         => 'checkbox',
 	'label'        => 'JS',
 	'name'         => 'minify_concatenate_js',
-	'label_screen' => __( 'Concatenate JS files', 'rocket' ),
+	'label_screen' => 'Concatenate JS files',
 	'readonly'	   => rocket_maybe_disable_minify_js(),
 );
 $rocket_concatenate_fields[] = array(
 	'parent'       => 'minify_concatenate_js',
 	'type'         => 'checkbox',
-	'label'        => __( 'Combine all JavaScript files into as few files as possible <em>(test thoroughly!)</em>', 'rocket' ),
+	'label'        => 'Combine all JavaScript files into as few files as possible <em>(test thoroughly!)</em>',
 	'name'         => 'minify_js_combine_all',
 	'label_screen' => __( 'JS Files concatenation', 'rocket' ),
 );
@@ -287,7 +287,7 @@ add_settings_field(
 		array(
 			'type'         => 'helper_description',
 			'name'         => 'rocket_remove_query_strings_desc',
-			'description'  => __( 'Removes the version query string from static files (e.g. style.css?ver=1.0) and encodes it into the file name instead (e.g. style-1-0.css).', 'rocket' ),
+			'description'  => __( 'Removes the version query string from static files (e.g. style.css?ver=1.0) and encodes it into the file name instead (e.g. style-1.0.css).', 'rocket' ),
 		),
 	)
 );
@@ -303,7 +303,7 @@ $rocket_render_blocking[] = array(
 	'description' => sprintf(
 		/* translators: %s = docs link, or nothing if white-label is enabled */
 		__( 'Deactivate in case you notice any visually broken items on your website.%s', 'rocket' ),
-		$rwl ? '' : ' ' . __( '<a href="http://docs.wp-rocket.me/article/108-render-blocking-javascript-and-css-pagespeed" target="_blank">Why?</a>', 'rocket' )
+		$rwl ? '' : ' ' . __( '<a href="http://docs.wp-rocket.me/article/108-render-blocking-javascript-and-css-pagespeed" target="_blank">Why?</a>', 'rocket-docs' )
 	),
 );
 

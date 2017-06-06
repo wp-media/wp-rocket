@@ -44,7 +44,7 @@ $rocket_lazyload_fields[] = array(
 	'description' => sprintf(
 		/* translators: %s = docs link, or nothing if white-label is enabled */
 		__( 'Deactivate in case you notice any visually broken items on your website.%s', 'rocket' ),
-		$rwl ? '' : ' ' . __( '<a href="http://docs.wp-rocket.me/article/278-common-issues-with-lazyload" target="_blank">Why?</a>', 'rocket' )
+		$rwl ? '' : ' ' . __( '<a href="http://docs.wp-rocket.me/article/278-common-issues-with-lazyload" target="_blank">Why?</a>', 'rocket-docs' )
 	)
 );
 
@@ -264,7 +264,7 @@ $rocket_purge_fields[] = array(
 	'name'         => 'purge_warning_less',
 	'description'  => sprintf(
 		/* translators: %s = docs link, or nothing if white-label is enabled */
-		__( 'Reduce lifespan to 10 hours or less in case you notice issues that seem to appear periodically.%s', 'rocket' ),
+		__( 'Reduce lifespan to 10 hours or less in case you notice issues that seem to appear only frequently.%s', 'rocket' ),
 		$rwl ? '' : ' ' . __( '<a href="http://docs.wp-rocket.me/article/975-nonces-and-cache-lifespan" target="_blank">Why?</a>', 'rocket' )
 	),
 );

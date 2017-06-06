@@ -117,7 +117,7 @@ add_settings_field(
 			'type'         => 'checkbox',
 			'label'        => __( 'Disable CDN functionality on HTTPS pages', 'rocket' ),
 			'label_for'    => 'cdn_ssl',
-			'label_screen' => __( 'CDN without SSL:', 'rocket' ),
+			'label_screen' => 'CDN without SSL:',
 		),
 		array(
 			'type'         => 'helper_description',
