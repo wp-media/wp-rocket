@@ -328,6 +328,7 @@ function rocket_serve_cache_file( $rocket_cache_filepath ) {
 
 	// Check if cache file exist.
 	if ( in_array( 'gzip', $_SERVER['HTTP_ACCEPT_ENCODING'] ) && file_exists( $rocket_cache_filepath_gzip ) && is_readable( $rocket_cache_filepath_gzip ) ) {
+		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s', filemtime( $rocket_cache_filepath_gzip ) ) . ' GMT' );
 
 		// Getting If-Modified-Since headers sent by the client.
 		if ( function_exists( 'apache_request_headers' ) ) {
@@ -348,6 +349,7 @@ function rocket_serve_cache_file( $rocket_cache_filepath ) {
 		readgzfile( $rocket_cache_filepath_gzip );
 		exit;
 	} elseif ( file_exists( $rocket_cache_filepath ) && is_readable( $rocket_cache_filepath ) ) {
+		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s', filemtime( $rocket_cache_filepath ) ) . ' GMT' );
 
 		// Getting If-Modified-Since headers sent by the client.
 		if ( function_exists( 'apache_request_headers' ) ) {
