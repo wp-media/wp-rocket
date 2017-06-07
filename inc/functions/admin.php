@@ -433,7 +433,7 @@ function rocket_database_optimize( $type ) {
 			$query = $wpdb->get_results( $wpdb->prepare( "SELECT table_name, data_free FROM information_schema.tables WHERE table_schema = %s and Engine <> 'InnoDB' and data_free > 0", DB_NAME ) );
 			if ( $query ) {
 				foreach ( $query as $table ) {
-					$wpdb->query( $wpdb->prepare( 'OPTIMIZE TABLE %s', $table->table_name ) );
+					$wpdb->query( 'OPTIMIZE TABLE ' . $table->table_name );
 				}
 			}
 			break;
