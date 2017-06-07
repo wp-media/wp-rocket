@@ -8,6 +8,9 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
  *
  * @since 1.3.5 Redo the function
  * @since 1.0
+ *
+ * @param string $file URL we want to parse.
+ * @return bool\string false if $file is empty or false, relative path otherwise
  */
 function rocket_clean_exclude_file( $file ) {
 	if ( ! $file ) {
@@ -15,13 +18,16 @@ function rocket_clean_exclude_file( $file ) {
 	}
 
 	$path = parse_url( $file, PHP_URL_PATH );
-    return $path;
+	return $path;
 }
 
 /**
  * Used with array_filter to remove files without .css extension
  *
  * @since 1.0
+ *
+ * @param string $file filepath to sanitize.
+ * @return bool\string false if not a css file, filepath otherwise
  */
 function rocket_sanitize_css( $file ) {
 	$file = preg_replace( '#\?.*$#', '', $file );
@@ -33,6 +39,9 @@ function rocket_sanitize_css( $file ) {
  * Used with array_filter to remove files without .js extension
  *
  * @since 1.0
+ *
+ * @param string $file filepath to sanitize.
+ * @return bool\string false if not a js file, filepath otherwise
  */
 function rocket_sanitize_js( $file ) {
 	$file = preg_replace( '#\?.*$#', '', $file );
@@ -46,7 +55,7 @@ function rocket_sanitize_js( $file ) {
  * @since 2.8
  * @author Remy Perona
  *
- * @param string $file filename
+ * @param string $file filepath to sanitize.
  * @return string|boolean filename or false if not xml
  */
 function rocket_sanitize_xml( $file ) {
@@ -60,11 +69,11 @@ function rocket_sanitize_xml( $file ) {
  *
  * @since 1.3.0
  *
- * @param string $url The URL to parse
- * @param bool 	 $no_dots (default: false)
+ * @param string $url The URL to parse.
+ * @param bool 	 $no_dots (default: false).
  * @return string $url The URL without protocol
  */
-function rocket_remove_url_protocol( $url, $no_dots=false ) {
+function rocket_remove_url_protocol( $url, $no_dots = false ) {
 	$url = str_replace( array( 'http://', 'https://' ) , '', $url );
 
 	/** This filter is documented in inc/front/htaccess.php */
@@ -79,14 +88,14 @@ function rocket_remove_url_protocol( $url, $no_dots=false ) {
  *
  * @since 2.2.1
  *
- * @param string $url The URL to parse
+ * @param string $url The URL to parse.
  * @return string $url The URL with protocol
  */
 function rocket_add_url_protocol( $url ) {
 	if ( strpos( $url, 'http://' ) === false && strpos( $url, 'https://' ) === false ) {
-    	if ( substr( $url, 0, 2 ) !== '//' ) {
-        	$url = '//' . $url;
-    	}
+		if ( substr( $url, 0, 2 ) !== '//' ) {
+			$url = '//' . $url;
+		}
 		$url = set_url_scheme( $url );
 	}
 	return $url;
@@ -97,17 +106,17 @@ function rocket_add_url_protocol( $url ) {
  *
  * @since 2.6
  *
- * @param 	string $url Absolute url that includes a scheme
+ * @param 	string $url Absolute url that includes a scheme.
  * @return 	string $url URL with a scheme.
  */
 function rocket_set_internal_url_scheme( $url ) {
 	$tmp_url = set_url_scheme( $url );
 
-    if( parse_url( $tmp_url, PHP_URL_HOST ) == parse_url( home_url(), PHP_URL_HOST ) ) {
-            $url = $tmp_url;
-    }
+	if ( parse_url( $tmp_url, PHP_URL_HOST ) === parse_url( home_url(), PHP_URL_HOST ) ) {
+			$url = $tmp_url;
+	}
 
-    return $url;
+	return $url;
 }
 
 /**
@@ -118,26 +127,26 @@ function rocket_set_internal_url_scheme( $url ) {
  * @since 2.7.3 undeprecated & updated
  * @since 1.0
  *
- * @param $url URL to parse
+ * @param string $url URL to parse.
  * @return string|bool Domain or false
  */
 function rocket_get_domain( $url ) {
-    // Add URL protocol if the $url doesn't have one to prevent issue with parse_url
-    $url = rocket_add_url_protocol( trim( $url ) );
+	// Add URL protocol if the $url doesn't have one to prevent issue with parse_url.
+	$url = rocket_add_url_protocol( trim( $url ) );
 
-    $url_array = parse_url( $url );
-    $host = $url_array['host'];
-    /**
-     * Filters the tld max range for edge cases
-     *
-     * @since 2.7.3
-     *
-     * @param string Max range number
-     */
-    $match = '/(?P<domain>[a-z0-9][a-z0-9\-]{1,63}\.[a-z\.]{2,' . apply_filters( 'rocket_get_domain_preg', '6' ) . '})$/i';
+	$url_array = parse_url( $url );
+	$host = $url_array['host'];
+	/**
+	 * Filters the tld max range for edge cases
+	 *
+	 * @since 2.7.3
+	 *
+	 * @param string Max range number
+	 */
+	$match = '/(?P<domain>[a-z0-9][a-z0-9\-]{1,63}\.[a-z\.]{2,' . apply_filters( 'rocket_get_domain_preg', '6' ) . '})$/i';
 
 	if ( preg_match( $match, $host, $regs ) ) {
-        return $regs['domain'];
+		return $regs['domain'];
 	}
 
 	return false;
@@ -149,7 +158,7 @@ function rocket_get_domain( $url ) {
  * @since 2.1 Add $query variable
  * @since 2.0
  *
- * @param string $url The URL to parse
+ * @param string $url The URL to parse.
  * @return array Components of an URL
  */
 function get_rocket_parse_url( $url ) {
@@ -179,16 +188,16 @@ function get_rocket_parse_url( $url ) {
  * @since 2.9
  * @author Remy Perona
  *
- * @param string $filename name of the cache busting file
- * @param string $extension file extension
+ * @param string $filename name of the cache busting file.
+ * @param string $extension file extension.
  * @return array Array of paths used for cache busting
  */
 function rocket_get_cache_busting_paths( $filename, $extension ) {
-    $blog_id                = get_current_blog_id();
-    $cache_busting_path     = WP_ROCKET_CACHE_BUSTING_PATH . $blog_id . '/';
-    $filename				= rtrim( str_replace( array( '/', ' ', '%20' ), '-', $filename ) );
-    $cache_busting_filepath = $cache_busting_path . $filename;
-    $cache_busting_url      = get_rocket_cdn_url( WP_ROCKET_CACHE_BUSTING_URL . $blog_id . '/' . $filename, array( 'all', 'css_and_js', $extension ) );
+	$blog_id                = get_current_blog_id();
+	$cache_busting_path     = WP_ROCKET_CACHE_BUSTING_PATH . $blog_id . '/';
+	$filename				= rtrim( str_replace( array( '/', ' ', '%20' ), '-', $filename ) );
+	$cache_busting_filepath = $cache_busting_path . $filename;
+	$cache_busting_url      = get_rocket_cdn_url( WP_ROCKET_CACHE_BUSTING_URL . $blog_id . '/' . $filename, array( 'all', 'css_and_js', $extension ) );
 
 	switch ( $extension ) {
 		case 'css':
@@ -201,9 +210,9 @@ function rocket_get_cache_busting_paths( $filename, $extension ) {
 			break;
 	}
 
-    return array(
-    	'bustingpath' => $cache_busting_path,
-    	'filepath'    => $cache_busting_filepath,
-    	'url'         => $cache_busting_url
-    );
+	return array(
+		'bustingpath' => $cache_busting_path,
+		'filepath'    => $cache_busting_filepath,
+		'url'         => $cache_busting_url,
+	);
 }

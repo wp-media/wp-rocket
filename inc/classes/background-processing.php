@@ -4,42 +4,47 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 require( WP_ROCKET_VENDORS_PATH . 'wp-async-request.php' );
 require( WP_ROCKET_VENDORS_PATH . 'wp-background-process.php' );
 
+/**
+ * Extends the background process class for the sitemap preload background process.
+ *
+ * @since 2.7
+ *
+ * @see WP_Background_Process
+ */
 class Rocket_Sitemap_Preload_Process extends WP_Background_Process {
 
 	/**
-	 * @var string
+	 * Specific action identifier for sitemap preload.
+	 *
+	 * @since 2.7
+	 * @access protected
+	 * @var string Action identifier
 	 */
 	protected $action = 'rocket_sitemap_preload';
 
 	/**
-	 * Task
+	 * Preload the URL provided by $item
 	 *
-	 * Override this method to perform any actions required on each
-	 * queue item. Return the modified item for further processing
-	 * in the next pass through. Or, return false to remove the
-	 * item from the queue.
+	 * @param mixed $item Queue item to iterate over.
 	 *
-	 * @param mixed $item Queue item to iterate over
-	 *
-	 * @return mixed
+	 * @return null
 	 */
 	protected function task( $item ) {
-        $args = array(
-            'timeout'    => 0.01,
-            'blocking'   => false,
-            'user-agent' => 'wprocketbot',
-            'sslverify'  => false
-        );
+		$args = array(
+			'timeout'    => 0.01,
+			'blocking'   => false,
+			'user-agent' => 'wprocketbot',
+			'sslverify'  => apply_filters( 'https_local_ssl_verify', true ),
+		);
 
-        $tmp = wp_remote_get( esc_url_raw( $item ), $args );
-        usleep( get_rocket_option( 'sitemap_preload_url_crawl', '500000' ) );
+		$tmp = wp_remote_get( esc_url_raw( $item ), $args );
+		usleep( get_rocket_option( 'sitemap_preload_url_crawl', '500000' ) );
 
 		return false;
 	}
 
 	/**
 	 * Complete
-	 *
 	 */
 	protected function complete() {
 		parent::complete();

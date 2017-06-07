@@ -8,25 +8,25 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
  * @since 1.3.5 Compatibility with qTranslate
  * @since 1.3.0 Compatibility with WPML
  * @since 1.0
+ *
+ * @param Object $wp_admin_bar Admin bar object.
  */
-add_action( 'admin_bar_menu', 'rocket_admin_bar', PHP_INT_MAX );
-function rocket_admin_bar( $wp_admin_bar )
-{
-	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) )  {
+function rocket_admin_bar( $wp_admin_bar ) {
+	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
 		return;
 	}
 
 	$referer = '&_wp_http_referer=' . urlencode( wp_unslash( $_SERVER['REQUEST_URI'] ) );
 	$action  = 'purge_cache';
-	
-	// Parent
-    $wp_admin_bar->add_menu( array(
+
+	// Parent.
+	$wp_admin_bar->add_menu( array(
 	    'id'    => 'wp-rocket',
 	    'title' => WP_ROCKET_PLUGIN_NAME,
 	    'href'  => admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG ),
 	));
 
-	// Settings
+	// Settings.
 	$wp_admin_bar->add_menu(array(
 		'parent' => 'wp-rocket',
 		'id' 	 => 'rocket-settings',
@@ -34,11 +34,11 @@ function rocket_admin_bar( $wp_admin_bar )
 	    'href'   => admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG ),
 	));
 
-    if ( rocket_valid_key() ) {
+	if ( rocket_valid_key() ) {
 
-		if ( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) )  {
+		if ( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
 
-			// Purge All
+			// Purge All.
 			$wp_admin_bar->add_menu(array(
 				'parent'	=> 'wp-rocket',
 				'id' 		=> 'purge-all',
@@ -48,7 +48,7 @@ function rocket_admin_bar( $wp_admin_bar )
 
 			if ( $langlinks = get_rocket_wpml_langs_for_admin_bar() ) {
 
-				foreach( $langlinks as $lang ) {
+				foreach ( $langlinks as $lang ) {
 		            $wp_admin_bar->add_menu( array(
 		                'parent' => 'purge-all',
 		                'id' 	 => 'purge-all-' . $lang['code'],
@@ -56,12 +56,10 @@ function rocket_admin_bar( $wp_admin_bar )
 		                'href'   => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . '&type=all&lang=' . $lang['code'] . $referer ), $action . '_all' ),
 		            ));
 		        }
-
 			}
+		} elseif ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) || rocket_is_plugin_active( 'qtranslate-x/qtranslate.php' ) || rocket_is_plugin_active( 'polylang/polylang.php' ) || rocket_is_plugin_active( 'polylang-pro/polylang.php' ) ) {
 
-		} else if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) || rocket_is_plugin_active( 'qtranslate-x/qtranslate.php' ) || rocket_is_plugin_active( 'polylang/polylang.php' ) || rocket_is_plugin_active( 'polylang-pro/polylang.php' ) ) {
-
-			// Purge All
+			// Purge All.
 			$wp_admin_bar->add_menu( array(
 				'parent'	=> 'wp-rocket',
 				'id' 		=> 'purge-all',
@@ -69,16 +67,16 @@ function rocket_admin_bar( $wp_admin_bar )
 				'href' 		=> '#',
 			));
 
-			// Add submenu for each active langs
+			// Add submenu for each active langs.
 			if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
 				$langlinks = get_rocket_qtranslate_langs_for_admin_bar();
-			} else if ( rocket_is_plugin_active( 'qtranslate-x/qtranslate.php' ) ) {
+			} elseif ( rocket_is_plugin_active( 'qtranslate-x/qtranslate.php' ) ) {
 				$langlinks = get_rocket_qtranslate_langs_for_admin_bar( 'x' );
-			} else if ( rocket_is_plugin_active( 'polylang/polylang.php' ) || rocket_is_plugin_active( 'polylang-pro/polylang.php' ) ) {
+			} elseif ( rocket_is_plugin_active( 'polylang/polylang.php' ) || rocket_is_plugin_active( 'polylang-pro/polylang.php' ) ) {
 				$langlinks = get_rocket_polylang_langs_for_admin_bar();
 			}
 
-			foreach( $langlinks as $lang ) {
+			foreach ( $langlinks as $lang ) {
 	            $wp_admin_bar->add_menu( array(
 	                'parent' => 'purge-all',
 	                'id' 	 => 'purge-all-' . $lang['code'],
@@ -87,17 +85,17 @@ function rocket_admin_bar( $wp_admin_bar )
 	            ));
 	        }
 
-	        // Add subemnu "All langs"
+	        // Add subemnu "All langs".
 	        $wp_admin_bar->add_menu( array(
 	            'parent' => 'purge-all',
 	            'id' 	 => 'purge-all-all',
-	            'title'  =>  '<div class="dashicons-before dashicons-admin-site" style="line-height:1.5"> ' . __( 'All languages', 'rocket' ) . '</div>',
+	            'title'  => '<div class="dashicons-before dashicons-admin-site" style="line-height:1.5"> ' . __( 'All languages', 'rocket' ) . '</div>',
 	            'href'   => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . '&type=all&lang=all' . $referer ), $action . '_all' ),
 	        ));
 
 		} else {
 
-			// Purge All
+			// Purge All.
 			$wp_admin_bar->add_menu(array(
 				'parent'	=> 'wp-rocket',
 				'id' 		=> 'purge-all',
@@ -106,12 +104,12 @@ function rocket_admin_bar( $wp_admin_bar )
 			));
 
 		}
-		
+
 		if ( is_admin() ) {
 
-			// Purge a post
+			// Purge a post.
 			global $pagenow, $post;
-			if( $post && 'post.php' == $pagenow && isset( $_GET['action'], $_GET['post'] ) ) {
+			if ( $post && 'post.php' === $pagenow && isset( $_GET['action'], $_GET['post'] ) ) {
 				$pobject = get_post_type_object( $post->post_type );
 				$wp_admin_bar->add_menu(array(
 					'parent' => 'wp-rocket',
@@ -121,10 +119,9 @@ function rocket_admin_bar( $wp_admin_bar )
 				));
 
 			}
-
 		} else {
 
-			// Purge this URL (frontend)
+			// Purge this URL (frontend).
 			$wp_admin_bar->add_menu( array(
 				'parent' => 'wp-rocket',
 				'id' 	 => 'purge-url',
@@ -133,47 +130,47 @@ function rocket_admin_bar( $wp_admin_bar )
 			));
 
 		}
-		
-		// Purge OPCache content if OPcache is active
-        if ( function_exists( 'opcache_reset' ) ) {
 
-            $action = 'rocket_purge_opcache';
+		// Purge OPCache content if OPcache is active.
+		if ( function_exists( 'opcache_reset' ) ) {
 
-            $wp_admin_bar->add_menu( array(
+			$action = 'rocket_purge_opcache';
+
+			$wp_admin_bar->add_menu( array(
 				'parent' => 'wp-rocket',
 				'id' 	 => 'purge-opcache',
 				'title'  => __( 'Purge OPcache', 'rocket' ),
 				'href' 	 => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . $referer ), $action ),
 			));
 
-        }
+		}
 
-        // Purge CloudFlare cache if CloudFlare is active
-        if ( 1 == get_rocket_option( 'do_cloudflare', 0 ) ) {
-            $action = 'rocket_purge_cloudflare';
+		// Purge CloudFlare cache if CloudFlare is active.
+		if ( 1 === get_rocket_option( 'do_cloudflare', 0 ) ) {
+			$action = 'rocket_purge_cloudflare';
 
-            $wp_admin_bar->add_menu( array(
+			$wp_admin_bar->add_menu( array(
 				'parent' => 'wp-rocket',
 				'id' 	 => 'purge-cloudflare',
-				'title'  => __( 'Clear CloudFlare cache', 'rocket' ),
+				'title'  => __( 'Clear Cloudflare cache', 'rocket' ),
 				'href' 	 => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . $referer ), $action ),
 			));
-        }
+		}
 
 		$action = 'preload';
-	    // Go robot gogo !
-        if ( get_rocket_option( 'manual_preload', 1 ) || get_rocket_option( 'sitemap_preload', false ) ) {
+	    // Go robot gogo!
+		if ( get_rocket_option( 'manual_preload', 1 ) || get_rocket_option( 'sitemap_preload', false ) ) {
 		    if ( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
-            
+
 		    	$wp_admin_bar->add_menu( array(
 	                'parent' => 'wp-rocket',
 	                'id' 	 => 'preload-cache',
 	                'title'  => __( 'Preload cache', 'rocket' ),
-	                'href' 	 => '#'
+	                'href' 	 => '#',
 	            ));
-            
+
 		    	if ( $langlinks = get_rocket_wpml_langs_for_admin_bar() ) {
-		    		foreach( $langlinks as $lang ) {
+		    		foreach ( $langlinks as $lang ) {
 		                $wp_admin_bar->add_menu( array(
 		                    'parent' => 'preload-cache',
 		                    'id' 	 => 'preload-cache-' . $lang['code'],
@@ -181,27 +178,25 @@ function rocket_admin_bar( $wp_admin_bar )
 		                    'href' 	 => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . '&lang=' . $lang['code'] . $referer ), $action ),
 		                ));
 		            }
-            
 		    	}
-            
-		    } else if( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) || rocket_is_plugin_active( 'qtranslate-x/qtranslate.php' ) || rocket_is_plugin_active( 'polylang/polylang.php' ) || rocket_is_plugin_active( 'polylang-pro/polylang.php' )  ) {
-            
+		    } elseif ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) || rocket_is_plugin_active( 'qtranslate-x/qtranslate.php' ) || rocket_is_plugin_active( 'polylang/polylang.php' ) || rocket_is_plugin_active( 'polylang-pro/polylang.php' )  ) {
+
 		    	$wp_admin_bar->add_menu( array(
 	                'parent' => 'wp-rocket',
 	                'id' 	 => 'preload-cache',
 	                'title'  => __( 'Preload cache', 'rocket' ),
-	                'href' 	 => '#'
+	                'href' 	 => '#',
 	            ));
-            
+
 		    	if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
 		    		$langlinks = get_rocket_qtranslate_langs_for_admin_bar();
-		    	} else if ( rocket_is_plugin_active( 'qtranslate-x/qtranslate.php' ) ) {
+		    	} elseif ( rocket_is_plugin_active( 'qtranslate-x/qtranslate.php' ) ) {
 		    		$langlinks = get_rocket_qtranslate_langs_for_admin_bar( 'x' );
-		    	} else if ( rocket_is_plugin_active( 'polylang/polylang.php' ) || rocket_is_plugin_active( 'polylang-pro/polylang.php' ) ) {
+		    	} elseif ( rocket_is_plugin_active( 'polylang/polylang.php' ) || rocket_is_plugin_active( 'polylang-pro/polylang.php' ) ) {
 		    		$langlinks = get_rocket_polylang_langs_for_admin_bar();
 		    	}
-            
-		    	foreach( $langlinks as $lang ) {
+
+		    	foreach ( $langlinks as $lang ) {
 	                $wp_admin_bar->add_menu( array(
 	                    'parent' => 'preload-cache',
 	                    'id' 	 => 'preload-cache-' . $lang['code'],
@@ -209,36 +204,44 @@ function rocket_admin_bar( $wp_admin_bar )
 	                    'href' 	 => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . '&lang=' . $lang['code'] . $referer ), $action ),
 	                ));
 	            }
-            
+
 	            $wp_admin_bar->add_menu( array(
 	                'parent' => 'preload-cache',
 	                'id' 	 => 'preload-cache-all',
-	                'title'  =>  '<div class="dashicons-before dashicons-admin-site" style="line-height:1.5;"> ' . __( 'All languages', 'rocket' ) . '</div>',
+	                'title'  => '<div class="dashicons-before dashicons-admin-site" style="line-height:1.5;"> ' . __( 'All languages', 'rocket' ) . '</div>',
 	                'href' 	 => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . '&lang=all' . $referer ), $action ),
 	            ));
-            
+
 		    } else {
-            
+
 		    	$wp_admin_bar->add_menu( array(
 	                'parent' => 'wp-rocket',
 	                'id' 	 => 'preload-cache',
 	                'title'  => __( 'Preload cache', 'rocket' ),
-	                'href' 	 => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . $referer ), $action )
+	                'href' 	 => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . $referer ), $action ),
 	            ));
-            
+
 		    }
-        }
+		}
 	}
 	if ( ! rocket_is_white_label() ) {
-		// Go to WP Rocket Documentation
+		// Go to WP Rocket Documentation.
 		$wp_admin_bar->add_menu( array(
 			'parent' => 'wp-rocket',
 			'id'     => 'docs',
 			'title'  => __( 'Documentation', 'rocket' ),
 			'href'   => get_rocket_documentation_url(),
 		));
-		
-		// Go to WP Rocket Support
+
+		// Go to WP Rocket FAQ.
+		$wp_admin_bar->add_menu( array(
+			'parent' => 'wp-rocket',
+			'id'     => 'faq',
+			'title'  => __( 'FAQ', 'rocket' ),
+			'href'   => get_rocket_faq_url(),
+		));
+
+		// Go to WP Rocket Support.
 		$wp_admin_bar->add_menu( array(
 			'parent' => 'wp-rocket',
 			'id'     => 'support',
@@ -247,3 +250,4 @@ function rocket_admin_bar( $wp_admin_bar )
 		));
 	}
 }
+add_action( 'admin_bar_menu', 'rocket_admin_bar', PHP_INT_MAX );

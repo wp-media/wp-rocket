@@ -1,140 +1,89 @@
-<?php 
-defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
+<?php
+defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
+
+// Are we white-labeled?
+$rwl = rocket_is_white_label();
 
 add_settings_section( 'rocket_display_main_options', __( 'Basic options', 'rocket' ), '__return_false', 'rocket_basic' );
-add_settings_field(
-	'rocket_lazyload',
-	__( 'Lazyload:', 'rocket' ),
-	'rocket_field',
-	'rocket_basic',
-	'rocket_display_main_options',
-	array(
+
+/**
+ * Panel caption
+ */
+if ( ! $rwl ) {
+
+	add_settings_field(
+		'rocket_basic_options_panel',
+		false,
+		'rocket_field',
+		'rocket_basic',
+		'rocket_display_main_options',
 		array(
-			'type'         => 'checkbox',
-			'label'        => __('Images', 'rocket' ),
-			'label_for'    => 'lazyload',
-			'label_screen' => __( 'Lazyload on images', 'rocket' ),
-		),
-		array(
-			'type'         => 'checkbox',
-			'label'        => __('Iframes & Videos', 'rocket' ),
-			'label_for'    => 'lazyload_iframes',
-			'label_screen' => __( 'Lazyload on iframes and videos', 'rocket' ),
-		),
-		array(
-			'type'         => 'helper_description',
-			'name'         => 'lazyload',
-			'description'  => __( 'LazyLoad displays images, iframes and videos on a page only when they are visible to the user.', 'rocket') . '<br/>' .
-								  __('This mechanism reduces the number of HTTP requests and improves the loading time.', 'rocket' )
-		),
-	)
-);
-
-$rocket_maybe_disable_minify = array( 
-	'type'         => 'helper_warning',
-	'name'         => 'minify_html_disabled'
-);
-
-if ( rocket_maybe_disable_minify_html() || rocket_maybe_disable_minify_css() || rocket_maybe_disable_minify_js() ) {
-	$disabled = '';
-
-	if ( rocket_maybe_disable_minify_html() ) {
-		$disabled .= 'HTML, ';
-	}
-
-	if ( rocket_maybe_disable_minify_css() ) {
-		$disabled .= 'CSS, ';
-	}
-
-	if ( rocket_maybe_disable_minify_js() ) {
-		$disabled .= 'JS, ';
-	}
-
-	$disabled = rtrim( $disabled, ', ' );
-
-	$rocket_maybe_disable_minify['description'] = sprintf(__( 'These minification options are disabled because they are currently activated in Autoptimize. If you want to use WP Rocket minification, disable them there first: %s', 'rocket' ), $disabled );
+			array(
+				'type'         => 'helper_panel_description',
+				'name'         => 'basic_options_panel_caption',
+				'description'  => sprintf(
+					'<span class="dashicons dashicons-performance" aria-hidden="true"></span><strong>%1$s</strong>',
+					/* translators: line break recommended, but not mandatory  */
+					__( 'Caching has been activated automatically, your website should load fast!<br>How about <a href="https://wp-rocket.me/blog/correctly-measure-websites-page-load-time/" target="_blank">testing your loading time</a>? Maybe you don’t even need to configure all these options.', 'rocket' )
+				),
+			),
+		)
+	);
 }
 
+/**
+ * LazyLoad
+ */
+
+/* Dynamic warning */
+$rocket_lazyload_fields = array();
+
+$rocket_lazyload_fields[] = array(
+	'type'        => 'helper_warning',
+	'name'        => 'lazyload_common_issues',
+	'description' => sprintf(
+		/* translators: %s = docs link, or nothing if white-label is enabled */
+		__( 'Deactivate in case you notice any visually broken items on your website.%s', 'rocket' ),
+		$rwl ? '' : ' ' . __( '<a href="http://docs.wp-rocket.me/article/278-common-issues-with-lazyload" target="_blank">Why?</a>', 'rocket-docs' )
+	)
+);
+
+/* LazyLoad options */
+$rocket_lazyload_fields[] =	array(
+	'type'         => 'checkbox',
+	'label'        => __( 'Enable for images', 'rocket' ),
+	'label_for'    => 'lazyload',
+	'label_screen' => __( 'Enable LazyLoad for images', 'rocket' ),
+);
+$rocket_lazyload_fields[] = array(
+	'type'         => 'checkbox',
+	'label'        => __( 'Enable for iframes and videos', 'rocket' ),
+	'label_for'    => 'lazyload_iframes',
+	'label_screen' => __( 'Enable LazyLoad for iframes and videos', 'rocket' ),
+);
+$rocket_lazyload_fields[] = array(
+	'type'         => 'helper_performance',
+	'name'         => 'lazyload_perf_tip',
+	'description'  => __( 'Reduces the number of HTTP requests, can improve loading time.', 'rocket' )
+);
+$rocket_lazyload_fields[] = array(
+	'type'         => 'helper_description',
+	'name'         => 'lazyload',
+	'description'  => __( 'Images, iframes, and videos will be loaded only as they enter (or are about to enter) the viewport.', 'rocket' )
+);
+
 add_settings_field(
-	'rocket_minify',
-	 __( 'Files optimisation:<br/><span class="description">(Minification & Concatenation)</span>', 'rocket' ),
+	'rocket_lazyload',
+	__( 'LazyLoad:', 'rocket' ),
 	'rocket_field',
 	'rocket_basic',
 	'rocket_display_main_options',
-	array(
-		array(
-			'type'         => 'checkbox',
-			'label'        => 'HTML',
-			'name'         => 'minify_html',
-			'label_screen' => __( 'HTML Files minification', 'rocket' ),
-			'readonly'	   => rocket_maybe_disable_minify_html(),
-		),
-		array(
-			'parent'	   => 'minify_html',
-			'type'         => 'checkbox',
-			'label'        => 'Inline CSS',
-			'name'         => 'minify_html_inline_css',
-			'label_screen' => 'Inline CSS minification',
-		),
-		array(
-			'parent'	   => 'minify_html',
-			'type'         => 'checkbox',
-			'label'        => 'Inline JS',
-			'name'         => 'minify_html_inline_js',
-			'label_screen' => 'Inline JS minification'
-		),
-		array(
-			'type'		   => 'checkbox',
-			'label'		   => 'Google Fonts',
-			'name'		   => 'minify_google_fonts',
-			'label_screen' => __( 'Google Fonts minification', 'rocket' ),
-		),
-		array(
-			'type'         => 'checkbox',
-			'label'        => 'CSS',
-			'name'         => 'minify_css',
-			'label_screen' => __( 'CSS Files minification', 'rocket' ),
-			'readonly'	   => rocket_maybe_disable_minify_css(),
-		),
-		array(
-			'type'		   => 'checkbox',
-			'label'		   => 'JS',
-			'name'		   => 'minify_js',
-			'label_screen' => __( 'JS Files minification', 'rocket' ),
-			'readonly'	   => rocket_maybe_disable_minify_js(),
-		),
-		$rocket_maybe_disable_minify,
-		array(
-			'type'			=> 'helper_description',
-			'name'			=> 'minify',
-			'description'  => __( 'Minification removes any spaces and comments present in the CSS and JavaScript files.', 'rocket' ) . '<br/>' . __( 'This mechanism reduces the weight of each file and allows a faster reading of browsers and search engines.', 'rocket' ) . '<br/>' . __( 'Concatenation combines all CSS and JavaScript files.', 'rocket' ) . '<br/>' . __( 'This mechanism reduces the number of HTTP requests and improves the loading time.', 'rocket' )
-		),
-		array(
-			'type'			=> 'helper_warning',
-			'name'			=> 'minify_help1',
-			'description'  => __( 'Concatenating files can cause display errors.', 'rocket' ),
-		),
-		array(
-			'display'		=> ! rocket_is_white_label(),
-			'type'			=> 'helper_warning',
-			'name'			=> 'minify_help2',
-			'description'  => sprintf( __( 'In case of any errors we recommend you to turn off this option or watch the following video: <a href="%1$s" class="fancybox">%1$s</a>.', 'rocket' ), ( defined( 'WPLANG' ) && WPLANG == 'fr_FR' ) ? 'http://www.youtube.com/embed/5-Llh0ivyjs' : 'http://www.youtube.com/embed/kymoxCwW03c' )
-		),
-
-	)
-);
-// Mobile plugins list
-$mobile_plugins = array(
-	'<a href="https://wordpress.org/plugins/wptouch/" target="_blank">WP Touch (Free Version)</a>',
-	'<a href="https://wordpress.org/plugins/wiziapp-create-your-own-native-iphone-app" target="_blank">wiziApp</a>',
-	'<a href="https://wordpress.org/plugins/wordpress-mobile-pack/" target="_blank">WordPress Mobile Pack</a>',
-	'<a href="https://wordpress.org/plugins/wp-mobilizer/" target="_blank">WP-Mobilizer</a>',
-	'<a href="https://wordpress.org/plugins/wp-mobile-edition/" target="_blank">WP Mobile Edition</a>',
-	'<a href="https://wordpress.org/plugins/device-theme-switcher/" target="_blank">Device Theme Switcher</a>',
-	'<a href="https://wordpress.org/plugins/wp-mobile-detect/" target="_blank">WP Mobile Detect</a>',
-	'<a href="https://codecanyon.net/item/easy-social-share-buttons-for-wordpress/6394476" target="_blank">Easy Social Share Buttons</a>',
+	$rocket_lazyload_fields
 );
 
+/**
+ * Mobile cache
+ */
 add_settings_field(
 	'rocket_mobile',
 	__( 'Mobile cache:', 'rocket' ),
@@ -143,73 +92,63 @@ add_settings_field(
 	'rocket_display_main_options',
 	array(
 		array(
-			'type'		   => 'checkbox',
-			'label'		   => __( 'Enable caching for mobile devices.', 'rocket' ),
+			'type'         => 'checkbox',
+			'label'        => __( 'Enable caching for mobile devices', 'rocket' ),
 			'label_for'	   => 'cache_mobile',
 			'label_screen' => __( 'Mobile cache:', 'rocket' ),
+			'default'	   => ( rocket_is_mobile_plugin_active() ) ? 1 : get_rocket_option( 'cache_mobile', 0 ),
+			'readonly'	   => rocket_is_mobile_plugin_active(),
 		),
 		array(
-			'parent'	   => 'cache_mobile',
+			'type'         => 'helper_performance',
+			'name'         => 'mobile_perf_tip',
+			'description'  => __( 'Makes your website mobile-friendlier.', 'rocket' ),
+		),
+		array(
+			'parent'       => 'cache_mobile',
 			'type'         => 'checkbox',
-			'label'        => __( 'Create a caching file for mobile visitors.', 'rocket' ),
-			'name'         => 'do_caching_mobile_files'
+			'label'        => __( 'Separate cache files for mobile devices', 'rocket' ),
+			'name'         => 'do_caching_mobile_files',
+			'default'	   => ( rocket_is_mobile_plugin_active() ) ? 1 : get_rocket_option( 'do_caching_mobile_files', 0 ),
+			'readonly'	   => rocket_is_mobile_plugin_active(),
 		),
 		array(
-			'parent'	   => 'cache_mobile',
+			'parent'       => 'cache_mobile',
 			'type'         => 'helper_description',
 			'name'         => 'mobile',
-			'description'  => __( 'Are you using a dedicated mobile theme or <code>wp_is_mobile()</code>? If so, you should activate this option to serve a specific caching file for your mobile visitors.', 'rocket' ),
-		),
-		array(
-			'parent'	   => 'cache_mobile',
-			'type'         => 'helper_warning',
-			'name'         => 'mobile',
-			'description'  => wp_sprintf( __( 'If you are using one of these plugins, you must activate this option: %l', 'rocket' ), $mobile_plugins ),
+			'description'  => $rwl ? __( 'Mobile cache works safest with both options enabled. When in doubt, keep both.', 'rocket' ) : __( '<a href="http://docs.wp-rocket.me/article/708-mobile-caching" target="_blank">Mobile cache</a> works safest with both options enabled. When in doubt, keep both.', 'rocket' ),
 		),
 	)
 );
+
+/**
+ * User cache
+ */
 add_settings_field(
-	'rocket_feed',
-	__( 'Feeds cache:', 'rocket' ),
+	'rocket_logged_user',
+	__( 'User cache:', 'rocket' ),
 	'rocket_field',
 	'rocket_basic',
 	'rocket_display_main_options',
 	array(
 		array(
-			'type'		   => 'checkbox',
-			'label'		   => __( 'Enable caching for WordPress feeds.', 'rocket' ),
-			'label_for'	   => 'cache_feed',
-			'label_screen' => __( 'Feeds cache:', 'rocket' ),
-		)
-	)
-);
-add_settings_field(
-	'rocket_logged_user',
-	__( 'Logged in user cache:', 'rocket' ),
-	'rocket_field', 'rocket_basic',
-	'rocket_display_main_options',
-	array(
-		array(
-		    'type'         => 'checkbox',
-		    'label'        => __('Enable caching for logged in users.', 'rocket' ),
-		    'label_for'    => 'cache_logged_user',
-		    'label_screen' =>__( 'Logged in user cache:', 'rocket' ),
-		),
-		array(
-			'parent'	   => 'cache_logged_user',
 			'type'         => 'checkbox',
-			'label'        => __( 'Use the same cache for all logged in users.', 'rocket' ),
-			'name'         => 'common_cache_logged_users',
-			'label_screen' => __( 'Common cache for logged in users', 'rocket' ),
+			'name'         => 'cache_logged_user',
+			'label'        => __( 'Enable caching for logged-in WordPress users', 'rocket' ),
+			'label_for'    => 'cache_logged_user',
+			'label_screen' => __( 'User cache:', 'rocket' ),
 		),
 		array(
-			'parent'	   => 'cache_logged_user',
 			'type'         => 'helper_description',
-			'name'         => 'common_cache_logged_users_description',
-			'description'  => __( 'You can use this option if you want to only have one cache folder fo all logged in users, instead of creating one for each. This can be useful if you serve the same content for all users.', 'rocket' ),
+			'name'         => 'user_cache_desc',
+			'description'  => $rwl ? __( 'User cache is great when you have user-specific or restricted content on your website.', 'rocket' ) : __( '<a href="http://docs.wp-rocket.me/article/313-logged-in-user-cache" target="_blank">User cache</a> is great when you have user-specific or restricted content on your website.', 'rocket' ),
 		),
 	)
 );
+
+/**
+ * SSL cache
+ */
 add_settings_field(
 	'rocket_ssl',
 	__( 'SSL cache:', 'rocket' ),
@@ -217,68 +156,132 @@ add_settings_field(
 	'rocket_basic',
 	'rocket_display_main_options',
 	array(
-		'type'         => 'checkbox',
-		'label'        => __('Enable caching for pages with SSL protocol (<code>https://</code>).', 'rocket' ),
-		'label_for'    => 'cache_ssl',
-		'label_screen' => __( 'SSL cache:', 'rocket' ),
-		'default'	   => ( rocket_is_ssl_website() ) ? 1 : get_rocket_option( 'ssl', 0 ),
-		'readonly'	   => rocket_is_ssl_website()
+		array(
+			'type'         => 'checkbox',
+			'label'        => __( 'Enable caching for pages with <code>https://</code>', 'rocket' ),
+			'label_for'    => 'cache_ssl',
+			'label_screen' => __( 'SSL cache:', 'rocket' ),
+			'name'         => 'cache_ssl',
+			'default'	   => ( rocket_is_ssl_website() ) ? 1 : get_rocket_option( 'ssl', 0 ),
+			'readonly'	   => rocket_is_ssl_website(),
+		),
+		array(
+			'type'         => 'helper_description',
+			'name'         => 'ssl_cache_desc',
+			'description'  => $rwl ? __( 'SSL cache works best when your entire website runs on HTTPS.', 'rocket' ) : __( '<a href="http://docs.wp-rocket.me/article/314-using-ssl-with-wp-rocket" target="_blank">SSL cache</a> works best when your entire website runs on HTTPS.', 'rocket' ),
+		),
 	)
 );
+
+/**
+ * Emoji cache
+ */
 add_settings_field(
-	'rocket_emoji',
-	__( 'Emojis:', 'rocket' ),
+	'rocket_wordpress_emojis',
+	__( 'Emoji cache:', 'rocket' ),
 	'rocket_field',
 	'rocket_basic',
 	'rocket_display_main_options',
 	array(
 		array(
 			'type'         => 'checkbox',
-			'label'        => __( 'Replace emojis with default WordPress smileys.', 'rocket' ),
+			'label'        => __( 'Use default emoji of visitors’ browser instead of loading emoji from WordPress.org', 'rocket' ),
 			'label_for'    => 'emoji',
-			'label_screen' => __( 'Emojis:', 'rocket' ),
+			'label_screen' => __( 'Emoji cache:', 'rocket' ),
+			'name'         => 'emoji',
 		),
 		array(
-			'type'         => 'helper_description',
-			'name'         => 'emoji',
-			'description'  => __( '<strong>Note:</strong> By activating this option, you will reduce the number of external HTTP requests.', 'rocket' ),
+			'type'         => 'helper_performance',
+			'name'         => 'emoji_cache_perf_tip',
+			'description'  => __( 'Reduces the number of HTTP requests, can improve loading time.', 'rocket' )
 		),
 	)
 );
+
+/**
+ * Disable Embeds
+ */
 add_settings_field(
-	'rocket_purge',
-	__( 'Clear Cache Lifespan', 'rocket' ),
+	'rocket_wordpress_embeds',
+	__( 'Embeds:', 'rocket' ),
 	'rocket_field',
 	'rocket_basic',
 	'rocket_display_main_options',
 	array(
 		array(
-			'type'         => 'number',
-			'label_for'    => 'purge_cron_interval',
-			'label_screen' => __( 'Clear Cache Lifespan', 'rocket' ),
-			'fieldset'     => 'start'
-		),
-		array(
-			'type'		   => 'select',
-			'label_for'	   => 'purge_cron_unit',
-			'label_screen' => __( 'Unit of time', 'rocket' ),
-			'fieldset'	   => 'end',
-			'options' => array(
-				'SECOND_IN_SECONDS' => __( 'second(s)', 'rocket' ),
-				'MINUTE_IN_SECONDS' => __( 'minute(s)', 'rocket' ),
-				'HOUR_IN_SECONDS'   => __( 'hour(s)', 'rocket' ),
-				'DAY_IN_SECONDS'    => __( 'day(s)', 'rocket' )
-			)
+			'type'         => 'checkbox',
+			'label'        => __( 'Disable WordPress Embeds', 'rocket' ),
+			'label_for'    => 'embeds',
+			'label_screen' => __( 'Embeds:', 'rocket' ),
 		),
 		array(
 			'type'         => 'helper_description',
-			'name'         => 'purge',
-			'description'  => __( 'By default, cache lifespan is 24 hours. This means that once created, the cache files are automatically removed after 24 hours before being recreated.', 'rocket' ). '<br/>' . __('This can be useful if you display your latest tweets or rss feeds in your sidebar, for example.', 'rocket' ),
+			'name'         => 'embeds',
+			'description'  => __( 'Prevents others from embedding content from your site, prevents you from embedding content from other (non-whitelisted) sites, and removes JavaScript requests related to <a href="https://wordpress.org/news/2015/12/clifford/">WordPress Embeds</a>.', 'rocket' ),
 		),
-		array(
-			'type'         => 'helper_help',
-			'name'         => 'purge',
-			'description'  => __( 'Specify 0 for unlimited lifetime.', 'rocket' ),
-			),
-		)
+	)
+);
+
+/**
+ * Cache lifespan
+ */
+$rocket_purge_fields = array(
+	array(
+		'type'         => 'helper_help',
+		'name'         => 'purge_tip',
+		'description'  => __( 'Specify time after which the global cache gets cleared (0 = unlimited)', 'rocket' ),
+	),
+	array(
+		'type'         => 'number',
+		'label_for'    => 'purge_cron_interval',
+		'label_screen' => __( 'Clear cache after …', 'rocket' ),
+		'fieldset'     => 'start',
+	),
+	array(
+		'type'         => 'select',
+		'label_for'    => 'purge_cron_unit',
+		'label_screen' => __( 'Unit of time', 'rocket' ),
+		'fieldset'     => 'end',
+		'options'      => array(
+			'MINUTE_IN_SECONDS' => __( 'minute(s)', 'rocket' ),
+			'HOUR_IN_SECONDS'   => __( 'hour(s)', 'rocket' ),
+			'DAY_IN_SECONDS'    => __( 'day(s)', 'rocket' ),
+		),
+	),
+	array(
+		'type'         => 'helper_description',
+		'name'         => 'purge',
+		'description'  => sprintf(
+			/* translators: %s = preload tab ID */
+			__( 'Cache lifespan is the period of time after which all cache files get removed. Enable <a href="%s">Preloading</a> for the cache to be rebuilt automatically after lifespan expiration.', 'rocket' ),
+			'#tab_preload'
+		),
+	),
+);
+
+$rocket_purge_fields[] = array(
+	'type'         => 'helper_warning',
+	'name'         => 'purge_warning_less',
+	'description'  => sprintf(
+		/* translators: %s = docs link, or nothing if white-label is enabled */
+		__( 'Reduce lifespan to 10 hours or less in case you notice issues that seem to appear only frequently.%s', 'rocket' ),
+		$rwl ? '' : ' ' . __( '<a href="http://docs.wp-rocket.me/article/975-nonces-and-cache-lifespan" target="_blank">Why?</a>', 'rocket' )
+	),
+);
+
+
+$rocket_purge_fields[] = array(
+		'type'         => 'helper_warning',
+		'name'         => 'purge_warning_more',
+		'description'  => __( 'Increase lifespan to a few hours in case you notice server issues with this setting.', 'rocket' ),
+	);
+
+/* Cache lifespan option */
+add_settings_field(
+	'rocket_purge',
+	__( 'Cache lifespan', 'rocket' ),
+	'rocket_field',
+	'rocket_basic',
+	'rocket_display_main_options',
+	$rocket_purge_fields
 );

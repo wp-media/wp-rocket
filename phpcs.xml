@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<ruleset name="WPRocket">
+	<description>Caching plugin for WordPress by WP Media.</description>
+
+	<arg name="extensions" value="php"/>
+	<!--<arg value="s"/>-->
+
+	<file>.</file>
+	<exclude-pattern>/min/*</exclude-pattern>
+	<exclude-pattern>/inc/vendors/*</exclude-pattern>
+	<exclude-pattern>/tests/*</exclude-pattern>
+
+	<rule ref="WordPress">
+		<exclude name="Generic.PHP.NoSilencedErrors.Discouraged"/>
+        <exclude name="PEAR.Functions.FunctionCallSignature.Indent"/>
+        <exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterCloseBrace"/>
+        <exclude name="Squiz.Commenting.FileComment.Missing"/>
+        <exclude name="Squiz.Commenting.FileComment.MissingPackageTag"/>
+        <exclude name="Squiz.PHP.CommentedOutCode.Found"/>
+        <exclude name="WordPress.VIP.AdminBarRemoval"/>
+        <exclude name="WordPress.VIP.CronInterval.ChangeDetected"/>
+        <exclude name="WordPress.VIP.DirectDatabaseQuery.DirectQuery"/>
+        <exclude name="WordPress.VIP.DirectDatabaseQuery.NoCaching"/>
+        <exclude name="WordPress.VIP.OrderByRand"/>
+        <exclude name="WordPress.VIP.PostsPerPage.posts_per_page"/>
+        <exclude name="WordPress.VIP.RestrictedFunctions"/>
+        <exclude name="WordPress.VIP.RestrictedFunctions.urlencode"/>
+        <exclude name="WordPress.VIP.RestrictedFunctions.wp_redirect"/>
+        <exclude name="WordPress.VIP.RestrictedVariables.cache_constraints"/>
+        <exclude name="WordPress.VIP.RestrictedVariables.user_meta"/>
+        <exclude name="WordPress.VIP.SlowDBQuery.slow_db_query"/>
+        <exclude name="WordPress.VIP.SuperGlobalInputUsage.AccessDetected"/>
+        <exclude name="WordPress.VIP.TimezoneChange"/>
+        <exclude name="WordPress.VIP.ValidatedSanitizedInput"/>
+        <exclude name="WordPress.XSS.EscapeOutput"/>
+	</rule>
+</ruleset>

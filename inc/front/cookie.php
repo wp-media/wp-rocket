@@ -7,9 +7,7 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
  *
  * @since 1.0
  */
-add_filter( 'comment_cookie_lifetime', 'rocket_comment_cookie_lifetime' );
-function rocket_comment_cookie_lifetime()
-{
+function rocket_comment_cookie_lifetime() {
 	/**
 	 * Filter the lifetime of the cookie comment
 	 *
@@ -21,3 +19,4 @@ function rocket_comment_cookie_lifetime()
 
 	return $cookie_lifetime;
 }
+add_filter( 'comment_cookie_lifetime', 'rocket_comment_cookie_lifetime' );
