@@ -374,3 +374,19 @@ if ( ! function_exists( 'do_rocket_bot_cache_json' ) ) :
 		return false;
 	}
 endif;
+
+if ( ! function_exists( 'rocket_database_optimize' ) ) :
+	/**
+	 * Optimizes the database depending on the option
+	 *
+	 * @since 2.8
+	 * @deprecated 3.0
+	 * @author Remy Perona
+	 *
+	 * @param string $type Type of optimization to perform.
+	 */
+	function rocket_database_optimize( $type ) {
+		_deprecated_function( __FUNCTION__, '3.0' );
+		return false;
+	}
+endif;
