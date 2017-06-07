@@ -21,21 +21,47 @@ if ( class_exists( 'Jetpack' ) ) :
 		Jetpack::is_module_active( 'sitemaps' )
 		&& function_exists( 'jetpack_sitemap_uri' )
 	) {
-		add_filter( 'rocket_first_install_options', 'rocket_add_jetpack_sitemap_option' );
+		/**
+		 * Add Jetpack option to WP Rocket options
+		 *
+		 * @since 2.8
+		 * @author Remy Perona
+		 *
+		 * @param Array $options WP Rocket options array.
+		 * @return Array Updated WP Rocket options array
+		 */
 		function rocket_add_jetpack_sitemap_option( $options ) {
 			$options['jetpack_xml_sitemap'] = 0;
 
 			return $options;
 		}
+		add_filter( 'rocket_first_install_options', 'rocket_add_jetpack_sitemap_option' );
 
-		add_filter( 'rocket_inputs_sanitize', 'rocket_jetpack_sitemap_option_sanitize' );
+		/**
+		 * Sanitize jetpack option value
+		 *
+		 * @since 2.8
+		 * @author Remy Perona
+		 *
+		 * @param Array $inputs Array of inputs values.
+		 * @return Array Array of inputs values
+		 */
 		function rocket_jetpack_sitemap_option_sanitize( $inputs ) {
 			$inputs['jetpack_xml_sitemap'] = ! empty( $inputs['jetpack_xml_sitemap'] ) ? 1 : 0;
 
 			return $inputs;
 		}
+		add_filter( 'rocket_inputs_sanitize', 'rocket_jetpack_sitemap_option_sanitize' );
 
-		add_filter( 'rocket_sitemap_preload_list', 'rocket_add_jetpack_sitemap' );
+		/**
+		 * Add Jetpack sitemap to preload list
+		 *
+		 * @since 2.8
+		 * @author Remy Perona
+		 *
+		 * @param Array $sitemaps Array of sitemaps to preload.
+		 * @return Array Updated Array of sitemaps to preload
+		 */
 		function rocket_add_jetpack_sitemap( $sitemaps ) {
 			if ( get_rocket_option( 'jetpack_xml_sitemap', false ) ) {
 				$sitemaps['jetpack'] = jetpack_sitemap_uri();
@@ -43,8 +69,17 @@ if ( class_exists( 'Jetpack' ) ) :
 
 			return $sitemaps;
 		}
+		add_filter( 'rocket_sitemap_preload_list', 'rocket_add_jetpack_sitemap' );
 
-		add_filter( 'rocket_sitemap_preload_options', 'rocket_sitemap_preload_jetpack_option' );
+		/**
+		 * Add Jetpack sub-option to WP Rocket settings page
+		 *
+		 * @since 2.8
+		 * @author Remy Perona
+		 *
+		 * @param Array $options WP Rocket options array.
+		 * @return Array Updated WP Rocket options array
+		 */
 		function rocket_sitemap_preload_jetpack_option( $options ) {
 			$options[] = array(
 				'parent'       => 'sitemap_preload',
@@ -63,6 +98,7 @@ if ( class_exists( 'Jetpack' ) ) :
 
 			return $options;
 		}
+		add_filter( 'rocket_sitemap_preload_options', 'rocket_sitemap_preload_jetpack_option' );
 	} // End if().
 
 	/**

@@ -1,5 +1,5 @@
-<?php 
-defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
+<?php
+defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
 
 add_settings_section( 'rocket_display_tutorials', __( 'Tutorials', 'rocket' ), '__return_false', 'rocket_tutorials' );
 add_settings_field(

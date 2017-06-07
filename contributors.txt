@@ -4,3 +4,6 @@ Developers:
 	Jonathan Buttigieg <jonathan@wp-rocket.me>
 	Julio Potier <julio@wp-rocket.me>
 	Remy Perona <remy@wp-rocket.me>
+
+UX:
+	Caspar Hübinger <caspar@wp-rocket.me>
