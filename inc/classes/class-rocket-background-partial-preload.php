@@ -8,7 +8,7 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
  *
  * @see WP_Background_Process
  */
-class Rocket_Partial_Background_Preload extends WP_Background_Process {
+class Rocket_Background_Partial_Preload extends WP_Background_Process {
 	/**
 	 * Prefix
 	 *
