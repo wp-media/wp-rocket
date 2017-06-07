@@ -103,8 +103,9 @@ function rocket_init() {
 	// Call defines,  classes and functions.
 	require( WP_ROCKET_VENDORS_PATH . 'wp-async-request.php' );
 	require( WP_ROCKET_VENDORS_PATH . 'wp-background-process.php' );
-	require( WP_ROCKET_CLASSES_PATH . 'class-rocket-sitemap-background-preload.php' );
-	require( WP_ROCKET_CLASSES_PATH . 'class-rocket-partial-background-preload.php' );
+	require( WP_ROCKET_CLASSES_PATH . 'class-rocket-background-sitemap-preload.php' );
+	require( WP_ROCKET_CLASSES_PATH . 'class-rocket-background-partial-preload.php' );
+	require( WP_ROCKET_CLASSES_PATH . 'class-rocket-background-database-optimization.php' );
 	require( WP_ROCKET_FUNCTIONS_PATH . 'files.php' );
 	require( WP_ROCKET_FUNCTIONS_PATH . 'posts.php' );
 	require( WP_ROCKET_FUNCTIONS_PATH . 'admin.php' );
@@ -187,10 +188,13 @@ function rocket_init() {
 	}
 
 	global $rocket_sitemap_preload_process;
-	$rocket_sitemap_preload_process = new Rocket_Sitemap_Background_Preload();
+	$rocket_sitemap_preload_process = new Rocket_Background_Sitemap_Preload();
 
 	global $rocket_partial_preload_process;
-	$rocket_partial_preload_process = new Rocket_Partial_Background_Preload();
+	$rocket_partial_preload_process = new Rocket_Background_Partial_Preload();
+
+	global $rocket_database_optimization_process;
+	$rocket_database_optimization_process = new Rocket_Background_Database_Optimization();
 
 	// You can hook this to trigger any action when WP Rocket is correctly loaded, so, not in AUTOSAVE mode.
 	if ( rocket_valid_key() ) {
