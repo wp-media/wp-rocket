@@ -704,3 +704,38 @@ function rocket_automatic_preload_result() {
 	}
 }
 add_action( 'admin_notices', 'rocket_automatic_preload_result' );
+
+/**
+ * This notice is displayed during and after database optimization
+ *
+ * @since 3.0
+ * @author Remy Perona
+ */
+function rocket_database_optimization_notice() {
+	global $current_user;
+	$screen              = get_current_screen();
+	$rocket_wl_name      = get_rocket_option( 'wl_plugin_name', null );
+	$wp_rocket_screen_id = isset( $rocket_wl_name ) ?  'settings_page_' . sanitize_key( $rocket_wl_name ) : 'settings_page_wprocket';
+	/** This filter is documented in inc/admin-bar.php */
+	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		return;
+	}
+
+	if ( $screen->id !== $wp_rocket_screen_id ) {
+		return;
+	}
+
+	if ( $result = get_transient( 'rocket_database_optimization_process' ) ) {
+		if( 'complete' === $result ) {
+			delete_transient( 'rocket_database_optimization_process' ); ?>
+			<div class="notice notice-success is-dismissible">
+			<p><?php _e( 'Database optimization completed.', 'rocket' ); ?></p>
+		</div>
+		<?php } elseif ( 'running' === $result ) { ?>
+			<div class="notice notice-success is-dismissible">
+			<p><?php echo _e( 'Database optimization is running…', 'rocket' ); ?></p>
+		</div>
+		<?php }
+	}
+}
+add_action( 'admin_notices', 'rocket_database_optimization_notice' );
