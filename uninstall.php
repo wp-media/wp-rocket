@@ -10,7 +10,10 @@ delete_transient( 'rocket_cloudflare_ips' );
 // Delete WP Rocket options.
 delete_option( 'wp_rocket_settings' );
 
-// Delete all user meta related to WP Rocket.
+// Delete Compatibility options.
+delete_option( 'rocket_jetpack_eu_cookie_widget' );
+
+// Delete all user meta related to WP Rocket
 delete_metadata( 'user', '', 'rocket_boxes', '', true );
 
 // Clear scheduled WP Rocket Cron.
