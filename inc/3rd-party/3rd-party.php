@@ -9,6 +9,7 @@ require( WP_ROCKET_3RD_PARTY_PATH . 'hosting/varnish.php' );
 if ( version_compare( phpversion(), '5.3.0', '>=' ) ) {
 	require( WP_ROCKET_3RD_PARTY_PATH . 'hosting/savvii.php' );
 	require( WP_ROCKET_3RD_PARTY_PATH . 'hosting/godaddy.php' );
+	require( WP_ROCKET_3RD_PARTY_PATH . 'plugins/geotargetingwp.php' );
 }
 
 require( WP_ROCKET_3RD_PARTY_PATH . 'slider/revslider.php' );
