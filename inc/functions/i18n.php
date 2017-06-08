@@ -27,7 +27,7 @@ function get_rocket_wpml_langs_for_admin_bar() {
 			'code'		=> $lang['code'],
 			'current'   => $lang['code'] === $sitepress->get_current_language(),
 			'anchor'    => $lang['display_name'],
-			'flag'      => '<img class="admin_iclflag" src="' . $flag_url . '" alt="' . $lang['code'] . '" width="18" height="12" />',
+			'flag'      => '<img class="icl_als_iclflag" src="' . $flag_url . '" alt="' . $lang['code'] . '" width="18" height="12" />',
 		);
 	}
 
