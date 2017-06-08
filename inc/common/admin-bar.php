@@ -146,7 +146,7 @@ function rocket_admin_bar( $wp_admin_bar ) {
 		}
 
 		// Purge CloudFlare cache if CloudFlare is active.
-		if ( 1 === get_rocket_option( 'do_cloudflare', 0 ) ) {
+		if ( 1 === (int) get_rocket_option( 'do_cloudflare', 0 ) ) {
 			$action = 'rocket_purge_cloudflare';
 
 			$wp_admin_bar->add_menu( array(
