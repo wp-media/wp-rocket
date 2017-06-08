@@ -65,7 +65,7 @@ add_filter( 'rocket_buffer', 'rocket_minify_process', 13 );
 function rocket_insert_minify_js_in_footer() {
 	global $pagenow;
 
-	if ( get_rocket_option( 'minify_js' ) ) {
+	if ( get_rocket_option( 'minify_js' ) && ! get_rocket_option( 'minify_concatenate_js', 0 ) ) {
 		return;
 	}
 
@@ -103,7 +103,7 @@ function rocket_insert_minify_js_in_footer() {
 			list( $file_host, $file_path ) = get_rocket_parse_url( $file );
 
 			// Check if its an external file.
-			if ( $home_host !== $file_host && ! in_array( $file_host, $cnames_host, true ) && ! in_array( $file_path, $rocket_enqueue_js_in_footer, true ) || get_rocket_option( 'minify_js' ) && preg_match( '/(?:-|\.)min.js/i', $file ) ) {
+			if ( $home_host !== $file_host && ! in_array( $file_host, $cnames_host, true ) && ! in_array( $file_path, $rocket_enqueue_js_in_footer, true ) ) {
 				if ( isset( $ordered_files[ $i ] ) ) {
 					$i++;
 					$ordered_files[ $i++ ] = $file;
@@ -695,7 +695,7 @@ add_action( 'wp_print_scripts', 'rocket_extract_excluded_js_files' );
 function rocket_extract_js_files_from_footer() {
 	global $rocket_enqueue_js_in_footer, $rocket_js_enqueued_in_head, $wp_scripts, $pagenow;
 
-	if ( get_rocket_option( 'minify_js' ) ) {
+	if ( get_rocket_option( 'minify_js', 0 ) && ! get_rocket_option( 'minify_concatenate_js', 0 ) ) {
 		return;
 	}
 
