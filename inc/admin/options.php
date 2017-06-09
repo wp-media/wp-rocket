@@ -512,8 +512,6 @@ function rocket_display_options() {
 		'varnish',
 		'white-label',
 		'tools',
-		'tutorials',
-		'faq',
 		'support',
 	);
 
