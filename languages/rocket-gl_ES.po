@@ -1,21 +1,19 @@
 # Copyright (C) 2016 WP Rocket
 # This file is distributed under the same license as the WP Rocket package.
 # Translators:
-# Ou, 2015
-# Pseric Lin (Pseric) <pserics@gmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
 "POT-Creation-Date: 2017-06-01 10:57-0400\n"
-"PO-Revision-Date: 2017-06-01 15:01+0000\n"
-"Last-Translator: wpmedia <contact@wp-media.me>\n"
-"Language-Team: Chinese (China) (http://www.transifex.com/wp-media/wp-rocket/language/zh_CN/)\n"
+"PO-Revision-Date: 2014-05-06 12:56+0000\n"
+"Last-Translator: WP Media (http://wp-rocket.me/)\n"
+"Language-Team: Galician (Spain) (http://www.transifex.com/wp-media/wp-rocket/language/gl_ES/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: zh_CN\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Language: gl_ES\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.8.11\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c\n"
@@ -1168,6 +1166,7 @@ msgstr ""
 msgid "%d revision in your database."
 msgid_plural "%d revisions in your database."
 msgstr[0] ""
+msgstr[1] ""
 
 #: inc/admin/ui/modules/database.php:66
 msgid "Auto Drafts"
@@ -1182,6 +1181,7 @@ msgstr ""
 msgid "%d draft in your database."
 msgid_plural "%d drafts in your database."
 msgstr[0] ""
+msgstr[1] ""
 
 #: inc/admin/ui/modules/database.php:77
 msgid "Trashed posts"
@@ -1196,6 +1196,7 @@ msgstr ""
 msgid "%d trashed post in your database."
 msgid_plural "%d trashed posts in your database."
 msgstr[0] ""
+msgstr[1] ""
 
 #: inc/admin/ui/modules/database.php:94
 msgid "Comments cleanup:"
@@ -1214,6 +1215,7 @@ msgstr ""
 msgid "%d spam comment in your database."
 msgid_plural "%d spam comments in your database."
 msgstr[0] ""
+msgstr[1] ""
 
 #: inc/admin/ui/modules/database.php:112
 msgid "Trashed comments"
@@ -1228,6 +1230,7 @@ msgstr ""
 msgid "%d trashed comment in your database."
 msgid_plural "%d trashed comments in your database."
 msgstr[0] ""
+msgstr[1] ""
 
 #: inc/admin/ui/modules/database.php:129
 msgid "Transients cleanup:"
@@ -1246,6 +1249,7 @@ msgstr ""
 msgid "%d expired transient in your database."
 msgid_plural "%d expired transients in your database."
 msgstr[0] ""
+msgstr[1] ""
 
 #: inc/admin/ui/modules/database.php:147
 msgid "All transients"
@@ -1260,6 +1264,7 @@ msgstr ""
 msgid "%d transient in your database."
 msgid_plural "%d transients in your database."
 msgstr[0] ""
+msgstr[1] ""
 
 #: inc/admin/ui/modules/database.php:164
 msgid "Database cleanup:"
@@ -1278,6 +1283,7 @@ msgstr ""
 msgid "%d table to optimize in your database."
 msgid_plural "%d tables to optimize in your database."
 msgstr[0] ""
+msgstr[1] ""
 
 #: inc/admin/ui/modules/database.php:188
 msgid "Automatic cleanup:"

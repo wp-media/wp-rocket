@@ -1,9 +1,7 @@
 # PHPUnit files
 .travis.yml export-ignore
 bin export-ignore
-tests/bootstrap.php export-ignore
-tests/test-sample.php export-ignore
-tests/inc export-ignore
+tests export-ignore
 phpunit.xml export-ignore
 README.md export-ignore
 .gitattributes export-ignore
