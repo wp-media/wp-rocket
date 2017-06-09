@@ -19,10 +19,10 @@ if ( class_exists( 'GeotWP\GeotargetingWP' ) ) :
 	 */
 	if ( get_option( 'geotWP-deactivated' ) ) {
 		// Update the WP Rocket rules on the .htaccess file.
-		flush_rocket_htaccess();
+		add_action( 'admin_init', 'flush_rocket_htaccess' );
 
 		// Regenerate the config file.
-		rocket_generate_config_file();
+		add_action( 'admin_init', 'rocket_generate_config_file' );
 		delete_option( 'geotWP-deactivated' );
 	}
 endif;
