@@ -43,7 +43,7 @@ $rocket_lazyload_fields[] = array(
 	'name'        => 'lazyload_common_issues',
 	'description' => sprintf(
 		/* translators: %s = docs link, or nothing if white-label is enabled */
-		__( 'Deactivate in case you notice any visually broken items on your website.%s', 'rocket' ),
+		__( 'Deactivate if you notice any visually broken items on your website.%s', 'rocket' ),
 		$rwl ? '' : ' ' . __( '<a href="http://docs.wp-rocket.me/article/278-common-issues-with-lazyload" target="_blank">Why?</a>', 'rocket' )
 	)
 );
@@ -264,7 +264,7 @@ $rocket_purge_fields[] = array(
 	'name'         => 'purge_warning_less',
 	'description'  => sprintf(
 		/* translators: %s = docs link, or nothing if white-label is enabled */
-		__( 'Reduce lifespan to 10 hours or less in case you notice issues that seem to appear periodically.%s', 'rocket' ),
+		__( 'Reduce lifespan to 10 hours or less if you notice issues that seem to appear periodically.%s', 'rocket' ),
 		$rwl ? '' : ' ' . __( '<a href="http://docs.wp-rocket.me/article/975-nonces-and-cache-lifespan" target="_blank">Why?</a>', 'rocket' )
 	),
 );
@@ -273,7 +273,7 @@ $rocket_purge_fields[] = array(
 $rocket_purge_fields[] = array(
 		'type'         => 'helper_warning',
 		'name'         => 'purge_warning_more',
-		'description'  => __( 'Increase lifespan to a few hours in case you notice server issues with this setting.', 'rocket' ),
+		'description'  => __( 'Increase lifespan to a few hours if you notice server issues with this setting.', 'rocket' ),
 	);
 
 /* Cache lifespan option */

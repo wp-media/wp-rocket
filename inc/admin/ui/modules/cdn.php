@@ -121,7 +121,7 @@ add_settings_field(
 		),
 		array(
 			'type'         => 'helper_description',
-			'description'  => __( 'In case your CDN account does not fully support SSL, you can disable URL rewriting on HTTPS pages here.', 'rocket' ),
+			'description'  => __( 'If your CDN account does not fully support SSL, you can disable URL rewriting on HTTPS pages here.', 'rocket' ),
 		),
 	)
 );

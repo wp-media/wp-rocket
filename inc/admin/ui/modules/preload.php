@@ -78,7 +78,7 @@ add_settings_field(
 		array(
 			'type'        => 'helper_warning',
 			'name'        => 'sitemaps_preload_url_crawl_warning',
-			'description' => __( 'Set a higher value in case you notice any overload on your server!', 'rocket' ),
+			'description' => __( 'Set a higher value if you notice any overload on your server!', 'rocket' ),
 		),
 	)
 );
@@ -140,7 +140,7 @@ add_settings_field(
 		array(
 			'type'        => 'helper_warning',
 			'name'        => 'bot_preload_warning',
-			'description' => __( 'Deactivate these options in case you notice any overload on your server!', 'rocket' ),
+			'description' => __( 'Deactivate these options if you notice any overload on your server!', 'rocket' ),
 		),
 	)
 );
