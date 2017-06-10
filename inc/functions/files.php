@@ -1023,7 +1023,7 @@ function get_rocket_footprint( $debug = true ) {
 function rocket_fetch_and_cache_busting( $src, $cache_busting_paths, $absolute_src_path, $current_filter ) {
 	$response = wp_remote_get( $src );
 
-	if ( wp_remote_retrieve_response_code( $response ) ) {
+	if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
 		return false;
 	}
 
