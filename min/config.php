@@ -133,7 +133,7 @@ $min_serveOptions['maxAge'] = 31536000;
 /**
  * To use CSSmin (Túbal Martín's port of the YUI CSS compressor), uncomment the following line:
  */
-if ( 0 === $rocket_minify_css_legacy ) {
+if ( '0' === $rocket_minify_css_legacy ) {
 	$min_serveOptions['minifiers']['text/css'] = array('Minify_CSSmin', 'minify');
 }
 
@@ -141,7 +141,7 @@ if ( 0 === $rocket_minify_css_legacy ) {
  * To use Google's Closure Compiler API to minify Javascript (falling back to JSMin
  * on failure), uncomment the following line:
  */
-if ( 0 === $rocket_minify_js_legacy ) {
+if ( '0' === $rocket_minify_js_legacy ) {
 	$min_serveOptions['minifiers']['application/x-javascript'] = array('Minify_JS_ClosureCompiler', 'minify');
 }
 
