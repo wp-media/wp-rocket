@@ -41,25 +41,25 @@ if ( ! isset( $_SERVER['REQUEST_METHOD'] ) || 'GET' !== $_SERVER['REQUEST_METHOD
 $rocket_config_path = WP_CONTENT_DIR . '/wp-rocket-config/';
 $host = ( isset( $_SERVER['HTTP_HOST'] ) ) ? $_SERVER['HTTP_HOST'] : time();
 $host = trim( strtolower( $host ), '.' );
-$host = str_replace( array( '..', chr( 0 ) ), '', $host );
+$host = urlencode( $host );
 
 $continue = false;
-if ( file_exists( $rocket_config_path . $host . '.php' ) ) {
+if ( file_exists( realpath( $rocket_config_path . $host . '.php' ) ) && false !== stripos( realpath( $rocket_config_path . $host . '.php' ), $rocket_config_path ) ) {
 	include( $rocket_config_path . $host . '.php' );
 	$continue = true;
 } else {
-	$path = explode( '/' , trim( $_SERVER['REQUEST_URI'], '/' ) );
+	$path = explode( '%2F' , trim( $_SERVER['REQUEST_URI'], '%2F' ) );
 
 	foreach ( $path as $p ) {
 		static $dir;
 
-		if ( file_exists( $rocket_config_path . $host . '.' . $p . '.php' ) ) {
+		if ( file_exists( realpath( $rocket_config_path . $host . '.' . $p . '.php' ) ) && false !== stripos( realpath( $rocket_config_path . $host . '.' . $p . '.php' ), $rocket_config_path ) ) {
 			include( $rocket_config_path . $host . '.' . $p . '.php' );
 			$continue = true;
 			break;
 		}
 
-		if ( file_exists( $rocket_config_path . $host . '.' . $dir . $p . '.php' ) ) {
+		if ( file_exists( realpath( $rocket_config_path . $host . '.' . $dir . $p . '.php' ) ) && false !== stripos( realpath( $rocket_config_path . $host . '.' . $dir . $p . '.php' ), $rocket_config_path ) ) {
 			include( $rocket_config_path . $host . '.' . $dir . $p . '.php' );
 			$continue = true;
 			break;
