@@ -10,7 +10,7 @@
 $host = $_SERVER['HTTP_HOST'];
 $host = urlencode( $host );
 $wp_rocket_config_path = dirname( dirname( dirname( dirname( __FILE__ ) ) ) ) . '/wp-rocket-config/';
-$wp_rocket_config_file = realpath( dirname( dirname( dirname( dirname( __FILE__ ) ) ) ) . '/wp-rocket-config/' . $host . '.php' );
+$wp_rocket_config_file = realpath( $wp_rocket_config_path . $host . '.php' );
 
 if ( file_exists( $wp_rocket_config_file ) && false !== stripos( $wp_rocket_config_file, $wp_rocket_config_path ) && ! defined( 'ABSPATH' ) ) {
   // Create fake ABSPATH
