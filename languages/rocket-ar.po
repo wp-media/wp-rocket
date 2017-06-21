@@ -7,16 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2017-06-01 10:57-0400\n"
-"PO-Revision-Date: 2017-06-01 15:01+0000\n"
-"Last-Translator: wpmedia <contact@wp-media.me>\n"
+"POT-Creation-Date: 2017-06-13 11:41-0400\n"
+"PO-Revision-Date: 2017-06-17 15:09+0000\n"
+"Last-Translator: Mohamed Elsa3dy <m.elsa3dy@gmail.com>\n"
 "Language-Team: Arabic (http://www.transifex.com/wp-media/wp-rocket/language/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ar\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
-"X-Generator: Poedit 1.8.11\n"
+"X-Generator: Poedit 1.8.9\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -27,13 +27,12 @@ msgstr ""
 msgid "All in One SEO XML sitemap"
 msgstr "خرائط اضافة All in One SEO Pack"
 
-#: inc/3rd-party/all-in-one-seo-pack.php:79 inc/3rd-party/jetpack.php:78
-#: inc/3rd-party/yoast-seo.php:79
+#: inc/3rd-party/all-in-one-seo-pack.php:79 inc/3rd-party/yoast-seo.php:79
 #, php-format
 msgid "Preload the sitemap from the %s plugin"
 msgstr "التحميل المسبق لخرائط الموقع لإضافة %s"
 
-#: inc/3rd-party/all-in-one-seo-pack.php:86 inc/3rd-party/jetpack.php:85
+#: inc/3rd-party/all-in-one-seo-pack.php:86 inc/3rd-party/jetpack.php:96
 #: inc/3rd-party/yoast-seo.php:86
 #, php-format
 msgid ""
@@ -41,15 +40,19 @@ msgid ""
 "check the option to preload it."
 msgstr "اكتشفنا تلقائيا خريطة الموقع وتم إنشائها بواسطة إضافة %s. ويمكنك التحقق من خيار التحميل المسبق للخرائط."
 
-#: inc/3rd-party/jetpack.php:76
+#: inc/3rd-party/jetpack.php:86
 msgid "Jetpack XML Sitemaps"
 msgstr "خرائط الموقع Jetpack XML"
+
+#: inc/3rd-party/jetpack.php:88
+msgid "Preload the sitemap from the Jetpack plugin"
+msgstr "التحميل المسبق لخرائط الموقع من اضافة جيت باك"
 
 #: inc/3rd-party/yoast-seo.php:77
 msgid "Yoast SEO XML sitemap"
 msgstr "خرائط الموقع Yoast SEO XML"
 
-#: inc/admin/admin.php:14 inc/admin/options.php:573
+#: inc/admin/admin.php:14 inc/admin/options.php:571
 #: inc/admin/ui/modules/support.php:4 inc/common/admin-bar.php:248
 msgid "Support"
 msgstr "الدعم"
@@ -58,8 +61,7 @@ msgstr "الدعم"
 msgid "Docs"
 msgstr "مستندات المساعدة"
 
-#: inc/admin/admin.php:18 inc/admin/ui/modules/faq.php:4
-#: inc/admin/ui/modules/faq.php:7 inc/common/admin-bar.php:240
+#: inc/admin/admin.php:18 inc/common/admin-bar.php:240
 msgid "FAQ"
 msgstr "الأسئلة المتكررة"
 
@@ -76,156 +78,13 @@ msgstr "مسح الملفات المخذنة"
 msgid "%s Update Rollback"
 msgstr "%s التراجع عن التحديث"
 
-#: inc/admin/faq.inc.php:2
-msgid "FAQ's Table of Content"
-msgstr "قائمة محتويات الأسئلة الشائعة "
-
-#: inc/admin/faq.inc.php:4
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/67-what-exactly-does-wp-rocket-"
-"do?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
-"target=\"_blank\">What exactly does WP Rocket do?</a>"
-msgstr "<a href=\"http://docs.wp-rocket.me/article/67-what-exactly-does-wp-rocket-do?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">ماذا تفعل اضافة WP Rocket بالتحديد؟</a>"
-
-#: inc/admin/faq.inc.php:5
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/77-my-license-has-expired-what-"
-"should-i-do?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
-"target=\"_blank\">My license has expired, what should I do?</a>"
-msgstr "<a href=\"http://docs.wp-rocket.me/article/77-my-license-has-expired-what-should-i-do?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">انتهت صلاحية رخصتي، ماذا سوف أفعل الآن؟</a>"
-
-#: inc/admin/faq.inc.php:6
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/66-how-many-sites-is-my-key-"
-"valid-for?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
-"target=\"_blank\">How many sites is my key valid for?</a>"
-msgstr "<a href=\"http://docs.wp-rocket.me/article/66-how-many-sites-is-my-key-valid-for?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">كم عدد المواقع التي يمكنني استخدامها؟</a>"
-
-#: inc/admin/faq.inc.php:7
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/72-i-want-to-change-the-url-of-"
-"my-site-associated-with-my-license-what-"
-"should-i-d?utm_source=plugin&utm_medium=faq&utm_campaign=doco\" "
-"target=\"_blank\">I want to change the URL of my website associated with my "
-"license, what should I do?</a>"
-msgstr "<a href=\"http://docs.wp-rocket.me/article/72-i-want-to-change-the-url-of-my-site-associated-with-my-license-what-should-i-d?utm_source=plugin&utm_medium=faq&utm_campaign=doco\" target=\"_blank\">أريد تغيير رابط الموقع المخصص لرخصتي، ماذا يجب أن أفعل؟</a>"
-
-#: inc/admin/faq.inc.php:8
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/68-i-have-turned-any-of-the-"
-"basic-options-on-does-wp-rocket-"
-"work?utm_source=plugin&utm_medium=faq&utm_campaign=doc\">I haven't turned "
-"any of the basic options on, does WP Rocket work?</a>"
-msgstr "<a href=\"http://docs.wp-rocket.me/article/68-i-have-turned-any-of-the-basic-options-on-does-wp-rocket-work?utm_source=plugin&utm_medium=faq&utm_campaign=doc\">انا لم اقم بتفعيل الخيارات الأساسية، هل سوف تعمل الاضافة؟</a>"
-
-#: inc/admin/faq.inc.php:9
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/78-how-often-is-the-cache-"
-"updated?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
-"target=\"_blank\">How often is the cache updated?</a>"
-msgstr "<a href=\"http://docs.wp-rocket.me/article/78-how-often-is-the-cache-updated?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">كم مرة يتم تحديث ذاكرة التخزين المؤقت؟</a>"
-
-#: inc/admin/faq.inc.php:10
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/70-does-wp-rocket-work-with-"
-"default-permalinks?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
-"target=\"_blank\">Does WP Rocket work with default permalinks?</a>"
-msgstr "<a href=\"http://docs.wp-rocket.me/article/70-does-wp-rocket-work-with-default-permalinks?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">هل تعمل الاضافة مع الراوبط الثابتة الافتراضية للوردبريس؟</a>"
-
-#: inc/admin/faq.inc.php:11
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/71-which-web-servers-is-wp-"
-"rocket-compatible-with?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
-"target=\"_blank\">Which web servers WP Rocket is compatible with?</a>"
-msgstr "<a href=\"http://docs.wp-rocket.me/article/71-which-web-servers-is-wp-rocket-compatible-with?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">ما هي خوادم الويب المتكاملة مع اضافة WP Rocket؟</a>"
-
-#: inc/admin/faq.inc.php:12
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/8-how-the-cache-is-"
-"preloaded?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
-"target=\"_blank\">How is the Cache Preloaded?</a>"
-msgstr "<a href=\"http://docs.wp-rocket.me/article/8-how-the-cache-is-preloaded?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">كيف يعمل التحميل المسبق لملفات التخزين المؤقت؟</a>"
-
-#: inc/admin/faq.inc.php:13
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/69-which-tools-should-i-use-to-"
-"measure-the-performance-of-my-"
-"site?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
-"target=\"_blank\">Which tools should I use to measure the performance of my "
-"website?</a>"
-msgstr "<a href=\"http://docs.wp-rocket.me/article/69-which-tools-should-i-use-to-measure-the-performance-of-my-site?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">ما هي الأدوات التي يجب استخدامها لقياس أداء موقع الويب الخاص بي؟</a>"
-
-#: inc/admin/faq.inc.php:14
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/115-can-i-use-wp-rocket-with-"
-"sitegrounds-supercacher?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
-"target=\"_blank\">Can I Use WP Rocket With Siteground's SuperCacher?</a>"
-msgstr "<a href=\"http://docs.wp-rocket.me/article/115-can-i-use-wp-rocket-with-sitegrounds-supercacher?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">هل يمكنني استخدام الاضافة مع اضافة SuperCacher من موقع Siteground؟</a>"
-
-#: inc/admin/faq.inc.php:15
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/73-is-wp-rocket-compatible-with-"
-"others-cache-plugins-like-wp-super-cache-or-w3-total-"
-"cache?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
-"target=\"_blank\">Is WP Rocket compatible with others cache plugins like WP "
-"Super Cache or W3 Total Cache?</a>"
-msgstr "<a href=\"http://docs.wp-rocket.me/article/73-is-wp-rocket-compatible-with-others-cache-plugins-like-wp-super-cache-or-w3-total-cache?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">هل اضافة WP Rocket متوافقة مع اضافات التخزين المؤقت الاخري مثل WP Suprt Cache أو W3 Total Cache؟</a>"
-
-#: inc/admin/faq.inc.php:16
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/75-is-wp-rocket-compatible-with-e"
-"-commerce-plugins?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
-"target=\"_blank\">Is WP Rocket compatible with e-commerce plugins?</a>"
-msgstr "<a href=\"http://docs.wp-rocket.me/article/75-is-wp-rocket-compatible-with-e-commerce-plugins?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">هل اضافة WP Rockets متكاملة مع الاضافات التجارية E-commerce ؟</a>"
-
-#: inc/admin/faq.inc.php:17
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/76-is-wp-rocket-compatible-with-"
-"wpml-qtranslate-or-"
-"polylang?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
-"target=\"_blank\">Is WP Rocket compatible with WPML, qTranslate or "
-"Polylang?</a>"
-msgstr "<a href=\"http://docs.wp-rocket.me/article/76-is-wp-rocket-compatible-with-wpml-qtranslate-or-polylang?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">هل تدعم اضافة WP Rocket اضافات الترجمة مثل WPML أو qTranslate او Polylang؟ </a>"
-
-#: inc/admin/faq.inc.php:18
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/74-is-wp-rocket-compatible-with-"
-"wp-touch-wordpress-mobile-pack-and-wp-mobile-"
-"detector?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
-"target=\"_blank\">Is WP Rocket compatible with WP Touch, WordPress Mobile "
-"Pack and WP Mobile Detector?</a>"
-msgstr "<a href=\"http://docs.wp-rocket.me/article/74-is-wp-rocket-compatible-with-wp-touch-wordpress-mobile-pack-and-wp-mobile-detector?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">هل اضافة WP Rocket تدعم اضافة الموبايل WP Touch او Mobile Pack و خاصية تحديد الجهاز موبايل ام لا؟</a>"
-
-#: inc/admin/faq.inc.php:19
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/79-reports-from-pagespeed-and-"
-"yslow-tell-me-that-the-content-is-not-gziped-and-or-did-not-expire-what-"
-"should-i-do?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
-"target=\"_blank\">Reports from PageSpeed and YSlow tell me that the content "
-"is not gziped and/or did not expire, what should I do?</a>"
-msgstr "<a href=\"http://docs.wp-rocket.me/article/79-reports-from-pagespeed-and-yslow-tell-me-that-the-content-is-not-gziped-and-or-did-not-expire-what-should-i-do?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">التقارير من PageSpeed و YSlow تخبرني ان المحتوي غير مضغوط Gziped او غير محدد للانتهاء ، ماذا أفعل؟</a>"
-
-#: inc/admin/faq.inc.php:20
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/106-my-site-is-"
-"broken?utm_source=plugin&utm_medium=faq&utm_campaign=doc\">What should I do "
-"if WP Rocket distorts my website display?</a>"
-msgstr "<a href=\"http://docs.wp-rocket.me/article/106-my-site-is-broken?utm_source=plugin&utm_medium=faq&utm_campaign=doc\">ماذا يجب أن أفعل اذا اضافة WP Rocket قامت بتشويه عرض الموقع الخاص بي ؟</a>"
-
-#: inc/admin/faq.inc.php:21
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/54-exclude-pages-from-the-"
-"cache?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
-"target=\"_blank\">How to exclude a particular page from caching?</a>"
-msgstr "<a href=\"http://docs.wp-rocket.me/article/54-exclude-pages-from-the-cache?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">كيفية استبعاد صفحة معينة من التخزين المؤقت؟</a>"
-
 #: inc/admin/options.php:117
 msgid "Your Cloudflare credentials are valid."
-msgstr ""
+msgstr "بيانات دخول حساب كلاودفلير صحيحة."
 
 #: inc/admin/options.php:121
 msgid "Your Cloudflare credentials are invalid!"
-msgstr ""
+msgstr "بيانات دخول حساب كلاودفلير غير صحيحة!"
 
 #: inc/admin/options.php:177 inc/admin/ui/modules/database.php:244
 msgid "Save and optimize"
@@ -238,31 +97,31 @@ msgstr "تحسين"
 #: inc/admin/options.php:195 inc/admin/options.php:439
 msgctxt "screen-reader-text"
 msgid "Note:"
-msgstr ""
+msgstr "محلوظة:"
 
 #: inc/admin/options.php:202
 msgctxt "screen-reader-text"
 msgid "Performance tip:"
-msgstr ""
+msgstr "نصحية لأداء أفضل:"
 
 #: inc/admin/options.php:209
 msgctxt "screen-reader-text"
 msgid "Third-party feature detected:"
-msgstr ""
+msgstr "تم اكتشاف اضافات خارجية:"
 
 #: inc/admin/options.php:223 inc/admin/options.php:445
 msgctxt "screen-reader-text"
 msgid "Warning:"
-msgstr ""
+msgstr "تحذير:"
 
 #: inc/admin/options.php:237 inc/admin/ui/modules/tools.php:128
 msgctxt "button text"
 msgid "Download settings"
-msgstr ""
+msgstr "خيارات التحميل"
 
 #: inc/admin/options.php:265
 msgid "<strong>JS</strong> files with Deferred Loading JavaScript"
-msgstr ""
+msgstr " تأجيل تحميل ملفات <strong>JS</strong> من خلال الجافا سكربت "
 
 #: inc/admin/options.php:318 inc/admin/ui/modules/optimization.php:428
 msgid "Add URL"
@@ -295,130 +154,130 @@ msgstr "إنشاء سجل CNAME"
 msgid "Watch the video"
 msgstr "شاهد الفيديو"
 
-#: inc/admin/options.php:555
+#: inc/admin/options.php:553
 msgid "Basic"
-msgstr ""
+msgstr "إعدادات أساسية"
 
-#: inc/admin/options.php:556
+#: inc/admin/options.php:554
 msgid "Static Files"
-msgstr ""
+msgstr "الملفات الثابتة"
 
-#: inc/admin/options.php:557 inc/admin/ui/meta-boxes.php:72
+#: inc/admin/options.php:555 inc/admin/ui/meta-boxes.php:72
 msgid "CDN"
 msgstr "شبكة توصيل المحتوى CDN"
 
-#: inc/admin/options.php:558
+#: inc/admin/options.php:556
 msgid "Advanced"
-msgstr ""
+msgstr "الإعدادات المتقدمة"
 
-#: inc/admin/options.php:559
+#: inc/admin/options.php:557
 msgid "Database"
 msgstr "قاعدة البيانات"
 
-#: inc/admin/options.php:560
+#: inc/admin/options.php:558
 msgid "Preload"
 msgstr "التحميل المسبق"
 
-#: inc/admin/options.php:569 inc/admin/ui/modules/white-label.php:4
+#: inc/admin/options.php:567 inc/admin/ui/modules/white-label.php:4
 msgid "White Label"
 msgstr "العلامة البيضاء"
 
-#: inc/admin/options.php:571 inc/admin/ui/modules/tools.php:7
+#: inc/admin/options.php:569 inc/admin/ui/modules/tools.php:7
 msgid "Tools"
 msgstr "أداوات"
 
-#: inc/admin/options.php:576
+#: inc/admin/options.php:574
 msgid "License"
 msgstr "الرخصة"
 
-#: inc/admin/options.php:994
+#: inc/admin/options.php:992
 msgid "Settings imported and saved."
 msgstr "تم إستعادة الإعدادات وحفظها."
 
-#: inc/admin/options.php:1010 inc/admin/options.php:1179
+#: inc/admin/options.php:1008 inc/admin/options.php:1177
 msgid "Settings saved."
 msgstr "تم حفظ الإعدادات"
 
-#: inc/admin/options.php:1106
+#: inc/admin/options.php:1104
 #, php-format
 msgid "Cloudflare development mode error: %s"
-msgstr ""
+msgstr "خطا بكلاودفلير وضع التطوير : %s"
 
-#: inc/admin/options.php:1108
+#: inc/admin/options.php:1106
 #, php-format
 msgid "Cloudflare development mode %s"
-msgstr ""
+msgstr "وضع التطوير كلاودفلير %s"
+
+#: inc/admin/options.php:1118
+#, php-format
+msgid "Cloudflare cache level error: %s"
+msgstr "خطأ بمستوي الملفات المخزنة بكلاودفلير : %s"
 
 #: inc/admin/options.php:1120
 #, php-format
-msgid "Cloudflare cache level error: %s"
-msgstr ""
-
-#: inc/admin/options.php:1122
-#, php-format
 msgid "Cloudflare cache level set to %s"
-msgstr ""
+msgstr "ضبط مستوي التخزين المؤقت لكلاودفلير علي %s "
+
+#: inc/admin/options.php:1128
+#, php-format
+msgid "Cloudflare minification error: %s"
+msgstr "خطأ في خاصية تصغير الملفات بكلاودفلير: %s"
 
 #: inc/admin/options.php:1130
 #, php-format
-msgid "Cloudflare minification error: %s"
-msgstr ""
-
-#: inc/admin/options.php:1132
-#, php-format
 msgid "Cloudflare minification %s"
-msgstr ""
+msgstr "خدمة تصغير الملفات لكلاودفلير %s"
+
+#: inc/admin/options.php:1138
+#, php-format
+msgid "Cloudflare rocket loader error: %s"
+msgstr "خطأ في خدمة التحميل الصاروخي بكلاودفلير: %s"
 
 #: inc/admin/options.php:1140
 #, php-format
-msgid "Cloudflare rocket loader error: %s"
-msgstr ""
-
-#: inc/admin/options.php:1142
-#, php-format
 msgid "Cloudflare rocket loader %s"
-msgstr ""
+msgstr "خدمة التحميل الصاروخي بكلاودفلير %s"
+
+#: inc/admin/options.php:1148
+#, php-format
+msgid "Cloudflare browser cache error: %s"
+msgstr "خطأ في خدمة التخزين المؤقت للمتصفح بكلاودفلير: %s"
 
 #: inc/admin/options.php:1150
 #, php-format
-msgid "Cloudflare browser cache error: %s"
-msgstr ""
-
-#: inc/admin/options.php:1152
-#, php-format
 msgid "Cloudflare browser cache set to %s seconds"
-msgstr ""
+msgstr "ضبط خدمة التخزين المؤقت للمتصفح علي %s ثواني"
 
-#: inc/admin/options.php:1291
+#: inc/admin/options.php:1289
 msgid ""
 "Before you can upload your import file, you will need to fix the following "
 "error:"
 msgstr "قبل أن يمكنك برفع واستعادة الملف، يجب عليك ان تصلح الخطأ التالي:"
 
-#: inc/admin/options.php:1298
+#: inc/admin/options.php:1296
 #, php-format
 msgid "Choose a file from your computer (maximum size: %s)"
-msgstr ""
+msgstr "أختر ملف من جهاز الكمبيوتر (أقصي حجم: %s)"
 
-#: inc/admin/options.php:1301
+#: inc/admin/options.php:1299
 msgid "Upload file and import settings"
 msgstr "رفع ملف وإستيراد الإعدادات"
 
 #: inc/admin/ui/enqueue.php:20
-msgid "In case of any display errors we recommend to disable the option."
-msgstr "في حالة ظهور اي أخطاء، نوصي بتعطيل هذا الخيار."
+msgid "If there are any display errors we recommend to disable the option."
+msgstr "في حالة ظهور اي أخطاء نوصي بتعطيل هذا الخيار."
 
 #: inc/admin/ui/enqueue.php:20
 msgid ""
-"In case of any display errors we recommend following our documentation: "
-msgstr "في حالة ظهور اي أخطاء، نوصي بمتابعة إرشادتنا بوثائق المساعدة."
+"If there are any display errors we recommend following our documentation: "
+msgstr "في حالة ظهور اي أخطاء، نوصي اتباع وثائق المساعدة:"
 
 #: inc/admin/ui/enqueue.php:20
 #, php-format
 msgid ""
 "You can also <a href=\"%s\">contact our support</a> if you need help with "
 "this feature."
-msgstr ""
+msgstr "يمكنك أيضا <a href=\"%s\">الإتصال بالدعم</a> إذا كنت بحاجة إلى مساعدة حول هذه الميزة."
 
 #: inc/admin/ui/enqueue.php:24
 msgid "Are you sure?"
@@ -430,7 +289,7 @@ msgstr "جميع الحقول مطلوبة!"
 
 #: inc/admin/ui/enqueue.php:27
 msgid "Cloudflare Settings"
-msgstr ""
+msgstr "إعدادت كلاودفلير CloudFlare"
 
 #: inc/admin/ui/enqueue.php:28
 msgid "Click \"Save Changes\" to activate the Cloudflare tab."
@@ -438,7 +297,7 @@ msgstr "أضغط \"حفظ الإعدادات\" لتفعيل علامة تبوي�
 
 #: inc/admin/ui/enqueue.php:30
 msgid "Transmitting your message …"
-msgstr ""
+msgstr "جار إرسال رسالتك ..."
 
 #: inc/admin/ui/enqueue.php:33
 msgid "Unable to transmit"
@@ -473,24 +332,24 @@ msgstr "تم الإستلام!"
 
 #: inc/admin/ui/enqueue.php:41
 msgid "We have received your ticket and will reply back within a few hours!"
-msgstr ""
+msgstr "لقد تلقينا تذكرة الدعم الخاصة بك وسوف نقوم بالرد عليك في خلال ساعات قليلة!"
 
 #: inc/admin/ui/enqueue.php:41
 msgid ""
-"We answer every ticket, so please check your spam folder in case you do not "
-"hear from us."
-msgstr ""
+"We answer every ticket, so please check your spam folder if you do not hear "
+"from us."
+msgstr "نحن نقوم بالرد علي جميع تذاكر الدعم لذلك تحقق من صندوق الرسائل الغير مرغوب فيها إذا لم تتلقي رد منا."
 
 #: inc/admin/ui/enqueue.php:43
 msgid "Oh dear, someone’s been naughty…"
-msgstr ""
+msgstr "ياعزيزي، هناك شخص سيئ الطباع..."
 
 #: inc/admin/ui/enqueue.php:44
 msgid ""
 "Well, well, looks like you have got yourself a \"nulled\" version! We don’t "
 "provide support to crackers or pirates, so you will need a valid license to "
 "proceed."
-msgstr ""
+msgstr "حسنا، حسنا، يبدو انك تعمل بنسخه \"مقرصنة\"! نحن لا نقوم بتقديم الدعم إلي المخربين والقراصنة، ولذلك تحتاج إلي ترخيص ساري المفعول للمتابعة."
 
 #: inc/admin/ui/enqueue.php:44
 #, php-format
@@ -504,13 +363,13 @@ msgstr "أشتري الآن!"
 
 #: inc/admin/ui/enqueue.php:47
 msgid "Uh-oh, you’re out of fuel!"
-msgstr ""
+msgstr "اوو، لقد نفذ الوقود منك!"
 
 #: inc/admin/ui/enqueue.php:48
 msgid ""
 "To keep your Rocket running with access to support, <strong>you will need to"
 " renew your license</strong>."
-msgstr ""
+msgstr "للحفاظ علي عمل اضافة السرعة الخاصة بك والدعم، <strong>يجب عليك تجديد الترخيص الخاص بك</strong>."
 
 #: inc/admin/ui/enqueue.php:48
 msgid ""
@@ -531,7 +390,7 @@ msgid "Cancel"
 msgstr "إلغاء"
 
 #: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/modules/tools.php:46
-#: inc/admin/ui/notices.php:89 inc/common/admin-bar.php:45
+#: inc/admin/ui/notices.php:100 inc/common/admin-bar.php:45
 #: inc/common/admin-bar.php:66 inc/common/admin-bar.php:102
 msgid "Clear cache"
 msgstr "مسح ملفات التخزين المؤقت"
@@ -549,32 +408,32 @@ msgid "Activate these options on this post:"
 msgstr "تفعيل هذه الخيارات علي هذه المقالة:"
 
 #: inc/admin/ui/meta-boxes.php:67
-msgid "Images LazyLoad"
+msgid "LazyLoad for images"
 msgstr "التحميل الكسول للصور"
 
 #: inc/admin/ui/meta-boxes.php:68
-msgid "Iframes & Videos LazyLoad"
-msgstr "التحميل الكسول للفيديو و الإطارات الداخلية iframe"
+msgid "LazyLoad for iframes/videos"
+msgstr "التحميل الكسول للفيديو و الإطارات الداخلية Iframes"
 
 #: inc/admin/ui/meta-boxes.php:69
-msgid "HTML Minification"
-msgstr "تصغير حجم HTML"
+msgid "Minify/combine HTML"
+msgstr "تصغير / دمج HTML"
 
 #: inc/admin/ui/meta-boxes.php:70
-msgid "CSS Minification"
-msgstr "تصغير حجم CSS"
+msgid "Minify/combine CSS"
+msgstr "تصغير / دمج CSS"
 
 #: inc/admin/ui/meta-boxes.php:71
-msgid "JS Minification"
-msgstr "تصغير حجم JS"
+msgid "Minify/combine JS"
+msgstr "تصغير / دمج JS"
 
 #: inc/admin/ui/meta-boxes.php:73
 msgid "Async CSS"
-msgstr ""
+msgstr "تزامن ملفات CSS"
 
 #: inc/admin/ui/meta-boxes.php:74
 msgid "Defer JS"
-msgstr ""
+msgstr "تأجيل ملفات JS"
 
 #: inc/admin/ui/meta-boxes.php:79
 #, php-format
@@ -583,9 +442,9 @@ msgstr "تفعيل أولا خيار %s."
 
 #: inc/admin/ui/meta-boxes.php:92
 msgid ""
-"<strong>Note:</strong> These options aren't applied if you added this post "
-"in the \"Never cache the following pages\" option."
-msgstr "<strong>ملاحظة:</strong> لا تقوم بتطبيق هذه الخيارات إذا كنت أضفت خيار \"لا تقم بتخزين هذه الصفحة\" للمقالة."
+"<strong>Note:</strong> None of these options will be applied if this post "
+"has been excluded from cache in the global cache settings."
+msgstr "<strong>ملاحظة:</strong> لن يتم تطبيق أي من هذه الخيارات إذا تم استبعاد هذه المقالة من ذاكرة التخزين المؤقت في إعدادات ذاكرة التخزين المؤقت العامة."
 
 #: inc/admin/ui/modules/advanced.php:7
 msgid "Advanced options"
@@ -597,78 +456,78 @@ msgid ""
 "automatically.<br>Read the <a href=\"http://docs.wp-rocket.me/article/78"
 "-how-often-is-the-cache-updated\" target=\"_blank\">documentation on "
 "automatic cache management</a> to better understand how caching works."
-msgstr ""
+msgstr "هذه إعدادات إدارة ذاكرة التخزين المؤقت المتقدمة. التخزين المؤقت يعمل تلقائيا <br> اقرأ <a href=\"http://docs.wp-rocket.me/article/78-how-often-is-the-cache-updated\" target=\"_blank\">وثائق الدعم الخاصة بإدارة ذاكرة التخزين المؤقت التلقائي</a> لفهم كيفية عمل التخزين المؤقت بشكل أفضل."
 
 #: inc/admin/ui/modules/advanced.php:42
 msgid ""
 "Specify URLs of pages or posts that should never get cached (one per line)"
-msgstr ""
+msgstr "تحديد عناوين الملفات التي لن يتم إستخدام خدمة التخزين المؤقت معها (رابط واحد لكل سطر)"
 
 #: inc/admin/ui/modules/advanced.php:47 inc/admin/ui/modules/advanced.php:104
 msgid "Never cache (URLs):"
-msgstr ""
+msgstr "لا تقم بتخزين هذه (العناوين) أبداً:"
 
 #: inc/admin/ui/modules/advanced.php:60
 msgctxt "plugin name"
 msgid "WooCommerce"
-msgstr ""
+msgstr "WooCommerce"
 
 #: inc/admin/ui/modules/advanced.php:64
 msgctxt "plugin name"
 msgid "Easy Digital Downloads"
-msgstr ""
+msgstr "Easy Digital Downloads"
 
 #: inc/admin/ui/modules/advanced.php:68
 msgctxt "plugin name"
 msgid "iThemes Exchange"
-msgstr ""
+msgstr "iThemes Exchange"
 
 #: inc/admin/ui/modules/advanced.php:72
 msgctxt "plugin name"
 msgid "Jigoshop"
-msgstr ""
+msgstr "Jigoshop"
 
 #: inc/admin/ui/modules/advanced.php:76
 msgctxt "plugin name"
 msgid "WP-Shop"
-msgstr ""
+msgstr "WP-Shop"
 
 #: inc/admin/ui/modules/advanced.php:85
 #, php-format
 msgid ""
 "Cart and checkout pages set in <strong>%s</strong> will be detected and "
 "never cached by default. No need to enter them here."
-msgstr ""
+msgstr "سيتم اكتشاف صفحات التسوق والدفع في <strong>%s</strong> ولن يتم تخزينها مؤقتا افتراضياً. لا حاجة لإدخالها هنا."
 
 #: inc/admin/ui/modules/advanced.php:97 inc/admin/ui/modules/advanced.php:191
 #, php-format
 msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use %s "
 "wildcards to address multiple URLs under a given path."
-msgstr ""
+msgstr "سيتم حذف جزء النطاق تلقائيا.<br> استخدم %s wildcards للعناوين المتعددة تحت المسار المحدد."
 
 #: inc/admin/ui/modules/advanced.php:116
 msgid "Never cache (cookies):"
-msgstr ""
+msgstr "لا تقم بتخزين هذه (الكوكيز) أبداً:"
 
 #: inc/admin/ui/modules/advanced.php:124
 msgid ""
 "Specify the IDs of cookies that, when set in the visitor’s browser, should "
 "prevent a page from getting cached (one per line)"
-msgstr ""
+msgstr "تحديد عناوين الكوكيز، التي سيتم تعيينها في متصفح الزائر ولن يتم إستخدام خدمة التخزين المؤقت معها (رابط واحد لكل سطر)"
 
 #: inc/admin/ui/modules/advanced.php:129
 msgid "Never cache pages when these cookies are present:"
-msgstr ""
+msgstr "عدم تخزين الصفحات مؤقتا عند وجود الكوكيز ملفات تعريف الارتباط  هذه:"
 
 #: inc/admin/ui/modules/advanced.php:139
 msgid "Never cache (user agents):"
-msgstr ""
+msgstr "عدم التخزين المؤقت (وكلاء المستخدم user agents):"
 
 #: inc/admin/ui/modules/advanced.php:147
 msgid ""
 "Specify user agent strings that should never see cached pages (one per line)"
-msgstr ""
+msgstr "تحديد عناوين وكلاء المستخدمين user agents التي لن يتم إستخدام خدمة التخزين المؤقت معها (رابط واحد لكل سطر)"
 
 #: inc/admin/ui/modules/advanced.php:152
 msgid "Never send cache pages for these user agents:"
@@ -683,29 +542,29 @@ msgstr ""
 
 #: inc/admin/ui/modules/advanced.php:172
 msgid "Always purge (URLs):"
-msgstr ""
+msgstr "حذف ملفات التخزين دائما (العناوين):"
 
 #: inc/admin/ui/modules/advanced.php:180
 msgid ""
 "Specify URLs you always want purged from cache whenever you update any post "
 "or page (one per line)"
-msgstr ""
+msgstr "حدد العناوين التي سيتم إزالتها دائما عند تحديث أي مقالة أو صفحة (رابط لكل سطر)"
 
 #: inc/admin/ui/modules/advanced.php:185
 msgid "Always purge these URLs from cache when updating any post or page:"
-msgstr ""
+msgstr "قم بإزاله هذه العناوين من ذاكرة التخزين المؤقت عند تحديث أي مقالة أو صفحة:"
 
 #: inc/admin/ui/modules/advanced.php:203
 msgid "Cache query strings:"
-msgstr ""
+msgstr "التخزين المؤقت معلمات الاستعلام:"
 
 #: inc/admin/ui/modules/advanced.php:211
 msgid "Specify query strings for caching (one per line)"
-msgstr ""
+msgstr "تحديد معلمات الاستعلام للتخزين المؤقت (رابط لكل سطر)"
 
 #: inc/admin/ui/modules/advanced.php:216
 msgid "Force caching for URLs with these query strings (GET parameters):"
-msgstr ""
+msgstr "فرض التخزين المؤقت للعناوين التي تحتوي على معلمات الاستعلام التالية (GET parameters):"
 
 #: inc/admin/ui/modules/advanced.php:221
 msgid ""
@@ -731,15 +590,15 @@ msgid ""
 "validation\" target=\"_blank\">this tutorial</a>, or contact <a href=\"https"
 "://wp-rocket.me/support/\" target=\"_blank\">support</a> to get this engine "
 "started."
-msgstr ""
+msgstr "اضافة WP Rocket غير قادرة علي التحقق من صحة الترخيص الخاص بك تلقائيا. <br>اتبع <a href=\"http://docs.wp-rocket.me/article/100-resolving-problems-with-license-validation\" target=\"_blank\">هذا الشرح</a>، أو أتصل <a href=\"https://wp-rocket.me/support/\" target=\"_blank\">بالدعم</a> لتشغيل الاضافة."
 
 #: inc/admin/ui/modules/api-key.php:39 inc/admin/ui/modules/api-key.php:47
 msgid "API key"
-msgstr ""
+msgstr "مفتاح API"
 
 #: inc/admin/ui/modules/api-key.php:59 inc/admin/ui/modules/api-key.php:67
 msgid "Email address"
-msgstr ""
+msgstr "البريد الإلكتروني"
 
 #: inc/admin/ui/modules/basic.php:7
 msgid "Basic options"
@@ -757,36 +616,35 @@ msgstr ""
 #: inc/admin/ui/modules/optimization.php:139
 #: inc/admin/ui/modules/optimization.php:305
 #, php-format
-msgid ""
-"Deactivate in case you notice any visually broken items on your website.%s"
+msgid "Deactivate if you notice any visually broken items on your website.%s"
 msgstr ""
 
 #: inc/admin/ui/modules/basic.php:47
 msgid ""
 "<a href=\"http://docs.wp-rocket.me/article/278-common-issues-with-lazyload\""
 " target=\"_blank\">Why?</a>"
-msgstr ""
+msgstr "<a href=\"http://docs.wp-rocket.me/article/278-common-issues-with-lazyload\" target=\"_blank\">لماذا؟</a>"
 
 #: inc/admin/ui/modules/basic.php:54
 msgid "Enable for images"
-msgstr ""
+msgstr "تمكين للصور"
 
 #: inc/admin/ui/modules/basic.php:56
 msgid "Enable LazyLoad for images"
-msgstr ""
+msgstr "تمكين التحميل الكسول للصور"
 
 #: inc/admin/ui/modules/basic.php:60
 msgid "Enable for iframes and videos"
-msgstr ""
+msgstr "تمكين للفيديو و الإطارات الداخلية Iframes"
 
 #: inc/admin/ui/modules/basic.php:62
 msgid "Enable LazyLoad for iframes and videos"
-msgstr ""
+msgstr "تمكين التحميل الكسول علي الفيديو و الإطارات الداخلية Iframes"
 
 #: inc/admin/ui/modules/basic.php:67 inc/admin/ui/modules/basic.php:196
 #: inc/admin/ui/modules/optimization.php:183
 msgid "Reduces the number of HTTP requests, can improve loading time."
-msgstr ""
+msgstr "تقلل عدد طلبات HTTP وتحسن وقت التحميل."
 
 #: inc/admin/ui/modules/basic.php:72
 msgid ""
@@ -796,7 +654,7 @@ msgstr ""
 
 #: inc/admin/ui/modules/basic.php:77
 msgid "LazyLoad:"
-msgstr ""
+msgstr "التحميل الكسول:"
 
 #: inc/admin/ui/modules/basic.php:89 inc/admin/ui/modules/basic.php:98
 msgid "Mobile cache:"
@@ -804,49 +662,49 @@ msgstr "التخزين المؤقت للأجهزة المحمولة:"
 
 #: inc/admin/ui/modules/basic.php:96
 msgid "Enable caching for mobile devices"
-msgstr ""
+msgstr "تفعيل التخزين المؤقت للأجهزة المحمولة."
 
 #: inc/admin/ui/modules/basic.php:105
 msgid "Makes your website mobile-friendlier."
-msgstr ""
+msgstr "أجعل موقعك مناسب للموبايل."
 
 #: inc/admin/ui/modules/basic.php:110
 msgid "Separate cache files for mobile devices"
-msgstr ""
+msgstr "إنشاء ملفات منفصلة للتخزين المؤقت للأجهزة المحمولة."
 
 #: inc/admin/ui/modules/basic.php:119
 msgid ""
 "Mobile cache works safest with both options enabled. When in doubt, keep "
 "both."
-msgstr ""
+msgstr "عندما تكون حيرة لتفعيلهم، قم بتفعيلهم الخيارين معاً. لان ذاكرة التخزين المؤقت تعمل للجوال بشكل آمن عند تمكين كلا الخيارين. "
 
 #: inc/admin/ui/modules/basic.php:119
 msgid ""
 "<a href=\"http://docs.wp-rocket.me/article/708-mobile-caching\" "
 "target=\"_blank\">Mobile cache</a> works safest with both options enabled. "
 "When in doubt, keep both."
-msgstr ""
+msgstr "<a href=\"http://docs.wp-rocket.me/article/708-mobile-caching\" target=\"_blank\">ذاكرة التخزين المؤقت للموبايل</a> تعمل بأمان عند تمكين كلا الخيارين. عندما تكون في شك، قم بتفعل الخيارين."
 
 #: inc/admin/ui/modules/basic.php:129 inc/admin/ui/modules/basic.php:139
 msgid "User cache:"
-msgstr ""
+msgstr "ملفات التخزين المؤقت للأعضاء:"
 
 #: inc/admin/ui/modules/basic.php:137
 msgid "Enable caching for logged-in WordPress users"
-msgstr ""
+msgstr "تفعيل التخزين المؤقت للمستخدمين الذين قاموا بتسجيل الدخول"
 
 #: inc/admin/ui/modules/basic.php:144
 msgid ""
 "User cache is great when you have user-specific or restricted content on "
 "your website."
-msgstr ""
+msgstr "ذاكرة التخزين المؤقت للمستخدم مفيدة عندما يكون لديك محتوى مخصص للمستخدمين فقط."
 
 #: inc/admin/ui/modules/basic.php:144
 msgid ""
 "<a href=\"http://docs.wp-rocket.me/article/313-logged-in-user-cache\" "
 "target=\"_blank\">User cache</a> is great when you have user-specific or "
 "restricted content on your website."
-msgstr ""
+msgstr "<a href=\"http://docs.wp-rocket.me/article/313-logged-in-user-cache\" target=\"_blank\">ذاكرة التخزين المؤقت للمستخدم</a> مفيدة عندما يكون لديك محتوى مخصص للمستخدمين فقط."
 
 #: inc/admin/ui/modules/basic.php:154 inc/admin/ui/modules/basic.php:163
 msgid "SSL cache:"
@@ -854,52 +712,53 @@ msgstr "ذاكرة التخزين المؤقت لـ SSL"
 
 #: inc/admin/ui/modules/basic.php:161
 msgid "Enable caching for pages with <code>https://</code>"
-msgstr ""
+msgstr "تفعيل التخزين المؤقت لصفحات البروتوكول الآمن <code>https://</code>"
 
 #: inc/admin/ui/modules/basic.php:171
 msgid "SSL cache works best when your entire website runs on HTTPS."
-msgstr ""
+msgstr "ذاكرة التخزين المؤقت الخاصة بـشهادة الـ SSL تعمل بشكل أفضل عندما يعمل الموقع بأكملة ببروتوكول الإتصال الآمن HTTPS."
 
 #: inc/admin/ui/modules/basic.php:171
 msgid ""
 "<a href=\"http://docs.wp-rocket.me/article/314-using-ssl-with-wp-rocket\" "
 "target=\"_blank\">SSL cache</a> works best when your entire website runs on "
 "HTTPS."
-msgstr ""
+msgstr "<a href=\"http://docs.wp-rocket.me/article/314-using-ssl-with-wp-rocket\" target=\"_blank\">ذاكرة التخزين المؤقت الخاصة بـشهادة الـ SSL</a> تعمل بشكل أفضل عندما يعمل الموقع بأكملة ببروتوكول الإتصال الآمن HTTPS."
 
 #: inc/admin/ui/modules/basic.php:181 inc/admin/ui/modules/basic.php:190
 msgid "Emoji cache:"
-msgstr ""
+msgstr "ذاكرة التخزين المؤقت للوجوه التعبيرية Emojis:"
 
 #: inc/admin/ui/modules/basic.php:188
 msgid ""
 "Use default emoji of visitors’ browser instead of loading emoji from "
 "WordPress.org"
-msgstr ""
+msgstr "استخدم الرموز التعبيرية الافتراضية emoji  لمتصفح الزوار بدلا من تحميل الرموز التعبيرية من WordPress.org"
 
 #: inc/admin/ui/modules/basic.php:206 inc/admin/ui/modules/basic.php:215
 msgid "Embeds:"
-msgstr ""
+msgstr "التضمينات:"
 
 #: inc/admin/ui/modules/basic.php:213
 msgid "Disable WordPress Embeds"
-msgstr ""
+msgstr "إيقاف تضمينات ووردبريس"
 
 #: inc/admin/ui/modules/basic.php:220
 msgid ""
 "Prevents others from embedding content from your site, prevents you from "
 "embedding content from other (non-whitelisted) sites, and removes JavaScript"
 " requests related to <a "
-"href=\"https://wordpress.org/news/2015/12/clifford/\">WordPress Embeds</a>."
-msgstr ""
+"href=\"https://wordpress.org/news/2015/12/clifford/\" "
+"target=\"_blank\">WordPress Embeds</a>."
+msgstr "منع المواقع الاخري (الغير المدرجة في القائمة البيضاء)، من تضمين محتوي موقعك وحذف طلبات الجافاسكربت المتعلقة  <a href=\"https://wordpress.org/news/2015/12/clifford/\" target=\"_blank\">بتضمينات الووردبريس</a>."
 
 #: inc/admin/ui/modules/basic.php:232
 msgid "Specify time after which the global cache gets cleared (0 = unlimited)"
-msgstr ""
+msgstr "تحديد الوقت الذي يتم بعده مسح جميع ملفات ذاكرة التخزين المؤقت (0 = غير محدود)"
 
 #: inc/admin/ui/modules/basic.php:237
 msgid "Clear cache after …"
-msgstr ""
+msgstr "مسح ذاكرة التخزين المؤقت بعد ..."
 
 #: inc/admin/ui/modules/basic.php:243
 msgid "Unit of time"
@@ -923,30 +782,30 @@ msgid ""
 "Cache lifespan is the period of time after which all cache files get "
 "removed. Enable <a href=\"%s\">Preloading</a> for the cache to be rebuilt "
 "automatically after lifespan expiration."
-msgstr ""
+msgstr "مدة التخزين المؤقت هي الفترة الزمنية التي تتم بعدها إذالة جميع ملفات ذاكرة التخزين المؤقت.\n\n تفعيل <a href=\"%s\">التحميل المسبق</a> لذاكرة التخزين المؤقت لإعادة بنائها تلقائيا بعد انتهاء مدة التخزين."
 
 #: inc/admin/ui/modules/basic.php:267
 #, php-format
 msgid ""
-"Reduce lifespan to 10 hours or less in case you notice issues that seem to "
-"appear only frequently.%s"
-msgstr ""
+"Reduce lifespan to 10 hours or less if you notice issues that seem to appear"
+" periodically.%s"
+msgstr "قلل مدة العمر الافتراضي إلى 10 ساعات أو أقل إذا ظهرت مشاكل بشكل دوري.%s"
 
 #: inc/admin/ui/modules/basic.php:268
 msgid ""
 "<a href=\"http://docs.wp-rocket.me/article/975-nonces-and-cache-lifespan\" "
 "target=\"_blank\">Why?</a>"
-msgstr ""
+msgstr "<a href=\"http://docs.wp-rocket.me/article/975-nonces-and-cache-lifespan\" target=\"_blank\">لماذا؟</a>"
 
 #: inc/admin/ui/modules/basic.php:276
 msgid ""
-"Increase lifespan to a few hours in case you notice server issues with this "
+"Increase lifespan to a few hours if you notice server issues with this "
 "setting."
-msgstr ""
+msgstr "قم بزيادة عمر ملفات التخزين المؤقت لبضع ساعات اذا ظهرت مشاكل الخادم او الاستضافة مع هذا الإعداد."
 
 #: inc/admin/ui/modules/basic.php:282
-msgid "Cache lifespan"
-msgstr ""
+msgid "Cache lifespan:"
+msgstr "عمر ملفات التخزين المؤقت:"
 
 #: inc/admin/ui/modules/cdn.php:7
 msgid "Content Delivery Network options"
@@ -958,11 +817,11 @@ msgid ""
 "5.6 or greater and therefore is not available for you currently. We "
 "recommend you contact your web host in order to upgrade to a PHP 5.6 or "
 "greater."
-msgstr ""
+msgstr "إصدار PHP الخاص بك هو أقل من 5.4. لتشغيل خدمة كلاودفلير يتطلب وجود PHP 5.6 أو أعلي، وبالتالي ليست هذا الخيار ليس متاح لك حالياً. نوصي بالاتصال مقدم الاستضافة الخاصة بك من أجل الترقية إلى PHP 5.6 أو إصدار أحدث."
 
 #: inc/admin/ui/modules/cdn.php:30
 msgid "Show Cloudflare settings tab"
-msgstr ""
+msgstr "عرض علامة التبويب إعدادات كلودفلير CloudFlare"
 
 #: inc/admin/ui/modules/cdn.php:61
 #, php-format
@@ -980,7 +839,7 @@ msgstr "شبكة توصيل المحتوي CDN:"
 
 #: inc/admin/ui/modules/cdn.php:80
 msgid "Enable Content Delivery Network"
-msgstr ""
+msgstr "تفعيل شبكة توصيل المحتوي."
 
 #: inc/admin/ui/modules/cdn.php:88
 msgid ""
@@ -998,26 +857,30 @@ msgstr ""
 
 #: inc/admin/ui/modules/cdn.php:100
 msgid "CDN CNAME(S):"
-msgstr ""
+msgstr "سجلات (CNAME) شبكة توصيل المحتوي:"
+
+#: inc/admin/ui/modules/cdn.php:111 inc/admin/ui/modules/cdn.php:120
+msgid "CDN without SSL:"
+msgstr "شبكة توصيل المحتوي CDN بدون شهادة SSL:"
 
 #: inc/admin/ui/modules/cdn.php:118
 msgid "Disable CDN functionality on HTTPS pages"
-msgstr ""
+msgstr "إيقاف خدمة توصيل المحتوي CDN في صفحات البروتوكول النقل الآمن HTTPS."
 
 #: inc/admin/ui/modules/cdn.php:124
 msgid ""
-"In case your CDN account does not fully support SSL, you can disable URL "
+"If your CDN account does not fully support SSL, you can disable URL "
 "rewriting on HTTPS pages here."
-msgstr ""
+msgstr "إذا كان حساب شبكة توصيل المحتوي لا يدعم اتصال SSL بشكل كامل، فيمكنك تعطيل ميزة إعادة كتابة الروابط في صفحات بروتوكول HTTPS."
 
 #: inc/admin/ui/modules/cdn.php:130 inc/admin/ui/modules/cdn.php:143
 msgid "Exclude files:"
-msgstr ""
+msgstr "استثناء الملفات:"
 
 #: inc/admin/ui/modules/cdn.php:138
 msgid ""
 "Specify URL(s) of files that should not get served via CDN (one per line)"
-msgstr ""
+msgstr "تحديد عناوين الملفات التي لن يتم إستخدام خدمة توصيل المحتوي (CDN) معها. (رابط واحد لكل سطر)"
 
 #: inc/admin/ui/modules/cdn.php:150
 #, php-format
@@ -1030,47 +893,47 @@ msgstr ""
 #: inc/admin/ui/modules/cloudflare.php:11
 msgctxt "Cloudflare"
 msgid "Account email:"
-msgstr ""
+msgstr "حساب البريد الإلكتروني:"
 
 #: inc/admin/ui/modules/cloudflare.php:18
 msgid "Enter the email address of your Cloudflare account"
-msgstr ""
+msgstr "أدخل البريد الإلكتروني لحساب الكلاودفلير الخاص بك"
 
 #: inc/admin/ui/modules/cloudflare.php:23
 msgid "Cloudflare account email address"
-msgstr ""
+msgstr "حساب البريد الإلكتروني للكلاودفلير"
 
 #: inc/admin/ui/modules/cloudflare.php:37
 msgid "Enter the global API key of your Cloudflare account"
-msgstr ""
+msgstr "أدخل مفتاح API العام لحساب الكلاودفلير الخاص بك"
 
 #: inc/admin/ui/modules/cloudflare.php:43
 msgid "Global API key"
-msgstr ""
+msgstr "مفتاح API العام"
 
 #: inc/admin/ui/modules/cloudflare.php:50
 #, php-format
 msgid "<a href=\"%s\" target=\"_blank\">Retrieve your API key</a>"
-msgstr ""
+msgstr "<a href=\"%s\" target=\"_blank\">الحصول علي المفتاح API العام الخاص بك</a>"
 
 #: inc/admin/ui/modules/cloudflare.php:57
 msgctxt "Cloudflare"
 msgid "Global API key:"
-msgstr ""
+msgstr "مفتاح API العام:"
 
 #: inc/admin/ui/modules/cloudflare.php:76
 msgctxt "Cloudflare"
 msgid "Domain:"
-msgstr ""
+msgstr "النطاق:"
 
 #: inc/admin/ui/modules/cloudflare.php:84
 msgid "Cloudflare domain"
-msgstr ""
+msgstr "نطاق كلودفلير"
 
 #: inc/admin/ui/modules/cloudflare.php:96
 msgctxt "Cloudflare"
 msgid "Development mode:"
-msgstr ""
+msgstr "وضع التطوير:"
 
 #: inc/admin/ui/modules/cloudflare.php:104
 msgid "Development Mode"
@@ -1094,24 +957,24 @@ msgid ""
 "Temporarily enter development mode on your website. This setting will "
 "automatically get turned off after 3 hours. <a href=\"%s\" "
 "target=\"_blank\">Learn more</a>"
-msgstr ""
+msgstr "تشغيل وضع التطوير بشكل مؤقت علي موقعك. هذا الخيار سوف يتم ايقاف تشغيله تلقائياً بعد 3 ساعات.  <a href=\"%s\" target=\"_blank\">معرفة المزيد</a>"
 
 #: inc/admin/ui/modules/cloudflare.php:124
 #: inc/admin/ui/modules/cloudflare.php:132
 msgctxt "Cloudflare"
 msgid "Optimal settings:"
-msgstr ""
+msgstr "الإعدادات المثلى:"
 
 #: inc/admin/ui/modules/cloudflare.php:142
 msgid ""
 "Automatically enhances your Cloudflare configuration for speed, performance "
 "grade, and compatibility."
-msgstr ""
+msgstr "تهيئة وضبط تلقائي لأفضل إعدادات كلاودفلير للسرعة، ودرجة الأداء، والتوافق."
 
 #: inc/admin/ui/modules/cloudflare.php:152
 msgctxt "Cloudflare"
 msgid "Relative Protocol:"
-msgstr ""
+msgstr "البروتوكول المرن:"
 
 #: inc/admin/ui/modules/cloudflare.php:160
 msgid "HTTPS Protocol Rewrite"
@@ -1124,22 +987,22 @@ msgid ""
 "target=\"_blank\">Flexible SSL</a> feature.<br>URLs of static files (CSS, "
 "JS, images) will be rewritten to use relative protocol (%2$s instead of %3$s"
 " or %4$s)."
-msgstr ""
+msgstr "يجب إستخدام هذا الخيار في حالة تفعيل ميزة <a href=\"%1$s\" target=\"_blank\">الإتصال المرن SSL</a>.<br>سيتم إعادة كتابة العناوين للملفات الثابتة (CSS، JS، الصور) لاستخدام البروتوكول المرن (%2$s بدلاً من %3$s أو %4$s)."
 
 #: inc/admin/ui/modules/cloudflare.php:185
 msgid "Clear Cloudflare cache:"
-msgstr ""
+msgstr "مسح ذاكرة التخزين المؤقت لكلودفلير:"
 
 #: inc/admin/ui/modules/cloudflare.php:191 inc/common/admin-bar.php:155
 msgid "Clear Cloudflare cache"
-msgstr ""
+msgstr "مسح ذاكرة التخزين المؤقت لكلودفلير"
 
 #: inc/admin/ui/modules/cloudflare.php:196
 #, php-format
 msgid ""
 "Purges cached resources for your website. <a href=\"%s\" "
 "target=\"_blank\">Learn more</a>"
-msgstr ""
+msgstr "حذف الموارد المخزنة مؤقتا لموقعك. <a href=\"%s\" target=\"_blank\">معرفة المزيد</a>"
 
 #: inc/admin/ui/modules/database.php:16
 msgid "Database Optimization"
@@ -1149,7 +1012,7 @@ msgstr "تحسين قاعدة البيانات"
 msgid ""
 "Backup your database before you run a cleanup!<br>Once a database "
 "optimization has been performed, there is no way to undo it."
-msgstr ""
+msgstr "قم بالنسخ الاحتياطي لقاعدة البيانات الخاصة بك قبل تشغيل ميزة التحسين!<br> لأن لا توجد وسيلة للتراجع عن ذلك ،بمجرد بدء تشغيل ميزة تحسين قاعدة البيانات."
 
 #: inc/admin/ui/modules/database.php:48
 msgid "Posts cleanup:"
@@ -1353,7 +1216,7 @@ msgstr "شهري"
 
 #: inc/admin/ui/modules/database.php:215
 msgid "Save Changes"
-msgstr ""
+msgstr "حفظ التغيرات"
 
 #: inc/admin/ui/modules/database.php:230
 msgid "Run cleanup:"
@@ -1364,17 +1227,17 @@ msgstr "تشغيل التنظيف:"
 msgid ""
 "“%1$s” will save your settings and run a database optimization; “%2$s” below"
 " will only save your settings."
-msgstr ""
+msgstr "“%1$s” عندها سيتم حفظ إعدادات الصفحة وتشغيل ميزة تحسين قاعدة البيانات; “%2$s” سيتم حفظ إعدادات الصفحة فقط."
 
 #: inc/admin/ui/modules/optimization.php:7
 msgid "Files optimization"
-msgstr ""
+msgstr "تحسين الملفات"
 
 #: inc/admin/ui/modules/optimization.php:27
 msgid ""
 "Heads up! These options are not equally suitable for all WordPress "
-"setups.<br>In case you notice any visual issues on your site, just turn off "
-"the last option(s) you had activated here. <br>Read the documentation on <a "
+"setups.<br>If you notice any visual issues on your site, just turn off the "
+"last option(s) you had activated here. <br>Read the documentation on <a "
 "href=\"http://docs.wp-rocket.me/article/19-resolving-issues-with-"
 "minification\" target=\"_blank\">troubleshooting file optimization</a>."
 msgstr ""
@@ -1392,45 +1255,65 @@ msgstr ""
 msgid ""
 "<a href=\"http://docs.wp-rocket.me/article/19-resolving-issues-with-"
 "minification\" target=\"_blank\">Why?</a>"
-msgstr ""
+msgstr "<a href=\"http://docs.wp-rocket.me/article/19-resolving-issues-with-minification\" target=\"_blank\">لماذا؟</a>"
 
 #: inc/admin/ui/modules/optimization.php:83
 msgid "Minify HTML files"
-msgstr ""
+msgstr "تصغير ملفات HTML"
 
 #: inc/admin/ui/modules/optimization.php:90
 msgid "Minify CSS files"
-msgstr ""
+msgstr "تصغير ملفات CSS"
 
 #: inc/admin/ui/modules/optimization.php:97
 msgid "Minify JS files"
-msgstr ""
+msgstr "تصغير ملفات JS"
 
 #: inc/admin/ui/modules/optimization.php:104
 msgid "Reduces file size, can improve loading time."
-msgstr ""
+msgstr "تقليل حجم الملف، يساعد علي تحسين وقت التحميل."
 
 #: inc/admin/ui/modules/optimization.php:109
 msgid ""
 "Removes spaces and comments from static files, enables browsers and search "
 "engines to faster process HTML, CSS, and JavaScript files."
-msgstr ""
+msgstr "إزالة المساحات والتعليقات من الملفات الثابتة، وتمكين المتصفحات ومحركات البحث من معالجة ملفات HTML وCSS و جافاسكريبت بشكل أسرع."
 
 #: inc/admin/ui/modules/optimization.php:114
 msgid "Minify files:"
-msgstr ""
+msgstr "تصغير الملفات:"
 
 #: inc/admin/ui/modules/optimization.php:150
 msgid "Concatenate Google Fonts"
-msgstr ""
+msgstr "دمج خطوط جوجل"
+
+#: inc/admin/ui/modules/optimization.php:156
+msgid "Concatenate CSS files"
+msgstr "دمج ملفات CSS"
+
+#: inc/admin/ui/modules/optimization.php:162
+msgid ""
+"Combine all CSS files into as few files as possible <em>(test "
+"thoroughly!)</em>"
+msgstr "دمج جميع ملفات CSS في أقل عدد ممكن من الملفات <em>(اختبرها بعناية!)</em>"
 
 #: inc/admin/ui/modules/optimization.php:164
 msgid "CSS Files concatenation"
-msgstr ""
+msgstr "دمج ملفات CSS"
+
+#: inc/admin/ui/modules/optimization.php:170
+msgid "Concatenate JS files"
+msgstr "دمج ملفات جافاسكربت"
+
+#: inc/admin/ui/modules/optimization.php:176
+msgid ""
+"Combine all JavaScript files into as few files as possible <em>(test "
+"thoroughly!)</em>"
+msgstr "دمج جميع ملفات جافاسكربت في أقل عدد ممكن من الملفات <em>(اختبرها بعناية!)</em>"
 
 #: inc/admin/ui/modules/optimization.php:178
 msgid "JS Files concatenation"
-msgstr ""
+msgstr "دمج ملفات جافاسكربت"
 
 #: inc/admin/ui/modules/optimization.php:188
 msgid ""
@@ -1452,53 +1335,53 @@ msgstr ""
 
 #: inc/admin/ui/modules/optimization.php:193
 msgid "Combine files:"
-msgstr ""
+msgstr "دمج الملفات:"
 
 #: inc/admin/ui/modules/optimization.php:205
 msgid "Exclude CSS:"
-msgstr ""
+msgstr "استثناء ملفات CSS:"
 
 #: inc/admin/ui/modules/optimization.php:213
 msgid ""
 "Specify URLs of CSS files to be excluded from minification and concatenation"
 " (one per line)"
-msgstr ""
+msgstr "تحديد عناوين ملفات CSS التي سيتم استبعادها من التصغير والدمج (ملف لكل سطر)"
 
 #: inc/admin/ui/modules/optimization.php:218
 msgid "CSS files to be excluded from minification and concatenation:"
-msgstr ""
+msgstr "ملفات CSS التي سيتم استبعادها من التصغير والدمج:"
 
 #: inc/admin/ui/modules/optimization.php:225
 #, php-format
 msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use %s "
 "wildcards to exclude all CSS files located at a specific path."
-msgstr ""
+msgstr "سيتم حذف جزء النطاق تلقائيا.<br>استخدم %s wildcards لإستثناء جميع ملفات CSS التي تتواجد بمسار محدد."
 
 #: inc/admin/ui/modules/optimization.php:236
 msgid "Exclude JS:"
-msgstr ""
+msgstr "استثناء ملفات JS:"
 
 #: inc/admin/ui/modules/optimization.php:244
 msgid ""
 "Specify URLs of JS files to be excluded from minification and concatenation "
 "(one per line)"
-msgstr ""
+msgstr "تحديد عناوين ملفات جافاسكربت التي سيتم استبعادها من التصغير والدمج (ملف لكل سطر)"
 
 #: inc/admin/ui/modules/optimization.php:249
 msgid "JS files to be excludeded from minification and concatenation:"
-msgstr ""
+msgstr "ملفات جافاسكربت التي سيتم استبعادها من التصغير والدمج:"
 
 #: inc/admin/ui/modules/optimization.php:256
 #, php-format
 msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use %s "
 "wildcards to exclude all JS files located at a specific path."
-msgstr ""
+msgstr "سيتم حذف جزء النطاق تلقائيا.<br>استخدم %s wildcards لإستثناء جميع ملفات جافاسكربت التي تتواجد علي مسار محدد."
 
 #: inc/admin/ui/modules/optimization.php:267
 msgid "Remove query strings:"
-msgstr ""
+msgstr "إزالة معلمات الاستعلام من الملفات الثابتة:"
 
 #: inc/admin/ui/modules/optimization.php:274
 #: inc/admin/ui/modules/optimization.php:276
@@ -1510,43 +1393,43 @@ msgstr "إزالة معلمات الاستعلام من الملفات الثا�
 msgid ""
 "Can improve the performance grade on <a href=\"%s\" target=\"_blank\">GT "
 "Metrix</a>."
-msgstr ""
+msgstr "تساعد علي تحسين درجة الأداء على موقع <a href=\"%s\" target=\"_blank\">GT Metrix</a>."
 
 #: inc/admin/ui/modules/optimization.php:290
 msgid ""
 "Removes the version query string from static files (e.g. style.css?ver=1.0) "
-"and encodes it into the file name instead (e.g. style-1.0.css)."
-msgstr ""
+"and encodes it into the file name instead (e.g. style-1-0.css)."
+msgstr "حذف معلمات الاستعلام من الملفات الثابتة مثال (style.css?ver=1.0) ودمجها في اسم الملف مثال (style-1-0.css)."
 
 #: inc/admin/ui/modules/optimization.php:306
 msgid ""
 "<a href=\"http://docs.wp-rocket.me/article/108-render-blocking-javascript-"
 "and-css-pagespeed\" target=\"_blank\">Why?</a>"
-msgstr ""
+msgstr "<a href=\"http://docs.wp-rocket.me/article/108-render-blocking-javascript-and-css-pagespeed\" target=\"_blank\">لماذا؟</a>"
 
 #: inc/admin/ui/modules/optimization.php:312
 #: inc/admin/ui/modules/optimization.php:314
 msgid "Load CSS files asynchronously"
-msgstr ""
+msgstr "تحميل ملفات CSS بشكل غير متزامن"
 
 #: inc/admin/ui/modules/optimization.php:321
 msgid ""
 "If you activate the option below, your deprecated Defer JS option below will"
 " be deleted."
-msgstr ""
+msgstr "إذا قمت بتنشيط الخيار أدناه، سيتم حذف خيار تأجيل الجافاسكربت."
 
 #: inc/admin/ui/modules/optimization.php:327
 #: inc/admin/ui/modules/optimization.php:329
 msgid "Load JS files deferred"
-msgstr ""
+msgstr "تحميل ملفات الجافاسكربت المؤجلة"
 
 #: inc/admin/ui/modules/optimization.php:334
 msgid "Safe mode (recommended)"
-msgstr ""
+msgstr "الوضع الآمن (مستحسن)"
 
 #: inc/admin/ui/modules/optimization.php:336
 msgid "Defer JS files safely"
-msgstr ""
+msgstr "تأجيل ملفات الجافاسكربت بأمان"
 
 #: inc/admin/ui/modules/optimization.php:342
 msgid ""
@@ -1560,7 +1443,7 @@ msgstr ""
 msgid ""
 "Reduces the number of initial HTTP requests, can improve loading time and "
 "performance grade."
-msgstr ""
+msgstr "تقليل عدد طلبات HTTP الأولية، يساعد في تحسين وقت التحميل ودرجة الأداء للأفضل."
 
 #: inc/admin/ui/modules/optimization.php:352
 msgid "Render-blocking CSS/JS:"
@@ -1568,22 +1451,22 @@ msgstr ""
 
 #: inc/admin/ui/modules/optimization.php:364
 msgid "Critical path CSS:"
-msgstr ""
+msgstr "المسار الحرج لـ CSS: "
 
 #: inc/admin/ui/modules/optimization.php:372
 msgid "Specify CSS rules required for rendering above-the-fold content"
-msgstr ""
+msgstr "تحديد أكواد CSS المطلوب تحميلها لتظهر الجزء المرئي من المحتوي"
 
 #: inc/admin/ui/modules/optimization.php:377
 msgid "Critical path CSS rules for rendering above-the-fold content"
-msgstr ""
+msgstr "المسار الحرج لأكواد الـ CSS لتحميلها لتظهر الجزء المرئي من المحتوي"
 
 #: inc/admin/ui/modules/optimization.php:382
 #, php-format
 msgid ""
 "Use the <a href=\"%s\" target=\"_blank\">Critical Path CSS Generator</a> to "
 "specify required CSS rules."
-msgstr ""
+msgstr "استخدم اداة <a href=\"%s\" target=\"_blank\">مولد المسار الحرج لملفات CSS</a> لتحديد أكواد CSS المطلوبة."
 
 #: inc/admin/ui/modules/optimization.php:404
 msgid ""
@@ -1627,7 +1510,7 @@ msgstr ""
 msgid ""
 "Specify complete URLs like: "
 "<code>http://example.com/path/to/script.js</code>"
-msgstr ""
+msgstr "حدد العناوين بشكل كامل مثل: <code>http://example.com/path/to/script.js</code>"
 
 #: inc/admin/ui/modules/preload.php:7
 msgid "Preload options"
@@ -1635,14 +1518,14 @@ msgstr "خيارات التحميل المسبق"
 
 #: inc/admin/ui/modules/preload.php:15 inc/admin/ui/modules/preload.php:18
 msgid "Activate sitemap-based cache preloading"
-msgstr ""
+msgstr "تفعيل التحميل المسبق للخرائط"
 
 #: inc/admin/ui/modules/preload.php:24
 msgid ""
 "Sitemap preloading runs automatically when the cache lifespan expires. You "
 "can also launch it manually from the upper toolbar menu, or from the Tools "
 "tab."
-msgstr ""
+msgstr "يتم تشغيل التحميل المسبق للخرائط تلقائيا عند انتهاء صلاحية ذاكرة التخزين المؤقت. يمكنك أيضا تشغيله يدويا من قائمة الاضافة بشريط الأدوات العلوي، أو من علامة التبويب أدوات."
 
 #: inc/admin/ui/modules/preload.php:24
 msgid ""
@@ -1650,7 +1533,7 @@ msgid ""
 "target=\"_blank\">Sitemap preloading</a> runs automatically when the cache "
 "lifespan expires. You can also launch it manually from the upper toolbar "
 "menu, or from the Tools tab."
-msgstr ""
+msgstr "يتم تشغيل <a href=\"http://docs.wp-rocket.me/article/8-how-the-cache-is-preloaded\" target=\"_blank\">التحميل المسبق للخرائط </a>تلقائيا عند انتهاء صلاحية ذاكرة التخزين المؤقت. يمكنك أيضا تشغيله يدويا من قائمة الاضافة بشريط الأدوات العلوي، أو من علامة التبويب أدوات."
 
 #: inc/admin/ui/modules/preload.php:30
 msgid "Sitemap preloading:"
@@ -1658,29 +1541,29 @@ msgstr "التحميل المسبق للخرائط:"
 
 #: inc/admin/ui/modules/preload.php:49
 msgid "Sitemap crawl interval:"
-msgstr ""
+msgstr "معدل الزحف لخرائط الموقع:"
 
 #: inc/admin/ui/modules/preload.php:56
 msgid ""
 "<span class=\"screen-reader-text\">This is the </span>waiting time between "
 "each URL crawl"
-msgstr ""
+msgstr "<span class=\"screen-reader-text\">وقت الإنتظار </span>بين كل رابط سيتم الزحف إليه"
 
 #: inc/admin/ui/modules/preload.php:58
 msgid "Sets the intervall between each URL crawl"
-msgstr ""
+msgstr "ضبط الفاصل الزمني بين كل عملية زحف لكل رابط"
 
 #: inc/admin/ui/modules/preload.php:81
-msgid "Set a higher value in case you notice any overload on your server!"
-msgstr ""
+msgid "Set a higher value if you notice any overload on your server!"
+msgstr "اضبطه علي قيمة أعلى إذا لاحظت أي بطئ علي الخادم او الاستضافة الخاصة بك!"
 
 #: inc/admin/ui/modules/preload.php:91
 msgid "Sitemaps for preloading:"
-msgstr ""
+msgstr "التحميل المسبق للخرائط:"
 
 #: inc/admin/ui/modules/preload.php:99
 msgid "Specify XML sitemap(s) to be used for preloading (one per line)"
-msgstr ""
+msgstr "تحديد (ملفات الخرائط XML) التي ستستخدم في التحميل المسبق (ملف لكل سطر)"
 
 #: inc/admin/ui/modules/preload.php:103
 msgid "Sitemap files to use for preloading"
@@ -1692,7 +1575,7 @@ msgstr "إستخدام ملفات الخرائط للتحميل المسبق ع�
 
 #: inc/admin/ui/modules/preload.php:116
 msgid "Preload bot:"
-msgstr ""
+msgstr "التحميل المسبق للزاحف:"
 
 #: inc/admin/ui/modules/preload.php:123
 msgid "Manual"
@@ -1701,7 +1584,7 @@ msgstr "يدوي"
 #: inc/admin/ui/modules/preload.php:125
 msgid ""
 "Activate manual preload (from upper toolbar, or from Tools tab of WP Rocket)"
-msgstr ""
+msgstr "تفعيل يدوي للتحميل المسبق (من شريط المدير او تبويب الأدوات للاضافة)"
 
 #: inc/admin/ui/modules/preload.php:130
 msgid "Automatic"
@@ -1709,11 +1592,11 @@ msgstr "تلقائي"
 
 #: inc/admin/ui/modules/preload.php:132
 msgid "Activate automatic preload after content updates"
-msgstr ""
+msgstr "تفعيل التحميل المسبق التلقائي بعد تحديث المحتوي"
 
 #: inc/admin/ui/modules/preload.php:138
 msgid ""
-"Bot-based preloading should only be used on well-performaning servers. Once "
+"Bot-based preloading should only be used on well-performing servers. Once "
 "activated, it gets triggered automatically after you add or update content "
 "on your website. You can also launch it manually from the upper toolbar "
 "menu, or from the Tools tab."
@@ -1723,15 +1606,14 @@ msgstr ""
 msgid ""
 "<a href=\"http://docs.wp-rocket.me/article/8-how-the-cache-is-preloaded\" "
 "target=\"_blank\">Bot-based preloading</a> should only be used on well-"
-"performaning servers. Once activated, it gets triggered automatically after "
+"performing servers. Once activated, it gets triggered automatically after "
 "you add or update content on your website. You can also launch it manually "
 "from the upper toolbar menu, or from the Tools tab."
 msgstr ""
 
 #: inc/admin/ui/modules/preload.php:143
-msgid ""
-"Deactivate these options in case you notice any overload on your server!"
-msgstr ""
+msgid "Deactivate these options if you notice any overload on your server!"
+msgstr "قم بتعطيل هذا الخيار إذا لاحظت أي تحميل زائد علي الخادم او الاستضافة الخاصة بك!"
 
 #: inc/admin/ui/modules/preload.php:153 inc/admin/ui/modules/preload.php:166
 msgid "Prefetch DNS requests:"
@@ -1741,14 +1623,14 @@ msgstr "طلبات الجلب المسبق DNS:"
 msgid ""
 "Specify external hosts to be prefetched (no <code>http:</code>, one per "
 "line)"
-msgstr ""
+msgstr "حدد الروابط الخارجية المراد جلبها مسبقا (لا تضف<code>http:</code>, رابط لكل سطر)"
 
 #: inc/admin/ui/modules/preload.php:172
 msgid ""
 "<a href=\"https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-DNS-"
 "Prefetch-Control\" target=\"_blank\">DNS prefetching</a> can make external "
 "files load faster, especially on mobile networks."
-msgstr ""
+msgstr "<a href=\"https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-DNS-Prefetch-Control\" target=\"_blank\">DNS الجلب المسبق لـ </a> يساعد علي تحميل الملفات الخارجية بشكل أسرع، وخاصة على شبكات المحمول."
 
 #: inc/admin/ui/modules/support.php:22
 #, php-format
@@ -1761,11 +1643,11 @@ msgstr ""
 
 #: inc/admin/ui/modules/support.php:33
 msgid "Summary:"
-msgstr ""
+msgstr "ملخص:"
 
 #: inc/admin/ui/modules/support.php:40
 msgid "In one sentence: What is going on, or wrong?"
-msgstr ""
+msgstr "في جملة واحدة: ما الذي يحدث، أو ما هو الخطأ؟"
 
 #: inc/admin/ui/modules/support.php:45
 msgid "Summary"
@@ -1780,7 +1662,7 @@ msgstr "الوصف:"
 msgid ""
 "<strong>Now be specific!</strong><br>We have pre-filled the form with some "
 "questions for you to phrase your description along."
-msgstr ""
+msgstr "<strong>الآن لتكن أكثر تحديداً!</strong><br>لدينا نموذج به بعض الاسئلة للإجابة عليها لوصف المشكلة الخاصة بك."
 
 #: inc/admin/ui/modules/support.php:69
 msgid "Description"
@@ -1793,7 +1675,7 @@ msgid ""
 "- What had you expected to see?\n"
 "- Where can we see your issue?\n"
 "- What steps do we need to perform in order to see it?"
-msgstr ""
+msgstr "- ما الذي فعلته؟\n- ماذا رأيت؟\n- ماذا كنت تتوقع أن ترى؟\n- أين يمكن أن نرى مشكلتك؟\n- ما هي الخطوات التي نحن بحاجة إلى القيام بها من أجل أن نرى ذلك الخطأ؟"
 
 #: inc/admin/ui/modules/support.php:91
 #, php-format
@@ -1801,54 +1683,53 @@ msgid ""
 "I have read the <a href=\"%s\" target=\"_blank\">documentation</a> and agree"
 " that WP Rocket automatically detects my WordPress version and list of "
 "active plugins when I send this form."
-msgstr ""
+msgstr "لقد قرأت <a href=\"%s\" target=\"_blank\">وثائق المساعدة</a>، وموافق علي السماح لإضافه WP Rocket أن تحدد رقم إصدار ووردبريس الخاص بي وقائمة بالإضافات المُفعلة بشكل تلقائي عند إرسال هذا النموذج."
 
 #: inc/admin/ui/modules/support.php:109
 msgctxt "button text"
 msgid "Send your ticket"
-msgstr ""
+msgstr "أرسل التذكرة"
 
 #: inc/admin/ui/modules/tools.php:16
 msgid "Beta testing:"
-msgstr ""
+msgstr "اختبار النسخة التجريبية:"
 
 #: inc/admin/ui/modules/tools.php:23
 msgid ""
 "Yes, I would like to receive beta versions of WP Rocket as updates. I "
 "understand that beta versions may contain unstable code, and I know how to "
 "roll back to a stable version manually if I have to."
-msgstr ""
+msgstr "نعم، أود الحصول على إصدارات بيتا التجريبية من WP Rocket كتحديثات. أنا أفهم أن إصدارات بيتا التجريبية قد تحتوي على أكواد برمجية غير مستقرة، وأنا أعرف كيفية العودة إلى إصدار ثابت يدويا إذا كنت مضطر لذلك."
 
 #: inc/admin/ui/modules/tools.php:25
 msgid "Beta Testing"
-msgstr ""
+msgstr "اختبار النسخة التجريبية"
 
 #: inc/admin/ui/modules/tools.php:36
 msgid "Clear cache:"
-msgstr ""
+msgstr "مسح ملفات التخزين المؤقت:"
 
 #: inc/admin/ui/modules/tools.php:43
 msgid "Clear the cache for the whole website."
-msgstr ""
+msgstr "مسح ملفات التخزين المؤقت للموقع بأكمله."
 
 #: inc/admin/ui/modules/tools.php:57
 msgid "Preload cache:"
-msgstr ""
+msgstr "التحميل المسبق للتخزين المؤقت:"
 
 #: inc/admin/ui/modules/tools.php:66
 #, php-format
 msgid "Preload the cache according to your <a href=\"%s\">Preload settings</a>."
-msgstr ""
+msgstr "التحميل المسبق لذاكرة التخزين المؤقت وفقا لـ <a href=\"%s\">إعدادات التحميل المسبق</a>."
 
-#: inc/admin/ui/modules/tools.php:71 inc/admin/ui/modules/tutorials.php:7
-#: inc/common/admin-bar.php:168 inc/common/admin-bar.php:187
-#: inc/common/admin-bar.php:220
+#: inc/admin/ui/modules/tools.php:71 inc/common/admin-bar.php:168
+#: inc/common/admin-bar.php:187 inc/common/admin-bar.php:220
 msgid "Preload cache"
 msgstr "التحميل المسبق للتخزين المؤقت"
 
 #: inc/admin/ui/modules/tools.php:84
 msgid "Purge OPcache:"
-msgstr ""
+msgstr "مسح OPcache"
 
 #: inc/admin/ui/modules/tools.php:90 inc/common/admin-bar.php:142
 msgid "Purge OPcache"
@@ -1856,34 +1737,34 @@ msgstr "مسح OPcache"
 
 #: inc/admin/ui/modules/tools.php:102
 msgid "Export settings:"
-msgstr ""
+msgstr "إستخراج الإعدادات:"
 
 #: inc/admin/ui/modules/tools.php:114
 msgid "Import settings:"
-msgstr ""
+msgstr "استيراد الإعدادات:"
 
 #: inc/admin/ui/modules/tools.php:127
 #, php-format
 msgid ""
 "Backup your settings with the “%s” button above before you re-install a "
 "previous version."
-msgstr ""
+msgstr "يمكنك الاحتفاظ بنسخة احتياطية من إعدادات الإضافة بالضغط علي الزر “%s” بالأعلي قبل إعادة تثبيت النسخة السابقة."
 
 #: inc/admin/ui/modules/tools.php:132
 msgid "Rollback:"
-msgstr ""
+msgstr "التراجع عن التحديث"
 
 #: inc/admin/ui/modules/tools.php:142
 #, php-format
 msgid "Re-install version %s"
-msgstr ""
+msgstr "إعادة تثبيت اصدار v%s"
 
 #: inc/admin/ui/modules/tools.php:149
 #, php-format
 msgid ""
 "Has version %1$s caused an issue on your website? You can roll back to the "
 "previous major version here."
-msgstr ""
+msgstr "هل تسبب الإصدار %1$s في حدوث مشكلة في موقعك؟ يمكنك العودة إلى الإصدار السابق."
 
 #: inc/admin/ui/modules/tools.php:153
 #, php-format
@@ -1891,65 +1772,7 @@ msgid ""
 "Has version %1$s caused an issue on your website?<br>You can roll back to "
 "the previous major version here. Then <a href=\"%2$s\">send us a support "
 "request</a>."
-msgstr ""
-
-#: inc/admin/ui/modules/tutorials.php:4
-msgid "Tutorials"
-msgstr "الدروس"
-
-#: inc/admin/ui/modules/tutorials.php:12
-msgid ""
-"This video gives some explanations about our two crawler robots. They "
-"generate several cache files in a few seconds."
-msgstr "هذا الفيديو يعطي لك بعض التوضحيات حول اثنين من برامج الزحف الخاصة بنا، أنها تنشئ عدة ملفات ذاكرة التخزين المؤقت في بضع ثوان."
-
-#: inc/admin/ui/modules/tutorials.php:19
-msgid "CSS and JavaScript minification"
-msgstr "تقليل حجم الـ CSS و JavaScript"
-
-#: inc/admin/ui/modules/tutorials.php:24
-msgid ""
-"This video gives some explanations about how to use the advanced processes "
-"of minification and concatenation of CSS and JavaScript files."
-msgstr "هذا الفيديو يعطي بعض التوضيحات حول كيفية استخدام العمليات المتقدمة لتصغير الحجم والتحميل المسلسل لملفات CSS وجافا سكريبت."
-
-#: inc/admin/ui/modules/tutorials.php:31
-msgid "Preloading DNS queries"
-msgstr "استعلامات التحميل المسبق DNS"
-
-#: inc/admin/ui/modules/tutorials.php:36
-msgid ""
-"This video helps to easily understand the advanced option of \"Preloading "
-"DNS queries\" and the use of the filter <code>rocket_dns_prefetch</code>."
-msgstr "هذا الفيديو يساعد على فهم بسهولة الخيار المتقدم \"استعلامات التحميل المسبق DNS\" واستخدام فلتر .<code>rocket_dns_prefetch</code>."
-
-#: inc/admin/ui/modules/tutorials.php:43
-msgid "How to use the White Label functionality?"
-msgstr "كيفية استخدام ميزة العلامة البيضاء؟"
-
-#: inc/admin/ui/modules/tutorials.php:48
-msgid "This video helps to set up a White Label version of WP Rocket."
-msgstr "هذا الفيديو يساعد على إنشاء نسخة البطاقة البيضاء من WP Rocket."
-
-#: inc/admin/ui/modules/tutorials.php:55
-msgid "How to use the CDN functionality?"
-msgstr "كيفية استخدام ميزة شبكة توصيل المحتوي CDN؟"
-
-#: inc/admin/ui/modules/tutorials.php:60
-msgid ""
-"This video helps to understand what is the CDN functionality included since "
-"WP Rocket 2.1."
-msgstr "هذا الفيديو يساعد على فهم ما هي ميزة شبكة توصيل المحتوي CDN بداية من WP Rocket 2.1."
-
-#: inc/admin/ui/modules/tutorials.php:67
-msgid "How to use the CDN API?"
-msgstr "كيفية استخدام API لـ شبكة توصيل المحتوي CDN؟"
-
-#: inc/admin/ui/modules/tutorials.php:72
-msgid ""
-"This video helps to set up the two functions "
-"<code>get_rocket_cdn_url()</code> and <code>rocket_cdn_url()</code>."
-msgstr "هذا الفيديو يساعد علي إعداد ميزتين <code>get_rocket_cdn_url()</code> و <code>rocket_cdn_url()</code>."
+msgstr "هل تسبب الإصدار %1$s في حدوث مشكلة في موقعك؟<br> يمكنك العودة إلى الإصدار السابق. وارسل لنا <a href=\"%2$s\">طلب الدعم</a>."
 
 #: inc/admin/ui/modules/varnish.php:39
 #, php-format
@@ -1957,26 +1780,26 @@ msgid ""
 "If <a href=\"%s\" target=\"_blank\">Varnish</a> runs on your server, you "
 "must activate the option below.<br>You would know if Varnish is active. If "
 "you don’t know, you can safely ignore this setting."
-msgstr ""
+msgstr "إذا كان لديك <a href=\"%s\" target=\"_blank\">Varnish</a> يعمل علي خادم الويب او استضافتك, يجب عليك تفعيل هذا الخيار ادناه<br>اذا كنت تريد معرفة اذا كان Varnish يعمل. واذا كنت لا تعلم، يمكنك تجاهل هذا الخيار بأمان."
 
 #: inc/admin/ui/modules/varnish.php:53
 msgid "Sync Varnish cache:"
-msgstr ""
+msgstr "مزامنة ذاكرة التخزين المؤقت لـ Varnish :"
 
 #: inc/admin/ui/modules/varnish.php:60
 msgid "Purge Varnish cache automatically"
-msgstr ""
+msgstr "حذف ذاكرة التخزين المؤقت لـ Varnish تلقائيا"
 
 #: inc/admin/ui/modules/varnish.php:62
 msgid "Sync Varnish cache with plugin cache"
-msgstr ""
+msgstr "مزامنة ذاكرة التخزين المؤقت لـ Varnish مع إضافة التخزين المؤقت"
 
 #: inc/admin/ui/modules/varnish.php:69
 #, php-format
 msgid ""
 "Varnish cache will be purged each time %s clears its cache to ensure content"
 " is always up to date."
-msgstr ""
+msgstr "سيتم مسح ملفات التخزين المؤقت لـ Varnish في كل مرة يتم فيها مسح ذاكرة التخزين المؤقت لإضافة %s لضمان تحديث المحتوى دائما."
 
 #: inc/admin/ui/modules/white-label.php:7
 #: inc/admin/ui/modules/white-label.php:16
@@ -2006,187 +1829,176 @@ msgstr "إعادة تعيين القيم الإفتراضية للعلامة ا�
 msgid ""
 "The Support tab and all links to WP Rocket’s documentation will be hidden "
 "when you customize these fields."
+msgstr "سيتم إخفاء علامة التبويب الخاصة بالدعم وجميع روابط الوثائق الخاصة بـ WP Rockets عند تفعيل هذا الخيار."
+
+#: inc/admin/ui/notices.php:26
+#, php-format
+msgid ""
+"<strong>%1$s</strong> can not be deactivated because of "
+"<code>%2$s</code>.<br>This constant is still defined in <code>%3$s</code>. "
+"Its value must be set to <code>false</code>, but apparently %1$s does not "
+"have writing permissions for <code>%3$s</code>.<br>Please make "
+"<code>%3$s</code> writable, then retry deactivation."
 msgstr ""
 
-#: inc/admin/ui/notices.php:24 inc/admin/ui/notices.php:28
+#: inc/admin/ui/notices.php:36
 #, php-format
-msgid "<b>%1$s</b> can not be deactivated because of <code>%1$s</code>."
+msgid ""
+"<strong>%1$s</strong> can not be deactivated because of "
+"<code>%2$s</code>.<br>This file is not writable for %1$s, so %1$s can not "
+"remove its own directives.<br>Please make <code>%3$s</code> writable, then "
+"retry deactivation."
 msgstr ""
 
-#: inc/admin/ui/notices.php:24
-msgid ""
-"This constant is still defined in <code>wp-config.php</code> file and its "
-"value must be set to <code>false</code>."
-msgstr "لا يزال هذا الكود مُفعل في ملف <code>wp-config.php</code> ويجب تغيير قيمته إلي <code>false</code>."
+#: inc/admin/ui/notices.php:75
+msgid "You can still force deactivation by clicking here."
+msgstr "لا يزال بإمكانك فرض التعطيل بالنقر هنا."
 
-#: inc/admin/ui/notices.php:24
-#, php-format
-msgid "Maybe we do not have the writing permissions for <code>%s</code>."
-msgstr "ربما ليس لدينا أذونات الكتابة لـ <code>%s</code>."
-
-#: inc/admin/ui/notices.php:24 inc/admin/ui/notices.php:28
-msgid ""
-"Please give us permissions or resolve the problem yourself. Then retry "
-"deactivation."
-msgstr "يرجى تعطينا الصلاحيات أو ان تحل المشكلة بنفسك. ثم أعد محاولة التعطيل."
-
-#: inc/admin/ui/notices.php:28
-msgid "This file is not writable and we can not remove these directives."
-msgstr "هذا الملف غير قابل للكتابة، ولا يمكن إزالة هذه التوجيهات."
-
-#: inc/admin/ui/notices.php:28
-#, php-format
-msgid "Maybe we do not have writing permissions for <code>%s</code>."
-msgstr "ربما ليس لدينا أذونات الكتابة لـ <code>%s</code>."
-
-#: inc/admin/ui/notices.php:64
-msgid "You can still force the deactivation by clicking here."
-msgstr "مازال يمكنك إجبار التعطيل بالضغط هنا."
-
-#: inc/admin/ui/notices.php:89
+#: inc/admin/ui/notices.php:100
 #, php-format
 msgid ""
-"<b>%s</b>: One or more extensions have been enabled or disabled, do not "
-"forget to clear the cache if necessary."
-msgstr "<b>%s</b>: تم تفعيل او تعطيل إضافة أو أكثر، لا تنسى أن تمسح ذاكرة التخزين المؤقت إذا لزم الأمر."
+"<strong>%s</strong>: One or more extensions have been enabled or disabled, "
+"clear the cache if necessary."
+msgstr "<strong>%s</strong>: تم تفعيل او تعطيل إضافة أو أكثر، امسح ذاكرة التخزين المؤقت إذا لزم الأمر."
 
-#: inc/admin/ui/notices.php:193
+#: inc/admin/ui/notices.php:204
 #, php-format
 msgid ""
-"<b>%s</b>: The following plugins are not compatible with this plugin and may"
-" cause unexpected results:"
-msgstr "<b>%s</b>:  الإضافات التالية غير متوافقة مع هذه الإضافة وقد تسبب نتائج غير متوقعة:"
+"<strong>%s</strong>: The following plugins are not compatible with this "
+"plugin and may cause unexpected results:"
+msgstr "<strong>%s</strong>: الإضافات التالية غير متوافقة مع هذه الإضافة وقد تسبب نتائج غير متوقعة:"
 
-#: inc/admin/ui/notices.php:198
+#: inc/admin/ui/notices.php:209
 msgid "Deactivate"
 msgstr "تعطيل"
 
-#: inc/admin/ui/notices.php:223
+#: inc/admin/ui/notices.php:236
 #, php-format
 msgid ""
-"<b>%1$s</b>: A custom permalink structure is required for the plugin to work"
-" properly. Please go to <a href=\"%1$s\">Permalink</a> to configure it."
-msgstr ""
+"<strong>%1$s</strong>: A custom permalink structure is required for the "
+"plugin to work properly. Please go to <a href=\"%2$s\">Permalink</a> to "
+"configure it."
+msgstr "<strong>%1$s</strong>: لتعمل الإضافه بشكل صحيح مطلوب إنشاء تركيبة مخصصة للروابط الدائمة. برجاء الذهاب إلي\n<a href=\"%2$s\">الروابط الدائمة</a> لضبطها."
 
-#: inc/admin/ui/notices.php:253
+#: inc/admin/ui/notices.php:271
 #, php-format
 msgid ""
-"<b>%1$s</b>: It seems we don't have <a href=\"%1$s\" "
+"<strong>%1$s</strong>: It seems we do not have <a href=\"%2$s\" "
 "target=\"_blank\">writing permissions</a> on <code>wp-config.php</code> file"
 " or the value of the constant <code>WP_CACHE</code> is set to "
 "<code>false</code>"
-msgstr ""
+msgstr "<strong>%1$s</strong>: يبدو أننا ليس لدينا <a href=\"%2$s\" target=\"_blank\">صلاحيات الكتابة</a> علي ملف <code>wp-config.php</code> أو أن قيمة بالملف <code>WP_CACHE</code> تم ضبطها علي <code>false</code>"
 
-#: inc/admin/ui/notices.php:255
+#: inc/admin/ui/notices.php:276
 msgid ""
 "To fix this you have to set writing permissions for <code>wp-"
 "config.php</code> and then save the settings again."
 msgstr "لإصلاح هذه المشكلة يجب إعطاء صلاحيات الكتابة إلي <code>wp-config.php</code> وثم حفظ الإعدادات مرة أخرى."
 
-#: inc/admin/ui/notices.php:257
+#: inc/admin/ui/notices.php:278
 msgid ""
 "If the message persists, you have to put the following code in your <code"
 ">wp-config.php</code> file so that it works correctly. Click on the field "
 "and press Ctrl-A to select all."
 msgstr "إذا استمرت ظهور الرسالة، يجب عليك وضع الكود التالي في ملف <code>wp-config.php</code> ليعمل بشكل صحيح. أنقر علي الحقل وأضغط علي Ctrl+A لتحديد الكل."
 
-#: inc/admin/ui/notices.php:295
+#: inc/admin/ui/notices.php:316
 #, php-format
 msgid ""
 "If you had <a href=\"%1$s\" target=\"_blank\">writing permissions</a> on "
-"<code>%2$s</code> file, <b>%3$s</b> could do this automatically. This is not"
-" the case, here is the code you should add in your <code>%2$s</code> file "
-"for <b>%3$s</b> to work properly."
-msgstr "إذا كان لديك <a href=\"%1$s\" target=\"_blank\">صلاحيات الكتابة</a> علي ملف <code>%2$s</code> ، <b>%3$s</b> يمكن القيام بذلك تلقائياً. إذا لم يكن لديك الصلاحيات، ها هو الكود الذي يجب إضافته ملف <code>%2$s</code> لـ <b>%3$s</b> لتعمل بشكل صحيح."
+"<code>%2$s</code> file, <strong>%3$s</strong> could do this automatically. "
+"This is not the case, here is the code you should add in your "
+"<code>%2$s</code> file for <strong>%3$s</strong> to work properly."
+msgstr ""
 
-#: inc/admin/ui/notices.php:326
+#: inc/admin/ui/notices.php:347
 #, php-format
 msgid ""
 "It seems that the <code>%s</code> file is not ours. Save the settings, we "
-"will automatically recreate the correct one. If it's still not working, "
+"will automatically recreate the correct one. If it still does not work, "
 "please delete it and save again."
-msgstr "يبدو أن ملف <code>%s</code> ليس لنا. أحفظ الإعدادات، وسوف نقوم بشكل تلقائي بإعاده إنشاء الملف الصحيح. وإذا إستمرت المشكلة، من فضلك قم بحذفه وإعاده الحفظ مره اخري."
+msgstr ""
 
-#: inc/admin/ui/notices.php:355
+#: inc/admin/ui/notices.php:376
 #, php-format
 msgid ""
 "If you had <a href=\"%1$s\" target=\"_blank\">writing permissions</a> on "
-"<code>.htaccess</code> file, <b>%2$s</b> could do this automatically. This "
-"is not the case, so here are the rewrite rules you have to put in your "
-"<code>.htaccess</code> file for <b>%2$s</b> to work correctly. Click on the "
-"field and press Ctrl-A to select all."
-msgstr "إذا كان لديك <a href=\"%1$s\" target=\"_blank\">صلاحيات الكتابة</a> علي ملف <code>.htaccess</code>، <b>%2$s</b>يمكن القيام بذلك تلقائياً. إذا لم يكن لديك الصلاحيات، ها هو الكود الذي يجب إضافته في ملف <code>.htaccess</code> لـ <b>%2$s</b> لتعمل بشكل صحيح. أنقر علي الحقل وأضغط Ctrl-A لتحديد الكل."
+"<code>.htaccess</code> file, <strong>%2$s</strong> could do this "
+"automatically. This is not the case, so here are the rewrite rules you have "
+"to put in your <code>.htaccess</code> file for <strong>%2$s</strong> to work"
+" correctly. Click on the field and press Ctrl-A to select all."
+msgstr ""
 
-#: inc/admin/ui/notices.php:355
+#: inc/admin/ui/notices.php:376
 msgid ""
 "<strong>Warning:</strong> This message will popup again and its content may "
 "be updated when saving the options"
 msgstr "<strong>تحذير:</strong> سوف تظهر هذه الرسالة مرة أخرى وربما يتم تحديث محتواها عند حفظ الخيارات"
 
-#: inc/admin/ui/notices.php:382
+#: inc/admin/ui/notices.php:403
 #, php-format
 msgid ""
 "Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
-"permissions</a> on <b>%3$s</b> domain configuration folder "
-"(<code>%2$s</code>). To make <b>%3$s</b> work properly, please CHMOD "
-"<code>755</code> or <code>775</code> or <code>777</code> this "
+"permissions</a> on <strong>%3$s</strong> domain configuration folder "
+"(<code>%2$s</code>). To make <strong>%3$s</strong> work properly, please "
+"CHMOD <code>755</code> or <code>775</code> or <code>777</code> this "
 "folder.<br/>When the problem is solved, thank you to save the %3$s options "
 "to generate the configuration file."
-msgstr "كن حذراً، ليس لديك <a href=\"%1$s\" target=\"_blank\">صلاحيات كتابة</a> علي <b>%3$s</b> مجلد ضبط النطاق (<code>%2$s</code>). لجعل <b>%3$s</b> تعمل بشكل صحيح، من فضلك ضع صلاحيات CHMOD <code>755</code> أو <code>775</code> أو <code>777</code> علي هذا المجلد <br/>عندما يتم حل المشكلة، شكراً لك لحفظ خيارات %3$s لإعادة إنشاء ملف الضبط."
+msgstr ""
 
-#: inc/admin/ui/notices.php:408
+#: inc/admin/ui/notices.php:429
 #, php-format
 msgid ""
 "Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
-"permissions</a> on <b>%3$s</b> cache folder (<code>%2$s</code>). For "
-"<b>%3$s</b> works properly, please CHMOD <code>755</code> or "
+"permissions</a> on <strong>%3$s</strong> cache folder (<code>%2$s</code>). "
+"For <strong>%3$s</strong> works properly, please CHMOD <code>755</code> or "
 "<code>775</code> or <code>777</code> this folder."
-msgstr "كن حذراً، ليس لديك <a href=\"%1$s\" target=\"_blank\">صلاحيات كتابة</a> علي <b>%3$s</b> مجلد التخزين المؤقت (<code>%2$s</code>). لجعل <b>%3$s</b> تعمل بشكل صحيح، من فضلك ضع صلاحيات CHMOD <code>755</code> أو <code>775</code> أو <code>777</code> علي هذا المجلد."
+msgstr ""
 
-#: inc/admin/ui/notices.php:435
+#: inc/admin/ui/notices.php:456
 #, php-format
 msgid ""
 "Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
-"permissions</a> on <b>%3$s</b> minified cache folder (<code>%2$s</code>). To"
-" make <b>%3$s</b> work properly, please CHMOD <code>755</code> or "
-"<code>775</code> or <code>777</code> this folder."
-msgstr "كن حذراً، ليس لديك <a href=\"%1$s\" target=\"_blank\">صلاحيات كتابة</a> علي <b>%3$s</b> مجلد التخزين المؤقت للملفات المصغرة(<code>%2$s</code>). لجعل <b>%3$s</b> تعمل بشكل صحيح، من فضلك ضع صلاحيات CHMOD <code>755</code> أو <code>775</code> أو <code>777</code> علي هذا المجلد."
+"permissions</a> on <strong>%3$s</strong> minified cache folder "
+"(<code>%2$s</code>). To make <strong>%3$s</strong> work properly, please "
+"CHMOD <code>755</code> or <code>775</code> or <code>777</code> this folder."
+msgstr ""
 
-#: inc/admin/ui/notices.php:463
+#: inc/admin/ui/notices.php:484
 #, php-format
 msgid ""
 "Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
-"permissions</a> on <b>%3$s</b> cache busting folder (<code>%2$s</code>). To "
-"make <b>%3$s</b> work properly, please CHMOD <code>755</code> or "
-"<code>775</code> or <code>777</code> this folder."
-msgstr "كن حذراً، ليس لديك <a href=\"%1$s\" target=\"_blank\">صلاحيات كتابة</a> علي <b>%3$s</b> مجلد التخزين المؤقت (<code>%2$s</code>). لجعل <b>%3$s</b> تعمل بشكل صحيح، من فضلك ضع صلاحيات CHMOD <code>755</code> أو <code>775</code> أو <code>777</code> علي هذا المجلد."
+"permissions</a> on <strong>%3$s</strong> cache busting folder "
+"(<code>%2$s</code>). To make <strong>%3$s</strong> work properly, please "
+"CHMOD <code>755</code> or <code>775</code> or <code>777</code> this folder."
+msgstr ""
 
-#: inc/admin/ui/notices.php:486
+#: inc/admin/ui/notices.php:507
 msgid "Thank you. Your license has been successfully validated!"
 msgstr "شكراً لك. تم التحقق من صحة الترخيص الخاص بك بنجاح!."
 
-#: inc/admin/ui/notices.php:487
+#: inc/admin/ui/notices.php:510
 #, php-format
-msgid "Key: <code>%1$s</code><br>Email: <i>%1$s</i>"
+msgid "Key: <code>%1$s</code><br>Email: <em>%2$s</em>"
 msgstr ""
 
-#: inc/admin/ui/notices.php:540
+#: inc/admin/ui/notices.php:566
 msgid "Activate Imagify"
 msgstr "تفعيل Imagify"
 
-#: inc/admin/ui/notices.php:540
+#: inc/admin/ui/notices.php:566
 msgid "Install Imagify for Free"
 msgstr "تثبيت Imagify مجانا"
 
-#: inc/admin/ui/notices.php:555
+#: inc/admin/ui/notices.php:581
 msgid ""
 "Speed up your website and boost your SEO by reducing image file sizes "
 "without losing quality with Imagify."
 msgstr "تسريع موقع الويب الخاص بك وتحسين تهيئة محرك البحث عبر تقليل حجم الصور بدون خسارة جودتها مع خدمة Imagify."
 
-#: inc/admin/ui/notices.php:560
+#: inc/admin/ui/notices.php:586
 msgid "More details"
-msgstr ""
+msgstr "مزيد من التفاصيل"
 
 #: inc/admin/updater.php:65 inc/admin/updater.php:72
 #, php-format
@@ -2244,7 +2056,7 @@ msgstr ""
 
 #: inc/functions/cloudflare.php:17
 msgid "Cloudflare Email and API key are not set"
-msgstr ""
+msgstr "لم يتم تعيين البريد الإلكتروني ومفتاح API لخدمة الكلاودفلير"
 
 #: inc/functions/cloudflare.php:43
 msgid "No Zone ID set in the WP Rocket settings"
@@ -2252,7 +2064,7 @@ msgstr "لم يتم تعيين Zone ID في  اعدادات اضافة WP Rocket
 
 #: inc/functions/cloudflare.php:76
 msgid "Connection to Cloudflare failed"
-msgstr ""
+msgstr "فشل الاتصال بكلاودفلير"
 
 #: inc/functions/cloudflare.php:98
 msgid "Choose a domain from the list"
@@ -2260,21 +2072,21 @@ msgstr "اختر نطاق من القائمة"
 
 #: inc/functions/cloudflare.php:111
 msgid "No domain available in your Cloudflare account"
-msgstr ""
+msgstr "لا يوجد نطاقات علي حساب الكلاودفلير الخاص بك"
 
-#: inc/functions/options.php:602
+#: inc/functions/options.php:598
 msgid "Your license is not valid."
 msgstr "الترخيص الخاص بك غير صالح."
 
-#: inc/functions/options.php:603
+#: inc/functions/options.php:599
 msgid "You cannot add more websites. Upgrade your account."
 msgstr "لا يمكنك إضافة مواقع آخري. قم بترقية حسابك."
 
-#: inc/functions/options.php:604
+#: inc/functions/options.php:600
 msgid "This website is not allowed."
 msgstr "غير مسموح لهذا الموقع."
 
-#: inc/functions/options.php:605
+#: inc/functions/options.php:601
 msgid "This license key is not accepted."
 msgstr "الترخيص الخاص بك غير مقبول."
 
