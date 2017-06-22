@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2017-06-01 10:57-0400\n"
-"PO-Revision-Date: 2017-06-07 11:04+0000\n"
+"POT-Creation-Date: 2017-06-13 11:41-0400\n"
+"PO-Revision-Date: 2017-06-20 05:04+0000\n"
 "Last-Translator: BouRock\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/wp-media/wp-rocket/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: tr_TR\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 1.8.11\n"
+"X-Generator: Poedit 1.8.9\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -25,15 +25,14 @@ msgstr ""
 
 #: inc/3rd-party/all-in-one-seo-pack.php:77
 msgid "All in One SEO XML sitemap"
-msgstr "Tümü Bir SEO XML site haritasında"
+msgstr "Tümü Bir SEO XML site haritasındaombine"
 
-#: inc/3rd-party/all-in-one-seo-pack.php:79 inc/3rd-party/jetpack.php:78
-#: inc/3rd-party/yoast-seo.php:79
+#: inc/3rd-party/all-in-one-seo-pack.php:79 inc/3rd-party/yoast-seo.php:79
 #, php-format
 msgid "Preload the sitemap from the %s plugin"
 msgstr "Site haritasını %s eklentisinden ön yükleme yap"
 
-#: inc/3rd-party/all-in-one-seo-pack.php:86 inc/3rd-party/jetpack.php:85
+#: inc/3rd-party/all-in-one-seo-pack.php:86 inc/3rd-party/jetpack.php:96
 #: inc/3rd-party/yoast-seo.php:86
 #, php-format
 msgid ""
@@ -41,15 +40,19 @@ msgid ""
 "check the option to preload it."
 msgstr "%s eklentisi tarafından üretilen site haritasını otomatik olarak algıladık. Ön yüklemek için seçeneği işaretleyebilirsiniz."
 
-#: inc/3rd-party/jetpack.php:76
+#: inc/3rd-party/jetpack.php:86
 msgid "Jetpack XML Sitemaps"
 msgstr "Jetpack XML site haritaları"
+
+#: inc/3rd-party/jetpack.php:88
+msgid "Preload the sitemap from the Jetpack plugin"
+msgstr "Site haritasını Jetpack eklentisinden ön yükleme yap"
 
 #: inc/3rd-party/yoast-seo.php:77
 msgid "Yoast SEO XML sitemap"
 msgstr "Yoast SEO XML site haritası"
 
-#: inc/admin/admin.php:14 inc/admin/options.php:573
+#: inc/admin/admin.php:14 inc/admin/options.php:571
 #: inc/admin/ui/modules/support.php:4 inc/common/admin-bar.php:248
 msgid "Support"
 msgstr "Destek"
@@ -58,8 +61,7 @@ msgstr "Destek"
 msgid "Docs"
 msgstr "Belgeler"
 
-#: inc/admin/admin.php:18 inc/admin/ui/modules/faq.php:4
-#: inc/admin/ui/modules/faq.php:7 inc/common/admin-bar.php:240
+#: inc/admin/admin.php:18 inc/common/admin-bar.php:240
 msgid "FAQ"
 msgstr "SSS"
 
@@ -75,149 +77,6 @@ msgstr "Bu önbelleği temizle"
 #, php-format
 msgid "%s Update Rollback"
 msgstr "%s Güncellemesi Geri Alma"
-
-#: inc/admin/faq.inc.php:2
-msgid "FAQ's Table of Content"
-msgstr "SSS'ın İçindekiler"
-
-#: inc/admin/faq.inc.php:4
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/67-what-exactly-does-wp-rocket-"
-"do?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
-"target=\"_blank\">What exactly does WP Rocket do?</a>"
-msgstr "<a href=\"http://docs.wp-rocket.me/article/67-what-exactly-does-wp-rocket-do?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">WP Rocket tam olarak ne yapıyor?</a>"
-
-#: inc/admin/faq.inc.php:5
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/77-my-license-has-expired-what-"
-"should-i-do?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
-"target=\"_blank\">My license has expired, what should I do?</a>"
-msgstr "<a href=\"http://docs.wp-rocket.me/article/77-my-license-has-expired-what-should-i-do?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">Lisansımın süresi doldu, ne yapmalıyım?</a>"
-
-#: inc/admin/faq.inc.php:6
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/66-how-many-sites-is-my-key-"
-"valid-for?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
-"target=\"_blank\">How many sites is my key valid for?</a>"
-msgstr "<a href=\"http://docs.wp-rocket.me/article/66-how-many-sites-is-my-key-valid-for?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">Anahtarım kaç tane site için geçerli?</a>"
-
-#: inc/admin/faq.inc.php:7
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/72-i-want-to-change-the-url-of-"
-"my-site-associated-with-my-license-what-"
-"should-i-d?utm_source=plugin&utm_medium=faq&utm_campaign=doco\" "
-"target=\"_blank\">I want to change the URL of my website associated with my "
-"license, what should I do?</a>"
-msgstr "<a href=\"http://docs.wp-rocket.me/article/72-i-want-to-change-the-url-of-my-site-associated-with-my-license-what-should-i-d?utm_source=plugin&utm_medium=faq&utm_campaign=doco\" target=\"_blank\">Lisansım ile ilişkilendirilmiş web sitemin URL'sini değiştirmek istiyorum, ne yapmalıyım?</a>"
-
-#: inc/admin/faq.inc.php:8
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/68-i-have-turned-any-of-the-"
-"basic-options-on-does-wp-rocket-"
-"work?utm_source=plugin&utm_medium=faq&utm_campaign=doc\">I haven't turned "
-"any of the basic options on, does WP Rocket work?</a>"
-msgstr "<a href=\"http://docs.wp-rocket.me/article/68-i-have-turned-any-of-the-basic-options-on-does-wp-rocket-work?utm_source=plugin&utm_medium=faq&utm_campaign=doc\">Temel seçeneklerin hiçbirini açmadım, WP Rocket çalışır mı?</a>"
-
-#: inc/admin/faq.inc.php:9
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/78-how-often-is-the-cache-"
-"updated?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
-"target=\"_blank\">How often is the cache updated?</a>"
-msgstr "<a href=\"http://docs.wp-rocket.me/article/78-how-often-is-the-cache-updated?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">Ne sıklıkla önbellek güncellenir?</a>"
-
-#: inc/admin/faq.inc.php:10
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/70-does-wp-rocket-work-with-"
-"default-permalinks?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
-"target=\"_blank\">Does WP Rocket work with default permalinks?</a>"
-msgstr "<a href=\"http://docs.wp-rocket.me/article/70-does-wp-rocket-work-with-default-permalinks?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">WP Rocket varsayılan kalıcı bağlantılar ile çalışır mı?</a>"
-
-#: inc/admin/faq.inc.php:11
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/71-which-web-servers-is-wp-"
-"rocket-compatible-with?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
-"target=\"_blank\">Which web servers WP Rocket is compatible with?</a>"
-msgstr "<a href=\"http://docs.wp-rocket.me/article/71-which-web-servers-is-wp-rocket-compatible-with?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">WP Rocket hangi web sunucuları ile uyumlu?</a>"
-
-#: inc/admin/faq.inc.php:12
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/8-how-the-cache-is-"
-"preloaded?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
-"target=\"_blank\">How is the Cache Preloaded?</a>"
-msgstr "<a href=\"http://docs.wp-rocket.me/article/8-how-the-cache-is-preloaded?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">Önbellek nasıl Önyükleme yapılır?</a>"
-
-#: inc/admin/faq.inc.php:13
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/69-which-tools-should-i-use-to-"
-"measure-the-performance-of-my-"
-"site?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
-"target=\"_blank\">Which tools should I use to measure the performance of my "
-"website?</a>"
-msgstr "<a href=\"http://docs.wp-rocket.me/article/69-which-tools-should-i-use-to-measure-the-performance-of-my-site?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">Web sitemin performansını ölçmek için hangi araçları kullanmalıyım?</a>"
-
-#: inc/admin/faq.inc.php:14
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/115-can-i-use-wp-rocket-with-"
-"sitegrounds-supercacher?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
-"target=\"_blank\">Can I Use WP Rocket With Siteground's SuperCacher?</a>"
-msgstr "<a href=\"http://docs.wp-rocket.me/article/115-can-i-use-wp-rocket-with-sitegrounds-supercacher?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">WP Rocket'ı Siteground'un SuperCacher'ı ile kullanabilirmiyim?</a>"
-
-#: inc/admin/faq.inc.php:15
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/73-is-wp-rocket-compatible-with-"
-"others-cache-plugins-like-wp-super-cache-or-w3-total-"
-"cache?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
-"target=\"_blank\">Is WP Rocket compatible with others cache plugins like WP "
-"Super Cache or W3 Total Cache?</a>"
-msgstr "<a href=\"http://docs.wp-rocket.me/article/73-is-wp-rocket-compatible-with-others-cache-plugins-like-wp-super-cache-or-w3-total-cache?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">WP Rocket, WP Super Cache veya W3 Total Cache gibi diğer önbellekleme eklentileri ile uyumlu mu?</a>"
-
-#: inc/admin/faq.inc.php:16
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/75-is-wp-rocket-compatible-with-e"
-"-commerce-plugins?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
-"target=\"_blank\">Is WP Rocket compatible with e-commerce plugins?</a>"
-msgstr "<a href=\"http://docs.wp-rocket.me/article/75-is-wp-rocket-compatible-with-e-commerce-plugins?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">WP Rocket, e-ticaret eklentileri ile uyumlu mu?</a>"
-
-#: inc/admin/faq.inc.php:17
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/76-is-wp-rocket-compatible-with-"
-"wpml-qtranslate-or-"
-"polylang?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
-"target=\"_blank\">Is WP Rocket compatible with WPML, qTranslate or "
-"Polylang?</a>"
-msgstr "<a href=\"http://docs.wp-rocket.me/article/76-is-wp-rocket-compatible-with-wpml-qtranslate-or-polylang?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">WP Rocket, WPML, qTranslate veya Polylang ile uyumlu mu?</a>"
-
-#: inc/admin/faq.inc.php:18
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/74-is-wp-rocket-compatible-with-"
-"wp-touch-wordpress-mobile-pack-and-wp-mobile-"
-"detector?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
-"target=\"_blank\">Is WP Rocket compatible with WP Touch, WordPress Mobile "
-"Pack and WP Mobile Detector?</a>"
-msgstr "<a href=\"http://docs.wp-rocket.me/article/74-is-wp-rocket-compatible-with-wp-touch-wordpress-mobile-pack-and-wp-mobile-detector?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">WP Rocket, WP Touch, WordPress Mobile Pack ve WP Mobile Detector ile uyumlu mu?</a>"
-
-#: inc/admin/faq.inc.php:19
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/79-reports-from-pagespeed-and-"
-"yslow-tell-me-that-the-content-is-not-gziped-and-or-did-not-expire-what-"
-"should-i-do?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
-"target=\"_blank\">Reports from PageSpeed and YSlow tell me that the content "
-"is not gziped and/or did not expire, what should I do?</a>"
-msgstr "<a href=\"http://docs.wp-rocket.me/article/79-reports-from-pagespeed-and-yslow-tell-me-that-the-content-is-not-gziped-and-or-did-not-expire-what-should-i-do?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">PageSpeed ve YSlow'dan gelen raporlar içeriğin gzip'lenmediğini ve/veya süresinin dolmadığını söylüyor, ne yapmalıyım?</a>"
-
-#: inc/admin/faq.inc.php:20
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/106-my-site-is-"
-"broken?utm_source=plugin&utm_medium=faq&utm_campaign=doc\">What should I do "
-"if WP Rocket distorts my website display?</a>"
-msgstr "<a href=\"http://docs.wp-rocket.me/article/106-my-site-is-broken?utm_source=plugin&utm_medium=faq&utm_campaign=doc\">Eğer WP Rocket web sitemin görüntüsünü bozarsa ne yapmalıyım?</a>"
-
-#: inc/admin/faq.inc.php:21
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/54-exclude-pages-from-the-"
-"cache?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
-"target=\"_blank\">How to exclude a particular page from caching?</a>"
-msgstr "<a href=\"http://docs.wp-rocket.me/article/54-exclude-pages-from-the-cache?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">Belirli bir sayfayı önbelleklenmekten nasıl hariç tutarım?</a>"
 
 #: inc/admin/options.php:117
 msgid "Your Cloudflare credentials are valid."
@@ -262,7 +121,7 @@ msgstr "İndirme seçenekleri"
 
 #: inc/admin/options.php:265
 msgid "<strong>JS</strong> files with Deferred Loading JavaScript"
-msgstr "Yüklemesi Geciktirilen JavaScript'i olan <strong>JS</strong> dosyaları"
+msgstr "Yüklemesi Ertelenmiş JavaScript'i olan <strong>JS</strong> dosyaları"
 
 #: inc/admin/options.php:318 inc/admin/ui/modules/optimization.php:428
 msgid "Add URL"
@@ -295,123 +154,123 @@ msgstr "CNAME Ekle"
 msgid "Watch the video"
 msgstr "Görüntüyü izle"
 
-#: inc/admin/options.php:555
+#: inc/admin/options.php:553
 msgid "Basic"
 msgstr "Temel"
 
-#: inc/admin/options.php:556
+#: inc/admin/options.php:554
 msgid "Static Files"
 msgstr "Sabit Dosyalar"
 
-#: inc/admin/options.php:557 inc/admin/ui/meta-boxes.php:72
+#: inc/admin/options.php:555 inc/admin/ui/meta-boxes.php:72
 msgid "CDN"
 msgstr "CDN"
 
-#: inc/admin/options.php:558
+#: inc/admin/options.php:556
 msgid "Advanced"
 msgstr "Gelişmiş"
 
-#: inc/admin/options.php:559
+#: inc/admin/options.php:557
 msgid "Database"
 msgstr "Veritabanı"
 
-#: inc/admin/options.php:560
+#: inc/admin/options.php:558
 msgid "Preload"
 msgstr "Önyükle"
 
-#: inc/admin/options.php:569 inc/admin/ui/modules/white-label.php:4
+#: inc/admin/options.php:567 inc/admin/ui/modules/white-label.php:4
 msgid "White Label"
 msgstr "Beyaz Etiket"
 
-#: inc/admin/options.php:571 inc/admin/ui/modules/tools.php:7
+#: inc/admin/options.php:569 inc/admin/ui/modules/tools.php:7
 msgid "Tools"
 msgstr "Araçlar"
 
-#: inc/admin/options.php:576
+#: inc/admin/options.php:574
 msgid "License"
 msgstr "Lisans"
 
-#: inc/admin/options.php:994
+#: inc/admin/options.php:992
 msgid "Settings imported and saved."
 msgstr "Ayarlar içe aktarıldı ve kaydedildi."
 
-#: inc/admin/options.php:1010 inc/admin/options.php:1179
+#: inc/admin/options.php:1008 inc/admin/options.php:1177
 msgid "Settings saved."
 msgstr "Ayarlar kaydedildi."
 
-#: inc/admin/options.php:1106
+#: inc/admin/options.php:1104
 #, php-format
 msgid "Cloudflare development mode error: %s"
 msgstr "Cloudflare geliştirme kipi hatası: %s"
 
-#: inc/admin/options.php:1108
+#: inc/admin/options.php:1106
 #, php-format
 msgid "Cloudflare development mode %s"
 msgstr "Cloudflare geliştirme kipi %s"
 
-#: inc/admin/options.php:1120
+#: inc/admin/options.php:1118
 #, php-format
 msgid "Cloudflare cache level error: %s"
 msgstr "Cloudflare önbellek seviyesi hatası: %s"
 
-#: inc/admin/options.php:1122
+#: inc/admin/options.php:1120
 #, php-format
 msgid "Cloudflare cache level set to %s"
 msgstr "Cloudflare önbellek seviyesi %s olarak ayarlandı"
 
-#: inc/admin/options.php:1130
+#: inc/admin/options.php:1128
 #, php-format
 msgid "Cloudflare minification error: %s"
-msgstr "Cloudflare küçülttürme hatası: %s"
+msgstr "Cloudflare küçültme hatası: %s"
 
-#: inc/admin/options.php:1132
+#: inc/admin/options.php:1130
 #, php-format
 msgid "Cloudflare minification %s"
-msgstr "Cloudflare küçülttürme %s"
+msgstr "Cloudflare küçültme %s"
 
-#: inc/admin/options.php:1140
+#: inc/admin/options.php:1138
 #, php-format
 msgid "Cloudflare rocket loader error: %s"
 msgstr "Cloudflare rocket yükleyici hatası: %s"
 
-#: inc/admin/options.php:1142
+#: inc/admin/options.php:1140
 #, php-format
 msgid "Cloudflare rocket loader %s"
 msgstr "Cloudflare rocket yükleyici %s"
 
-#: inc/admin/options.php:1150
+#: inc/admin/options.php:1148
 #, php-format
 msgid "Cloudflare browser cache error: %s"
 msgstr "Cloudflare tarayıcı önbelleği hatası: %s"
 
-#: inc/admin/options.php:1152
+#: inc/admin/options.php:1150
 #, php-format
 msgid "Cloudflare browser cache set to %s seconds"
 msgstr "Cloudflare tarayıcı önbelleği %s saniyeye ayarlandı"
 
-#: inc/admin/options.php:1291
+#: inc/admin/options.php:1289
 msgid ""
 "Before you can upload your import file, you will need to fix the following "
 "error:"
 msgstr "İçe aktarma dosyanızı göndermeden önce, şurada belirtilen hatayı düzeltmeniz gerekecek:"
 
-#: inc/admin/options.php:1298
+#: inc/admin/options.php:1296
 #, php-format
 msgid "Choose a file from your computer (maximum size: %s)"
 msgstr "Bilgisayarınızdan bir dosya seçin (en fazla boyut: %s)"
 
-#: inc/admin/options.php:1301
+#: inc/admin/options.php:1299
 msgid "Upload file and import settings"
 msgstr "Dosyayı gönder ve ayarları içe aktar"
 
 #: inc/admin/ui/enqueue.php:20
-msgid "In case of any display errors we recommend to disable the option."
-msgstr "Herhangi bir görüntü hatası durumunda seçeneği etkisizleştirmeyi öneririz."
+msgid "If there are any display errors we recommend to disable the option."
+msgstr "Eğer herhangi bir görüntü hatası varsa seçeneği etkisizleştirmeyi öneririz."
 
 #: inc/admin/ui/enqueue.php:20
 msgid ""
-"In case of any display errors we recommend following our documentation: "
-msgstr "Herhangi bir görüntü hatası durumunda belgelerimizi takip etmenizi öneririz:"
+"If there are any display errors we recommend following our documentation: "
+msgstr "Eğer herhangi bir görüntü hatası varsa belgelerimizi takip etmenizi öneririz:"
 
 #: inc/admin/ui/enqueue.php:20
 #, php-format
@@ -434,7 +293,7 @@ msgstr "Cloudflare Ayarları"
 
 #: inc/admin/ui/enqueue.php:28
 msgid "Click \"Save Changes\" to activate the Cloudflare tab."
-msgstr "Cloudflare sekmesini etkinleştirmek için \"Değişiklikleri Kaydet\" düğmesine tıklayın."
+msgstr "Cloudflare sekmesini aktif etmek için \"Değişiklikleri Kaydet\" düğmesine tıklayın."
 
 #: inc/admin/ui/enqueue.php:30
 msgid "Transmitting your message …"
@@ -477,9 +336,9 @@ msgstr "Çağrınızı aldık ve birkaç saat içinde geri döneceğiz!"
 
 #: inc/admin/ui/enqueue.php:41
 msgid ""
-"We answer every ticket, so please check your spam folder in case you do not "
-"hear from us."
-msgstr "Her çağrıyı yanıtlıyoruz, bu yüzden bizden haber alamama durumunda lütfen istenmeyen mesaj klasörünüzü kontrol edin."
+"We answer every ticket, so please check your spam folder if you do not hear "
+"from us."
+msgstr "Her çağrıyı yanıtlıyoruz, bu yüzden bizden haber almadıysanız lütfen istenmeyen mesaj klasörünüzü kontrol edin."
 
 #: inc/admin/ui/enqueue.php:43
 msgid "Oh dear, someone’s been naughty…"
@@ -496,7 +355,7 @@ msgstr "Vay, vay, kendinizin bir \"nulled\" sürüme sahip olduğu görülüyor!
 #, php-format
 msgid ""
 "Click below to buy a license with a 20% discount automatically applied."
-msgstr ""
+msgstr "Otomatik olarak uygulanan %20 indirim ile bir lisans satın almak için aşağıya tıklayın."
 
 #: inc/admin/ui/enqueue.php:45
 msgid "Buy It Now!"
@@ -531,7 +390,7 @@ msgid "Cancel"
 msgstr "İptal"
 
 #: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/modules/tools.php:46
-#: inc/admin/ui/notices.php:89 inc/common/admin-bar.php:45
+#: inc/admin/ui/notices.php:100 inc/common/admin-bar.php:45
 #: inc/common/admin-bar.php:66 inc/common/admin-bar.php:102
 msgid "Clear cache"
 msgstr "Önbelleği temizle"
@@ -546,27 +405,27 @@ msgstr "Bu sayfayı asla önbellekleme"
 
 #: inc/admin/ui/meta-boxes.php:64
 msgid "Activate these options on this post:"
-msgstr "Bu seçenekleri şu yazıda etkinleştir:"
+msgstr "Bu seçenekleri şu yazıda aktif et:"
 
 #: inc/admin/ui/meta-boxes.php:67
-msgid "Images LazyLoad"
-msgstr "LazyLoad Resimler"
+msgid "LazyLoad for images"
+msgstr "Resimler için LazyLoad"
 
 #: inc/admin/ui/meta-boxes.php:68
-msgid "Iframes & Videos LazyLoad"
-msgstr "LazyLoad Iframe'ler ve Görüntüler"
+msgid "LazyLoad for iframes/videos"
+msgstr "Iframe'ler ve görüntüler için LazyLoad"
 
 #: inc/admin/ui/meta-boxes.php:69
-msgid "HTML Minification"
-msgstr "HTML Küçülttürme"
+msgid "Minify/combine HTML"
+msgstr "HTML'i küçült/birleştir"
 
 #: inc/admin/ui/meta-boxes.php:70
-msgid "CSS Minification"
-msgstr "CSS Küçülttürme"
+msgid "Minify/combine CSS"
+msgstr "CSS'yi küçült/birleştir"
 
 #: inc/admin/ui/meta-boxes.php:71
-msgid "JS Minification"
-msgstr "JS Küçülttürme"
+msgid "Minify/combine JS"
+msgstr "JS'yi küçült/birleştir"
 
 #: inc/admin/ui/meta-boxes.php:73
 msgid "Async CSS"
@@ -574,18 +433,18 @@ msgstr "CSS Eşitleme"
 
 #: inc/admin/ui/meta-boxes.php:74
 msgid "Defer JS"
-msgstr "JS Ötele"
+msgstr "JS'i Ertele"
 
 #: inc/admin/ui/meta-boxes.php:79
 #, php-format
 msgid "Activate first the %s option."
-msgstr "Önce %s seçeneğini etkinleştirin."
+msgstr "Önce %s seçeneğini aktif edin."
 
 #: inc/admin/ui/meta-boxes.php:92
 msgid ""
-"<strong>Note:</strong> These options aren't applied if you added this post "
-"in the \"Never cache the following pages\" option."
-msgstr "<strong>Not:</strong> \"Aşağıdaki sayfaları asla önbellekleme\" seçeneğine bu yazıyı eklerseniz bu seçenekler uygulanmaz."
+"<strong>Note:</strong> None of these options will be applied if this post "
+"has been excluded from cache in the global cache settings."
+msgstr "<strong>Not:</strong> Bu yazı genel önbellek ayarlarındaki önbellekten hariç tutulduysa, bu seçeneklerden hiçbiri uygulanmayacaktır."
 
 #: inc/admin/ui/modules/advanced.php:7
 msgid "Advanced options"
@@ -751,15 +610,14 @@ msgid ""
 "fast!<br>How about <a href=\"https://wp-rocket.me/blog/correctly-measure-"
 "websites-page-load-time/\" target=\"_blank\">testing your loading time</a>? "
 "Maybe you don’t even need to configure all these options."
-msgstr "Önbellekleme otomatik olarak etkinleştirildi, web siteniz hızlı yüklenmelidir!<br><a href=\"https://wp-rocket.me/blog/correctly-measure-websites-page-load-time/\" target=\"_blank\">Yükleme sürenizi denemeye</a>  ne dersiniz? Belki de tüm bu seçenekleri yapılandırmanıza gerek kalmaz."
+msgstr "Önbellekleme otomatik olarak aktif edildi, web siteniz hızlı yüklenmelidir!<br><a href=\"https://wp-rocket.me/blog/correctly-measure-websites-page-load-time/\" target=\"_blank\">Yükleme sürenizi denemeye</a>  ne dersiniz? Belki de tüm bu seçenekleri yapılandırmanıza gerek kalmaz."
 
 #: inc/admin/ui/modules/basic.php:46 inc/admin/ui/modules/optimization.php:73
 #: inc/admin/ui/modules/optimization.php:139
 #: inc/admin/ui/modules/optimization.php:305
 #, php-format
-msgid ""
-"Deactivate in case you notice any visually broken items on your website.%s"
-msgstr "Web sitenizde herhangi bir görsel olarak bozulmuş öğeyi fark etmeniz durumunda devre dışı bırakın. %s"
+msgid "Deactivate if you notice any visually broken items on your website.%s"
+msgstr "Eğer web sitenizde herhangi bir görsel olarak bozulmuş öğe fark ederseniz devre dışı bırakın. %s"
 
 #: inc/admin/ui/modules/basic.php:47
 msgid ""
@@ -858,64 +716,65 @@ msgstr "<code>https://</code> olan sayfalar için önbelleklemeyi etkinleştir"
 
 #: inc/admin/ui/modules/basic.php:171
 msgid "SSL cache works best when your entire website runs on HTTPS."
-msgstr ""
+msgstr "SSL önbelleği bütün web siteniz HTTPS üzerinde çalıştığında en iyi şekilde işler."
 
 #: inc/admin/ui/modules/basic.php:171
 msgid ""
 "<a href=\"http://docs.wp-rocket.me/article/314-using-ssl-with-wp-rocket\" "
 "target=\"_blank\">SSL cache</a> works best when your entire website runs on "
 "HTTPS."
-msgstr ""
+msgstr "<a href=\"http://docs.wp-rocket.me/article/314-using-ssl-with-wp-rocket\" target=\"_blank\">SSL önbelleği</a> bütün web siteniz HTTPS üzerinde çalıştığında en iyi şekilde işler."
 
 #: inc/admin/ui/modules/basic.php:181 inc/admin/ui/modules/basic.php:190
 msgid "Emoji cache:"
-msgstr ""
+msgstr "Emoji önbelleği:"
 
 #: inc/admin/ui/modules/basic.php:188
 msgid ""
 "Use default emoji of visitors’ browser instead of loading emoji from "
 "WordPress.org"
-msgstr ""
+msgstr "WordPress.org adresinden emoji yüklemek yerine ziyaretçilerin tarayıcısının varsayılan emoji'sini kullan"
 
 #: inc/admin/ui/modules/basic.php:206 inc/admin/ui/modules/basic.php:215
 msgid "Embeds:"
-msgstr ""
+msgstr "Gömülüler:"
 
 #: inc/admin/ui/modules/basic.php:213
 msgid "Disable WordPress Embeds"
-msgstr ""
+msgstr "WordPress Gömülülerini etkisizleştir"
 
 #: inc/admin/ui/modules/basic.php:220
 msgid ""
 "Prevents others from embedding content from your site, prevents you from "
 "embedding content from other (non-whitelisted) sites, and removes JavaScript"
 " requests related to <a "
-"href=\"https://wordpress.org/news/2015/12/clifford/\">WordPress Embeds</a>."
-msgstr ""
+"href=\"https://wordpress.org/news/2015/12/clifford/\" "
+"target=\"_blank\">WordPress Embeds</a>."
+msgstr "Sitenizden gömülü içerikten diğerlerini korur, diğer (beyaz listeye alınmamış) sitelerden gömülü içerikten sizi korur, ve <a href=\"https://wordpress.org/news/2015/12/clifford/\" target=\"_blank\">WordPress Gömülüleri</a> ile ilgili JavaScript isteklerini kaldırır."
 
 #: inc/admin/ui/modules/basic.php:232
 msgid "Specify time after which the global cache gets cleared (0 = unlimited)"
-msgstr ""
+msgstr "Genel önbelleğin ne kadar süre sonra temizleneceği zamanı belirtin (0 = sınırsız)"
 
 #: inc/admin/ui/modules/basic.php:237
 msgid "Clear cache after …"
-msgstr ""
+msgstr "Şu süreden sonra önbelleği temizle …"
 
 #: inc/admin/ui/modules/basic.php:243
 msgid "Unit of time"
-msgstr ""
+msgstr "Zaman birimi"
 
 #: inc/admin/ui/modules/basic.php:246
 msgid "minute(s)"
-msgstr ""
+msgstr "dakika"
 
 #: inc/admin/ui/modules/basic.php:247
 msgid "hour(s)"
-msgstr ""
+msgstr "saat"
 
 #: inc/admin/ui/modules/basic.php:248
 msgid "day(s)"
-msgstr ""
+msgstr "gün"
 
 #: inc/admin/ui/modules/basic.php:256
 #, php-format
@@ -923,34 +782,34 @@ msgid ""
 "Cache lifespan is the period of time after which all cache files get "
 "removed. Enable <a href=\"%s\">Preloading</a> for the cache to be rebuilt "
 "automatically after lifespan expiration."
-msgstr ""
+msgstr "Önbellek geçerlilik süresi, tüm önbellek dosyaları kaldırıldıktan sonraki  zaman dilimidir. Geçerlilik süresi sona erdikten sonra otomatik olarak yeniden oluşturulması için önbellek <a href=\"%s\">Önyüklemeyi</a> etkinleştirin."
 
 #: inc/admin/ui/modules/basic.php:267
 #, php-format
 msgid ""
-"Reduce lifespan to 10 hours or less in case you notice issues that seem to "
-"appear only frequently.%s"
-msgstr ""
+"Reduce lifespan to 10 hours or less if you notice issues that seem to appear"
+" periodically.%s"
+msgstr "Eğer belirli aralıklarla görünen sorunları fark ederseniz geçerlilik süresini 10 saat veya daha azına düşürün. %s"
 
 #: inc/admin/ui/modules/basic.php:268
 msgid ""
 "<a href=\"http://docs.wp-rocket.me/article/975-nonces-and-cache-lifespan\" "
 "target=\"_blank\">Why?</a>"
-msgstr ""
+msgstr "<a href=\"http://docs.wp-rocket.me/article/975-nonces-and-cache-lifespan\" target=\"_blank\">Neden?</a>"
 
 #: inc/admin/ui/modules/basic.php:276
 msgid ""
-"Increase lifespan to a few hours in case you notice server issues with this "
+"Increase lifespan to a few hours if you notice server issues with this "
 "setting."
-msgstr ""
+msgstr "Eğer bu ayarla ilgili sunucu sorunlarını fark ederseniz geçerlilik süresini birkaç saat arttırın."
 
 #: inc/admin/ui/modules/basic.php:282
-msgid "Cache lifespan"
-msgstr ""
+msgid "Cache lifespan:"
+msgstr "Önbellek geçerlilik süresi:"
 
 #: inc/admin/ui/modules/cdn.php:7
 msgid "Content Delivery Network options"
-msgstr ""
+msgstr "İçerik Dağıtım Ağı seçenekleri"
 
 #: inc/admin/ui/modules/cdn.php:24
 msgid ""
@@ -958,11 +817,11 @@ msgid ""
 "5.6 or greater and therefore is not available for you currently. We "
 "recommend you contact your web host in order to upgrade to a PHP 5.6 or "
 "greater."
-msgstr ""
+msgstr "PHP sürümünüz 5.4 sürümünden düşük. Cloudflare’in tümleştirmesi PHP 5.6 veya daha yüksek sürümü gerektirir ve bu nedenle şu an sizin için kullanılabilir değildir. PHP 5.6 veya daha yükseğine yükseltmek için web barındırıcınız ile iletişime geçmenizi öneririz."
 
 #: inc/admin/ui/modules/cdn.php:30
 msgid "Show Cloudflare settings tab"
-msgstr ""
+msgstr "Cloudflare ayarları sekmesini göster"
 
 #: inc/admin/ui/modules/cdn.php:61
 #, php-format
@@ -972,21 +831,21 @@ msgid ""
 "documentation on <a href=\"http://docs.wp-rocket.me/article/18-using-wp-"
 "rocket-with-cloudflare\" target=\"_blank\">using WP Rocket with "
 "Cloudflare</a>."
-msgstr ""
+msgstr "Cloudflare ayarlarını düzenlemek için <a href=\"%s\">Cloudflare sekmesine</a> gidin. Aşağıdaki CDN ayarları Cloudflare'a uygulanmaz.<br><a href=\"http://docs.wp-rocket.me/article/18-using-wp-rocket-with-cloudflare\" target=\"_blank\">Cloudflare ile WP Rocket kullanımı</a> üzerine belgeleri okuyun."
 
 #: inc/admin/ui/modules/cdn.php:73 inc/admin/ui/modules/cdn.php:82
 msgid "CDN:"
-msgstr ""
+msgstr "CDN:"
 
 #: inc/admin/ui/modules/cdn.php:80
 msgid "Enable Content Delivery Network"
-msgstr ""
+msgstr "İçerik Dağıtım Ağını etkinleştir"
 
 #: inc/admin/ui/modules/cdn.php:88
 msgid ""
 "All URLs of static files (CSS, JS, images) will be rewritten to the CNAME(s)"
 " entered below."
-msgstr ""
+msgstr "Sabit dosyaların (CSS, JS, resimler) tüm URL'leri aşağıya girilen CNAME(lere)e yeniden yazılacaktır."
 
 #: inc/admin/ui/modules/cdn.php:90
 msgid ""
@@ -994,30 +853,34 @@ msgid ""
 " entered below.<br>Read the documentation on <a href=\"http://docs.wp-"
 "rocket.me/article/42-using-wp-rocket-with-a-cdn\" target=\"_blank\">using WP"
 " Rocket with a CDN</a>."
-msgstr ""
+msgstr "Sabit dosyaların (CSS, JS, resimler) tüm URL'leri aşağıya girilen CNAME(lere)e yeniden yazılacaktır.<br><a href=\"http://docs.wp-rocket.me/article/42-using-wp-rocket-with-a-cdn\" target=\"_blank\">bir CDN ile WP Rocket kullanımı</a> üzerine belgeleri okuyun."
 
 #: inc/admin/ui/modules/cdn.php:100
 msgid "CDN CNAME(S):"
-msgstr ""
+msgstr "CDN CNAME(LER):"
+
+#: inc/admin/ui/modules/cdn.php:111 inc/admin/ui/modules/cdn.php:120
+msgid "CDN without SSL:"
+msgstr "SSL'siz CDN:"
 
 #: inc/admin/ui/modules/cdn.php:118
 msgid "Disable CDN functionality on HTTPS pages"
-msgstr ""
+msgstr "HTTPS sayfalarında CDN işlevselliğini etkisizleştir"
 
 #: inc/admin/ui/modules/cdn.php:124
 msgid ""
-"In case your CDN account does not fully support SSL, you can disable URL "
+"If your CDN account does not fully support SSL, you can disable URL "
 "rewriting on HTTPS pages here."
-msgstr ""
+msgstr "Eğer CDN hesabınızın tamamen SSL desteklemiyorsa, burada HTTPS sayfalarında yeniden URL yazımını etkisizleştirebilirsiniz."
 
 #: inc/admin/ui/modules/cdn.php:130 inc/admin/ui/modules/cdn.php:143
 msgid "Exclude files:"
-msgstr ""
+msgstr "Hariç dosyalar:"
 
 #: inc/admin/ui/modules/cdn.php:138
 msgid ""
 "Specify URL(s) of files that should not get served via CDN (one per line)"
-msgstr ""
+msgstr "CDN aracılığıyla sunulmaması gereken dosyaların URL(lerini)sini belirtin (satır başına bir tane)"
 
 #: inc/admin/ui/modules/cdn.php:150
 #, php-format
@@ -1025,68 +888,68 @@ msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use %s "
 "wildcards to exclude all files of a given file type located at a specific "
 "path."
-msgstr ""
+msgstr "URL'nin etki alanı kısmı otomatik olarak sadeleştirilecektir.<br>Belirli bir yolda bulunan verilen bir dosya türünün tüm dosyalarını hariç tutmak için %s joker karakterlerini kullanın."
 
 #: inc/admin/ui/modules/cloudflare.php:11
 msgctxt "Cloudflare"
 msgid "Account email:"
-msgstr ""
+msgstr "Hesap e-postası:"
 
 #: inc/admin/ui/modules/cloudflare.php:18
 msgid "Enter the email address of your Cloudflare account"
-msgstr ""
+msgstr "Cloudflare hesabınızın e-posta adresini girin"
 
 #: inc/admin/ui/modules/cloudflare.php:23
 msgid "Cloudflare account email address"
-msgstr ""
+msgstr "Cloudflare hesabı e-posta adresi"
 
 #: inc/admin/ui/modules/cloudflare.php:37
 msgid "Enter the global API key of your Cloudflare account"
-msgstr ""
+msgstr "Cloudflare hesabınızın genel API anahtarını girin"
 
 #: inc/admin/ui/modules/cloudflare.php:43
 msgid "Global API key"
-msgstr ""
+msgstr "Genel API anahtarı"
 
 #: inc/admin/ui/modules/cloudflare.php:50
 #, php-format
 msgid "<a href=\"%s\" target=\"_blank\">Retrieve your API key</a>"
-msgstr ""
+msgstr "<a href=\"%s\" target=\"_blank\">API anahtarınızı geri alın</a>"
 
 #: inc/admin/ui/modules/cloudflare.php:57
 msgctxt "Cloudflare"
 msgid "Global API key:"
-msgstr ""
+msgstr "Genel API anahtarı:"
 
 #: inc/admin/ui/modules/cloudflare.php:76
 msgctxt "Cloudflare"
 msgid "Domain:"
-msgstr ""
+msgstr "Etki alanı:"
 
 #: inc/admin/ui/modules/cloudflare.php:84
 msgid "Cloudflare domain"
-msgstr ""
+msgstr "Cloudflare etki alanı"
 
 #: inc/admin/ui/modules/cloudflare.php:96
 msgctxt "Cloudflare"
 msgid "Development mode:"
-msgstr ""
+msgstr "Geliştirme kipi:"
 
 #: inc/admin/ui/modules/cloudflare.php:104
 msgid "Development Mode"
-msgstr ""
+msgstr "Geliştirme Kipi"
 
 #: inc/admin/ui/modules/cloudflare.php:106
 #: inc/admin/ui/modules/cloudflare.php:134
 #: inc/admin/ui/modules/cloudflare.php:162
 msgid "Off"
-msgstr ""
+msgstr "Kapalı"
 
 #: inc/admin/ui/modules/cloudflare.php:107
 #: inc/admin/ui/modules/cloudflare.php:135
 #: inc/admin/ui/modules/cloudflare.php:163
 msgid "On"
-msgstr ""
+msgstr "Açık"
 
 #: inc/admin/ui/modules/cloudflare.php:114
 #, php-format
@@ -1094,28 +957,28 @@ msgid ""
 "Temporarily enter development mode on your website. This setting will "
 "automatically get turned off after 3 hours. <a href=\"%s\" "
 "target=\"_blank\">Learn more</a>"
-msgstr ""
+msgstr "Web sitenizi geçici olarak geliştirme kipine alın. Bu ayar otomatik olarak 3 saat sonra kapatılacak. <a href=\"%s\" target=\"_blank\">Daha fazla bilgi edinin</a>"
 
 #: inc/admin/ui/modules/cloudflare.php:124
 #: inc/admin/ui/modules/cloudflare.php:132
 msgctxt "Cloudflare"
 msgid "Optimal settings:"
-msgstr ""
+msgstr "En uygun ayarlar:"
 
 #: inc/admin/ui/modules/cloudflare.php:142
 msgid ""
 "Automatically enhances your Cloudflare configuration for speed, performance "
 "grade, and compatibility."
-msgstr ""
+msgstr "Hız, performans puanı ve uyumluluk için Cloudflare yapılandırmanızı otomatik olarak iyileştirir."
 
 #: inc/admin/ui/modules/cloudflare.php:152
 msgctxt "Cloudflare"
 msgid "Relative Protocol:"
-msgstr ""
+msgstr "Göreli Protokol:"
 
 #: inc/admin/ui/modules/cloudflare.php:160
 msgid "HTTPS Protocol Rewrite"
-msgstr ""
+msgstr "HTTPS Protokol Yeniden Yazma"
 
 #: inc/admin/ui/modules/cloudflare.php:170
 #, php-format
@@ -1124,220 +987,220 @@ msgid ""
 "target=\"_blank\">Flexible SSL</a> feature.<br>URLs of static files (CSS, "
 "JS, images) will be rewritten to use relative protocol (%2$s instead of %3$s"
 " or %4$s)."
-msgstr ""
+msgstr "Sadece Cloudflare’in <a href=\"%1$s\" target=\"_blank\">Flexible SSL</a> özelliği ile kullanılmalı.<br>Sabit dosyaların (CSS, JS, resimler) URL'leri, göreli protokol (%3$s veya %4$s yerine %2$s) kullanmak için yeniden yazılacaktır."
 
 #: inc/admin/ui/modules/cloudflare.php:185
 msgid "Clear Cloudflare cache:"
-msgstr ""
+msgstr "Cloudflare önbelleğini temizle:"
 
 #: inc/admin/ui/modules/cloudflare.php:191 inc/common/admin-bar.php:155
 msgid "Clear Cloudflare cache"
-msgstr ""
+msgstr "Cloudflare önbelleğini temizle"
 
 #: inc/admin/ui/modules/cloudflare.php:196
 #, php-format
 msgid ""
 "Purges cached resources for your website. <a href=\"%s\" "
 "target=\"_blank\">Learn more</a>"
-msgstr ""
+msgstr "Web sitenizin önbelleklenmiş kaynaklarını temizler. <a href=\"%s\" target=\"_blank\">Daha fazla bilgi ednin</a>"
 
 #: inc/admin/ui/modules/database.php:16
 msgid "Database Optimization"
-msgstr ""
+msgstr "Veritabanı İyileştirme"
 
 #: inc/admin/ui/modules/database.php:36
 msgid ""
 "Backup your database before you run a cleanup!<br>Once a database "
 "optimization has been performed, there is no way to undo it."
-msgstr ""
+msgstr "Temizlemeyi çalıştırmadan önce veritabanınızı yedekleyin!<br>Bir kere bir veritabanı iyileştirmesi yapıldı mı, bunu geri almanın hiç yolu yoktur."
 
 #: inc/admin/ui/modules/database.php:48
 msgid "Posts cleanup:"
-msgstr ""
+msgstr "Yazıları temizleme:"
 
 #: inc/admin/ui/modules/database.php:55
 msgid "Revisions"
-msgstr ""
+msgstr "Düzeltmeler"
 
 #: inc/admin/ui/modules/database.php:57
 msgid "Cleanup revisions"
-msgstr ""
+msgstr "Düzeltmeleri temizle"
 
 #: inc/admin/ui/modules/database.php:62
 #, php-format
 msgid "%d revision in your database."
 msgid_plural "%d revisions in your database."
-msgstr[0] ""
+msgstr[0] "Veritabanınızdaki %d düzeltme."
 
 #: inc/admin/ui/modules/database.php:66
 msgid "Auto Drafts"
-msgstr ""
+msgstr "Otomatik Taslaklar"
 
 #: inc/admin/ui/modules/database.php:68
 msgid "Cleanup auto drafts"
-msgstr ""
+msgstr "Otomatik taslakları temizle"
 
 #: inc/admin/ui/modules/database.php:73
 #, php-format
 msgid "%d draft in your database."
 msgid_plural "%d drafts in your database."
-msgstr[0] ""
+msgstr[0] "Veritabanınızdaki %d taslak."
 
 #: inc/admin/ui/modules/database.php:77
 msgid "Trashed posts"
-msgstr ""
+msgstr "Çöpe atılmış yazılar"
 
 #: inc/admin/ui/modules/database.php:79
 msgid "Cleanup trashed posts"
-msgstr ""
+msgstr "Çöpe atılmış yazıları temizle"
 
 #: inc/admin/ui/modules/database.php:84
 #, php-format
 msgid "%d trashed post in your database."
 msgid_plural "%d trashed posts in your database."
-msgstr[0] ""
+msgstr[0] "Veritabanınızdaki %d çöpe atılmış yazı."
 
 #: inc/admin/ui/modules/database.php:94
 msgid "Comments cleanup:"
-msgstr ""
+msgstr "Yorumları temizleme:"
 
 #: inc/admin/ui/modules/database.php:101
 msgid "Spam comments"
-msgstr ""
+msgstr "İstenmeyen yorumlar"
 
 #: inc/admin/ui/modules/database.php:103
 msgid "Cleanup spam comments"
-msgstr ""
+msgstr "İstenmeyen yorumları temizle"
 
 #: inc/admin/ui/modules/database.php:108
 #, php-format
 msgid "%d spam comment in your database."
 msgid_plural "%d spam comments in your database."
-msgstr[0] ""
+msgstr[0] "Veritabanınızdaki %d istenmeyen yorum."
 
 #: inc/admin/ui/modules/database.php:112
 msgid "Trashed comments"
-msgstr ""
+msgstr "Çöpe atılmış yorumlar"
 
 #: inc/admin/ui/modules/database.php:114
 msgid "Cleanup trashed comments"
-msgstr ""
+msgstr "Çöpe atılmış yorumları temizle"
 
 #: inc/admin/ui/modules/database.php:119
 #, php-format
 msgid "%d trashed comment in your database."
 msgid_plural "%d trashed comments in your database."
-msgstr[0] ""
+msgstr[0] "Veritabanınızdaki %d çöpe atılmış yorum."
 
 #: inc/admin/ui/modules/database.php:129
 msgid "Transients cleanup:"
-msgstr ""
+msgstr "Geçicileri temizleme:"
 
 #: inc/admin/ui/modules/database.php:136
 msgid "Expired transients"
-msgstr ""
+msgstr "Süresi dolan geçiciler"
 
 #: inc/admin/ui/modules/database.php:138
 msgid "Cleanup expired transients"
-msgstr ""
+msgstr "Süresi dolan geçicileri temizle"
 
 #: inc/admin/ui/modules/database.php:143
 #, php-format
 msgid "%d expired transient in your database."
 msgid_plural "%d expired transients in your database."
-msgstr[0] ""
+msgstr[0] "Veritabanınızdaki %d süresi dolan geçici."
 
 #: inc/admin/ui/modules/database.php:147
 msgid "All transients"
-msgstr ""
+msgstr "Tüm geçiciler"
 
 #: inc/admin/ui/modules/database.php:149
 msgid "Cleanup all transients"
-msgstr ""
+msgstr "Tüm geçicileri temizle"
 
 #: inc/admin/ui/modules/database.php:154
 #, php-format
 msgid "%d transient in your database."
 msgid_plural "%d transients in your database."
-msgstr[0] ""
+msgstr[0] "Veritabanınızdaki %d geçici."
 
 #: inc/admin/ui/modules/database.php:164
 msgid "Database cleanup:"
-msgstr ""
+msgstr "Veritabanı temizleme:"
 
 #: inc/admin/ui/modules/database.php:171
 msgid "Optimize tables"
-msgstr ""
+msgstr "Tabloları iyileştir"
 
 #: inc/admin/ui/modules/database.php:173
 msgid "Optimize database tables"
-msgstr ""
+msgstr "Veritabanı tablolarını iyileştirin"
 
 #: inc/admin/ui/modules/database.php:178
 #, php-format
 msgid "%d table to optimize in your database."
 msgid_plural "%d tables to optimize in your database."
-msgstr[0] ""
+msgstr[0] "Veritabanınızda iyileştirmek için %d tablo."
 
 #: inc/admin/ui/modules/database.php:188
 msgid "Automatic cleanup:"
-msgstr ""
+msgstr "Otomatik temizleme:"
 
 #: inc/admin/ui/modules/database.php:195
 msgid "Schedule automatic cleanup"
-msgstr ""
+msgstr "Otomatik temizlemeyi zamanla"
 
 #: inc/admin/ui/modules/database.php:197
 msgid "Schedule an automatic cleanup of the database"
-msgstr ""
+msgstr "Veritabanının otomatik temizleme işlemini zamanlayın"
 
 #: inc/admin/ui/modules/database.php:202
 msgid "Frequency"
-msgstr ""
+msgstr "Sıklık"
 
 #: inc/admin/ui/modules/database.php:204
 msgid "Frequency for the automatic cleanup"
-msgstr ""
+msgstr "Otomatik temizleme için sıklık"
 
 #: inc/admin/ui/modules/database.php:206
 msgid "Daily"
-msgstr ""
+msgstr "Günlük"
 
 #: inc/admin/ui/modules/database.php:207
 msgid "Weekly"
-msgstr ""
+msgstr "Haftalık"
 
 #: inc/admin/ui/modules/database.php:208
 msgid "Monthly"
-msgstr ""
+msgstr "Aylık"
 
 #: inc/admin/ui/modules/database.php:215
 msgid "Save Changes"
-msgstr ""
+msgstr "Değişiklikleri Kaydet"
 
 #: inc/admin/ui/modules/database.php:230
 msgid "Run cleanup:"
-msgstr ""
+msgstr "Temizlemeyi çalıştır:"
 
 #: inc/admin/ui/modules/database.php:243
 #, php-format
 msgid ""
 "“%1$s” will save your settings and run a database optimization; “%2$s” below"
 " will only save your settings."
-msgstr ""
+msgstr "“%1$s” ayarlarınızı kaydedecek ve bir veritabanı iyileştirmesi çalıştıracak; “%2$s” sadece aşağıdaki ayarlarınızı kaydedecek."
 
 #: inc/admin/ui/modules/optimization.php:7
 msgid "Files optimization"
-msgstr ""
+msgstr "Dosyaları iyileştirme"
 
 #: inc/admin/ui/modules/optimization.php:27
 msgid ""
 "Heads up! These options are not equally suitable for all WordPress "
-"setups.<br>In case you notice any visual issues on your site, just turn off "
-"the last option(s) you had activated here. <br>Read the documentation on <a "
+"setups.<br>If you notice any visual issues on your site, just turn off the "
+"last option(s) you had activated here. <br>Read the documentation on <a "
 "href=\"http://docs.wp-rocket.me/article/19-resolving-issues-with-"
 "minification\" target=\"_blank\">troubleshooting file optimization</a>."
-msgstr ""
+msgstr "Dikkat edin! Bu seçenekler tüm WordPress kurulumları için eşit bir şekilde uygun değildir.<br>Eğer sitenizde herhangi bir görsel sorun fark ederseniz, sadece burada aktif ettiğiniz son seçene(kleri)ği kapatın. <br><a href=\"http://docs.wp-rocket.me/article/19-resolving-issues-with-minification\" target=\"_blank\">Dosya iyileştirme sorunu giderme</a> üzerine belgeleri okuyun."
 
 #: inc/admin/ui/modules/optimization.php:62
 #, php-format
@@ -1345,52 +1208,72 @@ msgid ""
 "Minification (%1$s) is currently activated in <strong>Autoptimize</strong>. "
 "If you want to use %2$s’s minification, disable those options in "
 "Autoptimize."
-msgstr ""
+msgstr "Küçültme (%1$s) şu anda <strong>Autoptimize</strong> içinde aktif edildi. Eğer %2$s’in küçülttürmesini kullanmak istiyorsanız, Autoptimize içindeki bu seçenekleri etkisizleştirin."
 
 #: inc/admin/ui/modules/optimization.php:74
 #: inc/admin/ui/modules/optimization.php:140
 msgid ""
 "<a href=\"http://docs.wp-rocket.me/article/19-resolving-issues-with-"
 "minification\" target=\"_blank\">Why?</a>"
-msgstr ""
+msgstr "<a href=\"http://docs.wp-rocket.me/article/19-resolving-issues-with-minification\" target=\"_blank\">Neden?</a>"
 
 #: inc/admin/ui/modules/optimization.php:83
 msgid "Minify HTML files"
-msgstr ""
+msgstr "HTML dosyalarını küçült"
 
 #: inc/admin/ui/modules/optimization.php:90
 msgid "Minify CSS files"
-msgstr ""
+msgstr "CSS dosyalarını küçült"
 
 #: inc/admin/ui/modules/optimization.php:97
 msgid "Minify JS files"
-msgstr ""
+msgstr "JS dosyalarını küçült"
 
 #: inc/admin/ui/modules/optimization.php:104
 msgid "Reduces file size, can improve loading time."
-msgstr ""
+msgstr "Dosya boyutunu düşürmek, yükleme süresini iyileştirebilir."
 
 #: inc/admin/ui/modules/optimization.php:109
 msgid ""
 "Removes spaces and comments from static files, enables browsers and search "
 "engines to faster process HTML, CSS, and JavaScript files."
-msgstr ""
+msgstr "Sabit dosyalardan boşlukları ve açıklamaları kaldırır, HTML, CSS, ve JavaScript dosyalarını daha hızlı işlemesi için tarayıcıları ve arama motorlarını etkinleştirir."
 
 #: inc/admin/ui/modules/optimization.php:114
 msgid "Minify files:"
-msgstr ""
+msgstr "Dosyaları küçült:"
 
 #: inc/admin/ui/modules/optimization.php:150
 msgid "Concatenate Google Fonts"
-msgstr ""
+msgstr "Google Yazı Tiplerini birleştir"
+
+#: inc/admin/ui/modules/optimization.php:156
+msgid "Concatenate CSS files"
+msgstr "CSS dosyalarını birleştir"
+
+#: inc/admin/ui/modules/optimization.php:162
+msgid ""
+"Combine all CSS files into as few files as possible <em>(test "
+"thoroughly!)</em>"
+msgstr "Tüm CSS dosyalarını mümkün olduğu kadar birkaç dosyaya birleştirir <em>(iyice deneyin!)</em>"
 
 #: inc/admin/ui/modules/optimization.php:164
 msgid "CSS Files concatenation"
-msgstr ""
+msgstr "CSS Dosyalarını birleştirme"
+
+#: inc/admin/ui/modules/optimization.php:170
+msgid "Concatenate JS files"
+msgstr "JS dosyalarını birleştir"
+
+#: inc/admin/ui/modules/optimization.php:176
+msgid ""
+"Combine all JavaScript files into as few files as possible <em>(test "
+"thoroughly!)</em>"
+msgstr "Tüm JavaScript dosyalarını mümkün olduğu kadar birkaç dosyaya birleştirir <em>(iyice deneyin!)</em>"
 
 #: inc/admin/ui/modules/optimization.php:178
 msgid "JS Files concatenation"
-msgstr ""
+msgstr "JS Dosyalarını birleştirme"
 
 #: inc/admin/ui/modules/optimization.php:188
 msgid ""
@@ -1398,7 +1281,7 @@ msgid ""
 "compatibility and better performance. Forcing concatenation into 1 file is "
 "not recommended, because browsers are faster downloading up to 6 smaller "
 "files in parallel than 1-2 large files."
-msgstr ""
+msgstr "Tema/eklenti uyumluluğu ve daha iyi performans sağlamak için dosyalar küçük gruplar halinde birleştirildi. 1 dosya içine birleştirmeye zorlamak tavsiye edilmez, çünkü tarayıcılar 6'ya kadar daha küçük dosyayı paralel olarak 1-2 büyük dosyadan daha hızlı indiriyor."
 
 #: inc/admin/ui/modules/optimization.php:188
 msgid ""
@@ -1408,105 +1291,105 @@ msgid ""
 "performance</a>. Forcing concatenation into 1 file is not recommended, "
 "because browsers are faster downloading up to 6 smaller files in parallel "
 "than 1-2 large files."
-msgstr ""
+msgstr "<a href=\"http://docs.wp-rocket.me/article/17-reducing-the-number-of-minified-files\" target=\"_blank\">Tema/eklenti uyumluluğu ve daha iyi performans sağlamak</a> için dosyalar küçük gruplar halinde birleştirildi. 1 dosya içine birleştirmeye zorlamak tavsiye edilmez, çünkü tarayıcılar 6'ya kadar daha küçük dosyayı paralel olarak 1-2 büyük dosyadan daha hızlı indiriyor."
 
 #: inc/admin/ui/modules/optimization.php:193
 msgid "Combine files:"
-msgstr ""
+msgstr "Dosyaları birleştir:"
 
 #: inc/admin/ui/modules/optimization.php:205
 msgid "Exclude CSS:"
-msgstr ""
+msgstr "Hariç tutulan CSS:"
 
 #: inc/admin/ui/modules/optimization.php:213
 msgid ""
 "Specify URLs of CSS files to be excluded from minification and concatenation"
 " (one per line)"
-msgstr ""
+msgstr "Küçültmeden ve birleştirmeden hariç tutulacak CSS dosyalarının URL'lerini belirtin (satır başına bir tane)"
 
 #: inc/admin/ui/modules/optimization.php:218
 msgid "CSS files to be excluded from minification and concatenation:"
-msgstr ""
+msgstr "Küçültmeden ve birleştirmeden hariç tutulacak CSS dosyaları:"
 
 #: inc/admin/ui/modules/optimization.php:225
 #, php-format
 msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use %s "
 "wildcards to exclude all CSS files located at a specific path."
-msgstr ""
+msgstr "URL'nin etki alanı kısmı otomatik olarak sadeleştirilecektir.<br>Belirli bir yolda bulunan tüm CSS dosyalarını hariç tutmak için %s joker karakterlerini kullanın."
 
 #: inc/admin/ui/modules/optimization.php:236
 msgid "Exclude JS:"
-msgstr ""
+msgstr "Hariç tutulan JS:"
 
 #: inc/admin/ui/modules/optimization.php:244
 msgid ""
 "Specify URLs of JS files to be excluded from minification and concatenation "
 "(one per line)"
-msgstr ""
+msgstr "Küçültmeden ve birleştirmeden hariç tutulacak JS dosyalarının URL'lerini belirtin (satır başına bir tane)"
 
 #: inc/admin/ui/modules/optimization.php:249
 msgid "JS files to be excludeded from minification and concatenation:"
-msgstr ""
+msgstr "Küçültmeden ve birleştirmeden hariç tutulacak JS dosyaları:"
 
 #: inc/admin/ui/modules/optimization.php:256
 #, php-format
 msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use %s "
 "wildcards to exclude all JS files located at a specific path."
-msgstr ""
+msgstr "URL'nin etki alanı kısmı otomatik olarak sadeleştirilecektir.<br>Belirli bir yolda bulunan tüm JS dosyalarını hariç tutmak için %s joker karakterlerini kullanın."
 
 #: inc/admin/ui/modules/optimization.php:267
 msgid "Remove query strings:"
-msgstr ""
+msgstr "Sorgu dizgilerini kaldır:"
 
 #: inc/admin/ui/modules/optimization.php:274
 #: inc/admin/ui/modules/optimization.php:276
 msgid "Remove query strings from static resources"
-msgstr ""
+msgstr "Sorgu dizgilerini sabit kaynaklardan kaldır"
 
 #: inc/admin/ui/modules/optimization.php:283
 #, php-format
 msgid ""
 "Can improve the performance grade on <a href=\"%s\" target=\"_blank\">GT "
 "Metrix</a>."
-msgstr ""
+msgstr "<a href=\"%s\" target=\"_blank\">GT Metrix</a>'teki performans puanını iyileştirebilir."
 
 #: inc/admin/ui/modules/optimization.php:290
 msgid ""
 "Removes the version query string from static files (e.g. style.css?ver=1.0) "
-"and encodes it into the file name instead (e.g. style-1.0.css)."
-msgstr ""
+"and encodes it into the file name instead (e.g. style-1-0.css)."
+msgstr "Sabit dosyalardan sürüm sorgu dizgisini kaldırır (örn. style.css?ver=1.0) ve bunun yerine dosya adı içine bunu kodlar (örn. style-1-0.css)."
 
 #: inc/admin/ui/modules/optimization.php:306
 msgid ""
 "<a href=\"http://docs.wp-rocket.me/article/108-render-blocking-javascript-"
 "and-css-pagespeed\" target=\"_blank\">Why?</a>"
-msgstr ""
+msgstr "<a href=\"http://docs.wp-rocket.me/article/108-render-blocking-javascript-and-css-pagespeed\" target=\"_blank\">Neden?</a>"
 
 #: inc/admin/ui/modules/optimization.php:312
 #: inc/admin/ui/modules/optimization.php:314
 msgid "Load CSS files asynchronously"
-msgstr ""
+msgstr "CSS dosyalarını eşzamanlı olmadan yükle"
 
 #: inc/admin/ui/modules/optimization.php:321
 msgid ""
 "If you activate the option below, your deprecated Defer JS option below will"
 " be deleted."
-msgstr ""
+msgstr "Eğer aşağıdan bu seçeneği aktif ederseniz, aşağıdaki kullanım dışı JS'i Ertele seçeneğiniz silinecektir."
 
 #: inc/admin/ui/modules/optimization.php:327
 #: inc/admin/ui/modules/optimization.php:329
 msgid "Load JS files deferred"
-msgstr ""
+msgstr "JS dosyalarını yükle ertelendi"
 
 #: inc/admin/ui/modules/optimization.php:334
 msgid "Safe mode (recommended)"
-msgstr ""
+msgstr "Güvenli kip (önerilir)"
 
 #: inc/admin/ui/modules/optimization.php:336
 msgid "Defer JS files safely"
-msgstr ""
+msgstr "JS dosyalarını güvenle ertele"
 
 #: inc/admin/ui/modules/optimization.php:342
 msgid ""
@@ -1514,95 +1397,95 @@ msgid ""
 "themes and plugins by loading jQuery at the top of the document as a render-"
 "blocking script. Deactivating may result in broken functionality, test "
 "thoroughly!"
-msgstr ""
+msgstr "Ertelenmiş Js için güvenli kip, bir işleyişi engelleme betiği olarak belgenin en başında jQuery yükleyerek temalardan ve eklentilerden gelen satır içi jQuery kaynakları için desteği sağlama alır."
 
 #: inc/admin/ui/modules/optimization.php:347
 msgid ""
 "Reduces the number of initial HTTP requests, can improve loading time and "
 "performance grade."
-msgstr ""
+msgstr "İlk HTTP isteklerinin sayısını düşürmek, yükleme süresini ve performans puanını iyileştirebilir."
 
 #: inc/admin/ui/modules/optimization.php:352
 msgid "Render-blocking CSS/JS:"
-msgstr ""
+msgstr "İşleyişi engelleme CSS/JS'si:"
 
 #: inc/admin/ui/modules/optimization.php:364
 msgid "Critical path CSS:"
-msgstr ""
+msgstr "Kritik yol CSS'si:"
 
 #: inc/admin/ui/modules/optimization.php:372
 msgid "Specify CSS rules required for rendering above-the-fold content"
-msgstr ""
+msgstr "Manşetten içeriği işlemek için gereken CSS kurallarını belirleyin"
 
 #: inc/admin/ui/modules/optimization.php:377
 msgid "Critical path CSS rules for rendering above-the-fold content"
-msgstr ""
+msgstr "Manşetten içeriği işlemek için kritik yol CSS kuralları"
 
 #: inc/admin/ui/modules/optimization.php:382
 #, php-format
 msgid ""
 "Use the <a href=\"%s\" target=\"_blank\">Critical Path CSS Generator</a> to "
 "specify required CSS rules."
-msgstr ""
+msgstr "Gerekli CSS kurallarını belirlemek için <a href=\"%s\" target=\"_blank\">Kritik Yol CSS Üretici</a>'yi kullanın."
 
 #: inc/admin/ui/modules/optimization.php:404
 msgid ""
 "The options below will be deprecated in WP Rocket 3.0, in favor of the new "
 "options for render-blocking CSS/JS above. If you use those new options, the "
 "deprecated one for deferred JS gets ignored already."
-msgstr ""
+msgstr "Aşağıdaki seçenekler WP Rocket 3.0 içinde, yukarıdaki işleyişi engelleme CSS/JS'si için yeni seçenekler lehine artık kullanılmayacaktır. Eğer bu yeni seçenekleri kullanırsanız, ertelenmiş JS için kullanım dışı olan biri zaten yoksayılır."
 
 #: inc/admin/ui/modules/optimization.php:417
 msgid "Footer JS (deprecated):"
-msgstr ""
+msgstr "Altbilgi JS (kullanım dışı):"
 
 #: inc/admin/ui/modules/optimization.php:424
 msgid ""
 "<strong>JS</strong> files to be included in the footer during the "
 "minification process:"
-msgstr ""
+msgstr "Küçültme işlemi sırasında altbilgi içine dahil edilecek <strong>JS</strong> dosyaları:"
 
 #: inc/admin/ui/modules/optimization.php:433
 #: inc/admin/ui/modules/optimization.php:476
 msgid "Empty the field to remove it."
-msgstr ""
+msgstr "Kaldırmak için alanı boş bırakın."
 
 #: inc/admin/ui/modules/optimization.php:439
 msgid ""
 "Specify complete URLs like:  "
 "<code>http://example.com/path/to/script.js</code>"
-msgstr ""
+msgstr "Tam URL'leri belirtin, örn: <code>http://ornek.com/dosya/yolu/script.js</code>"
 
 #: inc/admin/ui/modules/optimization.php:457
 msgid "Defer JS (deprecated):"
-msgstr ""
+msgstr "JS Ertele (kullanım dışı):"
 
 #: inc/admin/ui/modules/optimization.php:467
 msgid ""
 "Specify JS files to be loaded asynchronously as the page loads.<br>Do NOT "
 "add URLs of minified files generated by WP Rocket."
-msgstr ""
+msgstr "Sayfa yüklemeleri ile eşzamanlı olmadan yüklenmesi için JS dosyalarını belirleyin.<br>WP Rocket tarafından üretilen küçültülmüş dosyaların URL'lerini EKLEMEYİN."
 
 #: inc/admin/ui/modules/optimization.php:482
 msgid ""
 "Specify complete URLs like: "
 "<code>http://example.com/path/to/script.js</code>"
-msgstr ""
+msgstr "Tam URL'leri belirtin, örn: <code>http://ornek.com/dosya/yolu/script.js</code>"
 
 #: inc/admin/ui/modules/preload.php:7
 msgid "Preload options"
-msgstr ""
+msgstr "Önyükleme seçenekleri"
 
 #: inc/admin/ui/modules/preload.php:15 inc/admin/ui/modules/preload.php:18
 msgid "Activate sitemap-based cache preloading"
-msgstr ""
+msgstr "Site haritası tabanlı önbellek önyüklemesini aktif et"
 
 #: inc/admin/ui/modules/preload.php:24
 msgid ""
 "Sitemap preloading runs automatically when the cache lifespan expires. You "
 "can also launch it manually from the upper toolbar menu, or from the Tools "
 "tab."
-msgstr ""
+msgstr "Önbellek geçerlilik süresi sona erdiğinde site haritası önyüklemesi otomatik olarak çalışır. Ayrıca üstteki araç çubuğu menüsünden ya da Araçlar sekmesinden el ile çalıştırablirsiniz."
 
 #: inc/admin/ui/modules/preload.php:24
 msgid ""
@@ -1610,105 +1493,104 @@ msgid ""
 "target=\"_blank\">Sitemap preloading</a> runs automatically when the cache "
 "lifespan expires. You can also launch it manually from the upper toolbar "
 "menu, or from the Tools tab."
-msgstr ""
+msgstr "Önbellek geçerlilik süresi sona erdiğinde <a href=\"http://docs.wp-rocket.me/article/8-how-the-cache-is-preloaded\" target=\"_blank\">site haritası önyüklemesi</a> otomatik olarak çalışır. Ayrıca üstteki araç çubuğu menüsünden ya da Araçlar sekmesinden el ile çalıştırablirsiniz."
 
 #: inc/admin/ui/modules/preload.php:30
 msgid "Sitemap preloading:"
-msgstr ""
+msgstr "Site haritası önyüklemesi:"
 
 #: inc/admin/ui/modules/preload.php:49
 msgid "Sitemap crawl interval:"
-msgstr ""
+msgstr "Site haritası gezinme aralığı:"
 
 #: inc/admin/ui/modules/preload.php:56
 msgid ""
 "<span class=\"screen-reader-text\">This is the </span>waiting time between "
 "each URL crawl"
-msgstr ""
+msgstr "<span class=\"screen-reader-text\">Bu </span>her URL gezinmesi arasındaki bekleme süresidir"
 
 #: inc/admin/ui/modules/preload.php:58
 msgid "Sets the intervall between each URL crawl"
-msgstr ""
+msgstr "Her URL gezinmesi arasındaki aralığı ayarlar"
 
 #: inc/admin/ui/modules/preload.php:81
-msgid "Set a higher value in case you notice any overload on your server!"
-msgstr ""
+msgid "Set a higher value if you notice any overload on your server!"
+msgstr "Sunucunuzda herhangi bir aşırı yük fark ederseniz yüksek bir değere ayarlayın!"
 
 #: inc/admin/ui/modules/preload.php:91
 msgid "Sitemaps for preloading:"
-msgstr ""
+msgstr "Önyükleme için site haritaları"
 
 #: inc/admin/ui/modules/preload.php:99
 msgid "Specify XML sitemap(s) to be used for preloading (one per line)"
-msgstr ""
+msgstr "Önyükleme için kullanılacak XML site harita(larını)sını belirtin (satır başına bir tane)"
 
 #: inc/admin/ui/modules/preload.php:103
 msgid "Sitemap files to use for preloading"
-msgstr ""
+msgstr "Önyükleme için kullanılacak site haritası dosyaları"
 
 #: inc/admin/ui/modules/preload.php:105
 msgid "The sitemap files to use for preloading the cache"
-msgstr ""
+msgstr "Önbelleği önyükleme için kullanılacak site haritası dosyaları"
 
 #: inc/admin/ui/modules/preload.php:116
 msgid "Preload bot:"
-msgstr ""
+msgstr "Önyükleme botu:"
 
 #: inc/admin/ui/modules/preload.php:123
 msgid "Manual"
-msgstr ""
+msgstr "Elle"
 
 #: inc/admin/ui/modules/preload.php:125
 msgid ""
 "Activate manual preload (from upper toolbar, or from Tools tab of WP Rocket)"
-msgstr ""
+msgstr "Elle önyüklemeyi aktif et (üstteki araç çubuğundan, ya da WP Rocket'in Araçlar sekmesinden)"
 
 #: inc/admin/ui/modules/preload.php:130
 msgid "Automatic"
-msgstr ""
+msgstr "Otomatik"
 
 #: inc/admin/ui/modules/preload.php:132
 msgid "Activate automatic preload after content updates"
-msgstr ""
+msgstr "İçerik güncellemelerinden sonra otomatik önyüklemeyi aktif et"
 
 #: inc/admin/ui/modules/preload.php:138
 msgid ""
-"Bot-based preloading should only be used on well-performaning servers. Once "
+"Bot-based preloading should only be used on well-performing servers. Once "
 "activated, it gets triggered automatically after you add or update content "
 "on your website. You can also launch it manually from the upper toolbar "
 "menu, or from the Tools tab."
-msgstr ""
+msgstr "Bot-tabanlı önyükleme sadece iyi işleyen sunucularda kullanılmalıdır. Bir kez aktif edildi mi, web sitenize içerik ekledikten veya güncelledikten sonra otomatik olarak tetiklenir. Ayrıca üstteki araç çubuğu menüsünden ya da Araçlar sekmesinden el ile çalıştırablirsiniz."
 
 #: inc/admin/ui/modules/preload.php:138
 msgid ""
 "<a href=\"http://docs.wp-rocket.me/article/8-how-the-cache-is-preloaded\" "
 "target=\"_blank\">Bot-based preloading</a> should only be used on well-"
-"performaning servers. Once activated, it gets triggered automatically after "
+"performing servers. Once activated, it gets triggered automatically after "
 "you add or update content on your website. You can also launch it manually "
 "from the upper toolbar menu, or from the Tools tab."
-msgstr ""
+msgstr "<a href=\"http://docs.wp-rocket.me/article/8-how-the-cache-is-preloaded\" target=\"_blank\">Bot-tabanlı önyükleme</a> sadece iyi işleyen sunucularda kullanılmalıdır. Bir kez aktif edildi mi, web sitenize içerik ekledikten veya güncelledikten sonra otomatik olarak tetiklenir. Ayrıca üstteki araç çubuğu menüsünden ya da Araçlar sekmesinden el ile çalıştırablirsiniz."
 
 #: inc/admin/ui/modules/preload.php:143
-msgid ""
-"Deactivate these options in case you notice any overload on your server!"
-msgstr ""
+msgid "Deactivate these options if you notice any overload on your server!"
+msgstr "Sunucunuzda herhangi bir aşırı yük fark ederseniz bu seçenekleri devre dışı bırakın!"
 
 #: inc/admin/ui/modules/preload.php:153 inc/admin/ui/modules/preload.php:166
 msgid "Prefetch DNS requests:"
-msgstr ""
+msgstr "DNS isteklerini önceden getir:"
 
 #: inc/admin/ui/modules/preload.php:161
 msgid ""
 "Specify external hosts to be prefetched (no <code>http:</code>, one per "
 "line)"
-msgstr ""
+msgstr "Önceden getirilecek olan harici anamakineleri belirtin (<code>http:</code> olmayacak, satır başına bir tane)"
 
 #: inc/admin/ui/modules/preload.php:172
 msgid ""
 "<a href=\"https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-DNS-"
 "Prefetch-Control\" target=\"_blank\">DNS prefetching</a> can make external "
 "files load faster, especially on mobile networks."
-msgstr ""
+msgstr "<a href=\"https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-DNS-Prefetch-Control\" target=\"_blank\">DNS önceden getirme</a> harici dosya ve klasörlerin hızlı yüklenmesini sağlayabilir, özellikle mobil ağlarda."
 
 #: inc/admin/ui/modules/support.php:22
 #, php-format
@@ -1717,24 +1599,24 @@ msgid ""
 "answers to many common questions, check it out!<br>Our Happiness Rocketeers "
 "will help you sort out any questions you may have regarding this "
 "plugin.<br>Please help us to help you and provide detailed information."
-msgstr ""
+msgstr "<a href=\"%s\" target=\"_blank\">WP Rocket belgeleri</a> birçok genel sorunun yanıtlarını sağlar, göz atın!<br>Mutlu Roketçilerimiz, bu eklentiye ilişkin sahip olabileceğiniz herhangi bir sorunuzu açıklığa kavuşturmada size yardımcı olacak.<br>Size yardım etmek ve ayrıntılı bilgileri sağlamak için lütfen bize yardımcı olun."
 
 #: inc/admin/ui/modules/support.php:33
 msgid "Summary:"
-msgstr ""
+msgstr "Özet:"
 
 #: inc/admin/ui/modules/support.php:40
 msgid "In one sentence: What is going on, or wrong?"
-msgstr ""
+msgstr "Tek cümleyle: Neler oluyor, ya da yanlış olan nedir?"
 
 #: inc/admin/ui/modules/support.php:45
 msgid "Summary"
-msgstr ""
+msgstr "Özet"
 
 #: inc/admin/ui/modules/support.php:55 inc/admin/ui/modules/white-label.php:37
 #: inc/admin/ui/modules/white-label.php:46
 msgid "Description:"
-msgstr ""
+msgstr "Açıklama:"
 
 #: inc/admin/ui/modules/support.php:64
 msgid ""
@@ -1744,7 +1626,7 @@ msgstr ""
 
 #: inc/admin/ui/modules/support.php:69
 msgid "Description"
-msgstr ""
+msgstr "Açıklama"
 
 #: inc/admin/ui/modules/support.php:73
 msgid ""
@@ -1800,9 +1682,8 @@ msgstr ""
 msgid "Preload the cache according to your <a href=\"%s\">Preload settings</a>."
 msgstr ""
 
-#: inc/admin/ui/modules/tools.php:71 inc/admin/ui/modules/tutorials.php:7
-#: inc/common/admin-bar.php:168 inc/common/admin-bar.php:187
-#: inc/common/admin-bar.php:220
+#: inc/admin/ui/modules/tools.php:71 inc/common/admin-bar.php:168
+#: inc/common/admin-bar.php:187 inc/common/admin-bar.php:220
 msgid "Preload cache"
 msgstr ""
 
@@ -1851,64 +1732,6 @@ msgid ""
 "Has version %1$s caused an issue on your website?<br>You can roll back to "
 "the previous major version here. Then <a href=\"%2$s\">send us a support "
 "request</a>."
-msgstr ""
-
-#: inc/admin/ui/modules/tutorials.php:4
-msgid "Tutorials"
-msgstr ""
-
-#: inc/admin/ui/modules/tutorials.php:12
-msgid ""
-"This video gives some explanations about our two crawler robots. They "
-"generate several cache files in a few seconds."
-msgstr ""
-
-#: inc/admin/ui/modules/tutorials.php:19
-msgid "CSS and JavaScript minification"
-msgstr ""
-
-#: inc/admin/ui/modules/tutorials.php:24
-msgid ""
-"This video gives some explanations about how to use the advanced processes "
-"of minification and concatenation of CSS and JavaScript files."
-msgstr ""
-
-#: inc/admin/ui/modules/tutorials.php:31
-msgid "Preloading DNS queries"
-msgstr ""
-
-#: inc/admin/ui/modules/tutorials.php:36
-msgid ""
-"This video helps to easily understand the advanced option of \"Preloading "
-"DNS queries\" and the use of the filter <code>rocket_dns_prefetch</code>."
-msgstr ""
-
-#: inc/admin/ui/modules/tutorials.php:43
-msgid "How to use the White Label functionality?"
-msgstr ""
-
-#: inc/admin/ui/modules/tutorials.php:48
-msgid "This video helps to set up a White Label version of WP Rocket."
-msgstr ""
-
-#: inc/admin/ui/modules/tutorials.php:55
-msgid "How to use the CDN functionality?"
-msgstr ""
-
-#: inc/admin/ui/modules/tutorials.php:60
-msgid ""
-"This video helps to understand what is the CDN functionality included since "
-"WP Rocket 2.1."
-msgstr ""
-
-#: inc/admin/ui/modules/tutorials.php:67
-msgid "How to use the CDN API?"
-msgstr ""
-
-#: inc/admin/ui/modules/tutorials.php:72
-msgid ""
-"This video helps to set up the two functions "
-"<code>get_rocket_cdn_url()</code> and <code>rocket_cdn_url()</code>."
 msgstr ""
 
 #: inc/admin/ui/modules/varnish.php:39
@@ -1968,183 +1791,172 @@ msgid ""
 "when you customize these fields."
 msgstr ""
 
-#: inc/admin/ui/notices.php:24 inc/admin/ui/notices.php:28
-#, php-format
-msgid "<b>%1$s</b> can not be deactivated because of <code>%1$s</code>."
-msgstr ""
-
-#: inc/admin/ui/notices.php:24
-msgid ""
-"This constant is still defined in <code>wp-config.php</code> file and its "
-"value must be set to <code>false</code>."
-msgstr ""
-
-#: inc/admin/ui/notices.php:24
-#, php-format
-msgid "Maybe we do not have the writing permissions for <code>%s</code>."
-msgstr ""
-
-#: inc/admin/ui/notices.php:24 inc/admin/ui/notices.php:28
-msgid ""
-"Please give us permissions or resolve the problem yourself. Then retry "
-"deactivation."
-msgstr ""
-
-#: inc/admin/ui/notices.php:28
-msgid "This file is not writable and we can not remove these directives."
-msgstr ""
-
-#: inc/admin/ui/notices.php:28
-#, php-format
-msgid "Maybe we do not have writing permissions for <code>%s</code>."
-msgstr ""
-
-#: inc/admin/ui/notices.php:64
-msgid "You can still force the deactivation by clicking here."
-msgstr ""
-
-#: inc/admin/ui/notices.php:89
+#: inc/admin/ui/notices.php:26
 #, php-format
 msgid ""
-"<b>%s</b>: One or more extensions have been enabled or disabled, do not "
-"forget to clear the cache if necessary."
+"<strong>%1$s</strong> can not be deactivated because of "
+"<code>%2$s</code>.<br>This constant is still defined in <code>%3$s</code>. "
+"Its value must be set to <code>false</code>, but apparently %1$s does not "
+"have writing permissions for <code>%3$s</code>.<br>Please make "
+"<code>%3$s</code> writable, then retry deactivation."
 msgstr ""
 
-#: inc/admin/ui/notices.php:193
+#: inc/admin/ui/notices.php:36
 #, php-format
 msgid ""
-"<b>%s</b>: The following plugins are not compatible with this plugin and may"
-" cause unexpected results:"
+"<strong>%1$s</strong> can not be deactivated because of "
+"<code>%2$s</code>.<br>This file is not writable for %1$s, so %1$s can not "
+"remove its own directives.<br>Please make <code>%3$s</code> writable, then "
+"retry deactivation."
 msgstr ""
 
-#: inc/admin/ui/notices.php:198
+#: inc/admin/ui/notices.php:75
+msgid "You can still force deactivation by clicking here."
+msgstr ""
+
+#: inc/admin/ui/notices.php:100
+#, php-format
+msgid ""
+"<strong>%s</strong>: One or more extensions have been enabled or disabled, "
+"clear the cache if necessary."
+msgstr ""
+
+#: inc/admin/ui/notices.php:204
+#, php-format
+msgid ""
+"<strong>%s</strong>: The following plugins are not compatible with this "
+"plugin and may cause unexpected results:"
+msgstr ""
+
+#: inc/admin/ui/notices.php:209
 msgid "Deactivate"
 msgstr ""
 
-#: inc/admin/ui/notices.php:223
+#: inc/admin/ui/notices.php:236
 #, php-format
 msgid ""
-"<b>%1$s</b>: A custom permalink structure is required for the plugin to work"
-" properly. Please go to <a href=\"%1$s\">Permalink</a> to configure it."
+"<strong>%1$s</strong>: A custom permalink structure is required for the "
+"plugin to work properly. Please go to <a href=\"%2$s\">Permalink</a> to "
+"configure it."
 msgstr ""
 
-#: inc/admin/ui/notices.php:253
+#: inc/admin/ui/notices.php:271
 #, php-format
 msgid ""
-"<b>%1$s</b>: It seems we don't have <a href=\"%1$s\" "
+"<strong>%1$s</strong>: It seems we do not have <a href=\"%2$s\" "
 "target=\"_blank\">writing permissions</a> on <code>wp-config.php</code> file"
 " or the value of the constant <code>WP_CACHE</code> is set to "
 "<code>false</code>"
 msgstr ""
 
-#: inc/admin/ui/notices.php:255
+#: inc/admin/ui/notices.php:276
 msgid ""
 "To fix this you have to set writing permissions for <code>wp-"
 "config.php</code> and then save the settings again."
 msgstr ""
 
-#: inc/admin/ui/notices.php:257
+#: inc/admin/ui/notices.php:278
 msgid ""
 "If the message persists, you have to put the following code in your <code"
 ">wp-config.php</code> file so that it works correctly. Click on the field "
 "and press Ctrl-A to select all."
 msgstr ""
 
-#: inc/admin/ui/notices.php:295
+#: inc/admin/ui/notices.php:316
 #, php-format
 msgid ""
 "If you had <a href=\"%1$s\" target=\"_blank\">writing permissions</a> on "
-"<code>%2$s</code> file, <b>%3$s</b> could do this automatically. This is not"
-" the case, here is the code you should add in your <code>%2$s</code> file "
-"for <b>%3$s</b> to work properly."
+"<code>%2$s</code> file, <strong>%3$s</strong> could do this automatically. "
+"This is not the case, here is the code you should add in your "
+"<code>%2$s</code> file for <strong>%3$s</strong> to work properly."
 msgstr ""
 
-#: inc/admin/ui/notices.php:326
+#: inc/admin/ui/notices.php:347
 #, php-format
 msgid ""
 "It seems that the <code>%s</code> file is not ours. Save the settings, we "
-"will automatically recreate the correct one. If it's still not working, "
+"will automatically recreate the correct one. If it still does not work, "
 "please delete it and save again."
 msgstr ""
 
-#: inc/admin/ui/notices.php:355
+#: inc/admin/ui/notices.php:376
 #, php-format
 msgid ""
 "If you had <a href=\"%1$s\" target=\"_blank\">writing permissions</a> on "
-"<code>.htaccess</code> file, <b>%2$s</b> could do this automatically. This "
-"is not the case, so here are the rewrite rules you have to put in your "
-"<code>.htaccess</code> file for <b>%2$s</b> to work correctly. Click on the "
-"field and press Ctrl-A to select all."
+"<code>.htaccess</code> file, <strong>%2$s</strong> could do this "
+"automatically. This is not the case, so here are the rewrite rules you have "
+"to put in your <code>.htaccess</code> file for <strong>%2$s</strong> to work"
+" correctly. Click on the field and press Ctrl-A to select all."
 msgstr ""
 
-#: inc/admin/ui/notices.php:355
+#: inc/admin/ui/notices.php:376
 msgid ""
 "<strong>Warning:</strong> This message will popup again and its content may "
 "be updated when saving the options"
 msgstr ""
 
-#: inc/admin/ui/notices.php:382
+#: inc/admin/ui/notices.php:403
 #, php-format
 msgid ""
 "Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
-"permissions</a> on <b>%3$s</b> domain configuration folder "
-"(<code>%2$s</code>). To make <b>%3$s</b> work properly, please CHMOD "
-"<code>755</code> or <code>775</code> or <code>777</code> this "
+"permissions</a> on <strong>%3$s</strong> domain configuration folder "
+"(<code>%2$s</code>). To make <strong>%3$s</strong> work properly, please "
+"CHMOD <code>755</code> or <code>775</code> or <code>777</code> this "
 "folder.<br/>When the problem is solved, thank you to save the %3$s options "
 "to generate the configuration file."
 msgstr ""
 
-#: inc/admin/ui/notices.php:408
+#: inc/admin/ui/notices.php:429
 #, php-format
 msgid ""
 "Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
-"permissions</a> on <b>%3$s</b> cache folder (<code>%2$s</code>). For "
-"<b>%3$s</b> works properly, please CHMOD <code>755</code> or "
+"permissions</a> on <strong>%3$s</strong> cache folder (<code>%2$s</code>). "
+"For <strong>%3$s</strong> works properly, please CHMOD <code>755</code> or "
 "<code>775</code> or <code>777</code> this folder."
 msgstr ""
 
-#: inc/admin/ui/notices.php:435
+#: inc/admin/ui/notices.php:456
 #, php-format
 msgid ""
 "Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
-"permissions</a> on <b>%3$s</b> minified cache folder (<code>%2$s</code>). To"
-" make <b>%3$s</b> work properly, please CHMOD <code>755</code> or "
-"<code>775</code> or <code>777</code> this folder."
+"permissions</a> on <strong>%3$s</strong> minified cache folder "
+"(<code>%2$s</code>). To make <strong>%3$s</strong> work properly, please "
+"CHMOD <code>755</code> or <code>775</code> or <code>777</code> this folder."
 msgstr ""
 
-#: inc/admin/ui/notices.php:463
+#: inc/admin/ui/notices.php:484
 #, php-format
 msgid ""
 "Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
-"permissions</a> on <b>%3$s</b> cache busting folder (<code>%2$s</code>). To "
-"make <b>%3$s</b> work properly, please CHMOD <code>755</code> or "
-"<code>775</code> or <code>777</code> this folder."
+"permissions</a> on <strong>%3$s</strong> cache busting folder "
+"(<code>%2$s</code>). To make <strong>%3$s</strong> work properly, please "
+"CHMOD <code>755</code> or <code>775</code> or <code>777</code> this folder."
 msgstr ""
 
-#: inc/admin/ui/notices.php:486
+#: inc/admin/ui/notices.php:507
 msgid "Thank you. Your license has been successfully validated!"
 msgstr ""
 
-#: inc/admin/ui/notices.php:487
+#: inc/admin/ui/notices.php:510
 #, php-format
-msgid "Key: <code>%1$s</code><br>Email: <i>%1$s</i>"
+msgid "Key: <code>%1$s</code><br>Email: <em>%2$s</em>"
 msgstr ""
 
-#: inc/admin/ui/notices.php:540
+#: inc/admin/ui/notices.php:566
 msgid "Activate Imagify"
 msgstr ""
 
-#: inc/admin/ui/notices.php:540
+#: inc/admin/ui/notices.php:566
 msgid "Install Imagify for Free"
 msgstr ""
 
-#: inc/admin/ui/notices.php:555
+#: inc/admin/ui/notices.php:581
 msgid ""
 "Speed up your website and boost your SEO by reducing image file sizes "
 "without losing quality with Imagify."
 msgstr ""
 
-#: inc/admin/ui/notices.php:560
+#: inc/admin/ui/notices.php:586
 msgid "More details"
 msgstr ""
 
@@ -2222,19 +2034,19 @@ msgstr ""
 msgid "No domain available in your Cloudflare account"
 msgstr ""
 
-#: inc/functions/options.php:602
+#: inc/functions/options.php:598
 msgid "Your license is not valid."
 msgstr ""
 
-#: inc/functions/options.php:603
+#: inc/functions/options.php:599
 msgid "You cannot add more websites. Upgrade your account."
 msgstr ""
 
-#: inc/functions/options.php:604
+#: inc/functions/options.php:600
 msgid "This website is not allowed."
 msgstr ""
 
-#: inc/functions/options.php:605
+#: inc/functions/options.php:601
 msgid "This license key is not accepted."
 msgstr ""
 

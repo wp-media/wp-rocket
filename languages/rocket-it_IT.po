@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2017-06-01 10:57-0400\n"
-"PO-Revision-Date: 2017-06-07 11:02+0000\n"
+"POT-Creation-Date: 2017-06-13 11:41-0400\n"
+"PO-Revision-Date: 2017-06-20 16:39+0000\n"
 "Last-Translator: wpmedia <contact@wp-media.me>\n"
 "Language-Team: Italian (Italy) (http://www.transifex.com/wp-media/wp-rocket/language/it_IT/)\n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.8.11\n"
+"X-Generator: Poedit 1.8.9\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -27,13 +27,12 @@ msgstr ""
 msgid "All in One SEO XML sitemap"
 msgstr "Sitemap XML di All in One SEO"
 
-#: inc/3rd-party/all-in-one-seo-pack.php:79 inc/3rd-party/jetpack.php:78
-#: inc/3rd-party/yoast-seo.php:79
+#: inc/3rd-party/all-in-one-seo-pack.php:79 inc/3rd-party/yoast-seo.php:79
 #, php-format
 msgid "Preload the sitemap from the %s plugin"
 msgstr "Precarica la sitemap dal plugin %s"
 
-#: inc/3rd-party/all-in-one-seo-pack.php:86 inc/3rd-party/jetpack.php:85
+#: inc/3rd-party/all-in-one-seo-pack.php:86 inc/3rd-party/jetpack.php:96
 #: inc/3rd-party/yoast-seo.php:86
 #, php-format
 msgid ""
@@ -41,15 +40,19 @@ msgid ""
 "check the option to preload it."
 msgstr "Abbiamo identificato automaticamente la sitemap generata dal plugin %s. Puoi fare clic sull'opzione per precaricarla."
 
-#: inc/3rd-party/jetpack.php:76
+#: inc/3rd-party/jetpack.php:86
 msgid "Jetpack XML Sitemaps"
 msgstr "Sitemaps XML Jetpack"
+
+#: inc/3rd-party/jetpack.php:88
+msgid "Preload the sitemap from the Jetpack plugin"
+msgstr "Precarica la sitemap del plugin Jetpack"
 
 #: inc/3rd-party/yoast-seo.php:77
 msgid "Yoast SEO XML sitemap"
 msgstr "Sitemap XML di Yoast SEO"
 
-#: inc/admin/admin.php:14 inc/admin/options.php:573
+#: inc/admin/admin.php:14 inc/admin/options.php:571
 #: inc/admin/ui/modules/support.php:4 inc/common/admin-bar.php:248
 msgid "Support"
 msgstr "Supporto"
@@ -58,8 +61,7 @@ msgstr "Supporto"
 msgid "Docs"
 msgstr "Docs"
 
-#: inc/admin/admin.php:18 inc/admin/ui/modules/faq.php:4
-#: inc/admin/ui/modules/faq.php:7 inc/common/admin-bar.php:240
+#: inc/admin/admin.php:18 inc/common/admin-bar.php:240
 msgid "FAQ"
 msgstr "FAQ"
 
@@ -69,155 +71,12 @@ msgstr "Impostazioni"
 
 #: inc/admin/admin.php:66 inc/admin/admin.php:88 inc/admin/admin.php:107
 msgid "Clear this cache"
-msgstr "Cancella questa cache"
+msgstr "Svuotare questa cache"
 
 #: inc/admin/admin.php:312 inc/admin/admin.php:321
 #, php-format
 msgid "%s Update Rollback"
 msgstr "Tornare all'aggiornamento %s"
-
-#: inc/admin/faq.inc.php:2
-msgid "FAQ's Table of Content"
-msgstr "Indice dei contenuti delle FAQ"
-
-#: inc/admin/faq.inc.php:4
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/67-what-exactly-does-wp-rocket-"
-"do?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
-"target=\"_blank\">What exactly does WP Rocket do?</a>"
-msgstr "<a href=\"http://it.docs.wp-rocket.me/article/322-cosa-fa-esattamente-wp-rocket?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">Cosa fa esattamente WP Rocket?</a>"
-
-#: inc/admin/faq.inc.php:5
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/77-my-license-has-expired-what-"
-"should-i-do?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
-"target=\"_blank\">My license has expired, what should I do?</a>"
-msgstr "<a href=\"http://it.docs.wp-rocket.me/article/323-la-mia-licenza-e-scaduta-cosa-devo-fare?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">La mia licenza è scaduta, cosa devo fare?</a>"
-
-#: inc/admin/faq.inc.php:6
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/66-how-many-sites-is-my-key-"
-"valid-for?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
-"target=\"_blank\">How many sites is my key valid for?</a>"
-msgstr "<a href=\"http://it.docs.wp-rocket.me/article/324-su-quanti-siti-posso-usare-la-mia-licenza?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">Su quanti siti posso usare la mia licenza?</a>"
-
-#: inc/admin/faq.inc.php:7
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/72-i-want-to-change-the-url-of-"
-"my-site-associated-with-my-license-what-"
-"should-i-d?utm_source=plugin&utm_medium=faq&utm_campaign=doco\" "
-"target=\"_blank\">I want to change the URL of my website associated with my "
-"license, what should I do?</a>"
-msgstr "<a href=\"http://it.docs.wp-rocket.me/article/325-voglio-cambiare-lurl-del-sito-associato-alla-mia-licenza-cosa-devo-fare?utm_source=plugin&utm_medium=faq&utm_campaign=doco\" target=\"_blank\">Voglio cambiare l'URL del sito associato alla mia licenza, cosa devo fare?</a>"
-
-#: inc/admin/faq.inc.php:8
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/68-i-have-turned-any-of-the-"
-"basic-options-on-does-wp-rocket-"
-"work?utm_source=plugin&utm_medium=faq&utm_campaign=doc\">I haven't turned "
-"any of the basic options on, does WP Rocket work?</a>"
-msgstr "<a href=\"http://it.docs.wp-rocket.me/article/326-non-ho-attivato-nessuna-delle-opzioni-di-base-wp-rocket-funziona-lo-stesso?utm_source=plugin&utm_medium=faq&utm_campaign=doc\">Non ho attivato nessuna delle opzioni di base: WP Rocket funziona lo stesso?</a>"
-
-#: inc/admin/faq.inc.php:9
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/78-how-often-is-the-cache-"
-"updated?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
-"target=\"_blank\">How often is the cache updated?</a>"
-msgstr "<a href=\"http://it.docs.wp-rocket.me/article/327-quanto-spesso-si-aggiorna-la-cache?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">Con quale frequenza si aggiorna la cache?</a>"
-
-#: inc/admin/faq.inc.php:10
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/70-does-wp-rocket-work-with-"
-"default-permalinks?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
-"target=\"_blank\">Does WP Rocket work with default permalinks?</a>"
-msgstr "<a href=\"http://it.docs.wp-rocket.me/article/328-wp-rocket-funziona-con-i-permalink-di-default?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">WP Rocket funziona con i permalink di default?</a>"
-
-#: inc/admin/faq.inc.php:11
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/71-which-web-servers-is-wp-"
-"rocket-compatible-with?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
-"target=\"_blank\">Which web servers WP Rocket is compatible with?</a>"
-msgstr "<a href=\"http://it.docs.wp-rocket.me/article/329-con-quali-web-server-e-compatibile-wp-rocket?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">Quali sono i server web compatibili con WP Rocket?</a>"
-
-#: inc/admin/faq.inc.php:12
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/8-how-the-cache-is-"
-"preloaded?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
-"target=\"_blank\">How is the Cache Preloaded?</a>"
-msgstr "<a href=\"http://it.docs.wp-rocket.me/article/330-come-viene-pre-caricata-la-cache?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">Come viene precaricata la cache?</a>"
-
-#: inc/admin/faq.inc.php:13
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/69-which-tools-should-i-use-to-"
-"measure-the-performance-of-my-"
-"site?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
-"target=\"_blank\">Which tools should I use to measure the performance of my "
-"website?</a>"
-msgstr "<a href=\"http://it.docs.wp-rocket.me/article/336-che-strumenti-usare-per-misurare-la-performance-del-mio-sito?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">Che strumenti usare per misurare la performance del mio sito?</a>"
-
-#: inc/admin/faq.inc.php:14
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/115-can-i-use-wp-rocket-with-"
-"sitegrounds-supercacher?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
-"target=\"_blank\">Can I Use WP Rocket With Siteground's SuperCacher?</a>"
-msgstr "<a href=\"http://it.docs.wp-rocket.me/article/349-posso-usare-wp-rocket-con-supercacher-di-siteground?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">Posso usare WP Rocket con SuperCacher di Siteground?</a>"
-
-#: inc/admin/faq.inc.php:15
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/73-is-wp-rocket-compatible-with-"
-"others-cache-plugins-like-wp-super-cache-or-w3-total-"
-"cache?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
-"target=\"_blank\">Is WP Rocket compatible with others cache plugins like WP "
-"Super Cache or W3 Total Cache?</a>"
-msgstr "<a href=\"http://it.docs.wp-rocket.me/article/341-wp-rocket-e-compatibile-con-altri-plugin-di-cache-come-wp-super-cache-o-w3-total-cache?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">WP Rocket è compatibile con altri plugin di cache come Super Cache o W3 Total Cache?</a>"
-
-#: inc/admin/faq.inc.php:16
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/75-is-wp-rocket-compatible-with-e"
-"-commerce-plugins?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
-"target=\"_blank\">Is WP Rocket compatible with e-commerce plugins?</a>"
-msgstr "<a href=\"http://it.docs.wp-rocket.me/article/342-wp-rocket-e-compatibile-con-i-plugin-di-e-commerce?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">WP Rocket è compatibile con i plugin di e-commerce?</a>"
-
-#: inc/admin/faq.inc.php:17
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/76-is-wp-rocket-compatible-with-"
-"wpml-qtranslate-or-"
-"polylang?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
-"target=\"_blank\">Is WP Rocket compatible with WPML, qTranslate or "
-"Polylang?</a>"
-msgstr "<a href=\"http://it.docs.wp-rocket.me/article/331-wp-rocket-e-compatibile-con-wpml-qtranslate-o-polylang?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">WP Rocket è compatibile con WPML, qTranslate o Polylang?</a>"
-
-#: inc/admin/faq.inc.php:18
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/74-is-wp-rocket-compatible-with-"
-"wp-touch-wordpress-mobile-pack-and-wp-mobile-"
-"detector?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
-"target=\"_blank\">Is WP Rocket compatible with WP Touch, WordPress Mobile "
-"Pack and WP Mobile Detector?</a>"
-msgstr "<a href=\"http://it.docs.wp-rocket.me/article/344-wp-rocket-e-compatibile-con-wp-touch-wordpress-mobile-pack-e-wp-mobile-detector?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">WP Rocket è compatibile con WP Touch, WordPress Mobile Pack e WP Mobile Detector?</a>"
-
-#: inc/admin/faq.inc.php:19
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/79-reports-from-pagespeed-and-"
-"yslow-tell-me-that-the-content-is-not-gziped-and-or-did-not-expire-what-"
-"should-i-do?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
-"target=\"_blank\">Reports from PageSpeed and YSlow tell me that the content "
-"is not gziped and/or did not expire, what should I do?</a>"
-msgstr "<a href=\"http://it.docs.wp-rocket.me/article/345-i-report-di-pagespeed-o-yslow-mi-segnalano-che-il-contenuto-non-e-in-formato-gzip-o-che-non-e-configurato-lexpire-cosa-devo-fare?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">I report di PageSpeed o YSlow mi segnalano che il contenuto non è in formato gzip o che l'expire non è configurato, cosa devo fare?</a>"
-
-#: inc/admin/faq.inc.php:20
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/106-my-site-is-"
-"broken?utm_source=plugin&utm_medium=faq&utm_campaign=doc\">What should I do "
-"if WP Rocket distorts my website display?</a>"
-msgstr "<a href=\"http://it.docs.wp-rocket.me/article/457-il-mio-sito-e-rotto?utm_source=plugin&utm_medium=faq&utm_campaign=doc\">Cosa devo fare se WP Rocket distorce l'aspetto del mio sito?</a>"
-
-#: inc/admin/faq.inc.php:21
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/54-exclude-pages-from-the-"
-"cache?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" "
-"target=\"_blank\">How to exclude a particular page from caching?</a>"
-msgstr "<a href=\"http://it.docs.wp-rocket.me/article/375-escludere-pagine-dalla-cache?utm_source=plugin&utm_medium=faq&utm_campaign=doc\" target=\"_blank\">Come escludere una pagina dalla cache?</a>"
 
 #: inc/admin/options.php:117
 msgid "Your Cloudflare credentials are valid."
@@ -295,122 +154,122 @@ msgstr "Aggiungi CNAME"
 msgid "Watch the video"
 msgstr "Guardare il video"
 
-#: inc/admin/options.php:555
+#: inc/admin/options.php:553
 msgid "Basic"
 msgstr "Base"
 
-#: inc/admin/options.php:556
+#: inc/admin/options.php:554
 msgid "Static Files"
 msgstr "File statici"
 
-#: inc/admin/options.php:557 inc/admin/ui/meta-boxes.php:72
+#: inc/admin/options.php:555 inc/admin/ui/meta-boxes.php:72
 msgid "CDN"
 msgstr "CDN"
 
-#: inc/admin/options.php:558
+#: inc/admin/options.php:556
 msgid "Advanced"
 msgstr "Avanzate"
 
-#: inc/admin/options.php:559
+#: inc/admin/options.php:557
 msgid "Database"
 msgstr "Database"
 
-#: inc/admin/options.php:560
+#: inc/admin/options.php:558
 msgid "Preload"
 msgstr "Precaricamento"
 
-#: inc/admin/options.php:569 inc/admin/ui/modules/white-label.php:4
+#: inc/admin/options.php:567 inc/admin/ui/modules/white-label.php:4
 msgid "White Label"
 msgstr "Marca bianca"
 
-#: inc/admin/options.php:571 inc/admin/ui/modules/tools.php:7
+#: inc/admin/options.php:569 inc/admin/ui/modules/tools.php:7
 msgid "Tools"
 msgstr "Strumenti"
 
-#: inc/admin/options.php:576
+#: inc/admin/options.php:574
 msgid "License"
 msgstr "Licenza"
 
-#: inc/admin/options.php:994
+#: inc/admin/options.php:992
 msgid "Settings imported and saved."
 msgstr "Impostazioni importate e salvate."
 
-#: inc/admin/options.php:1010 inc/admin/options.php:1179
+#: inc/admin/options.php:1008 inc/admin/options.php:1177
 msgid "Settings saved."
 msgstr "Impostazioni salvate."
 
-#: inc/admin/options.php:1106
+#: inc/admin/options.php:1104
 #, php-format
 msgid "Cloudflare development mode error: %s"
 msgstr "Errore modalità sviluppo Cloudflare: %s"
 
-#: inc/admin/options.php:1108
+#: inc/admin/options.php:1106
 #, php-format
 msgid "Cloudflare development mode %s"
 msgstr "Modalità sviluppo Cloudflare %s"
 
-#: inc/admin/options.php:1120
+#: inc/admin/options.php:1118
 #, php-format
 msgid "Cloudflare cache level error: %s"
 msgstr "Errore nel livello cache Cloudflare: %s"
 
-#: inc/admin/options.php:1122
+#: inc/admin/options.php:1120
 #, php-format
 msgid "Cloudflare cache level set to %s"
 msgstr "Livello cache Cloudflare impostato su %s"
 
-#: inc/admin/options.php:1130
+#: inc/admin/options.php:1128
 #, php-format
 msgid "Cloudflare minification error: %s"
 msgstr "Errore minificazione Cloudflare: %s"
 
-#: inc/admin/options.php:1132
+#: inc/admin/options.php:1130
 #, php-format
 msgid "Cloudflare minification %s"
 msgstr "Minificazione Cloudflare %s"
 
-#: inc/admin/options.php:1140
+#: inc/admin/options.php:1138
 #, php-format
 msgid "Cloudflare rocket loader error: %s"
 msgstr "Errore del Rocket Loader di Cloudflare: %s"
 
-#: inc/admin/options.php:1142
+#: inc/admin/options.php:1140
 #, php-format
 msgid "Cloudflare rocket loader %s"
 msgstr "Rocket Loader Cloudflare %s"
 
-#: inc/admin/options.php:1150
+#: inc/admin/options.php:1148
 #, php-format
 msgid "Cloudflare browser cache error: %s"
 msgstr "Errore della cache del browser di Cloudflare: %s"
 
-#: inc/admin/options.php:1152
+#: inc/admin/options.php:1150
 #, php-format
 msgid "Cloudflare browser cache set to %s seconds"
 msgstr "La cache del browser di Cloudflare è impostata su %s secondi"
 
-#: inc/admin/options.php:1291
+#: inc/admin/options.php:1289
 msgid ""
 "Before you can upload your import file, you will need to fix the following "
 "error:"
 msgstr "Prima di poter caricare il tuo file di importazione, è necessario correggere il seguente errore:"
 
-#: inc/admin/options.php:1298
+#: inc/admin/options.php:1296
 #, php-format
 msgid "Choose a file from your computer (maximum size: %s)"
 msgstr "Scegliere un file dal computer (dimensione massima: %s)"
 
-#: inc/admin/options.php:1301
+#: inc/admin/options.php:1299
 msgid "Upload file and import settings"
 msgstr "Caricare il file e importare le impostazioni"
 
 #: inc/admin/ui/enqueue.php:20
-msgid "In case of any display errors we recommend to disable the option."
+msgid "If there are any display errors we recommend to disable the option."
 msgstr "In caso di qualsiasi errore di visualizzazione ti raccomandiamo di disabilitare questa opzione."
 
 #: inc/admin/ui/enqueue.php:20
 msgid ""
-"In case of any display errors we recommend following our documentation: "
+"If there are any display errors we recommend following our documentation: "
 msgstr "In caso di eventuali errori di visualizzazione, ti consigliamo di seguire la nostra documentazione:"
 
 #: inc/admin/ui/enqueue.php:20
@@ -477,9 +336,9 @@ msgstr "Abbiamo ricevuto la tua richiesta di supporto e ti risponderemo nel giro
 
 #: inc/admin/ui/enqueue.php:41
 msgid ""
-"We answer every ticket, so please check your spam folder in case you do not "
-"hear from us."
-msgstr "Rispondiamo a ogni richiesta di supporto per cui, nel caso in cui non dovessi ricevere nostre notizie, controlla la tua cartella di spam."
+"We answer every ticket, so please check your spam folder if you do not hear "
+"from us."
+msgstr "Rispondiamo a ogni richiesta di supporto per cui, se non dovessi ricevere nostre notizie, controlla la tua cartella di spam."
 
 #: inc/admin/ui/enqueue.php:43
 msgid "Oh dear, someone’s been naughty…"
@@ -531,10 +390,10 @@ msgid "Cancel"
 msgstr "Annulla"
 
 #: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/modules/tools.php:46
-#: inc/admin/ui/notices.php:89 inc/common/admin-bar.php:45
+#: inc/admin/ui/notices.php:100 inc/common/admin-bar.php:45
 #: inc/common/admin-bar.php:66 inc/common/admin-bar.php:102
 msgid "Clear cache"
-msgstr "Cancellare la cache"
+msgstr "Svuotare la cache"
 
 #: inc/admin/ui/meta-boxes.php:31
 msgid "Cache Options"
@@ -549,24 +408,24 @@ msgid "Activate these options on this post:"
 msgstr "Attivare le seguenti opzioni su questo post:"
 
 #: inc/admin/ui/meta-boxes.php:67
-msgid "Images LazyLoad"
-msgstr "Lazyload per immagini"
+msgid "LazyLoad for images"
+msgstr "LazyLoad per le immagini"
 
 #: inc/admin/ui/meta-boxes.php:68
-msgid "Iframes & Videos LazyLoad"
-msgstr "Lazyload Iframes e Video"
+msgid "LazyLoad for iframes/videos"
+msgstr "LazyLoad per iframe e video"
 
 #: inc/admin/ui/meta-boxes.php:69
-msgid "HTML Minification"
-msgstr "Minificazione HTML"
+msgid "Minify/combine HTML"
+msgstr "Minifica/combina HTML"
 
 #: inc/admin/ui/meta-boxes.php:70
-msgid "CSS Minification"
-msgstr "Minificazione CSS"
+msgid "Minify/combine CSS"
+msgstr "Minifica/combina CSS"
 
 #: inc/admin/ui/meta-boxes.php:71
-msgid "JS Minification"
-msgstr "Minificazione JS"
+msgid "Minify/combine JS"
+msgstr "Minifica/combina JS"
 
 #: inc/admin/ui/meta-boxes.php:73
 msgid "Async CSS"
@@ -583,9 +442,9 @@ msgstr "Attivare prima l'opzione %s."
 
 #: inc/admin/ui/meta-boxes.php:92
 msgid ""
-"<strong>Note:</strong> These options aren't applied if you added this post "
-"in the \"Never cache the following pages\" option."
-msgstr "<strong>Nota:</strong> Queste opzioni non verranno applicate se hai aggiunto questo post nel campo \"Escludi le seguenti pagine dalla cache\"."
+"<strong>Note:</strong> None of these options will be applied if this post "
+"has been excluded from cache in the global cache settings."
+msgstr "<strong>Nota:</strong> Nessuna di queste opzioni verrà applicata se hai aggiunto questo post nelle impostazioni globali della cache."
 
 #: inc/admin/ui/modules/advanced.php:7
 msgid "Advanced options"
@@ -683,17 +542,17 @@ msgstr "Usare i caratteri jolly %1$s per <a href=\"%2$s\" target=\"_blank\">iden
 
 #: inc/admin/ui/modules/advanced.php:172
 msgid "Always purge (URLs):"
-msgstr "Cancellare sempre (URL):"
+msgstr "Svuotare sempre (URL):"
 
 #: inc/admin/ui/modules/advanced.php:180
 msgid ""
 "Specify URLs you always want purged from cache whenever you update any post "
 "or page (one per line)"
-msgstr "Specificare gli URL per i quali cancellare sempre la cache ogni volta che si aggiorna un articolo o una pagina (uno per riga)"
+msgstr "Specificare gli URL per i quali svuotare sempre la cache ogni volta che si aggiorna un articolo o una pagina (uno per riga)"
 
 #: inc/admin/ui/modules/advanced.php:185
 msgid "Always purge these URLs from cache when updating any post or page:"
-msgstr "Cancellare sempre questi URL dalla cache quando si aggiorna un articolo o una pagina:"
+msgstr "Eliminare sempre questi URL dalla cache quando si aggiorna un articolo o una pagina:"
 
 #: inc/admin/ui/modules/advanced.php:203
 msgid "Cache query strings:"
@@ -757,8 +616,7 @@ msgstr "La funzione di cache è stata attivata automaticamente, il tuo sito dovr
 #: inc/admin/ui/modules/optimization.php:139
 #: inc/admin/ui/modules/optimization.php:305
 #, php-format
-msgid ""
-"Deactivate in case you notice any visually broken items on your website.%s"
+msgid "Deactivate if you notice any visually broken items on your website.%s"
 msgstr "Disattivarlo in caso apparissero problemi di visualizzazione sul sito.%s "
 
 #: inc/admin/ui/modules/basic.php:47
@@ -890,16 +748,17 @@ msgid ""
 "Prevents others from embedding content from your site, prevents you from "
 "embedding content from other (non-whitelisted) sites, and removes JavaScript"
 " requests related to <a "
-"href=\"https://wordpress.org/news/2015/12/clifford/\">WordPress Embeds</a>."
-msgstr "Impedisce che altri possano incorporare contenuto dal tuo sito, ti impedisce di incorporare contenuto da siti terzi (non approvati) e rimuove le richieste JavaScript legate agli <a href=\"https://wordpress.org/news/2015/12/clifford/\">incorporamenti WordPress</a>."
+"href=\"https://wordpress.org/news/2015/12/clifford/\" "
+"target=\"_blank\">WordPress Embeds</a>."
+msgstr "Impedisce che altri possano incorporare contenuto dal tuo sito, ti impedisce di incorporare contenuto da siti terzi (non approvati) e rimuove le richieste JavaScript legate agli <a href=\"https://wordpress.org/news/2015/12/clifford/\" target=\"_blank\">incorporamenti WordPress</a>."
 
 #: inc/admin/ui/modules/basic.php:232
 msgid "Specify time after which the global cache gets cleared (0 = unlimited)"
-msgstr "Specificare un lasso di tempo dopo il quale la cache globale verrà cancellata (0 = illimitato)"
+msgstr "Specificare un lasso di tempo dopo il quale la cache globale verrà svuotata (0 = illimitato)"
 
 #: inc/admin/ui/modules/basic.php:237
 msgid "Clear cache after …"
-msgstr "Cancellare la cache dopo..."
+msgstr "Svuotare la cache dopo..."
 
 #: inc/admin/ui/modules/basic.php:243
 msgid "Unit of time"
@@ -928,8 +787,8 @@ msgstr "La vita utile della cache è il periodo di tempo dopo il quale tutti i f
 #: inc/admin/ui/modules/basic.php:267
 #, php-format
 msgid ""
-"Reduce lifespan to 10 hours or less in case you notice issues that seem to "
-"appear only frequently.%s"
+"Reduce lifespan to 10 hours or less if you notice issues that seem to appear"
+" periodically.%s"
 msgstr "Consigliamo di ridurre la vita utile a 10 ore o meno in caso notassi la comparsa frequente di problemi.%s"
 
 #: inc/admin/ui/modules/basic.php:268
@@ -940,13 +799,13 @@ msgstr "<a href=\"http://docs.wp-rocket.me/article/975-nonces-and-cache-lifespan
 
 #: inc/admin/ui/modules/basic.php:276
 msgid ""
-"Increase lifespan to a few hours in case you notice server issues with this "
+"Increase lifespan to a few hours if you notice server issues with this "
 "setting."
 msgstr "Aumentare la vita utile di qualche ora in caso notassi problemi con il server dovuti a questa opzione."
 
 #: inc/admin/ui/modules/basic.php:282
-msgid "Cache lifespan"
-msgstr "Vita utile della cache"
+msgid "Cache lifespan:"
+msgstr "Vita utile della cache:"
 
 #: inc/admin/ui/modules/cdn.php:7
 msgid "Content Delivery Network options"
@@ -1000,15 +859,19 @@ msgstr "Tutti gli URL dei file statici (CSS, JS, immagini) verranno riscritti co
 msgid "CDN CNAME(S):"
 msgstr "CNAME(s) del CDN:"
 
+#: inc/admin/ui/modules/cdn.php:111 inc/admin/ui/modules/cdn.php:120
+msgid "CDN without SSL:"
+msgstr "CDN senza SSL:"
+
 #: inc/admin/ui/modules/cdn.php:118
 msgid "Disable CDN functionality on HTTPS pages"
 msgstr "Disabilitare la funzione CDN sulle pagine HTTPS"
 
 #: inc/admin/ui/modules/cdn.php:124
 msgid ""
-"In case your CDN account does not fully support SSL, you can disable URL "
+"If your CDN account does not fully support SSL, you can disable URL "
 "rewriting on HTTPS pages here."
-msgstr "Nel caso in cui il tuo piano CDN non includesse il supporto SSL, qui puoi disabilitare la riscrittura dell'URL per le pagine HTTPS."
+msgstr "Se il tuo piano CDN non include il supporto SSL, qui puoi disabilitare la riscrittura dell'URL per le pagine HTTPS."
 
 #: inc/admin/ui/modules/cdn.php:130 inc/admin/ui/modules/cdn.php:143
 msgid "Exclude files:"
@@ -1128,11 +991,11 @@ msgstr "Dovrebbe essere usato solo insieme all'opzione <a href=\"%1$s\" target=\
 
 #: inc/admin/ui/modules/cloudflare.php:185
 msgid "Clear Cloudflare cache:"
-msgstr "Cancellare la cache Cloudflare:"
+msgstr "Svuotare la cache Cloudflare:"
 
 #: inc/admin/ui/modules/cloudflare.php:191 inc/common/admin-bar.php:155
 msgid "Clear Cloudflare cache"
-msgstr "Cancellare la cache Cloudflare"
+msgstr "Svuotare la cache Cloudflare"
 
 #: inc/admin/ui/modules/cloudflare.php:196
 #, php-format
@@ -1341,8 +1204,8 @@ msgstr "Ottimizzazione dei file"
 #: inc/admin/ui/modules/optimization.php:27
 msgid ""
 "Heads up! These options are not equally suitable for all WordPress "
-"setups.<br>In case you notice any visual issues on your site, just turn off "
-"the last option(s) you had activated here. <br>Read the documentation on <a "
+"setups.<br>If you notice any visual issues on your site, just turn off the "
+"last option(s) you had activated here. <br>Read the documentation on <a "
 "href=\"http://docs.wp-rocket.me/article/19-resolving-issues-with-"
 "minification\" target=\"_blank\">troubleshooting file optimization</a>."
 msgstr "Attenzione! Queste opzioni non sono applicabili in ugual maniera a tutte le configurazioni WordPress.<br>In caso notassi dei problemi di visualizzazione sul tuo sito, puoi semplicemente disattivare l'ultima opzione (o le ultime) che hai attivato in questa sezione. <br>Leggi la documentazione su <a href=\"http://it.docs.wp-rocket.me/article/352-risolvere-i-problemi-con-la-minificazione\" target=\"_blank\">come risolvere i problemi con l'ottimizzazione dei file</a>."
@@ -1392,9 +1255,29 @@ msgstr "Minificare i file:"
 msgid "Concatenate Google Fonts"
 msgstr "Concatenare Google Fonts"
 
+#: inc/admin/ui/modules/optimization.php:156
+msgid "Concatenate CSS files"
+msgstr "Concatenare i file CSS"
+
+#: inc/admin/ui/modules/optimization.php:162
+msgid ""
+"Combine all CSS files into as few files as possible <em>(test "
+"thoroughly!)</em>"
+msgstr "Combina tutti i file CSS nel minor numero di file possibile <em>(testar con cautela!)</em>"
+
 #: inc/admin/ui/modules/optimization.php:164
 msgid "CSS Files concatenation"
 msgstr "Concatenazione file CSS"
+
+#: inc/admin/ui/modules/optimization.php:170
+msgid "Concatenate JS files"
+msgstr "Concatenare i file JS"
+
+#: inc/admin/ui/modules/optimization.php:176
+msgid ""
+"Combine all JavaScript files into as few files as possible <em>(test "
+"thoroughly!)</em>"
+msgstr "Combina tutti i file JavaScript nel minor numero di file possibile <em>(testar con cautela!)</em>"
 
 #: inc/admin/ui/modules/optimization.php:178
 msgid "JS Files concatenation"
@@ -1483,8 +1366,8 @@ msgstr "Può migliorare la valutazione della performance su <a href=\"%s\" targe
 #: inc/admin/ui/modules/optimization.php:290
 msgid ""
 "Removes the version query string from static files (e.g. style.css?ver=1.0) "
-"and encodes it into the file name instead (e.g. style-1.0.css)."
-msgstr "Rimuove la versione della query string dalle risorse statiche (es. style.css?ver=1.0) e la codifica dentro il nome del file (es. style-1.0.css)."
+"and encodes it into the file name instead (e.g. style-1-0.css)."
+msgstr "Rimuove la versione della query string dai file statici (es. style.css?ver=1.0) e la codifica dentro il nome del file (es. style-1-0.css)."
 
 #: inc/admin/ui/modules/optimization.php:306
 msgid ""
@@ -1639,7 +1522,7 @@ msgid "Sets the intervall between each URL crawl"
 msgstr "Indica l'intervallo di tempo fra le analisi di ogni URL"
 
 #: inc/admin/ui/modules/preload.php:81
-msgid "Set a higher value in case you notice any overload on your server!"
+msgid "Set a higher value if you notice any overload on your server!"
 msgstr "Aumenta questo valore se noti problemi di sovraccarico sul tuo server! "
 
 #: inc/admin/ui/modules/preload.php:91
@@ -1681,7 +1564,7 @@ msgstr "Attiva il precaricamento automatico dopo un aggiornamento del contenuto"
 
 #: inc/admin/ui/modules/preload.php:138
 msgid ""
-"Bot-based preloading should only be used on well-performaning servers. Once "
+"Bot-based preloading should only be used on well-performing servers. Once "
 "activated, it gets triggered automatically after you add or update content "
 "on your website. You can also launch it manually from the upper toolbar "
 "menu, or from the Tools tab."
@@ -1691,14 +1574,13 @@ msgstr "Il precaricamento cache basato sul bot dovrebbe essere usato solo su ser
 msgid ""
 "<a href=\"http://docs.wp-rocket.me/article/8-how-the-cache-is-preloaded\" "
 "target=\"_blank\">Bot-based preloading</a> should only be used on well-"
-"performaning servers. Once activated, it gets triggered automatically after "
+"performing servers. Once activated, it gets triggered automatically after "
 "you add or update content on your website. You can also launch it manually "
 "from the upper toolbar menu, or from the Tools tab."
 msgstr "<a href=\"http://it.docs.wp-rocket.me/article/330-come-viene-pre-caricata-la-cache\" target=\"_blank\">Il precaricamento cache basato sul bot</a> dovrebbe essere usato solo su server ad alte prestazioni. Una volta attivato, viene lanciato automaticamente in seguito all'aggiunta o alla modifica di contenuto sul tuo sito. Puoi anche lanciarlo manualmente dalla barra del menu admin o dalla scheda Strumenti."
 
 #: inc/admin/ui/modules/preload.php:143
-msgid ""
-"Deactivate these options in case you notice any overload on your server!"
+msgid "Deactivate these options if you notice any overload on your server!"
 msgstr "Disattiva queste opzioni se noti problemi di sovraccarico sul tuo server! "
 
 #: inc/admin/ui/modules/preload.php:153 inc/admin/ui/modules/preload.php:166
@@ -1793,11 +1675,11 @@ msgstr "Beta tester"
 
 #: inc/admin/ui/modules/tools.php:36
 msgid "Clear cache:"
-msgstr "Cancellare la cache:"
+msgstr "Svuotare la cache:"
 
 #: inc/admin/ui/modules/tools.php:43
 msgid "Clear the cache for the whole website."
-msgstr "Cancellare la cache per tutto il sito web."
+msgstr "Svuotare la cache per tutto il sito web."
 
 #: inc/admin/ui/modules/tools.php:57
 msgid "Preload cache:"
@@ -1808,19 +1690,18 @@ msgstr "Precaricare la cache:"
 msgid "Preload the cache according to your <a href=\"%s\">Preload settings</a>."
 msgstr "Precaricare la cache in base a quanto definito nelle <a href=\"%s\">impostazioni di precaricamento</a>."
 
-#: inc/admin/ui/modules/tools.php:71 inc/admin/ui/modules/tutorials.php:7
-#: inc/common/admin-bar.php:168 inc/common/admin-bar.php:187
-#: inc/common/admin-bar.php:220
+#: inc/admin/ui/modules/tools.php:71 inc/common/admin-bar.php:168
+#: inc/common/admin-bar.php:187 inc/common/admin-bar.php:220
 msgid "Preload cache"
 msgstr "Precaricare la cache"
 
 #: inc/admin/ui/modules/tools.php:84
 msgid "Purge OPcache:"
-msgstr "Cancellare la OPcache:"
+msgstr "Svuotare la OPcache:"
 
 #: inc/admin/ui/modules/tools.php:90 inc/common/admin-bar.php:142
 msgid "Purge OPcache"
-msgstr "Cancellare la OPcache"
+msgstr "Svuotare la OPcache"
 
 #: inc/admin/ui/modules/tools.php:102
 msgid "Export settings:"
@@ -1861,64 +1742,6 @@ msgid ""
 "request</a>."
 msgstr "La versione %1$s ha creato qualche problema sul tuo sito?<br>Qui puoi tornare indietro alla versione maggiore precedente. Poi puoi <a href=\"%2$s\">inviarci una richiesta di supporto</a>."
 
-#: inc/admin/ui/modules/tutorials.php:4
-msgid "Tutorials"
-msgstr "Tutorial"
-
-#: inc/admin/ui/modules/tutorials.php:12
-msgid ""
-"This video gives some explanations about our two crawler robots. They "
-"generate several cache files in a few seconds."
-msgstr "Questo video ti spiega come funzionano i nostri due robot di precaricamento, che generano diversi file in pochi secondi."
-
-#: inc/admin/ui/modules/tutorials.php:19
-msgid "CSS and JavaScript minification"
-msgstr "Minimizzazione CSS e JavaScript"
-
-#: inc/admin/ui/modules/tutorials.php:24
-msgid ""
-"This video gives some explanations about how to use the advanced processes "
-"of minification and concatenation of CSS and JavaScript files."
-msgstr "Questo video ti spiega come usare le opzioni avanzate di minificazione e concatenazione dei file CSS e JavaScript."
-
-#: inc/admin/ui/modules/tutorials.php:31
-msgid "Preloading DNS queries"
-msgstr "Precaricamento delle query DNS"
-
-#: inc/admin/ui/modules/tutorials.php:36
-msgid ""
-"This video helps to easily understand the advanced option of \"Preloading "
-"DNS queries\" and the use of the filter <code>rocket_dns_prefetch</code>."
-msgstr "Questo video ti spiega come funziona l'opzione \"Precaricamento delle query DNS\" e come usare il filtro <code>rocket_dns_prefetch</code>."
-
-#: inc/admin/ui/modules/tutorials.php:43
-msgid "How to use the White Label functionality?"
-msgstr "Come usare la funzione Marca Bianca?"
-
-#: inc/admin/ui/modules/tutorials.php:48
-msgid "This video helps to set up a White Label version of WP Rocket."
-msgstr "Questo video ti aiuta a configurare una versione marca bianca di WP Rocket."
-
-#: inc/admin/ui/modules/tutorials.php:55
-msgid "How to use the CDN functionality?"
-msgstr "Come usare la funzionalità CDN?"
-
-#: inc/admin/ui/modules/tutorials.php:60
-msgid ""
-"This video helps to understand what is the CDN functionality included since "
-"WP Rocket 2.1."
-msgstr "Questo video ti aiuta a capire cos'è la funzionalità CDN, inclusa a partire dalla versione 2.1 di WP Rocket."
-
-#: inc/admin/ui/modules/tutorials.php:67
-msgid "How to use the CDN API?"
-msgstr "Come usare l'API del CDN?"
-
-#: inc/admin/ui/modules/tutorials.php:72
-msgid ""
-"This video helps to set up the two functions "
-"<code>get_rocket_cdn_url()</code> and <code>rocket_cdn_url()</code>."
-msgstr "Questo video ti aiuta ad usare le due funzioni <code>get_rocket_cdn_url()</code> e <code>rocket_cdn_url()</code>."
-
 #: inc/admin/ui/modules/varnish.php:39
 #, php-format
 msgid ""
@@ -1933,7 +1756,7 @@ msgstr "Sincronizzare cache Varnish:"
 
 #: inc/admin/ui/modules/varnish.php:60
 msgid "Purge Varnish cache automatically"
-msgstr "Cancellare automaticamente la cache Varnish"
+msgstr "Svuotare automaticamente la cache Varnish"
 
 #: inc/admin/ui/modules/varnish.php:62
 msgid "Sync Varnish cache with plugin cache"
@@ -1944,7 +1767,7 @@ msgstr "Sincronizzare la cache Varnish con la cache del plugin"
 msgid ""
 "Varnish cache will be purged each time %s clears its cache to ensure content"
 " is always up to date."
-msgstr "La cache Varnish verrà cancellata allo stesso tempo della cache di %s così il contenuto del tuo sito sarà sempre aggiornato."
+msgstr "La cache Varnish verrà svuotata allo stesso tempo della cache di %s così il contenuto del tuo sito sarà sempre aggiornato."
 
 #: inc/admin/ui/modules/white-label.php:7
 #: inc/admin/ui/modules/white-label.php:16
@@ -1976,183 +1799,172 @@ msgid ""
 "when you customize these fields."
 msgstr "La scheda Supporto e tutti i link alla documentazione di WP Rocket verranno nascosti se personalizzi questi campi."
 
-#: inc/admin/ui/notices.php:24 inc/admin/ui/notices.php:28
-#, php-format
-msgid "<b>%1$s</b> can not be deactivated because of <code>%1$s</code>."
-msgstr "<b>%1$s</b> non può essere disattivato a causa di <code>%1$s</code>."
-
-#: inc/admin/ui/notices.php:24
-msgid ""
-"This constant is still defined in <code>wp-config.php</code> file and its "
-"value must be set to <code>false</code>."
-msgstr "Questa costante è ancora definita nel file <code>wp-config.php</code> e il suo valore deve essere impostato su <code>false</code>."
-
-#: inc/admin/ui/notices.php:24
-#, php-format
-msgid "Maybe we do not have the writing permissions for <code>%s</code>."
-msgstr "Forse non abbiamo i permessi di scrittura su <code>%s</code>."
-
-#: inc/admin/ui/notices.php:24 inc/admin/ui/notices.php:28
-msgid ""
-"Please give us permissions or resolve the problem yourself. Then retry "
-"deactivation."
-msgstr "Per favore dacci i permessi o risolvi il problema. Quindi riprova a disattivare il plugin."
-
-#: inc/admin/ui/notices.php:28
-msgid "This file is not writable and we can not remove these directives."
-msgstr "Questo file non è scrivibile e non possiamo rimuovere queste direttive."
-
-#: inc/admin/ui/notices.php:28
-#, php-format
-msgid "Maybe we do not have writing permissions for <code>%s</code>."
-msgstr "Forse non abbiamo i permessi di scrittura su <code>%s</code>."
-
-#: inc/admin/ui/notices.php:64
-msgid "You can still force the deactivation by clicking here."
-msgstr "È comunque possibile forzare la disattivazione facendo clic qui."
-
-#: inc/admin/ui/notices.php:89
+#: inc/admin/ui/notices.php:26
 #, php-format
 msgid ""
-"<b>%s</b>: One or more extensions have been enabled or disabled, do not "
-"forget to clear the cache if necessary."
-msgstr "<b>%s</b>: Una o più estensioni sono state abilitate o disabilitate, non dimenticare di cancellare la cache se necessario."
+"<strong>%1$s</strong> can not be deactivated because of "
+"<code>%2$s</code>.<br>This constant is still defined in <code>%3$s</code>. "
+"Its value must be set to <code>false</code>, but apparently %1$s does not "
+"have writing permissions for <code>%3$s</code>.<br>Please make "
+"<code>%3$s</code> writable, then retry deactivation."
+msgstr "<strong>%1$s</strong> non può essere disattivato a causa del <code>%2$s</code>.<br>Questa costante è ancora definita come <code>%3$s</code>. Il suo valore deve essere impostato su <code>false</code>, ma apparentemente %1$s non ha i permessi di scrittura per <code>%3$s</code>.<br>Rendi <code>%3$s</code> scrivibile e poi riprova con la disattivazione."
 
-#: inc/admin/ui/notices.php:193
+#: inc/admin/ui/notices.php:36
 #, php-format
 msgid ""
-"<b>%s</b>: The following plugins are not compatible with this plugin and may"
-" cause unexpected results:"
-msgstr "<b>%s</b>: I seguenti plugin non sono compatibili con questo plugin e possono causare risultati indesiderati:"
+"<strong>%1$s</strong> can not be deactivated because of "
+"<code>%2$s</code>.<br>This file is not writable for %1$s, so %1$s can not "
+"remove its own directives.<br>Please make <code>%3$s</code> writable, then "
+"retry deactivation."
+msgstr "<strong>%1$s</strong> non può essere disattivato a causa del <code>%2$s</code>.<br>Questo file non è scrivibile per %1$s, per cui %1$s non può rimuovere le sue proprie regole.<br>Rendi <code>%3$s</code> scrivibile e poi riprova con la disattivazione."
 
-#: inc/admin/ui/notices.php:198
+#: inc/admin/ui/notices.php:75
+msgid "You can still force deactivation by clicking here."
+msgstr "Puoi comunque forzare la disattivazione facendo clic qui."
+
+#: inc/admin/ui/notices.php:100
+#, php-format
+msgid ""
+"<strong>%s</strong>: One or more extensions have been enabled or disabled, "
+"clear the cache if necessary."
+msgstr "<strong>%s</strong>: Una o più estensioni sono state abilitate o disabilitate, non dimenticare di svuotare la cache se necessario."
+
+#: inc/admin/ui/notices.php:204
+#, php-format
+msgid ""
+"<strong>%s</strong>: The following plugins are not compatible with this "
+"plugin and may cause unexpected results:"
+msgstr "<strong>%s</strong>: I seguenti plugin non sono compatibili con questo plugin e possono causare risultati indesiderati:"
+
+#: inc/admin/ui/notices.php:209
 msgid "Deactivate"
 msgstr "Disattivare"
 
-#: inc/admin/ui/notices.php:223
+#: inc/admin/ui/notices.php:236
 #, php-format
 msgid ""
-"<b>%1$s</b>: A custom permalink structure is required for the plugin to work"
-" properly. Please go to <a href=\"%1$s\">Permalink</a> to configure it."
-msgstr "<b>%1$s</b>: Perché il plugin funzioni correttamente, è necessaria una struttura personalizzata dei permalink. Vai su <a href=\"%1$s\">Permalink</a> per impostarla."
+"<strong>%1$s</strong>: A custom permalink structure is required for the "
+"plugin to work properly. Please go to <a href=\"%2$s\">Permalink</a> to "
+"configure it."
+msgstr "<strong>%1$s</strong>: Perché il plugin funzioni correttamente, è necessaria una struttura personalizzata dei permalink. Vai su <a href=\"%2$s\">Permalink</a> per impostarla."
 
-#: inc/admin/ui/notices.php:253
+#: inc/admin/ui/notices.php:271
 #, php-format
 msgid ""
-"<b>%1$s</b>: It seems we don't have <a href=\"%1$s\" "
+"<strong>%1$s</strong>: It seems we do not have <a href=\"%2$s\" "
 "target=\"_blank\">writing permissions</a> on <code>wp-config.php</code> file"
 " or the value of the constant <code>WP_CACHE</code> is set to "
 "<code>false</code>"
-msgstr "<b>%1$s</b>: Sembra che non abbiamo i <a href=\"%1$s\" target=\"_blank\">permessi di scrittura</a> sul file <code>wp-config.php</code> o il valore della costante <code>WP_CACHE</code> è impostato su <code>false</code>"
+msgstr "<strong>%1$s</strong>: Sembra che non abbiamo i <a href=\"%2$s\" target=\"_blank\">permessi di scrittura</a> sul file <code>wp-config.php</code> oppure il valore della costante <code>WP_CACHE</code> è impostato su <code>false</code>"
 
-#: inc/admin/ui/notices.php:255
+#: inc/admin/ui/notices.php:276
 msgid ""
 "To fix this you have to set writing permissions for <code>wp-"
 "config.php</code> and then save the settings again."
 msgstr "Per risolverelo devi dare i permessi di scrittura al file <code>wp-config.php</code> e quindi salvare di nuovo le impostazioni."
 
-#: inc/admin/ui/notices.php:257
+#: inc/admin/ui/notices.php:278
 msgid ""
 "If the message persists, you have to put the following code in your <code"
 ">wp-config.php</code> file so that it works correctly. Click on the field "
 "and press Ctrl-A to select all."
 msgstr "Se il messaggio persiste, devi aggiungere il seguente codice nel tuo file <code>wp-config.php</code> in modo da farlo funzionare correttamente. Fai clic sul box e premi Ctrl-A o cmd+A per selezionare tutto."
 
-#: inc/admin/ui/notices.php:295
+#: inc/admin/ui/notices.php:316
 #, php-format
 msgid ""
 "If you had <a href=\"%1$s\" target=\"_blank\">writing permissions</a> on "
-"<code>%2$s</code> file, <b>%3$s</b> could do this automatically. This is not"
-" the case, here is the code you should add in your <code>%2$s</code> file "
-"for <b>%3$s</b> to work properly."
-msgstr "Se avessi avuto i <a href=\"%1$s\" target=\"_blank\">permessi di scrittura</a> sul file <code>%2$s</code>, <b>%3$s</b> avrebbe potuto realizzare questa azione automaticamente. Non essendo il tuo caso, ecco il codice che dovresti aggiungere nel file <code>%2$s</code> per far funzionare correttamente <b>%3$s</b>."
+"<code>%2$s</code> file, <strong>%3$s</strong> could do this automatically. "
+"This is not the case, here is the code you should add in your "
+"<code>%2$s</code> file for <strong>%3$s</strong> to work properly."
+msgstr "Se avessi avuto i <a href=\"%1$s\" target=\"_blank\">permessi di scrittura</a> sul file <code>%2$s</code>, <strong>%3$s</strong> avrebbe potuto realizzare questa azione automaticamente. Non essendo il tuo caso, ecco il codice che dovresti aggiungere nel file <code>%2$s</code> per far funzionare correttamente <strong>%3$s</strong>."
 
-#: inc/admin/ui/notices.php:326
+#: inc/admin/ui/notices.php:347
 #, php-format
 msgid ""
 "It seems that the <code>%s</code> file is not ours. Save the settings, we "
-"will automatically recreate the correct one. If it's still not working, "
+"will automatically recreate the correct one. If it still does not work, "
 "please delete it and save again."
 msgstr "Sembra che il file <code>%s</code> non sia nostro. Salva le impostazioni, ricreeremo automaticamente quello corretto. Se ancora non funziona, per favore cancellalo e salva di nuovo."
 
-#: inc/admin/ui/notices.php:355
+#: inc/admin/ui/notices.php:376
 #, php-format
 msgid ""
 "If you had <a href=\"%1$s\" target=\"_blank\">writing permissions</a> on "
-"<code>.htaccess</code> file, <b>%2$s</b> could do this automatically. This "
-"is not the case, so here are the rewrite rules you have to put in your "
-"<code>.htaccess</code> file for <b>%2$s</b> to work correctly. Click on the "
-"field and press Ctrl-A to select all."
-msgstr "Se avessi avuto <a href=\"%1$s\" target=\"_blank\">permessi di scrittura</a> sul file <code>.htaccess</code>, <b>%2$s</b> avrebbe potuto realizzare questa azione automaticamente. Non essendo il tuo caso, ecco le regole di riscrittura che devi aggiungere al tuo file <code>.htaccess</code> per far funzionare correttamente <b>%2$s</b>. Fai clic sul box e premi Ctrl-A o cmd+A per selezionare tutto."
+"<code>.htaccess</code> file, <strong>%2$s</strong> could do this "
+"automatically. This is not the case, so here are the rewrite rules you have "
+"to put in your <code>.htaccess</code> file for <strong>%2$s</strong> to work"
+" correctly. Click on the field and press Ctrl-A to select all."
+msgstr "Se avessi avuto <a href=\"%1$s\" target=\"_blank\">permessi di scrittura</a> sul file <code>.htaccess</code>, <strong>%2$s</strong> avrebbe potuto realizzare questa azione automaticamente. Non essendo il tuo caso, ecco le regole di riscrittura che devi aggiungere al tuo file <code>.htaccess</code> per far funzionare correttamente <strong>%2$s</strong>. Fai clic sul box e premi Ctrl-A o cmd+A per selezionare tutto."
 
-#: inc/admin/ui/notices.php:355
+#: inc/admin/ui/notices.php:376
 msgid ""
 "<strong>Warning:</strong> This message will popup again and its content may "
 "be updated when saving the options"
 msgstr "<strong>Attenzione:</strong> Questo messaggio verrà mostrato di nuovo e il suo contenuto potrebbe essere aggiornato quando si salvano le opzioni"
 
-#: inc/admin/ui/notices.php:382
+#: inc/admin/ui/notices.php:403
 #, php-format
 msgid ""
 "Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
-"permissions</a> on <b>%3$s</b> domain configuration folder "
-"(<code>%2$s</code>). To make <b>%3$s</b> work properly, please CHMOD "
-"<code>755</code> or <code>775</code> or <code>777</code> this "
+"permissions</a> on <strong>%3$s</strong> domain configuration folder "
+"(<code>%2$s</code>). To make <strong>%3$s</strong> work properly, please "
+"CHMOD <code>755</code> or <code>775</code> or <code>777</code> this "
 "folder.<br/>When the problem is solved, thank you to save the %3$s options "
 "to generate the configuration file."
-msgstr "Attenzione, non hai i <a href=\"%1$s\" target=\"_blank\">permessi di scrittura</a> sulla cartella di configurazione del dominio <b>%3$s</b> (<code>%2$s</code>). Per far funzionare correttamente <b>%3$s</b>, modifica il  CHMOD su <code>755</code> o <code>775</code> o <code>777</code>.<br/>Quando il problema sarà risolto, salva le opzioni di %3$s per generare il file di configurazione."
+msgstr "Attenzione, non hai i <a href=\"%1$s\" target=\"_blank\">permessi di scrittura</a> sulla <strong>%3$s</strong> cartella di configurazione del dominio (<code>%2$s</code>). Per far funzionare correttamente <strong>%3$s</strong>, modifica il  CHMOD su <code>755</code> o <code>775</code> o <code>777</code>.<br/>Quando il problema sarà risolto, salva le opzioni di %3$s per generare il file di configurazione."
 
-#: inc/admin/ui/notices.php:408
+#: inc/admin/ui/notices.php:429
 #, php-format
 msgid ""
 "Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
-"permissions</a> on <b>%3$s</b> cache folder (<code>%2$s</code>). For "
-"<b>%3$s</b> works properly, please CHMOD <code>755</code> or "
+"permissions</a> on <strong>%3$s</strong> cache folder (<code>%2$s</code>). "
+"For <strong>%3$s</strong> works properly, please CHMOD <code>755</code> or "
 "<code>775</code> or <code>777</code> this folder."
-msgstr "Attenzione, non hai i <a href=\"%1$s\" target=\"_blank\">permessi di scrittura</a> sulla cartella della cache <b>%3$s</b> (<code>%2$s</code>). Per far funzionare correttamente <b>%3$s</b>, modifica i permessi di questa cartella impostandoli su CHMOD <code>755</code> o <code>775</code> o <code>777</code>."
+msgstr "Attenzione, non hai <a href=\"%1$s\" target=\"_blank\">i permessi di scrittura</a> sulla <strong>%3$s</strong> cartella di cache (<code>%2$s</code>). Per far funzionare correttamente <strong>%3$s</strong>, modifica i permessi di questa cartella impostandoli su CHMOD <code>755</code> o <code>775</code> o <code>777</code>."
 
-#: inc/admin/ui/notices.php:435
+#: inc/admin/ui/notices.php:456
 #, php-format
 msgid ""
 "Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
-"permissions</a> on <b>%3$s</b> minified cache folder (<code>%2$s</code>). To"
-" make <b>%3$s</b> work properly, please CHMOD <code>755</code> or "
-"<code>775</code> or <code>777</code> this folder."
-msgstr "Attenzione, non hai i <a href=\"%1$s\" target=\"_blank\">permessi di scrittura</a> sulla cartella della file minificati <b>%3$s</b> (<code>%2$s</code>). Per far funzionare correttamente <b>%3$s</b>, modifica i permessi  di questa cartella impostandoli su CHMOD <code>755</code> o <code>775</code> o <code>777</code>."
+"permissions</a> on <strong>%3$s</strong> minified cache folder "
+"(<code>%2$s</code>). To make <strong>%3$s</strong> work properly, please "
+"CHMOD <code>755</code> or <code>775</code> or <code>777</code> this folder."
+msgstr "Attenzione, non hai <a href=\"%1$s\" target=\"_blank\">i permessi di scrittura</a> sulla <strong>%3$s</strong> cartella dei file minificati  (<code>%2$s</code>). Per far funzionare correttamente <strong>%3$s</strong>, modifica i permessi di questa cartella impostandoli su CHMOD <code>755</code> o <code>775</code> o <code>777</code>."
 
-#: inc/admin/ui/notices.php:463
+#: inc/admin/ui/notices.php:484
 #, php-format
 msgid ""
 "Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
-"permissions</a> on <b>%3$s</b> cache busting folder (<code>%2$s</code>). To "
-"make <b>%3$s</b> work properly, please CHMOD <code>755</code> or "
-"<code>775</code> or <code>777</code> this folder."
-msgstr "Attenzione, non hai <a href=\"%1$s\" target=\"_blank\">i permessi di scrittura</a> sulla cartella cache busting <b>%3$s</b>(<code>%2$s</code>). Per far funzionare correttamente <b>%3$s</b>, modifica i permessi di questa cartella su CHMOD <code>755</code> o <code>775</code> o <code>777</code>."
+"permissions</a> on <strong>%3$s</strong> cache busting folder "
+"(<code>%2$s</code>). To make <strong>%3$s</strong> work properly, please "
+"CHMOD <code>755</code> or <code>775</code> or <code>777</code> this folder."
+msgstr "Attenzione, non hai <a href=\"%1$s\" target=\"_blank\">i permessi di scrittura</a> sulla <strong>%3$s</strong> cartella cache busting (<code>%2$s</code>). Per far funzionare correttamente <strong>%3$s</strong>, modifica i permessi di questa cartella impostandoli su CHMOD <code>755</code> o <code>775</code> o <code>777</code>."
 
-#: inc/admin/ui/notices.php:486
+#: inc/admin/ui/notices.php:507
 msgid "Thank you. Your license has been successfully validated!"
 msgstr "Grazie. La tua licenza è stata validata con successo!"
 
-#: inc/admin/ui/notices.php:487
+#: inc/admin/ui/notices.php:510
 #, php-format
-msgid "Key: <code>%1$s</code><br>Email: <i>%1$s</i>"
-msgstr "Chiave: <code>%1$s</code><br>Email: <i>%1$s</i>"
+msgid "Key: <code>%1$s</code><br>Email: <em>%2$s</em>"
+msgstr "Chiave: <code>%1$s</code><br>Email: <em>%2$s</em>"
 
-#: inc/admin/ui/notices.php:540
+#: inc/admin/ui/notices.php:566
 msgid "Activate Imagify"
 msgstr "Attivare Imagify"
 
-#: inc/admin/ui/notices.php:540
+#: inc/admin/ui/notices.php:566
 msgid "Install Imagify for Free"
 msgstr "Installare Imagify gratuitamente"
 
-#: inc/admin/ui/notices.php:555
+#: inc/admin/ui/notices.php:581
 msgid ""
 "Speed up your website and boost your SEO by reducing image file sizes "
 "without losing quality with Imagify."
 msgstr "Velocizza il tuo sito web e dai un'accelerata al tuo SEO riducendo la dimensione dei file immagine senza perdere qualità grazie a Imagify."
 
-#: inc/admin/ui/notices.php:560
+#: inc/admin/ui/notices.php:586
 msgid "More details"
 msgstr "Maggiori informazioni"
 
@@ -2171,11 +1983,11 @@ msgstr "Tutte le lingue"
 
 #: inc/common/admin-bar.php:117
 msgid "Clear this post"
-msgstr "Cancellare la cache di questo articolo"
+msgstr "Svuotare la cache di questo articolo"
 
 #: inc/common/admin-bar.php:128
 msgid "Purge this URL"
-msgstr "Cancellare la cache per questo URL"
+msgstr "Svuotare la cache per questo URL"
 
 #: inc/common/admin-bar.php:232
 msgid "Documentation"
@@ -2197,11 +2009,11 @@ msgstr "Mensile"
 #: inc/common/purge.php:549
 #, php-format
 msgid "CloudFlare Cache purge error: %s"
-msgstr "Errore cancellazione cache CloudFlare: %s"
+msgstr "Errore svuotamento cache CloudFlare: %s"
 
 #: inc/common/purge.php:551
 msgid "CloudFlare cache sucessfully purged"
-msgstr "Cache CloudFlare cancellata con successo"
+msgstr "Cache CloudFlare svuotata con successo"
 
 #: inc/functions/admin.php:15
 #, php-format
@@ -2230,19 +2042,19 @@ msgstr "Scegliere un dominio dalla lista"
 msgid "No domain available in your Cloudflare account"
 msgstr "Non ci sono domini disponibili nel tuo account CloudFlare"
 
-#: inc/functions/options.php:602
+#: inc/functions/options.php:598
 msgid "Your license is not valid."
 msgstr "La tua licenza non è valida."
 
-#: inc/functions/options.php:603
+#: inc/functions/options.php:599
 msgid "You cannot add more websites. Upgrade your account."
 msgstr "Non puoi aggiungere altri siti. Estendi il tuo account."
 
-#: inc/functions/options.php:604
+#: inc/functions/options.php:600
 msgid "This website is not allowed."
 msgstr "Questo sito web non è consentito."
 
-#: inc/functions/options.php:605
+#: inc/functions/options.php:601
 msgid "This license key is not accepted."
 msgstr "Questa chiave di licenza non è stata accettata."
 

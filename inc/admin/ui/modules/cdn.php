@@ -108,7 +108,7 @@ add_settings_field(
  */
 add_settings_field(
 	'rocket_cdn_on_ssl',
-	'CDN without SSL:',
+	__( 'CDN without SSL:', 'rocket' ),
 	'rocket_field',
 	'rocket_cdn',
 	'rocket_display_cdn_options',
@@ -117,11 +117,11 @@ add_settings_field(
 			'type'         => 'checkbox',
 			'label'        => __( 'Disable CDN functionality on HTTPS pages', 'rocket' ),
 			'label_for'    => 'cdn_ssl',
-			'label_screen' => 'CDN without SSL:',
+			'label_screen' => __( 'CDN without SSL:', 'rocket' ),
 		),
 		array(
 			'type'         => 'helper_description',
-			'description'  => __( 'In case your CDN account does not fully support SSL, you can disable URL rewriting on HTTPS pages here.', 'rocket' ),
+			'description'  => __( 'If your CDN account does not fully support SSL, you can disable URL rewriting on HTTPS pages here.', 'rocket' ),
 		),
 	)
 );

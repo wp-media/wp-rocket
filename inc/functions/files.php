@@ -1023,8 +1023,8 @@ function get_rocket_footprint( $debug = true ) {
 function rocket_fetch_and_cache_busting( $src, $cache_busting_paths, $absolute_src_path, $current_filter ) {
 	$response = wp_remote_get( $src );
 
-	if ( ! is_array( $response ) || is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
-		return $src;
+	if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
+		return false;
 	}
 
 	if ( 'style_loader_src' === $current_filter ) {

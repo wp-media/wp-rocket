@@ -101,9 +101,9 @@ function get_rocket_browser_cache_busting( $src, $current_filter = '' ) {
 			break;
 	}
 
-	$hosts 		 = get_rocket_cnames_host( array( 'all', 'css_and_js', $extension ) );
-	$hosts[] 	 = parse_url( home_url(), PHP_URL_HOST );
-	$hosts_index = array_flip( $hosts );
+	$hosts 		   = get_rocket_cnames_host( array( 'all', 'css_and_js', $extension ) );
+	$hosts['home'] = parse_url( home_url(), PHP_URL_HOST );
+	$hosts_index   = array_flip( $hosts );
 	list( $file_host, $relative_src_path, $scheme, $query ) = get_rocket_parse_url( $full_src );
 
 	if ( '' === $file_host ) {
@@ -117,12 +117,16 @@ function get_rocket_browser_cache_busting( $src, $current_filter = '' ) {
 	if ( empty( $query ) ) {
 		return $src;
 	}
-
+	
+	if ( isset( $hosts_index[ $file_host ] ) && 'home' !== $hosts_index[ $file_host ] ) {
+		$site_url = trailingslashit( rocket_add_url_protocol( $file_host ) );
+	} else {
+		$site_url = trailingslashit( rocket_add_url_protocol( site_url() ) );
+	}
+	
 	$abspath  				= wp_normalize_path(  ABSPATH );
-	$site_url 				= trailingslashit( set_url_scheme( site_url() ) );
     $relative_src_path      = ltrim( $relative_src_path . '?' . $query, '/' );
     $full_src_path          = dirname( str_replace( $site_url, $abspath, $full_src ) );
-
 	$cache_busting_filename = preg_replace( '/\.(js|css)\?(?:timestamp|ver)=([^&]+)(?:.*)/', '-$2.$1', $relative_src_path );
 
 	if (  $cache_busting_filename === $relative_src_path ) {

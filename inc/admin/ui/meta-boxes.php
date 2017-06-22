@@ -64,11 +64,11 @@ function rocket_display_cache_options_meta_boxes() {
 			<p><?php _e( 'Activate these options on this post:', 'rocket' );?></p>
 			<?php
 			$fields = array(
-				'lazyload'  	   => __( 'Images LazyLoad', 'rocket' ),
-				'lazyload_iframes' => __( 'Iframes & Videos LazyLoad', 'rocket' ),
-				'minify_html'      => __( 'HTML Minification', 'rocket' ),
-				'minify_css'       => __( 'CSS Minification', 'rocket' ),
-				'minify_js'        => __( 'JS Minification', 'rocket' ),
+				'lazyload'  	   => __( 'LazyLoad for images', 'rocket' ),
+				'lazyload_iframes' => __( 'LazyLoad for iframes/videos', 'rocket' ),
+				'minify_html'      => __( 'Minify/combine HTML', 'rocket' ),
+				'minify_css'       => __( 'Minify/combine CSS', 'rocket' ),
+				'minify_js'        => __( 'Minify/combine JS', 'rocket' ),
 				'cdn'              => __( 'CDN', 'rocket' ),
 				'async_css'		   => __( 'Async CSS', 'rocket' ),
 				'defer_all_js'	   => __( 'Defer JS', 'rocket' ),
@@ -89,7 +89,7 @@ function rocket_display_cache_options_meta_boxes() {
 			}
 			?>
 
-			<p class="rkt-note"><?php _e( '<strong>Note:</strong> These options aren\'t applied if you added this post in the "Never cache the following pages" option.', 'rocket' ); ?></p>
+			<p class="rkt-note"><?php _e( '<strong>Note:</strong> None of these options will be applied if this post has been excluded from cache in the global cache settings.', 'rocket' ); ?></p>
 		</div>
 
 	<?php
