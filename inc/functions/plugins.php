@@ -177,6 +177,11 @@ function get_rocket_ecommerce_exclude_pages() {
 		$urls = array_merge( $urls, $checkout_urls );
 	}
 
+	if ( function_exists( 'EDD' ) && isset( $edd_settings['success_page'] ) ) {
+		$success_urls  = get_rocket_i18n_translated_post_urls( $edd_settings['success_page'], 'page', '(.*)' );
+		$urls = array_merge( $urls, $success_urls );
+	}
+
 	// iThemes Exchange.
 	if ( function_exists( 'it_exchange_get_page_type' ) && function_exists( 'it_exchange_get_page_url' ) ) {
 		$pages = array(
