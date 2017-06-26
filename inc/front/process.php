@@ -44,22 +44,24 @@ $host = trim( strtolower( $host ), '.' );
 $host = urlencode( $host );
 
 $continue = false;
-if ( file_exists( realpath( $rocket_config_path . $host . '.php' ) ) && 0 === stripos( realpath( $rocket_config_path . $host . '.php' ), $rocket_config_path ) ) {
+if ( realpath( $rocket_config_path . $host . '.php' ) && 0 === stripos( realpath( $rocket_config_path . $host . '.php' ), $rocket_config_path ) ) {
 	include( $rocket_config_path . $host . '.php' );
 	$continue = true;
 } else {
-	$path = explode( '%2F' , trim( urlencode( $_SERVER['REQUEST_URI'] ), '%2F' ) );
+	$path = str_replace( '\\', '/', strtok( $_SERVER['REQUEST_URI'], '?' ) );
+	$path = preg_replace( '|(?<=.)/+|', '/', $path );
+	$path = explode( '%2F' , trim( urlencode( $path ), '%2F' ) );
 
 	foreach ( $path as $p ) {
 		static $dir;
 
-		if ( file_exists( realpath( $rocket_config_path . $host . '.' . $p . '.php' ) ) && 0 === stripos( realpath( $rocket_config_path . $host . '.' . $p . '.php' ), $rocket_config_path ) ) {
+		if ( realpath( $rocket_config_path . $host . '.' . $p . '.php' ) && 0 === stripos( realpath( $rocket_config_path . $host . '.' . $p . '.php' ), $rocket_config_path ) ) {
 			include( $rocket_config_path . $host . '.' . $p . '.php' );
 			$continue = true;
 			break;
 		}
 
-		if ( file_exists( realpath( $rocket_config_path . $host . '.' . $dir . $p . '.php' ) ) && 0 === stripos( realpath( $rocket_config_path . $host . '.' . $dir . $p . '.php' ), $rocket_config_path ) ) {
+		if ( realpath( $rocket_config_path . $host . '.' . $dir . $p . '.php' ) && 0 === stripos( realpath( $rocket_config_path . $host . '.' . $dir . $p . '.php' ), $rocket_config_path ) ) {
 			include( $rocket_config_path . $host . '.' . $dir . $p . '.php' );
 			$continue = true;
 			break;
