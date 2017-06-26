@@ -1,5 +1,11 @@
 <?php
 
+namespace Cron;
+
+use DateTime;
+use InvalidArgumentException;
+
+
 /**
  * Day of week field.  Allows: * / , - ? L #
  *
@@ -12,14 +18,9 @@
  * '#' is allowed for the day-of-week field, and must be followed by a
  * number between one and five. It allows you to specify constructs such as
  * "the second Friday" of a given month.
- *
- * @author Michael Dowling <mtdowling@gmail.com>
  */
-class CronExpression_DayOfWeekField extends CronExpression_AbstractField
+class DayOfWeekField extends AbstractField
 {
-    /**
-     * {@inheritdoc}
-     */
     public function isSatisfiedBy(DateTime $date, $value)
     {
         if ($value == '?') {
@@ -27,11 +28,7 @@ class CronExpression_DayOfWeekField extends CronExpression_AbstractField
         }
 
         // Convert text day of the week values to integers
-        $value = str_ireplace(
-            array('SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'),
-            range(0, 6),
-            $value
-        );
+        $value = $this->convertLiterals($value);
 
         $currentYear = $date->format('Y');
         $currentMonth = $date->format('m');
@@ -43,7 +40,10 @@ class CronExpression_DayOfWeekField extends CronExpression_AbstractField
             $tdate = clone $date;
             $tdate->setDate($currentYear, $currentMonth, $lastDayOfMonth);
             while ($tdate->format('w') != $weekday) {
-                $tdate->setDate($currentYear, $currentMonth, --$lastDayOfMonth);
+                $tdateClone = new DateTime();
+                $tdate = $tdateClone
+                    ->setTimezone($tdate->getTimezone())
+                    ->setDate($currentYear, $currentMonth, --$lastDayOfMonth);
             }
 
             return $date->format('j') == $lastDayOfMonth;
@@ -52,9 +52,15 @@ class CronExpression_DayOfWeekField extends CronExpression_AbstractField
         // Handle # hash tokens
         if (strpos($value, '#')) {
             list($weekday, $nth) = explode('#', $value);
+
+            // 0 and 7 are both Sunday, however 7 matches date('N') format ISO-8601
+            if ($weekday === '0') {
+                $weekday = 7;
+            }
+
             // Validate the hash fields
-            if ($weekday < 1 || $weekday > 5) {
-                throw new InvalidArgumentException("Weekday must be a value between 1 and 5. {$weekday} given");
+            if ($weekday < 0 || $weekday > 7) {
+                throw new InvalidArgumentException("Weekday must be a value between 0 and 7. {$weekday} given");
             }
             if ($nth > 5) {
                 throw new InvalidArgumentException('There are never more than 5 of a given weekday in a month');
@@ -98,9 +104,6 @@ class CronExpression_DayOfWeekField extends CronExpression_AbstractField
         return $this->isSatisfied($fieldValue, $value);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function increment(DateTime $date, $invert = false)
     {
         if ($invert) {
@@ -114,11 +117,25 @@ class CronExpression_DayOfWeekField extends CronExpression_AbstractField
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function validate($value)
     {
-        return (bool) preg_match('/[\*,\/\-0-9A-Z]+/', $value);
+        $value = $this->convertLiterals($value);
+
+        foreach (explode(',', $value) as $expr) {
+            if (!preg_match('/^(\*|[0-7](L?|#[1-5]))([\/\,\-][0-7]+)*$/', $expr)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private function convertLiterals($string)
+    {
+        return str_ireplace(
+            array('SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'),
+            range(0, 6),
+            $string
+        );
     }
 }

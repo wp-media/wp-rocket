@@ -1,23 +1,20 @@
 <?php
 
+namespace Cron;
+
+use DateTime;
+
+
 /**
  * Year field.  Allows: * , / -
- *
- * @author Michael Dowling <mtdowling@gmail.com>
  */
-class CronExpression_YearField extends CronExpression_AbstractField
+class YearField extends AbstractField
 {
-    /**
-     * {@inheritdoc}
-     */
     public function isSatisfiedBy(DateTime $date, $value)
     {
         return $this->isSatisfied($date->format('Y'), $value);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function increment(DateTime $date, $invert = false)
     {
         if ($invert) {
@@ -33,11 +30,8 @@ class CronExpression_YearField extends CronExpression_AbstractField
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function validate($value)
     {
-        return (bool) preg_match('/[\*,\/\-0-9]+/', $value);
+        return (bool) preg_match('/^[\*,\/\-0-9]+$/', $value);
     }
 }

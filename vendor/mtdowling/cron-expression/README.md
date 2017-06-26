@@ -13,23 +13,13 @@ lists (e.g. 1,2,3), W to find the nearest weekday for a given day of the month, 
 find the last day of the month, L to find the last given weekday of a month, and hash
 (#) to find the nth weekday of a given month.
 
-Credits
-==========
-
-Created by Micheal Dowling. Ported to PHP 5.2 by Flightless, Inc.
-Based on version 1.0.3: https://github.com/mtdowling/cron-expression/tree/v1.0.3
-
 Installing
 ==========
 
-Add the following to your project's composer.json:
+Add the dependency to your project:
 
-```javascript
-{
-    "require": {
-        "mtdowling/cron-expression": "1.0.*"
-    }
-}
+```bash
+composer require mtdowling/cron-expression
 ```
 
 Usage
@@ -79,14 +69,3 @@ Requirements
 - PHP 5.3+
 - PHPUnit is required to run the unit tests
 - Composer is required to run the unit tests
-
-CHANGELOG
-=========
-
-1.0.3 (2013-11-23)
-------------------
-
-* Only set default timezone if the given $currentTime is not a DateTime instance (#34)
-* Fixes issue #28 where PHP increments of ranges were failing due to PHP casting hyphens to 0
-* Now supports expressions with any number of extra spaces, tabs, or newlines
-* Using static instead of self in `CronExpression::factory`
