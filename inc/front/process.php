@@ -48,7 +48,7 @@ if ( file_exists( realpath( $rocket_config_path . $host . '.php' ) ) && 0 === st
 	include( $rocket_config_path . $host . '.php' );
 	$continue = true;
 } else {
-	$path = explode( '%2F' , trim( $_SERVER['REQUEST_URI'], '%2F' ) );
+	$path = explode( '%2F' , trim( urlencode( $_SERVER['REQUEST_URI'] ), '%2F' ) );
 
 	foreach ( $path as $p ) {
 		static $dir;
