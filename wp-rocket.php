@@ -13,7 +13,7 @@
  * Text Domain: rocket
  * Domain Path: languages
  *
- * Copyright 2013-2016 WP Rocket
+ * Copyright 2013-2017 WP Rocket
  * */
 
 defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
