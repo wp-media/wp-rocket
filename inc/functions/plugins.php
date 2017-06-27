@@ -172,9 +172,14 @@ function get_rocket_ecommerce_exclude_pages() {
 
 	// Easy Digital Downloads.
 	$edd_settings = get_option( 'edd_settings' );
-	if ( function_exists( 'EDD' ) && isset( $edd_settings['purchase_page'] ) ) {
+	if ( function_exists( 'EDD' ) && ! empty( $edd_settings['purchase_page'] ) ) {
 		$checkout_urls = get_rocket_i18n_translated_post_urls( $edd_settings['purchase_page'], 'page', '(.*)' );
 		$urls = array_merge( $urls, $checkout_urls );
+	}
+
+	if ( function_exists( 'EDD' ) && ! empty( $edd_settings['success_page'] ) ) {
+		$success_urls  = get_rocket_i18n_translated_post_urls( $edd_settings['success_page'], 'page', '(.*)' );
+		$urls = array_merge( $urls, $success_urls );
 	}
 
 	// iThemes Exchange.
