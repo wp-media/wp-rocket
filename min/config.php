@@ -142,9 +142,9 @@ if ( isset( $rocket_minify_css_legacy ) && '0' === $rocket_minify_css_legacy ) {
  * To use Google's Closure Compiler API to minify Javascript (falling back to JSMin
  * on failure), uncomment the following line:
  */
-if ( isset( $rocket_minify_js_legacy ) && '0' === $rocket_minify_js_legacy ) {
+/*if ( isset( $rocket_minify_js_legacy ) && '0' === $rocket_minify_js_legacy ) {
 	$min_serveOptions['minifiers']['application/x-javascript'] = array('Minify_JS_ClosureCompiler', 'minify');
-}
+}*/
 
 /**
  * If you'd like to restrict the "f" option to files within/below
