@@ -6,7 +6,7 @@
 class ActionScheduler_QueueCleaner_Test extends ActionScheduler_UnitTestCase {
 
 	public function test_delete_old_actions() {
-		$store = new ActionScheduler_wpPostStore();
+		$store = ActionScheduler::store();
 		$runner = new ActionScheduler_QueueRunner( $store );
 
 		$random = md5(rand());
@@ -32,7 +32,7 @@ class ActionScheduler_QueueCleaner_Test extends ActionScheduler_UnitTestCase {
 	}
 
 	public function test_do_not_delete_recent_actions() {
-		$store = new ActionScheduler_wpPostStore();
+		$store = ActionScheduler::store();
 		$runner = new ActionScheduler_QueueRunner( $store );
 
 		$random = md5(rand());
@@ -56,7 +56,7 @@ class ActionScheduler_QueueCleaner_Test extends ActionScheduler_UnitTestCase {
 	}
 
 	public function test_reset_unrun_actions() {
-		$store = new ActionScheduler_wpPostStore();
+		$store = ActionScheduler::store();
 
 		$random = md5(rand());
 		$schedule = new ActionScheduler_SimpleSchedule(as_get_datetime_object('1 day ago'));
@@ -82,7 +82,7 @@ class ActionScheduler_QueueCleaner_Test extends ActionScheduler_UnitTestCase {
 	}
 
 	public function test_do_not_reset_failed_action() {
-		$store = new ActionScheduler_wpPostStore();
+		$store = ActionScheduler::store();
 
 		$random = md5(rand());
 		$schedule = new ActionScheduler_SimpleSchedule(as_get_datetime_object('1 day ago'));

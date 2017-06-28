@@ -6,7 +6,7 @@
  */
 class ActionScheduler_QueueRunner_Test extends ActionScheduler_UnitTestCase {
 	public function test_create_runner() {
-		$store = new ActionScheduler_wpPostStore();
+		$store = ActionScheduler::store();
 		$runner = new ActionScheduler_QueueRunner( $store );
 		$actions_run = $runner->run();
 
@@ -14,7 +14,7 @@ class ActionScheduler_QueueRunner_Test extends ActionScheduler_UnitTestCase {
 	}
 
 	public function test_run() {
-		$store = new ActionScheduler_wpPostStore();
+		$store = ActionScheduler::store();
 		$runner = new ActionScheduler_QueueRunner( $store );
 
 		$mock = new MockAction();
@@ -36,7 +36,7 @@ class ActionScheduler_QueueRunner_Test extends ActionScheduler_UnitTestCase {
 	}
 
 	public function test_run_with_future_actions() {
-		$store = new ActionScheduler_wpPostStore();
+		$store = ActionScheduler::store();
 		$runner = new ActionScheduler_QueueRunner( $store );
 
 		$mock = new MockAction();
@@ -64,7 +64,7 @@ class ActionScheduler_QueueRunner_Test extends ActionScheduler_UnitTestCase {
 	}
 
 	public function test_completed_action_status() {
-		$store = new ActionScheduler_wpPostStore();
+		$store = ActionScheduler::store();
 		$runner = new ActionScheduler_QueueRunner( $store );
 
 		$random = md5(rand());
@@ -81,7 +81,7 @@ class ActionScheduler_QueueRunner_Test extends ActionScheduler_UnitTestCase {
 	}
 
 	public function test_next_instance_of_action() {
-		$store = new ActionScheduler_wpPostStore();
+		$store = ActionScheduler::store();
 		$runner = new ActionScheduler_QueueRunner( $store );
 
 		$random = md5(rand());
@@ -113,7 +113,7 @@ class ActionScheduler_QueueRunner_Test extends ActionScheduler_UnitTestCase {
 	}
 
 	public function test_batch_count_limit() {
-		$store = new ActionScheduler_wpPostStore();
+		$store = ActionScheduler::store();
 		$runner = new ActionScheduler_QueueRunner( $store );
 
 		$mock = new MockAction();
@@ -149,7 +149,7 @@ class ActionScheduler_QueueRunner_Test extends ActionScheduler_UnitTestCase {
 	}
 
 	public function test_changing_batch_count_limit() {
-		$store = new ActionScheduler_wpPostStore();
+		$store = ActionScheduler::store();
 		$runner = new ActionScheduler_QueueRunner( $store );
 
 		$random = md5(rand());
