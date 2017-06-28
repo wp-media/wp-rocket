@@ -12,7 +12,7 @@ $host = urlencode( $host );
 $wp_rocket_config_path = dirname( dirname( dirname( dirname( __FILE__ ) ) ) ) . '/wp-rocket-config/';
 $wp_rocket_config_file = realpath( $wp_rocket_config_path . $host . '.php' );
 
-if ( file_exists( $wp_rocket_config_file ) && 0 === stripos( $wp_rocket_config_file, $wp_rocket_config_path ) && ! defined( 'ABSPATH' ) ) {
+if ( $wp_rocket_config_file && 0 === stripos( $wp_rocket_config_file, $wp_rocket_config_path ) && ! defined( 'ABSPATH' ) ) {
   // Create fake ABSPATH
   define( 'ABSPATH', null );
   
@@ -142,9 +142,9 @@ if ( isset( $rocket_minify_css_legacy ) && '0' === $rocket_minify_css_legacy ) {
  * To use Google's Closure Compiler API to minify Javascript (falling back to JSMin
  * on failure), uncomment the following line:
  */
-if ( isset( $rocket_minify_js_legacy ) && '0' === $rocket_minify_js_legacy ) {
+/*if ( isset( $rocket_minify_js_legacy ) && '0' === $rocket_minify_js_legacy ) {
 	$min_serveOptions['minifiers']['application/x-javascript'] = array('Minify_JS_ClosureCompiler', 'minify');
-}
+}*/
 
 /**
  * If you'd like to restrict the "f" option to files within/below

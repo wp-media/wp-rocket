@@ -188,6 +188,9 @@ function get_rocket_cache_reject_uri() {
 	// Exclude hide login plugins.
 	$uri = array_merge( $uri, get_rocket_logins_exclude_pages() );
 
+	// Exclude feeds
+	$uri[] = '(.*)/' . $GLOBALS['wp_rewrite']->feed_base . '/?';
+
 	/**
 	 * Filter the rejected uri
 	 *
