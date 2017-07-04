@@ -154,17 +154,17 @@ function get_rocket_ecommerce_exclude_pages() {
 
 	// WooCommerce.
 	if ( function_exists( 'WC' ) && function_exists( 'wc_get_page_id' ) ) {
-		if ( wc_get_page_id( 'checkout' ) && wc_get_page_id( 'checkout' ) !== -1 ) {
+		if ( wc_get_page_id( 'checkout' ) && wc_get_page_id( 'checkout' ) !== -1 && wc_get_page_id( 'checkout' ) !== (int) get_option( 'page_on_front' ) ) {
 			$checkout_urls = get_rocket_i18n_translated_post_urls( wc_get_page_id( 'checkout' ), 'page', '(.*)' );
 			$urls = array_merge( $urls, $checkout_urls );
 		}
 
-		if ( wc_get_page_id( 'cart' ) && wc_get_page_id( 'cart' ) !== -1 ) {
+		if ( wc_get_page_id( 'cart' ) && wc_get_page_id( 'cart' ) !== -1 && wc_get_page_id( 'cart' ) !== (int) get_option( 'page_on_front' ) ) {
 			$cart_urls = get_rocket_i18n_translated_post_urls( wc_get_page_id( 'cart' ) );
 			$urls = array_merge( $urls, $cart_urls );
 		}
 
-		if ( wc_get_page_id( 'myaccount' ) && wc_get_page_id( 'myaccount' ) !== -1 ) {
+		if ( wc_get_page_id( 'myaccount' ) && wc_get_page_id( 'myaccount' ) !== -1 && wc_get_page_id( 'myaccount' ) !== (int) get_option( 'page_on_front' ) ) {
 			$cart_urls = get_rocket_i18n_translated_post_urls( wc_get_page_id( 'myaccount' ), 'page', '(.*)' );
 			$urls = array_merge( $urls, $cart_urls );
 		}
