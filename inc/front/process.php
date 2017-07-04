@@ -44,7 +44,7 @@ $host = trim( strtolower( $host ), '.' );
 $host = urlencode( $host );
 
 $continue = false;
-if ( realpath( $rocket_config_path . $host . '.php' ) && 0 === stripos( realpath( $rocket_config_path . $host . '.php' ), $rocket_config_path ) ) {
+if ( realpath( $rocket_config_path . $host . '.php' ) && 0 === stripos( realpath( $rocket_config_path . $host . '.php' ), realpath( $rocket_config_path ) ) ) {
 	include( $rocket_config_path . $host . '.php' );
 	$continue = true;
 } else {
@@ -55,13 +55,13 @@ if ( realpath( $rocket_config_path . $host . '.php' ) && 0 === stripos( realpath
 	foreach ( $path as $p ) {
 		static $dir;
 
-		if ( realpath( $rocket_config_path . $host . '.' . $p . '.php' ) && 0 === stripos( realpath( $rocket_config_path . $host . '.' . $p . '.php' ), $rocket_config_path ) ) {
+		if ( realpath( $rocket_config_path . $host . '.' . $p . '.php' ) && 0 === stripos( realpath( $rocket_config_path . $host . '.' . $p . '.php' ), realpath( $rocket_config_path ) ) ) {
 			include( $rocket_config_path . $host . '.' . $p . '.php' );
 			$continue = true;
 			break;
 		}
 
-		if ( realpath( $rocket_config_path . $host . '.' . $dir . $p . '.php' ) && 0 === stripos( realpath( $rocket_config_path . $host . '.' . $dir . $p . '.php' ), $rocket_config_path ) ) {
+		if ( realpath( $rocket_config_path . $host . '.' . $dir . $p . '.php' ) && 0 === stripos( realpath( $rocket_config_path . $host . '.' . $dir . $p . '.php' ), realpath( $rocket_config_path ) ) ) {
 			include( $rocket_config_path . $host . '.' . $dir . $p . '.php' );
 			$continue = true;
 			break;
