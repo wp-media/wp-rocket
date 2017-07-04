@@ -53,7 +53,7 @@ Among other tasks, from the admin screen you can:
 
 * view the scheduled actions with a specific status, like the all actions which have failed or are in-progress (http://cl.ly/image/3A3C1b1p0702).
 * view the log entries (comments) for a specific action to find out why it failed (http://cl.ly/image/3h1E0c23081U).
-* search for scheduled actions with a certain hook name, arguement or claim ID (http://cl.ly/image/0V1e1s0A2J3Z).
+* search for scheduled actions with a certain hook name, argument or claim ID (http://cl.ly/image/0V1e1s0A2J3Z).
 * sort scheduled actions by hook name, scheduled, start or completed date, claim ID or number of log entries.
 
 
