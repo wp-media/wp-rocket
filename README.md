@@ -43,4 +43,4 @@ We also make other plugins that help speed up and secure WordPress websites. Che
 
 Thank you BrowserStack for your support and helping us do cross-browser testing easily!
 
-![BrowserStack](https://github.com/wp-media/wp-rocket/blob/master/bin/browserstack.png)
+[![BrowserStack](https://github.com/wp-media/wp-rocket/blob/master/bin/browserstack.png)](https://browserstack.com)
