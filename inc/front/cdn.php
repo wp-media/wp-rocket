@@ -73,6 +73,10 @@ function rocket_cdn_attachment_image_src( $image ) {
 		return $image;
 	}
 
+	if ( is_admin() || is_preview() || is_feed() ) {
+		return $image;
+	}
+
 	$zones = array( 'all', 'images' );
 
 	if ( ! (bool) get_rocket_cdn_cnames( $zones ) ) {
