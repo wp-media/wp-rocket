@@ -8,3 +8,4 @@ README.md export-ignore
 .gitignore export-ignore
 phpcs.xml export-ignore
 .tx export-ignore
+LICENSE.md export-ignore
