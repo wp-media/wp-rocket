@@ -184,10 +184,18 @@ $filename = 'index';
 
 // Rename the caching filename for mobile.
 if ( isset( $rocket_cache_mobile, $rocket_do_caching_mobile_files ) && class_exists( 'Rocket_Mobile_Detect' ) ) {
-	$detect = new Rocket_Mobile_Detect();
-
-	if ( $detect->isMobile() && ! $detect->isTablet() ) {
-		$filename .= '-mobile';
+	// Allow power users to define their own mobile detection routine using wp_rocket_custom_mobile_detect() in wp-content/advanced-cache-mobile-detect.php
+	if( file_exists(WP_CONTENT_DIR . '/advanced-cache-mobile-detect.php') ) {
+		include(WP_CONTENT_DIR . '/advanced-cache-mobile-detect.php');
+		if( function_exists('wp_rocket_custom_mobile_detect') ) {
+			$filename .= wp_rocket_custom_mobile_detect();
+		}
+	} else {
+		$detect = new Rocket_Mobile_Detect();
+	
+		if ( $detect->isMobile() && ! $detect->isTablet() ) {
+			$filename .= '-mobile';
+		}
 	}
 
 	if ( strpos( $_SERVER['SERVER_SOFTWARE'], 'nginx' ) !== false ) {
