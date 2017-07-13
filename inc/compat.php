@@ -213,3 +213,34 @@ if ( ! function_exists( '_wp_translate_php_url_constant_to_key' ) ) {
 		}
 	}
 }
+
+if ( ! function_exists( 'hash_equals' ) ) {
+	/**
+	 * Polyfill for hash_equals function not available before 5.6
+	 *
+	 * @since 2.10.6
+	 * @author Remy Perona
+	 *
+	 * @see   http://php.net/manual/fr/function.hash-equals.php
+	 *
+	 * @param string $known_string The string of known length to compare against.
+	 * @param string $user_string The user-supplied string.
+	 * @return bool Returns TRUE when the two strings are equal, FALSE otherwise.
+	 */
+    function hash_equals( $known_string, $user_string ) {
+        $ret = 0;
+        
+        if ( strlen( $known_string ) !== strlen( $user_string ) ) {
+            $user_string = $known_string;
+            $ret = 1;
+        }
+        
+        $res = $known_string ^ $user_string;
+        
+        for ( $i = strlen( $res ) - 1; $i >= 0; --$i ) {
+            $ret |= ord( $res[ $i ] );
+        }
+        
+        return ! $ret;
+    }
+}
