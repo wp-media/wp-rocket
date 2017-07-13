@@ -10,10 +10,8 @@ function _manually_load_plugin() {
 }
 tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
 
-function _manually_load_environment() {
-    update_option( 'active_plugins', 'wp-rocket/wp-rocket.php' );
-
-}
-tests_add_filter( 'muplugins_loaded', '_manually_load_environment' );
-
 require $_tests_dir . '/includes/bootstrap.php';
+
+activate_plugin( 'wp-rocket/wp-rocket.php' );
+
+
