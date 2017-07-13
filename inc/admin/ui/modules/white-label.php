@@ -1,5 +1,5 @@
-<?php 
-defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
+<?php
+defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
 
 add_settings_section( 'rocket_display_white_label', __( 'White Label', 'rocket' ), '__return_false', 'rocket_white_label' );
 add_settings_field(
@@ -84,13 +84,13 @@ add_settings_field(
 	'rocket_white_label',
 	'rocket_display_white_label',
 	array(
-        'button'=>array(
-        	'button_label' => __( 'Reset White Label values to default', 'rocket' ),
-        	'url'		   => wp_nonce_url( admin_url( 'admin-post.php?action=rocket_resetwl' ), 'rocket_resetwl' ),
-        ),
-		'helper_warning'=>array(
+		'button' => array(
+			'button_label' => __( 'Reset White Label values to default', 'rocket' ),
+			'url'		   => wp_nonce_url( admin_url( 'admin-post.php?action=rocket_resetwl' ), 'rocket_resetwl' ),
+		),
+		'helper_warning' => array(
 			'name'         => 'wl_warning',
-			'description'  => __( 'If you change anything, the tutorial + FAQ + Support tabs will be hidden.', 'rocket' ),
+			'description'  => __( 'The Support tab and all links to WP Rocket’s documentation will be hidden when you customize these fields.', 'rocket' ),
 		),
 	)
 );

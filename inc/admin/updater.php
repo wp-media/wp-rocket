@@ -5,48 +5,58 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
  * Excludes WP Rocket from WP updates
  *
  * @since 1.0
+ *
+ * @param array  $r An array of HTTP request arguments.
+ * @param string $url The request URL.
+ * @return array Updated array of HTTP request arguments.
  */
-add_filter( 'http_request_args', 'rocket_updates_exclude', 5, 2 );
-function rocket_updates_exclude( $r, $url )
-{
+function rocket_updates_exclude( $r, $url ) {
 	if ( 0 !== strpos( $url, 'http://api.wordpress.org/plugins/update-check' ) || ! isset( $r['body']['plugins'] ) ) {
 		return $r; // Not a plugin update request. Stop immediately.
 	}
 
 	$plugins = maybe_unserialize( $r['body']['plugins'] );
 
-	if ( isset( $plugins->plugins[ plugin_basename( WP_ROCKET_FILE ) ], $plugins->active[ array_search( plugin_basename( WP_ROCKET_FILE ), $plugins->active ) ] ) ) {
+	if ( isset( $plugins->plugins[ plugin_basename( WP_ROCKET_FILE ) ], $plugins->active[ array_search( plugin_basename( WP_ROCKET_FILE ), $plugins->active, true ) ] ) ) {
 		unset( $plugins->plugins[ plugin_basename( WP_ROCKET_FILE ) ] );
-		unset( $plugins->active[ array_search( plugin_basename( WP_ROCKET_FILE ), $plugins->active ) ] );
+		unset( $plugins->active[ array_search( plugin_basename( WP_ROCKET_FILE ), $plugins->active, true ) ] );
 	}
 
 	$r['body']['plugins'] = serialize( $plugins );
 	return $r;
 }
+add_filter( 'http_request_args', 'rocket_updates_exclude', 5, 2 );
 
 /**
  * Hack the returned object
  *
  * @since 1.0
+ *
+ * @param false|object|array $bool The result object or array. Default false.
+ * @param string             $action The type of information being requested from the Plugin Install API.
+ * @param object             $args Plugin API arguments.
+ * @return false|object|array Empty object if slug is WP Rocket, default value otherwise
  */
-add_filter( 'plugins_api', 'rocket_force_info', 10, 3 );
-function rocket_force_info( $bool, $action, $args )
-{
-	if ( 'plugin_information' == $action && 'wp-rocket' == $args->slug ) {
+function rocket_force_info( $bool, $action, $args ) {
+	if ( 'plugin_information' === $action && 'wp-rocket' === $args->slug ) {
 		return new stdClass();
 	}
 	return $bool;
 }
+add_filter( 'plugins_api', 'rocket_force_info', 10, 3 );
 
 /**
  * Hack the returned result with our content
  *
  * @since 1.0
+ *
+ * @param object|WP_Error $res Response object or WP_Error.
+ * @param string          $action The type of information being requested from the Plugin Install API.
+ * @param object          $args Plugin API arguments.
+ * @return object|WP_Error Updated response object or WP_Error
  */
-add_filter( 'plugins_api_result', 'rocket_force_info_result', 10, 3 );
-function rocket_force_info_result( $res, $action, $args )
-{
-	if ( 'plugin_information' == $action && isset( $args->slug ) && 'wp-rocket' == $args->slug && isset( $res->external ) && $res->external ) {
+function rocket_force_info_result( $res, $action, $args ) {
+	if ( 'plugin_information' === $action && isset( $args->slug ) && 'wp-rocket' === $args->slug && isset( $res->external ) && $res->external ) {
 
 		$request = wp_remote_post( WP_ROCKET_WEB_INFO, array( 'timeout' => 30, 'action' => 'plugin_information', 'request' => serialize( $args ) ) );
 
@@ -57,11 +67,10 @@ function rocket_force_info_result( $res, $action, $args )
 		} else {
 
 			$res = maybe_unserialize( wp_remote_retrieve_body( $request ) );
-			
+
 			if ( ! is_object( $res ) && ! is_array( $res ) ) {
 				$res = new WP_Error( 'plugins_api_failed', sprintf( __( 'An unexpected error occurred. Something may be wrong with WP-Rocket.me or this server&#8217;s configuration. If you continue to have problems, please try the <a href="%s">support forums</a>.', 'rocket' ), WP_ROCKET_WEB_SUPPORT ), wp_remote_retrieve_body( $request ) );
 			}
-
 		}
 
 		if ( ! is_wp_error( $res ) && rocket_is_white_label() ) {
@@ -69,7 +78,7 @@ function rocket_force_info_result( $res, $action, $args )
 			$res = (array) $res;
 
 			$res['name']					= get_rocket_option( 'wl_plugin_name' );
-			$res['slug']					= sanitize_key( $res['name'] );	
+			$res['slug']					= sanitize_key( $res['name'] );
 			$res['author']					= get_rocket_option( 'wl_author' );
 			$res['homepage']				= get_rocket_option( 'wl_author_URI' );
 			$res['wl_plugin_URI']			= get_rocket_option( 'wl_plugin_URI' );
@@ -83,8 +92,8 @@ function rocket_force_info_result( $res, $action, $args )
 			$res = (object) $res;
 
 		}
-
 	}
-	
+
 	return $res;
 }
+add_filter( 'plugins_api_result', 'rocket_force_info_result', 10, 3 );

@@ -37,4 +37,10 @@ Visit [wp-media.me](https://wp-media.me/?utm_source=github&utm_medium=wp_rocket_
 We also make other plugins that help speed up and secure WordPress websites. Check out:
 
 * [Imagify](https://imagify.io): it's a great WordPress plugin to optimize your images and speed up your website.
-* [SecuPress](https://secupress.me): get peace of mind by securing your WordPress website against various security threats. 
+* [SecuPress](https://secupress.me): get peace of mind by securing your WordPress website against various security threats.
+
+## Special thanks
+
+Thank you BrowserStack for your support and helping us do cross-browser testing easily!
+
+[![BrowserStack](https://github.com/wp-media/wp-rocket/blob/master/bin/browserstack.png)](https://browserstack.com)

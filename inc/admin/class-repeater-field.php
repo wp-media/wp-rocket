@@ -1,11 +1,10 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
+defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
 
 /**
  * Used to display the repeater field on settings form
  *
  * @since 2.2
- *
  */
 class WP_Rocket_Repeater_Field {
 
@@ -52,16 +51,16 @@ class WP_Rocket_Repeater_Field {
 	/**
 	 * Constructor.
 	 *
-	 * @param array $args An associative array with information about the repeater field
+	 * @param array $args An associative array with information about the repeater field.
 	 * @access public
 	 */
 	function __construct( $args ) {
 
 		$this->option 		   = $args['name'];
-		$this->label_screen    = ! empty($args['label_screen']) ? esc_html($args['label_screen']) : false;
-		$this->placeholder 	   = ! empty( $args['placeholder'] ) ? 'placeholder="'. $args['placeholder'].'" ' : '';
-		$this->is_drag_n_drop  = ! empty($args['repeater_drag_n_drop']) ? true : false;
-		$this->label_add_field = ! empty($args['repeater_label_add_field']) ? $args['repeater_label_add_field'] : false;
+		$this->label_screen    = ! empty( $args['label_screen'] ) ? esc_html( $args['label_screen'] ) : false;
+		$this->placeholder 	   = ! empty( $args['placeholder'] ) ? 'placeholder="' . $args['placeholder'] . '" ' : '';
+		$this->is_drag_n_drop  = ! empty( $args['repeater_drag_n_drop'] ) ? true : false;
+		$this->label_add_field = ! empty( $args['repeater_label_add_field'] ) ? $args['repeater_label_add_field'] : false;
 
 		add_filter( 'rocket_repeater_field_classes', array( $this, 'add_drag_n_drop_classes' ) );
 		add_action( 'before_rocket_repeater_field', array( $this, 'add_drag_n_drop_support' ) );
@@ -91,7 +90,7 @@ class WP_Rocket_Repeater_Field {
 	 * @since 2.2
 	 * @access public
 	 *
-	 * @param string $classes All classes in rocket_repeater_field_classes filter
+	 * @param string $classes All classes in rocket_repeater_field_classes filter.
 	 */
 	public function add_drag_n_drop_classes( $classes ) {
 
@@ -108,8 +107,8 @@ class WP_Rocket_Repeater_Field {
 	 */
 	private function the_label_screen() {
 
-		if( $this->label_screen ) {
-			echo '<legend class="screen-reader-text"><span>' . $this->label_screen. '</span></legend>';
+		if ( $this->label_screen ) {
+			echo '<legend class="screen-reader-text"><span>' . $this->label_screen . '</span></legend>';
 		}
 
 	}
@@ -120,11 +119,12 @@ class WP_Rocket_Repeater_Field {
 	 * @since 2.2
 	 * @access private
 	 *
-	 * @param string $key The key of the field
-	 * @param string $value The value of the field
-	 * @param bool   $remove_button If true, remove button is display
+	 * @param string $key The key of the field.
+	 * @param string $value The value of the field.
+	 * @param bool   $remove_button If true, remove button is display.
 	 */
-	private function the_field( $key = null, $value = '', $remove_button = true ) { ?>
+	private function the_field( $key = null, $value = '', $remove_button = true ) {
+	?>
 
 		<p class="<?php echo apply_filters( 'rocket_repeater_field_classes', false ); ?>">
 
@@ -135,14 +135,14 @@ class WP_Rocket_Repeater_Field {
 			 *
 			 * @since 2.2
 			 * @param string $option The option name
-			*/
+			 */
 			do_action( 'before_rocket_repeater_field', $this->option );
 
 			?>
 
 			<input style="width: 32em" type="text" <?php echo $this->placeholder; ?> class="<?php echo $this->option; ?> regular-text" name="wp_rocket_settings[<?php echo $this->option; ?>][<?php echo $key; ?>]" value="<?php echo $value; ?>" />
 
-			<?php if( $remove_button ) { ?>
+			<?php if ( $remove_button ) { ?>
 				<span class="dashicons dashicons-no rkt-module-remove hide-if-no-js "></span>
 			<?php } ?>
 
@@ -153,7 +153,7 @@ class WP_Rocket_Repeater_Field {
 			 *
 			 * @since 2.2
 			 * @param string $option The option name
-			*/
+			 */
 			do_action( 'after_rocket_repeater_field', $this->option );
 
 			?>
@@ -168,9 +168,9 @@ class WP_Rocket_Repeater_Field {
 	 *
 	 * @since 2.2
 	 * @access public
-	 *
 	 */
-	public function render() { ?>
+	public function render() {
+	?>
 
 		<fieldset>
 
@@ -182,13 +182,13 @@ class WP_Rocket_Repeater_Field {
 
 				$_option = get_rocket_option( $this->option );
 
-				if( $_option ) {
+				if ( $_option ) {
 
-					foreach( $_option as $key => $value ) {
+					foreach ( $_option as $key => $value ) {
 						$this->the_field( $key, $value, true );
 					}
 
-				// If no values yet, use this template inside
+					// If no values yet, use this template inside.
 				} else {
 					$this->the_field( 0, '', false );
 				}
@@ -196,7 +196,7 @@ class WP_Rocket_Repeater_Field {
 
 			</div>
 
-			<?php // Clone Template ?>
+			<?php // Clone Template. ?>
 
 			<div class="rkt-module-model hide-if-js">
 				<?php $this->the_field(); ?>

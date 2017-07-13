@@ -1,0 +1,17 @@
+<IfModule mod_alias.c>
+<FilesMatch "\.(html|htm|rtf|rtx|txt|xsd|xsl|xml)$">
+<IfModule mod_headers.c>
+Header set X-Powered-By "WP Rocket/2.10"
+Header unset Pragma
+Header append Cache-Control "public"
+Header unset Last-Modified
+</IfModule>
+</FilesMatch>
+
+<FilesMatch "\.(css|htc|js|asf|asx|wax|wmv|wmx|avi|bmp|class|divx|doc|docx|eot|exe|gif|gz|gzip|ico|jpg|jpeg|jpe|json|mdb|mid|midi|mov|qt|mp3|m4a|mp4|m4v|mpeg|mpg|mpe|mpp|otf|odb|odc|odf|odg|odp|ods|odt|ogg|pdf|png|pot|pps|ppt|pptx|ra|ram|svg|svgz|swf|tar|tif|tiff|ttf|ttc|wav|wma|wri|xla|xls|xlsx|xlt|xlw|zip)$">
+<IfModule mod_headers.c>
+Header unset Pragma
+Header append Cache-Control "public"
+</IfModule>
+</FilesMatch>
+</IfModule>
