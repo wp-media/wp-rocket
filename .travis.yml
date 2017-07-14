@@ -14,8 +14,8 @@ matrix:
       env: SNIFF=1
 
 before_install:
-  - if [[ "$SNIFF" == "1" ]]; then export PHPCS_DIR=/tmp/phpcs; fi
-  - if [[ "$SNIFF" == "1" ]]; then export SNIFFS_DIR=/tmp/sniffs; fi
+  - export PHPCS_DIR=/tmp/phpcs
+  - export SNIFFS_DIR=/tmp/sniffs
   # Install PHP CodeSniffer.
   - if [[ "$SNIFF" == "1" ]]; then git clone -b master --depth 1 https://github.com/squizlabs/PHP_CodeSniffer.git $PHPCS_DIR; fi
   # Install WordPress Coding Standards.
@@ -29,7 +29,7 @@ before_script:
   - if [[ "$SNIFF" != "1" ]]; then bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION; fi
 
 script:
-  - if [[ "$SNIFF" == "1" ]]; then $PHPCS_DIR/scripts/phpcs -p . --standard=phpcs.xml; fi
+  - if [[ "$SNIFF" == "1" ]]; then $PHPCS_DIR/scripts/phpcs -p . --standard=phpcs.xml --runtime-set ignore_warnings_on_exit 1; fi
   - if [[ "$SNIFF" != "1" ]]; phpunit; fi
 
 notifications:
