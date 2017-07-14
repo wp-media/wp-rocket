@@ -3,34 +3,28 @@ language: php
 sudo: false
 
 php:
+- 5.3
+- 5.4
+- 5.5
+- 5.6
 - 7.0
+- 7.1
 
 env:
 - WP_VERSION=latest WP_MULTISITE=0
-
-matrix:
-  include:
-    - php: 7.0
-      env: SNIFF=1
-
-before_install:
-  - export PHPCS_DIR=/tmp/phpcs
-  - export SNIFFS_DIR=/tmp/sniffs
-  # Install PHP CodeSniffer.
-  - if [[ "$SNIFF" == "1" ]]; then mkdir -p $PHPCS_DIR && git clone -b master --depth 1 https://github.com/squizlabs/PHP_CodeSniffer.git $PHPCS_DIR; fi
-  # Install WordPress Coding Standards.
-  - if [[ "$SNIFF" == "1" ]]; then mkdir -p $SNIFFS_DIR && git clone -b master --depth 1 https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards.git $SNIFFS_DIR; fi
-  # Set install path for WordPress Coding Standards.
-  - if [[ "$SNIFF" == "1" ]]; then $PHPCS_DIR/scripts/phpcs --config-set installed_paths $SNIFFS_DIR; fi
-  # After CodeSniffer install you should refresh your path.
-  - if [[ "$SNIFF" == "1" ]]; then phpenv rehash; fi
+- WP_VERSION=4.7 WP_MULTISITE=0
+- WP_VERSION=4.6 WP_MULTISITE=0
+- WP_VERSION=4.5 WP_MULTISITE=0
+- WP_VERSION=4.3 WP_MULTISITE=0
+- WP_VERSION=4.2 WP_MULTISITE=0
+- WP_VERSION=4.1 WP_MULTISITE=0
+- WP_VERSION=4.0 WP_MULTISITE=0
 
 before_script:
-  - if [[ "$SNIFF" != "1" ]]; then bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION; fi
+  - bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION; fi
 
 script:
-  - if [[ "$SNIFF" == "1" ]]; then $PHPCS_DIR/scripts/phpcs -p . --standard=phpcs.xml --runtime-set ignore_warnings_on_exit 1; fi
-  - if [[ "$SNIFF" != "1" ]]; phpunit; fi
+  phpunit
 
 notifications:
   slack:
