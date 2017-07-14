@@ -192,7 +192,7 @@ class Test_WP_Rocket extends WP_UnitTestCase {
 		$this->assertFileExists( WP_ROCKET_3RD_PARTY_PATH . 'custom-login.php' );
 		$this->assertFileExists( WP_ROCKET_3RD_PARTY_PATH . 'mobile/amp.php' );
 		$this->assertFileExists( WP_ROCKET_3RD_PARTY_PATH . 'mobile/wp-appkit.php' );
-		//require( WP_ROCKET_3RD_PARTY_PATH . 'jetpack.php' );
+		//$this->assertFileExists( WP_ROCKET_3RD_PARTY_PATH . 'jetpack.php' );
 		$this->assertFileExists( WP_ROCKET_3RD_PARTY_PATH . 'yoast-seo.php' );
 		$this->assertFileExists( WP_ROCKET_3RD_PARTY_PATH . 'all-in-one-seo-pack.php' );
 		$this->assertFileExists( WP_ROCKET_3RD_PARTY_PATH . 'wp-rest-api.php' );
