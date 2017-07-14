@@ -91,5 +91,6 @@ class Test_WP_Rocket extends WP_UnitTestCase {
 
 	public function test_requires() {
 		$this->assertFileExists( WP_ROCKET_FUNCTIONS_PATH . 'options.php' );
+		$this->assertFileExists( WP_ROCKET_CLASSES_PATH . 'background-processing.php' );
 	}
 }
