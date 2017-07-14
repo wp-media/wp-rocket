@@ -88,4 +88,8 @@ class Test_WP_Rocket extends WP_UnitTestCase {
 		$this->assertSame( CHMOD_WP_ROCKET_CACHE_DIRS, 0755 );
 		$this->assertSame( WP_ROCKET_LASTVERSION, '2.9.11' );
 	}
+
+	public function test_requires() {
+		$this->assertFileExists( WP_ROCKET_FUNCTIONS_PATH . 'options.php' );
+	}
 }
