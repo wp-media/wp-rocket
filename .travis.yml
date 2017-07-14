@@ -45,6 +45,7 @@ script:
   # You can use any of the normal PHPCS command line arguments in the command:
   # https://github.com/squizlabs/PHP_CodeSniffer/wiki/Usage
   - if [[ "$SNIFF" == "1" ]]; then $PHPCS_DIR/scripts/phpcs -p . --standard=phpcs.xml; fi
+  - phpunit
 
 notifications:
   slack:
