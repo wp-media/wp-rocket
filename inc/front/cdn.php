@@ -138,8 +138,8 @@ function rocket_cdn_images( $html ) {
 	$zone = array( 'all', 'images' );
 	if ( $cnames = get_rocket_cdn_cnames( $zone ) ) {
 
-		$cnames				= array_flip( $cnames );
-		$home_url			= home_url( '/' );
+		$cnames             = array_flip( $cnames );
+		$home_url           = home_url( '/' );
 		$wp_content_dirname = str_replace( $home_url, '', WP_CONTENT_URL );
 		// Get all images of the content.
 		preg_match_all( '#<img([^>]+?)src=([\'"\\\]*)([^\'"\s\\\>]+)([\'"\\\]*)([^>]*)>#i', $html, $images_match );
