@@ -27,8 +27,16 @@ function flush_rocket_htaccess( $force = false ) {
 		// Remove the WP Rocket marker.
 		$ftmp = preg_replace( '/# BEGIN WP Rocket(.*)# END WP Rocket/isU', '', $ftmp );
 
-		// Remove empty spacings.
-		$ftmp = str_replace( "\n\n" , "\n" , $ftmp );
+		/**
+		 * Determine if empty lines should be removed in the .htaccess file
+		 *
+		 * @since 2.10.7
+		 * @author Remy Perona
+		 * @param boolean $remove_empty_lines True to remove, false otherwise.
+		 */
+		if ( apply_filters( 'rocket_remove_empty_lines', true ) ) {
+			$ftmp = str_replace( "\n\n" , "\n" , $ftmp );
+		}
 
 		if ( false === $force ) {
 			$rules = get_rocket_htaccess_marker();
