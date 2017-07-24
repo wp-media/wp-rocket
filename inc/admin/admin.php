@@ -383,3 +383,64 @@ function rocket_optimize_database() {
 	die();
 }
 add_action( 'admin_post_rocket_optimize_database', 'rocket_optimize_database' );
+
+/**
+ * Filter plugin fetching API results to inject Imagify
+ *
+ * @since 2.10.7
+ * @author Remy Perona
+ *
+ * @param object|WP_Error $result Response object or WP_Error.
+ * @param string          $action The type of information being requested from the Plugin Install API.
+ * @param object          $args   Plugin API arguments.
+ *
+ * @return array Updated array of results
+ */
+function rocket_add_imagify_api_result( $result, $action, $args ) {
+	if ( empty( $args->browse ) ) {
+		return $result;
+	}
+
+	if ( 'featured' !== $args->browse && 'recommended' !== $args->browse && 'popular' !== $args->browse ) {
+		return $result;
+	}
+
+	if ( ! isset( $result->info['page'] ) || 1 < $result->info['page'] ) {
+		return $result;
+	}
+
+	if ( is_plugin_active( 'imagify/imagify.php' ) || is_plugin_active_for_network( 'imagify/imagify.php' ) ) {
+		return $result;
+	}
+
+	// grab all slugs from the api results.
+	$result_slugs = wp_list_pluck( $result->plugins, 'slug' );
+
+	if ( in_array( 'imagify', $result_slugs ) ) {
+		return $result;
+	}
+
+	$query_args = array(
+		'slug'   => 'imagify',
+		'fields' => array( 
+			'icons'             => true, 
+			'active_installs'   => true, 
+			'short_description' => true,
+			'group'             => true,
+		)
+	);
+	$imagify_data = plugins_api( 'plugin_information', $query_args );
+
+	if ( is_wp_error( $imagify_data ) ) {
+		return $result;
+	}
+
+	if ( 'featured' === $args->browse ) {
+		array_push( $result->plugins, $imagify_data );
+	} else {
+		array_unshift($result->plugins, $imagify_data );
+	}
+
+	return $result;
+}
+add_filter( 'plugins_api_result', 'rocket_add_imagify_api_result', 11, 3 );
