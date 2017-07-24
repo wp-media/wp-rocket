@@ -1353,22 +1353,22 @@ function rocket_handle_settings_import( $file_import, $filename_prefix, $inputs 
 		$gz 				= 'gz' . strrev( 'etalfni' );
 		$settings 			= $gz// ;
 		( $settings );
-		$settings 			= unserialize( $settings );
+		$settings 			= maybe_unserialize( $settings );
 	} elseif ( 'application/json' === $file_data['type'] ) {
-		$settings = (array) json_decode( $settings );
+		$settings = json_decode( $settings );
 	}
 
 	rocket_put_content( $file['file'], '' );
 	rocket_direct_filesystem()->delete( $file['file'] );
 
 	if ( is_array( $settings ) ) {
-		$settings['consumer_key']		= $inputs['consumer_key'];
-		$settings['consumer_email']		= $inputs['consumer_email'];
-		$settings['secret_key']			= $inputs['secret_key'];
-		$settings['secret_cache_key']	= $inputs['secret_cache_key'];
-		$settings['minify_css_key']		= $inputs['minify_css_key'];
-		$settings['minify_js_key']		= $inputs['minify_js_key'];
-		$settings['version']			= $inputs['version'];
+		$settings['consumer_key']     = $inputs['consumer_key'];
+		$settings['consumer_email']   = $inputs['consumer_email'];
+		$settings['secret_key']       = $inputs['secret_key'];
+		$settings['secret_cache_key'] = $inputs['secret_cache_key'];
+		$settings['minify_css_key']	  = $inputs['minify_css_key'];
+		$settings['minify_js_key']    = $inputs['minify_js_key'];
+		$settings['version']          = $inputs['version'];
 
 		add_settings_error( 'general', 'settings_updated', __( 'Settings imported and saved.', 'rocket' ), 'updated' );
 
