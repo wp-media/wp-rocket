@@ -47,5 +47,7 @@ require( WP_ROCKET_3RD_PARTY_PATH . 'simple-custom-css.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'wp-retina-2x.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'plugins/sf-move-login.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'plugins/advanced-custom-fields.php' );
+require( WP_ROCKET_3RD_PARTY_PATH . 'plugins/wp-offload-s3.php' );
+require( WP_ROCKET_3RD_PARTY_PATH . 'plugins/wp-offload-s3-assets.php' );
 
 require( WP_ROCKET_3RD_PARTY_PATH . 'themes/divi.php' );

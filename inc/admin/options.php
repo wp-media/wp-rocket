@@ -348,7 +348,18 @@ function rocket_cnames_module() {
 						<?php _e( 'reserved for', 'rocket' ); ?>
 						<select name="wp_rocket_settings[cdn_zone][<?php echo $k; ?>]">
 							<option value="all" <?php selected( $cnames_zone[ $k ], 'all' ); ?>><?php _e( 'All files', 'rocket' ); ?></option>
+							<?php
+							/**
+							 * Controls the inclusion of images option for the CDN dropdown
+							 *
+							 * @since 2.10.7
+							 * @author Remy Perona
+							 *
+							 * @param bool $allow true to add the option, false otherwise.
+							 */
+							if ( apply_filters( 'rocket_allow_cdn_images', true ) ) : ?>
 							<option value="images" <?php selected( $cnames_zone[ $k ], 'images' ); ?>><?php _e( 'Images', 'rocket' ); ?></option>
+							<?php endif; ?>
 							<option value="css_and_js" <?php selected( $cnames_zone[ $k ], 'css_and_js' ); ?>>CSS & JavaScript</option>
 							<option value="js" <?php selected( $cnames_zone[ $k ], 'js' ); ?>>JavaScript</option>
 							<option value="css" <?php selected( $cnames_zone[ $k ], 'css' ); ?>>CSS</option>
@@ -373,7 +384,11 @@ function rocket_cnames_module() {
 						<?php _e( 'reserved for', 'rocket' ); ?>
 						<select name="wp_rocket_settings[cdn_zone][]">
 							<option value="all"><?php _e( 'All files', 'rocket' ); ?></option>
+							<?php
+							// this filter is defined in inc/admin/options.php.
+							if ( apply_filters( 'rocket_allow_cdn_images', true ) ) : ?>
 							<option value="images"><?php _e( 'Images', 'rocket' ); ?></option>
+							<?php endif; ?>
 							<option value="css_and_js">CSS & JavaScript</option>
 							<option value="js">JavaScript</option>
 							<option value="css">CSS</option>
@@ -397,7 +412,11 @@ function rocket_cnames_module() {
 					<?php _e( 'reserved for', 'rocket' ); ?>
 					<select name="wp_rocket_settings[cdn_zone][]">
 						<option value="all"><?php _e( 'All files', 'rocket' ); ?></option>
+						<?php
+						// this filter is defined in inc/admin/options.php.
+						if ( apply_filters( 'rocket_allow_cdn_images', true ) ) : ?>
 						<option value="images"><?php _e( 'Images', 'rocket' ); ?></option>
+						<?php endif; ?>
 						<option value="css_and_js">CSS & JavaScript</option>
 						<option value="js">JavaScript</option>
 						<option value="css">CSS</option>
