@@ -50,7 +50,7 @@ function rocket_minify_process( $buffer ) {
 	    $buffer = rocket_inject_ie_conditionals( $buffer, $conditionals );
 
 		// Insert all CSS and JS files in head.
-		$buffer = preg_replace( '/<head(.*)>/', '<head$1>' . $google_fonts . $css . $js, $buffer, 1 );
+		$buffer = preg_replace( '/<head(.*)>/U', '<head$1>' . $google_fonts . $css . $js, $buffer, 1 );
 	}
 
 	return $buffer;
