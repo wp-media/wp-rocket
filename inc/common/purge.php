@@ -142,6 +142,7 @@ function rocket_clean_post( $post_id ) {
 	// Add permalink.
 	if ( parse_url( $permalink, PHP_URL_PATH ) !== '/' ) {
 		array_push( $purge_urls, $permalink );
+		array_push( $purge_urls, $permalink.'?*' ); //  also purge cache of post permalink with query args
 	}
 
 	// Add Posts page.
