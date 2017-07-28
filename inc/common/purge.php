@@ -288,7 +288,7 @@ function rocket_clean_files_users( $urls ) {
 	}
 	return $pattern_urls;
 }
-add_filter( 'rocket_clean_files', 'rocket_clean_files_users' );
+//add_filter( 'rocket_clean_files', 'rocket_clean_files_users' );
 
 /**
  * Return all translated version of a post when qTranslate is used.
