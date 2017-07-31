@@ -3,23 +3,23 @@ msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
 "POT-Creation-Date: 2017-07-06 07:40+0000\n"
-"PO-Revision-Date: 2017-07-06 09:59+0000\n"
-"Last-Translator: Bogdan Gerasymenko <bogdan@at.ua>\n"
+"PO-Revision-Date: 2017-07-27 12:22-0400\n"
+"Last-Translator: Rémy Perona <remperona@gmail.com>\n"
 "Language-Team: Russian\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ru-RU\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10 >= 2 && "
-"n%10<=4 &&(n%100<10||n%100 >= 20)? 1 : 2)\n"
-"X-Generator: Loco - https://localise.biz/\n"
+"Language: ru_RU\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10 >= 2 && n"
+"%10<=4 &&(n%100<10||n%100 >= 20)? 1 : 2);\n"
+"X-Generator: Poedit 1.8.11\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;"
 "_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;"
 "esc_html_x:1,2c\n"
-"X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Textdomain-Support: yes"
+"X-Textdomain-Support: yes\n"
+"X-Poedit-SearchPath-0: .\n"
 
 #: inc/3rd-party/all-in-one-seo-pack.php:77
 msgid "All in One SEO XML sitemap"
@@ -30,7 +30,7 @@ msgstr ""
 msgid "Preload the sitemap from the %s plugin"
 msgstr ""
 
-#: inc/3rd-party/all-in-one-seo-pack.php:86 inc/3rd-party/jetpack.php:96 
+#: inc/3rd-party/all-in-one-seo-pack.php:86 inc/3rd-party/jetpack.php:96
 #: inc/3rd-party/yoast-seo.php:86
 #, php-format
 msgid ""
@@ -363,8 +363,8 @@ msgid ""
 "Use %1$s wildcards to <a href=\"%2$s\" target=\"_blank\">detect parts of UA "
 "strings</a>."
 msgstr ""
-"Используйте маску %1$s для определения части <a href=\"%2$s\" "
-"target=\"_blank\">User-Agent</a>."
+"Используйте маску %1$s для определения части <a href=\"%2$s\" target=\"_blank"
+"\">User-Agent</a>."
 
 #: inc/admin/ui/modules/advanced.php:172
 msgid "Always purge (URLs):"
@@ -413,9 +413,9 @@ msgstr ""
 msgid ""
 "WP Rocket was not able to automatically validate your license.<br>Follow <a "
 "href=\"http://docs.wp-rocket.me/article/100-resolving-problems-with-license-"
-"validation\" target=\"_blank\">this tutorial</a>, or contact <a href=\"https:"
-"//wp-rocket.me/support/\" target=\"_blank\">support</a> to get this engine "
-"started."
+"validation\" target=\"_blank\">this tutorial</a>, or contact <a href="
+"\"https://wp-rocket.me/support/\" target=\"_blank\">support</a> to get this "
+"engine started."
 msgstr ""
 
 #: inc/admin/ui/modules/api-key.php:39 inc/admin/ui/modules/api-key.php:47
@@ -426,8 +426,8 @@ msgstr ""
 msgid "Email address"
 msgstr ""
 
-#: inc/admin/ui/modules/basic.php:46 inc/admin/ui/modules/optimization.php:73 
-#: inc/admin/ui/modules/optimization.php:139 
+#: inc/admin/ui/modules/basic.php:46 inc/admin/ui/modules/optimization.php:73
+#: inc/admin/ui/modules/optimization.php:139
 #: inc/admin/ui/modules/optimization.php:305
 #, php-format
 msgid "Deactivate if you notice any visually broken items on your website.%s"
@@ -460,8 +460,8 @@ msgid ""
 msgstr ""
 "Запрещает внедрение вашего контента на других сайтах, а также чужих "
 "материалов на вашем сайте (кроме сайтов из белого списка), убирает лишние "
-"JavaScript запросы с сайта <a href=\"https://wordpress."
-"org/news/2015/12/clifford/\" target=\"_blank\">WordPress Embeds</a>."
+"JavaScript запросы с сайта <a href=\"https://wordpress.org/news/2015/12/"
+"clifford/\" target=\"_blank\">WordPress Embeds</a>."
 
 #: inc/admin/ui/modules/basic.php:267
 #, php-format
@@ -483,9 +483,10 @@ msgstr "Время жизни кэша:"
 
 #: inc/admin/ui/modules/cdn.php:24
 msgid ""
-"Your PHP version is lower than 5.4. Cloudflare’s integration requires PHP 5."
-"6 or greater and therefore is not available for you currently. We recommend "
-"you contact your web host in order to upgrade to a PHP 5.6 or greater."
+"Your PHP version is lower than 5.4. Cloudflare’s integration requires PHP "
+"5.6 or greater and therefore is not available for you currently. We "
+"recommend you contact your web host in order to upgrade to a PHP 5.6 or "
+"greater."
 msgstr ""
 
 #: inc/admin/ui/modules/cdn.php:100
@@ -553,14 +554,14 @@ msgstr "Режим разработчика:"
 msgid "Development Mode"
 msgstr "Режим разработчика"
 
-#: inc/admin/ui/modules/cloudflare.php:106 
-#: inc/admin/ui/modules/cloudflare.php:134 
+#: inc/admin/ui/modules/cloudflare.php:106
+#: inc/admin/ui/modules/cloudflare.php:134
 #: inc/admin/ui/modules/cloudflare.php:162
 msgid "Off"
 msgstr "Откл"
 
-#: inc/admin/ui/modules/cloudflare.php:107 
-#: inc/admin/ui/modules/cloudflare.php:135 
+#: inc/admin/ui/modules/cloudflare.php:107
+#: inc/admin/ui/modules/cloudflare.php:135
 #: inc/admin/ui/modules/cloudflare.php:163
 msgid "On"
 msgstr "Вкл"
@@ -569,13 +570,13 @@ msgstr "Вкл"
 #, php-format
 msgid ""
 "Temporarily enter development mode on your website. This setting will "
-"automatically get turned off after 3 hours. <a href=\"%s\" target=\"_blank\">"
-"Learn more</a>"
+"automatically get turned off after 3 hours. <a href=\"%s\" target=\"_blank"
+"\">Learn more</a>"
 msgstr ""
 "Временно включить режим разработчика. Этот параметр автоматически "
 "отключается <a href=\"%s\" target=\"_blank\">через 3 часа</a>."
 
-#: inc/admin/ui/modules/cloudflare.php:124 
+#: inc/admin/ui/modules/cloudflare.php:124
 #: inc/admin/ui/modules/cloudflare.php:132
 msgctxt "Cloudflare"
 msgid "Optimal settings:"
@@ -601,9 +602,9 @@ msgstr ""
 #: inc/admin/ui/modules/cloudflare.php:170
 #, php-format
 msgid ""
-"Should only be used with Cloudflare’s <a href=\"%1$s\" target=\"_blank\">"
-"Flexible SSL</a> feature.<br>URLs of static files (CSS, JS, images) will be "
-"rewritten to use relative protocol (%2$s instead of %3$s or %4$s)."
+"Should only be used with Cloudflare’s <a href=\"%1$s\" target=\"_blank"
+"\">Flexible SSL</a> feature.<br>URLs of static files (CSS, JS, images) will "
+"be rewritten to use relative protocol (%2$s instead of %3$s or %4$s)."
 msgstr ""
 "Использовать только с функцией <a href=\"%1$s\" target=\"_blank\">Cloudflare "
 "Flexible SSL</a>.<br>Изменяет ссылки на файлы на относительные (%2$s вместо "
@@ -620,8 +621,8 @@ msgstr "Очистить кэш Cloudflare"
 #: inc/admin/ui/modules/cloudflare.php:196
 #, php-format
 msgid ""
-"Purges cached resources for your website. <a href=\"%s\" target=\"_blank\">"
-"Learn more</a>"
+"Purges cached resources for your website. <a href=\"%s\" target=\"_blank"
+"\">Learn more</a>"
 msgstr ""
 "Очищает <a href=\"%s\" target=\"_blank\">кэш ресурсов</a> для вашего сайта."
 
@@ -656,7 +657,6 @@ msgid_plural "%d revisions in your database."
 msgstr[0] "%d ревизия в базе данных."
 msgstr[1] "%d ревизий в базе данных."
 msgstr[2] "%d ревизий в базе данных."
-msgstr[3] ""
 
 #: inc/admin/ui/modules/database.php:66
 msgid "Auto Drafts"
@@ -673,7 +673,6 @@ msgid_plural "%d drafts in your database."
 msgstr[0] "%d черновик в базе данных."
 msgstr[1] "%d черновика в базе данных."
 msgstr[2] "%d черновиков в базе данных."
-msgstr[3] ""
 
 #: inc/admin/ui/modules/database.php:77
 msgid "Trashed posts"
@@ -690,7 +689,6 @@ msgid_plural "%d trashed posts in your database."
 msgstr[0] "%d удаленная запись в базе данных."
 msgstr[1] "%d удаленных записи в базе данных."
 msgstr[2] "%d удаленных записей в базе данных."
-msgstr[3] ""
 
 #: inc/admin/ui/modules/database.php:94
 msgid "Comments cleanup:"
@@ -711,7 +709,6 @@ msgid_plural "%d spam comments in your database."
 msgstr[0] "%d комментарий со спамом в базе данных."
 msgstr[1] "%d комментария со спамом в базе данных."
 msgstr[2] "%d комментариев со спамом в базе данных."
-msgstr[3] ""
 
 #: inc/admin/ui/modules/database.php:112
 msgid "Trashed comments"
@@ -728,7 +725,6 @@ msgid_plural "%d trashed comments in your database."
 msgstr[0] "%d удаленный комментарий в базе данных."
 msgstr[1] "%d удаленных комментария в базе данных."
 msgstr[2] "%d удаленных комментариев в базе данных."
-msgstr[3] ""
 
 #: inc/admin/ui/modules/database.php:129
 msgid "Transients cleanup:"
@@ -749,7 +745,6 @@ msgid_plural "%d expired transients in your database."
 msgstr[0] "%d истекшая транзакция в базе данных."
 msgstr[1] "%d истекшие транзакции в базе данных."
 msgstr[2] "%d истекших транзакций в базе данных."
-msgstr[3] ""
 
 #: inc/admin/ui/modules/database.php:147
 msgid "All transients"
@@ -766,7 +761,6 @@ msgid_plural "%d transients in your database."
 msgstr[0] "%d транзакция в базе данных."
 msgstr[1] "%d транзакции в базе данных."
 msgstr[2] "%d транзакций в базе данных."
-msgstr[3] ""
 
 #: inc/admin/ui/modules/database.php:164
 msgid "Database cleanup:"
@@ -787,7 +781,6 @@ msgid_plural "%d tables to optimize in your database."
 msgstr[0] "%d таблица нуждается в оптимизации."
 msgstr[1] "%d таблицы нуждаются в оптимизации."
 msgstr[2] "%d таблиц нуждаются в оптимизации."
-msgstr[3] ""
 
 #: inc/admin/ui/modules/database.php:188
 msgid "Automatic cleanup:"
@@ -846,15 +839,15 @@ msgstr ""
 msgid ""
 "Heads up! These options are not equally suitable for all WordPress setups."
 "<br>If you notice any visual issues on your site, just turn off the last "
-"option(s) you had activated here. <br>Read the documentation on <a "
-"href=\"http://docs.wp-rocket.me/article/19-resolving-issues-with-"
-"minification\" target=\"_blank\">troubleshooting file optimization</a>."
+"option(s) you had activated here. <br>Read the documentation on <a href="
+"\"http://docs.wp-rocket.me/article/19-resolving-issues-with-minification\" "
+"target=\"_blank\">troubleshooting file optimization</a>."
 msgstr ""
 "Обратите внимание, эти настройки индивидуальны для каждой версии WordPress."
 "<br>Если после их активации у вас возникают ошибки на сайте, отмените "
-"последние изменения.<br>Более подробно об этом написано в <a href=\"http:"
-"//docs.wp-rocket.me/article/19-resolving-issues-with-minification\" "
-"target=\"_blank\">документации</a>."
+"последние изменения.<br>Более подробно об этом написано в <a href=\"http://"
+"docs.wp-rocket.me/article/19-resolving-issues-with-minification\" target="
+"\"_blank\">документации</a>."
 
 #: inc/admin/ui/modules/optimization.php:62
 #, php-format
@@ -869,11 +862,11 @@ msgstr ""
 
 #: inc/admin/ui/modules/optimization.php:162
 msgid ""
-"Combine all CSS files into as few files as possible <em>(test thoroughly!)"
-"</em>"
+"Combine all CSS files into as few files as possible <em>(test thoroughly!)</"
+"em>"
 msgstr ""
-"Объединяет все CSS файлы в несколько файлов <em>(экспериментальная функция)"
-"</em>"
+"Объединяет все CSS файлы в несколько файлов <em>(экспериментальная функция)</"
+"em>"
 
 #: inc/admin/ui/modules/optimization.php:164
 msgid "CSS Files concatenation"
@@ -971,8 +964,8 @@ msgstr ""
 
 #: inc/admin/ui/modules/optimization.php:439
 msgid ""
-"Specify complete URLs like:  <code>http://example.com/path/to/script."
-"js</code>"
+"Specify complete URLs like:  <code>http://example.com/path/to/script.js</"
+"code>"
 msgstr ""
 
 #: inc/admin/ui/modules/optimization.php:457
@@ -1004,8 +997,8 @@ msgid ""
 "can also launch it manually from the upper toolbar menu, or from the Tools "
 "tab."
 msgstr ""
-"Предзагрузка по карте сайта начинается автоматически по истечении жизни кэша."
-" Вы можете запустить её вручную во вкладке Инструменты."
+"Предзагрузка по карте сайта начинается автоматически по истечении жизни "
+"кэша. Вы можете запустить её вручную во вкладке Инструменты."
 
 #: inc/admin/ui/modules/preload.php:24
 msgid ""
@@ -1085,8 +1078,8 @@ msgstr ""
 msgid ""
 "Bot-based preloading should only be used on well-performing servers. Once "
 "activated, it gets triggered automatically after you add or update content "
-"on your website. You can also launch it manually from the upper toolbar menu,"
-" or from the Tools tab."
+"on your website. You can also launch it manually from the upper toolbar "
+"menu, or from the Tools tab."
 msgstr ""
 "Бот предзагрузки стоит использовать только на мощных серверах. Бот "
 "автоматически кэширует новые и отредактированные записи на сайте. Его можно "
@@ -1172,8 +1165,8 @@ msgid ""
 "<strong>%1$s</strong> can not be deactivated because of <code>%2$s</code>."
 "<br>This constant is still defined in <code>%3$s</code>. Its value must be "
 "set to <code>false</code>, but apparently %1$s does not have writing "
-"permissions for <code>%3$s</code>.<br>Please make <code>%3$s</code> writable,"
-" then retry deactivation."
+"permissions for <code>%3$s</code>.<br>Please make <code>%3$s</code> "
+"writable, then retry deactivation."
 msgstr ""
 
 #: inc/admin/ui/notices.php:36
@@ -1214,10 +1207,9 @@ msgstr ""
 #: inc/admin/ui/notices.php:271
 #, php-format
 msgid ""
-"<strong>%1$s</strong>: It seems we do not have <a href=\"%2$s\" "
-"target=\"_blank\">writing permissions</a> on <code>wp-config.php</code> file "
-"or the value of the constant <code>WP_CACHE</code> is set to <code>"
-"false</code>"
+"<strong>%1$s</strong>: It seems we do not have <a href=\"%2$s\" target="
+"\"_blank\">writing permissions</a> on <code>wp-config.php</code> file or the "
+"value of the constant <code>WP_CACHE</code> is set to <code>false</code>"
 msgstr ""
 
 #: inc/admin/ui/notices.php:316
@@ -1225,8 +1217,8 @@ msgstr ""
 msgid ""
 "If you had <a href=\"%1$s\" target=\"_blank\">writing permissions</a> on "
 "<code>%2$s</code> file, <strong>%3$s</strong> could do this automatically. "
-"This is not the case, here is the code you should add in your <code>"
-"%2$s</code> file for <strong>%3$s</strong> to work properly."
+"This is not the case, here is the code you should add in your <code>%2$s</"
+"code> file for <strong>%3$s</strong> to work properly."
 msgstr ""
 
 #: inc/admin/ui/notices.php:347
@@ -1253,8 +1245,8 @@ msgid ""
 "Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
 "permissions</a> on <strong>%3$s</strong> domain configuration folder (<code>"
 "%2$s</code>). To make <strong>%3$s</strong> work properly, please CHMOD "
-"<code>755</code> or <code>775</code> or <code>777</code> this folder.<br/>"
-"When the problem is solved, thank you to save the %3$s options to generate "
+"<code>755</code> or <code>775</code> or <code>777</code> this folder.<br/"
+">When the problem is solved, thank you to save the %3$s options to generate "
 "the configuration file."
 msgstr ""
 
@@ -1271,18 +1263,18 @@ msgstr ""
 #, php-format
 msgid ""
 "Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
-"permissions</a> on <strong>%3$s</strong> minified cache folder (<code>"
-"%2$s</code>). To make <strong>%3$s</strong> work properly, please CHMOD "
-"<code>755</code> or <code>775</code> or <code>777</code> this folder."
+"permissions</a> on <strong>%3$s</strong> minified cache folder (<code>%2$s</"
+"code>). To make <strong>%3$s</strong> work properly, please CHMOD <code>755</"
+"code> or <code>775</code> or <code>777</code> this folder."
 msgstr ""
 
 #: inc/admin/ui/notices.php:484
 #, php-format
 msgid ""
 "Be careful, you don't have <a href=\"%1$s\" target=\"_blank\">writing "
-"permissions</a> on <strong>%3$s</strong> cache busting folder (<code>"
-"%2$s</code>). To make <strong>%3$s</strong> work properly, please CHMOD "
-"<code>755</code> or <code>775</code> or <code>777</code> this folder."
+"permissions</a> on <strong>%3$s</strong> cache busting folder (<code>%2$s</"
+"code>). To make <strong>%3$s</strong> work properly, please CHMOD <code>755</"
+"code> or <code>775</code> or <code>777</code> this folder."
 msgstr ""
 
 #: inc/admin/ui/notices.php:510
@@ -1361,7 +1353,7 @@ msgstr ""
 msgid "Every %d Minutes"
 msgstr ""
 
-#: inc/admin/admin.php:14 inc/admin/options.php:571 
+#: inc/admin/admin.php:14 inc/admin/options.php:571
 #: inc/admin/ui/modules/support.php:4 inc/common/admin-bar.php:248
 msgid "Support"
 msgstr "Поддержка"
@@ -1395,17 +1387,17 @@ msgstr "Добавить URL"
 msgid "Replace site's hostname with:"
 msgstr "Заменить адреса сайта на:"
 
-#: inc/admin/options.php:348 inc/admin/options.php:373 
+#: inc/admin/options.php:348 inc/admin/options.php:373
 #: inc/admin/options.php:397
 msgid "reserved for"
 msgstr "зарезервировано для"
 
-#: inc/admin/options.php:350 inc/admin/options.php:375 
+#: inc/admin/options.php:350 inc/admin/options.php:375
 #: inc/admin/options.php:399
 msgid "All files"
 msgstr "Все файлы"
 
-#: inc/admin/options.php:351 inc/admin/options.php:376 
+#: inc/admin/options.php:351 inc/admin/options.php:376
 #: inc/admin/options.php:400
 msgid "Images"
 msgstr "Изображения"
@@ -1498,11 +1490,11 @@ msgid ""
 "to agree to send informations relative to your website to submit a support "
 "ticket."
 msgstr ""
-"Вы должны подтвердить, что вы прочитали <a href=\"%s\" target=\"_blank\">"
-"документацию</a> и не нашли в ней ответа."
+"Вы должны подтвердить, что вы прочитали <a href=\"%s\" target=\"_blank"
+"\">документацию</a> и не нашли в ней ответа."
 
-#: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/modules/tools.php:46 
-#: inc/admin/ui/notices.php:100 inc/common/admin-bar.php:45 
+#: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/modules/tools.php:46
+#: inc/admin/ui/notices.php:100 inc/common/admin-bar.php:45
 #: inc/common/admin-bar.php:66 inc/common/admin-bar.php:102
 msgid "Clear cache"
 msgstr "Очистить кэш"
@@ -1519,8 +1511,8 @@ msgid ""
 "cache management</a> to better understand how caching works."
 msgstr ""
 "Здесь указываются расширенные настройки кэширования. Обычно, это не "
-"требуется.<br>Вы можете почитать <a href=\"http://docs.wp-rocket."
-"me/article/78-how-often-is-the-cache-updated\" target=\"_blank\">о принципах "
+"требуется.<br>Вы можете почитать <a href=\"http://docs.wp-rocket.me/"
+"article/78-how-often-is-the-cache-updated\" target=\"_blank\">о принципах "
 "кэширования</a> в документации."
 
 #: inc/admin/ui/modules/advanced.php:42
@@ -1561,13 +1553,13 @@ msgstr "Базовые параметры"
 
 #: inc/admin/ui/modules/basic.php:27
 msgid ""
-"Caching has been activated automatically, your website should load fast!<br>"
-"How about <a href=\"https://wp-rocket.me/blog/correctly-measure-websites-"
+"Caching has been activated automatically, your website should load fast!"
+"<br>How about <a href=\"https://wp-rocket.me/blog/correctly-measure-websites-"
 "page-load-time/\" target=\"_blank\">testing your loading time</a>? Maybe you "
 "don’t even need to configure all these options."
 msgstr ""
-"Кэширование активировано автоматически, сайт должен грузиться быстрее!<br>"
-"Убедитесь в этом проверив <a href=\"https://wp-rocket.me/blog/correctly-"
+"Кэширование активировано автоматически, сайт должен грузиться быстрее!"
+"<br>Убедитесь в этом проверив <a href=\"https://wp-rocket.me/blog/correctly-"
 "measure-websites-page-load-time/\" target=\"_blank\">скорость загрузки</a>. "
 "Возможно, Вам даже не нужно будет настраивать дальше."
 
@@ -1595,7 +1587,7 @@ msgstr "Включить для фреймов и видео"
 msgid "Enable LazyLoad for iframes and videos"
 msgstr "Включить LazyLoad для фреймов и видео"
 
-#: inc/admin/ui/modules/basic.php:67 inc/admin/ui/modules/basic.php:196 
+#: inc/admin/ui/modules/basic.php:67 inc/admin/ui/modules/basic.php:196
 #: inc/admin/ui/modules/optimization.php:183
 msgid "Reduces the number of HTTP requests, can improve loading time."
 msgstr "Сокращает количество HTTP запросов, ускоряя время загрузки."
@@ -1633,13 +1625,13 @@ msgstr ""
 
 #: inc/admin/ui/modules/basic.php:119
 msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/708-mobile-caching\" "
-"target=\"_blank\">Mobile cache</a> works safest with both options enabled. "
-"When in doubt, keep both."
+"<a href=\"http://docs.wp-rocket.me/article/708-mobile-caching\" target="
+"\"_blank\">Mobile cache</a> works safest with both options enabled. When in "
+"doubt, keep both."
 msgstr ""
-"<a href=\"http://docs.wp-rocket.me/article/708-mobile-caching\" "
-"target=\"_blank\">Мобильный кэш</a> работает нормально с двумя опциями. Не "
-"знаете что выбрать - выбирайте обе."
+"<a href=\"http://docs.wp-rocket.me/article/708-mobile-caching\" target="
+"\"_blank\">Мобильный кэш</a> работает нормально с двумя опциями. Не знаете "
+"что выбрать - выбирайте обе."
 
 #: inc/admin/ui/modules/basic.php:129 inc/admin/ui/modules/basic.php:139
 msgid "User cache:"
@@ -1659,13 +1651,13 @@ msgstr ""
 
 #: inc/admin/ui/modules/basic.php:144
 msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/313-logged-in-user-cache\" "
-"target=\"_blank\">User cache</a> is great when you have user-specific or "
-"restricted content on your website."
+"<a href=\"http://docs.wp-rocket.me/article/313-logged-in-user-cache\" target="
+"\"_blank\">User cache</a> is great when you have user-specific or restricted "
+"content on your website."
 msgstr ""
-"<a href=\"http://docs.wp-rocket.me/article/313-logged-in-user-cache\" "
-"target=\"_blank\">Пользовательский кэш</a> хорош, когда вы разделяете "
-"контент в зависимости от пользователя."
+"<a href=\"http://docs.wp-rocket.me/article/313-logged-in-user-cache\" target="
+"\"_blank\">Пользовательский кэш</a> хорош, когда вы разделяете контент в "
+"зависимости от пользователя."
 
 #: inc/admin/ui/modules/basic.php:154 inc/admin/ui/modules/basic.php:163
 msgid "SSL cache:"
@@ -1721,8 +1713,8 @@ msgstr "день"
 #: inc/admin/ui/modules/basic.php:256
 #, php-format
 msgid ""
-"Cache lifespan is the period of time after which all cache files get removed."
-" Enable <a href=\"%s\">Preloading</a> for the cache to be rebuilt "
+"Cache lifespan is the period of time after which all cache files get "
+"removed. Enable <a href=\"%s\">Preloading</a> for the cache to be rebuilt "
 "automatically after lifespan expiration."
 msgstr ""
 "Время жизни кэша - это время, по истечении которого удаляется весь кэш. "
@@ -1748,11 +1740,11 @@ msgstr "Показывать настройки Cloudflare"
 #: inc/admin/ui/modules/cdn.php:61
 #, php-format
 msgid ""
-"Go to the <a href=\"%s\">Cloudflare tab</a> to edit your Cloudflare settings."
-" The CDN settings below do NOT apply to Cloudflare.<br>Read the "
+"Go to the <a href=\"%s\">Cloudflare tab</a> to edit your Cloudflare "
+"settings. The CDN settings below do NOT apply to Cloudflare.<br>Read the "
 "documentation on <a href=\"http://docs.wp-rocket.me/article/18-using-wp-"
-"rocket-with-cloudflare\" target=\"_blank\">using WP Rocket with "
-"Cloudflare</a>."
+"rocket-with-cloudflare\" target=\"_blank\">using WP Rocket with Cloudflare</"
+"a>."
 msgstr ""
 "Перейдите на вкладку <a href=\"%s\">Cloudflare</a> и настройте свой аккаунт. "
 "Настройки CDN ниже НЕ влияют на Cloudflare.<br>Подробнее о взаимодействии "
@@ -1812,7 +1804,7 @@ msgstr ""
 "Доменное имя подставляется автоматически.<br>Используйте шаблон %s, чтобы "
 "исключить все файлы соответствующие маске."
 
-#: inc/admin/ui/modules/optimization.php:74 
+#: inc/admin/ui/modules/optimization.php:74
 #: inc/admin/ui/modules/optimization.php:140
 msgid ""
 "<a href=\"http://docs.wp-rocket.me/article/19-resolving-issues-with-"
@@ -1867,17 +1859,15 @@ msgstr ""
 #: inc/admin/ui/modules/optimization.php:188
 msgid ""
 "Files get concatenated into small groups in order to <a href=\"http://docs."
-"wp-rocket.me/article/17-reducing-the-number-of-minified-files\" "
-"target=\"_blank\">ensure theme/plugin compatibility and better "
-"performance</a>. Forcing concatenation into 1 file is not recommended, "
-"because browsers are faster downloading up to 6 smaller files in parallel "
-"than 1-2 large files."
+"wp-rocket.me/article/17-reducing-the-number-of-minified-files\" target="
+"\"_blank\">ensure theme/plugin compatibility and better performance</a>. "
+"Forcing concatenation into 1 file is not recommended, because browsers are "
+"faster downloading up to 6 smaller files in parallel than 1-2 large files."
 msgstr ""
 "Файлы объединяются в малые группы в порядке их <a href=\"http://docs.wp-"
-"rocket.me/article/17-reducing-the-number-of-minified-files\" "
-"target=\"_blank\">подключения в теме/плагине</a>. Создание одного файла не "
-"рекомендуется: браузер быстрее загрузит шесть маленьких файлов, чем один "
-"большой."
+"rocket.me/article/17-reducing-the-number-of-minified-files\" target=\"_blank"
+"\">подключения в теме/плагине</a>. Создание одного файла не рекомендуется: "
+"браузер быстрее загрузит шесть маленьких файлов, чем один большой."
 
 #: inc/admin/ui/modules/optimization.php:193
 msgid "Combine files:"
@@ -1929,7 +1919,7 @@ msgstr ""
 msgid "Remove query strings:"
 msgstr "Убрать запросы:"
 
-#: inc/admin/ui/modules/optimization.php:274 
+#: inc/admin/ui/modules/optimization.php:274
 #: inc/admin/ui/modules/optimization.php:276
 msgid "Remove query strings from static resources"
 msgstr "Убрать запросы со статических файлов"
@@ -1951,12 +1941,12 @@ msgstr ""
 "<a href=\"http://docs.wp-rocket.me/article/108-render-blocking-javascript-"
 "and-css-pagespeed\" target=\"_blank\">Почему?</a>"
 
-#: inc/admin/ui/modules/optimization.php:312 
+#: inc/admin/ui/modules/optimization.php:312
 #: inc/admin/ui/modules/optimization.php:314
 msgid "Load CSS files asynchronously"
 msgstr "Асинхронная загрузка CSS файлов"
 
-#: inc/admin/ui/modules/optimization.php:327 
+#: inc/admin/ui/modules/optimization.php:327
 #: inc/admin/ui/modules/optimization.php:329
 msgid "Load JS files deferred"
 msgstr "Отложенная загрузка JS файлов"
@@ -1973,7 +1963,7 @@ msgstr ""
 msgid "Render-blocking CSS/JS:"
 msgstr "Асинхронная загрузка:"
 
-#: inc/admin/ui/modules/optimization.php:433 
+#: inc/admin/ui/modules/optimization.php:433
 #: inc/admin/ui/modules/optimization.php:476
 msgid "Empty the field to remove it."
 msgstr "Очистите поле, чтобы убрать."
@@ -1987,8 +1977,8 @@ msgstr "Кэширование DNS:"
 msgid ""
 "The <a href=\"%s\" target=\"_blank\">WP Rocket documentation</a> provides "
 "answers to many common questions, check it out!<br>Our Happiness Rocketeers "
-"will help you sort out any questions you may have regarding this plugin.<br>"
-"Please help us to help you and provide detailed information."
+"will help you sort out any questions you may have regarding this plugin."
+"<br>Please help us to help you and provide detailed information."
 msgstr ""
 "В <a href=\"%s\" target=\"_blank\">документации WP Rocket</a> содержатся "
 "ответы на многие вопросы, прочтите её!<br>В любом случае, мы готовы оказать "
@@ -2007,7 +1997,7 @@ msgstr "Одно предложение описывающее проблему"
 msgid "Summary"
 msgstr "Тема запроса"
 
-#: inc/admin/ui/modules/support.php:55 inc/admin/ui/modules/white-label.php:37 
+#: inc/admin/ui/modules/support.php:55 inc/admin/ui/modules/white-label.php:37
 #: inc/admin/ui/modules/white-label.php:46
 msgid "Description:"
 msgstr "Описание:"
@@ -2085,7 +2075,7 @@ msgid ""
 msgstr ""
 "Начать создание кэша согласно <a href=\"%s\">настроек предзагрузки</a>."
 
-#: inc/admin/ui/modules/tools.php:71 inc/common/admin-bar.php:168 
+#: inc/admin/ui/modules/tools.php:71 inc/common/admin-bar.php:168
 #: inc/common/admin-bar.php:187 inc/common/admin-bar.php:220
 msgid "Preload cache"
 msgstr "Начать кэширование"
@@ -2141,22 +2131,22 @@ msgstr ""
 "Версия %1$s вызывает ошибки на вашем сайте? Попробуйте откатиться до "
 "предыдущей версии, а затем <a href=\"%2$s\">напишите в техподдержку</a>."
 
-#: inc/admin/ui/modules/white-label.php:7 
+#: inc/admin/ui/modules/white-label.php:7
 #: inc/admin/ui/modules/white-label.php:16
 msgid "Plugin Name:"
 msgstr "Имя плагина:"
 
-#: inc/admin/ui/modules/white-label.php:22 
+#: inc/admin/ui/modules/white-label.php:22
 #: inc/admin/ui/modules/white-label.php:31
 msgid "Plugin URI:"
 msgstr "Плагин URI:"
 
-#: inc/admin/ui/modules/white-label.php:52 
+#: inc/admin/ui/modules/white-label.php:52
 #: inc/admin/ui/modules/white-label.php:61
 msgid "Author:"
 msgstr "Автор:"
 
-#: inc/admin/ui/modules/white-label.php:67 
+#: inc/admin/ui/modules/white-label.php:67
 #: inc/admin/ui/modules/white-label.php:76
 msgid "Author URI:"
 msgstr "Автор URI:"
@@ -2171,8 +2161,8 @@ msgstr "Отключение"
 
 #: inc/admin/ui/notices.php:276
 msgid ""
-"To fix this you have to set writing permissions for <code>wp-config."
-"php</code> and then save the settings again."
+"To fix this you have to set writing permissions for <code>wp-config.php</"
+"code> and then save the settings again."
 msgstr ""
 "Чтобы решить данную проблему вам необходимо установить права записи на файл "
 "<code>wp-config.php</code> и сохранить настройки снова."
@@ -2206,10 +2196,10 @@ msgid ""
 "try the <a href=\"%s\">support forums</a>."
 msgstr ""
 "Произошла непредвиденная ошибка. Что-то может быть не так с WP-Rocket.me или "
-"с настройками этого сервера. Если данная ошибка повторяется длительное время,"
-" пожалуйста попробуйте <a href=\"%s\">наш форум поддержки</a>."
+"с настройками этого сервера. Если данная ошибка повторяется длительное "
+"время, пожалуйста попробуйте <a href=\"%s\">наш форум поддержки</a>."
 
-#: inc/common/admin-bar.php:92 inc/common/admin-bar.php:211 
+#: inc/common/admin-bar.php:92 inc/common/admin-bar.php:211
 #: inc/functions/i18n.php:38 inc/functions/i18n.php:45
 msgid "All languages"
 msgstr "Все языки"
