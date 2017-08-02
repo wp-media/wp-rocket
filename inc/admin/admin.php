@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) ||	die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
  * Link to the configuration page of the plugin, support & documentation
@@ -127,9 +127,11 @@ function rocket_dismiss_boxes( $args ) {
 
 		if ( ! wp_verify_nonce( $args['_wpnonce'], $args['action'] . '_' . $args['box'] ) ) {
 			if ( defined( 'DOING_AJAX' ) ) {
-				wp_send_json( array(
-					'error' => 1,
-				) );
+				wp_send_json(
+					array(
+						'error' => 1,
+					)
+				);
 			} else {
 				wp_nonce_ays( '' );
 			}
@@ -149,9 +151,11 @@ function rocket_dismiss_boxes( $args ) {
 
 		if ( 'admin-post.php' === $GLOBALS['pagenow'] ) {
 			if ( defined( 'DOING_AJAX' ) ) {
-				wp_send_json( array(
-					'error' => 0,
-				) );
+				wp_send_json(
+					array(
+						'error' => 0,
+					)
+				);
 			} else {
 				wp_safe_redirect( wp_get_referer() );
 				die();
@@ -220,15 +224,15 @@ function rocket_white_label( $plugins ) {
 	$white_label_description = get_rocket_option( 'wl_description' );
 	// We change the plugin's header.
 	$plugins['wp-rocket/wp-rocket.php'] = array(
-			'Name'			=> get_rocket_option( 'wl_plugin_name' ),
-			'PluginURI'		=> get_rocket_option( 'wl_plugin_URI' ),
-			'Version'		=> isset( $plugins['wp-rocket/wp-rocket.php']['Version'] ) ? $plugins['wp-rocket/wp-rocket.php']['Version'] : '',
-			'Description'	=> reset( ( $white_label_description ) ),
-			'Author'		=> get_rocket_option( 'wl_author' ),
-			'AuthorURI'		=> get_rocket_option( 'wl_author_URI' ),
-			'TextDomain'	=> isset( $plugins['wp-rocket/wp-rocket.php']['TextDomain'] ) ? $plugins['wp-rocket/wp-rocket.php']['TextDomain'] : '',
-			'DomainPath'	=> isset( $plugins['wp-rocket/wp-rocket.php']['DomainPath'] ) ? $plugins['wp-rocket/wp-rocket.php']['DomainPath'] : '',
-		);
+		'Name'          => get_rocket_option( 'wl_plugin_name' ),
+		'PluginURI'     => get_rocket_option( 'wl_plugin_URI' ),
+		'Version'       => isset( $plugins['wp-rocket/wp-rocket.php']['Version'] ) ? $plugins['wp-rocket/wp-rocket.php']['Version'] : '',
+		'Description'   => reset( ( $white_label_description ) ),
+		'Author'        => get_rocket_option( 'wl_author' ),
+		'AuthorURI'     => get_rocket_option( 'wl_author_URI' ),
+		'TextDomain'    => isset( $plugins['wp-rocket/wp-rocket.php']['TextDomain'] ) ? $plugins['wp-rocket/wp-rocket.php']['TextDomain'] : '',
+		'DomainPath'    => isset( $plugins['wp-rocket/wp-rocket.php']['DomainPath'] ) ? $plugins['wp-rocket/wp-rocket.php']['DomainPath'] : '',
+	);
 
 	// if white label, remove our names from contributors.
 	if ( rocket_is_white_label() ) {
@@ -291,13 +295,13 @@ function rocket_rollback() {
 		wp_nonce_ays( '' );
 	}
 
-	$plugin_transient 	= get_site_transient( 'update_plugins' );
-	$plugin_folder    	= plugin_basename( dirname( WP_ROCKET_FILE ) );
-	$plugin_file      	= basename( WP_ROCKET_FILE );
-	$version          	= WP_ROCKET_LASTVERSION;
-	$c_key 				= get_rocket_option( 'consumer_key' );
-	$url 				= sprintf( 'https://wp-rocket.me/%s/wp-rocket_%s.zip', $c_key, $version );
-	$temp_array 		= array(
+	$plugin_transient   = get_site_transient( 'update_plugins' );
+	$plugin_folder      = plugin_basename( dirname( WP_ROCKET_FILE ) );
+	$plugin_file        = basename( WP_ROCKET_FILE );
+	$version            = WP_ROCKET_LASTVERSION;
+	$c_key              = get_rocket_option( 'consumer_key' );
+	$url                = sprintf( 'https://wp-rocket.me/%s/wp-rocket_%s.zip', $c_key, $version );
+	$temp_array         = array(
 		'slug'        => $plugin_folder,
 		'new_version' => $version,
 		'url'         => 'https://wp-rocket.me',
@@ -322,10 +326,12 @@ function rocket_rollback() {
 		$upgrader = new Plugin_Upgrader( $upgrader_skin );
 		remove_filter( 'site_transient_update_plugins', 'rocket_check_update', 100 );
 		$upgrader->upgrade( $plugin );
-		// translators: %s is the plugin name.
-		wp_die( '', sprintf( __( '%s Update Rollback', 'rocket' ), WP_ROCKET_PLUGIN_NAME ), array(
-			'response' => 200,
-		) );
+		wp_die(
+			// translators: %s is the plugin name.
+			'', sprintf( __( '%s Update Rollback', 'rocket' ), WP_ROCKET_PLUGIN_NAME ), array(
+				'response' => 200,
+			)
+		);
 	}
 }
 add_action( 'admin_post_rocket_rollback', 'rocket_rollback' );

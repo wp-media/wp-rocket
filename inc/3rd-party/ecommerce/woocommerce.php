@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 if ( class_exists( 'WooCommerce' ) ) :
 	add_filter( 'rocket_cache_query_strings', 'rocket_cache_v_query_string' );
@@ -16,7 +16,8 @@ endif;
  * @param int $variation_id ID of the variation.
  */
 function rocket_clean_cache_after_woocommerce_save_product_variation( $variation_id ) {
-	if ( $product_id = wp_get_post_parent_id( $variation_id ) ) {
+	$product_id = wp_get_post_parent_id( $variation_id );
+	if ( $product_id ) {
 		rocket_clean_post( $product_id );
 	}
 }

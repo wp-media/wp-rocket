@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
  * Check if minify cache file exist and create it if not
@@ -7,7 +7,7 @@ defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
  * @since 2.10 Use wp_safe_remote_get() instead of curl
  * @since 2.1
  *
- * @param string $url 		 The minified URL with Minify Library.
+ * @param string $url        The minified URL with Minify Library.
  * @param string $pretty_url The minified URL cache file.
  * @return bool True if sucessfully saved the minify cache file, false otherwise
  */
@@ -28,7 +28,7 @@ function rocket_fetch_and_cache_minify( $url, $pretty_url ) {
 	 *
 	 * @param string $url The minify URL.
 	 */
-	$url = apply_filters(  'rocket_minify_bypass_varnish', $url );
+	$url = apply_filters( 'rocket_minify_bypass_varnish', $url );
 
 	/**
 	 * Filters the request arguments
@@ -78,9 +78,9 @@ function rocket_fetch_and_cache_minify( $url, $pretty_url ) {
  */
 function get_rocket_minify_file( $file, $force_pretty_url = true, $pretty_filename = null ) {
 
-	$base_url 	= WP_ROCKET_URL . 'min/?f=';
+	$base_url   = WP_ROCKET_URL . 'min/?f=';
 
-	$file = parse_url( $file, PHP_URL_PATH );
+	$file = wp_parse_url( $file, PHP_URL_PATH );
 	$file = trim( $file );
 
 	if ( empty( $file ) ) {
@@ -174,11 +174,13 @@ function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_file
 	 * To avoid conflicts with file URLs are too long for browsers,
 	 * cut into several parts concatenated files
 	 */
-	$tags 		= '';
+	$tags       = '';
 	$data_attr  = 'data-minify="1"';
-	$urls 		= array( 0 => '' );
-	$base_url 	= WP_ROCKET_URL . 'min/?f=';
-	$files  	= is_array( $files ) ? $files : (array) $files;
+	$urls       = array(
+		0 => '',
+	);
+	$base_url   = WP_ROCKET_URL . 'min/?f=';
+	$files      = is_array( $files ) ? $files : (array) $files;
 	$files      = array_filter( $files );
 
 	if ( ! (bool) $files ) {
@@ -187,7 +189,7 @@ function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_file
 
 	$i = 0;
 	foreach ( $files as $file ) {
-		$file = parse_url( $file, PHP_URL_PATH );
+		$file = wp_parse_url( $file, PHP_URL_PATH );
 		$file = trim( $file );
 
 		if ( empty( $file ) ) {
@@ -202,7 +204,7 @@ function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_file
 		 *
 		 * @since 2.1
 		 *
-		 * @param string $length 	The maximum number of characters in a URL.
+		 * @param string $length    The maximum number of characters in a URL.
 		 * @param string $extension The file's extension.
 		*/
 		$filename_length = apply_filters( 'rocket_minify_filename_length', 255, pathinfo( $file, PATHINFO_EXTENSION ) );
@@ -307,48 +309,50 @@ function get_rocket_minify_excluded_external_js() {
 	 *
 	 * @param array $hostnames Hostname of JS files to exclude.
 	 */
-	$excluded_external_js = apply_filters( 'rocket_minify_excluded_external_js', array(
-		'forms.aweber.com',
-		'video.unrulymedia.com',
-		'gist.github.com',
-		'stats.wp.com',
-		'stats.wordpress.com',
-		'www.statcounter.com',
-		'widget.rafflecopter.com',
-		'widget-prime.rafflecopter.com',
-		'widget.supercounters.com',
-		'releases.flowplayer.org',
-		'tools.meetaffiliate.com',
-		'c.ad6media.fr',
-		'cdn.stickyadstv.com',
-		'www.smava.de',
-		'contextual.media.net',
-		'app.getresponse.com',
-		'ap.lijit.com',
-		'adserver.reklamstore.com',
-		's0.wp.com',
-		'wprp.zemanta.com',
-		'files.bannersnack.com',
-		'smarticon.geotrust.com',
-		'js.gleam.io',
-		'script.ioam.de',
-		'ir-na.amazon-adsystem.com',
-		'web.ventunotech.com',
-		'verify.authorize.net',
-		'ads.themoneytizer.com',
-		'embed.finanzcheck.de',
-		'imagesrv.adition.com',
-		'js.juicyads.com',
-		'form.jotformeu.com',
-		'speakerdeck.com',
-		'content.jwplatform.com',
-		'ads.investingchannel.com',
-		'app.ecwid.com',
-		'www.industriejobs.de',
-		's.gravatar.com',
-		'cdn.jsdelivr.net',
-		'cdnjs.cloudflare.com',
-	) );
+	$excluded_external_js = apply_filters(
+		'rocket_minify_excluded_external_js', array(
+			'forms.aweber.com',
+			'video.unrulymedia.com',
+			'gist.github.com',
+			'stats.wp.com',
+			'stats.wordpress.com',
+			'www.statcounter.com',
+			'widget.rafflecopter.com',
+			'widget-prime.rafflecopter.com',
+			'widget.supercounters.com',
+			'releases.flowplayer.org',
+			'tools.meetaffiliate.com',
+			'c.ad6media.fr',
+			'cdn.stickyadstv.com',
+			'www.smava.de',
+			'contextual.media.net',
+			'app.getresponse.com',
+			'ap.lijit.com',
+			'adserver.reklamstore.com',
+			's0.wp.com',
+			'wprp.zemanta.com',
+			'files.bannersnack.com',
+			'smarticon.geotrust.com',
+			'js.gleam.io',
+			'script.ioam.de',
+			'ir-na.amazon-adsystem.com',
+			'web.ventunotech.com',
+			'verify.authorize.net',
+			'ads.themoneytizer.com',
+			'embed.finanzcheck.de',
+			'imagesrv.adition.com',
+			'js.juicyads.com',
+			'form.jotformeu.com',
+			'speakerdeck.com',
+			'content.jwplatform.com',
+			'ads.investingchannel.com',
+			'app.ecwid.com',
+			'www.industriejobs.de',
+			's.gravatar.com',
+			'cdn.jsdelivr.net',
+			'cdnjs.cloudflare.com',
+		)
+	);
 
 	return $excluded_external_js;
 }

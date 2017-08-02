@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 global $wp_version;
 
@@ -19,9 +19,11 @@ if ( version_compare( $wp_version, '4.4' ) >= 0 && get_rocket_option( 'embeds', 
 		global $wp;
 
 		// Remove the embed query var.
-		$wp->public_query_vars = array_diff( $wp->public_query_vars, array(
-			'embed',
-		) );
+		$wp->public_query_vars = array_diff(
+			$wp->public_query_vars, array(
+				'embed',
+			)
+		);
 
 		// Remove the REST API endpoint.
 		remove_action( 'rest_api_init', 'wp_oembed_register_route' );

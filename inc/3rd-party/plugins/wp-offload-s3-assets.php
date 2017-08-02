@@ -8,7 +8,7 @@ endif;
 
 /**
  * Compatibility with WP Offload S3 assets addon.
- * 
+ *
  * @since 2.10.7
  * @author Remy Perona
  */
@@ -28,7 +28,7 @@ function rocket_as3cf_assets_compatibility() {
  * @author Remy Perona
  *
  * @param string $old_value Previous assets option value.
- * @param string $value New assets option value.
+ * @param string $new_value New assets option value.
  */
 function rocket_maybe_deactivate_cdn( $old_value, $new_value ) {
 	if ( $old_value['enable-addon'] !== $new_value['enable-addon'] && 1 === (int) $new_value['enable-addon'] ) {

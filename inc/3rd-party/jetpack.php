@@ -131,10 +131,10 @@ if ( class_exists( 'Jetpack' ) ) :
 
 		/**
 		 * Add Jetpack cookie when:
-		 * 	- Jetpack is active.
-		 * 	- Jetpack's Extra Sidebar Widgets module is active.
-		 * 	- The widget is active.
-		 *	- the rocket_jetpack_eu_cookie_widget option is empty or not set.
+		 *  - Jetpack is active.
+		 *  - Jetpack's Extra Sidebar Widgets module is active.
+		 *  - The widget is active.
+		 *  - the rocket_jetpack_eu_cookie_widget option is empty or not set.
 		 *
 		 * @since 2.10.1
 		 * @author Jeremy Herve

@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
  * Check whether the plugin is active by checking the active_plugins list.
@@ -74,7 +74,7 @@ function rocket_clean_studiopress_accelerator() {
 function rocket_clean_varnish_http_purge() {
 	if ( class_exists( 'VarnishPurger' ) ) {
 		$url    = home_url( '/?vhp-regex' );
-		$p      = parse_url( $url );
+		$p      = wp_parse_url( $url );
 		$path   = '';
 		$pregex = '.*';
 
@@ -199,7 +199,7 @@ function get_rocket_ecommerce_exclude_pages() {
 			if ( it_exchange_get_page_type( $page ) === 'wordpress' ) {
 				$exchange_urls = get_rocket_i18n_translated_post_urls( it_exchange_get_page_wpid( $page ) );
 			} else {
-				$exchange_urls = array( parse_url( it_exchange_get_page_url( $page ), PHP_URL_PATH ) );
+				$exchange_urls = array( wp_parse_url( it_exchange_get_page_url( $page ), PHP_URL_PATH ) );
 			}
 
 			$urls = array_merge( $urls, $exchange_urls );
@@ -235,7 +235,8 @@ function get_rocket_ecommerce_exclude_pages() {
 		);
 
 		foreach ( $pages as $page ) {
-			if ( $page_id = wpshop_tools::get_page_id( get_option( $page ) ) ) {
+			$page_id = wpshop_tools::get_page_id( get_option( $page ) );
+			if ( $page_id ) {
 				$urls = array_merge( $urls, get_rocket_i18n_translated_post_urls( $page_id ) );
 			}
 		}

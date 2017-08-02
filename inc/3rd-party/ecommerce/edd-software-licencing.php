@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
  * Compatibility with Easy Digital Downloads Software Licensing addon.
@@ -8,7 +8,7 @@ defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
  */
 if ( class_exists( 'EDD_Software_Licensing' ) && defined( 'EDD_SL_VERSION' ) ) :
 	// Exclude EDD SL endpoint from cache on WP Rocket activation.
-	add_filter( 'rocket_cache_reject_uri'	 , 'rocket_exclude_edd_sl_endpoint' );
+	add_filter( 'rocket_cache_reject_uri', 'rocket_exclude_edd_sl_endpoint' );
 endif;
 
 /**
@@ -17,7 +17,7 @@ endif;
  * @since 2.7
  */
 function rocket_activate_edd_software_licensing() {
-	add_filter( 'rocket_cache_reject_uri'	 , 'rocket_exclude_edd_sl_endpoint' );
+	add_filter( 'rocket_cache_reject_uri', 'rocket_exclude_edd_sl_endpoint' );
 
 	// Update the WP Rocket rules on the .htaccess file.
 	flush_rocket_htaccess();
@@ -33,7 +33,7 @@ add_action( 'activate_edd-software-licensing/edd-software-licenses.php', 'rocket
  * @since 2.7
  */
 function rocket_deactivate_edd_software_licensing() {
-	remove_filter( 'rocket_cache_reject_uri'	 , 'rocket_exclude_edd_sl_endpoint' );
+	remove_filter( 'rocket_cache_reject_uri', 'rocket_exclude_edd_sl_endpoint' );
 
 	// Update the WP Rocket rules on the .htaccess file.
 	flush_rocket_htaccess();

@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 require( WP_ROCKET_3RD_PARTY_PATH . 'hosting/wpengine.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'hosting/flywheel.php' );
@@ -35,7 +35,6 @@ require( WP_ROCKET_3RD_PARTY_PATH . 'give.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'custom-login.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'mobile/amp.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'mobile/wp-appkit.php' );
-//require( WP_ROCKET_3RD_PARTY_PATH . 'jetpack.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'yoast-seo.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'all-in-one-seo-pack.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'wp-rest-api.php' );

@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
  * Conflict with WP Touch: deactivate LazyLoad on mobile theme
@@ -33,7 +33,7 @@ add_action( 'layerslider_ready', 'rocket_deactivate_specify_image_dimensions_wit
  */
 function rocket_deactivate_js_minifier_with_appbanner( $html_options ) {
 	if ( isset( $html_options['jsMinifier'] ) && class_exists( 'AppBanners' ) ) {
-	 	unset( $html_options['jsMinifier'] );
+		 unset( $html_options['jsMinifier'] );
 	}
 	 return $html_options;
 }
@@ -81,8 +81,8 @@ function rocket_cdn_resize_image_args_on_envira_gallery( $args ) {
 	}
 
 	$cnames_host = get_rocket_cnames_host();
-	$url_host    = parse_url( $args['url'], PHP_URL_HOST );
-	$home_host   = parse_url( home_url(), PHP_URL_HOST );
+	$url_host    = wp_parse_url( $args['url'], PHP_URL_HOST );
+	$home_host   = wp_parse_url( home_url(), PHP_URL_HOST );
 
 	if ( in_array( $url_host, $cnames_host, true ) ) {
 		$args['url'] = str_replace( $url_host, $home_host , $args['url'] );

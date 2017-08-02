@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 // Are we white-labeled?
 $rwl = rocket_is_white_label();
@@ -43,7 +43,7 @@ add_settings_field(
 );
 
 /* Conditional panel caption if CF option is active */
-if ( 0 !== absint( get_rocket_option('do_cloudflare') ) && ! $rwl ) {
+if ( 0 !== absint( get_rocket_option( 'do_cloudflare' ) ) && ! $rwl ) {
 
 	add_settings_field(
 		'rocket_cdn_options_panel',
@@ -79,11 +79,11 @@ $rocket_cdn_options = array(
 		 *
 		 * @param bool $readonly true to disable the field, false otherwise.
 		 */
-		'readonly'     => apply_filters( 'rocket_readonly_cdn_option', false ),
+		'readonly'    => apply_filters( 'rocket_readonly_cdn_option', false ),
 	),
 	array(
-		'type' 		  => 'helper_description',
-		'name' 		  => 'cdn',
+		'type'        => 'helper_description',
+		'name'        => 'cdn',
 		'description' => $rwl ?
 		__( 'All URLs of static files (CSS, JS, images) will be rewritten to the CNAME(s) entered below.', 'rocket' ) :
 		/* translators: line-break recommended, but not mandatory; use URL of localised document if available in your language  */
@@ -96,7 +96,7 @@ if ( apply_filters( 'rocket_readonly_cdn_option', false ) ) {
 	$rocket_cdn_options[] = array(
 		'type'        => 'helper_detection',
 		'name'        => 'cdn_disabled',
-		'description' =>__( 'CDN is disabled because you are using WP Offload S3 and the assets addon to serve your images, CSS & JS files.', 'rocket' ),
+		'description' => __( 'CDN is disabled because you are using WP Offload S3 and the assets addon to serve your images, CSS & JS files.', 'rocket' ),
 	);
 }
 
@@ -115,13 +115,13 @@ add_settings_field(
 /**
  * CDN CNAMES
  */
- add_settings_field(
- 	'rocket_cdn_cnames',
- 	__( 'CDN CNAME(S):', 'rocket' ),
- 	'rocket_cnames_module',
- 	'rocket_cdn',
- 	'rocket_display_cdn_options'
- );
+add_settings_field(
+	'rocket_cdn_cnames',
+	__( 'CDN CNAME(S):', 'rocket' ),
+	'rocket_cnames_module',
+	'rocket_cdn',
+	'rocket_display_cdn_options'
+);
 
 /**
  * CDN with SSL
@@ -145,6 +145,7 @@ add_settings_field(
 		),
 	)
 );
+
 add_settings_field(
 	'rocket_cdn_reject_files',
 	__( 'Exclude files:', 'rocket' ),

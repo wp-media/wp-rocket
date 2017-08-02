@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
  * Defer loading of CSS files
@@ -32,24 +32,24 @@ function rocket_async_css( $buffer ) {
 
 	foreach ( $tags_match[0] as $i => $tag ) {
 		// Strip query args.
-		$path = parse_url( $tags_match[2][ $i ] , PHP_URL_PATH );
+		$path = wp_parse_url( $tags_match[2][ $i ] , PHP_URL_PATH );
 
 		// Check if this file should be deferred.
 		if ( isset( $excluded_css[ $path ] ) ) {
 			continue;
 		}
 
-	    $preload = str_replace( 'stylesheet', 'preload', $tags_match[1][ $i ] );
-	    $onload  = str_replace( $tags_match[3][ $i ], ' as="style" onload=""' . $tags_match[3][ $i ] . '>', $tags_match[3][ $i ] );
-	    $tag	 = str_replace( $tags_match[3][ $i ] . '>', $onload, $tag );
-	    $tag	 = str_replace( $tags_match[1][ $i ], $preload, $tag );
-	    $tag 	 = str_replace( 'onload=""', 'onload="this.rel=\'stylesheet\'"', $tag );
-	    $buffer  = str_replace( $tags_match[0][ $i ], $tag, $buffer );
+		$preload = str_replace( 'stylesheet', 'preload', $tags_match[1][ $i ] );
+		$onload  = str_replace( $tags_match[3][ $i ], ' as="style" onload=""' . $tags_match[3][ $i ] . '>', $tags_match[3][ $i ] );
+		$tag     = str_replace( $tags_match[3][ $i ] . '>', $onload, $tag );
+		$tag     = str_replace( $tags_match[1][ $i ], $preload, $tag );
+		$tag     = str_replace( 'onload=""', 'onload="this.rel=\'stylesheet\'"', $tag );
+		$buffer  = str_replace( $tags_match[0][ $i ], $tag, $buffer );
 
 		$noscripts .= '<noscript>' . $tags_match[0][ $i ] . '</noscript>';
 	}
 
-	$buffer = str_replace( '</html>', $noscripts . '</html>', $buffer );	
+	$buffer = str_replace( '</html>', $noscripts . '</html>', $buffer );
 
 	return $buffer;
 }
