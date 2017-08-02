@@ -3,21 +3,21 @@
 # Translators:
 # FX Bénard <fxb@wp-translations.org>, 2016
 # Valentin Lyong <icedge@abv.bg>, 2014
-# Valentin Lyong <icedge@abv.bg>, 2014-2016
+# Valentin Lyong <icedge@abv.bg>, 2014-2017
 msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2017-06-13 11:41-0400\n"
-"PO-Revision-Date: 2017-06-13 15:41+0000\n"
-"Last-Translator: wpmedia <contact@wp-media.me>\n"
+"POT-Creation-Date: 2017-07-27 12:16-0400\n"
+"PO-Revision-Date: 2017-07-28 09:23+0000\n"
+"Last-Translator: Valentin Lyong <icedge@abv.bg>\n"
 "Language-Team: Bulgarian (Bulgaria) (http://www.transifex.com/wp-media/wp-rocket/language/bg_BG/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: bg_BG\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.8.9\n"
+"X-Generator: Poedit 1.8.11\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -26,7 +26,7 @@ msgstr ""
 
 #: inc/3rd-party/all-in-one-seo-pack.php:77
 msgid "All in One SEO XML sitemap"
-msgstr ""
+msgstr "Всичко е едно SEO XML карта на сайта"
 
 #: inc/3rd-party/all-in-one-seo-pack.php:79 inc/3rd-party/yoast-seo.php:79
 #, php-format
@@ -47,13 +47,13 @@ msgstr "Jetpack XML карти на сайта"
 
 #: inc/3rd-party/jetpack.php:88
 msgid "Preload the sitemap from the Jetpack plugin"
-msgstr ""
+msgstr "Презаредете картата на сайта от плъгина Jetpack"
 
 #: inc/3rd-party/yoast-seo.php:77
 msgid "Yoast SEO XML sitemap"
 msgstr "Yoast SEO XML карта на сайта"
 
-#: inc/admin/admin.php:14 inc/admin/options.php:571
+#: inc/admin/admin.php:14 inc/admin/options.php:590
 #: inc/admin/ui/modules/support.php:4 inc/common/admin-bar.php:248
 msgid "Support"
 msgstr "Поддръжка"
@@ -74,18 +74,18 @@ msgstr "Настройки"
 msgid "Clear this cache"
 msgstr "Изчистете този кеш"
 
-#: inc/admin/admin.php:312 inc/admin/admin.php:321
+#: inc/admin/admin.php:317 inc/admin/admin.php:326
 #, php-format
 msgid "%s Update Rollback"
 msgstr "%s Връщания на обновяване"
 
 #: inc/admin/options.php:117
 msgid "Your Cloudflare credentials are valid."
-msgstr ""
+msgstr "Вашите данни за вход в Cloudflare са валидни."
 
 #: inc/admin/options.php:121
 msgid "Your Cloudflare credentials are invalid!"
-msgstr ""
+msgstr "Вашите данни за вход в Cloudflare са невалидни!"
 
 #: inc/admin/options.php:177 inc/admin/ui/modules/database.php:244
 msgid "Save and optimize"
@@ -95,34 +95,34 @@ msgstr "Запаметете и оптимизирайте"
 msgid "Optimize"
 msgstr "Оптимизирайте"
 
-#: inc/admin/options.php:195 inc/admin/options.php:439
+#: inc/admin/options.php:195 inc/admin/options.php:458
 msgctxt "screen-reader-text"
 msgid "Note:"
-msgstr ""
+msgstr "Забележка:"
 
 #: inc/admin/options.php:202
 msgctxt "screen-reader-text"
 msgid "Performance tip:"
-msgstr ""
+msgstr "Съвет за производителност:"
 
 #: inc/admin/options.php:209
 msgctxt "screen-reader-text"
 msgid "Third-party feature detected:"
-msgstr ""
+msgstr "Засечена е функция от трета страна:"
 
-#: inc/admin/options.php:223 inc/admin/options.php:445
+#: inc/admin/options.php:223 inc/admin/options.php:464
 msgctxt "screen-reader-text"
 msgid "Warning:"
-msgstr ""
+msgstr "Внимание:"
 
 #: inc/admin/options.php:237 inc/admin/ui/modules/tools.php:128
 msgctxt "button text"
 msgid "Download settings"
-msgstr ""
+msgstr "Настройки за сваляне"
 
 #: inc/admin/options.php:265
 msgid "<strong>JS</strong> files with Deferred Loading JavaScript"
-msgstr ""
+msgstr "<strong>JS</strong> файлове с отложено зареждане на JavaScript"
 
 #: inc/admin/options.php:318 inc/admin/ui/modules/optimization.php:428
 msgid "Add URL"
@@ -132,153 +132,165 @@ msgstr "Добавяне на URL"
 msgid "Replace site's hostname with:"
 msgstr "Заменете hostname на сайтовете с:"
 
-#: inc/admin/options.php:348 inc/admin/options.php:373
-#: inc/admin/options.php:397
+#: inc/admin/options.php:348 inc/admin/options.php:384
+#: inc/admin/options.php:412
 msgid "reserved for"
 msgstr "запазено за"
 
-#: inc/admin/options.php:350 inc/admin/options.php:375
-#: inc/admin/options.php:399
+#: inc/admin/options.php:350 inc/admin/options.php:386
+#: inc/admin/options.php:414
 msgid "All files"
 msgstr "Всички файлове"
 
-#: inc/admin/options.php:351 inc/admin/options.php:376
-#: inc/admin/options.php:400
+#: inc/admin/options.php:361 inc/admin/options.php:390
+#: inc/admin/options.php:418
 msgid "Images"
 msgstr "Изображения"
 
-#: inc/admin/options.php:412
+#: inc/admin/options.php:431
 msgid "Add CNAME"
 msgstr "Добавете CNAME"
 
-#: inc/admin/options.php:479
+#: inc/admin/options.php:498
 msgid "Watch the video"
 msgstr "Изгледайте видеото"
 
-#: inc/admin/options.php:553
+#: inc/admin/options.php:572
 msgid "Basic"
-msgstr ""
+msgstr "Основни"
 
-#: inc/admin/options.php:554
+#: inc/admin/options.php:573
 msgid "Static Files"
-msgstr ""
+msgstr "Статични файлове"
 
-#: inc/admin/options.php:555 inc/admin/ui/meta-boxes.php:72
+#: inc/admin/options.php:574 inc/admin/ui/meta-boxes.php:72
 msgid "CDN"
 msgstr "CDN"
 
-#: inc/admin/options.php:556
+#: inc/admin/options.php:575
 msgid "Advanced"
-msgstr ""
+msgstr "Разширени"
 
-#: inc/admin/options.php:557
+#: inc/admin/options.php:576
 msgid "Database"
 msgstr "База данни"
 
-#: inc/admin/options.php:558
+#: inc/admin/options.php:577
 msgid "Preload"
 msgstr "Презареждане"
 
-#: inc/admin/options.php:567 inc/admin/ui/modules/white-label.php:4
+#: inc/admin/options.php:586 inc/admin/ui/modules/white-label.php:4
 msgid "White Label"
 msgstr "Дебрандиране"
 
-#: inc/admin/options.php:569 inc/admin/ui/modules/tools.php:7
+#: inc/admin/options.php:588 inc/admin/ui/modules/tools.php:7
 msgid "Tools"
 msgstr "Инструменти"
 
-#: inc/admin/options.php:574
+#: inc/admin/options.php:593
 msgid "License"
 msgstr "Лиценз"
 
-#: inc/admin/options.php:992
-msgid "Settings imported and saved."
-msgstr "Настройките са импортнати и запазени."
-
-#: inc/admin/options.php:1008 inc/admin/options.php:1177
+#: inc/admin/options.php:992 inc/admin/options.php:1161
 msgid "Settings saved."
 msgstr "Настройките са запазени."
 
-#: inc/admin/options.php:1104
+#: inc/admin/options.php:1088
 #, php-format
 msgid "Cloudflare development mode error: %s"
-msgstr ""
+msgstr "Грешка за режим на разработчик на Cloudflare: %s"
 
-#: inc/admin/options.php:1106
+#: inc/admin/options.php:1090
 #, php-format
 msgid "Cloudflare development mode %s"
-msgstr ""
+msgstr "Режим на разработчик за Cloudflare %s"
 
-#: inc/admin/options.php:1118
+#: inc/admin/options.php:1102
 #, php-format
 msgid "Cloudflare cache level error: %s"
-msgstr ""
+msgstr "Грешка в нивото на кеша за Cloudflare: %s"
 
-#: inc/admin/options.php:1120
+#: inc/admin/options.php:1104
 #, php-format
 msgid "Cloudflare cache level set to %s"
-msgstr ""
+msgstr "Нивото на кеша за Cloudflare е зададено на %s"
 
-#: inc/admin/options.php:1128
+#: inc/admin/options.php:1112
 #, php-format
 msgid "Cloudflare minification error: %s"
-msgstr ""
+msgstr "Грешка в минификацията за Cloudflare: %s"
 
-#: inc/admin/options.php:1130
+#: inc/admin/options.php:1114
 #, php-format
 msgid "Cloudflare minification %s"
-msgstr ""
+msgstr "Минификация на Cloudflare %s"
 
-#: inc/admin/options.php:1138
+#: inc/admin/options.php:1122
 #, php-format
 msgid "Cloudflare rocket loader error: %s"
-msgstr ""
+msgstr "Грешка в rocket loader за Cloudflare: %s"
 
-#: inc/admin/options.php:1140
+#: inc/admin/options.php:1124
 #, php-format
 msgid "Cloudflare rocket loader %s"
-msgstr ""
+msgstr "Rocker loader за Cloudflare %s"
 
-#: inc/admin/options.php:1148
+#: inc/admin/options.php:1132
 #, php-format
 msgid "Cloudflare browser cache error: %s"
-msgstr ""
+msgstr "Грешка в кеша на браузера за Cloudflare: %s"
 
-#: inc/admin/options.php:1150
+#: inc/admin/options.php:1134
 #, php-format
 msgid "Cloudflare browser cache set to %s seconds"
-msgstr ""
+msgstr "Кеша на браузера за Cloudflare е зададено на %s секунди"
 
-#: inc/admin/options.php:1289
+#: inc/admin/options.php:1273
 msgid ""
 "Before you can upload your import file, you will need to fix the following "
 "error:"
 msgstr "Преди да можете да качите и импортнете файла, Вие трябва да решите следната грешка:"
 
-#: inc/admin/options.php:1296
+#: inc/admin/options.php:1280
 #, php-format
 msgid "Choose a file from your computer (maximum size: %s)"
-msgstr ""
+msgstr "Изберете файл от Вашият компютър (максимален размер: %s )"
 
-#: inc/admin/options.php:1299
+#: inc/admin/options.php:1283
 msgid "Upload file and import settings"
 msgstr "Качване на файла и импортване на настройките"
 
+#: inc/admin/options.php:1346
+msgid "Settings import failed: no file uploaded."
+msgstr "Импортиране на настройките са провалени: няма качен файл."
+
+#: inc/admin/options.php:1351
+msgid "Settings import failed: incorrect filename."
+msgstr "Настройките за импортиране са провалени: некоректно име на файл."
+
+#: inc/admin/options.php:1360
+msgid "Settings import failed: incorrect filetype."
+msgstr "Настройките за импортиране са провалени: некорекетн тип на файла."
+
+#: inc/admin/options.php:1392
+msgid "Settings imported and saved."
+msgstr "Настройките са импортнати и запазени."
+
 #: inc/admin/ui/enqueue.php:20
 msgid "If there are any display errors we recommend to disable the option."
-msgstr ""
+msgstr "Ако се покажат някакви грешки, ние препоръчваме да се забрани тази опция."
 
 #: inc/admin/ui/enqueue.php:20
 msgid ""
 "If there are any display errors we recommend following our documentation: "
-msgstr ""
+msgstr "Ако се покажат някакви грешки ние препоръчваме да проследите нашата документация:"
 
 #: inc/admin/ui/enqueue.php:20
 #, php-format
 msgid ""
 "You can also <a href=\"%s\">contact our support</a> if you need help with "
 "this feature."
-msgstr ""
+msgstr "Вие можете също да <a href=\"%s\">се свържете с нашата подръжка</a> ако имате нужда от помощ с тази функция."
 
 #: inc/admin/ui/enqueue.php:24
 msgid "Are you sure?"
@@ -290,7 +302,7 @@ msgstr "Всички полета са задължителни!"
 
 #: inc/admin/ui/enqueue.php:27
 msgid "Cloudflare Settings"
-msgstr ""
+msgstr "Cloudflare настройки"
 
 #: inc/admin/ui/enqueue.php:28
 msgid "Click \"Save Changes\" to activate the Cloudflare tab."
@@ -298,7 +310,7 @@ msgstr "Натиснете \"Запамети настройките\" за да
 
 #: inc/admin/ui/enqueue.php:30
 msgid "Transmitting your message …"
-msgstr ""
+msgstr "Вашето съобщение се предава ..."
 
 #: inc/admin/ui/enqueue.php:33
 msgid "Unable to transmit"
@@ -333,24 +345,24 @@ msgstr "Трансмисията е получена!"
 
 #: inc/admin/ui/enqueue.php:41
 msgid "We have received your ticket and will reply back within a few hours!"
-msgstr ""
+msgstr "Ние получихме Вашият тикет и ще Ви върнем отговор до няколко часа!"
 
 #: inc/admin/ui/enqueue.php:41
 msgid ""
 "We answer every ticket, so please check your spam folder if you do not hear "
 "from us."
-msgstr ""
+msgstr "Ние отговаряме на всеки тикет, така че моля прегледайте Вашата спам папка, ако не чуете нищо от нас."
 
 #: inc/admin/ui/enqueue.php:43
 msgid "Oh dear, someone’s been naughty…"
-msgstr ""
+msgstr "Ох, някой е бил палав..."
 
 #: inc/admin/ui/enqueue.php:44
 msgid ""
 "Well, well, looks like you have got yourself a \"nulled\" version! We don’t "
 "provide support to crackers or pirates, so you will need a valid license to "
 "proceed."
-msgstr ""
+msgstr "Така, така, изглежда Вие имате \"нулирана\" версия! Ние не предоставяме поддръжка за кракери или пирати, така че трябва да имате валиден лиценз за да продължите."
 
 #: inc/admin/ui/enqueue.php:44
 #, php-format
@@ -364,13 +376,13 @@ msgstr "Купете сега!"
 
 #: inc/admin/ui/enqueue.php:47
 msgid "Uh-oh, you’re out of fuel!"
-msgstr ""
+msgstr "Ъх-ох, свършва Ви горивото!"
 
 #: inc/admin/ui/enqueue.php:48
 msgid ""
 "To keep your Rocket running with access to support, <strong>you will need to"
 " renew your license</strong>."
-msgstr ""
+msgstr "За да запазите Вашият Rocket с достъп до поддръжката, <strong>Вие трябва да подновите лиценза си</strong>."
 
 #: inc/admin/ui/enqueue.php:48
 msgid ""
@@ -402,7 +414,7 @@ msgstr "Опции на кеша"
 
 #: inc/admin/ui/meta-boxes.php:60
 msgid "Never cache this page"
-msgstr ""
+msgstr "Никога да не се кешира тази страница"
 
 #: inc/admin/ui/meta-boxes.php:64
 msgid "Activate these options on this post:"
@@ -410,31 +422,31 @@ msgstr "Активирайте тези опции за тази публика�
 
 #: inc/admin/ui/meta-boxes.php:67
 msgid "LazyLoad for images"
-msgstr ""
+msgstr "LazyLoad за изображенията"
 
 #: inc/admin/ui/meta-boxes.php:68
 msgid "LazyLoad for iframes/videos"
-msgstr ""
+msgstr "LazyLoad за iframes/видеа"
 
 #: inc/admin/ui/meta-boxes.php:69
 msgid "Minify/combine HTML"
-msgstr ""
+msgstr "Минифициране/комбиниране на HTML"
 
 #: inc/admin/ui/meta-boxes.php:70
 msgid "Minify/combine CSS"
-msgstr ""
+msgstr "Минифициране/комбиниране на CSS"
 
 #: inc/admin/ui/meta-boxes.php:71
 msgid "Minify/combine JS"
-msgstr ""
+msgstr "Минифициране/комбиниране на JS"
 
 #: inc/admin/ui/meta-boxes.php:73
 msgid "Async CSS"
-msgstr ""
+msgstr "Async CSS"
 
 #: inc/admin/ui/meta-boxes.php:74
 msgid "Defer JS"
-msgstr ""
+msgstr "Отлагане на JS"
 
 #: inc/admin/ui/meta-boxes.php:79
 #, php-format
@@ -445,7 +457,7 @@ msgstr "Активирайте първо %s опция."
 msgid ""
 "<strong>Note:</strong> None of these options will be applied if this post "
 "has been excluded from cache in the global cache settings."
-msgstr ""
+msgstr "<strong>Забележка:</strong> Никоя от тези опции няма да бъде приложена, ако тази публикация бъде премахната от кеша в глобалните настройки на кеша."
 
 #: inc/admin/ui/modules/advanced.php:7
 msgid "Advanced options"
@@ -457,78 +469,78 @@ msgid ""
 "automatically.<br>Read the <a href=\"http://docs.wp-rocket.me/article/78"
 "-how-often-is-the-cache-updated\" target=\"_blank\">documentation on "
 "automatic cache management</a> to better understand how caching works."
-msgstr ""
+msgstr "Тези настройки са за разширен мениджмънт на кеша. Самия кеш работи автоматично.<br>Прочетете<a href=\"http://docs.wp-rocket.me/article/78-how-often-is-the-cache-updated\" target=\"_blank\">документацията за автоматичния мениджмънт на кеша</a> за по-добро разбиране как действа кеша."
 
 #: inc/admin/ui/modules/advanced.php:42
 msgid ""
 "Specify URLs of pages or posts that should never get cached (one per line)"
-msgstr ""
+msgstr "Посочете URL-и на страници или публикации, които никога няма да се кешират (по една на ред)"
 
 #: inc/admin/ui/modules/advanced.php:47 inc/admin/ui/modules/advanced.php:104
 msgid "Never cache (URLs):"
-msgstr ""
+msgstr "Никога да не се кешират (URL-и):"
 
 #: inc/admin/ui/modules/advanced.php:60
 msgctxt "plugin name"
 msgid "WooCommerce"
-msgstr ""
+msgstr "WooCommerce"
 
 #: inc/admin/ui/modules/advanced.php:64
 msgctxt "plugin name"
 msgid "Easy Digital Downloads"
-msgstr ""
+msgstr "Easy Digital Downloads"
 
 #: inc/admin/ui/modules/advanced.php:68
 msgctxt "plugin name"
 msgid "iThemes Exchange"
-msgstr ""
+msgstr "iThemes Exchange"
 
 #: inc/admin/ui/modules/advanced.php:72
 msgctxt "plugin name"
 msgid "Jigoshop"
-msgstr ""
+msgstr "Jigoshop"
 
 #: inc/admin/ui/modules/advanced.php:76
 msgctxt "plugin name"
 msgid "WP-Shop"
-msgstr ""
+msgstr "WP-Shop"
 
 #: inc/admin/ui/modules/advanced.php:85
 #, php-format
 msgid ""
 "Cart and checkout pages set in <strong>%s</strong> will be detected and "
 "never cached by default. No need to enter them here."
-msgstr ""
+msgstr "Страниците на количката и плащането зададени в <strong>%s</strong> ще се засичат и никога няма да бъдат кеширани по подразбиране. Няма нужда да се въвеждат тук."
 
 #: inc/admin/ui/modules/advanced.php:97 inc/admin/ui/modules/advanced.php:191
 #, php-format
 msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use %s "
 "wildcards to address multiple URLs under a given path."
-msgstr ""
+msgstr "Домейна част от URL ще бъде премахнат автоматично.<br>Използвайте %s ще се замести със символи до адрес с много URL-и под посочения път."
 
 #: inc/admin/ui/modules/advanced.php:116
 msgid "Never cache (cookies):"
-msgstr ""
+msgstr "Никога да не се кешират (кукита):"
 
 #: inc/admin/ui/modules/advanced.php:124
 msgid ""
 "Specify the IDs of cookies that, when set in the visitor’s browser, should "
 "prevent a page from getting cached (one per line)"
-msgstr ""
+msgstr "Уточнете ID-та на кукита, които са зададени в браузера на посетителя и трябва да се предостврати кеширането за тях (по една на ре)"
 
 #: inc/admin/ui/modules/advanced.php:129
 msgid "Never cache pages when these cookies are present:"
-msgstr ""
+msgstr "Никога да не се кешират страници, когато тези кукита се презентират:"
 
 #: inc/admin/ui/modules/advanced.php:139
 msgid "Never cache (user agents):"
-msgstr ""
+msgstr "Никога да не се кешира (потребителски агенти):"
 
 #: inc/admin/ui/modules/advanced.php:147
 msgid ""
 "Specify user agent strings that should never see cached pages (one per line)"
-msgstr ""
+msgstr "Уточнете потребителските агенти, които никога няма да виждат кеширани страници (една на ред)"
 
 #: inc/admin/ui/modules/advanced.php:152
 msgid "Never send cache pages for these user agents:"
@@ -539,46 +551,46 @@ msgstr "Никога да не се изпращат кешираните стр
 msgid ""
 "Use %1$s wildcards to <a href=\"%2$s\" target=\"_blank\">detect parts of UA "
 "strings</a>."
-msgstr ""
+msgstr "Използвайте %1$s заместващи симполи за да <a href=\"%2$s\" target=\"_blank\">засечете части от UA символи</a>."
 
 #: inc/admin/ui/modules/advanced.php:172
 msgid "Always purge (URLs):"
-msgstr ""
+msgstr "Винаги да се изчистват (URL-и):"
 
 #: inc/admin/ui/modules/advanced.php:180
 msgid ""
 "Specify URLs you always want purged from cache whenever you update any post "
 "or page (one per line)"
-msgstr ""
+msgstr "Уточнете URL-и, които винаги искате да се изчистват от кеша независимо дали да обновите публикация или страница (една на ред)"
 
 #: inc/admin/ui/modules/advanced.php:185
 msgid "Always purge these URLs from cache when updating any post or page:"
-msgstr ""
+msgstr "Винаги да се изчистват тези URL-и от кеша, когато се обновява някоя публикация или страница:"
 
 #: inc/admin/ui/modules/advanced.php:203
 msgid "Cache query strings:"
-msgstr ""
+msgstr "Кеширане на query strings:"
 
 #: inc/admin/ui/modules/advanced.php:211
 msgid "Specify query strings for caching (one per line)"
-msgstr ""
+msgstr "Уточнете query strings за кеширане (една на страница)"
 
 #: inc/admin/ui/modules/advanced.php:216
 msgid "Force caching for URLs with these query strings (GET parameters):"
-msgstr ""
+msgstr "Принудително кеширане за URL-и с тези query strings (GET параметри):"
 
 #: inc/admin/ui/modules/advanced.php:221
 msgid ""
 "Cache for query strings enables you to force caching for specific GET "
 "parameters."
-msgstr ""
+msgstr "Кеширане за query strings Ви разрешава да кеширате принугително специфични GET параметри."
 
 #: inc/admin/ui/modules/advanced.php:221
 msgid ""
 "<a href=\"http://docs.wp-rocket.me/article/971-caching-query-strings\" "
 "target=\"_blank\">Cache for query strings</a> enables you to force caching "
 "for specific GET parameters."
-msgstr ""
+msgstr "<a href=\"http://docs.wp-rocket.me/article/971-caching-query-strings\" target=\"_blank\">Кеш за query strings</a> разрешава Ви да принудите кеширането за специфични GET параметри."
 
 #: inc/admin/ui/modules/api-key.php:7
 msgid "License validation"
@@ -591,15 +603,15 @@ msgid ""
 "validation\" target=\"_blank\">this tutorial</a>, or contact <a href=\"https"
 "://wp-rocket.me/support/\" target=\"_blank\">support</a> to get this engine "
 "started."
-msgstr ""
+msgstr "WP Rocket не може автоматично да валидира Вашият лиценз.<br>Следвайте <a href=\"http://docs.wp-rocket.me/article/100-resolving-problems-with-license-validation\" target=\"_blank\">този урок</a>, или се свържете с <a href=\"https://wp-rocket.me/support/\" target=\"_blank\">поддръжката</a> за да направите двигателя да работи."
 
 #: inc/admin/ui/modules/api-key.php:39 inc/admin/ui/modules/api-key.php:47
 msgid "API key"
-msgstr ""
+msgstr "API ключ"
 
 #: inc/admin/ui/modules/api-key.php:59 inc/admin/ui/modules/api-key.php:67
 msgid "Email address"
-msgstr ""
+msgstr "Email адрес"
 
 #: inc/admin/ui/modules/basic.php:7
 msgid "Basic options"
@@ -611,51 +623,51 @@ msgid ""
 "fast!<br>How about <a href=\"https://wp-rocket.me/blog/correctly-measure-"
 "websites-page-load-time/\" target=\"_blank\">testing your loading time</a>? "
 "Maybe you don’t even need to configure all these options."
-msgstr ""
+msgstr "Кеширането е било активирано автоматично, Вашият сайт трябва да се зарежда бързо!<br> Защо не <a href=\"https://wp-rocket.me/blog/correctly-measure-websites-page-load-time/\" target=\"_blank\">тествате Вашето време за зареждане </a>? Може би Вие даже няма нужда да конфигурирате тези опции."
 
 #: inc/admin/ui/modules/basic.php:46 inc/admin/ui/modules/optimization.php:73
 #: inc/admin/ui/modules/optimization.php:139
 #: inc/admin/ui/modules/optimization.php:305
 #, php-format
 msgid "Deactivate if you notice any visually broken items on your website.%s"
-msgstr ""
+msgstr "Деактивирайте, ако забележите някакъв визуален проблем със Вашият сайт. %s"
 
 #: inc/admin/ui/modules/basic.php:47
 msgid ""
 "<a href=\"http://docs.wp-rocket.me/article/278-common-issues-with-lazyload\""
 " target=\"_blank\">Why?</a>"
-msgstr ""
+msgstr "<a href=\"http://docs.wp-rocket.me/article/278-common-issues-with-lazyload\" target=\"_blank\">Защо?</a>"
 
 #: inc/admin/ui/modules/basic.php:54
 msgid "Enable for images"
-msgstr ""
+msgstr "Разрешаване за изображения"
 
 #: inc/admin/ui/modules/basic.php:56
 msgid "Enable LazyLoad for images"
-msgstr ""
+msgstr "Разрешаване на LazyLoad за изображения"
 
 #: inc/admin/ui/modules/basic.php:60
 msgid "Enable for iframes and videos"
-msgstr ""
+msgstr "Разрешаване за iframes и видеа"
 
 #: inc/admin/ui/modules/basic.php:62
 msgid "Enable LazyLoad for iframes and videos"
-msgstr ""
+msgstr "Разрешете LazyLoad за iframes и видеа"
 
 #: inc/admin/ui/modules/basic.php:67 inc/admin/ui/modules/basic.php:196
 #: inc/admin/ui/modules/optimization.php:183
 msgid "Reduces the number of HTTP requests, can improve loading time."
-msgstr ""
+msgstr "Намаляването на броя на HTTP заявките може да подобри времето за зареждане."
 
 #: inc/admin/ui/modules/basic.php:72
 msgid ""
 "Images, iframes, and videos will be loaded only as they enter (or are about "
 "to enter) the viewport."
-msgstr ""
+msgstr "Изображенията, iframes, и видеата ще бъдат зареждани само когато влязат (или малко преди да влязат) в точката на видимост."
 
 #: inc/admin/ui/modules/basic.php:77
 msgid "LazyLoad:"
-msgstr ""
+msgstr "LazyLoad:"
 
 #: inc/admin/ui/modules/basic.php:89 inc/admin/ui/modules/basic.php:98
 msgid "Mobile cache:"
@@ -663,49 +675,49 @@ msgstr "Мобилен кеш:"
 
 #: inc/admin/ui/modules/basic.php:96
 msgid "Enable caching for mobile devices"
-msgstr ""
+msgstr "Разрешаване на кеширането за мобилни устройства"
 
 #: inc/admin/ui/modules/basic.php:105
 msgid "Makes your website mobile-friendlier."
-msgstr ""
+msgstr "Направете Вашият уебсайт мобилно-ориентиран."
 
 #: inc/admin/ui/modules/basic.php:110
 msgid "Separate cache files for mobile devices"
-msgstr ""
+msgstr "Съединете кеш файловете за мобилни устройства"
 
 #: inc/admin/ui/modules/basic.php:119
 msgid ""
 "Mobile cache works safest with both options enabled. When in doubt, keep "
 "both."
-msgstr ""
+msgstr "Мобилния кеш работи безопасно с двете разрешени опции. Когато се съмнявате, задръжте и двете."
 
 #: inc/admin/ui/modules/basic.php:119
 msgid ""
 "<a href=\"http://docs.wp-rocket.me/article/708-mobile-caching\" "
 "target=\"_blank\">Mobile cache</a> works safest with both options enabled. "
 "When in doubt, keep both."
-msgstr ""
+msgstr "<a href=\"http://docs.wp-rocket.me/article/708-mobile-caching\" target=\"_blank\">Мобилен кеш</a> работи безопасно и с двете разрешени опции. Когато се съмнявате, дръжте и двете."
 
 #: inc/admin/ui/modules/basic.php:129 inc/admin/ui/modules/basic.php:139
 msgid "User cache:"
-msgstr ""
+msgstr "Потребителски кеш:"
 
 #: inc/admin/ui/modules/basic.php:137
 msgid "Enable caching for logged-in WordPress users"
-msgstr ""
+msgstr "Разрешаване на кеширането за вписани в WordPress потребители"
 
 #: inc/admin/ui/modules/basic.php:144
 msgid ""
 "User cache is great when you have user-specific or restricted content on "
 "your website."
-msgstr ""
+msgstr "Потребителския кеш е страхотен, когато Вие имате специфично за потребител или ограничено съдържание на Вашият уебсайт."
 
 #: inc/admin/ui/modules/basic.php:144
 msgid ""
 "<a href=\"http://docs.wp-rocket.me/article/313-logged-in-user-cache\" "
 "target=\"_blank\">User cache</a> is great when you have user-specific or "
 "restricted content on your website."
-msgstr ""
+msgstr "<a href=\"http://docs.wp-rocket.me/article/313-logged-in-user-cache\" target=\"_blank\">Потребителски кеш</a> е страхотен, когато Вие имате потребителско специфично или ограничено съдържание на Вашият уебсайт."
 
 #: inc/admin/ui/modules/basic.php:154 inc/admin/ui/modules/basic.php:163
 msgid "SSL cache:"
@@ -713,36 +725,36 @@ msgstr "SSL кеш:"
 
 #: inc/admin/ui/modules/basic.php:161
 msgid "Enable caching for pages with <code>https://</code>"
-msgstr ""
+msgstr "Разрешаване на кеширането за страници с <code>https://</code>"
 
 #: inc/admin/ui/modules/basic.php:171
 msgid "SSL cache works best when your entire website runs on HTTPS."
-msgstr ""
+msgstr "SSL кеширането работи най-добре, когато Вашият сайт изцяло работи на HTTPS."
 
 #: inc/admin/ui/modules/basic.php:171
 msgid ""
 "<a href=\"http://docs.wp-rocket.me/article/314-using-ssl-with-wp-rocket\" "
 "target=\"_blank\">SSL cache</a> works best when your entire website runs on "
 "HTTPS."
-msgstr ""
+msgstr "<a href=\"http://docs.wp-rocket.me/article/314-using-ssl-with-wp-rocket\" target=\"_blank\">SSL кешът</a> работи най-добре, когато Вашият сайт работи изцяло на HTTPS."
 
 #: inc/admin/ui/modules/basic.php:181 inc/admin/ui/modules/basic.php:190
 msgid "Emoji cache:"
-msgstr ""
+msgstr "Emoji кеш:"
 
 #: inc/admin/ui/modules/basic.php:188
 msgid ""
 "Use default emoji of visitors’ browser instead of loading emoji from "
 "WordPress.org"
-msgstr ""
+msgstr "Използвайте emoji по подразбиране за потребителски браузер вместо зареждането на emoji от WordPress.org"
 
 #: inc/admin/ui/modules/basic.php:206 inc/admin/ui/modules/basic.php:215
 msgid "Embeds:"
-msgstr ""
+msgstr "Вграждания:"
 
 #: inc/admin/ui/modules/basic.php:213
 msgid "Disable WordPress Embeds"
-msgstr ""
+msgstr "Забраняване на WordPress вграждания"
 
 #: inc/admin/ui/modules/basic.php:220
 msgid ""
@@ -751,15 +763,15 @@ msgid ""
 " requests related to <a "
 "href=\"https://wordpress.org/news/2015/12/clifford/\" "
 "target=\"_blank\">WordPress Embeds</a>."
-msgstr ""
+msgstr "Предотвратява вграждането на съдържание от други потребители на Вашия сайт, предотвратява да вграждате съдържание от други (който не са в бяла листа) сайтове, и премахва JavaScript заявки свързани с <a href=\"https://wordpress.org/news/2015/12/clifford/\" target=\"_blank\">WordPress вграждания</a>."
 
 #: inc/admin/ui/modules/basic.php:232
 msgid "Specify time after which the global cache gets cleared (0 = unlimited)"
-msgstr ""
+msgstr "Посочете време след което глобалния кеш ще се изтрива (0 = без лимит)"
 
 #: inc/admin/ui/modules/basic.php:237
 msgid "Clear cache after …"
-msgstr ""
+msgstr "Изчистете кеша след ..."
 
 #: inc/admin/ui/modules/basic.php:243
 msgid "Unit of time"
@@ -783,30 +795,30 @@ msgid ""
 "Cache lifespan is the period of time after which all cache files get "
 "removed. Enable <a href=\"%s\">Preloading</a> for the cache to be rebuilt "
 "automatically after lifespan expiration."
-msgstr ""
+msgstr "Продължителност на живота на кеша е времето след което всички кеш файлове ще се изтрият. Разрешете <a href=\"%s\">Презареждане</a> за кеша за да се възстанови автоматично след, като изтече продължителността на живота."
 
 #: inc/admin/ui/modules/basic.php:267
 #, php-format
 msgid ""
 "Reduce lifespan to 10 hours or less if you notice issues that seem to appear"
 " periodically.%s"
-msgstr ""
+msgstr "Намалете продължителността на живота на 10 часа или по-малко, ако забележите проблеми, които се появяват периодично.%s"
 
 #: inc/admin/ui/modules/basic.php:268
 msgid ""
 "<a href=\"http://docs.wp-rocket.me/article/975-nonces-and-cache-lifespan\" "
 "target=\"_blank\">Why?</a>"
-msgstr ""
+msgstr "<a href=\"http://docs.wp-rocket.me/article/975-nonces-and-cache-lifespan\" target=\"_blank\">Защо?</a>"
 
 #: inc/admin/ui/modules/basic.php:276
 msgid ""
 "Increase lifespan to a few hours if you notice server issues with this "
 "setting."
-msgstr ""
+msgstr "Увеличете продължителността на живот на 10 часа, ако забележите проблеми със сървъра с тези настройки."
 
 #: inc/admin/ui/modules/basic.php:282
 msgid "Cache lifespan:"
-msgstr ""
+msgstr "Продължителност на живота на кеша:"
 
 #: inc/admin/ui/modules/cdn.php:7
 msgid "Content Delivery Network options"
@@ -818,11 +830,11 @@ msgid ""
 "5.6 or greater and therefore is not available for you currently. We "
 "recommend you contact your web host in order to upgrade to a PHP 5.6 or "
 "greater."
-msgstr ""
+msgstr "Вашата PHP версия е по-малка от 5.4. Интеграцията на Cloudflare изисква PHP 5.6 или по-голяма и за това не е на лице за Вас. Ние препоръчваме да се свържете с Вашият уеб хостинг доставчик за да ъпгрейдне на PHP 5.6 или по-голяма."
 
 #: inc/admin/ui/modules/cdn.php:30
 msgid "Show Cloudflare settings tab"
-msgstr ""
+msgstr "Моказване на таба с настройките за Cloudflare"
 
 #: inc/admin/ui/modules/cdn.php:61
 #, php-format
@@ -832,21 +844,21 @@ msgid ""
 "documentation on <a href=\"http://docs.wp-rocket.me/article/18-using-wp-"
 "rocket-with-cloudflare\" target=\"_blank\">using WP Rocket with "
 "Cloudflare</a>."
-msgstr ""
+msgstr "Отидете на <a href=\"%s\">Cloudflare таба</a> за да редактирате настройките на Cloudflare. CDN настройките отдолу не са приложими за Cloudlare.<br>Прочетете документацията за <a href=\"http://docs.wp-rocket.me/article/18-using-wp-rocket-with-cloudflare\" target=\"_blank\">използване на WP Rocket с Cloudflare</a>."
 
-#: inc/admin/ui/modules/cdn.php:73 inc/admin/ui/modules/cdn.php:82
+#: inc/admin/ui/modules/cdn.php:71
+msgid "Enable Content Delivery Network"
+msgstr "Разрешаване на Мрежата за Доставка на Съдържание"
+
+#: inc/admin/ui/modules/cdn.php:73 inc/admin/ui/modules/cdn.php:108
 msgid "CDN:"
 msgstr "CDN:"
-
-#: inc/admin/ui/modules/cdn.php:80
-msgid "Enable Content Delivery Network"
-msgstr ""
 
 #: inc/admin/ui/modules/cdn.php:88
 msgid ""
 "All URLs of static files (CSS, JS, images) will be rewritten to the CNAME(s)"
 " entered below."
-msgstr ""
+msgstr "Всички URL-и за статични файлове (CSS, JS, изображения) ще се пренапишат в CNAME(s) въведени отдолу."
 
 #: inc/admin/ui/modules/cdn.php:90
 msgid ""
@@ -856,34 +868,40 @@ msgid ""
 " Rocket with a CDN</a>."
 msgstr ""
 
-#: inc/admin/ui/modules/cdn.php:100
+#: inc/admin/ui/modules/cdn.php:99
+msgid ""
+"CDN is disabled because you are using WP Offload S3 and the assets addon to "
+"serve your images, CSS & JS files."
+msgstr ""
+
+#: inc/admin/ui/modules/cdn.php:120
 msgid "CDN CNAME(S):"
-msgstr ""
+msgstr "CDN CNAME(S):"
 
-#: inc/admin/ui/modules/cdn.php:111 inc/admin/ui/modules/cdn.php:120
+#: inc/admin/ui/modules/cdn.php:131 inc/admin/ui/modules/cdn.php:140
 msgid "CDN without SSL:"
-msgstr ""
+msgstr "CDN без SSL:"
 
-#: inc/admin/ui/modules/cdn.php:118
+#: inc/admin/ui/modules/cdn.php:138
 msgid "Disable CDN functionality on HTTPS pages"
 msgstr ""
 
-#: inc/admin/ui/modules/cdn.php:124
+#: inc/admin/ui/modules/cdn.php:144
 msgid ""
 "If your CDN account does not fully support SSL, you can disable URL "
 "rewriting on HTTPS pages here."
 msgstr ""
 
-#: inc/admin/ui/modules/cdn.php:130 inc/admin/ui/modules/cdn.php:143
+#: inc/admin/ui/modules/cdn.php:150 inc/admin/ui/modules/cdn.php:163
 msgid "Exclude files:"
-msgstr ""
+msgstr "Изключени файлове:"
 
-#: inc/admin/ui/modules/cdn.php:138
+#: inc/admin/ui/modules/cdn.php:158
 msgid ""
 "Specify URL(s) of files that should not get served via CDN (one per line)"
 msgstr ""
 
-#: inc/admin/ui/modules/cdn.php:150
+#: inc/admin/ui/modules/cdn.php:170
 #, php-format
 msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use %s "
@@ -894,7 +912,7 @@ msgstr ""
 #: inc/admin/ui/modules/cloudflare.php:11
 msgctxt "Cloudflare"
 msgid "Account email:"
-msgstr ""
+msgstr "Email за акаунта:"
 
 #: inc/admin/ui/modules/cloudflare.php:18
 msgid "Enter the email address of your Cloudflare account"
@@ -910,31 +928,31 @@ msgstr ""
 
 #: inc/admin/ui/modules/cloudflare.php:43
 msgid "Global API key"
-msgstr ""
+msgstr "Глобален API ключ"
 
 #: inc/admin/ui/modules/cloudflare.php:50
 #, php-format
 msgid "<a href=\"%s\" target=\"_blank\">Retrieve your API key</a>"
-msgstr ""
+msgstr "<a href=\"%s\" target=\"_blank\">Извличане на Вашият API ключ</a>"
 
 #: inc/admin/ui/modules/cloudflare.php:57
 msgctxt "Cloudflare"
 msgid "Global API key:"
-msgstr ""
+msgstr "Глобален API ключ:"
 
 #: inc/admin/ui/modules/cloudflare.php:76
 msgctxt "Cloudflare"
 msgid "Domain:"
-msgstr ""
+msgstr "Домейн:"
 
 #: inc/admin/ui/modules/cloudflare.php:84
 msgid "Cloudflare domain"
-msgstr ""
+msgstr "Cloudflare домейн"
 
 #: inc/admin/ui/modules/cloudflare.php:96
 msgctxt "Cloudflare"
 msgid "Development mode:"
-msgstr ""
+msgstr "Режим на разработчик:"
 
 #: inc/admin/ui/modules/cloudflare.php:104
 msgid "Development Mode"
@@ -964,7 +982,7 @@ msgstr ""
 #: inc/admin/ui/modules/cloudflare.php:132
 msgctxt "Cloudflare"
 msgid "Optimal settings:"
-msgstr ""
+msgstr "Оптимални настройки:"
 
 #: inc/admin/ui/modules/cloudflare.php:142
 msgid ""
@@ -975,7 +993,7 @@ msgstr ""
 #: inc/admin/ui/modules/cloudflare.php:152
 msgctxt "Cloudflare"
 msgid "Relative Protocol:"
-msgstr ""
+msgstr "Свързан протокол:"
 
 #: inc/admin/ui/modules/cloudflare.php:160
 msgid "HTTPS Protocol Rewrite"
@@ -992,11 +1010,11 @@ msgstr ""
 
 #: inc/admin/ui/modules/cloudflare.php:185
 msgid "Clear Cloudflare cache:"
-msgstr ""
+msgstr "Изчистване на Cloudflare кеша:"
 
 #: inc/admin/ui/modules/cloudflare.php:191 inc/common/admin-bar.php:155
 msgid "Clear Cloudflare cache"
-msgstr ""
+msgstr "Изчистване на Cloudflare кеша"
 
 #: inc/admin/ui/modules/cloudflare.php:196
 #, php-format
@@ -1007,7 +1025,7 @@ msgstr ""
 
 #: inc/admin/ui/modules/database.php:16
 msgid "Database Optimization"
-msgstr ""
+msgstr "Оптимизация на базата данни"
 
 #: inc/admin/ui/modules/database.php:36
 msgid ""
@@ -1017,15 +1035,15 @@ msgstr ""
 
 #: inc/admin/ui/modules/database.php:48
 msgid "Posts cleanup:"
-msgstr ""
+msgstr "Почистване на публикации:"
 
 #: inc/admin/ui/modules/database.php:55
 msgid "Revisions"
-msgstr ""
+msgstr "Ревизии"
 
 #: inc/admin/ui/modules/database.php:57
 msgid "Cleanup revisions"
-msgstr ""
+msgstr "Почистване на ревизии"
 
 #: inc/admin/ui/modules/database.php:62
 #, php-format
@@ -1036,7 +1054,7 @@ msgstr[1] ""
 
 #: inc/admin/ui/modules/database.php:66
 msgid "Auto Drafts"
-msgstr ""
+msgstr "Автоматични чернови"
 
 #: inc/admin/ui/modules/database.php:68
 msgid "Cleanup auto drafts"
@@ -1173,23 +1191,23 @@ msgstr ""
 
 #: inc/admin/ui/modules/database.php:206
 msgid "Daily"
-msgstr ""
+msgstr "Дневно"
 
 #: inc/admin/ui/modules/database.php:207
 msgid "Weekly"
-msgstr ""
+msgstr "Седмично"
 
 #: inc/admin/ui/modules/database.php:208
 msgid "Monthly"
-msgstr ""
+msgstr "Месечно"
 
 #: inc/admin/ui/modules/database.php:215
 msgid "Save Changes"
-msgstr ""
+msgstr "Запазете промените"
 
 #: inc/admin/ui/modules/database.php:230
 msgid "Run cleanup:"
-msgstr ""
+msgstr "Стартиране на почистване:"
 
 #: inc/admin/ui/modules/database.php:243
 #, php-format
@@ -1200,7 +1218,7 @@ msgstr ""
 
 #: inc/admin/ui/modules/optimization.php:7
 msgid "Files optimization"
-msgstr ""
+msgstr "Оптимизация на файлове"
 
 #: inc/admin/ui/modules/optimization.php:27
 msgid ""
@@ -1224,19 +1242,19 @@ msgstr ""
 msgid ""
 "<a href=\"http://docs.wp-rocket.me/article/19-resolving-issues-with-"
 "minification\" target=\"_blank\">Why?</a>"
-msgstr ""
+msgstr "<a href=\"http://docs.wp-rocket.me/article/19-resolving-issues-with-minification\" target=\"_blank\">Защо?</a>"
 
 #: inc/admin/ui/modules/optimization.php:83
 msgid "Minify HTML files"
-msgstr ""
+msgstr "Минифициране на HTML файлове"
 
 #: inc/admin/ui/modules/optimization.php:90
 msgid "Minify CSS files"
-msgstr ""
+msgstr "Минифициране на CSS файлове"
 
 #: inc/admin/ui/modules/optimization.php:97
 msgid "Minify JS files"
-msgstr ""
+msgstr "Минифициране на JS файлове"
 
 #: inc/admin/ui/modules/optimization.php:104
 msgid "Reduces file size, can improve loading time."
@@ -1250,7 +1268,7 @@ msgstr ""
 
 #: inc/admin/ui/modules/optimization.php:114
 msgid "Minify files:"
-msgstr ""
+msgstr "Минифицирани файлове:"
 
 #: inc/admin/ui/modules/optimization.php:150
 msgid "Concatenate Google Fonts"
@@ -1630,7 +1648,8 @@ msgstr "Описание:"
 #: inc/admin/ui/modules/support.php:64
 msgid ""
 "<strong>Now be specific!</strong><br>We have pre-filled the form with some "
-"questions for you to phrase your description along."
+"questions for you to phrase your description along.<br>We speak English, "
+"French, German, Italian, Serbian, and Spanish."
 msgstr ""
 
 #: inc/admin/ui/modules/support.php:69
@@ -1967,7 +1986,7 @@ msgstr ""
 
 #: inc/admin/ui/notices.php:586
 msgid "More details"
-msgstr ""
+msgstr "Повече детайли"
 
 #: inc/admin/updater.php:65 inc/admin/updater.php:72
 #, php-format
@@ -2001,11 +2020,11 @@ msgstr "%s изчистване"
 
 #: inc/common/cron.php:32
 msgid "weekly"
-msgstr ""
+msgstr "седмично"
 
 #: inc/common/cron.php:38
 msgid "monthly"
-msgstr ""
+msgstr "месечно"
 
 #: inc/common/purge.php:549
 #, php-format
@@ -2043,23 +2062,23 @@ msgstr ""
 msgid "No domain available in your Cloudflare account"
 msgstr ""
 
-#: inc/functions/options.php:598
+#: inc/functions/options.php:601
 msgid "Your license is not valid."
 msgstr "Вашият лиценз не е валиден."
 
-#: inc/functions/options.php:599
+#: inc/functions/options.php:602
 msgid "You cannot add more websites. Upgrade your account."
 msgstr "Вие не можете да добавяте повече уебсайта. Ъпгрейднете Вашият акаунт."
 
-#: inc/functions/options.php:600
+#: inc/functions/options.php:603
 msgid "This website is not allowed."
 msgstr "Този уебсайт не е позволен."
 
-#: inc/functions/options.php:601
+#: inc/functions/options.php:604
 msgid "This license key is not accepted."
 msgstr "Този лицензен ключ не е приет."
 
 #: inc/vendors/wp-background-process.php:425
 #, php-format
 msgid "Every %d Minutes"
-msgstr ""
+msgstr "Всяка %d Минута"
