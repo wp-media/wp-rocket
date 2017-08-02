@@ -1,14 +1,15 @@
 # Copyright (C) 2016 WP Rocket
 # This file is distributed under the same license as the WP Rocket package.
 # Translators:
+# m615926 <m615926@gmail.com>, 2017
 # Pseric Lin (Pseric) <pserics@gmail.com>, 2016
 # Pseric Lin (Pseric) <pserics@gmail.com>, 2015-2016
 msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2017-06-13 11:41-0400\n"
-"PO-Revision-Date: 2017-06-21 06:37+0000\n"
+"POT-Creation-Date: 2017-07-27 12:16-0400\n"
+"PO-Revision-Date: 2017-07-28 02:21+0000\n"
 "Last-Translator: m615926 <m615926@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/wp-media/wp-rocket/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -16,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: zh_TW\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 1.8.9\n"
+"X-Generator: Poedit 1.8.11\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -25,7 +26,7 @@ msgstr ""
 
 #: inc/3rd-party/all-in-one-seo-pack.php:77
 msgid "All in One SEO XML sitemap"
-msgstr "All in One SEO XML sitemap"
+msgstr "All in One SEO XML 網站地圖"
 
 #: inc/3rd-party/all-in-one-seo-pack.php:79 inc/3rd-party/yoast-seo.php:79
 #, php-format
@@ -52,7 +53,7 @@ msgstr "從 Jetpack 預先載入網站地圖"
 msgid "Yoast SEO XML sitemap"
 msgstr "Yoast SEO XML 網站地圖"
 
-#: inc/admin/admin.php:14 inc/admin/options.php:571
+#: inc/admin/admin.php:14 inc/admin/options.php:590
 #: inc/admin/ui/modules/support.php:4 inc/common/admin-bar.php:248
 msgid "Support"
 msgstr "支援"
@@ -73,7 +74,7 @@ msgstr "設定"
 msgid "Clear this cache"
 msgstr "清除快取"
 
-#: inc/admin/admin.php:312 inc/admin/admin.php:321
+#: inc/admin/admin.php:317 inc/admin/admin.php:326
 #, php-format
 msgid "%s Update Rollback"
 msgstr "%s 更新還原"
@@ -94,7 +95,7 @@ msgstr "儲存並最佳化"
 msgid "Optimize"
 msgstr "最佳化"
 
-#: inc/admin/options.php:195 inc/admin/options.php:439
+#: inc/admin/options.php:195 inc/admin/options.php:458
 msgctxt "screen-reader-text"
 msgid "Note:"
 msgstr "注意:"
@@ -109,7 +110,7 @@ msgctxt "screen-reader-text"
 msgid "Third-party feature detected:"
 msgstr "檢測到第三方功能："
 
-#: inc/admin/options.php:223 inc/admin/options.php:445
+#: inc/admin/options.php:223 inc/admin/options.php:464
 msgctxt "screen-reader-text"
 msgid "Warning:"
 msgstr "警告："
@@ -121,7 +122,7 @@ msgstr "下載設定"
 
 #: inc/admin/options.php:265
 msgid "<strong>JS</strong> files with Deferred Loading JavaScript"
-msgstr "延遲載入<b>JavaScript</b> 檔案"
+msgstr "延遲載入<strong>JavaScript</strong> 檔案"
 
 #: inc/admin/options.php:318 inc/admin/ui/modules/optimization.php:428
 msgid "Add URL"
@@ -131,146 +132,158 @@ msgstr "新增網址"
 msgid "Replace site's hostname with:"
 msgstr "將網站網址重新設定為："
 
-#: inc/admin/options.php:348 inc/admin/options.php:373
-#: inc/admin/options.php:397
+#: inc/admin/options.php:348 inc/admin/options.php:384
+#: inc/admin/options.php:412
 msgid "reserved for"
 msgstr "套用到"
 
-#: inc/admin/options.php:350 inc/admin/options.php:375
-#: inc/admin/options.php:399
+#: inc/admin/options.php:350 inc/admin/options.php:386
+#: inc/admin/options.php:414
 msgid "All files"
 msgstr "所有檔案"
 
-#: inc/admin/options.php:351 inc/admin/options.php:376
-#: inc/admin/options.php:400
+#: inc/admin/options.php:361 inc/admin/options.php:390
+#: inc/admin/options.php:418
 msgid "Images"
 msgstr "圖片"
 
-#: inc/admin/options.php:412
+#: inc/admin/options.php:431
 msgid "Add CNAME"
 msgstr "新增 CNAME"
 
-#: inc/admin/options.php:479
+#: inc/admin/options.php:498
 msgid "Watch the video"
 msgstr "觀看影片"
 
-#: inc/admin/options.php:553
+#: inc/admin/options.php:572
 msgid "Basic"
 msgstr "基本"
 
-#: inc/admin/options.php:554
+#: inc/admin/options.php:573
 msgid "Static Files"
 msgstr "靜態資源"
 
-#: inc/admin/options.php:555 inc/admin/ui/meta-boxes.php:72
+#: inc/admin/options.php:574 inc/admin/ui/meta-boxes.php:72
 msgid "CDN"
 msgstr "CDN"
 
-#: inc/admin/options.php:556
+#: inc/admin/options.php:575
 msgid "Advanced"
 msgstr "進階"
 
-#: inc/admin/options.php:557
+#: inc/admin/options.php:576
 msgid "Database"
 msgstr "資料庫"
 
-#: inc/admin/options.php:558
+#: inc/admin/options.php:577
 msgid "Preload"
 msgstr "預先載入"
 
-#: inc/admin/options.php:567 inc/admin/ui/modules/white-label.php:4
+#: inc/admin/options.php:586 inc/admin/ui/modules/white-label.php:4
 msgid "White Label"
 msgstr "白標"
 
-#: inc/admin/options.php:569 inc/admin/ui/modules/tools.php:7
+#: inc/admin/options.php:588 inc/admin/ui/modules/tools.php:7
 msgid "Tools"
 msgstr "工具"
 
-#: inc/admin/options.php:574
+#: inc/admin/options.php:593
 msgid "License"
 msgstr "註冊碼"
 
-#: inc/admin/options.php:992
-msgid "Settings imported and saved."
-msgstr "已匯入設定並儲存。"
-
-#: inc/admin/options.php:1008 inc/admin/options.php:1177
+#: inc/admin/options.php:992 inc/admin/options.php:1161
 msgid "Settings saved."
 msgstr "設定已儲存。"
 
-#: inc/admin/options.php:1104
+#: inc/admin/options.php:1088
 #, php-format
 msgid "Cloudflare development mode error: %s"
 msgstr "CloudFlare 開發者模式錯誤: %s"
 
-#: inc/admin/options.php:1106
+#: inc/admin/options.php:1090
 #, php-format
 msgid "Cloudflare development mode %s"
 msgstr "CloudFlare 開發者模式: %s"
 
-#: inc/admin/options.php:1118
+#: inc/admin/options.php:1102
 #, php-format
 msgid "Cloudflare cache level error: %s"
 msgstr "CloudFlare 快取層級錯誤: %s"
 
-#: inc/admin/options.php:1120
+#: inc/admin/options.php:1104
 #, php-format
 msgid "Cloudflare cache level set to %s"
 msgstr "CloudFlare 快取層級設定為: %s"
 
-#: inc/admin/options.php:1128
+#: inc/admin/options.php:1112
 #, php-format
 msgid "Cloudflare minification error: %s"
 msgstr "CloudFlare 壓縮錯誤: %s"
 
-#: inc/admin/options.php:1130
+#: inc/admin/options.php:1114
 #, php-format
 msgid "Cloudflare minification %s"
 msgstr "CloudFlare 壓縮: %s"
 
-#: inc/admin/options.php:1138
+#: inc/admin/options.php:1122
 #, php-format
 msgid "Cloudflare rocket loader error: %s"
 msgstr "CloudFlare rocket loader 錯誤: %s"
 
-#: inc/admin/options.php:1140
+#: inc/admin/options.php:1124
 #, php-format
 msgid "Cloudflare rocket loader %s"
 msgstr "CloudFlare rocket loader %s"
 
-#: inc/admin/options.php:1148
+#: inc/admin/options.php:1132
 #, php-format
 msgid "Cloudflare browser cache error: %s"
 msgstr "CloudFlare 瀏覽器快取錯誤: %s"
 
-#: inc/admin/options.php:1150
+#: inc/admin/options.php:1134
 #, php-format
 msgid "Cloudflare browser cache set to %s seconds"
 msgstr "CloudFlare 瀏覽器快取設定為 %s 秒"
 
-#: inc/admin/options.php:1289
+#: inc/admin/options.php:1273
 msgid ""
 "Before you can upload your import file, you will need to fix the following "
 "error:"
 msgstr "在上傳你的設定檔前，你必須先修復以下問題："
 
-#: inc/admin/options.php:1296
+#: inc/admin/options.php:1280
 #, php-format
 msgid "Choose a file from your computer (maximum size: %s)"
 msgstr "從你的電腦選擇一個檔案 (檔案上限為 %s )"
 
-#: inc/admin/options.php:1299
+#: inc/admin/options.php:1283
 msgid "Upload file and import settings"
 msgstr "上傳檔案並匯入設定"
 
+#: inc/admin/options.php:1346
+msgid "Settings import failed: no file uploaded."
+msgstr "匯入設定錯誤：無上傳檔案"
+
+#: inc/admin/options.php:1351
+msgid "Settings import failed: incorrect filename."
+msgstr "匯入設定錯誤：不正確的檔案名稱"
+
+#: inc/admin/options.php:1360
+msgid "Settings import failed: incorrect filetype."
+msgstr "匯入設定錯誤：不正確的檔案類型"
+
+#: inc/admin/options.php:1392
+msgid "Settings imported and saved."
+msgstr "已匯入設定並儲存。"
+
 #: inc/admin/ui/enqueue.php:20
 msgid "If there are any display errors we recommend to disable the option."
-msgstr ""
+msgstr "萬一有出現錯誤訊息，我們建議你停用此選項。"
 
 #: inc/admin/ui/enqueue.php:20
 msgid ""
 "If there are any display errors we recommend following our documentation: "
-msgstr ""
+msgstr "萬一有出現錯誤訊息，建議參閱我們的說明文件: "
 
 #: inc/admin/ui/enqueue.php:20
 #, php-format
@@ -338,7 +351,7 @@ msgstr "我們已經收到你的來信，並將在數小時內回覆！"
 msgid ""
 "We answer every ticket, so please check your spam folder if you do not hear "
 "from us."
-msgstr ""
+msgstr "我們會回答每個支援單，如果你沒有收到回覆，請檢查你的垃圾郵件匣。"
 
 #: inc/admin/ui/enqueue.php:43
 msgid "Oh dear, someone’s been naughty…"
@@ -409,23 +422,23 @@ msgstr "在這篇文章啟用這些選項："
 
 #: inc/admin/ui/meta-boxes.php:67
 msgid "LazyLoad for images"
-msgstr ""
+msgstr "針對圖片啟用延遲載入"
 
 #: inc/admin/ui/meta-boxes.php:68
 msgid "LazyLoad for iframes/videos"
-msgstr ""
+msgstr "針對 iFrame 與影片使用延遲載入"
 
 #: inc/admin/ui/meta-boxes.php:69
 msgid "Minify/combine HTML"
-msgstr ""
+msgstr "壓縮/合併 HTML"
 
 #: inc/admin/ui/meta-boxes.php:70
 msgid "Minify/combine CSS"
-msgstr ""
+msgstr "壓縮/合併 CSS"
 
 #: inc/admin/ui/meta-boxes.php:71
 msgid "Minify/combine JS"
-msgstr ""
+msgstr "壓縮/合併 JS"
 
 #: inc/admin/ui/meta-boxes.php:73
 msgid "Async CSS"
@@ -444,7 +457,7 @@ msgstr "先啟用 %s 選項。"
 msgid ""
 "<strong>Note:</strong> None of these options will be applied if this post "
 "has been excluded from cache in the global cache settings."
-msgstr ""
+msgstr "<strong>警告：</strong>如果你將這篇文章加入「永不快取以下頁面」選項，這些選項將沒有作用 "
 
 #: inc/admin/ui/modules/advanced.php:7
 msgid "Advanced options"
@@ -617,7 +630,7 @@ msgstr "快取功能已自動啟用，你的網站應該變快囉！<br/><a href
 #: inc/admin/ui/modules/optimization.php:305
 #, php-format
 msgid "Deactivate if you notice any visually broken items on your website.%s"
-msgstr ""
+msgstr "如發現網站有異常請停用該功能。%s"
 
 #: inc/admin/ui/modules/basic.php:47
 msgid ""
@@ -750,7 +763,7 @@ msgid ""
 " requests related to <a "
 "href=\"https://wordpress.org/news/2015/12/clifford/\" "
 "target=\"_blank\">WordPress Embeds</a>."
-msgstr ""
+msgstr "預防你的網站被別人嵌入在他自己的網站，以及移除 WordPress 自動內嵌影音功能的 JavaScript。"
 
 #: inc/admin/ui/modules/basic.php:232
 msgid "Specify time after which the global cache gets cleared (0 = unlimited)"
@@ -789,7 +802,7 @@ msgstr "快取週期是指從快取產生到自動刪除的時間。啟用 <a hr
 msgid ""
 "Reduce lifespan to 10 hours or less if you notice issues that seem to appear"
 " periodically.%s"
-msgstr ""
+msgstr "如果你有注意到某些問題持續性的出現，把快取週期降低至十小時或更少。%s"
 
 #: inc/admin/ui/modules/basic.php:268
 msgid ""
@@ -801,11 +814,11 @@ msgstr "<a href=\"http://docs.wp-rocket.me/article/78-how-often-is-the-cache-upd
 msgid ""
 "Increase lifespan to a few hours if you notice server issues with this "
 "setting."
-msgstr ""
+msgstr "如果你注意到主機發生一些問題，把快取週期增加幾個小時看看。"
 
 #: inc/admin/ui/modules/basic.php:282
 msgid "Cache lifespan:"
-msgstr ""
+msgstr "快取清理週期"
 
 #: inc/admin/ui/modules/cdn.php:7
 msgid "Content Delivery Network options"
@@ -833,13 +846,13 @@ msgid ""
 "Cloudflare</a>."
 msgstr "前往 <a href=“%s”>Cloudflare 頁籤</a> 來調整 Cloudflare 的設定。下方的 CDN 設定對 Cloudflare 不會起作用。<br>前往閱讀官方文件<a href=“http://docs.wp-rocket.me/article/18-using-wp-rocket-with-cloudflare” target=“_blank”>如何在 WP Rocket 使用 Cloudflare</a>。"
 
-#: inc/admin/ui/modules/cdn.php:73 inc/admin/ui/modules/cdn.php:82
-msgid "CDN:"
-msgstr "CDN："
-
-#: inc/admin/ui/modules/cdn.php:80
+#: inc/admin/ui/modules/cdn.php:71
 msgid "Enable Content Delivery Network"
 msgstr "啟用內容傳遞網路 CDN"
+
+#: inc/admin/ui/modules/cdn.php:73 inc/admin/ui/modules/cdn.php:108
+msgid "CDN:"
+msgstr "CDN："
 
 #: inc/admin/ui/modules/cdn.php:88
 msgid ""
@@ -855,34 +868,40 @@ msgid ""
 " Rocket with a CDN</a>."
 msgstr "所有靜態資源(CSS, JS, 圖片)的網址將會被下方的 CNAME 所覆寫。<br>可以參考<a href=“http://docs.wp-rocket.me/article/42-using-wp-rocket-with-a-cdn” target=“_blank”>官方文件</a>了解如何搭配 CDN 快取。"
 
-#: inc/admin/ui/modules/cdn.php:100
+#: inc/admin/ui/modules/cdn.php:99
+msgid ""
+"CDN is disabled because you are using WP Offload S3 and the assets addon to "
+"serve your images, CSS & JS files."
+msgstr "CDN 已停用，因為你正在使用 WP Offload S3 來管理你的圖片、CSS 與 JS 檔案。"
+
+#: inc/admin/ui/modules/cdn.php:120
 msgid "CDN CNAME(S):"
 msgstr "CDN CNAME(S):"
 
-#: inc/admin/ui/modules/cdn.php:111 inc/admin/ui/modules/cdn.php:120
+#: inc/admin/ui/modules/cdn.php:131 inc/admin/ui/modules/cdn.php:140
 msgid "CDN without SSL:"
-msgstr ""
+msgstr "無加密 CDN："
 
-#: inc/admin/ui/modules/cdn.php:118
+#: inc/admin/ui/modules/cdn.php:138
 msgid "Disable CDN functionality on HTTPS pages"
 msgstr "在 HTTPS 頁面停用 CDN"
 
-#: inc/admin/ui/modules/cdn.php:124
+#: inc/admin/ui/modules/cdn.php:144
 msgid ""
 "If your CDN account does not fully support SSL, you can disable URL "
 "rewriting on HTTPS pages here."
-msgstr ""
+msgstr "萬一你使用的 CDN 服務沒有支援 SSL，可以啟用此功能來停用 HTTPS 頁面中的 CDN 功能。"
 
-#: inc/admin/ui/modules/cdn.php:130 inc/admin/ui/modules/cdn.php:143
+#: inc/admin/ui/modules/cdn.php:150 inc/admin/ui/modules/cdn.php:163
 msgid "Exclude files:"
 msgstr "排除檔案："
 
-#: inc/admin/ui/modules/cdn.php:138
+#: inc/admin/ui/modules/cdn.php:158
 msgid ""
 "Specify URL(s) of files that should not get served via CDN (one per line)"
 msgstr "指定不使用 CDN 的檔案網址。(每行一個)"
 
-#: inc/admin/ui/modules/cdn.php:150
+#: inc/admin/ui/modules/cdn.php:170
 #, php-format
 msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use %s "
@@ -1200,7 +1219,7 @@ msgid ""
 "last option(s) you had activated here. <br>Read the documentation on <a "
 "href=\"http://docs.wp-rocket.me/article/19-resolving-issues-with-"
 "minification\" target=\"_blank\">troubleshooting file optimization</a>."
-msgstr ""
+msgstr "請注意！這頁之中的選項並非適合每一個 WordPress 網站。<br>在使用時要注意是否在勾選某些項目後造成網站的錯誤或跑版。<br>可以前往官網<a href=“http://docs.wp-rocket.me/article/19-resolving-issues-with-minification” target=“_blank”>了解更多</a>以及如何排除問題。"
 
 #: inc/admin/ui/modules/optimization.php:62
 #, php-format
@@ -1249,13 +1268,13 @@ msgstr "合併 Google Fonts"
 
 #: inc/admin/ui/modules/optimization.php:156
 msgid "Concatenate CSS files"
-msgstr ""
+msgstr "合併 CSS 檔案"
 
 #: inc/admin/ui/modules/optimization.php:162
 msgid ""
 "Combine all CSS files into as few files as possible <em>(test "
 "thoroughly!)</em>"
-msgstr ""
+msgstr "盡可能合併 CSS 檔案來減少請求。<em>(測試版)</em>"
 
 #: inc/admin/ui/modules/optimization.php:164
 msgid "CSS Files concatenation"
@@ -1263,13 +1282,13 @@ msgstr "CSS 檔案合併"
 
 #: inc/admin/ui/modules/optimization.php:170
 msgid "Concatenate JS files"
-msgstr ""
+msgstr "合併 JS 檔案"
 
 #: inc/admin/ui/modules/optimization.php:176
 msgid ""
 "Combine all JavaScript files into as few files as possible <em>(test "
 "thoroughly!)</em>"
-msgstr ""
+msgstr "盡可能合併 JS 檔案來減少請求。<em>(測試版)</em>"
 
 #: inc/admin/ui/modules/optimization.php:178
 msgid "JS Files concatenation"
@@ -1359,7 +1378,7 @@ msgstr "立即為你的網站清除快取資源。 <a href=\"%s\" target=\"_blan
 msgid ""
 "Removes the version query string from static files (e.g. style.css?ver=1.0) "
 "and encodes it into the file name instead (e.g. style-1-0.css)."
-msgstr ""
+msgstr "這功能會移除檔案後方的版本號 ver 字串，像是 style.css?ver=1.0 會變成 style-1.0.css."
 
 #: inc/admin/ui/modules/optimization.php:306
 msgid ""
@@ -1515,7 +1534,7 @@ msgstr "設定每個網址抓取時間間隔"
 
 #: inc/admin/ui/modules/preload.php:81
 msgid "Set a higher value if you notice any overload on your server!"
-msgstr ""
+msgstr "如果發現主機有超載現象請把值調高些！"
 
 #: inc/admin/ui/modules/preload.php:91
 msgid "Sitemaps for preloading:"
@@ -1560,7 +1579,7 @@ msgid ""
 "activated, it gets triggered automatically after you add or update content "
 "on your website. You can also launch it manually from the upper toolbar "
 "menu, or from the Tools tab."
-msgstr ""
+msgstr "以爬蟲機器人為主的預先載入</a>應該只在性能較好的主機上使用。一但啟動，將會在更新網站內容時自動觸發。你也可以在頂部工具列手動啟用。"
 
 #: inc/admin/ui/modules/preload.php:138
 msgid ""
@@ -1569,11 +1588,11 @@ msgid ""
 "performing servers. Once activated, it gets triggered automatically after "
 "you add or update content on your website. You can also launch it manually "
 "from the upper toolbar menu, or from the Tools tab."
-msgstr ""
+msgstr "<a href=“http://docs.wp-rocket.me/article/8-how-the-cache-is-preloaded” target=“_blank”>以爬蟲機器人為主的預先載入</a>應該只在性能較好的主機上使用。一但啟動，將會在更新網站內容時自動觸發。你也可以在頂部工具列手動啟用。"
 
 #: inc/admin/ui/modules/preload.php:143
 msgid "Deactivate these options if you notice any overload on your server!"
-msgstr ""
+msgstr "如發現主機負荷過重請關閉此功能！"
 
 #: inc/admin/ui/modules/preload.php:153 inc/admin/ui/modules/preload.php:166
 msgid "Prefetch DNS requests:"
@@ -1621,8 +1640,9 @@ msgstr "內容說明："
 #: inc/admin/ui/modules/support.php:64
 msgid ""
 "<strong>Now be specific!</strong><br>We have pre-filled the form with some "
-"questions for you to phrase your description along."
-msgstr "<strong>具體描述你的問題</strong><br>我們預先設置了一些問題讓你更好進行提問。"
+"questions for you to phrase your description along.<br>We speak English, "
+"French, German, Italian, Serbian, and Spanish."
+msgstr "<strong>讓你發問更精準！</strong><br>我們在支援單系統新增了許多不同語言的預設問題，讓你更能輕鬆描述目前遇到的狀況。<br>語言如下：英文、法文、德文、義大利文、塞爾維亞文、西班牙文。對，還沒有繁體中文 > <"
 
 #: inc/admin/ui/modules/support.php:69
 msgid "Description"
@@ -1799,7 +1819,7 @@ msgid ""
 "Its value must be set to <code>false</code>, but apparently %1$s does not "
 "have writing permissions for <code>%3$s</code>.<br>Please make "
 "<code>%3$s</code> writable, then retry deactivation."
-msgstr ""
+msgstr "因為 <code>%2$s</code> 所以無法停用。<br>此常數仍被定義在<code>%3$s</code>中。它的值必須被設為 <code>false</code>，但顯然地 %1$s 並沒有 <code>%3$s</code> 的寫入權限。<br>請確認 <code>%3$s</code> 是否可寫入，然後再嘗試一次停用。"
 
 #: inc/admin/ui/notices.php:36
 #, php-format
@@ -1808,25 +1828,25 @@ msgid ""
 "<code>%2$s</code>.<br>This file is not writable for %1$s, so %1$s can not "
 "remove its own directives.<br>Please make <code>%3$s</code> writable, then "
 "retry deactivation."
-msgstr ""
+msgstr "因為 <code>%2$s</code> 所以無法停用。此檔案無法被 %1$s 所寫入，所以 %1$s 無法移除它的指令。<br>請確認 <code>%3$s</code> 是否可寫入，然後再嘗試一次停用。"
 
 #: inc/admin/ui/notices.php:75
 msgid "You can still force deactivation by clicking here."
-msgstr ""
+msgstr "你仍然可以點選這裡來強制停用。"
 
 #: inc/admin/ui/notices.php:100
 #, php-format
 msgid ""
 "<strong>%s</strong>: One or more extensions have been enabled or disabled, "
 "clear the cache if necessary."
-msgstr ""
+msgstr "<b>%s</b>：一個或多個外掛已啟用或停用，必要時別忘了清除快取。"
 
 #: inc/admin/ui/notices.php:204
 #, php-format
 msgid ""
 "<strong>%s</strong>: The following plugins are not compatible with this "
 "plugin and may cause unexpected results:"
-msgstr ""
+msgstr "<b>%s</b>：以下外掛與此外掛不相容，且可能造成意外的結果："
 
 #: inc/admin/ui/notices.php:209
 msgid "Deactivate"
@@ -1838,7 +1858,7 @@ msgid ""
 "<strong>%1$s</strong>: A custom permalink structure is required for the "
 "plugin to work properly. Please go to <a href=\"%2$s\">Permalink</a> to "
 "configure it."
-msgstr ""
+msgstr "<b>%1$s</b>：為了使外掛能正常運作，自訂固定網址結構是必須的。請前往<a href=“%2$s\">固定網址</a>來進行設定。"
 
 #: inc/admin/ui/notices.php:271
 #, php-format
@@ -1847,7 +1867,7 @@ msgid ""
 "target=\"_blank\">writing permissions</a> on <code>wp-config.php</code> file"
 " or the value of the constant <code>WP_CACHE</code> is set to "
 "<code>false</code>"
-msgstr ""
+msgstr "<b>%1$s</b>：看起來我們沒有 <code>wp-config.php</code> 檔案的<a href=“%2$s\" target=\"_blank\">寫入權限</a>，或者 <code>WP_CACHE</code> 常數值為 <code>false</code>"
 
 #: inc/admin/ui/notices.php:276
 msgid ""
@@ -1869,7 +1889,7 @@ msgid ""
 "<code>%2$s</code> file, <strong>%3$s</strong> could do this automatically. "
 "This is not the case, here is the code you should add in your "
 "<code>%2$s</code> file for <strong>%3$s</strong> to work properly."
-msgstr ""
+msgstr "如果你有 <code>%2$s</code> 檔案的<a href=\"%1$s\" target=\"_blank\">寫入權限</a>，<b>%3$s</b> 可以自動進行。若不是如此，為了使 <b>%3$s</b> 能正常運作，你應該在你的 <code>%2$s</code> 檔案加入程式碼。"
 
 #: inc/admin/ui/notices.php:347
 #, php-format
@@ -1877,7 +1897,7 @@ msgid ""
 "It seems that the <code>%s</code> file is not ours. Save the settings, we "
 "will automatically recreate the correct one. If it still does not work, "
 "please delete it and save again."
-msgstr ""
+msgstr "看起來 <code>%s</code> 檔案不是我們的。儲存設定，我們將自動重新建立一個正確的。如果它仍然無法運作，請刪除然後再次儲存。"
 
 #: inc/admin/ui/notices.php:376
 #, php-format
@@ -1887,7 +1907,7 @@ msgid ""
 "automatically. This is not the case, so here are the rewrite rules you have "
 "to put in your <code>.htaccess</code> file for <strong>%2$s</strong> to work"
 " correctly. Click on the field and press Ctrl-A to select all."
-msgstr ""
+msgstr "如果你有 <code>.htaccess</code> 檔案的<a href=\"%1$s\" target=\"_blank\">寫入權限</a>，<b>%2$s</b> 可以自動進行。若不是如此，為了使 <b>%2$s</b> 能正常運作，你必須將重寫規則加入你的 <code>.htaccess</code> 檔案。點選欄位後按下 Ctrl-A 來全選。"
 
 #: inc/admin/ui/notices.php:376
 msgid ""
@@ -1904,7 +1924,7 @@ msgid ""
 "CHMOD <code>755</code> or <code>775</code> or <code>777</code> this "
 "folder.<br/>When the problem is solved, thank you to save the %3$s options "
 "to generate the configuration file."
-msgstr ""
+msgstr "請注意，你沒有 <b>%3$s</b> 網域設定資料夾（<code>%2$s</code>）的<a href=\"%1$s\" target=\"_blank\">寫入權限</a>。為了使 <b>%3$s</b> 能正常運作，請將資料夾權限調整為 <code>755</code> 或 <code>775</code> 或 <code>777</code>。<br/>當問題解決後，儲存 %3$s 選項來產生設定檔。"
 
 #: inc/admin/ui/notices.php:429
 #, php-format
@@ -1913,7 +1933,7 @@ msgid ""
 "permissions</a> on <strong>%3$s</strong> cache folder (<code>%2$s</code>). "
 "For <strong>%3$s</strong> works properly, please CHMOD <code>755</code> or "
 "<code>775</code> or <code>777</code> this folder."
-msgstr ""
+msgstr "請注意，你沒有 <b>%3$s</b> 快取資料夾（<code>%2$s</code>）的<a href=\"%1$s\" target=\"_blank\">寫入權限</a>。為了使 <b>%3$s</b> 能正常運作，請將資料夾權限調整為 <code>755</code> 或 <code>775</code> 或 <code>777</code>。"
 
 #: inc/admin/ui/notices.php:456
 #, php-format
@@ -1922,7 +1942,7 @@ msgid ""
 "permissions</a> on <strong>%3$s</strong> minified cache folder "
 "(<code>%2$s</code>). To make <strong>%3$s</strong> work properly, please "
 "CHMOD <code>755</code> or <code>775</code> or <code>777</code> this folder."
-msgstr ""
+msgstr "請注意，你沒有 <b>%3$s</b> 最小化快取資料夾（<code>%2$s</code>）的<a href=\"%1$s\" target=\"_blank\">寫入權限</a>。為了使 <b>%3$s</b> 能正常運作，請將資料夾權限調整為 <code>755</code> 或 <code>775</code> 或 <code>777</code>。"
 
 #: inc/admin/ui/notices.php:484
 #, php-format
@@ -1931,7 +1951,7 @@ msgid ""
 "permissions</a> on <strong>%3$s</strong> cache busting folder "
 "(<code>%2$s</code>). To make <strong>%3$s</strong> work properly, please "
 "CHMOD <code>755</code> or <code>775</code> or <code>777</code> this folder."
-msgstr ""
+msgstr "請注意，你沒有 <a href=\"%1$s\" target=\"_blank\">寫入權限</a>於<b>%3$s</b>快取資料夾 (<code>%2$s</code>). 為使 <b>%3$s</b> 正常運作, 請修改資料夾權限為<code>755</code> 或 <code>775</code> 或 <code>777</code> 。"
 
 #: inc/admin/ui/notices.php:507
 msgid "Thank you. Your license has been successfully validated!"
@@ -1940,7 +1960,7 @@ msgstr "謝謝你。你的註冊碼已驗證成功！"
 #: inc/admin/ui/notices.php:510
 #, php-format
 msgid "Key: <code>%1$s</code><br>Email: <em>%2$s</em>"
-msgstr ""
+msgstr "金鑰：<code>%1$s</code><br>Email：<em>%2$s</em>"
 
 #: inc/admin/ui/notices.php:566
 msgid "Activate Imagify"
@@ -2034,19 +2054,19 @@ msgstr "從清單中選擇網址"
 msgid "No domain available in your Cloudflare account"
 msgstr "在您的 CloudFlare 帳戶中沒有網址可供選擇"
 
-#: inc/functions/options.php:598
+#: inc/functions/options.php:601
 msgid "Your license is not valid."
 msgstr "你的註冊碼無效。"
 
-#: inc/functions/options.php:599
+#: inc/functions/options.php:602
 msgid "You cannot add more websites. Upgrade your account."
 msgstr "你無法新增更多網站。升級你的帳戶。"
 
-#: inc/functions/options.php:600
+#: inc/functions/options.php:603
 msgid "This website is not allowed."
 msgstr "這個網站是不允許的。"
 
-#: inc/functions/options.php:601
+#: inc/functions/options.php:604
 msgid "This license key is not accepted."
 msgstr "這個註冊金鑰不被接受。"
 

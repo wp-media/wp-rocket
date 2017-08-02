@@ -7,16 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2017-06-13 11:41-0400\n"
-"PO-Revision-Date: 2017-06-17 15:09+0000\n"
-"Last-Translator: Mohamed Elsa3dy <m.elsa3dy@gmail.com>\n"
+"POT-Creation-Date: 2017-07-27 12:16-0400\n"
+"PO-Revision-Date: 2017-07-27 16:17+0000\n"
+"Last-Translator: wpmedia <contact@wp-media.me>\n"
 "Language-Team: Arabic (http://www.transifex.com/wp-media/wp-rocket/language/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ar\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
-"X-Generator: Poedit 1.8.9\n"
+"X-Generator: Poedit 1.8.11\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -52,7 +52,7 @@ msgstr "التحميل المسبق لخرائط الموقع من اضافة ج
 msgid "Yoast SEO XML sitemap"
 msgstr "خرائط الموقع Yoast SEO XML"
 
-#: inc/admin/admin.php:14 inc/admin/options.php:571
+#: inc/admin/admin.php:14 inc/admin/options.php:590
 #: inc/admin/ui/modules/support.php:4 inc/common/admin-bar.php:248
 msgid "Support"
 msgstr "الدعم"
@@ -73,7 +73,7 @@ msgstr "إعدادات"
 msgid "Clear this cache"
 msgstr "مسح الملفات المخذنة"
 
-#: inc/admin/admin.php:312 inc/admin/admin.php:321
+#: inc/admin/admin.php:317 inc/admin/admin.php:326
 #, php-format
 msgid "%s Update Rollback"
 msgstr "%s التراجع عن التحديث"
@@ -94,7 +94,7 @@ msgstr "حفظ وتحسين"
 msgid "Optimize"
 msgstr "تحسين"
 
-#: inc/admin/options.php:195 inc/admin/options.php:439
+#: inc/admin/options.php:195 inc/admin/options.php:458
 msgctxt "screen-reader-text"
 msgid "Note:"
 msgstr "محلوظة:"
@@ -109,7 +109,7 @@ msgctxt "screen-reader-text"
 msgid "Third-party feature detected:"
 msgstr "تم اكتشاف اضافات خارجية:"
 
-#: inc/admin/options.php:223 inc/admin/options.php:445
+#: inc/admin/options.php:223 inc/admin/options.php:464
 msgctxt "screen-reader-text"
 msgid "Warning:"
 msgstr "تحذير:"
@@ -131,137 +131,149 @@ msgstr "أضف رابط"
 msgid "Replace site's hostname with:"
 msgstr "إستبدال إسم مضيف الموقع بــ :"
 
-#: inc/admin/options.php:348 inc/admin/options.php:373
-#: inc/admin/options.php:397
+#: inc/admin/options.php:348 inc/admin/options.php:384
+#: inc/admin/options.php:412
 msgid "reserved for"
 msgstr "مخصصة لـ "
 
-#: inc/admin/options.php:350 inc/admin/options.php:375
-#: inc/admin/options.php:399
+#: inc/admin/options.php:350 inc/admin/options.php:386
+#: inc/admin/options.php:414
 msgid "All files"
 msgstr "كل الملفات"
 
-#: inc/admin/options.php:351 inc/admin/options.php:376
-#: inc/admin/options.php:400
+#: inc/admin/options.php:361 inc/admin/options.php:390
+#: inc/admin/options.php:418
 msgid "Images"
 msgstr "الصور"
 
-#: inc/admin/options.php:412
+#: inc/admin/options.php:431
 msgid "Add CNAME"
 msgstr "إنشاء سجل CNAME"
 
-#: inc/admin/options.php:479
+#: inc/admin/options.php:498
 msgid "Watch the video"
 msgstr "شاهد الفيديو"
 
-#: inc/admin/options.php:553
+#: inc/admin/options.php:572
 msgid "Basic"
 msgstr "إعدادات أساسية"
 
-#: inc/admin/options.php:554
+#: inc/admin/options.php:573
 msgid "Static Files"
 msgstr "الملفات الثابتة"
 
-#: inc/admin/options.php:555 inc/admin/ui/meta-boxes.php:72
+#: inc/admin/options.php:574 inc/admin/ui/meta-boxes.php:72
 msgid "CDN"
 msgstr "شبكة توصيل المحتوى CDN"
 
-#: inc/admin/options.php:556
+#: inc/admin/options.php:575
 msgid "Advanced"
 msgstr "الإعدادات المتقدمة"
 
-#: inc/admin/options.php:557
+#: inc/admin/options.php:576
 msgid "Database"
 msgstr "قاعدة البيانات"
 
-#: inc/admin/options.php:558
+#: inc/admin/options.php:577
 msgid "Preload"
 msgstr "التحميل المسبق"
 
-#: inc/admin/options.php:567 inc/admin/ui/modules/white-label.php:4
+#: inc/admin/options.php:586 inc/admin/ui/modules/white-label.php:4
 msgid "White Label"
 msgstr "العلامة البيضاء"
 
-#: inc/admin/options.php:569 inc/admin/ui/modules/tools.php:7
+#: inc/admin/options.php:588 inc/admin/ui/modules/tools.php:7
 msgid "Tools"
 msgstr "أداوات"
 
-#: inc/admin/options.php:574
+#: inc/admin/options.php:593
 msgid "License"
 msgstr "الرخصة"
 
-#: inc/admin/options.php:992
-msgid "Settings imported and saved."
-msgstr "تم إستعادة الإعدادات وحفظها."
-
-#: inc/admin/options.php:1008 inc/admin/options.php:1177
+#: inc/admin/options.php:992 inc/admin/options.php:1161
 msgid "Settings saved."
 msgstr "تم حفظ الإعدادات"
 
-#: inc/admin/options.php:1104
+#: inc/admin/options.php:1088
 #, php-format
 msgid "Cloudflare development mode error: %s"
 msgstr "خطا بكلاودفلير وضع التطوير : %s"
 
-#: inc/admin/options.php:1106
+#: inc/admin/options.php:1090
 #, php-format
 msgid "Cloudflare development mode %s"
 msgstr "وضع التطوير كلاودفلير %s"
 
-#: inc/admin/options.php:1118
+#: inc/admin/options.php:1102
 #, php-format
 msgid "Cloudflare cache level error: %s"
 msgstr "خطأ بمستوي الملفات المخزنة بكلاودفلير : %s"
 
-#: inc/admin/options.php:1120
+#: inc/admin/options.php:1104
 #, php-format
 msgid "Cloudflare cache level set to %s"
 msgstr "ضبط مستوي التخزين المؤقت لكلاودفلير علي %s "
 
-#: inc/admin/options.php:1128
+#: inc/admin/options.php:1112
 #, php-format
 msgid "Cloudflare minification error: %s"
 msgstr "خطأ في خاصية تصغير الملفات بكلاودفلير: %s"
 
-#: inc/admin/options.php:1130
+#: inc/admin/options.php:1114
 #, php-format
 msgid "Cloudflare minification %s"
 msgstr "خدمة تصغير الملفات لكلاودفلير %s"
 
-#: inc/admin/options.php:1138
+#: inc/admin/options.php:1122
 #, php-format
 msgid "Cloudflare rocket loader error: %s"
 msgstr "خطأ في خدمة التحميل الصاروخي بكلاودفلير: %s"
 
-#: inc/admin/options.php:1140
+#: inc/admin/options.php:1124
 #, php-format
 msgid "Cloudflare rocket loader %s"
 msgstr "خدمة التحميل الصاروخي بكلاودفلير %s"
 
-#: inc/admin/options.php:1148
+#: inc/admin/options.php:1132
 #, php-format
 msgid "Cloudflare browser cache error: %s"
 msgstr "خطأ في خدمة التخزين المؤقت للمتصفح بكلاودفلير: %s"
 
-#: inc/admin/options.php:1150
+#: inc/admin/options.php:1134
 #, php-format
 msgid "Cloudflare browser cache set to %s seconds"
 msgstr "ضبط خدمة التخزين المؤقت للمتصفح علي %s ثواني"
 
-#: inc/admin/options.php:1289
+#: inc/admin/options.php:1273
 msgid ""
 "Before you can upload your import file, you will need to fix the following "
 "error:"
 msgstr "قبل أن يمكنك برفع واستعادة الملف، يجب عليك ان تصلح الخطأ التالي:"
 
-#: inc/admin/options.php:1296
+#: inc/admin/options.php:1280
 #, php-format
 msgid "Choose a file from your computer (maximum size: %s)"
 msgstr "أختر ملف من جهاز الكمبيوتر (أقصي حجم: %s)"
 
-#: inc/admin/options.php:1299
+#: inc/admin/options.php:1283
 msgid "Upload file and import settings"
 msgstr "رفع ملف وإستيراد الإعدادات"
+
+#: inc/admin/options.php:1346
+msgid "Settings import failed: no file uploaded."
+msgstr ""
+
+#: inc/admin/options.php:1351
+msgid "Settings import failed: incorrect filename."
+msgstr ""
+
+#: inc/admin/options.php:1360
+msgid "Settings import failed: incorrect filetype."
+msgstr ""
+
+#: inc/admin/options.php:1392
+msgid "Settings imported and saved."
+msgstr "تم إستعادة الإعدادات وحفظها."
 
 #: inc/admin/ui/enqueue.php:20
 msgid "If there are any display errors we recommend to disable the option."
@@ -617,7 +629,7 @@ msgstr ""
 #: inc/admin/ui/modules/optimization.php:305
 #, php-format
 msgid "Deactivate if you notice any visually broken items on your website.%s"
-msgstr ""
+msgstr "قم بإلغاء تنشيط هذا الخيار في حال لاحظت أي مشاكل في عرض موقع الويب الخاص بك.%s"
 
 #: inc/admin/ui/modules/basic.php:47
 msgid ""
@@ -833,13 +845,13 @@ msgid ""
 "Cloudflare</a>."
 msgstr ""
 
-#: inc/admin/ui/modules/cdn.php:73 inc/admin/ui/modules/cdn.php:82
-msgid "CDN:"
-msgstr "شبكة توصيل المحتوي CDN:"
-
-#: inc/admin/ui/modules/cdn.php:80
+#: inc/admin/ui/modules/cdn.php:71
 msgid "Enable Content Delivery Network"
 msgstr "تفعيل شبكة توصيل المحتوي."
+
+#: inc/admin/ui/modules/cdn.php:73 inc/admin/ui/modules/cdn.php:108
+msgid "CDN:"
+msgstr "شبكة توصيل المحتوي CDN:"
 
 #: inc/admin/ui/modules/cdn.php:88
 msgid ""
@@ -855,34 +867,40 @@ msgid ""
 " Rocket with a CDN</a>."
 msgstr ""
 
-#: inc/admin/ui/modules/cdn.php:100
+#: inc/admin/ui/modules/cdn.php:99
+msgid ""
+"CDN is disabled because you are using WP Offload S3 and the assets addon to "
+"serve your images, CSS & JS files."
+msgstr ""
+
+#: inc/admin/ui/modules/cdn.php:120
 msgid "CDN CNAME(S):"
 msgstr "سجلات (CNAME) شبكة توصيل المحتوي:"
 
-#: inc/admin/ui/modules/cdn.php:111 inc/admin/ui/modules/cdn.php:120
+#: inc/admin/ui/modules/cdn.php:131 inc/admin/ui/modules/cdn.php:140
 msgid "CDN without SSL:"
 msgstr "شبكة توصيل المحتوي CDN بدون شهادة SSL:"
 
-#: inc/admin/ui/modules/cdn.php:118
+#: inc/admin/ui/modules/cdn.php:138
 msgid "Disable CDN functionality on HTTPS pages"
 msgstr "إيقاف خدمة توصيل المحتوي CDN في صفحات البروتوكول النقل الآمن HTTPS."
 
-#: inc/admin/ui/modules/cdn.php:124
+#: inc/admin/ui/modules/cdn.php:144
 msgid ""
 "If your CDN account does not fully support SSL, you can disable URL "
 "rewriting on HTTPS pages here."
 msgstr "إذا كان حساب شبكة توصيل المحتوي لا يدعم اتصال SSL بشكل كامل، فيمكنك تعطيل ميزة إعادة كتابة الروابط في صفحات بروتوكول HTTPS."
 
-#: inc/admin/ui/modules/cdn.php:130 inc/admin/ui/modules/cdn.php:143
+#: inc/admin/ui/modules/cdn.php:150 inc/admin/ui/modules/cdn.php:163
 msgid "Exclude files:"
 msgstr "استثناء الملفات:"
 
-#: inc/admin/ui/modules/cdn.php:138
+#: inc/admin/ui/modules/cdn.php:158
 msgid ""
 "Specify URL(s) of files that should not get served via CDN (one per line)"
 msgstr "تحديد عناوين الملفات التي لن يتم إستخدام خدمة توصيل المحتوي (CDN) معها. (رابط واحد لكل سطر)"
 
-#: inc/admin/ui/modules/cdn.php:150
+#: inc/admin/ui/modules/cdn.php:170
 #, php-format
 msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use %s "
@@ -1494,7 +1512,7 @@ msgstr "افرغ الحقل لحذفه."
 msgid ""
 "Specify complete URLs like:  "
 "<code>http://example.com/path/to/script.js</code>"
-msgstr ""
+msgstr "حدد العناوين بشكل كامل مثل: <code>http://example.com/path/to/script.js</code>"
 
 #: inc/admin/ui/modules/optimization.php:457
 msgid "Defer JS (deprecated):"
@@ -1661,8 +1679,9 @@ msgstr "الوصف:"
 #: inc/admin/ui/modules/support.php:64
 msgid ""
 "<strong>Now be specific!</strong><br>We have pre-filled the form with some "
-"questions for you to phrase your description along."
-msgstr "<strong>الآن لتكن أكثر تحديداً!</strong><br>لدينا نموذج به بعض الاسئلة للإجابة عليها لوصف المشكلة الخاصة بك."
+"questions for you to phrase your description along.<br>We speak English, "
+"French, German, Italian, Serbian, and Spanish."
+msgstr ""
 
 #: inc/admin/ui/modules/support.php:69
 msgid "Description"
@@ -1980,7 +1999,7 @@ msgstr "شكراً لك. تم التحقق من صحة الترخيص الخاص
 #: inc/admin/ui/notices.php:510
 #, php-format
 msgid "Key: <code>%1$s</code><br>Email: <em>%2$s</em>"
-msgstr ""
+msgstr "المفتاح: <code>%1$s</code><br>البريد الإلكتروني: <em>%2$s</em>"
 
 #: inc/admin/ui/notices.php:566
 msgid "Activate Imagify"
@@ -2052,7 +2071,7 @@ msgstr "تم مسح الذاكرة المؤقتة الخاصة بخدمة كلا
 msgid ""
 "<a href=\"%s\">Enter your API key here</a> to fully activate this plugin and"
 " give the performance of your website a boost."
-msgstr ""
+msgstr "<a href=\"%s\">أدخل مفتاح API هنا</a> لتنشيط الإضافة بشكل كامل لضمان تحسين أداء موقعك."
 
 #: inc/functions/cloudflare.php:17
 msgid "Cloudflare Email and API key are not set"
@@ -2074,19 +2093,19 @@ msgstr "اختر نطاق من القائمة"
 msgid "No domain available in your Cloudflare account"
 msgstr "لا يوجد نطاقات علي حساب الكلاودفلير الخاص بك"
 
-#: inc/functions/options.php:598
+#: inc/functions/options.php:601
 msgid "Your license is not valid."
 msgstr "الترخيص الخاص بك غير صالح."
 
-#: inc/functions/options.php:599
+#: inc/functions/options.php:602
 msgid "You cannot add more websites. Upgrade your account."
 msgstr "لا يمكنك إضافة مواقع آخري. قم بترقية حسابك."
 
-#: inc/functions/options.php:600
+#: inc/functions/options.php:603
 msgid "This website is not allowed."
 msgstr "غير مسموح لهذا الموقع."
 
-#: inc/functions/options.php:601
+#: inc/functions/options.php:604
 msgid "This license key is not accepted."
 msgstr "الترخيص الخاص بك غير مقبول."
 

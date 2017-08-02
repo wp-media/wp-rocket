@@ -43,22 +43,4 @@ if ( class_exists( 'BuddyPress' ) ) :
 		add_filter( 'do_rocket_lazyload', 'rocket_deactivate_lazyload_on_buddypress_group_pages' );
 		add_filter( 'do_rocket_lazyload_iframes', 'rocket_deactivate_lazyload_on_buddypress_group_pages' );
 	endif;
-
-	/**
-	 * Excludes BuddyPress's plupload from JS minification
-	 *
-	 * Exclude it to prevent an error after minification/concatenation preventing the image upload from working correctly
-	 *
-	 * @since 2.8.10
-	 * @author Remy Perona
-	 *
-	 * @param Array $excluded_handle An array of JS handles enqueued in WordPress.
-	 * @return Array the updated array of handles
-	 */
-	function rocket_exclude_js_buddypress( $excluded_handle ) {
-		$excluded_handle[] = 'bp-plupload';
-
-		return $excluded_handle;
-	}
-	add_filter( 'rocket_excluded_handle_js', 'rocket_exclude_js_buddypress' );
 endif;

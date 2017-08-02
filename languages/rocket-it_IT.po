@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2017-06-13 11:41-0400\n"
-"PO-Revision-Date: 2017-06-20 16:39+0000\n"
+"POT-Creation-Date: 2017-07-27 12:16-0400\n"
+"PO-Revision-Date: 2017-07-27 16:17+0000\n"
 "Last-Translator: wpmedia <contact@wp-media.me>\n"
 "Language-Team: Italian (Italy) (http://www.transifex.com/wp-media/wp-rocket/language/it_IT/)\n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.8.9\n"
+"X-Generator: Poedit 1.8.11\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -52,7 +52,7 @@ msgstr "Precarica la sitemap del plugin Jetpack"
 msgid "Yoast SEO XML sitemap"
 msgstr "Sitemap XML di Yoast SEO"
 
-#: inc/admin/admin.php:14 inc/admin/options.php:571
+#: inc/admin/admin.php:14 inc/admin/options.php:590
 #: inc/admin/ui/modules/support.php:4 inc/common/admin-bar.php:248
 msgid "Support"
 msgstr "Supporto"
@@ -73,7 +73,7 @@ msgstr "Impostazioni"
 msgid "Clear this cache"
 msgstr "Svuotare questa cache"
 
-#: inc/admin/admin.php:312 inc/admin/admin.php:321
+#: inc/admin/admin.php:317 inc/admin/admin.php:326
 #, php-format
 msgid "%s Update Rollback"
 msgstr "Tornare all'aggiornamento %s"
@@ -94,7 +94,7 @@ msgstr "Salva e ottimizza"
 msgid "Optimize"
 msgstr "Ottimizza"
 
-#: inc/admin/options.php:195 inc/admin/options.php:439
+#: inc/admin/options.php:195 inc/admin/options.php:458
 msgctxt "screen-reader-text"
 msgid "Note:"
 msgstr "Nota:"
@@ -109,7 +109,7 @@ msgctxt "screen-reader-text"
 msgid "Third-party feature detected:"
 msgstr "Individuata funzione di un plugin di terzi:"
 
-#: inc/admin/options.php:223 inc/admin/options.php:445
+#: inc/admin/options.php:223 inc/admin/options.php:464
 msgctxt "screen-reader-text"
 msgid "Warning:"
 msgstr "Attenzione:"
@@ -131,137 +131,149 @@ msgstr "Aggiungere URL"
 msgid "Replace site's hostname with:"
 msgstr "Sostituire il nome host del sito con:"
 
-#: inc/admin/options.php:348 inc/admin/options.php:373
-#: inc/admin/options.php:397
+#: inc/admin/options.php:348 inc/admin/options.php:384
+#: inc/admin/options.php:412
 msgid "reserved for"
 msgstr "riservato per"
 
-#: inc/admin/options.php:350 inc/admin/options.php:375
-#: inc/admin/options.php:399
+#: inc/admin/options.php:350 inc/admin/options.php:386
+#: inc/admin/options.php:414
 msgid "All files"
 msgstr "Tutti i files"
 
-#: inc/admin/options.php:351 inc/admin/options.php:376
-#: inc/admin/options.php:400
+#: inc/admin/options.php:361 inc/admin/options.php:390
+#: inc/admin/options.php:418
 msgid "Images"
 msgstr "Immagini"
 
-#: inc/admin/options.php:412
+#: inc/admin/options.php:431
 msgid "Add CNAME"
 msgstr "Aggiungi CNAME"
 
-#: inc/admin/options.php:479
+#: inc/admin/options.php:498
 msgid "Watch the video"
 msgstr "Guardare il video"
 
-#: inc/admin/options.php:553
+#: inc/admin/options.php:572
 msgid "Basic"
 msgstr "Base"
 
-#: inc/admin/options.php:554
+#: inc/admin/options.php:573
 msgid "Static Files"
 msgstr "File statici"
 
-#: inc/admin/options.php:555 inc/admin/ui/meta-boxes.php:72
+#: inc/admin/options.php:574 inc/admin/ui/meta-boxes.php:72
 msgid "CDN"
 msgstr "CDN"
 
-#: inc/admin/options.php:556
+#: inc/admin/options.php:575
 msgid "Advanced"
 msgstr "Avanzate"
 
-#: inc/admin/options.php:557
+#: inc/admin/options.php:576
 msgid "Database"
 msgstr "Database"
 
-#: inc/admin/options.php:558
+#: inc/admin/options.php:577
 msgid "Preload"
 msgstr "Precaricamento"
 
-#: inc/admin/options.php:567 inc/admin/ui/modules/white-label.php:4
+#: inc/admin/options.php:586 inc/admin/ui/modules/white-label.php:4
 msgid "White Label"
 msgstr "Marca bianca"
 
-#: inc/admin/options.php:569 inc/admin/ui/modules/tools.php:7
+#: inc/admin/options.php:588 inc/admin/ui/modules/tools.php:7
 msgid "Tools"
 msgstr "Strumenti"
 
-#: inc/admin/options.php:574
+#: inc/admin/options.php:593
 msgid "License"
 msgstr "Licenza"
 
-#: inc/admin/options.php:992
-msgid "Settings imported and saved."
-msgstr "Impostazioni importate e salvate."
-
-#: inc/admin/options.php:1008 inc/admin/options.php:1177
+#: inc/admin/options.php:992 inc/admin/options.php:1161
 msgid "Settings saved."
 msgstr "Impostazioni salvate."
 
-#: inc/admin/options.php:1104
+#: inc/admin/options.php:1088
 #, php-format
 msgid "Cloudflare development mode error: %s"
 msgstr "Errore modalità sviluppo Cloudflare: %s"
 
-#: inc/admin/options.php:1106
+#: inc/admin/options.php:1090
 #, php-format
 msgid "Cloudflare development mode %s"
 msgstr "Modalità sviluppo Cloudflare %s"
 
-#: inc/admin/options.php:1118
+#: inc/admin/options.php:1102
 #, php-format
 msgid "Cloudflare cache level error: %s"
 msgstr "Errore nel livello cache Cloudflare: %s"
 
-#: inc/admin/options.php:1120
+#: inc/admin/options.php:1104
 #, php-format
 msgid "Cloudflare cache level set to %s"
 msgstr "Livello cache Cloudflare impostato su %s"
 
-#: inc/admin/options.php:1128
+#: inc/admin/options.php:1112
 #, php-format
 msgid "Cloudflare minification error: %s"
 msgstr "Errore minificazione Cloudflare: %s"
 
-#: inc/admin/options.php:1130
+#: inc/admin/options.php:1114
 #, php-format
 msgid "Cloudflare minification %s"
 msgstr "Minificazione Cloudflare %s"
 
-#: inc/admin/options.php:1138
+#: inc/admin/options.php:1122
 #, php-format
 msgid "Cloudflare rocket loader error: %s"
 msgstr "Errore del Rocket Loader di Cloudflare: %s"
 
-#: inc/admin/options.php:1140
+#: inc/admin/options.php:1124
 #, php-format
 msgid "Cloudflare rocket loader %s"
 msgstr "Rocket Loader Cloudflare %s"
 
-#: inc/admin/options.php:1148
+#: inc/admin/options.php:1132
 #, php-format
 msgid "Cloudflare browser cache error: %s"
 msgstr "Errore della cache del browser di Cloudflare: %s"
 
-#: inc/admin/options.php:1150
+#: inc/admin/options.php:1134
 #, php-format
 msgid "Cloudflare browser cache set to %s seconds"
 msgstr "La cache del browser di Cloudflare è impostata su %s secondi"
 
-#: inc/admin/options.php:1289
+#: inc/admin/options.php:1273
 msgid ""
 "Before you can upload your import file, you will need to fix the following "
 "error:"
 msgstr "Prima di poter caricare il tuo file di importazione, è necessario correggere il seguente errore:"
 
-#: inc/admin/options.php:1296
+#: inc/admin/options.php:1280
 #, php-format
 msgid "Choose a file from your computer (maximum size: %s)"
 msgstr "Scegliere un file dal computer (dimensione massima: %s)"
 
-#: inc/admin/options.php:1299
+#: inc/admin/options.php:1283
 msgid "Upload file and import settings"
 msgstr "Caricare il file e importare le impostazioni"
+
+#: inc/admin/options.php:1346
+msgid "Settings import failed: no file uploaded."
+msgstr ""
+
+#: inc/admin/options.php:1351
+msgid "Settings import failed: incorrect filename."
+msgstr ""
+
+#: inc/admin/options.php:1360
+msgid "Settings import failed: incorrect filetype."
+msgstr ""
+
+#: inc/admin/options.php:1392
+msgid "Settings imported and saved."
+msgstr "Impostazioni importate e salvate."
 
 #: inc/admin/ui/enqueue.php:20
 msgid "If there are any display errors we recommend to disable the option."
@@ -833,13 +845,13 @@ msgid ""
 "Cloudflare</a>."
 msgstr "Vai sulla <a href=\"%s\">scheda Cloudflare</a> per modificare le impostazioni Cloudflare. Le impostazioni sul CDN che seguono NON si applicano a Cloudflare.<br>Leggi la documentazione su <a href=\"http://it.docs.wp-rocket.me/article/392-usare-wp-rocket-con-cloudflare\" target=\"_blank\">come usare WP Rocket con Cloudflare</a>."
 
-#: inc/admin/ui/modules/cdn.php:73 inc/admin/ui/modules/cdn.php:82
-msgid "CDN:"
-msgstr "CDN:"
-
-#: inc/admin/ui/modules/cdn.php:80
+#: inc/admin/ui/modules/cdn.php:71
 msgid "Enable Content Delivery Network"
 msgstr "Abilitare il Content Delivery Network"
+
+#: inc/admin/ui/modules/cdn.php:73 inc/admin/ui/modules/cdn.php:108
+msgid "CDN:"
+msgstr "CDN:"
 
 #: inc/admin/ui/modules/cdn.php:88
 msgid ""
@@ -855,34 +867,40 @@ msgid ""
 " Rocket with a CDN</a>."
 msgstr "Tutti gli URL dei file statici (CSS, JS, immagini) verranno riscritti con i CNAME(s) indicati qui sotto.<br>Leggi la documentazione su <a href=\"http://it.docs.wp-rocket.me/article/389-usare-wp-rocket-con-un-cdn\" target=\"_blank\">come usare WP Rocket con un CDN</a>."
 
-#: inc/admin/ui/modules/cdn.php:100
+#: inc/admin/ui/modules/cdn.php:99
+msgid ""
+"CDN is disabled because you are using WP Offload S3 and the assets addon to "
+"serve your images, CSS & JS files."
+msgstr ""
+
+#: inc/admin/ui/modules/cdn.php:120
 msgid "CDN CNAME(S):"
 msgstr "CNAME(s) del CDN:"
 
-#: inc/admin/ui/modules/cdn.php:111 inc/admin/ui/modules/cdn.php:120
+#: inc/admin/ui/modules/cdn.php:131 inc/admin/ui/modules/cdn.php:140
 msgid "CDN without SSL:"
 msgstr "CDN senza SSL:"
 
-#: inc/admin/ui/modules/cdn.php:118
+#: inc/admin/ui/modules/cdn.php:138
 msgid "Disable CDN functionality on HTTPS pages"
 msgstr "Disabilitare la funzione CDN sulle pagine HTTPS"
 
-#: inc/admin/ui/modules/cdn.php:124
+#: inc/admin/ui/modules/cdn.php:144
 msgid ""
 "If your CDN account does not fully support SSL, you can disable URL "
 "rewriting on HTTPS pages here."
 msgstr "Se il tuo piano CDN non include il supporto SSL, qui puoi disabilitare la riscrittura dell'URL per le pagine HTTPS."
 
-#: inc/admin/ui/modules/cdn.php:130 inc/admin/ui/modules/cdn.php:143
+#: inc/admin/ui/modules/cdn.php:150 inc/admin/ui/modules/cdn.php:163
 msgid "Exclude files:"
 msgstr "Escludere file:"
 
-#: inc/admin/ui/modules/cdn.php:138
+#: inc/admin/ui/modules/cdn.php:158
 msgid ""
 "Specify URL(s) of files that should not get served via CDN (one per line)"
 msgstr "Specificare gli URL dei file che non dovrebbero essere inviati tramite il CDN (uno per riga)"
 
-#: inc/admin/ui/modules/cdn.php:150
+#: inc/admin/ui/modules/cdn.php:170
 #, php-format
 msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use %s "
@@ -1263,7 +1281,7 @@ msgstr "Concatenare i file CSS"
 msgid ""
 "Combine all CSS files into as few files as possible <em>(test "
 "thoroughly!)</em>"
-msgstr "Combina tutti i file CSS nel minor numero di file possibile <em>(testar con cautela!)</em>"
+msgstr "Combina tutti i file CSS nel minor numero di file possibile <em>(testare con cautela!)</em>"
 
 #: inc/admin/ui/modules/optimization.php:164
 msgid "CSS Files concatenation"
@@ -1277,7 +1295,7 @@ msgstr "Concatenare i file JS"
 msgid ""
 "Combine all JavaScript files into as few files as possible <em>(test "
 "thoroughly!)</em>"
-msgstr "Combina tutti i file JavaScript nel minor numero di file possibile <em>(testar con cautela!)</em>"
+msgstr "Combina tutti i file JavaScript nel minor numero di file possibile <em>(testare con cautela!)</em>"
 
 #: inc/admin/ui/modules/optimization.php:178
 msgid "JS Files concatenation"
@@ -1629,8 +1647,9 @@ msgstr "Descrizione:"
 #: inc/admin/ui/modules/support.php:64
 msgid ""
 "<strong>Now be specific!</strong><br>We have pre-filled the form with some "
-"questions for you to phrase your description along."
-msgstr "<strong>Dacci tutti i dettagli!</strong><br>Abbiamo precompilato il modulo con alcune domande che ti aiuteranno a descrivere quello che succede."
+"questions for you to phrase your description along.<br>We speak English, "
+"French, German, Italian, Serbian, and Spanish."
+msgstr ""
 
 #: inc/admin/ui/modules/support.php:69
 msgid "Description"
@@ -2042,19 +2061,19 @@ msgstr "Scegliere un dominio dalla lista"
 msgid "No domain available in your Cloudflare account"
 msgstr "Non ci sono domini disponibili nel tuo account CloudFlare"
 
-#: inc/functions/options.php:598
+#: inc/functions/options.php:601
 msgid "Your license is not valid."
 msgstr "La tua licenza non è valida."
 
-#: inc/functions/options.php:599
+#: inc/functions/options.php:602
 msgid "You cannot add more websites. Upgrade your account."
 msgstr "Non puoi aggiungere altri siti. Estendi il tuo account."
 
-#: inc/functions/options.php:600
+#: inc/functions/options.php:603
 msgid "This website is not allowed."
 msgstr "Questo sito web non è consentito."
 
-#: inc/functions/options.php:601
+#: inc/functions/options.php:604
 msgid "This license key is not accepted."
 msgstr "Questa chiave di licenza non è stata accettata."
 

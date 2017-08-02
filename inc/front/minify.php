@@ -50,7 +50,7 @@ function rocket_minify_process( $buffer ) {
 	    $buffer = rocket_inject_ie_conditionals( $buffer, $conditionals );
 
 		// Insert all CSS and JS files in head.
-		$buffer = preg_replace( '/<head(.*)>/', '<head$1>' . $google_fonts . $css . $js, $buffer, 1 );
+		$buffer = preg_replace( '/<head(.*)>/U', '<head$1>' . $google_fonts . $css . $js, $buffer, 1 );
 	}
 
 	return $buffer;
@@ -362,11 +362,10 @@ function rocket_minify_js( $buffer ) {
 	$excluded_external_js = get_rocket_minify_excluded_external_js();
 
 	// Get all JS files with this regex.
-	preg_match_all( apply_filters( 'rocket_minify_js_regex_pattern', '#<script[^>]+?src=[\'|"]([^\'|"]+\.js?.+)[\'|"].*>(?:<\/script>)#i' ), $buffer, $tags_match );
+	preg_match_all( apply_filters( 'rocket_minify_js_regex_pattern', '#<script[^>]+?src=[\'|"]([^\'|"]+\.js?.+)[\'|"].*>(?:<\/script>)#iU' ), $buffer, $tags_match );
 
 	$i = 0;
 	foreach ( $tags_match[0] as $tag ) {
-
 		// Check if the file is already minify by get_rocket_minify_files.
 		// or the file is rejected to the process.
 		if ( ! strpos( $tag, 'data-minify=' ) && ! strpos( $tag, 'data-no-minify=' ) ) {
@@ -491,14 +490,14 @@ function rocket_minify_only( $buffer, $extension ) {
 		$excluded_files = str_replace( '//' . $home_host , '', $excluded_files );
 
 		// Get all js files with this regex.
-		preg_match_all( apply_filters( 'rocket_minify_js_regex_pattern', '#<script[^>]+?src=[\'|"]([^\'|"]+\.js?.+)[\'|"].*>(?:<\/script>)#i' ), $buffer, $tags_match );
+		preg_match_all( apply_filters( 'rocket_minify_js_regex_pattern', '#<script[^>]+?src=[\'|"]([^\'|"]+\.js?.+)[\'|"].*>(?:<\/script>)#iU' ), $buffer, $tags_match );
 	}
 
 	$wp_content_dirname = ltrim( str_replace( home_url(), '', WP_CONTENT_URL ), '/' ) . '/';
 
 	foreach ( $tags_match[0] as $k => $tag ) {
 		if ( 'css' === $extension ) {
-			if ( false !== strpos( $tag, 'media=' ) && ! preg_match( '/media=["\'](?:["\']|[^"\']*?(all|screen)[^"\']*?["\'])/', $tag ) ) {
+			if ( false !== strpos( $tag, 'media=' ) && ! preg_match( '/media=["\'](?:["\']|[^"\']*?(all|screen)[^"\']*?["\'])/iU', $tag ) ) {
 				continue;
 			}
 		}
@@ -757,6 +756,10 @@ add_action( 'wp_footer', 'rocket_extract_js_files_from_footer', PHP_INT_MAX - 10
  */
 function rocket_get_js_enqueued_in_head() {
 	global $wp_scripts, $rocket_js_enqueued_in_head;
+
+	if ( ! (bool) $wp_scripts->done ) {
+		return;
+	}
 
 	foreach ( $wp_scripts->done as $handle ) {
 		$rocket_js_enqueued_in_head[ $handle ] = true;

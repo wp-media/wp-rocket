@@ -487,3 +487,18 @@ function rocket_is_mobile_plugin_active() {
 
 	return false;
 }
+
+/**
+ * Allow upload of JSON file.
+ * 
+ * @since 2.10.7
+ * @author Remy Perona
+ *
+ * @param array $wp_get_mime_types Array of allowed mime types.
+ * @return array Updated array of allowed mime types
+ */
+function rocket_allow_json_mime_type( $wp_get_mime_types ) {
+	$wp_get_mime_types['json'] = 'application/json';
+
+	return $wp_get_mime_types;
+}
