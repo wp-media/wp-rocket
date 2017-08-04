@@ -1,9 +1,9 @@
-<?php 
-defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
+<?php
+defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
 
-if ( defined( 'SFML_VERSION' ) ):
+if ( defined( 'SFML_VERSION' ) ) :
 	add_filter( 'rocket_cache_reject_uri', 'rocket_add_sfml_exclude_pages' );
-	add_action( 'update_option_sfml', '__rocket_after_update_single_options', 10, 2 );
+	add_action( 'update_option_sfml', 'rocket_after_update_single_options', 10, 2 );
 endif;
 
 /**
@@ -36,15 +36,14 @@ function rocket_add_sfml_exclude_pages( $urls ) {
 	$sfml_slugs = array_map( 'home_url', $sfml_slugs );
 	$sfml_slugs = array_map( 'trailingslashit', $sfml_slugs );
 	$sfml_slugs = array_map( 'rocket_clean_exclude_file', $sfml_slugs );
-	
-	foreach( $sfml_slugs as $key => $slug ) {
+
+	foreach ( $sfml_slugs as $key => $slug ) {
 		$sfml_slugs[ $key ] = $slug . '?';
 	}
-	
+
 	return array_merge( $urls, $sfml_slugs );
 }
 
-add_action( 'activate_sf-move-login/sf-move-login.php', 'rocket_activate_sfml', 11 );
 /**
  * Add SFML custom urls to caching exclusion when activating the plugin
  *
@@ -53,16 +52,16 @@ add_action( 'activate_sf-move-login/sf-move-login.php', 'rocket_activate_sfml', 
 function rocket_activate_sfml() {
 	if ( defined( 'SFML_VERSION' ) ) {
 		add_filter( 'rocket_cache_reject_uri', 'rocket_add_sfml_exclude_pages' );
-		
-    	// Update the WP Rocket rules on the .htaccess
-    	flush_rocket_htaccess();
-		
-    	// Regenerate the config file
-    	rocket_generate_config_file();
-    }
-}
 
-add_action( 'deactivate_sf-move-login/sf-move-login.php', 'rocket_deactivate_sfml', 11 );
+		// Update the WP Rocket rules on the .htaccess.
+		flush_rocket_htaccess();
+
+		// Regenerate the config file.
+		rocket_generate_config_file();
+	}
+}
+add_action( 'activate_sf-move-login/sf-move-login.php', 'rocket_activate_sfml', 11 );
+
 /**
  * Remove SFML custom urls from caching exclusion when deactivating the plugin
  *
@@ -71,11 +70,12 @@ add_action( 'deactivate_sf-move-login/sf-move-login.php', 'rocket_deactivate_sfm
 function rocket_deactivate_sfml() {
 	if ( defined( 'SFML_VERSION' ) ) {
 		remove_filter( 'rocket_cache_reject_uri', 'rocket_add_sfml_exclude_pages' );
-		
-    	// Update the WP Rocket rules on the .htaccess
-    	flush_rocket_htaccess();
-		
-    	// Regenerate the config file
-    	rocket_generate_config_file();
-    }
+
+		// Update the WP Rocket rules on the .htaccess.
+		flush_rocket_htaccess();
+
+		// Regenerate the config file.
+		rocket_generate_config_file();
+	}
 }
+add_action( 'deactivate_sf-move-login/sf-move-login.php', 'rocket_deactivate_sfml', 11 );

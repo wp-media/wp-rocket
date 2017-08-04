@@ -6,8 +6,7 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
  *
  * @since 2.1
  */
-add_action( 'layerslider_ready', '__deactivate_rocket_specify_image_dimensions_with_layerslider' );
-function __deactivate_rocket_specify_image_dimensions_with_layerslider()
-{
+function rocket_deactivate_specify_image_dimensions_with_layerslider() {
 	remove_filter( 'rocket_buffer', 'rocket_specify_image_dimensions' );
 }
+add_action( 'layerslider_ready', 'rocket_deactivate_specify_image_dimensions_with_layerslider' );

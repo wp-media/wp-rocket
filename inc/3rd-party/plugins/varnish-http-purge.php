@@ -2,7 +2,7 @@
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 if ( class_exists( 'VarnishPurger' ) ) :
-	add_action( 'admin_init', '__rocket_clear_cache_after_varnish_http_purge' );
+	add_action( 'admin_init', 'rocket_clear_cache_after_varnish_http_purge' );
 	/**
 	 * Clear WP Rocket cache after purged the Varnish cache via Varnish HTTP Purge plugin
 	 *
@@ -10,7 +10,7 @@ if ( class_exists( 'VarnishPurger' ) ) :
 	 *
 	 * @return void
 	 */
-	function __rocket_clear_cache_after_varnish_http_purge() {
+	function rocket_clear_cache_after_varnish_http_purge() {
 		if ( isset( $_GET['vhp_flush_all'] ) && current_user_can( 'manage_options' ) && check_admin_referer( 'varnish-http-purge' ) ) {
 			// Clear all caching files
 			rocket_clean_domain();

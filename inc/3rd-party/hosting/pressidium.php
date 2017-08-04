@@ -2,7 +2,7 @@
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 if ( defined( 'WP_NINUKIS_WP_NAME' ) ) :
-	add_action( 'admin_init', '__rocket_clear_cache_after_pressidium' );
+	add_action( 'admin_init', 'rocket_clear_cache_after_pressidium' );
 	/**
 	 * Clear WP Rocket cache after purged the Varnish cache via Pressidium Hosting
 	 *
@@ -10,7 +10,7 @@ if ( defined( 'WP_NINUKIS_WP_NAME' ) ) :
 	 *
 	 * @return void
 	 */
-	function __rocket_clear_cache_after_pressidium() {
+	function rocket_clear_cache_after_pressidium() {
 		if ( isset( $_POST['purge-all'] ) && current_user_can( 'manage_options' ) && check_admin_referer( WP_NINUKIS_WP_NAME . '-caching' ) ) {
 			// Clear all caching files
 			rocket_clean_domain();

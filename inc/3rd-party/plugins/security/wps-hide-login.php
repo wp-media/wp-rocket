@@ -2,14 +2,14 @@
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 if ( class_exists( 'WPS_Hide_Login' ) ) :
-	add_action( 'update_option_whl_page', '__rocket_after_update_single_options', 10, 2 );
+	add_action( 'update_option_whl_page', 'rocket_after_update_single_options', 10, 2 );
 	add_filter( 'rocket_cache_reject_uri', 'rocket_exlude_wps_hide_login_page' );
 endif;
 
 /**
  * Exclude WPS Hide Login custom url from caching
  *
- * @since 3.0 Moved to 3rd party file
+ * @since 2.11 Moved to 3rd party file
  * @since 2.6
  *
  * @param array $urls An array of URLs to exclude from cache.
@@ -25,7 +25,7 @@ add_action( 'activate_wps-hide-login/wps-hide-login.php', 'rocket_activate_wps_h
 /**
  * Add WPS Hide Login custom url to caching exclusion when activating the plugin
  *
- * @since 3.0
+ * @since 2.11
  */
 function rocket_activate_wps_hide_login() {
 	add_filter( 'rocket_cache_reject_uri', 'rocket_exlude_wps_hide_login_page' );
@@ -41,7 +41,7 @@ add_action( 'deactivate_wps-hide-login/wps-hide-login.php', 'rocket_deactivate_w
 /**
  * Remove WPS Hide Login custom url from caching exclusion when deactivating the plugin
  *
- * @since 3.0
+ * @since 2.11
  */
 function rocket_deactivate_wps_hide_login() {
 	remove_filter( 'rocket_cache_reject_uri', 'rocket_exlude_wps_hide_login_page' );

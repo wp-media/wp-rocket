@@ -3,11 +3,11 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 if ( defined( 'WPSHOP_VERSION' ) && class_exists( 'wpshop_tools' ) && method_exists( 'wpshop_tools','get_page_id' ) ) :
 	add_filter( 'rocket_cache_reject_uri', 'rocket_exclude_wpshop_pages' );
-	add_action( 'update_option_wpshop_cart_page_id'			, '__rocket_after_update_single_options', 10, 2 );
-	add_action( 'update_option_wpshop_checkout_page_id'		, '__rocket_after_update_single_options', 10, 2 );
-	add_action( 'update_option_wpshop_payment_return_page_id', '__rocket_after_update_single_options', 10, 2 );
-	add_action( 'update_option_wpshop_payment_return_nok_page_id', '__rocket_after_update_single_options', 10, 2 );
-	add_action( 'update_option_wpshop_myaccount_page_id'	, '__rocket_after_update_single_options', 10, 2 );
+	add_action( 'update_option_wpshop_cart_page_id'			, 'rocket_after_update_single_options', 10, 2 );
+	add_action( 'update_option_wpshop_checkout_page_id'		, 'rocket_after_update_single_options', 10, 2 );
+	add_action( 'update_option_wpshop_payment_return_page_id', 'rocket_after_update_single_options', 10, 2 );
+	add_action( 'update_option_wpshop_payment_return_nok_page_id', 'rocket_after_update_single_options', 10, 2 );
+	add_action( 'update_option_wpshop_myaccount_page_id'	, 'rocket_after_update_single_options', 10, 2 );
 endif;
 
 function rocket_exclude_wpshop_pages( $urls ) {

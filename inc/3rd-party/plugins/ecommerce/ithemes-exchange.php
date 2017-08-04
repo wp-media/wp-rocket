@@ -3,7 +3,7 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 if ( function_exists( 'it_exchange_get_page_type' ) && function_exists( 'it_exchange_get_page_url' ) ) :
 	add_filter( 'rocket_cache_reject_uri', 'rocket_exclude_ithemes_exchange_pages' );
-	add_action( 'update_option_it-storage-exchange_settings_pages', '__rocket_after_update_single_options', 10, 2 );
+	add_action( 'update_option_it-storage-exchange_settings_pages', 'rocket_after_update_single_options', 10, 2 );
 endif;
 
 function rocket_exclude_ithemes_exchange_pages( $urls ) {	

@@ -3,7 +3,7 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 if ( defined( 'JIGOSHOP_VERSION' ) && function_exists( 'jigoshop_get_page_id' ) ) :
 	add_filter( 'rocket_cache_reject_uri', 'rocket_exclude_jigoshop_pages' );
-	add_action( 'update_option_jigoshop_options', '__rocket_after_update_array_options', 10, 2 );
+	add_action( 'update_option_jigoshop_options', 'rocket_after_update_array_options', 10, 2 );
 endif;
 
 function rocket_exclude_jigoshop_pages( $urls ) {

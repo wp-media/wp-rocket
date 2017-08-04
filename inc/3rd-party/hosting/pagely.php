@@ -1,7 +1,7 @@
 <?php 
 defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
-add_action( 'pagely_page_purge-cache', '__rocket_clear_cache_after_pagely' );
+add_action( 'pagely_page_purge-cache', 'rocket_clear_cache_after_pagely' );
 /**
  * Clear WP Rocket cache after purged the Varnish cache via Pagely hosting
  *
@@ -9,7 +9,7 @@ add_action( 'pagely_page_purge-cache', '__rocket_clear_cache_after_pagely' );
  *
  * @return void
  */
-function __rocket_clear_cache_after_pagely() {
+function rocket_clear_cache_after_pagely() {
 	// Clear all caching files
 	rocket_clean_domain();
 		

@@ -1,8 +1,7 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
+defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
 
 require( WP_ROCKET_3RD_PARTY_PATH . 'hosting/wpengine.php' );
-require( WP_ROCKET_3RD_PARTY_PATH . 'hosting/godaddy.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'hosting/flywheel.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'hosting/wp-serveur.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'hosting/varnish.php' );
@@ -13,6 +12,8 @@ require( WP_ROCKET_3RD_PARTY_PATH . 'hosting/pressidium.php' );
 
 if ( version_compare( phpversion(), '5.3.0', '>=' ) ) {
 	require( WP_ROCKET_3RD_PARTY_PATH . 'hosting/savvii.php' );
+	require( WP_ROCKET_3RD_PARTY_PATH . 'hosting/godaddy.php' );
+	require( WP_ROCKET_3RD_PARTY_PATH . 'plugins/geotargetingwp.php' );
 }
 
 require( WP_ROCKET_3RD_PARTY_PATH . 'plugins/slider/revslider.php' );
@@ -48,7 +49,6 @@ require( WP_ROCKET_3RD_PARTY_PATH . 'plugins/custom-login.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'plugins/mobile/amp.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'plugins/mobile/wp-appkit.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'plugins/mobile/wp-touch.php' );
-require( WP_ROCKET_3RD_PARTY_PATH . 'plugins/jetpack.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'plugins/seo/yoast-seo.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'plugins/seo/all-in-one-seo-pack.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'plugins/wp-rest-api.php' );
@@ -63,6 +63,9 @@ require( WP_ROCKET_3RD_PARTY_PATH . 'plugins/wp-retina-2x.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'plugins/varnish-http-purge.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'plugins/thrive-leads.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'plugins/mailchimp.php' );
+require( WP_ROCKET_3RD_PARTY_PATH . 'plugins/advanced-custom-fields.php' );
+require( WP_ROCKET_3RD_PARTY_PATH . 'plugins/wp-offload-s3.php' );
+require( WP_ROCKET_3RD_PARTY_PATH . 'plugins/wp-offload-s3-assets.php' );
 
 require( WP_ROCKET_3RD_PARTY_PATH . 'themes/divi.php' );
 require( WP_ROCKET_3RD_PARTY_PATH . 'themes/avada.php' );

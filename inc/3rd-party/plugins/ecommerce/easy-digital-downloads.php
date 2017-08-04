@@ -3,7 +3,7 @@ defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
 
 if ( function_exists( 'EDD' ) ) :
 	add_filter( 'rocket_cache_reject_uri', 'rocket_exclude_edd_pages' );
-	add_action( 'update_option_edd_settings', '__rocket_after_update_array_options', 10, 2 );
+	add_action( 'update_option_edd_settings', 'rocket_after_update_array_options', 10, 2 );
 endif;
 
 function rocket_exclude_edd_pages( $urls ) {

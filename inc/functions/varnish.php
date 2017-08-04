@@ -1,12 +1,12 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin\' uh?' );
+defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
 
 /**
  * Send data to Varnish
  *
  * @since 2.6.8
  *
- * @param  string $url The URL to purge
+ * @param  string $url The URL to purge.
  * @return void
  */
 function rocket_varnish_http_purge( $url ) {
@@ -15,7 +15,7 @@ function rocket_varnish_http_purge( $url ) {
 	$varnish_x_purgemethod = 'default';
 	$regex = '';
 
-	if ( $query == 'vregex' ) {
+	if ( 'vregex' === $query ) {
 		$varnish_x_purgemethod = 'regex';
 		$regex = '.*';
 	}
@@ -50,14 +50,14 @@ function rocket_varnish_http_purge( $url ) {
 			'blocking'    => false,
 			'redirection' => 0,
 			'headers'     => array(
-    			/**
-                 * Filters the host value passed in the request headers
-                 *
-                 * @since 2.8.15
-                 * @param string The host
-                 */
+				/**
+				 * Filters the host value passed in the request headers
+				 *
+				 * @since 2.8.15
+				 * @param string The host
+				 */
 				'host'           => apply_filters( 'rocket_varnish_purge_request_host', $host ),
-				'X-Purge-Method' => $varnish_x_purgemethod
+				'X-Purge-Method' => $varnish_x_purgemethod,
 			),
 		)
 	);
