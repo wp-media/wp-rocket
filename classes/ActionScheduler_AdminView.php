@@ -30,6 +30,7 @@ class ActionScheduler_AdminView {
 	public function init() {
 
 		if ( is_admin() && ( ! defined( 'DOING_AJAX' ) || false == DOING_AJAX ) ) {
+			add_filter( 'action_scheduler_post_type_args', array( self::instance(), 'action_scheduler_post_type_args' ) );
 			add_action('admin_menu', array( self::instance(), 'register_menu' ) );
 		}
 
@@ -56,6 +57,14 @@ class ActionScheduler_AdminView {
 		add_filter( 'posts_orderby', array( self::instance(), 'custom_orderby' ), 10, 2 );
 
 		add_filter( 'posts_search', array( self::instance(), 'search_post_password' ), 10, 2 );
+	}
+
+	public function action_scheduler_post_type_args( $args ) {
+		return array_merge( $args, array(
+					'show_ui'           => true,
+					'show_in_menu'      => 'tools.php',
+					'show_in_admin_bar' => false,
+					) );
 	}
 
 	public function register_menu() {

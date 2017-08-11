@@ -188,6 +188,88 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	 * @param array $query
 	 * @return array The IDs of actions matching the query
 	 */
+	public function query_actions_count( $query = array() ) {
+		$query = wp_parse_args( $query, array(
+			'hook' => '',
+			'args' => NULL,
+			'date' => NULL,
+			'date_compare' => '<=',
+			'modified' => NULL,
+			'modified_compare' => '<=',
+			'group' => '',
+			'status' => '',
+			'claimed' => NULL,
+		) );
+
+		/** @var wpdb $wpdb */
+		global $wpdb;
+		$sql = "SELECT count(p.ID) FROM {$wpdb->posts} p";
+		$sql_params = array();
+		if ( !empty($query['group']) ) {
+			$sql .= " INNER JOIN {$wpdb->term_relationships} tr ON tr.object_id=p.ID";
+			$sql .= " INNER JOIN {$wpdb->term_taxonomy} tt ON tr.term_taxonomy_id=tt.term_taxonomy_id";
+			$sql .= " INNER JOIN {$wpdb->terms} t ON tt.term_id=t.term_id AND t.slug=%s";
+			$sql_params[] = $query['group'];
+		}
+		$sql .= " WHERE post_type=%s";
+		$sql_params[] = self::POST_TYPE;
+		if ( $query['hook'] ) {
+			$sql .= " AND p.post_title=%s";
+			$sql_params[] = $query['hook'];
+		}
+		if ( !is_null($query['args']) ) {
+			$sql .= " AND p.post_content=%s";
+			$sql_params[] = json_encode($query['args']);
+		}
+
+		switch ( $query['status'] ) {
+			case self::STATUS_COMPLETE:
+				$sql .= " AND p.post_status='publish'";
+				break;
+			case self::STATUS_PENDING:
+			case self::STATUS_RUNNING:
+			case self::STATUS_FAILED:
+				$sql .= " AND p.post_status=%s";
+				$sql_params[] = $query['status'];
+				break;
+		}
+
+		if ( $query['date'] instanceof DateTime ) {
+			$date = clone $query['date'];
+			$date->setTimezone( new DateTimeZone('UTC') );
+			$date_string = $date->format('Y-m-d H:i:s');
+			$comparator = $this->validate_sql_comparator($query['date_compare']);
+			$sql .= " AND p.post_date_gmt $comparator %s";
+			$sql_params[] = $date_string;
+		}
+
+		if ( $query['modified'] instanceof DateTime ) {
+			$modified = clone $query['modified'];
+			$modified->setTimezone( new DateTimeZone('UTC') );
+			$date_string = $modified->format('Y-m-d H:i:s');
+			$comparator = $this->validate_sql_comparator($query['modified_compare']);
+			$sql .= " AND p.post_modified_gmt $comparator %s";
+			$sql_params[] = $date_string;
+		}
+
+		if ( $query['claimed'] === TRUE ) {
+			$sql .= " AND p.post_password != ''";
+		} elseif ( $query['claimed'] === FALSE ) {
+			$sql .= " AND p.post_password = ''";
+		} elseif ( !is_null($query['claimed']) ) {
+			$sql .= " AND p.post_password = %s";
+			$sql_params[] = $query['claimed'];
+		}
+
+		$sql = $wpdb->prepare( $sql, $sql_params );
+
+		return $wpdb->get_var($sql);
+	}
+
+	/**
+	 * @param array $query
+	 * @return array The IDs of actions matching the query
+	 */
 	public function query_actions( $query = array() ) {
 		$query = wp_parse_args( $query, array(
 			'hook' => '',
