@@ -16,6 +16,9 @@ class ActionScheduler_QueueRunner {
 	/** @var ActionScheduler_FatalErrorMonitor */
 	private $monitor = NULL;
 
+
+	private $claim;
+
 	/**
 	 * @return ActionScheduler_QueueRunner
 	 * @codeCoverageIgnore
@@ -138,5 +141,55 @@ class ActionScheduler_QueueRunner {
 
 		return $schedules;
 	}
+
+	/**
+	 *
+	 *
+	 * @author Jeremy Pry
+	 *
+	 * @param $size
+	 *
+	 * @return bool|WP_Error
+	 */
+	public function setup_wp_cli_process( $size ) {
+		$this->run_cleanup();
+		$this->monitor = new ActionScheduler_FatalErrorMonitor( $this->store );
+
+
+		if ( $this->store->get_claim_count() > apply_filters( 'action_scheduler_queue_runner_concurrent_batches', 5 ) ) {
+			return new WP_Error(
+				'action_scheduler_concurrent_batches',
+				__( 'There are too many concurrent batches already running.', '' )
+			);
+		}
+
+		$this->claim = $this->store->stake_claim( $size );
+		$this->monitor->attach( $this->claim );
+
+		return true;
+	}
+
+
+	public function run_wp_cli_batch() {
+
+		$processed_actions = 0;
+		foreach ( $claim->get_actions() as $action_id ) {
+			// bail if we lost the claim
+			if ( ! in_array( $action_id, $this->store->find_actions_by_claim_id( $claim->get_id() ) ) ) {
+				break;
+			}
+			$this->process_action( $action_id );
+			$processed_actions ++;
+		}
+		$this->store->release_claim( $claim );
+		$this->monitor->detach();
+		$this->clear_caches();
+
+		return $processed_actions;
+	}
+
+
+	public function cleanup_wp_cli_process() {
+		unset( $this->monitor );
+	}
 }
- 
