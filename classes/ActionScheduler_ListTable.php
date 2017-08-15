@@ -14,6 +14,10 @@ class ActionScheduler_ListTable extends PP_List_Table {
 
 	protected $data_store;
 
+	protected $bulk_actions = array(
+		'delete' => 'Delete',
+	);
+
 	public function __construct() {
 		$this->data_store = ActionScheduler_Store::instance();
 		parent::__construct( array(
@@ -73,6 +77,12 @@ class ActionScheduler_ListTable extends PP_List_Table {
 		}
 	}
 
+	protected function bulk_delete( array $ids ) {
+		foreach ( $ids as $id ) {
+			$this->data_store->delete_action( $id );
+		}
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -108,7 +118,6 @@ class ActionScheduler_ListTable extends PP_List_Table {
 				'group' => $item->get_group(),
 				'recurrence' => $this->get_recurrence( $item ),
 				'scheduled' => $item->get_schedule(),
-				'claim'
 			);
 		}
 
