@@ -12,6 +12,8 @@ php:
     - "7.0"
     - "7.1"
 
+dist: precise
+
 # Specify versions of WordPress to test against
 # WP_VERSION = WordPress version number (use "master" for SVN trunk)
 # WP_MULTISITE = whether to test multisite (use either "0" or "1")
