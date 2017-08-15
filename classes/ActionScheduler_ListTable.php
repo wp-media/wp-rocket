@@ -72,9 +72,11 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	}
 
 	protected function get_status( $item ) {
-		if ( $item instanceof ActionScheduler_Action ) {
-			return 'Pending';
+		if ( $item->is_finished() ) {
+			return 'Completed';
 		}
+
+		return 'Pending';
 	}
 
 	protected function bulk_delete( array $ids ) {
