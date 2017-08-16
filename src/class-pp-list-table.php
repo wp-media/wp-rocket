@@ -55,6 +55,16 @@ abstract class PP_List_Table extends WP_List_Table {
 	protected $columns = array();
 
 	/**
+	 * Defines the row-actions. It expects an array where the key
+	 * is the column name and the value is an array of actions.
+	 *
+	 * The array of actions are key => value, where key is the method name
+	 * (with the prefix row_action_<key>) and the value is the label
+	 * and title.
+	 */
+	protected $row_actions = array();
+
+	/**
 	 * The Primary key of our table
 	 */
 	protected $ID = 'ID';
@@ -221,7 +231,7 @@ abstract class PP_List_Table extends WP_List_Table {
 	/**
 	 * Prepares the ORDER BY sql statement. It uses `$this->sort_by` to know which
 	 * columns are sortable. This requests validates the orderby $_GET parameter is a valid
-	 * columna and sortable. It will also use order (ASC|DESC) using DESC by default.
+	 * column and sortable. It will also use order (ASC|DESC) using DESC by default.
 	 */
 	protected function get_items_query_order() {
 		if ( empty( $this->sort_by ) ) {
@@ -324,6 +334,8 @@ abstract class PP_List_Table extends WP_List_Table {
 
 		$this->process_bulk_action();
 
+		$this->process_row_actions();
+
 		if ( ! empty( $_REQUEST['_wp_http_referer'] ) ) {
 			// _wp_http_referer is used only on bulk actions, we remove it to keep the $_GET shorter
 			wp_redirect( remove_query_arg( array( '_wp_http_referer', '_wpnonce' ), wp_unslash( $_SERVER['REQUEST_URI'] ) ) );
@@ -410,10 +422,71 @@ abstract class PP_List_Table extends WP_List_Table {
 	}
 
 	/**
+	 * Renders the row-actions.
+	 *
+	 * This method renders the action menu, it reads the definition from the $row_actions property,
+	 * and it checks that the row action method exists before rendering it.
+	 *
+	 * @param array $row     Row to render
+	 * @param $column_name   Current row
+	 */
+	protected function maybe_render_actions( $row, $column_name ) {
+		if ( empty( $this->row_actions[ $column_name ] ) ) {
+			return;
+		}
+
+		$row_id = $row[ $this->ID ];
+
+		echo '<div class="row-actions">';
+		foreach ( $this->row_actions[ $column_name ] as $action => $definition ) {
+			if ( is_array( $definition ) ) {
+				list( $title, $label ) = $definition;
+			} else {
+				$title = $label = $definition;
+			}
+
+			if ( ! method_exists( $this, 'row_action_' . $action ) ) {
+				continue;
+			}
+
+			echo '<span class="' . esc_attr( $action ) . '">';
+			echo '<a href="' . add_query_arg( array(
+				'row_action' => $action,
+				'row_id' => $row_id,
+				'nonce'  => wp_create_nonce( $action . '::' . $row_id ),
+			) ) . '" title="' . esc_attr( $this->translate( $label ) ) . '">' . esc_html( $this->translate( $title ) ) . '</a>';
+			echo '</span>';
+		}
+		echo '</div>';
+	}
+
+	protected function process_row_actions() {
+		$parameters = array( 'row_action', 'row_id', 'nonce' );
+		foreach ( $parameters as $parameter ) {
+			if ( empty( $_REQUEST[ $parameter ] ) ) {
+				return;
+			}
+		}
+
+		$method = 'row_action_' . $_REQUEST['row_action'];
+
+		if ( $_REQUEST['nonce'] === wp_create_nonce( $_REQUEST[ 'row_action' ] . '::' . $_REQUEST[ 'row_id' ] ) && method_exists( $this, $method ) ) {
+			$this->$method( $_REQUEST['row_id'] );
+		}
+
+		wp_redirect( remove_query_arg(
+			array( 'row_id', 'row_action', 'nonce' ),
+			wp_unslash( $_SERVER['REQUEST_URI'] )
+		) );
+		exit;
+	}
+
+	/**
 	 * Default column formatting, it will escape everythig for security.
 	 */
 	public function column_default( $item, $column_name ) {
-		return esc_html( $item[ $column_name ] );
+		echo esc_html( $item[ $column_name ] );
+		$this->maybe_render_actions( $item, $column_name );
 	}
 
 	/**
