@@ -22,6 +22,12 @@ class ActionScheduler_ListTable extends PP_List_Table {
 		'scheduled' => 'Scheduled Date',
 	);
 
+	protected $row_actions = array(
+		'hook' => array(
+			'run' => array( 'Run', 'Process the action now as if it were run as part of a queue' ),
+		),
+	);
+
 	/**
 	 *  The active data store
 	 */
@@ -136,10 +142,19 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	 *
 	 * @return void
 	 */
-	protected function bulk_delete( array $ids ) {
+	protected function bulk_delete( array $ids, $ids_sql ) {
 		foreach ( $ids as $id ) {
 			$this->data_store->delete_action( $id );
 		}
+	}
+
+	/**
+	 * Implements the logic behind running an action. PP_Table_List validates the request and their
+	 * parameters are valid.
+	 */
+	protected function row_action_run( $row_id ) {
+		$action = $this->data_store->fetch_action( $row_id );
+		$action->execute();
 	}
 
 	/**
@@ -147,6 +162,8 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	 */
 	public function prepare_items() {
 		$this->process_bulk_action();
+
+		$this->process_row_actions();
 
 		if ( ! empty( $_REQUEST['_wp_http_referer'] ) ) {
 			// _wp_http_referer is used only on bulk actions, we remove it to keep the $_GET shorter
