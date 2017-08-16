@@ -1,8 +1,18 @@
 <?php
 
+/**
+ *
+ */
 class ActionScheduler_ListTable extends PP_List_Table {
+	/**
+	 * The package name. It is used also as the domain for the translations
+	 */
 	protected $package = 'action-scheduler';
 
+	/**
+	 * Columns to show (name => label). The label is automatically
+	 * translated before rendering
+	 */
 	protected $columns = array(
 		'hook' => 'Hook',
 		'status' => 'Status',
@@ -12,12 +22,25 @@ class ActionScheduler_ListTable extends PP_List_Table {
 		'scheduled' => 'Scheduled Date',
 	);
 
+	/**
+	 *  The active data store
+	 */
 	protected $data_store;
 
+	/**
+	 * Bulk actions. The key of the array is the method name of the implementation:
+	 *
+	 *     bulk_<key>(array $ids, string $sql_in).
+	 *
+	 * See the comments in the parent class for further details
+	 */
 	protected $bulk_actions = array(
 		'delete' => 'Delete',
 	);
 
+	/**
+	 * Set the current data store object into `data_store` and initialises the object.
+	 */
 	public function __construct() {
 		$this->data_store = ActionScheduler_Store::instance();
 		parent::__construct( array(
@@ -27,6 +50,13 @@ class ActionScheduler_ListTable extends PP_List_Table {
 		) );
 	}
 
+	/**
+	 * Returns the recurrence of an action or 'Non-repeating'. The output is human readable.
+	 *
+	 * @param ActionScheduler_Action $item
+	 *
+	 * @return string
+	 */
 	protected function get_recurrence( $item ) {
 		$recurrence = $item->get_schedule();
 		if ( method_exists( $recurrence, 'interval_in_seconds' ) ) {
@@ -57,10 +87,22 @@ class ActionScheduler_ListTable extends PP_List_Table {
 		return 0;
 	}
 
+	/**
+	 * Serializes the argument of an action to render it in a human friendly format.
+	 *
+	 * @param array $row The array representation of the current row of the table
+	 *
+	 * @return string
+	 */
 	public function column_args( array $row ) {
 		return '<code>' . json_encode( $row['args'] ) . '</code>';
 	}
 
+	/**
+	 * Returns the scheduled date in a human friendly format.
+	 *
+	 * @param array $row The array representation of the current row of the table
+	 */
 	public function column_scheduled( $row ) {
 		$next_timestamp = $row['scheduled']->next()->format( 'U' );
 		echo get_date_from_gmt( gmdate( 'Y-m-d H:i:s', $next_timestamp ), 'Y-m-d H:i:s' );
@@ -71,6 +113,11 @@ class ActionScheduler_ListTable extends PP_List_Table {
 		}
 	}
 
+	/**
+	 * Returns if the current action is finished or pending.
+	 *
+	 * @param ActionScheduler_Action $item
+	 */
 	protected function get_status( $item ) {
 		if ( $item->is_finished() ) {
 			return 'Completed';
@@ -79,6 +126,16 @@ class ActionScheduler_ListTable extends PP_List_Table {
 		return 'Pending';
 	}
 
+	/**
+	 * Bulk delete
+	 *
+	 * Deletes actions based on their ID. This is the handler for the bulk delete. It assumes the data
+	 * properly validated by the callee and it will delete the actions without any extra validation.
+	 *
+	 * @param array $ids
+	 *
+	 * @return void
+	 */
 	protected function bulk_delete( array $ids ) {
 		foreach ( $ids as $id ) {
 			$this->data_store->delete_action( $id );
@@ -130,6 +187,14 @@ class ActionScheduler_ListTable extends PP_List_Table {
 		) );
 	}
 
+	/**
+	 * This function is used to filter the actions by a status. It will return the status based on a 
+	 * a GET parameter or it will filter by 'pending' by default. 
+	 * We filter by status because if we do not filter we have NullActions that are not rendered at the 
+	 * moment.
+	 *
+	 * @return string
+	 */
 	public function get_request_status() {
 		$statuses = array(
 			ActionScheduler_Store::STATUS_PENDING,
@@ -144,6 +209,11 @@ class ActionScheduler_ListTable extends PP_List_Table {
 		return ActionScheduler_Store::STATUS_PENDING;
 	}
 
+	/**
+	 * Prints the available statuses so the user can click to filter.
+	 *
+	 * @return void
+	 */
 	public function display_filter_by_status() {
 		$statuses = array(
 			'pending' => ActionScheduler_Store::STATUS_PENDING,
@@ -181,6 +251,13 @@ class ActionScheduler_ListTable extends PP_List_Table {
 		}
 	}
 
+	/**
+	 * Overrides the original display method to print the `display_filter_by_status()`. By overriding
+	 * this object it prints all the needed HTML already, making it easy to use from higher layers because
+	 * the object is 'self-contained' and 'self-sufficient'.
+	 *
+	 * @return void
+	 */
 	public function display() {
 		$this->display_filter_by_status();
 
