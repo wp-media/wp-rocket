@@ -279,19 +279,18 @@ if ( ! function_exists( 'set_rocket_cloudflare_cache_lvl' ) ) :
 endif;
 
 if ( ! function_exists( 'rocket_delete_script_wp_version' ) ) :
-	/**
-	 * Used to remove version query string in CSS/JS URL
-	 *
-	 * @since 1.1.6
-	 * @deprecated 2.9
-	 * @deprecated Use rocket_browser_cache_busting()
-	 *
-	 * @param string $src Source URL for the JS/CSS.
-	 */
-	function rocket_delete_script_wp_version( $src ) {
-	    _deprecated_function( __FUNCTION__, '2.9', 'rocket_browser_cache_busting()' );
-	    return rocket_browser_cache_busting( $src );
-	}
+/**
+ * Used to remove version query string in CSS/JS URL
+ *
+ * @since 1.1.6
+ * @deprecated 2.9
+ * @deprecated Use rocket_browser_cache_busting()
+ *
+ */
+function rocket_delete_script_wp_version( $src ) {
+    _deprecated_function( __FUNCTION__, '2.9', 'rocket_browser_cache_busting()' );
+    return rocket_browser_cache_busting( $src );
+}
 endif;
 
 if ( ! function_exists( 'rocket_exclude_deferred_js' ) ) :
@@ -343,4 +342,34 @@ if ( ! function_exists( 'rocket_exclude_js_buddypress' ) ) :
 		_deprecated_function( __FUNCTION__, '2.10.7' );
 		return $excluded_handle;
 	}
+endif;
+
+if ( ! function_exists( 'get_rocket_logins_exclude_pages' ) ) :
+/**
+ * Get hide login pages to automatically exclude them to the cache.
+ *
+ * @since 2.6
+ * @deprecated 3.0
+ *
+ * @return array $urls
+ */
+function get_rocket_logins_exclude_pages() {
+	_deprecated_function( __FUNCTION__, '2.11' );
+	return array();
+}
+endif;
+
+if ( ! function_exists( 'get_rocket_ecommerce_exclude_pages' ) ) :
+/**
+ * Get cart & checkout path with their translations to automatically exclude them to the cache.
+ *
+ * @since 2.4
+ * @deprecated 3.0
+ *
+ * @return array $urls
+ */
+function get_rocket_ecommerce_exclude_pages() {
+	_deprecated_function( __FUNCTION__, '2.11' );
+	return array();
+}
 endif;

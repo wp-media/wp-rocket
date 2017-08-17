@@ -1,6 +1,9 @@
 <?php
 defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
 
+// When Avada theme purge its own cache
+add_action( 'avada_clear_dynamic_css_cache',  'rocket_clean_domain' );	
+
 /**
  * Conflict with Avada theme and WP Rocket CDN
  *
@@ -12,6 +15,7 @@ defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
  */
 function rocket_fix_cdn_for_avada_theme( $vars, $handle ) {
 	if ( 'avada-dynamic' === $handle && get_rocket_option( 'cdn' ) ) {
+
 		$src = get_rocket_cdn_url( get_template_directory_uri() . '/assets/less/theme/dynamic.less' );
 		$vars['template-directory'] = sprintf( '~"%s"', dirname( dirname( dirname( dirname( $src ) ) ) ) );
 		$vars['lessurl'] = sprintf( '~"%s"', dirname( $src ) );

@@ -112,14 +112,11 @@ function rocket_init() {
 	require( WP_ROCKET_FUNCTIONS_PATH . 'formatting.php' );
 	require( WP_ROCKET_FUNCTIONS_PATH . 'cdn.php' );
 	require( WP_ROCKET_FUNCTIONS_PATH . 'minify.php' );
-	require( WP_ROCKET_FUNCTIONS_PATH . 'plugins.php' );
 	require( WP_ROCKET_FUNCTIONS_PATH . 'i18n.php' );
 	require( WP_ROCKET_FUNCTIONS_PATH . 'bots.php' );
 	require( WP_ROCKET_FUNCTIONS_PATH . 'htaccess.php' );
 	require( WP_ROCKET_FUNCTIONS_PATH . 'varnish.php' );
 	require( WP_ROCKET_INC_PATH . 'deprecated.php' );
-	require( WP_ROCKET_FRONT_PATH . 'plugin-compatibility.php' );
-	require( WP_ROCKET_FRONT_PATH . 'theme-compatibility.php' );
 	require( WP_ROCKET_3RD_PARTY_PATH . '3rd-party.php' );
 	require( WP_ROCKET_COMMON_PATH . 'admin-bar.php' );
 	require( WP_ROCKET_COMMON_PATH . 'updater.php' );
@@ -160,7 +157,6 @@ function rocket_init() {
 		require( WP_ROCKET_ADMIN_PATH . 'class-repeater-field.php' );
 		require( WP_ROCKET_ADMIN_PATH . 'options.php' );
 		require( WP_ROCKET_ADMIN_PATH . 'admin.php' );
-		require( WP_ROCKET_ADMIN_PATH . 'plugin-compatibility.php' );
 		require( WP_ROCKET_ADMIN_UI_PATH . 'enqueue.php' );
 		require( WP_ROCKET_ADMIN_UI_PATH . 'notices.php' );
 		require( WP_ROCKET_ADMIN_UI_PATH . 'meta-boxes.php' );
@@ -266,7 +262,6 @@ function rocket_activation() {
 	require( WP_ROCKET_FUNCTIONS_PATH . 'options.php' );
 	require( WP_ROCKET_FUNCTIONS_PATH . 'files.php' );
 	require( WP_ROCKET_FUNCTIONS_PATH . 'formatting.php' );
-	require( WP_ROCKET_FUNCTIONS_PATH . 'plugins.php' );
 	require( WP_ROCKET_FUNCTIONS_PATH . 'i18n.php' );
 	require( WP_ROCKET_FUNCTIONS_PATH . 'htaccess.php' );
 
