@@ -318,7 +318,7 @@ function do_rocket_callback( $buffer ) {
 /**
  * Serve the cache file if exist
  *
- * @since Serve the gzipped cache file if possible
+ * @since 2.11 Serve the gzipped cache file if possible
  * @since 2.0
  *
  * @param string $rocket_cache_filepath Path to the cache file.
