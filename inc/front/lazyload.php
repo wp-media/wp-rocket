@@ -15,9 +15,40 @@ function rocket_lazyload_script() {
 	}
 
 	$suffix       = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-	$lazyload_url = get_rocket_cdn_url( WP_ROCKET_FRONT_JS_URL . 'lazyload.' . WP_ROCKET_LAZYLOAD_JS_VERSION . $suffix . '.js', array( 'all', 'css_and_js', 'js' ) );
+	$lazyload_url = get_rocket_cdn_url( WP_ROCKET_FRONT_JS_URL . 'lazyload-' . WP_ROCKET_LAZYLOAD_JS_VERSION . $suffix . '.js', array( 'all', 'css_and_js', 'js' ) );
 
-	echo '<script data-no-minify="1" data-cfasync="false">(function(w,d){function a(){var b=d.createElement("script");b.async=!0;b.src="' . $lazyload_url . '";var a=d.getElementsByTagName("script")[0];a.parentNode.insertBefore(b,a)}w.attachEvent?w.attachEvent("onload",a):w.addEventListener("load",a,!1)})(window,document);</script>';
+	echo <<<HTML
+	<script data-cfasync="false">(function(w,d){function loadScript(c,b){var a=d.createElement("script");a.async=!0;a.readyState?a.onreadystatechange=function(){if("loaded"===a.readyState||"complete"===a.readyState)a.onreadystatechange=null,b()}:a.onload=function(){b()};a.src=c;d.getElementsByTagName("head")[0].appendChild(a)}loadScript("$lazyload_url",function(){
+		var rocket_ll = new LazyLoad({
+			elements_selector: "img, iframe",
+			data_src: "lazy-src",
+			data_srcset: "lazy-srcset",
+			class_loading: "lazyloading",
+			class_loaded: "lazyloaded",
+			callback_set: function(element) {
+				//todo: check fitvids compatibility (class or data-attribute)
+				if (  element.tagName === "IFRAME" && element.classList.contains("fitvidscompatible") ) {
+					if ( element.classList.contains("lazyloaded") ) {
+						//todo: check if $.fn.fitvids() is available
+						if ( typeof $ === "function" ) {
+							$( element ).parent().fitVids();
+						}
+					} else {
+						var temp = setInterval( function() {
+							//todo: check if $.fn.fitvids() is available
+							if ( element.classList.contains("lazyloaded") && typeof $ === "function" ) {
+								$( element ).parent().fitVids();
+								clearInterval( temp );
+							} else {
+								clearInterval( temp );
+							}
+						}, 50 );
+					}
+				} // if element is an iframe
+			}	
+		});
+	});})(window,document);</script>
+HTML;
 }
 add_action( 'wp_head', 'rocket_lazyload_script', PHP_INT_MAX );
 
@@ -73,35 +104,73 @@ function rocket_lazyload_replace_callback( $matches ) {
 		}
 	}
 
-	// TO DO - improve this code with a preg_match - it's ugly!!!!
-	if ( strpos( $matches[1] . $matches[3], 'data-no-lazy=' ) === false && strpos( $matches[1] . $matches[3], 'data-lazy-original=' ) === false && strpos( $matches[1] . $matches[3], 'data-lazy-src=' ) === false && strpos( $matches[1] . $matches[3], 'data-lazysrc=' ) === false && strpos( $matches[1] . $matches[3], 'data-src=' ) === false && strpos( $matches[1] . $matches[3], 'data-lazyload=' ) === false && strpos( $matches[1] . $matches[3], 'data-bgposition=' ) === false && strpos( $matches[2], '/wpcf7_captcha/' ) === false && strpos( $matches[2], 'timthumb.php?src' ) === false && strpos( $matches[1] . $matches[3], 'data-envira-src=' ) === false && strpos( $matches[1] . $matches[3], 'fullurl=' ) === false && strpos( $matches[1] . $matches[3], 'lazy-slider-img=' ) === false && strpos( $matches[1] . $matches[3], 'data-srcset=' ) === false && strpos( $matches[1] . $matches[3], 'class="ls-l' ) === false && strpos( $matches[1] . $matches[3], 'class="ls-bg' ) === false ) {
+	$excluded_attributes = apply_filters( 'rocket_lazyload_excluded_attributes', array(
+		'data-no-lazy=',
+		'data-lazy-original=',
+		'data-lazy-src=',
+		'data-lazysrc=',
+		'data-lazyload=',
+		'data-bgposition=',
+		'data-envira-src=',
+		'fullurl=',
+		'lazy-slider-img=',
+		'data-srcset=',
+		'class="ls-l',
+		'class="ls-bg',
+	) );
 
-		/**
-		 * Filter the LazyLoad placeholder on src attribute
-		 *
-		 * @since 2.6
-		 *
-		 * @param string Output that will be printed
-		*/
-		$placeholder = apply_filters( 'rocket_lazyload_placeholder', 'data:image/gif;base64,R0lGODdhAQABAPAAAP///wAAACwAAAAAAQABAEACAkQBADs=' );
+	$excluded_src = apply_filters( 'rocket_lazyload_excluded_src', array(
+		'/wpcf7_captcha/',
+		'timthumb.php?src',
+	) );
 
-		$html = sprintf( '<img%1$s src="%4$s" data-lazy-src=%2$s%3$s>', $matches[1], $matches[2], $matches[3], $placeholder );
-
-		$html_noscript = sprintf( '<noscript><img%1$s src=%2$s%3$s></noscript>', $matches[1], $matches[2], $matches[3] );
-
-		/**
-		 * Filter the LazyLoad HTML output on images
-		 *
-		 * @since 2.3.8
-		 *
-		 * @param string $html Output that will be printed
-		*/
-		$html = apply_filters( 'rocket_lazyload_html', $html, true );
-
-		return $html . $html_noscript;
-	} else {
+	if ( rocket_is_excluded_lazyload( $matches[1] . $matches[3], $excluded_attributes ) ||  rocket_is_excluded_lazyload( $matches[2], $excluded_src ) ) {
 		return $matches[0];
 	}
+
+	/**
+	 * Filter the LazyLoad placeholder on src attribute
+	 *
+	 * @since 1.1
+	 *
+	 * @param string $placeholder Placeholder that will be printed.
+	 */
+	$placeholder = apply_filters( 'rocket_lazyload_placeholder', 'data:image/gif;base64,R0lGODdhAQABAPAAAP///wAAACwAAAAAAQABAEACAkQBADs=' );
+
+	$html = sprintf( '<img%1$s src="%4$s" data-lazy-src=%2$s%3$s>', $matches[1], $matches[2], $matches[3], $placeholder );
+
+	$html_noscript = sprintf( '<noscript><img%1$s src=%2$s%3$s></noscript>', $matches[1], $matches[2], $matches[3] );
+
+	/**
+	 * Filter the LazyLoad HTML output
+	 *
+	 * @since 1.0.2
+	 *
+	 * @param array $html Output that will be printed
+	 */
+	$html = apply_filters( 'rocket_lazyload_html', $html, true );
+
+	return $html . $html_noscript;
+}
+
+/**
+ * Determine if the current image should be excluded from lazyload
+ *
+ * @since 1.1
+ * @author Remy Perona
+ *
+ * @param string $string String to search.
+ * @param array  $excluded_values Array of excluded values to search in the string.
+ * @return bool True if one of the excluded values was found, false otherwise
+ */
+function rocket_is_excluded_lazyload( $string, $excluded_values ) {
+	foreach ( $excluded_values as $excluded_value ) {
+		if ( strpos( $string, $excluded_value ) !== false ) {
+			return true;
+		}
+	}
+
+	return false;
 }
 
 /**
