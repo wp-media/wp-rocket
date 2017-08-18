@@ -14,12 +14,14 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	 * translated before rendering
 	 */
 	protected $columns = array(
-		'hook' => 'Hook',
+		'hook'   => 'Hook',
 		'status' => 'Status',
-		'args' => 'Arguments',
-		'group' => 'Group',
+		'args'   => 'Arguments',
+		'group'  => 'Group',
 		'recurrence' => 'Recurrence',
-		'scheduled' => 'Scheduled Date',
+		'scheduled'  => 'Scheduled Date',
+		'claim_id'   => 'Claim ID',
+		'comments'   => 'Log',
 	);
 
 	protected $row_actions = array(
@@ -29,9 +31,9 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	);
 
 	/**
-	 *  The active data store
+	 *  The active data stores
 	 */
-	protected $data_store;
+	protected $store;
 
 	/**
 	 * Bulk actions. The key of the array is the method name of the implementation:
@@ -45,10 +47,14 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	);
 
 	/**
-	 * Set the current data store object into `data_store` and initialises the object.
+	 * Set the current data store object into `store->action` and initialises the object.
 	 */
 	public function __construct() {
-		$this->data_store = ActionScheduler_Store::instance();
+		$this->store = (object) array(
+			'action' => ActionScheduler_Store::instance(),
+			'log'    => ActionScheduler_Logger::instance(),
+		);
+
 		parent::__construct( array(
 			'singular' => $this->translate( 'action-scheduler' ),
 			'plural'   => $this->translate( 'action-scheduler' ),
@@ -104,6 +110,14 @@ class ActionScheduler_ListTable extends PP_List_Table {
 		return '<code>' . json_encode( $row['args'] ) . '</code>';
 	}
 
+	public function column_comments( array $row ) {
+		echo '<div class="post-com-count-wrapper">';
+		echo '<a href="" class="post-com-count post-com-count-approved">';
+		echo '<span class="comment-count-approved">' . esc_html( $row['comments'] ) . '</span>';
+		echo '</a>';
+		echo '</div>';
+	}
+
 	/**
 	 * Returns the scheduled date in a human friendly format.
 	 *
@@ -144,7 +158,7 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	 */
 	protected function bulk_delete( array $ids, $ids_sql ) {
 		foreach ( $ids as $id ) {
-			$this->data_store->delete_action( $id );
+			$this->store->action->delete_action( $id );
 		}
 	}
 
@@ -153,7 +167,7 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	 * parameters are valid.
 	 */
 	protected function row_action_run( $row_id ) {
-		$action = $this->data_store->fetch_action( $row_id );
+		$action = $this->store->action->fetch_action( $row_id );
 		$action->execute();
 	}
 
@@ -182,18 +196,19 @@ class ActionScheduler_ListTable extends PP_List_Table {
 
 		$this->items = array();
 
-		$total_items = $this->data_store->query_actions_count( $query );
+		$total_items = $this->store->action->query_actions_count( $query );
 
-		foreach ( $this->data_store->query_actions( $query ) as $id ) {
-			$item = $this->data_store->fetch_action( $id );
+		foreach ( $this->store->action->query_actions( $query ) as $id ) {
+			$item = $this->store->action->fetch_action( $id );
 			$this->items[ $id ] = array(
-				'ID'   => $id,
-				'hook' => $item->get_hook(),
+				'ID'     => $id,
+				'hook'   => $item->get_hook(),
 				'status' => $this->get_status( $item ),
-				'args' => $item->get_args(),
-				'group' => $item->get_group(),
+				'args'   => $item->get_args(),
+				'group'  => $item->get_group(),
 				'recurrence' => $this->get_recurrence( $item ),
-				'scheduled' => $item->get_schedule(),
+				'scheduled'  => $item->get_schedule(),
+				'comments'   => count( $this->store->log->get_logs( $id ) ),
 			);
 		}
 
@@ -234,13 +249,13 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	public function display_filter_by_status() {
 		$statuses = array(
 			'pending' => ActionScheduler_Store::STATUS_PENDING,
-			'publish' => ActionScheduler_Store::STATUS_COMPLETE,
+			'complete' => ActionScheduler_Store::STATUS_COMPLETE,
 			'failed'  => ActionScheduler_Store::STATUS_FAILED,
 		);
 
 		$li = array();
 		foreach ( $statuses as $name => $status ) {
-			$total_items = $this->data_store->query_actions_count( compact( 'status' ) );
+			$total_items = $this->store->action->query_actions_count( compact( 'status' ) );
 			if ( 0 === $total_items ) {
 				continue;
 			}
