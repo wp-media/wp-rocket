@@ -45,6 +45,12 @@ abstract class ActionScheduler_Store {
 	abstract public function query_actions( $query = array() );
 
 	/**
+	 * @param array $query
+	 * @return array The IDs of actions matching the query
+	 */
+	abstract public function query_actions_count( $query = array() );
+
+	/**
 	 * @param string $action_id
 	 *
 	 * @return void
