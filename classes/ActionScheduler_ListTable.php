@@ -46,10 +46,37 @@ class ActionScheduler_ListTable extends PP_List_Table {
 		'delete' => 'Delete',
 	);
 
+
+	protected static $should_include_js = false;
+
+	public static function init() {
+		add_action( 'admin_footer', __CLASS__ . '::print_script' );
+		add_action( 'admin_enqueue_scripts', __CLASS__ . '::register_javascript' );
+	}
+
+	public static function print_script() {
+		if ( ! self::$should_include_js ) {
+			return;
+		}
+		wp_enqueue_script( 'action-scheduler' );
+		wp_print_styles( 'wp-jquery-ui-dialog' );
+	}
+
+	public static function register_javascript() {
+		wp_register_script( 'action-scheduler', plugins_url( 'action-scheduler.js', dirname( __FILE__ ) ), array(
+			'jquery',
+			'jquery-ui-core',
+			'jquery-ui-dialog',
+		), '1.0', true );
+	}
+
+
 	/**
 	 * Set the current data store object into `store->action` and initialises the object.
 	 */
 	public function __construct() {
+		self::$should_include_js = true;
+
 		$this->store = (object) array(
 			'action' => ActionScheduler_Store::instance(),
 			'log'    => ActionScheduler_Logger::instance(),
@@ -111,9 +138,16 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	}
 
 	public function column_comments( array $row ) {
+		echo '<div id="log-' . $row['ID'] . '" class="log-modal hidden" style="max-width:800px">';
+		echo '<h3>Log entries for ' . $row['ID'] . '</h3>';
+		foreach ( $row['comments'] as $log ) {
+			echo '<p>' . $log->get_message() . '</p>';
+		}
+		echo '</div>';
+
 		echo '<div class="post-com-count-wrapper">';
-		echo '<a href="" class="post-com-count post-com-count-approved">';
-		echo '<span class="comment-count-approved">' . esc_html( $row['comments'] ) . '</span>';
+		echo '<a href="#" data-log-id="' . $row['ID'] . '" class="post-com-count post-com-count-approved log-modal-open">';
+		echo '<span class="comment-count-approved">' . esc_html( count( $row['comments'] ) ) . '</span>';
 		echo '</a>';
 		echo '</div>';
 	}
@@ -208,7 +242,8 @@ class ActionScheduler_ListTable extends PP_List_Table {
 				'group'  => $item->get_group(),
 				'recurrence' => $this->get_recurrence( $item ),
 				'scheduled'  => $item->get_schedule(),
-				'comments'   => count( $this->store->log->get_logs( $id ) ),
+				'claim_id'   => '',
+				'comments'   => $this->store->log->get_logs( $id ),
 			);
 		}
 
@@ -292,7 +327,6 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	 */
 	public function display() {
 		$this->display_filter_by_status();
-
 		parent::display();
 	}
 }

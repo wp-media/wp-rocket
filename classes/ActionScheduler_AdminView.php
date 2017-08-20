@@ -32,6 +32,7 @@ class ActionScheduler_AdminView {
 		if ( is_admin() && ( ! defined( 'DOING_AJAX' ) || false == DOING_AJAX ) ) {
 			add_filter( 'action_scheduler_post_type_args', array( self::instance(), 'action_scheduler_post_type_args' ) );
 			add_action( 'admin_menu', array( self::instance(), 'register_menu' ) );
+			ActionScheduler_ListTable::init();
 		}
 
 		self::$admin_url = admin_url( 'edit.php?post_type=' . ActionScheduler_wpPostStore::POST_TYPE );
