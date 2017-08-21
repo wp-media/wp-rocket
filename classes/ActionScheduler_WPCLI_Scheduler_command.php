@@ -1,63 +1,39 @@
 <?php
-/**
- *
- */
 
 class ActionScheduler_WPCLI_Scheduler_command extends WP_CLI_Command {
 
 	/**
-	 * Run scheduler
+	 * Run the Action Scheduler
+	 *
+	 * ## OPTIONS
+	 *
+	 * [--batch-size=<size>]
+	 * : The maximum number of actions to run. Defaults to 100.
+	 *
+	 * [--force]
+	 * : Whether to force execution despite the maximum number of concurrent processes being exceeded.
 	 *
 	 * @subcommand run-scheduler
 	 */
 	public function run_scheduler( $args, $assoc_args ) {
+		// Handle passed arguments.
+		$batch = \WP_CLI\Utils\get_flag_value( $assoc_args, 'batch-size', 100 );
+		$force = \WP_CLI\Utils\get_flag_value( $assoc_args, 'force', false );
+
+		// Set up the class instances we'll need
+		$store   = ActionScheduler_Store::instance();
+		$monitor = new ActionScheduler_FatalErrorMonitor();
+		$cleaner = new ActionScheduler_QueueCleaner();
 
 		// Get the queue runner instance
-		$queue_runner = ActionScheduler_QueueRunner::instance();
+		$runner = new ActionScheduler_WPCLI_QueueRunner( $store, $monitor, $cleaner );
+
+		// Determine how many tasks will be run.
+		$total = $runner->setup( $batch, $force );
+		\WP_CLI::line( sprintf( _n( 'Found %d scheduled task', 'Found %d scheduled tasks', $total, 'action-scheduler' ), $total ) );
 
 
-
-
-		// Get scheduled tasks to run
-		$scheduled_tasks = array();
-
-		$total = count( $scheduled_tasks );
-
-		\WP_CLI::line( sprintf( _n( 'Found %d scheduled tasks', 'Found %d scheduled task', $total, 'prospress' ), $total ) );
-
-		$progress_bar = \WP_CLI\Utils\make_progress_bar(
-			sprintf( _n( 'Running %d tasks', 'Running %d tasks', $total, 'prospress' ), number_format_i18n( $total ) ),
-			$total
-		);
-
-		$counter = 0;
-
-		foreach ( $scheduled_tasks as $scheduled_task ) {
-			try {
-				// Do something
-				$success = true;
-
-				if ( ! $success ) {
-					\WP_CLI::warning( 'Some problem happened' );
-				} else {
-					// Success!
-				}
-
-				$counter ++;
-
-				$progress_bar->tick();
-
-				// Every 100 tasks, clean memory
-				if ( 0 === ( $counter % 100 ) ) {
-					$this->stop_the_insanity();
-				}
-			} catch ( \Exception $e ) {
-				\WP_CLI::error( 'Some big problem happened' );
-			}
-		}
-
-		$progress_bar->finish();
-
+		$runner->run();
 		\WP_CLI::success( __( 'Scheduled task queue cleared.', 'prospress' ) );
 	}
 }
