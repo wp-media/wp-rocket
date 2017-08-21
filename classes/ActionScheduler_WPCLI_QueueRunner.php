@@ -56,7 +56,7 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueCl
 	 * @param int  $batch_size The batch size to process.
 	 * @param bool $force      Whether to force running even with too many concurrent processes.
 	 *
-	 * @return int
+	 * @return int The number of actions that will be run.
 	 */
 	public function setup( $batch_size, $force = false ) {
 		$this->run_cleanup();
@@ -133,6 +133,11 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueCl
 
 			$this->process_action( $action_id );
 			$this->progress_bar->tick();
+
+			// Free up memory after every 50 items
+			if ( 0 === $this->progress_bar->current() % 50 ) {
+				$this->stop_the_insanity();
+			}
 		}
 
 		$completed = $this->progress_bar->current();
@@ -179,5 +184,40 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueCl
 			sprintf( __( 'Error processing action %1$s: %2$s', 'action-scheduler' ), $action_id, $exception->getMessage() ),
 			false
 		);
+	}
+
+	/**
+	 * Sleep and help avoid hitting memory limit
+	 *
+	 * @param int $sleep_time Amount of seconds to sleep
+	 */
+	protected function stop_the_insanity( $sleep_time = 0 ) {
+		if ( 0 < $sleep_time ) {
+			WP_CLI::warning( sprintf( 'Stopped the insanity for %d %s', $sleep_time, _n( 'second', 'seconds', $sleep_time ) ) );
+			sleep( $sleep_time );
+		}
+
+		WP_CLI::warning( __( 'Attempting to reduce used memory...', 'action-scheduler' ) );
+
+		/**
+		 * @var $wpdb            \wpdb
+		 * @var $wp_object_cache \WP_Object_Cache
+		 */
+		global $wpdb, $wp_object_cache;
+
+		$wpdb->queries = array();
+
+		if ( ! is_object( $wp_object_cache ) ) {
+			return;
+		}
+
+		$wp_object_cache->group_ops      = array();
+		$wp_object_cache->stats          = array();
+		$wp_object_cache->memcache_debug = array();
+		$wp_object_cache->cache          = array();
+
+		if ( is_callable( array( $wp_object_cache, '__remoteset' ) ) ) {
+			call_user_func( array( $wp_object_cache, '__remoteset' ) ); // important
+		}
 	}
 }
