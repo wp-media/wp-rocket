@@ -16,6 +16,7 @@ function rocket_lazyload_script() {
 
 	$suffix       = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 	$lazyload_url = get_rocket_cdn_url( WP_ROCKET_FRONT_JS_URL . 'lazyload-' . WP_ROCKET_LAZYLOAD_JS_VERSION . $suffix . '.js', array( 'all', 'css_and_js', 'js' ) );
+	$threshold    = apply_filters( 'rocket_lazyload_threshold', 300 );
 
 	echo <<<HTML
 	<script data-cfasync="false">(function(w,d){function loadScript(c,b){var a=d.createElement("script");a.async=!0;a.readyState?a.onreadystatechange=function(){if("loaded"===a.readyState||"complete"===a.readyState)a.onreadystatechange=null,b()}:a.onload=function(){b()};a.src=c;d.getElementsByTagName("head")[0].appendChild(a)}loadScript("$lazyload_url",function(){
@@ -25,6 +26,7 @@ function rocket_lazyload_script() {
 			data_srcset: "lazy-srcset",
 			class_loading: "lazyloading",
 			class_loaded: "lazyloaded",
+			threshold: $threshold,
 			callback_set: function(element) {
 				//todo: check fitvids compatibility (class or data-attribute)
 				if (  element.tagName === "IFRAME" && element.classList.contains("fitvidscompatible") ) {
