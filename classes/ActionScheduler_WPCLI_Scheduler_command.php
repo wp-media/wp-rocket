@@ -12,10 +12,8 @@ class ActionScheduler_WPCLI_Scheduler_command extends WP_CLI_Command {
 	 *
 	 * [--force]
 	 * : Whether to force execution despite the maximum number of concurrent processes being exceeded.
-	 *
-	 * @subcommand run-scheduler
 	 */
-	public function run_scheduler( $args, $assoc_args ) {
+	public function run( $args, $assoc_args ) {
 		// Handle passed arguments.
 		$batch = \WP_CLI\Utils\get_flag_value( $assoc_args, 'batch-size', 100 );
 		$force = \WP_CLI\Utils\get_flag_value( $assoc_args, 'force', false );
