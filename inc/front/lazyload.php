@@ -9,7 +9,7 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
  * @since 1.1.0 This code is insert in head with inline script for more performance
  * @since 1.0
  */
-function rocket_lazyload_config() {
+function rocket_lazyload_script() {
 	if ( ( ! get_rocket_option( 'lazyload' ) && ! get_rocket_option( 'lazyload_iframes' ) ) || ( ! apply_filters( 'do_rocket_lazyload', true ) && ! apply_filters( 'do_rocket_lazyload_iframes', true ) ) ) {
 		return;
 	}
@@ -50,7 +50,7 @@ function rocket_lazyload_config() {
 	</script>
 HTML;
 }
-add_action( 'wp_footer', 'rocket_lazyload_config', 9 );
+add_action( 'wp_footer', 'rocket_lazyload_script', 9 );
 
 /**
  * Enqueue the lazyload script
