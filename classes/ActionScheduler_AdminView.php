@@ -28,10 +28,15 @@ class ActionScheduler_AdminView {
 	 * @codeCoverageIgnore
 	 */
 	public function init() {
+		$self = self::instance();
 
 		if ( is_admin() && ( ! defined( 'DOING_AJAX' ) || false == DOING_AJAX ) ) {
-			add_filter( 'action_scheduler_post_type_args', array( self::instance(), 'action_scheduler_post_type_args' ) );
-			add_action( 'admin_menu', array( self::instance(), 'register_menu' ) );
+			if ( class_exists( 'WooCommerce' ) ) {
+				add_action( 'woocommerce_admin_status_content_action-scheduler', array( $self, 'render_admin_ui' ) );
+				add_filter( 'woocommerce_admin_status_tabs', array( $self, 'register_menu_woo_tab' ) );
+			} else {
+				add_action( 'admin_menu', array( $self, 'register_menu' ) );
+			}
 			ActionScheduler_ListTable::init();
 		}
 
@@ -60,29 +65,37 @@ class ActionScheduler_AdminView {
 		add_filter( 'posts_search', array( self::instance(), 'search_post_password' ), 10, 2 );
 	}
 
-	public function action_scheduler_post_type_args( $args ) {
-		return array_merge( $args, array(
-					'show_ui'           => true,
-					'show_in_menu'      => 'tools.php',
-					'show_in_admin_bar' => false,
-					) );
+	/**
+	 * Registers action-scheduler into WooCommerce > System status.
+	 */
+	public function register_menu_woo_tab( array $tabs ) {
+		$tabs[ 'action-scheduler' ] = __( 'Scheduled Actions', 'action-scheduler' );
+
+		return $tabs;
 	}
 
+	/**
+	 * Registers action-scheduler under Tools
+	 */
 	public function register_menu() {
 		add_submenu_page(
 			'tools.php',
-			__( 'Action Scheduler', 'action-scheduler' ),
-			__( 'Action Scheduler', 'action-scheduler' ),
+			__( 'Scheduled Actions', 'action-scheduler' ),
+			__( 'Scheduled Actions', 'action-scheduler' ),
 			'manage_options',
 			'action-scheduler',
 			array( $this, 'render_admin_ui' )
 		);
 	}
 
+	/**
+	 * Renders the Admin UI
+	 */
 	public function render_admin_ui() {
-		$x = new ActionScheduler_ListTable();
-		$x->prepare_items();
-		$x->display();
+		echo '<h1>' . __( 'Scheduled Actions', 'action-scheduler' ) . '</h1>';
+		$table = new ActionScheduler_ListTable();
+		$table->prepare_items();
+		$table->display();
 	}
 
 	/**
