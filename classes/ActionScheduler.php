@@ -99,7 +99,7 @@ abstract class ActionScheduler {
 		require_once( self::plugin_path('functions.php') );
 
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
-			\WP_CLI::add_command( 'action-scheduler', 'ActionScheduler_WPCLI_Scheduler_command' );
+			WP_CLI::add_command( 'action-scheduler', 'ActionScheduler_WPCLI_Scheduler_command' );
 		}
 	}
 
