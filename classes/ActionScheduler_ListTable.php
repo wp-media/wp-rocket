@@ -1,7 +1,7 @@
 <?php
 
 /**
- *
+ * Implements the admin view of the actions.
  */
 class ActionScheduler_ListTable extends PP_List_Table {
 	/**
@@ -47,32 +47,16 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	);
 
 
+	/**
+	 * If it is true it will load our own javascript library.
+	 *
+	 * Our javascript library will show the logs as a jQuery modal.
+	 */
 	protected static $should_include_js = false;
-
-	public static function init() {
-		add_action( 'admin_footer', __CLASS__ . '::print_script' );
-		add_action( 'admin_enqueue_scripts', __CLASS__ . '::register_javascript' );
-	}
-
-	public static function print_script() {
-		if ( ! self::$should_include_js ) {
-			return;
-		}
-		wp_enqueue_script( 'action-scheduler' );
-		wp_print_styles( 'wp-jquery-ui-dialog' );
-	}
-
-	public static function register_javascript() {
-		wp_register_script( 'action-scheduler', plugins_url( 'action-scheduler.js', dirname( __FILE__ ) ), array(
-			'jquery',
-			'jquery-ui-core',
-			'jquery-ui-dialog',
-		), '1.0', true );
-	}
 
 
 	/**
-	 * Set the current data store object into `store->action` and initialises the object.
+	 * Sets the current data store object into `store->action` and initialises the object.
 	 */
 	public function __construct() {
 		self::$should_include_js = true;
@@ -87,6 +71,36 @@ class ActionScheduler_ListTable extends PP_List_Table {
 			'plural'   => $this->translate( 'action-scheduler' ),
 			'ajax'     => false,
 		) );
+	}
+
+	/**
+	 * Setups the libraries. It is executed if `is_admin()` is TRUE.
+	 */
+	public static function init() {
+		add_action( 'admin_footer', __CLASS__ . '::print_script' );
+		add_action( 'admin_enqueue_scripts', __CLASS__ . '::register_javascript' );
+	}
+
+	/**
+	 * Prints our javascript, if we need it.
+	 */
+	public static function print_script() {
+		if ( ! self::$should_include_js ) {
+			return;
+		}
+		wp_enqueue_script( 'action-scheduler' );
+		wp_print_styles( 'wp-jquery-ui-dialog' );
+	}
+
+	/**
+	 * Registers our javascript library and its dependencies.
+	 */
+	public static function register_javascript() {
+		wp_register_script( 'action-scheduler', plugins_url( 'action-scheduler.js', dirname( __FILE__ ) ), array(
+			'jquery',
+			'jquery-ui-core',
+			'jquery-ui-dialog',
+		), '1.0', true );
 	}
 
 	/**
@@ -137,6 +151,14 @@ class ActionScheduler_ListTable extends PP_List_Table {
 		return '<code>' . json_encode( $row['args'] ) . '</code>';
 	}
 
+	/**
+	 * Prints the comments, which are the log entries. It needs to be named comments otherwise it won't pickup
+	 * the WordPress styles to make the number pretty.
+	 *
+	 * It will also render all the log entries, but it will be hidden and rendered on click in the number as a modal.
+	 *
+	 * @param array $row Action array.
+	 */
 	public function column_comments( array $row ) {
 		echo '<div id="log-' . $row['ID'] . '" class="log-modal hidden" style="max-width:800px">';
 		echo '<h3>Log entries for ' . $row['ID'] . '</h3>';
@@ -153,7 +175,7 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	}
 
 	/**
-	 * Returns the scheduled date in a human friendly format.
+	 * Prints the scheduled date in a human friendly format.
 	 *
 	 * @param array $row The array representation of the current row of the table
 	 */
