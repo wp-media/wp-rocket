@@ -1,12 +1,8 @@
 <?php
 
-$GLOBALS['wp_tests_options'] = array(
-	'active_plugins' => array(
-		basename(dirname(dirname(__FILE__))).'/action-scheduler.php',
-	),
-	'template' => 'twentythirteen',
-	'stylesheet' => 'twentythirteen',
-);
+$GLOBALS['wp_tests_options'][ 'template' ] = 'twentyseventeen';
+$GLOBALS['wp_tests_options'][ 'stylesheet' ] = 'twentyseventeen';
+$GLOBALS['wp_tests_options'][ 'active_plugins' ][] = basename( dirname( __DIR__ ) ) .'/action-scheduler.php';
 
 // Check for select constants defined as environment variables
 foreach ( array('WP_CONTENT_DIR', 'WP_CONTENT_URL', 'WP_PLUGIN_DIR', 'WP_PLUGIN_URL', 'WPMU_PLUGIN_DIR') as $env_constant ) {

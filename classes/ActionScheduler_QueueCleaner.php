@@ -18,15 +18,21 @@ class ActionScheduler_QueueCleaner {
 		$lifespan = apply_filters( 'action_scheduler_retention_period', $this->month_in_seconds );
 		$cutoff = as_get_datetime_object($lifespan.' seconds ago');
 
-		$actions_to_delete = $this->store->query_actions( array(
-			'status' => ActionScheduler_Store::STATUS_COMPLETE,
-			'modified' => $cutoff,
-			'modified_compare' => '<=',
-			'per_page' => apply_filters( 'action_scheduler_cleanup_batch_size', 20 ),
-		) );
+		$statuses_to_purge = array(
+			ActionScheduler_Store::STATUS_COMPLETE,
+			ActionScheduler_Store::STATUS_CANCELED,
+		);
+		foreach ( $statuses_to_purge as $status ) {
+			$actions_to_delete = $this->store->query_actions( array(
+				'status' => $status,
+				'modified' => $cutoff,
+				'modified_compare' => '<=',
+				'per_page' => apply_filters( 'action_scheduler_cleanup_batch_size', 20 ),
+			) );
 
-		foreach ( $actions_to_delete as $action_id ) {
-			$this->store->delete_action( $action_id );
+			foreach ( $actions_to_delete as $action_id ) {
+				$this->store->delete_action( $action_id );
+			}
 		}
 	}
 

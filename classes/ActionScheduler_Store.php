@@ -6,9 +6,10 @@
  */
 abstract class ActionScheduler_Store {
 	const STATUS_COMPLETE = 'complete';
-	const STATUS_PENDING = 'pending';
-	const STATUS_RUNNING = 'in-progress';
-	const STATUS_FAILED = 'failed';
+	const STATUS_PENDING  = 'pending';
+	const STATUS_RUNNING  = 'in-progress';
+	const STATUS_FAILED   = 'failed';
+	const STATUS_CANCELED = 'canceled';
 
 	/** @var ActionScheduler_Store */
 	private static $store = NULL;
@@ -111,6 +112,19 @@ abstract class ActionScheduler_Store {
 	 * @return void
 	 */
 	abstract public function mark_complete( $action_id );
+
+	/**
+	 * @param string $action_id
+	 *
+	 * @return string
+	 */
+	abstract public function get_status( $action_id );
+
+	/**
+	 * @param string $claim_id
+	 * @return array
+	 */
+	abstract public function find_actions_by_claim_id( $claim_id );
 
 	public function init() {}
 

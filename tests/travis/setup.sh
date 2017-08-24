@@ -8,7 +8,7 @@
 export WP_CORE_DIR=/tmp/wordpress
 export WP_TESTS_DIR=/tmp/wordpress-tests/tests/phpunit
 
-if [[ "$1" == "7.0" ]]
+if [[ "$1" = "5.6" || "$1" > "5.6" ]]
 then
   wget -c https://phar.phpunit.de/phpunit-5.7.phar
   chmod +x phpunit-5.7.phar
