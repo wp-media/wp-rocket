@@ -53,7 +53,7 @@ class ActionScheduler_ActionFactory {
 			return $this->single( $hook, $args, $first, $group );
 		}
 		$date = as_get_datetime_object( $first );
-		$cron = Cron\CronExpression::factory( $schedule );
+		$cron = CronExpression::factory( $schedule );
 		$schedule = new ActionScheduler_CronSchedule( $date, $cron );
 		$action = new ActionScheduler_Action( $hook, $args, $schedule, $group );
 		return $this->store( $action );

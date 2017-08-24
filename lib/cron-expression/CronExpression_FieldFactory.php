@@ -1,14 +1,12 @@
 <?php
 
-namespace Cron;
-
-use InvalidArgumentException;
-
 /**
  * CRON field factory implementing a flyweight factory
+ *
+ * @author Michael Dowling <mtdowling@gmail.com>
  * @link http://en.wikipedia.org/wiki/Cron
  */
-class FieldFactory
+class CronExpression_FieldFactory
 {
     /**
      * @var array Cache of instantiated fields
@@ -20,7 +18,7 @@ class FieldFactory
      *
      * @param int $position CRON expression position value to retrieve
      *
-     * @return FieldInterface
+     * @return CronExpression_FieldInterface
      * @throws InvalidArgumentException if a position is not valid
      */
     public function getField($position)
@@ -28,22 +26,22 @@ class FieldFactory
         if (!isset($this->fields[$position])) {
             switch ($position) {
                 case 0:
-                    $this->fields[$position] = new MinutesField();
+                    $this->fields[$position] = new CronExpression_MinutesField();
                     break;
                 case 1:
-                    $this->fields[$position] = new HoursField();
+                    $this->fields[$position] = new CronExpression_HoursField();
                     break;
                 case 2:
-                    $this->fields[$position] = new DayOfMonthField();
+                    $this->fields[$position] = new CronExpression_DayOfMonthField();
                     break;
                 case 3:
-                    $this->fields[$position] = new MonthField();
+                    $this->fields[$position] = new CronExpression_MonthField();
                     break;
                 case 4:
-                    $this->fields[$position] = new DayOfWeekField();
+                    $this->fields[$position] = new CronExpression_DayOfWeekField();
                     break;
                 case 5:
-                    $this->fields[$position] = new YearField();
+                    $this->fields[$position] = new CronExpression_YearField();
                     break;
                 default:
                     throw new InvalidArgumentException(

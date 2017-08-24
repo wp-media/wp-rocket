@@ -1,11 +1,11 @@
 <?php
 
-namespace Cron;
-
 /**
  * Abstract CRON expression field
+ *
+ * @author Michael Dowling <mtdowling@gmail.com>
  */
-abstract class AbstractField implements FieldInterface
+abstract class CronExpression_AbstractField implements CronExpression_FieldInterface
 {
     /**
      * Check to see if a field is satisfied by a value
@@ -76,13 +76,8 @@ abstract class AbstractField implements FieldInterface
     public function isInIncrementsOfRanges($dateValue, $value)
     {
         $parts = array_map('trim', explode('/', $value, 2));
-        $stepSize = isset($parts[1]) ? (int) $parts[1] : 0;
-
-        if ($stepSize === 0) {
-            return false;
-        }
-
-        if (($parts[0] == '*' || $parts[0] === '0')) {
+        $stepSize = isset($parts[1]) ? $parts[1] : 0;
+        if ($parts[0] == '*' || $parts[0] === '0') {
             return (int) $dateValue % $stepSize == 0;
         }
 
@@ -94,10 +89,6 @@ abstract class AbstractField implements FieldInterface
             return false;
         }
 
-        if ($dateValue > $offset && 0 === $stepSize) {
-          return false;
-        }
-
         for ($i = $offset; $i <= $to; $i+= $stepSize) {
             if ($i == $dateValue) {
                 return true;
@@ -106,43 +97,4 @@ abstract class AbstractField implements FieldInterface
 
         return false;
     }
-
-    /**
-     * Returns a range of values for the given cron expression
-     *
-     * @param string $expression The expression to evaluate
-     * @param int $max           Maximum offset for range
-     *
-     * @return array
-     */
-    public function getRangeForExpression($expression, $max)
-    {
-        $values = array();
-
-        if ($this->isRange($expression) || $this->isIncrementsOfRanges($expression)) {
-            if (!$this->isIncrementsOfRanges($expression)) {
-                list ($offset, $to) = explode('-', $expression);
-                $stepSize = 1;
-            }
-            else {
-                $range = array_map('trim', explode('/', $expression, 2));
-                $stepSize = isset($range[1]) ? $range[1] : 0;
-                $range = $range[0];
-                $range = explode('-', $range, 2);
-                $offset = $range[0];
-                $to = isset($range[1]) ? $range[1] : $max;
-            }
-            $offset = $offset == '*' ? 0 : $offset;
-            for ($i = $offset; $i <= $to; $i += $stepSize) {
-                $values[] = $i;
-            }
-            sort($values);
-        }
-        else {
-            $values = array($expression);
-        }
-
-        return $values;
-    }
-
 }
