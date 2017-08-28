@@ -13,7 +13,7 @@ abstract class ActionScheduler_Abstract_QueueRunner {
 	 *
 	 * @param int $action_id The action ID to process.
 	 */
-	protected function process_action( $action_id ) {
+	public function process_action( $action_id ) {
 		$action = $this->store->fetch_action( $action_id );
 		try {
 			do_action( 'action_scheduler_before_execute', $action_id );
