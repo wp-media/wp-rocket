@@ -11,9 +11,6 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	/** @var ActionScheduler_QueueRunner  */
 	private static $runner = null;
 
-	/** @var ActionScheduler_FatalErrorMonitor */
-	private $monitor = null;
-
 	/**
 	 * @return ActionScheduler_QueueRunner
 	 * @codeCoverageIgnore
