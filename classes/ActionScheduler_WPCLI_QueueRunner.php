@@ -5,7 +5,7 @@
  *
  * This class can only be called from within a WP CLI instance.
  */
-class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueCleaner {
+class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 
 	/** @var array */
 	protected $actions;

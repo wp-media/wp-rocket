@@ -3,7 +3,7 @@
 /**
  * Abstract class with common Queue Cleaner functionality.
  */
-abstract class ActionScheduler_Abstract_QueueCleaner {
+abstract class ActionScheduler_Abstract_QueueRunner {
 
 	/** @var ActionScheduler_Store */
 	protected $store;
