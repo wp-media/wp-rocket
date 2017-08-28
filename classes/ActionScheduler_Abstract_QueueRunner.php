@@ -5,8 +5,27 @@
  */
 abstract class ActionScheduler_Abstract_QueueRunner {
 
+	/** @var ActionScheduler_QueueCleaner */
+	protected $cleaner;
+
+	/** @var ActionScheduler_FatalErrorMonitor */
+	protected $monitor;
+
 	/** @var ActionScheduler_Store */
 	protected $store;
+
+	/**
+	 * ActionScheduler_Abstract_QueueRunner constructor.
+	 *
+	 * @param ActionScheduler_Store             $store
+	 * @param ActionScheduler_FatalErrorMonitor $monitor
+	 * @param ActionScheduler_QueueCleaner      $cleaner
+	 */
+	public function __construct( ActionScheduler_Store $store, ActionScheduler_FatalErrorMonitor $monitor, ActionScheduler_QueueCleaner $cleaner ) {
+		$this->store   = $store;
+		$this->monitor = $monitor;
+		$this->cleaner = $cleaner;
+	}
 
 	/**
 	 * Process an individual action.

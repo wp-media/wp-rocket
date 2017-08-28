@@ -26,8 +26,19 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 		return self::$runner;
 	}
 
-	public function __construct( ActionScheduler_Store $store = NULL ) {
-		$this->store = $store ? $store : ActionScheduler_Store::instance();
+	/**
+	 * ActionScheduler_QueueRunner constructor.
+	 *
+	 * @param ActionScheduler_Store             $store
+	 * @param ActionScheduler_FatalErrorMonitor $monitor
+	 * @param ActionScheduler_QueueCleaner      $cleaner
+	 */
+	public function __construct( ActionScheduler_Store $store = null, ActionScheduler_FatalErrorMonitor $monitor = null, ActionScheduler_QueueCleaner $cleaner = null ) {
+		$store   = $store ?: ActionScheduler_Store::instance();
+		$monitor = $monitor ?: new ActionScheduler_FatalErrorMonitor( $store );
+		$cleaner = $cleaner ?: new ActionScheduler_QueueCleaner( $store );
+
+		parent::__construct( $store, $monitor, $cleaner );
 	}
 
 	/**
@@ -53,9 +64,7 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 		$count = 0;
 		if ( $this->store->get_claim_count() < apply_filters( 'action_scheduler_queue_runner_concurrent_batches', 5 ) ) {
 			$batch_size = apply_filters( 'action_scheduler_queue_runner_batch_size', 25 );
-			$this->monitor = new ActionScheduler_FatalErrorMonitor( $this->store );
 			$count = $this->do_batch( $batch_size );
-			unset( $this->monitor );
 		}
 
 		do_action( 'action_scheduler_after_process_queue' );

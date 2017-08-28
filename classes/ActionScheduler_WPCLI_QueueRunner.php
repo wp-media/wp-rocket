@@ -13,14 +13,8 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 	/** @var  ActionScheduler_ActionClaim */
 	protected $claim;
 
-	/** @var ActionScheduler_QueueCleaner */
-	protected $cleaner;
-
 	/** @var string */
 	protected $id;
-
-	/** @var ActionScheduler_FatalErrorMonitor */
-	protected $monitor;
 
 	/** @var \cli\progress\Bar */
 	protected $progress_bar;
@@ -34,18 +28,12 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 	 *
 	 * @throws Exception When this is not run within WP CLI
 	 */
-	public function __construct(
-		ActionScheduler_Store $store,
-		ActionScheduler_FatalErrorMonitor $monitor,
-		ActionScheduler_QueueCleaner $cleaner
-	) {
+	public function __construct( ActionScheduler_Store $store, ActionScheduler_FatalErrorMonitor $monitor, ActionScheduler_QueueCleaner $cleaner ) {
 		if ( ! ( defined( 'WP_CLI' ) && WP_CLI ) ) {
 			throw new Exception( __( 'The ' . __CLASS__ . ' class can only be run within WP CLI.', 'action-scheduler' ) );
 		}
 
-		$this->store   = $store;
-		$this->monitor = $monitor;
-		$this->cleaner = $cleaner;
+		parent::__construct( $store, $monitor, $cleaner );
 	}
 
 	/**
