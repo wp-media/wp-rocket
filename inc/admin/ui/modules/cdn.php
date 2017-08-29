@@ -96,7 +96,7 @@ if ( apply_filters( 'rocket_readonly_cdn_option', false ) ) {
 	$rocket_cdn_options[] = array(
 		'type'        => 'helper_detection',
 		'name'        => 'cdn_disabled',
-		'description' =>__( 'CDN is disabled because you are using WP Offload S3 and the assets addon to serve your images, CSS & JS files.', 'rocket' ),
+		'description' =>__( 'CDN is disabled because you are using WP Offload S3 and the assets addon to serve your images, CSS and JS files.', 'rocket' ),
 	);
 }
 
