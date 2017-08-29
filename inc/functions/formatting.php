@@ -185,7 +185,7 @@ function get_rocket_parse_url( $url ) {
 
 /**
  * Extract a component from an URL.
- * 
+ *
  * @since 2.11
  * @author Remy Perona
  *
