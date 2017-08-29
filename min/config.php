@@ -8,10 +8,11 @@
 
 // load WP Rocket config file
 $host = $_SERVER['HTTP_HOST'];
-$host = str_replace( array( '..', chr(0) ), '', $host );
-$wp_rocket_config_file = dirname( dirname( dirname( dirname( __FILE__ ) ) ) ) . '/wp-rocket-config/' . $host . '.php';
+$host = urlencode( $host );
+$wp_rocket_config_path = dirname( dirname( dirname( dirname( __FILE__ ) ) ) ) . '/wp-rocket-config/';
+$wp_rocket_config_file = realpath( $wp_rocket_config_path . $host . '.php' );
 
-if ( file_exists( $wp_rocket_config_file ) && ! defined( 'ABSPATH' ) ) {
+if ( $wp_rocket_config_file && 0 === stripos( $wp_rocket_config_file, $wp_rocket_config_path ) && ! defined( 'ABSPATH' ) ) {
   // Create fake ABSPATH
   define( 'ABSPATH', null );
   
@@ -133,7 +134,7 @@ $min_serveOptions['maxAge'] = 31536000;
 /**
  * To use CSSmin (Túbal Martín's port of the YUI CSS compressor), uncomment the following line:
  */
-if ( 0 === $rocket_minify_css_legacy ) {
+if ( isset( $rocket_minify_css_legacy ) && '0' === $rocket_minify_css_legacy ) {
 	$min_serveOptions['minifiers']['text/css'] = array('Minify_CSSmin', 'minify');
 }
 
@@ -141,9 +142,9 @@ if ( 0 === $rocket_minify_css_legacy ) {
  * To use Google's Closure Compiler API to minify Javascript (falling back to JSMin
  * on failure), uncomment the following line:
  */
-if ( 0 === $rocket_minify_js_legacy ) {
+/*if ( isset( $rocket_minify_js_legacy ) && '0' === $rocket_minify_js_legacy ) {
 	$min_serveOptions['minifiers']['application/x-javascript'] = array('Minify_JS_ClosureCompiler', 'minify');
-}
+}*/
 
 /**
  * If you'd like to restrict the "f" option to files within/below

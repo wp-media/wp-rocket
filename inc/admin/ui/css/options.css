@@ -81,10 +81,17 @@ input[type=number].small-text {
 	border-bottom:  2px solid #fd7300;
 	padding:  0.75em 0 1em 1.5em;
 }
+[dir="rtl"] .rocket-panel-description {
+	padding: 0.75em 1.5em 1em 0;
+}
 .rocket-panel-description span.dashicons  {
 	color: #fd7300;
 	margin-left: -1.25em;
 	margin-right: 0.25em;
+}
+[dir="rtl"] .rocket-panel-description span.dashicons {
+	margin-right: -1.25em;
+	margin-left: 0.25em;
 }
 .description.tip--detect  {
 	color: #826eb4;

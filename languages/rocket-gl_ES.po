@@ -1,22 +1,20 @@
 # Copyright (C) 2016 WP Rocket
 # This file is distributed under the same license as the WP Rocket package.
 # Translators:
-# FX Bénard <fxb@wp-translations.org>, 2014
-# Seggev Shoresh, 2014-2015,2017
 msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2017-07-27 12:16-0400\n"
-"PO-Revision-Date: 2017-07-29 10:06+0000\n"
-"Last-Translator: Seggev Shoresh\n"
-"Language-Team: Hebrew (Israel) (http://www.transifex.com/wp-media/wp-rocket/language/he_IL/)\n"
+"POT-Creation-Date: 2017-06-13 11:41-0400\n"
+"PO-Revision-Date: 2017-06-13 15:41+0000\n"
+"Last-Translator: wpmedia <contact@wp-media.me>\n"
+"Language-Team: Galician (Spain) (http://www.transifex.com/wp-media/wp-rocket/language/gl_ES/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: he_IL\n"
+"Language: gl_ES\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.8.11\n"
+"X-Generator: Poedit 1.8.9\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -30,7 +28,7 @@ msgstr ""
 #: inc/3rd-party/all-in-one-seo-pack.php:79 inc/3rd-party/yoast-seo.php:79
 #, php-format
 msgid "Preload the sitemap from the %s plugin"
-msgstr "טען מראש את מפת האתר מתוסף ה-%s"
+msgstr ""
 
 #: inc/3rd-party/all-in-one-seo-pack.php:86 inc/3rd-party/jetpack.php:96
 #: inc/3rd-party/yoast-seo.php:86
@@ -42,41 +40,41 @@ msgstr ""
 
 #: inc/3rd-party/jetpack.php:86
 msgid "Jetpack XML Sitemaps"
-msgstr "מפות אתר XML של Jetpack"
+msgstr ""
 
 #: inc/3rd-party/jetpack.php:88
 msgid "Preload the sitemap from the Jetpack plugin"
-msgstr "טען מראש את מפת האתר מתוסף ה-Jetpack"
+msgstr ""
 
 #: inc/3rd-party/yoast-seo.php:77
 msgid "Yoast SEO XML sitemap"
 msgstr ""
 
-#: inc/admin/admin.php:14 inc/admin/options.php:590
+#: inc/admin/admin.php:14 inc/admin/options.php:571
 #: inc/admin/ui/modules/support.php:4 inc/common/admin-bar.php:248
 msgid "Support"
-msgstr "תמיכה"
+msgstr ""
 
 #: inc/admin/admin.php:16
 msgid "Docs"
-msgstr "מסמכים"
+msgstr ""
 
 #: inc/admin/admin.php:18 inc/common/admin-bar.php:240
 msgid "FAQ"
-msgstr "שאלות נפוצות"
+msgstr ""
 
 #: inc/admin/admin.php:21 inc/common/admin-bar.php:33
 msgid "Settings"
-msgstr "הגדרות"
+msgstr ""
 
 #: inc/admin/admin.php:66 inc/admin/admin.php:88 inc/admin/admin.php:107
 msgid "Clear this cache"
-msgstr "נקה מזיכרון המטמון"
+msgstr ""
 
-#: inc/admin/admin.php:317 inc/admin/admin.php:326
+#: inc/admin/admin.php:312 inc/admin/admin.php:321
 #, php-format
 msgid "%s Update Rollback"
-msgstr "שחזור גרסא %s"
+msgstr ""
 
 #: inc/admin/options.php:117
 msgid "Your Cloudflare credentials are valid."
@@ -88,36 +86,36 @@ msgstr ""
 
 #: inc/admin/options.php:177 inc/admin/ui/modules/database.php:244
 msgid "Save and optimize"
-msgstr "שמור וייעל"
+msgstr ""
 
 #: inc/admin/options.php:177
 msgid "Optimize"
-msgstr "ייעל"
+msgstr ""
 
-#: inc/admin/options.php:195 inc/admin/options.php:458
+#: inc/admin/options.php:195 inc/admin/options.php:439
 msgctxt "screen-reader-text"
 msgid "Note:"
-msgstr "הערה:"
+msgstr ""
 
 #: inc/admin/options.php:202
 msgctxt "screen-reader-text"
 msgid "Performance tip:"
-msgstr "טיפ ביצועים:"
+msgstr ""
 
 #: inc/admin/options.php:209
 msgctxt "screen-reader-text"
 msgid "Third-party feature detected:"
-msgstr "אותרה תכונה צד ג':"
+msgstr ""
 
-#: inc/admin/options.php:223 inc/admin/options.php:464
+#: inc/admin/options.php:223 inc/admin/options.php:445
 msgctxt "screen-reader-text"
 msgid "Warning:"
-msgstr "אזהרה:"
+msgstr ""
 
 #: inc/admin/options.php:237 inc/admin/ui/modules/tools.php:128
 msgctxt "button text"
 msgid "Download settings"
-msgstr "הגדרות הורדה"
+msgstr ""
 
 #: inc/admin/options.php:265
 msgid "<strong>JS</strong> files with Deferred Loading JavaScript"
@@ -125,183 +123,171 @@ msgstr ""
 
 #: inc/admin/options.php:318 inc/admin/ui/modules/optimization.php:428
 msgid "Add URL"
-msgstr "הוסף URL"
+msgstr ""
 
 #: inc/admin/options.php:330
 msgid "Replace site's hostname with:"
-msgstr "החלף את שם מארח האתר ב:"
+msgstr ""
 
-#: inc/admin/options.php:348 inc/admin/options.php:384
-#: inc/admin/options.php:412
+#: inc/admin/options.php:348 inc/admin/options.php:373
+#: inc/admin/options.php:397
 msgid "reserved for"
-msgstr "שמור עבור"
+msgstr ""
 
-#: inc/admin/options.php:350 inc/admin/options.php:386
-#: inc/admin/options.php:414
+#: inc/admin/options.php:350 inc/admin/options.php:375
+#: inc/admin/options.php:399
 msgid "All files"
-msgstr "כל הקבצים"
+msgstr ""
 
-#: inc/admin/options.php:361 inc/admin/options.php:390
-#: inc/admin/options.php:418
+#: inc/admin/options.php:351 inc/admin/options.php:376
+#: inc/admin/options.php:400
 msgid "Images"
-msgstr "תמונות"
+msgstr ""
 
-#: inc/admin/options.php:431
+#: inc/admin/options.php:412
 msgid "Add CNAME"
-msgstr "הוסף CNAME"
+msgstr ""
 
-#: inc/admin/options.php:498
+#: inc/admin/options.php:479
 msgid "Watch the video"
-msgstr "צפה בוידיאו"
+msgstr ""
 
-#: inc/admin/options.php:572
+#: inc/admin/options.php:553
 msgid "Basic"
-msgstr "בסיסי"
+msgstr ""
 
-#: inc/admin/options.php:573
+#: inc/admin/options.php:554
 msgid "Static Files"
-msgstr "שדות סטטיים"
+msgstr ""
 
-#: inc/admin/options.php:574 inc/admin/ui/meta-boxes.php:72
+#: inc/admin/options.php:555 inc/admin/ui/meta-boxes.php:72
 msgid "CDN"
-msgstr "CDN"
+msgstr ""
 
-#: inc/admin/options.php:575
+#: inc/admin/options.php:556
 msgid "Advanced"
-msgstr "מתקדם"
+msgstr ""
 
-#: inc/admin/options.php:576
+#: inc/admin/options.php:557
 msgid "Database"
-msgstr "מסד נתונים"
+msgstr ""
 
-#: inc/admin/options.php:577
+#: inc/admin/options.php:558
 msgid "Preload"
-msgstr "טעינה מראש"
+msgstr ""
 
-#: inc/admin/options.php:586 inc/admin/ui/modules/white-label.php:4
+#: inc/admin/options.php:567 inc/admin/ui/modules/white-label.php:4
 msgid "White Label"
-msgstr "תווית לבנה"
+msgstr ""
 
-#: inc/admin/options.php:588 inc/admin/ui/modules/tools.php:7
+#: inc/admin/options.php:569 inc/admin/ui/modules/tools.php:7
 msgid "Tools"
-msgstr "כלים"
+msgstr ""
 
-#: inc/admin/options.php:593
+#: inc/admin/options.php:574
 msgid "License"
-msgstr "רישיון"
+msgstr ""
 
-#: inc/admin/options.php:992 inc/admin/options.php:1161
+#: inc/admin/options.php:992
+msgid "Settings imported and saved."
+msgstr ""
+
+#: inc/admin/options.php:1008 inc/admin/options.php:1177
 msgid "Settings saved."
-msgstr "ההגדרות נשמרו."
-
-#: inc/admin/options.php:1088
-#, php-format
-msgid "Cloudflare development mode error: %s"
-msgstr "שגיאת מצב פיתוח של Cloudflare: %s"
-
-#: inc/admin/options.php:1090
-#, php-format
-msgid "Cloudflare development mode %s"
-msgstr "מצב פיתוח של Cloudflare %s"
-
-#: inc/admin/options.php:1102
-#, php-format
-msgid "Cloudflare cache level error: %s"
-msgstr "שגיאת רמת זיכרון מטמון של Cloudflare: %s"
+msgstr ""
 
 #: inc/admin/options.php:1104
 #, php-format
-msgid "Cloudflare cache level set to %s"
-msgstr "רמת זיכרון מטמון של Cloudflare הוגדרה ל%s"
+msgid "Cloudflare development mode error: %s"
+msgstr ""
 
-#: inc/admin/options.php:1112
+#: inc/admin/options.php:1106
+#, php-format
+msgid "Cloudflare development mode %s"
+msgstr ""
+
+#: inc/admin/options.php:1118
+#, php-format
+msgid "Cloudflare cache level error: %s"
+msgstr ""
+
+#: inc/admin/options.php:1120
+#, php-format
+msgid "Cloudflare cache level set to %s"
+msgstr ""
+
+#: inc/admin/options.php:1128
 #, php-format
 msgid "Cloudflare minification error: %s"
-msgstr "שגיאת צמצום של Cloudflare: %s"
+msgstr ""
 
-#: inc/admin/options.php:1114
+#: inc/admin/options.php:1130
 #, php-format
 msgid "Cloudflare minification %s"
-msgstr "צמצום Cloudflare %s"
+msgstr ""
 
-#: inc/admin/options.php:1122
+#: inc/admin/options.php:1138
 #, php-format
 msgid "Cloudflare rocket loader error: %s"
 msgstr ""
 
-#: inc/admin/options.php:1124
+#: inc/admin/options.php:1140
 #, php-format
 msgid "Cloudflare rocket loader %s"
 msgstr ""
 
-#: inc/admin/options.php:1132
+#: inc/admin/options.php:1148
 #, php-format
 msgid "Cloudflare browser cache error: %s"
 msgstr ""
 
-#: inc/admin/options.php:1134
+#: inc/admin/options.php:1150
 #, php-format
 msgid "Cloudflare browser cache set to %s seconds"
 msgstr ""
 
-#: inc/admin/options.php:1273
+#: inc/admin/options.php:1289
 msgid ""
 "Before you can upload your import file, you will need to fix the following "
 "error:"
-msgstr "לפני שתוכל להעלות את קובץ הייבוא שלך, עליך לפתור את השגיאה הבאה:"
+msgstr ""
 
-#: inc/admin/options.php:1280
+#: inc/admin/options.php:1296
 #, php-format
 msgid "Choose a file from your computer (maximum size: %s)"
 msgstr ""
 
-#: inc/admin/options.php:1283
+#: inc/admin/options.php:1299
 msgid "Upload file and import settings"
-msgstr "העלה קובץ וייבא הגדרות"
-
-#: inc/admin/options.php:1346
-msgid "Settings import failed: no file uploaded."
-msgstr "יבוא הגדרות נכשל: לא הועלה אף קובץ."
-
-#: inc/admin/options.php:1351
-msgid "Settings import failed: incorrect filename."
-msgstr "יבוא הגדרות נכשל: שם קובץ שגוי."
-
-#: inc/admin/options.php:1360
-msgid "Settings import failed: incorrect filetype."
-msgstr "יבוא הגדרות נכשל: סוג קובץ שגוי."
-
-#: inc/admin/options.php:1392
-msgid "Settings imported and saved."
-msgstr "ההגדרות יובאו ונשמרו."
+msgstr ""
 
 #: inc/admin/ui/enqueue.php:20
 msgid "If there are any display errors we recommend to disable the option."
-msgstr "אם ישנן שגיאות תצוגה כלשהן אנו ממליצים לכבות אפשרות זו."
+msgstr ""
 
 #: inc/admin/ui/enqueue.php:20
 msgid ""
 "If there are any display errors we recommend following our documentation: "
-msgstr "אם ישנן שגיאות תצוגה כלשהן אנו ממליצים לעקוב אחר מסמכי התיעוד שלנו:"
+msgstr ""
 
 #: inc/admin/ui/enqueue.php:20
 #, php-format
 msgid ""
 "You can also <a href=\"%s\">contact our support</a> if you need help with "
 "this feature."
-msgstr "באפשרותך גם <a href=\"%s\">ליצור קשר עם התמיכה שלנו</a> אם אתה זקוק לעזרה עם תכונה זו."
+msgstr ""
 
 #: inc/admin/ui/enqueue.php:24
 msgid "Are you sure?"
-msgstr "האם אתה בטוח?"
+msgstr ""
 
 #: inc/admin/ui/enqueue.php:25
 msgid "All fields are required!"
-msgstr "כל השדות נדרשים!"
+msgstr ""
 
 #: inc/admin/ui/enqueue.php:27
 msgid "Cloudflare Settings"
-msgstr "הגדרות Cloudflare"
+msgstr ""
 
 #: inc/admin/ui/enqueue.php:28
 msgid "Click \"Save Changes\" to activate the Cloudflare tab."
@@ -313,7 +299,7 @@ msgstr ""
 
 #: inc/admin/ui/enqueue.php:33
 msgid "Unable to transmit"
-msgstr "לא ניתן לשדר"
+msgstr ""
 
 #: inc/admin/ui/enqueue.php:34
 msgid ""
@@ -324,11 +310,11 @@ msgstr ""
 
 #: inc/admin/ui/enqueue.php:35
 msgid "Get help from a rocket scientist"
-msgstr "השג עזרה ממדען טילים"
+msgstr ""
 
 #: inc/admin/ui/enqueue.php:37
 msgid "Last steps before contacting us"
-msgstr "צעדים אחרונים לפני יצירת קשר עימנו"
+msgstr ""
 
 #: inc/admin/ui/enqueue.php:38
 #, php-format
@@ -340,7 +326,7 @@ msgstr ""
 
 #: inc/admin/ui/enqueue.php:40
 msgid "Transmission Received!"
-msgstr "תמסורת נתקבלה!"
+msgstr ""
 
 #: inc/admin/ui/enqueue.php:41
 msgid "We have received your ticket and will reply back within a few hours!"
@@ -354,7 +340,7 @@ msgstr ""
 
 #: inc/admin/ui/enqueue.php:43
 msgid "Oh dear, someone’s been naughty…"
-msgstr "אוי לי, מישהו היה שובב..."
+msgstr ""
 
 #: inc/admin/ui/enqueue.php:44
 msgid ""
@@ -367,21 +353,21 @@ msgstr ""
 #, php-format
 msgid ""
 "Click below to buy a license with a 20% discount automatically applied."
-msgstr "לחץ למטה כדי לקנות רישיון עם הנחה של 20% מוחלת באופן אוטומטי."
+msgstr ""
 
 #: inc/admin/ui/enqueue.php:45
 msgid "Buy It Now!"
-msgstr "קנה כעת!"
+msgstr ""
 
 #: inc/admin/ui/enqueue.php:47
 msgid "Uh-oh, you’re out of fuel!"
-msgstr "או-או, נגמר לך הדלק!"
+msgstr ""
 
 #: inc/admin/ui/enqueue.php:48
 msgid ""
 "To keep your Rocket running with access to support, <strong>you will need to"
 " renew your license</strong>."
-msgstr "כדי לשמור על ה-Rocket פועל עם גישה לתמיכה, <strong>אתה תיאלץ לחדש את הרישיון שלך</strong>."
+msgstr ""
 
 #: inc/admin/ui/enqueue.php:48
 msgid ""
@@ -395,29 +381,29 @@ msgstr ""
 
 #: inc/admin/ui/enqueue.php:53
 msgid "Yes, I'm sure!"
-msgstr "כן, אני בטוח!"
+msgstr ""
 
 #: inc/admin/ui/enqueue.php:54
 msgid "Cancel"
-msgstr "ביטול"
+msgstr ""
 
 #: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/modules/tools.php:46
 #: inc/admin/ui/notices.php:100 inc/common/admin-bar.php:45
 #: inc/common/admin-bar.php:66 inc/common/admin-bar.php:102
 msgid "Clear cache"
-msgstr "נקה זיכרון מטמון"
+msgstr ""
 
 #: inc/admin/ui/meta-boxes.php:31
 msgid "Cache Options"
-msgstr "אפשרויות זיכרון מטמון"
+msgstr ""
 
 #: inc/admin/ui/meta-boxes.php:60
 msgid "Never cache this page"
-msgstr "לעולם אל תשמור עמוד זה במטמון"
+msgstr ""
 
 #: inc/admin/ui/meta-boxes.php:64
 msgid "Activate these options on this post:"
-msgstr "הפעל אפשרויות אלו על פוסט זה:"
+msgstr ""
 
 #: inc/admin/ui/meta-boxes.php:67
 msgid "LazyLoad for images"
@@ -429,19 +415,19 @@ msgstr ""
 
 #: inc/admin/ui/meta-boxes.php:69
 msgid "Minify/combine HTML"
-msgstr "כווץ/מזג HTML"
+msgstr ""
 
 #: inc/admin/ui/meta-boxes.php:70
 msgid "Minify/combine CSS"
-msgstr "כווץ/מזג CSS"
+msgstr ""
 
 #: inc/admin/ui/meta-boxes.php:71
 msgid "Minify/combine JS"
-msgstr "כווץ/מזג JS"
+msgstr ""
 
 #: inc/admin/ui/meta-boxes.php:73
 msgid "Async CSS"
-msgstr "CSS אסינכרוני"
+msgstr ""
 
 #: inc/admin/ui/meta-boxes.php:74
 msgid "Defer JS"
@@ -460,7 +446,7 @@ msgstr ""
 
 #: inc/admin/ui/modules/advanced.php:7
 msgid "Advanced options"
-msgstr "אפשרויות מתקדמות"
+msgstr ""
 
 #: inc/admin/ui/modules/advanced.php:27
 msgid ""
@@ -468,82 +454,82 @@ msgid ""
 "automatically.<br>Read the <a href=\"http://docs.wp-rocket.me/article/78"
 "-how-often-is-the-cache-updated\" target=\"_blank\">documentation on "
 "automatic cache management</a> to better understand how caching works."
-msgstr "הגדרות אלו הן עבור ניהול מתקדם של זיכרון מטמון. ההטמנה בזיכרון עצמה עובדת אוטומטית.<br>קראת את <a href=\"http://docs.wp-rocket.me/article/78-how-often-is-the-cache-updated\" target=\"_blank\">מסמכי התיעוד על ניהול אוטומטי של הטמנה בזיכרון</a> עח מנת להבין יותר טוב איך ההטמנה עובדת."
+msgstr ""
 
 #: inc/admin/ui/modules/advanced.php:42
 msgid ""
 "Specify URLs of pages or posts that should never get cached (one per line)"
-msgstr "ציין כתובות URL של עמודים שלעולם אין לשמור בזיכרון המטמון (אחת בכל שורה)"
+msgstr ""
 
 #: inc/admin/ui/modules/advanced.php:47 inc/admin/ui/modules/advanced.php:104
 msgid "Never cache (URLs):"
-msgstr "לעולם אל תשמור במטמון (כתובות URL):"
+msgstr ""
 
 #: inc/admin/ui/modules/advanced.php:60
 msgctxt "plugin name"
 msgid "WooCommerce"
-msgstr "WooCommerce"
+msgstr ""
 
 #: inc/admin/ui/modules/advanced.php:64
 msgctxt "plugin name"
 msgid "Easy Digital Downloads"
-msgstr "Easy Digital Downloads"
+msgstr ""
 
 #: inc/admin/ui/modules/advanced.php:68
 msgctxt "plugin name"
 msgid "iThemes Exchange"
-msgstr "iThemes Exchange"
+msgstr ""
 
 #: inc/admin/ui/modules/advanced.php:72
 msgctxt "plugin name"
 msgid "Jigoshop"
-msgstr "Jigoshop"
+msgstr ""
 
 #: inc/admin/ui/modules/advanced.php:76
 msgctxt "plugin name"
 msgid "WP-Shop"
-msgstr "WP-Shop"
+msgstr ""
 
 #: inc/admin/ui/modules/advanced.php:85
 #, php-format
 msgid ""
 "Cart and checkout pages set in <strong>%s</strong> will be detected and "
 "never cached by default. No need to enter them here."
-msgstr "עמודי עגלת קניות וסיום קנייה שהוגדרו <strong>ב%s</strong> יאותרו ולעולם לא יוטמנו בזיכרון כברירת מחדל. אין צורך לציין אותם כאן."
+msgstr ""
 
 #: inc/admin/ui/modules/advanced.php:97 inc/admin/ui/modules/advanced.php:191
 #, php-format
 msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use %s "
 "wildcards to address multiple URLs under a given path."
-msgstr "חלק הדומיין של כתובת ה-URL יוסר אוטומטית.<br>השתמש במשתני %s כדי להתייחס לכתובות URL מרובות תחת נתיב נתון."
+msgstr ""
 
 #: inc/admin/ui/modules/advanced.php:116
 msgid "Never cache (cookies):"
-msgstr "לעולם אל תשמור במטמון (עוגיות):"
+msgstr ""
 
 #: inc/admin/ui/modules/advanced.php:124
 msgid ""
 "Specify the IDs of cookies that, when set in the visitor’s browser, should "
 "prevent a page from getting cached (one per line)"
-msgstr "ציין את המזהים של עוגיות אשר, כאשר הן הוגדרו בדפדפן של המשתמש, אמורות למנוע מעמוד להיטמן בזיכרון (אחד בכל שורה)"
+msgstr ""
 
 #: inc/admin/ui/modules/advanced.php:129
 msgid "Never cache pages when these cookies are present:"
-msgstr "לעולם אל תשמור במטמוןעמודים כאשר עוגיות אלו נוכחות:"
+msgstr ""
 
 #: inc/admin/ui/modules/advanced.php:139
 msgid "Never cache (user agents):"
-msgstr "לעולם אל תשמור במטמון (סוכני משתמש):"
+msgstr ""
 
 #: inc/admin/ui/modules/advanced.php:147
 msgid ""
 "Specify user agent strings that should never see cached pages (one per line)"
-msgstr "ציין מחרוזות סוכני משתמש שלעולם לא אמורים לראות עמודים שנשמרו במטמון (אחד לכל שורה)"
+msgstr ""
 
 #: inc/admin/ui/modules/advanced.php:152
 msgid "Never send cache pages for these user agents:"
-msgstr "לעולם אל תשלח עמודי מטמון עבור סוכני משתמשים אלו:"
+msgstr ""
 
 #: inc/admin/ui/modules/advanced.php:159
 #, php-format
@@ -554,25 +540,25 @@ msgstr ""
 
 #: inc/admin/ui/modules/advanced.php:172
 msgid "Always purge (URLs):"
-msgstr "סלק תמיד (כתובות URL):"
+msgstr ""
 
 #: inc/admin/ui/modules/advanced.php:180
 msgid ""
 "Specify URLs you always want purged from cache whenever you update any post "
 "or page (one per line)"
-msgstr "ציין כתובות URL שברצונך למחוק מהמטמון בכל פעם שאתה מעדכן כל פוסט או עמוד (אחת בכל שורה)"
+msgstr ""
 
 #: inc/admin/ui/modules/advanced.php:185
 msgid "Always purge these URLs from cache when updating any post or page:"
-msgstr "סלק תמיד כתובות URL אלו מזיכרון המטמון בעת עדכון של פוסט או עמוד כלשהו:"
+msgstr ""
 
 #: inc/admin/ui/modules/advanced.php:203
 msgid "Cache query strings:"
-msgstr "מחרוזות שאילתה של זיכרון מטמון:"
+msgstr ""
 
 #: inc/admin/ui/modules/advanced.php:211
 msgid "Specify query strings for caching (one per line)"
-msgstr "ציין מחרוזות שאילתה עבור הטמנה בזיכרון (אחת לכל שורה)"
+msgstr ""
 
 #: inc/admin/ui/modules/advanced.php:216
 msgid "Force caching for URLs with these query strings (GET parameters):"
@@ -593,7 +579,7 @@ msgstr ""
 
 #: inc/admin/ui/modules/api-key.php:7
 msgid "License validation"
-msgstr "אימות רישיון"
+msgstr ""
 
 #: inc/admin/ui/modules/api-key.php:27
 msgid ""
@@ -606,15 +592,15 @@ msgstr ""
 
 #: inc/admin/ui/modules/api-key.php:39 inc/admin/ui/modules/api-key.php:47
 msgid "API key"
-msgstr "מפתח API"
+msgstr ""
 
 #: inc/admin/ui/modules/api-key.php:59 inc/admin/ui/modules/api-key.php:67
 msgid "Email address"
-msgstr "כתובת דוא\"ל"
+msgstr ""
 
 #: inc/admin/ui/modules/basic.php:7
 msgid "Basic options"
-msgstr "אפשרויות בסיסיות"
+msgstr ""
 
 #: inc/admin/ui/modules/basic.php:27
 msgid ""
@@ -635,11 +621,11 @@ msgstr ""
 msgid ""
 "<a href=\"http://docs.wp-rocket.me/article/278-common-issues-with-lazyload\""
 " target=\"_blank\">Why?</a>"
-msgstr "<a href=\"http://docs.wp-rocket.me/article/278-common-issues-with-lazyload\" target=\"_blank\">למה?</a>"
+msgstr ""
 
 #: inc/admin/ui/modules/basic.php:54
 msgid "Enable for images"
-msgstr "אפשר עבור תמונות"
+msgstr ""
 
 #: inc/admin/ui/modules/basic.php:56
 msgid "Enable LazyLoad for images"
@@ -670,7 +656,7 @@ msgstr ""
 
 #: inc/admin/ui/modules/basic.php:89 inc/admin/ui/modules/basic.php:98
 msgid "Mobile cache:"
-msgstr "זיכרון מטמון mobile:"
+msgstr ""
 
 #: inc/admin/ui/modules/basic.php:96
 msgid "Enable caching for mobile devices"
@@ -699,7 +685,7 @@ msgstr ""
 
 #: inc/admin/ui/modules/basic.php:129 inc/admin/ui/modules/basic.php:139
 msgid "User cache:"
-msgstr "זיכרון מטמון משתמש:"
+msgstr ""
 
 #: inc/admin/ui/modules/basic.php:137
 msgid "Enable caching for logged-in WordPress users"
@@ -720,7 +706,7 @@ msgstr ""
 
 #: inc/admin/ui/modules/basic.php:154 inc/admin/ui/modules/basic.php:163
 msgid "SSL cache:"
-msgstr "זיכרון מטמון SSL:"
+msgstr ""
 
 #: inc/admin/ui/modules/basic.php:161
 msgid "Enable caching for pages with <code>https://</code>"
@@ -739,13 +725,13 @@ msgstr ""
 
 #: inc/admin/ui/modules/basic.php:181 inc/admin/ui/modules/basic.php:190
 msgid "Emoji cache:"
-msgstr "זיכרון מטמון אמוג'י:"
+msgstr ""
 
 #: inc/admin/ui/modules/basic.php:188
 msgid ""
 "Use default emoji of visitors’ browser instead of loading emoji from "
 "WordPress.org"
-msgstr "השתמש באמוג'י ברירת המחדל של דפדפן המשתמש במקום לטעון אמוג'י מ-WordPress.org"
+msgstr ""
 
 #: inc/admin/ui/modules/basic.php:206 inc/admin/ui/modules/basic.php:215
 msgid "Embeds:"
@@ -770,23 +756,23 @@ msgstr ""
 
 #: inc/admin/ui/modules/basic.php:237
 msgid "Clear cache after …"
-msgstr "נקה זיכרון מטמון לאחר ..."
+msgstr ""
 
 #: inc/admin/ui/modules/basic.php:243
 msgid "Unit of time"
-msgstr "יחידת זמן"
+msgstr ""
 
 #: inc/admin/ui/modules/basic.php:246
 msgid "minute(s)"
-msgstr "דקה/ות"
+msgstr ""
 
 #: inc/admin/ui/modules/basic.php:247
 msgid "hour(s)"
-msgstr "שעה/ות"
+msgstr ""
 
 #: inc/admin/ui/modules/basic.php:248
 msgid "day(s)"
-msgstr "יום/ימים"
+msgstr ""
 
 #: inc/admin/ui/modules/basic.php:256
 #, php-format
@@ -817,11 +803,11 @@ msgstr ""
 
 #: inc/admin/ui/modules/basic.php:282
 msgid "Cache lifespan:"
-msgstr "תוחלת חיים של זיכרון מטמון"
+msgstr ""
 
 #: inc/admin/ui/modules/cdn.php:7
 msgid "Content Delivery Network options"
-msgstr "אפשרויות רשת מסירת תוכן (Content Delivery Network)"
+msgstr ""
 
 #: inc/admin/ui/modules/cdn.php:24
 msgid ""
@@ -845,13 +831,13 @@ msgid ""
 "Cloudflare</a>."
 msgstr ""
 
-#: inc/admin/ui/modules/cdn.php:71
-msgid "Enable Content Delivery Network"
+#: inc/admin/ui/modules/cdn.php:73 inc/admin/ui/modules/cdn.php:82
+msgid "CDN:"
 msgstr ""
 
-#: inc/admin/ui/modules/cdn.php:73 inc/admin/ui/modules/cdn.php:108
-msgid "CDN:"
-msgstr "CDN:"
+#: inc/admin/ui/modules/cdn.php:80
+msgid "Enable Content Delivery Network"
+msgstr ""
 
 #: inc/admin/ui/modules/cdn.php:88
 msgid ""
@@ -867,40 +853,34 @@ msgid ""
 " Rocket with a CDN</a>."
 msgstr ""
 
-#: inc/admin/ui/modules/cdn.php:99
-msgid ""
-"CDN is disabled because you are using WP Offload S3 and the assets addon to "
-"serve your images, CSS & JS files."
-msgstr ""
-
-#: inc/admin/ui/modules/cdn.php:120
+#: inc/admin/ui/modules/cdn.php:100
 msgid "CDN CNAME(S):"
 msgstr ""
 
-#: inc/admin/ui/modules/cdn.php:131 inc/admin/ui/modules/cdn.php:140
+#: inc/admin/ui/modules/cdn.php:111 inc/admin/ui/modules/cdn.php:120
 msgid "CDN without SSL:"
 msgstr ""
 
-#: inc/admin/ui/modules/cdn.php:138
+#: inc/admin/ui/modules/cdn.php:118
 msgid "Disable CDN functionality on HTTPS pages"
 msgstr ""
 
-#: inc/admin/ui/modules/cdn.php:144
+#: inc/admin/ui/modules/cdn.php:124
 msgid ""
 "If your CDN account does not fully support SSL, you can disable URL "
 "rewriting on HTTPS pages here."
 msgstr ""
 
-#: inc/admin/ui/modules/cdn.php:150 inc/admin/ui/modules/cdn.php:163
+#: inc/admin/ui/modules/cdn.php:130 inc/admin/ui/modules/cdn.php:143
 msgid "Exclude files:"
-msgstr "הוצא מן הכלל קבצים:"
+msgstr ""
 
-#: inc/admin/ui/modules/cdn.php:158
+#: inc/admin/ui/modules/cdn.php:138
 msgid ""
 "Specify URL(s) of files that should not get served via CDN (one per line)"
 msgstr ""
 
-#: inc/admin/ui/modules/cdn.php:170
+#: inc/admin/ui/modules/cdn.php:150
 #, php-format
 msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use %s "
@@ -911,7 +891,7 @@ msgstr ""
 #: inc/admin/ui/modules/cloudflare.php:11
 msgctxt "Cloudflare"
 msgid "Account email:"
-msgstr "דוא\"ל חשבון:"
+msgstr ""
 
 #: inc/admin/ui/modules/cloudflare.php:18
 msgid "Enter the email address of your Cloudflare account"
@@ -1068,7 +1048,7 @@ msgstr[1] ""
 
 #: inc/admin/ui/modules/database.php:77
 msgid "Trashed posts"
-msgstr "פוסטים מחוקים"
+msgstr ""
 
 #: inc/admin/ui/modules/database.php:79
 msgid "Cleanup trashed posts"
@@ -1087,7 +1067,7 @@ msgstr ""
 
 #: inc/admin/ui/modules/database.php:101
 msgid "Spam comments"
-msgstr "הערות ספאם"
+msgstr ""
 
 #: inc/admin/ui/modules/database.php:103
 msgid "Cleanup spam comments"
@@ -1182,31 +1162,31 @@ msgstr ""
 
 #: inc/admin/ui/modules/database.php:202
 msgid "Frequency"
-msgstr "תדירות"
+msgstr ""
 
 #: inc/admin/ui/modules/database.php:204
 msgid "Frequency for the automatic cleanup"
-msgstr "תדירות עבור הניקוי האוטומטי"
+msgstr ""
 
 #: inc/admin/ui/modules/database.php:206
 msgid "Daily"
-msgstr "יומי"
+msgstr ""
 
 #: inc/admin/ui/modules/database.php:207
 msgid "Weekly"
-msgstr "שבועי"
+msgstr ""
 
 #: inc/admin/ui/modules/database.php:208
 msgid "Monthly"
-msgstr "חודשי"
+msgstr ""
 
 #: inc/admin/ui/modules/database.php:215
 msgid "Save Changes"
-msgstr "שמור שינויים"
+msgstr ""
 
 #: inc/admin/ui/modules/database.php:230
 msgid "Run cleanup:"
-msgstr "הפעל ניקוי:"
+msgstr ""
 
 #: inc/admin/ui/modules/database.php:243
 #, php-format
@@ -1241,65 +1221,65 @@ msgstr ""
 msgid ""
 "<a href=\"http://docs.wp-rocket.me/article/19-resolving-issues-with-"
 "minification\" target=\"_blank\">Why?</a>"
-msgstr "<a href=\"http://docs.wp-rocket.me/article/19-resolving-issues-with-minification\" target=\"_blank\">למה?</a>"
+msgstr ""
 
 #: inc/admin/ui/modules/optimization.php:83
 msgid "Minify HTML files"
-msgstr "כווץ קבצי HTML"
+msgstr ""
 
 #: inc/admin/ui/modules/optimization.php:90
 msgid "Minify CSS files"
-msgstr "כווץ קבצי CSS"
+msgstr ""
 
 #: inc/admin/ui/modules/optimization.php:97
 msgid "Minify JS files"
-msgstr "כווץ קבצי JS"
+msgstr ""
 
 #: inc/admin/ui/modules/optimization.php:104
 msgid "Reduces file size, can improve loading time."
-msgstr "מקטין גודל קובץ, עשוי לשפר זמן טעינה."
+msgstr ""
 
 #: inc/admin/ui/modules/optimization.php:109
 msgid ""
 "Removes spaces and comments from static files, enables browsers and search "
 "engines to faster process HTML, CSS, and JavaScript files."
-msgstr "מסיר רווחים והערות מקבצים סטטיים, מאפשר לדפדפנים ומנועי חיפוש לעבד קבצי HTML, CSS, ו-JavaScript במהירות גבוהה יותר."
+msgstr ""
 
 #: inc/admin/ui/modules/optimization.php:114
 msgid "Minify files:"
-msgstr "כווץ קבצים:"
+msgstr ""
 
 #: inc/admin/ui/modules/optimization.php:150
 msgid "Concatenate Google Fonts"
-msgstr "שרשר גופנים של Google"
+msgstr ""
 
 #: inc/admin/ui/modules/optimization.php:156
 msgid "Concatenate CSS files"
-msgstr "שרשר קבצי CSS"
+msgstr ""
 
 #: inc/admin/ui/modules/optimization.php:162
 msgid ""
 "Combine all CSS files into as few files as possible <em>(test "
 "thoroughly!)</em>"
-msgstr "שלב את כל קבצי ה-CSS להכי מעט קבצים שאפשר <em>(בדוק ביסודיות!)</em>"
+msgstr ""
 
 #: inc/admin/ui/modules/optimization.php:164
 msgid "CSS Files concatenation"
-msgstr "שרשור קבצי CSS"
+msgstr ""
 
 #: inc/admin/ui/modules/optimization.php:170
 msgid "Concatenate JS files"
-msgstr "שרשר קבצי JS"
+msgstr ""
 
 #: inc/admin/ui/modules/optimization.php:176
 msgid ""
 "Combine all JavaScript files into as few files as possible <em>(test "
 "thoroughly!)</em>"
-msgstr "מזג את כל קבצי ה-JavaScript להכי מעט קבצים שאפשר <em>(בדוק ביסודיות!)</em>"
+msgstr ""
 
 #: inc/admin/ui/modules/optimization.php:178
 msgid "JS Files concatenation"
-msgstr "שרשור קבצי JS"
+msgstr ""
 
 #: inc/admin/ui/modules/optimization.php:188
 msgid ""
@@ -1321,7 +1301,7 @@ msgstr ""
 
 #: inc/admin/ui/modules/optimization.php:193
 msgid "Combine files:"
-msgstr "מזג קבצים:"
+msgstr ""
 
 #: inc/admin/ui/modules/optimization.php:205
 msgid "Exclude CSS:"
@@ -1474,7 +1454,7 @@ msgstr ""
 #: inc/admin/ui/modules/optimization.php:433
 #: inc/admin/ui/modules/optimization.php:476
 msgid "Empty the field to remove it."
-msgstr "רוקן את השדה להסרתו."
+msgstr ""
 
 #: inc/admin/ui/modules/optimization.php:439
 msgid ""
@@ -1603,7 +1583,7 @@ msgstr ""
 
 #: inc/admin/ui/modules/preload.php:153 inc/admin/ui/modules/preload.php:166
 msgid "Prefetch DNS requests:"
-msgstr "שליפה מראש של פניות DNS:"
+msgstr ""
 
 #: inc/admin/ui/modules/preload.php:161
 msgid ""
@@ -1629,7 +1609,7 @@ msgstr ""
 
 #: inc/admin/ui/modules/support.php:33
 msgid "Summary:"
-msgstr "סיכום:"
+msgstr ""
 
 #: inc/admin/ui/modules/support.php:40
 msgid "In one sentence: What is going on, or wrong?"
@@ -1637,23 +1617,22 @@ msgstr ""
 
 #: inc/admin/ui/modules/support.php:45
 msgid "Summary"
-msgstr "סיכום"
+msgstr ""
 
 #: inc/admin/ui/modules/support.php:55 inc/admin/ui/modules/white-label.php:37
 #: inc/admin/ui/modules/white-label.php:46
 msgid "Description:"
-msgstr "תיאור:"
+msgstr ""
 
 #: inc/admin/ui/modules/support.php:64
 msgid ""
 "<strong>Now be specific!</strong><br>We have pre-filled the form with some "
-"questions for you to phrase your description along.<br>We speak English, "
-"French, German, Italian, Serbian, and Spanish."
+"questions for you to phrase your description along."
 msgstr ""
 
 #: inc/admin/ui/modules/support.php:69
 msgid "Description"
-msgstr "תיאור"
+msgstr ""
 
 #: inc/admin/ui/modules/support.php:73
 msgid ""
@@ -1712,7 +1691,7 @@ msgstr ""
 #: inc/admin/ui/modules/tools.php:71 inc/common/admin-bar.php:168
 #: inc/common/admin-bar.php:187 inc/common/admin-bar.php:220
 msgid "Preload cache"
-msgstr "טען זיכרון מטמון מראש"
+msgstr ""
 
 #: inc/admin/ui/modules/tools.php:84
 msgid "Purge OPcache:"
@@ -1791,26 +1770,26 @@ msgstr ""
 #: inc/admin/ui/modules/white-label.php:7
 #: inc/admin/ui/modules/white-label.php:16
 msgid "Plugin Name:"
-msgstr "שם תוסף:"
+msgstr ""
 
 #: inc/admin/ui/modules/white-label.php:22
 #: inc/admin/ui/modules/white-label.php:31
 msgid "Plugin URI:"
-msgstr "URI תוסף:"
+msgstr ""
 
 #: inc/admin/ui/modules/white-label.php:52
 #: inc/admin/ui/modules/white-label.php:61
 msgid "Author:"
-msgstr "מחבר:"
+msgstr ""
 
 #: inc/admin/ui/modules/white-label.php:67
 #: inc/admin/ui/modules/white-label.php:76
 msgid "Author URI:"
-msgstr "URI מחבר:"
+msgstr ""
 
 #: inc/admin/ui/modules/white-label.php:88
 msgid "Reset White Label values to default"
-msgstr "אפס ערכי \"תווית לבנה\" לברירת המחדל"
+msgstr ""
 
 #: inc/admin/ui/modules/white-label.php:93
 msgid ""
@@ -1857,7 +1836,7 @@ msgstr ""
 
 #: inc/admin/ui/notices.php:209
 msgid "Deactivate"
-msgstr "כיבוי"
+msgstr ""
 
 #: inc/admin/ui/notices.php:236
 #, php-format
@@ -1880,14 +1859,14 @@ msgstr ""
 msgid ""
 "To fix this you have to set writing permissions for <code>wp-"
 "config.php</code> and then save the settings again."
-msgstr "כדי לתקן זאת עליך להגדיר הרשאות כתיבה עבור <code>wp-config.php</code>ואז לשמור את ההגדרות בשנית."
+msgstr ""
 
 #: inc/admin/ui/notices.php:278
 msgid ""
 "If the message persists, you have to put the following code in your <code"
 ">wp-config.php</code> file so that it works correctly. Click on the field "
 "and press Ctrl-A to select all."
-msgstr "אם ההודעה ממשיכה להופיע, עליך להכניס את הקוד ה&quot;ל לתוך קובץ <code>wp-config.php</code> שלך כדי שזה יעבוד כראוי. לחץ על השדה ולחץ Ctrl+A כדי לבחור את הכל."
+msgstr ""
 
 #: inc/admin/ui/notices.php:316
 #, php-format
@@ -1920,7 +1899,7 @@ msgstr ""
 msgid ""
 "<strong>Warning:</strong> This message will popup again and its content may "
 "be updated when saving the options"
-msgstr "<strong>אזהרה:</strong> מסר זה יוקפץ שוב וייתכן ותוכנו יעודכן בעת שמירת ההגדרות"
+msgstr ""
 
 #: inc/admin/ui/notices.php:403
 #, php-format
@@ -1962,7 +1941,7 @@ msgstr ""
 
 #: inc/admin/ui/notices.php:507
 msgid "Thank you. Your license has been successfully validated!"
-msgstr "תודה רבה. רישיונך אומת בהצלחה!"
+msgstr ""
 
 #: inc/admin/ui/notices.php:510
 #, php-format
@@ -1985,7 +1964,7 @@ msgstr ""
 
 #: inc/admin/ui/notices.php:586
 msgid "More details"
-msgstr "פרטים נוספים"
+msgstr ""
 
 #: inc/admin/updater.php:65 inc/admin/updater.php:72
 #, php-format
@@ -1993,37 +1972,37 @@ msgid ""
 "An unexpected error occurred. Something may be wrong with WP-Rocket.me or "
 "this server&#8217;s configuration. If you continue to have problems, please "
 "try the <a href=\"%s\">support forums</a>."
-msgstr "התרחשה שגיאה בלתי צפויה. ייתכן כי ישנה בעיה עם האתר WP-Rocket.me או עם ההגדרות של שרת זה. אם אתה ממשיך לחוות בעיות, אנא נסה את <a href=\"%s\">פורום התמיכה</a>."
+msgstr ""
 
 #: inc/common/admin-bar.php:92 inc/common/admin-bar.php:211
 #: inc/functions/i18n.php:38 inc/functions/i18n.php:45
 msgid "All languages"
-msgstr "כל השפות"
+msgstr ""
 
 #: inc/common/admin-bar.php:117
 msgid "Clear this post"
-msgstr "נקה פוסט זה"
+msgstr ""
 
 #: inc/common/admin-bar.php:128
 msgid "Purge this URL"
-msgstr "מחק URL זה"
+msgstr ""
 
 #: inc/common/admin-bar.php:232
 msgid "Documentation"
-msgstr "תיעוד"
+msgstr ""
 
 #: inc/common/cron.php:23
 #, php-format
 msgid "%s clear"
-msgstr "%s נוקה"
+msgstr ""
 
 #: inc/common/cron.php:32
 msgid "weekly"
-msgstr "שבועי"
+msgstr ""
 
 #: inc/common/cron.php:38
 msgid "monthly"
-msgstr "חודשי"
+msgstr ""
 
 #: inc/common/purge.php:549
 #, php-format
@@ -2061,23 +2040,23 @@ msgstr ""
 msgid "No domain available in your Cloudflare account"
 msgstr ""
 
-#: inc/functions/options.php:601
+#: inc/functions/options.php:598
 msgid "Your license is not valid."
-msgstr "הרישון שלך אינו תקף."
+msgstr ""
 
-#: inc/functions/options.php:602
+#: inc/functions/options.php:599
 msgid "You cannot add more websites. Upgrade your account."
-msgstr "אין באפשרותך להוסיף עוד אתרים. שדרג את החשבון שלך."
+msgstr ""
 
-#: inc/functions/options.php:603
+#: inc/functions/options.php:600
 msgid "This website is not allowed."
-msgstr "אתר זה אינו מורשה."
+msgstr ""
 
-#: inc/functions/options.php:604
+#: inc/functions/options.php:601
 msgid "This license key is not accepted."
-msgstr "מפתח רישיון זה אינו מקובל."
+msgstr ""
 
 #: inc/vendors/wp-background-process.php:425
 #, php-format
 msgid "Every %d Minutes"
-msgstr "כל %d דקות"
+msgstr ""

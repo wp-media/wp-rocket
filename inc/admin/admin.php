@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) ||	die( 'Cheatin&#8217; uh?' );
 
 /**
  * Link to the configuration page of the plugin, support & documentation
@@ -127,7 +127,9 @@ function rocket_dismiss_boxes( $args ) {
 
 		if ( ! wp_verify_nonce( $args['_wpnonce'], $args['action'] . '_' . $args['box'] ) ) {
 			if ( defined( 'DOING_AJAX' ) ) {
-				wp_send_json( array( 'error' => 1 ) );
+				wp_send_json( array(
+					'error' => 1,
+				) );
 			} else {
 				wp_nonce_ays( '' );
 			}
@@ -147,7 +149,9 @@ function rocket_dismiss_boxes( $args ) {
 
 		if ( 'admin-post.php' === $GLOBALS['pagenow'] ) {
 			if ( defined( 'DOING_AJAX' ) ) {
-				wp_send_json( array( 'error' => 0 ) );
+				wp_send_json( array(
+					'error' => 0,
+				) );
 			} else {
 				wp_safe_redirect( wp_get_referer() );
 				die();
@@ -166,7 +170,7 @@ add_action( 'admin_post_rocket_ignore', 'rocket_dismiss_boxes' );
  * @param string $plugin plugin name.
  */
 function rocket_dismiss_plugin_box( $plugin ) {
-	if ( plugin_basename( WP_ROCKET_FILE ) !== $plugin  ) {
+	if ( plugin_basename( WP_ROCKET_FILE ) !== $plugin ) {
 		rocket_renew_box( 'rocket_warning_plugin_modification' );
 	}
 }
@@ -309,16 +313,19 @@ function rocket_rollback() {
 
 	if ( false === $transient ) {
 		require_once( ABSPATH . 'wp-admin/includes/class-wp-upgrader.php' );
+		// translators: %s is the plugin name.
 		$title = sprintf( __( '%s Update Rollback', 'rocket' ), WP_ROCKET_PLUGIN_NAME );
 		$plugin = 'wp-rocket/wp-rocket.php';
 		$nonce = 'upgrade-plugin_' . $plugin;
-		$url = 'update.php?action=upgrade-plugin&plugin=' . urlencode( $plugin );
+		$url = 'update.php?action=upgrade-plugin&plugin=' . rawurlencode( $plugin );
 		$upgrader_skin = new Plugin_Upgrader_Skin( compact( 'title', 'nonce', 'url', 'plugin' ) );
 		$upgrader = new Plugin_Upgrader( $upgrader_skin );
 		remove_filter( 'site_transient_update_plugins', 'rocket_check_update', 100 );
 		$upgrader->upgrade( $plugin );
-
-		wp_die( '', sprintf( __( '%s Update Rollback', 'rocket' ), WP_ROCKET_PLUGIN_NAME ), array( 'response' => 200 ) );
+		// translators: %s is the plugin name.
+		wp_die( '', sprintf( __( '%s Update Rollback', 'rocket' ), WP_ROCKET_PLUGIN_NAME ), array(
+			'response' => 200,
+		) );
 	}
 }
 add_action( 'admin_post_rocket_rollback', 'rocket_rollback' );
@@ -383,3 +390,64 @@ function rocket_optimize_database() {
 	die();
 }
 add_action( 'admin_post_rocket_optimize_database', 'rocket_optimize_database' );
+
+/**
+ * Filter plugin fetching API results to inject Imagify
+ *
+ * @since 2.10.7
+ * @author Remy Perona
+ *
+ * @param object|WP_Error $result Response object or WP_Error.
+ * @param string          $action The type of information being requested from the Plugin Install API.
+ * @param object          $args   Plugin API arguments.
+ *
+ * @return array Updated array of results
+ */
+function rocket_add_imagify_api_result( $result, $action, $args ) {
+	if ( empty( $args->browse ) ) {
+		return $result;
+	}
+
+	if ( 'featured' !== $args->browse && 'recommended' !== $args->browse && 'popular' !== $args->browse ) {
+		return $result;
+	}
+
+	if ( ! isset( $result->info['page'] ) || 1 < $result->info['page'] ) {
+		return $result;
+	}
+
+	if ( is_plugin_active( 'imagify/imagify.php' ) || is_plugin_active_for_network( 'imagify/imagify.php' ) ) {
+		return $result;
+	}
+
+	// grab all slugs from the api results.
+	$result_slugs = wp_list_pluck( $result->plugins, 'slug' );
+
+	if ( in_array( 'imagify', $result_slugs, true ) ) {
+		return $result;
+	}
+
+	$query_args = array(
+		'slug'   => 'imagify',
+		'fields' => array(
+			'icons'             => true,
+			'active_installs'   => true,
+			'short_description' => true,
+			'group'             => true,
+		),
+	);
+	$imagify_data = plugins_api( 'plugin_information', $query_args );
+
+	if ( is_wp_error( $imagify_data ) ) {
+		return $result;
+	}
+
+	if ( 'featured' === $args->browse ) {
+		array_push( $result->plugins, $imagify_data );
+	} else {
+		array_unshift( $result->plugins, $imagify_data );
+	}
+
+	return $result;
+}
+add_filter( 'plugins_api_result', 'rocket_add_imagify_api_result', 11, 3 );

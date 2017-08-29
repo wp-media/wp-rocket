@@ -39,27 +39,30 @@ if ( ! isset( $_SERVER['REQUEST_METHOD'] ) || 'GET' !== $_SERVER['REQUEST_METHOD
 
 // Get the correct config file.
 $rocket_config_path = WP_CONTENT_DIR . '/wp-rocket-config/';
+$real_rocket_config_path = realpath( $rocket_config_path ) . DIRECTORY_SEPARATOR;
 $host = ( isset( $_SERVER['HTTP_HOST'] ) ) ? $_SERVER['HTTP_HOST'] : time();
 $host = trim( strtolower( $host ), '.' );
-$host = str_replace( array( '..', chr( 0 ) ), '', $host );
+$host = urlencode( $host );
 
 $continue = false;
-if ( file_exists( $rocket_config_path . $host . '.php' ) ) {
+if ( realpath( $rocket_config_path . $host . '.php' ) && 0 === stripos( realpath( $rocket_config_path . $host . '.php' ), $real_rocket_config_path ) ) {
 	include( $rocket_config_path . $host . '.php' );
 	$continue = true;
 } else {
-	$path = explode( '/' , trim( $_SERVER['REQUEST_URI'], '/' ) );
+	$path = str_replace( '\\', '/', strtok( $_SERVER['REQUEST_URI'], '?' ) );
+	$path = preg_replace( '|(?<=.)/+|', '/', $path );
+	$path = explode( '%2F' , trim( urlencode( $path ), '%2F' ) );
 
 	foreach ( $path as $p ) {
 		static $dir;
 
-		if ( file_exists( $rocket_config_path . $host . '.' . $p . '.php' ) ) {
+		if ( realpath( $rocket_config_path . $host . '.' . $p . '.php' ) && 0 === stripos( realpath( $rocket_config_path . $host . '.' . $p . '.php' ), $real_rocket_config_path ) ) {
 			include( $rocket_config_path . $host . '.' . $p . '.php' );
 			$continue = true;
 			break;
 		}
 
-		if ( file_exists( $rocket_config_path . $host . '.' . $dir . $p . '.php' ) ) {
+		if ( realpath( $rocket_config_path . $host . '.' . $dir . $p . '.php' ) && 0 === stripos( realpath( $rocket_config_path . $host . '.' . $dir . $p . '.php' ), $real_rocket_config_path ) ) {
 			include( $rocket_config_path . $host . '.' . $dir . $p . '.php' );
 			$continue = true;
 			break;
@@ -296,7 +299,7 @@ function do_rocket_callback( $buffer ) {
 			rocket_put_content( $rocket_cache_filepath, $buffer . $footprint );
 
 			if ( function_exists( 'gzencode' ) ) {
-				rocket_put_content( $rocket_cache_filepath . '_gzip', gzencode( $buffer . get_rocket_footprint(), apply_filters( 'rocket_gzencode_level_compression', 3 ) ) );
+				rocket_put_content( $rocket_cache_filepath . '_gzip', gzencode( $buffer . $footprint, apply_filters( 'rocket_gzencode_level_compression', 3 ) ) );
 			}
 
 			// Send headers with the last modified time of the cache file.

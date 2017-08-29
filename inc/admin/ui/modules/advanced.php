@@ -169,7 +169,7 @@ add_settings_field(
  */
 add_settings_field(
 	'rocket_purge_pages',
-	__( 'Always purge (URLs):' ),
+	__( 'Always purge (URLs):', 'rocket' ),
 	'rocket_field',
 	'rocket_advanced',
 	'rocket_display_imp_options',
@@ -200,7 +200,7 @@ add_settings_field(
  */
 add_settings_field(
 	'rocket_query_strings',
-	__( 'Cache query strings:' ),
+	__( 'Cache query strings:', 'rocket' ),
 	'rocket_field',
 	'rocket_advanced',
 	'rocket_display_imp_options',

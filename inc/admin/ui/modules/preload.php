@@ -78,7 +78,7 @@ add_settings_field(
 		array(
 			'type'        => 'helper_warning',
 			'name'        => 'sitemaps_preload_url_crawl_warning',
-			'description' => __( 'Set a higher value in case you notice any overload on your server!', 'rocket' ),
+			'description' => __( 'Set a higher value if you notice any overload on your server!', 'rocket' ),
 		),
 	)
 );
@@ -135,12 +135,12 @@ add_settings_field(
 		array(
 			'type'        => 'helper_description',
 			'name'        => 'bot_preload',
-			'description' => $rwl ? __( 'Bot-based preloading should only be used on well-performaning servers. Once activated, it gets triggered automatically after you add or update content on your website. You can also launch it manually from the upper toolbar menu, or from the Tools tab.', 'rocket' ) : __( '<a href="http://docs.wp-rocket.me/article/8-how-the-cache-is-preloaded" target="_blank">Bot-based preloading</a> should only be used on well-performaning servers. Once activated, it gets triggered automatically after you add or update content on your website. You can also launch it manually from the upper toolbar menu, or from the Tools tab.', 'rocket' ),
+			'description' => $rwl ? __( 'Bot-based preloading should only be used on well-performing servers. Once activated, it gets triggered automatically after you add or update content on your website. You can also launch it manually from the upper toolbar menu, or from the Tools tab.', 'rocket' ) : __( '<a href="http://docs.wp-rocket.me/article/8-how-the-cache-is-preloaded" target="_blank">Bot-based preloading</a> should only be used on well-performing servers. Once activated, it gets triggered automatically after you add or update content on your website. You can also launch it manually from the upper toolbar menu, or from the Tools tab.', 'rocket' ),
 		),
 		array(
 			'type'        => 'helper_warning',
 			'name'        => 'bot_preload_warning',
-			'description' => __( 'Deactivate these options in case you notice any overload on your server!', 'rocket' ),
+			'description' => __( 'Deactivate these options if you notice any overload on your server!', 'rocket' ),
 		),
 	)
 );

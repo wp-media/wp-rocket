@@ -324,3 +324,23 @@ if ( ! function_exists( 'is_rocket_cache_feed' ) ) :
 		return get_rocket_option( 'cache_feed', false );
 	}
 endif;
+
+if ( ! function_exists( 'rocket_exclude_js_buddypress' ) ) :
+	/**		
+	 * Excludes BuddyPress's plupload from JS minification		
+	 *		
+	 * Exclude it to prevent an error after minification/concatenation
+	 * preventing the image upload from working correctly		
+	 *		
+	 * @since 2.8.10
+	 * @deprecated 2.10.7
+	 * @author Remy Perona		
+	 *		
+	 * @param Array $excluded_handle An array of JS handles enqueued in WordPress.		
+	 * @return Array the updated array of handles		
+	 */
+	function rocket_exclude_js_buddypress( $excluded_handle  ) {
+		_deprecated_function( __FUNCTION__, '2.10.7' );
+		return $excluded_handle;
+	}
+endif;

@@ -73,6 +73,10 @@ function rocket_cdn_attachment_image_src( $image ) {
 		return $image;
 	}
 
+	if ( is_admin() || is_preview() || is_feed() ) {
+		return $image;
+	}
+
 	$zones = array( 'all', 'images' );
 
 	if ( ! (bool) get_rocket_cdn_cnames( $zones ) ) {
@@ -134,8 +138,9 @@ function rocket_cdn_images( $html ) {
 	$zone = array( 'all', 'images' );
 	if ( $cnames = get_rocket_cdn_cnames( $zone ) ) {
 
-		$cnames = array_flip( $cnames );
-		$home_url = home_url( '/' );
+		$cnames             = array_flip( $cnames );
+		$home_url           = home_url( '/' );
+		$wp_content_dirname = str_replace( $home_url, '', WP_CONTENT_URL );
 		// Get all images of the content.
 		preg_match_all( '#<img([^>]+?)src=([\'"\\\]*)([^\'"\s\\\>]+)([\'"\\\]*)([^>]*)>#i', $html, $images_match );
 
@@ -144,7 +149,7 @@ function rocket_cdn_images( $html ) {
 			list( $host, $path, $scheme, $query ) = get_rocket_parse_url( $image_url );
 			$path = trim( $path );
 
-			if ( empty( $path ) || '{href}' === $path || '+markerData[i].thumbnail+' === $path ) {
+			if ( empty( $path ) ||  ! preg_match( '#(' . $wp_content_dirname . '|wp-includes)#', $path ) ) {
 				continue;
 			}
 
@@ -265,7 +270,7 @@ function rocket_cdn_custom_files( $html ) {
 		 *
 		 * @param array $filetypes Array of file types.
 		 */
-		$filetypes = apply_filters( 'rocket_cdn_custom_filetypes', array( 'mp3', 'ogg', 'mp4', 'm4v', 'avi', 'mov', 'flv', 'swf', 'webm', 'pdf', 'doc', 'docx', 'txt', 'zip', 'tar', 'bz2', 'tgz', 'rar' ) );
+		$filetypes = apply_filters( 'rocket_cdn_custom_filetypes', array( 'mp3', 'ogg', 'mp4', 'm4v', 'avi', 'mov', 'flv', 'swf', 'webm', 'pdf', 'doc', 'docx', 'txt', 'zip', 'tar', 'bz2', 'tgz', 'rar', 'jpg', 'jpeg', 'jpe', 'png', 'gif', 'webp', 'bmp', 'tiff' ) );
 		$filetypes = implode( '|', $filetypes );
 
 		preg_match_all( '#<a[^>]+?href=[\'"]?([^"\'>]+\.(?:' . $filetypes . '))[\'"]?[^>]*>#i', $html, $matches );
