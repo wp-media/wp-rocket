@@ -17,7 +17,7 @@ function rocket_clean_exclude_file( $file ) {
 		return false;
 	}
 
-	$path = wp_parse_url( $file, PHP_URL_PATH );
+	$path = rocket_extract_url_component( $file, PHP_URL_PATH );
 	return $path;
 }
 
@@ -112,7 +112,7 @@ function rocket_add_url_protocol( $url ) {
 function rocket_set_internal_url_scheme( $url ) {
 	$tmp_url = set_url_scheme( $url );
 
-	if ( wp_parse_url( $tmp_url, PHP_URL_HOST ) === wp_parse_url( home_url(), PHP_URL_HOST ) ) {
+	if ( rocket_extract_url_component( $tmp_url, PHP_URL_HOST ) === rocket_extract_url_component( home_url(), PHP_URL_HOST ) ) {
 			$url = $tmp_url;
 	}
 
@@ -180,6 +180,20 @@ function get_rocket_parse_url( $url ) {
 	 * @param array Components of an URL
 	*/
 	return apply_filters( 'rocket_parse_url', array( $host, $path, $scheme, $query ) );
+}
+
+
+/**
+ * Extract a component from an URL.
+ * 
+ * @since 2.11
+ * @author Remy Perona
+ *
+ * @param string $url URL to parse and extract component of.
+ * @return string extracted component
+ */
+function rocket_extract_url_component( $url ) {
+	return _get_component_from_parsed_url_array( wp_parse_url( $url ), $component );
 }
 
 /**

@@ -257,7 +257,7 @@ function rocket_sanitize_ua( $ua ) {
  * @since 2.7
  */
 function rocket_is_ssl_website() {
-	return 'https' === wp_parse_url( home_url(), PHP_URL_SCHEME );
+	return 'https' === rocket_extract_url_component( home_url(), PHP_URL_SCHEME );
 }
 
 /**

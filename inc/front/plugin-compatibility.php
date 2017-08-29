@@ -81,8 +81,8 @@ function rocket_cdn_resize_image_args_on_envira_gallery( $args ) {
 	}
 
 	$cnames_host = get_rocket_cnames_host();
-	$url_host    = wp_parse_url( $args['url'], PHP_URL_HOST );
-	$home_host   = wp_parse_url( home_url(), PHP_URL_HOST );
+	$url_host    = rocket_extract_url_component( $args['url'], PHP_URL_HOST );
+	$home_host   = rocket_extract_url_component( home_url(), PHP_URL_HOST );
 
 	if ( in_array( $url_host, $cnames_host, true ) ) {
 		$args['url'] = str_replace( $url_host, $home_host , $args['url'] );

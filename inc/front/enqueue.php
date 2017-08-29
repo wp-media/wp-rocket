@@ -102,7 +102,7 @@ function get_rocket_browser_cache_busting( $src, $current_filter = '' ) {
 	}
 
 	$hosts         = get_rocket_cnames_host( array( 'all', 'css_and_js', $extension ) );
-	$hosts['home'] = wp_parse_url( home_url(), PHP_URL_HOST );
+	$hosts['home'] = rocket_extract_url_component( home_url(), PHP_URL_HOST );
 	$hosts_index   = array_flip( $hosts );
 	list( $file_host, $relative_src_path, $scheme, $query ) = get_rocket_parse_url( $full_src );
 
@@ -211,7 +211,7 @@ function rocket_cache_dynamic_resource( $src ) {
 	}
 
 	$hosts       = get_rocket_cnames_host( array( 'all', 'css_and_js', $extension ) );
-	$hosts[]     = wp_parse_url( home_url(), PHP_URL_HOST );
+	$hosts[]     = rocket_extract_url_component( home_url(), PHP_URL_HOST );
 	$hosts_index = array_flip( $hosts );
 	list( $file_host, $relative_src_path, $scheme, $query ) = get_rocket_parse_url( $full_src );
 

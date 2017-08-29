@@ -160,11 +160,11 @@ function get_rocket_htaccess_mod_rewrite() {
 	}
 
 	// Get root base.
-	$home_root = wp_parse_url( home_url() );
-	$home_root = isset( $home_root['path'] ) ? trailingslashit( $home_root['path'] ) : '/';
+	$home_root = rocket_extract_url_component( home_url(), PHP_URL_PATH );
+	$home_root = isset( $home_root ) ? trailingslashit( $home_root ) : '/';
 
-	$site_root = wp_parse_url( site_url() );
-	$site_root = isset( $site_root['path'] ) ? trailingslashit( $site_root['path'] ) : '';
+	$site_root = rocket_extract_url_component( site_url(), PHP_URL_PATH );
+	$site_root = isset( $site_root ) ? trailingslashit( $site_root ) : '';
 
 	// Get cache root.
 	if ( strpos( ABSPATH, WP_ROCKET_CACHE_PATH ) === false ) {

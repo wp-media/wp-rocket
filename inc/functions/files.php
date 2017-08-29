@@ -700,7 +700,7 @@ function rocket_clean_term( $term_id, $taxonomy_slug ) {
 	$permalink = get_term_link( $term, $taxonomy_slug );
 
 	// Add permalink.
-	if ( '/' !== wp_parse_url( $permalink, PHP_URL_PATH ) ) {
+	if ( '/' !== rocket_extract_url_component( $permalink, PHP_URL_PATH ) ) {
 		array_push( $purge_urls, $permalink );
 	}
 

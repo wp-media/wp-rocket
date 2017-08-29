@@ -197,7 +197,7 @@ function get_rocket_i18n_host() {
 
 	if ( $langs ) {
 		foreach ( $langs as $lang ) {
-			$langs_host[] = wp_parse_url( $lang, PHP_URL_HOST );
+			$langs_host[] = rocket_extract_url_component( $lang, PHP_URL_HOST );
 		}
 	}
 
@@ -367,7 +367,7 @@ function get_rocket_i18n_home_url( $lang = '' ) {
  */
 function get_rocket_i18n_translated_post_urls( $post_id, $post_type = 'page', $regex = null ) {
 	$urls  = array();
-	$path  = wp_parse_url( get_permalink( $post_id ), PHP_URL_PATH );
+	$path  = rocket_extract_url_component( get_permalink( $post_id ), PHP_URL_PATH );
 	$langs = get_rocket_i18n_code();
 
 	if ( empty( $path ) ) {
@@ -377,7 +377,7 @@ function get_rocket_i18n_translated_post_urls( $post_id, $post_type = 'page', $r
 	// WPML.
 	if ( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
 		foreach ( $langs as $lang ) {
-			$urls[] = wp_parse_url( get_permalink( icl_object_id( $post_id, $post_type, true, $lang ) ), PHP_URL_PATH ) . $regex;
+			$urls[] = rocket_extract_url_component( get_permalink( icl_object_id( $post_id, $post_type, true, $lang ) ), PHP_URL_PATH ) . $regex;
 		}
 	}
 
@@ -386,13 +386,13 @@ function get_rocket_i18n_translated_post_urls( $post_id, $post_type = 'page', $r
 		$langs  = $GLOBALS['q_config']['enabled_languages'];
 		$langs  = array_diff( $langs, array( $GLOBALS['q_config']['default_language'] ) );
 		$url    = get_permalink( $post_id );
-		$urls[] = wp_parse_url( get_permalink( $post_id ), PHP_URL_PATH ) . $regex;
+		$urls[] = rocket_extract_url_component( get_permalink( $post_id ), PHP_URL_PATH ) . $regex;
 
 		foreach ( $langs as $lang ) {
 			if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
-				$urls[] = wp_parse_url( qtrans_convertURL( $url, $lang, true ), PHP_URL_PATH ) . $regex;
+				$urls[] = rocket_extract_url_component( qtrans_convertURL( $url, $lang, true ), PHP_URL_PATH ) . $regex;
 			} elseif ( rocket_is_plugin_active( 'qtranslate-x/qtranslate.php' ) ) {
-				$urls[] = wp_parse_url( qtranxf_convertURL( $url, $lang, true ), PHP_URL_PATH ) . $regex;
+				$urls[] = rocket_extract_url_component( qtranxf_convertURL( $url, $lang, true ), PHP_URL_PATH ) . $regex;
 			}
 		}
 	}
@@ -407,7 +407,7 @@ function get_rocket_i18n_translated_post_urls( $post_id, $post_type = 'page', $r
 
 		if ( ! empty( $translations ) ) {
 			foreach ( $translations as $post_id ) {
-				$urls[] = wp_parse_url( get_permalink( $post_id ), PHP_URL_PATH ) . $regex;
+				$urls[] = rocket_extract_url_component( get_permalink( $post_id ), PHP_URL_PATH ) . $regex;
 			}
 		}
 	}

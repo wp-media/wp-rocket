@@ -32,7 +32,7 @@ function rocket_async_css( $buffer ) {
 
 	foreach ( $tags_match[0] as $i => $tag ) {
 		// Strip query args.
-		$path = wp_parse_url( $tags_match[2][ $i ] , PHP_URL_PATH );
+		$path = rocket_extract_url_component( $tags_match[2][ $i ] , PHP_URL_PATH );
 
 		// Check if this file should be deferred.
 		if ( isset( $excluded_css[ $path ] ) ) {

@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  * @return bool\void False if we don't want to launch the preload, void otherwise
  */
 function run_rocket_bot( $spider = 'cache-preload', $lang = '' ) {
-	$domain = wp_parse_url( home_url(), PHP_URL_HOST );
+	$domain = rocket_extract_url_component( home_url(), PHP_URL_HOST );
 	if ( 'localhost' === $domain || pathinfo( $domain, PATHINFO_EXTENSION ) === 'dev' ) {
 		return false;
 	}

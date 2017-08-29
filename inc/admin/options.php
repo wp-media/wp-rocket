@@ -1221,7 +1221,7 @@ add_action( 'update_option_' . WP_ROCKET_SLUG, 'rocket_after_save_options', 10, 
  * @param array $value An array of submitted options values.
  */
 function rocket_update_ssl_option_after_save_home_url( $oldvalue, $value ) {
-	if ( 'https' === wp_parse_url( $value, PHP_URL_SCHEME ) ) {
+	if ( 'https' === rocket_extract_url_component( $value, PHP_URL_SCHEME ) ) {
 		update_rocket_option( 'cache_ssl', 1 );
 	}
 }
