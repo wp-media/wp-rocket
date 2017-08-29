@@ -42,11 +42,11 @@ function rocket_cdn_resize_image_args_on_envira_gallery( $args ) {
 		return $args;
 	}
 
-	$cnames_host = get_rocket_cnames_host();
+	$cnames_host = array_flip( get_rocket_cnames_host() );
 	$url_host    = parse_url( $args['url'], PHP_URL_HOST );
 	$home_host   = parse_url( home_url(), PHP_URL_HOST );
 
-	if ( in_array( $url_host, $cnames_host, true ) ) {
+	if ( isset( $cnames_host[ $url_host ] ) ) {
 		$args['url'] = str_replace( $url_host, $home_host , $args['url'] );
 	}
 
