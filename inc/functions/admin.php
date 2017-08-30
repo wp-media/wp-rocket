@@ -461,6 +461,58 @@ function rocket_do_async_job( $body ) {
 }
 
 /**
+ * When Woocommerce, EDD, iThemes Exchange, Jigoshop & WP-Shop options are saved or deleted,
+ * we update .htaccess & config file to get the right checkout page to exclude to the cache.
+ *
+ * @since 2.9.3 Support for SF Move Login moved to 3rd party file
+ * @since 2.6 Add support with SF Move Login & WPS Hide Login to exclude login pages
+ * @since 2.4
+ *
+ * @param array $old_value An array of previous settings values.
+ * @param array $value An array of submitted settings values.
+ */
+function rocket_after_update_single_options( $old_value, $value ) {
+	if ( $old_value !== $value ) {
+		// Update .htaccess file rules.
+		flush_rocket_htaccess();
+
+		// Update config file.
+		rocket_generate_config_file();
+	}
+}
+
+/**
+ * We need to regenerate the config file + htaccess depending on some plugins
+ *
+ * @since 2.9.3 Support for SF Move Login moved to 3rd party file
+ * @since 2.6.5 Add support with SF Move Login & WPS Hide Login
+ *
+ * @param array $old_value An array of previous settings values.
+ * @param array $value An array of submitted settings values.
+ */
+function rocket_after_update_array_options( $old_value, $value ) {
+	$options = array(
+		'purchase_page',
+		'jigoshop_cart_page_id',
+		'jigoshop_checkout_page_id',
+		'jigoshop_myaccount_page_id',
+	);
+
+	foreach ( $options as $val ) {
+		if ( ( ! isset( $old_value[ $val ] ) && isset( $value[ $val ] ) ) ||
+			( isset( $old_value[ $val ], $value[ $val ] ) && $old_value[ $val ] !== $value[ $val ] )
+		) {
+			// Update .htaccess file rules.
+			flush_rocket_htaccess();
+
+			// Update config file.
+			rocket_generate_config_file();
+			break;
+		}
+	}
+}
+
+/**
  * Check if a mobile plugin is active
  *
  * @since 2.10

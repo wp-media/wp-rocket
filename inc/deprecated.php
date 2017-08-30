@@ -344,3 +344,33 @@ if ( ! function_exists( 'rocket_exclude_js_buddypress' ) ) :
 		return $excluded_handle;
 	}
 endif;
+
+if ( ! function_exists( 'get_rocket_logins_exclude_pages' ) ) :
+	/**
+	 * Get hide login pages to automatically exclude them to the cache.
+	 *
+	 * @since 2.6
+	 * @deprecated 2.11
+	 *
+	 * @return array $urls
+	 */
+	function get_rocket_logins_exclude_pages() {
+		_deprecated_function( __FUNCTION__, '2.11' );
+		return array();
+	}
+endif;
+
+if ( ! function_exists( 'get_rocket_ecommerce_exclude_pages' ) ) :
+	/**
+	 * Get cart & checkout path with their translations to automatically exclude them to the cache.
+	 *
+	 * @since 2.4
+	 * @deprecated 2.11
+	 *
+	 * @return array $urls
+	 */
+	function get_rocket_ecommerce_exclude_pages() {
+		_deprecated_function( __FUNCTION__, '2.11' );
+		return array();
+	}
+endif;

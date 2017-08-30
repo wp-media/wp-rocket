@@ -18,16 +18,7 @@ add_action( 'add_link'                                              , 'rocket_cl
 add_action( 'edit_link'                                             , 'rocket_clean_domain' );  // When a link is updated
 add_action( 'delete_link'                                           , 'rocket_clean_domain' );  // When a link is deleted
 add_action( 'customize_save'                                        , 'rocket_clean_domain' );  // When customizer is saved
-add_action( 'avada_clear_dynamic_css_cache'                         , 'rocket_clean_domain' );  // When Avada theme purge its own cache
 add_action( 'update_option_theme_mods_' . get_option( 'stylesheet' ), 'rocket_clean_domain' ); // When location of a menu is updated.
-
-/**
- * When SuperCacher (SiteGround) is purged
- *
- * @since 2.3.5
- */
-add_action( 'wp_ajax_sg-cachepress-purge',    'rocket_clean_domain', 0 );
-add_action( 'admin_post_sg-cachepress-purge', 'rocket_clean_domain', 0 );
 
 /**
  * Purge cache When a widget is updated
@@ -42,42 +33,6 @@ function rocket_widget_update_callback( $instance ) {
 	return $instance;
 }
 add_filter( 'widget_update_callback', 'rocket_widget_update_callback' );
-
-/*
- @since 1.3.3
- * For not conflit with WooCommerce when clean_post_cache is called
-*/
-add_filter( 'delete_transient_wc_products_onsale', 'wp_suspend_cache_invalidation' );
-
-/*
- @since 2.3
- * For not conflit with SuperCacher (SiteGround) Pretty good hosting!
-*/
-add_action( 'after_rocket_clean_domain', 'rocket_clean_supercacher' );
-
-/*
- @since 2.5.5
- * For not conflit with StudioPress Accelerator
-*/
-add_action( 'after_rocket_clean_domain', 'rocket_clean_studiopress_accelerator' );
-
-/*
- @since 2.5.5
- * For not conflit with Varnish HTTP Purge
-*/
-add_action( 'after_rocket_clean_domain', 'rocket_clean_varnish_http_purge' );
-
-/*
- @since 2.5.7
- * For not conflit with Pagely Hosting
-*/
-add_action( 'after_rocket_clean_domain', 'rocket_clean_pagely' );
-
-/*
- @since 2.5.11
- * For not conflit with Pressidium Hosting
-*/
-add_action( 'after_rocket_clean_domain', 'rocket_clean_pressidium' );
 
 /**
  * Update cache when a post is updated or commented
