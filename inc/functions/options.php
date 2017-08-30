@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
  * A wrapper to easily get rocket option
@@ -63,10 +63,11 @@ function update_rocket_option( $key, $value ) {
  * @since 1.3.0
  *
  * @source wp-admin/includes/plugin.php
+ *
+ * @param string $plugin Plugin folder/main file.
  */
-function rocket_is_plugin_active( $plugin )
-{
-	return in_array( $plugin, (array) get_option( 'active_plugins', array() ) ) || rocket_is_plugin_active_for_network( $plugin );
+function rocket_is_plugin_active( $plugin ) {
+	return in_array( $plugin, (array) get_option( 'active_plugins', array() ), true ) || rocket_is_plugin_active_for_network( $plugin );
 }
 
 /**
@@ -75,15 +76,16 @@ function rocket_is_plugin_active( $plugin )
  * @since 1.3.0
  *
  * @source wp-admin/includes/plugin.php
+ *
+ * @param string $plugin Plugin folder/main file.
  */
-function rocket_is_plugin_active_for_network( $plugin )
-{
-	if ( !is_multisite() ) {
+function rocket_is_plugin_active_for_network( $plugin ) {
+	if ( ! is_multisite() ) {
 		return false;
 	}
 
-	$plugins = get_site_option( 'active_sitewide_plugins');
-	if ( isset($plugins[$plugin]) ) {
+	$plugins = get_site_option( 'active_sitewide_plugins' );
+	if ( isset( $plugins[ $plugin ] ) ) {
 		return true;
 	}
 
@@ -96,7 +98,7 @@ function rocket_is_plugin_active_for_network( $plugin )
  * @since 2.5
  *
  * @param  string $option  The option name (lazyload, css, js, cdn).
- * @return bool 		   True if the option is deactivated
+ * @return bool            True if the option is deactivated
  */
 function is_rocket_post_excluded_option( $option ) {
 	global $post;
@@ -206,7 +208,7 @@ function get_rocket_purge_cron_interval() {
 /**
  * Get all uri we don't cache
  *
- * @since 2.6	Using json_get_url_prefix() to auto-exclude the WordPress REST API
+ * @since 2.6   Using json_get_url_prefix() to auto-exclude the WordPress REST API
  * @since 2.4.1 Auto-exclude WordPress REST API
  * @since 2.0
  *
@@ -215,7 +217,7 @@ function get_rocket_purge_cron_interval() {
 function get_rocket_cache_reject_uri() {
 	$uri = get_rocket_option( 'cache_reject_uri', array() );
 
-	// Exclude feeds
+	// Exclude feeds.
 	$uri[] = '(.*)/' . $GLOBALS['wp_rewrite']->feed_base . '/?';
 
 	/**
@@ -372,7 +374,7 @@ function get_rocket_cdn_cnames( $zone = 'all' ) {
 	$hosts       = array();
 	$cnames      = get_rocket_option( 'cdn_cnames', array() );
 	$cnames_zone = get_rocket_option( 'cdn_zone', array() );
-	$zone 		 = is_array( $zone ) ? $zone : (array) $zone;
+	$zone        = is_array( $zone ) ? $zone : (array) $zone;
 
 	foreach ( $cnames as $k => $_urls ) {
 		if ( in_array( $cnames_zone[ $k ], $zone, true ) ) {
@@ -535,7 +537,7 @@ function get_rocket_exclude_defer_js() {
 
 	if ( get_rocket_option( 'defer_all_js', 0 ) && get_rocket_option( 'defer_all_js_safe', 0 ) ) {
 		$jquery = $wp_scripts->registered['jquery-core']->src;
-		
+
 		if ( get_rocket_option( 'remove_query_strings', 0 ) ) {
 			$jquery = site_url( $jquery . '?ver=' . $wp_scripts->registered['jquery-core']->ver );
 			$exclude_defer_js[] = rocket_clean_exclude_file( get_rocket_browser_cache_busting( $jquery, 'script_loader_src' ) );
@@ -588,7 +590,8 @@ function get_rocket_exclude_async_css() {
  * @return bool true if everything is ok, false otherwise
  */
 function rocket_valid_key() {
-	if ( ! $rocket_secret_key = get_rocket_option( 'secret_key' ) ) {
+	$rocket_secret_key = get_rocket_option( 'secret_key' );
+	if ( ! $rocket_secret_key ) {
 		return false;
 	}
 
@@ -607,14 +610,18 @@ function rocket_check_key() {
 	$return = rocket_valid_key();
 
 	if ( ! rocket_valid_key() ) {
-		$response = wp_remote_get( WP_ROCKET_WEB_VALID, array( 'timeout' => 30 ) );
+		$response = wp_remote_get(
+			WP_ROCKET_WEB_VALID, array(
+				'timeout' => 30,
+			)
+		);
 
 		$json = ! is_wp_error( $response ) ? json_decode( $response['body'] ) : false;
 		$rocket_options = array();
 
 		if ( $json ) {
-			$rocket_options['consumer_key'] 	= $json->data->consumer_key;
-			$rocket_options['consumer_email']	= $json->data->consumer_email;
+			$rocket_options['consumer_key']     = $json->data->consumer_key;
+			$rocket_options['consumer_email']   = $json->data->consumer_email;
 
 			if ( $json->success ) {
 				$rocket_options['secret_key'] = $json->data->secret_key;
@@ -627,8 +634,8 @@ function rocket_check_key() {
 				$messages = array(
 					'BAD_LICENSE' => __( 'Your license is not valid.', 'rocket' ),
 					'BAD_NUMBER'  => __( 'You cannot add more websites. Upgrade your account.', 'rocket' ),
-					'BAD_SITE'	  => __( 'This website is not allowed.', 'rocket' ),
-					'BAD_KEY'	  => __( 'This license key is not accepted.', 'rocket' ),
+					'BAD_SITE'    => __( 'This website is not allowed.', 'rocket' ),
+					'BAD_KEY'     => __( 'This license key is not accepted.', 'rocket' ),
 				);
 				$rocket_options['secret_key'] = '';
 

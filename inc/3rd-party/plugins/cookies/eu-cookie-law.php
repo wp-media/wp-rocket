@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
  * Compatibility with EU Cookie Law
@@ -41,7 +41,7 @@ endif;
  * @since 2.7
  */
 function rocket_activate_eu_cookie_law() {
-	add_filter( 'rocket_htaccess_mod_rewrite'	 , '__return_false' );
+	add_filter( 'rocket_htaccess_mod_rewrite'    , '__return_false' );
 	add_filter( 'rocket_cache_mandatory_cookies' , 'rocket_add_eu_cookie_law_mandatory_cookie' );
 
 	// Update the WP Rocket rules on the .htaccess file.

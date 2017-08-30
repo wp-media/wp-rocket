@@ -1,17 +1,17 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 if ( class_exists( 'WooCommerce' ) ) :
 
 	add_filter( 'rocket_cache_reject_uri', 'rocket_exclude_woocommerce_pages' );
-	add_action( 'update_option_woocommerce_cart_page_id'	, 'rocket_after_update_single_options', 10, 2 );
-	add_action( 'update_option_woocommerce_checkout_page_id', 'rocket_after_update_single_options', 10, 2 );
-	add_action( 'update_option_woocommerce_myaccount_page_id', 'rocket_after_update_single_options', 10, 2 );
+	add_action( 'update_option_woocommerce_cart_page_id'            , 'rocket_after_update_single_options', 10, 2 );
+	add_action( 'update_option_woocommerce_checkout_page_id'        , 'rocket_after_update_single_options', 10, 2 );
+	add_action( 'update_option_woocommerce_myaccount_page_id'       , 'rocket_after_update_single_options', 10, 2 );
 	add_filter( 'update_option_woocommerce_default_customer_address', 'rocket_after_update_single_options', 10, 2 );
-    add_filter( 'rocket_cache_query_strings', 'rocket_cache_v_query_string' );
-    add_action( 'woocommerce_save_product_variation', 'rocket_clean_cache_after_woocommerce_save_product_variation', 10 );
-	//Prevent conflict with WooCommerce when clean_post_cache is called
-	add_filter( 'delete_transient_wc_products_onsale', 'wp_suspend_cache_invalidation' );
+	add_filter( 'rocket_cache_query_strings', 'rocket_cache_v_query_string' );
+	add_action( 'woocommerce_save_product_variation'                , 'rocket_clean_cache_after_woocommerce_save_product_variation', 10 );
+	// Prevent conflict with WooCommerce when clean_post_cache is called.
+	add_filter( 'delete_transient_wc_products_onsale'               , 'wp_suspend_cache_invalidation' );
 
 endif;
 
@@ -24,7 +24,8 @@ endif;
  * @param int $variation_id ID of the variation.
  */
 function rocket_clean_cache_after_woocommerce_save_product_variation( $variation_id ) {
-	if ( $product_id = wp_get_post_parent_id( $variation_id ) ) {
+	$product_id = wp_get_post_parent_id( $variation_id );
+	if ( $product_id ) {
 		rocket_clean_post( $product_id );
 	}
 }
@@ -52,11 +53,10 @@ function rocket_cache_v_query_string( $query_strings ) {
  * @since 2.11 Moved to 3rd party
  * @since 2.4
  *
- * @param array $query_strings An array of excluded pages
+ * @param array $urls An array of excluded pages.
  * @return array Updated array of excluded pages
  */
 function rocket_exclude_woocommerce_pages( $urls ) {
-	// WooCommerce
 	if ( function_exists( 'WC' ) && function_exists( 'wc_get_page_id' ) ) {
 		if ( wc_get_page_id( 'checkout' ) && wc_get_page_id( 'checkout' ) !== -1 && wc_get_page_id( 'checkout' ) !== (int) get_option( 'page_on_front' ) ) {
 			$checkout_urls = get_rocket_i18n_translated_post_urls( wc_get_page_id( 'checkout' ), 'page', '(.*)' );
@@ -87,7 +87,7 @@ function rocket_activate_woocommerce() {
 	add_filter( 'rocket_cache_reject_uri', 'rocket_exclude_woocommerce_pages' );
 	add_filter( 'rocket_cache_query_strings', 'rocket_cache_v_query_string' );
 
-	// Update .htaccess file rules
+	// Update .htaccess file rules.
 	flush_rocket_htaccess();
 
 	// Regenerate the config file.
@@ -105,7 +105,7 @@ function rocket_deactivate_woocommerce() {
 	remove_filter( 'rocket_cache_reject_uri', 'rocket_exclude_woocommerce_pages' );
 	remove_filter( 'rocket_cache_query_strings', 'rocket_cache_v_query_string' );
 
-	// Update .htaccess file rules
+	// Update .htaccess file rules.
 	flush_rocket_htaccess();
 
 	// Regenerate the config file.

@@ -1,8 +1,8 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
-// When Avada theme purge its own cache
-add_action( 'avada_clear_dynamic_css_cache',  'rocket_clean_domain' );	
+// When Avada theme purge its own cache.
+add_action( 'avada_clear_dynamic_css_cache',  'rocket_clean_domain' );
 
 /**
  * Conflict with Avada theme and WP Rocket CDN

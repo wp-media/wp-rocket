@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
  * Conflict with Envira Gallery: don't apply LazyLoad on all images
@@ -43,8 +43,8 @@ function rocket_cdn_resize_image_args_on_envira_gallery( $args ) {
 	}
 
 	$cnames_host = array_flip( get_rocket_cnames_host() );
-	$url_host    = parse_url( $args['url'], PHP_URL_HOST );
-	$home_host   = parse_url( home_url(), PHP_URL_HOST );
+	$url_host    = rocket_extract_url_component( $args['url'], PHP_URL_HOST );
+	$home_host   = rocket_extract_url_component( home_url(), PHP_URL_HOST );
 
 	if ( isset( $cnames_host[ $url_host ] ) ) {
 		$args['url'] = str_replace( $url_host, $home_host , $args['url'] );
