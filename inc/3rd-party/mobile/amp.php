@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
  * Removes Minification, DNS Prefetch, LazyLoad, Defer JS when on an AMP version of a post with the AMP for WordPress plugin from Auttomatic
@@ -25,7 +25,7 @@ function rocket_disable_options_on_amp() {
 
 		add_filter( 'do_rocket_lazyload', '__return_false' );
 
-		// this filter is documented in inc/front/protocol.php
+		// this filter is documented in inc/front/protocol.php.
 		$do_rocket_protocol_rewrite = apply_filters( 'do_rocket_protocol_rewrite', false );
 
 		if ( ( get_rocket_option( 'do_cloudflare', 0 ) && get_rocket_option( 'cloudflare_protocol_rewrite', 0 ) || $do_rocket_protocol_rewrite ) ) {

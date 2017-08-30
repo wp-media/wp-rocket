@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
  * Conflict with Revolution Slider: don't minify inline script when HTML minification is activated
@@ -11,7 +11,7 @@ defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
  */
 function rocket_deactivate_js_minifier_with_revslider( $html_options ) {
 	if ( isset( $html_options['jsMinifier'] ) && class_exists( 'RevSliderFront' ) ) {
-	 	unset( $html_options['jsMinifier'] );
+		unset( $html_options['jsMinifier'] );
 	}
 	 return $html_options;
 }

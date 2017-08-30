@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 add_action( 'update_option_secupress_users-login_settings', 'rocket_after_update_single_options', 10, 2 );
 

@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 // Are we white-labeled?
 $rwl = rocket_is_white_label();
@@ -54,7 +54,7 @@ if ( ! empty( $ecommerce_excluded_pages ) ) {
 
 	$ecommerce_plugin_name = '';
 
-	// Conditions grabbed from inc/functions/plugins.php
+	// Conditions grabbed from inc/functions/plugins.php.
 	if ( function_exists( 'WC' ) && function_exists( 'wc_get_page_id' ) ) {
 
 		$ecommerce_plugin_name = _x( 'WooCommerce', 'plugin name', 'rocket' );
@@ -87,7 +87,6 @@ if ( ! empty( $ecommerce_excluded_pages ) ) {
 			),
 		);
 	}
-
 }
 
 $rocket_reject_uri[] = array(
@@ -160,7 +159,7 @@ add_settings_field(
 				'<code>(.*)</code>',
 				'https://developer.mozilla.org/en-US/docs/Web/HTTP/Browser_detection_using_the_user_agent'
 			),
-		)
+		),
 	)
 );
 
@@ -186,7 +185,7 @@ add_settings_field(
 		),
 		array(
 			'type'         => 'helper_description',
-			'description'  =>  sprintf(
+			'description'  => sprintf(
 				/* translators: line-break recommended; %s = code sample  */
 				__( 'The domain part of the URL will be stripped automatically.<br>Use %s wildcards to address multiple URLs under a given path.', 'rocket' ),
 				'<code>(.*)</code>'

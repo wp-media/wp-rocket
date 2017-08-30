@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 // Don't cache robots.txt && .htaccess directory (it's happened sometimes with weird server configuration).
 if ( strstr( $_SERVER['REQUEST_URI'], 'robots.txt' ) || strstr( $_SERVER['REQUEST_URI'], '.htaccess' ) ) {
@@ -42,7 +42,7 @@ $rocket_config_path = WP_CONTENT_DIR . '/wp-rocket-config/';
 $real_rocket_config_path = realpath( $rocket_config_path ) . DIRECTORY_SEPARATOR;
 $host = ( isset( $_SERVER['HTTP_HOST'] ) ) ? $_SERVER['HTTP_HOST'] : time();
 $host = trim( strtolower( $host ), '.' );
-$host = urlencode( $host );
+$host = rawurlencode( $host );
 
 $continue = false;
 if ( realpath( $rocket_config_path . $host . '.php' ) && 0 === stripos( realpath( $rocket_config_path . $host . '.php' ), $real_rocket_config_path ) ) {
@@ -51,7 +51,7 @@ if ( realpath( $rocket_config_path . $host . '.php' ) && 0 === stripos( realpath
 } else {
 	$path = str_replace( '\\', '/', strtok( $_SERVER['REQUEST_URI'], '?' ) );
 	$path = preg_replace( '|(?<=.)/+|', '/', $path );
-	$path = explode( '%2F' , trim( urlencode( $path ), '%2F' ) );
+	$path = explode( '%2F' , trim( rawurlencode( $path ), '%2F' ) );
 
 	foreach ( $path as $p ) {
 		static $dir;
@@ -125,14 +125,14 @@ if ( isset( $rocket_cache_reject_cookies ) && preg_match( '#(' . $rocket_cache_r
 	return;
 }
 
-$ip	= rocket_get_ip();
+$ip = rocket_get_ip();
 $allowed_ips = array(
 	'85.17.131.209'  => 0, // Pingdom Tools - Amsterdam.
 	'173.208.58.138' => 1, // Pingdom Tools - New-York.
 	'50.22.90.226'   => 2, // Pingdom Tools - Dallas.
 	'209.58.131.213' => 3, // Pingdom Tools - San Jose.
 	'168.1.92.52'    => 4, // Pingdom Tools - Melbourne.
-	'5.178.78.78'    => 5,// Pingdom Tools - Stockholm.
+	'5.178.78.78'    => 5, // Pingdom Tools - Stockholm.
 );
 
 // Don't cache page when these cookies don't exist.
@@ -359,15 +359,15 @@ function rocket_serve_cache_file( $rocket_cache_filepath ) {
 			$headers = apache_request_headers();
 			$http_if_modified_since = ( isset( $headers['If-Modified-Since'] ) ) ? $headers['If-Modified-Since'] : '';
 		} else {
-			$http_if_modified_since = ( isset( $_SERVER['HTTP_IF_MODIFIED_SINCE'] ) ) ?$_SERVER['HTTP_IF_MODIFIED_SINCE'] : '';
+			$http_if_modified_since = ( isset( $_SERVER['HTTP_IF_MODIFIED_SINCE'] ) ) ? $_SERVER['HTTP_IF_MODIFIED_SINCE'] : '';
 		}
 
 		// Checking if the client is validating his cache and if it is current.
-	    if ( $http_if_modified_since && ( strtotime( $http_if_modified_since ) === @filemtime( $rocket_cache_filepath ) ) ) {
-	        // Client's cache is current, so we just respond '304 Not Modified'.
-	        header( $_SERVER['SERVER_PROTOCOL'] . ' 304 Not Modified', true, 304 );
-	        exit;
-	    }
+		if ( $http_if_modified_since && ( strtotime( $http_if_modified_since ) === @filemtime( $rocket_cache_filepath ) ) ) {
+			// Client's cache is current, so we just respond '304 Not Modified'.
+			header( $_SERVER['SERVER_PROTOCOL'] . ' 304 Not Modified', true, 304 );
+			exit;
+		}
 
 		// Serve the cache if file isn't store in the client browser cache.
 		readfile( $rocket_cache_filepath );

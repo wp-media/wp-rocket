@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
  * Add the CSS and JS files for WP Rocket options page
@@ -17,7 +17,8 @@ function rocket_add_admin_css_js() {
 	wp_enqueue_style( 'options-wp-rocket', WP_ROCKET_ADMIN_UI_CSS_URL . 'options.css', array(), WP_ROCKET_VERSION );
 	wp_enqueue_style( 'fancybox-wp-rocket', WP_ROCKET_ADMIN_UI_CSS_URL . 'fancybox/jquery.fancybox.css', array( 'options-wp-rocket' ), WP_ROCKET_VERSION );
 
-	$minify_text = rocket_is_white_label() ? __( 'If there are any display errors we recommend to disable the option.', 'rocket' ) : __( 'If there are any display errors we recommend following our documentation: ', 'rocket' ) . ' <a href="http://docs.wp-rocket.me/article/19-resolving-issues-with-file-optimization?utm_source=wp-rocket&utm_medium=wp-admin&utm_term=doc-minification&utm_campaign=plugin">Resolving issues with file optimization</a>.<br/><br/>' . sprintf( __( 'You can also <a href="%s">contact our support</a> if you need help with this feature.', 'rocket' ), 'http://wp-rocket.me/support/?utm_source=wp-rocket&utm_medium=wp-admin&utm_term=support-minification&utm_campaign=plugin' );
+	// translators: %s is the URL of the support form.
+	$minify_text = rocket_is_white_label() ? __( 'If there are any display errors we recommend to disable the option.', 'rocket' ) : __( 'If there are any display errors we recommend following our documentation: ', 'rocket' ) . ' <a href="http://docs.wp-rocket.me/article/19-resolving-issues-with-file-optimization?utm_source=wp-rocket&utm_medium=wp-admin&utm_term=doc-minification&utm_campaign=plugin">Resolving issues with file optimization</a>.<br/><br/>' . sprintf( __( 'You can also <a href="%s">contact our support</a> if you need help with this feature.', 'rocket' ), 'https://wp-rocket.me/support/?utm_source=wp-rocket&utm_medium=wp-admin&utm_term=support-minification&utm_campaign=plugin' );
 
 	// Sweet Alert.
 	$translation_array = array(
@@ -28,13 +29,14 @@ function rocket_add_admin_css_js() {
 		'cloudflareText'   => __( 'Click "Save Changes" to activate the Cloudflare tab.', 'rocket' ),
 
 		'preloaderTitle' => __( 'Transmitting your message …', 'rocket' ),
-		'preloaderImg'	 => WP_ROCKET_ADMIN_UI_IMG_URL . 'preloader.gif',
+		'preloaderImg'   => WP_ROCKET_ADMIN_UI_IMG_URL . 'preloader.gif',
 
 		'badServerConnectionTitle'             => __( 'Unable to transmit', 'rocket' ),
 		'badServerConnectionText'              => __( 'It seems that communications with Mission Control are temporarily down....please submit a support ticket while our Rocket Scientists fix the issue.', 'rocket' ),
 		'badServerConnectionConfirmButtonText' => __( 'Get help from a rocket scientist', 'rocket' ),
 
 		'warningSupportTitle' => __( 'Last steps before contacting us', 'rocket' ),
+		// translators: %s is the documentation URL.
 		'warningSupportText'  => sprintf( __( 'You have to read the <a href="%s" target="_blank">documentation</a> and to agree to send informations relative to your website to submit a support ticket.', 'rocket' ), get_rocket_documentation_url() . '?utm_source=wp-rocket&utm_medium=wp-admin&utm_term=doc-support&utm_campaign=plugin' ),
 
 		'successSupportTitle' => __( 'Transmission Received!', 'rocket' ),
@@ -86,9 +88,9 @@ add_action( 'admin_print_styles', 'rocket_admin_print_styles' );
 function rocket_enqueue_modal_plugin() {
 	wp_enqueue_style( 'plugin-install' );
 
-    wp_enqueue_script( 'plugin-install' );
-    wp_enqueue_script( 'updates' );
-    add_thickbox();
+	wp_enqueue_script( 'plugin-install' );
+	wp_enqueue_script( 'updates' );
+	add_thickbox();
 }
 add_action( 'admin_print_styles-media-new.php', 'rocket_enqueue_modal_plugin' );
 add_action( 'admin_print_styles-upload.php', 'rocket_enqueue_modal_plugin' );

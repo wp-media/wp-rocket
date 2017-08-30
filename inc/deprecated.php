@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /*
  * Deprecated functions come here to die.
@@ -257,8 +257,8 @@ if ( ! function_exists( 'set_rocket_cloudflare_async' ) ) :
 	 * @param string $cf_rocket_loader Value for the Rocket Loader.
 	 */
 	function set_rocket_cloudflare_async( $cf_rocket_loader ) {
-	    _deprecated_function( __FUNCTION__, '2.8.16', 'set_rocket_cloudflare_rocket_loader()' );
-	    return set_rocket_cloudflare_rocket_loader( $cf_rocket_loader );
+		_deprecated_function( __FUNCTION__, '2.8.16', 'set_rocket_cloudflare_rocket_loader()' );
+		return set_rocket_cloudflare_rocket_loader( $cf_rocket_loader );
 	}
 endif;
 
@@ -273,8 +273,8 @@ if ( ! function_exists( 'set_rocket_cloudflare_cache_lvl' ) ) :
 	 * @param string $cf_cache_level Value for the cache level.
 	 */
 	function set_rocket_cloudflare_cache_lvl( $cf_cache_level ) {
-	    _deprecated_function( __FUNCTION__, '2.8.16', 'set_rocket_cloudflare_cache_level()' );
-	    return set_rocket_cloudflare_cache_level( $cf_cache_level );
+		_deprecated_function( __FUNCTION__, '2.8.16', 'set_rocket_cloudflare_cache_level()' );
+		return set_rocket_cloudflare_cache_level( $cf_cache_level );
 	}
 endif;
 
@@ -289,8 +289,8 @@ if ( ! function_exists( 'rocket_delete_script_wp_version' ) ) :
 	 * @param string $src Source URL for the JS/CSS.
 	 */
 	function rocket_delete_script_wp_version( $src ) {
-	    _deprecated_function( __FUNCTION__, '2.9', 'rocket_browser_cache_busting()' );
-	    return rocket_browser_cache_busting( $src );
+		_deprecated_function( __FUNCTION__, '2.9', 'rocket_browser_cache_busting()' );
+		return rocket_browser_cache_busting( $src );
 	}
 endif;
 
@@ -326,20 +326,20 @@ if ( ! function_exists( 'is_rocket_cache_feed' ) ) :
 endif;
 
 if ( ! function_exists( 'rocket_exclude_js_buddypress' ) ) :
-	/**		
-	 * Excludes BuddyPress's plupload from JS minification		
-	 *		
+	/**
+	 * Excludes BuddyPress's plupload from JS minification
+	 *
 	 * Exclude it to prevent an error after minification/concatenation
-	 * preventing the image upload from working correctly		
-	 *		
+	 * preventing the image upload from working correctly
+	 *
 	 * @since 2.8.10
 	 * @deprecated 2.10.7
-	 * @author Remy Perona		
-	 *		
-	 * @param Array $excluded_handle An array of JS handles enqueued in WordPress.		
-	 * @return Array the updated array of handles		
+	 * @author Remy Perona
+	 *
+	 * @param Array $excluded_handle An array of JS handles enqueued in WordPress.
+	 * @return Array the updated array of handles
 	 */
-	function rocket_exclude_js_buddypress( $excluded_handle  ) {
+	function rocket_exclude_js_buddypress( $excluded_handle ) {
 		_deprecated_function( __FUNCTION__, '2.10.7' );
 		return $excluded_handle;
 	}

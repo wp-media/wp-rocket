@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
  * When Woocommerce, EDD, iThemes Exchange, Jigoshop & WP-Shop options are saved or deleted,
@@ -21,16 +21,16 @@ function rocket_after_update_single_options( $old_value, $value ) {
 		rocket_generate_config_file();
 	}
 }
-add_action( 'update_option_woocommerce_cart_page_id'	, 'rocket_after_update_single_options', 10, 2 );
-add_action( 'update_option_woocommerce_checkout_page_id', 'rocket_after_update_single_options', 10, 2 );
-add_action( 'update_option_woocommerce_myaccount_page_id', 'rocket_after_update_single_options', 10, 2 );
-add_action( 'update_option_wpshop_cart_page_id'			, 'rocket_after_update_single_options', 10, 2 );
-add_action( 'update_option_wpshop_checkout_page_id'		, 'rocket_after_update_single_options', 10, 2 );
-add_action( 'update_option_wpshop_payment_return_page_id', 'rocket_after_update_single_options', 10, 2 );
-add_action( 'update_option_wpshop_payment_return_nok_page_id', 'rocket_after_update_single_options', 10, 2 );
-add_action( 'update_option_wpshop_myaccount_page_id'	, 'rocket_after_update_single_options', 10, 2 );
+add_action( 'update_option_woocommerce_cart_page_id'          , 'rocket_after_update_single_options', 10, 2 );
+add_action( 'update_option_woocommerce_checkout_page_id'      , 'rocket_after_update_single_options', 10, 2 );
+add_action( 'update_option_woocommerce_myaccount_page_id'     , 'rocket_after_update_single_options', 10, 2 );
+add_action( 'update_option_wpshop_cart_page_id'               , 'rocket_after_update_single_options', 10, 2 );
+add_action( 'update_option_wpshop_checkout_page_id'           , 'rocket_after_update_single_options', 10, 2 );
+add_action( 'update_option_wpshop_payment_return_page_id'     , 'rocket_after_update_single_options', 10, 2 );
+add_action( 'update_option_wpshop_payment_return_nok_page_id' , 'rocket_after_update_single_options', 10, 2 );
+add_action( 'update_option_wpshop_myaccount_page_id'          , 'rocket_after_update_single_options', 10, 2 );
 add_action( 'update_option_it-storage-exchange_settings_pages', 'rocket_after_update_single_options', 10, 2 );
-add_action( 'update_option_whl_page', 'rocket_after_update_single_options', 10, 2 );
+add_action( 'update_option_whl_page'                          , 'rocket_after_update_single_options', 10, 2 );
 
 /**
  * We need to regenerate the config file + htaccess depending on some plugins

@@ -8,7 +8,7 @@ endif;
 
 /**
  * Compatibility with WP Offload S3.
- * 
+ *
  * @since 2.10.7
  * @author Remy Perona
  */

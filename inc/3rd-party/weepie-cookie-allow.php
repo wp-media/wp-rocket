@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
  * Compatibility with WeePie Cookie Allow
@@ -42,7 +42,7 @@ endif;
  * @author Remy Perona
  */
 function rocket_activate_wp_cookie_allow() {
-	add_filter( 'rocket_htaccess_mod_rewrite'	 , '__return_false' );
+	add_filter( 'rocket_htaccess_mod_rewrite'    , '__return_false' );
 	add_filter( 'rocket_cache_mandatory_cookies' , 'rocket_add_weepie_cookie_allow_mandatory_cookie' );
 
 	// Update the WP Rocket rules on the .htaccess file.
