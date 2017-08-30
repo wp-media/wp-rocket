@@ -350,7 +350,7 @@ if ( ! function_exists( 'get_rocket_logins_exclude_pages' ) ) :
 	 * Get hide login pages to automatically exclude them to the cache.
 	 *
 	 * @since 2.6
-	 * @deprecated 3.0
+	 * @deprecated 2.11
 	 *
 	 * @return array $urls
 	 */
@@ -365,7 +365,7 @@ if ( ! function_exists( 'get_rocket_ecommerce_exclude_pages' ) ) :
 	 * Get cart & checkout path with their translations to automatically exclude them to the cache.
 	 *
 	 * @since 2.4
-	 * @deprecated 3.0
+	 * @deprecated 2.11
 	 *
 	 * @return array $urls
 	 */
