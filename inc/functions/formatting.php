@@ -190,9 +190,10 @@ function get_rocket_parse_url( $url ) {
  * @author Remy Perona
  *
  * @param string $url URL to parse and extract component of.
+ * @param string $component URL component to extract using constant as in parse_url().
  * @return string extracted component
  */
-function rocket_extract_url_component( $url ) {
+function rocket_extract_url_component( $url, $component ) {
 	return _get_component_from_parsed_url_array( wp_parse_url( $url ), $component );
 }
 
