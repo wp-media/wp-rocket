@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
  * Add Lazy Load JavaScript in the header
@@ -45,18 +45,18 @@ function rocket_lazyload_images( $html ) {
 
 	return $html;
 }
-add_filter( 'get_avatar'			, 'rocket_lazyload_images', PHP_INT_MAX );
-add_filter( 'the_content'			, 'rocket_lazyload_images', PHP_INT_MAX );
-add_filter( 'widget_text'			, 'rocket_lazyload_images', PHP_INT_MAX );
-add_filter( 'get_image_tag'			, 'rocket_lazyload_images', PHP_INT_MAX );
-add_filter( 'post_thumbnail_html'	, 'rocket_lazyload_images', PHP_INT_MAX );
+add_filter( 'get_avatar'            , 'rocket_lazyload_images', PHP_INT_MAX );
+add_filter( 'the_content'           , 'rocket_lazyload_images', PHP_INT_MAX );
+add_filter( 'widget_text'           , 'rocket_lazyload_images', PHP_INT_MAX );
+add_filter( 'get_image_tag'         , 'rocket_lazyload_images', PHP_INT_MAX );
+add_filter( 'post_thumbnail_html'   , 'rocket_lazyload_images', PHP_INT_MAX );
 
 /**
  * Used to check if we have to LazyLoad this or not
  *
- * @since 2.5.5	 Don't apply LazyLoad on images from WP Retina x2
- * @since 2.5	 Don't apply LazyLoad on all images from LayerSlider
- * @since 2.4.2	 Don't apply LazyLoad on all images from Media Grid
+ * @since 2.5.5  Don't apply LazyLoad on images from WP Retina x2
+ * @since 2.5    Don't apply LazyLoad on all images from LayerSlider
+ * @since 2.4.2  Don't apply LazyLoad on all images from Media Grid
  * @since 2.3.11 Don't apply LazyLoad on all images from Timthumb
  * @since 2.3.10 Don't apply LazyLoad on all images from Revolution Slider & Justified Image Grid
  * @since 2.3.8  Don't apply LazyLoad on captcha from Really Simple CAPTCHA
@@ -107,7 +107,7 @@ function rocket_lazyload_replace_callback( $matches ) {
 /**
  * Replace WordPress smilies by Lazy Load
  *
- * @since 2.0 	New system for replace smilies by Lazy Load
+ * @since 2.0   New system for replace smilies by Lazy Load
  * @since 1.3.5 It's possible to exclude LazyLoad process by used do_rocket_lazyload filter
  * @since 1.1.0 Don't lazy-load if the thumbnail has already been run through previously
  * @since 1.0.1 Add priority of hooks at maximum later with PHP_INT_MAX

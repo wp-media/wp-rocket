@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
  * Get a CloudFlare\Api instance
@@ -32,18 +32,23 @@ function get_rocket_cloudflare_api_instance() {
  */
 function get_rocket_cloudflare_instance() {
 	$cf_api_instance = get_rocket_cloudflare_api_instance();
-	if ( is_wp_error( $cf_api_instance )  ) {
+	if ( is_wp_error( $cf_api_instance ) ) {
 		return $cf_api_instance;
 	}
 
-	$cf_instance = (object) [ 'auth' => $cf_api_instance ];
+	$cf_instance = (object) [
+		'auth' => $cf_api_instance,
+	];
 	$cf_zone_id  = get_rocket_option( 'cloudflare_zone_id', null );
 
 	if ( ! isset( $cf_zone_id ) ) {
 		return new WP_Error( 'cloudflare_no_zone_id', __( 'No Zone ID set in the WP Rocket settings', 'rocket' ) );
 	}
 
-	$cf_instance = (object) [ 'auth' => $cf_api_instance, 'zone_id' => $cf_zone_id ];
+	$cf_instance = (object) [
+		'auth' => $cf_api_instance,
+		'zone_id' => $cf_zone_id,
+	];
 
 	return $cf_instance;
 }
@@ -138,22 +143,22 @@ function get_rocket_cloudflare_settings() {
 
 	try {
 		$cf_settings_instance = new CloudFlare\Zone\Settings( $GLOBALS['rocket_cloudflare']->auth );
-	    $cf_settings          = $cf_settings_instance->settings( $GLOBALS['rocket_cloudflare']->zone_id );
-	    $cf_minify            = $cf_settings->result[16]->value;
-	    $cf_minify_value      = 'on';
+		$cf_settings          = $cf_settings_instance->settings( $GLOBALS['rocket_cloudflare']->zone_id );
+		$cf_minify            = $cf_settings->result[16]->value;
+		$cf_minify_value      = 'on';
 
-	    if ( 'off' === $cf_minify->js || 'off' === $cf_minify->css || 'off' === $cf_minify->html ) {
+		if ( 'off' === $cf_minify->js || 'off' === $cf_minify->css || 'off' === $cf_minify->html ) {
 			$cf_minify_value = 'off';
-	    }
+		}
 
-	    $cf_settings_array  = array(
+		$cf_settings_array  = array(
 			'cache_level'       => $cf_settings->result[5]->value,
 			'minify'            => $cf_minify_value,
 			'rocket_loader'     => $cf_settings->result[25]->value,
 			'browser_cache_ttl' => $cf_settings->result[3]->value,
-	    );
+		);
 
-	    return $cf_settings_array;
+		return $cf_settings_array;
 	} catch ( Exception $e ) {
 		return new WP_Error( 'cloudflare_current_settings', $e->getMessage() );
 	}
@@ -401,7 +406,8 @@ function rocket_get_cloudflare_ips() {
 		return $cf_instance;
 	}
 
-	if ( false === ( $cf_ips = get_transient( 'rocket_cloudflare_ips' ) ) ) {
+	$cf_ips = get_transient( 'rocket_cloudflare_ips' );
+	if ( false === $cf_ips ) {
 		try {
 			$cf_ips_instance = new CloudFlare\IPs( $cf_instance );
 			$cf_ips = $cf_ips_instance->ips();
@@ -412,7 +418,10 @@ function rocket_get_cloudflare_ips() {
 				throw new Exception( 'Error connecting to CloudFlare' );
 			}
 		} catch ( Exception $e ) {
-			$cf_ips = (object) [ 'success' => true, 'result' => (object) [] ];
+			$cf_ips = (object) [
+				'success' => true,
+				'result' => (object) [],
+			];
 			$cf_ips->result->ipv4_cidrs = array(
 				'103.21.244.0/22',
 				'103.22.200.0/22',

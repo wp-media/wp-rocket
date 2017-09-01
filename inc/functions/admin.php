@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
  * This warning is displayed when the API KEY isn't already set or not valid
@@ -9,14 +9,15 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 function rocket_need_api_key() {
 	?>
 	<div class="notice notice-warning">
-		<p><strong><?php echo WP_ROCKET_PLUGIN_NAME; ?></strong> : <?php
-
+		<p><strong><?php echo WP_ROCKET_PLUGIN_NAME; ?></strong> : 
+		<?php
 		printf(
-			__( '<a href="%s">Enter your API key here</a> to fully activate this plugin and give the performance of your website a boost.', 'rocket' ),
-			admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG )
+		// translators: %s URL to WP Rocket settings page.
+		__( '<a href="%s">Enter your API key here</a> to fully activate this plugin and give the performance of your website a boost.', 'rocket' ),
+		admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG )
 		);
-
-		?></p>
+		?>
+		</p>
 	</div>
 <?php
 }
@@ -56,7 +57,7 @@ function rocket_user_agent( $user_agent ) {
  *
  * @since 1.1.10
  * @modified 2.1 :
- *	- Better usage of delete_user_meta into delete_metadata
+ *  - Better usage of delete_user_meta into delete_metadata
  *
  * @param (int|null)     $uid : a User id, can be null, null = all users.
  * @param (string|array) $keep_this : which box have to be kept.
@@ -150,12 +151,12 @@ function rocket_is_white_label() {
 function rocket_reset_white_label_values( $hack_post ) {
 	// White Label default values - !!! DO NOT TRANSLATE !!!
 	$options = get_option( WP_ROCKET_SLUG );
-	$options['wl_plugin_name']	= 'WP Rocket';
-	$options['wl_plugin_slug']	= 'wprocket';
-	$options['wl_plugin_URI']	= 'http://www.wp-rocket.me';
-	$options['wl_description']	= array( 'The best WordPress performance plugin.' );
-	$options['wl_author']		= 'WP Rocket';
-	$options['wl_author_URI']	= 'http://www.wp-rocket.me';
+	$options['wl_plugin_name']  = 'WP Rocket';
+	$options['wl_plugin_slug']  = 'wprocket';
+	$options['wl_plugin_URI']   = 'http://www.wp-rocket.me';
+	$options['wl_description']  = array( 'The best WordPress performance plugin.' );
+	$options['wl_author']       = 'WP Rocket';
+	$options['wl_author_URI']   = 'http://www.wp-rocket.me';
 
 	if ( $hack_post ) {
 		// hack $_POST to force refresh of files, sorry.
@@ -214,7 +215,7 @@ function rocket_hidden_fields( $fields ) {
  * @since 2.6
  */
 function rocket_get_active_plugins() {
-	$plugins 		= array();
+	$plugins        = array();
 	$active_plugins = array_intersect_key( get_plugins(), array_flip( array_filter( array_keys( get_plugins() ), 'is_plugin_active' ) ) );
 
 	foreach ( $active_plugins as $plugin ) {
@@ -256,7 +257,7 @@ function rocket_sanitize_ua( $ua ) {
  * @since 2.7
  */
 function rocket_is_ssl_website() {
-	return 'https' === parse_url( home_url(), PHP_URL_SCHEME );
+	return 'https' === rocket_extract_url_component( home_url(), PHP_URL_SCHEME );
 }
 
 /**
@@ -292,7 +293,7 @@ function get_rocket_faq_url() {
 		'de_DE' => 'de.docs.wp-rocket.me/category/285-haufig-gestellte-fragen-faq',
 	);
 	$lang   = get_locale();
-	$faq 	= isset( $langs[ $lang ] ) ? $langs[ $lang ] : 'docs.wp-rocket.me/category/65-faq';
+	$faq    = isset( $langs[ $lang ] ) ? $langs[ $lang ] : 'docs.wp-rocket.me/category/65-faq';
 	$url    = "http://{$faq}/?utm_source=wp-rocket&utm_medium=wp-admin&utm_term=doc-faq&utm_campaign=plugin";
 
 	return $url;
@@ -337,14 +338,14 @@ function rocket_is_plugin_installed( $plugin ) {
  */
 function do_rocket_database_optimization() {
 	$options = array(
-	 'revisions',
-	 'auto_drafts',
-	 'trashed_posts',
-	 'spam_comments',
-	 'trashed_comments',
-	 'expired_transients',
-	 'all_transients',
-	 'optimize_tables',
+		'revisions',
+		'auto_drafts',
+		'trashed_posts',
+		'spam_comments',
+		'trashed_comments',
+		'expired_transients',
+		'all_transients',
+		'optimize_tables',
 	);
 
 	foreach ( $options as $option ) {
@@ -433,7 +434,7 @@ function rocket_database_optimize( $type ) {
 			$query = $wpdb->get_results( $wpdb->prepare( "SELECT table_name, data_free FROM information_schema.tables WHERE table_schema = %s and Engine <> 'InnoDB' and data_free > 0", DB_NAME ) );
 			if ( $query ) {
 				foreach ( $query as $table ) {
-					$wpdb->query( $wpdb->prepare( 'OPTIMIZE TABLE %s', $table->table_name ) );
+					$wpdb->query( 'OPTIMIZE TABLE ' . $table->table_name );
 				}
 			}
 			break;
@@ -460,6 +461,58 @@ function rocket_do_async_job( $body ) {
 }
 
 /**
+ * When Woocommerce, EDD, iThemes Exchange, Jigoshop & WP-Shop options are saved or deleted,
+ * we update .htaccess & config file to get the right checkout page to exclude to the cache.
+ *
+ * @since 2.9.3 Support for SF Move Login moved to 3rd party file
+ * @since 2.6 Add support with SF Move Login & WPS Hide Login to exclude login pages
+ * @since 2.4
+ *
+ * @param array $old_value An array of previous settings values.
+ * @param array $value An array of submitted settings values.
+ */
+function rocket_after_update_single_options( $old_value, $value ) {
+	if ( $old_value !== $value ) {
+		// Update .htaccess file rules.
+		flush_rocket_htaccess();
+
+		// Update config file.
+		rocket_generate_config_file();
+	}
+}
+
+/**
+ * We need to regenerate the config file + htaccess depending on some plugins
+ *
+ * @since 2.9.3 Support for SF Move Login moved to 3rd party file
+ * @since 2.6.5 Add support with SF Move Login & WPS Hide Login
+ *
+ * @param array $old_value An array of previous settings values.
+ * @param array $value An array of submitted settings values.
+ */
+function rocket_after_update_array_options( $old_value, $value ) {
+	$options = array(
+		'purchase_page',
+		'jigoshop_cart_page_id',
+		'jigoshop_checkout_page_id',
+		'jigoshop_myaccount_page_id',
+	);
+
+	foreach ( $options as $val ) {
+		if ( ( ! isset( $old_value[ $val ] ) && isset( $value[ $val ] ) ) ||
+			( isset( $old_value[ $val ], $value[ $val ] ) && $old_value[ $val ] !== $value[ $val ] )
+		) {
+			// Update .htaccess file rules.
+			flush_rocket_htaccess();
+
+			// Update config file.
+			rocket_generate_config_file();
+			break;
+		}
+	}
+}
+
+/**
  * Check if a mobile plugin is active
  *
  * @since 2.10
@@ -480,10 +533,25 @@ function rocket_is_mobile_plugin_active() {
 	);
 
 	foreach ( $mobile_plugins as $mobile_plugin ) {
-		if ( is_plugin_active(  $mobile_plugin ) ) {
+		if ( is_plugin_active( $mobile_plugin ) ) {
 			return true;
 		}
 	}
 
 	return false;
+}
+
+/**
+ * Allow upload of JSON file.
+ *
+ * @since 2.10.7
+ * @author Remy Perona
+ *
+ * @param array $wp_get_mime_types Array of allowed mime types.
+ * @return array Updated array of allowed mime types
+ */
+function rocket_allow_json_mime_type( $wp_get_mime_types ) {
+	$wp_get_mime_types['json'] = 'application/json';
+
+	return $wp_get_mime_types;
 }

@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
  * Add defer attribute to script that should be deferred
@@ -69,7 +69,7 @@ function rocket_defer_js( $buffer ) {
 
 	foreach ( $tags_match[0] as $i => $tag ) {
 		// Strip query args.
-		$path = parse_url( $tags_match[2][ $i ] , PHP_URL_PATH );
+		$path = rocket_extract_url_component( $tags_match[2][ $i ] , PHP_URL_PATH );
 
 		// Check if this file should be deferred.
 		if ( isset( $exclude_defer_js[ $path ] ) ) {

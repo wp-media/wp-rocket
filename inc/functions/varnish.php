@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
  * Send data to Varnish
@@ -40,7 +40,7 @@ function rocket_varnish_http_purge( $url ) {
 	 */
 	$scheme = apply_filters( 'rocket_varnish_http_purge_scheme', 'http' );
 
-	$host 	 = ( $varnish_ip ) ? $varnish_ip : $host;
+	$host    = ( $varnish_ip ) ? $varnish_ip : $host;
 	$purgeme = $scheme . '://' . $host . $path . $regex;
 
 	wp_remote_request(

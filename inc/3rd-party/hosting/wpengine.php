@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 if ( class_exists( 'WpeCommon' ) && function_exists( 'wpe_param' ) ) :
 	/**
@@ -42,44 +42,6 @@ if ( class_exists( 'WpeCommon' ) && function_exists( 'wpe_param' ) ) :
 		}
 	}
 	add_action( 'admin_init', 'rocket_run_rocket_bot_after_wpengine' );
-
-	/**
-	 * Activate the CDN option if WPEngine CDN is active
-	 *
-	 * @since 2.7
-	 *
-	 * @param bool $value WP Rocket CDN option value.
-	 * @return bool true if there is a CDN domain, default value otherwise
-	 */
-	function rocket_auto_activate_cdn_on_wpengine( $value ) {
-		$cdn_domain = rocket_get_wp_engine_cdn_domain();
-
-		if ( ! empty( $cdn_domain ) ) {
-			$value = true;
-		}
-
-		return $value;
-	}
-	add_filter( 'get_rocket_option_cdn', 'rocket_auto_activate_cdn_on_wpengine' );
-
-	/**
-	 * Add WP Engine CDN CNAMES to the list of allowed CNAMES
-	 *
-	 * @since 2.7
-	 *
-	 * @param array $hosts WP Rocket CDN cnames.
-	 * @return array Updated WP Rocket CDN cnames values
-	 */
-	function rocket_add_wpengine_cdn_cnames( $hosts ) {
-		$cdn_domain = rocket_get_wp_engine_cdn_domain();
-
-		if ( ! empty( $cdn_domain ) ) {
-			$hosts[] = $cdn_domain;
-		}
-
-		return $hosts;
-	}
-	add_filter( 'rocket_cdn_cnames', 'rocket_add_wpengine_cdn_cnames' );
 
 	/**
 	 * Call the cache server to purge the cache with WP Engine hosting.
