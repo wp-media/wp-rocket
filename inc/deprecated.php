@@ -331,14 +331,14 @@ if ( ! function_exists( 'run_rocket_bot' ) ) :
 	 *
 	 * @since 2.6.4 Don't preload localhost & .dev domains
 	 * @since 1.0
-	 * @deprecated 3.0
+	 * @deprecated 2.11
 	 *
 	 * @param string $spider (default: 'cache-preload') The spider name: cache-preload or cache-json.
 	 * @param string $lang (default: '') The language code to preload.
 	 * @return false
 	 */
 	function run_rocket_bot( $spider, $lang ) {
-		_deprecated_function( __FUNCTION__, '3.0' );
+		_deprecated_function( __FUNCTION__, '2.11' );
 		return false;
 	}
 endif;
@@ -349,7 +349,7 @@ if ( ! function_exists( 'run_rocket_preload_cache' ) ) :
 	 *
 	 * @since 2.8
 	 * @author Remy Perona
-	 * @deprecated 3.0
+	 * @deprecated 2.11
 	 *
 	 * @param string $spider The spider name.
 	 * @param bool   $do_sitemap_preload Do the sitemap preload.
@@ -357,7 +357,7 @@ if ( ! function_exists( 'run_rocket_preload_cache' ) ) :
 	 * @return void
 	 */
 	function run_rocket_preload_cache( $spider, $do_sitemap_preload = true ) {
-		_deprecated_function( __FUNCTION__, '3.0' );
+		_deprecated_function( __FUNCTION__, '2.11' );
 		return false;
 	}
 endif;
@@ -367,10 +367,10 @@ if ( ! function_exists( 'do_rocket_bot_cache_json' ) ) :
 	 * Run WP Rocket Bot when a post is added, updated or deleted
 	 *
 	 * @since 1.3.2
-	 * @deprecated 3.0
+	 * @deprecated 2.11
 	 */
 	function do_rocket_bot_cache_json() {
-		_deprecated_function( __FUNCTION__, '3.0' );
+		_deprecated_function( __FUNCTION__, '2.11' );
 		return false;
 	}
 endif;
