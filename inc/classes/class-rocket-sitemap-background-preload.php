@@ -26,6 +26,13 @@ class Rocket_Sitemap_Background_Preload extends WP_Background_Process {
 	 */
 	protected $action = 'sitemap_preload';
 
+	/**
+	 * Counter for number of preloaded URLs.
+	 *
+	 * @since 2.11
+	 * @access protected
+	 * @var string Counter
+	 */
 	protected $count = 0;
 
 	/**
@@ -46,12 +53,12 @@ class Rocket_Sitemap_Background_Preload extends WP_Background_Process {
 		 * @since
 		 * @author Remy Perona
 		 *
-		 * @param array $args Arguments for the request
+		 * @param array $args Arguments for the request.
 		 */
-		$args = apply_filters( 'rocket_sitemap_preload_request_args', array(
+		$args = apply_filters( 'rocket_preload_url_request_args', array(
 			'timeout'    => 0.01,
 			'blocking'   => false,
-			'user-agent' => 'wprocketbot',
+			'user-agent' => 'wprocket-sitemap-preload',
 			'sslverify'  => apply_filters( 'https_local_ssl_verify', true ),
 		) );
 
@@ -70,12 +77,9 @@ class Rocket_Sitemap_Background_Preload extends WP_Background_Process {
 	 * @return bool true if exists, false otherwise
 	 */
 	protected function is_already_cached( $item ) {
-		$host = ( isset( $_SERVER['HTTP_HOST'] ) ) ? $_SERVER['HTTP_HOST'] : time();
-		$host = trim( strtolower( $host ), '.' );
-		$host = str_replace( array( '..', chr( 0 ) ), '', $host );
-		$host = isset( $rocket_url_no_dots ) ? str_replace( '.', '_', $host ) : $host;
-		$path = parse_url( $item, PHP_URL_PATH );
-		$file_cache_path = WP_ROCKET_CACHE_PATH . $host . '/' . $item . '/index.html';
+		$url = wp_parse_url( $item );
+		$host = isset( $url['host'] ) ? str_replace( '.', '_', $url['host'] ) : $url['host'];
+		$file_cache_path = WP_ROCKET_CACHE_PATH . $host . '/' . strtolower( $url['path'] ) . '/index.html';
 
 		return file_exists( $file_cache_path );
 	}
