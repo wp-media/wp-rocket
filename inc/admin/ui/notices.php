@@ -648,7 +648,7 @@ add_action( 'admin_notices', 'rocket_cloudflare_update_settings' );
 /**
  * This notice is displayed after the sitemap preload is complete
  *
- * @since 3.0
+ * @since 2.11
  * @author Remy Perona
  */
 function rocket_sitemap_preload_result() {
@@ -678,7 +678,7 @@ add_action( 'admin_notices', 'rocket_sitemap_preload_result' );
 /**
  * This notice is displayed after the automatic partial preload is complete
  *
- * @since 3.0
+ * @since 2.11
  * @author Remy Perona
  */
 function rocket_automatic_preload_result() {
