@@ -4,11 +4,10 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 /**
  * Launches the automatic partial preload
  *
- * @since X.X
+ * @since 2.11
  * @author Remy Perona
  *
  * @param array $preload_urls An array of URLs to preload.
- * @return void
  */
 function run_rocket_automatic_preload( $preload_urls ) {
 	if ( ! get_rocket_option( 'partial_preload', 0 ) ) {
@@ -39,7 +38,7 @@ function run_rocket_sitemap_preload() {
      *
      * @since 2.8
      *
-     * @param array Array of sitemaps URL
+     * @param array Array of sitemaps URL.
      */
 	$sitemaps = apply_filters( 'rocket_sitemap_preload_list', get_rocket_option( 'sitemaps', false ) );
 
@@ -104,11 +103,21 @@ function run_rocket_sitemap_preload() {
 function rocket_process_sitemap( $sitemap_url, $urls = array() ) {
 	$tmp_urls = array();
 
-	$args = array(
-		'timeout'    => 0.01,
-		'blocking'   => false,
-		'user-agent' => 'wprocketbot',
-		'sslverify'  => apply_filters( 'https_local_ssl_verify', true ),
+	/**
+	 * Filters the arguments for the sitemap preload request
+	 *
+	 * @since 2.11
+	 * @author Remy Perona
+	 *
+	 * @param array $args Arguments for the request.
+	 */
+	$args = apply_filters( 'rocket_preload_sitemap_request_args', 
+		array(
+			'timeout'    => 0.01,
+			'blocking'   => false,
+			'user-agent' => 'wprocket-sitemap-preload',
+			'sslverify'  => apply_filters( 'https_local_ssl_verify', true ),
+		)
 	);
 
 	$sitemap = wp_remote_get( esc_url_raw( $sitemap_url ) );
