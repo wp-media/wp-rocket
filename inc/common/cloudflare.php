@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
  * Set Real IP from CloudFlare
@@ -14,7 +14,7 @@ function rocket_set_real_ip_cloudflare() {
 	$is_cf = ( isset( $_SERVER['HTTP_CF_CONNECTING_IP'] ) ) ? true : false;
 
 	if ( ! $is_cf ) {
-	    return;
+		return;
 	}
 
 	// only run this logic if the REMOTE_ADDR is populated, to avoid causing notices in CLI mode.

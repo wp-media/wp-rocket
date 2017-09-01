@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 // WP <3.5 defines.
 if ( ! defined( 'SECOND_IN_SECONDS' ) ) {
@@ -80,11 +80,11 @@ if ( ! function_exists( 'apply_filters_deprecated' ) ) {
 	 * @param string $message     Optional. A message regarding the change.
 	 */
 	function apply_filters_deprecated( $tag, $args, $version, $replacement = false, $message = null ) {
-	    if ( ! has_filter( $tag ) ) {
-	    	return $args[0];
-	    }
+		if ( ! has_filter( $tag ) ) {
+			return $args[0];
+		}
 
-	    return apply_filters_ref_array( $tag, $args );
+		return apply_filters_ref_array( $tag, $args );
 	}
 }
 
@@ -119,31 +119,31 @@ if ( ! function_exists( 'wp_parse_url' ) ) {
 	 *               PHP_URL_PORT - integer when it does. See parse_url()'s return values.
 	 */
 	function wp_parse_url( $url, $component = -1 ) {
-	    $to_unset = array();
-	    $url = strval( $url );
+		$to_unset = array();
+		$url = strval( $url );
 
-	    if ( '//' === substr( $url, 0, 2 ) ) {
-	        $to_unset[] = 'scheme';
-	        $url = 'placeholder:' . $url;
-	    } elseif ( '/' === substr( $url, 0, 1 ) ) {
-	        $to_unset[] = 'scheme';
-	        $to_unset[] = 'host';
-	        $url = 'placeholder://placeholder' . $url;
-	    }
+		if ( '//' === substr( $url, 0, 2 ) ) {
+			$to_unset[] = 'scheme';
+			$url = 'placeholder:' . $url;
+		} elseif ( '/' === substr( $url, 0, 1 ) ) {
+			$to_unset[] = 'scheme';
+			$to_unset[] = 'host';
+			$url = 'placeholder://placeholder' . $url;
+		}
 
-	    $parts = @parse_url( $url );
+		$parts = @parse_url( $url );
 
-	    if ( false === $parts ) {
-	        // Parsing failure.
-	        return $parts;
-	    }
+		if ( false === $parts ) {
+			// Parsing failure.
+			return $parts;
+		}
 
-	    // Remove the placeholder values.
-	    foreach ( $to_unset as $key ) {
-	        unset( $parts[ $key ] );
-	    }
+		// Remove the placeholder values.
+		foreach ( $to_unset as $key ) {
+			unset( $parts[ $key ] );
+		}
 
-	    return _get_component_from_parsed_url_array( $parts, $component );
+		return _get_component_from_parsed_url_array( $parts, $component );
 	}
 }
 
@@ -157,9 +157,9 @@ if ( ! function_exists( '_get_component_from_parsed_url_array' ) ) {
 	 * @since 4.7.0
 	 *
 	 * @param array|false $url_parts The parsed URL. Can be false if the URL failed to parse.
-	 * @param int    $component The specific component to retrieve. Use one of the PHP
-	 *                          predefined constants to specify which one.
-	 *                          Defaults to -1 (= return all parts as an array).
+	 * @param int         $component The specific component to retrieve. Use one of the PHP
+	 *                               predefined constants to specify which one.
+	 *                               Defaults to -1 (= return all parts as an array).
 	 *                          @see http://php.net/manual/en/function.parse-url.php
 	 * @return mixed False on parse failure; Array of URL components on success;
 	 *               When a specific component has been requested: null if the component
@@ -168,14 +168,14 @@ if ( ! function_exists( '_get_component_from_parsed_url_array' ) ) {
 	 */
 	function _get_component_from_parsed_url_array( $url_parts, $component = -1 ) {
 		if ( -1 === $component ) {
-		        return $url_parts;
+				return $url_parts;
 		}
 
 		$key = _wp_translate_php_url_constant_to_key( $component );
 		if ( false !== $key && is_array( $url_parts ) && isset( $url_parts[ $key ] ) ) {
-		        return $url_parts[ $key ];
+				return $url_parts[ $key ];
 		} else {
-		        return null;
+				return null;
 		}
 	}
 }
@@ -196,14 +196,14 @@ if ( ! function_exists( '_wp_translate_php_url_constant_to_key' ) ) {
 	 */
 	function _wp_translate_php_url_constant_to_key( $constant ) {
 		$translation = array(
-				PHP_URL_SCHEME   => 'scheme',
-				PHP_URL_HOST     => 'host',
-				PHP_URL_PORT     => 'port',
-				PHP_URL_USER     => 'user',
-				PHP_URL_PASS     => 'pass',
-				PHP_URL_PATH     => 'path',
-				PHP_URL_QUERY    => 'query',
-				PHP_URL_FRAGMENT => 'fragment',
+			PHP_URL_SCHEME   => 'scheme',
+			PHP_URL_HOST     => 'host',
+			PHP_URL_PORT     => 'port',
+			PHP_URL_USER     => 'user',
+			PHP_URL_PASS     => 'pass',
+			PHP_URL_PATH     => 'path',
+			PHP_URL_QUERY    => 'query',
+			PHP_URL_FRAGMENT => 'fragment',
 		);
 
 		if ( isset( $translation[ $constant ] ) ) {
@@ -211,5 +211,85 @@ if ( ! function_exists( '_wp_translate_php_url_constant_to_key' ) ) {
 		} else {
 				return false;
 		}
+	}
+}
+
+if ( ! function_exists( 'hash_equals' ) ) {
+	/**
+	 * Polyfill for hash_equals function not available before 5.6
+	 *
+	 * @since 2.10.6
+	 * @author Remy Perona
+	 *
+	 * @see   http://php.net/manual/fr/function.hash-equals.php
+	 *
+	 * @param string $known_string The string of known length to compare against.
+	 * @param string $user_string The user-supplied string.
+	 * @return bool Returns TRUE when the two strings are equal, FALSE otherwise.
+	 */
+	function hash_equals( $known_string, $user_string ) {
+		$ret = 0;
+
+		if ( strlen( $known_string ) !== strlen( $user_string ) ) {
+			$user_string = $known_string;
+			$ret = 1;
+		}
+
+				$res = $known_string ^ $user_string;
+
+		for ( $i = strlen( $res ) - 1; $i >= 0; --$i ) {
+			$ret |= ord( $res[ $i ] );
+		}
+
+				return ! $ret;
+	}
+}
+
+if ( ! function_exists( 'wp_json_encode' ) ) {
+	/**
+	 * Copied from core for compatibility with WP < 4.1
+	 * Encode a variable into JSON, with some sanity checks.
+	 *
+	 * @since 4.1.0
+	 *
+	 * @param mixed $data    Variable (usually an array or object) to encode as JSON.
+	 * @param int   $options Optional. Options to be passed to json_encode(). Default 0.
+	 * @param int   $depth   Optional. Maximum depth to walk through $data. Must be
+	 *                       greater than 0. Default 512.
+	 * @return string|false The JSON encoded string, or false if it cannot be encoded.
+	 */
+	function wp_json_encode( $data, $options = 0, $depth = 512 ) {
+		/*
+		 * json_encode() has had extra params added over the years.
+		 * $options was added in 5.3, and $depth in 5.5.
+		 * We need to make sure we call it with the correct arguments.
+		 */
+		if ( version_compare( PHP_VERSION, '5.5', '>=' ) ) {
+			$args = array( $data, $options, $depth );
+		} elseif ( version_compare( PHP_VERSION, '5.3', '>=' ) ) {
+			$args = array( $data, $options );
+		} else {
+			$args = array( $data );
+		}
+
+		// Prepare the data for JSON serialization.
+		$args[0] = _wp_json_prepare_data( $data );
+
+		$json = @call_user_func_array( 'json_encode', $args );
+
+		// If json_encode() was successful, no need to do more sanity checking.
+		// ... unless we're in an old version of PHP, and json_encode() returned
+		// a string containing 'null'. Then we need to do more sanity checking.
+		if ( false !== $json && ( version_compare( PHP_VERSION, '5.5', '>=' ) || false === strpos( $json, 'null' ) ) ) {
+			return $json;
+		}
+
+		try {
+			$args[0] = _wp_json_sanity_check( $data, $depth );
+		} catch ( Exception $e ) {
+			return false;
+		}
+
+		return call_user_func_array( 'json_encode', $args );
 	}
 }

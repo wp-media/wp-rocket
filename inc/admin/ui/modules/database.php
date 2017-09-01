@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 // Are we white-labeled?
 $rwl = rocket_is_white_label();
@@ -59,6 +59,7 @@ add_settings_field(
 		array(
 			'type'         => 'helper_description',
 			'name'         => 'revisions_desc',
+			// translators: %d is the number of revisions found in the database.
 			'description'  => sprintf( _n( '%d revision in your database.', '%d revisions in your database.', $total_revisions, 'rocket' ), $total_revisions ),
 		),
 		array(
@@ -70,6 +71,7 @@ add_settings_field(
 		array(
 			'type'         => 'helper_description',
 			'name'         => 'auto_drafts_desc',
+			// translators: %d is the number of drafts found in the database.
 			'description'  => sprintf( _n( '%d draft in your database.', '%d drafts in your database.', $total_auto_draft, 'rocket' ), $total_auto_draft ),
 		),
 		array(
@@ -81,6 +83,7 @@ add_settings_field(
 		array(
 			'type'         => 'helper_description',
 			'name'         => 'trashed_posts_desc',
+			// translators: %d is the number of trashed posts found in the database.
 			'description'  => sprintf( _n( '%d trashed post in your database.', '%d trashed posts in your database.', $total_trashed_posts, 'rocket' ), $total_trashed_posts ),
 		),
 	)
@@ -105,6 +108,7 @@ add_settings_field(
 		array(
 			'type'         => 'helper_description',
 			'name'         => 'spam_comments_desc',
+			// translators: %d is the number of spam comments found in the database.
 			'description'  => sprintf( _n( '%d spam comment in your database.', '%d spam comments in your database.', $total_spam_comments, 'rocket' ), $total_spam_comments ),
 		),
 		array(
@@ -116,6 +120,7 @@ add_settings_field(
 		array(
 			'type'         => 'helper_description',
 			'name'         => 'trashed_comments_desc',
+			// translators: %d is the number of trashed comments found in the database.
 			'description'  => sprintf( _n( '%d trashed comment in your database.', '%d trashed comments in your database.', $total_trashed_comments, 'rocket' ), $total_trashed_comments ),
 		),
 	)
@@ -140,6 +145,7 @@ add_settings_field(
 		array(
 			'type'         => 'helper_description',
 			'name'         => 'expired_transients_desc',
+			// translators: %d is the number of expired transients found in the database.
 			'description'  => sprintf( _n( '%d expired transient in your database.', '%d expired transients in your database.', $total_expired_transients, 'rocket' ), $total_expired_transients ),
 		),
 		array(
@@ -151,6 +157,7 @@ add_settings_field(
 		array(
 			'type'         => 'helper_description',
 			'name'         => 'all_transients_desc',
+			// translators: %d is the number of transients found in the database.
 			'description'  => sprintf( _n( '%d transient in your database.', '%d transients in your database.', $total_all_transients, 'rocket' ), $total_all_transients ),
 		),
 	)
@@ -175,6 +182,7 @@ add_settings_field(
 		array(
 			'type'         => 'helper_description',
 			'name'         => 'optimize_tables_desc',
+			// translators: %d is the number of tables to optimize in the database.
 			'description'  => sprintf( _n( '%d table to optimize in your database.', '%d tables to optimize in your database.', $total_optimize_tables, 'rocket' ), $total_optimize_tables ),
 		),
 	)
@@ -212,7 +220,7 @@ add_settings_field(
 );
 
 /* Little trickery to fetch submit button text from WP */
-$wp_submit_button_text = __( 'Save Changes' ); // just in case
+$wp_submit_button_text = __( 'Save Changes' ); // just in case.
 
 preg_match_all(
 	'/<input(.*?)type=\"submit\"(.*)value=\"(.*?)\"/i',

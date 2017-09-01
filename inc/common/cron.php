@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
  * Adds new intervals for cron jobs
@@ -19,8 +19,9 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 function rocket_purge_cron_schedule( $schedules ) {
 	if ( 0 < (int) get_rocket_option( 'purge_cron_interval' ) ) {
 		$schedules['rocket_purge'] = array(
-			'interval'	=> get_rocket_purge_cron_interval(),
-			'display' 	=> sprintf( __( '%s clear', 'rocket' ), WP_ROCKET_PLUGIN_NAME ),
+			'interval'  => get_rocket_purge_cron_interval(),
+			// translators: %s = WP Rocket name (maybe white label).
+			'display'   => sprintf( __( '%s clear', 'rocket' ), WP_ROCKET_PLUGIN_NAME ),
 		);
 	}
 

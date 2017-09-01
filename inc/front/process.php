@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 // Don't cache robots.txt && .htaccess directory (it's happened sometimes with weird server configuration).
 if ( strstr( $_SERVER['REQUEST_URI'], 'robots.txt' ) || strstr( $_SERVER['REQUEST_URI'], '.htaccess' ) ) {
@@ -39,27 +39,30 @@ if ( ! isset( $_SERVER['REQUEST_METHOD'] ) || 'GET' !== $_SERVER['REQUEST_METHOD
 
 // Get the correct config file.
 $rocket_config_path = WP_CONTENT_DIR . '/wp-rocket-config/';
+$real_rocket_config_path = realpath( $rocket_config_path ) . DIRECTORY_SEPARATOR;
 $host = ( isset( $_SERVER['HTTP_HOST'] ) ) ? $_SERVER['HTTP_HOST'] : time();
 $host = trim( strtolower( $host ), '.' );
-$host = str_replace( array( '..', chr( 0 ) ), '', $host );
+$host = rawurlencode( $host );
 
 $continue = false;
-if ( file_exists( $rocket_config_path . $host . '.php' ) ) {
+if ( realpath( $rocket_config_path . $host . '.php' ) && 0 === stripos( realpath( $rocket_config_path . $host . '.php' ), $real_rocket_config_path ) ) {
 	include( $rocket_config_path . $host . '.php' );
 	$continue = true;
 } else {
-	$path = explode( '/' , trim( $_SERVER['REQUEST_URI'], '/' ) );
+	$path = str_replace( '\\', '/', strtok( $_SERVER['REQUEST_URI'], '?' ) );
+	$path = preg_replace( '|(?<=.)/+|', '/', $path );
+	$path = explode( '%2F' , trim( rawurlencode( $path ), '%2F' ) );
 
 	foreach ( $path as $p ) {
 		static $dir;
 
-		if ( file_exists( $rocket_config_path . $host . '.' . $p . '.php' ) ) {
+		if ( realpath( $rocket_config_path . $host . '.' . $p . '.php' ) && 0 === stripos( realpath( $rocket_config_path . $host . '.' . $p . '.php' ), $real_rocket_config_path ) ) {
 			include( $rocket_config_path . $host . '.' . $p . '.php' );
 			$continue = true;
 			break;
 		}
 
-		if ( file_exists( $rocket_config_path . $host . '.' . $dir . $p . '.php' ) ) {
+		if ( realpath( $rocket_config_path . $host . '.' . $dir . $p . '.php' ) && 0 === stripos( realpath( $rocket_config_path . $host . '.' . $dir . $p . '.php' ), $real_rocket_config_path ) ) {
 			include( $rocket_config_path . $host . '.' . $dir . $p . '.php' );
 			$continue = true;
 			break;
@@ -122,14 +125,14 @@ if ( isset( $rocket_cache_reject_cookies ) && preg_match( '#(' . $rocket_cache_r
 	return;
 }
 
-$ip	= rocket_get_ip();
+$ip = rocket_get_ip();
 $allowed_ips = array(
 	'85.17.131.209'  => 0, // Pingdom Tools - Amsterdam.
 	'173.208.58.138' => 1, // Pingdom Tools - New-York.
 	'50.22.90.226'   => 2, // Pingdom Tools - Dallas.
 	'209.58.131.213' => 3, // Pingdom Tools - San Jose.
 	'168.1.92.52'    => 4, // Pingdom Tools - Melbourne.
-	'5.178.78.78'    => 5,// Pingdom Tools - Stockholm.
+	'5.178.78.78'    => 5, // Pingdom Tools - Stockholm.
 );
 
 // Don't cache page when these cookies don't exist.
@@ -296,7 +299,7 @@ function do_rocket_callback( $buffer ) {
 			rocket_put_content( $rocket_cache_filepath, $buffer . $footprint );
 
 			if ( function_exists( 'gzencode' ) ) {
-				rocket_put_content( $rocket_cache_filepath . '_gzip', gzencode( $buffer . get_rocket_footprint(), apply_filters( 'rocket_gzencode_level_compression', 3 ) ) );
+				rocket_put_content( $rocket_cache_filepath . '_gzip', gzencode( $buffer . $footprint, apply_filters( 'rocket_gzencode_level_compression', 3 ) ) );
 			}
 
 			// Send headers with the last modified time of the cache file.
@@ -318,29 +321,53 @@ function do_rocket_callback( $buffer ) {
 /**
  * Serve the cache file if exist
  *
+ * @since 2.11 Serve the gzipped cache file if possible
  * @since 2.0
  *
  * @param string $rocket_cache_filepath Path to the cache file.
  */
 function rocket_serve_cache_file( $rocket_cache_filepath ) {
+	$rocket_cache_filepath_gzip = $rocket_cache_filepath . '_gzip';
 
 	// Check if cache file exist.
-	if ( file_exists( $rocket_cache_filepath ) && is_readable( $rocket_cache_filepath ) ) {
+	if ( in_array( 'gzip', $_SERVER['HTTP_ACCEPT_ENCODING'], true ) && file_exists( $rocket_cache_filepath_gzip ) && is_readable( $rocket_cache_filepath_gzip ) ) {
+		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s', filemtime( $rocket_cache_filepath_gzip ) ) . ' GMT' );
 
 		// Getting If-Modified-Since headers sent by the client.
 		if ( function_exists( 'apache_request_headers' ) ) {
 			$headers = apache_request_headers();
 			$http_if_modified_since = ( isset( $headers['If-Modified-Since'] ) ) ? $headers['If-Modified-Since'] : '';
 		} else {
-			$http_if_modified_since = ( isset( $_SERVER['HTTP_IF_MODIFIED_SINCE'] ) ) ?$_SERVER['HTTP_IF_MODIFIED_SINCE'] : '';
+			$http_if_modified_since = ( isset( $_SERVER['HTTP_IF_MODIFIED_SINCE'] ) ) ? $_SERVER['HTTP_IF_MODIFIED_SINCE'] : '';
 		}
 
 		// Checking if the client is validating his cache and if it is current.
-	    if ( $http_if_modified_since && ( strtotime( $http_if_modified_since ) === @filemtime( $rocket_cache_filepath ) ) ) {
-	        // Client's cache is current, so we just respond '304 Not Modified'.
-	        header( $_SERVER['SERVER_PROTOCOL'] . ' 304 Not Modified', true, 304 );
-	        exit;
-	    }
+		if ( $http_if_modified_since && ( strtotime( $http_if_modified_since ) === @filemtime( $rocket_cache_filepath_gzip ) ) ) {
+	    	// Client's cache is current, so we just respond '304 Not Modified'.
+			header( $_SERVER['SERVER_PROTOCOL'] . ' 304 Not Modified', true, 304 );
+			exit;
+		}
+
+		// Serve the cache if file isn't store in the client browser cache.
+		readgzfile( $rocket_cache_filepath_gzip );
+		exit;
+	} elseif ( file_exists( $rocket_cache_filepath ) && is_readable( $rocket_cache_filepath ) ) {
+		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s', filemtime( $rocket_cache_filepath ) ) . ' GMT' );
+
+		// Getting If-Modified-Since headers sent by the client.
+		if ( function_exists( 'apache_request_headers' ) ) {
+			$headers = apache_request_headers();
+			$http_if_modified_since = ( isset( $headers['If-Modified-Since'] ) ) ? $headers['If-Modified-Since'] : '';
+		} else {
+			$http_if_modified_since = ( isset( $_SERVER['HTTP_IF_MODIFIED_SINCE'] ) ) ? $_SERVER['HTTP_IF_MODIFIED_SINCE'] : '';
+		}
+
+		// Checking if the client is validating his cache and if it is current.
+		if ( $http_if_modified_since && ( strtotime( $http_if_modified_since ) === @filemtime( $rocket_cache_filepath ) ) ) {
+			// Client's cache is current, so we just respond '304 Not Modified'.
+			header( $_SERVER['SERVER_PROTOCOL'] . ' 304 Not Modified', true, 304 );
+			exit;
+		}
 
 		// Serve the cache if file isn't store in the client browser cache.
 		readfile( $rocket_cache_filepath );

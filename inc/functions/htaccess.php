@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
  * Used to flush the .htaccess file
@@ -22,13 +22,21 @@ function flush_rocket_htaccess( $force = false ) {
 
 	if ( rocket_direct_filesystem()->is_writable( $htaccess_file ) ) {
 		// Get content of .htaccess file.
-		$ftmp = file_get_contents( $htaccess_file );
+		$ftmp = rocket_direct_filesystem()->get_contents( $htaccess_file );
 
 		// Remove the WP Rocket marker.
 		$ftmp = preg_replace( '/# BEGIN WP Rocket(.*)# END WP Rocket/isU', '', $ftmp );
 
-		// Remove empty spacings.
-		$ftmp = str_replace( "\n\n" , "\n" , $ftmp );
+		/**
+		 * Determine if empty lines should be removed in the .htaccess file
+		 *
+		 * @since 2.10.7
+		 * @author Remy Perona
+		 * @param boolean $remove_empty_lines True to remove, false otherwise.
+		 */
+		if ( apply_filters( 'rocket_remove_empty_lines', true ) ) {
+			$ftmp = str_replace( "\n\n" , "\n" , $ftmp );
+		}
 
 		if ( false === $force ) {
 			$rules = get_rocket_htaccess_marker();
@@ -59,14 +67,16 @@ function rocket_htaccess_rules_test( $rules_name ) {
 	 *
 	 * @param array $args Array of argument for the request.
 	 */
-	$request_args = apply_filters( 'rocket_htaccess_rules_test_args', array(
-		'redirection' => 0,
-		'timeout'     => 5,
-		'sslverify'   => apply_filters( 'https_local_ssl_verify', false ),
-		'user-agent'  => 'wprocketbot',
-		'cookies'     => $_COOKIE,
-	) );
-		
+	$request_args = apply_filters(
+		'rocket_htaccess_rules_test_args', array(
+			'redirection' => 0,
+			'timeout'     => 5,
+			'sslverify'   => apply_filters( 'https_local_ssl_verify', false ),
+			'user-agent'  => 'wprocketbot',
+			'cookies'     => $_COOKIE,
+		)
+	);
+
 	$response = wp_remote_get( site_url( WP_ROCKET_URL . 'tests/' . $rules_name . '/index.html' ), $request_args );
 
 	if ( is_wp_error( $response ) ) {
@@ -150,11 +160,11 @@ function get_rocket_htaccess_mod_rewrite() {
 	}
 
 	// Get root base.
-	$home_root = parse_url( home_url() );
-	$home_root = isset( $home_root['path'] ) ? trailingslashit( $home_root['path'] ) : '/';
+	$home_root = rocket_extract_url_component( home_url(), PHP_URL_PATH );
+	$home_root = isset( $home_root ) ? trailingslashit( $home_root ) : '/';
 
-	$site_root = parse_url( site_url() );
-	$site_root = isset( $site_root['path'] ) ? trailingslashit( $site_root['path'] ) : '';
+	$site_root = rocket_extract_url_component( site_url(), PHP_URL_PATH );
+	$site_root = isset( $site_root ) ? trailingslashit( $site_root ) : '';
 
 	// Get cache root.
 	if ( strpos( ABSPATH, WP_ROCKET_CACHE_PATH ) === false ) {
@@ -215,17 +225,20 @@ function get_rocket_htaccess_mod_rewrite() {
 	$rules .= 'RewriteCond %{REQUEST_METHOD} GET' . PHP_EOL;
 	$rules .= 'RewriteCond %{QUERY_STRING} =""' . PHP_EOL;
 
-	if ( $cookies = get_rocket_cache_reject_cookies() ) {
+	$cookies = get_rocket_cache_reject_cookies();
+	if ( $cookies ) {
 		$rules .= 'RewriteCond %{HTTP:Cookie} !(' . $cookies . ') [NC]' . PHP_EOL;
 	}
 
-	if ( $uri = get_rocket_cache_reject_uri() ) {
+	$uri = get_rocket_cache_reject_uri();
+	if ( $uri ) {
 		$rules .= 'RewriteCond %{REQUEST_URI} !^(' . $uri . ')$ [NC]' . PHP_EOL;
 	}
 
 	$rules .= ! is_rocket_cache_mobile() ? get_rocket_htaccess_mobile_rewritecond() : '';
 
-	if ( $ua = get_rocket_cache_reject_ua() ) {
+	$ua = get_rocket_cache_reject_ua();
+	if ( $ua ) {
 		$rules .= 'RewriteCond %{HTTP_USER_AGENT} !^(' . $ua . ').* [NC]' . PHP_EOL;
 	}
 
@@ -464,18 +477,18 @@ function get_rocket_htaccess_charset() {
 function get_rocket_htaccess_files_match() {
 	$rules = '<IfModule mod_alias.c>' . PHP_EOL;
 		$rules .= '<FilesMatch "\.(html|htm|rtf|rtx|txt|xsd|xsl|xml)$">' . PHP_EOL;
-		    $rules .= '<IfModule mod_headers.c>' . PHP_EOL;
-		         $rules .= 'Header set X-Powered-By "WP Rocket/' . WP_ROCKET_VERSION . '"' . PHP_EOL;
-		         $rules .= 'Header unset Pragma' . PHP_EOL;
-		         $rules .= 'Header append Cache-Control "public"' . PHP_EOL;
-		         $rules .= 'Header unset Last-Modified' . PHP_EOL;
-		    $rules .= '</IfModule>' . PHP_EOL;
+			$rules .= '<IfModule mod_headers.c>' . PHP_EOL;
+				 $rules .= 'Header set X-Powered-By "WP Rocket/' . WP_ROCKET_VERSION . '"' . PHP_EOL;
+				 $rules .= 'Header unset Pragma' . PHP_EOL;
+				 $rules .= 'Header append Cache-Control "public"' . PHP_EOL;
+				 $rules .= 'Header unset Last-Modified' . PHP_EOL;
+			$rules .= '</IfModule>' . PHP_EOL;
 		$rules .= '</FilesMatch>' . PHP_EOL . PHP_EOL;
 		$rules .= '<FilesMatch "\.(css|htc|js|asf|asx|wax|wmv|wmx|avi|bmp|class|divx|doc|docx|eot|exe|gif|gz|gzip|ico|jpg|jpeg|jpe|json|mdb|mid|midi|mov|qt|mp3|m4a|mp4|m4v|mpeg|mpg|mpe|mpp|otf|odb|odc|odf|odg|odp|ods|odt|ogg|pdf|png|pot|pps|ppt|pptx|ra|ram|svg|svgz|swf|tar|tif|tiff|ttf|ttc|wav|wma|wri|xla|xls|xlsx|xlt|xlw|zip)$">' . PHP_EOL;
-		    $rules .= '<IfModule mod_headers.c>' . PHP_EOL;
-		        $rules .= 'Header unset Pragma' . PHP_EOL;
-		        $rules .= 'Header append Cache-Control "public"' . PHP_EOL;
-		    $rules .= '</IfModule>' . PHP_EOL;
+			$rules .= '<IfModule mod_headers.c>' . PHP_EOL;
+				$rules .= 'Header unset Pragma' . PHP_EOL;
+				$rules .= 'Header append Cache-Control "public"' . PHP_EOL;
+			$rules .= '</IfModule>' . PHP_EOL;
 		$rules .= '</FilesMatch>' . PHP_EOL;
 	$rules .= '</IfModule>' . PHP_EOL . PHP_EOL;
 
@@ -534,11 +547,11 @@ function get_rocket_htaccess_web_fonts_access() {
 	$rules  = '# Send CORS headers if browsers request them; enabled by default for images.' . PHP_EOL;
 	$rules  .= '<IfModule mod_setenvif.c>' . PHP_EOL;
 	  $rules  .= '<IfModule mod_headers.c>' . PHP_EOL;
-	    $rules  .= '# mod_headers, y u no match by Content-Type?!' . PHP_EOL;
-	    $rules  .= '<FilesMatch "\.(cur|gif|png|jpe?g|svgz?|ico|webp)$">' . PHP_EOL;
-	      $rules  .= 'SetEnvIf Origin ":" IS_CORS' . PHP_EOL;
-	      $rules  .= 'Header set Access-Control-Allow-Origin "*" env=IS_CORS' . PHP_EOL;
-	    $rules  .= '</FilesMatch>' . PHP_EOL;
+		$rules  .= '# mod_headers, y u no match by Content-Type?!' . PHP_EOL;
+		$rules  .= '<FilesMatch "\.(cur|gif|png|jpe?g|svgz?|ico|webp)$">' . PHP_EOL;
+		  $rules  .= 'SetEnvIf Origin ":" IS_CORS' . PHP_EOL;
+		  $rules  .= 'Header set Access-Control-Allow-Origin "*" env=IS_CORS' . PHP_EOL;
+		$rules  .= '</FilesMatch>' . PHP_EOL;
 	  $rules  .= '</IfModule>' . PHP_EOL;
 	$rules  .= '</IfModule>' . PHP_EOL . PHP_EOL;
 

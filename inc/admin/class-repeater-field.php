@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
  * Used to display the repeater field on settings form
@@ -56,9 +56,9 @@ class WP_Rocket_Repeater_Field {
 	 */
 	function __construct( $args ) {
 
-		$this->option 		   = $args['name'];
+		$this->option          = $args['name'];
 		$this->label_screen    = ! empty( $args['label_screen'] ) ? esc_html( $args['label_screen'] ) : false;
-		$this->placeholder 	   = ! empty( $args['placeholder'] ) ? 'placeholder="' . $args['placeholder'] . '" ' : '';
+		$this->placeholder     = ! empty( $args['placeholder'] ) ? 'placeholder="' . $args['placeholder'] . '" ' : '';
 		$this->is_drag_n_drop  = ! empty( $args['repeater_drag_n_drop'] ) ? true : false;
 		$this->label_add_field = ! empty( $args['repeater_label_add_field'] ) ? $args['repeater_label_add_field'] : false;
 
@@ -197,7 +197,6 @@ class WP_Rocket_Repeater_Field {
 			</div>
 
 			<?php // Clone Template. ?>
-
 			<div class="rkt-module-model hide-if-js">
 				<?php $this->the_field(); ?>
 			</div>

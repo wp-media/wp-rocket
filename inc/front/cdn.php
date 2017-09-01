@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
  * Replace URL by CDN of all thumbnails and smilies.
@@ -26,8 +26,8 @@ function rocket_cdn_file( $url ) {
 	switch ( $filter ) {
 		case 'wp_get_attachment_url':
 		case 'wp_calculate_image_srcset':
-		    $zone = array( 'all', 'images' );
-		    break;
+			$zone = array( 'all', 'images' );
+			break;
 		case 'smilies_src':
 			$zone = array( 'all', 'images' );
 			break;
@@ -42,20 +42,21 @@ function rocket_cdn_file( $url ) {
 			break;
 	}
 
-	if ( $cnames = get_rocket_cdn_cnames( $zone ) ) {
+	$cnames = get_rocket_cdn_cnames( $zone );
+	if ( $cnames ) {
 		$url = get_rocket_cdn_url( $url, $zone );
 	}
 
 	return $url;
 }
-add_filter( 'template_directory_uri'	, 'rocket_cdn_file', PHP_INT_MAX );
-add_filter( 'wp_get_attachment_url'		, 'rocket_cdn_file', PHP_INT_MAX );
-add_filter( 'smilies_src'				, 'rocket_cdn_file', PHP_INT_MAX );
-add_filter( 'stylesheet_uri'			, 'rocket_cdn_file', PHP_INT_MAX );
+add_filter( 'template_directory_uri'    , 'rocket_cdn_file', PHP_INT_MAX );
+add_filter( 'wp_get_attachment_url'     , 'rocket_cdn_file', PHP_INT_MAX );
+add_filter( 'smilies_src'               , 'rocket_cdn_file', PHP_INT_MAX );
+add_filter( 'stylesheet_uri'            , 'rocket_cdn_file', PHP_INT_MAX );
 // If for some completely unknown reason the user is using WP Minify or Better WordPress Minify instead of the WP Rocket minification.
-add_filter( 'wp_minify_css_url'			, 'rocket_cdn_file', PHP_INT_MAX );
-add_filter( 'wp_minify_js_url'			, 'rocket_cdn_file', PHP_INT_MAX );
-add_filter( 'bwp_get_minify_src'		, 'rocket_cdn_file', PHP_INT_MAX );
+add_filter( 'wp_minify_css_url'         , 'rocket_cdn_file', PHP_INT_MAX );
+add_filter( 'wp_minify_js_url'          , 'rocket_cdn_file', PHP_INT_MAX );
+add_filter( 'bwp_get_minify_src'        , 'rocket_cdn_file', PHP_INT_MAX );
 
 
 /**
@@ -70,6 +71,10 @@ add_filter( 'bwp_get_minify_src'		, 'rocket_cdn_file', PHP_INT_MAX );
  */
 function rocket_cdn_attachment_image_src( $image ) {
 	if ( ! (bool) $image ) {
+		return $image;
+	}
+
+	if ( is_admin() || is_preview() || is_feed() ) {
 		return $image;
 	}
 
@@ -131,11 +136,14 @@ function rocket_cdn_images( $html ) {
 		return $html;
 	}
 
-	$zone = array( 'all', 'images' );
-	if ( $cnames = get_rocket_cdn_cnames( $zone ) ) {
+	$zone   = array( 'all', 'images' );
+	$cnames = get_rocket_cdn_cnames( $zone );
 
-		$cnames = array_flip( $cnames );
-		$home_url = home_url( '/' );
+	if ( $cnames ) {
+
+		$cnames             = array_flip( $cnames );
+		$home_url           = home_url( '/' );
+		$wp_content_dirname = str_replace( $home_url, '', WP_CONTENT_URL );
 		// Get all images of the content.
 		preg_match_all( '#<img([^>]+?)src=([\'"\\\]*)([^\'"\s\\\>]+)([\'"\\\]*)([^>]*)>#i', $html, $images_match );
 
@@ -144,7 +152,7 @@ function rocket_cdn_images( $html ) {
 			list( $host, $path, $scheme, $query ) = get_rocket_parse_url( $image_url );
 			$path = trim( $path );
 
-			if ( empty( $path ) || '{href}' === $path || '+markerData[i].thumbnail+' === $path ) {
+			if ( empty( $path ) || ! preg_match( '#(' . $wp_content_dirname . '|wp-includes)#', $path ) ) {
 				continue;
 			}
 
@@ -155,11 +163,11 @@ function rocket_cdn_images( $html ) {
 			// Image path is relative, apply the host to it.
 			if ( empty( $host ) ) {
 				$image_url = $home_url . ltrim( $image_url, '/' );
-				$host = parse_url( $image_url, PHP_URL_HOST );
+				$host = rocket_extract_url_component( $image_url, PHP_URL_HOST );
 			}
 
 			// Check if the link isn't external.
-			if ( parse_url( $home_url, PHP_URL_HOST ) !== $host ) {
+			if ( rocket_extract_url_component( $home_url, PHP_URL_HOST ) !== $host ) {
 				continue;
 			}
 
@@ -176,13 +184,15 @@ function rocket_cdn_images( $html ) {
 				 * @since 2.5.5
 				 *
 				 * @param array $html Output that will be printed.
-				*/
-				apply_filters( 'rocket_cdn_images_html', sprintf(
-					'<img %1$s %2$s %3$s>',
-					trim( $images_match[1][ $k ] ),
-					'src=' . $images_match[2][ $k ] . get_rocket_cdn_url( $image_url, $zone ) . $images_match[4][ $k ],
-					trim( $images_match[5][ $k ] )
-				) ),
+				 */
+				apply_filters(
+					'rocket_cdn_images_html', sprintf(
+						'<img %1$s %2$s %3$s>',
+						trim( $images_match[1][ $k ] ),
+						'src=' . $images_match[2][ $k ] . get_rocket_cdn_url( $image_url, $zone ) . $images_match[4][ $k ],
+						trim( $images_match[5][ $k ] )
+					)
+				),
 				$html
 			);
 		}
@@ -215,22 +225,23 @@ function rocket_cdn_inline_styles( $html ) {
 		'css',
 	);
 
-	if ( $cnames = get_rocket_cdn_cnames( $zone ) ) {
-    	preg_match_all( '/url\((?![\'\"]?data)[\"\']?([^\)\"\']+)[\"\']?\)/i', $html, $matches );
+	$cnames = get_rocket_cdn_cnames( $zone );
+	if ( $cnames ) {
+		preg_match_all( '/url\((?![\'\"]?data)[\"\']?([^\)\"\']+)[\"\']?\)/i', $html, $matches );
 
-        if ( ( bool ) $matches ) {
-            foreach( $matches[1] as $k => $url ) {
-            	$url = str_replace( array( ' ', '\t', '\n', '\r', '\0', '\x0B', '"', "'", '&quot;', '&#039;' ), '', $url );
+		if ( (bool) $matches ) {
+			foreach ( $matches[1] as $k => $url ) {
+				$url = str_replace( array( ' ', '\t', '\n', '\r', '\0', '\x0B', '"', "'", '&quot;', '&#039;' ), '', $url );
 
 				if ( '#' === substr( $url, 0, 1 ) ) {
 					continue;
 				}
 
-            	$url      = get_rocket_cdn_url( $url, $zone );
-            	$property = str_replace( $matches[1][ $k ], $url, $matches[0][ $k ] );
-            	$html     = str_replace( $matches[0][ $k ], $property, $html );
-            }
-        }
+				$url      = get_rocket_cdn_url( $url, $zone );
+				$property = str_replace( $matches[1][ $k ], $url, $matches[0][ $k ] );
+				$html     = str_replace( $matches[0][ $k ], $property, $html );
+			}
+		}
 	}
 
 	return $html;
@@ -251,11 +262,12 @@ function rocket_cdn_custom_files( $html ) {
 		return $html;
 	}
 
-	$zone = array(
+	$zone   = array(
 		'all',
 	);
+	$cnames = get_rocket_cdn_cnames( $zone );
 
-	if ( $cnames = get_rocket_cdn_cnames( $zone ) ) {
+	if ( $cnames ) {
 
 		/**
 		 * Filters the filetypes allowed for the CDN
@@ -265,7 +277,7 @@ function rocket_cdn_custom_files( $html ) {
 		 *
 		 * @param array $filetypes Array of file types.
 		 */
-		$filetypes = apply_filters( 'rocket_cdn_custom_filetypes', array( 'mp3', 'ogg', 'mp4', 'm4v', 'avi', 'mov', 'flv', 'swf', 'webm', 'pdf', 'doc', 'docx', 'txt', 'zip', 'tar', 'bz2', 'tgz', 'rar' ) );
+		$filetypes = apply_filters( 'rocket_cdn_custom_filetypes', array( 'mp3', 'ogg', 'mp4', 'm4v', 'avi', 'mov', 'flv', 'swf', 'webm', 'pdf', 'doc', 'docx', 'txt', 'zip', 'tar', 'bz2', 'tgz', 'rar', 'jpg', 'jpeg', 'jpe', 'png', 'gif', 'webp', 'bmp', 'tiff' ) );
 		$filetypes = implode( '|', $filetypes );
 
 		preg_match_all( '#<a[^>]+?href=[\'"]?([^"\'>]+\.(?:' . $filetypes . '))[\'"]?[^>]*>#i', $html, $matches );
@@ -301,7 +313,7 @@ function rocket_cdn_enqueue( $src ) {
 		return $src;
 	}
 
-	if ( parse_url( $src, PHP_URL_HOST ) !== '' ) {
+	if ( rocket_extract_url_component( $src, PHP_URL_HOST ) !== '' ) {
 		$src  = rocket_add_url_protocol( $src );
 	}
 
@@ -317,9 +329,10 @@ function rocket_cdn_enqueue( $src ) {
 		$zone[] = 'js';
 	}
 
-	if ( $cnames = get_rocket_cdn_cnames( $zone ) ) {
+	$cnames = get_rocket_cdn_cnames( $zone );
+	if ( $cnames ) {
 		// Check if the path isn't empty.
-		if ( trim( parse_url( $src, PHP_URL_PATH ), '/' ) !== '' ) {
+		if ( trim( rocket_extract_url_component( $src, PHP_URL_PATH ), '/' ) !== '' ) {
 			$src = get_rocket_cdn_url( $src, $zone );
 		}
 	}

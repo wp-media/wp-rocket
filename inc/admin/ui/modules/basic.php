@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 // Are we white-labeled?
 $rwl = rocket_is_white_label();
@@ -43,13 +43,13 @@ $rocket_lazyload_fields[] = array(
 	'name'        => 'lazyload_common_issues',
 	'description' => sprintf(
 		/* translators: %s = docs link, or nothing if white-label is enabled */
-		__( 'Deactivate in case you notice any visually broken items on your website.%s', 'rocket' ),
-		$rwl ? '' : ' ' . __( '<a href="http://docs.wp-rocket.me/article/278-common-issues-with-lazyload" target="_blank">Why?</a>', 'rocket-docs' )
-	)
+		__( 'Deactivate if you notice any visually broken items on your website.%s', 'rocket' ),
+		$rwl ? '' : ' ' . __( '<a href="http://docs.wp-rocket.me/article/278-common-issues-with-lazyload" target="_blank">Why?</a>', 'rocket' )
+	),
 );
 
 /* LazyLoad options */
-$rocket_lazyload_fields[] =	array(
+$rocket_lazyload_fields[] = array(
 	'type'         => 'checkbox',
 	'label'        => __( 'Enable for images', 'rocket' ),
 	'label_for'    => 'lazyload',
@@ -64,12 +64,12 @@ $rocket_lazyload_fields[] = array(
 $rocket_lazyload_fields[] = array(
 	'type'         => 'helper_performance',
 	'name'         => 'lazyload_perf_tip',
-	'description'  => __( 'Reduces the number of HTTP requests, can improve loading time.', 'rocket' )
+	'description'  => __( 'Reduces the number of HTTP requests, can improve loading time.', 'rocket' ),
 );
 $rocket_lazyload_fields[] = array(
 	'type'         => 'helper_description',
 	'name'         => 'lazyload',
-	'description'  => __( 'Images, iframes, and videos will be loaded only as they enter (or are about to enter) the viewport.', 'rocket' )
+	'description'  => __( 'Images, iframes, and videos will be loaded only as they enter (or are about to enter) the viewport.', 'rocket' ),
 );
 
 add_settings_field(
@@ -94,10 +94,10 @@ add_settings_field(
 		array(
 			'type'         => 'checkbox',
 			'label'        => __( 'Enable caching for mobile devices', 'rocket' ),
-			'label_for'	   => 'cache_mobile',
+			'label_for'    => 'cache_mobile',
 			'label_screen' => __( 'Mobile cache:', 'rocket' ),
-			'default'	   => ( rocket_is_mobile_plugin_active() ) ? 1 : get_rocket_option( 'cache_mobile', 0 ),
-			'readonly'	   => rocket_is_mobile_plugin_active(),
+			'default'      => ( rocket_is_mobile_plugin_active() ) ? 1 : get_rocket_option( 'cache_mobile', 0 ),
+			'readonly'     => rocket_is_mobile_plugin_active(),
 		),
 		array(
 			'type'         => 'helper_performance',
@@ -109,8 +109,8 @@ add_settings_field(
 			'type'         => 'checkbox',
 			'label'        => __( 'Separate cache files for mobile devices', 'rocket' ),
 			'name'         => 'do_caching_mobile_files',
-			'default'	   => ( rocket_is_mobile_plugin_active() ) ? 1 : get_rocket_option( 'do_caching_mobile_files', 0 ),
-			'readonly'	   => rocket_is_mobile_plugin_active(),
+			'default'      => ( rocket_is_mobile_plugin_active() ) ? 1 : get_rocket_option( 'do_caching_mobile_files', 0 ),
+			'readonly'     => rocket_is_mobile_plugin_active(),
 		),
 		array(
 			'parent'       => 'cache_mobile',
@@ -162,8 +162,8 @@ add_settings_field(
 			'label_for'    => 'cache_ssl',
 			'label_screen' => __( 'SSL cache:', 'rocket' ),
 			'name'         => 'cache_ssl',
-			'default'	   => ( rocket_is_ssl_website() ) ? 1 : get_rocket_option( 'ssl', 0 ),
-			'readonly'	   => rocket_is_ssl_website(),
+			'default'      => ( rocket_is_ssl_website() ) ? 1 : get_rocket_option( 'ssl', 0 ),
+			'readonly'     => rocket_is_ssl_website(),
 		),
 		array(
 			'type'         => 'helper_description',
@@ -193,7 +193,7 @@ add_settings_field(
 		array(
 			'type'         => 'helper_performance',
 			'name'         => 'emoji_cache_perf_tip',
-			'description'  => __( 'Reduces the number of HTTP requests, can improve loading time.', 'rocket' )
+			'description'  => __( 'Reduces the number of HTTP requests, can improve loading time.', 'rocket' ),
 		),
 	)
 );
@@ -217,7 +217,7 @@ add_settings_field(
 		array(
 			'type'         => 'helper_description',
 			'name'         => 'embeds',
-			'description'  => __( 'Prevents others from embedding content from your site, prevents you from embedding content from other (non-whitelisted) sites, and removes JavaScript requests related to <a href="https://wordpress.org/news/2015/12/clifford/">WordPress Embeds</a>.', 'rocket' ),
+			'description'  => __( 'Prevents others from embedding content from your site, prevents you from embedding content from other (non-whitelisted) sites, and removes JavaScript requests related to <a href="https://wordpress.org/news/2015/12/clifford/" target="_blank">WordPress Embeds</a>.', 'rocket' ),
 		),
 	)
 );
@@ -264,22 +264,22 @@ $rocket_purge_fields[] = array(
 	'name'         => 'purge_warning_less',
 	'description'  => sprintf(
 		/* translators: %s = docs link, or nothing if white-label is enabled */
-		__( 'Reduce lifespan to 10 hours or less in case you notice issues that seem to appear only frequently.%s', 'rocket' ),
+		__( 'Reduce lifespan to 10 hours or less if you notice issues that seem to appear periodically.%s', 'rocket' ),
 		$rwl ? '' : ' ' . __( '<a href="http://docs.wp-rocket.me/article/975-nonces-and-cache-lifespan" target="_blank">Why?</a>', 'rocket' )
 	),
 );
 
 
 $rocket_purge_fields[] = array(
-		'type'         => 'helper_warning',
-		'name'         => 'purge_warning_more',
-		'description'  => __( 'Increase lifespan to a few hours in case you notice server issues with this setting.', 'rocket' ),
-	);
+	'type'         => 'helper_warning',
+	'name'         => 'purge_warning_more',
+	'description'  => __( 'Increase lifespan to a few hours if you notice server issues with this setting.', 'rocket' ),
+);
 
 /* Cache lifespan option */
 add_settings_field(
 	'rocket_purge',
-	__( 'Cache lifespan', 'rocket' ),
+	__( 'Cache lifespan:', 'rocket' ),
 	'rocket_field',
 	'rocket_basic',
 	'rocket_display_main_options',

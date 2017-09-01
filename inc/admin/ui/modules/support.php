@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 add_settings_section( 'rocket_display_support', __( 'Support', 'rocket' ), '__return_false', 'rocket_support' );
 
@@ -37,7 +37,7 @@ add_settings_field(
 	array(
 		array(
 			'type'         => 'helper_help',
-			'description'  => __( 'In one sentence: What is going on, or wrong?', 'rocket' )
+			'description'  => __( 'In one sentence: What is going on, or wrong?', 'rocket' ),
 		),
 		array(
 			'type'         => 'text',
@@ -60,17 +60,17 @@ add_settings_field(
 		array(
 			'type'         => 'helper_help',
 			'description'  =>
-			/* translators: line break recommended, but not mandatory  */
-			__( '<strong>Now be specific!</strong><br>We have pre-filled the form with some questions for you to phrase your description along.', 'rocket' )
+			/* translators: line breaks recommended, but not mandatory  */
+			__( '<strong>Now be specific!</strong><br>We have pre-filled the form with some questions for you to phrase your description along.<br>We speak English, French, German, Italian, Serbian, and Spanish.', 'rocket' ),
 		),
 		array(
 			'type'         => 'textarea',
 			'label_for'    => 'support_description',
 			'label_screen' => __( 'Description', 'rocket' ),
-			'rows'	       => 10,
-			'default'  	   =>
+			'rows'         => 10,
+			'default'      =>
 			/* translators: default field value, no HTML allowed! */
-			__( "- What did you do?\n- What did you see?\n- What had you expected to see?\n- Where can we see your issue?\n- What steps do we need to perform in order to see it?", 'rocket' )
+			__( "- What did you do?\n- What did you see?\n- What had you expected to see?\n- Where can we see your issue?\n- What steps do we need to perform in order to see it?", 'rocket' ),
 		),
 	)
 );
@@ -108,7 +108,7 @@ add_settings_field(
 		'button' => array(
 			'button_label' => _x( 'Send your ticket', 'button text', 'rocket' ),
 			'button_id'    => 'submit-support-button',
-			'style'		   => 'primary',
+			'style'        => 'primary',
 		),
 	)
 );
