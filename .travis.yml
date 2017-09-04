@@ -3,6 +3,9 @@
 # Tell Travis CI we're using PHP
 language: php
 
+# We nee to use Precise, not Trusty, to test against PHP 5.3, see https://github.com/travis-ci/travis-ci/issues/8219
+dist: precise
+
 # Versions of PHP to test against
 php:
     - "5.3"
@@ -21,13 +24,9 @@ env:
     - WP_VERSION=4.8 WP_MULTISITE=0
     - WP_VERSION=4.7 WP_MULTISITE=0
     - WP_VERSION=4.6 WP_MULTISITE=0
-    - WP_VERSION=4.5 WP_MULTISITE=0
-    - WP_VERSION=4.4 WP_MULTISITE=0
     - WP_VERSION=4.8 WP_MULTISITE=1
     - WP_VERSION=4.7 WP_MULTISITE=1
     - WP_VERSION=4.6 WP_MULTISITE=1
-    - WP_VERSION=4.5 WP_MULTISITE=1
-    - WP_VERSION=4.4 WP_MULTISITE=1
 
 # Grab the setup script and execute
 before_script:

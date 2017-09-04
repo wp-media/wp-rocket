@@ -1,7 +1,5 @@
 <?php
 
-use Cron\CronExpression;
-
 /**
  * Class ActionScheduler_CronSchedule_Test
  * @group schedules

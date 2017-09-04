@@ -61,6 +61,8 @@ abstract class ActionScheduler {
 		$d = DIRECTORY_SEPARATOR;
 		if ( strpos( $class, 'ActionScheduler' ) === 0 ) {
 			$dir = self::plugin_path('classes'.$d);
+		} elseif ( strpos( $class, 'CronExpression' ) === 0 ) {
+			$dir = self::plugin_path('lib'.$d.'cron-expression'.$d);
 		} else {
 			return;
 		}

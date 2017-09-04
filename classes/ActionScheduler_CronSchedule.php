@@ -7,10 +7,10 @@ class ActionScheduler_CronSchedule implements ActionScheduler_Schedule {
 	/** @var DateTime */
 	private $start = NULL;
 	private $start_timestamp = 0;
-	/** @var Cron\CronExpression */
+	/** @var CronExpression */
 	private $cron = NULL;
 
-	public function __construct( DateTime $start, Cron\CronExpression $cron ) {
+	public function __construct( DateTime $start, CronExpression $cron ) {
 		$this->start = $start;
 		$this->cron = $cron;
 	}
