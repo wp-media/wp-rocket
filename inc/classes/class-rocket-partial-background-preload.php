@@ -82,7 +82,12 @@ class Rocket_Partial_Background_Preload extends WP_Background_Process {
 		$host = ( isset( $_SERVER['HTTP_HOST'] ) ) ? $_SERVER['HTTP_HOST'] : time();
 		$host = trim( strtolower( $host ), '.' );
 		$host = rawurlencode( $host );
-		$host = isset( $rocket_url_no_dots ) ? str_replace( '.', '_', $host ) : $host;
+
+		/** This filter is documented in inc/front/htaccess.php */
+		if ( apply_filters( 'rocket_url_no_dots', false ) ) {
+			$host = str_replace( '.', '_', $host );
+		}
+
 		$file_cache_path = WP_ROCKET_CACHE_PATH . $host . '/' . $item . '/index.html';
 
 		return file_exists( $file_cache_path );
