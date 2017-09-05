@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
  * Extends the background process class for the sitemap preload background process.
@@ -62,7 +62,7 @@ class Rocket_Sitemap_Background_Preload extends WP_Background_Process {
 			'sslverify'  => apply_filters( 'https_local_ssl_verify', true ),
 		) );
 
-		wp_remote_get( esc_url_raw( $item ), $args );
+		wp_remote_get( esc_url( $item ), $args );
 		usleep( get_rocket_option( 'sitemap_preload_url_crawl', '500000' ) );
 		$this->count++;
 

@@ -748,7 +748,7 @@ function rocket_sitemap_preload_result() {
 	global $current_user;
 	$screen              = get_current_screen();
 	$rocket_wl_name      = get_rocket_option( 'wl_plugin_name', null );
-	$wp_rocket_screen_id = isset( $rocket_wl_name ) ?  'settings_page_' . sanitize_key( $rocket_wl_name ) : 'settings_page_wprocket';
+	$wp_rocket_screen_id = isset( $rocket_wl_name ) ? 'settings_page_' . sanitize_key( $rocket_wl_name ) : 'settings_page_wprocket';
 	/** This filter is documented in inc/admin-bar.php */
 	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
 		return;
@@ -758,10 +758,17 @@ function rocket_sitemap_preload_result() {
 		return;
 	}
 
-	if ( $result = get_transient( 'rocket_sitemap_preload_complete' ) ) {
-		delete_transient( 'rocket_sitemap_preload_complete' ); ?>
+	$result = get_transient( 'rocket_sitemap_preload_complete' );
+	if ( $result ) {
+		delete_transient( 'rocket_sitemap_preload_complete' );
+	?>
 		<div class="notice notice-success is-dismissible">
-			<p><?php printf( __( 'Sitemap preload complete: %d pages not yet cached have been preloaded.', 'rocket' ), $result ); ?></p>
+			<p>
+			<?php
+				// translators: %d is the number of pages preloaded.
+				printf( __( 'Sitemap preload complete: %d pages not yet cached have been preloaded.', 'rocket' ), $result );
+			?>
+			</p>
 		</div>
 	<?php
 	}
@@ -778,7 +785,7 @@ function rocket_automatic_preload_result() {
 	global $current_user;
 	$screen              = get_current_screen();
 	$rocket_wl_name      = get_rocket_option( 'wl_plugin_name', null );
-	$wp_rocket_screen_id = isset( $rocket_wl_name ) ?  'settings_page_' . sanitize_key( $rocket_wl_name ) : 'settings_page_wprocket';
+	$wp_rocket_screen_id = isset( $rocket_wl_name ) ? 'settings_page_' . sanitize_key( $rocket_wl_name ) : 'settings_page_wprocket';
 	/** This filter is documented in inc/admin-bar.php */
 	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
 		return;
@@ -788,10 +795,17 @@ function rocket_automatic_preload_result() {
 		return;
 	}
 
-	if ( $result = get_transient( 'rocket_automatic_preload_complete' ) ) {
-		delete_transient( 'rocket_automatic_preload_complete' ); ?>
+	$result = get_transient( 'rocket_automatic_preload_complete' );
+	if ( $result ) {
+		delete_transient( 'rocket_automatic_preload_complete' );
+	?>
 		<div class="notice notice-success is-dismissible">
-			<p><?php printf( __( 'Partial preload complete: %d pages not yet cached have been preloaded.', 'rocket' ), $result ); ?></p>
+			<p>
+			<?php
+				// translators: %d is the number of pages preloaded.
+				printf( __( 'Partial preload complete: %d pages not yet cached have been preloaded.', 'rocket' ), $result );
+			?>
+			</p>
 		</div>
 	<?php
 	}

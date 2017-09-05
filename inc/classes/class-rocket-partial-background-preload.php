@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
  * Extends the background process class for the automatic partial preload background process.
@@ -64,7 +64,7 @@ class Rocket_Partial_Background_Preload extends WP_Background_Process {
 			)
 		);
 
-		wp_remote_get( esc_url_raw( $item ), $args );
+		wp_remote_get( esc_url( $item ), $args );
 		usleep( get_rocket_option( 'sitemap_preload_url_crawl', '500000' ) );
 		$this->count++;
 
@@ -81,7 +81,7 @@ class Rocket_Partial_Background_Preload extends WP_Background_Process {
 	protected function is_already_cached( $item ) {
 		$host = ( isset( $_SERVER['HTTP_HOST'] ) ) ? $_SERVER['HTTP_HOST'] : time();
 		$host = trim( strtolower( $host ), '.' );
-		$host = urlencode( $host );
+		$host = rawurlencode( $host );
 		$host = isset( $rocket_url_no_dots ) ? str_replace( '.', '_', $host ) : $host;
 		$file_cache_path = WP_ROCKET_CACHE_PATH . $host . '/' . $item . '/index.html';
 

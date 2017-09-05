@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
  * Launches the automatic partial preload
@@ -16,7 +16,7 @@ function run_rocket_automatic_preload( $preload_urls ) {
 
 	global $rocket_partial_preload_process;
 	$rocket_partial_preload_process->cancel_process();
-	
+
 	foreach ( $preload_urls as $preload_url ) {
 		$rocket_partial_preload_process->push_to_queue( $preload_url );
 	}
@@ -58,8 +58,8 @@ function run_rocket_sitemap_preload() {
 		 *
 		 * @since 2.8
 		 *
-		 * @param string $sitemap_type 	the sitemap identifier
-		 * @param string $sitemap_url sitemap URL to be crawler
+		 * @param string $sitemap_type the sitemap identifier
+		 * @param string $sitemap_url  sitemap URL to be crawler
 		*/
 		do_action( 'before_run_rocket_sitemap_preload', $sitemap_type, $sitemap_url );
 
@@ -70,8 +70,8 @@ function run_rocket_sitemap_preload() {
 		 *
 		 * @since 2.8
 		 *
-		 * @param string $sitemap_type 	the sitemap identifier
-		 * @param string $sitemap_url sitemap URL crawled
+		 * @param string $sitemap_type the sitemap identifier
+		 * @param string $sitemap_url  sitemap URL crawled
 		*/
 		do_action( 'after_run_rocket_sitemap_preload', $sitemap_type, $sitemap_url );
 	}
@@ -111,7 +111,7 @@ function rocket_process_sitemap( $sitemap_url, $urls = array() ) {
 	 *
 	 * @param array $args Arguments for the request.
 	 */
-	$args = apply_filters( 'rocket_preload_sitemap_request_args', 
+	$args = apply_filters( 'rocket_preload_sitemap_request_args',
 		array(
 			'timeout'    => 0.01,
 			'blocking'   => false,

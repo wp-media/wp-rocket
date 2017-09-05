@@ -408,7 +408,6 @@ if ( ! function_exists( 'run_rocket_preload_cache' ) ) :
 	 */
 	function run_rocket_preload_cache( $spider, $do_sitemap_preload = true ) {
 		_deprecated_function( __FUNCTION__, '2.11' );
-		return false;
 	}
 endif;
 
