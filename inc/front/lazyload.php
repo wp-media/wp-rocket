@@ -260,7 +260,11 @@ function rocket_lazyload_iframes( $html ) {
 			continue;
 		}
 
-		/** This filter is documented in inc/front/lazyload.php */
+		/**
+		 * Filters the placeholder for iframe lazyload
+		 *
+		 * @param string $placeholder Placeholder for iframe lazyload.
+		 */
 		$placeholder = apply_filters( 'rocket_iframe_lazyload_placeholder', 'about:blank' ) );
 
 		$iframe = preg_replace( '/<iframe(.*?)src=/is', '<iframe$1src="' . $placeholder . '" data-lazy-src=', $iframe );
