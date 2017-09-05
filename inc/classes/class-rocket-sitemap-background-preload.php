@@ -78,7 +78,7 @@ class Rocket_Sitemap_Background_Preload extends WP_Background_Process {
 	 */
 	protected function is_already_cached( $item ) {
 		$url = wp_parse_url( $item );
-		$host = isset( $url['host'] ) ? str_replace( '.', '_', $url['host'] ) : $url['host'];
+		$host = isset( $rocket_url_no_dots ) ? str_replace( '.', '_', $url['host'] ) : $url['host'];
 		$file_cache_path = WP_ROCKET_CACHE_PATH . $host . '/' . strtolower( $url['path'] ) . '/index.html';
 
 		return file_exists( $file_cache_path );
