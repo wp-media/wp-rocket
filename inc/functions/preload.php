@@ -76,7 +76,7 @@ function run_rocket_sitemap_preload() {
 		do_action( 'after_run_rocket_sitemap_preload', $sitemap_type, $sitemap_url );
 	}
 
-	foreach ( $urls_group as $k => $urls ) {
+	foreach ( $urls_group as $urls ) {
 		if ( ! (bool) $urls ) {
 			continue;
 		}
@@ -120,7 +120,7 @@ function rocket_process_sitemap( $sitemap_url, $urls = array() ) {
 		)
 	);
 
-	$sitemap = wp_remote_get( esc_url_raw( $sitemap_url ) );
+	$sitemap = wp_remote_get( esc_url( $sitemap_url ) );
 
 	if ( 200 !== wp_remote_retrieve_response_code( $sitemap ) ) {
 		return array();
