@@ -158,7 +158,7 @@ function run_rocket_sitemap_preload() {
 		do_action( 'after_run_rocket_sitemap_preload', $sitemap_type, $sitemap_url );
 	}
 
-	foreach ( $urls_group as $k => $urls ) {
+	foreach ( $urls_group as $urls ) {
 		if ( empty( $urls ) ) {
 			continue;
 		}
@@ -185,14 +185,22 @@ function run_rocket_sitemap_preload() {
 function rocket_process_sitemap( $sitemap_url, $urls = array() ) {
 	$tmp_urls = array();
 
-	$args = array(
+	/**
+	 * Filters the arguments for the sitemap preload request
+	 *
+	 * @since 2.10.8
+	 * @author Remy Perona
+	 *
+	 * @param array $args Arguments for the request.
+	 */
+	$args = apply_filters( 'rocket_preload_sitemap_request_args', array(
 		'timeout'    => 0.01,
 		'blocking'   => false,
-		'user-agent' => 'wprocketbot',
+		'user-agent' => 'WP Rocket/Sitemaps',
 		'sslverify'  => apply_filters( 'https_local_ssl_verify', true ),
-	);
+	) );
 
-	$sitemap = wp_remote_get( esc_url_raw( $sitemap_url ) );
+	$sitemap = wp_remote_get( esc_url( $sitemap_url ) );
 
 	if ( is_wp_error( $sitemap ) ) {
 		return array();
