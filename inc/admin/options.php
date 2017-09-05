@@ -1374,7 +1374,7 @@ function rocket_handle_settings_import( $file_import, $filename_prefix, $inputs 
 		( $settings );
 		$settings 			= maybe_unserialize( $settings );
 	} elseif ( 'application/json' === $file_data['type'] ) {
-		$settings = json_decode( $settings );
+		$settings = json_decode( $settings, true );
 	}
 
 	rocket_put_content( $file['file'], '' );
