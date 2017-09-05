@@ -761,7 +761,7 @@ function rocket_sitemap_preload_result() {
 	if ( $result = get_transient( 'rocket_sitemap_preload_complete' ) ) {
 		delete_transient( 'rocket_sitemap_preload_complete' ); ?>
 		<div class="notice notice-success is-dismissible">
-			<p><?php echo sprintf( __( 'Sitemap preload complete: %d pages not yet cached have been preloaded.', 'rocket' ), $result ); ?></p>
+			<p><?php printf( __( 'Sitemap preload complete: %d pages not yet cached have been preloaded.', 'rocket' ), $result ); ?></p>
 		</div>
 	<?php
 	}
@@ -791,7 +791,7 @@ function rocket_automatic_preload_result() {
 	if ( $result = get_transient( 'rocket_automatic_preload_complete' ) ) {
 		delete_transient( 'rocket_automatic_preload_complete' ); ?>
 		<div class="notice notice-success is-dismissible">
-			<p><?php echo sprintf( __( 'Partial preload complete: %d pages not yet cached have been preloaded.', 'rocket' ), $result ); ?></p>
+			<p><?php printf( __( 'Partial preload complete: %d pages not yet cached have been preloaded.', 'rocket' ), $result ); ?></p>
 		</div>
 	<?php
 	}
