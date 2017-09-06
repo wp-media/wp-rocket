@@ -49,7 +49,7 @@ function rocket_async_css( $buffer ) {
 		$noscripts .= '<noscript>' . $tags_match[0][ $i ] . '</noscript>';
 	}
 
-	$buffer = str_replace( '</html>', $noscripts . '</html>', $buffer );	
+	$buffer = str_replace( '</body>', $noscripts . '</body>', $buffer );	
 
 	return $buffer;
 }
