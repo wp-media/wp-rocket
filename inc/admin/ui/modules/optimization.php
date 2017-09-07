@@ -379,10 +379,16 @@ add_settings_field(
 			'label_screen' => __( 'Critical path CSS rules for rendering above-the-fold content', 'rocket' ),
 		),
 		array(
+			'type'         => 'button',
+			'label_for'    => 'critical_css_generator',
+			'label'        => __( 'Generate critical CSS', 'rocket' ),
+			'label_screen' => __( 'Generate critical CSS', 'rocket' ),
+		),
+		array(
 			'type'         => 'helper_description',
-			'name'         => 'critical_css_generator',
+			'name'         => 'critical_css_generator_description',
 			// translators: %s is the URL to the documentation page.
-			'description'  => sprintf( __( 'Use the <a href="%s" target="_blank">Critical Path CSS Generator</a> to specify required CSS rules.', 'rocket' ), 'http://docs.wp-rocket.me/article/108-render-blocking-javascript-and-css-pagespeed#critical-path-css' ),
+			'description'  => sprintf( __( '<a href="%s" target="_blank">Critical CSS documentation</a>', 'rocket' ), 'http://docs.wp-rocket.me/article/108-render-blocking-javascript-and-css-pagespeed#critical-path-css' ),
 		),
 		'class' => 'critical-css-row',
 	)
