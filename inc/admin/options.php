@@ -810,6 +810,11 @@ function rocket_settings_callback( $inputs ) {
 	// Option: Critical CSS.
 	$inputs['critical_css'] = ! empty( $inputs['critical_css'] ) ? str_replace( array( '<style>', '</style>' ), '', $inputs['critical_css'] ) : '';
 
+	if ( 1 === (int) $inputs['async_css'] && empty( $inputs['critical_css'] ) ) {
+		$inputs['async_css'] = 0;
+		add_settings_error( 'wp_rocket', 'rocket-no-cpcss', __( 'Load CSS asynchronously was checked, but no critical CSS given. Fill in the critical CSS to activate this feature.', 'rocket' ), 'error' );
+	}
+
 	/*
 	 * Option : JS files to exclude from defer JS
 	 */
