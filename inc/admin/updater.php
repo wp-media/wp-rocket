@@ -87,7 +87,7 @@ function rocket_force_info_result( $res, $action, $args ) {
 			$res['sections']['changelog']	= str_replace( array( 'WP Rocket', 'WP&nbsp;Rocket', 'WP-Rocket' ), $res['name'], $res['sections']['changelog'] );
 			$res['sections']['description']	= implode( "\n", get_rocket_option( 'wl_description' ) );
 
-			unset( $res['sections']['installation'], $res['sections']['faq'], $res['contributors'] );
+			unset( $res['sections']['installation'], $res['sections']['faq'], $res['contributors'], $res['banners'] );
 
 			$res = (object) $res;
 
