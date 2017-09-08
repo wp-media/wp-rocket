@@ -72,3 +72,31 @@ function wp_ajax_rocket_helpscout_live_search() {
 	}
 }
 add_action( 'wp_ajax_rocket_helpscout_live_search', 'wp_ajax_rocket_helpscout_live_search' );
+
+/**
+ * Generates the critical CSS
+ *
+ * @since 2.11
+ * @author Remy Perona
+ */
+function wp_ajax_rocket_generate_critical_css() {
+	if ( false === check_ajax_referer( 'wp_rocket-options', '_wpnonce', false ) ) {
+		wp_send_json_error( __( 'Nonce verification failed', 'rocket' ), 403 );
+	}
+
+	$response = wp_remote_post(
+		WP_ROCKET_CRITICAL_CSS_GENERATOR,
+		array(
+			'body' => home_url(),
+		)
+	);
+
+	if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
+		wp_send_json_error(  $response, wp_remote_retrieve_response_code( $response ) );
+	}
+
+	$critical_css = wp_remote_retrieve_body( $response );
+
+	wp_send_json_success(  $critical_css );
+}
+add_action( 'wp_ajax_rocket_generate_critical_css', 'wp_ajax_rocket_generate_critical_css' );

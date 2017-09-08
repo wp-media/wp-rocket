@@ -439,4 +439,32 @@ jQuery( document ).ready( function($){
         }
         return false;
     }
+
+	// Critical CSS generation
+	$( '#critical_css_generator' ).on( 'click', function( e ) {
+		e.preventDefault();
+		wpnonce = $( '#_wpnonce' ).val();
+
+		$.post(
+			ajaxurl,
+			{
+				'action': 'rocket_generate_critical_css',
+				'_wpnonce': wpnonce,
+				
+			},
+			function( response ) {
+				if ( true == response.success ) {
+					$( '#critical_css' ).val( response.data );
+				} else {
+					if ( response.data instanceof Array ) {
+						for ( i = 0; response.data.length; i++ ) {
+							$( this ).parent().append( '<p>' + response.data[i].message + '</p>' );
+						}
+					} else {
+						$( this ).parent().append( '<p>' + response.data + '</p>' );
+					}
+				}
+			}
+		);
+	} );
 } );
