@@ -10,19 +10,9 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	protected $package = 'action-scheduler';
 
 	/**
-	 * Columns to show (name => label). The label is automatically
-	 * translated before rendering
+	 * Columns to show (name => label).
 	 */
-	protected $columns = array(
-		'hook'   => 'Hook',
-		'status' => 'Status',
-		'args'   => 'Arguments',
-		'group'  => 'Group',
-		'recurrence' => 'Recurrence',
-		'scheduled'  => 'Scheduled Date',
-		'claim_id'   => 'Claim ID',
-		'comments'   => 'Log',
-	);
+	protected $columns = array();
 
 	protected $row_actions = array(
 		'hook' => array(
@@ -33,7 +23,7 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	/**
 	 *  The active data stores
 	 */
-	protected $store;
+	protected $stores;
 
 	/**
 	 * Bulk actions. The key of the array is the method name of the implementation:
@@ -61,30 +51,60 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	public function __construct() {
 		self::$should_include_js = true;
 
-		$this->store = (object) array(
+		$this->columns = array(
+			'hook'   => __( 'Hook', 'action-scheduler' ),
+			'status' => __( 'Status', 'action-scheduler' ),
+			'args'   => __( 'Arguments', 'action-scheduler' ),
+			'group'  => __( 'Group', 'action-scheduler' ),
+			'recurrence' => __( 'Recurrence', 'action-scheduler' ),
+			'scheduled'  => __( 'Scheduled Date', 'action-scheduler' ),
+			'claim_id'   => __( 'Claim ID', 'action-scheduler' ),
+			'comments'   => __( 'Log', 'action-scheduler' ),
+		);
+
+		$this->row_actions = array(
+			'hook' => array(
+				'run' => array(
+					__( 'Run', 'action-scheduler' ),
+					__( 'Process the action now as if it were run as part of a queue', 'action-scheduler' ),
+				),
+			),
+		);
+
+		$this->stores = (object) array(
 			'action' => ActionScheduler_Store::instance(),
 			'log'    => ActionScheduler_Logger::instance(),
 		);
 
 		parent::__construct( array(
-			'singular' => $this->translate( 'action-scheduler' ),
-			'plural'   => $this->translate( 'action-scheduler' ),
+			'singular' => __( 'action-scheduler', 'action-scheduler' ),
+			'plural'   => __( 'action-scheduler', 'action-scheduler' ),
 			'ajax'     => false,
 		) );
 	}
 
 	/**
-	 * Setups the libraries. It is executed if `is_admin()` is TRUE.
+	 * Sets up the class. It is executed if `is_admin()` is TRUE.
 	 */
 	public static function init() {
-		add_action( 'admin_footer', __CLASS__ . '::print_script' );
+		add_action( 'admin_footer', __CLASS__ . '::maybe_include_assets' );
 		add_action( 'admin_enqueue_scripts', __CLASS__ . '::register_javascript' );
 	}
 
 	/**
-	 * Prints our javascript, if we need it.
+	 * Include our assets files if needed.
+	 *
+	 * Instead of loading our javascript everywhere in the WP-Admin, this method will make sure
+	 * our assets files are loaded only if this class is constructed.
+	 *
+	 * This method will be called in the admin_footer and it will print the CSS we need right away
+	 * and will queue our javascript file.
+	 *
+	 * Our javascript/css does the following things:
+	 *   1. Opens the logs in a modal.
+	 *   2. Loads the CSS for jquery-ui (used in the modals):
 	 */
-	public static function print_script() {
+	public static function maybe_include_assets() {
 		if ( ! self::$should_include_js ) {
 			return;
 		}
@@ -161,7 +181,7 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	 */
 	public function column_comments( array $row ) {
 		echo '<div id="log-' . $row['ID'] . '" class="log-modal hidden" style="max-width:800px">';
-		echo '<h3>Log entries for ' . $row['ID'] . '</h3>';
+		echo '<h3>' . sprintf( __( 'Log entries for %d', 'action-scheduler' ),  $row['ID'] ) . '</h3>';
 		foreach ( $row['comments'] as $log ) {
 			echo '<p>' . $log->get_message() . '</p>';
 		}
@@ -196,10 +216,10 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	 */
 	protected function get_status( $item ) {
 		if ( $item->is_finished() ) {
-			return 'Completed';
+			return __( 'Completed', 'action-scheduler' );
 		}
 
-		return 'Pending';
+		return __( 'Pending', 'action-scheduler' );
 	}
 
 	/**
@@ -214,7 +234,7 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	 */
 	protected function bulk_delete( array $ids, $ids_sql ) {
 		foreach ( $ids as $id ) {
-			$this->store->action->delete_action( $id );
+			$this->stores->action->delete_action( $id );
 		}
 	}
 
@@ -223,7 +243,7 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	 * parameters are valid.
 	 */
 	protected function row_action_run( $row_id ) {
-		$action = $this->store->action->fetch_action( $row_id );
+		$action = $this->stores->action->fetch_action( $row_id );
 		$action->execute();
 	}
 
@@ -252,10 +272,10 @@ class ActionScheduler_ListTable extends PP_List_Table {
 
 		$this->items = array();
 
-		$total_items = $this->store->action->query_actions_count( $query );
+		$total_items = $this->stores->action->query_actions_count( $query );
 
-		foreach ( $this->store->action->query_actions( $query ) as $id ) {
-			$item = $this->store->action->fetch_action( $id );
+		foreach ( $this->stores->action->query_actions( $query ) as $id ) {
+			$item = $this->stores->action->fetch_action( $id );
 			$this->items[ $id ] = array(
 				'ID'     => $id,
 				'hook'   => $item->get_hook(),
@@ -265,7 +285,7 @@ class ActionScheduler_ListTable extends PP_List_Table {
 				'recurrence' => $this->get_recurrence( $item ),
 				'scheduled'  => $item->get_schedule(),
 				'claim_id'   => '',
-				'comments'   => $this->store->log->get_logs( $id ),
+				'comments'   => $this->stores->log->get_logs( $id ),
 			);
 		}
 
@@ -312,7 +332,7 @@ class ActionScheduler_ListTable extends PP_List_Table {
 
 		$li = array();
 		foreach ( $statuses as $name => $status ) {
-			$total_items = $this->store->action->query_actions_count( compact( 'status' ) );
+			$total_items = $this->stores->action->query_actions_count( compact( 'status' ) );
 			if ( 0 === $total_items ) {
 				continue;
 			}
