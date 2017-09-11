@@ -31,3 +31,4 @@ p.description.file-error{color:#F00}
 .rkt-imagify-notice .rkt-imagify-logo{text-align:left; padding:5px 15px}
 .rkt-cross{top:8px; margin-top:0}
 }
+#wp-admin-bar-wp-rocket #wp-admin-bar-purge-all .ab-item>img, #wp-admin-bar-wp-rocket #wp-admin-bar-preload-cache .ab-item>img{max-width: 16px; max-height: 11px}
