@@ -139,13 +139,13 @@ add_action( 'wp_footer', 'rocket_insert_minify_js_in_footer', PHP_INT_MAX );
 function rocket_concatenate_google_fonts( $buffer ) {
 	// Get all Google Fonts CSS files.
 	$buffer_without_comments = preg_replace( '/<!--(.*)-->/Uis', '', $buffer );
-	preg_match_all( '/<link\s*.+href=[\'|"](.+fonts\.googleapis\.com.+)(\'|").+>/iU', $buffer_without_comments, $matches );
+	preg_match_all( '/<link(?:\s.+)?\shref\s*=\s*(\'|")((?!\1).+fonts\.googleapis\.com(?!\1).+)\1(?:\s.*)?>/iU', $buffer_without_comments, $matches );
 
 	$i = 0;
 	$fonts   = array();
 	$subsets = array();
 
-	if ( ! $matches[1] ) {
+	if ( ! $matches[2] ) {
 		return array( $buffer, '' );
 	}
 
