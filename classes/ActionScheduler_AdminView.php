@@ -41,28 +41,15 @@ class ActionScheduler_AdminView {
 		}
 
 		self::$admin_url = admin_url( 'edit.php?post_type=' . ActionScheduler_wpPostStore::POST_TYPE );
+	}
 
-		add_filter( 'views_edit-' . ActionScheduler_wpPostStore::POST_TYPE, array( self::instance(), 'list_table_views' ) );
-
-		add_filter( 'bulk_actions-edit-' . ActionScheduler_wpPostStore::POST_TYPE, array( self::instance(), 'bulk_actions' ) );
-
-		add_filter( 'manage_' . ActionScheduler_wpPostStore::POST_TYPE . '_posts_columns', array( self::instance(), 'list_table_columns' ), 1 );
-
-		add_filter( 'manage_edit-' . ActionScheduler_wpPostStore::POST_TYPE . '_sortable_columns', array( self::instance(), 'list_table_sortable_columns' ) );
-
-		add_filter( 'manage_' . ActionScheduler_wpPostStore::POST_TYPE . '_posts_custom_column', array( self::instance(), 'list_table_column_content' ), 10, 2 );
-
-		add_filter( 'post_row_actions', array( self::instance(), 'row_actions' ), 10, 2 );
-
-		add_action( 'admin_init', array( self::instance(), 'maybe_execute_action' ), 20 );
-
-		add_action( 'admin_notices', array( self::instance(), 'admin_notices' ) );
-
-		add_filter( 'post_updated_messages', array( self::instance(), 'post_updated_messages' ) );
-
-		add_filter( 'posts_orderby', array( self::instance(), 'custom_orderby' ), 10, 2 );
-
-		add_filter( 'posts_search', array( self::instance(), 'search_post_password' ), 10, 2 );
+	public function action_scheduler_post_type_args( $args ) {
+		_deprecated_function( __METHOD__, '2.0' );
+		return array_merge( $args, array(
+			'show_ui' => true,
+			'show_in_menu' => 'tools.php',
+			'show_in_admin_bar' => false,
+		));
 	}
 
 	/**
@@ -75,7 +62,10 @@ class ActionScheduler_AdminView {
 	}
 
 	/**
-	 * Registers action-scheduler under Tools
+	 * Registers action-scheduler under Tools.
+	 *
+	 * This method is called if woocommerce is not activated and we can't register our page
+	 * to WooCommerce's System status page.
 	 */
 	public function register_menu() {
 		add_submenu_page(
@@ -105,6 +95,7 @@ class ActionScheduler_AdminView {
 	 * @return array $views An associative array of views and view labels which can be used to filter the 'scheduled-action' posts displayed on the Scheduled Actions administration screen.
 	 */
 	public function list_table_views( $views ) {
+		_deprecated_function( __METHOD__, '2.0' );
 
 		foreach ( $views as $view_key => $view ) {
 			if ( 'publish' == $view_key ) {
@@ -125,6 +116,7 @@ class ActionScheduler_AdminView {
 	 * @return array $actions An associative array of actions which can be performed on the 'scheduled-action' post type.
 	 */
 	public function bulk_actions( $actions ) {
+		_deprecated_function( __METHOD__, '2.0' );
 
 		if ( isset( $actions['edit'] ) ) {
 			unset( $actions['edit'] );
@@ -143,6 +135,7 @@ class ActionScheduler_AdminView {
 	 * @return array $columns An associative array of columns that are use for the table on the Scheduled Actions administration screen.
 	 */
 	public function list_table_columns( $columns ) {
+		_deprecated_function( __METHOD__, '2.0' );
 
 		$custom_columns = array(
 			'cb'                    => $columns['cb'],
@@ -175,6 +168,7 @@ class ActionScheduler_AdminView {
 	 * @return array $columns An associative array of columns that can be used to sort the table on the Scheduled Actions administration screen.
 	 */
 	public static function list_table_sortable_columns( $columns ) {
+		_deprecated_function( __METHOD__, '2.0' );
 
 		$columns['hook']      = 'title';
 		$columns['scheduled'] = array( 'date', true );
@@ -193,6 +187,8 @@ class ActionScheduler_AdminView {
 	 */
 	public static function list_table_column_content( $column_name, $post_id ) {
 		global $post;
+
+		_deprecated_function( __METHOD__, '2.0' );
 
 		$action         = ActionScheduler::store()->fetch_action( $post_id );
 
@@ -261,6 +257,7 @@ class ActionScheduler_AdminView {
 	 * @return array $actions An associative array of actions which can be performed on the 'scheduled-action' post type.
 	 */
 	public static function row_actions( $actions, $post ) {
+		_deprecated_function( __METHOD__, '2.0' );
 
 		if ( ActionScheduler_wpPostStore::POST_TYPE == $post->post_type ) {
 
@@ -290,6 +287,7 @@ class ActionScheduler_AdminView {
 	 * @return string The URL for running the action.
 	 */
 	private static function get_run_action_link( $action_id, $operation = 'process' ) {
+		_deprecated_function( __METHOD__, '2.0' );
 
 		if ( !$post = get_post( $action_id ) )
 			return;
@@ -313,6 +311,7 @@ class ActionScheduler_AdminView {
 	 * @codeCoverageIgnore
 	 */
 	public static function maybe_execute_action() {
+		_deprecated_function( __METHOD__, '2.0' );
 
 		if ( ! isset( $_GET['action'] ) || 'process' != $_GET['action'] || ! isset( $_GET['post_id'] ) ){
 			return;
@@ -346,6 +345,7 @@ class ActionScheduler_AdminView {
 	 * @return string A human friendly string representation of the interval.
 	 */
 	public static function admin_notices() {
+		_deprecated_function( __METHOD__, '2.0' );
 
 		if ( self::is_admin_page() ) {
 
@@ -384,6 +384,8 @@ class ActionScheduler_AdminView {
 	 * @return string A human friendly string representation of the interval.
 	 */
 	private static function human_interval( $interval ) {
+		_deprecated_function( __METHOD__, '2.0' );
+
 		// array of time period chunks
 		$chunks = array(
 			array( 60 * 60 * 24 * 365 , _n_noop( '%s year', '%s years', 'action-scheduler' ) ),
@@ -434,6 +436,8 @@ class ActionScheduler_AdminView {
 	public function custom_orderby( $orderby, $query ){
 		global $wpdb;
 
+		_deprecated_function( __METHOD__, '2.0' );
+
 		if ( self::is_admin_page() && ! empty( $query->query['orderby'] ) && 'post_password' == $query->query['orderby'] ) {
 			$orderby = "$wpdb->posts.post_password " . $query->query['order'];
 		}
@@ -450,6 +454,8 @@ class ActionScheduler_AdminView {
 	 */
 	public function search_post_password( $search, $query ) {
 		global $wpdb;
+
+		_deprecated_function( __METHOD__, '2.0' );
 
 		if ( self::is_admin_page() && ! empty( $search ) ) {
 
@@ -481,6 +487,8 @@ class ActionScheduler_AdminView {
 	public function post_updated_messages( $messages ) {
 		global $post, $post_ID;
 
+		_deprecated_function( __METHOD__, '2.0' );
+
 		$messages[ ActionScheduler_wpPostStore::POST_TYPE ] = array(
 			0  => '', // Unused. Messages start at index 1.
 			1  => __( 'Action updated.', 'action-scheduler' ),
@@ -504,6 +512,8 @@ class ActionScheduler_AdminView {
 	 * @return bool
 	 */
 	private static function is_admin_page() {
+		_deprecated_function( __METHOD__, '2.0' );
+
 		if ( is_admin() && isset( $_GET['post_type'] ) && $_GET['post_type'] == ActionScheduler_wpPostStore::POST_TYPE ) {
 			return true;
 		} else {
