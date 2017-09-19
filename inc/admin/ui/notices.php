@@ -33,7 +33,7 @@ function rocket_bad_deactivations() {
 					case 'htaccess' :
 						$errors['htaccess'] = '<p>' . sprintf(
 							/* translators: %1$s WP Rocket plugin name; %2$s = .htaccess */
-							__( '<strong>%1$s</strong> can not be deactivated because of <code>%2$s</code>.<br>This file is not writable for %1$s, so %1$s can not remove its own directives.<br>Please make <code>%3$s</code> writable, then retry deactivation.', 'rocket' ),
+							__( '<strong>%1$s</strong> can not be deactivated because of <code>%2$s</code>.<br>This file is not writable for %1$s, so %1$s can not remove its own directives.<br>Please make <code>%2$s</code> writable, then retry deactivation.', 'rocket' ),
 							WP_ROCKET_PLUGIN_NAME,
 							'.htaccess'
 						) . '</p>';
