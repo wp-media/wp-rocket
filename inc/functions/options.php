@@ -432,7 +432,7 @@ function get_rocket_exclude_js() {
 	$js_files = array_unique( array_merge( $js_files, (array) $rocket_excluded_enqueue_js ) );
 
 	if ( get_rocket_option( 'defer_all_js', 0 ) && get_rocket_option( 'defer_all_js_safe', 0 ) ) {
-		$js_files[] = $wp_scripts->registered['jquery-core']->src;
+		$js_files[] = parse_url( site_url( $wp_scripts->registered['jquery-core']->src), PHP_URL_PATH );
 	}
 
 	/**
@@ -507,7 +507,7 @@ function get_rocket_exclude_defer_js() {
 	$exclude_defer_js = array();
 
 	if ( get_rocket_option( 'defer_all_js', 0 ) && get_rocket_option( 'defer_all_js_safe', 0 ) ) {
-		$jquery = $wp_scripts->registered['jquery-core']->src;
+		$jquery = parse_url( site_url( $wp_scripts->registered['jquery-core']->src ), PHP_URL_PATH );
 		
 		if ( get_rocket_option( 'remove_query_strings', 0 ) ) {
 			$jquery = site_url( $jquery . '?ver=' . $wp_scripts->registered['jquery-core']->ver );
