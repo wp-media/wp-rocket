@@ -336,26 +336,32 @@ class ActionScheduler_AdminView {
 	/**
 	 * Renders admin notifications
 	 *
+	 * Notifications:
+	 *  1. When the maximum number of tasks are being executed simultaneously
+	 *  2. Notifications when a task us manually executed
 	 */
 	public function maybe_render_admin_notices() {
-		$notification = get_transient( 'actionscheduler_admin_executed' );
-		if ( ! is_array( $notification ) ) {
-			return;
-		}
-
-		delete_transient( 'actionscheduler_admin_executed' );
-
-		$action = ActionScheduler::store()->fetch_action( $notification['action_id'] );
-		$action_hook_html = '<strong>' . $action->get_hook() . '</strong>';
-		if ( 1 == $notification['success'] ): ?>
+		if ( ActionScheduler_Store::instance()->get_claim_count() >= apply_filters( 'action_scheduler_queue_runner_concurrent_batches', 5 ) ) : ?>
 <div id="message" class="updated">
-	<p><?php printf( __( 'Successfully executed the action: %s', 'action-scheduler' ), $action_hook_html ); ?></p>
+	<p><?php printf( __( 'Maximum simulatenous batches already in progress (%s queues). No actions will be processed until the current batches are complete.', 'action-scheduler' ), ActionScheduler_Store::instance()->get_claim_count() ); ?></p>
 </div>
+		<?php endif;
+		$notification = get_transient( 'actionscheduler_admin_executed' );
+		if ( is_array( $notification ) ) {
+			delete_transient( 'actionscheduler_admin_executed' );
+
+			$action = ActionScheduler::store()->fetch_action( $notification['action_id'] );
+			$action_hook_html = '<strong>' . $action->get_hook() . '</strong>';
+			if ( 1 == $notification['success'] ): ?>
+				<div id="message" class="updated">
+					<p><?php printf( __( 'Successfully executed the action: %s', 'action-scheduler' ), $action_hook_html ); ?></p>
+				</div>
 			<?php else : ?>
-<div id="message" class="error">
-	<p><?php printf( __( 'Could not execute the action: %s', 'action-scheduler' ), $action_hook_html ); ?></p>
-</div>
+			<div id="message" class="error">
+				<p><?php printf( __( 'Could not execute the action: %s', 'action-scheduler' ), $action_hook_html ); ?></p>
+			</div>
 			<?php endif;
+		}
 	}
 
 	/**
