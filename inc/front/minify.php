@@ -149,7 +149,7 @@ function rocket_concatenate_google_fonts( $buffer ) {
 		return array( $buffer, '' );
 	}
 
-	foreach ( $matches[1] as $font ) {
+	foreach ( $matches[2] as $font ) {
 		if ( ! preg_match( '/rel=["\']dns-prefetch["\']/', $matches[0][ $i ] ) ) {
 			// Get fonts name.
 			$font = str_replace( array( '%7C', '%7c' ) , '|', $font );
