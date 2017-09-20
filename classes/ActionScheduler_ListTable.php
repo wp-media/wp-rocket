@@ -242,9 +242,15 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	 * Implements the logic behind running an action. PP_Table_List validates the request and their
 	 * parameters are valid.
 	 */
-	protected function row_action_run( $row_id ) {
-		$action = $this->stores->action->fetch_action( $row_id );
-		$action->execute();
+	protected function row_action_run( $action_id ) {
+		try {
+			ActionScheduler::runner()->process_action( $action_id );
+			$success = 1;
+		} catch ( Exception $e ) {
+			$success = 0;
+		}
+
+		set_transient( 'actionscheduler_admin_executed', compact( 'action_id', 'success' ), 30 );
 	}
 
 	/**

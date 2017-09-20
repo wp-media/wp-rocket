@@ -38,6 +38,7 @@ class ActionScheduler_AdminView {
 				add_action( 'admin_menu', array( $self, 'register_menu' ) );
 			}
 			ActionScheduler_ListTable::init();
+			add_action( 'admin_notices', array( $self, 'maybe_render_admin_notices' ) );
 		}
 
 		self::$admin_url = admin_url( 'edit.php?post_type=' . ActionScheduler_wpPostStore::POST_TYPE );
@@ -330,6 +331,31 @@ class ActionScheduler_AdminView {
 
 		wp_redirect( add_query_arg( array( 'executed' => $success, 'ids' => $action_id ), self::$admin_url ) );
 		exit();
+	}
+
+	/**
+	 * Renders admin notifications
+	 *
+	 */
+	public function maybe_render_admin_notices() {
+		$notification = get_transient( 'actionscheduler_admin_executed' );
+		if ( ! is_array( $notification ) ) {
+			return;
+		}
+
+		delete_transient( 'actionscheduler_admin_executed' );
+
+		$action = ActionScheduler::store()->fetch_action( $notification['action_id'] );
+		$action_hook_html = '<strong>' . $action->get_hook() . '</strong>';
+		if ( 1 == $notification['success'] ): ?>
+<div id="message" class="updated">
+	<p><?php printf( __( 'Successfully executed the action: %s', 'action-scheduler' ), $action_hook_html ); ?></p>
+</div>
+			<?php else : ?>
+<div id="message" class="error">
+	<p><?php printf( __( 'Could not execute the action: %s', 'action-scheduler' ), $action_hook_html ); ?></p>
+</div>
+			<?php endif;
 	}
 
 	/**
