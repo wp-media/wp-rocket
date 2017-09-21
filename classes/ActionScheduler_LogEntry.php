@@ -15,10 +15,10 @@ class ActionScheduler_LogEntry {
 	 * @param string $message   Message
 	 * @param string $date
 	 */
-	public function __construct( $action_id, $message, $date ) {
+	public function __construct( $action_id, $message, $date  = '' ) {
 		$this->action_id = $action_id;
 		$this->message   = $message;
-		$this->date      =  $date;
+		$this->date      = $date;
 	}
 
 	/**
