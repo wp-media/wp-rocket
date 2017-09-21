@@ -181,9 +181,9 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	 */
 	public function column_comments( array $row ) {
 		echo '<div id="log-' . $row['ID'] . '" class="log-modal hidden" style="max-width:800px">';
-		echo '<h3>' . sprintf( __( 'Log entries for %d', 'action-scheduler' ),  $row['ID'] ) . '</h3>';
+		echo '<h3>' . esc_html( sprintf( __( 'Log entries for %d', 'action-scheduler' ),  $row['ID'] ) ) . '</h3>';
 		foreach ( $row['comments'] as $log ) {
-			echo '<p>' . $log->get_message() . '</p>';
+			echo '<p><strong>' . esc_html( $log->get_date() ) . '</strong> ' . esc_html( $log->get_message() ) . '</p>';
 		}
 		echo '</div>';
 
@@ -274,6 +274,8 @@ class ActionScheduler_ListTable extends PP_List_Table {
 			'per_page' => $per_page,
 			'offset'   => $this->get_items_query_offset(),
 			'status'   => $this->get_request_status(),
+			'orderby'  => 'modified',
+			'order'    => 'ASC',
 		);
 
 		$this->items = array();
