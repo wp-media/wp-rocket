@@ -976,8 +976,16 @@ function rocket_put_content( $file, $content ) {
  * @return string|bool The path of wp-config.php file or false
  */
 function rocket_find_wpconfig_path() {
-	$config_file     = ABSPATH . 'wp-config.php';
-	$config_file_alt = dirname( ABSPATH ) . '/wp-config.php';
+	/**
+	 * Filter the wp-config's filename
+	 *
+	 * @since x.x.x
+	 *
+	 * @param string $filename The WP Config filename
+	 */
+	$config_file_name = apply_filters( 'rocket_wp_config_name', 'wp-config' );
+	$config_file      = ABSPATH . $config_file_name . '.php';
+	$config_file_alt  = dirname( ABSPATH ) . '/'. $config_file_name .'.php';
 
 	if ( file_exists( $config_file ) && rocket_direct_filesystem()->is_writable( $config_file ) ) {
 		return $config_file;
