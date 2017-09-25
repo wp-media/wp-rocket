@@ -13,28 +13,22 @@ class ActionScheduler_LogEntry {
 	 *
 	 * @param mixed  $action_id	Action ID
 	 * @param string $message   Message
-	 * @param string $date
+	 * @param Datetime $date    Datetime object with the time when this log entry was created. If this parameter is
+	 *                          not provided a new Datetime object (with current time) will be created.
 	 */
-	public function __construct( $action_id, $message, $date  = '' ) {
+	public function __construct( $action_id, $message, Datetime $date  = null ) {
 		$this->action_id = $action_id;
 		$this->message   = $message;
-		$this->date      = $date;
+		$this->date      = $date ? $date : new Datetime;
 	}
 
 	/**
 	 * Returns the date when this log entry was created
 	 *
-	 * The date is returned in a string, and there is a default format but it can be changed
-	 * through the `action_scheduler_date_format` filter.
-	 *
-	 * The date is the same timezone as the WordPress site.
-	 *
-	 * @return string
+	 * @return Datetime
 	 */
 	public function get_date() {
-		$date = as_get_datetime_object( $this->date );
-		$date->setTimezone( ActionScheduler_TimezoneHelper::get_local_timezone() );
-		return $date->format( apply_filters( 'action_scheduler_date_format', 'Y-m-d H:i:s' ) );
+		return $this->date;
 	}
 
 	public function get_action_id() {
@@ -45,4 +39,4 @@ class ActionScheduler_LogEntry {
 		return $this->message;
 	}
 }
- 
+
