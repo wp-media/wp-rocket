@@ -182,8 +182,11 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	public function column_comments( array $row ) {
 		echo '<div id="log-' . $row['ID'] . '" class="log-modal hidden" style="max-width:800px">';
 		echo '<h3>' . esc_html( sprintf( __( 'Log entries for %d', 'action-scheduler' ),  $row['ID'] ) ) . '</h3>';
+		$timezone = new DateTimezone( 'UTC' );
 		foreach ( $row['comments'] as $log ) {
-			echo '<p><strong>' . esc_html( $log->get_date()->format( 'Y-m-d H:i:s' ) ) . '</strong> ' . esc_html( $log->get_message() ) . '</p>';
+			$date = $log->get_date();
+			$date->setTimezone( $timezone );
+			echo '<p><strong>' . esc_html( $date->format( 'Y-m-d H:i:s' ) ) . ' UTC</strong> ' . esc_html( $log->get_message() ) . '</p>';
 		}
 		echo '</div>';
 
