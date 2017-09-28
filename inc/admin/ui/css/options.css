@@ -20,9 +20,6 @@ input[type=number].small-text {
 #tab_faq th {
 	display: none;
 }
-.rkt-move-deferred {
-	cursor: move;
-}
 .button-link:after,
 .rocketicon:before {
 	vertical-align: middle;

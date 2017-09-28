@@ -374,3 +374,132 @@ if ( ! function_exists( 'get_rocket_ecommerce_exclude_pages' ) ) :
 		return array();
 	}
 endif;
+
+/**
+ * Get list of JS files to deferred.
+ *
+ * @since 2.6
+ * @deprecated 2.11
+ *
+ * @return array List of JS files.
+ */
+function get_rocket_deferred_js_files() {
+	_deprecated_function( __FUNCTION__, '2.11' );
+	/**
+	 * Filter list of Deferred JavaScript files
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param array List of Deferred JavaScript files
+	 */
+	$deferred_js_files = apply_filters( 'rocket_minify_deferred_js', get_rocket_option( 'deferred_js_files', array() ) );
+
+	return $deferred_js_files;
+}
+
+/**
+ * Add defer attribute to script that should be deferred
+ *
+ * @since 2.10 Use defer attribute instead of labJS
+ * @since 1.1.0
+ * @deprecated 2.11
+ *
+ * @param string $buffer HTML content in the buffer.
+ * @return string Updated HTML content
+ */
+function rocket_insert_deferred_js( $buffer ) {
+	_deprecated_function( __FUNCTION__, '2.11', 'rocket_defer_js()' );
+	if ( get_rocket_option( 'defer_all_js' ) ) {
+		return $buffer;
+	}
+
+	// Get all JS files with this regex.
+	preg_match_all( '#<script.*src=[\'|"]([^\'|"]+\.js?.+)[\'|"].*></script>#iU', $buffer, $tags_match );
+
+	if ( ! isset( $tags_match[0] ) ) {
+		return $buffer;
+	}
+
+	foreach ( $tags_match[0] as $i => $tag ) {
+		// Strip query args.
+		$url = strtok( $tags_match[1][ $i ] , '?' );
+
+		$deferred_js_files = array_flip( get_rocket_deferred_js_files() );
+
+		// Check if this file should be deferred.
+		if ( isset( $deferred_js_files[ $url ] ) ) {
+			$deferred_tag = str_replace( '></script>', ' defer></script>', $tag );
+			$buffer = str_replace( $tag, $deferred_tag, $buffer );
+		}
+	}
+
+	return $buffer;
+}
+
+/**
+ * Used to display the defered module on settings form
+ *
+ * @since 1.1.0
+ * @deprecated 2.11
+ */
+function rocket_defered_module() {
+	_deprecated_function( __FUNCTION__, '2.11' );
+	?>
+	<fieldset>
+	<legend class="screen-reader-text"><span><?php _e( '<strong>JS</strong> files with Deferred Loading JavaScript', 'rocket' ); ?></span></legend>
+
+	<div id="rkt-drop-deferred" class="rkt-module rkt-module-drop">
+
+		<?php
+		$deferred_js_files = get_rocket_option( 'deferred_js_files' );
+
+		if ( $deferred_js_files ) {
+
+			foreach ( $deferred_js_files as $k => $_url ) {
+			?>
+
+				<p class="rkt-module-drag">
+					<span class="dashicons dashicons-sort rkt-module-move hide-if-no-js"></span>
+
+					<input style="width: 32em" type="text" placeholder="http://" class="deferred_js regular-text" name="wp_rocket_settings[deferred_js_files][<?php echo $k; ?>]" value="<?php echo esc_url( $_url ); ?>" />
+
+					<span class="dashicons dashicons-no rkt-module-remove hide-if-no-js"></span>
+				</p>
+				<!-- .rkt-module-drag -->
+
+			<?php
+			}
+		} else {
+			// If no files yet, use this template inside #rkt-drop-deferred.
+			?>
+
+			<p class="rkt-module-drag">
+				<span class="dashicons dashicons-sort rkt-module-move hide-if-no-js"></span>
+
+				<input style="width: 32em" type="text" placeholder="http://" class="deferred_js regular-text" name="wp_rocket_settings[deferred_js_files][0]" value="" />
+			</p>
+			<!-- .rkt-module-drag -->
+
+				<?php } ?>
+
+	</div>
+	<!-- .rkt-drop-deferred -->
+
+	
+	<div class="rkt-module-model hide-if-js">
+
+		<p class="rkt-module-drag">
+			<span class="dashicons dashicons-sort rkt-module-move hide-if-no-js"></span>
+
+			<input style="width: 32em" type="text" placeholder="http://" class="deferred_js regular-text" name="wp_rocket_settings[deferred_js_files][]" value="" />
+
+			<span class="dashicons dashicons-no rkt-module-remove hide-if-no-js"></span>
+		</p>
+		<!-- .rkt-module-drag -->
+	</div>
+	<!-- .rkt-model-deferred-->
+
+	<p><a href="javascript:void(0)" class="rkt-module-clone hide-if-no-js button-secondary"><?php _e( 'Add URL', 'rocket' ); ?></a></p>
+
+<?php
+}

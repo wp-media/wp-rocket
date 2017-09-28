@@ -78,18 +78,6 @@ function get_rocket_browser_cache_busting( $src, $current_filter = '' ) {
 		$current_filter = current_filter();
 	}
 
-	if ( 'script_loader_src' === $current_filter ) {
-		$deferred_js_files = get_rocket_deferred_js_files();
-
-		if ( (bool) $deferred_js_files ) {
-			$deferred_js_files = array_flip( $deferred_js_files );
-			$clean_src         = strtok( $src, '?' );
-			if ( isset( $deferred_js_files[ $clean_src ] ) ) {
-				return $src;
-			}
-		}
-	}
-
 	$full_src = ( substr( $src, 0, 2 ) === '//' ) ? rocket_add_url_protocol( $src ) : $src;
 
 	switch ( $current_filter ) {
