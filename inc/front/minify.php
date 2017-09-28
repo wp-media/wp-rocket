@@ -723,7 +723,6 @@ function rocket_extract_js_files_from_footer() {
 	}
 
 	$home_host            = rocket_extract_url_component( home_url(), PHP_URL_HOST );
-	$deferred_js_files    = get_rocket_deferred_js_files();
 	$excluded_js          = get_rocket_exclude_js();
 	$excluded_external_js = get_rocket_minify_excluded_external_js();
 
@@ -732,7 +731,7 @@ function rocket_extract_js_files_from_footer() {
 		$script_src  = ( strstr( $script_src, '/wp-includes/js/' ) ) ? $wp_scripts->base_url . $script_src : $script_src;
 		$script_src_cleaned = str_replace( array( 'http:', 'https:', '//' . $home_host ), '', $script_src );
 
-		if ( ! in_array( rocket_extract_url_component( $script_src, PHP_URL_HOST ), $excluded_external_js, true ) && ! in_array( $script_src, $deferred_js_files, true ) && ! in_array( rocket_extract_url_component( $script_src, PHP_URL_PATH ), $excluded_js, true ) && ! in_array( rocket_extract_url_component( $script_src_cleaned, PHP_URL_PATH ), $excluded_js, true ) ) {
+		if ( ! in_array( rocket_extract_url_component( $script_src, PHP_URL_HOST ), $excluded_external_js, true ) && ! in_array( rocket_extract_url_component( $script_src, PHP_URL_PATH ), $excluded_js, true ) && ! in_array( rocket_extract_url_component( $script_src_cleaned, PHP_URL_PATH ), $excluded_js, true ) ) {
 			if ( isset( $rocket_js_enqueued_in_head[ $handle ] ) ) {
 				continue;
 			}

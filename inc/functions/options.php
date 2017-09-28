@@ -486,7 +486,6 @@ function get_rocket_exclude_js() {
 function get_rocket_minify_js_in_footer() {
 	global $rocket_enqueue_js_in_footer, $wp_scripts;
 
-	$js_files = get_rocket_option( 'minify_js_in_footer', array() );
 	$js_files = array_map( 'rocket_set_internal_url_scheme', $js_files );
 	$js_files = array_unique( array_merge( $js_files, (array) $rocket_enqueue_js_in_footer ) );
 
@@ -500,26 +499,6 @@ function get_rocket_minify_js_in_footer() {
 	$js_files = apply_filters( 'rocket_minify_js_in_footer', $js_files );
 
 	return $js_files;
-}
-
-/**
- * Get list of JS files to deferred.
- *
- * @since 2.6
- *
- * @return array List of JS files.
- */
-function get_rocket_deferred_js_files() {
-	/**
-	 * Filter list of Deferred JavaScript files
-	 *
-	 * @since 1.1.0
-	 *
-	 * @param array List of Deferred JavaScript files
-	 */
-	$deferred_js_files = apply_filters( 'rocket_minify_deferred_js', get_rocket_option( 'deferred_js_files', array() ) );
-
-	return $deferred_js_files;
 }
 
 /**

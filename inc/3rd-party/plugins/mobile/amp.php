@@ -17,7 +17,6 @@ function rocket_disable_options_on_amp() {
 			remove_filter( 'rocket_buffer', 'rocket_dns_prefetch_buffer', 12 );
 		}
 
-		remove_filter( 'rocket_buffer', 'rocket_insert_deferred_js', 11 );
 		remove_filter( 'rocket_buffer', 'rocket_minify_process', 13 );
 		remove_filter( 'rocket_buffer', 'rocket_defer_js', 14 );
 		remove_filter( 'rocket_buffer', 'rocket_async_css', 15 );
