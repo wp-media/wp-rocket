@@ -330,7 +330,7 @@ function rocket_serve_cache_file( $rocket_cache_filepath ) {
 	$rocket_cache_filepath_gzip = $rocket_cache_filepath . '_gzip';
 
 	// Check if cache file exist.
-	if ( in_array( 'gzip', $_SERVER['HTTP_ACCEPT_ENCODING'], true ) && file_exists( $rocket_cache_filepath_gzip ) && is_readable( $rocket_cache_filepath_gzip ) ) {
+	if ( isset( $_SERVER['HTTP_ACCEPT_ENCODING'] ) && false !== strpos( $_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip' ) && file_exists( $rocket_cache_filepath_gzip ) && is_readable( $rocket_cache_filepath_gzip ) ) {
 		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s', filemtime( $rocket_cache_filepath_gzip ) ) . ' GMT' );
 
 		// Getting If-Modified-Since headers sent by the client.
