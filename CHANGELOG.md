@@ -9,16 +9,11 @@
 
 **Fixed bugs:**
 
+- Too few arguments for sprintf\(\) [\#518](https://github.com/wp-media/wp-rocket/issues/518)
 - Conflict between Elementor and Combine Google Fonts  [\#514](https://github.com/wp-media/wp-rocket/issues/514)
 - Exclude WooCommerce shipping class URLs from purge [\#513](https://github.com/wp-media/wp-rocket/issues/513)
 - Custom Polylang flags [\#510](https://github.com/wp-media/wp-rocket/issues/510)
 - Incorrect parsing when the subdomain URL is like https://subdomain-www.example.com [\#493](https://github.com/wp-media/wp-rocket/issues/493)
-
-**Closed issues:**
-
-- Too few arguments for sprintf\(\) [\#518](https://github.com/wp-media/wp-rocket/issues/518)
-- Renewal Page [\#512](https://github.com/wp-media/wp-rocket/issues/512)
-- Upgrade Page [\#511](https://github.com/wp-media/wp-rocket/issues/511)
 
 ## [v2.10.7](https://github.com/wp-media/wp-rocket/tree/v2.10.7) (2017-08-02)
 **Implemented enhancements:**
@@ -57,7 +52,6 @@
 
 **Closed issues:**
 
-- Custom WP\_CONTENT\_DIR for Deployments with symlink [\#455](https://github.com/wp-media/wp-rocket/issues/455)
 - Correct typo in explanatory text for Preload bot option [\#454](https://github.com/wp-media/wp-rocket/issues/454)
 
 ## [v2.10.4](https://github.com/wp-media/wp-rocket/tree/v2.10.4) (2017-06-22)
@@ -94,10 +88,6 @@
 - Issues with CDN on WP Engine [\#402](https://github.com/wp-media/wp-rocket/issues/402)
 -  Moving JS in footer removes attributes [\#66](https://github.com/wp-media/wp-rocket/issues/66)
 
-**Closed issues:**
-
-- Require a minimum time for Cache Lifespan [\#255](https://github.com/wp-media/wp-rocket/issues/255)
-
 ## [v2.10](https://github.com/wp-media/wp-rocket/tree/v2.10) (2017-06-07)
 **Implemented enhancements:**
 
@@ -114,20 +104,12 @@
 - Full path is incorrect when using Remove query strings from static resources with WP in a subdirectory [\#399](https://github.com/wp-media/wp-rocket/issues/399)
 - style\_loader\_src / script\_loader\_src and front-end editors [\#385](https://github.com/wp-media/wp-rocket/issues/385)
 
-**Closed issues:**
-
-- Real regexes can not be used in exclude uri [\#389](https://github.com/wp-media/wp-rocket/issues/389)
-
 ## [v2.9.11](https://github.com/wp-media/wp-rocket/tree/v2.9.11) (2017-04-04)
 ## [v2.9.10](https://github.com/wp-media/wp-rocket/tree/v2.9.10) (2017-03-29)
-**Closed issues:**
-
-- Auto-exclude Thrive Visual Editor CSS from cache busting [\#388](https://github.com/wp-media/wp-rocket/issues/388)
-- Which action fires on Clear cache in WP Admin? [\#387](https://github.com/wp-media/wp-rocket/issues/387)
-
 ## [v2.9.9](https://github.com/wp-media/wp-rocket/tree/v2.9.9) (2017-03-20)
 **Implemented enhancements:**
 
+- Add compatibility when Autoptimize is activate [\#376](https://github.com/wp-media/wp-rocket/issues/376)
 - .htaccess BasicAuth and Minification [\#373](https://github.com/wp-media/wp-rocket/issues/373)
 - Update Mobile\_Detect class to recent version [\#365](https://github.com/wp-media/wp-rocket/issues/365)
 
@@ -137,11 +119,6 @@
 - Remove query string not applied when minification disabled on a single post [\#367](https://github.com/wp-media/wp-rocket/issues/367)
 - Imagify install button doesn't work since WP 4.6 [\#156](https://github.com/wp-media/wp-rocket/issues/156)
 -  LazyLoad Iframes & Videos crashes Android Facebook browser [\#75](https://github.com/wp-media/wp-rocket/issues/75)
-
-**Closed issues:**
-
-- Understanding "exlude external JS" [\#377](https://github.com/wp-media/wp-rocket/issues/377)
-- Add compatibility when Autoptimize is activate [\#376](https://github.com/wp-media/wp-rocket/issues/376)
 
 ## [v2.9.8](https://github.com/wp-media/wp-rocket/tree/v2.9.8) (2017-03-02)
 **Implemented enhancements:**
@@ -153,12 +130,9 @@
 - CDN breaks Envira gallery lightbox [\#360](https://github.com/wp-media/wp-rocket/issues/360)
 - PHP notice when saving WP Rocket settings since 2.9.7 [\#359](https://github.com/wp-media/wp-rocket/issues/359)
 - Issue in process.php when $rocket\_cache\_reject\_ua is empty [\#358](https://github.com/wp-media/wp-rocket/issues/358)
+- JS & CSS minification should reflect uncached position of enqueued scripts & styles and not $wp\_scripts-\>in\_footer array [\#304](https://github.com/wp-media/wp-rocket/issues/304)
 - Compatibility between CDN & Hide My WP [\#56](https://github.com/wp-media/wp-rocket/issues/56)
 -  If seach pages are cached with the filter, Js files added in the footer with minification are not added [\#47](https://github.com/wp-media/wp-rocket/issues/47)
-
-**Closed issues:**
-
-- JS & CSS minification should reflect uncached position of enqueued scripts & styles and not $wp\_scripts-\>in\_footer array [\#304](https://github.com/wp-media/wp-rocket/issues/304)
 
 ## [v2.9.7](https://github.com/wp-media/wp-rocket/tree/v2.9.7) (2017-02-27)
 ## [v2.9.6](https://github.com/wp-media/wp-rocket/tree/v2.9.6) (2017-02-22)
@@ -186,12 +160,9 @@
 - Fix PHP Notice: Undefined index: HTTP\_CF\_CONNECTING\_IP in ../inc/common/cloudflare.php on line 31 [\#338](https://github.com/wp-media/wp-rocket/issues/338)
 - Add Minify Key on dynamic CSS & JS files to avoid browser caching issue  [\#327](https://github.com/wp-media/wp-rocket/issues/327)
 - Import no longer works on WordPress 4.7.1 [\#315](https://github.com/wp-media/wp-rocket/issues/315)
+-  PHP Parse error:  syntax error, unexpected ':' since 2.9.4 [\#311](https://github.com/wp-media/wp-rocket/issues/311)
 - URI rewriter passes through empty URLs [\#308](https://github.com/wp-media/wp-rocket/issues/308)
 - PHP Warning filemtime\(\) [\#238](https://github.com/wp-media/wp-rocket/issues/238)
-
-**Closed issues:**
-
--  PHP Parse error:  syntax error, unexpected ':' since 2.9.4 [\#311](https://github.com/wp-media/wp-rocket/issues/311)
 
 ## [v2.9.4](https://github.com/wp-media/wp-rocket/tree/v2.9.4) (2017-01-22)
 ## [v2.9.3](https://github.com/wp-media/wp-rocket/tree/v2.9.3) (2017-01-18)
@@ -215,6 +186,7 @@
 
 - Static Resources + Deferred JS + CDN Loads Files Twice [\#292](https://github.com/wp-media/wp-rocket/issues/292)
 - CDN for background image in HTML is breaking if URL is surrounded by &quot; [\#289](https://github.com/wp-media/wp-rocket/issues/289)
+- Fatal error with Move Login 2.4 [\#286](https://github.com/wp-media/wp-rocket/issues/286)
 - Save CloudFlare IPs in transient even if they're the hardcoded ones [\#284](https://github.com/wp-media/wp-rocket/issues/284)
 - Check for get\_post\_type\_object\(\) = null when purging [\#278](https://github.com/wp-media/wp-rocket/issues/278)
 - The busting folder is not removed with others during uninstall [\#273](https://github.com/wp-media/wp-rocket/issues/273)
@@ -222,7 +194,6 @@
 
 **Closed issues:**
 
-- Fatal error with Move Login 2.4 [\#286](https://github.com/wp-media/wp-rocket/issues/286)
 - Move rocket\_get\_dns\_prefetch\_domains into inc/functions/options.php [\#280](https://github.com/wp-media/wp-rocket/issues/280)
 
 ## [v2.9.1](https://github.com/wp-media/wp-rocket/tree/v2.9.1) (2016-12-27)
