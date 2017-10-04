@@ -1,0 +1,28 @@
+{
+	"name": "wp-media/wp-rocket",
+	"description": "Performance optimization plugin for WordPress",
+	"keywords": [
+		"wordpress",
+		"cache",
+		"minification",
+		"lazyload"
+	],
+	"homepage": "https://wp-rocket.me",
+	"license": "GPL-2.0+",
+	"authors": [
+		{
+			"name": "WP Media",
+			"email": "contact@wp-media.me",
+			"homepage": "https://wp-media.me"
+		}
+	],
+	"type": "wordpress-plugin",
+	"support": {
+		"issues": "https://github.com/wp-media/wp-rocket/issues",
+		"source": "https://github.com/wp-media/wp-rocket"
+	},
+    "require": {
+		"paquettg/php-html-parser": "dev-dev",
+		"matthiasmullie/minify": "1.3.*"
+	}
+}
