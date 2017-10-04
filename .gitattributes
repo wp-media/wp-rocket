@@ -10,3 +10,4 @@ README.md export-ignore
 phpcs.xml export-ignore
 .tx export-ignore
 LICENSE.md export-ignore
+CHANGELOG.md export-ignore
