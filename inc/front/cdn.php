@@ -141,6 +141,12 @@ function rocket_cdn_images( $html ) {
 		$cnames             = array_flip( $cnames );
 		$home_url           = home_url( '/' );
 		$wp_content_dirname = str_replace( $home_url, '', WP_CONTENT_URL );
+		
+		$aUploadsDir = wp_upload_dir();
+		if( !empty($aUploadsDir['baseurl']) ) {
+			$wp_content_dirname .= "|". trailingslashit( str_replace( $home_url, '/', $aUploadsDir['baseurl'] ) );	//	make sure https://www.site.com/images/ becomes /images/
+		}
+		
 		// Get all images of the content.
 		preg_match_all( '#<img([^>]+?)src=([\'"\\\]*)([^\'"\s\\\>]+)([\'"\\\]*)([^>]*)>#i', $html, $images_match );
 
