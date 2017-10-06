@@ -1,5 +1,6 @@
 # PHPUnit files
 .travis.yml export-ignore
+.stickler.yml export-ignore
 bin export-ignore
 tests export-ignore
 phpunit.xml export-ignore
@@ -9,3 +10,4 @@ README.md export-ignore
 phpcs.xml export-ignore
 .tx export-ignore
 LICENSE.md export-ignore
+CHANGELOG.md export-ignore

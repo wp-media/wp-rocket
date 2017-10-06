@@ -22,7 +22,7 @@ function rocket_updates_exclude( $r, $url ) {
 		unset( $plugins->active[ array_search( plugin_basename( WP_ROCKET_FILE ), $plugins->active, true ) ] );
 	}
 
-	$r['body']['plugins'] = serialize( $plugins );
+	$r['body']['plugins'] = maybe_serialize( $plugins );
 	return $r;
 }
 add_filter( 'http_request_args', 'rocket_updates_exclude', 5, 2 );
@@ -87,7 +87,7 @@ function rocket_force_info_result( $res, $action, $args ) {
 			$res['sections']['changelog']	= str_replace( array( 'WP Rocket', 'WP&nbsp;Rocket', 'WP-Rocket' ), $res['name'], $res['sections']['changelog'] );
 			$res['sections']['description']	= implode( "\n", get_rocket_option( 'wl_description' ) );
 
-			unset( $res['sections']['installation'], $res['sections']['faq'], $res['contributors'] );
+			unset( $res['sections']['installation'], $res['sections']['faq'], $res['contributors'], $res['banners'] );
 
 			$res = (object) $res;
 

@@ -348,7 +348,18 @@ function rocket_cnames_module() {
 						<?php _e( 'reserved for', 'rocket' ); ?>
 						<select name="wp_rocket_settings[cdn_zone][<?php echo $k; ?>]">
 							<option value="all" <?php selected( $cnames_zone[ $k ], 'all' ); ?>><?php _e( 'All files', 'rocket' ); ?></option>
+							<?php
+							/**
+							 * Controls the inclusion of images option for the CDN dropdown
+							 *
+							 * @since 2.10.7
+							 * @author Remy Perona
+							 *
+							 * @param bool $allow true to add the option, false otherwise.
+							 */
+							if ( apply_filters( 'rocket_allow_cdn_images', true ) ) : ?>
 							<option value="images" <?php selected( $cnames_zone[ $k ], 'images' ); ?>><?php _e( 'Images', 'rocket' ); ?></option>
+							<?php endif; ?>
 							<option value="css_and_js" <?php selected( $cnames_zone[ $k ], 'css_and_js' ); ?>>CSS & JavaScript</option>
 							<option value="js" <?php selected( $cnames_zone[ $k ], 'js' ); ?>>JavaScript</option>
 							<option value="css" <?php selected( $cnames_zone[ $k ], 'css' ); ?>>CSS</option>
@@ -373,7 +384,11 @@ function rocket_cnames_module() {
 						<?php _e( 'reserved for', 'rocket' ); ?>
 						<select name="wp_rocket_settings[cdn_zone][]">
 							<option value="all"><?php _e( 'All files', 'rocket' ); ?></option>
+							<?php
+							// this filter is defined in inc/admin/options.php.
+							if ( apply_filters( 'rocket_allow_cdn_images', true ) ) : ?>
 							<option value="images"><?php _e( 'Images', 'rocket' ); ?></option>
+							<?php endif; ?>
 							<option value="css_and_js">CSS & JavaScript</option>
 							<option value="js">JavaScript</option>
 							<option value="css">CSS</option>
@@ -397,7 +412,11 @@ function rocket_cnames_module() {
 					<?php _e( 'reserved for', 'rocket' ); ?>
 					<select name="wp_rocket_settings[cdn_zone][]">
 						<option value="all"><?php _e( 'All files', 'rocket' ); ?></option>
+						<?php
+						// this filter is defined in inc/admin/options.php.
+						if ( apply_filters( 'rocket_allow_cdn_images', true ) ) : ?>
 						<option value="images"><?php _e( 'Images', 'rocket' ); ?></option>
+						<?php endif; ?>
 						<option value="css_and_js">CSS & JavaScript</option>
 						<option value="js">JavaScript</option>
 						<option value="css">CSS</option>
@@ -954,43 +973,8 @@ function rocket_settings_callback( $inputs ) {
 
 	$filename_prefix = rocket_is_white_label() ? sanitize_title( get_rocket_option( 'wl_plugin_name' ) ) : 'wp-rocket';
 
-	if ( isset( $_FILES['import'] )
-		&& preg_match( '/' . $filename_prefix . '-settings-20\d{2}-\d{2}-\d{2}-[a-f0-9]{13}\.(?:txt|json)/', $_FILES['import']['name'] )
-		&& ( 'text/plain' === $_FILES['import']['type'] || 'application/json' === $_FILES['import']['type'] ) ) {
-		$file_name 			= $_FILES['import']['name'];
-		$file_type			= $_FILES['import']['type'];
-		$_post_action 		= $_POST['action'];
-		$_POST['action'] 	= 'wp_handle_sideload';
-		if ( 'text/plain' === $file_type ) {
-			$mimes = array( 'txt' => 'application/octet-stream' );
-		} elseif ( 'application/json' === $file_type ) {
-			$mimes = array( 'json' => 'text/plain' );
-		}
-		$file 				= wp_handle_sideload( $_FILES['import'], array( 'mimes' => $mimes ) );
-		$_POST['action'] 	= $_post_action;
-		$settings 			= rocket_direct_filesystem()->get_contents( $file['file'] );
-		if ( 'text/plain' === $file_type ) {
-			$gz 				= 'gz' . strrev( 'etalfni' );
-			$settings 			= $gz// ;
-			( $settings );
-			$settings 			= unserialize( $settings );
-		} elseif ( 'application/json' === $file_type ) {
-			$settings = (array) json_decode( $settings );
-		}
-		rocket_direct_filesystem()->put_contents( $file['file'], '' );
-		rocket_direct_filesystem()->delete( $file['file'] );
-
-		if ( is_array( $settings ) ) {
-			$settings['consumer_key']		= $inputs['consumer_key'];
-			$settings['consumer_email']		= $inputs['consumer_email'];
-			$settings['secret_key']			= $inputs['secret_key'];
-			$settings['secret_cache_key']	= $inputs['secret_cache_key'];
-			$settings['minify_css_key']		= $inputs['minify_css_key'];
-			$settings['minify_js_key']		= $inputs['minify_js_key'];
-			$settings['version']			= $inputs['version'];
-			$inputs = $settings;
-			add_settings_error( 'general', 'settings_updated', __( 'Settings imported and saved.', 'rocket' ), 'updated' );
-		}
+	if ( isset( $_FILES['import'] ) && 0 !== $_FILES['import']['size'] && $settings = rocket_handle_settings_import( $_FILES['import'], $filename_prefix, $inputs ) ) {
+		$inputs = $settings;
 	}
 
 	if ( ! rocket_valid_key() ) {
@@ -1343,4 +1327,70 @@ function rocket_database_count_cleanup_items( $type ) {
 	}
 
 	return $count;
+}
+
+
+/**
+ * Handle WP Rocket settings import.
+ * 
+ * @since 2.10.7
+ * @author Remy Perona
+ *
+ * @param array $file_import File import data.
+ * @param string $filename_prefix import filename prefix.
+ * @param array $inputs Original settings.
+ * @return bool|array False if there was an error, an array of imported settings otherwise.
+ */
+function rocket_handle_settings_import( $file_import, $filename_prefix, $inputs ) {
+	if ( ! isset( $file_import ) ) {
+		add_settings_error( 'general', 'settings_update_error', __( 'Settings import failed: no file uploaded.', 'rocket' ), 'error' );
+		return false;
+	}
+
+	if ( ! preg_match( '/' . $filename_prefix . '-settings-20\d{2}-\d{2}-\d{2}-[a-f0-9]{13}\.(?:txt|json)/', $file_import['name'] ) ) {
+		add_settings_error( 'general', 'settings_update_error', __( 'Settings import failed: incorrect filename.', 'rocket' ), 'error' );
+		return false;
+	}
+
+	add_filter( 'mime_types', 'rocket_allow_json_mime_type' );
+
+	$file_data = wp_check_filetype_and_ext(  $file_import['tmp_name'], $file_import['name'] );
+
+	if ( 'text/plain' !== $file_data['type'] && 'application/json' !== $file_data['type'] ) {
+		add_settings_error( 'general', 'settings_update_error', __( 'Settings import failed: incorrect filetype.', 'rocket' ), 'error' );
+		return false;
+	}
+
+	$_post_action 		= $_POST['action'];
+	$_POST['action'] 	= 'wp_handle_sideload';
+	$file 				= wp_handle_sideload( $file_import );
+	$_POST['action'] 	= $_post_action;
+	$settings 			= rocket_direct_filesystem()->get_contents( $file['file'] );
+	remove_filter( 'mime_types', 'rocket_allow_json_mime_type' );
+	
+	if ( 'text/plain' === $file_data['type'] ) {
+		$gz 				= 'gz' . strrev( 'etalfni' );
+		$settings 			= $gz// ;
+		( $settings );
+		$settings 			= maybe_unserialize( $settings );
+	} elseif ( 'application/json' === $file_data['type'] ) {
+		$settings = json_decode( $settings, true );
+	}
+
+	rocket_put_content( $file['file'], '' );
+	rocket_direct_filesystem()->delete( $file['file'] );
+
+	if ( is_array( $settings ) ) {
+		$settings['consumer_key']     = $inputs['consumer_key'];
+		$settings['consumer_email']   = $inputs['consumer_email'];
+		$settings['secret_key']       = $inputs['secret_key'];
+		$settings['secret_cache_key'] = $inputs['secret_cache_key'];
+		$settings['minify_css_key']	  = $inputs['minify_css_key'];
+		$settings['minify_js_key']    = $inputs['minify_js_key'];
+		$settings['version']          = $inputs['version'];
+
+		add_settings_error( 'general', 'settings_updated', __( 'Settings imported and saved.', 'rocket' ), 'updated' );
+
+		return $settings;
+	}
 }

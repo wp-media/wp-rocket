@@ -152,10 +152,10 @@ function rocket_reset_white_label_values( $hack_post ) {
 	$options = get_option( WP_ROCKET_SLUG );
 	$options['wl_plugin_name']	= 'WP Rocket';
 	$options['wl_plugin_slug']	= 'wprocket';
-	$options['wl_plugin_URI']	= 'http://www.wp-rocket.me';
+	$options['wl_plugin_URI']	= 'https://wp-rocket.me';
 	$options['wl_description']	= array( 'The best WordPress performance plugin.' );
-	$options['wl_author']		= 'WP Rocket';
-	$options['wl_author_URI']	= 'http://www.wp-rocket.me';
+	$options['wl_author']		= 'WP Media';
+	$options['wl_author_URI']	= 'https://wp-media.me';
 
 	if ( $hack_post ) {
 		// hack $_POST to force refresh of files, sorry.
@@ -486,4 +486,19 @@ function rocket_is_mobile_plugin_active() {
 	}
 
 	return false;
+}
+
+/**
+ * Allow upload of JSON file.
+ * 
+ * @since 2.10.7
+ * @author Remy Perona
+ *
+ * @param array $wp_get_mime_types Array of allowed mime types.
+ * @return array Updated array of allowed mime types
+ */
+function rocket_allow_json_mime_type( $wp_get_mime_types ) {
+	$wp_get_mime_types['json'] = 'application/json';
+
+	return $wp_get_mime_types;
 }

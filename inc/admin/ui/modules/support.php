@@ -60,8 +60,8 @@ add_settings_field(
 		array(
 			'type'         => 'helper_help',
 			'description'  =>
-			/* translators: line break recommended, but not mandatory  */
-			__( '<strong>Now be specific!</strong><br>We have pre-filled the form with some questions for you to phrase your description along.', 'rocket' )
+			/* translators: line breaks recommended, but not mandatory  */
+			__( '<strong>Now be specific!</strong><br>We have pre-filled the form with some questions for you to phrase your description along.<br>We speak English, French, German, Italian, Serbian, and Spanish.', 'rocket' )
 		),
 		array(
 			'type'         => 'textarea',

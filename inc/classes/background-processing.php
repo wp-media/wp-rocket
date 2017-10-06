@@ -30,14 +30,22 @@ class Rocket_Sitemap_Preload_Process extends WP_Background_Process {
 	 * @return null
 	 */
 	protected function task( $item ) {
-		$args = array(
+		/**
+		 * Filters the arguments for the preload request
+		 *
+		 * @since 2.10.8
+		 * @author Remy Perona
+		 *
+		 * @param array $args Arguments for the request.
+		 */
+		$args = apply_filters( 'rocket_preload_url_request_args', array(
 			'timeout'    => 0.01,
 			'blocking'   => false,
-			'user-agent' => 'wprocketbot',
+			'user-agent' => 'WP Rocket/Preload',
 			'sslverify'  => apply_filters( 'https_local_ssl_verify', true ),
-		);
+		) );
 
-		$tmp = wp_remote_get( esc_url_raw( $item ), $args );
+		$tmp = wp_remote_get( esc_url( $item ), $args );
 		usleep( get_rocket_option( 'sitemap_preload_url_crawl', '500000' ) );
 
 		return false;

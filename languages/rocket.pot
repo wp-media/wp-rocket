@@ -5,14 +5,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 2.8\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2017-06-13 11:41-0400\n"
+"POT-Creation-Date: 2017-07-27 12:16-0400\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2016-MO-DA HO:MI+ZONE\n"
 "Last-Translator: WP Media (http://wp-rocket.me/)\n"
 "Language-Team: WP Media (http://www.transifex.com/projects/p/wp-media/)\n"
-"X-Generator: Poedit 1.8.9\n"
+"X-Generator: Poedit 1.8.11\n"
 "X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;"
 "_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;"
 "esc_html_x:1,2c\n"
@@ -52,7 +52,7 @@ msgstr ""
 msgid "Yoast SEO XML sitemap"
 msgstr ""
 
-#: inc/admin/admin.php:14 inc/admin/options.php:571
+#: inc/admin/admin.php:14 inc/admin/options.php:590
 #: inc/admin/ui/modules/support.php:4 inc/common/admin-bar.php:248
 msgid "Support"
 msgstr ""
@@ -73,7 +73,7 @@ msgstr ""
 msgid "Clear this cache"
 msgstr ""
 
-#: inc/admin/admin.php:312 inc/admin/admin.php:321
+#: inc/admin/admin.php:317 inc/admin/admin.php:326
 #, php-format
 msgid "%s Update Rollback"
 msgstr ""
@@ -94,7 +94,7 @@ msgstr ""
 msgid "Optimize"
 msgstr ""
 
-#: inc/admin/options.php:195 inc/admin/options.php:439
+#: inc/admin/options.php:195 inc/admin/options.php:458
 msgctxt "screen-reader-text"
 msgid "Note:"
 msgstr ""
@@ -109,7 +109,7 @@ msgctxt "screen-reader-text"
 msgid "Third-party feature detected:"
 msgstr ""
 
-#: inc/admin/options.php:223 inc/admin/options.php:445
+#: inc/admin/options.php:223 inc/admin/options.php:464
 msgctxt "screen-reader-text"
 msgid "Warning:"
 msgstr ""
@@ -131,132 +131,144 @@ msgstr ""
 msgid "Replace site's hostname with:"
 msgstr ""
 
-#: inc/admin/options.php:348 inc/admin/options.php:373 inc/admin/options.php:397
+#: inc/admin/options.php:348 inc/admin/options.php:384 inc/admin/options.php:412
 msgid "reserved for"
 msgstr ""
 
-#: inc/admin/options.php:350 inc/admin/options.php:375 inc/admin/options.php:399
+#: inc/admin/options.php:350 inc/admin/options.php:386 inc/admin/options.php:414
 msgid "All files"
 msgstr ""
 
-#: inc/admin/options.php:351 inc/admin/options.php:376 inc/admin/options.php:400
+#: inc/admin/options.php:361 inc/admin/options.php:390 inc/admin/options.php:418
 msgid "Images"
 msgstr ""
 
-#: inc/admin/options.php:412
+#: inc/admin/options.php:431
 msgid "Add CNAME"
 msgstr ""
 
-#: inc/admin/options.php:479
+#: inc/admin/options.php:498
 msgid "Watch the video"
 msgstr ""
 
-#: inc/admin/options.php:553
+#: inc/admin/options.php:572
 msgid "Basic"
 msgstr ""
 
-#: inc/admin/options.php:554
+#: inc/admin/options.php:573
 msgid "Static Files"
 msgstr ""
 
-#: inc/admin/options.php:555 inc/admin/ui/meta-boxes.php:72
+#: inc/admin/options.php:574 inc/admin/ui/meta-boxes.php:72
 msgid "CDN"
 msgstr ""
 
-#: inc/admin/options.php:556
+#: inc/admin/options.php:575
 msgid "Advanced"
 msgstr ""
 
-#: inc/admin/options.php:557
+#: inc/admin/options.php:576
 msgid "Database"
 msgstr ""
 
-#: inc/admin/options.php:558
+#: inc/admin/options.php:577
 msgid "Preload"
 msgstr ""
 
-#: inc/admin/options.php:567 inc/admin/ui/modules/white-label.php:4
+#: inc/admin/options.php:586 inc/admin/ui/modules/white-label.php:4
 msgid "White Label"
 msgstr ""
 
-#: inc/admin/options.php:569 inc/admin/ui/modules/tools.php:7
+#: inc/admin/options.php:588 inc/admin/ui/modules/tools.php:7
 msgid "Tools"
 msgstr ""
 
-#: inc/admin/options.php:574
+#: inc/admin/options.php:593
 msgid "License"
 msgstr ""
 
-#: inc/admin/options.php:992
-msgid "Settings imported and saved."
-msgstr ""
-
-#: inc/admin/options.php:1008 inc/admin/options.php:1177
+#: inc/admin/options.php:992 inc/admin/options.php:1161
 msgid "Settings saved."
 msgstr ""
 
-#: inc/admin/options.php:1104
+#: inc/admin/options.php:1088
 #, php-format
 msgid "Cloudflare development mode error: %s"
 msgstr ""
 
-#: inc/admin/options.php:1106
+#: inc/admin/options.php:1090
 #, php-format
 msgid "Cloudflare development mode %s"
 msgstr ""
 
-#: inc/admin/options.php:1118
+#: inc/admin/options.php:1102
 #, php-format
 msgid "Cloudflare cache level error: %s"
 msgstr ""
 
-#: inc/admin/options.php:1120
+#: inc/admin/options.php:1104
 #, php-format
 msgid "Cloudflare cache level set to %s"
 msgstr ""
 
-#: inc/admin/options.php:1128
+#: inc/admin/options.php:1112
 #, php-format
 msgid "Cloudflare minification error: %s"
 msgstr ""
 
-#: inc/admin/options.php:1130
+#: inc/admin/options.php:1114
 #, php-format
 msgid "Cloudflare minification %s"
 msgstr ""
 
-#: inc/admin/options.php:1138
+#: inc/admin/options.php:1122
 #, php-format
 msgid "Cloudflare rocket loader error: %s"
 msgstr ""
 
-#: inc/admin/options.php:1140
+#: inc/admin/options.php:1124
 #, php-format
 msgid "Cloudflare rocket loader %s"
 msgstr ""
 
-#: inc/admin/options.php:1148
+#: inc/admin/options.php:1132
 #, php-format
 msgid "Cloudflare browser cache error: %s"
 msgstr ""
 
-#: inc/admin/options.php:1150
+#: inc/admin/options.php:1134
 #, php-format
 msgid "Cloudflare browser cache set to %s seconds"
 msgstr ""
 
-#: inc/admin/options.php:1289
+#: inc/admin/options.php:1273
 msgid ""
 "Before you can upload your import file, you will need to fix the following error:"
 msgstr ""
 
-#: inc/admin/options.php:1296
+#: inc/admin/options.php:1280
 #, php-format
 msgid "Choose a file from your computer (maximum size: %s)"
 msgstr ""
 
-#: inc/admin/options.php:1299
+#: inc/admin/options.php:1283
 msgid "Upload file and import settings"
+msgstr ""
+
+#: inc/admin/options.php:1346
+msgid "Settings import failed: no file uploaded."
+msgstr ""
+
+#: inc/admin/options.php:1351
+msgid "Settings import failed: incorrect filename."
+msgstr ""
+
+#: inc/admin/options.php:1360
+msgid "Settings import failed: incorrect filetype."
+msgstr ""
+
+#: inc/admin/options.php:1392
+msgid "Settings imported and saved."
 msgstr ""
 
 #: inc/admin/ui/enqueue.php:20
@@ -816,12 +828,12 @@ msgid ""
 "target=\"_blank\">using WP Rocket with Cloudflare</a>."
 msgstr ""
 
-#: inc/admin/ui/modules/cdn.php:73 inc/admin/ui/modules/cdn.php:82
-msgid "CDN:"
+#: inc/admin/ui/modules/cdn.php:71
+msgid "Enable Content Delivery Network"
 msgstr ""
 
-#: inc/admin/ui/modules/cdn.php:80
-msgid "Enable Content Delivery Network"
+#: inc/admin/ui/modules/cdn.php:73 inc/admin/ui/modules/cdn.php:108
+msgid "CDN:"
 msgstr ""
 
 #: inc/admin/ui/modules/cdn.php:88
@@ -838,33 +850,39 @@ msgid ""
 "CDN</a>."
 msgstr ""
 
-#: inc/admin/ui/modules/cdn.php:100
+#: inc/admin/ui/modules/cdn.php:99
+msgid ""
+"CDN is disabled because you are using WP Offload S3 and the assets addon to "
+"serve your images, CSS & JS files."
+msgstr ""
+
+#: inc/admin/ui/modules/cdn.php:120
 msgid "CDN CNAME(S):"
 msgstr ""
 
-#: inc/admin/ui/modules/cdn.php:111 inc/admin/ui/modules/cdn.php:120
+#: inc/admin/ui/modules/cdn.php:131 inc/admin/ui/modules/cdn.php:140
 msgid "CDN without SSL:"
 msgstr ""
 
-#: inc/admin/ui/modules/cdn.php:118
+#: inc/admin/ui/modules/cdn.php:138
 msgid "Disable CDN functionality on HTTPS pages"
 msgstr ""
 
-#: inc/admin/ui/modules/cdn.php:124
+#: inc/admin/ui/modules/cdn.php:144
 msgid ""
 "If your CDN account does not fully support SSL, you can disable URL rewriting on "
 "HTTPS pages here."
 msgstr ""
 
-#: inc/admin/ui/modules/cdn.php:130 inc/admin/ui/modules/cdn.php:143
+#: inc/admin/ui/modules/cdn.php:150 inc/admin/ui/modules/cdn.php:163
 msgid "Exclude files:"
 msgstr ""
 
-#: inc/admin/ui/modules/cdn.php:138
+#: inc/admin/ui/modules/cdn.php:158
 msgid "Specify URL(s) of files that should not get served via CDN (one per line)"
 msgstr ""
 
-#: inc/admin/ui/modules/cdn.php:150
+#: inc/admin/ui/modules/cdn.php:170
 #, php-format
 msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use %s wildcards "
@@ -1599,7 +1617,8 @@ msgstr ""
 #: inc/admin/ui/modules/support.php:64
 msgid ""
 "<strong>Now be specific!</strong><br>We have pre-filled the form with some "
-"questions for you to phrase your description along."
+"questions for you to phrase your description along.<br>We speak English, French, "
+"German, Italian, Serbian, and Spanish."
 msgstr ""
 
 #: inc/admin/ui/modules/support.php:69
@@ -2004,19 +2023,19 @@ msgstr ""
 msgid "No domain available in your Cloudflare account"
 msgstr ""
 
-#: inc/functions/options.php:598
+#: inc/functions/options.php:601
 msgid "Your license is not valid."
 msgstr ""
 
-#: inc/functions/options.php:599
+#: inc/functions/options.php:602
 msgid "You cannot add more websites. Upgrade your account."
 msgstr ""
 
-#: inc/functions/options.php:600
+#: inc/functions/options.php:603
 msgid "This website is not allowed."
 msgstr ""
 
-#: inc/functions/options.php:601
+#: inc/functions/options.php:604
 msgid "This license key is not accepted."
 msgstr ""
 

@@ -97,6 +97,7 @@ if ( ! empty( $_GET )
 	&& ( ! isset( $_GET['s'] ) )
 	&& ( ! isset( $_GET['age-verified'] ) )
 	&& ( ! isset( $_GET['ao_noptimize'] ) )
+	&& ( ! isset( $_GET['usqp'] ) )
 	&& ( ! isset( $rocket_cache_query_strings ) || ! array_intersect( array_keys( $_GET ), $rocket_cache_query_strings ) )
 ) {
 	rocket_define_donotminify_constants( true );
@@ -299,7 +300,7 @@ function do_rocket_callback( $buffer ) {
 			rocket_put_content( $rocket_cache_filepath, $buffer . $footprint );
 
 			if ( function_exists( 'gzencode' ) ) {
-				rocket_put_content( $rocket_cache_filepath . '_gzip', gzencode( $buffer . get_rocket_footprint(), apply_filters( 'rocket_gzencode_level_compression', 3 ) ) );
+				rocket_put_content( $rocket_cache_filepath . '_gzip', gzencode( $buffer . $footprint, apply_filters( 'rocket_gzencode_level_compression', 3 ) ) );
 			}
 
 			// Send headers with the last modified time of the cache file.

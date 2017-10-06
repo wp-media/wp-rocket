@@ -65,6 +65,41 @@ if ( 0 !== absint( get_rocket_option('do_cloudflare') ) && ! $rwl ) {
 	);
 }
 
+$rocket_cdn_options = array(
+	array(
+		'type'         => 'checkbox',
+		'label'        => __( 'Enable Content Delivery Network', 'rocket' ),
+		'label_for'    => 'cdn',
+		'label_screen' => __( 'CDN:', 'rocket' ),
+		/**
+		 * Filters the value for the read only option of WP Rocket CDN
+		 *
+		 * @since 2.10.7
+		 * @author Remy Perona
+		 *
+		 * @param bool $readonly true to disable the field, false otherwise.
+		 */
+		'readonly'     => apply_filters( 'rocket_readonly_cdn_option', false ),
+	),
+	array(
+		'type' 		  => 'helper_description',
+		'name' 		  => 'cdn',
+		'description' => $rwl ?
+		__( 'All URLs of static files (CSS, JS, images) will be rewritten to the CNAME(s) entered below.', 'rocket' ) :
+		/* translators: line-break recommended, but not mandatory; use URL of localised document if available in your language  */
+		__( 'All URLs of static files (CSS, JS, images) will be rewritten to the CNAME(s) entered below.<br>Read the documentation on <a href="http://docs.wp-rocket.me/article/42-using-wp-rocket-with-a-cdn" target="_blank">using WP Rocket with a CDN</a>.', 'rocket' ),
+	),
+);
+
+// This filter is documented in inc/admin/ui/modules/cdn.php.
+if ( apply_filters( 'rocket_readonly_cdn_option', false ) ) {
+	$rocket_cdn_options[] = array(
+		'type'        => 'helper_detection',
+		'name'        => 'cdn_disabled',
+		'description' =>__( 'CDN is disabled because you are using WP Offload S3 and the assets addon to serve your images, CSS and JS files.', 'rocket' ),
+	);
+}
+
 /**
  * CDN
  */
@@ -74,22 +109,7 @@ add_settings_field(
 	'rocket_field',
 	'rocket_cdn',
 	'rocket_display_cdn_options',
-	array(
-		array(
-			'type'         => 'checkbox',
-			'label'        => __( 'Enable Content Delivery Network', 'rocket' ),
-			'label_for'    => 'cdn',
-			'label_screen' => __( 'CDN:', 'rocket' ),
-		),
-		array(
-			'type' 		  => 'helper_description',
-			'name' 		  => 'cdn',
-			'description' => $rwl ?
-			__( 'All URLs of static files (CSS, JS, images) will be rewritten to the CNAME(s) entered below.', 'rocket' ) :
-			/* translators: line-break recommended, but not mandatory; use URL of localised document if available in your language  */
-			__( 'All URLs of static files (CSS, JS, images) will be rewritten to the CNAME(s) entered below.<br>Read the documentation on <a href="http://docs.wp-rocket.me/article/42-using-wp-rocket-with-a-cdn" target="_blank">using WP Rocket with a CDN</a>.', 'rocket' ),
-		),
-	)
+	$rocket_cdn_options
 );
 
 /**
