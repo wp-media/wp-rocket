@@ -142,9 +142,9 @@ function rocket_cdn_images( $html ) {
 		$home_url           = home_url( '/' );
 		$wp_content_dirname = str_replace( $home_url, '', WP_CONTENT_URL );
 		
-		$aUploadsDir = wp_upload_dir();
-		if( !empty($aUploadsDir['baseurl']) ) {
-			$wp_content_dirname .= "|". trailingslashit( str_replace( $home_url, '/', $aUploadsDir['baseurl'] ) );	//	make sure https://www.site.com/images/ becomes /images/
+		$uploads_info = wp_upload_dir();
+		if ( ! empty($uploads_info['baseurl']) ) {
+			$wp_content_dirname .= '|' . trailingslashit( str_replace( $home_url, '/', $uploads_info['baseurl'] ) );	//	make sure https://www.site.com/images/ becomes /images/
 		}
 		
 		// Get all images of the content.
