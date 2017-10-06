@@ -1,0 +1,37 @@
+#!/usr/bin/env php
+<?php
+
+use tubalmartin\CssMin\Command;
+
+$autoloadPath = null;
+$autoloadPaths = array(
+    __DIR__ . '/../../autoload.php',
+    __DIR__ . '/../vendor/autoload.php',
+    __DIR__ . '/vendor/autoload.php'
+);
+
+foreach ($autoloadPaths as $file) {
+    if (file_exists($file)) {
+        $autoloadPath = $file;
+        break;
+    }
+}
+
+unset($file);
+unset($autoloadPaths);
+
+if (is_null($autoloadPath)) {
+    fwrite(
+        STDERR,
+        'You need to set up the project dependencies using Composer:' . PHP_EOL . PHP_EOL .
+        '    composer install' . PHP_EOL . PHP_EOL .
+        'You can learn all about Composer on https://getcomposer.org/.' . PHP_EOL
+    );
+    die(1);
+}
+
+require $autoloadPath;
+
+unset($autoloadPath);
+
+Command::main();

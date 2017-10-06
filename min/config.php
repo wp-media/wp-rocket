@@ -20,9 +20,10 @@ if ( $wp_rocket_config_file && 0 === stripos( $wp_rocket_config_file, $wp_rocket
 }
 
 /**
- * Remove all CSS comments
+ * Enable the static serving feature
  */
-$min_serveOptions['minifierOptions']['text/css']['preserveComments'] = isset( $min_preserve_css_comments ) ? true : false;
+$min_enableStatic = false;
+
 
 /**
  * Allow use of the Minify URI Builder app. Only set this to true while you need it.
@@ -44,12 +45,8 @@ $min_builderPassword = 'admin';
 
 
 /**
- * Set to true to log messages to FirePHP (Firefox Firebug addon).
+ * Set to true to log messages to FirePHP (Firefox Firebug addon) and PHP's error_log
  * Set to false for no error logging (Minify may be slightly faster).
- * @link http://www.firephp.org/
- *
- * If you want to use a custom error logger, set this to your logger
- * instance. Your object should have a method log(string $message).
  */
 $min_errorLogger = false;
 
@@ -78,11 +75,11 @@ $min_cachePath = ( isset( $min_cachePath ) ) ? $min_cachePath : '';
 //$min_cachePath = '/tmp';
 //$min_cachePath = preg_replace('/^\\d+;/', '', session_save_path());
 
+
 /**
  * To use APC/Memcache/ZendPlatform for cache storage, require the class and
  * set $min_cachePath to an instance. Example below:
  */
-//require dirname(__FILE__) . '/lib/Minify/Cache/APC.php';
 //$min_cachePath = new Minify_Cache_APC();
 
 
@@ -97,6 +94,7 @@ $min_cachePath = ( isset( $min_cachePath ) ) ? $min_cachePath : '';
  * second line. The third line might work on some Apache servers.
  */
 $min_documentRoot = ( isset( $min_documentRoot ) ) ? $min_documentRoot : '';
+//$min_documentRoot = dirname(dirname(__DIR__));
 //$min_documentRoot = substr(__FILE__, 0, -15);
 //$min_documentRoot = $_SERVER['SUBDOMAIN_DOCUMENT_ROOT'];
 
@@ -132,19 +130,17 @@ $min_serveOptions['maxAge'] = 31536000;
 
 
 /**
- * To use CSSmin (Túbal Martín's port of the YUI CSS compressor), uncomment the following line:
+ * To use the CSS compressor that shipped with 2.x, uncomment the following line:
  */
-if ( isset( $rocket_minify_css_legacy ) && '0' === $rocket_minify_css_legacy ) {
-	$min_serveOptions['minifiers']['text/css'] = array('Minify_CSSmin', 'minify');
-}
+//$min_serveOptions['minifiers'][Minify::TYPE_CSS] = array('Minify_CSS', 'minify');
+
 
 /**
  * To use Google's Closure Compiler API to minify Javascript (falling back to JSMin
  * on failure), uncomment the following line:
  */
-/*if ( isset( $rocket_minify_js_legacy ) && '0' === $rocket_minify_js_legacy ) {
-	$min_serveOptions['minifiers']['application/x-javascript'] = array('Minify_JS_ClosureCompiler', 'minify');
-}*/
+//$min_serveOptions['minifiers']['application/x-javascript'] = array('Minify_JS_ClosureCompiler', 'minify');
+
 
 /**
  * If you'd like to restrict the "f" option to files within/below
@@ -170,7 +166,7 @@ $min_serveOptions['minApp']['groupsOnly'] = false;
  * To minify all files, set this option to null. You could also specify your
  * own pattern that is matched against the filename.
  */
-$min_serveOptions['minApp']['noMinPattern'] = null;
+//$min_serveOptions['minApp']['noMinPattern'] = '@[-\\.]min\\.(?:js|css)$@i';
 
 
 /**
@@ -208,11 +204,11 @@ $min_uploaderHoursBehind = 0;
 
 
 /**
- * Path to Minify's lib folder. If you happen to move it, change 
- * this accordingly.
+ * Advanced: you can replace some of the PHP classes Minify uses to serve requests.
+ * To do this, assign a callable to one of the elements of the $min_factories array.
+ *
+ * You can see the default implementations (and what gets passed in) in index.php.
  */
-$min_libPath = dirname(__FILE__) . '/lib';
+//$min_factories['minify'] = ... a callable accepting a Minify\App object
+//$min_factories['controller'] = ... a callable accepting a Minify\App object
 
-
-// try to disable output_compression (may not have an effect)
-ini_set('zlib.output_compression', '0');

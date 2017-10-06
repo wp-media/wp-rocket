@@ -1,9 +1,6 @@
 <?php
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
-require( WP_ROCKET_VENDORS_PATH . 'wp-async-request.php' );
-require( WP_ROCKET_VENDORS_PATH . 'wp-background-process.php' );
-
 /**
  * Extends the background process class for the sitemap preload background process.
  *
