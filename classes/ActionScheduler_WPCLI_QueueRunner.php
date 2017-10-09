@@ -13,9 +13,6 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 	/** @var  ActionScheduler_ActionClaim */
 	protected $claim;
 
-	/** @var string */
-	protected $id;
-
 	/** @var \cli\progress\Bar */
 	protected $progress_bar;
 
@@ -65,7 +62,6 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 		$this->claim = $this->store->stake_claim( $batch_size );
 		$this->monitor->attach( $this->claim );
 		$this->actions = $this->claim->get_actions();
-		$this->id      = $this->claim->get_id();
 
 		return count( $this->actions );
 	}
@@ -122,7 +118,7 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 		$this->setup_progress_bar();
 		foreach ( $this->actions as $action_id ) {
 			// Error if we lost the claim.
-			$all_actions = array_flip( $this->store->find_actions_by_claim_id( $this->id ) );
+			$all_actions = array_flip( $this->store->find_actions_by_claim_id( $this->claim->get_id() ) );
 			if ( ! array_key_exists( $action_id, $all_actions ) ) {
 				$this->finish_progress_bar();
 				WP_CLI::error( __( 'The claim has been lost. Aborting.', 'action-scheduler' ) );
