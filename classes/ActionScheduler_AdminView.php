@@ -35,7 +35,6 @@ class ActionScheduler_AdminView {
 			} else {
 				add_action( 'admin_menu', array( $self, 'register_menu' ) );
 			}
-			ActionScheduler_ListTable::init();
 		}
 	}
 

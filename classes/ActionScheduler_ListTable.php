@@ -34,14 +34,9 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	protected $bulk_actions = array();
 
 	/**
-	 * If it is true it will load our own javascript library.
-	 *
-	 * This variable is set to FALSE by default because we do not want to load
-	 * our javascript library unless we need it.
-	 *
-	 * Our javascript library will show the execute tasks logs as a jQuery modal.
+	 * Flag variable to render our notifications, if any, once.
 	 */
-	protected static $should_include_js = false;
+	protected static $did_notification = false;
 
 
 	/**
@@ -49,12 +44,7 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	 */
 	public function __construct() {
 
-		if ( ! self::$should_include_js ) {
-			// Execute this function at most once.
-			$this->maybe_render_admin_notices();
-		}
-
-		self::$should_include_js = true;
+		$this->maybe_render_admin_notices();
 
 		$this->bulk_actions = array(
 			'delete' => __( 'Delete', 'action-scheduler' ),
@@ -67,8 +57,7 @@ class ActionScheduler_ListTable extends PP_List_Table {
 			'group'  => __( 'Group', 'action-scheduler' ),
 			'recurrence' => __( 'Recurrence', 'action-scheduler' ),
 			'scheduled'  => __( 'Scheduled Date', 'action-scheduler' ),
-			'claim_id'   => __( 'Claim ID', 'action-scheduler' ),
-			'comments'   => __( 'Log', 'action-scheduler' ),
+			'log'        => __( 'Log', 'action-scheduler' ),
 		);
 
 		$this->row_actions = array(
@@ -90,51 +79,6 @@ class ActionScheduler_ListTable extends PP_List_Table {
 			'plural'   => __( 'action-scheduler', 'action-scheduler' ),
 			'ajax'     => false,
 		) );
-	}
-
-	/**
-	 * Sets up the class. It is executed if `is_admin()` is TRUE.
-	 */
-	public static function init() {
-		add_action( 'admin_footer', __CLASS__ . '::maybe_include_assets' );
-		add_action( 'admin_enqueue_scripts', __CLASS__ . '::register_javascript' );
-	}
-
-	/**
-	 * Include our assets files if needed.
-	 *
-	 * Instead of loading our javascript everywhere in the WP-Admin, this method will make sure
-	 * our assets files are loaded only if this class is constructed.
-	 *
-	 * This method will be called in the admin_footer and it will print the CSS we need right away
-	 * and will queue our javascript file.
-	 *
-	 * Our javascript/css does the following things:
-	 *   1. Opens the logs in a modal.
-	 *   2. Loads the CSS for jquery-ui (used in the modals):
-	 */
-	public static function maybe_include_assets() {
-		if ( ! self::$should_include_js ) {
-			return;
-		}
-
-		wp_localize_script( 'action-scheduler', 'action_scheduler_str', array(
-			'title' => __( 'Log entries', 'action_scheduler' ),
-		) );
-
-		wp_enqueue_script( 'action-scheduler' );
-		wp_print_styles( 'wp-jquery-ui-dialog' );
-	}
-
-	/**
-	 * Registers our javascript library and its dependencies.
-	 */
-	public static function register_javascript() {
-		wp_register_script( 'action-scheduler', plugins_url( 'action-scheduler.js', dirname( __FILE__ ) ), array(
-			'jquery',
-			'jquery-ui-core',
-			'jquery-ui-dialog',
-		), '1.0', true );
 	}
 
 	/**
@@ -225,22 +169,15 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	 *
 	 * @param array $row Action array.
 	 */
-	public function column_comments( array $row ) {
-		echo '<div id="log-' . absint( $row['ID'] ) . '" class="log-modal hidden" style="max-width:800px">';
-		echo '<h3>' . esc_html( sprintf( __( 'Log entries for %d', 'action-scheduler' ),  $row['ID'] ) ) . '</h3>';
+	public function column_log( array $row ) {
+		echo '<ol>';
 		$timezone = new DateTimezone( 'UTC' );
-		foreach ( $row['comments'] as $log ) {
+		foreach ( $row['log'] as $log ) {
 			$date = $log->get_date();
 			$date->setTimezone( $timezone );
-			echo '<p><strong>' . esc_html( $date->format( 'Y-m-d H:i:s e' ) ) . '</strong> ' . esc_html( $log->get_message() ) . '</p>';
+			echo '<li><strong>' . esc_html( $date->format( 'Y-m-d H:i:s e' ) ) . '</strong><br/>' . esc_html( $log->get_message() ) . '</li>';
 		}
-		echo '</div>';
-
-		echo '<div class="post-com-count-wrapper">';
-		echo '<a href="#" data-log-id="' . absint( $row['ID'] ) . '" class="post-com-count post-com-count-approved log-modal-open">';
-		echo '<span class="comment-count-approved">' . esc_html( count( $row['comments'] ) ) . '</span>';
-		echo '</a>';
-		echo '</div>';
+		echo '</ol>';
 	}
 
 	/**
@@ -251,6 +188,12 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	 *  2. Notifications when a task us manually executed
 	 */
 	public function maybe_render_admin_notices() {
+		if ( self::$did_notification ) {
+			return;
+		}
+
+		self::$did_notification = true;
+
 		if ( ActionScheduler_Store::instance()->get_claim_count() >= apply_filters( 'action_scheduler_queue_runner_concurrent_batches', 5 ) ) : ?>
 <div id="message" class="updated">
 	<p><?php printf( __( 'Maximum simulatenous batches already in progress (%s queues). No actions will be processed until the current batches are complete.', 'action-scheduler' ), ActionScheduler_Store::instance()->get_claim_count() ); ?></p>
@@ -358,10 +301,9 @@ class ActionScheduler_ListTable extends PP_List_Table {
 				'status' => ActionScheduler::store()->get_status( $id ),
 				'args'   => $item->get_args(),
 				'group'  => $item->get_group(),
+				'log'    => $this->stores->log->get_logs( $id ),
 				'recurrence' => $this->get_recurrence( $item ),
 				'scheduled'  => $item->get_schedule(),
-				'claim_id'   => '',
-				'comments'   => $this->stores->log->get_logs( $id ),
 			);
 		}
 
