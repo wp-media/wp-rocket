@@ -85,7 +85,7 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 	protected function setup_progress_bar() {
 		$count              = count( $this->actions );
 		$this->progress_bar = \WP_CLI\Utils\make_progress_bar(
-			sprintf( _n( 'Running %d task', 'Running %d tasks', $count, 'action-scheduler' ), number_format_i18n( $count ) ),
+			sprintf( _n( 'Running %d action', 'Running %d actions', $count, 'action-scheduler' ), number_format_i18n( $count ) ),
 			$count
 		);
 	}
