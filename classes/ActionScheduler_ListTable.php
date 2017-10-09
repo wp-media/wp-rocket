@@ -162,10 +162,7 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	}
 
 	/**
-	 * Prints the comments, which are the log entries. It needs to be named comments otherwise it won't pickup
-	 * the WordPress styles to make the number pretty.
-	 *
-	 * It will also render all the log entries, but it will be hidden and rendered on click in the number as a modal.
+	 * Prints the logs entries inline. We do so to avoid loading Javascript and other hacks to show it in a modal.
 	 *
 	 * @param array $row Action array.
 	 */
