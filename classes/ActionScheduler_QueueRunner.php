@@ -24,21 +24,6 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	}
 
 	/**
-	 * ActionScheduler_QueueRunner constructor.
-	 *
-	 * @param ActionScheduler_Store             $store
-	 * @param ActionScheduler_FatalErrorMonitor $monitor
-	 * @param ActionScheduler_QueueCleaner      $cleaner
-	 */
-	public function __construct( ActionScheduler_Store $store = null, ActionScheduler_FatalErrorMonitor $monitor = null, ActionScheduler_QueueCleaner $cleaner = null ) {
-		$store   = $store ?: ActionScheduler_Store::instance();
-		$monitor = $monitor ?: new ActionScheduler_FatalErrorMonitor( $store );
-		$cleaner = $cleaner ?: new ActionScheduler_QueueCleaner( $store );
-
-		parent::__construct( $store, $monitor, $cleaner );
-	}
-
-	/**
 	 * @codeCoverageIgnore
 	 */
 	public function init() {

@@ -21,10 +21,10 @@ abstract class ActionScheduler_Abstract_QueueRunner {
 	 * @param ActionScheduler_FatalErrorMonitor $monitor
 	 * @param ActionScheduler_QueueCleaner      $cleaner
 	 */
-	public function __construct( ActionScheduler_Store $store, ActionScheduler_FatalErrorMonitor $monitor, ActionScheduler_QueueCleaner $cleaner ) {
-		$this->store   = $store;
-		$this->monitor = $monitor;
-		$this->cleaner = $cleaner;
+	public function __construct( ActionScheduler_Store $store = null, ActionScheduler_FatalErrorMonitor $monitor = null, ActionScheduler_QueueCleaner $cleaner = null ) {
+		$this->store   = $store ? $store : ActionScheduler_Store::instance();
+		$this->monitor = $monitor ? $monitor : new ActionScheduler_FatalErrorMonitor( $store );
+		$this->cleaner = $cleaner ? $cleaner : new ActionScheduler_QueueCleaner( $store );
 	}
 
 	/**
