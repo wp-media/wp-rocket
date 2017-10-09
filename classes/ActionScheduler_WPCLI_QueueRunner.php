@@ -67,15 +67,6 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 	}
 
 	/**
-	 * Run the queue cleaner.
-	 *
-	 * @author Jeremy Pry
-	 */
-	protected function run_cleanup() {
-		$this->cleaner->clean();
-	}
-
-	/**
 	 * Add our hooks to the appropriate actions.
 	 *
 	 * @author Jeremy Pry
