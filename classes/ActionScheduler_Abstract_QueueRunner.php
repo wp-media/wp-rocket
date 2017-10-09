@@ -67,8 +67,7 @@ abstract class ActionScheduler_Abstract_QueueRunner {
 	 * @author Jeremy Pry
 	 */
 	protected function run_cleanup() {
-		$cleaner = new ActionScheduler_QueueCleaner( $this->store );
-		$cleaner->clean();
+		$this->cleaner->clean();
 	}
 
 	/**
