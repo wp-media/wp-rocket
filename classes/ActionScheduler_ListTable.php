@@ -366,7 +366,7 @@ class ActionScheduler_ListTable extends PP_List_Table {
 			$li[] =  '<li class="' . esc_attr( $name ) . '">'
 				. '<a href="' . esc_url( add_query_arg( 'status', $status ) )  . '">'
 				. esc_html( ucfirst( $name ) )
-				. "</a> ($total_items)"
+				. "</a> (" . absint( $total_items ) . ")"
 			. '</li>';
 		}
 
