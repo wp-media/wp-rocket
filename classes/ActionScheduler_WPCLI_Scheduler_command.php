@@ -24,13 +24,8 @@ class ActionScheduler_WPCLI_Scheduler_command extends WP_CLI_Command {
 		$completed = 0;
 
 		try {
-			// Set up the class instances we'll need
-			$store   = ActionScheduler_Store::instance();
-			$monitor = new ActionScheduler_FatalErrorMonitor( $store );
-			$cleaner = new ActionScheduler_QueueCleaner( $store );
-
 			// Get the queue runner instance
-			$runner = new ActionScheduler_WPCLI_QueueRunner( $store, $monitor, $cleaner );
+			$runner = new ActionScheduler_WPCLI_QueueRunner();
 
 			// Determine how many tasks will be run.
 			$total = $runner->setup( $batch, $force );
