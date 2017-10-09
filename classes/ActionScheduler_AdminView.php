@@ -8,8 +8,6 @@ class ActionScheduler_AdminView {
 
 	private static $admin_view = NULL;
 
-	private static $admin_url;
-
 	/**
 	 * @return ActionScheduler_QueueRunner
 	 * @codeCoverageIgnore
@@ -38,20 +36,9 @@ class ActionScheduler_AdminView {
 				add_action( 'admin_menu', array( $self, 'register_menu' ) );
 			}
 			ActionScheduler_ListTable::init();
-			add_action( 'admin_notices', array( $self, 'maybe_render_admin_notices' ) );
 		}
-
-		self::$admin_url = admin_url( 'edit.php?post_type=' . ActionScheduler_wpPostStore::POST_TYPE );
 	}
 
-	public function action_scheduler_post_type_args( $args ) {
-		_deprecated_function( __METHOD__, '2.0' );
-		return array_merge( $args, array(
-			'show_ui' => true,
-			'show_in_menu' => 'tools.php',
-			'show_in_admin_bar' => false,
-		));
-	}
 
 	/**
 	 * Registers action-scheduler into WooCommerce > System status.
@@ -83,10 +70,19 @@ class ActionScheduler_AdminView {
 	 * Renders the Admin UI
 	 */
 	public function render_admin_ui() {
-		echo '<h1>' . __( 'Scheduled Actions', 'action-scheduler' ) . '</h1>';
 		$table = new ActionScheduler_ListTable();
 		$table->prepare_items();
+
+		echo '<h1>' . __( 'Scheduled Actions', 'action-scheduler' ) . '</h1>';
 		$table->display();
+	}
+
+	/** Deprecated Functions **/
+
+	public function action_scheduler_post_type_args( $args ) {
+		_deprecated_function( __METHOD__, '1.6' );
+
+		return $args;
 	}
 
 	/**
@@ -96,14 +92,7 @@ class ActionScheduler_AdminView {
 	 * @return array $views An associative array of views and view labels which can be used to filter the 'scheduled-action' posts displayed on the Scheduled Actions administration screen.
 	 */
 	public function list_table_views( $views ) {
-		_deprecated_function( __METHOD__, '2.0' );
-
-		foreach ( $views as $view_key => $view ) {
-			if ( 'publish' == $view_key ) {
-				$views[ $view_key ] = str_replace( __( 'Published', 'action-scheduler' ), __( 'Complete', 'action-scheduler' ), $view );
-				break;
-			}
-		}
+		_deprecated_function( __METHOD__, '1.6' );
 
 		return $views;
 	}
@@ -117,11 +106,7 @@ class ActionScheduler_AdminView {
 	 * @return array $actions An associative array of actions which can be performed on the 'scheduled-action' post type.
 	 */
 	public function bulk_actions( $actions ) {
-		_deprecated_function( __METHOD__, '2.0' );
-
-		if ( isset( $actions['edit'] ) ) {
-			unset( $actions['edit'] );
-		}
+		_deprecated_function( __METHOD__, '1.6' );
 
 		return $actions;
 	}
@@ -136,30 +121,7 @@ class ActionScheduler_AdminView {
 	 * @return array $columns An associative array of columns that are use for the table on the Scheduled Actions administration screen.
 	 */
 	public function list_table_columns( $columns ) {
-		_deprecated_function( __METHOD__, '2.0' );
-
-		$custom_columns = array(
-			'cb'                    => $columns['cb'],
-			'hook'                  => __( 'Hook', 'action-scheduler' ), // because we want to customise the inline actions
-			'status'                => __( 'Status', 'action-scheduler' ),
-			'args'                  => __( 'Arguments', 'action-scheduler' ),
-			'taxonomy-action-group' => __( 'Group', 'action-scheduler' ),
-			'recurrence'            => __( 'Recurrence', 'action-scheduler' ),
-			'scheduled'             => __( 'Scheduled Date', 'action-scheduler' ), // because we want to customise how the date is displayed
-		);
-
-		if ( isset( $_REQUEST['post_status'] ) ) {
-			if ( in_array( $_REQUEST['post_status'], array( 'failed', 'in-progress' ) ) ) {
-				$custom_columns['modified'] = __( 'Started', 'action-scheduler' );
-			} elseif ( 'publish' == $_REQUEST['post_status'] ) {
-				$custom_columns['modified'] = __( 'Completed', 'action-scheduler' );
-			}
-		}
-
-		$custom_columns['claim']    = __( 'Claim ID', 'action-scheduler' );
-		$custom_columns['comments'] = __( 'Log', 'action-scheduler' );
-
-		return $custom_columns;
+		_deprecated_function( __METHOD__, '1.6' );
 	}
 
 	/**
@@ -169,12 +131,7 @@ class ActionScheduler_AdminView {
 	 * @return array $columns An associative array of columns that can be used to sort the table on the Scheduled Actions administration screen.
 	 */
 	public static function list_table_sortable_columns( $columns ) {
-		_deprecated_function( __METHOD__, '2.0' );
-
-		$columns['hook']      = 'title';
-		$columns['scheduled'] = array( 'date', true );
-		$columns['modified']  = 'modified';
-		$columns['claim']     = 'post_password';
+		_deprecated_function( __METHOD__, '1.6' );
 
 		return $columns;
 	}
@@ -187,66 +144,7 @@ class ActionScheduler_AdminView {
 	 * @return void
 	 */
 	public static function list_table_column_content( $column_name, $post_id ) {
-		global $post;
-
-		_deprecated_function( __METHOD__, '2.0' );
-
-		$action         = ActionScheduler::store()->fetch_action( $post_id );
-
-		$action_title   = ( 'trash' == $post->post_status ) ? $post->post_title : $action->get_hook();
-		$recurrence     = ( 'trash' == $post->post_status ) ? 0 : $action->get_schedule();
-		$next_timestamp = as_get_datetime_object( $post->post_date_gmt )->format( 'U' );
-		$status         = get_post_status( $post_id );
-
-		switch ( $column_name ) {
-			case 'hook':
-				echo $action_title;
-				break;
-			case 'status':
-				if ( 'publish' == $status ) {
-					_e( 'Complete', 'action-scheduler' );
-				} else {
-					echo ucfirst( $status );
-				}
-				break;
-			case 'args':
-				$action_args = ( 'trash' == $post->post_status ) ? $post->post_content : $action->get_args();
-				if ( is_array( $action_args ) ) {
-					foreach( $action_args as $key => $value ) {
-						printf( "<code>%s => %s</code><br/>", $key, $value );
-					}
-				} else {
-					printf( "<code>%s</code><br/>", $action_args );
-				}
-				break;
-			case 'recurrence':
-				if ( method_exists( $recurrence, 'interval_in_seconds' ) ) {
-					echo self::human_interval( $recurrence->interval_in_seconds() );
-				} else {
-					_e( 'Non-repeating', 'action-scheduler' );
-				}
-				break;
-			case 'scheduled':
-				echo get_date_from_gmt( gmdate( 'Y-m-d H:i:s', $next_timestamp ), 'Y-m-d H:i:s' );
-				if ( gmdate( 'U' ) > $next_timestamp ) {
-					printf( __( ' (%s ago)', 'action-scheduler' ), human_time_diff( gmdate( 'U' ), $next_timestamp ) );
-				} else {
-					echo ' (' . human_time_diff( gmdate( 'U' ), $next_timestamp ) . ')';
-				}
-				break;
-			case 'modified':
-				echo get_post_modified_time( 'Y-m-d H:i:s' );
-				$modified_timestamp = get_post_modified_time( 'U', true );
-				if ( gmdate( 'U' ) > $modified_timestamp ) {
-					printf( __( ' (%s ago)', 'action-scheduler' ), human_time_diff( gmdate( 'U' ), $modified_timestamp ) );
-				} else {
-					echo ' (' . human_time_diff( gmdate( 'U' ), $modified_timestamp ) . ')';
-				}
-				break;
-			case 'claim':
-				echo $post->post_password;
-				break;
-		}
+		_deprecated_function( __METHOD__, '1.6' );
 	}
 
 	/**
@@ -258,52 +156,9 @@ class ActionScheduler_AdminView {
 	 * @return array $actions An associative array of actions which can be performed on the 'scheduled-action' post type.
 	 */
 	public static function row_actions( $actions, $post ) {
-		_deprecated_function( __METHOD__, '2.0' );
-
-		if ( ActionScheduler_wpPostStore::POST_TYPE == $post->post_type ) {
-
-			if ( isset( $actions['edit'] ) ) {
-				unset( $actions['edit'] );
-			}
-
-			if ( isset( $actions['inline hide-if-no-js'] ) ) {
-				unset( $actions['inline hide-if-no-js'] );
-			}
-
-			if ( current_user_can( 'edit_post', $post->ID ) && ! in_array( $post->post_status, array( 'publish', 'in-progress', 'trash' ) ) ) {
-				$actions['process'] = "<a title='" . esc_attr( __( 'Process the action now as if it were run as part of a queue' ) ) . "' href='" . self::get_run_action_link( $post->ID, 'process' ) . "'>" . __( 'Run', 'action-scheduler' ) . "</a>";
-			}
-
-			ksort( $actions );
-		}
+		_deprecated_function( __METHOD__, '1.6' );
 
 		return $actions;
-	}
-
-	/**
-	 * Retrieve a URI to execute a scheduled action.
-	 *
-	 * @param int $action_id The ID for a 'scheduled-action' post.
-	 * @param string $operation To run the action (including trigger before/after hooks), log the execution and update the action's status, use 'process', to simply trigger the action, use 'execute'. Default 'execute'.
-	 * @return string The URL for running the action.
-	 */
-	private static function get_run_action_link( $action_id, $operation = 'process' ) {
-		_deprecated_function( __METHOD__, '2.0' );
-
-		if ( !$post = get_post( $action_id ) )
-			return;
-
-		$post_type_object = get_post_type_object( $post->post_type );
-
-		if ( ! $post_type_object )
-			return;
-
-		if ( ! current_user_can( 'edit_post', $post->ID ) )
-			return;
-
-		$execute_link = add_query_arg( array( 'action' => $operation, 'post_id' => $post->ID ), self::$admin_url );
-
-		return wp_nonce_url( $execute_link, "{$operation}-action_{$post->ID}" );
 	}
 
 	/**
@@ -312,56 +167,7 @@ class ActionScheduler_AdminView {
 	 * @codeCoverageIgnore
 	 */
 	public static function maybe_execute_action() {
-		_deprecated_function( __METHOD__, '2.0' );
-
-		if ( ! isset( $_GET['action'] ) || 'process' != $_GET['action'] || ! isset( $_GET['post_id'] ) ){
-			return;
-		}
-
-		$action_id = absint( $_GET['post_id'] );
-
-		check_admin_referer( $_GET['action'] . '-action_' . $action_id );
-
-		try {
-			ActionScheduler::runner()->process_action( $action_id );
-			$success = 1;
-		} catch ( Exception $e ) {
-			$success = 0;
-		}
-
-		wp_redirect( add_query_arg( array( 'executed' => $success, 'ids' => $action_id ), self::$admin_url ) );
-		exit();
-	}
-
-	/**
-	 * Renders admin notifications
-	 *
-	 * Notifications:
-	 *  1. When the maximum number of tasks are being executed simultaneously
-	 *  2. Notifications when a task us manually executed
-	 */
-	public function maybe_render_admin_notices() {
-		if ( ActionScheduler_Store::instance()->get_claim_count() >= apply_filters( 'action_scheduler_queue_runner_concurrent_batches', 5 ) ) : ?>
-<div id="message" class="updated">
-	<p><?php printf( __( 'Maximum simulatenous batches already in progress (%s queues). No actions will be processed until the current batches are complete.', 'action-scheduler' ), ActionScheduler_Store::instance()->get_claim_count() ); ?></p>
-</div>
-		<?php endif;
-		$notification = get_transient( 'actionscheduler_admin_executed' );
-		if ( is_array( $notification ) ) {
-			delete_transient( 'actionscheduler_admin_executed' );
-
-			$action = ActionScheduler::store()->fetch_action( $notification['action_id'] );
-			$action_hook_html = '<strong>' . $action->get_hook() . '</strong>';
-			if ( 1 == $notification['success'] ): ?>
-				<div id="message" class="updated">
-					<p><?php printf( __( 'Successfully executed the action: %s', 'action-scheduler' ), $action_hook_html ); ?></p>
-				</div>
-			<?php else : ?>
-			<div id="message" class="error">
-				<p><?php printf( __( 'Could not execute the action: %s', 'action-scheduler' ), $action_hook_html ); ?></p>
-			</div>
-			<?php endif;
-		}
+		_deprecated_function( __METHOD__, '1.6' );
 	}
 
 	/**
@@ -377,85 +183,7 @@ class ActionScheduler_AdminView {
 	 * @return string A human friendly string representation of the interval.
 	 */
 	public static function admin_notices() {
-		_deprecated_function( __METHOD__, '2.0' );
-
-		if ( self::is_admin_page() ) {
-
-			if ( ActionScheduler_Store::instance()->get_claim_count() >= apply_filters( 'action_scheduler_queue_runner_concurrent_batches', 5 ) ) : ?>
-<div id="message" class="updated">
-	<p><?php printf( __( 'Maximum simulatenous batches already in progress (%s queues). No actions will be processed until the current batches are complete.', 'action-scheduler' ), ActionScheduler_Store::instance()->get_claim_count() ); ?></p>
-</div>
-			<?php endif;
-
-			if ( isset( $_GET['executed'] ) && isset( $_GET['ids'] ) ) {
-				$action = ActionScheduler::store()->fetch_action( $_GET['ids'] );
-				$action_hook_html = '<strong>' . $action->get_hook() . '</strong>';
-				if ( 1 == $_GET['executed'] ) : ?>
-<div id="message" class="updated">
-	<p><?php printf( __( 'Successfully executed the action: %s', 'action-scheduler' ), $action_hook_html ); ?></p>
-</div>
-			<?php else : ?>
-<div id="message" class="error">
-	<p><?php printf( __( 'Could not execute the action: %s', 'action-scheduler' ), $action_hook_html ); ?></p>
-</div>
-			<?php endif;
-			}
-		}
-	}
-
-	/**
-	 * Convert a interval of seconds into a two part human friendly string.
-	 *
-	 * The WordPress human_time_diff() function only calculates the time difference to one degree, meaning
-	 * even if an action is 1 day and 11 hours away, it will display "1 day". This funciton goes one step
-	 * further to display two degrees of accuracy.
-	 *
-	 * Based on Crontrol::interval() funciton by Edward Dale: https://wordpress.org/plugins/wp-crontrol/
-	 *
-	 * @param int $interval A interval in seconds.
-	 * @return string A human friendly string representation of the interval.
-	 */
-	private static function human_interval( $interval ) {
-		_deprecated_function( __METHOD__, '2.0' );
-
-		// array of time period chunks
-		$chunks = array(
-			array( 60 * 60 * 24 * 365 , _n_noop( '%s year', '%s years', 'action-scheduler' ) ),
-			array( 60 * 60 * 24 * 30 , _n_noop( '%s month', '%s months', 'action-scheduler' ) ),
-			array( 60 * 60 * 24 * 7, _n_noop( '%s week', '%s weeks', 'action-scheduler' ) ),
-			array( 60 * 60 * 24 , _n_noop( '%s day', '%s days', 'action-scheduler' ) ),
-			array( 60 * 60 , _n_noop( '%s hour', '%s hours', 'action-scheduler' ) ),
-			array( 60 , _n_noop( '%s minute', '%s minutes', 'action-scheduler' ) ),
-			array(  1 , _n_noop( '%s second', '%s seconds', 'action-scheduler' ) ),
-		);
-
-		if ( $interval <= 0 ) {
-			return __( 'Now!', 'action-scheduler' );
-		}
-
-		// Step one: the first chunk
-		for ( $i = 0, $j = count( $chunks ); $i < $j; $i++ ) {
-			$seconds = $chunks[$i][0];
-			$name = $chunks[$i][1];
-
-			if ( ( $count = floor( $interval / $seconds ) ) != 0 ) {
-				break;
-			}
-		}
-
-		$output = sprintf( _n( $name[0], $name[1], $count, 'action-scheduler' ), $count );
-
-		if ( $i + 1 < $j ) {
-			$seconds2 = $chunks[$i + 1][0];
-			$name2 = $chunks[$i + 1][1];
-
-			if ( ( $count2 = floor( ( $interval - ( $seconds * $count ) ) / $seconds2 ) ) != 0 ) {
-				// add to output var
-				$output .= ' '.sprintf( _n( $name2[0], $name2[1], $count2, 'action-scheduler' ), $count2 );
-			}
-		}
-
-		return $output;
+		_deprecated_function( __METHOD__, '1.6' );
 	}
 
 	/**
@@ -466,15 +194,7 @@ class ActionScheduler_AdminView {
 	 * @return string MySQL orderby string.
 	 */
 	public function custom_orderby( $orderby, $query ){
-		global $wpdb;
-
-		_deprecated_function( __METHOD__, '2.0' );
-
-		if ( self::is_admin_page() && ! empty( $query->query['orderby'] ) && 'post_password' == $query->query['orderby'] ) {
-			$orderby = "$wpdb->posts.post_password " . $query->query['order'];
-		}
-
-		return $orderby;
+		_deprecated_function( __METHOD__, '1.6' );
 	}
 
 	/**
@@ -485,29 +205,7 @@ class ActionScheduler_AdminView {
 	 * @return string MySQL search string.
 	 */
 	public function search_post_password( $search, $query ) {
-		global $wpdb;
-
-		_deprecated_function( __METHOD__, '2.0' );
-
-		if ( self::is_admin_page() && ! empty( $search ) ) {
-
-			$search = '';
-
-			$searchand = '';
-			$n = ! empty( $query->query_vars['exact'] ) ? '' : '%';
-			foreach ( $query->query_vars['search_terms'] as $term ) {
-				$term = $wpdb->esc_like( esc_sql( $term ) );
-				$search .= "{$searchand}(($wpdb->posts.post_title LIKE '{$n}{$term}{$n}') OR ($wpdb->posts.post_content LIKE '{$n}{$term}{$n}') OR ($wpdb->posts.post_password LIKE '{$n}{$term}{$n}'))";
-				$searchand = ' AND ';
-			}
-
-			if ( ! empty( $search ) ) {
-				$search = " AND ({$search}) ";
-			}
-
-		}
-
-		return $search;
+		_deprecated_function( __METHOD__, '1.6' );
 	}
 
 	/**
@@ -517,39 +215,9 @@ class ActionScheduler_AdminView {
 	 * @return array
 	 */
 	public function post_updated_messages( $messages ) {
-		global $post, $post_ID;
-
-		_deprecated_function( __METHOD__, '2.0' );
-
-		$messages[ ActionScheduler_wpPostStore::POST_TYPE ] = array(
-			0  => '', // Unused. Messages start at index 1.
-			1  => __( 'Action updated.', 'action-scheduler' ),
-			2  => __( 'Custom field updated.', 'action-scheduler' ),
-			3  => __( 'Custom field deleted.', 'action-scheduler' ),
-			4  => __( 'Action updated.', 'action-scheduler' ),
-			5  => isset( $_GET['revision'] ) ? sprintf( __( 'Action restored to revision from %s', 'action-scheduler' ), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
-			6  => __( 'Action scheduled.', 'action-scheduler' ),
-			7  => __( 'Action saved.', 'action-scheduler' ),
-			8  => __( 'Action submitted.', 'action-scheduler' ),
-			9  => sprintf( __( 'Action scheduled for: <strong>%1$s</strong>', 'action-scheduler' ), date_i18n( __( 'M j, Y @ G:i', 'action-scheduler' ), strtotime( $post->post_date ) ) ),
-			10 => __( 'Action draft updated.', 'action-scheduler' ),
-		);
+		_deprecated_function( __METHOD__, '1.6' );
 
 		return $messages;
 	}
 
-	/**
-	 * Check if the current request is for the Schedul Actions administration screen.
-	 *
-	 * @return bool
-	 */
-	private static function is_admin_page() {
-		_deprecated_function( __METHOD__, '2.0' );
-
-		if ( is_admin() && isset( $_GET['post_type'] ) && $_GET['post_type'] == ActionScheduler_wpPostStore::POST_TYPE ) {
-			return true;
-		} else {
-			return false;
-		}
-	}
 }

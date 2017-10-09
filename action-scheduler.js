@@ -1,7 +1,7 @@
 (function($) {
 
 $('.log-modal').dialog({
-	title: 'Log entries',
+	title: action_scheduler_str.title,
 	dialogClass: 'wp-dialog',
 	autoOpen: false,
 	draggable: false,

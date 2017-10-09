@@ -208,6 +208,23 @@ abstract class PP_List_Table extends WP_List_Table {
 	}
 
 	/**
+	 * Returns the number of items to offset/skip for this current view.
+	 *
+	 * @return int
+	 */
+	protected function get_items_offset() {
+		$per_page = $this->get_items_per_page( $this->package . '_items_per_page', $this->items_per_page );
+		$current_page = $this->get_pagenum();
+		if ( 1 < $current_page ) {
+			$offset = $per_page * ( $current_page - 1 );
+		} else {
+			$offset = 0;
+		}
+
+		return $offset;
+	}
+
+	/**
 	 * Get prepared OFFSET clause for items query
 	 *
 	 * @global wpdb $wpdb
@@ -217,15 +234,7 @@ abstract class PP_List_Table extends WP_List_Table {
 	protected function get_items_query_offset() {
 		global $wpdb;
 
-		$per_page = $this->get_items_per_page( $this->package . '_items_per_page', $this->items_per_page );
-		$current_page = $this->get_pagenum();
-		if ( 1 < $current_page ) {
-			$offset = $per_page * ( $current_page - 1 );
-		} else {
-			$offset = 0;
-		}
-
-		return $wpdb->prepare( 'OFFSET %d', $offset );
+		return $wpdb->prepare( 'OFFSET %d', $this->get_items_offset() );
 	}
 
 	/**

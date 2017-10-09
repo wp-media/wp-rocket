@@ -226,6 +226,9 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 			case self::STATUS_COMPLETE:
 				$sql .= " AND p.post_status='publish'";
 				break;
+			case self::STATUS_CANCELED:
+				$sql .= " AND p.post_status='trash'";
+				break;
 			case self::STATUS_PENDING:
 			case self::STATUS_RUNNING:
 			case self::STATUS_FAILED:
@@ -311,6 +314,9 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		switch ( $query['status'] ) {
 			case self::STATUS_COMPLETE:
 				$sql .= " AND p.post_status='publish'";
+				break;
+			case self::STATUS_CANCELED:
+				$sql .= " AND p.post_status='trash'";
 				break;
 			case self::STATUS_PENDING:
 			case self::STATUS_RUNNING:

@@ -5,7 +5,7 @@
  */
 class ActionScheduler_ListTable extends PP_List_Table {
 	/**
-	 * The package name. It is used also as the domain for the translations
+	 * The package name.
 	 */
 	protected $package = 'action-scheduler';
 
@@ -14,11 +14,10 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	 */
 	protected $columns = array();
 
-	protected $row_actions = array(
-		'hook' => array(
-			'run' => array( 'Run', 'Process the action now as if it were run as part of a queue' ),
-		),
-	);
+	/**
+	 * Actions (name => label).
+	 */
+	protected $row_actions = array();
 
 	/**
 	 *  The active data stores
@@ -32,15 +31,15 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	 *
 	 * See the comments in the parent class for further details
 	 */
-	protected $bulk_actions = array(
-		'delete' => 'Delete',
-	);
-
+	protected $bulk_actions = array();
 
 	/**
 	 * If it is true it will load our own javascript library.
 	 *
-	 * Our javascript library will show the logs as a jQuery modal.
+	 * This variable is set to FALSE by default because we do not want to load
+	 * our javascript library unless we need it.
+	 *
+	 * Our javascript library will show the execute tasks logs as a jQuery modal.
 	 */
 	protected static $should_include_js = false;
 
@@ -49,7 +48,17 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	 * Sets the current data store object into `store->action` and initialises the object.
 	 */
 	public function __construct() {
+
+		if ( ! self::$should_include_js ) {
+			// Execute this function at most once.
+			$this->maybe_render_admin_notices();
+		}
+
 		self::$should_include_js = true;
+
+		$this->bulk_actions = array(
+			'delete' => __( 'Delete', 'action-scheduler' ),
+		);
 
 		$this->columns = array(
 			'hook'   => __( 'Hook', 'action-scheduler' ),
@@ -108,6 +117,11 @@ class ActionScheduler_ListTable extends PP_List_Table {
 		if ( ! self::$should_include_js ) {
 			return;
 		}
+
+		wp_localize_script( 'action-scheduler', 'action_scheduler_str', array(
+			'title' => __( 'Log entries', 'action_scheduler' ),
+		) );
+
 		wp_enqueue_script( 'action-scheduler' );
 		wp_print_styles( 'wp-jquery-ui-dialog' );
 	}
@@ -124,6 +138,60 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	}
 
 	/**
+	 * Convert a interval of seconds into a two part human friendly string.
+	 *
+	 * The WordPress human_time_diff() function only calculates the time difference to one degree, meaning
+	 * even if an action is 1 day and 11 hours away, it will display "1 day". This funciton goes one step
+	 * further to display two degrees of accuracy.
+	 *
+	 * Based on Crontrol::interval() funciton by Edward Dale: https://wordpress.org/plugins/wp-crontrol/
+	 *
+	 * @param int $interval A interval in seconds.
+	 * @return string A human friendly string representation of the interval.
+	 */
+	private static function human_interval( $interval ) {
+
+		// array of time period chunks
+		$chunks = array(
+			array( 60 * 60 * 24 * 365 , _n_noop( '%s year', '%s years', 'action-scheduler' ) ),
+			array( 60 * 60 * 24 * 30 , _n_noop( '%s month', '%s months', 'action-scheduler' ) ),
+			array( 60 * 60 * 24 * 7, _n_noop( '%s week', '%s weeks', 'action-scheduler' ) ),
+			array( 60 * 60 * 24 , _n_noop( '%s day', '%s days', 'action-scheduler' ) ),
+			array( 60 * 60 , _n_noop( '%s hour', '%s hours', 'action-scheduler' ) ),
+			array( 60 , _n_noop( '%s minute', '%s minutes', 'action-scheduler' ) ),
+			array(  1 , _n_noop( '%s second', '%s seconds', 'action-scheduler' ) ),
+		);
+
+		if ( $interval <= 0 ) {
+			return __( 'Now!', 'action-scheduler' );
+		}
+
+		// Step one: the first chunk
+		for ( $i = 0, $j = count( $chunks ); $i < $j; $i++ ) {
+			$seconds = $chunks[$i][0];
+			$name = $chunks[$i][1];
+
+			if ( ( $count = floor( $interval / $seconds ) ) != 0 ) {
+				break;
+			}
+		}
+
+		$output = sprintf( _n( $name[0], $name[1], $count, 'action-scheduler' ), $count );
+
+		if ( $i + 1 < $j ) {
+			$seconds2 = $chunks[$i + 1][0];
+			$name2 = $chunks[$i + 1][1];
+
+			if ( ( $count2 = floor( ( $interval - ( $seconds * $count ) ) / $seconds2 ) ) != 0 ) {
+				// add to output var
+				$output .= ' '.sprintf( _n( $name2[0], $name2[1], $count2, 'action-scheduler' ), $count2 );
+			}
+		}
+
+		return $output;
+	}
+
+	/**
 	 * Returns the recurrence of an action or 'Non-repeating'. The output is human readable.
 	 *
 	 * @param ActionScheduler_Action $item
@@ -136,28 +204,6 @@ class ActionScheduler_ListTable extends PP_List_Table {
 			return self::human_interval( $recurrence->interval_in_seconds() );
 		}
 		return __( 'Non-repeating', 'action-scheduler' );
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	protected function get_items_query_limit() {
-		return $this->get_items_per_page( $this->package . '_items_per_page', $this->items_per_page );
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	protected function get_items_query_offset() {
-		global $wpdb;
-
-		$per_page = $this->get_items_query_limit();
-		$current_page = $this->get_pagenum();
-		if ( 1 < $current_page ) {
-			return $per_page * ( $current_page - 1 );
-		}
-
-		return 0;
 	}
 
 	/**
@@ -180,22 +226,54 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	 * @param array $row Action array.
 	 */
 	public function column_comments( array $row ) {
-		echo '<div id="log-' . $row['ID'] . '" class="log-modal hidden" style="max-width:800px">';
+		echo '<div id="log-' . absint( $row['ID'] ) . '" class="log-modal hidden" style="max-width:800px">';
 		echo '<h3>' . esc_html( sprintf( __( 'Log entries for %d', 'action-scheduler' ),  $row['ID'] ) ) . '</h3>';
 		$timezone = new DateTimezone( 'UTC' );
 		foreach ( $row['comments'] as $log ) {
 			$date = $log->get_date();
 			$date->setTimezone( $timezone );
-			echo '<p><strong>' . esc_html( $date->format( 'Y-m-d H:i:s' ) ) . ' UTC</strong> ' . esc_html( $log->get_message() ) . '</p>';
+			echo '<p><strong>' . esc_html( $date->format( 'Y-m-d H:i:s e' ) ) . '</strong> ' . esc_html( $log->get_message() ) . '</p>';
 		}
 		echo '</div>';
 
 		echo '<div class="post-com-count-wrapper">';
-		echo '<a href="#" data-log-id="' . $row['ID'] . '" class="post-com-count post-com-count-approved log-modal-open">';
+		echo '<a href="#" data-log-id="' . absint( $row['ID'] ) . '" class="post-com-count post-com-count-approved log-modal-open">';
 		echo '<span class="comment-count-approved">' . esc_html( count( $row['comments'] ) ) . '</span>';
 		echo '</a>';
 		echo '</div>';
 	}
+
+	/**
+	 * Renders admin notifications
+	 *
+	 * Notifications:
+	 *  1. When the maximum number of tasks are being executed simultaneously
+	 *  2. Notifications when a task us manually executed
+	 */
+	public function maybe_render_admin_notices() {
+		if ( ActionScheduler_Store::instance()->get_claim_count() >= apply_filters( 'action_scheduler_queue_runner_concurrent_batches', 5 ) ) : ?>
+<div id="message" class="updated">
+	<p><?php printf( __( 'Maximum simulatenous batches already in progress (%s queues). No actions will be processed until the current batches are complete.', 'action-scheduler' ), ActionScheduler_Store::instance()->get_claim_count() ); ?></p>
+</div>
+		<?php endif;
+		$notification = get_transient( 'actionscheduler_admin_executed' );
+		if ( is_array( $notification ) ) {
+			delete_transient( 'actionscheduler_admin_executed' );
+
+			$action = ActionScheduler::store()->fetch_action( $notification['action_id'] );
+			$action_hook_html = '<strong>' . $action->get_hook() . '</strong>';
+			if ( 1 == $notification['success'] ): ?>
+				<div id="message" class="updated">
+					<p><?php printf( __( 'Successfully executed the action: %s', 'action-scheduler' ), $action_hook_html ); ?></p>
+				</div>
+			<?php else : ?>
+			<div id="message" class="error">
+				<p><?php printf( __( 'Could not execute the action: %s', 'action-scheduler' ), $action_hook_html ); ?></p>
+			</div>
+			<?php endif;
+		}
+	}
+
 
 	/**
 	 * Prints the scheduled date in a human friendly format.
@@ -204,25 +282,12 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	 */
 	public function column_scheduled( $row ) {
 		$next_timestamp = $row['scheduled']->next()->format( 'U' );
-		echo get_date_from_gmt( gmdate( 'Y-m-d H:i:s', $next_timestamp ), 'Y-m-d H:i:s' );
+		echo $row['scheduled']->next()->format( 'Y-m-d H:i:s' );
 		if ( gmdate( 'U' ) > $next_timestamp ) {
 			printf( __( ' (%s ago)', 'action-scheduler' ), human_time_diff( gmdate( 'U' ), $next_timestamp ) );
 		} else {
 			echo ' (' . human_time_diff( gmdate( 'U' ), $next_timestamp ) . ')';
 		}
-	}
-
-	/**
-	 * Returns if the current action is finished or pending.
-	 *
-	 * @param ActionScheduler_Action $item
-	 */
-	protected function get_status( $item ) {
-		if ( $item->is_finished() ) {
-			return __( 'Completed', 'action-scheduler' );
-		}
-
-		return __( 'Pending', 'action-scheduler' );
 	}
 
 	/**
@@ -272,10 +337,10 @@ class ActionScheduler_ListTable extends PP_List_Table {
 
 		$this->prepare_column_headers();
 
-		$per_page = $this->get_items_query_limit();
+		$per_page = $this->get_items_per_page( $this->package . '_items_per_page', $this->items_per_page );
 		$query = array(
 			'per_page' => $per_page,
-			'offset'   => $this->get_items_query_offset(),
+			'offset'   => $this->get_items_offset(),
 			'status'   => $this->get_request_status(),
 			'orderby'  => 'modified',
 			'order'    => 'ASC',
@@ -290,7 +355,7 @@ class ActionScheduler_ListTable extends PP_List_Table {
 			$this->items[ $id ] = array(
 				'ID'     => $id,
 				'hook'   => $item->get_hook(),
-				'status' => $this->get_status( $item ),
+				'status' => ActionScheduler::store()->get_status( $id ),
 				'args'   => $item->get_args(),
 				'group'  => $item->get_group(),
 				'recurrence' => $this->get_recurrence( $item ),
@@ -308,9 +373,9 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	}
 
 	/**
-	 * This function is used to filter the actions by a status. It will return the status based on a 
-	 * a GET parameter or it will filter by 'pending' by default. 
-	 * We filter by status because if we do not filter we have NullActions that are not rendered at the 
+	 * This function is used to filter the actions by a status. It will return the status based on a
+	 * a GET parameter or it will filter by 'pending' by default.
+	 * We filter by status because if we do not filter we have NullActions that are not rendered at the
 	 * moment.
 	 *
 	 * @return string
@@ -320,6 +385,7 @@ class ActionScheduler_ListTable extends PP_List_Table {
 			ActionScheduler_Store::STATUS_PENDING,
 			ActionScheduler_Store::STATUS_COMPLETE,
 			ActionScheduler_Store::STATUS_FAILED,
+			ActionScheduler_Store::STATUS_RUNNING,
 		);
 
 		if ( ! empty( $_GET['status'] ) && in_array( $_GET['status'], $statuses ) ) {
@@ -336,9 +402,10 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	 */
 	public function display_filter_by_status() {
 		$statuses = array(
-			'pending' => ActionScheduler_Store::STATUS_PENDING,
-			'complete' => ActionScheduler_Store::STATUS_COMPLETE,
-			'failed'  => ActionScheduler_Store::STATUS_FAILED,
+			'pending'   => ActionScheduler_Store::STATUS_PENDING,
+			'running'   => ActionScheduler_Store::STATUS_RUNNING,
+			'complete'  => ActionScheduler_Store::STATUS_COMPLETE,
+			'failed'    => ActionScheduler_Store::STATUS_FAILED,
 		);
 
 		$li = array();
@@ -352,7 +419,7 @@ class ActionScheduler_ListTable extends PP_List_Table {
 				$li[] =  '<li class="' . esc_attr( $name ) . '">'
 					. '<strong>'
 						. esc_html( ucfirst( $name ) )
-					. "</strong> ($total_items)"
+					. "</strong> (" . absint( $total_items ) . ")"
 				. '</li>';
 				continue;
 			}
