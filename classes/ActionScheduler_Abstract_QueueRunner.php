@@ -23,8 +23,8 @@ abstract class ActionScheduler_Abstract_QueueRunner {
 	 */
 	public function __construct( ActionScheduler_Store $store = null, ActionScheduler_FatalErrorMonitor $monitor = null, ActionScheduler_QueueCleaner $cleaner = null ) {
 		$this->store   = $store ? $store : ActionScheduler_Store::instance();
-		$this->monitor = $monitor ? $monitor : new ActionScheduler_FatalErrorMonitor( $store );
-		$this->cleaner = $cleaner ? $cleaner : new ActionScheduler_QueueCleaner( $store );
+		$this->monitor = $monitor ? $monitor : new ActionScheduler_FatalErrorMonitor( $this->store );
+		$this->cleaner = $cleaner ? $cleaner : new ActionScheduler_QueueCleaner( $this->store );
 	}
 
 	/**
