@@ -106,6 +106,7 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 	 * @return int The number of actions processed.
 	 */
 	public function run() {
+		do_action( 'action_scheduler_before_process_queue' );
 		$this->setup_progress_bar();
 		foreach ( $this->actions as $action_id ) {
 			// Error if we lost the claim.
@@ -125,6 +126,7 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 
 		$completed = $this->progress_bar->current();
 		$this->finish_progress_bar();
+		do_action( 'action_scheduler_after_process_queue' );
 
 		return $completed;
 	}
