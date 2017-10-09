@@ -35,7 +35,10 @@ class ActionScheduler_WPCLI_Scheduler_command extends WP_CLI_Command {
 			// Determine how many tasks will be run.
 			$total = $runner->setup( $batch, $force );
 			WP_CLI::line(
-				sprintf( _n( 'Found %d scheduled task', 'Found %d scheduled tasks', $total, 'action-scheduler' ), $total )
+				sprintf(
+					_n( 'Found %d scheduled task', 'Found %d scheduled tasks', $total, 'action-scheduler' ),
+					number_format_i18n( $total )
+				)
 			);
 
 			$completed = $runner->run();
@@ -52,7 +55,7 @@ class ActionScheduler_WPCLI_Scheduler_command extends WP_CLI_Command {
 		WP_CLI::success(
 			sprintf(
 				_n( '%d scheduled task completed.', '%d scheduled tasks completed.', $completed, 'action-scheduler' ),
-				$completed
+				number_format_i18n( $completed )
 			)
 		);
 	}
