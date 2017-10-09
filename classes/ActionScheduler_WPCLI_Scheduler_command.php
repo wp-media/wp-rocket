@@ -51,7 +51,7 @@ class ActionScheduler_WPCLI_Scheduler_command extends WP_CLI_Command {
 
 		WP_CLI::success(
 			sprintf(
-				_n( '%d scheduled task completed.', '%d scheduled taskes completed.', $completed, 'action-scheduler' ),
+				_n( '%d scheduled task completed.', '%d scheduled tasks completed.', $completed, 'action-scheduler' ),
 				$completed
 			)
 		);
