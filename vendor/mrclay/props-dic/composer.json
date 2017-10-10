@@ -1,0 +1,27 @@
+{
+    "name": "mrclay/props-dic",
+    "type": "library",
+    "description": "Props is a simple DI container that allows retrieving values via custom property and method names",
+    "keywords": ["container", "dependency injection", "di", "di container", "dependency injection container"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Steve Clay",
+            "email": "steve@mrclay.org",
+            "homepage": "http://www.mrclay.org/"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "container-interop/container-interop": "^1.1",
+        "pimple/pimple": "~3.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.8"
+    },
+    "autoload": {
+        "psr-0": {
+            "Props\\": ["src/", "test/"]
+        }
+    }
+}

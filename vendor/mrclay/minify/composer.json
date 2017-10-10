@@ -1,0 +1,55 @@
+{
+	"name": "mrclay/minify",
+	"type": "library",
+	"description": "Minify is a PHP5 app that helps you follow several rules for client-side performance. It combines multiple CSS or Javascript files, removes unnecessary whitespace and comments, and serves them with gzip encoding and optimal client-side cache headers",
+	"homepage": "https://github.com/mrclay/minify",
+	"license": "BSD-3-Clause",
+	"authors": [
+		{
+			"name": "Stephen Clay",
+			"email": "steve@mrclay.org",
+			"role": "Developer"
+		}
+	],
+	"support": {
+		"email": "minify@googlegroups.com",
+		"issues": "https://github.com/mrclay/minify/issues",
+		"wiki": "https://github.com/mrclay/minify/blob/master/docs"
+	},
+	"autoload": {
+		"classmap": ["lib/"]
+	},
+	"autoload-dev": {
+		"classmap": ["tests/TestCase.php"]
+	},
+	"require": {
+		"ext-pcre": "*",
+		"intervention/httpauth": "~2.0",
+		"monolog/monolog": "~1.1",
+		"mrclay/jsmin-php": "~2",
+		"mrclay/props-dic": "^2.2",
+		"php": "^5.3.0 || ^7.0",
+		"tubalmartin/cssmin": "~4"
+	},
+	"require-dev": {
+		"firephp/firephp-core": "~0.4.0",
+		"leafo/scssphp": "~0.6.6",
+		"marcusschwarz/lesserphp": "~0.5.1",
+		"meenie/javascript-packer": "~1.1",
+		"phpunit/phpunit": "4.8.*",
+		"tedivm/jshrink": "~1.1.0"
+	},
+	"suggest": {
+		"firephp/firephp-core": "Use FirePHP for Log messages",
+		"marcusschwarz/lesserphp": "LESS support",
+		"meenie/javascript-packer": "Keep track of the Packer PHP port using Composer"
+	},
+	"scripts": {
+		"test": "phpunit"
+	},
+	"extra": {
+		"branch-alias": {
+			"dev-master": "3.0.x-dev"
+		}
+	}
+}

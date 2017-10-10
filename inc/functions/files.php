@@ -24,14 +24,14 @@ function get_rocket_advanced_cache_file() {
 
 	// Include the Mobile Detect class if we have to create a different caching file for mobile.
 	if ( is_rocket_generate_caching_mobile_files() ) {
-		$buffer .= 'if ( file_exists( \'' . WP_ROCKET_VENDORS_PATH . 'Mobile_Detect.php' . '\' ) ) {' . "\n";
-		$buffer .= "\t" . 'include( \'' . WP_ROCKET_VENDORS_PATH . 'Mobile_Detect.php' . '\' );' . "\n";
+		$buffer .= 'if ( file_exists( \'' . WP_ROCKET_PATH . 'vendor/mobiledetect/mobiledetectlib/Mobile_Detect.php' . '\' ) && ! class_exists( \'Mobile_Detect\' ) ) {' . "\n";
+		$buffer .= "\t" . 'include \'' . WP_ROCKET_PATH . 'vendor/mobiledetect/mobiledetectlib/Mobile_Detect.php' . '\';' . "\n";
 		$buffer .= '}' . "\n";
 	}
 
 	// Include the process file in buffer.
 	$buffer .= 'if ( file_exists( \'' . WP_ROCKET_FRONT_PATH . 'process.php' . '\' ) ) {' . "\n";
-		$buffer .= "\t" . 'include( \'' . WP_ROCKET_FRONT_PATH . 'process.php' . '\' );' . "\n";
+		$buffer .= "\t" . 'include \'' . WP_ROCKET_FRONT_PATH . 'process.php' . '\';' . "\n";
 	$buffer .= '} else {' . "\n";
 		// Add a constant to provent include issue.
 		$buffer .= "\t" . 'define( \'WP_ROCKET_ADVANCED_CACHE_PROBLEM\', true );' . "\n";

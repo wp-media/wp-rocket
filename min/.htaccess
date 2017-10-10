@@ -1,7 +1,3 @@
-<Files index.php>
-Allow from all
-</Files>
-
 <IfModule mod_rewrite.c>
 RewriteEngine on
 
