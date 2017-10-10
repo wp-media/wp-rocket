@@ -73,13 +73,6 @@ class ComposerStaticInit0667ef9b9265640664ae067531ce2727
     );
 
     public static $prefixesPsr0 = array (
-        's' => 
-        array (
-            'stringEncode' => 
-            array (
-                0 => __DIR__ . '/..' . '/paquettg/string-encode/src',
-            ),
-        ),
         'P' => 
         array (
             'Props\\' => 
@@ -90,10 +83,6 @@ class ComposerStaticInit0667ef9b9265640664ae067531ce2727
             'Pimple' => 
             array (
                 0 => __DIR__ . '/..' . '/pimple/pimple/src',
-            ),
-            'PHPHtmlParser' => 
-            array (
-                0 => __DIR__ . '/..' . '/paquettg/php-html-parser/src',
             ),
         ),
         'J' => 

@@ -22,7 +22,6 @@
 		"source": "https://github.com/wp-media/wp-rocket"
 	},
     "require": {
-		"paquettg/php-html-parser": "dev-dev",
 		"matthiasmullie/minify": "1.3.*",
 		"mrclay/minify": "~3.0.0",
 		"jamesryanbell/cloudflare": "^1.11",
