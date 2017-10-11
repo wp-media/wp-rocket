@@ -1026,16 +1026,21 @@ function get_rocket_footprint( $debug = true ) {
  * @since 2.10
  * @author Remy Perona
  *
- * @param string $src Original URL of the asset.
+ * @param string $src                 Original URL of the asset.
  * @param array  $cache_busting_paths Paths used to generated the cache busting file.
- * @param string $absolute_src_path Absolute path to the asset.
- * @param string $current_filter Current filter value.
+ * @param string $abspath_src         Absolute path to the asset.
+ * @param string $current_filter      Current filter value.
  * @return bool true if successful, false otherwise
  */
-function rocket_fetch_and_cache_busting( $src, $cache_busting_paths, $absolute_src_path, $current_filter ) {
-	$response = wp_remote_get( $src );
+function rocket_fetch_and_cache_busting( $src, $cache_busting_paths, $abspath_src, $current_filter ) {
+	if ( wp_is_stream( $src ) ) {
+		$response = wp_remote_get( $src );
+		$content  = wp_remote_retrieve_body( $response );
+	} else {
+		$content = rocket_direct_filesystem()->get_contents( $src );
+	}
 
-	if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
+	if ( ! $content ) {
 		return false;
 	}
 
@@ -1044,14 +1049,16 @@ function rocket_fetch_and_cache_busting( $src, $cache_busting_paths, $absolute_s
 			require( WP_ROCKET_PATH . 'min/lib/Minify/CSS/UriRewriter.php' );
 		}
 		// Rewrite import/url in CSS content to add the absolute path to the file.
-		$file_content = Minify_CSS_UriRewriter::rewrite( $response['body'], $absolute_src_path );
+		$file_content = Minify_CSS_UriRewriter::rewrite( $content, dirname( $abspath_src ) );
 	} else {
-		$file_content = $response['body'];
+		$file_content = $content;
 	}
 
 	if ( ! is_dir( $cache_busting_paths['bustingpath'] ) ) {
 		rocket_mkdir_p( $cache_busting_paths['bustingpath'] );
 	}
+
+	wp_mkdir_p( dirname( $cache_busting_paths['filepath'] ) );
 
 	return rocket_put_content( $cache_busting_paths['filepath'], $file_content );
 }
