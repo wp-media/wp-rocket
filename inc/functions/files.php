@@ -1053,9 +1053,7 @@ function rocket_fetch_and_cache_busting( $src, $cache_busting_paths, $abspath_sr
 
 	if ( 'style_loader_src' === $current_filter ) {
 		// Rewrite import/url in CSS content to add the absolute path to the file.
-		$file_content = Minify_CSS_UriRewriter::rewrite( $content, dirname( $abspath_src ) );
-	} else {
-		$file_content = $content;
+		$content = Minify_CSS_UriRewriter::rewrite( $content, dirname( $abspath_src ) );
 	}
 
 	if ( ! is_dir( $cache_busting_paths['bustingpath'] ) ) {
@@ -1064,5 +1062,5 @@ function rocket_fetch_and_cache_busting( $src, $cache_busting_paths, $abspath_sr
 
 	wp_mkdir_p( dirname( $cache_busting_paths['filepath'] ) );
 
-	return rocket_put_content( $cache_busting_paths['filepath'], $file_content );
+	return rocket_put_content( $cache_busting_paths['filepath'], $content );
 }
