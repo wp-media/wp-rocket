@@ -245,14 +245,14 @@ function rocket_realpath( $file_path ) {
 	$path = [];
  
 	foreach ( explode( '/', $file_path ) as $part ) {
-		if ( empty( $part ) || '.' === $part ) {
+		if ( '' === $part || '.' === $part ) {
 			continue;
 		}
 
 		if ( '..' !== $part ) {
 			array_push( $path, $part );
 		}
-		else if ( count( $path ) > 0 ) {
+		elseif ( count( $path ) > 0 ) {
 			array_pop($path);
 		}
 	}
