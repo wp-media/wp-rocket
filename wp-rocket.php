@@ -8,7 +8,7 @@
  * Author: WP Media
  * Contributors: Jonathan Buttigieg, Julio Potier, Remy Perona
  * Author URI: http://wp-media.me
- * Licence: GPLv2
+ * Licence: GPLv2 or later
  *
  * Text Domain: rocket
  * Domain Path: languages
