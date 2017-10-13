@@ -397,23 +397,30 @@ function rocket_clean_minify( $extensions = array( 'js', 'css' ) ) {
  * @return void
  */
 function rocket_clean_cache_busting( $extensions = array( 'js', 'css' ) ) {
-	$blog_id    = get_current_blog_id();
 	$extensions = is_string( $extensions ) ? (array) $extensions : $extensions;
+	$dir        = new RecursiveDirectoryIterator( WP_ROCKET_CACHE_BUSTING_PATH . get_current_blog_id(), FilesystemIterator::SKIP_DOTS );
+	$iterator   = new RecursiveIteratorIterator( $dir, RecursiveIteratorIterator::CHILD_FIRST );
 
 	foreach ( $extensions as $ext ) {
 		/**
-		 * Fires before the cache busting files are deleted
+		 * Fires before the minify cache files are deleted
 		 *
-		 * @since 2.9
+		 * @since 2.1
 		 *
 		 * @param string $ext File extensions to minify.
 		*/
-		do_action( 'before_rocket_clean_cache_busting', $ext );
+		do_action( 'before_rocket_clean_minify', $ext );
 
-		$files = @glob( WP_ROCKET_CACHE_BUSTING_PATH . $blog_id . '/*.' . $ext, GLOB_NOSORT );
-		if ( $files ) {
-			foreach ( $files as $file ) { // no array map to use @.
-				rocket_direct_filesystem()->delete( $file );
+		try {
+			$files = new RegexIterator( $iterator, '#.*\.' . $ext . '#', RegexIterator::GET_MATCH );
+			foreach ( $files as $file ) {
+				rocket_direct_filesystem()->delete( $file[0] );
+			}
+		} catch ( Exception $e ) {}
+
+		foreach( $iterator as $item ) {
+			if ( rocket_direct_filesystem()->is_dir( $item ) ) {
+				rocket_direct_filesystem()->delete( $item );
 			}
 		}
 
