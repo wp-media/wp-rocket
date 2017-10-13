@@ -1052,9 +1052,6 @@ function rocket_fetch_and_cache_busting( $src, $cache_busting_paths, $abspath_sr
 	}
 
 	if ( 'style_loader_src' === $current_filter ) {
-		if ( ! class_exists( 'Minify_CSS_UriRewriter' ) ) {
-			require( WP_ROCKET_PATH . 'min/lib/Minify/CSS/UriRewriter.php' );
-		}
 		// Rewrite import/url in CSS content to add the absolute path to the file.
 		$file_content = Minify_CSS_UriRewriter::rewrite( $content, dirname( $abspath_src ) );
 	} else {
