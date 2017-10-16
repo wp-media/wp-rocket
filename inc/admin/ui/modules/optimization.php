@@ -172,7 +172,7 @@ $rocket_concatenate_fields[] = array(
 $rocket_concatenate_fields[] = array(
 	'type'         => 'helper_warning',
 	'name'         => 'rocket_minify_combine_all',
-	'description'  => __( 'Files are combined into 1 file. This option is not recommended if your server is HTTP/2 enabled.', 'rocket' )
+	'description'  => __( 'Files are combined into 1 file. This option is not recommended if your server is HTTP/2 enabled.', 'rocket' ),
 );
 
 add_settings_field(
