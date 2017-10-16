@@ -397,25 +397,26 @@ function rocket_clean_minify( $extensions = array( 'js', 'css' ) ) {
  * @return void
  */
 function rocket_clean_cache_busting( $extensions = array( 'js', 'css' ) ) {
-	$blog_id    = get_current_blog_id();
 	$extensions = is_string( $extensions ) ? (array) $extensions : $extensions;
+	$dir        = new RecursiveDirectoryIterator( WP_ROCKET_CACHE_BUSTING_PATH . get_current_blog_id(), FilesystemIterator::SKIP_DOTS );
+	$iterator   = new RecursiveIteratorIterator( $dir, RecursiveIteratorIterator::CHILD_FIRST );
 
 	foreach ( $extensions as $ext ) {
 		/**
-		 * Fires before the cache busting files are deleted
+		 * Fires before the minify cache files are deleted
 		 *
-		 * @since 2.9
+		 * @since 2.1
 		 *
 		 * @param string $ext File extensions to minify.
 		*/
-		do_action( 'before_rocket_clean_cache_busting', $ext );
+		do_action( 'before_rocket_clean_minify', $ext );
 
-		$files = @glob( WP_ROCKET_CACHE_BUSTING_PATH . $blog_id . '/*.' . $ext, GLOB_NOSORT );
-		if ( $files ) {
-			foreach ( $files as $file ) { // no array map to use @.
-				rocket_direct_filesystem()->delete( $file );
+		try {
+			$files = new RegexIterator( $iterator, '#.*\.' . $ext . '#', RegexIterator::GET_MATCH );
+			foreach ( $files as $file ) {
+				rocket_direct_filesystem()->delete( $file[0] );
 			}
-		}
+		} catch ( Exception $e ) {}
 
 		/**
 		 * Fires after the cache busting files was deleted
@@ -425,6 +426,12 @@ function rocket_clean_cache_busting( $extensions = array( 'js', 'css' ) ) {
 		 * @param string $ext File extensions to clean.
 		*/
 		do_action( 'after_rocket_clean_cache_busting', $ext );
+	}
+
+	foreach( $iterator as $item ) {
+		if ( rocket_direct_filesystem()->is_dir( $item ) ) {
+			rocket_direct_filesystem()->delete( $item );
+		}
 	}
 }
 
@@ -1026,32 +1033,34 @@ function get_rocket_footprint( $debug = true ) {
  * @since 2.10
  * @author Remy Perona
  *
- * @param string $src Original URL of the asset.
+ * @param string $src                 Original URL of the asset.
  * @param array  $cache_busting_paths Paths used to generated the cache busting file.
- * @param string $absolute_src_path Absolute path to the asset.
- * @param string $current_filter Current filter value.
+ * @param string $abspath_src         Absolute path to the asset.
+ * @param string $current_filter      Current filter value.
  * @return bool true if successful, false otherwise
  */
-function rocket_fetch_and_cache_busting( $src, $cache_busting_paths, $absolute_src_path, $current_filter ) {
-	$response = wp_remote_get( $src );
+function rocket_fetch_and_cache_busting( $src, $cache_busting_paths, $abspath_src, $current_filter ) {
+	if ( wp_is_stream( $src ) ) {
+		$response = wp_remote_get( $src );
+		$content  = wp_remote_retrieve_body( $response );
+	} else {
+		$content = rocket_direct_filesystem()->get_contents( $src );
+	}
 
-	if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
+	if ( ! $content ) {
 		return false;
 	}
 
 	if ( 'style_loader_src' === $current_filter ) {
-		if ( ! class_exists( 'Minify_CSS_UriRewriter' ) ) {
-			require( WP_ROCKET_PATH . 'min/lib/Minify/CSS/UriRewriter.php' );
-		}
 		// Rewrite import/url in CSS content to add the absolute path to the file.
-		$file_content = Minify_CSS_UriRewriter::rewrite( $response['body'], $absolute_src_path );
-	} else {
-		$file_content = $response['body'];
+		$content = Minify_CSS_UriRewriter::rewrite( $content, dirname( $abspath_src ) );
 	}
 
 	if ( ! is_dir( $cache_busting_paths['bustingpath'] ) ) {
 		rocket_mkdir_p( $cache_busting_paths['bustingpath'] );
 	}
 
-	return rocket_put_content( $cache_busting_paths['filepath'], $file_content );
+	wp_mkdir_p( dirname( $cache_busting_paths['filepath'] ) );
+
+	return rocket_put_content( $cache_busting_paths['filepath'], $content );
 }
