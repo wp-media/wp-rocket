@@ -210,7 +210,7 @@ function rocket_extract_url_component( $url, $component ) {
 function rocket_get_cache_busting_paths( $filename, $extension ) {
 	$blog_id                = get_current_blog_id();
 	$cache_busting_path     = WP_ROCKET_CACHE_BUSTING_PATH . $blog_id . '/';
-	$filename               = rtrim( str_replace( array( '/', ' ', '%20' ), '-', $filename ) );
+	$filename               = rocket_realpath( rtrim( str_replace( array( ' ', '%20' ), '-', $filename ) ) );
 	$cache_busting_filepath = $cache_busting_path . $filename;
 	$cache_busting_url      = get_rocket_cdn_url( WP_ROCKET_CACHE_BUSTING_URL . $blog_id . '/' . $filename, array( 'all', 'css_and_js', $extension ) );
 
@@ -230,4 +230,32 @@ function rocket_get_cache_busting_paths( $filename, $extension ) {
 		'filepath'    => $cache_busting_filepath,
 		'url'         => $cache_busting_url,
 	);
+}
+
+/**
+ * Returns realpath to file (used for relative path with /../ in it or not-yet existing file)
+ *
+ * @since 2.11
+ * @author Remy Perona
+ *
+ * @param string $file_path Path to the file.
+ * @return string Resolved file path
+ */
+function rocket_realpath( $file_path ) {
+	$path = [];
+
+	foreach ( explode( '/', $file_path ) as $part ) {
+		if ( '' === $part || '.' === $part ) {
+			continue;
+		}
+
+		if ( '..' !== $part ) {
+			array_push( $path, $part );
+		}
+		elseif ( count( $path ) > 0 ) {
+			array_pop( $path );
+		}
+	}
+
+	return join( '/', $path );
 }
