@@ -243,7 +243,7 @@ function rocket_get_cache_busting_paths( $filename, $extension ) {
  */
 function rocket_realpath( $file_path ) {
 	$path = [];
- 
+
 	foreach ( explode( '/', $file_path ) as $part ) {
 		if ( '' === $part || '.' === $part ) {
 			continue;
@@ -253,7 +253,7 @@ function rocket_realpath( $file_path ) {
 			array_push( $path, $part );
 		}
 		elseif ( count( $path ) > 0 ) {
-			array_pop($path);
+			array_pop( $path );
 		}
 	}
 

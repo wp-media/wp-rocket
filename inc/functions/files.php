@@ -416,7 +416,9 @@ function rocket_clean_cache_busting( $extensions = array( 'js', 'css' ) ) {
 			foreach ( $files as $file ) {
 				rocket_direct_filesystem()->delete( $file[0] );
 			}
-		} catch ( Exception $e ) {}
+		} catch ( Exception $e ) {
+			// No logging yet.
+		}
 
 		/**
 		 * Fires after the cache busting files was deleted
@@ -428,7 +430,7 @@ function rocket_clean_cache_busting( $extensions = array( 'js', 'css' ) ) {
 		do_action( 'after_rocket_clean_cache_busting', $ext );
 	}
 
-	foreach( $iterator as $item ) {
+	foreach ( $iterator as $item ) {
 		if ( rocket_direct_filesystem()->is_dir( $item ) ) {
 			rocket_direct_filesystem()->delete( $item );
 		}
