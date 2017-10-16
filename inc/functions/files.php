@@ -418,12 +418,6 @@ function rocket_clean_cache_busting( $extensions = array( 'js', 'css' ) ) {
 			}
 		} catch ( Exception $e ) {}
 
-		foreach( $iterator as $item ) {
-			if ( rocket_direct_filesystem()->is_dir( $item ) ) {
-				rocket_direct_filesystem()->delete( $item );
-			}
-		}
-
 		/**
 		 * Fires after the cache busting files was deleted
 		 *
@@ -432,6 +426,12 @@ function rocket_clean_cache_busting( $extensions = array( 'js', 'css' ) ) {
 		 * @param string $ext File extensions to clean.
 		*/
 		do_action( 'after_rocket_clean_cache_busting', $ext );
+	}
+
+	foreach( $iterator as $item ) {
+		if ( rocket_direct_filesystem()->is_dir( $item ) ) {
+			rocket_direct_filesystem()->delete( $item );
+		}
 	}
 }
 
