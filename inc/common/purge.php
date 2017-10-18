@@ -548,7 +548,7 @@ function do_admin_post_rocket_purge_cloudflare() {
 	if ( is_wp_error( $cf_purge ) ) {
 		$cf_purge_result = array( 'result' => 'error', 'message' => sprintf( __( 'CloudFlare Cache purge error: %s', 'rocket' ), $cf_purge->get_error_message() ) );
 	} else {
-		$cf_purge_result = array( 'result' => 'success', 'message' => __( 'CloudFlare cache sucessfully purged', 'rocket' ) );
+		$cf_purge_result = array( 'result' => 'success', 'message' => __( 'CloudFlare cache successfully purged', 'rocket' ) );
 	}
 
 	set_transient( $GLOBALS['current_user']->ID . '_cloudflare_purge_result', $cf_purge_result );
