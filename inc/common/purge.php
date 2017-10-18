@@ -45,37 +45,37 @@ add_filter( 'widget_update_callback'	, 'rocket_widget_update_callback' );
 
 /*
  @since 1.3.3
- * For not conflit with WooCommerce when clean_post_cache is called
+ * For no conflict with WooCommerce when clean_post_cache is called
 */
 add_filter( 'delete_transient_wc_products_onsale', 'wp_suspend_cache_invalidation' );
 
 /*
  @since 2.3
- * For not conflit with SuperCacher (SiteGround) Pretty good hosting!
+ * For no conflict with SuperCacher (SiteGround) - Pretty good hosting!
 */
 add_action( 'after_rocket_clean_domain', 'rocket_clean_supercacher' );
 
 /*
  @since 2.5.5
- * For not conflit with StudioPress Accelerator
+ * For no conflict with StudioPress Accelerator
 */
 add_action( 'after_rocket_clean_domain', 'rocket_clean_studiopress_accelerator' );
 
 /*
  @since 2.5.5
- * For not conflit with Varnish HTTP Purge
+ * For no conflict with Varnish HTTP Purge
 */
 add_action( 'after_rocket_clean_domain', 'rocket_clean_varnish_http_purge' );
 
 /*
  @since 2.5.7
- * For not conflit with Pagely Hosting
+ * For no conflict with Pagely Hosting
 */
 add_action( 'after_rocket_clean_domain', 'rocket_clean_pagely' );
 
 /*
  @since 2.5.11
- * For not conflit with Pressidium Hosting
+ * For no conflict with Pressidium Hosting
 */
 add_action( 'after_rocket_clean_domain', 'rocket_clean_pressidium' );
 
