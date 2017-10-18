@@ -492,8 +492,6 @@ function rocket_display_options() {
 				'version',
 				'cloudflare_old_settings',
 				'cloudflare_zone_id',
-				'minify_css_legacy',
-				'minify_js_legacy',
 			)
 		);
 

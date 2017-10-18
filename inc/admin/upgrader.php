@@ -237,26 +237,5 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		delete_transient( 'rocket_check_licence_30' );
 		delete_transient( 'rocket_check_licence_1' );
 	}
-
-	if ( version_compare( $actual_version, '2.10', '<' ) ) {
-		$options = get_option( WP_ROCKET_SLUG );
-
-		if ( 0 < $options['minify_css'] ) {
-			update_rocket_option( 'minify_css_legacy', 1 );
-			update_rocket_option( 'minify_concatenate_css', 1 );
-		} else {
-			update_rocket_option( 'minify_css_legacy', 0 );
-		}
-
-		if ( 0 < $options['minify_js'] ) {
-			update_rocket_option( 'minify_js_legacy', 1 );
-			update_rocket_option( 'minify_concatenate_js', 1 );
-		} else {
-			update_rocket_option( 'minify_js_legacy', 0 );
-		}
-
-		rocket_generate_config_file();
-		rocket_clean_domain();
-	}
 }
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );
