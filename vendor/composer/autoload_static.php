@@ -7,25 +7,10 @@ namespace Composer\Autoload;
 class ComposerStaticInit0667ef9b9265640664ae067531ce2727
 {
     public static $prefixLengthsPsr4 = array (
-        't' => 
-        array (
-            'tubalmartin\\CssMin\\' => 19,
-        ),
-        'P' => 
-        array (
-            'Psr\\Log\\' => 8,
-            'Psr\\Container\\' => 14,
-        ),
         'M' => 
         array (
-            'Monolog\\' => 8,
             'MatthiasMullie\\PathConverter\\' => 29,
             'MatthiasMullie\\Minify\\' => 22,
-        ),
-        'I' => 
-        array (
-            'Intervention\\Httpauth\\' => 22,
-            'Interop\\Container\\' => 18,
         ),
         'C' => 
         array (
@@ -34,22 +19,6 @@ class ComposerStaticInit0667ef9b9265640664ae067531ce2727
     );
 
     public static $prefixDirsPsr4 = array (
-        'tubalmartin\\CssMin\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/tubalmartin/cssmin/src',
-        ),
-        'Psr\\Log\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
-        ),
-        'Psr\\Container\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/psr/container/src',
-        ),
-        'Monolog\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
-        ),
         'MatthiasMullie\\PathConverter\\' => 
         array (
             0 => __DIR__ . '/..' . '/matthiasmullie/path-converter/src',
@@ -58,14 +27,6 @@ class ComposerStaticInit0667ef9b9265640664ae067531ce2727
         array (
             0 => __DIR__ . '/..' . '/matthiasmullie/minify/src',
         ),
-        'Intervention\\Httpauth\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/intervention/httpauth/src/Intervention/Httpauth',
-        ),
-        'Interop\\Container\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/container-interop/container-interop/src/Interop/Container',
-        ),
         'Cloudflare\\' => 
         array (
             0 => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare',
@@ -73,25 +34,6 @@ class ComposerStaticInit0667ef9b9265640664ae067531ce2727
     );
 
     public static $prefixesPsr0 = array (
-        'P' => 
-        array (
-            'Props\\' => 
-            array (
-                0 => __DIR__ . '/..' . '/mrclay/props-dic/src',
-                1 => __DIR__ . '/..' . '/mrclay/props-dic/test',
-            ),
-            'Pimple' => 
-            array (
-                0 => __DIR__ . '/..' . '/pimple/pimple/src',
-            ),
-        ),
-        'J' => 
-        array (
-            'JSMin\\' => 
-            array (
-                0 => __DIR__ . '/..' . '/mrclay/jsmin-php/src',
-            ),
-        ),
         'D' => 
         array (
             'Detection' => 
@@ -102,57 +44,67 @@ class ComposerStaticInit0667ef9b9265640664ae067531ce2727
     );
 
     public static $classMap = array (
-        'HTTP_ConditionalGet' => __DIR__ . '/..' . '/mrclay/minify/lib/HTTP/ConditionalGet.php',
-        'HTTP_Encoder' => __DIR__ . '/..' . '/mrclay/minify/lib/HTTP/Encoder.php',
-        'Minify' => __DIR__ . '/..' . '/mrclay/minify/lib/Minify.php',
-        'Minify\\App' => __DIR__ . '/..' . '/mrclay/minify/lib/Minify/App.php',
-        'Minify\\Config' => __DIR__ . '/..' . '/mrclay/minify/lib/Minify/Config.php',
-        'Minify\\JS\\JShrink' => __DIR__ . '/..' . '/mrclay/minify/lib/Minify/JS/JShrink.php',
-        'Minify\\Logger\\LegacyHandler' => __DIR__ . '/..' . '/mrclay/minify/lib/Minify/Logger/LegacyHandler.php',
-        'Minify_Build' => __DIR__ . '/..' . '/mrclay/minify/lib/Minify/Build.php',
-        'Minify_CSS' => __DIR__ . '/..' . '/mrclay/minify/lib/Minify/CSS.php',
-        'Minify_CSS_Compressor' => __DIR__ . '/..' . '/mrclay/minify/lib/Minify/CSS/Compressor.php',
-        'Minify_CSS_UriRewriter' => __DIR__ . '/..' . '/mrclay/minify/lib/Minify/CSS/UriRewriter.php',
-        'Minify_CSSmin' => __DIR__ . '/..' . '/mrclay/minify/lib/Minify/CSSmin.php',
-        'Minify_CacheInterface' => __DIR__ . '/..' . '/mrclay/minify/lib/Minify/CacheInterface.php',
-        'Minify_Cache_APC' => __DIR__ . '/..' . '/mrclay/minify/lib/Minify/Cache/APC.php',
-        'Minify_Cache_File' => __DIR__ . '/..' . '/mrclay/minify/lib/Minify/Cache/File.php',
-        'Minify_Cache_Memcache' => __DIR__ . '/..' . '/mrclay/minify/lib/Minify/Cache/Memcache.php',
-        'Minify_Cache_Null' => __DIR__ . '/..' . '/mrclay/minify/lib/Minify/Cache/Null.php',
-        'Minify_Cache_WinCache' => __DIR__ . '/..' . '/mrclay/minify/lib/Minify/Cache/WinCache.php',
-        'Minify_Cache_XCache' => __DIR__ . '/..' . '/mrclay/minify/lib/Minify/Cache/XCache.php',
-        'Minify_Cache_ZendPlatform' => __DIR__ . '/..' . '/mrclay/minify/lib/Minify/Cache/ZendPlatform.php',
-        'Minify_ClosureCompiler' => __DIR__ . '/..' . '/mrclay/minify/lib/Minify/ClosureCompiler.php',
-        'Minify_ClosureCompiler_Exception' => __DIR__ . '/..' . '/mrclay/minify/lib/Minify/ClosureCompiler.php',
-        'Minify_CommentPreserver' => __DIR__ . '/..' . '/mrclay/minify/lib/Minify/CommentPreserver.php',
-        'Minify_ControllerInterface' => __DIR__ . '/..' . '/mrclay/minify/lib/Minify/ControllerInterface.php',
-        'Minify_Controller_Base' => __DIR__ . '/..' . '/mrclay/minify/lib/Minify/Controller/Base.php',
-        'Minify_Controller_Files' => __DIR__ . '/..' . '/mrclay/minify/lib/Minify/Controller/Files.php',
-        'Minify_Controller_Groups' => __DIR__ . '/..' . '/mrclay/minify/lib/Minify/Controller/Groups.php',
-        'Minify_Controller_MinApp' => __DIR__ . '/..' . '/mrclay/minify/lib/Minify/Controller/MinApp.php',
-        'Minify_Controller_Page' => __DIR__ . '/..' . '/mrclay/minify/lib/Minify/Controller/Page.php',
-        'Minify_DebugDetector' => __DIR__ . '/..' . '/mrclay/minify/lib/Minify/DebugDetector.php',
-        'Minify_Env' => __DIR__ . '/..' . '/mrclay/minify/lib/Minify/Env.php',
-        'Minify_HTML' => __DIR__ . '/..' . '/mrclay/minify/lib/Minify/HTML.php',
-        'Minify_HTML_Helper' => __DIR__ . '/..' . '/mrclay/minify/lib/Minify/HTML/Helper.php',
-        'Minify_ImportProcessor' => __DIR__ . '/..' . '/mrclay/minify/lib/Minify/ImportProcessor.php',
-        'Minify_JS_ClosureCompiler' => __DIR__ . '/..' . '/mrclay/minify/lib/Minify/JS/ClosureCompiler.php',
-        'Minify_JS_ClosureCompiler_Exception' => __DIR__ . '/..' . '/mrclay/minify/lib/Minify/JS/ClosureCompiler.php',
-        'Minify_LessCssSource' => __DIR__ . '/..' . '/mrclay/minify/lib/Minify/LessCssSource.php',
-        'Minify_Lines' => __DIR__ . '/..' . '/mrclay/minify/lib/Minify/Lines.php',
-        'Minify_NailgunClosureCompiler' => __DIR__ . '/..' . '/mrclay/minify/lib/Minify/NailgunClosureCompiler.php',
-        'Minify_Packer' => __DIR__ . '/..' . '/mrclay/minify/lib/Minify/Packer.php',
-        'Minify_ScssCssSource' => __DIR__ . '/..' . '/mrclay/minify/lib/Minify/ScssCssSource.php',
-        'Minify_ServeConfiguration' => __DIR__ . '/..' . '/mrclay/minify/lib/Minify/ServeConfiguration.php',
-        'Minify_Source' => __DIR__ . '/..' . '/mrclay/minify/lib/Minify/Source.php',
-        'Minify_SourceInterface' => __DIR__ . '/..' . '/mrclay/minify/lib/Minify/SourceInterface.php',
-        'Minify_SourceSet' => __DIR__ . '/..' . '/mrclay/minify/lib/Minify/SourceSet.php',
-        'Minify_Source_Factory' => __DIR__ . '/..' . '/mrclay/minify/lib/Minify/Source/Factory.php',
-        'Minify_Source_FactoryException' => __DIR__ . '/..' . '/mrclay/minify/lib/Minify/Source/FactoryException.php',
-        'Minify_YUICompressor' => __DIR__ . '/..' . '/mrclay/minify/lib/Minify/YUICompressor.php',
+        'Cloudflare\\Api' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/Api.php',
+        'Cloudflare\\Certificates' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/Certificates.php',
+        'Cloudflare\\Exception\\AuthenticationException' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/Exception/AuthenticationException.php',
+        'Cloudflare\\Exception\\UnauthorizedException' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/Exception/UnauthorizedException.php',
+        'Cloudflare\\IPs' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/IPs.php',
+        'Cloudflare\\Organizations' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/Organizations.php',
+        'Cloudflare\\Organizations\\Firewall\\AccessRules\\Rules' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/Organizations/Firewall/AccessRules/Rules.php',
+        'Cloudflare\\Organizations\\Invites' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/Organizations/Invites.php',
+        'Cloudflare\\Organizations\\LoadBalancers\\Monitors' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/Organizations/LoadBalancers/Monitors.php',
+        'Cloudflare\\Organizations\\LoadBalancers\\Pools' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/Organizations/LoadBalancers/Pools.php',
+        'Cloudflare\\Organizations\\Members' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/Organizations/Members.php',
+        'Cloudflare\\Organizations\\Railguns' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/Organizations/Railguns.php',
+        'Cloudflare\\Organizations\\Roles' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/Organizations/Roles.php',
+        'Cloudflare\\Organizations\\Virtual_Dns' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/Organizations/VirtualDns.php',
+        'Cloudflare\\Railguns' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/Railguns.php',
+        'Cloudflare\\User' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/User.php',
+        'Cloudflare\\User\\Billing' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/User/Billing.php',
+        'Cloudflare\\User\\Billing\\Subscriptions\\Apps' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/User/Billing/Subscriptions/Apps.php',
+        'Cloudflare\\User\\Billing\\Subscriptions\\Zones' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/User/Billing/Subscriptions/Zones.php',
+        'Cloudflare\\User\\Firewall\\AccessRules' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/User/Firewall/AccessRules.php',
+        'Cloudflare\\User\\Invites' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/User/Invites.php',
+        'Cloudflare\\User\\LoadBalancers\\GlobalPolicies' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/User/LoadBalancers/GlobalPolicies.php',
+        'Cloudflare\\User\\LoadBalancers\\Maps' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/User/LoadBalancers/Maps.php',
+        'Cloudflare\\User\\LoadBalancers\\Monitors' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/User/LoadBalancers/Monitors.php',
+        'Cloudflare\\User\\LoadBalancers\\Notifiers' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/User/LoadBalancers/Notifiers.php',
+        'Cloudflare\\User\\LoadBalancers\\Origins' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/User/LoadBalancers/Origins.php',
+        'Cloudflare\\User\\LoadBalancers\\Pools' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/User/LoadBalancers/Pools.php',
+        'Cloudflare\\User\\Organizations' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/User/Organizations.php',
+        'Cloudflare\\User\\Virtual_Dns' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/User/VirtualDns.php',
+        'Cloudflare\\Zone' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/Zone.php',
+        'Cloudflare\\Zone\\Aml' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/Zone/Aml.php',
+        'Cloudflare\\Zone\\Analytics' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/Zone/Analytics.php',
+        'Cloudflare\\Zone\\Cache' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/Zone/Cache.php',
+        'Cloudflare\\Zone\\CustomPages' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/Zone/CustomPages.php',
+        'Cloudflare\\Zone\\CustomSSL' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/Zone/CustomSSL.php',
+        'Cloudflare\\Zone\\Dns' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/Zone/Dns.php',
+        'Cloudflare\\Zone\\Firewall\\AccessRules' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/Zone/Firewall/AccessRules.php',
+        'Cloudflare\\Zone\\KeylessSSL' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/Zone/KeylessSSL.php',
+        'Cloudflare\\Zone\\LoadBalancers' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/Zone/LoadBalancers.php',
+        'Cloudflare\\Zone\\Pagerules' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/Zone/Pagerules.php',
+        'Cloudflare\\Zone\\Plan' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/Zone/Plan.php',
+        'Cloudflare\\Zone\\Railgun' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/Zone/Railgun.php',
+        'Cloudflare\\Zone\\SSL' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/Zone/SSL.php',
+        'Cloudflare\\Zone\\SSL\\Analyze' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/Zone/SSL/Analyze.php',
+        'Cloudflare\\Zone\\SSL\\CertificatePacks' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/Zone/SSL/CertificatePacks.php',
+        'Cloudflare\\Zone\\Settings' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/Zone/Settings.php',
+        'Cloudflare\\Zone\\WAF\\Packages' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/Zone/WAF/Packages.php',
+        'Cloudflare\\Zone\\WAF\\Packages\\Groups' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/Zone/WAF/Packages/Groups.php',
+        'Cloudflare\\Zone\\WAF\\Packages\\Rules' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/Zone/WAF/Packages/Rules.php',
+        'Detection\\MobileDetect' => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/namespaced/Detection/MobileDetect.php',
+        'MatthiasMullie\\Minify\\CSS' => __DIR__ . '/..' . '/matthiasmullie/minify/src/CSS.php',
+        'MatthiasMullie\\Minify\\Exception' => __DIR__ . '/..' . '/matthiasmullie/minify/src/Exception.php',
+        'MatthiasMullie\\Minify\\Exceptions\\BasicException' => __DIR__ . '/..' . '/matthiasmullie/minify/src/Exceptions/BasicException.php',
+        'MatthiasMullie\\Minify\\Exceptions\\FileImportException' => __DIR__ . '/..' . '/matthiasmullie/minify/src/Exceptions/FileImportException.php',
+        'MatthiasMullie\\Minify\\Exceptions\\IOException' => __DIR__ . '/..' . '/matthiasmullie/minify/src/Exceptions/IOException.php',
+        'MatthiasMullie\\Minify\\JS' => __DIR__ . '/..' . '/matthiasmullie/minify/src/JS.php',
+        'MatthiasMullie\\Minify\\Minify' => __DIR__ . '/..' . '/matthiasmullie/minify/src/Minify.php',
+        'MatthiasMullie\\PathConverter\\Converter' => __DIR__ . '/..' . '/matthiasmullie/path-converter/src/Converter.php',
+        'MatthiasMullie\\PathConverter\\ConverterInterface' => __DIR__ . '/..' . '/matthiasmullie/path-converter/src/ConverterInterface.php',
+        'MatthiasMullie\\PathConverter\\NoConverter' => __DIR__ . '/..' . '/matthiasmullie/path-converter/src/NoConverter.php',
         'Mobile_Detect' => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/Mobile_Detect.php',
-        'MrClay\\Cli' => __DIR__ . '/..' . '/mrclay/minify/lib/MrClay/Cli.php',
-        'MrClay\\Cli\\Arg' => __DIR__ . '/..' . '/mrclay/minify/lib/MrClay/Cli/Arg.php',
         'WP_Async_Request' => __DIR__ . '/..' . '/a5hleyrich/wp-background-processing/classes/wp-async-request.php',
         'WP_Background_Process' => __DIR__ . '/..' . '/a5hleyrich/wp-background-processing/classes/wp-background-process.php',
     );
