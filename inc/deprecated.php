@@ -503,3 +503,26 @@ function rocket_defered_module() {
 
 <?php
 }
+
+/**
+ * Force the minification to create only 1 file.
+ *
+ * @since 2.6
+ * @deprecated 2.11
+ *
+ * @param int    $length maximum URL length.
+ * @param string $ext file extension.
+ * @return int Updated length
+ */
+function rocket_force_minify_combine_all( $length, $ext ) {
+	_deprecated_function( __FUNCTION__, '2.11' );
+	if ( 'css' === $ext && get_rocket_option( 'minify_css_combine_all', false ) ) {
+		$length = PHP_INT_MAX;
+	}
+
+	if ( 'js' === $ext && get_rocket_option( 'minify_js_combine_all', false ) ) {
+		$length = PHP_INT_MAX;
+	}
+
+	return $length;
+}

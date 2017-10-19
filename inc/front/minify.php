@@ -612,28 +612,6 @@ add_filter( 'rocket_css_url', 'rocket_fix_ssl_minify' );
 add_filter( 'rocket_js_url', 'rocket_fix_ssl_minify' );
 
 /**
- * Force the minification to create only 1 file.
- *
- * @since 2.6
- *
- * @param int    $length maximum URL length.
- * @param string $ext file extension.
- * @return int Updated length
- */
-function rocket_force_minify_combine_all( $length, $ext ) {
-	if ( 'css' === $ext && get_rocket_option( 'minify_css_combine_all', false ) ) {
-		$length = PHP_INT_MAX;
-	}
-
-	if ( 'js' === $ext && get_rocket_option( 'minify_js_combine_all', false ) ) {
-		$length = PHP_INT_MAX;
-	}
-
-	return $length;
-}
-add_filter( 'rocket_minify_filename_length', 'rocket_force_minify_combine_all', 10, 2 );
-
-/**
  * Extract all enqueued CSS files which should be exclude to the minification
  *
  * @since 2.6
