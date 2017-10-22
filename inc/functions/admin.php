@@ -136,7 +136,7 @@ function rocket_is_white_label() {
 		$options .= ! is_array( $option ) ? $option : reset( ( $option ) );
 	}
 
-	return 'a509cac94e0cd8238b250074fe802b90' !== md5( $options );
+	return '7ddca92d3d48d4da715a90ebcb3ec1f0' !== md5( $options );
 }
 
 /**
