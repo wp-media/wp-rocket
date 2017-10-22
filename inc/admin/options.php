@@ -1352,7 +1352,7 @@ function rocket_handle_settings_import( $file_import, $filename_prefix, $inputs 
 		return false;
 	}
 
-	add_filter( 'mime_types', 'rocket_allow_json_mime_type' );
+	add_filter( 'upload_mimes', 'rocket_allow_json_mime_type' );
 
 	$file_data = wp_check_filetype_and_ext(  $file_import['tmp_name'], $file_import['name'] );
 
@@ -1366,7 +1366,7 @@ function rocket_handle_settings_import( $file_import, $filename_prefix, $inputs 
 	$file 				= wp_handle_sideload( $file_import );
 	$_POST['action'] 	= $_post_action;
 	$settings 			= rocket_direct_filesystem()->get_contents( $file['file'] );
-	remove_filter( 'mime_types', 'rocket_allow_json_mime_type' );
+	remove_filter( 'upload_mimes', 'rocket_allow_json_mime_type' );
 	
 	if ( 'text/plain' === $file_data['type'] ) {
 		$gz 				= 'gz' . strrev( 'etalfni' );
