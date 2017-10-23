@@ -30,10 +30,12 @@ function rocket_minify_files( $buffer, $extension ) {
 	$excluded_files = array();
 
 	foreach ( $tags_match as $tag ) {
+		// Don't minify external files.
 		if ( is_rocket_external_file( $tag[1], $extension ) ) {
 			continue;
 		}
-		
+
+		// Don't minify excluded files.
 		if ( is_rocket_minify_excluded_file( $tag, $extension ) ) {
 			$excluded_files[] = $tag;
 			continue;
