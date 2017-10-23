@@ -216,3 +216,43 @@ function rocket_get_cache_busting_paths( $filename, $extension ) {
 		'url'         => $cache_busting_url,
 	);
 }
+
+/**
+ * Simple helper to get some external URLs.
+ *
+ * @since  2.10.10
+ * @author Grégory Viguier
+ *
+ * @param  string $target     What we want.
+ * @param  array  $query_args An array of query arguments.
+ * @return string The URL.
+ */
+function rocket_get_external_url( $target, $query_args = array() ) {
+	$site_url = WP_ROCKET_WEB_MAIN;
+
+	switch ( $target ) {
+		case 'support':
+			$locale = function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale();
+			$paths  = array(
+				'default' => 'support',
+				'fr_FR'   => 'fr/support',
+				'ca_FR'   => 'fr/support',
+				'it_IT'   => 'it/supporto',
+				'de_DE'   => 'de/support',
+				'es_ES'   => 'es/soporte',
+				'gl_ES'   => 'es/soporte',
+			);
+
+			$url = isset( $paths[ $locale ] ) ? $paths[ $locale ] : $paths['default'];
+			$url = $site_url . $url . '/';
+			break;
+		default:
+			$url = $site_url;
+	}
+
+	if ( $query_args ) {
+		$url = add_query_arg( $query_args, $url );
+	}
+
+	return $url;
+}

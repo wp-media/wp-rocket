@@ -62,14 +62,16 @@ function rocket_force_info_result( $res, $action, $args ) {
 
 		if ( is_wp_error( $request ) ) {
 
-			$res = new WP_Error( 'plugins_api_failed', sprintf( __( 'An unexpected error occurred. Something may be wrong with WP-Rocket.me or this server&#8217;s configuration. If you continue to have problems, please try the <a href="%s">support forums</a>.','rocket' ), WP_ROCKET_WEB_SUPPORT ), $request->get_error_message() );
+			// translators: %s is an URL.
+			$res = new WP_Error( 'plugins_api_failed', sprintf( __( 'An unexpected error occurred. Something may be wrong with WP-Rocket.me or this server&#8217;s configuration. If you continue to have problems, please try the <a href="%s">support forums</a>.','rocket' ), rocket_get_external_url( 'support' ) ), $request->get_error_message() );
 
 		} else {
 
 			$res = maybe_unserialize( wp_remote_retrieve_body( $request ) );
 
 			if ( ! is_object( $res ) && ! is_array( $res ) ) {
-				$res = new WP_Error( 'plugins_api_failed', sprintf( __( 'An unexpected error occurred. Something may be wrong with WP-Rocket.me or this server&#8217;s configuration. If you continue to have problems, please try the <a href="%s">support forums</a>.', 'rocket' ), WP_ROCKET_WEB_SUPPORT ), wp_remote_retrieve_body( $request ) );
+				// translators: %s is an URL.
+				$res = new WP_Error( 'plugins_api_failed', sprintf( __( 'An unexpected error occurred. Something may be wrong with WP-Rocket.me or this server&#8217;s configuration. If you continue to have problems, please try the <a href="%s">support forums</a>.', 'rocket' ), rocket_get_external_url( 'support' ) ), wp_remote_retrieve_body( $request ) );
 			}
 		}
 
