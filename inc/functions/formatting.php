@@ -179,7 +179,12 @@ function get_rocket_parse_url( $url ) {
 	 *
 	 * @param array Components of an URL
 	*/
-	return apply_filters( 'rocket_parse_url', array( $host, $path, $scheme, $query ) );
+	return apply_filters( 'rocket_parse_url', array( 
+		'host'   => $host,
+		'path'   => $path,
+		'scheme' => $scheme,
+		'query'  => $query
+	) );
 }
 
 
