@@ -92,50 +92,7 @@ function rocket_fix_ssl_minify( $url ) {
 	return $url;
 }
 add_filter( 'rocket_css_url', 'rocket_fix_ssl_minify' );
-add_filter( 'rocket_js_url', 'rocket_fix_ssl_minify' );
-
-/**
- * Compatibility with WordPress multisite with subfolders websites
- *
- * @since 2.6.5
- *
- * @param string $url minified file URL.
- * @return string Updated minified file URL
- */
-function rocket_fix_minify_multisite_path_issue( $url ) {
-	if ( ! is_multisite() || is_main_site() ) {
-		return $url;
-	}
-
-	// Current blog infos.
-	$blog_id  = get_current_blog_id();
-	$bloginfo = get_blog_details( $blog_id, false );
-
-	// Main blog infos.
-	$main_blog_id = 1;
-
-	if ( ! empty( $GLOBALS['current_site']->blog_id ) ) {
-		$main_blog_id = absint( $GLOBALS['current_site']->blog_id );
-	}
-	elseif ( defined( 'BLOG_ID_CURRENT_SITE' ) ) {
-		$main_blog_id = absint( BLOG_ID_CURRENT_SITE );
-	}
-	elseif ( defined( 'BLOGID_CURRENT_SITE' ) ) { // deprecated.
-		$main_blog_id = absint( BLOGID_CURRENT_SITE );
-	}
-
-	$main_bloginfo = get_blog_details( $main_blog_id, false );
-
-	if ( '/' !== $bloginfo->path ) {
-		$first_path_pos = strpos( $url, $bloginfo->path );
-		if ( false !== $first_path_pos ) {
-			$url = substr_replace( $url, $main_bloginfo->path, $first_path_pos, strlen( $bloginfo->path ) );
-		}
-	}
-
-	return $url;
-}
-//add_filter( 'rocket_pre_minify_path', 'rocket_fix_minify_multisite_path_issue' );
+add_filter( 'rocket_js_url' , 'rocket_fix_ssl_minify' );
 
 /**
  * Compatibility with multilingual plugins & multidomain configuration
