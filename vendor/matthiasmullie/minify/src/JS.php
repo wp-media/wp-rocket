@@ -242,7 +242,7 @@ class JS extends Minify
                 (isset($match['after']) ? $match['after'] : '');
         };
 
-        $pattern = '(?P<regex>\/(?!\/).+?((?<!\\\\)\\\\\\\\)*\/[gimy]*)(?![0-9a-zA-Z\/])';
+        $pattern = '(?P<regex>\/(?!\/).*?(?<!\\\\)(\\\\\\\\)*\/[gimy]*)(?![0-9a-zA-Z\/])';
 
         // a regular expression can only be followed by a few operators or some
         // of the RegExp methods (a `\` followed by a variable or value is
@@ -250,10 +250,6 @@ class JS extends Minify
         $keywords = array('do', 'in', 'new', 'else', 'throw', 'yield', 'delete', 'return',  'typeof');
         $before = '(?P<before>[=:,;\}\(\{&\|!]|^|'.implode('|', $keywords).')';
         $propertiesAndMethods = array(
-            // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp#Properties
-            'prototype',
-            'length',
-            'lastIndex',
             // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp#Properties_2
             'constructor',
             'flags',
@@ -267,10 +263,6 @@ class JS extends Minify
             'compile(',
             'exec(',
             'test(',
-            'match',
-            'replace(',
-            'search(',
-            'split(',
             'toSource(',
             'toString(',
         );

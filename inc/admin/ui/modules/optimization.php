@@ -158,13 +158,6 @@ $rocket_concatenate_fields[] = array(
 	'readonly'     => rocket_maybe_disable_minify_css(),
 );
 $rocket_concatenate_fields[] = array(
-	'parent'       => 'minify_concatenate_css',
-	'type'         => 'checkbox',
-	'label'        => __( 'Combine all CSS files into as few files as possible <em>(test thoroughly!)</em>', 'rocket' ),
-	'name'         => 'minify_css_combine_all',
-	'label_screen' => __( 'CSS Files concatenation', 'rocket' ),
-);
-$rocket_concatenate_fields[] = array(
 	'type'         => 'checkbox',
 	'label'        => 'JS',
 	'name'         => 'minify_concatenate_js',
@@ -172,21 +165,14 @@ $rocket_concatenate_fields[] = array(
 	'readonly'     => rocket_maybe_disable_minify_js(),
 );
 $rocket_concatenate_fields[] = array(
-	'parent'       => 'minify_concatenate_js',
-	'type'         => 'checkbox',
-	'label'        => __( 'Combine all JavaScript files into as few files as possible <em>(test thoroughly!)</em>', 'rocket' ),
-	'name'         => 'minify_js_combine_all',
-	'label_screen' => __( 'JS Files concatenation', 'rocket' ),
-);
-$rocket_concatenate_fields[] = array(
 	'type'         => 'helper_performance',
 	'name'         => 'minify_concatenate_perf_tip',
 	'description'  => __( 'Reduces the number of HTTP requests, can improve loading time.', 'rocket' ),
 );
 $rocket_concatenate_fields[] = array(
-	'type'         => 'helper_description',
+	'type'         => 'helper_warning',
 	'name'         => 'rocket_minify_combine_all',
-	'description'  => $rwl ? __( 'Files get concatenated into small groups in order to ensure theme/plugin compatibility and better performance. Forcing concatenation into 1 file is not recommended, because browsers are faster downloading up to 6 smaller files in parallel than 1-2 large files.', 'rocket' ) : __( 'Files get concatenated into small groups in order to <a href="http://docs.wp-rocket.me/article/17-reducing-the-number-of-minified-files" target="_blank">ensure theme/plugin compatibility and better performance</a>. Forcing concatenation into 1 file is not recommended, because browsers are faster downloading up to 6 smaller files in parallel than 1-2 large files.', 'rocket' ),
+	'description'  => __( 'Files are combined into 1 file. This option is not recommended if your server is HTTP/2 enabled.', 'rocket' ),
 );
 
 add_settings_field(

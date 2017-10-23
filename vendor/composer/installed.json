@@ -51,68 +51,6 @@
         ]
     },
     {
-        "name": "matthiasmullie/minify",
-        "version": "1.3.52",
-        "version_normalized": "1.3.52.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/matthiasmullie/minify.git",
-            "reference": "134b25a63d83a80ae128aedc9a99987e064b4382"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/matthiasmullie/minify/zipball/134b25a63d83a80ae128aedc9a99987e064b4382",
-            "reference": "134b25a63d83a80ae128aedc9a99987e064b4382",
-            "shasum": ""
-        },
-        "require": {
-            "ext-pcre": "*",
-            "matthiasmullie/path-converter": "~1.1",
-            "php": ">=5.3.0"
-        },
-        "require-dev": {
-            "friendsofphp/php-cs-fixer": "~1.0",
-            "matthiasmullie/scrapbook": "~1.0",
-            "phpunit/phpunit": "~4.8"
-        },
-        "suggest": {
-            "psr/cache-implementation": "Cache implementation to use with Minify::cache"
-        },
-        "time": "2017-09-15T13:02:11+00:00",
-        "bin": [
-            "bin/minifycss",
-            "bin/minifyjs"
-        ],
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "MatthiasMullie\\Minify\\": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Matthias Mullie",
-                "email": "minify@mullie.eu",
-                "homepage": "http://www.mullie.eu",
-                "role": "Developer"
-            }
-        ],
-        "description": "CSS & JS minifier",
-        "homepage": "http://www.minifier.org",
-        "keywords": [
-            "JS",
-            "css",
-            "javascript",
-            "minifier",
-            "minify"
-        ]
-    },
-    {
         "name": "jamesryanbell/cloudflare",
         "version": "1.11.1",
         "version_normalized": "1.11.1.0",
@@ -245,6 +183,68 @@
             "mobile detect",
             "mobile detector",
             "php mobile detect"
+        ]
+    },
+    {
+        "name": "matthiasmullie/minify",
+        "version": "1.3.53",
+        "version_normalized": "1.3.53.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/matthiasmullie/minify.git",
+            "reference": "7d79f1188e749ad09a075b0487aa58b11bac86d8"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/matthiasmullie/minify/zipball/7d79f1188e749ad09a075b0487aa58b11bac86d8",
+            "reference": "7d79f1188e749ad09a075b0487aa58b11bac86d8",
+            "shasum": ""
+        },
+        "require": {
+            "ext-pcre": "*",
+            "matthiasmullie/path-converter": "~1.1",
+            "php": ">=5.3.0"
+        },
+        "require-dev": {
+            "friendsofphp/php-cs-fixer": "~2.0",
+            "matthiasmullie/scrapbook": "~1.0",
+            "phpunit/phpunit": "~4.8"
+        },
+        "suggest": {
+            "psr/cache-implementation": "Cache implementation to use with Minify::cache"
+        },
+        "time": "2017-10-13T15:44:30+00:00",
+        "bin": [
+            "bin/minifycss",
+            "bin/minifyjs"
+        ],
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "MatthiasMullie\\Minify\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Matthias Mullie",
+                "email": "minify@mullie.eu",
+                "homepage": "http://www.mullie.eu",
+                "role": "Developer"
+            }
+        ],
+        "description": "CSS & JavaScript minifier, in PHP. Removes whitespace, strips comments, combines files (incl. @import statements and small assets in CSS files), and optimizes/shortens a few common programming patterns.",
+        "homepage": "http://www.minifier.org",
+        "keywords": [
+            "JS",
+            "css",
+            "javascript",
+            "minifier",
+            "minify"
         ]
     }
 ]

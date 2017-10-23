@@ -103,7 +103,6 @@ jQuery( document ).ready( function($){
 	minify_css.change( function() {
 		if ( ! minify_css.is( ':checked' ) ) {
 			concatenate_css.find( '#minify_concatenate_css' ).prop( 'checked', false );
-			$( '.fieldname-minify_css_combine_all' ).hide();
 		}
 
 		concatenate_css.toggle( 'fast' );
@@ -122,7 +121,6 @@ jQuery( document ).ready( function($){
 	minify_js.change( function() {
 		if ( ! minify_js.is( ':checked' ) ) {
 			concatenate_js.find( '#minify_concatenate_js' ).prop( 'checked', false );
-			$( '.fieldname-minify_js_combine_all' ).hide();
 		}
 
 		concatenate_js.toggle( 'fast' );
