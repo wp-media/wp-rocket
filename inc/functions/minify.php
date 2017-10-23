@@ -40,7 +40,7 @@ function rocket_minify_files( $buffer, $extension ) {
 		}
 
 		if ( $concatenate ) {
-			$files[] = $tag[1];
+			$files[] = strtok( $tag[1], '?' );
 			$buffer = str_replace( $tag[0], '', $buffer );
 			continue;
 		}
@@ -174,9 +174,9 @@ function is_rocket_minify_excluded_file( $tag, $extension ) {
 	// File is excluded from minification/concatenation.
 	if ( isset( $excluded_files[ $file_path ] ) ) {
 		return true;
-	} else {
-		return false;
 	}
+
+	return false;
 }
 
 function get_rocket_minify_url( $files, $extension ) {
@@ -185,14 +185,13 @@ function get_rocket_minify_url( $files, $extension ) {
 	}
 
 	if ( is_string( $files ) ) {
-		$file  = get_rocket_parse_url( $files );
-		$file_path  = rocket_realpath( $file['path'] );
-		$filename   = preg_replace( '/\.(js|css)\?(?:timestamp|ver)=([^&]+)(?:.*)/', '.min-$2.$1', ltrim( $file['path'], '/' ) . '?' . $file['query'] );
+		$file      = get_rocket_parse_url( $files );
+		$file_path = rocket_realpath( strtok( $files, '?' ) );
+		$filename  = preg_replace( '/\.(js|css)\?(?:timestamp|ver)=([^&]+)(?:.*)/', '.min-$2.$1', ltrim( $file['path'], '/' ) . '?' . $file['query'] );
 	} else {
-		$files = wp_list_pluck( array_map( 'get_rocket_parse_url', $files ), 'path' );
-		$file_path = array_map( 'rocket_realpath', $files );
+		$file_path  = array_map( 'rocket_realpath', $files );
 		$files_hash = implode( ',', $files );
-		$filename = md5( $files_hash . get_rocket_option( 'minify_' . $extension . '_key', create_rocket_uniqid() ) ) . '.'  . $extension;
+		$filename   = md5( $files_hash . get_rocket_option( 'minify_' . $extension . '_key', create_rocket_uniqid() ) ) . '.'  . $extension;
 	}
 
 	$minify_filepath = rocket_write_minify_file( rocket_minify( $file_path, $extension ), $filename );
@@ -237,10 +236,9 @@ function rocket_minify( $files, $extension ) {
 	$files = is_string( $files ) ? (array) $files : $files;
 
 	foreach ( $files as $file ) {
-		$abspath_file = wp_normalize_path( ABSPATH ) . $file;
-		$file_content = rocket_direct_filesystem()->get_contents( $abspath_file );
+		$file_content = rocket_direct_filesystem()->get_contents( $file );
 		if ( 'css' === $extension ) {
-			$file_content = rocket_cdn_css_properties( Minify_CSS_UriRewriter::rewrite( $file_content, dirname( $abspath_file ) ) );
+			$file_content = rocket_cdn_css_properties( Minify_CSS_UriRewriter::rewrite( $file_content, dirname( $file ) ) );
 		}
 
 		$minify->add( $file_content );
@@ -264,7 +262,7 @@ function rocket_write_minify_file( $content, $filename ) {
 }
 
 /**
- * Used to concatenate Google Fonts tags (http://fonts.googleapis.com/css?...)
+ * Concatenates Google Fonts tags (http://fonts.googleapis.com/css?...)
  *
  * @since 2.3
  *
