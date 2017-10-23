@@ -246,7 +246,7 @@ function rocket_admin_bar( $wp_admin_bar ) {
 			'parent' => 'wp-rocket',
 			'id'     => 'support',
 			'title'  => __( 'Support', 'rocket' ),
-			'href'   => WP_ROCKET_WEB_SUPPORT,
+			'href'   => rocket_get_external_url( 'support' ),
 		));
 	}
 }
