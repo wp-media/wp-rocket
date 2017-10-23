@@ -112,9 +112,8 @@ function get_rocket_browser_cache_busting( $src, $current_filter = '' ) {
 		$site_url = trailingslashit( rocket_add_url_protocol( site_url() ) );
 	}
 
-	$abspath                = wp_normalize_path( ABSPATH );
 	$relative_src           = ltrim( $file['path'] . '?' . $file['query'], '/' );
-	$abspath_src            = realpath( str_replace( $site_url, $abspath, strtok( $full_src, '?' ) ) );
+	$abspath_src            = rocket_realpath( strtok( $full_src, '?' ) );
 	$cache_busting_filename = preg_replace( '/\.(js|css)\?(?:timestamp|ver)=([^&]+)(?:.*)/', '-$2.$1', $relative_src );
 
 	if ( $cache_busting_filename === $relative_src ) {
@@ -221,9 +220,8 @@ function rocket_cache_dynamic_resource( $src ) {
 		$site_url = trailingslashit( rocket_add_url_protocol( site_url() ) );
 	}
 
-	$abspath              = wp_normalize_path( ABSPATH );
 	$relative_src         = ltrim( $file['path'], '/' );
-	$abspath_src          = realpath( str_replace( $site_url, $abspath, strtok( $full_src, '?' ) ) );
+	$abspath_src          = rocket_realpath( strtok( $full_src, '?' ) );
 
 	/*
      * Filters the dynamic resource cache filename
