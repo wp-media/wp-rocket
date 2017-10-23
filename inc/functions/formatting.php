@@ -251,7 +251,7 @@ function rocket_realpath( $file, $absolute = true ) {
 	if ( $absolute ) {
 		$abspath  = wp_normalize_path( ABSPATH );
 		$site_url = trailingslashit( rocket_add_url_protocol( site_url() ) );
-		$file     = str_replace( $site_url, $abspath, $file );
+		$file     = str_replace( $site_url, $abspath, rocket_set_internal_url_scheme( $file ) );
 	}
 
 	$path = array();
