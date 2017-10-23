@@ -107,7 +107,7 @@ function rocket_minify_files( $buffer, $extension ) {
 	$minify_url = get_rocket_minify_url( $files, $extension );
 
 	if ( ! $minify_url ) {
-		continue;
+		return $buffer;
 	}
 
 	if ( 'css' === $extension ) {
