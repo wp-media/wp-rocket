@@ -773,3 +773,18 @@ function rocket_insert_minify_js_in_footer() {
 
 	return false;
 }
+
+/**
+ * Compatibility with WordPress multisite with subfolders websites
+ *
+ * @since 2.6.5
+ * @deprecated 2.11
+ *
+ * @param string $url minified file URL.
+ * @return string Updated minified file URL
+ */
+function rocket_fix_minify_multisite_path_issue( $url ) {
+	_deprecated_function( __FUNCTION__, '2.11' );
+
+	return $url;
+}
