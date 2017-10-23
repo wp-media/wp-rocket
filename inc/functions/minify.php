@@ -9,8 +9,8 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  * @since 2.11
  * @since 2.1
  *
- * @param string $buffer HTML output.
- * @param string $extension type of files to minify.
+ * @param string $buffer    HTML output.
+ * @param string $extension Type of files to minify.
  * @return string Updated HTML output.
  */
 function rocket_minify_files( $buffer, $extension ) {
@@ -123,6 +123,16 @@ function rocket_minify_files( $buffer, $extension ) {
 	}
 }
 
+/**
+ * Determines if the file is external
+ *
+ * @since 2.11
+ * @author Remy Perona
+ *
+ * @param string $url       URL of the file.
+ * @param string $extension File extension.
+ * @return bool True if external, false otherwise
+ */
 function is_rocket_external_file( $url, $extension ) {
 	$file       = get_rocket_parse_url( $url );
 	$wp_content = get_rocket_parse_url( WP_CONTENT_URL );
@@ -152,6 +162,16 @@ function is_rocket_external_file( $url, $extension ) {
 	return false;
 }
 
+/**
+ * Determines if it is a file excluded from minification
+ *
+ * @since 2.11
+ * @author Remy Perona
+ *
+ * @param array  $tag       Array containing the matches from the regex.
+ * @param string $extension File extension.
+ * @return bool True if it is a file excluded, false otherwise
+ */
 function is_rocket_minify_excluded_file( $tag, $extension ) {
 	// File should not be minified.
 	if ( false !== strpos( $tag[0], 'data-minify=' ) || false !== strpos( $tag[0], 'data-no-minify=' ) ) {
@@ -181,6 +201,16 @@ function is_rocket_minify_excluded_file( $tag, $extension ) {
 	return false;
 }
 
+/**
+ * Creates the minify URL if the minification is successful
+ *
+ * @since 2.11
+ * @author Remy Perona
+ *
+ * @param string|array $files     Original file(s) URL(s).
+ * @param string       $extension File(s) extension.
+ * @return string|bool The minify URL if successful, false otherwise
+ */
 function get_rocket_minify_url( $files, $extension ) {
 	if ( empty( $files ) ) {
 		return false;
@@ -228,6 +258,16 @@ function get_rocket_minify_url( $files, $extension ) {
 	}
 }
 
+/**
+ * Minifies the content
+ *
+ * @since 2.11
+ * @author Remy Perona
+ *
+ * @param string|array $files     File(s) to minify.
+ * @param string       $extension File(s) extension.
+ * @return string Minified content
+ */
 function rocket_minify( $files, $extension ) {
 	if ( 'css' === $extension ) {
 		$minify = new Minify\CSS;
@@ -249,6 +289,16 @@ function rocket_minify( $files, $extension ) {
 	return $minify->minify();
 }
 
+/**
+ * Writes the minified content to a file
+ *
+ * @since 2.11
+ * @author Remy Perona
+ *
+ * @param string $content  Minified content.
+ * @param string $filename Name of the minified file.
+ * @return bool True if successful, false otherwise
+ */
 function rocket_write_minify_file( $content, $filename ) {
 	$minify_filepath = WP_ROCKET_MINIFY_CACHE_PATH . get_current_blog_id() . '/' . $filename;
 
@@ -317,7 +367,7 @@ function rocket_concatenate_google_fonts( $buffer ) {
 }
 
 /**
- * Used to minify inline CSS
+ * Minifies inline CSS
  *
  * @since 1.1.6
  *
@@ -330,7 +380,7 @@ function rocket_minify_inline_css( $css ) {
 }
 
 /**
- * Used to minify inline JavaScript
+ * Minifies inline JavaScript
  *
  * @since 1.1.6
  *
@@ -343,7 +393,7 @@ function rocket_minify_inline_js( $js ) {
 }
 
 /**
- * Get all CSS ans JS files of IE conditionals tags
+ * Extracts IE conditionals tags and replace them with placeholders
  *
  * @since 1.0
  *
@@ -363,7 +413,7 @@ function rocket_extract_ie_conditionals( $buffer ) {
 }
 
 /**
- * Replace WP Rocket IE conditionals tags
+ * Replaces WP Rocket placeholders with IE condtional tags
  *
  * @since 1.0
  *
