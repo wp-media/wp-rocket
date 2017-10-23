@@ -357,8 +357,19 @@ function set_rocket_wp_cache_define( $turn_it_on ) {
  */
 function rocket_clean_minify( $extensions = array( 'js', 'css' ) ) {
 	$extensions = is_string( $extensions ) ? (array) $extensions : $extensions;
-	$dir        = new RecursiveDirectoryIterator( WP_ROCKET_MINIFY_CACHE_PATH . get_current_blog_id(), FilesystemIterator::SKIP_DOTS );
-	$iterator   = new RecursiveIteratorIterator( $dir, RecursiveIteratorIterator::CHILD_FIRST );
+	try {
+		$dir = new RecursiveDirectoryIterator( WP_ROCKET_MINIFY_CACHE_PATH . get_current_blog_id(), FilesystemIterator::SKIP_DOTS );
+	} catch ( Exception $e ) {
+		// No logging yet.
+		return;
+	}
+
+	try {
+		$iterator = new RecursiveIteratorIterator( $dir, RecursiveIteratorIterator::CHILD_FIRST );
+	} catch ( Exception $e ) {
+		// No logging yet.
+		return;
+	}
 
 	foreach ( $extensions as $ext ) {
 		/**
@@ -377,6 +388,7 @@ function rocket_clean_minify( $extensions = array( 'js', 'css' ) ) {
 			}
 		} catch ( Exception $e ) {
 			// No logging yet.
+			return;
 		}
 
 		/**
@@ -407,8 +419,20 @@ function rocket_clean_minify( $extensions = array( 'js', 'css' ) ) {
  */
 function rocket_clean_cache_busting( $extensions = array( 'js', 'css' ) ) {
 	$extensions = is_string( $extensions ) ? (array) $extensions : $extensions;
-	$dir        = new RecursiveDirectoryIterator( WP_ROCKET_CACHE_BUSTING_PATH . get_current_blog_id(), FilesystemIterator::SKIP_DOTS );
-	$iterator   = new RecursiveIteratorIterator( $dir, RecursiveIteratorIterator::CHILD_FIRST );
+
+	try {
+		$dir = new RecursiveDirectoryIterator( WP_ROCKET_CACHE_BUSTING_PATH . get_current_blog_id(), FilesystemIterator::SKIP_DOTS );
+	} catch ( Exception $e ) {
+		// No logging yet.
+		return;
+	}
+
+	try {
+		$iterator = new RecursiveIteratorIterator( $dir, RecursiveIteratorIterator::CHILD_FIRST );
+	} catch ( Exception $e ) {
+		// No logging yet.
+		return;
+	}
 
 	foreach ( $extensions as $ext ) {
 		/**
