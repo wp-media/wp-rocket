@@ -247,7 +247,7 @@ function rocket_get_external_url( $target, $query_args = array() ) {
 			$url = $site_url . $url . '/';
 			break;
 		default:
-			return '';
+			$url = $site_url;
 	}
 
 	if ( $query_args ) {
