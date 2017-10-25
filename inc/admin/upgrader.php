@@ -135,6 +135,7 @@ function rocket_first_install() {
 				'cloudflare_old_settings'     => '',
 				'varnish_auto_purge'          => 0,
 				'do_beta'                     => 0,
+				'analytics_enabled'           => 0,
 			)
 		)
 	);
