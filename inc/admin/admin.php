@@ -470,38 +470,32 @@ function rocket_analytics_data() {
 	global $wp_version, $is_nginx, $is_apache, $is_iis7, $is_IIS;
 
 	$untracked_wp_rocket_options = array(
-		'license',
-		'consumer_email',
-		'consumer_key',
-		'secret_key',
-		'secret_cache_key',
-		'minify_css_key',
-		'minify_js_key',
-		'sitemaps',
-		'cdn_zone',
-		'cdn_cnames',
-		'cloudflare_email',
-		'cloudflare_api_key',
-		'cloudflare_domain',
-		'cloudflare_zone_id',
-		'cloudflare_old_settings',
-		'analytics_enabled',
-		'wl_author',
-		'wl_author_URI',
-		'wl_description',
-		'wl_plugin_URI',
-		'wl_plugin_name',
-		'wl_plugin_slug',
+		'license'                 => 1,
+		'consumer_email'          => 1,
+		'consumer_key'            => 1,
+		'secret_key'              => 1,
+		'secret_cache_key'        => 1,
+		'minify_css_key'          => 1,
+		'minify_js_key'           => 1,
+		'sitemaps'                => 1,
+		'cdn_zone'                => 1,
+		'cdn_cnames'              => 1,
+		'cloudflare_email'        => 1,
+		'cloudflare_api_key'      => 1,
+		'cloudflare_domain'       => 1,
+		'cloudflare_zone_id'      => 1,
+		'cloudflare_old_settings' => 1,
+		'analytics_enabled'       => 1,
+		'wl_author'               => 1,
+		'wl_author_URI'           => 1,
+		'wl_description'          => 1,
+		'wl_plugin_URI'           => 1,
+		'wl_plugin_name'          => 1,
+		'wl_plugin_slug'          => 1,
 	);
 
 	$theme = wp_get_theme();
-	$data  = get_option( WP_ROCKET_SLUG );
-
-	foreach ( $untracked_wp_rocket_options as $untracked_option ) {
-		if ( isset( $data[ $untracked_option ] ) ) {
-			unset( $data[ $untracked_option ] );
-		}
-	}
+	$data  = array_diff_key( get_option( WP_ROCKET_SLUG ), $untracked_wp_rocket_options );
 
 	if ( $is_nginx ) {
 		$data['web_server'] = 'NGINX';
