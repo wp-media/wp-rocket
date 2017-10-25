@@ -535,5 +535,4 @@ function rocket_force_minify_combine_all( $length, $ext ) {
  */
 function rocket_admin_print_styles() {
 	_deprecated_function( __FUNCTION__, '2.11' );
-	return false;
 }
