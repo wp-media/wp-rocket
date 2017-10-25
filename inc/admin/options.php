@@ -1091,7 +1091,7 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		set_rocket_wp_cache_define( true );
 	}
 
-	if ( isset( $oldvalue['analytics_enabled'] ) && isset( $value['analytics_enabled'] ) && $oldvalue['analytics_enabled'] !== $value['analytics_enabled'] && 1 === (int) $value['analytics_enabled'] ) {
+	if ( isset( $oldvalue['analytics_enabled'], $value['analytics_enabled'] ) && $oldvalue['analytics_enabled'] !== $value['analytics_enabled'] && 1 === (int) $value['analytics_enabled'] ) {
 		set_transient( 'rocket_analytics_optin', 1 );
 	}
 
