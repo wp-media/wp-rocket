@@ -1,12 +1,21 @@
 <?php
-
-namespace MatthiasMullie\Minify;
-
 /**
- * JavaScript minifier.
+ * JavaScript minifier
  *
  * Please report bugs on https://github.com/matthiasmullie/minify/issues
  *
+ * @author Matthias Mullie <minify@mullie.eu>
+ * @copyright Copyright (c) 2012, Matthias Mullie. All rights reserved
+ * @license MIT License
+ */
+namespace MatthiasMullie\Minify;
+
+/**
+ * JavaScript Minifier Class
+ *
+ * Please report bugs on https://github.com/matthiasmullie/minify/issues
+ *
+ * @package Minify
  * @author Matthias Mullie <minify@mullie.eu>
  * @author Tijs Verkoyen <minify@verkoyen.eu>
  * @copyright Copyright (c) 2012, Matthias Mullie. All rights reserved
@@ -111,9 +120,13 @@ class JS extends Minify
     protected $operatorsAfter = array();
 
     /**
+     * Public property so it can be accessed from inside the closure in
+     * extractRegex. Once PHP5.3 compatibility is dropped, we can make this
+     * property protected again.
+     *
      * @var array
      */
-    protected $nestedExtracted = array();
+    public $nestedExtracted = array();
 
     /**
      * {@inheritdoc}
@@ -188,8 +201,12 @@ class JS extends Minify
 
     /**
      * Strip comments from source code.
+     *
+     * Public method so it can be accessed from inside the closure in
+     * extractRegex. Once PHP5.3 compatibility is dropped, we can make this
+     * method protected again.
      */
-    protected function stripComments()
+    public function stripComments()
     {
         // single-line comments
         $this->registerPattern('/\/\/.*$/m', '');
@@ -230,11 +247,11 @@ class JS extends Minify
             // e.g. `if("some   string"/* or comment */)` should become
             //      `if("some   string")`
             if (isset($match['before'])) {
-                $other = new static();
+                $other = new $minifier();
                 $other->extractStrings('\'"`', "$count-");
                 $other->stripComments();
                 $match['before'] = $other->replace($match['before']);
-                $this->nestedExtracted += $other->extracted;
+                $minifier->nestedExtracted += $other->extracted;
             }
 
             return (isset($match['before']) ? $match['before'] : '').
@@ -248,7 +265,7 @@ class JS extends Minify
         // of the RegExp methods (a `\` followed by a variable or value is
         // likely part of a division, not a regex)
         $keywords = array('do', 'in', 'new', 'else', 'throw', 'yield', 'delete', 'return',  'typeof');
-        $before = '(?P<before>[=:,;\}\(\{&\|!]|^|'.implode('|', $keywords).')';
+        $before = '(?P<before>[=:,;\}\(\{\[&\|!]|^|'.implode('|', $keywords).')';
         $propertiesAndMethods = array(
             // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp#Properties_2
             'constructor',
@@ -595,5 +612,27 @@ class JS extends Minify
         }
 
         return $content;
+    }
+
+    /**
+     * Protected method in parent made public, so it can be accessed from inside
+     * the closure in extractRegex. Once PHP5.3 compatibility is dropped, we can
+     * remove this.
+     *
+     * {@inheritdoc}
+     */
+    public function extractStrings($chars = '\'"', $placeholderPrefix = '') {
+        parent::extractStrings($chars, $placeholderPrefix);
+    }
+
+    /**
+     * Protected method in parent made public, so it can be accessed from inside
+     * the closure in extractRegex. Once PHP5.3 compatibility is dropped, we can
+     * remove this.
+     *
+     * {@inheritdoc}
+     */
+    public function replace($content) {
+        return parent::replace($content);
     }
 }
