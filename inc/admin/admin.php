@@ -553,9 +553,12 @@ function rocket_analytics_optin() {
 		wp_nonce_ays( '' );
 	}
 
-	$value = sanitize_text_field( $_GET['value'] );
+	if ( ! current_user_can( 'administrator' ) ) {
+		wp_redirect( wp_get_referer() );
+		die();
+	}
 
-	if ( 'yes' === $value ) {
+	if ( 'yes' === $_GET['value'] ) {
 		update_rocket_option( 'analytics_enabled', 1 );
 		set_transient( 'rocket_analytics_optin', 1 );
 	}
