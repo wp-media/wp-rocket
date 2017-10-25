@@ -393,4 +393,12 @@ jQuery( document ).ready( function($){
         }
         return false;
     }
+
+	$( '.rocket-analytics-data-container' ).hide();
+	$( '.rocket-preview-analytics-data' ).on( 'click', function( e ) {
+		e.preventDefault();
+
+		$(this).parent().next( '.rocket-analytics-data-container' ).toggle();
+	} );
+
 } );
