@@ -497,7 +497,7 @@ function rocket_analytics_data() {
 	$theme = wp_get_theme();
 	$data  = get_option( WP_ROCKET_SLUG );
 
-	foreach( $untracked_wp_rocket_options as $untracked_option ) {
+	foreach ( $untracked_wp_rocket_options as $untracked_option ) {
 		if ( isset( $data[ $untracked_option ] ) ) {
 			unset( $data[ $untracked_option ] );
 		}
@@ -505,11 +505,11 @@ function rocket_analytics_data() {
 
 	if ( $is_nginx ) {
 		$data['web_server'] = 'NGINX';
-	} else if ( $is_apache ) {
+	} elseif ( $is_apache ) {
 		$data['web_server'] = 'Apache';
-	} else if ( $is_iis7 ) {
+	} elseif ( $is_iis7 ) {
 		$data['web_server'] = 'IIS 7';
-	} else if ( $is_IIS ) {
+	} elseif ( $is_IIS ) {
 		$data['web_server'] = 'IIS';
 	}
 

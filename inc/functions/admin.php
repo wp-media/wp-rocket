@@ -559,6 +559,14 @@ function rocket_allow_json_mime_type( $wp_get_mime_types ) {
 	return $wp_get_mime_types;
 }
 
+/**
+ * Lists Data collected for analytics
+ *
+ * @since 2.11
+ * @author Remy Perona
+ *
+ * @return string HTML list
+ */
 function rocket_preview_data_collected_list() {
 	return '<ul>
 		<li>' . __( 'Anonymized WP Rocket settings', 'rocket' ) . '</li>

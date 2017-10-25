@@ -71,6 +71,12 @@ function rocket_add_admin_css_js_everywhere() {
 }
 add_action( 'admin_enqueue_scripts', 'rocket_add_admin_css_js_everywhere', 11 );
 
+/**
+ * Adds mixpanel JS code in header when analytics data should be sent
+ *
+ * @since 2.11
+ * @author Remy Perona
+ */
 function rocket_add_mixpanel_code() {
 	if ( rocket_send_analytics_data() ) {
 	?>

@@ -770,7 +770,7 @@ function rocket_analytics_optin_notice() {
 		<p><strong><?php _e( 'Allow WP Rocket to collect non-sensitive diagnostic data from this website?', 'rocket' ); ?></strong></p>
 		<p><?php _e( 'This would enable us to improve WP Rocket for you in the future.', 'rocket' ); ?></p>
 		<p><button class="hide-if-no-js button-rocket-reveal rocket-preview-analytics-data"><?php _e( 'See a preview of which data would be collected', 'rocket' ); ?></button></p>
-		<div class="rocket-analytics-data-container"><?php echo rocket_preview_data_collected_list() ; ?></div>
+		<div class="rocket-analytics-data-container"><?php echo rocket_preview_data_collected_list(); ?></div>
 		<p><a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_analytics_optin&value=yes' ), 'analytics_optin' ); ?>" class="button button-primary"><?php _e( 'Yes I Allow', 'rocket' ); ?></a> <a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_analytics_optin&value=no' ), 'analytics_optin' ); ?>" class="button button-secondary"><?php _e( 'No Thanks', 'rocket' ); ?></a></p>
 	</div>
 	<?php
@@ -806,7 +806,7 @@ function rocket_analytics_optin_thankyou_notice() {
 	<div class="notice notice-success is-dismissible">
 		<p><strong><?php _e( 'Thank you!', 'rocket' ); ?></strong></p>
 		<p><?php _e( 'WP Rocket now collects these metrics from your website:', 'rocket' ); ?></p>
-		<div><?php echo rocket_preview_data_collected_list() ; ?></div>
+		<div><?php echo rocket_preview_data_collected_list(); ?></div>
 		<p><?php _e( 'If you ever want to opt-out, you can do so from the Tools tab of WP Rocket settings', 'rocket' ); ?></p>
 	</div>
 	<?php
