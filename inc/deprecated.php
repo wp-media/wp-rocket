@@ -526,3 +526,14 @@ function rocket_force_minify_combine_all( $length, $ext ) {
 
 	return $length;
 }
+
+/**
+ * Add some CSS to display the dismiss cross
+ *
+ * @since 1.1.10
+ * @deprecated 2.11
+ */
+function rocket_admin_print_styles() {
+	_deprecated_function( __FUNCTION__, '2.11' );
+	return false;
+}
