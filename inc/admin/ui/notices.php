@@ -737,3 +737,79 @@ function rocket_cloudflare_update_settings() {
 	}
 }
 add_action( 'admin_notices', 'rocket_cloudflare_update_settings' );
+
+/**
+ * Displays a notice for analytics opt-in
+ *
+ * @since 2.11
+ * @author Remy Perona
+ */
+function rocket_analytics_optin_notice() {
+	$screen              = get_current_screen();
+	$rocket_wl_name      = get_rocket_option( 'wl_plugin_name', null );
+	$wp_rocket_screen_id = isset( $rocket_wl_name ) ? 'settings_page_' . sanitize_key( $rocket_wl_name ) : 'settings_page_wprocket';
+
+	if ( ! current_user_can( 'administrator' ) ) {
+		return;
+	}
+
+	if ( $screen->id !== $wp_rocket_screen_id ) {
+		return;
+	}
+
+	if ( 1 === (int) get_option( 'rocket_analytics_notice_displayed' ) ) {
+		return;
+	}
+
+	if ( get_rocket_option( 'analytics_enabled' ) ) {
+		return;
+	}
+
+	?>
+	<div class="notice notice-info is-dismissible">
+		<p><strong><?php _e( 'Allow WP Rocket to collect non-sensitive diagnostic data from this website?', 'rocket' ); ?></strong></p>
+		<p><?php _e( 'This would enable us to improve WP Rocket for you in the future.', 'rocket' ); ?></p>
+		<p><button class="hide-if-no-js button-rocket-reveal rocket-preview-analytics-data"><?php _e( 'See a preview of which data would be collected', 'rocket' ); ?></button></p>
+		<div class="rocket-analytics-data-container"><?php echo rocket_preview_data_collected_list() ; ?></div>
+		<p><a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_analytics_optin&value=yes' ), 'analytics_optin' ); ?>" class="button button-primary"><?php _e( 'Yes I Allow', 'rocket' ); ?></a> <a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_analytics_optin&value=no' ), 'analytics_optin' ); ?>" class="button button-secondary"><?php _e( 'No Thanks', 'rocket' ); ?></a></p>
+	</div>
+	<?php
+}
+add_action( 'admin_notices', 'rocket_analytics_optin_notice' );
+
+/**
+ * Displays a notice after analytics opt-in
+ *
+ * @since 2.11
+ * @author Remy Perona
+ */
+function rocket_analytics_optin_thankyou_notice() {
+	$screen              = get_current_screen();
+	$rocket_wl_name      = get_rocket_option( 'wl_plugin_name', null );
+	$wp_rocket_screen_id = isset( $rocket_wl_name ) ? 'settings_page_' . sanitize_key( $rocket_wl_name ) : 'settings_page_wprocket';
+
+	if ( ! current_user_can( 'administrator' ) ) {
+		return;
+	}
+
+	if ( $screen->id !== $wp_rocket_screen_id ) {
+		return;
+	}
+
+	$analytics_optin = get_transient( 'rocket_analytics_optin' );
+
+	if ( ! $analytics_optin ) {
+		return;
+	}
+
+	?>
+	<div class="notice notice-success is-dismissible">
+		<p><strong><?php _e( 'Thank you!', 'rocket' ); ?></strong></p>
+		<p><?php _e( 'WP Rocket now collects these metrics from your website:', 'rocket' ); ?></p>
+		<div><?php echo rocket_preview_data_collected_list() ; ?></div>
+		<p><?php _e( 'If you ever want to opt-out, you can do so from the Tools tab of WP Rocket settings', 'rocket' ); ?></p>
+	</div>
+	<?php
+	delete_transient( 'rocket_analytics_optin' );
+}
+add_action( 'admin_notices', 'rocket_analytics_optin_thankyou_notice' );
