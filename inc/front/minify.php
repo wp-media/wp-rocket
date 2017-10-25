@@ -30,7 +30,7 @@ function rocket_minify_process( $buffer ) {
 	if ( $enable_css && ( ! defined( 'DONOTMINIFYCSS' ) || ! DONOTMINIFYCSS ) && ! is_rocket_post_excluded_option( 'minify_css' ) ) {
 		$buffer = rocket_minify_files( $buffer, 'js' );
 	}
-	
+
 	// Concatenate Google Fonts.
 	if ( $enable_google_fonts ) {
 		$buffer = rocket_concatenate_google_fonts( $buffer );

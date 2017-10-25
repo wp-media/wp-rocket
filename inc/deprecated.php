@@ -791,6 +791,7 @@ function rocket_fix_minify_multisite_path_issue( $url ) {
 
 /**
  * Force the minification to create only 1 file.
+ *
  * @param int    $length maximum URL length.
  * @param string $ext file extension.
  * @return int Updated length

@@ -451,6 +451,7 @@ function rocket_clean_cache_busting( $extensions = array( 'js', 'css' ) ) {
 			}
 		} catch ( Exception $e ) {
 			// No logging yet.
+			return;
 		}
 
 		/**
