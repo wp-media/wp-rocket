@@ -42,19 +42,17 @@ Actions can also be grouped together using a custom taxonomy named `action-group
 
 Action Scheduler has a built in administration screen for monitoring, debugging and manually triggering scheduled actions.
 
-To enable the interface:
+The interface is enabled by default and it's accesible through
 
-1. Set [`WP_DEBUG`](https://codex.wordpress.org/WP_DEBUG) in your site's *wp-config.php* file.
-2. Go to: **Tools > Scheduled Actions**.
+1. **WooCommerce > Status > Scheduled Actions**
+2. If WooCommerce is not installed it is accesible through: **Tools > Scheduled Actions**.
 
-![](http://f.cl.ly/items/1v2C161c2i230K0F1J3A/Screen%20Shot%202014-04-25%20at%203.33.26%20pm.png)
+![](https://cldup.com/5BA2BNB1sw.png)
 
 Among other tasks, from the admin screen you can:
 
-* view the scheduled actions with a specific status, like the all actions which have failed or are in-progress (http://cl.ly/image/3A3C1b1p0702).
-* view the log entries (comments) for a specific action to find out why it failed (http://cl.ly/image/3h1E0c23081U).
-* search for scheduled actions with a certain hook name, argument or claim ID (http://cl.ly/image/0V1e1s0A2J3Z).
-* sort scheduled actions by hook name, scheduled, start or completed date, claim ID or number of log entries.
+* view the scheduled actions with a specific status, like the all actions which have failed or are in-progress (https://cldup.com/NNTwE88Xl8.png).
+* view the log entries for a specific action to find out why it failed.
 
 Still have questions? Check out the [FAQ below](#faq).
 
