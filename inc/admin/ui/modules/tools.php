@@ -26,6 +26,27 @@ if ( ! $rwl ) {
 			),
 		)
 	);
+
+	add_settings_field(
+		'rocket_analytics_enabled',
+		__( 'Analytics:', 'rocket' ),
+		'rocket_field',
+		'rocket_tools',
+		'rocket_display_tools',
+		array(
+			array(
+				'type'         => 'checkbox',
+				'label'        => __( 'Allow WP Rocket to collect non-sensitive diagnostic data.', 'rocket' ),
+				'label_for'    => 'analytics_enabled',
+				'label_screen' => __( 'Analytics tracking', 'rocket' ),
+			),
+			array(
+				'type'        => 'helper_help',
+				'name'        => 'analytics_description',
+				'description' => '<button class="hide-if-no-js button-rocket-reveal rocket-preview-analytics-data">' . __( 'Preview data', 'rocket' ) . '</button><div class="rocket-analytics-data-container">' . rocket_preview_data_collected_list() . '</div>',
+			),
+		)
+	);
 }
 
 /**
