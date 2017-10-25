@@ -878,6 +878,9 @@ function rocket_settings_callback( $inputs ) {
 		}
 	}
 
+	// Analytics opt-in.
+	$inputs['analytics_enabled'] = isset( $inputs['analytics_enabled'] ) ? 1 : 0;
+
 	$filename_prefix = rocket_is_white_label() ? sanitize_title( get_rocket_option( 'wl_plugin_name' ) ) : 'wp-rocket';
 
 	if ( isset( $_FILES['import'] ) && 0 !== $_FILES['import']['size'] && $settings = rocket_handle_settings_import( $_FILES['import'], $filename_prefix, $inputs ) ) {
@@ -1086,6 +1089,10 @@ function rocket_after_save_options( $oldvalue, $value ) {
 	// Set WP_CACHE constant in wp-config.php.
 	if ( ! defined( 'WP_CACHE' ) || ! WP_CACHE ) {
 		set_rocket_wp_cache_define( true );
+	}
+
+	if ( isset( $oldvalue['analytics_enabled'] ) && isset( $value['analytics_enabled'] ) && $oldvalue['analytics_enabled'] !== $value['analytics_enabled'] && 1 === (int) $value['analytics_enabled'] ) {
+		set_transient( 'rocket_analytics_optin', 1 );
 	}
 
 	// Redirect on the correct page slug name to avoid false negative error message.
