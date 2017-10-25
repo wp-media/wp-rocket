@@ -515,7 +515,7 @@ function rocket_defered_module() {
  * @param string $pretty_url The minified URL cache file.
  * @return bool True if sucessfully saved the minify cache file, false otherwise
  */
-function rocket_fetch_and_cache_minify( $src, $pretty_url ) {
+function rocket_fetch_and_cache_minify( $url, $pretty_url ) {
 	_deprecated_function( __FUNCTION__, '2.11', 'rocket_minify()' );
 
 	return false;

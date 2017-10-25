@@ -442,7 +442,7 @@ function get_rocket_exclude_files( $extension ) {
 		 * @param array $excluded_files List of excluded CSS files.
 		*/
 		$excluded_files = apply_filters( 'rocket_exclude_css', $excluded_files );
-	} elseif( 'js' === $extension ) {
+	} elseif ( 'js' === $extension ) {
 		global $wp_scripts;
 
 		$excluded_files = get_rocket_option( 'exclude_js', array() );

@@ -401,7 +401,7 @@ function rocket_clean_minify( $extensions = array( 'js', 'css' ) ) {
 		do_action( 'after_rocket_clean_minify', $ext );
 	}
 
-	foreach( $iterator as $item ) {
+	foreach ( $iterator as $item ) {
 		if ( rocket_direct_filesystem()->is_dir( $item ) ) {
 			rocket_direct_filesystem()->delete( $item );
 		}

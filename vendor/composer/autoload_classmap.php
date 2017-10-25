@@ -6,7 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Minify_CSS_UriRewriter' => $baseDir . '/inc/vendors/classes/class-minify-css-uri-rewriter.php',
+    'Minify_CSS_UriRewriter' => $baseDir . '/inc/vendors/classes/class-minify-css-urirewriter.php',
     'Minify_HTML' => $baseDir . '/inc/vendors/classes/class-minify-html.php',
     'Mobile_Detect' => $vendorDir . '/mobiledetect/mobiledetectlib/Mobile_Detect.php',
     'Rocket_Sitemap_Preload_Process' => $baseDir . '/inc/classes/background-processing.php',

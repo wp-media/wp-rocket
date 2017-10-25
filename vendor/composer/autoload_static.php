@@ -44,7 +44,7 @@ class ComposerStaticInit0667ef9b9265640664ae067531ce2727
     );
 
     public static $classMap = array (
-        'Minify_CSS_UriRewriter' => __DIR__ . '/../..' . '/inc/vendors/classes/class-minify-css-uri-rewriter.php',
+        'Minify_CSS_UriRewriter' => __DIR__ . '/../..' . '/inc/vendors/classes/class-minify-css-urirewriter.php',
         'Minify_HTML' => __DIR__ . '/../..' . '/inc/vendors/classes/class-minify-html.php',
         'Mobile_Detect' => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/Mobile_Detect.php',
         'Rocket_Sitemap_Preload_Process' => __DIR__ . '/../..' . '/inc/classes/background-processing.php',
