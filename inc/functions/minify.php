@@ -56,7 +56,7 @@ function rocket_minify_files( $buffer, $extension ) {
 		global $wp_scripts;
 
 		// Don't minify jQuery included in WP core since it's already minified but without .min in the filename.
-		if ( false !== strpos( $tag[1], $wp_scripts->registered['jquery-core']->src ) ) {
+		if ( ! empty( $wp_scripts->registered['jquery-core']->src ) && false !== strpos( $tag[1], $wp_scripts->registered['jquery-core']->src ) ) {
 			$excluded_files[] = $tag;
 			continue;
 		}
@@ -275,7 +275,7 @@ function rocket_minify( $files, $extension ) {
 		$minify = new Minify\JS();
 	}
 
-	$files = is_string( $files ) ? (array) $files : $files;
+	$files = (array) $files;
 
 	foreach ( $files as $file ) {
 		$file_content = rocket_direct_filesystem()->get_contents( $file );
@@ -355,11 +355,11 @@ function rocket_concatenate_google_fonts( $buffer ) {
 
 	// Concatenate fonts tag.
 	$subsets = ( $subsets ) ? '&subset=' . implode( ',', array_filter( array_unique( $subsets ) ) ) : '';
-	$fonts   = trim( implode( '|' , array_filter( array_unique( $fonts ) ) ), '|' );
+	$fonts   = implode( '|' , array_filter( array_unique( $fonts ) ) );
 	$fonts   = str_replace( '|', '%7C', $fonts );
 
 	if ( ! empty( $fonts ) ) {
-		$fonts = '<link rel="stylesheet" href="//fonts.googleapis.com/css?family=' . $fonts . $subsets . '" />';
+		$fonts = '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=' . $fonts . $subsets . '" />';
 		$buffer = preg_replace( '/<head(.*)>/U', '<head$1>' . $fonts, $buffer, 1 );
 	}
 
