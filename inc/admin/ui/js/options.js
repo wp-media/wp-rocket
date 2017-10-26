@@ -80,16 +80,6 @@ jQuery( document ).ready( function($){
 
 	$inputs_render_blocking.on('change.wprocket', check_minify);
 
-	// Deferred JS
-	function rocket_deferred_rename()
-	{
-		$('#rkt-drop-deferred .rkt-module-drag').each( function(i){
-			var $item_t_input = $(this).find( 'input[type=text]' );
-			var $item_c_input = $(this).find( 'input[type=checkbox]' );
-			$($item_t_input).attr( 'name', 'wp_rocket_settings[deferred_js_files]['+i+']' );
-		});
-	}
-
 	var async_css 		 = $( '#async_css' );
 	var critical_css_row = $( '.critical-css-row' );
 
@@ -113,7 +103,6 @@ jQuery( document ).ready( function($){
 	minify_css.change( function() {
 		if ( ! minify_css.is( ':checked' ) ) {
 			concatenate_css.find( '#minify_concatenate_css' ).prop( 'checked', false );
-			$( '.fieldname-minify_css_combine_all' ).hide();
 		}
 
 		concatenate_css.toggle( 'fast' );
@@ -132,41 +121,10 @@ jQuery( document ).ready( function($){
 	minify_js.change( function() {
 		if ( ! minify_js.is( ':checked' ) ) {
 			concatenate_js.find( '#minify_concatenate_js' ).prop( 'checked', false );
-			$( '.fieldname-minify_js_combine_all' ).hide();
 		}
 
 		concatenate_js.toggle( 'fast' );
 		exclude_js_row.toggle( 'fast' );
-	});
-
-	// Minify JS in footer
-	function rocket_minify_js_rename() {
-		$('#rkt-drop-minify_js_in_footer .rkt-module-drag').each( function(i){
-			var $item_t_input = $(this).find( 'input[type=text]' );
-			$($item_t_input).attr( 'name', 'wp_rocket_settings[minify_js_in_footer]['+i+']' );
-		});
-	}
-
-	$('.rkt-module-drop').sortable({
-		update : function() {
-			if ( $(this).attr('id') == 'rkt-drop-deferred' ) {
-				rocket_deferred_rename();
-			}
-
-			if ( $(this).attr('id') == 'rkt-drop-minify_js_in_footer' ) {
-				rocket_minify_js_rename();
-			}
-		},
-		axis: "y",
-		items: ".rkt-module-drag",
-		containment: "parent",
-		cursor: "move",
-		handle: ".rkt-module-move",
-		forcePlaceholderSize: true,
-		dropOnEmpty: false,
-		placeholder: 'sortable-placeholder',
-		tolerance: 'pointer',
-		revert: true,
 	});
 
 	// Remove input
@@ -182,10 +140,6 @@ jQuery( document ).ready( function($){
 
 		e.preventDefault();
 		$($('#' + moduleID ).siblings('.rkt-module-model:last')[0].innerHTML).appendTo('#' + moduleID);
-
-		if( moduleID == '' ) {
-			rocket_deferred_rename();
-		}
 
 	});
 
@@ -439,4 +393,12 @@ jQuery( document ).ready( function($){
         }
         return false;
     }
+
+	$( '.rocket-analytics-data-container' ).hide();
+	$( '.rocket-preview-analytics-data' ).on( 'click', function( e ) {
+		e.preventDefault();
+
+		$(this).parent().next( '.rocket-analytics-data-container' ).toggle();
+	} );
+
 } );

@@ -191,11 +191,6 @@ function rocket_field( $args ) {
 
 				break;
 
-			case 'rocket_defered_module':
-					rocket_defered_module();
-
-				break;
-
 			case 'helper_description':
 				$description = isset( $args['description'] ) ? sprintf( '<p class="description help %1$s" %2$s><span class="dashicons dashicons-info" aria-hidden="true"></span><strong class="screen-reader-text">%3$s</strong> %4$s</p>', $class, $parent, _x( 'Note:', 'screen-reader-text', 'rocket' ), $args['description'] ) : '';
 				echo apply_filters( 'rocket_help', $description, $args['name'], 'description' );
@@ -252,72 +247,6 @@ function rocket_field( $args ) {
 		}
 	}
 
-}
-
-/**
- * Used to display the defered module on settings form
- *
- * @since 1.1.0
- */
-function rocket_defered_module() {
-	?>
-	<fieldset>
-	<legend class="screen-reader-text"><span><?php _e( '<strong>JS</strong> files with Deferred Loading JavaScript', 'rocket' ); ?></span></legend>
-
-	<div id="rkt-drop-deferred" class="rkt-module rkt-module-drop">
-
-		<?php
-		$deferred_js_files = get_rocket_option( 'deferred_js_files' );
-
-		if ( $deferred_js_files ) {
-
-			foreach ( $deferred_js_files as $k => $_url ) {
-			?>
-
-				<p class="rkt-module-drag">
-					<span class="dashicons dashicons-sort rkt-module-move hide-if-no-js"></span>
-
-					<input style="width: 32em" type="text" placeholder="http://" class="deferred_js regular-text" name="wp_rocket_settings[deferred_js_files][<?php echo $k; ?>]" value="<?php echo esc_url( $_url ); ?>" />
-
-					<span class="dashicons dashicons-no rkt-module-remove hide-if-no-js"></span>
-				</p>
-				<!-- .rkt-module-drag -->
-
-			<?php
-			}
-		} else {
-			// If no files yet, use this template inside #rkt-drop-deferred.
-			?>
-
-			<p class="rkt-module-drag">
-				<span class="dashicons dashicons-sort rkt-module-move hide-if-no-js"></span>
-
-				<input style="width: 32em" type="text" placeholder="http://" class="deferred_js regular-text" name="wp_rocket_settings[deferred_js_files][0]" value="" />
-			</p>
-			<!-- .rkt-module-drag -->
-
-				<?php } ?>
-
-	</div>
-	<!-- .rkt-drop-deferred -->
-
-	
-	<div class="rkt-module-model hide-if-js">
-
-		<p class="rkt-module-drag">
-			<span class="dashicons dashicons-sort rkt-module-move hide-if-no-js"></span>
-
-			<input style="width: 32em" type="text" placeholder="http://" class="deferred_js regular-text" name="wp_rocket_settings[deferred_js_files][]" value="" />
-
-			<span class="dashicons dashicons-no rkt-module-remove hide-if-no-js"></span>
-		</p>
-		<!-- .rkt-module-drag -->
-	</div>
-	<!-- .rkt-model-deferred-->
-
-	<p><a href="javascript:void(0)" class="rkt-module-clone hide-if-no-js button-secondary"><?php _e( 'Add URL', 'rocket' ); ?></a></p>
-
-<?php
 }
 
 /**
@@ -563,8 +492,6 @@ function rocket_display_options() {
 				'version',
 				'cloudflare_old_settings',
 				'cloudflare_zone_id',
-				'minify_css_legacy',
-				'minify_js_legacy',
 			)
 		);
 
@@ -825,32 +752,6 @@ function rocket_settings_callback( $inputs ) {
 		$inputs['exclude_defer_js'] = array();
 	}
 
-	/*
-	 * Option : JS files with deferred loading
-	 */
-	if ( ! empty( $inputs['deferred_js_files'] ) ) {
-		$inputs['deferred_js_files'] = array_unique( $inputs['deferred_js_files'] );
-		$inputs['deferred_js_files'] = array_map( 'rocket_sanitize_js', $inputs['deferred_js_files'] );
-		$inputs['deferred_js_files'] = array_filter( $inputs['deferred_js_files'] );
-	} else {
-		$inputs['deferred_js_files'] = array();
-	}
-
-	/*
-	 * Option : JS files of the minification to insert in footer
-	 */
-	if ( ! empty( $inputs['minify_js_in_footer'] ) ) {
-		foreach ( $inputs['minify_js_in_footer'] as $k => $url ) {
-			if ( in_array( $url, $inputs['deferred_js_files'], true ) ) {
-				unset( $inputs['minify_js_in_footer'][ $k ] );
-			}
-		}
-
-		$inputs['minify_js_in_footer'] = array_filter( array_map( 'rocket_sanitize_js', array_unique( $inputs['minify_js_in_footer'] ) ) );
-	} else {
-		$inputs['minify_js_in_footer'] = array();
-	}
-
 	/**
 	 * Database options
 	 */
@@ -977,6 +878,9 @@ function rocket_settings_callback( $inputs ) {
 		}
 	}
 
+	// Analytics opt-in.
+	$inputs['analytics_enabled'] = isset( $inputs['analytics_enabled'] ) ? 1 : 0;
+
 	$filename_prefix = rocket_is_white_label() ? sanitize_title( get_rocket_option( 'wl_plugin_name' ) ) : 'wp-rocket';
 
 	if ( isset( $_FILES['import'] ) && 0 !== $_FILES['import']['size'] && $settings = rocket_handle_settings_import( $_FILES['import'], $filename_prefix, $inputs ) ) {
@@ -1063,20 +967,6 @@ function rocket_after_save_options( $oldvalue, $value ) {
 				'sslverify'  => apply_filters( 'https_local_ssl_verify', true ),
 			)
 		);
-	}
-
-	if ( $oldvalue['minify_css'] !== $value['minify_css'] && 0 === $value['minify_css'] ) {
-		if ( ! isset( $value['minify_css_legacy'] ) || 0 !== $value['minify_css_legacy'] ) {
-			update_rocket_option( 'minify_css_legacy', 0 );
-			rocket_generate_config_file();
-		}
-	}
-
-	if ( $oldvalue['minify_js'] !== $value['minify_js'] && 0 === $value['minify_js'] ) {
-		if ( ! isset( $value['minify_js_legacy'] ) || 0 !== $value['minify_js_legacy'] ) {
-			update_rocket_option( 'minify_js_legacy', 0 );
-			rocket_generate_config_file();
-		}
 	}
 
 	// Performs the database optimization when settings are saved with the "save and optimize" submit button".
@@ -1201,6 +1091,10 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		set_rocket_wp_cache_define( true );
 	}
 
+	if ( isset( $oldvalue['analytics_enabled'], $value['analytics_enabled'] ) && $oldvalue['analytics_enabled'] !== $value['analytics_enabled'] && 1 === (int) $value['analytics_enabled'] ) {
+		set_transient( 'rocket_analytics_optin', 1 );
+	}
+
 	// Redirect on the correct page slug name to avoid false negative error message.
 	if ( ! empty( $_POST ) && $oldvalue['wl_plugin_name'] !== $value['wl_plugin_name'] &&
 		isset( $_POST['option_page'], $_POST['action'] ) && 'wp_rocket' === $_POST['option_page'] && 'update' === $_POST['action'] ) {
@@ -1262,7 +1156,6 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 	// Regenerate the minify key if JS files have been modified.
 	if ( ( isset( $newvalue['minify_js'], $oldvalue['minify_js'] ) && $newvalue['minify_js'] !== $oldvalue['minify_js'] )
 		|| ( isset( $newvalue['exclude_js'], $oldvalue['exclude_js'] ) && $newvalue['exclude_js'] !== $oldvalue['exclude_js'] )
-		|| ( isset( $newvalue['minify_js_in_footer'], $oldvalue['minify_js_in_footer'] ) && $newvalue['minify_js_in_footer'] !== $oldvalue['minify_js_in_footer'] )
 		|| ( isset( $oldvalue['cdn'] ) && ! isset( $newvalue['cdn'] ) || ! isset( $oldvalue['cdn'] ) && isset( $newvalue['cdn'] ) )
 	) {
 		$newvalue['minify_js_key'] = create_rocket_uniqid();
