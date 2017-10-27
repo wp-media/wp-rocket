@@ -24,9 +24,7 @@ if ( class_exists( '\\Savvii\\CacheFlusherPlugin' ) & class_exists( '\\Savvii\\O
 			rocket_clean_domain();
 
 			// Preload cache.
-			if ( get_rocket_option( 'sitemap_preload', 0 ) ) {
-				run_rocket_sitemap_preload();
-			}
+			run_rocket_preload_cache( 'cache-preload' );
 		}
 	}
 	add_action( 'init', 'rocket_clear_cache_after_savvii' );
