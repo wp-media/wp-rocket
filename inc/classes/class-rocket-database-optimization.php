@@ -1,12 +1,11 @@
 <?php
-defined( 'ABSPATH' ) ||	die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
  * Handles the database optimization process.
  *
  * @since 2.11
  * @author Remy Perona
- *
  */
 class Rocket_Database_Optimization {
 	/**
@@ -71,13 +70,13 @@ class Rocket_Database_Optimization {
 	 */
 	public function process_handler() {
 		$this->process->cancel_process();
-	
+
 		foreach ( $this->options as $option ) {
 			if ( get_rocket_option( 'database_' . $option, false ) ) {
 				$this->process->push_to_queue( $option );
 			}
 		}
-	
+
 		$this->process->save()->dispatch();
 	}
 
@@ -93,16 +92,16 @@ class Rocket_Database_Optimization {
 		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'rocket_optimize_database' ) ) {
 			wp_nonce_ays( '' );
 		}
-	
+
 		$this->process_handler();
-	
+
 		wp_redirect( wp_get_referer() );
 		die();
 	}
-	
+
 
 	/**
-	 * Planning database optimization cron
+	 * Plans database optimization cron
 	 * If the task is not programmed, it is automatically triggered
 	 *
 	 * @since 2.8
@@ -118,6 +117,14 @@ class Rocket_Database_Optimization {
 		}
 	}
 
+	/**
+	 * Launches the database optimization when the settings are saved with save and optimize button
+	 *
+	 * @since 2.8
+	 * @author Remy Perona
+	 *
+	 * @see process_handler()
+	 */
 	public function save_optimize() {
 		// Performs the database optimization when settings are saved with the "save and optimize" submit button".
 		if ( ! empty( $_POST ) && isset( $_POST['wp_rocket_settings']['submit_optimize'] ) ) {
@@ -136,9 +143,9 @@ class Rocket_Database_Optimization {
 	 */
 	public function count_cleanup_items( $type ) {
 		global $wpdb;
-	
+
 		$count = 0;
-	
+
 		switch ( $type ) {
 			case 'revisions':
 				$count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(ID) FROM $wpdb->posts WHERE post_type = %s", 'revision' ) );
@@ -166,7 +173,7 @@ class Rocket_Database_Optimization {
 				$count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(table_name) FROM information_schema.tables WHERE table_schema = %s and Engine <> 'InnoDB' and data_free > 0", DB_NAME ) );
 				break;
 		}
-	
+
 		return $count;
 	}
 
@@ -187,11 +194,11 @@ class Rocket_Database_Optimization {
 		if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
 			return;
 		}
-	
+
 		if ( $screen->id !== $wp_rocket_screen_id ) {
 			return;
 		}
-	
+
 		$notice = get_transient( 'rocket_database_optimization_process' );
 
 		if ( ! $notice ) {
@@ -222,11 +229,11 @@ class Rocket_Database_Optimization {
 		if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
 			return;
 		}
-	
+
 		if ( $screen->id !== $wp_rocket_screen_id ) {
 			return;
 		}
-	
+
 		$optimized = get_transient( 'rocket_database_optimization_process_complete' );
 
 		if ( false === $optimized ) {
@@ -241,8 +248,13 @@ class Rocket_Database_Optimization {
 			<?php else : ?>
 			<p><?php _e( 'Database optimization process is complete. List of optimized items below:', 'rocket' ); ?></p>
 			<ul>
-			<?php foreach( $optimized as $k => $number ) : ?>
-				<li><?php printf( __( '%1$d %2$s optimized.', 'rocket' ), $number, $k ); ?></li>
+			<?php foreach ( $optimized as $k => $number ) : ?>
+				<li>
+				<?php
+					// Translators: %1$d is the number of items optimized, %2$s is the type of optimization.
+					printf( __( '%1$d %2$s optimized.', 'rocket' ), $number, $k );
+				?>
+				</li>
 			<?php endforeach; ?>
 			</ul>
 			<?php endif; ?>

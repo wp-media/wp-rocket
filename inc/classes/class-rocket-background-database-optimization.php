@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
  * Extends the background process class for the database optimization background process.
@@ -38,7 +38,7 @@ class Rocket_Background_Database_Optimization extends WP_Background_Process {
 	 * Dispatch
 	 *
 	 * @access public
-	 * @return void
+	 * @return array|WP_Error
 	 */
 	public function dispatch() {
 		set_transient( 'rocket_database_optimization_process', 'running', HOUR_IN_SECONDS );
@@ -56,7 +56,7 @@ class Rocket_Background_Database_Optimization extends WP_Background_Process {
 	 */
 	protected function task( $item ) {
 		global $wpdb;
-		
+
 		switch ( $item ) {
 			case 'revisions':
 				$query = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type = %s", 'revision' ) );
@@ -64,7 +64,7 @@ class Rocket_Background_Database_Optimization extends WP_Background_Process {
 					foreach ( $query as $id ) {
 						wp_delete_post_revision( intval( $id ) );
 					}
-					
+
 					$number = count( $query );
 					$this->count[ $item ] = $number;
 				}
@@ -116,7 +116,7 @@ class Rocket_Background_Database_Optimization extends WP_Background_Process {
 			case 'expired_transients':
 				$time = isset( $_SERVER['REQUEST_TIME'] ) ? (int) $_SERVER['REQUEST_TIME'] : time();
 				$query = $wpdb->get_col( $wpdb->prepare( "SELECT option_name FROM $wpdb->options WHERE option_name LIKE %s AND option_value < %s", '_transient_timeout%', $time ) );
-		
+
 				if ( $query ) {
 					foreach ( $query as $transient ) {
 						$key = str_replace( '_transient_timeout_', '', $transient );
