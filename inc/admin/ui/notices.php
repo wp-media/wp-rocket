@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 <?php
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
@@ -814,3 +815,4 @@ function rocket_analytics_optin_thankyou_notice() {
 	delete_transient( 'rocket_analytics_optin' );
 }
 add_action( 'admin_notices', 'rocket_analytics_optin_thankyou_notice' );
+
