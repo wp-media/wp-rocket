@@ -4,11 +4,12 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 /**
  * Extends the background process class for the database optimization background process.
  *
- * @since
+ * @since 2.11
+ * @author Remy Perona
  *
  * @see WP_Background_Process
  */
-class Rocket_Background_Database_optimization extends WP_Background_Process {
+class Rocket_Background_Database_Optimization extends WP_Background_Process {
 	/**
 	 * Prefix
 	 *
@@ -26,13 +27,21 @@ class Rocket_Background_Database_optimization extends WP_Background_Process {
 	protected $action = 'database_optimization';
 
 	/**
+	 * Count the number of optimized items.
+	 *
+	 * @access protected
+	 * @var array $count An array of indexed number of optimized items.
+	 */
+	protected $count = array();
+
+	/**
 	 * Dispatch
 	 *
 	 * @access public
 	 * @return void
 	 */
 	public function dispatch() {
-		set_transient( 'rocket_database_optimization_process', 'running' );
+		set_transient( 'rocket_database_optimization_process', 'running', HOUR_IN_SECONDS );
 
 		// Perform remote post.
 		return parent::dispatch();
@@ -55,6 +64,9 @@ class Rocket_Background_Database_optimization extends WP_Background_Process {
 					foreach ( $query as $id ) {
 						wp_delete_post_revision( intval( $id ) );
 					}
+					
+					$number = count( $query );
+					$this->count[ $item ] = $number;
 				}
 				break;
 			case 'auto_drafts':
@@ -63,6 +75,9 @@ class Rocket_Background_Database_optimization extends WP_Background_Process {
 					foreach ( $query as $id ) {
 						wp_delete_post( intval( $id ), true );
 					}
+
+					$number = count( $query );
+					$this->count[ $item ] = $number;
 				}
 				break;
 			case 'trashed_posts':
@@ -71,6 +86,9 @@ class Rocket_Background_Database_optimization extends WP_Background_Process {
 					foreach ( $query as $id ) {
 						wp_delete_post( $id, true );
 					}
+
+					$number = count( $query );
+					$this->count[ $item ] = $number;
 				}
 				break;
 			case 'spam_comments':
@@ -79,6 +97,9 @@ class Rocket_Background_Database_optimization extends WP_Background_Process {
 					foreach ( $query as $id ) {
 						wp_delete_comment( intval( $id ), true );
 					}
+
+					$number = count( $query );
+					$this->count[ $item ] = $number;
 				}
 				break;
 			case 'trashed_comments':
@@ -87,6 +108,9 @@ class Rocket_Background_Database_optimization extends WP_Background_Process {
 					foreach ( $query as $id ) {
 						wp_delete_comment( intval( $id ), true );
 					}
+
+					$number = count( $query );
+					$this->count[ $item ] = $number;
 				}
 				break;
 			case 'expired_transients':
@@ -98,6 +122,9 @@ class Rocket_Background_Database_optimization extends WP_Background_Process {
 						$key = str_replace( '_transient_timeout_', '', $transient );
 						delete_transient( $key );
 					}
+
+					$number = count( $query );
+					$this->count[ $item ] = $number;
 				}
 				break;
 			case 'all_transients':
@@ -110,6 +137,9 @@ class Rocket_Background_Database_optimization extends WP_Background_Process {
 							delete_transient( str_replace( '_transient_', '', $transient ) );
 						}
 					}
+
+					$number = count( $query );
+					$this->count[ $item ] = $number;
 				}
 				break;
 			case 'optimize_tables':
@@ -118,6 +148,9 @@ class Rocket_Background_Database_optimization extends WP_Background_Process {
 					foreach ( $query as $table ) {
 						$wpdb->query( $wpdb->prepare( 'OPTIMIZE TABLE %s', $table->table_name ) );
 					}
+
+					$number = count( $query );
+					$this->count[ $item ] = $number;
 				}
 				break;
 		}
@@ -129,8 +162,9 @@ class Rocket_Background_Database_optimization extends WP_Background_Process {
 	 * Complete
 	 */
 	protected function complete() {
-		delete_transient( 'rocket_database_optimization_process', 'running' );
-		set_transient( 'rocket_database_optimization_process', 'complete' );
+		delete_transient( 'rocket_database_optimization_process' );
+		set_transient( 'rocket_database_optimization_process_complete', $this->count );
+
 		parent::complete();
 	}
 
