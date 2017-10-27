@@ -37,7 +37,6 @@ define( 'WP_ROCKET_ADMIN_PATH'          , realpath( WP_ROCKET_INC_PATH . 'admin'
 define( 'WP_ROCKET_ADMIN_UI_PATH'       , realpath( WP_ROCKET_ADMIN_PATH . 'ui' ) . '/' );
 define( 'WP_ROCKET_ADMIN_UI_MODULES_PATH', realpath( WP_ROCKET_ADMIN_UI_PATH . 'modules' ) . '/' );
 define( 'WP_ROCKET_COMMON_PATH'         , realpath( WP_ROCKET_INC_PATH . 'common' ) . '/' );
-define( 'WP_ROCKET_CLASSES_PATH'        , realpath( WP_ROCKET_INC_PATH . 'classes' ) . '/' );
 define( 'WP_ROCKET_FUNCTIONS_PATH'      , realpath( WP_ROCKET_INC_PATH . 'functions' ) . '/' );
 define( 'WP_ROCKET_VENDORS_PATH'        , realpath( WP_ROCKET_INC_PATH . 'vendors' ) . '/' );
 define( 'WP_ROCKET_3RD_PARTY_PATH'      , realpath( WP_ROCKET_INC_PATH . '3rd-party' ) . '/' );
@@ -99,7 +98,7 @@ function rocket_init() {
 	// Composer autoload.
 	require WP_ROCKET_PATH . 'vendor/autoload.php';
 
-	// Call defines, classes and functions.
+	// Call defines and functions.
 	require WP_ROCKET_FUNCTIONS_PATH . 'options.php';
 
 	// Last constants.
@@ -107,9 +106,6 @@ function rocket_init() {
 	define( 'WP_ROCKET_PLUGIN_SLUG', sanitize_key( WP_ROCKET_PLUGIN_NAME ) );
 
 	// Call defines and functions.
-	require( WP_ROCKET_CLASSES_PATH . 'class-rocket-background-sitemap-preload.php' );
-	require( WP_ROCKET_CLASSES_PATH . 'class-rocket-background-partial-preload.php' );
-	require( WP_ROCKET_CLASSES_PATH . 'class-rocket-background-database-optimization.php' );
 	require WP_ROCKET_FUNCTIONS_PATH . 'files.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'posts.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'admin.php';
@@ -180,14 +176,7 @@ function rocket_init() {
 		require WP_ROCKET_FRONT_PATH . 'protocol.php';
 	}
 
-	global $rocket_sitemap_preload_process;
-	$rocket_sitemap_preload_process = new Rocket_Background_Sitemap_Preload();
-
-	global $rocket_partial_preload_process;
-	$rocket_partial_preload_process = new Rocket_Background_Partial_Preload();
-
-	global $rocket_database_optimization_process;
-	$rocket_database_optimization_process = new Rocket_Background_Database_Optimization();
+	Rocket_Database_Optimization::init();
 
 	// You can hook this to trigger any action when WP Rocket is correctly loaded, so, not in AUTOSAVE mode.
 	if ( rocket_valid_key() ) {
