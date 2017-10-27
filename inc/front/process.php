@@ -343,7 +343,7 @@ function rocket_serve_cache_file( $rocket_cache_filepath ) {
 
 		// Checking if the client is validating his cache and if it is current.
 		if ( $http_if_modified_since && ( strtotime( $http_if_modified_since ) === @filemtime( $rocket_cache_filepath_gzip ) ) ) {
-	    	// Client's cache is current, so we just respond '304 Not Modified'.
+			// Client's cache is current, so we just respond '304 Not Modified'.
 			header( $_SERVER['SERVER_PROTOCOL'] . ' 304 Not Modified', true, 304 );
 			exit;
 		}

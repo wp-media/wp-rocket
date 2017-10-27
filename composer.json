@@ -26,5 +26,11 @@
 		"jamesryanbell/cloudflare": "^1.11",
 		"a5hleyrich/wp-background-processing": "^1.0",
 		"mobiledetect/mobiledetectlib": "^2.8"
+	},
+	"autoload": {
+		"classmap": [
+			"inc/classes",
+			"inc/vendors/classes"
+		]
 	}
 }

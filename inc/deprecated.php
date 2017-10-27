@@ -505,10 +505,292 @@ function rocket_defered_module() {
 }
 
 /**
- * Force the minification to create only 1 file.
+ * Check if minify cache file exist and create it if not
+ *
+ * @since 2.10 Use wp_safe_remote_get() instead of curl
+ * @since 2.1
+ * @deprecated 2.11
+ *
+ * @param string $url        The minified URL with Minify Library.
+ * @param string $pretty_url The minified URL cache file.
+ * @return bool True if sucessfully saved the minify cache file, false otherwise
+ */
+function rocket_fetch_and_cache_minify( $url, $pretty_url ) {
+	_deprecated_function( __FUNCTION__, '2.11', 'rocket_minify()' );
+
+	return false;
+}
+
+/**
+ * Minify a file and return the URL
+ *
+ * @since 2.10
+ * @deprecated 2.11
+ *
+ * @param string $file File to minify.
+ * @param bool   $force_pretty_url (default: true).
+ * @param string $pretty_filename (default: null) The new filename if $force_pretty_url set to true.
+ * @return string URL of the minified file
+ */
+function get_rocket_minify_file( $file, $force_pretty_url = true, $pretty_filename = null ) {
+	_deprecated_function( __FUNCTION__, '2.11', 'get_rocket_minify_url()' );
+
+	return $file;
+}
+
+/**
+ * Get tag of a group of files or JS minified CSS
+ *
+ * @since 2.1
+ * @deprecated 2.11
+ *
+ * @param array  $files List of files to minify (CSS or JS).
+ * @param bool   $force_pretty_url (default: true).
+ * @param string $pretty_filename (default: null) The new filename if $force_pretty_url set to true.
+ * @return string $tags HTML tags for the minified CSS/JS files
+ */
+function get_rocket_minify_files( $files, $force_pretty_url = true, $pretty_filename = null ) {
+	_deprecated_function( __FUNCTION__, '2.11', 'get_rocket_minify_url()' );
+
+	return false;
+}
+
+/**
+ * Get all JS externals files to exclude of the minification process
  *
  * @since 2.6
  * @deprecated 2.11
+ *
+ * @return array Array of excluded external JS
+ */
+function get_rocket_minify_excluded_external_js() {
+	_deprecated_function( __FUNCTION__, '2.11' );
+	/**
+	 * Filters JS externals files to exclude from the minification process (do not move into the header)
+	 *
+	 * @since 2.2
+	 *
+	 * @param array $hostnames Hostname of JS files to exclude.
+	 */
+	$excluded_external_js = apply_filters(
+		'rocket_minify_excluded_external_js', array(
+			'forms.aweber.com',
+			'video.unrulymedia.com',
+			'gist.github.com',
+			'stats.wp.com',
+			'stats.wordpress.com',
+			'www.statcounter.com',
+			'widget.rafflecopter.com',
+			'widget-prime.rafflecopter.com',
+			'widget.supercounters.com',
+			'releases.flowplayer.org',
+			'tools.meetaffiliate.com',
+			'c.ad6media.fr',
+			'cdn.stickyadstv.com',
+			'www.smava.de',
+			'contextual.media.net',
+			'app.getresponse.com',
+			'ap.lijit.com',
+			'adserver.reklamstore.com',
+			's0.wp.com',
+			'wprp.zemanta.com',
+			'files.bannersnack.com',
+			'smarticon.geotrust.com',
+			'js.gleam.io',
+			'script.ioam.de',
+			'ir-na.amazon-adsystem.com',
+			'web.ventunotech.com',
+			'verify.authorize.net',
+			'ads.themoneytizer.com',
+			'embed.finanzcheck.de',
+			'imagesrv.adition.com',
+			'js.juicyads.com',
+			'form.jotformeu.com',
+			'speakerdeck.com',
+			'content.jwplatform.com',
+			'ads.investingchannel.com',
+			'app.ecwid.com',
+			'www.industriejobs.de',
+			's.gravatar.com',
+			'cdn.jsdelivr.net',
+			'cdnjs.cloudflare.com',
+		)
+	);
+
+	return $excluded_external_js;
+}
+
+/**
+ * Used to minify and concat CSS files
+ *
+ * @since 1.1.0 Fix Bug with externals URLs like //ajax.google.com
+ * @since 1.0.2 Remove the filter, remove the array_chunk, add an automatic way to cut strings to 255c max
+ * @since 1.0
+ * @deprecated 2.11
+ *
+ * @param string $buffer HTML content.
+ * @return string Updated HTML content
+ */
+function rocket_minify_css( $buffer ) {
+	_deprecated_function( __FUNCTION__, '2.11', 'rocket_minify_files()' );
+
+	return rocket_minify_files( $buffer, 'css' );
+}
+
+/**
+ * Used to minify and concat JavaScript files
+ *
+ * @since 1.1.0 Fix Bug with externals URLs like //ajax.google.com
+ * @since 1.0.2 Remove the filter, remove the array_chunk, add an automatic way to cut strings to 255c max
+ * @since 1.0
+ * @deprecated 2.11
+ *
+ * @param string $buffer HTML content.
+ * @return string Updated HTML content
+ */
+function rocket_minify_js( $buffer ) {
+	_deprecated_function( __FUNCTION__, '2.11', 'rocket_minify_files()' );
+
+	return rocket_minify_files( $buffer, 'js' );
+}
+
+/**
+ * Minify CSS/JS files without concatenation.
+ *
+ * @since 2.10
+ * @deprecated 2.11
+ * @author Remy Perona
+ *
+ * @param string $buffer HTML code to parse.
+ * @param string $extension css or js.
+ * @return string Updated HTML code
+ */
+function rocket_minify_only( $buffer, $extension ) {
+	_deprecated_function( __FUNCTION__, '2.11', 'rocket_minify_files()' );
+
+	return rocket_minify_files( $buffer, $extension );
+}
+
+/**
+ * Get all CSS files to exclude to the minification.
+ *
+ * @since 2.6
+ * @deprecated 2.11
+ *
+ * @return array List of excluded CSS files.
+ */
+function get_rocket_exclude_css() {
+	_deprecated_function( __FUNCTION__, '2.11', 'get_rocket_exclude_files()' );
+
+	return get_rocket_exclude_files( 'css' );
+}
+
+/**
+ * Get all JS files to exclude to the minification.
+ *
+ * @since 2.6
+ * @deprecated 2.11
+ *
+ * @return array List of excluded JS files.
+ */
+function get_rocket_exclude_js() {
+	_deprecated_function( __FUNCTION__, '2.11', 'get_rocket_exclude_files()' );
+
+	return get_rocket_exclude_files( 'js' );
+}
+
+/**
+ * Get all JS files to move in the footer during the minification.
+ *
+ * @since 2.6
+ * @deprecated 2.11
+ *
+ * @return array List of JS files.
+ */
+function get_rocket_minify_js_in_footer() {
+	_deprecated_function( __FUNCTION__, '2.11' );
+
+	return array();
+}
+
+/**
+ * Extract all enqueued CSS files which should be exclude to the minification
+ *
+ * @since 2.6
+ * @deprecated 2.11
+ */
+function rocket_extract_excluded_css_files() {
+	_deprecated_function( __FUNCTION__, '2.11' );
+
+	return false;
+}
+
+/**
+ * Extract all enqueued JS files which should be exclude to the minification
+ *
+ * @since 2.6.1
+ * @deprecated 2.11
+ */
+function rocket_extract_excluded_js_files() {
+	_deprecated_function( __FUNCTION__, '2.11' );
+
+	return false;
+}
+
+/**
+ * Extract all enqueued JS files which should be insert in the footer
+ *
+ * @since 2.10
+ * @since 2.6
+ * @deprecated 2.11
+ */
+function rocket_extract_js_files_from_footer() {
+	_deprecated_function( __FUNCTION__, '2.11' );
+
+	return false;
+}
+
+/**
+ * Get all handles for JS files already enqueued in head
+ *
+ * @since 2.10
+ * @deprecated 2.11
+ * @author Remy Perona
+ */
+function rocket_get_js_enqueued_in_head() {
+	_deprecated_function( __FUNCTION__, '2.11' );
+
+	return false;
+}
+
+/**
+ * Insert JS minify files in footer
+ *
+ * @since 2.2
+ */
+function rocket_insert_minify_js_in_footer() {
+	_deprecated_function( __FUNCTION__, '2.11' );
+
+	return false;
+}
+
+/**
+ * Compatibility with WordPress multisite with subfolders websites
+ *
+ * @since 2.6.5
+ * @deprecated 2.11
+ *
+ * @param string $url minified file URL.
+ * @return string Updated minified file URL
+ */
+function rocket_fix_minify_multisite_path_issue( $url ) {
+	_deprecated_function( __FUNCTION__, '2.11' );
+
+	return $url;
+}
+
+/**
+ * Force the minification to create only 1 file.
  *
  * @param int    $length maximum URL length.
  * @param string $ext file extension.
