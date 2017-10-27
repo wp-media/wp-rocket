@@ -334,37 +334,6 @@ function rocket_is_plugin_installed( $plugin ) {
 }
 
 /**
- * Performs the database optimization
- *
- * @since Performs the database optimization using a background process
- * @since 2.8
- * @author Remy Perona
- */
-function do_rocket_database_optimization() {
-	global $rocket_database_optimization_process;
-	$rocket_database_optimization_process->cancel_process();
-
-	$options = array(
-		'revisions',
-		'auto_drafts',
-		'trashed_posts',
-		'spam_comments',
-		'trashed_comments',
-		'expired_transients',
-		'all_transients',
-		'optimize_tables',
-	);
-
-	foreach ( $options as $option ) {
-		if ( get_rocket_option( 'database_' . $option, false ) ) {
-			$rocket_database_optimization_process->push_to_queue( $option );
-		}
-	}
-
-	$rocket_database_optimization_process->save()->dispatch();
-}
-
-/**
  * When Woocommerce, EDD, iThemes Exchange, Jigoshop & WP-Shop options are saved or deleted,
  * we update .htaccess & config file to get the right checkout page to exclude to the cache.
  *
