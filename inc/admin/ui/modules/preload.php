@@ -111,26 +111,33 @@ add_settings_field(
 );
 
 /**
- * Partial preload
+ * Preload bot
  */
 add_settings_field(
-	'rocket_enable_partial preload',
-	__( 'Automatic partial preload:', 'rocket' ),
+	'rocket_enable_bot_preload',
+	__( 'Preload bot:', 'rocket' ),
 	'rocket_field',
 	'rocket_preload',
 	'rocket_display_preload_options',
 	array(
 		array(
 			'type'         => 'checkbox',
-			'label'        => __( 'Activate automatic partial preload', 'rocket' ),
-			'label_for'    => 'partial_preload',
-			'label_screen' => __( 'Activate automatic partial preload', 'rocket' ),
+			'label'        => __( 'Manual', 'rocket' ),
+			'label_for'    => 'manual_preload',
+			'label_screen' => __( 'Activate manual preload (from upper toolbar, or from Tools tab of WP Rocket)', 'rocket' ),
+			'default'      => 1,
+		),
+		array(
+			'type'         => 'checkbox',
+			'label'        => __( 'Automatic', 'rocket' ),
+			'label_for'    => 'automatic_preload',
+			'label_screen' => __( 'Activate automatic preload after content updates', 'rocket' ),
 			'default'      => 1,
 		),
 		array(
 			'type'        => 'helper_description',
-			'name'        => 'partial_preload_description',
-			'description' => __( 'Once activated, it gets triggered automatically after you add or update content on your website, to preload only the content for which the cache has been cleared.', 'rocket' ),
+			'name'        => 'bot_preload',
+			'description' => $rwl ? __( 'Bot-based preloading should only be used on well-performaning servers. Once activated, it gets triggered automatically after you add or update content on your website. You can also launch it manually from the upper toolbar menu, or from the Tools tab.', 'rocket' ) : __( '<a href="http://docs.wp-rocket.me/article/8-how-the-cache-is-preloaded" target="_blank">Bot-based preloading</a> should only be used on well-performaning servers. Once activated, it gets triggered automatically after you add or update content on your website. You can also launch it manually from the upper toolbar menu, or from the Tools tab.', 'rocket' ),
 		),
 		array(
 			'type'        => 'helper_warning',
