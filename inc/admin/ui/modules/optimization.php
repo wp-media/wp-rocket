@@ -158,13 +158,6 @@ $rocket_concatenate_fields[] = array(
 	'readonly'     => rocket_maybe_disable_minify_css(),
 );
 $rocket_concatenate_fields[] = array(
-	'parent'       => 'minify_concatenate_css',
-	'type'         => 'checkbox',
-	'label'        => __( 'Combine all CSS files into as few files as possible <em>(test thoroughly!)</em>', 'rocket' ),
-	'name'         => 'minify_css_combine_all',
-	'label_screen' => __( 'CSS Files concatenation', 'rocket' ),
-);
-$rocket_concatenate_fields[] = array(
 	'type'         => 'checkbox',
 	'label'        => 'JS',
 	'name'         => 'minify_concatenate_js',
@@ -172,21 +165,14 @@ $rocket_concatenate_fields[] = array(
 	'readonly'     => rocket_maybe_disable_minify_js(),
 );
 $rocket_concatenate_fields[] = array(
-	'parent'       => 'minify_concatenate_js',
-	'type'         => 'checkbox',
-	'label'        => __( 'Combine all JavaScript files into as few files as possible <em>(test thoroughly!)</em>', 'rocket' ),
-	'name'         => 'minify_js_combine_all',
-	'label_screen' => __( 'JS Files concatenation', 'rocket' ),
-);
-$rocket_concatenate_fields[] = array(
 	'type'         => 'helper_performance',
 	'name'         => 'minify_concatenate_perf_tip',
 	'description'  => __( 'Reduces the number of HTTP requests, can improve loading time.', 'rocket' ),
 );
 $rocket_concatenate_fields[] = array(
-	'type'         => 'helper_description',
+	'type'         => 'helper_warning',
 	'name'         => 'rocket_minify_combine_all',
-	'description'  => $rwl ? __( 'Files get concatenated into small groups in order to ensure theme/plugin compatibility and better performance. Forcing concatenation into 1 file is not recommended, because browsers are faster downloading up to 6 smaller files in parallel than 1-2 large files.', 'rocket' ) : __( 'Files get concatenated into small groups in order to <a href="http://docs.wp-rocket.me/article/17-reducing-the-number-of-minified-files" target="_blank">ensure theme/plugin compatibility and better performance</a>. Forcing concatenation into 1 file is not recommended, because browsers are faster downloading up to 6 smaller files in parallel than 1-2 large files.', 'rocket' ),
+	'description'  => __( 'Files are combined into 1 file. This option is not recommended if your server is HTTP/2 enabled.', 'rocket' ),
 );
 
 add_settings_field(
@@ -308,13 +294,6 @@ $rocket_render_blocking[] = array(
 	),
 );
 
-if ( 0 !== absint( get_rocket_option( 'deferred_js' ) ) ) {
-	$rocket_render_blocking[] = array(
-		'type'        => 'helper_warning',
-		'description' => __( 'If you activate the option below, your deprecated Defer JS option below will be deleted.', 'rocket' ),
-	);
-}
-
 $rocket_render_blocking[] = array(
 	'type'         => 'checkbox',
 	'label'        => __( 'Load JS files deferred', 'rocket' ),
@@ -393,103 +372,3 @@ add_settings_field(
 		'class' => 'critical-css-row',
 	)
 );
-
-/**
- * Deprecated options panel caption
- */
-if ( ! $rwl && ( get_rocket_option( 'minify_js_in_footer' ) || get_rocket_option( 'deferred_js' ) ) ) {
-	add_settings_field(
-		'rocket_optimization_deprected_options',
-		false,
-		'rocket_field',
-		'rocket_optimization',
-		'rocket_display_optimization_options',
-		array(
-			array(
-				'type'         => 'helper_panel_description',
-				'description'  => sprintf(
-					'<span class="dashicons dashicons-warning" aria-hidden="true"></span><strong>%1$s</strong>',
-					/* translators: line-break recommended, but not mandatory  */
-					__( 'The options below will be deprecated in WP Rocket 3.0, in favor of the new options for render-blocking CSS/JS above. If you use those new options, the deprecated one for deferred JS gets ignored already.', 'rocket' )
-				),
-			),
-		)
-	);
-}
-
-/**
- * Legacy: JS to footer
- */
-if ( get_rocket_option( 'minify_js_in_footer' ) ) {
-	add_settings_field(
-		'minify_js_in_footer',
-		__( 'Footer JS (deprecated):', 'rocket' ),
-		'rocket_field',
-		'rocket_optimization',
-		'rocket_display_optimization_options',
-		array(
-			array(
-				'type'                     => 'repeater',
-				'label_screen'             => __( '<strong>JS</strong> files to be included in the footer during the minification process:', 'rocket' ),
-				'name'                     => 'minify_js_in_footer',
-				'placeholder'              => 'http://',
-				'repeater_drag_n_drop'     => true,
-				'repeater_label_add_field' => __( 'Add URL', 'rocket' ),
-			),
-			array(
-				'type'         => 'helper_help',
-				'name'         => 'minify_js_in_footer',
-				'description'  => __( 'Empty the field to remove it.', 'rocket' ),
-				'class'        => 'hide-if-js',
-			),
-			array(
-				'type'         => 'helper_description',
-				'name'         => 'minify_js_in_footer',
-				'description'  => __( 'Specify complete URLs like:  <code>http://example.com/path/to/script.js</code>', 'rocket' ),
-			),
-		)
-	);
-}
-
-/**
- * Legacy: Deferred JS
- */
-if ( get_rocket_option( 'deferred_js' ) ) {
-	$deferred_js_readonly = '';
-
-	if ( get_rocket_option( 'defer_all_js', 0 ) ) {
-		$deferred_js_readonly = 1;
-	}
-
-	add_settings_field(
-		'rocket_deferred_js',
-		__( 'Defer JS (deprecated):', 'rocket' ),
-		'rocket_field',
-		'rocket_optimization',
-		'rocket_display_optimization_options',
-		array(
-			array(
-				'type'         => 'helper_help',
-				'name'         => 'deferred_js',
-				'description'  =>
-				/* translators: line-break recommended, but not mandatory  */
-				__( 'Specify JS files to be loaded asynchronously as the page loads.<br>Do NOT add URLs of minified files generated by WP Rocket.', 'rocket' ),
-				'readonly'     => $deferred_js_readonly,
-			),
-			array(
-				'type'         => 'rocket_defered_module',
-			),
-			array(
-				'type'         => 'helper_help',
-				'name'         => 'deferred_js',
-				'description'  => __( 'Empty the field to remove it.', 'rocket' ),
-				'class'        => 'hide-if-js',
-			),
-			array(
-				'type'         => 'helper_description',
-				'name'         => 'deferred_js',
-				'description'  => __( 'Specify complete URLs like: <code>http://example.com/path/to/script.js</code>', 'rocket' ),
-			),
-		)
-	);
-}

@@ -149,8 +149,9 @@ function rocket_cdn_images( $html ) {
 
 		foreach ( $images_match[3] as $k => $image_url ) {
 
-			list( $host, $path, $scheme, $query ) = get_rocket_parse_url( $image_url );
-			$path = trim( $path );
+			$parse_url = get_rocket_parse_url( $image_url );
+			$path      = trim( $parse_url['path'] );
+			$host      = $parse_url['host'];
 
 			if ( empty( $path ) || ! preg_match( '#(' . $wp_content_dirname . '|wp-includes)#', $path ) ) {
 				continue;

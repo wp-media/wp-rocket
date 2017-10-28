@@ -6,7 +6,7 @@
 	<!--<arg value="s"/>-->
 
 	<file>.</file>
-	<exclude-pattern>/min/*</exclude-pattern>
+	<exclude-pattern>/vendor/*</exclude-pattern>
 	<exclude-pattern>/inc/vendors/*</exclude-pattern>
 	<exclude-pattern>/tests/*</exclude-pattern>
 

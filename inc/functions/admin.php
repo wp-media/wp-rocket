@@ -210,16 +210,19 @@ function rocket_hidden_fields( $fields ) {
 }
 
 /**
- * Get name & version of all active plugins.
+ * Gets names of all active plugins.
  *
+ * @since 2.11 Only get the name
  * @since 2.6
+ *
+ * @return array An array of active plugins names.
  */
 function rocket_get_active_plugins() {
 	$plugins        = array();
 	$active_plugins = array_intersect_key( get_plugins(), array_flip( array_filter( array_keys( get_plugins() ), 'is_plugin_active' ) ) );
 
 	foreach ( $active_plugins as $plugin ) {
-		$plugins[] = $plugin['Name'] . ' ' . $plugin['Version'];
+		$plugins[] = $plugin['Name'];
 	}
 
 	return $plugins;
@@ -554,4 +557,25 @@ function rocket_allow_json_mime_type( $wp_get_mime_types ) {
 	$wp_get_mime_types['json'] = 'application/json';
 
 	return $wp_get_mime_types;
+}
+
+/**
+ * Lists Data collected for analytics
+ *
+ * @since 2.11
+ * @author Remy Perona
+ *
+ * @return string HTML list
+ */
+function rocket_preview_data_collected_list() {
+	return '<ul>
+		<li>' . __( 'Anonymized WP Rocket settings', 'rocket' ) . '</li>
+		<li>' . __( 'Server type', 'rocket' ) . '</li>
+		<li>' . __( 'PHP version', 'rocket' ) . '</li>
+		<li>' . __( 'WordPress version', 'rocket' ) . '</li>
+		<li>' . __( 'Single or multisite', 'rocket' ) . '</li>
+		<li>' . __( 'Current theme', 'rocket' ) . '</li>
+		<li>' . __( 'Active plugins', 'rocket' ) . '</li>
+		<li>' . __( 'Current language', 'rocket' ) . '</li>
+	</ul>';
 }

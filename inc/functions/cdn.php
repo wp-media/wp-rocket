@@ -41,25 +41,25 @@ function get_rocket_cdn_url( $url, $zone = array( 'all' ) ) {
 		return $url;
 	}
 
-	list( $host, $path, $scheme, $query ) = get_rocket_parse_url( $url );
-	$query = ! empty( $query ) ? '?' . $query : '';
+	$parse_url = get_rocket_parse_url( $url );
+	$query = ! empty( $parse_url['query'] ) ? '?' . $parse_url['query'] : '';
 
 	// Exclude rejected & external files from CDN.
 	$rejected_files = get_rocket_cdn_reject_files();
-	if ( ( ! empty( $rejected_files ) && preg_match( '#(' . $rejected_files . ')#', $path ) ) || ( ! empty( $scheme ) && rocket_extract_url_component( home_url(), PHP_URL_HOST ) !== $host && ! in_array( $host, get_rocket_i18n_host(), true ) ) ) {
+	if ( ( ! empty( $rejected_files ) && preg_match( '#(' . $rejected_files . ')#', $parse_url['path'] ) ) || ( ! empty( $parse_url['scheme'] ) && rocket_extract_url_component( home_url(), PHP_URL_HOST ) !== $parse_url['host'] && ! in_array( $parse_url['host'], get_rocket_i18n_host(), true ) ) ) {
 		return $url;
 	}
 
-	if ( empty( $scheme ) ) {
+	if ( empty( $parse_url['scheme'] ) ) {
 		// Check if the URL is external.
-		if ( strpos( $path, $home ) === false && ! preg_match( '#(' . $wp_content_dirname . '|wp-includes)#', $path ) ) {
+		if ( strpos( $parse_url['path'], $home ) === false && ! preg_match( '#(' . $wp_content_dirname . '|wp-includes)#', $parse_url['path'] ) ) {
 			return $url;
 		} else {
-			$path = str_replace( $home, '', ltrim( $path, '//' ) );
+			$path = str_replace( $home, '', ltrim( $parse_url['path'], '//' ) );
 		}
 	}
 
-	$url = untrailingslashit( $cnames[ ( abs( crc32( $path ) ) % count( $cnames ) ) ] ) . '/' . ltrim( $path, '/' ) . $query;
+	$url = untrailingslashit( $cnames[ ( abs( crc32( $path ) ) % count( $cnames ) ) ] ) . '/' . ltrim( $path, '/' ) . $parse_url['query'];
 	$url = rocket_add_url_protocol( $url );
 	return $url;
 }

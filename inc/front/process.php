@@ -183,8 +183,8 @@ else {
 $filename = 'index';
 
 // Rename the caching filename for mobile.
-if ( isset( $rocket_cache_mobile, $rocket_do_caching_mobile_files ) && class_exists( 'Rocket_Mobile_Detect' ) ) {
-	$detect = new Rocket_Mobile_Detect();
+if ( isset( $rocket_cache_mobile, $rocket_do_caching_mobile_files ) ) {
+	$detect = new Mobile_Detect();
 
 	if ( $detect->isMobile() && ! $detect->isTablet() ) {
 		$filename .= '-mobile';
@@ -330,7 +330,7 @@ function rocket_serve_cache_file( $rocket_cache_filepath ) {
 	$rocket_cache_filepath_gzip = $rocket_cache_filepath . '_gzip';
 
 	// Check if cache file exist.
-	if ( in_array( 'gzip', $_SERVER['HTTP_ACCEPT_ENCODING'], true ) && file_exists( $rocket_cache_filepath_gzip ) && is_readable( $rocket_cache_filepath_gzip ) ) {
+	if ( isset( $_SERVER['HTTP_ACCEPT_ENCODING'] ) && false !== strpos( $_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip' ) && file_exists( $rocket_cache_filepath_gzip ) && is_readable( $rocket_cache_filepath_gzip ) ) {
 		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s', filemtime( $rocket_cache_filepath_gzip ) ) . ' GMT' );
 
 		// Getting If-Modified-Since headers sent by the client.
@@ -343,7 +343,7 @@ function rocket_serve_cache_file( $rocket_cache_filepath ) {
 
 		// Checking if the client is validating his cache and if it is current.
 		if ( $http_if_modified_since && ( strtotime( $http_if_modified_since ) === @filemtime( $rocket_cache_filepath_gzip ) ) ) {
-	    	// Client's cache is current, so we just respond '304 Not Modified'.
+			// Client's cache is current, so we just respond '304 Not Modified'.
 			header( $_SERVER['SERVER_PROTOCOL'] . ' 304 Not Modified', true, 304 );
 			exit;
 		}

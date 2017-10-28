@@ -6,9 +6,11 @@ delete_site_transient( 'update_wprocket' );
 delete_site_transient( 'update_wprocket_response' );
 delete_transient( 'wp_rocket_settings' );
 delete_transient( 'rocket_cloudflare_ips' );
+delete_transient( 'rocket_send_analytics_data' );
 
 // Delete WP Rocket options.
 delete_option( 'wp_rocket_settings' );
+delete_option( 'rocket_analytics_notice_displayed' );
 
 // Delete Compatibility options.
 delete_option( 'rocket_jetpack_eu_cookie_widget' );

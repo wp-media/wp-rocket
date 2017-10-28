@@ -23,7 +23,7 @@ function rocket_browser_cache_busting( $src ) {
 
 	return get_rocket_browser_cache_busting( $src, $current_filter );
 }
-add_filter( 'style_loader_src', 'rocket_browser_cache_busting', PHP_INT_MAX );
+add_filter( 'style_loader_src',  'rocket_browser_cache_busting', PHP_INT_MAX );
 add_filter( 'script_loader_src', 'rocket_browser_cache_busting', PHP_INT_MAX );
 
 /**
@@ -78,18 +78,6 @@ function get_rocket_browser_cache_busting( $src, $current_filter = '' ) {
 		$current_filter = current_filter();
 	}
 
-	if ( 'script_loader_src' === $current_filter ) {
-		$deferred_js_files = get_rocket_deferred_js_files();
-
-		if ( (bool) $deferred_js_files ) {
-			$deferred_js_files = array_flip( $deferred_js_files );
-			$clean_src         = strtok( $src, '?' );
-			if ( isset( $deferred_js_files[ $clean_src ] ) ) {
-				return $src;
-			}
-		}
-	}
-
 	$full_src = ( substr( $src, 0, 2 ) === '//' ) ? rocket_add_url_protocol( $src ) : $src;
 
 	switch ( $current_filter ) {
@@ -104,32 +92,31 @@ function get_rocket_browser_cache_busting( $src, $current_filter = '' ) {
 	$hosts         = get_rocket_cnames_host( array( 'all', 'css_and_js', $extension ) );
 	$hosts['home'] = rocket_extract_url_component( home_url(), PHP_URL_HOST );
 	$hosts_index   = array_flip( $hosts );
-	list( $file_host, $relative_src_path, $scheme, $query ) = get_rocket_parse_url( $full_src );
+	$file          = get_rocket_parse_url( $full_src );
 
-	if ( '' === $file_host ) {
+	if ( '' === $file['host'] ) {
 		$full_src = home_url() . $src;
 	}
 
-	if ( false !== strpos( $full_src, '://' ) && ! isset( $hosts_index[ $file_host ] ) ) {
+	if ( false !== strpos( $full_src, '://' ) && ! isset( $hosts_index[ $file['host'] ] ) ) {
 		return $src;
 	}
 
-	if ( empty( $query ) ) {
+	if ( empty( $file['query'] ) ) {
 		return $src;
 	}
 
-	if ( isset( $hosts_index[ $file_host ] ) && 'home' !== $hosts_index[ $file_host ] ) {
-		$site_url = trailingslashit( rocket_add_url_protocol( $file_host ) );
+	if ( isset( $hosts_index[ $file['host'] ] ) && 'home' !== $hosts_index[ $file['host'] ] ) {
+		$site_url = trailingslashit( rocket_add_url_protocol( $file['host'] ) );
 	} else {
 		$site_url = trailingslashit( rocket_add_url_protocol( site_url() ) );
 	}
 
-	$abspath                = wp_normalize_path( ABSPATH );
-	$relative_src_path      = ltrim( $relative_src_path . '?' . $query, '/' );
-	$full_src_path          = dirname( str_replace( $site_url, $abspath, $full_src ) );
-	$cache_busting_filename = preg_replace( '/\.(js|css)\?(?:timestamp|ver)=([^&]+)(?:.*)/', '-$2.$1', $relative_src_path );
+	$relative_src           = ltrim( $file['path'] . '?' . $file['query'], '/' );
+	$abspath_src            = rocket_realpath( strtok( $full_src, '?' ) );
+	$cache_busting_filename = preg_replace( '/\.(js|css)\?(?:timestamp|ver)=([^&]+)(?:.*)/', '-$2.$1', $relative_src );
 
-	if ( $cache_busting_filename === $relative_src_path ) {
+	if ( $cache_busting_filename === $relative_src ) {
 		return $src;
 	}
 
@@ -148,7 +135,7 @@ function get_rocket_browser_cache_busting( $src, $current_filter = '' ) {
 		return $cache_busting_paths['url'];
 	}
 
-	if ( rocket_fetch_and_cache_busting( $full_src, $cache_busting_paths, $full_src_path, $current_filter ) ) {
+	if ( rocket_fetch_and_cache_busting( $abspath_src, $cache_busting_paths, $abspath_src, $current_filter ) ) {
 		return $cache_busting_paths['url'];
 	} else {
 		return $src;
@@ -213,20 +200,28 @@ function rocket_cache_dynamic_resource( $src ) {
 	$hosts       = get_rocket_cnames_host( array( 'all', 'css_and_js', $extension ) );
 	$hosts[]     = rocket_extract_url_component( home_url(), PHP_URL_HOST );
 	$hosts_index = array_flip( $hosts );
-	list( $file_host, $relative_src_path, $scheme, $query ) = get_rocket_parse_url( $full_src );
+	$file        = get_rocket_parse_url( $full_src );
 
-	if ( '' === $file_host ) {
-		$full_src = home_url() . $src;
-	}
-
-	if ( strpos( $full_src, '://' ) !== false && ! isset( $hosts_index[ $file_host ] ) ) {
+	if ( $file['query'] ) {
 		return $src;
 	}
 
-	$abspath                = wp_normalize_path( ABSPATH );
-	$site_url               = trailingslashit( set_url_scheme( site_url() ) );
-	$relative_src_path      = ltrim( $relative_src_path . '?' . $query, '/' );
-	$full_src_path          = dirname( str_replace( $site_url, $abspath, $full_src ) );
+	if ( '' === $file['host'] ) {
+		$full_src = home_url() . $src;
+	}
+
+	if ( strpos( $full_src, '://' ) !== false && ! isset( $hosts_index[ $file['host'] ] ) ) {
+		return $src;
+	}
+
+	if ( isset( $hosts_index[ $file['host'] ] ) && 'home' !== $hosts_index[ $file['host'] ] ) {
+		$site_url = trailingslashit( rocket_add_url_protocol( $file_host ) );
+	} else {
+		$site_url = trailingslashit( rocket_add_url_protocol( site_url() ) );
+	}
+
+	$relative_src         = ltrim( $file['path'], '/' );
+	$abspath_src          = rocket_realpath( strtok( $full_src, '?' ) );
 
 	/*
      * Filters the dynamic resource cache filename
@@ -236,18 +231,18 @@ function rocket_cache_dynamic_resource( $src ) {
      *
      * @param string $filename filename for the cache file
      */
-	$cache_dynamic_resource_filename = apply_filters( 'rocket_dynamic_resource_cache_filename', preg_replace( '/\.(php)$/', '-' . $minify_key . $extension, strtok( $relative_src_path, '?' ) ) );
+	$cache_dynamic_resource_filename = apply_filters( 'rocket_dynamic_resource_cache_filename', preg_replace( '/\.(php)$/', '-' . $minify_key . $extension, $relative_src ) );
 	$cache_busting_paths             = rocket_get_cache_busting_paths( $cache_dynamic_resource_filename, $extension );
 
 	if ( file_exists( $cache_busting_paths['filepath'] ) && is_readable( $cache_busting_paths['filepath'] ) ) {
 		return $cache_busting_paths['url'];
 	}
 
-	if ( rocket_fetch_and_cache_busting( $full_src, $cache_busting_paths, $full_src_path, $current_filter ) ) {
+	if ( rocket_fetch_and_cache_busting( $full_src, $cache_busting_paths, $abspath_src, $current_filter ) ) {
 		return $cache_busting_paths['url'];
 	} else {
 		return $src;
 	}
 }
-add_filter( 'style_loader_src', 'rocket_cache_dynamic_resource', 16 );
+add_filter( 'style_loader_src',  'rocket_cache_dynamic_resource', 16 );
 add_filter( 'script_loader_src', 'rocket_cache_dynamic_resource', 16 );

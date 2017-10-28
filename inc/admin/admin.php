@@ -360,10 +360,10 @@ function rocket_maybe_generate_advanced_cache_file() {
  * @since 2.6.5
  */
 function rocket_maybe_generate_config_files() {
-	list( $host, $path ) = get_rocket_parse_url( home_url() );
-	$path = ( ! empty( $path ) ) ? str_replace( '/', '.', untrailingslashit( $path ) ) : '';
+	$home = get_rocket_parse_url( home_url() );
+	$path = ( ! empty( $home['path'] ) ) ? str_replace( '/', '.', untrailingslashit( $home['path'] ) ) : '';
 
-	if ( ! file_exists( WP_ROCKET_CONFIG_PATH . strtolower( $host ) . $path . '.php' ) ) {
+	if ( ! file_exists( WP_ROCKET_CONFIG_PATH . strtolower( $home['host'] ) . $path . '.php' ) ) {
 		rocket_generate_config_file();
 	}
 }
@@ -457,3 +457,115 @@ function rocket_add_imagify_api_result( $result, $action, $args ) {
 	return $result;
 }
 add_filter( 'plugins_api_result', 'rocket_add_imagify_api_result', 11, 3 );
+
+/**
+ * Gets all data to send to the analytics system
+ *
+ * @since 2.11
+ * @author Remy Perona
+ *
+ * @return array An array of data
+ */
+function rocket_analytics_data() {
+	global $wp_version, $is_nginx, $is_apache, $is_iis7, $is_IIS;
+
+	$untracked_wp_rocket_options = array(
+		'license'                 => 1,
+		'consumer_email'          => 1,
+		'consumer_key'            => 1,
+		'secret_key'              => 1,
+		'secret_cache_key'        => 1,
+		'minify_css_key'          => 1,
+		'minify_js_key'           => 1,
+		'sitemaps'                => 1,
+		'cdn_zone'                => 1,
+		'cdn_cnames'              => 1,
+		'cloudflare_email'        => 1,
+		'cloudflare_api_key'      => 1,
+		'cloudflare_domain'       => 1,
+		'cloudflare_zone_id'      => 1,
+		'cloudflare_old_settings' => 1,
+		'analytics_enabled'       => 1,
+		'wl_author'               => 1,
+		'wl_author_URI'           => 1,
+		'wl_description'          => 1,
+		'wl_plugin_URI'           => 1,
+		'wl_plugin_name'          => 1,
+		'wl_plugin_slug'          => 1,
+	);
+
+	$theme = wp_get_theme();
+	$data  = array_diff_key( get_option( WP_ROCKET_SLUG ), $untracked_wp_rocket_options );
+
+	if ( $is_nginx ) {
+		$data['web_server'] = 'NGINX';
+	} elseif ( $is_apache ) {
+		$data['web_server'] = 'Apache';
+	} elseif ( $is_iis7 ) {
+		$data['web_server'] = 'IIS 7';
+	} elseif ( $is_IIS ) {
+		$data['web_server'] = 'IIS';
+	}
+
+	$data['php_version']       = phpversion();
+	$data['wordpress_version'] = $wp_version;
+	$data['current_theme']     = $theme->get( 'Name' );
+	$data['active_plugins']    = rocket_get_active_plugins();
+	$data['locale']            = get_locale();
+	$data['multisite']         = is_multisite();
+
+	return $data;
+}
+
+/**
+ * Determines if we should send the analytics data
+ *
+ * @since 2.11
+ * @author Remy Perona
+ *
+ * @return bool True if we should send them, false otherwise
+ */
+function rocket_send_analytics_data() {
+	if ( ! get_rocket_option( 'analytics_enabled' ) ) {
+		return false;
+	}
+
+	if ( ! current_user_can( 'administrator' ) ) {
+		return false;
+	}
+
+	if ( false === get_transient( 'rocket_send_analytics_data' ) ) {
+		set_transient( 'rocket_send_analytics_data', 1, 7 * DAY_IN_SECONDS );
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * Handles the analytics opt-in notice selection and prevent further display
+ *
+ * @since 2.11
+ * @author Remy Perona
+ */
+function rocket_analytics_optin() {
+	if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'analytics_optin' ) ) {
+		wp_nonce_ays( '' );
+	}
+
+	if ( ! current_user_can( 'administrator' ) ) {
+		wp_redirect( wp_get_referer() );
+		die();
+	}
+
+	if ( 'yes' === $_GET['value'] ) {
+		update_rocket_option( 'analytics_enabled', 1 );
+		set_transient( 'rocket_analytics_optin', 1 );
+	}
+
+	update_option( 'rocket_analytics_notice_displayed', 1 );
+
+	wp_redirect( wp_get_referer() );
+	die();
+}
+add_action( 'admin_post_rocket_analytics_optin', 'rocket_analytics_optin' );
