@@ -59,97 +59,97 @@ class Rocket_Background_Database_Optimization extends WP_Background_Process {
 
 		switch ( $item ) {
 			case 'revisions':
-				$query = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type = %s", 'revision' ) );
+				$query = $wpdb->get_col( "SELECT ID FROM $wpdb->posts WHERE post_type = revision" );
 				if ( $query ) {
+					$number = 0;
 					foreach ( $query as $id ) {
-						wp_delete_post_revision( intval( $id ) );
+						$number += (int) wp_delete_post_revision( intval( $id ) );
 					}
 
-					$number = count( $query );
 					$this->count[ $item ] = $number;
 				}
 				break;
 			case 'auto_drafts':
-				$query = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_status = %s", 'auto-draft' ) );
+				$query = $wpdb->get_col( "SELECT ID FROM $wpdb->posts WHERE post_status = auto-draft" );
 				if ( $query ) {
+					$number = 0;
 					foreach ( $query as $id ) {
-						wp_delete_post( intval( $id ), true );
+						$number += (int) wp_delete_post( intval( $id ), true );
 					}
 
-					$number = count( $query );
 					$this->count[ $item ] = $number;
 				}
 				break;
 			case 'trashed_posts':
-				$query = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_status = %s", 'trash' ) );
+				$query = $wpdb->get_col( "SELECT ID FROM $wpdb->posts WHERE post_status = trash" );
 				if ( $query ) {
+					$number = 0;
 					foreach ( $query as $id ) {
-						wp_delete_post( $id, true );
+						$number += (int) wp_delete_post( $id, true );
 					}
 
-					$number = count( $query );
 					$this->count[ $item ] = $number;
 				}
 				break;
 			case 'spam_comments':
-				$query = $wpdb->get_col( $wpdb->prepare( "SELECT comment_ID FROM $wpdb->comments WHERE comment_approved = %s", 'spam' ) );
+				$query = $wpdb->get_col( "SELECT comment_ID FROM $wpdb->comments WHERE comment_approved = spam" );
 				if ( $query ) {
+					$number = 0;
 					foreach ( $query as $id ) {
-						wp_delete_comment( intval( $id ), true );
+						$number += (int) wp_delete_comment( intval( $id ), true );
 					}
 
-					$number = count( $query );
 					$this->count[ $item ] = $number;
 				}
 				break;
 			case 'trashed_comments':
-				$query = $wpdb->get_col( $wpdb->prepare( "SELECT comment_ID FROM $wpdb->comments WHERE (comment_approved = %s OR comment_approved = %s)", 'trash', 'post-trashed' ) );
+				$query = $wpdb->get_col( "SELECT comment_ID FROM $wpdb->comments WHERE (comment_approved = trash OR comment_approved = post-trashed)" );
 				if ( $query ) {
+					$number = 0;
 					foreach ( $query as $id ) {
-						wp_delete_comment( intval( $id ), true );
+						$number += (int) wp_delete_comment( intval( $id ), true );
 					}
 
-					$number = count( $query );
 					$this->count[ $item ] = $number;
 				}
 				break;
 			case 'expired_transients':
 				$time = isset( $_SERVER['REQUEST_TIME'] ) ? (int) $_SERVER['REQUEST_TIME'] : time();
-				$query = $wpdb->get_col( $wpdb->prepare( "SELECT option_name FROM $wpdb->options WHERE option_name LIKE %s AND option_value < %s", '_transient_timeout%', $time ) );
+				$query = $wpdb->get_col( "SELECT option_name FROM $wpdb->options WHERE option_name LIKE _transient_timeout% AND option_value < $time" );
 
 				if ( $query ) {
+					$number = 0;
 					foreach ( $query as $transient ) {
 						$key = str_replace( '_transient_timeout_', '', $transient );
-						delete_transient( $key );
+						$number += (int) delete_transient( $key );
 					}
 
-					$number = count( $query );
 					$this->count[ $item ] = $number;
 				}
 				break;
 			case 'all_transients':
-				$query = $wpdb->get_col( $wpdb->prepare( "SELECT option_name FROM $wpdb->options WHERE option_name LIKE %s", '%_transient_%' ) );
+				$query = $wpdb->get_col( "SELECT option_name FROM $wpdb->options WHERE option_name LIKE _transient_% OR option_name LIKE _site_transient_%" );
 				if ( $query ) {
+					$number = 0;
 					foreach ( $query as $transient ) {
 						if ( strpos( $transient, '_site_transient_' ) !== false ) {
-							delete_site_transient( str_replace( '_site_transient_', '', $transient ) );
+							$number += (int) delete_site_transient( str_replace( '_site_transient_', '', $transient ) );
 						} else {
-							delete_transient( str_replace( '_transient_', '', $transient ) );
+							$number += (int) delete_transient( str_replace( '_transient_', '', $transient ) );
 						}
 					}
 
-					$number = count( $query );
 					$this->count[ $item ] = $number;
 				}
 				break;
 			case 'optimize_tables':
-				$query = $wpdb->get_results( $wpdb->prepare( "SELECT table_name, data_free FROM information_schema.tables WHERE table_schema = %s and Engine <> 'InnoDB' and data_free > 0", DB_NAME ) );
+				$query = $wpdb->get_results( "SELECT table_name, data_free FROM information_schema.tables WHERE table_schema = " . DB_NAME . " and Engine <> 'InnoDB' and data_free > 0" );
 				if ( $query ) {
+					$number = 0;
 					foreach ( $query as $table ) {
-						$wpdb->query( $wpdb->prepare( 'OPTIMIZE TABLE %s', $table->table_name ) );
+						$number += (int) $wpdb->query( "OPTIMIZE TABLE $table->table_name" );
 					}
 
-					$number = count( $query );
 					$this->count[ $item ] = $number;
 				}
 				break;
