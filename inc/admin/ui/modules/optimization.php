@@ -296,9 +296,9 @@ $rocket_render_blocking[] = array(
 
 $rocket_render_blocking[] = array(
 	'type'         => 'checkbox',
-	'label'        => __( 'Load CSS files asynchronously', 'rocket' ),
+	'label'        => __( 'Optimize CSS delivery', 'rocket' ),
 	'name'         => 'async_css',
-	'label_screen' => __( 'Load CSS files asynchronously', 'rocket' ),
+	'label_screen' => __( 'Optimize CSS delivery', 'rocket' ),
 	'readonly'     => rocket_maybe_disable_async_css(),
 );
 
