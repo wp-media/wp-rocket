@@ -177,12 +177,6 @@ function rocket_field( $args ) {
 
 			<?php
 				break;
-			case 'button':
-				?>
-					<button id="<?php echo $args['name']; ?>" class="button-secondary rocketicon rocketicon-<?php echo $class; ?>"><?php echo wp_kses_post( $args['label'] ); ?></button>
-				
-			<?php
-				break;
 
 			case 'submit_optimize':
 				?>
