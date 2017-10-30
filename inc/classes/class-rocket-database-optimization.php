@@ -95,7 +95,7 @@ class Rocket_Database_Optimization {
 
 		$this->process_handler();
 
-		wp_redirect( wp_get_referer() );
+		wp_redirect( esc_url_raw( wp_get_referer() ) );
 		die();
 	}
 
