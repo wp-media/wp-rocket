@@ -59,7 +59,7 @@ class Rocket_Background_Database_Optimization extends WP_Background_Process {
 
 		switch ( $item ) {
 			case 'revisions':
-				$query = $wpdb->get_col( "SELECT ID FROM $wpdb->posts WHERE post_type = revision" );
+				$query = $wpdb->get_col( "SELECT ID FROM $wpdb->posts WHERE post_type = 'revision'" );
 				if ( $query ) {
 					$number = 0;
 					foreach ( $query as $id ) {
@@ -70,7 +70,7 @@ class Rocket_Background_Database_Optimization extends WP_Background_Process {
 				}
 				break;
 			case 'auto_drafts':
-				$query = $wpdb->get_col( "SELECT ID FROM $wpdb->posts WHERE post_status = auto-draft" );
+				$query = $wpdb->get_col( "SELECT ID FROM $wpdb->posts WHERE post_status = 'auto-draft'" );
 				if ( $query ) {
 					$number = 0;
 					foreach ( $query as $id ) {
@@ -81,7 +81,7 @@ class Rocket_Background_Database_Optimization extends WP_Background_Process {
 				}
 				break;
 			case 'trashed_posts':
-				$query = $wpdb->get_col( "SELECT ID FROM $wpdb->posts WHERE post_status = trash" );
+				$query = $wpdb->get_col( "SELECT ID FROM $wpdb->posts WHERE post_status = 'trash'" );
 				if ( $query ) {
 					$number = 0;
 					foreach ( $query as $id ) {
@@ -92,7 +92,7 @@ class Rocket_Background_Database_Optimization extends WP_Background_Process {
 				}
 				break;
 			case 'spam_comments':
-				$query = $wpdb->get_col( "SELECT comment_ID FROM $wpdb->comments WHERE comment_approved = spam" );
+				$query = $wpdb->get_col( "SELECT comment_ID FROM $wpdb->comments WHERE comment_approved = 'spam'" );
 				if ( $query ) {
 					$number = 0;
 					foreach ( $query as $id ) {
@@ -103,7 +103,7 @@ class Rocket_Background_Database_Optimization extends WP_Background_Process {
 				}
 				break;
 			case 'trashed_comments':
-				$query = $wpdb->get_col( "SELECT comment_ID FROM $wpdb->comments WHERE (comment_approved = trash OR comment_approved = post-trashed)" );
+				$query = $wpdb->get_col( "SELECT comment_ID FROM $wpdb->comments WHERE (comment_approved = 'trash' OR comment_approved = 'post-trashed')" );
 				if ( $query ) {
 					$number = 0;
 					foreach ( $query as $id ) {
@@ -115,7 +115,7 @@ class Rocket_Background_Database_Optimization extends WP_Background_Process {
 				break;
 			case 'expired_transients':
 				$time = isset( $_SERVER['REQUEST_TIME'] ) ? (int) $_SERVER['REQUEST_TIME'] : time();
-				$query = $wpdb->get_col( "SELECT option_name FROM $wpdb->options WHERE option_name LIKE _transient_timeout% AND option_value < $time" );
+				$query = $wpdb->get_col( "SELECT option_name FROM $wpdb->options WHERE option_name LIKE '_transient_timeout%' AND option_value < '$time'" );
 
 				if ( $query ) {
 					$number = 0;
@@ -128,7 +128,7 @@ class Rocket_Background_Database_Optimization extends WP_Background_Process {
 				}
 				break;
 			case 'all_transients':
-				$query = $wpdb->get_col( "SELECT option_name FROM $wpdb->options WHERE option_name LIKE _transient_% OR option_name LIKE _site_transient_%" );
+				$query = $wpdb->get_col( "SELECT option_name FROM $wpdb->options WHERE option_name LIKE '_transient_%' OR option_name LIKE '_site_transient_%'" );
 				if ( $query ) {
 					$number = 0;
 					foreach ( $query as $transient ) {
@@ -143,11 +143,11 @@ class Rocket_Background_Database_Optimization extends WP_Background_Process {
 				}
 				break;
 			case 'optimize_tables':
-				$query = $wpdb->get_results( "SELECT table_name, data_free FROM information_schema.tables WHERE table_schema = " . DB_NAME . " and Engine <> 'InnoDB' and data_free > 0" );
+				$query = $wpdb->get_results( "SELECT table_name, data_free FROM information_schema.tables WHERE table_schema = '" . DB_NAME . "' and Engine <> 'InnoDB' and data_free > 0" );
 				if ( $query ) {
 					$number = 0;
 					foreach ( $query as $table ) {
-						$number += (int) $wpdb->query( "OPTIMIZE TABLE $table->table_name" );
+						$number += (int) $wpdb->query( "OPTIMIZE TABLE '$table->table_name'" );
 					}
 
 					$this->count[ $item ] = $number;
