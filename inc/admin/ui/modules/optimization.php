@@ -336,39 +336,3 @@ add_settings_field(
 	'rocket_display_optimization_options',
 	$rocket_render_blocking
 );
-
-/**
- * Above the fold CSS
- */
-add_settings_field(
-	'rocket_critical_css',
-	__( 'Critical path CSS:', 'rocket' ),
-	'rocket_field',
-	'rocket_optimization',
-	'rocket_display_optimization_options',
-	array(
-		array(
-			'type'         => 'helper_help',
-			'name'         => 'critical_css_description',
-			'description'  => __( 'Specify CSS rules required for rendering above-the-fold content', 'rocket' ),
-		),
-		array(
-			'type'         => 'textarea',
-			'label_for'    => 'critical_css',
-			'label_screen' => __( 'Critical path CSS rules for rendering above-the-fold content', 'rocket' ),
-		),
-		array(
-			'type'         => 'button',
-			'label_for'    => 'critical_css_generator',
-			'label'        => __( 'Generate critical CSS', 'rocket' ),
-			'label_screen' => __( 'Generate critical CSS', 'rocket' ),
-		),
-		array(
-			'type'         => 'helper_description',
-			'name'         => 'critical_css_generator_description',
-			// translators: %s is the URL to the documentation page.
-			'description'  => sprintf( __( '<a href="%s" target="_blank">Critical CSS documentation</a>', 'rocket' ), 'http://docs.wp-rocket.me/article/108-render-blocking-javascript-and-css-pagespeed#critical-path-css' ),
-		),
-		'class' => 'critical-css-row',
-	)
-);
