@@ -423,79 +423,45 @@ function get_rocket_cache_query_string() {
 }
 
 /**
- * Get all CSS files to exclude to the minification.
+ * Get all files to exclude from minification/concatenation.
  *
- * @since 2.6
+ * @since 2.11
+ * @author Remy Perona
  *
- * @return array List of excluded CSS files.
+ * @param string $extension Type of files to exclude.
+ * @return array Array of excluded files.
  */
-function get_rocket_exclude_css() {
-	global $rocket_excluded_enqueue_css;
+function get_rocket_exclude_files( $extension ) {
+	if ( 'css' === $extension ) {
+		$excluded_files = get_rocket_option( 'exclude_css', array() );
+		/**
+		 * Filters CSS files to exclude from minification/concatenation.
+		 *
+		 * @since 2.6
+		 *
+		 * @param array $excluded_files List of excluded CSS files.
+		*/
+		$excluded_files = apply_filters( 'rocket_exclude_css', $excluded_files );
+	} elseif ( 'js' === $extension ) {
+		global $wp_scripts;
 
-	$css_files = get_rocket_option( 'exclude_css', array() );
-	$css_files = array_unique( array_merge( $css_files, (array) $rocket_excluded_enqueue_css ) );
+		$excluded_files = get_rocket_option( 'exclude_js', array() );
 
-	/**
-	 * Filter CSS files to exclude to the minification.
-	 *
-	 * @since 2.6
-	 *
-	 * @param array $css_files List of excluded CSS files.
-	*/
-	$css_files = apply_filters( 'rocket_exclude_css', $css_files );
+		if ( get_rocket_option( 'defer_all_js', 0 ) && get_rocket_option( 'defer_all_js_safe', 0 ) ) {
+			$excluded_files[] = $wp_scripts->registered['jquery-core']->src;
+		}
 
-	return $css_files;
-}
-
-/**
- * Get all JS files to exclude to the minification.
- *
- * @since 2.6
- *
- * @return array List of excluded JS files.
- */
-function get_rocket_exclude_js() {
-	global $wp_scripts, $rocket_excluded_enqueue_js;
-
-	$js_files = get_rocket_option( 'exclude_js', array() );
-	$js_files = array_unique( array_merge( $js_files, (array) $rocket_excluded_enqueue_js ) );
-
-	if ( get_rocket_option( 'defer_all_js', 0 ) && get_rocket_option( 'defer_all_js_safe', 0 ) ) {
-		$js_files[] = $wp_scripts->registered['jquery-core']->src;
+		/**
+		 * Filter JS files to exclude from minification/concatenation.
+		 *
+		 * @since 2.6
+		 *
+		 * @param array $js_files List of excluded JS files.
+		*/
+		$excluded_files = apply_filters( 'rocket_exclude_js', $excluded_files );
 	}
 
-	/**
-	 * Filter JS files to exclude to the minification.
-	 *
-	 * @since 2.6
-	 *
-	 * @param array $css_files List of excluded JS files.
-	*/
-	$js_files = apply_filters( 'rocket_exclude_js', $js_files );
-
-	return $js_files;
-}
-
-/**
- * Get all JS files to move in the footer during the minification.
- *
- * @since 2.6
- *
- * @return array List of JS files.
- */
-function get_rocket_minify_js_in_footer() {
-	global $rocket_enqueue_js_in_footer;
-
-	/**
-	 * Filter JS files to move in the footer during the minification.
-	 *
-	 * @since 2.6
-	 *
-	 * @param array $rocket_enqueue_js_in_footer List of JS files.
-	*/
-	$js_files = apply_filters( 'rocket_minify_js_in_footer', $rocket_enqueue_js_in_footer );
-
-	return $js_files;
+	return array_flip( $excluded_files );
 }
 
 /**

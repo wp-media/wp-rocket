@@ -109,6 +109,10 @@ class ComposerStaticInit0667ef9b9265640664ae067531ce2727
         'Rocket_Background_Partial_Preload' => __DIR__ . '/../..' . '/inc/classes/class-rocket-background-partial-preload.php',
         'Rocket_Background_Sitemap_Preload' => __DIR__ . '/../..' . '/inc/classes/class-rocket-background-sitemap-preload.php',
         'Rocket_Database_Optimization' => __DIR__ . '/../..' . '/inc/classes/class-rocket-database-optimization.php',
+        'Minify_CSS_UriRewriter' => __DIR__ . '/../..' . '/inc/vendors/classes/class-minify-css-urirewriter.php',
+        'Minify_HTML' => __DIR__ . '/../..' . '/inc/vendors/classes/class-minify-html.php',
+        'Mobile_Detect' => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/Mobile_Detect.php',
+        'Rocket_Sitemap_Preload_Process' => __DIR__ . '/../..' . '/inc/classes/background-processing.php',
         'WP_Async_Request' => __DIR__ . '/..' . '/a5hleyrich/wp-background-processing/classes/wp-async-request.php',
         'WP_Background_Process' => __DIR__ . '/..' . '/a5hleyrich/wp-background-processing/classes/wp-background-process.php',
     );

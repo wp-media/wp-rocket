@@ -271,8 +271,8 @@ function get_rocket_i18n_to_preserve( $current_lang ) {
 
 	// Stock all URLs of langs to preserve.
 	foreach ( $langs as $lang ) {
-		list( $host, $path ) = get_rocket_parse_url( get_rocket_i18n_home_url( $lang ) );
-		$langs_to_preserve[] = WP_ROCKET_CACHE_PATH . $host . '(.*)/' . trim( $path, '/' );
+		$parse_url = get_rocket_parse_url( get_rocket_i18n_home_url( $lang ) );
+		$langs_to_preserve[] = WP_ROCKET_CACHE_PATH . $parse_url['host'] . '(.*)/' . trim( $parse_url['path'], '/' );
 	}
 
 	/**
