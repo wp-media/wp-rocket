@@ -380,24 +380,6 @@ function rocket_maybe_set_wp_cache_define() {
 }
 
 /**
- * Launches the database optimization from admin
- *
- * @since 2.8
- * @author Remy Perona
- */
-function rocket_optimize_database() {
-	if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'rocket_optimize_database' ) ) {
-		wp_nonce_ays( '' );
-	}
-
-	do_rocket_database_optimization();
-
-	wp_redirect( wp_get_referer() );
-	die();
-}
-add_action( 'admin_post_rocket_optimize_database', 'rocket_optimize_database' );
-
-/**
  * Filter plugin fetching API results to inject Imagify
  *
  * @since 2.10.7

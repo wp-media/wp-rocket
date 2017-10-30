@@ -818,3 +818,71 @@ function rocket_force_minify_combine_all( $length, $ext ) {
 function rocket_admin_print_styles() {
 	_deprecated_function( __FUNCTION__, '2.11' );
 }
+
+/**
+ * Optimizes the database depending on the option
+ *
+ * @since 2.8
+ * @deprecated 2.11
+ * @see Rocket_Background_Database_Optimisation->task()
+ * @author Remy Perona
+ *
+ * @param string $type Type of optimization to perform.
+ */
+function rocket_database_optimize( $type ) {
+	_deprecated_function( __FUNCTION__, '2.11', 'Rocket_Background_Database_Optimisation->task()' );
+}
+
+/**
+ * Launches the database optimization from admin
+ *
+ * @since 2.8
+ * @deprecated 2.11
+ * @see Rocket_Database_Optimisation->optimize()
+ * @author Remy Perona
+ */
+function rocket_optimize_database() {
+	_deprecated_function( __FUNCTION__, '2.11', 'Rocket_Database_Optimisation->optimize()' );
+}
+
+/**
+ * Count the number of items concerned by the database cleanup
+ *
+ * @since 2.8
+ * @deprecated 2.11
+ * @see Rocket_Database_Optimisation->count_cleanup_items()
+ * @author Remy Perona
+ *
+ * @param string $type Item type to count.
+ * @return int Number of items for this type
+ */
+function rocket_database_count_cleanup_items( $type ) {
+	_deprecated_function( __FUNCTION__, '2.11', 'Rocket_Database_Optimisation->count_cleanup_items()' );
+
+	return 0;
+}
+
+/**
+ * Planning database optimization cron
+ * If the task is not programmed, it is automatically triggered
+ *
+ * @since 2.8
+ * @deprecated 2.11
+ * @see Rocket_Database_Optimisation->database_optimization_scheduled()
+ * @author Remy Perona
+ */
+function rocket_database_optimization_scheduled() {
+	_deprecated_function( __FUNCTION__, '2.11', 'Rocket_Database_Optimisation->database_optimization_scheduled()' );
+}
+
+/**
+ * Performs the database optimization
+ *
+ * @since 2.8
+ * @deprecated 2.11
+ * @see Rocket_Database_Optimisation->process_handler()
+ * @author Remy Perona
+ */
+function do_rocket_database_optimization() {
+	_deprecated_function( __FUNCTION__, '2.11', 'Rocket_Database_Optimisation->process_handler()' );
+}

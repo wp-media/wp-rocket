@@ -176,6 +176,8 @@ function rocket_init() {
 		require WP_ROCKET_FRONT_PATH . 'protocol.php';
 	}
 
+	Rocket_Database_Optimization::init();
+
 	// You can hook this to trigger any action when WP Rocket is correctly loaded, so, not in AUTOSAVE mode.
 	if ( rocket_valid_key() ) {
 		/**

@@ -969,11 +969,6 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		);
 	}
 
-	// Performs the database optimization when settings are saved with the "save and optimize" submit button".
-	if ( ! empty( $_POST ) && isset( $_POST['wp_rocket_settings']['submit_optimize'] ) ) {
-		do_rocket_database_optimization();
-	}
-
 	// Update CloudFlare Development Mode.
 	$cloudflare_update_result = array();
 
@@ -1231,52 +1226,6 @@ function rocket_import_upload_form() {
 		submit_button( __( 'Upload file and import settings', 'rocket' ), 'button', 'import' );
 	}
 }
-
-/**
- * Count the number of items concerned by the database cleanup
- *
- * @since 2.8
- * @author Remy Perona
- *
- * @param string $type Item type to count.
- * @return int Number of items for this type
- */
-function rocket_database_count_cleanup_items( $type ) {
-	global $wpdb;
-
-	$count = 0;
-
-	switch ( $type ) {
-		case 'revisions':
-			$count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(ID) FROM $wpdb->posts WHERE post_type = %s", 'revision' ) );
-			break;
-		case 'auto_drafts':
-			$count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(ID) FROM $wpdb->posts WHERE post_status = %s", 'auto-draft' ) );
-			break;
-		case 'trashed_posts':
-			$count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(ID) FROM $wpdb->posts WHERE post_status = %s", 'trash' ) );
-			break;
-		case 'spam_comments':
-			$count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(comment_ID) FROM $wpdb->comments WHERE comment_approved = %s", 'spam' ) );
-			break;
-		case 'trashed_comments':
-			$count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(comment_ID) FROM $wpdb->comments WHERE (comment_approved = %s OR comment_approved = %s)", 'trash', 'post-trashed' ) );
-			break;
-		case 'expired_transients':
-			$time = isset( $_SERVER['REQUEST_TIME'] ) ? (int) $_SERVER['REQUEST_TIME'] : time();
-			$count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(option_name) FROM $wpdb->options WHERE option_name LIKE %s AND option_value < %d;", '_transient_timeout%', $time ) );
-			break;
-		case 'all_transients':
-			$count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(option_id) FROM $wpdb->options WHERE option_name LIKE %s", '%_transient_%' ) );
-			break;
-		case 'optimize_tables':
-			$count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(table_name) FROM information_schema.tables WHERE table_schema = %s and Engine <> 'InnoDB' and data_free > 0", DB_NAME ) );
-			break;
-	}
-
-	return $count;
-}
-
 
 /**
  * Handle WP Rocket settings import.

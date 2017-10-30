@@ -813,3 +813,4 @@ function rocket_analytics_optin_thankyou_notice() {
 	delete_transient( 'rocket_analytics_optin' );
 }
 add_action( 'admin_notices', 'rocket_analytics_optin_thankyou_notice' );
+
