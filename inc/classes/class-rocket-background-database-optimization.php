@@ -115,7 +115,7 @@ class Rocket_Background_Database_Optimization extends WP_Background_Process {
 				break;
 			case 'expired_transients':
 				$time = isset( $_SERVER['REQUEST_TIME'] ) ? (int) $_SERVER['REQUEST_TIME'] : time();
-				$query = $wpdb->get_col( "SELECT option_name FROM $wpdb->options WHERE option_name LIKE '_transient_timeout%' AND option_value < '$time'" );
+				$query = $wpdb->get_col( "SELECT option_name FROM $wpdb->options WHERE option_name LIKE '_transient_timeout%' AND option_value < $time" );
 
 				if ( $query ) {
 					$number = 0;
@@ -143,7 +143,7 @@ class Rocket_Background_Database_Optimization extends WP_Background_Process {
 				}
 				break;
 			case 'optimize_tables':
-				$query = $wpdb->get_results( "SELECT table_name, data_free FROM information_schema.tables WHERE table_schema = '" . DB_NAME . "' and Engine <> 'InnoDB' and data_free > 0" );
+				$query = $wpdb->get_results( "SELECT table_name, data_free FROM information_schema.tables WHERE table_schema = " . DB_NAME . " and Engine <> 'InnoDB' and data_free > 0" );
 				if ( $query ) {
 					$number = 0;
 					foreach ( $query as $table ) {
