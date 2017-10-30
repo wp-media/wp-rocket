@@ -116,6 +116,27 @@ if ( function_exists( 'opcache_reset' ) ) {
 }
 
 /**
+ * Clear cache
+ */
+add_settings_field(
+	'rocket_clear_critical_path_css',
+	__( 'Clear Critical Path CSS:', 'rocket' ),
+	'rocket_button',
+	'rocket_tools',
+	'rocket_display_tools',
+	array(
+		'helper_help' => array(
+			'name'         => 'clear_critical_path_css',
+			'description'  => __( 'Clear all generated Critical Path CSS.', 'rocket' ),
+		),
+		'button' => array(
+			'button_label' => __( 'Clear Critical Path CSS', 'rocket' ),
+			'url'          => wp_nonce_url( admin_url( 'admin-post.php?action=clear_critical_path' ), 'clear_critical_path' ),
+		),
+	)
+);
+
+/**
  * Export
  */
 add_settings_field(
