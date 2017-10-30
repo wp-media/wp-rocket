@@ -95,7 +95,7 @@ class Rocket_Database_Optimization {
 
 		$this->process_handler();
 
-		wp_redirect( esc_url_raw( wp_get_referer() ) );
+		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
 		die();
 	}
 
@@ -148,29 +148,29 @@ class Rocket_Database_Optimization {
 
 		switch ( $type ) {
 			case 'revisions':
-				$count = $wpdb->get_var( "SELECT COUNT(ID) FROM $wpdb->posts WHERE post_type = revision" );
+				$count = $wpdb->get_var( "SELECT COUNT(ID) FROM $wpdb->posts WHERE post_type = 'revision'" );
 				break;
 			case 'auto_drafts':
-				$count = $wpdb->get_var( "SELECT COUNT(ID) FROM $wpdb->posts WHERE post_status = auto-draft" );
+				$count = $wpdb->get_var( "SELECT COUNT(ID) FROM $wpdb->posts WHERE post_status = 'auto-draft'" );
 				break;
 			case 'trashed_posts':
-				$count = $wpdb->get_var( "SELECT COUNT(ID) FROM $wpdb->posts WHERE post_status = trash" );
+				$count = $wpdb->get_var( "SELECT COUNT(ID) FROM $wpdb->posts WHERE post_status = 'trash'" );
 				break;
 			case 'spam_comments':
-				$count = $wpdb->get_var( "SELECT COUNT(comment_ID) FROM $wpdb->comments WHERE comment_approved = spam" );
+				$count = $wpdb->get_var( "SELECT COUNT(comment_ID) FROM $wpdb->comments WHERE comment_approved = 'spam'" );
 				break;
 			case 'trashed_comments':
-				$count = $wpdb->get_var( "SELECT COUNT(comment_ID) FROM $wpdb->comments WHERE (comment_approved = trash OR comment_approved = post-trashed)" );
+				$count = $wpdb->get_var( "SELECT COUNT(comment_ID) FROM $wpdb->comments WHERE (comment_approved = 'trash' OR comment_approved = 'post-trashed')" );
 				break;
 			case 'expired_transients':
 				$time = isset( $_SERVER['REQUEST_TIME'] ) ? (int) $_SERVER['REQUEST_TIME'] : time();
-				$count = $wpdb->get_var( "SELECT COUNT(option_name) FROM $wpdb->options WHERE option_name LIKE _transient_timeout% AND option_value < $time" );
+				$count = $wpdb->get_var( "SELECT COUNT(option_name) FROM $wpdb->options WHERE option_name LIKE '_transient_timeout%' AND option_value < '$time'" );
 				break;
 			case 'all_transients':
-				$count = $wpdb->get_var( "SELECT COUNT(option_id) FROM $wpdb->options WHERE option_name LIKE _transient_% OR option_name LIKE _site_transient_%" );
+				$count = $wpdb->get_var( "SELECT COUNT(option_id) FROM $wpdb->options WHERE option_name LIKE '_transient_%' OR option_name LIKE '_site_transient_%'" );
 				break;
 			case 'optimize_tables':
-				$count = $wpdb->get_var( "SELECT COUNT(table_name) FROM information_schema.tables WHERE table_schema = " . DB_NAME . " and Engine <> 'InnoDB' and data_free > 0" );
+				$count = $wpdb->get_var( "SELECT COUNT(table_name) FROM information_schema.tables WHERE table_schema = '" . DB_NAME . "' and Engine <> 'InnoDB' and data_free > 0" );
 				break;
 		}
 
