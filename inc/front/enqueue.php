@@ -92,29 +92,28 @@ function get_rocket_browser_cache_busting( $src, $current_filter = '' ) {
 	$hosts         = get_rocket_cnames_host( array( 'all', 'css_and_js', $extension ) );
 	$hosts['home'] = rocket_extract_url_component( home_url(), PHP_URL_HOST );
 	$hosts_index   = array_flip( $hosts );
-	list( $file_host, $relative_src_path, $scheme, $query ) = get_rocket_parse_url( $full_src );
+	$file          = get_rocket_parse_url( $full_src );
 
-	if ( '' === $file_host ) {
+	if ( '' === $file['host'] ) {
 		$full_src = home_url() . $src;
 	}
 
-	if ( false !== strpos( $full_src, '://' ) && ! isset( $hosts_index[ $file_host ] ) ) {
+	if ( false !== strpos( $full_src, '://' ) && ! isset( $hosts_index[ $file['host'] ] ) ) {
 		return $src;
 	}
 
-	if ( empty( $query ) ) {
+	if ( empty( $file['query'] ) ) {
 		return $src;
 	}
 
-	if ( isset( $hosts_index[ $file_host ] ) && 'home' !== $hosts_index[ $file_host ] ) {
-		$site_url = trailingslashit( rocket_add_url_protocol( $file_host ) );
+	if ( isset( $hosts_index[ $file['host'] ] ) && 'home' !== $hosts_index[ $file['host'] ] ) {
+		$site_url = trailingslashit( rocket_add_url_protocol( $file['host'] ) );
 	} else {
 		$site_url = trailingslashit( rocket_add_url_protocol( site_url() ) );
 	}
 
-	$abspath                = wp_normalize_path( ABSPATH );
-	$relative_src           = ltrim( $relative_src_path . '?' . $query, '/' );
-	$abspath_src            = realpath( str_replace( $site_url, $abspath, strtok( $full_src, '?' ) ) );
+	$relative_src           = ltrim( $file['path'] . '?' . $file['query'], '/' );
+	$abspath_src            = rocket_realpath( strtok( $full_src, '?' ) );
 	$cache_busting_filename = preg_replace( '/\.(js|css)\?(?:timestamp|ver)=([^&]+)(?:.*)/', '-$2.$1', $relative_src );
 
 	if ( $cache_busting_filename === $relative_src ) {
@@ -201,29 +200,28 @@ function rocket_cache_dynamic_resource( $src ) {
 	$hosts       = get_rocket_cnames_host( array( 'all', 'css_and_js', $extension ) );
 	$hosts[]     = rocket_extract_url_component( home_url(), PHP_URL_HOST );
 	$hosts_index = array_flip( $hosts );
-	list( $file_host, $relative_src_path, $scheme, $query ) = get_rocket_parse_url( $full_src );
+	$file        = get_rocket_parse_url( $full_src );
 
-	if ( $query ) {
+	if ( $file['query'] ) {
 		return $src;
 	}
 
-	if ( '' === $file_host ) {
+	if ( '' === $file['host'] ) {
 		$full_src = home_url() . $src;
 	}
 
-	if ( strpos( $full_src, '://' ) !== false && ! isset( $hosts_index[ $file_host ] ) ) {
+	if ( strpos( $full_src, '://' ) !== false && ! isset( $hosts_index[ $file['host'] ] ) ) {
 		return $src;
 	}
 
-	if ( isset( $hosts_index[ $file_host ] ) && 'home' !== $hosts_index[ $file_host ] ) {
+	if ( isset( $hosts_index[ $file['host'] ] ) && 'home' !== $hosts_index[ $file['host'] ] ) {
 		$site_url = trailingslashit( rocket_add_url_protocol( $file_host ) );
 	} else {
 		$site_url = trailingslashit( rocket_add_url_protocol( site_url() ) );
 	}
 
-	$abspath              = wp_normalize_path( ABSPATH );
-	$relative_src         = ltrim( $relative_src_path, '/' );
-	$abspath_src          = realpath( str_replace( $site_url, $abspath, strtok( $full_src, '?' ) ) );
+	$relative_src         = ltrim( $file['path'], '/' );
+	$abspath_src          = rocket_realpath( strtok( $full_src, '?' ) );
 
 	/*
      * Filters the dynamic resource cache filename

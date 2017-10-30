@@ -238,8 +238,8 @@ add_action( 'wp_update_comment_count'   , 'rocket_clean_post' );
 function rocket_clean_files_users( $urls ) {
 	$pattern_urls = array();
 	foreach ( $urls as $url ) {
-		list( $host, $path, $scheme ) = get_rocket_parse_url( $url );
-		$pattern_urls[] = $scheme . '://' . $host . '*' . $path;
+		$parse_url = get_rocket_parse_url( $url );
+		$pattern_urls[] = $parse_url['scheme'] . '://' . $parse_url['host'] . '*' . $parse_url['path'];
 	}
 	return $pattern_urls;
 }
@@ -422,8 +422,8 @@ function do_admin_post_rocket_purge_cache() {
 				$referer = wp_get_referer();
 
 				if ( 0 !== strpos( $referer, 'http' ) ) {
-					list( $host, $path, $scheme, $query ) = get_rocket_parse_url( untrailingslashit( home_url() ) );
-					$referer = $scheme . '://' . $host . $referer;
+					$parse_url = get_rocket_parse_url( untrailingslashit( home_url() ) );
+					$referer = $parse_url['scheme'] . '://' . $parse_url['host'] . $referer;
 				}
 
 				if ( home_url( '/' ) === $referer ) {
