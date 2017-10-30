@@ -11,7 +11,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  * @return string Updated HTML code
  */
 function rocket_async_css( $buffer ) {
-	if ( ! get_rocket_option( 'async_css' ) && ! get_rocket_option( 'critical_css' ) ) {
+	if ( ! get_rocket_option( 'async_css' ) ) {
 		return $buffer;
 	}
 
@@ -65,7 +65,7 @@ add_filter( 'rocket_buffer', 'rocket_async_css', 15 );
 function rocket_insert_critical_css() {
 	global $pagenow;
 
-	if ( ! get_rocket_option( 'async_css' ) && ! get_rocket_option( 'critical_css' ) ) {
+	if ( ! get_rocket_option( 'async_css' ) ) {
 		return;
 	}
 
@@ -126,7 +126,7 @@ add_action( 'wp_head', 'rocket_insert_critical_css', 1 );
 function rocket_insert_load_css() {
 	global $pagenow;
 
-	if ( ! get_rocket_option( 'async_css' ) && ! get_rocket_option( 'critical_css' ) ) {
+	if ( ! get_rocket_option( 'async_css' ) ) {
 		return;
 	}
 
