@@ -170,7 +170,7 @@ class Rocket_Database_Optimization {
 				$count = $wpdb->get_var( "SELECT COUNT(option_id) FROM $wpdb->options WHERE option_name LIKE '_transient_%' OR option_name LIKE '_site_transient_%'" );
 				break;
 			case 'optimize_tables':
-				$count = $wpdb->get_var( "SELECT COUNT(table_name) FROM information_schema.tables WHERE table_schema = " . DB_NAME . " and Engine <> 'InnoDB' and data_free > 0" );
+				$count = $wpdb->get_var( "SELECT COUNT(table_name) FROM information_schema.tables WHERE table_schema = '" . DB_NAME . "' and Engine <> 'InnoDB' and data_free > 0" );
 				break;
 		}
 
