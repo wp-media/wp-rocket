@@ -811,3 +811,122 @@ function rocket_analytics_optin_thankyou_notice() {
 }
 add_action( 'admin_notices', 'rocket_analytics_optin_thankyou_notice' );
 
+/**
+ * Displays a notice after clearing the cache
+ *
+ * @since 2.11
+ * @author Remy Perona
+ */
+function rocket_clear_cache_notice() {
+	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		return;
+	}
+
+	$cleared_cache = get_transient( 'rocket_clear_cache' );
+
+	if ( ! $cleared_cache ) {
+		return;
+	}
+
+	delete_transient( 'rocket_clear_cache' );
+
+	switch ( $cleared_cache ) {
+		case 'all':
+			$notice = sprintf( __( '%s cache cleared.', 'rocket' ), WP_ROCKET_PLUGIN_NAME );
+			break;
+		case 'post':
+			$notice = __( 'Post cache cleared.', 'rocket' );
+			break;
+		case 'term':
+			$notice = __( 'Term cache cleared.', 'rocket' );
+			break;
+		case 'user':
+			$notice = __( 'User cache cleared.', 'rocket' );
+			break;
+		default:
+			$notice = '';
+			break;
+	}
+
+	if ( empty( $notice ) ) {
+		return;
+	}
+
+	?>
+	<div class="notice notice-success is-dismissible">
+		<p><?php echo $notice; ?></p>
+	</div>
+	<?php
+}
+add_action( 'admin_notices', 'rocket_clear_cache_notice' );
+
+/**
+ * This notice is displayed when the sitemap preload is running
+ *
+ * @since 2.11
+ * @author Remy Perona
+ */
+function rocket_sitemap_preload_running() {
+	global $current_user;
+	$screen              = get_current_screen();
+	$rocket_wl_name      = get_rocket_option( 'wl_plugin_name', null );
+	$wp_rocket_screen_id = isset( $rocket_wl_name ) ? 'settings_page_' . sanitize_key( $rocket_wl_name ) : 'settings_page_wprocket';
+	/** This filter is documented in inc/admin-bar.php */
+	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		return;
+	}
+
+	if ( $screen->id !== $wp_rocket_screen_id ) {
+		return;
+	}
+
+	$running = get_transient( 'rocket_sitemap_preload_running' );
+	if ( ! $running ) {
+		return;
+	}
+	?>
+		<div class="notice notice-success is-dismissible">
+			<p><?php _e( 'Sitemap-based cache preload is currently running…', 'rocket' ); ?></p>
+		</div>
+	<?php
+}
+add_action( 'admin_notices', 'rocket_sitemap_preload_running' );
+
+/**
+ * This notice is displayed after the sitemap preload is complete
+ *
+ * @since 2.11
+ * @author Remy Perona
+ */
+function rocket_sitemap_preload_complete() {
+	global $current_user;
+	$screen              = get_current_screen();
+	$rocket_wl_name      = get_rocket_option( 'wl_plugin_name', null );
+	$wp_rocket_screen_id = isset( $rocket_wl_name ) ? 'settings_page_' . sanitize_key( $rocket_wl_name ) : 'settings_page_wprocket';
+	/** This filter is documented in inc/admin-bar.php */
+	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		return;
+	}
+
+	if ( $screen->id !== $wp_rocket_screen_id ) {
+		return;
+	}
+
+	$result = get_transient( 'rocket_sitemap_preload_complete' );
+	if ( ! $result ) {
+		return;
+	}
+
+	delete_transient( 'rocket_sitemap_preload_complete' );
+	?>
+		<div class="notice notice-success is-dismissible">
+			<p>
+			<?php
+				// translators: %d is the number of pages preloaded.
+				printf( __( 'Sitemap preload complete: %d pages not yet cached have been preloaded.', 'rocket' ), $result );
+			?>
+			</p>
+		</div>
+	<?php
+}
+add_action( 'admin_notices', 'rocket_sitemap_preload_complete' );
