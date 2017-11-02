@@ -190,15 +190,6 @@ if ( isset( $rocket_cache_mobile, $rocket_do_caching_mobile_files ) && class_exi
 	if ( $detect->isMobile() && ! $detect->isTablet() ) {
 		$filename .= '-mobile';
 	}
-
-	if ( strpos( $_SERVER['SERVER_SOFTWARE'], 'nginx' ) !== false ) {
-		// Create a hidden empty file for mobile detection on NGINX with the Rocket NGINX configuration.
-		$nginx_mobile_detect_file = $request_uri_path . '/.mobile-active';
-
-		if ( ! file_exists( $nginx_mobile_detect_file ) ) {
-			touch( $nginx_mobile_detect_file );
-		}
-	}
 }
 
 // Rename the caching filename for SSL URLs.
@@ -261,7 +252,7 @@ function do_rocket_callback( $buffer ) {
 		&& ( ! defined( 'DONOTCACHEPAGE' ) || ! DONOTCACHEPAGE || $rocket_override_donotcachepage ) // Don't cache template that use this constant.
 		&& function_exists( 'rocket_mkdir_p' )
 	) {
-		global $request_uri_path, $rocket_cache_filepath;
+		global $request_uri_path, $rocket_cache_filepath, $is_nginx;
 
 		$footprint = '';
 		$is_html   = false;
@@ -298,6 +289,17 @@ function do_rocket_callback( $buffer ) {
 
 			// Save the cache file.
 			rocket_put_content( $rocket_cache_filepath, $buffer . $footprint );
+
+			if ( get_rocket_option( 'do_caching_mobile_files' ) ) {
+				if ( $is_nginx ) {
+					// Create a hidden empty file for mobile detection on NGINX with the Rocket NGINX configuration.
+					$nginx_mobile_detect_file = $request_uri_path . '/.mobile-active';
+
+					if ( ! rocket_direct_filesystem()->exists( $nginx_mobile_detect_file ) ) {
+						rocket_direct_filesystem()->touch( $nginx_mobile_detect_file );
+					}
+				}
+			}
 
 			if ( function_exists( 'gzencode' ) ) {
 				rocket_put_content( $rocket_cache_filepath . '_gzip', gzencode( $buffer . $footprint, apply_filters( 'rocket_gzencode_level_compression', 3 ) ) );
