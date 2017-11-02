@@ -545,10 +545,10 @@ function rocket_clean_home( $lang = '' ) {
 
 	/** This filter is documented in inc/front/htaccess.php */
 	if ( apply_filters( 'rocket_url_no_dots', false ) ) {
-		$host = str_replace( '.' , '_', $parse_url['host'] );
+		$parse_url['host'] = str_replace( '.' , '_', $parse_url['host'] );
 	}
 
-	$root = WP_ROCKET_CACHE_PATH . $host . '*' . untrailingslashit( $parse_url['path'] );
+	$root = WP_ROCKET_CACHE_PATH . $parse_url['host'] . '*' . untrailingslashit( $parse_url['path'] );
 
 	/**
 	 * Filter the homepage caching folder root
@@ -558,7 +558,7 @@ function rocket_clean_home( $lang = '' ) {
 	 * @param string    $host The website host.
 	 * @param string    $path The website path.
 	*/
-	$root = apply_filters( 'rocket_clean_home_root', $root, $host, $parse_url['path'] );
+	$root = apply_filters( 'rocket_clean_home_root', $root, $parse_url['host'], $parse_url['path'] );
 
 	/**
 	 * Fires before the home cache file is deleted
