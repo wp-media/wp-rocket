@@ -1004,9 +1004,13 @@ function rocket_after_save_options( $oldvalue, $value ) {
 				'message' => sprintf( __( 'Cloudflare cache level error: %s', 'rocket' ), $cf_cache_level_return->get_error_message() ),
 			);
 		} else {
+			if ( 'aggressive' === $cf_cache_level_return ) {
+				$cf_cache_level_return = _x( 'Standard', 'Cloudflare caching level', 'rocket' );
+			}
+
 			$cloudflare_update_result[] = array(
 				'result' => 'success',
-				// translators: %s is the message returned by the CloudFlare API.
+				// translators: %s is the caching level returned by the CloudFlare API.
 				'message' => sprintf( __( 'Cloudflare cache level set to %s', 'rocket' ), $cf_cache_level_return ),
 			);
 		}
