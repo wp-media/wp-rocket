@@ -832,6 +832,7 @@ function rocket_clear_cache_notice() {
 
 	switch ( $cleared_cache ) {
 		case 'all':
+			// translators: %s = WP Rocket name (maybe white label).
 			$notice = sprintf( __( '%s cache cleared.', 'rocket' ), WP_ROCKET_PLUGIN_NAME );
 			break;
 		case 'post':
