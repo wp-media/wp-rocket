@@ -24,10 +24,10 @@ function rocket_bad_deactivations() {
 				switch ( $msg ) {
 					case 'wpconfig':
 						$errors['wpconfig'] = '<p>' . sprintf(
-							/* translators: %1$s WP Rocket plugin name; %2$s = WP_CACHE; %3$s = wp-config.php */
-							__( '<strong>%1$s</strong> can not be deactivated because of <code>%2$s</code>.<br>This constant is still defined in <code>%3$s</code>. Its value must be set to <code>false</code>, but apparently %1$s does not have writing permissions for <code>%3$s</code>.<br>Please make <code>%3$s</code> writable, then retry deactivation.', 'rocket' ),
+							/* translators: %1$s WP Rocket plugin name; %2$s = wp-config.php */
+							__( '<strong>%1$s</strong> has not been deactivated due to missing writing permissions.<br>
+Make <strong>%2$s</strong> writeable and retry deactivation, or force deactivation now.', 'rocket' ),
 							WP_ROCKET_PLUGIN_NAME,
-							'WP_CACHE',
 							'wp-config.php'
 						) . '</p>';
 						break;
@@ -35,7 +35,8 @@ function rocket_bad_deactivations() {
 					case 'htaccess':
 						$errors['htaccess'] = '<p>' . sprintf(
 							/* translators: %1$s WP Rocket plugin name; %2$s = .htaccess */
-							__( '<strong>%1$s</strong> can not be deactivated because of <code>%2$s</code>.<br>This file is not writable for %1$s, so %1$s can not remove its own directives.<br>Please make <code>%3$s</code> writable, then retry deactivation.', 'rocket' ),
+							__( '<strong>%1$s</strong> has not been deactivated due to missing writing permissions.<br>
+Make <strong>%2$s</strong> writeable and retry deactivation, or force deactivation now.', 'rocket' ),
 							WP_ROCKET_PLUGIN_NAME,
 							'.htaccess'
 						) . '</p>';
@@ -249,7 +250,7 @@ function rocket_warning_using_permalinks() {
 			<?php
 			printf(
 				/* translators: %1$s WP Rocket plugin name; %2$s = permalink settings admin URL */
-				__( '<strong>%1$s</strong>: A custom permalink structure is required for the plugin to work properly. Please go to <a href="%2$s">Permalink</a> to configure it.', 'rocket' ),
+				__( '<strong>%1$s</strong>: A custom permalink structure is required for the plugin to work properly. <a href="%2$s">Go to permalinks settings</a>', 'rocket' ),
 				WP_ROCKET_PLUGIN_NAME,
 				admin_url( 'options-permalink.php' )
 			);
@@ -284,13 +285,14 @@ function rocket_warning_wp_config_permissions() {
 				<p>
 				<?php
 					printf(
-						/* translators: %1$s WP Rocket plugin name; %2$s = Codex URL */
-						__( '<strong>%1$s</strong>: It seems we do not have <a href="%2$s" target="_blank">writing permissions</a> on <code>wp-config.php</code> file or the value of the constant <code>WP_CACHE</code> is set to <code>false</code>', 'rocket' ),
+						// translators: %1$s WP Rocket plugin name (maybe white label); %2$s = concerned file/folder; %3$s = URL.
+						__( '<strong>%1$s</strong>: cannot configure itself due to missing writing permissions. Affected file:<br>
+						- %2$s<br>
+						Troubleshoot: <a href="%3$s" target="_blank">Resolving issues with writing permissions</a>', 'rocket' ),
 						WP_ROCKET_PLUGIN_NAME,
+						'wp-config.php',
 						'http://codex.wordpress.org/Changing_File_Permissions'
 					);
-					echo '<br>';
-					_e( 'To fix this you have to set writing permissions for <code>wp-config.php</code> and then save the settings again.', 'rocket' );
 					echo '<br>';
 					_e( 'If the message persists, you have to put the following code in your <code>wp-config.php</code> file so that it works correctly. Click on the field and press Ctrl-A to select all.', 'rocket' );
 				?>
@@ -332,8 +334,14 @@ function rocket_warning_advanced_cache_permissions() {
 			<div class="notice notice-error">
 				<p><strong><?php echo WP_ROCKET_PLUGIN_NAME; ?></strong>: 
 				<?php
-				// translators: %1$s = URL to WP Codex on file permissions, %2$s = advanced-cache.php path, %3$s = WP Rocket name (maybe white label).
-				printf( __( 'If you had <a href="%1$s" target="_blank">writing permissions</a> on <code>%2$s</code> file, <strong>%3$s</strong> could do this automatically. This is not the case, here is the code you should add in your <code>%2$s</code> file for <strong>%3$s</strong> to work properly.', 'rocket' ), 'http://codex.wordpress.org/Changing_File_Permissions', basename( WP_CONTENT_DIR ) . '/advanced-cache.php', WP_ROCKET_PLUGIN_NAME );
+				// translators: %1$s WP Rocket plugin name (maybe white label); %2$s = concerned file/folder; %3$s = URL.
+				printf( __( '<strong>%1$s</strong> cannot configure itself due to missing writing permissions. Affected file:<br>
+					- %2$s<br>
+					Troubleshoot: <a href="%3$s" target="_blank">Resolving issues with writing permissions</a>', 'rocket' ),
+					WP_ROCKET_PLUGIN_NAME,
+					basename( WP_CONTENT_DIR ) . '/advanced-cache.php',
+					'http://codex.wordpress.org/Changing_File_Permissions'
+				);
 				?>
 				</p>
 
@@ -370,8 +378,15 @@ function rocket_warning_advanced_cache_not_ours() {
 			<div class="notice notice-error">
 				<p><strong><?php echo WP_ROCKET_PLUGIN_NAME; ?></strong>: 
 				<?php
-				// translators: %s = advanced-cache.php path.
-				printf( __( 'It seems that the <code>%s</code> file is not ours. Save the settings, we will automatically recreate the correct one. If it still does not work, please delete it and save again.', 'rocket' ), basename( WP_CONTENT_DIR ) . '/advanced-cache.php' );
+				printf(
+					// translators: %1$s WP Rocket plugin name (maybe white label); %2$s = concerned file/folder; %3$s = URL.
+					__( '<strong>%1$s</strong>: cannot configure itself due to missing writing permissions. Affected file:<br>
+					- %2$s<br>
+					Troubleshoot: <a href="%3$s" target="_blank">Resolving issues with writing permissions</a>', 'rocket' ),
+					WP_ROCKET_PLUGIN_NAME,
+					basename( WP_CONTENT_DIR ) . '/advanced-cache.php',
+					'http://codex.wordpress.org/Changing_File_Permissions'
+				);
 				?>
 				</p>
 			</div>
@@ -404,8 +419,17 @@ function rocket_warning_htaccess_permissions() {
 			<div class="notice notice-error">
 				<p><strong><?php echo WP_ROCKET_PLUGIN_NAME; ?></strong>: 
 				<?php
-				// translators: %1$s = URL to WP Codex on file permissions, %2$s = WP Rocket name (maybe white label).
-				printf( __( 'If you had <a href="%1$s" target="_blank">writing permissions</a> on <code>.htaccess</code> file, <strong>%2$s</strong> could do this automatically. This is not the case, so here are the rewrite rules you have to put in your <code>.htaccess</code> file for <strong>%2$s</strong> to work correctly. Click on the field and press Ctrl-A to select all.', 'rocket' ), 'http://codex.wordpress.org/Changing_File_Permissions', WP_ROCKET_PLUGIN_NAME ) . '<br>' . __( '<strong>Warning:</strong> This message will popup again and its content may be updated when saving the options', 'rocket' );
+				printf(
+					// translators: %1$s WP Rocket plugin name (maybe white label); %2$s = concerned file/folder; %3$s = URL.
+					__( '<strong>%1$s</strong>: cannot configure itself due to missing writing permissions. Affected file:<br>
+					- %2$s<br>
+					Troubleshoot: <a href="%3$s" target="_blank">Resolving issues with writing permissions</a>', 'rocket' ),
+					WP_ROCKET_PLUGIN_NAME,
+					'.htaccess',
+					'http://codex.wordpress.org/Changing_File_Permissions'
+				);
+				// translators: %s = WP Rocket name (maybe white label).
+				printf( __( 'Here are the rewrite rules you have to put in your <code>.htaccess</code> file for <strong>%s</strong> to work correctly. Click on the field and press Ctrl-A to select all.', 'rocket' ), WP_ROCKET_PLUGIN_NAME ) . '<br>' . __( '<strong>Warning:</strong> This message will popup again and its content may be updated when saving the options', 'rocket' );
 				?>
 				</p>
 				<p><textarea readonly="readonly" id="rules" name="rules" class="large-text readonly" rows="6"><?php echo esc_textarea( get_rocket_htaccess_marker() ); ?></textarea></p>
@@ -437,8 +461,15 @@ function rocket_warning_config_dir_permissions() {
 			<div class="notice notice-error">
 				<p><strong><?php echo WP_ROCKET_PLUGIN_NAME; ?></strong>: 
 				<?php
-				// translators: %1$s = URL to WP Codex on file permissions, %2$s = WP Rochet config path, %3$s = WP Rocket name (maybe white label).
-				printf( __( 'Be careful, you don\'t have <a href="%1$s" target="_blank">writing permissions</a> on <strong>%3$s</strong> domain configuration folder (<code>%2$s</code>). To make <strong>%3$s</strong> work properly, please CHMOD <code>755</code> or <code>775</code> or <code>777</code> this folder.<br/>When the problem is solved, thank you to save the %3$s options to generate the configuration file.', 'rocket' ), 'http://codex.wordpress.org/Changing_File_Permissions', trim( str_replace( ABSPATH, '', WP_ROCKET_CONFIG_PATH ), '/' ), WP_ROCKET_PLUGIN_NAME );
+				printf(
+					// translators: %1$s WP Rocket plugin name (maybe white label); %2$s = concerned file/folder; %3$s = URL.
+					__( '<strong>%1$s</strong>: cannot configure itself due to missing writing permissions. Affected file:<br>
+					- %2$s<br>
+					Troubleshoot: <a href="%3$s" target="_blank">Resolving issues with writing permissions</a>', 'rocket' ),
+					WP_ROCKET_PLUGIN_NAME,
+					trim( str_replace( ABSPATH, '', WP_ROCKET_CONFIG_PATH ), '/' ),
+					'http://codex.wordpress.org/Changing_File_Permissions'
+				);
 				?>
 				</p>
 			</div>
@@ -468,8 +499,15 @@ function rocket_warning_cache_dir_permissions() {
 			<div class="notice notice-error">
 				<p><strong><?php echo WP_ROCKET_PLUGIN_NAME; ?></strong>: 
 				<?php
-				// translators: %1$s = URL to WP Codex on file permissions, %2$s = WP Rochet cache path, %3$s = WP Rocket name (maybe white label).
-				printf( __( 'Be careful, you don\'t have <a href="%1$s" target="_blank">writing permissions</a> on <strong>%3$s</strong> cache folder (<code>%2$s</code>). For <strong>%3$s</strong> works properly, please CHMOD <code>755</code> or <code>775</code> or <code>777</code> this folder.', 'rocket' ), 'http://codex.wordpress.org/Changing_File_Permissions', trim( str_replace( ABSPATH, '', WP_ROCKET_CACHE_PATH ), '/' ), WP_ROCKET_PLUGIN_NAME );
+				printf(
+					// translators: %1$s WP Rocket plugin name (maybe white label); %2$s = concerned file/folder; %3$s = URL.
+					__( '<strong>%1$s</strong>: cannot configure itself due to missing writing permissions. Affected file:<br>
+					- %2$s<br>
+					Troubleshoot: <a href="%3$s" target="_blank">Resolving issues with writing permissions</a>', 'rocket' ),
+					WP_ROCKET_PLUGIN_NAME,
+					trim( str_replace( ABSPATH, '', WP_ROCKET_CACHE_PATH ), '/' ),
+					'http://codex.wordpress.org/Changing_File_Permissions'
+				);
 				?>
 				</p>
 			</div>
@@ -500,8 +538,15 @@ function rocket_warning_minify_cache_dir_permissions() {
 			<div class="notice notice-error">
 				<p><strong><?php echo WP_ROCKET_PLUGIN_NAME; ?></strong>: 
 				<?php
-					// translators: %1$s = URL to WP Codex on file permissions, %2$s = WP Rochet minify path, %3$s = WP Rocket name (maybe white label).
-				printf( __( 'Be careful, you don\'t have <a href="%1$s" target="_blank">writing permissions</a> on <strong>%3$s</strong> minified cache folder (<code>%2$s</code>). To make <strong>%3$s</strong> work properly, please CHMOD <code>755</code> or <code>775</code> or <code>777</code> this folder.', 'rocket' ), 'http://codex.wordpress.org/Changing_File_Permissions', trim( str_replace( ABSPATH, '', WP_ROCKET_MINIFY_CACHE_PATH ), '/' ), WP_ROCKET_PLUGIN_NAME );
+				printf(
+					// translators: %1$s WP Rocket plugin name (maybe white label); %2$s = concerned file/folder; %3$s = URL.
+					__( '<strong>%1$s</strong>: cannot configure itself due to missing writing permissions. Affected file:<br>
+					- %2$s<br>
+					Troubleshoot: <a href="%3$s" target="_blank">Resolving issues with writing permissions</a>', 'rocket' ),
+					WP_ROCKET_PLUGIN_NAME,
+					trim( str_replace( ABSPATH, '', WP_ROCKET_MINIFY_CACHE_PATH ), '/' ),
+					'http://codex.wordpress.org/Changing_File_Permissions'
+				);
 				?>
 				</p>
 			</div>
@@ -533,8 +578,15 @@ function rocket_warning_busting_cache_dir_permissions() {
 			<div class="notice notice-error">
 				<p><strong><?php echo WP_ROCKET_PLUGIN_NAME; ?></strong>: 
 				<?php
-				// translators: %1$s = URL to WP Codex on file permissions, %2$s = WP Rochet cache busting path, %3$s = WP Rocket name (maybe white label).
-				printf( __( 'Be careful, you don\'t have <a href="%1$s" target="_blank">writing permissions</a> on <strong>%3$s</strong> cache busting folder (<code>%2$s</code>). To make <strong>%3$s</strong> work properly, please CHMOD <code>755</code> or <code>775</code> or <code>777</code> this folder.', 'rocket' ), 'http://codex.wordpress.org/Changing_File_Permissions', trim( str_replace( ABSPATH, '', WP_ROCKET_CACHE_BUSTING_PATH ), '/' ), WP_ROCKET_PLUGIN_NAME );
+				printf(
+					// translators: %1$s WP Rocket plugin name (maybe white label); %2$s = concerned file/folder; %3$s = URL.
+					__( '<strong>%1$s</strong>: cannot configure itself due to missing writing permissions. Affected file:<br>
+					- %2$s<br>
+					Troubleshoot: <a href="%3$s" target="_blank">Resolving issues with writing permissions</a>', 'rocket' ),
+					WP_ROCKET_PLUGIN_NAME,
+					trim( str_replace( ABSPATH, '', WP_ROCKET_CACHE_BUSTING_PATH ), '/' ),
+					'http://codex.wordpress.org/Changing_File_Permissions'
+				);
 				?>
 				</p>
 			</div>
@@ -559,15 +611,7 @@ function rocket_thank_you_license() {
 	?>
 		<div class="notice notice-success">
 			<p>
-				<strong><?php echo WP_ROCKET_PLUGIN_NAME; ?></strong>: <?php _e( 'Thank you. Your license has been successfully validated!', 'rocket' ); ?><br />
-				<?php
-				printf(
-					/* translators: %1$s license key; %2$s = email address */
-					__( 'Key: <code>%1$s</code><br>Email: <em>%2$s</em>', 'rocket' ),
-					get_rocket_option( 'consumer_key' ),
-					get_rocket_option( 'consumer_email' )
-				);
-				?>
+				<strong><?php echo WP_ROCKET_PLUGIN_NAME; ?></strong>: <?php _e( 'is good to go!', 'rocket' ); ?>
 			</p>
 		</div>
 	<?php
