@@ -381,6 +381,7 @@ function do_admin_post_rocket_purge_cache() {
 
 			// Clear all cache domain.
 			case 'all':
+				set_transient( 'rocket_clear_cache', 'all', HOUR_IN_SECONDS );
 				// Remove all cache files.
 				$lang = isset( $_GET['lang'] ) && 'all' !== $_GET['lang'] ? sanitize_key( $_GET['lang'] ) : '';
 				// Remove all cache files.
@@ -400,21 +401,25 @@ function do_admin_post_rocket_purge_cache() {
 				update_option( WP_ROCKET_SLUG, $options );
 
 				rocket_dismiss_box( 'rocket_warning_plugin_modification' );
+				
 				break;
 
 			// Clear terms, homepage and other files associated at current post in back-end.
 			case 'post':
 				rocket_clean_post( $_id );
+				set_transient( 'rocket_clear_cache', 'post', HOUR_IN_SECONDS );
 				break;
 
 			// Clear a specific term.
 			case 'term':
 				rocket_clean_term( $_id, $_taxonomy );
+				set_transient( 'rocket_clear_cache', 'term', HOUR_IN_SECONDS );
 				break;
 
 			// Clear a specific user.
 			case 'user':
 				rocket_clean_user( $_id );
+				set_transient( 'rocket_clear_cache', 'user', HOUR_IN_SECONDS );
 				break;
 
 			// Clear cache file of the current page in front-end.
@@ -504,7 +509,7 @@ function do_admin_post_rocket_purge_cloudflare() {
 		$cf_purge_result = array(
 			'result' => 'error',
 			// translators: %s = CloudFare API return message.
-			'message' => sprintf( __( 'CloudFlare Cache purge error: %s', 'rocket' ), $cf_purge->get_error_message() ),
+			'message' => sprintf( __( 'CloudFlare cache purge error: %s', 'rocket' ), $cf_purge->get_error_message() ),
 		);
 	} else {
 		$cf_purge_result = array(

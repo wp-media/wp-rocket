@@ -17,7 +17,7 @@ function rocket_bad_deactivations() {
 		$errors = array();
 		?>
 
-		<div class="error">
+		<div class="notice notice-error">
 			<?php
 			foreach ( $msgs as $msg ) {
 
@@ -85,7 +85,7 @@ function rocket_bad_deactivations() {
 add_action( 'admin_notices', 'rocket_bad_deactivations' );
 
 /**
- * This warning is displayed to inform the user that a plugin de/activation can be followed by a cache purgation
+ * This warning is displayed to inform the user that a plugin de/activation can be followed by a cache clear
  *
  * @since 1.3.0
  */
@@ -98,14 +98,15 @@ function rocket_warning_plugin_modification() {
 		if ( ! in_array( __FUNCTION__, (array) $boxes, true ) ) {
 		?>
 
-			<div class="updated">
-				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=' . __FUNCTION__ ), 'rocket_ignore_' . __FUNCTION__ ); ?>" class="rkt-cross"><div class="dashicons dashicons-no"></div></a>
+			<div class="notice notice-warning">
 				<p>
 				<?php
 				// translators: %s is WP Rocket plugin name (maybe white label).
 				printf( __( '<strong>%s</strong>: One or more extensions have been enabled or disabled, clear the cache if necessary.', 'rocket' ), WP_ROCKET_PLUGIN_NAME );
 				?>
-				<a class="wp-core-ui button" href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=all' ), 'purge_cache_all' ); ?>"><?php _e( 'Clear cache', 'rocket' ); ?></a></p>
+				<a class="wp-core-ui button" href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=all' ), 'purge_cache_all' ); ?>"><?php _e( 'Clear cache', 'rocket' ); ?></a>
+				<a class="rocket-dismiss" href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=' . __FUNCTION__ ), 'rocket_ignore_' . __FUNCTION__ ); ?>"><?php _e( 'Dismiss this notice.', 'rocket' ); ?></a>
+				</p>
 			</div>
 
 		<?php
@@ -208,7 +209,7 @@ function rocket_plugins_to_deactivate() {
 		&& rocket_valid_key()
 	) {
 	?>
-		<div class="error">
+		<div class="notice notice-error">
 			<p>
 			<?php
 			// translators: %s is WP Rocket plugin name (maybe white label).
@@ -243,7 +244,7 @@ function rocket_warning_using_permalinks() {
 		&& rocket_valid_key()
 	) {
 	?>
-		<div class="error">
+		<div class="notice notice-error">
 			<p>
 			<?php
 			printf(
@@ -279,8 +280,7 @@ function rocket_warning_wp_config_permissions() {
 
 		if ( ! in_array( __FUNCTION__, (array) $boxes, true ) ) {
 		?>
-			<div class="error">
-				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=' . __FUNCTION__ ), 'rocket_ignore_' . __FUNCTION__ ); ?>" class="rkt-cross"><div class="dashicons dashicons-no"></div></a>
+			<div class="notice notice-error">
 				<p>
 				<?php
 					printf(
@@ -298,10 +298,11 @@ function rocket_warning_wp_config_permissions() {
 
 				<?php
 				// Get the content of the WP_CACHE constant added by WP Rocket.
-				$define = "/** Enable Cache by WP Rocket */\r\ndefine( 'WP_CACHE', true );\r\n";
+				$define = "/** Enable Cache by " . WP_ROCKET_PLUGIN_NAME . " */\r\ndefine( 'WP_CACHE', true );\r\n";
 				?>
 
 				<p><textarea readonly="readonly" id="rules" name="rules" class="large-text readonly" rows="2"><?php echo esc_textarea( $define ); ?></textarea></p>
+				<p><a class="rocket-dismiss" href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=' . __FUNCTION__ ), 'rocket_ignore_' . __FUNCTION__ ); ?>"><?php _e( 'Dismiss this notice.', 'rocket'); ?></a></p>
 			</div>
 
 		<?php
@@ -328,8 +329,7 @@ function rocket_warning_advanced_cache_permissions() {
 
 		if ( ! in_array( __FUNCTION__, (array) $boxes, true ) ) {
 		?>
-			<div class="error">
-				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=' . __FUNCTION__ ), 'rocket_ignore_' . __FUNCTION__ ); ?>" class="rkt-cross"><div class="dashicons dashicons-no"></div></a>
+			<div class="notice notice-error">
 				<p><strong><?php echo WP_ROCKET_PLUGIN_NAME; ?></strong>: 
 				<?php
 				// translators: %1$s = URL to WP Codex on file permissions, %2$s = advanced-cache.php path, %3$s = WP Rocket name (maybe white label).
@@ -343,6 +343,7 @@ function rocket_warning_advanced_cache_permissions() {
 				?>
 
 				<p><textarea readonly="readonly" id="rules" name="rules" class="large-text readonly" rows="8"><?php echo esc_textarea( $content ); ?></textarea></p>
+				<p><a class="rocket-dismiss" href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=' . __FUNCTION__ ), 'rocket_ignore_' . __FUNCTION__ ); ?>"><?php _e( 'Dismiss this notice.', 'rocket' ); ?></a></p>
 			</div>
 
 		<?php
@@ -366,7 +367,7 @@ function rocket_warning_advanced_cache_not_ours() {
 		&& rocket_valid_key() ) {
 		?>
 
-			<div class="error">
+			<div class="notice notice-error">
 				<p><strong><?php echo WP_ROCKET_PLUGIN_NAME; ?></strong>: 
 				<?php
 				// translators: %s = advanced-cache.php path.
@@ -400,8 +401,7 @@ function rocket_warning_htaccess_permissions() {
 		if ( ! in_array( __FUNCTION__, (array) $boxes, true ) ) {
 		?>
 
-			<div class="error">
-				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=' . __FUNCTION__ ), 'rocket_ignore_' . __FUNCTION__ ); ?>" class="rkt-cross"><div class="dashicons dashicons-no"></div></a>
+			<div class="notice notice-error">
 				<p><strong><?php echo WP_ROCKET_PLUGIN_NAME; ?></strong>: 
 				<?php
 				// translators: %1$s = URL to WP Codex on file permissions, %2$s = WP Rocket name (maybe white label).
@@ -409,6 +409,7 @@ function rocket_warning_htaccess_permissions() {
 				?>
 				</p>
 				<p><textarea readonly="readonly" id="rules" name="rules" class="large-text readonly" rows="6"><?php echo esc_textarea( get_rocket_htaccess_marker() ); ?></textarea></p>
+				<p><a class"rocket-notice" href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=' . __FUNCTION__ ), 'rocket_ignore_' . __FUNCTION__ ); ?>"><?php _e( 'Dismiss this notice.', 'rocket' ); ?></a></p>
 			</div>
 
 		<?php
@@ -433,8 +434,7 @@ function rocket_warning_config_dir_permissions() {
 		if ( ! in_array( __FUNCTION__, (array) $boxes, true ) ) {
 		?>
 
-			<div class="error">
-				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=' . __FUNCTION__ ), 'rocket_ignore_' . __FUNCTION__ ); ?>" class="rkt-cross"><div class="dashicons dashicons-no"></div></a>
+			<div class="notice notice-error">
 				<p><strong><?php echo WP_ROCKET_PLUGIN_NAME; ?></strong>: 
 				<?php
 				// translators: %1$s = URL to WP Codex on file permissions, %2$s = WP Rochet config path, %3$s = WP Rocket name (maybe white label).
@@ -465,8 +465,7 @@ function rocket_warning_cache_dir_permissions() {
 		if ( ! in_array( __FUNCTION__, (array) $boxes, true ) ) {
 		?>
 
-			<div class="error">
-				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=' . __FUNCTION__ ), 'rocket_ignore_' . __FUNCTION__ ); ?>" class="rkt-cross"><div class="dashicons dashicons-no"></div></a>
+			<div class="notice notice-error">
 				<p><strong><?php echo WP_ROCKET_PLUGIN_NAME; ?></strong>: 
 				<?php
 				// translators: %1$s = URL to WP Codex on file permissions, %2$s = WP Rochet cache path, %3$s = WP Rocket name (maybe white label).
@@ -498,8 +497,7 @@ function rocket_warning_minify_cache_dir_permissions() {
 		if ( ! in_array( __FUNCTION__, (array) $boxes, true ) ) {
 		?>
 
-			<div class="error">
-				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=' . __FUNCTION__ ), 'rocket_ignore_' . __FUNCTION__ ); ?>" class="rkt-cross"><div class="dashicons dashicons-no"></div></a>
+			<div class="notice notice-error">
 				<p><strong><?php echo WP_ROCKET_PLUGIN_NAME; ?></strong>: 
 				<?php
 					// translators: %1$s = URL to WP Codex on file permissions, %2$s = WP Rochet minify path, %3$s = WP Rocket name (maybe white label).
@@ -532,8 +530,7 @@ function rocket_warning_busting_cache_dir_permissions() {
 		if ( ! in_array( __FUNCTION__, (array) $boxes, true ) ) {
 		?>
 
-			<div class="error">
-				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=' . __FUNCTION__ ), 'rocket_ignore_' . __FUNCTION__ ); ?>" class="rkt-cross"><div class="dashicons dashicons-no"></div></a>
+			<div class="notice notice-error">
 				<p><strong><?php echo WP_ROCKET_PLUGIN_NAME; ?></strong>: 
 				<?php
 				// translators: %1$s = URL to WP Codex on file permissions, %2$s = WP Rochet cache busting path, %3$s = WP Rocket name (maybe white label).
@@ -560,7 +557,7 @@ function rocket_thank_you_license() {
 		$options['ignore'] = true;
 		update_option( WP_ROCKET_SLUG, $options );
 	?>
-		<div class="updated">
+		<div class="notice notice-success">
 			<p>
 				<strong><?php echo WP_ROCKET_PLUGIN_NAME; ?></strong>: <?php _e( 'Thank you. Your license has been successfully validated!', 'rocket' ); ?><br />
 				<?php
@@ -814,3 +811,123 @@ function rocket_analytics_optin_thankyou_notice() {
 }
 add_action( 'admin_notices', 'rocket_analytics_optin_thankyou_notice' );
 
+/**
+ * Displays a notice after clearing the cache
+ *
+ * @since 2.11
+ * @author Remy Perona
+ */
+function rocket_clear_cache_notice() {
+	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		return;
+	}
+
+	$cleared_cache = get_transient( 'rocket_clear_cache' );
+
+	if ( ! $cleared_cache ) {
+		return;
+	}
+
+	delete_transient( 'rocket_clear_cache' );
+
+	switch ( $cleared_cache ) {
+		case 'all':
+			// translators: %s = WP Rocket name (maybe white label).
+			$notice = sprintf( __( '%s cache cleared.', 'rocket' ), WP_ROCKET_PLUGIN_NAME );
+			break;
+		case 'post':
+			$notice = __( 'Post cache cleared.', 'rocket' );
+			break;
+		case 'term':
+			$notice = __( 'Term cache cleared.', 'rocket' );
+			break;
+		case 'user':
+			$notice = __( 'User cache cleared.', 'rocket' );
+			break;
+		default:
+			$notice = '';
+			break;
+	}
+
+	if ( empty( $notice ) ) {
+		return;
+	}
+
+	?>
+	<div class="notice notice-success is-dismissible">
+		<p><?php echo $notice; ?></p>
+	</div>
+	<?php
+}
+add_action( 'admin_notices', 'rocket_clear_cache_notice' );
+
+/**
+ * This notice is displayed when the sitemap preload is running
+ *
+ * @since 2.11
+ * @author Remy Perona
+ */
+function rocket_sitemap_preload_running() {
+	global $current_user;
+	$screen              = get_current_screen();
+	$rocket_wl_name      = get_rocket_option( 'wl_plugin_name', null );
+	$wp_rocket_screen_id = isset( $rocket_wl_name ) ? 'settings_page_' . sanitize_key( $rocket_wl_name ) : 'settings_page_wprocket';
+	/** This filter is documented in inc/admin-bar.php */
+	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		return;
+	}
+
+	if ( $screen->id !== $wp_rocket_screen_id ) {
+		return;
+	}
+
+	$running = get_transient( 'rocket_sitemap_preload_running' );
+	if ( ! $running ) {
+		return;
+	}
+	?>
+		<div class="notice notice-success is-dismissible">
+			<p><?php _e( 'Sitemap-based cache preload is currently running…', 'rocket' ); ?></p>
+		</div>
+	<?php
+}
+add_action( 'admin_notices', 'rocket_sitemap_preload_running' );
+
+/**
+ * This notice is displayed after the sitemap preload is complete
+ *
+ * @since 2.11
+ * @author Remy Perona
+ */
+function rocket_sitemap_preload_complete() {
+	global $current_user;
+	$screen              = get_current_screen();
+	$rocket_wl_name      = get_rocket_option( 'wl_plugin_name', null );
+	$wp_rocket_screen_id = isset( $rocket_wl_name ) ? 'settings_page_' . sanitize_key( $rocket_wl_name ) : 'settings_page_wprocket';
+	/** This filter is documented in inc/admin-bar.php */
+	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		return;
+	}
+
+	if ( $screen->id !== $wp_rocket_screen_id ) {
+		return;
+	}
+
+	$result = get_transient( 'rocket_sitemap_preload_complete' );
+	if ( ! $result ) {
+		return;
+	}
+
+	delete_transient( 'rocket_sitemap_preload_complete' );
+	?>
+		<div class="notice notice-success is-dismissible">
+			<p>
+			<?php
+				// translators: %d is the number of pages preloaded.
+				printf( __( 'Sitemap preload complete: %d pages not yet cached have been preloaded.', 'rocket' ), $result );
+			?>
+			</p>
+		</div>
+	<?php
+}
+add_action( 'admin_notices', 'rocket_sitemap_preload_complete' );
