@@ -18,11 +18,11 @@ function rocket_add_admin_css_js() {
 	wp_enqueue_style( 'fancybox-wp-rocket', WP_ROCKET_ADMIN_UI_CSS_URL . 'fancybox/jquery.fancybox.css', array( 'options-wp-rocket' ), WP_ROCKET_VERSION );
 
 	// translators: %s is the URL of the support form.
-	$minify_text = rocket_is_white_label() ? __( 'If there are any display errors we recommend to disable the option.', 'rocket' ) : __( 'If there are any display errors we recommend following our documentation: ', 'rocket' ) . ' <a href="http://docs.wp-rocket.me/article/19-resolving-issues-with-file-optimization?utm_source=wp-rocket&utm_medium=wp-admin&utm_term=doc-minification&utm_campaign=plugin">Resolving issues with file optimization</a>.<br/><br/>' . sprintf( __( 'You can also <a href="%s">contact our support</a> if you need help with this feature.', 'rocket' ), 'https://wp-rocket.me/support/?utm_source=wp-rocket&utm_medium=wp-admin&utm_term=support-minification&utm_campaign=plugin' );
+	$minify_text = rocket_is_white_label() ? __( 'This could break things!', 'rocket' ) : __( 'This could break things! Before you continue activating this setting, read the documentation:', 'rocket' ) . ' <a href="http://docs.wp-rocket.me/article/19-resolving-issues-with-file-optimization?utm_source=wp-rocket&utm_medium=wp-admin&utm_term=doc-minification&utm_campaign=plugin">Resolving issues with file optimization</a>.<br/><br/>' . __( 'If you proceed to activate this setting and you notice any errors on your website, just deactivate it again and your site will be back to normal.', 'rocket' );
 
 	// Sweet Alert.
 	$translation_array = array(
-		'warningTitle'     => __( 'Are you sure?', 'rocket' ),
+		'warningTitle'     => __( 'Fair warning:', 'rocket' ),
 		'requiredTitle'    => __( 'All fields are required!', 'rocket' ),
 
 		'cloudflareTitle'  => __( 'Cloudflare Settings', 'rocket' ),
@@ -32,7 +32,7 @@ function rocket_add_admin_css_js() {
 		'preloaderImg'   => WP_ROCKET_ADMIN_UI_IMG_URL . 'preloader.gif',
 
 		'badServerConnectionTitle'             => __( 'Unable to transmit', 'rocket' ),
-		'badServerConnectionText'              => __( 'It seems that communications with Mission Control are temporarily down....please submit a support ticket while our Rocket Scientists fix the issue.', 'rocket' ),
+		'badServerConnectionText'              => __( 'It seems that communications with Mission Control are temporarily down…please submit a support ticket while our Rocket Scientists fix the issue.', 'rocket' ),
 		'badServerConnectionConfirmButtonText' => __( 'Get help from a rocket scientist', 'rocket' ),
 
 		'warningSupportTitle' => __( 'Last steps before contacting us', 'rocket' ),
@@ -42,17 +42,17 @@ function rocket_add_admin_css_js() {
 		'successSupportTitle' => __( 'Transmission Received!', 'rocket' ),
 		'successSupportText'  => __( 'We have received your ticket and will reply back within a few hours!', 'rocket' ) . '<br/>' . __( 'We answer every ticket, so please check your spam folder if you do not hear from us.', 'rocket' ),
 
-		'badSupportTitle'      => __( 'Oh dear, someone’s been naughty…', 'rocket' ),
-		'badSupportText'       => __( 'Well, well, looks like you have got yourself a "nulled" version! We don’t provide support to crackers or pirates, so you will need a valid license to proceed.', 'rocket' ) . '<br/>' . __( 'Click below to buy a license with a 20% discount automatically applied.', 'rocket' ),
-		'badConfirmButtonText' => __( 'Buy It Now!', 'rocket' ),
+		'badSupportTitle'      => __( 'Hmm, that’s problematic…', 'rocket' ),
+		'badSupportText'       => __( 'It looks like you have got yourself a “nulled” version of WP Rocket. In order to activate your plugin and receive support and updates you will need a valid license.', 'rocket' ) . '<br/>' . __( 'Click below to purchase a license with a 20% discount automatically applied.', 'rocket' ),
+		'badConfirmButtonText' => __( 'Buy a valid license now', 'rocket' ),
 
-		'expiredSupportTitle'      => __( 'Uh-oh, you’re out of fuel!', 'rocket' ),
-		'expiredSupportText'       => __( 'To keep your Rocket running with access to support, <strong>you will need to renew your license</strong>.', 'rocket' ) . '<br/><br/>' . __( 'Click below to renew with a <strong>discount of 50%</strong> automatically applied!', 'rocket' ),
-		'expiredConfirmButtonText' => __( 'I re-synchronize now!', 'rocket' ),
+		'expiredSupportTitle'      => __( 'Uh-oh, you’re out of fuel…', 'rocket' ),
+		'expiredSupportText'       => __( 'To keep WP Rocket running with access to support and updates, <strong>you will need to renew your license</strong>.', 'rocket' ) . '<br/><br/>' . __( 'Click below to renew with a <strong>discount of 50%</strong> automatically applied!', 'rocket' ),
+		'expiredConfirmButtonText' => __( 'Buy renewal now', 'rocket' ),
 
 		'minifyText' => $minify_text,
 
-		'confirmButtonText' => __( 'Yes, I\'m sure!', 'rocket' ),
+		'confirmButtonText' => __( 'Activate this setting', 'rocket' ),
 		'cancelButtonText'  => __( 'Cancel', 'rocket' ),
 	);
 	wp_localize_script( 'options-wp-rocket', 'sawpr', $translation_array );
