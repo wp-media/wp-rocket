@@ -291,7 +291,7 @@ function rocket_warning_wp_config_permissions() {
 						Troubleshoot: <a href="%3$s" target="_blank">Resolving issues with writing permissions</a>', 'rocket' ),
 						WP_ROCKET_PLUGIN_NAME,
 						'wp-config.php',
-						'http://codex.wordpress.org/Changing_File_Permissions'
+						'https://codex.wordpress.org/Changing_File_Permissions'
 					);
 					echo '<br>';
 					_e( 'If the message persists, you have to put the following code in your <code>wp-config.php</code> file so that it works correctly. Click on the field and press Ctrl-A to select all.', 'rocket' );
@@ -340,7 +340,7 @@ function rocket_warning_advanced_cache_permissions() {
 					Troubleshoot: <a href="%3$s" target="_blank">Resolving issues with writing permissions</a>', 'rocket' ),
 					WP_ROCKET_PLUGIN_NAME,
 					basename( WP_CONTENT_DIR ) . '/advanced-cache.php',
-					'http://codex.wordpress.org/Changing_File_Permissions'
+					'https://codex.wordpress.org/Changing_File_Permissions'
 				);
 				?>
 				</p>
@@ -385,7 +385,7 @@ function rocket_warning_advanced_cache_not_ours() {
 					Troubleshoot: <a href="%3$s" target="_blank">Resolving issues with writing permissions</a>', 'rocket' ),
 					WP_ROCKET_PLUGIN_NAME,
 					basename( WP_CONTENT_DIR ) . '/advanced-cache.php',
-					'http://codex.wordpress.org/Changing_File_Permissions'
+					'https://codex.wordpress.org/Changing_File_Permissions'
 				);
 				?>
 				</p>
@@ -426,7 +426,7 @@ function rocket_warning_htaccess_permissions() {
 					Troubleshoot: <a href="%3$s" target="_blank">Resolving issues with writing permissions</a>', 'rocket' ),
 					WP_ROCKET_PLUGIN_NAME,
 					'.htaccess',
-					'http://codex.wordpress.org/Changing_File_Permissions'
+					'https://codex.wordpress.org/Changing_File_Permissions'
 				);
 				// translators: %s = WP Rocket name (maybe white label).
 				printf( __( 'Here are the rewrite rules you have to put in your <code>.htaccess</code> file for <strong>%s</strong> to work correctly. Click on the field and press Ctrl-A to select all.', 'rocket' ), WP_ROCKET_PLUGIN_NAME ) . '<br>' . __( '<strong>Warning:</strong> This message will popup again and its content may be updated when saving the options', 'rocket' );
@@ -468,7 +468,7 @@ function rocket_warning_config_dir_permissions() {
 					Troubleshoot: <a href="%3$s" target="_blank">Resolving issues with writing permissions</a>', 'rocket' ),
 					WP_ROCKET_PLUGIN_NAME,
 					trim( str_replace( ABSPATH, '', WP_ROCKET_CONFIG_PATH ), '/' ),
-					'http://codex.wordpress.org/Changing_File_Permissions'
+					'https://codex.wordpress.org/Changing_File_Permissions'
 				);
 				?>
 				</p>
@@ -506,7 +506,7 @@ function rocket_warning_cache_dir_permissions() {
 					Troubleshoot: <a href="%3$s" target="_blank">Resolving issues with writing permissions</a>', 'rocket' ),
 					WP_ROCKET_PLUGIN_NAME,
 					trim( str_replace( ABSPATH, '', WP_ROCKET_CACHE_PATH ), '/' ),
-					'http://codex.wordpress.org/Changing_File_Permissions'
+					'https://codex.wordpress.org/Changing_File_Permissions'
 				);
 				?>
 				</p>
@@ -545,7 +545,7 @@ function rocket_warning_minify_cache_dir_permissions() {
 					Troubleshoot: <a href="%3$s" target="_blank">Resolving issues with writing permissions</a>', 'rocket' ),
 					WP_ROCKET_PLUGIN_NAME,
 					trim( str_replace( ABSPATH, '', WP_ROCKET_MINIFY_CACHE_PATH ), '/' ),
-					'http://codex.wordpress.org/Changing_File_Permissions'
+					'https://codex.wordpress.org/Changing_File_Permissions'
 				);
 				?>
 				</p>
@@ -585,7 +585,7 @@ function rocket_warning_busting_cache_dir_permissions() {
 					Troubleshoot: <a href="%3$s" target="_blank">Resolving issues with writing permissions</a>', 'rocket' ),
 					WP_ROCKET_PLUGIN_NAME,
 					trim( str_replace( ABSPATH, '', WP_ROCKET_CACHE_BUSTING_PATH ), '/' ),
-					'http://codex.wordpress.org/Changing_File_Permissions'
+					'https://codex.wordpress.org/Changing_File_Permissions'
 				);
 				?>
 				</p>
@@ -611,7 +611,10 @@ function rocket_thank_you_license() {
 	?>
 		<div class="notice notice-success">
 			<p>
-				<strong><?php echo WP_ROCKET_PLUGIN_NAME; ?></strong>: <?php _e( 'is good to go!', 'rocket' ); ?>
+				<?php
+				// translators: %s = plugin name (maybe white label).
+				printf( __( '%s: is good to go!', 'rocket' ), '<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>' );
+				?>
 			</p>
 		</div>
 	<?php
