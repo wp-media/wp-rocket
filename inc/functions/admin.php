@@ -9,14 +9,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 function rocket_need_api_key() {
 	?>
 	<div class="notice notice-warning">
-		<p><strong><?php echo WP_ROCKET_PLUGIN_NAME; ?></strong> : 
-		<?php
-		printf(
-		// translators: %s URL to WP Rocket settings page.
-		__( '<a href="%s">Enter your API key here</a> to fully activate this plugin and give the performance of your website a boost.', 'rocket' ),
-		admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG )
-		);
-		?>
+		<p><strong><?php echo WP_ROCKET_PLUGIN_NAME; ?></strong>: <?php _e( 'There seems to be an issue with outgoing connections from your server. Resolve per documentation, or contact support.', 'rocket' ); ?>
 		</p>
 	</div>
 <?php

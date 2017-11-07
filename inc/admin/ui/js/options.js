@@ -1,4 +1,17 @@
 jQuery( document ).ready( function($){
+	$( '#submit-support-button' ).prop( 'disabled', true );
+	var support_submit_disabled = true;
+
+	$( '#support_documentation_validation' ).change( function() {
+		if ( true === support_submit_disabled ) {
+			$( '#submit-support-button' ).prop( 'disabled', false );
+			support_submit_disabled = false;
+		} else if ( false === support_submit_disabled ) {
+			$( '#submit-support-button' ).prop( 'disabled', true );
+			support_submit_disabled = true;
+		}
+	});
+
 	// Fancybox
 	$(".fancybox").fancybox({'type' : 'iframe'});
 
