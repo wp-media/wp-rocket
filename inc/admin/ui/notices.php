@@ -51,10 +51,6 @@ Make <st>%2$s</strong> writeable and retry deactivation, or force deactivation n
 
 		}
 
-		if ( count( $errors ) ) {
-			$errors = array_map( 'sprintf', $errors );
-		}
-
 		rocket_notice_html( array(
 			'status'      => 'error',
 			'dismissible' => '',
