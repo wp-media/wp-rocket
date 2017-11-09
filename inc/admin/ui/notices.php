@@ -54,7 +54,7 @@ Make <st>%2$s</strong> writeable and retry deactivation, or force deactivation n
 		rocket_notice_html( array(
 			'status'      => 'error',
 			'dismissible' => '',
-			'message'     => $errors,
+			'message'     => implode( '', $errors ),
 			'action'      => 'force_deactivation',
 		) );
 	}
@@ -183,7 +183,7 @@ function rocket_plugins_to_deactivate() {
 	) {
 
 		// translators: %s is WP Rocket plugin name (maybe white label).
-		$warning = sprintf( __( '<strong>%s</strong>: The following plugins are not compatible with this plugin and may cause unexpected results:', 'rocket' ), WP_ROCKET_PLUGIN_NAME );
+		$warning = '<p>' . sprintf( __( '<strong>%s</strong>: The following plugins are not compatible with this plugin and may cause unexpected results:', 'rocket' ), WP_ROCKET_PLUGIN_NAME ) . '</p>';
 
 		$warning .= '<ul class="rocket-plugins-error">';
 
@@ -368,7 +368,7 @@ function rocket_warning_htaccess_permissions() {
 			return;
 		}
 
-		$warning = '<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>: ' .
+		$warning = '<p><strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>: ' .
 			sprintf(
 				// translators: %1$s WP Rocket plugin name (maybe white label); %2$s = concerned file/folder; %3$s = URL.
 				__( '<strong>%1$s</strong>: cannot configure itself due to missing writing permissions. Affected file:<br>
@@ -377,12 +377,12 @@ function rocket_warning_htaccess_permissions() {
 				WP_ROCKET_PLUGIN_NAME,
 				'.htaccess',
 				'https://codex.wordpress.org/Changing_File_Permissions'
-			);
+			) . '</p>';
 
-		$warning .= sprintf( 
+		$warning .= '<p>' . sprintf( 
 			// translators: %s = WP Rocket name (maybe white label).
 			__( 'Here are the rewrite rules you have to put in your <code>.htaccess</code> file for <strong>%s</strong> to work correctly. Click on the field and press Ctrl-A to select all.', 'rocket' ), WP_ROCKET_PLUGIN_NAME
-			) . '<br>' . __( '<strong>Warning:</strong> This message will popup again and its content may be updated when saving the options', 'rocket' );
+			) . '<br>' . __( '<strong>Warning:</strong> This message will popup again and its content may be updated when saving the options', 'rocket' ) . '</p>';
 
 		rocket_notice_html( array(
 			'status'           => 'error',
@@ -967,9 +967,11 @@ function rocket_notice_html( $args ) {
 
 	?>
 	<div class="notice notice-<?php echo $args['status']; ?> <?php echo $args['dismissible']; ?>">
-		<p>
-		<?php echo $args['message']; ?>
-		</p>
+		<?php 
+			$tag = 0 !== strpos( $message, '<p' ) && 0 !== strpos( $message, '<ul' );
+
+			echo ( $tag ? '<p>' : '' ) . $args['message'] . ( $tag ? '</p>' : '' );
+		?>
 		<?php if ( ! empty( $args['readonly_content'] ) ) : ?>
 		<p><textarea readonly="readonly" id="rules" name="rules" class="large-text readonly" rows="6"><?php echo esc_textarea( $args['readonly_content'] ); ?></textarea></p>
 		<?php endif;
