@@ -191,7 +191,7 @@ function rocket_plugins_to_deactivate() {
 			$plugin_data = get_plugin_data( WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . $plugin );
 			$warning .= '<li>' . $plugin_data['Name'] . '</span> <a href="' . wp_nonce_url( admin_url( 'admin-post.php?action=deactivate_plugin&plugin=' . rawurlencode( $plugin ) ), 'deactivate_plugin' ) . '" class="button-secondary alignright">' . __( 'Deactivate', 'rocket' ) . '</a></li>';
 		}
-	
+
 		$warning .= '</ul>';
 
 		rocket_notice_html( array(
@@ -302,7 +302,7 @@ function rocket_warning_advanced_cache_permissions() {
 					basename( WP_CONTENT_DIR ) . '/advanced-cache.php',
 					'https://codex.wordpress.org/Changing_File_Permissions'
 			);
-	
+
 		rocket_notice_html( array(
 			'status'           => 'error',
 			'dismissible'      => '',
@@ -379,7 +379,7 @@ function rocket_warning_htaccess_permissions() {
 				'https://codex.wordpress.org/Changing_File_Permissions'
 			) . '</p>';
 
-		$warning .= '<p>' . sprintf( 
+		$warning .= '<p>' . sprintf(
 			// translators: %s = WP Rocket name (maybe white label).
 			__( 'Here are the rewrite rules you have to put in your <code>.htaccess</code> file for <strong>%s</strong> to work correctly. Click on the field and press Ctrl-A to select all.', 'rocket' ), WP_ROCKET_PLUGIN_NAME
 			) . '<br>' . __( '<strong>Warning:</strong> This message will popup again and its content may be updated when saving the options', 'rocket' ) . '</p>';
@@ -877,8 +877,8 @@ function rocket_sitemap_preload_running() {
 	if ( ! $running ) {
 		return;
 	}
-	
-	
+
+
 	rocket_notice_html( array(
 		'message' => __( 'Sitemap-based cache preload is currently running…', 'rocket' ),
 	) );
@@ -967,17 +967,17 @@ function rocket_notice_html( $args ) {
 
 	?>
 	<div class="notice notice-<?php echo $args['status']; ?> <?php echo $args['dismissible']; ?>">
-		<?php 
-			$tag = 0 !== strpos( $message, '<p' ) && 0 !== strpos( $message, '<ul' );
+		<?php
+			$tag = 0 !== strpos( $args['message'], '<p' ) && 0 !== strpos( $args['message'], '<ul' );
 
 			echo ( $tag ? '<p>' : '' ) . $args['message'] . ( $tag ? '</p>' : '' );
 		?>
 		<?php if ( ! empty( $args['readonly_content'] ) ) : ?>
 		<p><textarea readonly="readonly" id="rules" name="rules" class="large-text readonly" rows="6"><?php echo esc_textarea( $args['readonly_content'] ); ?></textarea></p>
 		<?php endif;
-		if ( $action || $args['dismiss_button'] ) : ?>
+		if ( $args['action'] || $args['dismiss_button'] ) : ?>
 		<p>
-			<?php echo $action; ?>
+			<?php echo $args['action']; ?>
 			<?php if ( $args['dismiss_button'] ) : ?>
 			<a class="rocket-dismiss" href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=' . __FUNCTION__ ), 'rocket_ignore_' . __FUNCTION__ ); ?>"><?php _e( 'Dismiss this notice.', 'rocket' ); ?></a>
 			<?php endif; ?>
