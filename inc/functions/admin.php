@@ -425,20 +425,102 @@ function rocket_allow_json_mime_type( $wp_get_mime_types ) {
 /**
  * Lists Data collected for analytics
  *
- * @since 2.11
- * @author Remy Perona
+ * @since  2.11
+ * @author Caspar Hübinger
  *
- * @return string HTML list
+ * @return string HTML list table
  */
-function rocket_preview_data_collected_list() {
-	return '<ul>
-		<li>' . __( 'Anonymized WP Rocket settings', 'rocket' ) . '</li>
-		<li>' . __( 'Server type', 'rocket' ) . '</li>
-		<li>' . __( 'PHP version', 'rocket' ) . '</li>
-		<li>' . __( 'WordPress version', 'rocket' ) . '</li>
-		<li>' . __( 'Single or multisite', 'rocket' ) . '</li>
-		<li>' . __( 'Current theme', 'rocket' ) . '</li>
-		<li>' . __( 'Active plugins', 'rocket' ) . '</li>
-		<li>' . __( 'Current language', 'rocket' ) . '</li>
-	</ul>';
+function rocket_data_collection_preview_table() {
+
+	$data     = rocket_analytics_data();
+	$esc_data = esc_textarea( var_export( $data, true ) );
+
+	$html  = '<table class="wp-rocket-data-table widefat striped">';
+	$html .= '<tbody>';
+
+	$html .= '<tr>';
+	$html .= '<td class="column-primary">';
+	$html .= sprintf( '<strong>%s</strong>', __( 'Server type:', 'rocket' ) );
+	$html .= '</td>';
+	$html .= '<td>';
+	$html .= sprintf( '<code>%s</code>', $data['web_server'] );
+	$html .= '</td>';
+	$html .= '</tr>';
+
+	$html .= '<tr>';
+	$html .= '<td class="column-primary">';
+	$html .= sprintf( '<strong>%s</strong>', __( 'PHP version number:', 'rocket' ) );
+	$html .= '</td>';
+	$html .= '<td>';
+	$html .= sprintf( '<code>%s</code>', $data['php_version'] );
+	$html .= '</td>';
+	$html .= '</tr>';
+
+	$html .= '<tr>';
+	$html .= '<td class="column-primary">';
+	$html .= sprintf( '<strong>%s</strong>', __( 'WordPress version number:', 'rocket' ) );
+	$html .= '</td>';
+	$html .= '<td>';
+	$html .= sprintf( '<code>%s</code>', $data['wordpress_version'] );
+	$html .= '</td>';
+	$html .= '</tr>';
+
+	$html .= '<tr>';
+	$html .= '<td class="column-primary">';
+	$html .= sprintf( '<strong>%s</strong>', __( 'WordPress multisite:', 'rocket' ) );
+	$html .= '</td>';
+	$html .= '<td>';
+	$html .= sprintf( '<code>%s</code>', var_export( $data['multisite'], true ) );
+	$html .= '</td>';
+	$html .= '</tr>';
+
+	$html .= '<tr>';
+	$html .= '<td class="column-primary">';
+	$html .= sprintf( '<strong>%s</strong>', __( 'Current theme:', 'rocket' ) );
+	$html .= '</td>';
+	$html .= '<td>';
+	$html .= sprintf( '<code>%s</code>', $data['current_theme'] );
+	$html .= '</td>';
+	$html .= '</tr>';
+
+	$html .= '<tr>';
+	$html .= '<td class="column-primary">';
+	$html .= sprintf( '<strong>%s</strong>', __( 'Current site language:', 'rocket' ) );
+	$html .= '</td>';
+	$html .= '<td>';
+	$html .= sprintf( '<code>%s</code>', $data['locale'] );
+	$html .= '</td>';
+	$html .= '</tr>';
+
+	$html .= '<tr>';
+	$html .= '<td class="column-primary">';
+	$html .= sprintf( '<strong>%s</strong>', __( 'Active plugins:', 'rocket' ) );
+	$html .= '</td>';
+	$html .= '<td>';
+	$html .= sprintf( '<em>%s</em>', __( 'For details see JSON array below.', 'rocket' ) );
+	$html .= '</td>';
+	$html .= '</tr>';
+
+	$html .= '<tr>';
+	$html .= '<td class="column-primary">';
+	$html .= sprintf( '<strong>%s</strong>', __( 'Anonymized WP Rocket settings:', 'rocket' ) );
+	$html .= '</td>';
+	$html .= '<td>';
+	$html .= sprintf( '<em>%s</em>', __( 'For details see JSON array below.', 'rocket' ) );
+	$html .= '</td>';
+	$html .= '</tr>';
+
+	$html .= '<tr>';
+	$html .= '<td class="column-primary">';
+	$html .= sprintf( '<strong>%s</strong>', __( 'Developer view (raw JSON array):', 'rocket' ) );
+	$html .= '</td>';
+	$html .= '<td>';
+	$html .= sprintf( '<textarea readonly="readonly" class="large-text readonly" rows="6">%s</textarea>', $esc_data );
+	$html .= '</td>';
+	$html .= '</tr>';
+
+	$html .= '</tbody>';
+	$html .= '</table>';
+
+	return $html;
 }

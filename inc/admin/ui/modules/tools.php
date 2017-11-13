@@ -43,7 +43,12 @@ if ( ! $rwl ) {
 			array(
 				'type'        => 'helper_help',
 				'name'        => 'analytics_description',
-				'description' => '<button class="hide-if-no-js button-rocket-reveal rocket-preview-analytics-data">' . __( 'Preview data', 'rocket' ) . '</button><div class="rocket-analytics-data-container">' . rocket_preview_data_collected_list() . '</div>',
+				'description' => sprintf(
+					'<button class="hide-if-no-js button-rocket-reveal rocket-preview-analytics-data">%1$s</button><div class="rocket-analytics-data-container"><p class="description">%2$s</p>%3$s</div>',
+					__( 'Expand detailed data preview', 'rocket' ),
+					__( 'Below is a detailed view of all data WP Rocket will collect if granted permission. WP Rocket will never transmit any domain names or email addresses (except for license validation), IP addresses, or third-party API keys.', 'rocket' ),
+					rocket_data_collection_preview_table()
+				),
 			),
 		)
 	);

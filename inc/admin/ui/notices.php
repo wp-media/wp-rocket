@@ -751,13 +751,39 @@ function rocket_analytics_optin_notice() {
 		return;
 	}
 
-	$analytics_notice = '<strong>' . __( 'Allow WP Rocket to collect non-sensitive diagnostic data from this website?', 'rocket' ) . '</strong></p>
-		<p>' .  __( 'This would enable us to improve WP Rocket for you in the future.', 'rocket' ) . '</p>
-		<p><button class="hide-if-no-js button-rocket-reveal rocket-preview-analytics-data">' . __( 'See a preview of which data would be collected', 'rocket' ) . '</button></p>
-		<div class="rocket-analytics-data-container">' . rocket_preview_data_collected_list() . '</div>
-		<p><a href="' . wp_nonce_url( admin_url( 'admin-post.php?action=rocket_analytics_optin&value=yes' ), 'analytics_optin' ) . '" class="button button-primary">' . __( 'Yes I Allow', 'rocket' ) . '</a> <a href="' .  wp_nonce_url( admin_url( 'admin-post.php?action=rocket_analytics_optin&value=no' ), 'analytics_optin' ) . '" class="button button-secondary">' . __( 'No Thanks', 'rocket' ) . '</a>';
+	$analytics_notice = sprintf(
+		// Opening <p> provided by rocket_notice_html()
+		'<strong>%1$s</strong><br>%2$s</p>',
+		__( 'Would you allow WP Rocket to collect non-sensitive diagnostic data from this website?', 'rocket' ),
+		__( 'This would help us to improve WP Rocket for you in the future.', 'rocket' )
+	);
 
+	$analytics_notice .= sprintf(
+		'<p><button class="hide-if-no-js button-rocket-reveal rocket-preview-analytics-data">%s</button></p>',
+		/* translators: button text, click will expand data collection preview */
+		__( 'Expand detailed data preview', 'rocket' )
+	);
+
+	$analytics_notice .= sprintf(
+		'<div class="rocket-analytics-data-container"><p class="description">%1$s</p>%2$s</div>',
+		__( 'Below is a detailed view of all data WP Rocket will collect if granted permission. WP Rocket will never transmit any domain names or email addresses (except for license validation), IP addresses, or third-party API keys.', 'rocket' ),
+		rocket_data_collection_preview_table()
+	);
+
+	$analytics_notice .= sprintf(
+		'<p><a href="%1$s" class="button button-primary">%2$s</a> <a href="%3$s" class="button button-secondary">%4$s</a>',
+		// Closing </p> provided by rocket_notice_html()
+		wp_nonce_url( admin_url( 'admin-post.php?action=rocket_analytics_optin&value=yes' ), 'analytics_optin' ),
+		/* translators: button text for data collection opt-in */
+		__( 'Yes, allow', 'rocket' ),
+		wp_nonce_url( admin_url( 'admin-post.php?action=rocket_analytics_optin&value=no' ), 'analytics_optin' ),
+		/* translators: button text for data collection opt-in */
+		__( 'No, thanks', 'rocket' )
+	);
+
+	// Status should be as neutral as possible; nothing has happened yet.
 	rocket_notice_html( array(
+		'status'  => 'info',
 		'message' => $analytics_notice,
 	) );
 }
@@ -792,10 +818,26 @@ function rocket_analytics_optin_thankyou_notice() {
 		return;
 	}
 
-	$thankyou_message = '<strong>' . __( 'Thank you!', 'rocket' ) . '</strong></p>
-		<p>' . __( 'WP Rocket now collects these metrics from your website:', 'rocket' ) . '</p>
-		<div>' . rocket_preview_data_collected_list() . '</div>
-		<p>' . __( 'If you ever want to opt-out, you can do so from the Tools tab of WP Rocket settings', 'rocket' );
+	$thankyou_message = sprintf(
+		// Opening <p> provided by rocket_notice_html()
+		'<strong>%s</strong></p>',
+		__( 'Thank you!', 'rocket' )
+	);
+
+	$thankyou_message .= sprintf(
+		'<p>%1$s</p><div>%2$s</div>',
+		__( 'WP Rocket now collects these metrics from your website:', 'rocket' ),
+		rocket_data_collection_preview_table()
+	);
+
+	$thankyou_message .= '<p>';
+	// Closing </p> provided by rocket_notice_html()
+	$thankyou_message .= sprintf(
+		/* translators: %1$s = opening link, %2$s = closing link */
+		__( 'If you ever wish to opt out of this feature, you can do so from the %1$sTools%2$s tab.', 'rocket' ),
+		'<a href="#tab_tools">',
+		'</a>'
+	);
 
 	rocket_notice_html( array(
 		'message' => $thankyou_message,

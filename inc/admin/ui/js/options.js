@@ -192,7 +192,8 @@ jQuery( document ).ready( function($){
 				$('#tab_basic').show();
 		}
 	}
-	$( 'h2.nav-tab-wrapper .nav-tab, a[href^="#tab_"]', '#rocket_options' ).on( 'click', function(e){
+	// Context includes tab links in admin notices.
+	$( 'h2.nav-tab-wrapper .nav-tab, a[href^="#tab_"]', '.settings_page_wprocket #wpbody-content' ).on( 'click', function(e){
 		e.preventDefault();
 		tab = $(this).attr( 'href' );
 		if( sup_html5st ) {
