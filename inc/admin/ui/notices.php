@@ -20,9 +20,9 @@ function rocket_bad_deactivations() {
 			switch ( $msg ) {
 				case 'wpconfig':
 					$errors['wpconfig'] = '<p>' . sprintf(
-						// translators: %1$s WP Rocket plugin name; %2$s = wp-config.php.
+						// translators: %1$s WP Rocket plugin name; %2$s = file name
 						__( '<strong>%1$s</strong> has not been deactivated due to missing writing permissions.<br>
-Make <st>%2$s</strong> writeable and retry deactivation, or force deactivation now.', 'rocket' ),
+Make <strong>%2$s</strong> writeable and retry deactivation, or force deactivation now.', 'rocket' ),
 						WP_ROCKET_PLUGIN_NAME,
 						'wp-config.php'
 					) . '</p>';
@@ -30,9 +30,9 @@ Make <st>%2$s</strong> writeable and retry deactivation, or force deactivation n
 
 				case 'htaccess':
 					$errors['htaccess'] = '<p>' . sprintf(
-						// translators: %1$s WP Rocket plugin name; %2$s = .htaccess.
+						// translators: %1$s WP Rocket plugin name; %2$s = file name
 						__( '<strong>%1$s</strong> has not been deactivated due to missing writing permissions.<br>
-Make <st>%2$s</strong> writeable and retry deactivation, or force deactivation now.', 'rocket' ),
+Make <strong>%2$s</strong> writeable and retry deactivation, or force deactivation now.', 'rocket' ),
 						WP_ROCKET_PLUGIN_NAME,
 						'.htaccess'
 					) . '</p>';
@@ -214,17 +214,18 @@ function rocket_warning_using_permalinks() {
 		&& ! $GLOBALS['wp_rewrite']->using_permalinks()
 		&& rocket_valid_key()
 	) {
-		$warning = sprintf(
-				// translators: %1$s WP Rocket plugin name; %2$s = permalink settings admin URL.
-				__( '<strong>%1$s</strong>: A custom permalink structure is required for the plugin to work properly. <a href="%2$s">Go to permalinks settings</a>', 'rocket' ),
-				WP_ROCKET_PLUGIN_NAME,
-				admin_url( 'options-permalink.php' )
-			);
+		$message = sprintf(
+			/* translators: %1$s WP Rocket plugin name; %2$s = opening link; %3$s = closing link */
+			__( '%1$s: A custom permalink structure is required for the plugin to work properly. %2$sGo to permalinks settings%3$s', 'rocket' ),
+			'<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>',
+			'<a href="' . admin_url( 'options-permalink.php' ) . '">',
+			'</a>'
+		);
 
 		rocket_notice_html( array(
 			'status'      => 'error',
 			'dismissible' => '',
-			'message'     => $warning,
+			'message'     => $message,
 		) );
 	}
 }
@@ -250,21 +251,12 @@ function rocket_warning_wp_config_permissions() {
 			return;
 		}
 
-		$warning = '<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>: ' .
-			sprintf(
-				// translators: %1$s WP Rocket plugin name (maybe white label); %2$s = concerned file/folder; %3$s = URL.
-				__( '<strong>%1$s</strong>: cannot configure itself due to missing writing permissions. Affected file:<br>
-				- %2$s<br>
-				Troubleshoot: <a href="%3$s" target="_blank">Resolving issues with writing permissions</a>', 'rocket' ),
-				WP_ROCKET_PLUGIN_NAME,
-				'wp-config.php',
-				'https://codex.wordpress.org/Changing_File_Permissions'
-			);
+		$message = rocket_notice_writing_permissions( 'wp-config.php' );
 
 		rocket_notice_html( array(
 			'status' => 'error',
 			'dismissible' => '',
-			'message' => $warning,
+			'message' => $message,
 			'dismiss_button' => true,
 			'readonly_content' => "/** Enable Cache by " . WP_ROCKET_PLUGIN_NAME . " */\r\ndefine( 'WP_CACHE', true );\r\n",
 		) );
@@ -292,21 +284,12 @@ function rocket_warning_advanced_cache_permissions() {
 			return;
 		}
 
-		$warning = '<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>: ' .
-			sprintf(
-				// translators: %1$s WP Rocket plugin name (maybe white label); %2$s = concerned file/folder; %3$s = URL.
-				__( '<strong>%1$s</strong> cannot configure itself due to missing writing permissions. Affected file:<br>
-					- %2$s<br>
-					Troubleshoot: <a href="%3$s" target="_blank">Resolving issues with writing permissions</a>', 'rocket' ),
-					WP_ROCKET_PLUGIN_NAME,
-					basename( WP_CONTENT_DIR ) . '/advanced-cache.php',
-					'https://codex.wordpress.org/Changing_File_Permissions'
-			);
+		$message = rocket_notice_writing_permissions( basename( WP_CONTENT_DIR ) . '/advanced-cache.php' );
 
 		rocket_notice_html( array(
 			'status'           => 'error',
 			'dismissible'      => '',
-			'message'          => $warning,
+			'message'          => $message,
 			'dismiss_button'   => true,
 			'readonly_content' => get_rocket_advanced_cache_file(),
 		) );
@@ -327,21 +310,13 @@ function rocket_warning_advanced_cache_not_ours() {
 		&& ( defined( 'WP_CACHE' ) && WP_CACHE )
 		&& get_rocket_option( 'version' ) === WP_ROCKET_VERSION
 		&& rocket_valid_key() ) {
-			$warning = '<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>: ' .
-			sprintf(
-				// translators: %1$s WP Rocket plugin name (maybe white label); %2$s = concerned file/folder; %3$s = URL.
-				__( '<strong>%1$s</strong>: cannot configure itself due to missing writing permissions. Affected file:<br>
-				- %2$s<br>
-				Troubleshoot: <a href="%3$s" target="_blank">Resolving issues with writing permissions</a>', 'rocket' ),
-				WP_ROCKET_PLUGIN_NAME,
-				basename( WP_CONTENT_DIR ) . '/advanced-cache.php',
-				'https://codex.wordpress.org/Changing_File_Permissions'
-			);
+
+			$message = rocket_notice_writing_permissions( basename( WP_CONTENT_DIR ) . '/advanced-cache.php' );
 
 			rocket_notice_html( array(
 				'status'      => 'error',
 				'dismissible' => '',
-				'message'     => $warning,
+				'message'     => $message,
 			) );
 	}
 }
@@ -368,26 +343,12 @@ function rocket_warning_htaccess_permissions() {
 			return;
 		}
 
-		$warning = '<p><strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>: ' .
-			sprintf(
-				// translators: %1$s WP Rocket plugin name (maybe white label); %2$s = concerned file/folder; %3$s = URL.
-				__( '<strong>%1$s</strong>: cannot configure itself due to missing writing permissions. Affected file:<br>
-				- %2$s<br>
-				Troubleshoot: <a href="%3$s" target="_blank">Resolving issues with writing permissions</a>', 'rocket' ),
-				WP_ROCKET_PLUGIN_NAME,
-				'.htaccess',
-				'https://codex.wordpress.org/Changing_File_Permissions'
-			) . '</p>';
-
-		$warning .= '<p>' . sprintf(
-			// translators: %s = WP Rocket name (maybe white label).
-			__( 'Here are the rewrite rules you have to put in your <code>.htaccess</code> file for <strong>%s</strong> to work correctly. Click on the field and press Ctrl-A to select all.', 'rocket' ), WP_ROCKET_PLUGIN_NAME
-			) . '<br>' . __( '<strong>Warning:</strong> This message will popup again and its content may be updated when saving the options', 'rocket' ) . '</p>';
+		$message = rocket_notice_writing_permissions( '.htaccess' );
 
 		rocket_notice_html( array(
 			'status'           => 'error',
 			'dismissible'      => '',
-			'message'          => $warning,
+			'message'          => $message,
 			'dismiss_button'   => true,
 			'readonly_content' => get_rocket_htaccess_marker(),
 		) );
@@ -412,21 +373,12 @@ function rocket_warning_config_dir_permissions() {
 			return;
 		}
 
-		$warning = '<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>: ' .
-			sprintf(
-				// translators: %1$s WP Rocket plugin name (maybe white label); %2$s = concerned file/folder; %3$s = URL.
-				__( '<strong>%1$s</strong>: cannot configure itself due to missing writing permissions. Affected file:<br>
-				- %2$s<br>
-				Troubleshoot: <a href="%3$s" target="_blank">Resolving issues with writing permissions</a>', 'rocket' ),
-				WP_ROCKET_PLUGIN_NAME,
-				trim( str_replace( ABSPATH, '', WP_ROCKET_CONFIG_PATH ), '/' ),
-				'https://codex.wordpress.org/Changing_File_Permissions'
-			);
+		$message = rocket_notice_writing_permissions( trim( str_replace( ABSPATH, '', WP_ROCKET_CONFIG_PATH ), '/' ) );
 
 		rocket_notice_html( array(
 			'status'      => 'error',
 			'dismissible' => '',
-			'message'     => $warning,
+			'message'     => $message,
 		) );
 	}
 }
@@ -449,21 +401,12 @@ function rocket_warning_cache_dir_permissions() {
 			return;
 		}
 
-		$warning = '<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>: ' .
-			sprintf(
-				// translators: %1$s WP Rocket plugin name (maybe white label); %2$s = concerned file/folder; %3$s = URL.
-				__( '<strong>%1$s</strong>: cannot configure itself due to missing writing permissions. Affected file:<br>
-				- %2$s<br>
-				Troubleshoot: <a href="%3$s" target="_blank">Resolving issues with writing permissions</a>', 'rocket' ),
-				WP_ROCKET_PLUGIN_NAME,
-				trim( str_replace( ABSPATH, '', WP_ROCKET_CACHE_PATH ), '/' ),
-				'https://codex.wordpress.org/Changing_File_Permissions'
-			);
+		$message = rocket_notice_writing_permissions( trim( str_replace( ABSPATH, '', WP_ROCKET_CACHE_PATH ), '/' ) );
 
 		rocket_notice_html( array(
 			'status'      => 'error',
 			'dismissible' => '',
-			'message'     => $warning,
+			'message'     => $message,
 		) );
 	}
 }
@@ -487,21 +430,12 @@ function rocket_warning_minify_cache_dir_permissions() {
 			return;
 		}
 
-		$warning = '<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>: ' .
-			sprintf(
-				// translators: %1$s WP Rocket plugin name (maybe white label); %2$s = concerned file/folder; %3$s = URL.
-				__( '<strong>%1$s</strong>: cannot configure itself due to missing writing permissions. Affected file:<br>
-				- %2$s<br>
-				Troubleshoot: <a href="%3$s" target="_blank">Resolving issues with writing permissions</a>', 'rocket' ),
-				WP_ROCKET_PLUGIN_NAME,
-				trim( str_replace( ABSPATH, '', WP_ROCKET_MINIFY_CACHE_PATH ), '/' ),
-				'https://codex.wordpress.org/Changing_File_Permissions'
-			);
+		$message = rocket_notice_writing_permissions( trim( str_replace( ABSPATH, '', WP_ROCKET_MINIFY_CACHE_PATH ), '/' ) );
 
 		rocket_notice_html( array(
 			'status'      => 'error',
 			'dismissible' => '',
-			'message'     => $warning,
+			'message'     => $message,
 		) );
 	}
 }
@@ -526,16 +460,7 @@ function rocket_warning_busting_cache_dir_permissions() {
 			return;
 		}
 
-		$message = '<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>: ' .
-			sprintf(
-				// translators: %1$s WP Rocket plugin name (maybe white label); %2$s = concerned file/folder; %3$s = URL.
-				__( '<strong>%1$s</strong>: cannot configure itself due to missing writing permissions. Affected file:<br>
-				- %2$s<br>
-				Troubleshoot: <a href="%3$s" target="_blank">Resolving issues with writing permissions</a>', 'rocket' ),
-				WP_ROCKET_PLUGIN_NAME,
-				trim( str_replace( ABSPATH, '', WP_ROCKET_CACHE_BUSTING_PATH ), '/' ),
-				'https://codex.wordpress.org/Changing_File_Permissions'
-			);
+		$message = rocket_notice_writing_permissions( trim( str_replace( ABSPATH, '', WP_ROCKET_CACHE_BUSTING_PATH ), '/' ) );
 
 		rocket_notice_html( array(
 			'status'      => 'error',
@@ -1039,16 +964,54 @@ function rocket_notice_html( $args ) {
 			echo ( $tag ? '<p>' : '' ) . $args['message'] . ( $tag ? '</p>' : '' );
 		?>
 		<?php if ( ! empty( $args['readonly_content'] ) ) : ?>
-		<p><textarea readonly="readonly" id="rules" name="rules" class="large-text readonly" rows="6"><?php echo esc_textarea( $args['readonly_content'] ); ?></textarea></p>
+		<p><?php _e( 'The following code should have been written to this file:', 'rocket' ); ?>:
+			<br><textarea readonly="readonly" id="rules" name="rules" class="large-text readonly" rows="6"><?php echo esc_textarea( $args['readonly_content'] ); ?></textarea>
+		</p>
 		<?php endif;
 		if ( $args['action'] || $args['dismiss_button'] ) : ?>
 		<p>
 			<?php echo $args['action']; ?>
 			<?php if ( $args['dismiss_button'] ) : ?>
-			<a class="rocket-dismiss" href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=' . __FUNCTION__ ), 'rocket_ignore_' . __FUNCTION__ ); ?>"><?php _e( 'Dismiss this notice.', 'rocket' ); ?></a>
+			<a class="rocket-dismiss" href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=' . __FUNCTION__ ), 'rocket_ignore_' . __FUNCTION__ ); ?>"><?php _e( 'Dismiss this notice', 'rocket' ); ?></a>
 			<?php endif; ?>
 		</p>
 		<?php endif; ?>
 	</div>
 	<?php
+}
+
+/**
+ * Outputs formatted notice about issues with writing permissions
+ *
+ * @since  2.11
+ * @author Caspar Hübinger
+ *
+ * @param  string $file File or folder name
+ * @return string       Message HTML
+ */
+function rocket_notice_writing_permissions( $file ) {
+
+	$message = sprintf(
+		/* translators: %s = plugin name (maybe white labelled) */
+		__( '%s cannot configure itself due to missing writing permissions.', 'rocket' ),
+		'<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>'
+	);
+
+	$message .= '<br>' . sprintf(
+		/* translators: %s = file/folder name */
+		__( 'Affected file/folder: %s', 'rocket' ),
+		'<code>' . $file . '</code>'
+	);
+
+	if ( ! rocket_is_white_label() ) {
+		$message .= '<br>' . sprintf(
+			/* translators: This is a doc title! %1$s = opening link; %2$s = closing link */
+			__( 'Troubleshoot: %1$sHow to make system files writeable%2$s', 'rocket' ),
+			/* translators: Documentation exists in EN, DE, FR, ES, IT; use loaclised URL if applicable */
+			'<a href="' . __( 'http://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-config-writeable', 'rocket' ) . '" target="_blank">',
+			'</a>'
+		);
+	}
+
+	return $message;
 }
