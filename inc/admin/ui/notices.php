@@ -579,6 +579,16 @@ function rocket_imagify_notice() {
 		return;
 	}
 
+	// No Imagify banner when WP Rocket’s analytics opt-in notice is displayed.
+	if ( 1 !== (int) get_option( 'rocket_analytics_notice_displayed' ) ) {
+		return;
+	}
+
+	// No Imagify banner when WP Rocket’s analytics thank-you notice is displayed.
+	if ( 1 === (int) get_option( 'rocket_analytics_notice_displayed' ) && get_transient( 'rocket_analytics_optin' ) ) {
+		return;
+	}
+
 	$boxes = get_user_meta( $GLOBALS['current_user']->ID, 'rocket_boxes', true );
 
 	if ( defined( 'IMAGIFY_VERSION' ) || in_array( __FUNCTION__, (array) $boxes, true ) || 1 === get_option( 'wp_rocket_dismiss_imagify_notice' ) || rocket_is_white_label() || ! current_user_can( 'manage_options' ) ) {
