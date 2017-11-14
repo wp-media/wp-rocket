@@ -815,19 +815,21 @@ function rocket_clear_cache_notice() {
 
 	delete_transient( 'rocket_clear_cache' );
 
+	$formatted_plugin_name = '<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>';
+
 	switch ( $cleared_cache ) {
 		case 'all':
-			// translators: %s = WP Rocket name (maybe white label).
-			$notice = sprintf( __( '%s cache cleared.', 'rocket' ), WP_ROCKET_PLUGIN_NAME );
+			/* translators: %s = plugin name (maybe white-labelled) */
+			$notice = sprintf( __( '%s: Cache cleared.', 'rocket' ), $formatted_plugin_name );
 			break;
 		case 'post':
-			$notice = __( 'Post cache cleared.', 'rocket' );
+			$notice = sprintf( __( '%s: Post cache cleared.', 'rocket' ), $formatted_plugin_name );
 			break;
 		case 'term':
-			$notice = __( 'Term cache cleared.', 'rocket' );
+			$notice = sprintf( __( '%s: Term cache cleared.', 'rocket' ), $formatted_plugin_name );
 			break;
 		case 'user':
-			$notice = __( 'User cache cleared.', 'rocket' );
+			$notice = sprintf( __( '%s: User cache cleared.', 'rocket' ), $formatted_plugin_name );
 			break;
 		default:
 			$notice = '';
