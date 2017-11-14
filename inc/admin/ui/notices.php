@@ -22,7 +22,7 @@ function rocket_bad_deactivations() {
 					$errors['wpconfig'] = '<p>' . sprintf(
 						// translators: %1$s WP Rocket plugin name; %2$s = file name
 						__( '<strong>%1$s</strong> has not been deactivated due to missing writing permissions.<br>
-Make <strong>%2$s</strong> writeable and retry deactivation, or force deactivation now.', 'rocket' ),
+Make <strong>%2$s</strong> writeable and retry deactivation, or force deactivation now:', 'rocket' ),
 						WP_ROCKET_PLUGIN_NAME,
 						'wp-config.php'
 					) . '</p>';
@@ -32,7 +32,7 @@ Make <strong>%2$s</strong> writeable and retry deactivation, or force deactivati
 					$errors['htaccess'] = '<p>' . sprintf(
 						// translators: %1$s WP Rocket plugin name; %2$s = file name
 						__( '<strong>%1$s</strong> has not been deactivated due to missing writing permissions.<br>
-Make <strong>%2$s</strong> writeable and retry deactivation, or force deactivation now.', 'rocket' ),
+Make <strong>%2$s</strong> writeable and retry deactivation, or force deactivation now:', 'rocket' ),
 						WP_ROCKET_PLUGIN_NAME,
 						'.htaccess'
 					) . '</p>';
@@ -951,7 +951,7 @@ function rocket_notice_html( $args ) {
 				$plugin_file = 'wp-rocket/wp-rocket.php';
 				$rocket_nonce = wp_create_nonce( 'force_deactivation' );
 
-				$args['action'] = '<a href="' . wp_nonce_url( 'plugins.php?action=deactivate&amp;rocket_nonce=' . $rocket_nonce . '&amp;plugin=' . $plugin_file . '&amp;plugin_status=' . $status . '&amp;paged=' . $page . '&amp;s=' . $s, 'deactivate-plugin_' . $plugin_file ) . '">' . __( 'You can still force deactivation by clicking here.', 'rocket' ) . '</a>';
+				$args['action'] = '<a href="' . wp_nonce_url( 'plugins.php?action=deactivate&amp;rocket_nonce=' . $rocket_nonce . '&amp;plugin=' . $plugin_file . '&amp;plugin_status=' . $status . '&amp;paged=' . $page . '&amp;s=' . $s, 'deactivate-plugin_' . $plugin_file ) . '">' . __( 'Force deactivation ', 'rocket' ) . '</a>';
 			}
 			break;
 	}
