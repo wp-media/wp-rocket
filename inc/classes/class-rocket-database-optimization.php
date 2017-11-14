@@ -251,8 +251,16 @@ class Rocket_Database_Optimization {
 			<?php foreach ( $optimized as $k => $number ) : ?>
 				<li>
 				<?php
-					// Translators: %1$d is the number of items optimized, %2$s is the type of optimization.
+					/* translators: %1$d = number of items optimized, %2$s = type of optimization */
 					printf( __( '%1$d %2$s optimized.', 'rocket' ), $number, $k );
+
+					/**
+					 * “I feel like I’m kind of lazy, but I keep the yard looking good.”
+					 * —Kris Kristofferson
+					 *
+					 * We shall do the same, shan’t we?
+					 * @todo Replace $k in the printf() arguments with something nicer to read.
+					 */
 				?>
 				</li>
 			<?php endforeach; ?>
