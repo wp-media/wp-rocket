@@ -169,11 +169,17 @@ $rocket_concatenate_fields[] = array(
 	'name'         => 'minify_concatenate_perf_tip',
 	'description'  => __( 'Reduces the number of HTTP requests, can improve loading time.', 'rocket' ),
 );
-$rocket_concatenate_fields[] = array(
-	'type'         => 'helper_warning',
-	'name'         => 'rocket_minify_combine_all',
-	'description'  => __( 'Files are combined into 1 file. This option is not recommended if your server is HTTP/2 enabled.', 'rocket' ),
-);
+
+// Display warning when server protocol is not HTTP/1.x.
+$rocket_maybe_http1 = strpos( $_SERVER['SERVER_PROTOCOL'], 'HTTP/1' );
+
+if ( false === $rocket_maybe_http1 ) {
+	$rocket_concatenate_fields[] = array(
+		'type'         => 'helper_warning',
+		'name'         => 'minify_combine_http2_warning',
+		'description'  => __( 'Your website seems to use HTTP/2. Activating these settings is not recommended, it can slow down your site.', 'rocket' ),
+	);
+}
 
 add_settings_field(
 	'rocket_concatenate',
