@@ -78,7 +78,7 @@ function rocket_insert_critical_css() {
 		return;
 	}
 
-	if ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) {
+	if ( ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) || ( defined( 'DONOTASYNCCSS' ) && DONOTASYNCCSS ) ) {
 		return;
 	}
 
@@ -134,7 +134,7 @@ function rocket_insert_load_css() {
 		return;
 	}
 
-	if ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) {
+	if ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE || ( defined( 'DONOTASYNCCSS' ) && DONOTASYNCCSS ) ) {
 		return;
 	}
 
