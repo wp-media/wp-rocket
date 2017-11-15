@@ -13,11 +13,11 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 function rocket_browser_cache_busting( $src ) {
 	$current_filter = current_filter();
 
-	if ( 'style_loader_src' === $current_filter && get_rocket_option( 'minify_css' ) && ! is_rocket_post_excluded_option( 'minify_css' ) ) {
+	if ( 'style_loader_src' === $current_filter && get_rocket_option( 'minify_css' ) && ( ! defined( 'DONOTMINIFYCSS' ) || ! DONOTMINIFYCSS ) && ! is_rocket_post_excluded_option( 'minify_css' ) ) {
 		return $src;
 	}
 
-	if ( 'script_loader_src' === $current_filter && get_rocket_option( 'minify_js' ) && ! is_rocket_post_excluded_option( 'minify_js' ) ) {
+	if ( 'script_loader_src' === $current_filter && get_rocket_option( 'minify_js' ) && ( ! defined( 'DONOTMINIFYJS' ) || ! DONOTMINIFYJS ) && ! is_rocket_post_excluded_option( 'minify_js' ) ) {
 		return $src;
 	}
 
