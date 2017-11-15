@@ -3,6 +3,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 // Don't cache robots.txt && .htaccess directory (it's happened sometimes with weird server configuration).
 if ( strstr( $_SERVER['REQUEST_URI'], 'robots.txt' ) || strstr( $_SERVER['REQUEST_URI'], '.htaccess' ) ) {
+	rocket_define_donotoptimize_constant( true );
 	return;
 }
 
@@ -11,30 +12,31 @@ $request_uri = reset( ( $request_uri ) );
 
 // Don't cache disallowed extensions.
 if ( strtolower( $_SERVER['REQUEST_URI'] ) !== '/index.php' && in_array( pathinfo( $request_uri, PATHINFO_EXTENSION ), array( 'php', 'xml', 'xsl' ), true ) ) {
+	rocket_define_donotoptimize_constant( true );
 	return;
 }
 
 // Don't cache if user is in admin.
 if ( is_admin() ) {
+	rocket_define_donotoptimize_constant( true );
 	return;
 }
 
 if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+	rocket_define_donotoptimize_constant( true );
 	return;
 }
 
 // Don't cache the customizer preview.
 if ( isset( $_POST['wp_customize'] ) ) {
-	rocket_define_donotminify_constants( true );
-	rocket_define_donotasync_css_constant( true );
+	rocket_define_donotoptimize_constant( true );
 	return;
 }
 
 // Don't cache without GET method.
 if ( ! isset( $_SERVER['REQUEST_METHOD'] ) || 'GET' !== $_SERVER['REQUEST_METHOD'] ) {
-		rocket_define_donotminify_constants( true );
-		rocket_define_donotasync_css_constant( true );
-		return;
+	rocket_define_donotoptimize_constant( true );
+	return;
 }
 
 // Get the correct config file.
@@ -74,6 +76,7 @@ if ( realpath( $rocket_config_path . $host . '.php' ) && 0 === stripos( realpath
 
 // Exit if no config file exists.
 if ( ! $continue ) {
+	rocket_define_donotoptimize_constant( true );
 	return;
 }
 
@@ -99,29 +102,25 @@ if ( ! empty( $_GET )
 	&& ( ! isset( $_GET['ao_noptimize'] ) )
 	&& ( ! isset( $rocket_cache_query_strings ) || ! array_intersect( array_keys( $_GET ), $rocket_cache_query_strings ) )
 ) {
-	rocket_define_donotminify_constants( true );
-	rocket_define_donotasync_css_constant( true );
+	rocket_define_donotoptimize_constant( true );
 	return;
 }
 
 // Don't cache SSL.
 if ( ! isset( $rocket_cache_ssl ) && rocket_is_ssl() ) {
-	rocket_define_donotminify_constants( true );
-	rocket_define_donotasync_css_constant( true );
+	rocket_define_donotoptimize_constant( true );
 	return;
 }
 
 // Don't cache these pages.
 if ( isset( $rocket_cache_reject_uri ) && preg_match( '#^(' . $rocket_cache_reject_uri . ')$#', $request_uri ) ) {
-	rocket_define_donotminify_constants( true );
-	rocket_define_donotasync_css_constant( true );
+	rocket_define_donotoptimize_constant( true );
 	return;
 }
 
 // Don't cache page with these cookies.
 if ( isset( $rocket_cache_reject_cookies ) && preg_match( '#(' . $rocket_cache_reject_cookies . ')#', var_export( $_COOKIE, true ) ) ) {
-	rocket_define_donotminify_constants( true );
-	rocket_define_donotasync_css_constant( true );
+	rocket_define_donotoptimize_constant( true );
 	return;
 }
 
@@ -137,22 +136,19 @@ $allowed_ips = array(
 
 // Don't cache page when these cookies don't exist.
 if ( ! isset( $allowed_ips[ $ip ] ) && isset( $rocket_cache_mandatory_cookies ) && ! preg_match( '#(' . $rocket_cache_mandatory_cookies . ')#', var_export( $_COOKIE, true ) ) ) {
-	rocket_define_donotminify_constants( true );
-	rocket_define_donotasync_css_constant( true );
+	rocket_define_donotoptimize_constant( true );
 	return;
 }
 
 // Don't cache page with these user agents.
 if ( isset( $rocket_cache_reject_ua, $_SERVER['HTTP_USER_AGENT'] ) && ! empty( $rocket_cache_reject_ua ) && preg_match( '#(' . $rocket_cache_reject_ua . ')#', $_SERVER['HTTP_USER_AGENT'] ) ) {
-	rocket_define_donotminify_constants( true );
-	rocket_define_donotasync_css_constant( true );
+	rocket_define_donotoptimize_constant( true );
 	return;
 }
 
 // Don't cache if mobile detection is activated.
 if ( ! isset( $rocket_cache_mobile ) && isset( $_SERVER['HTTP_USER_AGENT'] ) && (preg_match( '#^.*(2.0\ MMP|240x320|400X240|AvantGo|BlackBerry|Blazer|Cellphone|Danger|DoCoMo|Elaine/3.0|EudoraWeb|Googlebot-Mobile|hiptop|IEMobile|KYOCERA/WX310K|LG/U990|MIDP-2.|MMEF20|MOT-V|NetFront|Newt|Nintendo\ Wii|Nitro|Nokia|Opera\ Mini|Palm|PlayStation\ Portable|portalmmm|Proxinet|ProxiNet|SHARP-TQ-GX10|SHG-i900|Small|SonyEricsson|Symbian\ OS|SymbianOS|TS21i-10|UP.Browser|UP.Link|webOS|Windows\ CE|WinWAP|YahooSeeker/M1A1-R2D2|iPhone|iPod|Android|BlackBerry9530|LG-TU915\ Obigo|LGE\ VX|webOS|Nokia5800).*#i', $_SERVER['HTTP_USER_AGENT'] ) || preg_match( '#^(w3c\ |w3c-|acs-|alav|alca|amoi|audi|avan|benq|bird|blac|blaz|brew|cell|cldc|cmd-|dang|doco|eric|hipt|htc_|inno|ipaq|ipod|jigs|kddi|keji|leno|lg-c|lg-d|lg-g|lge-|lg/u|maui|maxo|midp|mits|mmef|mobi|mot-|moto|mwbp|nec-|newt|noki|palm|pana|pant|phil|play|port|prox|qwap|sage|sams|sany|sch-|sec-|send|seri|sgh-|shar|sie-|siem|smal|smar|sony|sph-|symb|t-mo|teli|tim-|tosh|tsm-|upg1|upsi|vk-v|voda|wap-|wapa|wapi|wapp|wapr|webc|winw|winw|xda\ |xda-).*#i', substr( $_SERVER['HTTP_USER_AGENT'], 0, 4 ) )) ) {
-	rocket_define_donotminify_constants( true );
-	rocket_define_donotasync_css_constant( true );
+	rocket_define_donotoptimize_constant( true );
 	return;
 }
 
@@ -397,33 +393,16 @@ function rocket_is_ssl() {
 }
 
 /**
- * Declare and set value to DONOTMINIFYCSS & DONOTMINIFYJS constant
+ * Declares and sets value of constant preventing Optimizations
  *
- * @since 2.6.2
- *
- * @param bool $value true or false.
- */
-function rocket_define_donotminify_constants( $value ) {
-	if ( ! defined( 'DONOTMINIFYCSS' ) ) {
-		define( 'DONOTMINIFYCSS', (bool) $value );
-	}
-
-	if ( ! defined( 'DONOTMINIFYJS' ) ) {
-		define( 'DONOTMINIFYJS', (bool) $value );
-	}
-}
-
-/**
- * Declare and set value to DONOTMASYNCCSS constant
- *
- * @since 2.10
+ * @since 2.11
  * @author Remy Perona
  *
  * @param bool $value true or false.
  */
-function rocket_define_donotasync_css_constant( $value ) {
-	if ( ! defined( 'DONOTASYNCCSS' ) ) {
-		define( 'DONOTASYNCCSS', (bool) $value );
+function rocket_define_donotoptimize_constant( $value ) {
+	if ( ! defined( 'DONOTROCKETOPTIMIZE' ) ) {
+		define( 'DONOTROCKETOPTIMIZE', (bool) $value );
 	}
 }
 

@@ -22,12 +22,12 @@ function rocket_minify_process( $buffer ) {
 	}
 
 	// Minify JavaScript.
-	if ( $enable_js && ( ! defined( 'DONOTMINIFYJS' ) || ! DONOTMINIFYJS ) && ! is_rocket_post_excluded_option( 'minify_js' ) ) {
+	if ( $enable_js && ( ! defined( 'DONOTROCKETOPTIMIZE' ) || ! DONOTROCKETOPTIMIZE ) && ! is_rocket_post_excluded_option( 'minify_js' ) ) {
 		$buffer = rocket_minify_files( $buffer, 'css' );
 	}
 
 	// Minify CSS.
-	if ( $enable_css && ( ! defined( 'DONOTMINIFYCSS' ) || ! DONOTMINIFYCSS ) && ! is_rocket_post_excluded_option( 'minify_css' ) ) {
+	if ( $enable_css && ( ! defined( 'DONOTROCKETOPTIMIZE' ) || ! DONOTROCKETOPTIMIZE ) && ! is_rocket_post_excluded_option( 'minify_css' ) ) {
 		$buffer = rocket_minify_files( $buffer, 'js' );
 	}
 
