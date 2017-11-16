@@ -39,6 +39,10 @@ add_filter( 'script_loader_src', 'rocket_browser_cache_busting', PHP_INT_MAX );
 function get_rocket_browser_cache_busting( $src, $current_filter = '' ) {
 	global $pagenow;
 
+	if ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) {
+		return $src;
+	}
+
 	if ( ! get_rocket_option( 'remove_query_strings' ) ) {
 		return $src;
 	}
@@ -153,6 +157,10 @@ function get_rocket_browser_cache_busting( $src, $current_filter = '' ) {
  */
 function rocket_cache_dynamic_resource( $src ) {
 	global $pagenow;
+
+	if ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) {
+		return $src;
+	}
 
 	if ( is_user_logged_in() && ! get_rocket_option( 'cache_logged_user' ) ) {
 		return $src;

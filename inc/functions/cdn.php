@@ -55,11 +55,11 @@ function get_rocket_cdn_url( $url, $zone = array( 'all' ) ) {
 		if ( strpos( $parse_url['path'], $home ) === false && ! preg_match( '#(' . $wp_content_dirname . '|wp-includes)#', $parse_url['path'] ) ) {
 			return $url;
 		} else {
-			$path = str_replace( $home, '', ltrim( $parse_url['path'], '//' ) );
+			$parse_url['path'] = str_replace( $home, '', ltrim( $parse_url['path'], '//' ) );
 		}
 	}
 
-	$url = untrailingslashit( $cnames[ ( abs( crc32( $path ) ) % count( $cnames ) ) ] ) . '/' . ltrim( $path, '/' ) . $parse_url['query'];
+	$url = untrailingslashit( $cnames[ ( abs( crc32( $path ) ) % count( $cnames ) ) ] ) . '/' . ltrim( $parse_url['path'], '/' ) . $parse_url['query'];
 	$url = rocket_add_url_protocol( $url );
 	return $url;
 }
