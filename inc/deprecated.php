@@ -886,3 +886,41 @@ function rocket_database_optimization_scheduled() {
 function do_rocket_database_optimization() {
 	_deprecated_function( __FUNCTION__, '2.11', 'Rocket_Database_Optimisation->process_handler()' );
 }
+
+/**
+ * Declare and set value to DONOTMINIFYCSS & DONOTMINIFYJS constant
+ *
+ * @since 2.6.2
+ * @deprecated 2.11
+ * @see rocket_define_donotoptimize_constant()
+ *
+ * @param bool $value true or false.
+ */
+function rocket_define_donotminify_constants( $value ) {
+	_deprecated_function( __FUNCTION__, '2.11', 'rocket_define_donotoptimize_constant' );
+
+	if ( ! defined( 'DONOTMINIFYCSS' ) ) {
+		define( 'DONOTMINIFYCSS', (bool) $value );
+	}
+	if ( ! defined( 'DONOTMINIFYJS' ) ) {
+		define( 'DONOTMINIFYJS', (bool) $value );
+	}
+}
+
+/**
+ * Declare and set value to DONOTMASYNCCSS constant
+ *
+ * @since 2.10
+ * @deprecated 2.11
+ * @see rocket_define_donotoptimize_constant()
+ * @author Remy Perona
+ *
+ * @param bool $value true or false.
+ */
+function rocket_define_donotasync_css_constant( $value ) {
+	_deprecated_function( __FUNCTION__, '2.11', 'rocket_define_donotoptimize_constant' );
+
+	if ( ! defined( 'DONOTASYNCCSS' ) ) {
+		define( 'DONOTASYNCCSS', (bool) $value );
+	}
+}

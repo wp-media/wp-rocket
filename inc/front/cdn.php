@@ -10,6 +10,10 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  * @return string modified URL
  */
 function rocket_cdn_file( $url ) {
+	if ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) {
+		return $url;
+	}
+
 	$ext = pathinfo( $url, PATHINFO_EXTENSION );
 
 	if ( is_admin() || 'php' === $ext ) {
@@ -70,6 +74,10 @@ add_filter( 'bwp_get_minify_src'        , 'rocket_cdn_file', PHP_INT_MAX );
  * @return array Array with updated src URL
  */
 function rocket_cdn_attachment_image_src( $image ) {
+	if ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) {
+		return $image;
+	}
+
 	if ( ! (bool) $image ) {
 		return $image;
 	}
@@ -112,6 +120,10 @@ if ( function_exists( 'wp_calculate_image_srcset' ) ) :
 	 * @return array $sources
 	 */
 	function rocket_add_cdn_on_srcset( $sources ) {
+		if ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) {
+			return $sources;
+		}
+
 		if ( (bool) $sources ) {
 			foreach ( $sources as $width => $data ) {
 				$sources[ $width ]['url'] = rocket_cdn_file( $data['url'] );
@@ -132,7 +144,7 @@ endif;
  */
 function rocket_cdn_images( $html ) {
 	// Don't use CDN if the image is in admin, a feed or in a post preview.
-	if ( is_admin() || is_feed() || is_preview() || empty( $html ) ) {
+	if ( is_admin() || is_feed() || is_preview() || empty( $html ) || defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) {
 		return $html;
 	}
 
@@ -215,7 +227,7 @@ add_filter( 'rocket_buffer', 'rocket_cdn_images', PHP_INT_MAX );
  * @return string modified HTML content
  */
 function rocket_cdn_inline_styles( $html ) {
-	if ( is_preview() || empty( $html ) ) {
+	if ( is_preview() || empty( $html ) || defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) {
 		return $html;
 	}
 
@@ -259,7 +271,7 @@ add_filter( 'rocket_buffer', 'rocket_cdn_inline_styles', PHP_INT_MAX );
  * @return string modified HTML content
  */
 function rocket_cdn_custom_files( $html ) {
-	if ( is_preview() || empty( $html ) ) {
+	if ( is_preview() || empty( $html ) || defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) {
 		return $html;
 	}
 
@@ -310,7 +322,7 @@ add_filter( 'rocket_buffer', 'rocket_cdn_custom_files', 12 );
  */
 function rocket_cdn_enqueue( $src ) {
 	// Don't use CDN if in admin, in login page, in register page or in a post preview.
-	if ( is_admin() || is_preview() || in_array( $GLOBALS['pagenow'], array( 'wp-login.php', 'wp-register.php' ), true ) ) {
+	if ( is_admin() || is_preview() || in_array( $GLOBALS['pagenow'], array( 'wp-login.php', 'wp-register.php' ), true ) || defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) {
 		return $src;
 	}
 
