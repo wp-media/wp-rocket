@@ -269,5 +269,5 @@ function rocket_realpath( $file, $absolute = true ) {
 		}
 	}
 
-	return join( '/', $path );
+	return '/' . join( '/', $path );
 }
