@@ -72,9 +72,9 @@ function get_rocket_browser_cache_busting( $src, $current_filter = '' ) {
 	 * @param array $excluded_files An array of filepath to exclude.
 	 */
 	$excluded_files = apply_filters( 'rocket_exclude_cache_busting', array() );
-	$excluded_files = array_flip( $excluded_files );
+	$excluded_files = implode( '|', $excluded_files );
 
-	if ( isset( $excluded_files[ rocket_clean_exclude_file( $src ) ] ) ) {
+	if ( preg_match( '#^(' . $excluded_files . ')$#', rocket_clean_exclude_file( $src ) ) ) {
 		return $src;
 	}
 
