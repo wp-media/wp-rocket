@@ -27,7 +27,6 @@ define( 'WP_ROCKET_WEB_API'             , WP_ROCKET_WEB_MAIN . 'api/wp-rocket/' 
 define( 'WP_ROCKET_WEB_CHECK'           , WP_ROCKET_WEB_MAIN . 'check_update.php' );
 define( 'WP_ROCKET_WEB_VALID'           , WP_ROCKET_WEB_MAIN . 'valid_key.php' );
 define( 'WP_ROCKET_WEB_INFO'            , WP_ROCKET_WEB_MAIN . 'plugin_information.php' );
-define( 'WP_ROCKET_WEB_SUPPORT'         , WP_ROCKET_WEB_MAIN . 'forums/' );
 define( 'WP_ROCKET_BOT_URL'             , 'http://bot.wp-rocket.me/launch.php' );
 define( 'WP_ROCKET_FILE'                , __FILE__ );
 define( 'WP_ROCKET_PATH'                , realpath( plugin_dir_path( WP_ROCKET_FILE ) ) . '/' );
@@ -61,7 +60,7 @@ if ( ! defined( 'CHMOD_WP_ROCKET_CACHE_DIRS' ) ) {
 	define( 'CHMOD_WP_ROCKET_CACHE_DIRS', 0755 );
 }
 if ( ! defined( 'WP_ROCKET_LASTVERSION' ) ) {
-	define( 'WP_ROCKET_LASTVERSION', '2.10.9' );
+	define( 'WP_ROCKET_LASTVERSION', '2.10.11.1' );
 }
 
 require WP_ROCKET_INC_PATH . 'compat.php';

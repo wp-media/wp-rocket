@@ -245,18 +245,32 @@ function rocket_delete_config_file() {
  * @return void
  */
 function rocket_init_cache_dir() {
+	global $is_apache;
 	// Create cache folder if not exist.
-	if ( ! is_dir( WP_ROCKET_CACHE_PATH ) ) {
+	if ( ! rocket_direct_filesystem()->is_dir( WP_ROCKET_CACHE_PATH ) ) {
 		rocket_mkdir_p( WP_ROCKET_CACHE_PATH );
 	}
 
+	if ( ! rocket_direct_filesystem()->is_file( WP_ROCKET_CACHE_PATH . 'index.html' ) ) {
+		rocket_direct_filesystem()->touch( WP_ROCKET_CACHE_PATH . 'index.html' );
+	}
+
+	if ( $is_apache ) {
+		$htaccess_path =  WP_ROCKET_CACHE_PATH . '.htaccess';
+
+		if ( ! rocket_direct_filesystem()->is_file( $htaccess_path ) ) {
+			rocket_direct_filesystem()->touch( $htaccess_path );
+			rocket_direct_filesystem()->put_contents( $htaccess_path, "Options -Indexes" );
+		}
+	}
+
 	// Create minify cache folder if not exist.
-	if ( ! is_dir( WP_ROCKET_MINIFY_CACHE_PATH ) ) {
+	if ( ! rocket_direct_filesystem()->is_dir( WP_ROCKET_MINIFY_CACHE_PATH ) ) {
 		rocket_mkdir_p( WP_ROCKET_MINIFY_CACHE_PATH );
 	}
 
 	// Create busting cache folder if not exist.
-	if ( ! is_dir( WP_ROCKET_CACHE_BUSTING_PATH ) ) {
+	if ( ! rocket_direct_filesystem()->is_dir( WP_ROCKET_CACHE_BUSTING_PATH ) ) {
 		rocket_mkdir_p( WP_ROCKET_CACHE_BUSTING_PATH );
 	}
 }
@@ -270,7 +284,7 @@ function rocket_init_cache_dir() {
  */
 function rocket_init_config_dir() {
 	// Create config domain folder if not exist.
-	if ( ! is_dir( WP_ROCKET_CONFIG_PATH ) ) {
+	if ( ! rocket_direct_filesystem()->is_dir( WP_ROCKET_CONFIG_PATH ) ) {
 		rocket_mkdir_p( WP_ROCKET_CONFIG_PATH );
 	}
 }
