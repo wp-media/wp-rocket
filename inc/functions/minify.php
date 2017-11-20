@@ -226,7 +226,13 @@ function get_rocket_minify_url( $files, $extension ) {
 		$filename   = md5( $files_hash . get_rocket_option( 'minify_' . $extension . '_key', create_rocket_uniqid() ) ) . '.' . $extension;
 	}
 
-	$minify_filepath = rocket_write_minify_file( rocket_minify( $file_path, $extension ), $filename );
+	$minified_content = rocket_minify( $file_path, $extension );
+
+	if ( ! $minified_content ) {
+		return false;
+	}
+
+	$minify_filepath = rocket_write_minify_file( $minified_content, $filename );
 
 	if ( ! $minify_filepath ) {
 		return false;
@@ -266,7 +272,7 @@ function get_rocket_minify_url( $files, $extension ) {
  *
  * @param string|array $files     File(s) to minify.
  * @param string       $extension File(s) extension.
- * @return string Minified content
+ * @return string|bool Minified content, false if empty
  */
 function rocket_minify( $files, $extension ) {
 	if ( 'css' === $extension ) {
@@ -285,8 +291,14 @@ function rocket_minify( $files, $extension ) {
 
 		$minify->add( $file_content );
 	}
+	
+	$minified_content = $minify->minify();
 
-	return $minify->minify();
+	if ( empty( $minified_content ) ) {
+		return false;
+	}
+
+	return $minified_content;
 }
 
 /**

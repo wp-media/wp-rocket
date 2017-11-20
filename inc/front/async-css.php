@@ -78,12 +78,7 @@ function rocket_insert_critical_css() {
 		return;
 	}
 
-	// Don't apply if DONOTCACHEPAGE is defined.
-	if ( defined( 'DONOTCACHEPAGE' ) && DONOTCACHEPAGE ) {
-		return;
-	}
-
-	if ( defined( 'DONOTASYNCCSS' ) && DONOTASYNCCSS ) {
+	if ( ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) || ( defined( 'DONOTASYNCCSS' ) && DONOTASYNCCSS ) ) {
 		return;
 	}
 
@@ -139,12 +134,7 @@ function rocket_insert_load_css() {
 		return;
 	}
 
-	// Don't apply if DONOTCACHEPAGE is defined.
-	if ( defined( 'DONOTCACHEPAGE' ) && DONOTCACHEPAGE ) {
-		return;
-	}
-
-	if ( defined( 'DONOTASYNCCSS' ) && DONOTASYNCCSS ) {
+	if ( ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) || ( defined( 'DONOTASYNCCSS' ) && DONOTASYNCCSS ) ) {
 		return;
 	}
 
