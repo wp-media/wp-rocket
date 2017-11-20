@@ -296,14 +296,12 @@ function rocket_admin_bar( $wp_admin_bar ) {
 		);
 
 		// Go to WP Rocket Support.
-		$wp_admin_bar->add_menu(
-			array(
-				'parent' => 'wp-rocket',
-				'id'     => 'support',
-				'title'  => __( 'Support', 'rocket' ),
-				'href'   => 'http://wp-rocket.me/support/',
-			)
-		);
+		$wp_admin_bar->add_menu( array(
+			'parent' => 'wp-rocket',
+			'id'     => 'support',
+			'title'  => __( 'Support', 'rocket' ),
+			'href'   => rocket_get_external_url( 'support' ),
+		));
 	}
 }
 add_action( 'admin_bar_menu', 'rocket_admin_bar', PHP_INT_MAX );
