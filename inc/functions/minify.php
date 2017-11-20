@@ -150,7 +150,7 @@ function is_rocket_external_file( $url, $extension ) {
 	$hosts_index = array_flip( array_unique( $hosts ) );
 
 	// URL has domain and domain is not part of the internal domains.
-	if ( isset( $file['host'] ) && ! isset( $hosts_index[ $file['host'] ] ) ) {
+	if ( isset( $file['host'] ) && ! empty( $file['host'] ) && ! isset( $hosts_index[ $file['host'] ] ) ) {
 		return true;
 	}
 
