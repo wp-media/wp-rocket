@@ -205,6 +205,7 @@ function is_rocket_minify_excluded_file( $tag, $extension ) {
 
 	$file_path      = rocket_extract_url_component( $tag[1], PHP_URL_PATH );
 	$excluded_files = get_rocket_exclude_files( $extension );
+	$excluded_files = implode( '|', $excluded_files );
 
 	// File extension is not .css or .js.
 	if ( pathinfo( $file_path, PATHINFO_EXTENSION ) !== $extension ) {
@@ -212,7 +213,7 @@ function is_rocket_minify_excluded_file( $tag, $extension ) {
 	}
 
 	// File is excluded from minification/concatenation.
-	if ( isset( $excluded_files[ $file_path ] ) ) {
+	if ( preg_match( '#^(' . $excluded_files . ')$#', $file_path ) ) {
 		return true;
 	}
 
