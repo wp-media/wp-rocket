@@ -22,13 +22,13 @@ function rocket_minify_process( $buffer ) {
 	}
 
 	// Minify JavaScript.
-	if ( $enable_js && ( ! defined( 'DONOTROCKETOPTIMIZE' ) || ! DONOTROCKETOPTIMIZE ) && ( ! defined( 'DONOTMINIFYCSS' ) || ! DONOTMINIFYCSS ) && ! is_rocket_post_excluded_option( 'minify_js' ) ) {
-		$buffer = rocket_minify_files( $buffer, 'css' );
+	if ( $enable_css && ( ! defined( 'DONOTROCKETOPTIMIZE' ) || ! DONOTROCKETOPTIMIZE ) && ( ! defined( 'DONOTMINIFYJS' ) || ! DONOTMINIFYJS ) && ! is_rocket_post_excluded_option( 'minify_js' ) ) {
+		$buffer = rocket_minify_files( $buffer, 'js' );
 	}
 
 	// Minify CSS.
-	if ( $enable_css && ( ! defined( 'DONOTROCKETOPTIMIZE' ) || ! DONOTROCKETOPTIMIZE ) && ( ! defined( 'DONOTMINIFYJS' ) || ! DONOTMINIFYJS ) && ! is_rocket_post_excluded_option( 'minify_css' ) ) {
-		$buffer = rocket_minify_files( $buffer, 'js' );
+	if ( $enable_js && ( ! defined( 'DONOTROCKETOPTIMIZE' ) || ! DONOTROCKETOPTIMIZE ) && ( ! defined( 'DONOTMINIFYCSS' ) || ! DONOTMINIFYCSS ) && ! is_rocket_post_excluded_option( 'minify_css' ) ) {
+		$buffer = rocket_minify_files( $buffer, 'css' );
 	}
 
 	// Concatenate Google Fonts.
@@ -133,3 +133,24 @@ function rocket_minify_i18n_multidomain( $url ) {
 }
 add_filter( 'rocket_css_url', 'rocket_minify_i18n_multidomain' );
 add_filter( 'rocket_js_url' , 'rocket_minify_i18n_multidomain' );
+
+/**
+ * Get all src for JS files already enqueued in head
+ *
+ * @since 2.10
+ * @author Remy Perona
+ */
+function rocket_get_js_enqueued_in_head() {
+	global $wp_scripts, $rocket_js_enqueued_in_head;
+
+	if ( ! (bool) $wp_scripts->done ) {
+		return;
+	}
+
+	foreach ( $wp_scripts->done as $handle ) {
+		if ( ! empty( $wp_scripts->registered[ $handle ]->src ) ) {
+			$rocket_js_enqueued_in_head[ $wp_scripts->registered[ $handle ]->src ] = 1;
+		}
+	}
+}
+add_action( 'wp_head', 'rocket_get_js_enqueued_in_head', PHP_INT_MAX );
