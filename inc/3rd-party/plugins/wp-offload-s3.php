@@ -15,7 +15,7 @@ endif;
 function rocket_as3cf_compatibility() {
 	global $as3cf;
 
-	if ( $as3cf->is_plugin_setup() && 1 === (int) $as3cf->get_setting( 'serve-from-s3' ) ) {
+	if ( isset( $as3cf ) && $as3cf->is_plugin_setup() && 1 === (int) $as3cf->get_setting( 'serve-from-s3' ) ) {
 			// Remove images option from WP Rocket CDN dropdown settings.
 			add_filter( 'rocket_allow_cdn_images', '__return_false' );
 	}
