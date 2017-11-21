@@ -255,6 +255,10 @@ function get_rocket_i18n_to_preserve( $current_lang ) {
 		return $langs_to_preserve;
 	}
 
+	if ( empty( $current_lang ) ) {
+		return $langs_to_preserve;
+	}
+
 	$langs = get_rocket_i18n_code();
 
 	// Unset current lang to the preserve dirs.
