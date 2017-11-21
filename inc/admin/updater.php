@@ -22,7 +22,7 @@ function rocket_updates_exclude( $r, $url ) {
 		unset( $plugins->active[ array_search( plugin_basename( WP_ROCKET_FILE ), $plugins->active, true ) ] );
 	}
 
-	$r['body']['plugins'] = serialize( $plugins );
+	$r['body']['plugins'] = maybe_serialize( $plugins );
 	return $r;
 }
 add_filter( 'http_request_args', 'rocket_updates_exclude', 5, 2 );
@@ -67,16 +67,14 @@ function rocket_force_info_result( $res, $action, $args ) {
 		);
 
 		if ( is_wp_error( $request ) ) {
-			// translators: %s is the URL of WP Rocket support.
-			$res = new WP_Error( 'plugins_api_failed', sprintf( __( 'An unexpected error occurred. Something may be wrong with WP-Rocket.me or this server&#8217;s configuration. If you continue to have problems, please try the <a href="%s">support forums</a>.','rocket' ), WP_ROCKET_WEB_SUPPORT ), $request->get_error_message() );
-
+			// translators: %s is an URL.
+			$res = new WP_Error( 'plugins_api_failed', sprintf( __( 'An unexpected error occurred. Something may be wrong with WP-Rocket.me or this server&#8217;s configuration. If you continue to have problems, please try the <a href="%s">support forums</a>.','rocket' ), rocket_get_external_url( 'support' ) ), $request->get_error_message() );
 		} else {
-
 			$res = maybe_unserialize( wp_remote_retrieve_body( $request ) );
 
 			if ( ! is_object( $res ) && ! is_array( $res ) ) {
-				// translators: %s is the URL of WP Rocket support.
-				$res = new WP_Error( 'plugins_api_failed', sprintf( __( 'An unexpected error occurred. Something may be wrong with WP-Rocket.me or this server&#8217;s configuration. If you continue to have problems, please try the <a href="%s">support forums</a>.', 'rocket' ), WP_ROCKET_WEB_SUPPORT ), wp_remote_retrieve_body( $request ) );
+				// translators: %s is an URL.
+				$res = new WP_Error( 'plugins_api_failed', sprintf( __( 'An unexpected error occurred. Something may be wrong with WP-Rocket.me or this server&#8217;s configuration. If you continue to have problems, please try the <a href="%s">support forums</a>.', 'rocket' ), rocket_get_external_url( 'support' ) ), wp_remote_retrieve_body( $request ) );
 			}
 		}
 
@@ -94,7 +92,7 @@ function rocket_force_info_result( $res, $action, $args ) {
 			$res['sections']['changelog']   = str_replace( array( 'WP Rocket', 'WP&nbsp;Rocket', 'WP-Rocket' ), $res['name'], $res['sections']['changelog'] );
 			$res['sections']['description'] = implode( "\n", get_rocket_option( 'wl_description' ) );
 
-			unset( $res['sections']['installation'], $res['sections']['faq'], $res['contributors'] );
+			unset( $res['sections']['installation'], $res['sections']['faq'], $res['contributors'], $res['banners'] );
 
 			$res = (object) $res;
 

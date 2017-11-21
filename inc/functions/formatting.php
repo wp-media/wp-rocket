@@ -214,10 +214,10 @@ function rocket_extract_url_component( $url, $component ) {
  */
 function rocket_get_cache_busting_paths( $filename, $extension ) {
 	$blog_id                = get_current_blog_id();
-	$cache_busting_path     = WP_ROCKET_CACHE_BUSTING_PATH . $blog_id . '/';
+	$cache_busting_path     = WP_ROCKET_CACHE_BUSTING_PATH . $blog_id;
 	$filename               = rocket_realpath( rtrim( str_replace( array( ' ', '%20' ), '-', $filename ) ), false );
 	$cache_busting_filepath = $cache_busting_path . $filename;
-	$cache_busting_url      = get_rocket_cdn_url( WP_ROCKET_CACHE_BUSTING_URL . $blog_id . '/' . $filename, array( 'all', 'css_and_js', $extension ) );
+	$cache_busting_url      = get_rocket_cdn_url( WP_ROCKET_CACHE_BUSTING_URL . $blog_id . $filename, array( 'all', 'css_and_js', $extension ) );
 
 	switch ( $extension ) {
 		case 'css':
@@ -270,4 +270,44 @@ function rocket_realpath( $file, $absolute = true ) {
 	}
 
 	return '/' . join( '/', $path );
+}
+
+/**
+ * Simple helper to get some external URLs.
+ *
+ * @since  2.10.10
+ * @author Grégory Viguier
+ *
+ * @param  string $target     What we want.
+ * @param  array  $query_args An array of query arguments.
+ * @return string The URL.
+ */
+function rocket_get_external_url( $target, $query_args = array() ) {
+	$site_url = WP_ROCKET_WEB_MAIN;
+
+	switch ( $target ) {
+		case 'support':
+			$locale = function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale();
+			$paths  = array(
+				'default' => 'support',
+				'fr_FR'   => 'fr/support',
+				'ca_FR'   => 'fr/support',
+				'it_IT'   => 'it/supporto',
+				'de_DE'   => 'de/support',
+				'es_ES'   => 'es/soporte',
+				'gl_ES'   => 'es/soporte',
+			);
+
+			$url = isset( $paths[ $locale ] ) ? $paths[ $locale ] : $paths['default'];
+			$url = $site_url . $url . '/';
+			break;
+		default:
+			$url = $site_url;
+	}
+
+	if ( $query_args ) {
+		$url = add_query_arg( $query_args, $url );
+	}
+
+	return $url;
 }

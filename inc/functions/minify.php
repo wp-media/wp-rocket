@@ -14,6 +14,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  * @return string Updated HTML output.
  */
 function rocket_minify_files( $buffer, $extension ) {
+	global $wp_scripts, $rocket_js_enqueued_in_head;
 	if ( 'css' === $extension ) {
 		$concatenate = get_rocket_option( 'minify_concatenate_css', false ) ? true : false;
 		// Get all css files with this regex.
@@ -21,11 +22,12 @@ function rocket_minify_files( $buffer, $extension ) {
 	}
 
 	if ( 'js' === $extension ) {
+		$header_files   = array();
 		$concatenate = get_rocket_option( 'minify_concatenate_js', false ) ? true : false;
 		// Get all js files with this regex.
 		preg_match_all( apply_filters( 'rocket_minify_js_regex_pattern', '#<script[^>]+?src=[\'|"]([^\'|"]+\.js?.+)[\'|"].*>(?:<\/script>)#iU' ), $buffer, $tags_match, PREG_SET_ORDER );
 	}
-
+	
 	$files          = array();
 	$excluded_files = array();
 
@@ -42,7 +44,18 @@ function rocket_minify_files( $buffer, $extension ) {
 		}
 
 		if ( $concatenate ) {
-			$files[] = strtok( $tag[1], '?' );
+			if ( 'js' === $extension ) {
+				$file_path = rocket_clean_exclude_file( $tag[1] );
+
+				if ( isset( $rocket_js_enqueued_in_head[ $file_path ] ) ) {
+					$header_files[] = strtok( $tag[1], '?' );
+				} else {
+					$files[] = strtok( $tag[1], '?' );
+				}
+			} else {
+				$files[] = strtok( $tag[1], '?' );
+			}
+
 			$buffer = str_replace( $tag[0], '', $buffer );
 			continue;
 		}
@@ -52,8 +65,6 @@ function rocket_minify_files( $buffer, $extension ) {
 			$excluded_files[] = $tag;
 			continue;
 		}
-
-		global $wp_scripts;
 
 		// Don't minify jQuery included in WP core since it's already minified but without .min in the filename.
 		if ( ! empty( $wp_scripts->registered['jquery-core']->src ) && false !== strpos( $tag[1], $wp_scripts->registered['jquery-core']->src ) ) {
@@ -106,7 +117,11 @@ function rocket_minify_files( $buffer, $extension ) {
 		return $buffer;
 	}
 
-	$minify_url = get_rocket_minify_url( $files, $extension );
+	if ( 'js' === $extension ) {
+		$minify_header_url = get_rocket_minify_url( $header_files, $extension );
+	}
+
+	$minify_url        = get_rocket_minify_url( $files, $extension );
 
 	if ( ! $minify_url ) {
 		return $buffer;
@@ -118,6 +133,9 @@ function rocket_minify_files( $buffer, $extension ) {
 	}
 
 	if ( 'js' === $extension ) {
+		$minify_header_tag = '<script src="' . $minify_header_url . '" data-minify="1"></script>';
+		$buffer = preg_replace( '/<head(.*)>/U', '<head$1>' . $minify_header_tag, $buffer, 1 );
+
 		$minify_tag = '<script src="' . $minify_url . '" data-minify="1"></script>';
 		return str_replace( '</body>', $minify_tag . '</body>', $buffer );
 	}
@@ -150,7 +168,7 @@ function is_rocket_external_file( $url, $extension ) {
 	$hosts_index = array_flip( array_unique( $hosts ) );
 
 	// URL has domain and domain is not part of the internal domains.
-	if ( isset( $file['host'] ) && ! isset( $hosts_index[ $file['host'] ] ) ) {
+	if ( isset( $file['host'] ) && ! empty( $file['host'] ) && ! isset( $hosts_index[ $file['host'] ] ) ) {
 		return true;
 	}
 

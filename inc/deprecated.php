@@ -751,19 +751,6 @@ function rocket_extract_js_files_from_footer() {
 }
 
 /**
- * Get all handles for JS files already enqueued in head
- *
- * @since 2.10
- * @deprecated 2.11
- * @author Remy Perona
- */
-function rocket_get_js_enqueued_in_head() {
-	_deprecated_function( __FUNCTION__, '2.11' );
-
-	return false;
-}
-
-/**
  * Insert JS minify files in footer
  *
  * @since 2.2
