@@ -259,7 +259,7 @@ function rocket_init_cache_dir() {
 
 		if ( ! rocket_direct_filesystem()->is_file( $htaccess_path ) ) {
 			rocket_direct_filesystem()->touch( $htaccess_path );
-			rocket_direct_filesystem()->put_contents( $htaccess_path, "Options -Indexes" );
+			rocket_direct_filesystem()->put_contents( $htaccess_path, "<IfModule mod_autoindex.c>\nOptions -Indexes\n</IfModule>" );
 		}
 	}
 
