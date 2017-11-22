@@ -168,17 +168,19 @@ function rocket_admin_bar( $wp_admin_bar ) {
 
 		}
 
-		// Regenerate Critical Path CSS.
-		$action = 'rocket_regenerate_critical_path';
-
-		$wp_admin_bar->add_menu(
-			array(
-				'parent' => 'wp-rocket',
-				'id'     => 'regenerate-critical-path',
-				'title'  => __( 'Regenerate Critical Path CSS', 'rocket' ),
-				'href'   => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . $referer ), $action ),
-			)
-		);
+		if ( get_rocket_option( 'async_css' ) ) {
+			// Regenerate Critical Path CSS.
+			$action = 'rocket_generate_critical_css';
+			
+			$wp_admin_bar->add_menu(
+				array(
+					'parent' => 'wp-rocket',
+					'id'     => 'regenerate-critical-path',
+					'title'  => __( 'Regenerate Critical Path CSS', 'rocket' ),
+					'href'   => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . $referer ), $action ),
+				)
+			);
+		}
 
 		// Purge CloudFlare cache if CloudFlare is active.
 		if ( 1 === (int) get_rocket_option( 'do_cloudflare', 0 ) ) {
