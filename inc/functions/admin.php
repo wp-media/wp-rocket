@@ -497,7 +497,7 @@ function rocket_data_collection_preview_table() {
 	$html .= sprintf( '<strong>%s</strong>', __( 'Active plugins:', 'rocket' ) );
 	$html .= '</td>';
 	$html .= '<td>';
-	$html .= sprintf( '<em>%s</em>', __( 'For details see JSON array below.', 'rocket' ) );
+	$html .= sprintf( '<em>%s</em>', __( 'Plugin names of all active plugins', 'rocket' ) );
 	$html .= '</td>';
 	$html .= '</tr>';
 
@@ -506,16 +506,7 @@ function rocket_data_collection_preview_table() {
 	$html .= sprintf( '<strong>%s</strong>', __( 'Anonymized WP Rocket settings:', 'rocket' ) );
 	$html .= '</td>';
 	$html .= '<td>';
-	$html .= sprintf( '<em>%s</em>', __( 'For details see JSON array below.', 'rocket' ) );
-	$html .= '</td>';
-	$html .= '</tr>';
-
-	$html .= '<tr>';
-	$html .= '<td class="column-primary">';
-	$html .= sprintf( '<strong>%s</strong>', __( 'Developer view (raw JSON array):', 'rocket' ) );
-	$html .= '</td>';
-	$html .= '<td>';
-	$html .= sprintf( '<textarea readonly="readonly" class="large-text readonly" rows="6">%s</textarea>', $esc_data );
+	$html .= sprintf( '<em>%s</em>', __( 'Which WP Rocket settings are active', 'rocket' ) );
 	$html .= '</td>';
 	$html .= '</tr>';
 
