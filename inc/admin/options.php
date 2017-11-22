@@ -662,6 +662,10 @@ function rocket_settings_callback( $inputs ) {
 		$inputs['do_caching_mobile_files'] = 1;
 	}
 
+	if ( empty( $inputs['lazyload_iframes'] ) ) {
+		$inputs['lazyload_youtube'] = 0;
+	}
+
 	/*
 	 * Option : Purge delay
 	 */
