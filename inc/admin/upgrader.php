@@ -93,6 +93,7 @@ function rocket_first_install() {
 			'deferred_js_files'           => array(),
 			'lazyload'                    => 0,
 			'lazyload_iframes'            => 0,
+			'lazyload_youtube'            => 0,
 			'minify_css'                  => 0,
 			'minify_css_key'              => $minify_css_key,
 			'minify_concatenate_css'	  => 0,
