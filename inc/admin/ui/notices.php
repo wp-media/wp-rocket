@@ -771,12 +771,6 @@ function rocket_analytics_optin_thankyou_notice() {
 
 	$thankyou_message .= '<p>';
 	// Closing </p> provided by rocket_notice_html()
-	$thankyou_message .= sprintf(
-		/* translators: %1$s = opening link, %2$s = closing link */
-		__( 'If you ever wish to opt out of this feature, you can do so from the %1$sTools%2$s tab.', 'rocket' ),
-		'<a href="#tab_tools">',
-		'</a>'
-	);
 
 	rocket_notice_html( array(
 		'message' => $thankyou_message,
