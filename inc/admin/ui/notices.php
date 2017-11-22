@@ -700,7 +700,7 @@ function rocket_analytics_optin_notice() {
 	$analytics_notice .= sprintf(
 		'<p><button class="hide-if-no-js button-rocket-reveal rocket-preview-analytics-data">%s</button></p>',
 		/* translators: button text, click will expand data collection preview */
-		__( 'Expand detailed data preview', 'rocket' )
+		__( 'What info will we collect?', 'rocket' )
 	);
 
 	$analytics_notice .= sprintf(
