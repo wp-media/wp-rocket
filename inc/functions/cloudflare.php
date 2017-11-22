@@ -42,7 +42,7 @@ function get_rocket_cloudflare_instance() {
 	$cf_zone_id  = get_rocket_option( 'cloudflare_zone_id', null );
 
 	if ( ! isset( $cf_zone_id ) ) {
-		return new WP_Error( 'cloudflare_no_zone_id', __( 'No Zone ID set in the WP Rocket settings', 'rocket' ) );
+		return new WP_Error( 'cloudflare_no_zone_id', __( 'Missing Cloudflare zone ID. WP Rocket could not fix this automatically. Read the documentation for further guidance.', 'rocket' ) );
 	}
 
 	$cf_instance = (object) [
