@@ -863,7 +863,7 @@ function rocket_sitemap_preload_running() {
 
 
 	rocket_notice_html( array(
-		'message' => __( 'Sitemap-based cache preload is currently running…', 'rocket' ),
+		'message' => __( 'Sitemap-based cache preload is currently running …', 'rocket' ),
 	) );
 }
 add_action( 'admin_notices', 'rocket_sitemap_preload_running' );
