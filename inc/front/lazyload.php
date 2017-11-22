@@ -17,38 +17,32 @@ function rocket_lazyload_script() {
 	$threshold = apply_filters( 'rocket_lazyload_threshold', 300 );
 
 	echo <<<HTML
-	<script>
-	window.lazyLoadOptions = {
+	<script>window.lazyLoadOptions = {
 		elements_selector: "img, iframe",
-		data_src: "lazySrc",
-		data_srcset: "lazySrcset",
+		data_src: "lazy-src",
+		data_srcset: "lazy-srcset",
 		class_loading: "lazyloading",
 		class_loaded: "lazyloaded",
 		threshold: $threshold,
-		callback_set: function(element) {
-			//todo: check fitvids compatibility (class or data-attribute)
-			if (  element.tagName === "IFRAME" && element.classList.contains("fitvidscompatible") ) {
-				if ( element.classList.contains("lazyloaded") ) {
-					//todo: check if $.fn.fitvids() is available
-					if ( typeof $ === "function" ) {
-						$( element ).parent().fitVids();
-					}
-				} else {
-					var temp = setInterval( function() {
-						//todo: check if $.fn.fitvids() is available
-						if ( element.classList.contains("lazyloaded") && typeof $ === "function" ) {
-							$( element ).parent().fitVids();
-							clearInterval( temp );
-						} else {
-							clearInterval( temp );
+		callback_load: function(element) {
+			if ( element.tagName === "IFRAME" && element.dataset.rocketLazyload == "fitvidscompatible" ) {
+				if (element.classList.contains("lazyloaded") ) {
+					if (typeof window.jQuery != 'undefined') {
+						if (jQuery.fn.fitVids) {
+							jQuery(element).parent().fitVids();
 						}
-					}, 50 );
+					}
 				}
-			} // if element is an iframe
+			}
 		}	
-	};
-	</script>
+	};</script>
 HTML;
+
+	if ( get_rocket_option( 'lazyload_youtube' ) ) {
+		echo <<<HTML
+		<script>function lazyLoadThumb(e){var t='<img src="https://i.ytimg.com/vi/ID/hqdefault.jpg">',a='<div class="play"></div>';return t.replace("ID",e)+a}function lazyLoadYoutubeIframe(){var e=document.createElement("iframe"),t="https://www.youtube.com/embed/ID?autoplay=1";e.setAttribute("src",t.replace("ID",this.dataset.id)),e.setAttribute("frameborder","0"),e.setAttribute("allowfullscreen","1"),this.parentNode.replaceChild(e,this)}document.addEventListener("DOMContentLoaded",function(){var e,t,a=document.getElementsByClassName("rll-youtube-player");for(t=0;t<a.length;t++)e=document.createElement("div"),e.setAttribute("data-id",a[t].dataset.id),e.innerHTML=lazyLoadThumb(a[t].dataset.id),e.onclick=lazyLoadYoutubeIframe,a[t].appendChild(e)});</script>
+HTML;
+	}
 }
 add_action( 'wp_footer', 'rocket_lazyload_script', 9 );
 
@@ -67,6 +61,14 @@ function rocket_lazyload_enqueue() {
 	$lazyload_url = get_rocket_cdn_url( WP_ROCKET_FRONT_JS_URL . 'lazyload-' . WP_ROCKET_LAZYLOAD_JS_VERSION . $suffix . '.js', array( 'all', 'css_and_js', 'js' ) );
 
 	wp_enqueue_script( 'rocket-lazyload', $lazyload_url, null, null, true );
+
+	if ( get_rocket_option( 'lazyload_youtube' ) ) {
+		$css = '.rll-youtube-player{position:relative;padding-bottom:56.23%;height:0;overflow:hidden;max-width:100%;background:#000;margin:5px}.rll-youtube-player iframe{position:absolute;top:0;left:0;width:100%;height:100%;z-index:100;background:0 0}.rll-youtube-player img{bottom:0;display:block;left:0;margin:auto;max-width:100%;width:100%;position:absolute;right:0;top:0;border:none;height:auto;cursor:pointer;-webkit-transition:.4s all;-moz-transition:.4s all;transition:.4s all}.rll-youtube-player img:hover{-webkit-filter:brightness(75%)}.rll-youtube-player .play{height:72px;width:72px;left:50%;top:50%;margin-left:-36px;margin-top:-36px;position:absolute;background:url(' . ROCKET_LL_ASSETS_URL . 'img/play.png) no-repeat;cursor:pointer}';
+
+		wp_register_style( 'rocket-lazyload', false );
+		wp_enqueue_style( 'rocket-lazyload' );
+		wp_add_inline_style( 'rocket-lazyload', $css );
+	}
 }
 add_action( 'wp_enqueue_scripts', 'rocket_lazyload_enqueue', PHP_INT_MAX );
 
@@ -83,7 +85,7 @@ add_action( 'wp_enqueue_scripts', 'rocket_lazyload_enqueue', PHP_INT_MAX );
  */
 function rocket_lazyload_async_script( $tag, $handle ) {
 	if ( 'rocket-lazyload' === $handle ) {
-		return str_replace( '<script', '<script async data-cfasync="false" data-minify="1"', $tag );
+		return str_replace( '<script', '<script async data-minify="1"', $tag );
 	}
 
 	return $tag;
@@ -106,7 +108,7 @@ add_filter( 'script_loader_tag', 'rocket_lazyload_async_script', 10, 2 );
  */
 function rocket_lazyload_images( $html ) {
 	// Don't LazyLoad if process is stopped for these reasons.
-	if ( ! get_rocket_option( 'lazyload' ) || ! apply_filters( 'do_rocket_lazyload', true ) || is_feed() || is_preview() || empty( $html ) || ( defined( 'DONOTLAZYLOAD' ) && DONOTLAZYLOAD ) || wp_script_is( 'twentytwenty-twentytwenty', 'enqueued' ) ) {
+	if ( ! get_rocket_option( 'lazyload' ) || ! apply_filters( 'do_rocket_lazyload', true ) || is_feed() || is_preview() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) || empty( $html ) || ( defined( 'DONOTLAZYLOAD' ) && DONOTLAZYLOAD ) || wp_script_is( 'twentytwenty-twentytwenty', 'enqueued' ) ) {
 		return $html;
 	}
 
@@ -348,40 +350,70 @@ function rocket_translate_smiley( $matches ) {
  */
 function rocket_lazyload_iframes( $html ) {
 	// Don't LazyLoad if process is stopped for these reasons.
-	if ( ! get_rocket_option( 'lazyload_iframes' ) || ! apply_filters( 'do_rocket_lazyload_iframes', true ) || is_feed() || is_preview() || empty( $html ) || ( defined( 'DONOTLAZYLOAD' ) && DONOTLAZYLOAD ) ) {
+	if ( ! get_rocket_option( 'lazyload_iframes' ) || ! apply_filters( 'do_rocket_lazyload_iframes', true ) || is_feed() || is_preview() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) || empty( $html ) || ( defined( 'DONOTLAZYLOAD' ) && DONOTLAZYLOAD ) ) {
 		return $html;
 	}
 
 	$matches = array();
-	preg_match_all( '/<iframe\s+.*?>/', $html, $matches );
+	preg_match_all( '/<iframe(?:.*)?src=["|\'](.*)["|\'](?:.*)?><\/iframe>/iU', $html, $matches, PREG_SET_ORDER );
 
-	foreach ( $matches[0] as $k => $iframe ) {
+	if ( empty( $matches ) ) {
+		return $html;
+	}
 
+	foreach ( $matches as $iframe ) {
 		// Don't mess with the Gravity Forms ajax iframe.
-		if ( strpos( $iframe, 'gform_ajax_frame' ) ) {
+		if ( strpos( $iframe[0], 'gform_ajax_frame' ) ) {
 			continue;
 		}
 
 		// Don't lazyload if iframe has data-no-lazy attribute.
-		if ( strpos( $iframe, 'data-no-lazy=' ) ) {
+		if ( strpos( $iframe[0], 'data-no-lazy=' ) ) {
 			continue;
 		}
 
-		/** This filter is documented in inc/front/lazyload.php */
-		$placeholder = apply_filters( 'rocket_iframe_lazyload_placeholder', get_rocket_cdn_url( WP_ROCKET_FRONT_URL . 'img/blank.gif' ) );
+		if ( get_rocket_option( 'lazyload_youtube' ) && false !== strpos( $iframe[1], 'youtube' ) ) {
+			$youtube_id = rocket_lazyload_get_youtube_id_from_url( $iframe[1] );
 
-		$iframe = preg_replace( '/<iframe(.*?)src=/is', '<iframe$1src="' . $placeholder . '" data-lazy-src=', $iframe );
+			if ( ! $youtube_id ) {
+				continue;
+			}
 
-		$html = str_replace( $matches[0][ $k ], $iframe, $html );
+			/**
+			 * Filter the LazyLoad HTML output on Youtube iframes
+			 *
+			 * @since 2.11
+			 *
+			 * @param array $html Output that will be printed.
+			 */
+			$youtube_lazyload = apply_filters( 'rocket_lazyload_youtube_html', '<div class="rll-youtube-player" data-id="' . $youtube_id . '"></div>');
+			$youtube_lazyload .= '<noscript>' . $iframe[0] . '</noscript>';
 
-		/**
-		 * Filter the LazyLoad HTML output on iframes
-		 *
-		 * @since 2.6
-		 *
-		 * @param array $html Output that will be printed
-		*/
-		$html = apply_filters( 'rocket_lazyload_iframe_html', $html );
+			$html = str_replace( $iframe[0], $youtube_lazyload, $html );
+		} else {
+			/**
+			 * Filter the LazyLoad placeholder on src attribute
+	    	 *
+	    	 * @since 2.11
+	    	 *
+	    	 * @param string $placeholder placeholder that will be printed.
+	    	 */
+			$placeholder = apply_filters( 'rocket_lazyload_placeholder', 'about:blank' );
+			
+			$iframe_noscript = '<noscript>' . $iframe[0] . '</noscript>';
+
+			/**
+			 * Filter the LazyLoad HTML output on iframes
+			 *
+			 * @since 2.11
+			 *
+			 * @param array $html Output that will be printed.
+			 */
+			$iframe_lazyload = apply_filters( 'rocket_lazyload_iframe_html', str_replace( $iframe[1], $placeholder . '" data-fitvidscompatible="1" data-lazy-src="' . $iframe[1], $iframe[0] ) );
+			$iframe_lazyload .= $iframe_noscript;
+			
+			$html = str_replace( $iframe[0], $iframe_lazyload, $html );
+		}
 	}
 
 	return $html;
@@ -427,3 +459,22 @@ function rocket_lazyload_on_srcset( $html ) {
 	return $html;
 }
 add_filter( 'rocket_lazyload_html', 'rocket_lazyload_on_srcset' );
+
+/**
+ * Gets youtube video ID from URL
+ *
+ * @author Remy Perona
+ * @since 2.11
+ *
+ * @param string $url URL to parse.
+ * @return string     Youtube video id or false if none found.
+ */
+function rocket_lazyload_get_youtube_id_from_url( $url ) {
+	$pattern = '#^(?:https?://)?(?:www\.)?(?:youtu\.be/|youtube\.com(?:/embed/|/v/|/watch\?v=))([\w-]{11})#iU';
+	$result  = preg_match( $pattern, $url, $matches );
+
+	if ( $result ) {
+		return $matches[1];
+	}
+	return false;
+}
