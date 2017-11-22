@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 // Are we white-labeled?
 $rwl = rocket_is_white_label();
@@ -68,7 +68,7 @@ add_settings_field(
 				/* translators: %s = “WP Rocket” or white-label plugin name */
 				__( 'Varnish cache will be purged each time %s clears its cache to ensure content is always up to date.', 'rocket' ),
 				WP_ROCKET_PLUGIN_NAME
-			)
+			),
 		),
 	)
 );

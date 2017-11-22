@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
  * Add lazyload options to the footer
@@ -108,7 +108,7 @@ add_filter( 'script_loader_tag', 'rocket_lazyload_async_script', 10, 2 );
  */
 function rocket_lazyload_images( $html ) {
 	// Don't LazyLoad if process is stopped for these reasons.
-	if ( ! get_rocket_option( 'lazyload' ) || ! apply_filters( 'do_rocket_lazyload', true ) || is_feed() || is_preview() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) || empty( $html ) || ( defined( 'DONOTLAZYLOAD' ) && DONOTLAZYLOAD ) || wp_script_is( 'twentytwenty-twentytwenty', 'enqueued' ) ) {
+	if ( ! get_rocket_option( 'lazyload' ) || ! apply_filters( 'do_rocket_lazyload', true ) || is_feed() || is_preview() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) || ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) || empty( $html ) || ( defined( 'DONOTLAZYLOAD' ) && DONOTLAZYLOAD ) || wp_script_is( 'twentytwenty-twentytwenty', 'enqueued' ) ) {
 		return $html;
 	}
 
@@ -116,18 +116,18 @@ function rocket_lazyload_images( $html ) {
 
 	return $html;
 }
-add_filter( 'get_avatar'			, 'rocket_lazyload_images', PHP_INT_MAX );
-add_filter( 'the_content'			, 'rocket_lazyload_images', PHP_INT_MAX );
-add_filter( 'widget_text'			, 'rocket_lazyload_images', PHP_INT_MAX );
-add_filter( 'get_image_tag'			, 'rocket_lazyload_images', PHP_INT_MAX );
-add_filter( 'post_thumbnail_html'	, 'rocket_lazyload_images', PHP_INT_MAX );
+add_filter( 'get_avatar'            , 'rocket_lazyload_images', PHP_INT_MAX );
+add_filter( 'the_content'           , 'rocket_lazyload_images', PHP_INT_MAX );
+add_filter( 'widget_text'           , 'rocket_lazyload_images', PHP_INT_MAX );
+add_filter( 'get_image_tag'         , 'rocket_lazyload_images', PHP_INT_MAX );
+add_filter( 'post_thumbnail_html'   , 'rocket_lazyload_images', PHP_INT_MAX );
 
 /**
  * Used to check if we have to LazyLoad this or not
  *
- * @since 2.5.5	 Don't apply LazyLoad on images from WP Retina x2
- * @since 2.5	 Don't apply LazyLoad on all images from LayerSlider
- * @since 2.4.2	 Don't apply LazyLoad on all images from Media Grid
+ * @since 2.5.5  Don't apply LazyLoad on images from WP Retina x2
+ * @since 2.5    Don't apply LazyLoad on all images from LayerSlider
+ * @since 2.4.2  Don't apply LazyLoad on all images from Media Grid
  * @since 2.3.11 Don't apply LazyLoad on all images from Timthumb
  * @since 2.3.10 Don't apply LazyLoad on all images from Revolution Slider & Justified Image Grid
  * @since 2.3.8  Don't apply LazyLoad on captcha from Really Simple CAPTCHA
@@ -216,14 +216,14 @@ function rocket_is_excluded_lazyload( $string, $excluded_values ) {
 /**
  * Replace WordPress smilies by Lazy Load
  *
- * @since 2.0 	New system for replace smilies by Lazy Load
+ * @since 2.0   New system for replace smilies by Lazy Load
  * @since 1.3.5 It's possible to exclude LazyLoad process by used do_rocket_lazyload filter
  * @since 1.1.0 Don't lazy-load if the thumbnail has already been run through previously
  * @since 1.0.1 Add priority of hooks at maximum later with PHP_INT_MAX
  * @since 1.0
  */
 function rocket_lazyload_smilies() {
-	if ( ! get_rocket_option( 'lazyload' ) || ! apply_filters( 'do_rocket_lazyload', true, 'smilies' ) || ( defined( 'DONOTLAZYLOAD' ) && DONOTLAZYLOAD ) ) {
+	if ( ! get_rocket_option( 'lazyload' ) || ! apply_filters( 'do_rocket_lazyload', true, 'smilies' ) || ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) || ( defined( 'DONOTLAZYLOAD' ) && DONOTLAZYLOAD ) ) {
 		return;
 	}
 
@@ -350,7 +350,7 @@ function rocket_translate_smiley( $matches ) {
  */
 function rocket_lazyload_iframes( $html ) {
 	// Don't LazyLoad if process is stopped for these reasons.
-	if ( ! get_rocket_option( 'lazyload_iframes' ) || ! apply_filters( 'do_rocket_lazyload_iframes', true ) || is_feed() || is_preview() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) || empty( $html ) || ( defined( 'DONOTLAZYLOAD' ) && DONOTLAZYLOAD ) ) {
+	if ( ! get_rocket_option( 'lazyload_iframes' ) || ! apply_filters( 'do_rocket_lazyload_iframes', true ) || is_feed() || is_preview() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) || empty( $html ) || ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) || ( defined( 'DONOTLAZYLOAD' ) && DONOTLAZYLOAD ) ) {
 		return $html;
 	}
 

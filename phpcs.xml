@@ -6,7 +6,7 @@
 	<!--<arg value="s"/>-->
 
 	<file>.</file>
-	<exclude-pattern>/min/*</exclude-pattern>
+	<exclude-pattern>/vendor/*</exclude-pattern>
 	<exclude-pattern>/inc/vendors/*</exclude-pattern>
 	<exclude-pattern>/tests/*</exclude-pattern>
 
@@ -27,6 +27,9 @@
         <exclude name="WordPress.VIP.RestrictedFunctions.urlencode"/>
         <exclude name="WordPress.VIP.RestrictedFunctions.wp_redirect"/>
         <exclude name="WordPress.VIP.RestrictedVariables.cache_constraints"/>
+        <exclude name="WordPress.VIP.RestrictedVariables.cache_constraints___COOKIE"/>
+        <exclude name="WordPress.VIP.RestrictedVariables.cache_constraints___SERVER__HTTP_USER_AGENT__"/>
+        <exclude name="WordPress.VIP.RestrictedVariables.cache_constraints___SERVER__REMOTE_ADDR__"/>
         <exclude name="WordPress.VIP.RestrictedVariables.user_meta"/>
         <exclude name="WordPress.VIP.SlowDBQuery.slow_db_query"/>
         <exclude name="WordPress.VIP.SuperGlobalInputUsage.AccessDetected"/>

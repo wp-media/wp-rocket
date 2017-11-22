@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
  * Get all terms archives urls associated to a specific post
@@ -14,7 +14,7 @@ function get_rocket_post_terms_urls( $post_id ) {
 	$taxonomies = get_object_taxonomies( get_post_type( $post_id ), 'objects' );
 
 	foreach ( $taxonomies as $taxonomy ) {
-		if ( ! $taxonomy->public ) {
+		if ( ! $taxonomy->public || 'product_shipping_class' === $taxonomy->name ) {
 			continue;
 		}
 
