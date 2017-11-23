@@ -171,7 +171,7 @@ function rocket_admin_bar( $wp_admin_bar ) {
 		if ( get_rocket_option( 'async_css' ) ) {
 			// Regenerate Critical Path CSS.
 			$action = 'rocket_generate_critical_css';
-			
+
 			$wp_admin_bar->add_menu(
 				array(
 					'parent' => 'wp-rocket',
