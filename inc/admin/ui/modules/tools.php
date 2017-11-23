@@ -116,7 +116,7 @@ if ( function_exists( 'opcache_reset' ) ) {
 }
 
 if ( get_rocket_option( 'async_css' ) ) {
-	//Regenerate Critical Path CSS.
+	// Regenerate Critical Path CSS.
 	add_settings_field(
 		'rocket_regenerate_critical_path_css',
 		__( 'Regenerate Critical Path CSS:', 'rocket' ),
