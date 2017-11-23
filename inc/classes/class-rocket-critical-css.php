@@ -27,6 +27,31 @@ class Rocket_Critical_CSS {
 	public $items = array();
 
 	/**
+	 * The single instance of the class.
+	 *
+	 * @since 2.11
+	 * @var object
+	 */
+	protected static $_instance;
+
+	/**
+	 * Get the main instance.
+	 *
+	 * Ensures only one instance of class is loaded or can be loaded.
+	 *
+	 * @since 2.11
+	 * @author Remy Perona
+	 *
+	 * @return object Main instance.
+	 */
+	public static function get_instance() {
+		if ( ! isset( self::$_instance ) ) {
+			self::$_instance = new self();
+		}
+		return self::$_instance;
+	}
+
+	/**
 	 * Class constructor.
 	 *
 	 * @since 2.11
@@ -46,11 +71,9 @@ class Rocket_Critical_CSS {
 	 * @since 2.11
 	 * @author Remy Perona
 	 */
-	public static function init() {
-		$self = new Self();
-
-		add_action( 'admin_post_rocket_generate_critical_css', array( $self, 'init_critical_css_generation' ) );
-		add_action( 'update_option_' . WP_ROCKET_SLUG, array( $self, 'generate_critical_css_on_activation' ), 11, 2 );
+	public function init() {
+		add_action( 'admin_post_rocket_generate_critical_css', array( $this, 'init_critical_css_generation' ) );
+		add_action( 'update_option_' . WP_ROCKET_SLUG, array( $this, 'generate_critical_css_on_activation' ), 11, 2 );
 	}
 
 	/**
@@ -68,7 +91,7 @@ class Rocket_Critical_CSS {
 		}
 
 		$this->process->save()->dispatch();
-	}	
+	}
 
 	/**
 	 * Launches the critical CSS generation from admin
@@ -96,9 +119,12 @@ class Rocket_Critical_CSS {
 	 * @author Remy Perona
 	 *
 	 * @see process_handler()
+	 *
+	 * @param array $old_value Previous values for WP Rocket settings.
+	 * @param array $value     New values for WP Rocket settings.
 	 */
 	public function generate_critical_css_on_activation( $old_value, $value ) {
-		if ( ! empty( $_POST ) && isset( $old_value['async_css'], $value['async_css'] ) && ( $old_value['async_css'] !== $value['async_css'] ) && 1 === (int) $value['async_css'] ) {
+		if ( ! empty( $_POST[ WP_ROCKET_SLUG ] ) && isset( $old_value['async_css'], $value['async_css'] ) && ( $old_value['async_css'] !== $value['async_css'] ) && 1 === (int) $value['async_css'] ) {
 			$this->process_handler();
 		}
 	}
@@ -112,7 +138,7 @@ class Rocket_Critical_CSS {
 	public function get_public_post_types() {
 		global $wpdb;
 
-		$post_types = get_post_types( 
+		$post_types = get_post_types(
 			array(
 				'public'             => true,
 				'publicly_queryable' => true,
@@ -133,9 +159,9 @@ class Rocket_Critical_CSS {
 		$post_types = array_diff( $post_types, $excluded_post_types );
 		$post_types = esc_sql( $post_types );
 		$post_types = "'" . implode( "','", $post_types ) . "'";
-		
+
 		$rows = $wpdb->get_results( // WPCS: unprepared SQL ok.
-		    "
+			"
 		    SELECT MAX(ID) as ID, post_type
 		    FROM (
 		        SELECT ID, post_type
@@ -177,7 +203,7 @@ class Rocket_Critical_CSS {
 		 */
 		$excluded_taxonomies = apply_filters( 'rocket_cpcss_excluded_taxonomies', array(
 			'post_format',
-			'product_shipping_class'
+			'product_shipping_class',
 		) );
 
 		$taxonomies = array_diff( $taxonomies, $excluded_taxonomies );
