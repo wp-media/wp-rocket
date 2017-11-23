@@ -62,6 +62,19 @@ $rocket_lazyload_fields[] = array(
 	'label_screen' => __( 'Enable LazyLoad for iframes and videos', 'rocket' ),
 );
 $rocket_lazyload_fields[] = array(
+	'parent'       => 'lazyload_iframes',
+	'type'         => 'checkbox',
+	'label'        => __( 'Replace Youtube iframe by preview image', 'rocket' ),
+	'label_for'    => 'lazyload_youtube',
+	'label_screen' => __( 'Replace Youtube iframe by preview image', 'rocket' ),
+);
+$rocket_lazyload_fields[] = array(
+	'parent'       => 'lazyload_iframes',
+	'type'         => 'helper_description',
+	'name'         => 'lazyload_youtube_description',
+	'description'  => __( 'This can significantly improve your loading if you have a lot of Youtube videos on a page.', 'rocket' )
+);
+$rocket_lazyload_fields[] = array(
 	'type'         => 'helper_performance',
 	'name'         => 'lazyload_perf_tip',
 	'description'  => __( 'Reduces the number of HTTP requests, can improve loading time.', 'rocket' ),
