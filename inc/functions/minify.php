@@ -27,7 +27,7 @@ function rocket_minify_files( $buffer, $extension ) {
 		// Get all js files with this regex.
 		preg_match_all( apply_filters( 'rocket_minify_js_regex_pattern', '#<script[^>]+?src=[\'|"]([^\'|"]+\.js?.+)[\'|"].*>(?:<\/script>)#iU' ), $buffer, $tags_match, PREG_SET_ORDER );
 	}
-	
+
 	$files          = array();
 	$excluded_files = array();
 
@@ -204,17 +204,25 @@ function is_rocket_minify_excluded_file( $tag, $extension ) {
 	}
 
 	$file_path      = rocket_extract_url_component( $tag[1], PHP_URL_PATH );
-	$excluded_files = get_rocket_exclude_files( $extension );
-	$excluded_files = implode( '|', $excluded_files );
 
 	// File extension is not .css or .js.
 	if ( pathinfo( $file_path, PATHINFO_EXTENSION ) !== $extension ) {
 		return true;
 	}
 
-	// File is excluded from minification/concatenation.
-	if ( preg_match( '#^(' . $excluded_files . ')$#', $file_path ) ) {
-		return true;
+	$excluded_files = get_rocket_exclude_files( $extension );
+
+	if ( ! empty( $excluded_files ) ) {
+		$excluded_files = implode( '|', $excluded_files );
+
+		foreach ( $excluded_files as $i => $excluded_file ) {
+			$excluded_files[ $i ] = preg_quote( $excluded_file, '#' );
+		}
+
+		// File is excluded from minification/concatenation.
+		if ( preg_match( '#^(' . $excluded_files . ')$#', $file_path ) ) {
+			return true;
+		}
 	}
 
 	return false;
@@ -310,7 +318,7 @@ function rocket_minify( $files, $extension ) {
 
 		$minify->add( $file_content );
 	}
-	
+
 	$minified_content = $minify->minify();
 
 	if ( empty( $minified_content ) ) {
