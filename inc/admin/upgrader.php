@@ -239,5 +239,11 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		delete_transient( 'rocket_check_licence_30' );
 		delete_transient( 'rocket_check_licence_1' );
 	}
+
+	if ( version_compare( $actual_version, '2.11', '<' ) ) {
+		rocket_clean_domain();
+		rocket_clean_minify();
+		rocket_clean_cache_busting();
+	}
 }
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );
