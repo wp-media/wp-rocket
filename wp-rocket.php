@@ -65,6 +65,38 @@ if ( ! defined( 'WP_ROCKET_LASTVERSION' ) ) {
 
 require WP_ROCKET_INC_PATH . 'compat.php';
 
+if ( version_compare( PHP_VERSION, '5.3', '<' ) ) {
+	/**
+	 * Warning if PHP version is less than 5.3.
+	 *
+	 * @since 2.11
+	 * @author Remy Perona
+	 */
+	function rocket_php_warning() {
+		// Translators: %s = Plugin Name (maybe White Label).
+		echo '<div class="notice notice-error"><p>' . sprintf( __( '%s requires PHP 5.3 to function properly. Please upgrade your PHP version to use the plugin. The Plugin has been auto-deactivated.', 'rocket' ), WP_ROCKET_PLUGIN_NAME ) . '</p></div>';
+		if ( isset( $_GET['activate'] ) ) { // WPCS: CSRF ok.
+			unset( $_GET['activate'] );
+		}
+	}
+	add_action( 'admin_notices', 'rocket_php_warning' );
+
+	/**
+	 * Deactivate plugin if needed.
+	 *
+	 * @since 2.11
+	 * @author Remy Perona
+	 */
+	function rocket_deactivate_self() {
+		deactivate_plugins( plugin_basename( __FILE__ ) );
+	}
+	add_action( 'admin_init', 'rocket_deactivate_self' );
+
+	return;
+} else {
+	add_action( 'plugins_loaded', 'rocket_init' );
+}
+
 /**
  * Tell WP what to do when plugin is loaded.
  *
@@ -187,7 +219,6 @@ function rocket_init() {
 		do_action( 'wp_rocket_loaded' );
 	}
 }
-add_action( 'plugins_loaded', 'rocket_init' );
 
 /**
  * Tell WP what to do when plugin is deactivated.
