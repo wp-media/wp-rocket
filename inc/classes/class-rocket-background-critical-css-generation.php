@@ -11,7 +11,10 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  */
 class Rocket_Background_Critical_CSS_Generation extends WP_Background_Process {
 	/**
-	 * Prefix
+	 * Process prefix
+	 *
+	 * @since 2.11
+	 * @author Remy Perona
 	 *
 	 * @var string
 	 * @access protected
@@ -21,6 +24,9 @@ class Rocket_Background_Critical_CSS_Generation extends WP_Background_Process {
 	/**
 	 * Specific action identifier for sitemap preload.
 	 *
+	 * @since 2.11
+	 * @author Remy Perona
+	 *
 	 * @access protected
 	 * @var string Action identifier
 	 */
@@ -28,6 +34,9 @@ class Rocket_Background_Critical_CSS_Generation extends WP_Background_Process {
 
 	/**
 	 * Critical CSS generator API URL.
+	 *
+	 * @since 2.11
+	 * @author Remy Perona
 	 *
 	 * @access protected
 	 * @var string Critical CSS generator API URL
@@ -37,6 +46,9 @@ class Rocket_Background_Critical_CSS_Generation extends WP_Background_Process {
 	/**
 	 * Critical CSS values container.
 	 *
+	 * @since 2.11
+	 * @author Remy Perona
+	 *
 	 * @access protected
 	 * @var array An array containing the type of item and its associated critical CSS path.
 	 */
@@ -45,13 +57,19 @@ class Rocket_Background_Critical_CSS_Generation extends WP_Background_Process {
 	/**
 	 * Notices container.
 	 *
+	 * @since 2.11
+	 * @author Remy Perona
+	 *
 	 * @access protected
 	 * @var array An array containing the type of notices and their associated values.
 	 */
 	protected $notice = array();
 
 	/**
-	 * Dispatch
+	 * Launches the background process
+	 *
+	 * @since 2.11
+	 * @author Remy Perona
 	 *
 	 * @access public
 	 * @return array|WP_Error
@@ -65,6 +83,9 @@ class Rocket_Background_Critical_CSS_Generation extends WP_Background_Process {
 
 	/**
 	 * Perform the optimization corresponding to $item
+	 *
+	 * @since 2.11
+	 * @author Remy Perona
 	 *
 	 * @param mixed $item Queue item to iterate over.
 	 *
@@ -89,15 +110,17 @@ class Rocket_Background_Critical_CSS_Generation extends WP_Background_Process {
 		);
 
 		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
+			// translators: %s = type of content.
 			$this->notice['errors'][] = sprintf( __( 'Critical CSS generation for %s could not be completed.', 'rocket' ), $item['type'] );
 			return false;
 		}
 
 		$data = json_decode( wp_remote_retrieve_body( $response ) );
 
-		while ( $job_data = $this->get_critical_path(  $data->data->id ) ) {
+		while ( $job_data = $this->get_critical_path( $data->data->id ) ) {
 			if ( 'complete' === $job_data->data->state ) {
 				$this->critical_css[ $item['type'] ] = $job_data->data->critical_path;
+				// translators: %s = type of content.
 				$this->notice['success'][] = sprintf( __( 'Critical CSS generation for %s complete.', 'rocket' ), $item['type'] );
 				break;
 			}
@@ -128,7 +151,10 @@ class Rocket_Background_Critical_CSS_Generation extends WP_Background_Process {
 	}
 
 	/**
-	 * Complete
+	 * Launches when the background process is complete.
+	 *
+	 * @since 2.11
+	 * @author Remy Perona
 	 */
 	protected function complete() {
 		update_rocket_option( 'critical_css', $this->critical_css );
