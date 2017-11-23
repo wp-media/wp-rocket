@@ -14,6 +14,14 @@ function rocket_lazyload_script() {
 		return;
 	}
 
+	/**
+	 * Filters the threshold at which lazyload is triggered
+	 *
+	 * @since 2.11
+	 * @author Remy Perona
+	 *
+	 * @param int $threshold Threshold value.
+	 */
 	$threshold = apply_filters( 'rocket_lazyload_threshold', 300 );
 
 	echo <<<HTML
@@ -144,27 +152,47 @@ function rocket_lazyload_replace_callback( $matches ) {
 		}
 	}
 
-	$excluded_attributes = apply_filters( 'rocket_lazyload_excluded_attributes', array(
-		'data-no-lazy=',
-		'data-lazy-original=',
-		'data-lazy-src=',
-		'data-lazysrc=',
-		'data-lazyload=',
-		'data-bgposition=',
-		'data-envira-src=',
-		'fullurl=',
-		'lazy-slider-img=',
-		'data-srcset=',
-		'class="ls-l',
-		'class="ls-bg',
-	) );
+	/**
+	 * Filters the attributes used to prevent lazylad from being applied
+	 *
+	 * @since 2.11
+	 * @author Remy Perona
+	 *
+	 * @param array $excluded_attributes An array of excluded attributes.
+	 */
+	$excluded_attributes = apply_filters(
+		 'rocket_lazyload_excluded_attributes', array(
+			 'data-no-lazy=',
+			 'data-lazy-original=',
+			 'data-lazy-src=',
+			 'data-lazysrc=',
+			 'data-lazyload=',
+			 'data-bgposition=',
+			 'data-envira-src=',
+			 'fullurl=',
+			 'lazy-slider-img=',
+			 'data-srcset=',
+			 'class="ls-l',
+			 'class="ls-bg',
+		 )
+		);
 
-	$excluded_src = apply_filters( 'rocket_lazyload_excluded_src', array(
-		'/wpcf7_captcha/',
-		'timthumb.php?src',
-	) );
+	/**
+	 * Filters the src used to prevent lazylad from being applied
+	 *
+	 * @since 2.11
+	 * @author Remy Perona
+	 *
+	 * @param array $excluded_src An array of excluded src.
+	 */
+	$excluded_src = apply_filters(
+		 'rocket_lazyload_excluded_src', array(
+			 '/wpcf7_captcha/',
+			 'timthumb.php?src',
+		 )
+		);
 
-	if ( rocket_is_excluded_lazyload( $matches[1] . $matches[3], $excluded_attributes ) ||  rocket_is_excluded_lazyload( $matches[2], $excluded_src ) ) {
+	if ( rocket_is_excluded_lazyload( $matches[1] . $matches[3], $excluded_attributes ) || rocket_is_excluded_lazyload( $matches[2], $excluded_src ) ) {
 		return $matches[0];
 	}
 
@@ -355,7 +383,7 @@ function rocket_lazyload_iframes( $html ) {
 	}
 
 	$matches = array();
-	preg_match_all( '/<iframe(?:.*)?src=["|\'](.*)["|\'](?:.*)?><\/iframe>/iU', $html, $matches, PREG_SET_ORDER );
+	preg_match_all( '/<iframe(?:\s.*)?\ssrc=["\'](.*)["\'].*><\/iframe>/iU', $html, $matches, PREG_SET_ORDER );
 
 	if ( empty( $matches ) ) {
 		return $html;
@@ -386,20 +414,20 @@ function rocket_lazyload_iframes( $html ) {
 			 *
 			 * @param array $html Output that will be printed.
 			 */
-			$youtube_lazyload = apply_filters( 'rocket_lazyload_youtube_html', '<div class="rll-youtube-player" data-id="' . $youtube_id . '"></div>');
+			$youtube_lazyload = apply_filters( 'rocket_lazyload_youtube_html', '<div class="rll-youtube-player" data-id="' . $youtube_id . '"></div>' );
 			$youtube_lazyload .= '<noscript>' . $iframe[0] . '</noscript>';
 
 			$html = str_replace( $iframe[0], $youtube_lazyload, $html );
 		} else {
 			/**
 			 * Filter the LazyLoad placeholder on src attribute
-	    	 *
-	    	 * @since 2.11
-	    	 *
-	    	 * @param string $placeholder placeholder that will be printed.
-	    	 */
+			 *
+			 * @since 2.11
+			 *
+			 * @param string $placeholder placeholder that will be printed.
+			 */
 			$placeholder = apply_filters( 'rocket_lazyload_placeholder', 'about:blank' );
-			
+
 			$iframe_noscript = '<noscript>' . $iframe[0] . '</noscript>';
 
 			/**
@@ -411,7 +439,7 @@ function rocket_lazyload_iframes( $html ) {
 			 */
 			$iframe_lazyload = apply_filters( 'rocket_lazyload_iframe_html', str_replace( $iframe[1], $placeholder . '" data-fitvidscompatible="1" data-lazy-src="' . $iframe[1], $iframe[0] ) );
 			$iframe_lazyload .= $iframe_noscript;
-			
+
 			$html = str_replace( $iframe[0], $iframe_lazyload, $html );
 		}
 	}
