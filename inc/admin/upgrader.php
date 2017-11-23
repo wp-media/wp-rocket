@@ -94,7 +94,7 @@ function rocket_first_install() {
 				'defer_all_js_safe'           => 1,
 				'lazyload'                    => 0,
 				'lazyload_iframes'            => 0,
-        'lazyload_youtube'            => 0,
+				'lazyload_youtube'            => 0,
 				'minify_css'                  => 0,
 				'minify_css_key'              => $minify_css_key,
 				'minify_concatenate_css'      => 0,
