@@ -75,8 +75,6 @@ class Rocket_Background_Critical_CSS_Generation extends WP_Background_Process {
 	 * @return array|WP_Error
 	 */
 	public function dispatch() {
-		set_transient( 'rocket_critical_css_generation_process', 'running', HOUR_IN_SECONDS );
-
 		// Perform remote post.
 		return parent::dispatch();
 	}
