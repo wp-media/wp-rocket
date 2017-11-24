@@ -59,7 +59,7 @@ function get_rocket_cdn_url( $url, $zone = array( 'all' ) ) {
 		}
 	}
 
-	$url = untrailingslashit( $cnames[ ( abs( crc32( $path ) ) % count( $cnames ) ) ] ) . '/' . ltrim( $parse_url['path'], '/' ) . $parse_url['query'];
+	$url = untrailingslashit( $cnames[ ( abs( crc32( $parse_url['path'] ) ) % count( $cnames ) ) ] ) . '/' . ltrim( $parse_url['path'], '/' ) . $parse_url['query'];
 	$url = rocket_add_url_protocol( $url );
 	return $url;
 }

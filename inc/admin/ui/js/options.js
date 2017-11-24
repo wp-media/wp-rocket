@@ -432,5 +432,4 @@ jQuery( document ).ready( function($){
 
 		$(this).parent().next( '.rocket-analytics-data-container' ).toggle();
 	} );
-
 } );

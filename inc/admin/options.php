@@ -595,6 +595,10 @@ function rocket_settings_callback( $inputs ) {
 		$inputs['do_caching_mobile_files'] = 1;
 	}
 
+	if ( empty( $inputs['lazyload_iframes'] ) ) {
+		$inputs['lazyload_youtube'] = 0;
+	}
+
 	/*
 	 * Option : Purge delay
 	 */
@@ -734,8 +738,8 @@ function rocket_settings_callback( $inputs ) {
 		$inputs['exclude_js'] = array();
 	}
 
-	// Option: Critical CSS.
-	$inputs['critical_css'] = ! empty( $inputs['critical_css'] ) ? str_replace( array( '<style>', '</style>' ), '', $inputs['critical_css'] ) : '';
+	// Option: Async CSS.
+	$inputs['async_css'] = ! empty( $inputs['async_css'] ) ? 1 : 0;
 
 	/*
 	 * Option : JS files to exclude from defer JS

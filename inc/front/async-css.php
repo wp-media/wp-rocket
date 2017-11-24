@@ -49,7 +49,7 @@ function rocket_async_css( $buffer ) {
 		$noscripts .= '<noscript>' . $tags_match[0][ $i ] . '</noscript>';
 	}
 
-	$buffer = str_replace( '</body>', $noscripts . '</body>', $buffer );	
+	$buffer = str_replace( '</body>', $noscripts . '</body>', $buffer );
 
 	return $buffer;
 }
@@ -105,10 +105,28 @@ function rocket_insert_critical_css() {
 		return;
 	}
 
-	$critical_css = wp_kses( get_rocket_option( 'critical_css' ), array( '\'', '\"' ) );
-	$critical_css = str_replace( '&gt;', '>', $critical_css );
+	$critical_css = get_rocket_option( 'critical_css' );
 
-	echo '<style id="rocket-critical-css">' . $critical_css . '</style>';
+	if ( is_home() ) {
+		$critical_css_content = $critical_css['home'];
+	} elseif ( is_category() ) {
+		$critical_css_content = $critical_css['category'];
+	} elseif ( is_tag() ) {
+		$critical_css_content = $critical_css['post_tag'];
+	} elseif ( is_tax() ) {
+		$taxonomy = get_queried_object()->term_name;
+		$critical_css_content = $critical_css[ $taxonomy ];
+	} elseif ( is_singular() ) {
+		$post_type = get_post_type();
+		$critical_css_content = $critical_css[ $post_type ];
+	} else {
+		$critical_css_content = $critical_css['front_page'];
+	}
+
+	$critical_css_content = wp_kses( $critical_css_content, array( '\'', '\"' ) );
+	$critical_css_content = str_replace( '&gt;', '>', $critical_css_content );
+
+	echo '<style id="rocket-critical-css">' . $critical_css_content . '</style>';
 }
 add_action( 'wp_head', 'rocket_insert_critical_css', 1 );
 

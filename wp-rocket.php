@@ -47,7 +47,7 @@ define( 'WP_ROCKET_URL'                 , plugin_dir_url( WP_ROCKET_FILE ) );
 define( 'WP_ROCKET_INC_URL'             , WP_ROCKET_URL . 'inc/' );
 define( 'WP_ROCKET_FRONT_URL'           , WP_ROCKET_INC_URL . 'front/' );
 define( 'WP_ROCKET_FRONT_JS_URL'        , WP_ROCKET_FRONT_URL . 'js/' );
-define( 'WP_ROCKET_LAZYLOAD_JS_VERSION' , '1.0.5' );
+define( 'WP_ROCKET_LAZYLOAD_JS_VERSION' , '8.2' );
 define( 'WP_ROCKET_ADMIN_URL'           , WP_ROCKET_INC_URL . 'admin/' );
 define( 'WP_ROCKET_ADMIN_UI_URL'        , WP_ROCKET_ADMIN_URL . 'ui/' );
 define( 'WP_ROCKET_ADMIN_UI_JS_URL'     , WP_ROCKET_ADMIN_UI_URL . 'js/' );
@@ -64,6 +64,37 @@ if ( ! defined( 'WP_ROCKET_LASTVERSION' ) ) {
 }
 
 require WP_ROCKET_INC_PATH . 'compat.php';
+
+if ( version_compare( PHP_VERSION, '5.3' ) < 0 ) {
+	/**
+	 * Warning if PHP version is less than 5.3.
+	 *
+	 * @since 2.11
+	 * @author Remy Perona
+	 */
+	function rocket_php_warning() {
+		echo '<div class="notice notice-error"><p>' . __( 'WP Rocket requires at least PHP 5.3 to function properly. Please upgrade to PHP 5.3 or higher to use the plugin. The Plugin has been auto-deactivated to prevent any issue.', 'rocket' ) . '</p></div>';
+		if ( isset( $_GET['activate'] ) ) { // WPCS: CSRF ok.
+			unset( $_GET['activate'] );
+		}
+	}
+	add_action( 'admin_notices', 'rocket_php_warning' );
+
+	/**
+	 * Deactivate plugin if needed.
+	 *
+	 * @since 2.11
+	 * @author Remy Perona
+	 */
+	function rocket_deactivate_self() {
+		deactivate_plugins( plugin_basename( __FILE__ ) );
+	}
+	add_action( 'admin_init', 'rocket_deactivate_self' );
+
+	return;
+} else {
+	add_action( 'plugins_loaded', 'rocket_init' );
+}
 
 /**
  * Tell WP what to do when plugin is loaded.
@@ -131,7 +162,7 @@ function rocket_init() {
 			require WP_ROCKET_FRONT_PATH . 'cdn.php';
 		}
 
-		if ( 0 < (int) get_rocket_option( 'do_cloudflare' ) && phpversion() >= '5.4' ) {
+		if ( 0 < (int) get_rocket_option( 'do_cloudflare' ) && version_compare( PHP_VERSION, '5.4' ) >= 0 ) {
 			require WP_ROCKET_FUNCTIONS_PATH . 'cloudflare.php';
 			require WP_ROCKET_VENDORS_PATH . 'ip_in_range.php';
 			require WP_ROCKET_COMMON_PATH . 'cloudflare.php';
@@ -175,7 +206,11 @@ function rocket_init() {
 		require WP_ROCKET_FRONT_PATH . 'protocol.php';
 	}
 
+	global $rocket_sitemap_background_process;
+	$rocket_sitemap_background_process = new Rocket_Sitemap_Preload_Process();
+
 	Rocket_Database_Optimization::init();
+	Rocket_Critical_CSS::get_instance()->init();
 
 	// You can hook this to trigger any action when WP Rocket is correctly loaded, so, not in AUTOSAVE mode.
 	if ( rocket_valid_key() ) {
@@ -187,7 +222,6 @@ function rocket_init() {
 		do_action( 'wp_rocket_loaded' );
 	}
 }
-add_action( 'plugins_loaded', 'rocket_init' );
 
 /**
  * Tell WP what to do when plugin is deactivated.
@@ -263,7 +297,7 @@ function rocket_activation() {
 	require WP_ROCKET_FUNCTIONS_PATH . 'i18n.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'htaccess.php';
 
-	if ( version_compare( phpversion(), '5.3.0', '>=' ) ) {
+	if ( version_compare( PHP_VERSION, '5.3.0' ) >= 0 ) {
 		require WP_ROCKET_3RD_PARTY_PATH . 'hosting/godaddy.php';
 	}
 
