@@ -115,6 +115,27 @@ if ( function_exists( 'opcache_reset' ) ) {
 	);
 }
 
+if ( get_rocket_option( 'async_css' ) ) {
+	// Regenerate Critical Path CSS.
+	add_settings_field(
+		'rocket_regenerate_critical_path_css',
+		__( 'Regenerate Critical Path CSS:', 'rocket' ),
+		'rocket_button',
+		'rocket_tools',
+		'rocket_display_tools',
+		array(
+			'helper_help' => array(
+				'name'         => 'regenerate_critical_path_css',
+				'description'  => __( 'Regenerate Critical Path CSS.', 'rocket' ),
+			),
+			'button' => array(
+				'button_label' => __( 'Regenerate Critical Path CSS', 'rocket' ),
+				'url'          => wp_nonce_url( admin_url( 'admin-post.php?action=rocket_generate_critical_css' ), 'rocket_regenerate_critical_css' ),
+			),
+		)
+	);
+}
+
 /**
  * Export
  */

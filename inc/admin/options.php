@@ -738,8 +738,8 @@ function rocket_settings_callback( $inputs ) {
 		$inputs['exclude_js'] = array();
 	}
 
-	// Option: Critical CSS.
-	$inputs['critical_css'] = ! empty( $inputs['critical_css'] ) ? str_replace( array( '<style>', '</style>' ), '', $inputs['critical_css'] ) : '';
+	// Option: Async CSS.
+	$inputs['async_css'] = ! empty( $inputs['async_css'] ) ? 1 : 0;
 
 	/*
 	 * Option : JS files to exclude from defer JS

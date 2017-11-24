@@ -82,7 +82,7 @@ function rocket_warning_plugin_modification() {
 			// translators: %s is WP Rocket plugin name (maybe white label).
 			'message'        => sprintf( __( '<strong>%s</strong>: One or more extensions have been enabled or disabled, clear the cache if necessary.', 'rocket' ), WP_ROCKET_PLUGIN_NAME ),
 			'action'         => 'clear_cache',
-			'dismiss_button' => true,
+			'dismiss_button' => __FUNCTION__,
 		) );
 	}
 }
@@ -191,7 +191,7 @@ function rocket_plugins_to_deactivate() {
 			$plugin_data = get_plugin_data( WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . $plugin );
 			$warning .= '<li>' . $plugin_data['Name'] . '</span> <a href="' . wp_nonce_url( admin_url( 'admin-post.php?action=deactivate_plugin&plugin=' . rawurlencode( $plugin ) ), 'deactivate_plugin' ) . '" class="button-secondary alignright">' . __( 'Deactivate', 'rocket' ) . '</a></li>';
 		}
-	
+
 		$warning .= '</ul>';
 
 		rocket_notice_html( array(
@@ -265,7 +265,7 @@ function rocket_warning_wp_config_permissions() {
 			'status' => 'error',
 			'dismissible' => '',
 			'message' => $warning,
-			'dismiss_button' => true,
+			'dismiss_button' => __FUNCTION__,
 			'readonly_content' => "/** Enable Cache by " . WP_ROCKET_PLUGIN_NAME . " */\r\ndefine( 'WP_CACHE', true );\r\n",
 		) );
 	}
@@ -302,12 +302,12 @@ function rocket_warning_advanced_cache_permissions() {
 					basename( WP_CONTENT_DIR ) . '/advanced-cache.php',
 					'https://codex.wordpress.org/Changing_File_Permissions'
 			);
-	
+
 		rocket_notice_html( array(
 			'status'           => 'error',
 			'dismissible'      => '',
 			'message'          => $warning,
-			'dismiss_button'   => true,
+			'dismiss_button'   => __FUNCTION__,
 			'readonly_content' => get_rocket_advanced_cache_file(),
 		) );
 	}
@@ -379,7 +379,7 @@ function rocket_warning_htaccess_permissions() {
 				'https://codex.wordpress.org/Changing_File_Permissions'
 			) . '</p>';
 
-		$warning .= '<p>' . sprintf( 
+		$warning .= '<p>' . sprintf(
 			// translators: %s = WP Rocket name (maybe white label).
 			__( 'Here are the rewrite rules you have to put in your <code>.htaccess</code> file for <strong>%s</strong> to work correctly. Click on the field and press Ctrl-A to select all.', 'rocket' ), WP_ROCKET_PLUGIN_NAME
 			) . '<br>' . __( '<strong>Warning:</strong> This message will popup again and its content may be updated when saving the options', 'rocket' ) . '</p>';
@@ -388,7 +388,7 @@ function rocket_warning_htaccess_permissions() {
 			'status'           => 'error',
 			'dismissible'      => '',
 			'message'          => $warning,
-			'dismiss_button'   => true,
+			'dismiss_button'   => __FUNCTION__,
 			'readonly_content' => get_rocket_htaccess_marker(),
 		) );
 	}
@@ -752,10 +752,10 @@ function rocket_analytics_optin_notice() {
 	}
 
 	$analytics_notice = '<strong>' . __( 'Allow WP Rocket to collect non-sensitive diagnostic data from this website?', 'rocket' ) . '</strong></p>
-		<p>' .  __( 'This would enable us to improve WP Rocket for you in the future.', 'rocket' ) . '</p>
+		<p>' . __( 'This would enable us to improve WP Rocket for you in the future.', 'rocket' ) . '</p>
 		<p><button class="hide-if-no-js button-rocket-reveal rocket-preview-analytics-data">' . __( 'See a preview of which data would be collected', 'rocket' ) . '</button></p>
 		<div class="rocket-analytics-data-container">' . rocket_preview_data_collected_list() . '</div>
-		<p><a href="' . wp_nonce_url( admin_url( 'admin-post.php?action=rocket_analytics_optin&value=yes' ), 'analytics_optin' ) . '" class="button button-primary">' . __( 'Yes I Allow', 'rocket' ) . '</a> <a href="' .  wp_nonce_url( admin_url( 'admin-post.php?action=rocket_analytics_optin&value=no' ), 'analytics_optin' ) . '" class="button button-secondary">' . __( 'No Thanks', 'rocket' ) . '</a>';
+		<p><a href="' . wp_nonce_url( admin_url( 'admin-post.php?action=rocket_analytics_optin&value=yes' ), 'analytics_optin' ) . '" class="button button-primary">' . __( 'Yes I Allow', 'rocket' ) . '</a> <a href="' . wp_nonce_url( admin_url( 'admin-post.php?action=rocket_analytics_optin&value=no' ), 'analytics_optin' ) . '" class="button button-secondary">' . __( 'No Thanks', 'rocket' ) . '</a>';
 
 	rocket_notice_html( array(
 		'message' => $analytics_notice,
@@ -860,7 +860,6 @@ add_action( 'admin_notices', 'rocket_clear_cache_notice' );
  * @author Remy Perona
  */
 function rocket_sitemap_preload_running() {
-	global $current_user;
 	$screen              = get_current_screen();
 	$rocket_wl_name      = get_rocket_option( 'wl_plugin_name', null );
 	$wp_rocket_screen_id = isset( $rocket_wl_name ) ? 'settings_page_' . sanitize_key( $rocket_wl_name ) : 'settings_page_wprocket';
@@ -877,8 +876,7 @@ function rocket_sitemap_preload_running() {
 	if ( ! $running ) {
 		return;
 	}
-	
-	
+
 	rocket_notice_html( array(
 		'message' => __( 'Sitemap-based cache preload is currently running…', 'rocket' ),
 	) );
@@ -920,13 +918,65 @@ function rocket_sitemap_preload_complete() {
 add_action( 'admin_notices', 'rocket_sitemap_preload_complete' );
 
 /**
+ * This notice is displayed when the critical CSS generation is running
+ *
+ * @since 2.11
+ * @author Remy Perona
+ */
+function rocket_critical_css_generation_running() {
+	$screen              = get_current_screen();
+	$rocket_wl_name      = get_rocket_option( 'wl_plugin_name', null );
+	$wp_rocket_screen_id = isset( $rocket_wl_name ) ? 'settings_page_' . sanitize_key( $rocket_wl_name ) : 'settings_page_wprocket';
+	// This filter is documented in inc/admin-bar.php.
+	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		return;
+	}
+
+	if ( $screen->id !== $wp_rocket_screen_id ) {
+		return;
+	}
+
+	$running = get_transient( 'rocket_critical_css_generation_process' );
+	if ( ! $running ) {
+		return;
+	}
+
+	if ( 'running' === $running ) {
+		rocket_notice_html( array(
+			'status'  => 'info',
+			'message' => __( 'Critical CSS generation is currently running…', 'rocket' ),
+		) );
+	} else {
+		if ( isset( $running['errors'] ) ) {
+			$message = implode( '<br>', $running['errors'] );
+
+			rocket_notice_html( array(
+				'status'  => 'error',
+				'message' => $message,
+			) );
+		}
+
+		if ( isset( $running['success'] ) ) {
+			$message = implode( '<br>', $running['success'] );
+
+			rocket_notice_html( array(
+				'message' => $message,
+			) );
+		}
+	}
+
+	delete_transient( 'rocket_critical_css_generation_process' );
+}
+add_action( 'admin_notices', 'rocket_critical_css_generation_running' );
+
+/**
  * Outputs notice HTML
  *
  * @since 2.11
  * @author Remy Perona
  *
  * @param array $args An array of arguments used to determine the notice output.
- * @return string notice HTML output
+ * @return void
  */
 function rocket_notice_html( $args ) {
 	$defaults = array(
@@ -967,19 +1017,21 @@ function rocket_notice_html( $args ) {
 
 	?>
 	<div class="notice notice-<?php echo $args['status']; ?> <?php echo $args['dismissible']; ?>">
-		<?php 
+		<?php
 			$tag = 0 !== strpos( $message, '<p' ) && 0 !== strpos( $message, '<ul' );
 
 			echo ( $tag ? '<p>' : '' ) . $args['message'] . ( $tag ? '</p>' : '' );
 		?>
 		<?php if ( ! empty( $args['readonly_content'] ) ) : ?>
 		<p><textarea readonly="readonly" id="rules" name="rules" class="large-text readonly" rows="6"><?php echo esc_textarea( $args['readonly_content'] ); ?></textarea></p>
-		<?php endif;
-		if ( $action || $args['dismiss_button'] ) : ?>
+		<?php
+		endif;
+		if ( $action || $args['dismiss_button'] ) :
+		?>
 		<p>
 			<?php echo $action; ?>
 			<?php if ( $args['dismiss_button'] ) : ?>
-			<a class="rocket-dismiss" href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=' . __FUNCTION__ ), 'rocket_ignore_' . __FUNCTION__ ); ?>"><?php _e( 'Dismiss this notice.', 'rocket' ); ?></a>
+			<a class="rocket-dismiss" href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=' . $args['dismiss_button'] ), 'rocket_ignore_' . $args['dismiss_button'] ); ?>"><?php _e( 'Dismiss this notice.', 'rocket' ); ?></a>
 			<?php endif; ?>
 		</p>
 		<?php endif; ?>

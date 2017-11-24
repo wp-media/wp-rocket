@@ -296,9 +296,9 @@ $rocket_render_blocking[] = array(
 
 $rocket_render_blocking[] = array(
 	'type'         => 'checkbox',
-	'label'        => __( 'Load CSS files asynchronously', 'rocket' ),
+	'label'        => __( 'Optimize CSS delivery', 'rocket' ),
 	'name'         => 'async_css',
-	'label_screen' => __( 'Load CSS files asynchronously', 'rocket' ),
+	'label_screen' => __( 'Optimize CSS delivery', 'rocket' ),
 	'readonly'     => rocket_maybe_disable_async_css(),
 );
 
@@ -321,6 +321,7 @@ $rocket_render_blocking[] = array(
 	'name'         => 'defer_js_safe_description',
 	'description'  => __( 'Safe mode for deferred JS ensures support for inline jQuery references from themes and plugins by loading jQuery at the top of the document as a render-blocking script. Deactivating may result in broken functionality, test thoroughly!', 'rocket' ),
 );
+
 $rocket_render_blocking[] = array(
 	'type'         => 'helper_performance',
 	'name'         => 'render_blocking_perf_tip',
@@ -334,34 +335,4 @@ add_settings_field(
 	'rocket_optimization',
 	'rocket_display_optimization_options',
 	$rocket_render_blocking
-);
-
-/**
- * Above the fold CSS
- */
-add_settings_field(
-	'rocket_critical_css',
-	__( 'Critical path CSS:', 'rocket' ),
-	'rocket_field',
-	'rocket_optimization',
-	'rocket_display_optimization_options',
-	array(
-		array(
-			'type'         => 'helper_help',
-			'name'         => 'critical_css_description',
-			'description'  => __( 'Specify CSS rules required for rendering above-the-fold content', 'rocket' ),
-		),
-		array(
-			'type'         => 'textarea',
-			'label_for'    => 'critical_css',
-			'label_screen' => __( 'Critical path CSS rules for rendering above-the-fold content', 'rocket' ),
-		),
-		array(
-			'type'         => 'helper_description',
-			'name'         => 'critical_css_generator',
-			// translators: %s is the URL to the documentation page.
-			'description'  => sprintf( __( 'Use the <a href="%s" target="_blank">Critical Path CSS Generator</a> to specify required CSS rules.', 'rocket' ), 'http://docs.wp-rocket.me/article/108-render-blocking-javascript-and-css-pagespeed#critical-path-css' ),
-		),
-		'class' => 'critical-css-row',
-	)
 );

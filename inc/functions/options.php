@@ -461,7 +461,7 @@ function get_rocket_exclude_files( $extension ) {
 		$excluded_files = apply_filters( 'rocket_exclude_js', $excluded_files );
 	}
 
-	return array_flip( $excluded_files );
+	return $excluded_files;
 }
 
 /**
