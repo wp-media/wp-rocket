@@ -213,11 +213,11 @@ function is_rocket_minify_excluded_file( $tag, $extension ) {
 	$excluded_files = get_rocket_exclude_files( $extension );
 
 	if ( ! empty( $excluded_files ) ) {
-		$excluded_files = implode( '|', $excluded_files );
-
 		foreach ( $excluded_files as $i => $excluded_file ) {
 			$excluded_files[ $i ] = preg_quote( $excluded_file, '#' );
 		}
+
+		$excluded_files = implode( '|', $excluded_files );
 
 		// File is excluded from minification/concatenation.
 		if ( preg_match( '#^(' . $excluded_files . ')$#', $file_path ) ) {
