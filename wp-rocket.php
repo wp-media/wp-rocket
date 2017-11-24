@@ -65,7 +65,7 @@ if ( ! defined( 'WP_ROCKET_LASTVERSION' ) ) {
 
 require WP_ROCKET_INC_PATH . 'compat.php';
 
-if ( version_compare( PHP_VERSION, '5.3' ) >= 0 ) {
+if ( version_compare( PHP_VERSION, '5.3', '<' ) ) {
 	/**
 	 * Warning if PHP version is less than 5.3.
 	 *
@@ -73,10 +73,11 @@ if ( version_compare( PHP_VERSION, '5.3' ) >= 0 ) {
 	 * @author Remy Perona
 	 */
 	function rocket_php_warning() {
-		echo '<div class="notice notice-error"><p>' . __( 'WP Rocket requires at least PHP 5.3 to function properly. Please upgrade to PHP 5.3 or higher to use the plugin. The Plugin has been auto-deactivated to prevent any issue.', 'rocket' ) . '</p></div>';
-
-		unset( $_GET['activate'] );
-
+		// Translators: %s = Plugin Name (maybe White Label).
+		echo '<div class="notice notice-error"><p>' . sprintf( __( '%s requires PHP 5.3 to function properly. Please upgrade your PHP version to use the plugin. The Plugin has been auto-deactivated.', 'rocket' ), WP_ROCKET_PLUGIN_NAME ) . '</p></div>';
+		if ( isset( $_GET['activate'] ) ) { // WPCS: CSRF ok.
+			unset( $_GET['activate'] );
+		}
 	}
 	add_action( 'admin_notices', 'rocket_php_warning' );
 
@@ -162,7 +163,7 @@ function rocket_init() {
 			require WP_ROCKET_FRONT_PATH . 'cdn.php';
 		}
 
-		if ( 0 < (int) get_rocket_option( 'do_cloudflare' ) && version_compare( PHP_VERSION, '5.4' ) >= 0 ) {
+		if ( 0 < (int) get_rocket_option( 'do_cloudflare' ) && phpversion() >= '5.4' ) {
 			require WP_ROCKET_FUNCTIONS_PATH . 'cloudflare.php';
 			require WP_ROCKET_VENDORS_PATH . 'ip_in_range.php';
 			require WP_ROCKET_COMMON_PATH . 'cloudflare.php';
@@ -293,7 +294,7 @@ function rocket_activation() {
 	require WP_ROCKET_FUNCTIONS_PATH . 'i18n.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'htaccess.php';
 
-	if ( version_compare( PHP_VERSION, '5.3.0' ) >= 0 ) {
+	if ( version_compare( phpversion(), '5.3.0', '>=' ) ) {
 		require WP_ROCKET_3RD_PARTY_PATH . 'hosting/godaddy.php';
 	}
 
