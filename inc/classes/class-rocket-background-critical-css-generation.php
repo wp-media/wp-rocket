@@ -115,7 +115,10 @@ class Rocket_Background_Critical_CSS_Generation extends WP_Background_Process {
 
 		while ( $job_data = $this->get_critical_path( $data->data->id ) ) {
 			if ( 'complete' === $job_data->data->state ) {
-				$this->critical_css[ $item['type'] ] = $job_data->data->critical_path;
+				$critical_css = get_rocket_option( 'critical_css' );
+				$critical_css[ $item['type'] ] = $job_data->data->critical_path;
+				update_rocket_option( 'critical_css', $critical_css );
+
 				// translators: %s = type of content.
 				$this->notice['success'][] = sprintf( __( 'Critical CSS generation for %s complete.', 'rocket' ), $item['type'] );
 				break;
@@ -153,8 +156,6 @@ class Rocket_Background_Critical_CSS_Generation extends WP_Background_Process {
 	 * @author Remy Perona
 	 */
 	protected function complete() {
-		update_rocket_option( 'critical_css', $this->critical_css );
-
 		parent::complete();
 	}
 }
