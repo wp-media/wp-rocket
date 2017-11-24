@@ -106,21 +106,31 @@ function rocket_insert_critical_css() {
 	}
 
 	$critical_css = get_rocket_option( 'critical_css' );
+	$critical_css_content = '';
 
-	if ( is_home() ) {
+	if ( is_home() && isset( $critical_css['home'] ) ) {
 		$critical_css_content = $critical_css['home'];
-	} elseif ( is_category() ) {
+	} elseif ( is_category() && isset( $critical_css['category'] ) ) {
 		$critical_css_content = $critical_css['category'];
-	} elseif ( is_tag() ) {
+	} elseif ( is_tag() && isset( $critical_css['post_tag'] ) ) {
 		$critical_css_content = $critical_css['post_tag'];
 	} elseif ( is_tax() ) {
 		$taxonomy = get_queried_object()->term_name;
+		if ( isset( $critical_css[ $taxonomy ] ) ) {
+			$critical_css_content = $critical_css[ $taxonomy ];
+		}
 		$critical_css_content = $critical_css[ $taxonomy ];
 	} elseif ( is_singular() ) {
 		$post_type = get_post_type();
-		$critical_css_content = $critical_css[ $post_type ];
-	} else {
+		if ( isset( $critical_css[ $post_type ] ) ) {
+			$critical_css_content = $critical_css[ $post_type ];
+		}
+	} elseif ( isset( $critical_css['front_page'] ) ) {
 		$critical_css_content = $critical_css['front_page'];
+	}
+
+	if ( empty( $critical_css_content ) ) {
+		return;
 	}
 
 	$critical_css_content = wp_kses( $critical_css_content, array( '\'', '\"' ) );
