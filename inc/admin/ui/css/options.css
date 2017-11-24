@@ -103,3 +103,14 @@ fieldset[class*="fieldparent-"][class*="fieldtype-helper"]  {
 .fieldtype-checkbox + [class*="fieldtype-helper"] + .fieldtype-checkbox  {
 	margin-top: 1.75em;
 }
+.wp-rocket-data-table {
+	margin: 1.5em auto;
+}
+.wp-rocket-data-table td {
+	vertical-align: top;
+}
+.wp-rocket-data-table .column-primary {
+	padding-right: 1rem;
+	white-space: nowrap;
+	width: 1%;
+}

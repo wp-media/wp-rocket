@@ -401,7 +401,7 @@ function do_admin_post_rocket_purge_cache() {
 				update_option( WP_ROCKET_SLUG, $options );
 
 				rocket_dismiss_box( 'rocket_warning_plugin_modification' );
-				
+
 				break;
 
 			// Clear terms, homepage and other files associated at current post in back-end.
@@ -509,7 +509,7 @@ function do_admin_post_rocket_purge_cloudflare() {
 		$cf_purge_result = array(
 			'result' => 'error',
 			// translators: %s = CloudFare API return message.
-			'message' => sprintf( __( 'CloudFlare cache purge error: %s', 'rocket' ), $cf_purge->get_error_message() ),
+			'message' => sprintf( __( 'Cloudflare cache purge error: %s', 'rocket' ), $cf_purge->get_error_message() ),
 		);
 	} else {
 		$cf_purge_result = array(

@@ -33,23 +33,41 @@ jQuery( document ).ready( function($){
 
 	$inputs.on('change.wprocket', check_lazy);
 
-	// Display warning message if minification options are checked
+	// Display warning message if any minification options are checked
 	var $info_minify = $('.fieldname-minify_warning'),
-    	$inputs_minify = $('input[id^="minify"]'),
-		is_minify_checked = function(){
-		return $inputs_minify.filter(':checked').length > 0 ? true : false;
-    	},
+	    $inputs_minify = $('input[id^="minify"]'),
+	    is_minify_checked = function(){
+			return $inputs_minify.filter(':checked').length > 0 ? true : false;
+		},
 		check_minify = function(){
-			if( is_minify_checked() ) {
+			if( is_minify_checked() ){
 				$info_minify.fadeIn( 275 ).attr('aria-hidden', 'false' );
-      		} else {
+			} else {
 	  			$info_minify.fadeOut( 275 ).attr('aria-hidden', 'true' );
-      		}
-    	};
+			}
+		};
 
 	check_minify();
 
 	$inputs_minify.on('change.wprocket', check_minify);
+
+	// Display HTTP/2 warning message if CSS/JS minification options are checked
+	var $info_minify_js_css = $('.fieldname-minify_combine_http2_warning'),
+	    $inputs_minify_js_css = $('input#minify_css, input#minify_js'),
+	    is_minify_css_js_checked = function(){
+			return $inputs_minify_js_css.filter(':checked').length > 0 ? true : false;
+		},
+		check_minify_css_js = function(){
+			if( is_minify_css_js_checked() ){
+				$info_minify_js_css.fadeIn( 275 ).attr('aria-hidden', 'false' );
+			} else {
+	  			$info_minify_js_css.fadeOut( 275 ).attr('aria-hidden', 'true' );
+			}
+		};
+
+	check_minify_css_js();
+
+	$inputs_minify_js_css.on('change.wprocket', check_minify_css_js);
 
 	// Display warning message if purge interval is too low or too high
 	var $info_lifespan_less = $('.fieldname-purge_warning_less'),
@@ -192,7 +210,8 @@ jQuery( document ).ready( function($){
 				$('#tab_basic').show();
 		}
 	}
-	$( 'h2.nav-tab-wrapper .nav-tab, a[href^="#tab_"]', '#rocket_options' ).on( 'click', function(e){
+	// Context includes tab links in admin notices.
+	$( 'h2.nav-tab-wrapper .nav-tab, a[href^="#tab_"]', '.settings_page_wprocket #wpbody-content' ).on( 'click', function(e){
 		e.preventDefault();
 		tab = $(this).attr( 'href' );
 		if( sup_html5st ) {
