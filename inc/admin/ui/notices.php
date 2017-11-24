@@ -257,7 +257,7 @@ function rocket_warning_wp_config_permissions() {
 			'status' => 'error',
 			'dismissible' => '',
 			'message' => $message,
-			'dismiss_button' => true,
+			'dismiss_button' => __FUNCTION__,
 			'readonly_content' => "/** Enable Cache by " . WP_ROCKET_PLUGIN_NAME . " */\r\ndefine( 'WP_CACHE', true );\r\n",
 		) );
 	}
