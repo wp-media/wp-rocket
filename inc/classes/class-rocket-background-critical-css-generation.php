@@ -87,7 +87,7 @@ class Rocket_Background_Critical_CSS_Generation extends WP_Background_Process {
 	 *
 	 * @param mixed $item Queue item to iterate over.
 	 *
-	 * @return bool false
+	 * @return bool false if task performed successfully, true otherwise to re-queue the item
 	 */
 	protected function task( $item ) {
 		$response = wp_remote_post(
@@ -108,9 +108,7 @@ class Rocket_Background_Critical_CSS_Generation extends WP_Background_Process {
 		);
 
 		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
-			// translators: %s = type of content.
-			$this->notice['errors'][] = sprintf( __( 'Critical CSS generation for %s could not be completed.', 'rocket' ), $item['type'] );
-			return false;
+			return true;
 		}
 
 		$data = json_decode( wp_remote_retrieve_body( $response ) );
