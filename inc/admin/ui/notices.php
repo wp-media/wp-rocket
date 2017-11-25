@@ -905,38 +905,73 @@ function rocket_critical_css_generation_running() {
 		return;
 	}
 
-	$running = get_transient( 'rocket_critical_css_generation_process' );
-	if ( ! $running ) {
+	$transient = get_transient( 'rocket_critical_css_generation_process_running' );
+	if ( ! $transient ) {
 		return;
 	}
 
-	if ( 'running' === $running ) {
-		rocket_notice_html( array(
-			'status'  => 'info',
-			'message' => __( 'Critical CSS generation is currently running…', 'rocket' ),
-		) );
-	} else {
-		if ( isset( $running['errors'] ) ) {
-			$message = implode( '<br>', $running['errors'] );
+	$message = '<p>' . sprintf( __( 'Critical CSS generation is currently running: %1$d of %2$d critical CSS generated.', 'rocket' ), $transient['generated'], $transient['total'] ) . '</p>';
 
-			rocket_notice_html( array(
-				'status'  => 'error',
-				'message' => $message,
-			) );
+	if ( ! empty( $transient['items'] ) ) {
+		$message .= '<ul>';
+
+		foreach( $transient['items'] as $item ) {
+			$message .= '<li>' . $item . '</li>';
 		}
 
-		if ( isset( $running['success'] ) ) {
-			$message = implode( '<br>', $running['success'] );
-
-			rocket_notice_html( array(
-				'message' => $message,
-			) );
-		}
+		$message .= '</ul>';
 	}
 
-	delete_transient( 'rocket_critical_css_generation_process' );
+	rocket_notice_html( array(
+		'status'  => 'info',
+		'message' => $message,
+	) );
 }
 add_action( 'admin_notices', 'rocket_critical_css_generation_running' );
+
+/**
+ * This notice is displayed when the critical CSS generation is complete
+ *
+ * @since 2.11
+ * @author Remy Perona
+ */
+function rocket_critical_css_generation_complete() {
+	$screen              = get_current_screen();
+	$rocket_wl_name      = get_rocket_option( 'wl_plugin_name', null );
+	$wp_rocket_screen_id = isset( $rocket_wl_name ) ? 'settings_page_' . sanitize_key( $rocket_wl_name ) : 'settings_page_wprocket';
+	// This filter is documented in inc/admin-bar.php.
+	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		return;
+	}
+
+	if ( $screen->id !== $wp_rocket_screen_id ) {
+		return;
+	}
+
+	$transient = get_transient( 'rocket_critical_css_generation_process_complete' );
+	if ( ! $transient ) {
+		return;
+	}
+
+	$message = '<p>' . sprintf( __( 'Critical CSS generation finished: %1$d of %2$d critical CSS generated.', 'rocket' ), $transient['generated'], $transient['total'] ) . '</p>';
+
+	if ( ! empty( $transient['items'] ) ) {
+		$message .= '<ul>';
+
+		foreach( $transient['items'] as $item ) {
+			$message .= '<li>' . $item . '</li>';
+		}
+
+		$message .= '</ul>';
+	}
+
+	rocket_notice_html( array(
+		'message' => $message,
+	) );
+
+	delete_transient( 'rocket_critical_css_generation_process_complete' );
+}
+add_action( 'admin_notices', 'rocket_critical_css_generation_complete' );
 
 /**
  * Outputs notice HTML
