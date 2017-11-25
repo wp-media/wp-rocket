@@ -41,7 +41,7 @@ class Rocket_Sitemap_Preload_Process extends WP_Background_Process {
 	 * @return array|WP_Error
 	 */
 	public function dispatch() {
-		set_transient( 'rocket_sitemap_preload_process', 'running' );
+		set_transient( 'rocket_sitemap_preload_running', 'running' );
 
 		// Perform remote post.
 		return parent::dispatch();
@@ -111,7 +111,7 @@ class Rocket_Sitemap_Preload_Process extends WP_Background_Process {
 	 * Complete
 	 */
 	protected function complete() {
-		delete_transient( 'rocket_sitemap_preload_process' );
+		delete_transient( 'rocket_sitemap_preload_running' );
 		set_transient( 'rocket_sitemap_preload_complete', $this->count );
 		parent::complete();
 	}
