@@ -309,6 +309,16 @@ $rocket_render_blocking[] = array(
 );
 
 $rocket_render_blocking[] = array(
+	'type'         => 'helper_description',
+	'name'         => 'async_css_description',
+	'description'  => sprintf(
+		/* translators: %s = docs link, or nothing if white-label is enabled */
+		__( 'Critical path CSS will be automatically generated.%s', 'rocket' ),
+		$rwl ? '' : ' ' . __( '<a href="" target="_blank">More info</a>', 'rocket' )
+	),
+);
+
+$rocket_render_blocking[] = array(
 	'type'         => 'checkbox',
 	'label'        => __( 'Load JS files deferred', 'rocket' ),
 	'name'         => 'defer_all_js',
