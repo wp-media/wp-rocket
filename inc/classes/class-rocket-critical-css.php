@@ -90,7 +90,13 @@ class Rocket_Critical_CSS {
 			$this->process->push_to_queue( $item );
 		}
 
-		set_transient( 'rocket_critical_css_generation_process', 'running', HOUR_IN_SECONDS );
+		$transient = array(
+			'generated' => 0,
+			'total'     => count( $this->items ),
+			'items'     => array(),
+		);
+
+		set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
 		update_rocket_option( 'critical_css', array() );
 		$this->process->save()->dispatch();
 	}
