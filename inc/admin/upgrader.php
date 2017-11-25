@@ -246,6 +246,7 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		rocket_clean_domain();
 		rocket_clean_minify();
 		rocket_clean_cache_busting();
+		rocket_generate_advanced_cache_file();
 	}
 }
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );
