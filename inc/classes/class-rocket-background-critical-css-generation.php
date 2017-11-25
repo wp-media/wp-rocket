@@ -44,28 +44,6 @@ class Rocket_Background_Critical_CSS_Generation extends WP_Background_Process {
 	protected $critical_css_generator_api_url = 'https://cpcss.wp-rocket.me/api/job/';
 
 	/**
-	 * Critical CSS values container.
-	 *
-	 * @since 2.11
-	 * @author Remy Perona
-	 *
-	 * @access protected
-	 * @var array An array containing the type of item and its associated critical CSS path.
-	 */
-	protected $critical_css = array();
-
-	/**
-	 * Notices container.
-	 *
-	 * @since 2.11
-	 * @author Remy Perona
-	 *
-	 * @access protected
-	 * @var array An array containing the type of notices and their associated values.
-	 */
-	protected $notice = array();
-
-	/**
 	 * Launches the background process
 	 *
 	 * @since 2.11
@@ -119,15 +97,17 @@ class Rocket_Background_Critical_CSS_Generation extends WP_Background_Process {
 				$critical_css[ $item['type'] ] = $job_data->data->critical_path;
 				update_rocket_option( 'critical_css', $critical_css );
 
+				$transient = get_transient( 'rocket_critical_css_generation_process_running' );
 				// translators: %s = type of content.
-				$this->notice['success'][] = sprintf( __( 'Critical CSS generation for %s complete.', 'rocket' ), $item['type'] );
+				$transient['items'][] = sprintf( __( 'Critical CSS for %s generated.', 'rocket' ), $item['type'] );
+				$transient['generated']++;
+				set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
+
 				break;
 			}
 
 			sleep( 2 );
 		}
-
-		set_transient( 'rocket_critical_css_generation_process', $this->notice, HOUR_IN_SECONDS );
 
 		return false;
 	}
@@ -156,6 +136,9 @@ class Rocket_Background_Critical_CSS_Generation extends WP_Background_Process {
 	 * @author Remy Perona
 	 */
 	protected function complete() {
+		set_transient( 'rocket_critical_css_generation_process_complete', get_transient( 'rocket_critical_css_generation_process_running' ), HOUR_IN_SECONDS );
+		delete_transient( 'rocket_critical_css_generation_process_running' );
+
 		parent::complete();
 	}
 }
