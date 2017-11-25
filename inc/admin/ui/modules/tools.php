@@ -135,7 +135,7 @@ if ( get_rocket_option( 'async_css' ) ) {
 			),
 			'button' => array(
 				'button_label' => __( 'Regenerate Critical Path CSS', 'rocket' ),
-				'url'          => wp_nonce_url( admin_url( 'admin-post.php?action=rocket_generate_critical_css' ), 'rocket_regenerate_critical_css' ),
+				'url'          => wp_nonce_url( admin_url( 'admin-post.php?action=rocket_generate_critical_css' ), 'rocket_generate_critical_css' ),
 			),
 		)
 	);
