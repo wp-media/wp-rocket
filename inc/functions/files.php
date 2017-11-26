@@ -273,6 +273,11 @@ function rocket_init_cache_dir() {
 	if ( ! rocket_direct_filesystem()->is_dir( WP_ROCKET_CACHE_BUSTING_PATH ) ) {
 		rocket_mkdir_p( WP_ROCKET_CACHE_BUSTING_PATH );
 	}
+
+	// Create critical CSS folder if not exist.
+	if ( ! rocket_direct_filesystem()->is_dir( WP_ROCKET_CRITICAL_CSS_PATH ) ) {
+		rocket_mkdir_p( WP_ROCKET_CRITICAL_CSS_PATH );
+	}
 }
 
 /**
