@@ -911,3 +911,44 @@ function rocket_define_donotasync_css_constant( $value ) {
 		define( 'DONOTASYNCCSS', (bool) $value );
 	}
 }
+
+/**
+ * Defer loading of CSS files
+ *
+ * @since 2.10
+ * @deprecated 2.11
+ * @see Rocket_Critical_CSS->async_css()
+ * @author Remy Perona
+ *
+ * @param string $buffer HTML code.
+ * @return string Updated HTML code
+ */
+function rocket_async_css( $buffer ) {
+	_deprecated_function( __FUNCTION__, '2.11', 'Rocket_Critical_CSS->async_css()' );
+
+	return $buffer;
+}
+
+/**
+ * Insert critical CSS in the <head>
+ *								
+ * @since 2.10
+ * @deprecated 2.11
+ * @see Rocket_Critical_CSS->insert_critical_css()	
+ * @author Remy Perona			
+ */								
+function rocket_insert_critical_css() {
+	_deprecated_function( __FUNCTION__, '2.11', 'Rocket_Critical_CSS->insert_critical_css()' );
+}
+
+/**
+ * Insert loadCSS script in <head>
+ *
+ * @since 2.10
+ * @deprecated 2.11
+ * @see Rocket_Critical_CSS->insert_load_css()
+ * @author Remy Perona
+ */
+function rocket_insert_load_css() {
+	_deprecated_function( __FUNCTION__, '2.11', 'Rocket_Critical_CSS->insert_load_css()' );
+}
