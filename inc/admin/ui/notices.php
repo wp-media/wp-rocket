@@ -80,7 +80,7 @@ function rocket_warning_plugin_modification() {
 			'status'         => 'warning',
 			'dismissible'    => '',
 			// translators: %s is WP Rocket plugin name (maybe white label).
-			'message'        => sprintf( __( '<strong>%s</strong>: One or more extensions have been enabled or disabled, clear the cache if necessary.', 'rocket' ), WP_ROCKET_PLUGIN_NAME ),
+			'message'        => sprintf( __( '<strong>%s</strong>: One or more plugins have been enabled or disabled, clear the cache if they affect the front end of your site.', 'rocket' ), WP_ROCKET_PLUGIN_NAME ),
 			'action'         => 'clear_cache',
 			'dismiss_button' => __FUNCTION__,
 		) );
