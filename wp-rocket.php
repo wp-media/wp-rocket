@@ -43,6 +43,7 @@ define( 'WP_ROCKET_CONFIG_PATH'         , WP_CONTENT_DIR . '/wp-rocket-config/' 
 define( 'WP_ROCKET_CACHE_PATH'          , WP_CONTENT_DIR . '/cache/wp-rocket/' );
 define( 'WP_ROCKET_MINIFY_CACHE_PATH'   , WP_CONTENT_DIR . '/cache/min/' );
 define( 'WP_ROCKET_CACHE_BUSTING_PATH'  , WP_CONTENT_DIR . '/cache/busting/' );
+define( 'WP_ROCKET_CRITICAL_CSS_PATH'    , WP_CONTENT_DIR . '/cache/critical-css/' );
 define( 'WP_ROCKET_URL'                 , plugin_dir_url( WP_ROCKET_FILE ) );
 define( 'WP_ROCKET_INC_URL'             , WP_ROCKET_URL . 'inc/' );
 define( 'WP_ROCKET_FRONT_URL'           , WP_ROCKET_INC_URL . 'front/' );
@@ -194,10 +195,6 @@ function rocket_init() {
 			require WP_ROCKET_FRONT_PATH . 'deferred-js.php';
 		}
 
-		if ( get_rocket_option( 'async_css' ) ) {
-			require WP_ROCKET_FRONT_PATH . 'async-css.php';
-		}
-
 		// Don't insert the LazyLoad file if Rocket LazyLoad is activated.
 		if ( ! rocket_is_plugin_active( 'rocket-lazy-load/rocket-lazy-load.php' ) ) {
 			require WP_ROCKET_FRONT_PATH . 'lazyload.php';
@@ -210,7 +207,10 @@ function rocket_init() {
 	$rocket_sitemap_background_process = new Rocket_Sitemap_Preload_Process();
 
 	Rocket_Database_Optimization::init();
-	Rocket_Critical_CSS::get_instance()->init();
+
+	if ( get_rocket_option( 'async_css' ) ) {
+		Rocket_Critical_CSS::get_instance()->init();
+	}
 
 	// You can hook this to trigger any action when WP Rocket is correctly loaded, so, not in AUTOSAVE mode.
 	if ( rocket_valid_key() ) {
