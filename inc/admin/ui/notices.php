@@ -910,7 +910,7 @@ function rocket_critical_css_generation_running() {
 		return;
 	}
 
-	$message = '<p>' . sprintf( __( 'Critical CSS generation is currently running: %1$d of %2$d critical CSS generated.', 'rocket' ), $transient['generated'], $transient['total'] ) . '</p>';
+	$message = '<p>' . sprintf( __( 'Critical CSS generation is currently running: %1$d of %2$d page types completed. (Refresh this page to view progress)', 'rocket' ), $transient['generated'], $transient['total'] ) . '</p>';
 
 	if ( ! empty( $transient['items'] ) ) {
 		$message .= '<ul>';
