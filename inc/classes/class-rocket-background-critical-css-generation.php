@@ -93,9 +93,18 @@ class Rocket_Background_Critical_CSS_Generation extends WP_Background_Process {
 
 		while ( $job_data = $this->get_critical_path( $data->data->id ) ) {
 			if ( 'complete' === $job_data->data->state ) {
-				$critical_css = get_rocket_option( 'critical_css' );
-				$critical_css[ $item['type'] ] = $job_data->data->critical_path;
-				update_rocket_option( 'critical_css', $critical_css );
+				$critical_css_path = WP_ROCKET_CRITICAL_CSS_PATH . get_current_blog_id();
+
+				if ( ! rocket_direct_filesystem()->is_dir( $critical_css_path ) ) {
+					rocket_mkdir_p( $critical_css_path );
+				}
+
+				$file_path = $critical_css_path . '/' . $item['type'] . '.css';
+				$result    = rocket_direct_filesystem()->put_contents( $file_path, $job_data->data->critical_path );
+
+				if ( ! $result ) {
+					return true;
+				}
 
 				$transient = get_transient( 'rocket_critical_css_generation_process_running' );
 				// translators: %s = type of content.
