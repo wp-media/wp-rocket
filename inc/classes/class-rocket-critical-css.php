@@ -403,7 +403,7 @@ class Rocket_Critical_CSS {
 	 * @since 2.11
 	 * @author Remy Perona
 	 */
-	public function warning_busting_cache_dir_permissions() {
+	public function warning_critical_css_dir_permissions() {
 		// This filter is documented in inc/admin-bar.php.
 		if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
 			&& ( ! rocket_direct_filesystem()->is_writable( WP_ROCKET_CRITICAL_CSS_PATH ) )
@@ -529,28 +529,30 @@ class Rocket_Critical_CSS {
 		}
 	
 		if ( is_home() ) {
-			$file = 'home.css';
+			$name = 'home.css';
 		} elseif ( is_front_page() ) {
-			$file = 'front_page.css';
+			$name = 'front_page.css';
 		} elseif ( is_category() ) {
-			$file = 'category.css';
+			$name = 'category.css';
 		} elseif ( is_tag() ) {
-			$file = 'post_tag.css';
+			$name = 'post_tag.css';
 		} elseif ( is_tax() ) {
 			$taxonomy = get_queried_object()->term_name;
-			$file = $taxonomy . '.css';
+			$name = $taxonomy . '.css';
 		} elseif ( is_singular() ) {
 			$post_type = get_post_type();
-			$file = $post_type . '.css';
+			$name = $post_type . '.css';
 		} else {
-			$file = 'front_page.css';
+			$name = 'front_page.css';
 		}
+
+		$file = $this->critical_css_path . $name;
 	
-		if ( ! rocket_direct_filesystem()->is_readable( $this->critical_css_path . $file ) ) {
+		if ( ! rocket_direct_filesystem()->is_readable( $file ) ) {
 			return;
 		}
 	
-		echo '<style id="rocket-critical-css">' . rocket_direct_filesystem()->get_contents( $critical_css_content ) . '</style>';
+		echo '<style id="rocket-critical-css">' . rocket_direct_filesystem()->get_contents( $file ) . '</style>';
 	}
 
 
