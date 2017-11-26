@@ -111,17 +111,6 @@ jQuery( document ).ready( function($){
 
 	$inputs_render_blocking.on('change.wprocket', check_minify);
 
-	var async_css 		 = $( '#async_css' );
-	var critical_css_row = $( '.critical-css-row' );
-
-	if ( ! async_css.is( ':checked' ) ) {
-		critical_css_row.hide();
-	}
-
-	async_css.change( function() {
-		critical_css_row.toggle( 'fast' );
-	});
-
 	var minify_css 		= $( '#minify_css' );
 	var concatenate_css	= $( '.fieldname-minify_concatenate_css' );
 	var exclude_css_row = $( '.exclude-css-row' );
