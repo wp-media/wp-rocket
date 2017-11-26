@@ -13,7 +13,7 @@ class Rocket_Critical_CSS {
 	 *
 	 * @since 2.11
 	 * @var object $process Background Process instance.
-	 * @access protected
+	 * @access public
 	 */
 	public $process;
 
@@ -22,9 +22,18 @@ class Rocket_Critical_CSS {
 	 *
 	 * @since 2.11
 	 * @var array $items An array of items.
-	 * @access protected
+	 * @access public
 	 */
 	public $items = array();
+
+	/**
+	 * Path to the critical CSS directory
+	 *
+	 * @since 2.11
+	 * @var string path to the critical css directory
+	 * @access public
+	 */
+	public $critical_css_path;
 
 	/**
 	 * The single instance of the class.
@@ -63,6 +72,8 @@ class Rocket_Critical_CSS {
 			'type' => 'front_page',
 			'url'  => home_url( '/' ),
 		);
+
+		$this->critical_css_path = WP_ROCKET_CRITICAL_CSS_PATH . get_current_blog_id() . '/';
 	}
 
 	/**
@@ -76,6 +87,10 @@ class Rocket_Critical_CSS {
 		add_action( 'update_option_' . WP_ROCKET_SLUG, array( $this, 'generate_critical_css_on_activation' ), 11, 2 );
 		add_action( 'admin_notices', array( $this, 'critical_css_generation_running_notice' ) );
 		add_action( 'admin_notices', array( $this, 'critical_css_generation_complete_notice' ) );
+		add_action( 'admin_notices', array( $this, 'warning_critical_css_dir_permissions' ) );
+		add_action( 'wp_head', array( $this, 'insert_load_css' ), PHP_INT_MAX );
+		add_action( 'wp_head', array( $this, 'insert_critical_css' ), 1 );
+		add_filter( 'rocket_buffer', array( $this, 'async_css' ), 15 );
 	}
 
 	/**
@@ -85,6 +100,7 @@ class Rocket_Critical_CSS {
 	 * @author Remy Perona
 	 */
 	public function process_handler() {
+		$this->clean_critical_css();
 		$this->process->cancel_process();
 		$this->set_items();
 
@@ -99,7 +115,6 @@ class Rocket_Critical_CSS {
 		);
 
 		set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
-		update_rocket_option( 'critical_css', array() );
 		$this->process->save()->dispatch();
 	}
 
@@ -140,6 +155,32 @@ class Rocket_Critical_CSS {
 	}
 
 	/**
+	 * Deletes critical CSS files
+	 *
+	 * @since 2.11
+	 * @author Remy Perona
+	 */
+	public function clean_critical_css() {
+		try {
+			$directory = new RecursiveDirectoryIterator( $this->critical_css_path, FilesystemIterator::SKIP_DOTS );
+		} catch ( Exception $e ) {
+			// no logging yet.
+			return;
+		}
+
+		try {
+			$files = new RecursiveIteratorIterator( $directory, RecursiveIteratorIterator::CHILD_FIRST );
+		} catch ( Exception $e ) {
+			// no logging yet.
+			return;
+		}
+		
+		foreach ( $files as $file ) {
+			rocket_direct_filesystem()->delete( $file );
+		}
+	}
+
+	/**
 	 * Gets all public post types
 	 *
 	 * @since 2.11
@@ -154,6 +195,8 @@ class Rocket_Critical_CSS {
 				'publicly_queryable' => true,
 			)
 		);
+
+		$post_types[] = 'page';
 
 		/**
 		 * Filters the post types excluded from critical CSS generation
@@ -275,7 +318,7 @@ class Rocket_Critical_CSS {
 	 * @since 2.11
 	 * @author Remy Perona
 	 */
-	function critical_css_generation_running_notice() {
+	public function critical_css_generation_running_notice() {
 		$screen              = get_current_screen();
 		$rocket_wl_name      = get_rocket_option( 'wl_plugin_name', null );
 		$wp_rocket_screen_id = isset( $rocket_wl_name ) ? 'settings_page_' . sanitize_key( $rocket_wl_name ) : 'settings_page_wprocket';
@@ -317,7 +360,7 @@ class Rocket_Critical_CSS {
 	 * @since 2.11
 	 * @author Remy Perona
 	 */
-	function critical_css_generation_complete_notice() {
+	public function critical_css_generation_complete_notice() {
 		$screen              = get_current_screen();
 		$rocket_wl_name      = get_rocket_option( 'wl_plugin_name', null );
 		$wp_rocket_screen_id = isset( $rocket_wl_name ) ? 'settings_page_' . sanitize_key( $rocket_wl_name ) : 'settings_page_wprocket';
@@ -353,4 +396,221 @@ class Rocket_Critical_CSS {
 	
 		delete_transient( 'rocket_critical_css_generation_process_complete' );
 	}
+
+	/**
+	 * This warning is displayed when the critical CSS dir isn't writeable
+	 *
+	 * @since 2.11
+	 * @author Remy Perona
+	 */
+	public function warning_busting_cache_dir_permissions() {
+		// This filter is documented in inc/admin-bar.php.
+		if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
+			&& ( ! rocket_direct_filesystem()->is_writable( WP_ROCKET_CRITICAL_CSS_PATH ) )
+			&& ( get_rocket_option( 'async_css', false ) )
+			&& rocket_valid_key() ) {
+	
+			$boxes = get_user_meta( $GLOBALS['current_user']->ID, 'rocket_boxes', true );
+	
+			if ( in_array( __FUNCTION__, (array) $boxes, true ) ) {
+				return;
+			}
+	
+			$message = rocket_notice_writing_permissions( trim( str_replace( ABSPATH, '', WP_ROCKET_CRITICAL_CSS_PATH ), '/' ) );
+	
+			rocket_notice_html( array(
+				'status'      => 'error',
+				'dismissible' => '',
+				'message'     => $message,
+			) );
+		}
+	}
+
+	/**
+	 * Defer loading of CSS files
+	 *
+	 * @since 2.10
+	 * @author Remy Perona
+	 *
+	 * @param string $buffer HTML code.
+	 * @return string Updated HTML code
+	 */
+	function async_css( $buffer ) {
+		if ( ! get_rocket_option( 'async_css' ) ) {
+			return $buffer;
+		}
+	
+		if ( is_rocket_post_excluded_option( 'async_css' ) ) {
+			return $buffer;
+		}
+	
+		$excluded_css = array_flip( get_rocket_exclude_async_css() );
+	
+		// Get all css files with this regex.
+		preg_match_all( apply_filters( 'rocket_async_css_regex_pattern', '/(?=<link[^>]*\s(rel\s*=\s*[\'"]stylesheet["\']))<link[^>]*\shref\s*=\s*[\'"]([^\'"]+)[\'"](.*)>/iU' ), $buffer, $tags_match );
+	
+		if ( ! isset( $tags_match[0] ) ) {
+			return $buffer;
+		}
+	
+		$noscripts = '';
+	
+		foreach ( $tags_match[0] as $i => $tag ) {
+			// Strip query args.
+			$path = rocket_extract_url_component( $tags_match[2][ $i ], PHP_URL_PATH );
+	
+			// Check if this file should be deferred.
+			if ( isset( $excluded_css[ $path ] ) ) {
+				continue;
+			}
+	
+			$preload = str_replace( 'stylesheet', 'preload', $tags_match[1][ $i ] );
+			$onload  = str_replace( $tags_match[3][ $i ], ' as="style" onload=""' . $tags_match[3][ $i ] . '>', $tags_match[3][ $i ] );
+			$tag     = str_replace( $tags_match[3][ $i ] . '>', $onload, $tag );
+			$tag     = str_replace( $tags_match[1][ $i ], $preload, $tag );
+			$tag     = str_replace( 'onload=""', 'onload="this.rel=\'stylesheet\'"', $tag );
+			$buffer  = str_replace( $tags_match[0][ $i ], $tag, $buffer );
+	
+			$noscripts .= '<noscript>' . $tags_match[0][ $i ] . '</noscript>';
+		}
+	
+		$buffer = str_replace( '</body>', $noscripts . '</body>', $buffer );
+	
+		return $buffer;
+	}
+
+	/**
+	 * Insert critical CSS in the <head>
+	 *
+	 * @since 2.10
+	 * @author Remy Perona
+	 */
+	function insert_critical_css() {
+		global $pagenow;
+	
+		if ( ! get_rocket_option( 'async_css' ) ) {
+			return;
+		}
+	
+		if ( is_rocket_post_excluded_option( 'async_css' ) ) {
+			return;
+		}
+	
+		// Don't apply on wp-login.php/wp-register.php.
+		if ( in_array( $pagenow, array( 'wp-login.php', 'wp-register.php' ), true ) ) {
+			return;
+		}
+	
+		if ( ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) || ( defined( 'DONOTASYNCCSS' ) && DONOTASYNCCSS ) ) {
+			return;
+		}
+	
+		// Don't apply if user is logged-in and cache for logged-in user is off.
+		if ( is_user_logged_in() && ! get_rocket_option( 'cache_logged_user' ) ) {
+			return;
+		}
+	
+		// This filter is documented in inc/front/process.php.
+		$rocket_cache_search = apply_filters( 'rocket_cache_search', false );
+	
+		// Don't apply on search page.
+		if ( is_search() && ! $rocket_cache_search ) {
+			return;
+		}
+	
+		// Don't apply on excluded pages.
+		if ( in_array( $_SERVER['REQUEST_URI'] , get_rocket_option( 'cache_reject_uri' , array() ), true ) ) {
+			return;
+		}
+	
+		// Don't apply on 404 page.
+		if ( is_404() ) {
+			return;
+		}
+	
+		if ( is_home() ) {
+			$file = 'home.css';
+		} elseif ( is_front_page() ) {
+			$file = 'front_page.css';
+		} elseif ( is_category() ) {
+			$file = 'category.css';
+		} elseif ( is_tag() ) {
+			$file = 'post_tag.css';
+		} elseif ( is_tax() ) {
+			$taxonomy = get_queried_object()->term_name;
+			$file = $taxonomy . '.css';
+		} elseif ( is_singular() ) {
+			$post_type = get_post_type();
+			$file = $post_type . '.css';
+		} else {
+			$file = 'front_page.css';
+		}
+	
+		if ( ! rocket_direct_filesystem()->is_readable( $this->critical_css_path . $file ) ) {
+			return;
+		}
+	
+		echo '<style id="rocket-critical-css">' . rocket_direct_filesystem()->get_contents( $critical_css_content ) . '</style>';
+	}
+
+
+	/**
+	 * Insert loadCSS script in <head>
+	 *
+	 * @since 2.10
+	 * @author Remy Perona
+	 */
+	function insert_load_css() {
+		global $pagenow;
+	
+		if ( ! get_rocket_option( 'async_css' ) ) {
+			return;
+		}
+	
+		if ( is_rocket_post_excluded_option( 'async_css' ) ) {
+			return;
+		}
+	
+		// Don't apply on wp-login.php/wp-register.php.
+		if ( in_array( $pagenow, array( 'wp-login.php', 'wp-register.php' ), true ) ) {
+			return;
+		}
+	
+		if ( ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) || ( defined( 'DONOTASYNCCSS' ) && DONOTASYNCCSS ) ) {
+			return;
+		}
+	
+		// Don't apply if user is logged-in and cache for logged-in user is off.
+		if ( is_user_logged_in() && ! get_rocket_option( 'cache_logged_user' ) ) {
+			return;
+		}
+	
+		// This filter is documented in inc/front/process.php.
+		$rocket_cache_search = apply_filters( 'rocket_cache_search', false );
+	
+		// Don't apply on search page.
+		if ( is_search() && ! $rocket_cache_search ) {
+			return;
+		}
+	
+		// Don't apply on excluded pages.
+		if ( in_array( $_SERVER['REQUEST_URI'] , get_rocket_option( 'cache_reject_uri' , array() ), true ) ) {
+			return;
+		}
+	
+		// Don't apply on 404 page.
+		if ( is_404() ) {
+			return;
+		}
+	
+		echo <<<JS
+<script>
+/*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+!function(a){"use strict";var b=function(b,c,d){function e(a){return h.body?a():void setTimeout(function(){e(a)})}function f(){i.addEventListener&&i.removeEventListener("load",f),i.media=d||"all"}var g,h=a.document,i=h.createElement("link");if(c)g=c;else{var j=(h.body||h.getElementsByTagName("head")[0]).childNodes;g=j[j.length-1]}var k=h.styleSheets;i.rel="stylesheet",i.href=b,i.media="only x",e(function(){g.parentNode.insertBefore(i,c?g:g.nextSibling)});var l=function(a){for(var b=i.href,c=k.length;c--;)if(k[c].href===b)return a();setTimeout(function(){l(a)})};return i.addEventListener&&i.addEventListener("load",f),i.onloadcssdefined=l,l(f),i};"undefined"!=typeof exports?exports.loadCSS=b:a.loadCSS=b}("undefined"!=typeof global?global:this);
+/*! loadCSS rel=preload polyfill. [c]2017 Filament Group, Inc. MIT License */
+!function(a){if(a.loadCSS){var b=loadCSS.relpreload={};if(b.support=function(){try{return a.document.createElement("link").relList.supports("preload")}catch(b){return!1}},b.poly=function(){for(var b=a.document.getElementsByTagName("link"),c=0;c<b.length;c++){var d=b[c];"preload"===d.rel&&"style"===d.getAttribute("as")&&(a.loadCSS(d.href,d,d.getAttribute("media")),d.rel=null)}},!b.support()){b.poly();var c=a.setInterval(b.poly,300);a.addEventListener&&a.addEventListener("load",function(){b.poly(),a.clearInterval(c)}),a.attachEvent&&a.attachEvent("onload",function(){a.clearInterval(c)})}}}(this);
+</script>
+JS;
+	}
+
 }
