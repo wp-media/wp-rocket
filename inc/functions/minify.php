@@ -366,7 +366,7 @@ function rocket_concatenate_google_fonts( $buffer ) {
 	preg_match_all( '/<link(?:\s+(?:(?!href\s*=\s*)[^>])+)?(?:\s+href\s*=\s*([\'"])((?:https?:)?\/\/fonts\.googleapis\.com\/css(?:(?!\1).)+)\1)(?:\s+[^>]*)?>/iU', $buffer_without_comments, $matches );
 
 	if ( ! $matches[2] || 1 === count( $matches ) ) {
-		return array( $buffer, '' );
+		return $buffer;
 	}
 
 	$fonts   = array();
