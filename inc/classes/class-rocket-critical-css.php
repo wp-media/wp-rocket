@@ -551,8 +551,14 @@ class Rocket_Critical_CSS {
 		if ( ! rocket_direct_filesystem()->is_readable( $file ) ) {
 			return;
 		}
+
+		$critical_css_content = rocket_direct_filesystem()->get_contents( $file );
+
+		if ( ! $critical_css_content ) {
+			return;
+		}
 	
-		echo '<style id="rocket-critical-css">' . rocket_direct_filesystem()->get_contents( $file ) . '</style>';
+		echo '<style id="rocket-critical-css">' . esc_html( wp_strip_all_tags( $critical_css_content ) ) . '</style>';
 	}
 
 
