@@ -207,10 +207,7 @@ function rocket_init() {
 	$rocket_sitemap_background_process = new Rocket_Sitemap_Preload_Process();
 
 	Rocket_Database_Optimization::init();
-
-	if ( get_rocket_option( 'async_css' ) ) {
-		Rocket_Critical_CSS::get_instance()->init();
-	}
+	Rocket_Critical_CSS::get_instance()->init();
 
 	// You can hook this to trigger any action when WP Rocket is correctly loaded, so, not in AUTOSAVE mode.
 	if ( rocket_valid_key() ) {
