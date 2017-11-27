@@ -558,7 +558,7 @@ class Rocket_Critical_CSS {
 			return;
 		}
 	
-		echo '<style id="rocket-critical-css">' . esc_html( wp_strip_all_tags( $critical_css_content ) ) . '</style>';
+		echo '<style id="rocket-critical-css">' . wp_strip_all_tags( $critical_css_content ) . '</style>';
 	}
 
 
