@@ -188,10 +188,10 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	/**
 	 * Returns the SQL statement to query (or count) actions.
 	 *
-	 * @param array $query Filtering option
+	 * @param array $query Filtering options
 	 * @param bool $count  Whether the SQL should return the IDs or count
 	 *
-	 * @return string SQL statment. The returned SQL is already properly escaped.
+	 * @return string SQL statement. The returned SQL is already properly escaped.
 	 */
 	protected function get_query_actions_sql( array $query, $count = false ) {
 		$query = wp_parse_args( $query, array(
