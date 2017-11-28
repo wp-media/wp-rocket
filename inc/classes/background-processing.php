@@ -27,21 +27,12 @@ class Rocket_Sitemap_Preload_Process extends WP_Background_Process {
 	protected $action = 'sitemap_preload';
 
 	/**
-	 * Count the number of preloaded URLs.
-	 *
-	 * @access protected
-	 * @var int $count Number of preloaded URLs.
-	 */
-	protected $count = 0;
-
-	/**
 	 * Dispatch
 	 *
 	 * @access public
 	 * @return array|WP_Error
 	 */
 	public function dispatch() {
-		set_transient( 'rocket_sitemap_preload_running', 'running' );
 
 		// Perform remote post.
 		return parent::dispatch();
@@ -77,7 +68,8 @@ class Rocket_Sitemap_Preload_Process extends WP_Background_Process {
 		$response = wp_remote_get( esc_url_raw( $item ), $args );
 
 		if ( 200 === wp_remote_retrieve_response_code( $response ) ) {
-			$this->count++;
+			$count = get_transient( 'rocket_sitemap_preload_running' );
+			set_transient( 'rocket_sitemap_preload_running', $count++ );
 		}
 
 		usleep( get_rocket_option( 'sitemap_preload_url_crawl', '500000' ) );
@@ -111,8 +103,8 @@ class Rocket_Sitemap_Preload_Process extends WP_Background_Process {
 	 * Complete
 	 */
 	protected function complete() {
+		set_transient( 'rocket_sitemap_preload_complete', get_transient( 'rocket_sitemap_preload_running' ) );
 		delete_transient( 'rocket_sitemap_preload_running' );
-		set_transient( 'rocket_sitemap_preload_complete', $this->count );
 		parent::complete();
 	}
 
