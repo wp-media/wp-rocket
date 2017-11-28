@@ -250,7 +250,7 @@ function get_rocket_minify_url( $files, $extension ) {
 	if ( is_string( $files ) ) {
 		$file      = get_rocket_parse_url( $files );
 		$file_path = rocket_realpath( strtok( $files, '?' ) );
-		$filename  = preg_replace( '/\.(js|css)\?(?:timestamp|ver)=([^&]+)(?:.*)/', '.min-$2.$1', ltrim( $file['path'], '/' ) . '?' . $file['query'] );
+		$filename  = preg_replace( '/\.(js|css)\?(?:timestamp|ver)=([^&]+)(?:.*)/', '-$2.$1', ltrim( $file['path'], '/' ) . '?' . $file['query'] );
 	} else {
 		$file_path  = array_map( 'rocket_realpath', $files );
 		$files_hash = implode( ',', $files );
