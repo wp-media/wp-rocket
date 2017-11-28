@@ -218,7 +218,7 @@ function is_rocket_minify_excluded_file( $tag, $extension ) {
 
 	if ( ! empty( $excluded_files ) ) {
 		foreach ( $excluded_files as $i => $excluded_file ) {
-			$excluded_files[ $i ] = preg_quote( $excluded_file, '#' );
+			$excluded_files[ $i ] = str_replace( '#', '\#', $excluded_file );
 		}
 
 		$excluded_files = implode( '|', $excluded_files );
