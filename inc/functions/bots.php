@@ -168,6 +168,7 @@ function run_rocket_sitemap_preload() {
 		}
 	}
 
+	set_transient( 'rocket_sitemap_preload_running', 0 );
 	$rocket_background_process->save()->dispatch();
 }
 
