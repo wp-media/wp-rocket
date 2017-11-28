@@ -203,7 +203,6 @@ function is_rocket_minify_excluded_file( $tag, $extension ) {
 		}
 
 		if ( false !== strpos( $tag[0], 'only screen and' ) ) {
-			error_log( $tag[0] );
 			return true;
 		}
 	}
