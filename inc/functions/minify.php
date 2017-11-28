@@ -201,9 +201,14 @@ function is_rocket_minify_excluded_file( $tag, $extension ) {
 		if ( false !== strpos( $tag[0], 'media=' ) && ! preg_match( '/media=["\'](?:["\']|[^"\']*?(all|screen)[^"\']*?["\'])/iU', $tag[0] ) ) {
 			return true;
 		}
+
+		if ( false !== strpos( $tag[0], 'only screen and' ) ) {
+			error_log( $tag[0] );
+			return true;
+		}
 	}
 
-	$file_path      = rocket_extract_url_component( $tag[1], PHP_URL_PATH );
+	$file_path = rocket_extract_url_component( $tag[1], PHP_URL_PATH );
 
 	// File extension is not .css or .js.
 	if ( pathinfo( $file_path, PATHINFO_EXTENSION ) !== $extension ) {
