@@ -842,12 +842,12 @@ function rocket_sitemap_preload_running() {
 	}
 
 	$running = get_transient( 'rocket_sitemap_preload_running' );
-	if ( ! $running ) {
+	if ( false === $running ) {
 		return;
 	}
 
 	rocket_notice_html( array(
-		'message' => __( 'Sitemap-based cache preload is currently running …', 'rocket' ),
+		'message' => sprintf( __( 'Sitemap-based cache preload is currently running: %d pages not yet cached have been preloaded. (refresh to see progress)', 'rocket' ), $running ),
 	) );
 }
 add_action( 'admin_notices', 'rocket_sitemap_preload_running' );
@@ -873,7 +873,7 @@ function rocket_sitemap_preload_complete() {
 	}
 
 	$result = get_transient( 'rocket_sitemap_preload_complete' );
-	if ( ! $result ) {
+	if ( false === $result ) {
 		return;
 	}
 
