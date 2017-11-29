@@ -149,7 +149,7 @@ function rocket_get_js_enqueued_in_head() {
 
 	foreach ( $wp_scripts->done as $handle ) {
 		if ( ! empty( $wp_scripts->registered[ $handle ]->src ) ) {
-			$rocket_js_enqueued_in_head[ $wp_scripts->registered[ $handle ]->src ] = 1;
+			$rocket_js_enqueued_in_head[] = rocket_clean_exclude_file( $wp_scripts->registered[ $handle ]->src );
 		}
 	}
 }

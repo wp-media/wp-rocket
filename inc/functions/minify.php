@@ -47,7 +47,13 @@ function rocket_minify_files( $buffer, $extension ) {
 			if ( 'js' === $extension ) {
 				$file_path = rocket_clean_exclude_file( $tag[1] );
 
-				if ( isset( $rocket_js_enqueued_in_head[ $file_path ] ) ) {
+				foreach( $rocket_js_enqueued_in_head as $k => $js_in_head ) {
+					$rocket_js_enqueued_in_head[ $k ] = str_replace( '#', '\#', $js_in_head );
+				}
+
+				$js_files_in_head = implode( '|', $rocket_js_enqueued_in_head );
+
+				if ( preg_match( '#(' . $js_files_in_head . ')#', $file_path ) ) {
 					$header_files[] = strtok( $tag[1], '?' );
 				} else {
 					$files[] = strtok( $tag[1], '?' );
@@ -121,7 +127,7 @@ function rocket_minify_files( $buffer, $extension ) {
 		$minify_header_url = get_rocket_minify_url( $header_files, $extension );
 	}
 
-	$minify_url        = get_rocket_minify_url( $files, $extension );
+	$minify_url = get_rocket_minify_url( $files, $extension );
 
 	if ( ! $minify_url ) {
 		return $buffer;

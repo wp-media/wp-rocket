@@ -448,7 +448,7 @@ function get_rocket_exclude_files( $extension ) {
 		$excluded_files = get_rocket_option( 'exclude_js', array() );
 
 		if ( get_rocket_option( 'defer_all_js', 0 ) && get_rocket_option( 'defer_all_js_safe', 0 ) ) {
-			$excluded_files[] = $wp_scripts->registered['jquery-core']->src;
+			$excluded_files[] = rocket_clean_exclude_file( site_url( $wp_scripts->registered['jquery-core']->src ) );
 		}
 
 		/**
