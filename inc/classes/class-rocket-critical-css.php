@@ -320,15 +320,8 @@ class Rocket_Critical_CSS {
 	 * @author Remy Perona
 	 */
 	public function critical_css_generation_running_notice() {
-		$screen              = get_current_screen();
-		$rocket_wl_name      = get_rocket_option( 'wl_plugin_name', null );
-		$wp_rocket_screen_id = isset( $rocket_wl_name ) ? 'settings_page_' . sanitize_key( $rocket_wl_name ) : 'settings_page_wprocket';
 		// This filter is documented in inc/admin-bar.php.
 		if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
-			return;
-		}
-	
-		if ( $screen->id !== $wp_rocket_screen_id ) {
 			return;
 		}
 	
@@ -362,15 +355,8 @@ class Rocket_Critical_CSS {
 	 * @author Remy Perona
 	 */
 	public function critical_css_generation_complete_notice() {
-		$screen              = get_current_screen();
-		$rocket_wl_name      = get_rocket_option( 'wl_plugin_name', null );
-		$wp_rocket_screen_id = isset( $rocket_wl_name ) ? 'settings_page_' . sanitize_key( $rocket_wl_name ) : 'settings_page_wprocket';
 		// This filter is documented in inc/admin-bar.php.
 		if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
-			return;
-		}
-	
-		if ( $screen->id !== $wp_rocket_screen_id ) {
 			return;
 		}
 	
