@@ -147,7 +147,7 @@ class Rocket_Background_Database_Optimization extends WP_Background_Process {
 				if ( $query ) {
 					$number = 0;
 					foreach ( $query as $table ) {
-						$number += (int) $wpdb->query( "OPTIMIZE TABLE '$table->table_name'" );
+						$number += (int) $wpdb->query( "OPTIMIZE TABLE $table->table_name" );
 					}
 
 					$this->count[ $item ] = $number;
