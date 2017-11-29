@@ -86,13 +86,21 @@ class Rocket_Background_Critical_CSS_Generation extends WP_Background_Process {
 		);
 
 		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
-			return true;
+			return false;
 		}
 
 		$data = json_decode( wp_remote_retrieve_body( $response ) );
 
+		if ( ! isset( $data->data ) ) {
+			return false;
+		}
+
 		while ( $job_data = $this->get_critical_path( $data->data->id ) ) {
-			if ( 'complete' === $job_data->data->state ) {
+			if ( 400 === (int) $job_data->status ) {
+				break;
+			}
+
+			if ( isset( $job_data->data->state ) && 'complete' === $job_data->data->state ) {
 				$critical_css_path = WP_ROCKET_CRITICAL_CSS_PATH . get_current_blog_id();
 
 				if ( ! rocket_direct_filesystem()->is_dir( $critical_css_path ) ) {
@@ -104,7 +112,7 @@ class Rocket_Background_Critical_CSS_Generation extends WP_Background_Process {
 				$result    = rocket_direct_filesystem()->put_contents( $file_path, $job_data->data->critical_path );
 
 				if ( ! $result ) {
-					return true;
+					break;
 				}
 
 				$transient = get_transient( 'rocket_critical_css_generation_process_running' );
