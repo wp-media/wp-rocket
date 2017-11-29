@@ -24,16 +24,27 @@ function rocket_minify_files( $buffer, $extension ) {
 	if ( 'js' === $extension ) {
 		$header_files   = array();
 		$concatenate = get_rocket_option( 'minify_concatenate_js', false ) ? true : false;
+		$js_files_in_head = implode( '|', $rocket_js_enqueued_in_head );
+
 		// Get all js files with this regex.
 		preg_match_all( apply_filters( 'rocket_minify_js_regex_pattern', '#<script[^>]+?src=[\'|"]([^\'|"]+\.js?.+)[\'|"].*>(?:<\/script>)#iU' ), $buffer, $tags_match, PREG_SET_ORDER );
 	}
 
 	$files          = array();
 	$excluded_files = array();
+	$external_js_files = '';
 
 	foreach ( $tags_match as $tag ) {
 		// Don't minify external files.
 		if ( is_rocket_external_file( $tag[1], $extension ) ) {
+			if ( 'js' === $extension && $concatenate ) {
+				$host = rocket_extract_url_component( $tag[1], PHP_URL_HOST );
+				$excluded_external_js = get_rocket_minify_excluded_external_js();
+				if ( ! isset( $excluded_external_js[ $host ] ) ) {
+					$external_js_files .= $tag[0];
+					$buffer = str_replace( $tag[0], '', $buffer );
+				}
+			}
 			continue;
 		}
 
@@ -46,12 +57,6 @@ function rocket_minify_files( $buffer, $extension ) {
 		if ( $concatenate ) {
 			if ( 'js' === $extension ) {
 				$file_path = rocket_clean_exclude_file( $tag[1] );
-
-				foreach( $rocket_js_enqueued_in_head as $k => $js_in_head ) {
-					$rocket_js_enqueued_in_head[ $k ] = str_replace( '#', '\#', $js_in_head );
-				}
-
-				$js_files_in_head = implode( '|', $rocket_js_enqueued_in_head );
 
 				if ( preg_match( '#(' . $js_files_in_head . ')#', $file_path ) ) {
 					$header_files[] = strtok( $tag[1], '?' );
@@ -140,7 +145,7 @@ function rocket_minify_files( $buffer, $extension ) {
 
 	if ( 'js' === $extension ) {
 		$minify_header_tag = '<script src="' . $minify_header_url . '" data-minify="1"></script>';
-		$buffer = preg_replace( '/<head(.*)>/U', '<head$1>' . $minify_header_tag, $buffer, 1 );
+		$buffer = preg_replace( '/<head(.*)>/U', '<head$1>' . $external_js_files . $minify_header_tag, $buffer, 1 );
 
 		$minify_tag = '<script src="' . $minify_url . '" data-minify="1"></script>';
 		return str_replace( '</body>', $minify_tag . '</body>', $buffer );
@@ -483,4 +488,67 @@ function rocket_inject_ie_conditionals( $buffer, $conditionals ) {
 		}
 	}
 	return $buffer;
+}
+
+/**
+ * Get all JS externals files to exclude of the minification process
+ *
+ * @since 2.6
+ *
+ * @return array Array of excluded external JS
+ */
+function get_rocket_minify_excluded_external_js() {
+	/**
+	 * Filters JS externals files to exclude from the minification process (do not move into the header)
+	 *
+	 * @since 2.2
+	 *
+	 * @param array $hostnames Hostname of JS files to exclude.
+	 */
+	$excluded_external_js = apply_filters(
+		'rocket_minify_excluded_external_js', array(
+			'forms.aweber.com',
+			'video.unrulymedia.com',
+			'gist.github.com',
+			'stats.wp.com',
+			'stats.wordpress.com',
+			'www.statcounter.com',
+			'widget.rafflecopter.com',
+			'widget-prime.rafflecopter.com',
+			'widget.supercounters.com',
+			'releases.flowplayer.org',
+			'tools.meetaffiliate.com',
+			'c.ad6media.fr',
+			'cdn.stickyadstv.com',
+			'www.smava.de',
+			'contextual.media.net',
+			'app.getresponse.com',
+			'ap.lijit.com',
+			'adserver.reklamstore.com',
+			's0.wp.com',
+			'wprp.zemanta.com',
+			'files.bannersnack.com',
+			'smarticon.geotrust.com',
+			'js.gleam.io',
+			'script.ioam.de',
+			'ir-na.amazon-adsystem.com',
+			'web.ventunotech.com',
+			'verify.authorize.net',
+			'ads.themoneytizer.com',
+			'embed.finanzcheck.de',
+			'imagesrv.adition.com',
+			'js.juicyads.com',
+			'form.jotformeu.com',
+			'speakerdeck.com',
+			'content.jwplatform.com',
+			'ads.investingchannel.com',
+			'app.ecwid.com',
+			'www.industriejobs.de',
+			's.gravatar.com',
+			'cdn.jsdelivr.net',
+			'cdnjs.cloudflare.com',
+		)
+	);
+
+	return array_flip( $excluded_external_js );
 }
