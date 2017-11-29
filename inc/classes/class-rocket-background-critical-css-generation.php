@@ -100,7 +100,7 @@ class Rocket_Background_Critical_CSS_Generation extends WP_Background_Process {
 				break;
 			}
 
-			if ( isset( $job_data->data->state ) && 'complete' === $job_data->data->state ) {
+			if ( 'complete' === $job_data->data->state ) {
 				$critical_css_path = WP_ROCKET_CRITICAL_CSS_PATH . get_current_blog_id();
 
 				if ( ! rocket_direct_filesystem()->is_dir( $critical_css_path ) ) {
@@ -109,7 +109,7 @@ class Rocket_Background_Critical_CSS_Generation extends WP_Background_Process {
 
 				$file_path = $critical_css_path . '/' . $item['type'] . '.css';
 				$critical_css_content = wp_kses( $job_data->data->critical_path, array( "\'", '\"' ) );
-				$result    = rocket_direct_filesystem()->put_contents( $file_path, $job_data->data->critical_path );
+				$result    = rocket_put_content( $file_path, $job_data->data->critical_path );
 
 				if ( ! $result ) {
 					break;
