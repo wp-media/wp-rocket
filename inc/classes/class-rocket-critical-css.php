@@ -85,6 +85,7 @@ class Rocket_Critical_CSS {
 	public function init() {
 		add_action( 'admin_post_rocket_generate_critical_css', array( $this, 'init_critical_css_generation' ) );
 		add_action( 'update_option_' . WP_ROCKET_SLUG, array( $this, 'generate_critical_css_on_activation' ), 11, 2 );
+		add_action( 'switch_theme', array( $this, 'process_handler' ) );
 		add_action( 'admin_notices', array( $this, 'critical_css_generation_running_notice' ) );
 		add_action( 'admin_notices', array( $this, 'critical_css_generation_complete_notice' ) );
 		add_action( 'admin_notices', array( $this, 'warning_critical_css_dir_permissions' ) );
