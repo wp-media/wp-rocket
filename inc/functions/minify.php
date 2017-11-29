@@ -271,7 +271,7 @@ function get_rocket_minify_url( $files, $extension ) {
 	if ( is_string( $files ) ) {
 		$file      = get_rocket_parse_url( $files );
 		$file_path = rocket_realpath( strtok( $files, '?' ) );
-		if ( isset( $file['query'] ) ) {
+		if ( ! empty( $file['query'] ) ) {
 			$filename = preg_replace( '/\.(js|css)\?(?:timestamp|ver)=([^&]+)(?:.*)/', '-$2.$1', ltrim( $file['path'], '/' ) . '?' . $file['query'] );
 		} else {
 			$filename = $file_path;
