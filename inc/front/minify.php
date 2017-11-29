@@ -60,7 +60,6 @@ function rocket_minify_html( $buffer ) {
 
 	$html_options = array(
 		'cssMinifier' => 'rocket_minify_inline_css',
-		'jsMinifier'  => 'rocket_minify_inline_js',
 	);
 
 	/**
