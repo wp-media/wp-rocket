@@ -887,6 +887,26 @@ function rocket_sitemap_preload_complete() {
 add_action( 'admin_notices', 'rocket_sitemap_preload_complete' );
 
 /**
+ * Warns if PHP version is less than 5.3 and offers to rollback.
+ *
+ * @since 2.11
+ * @author Remy Perona
+ */
+function rocket_php_warning() {
+	/** This filter is documented in inc/admin-bar.php */
+	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		return;
+	}
+	// Translators: %1$s = Plugin name, %2$s = Plugin version, %3$s = PHP version required.
+	echo '<div class="notice notice-error"><p>' . sprintf( __( '%1$s %2$s requires at least PHP %3$s to function properly. To use this version, please ask your web host how to upgrade your server to PHP %3$s or higher. If you are not able to upgrade, you can rollback to the previous version by using the button below.', 'rocket' ), WP_ROCKET_PLUGIN_NAME, WP_ROCKET_VERSION, '5.3' ) . '</p>
+	<p><a href="' . wp_nonce_url( admin_url( 'admin-post.php?action=rocket_rollback' ), 'rocket_rollback' ) . '" class="button">' .
+	// Translators: %s = Previous plugin version.
+	sprintf( __( 'Re-install version %s', 'rocket' ), WP_ROCKET_LASTVERSION )
+	. '</a></p></div>';
+}
+add_action( 'admin_notices', 'rocket_php_warning' );
+
+/**
  * Outputs notice HTML
  *
  * @since 2.11

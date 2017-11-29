@@ -375,6 +375,10 @@ function set_rocket_wp_cache_define( $turn_it_on ) {
  * @return void
  */
 function rocket_clean_minify( $extensions = array( 'js', 'css' ) ) {
+	if ( version_compare( PHP_VERSION, '5.3' ) < 0 ) {
+		return;
+	}
+
 	$extensions = is_string( $extensions ) ? (array) $extensions : $extensions;
 	try {
 		$dir = new RecursiveDirectoryIterator( WP_ROCKET_MINIFY_CACHE_PATH . get_current_blog_id(), FilesystemIterator::SKIP_DOTS );
@@ -437,6 +441,10 @@ function rocket_clean_minify( $extensions = array( 'js', 'css' ) ) {
  * @return void
  */
 function rocket_clean_cache_busting( $extensions = array( 'js', 'css' ) ) {
+	if ( version_compare( PHP_VERSION, '5.3' ) < 0 ) {
+		return;
+	}
+
 	$extensions = is_string( $extensions ) ? (array) $extensions : $extensions;
 
 	try {

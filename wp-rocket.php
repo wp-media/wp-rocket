@@ -61,40 +61,80 @@ if ( ! defined( 'CHMOD_WP_ROCKET_CACHE_DIRS' ) ) {
 	define( 'CHMOD_WP_ROCKET_CACHE_DIRS', 0755 );
 }
 if ( ! defined( 'WP_ROCKET_LASTVERSION' ) ) {
-	define( 'WP_ROCKET_LASTVERSION', '2.10.11.1' );
+	define( 'WP_ROCKET_LASTVERSION', '2.10.12' );
 }
 
 require WP_ROCKET_INC_PATH . 'compat.php';
 
 if ( version_compare( PHP_VERSION, '5.3' ) < 0 ) {
-	/**
-	 * Warning if PHP version is less than 5.3.
-	 *
-	 * @since 2.11
-	 * @author Remy Perona
-	 */
-	function rocket_php_warning() {
-		echo '<div class="notice notice-error"><p>' . __( 'WP Rocket requires at least PHP 5.3 to function properly. Please upgrade to PHP 5.3 or higher to use the plugin. The Plugin has been auto-deactivated to prevent any issue.', 'rocket' ) . '</p></div>';
-		if ( isset( $_GET['activate'] ) ) { // WPCS: CSRF ok.
-			unset( $_GET['activate'] );
-		}
-	}
-	add_action( 'admin_notices', 'rocket_php_warning' );
-
-	/**
-	 * Deactivate plugin if needed.
-	 *
-	 * @since 2.11
-	 * @author Remy Perona
-	 */
-	function rocket_deactivate_self() {
-		deactivate_plugins( plugin_basename( __FILE__ ) );
-	}
-	add_action( 'admin_init', 'rocket_deactivate_self' );
+	add_action( 'plugins_loaded', 'rocket_init_php_deprecated' );
 
 	return;
 } else {
 	add_action( 'plugins_loaded', 'rocket_init' );
+}
+
+function rocket_init_php_deprecated() {
+	// Load translations from the languages directory.
+	$locale = get_locale();
+
+	// This filter is documented in /wp-includes/l10n.php.
+	$locale = apply_filters( 'plugin_locale', $locale, 'rocket' );
+	load_textdomain( 'rocket', WP_LANG_DIR . '/plugins/wp-rocket-' . $locale . '.mo' );
+
+	load_plugin_textdomain( 'rocket', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+
+	// Nothing to do if autosave.
+	if ( defined( 'DOING_AUTOSAVE' ) ) {
+		return;
+	}
+
+	// Nothing to do if XMLRPC request.
+	if ( defined( 'XMLRPC_REQUEST' ) ) {
+		return;
+	}
+
+	// Call defines and functions.
+	require WP_ROCKET_FUNCTIONS_PATH . 'options.php';
+
+	// Last constants.
+	define( 'WP_ROCKET_PLUGIN_NAME', get_rocket_option( 'wl_plugin_name', 'WP Rocket' ) );
+	define( 'WP_ROCKET_PLUGIN_SLUG', sanitize_key( WP_ROCKET_PLUGIN_NAME ) );
+
+	// Call defines and functions.
+	require WP_ROCKET_FUNCTIONS_PATH . 'files.php';
+	require WP_ROCKET_FUNCTIONS_PATH . 'posts.php';
+	require WP_ROCKET_FUNCTIONS_PATH . 'admin.php';
+	require WP_ROCKET_FUNCTIONS_PATH . 'formatting.php';
+	require WP_ROCKET_FUNCTIONS_PATH . 'i18n.php';
+	require WP_ROCKET_FUNCTIONS_PATH . 'bots.php';
+	require WP_ROCKET_FUNCTIONS_PATH . 'htaccess.php';
+	require WP_ROCKET_FUNCTIONS_PATH . 'varnish.php';
+	require WP_ROCKET_INC_PATH . 'deprecated.php';
+	require WP_ROCKET_3RD_PARTY_PATH . '3rd-party.php';
+	require WP_ROCKET_COMMON_PATH . 'updater.php';
+	require WP_ROCKET_COMMON_PATH . 'emoji.php';
+	require WP_ROCKET_COMMON_PATH . 'embeds.php';
+	require dirname( __FILE__ ) . '/licence-data.php';
+
+	if ( rocket_valid_key() ) {
+		require WP_ROCKET_COMMON_PATH . 'purge.php';
+		require WP_ROCKET_COMMON_PATH . 'cron.php';
+
+		if ( is_multisite() && defined( 'SUNRISE' ) && SUNRISE === 'on' && function_exists( 'domain_mapping_siteurl' ) ) {
+			require WP_ROCKET_INC_PATH . '/domain-mapping.php';
+		}
+	}
+
+	if ( is_admin() ) {
+		require WP_ROCKET_ADMIN_PATH . 'ajax.php';
+		require WP_ROCKET_ADMIN_PATH . 'upgrader.php';
+		require WP_ROCKET_ADMIN_PATH . 'updater.php';
+		require WP_ROCKET_ADMIN_PATH . 'admin.php';
+		require WP_ROCKET_ADMIN_UI_PATH . 'enqueue.php';
+		require WP_ROCKET_ADMIN_UI_PATH . 'notices.php';
+		require WP_ROCKET_ADMIN_UI_PATH . 'meta-boxes.php';
+	}
 }
 
 /**
