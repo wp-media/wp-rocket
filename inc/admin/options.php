@@ -882,9 +882,6 @@ function rocket_settings_callback( $inputs ) {
 		}
 	}
 
-	// Analytics opt-in.
-	$inputs['analytics_enabled'] = isset( $inputs['analytics_enabled'] ) ? 1 : 0;
-
 	$filename_prefix = rocket_is_white_label() ? sanitize_title( get_rocket_option( 'wl_plugin_name' ) ) : 'wp-rocket';
 
 	if ( isset( $_FILES['import'] ) && 0 !== $_FILES['import']['size'] && $settings = rocket_handle_settings_import( $_FILES['import'], $filename_prefix, $inputs ) ) {
