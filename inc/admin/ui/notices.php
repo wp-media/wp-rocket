@@ -893,6 +893,9 @@ add_action( 'admin_notices', 'rocket_sitemap_preload_complete' );
  * @author Remy Perona
  */
 function rocket_php_warning() {
+	if ( version_compare( PHP_VERSION, '5.3' ) >= 0 ) {
+		return;
+	}
 	/** This filter is documented in inc/admin-bar.php */
 	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
 		return;
