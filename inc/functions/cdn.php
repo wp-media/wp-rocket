@@ -42,7 +42,7 @@ function get_rocket_cdn_url( $url, $zone = array( 'all' ) ) {
 	}
 
 	$parse_url = get_rocket_parse_url( $url );
-	$query = ! empty( $parse_url['query'] ) ? '?' . $parse_url['query'] : '';
+	$parse_url['query'] = ! empty( $parse_url['query'] ) ? '?' . $parse_url['query'] : '';
 
 	// Exclude rejected & external files from CDN.
 	$rejected_files = get_rocket_cdn_reject_files();
