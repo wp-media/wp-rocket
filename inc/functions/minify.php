@@ -374,7 +374,7 @@ function rocket_write_minify_file( $content, $filename ) {
 		return true;
 	}
 
-	if ( ! wp_mkdir_p( dirname( $minify_filepath ) ) ) {
+	if ( ! rocket_mkdir_p( dirname( $minify_filepath ) ) ) {
 		return false;
 	}
 
