@@ -930,11 +930,11 @@ function rocket_rrmdir( $dir, $dirs_to_preserve = array() ) {
 	// Remove the hidden empty file for mobile detection on NGINX with the Rocket NGINX configuration.
 	$nginx_mobile_detect_file = $dir . '/.mobile-active';
 
-	if ( is_dir( $dir ) && file_exists( $nginx_mobile_detect_file ) ) {
+	if ( rocket_direct_filesystem()->is_dir( $dir ) && rocket_direct_filesystem()->exists( $nginx_mobile_detect_file ) ) {
 		rocket_direct_filesystem()->delete( $nginx_mobile_detect_file );
 	}
 
-	if ( ! is_dir( $dir ) ) {
+	if ( ! rocket_direct_filesystem()->is_dir( $dir ) ) {
 		rocket_direct_filesystem()->delete( $dir );
 		return;
 	};
@@ -950,7 +950,7 @@ function rocket_rrmdir( $dir, $dirs_to_preserve = array() ) {
 
 		$dirs = array_diff( $dirs, array_filter( $keys ) );
 		foreach ( $dirs as $dir ) {
-			if ( is_dir( $dir ) ) {
+			if ( rocket_direct_filesystem()->is_dir( $dir ) ) {
 				rocket_rrmdir( $dir, $dirs_to_preserve );
 			} else {
 				rocket_direct_filesystem()->delete( $dir );
@@ -1005,7 +1005,7 @@ function rocket_mkdir( $dir ) {
  * @source wp_mkdir_p() in /wp-includes/functions.php
  *
  * @param string $target path to the directory we want to create.
- * @return bool True if directory is create/exist, false otherwise
+ * @return bool True if directory is created/exists, false otherwise
  */
 function rocket_mkdir_p( $target ) {
 	// from php.net/mkdir user contributed notes.
@@ -1017,14 +1017,14 @@ function rocket_mkdir_p( $target ) {
 		$target = '/';
 	}
 
-	if ( file_exists( $target ) ) {
-		return @is_dir( $target );
+	if ( rocket_direct_filesystem()->exists( $target ) ) {
+		return rocket_direct_filesystem()->is_dir( $target );
 	}
 
 	// Attempting to create the directory may clutter up our display.
 	if ( rocket_mkdir( $target ) ) {
 		return true;
-	} elseif ( is_dir( dirname( $target ) ) ) {
+	} elseif ( rocket_direct_filesystem()->is_dir( dirname( $target ) ) ) {
 		return false;
 	}
 
@@ -1055,23 +1055,24 @@ function rocket_put_content( $file, $content ) {
  *
  * @since 2.1
  *
- * @return string|bool The path of wp-config.php file or false
+ * @return string|bool The path of wp-config.php file or false if not found
  */
 function rocket_find_wpconfig_path() {
 	/**
 	 * Filter the wp-config's filename
 	 *
-	 * @since x.x.x
+	 * @since 2.11
+	 * @author Maxime Culea
 	 *
-	 * @param string $filename The WP Config filename
+	 * @param string $filename The WP Config filename, without the extension.
 	 */
 	$config_file_name = apply_filters( 'rocket_wp_config_name', 'wp-config' );
 	$config_file      = ABSPATH . $config_file_name . '.php';
 	$config_file_alt  = dirname( ABSPATH ) . '/' . $config_file_name . '.php';
 
-	if ( file_exists( $config_file ) && rocket_direct_filesystem()->is_writable( $config_file ) ) {
+	if ( rocket_direct_filesystem()->exists( $config_file ) && rocket_direct_filesystem()->is_writable( $config_file ) ) {
 		return $config_file;
-	} elseif ( @file_exists( $config_file_alt ) && rocket_direct_filesystem()->is_writable( $config_file_alt ) && ! file_exists( dirname( ABSPATH ) . '/wp-settings.php' ) ) {
+	} elseif ( rocket_direct_filesystem()->exists( $config_file_alt ) && rocket_direct_filesystem()->is_writable( $config_file_alt ) && ! rocket_direct_filesystem()->exists( dirname( ABSPATH ) . '/wp-settings.php' ) ) {
 		return $config_file_alt;
 	}
 
@@ -1127,11 +1128,11 @@ function rocket_fetch_and_cache_busting( $src, $cache_busting_paths, $abspath_sr
 		$content = Minify_CSS_UriRewriter::rewrite( $content, dirname( $abspath_src ) );
 	}
 
-	if ( ! is_dir( $cache_busting_paths['bustingpath'] ) ) {
+	if ( ! rocket_direct_filesystem()->is_dir( $cache_busting_paths['bustingpath'] ) ) {
 		rocket_mkdir_p( $cache_busting_paths['bustingpath'] );
 	}
 
-	wp_mkdir_p( dirname( $cache_busting_paths['filepath'] ) );
+	rocket_mkdir_p( dirname( $cache_busting_paths['filepath'] ) );
 
 	return rocket_put_content( $cache_busting_paths['filepath'], $content );
 }
