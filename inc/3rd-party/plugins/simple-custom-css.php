@@ -72,7 +72,7 @@ function rocket_sccss_create_cache_file( $cache_busting_path, $cache_sccss_filep
 	$content     = wp_kses( $raw_content, array( '\'', '\"' ) );
 	$content     = str_replace( '&gt;', '>', $content );
 
-	if ( ! is_dir( $cache_busting_path ) ) {
+	if ( ! rocket_direct_filesystem()->is_dir( $cache_busting_path ) ) {
 		rocket_mkdir_p( $cache_busting_path );
 	}
 
