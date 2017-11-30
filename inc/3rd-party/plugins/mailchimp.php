@@ -16,11 +16,11 @@ function rocket_fix_mailchimp_main_css() {
 	$cache_url  = WP_ROCKET_MINIFY_CACHE_URL . $blog_id . '/';
 	$css_path   = $cache_path . 'mailchimpSF_main_css.css';
 
-	if ( ! is_dir( $cache_path ) ) {
+	if ( ! rocket_direct_filesystem()->is_dir( $cache_path ) ) {
 		rocket_mkdir_p( $cache_path );
 	}
 
-	if ( ! file_exists( $css_path ) ) {
+	if ( ! rocket_direct_filesystem()->exists( $css_path ) ) {
 		ob_start();
 		mailchimpSF_main_css();
 		$content = ob_get_contents();
