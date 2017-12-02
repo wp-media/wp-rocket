@@ -287,7 +287,9 @@ class Rocket_Critical_CSS {
 	 * @author Remy Perona
 	 */
 	public function set_items() {
-		if ( 'page' === get_option( 'show_on_front' ) && ! empty( get_option( 'page_for_posts' ) ) ) {
+		$page_for_posts = get_option( 'page_for_posts' );
+
+		if ( 'page' === get_option( 'show_on_front' ) && ! empty( $page_for_posts ) ) {
 			$this->items[] = array(
 				'type' => 'home',
 				'url'  => get_permalink( get_option( 'page_for_posts' ) ),
