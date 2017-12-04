@@ -125,7 +125,7 @@ function rocket_minify_files( $buffer, $extension ) {
 			$minify_tag = str_replace( $tag[1], $minify_url, $tag[0] );
 
 			if ( 'css' === $extension ) {
-				$minify_tag = str_replace( $tag[2], $tag[2] . ' data-minify="1"', $minify_tag );
+				$minify_tag = str_replace( $tag[2], 'data-minify="1" ' . $tag[2], $minify_tag );
 			}
 
 			if ( 'js' === $extension ) {
