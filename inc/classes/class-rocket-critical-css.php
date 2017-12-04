@@ -92,6 +92,7 @@ class Rocket_Critical_CSS {
 		add_action( 'wp_head', array( $this, 'insert_load_css' ), PHP_INT_MAX );
 		add_action( 'wp_head', array( $this, 'insert_critical_css' ), 1 );
 		add_filter( 'rocket_buffer', array( $this, 'async_css' ), 15 );
+		add_action( 'rocket_critical_css_generation_process_complete', 'rocket_clean_domain' );
 	}
 
 	/**
