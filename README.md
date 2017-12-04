@@ -351,7 +351,7 @@ Take a look at the `ActionScheduler_wpCommentLogger` class for an example implem
 
 ### I want to run Action Scheduler only on a dedicated application server in my cluster. Can I do that?
 
-Wow, now you're really asking the tough questions. In theory, yes, this is possbile. The `ActionScheduler_QueueRunner` class, which is responsible for running queues, is swappable via the `'action_scheduler_queue_runner_class'` filter.
+Wow, now you're really asking the tough questions. In theory, yes, this is possible. The `ActionScheduler_QueueRunner` class, which is responsible for running queues, is swappable via the `'action_scheduler_queue_runner_class'` filter.
 
 Because of this, you can effectively customise queue running however you need. Whether that means tweaking minor things, like not using WP-Cron at all to initiate queues by overriding `ActionScheduler_QueueRunner::init()`, or completely changing how and where queues are run, by overriding `ActionScheduler_QueueRunner::run()`.
 

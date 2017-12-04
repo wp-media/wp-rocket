@@ -5,5 +5,8 @@
   "type": "wordpress-plugin",
   "license": "GPL-3.0",
   "minimum-stability": "dev",
-  "require": {}
+  "require": {},
+  "require-dev": {
+    "wp-cli/wp-cli": "^1.3"
+  }
 }
