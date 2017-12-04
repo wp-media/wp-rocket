@@ -154,6 +154,14 @@ class Rocket_Background_Critical_CSS_Generation extends WP_Background_Process {
 	 * @author Remy Perona
 	 */
 	protected function complete() {
+		/**
+		 * Fires when the critical CSS generation process is complete
+		 *
+		 * @since 2.11
+		 * @author Remy Perona
+		 */
+		do_action( 'rocket_critical_css_generation_process_complete' );
+
 		set_transient( 'rocket_critical_css_generation_process_complete', get_transient( 'rocket_critical_css_generation_process_running' ), HOUR_IN_SECONDS );
 		delete_transient( 'rocket_critical_css_generation_process_running' );
 
