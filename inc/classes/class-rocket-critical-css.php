@@ -85,6 +85,7 @@ class Rocket_Critical_CSS {
 	public function init() {
 		add_action( 'admin_post_rocket_generate_critical_css', array( $this, 'init_critical_css_generation' ) );
 		add_action( 'update_option_' . WP_ROCKET_SLUG, array( $this, 'generate_critical_css_on_activation' ), 11, 2 );
+		add_action( 'update_option_' . WP_ROCKET_SLUG, array( $this, 'stop_process_on_deactivation' ), 11, 2 );
 		add_action( 'switch_theme', array( $this, 'process_handler' ) );
 		add_action( 'admin_notices', array( $this, 'critical_css_generation_running_notice' ) );
 		add_action( 'admin_notices', array( $this, 'critical_css_generation_complete_notice' ) );
@@ -153,6 +154,23 @@ class Rocket_Critical_CSS {
 	public function generate_critical_css_on_activation( $old_value, $value ) {
 		if ( ! empty( $_POST[ WP_ROCKET_SLUG ] ) && isset( $old_value['async_css'], $value['async_css'] ) && ( $old_value['async_css'] !== $value['async_css'] ) && 1 === (int) $value['async_css'] ) {
 			$this->process_handler();
+		}
+	}
+
+	/**
+	 * Stops the critical CSS generation when deactivating the async CSS option and remove the notices
+	 *
+	 * @since 2.11
+	 * @author Remy Perona
+	 *
+	 * @param array $old_value Previous values for WP Rocket settings.
+	 * @param array $value     New values for WP Rocket settings.
+	 */
+	public function stop_process_on_deactivation( $old_value, $value ) {
+		if ( ! empty( $_POST[ WP_ROCKET_SLUG ] ) && isset( $old_value['async_css'], $value['async_css'] ) && ( $old_value['async_css'] !== $value['async_css'] ) && 0 === (int) $value['async_css'] ) {
+			$this->process->cancel_process();
+			delete_transient( 'rocket_critical_css_generation_process_running' );
+			delete_transient( 'rocket_critical_css_generation_process_complete' );
 		}
 	}
 
