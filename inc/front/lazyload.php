@@ -76,7 +76,7 @@ function rocket_lazyload_enqueue() {
 	$suffix       = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 	$lazyload_url = get_rocket_cdn_url( WP_ROCKET_FRONT_JS_URL . 'lazyload-' . WP_ROCKET_LAZYLOAD_JS_VERSION . $suffix . '.js', array( 'all', 'css_and_js', 'js' ) );
 
-	wp_enqueue_script( 'rocket-lazyload', $lazyload_url, null, null );
+	wp_enqueue_script( 'rocket-lazyload', $lazyload_url, null, null, true );
 
 	if ( get_rocket_option( 'lazyload_youtube' ) ) {
 		$css = '.rll-youtube-player{position:relative;padding-bottom:56.23%;height:0;overflow:hidden;max-width:100%;background:#000;margin:5px}.rll-youtube-player iframe{position:absolute;top:0;left:0;width:100%;height:100%;z-index:100;background:0 0}.rll-youtube-player img{bottom:0;display:block;left:0;margin:auto;max-width:100%;width:100%;position:absolute;right:0;top:0;border:none;height:auto;cursor:pointer;-webkit-transition:.4s all;-moz-transition:.4s all;transition:.4s all}.rll-youtube-player img:hover{-webkit-filter:brightness(75%)}.rll-youtube-player .play{height:72px;width:72px;left:50%;top:50%;margin-left:-36px;margin-top:-36px;position:absolute;background:url(' . WP_ROCKET_FRONT_URL . 'img/play.png) no-repeat;cursor:pointer}';
@@ -86,7 +86,7 @@ function rocket_lazyload_enqueue() {
 		wp_add_inline_style( 'rocket-lazyload', $css );
 	}
 }
-add_action( 'wp_enqueue_scripts', 'rocket_lazyload_enqueue' );
+add_action( 'wp_enqueue_scripts', 'rocket_lazyload_enqueue', PHP_INT_MAX );
 
 /**
  * Add tags to the lazyload script to async and prevent concatenation
