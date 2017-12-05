@@ -268,16 +268,23 @@ function get_rocket_minify_url( $files, $extension ) {
 		return false;
 	}
 
+	$hosts         = get_rocket_cnames_host( array( 'all', 'css_and_js', $extension ) );
+	$hosts['home'] = rocket_extract_url_component( home_url(), PHP_URL_HOST );
+	$hosts_index   = array_flip( $hosts );
+
 	if ( is_string( $files ) ) {
 		$file      = get_rocket_parse_url( $files );
-		$file_path = rocket_realpath( strtok( $files, '?' ) );
+		$file_path = rocket_realpath( strtok( $files, '?' ), true, $hosts_index );
 		if ( ! empty( $file['query'] ) ) {
 			$filename = preg_replace( '/\.(js|css)\?(?:timestamp|ver)=([^&]+)(?:.*)/', '-$2.$1', ltrim( $file['path'], '/' ) . '?' . $file['query'] );
 		} else {
 			$filename = $file_path;
 		}
 	} else {
-		$file_path  = array_map( 'rocket_realpath', $files );
+		foreach ( $files as $file ) {
+			$file_path[] = rocket_realpath( $file, true, $hosts_index );
+		}
+
 		$files_hash = implode( ',', $files );
 		$filename   = md5( $files_hash . get_rocket_option( 'minify_' . $extension . '_key', create_rocket_uniqid() ) ) . '.' . $extension;
 	}

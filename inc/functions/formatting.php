@@ -215,7 +215,7 @@ function rocket_extract_url_component( $url, $component ) {
 function rocket_get_cache_busting_paths( $filename, $extension ) {
 	$blog_id                = get_current_blog_id();
 	$cache_busting_path     = WP_ROCKET_CACHE_BUSTING_PATH . $blog_id;
-	$filename               = rocket_realpath( rtrim( str_replace( array( ' ', '%20' ), '-', $filename ) ), false );
+	$filename               = rocket_realpath( rtrim( str_replace( array( ' ', '%20' ), '-', $filename ) ), false, '' );
 	$cache_busting_filepath = $cache_busting_path . $filename;
 	$cache_busting_url      = get_rocket_cdn_url( WP_ROCKET_CACHE_BUSTING_URL . $blog_id . $filename, array( 'all', 'css_and_js', $extension ) );
 
@@ -247,10 +247,17 @@ function rocket_get_cache_busting_paths( $filename, $extension ) {
  * @param bool   $absolute True to return an absolute path, false to return a relative one.
  * @return string Resolved file path
  */
-function rocket_realpath( $file, $absolute = true ) {
+function rocket_realpath( $file, $absolute = true, $hosts = '' ) {
 	if ( $absolute ) {
+		$file_host = rocket_extract_url_component( $file, PHP_URL_HOST );
+
+		if ( isset( $hosts[ $file_host ] ) && 'home' !== $hosts[ $file_host ] ) {
+			$site_url = trailingslashit( rocket_add_url_protocol( $file_host ) );
+		} else {
+			$site_url = trailingslashit( rocket_add_url_protocol( site_url() ) );
+		}
+
 		$abspath  = wp_normalize_path( ABSPATH );
-		$site_url = trailingslashit( rocket_add_url_protocol( site_url() ) );
 		$file     = str_replace( $site_url, $abspath, rocket_set_internal_url_scheme( $file ) );
 	}
 

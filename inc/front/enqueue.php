@@ -110,14 +110,8 @@ function get_rocket_browser_cache_busting( $src, $current_filter = '' ) {
 		return $src;
 	}
 
-	if ( isset( $hosts_index[ $file['host'] ] ) && 'home' !== $hosts_index[ $file['host'] ] ) {
-		$site_url = trailingslashit( rocket_add_url_protocol( $file['host'] ) );
-	} else {
-		$site_url = trailingslashit( rocket_add_url_protocol( site_url() ) );
-	}
-
 	$relative_src           = ltrim( $file['path'] . '?' . $file['query'], '/' );
-	$abspath_src            = rocket_realpath( strtok( $full_src, '?' ) );
+	$abspath_src            = rocket_realpath( strtok( $full_src, '?' ), true, $hosts_index );
 	$cache_busting_filename = preg_replace( '/\.(js|css)\?(?:timestamp|ver)=([^&]+)(?:.*)/', '-$2.$1', $relative_src );
 
 	if ( $cache_busting_filename === $relative_src ) {
@@ -222,14 +216,8 @@ function rocket_cache_dynamic_resource( $src ) {
 		return $src;
 	}
 
-	if ( isset( $hosts_index[ $file['host'] ] ) && 'home' !== $hosts_index[ $file['host'] ] ) {
-		$site_url = trailingslashit( rocket_add_url_protocol( $file_host ) );
-	} else {
-		$site_url = trailingslashit( rocket_add_url_protocol( site_url() ) );
-	}
-
 	$relative_src         = ltrim( $file['path'], '/' );
-	$abspath_src          = rocket_realpath( strtok( $full_src, '?' ) );
+	$abspath_src          = rocket_realpath( strtok( $full_src, '?' ), true, $hosts_index );
 
 	/*
      * Filters the dynamic resource cache filename
