@@ -132,72 +132,18 @@
         "description": "WP Background Processing can be used to fire off non-blocking asynchronous requests or as a background processing tool, allowing you to queue tasks."
     },
     {
-        "name": "mobiledetect/mobiledetectlib",
-        "version": "2.8.26",
-        "version_normalized": "2.8.26.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/serbanghita/Mobile-Detect.git",
-            "reference": "a0ed86c9d7c04ae27fa6418b55e3beb04dfe3297"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/serbanghita/Mobile-Detect/zipball/a0ed86c9d7c04ae27fa6418b55e3beb04dfe3297",
-            "reference": "a0ed86c9d7c04ae27fa6418b55e3beb04dfe3297",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.0.0"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "*"
-        },
-        "time": "2017-08-29T18:23:54+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "classmap": [
-                "Mobile_Detect.php"
-            ],
-            "psr-0": {
-                "Detection": "namespaced/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Serban Ghita",
-                "email": "serbanghita@gmail.com",
-                "homepage": "http://mobiledetect.net",
-                "role": "Developer"
-            }
-        ],
-        "description": "Mobile_Detect is a lightweight PHP class for detecting mobile devices. It uses the User-Agent string combined with specific HTTP headers to detect the mobile environment.",
-        "homepage": "https://github.com/serbanghita/Mobile-Detect",
-        "keywords": [
-            "detect mobile devices",
-            "mobile",
-            "mobile detect",
-            "mobile detector",
-            "php mobile detect"
-        ]
-    },
-    {
         "name": "matthiasmullie/minify",
-        "version": "1.3.55",
-        "version_normalized": "1.3.55.0",
+        "version": "1.3.56",
+        "version_normalized": "1.3.56.0",
         "source": {
             "type": "git",
             "url": "https://github.com/matthiasmullie/minify.git",
-            "reference": "21084eb9e6c117f5236969532d00ed2750cd1617"
+            "reference": "86e4a4e4e7eae2d0cd74871735f18bbb132da4b7"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/matthiasmullie/minify/zipball/21084eb9e6c117f5236969532d00ed2750cd1617",
-            "reference": "21084eb9e6c117f5236969532d00ed2750cd1617",
+            "url": "https://api.github.com/repos/matthiasmullie/minify/zipball/86e4a4e4e7eae2d0cd74871735f18bbb132da4b7",
+            "reference": "86e4a4e4e7eae2d0cd74871735f18bbb132da4b7",
             "shasum": ""
         },
         "require": {
@@ -213,7 +159,7 @@
         "suggest": {
             "psr/cache-implementation": "Cache implementation to use with Minify::cache"
         },
-        "time": "2017-10-25T11:13:12+00:00",
+        "time": "2017-11-24T12:51:16+00:00",
         "bin": [
             "bin/minifycss",
             "bin/minifyjs"

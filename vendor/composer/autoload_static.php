@@ -33,16 +33,6 @@ class ComposerStaticInit0667ef9b9265640664ae067531ce2727
         ),
     );
 
-    public static $prefixesPsr0 = array (
-        'D' => 
-        array (
-            'Detection' => 
-            array (
-                0 => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/namespaced',
-            ),
-        ),
-    );
-
     public static $classMap = array (
         'Cloudflare\\Api' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/Api.php',
         'Cloudflare\\Certificates' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/Certificates.php',
@@ -93,7 +83,6 @@ class ComposerStaticInit0667ef9b9265640664ae067531ce2727
         'Cloudflare\\Zone\\WAF\\Packages' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/Zone/WAF/Packages.php',
         'Cloudflare\\Zone\\WAF\\Packages\\Groups' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/Zone/WAF/Packages/Groups.php',
         'Cloudflare\\Zone\\WAF\\Packages\\Rules' => __DIR__ . '/..' . '/jamesryanbell/cloudflare/src/CloudFlare/Zone/WAF/Packages/Rules.php',
-        'Detection\\MobileDetect' => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/namespaced/Detection/MobileDetect.php',
         'MatthiasMullie\\Minify\\CSS' => __DIR__ . '/..' . '/matthiasmullie/minify/src/CSS.php',
         'MatthiasMullie\\Minify\\Exception' => __DIR__ . '/..' . '/matthiasmullie/minify/src/Exception.php',
         'MatthiasMullie\\Minify\\Exceptions\\BasicException' => __DIR__ . '/..' . '/matthiasmullie/minify/src/Exceptions/BasicException.php',
@@ -106,11 +95,11 @@ class ComposerStaticInit0667ef9b9265640664ae067531ce2727
         'MatthiasMullie\\PathConverter\\NoConverter' => __DIR__ . '/..' . '/matthiasmullie/path-converter/src/NoConverter.php',
         'Minify_CSS_UriRewriter' => __DIR__ . '/../..' . '/inc/vendors/classes/class-minify-css-urirewriter.php',
         'Minify_HTML' => __DIR__ . '/../..' . '/inc/vendors/classes/class-minify-html.php',
-        'Mobile_Detect' => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/Mobile_Detect.php',
         'Rocket_Background_Critical_CSS_Generation' => __DIR__ . '/../..' . '/inc/classes/class-rocket-background-critical-css-generation.php',
         'Rocket_Background_Database_Optimization' => __DIR__ . '/../..' . '/inc/classes/class-rocket-background-database-optimization.php',
         'Rocket_Critical_CSS' => __DIR__ . '/../..' . '/inc/classes/class-rocket-critical-css.php',
         'Rocket_Database_Optimization' => __DIR__ . '/../..' . '/inc/classes/class-rocket-database-optimization.php',
+        'Rocket_Mobile_Detect' => __DIR__ . '/../..' . '/inc/vendors/classes/class-rocket-mobile-detect.php',
         'Rocket_Sitemap_Preload_Process' => __DIR__ . '/../..' . '/inc/classes/background-processing.php',
         'WP_Async_Request' => __DIR__ . '/..' . '/a5hleyrich/wp-background-processing/classes/wp-async-request.php',
         'WP_Background_Process' => __DIR__ . '/..' . '/a5hleyrich/wp-background-processing/classes/wp-background-process.php',
@@ -121,7 +110,6 @@ class ComposerStaticInit0667ef9b9265640664ae067531ce2727
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInit0667ef9b9265640664ae067531ce2727::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit0667ef9b9265640664ae067531ce2727::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit0667ef9b9265640664ae067531ce2727::$prefixesPsr0;
             $loader->classMap = ComposerStaticInit0667ef9b9265640664ae067531ce2727::$classMap;
 
         }, null, ClassLoader::class);

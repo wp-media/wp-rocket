@@ -180,8 +180,8 @@ else {
 $filename = 'index';
 
 // Rename the caching filename for mobile.
-if ( isset( $rocket_cache_mobile, $rocket_do_caching_mobile_files ) && class_exists( 'Mobile_Detect' ) ) {
-	$detect = new Mobile_Detect();
+if ( isset( $rocket_cache_mobile, $rocket_do_caching_mobile_files ) && class_exists( 'Rocket_Mobile_Detect' ) ) {
+	$detect = new Rocket_Mobile_Detect();
 
 	if ( $detect->isMobile() && ! $detect->isTablet() ) {
 		$filename .= '-mobile';
