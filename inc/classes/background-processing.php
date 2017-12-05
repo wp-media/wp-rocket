@@ -67,10 +67,8 @@ class Rocket_Sitemap_Preload_Process extends WP_Background_Process {
 
 		$response = wp_remote_get( esc_url_raw( $item ), $args );
 
-		if ( 200 === wp_remote_retrieve_response_code( $response ) ) {
-			$count = get_transient( 'rocket_sitemap_preload_running' );
-			set_transient( 'rocket_sitemap_preload_running', $count++ );
-		}
+		$count = get_transient( 'rocket_sitemap_preload_running' );
+		set_transient( 'rocket_sitemap_preload_running', $count + 1 );
 
 		usleep( get_rocket_option( 'sitemap_preload_url_crawl', '500000' ) );
 
@@ -96,7 +94,7 @@ class Rocket_Sitemap_Preload_Process extends WP_Background_Process {
 
 		$file_cache_path = WP_ROCKET_CACHE_PATH . $url['host'] . '/' . strtolower( $url['path'] ) . '/index.html';
 
-		return file_exists( $file_cache_path );
+		return rocket_direct_filesystem()->exists( $file_cache_path );
 	}
 
 	/**
