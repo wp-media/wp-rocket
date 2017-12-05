@@ -564,6 +564,7 @@ function get_rocket_minify_excluded_external_js() {
 			's.gravatar.com',
 			'cdn.jsdelivr.net',
 			'cdnjs.cloudflare.com',
+			'code.jquery.com',
 		)
 	);
 
