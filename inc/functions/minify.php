@@ -57,6 +57,7 @@ function rocket_minify_files( $buffer, $extension ) {
 					$external_js_files = $tag[0];
 				}
 
+				$buffer = str_replace( $tag[0], '', $buffer );
 				continue;
 			}
 
