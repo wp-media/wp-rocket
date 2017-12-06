@@ -103,6 +103,10 @@ function run_rocket_preload_cache( $spider, $do_sitemap_preload = true ) {
 	run_rocket_bot( $spider );
 
 	if ( $do_sitemap_preload & get_rocket_option( 'sitemap_preload', false ) ) {
+		$rocket_background_process = $GLOBALS['rocket_sitemap_background_process'];
+		$rocket_background_process->cancel_process();
+		delete_transient( 'rocket_sitemap_preload_running' );
+		delete_transient( 'rocket_sitemap_preload_complete' );
 		run_rocket_sitemap_preload();
 	}
 }
