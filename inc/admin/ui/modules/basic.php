@@ -64,9 +64,9 @@ $rocket_lazyload_fields[] = array(
 $rocket_lazyload_fields[] = array(
 	'parent'       => 'lazyload_iframes',
 	'type'         => 'checkbox',
-	'label'        => __( 'Replace Youtube iframe by preview image', 'rocket' ),
+	'label'        => __( 'Replace Youtube iframe with preview image', 'rocket' ),
 	'label_for'    => 'lazyload_youtube',
-	'label_screen' => __( 'Replace Youtube iframe by preview image', 'rocket' ),
+	'label_screen' => __( 'Replace Youtube iframe with preview image', 'rocket' ),
 );
 $rocket_lazyload_fields[] = array(
 	'parent'       => 'lazyload_iframes',
