@@ -86,7 +86,11 @@ class Rocket_Critical_CSS {
 		add_action( 'admin_post_rocket_generate_critical_css', array( $this, 'init_critical_css_generation' ) );
 		add_action( 'update_option_' . WP_ROCKET_SLUG, array( $this, 'generate_critical_css_on_activation' ), 11, 2 );
 		add_action( 'update_option_' . WP_ROCKET_SLUG, array( $this, 'stop_process_on_deactivation' ), 11, 2 );
-		add_action( 'switch_theme', array( $this, 'process_handler' ) );
+
+		if ( get_rocket_option( 'async_css' ) ) {
+			add_action( 'switch_theme', array( $this, 'process_handler' ) );
+		}
+
 		add_action( 'admin_notices', array( $this, 'critical_css_generation_running_notice' ) );
 		add_action( 'admin_notices', array( $this, 'critical_css_generation_complete_notice' ) );
 		add_action( 'admin_notices', array( $this, 'warning_critical_css_dir_permissions' ) );
@@ -194,7 +198,7 @@ class Rocket_Critical_CSS {
 			// no logging yet.
 			return;
 		}
-		
+
 		foreach ( $files as $file ) {
 			rocket_direct_filesystem()->delete( $file );
 		}
@@ -345,24 +349,24 @@ class Rocket_Critical_CSS {
 		if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
 			return;
 		}
-	
+
 		$transient = get_transient( 'rocket_critical_css_generation_process_running' );
 		if ( ! $transient ) {
 			return;
 		}
-	
+
 		$message = '<p>' . sprintf( __( 'Critical CSS generation is currently running: %1$d of %2$d page types completed. (Refresh this page to view progress)', 'rocket' ), $transient['generated'], $transient['total'] ) . '</p>';
-	
+
 		if ( ! empty( $transient['items'] ) ) {
 			$message .= '<ul>';
-	
+
 			foreach( $transient['items'] as $item ) {
 				$message .= '<li>' . $item . '</li>';
 			}
-	
+
 			$message .= '</ul>';
 		}
-	
+
 		rocket_notice_html( array(
 			'status'  => 'info',
 			'message' => $message,
@@ -380,28 +384,28 @@ class Rocket_Critical_CSS {
 		if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
 			return;
 		}
-	
+
 		$transient = get_transient( 'rocket_critical_css_generation_process_complete' );
 		if ( ! $transient ) {
 			return;
 		}
-	
+
 		$message = '<p>' . sprintf( __( 'Critical CSS generation finished for %1$d of %2$d page types.', 'rocket' ), $transient['generated'], $transient['total'] ) . '</p>';
-	
+
 		if ( ! empty( $transient['items'] ) ) {
 			$message .= '<ul>';
-	
+
 			foreach( $transient['items'] as $item ) {
 				$message .= '<li>' . $item . '</li>';
 			}
-	
+
 			$message .= '</ul>';
 		}
-	
+
 		rocket_notice_html( array(
 			'message' => $message,
 		) );
-	
+
 		delete_transient( 'rocket_critical_css_generation_process_complete' );
 	}
 
@@ -417,15 +421,15 @@ class Rocket_Critical_CSS {
 			&& ( ! rocket_direct_filesystem()->is_writable( WP_ROCKET_CRITICAL_CSS_PATH ) )
 			&& ( get_rocket_option( 'async_css', false ) )
 			&& rocket_valid_key() ) {
-	
+
 			$boxes = get_user_meta( $GLOBALS['current_user']->ID, 'rocket_boxes', true );
-	
+
 			if ( in_array( __FUNCTION__, (array) $boxes, true ) ) {
 				return;
 			}
-	
+
 			$message = rocket_notice_writing_permissions( trim( str_replace( ABSPATH, '', WP_ROCKET_CRITICAL_CSS_PATH ), '/' ) );
-	
+
 			rocket_notice_html( array(
 				'status'      => 'error',
 				'dismissible' => '',
@@ -447,43 +451,43 @@ class Rocket_Critical_CSS {
 		if ( ! get_rocket_option( 'async_css' ) ) {
 			return $buffer;
 		}
-	
+
 		if ( is_rocket_post_excluded_option( 'async_css' ) ) {
 			return $buffer;
 		}
-	
+
 		$excluded_css = array_flip( get_rocket_exclude_async_css() );
-	
+
 		// Get all css files with this regex.
 		preg_match_all( apply_filters( 'rocket_async_css_regex_pattern', '/(?=<link[^>]*\s(rel\s*=\s*[\'"]stylesheet["\']))<link[^>]*\shref\s*=\s*[\'"]([^\'"]+)[\'"](.*)>/iU' ), $buffer, $tags_match );
-	
+
 		if ( ! isset( $tags_match[0] ) ) {
 			return $buffer;
 		}
-	
+
 		$noscripts = '';
-	
+
 		foreach ( $tags_match[0] as $i => $tag ) {
 			// Strip query args.
 			$path = rocket_extract_url_component( $tags_match[2][ $i ], PHP_URL_PATH );
-	
+
 			// Check if this file should be deferred.
 			if ( isset( $excluded_css[ $path ] ) ) {
 				continue;
 			}
-	
+
 			$preload = str_replace( 'stylesheet', 'preload', $tags_match[1][ $i ] );
 			$onload  = str_replace( $tags_match[3][ $i ], ' as="style" onload=""' . $tags_match[3][ $i ] . '>', $tags_match[3][ $i ] );
 			$tag     = str_replace( $tags_match[3][ $i ] . '>', $onload, $tag );
 			$tag     = str_replace( $tags_match[1][ $i ], $preload, $tag );
 			$tag     = str_replace( 'onload=""', 'onload="this.rel=\'stylesheet\'"', $tag );
 			$buffer  = str_replace( $tags_match[0][ $i ], $tag, $buffer );
-	
+
 			$noscripts .= '<noscript>' . $tags_match[0][ $i ] . '</noscript>';
 		}
-	
+
 		$buffer = str_replace( '</body>', $noscripts . '</body>', $buffer );
-	
+
 		return $buffer;
 	}
 
@@ -495,47 +499,47 @@ class Rocket_Critical_CSS {
 	 */
 	function insert_critical_css() {
 		global $pagenow;
-	
+
 		if ( ! get_rocket_option( 'async_css' ) ) {
 			return;
 		}
-	
+
 		if ( is_rocket_post_excluded_option( 'async_css' ) ) {
 			return;
 		}
-	
+
 		// Don't apply on wp-login.php/wp-register.php.
 		if ( in_array( $pagenow, array( 'wp-login.php', 'wp-register.php' ), true ) ) {
 			return;
 		}
-	
+
 		if ( ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) || ( defined( 'DONOTASYNCCSS' ) && DONOTASYNCCSS ) ) {
 			return;
 		}
-	
+
 		// Don't apply if user is logged-in and cache for logged-in user is off.
 		if ( is_user_logged_in() && ! get_rocket_option( 'cache_logged_user' ) ) {
 			return;
 		}
-	
+
 		// This filter is documented in inc/front/process.php.
 		$rocket_cache_search = apply_filters( 'rocket_cache_search', false );
-	
+
 		// Don't apply on search page.
 		if ( is_search() && ! $rocket_cache_search ) {
 			return;
 		}
-	
+
 		// Don't apply on excluded pages.
 		if ( in_array( $_SERVER['REQUEST_URI'] , get_rocket_option( 'cache_reject_uri' , array() ), true ) ) {
 			return;
 		}
-	
+
 		// Don't apply on 404 page.
 		if ( is_404() ) {
 			return;
 		}
-	
+
 		if ( is_home() ) {
 			$name = 'home.css';
 		} elseif ( is_front_page() ) {
@@ -555,7 +559,7 @@ class Rocket_Critical_CSS {
 		}
 
 		$file = $this->critical_css_path . $name;
-	
+
 		if ( ! rocket_direct_filesystem()->is_readable( $file ) ) {
 			return;
 		}
@@ -565,7 +569,7 @@ class Rocket_Critical_CSS {
 		if ( ! $critical_css_content ) {
 			return;
 		}
-	
+
 		echo '<style id="rocket-critical-css">' . wp_strip_all_tags( $critical_css_content ) . '</style>';
 	}
 
@@ -578,47 +582,47 @@ class Rocket_Critical_CSS {
 	 */
 	function insert_load_css() {
 		global $pagenow;
-	
+
 		if ( ! get_rocket_option( 'async_css' ) ) {
 			return;
 		}
-	
+
 		if ( is_rocket_post_excluded_option( 'async_css' ) ) {
 			return;
 		}
-	
+
 		// Don't apply on wp-login.php/wp-register.php.
 		if ( in_array( $pagenow, array( 'wp-login.php', 'wp-register.php' ), true ) ) {
 			return;
 		}
-	
+
 		if ( ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) || ( defined( 'DONOTASYNCCSS' ) && DONOTASYNCCSS ) ) {
 			return;
 		}
-	
+
 		// Don't apply if user is logged-in and cache for logged-in user is off.
 		if ( is_user_logged_in() && ! get_rocket_option( 'cache_logged_user' ) ) {
 			return;
 		}
-	
+
 		// This filter is documented in inc/front/process.php.
 		$rocket_cache_search = apply_filters( 'rocket_cache_search', false );
-	
+
 		// Don't apply on search page.
 		if ( is_search() && ! $rocket_cache_search ) {
 			return;
 		}
-	
+
 		// Don't apply on excluded pages.
 		if ( in_array( $_SERVER['REQUEST_URI'] , get_rocket_option( 'cache_reject_uri' , array() ), true ) ) {
 			return;
 		}
-	
+
 		// Don't apply on 404 page.
 		if ( is_404() ) {
 			return;
 		}
-	
+
 		echo <<<JS
 <script>
 /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
