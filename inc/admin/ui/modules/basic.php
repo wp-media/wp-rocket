@@ -64,15 +64,15 @@ $rocket_lazyload_fields[] = array(
 $rocket_lazyload_fields[] = array(
 	'parent'       => 'lazyload_iframes',
 	'type'         => 'checkbox',
-	'label'        => __( 'Replace Youtube iframe with preview image', 'rocket' ),
+	'label'        => __( 'Replace YouTube iframe with preview image', 'rocket' ),
 	'label_for'    => 'lazyload_youtube',
-	'label_screen' => __( 'Replace Youtube iframe with preview image', 'rocket' ),
+	'label_screen' => __( 'Replace YouTube iframe with preview image', 'rocket' ),
 );
 $rocket_lazyload_fields[] = array(
 	'parent'       => 'lazyload_iframes',
 	'type'         => 'helper_description',
 	'name'         => 'lazyload_youtube_description',
-	'description'  => __( 'This can significantly improve your loading if you have a lot of Youtube videos on a page.', 'rocket' )
+	'description'  => __( 'This can significantly improve your loading time if you have a lot of YouTube videos on a page.', 'rocket' )
 );
 $rocket_lazyload_fields[] = array(
 	'type'         => 'helper_performance',
