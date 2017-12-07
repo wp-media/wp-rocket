@@ -847,7 +847,7 @@ function rocket_sitemap_preload_running() {
 	}
 
 	rocket_notice_html( array(
-		'message' => sprintf( __( 'Sitemap-based cache preload is currently running: %d pages not yet cached have been preloaded. (refresh to see progress)', 'rocket' ), $running ),
+		'message' => sprintf( __( 'Sitemap preload: %d uncached pages have now been preloaded. (refresh to see progress)', 'rocket' ), $running ),
 	) );
 }
 add_action( 'admin_notices', 'rocket_sitemap_preload_running' );
@@ -881,7 +881,7 @@ function rocket_sitemap_preload_complete() {
 
 	rocket_notice_html( array(
 		// translators: %d is the number of pages preloaded.
-		'message' => sprintf( __( 'Sitemap preload complete: %d pages not yet cached have been preloaded.', 'rocket' ), $result ),
+		'message' => sprintf( __( 'Sitemap preload: %d pages have been cached.', 'rocket' ), $result ),
 	) );
 }
 add_action( 'admin_notices', 'rocket_sitemap_preload_complete' );
