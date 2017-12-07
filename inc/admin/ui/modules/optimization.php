@@ -312,7 +312,7 @@ $rocket_render_blocking[] = array(
 	'description'  => sprintf(
 		/* translators: %s = docs link, or nothing if white-label is enabled */
 		__( 'Critical path CSS will be automatically generated.%s', 'rocket' ),
-		$rwl ? '' : ' ' . __( '<a href="" target="_blank">More info</a>', 'rocket' )
+		$rwl ? '' : ' ' . __( '<a href="http://docs.wp-rocket.me/article/108-render-blocking-javascript-and-css-pagespeed#critical-path-css" target="_blank">More info</a>', 'rocket' )
 	),
 );
 
