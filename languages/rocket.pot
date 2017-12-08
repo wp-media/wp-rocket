@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 2.8\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2017-11-29 09:54-0500\n"
+"POT-Creation-Date: 2017-12-08 09:39-0500\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -401,7 +401,7 @@ msgid "Cancel"
 msgstr ""
 
 #: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/modules/tools.php:72
-#: inc/admin/ui/notices.php:912 inc/common/admin-bar.php:50
+#: inc/admin/ui/notices.php:935 inc/common/admin-bar.php:50
 #: inc/common/admin-bar.php:76 inc/common/admin-bar.php:118
 msgid "Clear cache"
 msgstr ""
@@ -622,7 +622,7 @@ msgstr ""
 
 #: inc/admin/ui/modules/basic.php:46 inc/admin/ui/modules/optimization.php:74
 #: inc/admin/ui/modules/optimization.php:140
-#: inc/admin/ui/modules/optimization.php:298
+#: inc/admin/ui/modules/optimization.php:296
 #, php-format
 msgid "Deactivate if you notice any visually broken items on your website.%s"
 msgstr ""
@@ -650,13 +650,13 @@ msgid "Enable LazyLoad for iframes and videos"
 msgstr ""
 
 #: inc/admin/ui/modules/basic.php:67 inc/admin/ui/modules/basic.php:69
-msgid "Replace Youtube iframe by preview image"
+msgid "Replace YouTube iframe with preview image"
 msgstr ""
 
 #: inc/admin/ui/modules/basic.php:75
 msgid ""
-"This can significantly improve your loading if you have a lot of Youtube videos "
-"on a page."
+"This can significantly improve your loading time if you have a lot of YouTube "
+"videos on a page."
 msgstr ""
 
 #: inc/admin/ui/modules/basic.php:80 inc/admin/ui/modules/basic.php:221
@@ -1278,114 +1278,121 @@ msgstr ""
 msgid "Concatenate JS files"
 msgstr ""
 
-#: inc/admin/ui/modules/optimization.php:180
-msgid ""
-"Your website seems to use HTTP/2. Activating these settings is not recommended, "
-"it can slow down your site."
+#: inc/admin/ui/modules/optimization.php:177
+#, php-format
+msgid "These settings are not recommended if your site uses HTTP/2.%s"
 msgstr ""
 
-#: inc/admin/ui/modules/optimization.php:186
+#: inc/admin/ui/modules/optimization.php:178
+msgid ""
+"<a href=\"http://docs.wp-rocket.me/article/1009-configuration-for-http-2\" "
+"target=\"_blank\">More info</a>"
+msgstr ""
+
+#: inc/admin/ui/modules/optimization.php:184
 msgid "Combine files:"
 msgstr ""
 
-#: inc/admin/ui/modules/optimization.php:198
+#: inc/admin/ui/modules/optimization.php:196
 msgid "Exclude CSS:"
 msgstr ""
 
-#: inc/admin/ui/modules/optimization.php:206
+#: inc/admin/ui/modules/optimization.php:204
 msgid ""
 "Specify URLs of CSS files to be excluded from minification and concatenation "
 "(one per line)"
 msgstr ""
 
-#: inc/admin/ui/modules/optimization.php:211
+#: inc/admin/ui/modules/optimization.php:209
 msgid "CSS files to be excluded from minification and concatenation:"
 msgstr ""
 
-#: inc/admin/ui/modules/optimization.php:218
+#: inc/admin/ui/modules/optimization.php:216
 #, php-format
 msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use %s wildcards "
 "to exclude all CSS files located at a specific path."
 msgstr ""
 
-#: inc/admin/ui/modules/optimization.php:229
+#: inc/admin/ui/modules/optimization.php:227
 msgid "Exclude JS:"
 msgstr ""
 
-#: inc/admin/ui/modules/optimization.php:237
+#: inc/admin/ui/modules/optimization.php:235
 msgid ""
 "Specify URLs of JS files to be excluded from minification and concatenation (one "
 "per line)"
 msgstr ""
 
-#: inc/admin/ui/modules/optimization.php:242
+#: inc/admin/ui/modules/optimization.php:240
 msgid "JS files to be excludeded from minification and concatenation:"
 msgstr ""
 
-#: inc/admin/ui/modules/optimization.php:249
+#: inc/admin/ui/modules/optimization.php:247
 #, php-format
 msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use %s wildcards "
 "to exclude all JS files located at a specific path."
 msgstr ""
 
-#: inc/admin/ui/modules/optimization.php:260
+#: inc/admin/ui/modules/optimization.php:258
 msgid "Remove query strings:"
 msgstr ""
 
+#: inc/admin/ui/modules/optimization.php:265
 #: inc/admin/ui/modules/optimization.php:267
-#: inc/admin/ui/modules/optimization.php:269
 msgid "Remove query strings from static resources"
 msgstr ""
 
-#: inc/admin/ui/modules/optimization.php:276
+#: inc/admin/ui/modules/optimization.php:274
 #, php-format
 msgid ""
 "Can improve the performance grade on <a href=\"%s\" target=\"_blank\">GT Metrix</"
 "a>."
 msgstr ""
 
-#: inc/admin/ui/modules/optimization.php:283
+#: inc/admin/ui/modules/optimization.php:281
 msgid ""
 "Removes the version query string from static files (e.g. style.css?ver=1.0) and "
 "encodes it into the file name instead (e.g. style-1-0.css)."
 msgstr ""
 
-#: inc/admin/ui/modules/optimization.php:299
+#: inc/admin/ui/modules/optimization.php:297
 msgid ""
 "<a href=\"http://docs.wp-rocket.me/article/108-render-blocking-javascript-and-"
 "css-pagespeed\" target=\"_blank\">Why?</a>"
 msgstr ""
 
+#: inc/admin/ui/modules/optimization.php:303
 #: inc/admin/ui/modules/optimization.php:305
-#: inc/admin/ui/modules/optimization.php:307
 msgid "Optimize CSS delivery"
 msgstr ""
 
-#: inc/admin/ui/modules/optimization.php:316
+#: inc/admin/ui/modules/optimization.php:314
 #, php-format
 msgid "Critical path CSS will be automatically generated.%s"
 msgstr ""
 
-#: inc/admin/ui/modules/optimization.php:317
-msgid "<a href=\"\" target=\"_blank\">More info</a>"
+#: inc/admin/ui/modules/optimization.php:315
+msgid ""
+"<a href=\"http://docs.wp-rocket.me/article/108-render-blocking-javascript-and-"
+"css-pagespeed#critical-path-css\" target=\"_blank\">More info</a>"
 msgstr ""
 
+#: inc/admin/ui/modules/optimization.php:321
 #: inc/admin/ui/modules/optimization.php:323
-#: inc/admin/ui/modules/optimization.php:325
 msgid "Load JS files deferred"
 msgstr ""
 
-#: inc/admin/ui/modules/optimization.php:330
+#: inc/admin/ui/modules/optimization.php:328
 msgid "Safe mode (recommended)"
 msgstr ""
 
-#: inc/admin/ui/modules/optimization.php:332
+#: inc/admin/ui/modules/optimization.php:330
 msgid "Defer JS files safely"
 msgstr ""
 
-#: inc/admin/ui/modules/optimization.php:338
+#: inc/admin/ui/modules/optimization.php:336
 msgid ""
 "Safe mode for deferred JS ensures support for inline jQuery references from "
 "themes and plugins by loading jQuery at the top of the document as a render-"
@@ -1393,13 +1400,13 @@ msgid ""
 "thoroughly!"
 msgstr ""
 
-#: inc/admin/ui/modules/optimization.php:344
+#: inc/admin/ui/modules/optimization.php:342
 msgid ""
 "Reduces the number of initial HTTP requests, can improve loading time and "
 "performance grade."
 msgstr ""
 
-#: inc/admin/ui/modules/optimization.php:349
+#: inc/admin/ui/modules/optimization.php:347
 msgid "Render-blocking CSS/JS:"
 msgstr ""
 
@@ -1679,7 +1686,7 @@ msgstr ""
 msgid "Rollback:"
 msgstr ""
 
-#: inc/admin/ui/modules/tools.php:195
+#: inc/admin/ui/modules/tools.php:195 inc/admin/ui/notices.php:907
 #, php-format
 msgid "Re-install version %s"
 msgstr ""
@@ -1858,43 +1865,52 @@ msgstr ""
 #: inc/admin/ui/notices.php:850
 #, php-format
 msgid ""
-"Sitemap-based cache preload is currently running: %d pages not yet cached have "
-"been preloaded. (refresh to see progress)"
+"Sitemap preload: %d uncached pages have now been preloaded. (refresh to see "
+"progress)"
 msgstr ""
 
 #: inc/admin/ui/notices.php:884
 #, php-format
-msgid "Sitemap preload complete: %d pages not yet cached have been preloaded."
+msgid "Sitemap preload: %d pages have been cached."
 msgstr ""
 
-#: inc/admin/ui/notices.php:930
+#: inc/admin/ui/notices.php:904
+#, php-format
+msgid ""
+"%1$s %2$s requires at least PHP %3$s to function properly. To use this version, "
+"please ask your web host how to upgrade your server to PHP %3$s or higher. If "
+"you are not able to upgrade, you can rollback to the previous version by using "
+"the button below."
+msgstr ""
+
+#: inc/admin/ui/notices.php:953
 msgid "Force deactivation "
 msgstr ""
 
-#: inc/admin/ui/notices.php:943
+#: inc/admin/ui/notices.php:966
 msgid "The following code should have been written to this file:"
 msgstr ""
 
-#: inc/admin/ui/notices.php:951
+#: inc/admin/ui/notices.php:974
 msgid "Dismiss this notice."
 msgstr ""
 
-#: inc/admin/ui/notices.php:972
+#: inc/admin/ui/notices.php:995
 #, php-format
 msgid "%s cannot configure itself due to missing writing permissions."
 msgstr ""
 
-#: inc/admin/ui/notices.php:978
+#: inc/admin/ui/notices.php:1001
 #, php-format
 msgid "Affected file/folder: %s"
 msgstr ""
 
-#: inc/admin/ui/notices.php:985
+#: inc/admin/ui/notices.php:1008
 #, php-format
 msgid "Troubleshoot: %1$sHow to make system files writeable%2$s"
 msgstr ""
 
-#: inc/admin/ui/notices.php:987
+#: inc/admin/ui/notices.php:1010
 msgid ""
 "http://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-config-"
 "writeable"
@@ -1913,14 +1929,14 @@ msgstr ""
 msgid "Critical CSS for %s generated."
 msgstr ""
 
-#: inc/classes/class-rocket-critical-css.php:340
+#: inc/classes/class-rocket-critical-css.php:358
 #, php-format
 msgid ""
 "Critical CSS generation is currently running: %1$d of %2$d page types completed. "
 "(Refresh this page to view progress)"
 msgstr ""
 
-#: inc/classes/class-rocket-critical-css.php:382
+#: inc/classes/class-rocket-critical-css.php:393
 #, php-format
 msgid "Critical CSS generation finished for %1$d of %2$d page types."
 msgstr ""
@@ -2085,11 +2101,4 @@ msgstr ""
 #: vendor/a5hleyrich/wp-background-processing/classes/wp-background-process.php:422
 #, php-format
 msgid "Every %d Minutes"
-msgstr ""
-
-#: wp-rocket.php:77
-msgid ""
-"WP Rocket requires at least PHP 5.3 to function properly. Please upgrade to PHP "
-"5.3 or higher to use the plugin. The Plugin has been auto-deactivated to prevent "
-"any issue."
 msgstr ""
