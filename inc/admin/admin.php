@@ -467,6 +467,7 @@ function rocket_analytics_data() {
 		'cloudflare_domain'       => 1,
 		'cloudflare_zone_id'      => 1,
 		'cloudflare_old_settings' => 1,
+		'submit_optimize'         => 1,
 		'analytics_enabled'       => 1,
 		'wl_author'               => 1,
 		'wl_author_URI'           => 1,
@@ -478,6 +479,7 @@ function rocket_analytics_data() {
 
 	$theme = wp_get_theme();
 	$data  = array_diff_key( get_option( WP_ROCKET_SLUG ), $untracked_wp_rocket_options );
+	$locale = explode('_', get_locale() );
 
 	if ( $is_nginx ) {
 		$data['web_server'] = 'NGINX';
@@ -489,11 +491,11 @@ function rocket_analytics_data() {
 		$data['web_server'] = 'IIS';
 	}
 
-	$data['php_version']       = phpversion();
-	$data['wordpress_version'] = $wp_version;
+	$data['php_version']       = preg_replace( '@^(\d\.\d+).*@', '\1', phpversion() );
+	$data['wordpress_version'] = preg_replace( '@^(\d\.\d+).*@', '\1', $wp_version );
 	$data['current_theme']     = $theme->get( 'Name' );
 	$data['active_plugins']    = rocket_get_active_plugins();
-	$data['locale']            = get_locale();
+	$data['locale']            = $locale[0];
 	$data['multisite']         = is_multisite();
 
 	return $data;
