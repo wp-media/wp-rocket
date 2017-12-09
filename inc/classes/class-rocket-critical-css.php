@@ -439,6 +439,42 @@ class Rocket_Critical_CSS {
 	}
 
 	/**
+	 * Determines if critical CSS is available for the current page
+	 *
+	 * @since 2.11
+	 * @author Remy Perona
+	 *
+	 * @return bool|string False if critical CSS file doesn't exist, file path otherwise
+	 */
+	public function get_current_page_critical_css() {
+		if ( is_home() ) {
+			$name = 'home.css';
+		} elseif ( is_front_page() ) {
+			$name = 'front_page.css';
+		} elseif ( is_category() ) {
+			$name = 'category.css';
+		} elseif ( is_tag() ) {
+			$name = 'post_tag.css';
+		} elseif ( is_tax() ) {
+			$taxonomy = get_queried_object()->term_name;
+			$name = $taxonomy . '.css';
+		} elseif ( is_singular() ) {
+			$post_type = get_post_type();
+			$name = $post_type . '.css';
+		} else {
+			$name = 'front_page.css';
+		}
+
+		$file = $this->critical_css_path . $name;
+
+		if ( ! rocket_direct_filesystem()->is_readable( $file ) ) {
+			return false;
+		}
+
+		return $file;
+	}
+
+	/**
 	 * Defer loading of CSS files
 	 *
 	 * @since 2.10
@@ -447,12 +483,16 @@ class Rocket_Critical_CSS {
 	 * @param string $buffer HTML code.
 	 * @return string Updated HTML code
 	 */
-	function async_css( $buffer ) {
+	public function async_css( $buffer ) {
 		if ( ! get_rocket_option( 'async_css' ) ) {
 			return $buffer;
 		}
 
 		if ( is_rocket_post_excluded_option( 'async_css' ) ) {
+			return $buffer;
+		}
+
+		if ( ! $this->get_current_page_critical_css() ) {
 			return $buffer;
 		}
 
@@ -497,7 +537,7 @@ class Rocket_Critical_CSS {
 	 * @since 2.10
 	 * @author Remy Perona
 	 */
-	function insert_critical_css() {
+	public function insert_critical_css() {
 		global $pagenow;
 
 		if ( ! get_rocket_option( 'async_css' ) ) {
@@ -506,6 +546,10 @@ class Rocket_Critical_CSS {
 
 		if ( is_rocket_post_excluded_option( 'async_css' ) ) {
 			return;
+		}
+
+		if ( ! $this->get_current_page_critical_css() ) {
+			return $buffer;
 		}
 
 		// Don't apply on wp-login.php/wp-register.php.
@@ -540,31 +584,7 @@ class Rocket_Critical_CSS {
 			return;
 		}
 
-		if ( is_home() ) {
-			$name = 'home.css';
-		} elseif ( is_front_page() ) {
-			$name = 'front_page.css';
-		} elseif ( is_category() ) {
-			$name = 'category.css';
-		} elseif ( is_tag() ) {
-			$name = 'post_tag.css';
-		} elseif ( is_tax() ) {
-			$taxonomy = get_queried_object()->term_name;
-			$name = $taxonomy . '.css';
-		} elseif ( is_singular() ) {
-			$post_type = get_post_type();
-			$name = $post_type . '.css';
-		} else {
-			$name = 'front_page.css';
-		}
-
-		$file = $this->critical_css_path . $name;
-
-		if ( ! rocket_direct_filesystem()->is_readable( $file ) ) {
-			return;
-		}
-
-		$critical_css_content = rocket_direct_filesystem()->get_contents( $file );
+		$critical_css_content = rocket_direct_filesystem()->get_contents( $this->get_current_page_critical_css() );
 
 		if ( ! $critical_css_content ) {
 			return;
@@ -580,7 +600,7 @@ class Rocket_Critical_CSS {
 	 * @since 2.10
 	 * @author Remy Perona
 	 */
-	function insert_load_css() {
+	public function insert_load_css() {
 		global $pagenow;
 
 		if ( ! get_rocket_option( 'async_css' ) ) {
@@ -589,6 +609,10 @@ class Rocket_Critical_CSS {
 
 		if ( is_rocket_post_excluded_option( 'async_css' ) ) {
 			return;
+		}
+
+		if ( ! $this->get_current_page_critical_css() ) {
+			return $buffer;
 		}
 
 		// Don't apply on wp-login.php/wp-register.php.
