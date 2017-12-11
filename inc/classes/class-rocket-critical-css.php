@@ -390,6 +390,14 @@ class Rocket_Critical_CSS {
 			return;
 		}
 
+		if ( $transient['generated'] === 0 ) {
+			$status = 'error';
+		} elseif ( $transient['generated'] < $transient['total'] ) {
+			$status = 'warning';
+		} else {
+			$status = 'success';
+		}
+
 		$message = '<p>' . sprintf( __( 'Critical CSS generation finished for %1$d of %2$d page types.', 'rocket' ), $transient['generated'], $transient['total'] ) . '</p>';
 
 		if ( ! empty( $transient['items'] ) ) {
@@ -403,6 +411,7 @@ class Rocket_Critical_CSS {
 		}
 
 		rocket_notice_html( array(
+			'status'  => $status,
 			'message' => $message,
 		) );
 

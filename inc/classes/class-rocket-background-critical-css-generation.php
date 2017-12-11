@@ -85,22 +85,46 @@ class Rocket_Background_Critical_CSS_Generation extends WP_Background_Process {
 			)
 		);
 
+		$transient = get_transient( 'rocket_critical_css_generation_process_running' );
+
+		if ( 400 === wp_remote_retrieve_response_code( $response ) ) {
+			$data = json_decode( wp_remote_retrieve_body( $response ) );
+
+			if ( isset( $data->message ) ) {
+				// translators: %1$s = type of content, %2$s = error message.
+				$transient['items'][] = sprintf( __( 'Critical CSS for %1$s not generated. Error: %2$s', 'rocket' ), $item['type'], $data->message );
+				set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
+			}
+
+			return false;
+		}
+
 		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
+			// translators: %1$s = type of content, %2$s = error message.
+			$transient['items'][] = sprintf( __( 'Critical CSS for %1$s not generated. Error: %2$s', 'rocket' ), $item['type'], __( 'The API returned an invalid response code.', 'rocket') );
+			set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
 			return false;
 		}
 
 		$data = json_decode( wp_remote_retrieve_body( $response ) );
 
 		if ( ! isset( $data->data ) ) {
+			// translators: %1$s = type of content, %2$s = error message.
+			$transient['items'][] = sprintf( __( 'Critical CSS for %1$s not generated. Error: %2$s', 'rocket' ), $item['type'], __( 'The API returned an empty response.', 'rocket') );
+			set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
 			return false;
 		}
 
 		while ( $job_data = $this->get_critical_path( $data->data->id ) ) {
 			if ( 400 === (int) $job_data->status ) {
+				// translators: %1$s = type of content, %2$s = error message.
+				$transient['items'][] = sprintf( __( 'Critical CSS for %1$s not generated. Error: %2$s', 'rocket' ), $item['type'], $job_data->message );
+				set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
 				break;
 			}
 
 			if ( 'complete' === $job_data->data->state ) {
+				$transient         = get_transient( 'rocket_critical_css_generation_process_running' );
 				$critical_css_path = WP_ROCKET_CRITICAL_CSS_PATH . get_current_blog_id();
 
 				if ( ! rocket_direct_filesystem()->is_dir( $critical_css_path ) ) {
@@ -112,10 +136,16 @@ class Rocket_Background_Critical_CSS_Generation extends WP_Background_Process {
 				$result    = rocket_put_content( $file_path, $job_data->data->critical_path );
 
 				if ( ! $result ) {
+					// translators: %1$s = type of content, %2$s = error message.
+					$transient['items'][] = sprintf(
+						__( 'Critical CSS for %1$s not generated. Error: %2$s', 'rocket' ), $item['type'],
+						// translators: %s = critical CSS directory path.
+						sprintf( __( 'The critical CSS content could not be saved as a file in %s.', 'rocket' ), $critical_css_path )
+					);
+					set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
 					break;
 				}
 
-				$transient = get_transient( 'rocket_critical_css_generation_process_running' );
 				// translators: %s = type of content.
 				$transient['items'][] = sprintf( __( 'Critical CSS for %s generated.', 'rocket' ), $item['type'] );
 				$transient['generated']++;
