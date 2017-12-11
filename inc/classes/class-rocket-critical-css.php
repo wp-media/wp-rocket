@@ -558,7 +558,7 @@ class Rocket_Critical_CSS {
 		}
 
 		if ( ! $this->get_current_page_critical_css() ) {
-			return $buffer;
+			return;
 		}
 
 		// Don't apply on wp-login.php/wp-register.php.
@@ -621,7 +621,7 @@ class Rocket_Critical_CSS {
 		}
 
 		if ( ! $this->get_current_page_critical_css() ) {
-			return $buffer;
+			return;
 		}
 
 		// Don't apply on wp-login.php/wp-register.php.
