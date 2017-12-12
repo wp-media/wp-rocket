@@ -141,10 +141,11 @@ function rocket_field( $args ) {
 				?>
 
 					<legend class="screen-reader-text"><span><?php echo $args['label_screen']; ?></span></legend>
-					<label><textarea id="<?php echo $args['label_for']; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]" cols="<?php echo $cols; ?>" rows="<?php echo $rows; ?>"
+					<label><textarea id="<?php echo $args['label_for']; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]" cols="<?php echo $cols; ?>" rows="<?php echo $rows; ?>" class="<?php echo $class; ?>"
 													<?php
 													echo $readonly;
 													echo $placeholder;
+													echo $parent;
 ?>
 ><?php echo esc_html( $value ); ?></textarea>
 					</label>
@@ -740,6 +741,9 @@ function rocket_settings_callback( $inputs ) {
 
 	// Option: Async CSS.
 	$inputs['async_css'] = ! empty( $inputs['async_css'] ) ? 1 : 0;
+
+	// Option: Critical CSS.
+	$inputs['critical_css'] = ! empty( $inputs['critical_css'] ) ? str_replace( array( '<style>', '</style>' ), '', wp_kses( $inputs['critical_css'], array( "\'", '\"' ) ) ) : '';
 
 	/*
 	 * Option : JS files to exclude from defer JS

@@ -477,6 +477,10 @@ class Rocket_Critical_CSS {
 		$file = $this->critical_css_path . $name;
 
 		if ( ! rocket_direct_filesystem()->is_readable( $file ) ) {
+			if ( ! empty( get_rocket_option( 'critical_css', '' ) ) ) {
+				return 'fallback';
+			}
+	
 			return false;
 		}
 
@@ -557,7 +561,9 @@ class Rocket_Critical_CSS {
 			return;
 		}
 
-		if ( ! $this->get_current_page_critical_css() ) {
+		$current_page_critical_css = $this->get_current_page_critical_css();
+
+		if ( ! $current_page_critical_css ) {
 			return;
 		}
 
@@ -593,7 +599,11 @@ class Rocket_Critical_CSS {
 			return;
 		}
 
-		$critical_css_content = rocket_direct_filesystem()->get_contents( $this->get_current_page_critical_css() );
+		if ( 'fallback' === $current_page_critical_css ) {
+			$critical_css_content = get_rocket_option( 'critical_css', '' );
+		} else {
+			$critical_css_content = rocket_direct_filesystem()->get_contents( $this->get_current_page_critical_css() );
+		}
 
 		if ( ! $critical_css_content ) {
 			return;

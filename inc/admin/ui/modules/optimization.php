@@ -300,24 +300,6 @@ $rocket_render_blocking[] = array(
 
 $rocket_render_blocking[] = array(
 	'type'         => 'checkbox',
-	'label'        => __( 'Optimize CSS delivery', 'rocket' ),
-	'name'         => 'async_css',
-	'label_screen' => __( 'Optimize CSS delivery', 'rocket' ),
-	'readonly'     => rocket_maybe_disable_async_css(),
-);
-
-$rocket_render_blocking[] = array(
-	'type'         => 'helper_description',
-	'name'         => 'async_css_description',
-	'description'  => sprintf(
-		/* translators: %s = docs link, or nothing if white-label is enabled */
-		__( 'Critical path CSS will be automatically generated.%s', 'rocket' ),
-		$rwl ? '' : ' ' . __( '<a href="http://docs.wp-rocket.me/article/108-render-blocking-javascript-and-css-pagespeed#critical-path-css" target="_blank">More info</a>', 'rocket' )
-	),
-);
-
-$rocket_render_blocking[] = array(
-	'type'         => 'checkbox',
 	'label'        => __( 'Load JS files deferred', 'rocket' ),
 	'name'         => 'defer_all_js',
 	'label_screen' => __( 'Load JS files deferred', 'rocket' ),
@@ -340,6 +322,42 @@ $rocket_render_blocking[] = array(
 	'type'         => 'helper_performance',
 	'name'         => 'render_blocking_perf_tip',
 	'description'  => __( 'Reduces the number of initial HTTP requests, can improve loading time and performance grade.', 'rocket' ),
+);
+
+$rocket_render_blocking[] = array(
+	'type'         => 'checkbox',
+	'label'        => __( 'Optimize CSS delivery', 'rocket' ),
+	'name'         => 'async_css',
+	'label_screen' => __( 'Optimize CSS delivery', 'rocket' ),
+	'readonly'     => rocket_maybe_disable_async_css(),
+);
+
+$rocket_render_blocking[] = array(
+	'type'         => 'helper_description',
+	'name'         => 'async_css_description',
+	'description'  => sprintf(
+		/* translators: %s = docs link, or nothing if white-label is enabled */
+		__( 'Critical path CSS will be automatically generated.%s', 'rocket' ),
+		$rwl ? '' : ' ' . __( '<a href="http://docs.wp-rocket.me/article/108-render-blocking-javascript-and-css-pagespeed#critical-path-css" target="_blank">More info</a>', 'rocket' )
+	),
+);
+
+/**
+ * Above the fold CSS fallback
+ */
+$rocket_render_blocking[] = array(
+	'parent'       => 'async_css',
+	'type'         => 'textarea',
+	'label_for'    => 'critical_css',
+	'label_screen' => __( 'Critical path CSS rules for rendering above-the-fold content', 'rocket' ),
+);
+
+$rocket_render_blocking[] = array(
+	'parent'       => 'async_css',
+	'type'         => 'helper_description',
+	'name'         => 'critical_css_generator',
+	// translators: %s is the URL to the documentation page.
+	'description'  => sprintf( __( 'Use the <a href="%s" target="_blank">Critical Path CSS Generator</a> to specify required CSS rules.', 'rocket' ), 'http://docs.wp-rocket.me/article/108-render-blocking-javascript-and-css-pagespeed#critical-path-css' ),
 );
 
 add_settings_field(
