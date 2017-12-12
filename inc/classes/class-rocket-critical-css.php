@@ -355,12 +355,13 @@ class Rocket_Critical_CSS {
 			return;
 		}
 
+		// Translators: %1$d = number of critical CSS generated, %2$d = total number of critical CSS to generate.
 		$message = '<p>' . sprintf( __( 'Critical CSS generation is currently running: %1$d of %2$d page types completed. (Refresh this page to view progress)', 'rocket' ), $transient['generated'], $transient['total'] ) . '</p>';
 
 		if ( ! empty( $transient['items'] ) ) {
 			$message .= '<ul>';
 
-			foreach( $transient['items'] as $item ) {
+			foreach ( $transient['items'] as $item ) {
 				$message .= '<li>' . $item . '</li>';
 			}
 
@@ -390,7 +391,7 @@ class Rocket_Critical_CSS {
 			return;
 		}
 
-		if ( $transient['generated'] === 0 ) {
+		if ( 0 === $transient['generated'] ) {
 			$status = 'error';
 		} elseif ( $transient['generated'] < $transient['total'] ) {
 			$status = 'warning';
@@ -398,12 +399,13 @@ class Rocket_Critical_CSS {
 			$status = 'success';
 		}
 
+		// Translators: %1$d = number of critical CSS generated, %2$d = total number of critical CSS to generate.
 		$message = '<p>' . sprintf( __( 'Critical CSS generation finished for %1$d of %2$d page types.', 'rocket' ), $transient['generated'], $transient['total'] ) . '</p>';
 
 		if ( ! empty( $transient['items'] ) ) {
 			$message .= '<ul>';
 
-			foreach( $transient['items'] as $item ) {
+			foreach ( $transient['items'] as $item ) {
 				$message .= '<li>' . $item . '</li>';
 			}
 
@@ -466,10 +468,10 @@ class Rocket_Critical_CSS {
 			$name = 'post_tag.css';
 		} elseif ( is_tax() ) {
 			$taxonomy = get_queried_object()->term_name;
-			$name = $taxonomy . '.css';
+			$name     = $taxonomy . '.css';
 		} elseif ( is_singular() ) {
 			$post_type = get_post_type();
-			$name = $post_type . '.css';
+			$name      = $post_type . '.css';
 		} else {
 			$name = 'front_page.css';
 		}
@@ -477,10 +479,11 @@ class Rocket_Critical_CSS {
 		$file = $this->critical_css_path . $name;
 
 		if ( ! rocket_direct_filesystem()->is_readable( $file ) ) {
-			if ( ! empty( get_rocket_option( 'critical_css', '' ) ) ) {
+			$critical_css = get_rocket_option( 'critical_css', '' );
+			if ( ! empty( critical_css ) ) {
 				return 'fallback';
 			}
-	
+
 			return false;
 		}
 
@@ -590,7 +593,7 @@ class Rocket_Critical_CSS {
 		}
 
 		// Don't apply on excluded pages.
-		if ( in_array( $_SERVER['REQUEST_URI'] , get_rocket_option( 'cache_reject_uri' , array() ), true ) ) {
+		if ( in_array( $_SERVER['REQUEST_URI'], get_rocket_option( 'cache_reject_uri', array() ), true ) ) {
 			return;
 		}
 
@@ -657,7 +660,7 @@ class Rocket_Critical_CSS {
 		}
 
 		// Don't apply on excluded pages.
-		if ( in_array( $_SERVER['REQUEST_URI'] , get_rocket_option( 'cache_reject_uri' , array() ), true ) ) {
+		if ( in_array( $_SERVER['REQUEST_URI'], get_rocket_option( 'cache_reject_uri', array() ), true ) ) {
 			return;
 		}
 
