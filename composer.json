@@ -31,5 +31,11 @@
 			"inc/classes",
 			"inc/vendors/classes"
 		]
+	},
+	"require-dev": {
+		"squizlabs/php_codesniffer": "^3.1",
+		"wimg/php-compatibility": "^8.0",
+		"dealerdirect/phpcodesniffer-composer-installer": "^0.4.4",
+		"wp-coding-standards/wpcs": "^0.14.0"
 	}
 }
