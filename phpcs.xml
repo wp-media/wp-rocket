@@ -5,6 +5,11 @@
 	<arg name="extensions" value="php"/>
 	<!--<arg value="s"/>-->
 
+    <!-- Run against the PHPCompatibility ruleset -->
+    <rule ref="PHPCompatibility"/>
+    <!-- Check for cross-version support for PHP 5.3 and higher. -->
+    <config name="testVersion" value="5.3-"/>
+
 	<file>.</file>
 	<exclude-pattern>/vendor/*</exclude-pattern>
 	<exclude-pattern>/inc/vendors/*</exclude-pattern>
