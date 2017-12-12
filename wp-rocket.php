@@ -74,6 +74,14 @@ if ( version_compare( PHP_VERSION, '5.3' ) < 0 ) {
 	add_action( 'plugins_loaded', 'rocket_init' );
 }
 
+/**
+ * Initializes WP Rocket partially if current PHP version is not supported.
+ *
+ * @since 2.11
+ * @author Remy Perona
+ *
+ * @return void
+ */
 function rocket_init_php_deprecated() {
 	// Load translations from the languages directory.
 	$locale = get_locale();
@@ -267,7 +275,7 @@ function rocket_init() {
  */
 function rocket_deactivation() {
 	if ( ! isset( $_GET['rocket_nonce'] ) || ! wp_verify_nonce( $_GET['rocket_nonce'], 'force_deactivation' ) ) {
-		  global $is_apache;
+		global $is_apache;
 		$causes = array();
 
 		// .htaccess problem.
