@@ -456,7 +456,7 @@ class Rocket_Critical_CSS {
 	 * @return bool|string False if critical CSS file doesn't exist, file path otherwise
 	 */
 	public function get_current_page_critical_css() {
-		if ( is_home() ) {
+		if ( is_home() && 'page' === get_option( 'show_on_front' ) ) {
 			$name = 'home.css';
 		} elseif ( is_front_page() ) {
 			$name = 'front_page.css';
