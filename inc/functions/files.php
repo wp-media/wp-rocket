@@ -218,7 +218,7 @@ function rocket_generate_config_file() {
 
 	if ( count( $config_files_path ) ) {
 		foreach ( $config_files_path as $file ) {
-			rocket_put_content( $file , $buffer );
+			rocket_put_content( $file, $buffer );
 		}
 	}
 }
@@ -256,7 +256,7 @@ function rocket_init_cache_dir() {
 	}
 
 	if ( $is_apache ) {
-		$htaccess_path =  WP_ROCKET_CACHE_PATH . '.htaccess';
+		$htaccess_path = WP_ROCKET_CACHE_PATH . '.htaccess';
 
 		if ( ! rocket_direct_filesystem()->is_file( $htaccess_path ) ) {
 			rocket_direct_filesystem()->touch( $htaccess_path );
@@ -535,7 +535,7 @@ function rocket_clean_files( $urls ) {
 
 		/** This filter is documented in inc/front/htaccess.php */
 		if ( apply_filters( 'rocket_url_no_dots', false ) ) {
-			$url = str_replace( '.' , '_', $url );
+			$url = str_replace( '.', '_', $url );
 		}
 
 		$dirs = glob( WP_ROCKET_CACHE_PATH . rocket_remove_url_protocol( $url ), GLOB_NOSORT );
@@ -572,7 +572,7 @@ function rocket_clean_home( $lang = '' ) {
 
 	/** This filter is documented in inc/front/htaccess.php */
 	if ( apply_filters( 'rocket_url_no_dots', false ) ) {
-		$parse_url['host'] = str_replace( '.' , '_', $parse_url['host'] );
+		$parse_url['host'] = str_replace( '.', '_', $parse_url['host'] );
 	}
 
 	$root = WP_ROCKET_CACHE_PATH . $parse_url['host'] . '*' . untrailingslashit( $parse_url['path'] );
@@ -702,7 +702,7 @@ function rocket_clean_domain( $lang = '' ) {
 
 		/** This filter is documented in inc/front/htaccess.php */
 		if ( apply_filters( 'rocket_url_no_dots', false ) ) {
-			$file['host'] = str_replace( '.' , '_', $file['host'] );
+			$file['host'] = str_replace( '.', '_', $file['host'] );
 		}
 
 		$root = WP_ROCKET_CACHE_PATH . $file['host'] . '*' . $file['path'];
@@ -839,7 +839,7 @@ function rocket_clean_user( $user_id, $lang = '' ) {
 
 		/** This filter is documented in inc/front/htaccess.php */
 		if ( apply_filters( 'rocket_url_no_dots', false ) ) {
-			$parse_url['host'] = str_replace( '.' , '_', $parse_url['host'] );
+			$parse_url['host'] = str_replace( '.', '_', $parse_url['host'] );
 		}
 
 		$root = WP_ROCKET_CACHE_PATH . $parse_url['host'] . '-' . $user_key . '*' . $parse_url['path'];
@@ -944,7 +944,7 @@ function rocket_rrmdir( $dir, $dirs_to_preserve = array() ) {
 
 		$keys = array();
 		foreach ( $dirs_to_preserve as $dir_to_preserve ) {
-			$matches = preg_grep( "#^$dir_to_preserve$#" , $dirs );
+			$matches = preg_grep( "#^$dir_to_preserve$#", $dirs );
 			$keys[] = reset( $matches );
 		}
 
@@ -979,8 +979,8 @@ function rocket_rrmdir( $dir, $dirs_to_preserve = array() ) {
  * @return object WP_Filesystem_Direct instance
  */
 function rocket_direct_filesystem() {
-	require_once( ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php' );
-	require_once( ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php' );
+	require_once ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php';
+	require_once ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php';
 	return new WP_Filesystem_Direct( new StdClass() );
 }
 
