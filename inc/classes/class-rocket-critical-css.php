@@ -480,7 +480,7 @@ class Rocket_Critical_CSS {
 
 		if ( ! rocket_direct_filesystem()->is_readable( $file ) ) {
 			$critical_css = get_rocket_option( 'critical_css', '' );
-			if ( ! empty( critical_css ) ) {
+			if ( ! empty( $critical_css ) ) {
 				return 'fallback';
 			}
 
