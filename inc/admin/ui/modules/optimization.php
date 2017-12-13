@@ -347,6 +347,13 @@ $rocket_render_blocking[] = array(
  * Above the fold CSS fallback
  */
 $rocket_render_blocking[] = array(
+	'parent'      => 'async_css',
+	'type'        => 'helper_help',
+	'name'        => 'critical_css_fallback_title',
+	'description' => __( 'Fallback critical path CSS:', 'rocket' ),
+);
+
+$rocket_render_blocking[] = array(
 	'parent'       => 'async_css',
 	'type'         => 'textarea',
 	'label_for'    => 'critical_css',
@@ -356,11 +363,11 @@ $rocket_render_blocking[] = array(
 $rocket_render_blocking[] = array(
 	'parent'      => 'async_css',
 	'type'        => 'helper_description',
-	'name'        => 'critical_css_generator',
+	'name'        => 'critical_css_fallback_description',
 	'description' => sprintf(
 		// translators: %s = docs link, or nothing if white-label is enabled.
 		__( 'Provides a fallback if auto-generated critical path CSS is incomplete.%s', 'rocket' ),
-		$rwl ? '' : ' ' . __( '<a href="http://docs.wp-rocket.me/article/108-render-blocking-javascript-and-css-pagespeed#critical-path-css" target="_blank">More info</a>' ) ),
+		$rwl ? '' : ' ' . __( '<a href="http://docs.wp-rocket.me/article/108-render-blocking-javascript-and-css-pagespeed#fallback" target="_blank">More info</a>' ) ),
 );
 
 add_settings_field(
