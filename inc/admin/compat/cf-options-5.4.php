@@ -3,7 +3,7 @@
 $cf_instance = get_rocket_cloudflare_api_instance();
 if ( ! is_wp_error( $cf_instance ) ) {
 	try {
-		$zone_instance = new CloudFlare\Zone( $cf_instance );
+		$zone_instance = new Cloudflare\Zone( $cf_instance );
 		$zone          = $zone_instance->zones( $newvalue['cloudflare_domain'] );
 
 		if ( isset( $zone->result[0]->id ) ) {
