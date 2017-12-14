@@ -34,10 +34,9 @@ Feel free to check out our [public roadmap](https://trello.com/b/CrUcz6Jy/wp-roc
 
 Visit [wp-media.me](https://wp-media.me/?utm_source=github&utm_medium=wp_rocket_profile). 
 
-We also make other plugins that help speed up and secure WordPress websites. Check out:
+We also make other plugins that help speed up WordPress websites. Check out:
 
 * [Imagify](https://imagify.io): it's a great WordPress plugin to optimize your images and speed up your website.
-* [SecuPress](https://secupress.me): get peace of mind by securing your WordPress website against various security threats.
 
 ## Special thanks
 

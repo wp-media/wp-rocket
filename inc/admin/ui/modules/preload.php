@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 // Are we white-labeled?
 $rwl = rocket_is_white_label();
@@ -19,10 +19,10 @@ $sitemap_preload_options = array(
 		'default'      => 0,
 	),
 	array(
-			'type'          => 'helper_description',
-			'name'          => 'sitemaps_preload_desc',
-			'description'   => $rwl ? __( 'Sitemap preloading runs automatically when the cache lifespan expires. You can also launch it manually from the upper toolbar menu, or from the Tools tab.', 'rocket' ) : __( '<a href="http://docs.wp-rocket.me/article/8-how-the-cache-is-preloaded" target="_blank">Sitemap preloading</a> runs automatically when the cache lifespan expires. You can also launch it manually from the upper toolbar menu, or from the Tools tab.', 'rocket' ),
-		),
+		'type'          => 'helper_description',
+		'name'          => 'sitemaps_preload_desc',
+		'description'   => $rwl ? __( 'Sitemap preloading runs automatically when the cache lifespan expires. You can also launch it manually from the upper toolbar menu, or from the Tools tab.', 'rocket' ) : __( '<a href="http://docs.wp-rocket.me/article/8-how-the-cache-is-preloaded" target="_blank">Sitemap preloading</a> runs automatically when the cache lifespan expires. You can also launch it manually from the upper toolbar menu, or from the Tools tab.', 'rocket' ),
+	),
 );
 
 add_settings_field(
@@ -63,13 +63,15 @@ add_settings_field(
 			 *
 			 * @param array $intervals Array of options interval defined by a $value => $label pair.
 			 */
-			'options'      => apply_filters( 'rocket_sitemap_preload_interval', array(
-				'250000'  => '250ms',
-				'500000'  => '500ms',
-				'750000'  => '750ms',
-				'1000000' => '1s',
-				'2000000' => '2s',
-			) ),
+			'options'      => apply_filters(
+				'rocket_sitemap_preload_interval', array(
+					'250000'  => '250ms',
+					'500000'  => '500ms',
+					'750000'  => '750ms',
+					'1000000' => '1s',
+					'2000000' => '2s',
+				)
+			),
 		),
 		array(
 			'type'        => 'helper_description',
@@ -135,7 +137,7 @@ add_settings_field(
 		array(
 			'type'        => 'helper_description',
 			'name'        => 'bot_preload',
-			'description' => $rwl ? __( 'Bot-based preloading should only be used on well-performing servers. Once activated, it gets triggered automatically after you add or update content on your website. You can also launch it manually from the upper toolbar menu, or from the Tools tab.', 'rocket' ) : __( '<a href="http://docs.wp-rocket.me/article/8-how-the-cache-is-preloaded" target="_blank">Bot-based preloading</a> should only be used on well-performing servers. Once activated, it gets triggered automatically after you add or update content on your website. You can also launch it manually from the upper toolbar menu, or from the Tools tab.', 'rocket' ),
+			'description' => $rwl ? __( 'Bot-based preloading should only be used on well-performing servers. Once activated, it gets triggered automatically after you add or update content on your website. You can also launch it manually from the upper toolbar menu, or from the Tools tab.', 'rocket' ) : __( '<a href="http://docs.wp-rocket.me/article/8-how-the-cache-is-preloaded" target="_blank">Bot-based preloading</a> should only be used on well-performaning servers. Once activated, it gets triggered automatically after you add or update content on your website. You can also launch it manually from the upper toolbar menu, or from the Tools tab.', 'rocket' ),
 		),
 		array(
 			'type'        => 'helper_warning',
@@ -159,17 +161,17 @@ add_settings_field(
 			'type'         => 'helper_help',
 			'name'         => 'dns_prefetch_tip',
 			'description'  => __( 'Specify external hosts to be prefetched (no <code>http:</code>, one per line)', 'rocket' ),
-			),
-			array(
-				'type'         => 'textarea',
-				'label_for'    => 'dns_prefetch',
-				'label_screen' => __( 'Prefetch DNS requests:', 'rocket' ),
-				'placeholder'  => '//example.com',
-			),
-			array(
-				'type'         => 'helper_description',
-				'name'         => 'dns_prefetch',
-				'description'  => __( '<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-DNS-Prefetch-Control" target="_blank">DNS prefetching</a> can make external files load faster, especially on mobile networks.', 'rocket' ),
-			),
+		),
+		array(
+			'type'         => 'textarea',
+			'label_for'    => 'dns_prefetch',
+			'label_screen' => __( 'Prefetch DNS requests:', 'rocket' ),
+			'placeholder'  => '//example.com',
+		),
+		array(
+			'type'         => 'helper_description',
+			'name'         => 'dns_prefetch',
+			'description'  => __( '<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-DNS-Prefetch-Control" target="_blank">DNS prefetching</a> can make external files load faster, especially on mobile networks.', 'rocket' ),
+		),
 	)
 );
