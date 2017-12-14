@@ -114,3 +114,10 @@ fieldset[class*="fieldparent-"][class*="fieldtype-helper"]  {
 	white-space: nowrap;
 	width: 1%;
 }
+.fieldname-critical_css.fieldtype-textarea[class*="fieldparent-"] textarea {
+    margin-left: 20px;
+}
+.fieldname-async_css.fieldtype-checkbox,
+.fieldname-critical_css_fallback_title {
+    margin-top: 1.75em;
+}
