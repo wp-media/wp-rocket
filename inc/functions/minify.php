@@ -22,27 +22,27 @@ function rocket_minify_files( $buffer, $extension ) {
 	}
 
 	if ( 'js' === $extension ) {
-		$header_files   = array();
-		$concatenate = get_rocket_option( 'minify_concatenate_js', false ) ? true : false;
+		$header_files     = array();
+		$concatenate      = get_rocket_option( 'minify_concatenate_js', false ) ? true : false;
 		$js_files_in_head = implode( '|', $rocket_js_enqueued_in_head );
 
 		// Get all js files with this regex.
 		preg_match_all( apply_filters( 'rocket_minify_js_regex_pattern', '#<script[^>]+?src=[\'|"]([^\'|"]+\.js?.+)[\'|"].*>(?:<\/script>)#iU' ), $buffer, $tags_match, PREG_SET_ORDER );
 	}
 
-	$files          = array();
-	$excluded_files = array();
+	$files             = array();
+	$excluded_files    = array();
 	$external_js_files = '';
 
 	foreach ( $tags_match as $tag ) {
 		// Don't minify external files.
 		if ( is_rocket_external_file( $tag[1], $extension ) ) {
 			if ( 'js' === $extension && $concatenate ) {
-				$host = rocket_extract_url_component( $tag[1], PHP_URL_HOST );
+				$host                 = rocket_extract_url_component( $tag[1], PHP_URL_HOST );
 				$excluded_external_js = get_rocket_minify_excluded_external_js();
 				if ( ! isset( $excluded_external_js[ $host ] ) ) {
 					$external_js_files .= $tag[0];
-					$buffer = str_replace( $tag[0], '', $buffer );
+					$buffer             = str_replace( $tag[0], '', $buffer );
 				}
 			}
 			continue;
@@ -156,7 +156,7 @@ function rocket_minify_files( $buffer, $extension ) {
 
 	if ( 'js' === $extension ) {
 		$minify_header_tag = '<script src="' . $minify_header_url . '" data-minify="1"></script>';
-		$buffer = preg_replace( '/<head(.*)>/U', '<head$1>' . $external_js_files . $minify_header_tag, $buffer, 1 );
+		$buffer            = preg_replace( '/<head(.*)>/U', '<head$1>' . $external_js_files . $minify_header_tag, $buffer, 1 );
 
 		$minify_tag = '<script src="' . $minify_url . '" data-minify="1"></script>';
 		return str_replace( '</body>', $minify_tag . '</body>', $buffer );
@@ -279,7 +279,7 @@ function get_rocket_minify_url( $files, $extension ) {
 		if ( ! empty( $file['query'] ) ) {
 			$filename = preg_replace( '/\.(js|css)\?(?:timestamp|ver)=([^&]+)(?:.*)/', '-$2.$1', ltrim( $file['path'], '/' ) . '?' . $file['query'] );
 		} else {
-			$filename = $file_path;
+			$filename = ltrim( rocket_realpath( $file['path'], false, $hosts_index ), '/' );
 		}
 	} else {
 		foreach ( $files as $file ) {
@@ -411,7 +411,7 @@ function rocket_concatenate_google_fonts( $buffer ) {
 
 	foreach ( $matches[2] as $k => $font ) {
 		// Get fonts name.
-		$font = str_replace( array( '%7C', '%7c' ) , '|', $font );
+		$font = str_replace( array( '%7C', '%7c' ), '|', $font );
 		$font = explode( 'family=', $font );
 		$font = ( isset( $font[1] ) ) ? explode( '&', $font[1] ) : array();
 
@@ -431,11 +431,11 @@ function rocket_concatenate_google_fonts( $buffer ) {
 
 	// Concatenate fonts tag.
 	$subsets = ( $subsets ) ? '&subset=' . implode( ',', array_filter( array_unique( $subsets ) ) ) : '';
-	$fonts   = implode( '|' , array_filter( array_unique( $fonts ) ) );
+	$fonts   = implode( '|', array_filter( array_unique( $fonts ) ) );
 	$fonts   = str_replace( '|', '%7C', $fonts );
 
 	if ( ! empty( $fonts ) ) {
-		$fonts = '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=' . $fonts . $subsets . '" />';
+		$fonts  = '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=' . $fonts . $subsets . '" />';
 		$buffer = preg_replace( '/<head(.*)>/U', '<head$1>' . $fonts, $buffer, 1 );
 	}
 
@@ -500,7 +500,7 @@ function rocket_extract_ie_conditionals( $buffer ) {
 function rocket_inject_ie_conditionals( $buffer, $conditionals ) {
 	foreach ( $conditionals as $conditional ) {
 		if ( false !== strpos( $buffer, '{{WP_ROCKET_CONDITIONAL}}' ) ) {
-			$buffer = preg_replace( '/{{WP_ROCKET_CONDITIONAL}}/' , $conditional, $buffer, 1 );
+			$buffer = preg_replace( '/{{WP_ROCKET_CONDITIONAL}}/', $conditional, $buffer, 1 );
 		} else {
 			break;
 		}
