@@ -126,7 +126,7 @@ function rocket_minify_files( $buffer, $extension ) {
 			$minify_tag = str_replace( $tag[1], $minify_url, $tag[0] );
 
 			if ( 'css' === $extension ) {
-				$minify_tag = str_replace( $tag[2], 'data-minify="1" ' . $tag[2], $minify_tag );
+				$minify_tag = str_replace( $tag[2], ' data-minify="1" ' . $tag[2], $minify_tag );
 			}
 
 			if ( 'js' === $extension ) {
@@ -272,22 +272,20 @@ function get_rocket_minify_url( $files, $extension ) {
 	$hosts         = get_rocket_cnames_host( array( 'all', 'css_and_js', $extension ) );
 	$hosts['home'] = rocket_extract_url_component( home_url(), PHP_URL_HOST );
 	$hosts_index   = array_flip( $hosts );
+	$minify_key    = get_rocket_option( 'minify_' . $extension . '_key', create_rocket_uniqid() );
 
 	if ( is_string( $files ) ) {
 		$file      = get_rocket_parse_url( $files );
 		$file_path = rocket_realpath( strtok( $files, '?' ), true, $hosts_index );
-		if ( ! empty( $file['query'] ) ) {
-			$filename = preg_replace( '/\.(js|css)\?(?:timestamp|ver)=([^&]+)(?:.*)/', '-$2.$1', ltrim( $file['path'], '/' ) . '?' . $file['query'] );
-		} else {
-			$filename = ltrim( rocket_realpath( $file['path'], false, $hosts_index ), '/' );
-		}
+		$unique_id = md5( $files . $minify_key );
+		$filename  = preg_replace( '/\.(' . $extension . ')$/', '-' . $unique_id . '.' . $extension, ltrim( rocket_realpath( $file['path'], false, $hosts_index ), '/' ) );
 	} else {
 		foreach ( $files as $file ) {
 			$file_path[] = rocket_realpath( $file, true, $hosts_index );
 		}
 
 		$files_hash = implode( ',', $files );
-		$filename   = md5( $files_hash . get_rocket_option( 'minify_' . $extension . '_key', create_rocket_uniqid() ) ) . '.' . $extension;
+		$filename   = md5( $files_hash . $minify_key ) . '.' . $extension;
 	}
 
 	$minified_content = rocket_minify( $file_path, $extension );
