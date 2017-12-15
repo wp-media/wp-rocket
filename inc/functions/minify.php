@@ -22,9 +22,12 @@ function rocket_minify_files( $buffer, $extension ) {
 	}
 
 	if ( 'js' === $extension ) {
+		$js_files_in_head = '';
 		$header_files     = array();
 		$concatenate      = get_rocket_option( 'minify_concatenate_js', false ) ? true : false;
-		$js_files_in_head = implode( '|', $rocket_js_enqueued_in_head );
+		if ( ! empty( $rocket_js_enqueued_in_head ) ) {
+			$js_files_in_head = implode( '|', $rocket_js_enqueued_in_head );
+		}
 
 		// Get all js files with this regex.
 		preg_match_all( apply_filters( 'rocket_minify_js_regex_pattern', '#<script[^>]+?src=[\'|"]([^\'|"]+\.js?.+)[\'|"].*>(?:<\/script>)#iU' ), $buffer, $tags_match, PREG_SET_ORDER );
