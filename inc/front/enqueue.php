@@ -23,7 +23,7 @@ function rocket_browser_cache_busting( $src ) {
 
 	return get_rocket_browser_cache_busting( $src, $current_filter );
 }
-add_filter( 'style_loader_src',  'rocket_browser_cache_busting', PHP_INT_MAX );
+add_filter( 'style_loader_src', 'rocket_browser_cache_busting', PHP_INT_MAX );
 add_filter( 'script_loader_src', 'rocket_browser_cache_busting', PHP_INT_MAX );
 
 /**
@@ -190,11 +190,11 @@ function rocket_cache_dynamic_resource( $src ) {
 
 	switch ( $current_filter ) {
 		case 'script_loader_src':
-			$extension = '.js';
+			$extension  = '.js';
 			$minify_key = get_rocket_option( 'minify_js_key' );
 			break;
 		case 'style_loader_src':
-			$extension = '.css';
+			$extension  = '.css';
 			$minify_key = get_rocket_option( 'minify_css_key' );
 			break;
 	}
@@ -216,8 +216,8 @@ function rocket_cache_dynamic_resource( $src ) {
 		return $src;
 	}
 
-	$relative_src         = ltrim( $file['path'], '/' );
-	$abspath_src          = rocket_realpath( strtok( $full_src, '?' ), true, $hosts_index );
+	$relative_src = ltrim( $file['path'], '/' );
+	$abspath_src  = rocket_realpath( strtok( $full_src, '?' ), true, $hosts_index );
 
 	/*
      * Filters the dynamic resource cache filename
@@ -227,7 +227,7 @@ function rocket_cache_dynamic_resource( $src ) {
      *
      * @param string $filename filename for the cache file
      */
-	$cache_dynamic_resource_filename = apply_filters( 'rocket_dynamic_resource_cache_filename', preg_replace( '/\.(php)$/', '-' . $minify_key . $extension, $relative_src ) );
+	$cache_dynamic_resource_filename = apply_filters( 'rocket_dynamic_resource_cache_filename', preg_replace( '/\.(php)$/', '-' . $minify_key . '.' . $extension, $relative_src ) );
 	$cache_busting_paths             = rocket_get_cache_busting_paths( $cache_dynamic_resource_filename, $extension );
 
 	if ( file_exists( $cache_busting_paths['filepath'] ) && is_readable( $cache_busting_paths['filepath'] ) ) {
@@ -240,5 +240,5 @@ function rocket_cache_dynamic_resource( $src ) {
 		return $src;
 	}
 }
-add_filter( 'style_loader_src',  'rocket_cache_dynamic_resource', 16 );
+add_filter( 'style_loader_src', 'rocket_cache_dynamic_resource', 16 );
 add_filter( 'script_loader_src', 'rocket_cache_dynamic_resource', 16 );
