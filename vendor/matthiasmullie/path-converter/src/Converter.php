@@ -44,8 +44,8 @@ class Converter implements ConverterInterface
 
             // or traveling the tree via `..`
             // attempt to resolve path, or assume it's fine if it doesn't exist
-            $from = realpath($from) ?: $from;
-            $to = realpath($to) ?: $to;
+            $from = @realpath($from) ?: $from;
+            $to = @realpath($to) ?: $to;
         }
 
         $from = $this->dirname($from);
@@ -169,11 +169,11 @@ class Converter implements ConverterInterface
      */
     protected function dirname($path)
     {
-        if (is_file($path)) {
+        if (@is_file($path)) {
             return dirname($path);
         }
 
-        if (is_dir($path)) {
+        if (@is_dir($path)) {
             return rtrim($path, '/');
         }
 

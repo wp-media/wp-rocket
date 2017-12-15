@@ -77,11 +77,12 @@ class Rocket_Background_Critical_CSS_Generation extends WP_Background_Process {
 				 * @since 2.11
 				 * @author Remy Perona
 				 *
-				 * @param array An array of parameters to send to the API.
+				 * @param array $params An array of parameters to send to the API.
+				 * @param array $item The item to process.
 				 */
 				'body' => apply_filters( 'rocket_cpcss_job_request', array(
 					'url' => $item['url'],
-				) ),
+				), $item ),
 			)
 		);
 
@@ -101,7 +102,7 @@ class Rocket_Background_Critical_CSS_Generation extends WP_Background_Process {
 
 		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
 			// translators: %1$s = type of content, %2$s = error message.
-			$transient['items'][] = sprintf( __( 'Critical CSS for %1$s not generated. Error: %2$s', 'rocket' ), $item['type'], __( 'The API returned an invalid response code.', 'rocket') );
+			$transient['items'][] = sprintf( __( 'Critical CSS for %1$s not generated. Error: %2$s', 'rocket' ), $item['type'], __( 'The API returned an invalid response code.', 'rocket' ) );
 			set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
 			return false;
 		}
@@ -110,7 +111,7 @@ class Rocket_Background_Critical_CSS_Generation extends WP_Background_Process {
 
 		if ( ! isset( $data->data ) ) {
 			// translators: %1$s = type of content, %2$s = error message.
-			$transient['items'][] = sprintf( __( 'Critical CSS for %1$s not generated. Error: %2$s', 'rocket' ), $item['type'], __( 'The API returned an empty response.', 'rocket') );
+			$transient['items'][] = sprintf( __( 'Critical CSS for %1$s not generated. Error: %2$s', 'rocket' ), $item['type'], __( 'The API returned an empty response.', 'rocket' ) );
 			set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
 			return false;
 		}
@@ -131,13 +132,13 @@ class Rocket_Background_Critical_CSS_Generation extends WP_Background_Process {
 					rocket_mkdir_p( $critical_css_path );
 				}
 
-				$file_path = $critical_css_path . '/' . $item['type'] . '.css';
+				$file_path            = $critical_css_path . '/' . $item['type'] . '.css';
 				$critical_css_content = wp_kses( $job_data->data->critical_path, array( "\'", '\"' ) );
-				$result    = rocket_put_content( $file_path, $job_data->data->critical_path );
+				$result               = rocket_put_content( $file_path, $job_data->data->critical_path );
 
 				if ( ! $result ) {
-					// translators: %1$s = type of content, %2$s = error message.
 					$transient['items'][] = sprintf(
+						// translators: %1$s = type of content, %2$s = error message.
 						__( 'Critical CSS for %1$s not generated. Error: %2$s', 'rocket' ), $item['type'],
 						// translators: %s = critical CSS directory path.
 						sprintf( __( 'The critical CSS content could not be saved as a file in %s.', 'rocket' ), $critical_css_path )
