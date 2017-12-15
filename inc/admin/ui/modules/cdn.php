@@ -21,7 +21,7 @@ if ( phpversion() < '5.4' ) {
 	$rocket_do_cloudflare_settings[] = array(
 		'type'        => 'helper_warning',
 		'name'        => 'rocket_cloudflare_warning',
-		'description' => __( 'Your PHP version is lower than 5.4. Cloudflare’s integration requires PHP 5.4 or greater and therefore is not available for you currently. We recommend you contact your web host in order to upgrade to a PHP 5.6 or greater.', 'rocket' ),
+		'description' => __( 'Your PHP version is lower than 5.4. Cloudflare’s integration requires PHP 5.4 or greater and therefore is not available for you currently. We recommend you contact your web host in order to upgrade to the latest PHP version.', 'rocket' ),
 	);
 }
 
