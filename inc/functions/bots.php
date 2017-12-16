@@ -104,7 +104,11 @@ function run_rocket_preload_cache( $spider, $do_sitemap_preload = true ) {
 
 	if ( $do_sitemap_preload & get_rocket_option( 'sitemap_preload', false ) ) {
 		$rocket_background_process = $GLOBALS['rocket_sitemap_background_process'];
-		$rocket_background_process->cancel_process();
+
+		if ( method_exists( $rocket_background_process, 'cancel_process' ) ) {
+			$rocket_background_process->cancel_process();
+		}
+
 		delete_transient( 'rocket_sitemap_preload_running' );
 		delete_transient( 'rocket_sitemap_preload_complete' );
 		run_rocket_sitemap_preload();
@@ -229,7 +233,7 @@ function rocket_process_sitemap( $sitemap_url, $urls = array() ) {
 
 	if ( $url_count > 0 ) {
 		for ( $i = 0; $i < $url_count; $i++ ) {
-			$page_url = (string) $xml->url[ $i ]->loc;
+			$page_url   = (string) $xml->url[ $i ]->loc;
 			$tmp_urls[] = $page_url;
 		}
 	} else {
@@ -238,7 +242,7 @@ function rocket_process_sitemap( $sitemap_url, $urls = array() ) {
 		if ( $sitemap_children > 0 ) {
 			for ( $i = 0; $i < $sitemap_children; $i++ ) {
 				$sub_sitemap_url = (string) $xml->sitemap[ $i ]->loc;
-				$urls = rocket_process_sitemap( $sub_sitemap_url, $urls );
+				$urls            = rocket_process_sitemap( $sub_sitemap_url, $urls );
 			}
 		}
 	}
