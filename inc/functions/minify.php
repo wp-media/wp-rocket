@@ -30,6 +30,7 @@ function rocket_minify_files( $buffer, $extension ) {
 		preg_match_all( apply_filters( 'rocket_minify_js_regex_pattern', '#<script[^>]+?src=[\'|"]([^\'|"]+\.js?.+)[\'|"].*>(?:<\/script>)#iU' ), $buffer, $tags_match, PREG_SET_ORDER );
 	}
 
+	$original_buffer   = $buffer;
 	$files             = array();
 	$excluded_files    = array();
 	$external_js_files = '';
@@ -112,7 +113,7 @@ function rocket_minify_files( $buffer, $extension ) {
 	}
 
 	if ( empty( $files ) ) {
-		return $buffer;
+		return $original_buffer;
 	}
 
 	if ( ! $concatenate ) {
@@ -136,7 +137,7 @@ function rocket_minify_files( $buffer, $extension ) {
 			$buffer = str_replace( $tag[0], $minify_tag, $buffer );
 		}
 
-		return $buffer;
+		return $original_buffer;
 	}
 
 	if ( 'js' === $extension ) {
@@ -146,7 +147,7 @@ function rocket_minify_files( $buffer, $extension ) {
 	$minify_url = get_rocket_minify_url( $files, $extension );
 
 	if ( ! $minify_url ) {
-		return $buffer;
+		return $original_buffer;
 	}
 
 	if ( 'css' === $extension ) {
