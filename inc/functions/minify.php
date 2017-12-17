@@ -52,9 +52,9 @@ function rocket_minify_files( $buffer, $extension ) {
 		if ( is_rocket_minify_excluded_file( $tag, $extension ) ) {
 			if ( $concatenate && 'js' === $extension && get_rocket_option( 'defer_all_js' ) && get_rocket_option( 'defer_all_js_safe' ) && false !== strpos( $tag[1], $wp_scripts->registered['jquery-core']->src ) ) {
 				if ( get_rocket_option( 'remove_query_strings' ) ) {
-					$external_js_files = str_replace( $tag[1], get_rocket_browser_cache_busting( $tag[1], 'script_loader_src' ), $tag[0] );
+					$external_js_files .= str_replace( $tag[1], get_rocket_browser_cache_busting( $tag[1], 'script_loader_src' ), $tag[0] );
 				} else {
-					$external_js_files = $tag[0];
+					$external_js_files .= $tag[0];
 				}
 
 				$buffer = str_replace( $tag[0], '', $buffer );
