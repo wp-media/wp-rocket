@@ -140,7 +140,7 @@ function rocket_minify_files( $buffer, $extension ) {
 			$buffer = str_replace( $tag[0], $minify_tag, $buffer );
 		}
 
-		return $original_buffer;
+		return $buffer;
 	}
 
 	if ( 'js' === $extension ) {
