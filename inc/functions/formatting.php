@@ -74,7 +74,7 @@ function rocket_sanitize_xml( $file ) {
  * @return string $url The URL without protocol
  */
 function rocket_remove_url_protocol( $url, $no_dots = false ) {
-	$url = str_replace( array( 'http://', 'https://' ) , '', $url );
+	$url = str_replace( array( 'http://', 'https://' ), '', $url );
 
 	/** This filter is documented in inc/front/htaccess.php */
 	if ( apply_filters( 'rocket_url_no_dots', $no_dots ) ) {
@@ -135,7 +135,7 @@ function rocket_get_domain( $url ) {
 	$url = rocket_add_url_protocol( trim( $url ) );
 
 	$url_array = wp_parse_url( $url );
-	$host = $url_array['host'];
+	$host      = $url_array['host'];
 	/**
 	 * Filters the tld max range for edge cases
 	 *
@@ -245,20 +245,26 @@ function rocket_get_cache_busting_paths( $filename, $extension ) {
  *
  * @param string $file     File to determine realpath for.
  * @param bool   $absolute True to return an absolute path, false to return a relative one.
+ * @param array  $hosts    An array of possible hosts for the file.
  * @return string Resolved file path
  */
 function rocket_realpath( $file, $absolute = true, $hosts = '' ) {
 	if ( $absolute ) {
-		$file_host = rocket_extract_url_component( $file, PHP_URL_HOST );
+		$file_components = get_rocket_parse_url( $file );
+		$site_components = get_rocket_parse_url( site_url() );
 
-		if ( isset( $hosts[ $file_host ] ) && 'home' !== $hosts[ $file_host ] ) {
-			$site_url = trailingslashit( rocket_add_url_protocol( $file_host ) );
+		if ( isset( $hosts[ $file_components['host'] ] ) && 'home' !== $hosts[ $file_components['host'] ] ) {
+			$site_url = trailingslashit( rocket_add_url_protocol( $file_components['host'] ) );
+
+			if ( $file_components['path'] !== $site_components['path'] ) {
+				$site_url .= ltrim( $site_components['path'], '/' );
+			}
 		} else {
 			$site_url = trailingslashit( rocket_add_url_protocol( site_url() ) );
 		}
 
-		$abspath  = wp_normalize_path( ABSPATH );
-		$file     = str_replace( $site_url, $abspath, rocket_set_internal_url_scheme( $file ) );
+		$abspath = wp_normalize_path( ABSPATH );
+		$file    = str_replace( $site_url, $abspath, rocket_set_internal_url_scheme( $file ) );
 	}
 
 	$path = array();
