@@ -171,7 +171,7 @@ function is_rocket_cdn_on_ssl() {
  * return Array An array of domain names to DNS prefetch
  */
 function rocket_get_dns_prefetch_domains() {
-	$cdn_cnames    = get_rocket_cdn_cnames( array( 'all', 'images', 'css_and_js', 'css', 'js' ) );
+	$cdn_cnames = get_rocket_cdn_cnames( array( 'all', 'images', 'css_and_js', 'css', 'js' ) );
 
 	// Don't add CNAMES if CDN is disabled HTTPS pages or on specific posts.
 	if ( ! is_rocket_cdn_on_ssl() || is_rocket_post_excluded_option( 'cdn' ) ) {
@@ -378,8 +378,8 @@ function get_rocket_cdn_cnames( $zone = 'all' ) {
 
 	foreach ( $cnames as $k => $_urls ) {
 		if ( in_array( $cnames_zone[ $k ], $zone, true ) ) {
-			$_urls = explode( ',' , $_urls );
-			$_urls = array_map( 'trim' , $_urls );
+			$_urls = explode( ',', $_urls );
+			$_urls = array_map( 'trim', $_urls );
 
 			foreach ( $_urls as $url ) {
 				$hosts[] = $url;
@@ -478,14 +478,13 @@ function get_rocket_exclude_defer_js() {
 	$exclude_defer_js = array();
 
 	if ( get_rocket_option( 'defer_all_js', 0 ) && get_rocket_option( 'defer_all_js_safe', 0 ) ) {
-		$jquery = $wp_scripts->registered['jquery-core']->src;
+		$jquery = site_url( $wp_scripts->registered['jquery-core']->src );
 
 		if ( get_rocket_option( 'remove_query_strings', 0 ) ) {
-			$jquery = site_url( $jquery . '?ver=' . $wp_scripts->registered['jquery-core']->ver );
-			$exclude_defer_js[] = rocket_clean_exclude_file( get_rocket_browser_cache_busting( $jquery, 'script_loader_src' ) );
-		} else {
-			$exclude_defer_js[] = $jquery;
+			$jquery = get_rocket_browser_cache_busting( $jquery . '?ver=' . $wp_scripts->registered['jquery-core']->ver, 'script_loader_src' );
 		}
+
+		$exclude_defer_js[] = rocket_clean_exclude_file( $jquery );
 	}
 
 	/**
@@ -558,12 +557,12 @@ function rocket_check_key() {
 			)
 		);
 
-		$json = ! is_wp_error( $response ) ? json_decode( $response['body'] ) : false;
+		$json           = ! is_wp_error( $response ) ? json_decode( $response['body'] ) : false;
 		$rocket_options = array();
 
 		if ( $json ) {
-			$rocket_options['consumer_key']     = $json->data->consumer_key;
-			$rocket_options['consumer_email']   = $json->data->consumer_email;
+			$rocket_options['consumer_key']   = $json->data->consumer_key;
+			$rocket_options['consumer_email'] = $json->data->consumer_email;
 
 			if ( $json->success ) {
 				$rocket_options['secret_key'] = $json->data->secret_key;
@@ -572,13 +571,13 @@ function rocket_check_key() {
 					$rocket_options['license'] = '1';
 				}
 			} else {
-
 				$messages = array(
 					'BAD_LICENSE' => __( 'Your license is not valid.', 'rocket' ),
 					'BAD_NUMBER'  => __( 'You cannot add more websites. Upgrade your account.', 'rocket' ),
 					'BAD_SITE'    => __( 'This website is not allowed.', 'rocket' ),
 					'BAD_KEY'     => __( 'This license key is not accepted.', 'rocket' ),
 				);
+
 				$rocket_options['secret_key'] = '';
 
 				add_settings_error( 'general', 'settings_updated', $messages[ $json->data->reason ], 'error' );
