@@ -54,7 +54,7 @@ class Rocket_Database_Optimization {
 	public static function init() {
 		$self = new self();
 
-		add_action( 'init',  array( $self, 'database_optimization_scheduled' ) );
+		add_action( 'init', array( $self, 'database_optimization_scheduled' ) );
 		add_action( 'rocket_database_optimization_time_event', array( $self, 'process_handler' ) );
 		add_action( 'update_option_' . WP_ROCKET_SLUG, array( $self, 'save_optimize' ) );
 		add_action( 'admin_post_rocket_optimize_database', array( $self, 'optimize' ) );
@@ -69,7 +69,9 @@ class Rocket_Database_Optimization {
 	 * @author Remy Perona
 	 */
 	public function process_handler() {
-		$this->process->cancel_process();
+		if ( method_exists( $this->process, 'cancel_process' ) ) {
+			$this->process->cancel_process();
+		}
 
 		foreach ( $this->options as $option ) {
 			if ( get_rocket_option( 'database_' . $option, false ) ) {
@@ -163,7 +165,7 @@ class Rocket_Database_Optimization {
 				$count = $wpdb->get_var( "SELECT COUNT(comment_ID) FROM $wpdb->comments WHERE (comment_approved = 'trash' OR comment_approved = 'post-trashed')" );
 				break;
 			case 'expired_transients':
-				$time = isset( $_SERVER['REQUEST_TIME'] ) ? (int) $_SERVER['REQUEST_TIME'] : time();
+				$time  = isset( $_SERVER['REQUEST_TIME'] ) ? (int) $_SERVER['REQUEST_TIME'] : time();
 				$count = $wpdb->get_var( "SELECT COUNT(option_name) FROM $wpdb->options WHERE option_name LIKE '_transient_timeout%' AND option_value < $time" );
 				break;
 			case 'all_transients':
@@ -259,6 +261,7 @@ class Rocket_Database_Optimization {
 					 * —Kris Kristofferson
 					 *
 					 * We shall do the same, shan’t we?
+					 *
 					 * @todo Replace $k in the printf() arguments with something nicer to read.
 					 */
 				?>

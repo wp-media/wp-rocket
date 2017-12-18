@@ -108,7 +108,11 @@ class Rocket_Critical_CSS {
 	 */
 	public function process_handler() {
 		$this->clean_critical_css();
-		$this->process->cancel_process();
+
+		if ( method_exists( $this->process, 'cancel_process' ) ) {
+			$this->process->cancel_process();
+		}
+
 		$this->set_items();
 
 		foreach ( $this->items as $item ) {
@@ -172,7 +176,10 @@ class Rocket_Critical_CSS {
 	 */
 	public function stop_process_on_deactivation( $old_value, $value ) {
 		if ( ! empty( $_POST[ WP_ROCKET_SLUG ] ) && isset( $old_value['async_css'], $value['async_css'] ) && ( $old_value['async_css'] !== $value['async_css'] ) && 0 === (int) $value['async_css'] ) {
-			$this->process->cancel_process();
+			if ( method_exists( $this->process, 'cancel_process' ) ) {
+				$this->process->cancel_process();
+			}
+
 			delete_transient( 'rocket_critical_css_generation_process_running' );
 			delete_transient( 'rocket_critical_css_generation_process_complete' );
 		}
