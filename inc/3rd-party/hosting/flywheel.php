@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 if ( class_exists( 'FlywheelNginxCompat' ) ) :
 	/**
@@ -24,5 +24,5 @@ if ( class_exists( 'FlywheelNginxCompat' ) ) :
 	function rocket_varnish_ip_on_flywheel() {
 		return '127.0.0.1';
 	}
-	add_filter( 'rocket_varnish_ip'	, 'rocket_varnish_ip_on_flywheel' );
+	add_filter( 'rocket_varnish_ip', 'rocket_varnish_ip_on_flywheel' );
 endif;

@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 // Are we white-labeled?
 $rwl = rocket_is_white_label();
@@ -48,46 +48,39 @@ $rocket_reject_uri[] = array(
 	'placeholder'  => '/members/(.*)',
 );
 
-/* Check for installed e-commerce plugins. */
-$ecommerce_excluded_pages = get_rocket_ecommerce_exclude_pages();
-if ( ! empty( $ecommerce_excluded_pages ) ) {
+$ecommerce_plugin_name = '';
 
-	$ecommerce_plugin_name = '';
+if ( function_exists( 'WC' ) && function_exists( 'wc_get_page_id' ) ) {
 
-	// Conditions grabbed from inc/functions/plugins.php
-	if ( function_exists( 'WC' ) && function_exists( 'wc_get_page_id' ) ) {
+	$ecommerce_plugin_name = _x( 'WooCommerce', 'plugin name', 'rocket' );
 
-		$ecommerce_plugin_name = _x( 'WooCommerce', 'plugin name', 'rocket' );
+} elseif ( function_exists( 'EDD' ) ) {
 
-	} elseif ( function_exists( 'EDD' ) ) {
+	$ecommerce_plugin_name = _x( 'Easy Digital Downloads', 'plugin name', 'rocket' );
 
-		$ecommerce_plugin_name = _x( 'Easy Digital Downloads', 'plugin name', 'rocket' );
+} elseif ( function_exists( 'it_exchange_get_page_type' ) && function_exists( 'it_exchange_get_page_url' ) ) {
 
-	} elseif ( function_exists( 'it_exchange_get_page_type' ) && function_exists( 'it_exchange_get_page_url' ) ) {
+	$ecommerce_plugin_name = _x( 'iThemes Exchange', 'plugin name', 'rocket' );
 
-		$ecommerce_plugin_name = _x( 'iThemes Exchange', 'plugin name', 'rocket' );
+} elseif ( defined( 'JIGOSHOP_VERSION' ) && function_exists( 'jigoshop_get_page_id' ) ) {
 
-	} elseif ( defined( 'JIGOSHOP_VERSION' ) && function_exists( 'jigoshop_get_page_id' ) ) {
+	$ecommerce_plugin_name = _x( 'Jigoshop', 'plugin name', 'rocket' );
 
-		$ecommerce_plugin_name = _x( 'Jigoshop', 'plugin name', 'rocket' );
+} elseif ( defined( 'WPSHOP_VERSION' ) && class_exists( 'wpshop_tools' ) && method_exists( 'wpshop_tools','get_page_id' ) ) {
 
-	} elseif ( defined( 'WPSHOP_VERSION' ) && class_exists( 'wpshop_tools' ) && method_exists( 'wpshop_tools','get_page_id' ) ) {
+	$ecommerce_plugin_name = _x( 'WP-Shop', 'plugin name', 'rocket' );
+}
 
-		$ecommerce_plugin_name = _x( 'WP-Shop', 'plugin name', 'rocket' );
-	}
+if ( ! empty( $ecommerce_plugin_name ) ) {
 
-	if ( ! empty( $ecommerce_plugin_name ) ) {
-
-		$rocket_reject_uri[] = array(
-			'type'         => 'helper_detection',
-			'description'  => sprintf(
-				/* translators: %s = plugin name, e.g. WooCommerce */
-				__( 'Cart and checkout pages set in <strong>%s</strong> will be detected and never cached by default. No need to enter them here.', 'rocket' ),
-				$ecommerce_plugin_name
-			),
-		);
-	}
-
+	$rocket_reject_uri[] = array(
+		'type'         => 'helper_detection',
+		'description'  => sprintf(
+			/* translators: %s = plugin name, e.g. WooCommerce */
+			__( 'Cart and checkout pages set in <strong>%s</strong> will be detected and never cached by default. No need to enter them here.', 'rocket' ),
+			$ecommerce_plugin_name
+		),
+	);
 }
 
 $rocket_reject_uri[] = array(
@@ -160,7 +153,7 @@ add_settings_field(
 				'<code>(.*)</code>',
 				'https://developer.mozilla.org/en-US/docs/Web/HTTP/Browser_detection_using_the_user_agent'
 			),
-		)
+		),
 	)
 );
 
@@ -186,7 +179,7 @@ add_settings_field(
 		),
 		array(
 			'type'         => 'helper_description',
-			'description'  =>  sprintf(
+			'description'  => sprintf(
 				/* translators: line-break recommended; %s = code sample  */
 				__( 'The domain part of the URL will be stripped automatically.<br>Use %s wildcards to address multiple URLs under a given path.', 'rocket' ),
 				'<code>(.*)</code>'
