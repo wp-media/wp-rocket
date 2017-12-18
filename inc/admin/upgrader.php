@@ -210,7 +210,7 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 	}
 
 	// Add a value to the new CF zone_id field if the CF domain is set.
-	if ( version_compare( $actual_version, '2.8.21', '<' ) && phpversion() >= '5.4' ) {
+	if ( version_compare( $actual_version, '2.8.21', '<' ) && version_compare( phpversion(), '5.4' ) >= 0 ) {
 		$options = get_option( WP_ROCKET_SLUG );
 		if ( 0 < $options['do_cloudflare'] && '' !== $options['cloudflare_domain'] ) {
 			require WP_ROCKET_ADMIN_PATH . 'compat/cf-upgrader-5.4.php';
@@ -251,20 +251,27 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 
 	if ( version_compare( $actual_version, '2.11.2', '<' ) ) {
 		$options = get_option( WP_ROCKET_SLUG );
+		$options = is_array( $options ) ? $options : array();
+		$update  = false;
 
-		if ( 'http://www.wp-rocket.me' === $options['wl_plugin_URI'] ) {
+		if ( ! isset( $options['wl_plugin_URI'] ) || 'http://www.wp-rocket.me' === $options['wl_plugin_URI'] ) {
 			$options['wl_plugin_URI'] = 'https://wp-rocket.me';
+			$update                   = true;
 		}
 
-		if ( 'WP Rocket' === $options['wl_author'] ) {
+		if ( ! isset( $options['wl_author'] ) || 'WP Rocket' === $options['wl_author'] ) {
 			$options['wl_author'] = 'WP Media';
+			$update               = true;
 		}
 
-		if ( 'http://www.wp-rocket.me' === $options['wl_author_URI'] ) {
+		if ( ! isset( $options['wl_author_URI'] ) || 'http://www.wp-rocket.me' === $options['wl_author_URI'] ) {
 			$options['wl_author_URI'] = 'https://wp-media.me';
+			$update                   = true;
 		}
 
-		update_option( WP_ROCKET_SLUG, $options );
+		if ( $update ) {
+			update_option( WP_ROCKET_SLUG, $options );
+		}
 	}
 }
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );
