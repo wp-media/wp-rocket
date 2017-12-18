@@ -25,7 +25,7 @@ function rocket_minify_files( $buffer, $extension ) {
 		$js_files_in_head = '';
 		$header_files     = array();
 		$concatenate      = get_rocket_option( 'minify_concatenate_js', false ) ? true : false;
-		if ( ! empty( $rocket_js_enqueued_in_head ) ) {
+		if ( $rocket_js_enqueued_in_head && is_array( $rocket_js_enqueued_in_head ) ) {
 			$js_files_in_head = implode( '|', $rocket_js_enqueued_in_head );
 		}
 
