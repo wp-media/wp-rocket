@@ -22,14 +22,18 @@ function rocket_minify_files( $buffer, $extension ) {
 	}
 
 	if ( 'js' === $extension ) {
+		$js_files_in_head = '';
 		$header_files     = array();
 		$concatenate      = get_rocket_option( 'minify_concatenate_js', false ) ? true : false;
-		$js_files_in_head = implode( '|', $rocket_js_enqueued_in_head );
+		if ( $rocket_js_enqueued_in_head && is_array( $rocket_js_enqueued_in_head ) ) {
+			$js_files_in_head = implode( '|', $rocket_js_enqueued_in_head );
+		}
 
 		// Get all js files with this regex.
 		preg_match_all( apply_filters( 'rocket_minify_js_regex_pattern', '#<script[^>]+?src=[\'|"]([^\'|"]+\.js?.+)[\'|"].*>(?:<\/script>)#iU' ), $buffer, $tags_match, PREG_SET_ORDER );
 	}
 
+	$original_buffer   = $buffer;
 	$files             = array();
 	$excluded_files    = array();
 	$external_js_files = '';
@@ -52,9 +56,9 @@ function rocket_minify_files( $buffer, $extension ) {
 		if ( is_rocket_minify_excluded_file( $tag, $extension ) ) {
 			if ( $concatenate && 'js' === $extension && get_rocket_option( 'defer_all_js' ) && get_rocket_option( 'defer_all_js_safe' ) && false !== strpos( $tag[1], $wp_scripts->registered['jquery-core']->src ) ) {
 				if ( get_rocket_option( 'remove_query_strings' ) ) {
-					$external_js_files = str_replace( $tag[1], get_rocket_browser_cache_busting( $tag[1], 'script_loader_src' ), $tag[0] );
+					$external_js_files .= str_replace( $tag[1], get_rocket_browser_cache_busting( $tag[1], 'script_loader_src' ), $tag[0] );
 				} else {
-					$external_js_files = $tag[0];
+					$external_js_files .= $tag[0];
 				}
 
 				$buffer = str_replace( $tag[0], '', $buffer );
@@ -112,7 +116,7 @@ function rocket_minify_files( $buffer, $extension ) {
 	}
 
 	if ( empty( $files ) ) {
-		return $buffer;
+		return $original_buffer;
 	}
 
 	if ( ! $concatenate ) {
@@ -126,7 +130,7 @@ function rocket_minify_files( $buffer, $extension ) {
 			$minify_tag = str_replace( $tag[1], $minify_url, $tag[0] );
 
 			if ( 'css' === $extension ) {
-				$minify_tag = str_replace( $tag[2], 'data-minify="1" ' . $tag[2], $minify_tag );
+				$minify_tag = str_replace( $tag[2], ' data-minify="1" ' . $tag[2], $minify_tag );
 			}
 
 			if ( 'js' === $extension ) {
@@ -136,7 +140,7 @@ function rocket_minify_files( $buffer, $extension ) {
 			$buffer = str_replace( $tag[0], $minify_tag, $buffer );
 		}
 
-		return $buffer;
+		return $original_buffer;
 	}
 
 	if ( 'js' === $extension ) {
@@ -146,7 +150,7 @@ function rocket_minify_files( $buffer, $extension ) {
 	$minify_url = get_rocket_minify_url( $files, $extension );
 
 	if ( ! $minify_url ) {
-		return $buffer;
+		return $original_buffer;
 	}
 
 	if ( 'css' === $extension ) {
@@ -272,22 +276,20 @@ function get_rocket_minify_url( $files, $extension ) {
 	$hosts         = get_rocket_cnames_host( array( 'all', 'css_and_js', $extension ) );
 	$hosts['home'] = rocket_extract_url_component( home_url(), PHP_URL_HOST );
 	$hosts_index   = array_flip( $hosts );
+	$minify_key    = get_rocket_option( 'minify_' . $extension . '_key', create_rocket_uniqid() );
 
 	if ( is_string( $files ) ) {
 		$file      = get_rocket_parse_url( $files );
 		$file_path = rocket_realpath( strtok( $files, '?' ), true, $hosts_index );
-		if ( ! empty( $file['query'] ) ) {
-			$filename = preg_replace( '/\.(js|css)\?(?:timestamp|ver)=([^&]+)(?:.*)/', '-$2.$1', ltrim( $file['path'], '/' ) . '?' . $file['query'] );
-		} else {
-			$filename = ltrim( rocket_realpath( $file['path'], false, $hosts_index ), '/' );
-		}
+		$unique_id = md5( $files . $minify_key );
+		$filename  = preg_replace( '/\.(' . $extension . ')$/', '-' . $unique_id . '.' . $extension, ltrim( rocket_realpath( $file['path'], false, $hosts_index ), '/' ) );
 	} else {
 		foreach ( $files as $file ) {
 			$file_path[] = rocket_realpath( $file, true, $hosts_index );
 		}
 
 		$files_hash = implode( ',', $files );
-		$filename   = md5( $files_hash . get_rocket_option( 'minify_' . $extension . '_key', create_rocket_uniqid() ) ) . '.' . $extension;
+		$filename   = md5( $files_hash . $minify_key ) . '.' . $extension;
 	}
 
 	$minified_content = rocket_minify( $file_path, $extension );

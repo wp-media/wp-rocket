@@ -422,14 +422,14 @@ function rocket_insert_deferred_js( $buffer ) {
 
 	foreach ( $tags_match[0] as $i => $tag ) {
 		// Strip query args.
-		$url = strtok( $tags_match[1][ $i ] , '?' );
+		$url = strtok( $tags_match[1][ $i ], '?' );
 
 		$deferred_js_files = array_flip( get_rocket_deferred_js_files() );
 
 		// Check if this file should be deferred.
 		if ( isset( $deferred_js_files[ $url ] ) ) {
 			$deferred_tag = str_replace( '></script>', ' defer></script>', $tag );
-			$buffer = str_replace( $tag, $deferred_tag, $buffer );
+			$buffer       = str_replace( $tag, $deferred_tag, $buffer );
 		}
 	}
 
@@ -809,7 +809,7 @@ function do_rocket_database_optimization() {
 	_deprecated_function( __FUNCTION__, '2.11', 'Rocket_Database_Optimisation->process_handler()' );
 }
 
-if ( ! function_exists( 'rocket_define_donotminify_constants') ) {
+if ( ! function_exists( 'rocket_define_donotminify_constants' ) ) {
 	/**
 	 * Declare and set value to DONOTMINIFYCSS & DONOTMINIFYJS constant
 	 *
@@ -870,12 +870,12 @@ function rocket_async_css( $buffer ) {
 
 /**
  * Insert critical CSS in the <head>
- *								
+ *
  * @since 2.10
  * @deprecated 2.11
- * @see Rocket_Critical_CSS->insert_critical_css()	
- * @author Remy Perona			
- */								
+ * @see Rocket_Critical_CSS->insert_critical_css()
+ * @author Remy Perona
+ */
 function rocket_insert_critical_css() {
 	_deprecated_function( __FUNCTION__, '2.11', 'Rocket_Critical_CSS->insert_critical_css()' );
 }
@@ -890,4 +890,24 @@ function rocket_insert_critical_css() {
  */
 function rocket_insert_load_css() {
 	_deprecated_function( __FUNCTION__, '2.11', 'Rocket_Critical_CSS->insert_load_css()' );
+}
+
+if ( ! function_exists( 'rocket_lazyload_async_script' ) ) {
+	/**
+	 * Add tags to the lazyload script to async and prevent concatenation
+	 *
+	 * @since 2.11
+	 * @deprecated 2.11.2
+	 * @author Remy Perona
+	 *
+	 * @param string $tag HTML for the script.
+	 * @param string $handle Handle for the script.
+	 *
+	 * @return string Updated HTML
+	 */
+	function rocket_lazyload_async_script( $tag, $handle ) {
+		_deprecated_function( __FUNCTION__, '2.11.2' );
+
+		return $tag;
+	}
 }

@@ -108,7 +108,11 @@ class Rocket_Critical_CSS {
 	 */
 	public function process_handler() {
 		$this->clean_critical_css();
-		$this->process->cancel_process();
+
+		if ( method_exists( $this->process, 'cancel_process' ) ) {
+			$this->process->cancel_process();
+		}
+
 		$this->set_items();
 
 		foreach ( $this->items as $item ) {
@@ -172,7 +176,10 @@ class Rocket_Critical_CSS {
 	 */
 	public function stop_process_on_deactivation( $old_value, $value ) {
 		if ( ! empty( $_POST[ WP_ROCKET_SLUG ] ) && isset( $old_value['async_css'], $value['async_css'] ) && ( $old_value['async_css'] !== $value['async_css'] ) && 0 === (int) $value['async_css'] ) {
-			$this->process->cancel_process();
+			if ( method_exists( $this->process, 'cancel_process' ) ) {
+				$this->process->cancel_process();
+			}
+
 			delete_transient( 'rocket_critical_css_generation_process_running' );
 			delete_transient( 'rocket_critical_css_generation_process_complete' );
 		}
@@ -536,7 +543,7 @@ class Rocket_Critical_CSS {
 			$onload  = str_replace( $tags_match[3][ $i ], ' as="style" onload=""' . $tags_match[3][ $i ] . '>', $tags_match[3][ $i ] );
 			$tag     = str_replace( $tags_match[3][ $i ] . '>', $onload, $tag );
 			$tag     = str_replace( $tags_match[1][ $i ], $preload, $tag );
-			$tag     = str_replace( 'onload=""', 'onload="this.rel=\'stylesheet\'"', $tag );
+			$tag     = str_replace( 'onload=""', 'onload="this.onload=null;this.rel=\'stylesheet\'"', $tag );
 			$buffer  = str_replace( $tags_match[0][ $i ], $tag, $buffer );
 
 			$noscripts .= '<noscript>' . $tags_match[0][ $i ] . '</noscript>';
@@ -619,6 +626,7 @@ class Rocket_Critical_CSS {
 	/**
 	 * Insert loadCSS script in <head>
 	 *
+	 * @since 2.11.2 Updated loadCSS rel=preload polyfill to version 2.0.1
 	 * @since 2.10
 	 * @author Remy Perona
 	 */
@@ -671,10 +679,15 @@ class Rocket_Critical_CSS {
 
 		echo <<<JS
 <script>
-/*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
-!function(a){"use strict";var b=function(b,c,d){function e(a){return h.body?a():void setTimeout(function(){e(a)})}function f(){i.addEventListener&&i.removeEventListener("load",f),i.media=d||"all"}var g,h=a.document,i=h.createElement("link");if(c)g=c;else{var j=(h.body||h.getElementsByTagName("head")[0]).childNodes;g=j[j.length-1]}var k=h.styleSheets;i.rel="stylesheet",i.href=b,i.media="only x",e(function(){g.parentNode.insertBefore(i,c?g:g.nextSibling)});var l=function(a){for(var b=i.href,c=k.length;c--;)if(k[c].href===b)return a();setTimeout(function(){l(a)})};return i.addEventListener&&i.addEventListener("load",f),i.onloadcssdefined=l,l(f),i};"undefined"!=typeof exports?exports.loadCSS=b:a.loadCSS=b}("undefined"!=typeof global?global:this);
 /*! loadCSS rel=preload polyfill. [c]2017 Filament Group, Inc. MIT License */
-!function(a){if(a.loadCSS){var b=loadCSS.relpreload={};if(b.support=function(){try{return a.document.createElement("link").relList.supports("preload")}catch(b){return!1}},b.poly=function(){for(var b=a.document.getElementsByTagName("link"),c=0;c<b.length;c++){var d=b[c];"preload"===d.rel&&"style"===d.getAttribute("as")&&(a.loadCSS(d.href,d,d.getAttribute("media")),d.rel=null)}},!b.support()){b.poly();var c=a.setInterval(b.poly,300);a.addEventListener&&a.addEventListener("load",function(){b.poly(),a.clearInterval(c)}),a.attachEvent&&a.attachEvent("onload",function(){a.clearInterval(c)})}}}(this);
+(function(w){"use strict";if(!w.loadCSS){w.loadCSS=function(){}}
+var rp=loadCSS.relpreload={};rp.support=(function(){var ret;try{ret=w.document.createElement("link").relList.supports("preload")}catch(e){ret=!1}
+return function(){return ret}})();rp.bindMediaToggle=function(link){var finalMedia=link.media||"all";function enableStylesheet(){link.media=finalMedia}
+if(link.addEventListener){link.addEventListener("load",enableStylesheet)}else if(link.attachEvent){link.attachEvent("onload",enableStylesheet)}
+setTimeout(function(){link.rel="stylesheet";link.media="only x"});setTimeout(enableStylesheet,3000)};rp.poly=function(){if(rp.support()){return}
+var links=w.document.getElementsByTagName("link");for(var i=0;i<links.length;i++){var link=links[i];if(link.rel==="preload"&&link.getAttribute("as")==="style"&&!link.getAttribute("data-loadcss")){link.setAttribute("data-loadcss",!0);rp.bindMediaToggle(link)}}};if(!rp.support()){rp.poly();var run=w.setInterval(rp.poly,500);if(w.addEventListener){w.addEventListener("load",function(){rp.poly();w.clearInterval(run)})}else if(w.attachEvent){w.attachEvent("onload",function(){rp.poly();w.clearInterval(run)})}}
+if(typeof exports!=="undefined"){exports.loadCSS=loadCSS}
+else{w.loadCSS=loadCSS}}(typeof global!=="undefined"?global:this))
 </script>
 JS;
 	}

@@ -99,43 +99,43 @@ class Minify_HTML
 
         // replace SCRIPTs (and minify) with placeholders
         $this->_html = preg_replace_callback(
-            '/(\\s*)<script(\\b[^>]*?>)([\\s\\S]*?)<\\/script>(\\s*)/iu'
+            '/(\\s*)<script(\\b[^>]*?>)([\\s\\S]*?)<\\/script>(\\s*)/i'
             ,array($this, '_removeScriptCB')
             ,$this->_html);
 
         // replace STYLEs (and minify) with placeholders
         $this->_html = preg_replace_callback(
-            '/\\s*<style(\\b[^>]*>)([\\s\\S]*?)<\\/style>\\s*/iu'
+            '/\\s*<style(\\b[^>]*>)([\\s\\S]*?)<\\/style>\\s*/i'
             ,array($this, '_removeStyleCB')
             ,$this->_html);
 
         // remove HTML comments (not containing IE conditional comments).
         $this->_html = preg_replace_callback(
-            '/<!--([\\s\\S]*?)-->/u'
+            '/<!--([\\s\\S]*?)-->/'
             ,array($this, '_commentCB')
             ,$this->_html);
 
         // replace PREs with placeholders
-        $this->_html = preg_replace_callback('/\\s*<pre(\\b[^>]*?>[\\s\\S]*?<\\/pre>)\\s*/iu'
+        $this->_html = preg_replace_callback('/\\s*<pre(\\b[^>]*?>[\\s\\S]*?<\\/pre>)\\s*/i'
             ,array($this, '_removePreCB')
             ,$this->_html);
 
         // replace TEXTAREAs with placeholders
         $this->_html = preg_replace_callback(
-            '/\\s*<textarea(\\b[^>]*?>[\\s\\S]*?<\\/textarea>)\\s*/iu'
+            '/\\s*<textarea(\\b[^>]*?>[\\s\\S]*?<\\/textarea>)\\s*/i'
             ,array($this, '_removeTextareaCB')
             ,$this->_html);
 
         // trim each line.
         // @todo take into account attribute values that span multiple lines.
-        $this->_html = preg_replace('/^\\s+|\\s+$/mu', '', $this->_html);
+        $this->_html = preg_replace('/^\\s+|\\s+$/m', '', $this->_html);
 
         // remove ws around block/undisplayed elements
         $this->_html = preg_replace('/\\s+(<\\/?(?:area|article|aside|base(?:font)?|blockquote|body'
             .'|canvas|caption|center|col(?:group)?|dd|dir|div|dl|dt|fieldset|figcaption|figure|footer|form'
             .'|frame(?:set)?|h[1-6]|head|header|hgroup|hr|html|legend|li|link|main|map|menu|meta|nav'
             .'|ol|opt(?:group|ion)|output|p|param|section|t(?:able|body|head|d|h||r|foot|itle)'
-            .'|ul|video)\\b[^>]*>)/iu', '$1', $this->_html);
+            .'|ul|video)\\b[^>]*>)/i', '$1', $this->_html);
 
         // remove ws outside of all elements
         $this->_html = preg_replace_callback(
