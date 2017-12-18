@@ -40,6 +40,7 @@ function rocket_lazyload_script() {
 		elements_selector: "img, iframe",
 		data_src: "lazy-src",
 		data_srcset: "lazy-srcset",
+		skip_invisible: false,
 		class_loading: "lazyloading",
 		class_loaded: "lazyloaded",
 		threshold: ' . $threshold . ',
