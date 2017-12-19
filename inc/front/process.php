@@ -247,7 +247,7 @@ function do_rocket_callback( $buffer ) {
 	$rocket_override_donotcachepage = apply_filters( 'rocket_override_donotcachepage', false );
 
 	if ( strlen( $buffer ) > 255
-	    	&& ( function_exists( 'http_response_code' ) &&  http_response_code() == 200) // only cache 200
+	    	&& ( ( function_exists( 'http_response_code' ) &&  http_response_code() == 200 ) or !function_exists( 'http_response_code' ) ) // only cache 200
 		&& ( function_exists( 'is_404' ) && ! is_404() ) // Don't cache 404
 		&& ( function_exists( 'is_search' ) && ! is_search() || $rocket_cache_search ) // Don't cache search results
 		&& ( ! defined( 'DONOTCACHEPAGE' ) || ! DONOTCACHEPAGE || $rocket_override_donotcachepage ) // Don't cache template that use this constant.
