@@ -514,7 +514,7 @@ function do_admin_post_rocket_purge_cloudflare() {
 	} else {
 		$cf_purge_result = array(
 			'result' => 'success',
-			'message' => __( 'CloudFlare cache sucessfully purged', 'rocket' ),
+			'message' => __( 'CloudFlare cache successfully purged', 'rocket' ),
 		);
 	}
 

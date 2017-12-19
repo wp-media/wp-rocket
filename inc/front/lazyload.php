@@ -35,11 +35,12 @@ function rocket_lazyload_script() {
 	var s = d.createElement("script"); s.async = true;
 	var v = !("IntersectionObserver" in w) ? "8.5.2" : "10.3.5";
 	s.src = "' . get_rocket_cdn_url( WP_ROCKET_FRONT_JS_URL . 'lazyload-v' . $suffix . '.js', array( 'all', 'css_and_js', 'js' ) ) . '";
-	s.src = s.src.replace( "-v", "-" + v );
+	s.src = s.src.replace( "lazyload-v", "lazyload-" + v );
 	w.lazyLoadOptions = {
 		elements_selector: "img, iframe",
 		data_src: "lazy-src",
 		data_srcset: "lazy-srcset",
+		skip_invisible: false,
 		class_loading: "lazyloading",
 		class_loaded: "lazyloaded",
 		threshold: ' . $threshold . ',
