@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) ||	die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
  * Link to the configuration page of the plugin, support & documentation
@@ -127,9 +127,11 @@ function rocket_dismiss_boxes( $args ) {
 
 		if ( ! wp_verify_nonce( $args['_wpnonce'], $args['action'] . '_' . $args['box'] ) ) {
 			if ( defined( 'DOING_AJAX' ) ) {
-				wp_send_json( array(
-					'error' => 1,
-				) );
+				wp_send_json(
+					array(
+						'error' => 1,
+					)
+				);
 			} else {
 				wp_nonce_ays( '' );
 			}
@@ -149,9 +151,11 @@ function rocket_dismiss_boxes( $args ) {
 
 		if ( 'admin-post.php' === $GLOBALS['pagenow'] ) {
 			if ( defined( 'DOING_AJAX' ) ) {
-				wp_send_json( array(
-					'error' => 0,
-				) );
+				wp_send_json(
+					array(
+						'error' => 0,
+					)
+				);
 			} else {
 				wp_safe_redirect( wp_get_referer() );
 				die();
@@ -220,15 +224,15 @@ function rocket_white_label( $plugins ) {
 	$white_label_description = get_rocket_option( 'wl_description' );
 	// We change the plugin's header.
 	$plugins['wp-rocket/wp-rocket.php'] = array(
-			'Name'			=> get_rocket_option( 'wl_plugin_name' ),
-			'PluginURI'		=> get_rocket_option( 'wl_plugin_URI' ),
-			'Version'		=> isset( $plugins['wp-rocket/wp-rocket.php']['Version'] ) ? $plugins['wp-rocket/wp-rocket.php']['Version'] : '',
-			'Description'	=> reset( ( $white_label_description ) ),
-			'Author'		=> get_rocket_option( 'wl_author' ),
-			'AuthorURI'		=> get_rocket_option( 'wl_author_URI' ),
-			'TextDomain'	=> isset( $plugins['wp-rocket/wp-rocket.php']['TextDomain'] ) ? $plugins['wp-rocket/wp-rocket.php']['TextDomain'] : '',
-			'DomainPath'	=> isset( $plugins['wp-rocket/wp-rocket.php']['DomainPath'] ) ? $plugins['wp-rocket/wp-rocket.php']['DomainPath'] : '',
-		);
+		'Name'          => get_rocket_option( 'wl_plugin_name' ),
+		'PluginURI'     => get_rocket_option( 'wl_plugin_URI' ),
+		'Version'       => isset( $plugins['wp-rocket/wp-rocket.php']['Version'] ) ? $plugins['wp-rocket/wp-rocket.php']['Version'] : '',
+		'Description'   => reset( ( $white_label_description ) ),
+		'Author'        => get_rocket_option( 'wl_author' ),
+		'AuthorURI'     => get_rocket_option( 'wl_author_URI' ),
+		'TextDomain'    => isset( $plugins['wp-rocket/wp-rocket.php']['TextDomain'] ) ? $plugins['wp-rocket/wp-rocket.php']['TextDomain'] : '',
+		'DomainPath'    => isset( $plugins['wp-rocket/wp-rocket.php']['DomainPath'] ) ? $plugins['wp-rocket/wp-rocket.php']['DomainPath'] : '',
+	);
 
 	// if white label, remove our names from contributors.
 	if ( rocket_is_white_label() ) {
@@ -291,13 +295,13 @@ function rocket_rollback() {
 		wp_nonce_ays( '' );
 	}
 
-	$plugin_transient 	= get_site_transient( 'update_plugins' );
-	$plugin_folder    	= plugin_basename( dirname( WP_ROCKET_FILE ) );
-	$plugin_file      	= basename( WP_ROCKET_FILE );
-	$version          	= WP_ROCKET_LASTVERSION;
-	$c_key 				= get_rocket_option( 'consumer_key' );
-	$url 				= sprintf( 'https://wp-rocket.me/%s/wp-rocket_%s.zip', $c_key, $version );
-	$temp_array 		= array(
+	$plugin_transient   = get_site_transient( 'update_plugins' );
+	$plugin_folder      = plugin_basename( dirname( WP_ROCKET_FILE ) );
+	$plugin_file        = basename( WP_ROCKET_FILE );
+	$version            = WP_ROCKET_LASTVERSION;
+	$c_key              = get_rocket_option( 'consumer_key' );
+	$url                = sprintf( 'https://wp-rocket.me/%s/wp-rocket_%s.zip', $c_key, $version );
+	$temp_array         = array(
 		'slug'        => $plugin_folder,
 		'new_version' => $version,
 		'url'         => 'https://wp-rocket.me',
@@ -322,10 +326,12 @@ function rocket_rollback() {
 		$upgrader = new Plugin_Upgrader( $upgrader_skin );
 		remove_filter( 'site_transient_update_plugins', 'rocket_check_update', 100 );
 		$upgrader->upgrade( $plugin );
-		// translators: %s is the plugin name.
-		wp_die( '', sprintf( __( '%s Update Rollback', 'rocket' ), WP_ROCKET_PLUGIN_NAME ), array(
-			'response' => 200,
-		) );
+		wp_die(
+			// translators: %s is the plugin name.
+			'', sprintf( __( '%s Update Rollback', 'rocket' ), WP_ROCKET_PLUGIN_NAME ), array(
+				'response' => 200,
+			)
+		);
 	}
 }
 add_action( 'admin_post_rocket_rollback', 'rocket_rollback' );
@@ -354,10 +360,10 @@ function rocket_maybe_generate_advanced_cache_file() {
  * @since 2.6.5
  */
 function rocket_maybe_generate_config_files() {
-	list( $host, $path ) = get_rocket_parse_url( home_url() );
-	$path = ( ! empty( $path ) ) ? str_replace( '/', '.', untrailingslashit( $path ) ) : '';
+	$home = get_rocket_parse_url( home_url() );
+	$path = ( ! empty( $home['path'] ) ) ? str_replace( '/', '.', untrailingslashit( $home['path'] ) ) : '';
 
-	if ( ! file_exists( WP_ROCKET_CONFIG_PATH . strtolower( $host ) . $path . '.php' ) ) {
+	if ( ! file_exists( WP_ROCKET_CONFIG_PATH . strtolower( $home['host'] ) . $path . '.php' ) ) {
 		rocket_generate_config_file();
 	}
 }
@@ -372,24 +378,6 @@ function rocket_maybe_set_wp_cache_define() {
 		set_rocket_wp_cache_define( true );
 	}
 }
-
-/**
- * Launches the database optimization from admin
- *
- * @since 2.8
- * @author Remy Perona
- */
-function rocket_optimize_database() {
-	if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'rocket_optimize_database' ) ) {
-		wp_nonce_ays( '' );
-	}
-
-	do_rocket_database_optimization();
-
-	wp_redirect( wp_get_referer() );
-	die();
-}
-add_action( 'admin_post_rocket_optimize_database', 'rocket_optimize_database' );
 
 /**
  * Filter plugin fetching API results to inject Imagify
@@ -451,3 +439,117 @@ function rocket_add_imagify_api_result( $result, $action, $args ) {
 	return $result;
 }
 add_filter( 'plugins_api_result', 'rocket_add_imagify_api_result', 11, 3 );
+
+/**
+ * Gets all data to send to the analytics system
+ *
+ * @since 2.11
+ * @author Remy Perona
+ *
+ * @return array An array of data
+ */
+function rocket_analytics_data() {
+	global $wp_version, $is_nginx, $is_apache, $is_iis7, $is_IIS;
+
+	$untracked_wp_rocket_options = array(
+		'license'                 => 1,
+		'consumer_email'          => 1,
+		'consumer_key'            => 1,
+		'secret_key'              => 1,
+		'secret_cache_key'        => 1,
+		'minify_css_key'          => 1,
+		'minify_js_key'           => 1,
+		'sitemaps'                => 1,
+		'cdn_zone'                => 1,
+		'cdn_cnames'              => 1,
+		'cloudflare_email'        => 1,
+		'cloudflare_api_key'      => 1,
+		'cloudflare_domain'       => 1,
+		'cloudflare_zone_id'      => 1,
+		'cloudflare_old_settings' => 1,
+		'submit_optimize'         => 1,
+		'analytics_enabled'       => 1,
+		'wl_author'               => 1,
+		'wl_author_URI'           => 1,
+		'wl_description'          => 1,
+		'wl_plugin_URI'           => 1,
+		'wl_plugin_name'          => 1,
+		'wl_plugin_slug'          => 1,
+	);
+
+	$theme = wp_get_theme();
+	$data  = array_diff_key( get_option( WP_ROCKET_SLUG ), $untracked_wp_rocket_options );
+	$locale = explode('_', get_locale() );
+
+	if ( $is_nginx ) {
+		$data['web_server'] = 'NGINX';
+	} elseif ( $is_apache ) {
+		$data['web_server'] = 'Apache';
+	} elseif ( $is_iis7 ) {
+		$data['web_server'] = 'IIS 7';
+	} elseif ( $is_IIS ) {
+		$data['web_server'] = 'IIS';
+	}
+
+	$data['php_version']       = preg_replace( '@^(\d\.\d+).*@', '\1', phpversion() );
+	$data['wordpress_version'] = preg_replace( '@^(\d\.\d+).*@', '\1', $wp_version );
+	$data['current_theme']     = $theme->get( 'Name' );
+	$data['active_plugins']    = rocket_get_active_plugins();
+	$data['locale']            = $locale[0];
+	$data['multisite']         = is_multisite();
+
+	return $data;
+}
+
+/**
+ * Determines if we should send the analytics data
+ *
+ * @since 2.11
+ * @author Remy Perona
+ *
+ * @return bool True if we should send them, false otherwise
+ */
+function rocket_send_analytics_data() {
+	if ( ! get_rocket_option( 'analytics_enabled' ) ) {
+		return false;
+	}
+
+	if ( ! current_user_can( 'administrator' ) ) {
+		return false;
+	}
+
+	if ( false === get_transient( 'rocket_send_analytics_data' ) ) {
+		set_transient( 'rocket_send_analytics_data', 1, 7 * DAY_IN_SECONDS );
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * Handles the analytics opt-in notice selection and prevent further display
+ *
+ * @since 2.11
+ * @author Remy Perona
+ */
+function rocket_analytics_optin() {
+	if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'analytics_optin' ) ) {
+		wp_nonce_ays( '' );
+	}
+
+	if ( ! current_user_can( 'administrator' ) ) {
+		wp_redirect( wp_get_referer() );
+		die();
+	}
+
+	if ( 'yes' === $_GET['value'] ) {
+		update_rocket_option( 'analytics_enabled', 1 );
+		set_transient( 'rocket_analytics_optin', 1 );
+	}
+
+	update_option( 'rocket_analytics_notice_displayed', 1 );
+
+	wp_redirect( wp_get_referer() );
+	die();
+}
+add_action( 'admin_post_rocket_analytics_optin', 'rocket_analytics_optin' );

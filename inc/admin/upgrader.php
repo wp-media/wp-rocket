@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
  * Tell WP what to do when admin is loaded aka upgrader
@@ -25,7 +25,7 @@ function rocket_upgrader() {
 
 		rocket_renew_all_boxes( 0, array( 'rocket_warning_plugin_modification' ) );
 
-		$options = get_option( WP_ROCKET_SLUG ); // do not use get_rocket_option() here.
+		$options            = get_option( WP_ROCKET_SLUG ); // do not use get_rocket_option() here.
 		$options['version'] = WP_ROCKET_VERSION;
 
 		$keys = rocket_check_key();
@@ -60,10 +60,11 @@ function rocket_first_install() {
 
 	// Generate an random key for minify md5 filename.
 	$minify_css_key = create_rocket_uniqid();
-	$minify_js_key = create_rocket_uniqid();
+	$minify_js_key  = create_rocket_uniqid();
 
 	// Create Option.
-	add_option( WP_ROCKET_SLUG,
+	add_option(
+		WP_ROCKET_SLUG,
 		/**
 		 * Filters the default rocket options array
 		 *
@@ -71,76 +72,76 @@ function rocket_first_install() {
 		 *
 		 * @param array Array of default rocket options
 		 */
-		apply_filters( 'rocket_first_install_options', array(
-			'secret_cache_key'            => $secret_cache_key,
-			'cache_mobile'                => 1,
-			'do_caching_mobile_files'     => 0,
-			'cache_logged_user'           => 0,
-			'cache_ssl'                   => ( rocket_is_ssl_website() ) ? 1 : 0,
-			'emoji'					  	  => 1,
-			'embeds'					  => 1,
-			'cache_reject_uri'            => array(),
-			'cache_reject_cookies'        => array(),
-			'cache_reject_ua'             => array(),
-			'cache_query_strings'         => array(),
-			'cache_purge_pages'           => array(),
-			'purge_cron_interval'         => 10,
-			'purge_cron_unit'             => 'HOUR_IN_SECONDS',
-			'exclude_css'                 => array(),
-			'exclude_js'                  => array(),
-			'defer_all_js'				  => 0,
-			'defer_all_js_safe'			  => 1,
-			'deferred_js_files'           => array(),
-			'lazyload'                    => 0,
-			'lazyload_iframes'            => 0,
-			'minify_css'                  => 0,
-			'minify_css_key'              => $minify_css_key,
-			'minify_concatenate_css'	  => 0,
-			'minify_css_combine_all'      => 0,
-			'minify_css_legacy'			  => 0,
-			'minify_js'                   => 0,
-			'minify_js_key'               => $minify_js_key,
-			'minify_js_in_footer'         => array(),
-			'minify_concatenate_js'		  => 0,
-			'minify_js_combine_all'       => 0,
-			'minify_js_legacy'			  => 0,
-			'minify_google_fonts'         => 0,
-			'minify_html'                 => 0,
-			'manual_preload'              => 0,
-			'automatic_preload'           => 0,
-			'sitemap_preload'             => 0,
-			'sitemap_preload_url_crawl'   => '500000',
-			'sitemaps'                    => array(),
-			'remove_query_strings'        => 0,
-			'dns_prefetch'                => 0,
-			'database_revisions'          => 0,
-			'database_auto_drafts'        => 0,
-			'database_trashed_posts'      => 0,
-			'database_spam_comments'      => 0,
-			'database_trashed_comments'   => 0,
-			'database_expired_transients' => 0,
-			'database_all_transients'     => 0,
-			'database_optimize_tables'    => 0,
-			'schedule_automatic_cleanup'  => 0,
-			'automatic_cleanup_frequency' => '',
-			'cdn'                         => 0,
-			'cdn_cnames'                  => array(),
-			'cdn_zone'                    => array(),
-			'cdn_ssl'                     => 0,
-			'cdn_reject_files'            => array(),
-			'do_cloudflare'               => 0,
-			'cloudflare_email'            => '',
-			'cloudflare_api_key'          => '',
-			'cloudflare_domain'           => '',
-			'cloudflare_zone_id'          => '',
-			'cloudflare_devmode'          => 0,
-			'cloudflare_protocol_rewrite' => 0,
-			'cloudflare_auto_settings'    => 0,
-			'cloudflare_old_settings'     => '',
-			'varnish_auto_purge'          => 0,
-			'do_beta'                     => 0,
+		apply_filters(
+			'rocket_first_install_options', array(
+				'secret_cache_key'            => $secret_cache_key,
+				'cache_mobile'                => 1,
+				'do_caching_mobile_files'     => 0,
+				'cache_logged_user'           => 0,
+				'cache_ssl'                   => ( rocket_is_ssl_website() ) ? 1 : 0,
+				'emoji'                       => 1,
+				'embeds'                      => 1,
+				'cache_reject_uri'            => array(),
+				'cache_reject_cookies'        => array(),
+				'cache_reject_ua'             => array(),
+				'cache_query_strings'         => array(),
+				'cache_purge_pages'           => array(),
+				'purge_cron_interval'         => 10,
+				'purge_cron_unit'             => 'HOUR_IN_SECONDS',
+				'exclude_css'                 => array(),
+				'exclude_js'                  => array(),
+				'defer_all_js'                => 0,
+				'defer_all_js_safe'           => 1,
+				'async_css'                   => 0,
+				'critical_css'                => '',
+				'lazyload'                    => 0,
+				'lazyload_iframes'            => 0,
+				'lazyload_youtube'            => 0,
+				'minify_css'                  => 0,
+				'minify_css_key'              => $minify_css_key,
+				'minify_concatenate_css'      => 0,
+				'minify_js'                   => 0,
+				'minify_js_key'               => $minify_js_key,
+				'minify_concatenate_js'       => 0,
+				'minify_google_fonts'         => 0,
+				'minify_html'                 => 0,
+				'manual_preload'              => 0,
+				'automatic_preload'           => 0,
+				'sitemap_preload'             => 0,
+				'sitemap_preload_url_crawl'   => '500000',
+				'sitemaps'                    => array(),
+				'remove_query_strings'        => 0,
+				'dns_prefetch'                => 0,
+				'database_revisions'          => 0,
+				'database_auto_drafts'        => 0,
+				'database_trashed_posts'      => 0,
+				'database_spam_comments'      => 0,
+				'database_trashed_comments'   => 0,
+				'database_expired_transients' => 0,
+				'database_all_transients'     => 0,
+				'database_optimize_tables'    => 0,
+				'schedule_automatic_cleanup'  => 0,
+				'automatic_cleanup_frequency' => '',
+				'cdn'                         => 0,
+				'cdn_cnames'                  => array(),
+				'cdn_zone'                    => array(),
+				'cdn_ssl'                     => 0,
+				'cdn_reject_files'            => array(),
+				'do_cloudflare'               => 0,
+				'cloudflare_email'            => '',
+				'cloudflare_api_key'          => '',
+				'cloudflare_domain'           => '',
+				'cloudflare_zone_id'          => '',
+				'cloudflare_devmode'          => 0,
+				'cloudflare_protocol_rewrite' => 0,
+				'cloudflare_auto_settings'    => 0,
+				'cloudflare_old_settings'     => '',
+				'varnish_auto_purge'          => 0,
+				'do_beta'                     => 0,
+				'analytics_enabled'           => 0,
+			)
 		)
-	) );
+	);
 	rocket_dismiss_box( 'rocket_warning_plugin_modification' );
 	rocket_reset_white_label_values( false );
 }
@@ -209,10 +210,10 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 	}
 
 	// Add a value to the new CF zone_id field if the CF domain is set.
-	if ( version_compare( $actual_version, '2.8.21', '<' ) && phpversion() >= '5.4' ) {
+	if ( version_compare( $actual_version, '2.8.21', '<' ) && version_compare( phpversion(), '5.4' ) >= 0 ) {
 		$options = get_option( WP_ROCKET_SLUG );
 		if ( 0 < $options['do_cloudflare'] && '' !== $options['cloudflare_domain'] ) {
-			require( WP_ROCKET_ADMIN_PATH . 'compat/cf-upgrader-5.4.php' );
+			require WP_ROCKET_ADMIN_PATH . 'compat/cf-upgrader-5.4.php';
 		}
 	}
 
@@ -241,25 +242,36 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		delete_transient( 'rocket_check_licence_1' );
 	}
 
-	if ( version_compare( $actual_version, '2.10', '<' ) ) {
-		$options = get_option( WP_ROCKET_SLUG );
-
-		if ( 0 < $options['minify_css'] ) {
-			update_rocket_option( 'minify_css_legacy', 1 );
-			update_rocket_option( 'minify_concatenate_css', 1 );
-		} else {
-			update_rocket_option( 'minify_css_legacy', 0 );
-		}
-
-		if ( 0 < $options['minify_js'] ) {
-			update_rocket_option( 'minify_js_legacy', 1 );
-			update_rocket_option( 'minify_concatenate_js', 1 );
-		} else {
-			update_rocket_option( 'minify_js_legacy', 0 );
-		}
-
-		rocket_generate_config_file();
+	if ( version_compare( $actual_version, '2.11', '<' ) ) {
 		rocket_clean_domain();
+		rocket_clean_minify();
+		rocket_clean_cache_busting();
+		rocket_generate_advanced_cache_file();
+	}
+
+	if ( version_compare( $actual_version, '2.11.2', '<' ) ) {
+		$options = get_option( WP_ROCKET_SLUG );
+		$options = is_array( $options ) ? $options : array();
+		$update  = false;
+
+		if ( ! isset( $options['wl_plugin_URI'] ) || 'http://www.wp-rocket.me' === $options['wl_plugin_URI'] ) {
+			$options['wl_plugin_URI'] = 'https://wp-rocket.me';
+			$update                   = true;
+		}
+
+		if ( ! isset( $options['wl_author'] ) || 'WP Rocket' === $options['wl_author'] ) {
+			$options['wl_author'] = 'WP Media';
+			$update               = true;
+		}
+
+		if ( ! isset( $options['wl_author_URI'] ) || 'http://www.wp-rocket.me' === $options['wl_author_URI'] ) {
+			$options['wl_author_URI'] = 'https://wp-media.me';
+			$update                   = true;
+		}
+
+		if ( $update ) {
+			update_option( WP_ROCKET_SLUG, $options );
+		}
 	}
 }
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );

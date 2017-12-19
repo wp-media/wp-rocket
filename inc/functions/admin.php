@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
  * This warning is displayed when the API KEY isn't already set or not valid
@@ -9,14 +9,8 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
 function rocket_need_api_key() {
 	?>
 	<div class="notice notice-warning">
-		<p><strong><?php echo WP_ROCKET_PLUGIN_NAME; ?></strong> : <?php
-
-		printf(
-			__( '<a href="%s">Enter your API key here</a> to fully activate this plugin and give the performance of your website a boost.', 'rocket' ),
-			admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG )
-		);
-
-		?></p>
+		<p><strong><?php echo WP_ROCKET_PLUGIN_NAME; ?></strong>: <?php _e( 'There seems to be an issue with outgoing connections from your server. Resolve per documentation, or contact support.', 'rocket' ); ?>
+		</p>
 	</div>
 <?php
 }
@@ -56,7 +50,7 @@ function rocket_user_agent( $user_agent ) {
  *
  * @since 1.1.10
  * @modified 2.1 :
- *	- Better usage of delete_user_meta into delete_metadata
+ *  - Better usage of delete_user_meta into delete_metadata
  *
  * @param (int|null)     $uid : a User id, can be null, null = all users.
  * @param (string|array) $keep_this : which box have to be kept.
@@ -209,16 +203,19 @@ function rocket_hidden_fields( $fields ) {
 }
 
 /**
- * Get name & version of all active plugins.
+ * Gets names of all active plugins.
  *
+ * @since 2.11 Only get the name
  * @since 2.6
+ *
+ * @return array An array of active plugins names.
  */
 function rocket_get_active_plugins() {
-	$plugins 		= array();
+	$plugins        = array();
 	$active_plugins = array_intersect_key( get_plugins(), array_flip( array_filter( array_keys( get_plugins() ), 'is_plugin_active' ) ) );
 
 	foreach ( $active_plugins as $plugin ) {
-		$plugins[] = $plugin['Name'] . ' ' . $plugin['Version'];
+		$plugins[] = $plugin['Name'];
 	}
 
 	return $plugins;
@@ -256,7 +253,7 @@ function rocket_sanitize_ua( $ua ) {
  * @since 2.7
  */
 function rocket_is_ssl_website() {
-	return 'https' === parse_url( home_url(), PHP_URL_SCHEME );
+	return 'https' === rocket_extract_url_component( home_url(), PHP_URL_SCHEME );
 }
 
 /**
@@ -292,7 +289,7 @@ function get_rocket_faq_url() {
 		'de_DE' => 'de.docs.wp-rocket.me/category/285-haufig-gestellte-fragen-faq',
 	);
 	$lang   = get_locale();
-	$faq 	= isset( $langs[ $lang ] ) ? $langs[ $lang ] : 'docs.wp-rocket.me/category/65-faq';
+	$faq    = isset( $langs[ $lang ] ) ? $langs[ $lang ] : 'docs.wp-rocket.me/category/65-faq';
 	$url    = "http://{$faq}/?utm_source=wp-rocket&utm_medium=wp-admin&utm_term=doc-faq&utm_campaign=plugin";
 
 	return $url;
@@ -330,133 +327,55 @@ function rocket_is_plugin_installed( $plugin ) {
 }
 
 /**
- * Performs the database optimization
+ * When Woocommerce, EDD, iThemes Exchange, Jigoshop & WP-Shop options are saved or deleted,
+ * we update .htaccess & config file to get the right checkout page to exclude to the cache.
  *
- * @since 2.8
- * @author Remy Perona
+ * @since 2.9.3 Support for SF Move Login moved to 3rd party file
+ * @since 2.6 Add support with SF Move Login & WPS Hide Login to exclude login pages
+ * @since 2.4
+ *
+ * @param array $old_value An array of previous settings values.
+ * @param array $value An array of submitted settings values.
  */
-function do_rocket_database_optimization() {
+function rocket_after_update_single_options( $old_value, $value ) {
+	if ( $old_value !== $value ) {
+		// Update .htaccess file rules.
+		flush_rocket_htaccess();
+
+		// Update config file.
+		rocket_generate_config_file();
+	}
+}
+
+/**
+ * We need to regenerate the config file + htaccess depending on some plugins
+ *
+ * @since 2.9.3 Support for SF Move Login moved to 3rd party file
+ * @since 2.6.5 Add support with SF Move Login & WPS Hide Login
+ *
+ * @param array $old_value An array of previous settings values.
+ * @param array $value An array of submitted settings values.
+ */
+function rocket_after_update_array_options( $old_value, $value ) {
 	$options = array(
-	 'revisions',
-	 'auto_drafts',
-	 'trashed_posts',
-	 'spam_comments',
-	 'trashed_comments',
-	 'expired_transients',
-	 'all_transients',
-	 'optimize_tables',
+		'purchase_page',
+		'jigoshop_cart_page_id',
+		'jigoshop_checkout_page_id',
+		'jigoshop_myaccount_page_id',
 	);
 
-	foreach ( $options as $option ) {
-		if ( get_rocket_option( 'database_' . $option, false ) ) {
-			rocket_database_optimize( $option );
+	foreach ( $options as $val ) {
+		if ( ( ! isset( $old_value[ $val ] ) && isset( $value[ $val ] ) ) ||
+			( isset( $old_value[ $val ], $value[ $val ] ) && $old_value[ $val ] !== $value[ $val ] )
+		) {
+			// Update .htaccess file rules.
+			flush_rocket_htaccess();
+
+			// Update config file.
+			rocket_generate_config_file();
+			break;
 		}
 	}
-}
-
-/**
- * Optimizes the database depending on the option
- *
- * @since 2.8
- * @author Remy Perona
- *
- * @param string $type Type of optimization to perform.
- */
-function rocket_database_optimize( $type ) {
-	global $wpdb;
-
-	switch ( $type ) {
-		case 'revisions':
-			$query = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type = %s", 'revision' ) );
-			if ( $query ) {
-				foreach ( $query as $id ) {
-					wp_delete_post_revision( intval( $id ) );
-				}
-			}
-			break;
-		case 'auto_drafts':
-			$query = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_status = %s", 'auto-draft' ) );
-			if ( $query ) {
-				foreach ( $query as $id ) {
-					wp_delete_post( intval( $id ), true );
-				}
-			}
-			break;
-		case 'trashed_posts':
-			$query = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_status = %s", 'trash' ) );
-			if ( $query ) {
-				foreach ( $query as $id ) {
-					wp_delete_post( $id, true );
-				}
-			}
-			break;
-		case 'spam_comments':
-			$query = $wpdb->get_col( $wpdb->prepare( "SELECT comment_ID FROM $wpdb->comments WHERE comment_approved = %s", 'spam' ) );
-			if ( $query ) {
-				foreach ( $query as $id ) {
-					wp_delete_comment( intval( $id ), true );
-				}
-			}
-			break;
-		case 'trashed_comments':
-			$query = $wpdb->get_col( $wpdb->prepare( "SELECT comment_ID FROM $wpdb->comments WHERE (comment_approved = %s OR comment_approved = %s)", 'trash', 'post-trashed' ) );
-			if ( $query ) {
-				foreach ( $query as $id ) {
-					wp_delete_comment( intval( $id ), true );
-				}
-			}
-			break;
-		case 'expired_transients':
-			$time = isset( $_SERVER['REQUEST_TIME'] ) ? (int) $_SERVER['REQUEST_TIME'] : time();
-			$query = $wpdb->get_col( $wpdb->prepare( "SELECT option_name FROM $wpdb->options WHERE option_name LIKE %s AND option_value < %s", '_transient_timeout%', $time ) );
-
-			if ( $query ) {
-				foreach ( $query as $transient ) {
-					$key = str_replace( '_transient_timeout_', '', $transient );
-					delete_transient( $key );
-				}
-			}
-			break;
-		case 'all_transients':
-			$query = $wpdb->get_col( $wpdb->prepare( "SELECT option_name FROM $wpdb->options WHERE option_name LIKE %s", '%_transient_%' ) );
-			if ( $query ) {
-				foreach ( $query as $transient ) {
-					if ( strpos( $transient, '_site_transient_' ) !== false ) {
-						delete_site_transient( str_replace( '_site_transient_', '', $transient ) );
-					} else {
-						delete_transient( str_replace( '_transient_', '', $transient ) );
-					}
-				}
-			}
-			break;
-		case 'optimize_tables':
-			$query = $wpdb->get_results( $wpdb->prepare( "SELECT table_name, data_free FROM information_schema.tables WHERE table_schema = %s and Engine <> 'InnoDB' and data_free > 0", DB_NAME ) );
-			if ( $query ) {
-				foreach ( $query as $table ) {
-					$wpdb->query( 'OPTIMIZE TABLE ' . $table->table_name );
-				}
-			}
-			break;
-	}
-}
-
-/**
- * Run an async job to preload sitemaps in background
- *
- * @since 2.8
- *
- * @param array $body Contains the usual $_POST.
- **/
-function rocket_do_async_job( $body ) {
-	$args = array(
-		'timeout'   => 0.01,
-		'blocking'  => false,
-		'body'      => $body,
-		'cookies'   => $_COOKIE,
-		'sslverify' => apply_filters( 'https_local_ssl_verify', false ),
-	);
-
-	wp_remote_post( admin_url( 'admin-ajax.php' ), $args );
 }
 
 /**
@@ -480,7 +399,7 @@ function rocket_is_mobile_plugin_active() {
 	);
 
 	foreach ( $mobile_plugins as $mobile_plugin ) {
-		if ( is_plugin_active(  $mobile_plugin ) ) {
+		if ( is_plugin_active( $mobile_plugin ) ) {
 			return true;
 		}
 	}
@@ -490,7 +409,7 @@ function rocket_is_mobile_plugin_active() {
 
 /**
  * Allow upload of JSON file.
- * 
+ *
  * @since 2.10.7
  * @author Remy Perona
  *
@@ -501,4 +420,98 @@ function rocket_allow_json_mime_type( $wp_get_mime_types ) {
 	$wp_get_mime_types['json'] = 'application/json';
 
 	return $wp_get_mime_types;
+}
+
+/**
+ * Lists Data collected for analytics
+ *
+ * @since  2.11
+ * @author Caspar Hübinger
+ *
+ * @return string HTML list table
+ */
+function rocket_data_collection_preview_table() {
+
+	$data     = rocket_analytics_data();
+	$esc_data = esc_textarea( var_export( $data, true ) );
+
+	$html  = '<table class="wp-rocket-data-table widefat striped">';
+	$html .= '<tbody>';
+
+	$html .= '<tr>';
+	$html .= '<td class="column-primary">';
+	$html .= sprintf( '<strong>%s</strong>', __( 'Server type:', 'rocket' ) );
+	$html .= '</td>';
+	$html .= '<td>';
+	$html .= sprintf( '<code>%s</code>', $data['web_server'] );
+	$html .= '</td>';
+	$html .= '</tr>';
+
+	$html .= '<tr>';
+	$html .= '<td class="column-primary">';
+	$html .= sprintf( '<strong>%s</strong>', __( 'PHP version number:', 'rocket' ) );
+	$html .= '</td>';
+	$html .= '<td>';
+	$html .= sprintf( '<code>%s</code>', $data['php_version'] );
+	$html .= '</td>';
+	$html .= '</tr>';
+
+	$html .= '<tr>';
+	$html .= '<td class="column-primary">';
+	$html .= sprintf( '<strong>%s</strong>', __( 'WordPress version number:', 'rocket' ) );
+	$html .= '</td>';
+	$html .= '<td>';
+	$html .= sprintf( '<code>%s</code>', $data['wordpress_version'] );
+	$html .= '</td>';
+	$html .= '</tr>';
+
+	$html .= '<tr>';
+	$html .= '<td class="column-primary">';
+	$html .= sprintf( '<strong>%s</strong>', __( 'WordPress multisite:', 'rocket' ) );
+	$html .= '</td>';
+	$html .= '<td>';
+	$html .= sprintf( '<code>%s</code>', var_export( $data['multisite'], true ) );
+	$html .= '</td>';
+	$html .= '</tr>';
+
+	$html .= '<tr>';
+	$html .= '<td class="column-primary">';
+	$html .= sprintf( '<strong>%s</strong>', __( 'Current theme:', 'rocket' ) );
+	$html .= '</td>';
+	$html .= '<td>';
+	$html .= sprintf( '<code>%s</code>', $data['current_theme'] );
+	$html .= '</td>';
+	$html .= '</tr>';
+
+	$html .= '<tr>';
+	$html .= '<td class="column-primary">';
+	$html .= sprintf( '<strong>%s</strong>', __( 'Current site language:', 'rocket' ) );
+	$html .= '</td>';
+	$html .= '<td>';
+	$html .= sprintf( '<code>%s</code>', $data['locale'] );
+	$html .= '</td>';
+	$html .= '</tr>';
+
+	$html .= '<tr>';
+	$html .= '<td class="column-primary">';
+	$html .= sprintf( '<strong>%s</strong>', __( 'Active plugins:', 'rocket' ) );
+	$html .= '</td>';
+	$html .= '<td>';
+	$html .= sprintf( '<em>%s</em>', __( 'Plugin names of all active plugins', 'rocket' ) );
+	$html .= '</td>';
+	$html .= '</tr>';
+
+	$html .= '<tr>';
+	$html .= '<td class="column-primary">';
+	$html .= sprintf( '<strong>%s</strong>', __( 'Anonymized WP Rocket settings:', 'rocket' ) );
+	$html .= '</td>';
+	$html .= '<td>';
+	$html .= sprintf( '<em>%s</em>', __( 'Which WP Rocket settings are active', 'rocket' ) );
+	$html .= '</td>';
+	$html .= '</tr>';
+
+	$html .= '</tbody>';
+	$html .= '</table>';
+
+	return $html;
 }

@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 // Are we white-labeled?
 $rwl = rocket_is_white_label();
@@ -45,11 +45,11 @@ $rocket_lazyload_fields[] = array(
 		/* translators: %s = docs link, or nothing if white-label is enabled */
 		__( 'Deactivate if you notice any visually broken items on your website.%s', 'rocket' ),
 		$rwl ? '' : ' ' . __( '<a href="http://docs.wp-rocket.me/article/278-common-issues-with-lazyload" target="_blank">Why?</a>', 'rocket' )
-	)
+	),
 );
 
 /* LazyLoad options */
-$rocket_lazyload_fields[] =	array(
+$rocket_lazyload_fields[] = array(
 	'type'         => 'checkbox',
 	'label'        => __( 'Enable for images', 'rocket' ),
 	'label_for'    => 'lazyload',
@@ -62,14 +62,27 @@ $rocket_lazyload_fields[] = array(
 	'label_screen' => __( 'Enable LazyLoad for iframes and videos', 'rocket' ),
 );
 $rocket_lazyload_fields[] = array(
+	'parent'       => 'lazyload_iframes',
+	'type'         => 'checkbox',
+	'label'        => __( 'Replace YouTube iframe with preview image', 'rocket' ),
+	'label_for'    => 'lazyload_youtube',
+	'label_screen' => __( 'Replace YouTube iframe with preview image', 'rocket' ),
+);
+$rocket_lazyload_fields[] = array(
+	'parent'       => 'lazyload_iframes',
+	'type'         => 'helper_description',
+	'name'         => 'lazyload_youtube_description',
+	'description'  => __( 'This can significantly improve your loading time if you have a lot of YouTube videos on a page.', 'rocket' )
+);
+$rocket_lazyload_fields[] = array(
 	'type'         => 'helper_performance',
 	'name'         => 'lazyload_perf_tip',
-	'description'  => __( 'Reduces the number of HTTP requests, can improve loading time.', 'rocket' )
+	'description'  => __( 'Reduces the number of HTTP requests, can improve loading time.', 'rocket' ),
 );
 $rocket_lazyload_fields[] = array(
 	'type'         => 'helper_description',
 	'name'         => 'lazyload',
-	'description'  => __( 'Images, iframes, and videos will be loaded only as they enter (or are about to enter) the viewport.', 'rocket' )
+	'description'  => __( 'Images, iframes, and videos will be loaded only as they enter (or are about to enter) the viewport.', 'rocket' ),
 );
 
 add_settings_field(
@@ -94,10 +107,10 @@ add_settings_field(
 		array(
 			'type'         => 'checkbox',
 			'label'        => __( 'Enable caching for mobile devices', 'rocket' ),
-			'label_for'	   => 'cache_mobile',
+			'label_for'    => 'cache_mobile',
 			'label_screen' => __( 'Mobile cache:', 'rocket' ),
-			'default'	   => ( rocket_is_mobile_plugin_active() ) ? 1 : get_rocket_option( 'cache_mobile', 0 ),
-			'readonly'	   => rocket_is_mobile_plugin_active(),
+			'default'      => ( rocket_is_mobile_plugin_active() ) ? 1 : get_rocket_option( 'cache_mobile', 0 ),
+			'readonly'     => rocket_is_mobile_plugin_active(),
 		),
 		array(
 			'type'         => 'helper_performance',
@@ -109,8 +122,8 @@ add_settings_field(
 			'type'         => 'checkbox',
 			'label'        => __( 'Separate cache files for mobile devices', 'rocket' ),
 			'name'         => 'do_caching_mobile_files',
-			'default'	   => ( rocket_is_mobile_plugin_active() ) ? 1 : get_rocket_option( 'do_caching_mobile_files', 0 ),
-			'readonly'	   => rocket_is_mobile_plugin_active(),
+			'default'      => ( rocket_is_mobile_plugin_active() ) ? 1 : get_rocket_option( 'do_caching_mobile_files', 0 ),
+			'readonly'     => rocket_is_mobile_plugin_active(),
 		),
 		array(
 			'parent'       => 'cache_mobile',
@@ -149,28 +162,40 @@ add_settings_field(
 /**
  * SSL cache
  */
+$rocket_ssl_cache_fields = array();
+$rocket_maybe_ssl = rocket_is_ssl_website();
+
+$rocket_ssl_cache_fields[] = array(
+	'type'         => 'checkbox',
+	'label'        => __( 'Enable caching for pages with <code>https://</code>', 'rocket' ),
+	'label_for'    => 'cache_ssl',
+	'label_screen' => __( 'SSL cache:', 'rocket' ),
+	'name'         => 'cache_ssl',
+	'default'      => $rocket_maybe_ssl ? 1 : get_rocket_option( 'ssl', 0 ),
+	'readonly'     => $rocket_maybe_ssl,
+);
+
+// Dynamic description: 1. white-label or not.
+$rocket_ssl_cache_fields_desc = $rwl ? __( 'SSL cache works best when your entire website runs on HTTPS.', 'rocket' ) : __( '<a href="http://docs.wp-rocket.me/article/314-using-ssl-with-wp-rocket" target="_blank">SSL cache</a> works best when your entire website runs on HTTPS.', 'rocket' );
+
+// Dynamic description: 2. SSL detected
+if ( $rocket_maybe_ssl ) {
+	$rocket_ssl_cache_fields_desc = __( 'Your site runs on HTTPS. SSL cache has been applied automatically.', 'rocket' );
+}
+
+$rocket_ssl_cache_fields[] = array(
+	'type' => $rocket_maybe_ssl ? 'helper_detection' : 'helper_description',
+	'name' => 'ssl_cache_desc',
+	'description'  => $rocket_ssl_cache_fields_desc,
+);
+
 add_settings_field(
 	'rocket_ssl',
 	__( 'SSL cache:', 'rocket' ),
 	'rocket_field',
 	'rocket_basic',
 	'rocket_display_main_options',
-	array(
-		array(
-			'type'         => 'checkbox',
-			'label'        => __( 'Enable caching for pages with <code>https://</code>', 'rocket' ),
-			'label_for'    => 'cache_ssl',
-			'label_screen' => __( 'SSL cache:', 'rocket' ),
-			'name'         => 'cache_ssl',
-			'default'	   => ( rocket_is_ssl_website() ) ? 1 : get_rocket_option( 'ssl', 0 ),
-			'readonly'	   => rocket_is_ssl_website(),
-		),
-		array(
-			'type'         => 'helper_description',
-			'name'         => 'ssl_cache_desc',
-			'description'  => $rwl ? __( 'SSL cache works best when your entire website runs on HTTPS.', 'rocket' ) : __( '<a href="http://docs.wp-rocket.me/article/314-using-ssl-with-wp-rocket" target="_blank">SSL cache</a> works best when your entire website runs on HTTPS.', 'rocket' ),
-		),
-	)
+	$rocket_ssl_cache_fields
 );
 
 /**
@@ -193,7 +218,7 @@ add_settings_field(
 		array(
 			'type'         => 'helper_performance',
 			'name'         => 'emoji_cache_perf_tip',
-			'description'  => __( 'Reduces the number of HTTP requests, can improve loading time.', 'rocket' )
+			'description'  => __( 'Reduces the number of HTTP requests, can improve loading time.', 'rocket' ),
 		),
 	)
 );
@@ -271,10 +296,10 @@ $rocket_purge_fields[] = array(
 
 
 $rocket_purge_fields[] = array(
-		'type'         => 'helper_warning',
-		'name'         => 'purge_warning_more',
-		'description'  => __( 'Increase lifespan to a few hours if you notice server issues with this setting.', 'rocket' ),
-	);
+	'type'         => 'helper_warning',
+	'name'         => 'purge_warning_more',
+	'description'  => __( 'Increase lifespan to a few hours if you notice server issues with this setting.', 'rocket' ),
+);
 
 /* Cache lifespan option */
 add_settings_field(
