@@ -3,11 +3,11 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 2.8\n"
+"Project-Id-Version: WP Rocket 2.11\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2017-12-14 17:58-0500\n"
+"POT-Creation-Date: 2017-12-19 07:48-0500\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2016-MO-DA HO:MI+ZONE\n"
 "Last-Translator: WP Media (http://wp-rocket.me/)\n"
@@ -833,7 +833,7 @@ msgstr ""
 msgid ""
 "Your PHP version is lower than 5.4. Cloudflare’s integration requires PHP 5.4 or "
 "greater and therefore is not available for you currently. We recommend you "
-"contact your web host in order to upgrade to a PHP 5.6 or greater."
+"contact your web host in order to upgrade to the latest PHP version."
 msgstr ""
 
 #: inc/admin/ui/modules/cdn.php:30
@@ -1967,32 +1967,32 @@ msgstr ""
 msgid "Critical CSS for %s generated."
 msgstr ""
 
-#: inc/classes/class-rocket-critical-css.php:359
+#: inc/classes/class-rocket-critical-css.php:366
 #, php-format
 msgid ""
 "Critical CSS generation is currently running: %1$d of %2$d page types completed. "
 "(Refresh this page to view progress)"
 msgstr ""
 
-#: inc/classes/class-rocket-critical-css.php:403
+#: inc/classes/class-rocket-critical-css.php:410
 #, php-format
 msgid "Critical CSS generation finished for %1$d of %2$d page types."
 msgstr ""
 
-#: inc/classes/class-rocket-database-optimization.php:210
+#: inc/classes/class-rocket-database-optimization.php:212
 msgid "Database optimization process is running"
 msgstr ""
 
-#: inc/classes/class-rocket-database-optimization.php:247
+#: inc/classes/class-rocket-database-optimization.php:249
 msgid ""
 "Database optimization process is complete. Everything was already optimized!"
 msgstr ""
 
-#: inc/classes/class-rocket-database-optimization.php:249
+#: inc/classes/class-rocket-database-optimization.php:251
 msgid "Database optimization process is complete. List of optimized items below:"
 msgstr ""
 
-#: inc/classes/class-rocket-database-optimization.php:255
+#: inc/classes/class-rocket-database-optimization.php:257
 #, php-format
 msgid "%1$d %2$s optimized."
 msgstr ""
@@ -2033,7 +2033,7 @@ msgid "Cloudflare cache purge error: %s"
 msgstr ""
 
 #: inc/common/purge.php:517
-msgid "CloudFlare cache sucessfully purged"
+msgid "CloudFlare cache successfully purged"
 msgstr ""
 
 #: inc/deprecated.php:449
@@ -2120,19 +2120,19 @@ msgstr ""
 msgid "No domain available in your Cloudflare account"
 msgstr ""
 
-#: inc/functions/options.php:577
+#: inc/functions/options.php:575
 msgid "Your license is not valid."
 msgstr ""
 
-#: inc/functions/options.php:578
+#: inc/functions/options.php:576
 msgid "You cannot add more websites. Upgrade your account."
 msgstr ""
 
-#: inc/functions/options.php:579
+#: inc/functions/options.php:577
 msgid "This website is not allowed."
 msgstr ""
 
-#: inc/functions/options.php:580
+#: inc/functions/options.php:578
 msgid "This license key is not accepted."
 msgstr ""
 
