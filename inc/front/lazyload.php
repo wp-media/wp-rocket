@@ -171,6 +171,7 @@ function rocket_lazyload_replace_callback( $matches ) {
 	 */
 	$excluded_attributes = apply_filters(
 		'rocket_lazyload_excluded_attributes', array(
+			'data-src=',
 			'data-no-lazy=',
 			'data-lazy-original=',
 			'data-lazy-src=',
