@@ -393,7 +393,7 @@ function rocket_lazyload_iframes( $html ) {
 	}
 
 	$matches = array();
-	preg_match_all( '/<iframe(?:\s.*)?\ssrc=["\'](.*)["\'].*><\/iframe>/iU', $html, $matches, PREG_SET_ORDER );
+	preg_match_all( '/<iframe(?:\s.*)?\ssrc=["\'](.*)["\'](.*)><\/iframe>/iU', $html, $matches, PREG_SET_ORDER );
 
 	if ( empty( $matches ) ) {
 		return $html;
@@ -440,6 +440,7 @@ function rocket_lazyload_iframes( $html ) {
 
 			$iframe_noscript = '<noscript>' . $iframe[0] . '</noscript>';
 
+			$iframe_lazyload = str_replace( $iframe[1], $placeholder, $iframe[0] );
 			/**
 			 * Filter the LazyLoad HTML output on iframes
 			 *
@@ -447,7 +448,7 @@ function rocket_lazyload_iframes( $html ) {
 			 *
 			 * @param array $html Output that will be printed.
 			 */
-			$iframe_lazyload  = apply_filters( 'rocket_lazyload_iframe_html', str_replace( $iframe[1], $placeholder . '" data-rocket-lazyload="fitvidscompatible" data-lazy-src="' . $iframe[1], $iframe[0] ) );
+			$iframe_lazyload  = apply_filters( 'rocket_lazyload_iframe_html', str_replace( $iframe[2], $iframe[2] . ' data-rocket-lazyload="fitvidscompatible" data-lazy-src="' . $iframe[1] . '"', $iframe[0] ) );
 			$iframe_lazyload .= $iframe_noscript;
 
 			$html = str_replace( $iframe[0], $iframe_lazyload, $html );
