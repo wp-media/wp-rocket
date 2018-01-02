@@ -18,27 +18,17 @@
 
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
-// Rocket defines.
-define( 'WP_ROCKET_VERSION'             , '2.11.3' );
-define( 'WP_ROCKET_PRIVATE_KEY'         , false );
-define( 'WP_ROCKET_SLUG'                , 'wp_rocket_settings' );
-define( 'WP_ROCKET_WEB_MAIN'            , false );
-define( 'WP_ROCKET_WEB_API'             , WP_ROCKET_WEB_MAIN . 'api/wp-rocket/' );
-define( 'WP_ROCKET_WEB_CHECK'           , WP_ROCKET_WEB_MAIN . 'check_update.php' );
-define( 'WP_ROCKET_WEB_VALID'           , WP_ROCKET_WEB_MAIN . 'valid_key.php' );
-define( 'WP_ROCKET_WEB_INFO'            , WP_ROCKET_WEB_MAIN . 'plugin_information.php' );
-define( 'WP_ROCKET_BOT_URL'             , 'http://bot.wp-rocket.me/launch.php' );
-define( 'WP_ROCKET_FILE'                , __FILE__ );
-define( 'WP_ROCKET_PATH'                , realpath( plugin_dir_path( WP_ROCKET_FILE ) ) . '/' );
-define( 'WP_ROCKET_INC_PATH'            , realpath( WP_ROCKET_PATH . 'inc/' ) . '/' );
-define( 'WP_ROCKET_FRONT_PATH'          , realpath( WP_ROCKET_INC_PATH . 'front/' ) . '/' );
-define( 'WP_ROCKET_ADMIN_PATH'          , realpath( WP_ROCKET_INC_PATH . 'admin' ) . '/' );
-define( 'WP_ROCKET_ADMIN_UI_PATH'       , realpath( WP_ROCKET_ADMIN_PATH . 'ui' ) . '/' );
-define( 'WP_ROCKET_ADMIN_UI_MODULES_PATH', realpath( WP_ROCKET_ADMIN_UI_PATH . 'modules' ) . '/' );
-define( 'WP_ROCKET_COMMON_PATH'         , realpath( WP_ROCKET_INC_PATH . 'common' ) . '/' );
-define( 'WP_ROCKET_FUNCTIONS_PATH'      , realpath( WP_ROCKET_INC_PATH . 'functions' ) . '/' );
-define( 'WP_ROCKET_VENDORS_PATH'        , realpath( WP_ROCKET_INC_PATH . 'vendors' ) . '/' );
-define( 'WP_ROCKET_3RD_PARTY_PATH'      , realpath( WP_ROCKET_INC_PATH . '3rd-party' ) . '/' );
+if ( ! defined( 'WP_ROCKET_VERSION' ) && is_readable( __DIR__ . '/vendor/autoload.php' ) ) {
+	// Load composer autoload if not loaded yet.
+	require __DIR__ . '/vendor/autoload.php';
+}
+
+if ( ! defined( 'WP_ROCKET_FUNCTIONS_PATH' ) ) {
+	// Composer autoload failed, this installation is probably corrupted, we can only stop here.
+	return;
+}
+
+// Rocket defines that depends on WP.
 define( 'WP_ROCKET_CONFIG_PATH'         , WP_CONTENT_DIR . '/wp-rocket-config/' );
 define( 'WP_ROCKET_CACHE_PATH'          , WP_CONTENT_DIR . '/cache/wp-rocket/' );
 define( 'WP_ROCKET_MINIFY_CACHE_PATH'   , WP_CONTENT_DIR . '/cache/min/' );
@@ -56,6 +46,7 @@ define( 'WP_ROCKET_ADMIN_UI_IMG_URL'    , WP_ROCKET_ADMIN_UI_URL . 'img/' );
 define( 'WP_ROCKET_CACHE_URL'           , WP_CONTENT_URL . '/cache/wp-rocket/' );
 define( 'WP_ROCKET_MINIFY_CACHE_URL'    , WP_CONTENT_URL . '/cache/min/' );
 define( 'WP_ROCKET_CACHE_BUSTING_URL'   , WP_CONTENT_URL . '/cache/busting/' );
+
 if ( ! defined( 'CHMOD_WP_ROCKET_CACHE_DIRS' ) ) {
 	define( 'CHMOD_WP_ROCKET_CACHE_DIRS', 0755 );
 }
@@ -172,9 +163,6 @@ function rocket_init() {
 	// Necessary to call correctly WP Rocket Bot for cache json.
 	global $do_rocket_bot_cache_json;
 	$do_rocket_bot_cache_json = false;
-
-	// Composer autoload.
-	require WP_ROCKET_PATH . 'vendor/autoload.php';
 
 	// Call defines and functions.
 	require WP_ROCKET_FUNCTIONS_PATH . 'options.php';
