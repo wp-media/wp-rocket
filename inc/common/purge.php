@@ -1,23 +1,23 @@
 <?php
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
-// Launch hooks that deletes all the cache domain
-add_action( 'switch_theme'                                          , 'rocket_clean_domain' );  // When user change theme
-add_action( 'user_register'                                         , 'rocket_clean_domain' );  // When a user is added
-add_action( 'profile_update'                                        , 'rocket_clean_domain' );  // When a user is updated
-add_action( 'deleted_user'                                          , 'rocket_clean_domain' );  // When a user is deleted
-add_action( 'wp_update_nav_menu'                                    , 'rocket_clean_domain' );  // When a custom menu is update
-add_action( 'update_option_sidebars_widgets'                        , 'rocket_clean_domain' );  // When you change the order of widgets
-add_action( 'update_option_category_base'                           , 'rocket_clean_domain' );  // When category permalink prefix is update
-add_action( 'update_option_tag_base'                                , 'rocket_clean_domain' );  // When tag permalink prefix is update
-add_action( 'permalink_structure_changed'                           , 'rocket_clean_domain' );  // When permalink structure is update
-add_action( 'create_term'                                           , 'rocket_clean_domain' );  // When a term is created
-add_action( 'edited_terms'                                          , 'rocket_clean_domain' );  // When a term is updated
-add_action( 'delete_term'                                           , 'rocket_clean_domain' );  // When a term is deleted
-add_action( 'add_link'                                              , 'rocket_clean_domain' );  // When a link is added
-add_action( 'edit_link'                                             , 'rocket_clean_domain' );  // When a link is updated
-add_action( 'delete_link'                                           , 'rocket_clean_domain' );  // When a link is deleted
-add_action( 'customize_save'                                        , 'rocket_clean_domain' );  // When customizer is saved
+// Launch hooks that deletes all the cache domain.
+add_action( 'switch_theme'                                          , 'rocket_clean_domain' );  // When user change theme.
+add_action( 'user_register'                                         , 'rocket_clean_domain' );  // When a user is added.
+add_action( 'profile_update'                                        , 'rocket_clean_domain' );  // When a user is updated.
+add_action( 'deleted_user'                                          , 'rocket_clean_domain' );  // When a user is deleted.
+add_action( 'wp_update_nav_menu'                                    , 'rocket_clean_domain' );  // When a custom menu is update.
+add_action( 'update_option_sidebars_widgets'                        , 'rocket_clean_domain' );  // When you change the order of widgets.
+add_action( 'update_option_category_base'                           , 'rocket_clean_domain' );  // When category permalink prefix is update.
+add_action( 'update_option_tag_base'                                , 'rocket_clean_domain' );  // When tag permalink prefix is update.
+add_action( 'permalink_structure_changed'                           , 'rocket_clean_domain' );  // When permalink structure is update.
+add_action( 'create_term'                                           , 'rocket_clean_domain' );  // When a term is created.
+add_action( 'edited_terms'                                          , 'rocket_clean_domain' );  // When a term is updated.
+add_action( 'delete_term'                                           , 'rocket_clean_domain' );  // When a term is deleted.
+add_action( 'add_link'                                              , 'rocket_clean_domain' );  // When a link is added.
+add_action( 'edit_link'                                             , 'rocket_clean_domain' );  // When a link is updated.
+add_action( 'delete_link'                                           , 'rocket_clean_domain' );  // When a link is deleted.
+add_action( 'customize_save'                                        , 'rocket_clean_domain' );  // When customizer is saved.
 add_action( 'update_option_theme_mods_' . get_option( 'stylesheet' ), 'rocket_clean_domain' ); // When location of a menu is updated.
 
 /**
@@ -172,7 +172,7 @@ function rocket_clean_post( $post_id ) {
 
 	// Add the author page.
 	$purge_author = array( get_author_posts_url( $post->post_author ) );
-	$purge_urls = array_merge( $purge_urls, $purge_author );
+	$purge_urls   = array_merge( $purge_urls, $purge_author );
 
 	// Add all parents.
 	$parents = get_post_ancestors( $post_id );
@@ -238,7 +238,7 @@ add_action( 'wp_update_comment_count'   , 'rocket_clean_post' );
 function rocket_clean_files_users( $urls ) {
 	$pattern_urls = array();
 	foreach ( $urls as $url ) {
-		$parse_url = get_rocket_parse_url( $url );
+		$parse_url      = get_rocket_parse_url( $url );
 		$pattern_urls[] = $parse_url['scheme'] . '://' . $parse_url['host'] . '*' . $parse_url['path'];
 	}
 	return $pattern_urls;
@@ -394,9 +394,9 @@ function do_admin_post_rocket_purge_cache() {
 				rocket_clean_cache_busting();
 
 				// Generate a new random key for minify cache file.
-				$options = get_option( WP_ROCKET_SLUG );
+				$options                   = get_option( WP_ROCKET_SLUG );
 				$options['minify_css_key'] = create_rocket_uniqid();
-				$options['minify_js_key'] = create_rocket_uniqid();
+				$options['minify_js_key']  = create_rocket_uniqid();
 				remove_all_filters( 'update_option_' . WP_ROCKET_SLUG );
 				update_option( WP_ROCKET_SLUG, $options );
 
@@ -428,7 +428,7 @@ function do_admin_post_rocket_purge_cache() {
 
 				if ( 0 !== strpos( $referer, 'http' ) ) {
 					$parse_url = get_rocket_parse_url( untrailingslashit( home_url() ) );
-					$referer = $parse_url['scheme'] . '://' . $parse_url['host'] . $referer;
+					$referer   = $parse_url['scheme'] . '://' . $parse_url['host'] . $referer;
 				}
 
 				if ( home_url( '/' ) === $referer ) {
@@ -507,14 +507,14 @@ function do_admin_post_rocket_purge_cloudflare() {
 
 	if ( is_wp_error( $cf_purge ) ) {
 		$cf_purge_result = array(
-			'result' => 'error',
+			'result'  => 'error',
 			// translators: %s = CloudFare API return message.
 			'message' => sprintf( __( 'Cloudflare cache purge error: %s', 'rocket' ), $cf_purge->get_error_message() ),
 		);
 	} else {
 		$cf_purge_result = array(
-			'result' => 'success',
-			'message' => __( 'CloudFlare cache successfully purged', 'rocket' ),
+			'result'  => 'success',
+			'message' => __( 'Cloudflare cache successfully purged', 'rocket' ),
 		);
 	}
 
