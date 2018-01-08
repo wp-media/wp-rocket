@@ -190,11 +190,11 @@ function rocket_cache_dynamic_resource( $src ) {
 
 	switch ( $current_filter ) {
 		case 'script_loader_src':
-			$extension  = '.js';
+			$extension  = 'js';
 			$minify_key = get_rocket_option( 'minify_js_key' );
 			break;
 		case 'style_loader_src':
-			$extension  = '.css';
+			$extension  = 'css';
 			$minify_key = get_rocket_option( 'minify_css_key' );
 			break;
 	}

@@ -20,7 +20,7 @@ function rocket_bad_deactivations() {
 			switch ( $msg ) {
 				case 'wpconfig':
 					$errors['wpconfig'] = '<p>' . sprintf(
-						// translators: %1$s WP Rocket plugin name; %2$s = file name
+						// translators: %1$s WP Rocket plugin name; %2$s = file name.
 						__( '<strong>%1$s</strong> has not been deactivated due to missing writing permissions.<br>
 Make <strong>%2$s</strong> writeable and retry deactivation, or force deactivation now:', 'rocket' ),
 						WP_ROCKET_PLUGIN_NAME,
@@ -30,7 +30,7 @@ Make <strong>%2$s</strong> writeable and retry deactivation, or force deactivati
 
 				case 'htaccess':
 					$errors['htaccess'] = '<p>' . sprintf(
-						// translators: %1$s WP Rocket plugin name; %2$s = file name
+						// translators: %1$s WP Rocket plugin name; %2$s = file name.
 						__( '<strong>%1$s</strong> has not been deactivated due to missing writing permissions.<br>
 Make <strong>%2$s</strong> writeable and retry deactivation, or force deactivation now:', 'rocket' ),
 						WP_ROCKET_PLUGIN_NAME,
@@ -138,6 +138,7 @@ function rocket_plugins_to_deactivate() {
 	}
 
 	if ( get_rocket_option( 'minify_css' ) || get_rocket_option( 'minify_js' ) || get_rocket_option( 'minify_html' ) ) {
+		$plugins['wp-super-minify']         = 'wp-super-minify/wp-super-minify.php';
 		$plugins['bwp-minify']              = 'bwp-minify/bwp-minify.php';
 		$plugins['wp-minify']               = 'wp-minify/wp-minify.php';
 		$plugins['scripts-gzip']            = 'scripts-gzip/scripts_gzip.php';
@@ -189,7 +190,7 @@ function rocket_plugins_to_deactivate() {
 
 		foreach ( $plugins as $plugin ) {
 			$plugin_data = get_plugin_data( WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . $plugin );
-			$warning .= '<li>' . $plugin_data['Name'] . '</span> <a href="' . wp_nonce_url( admin_url( 'admin-post.php?action=deactivate_plugin&plugin=' . rawurlencode( $plugin ) ), 'deactivate_plugin' ) . '" class="button-secondary alignright">' . __( 'Deactivate', 'rocket' ) . '</a></li>';
+			$warning    .= '<li>' . $plugin_data['Name'] . '</span> <a href="' . wp_nonce_url( admin_url( 'admin-post.php?action=deactivate_plugin&plugin=' . rawurlencode( $plugin ) ), 'deactivate_plugin' ) . '" class="button-secondary alignright">' . __( 'Deactivate', 'rocket' ) . '</a></li>';
 		}
 
 		$warning .= '</ul>';
@@ -254,11 +255,11 @@ function rocket_warning_wp_config_permissions() {
 		$message = rocket_notice_writing_permissions( 'wp-config.php' );
 
 		rocket_notice_html( array(
-			'status' => 'error',
-			'dismissible' => '',
-			'message' => $message,
-			'dismiss_button' => __FUNCTION__,
-			'readonly_content' => "/** Enable Cache by " . WP_ROCKET_PLUGIN_NAME . " */\r\ndefine( 'WP_CACHE', true );\r\n",
+			'status'           => 'error',
+			'dismissible'      => '',
+			'message'          => $message,
+			'dismiss_button'   => __FUNCTION__,
+			'readonly_content' => '/** Enable Cache by ' . WP_ROCKET_PLUGIN_NAME . " */\r\ndefine( 'WP_CACHE', true );\r\n",
 		) );
 	}
 }
@@ -478,9 +479,9 @@ add_action( 'admin_notices', 'rocket_warning_busting_cache_dir_permissions' );
  */
 function rocket_thank_you_license() {
 	if ( '1' === get_rocket_option( 'license' ) ) {
-		$options = get_option( WP_ROCKET_SLUG );
+		$options            = get_option( WP_ROCKET_SLUG );
 		$options['license'] = time();
-		$options['ignore'] = true;
+		$options['ignore']  = true;
 		update_option( WP_ROCKET_SLUG, $options );
 
 		$message = sprintf(
@@ -516,7 +517,7 @@ function rocket_imagify_notice() {
 		return;
 	}
 
-	$imagify_plugin = 'imagify/imagify.php';
+	$imagify_plugin       = 'imagify/imagify.php';
 	$is_imagify_installed = rocket_is_plugin_installed( $imagify_plugin );
 
 	$action_url = $is_imagify_installed ?
@@ -524,8 +525,8 @@ function rocket_imagify_notice() {
 		:
 	wp_nonce_url( add_query_arg(
 		array(
-			'action'       => 'install-plugin',
-			'plugin'    => 'imagify',
+			'action' => 'install-plugin',
+			'plugin' => 'imagify',
 		),
 		admin_url( 'update.php' )
 	), 'install-plugin_imagify' );
@@ -624,7 +625,7 @@ function rocket_cloudflare_update_settings() {
 
 	$notices = get_transient( $current_user->ID . '_cloudflare_update_settings' );
 	if ( $notices ) {
-		$errors = '';
+		$errors  = '';
 		$success = '';
 		delete_transient( $current_user->ID . '_cloudflare_update_settings' );
 		foreach ( $notices as $notice ) {
@@ -683,7 +684,7 @@ function rocket_analytics_optin_notice() {
 	}
 
 	$analytics_notice = sprintf(
-		// Opening <p> provided by rocket_notice_html()
+		// Opening <p> provided by rocket_notice_html().
 		'<strong>%1$s</strong><br>%2$s</p>',
 		__( 'Would you allow WP Rocket to collect non-sensitive diagnostic data from this website?', 'rocket' ),
 		__( 'This would help us to improve WP Rocket for you in the future.', 'rocket' )
@@ -703,7 +704,7 @@ function rocket_analytics_optin_notice() {
 
 	$analytics_notice .= sprintf(
 		'<p><a href="%1$s" class="button button-primary">%2$s</a> <a href="%3$s" class="button button-secondary">%4$s</a>',
-		// Closing </p> provided by rocket_notice_html()
+		// Closing </p> provided by rocket_notice_html().
 		wp_nonce_url( admin_url( 'admin-post.php?action=rocket_analytics_optin&value=yes' ), 'analytics_optin' ),
 		/* translators: button text for data collection opt-in */
 		__( 'Yes, allow', 'rocket' ),
@@ -750,7 +751,7 @@ function rocket_analytics_optin_thankyou_notice() {
 	}
 
 	$thankyou_message = sprintf(
-		// Opening <p> provided by rocket_notice_html()
+		// Opening <p> provided by rocket_notice_html().
 		'<strong>%s</strong></p>',
 		__( 'Thank you!', 'rocket' )
 	);
@@ -761,8 +762,8 @@ function rocket_analytics_optin_thankyou_notice() {
 		rocket_data_collection_preview_table()
 	);
 
+	// Closing </p> provided by rocket_notice_html().
 	$thankyou_message .= '<p>';
-	// Closing </p> provided by rocket_notice_html()
 
 	rocket_notice_html( array(
 		'message' => $thankyou_message,
@@ -947,7 +948,7 @@ function rocket_notice_html( $args ) {
 			// We add a link to permit "force deactivation", use at your own risks.
 			if ( $permit_force_deactivation ) {
 				global $status, $page, $s;
-				$plugin_file = 'wp-rocket/wp-rocket.php';
+				$plugin_file  = 'wp-rocket/wp-rocket.php';
 				$rocket_nonce = wp_create_nonce( 'force_deactivation' );
 
 				$args['action'] = '<a href="' . wp_nonce_url( 'plugins.php?action=deactivate&amp;rocket_nonce=' . $rocket_nonce . '&amp;plugin=' . $plugin_file . '&amp;plugin_status=' . $status . '&amp;paged=' . $page . '&amp;s=' . $s, 'deactivate-plugin_' . $plugin_file ) . '">' . __( 'Force deactivation ', 'rocket' ) . '</a>';
@@ -966,8 +967,10 @@ function rocket_notice_html( $args ) {
 		<p><?php _e( 'The following code should have been written to this file:', 'rocket' ); ?>:
 			<br><textarea readonly="readonly" id="rules" name="rules" class="large-text readonly" rows="6"><?php echo esc_textarea( $args['readonly_content'] ); ?></textarea>
 		</p>
-		<?php endif;
-		if ( $args['action'] || $args['dismiss_button'] ) : ?>
+		<?php
+		endif;
+		if ( $args['action'] || $args['dismiss_button'] ) :
+		?>
 		<p>
 			<?php echo $args['action']; ?>
 			<?php if ( $args['dismiss_button'] ) : ?>
@@ -985,7 +988,7 @@ function rocket_notice_html( $args ) {
  * @since  2.11
  * @author Caspar Hübinger
  *
- * @param  string $file File or folder name
+ * @param  string $file File or folder name.
  * @return string       Message HTML
  */
 function rocket_notice_writing_permissions( $file ) {
