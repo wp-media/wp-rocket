@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2017-12-08 09:39-0500\n"
-"PO-Revision-Date: 2017-12-08 19:32+0000\n"
+"POT-Creation-Date: 2017-12-19 07:48-0500\n"
+"PO-Revision-Date: 2017-12-29 15:31+0000\n"
 "Last-Translator: wpmedia <contact@wp-media.me>\n"
 "Language-Team: Italian (Italy) (http://www.transifex.com/wp-media/wp-rocket/language/it_IT/)\n"
 "MIME-Version: 1.0\n"
@@ -54,7 +54,7 @@ msgstr "Precarica la sitemap dal plugin %s"
 msgid "Yoast SEO XML sitemap"
 msgstr "Sitemap XML di Yoast SEO"
 
-#: inc/admin/admin.php:14 inc/admin/options.php:522
+#: inc/admin/admin.php:14 inc/admin/options.php:523
 #: inc/admin/ui/modules/support.php:4 inc/common/admin-bar.php:304
 msgid "Support"
 msgstr "Supporto"
@@ -88,189 +88,189 @@ msgstr "Le tue credenziali Clouflare sono valide."
 msgid "Your Cloudflare credentials are invalid!"
 msgstr "Le tue credenziali CloudFlare non sono valide!"
 
-#: inc/admin/options.php:184 inc/admin/ui/modules/database.php:250
+#: inc/admin/options.php:185 inc/admin/ui/modules/database.php:250
 msgid "Save and optimize"
 msgstr "Salva e ottimizza"
 
-#: inc/admin/options.php:184
+#: inc/admin/options.php:185
 msgid "Optimize"
 msgstr "Ottimizza"
 
-#: inc/admin/options.php:195 inc/admin/options.php:390
+#: inc/admin/options.php:196 inc/admin/options.php:391
 msgctxt "screen-reader-text"
 msgid "Note:"
 msgstr "Nota:"
 
-#: inc/admin/options.php:201
+#: inc/admin/options.php:202
 msgctxt "screen-reader-text"
 msgid "Performance tip:"
 msgstr "Suggerimento sulla performance:"
 
-#: inc/admin/options.php:207
+#: inc/admin/options.php:208
 msgctxt "screen-reader-text"
 msgid "Third-party feature detected:"
 msgstr "Individuata funzione di un plugin di terzi:"
 
-#: inc/admin/options.php:219 inc/admin/options.php:396
+#: inc/admin/options.php:220 inc/admin/options.php:397
 msgctxt "screen-reader-text"
 msgid "Warning:"
 msgstr "Attenzione:"
 
-#: inc/admin/options.php:232 inc/admin/ui/modules/tools.php:180
+#: inc/admin/options.php:233 inc/admin/ui/modules/tools.php:180
 msgctxt "button text"
 msgid "Download settings"
 msgstr "Scaricare impostazioni"
 
-#: inc/admin/options.php:259
+#: inc/admin/options.php:260
 msgid "Replace site's hostname with:"
 msgstr "Sostituire il nome host del sito con:"
 
-#: inc/admin/options.php:278 inc/admin/options.php:315
-#: inc/admin/options.php:343
+#: inc/admin/options.php:279 inc/admin/options.php:316
+#: inc/admin/options.php:344
 msgid "reserved for"
 msgstr "riservato per"
 
-#: inc/admin/options.php:280 inc/admin/options.php:317
-#: inc/admin/options.php:345
+#: inc/admin/options.php:281 inc/admin/options.php:318
+#: inc/admin/options.php:346
 msgid "All files"
 msgstr "Tutti i files"
 
-#: inc/admin/options.php:292 inc/admin/options.php:322
-#: inc/admin/options.php:350
+#: inc/admin/options.php:293 inc/admin/options.php:323
+#: inc/admin/options.php:351
 msgid "Images"
 msgstr "Immagini"
 
-#: inc/admin/options.php:363
+#: inc/admin/options.php:364
 msgid "Add CNAME"
 msgstr "Aggiungi CNAME"
 
-#: inc/admin/options.php:430
+#: inc/admin/options.php:431
 msgid "Watch the video"
 msgstr "Guardare il video"
 
-#: inc/admin/options.php:502
+#: inc/admin/options.php:503
 msgid "Basic"
 msgstr "Base"
 
-#: inc/admin/options.php:503
+#: inc/admin/options.php:504
 msgid "Static Files"
 msgstr "File statici"
 
-#: inc/admin/options.php:504 inc/admin/ui/meta-boxes.php:78
+#: inc/admin/options.php:505 inc/admin/ui/meta-boxes.php:78
 msgid "CDN"
 msgstr "CDN"
 
-#: inc/admin/options.php:505
+#: inc/admin/options.php:506
 msgid "Advanced"
 msgstr "Avanzate"
 
-#: inc/admin/options.php:506
+#: inc/admin/options.php:507
 msgid "Database"
 msgstr "Database"
 
-#: inc/admin/options.php:507
+#: inc/admin/options.php:508
 msgid "Preload"
 msgstr "Precaricamento"
 
-#: inc/admin/options.php:518 inc/admin/ui/modules/white-label.php:4
+#: inc/admin/options.php:519 inc/admin/ui/modules/white-label.php:4
 msgid "White Label"
 msgstr "Marca bianca"
 
-#: inc/admin/options.php:520 inc/admin/ui/modules/tools.php:7
+#: inc/admin/options.php:521 inc/admin/ui/modules/tools.php:7
 msgid "Tools"
 msgstr "Strumenti"
 
-#: inc/admin/options.php:525
+#: inc/admin/options.php:526
 msgid "License"
 msgstr "Licenza"
 
-#: inc/admin/options.php:903 inc/admin/options.php:1101
+#: inc/admin/options.php:907 inc/admin/options.php:1105
 msgid "Settings saved."
 msgstr "Impostazioni salvate."
 
-#: inc/admin/options.php:983
+#: inc/admin/options.php:987
 #, php-format
 msgid "Cloudflare development mode error: %s"
 msgstr "Errore modalità sviluppo Cloudflare: %s"
 
-#: inc/admin/options.php:989
+#: inc/admin/options.php:993
 #, php-format
 msgid "Cloudflare development mode %s"
 msgstr "Modalità sviluppo Cloudflare %s"
 
-#: inc/admin/options.php:1005
+#: inc/admin/options.php:1009
 #, php-format
 msgid "Cloudflare cache level error: %s"
 msgstr "Errore nel livello cache Cloudflare: %s"
 
-#: inc/admin/options.php:1009
+#: inc/admin/options.php:1013
 msgctxt "Cloudflare caching level"
 msgid "Standard"
 msgstr "Standard"
 
-#: inc/admin/options.php:1015
+#: inc/admin/options.php:1019
 #, php-format
 msgid "Cloudflare cache level set to %s"
 msgstr "Livello cache Cloudflare impostato su %s"
 
-#: inc/admin/options.php:1027
+#: inc/admin/options.php:1031
 #, php-format
 msgid "Cloudflare minification error: %s"
 msgstr "Errore minificazione Cloudflare: %s"
 
-#: inc/admin/options.php:1033
+#: inc/admin/options.php:1037
 #, php-format
 msgid "Cloudflare minification %s"
 msgstr "Minificazione Cloudflare %s"
 
-#: inc/admin/options.php:1045
+#: inc/admin/options.php:1049
 #, php-format
 msgid "Cloudflare rocket loader error: %s"
 msgstr "Errore del Rocket Loader di Cloudflare: %s"
 
-#: inc/admin/options.php:1051
+#: inc/admin/options.php:1055
 #, php-format
 msgid "Cloudflare rocket loader %s"
 msgstr "Rocket Loader Cloudflare %s"
 
-#: inc/admin/options.php:1063
+#: inc/admin/options.php:1067
 #, php-format
 msgid "Cloudflare browser cache error: %s"
 msgstr "Errore della cache del browser di Cloudflare: %s"
 
-#: inc/admin/options.php:1069
+#: inc/admin/options.php:1073
 #, php-format
 msgid "Cloudflare browser cache set to %s seconds"
 msgstr "La cache del browser di Cloudflare è impostata su %s secondi"
 
-#: inc/admin/options.php:1214
+#: inc/admin/options.php:1218
 msgid ""
 "Before you can upload your import file, you will need to fix the following "
 "error:"
 msgstr "Prima di poter caricare il tuo file di importazione, è necessario correggere il seguente errore:"
 
-#: inc/admin/options.php:1225
+#: inc/admin/options.php:1229
 #, php-format
 msgid "Choose a file from your computer (maximum size: %s)"
 msgstr "Scegliere un file dal computer (dimensione massima: %s)"
 
-#: inc/admin/options.php:1231
+#: inc/admin/options.php:1235
 msgid "Upload file and import settings"
 msgstr "Caricare il file e importare le impostazioni"
 
-#: inc/admin/options.php:1248
+#: inc/admin/options.php:1252
 msgid "Settings import failed: no file uploaded."
 msgstr "Importazione delle impostazioni non riuscito: nessun file caricato."
 
-#: inc/admin/options.php:1253
+#: inc/admin/options.php:1257
 msgid "Settings import failed: incorrect filename."
 msgstr "Importazione delle impostazioni: nome del file errato."
 
-#: inc/admin/options.php:1262
+#: inc/admin/options.php:1266
 msgid "Settings import failed: incorrect filetype."
 msgstr "Importazione delle impostazioni: tipologia di file non corretta."
 
-#: inc/admin/options.php:1294
+#: inc/admin/options.php:1298
 msgid "Settings imported and saved."
 msgstr "Impostazioni importate e salvate."
 
@@ -631,7 +631,7 @@ msgstr "La funzione di cache è stata attivata automaticamente, il tuo sito dovr
 
 #: inc/admin/ui/modules/basic.php:46 inc/admin/ui/modules/optimization.php:74
 #: inc/admin/ui/modules/optimization.php:140
-#: inc/admin/ui/modules/optimization.php:296
+#: inc/admin/ui/modules/optimization.php:297
 #, php-format
 msgid "Deactivate if you notice any visually broken items on your website.%s"
 msgstr "Disattivarlo in caso apparissero problemi di visualizzazione sul sito.%s "
@@ -845,10 +845,10 @@ msgstr "Opzioni Content Delivery Network"
 #: inc/admin/ui/modules/cdn.php:24
 msgid ""
 "Your PHP version is lower than 5.4. Cloudflare’s integration requires PHP "
-"5.6 or greater and therefore is not available for you currently. We "
-"recommend you contact your web host in order to upgrade to a PHP 5.6 or "
-"greater."
-msgstr "La versione di PHP che stai usando è inferiore alla 5.4. L'integrazione con Cloudflare richiede almeno PHP 5.6 o superiore, e di conseguenza al momento non è possibile usarla. Ti raccomandiamo di contattare il tuo host e chiedere di aggiornare il PHP almeno alla versione 5.6."
+"5.4 or greater and therefore is not available for you currently. We "
+"recommend you contact your web host in order to upgrade to the latest PHP "
+"version."
+msgstr "La tua versione di PHP è inferiore alla 5.4. L'integrazione con Cloudflare richiede come minimo PHP 5.4 o superiore, per questo motivo non ti è possibile usarla in questo momento. Ti raccomandiamo di contattare il tuo hosting e chiedere un aggiornamento all'ultima versione PHP."
 
 #: inc/admin/ui/modules/cdn.php:30
 msgid "Show Cloudflare settings tab"
@@ -1300,121 +1300,105 @@ msgstr "Concatenare i file CSS"
 msgid "Concatenate JS files"
 msgstr "Concatenare i file JS"
 
-#: inc/admin/ui/modules/optimization.php:177
+#: inc/admin/ui/modules/optimization.php:178
 #, php-format
 msgid "These settings are not recommended if your site uses HTTP/2.%s"
 msgstr "Non consigliamo di attivare queste impostazioni se il tuo sito usa HTTP/2.%s"
 
-#: inc/admin/ui/modules/optimization.php:178
+#: inc/admin/ui/modules/optimization.php:179
 msgid ""
 "<a href=\"http://docs.wp-rocket.me/article/1009-configuration-for-http-2\" "
 "target=\"_blank\">More info</a>"
 msgstr "<a href=\"http://docs.wp-rocket.me/article/1009-configuration-for-http-2\" target=\"_blank\">Maggiori informazioni</a>"
 
-#: inc/admin/ui/modules/optimization.php:184
+#: inc/admin/ui/modules/optimization.php:185
 msgid "Combine files:"
 msgstr "Combinare i file:"
 
-#: inc/admin/ui/modules/optimization.php:196
+#: inc/admin/ui/modules/optimization.php:197
 msgid "Exclude CSS:"
 msgstr "Escludere CSS:"
 
-#: inc/admin/ui/modules/optimization.php:204
+#: inc/admin/ui/modules/optimization.php:205
 msgid ""
 "Specify URLs of CSS files to be excluded from minification and concatenation"
 " (one per line)"
 msgstr "Specificare gli URL dei file CSS da escludere dalla minificazione e dalla concatenazione (uno per riga)"
 
-#: inc/admin/ui/modules/optimization.php:209
+#: inc/admin/ui/modules/optimization.php:210
 msgid "CSS files to be excluded from minification and concatenation:"
 msgstr "File CSS da escludere dalla minificazione e dalla concatenazione:"
 
-#: inc/admin/ui/modules/optimization.php:216
+#: inc/admin/ui/modules/optimization.php:217
 #, php-format
 msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use %s "
 "wildcards to exclude all CSS files located at a specific path."
 msgstr "La porzione di URL relativa al dominio non verrà inserita.<br>Puoi usare i caratteri jolly %s per escludere tutti i file CSS che si trovano sotto un percorso comune."
 
-#: inc/admin/ui/modules/optimization.php:227
+#: inc/admin/ui/modules/optimization.php:228
 msgid "Exclude JS:"
 msgstr "Escludere JS:"
 
-#: inc/admin/ui/modules/optimization.php:235
+#: inc/admin/ui/modules/optimization.php:236
 msgid ""
 "Specify URLs of JS files to be excluded from minification and concatenation "
 "(one per line)"
 msgstr "Specificare gli URL dei file JS da escludere dalla minificazione e dalla concatenazione (uno per riga)"
 
-#: inc/admin/ui/modules/optimization.php:240
+#: inc/admin/ui/modules/optimization.php:241
 msgid "JS files to be excludeded from minification and concatenation:"
 msgstr "File JS da escludere dalla minificazione e dalla concatenazione:"
 
-#: inc/admin/ui/modules/optimization.php:247
+#: inc/admin/ui/modules/optimization.php:248
 #, php-format
 msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use %s "
 "wildcards to exclude all JS files located at a specific path."
 msgstr "La porzione di URL relativa al dominio non verrà inserita.<br>Puoi usare i caratteri jolly %s per escludere tutti i file JS che si trovano sotto un percorso comune."
 
-#: inc/admin/ui/modules/optimization.php:258
+#: inc/admin/ui/modules/optimization.php:259
 msgid "Remove query strings:"
 msgstr "Rimuovere le query string:"
 
-#: inc/admin/ui/modules/optimization.php:265
-#: inc/admin/ui/modules/optimization.php:267
+#: inc/admin/ui/modules/optimization.php:266
+#: inc/admin/ui/modules/optimization.php:268
 msgid "Remove query strings from static resources"
 msgstr "Rimuove le query string dalle risorse statiche"
 
-#: inc/admin/ui/modules/optimization.php:274
+#: inc/admin/ui/modules/optimization.php:275
 #, php-format
 msgid ""
 "Can improve the performance grade on <a href=\"%s\" target=\"_blank\">GT "
 "Metrix</a>."
 msgstr "Può migliorare la valutazione della performance su <a href=\"%s\" target=\"_blank\">GT Metrix</a>."
 
-#: inc/admin/ui/modules/optimization.php:281
+#: inc/admin/ui/modules/optimization.php:282
 msgid ""
 "Removes the version query string from static files (e.g. style.css?ver=1.0) "
 "and encodes it into the file name instead (e.g. style-1-0.css)."
 msgstr "Rimuove la versione della query string dai file statici (es. style.css?ver=1.0) e la codifica dentro il nome del file (es. style-1-0.css)."
 
-#: inc/admin/ui/modules/optimization.php:297
+#: inc/admin/ui/modules/optimization.php:298
 msgid ""
 "<a href=\"http://docs.wp-rocket.me/article/108-render-blocking-javascript-"
 "and-css-pagespeed\" target=\"_blank\">Why?</a>"
 msgstr "<a href=\"http://it.docs.wp-rocket.me/article/401-javascript-e-css-di-blocco-esterno-nei-contenuti-above-the-fold-pagespeed\" target=\"_blank\">Perché?</a>"
 
-#: inc/admin/ui/modules/optimization.php:303
-#: inc/admin/ui/modules/optimization.php:305
-msgid "Optimize CSS delivery"
-msgstr "Ottimizza la pubblicazione del CSS"
-
-#: inc/admin/ui/modules/optimization.php:314
-#, php-format
-msgid "Critical path CSS will be automatically generated.%s"
-msgstr "Il percorso critico del CSS verrà generato automaticamente.%s"
-
-#: inc/admin/ui/modules/optimization.php:315
-msgid ""
-"<a href=\"http://docs.wp-rocket.me/article/108-render-blocking-javascript-"
-"and-css-pagespeed#critical-path-css\" target=\"_blank\">More info</a>"
-msgstr "<a href=\"http://it.docs.wp-rocket.me/article/401-javascript-e-css-di-blocco-esterno-nei-contenuti-above-the-fold-pagespeed#critical-path-css\" target=\"_blank\">Maggiori informazioni</a>"
-
-#: inc/admin/ui/modules/optimization.php:321
-#: inc/admin/ui/modules/optimization.php:323
+#: inc/admin/ui/modules/optimization.php:304
+#: inc/admin/ui/modules/optimization.php:306
 msgid "Load JS files deferred"
 msgstr "Caricare i file JS in modalità differita"
 
-#: inc/admin/ui/modules/optimization.php:328
+#: inc/admin/ui/modules/optimization.php:311
 msgid "Safe mode (recommended)"
 msgstr "Modalità sicura (raccomandata)"
 
-#: inc/admin/ui/modules/optimization.php:330
+#: inc/admin/ui/modules/optimization.php:313
 msgid "Defer JS files safely"
 msgstr "Differisce i file JS in modalità sicura"
 
-#: inc/admin/ui/modules/optimization.php:336
+#: inc/admin/ui/modules/optimization.php:319
 msgid ""
 "Safe mode for deferred JS ensures support for inline jQuery references from "
 "themes and plugins by loading jQuery at the top of the document as a render-"
@@ -1422,13 +1406,46 @@ msgid ""
 "thoroughly!"
 msgstr "La modalità sicura per i JS differiti supporta le referenze di jQuery in linea per temi e plugin perché carica la jQuery in cima al documento come uno script di blocco del rendering. La sua disattivazione potrebbe rompere alcune funzionalità, testalo con cautela!"
 
-#: inc/admin/ui/modules/optimization.php:342
+#: inc/admin/ui/modules/optimization.php:325
 msgid ""
 "Reduces the number of initial HTTP requests, can improve loading time and "
 "performance grade."
 msgstr "Riduce il numero di richieste HTTP iniziali, può migliorare il tempo di caricamento e la valutazione della performance."
 
-#: inc/admin/ui/modules/optimization.php:347
+#: inc/admin/ui/modules/optimization.php:330
+#: inc/admin/ui/modules/optimization.php:332
+msgid "Optimize CSS delivery"
+msgstr "Ottimizza la pubblicazione del CSS"
+
+#: inc/admin/ui/modules/optimization.php:341
+#, php-format
+msgid "Critical path CSS will be automatically generated.%s"
+msgstr "Il percorso critico del CSS verrà generato automaticamente.%s"
+
+#: inc/admin/ui/modules/optimization.php:342
+msgid ""
+"<a href=\"http://docs.wp-rocket.me/article/108-render-blocking-javascript-"
+"and-css-pagespeed#critical-path-css\" target=\"_blank\">More info</a>"
+msgstr "<a href=\"http://it.docs.wp-rocket.me/article/401-javascript-e-css-di-blocco-esterno-nei-contenuti-above-the-fold-pagespeed#critical-path-css\" target=\"_blank\">Maggiori informazioni</a>"
+
+#: inc/admin/ui/modules/optimization.php:353
+#: inc/admin/ui/modules/optimization.php:360
+msgid "Fallback critical path CSS:"
+msgstr "Percorso critico del CSS alternativo:"
+
+#: inc/admin/ui/modules/optimization.php:369
+#, php-format
+msgid ""
+"Provides a fallback if auto-generated critical path CSS is incomplete.%s"
+msgstr "Genera un percorso alternativo quando il percorso critico del CSS auto-generatosi non è completo.%s"
+
+#: inc/admin/ui/modules/optimization.php:370
+msgid ""
+"<a href=\"http://docs.wp-rocket.me/article/108-render-blocking-javascript-"
+"and-css-pagespeed#fallback\" target=\"_blank\">More info</a>"
+msgstr "<a href=\"http://docs.wp-rocket.me/article/108-render-blocking-javascript-and-css-pagespeed#fallback\" target=\"_blank\">Maggiori info</a>"
+
+#: inc/admin/ui/modules/optimization.php:375
 msgid "Render-blocking CSS/JS:"
 msgstr "CSS/JS che bloccano il rendering:"
 
@@ -1953,38 +1970,60 @@ msgid ""
 "try the <a href=\"%s\">support forums</a>."
 msgstr "Si è verificato un errore inaspettato. Ci potrebbe essere qualche problema su wp-rocket.me o con la configurazione di questo server. Se continui ad avere problemi, per favore consulta il <a href=\"%s\">forum di supporto</a>."
 
-#: inc/classes/class-rocket-background-critical-css-generation.php:120
+#: inc/classes/class-rocket-background-critical-css-generation.php:96
+#: inc/classes/class-rocket-background-critical-css-generation.php:105
+#: inc/classes/class-rocket-background-critical-css-generation.php:114
+#: inc/classes/class-rocket-background-critical-css-generation.php:122
+#: inc/classes/class-rocket-background-critical-css-generation.php:142
+#, php-format
+msgid "Critical CSS for %1$s not generated. Error: %2$s"
+msgstr "Non è stato possibile generare il CSS critico per %1$s. Errore: %2$s"
+
+#: inc/classes/class-rocket-background-critical-css-generation.php:105
+msgid "The API returned an invalid response code."
+msgstr "L'API ha risposto con un codice di risposta non valido."
+
+#: inc/classes/class-rocket-background-critical-css-generation.php:114
+msgid "The API returned an empty response."
+msgstr "L'API ha restituito una risposta vuota."
+
+#: inc/classes/class-rocket-background-critical-css-generation.php:144
+#, php-format
+msgid "The critical CSS content could not be saved as a file in %s."
+msgstr "Non è stato possibile salvare il contenuto del CSS critico come file in %s."
+
+#: inc/classes/class-rocket-background-critical-css-generation.php:151
 #, php-format
 msgid "Critical CSS for %s generated."
 msgstr "Il CSS critico per %s è stato generato."
 
-#: inc/classes/class-rocket-critical-css.php:358
+#: inc/classes/class-rocket-critical-css.php:366
 #, php-format
 msgid ""
 "Critical CSS generation is currently running: %1$d of %2$d page types "
 "completed. (Refresh this page to view progress)"
 msgstr "La generazione del CSS critico è in corso: %1$d di %2$d tipi di pagina sono stati completati. (Aggiorna la pagina per vedere il progresso)"
 
-#: inc/classes/class-rocket-critical-css.php:393
+#: inc/classes/class-rocket-critical-css.php:410
 #, php-format
 msgid "Critical CSS generation finished for %1$d of %2$d page types."
 msgstr "La generazione del CSS critico è terminata per %1$d di %2$d tipi di pagina."
 
-#: inc/classes/class-rocket-database-optimization.php:210
+#: inc/classes/class-rocket-database-optimization.php:212
 msgid "Database optimization process is running"
 msgstr "Il processo di ottimizzazione del database è in corso"
 
-#: inc/classes/class-rocket-database-optimization.php:247
+#: inc/classes/class-rocket-database-optimization.php:249
 msgid ""
 "Database optimization process is complete. Everything was already optimized!"
 msgstr "Il processo di ottimizzazione del database è completo. Era già tutto ottimizzato!"
 
-#: inc/classes/class-rocket-database-optimization.php:249
+#: inc/classes/class-rocket-database-optimization.php:251
 msgid ""
 "Database optimization process is complete. List of optimized items below:"
 msgstr "Il processo di ottimizzazione del database è completo. Ecco la lista degli elementi ottimizzati:"
 
-#: inc/classes/class-rocket-database-optimization.php:255
+#: inc/classes/class-rocket-database-optimization.php:257
 #, php-format
 msgid "%1$d %2$s optimized."
 msgstr "%1$d %2$s ottimizzati."
@@ -2025,8 +2064,8 @@ msgid "Cloudflare cache purge error: %s"
 msgstr "Errore durante la pulizia della cache Cloudflare: %s"
 
 #: inc/common/purge.php:517
-msgid "CloudFlare cache sucessfully purged"
-msgstr "Cache CloudFlare pulita con successo"
+msgid "CloudFlare cache successfully purged"
+msgstr "La cache di Cloudflare è stata cancellata con successo"
 
 #: inc/deprecated.php:449
 msgid "<strong>JS</strong> files with Deferred Loading JavaScript"
@@ -2112,19 +2151,19 @@ msgstr "Scegliere un dominio dalla lista"
 msgid "No domain available in your Cloudflare account"
 msgstr "Non ci sono domini disponibili nel tuo account CloudFlare"
 
-#: inc/functions/options.php:577
+#: inc/functions/options.php:575
 msgid "Your license is not valid."
 msgstr "La tua licenza non è valida."
 
-#: inc/functions/options.php:578
+#: inc/functions/options.php:576
 msgid "You cannot add more websites. Upgrade your account."
 msgstr "Non puoi aggiungere altri siti. Estendi il tuo account."
 
-#: inc/functions/options.php:579
+#: inc/functions/options.php:577
 msgid "This website is not allowed."
 msgstr "Questo sito web non è consentito."
 
-#: inc/functions/options.php:580
+#: inc/functions/options.php:578
 msgid "This license key is not accepted."
 msgstr "Questa chiave di licenza non è stata accettata."
 

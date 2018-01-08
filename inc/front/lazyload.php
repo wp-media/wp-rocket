@@ -34,8 +34,7 @@ function rocket_lazyload_script() {
 	var b = d.getElementsByTagName("body")[0];
 	var s = d.createElement("script"); s.async = true;
 	var v = !("IntersectionObserver" in w) ? "8.5.2" : "10.3.5";
-	s.src = "' . get_rocket_cdn_url( WP_ROCKET_FRONT_JS_URL . 'lazyload-v' . $suffix . '.js', array( 'all', 'css_and_js', 'js' ) ) . '";
-	s.src = s.src.replace( "lazyload-v", "lazyload-" + v );
+	s.src = "' . get_rocket_cdn_url( WP_ROCKET_FRONT_JS_URL, array( 'all', 'css_and_js', 'js' ) ) . 'lazyload-" + v + "' . $suffix . '.js";
 	w.lazyLoadOptions = {
 		elements_selector: "img, iframe",
 		data_src: "lazy-src",
@@ -57,7 +56,25 @@ function rocket_lazyload_script() {
 		}
 	}; // Your options here. See "recipes" for more information about async.
 	b.appendChild(s);
-}(window, document));</script>';
+}(window, document));
+
+// Listen to the Initialized event
+window.addEventListener(\'LazyLoad::Initialized\', function (e) {
+    // Get the instance and puts it in the lazyLoadInstance variable
+	var lazyLoadInstance = e.detail.instance;
+
+	var observer = new MutationObserver(function(mutations) {
+		mutations.forEach(function(mutation) {
+			lazyLoadInstance.update();
+		} );
+	} );
+	
+	var b      = document.getElementsByTagName("body")[0];
+	var config = { childList: true, subtree: true };
+	
+	observer.observe(b, config);
+}, false);
+</script>';
 
 	if ( get_rocket_option( 'lazyload_youtube' ) ) {
 		echo <<<HTML
@@ -154,6 +171,7 @@ function rocket_lazyload_replace_callback( $matches ) {
 	 */
 	$excluded_attributes = apply_filters(
 		'rocket_lazyload_excluded_attributes', array(
+			'data-src=',
 			'data-no-lazy=',
 			'data-lazy-original=',
 			'data-lazy-src=',
@@ -375,7 +393,7 @@ function rocket_lazyload_iframes( $html ) {
 	}
 
 	$matches = array();
-	preg_match_all( '/<iframe(?:\s.*)?\ssrc=["\'](.*)["\'].*><\/iframe>/iU', $html, $matches, PREG_SET_ORDER );
+	preg_match_all( '/<iframe(?:\s.*)?\ssrc=["\'](.*)["\'](.*)><\/iframe>/iU', $html, $matches, PREG_SET_ORDER );
 
 	if ( empty( $matches ) ) {
 		return $html;
@@ -422,6 +440,7 @@ function rocket_lazyload_iframes( $html ) {
 
 			$iframe_noscript = '<noscript>' . $iframe[0] . '</noscript>';
 
+			$iframe_lazyload = str_replace( $iframe[1], $placeholder, $iframe[0] );
 			/**
 			 * Filter the LazyLoad HTML output on iframes
 			 *
@@ -429,7 +448,7 @@ function rocket_lazyload_iframes( $html ) {
 			 *
 			 * @param array $html Output that will be printed.
 			 */
-			$iframe_lazyload  = apply_filters( 'rocket_lazyload_iframe_html', str_replace( $iframe[1], $placeholder . '" data-rocket-lazyload="fitvidscompatible" data-lazy-src="' . $iframe[1], $iframe[0] ) );
+			$iframe_lazyload  = apply_filters( 'rocket_lazyload_iframe_html', str_replace( $iframe[2], $iframe[2] . ' data-rocket-lazyload="fitvidscompatible" data-lazy-src="' . $iframe[1] . '"', $iframe[0] ) );
 			$iframe_lazyload .= $iframe_noscript;
 
 			$html = str_replace( $iframe[0], $iframe_lazyload, $html );

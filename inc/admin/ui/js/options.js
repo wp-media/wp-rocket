@@ -148,7 +148,7 @@ jQuery( document ).ready( function($){
 	});
 
 	// Remove input
-	$('.rkt-module-remove').css('cursor','pointer').live('click', function(e){
+	$('.rkt-module-remove').css('cursor','pointer').on('click', function(e){
 		e.preventDefault();
 		$(this).parent().css('background-color','red' ).slideUp( 'slow' , function(){$(this).remove(); } );
 	} );

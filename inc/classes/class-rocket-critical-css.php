@@ -343,6 +343,16 @@ class Rocket_Critical_CSS {
 				'url'  => get_term_link( (int) $taxonomy->ID, $taxonomy->taxonomy ),
 			);
 		}
+
+		/**
+		 * Filters the array containing the items to send to the critical CSS generator
+		 *
+		 * @since 2.11.4
+		 * @author Remy Perona
+		 *
+		 * @param Array $this->items Array containing the type/url pair for each item to send.
+		 */
+		$this->items = apply_filters( 'rocket_cpcss_items', $this->items );
 	}
 
 	/**
@@ -540,7 +550,7 @@ class Rocket_Critical_CSS {
 			}
 
 			$preload = str_replace( 'stylesheet', 'preload', $tags_match[1][ $i ] );
-			$onload  = str_replace( $tags_match[3][ $i ], ' as="style" onload=""' . $tags_match[3][ $i ] . '>', $tags_match[3][ $i ] );
+			$onload  = preg_replace( '~' . $tags_match[3][ $i ] . '~iU', ' as="style" onload=""' . $tags_match[3][ $i ] . '>', $tags_match[3][ $i ] );
 			$tag     = str_replace( $tags_match[3][ $i ] . '>', $onload, $tag );
 			$tag     = str_replace( $tags_match[1][ $i ], $preload, $tag );
 			$tag     = str_replace( 'onload=""', 'onload="this.onload=null;this.rel=\'stylesheet\'"', $tag );
