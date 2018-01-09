@@ -1166,12 +1166,24 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 	}
 
 	// Update CloudFlare zone ID if CloudFlare domain was changed.
-	if ( isset( $newvalue['cloudflare_domain'], $oldvalue['cloudflare_domain'] ) && $newvalue['cloudflare_domain'] !== $oldvalue['cloudflare_domain'] && 0 < (int) get_rocket_option( 'do_cloudflare' ) && phpversion() >= '5.4' ) {
-		require( WP_ROCKET_ADMIN_PATH . 'compat/cf-options-5.4.php' );
+	if ( isset( $newvalue['cloudflare_domain'], $oldvalue['cloudflare_domain'] ) && $newvalue['cloudflare_domain'] !== $oldvalue['cloudflare_domain'] && 0 < (int) get_rocket_option( 'do_cloudflare' ) ) {
+		$cf_instance = get_rocket_cloudflare_api_instance();
+		if ( ! is_wp_error( $cf_instance ) ) {
+			try {
+				$zone_instance = new Cloudflare\Zone( $cf_instance );
+				$zone          = $zone_instance->zones( $newvalue['cloudflare_domain'] );
+
+				if ( isset( $zone->result[0]->id ) ) {
+					$newvalue['cloudflare_zone_id'] = $zone->result[0]->id;
+				}
+			} catch ( Exception $e ) {
+				// do nothing.
+			}
+		}
 	}
 
 	// Save old CloudFlare settings.
-	if ( ( isset( $newvalue['cloudflare_auto_settings'], $oldvalue['cloudflare_auto_settings'] ) && $newvalue['cloudflare_auto_settings'] !== $oldvalue['cloudflare_auto_settings'] && 1 === $newvalue['cloudflare_auto_settings'] ) && 0 < (int) get_rocket_option( 'do_cloudflare' ) && phpversion() >= '5.4' ) {
+	if ( ( isset( $newvalue['cloudflare_auto_settings'], $oldvalue['cloudflare_auto_settings'] ) && $newvalue['cloudflare_auto_settings'] !== $oldvalue['cloudflare_auto_settings'] && 1 === $newvalue['cloudflare_auto_settings'] ) && 0 < (int) get_rocket_option( 'do_cloudflare' ) ) {
 		$cf_settings = get_rocket_cloudflare_settings();
 		$newvalue['cloudflare_old_settings'] = ( ! is_wp_error( $cf_settings ) ) ? implode( ',', array_filter( $cf_settings ) ) : '';
 	}
