@@ -65,7 +65,7 @@ if ( ! defined( 'WP_ROCKET_LASTVERSION' ) ) {
 
 require WP_ROCKET_INC_PATH . 'compat.php';
 
-if ( version_compare( PHP_VERSION, '5.3' ) < 0 ) {
+if ( version_compare( PHP_VERSION, '5.4' ) < 0 || version_compare( $wp_version, '4.2' ) < 0 ) {
 	add_action( 'plugins_loaded', 'rocket_init_php_deprecated' );
 
 	return;
@@ -118,7 +118,6 @@ function rocket_init_php_deprecated() {
 	require WP_ROCKET_FUNCTIONS_PATH . 'htaccess.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'varnish.php';
 	require WP_ROCKET_INC_PATH . 'deprecated.php';
-	require WP_ROCKET_3RD_PARTY_PATH . '3rd-party.php';
 	require WP_ROCKET_COMMON_PATH . 'updater.php';
 	require WP_ROCKET_COMMON_PATH . 'emoji.php';
 	require WP_ROCKET_COMMON_PATH . 'embeds.php';
@@ -135,7 +134,6 @@ function rocket_init_php_deprecated() {
 
 	if ( is_admin() ) {
 		require WP_ROCKET_ADMIN_PATH . 'ajax.php';
-		require WP_ROCKET_ADMIN_PATH . 'upgrader.php';
 		require WP_ROCKET_ADMIN_PATH . 'updater.php';
 		require WP_ROCKET_ADMIN_PATH . 'admin.php';
 		require WP_ROCKET_ADMIN_UI_PATH . 'enqueue.php';
