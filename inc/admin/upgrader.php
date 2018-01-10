@@ -125,7 +125,6 @@ function rocket_first_install() {
 				'cdn'                         => 0,
 				'cdn_cnames'                  => array(),
 				'cdn_zone'                    => array(),
-				'cdn_ssl'                     => 0,
 				'cdn_reject_files'            => array(),
 				'do_cloudflare'               => 0,
 				'cloudflare_email'            => '',
