@@ -452,6 +452,10 @@ add_filter( 'plugins_api_result', 'rocket_add_imagify_api_result', 11, 3 );
 function rocket_analytics_data() {
 	global $wp_version, $is_nginx, $is_apache, $is_iis7, $is_IIS;
 
+	if ( ! is_array( get_option( WP_ROCKET_SLUG ) ) ) {
+		return false;
+	}
+
 	$untracked_wp_rocket_options = array(
 		'license'                 => 1,
 		'consumer_email'          => 1,
