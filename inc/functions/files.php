@@ -10,7 +10,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  * @return  string  $buffer The content of avanced-cache.php file
  */
 function get_rocket_advanced_cache_file() {
-	$buffer = '<?php' . "\n";
+	$buffer  = '<?php' . "\n";
 	$buffer .= 'defined( \'ABSPATH\' ) or die( \'Cheatin\\\' uh?\' );' . "\n\n";
 
 	// Add a constant to be sure this is our file.
@@ -31,10 +31,10 @@ function get_rocket_advanced_cache_file() {
 
 	// Include the process file in buffer.
 	$buffer .= 'if ( file_exists( \'' . WP_ROCKET_FRONT_PATH . 'process.php' . '\' ) ) {' . "\n";
-		$buffer .= "\t" . 'include \'' . WP_ROCKET_FRONT_PATH . 'process.php' . '\';' . "\n";
+	$buffer .= "\t" . 'include \'' . WP_ROCKET_FRONT_PATH . 'process.php' . '\';' . "\n";
 	$buffer .= '} else {' . "\n";
-		// Add a constant to provent include issue.
-		$buffer .= "\t" . 'define( \'WP_ROCKET_ADVANCED_CACHE_PROBLEM\', true );' . "\n";
+	// Add a constant to provent include issue.
+	$buffer .= "\t" . 'define( \'WP_ROCKET_ADVANCED_CACHE_PROBLEM\', true );' . "\n";
 	$buffer .= '}';
 
 	/**
@@ -74,7 +74,7 @@ function get_rocket_config_file() {
 		return;
 	}
 
-	$buffer = '<?php' . "\n";
+	$buffer  = '<?php' . "\n";
 	$buffer .= 'defined( \'ABSPATH\' ) or die( \'Cheatin\\\' uh?\' );' . "\n\n";
 
 	if ( apply_filters( 'rocket_override_min_documentRoot', false ) ) {
@@ -130,7 +130,11 @@ function get_rocket_config_file() {
 	}
 
 	foreach ( $options as $option => $value ) {
-		if ( 'cache_ssl' === $option || 'cache_mobile' === $option || 'do_caching_mobile_files' === $option || 'secret_cache_key' === $option ) {
+		if ( rocket_is_ssl_website() ) {
+			$buffer .= '$rocket_cache_ssl = 1;' . "\n";
+		}
+
+		if ( 'cache_mobile' === $option || 'do_caching_mobile_files' === $option || 'secret_cache_key' === $option ) {
 			$buffer .= '$rocket_' . $option . ' = \'' . $value . '\';' . "\n";
 		}
 
@@ -147,8 +151,8 @@ function get_rocket_config_file() {
 
 			if ( get_rocket_option( 'cache_logged_user' ) ) {
 				$logged_in_cookie = str_replace( COOKIEHASH, '', LOGGED_IN_COOKIE );
-				$cookies = str_replace( $logged_in_cookie . '|', '', $cookies );
-				$cookies = trim( $cookies, '|' );
+				$cookies          = str_replace( $logged_in_cookie . '|', '', $cookies );
+				$cookies          = trim( $cookies, '|' );
 			}
 
 			$buffer .= '$rocket_' . $option . ' = \'' . $cookies . '\';' . "\n";
@@ -178,8 +182,8 @@ function get_rocket_config_file() {
 	}
 
 	foreach ( $urls as $url ) {
-		$file = get_rocket_parse_url( untrailingslashit( $url ) );
-		$file['path'] = ( ! empty( $file['path'] ) ) ? str_replace( '/', '.', untrailingslashit( $file['path'] ) ) : '';
+		$file                = get_rocket_parse_url( untrailingslashit( $url ) );
+		$file['path']        = ( ! empty( $file['path'] ) ) ? str_replace( '/', '.', untrailingslashit( $file['path'] ) ) : '';
 		$config_files_path[] = WP_ROCKET_CONFIG_PATH . strtolower( $file['host'] ) . $file['path'] . '.php';
 	}
 
@@ -342,7 +346,7 @@ function set_rocket_wp_cache_define( $turn_it_on ) {
 
 		if ( 'WP_CACHE' === $match[1] ) {
 			$is_wp_cache_exist = true;
-			$line = $constant;
+			$line              = $constant;
 		}
 	}
 	unset( $line );
@@ -641,7 +645,7 @@ function rocket_clean_home( $lang = '' ) {
  */
 function rocket_clean_home_feeds() {
 
-	$urls = array();
+	$urls   = array();
 	$urls[] = get_feed_link();
 	$urls[] = get_feed_link( 'comments_' );
 
@@ -945,7 +949,7 @@ function rocket_rrmdir( $dir, $dirs_to_preserve = array() ) {
 		$keys = array();
 		foreach ( $dirs_to_preserve as $dir_to_preserve ) {
 			$matches = preg_grep( "#^$dir_to_preserve$#", $dirs );
-			$keys[] = reset( $matches );
+			$keys[]  = reset( $matches );
 		}
 
 		$dirs = array_diff( $dirs, array_filter( $keys ) );
