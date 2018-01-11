@@ -65,6 +65,8 @@ if ( ! defined( 'WP_ROCKET_LASTVERSION' ) ) {
 
 require WP_ROCKET_INC_PATH . 'compat.php';
 
+global $wp_version;
+
 if ( version_compare( PHP_VERSION, '5.4' ) < 0 || version_compare( $wp_version, '4.2' ) < 0 ) {
 	add_action( 'plugins_loaded', 'rocket_init_php_deprecated' );
 
