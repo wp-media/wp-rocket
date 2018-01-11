@@ -141,17 +141,6 @@ function is_rocket_generate_caching_mobile_files() {
 }
 
 /**
- * Check if we need to cache SSL requests of the website (if available)
- *
- * @since 1.0
- * @access public
- * @return bool True if option is activated
- */
-function is_rocket_cache_ssl() {
-	return get_rocket_option( 'cache_ssl', false );
-}
-
-/**
  * Get the domain names to DNS prefetch from WP Rocket options
  *
  * @since 2.8.9

@@ -78,7 +78,6 @@ function rocket_first_install() {
 				'cache_mobile'                => 1,
 				'do_caching_mobile_files'     => 0,
 				'cache_logged_user'           => 0,
-				'cache_ssl'                   => ( rocket_is_ssl_website() ) ? 1 : 0,
 				'emoji'                       => 1,
 				'embeds'                      => 1,
 				'cache_reject_uri'            => array(),
