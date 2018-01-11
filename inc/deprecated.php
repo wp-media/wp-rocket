@@ -926,3 +926,18 @@ if ( ! function_exists( 'is_rocket_cdn_on_ssl' ) ) {
 		return is_ssl() && get_rocket_option( 'cdn_ssl', 0 ) ? false : true;
 	}
 }
+
+if ( ! function_exists( 'is_rocket_cache_ssl' ) ) {
+	/**
+	 * Check if we need to cache SSL requests of the website (if available)
+	 *
+	 * @since 1.0
+	 * @deprecated 3.0
+	 *
+	 * @return bool True if option is activated
+	 */
+	function is_rocket_cache_ssl() {
+		return false;
+	}
+}
+
