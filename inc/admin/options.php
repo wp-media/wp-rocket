@@ -1115,11 +1115,11 @@ add_action( 'update_option_' . WP_ROCKET_SLUG, 'rocket_after_save_options', 10, 
  *
  * @since 2.7
  *
- * @param array $oldvalue An array of previous options values.
- * @param array $value An array of submitted options values.
+ * @param array $old_value An array of previous options values.
+ * @param array $value     An array of submitted options values.
  */
-function rocket_update_ssl_option_after_save_home_url( $oldvalue, $value ) {
-	if ( 'https' === rocket_extract_url_component( $value, PHP_URL_SCHEME ) ) {
+function rocket_update_ssl_option_after_save_home_url( $old_value, $value ) {
+	if ( $old_value !== $value ) {
 		rocket_generate_config_file();
 	}
 }
