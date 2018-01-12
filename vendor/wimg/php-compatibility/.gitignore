@@ -1,7 +1,0 @@
-.idea/*
-/vendor/
-composer.phar
-composer.lock
-phpcs.xml
-phpunit.xml
-*~
