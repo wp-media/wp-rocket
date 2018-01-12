@@ -65,6 +65,26 @@ function rocket_sanitize_xml( $file ) {
 }
 
 /**
+ * Sanitizes a string key like the sanitize_key() WordPress function without forcing lowercase.
+ *
+ * @since 2.7
+ */
+function rocket_sanitize_key( $key ) {
+	$key = preg_replace( '/[^a-z0-9_\-]/i', '', $key );
+	return $key;
+}
+
+/**
+ * Used to sanitize values of the "Never send cache pages for these user agents" option.
+ *
+ * @since 2.6.4
+ */
+function rocket_sanitize_ua( $ua ) {
+	$ua = preg_replace( '/[^a-z0-9._\(\)\*\-\/\s\x5c]/i', '', $ua );
+	return $ua;
+}
+
+/**
  * Get an url without HTTP protocol
  *
  * @since 1.3.0

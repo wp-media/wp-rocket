@@ -222,32 +222,6 @@ function rocket_get_active_plugins() {
 }
 
 /**
- * Sanitizes a string key like the sanitize_key() WordPress function without forcing lowercase.
- *
- * @since 2.7
- *
- * @param string $key A string to sanitize.
- * @return string Sanitized string
- */
-function rocket_sanitize_key( $key ) {
-	$key = preg_replace( '/[^a-z0-9_\-]/i', '', $key );
-	return $key;
-}
-
-/**
- * Used to sanitize values of the "Never send cache pages for these user agents" option.
- *
- * @since 2.6.4
- *
- * @param string $ua User Agent string to sanitize.
- * @return string Sanitized user agent string
- */
-function rocket_sanitize_ua( $ua ) {
-	$ua = preg_replace( '/[^a-z0-9._\(\)\*\-\/\s\x5c]/i', '', $ua );
-	return $ua;
-}
-
-/**
  * Check if the whole website is on the SSL protocol
  *
  * @since 2.7
