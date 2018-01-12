@@ -485,7 +485,7 @@ function rocket_defered_module() {
 	</div>
 	<!-- .rkt-drop-deferred -->
 
-	
+
 	<div class="rkt-module-model hide-if-js">
 
 		<p class="rkt-module-drag">
@@ -911,3 +911,33 @@ if ( ! function_exists( 'rocket_lazyload_async_script' ) ) {
 		return $tag;
 	}
 }
+
+if ( ! function_exists( 'is_rocket_cdn_on_ssl' ) ) {
+	/**
+	 * Check if we need to disable CDN on SSL pages
+	 *
+	 * @since 2.5
+	 * @deprecated 3.0
+	 *
+	 * @return bool True if option is activated
+	 */
+	function is_rocket_cdn_on_ssl() {
+		_deprecated_function( __FUNCTION__, '3.0' );
+		return is_ssl() && get_rocket_option( 'cdn_ssl', 0 ) ? false : true;
+	}
+}
+
+if ( ! function_exists( 'is_rocket_cache_ssl' ) ) {
+	/**
+	 * Check if we need to cache SSL requests of the website (if available)
+	 *
+	 * @since 1.0
+	 * @deprecated 3.0
+	 *
+	 * @return bool True if option is activated
+	 */
+	function is_rocket_cache_ssl() {
+		return false;
+	}
+}
+

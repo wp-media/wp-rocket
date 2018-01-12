@@ -7,23 +7,10 @@ $rwl = rocket_is_white_label();
 add_settings_section( 'rocket_display_cdn_options', __( 'Content Delivery Network options', 'rocket' ), '__return_false', 'rocket_cdn' );
 $cloudflare_readonly = '';
 
-if ( phpversion() < '5.4' ) {
-	$cloudflare_readonly = '1';
-}
-
 /**
  * Cloudflare
  */
 $rocket_do_cloudflare_settings = array();
-
-if ( phpversion() < '5.4' ) {
-
-	$rocket_do_cloudflare_settings[] = array(
-		'type'        => 'helper_warning',
-		'name'        => 'rocket_cloudflare_warning',
-		'description' => __( 'Your PHP version is lower than 5.4. Cloudflare’s integration requires PHP 5.4 or greater and therefore is not available for you currently. We recommend you contact your web host in order to upgrade to the latest PHP version.', 'rocket' ),
-	);
-}
 
 $rocket_do_cloudflare_settings[] = array(
 	'type'         => 'checkbox',
@@ -121,29 +108,6 @@ add_settings_field(
 	'rocket_cnames_module',
 	'rocket_cdn',
 	'rocket_display_cdn_options'
-);
-
-/**
- * CDN with SSL
- */
-add_settings_field(
-	'rocket_cdn_on_ssl',
-	__( 'CDN without SSL:', 'rocket' ),
-	'rocket_field',
-	'rocket_cdn',
-	'rocket_display_cdn_options',
-	array(
-		array(
-			'type'         => 'checkbox',
-			'label'        => __( 'Disable CDN functionality on HTTPS pages', 'rocket' ),
-			'label_for'    => 'cdn_ssl',
-			'label_screen' => __( 'CDN without SSL:', 'rocket' ),
-		),
-		array(
-			'type'        => 'helper_description',
-			'description' => __( 'If your CDN account does not fully support SSL, you can disable URL rewriting on HTTPS pages here.', 'rocket' ),
-		),
-	)
 );
 
 add_settings_field(

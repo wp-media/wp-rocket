@@ -3,7 +3,7 @@
  * Plugin Name: WP Rocket
  * Plugin URI: https://wp-rocket.me
  * Description: The best WordPress performance plugin.
- * Version: 2.11.4
+ * Version: 3.0
  * Code Name: Dagobah
  * Author: WP Media
  * Contributors: Jonathan Buttigieg, Julio Potier, Remy Perona
@@ -19,7 +19,7 @@
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 // Rocket defines.
-define( 'WP_ROCKET_VERSION'             , '2.11.4' );
+define( 'WP_ROCKET_VERSION'             , '3.0' );
 define( 'WP_ROCKET_PRIVATE_KEY'         , false );
 define( 'WP_ROCKET_SLUG'                , 'wp_rocket_settings' );
 define( 'WP_ROCKET_WEB_MAIN'            , false );
@@ -65,7 +65,9 @@ if ( ! defined( 'WP_ROCKET_LASTVERSION' ) ) {
 
 require WP_ROCKET_INC_PATH . 'compat.php';
 
-if ( version_compare( PHP_VERSION, '5.3' ) < 0 ) {
+global $wp_version;
+
+if ( version_compare( PHP_VERSION, '5.4' ) < 0 || version_compare( $wp_version, '4.2' ) < 0 ) {
 	add_action( 'plugins_loaded', 'rocket_init_php_deprecated' );
 
 	return;
@@ -118,7 +120,6 @@ function rocket_init_php_deprecated() {
 	require WP_ROCKET_FUNCTIONS_PATH . 'htaccess.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'varnish.php';
 	require WP_ROCKET_INC_PATH . 'deprecated.php';
-	require WP_ROCKET_3RD_PARTY_PATH . '3rd-party.php';
 	require WP_ROCKET_COMMON_PATH . 'updater.php';
 	require WP_ROCKET_COMMON_PATH . 'emoji.php';
 	require WP_ROCKET_COMMON_PATH . 'embeds.php';
@@ -135,7 +136,6 @@ function rocket_init_php_deprecated() {
 
 	if ( is_admin() ) {
 		require WP_ROCKET_ADMIN_PATH . 'ajax.php';
-		require WP_ROCKET_ADMIN_PATH . 'upgrader.php';
 		require WP_ROCKET_ADMIN_PATH . 'updater.php';
 		require WP_ROCKET_ADMIN_PATH . 'admin.php';
 		require WP_ROCKET_ADMIN_UI_PATH . 'enqueue.php';

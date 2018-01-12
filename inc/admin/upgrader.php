@@ -78,7 +78,6 @@ function rocket_first_install() {
 				'cache_mobile'                => 1,
 				'do_caching_mobile_files'     => 0,
 				'cache_logged_user'           => 0,
-				'cache_ssl'                   => ( rocket_is_ssl_website() ) ? 1 : 0,
 				'emoji'                       => 1,
 				'embeds'                      => 1,
 				'cache_reject_uri'            => array(),
@@ -125,7 +124,6 @@ function rocket_first_install() {
 				'cdn'                         => 0,
 				'cdn_cnames'                  => array(),
 				'cdn_zone'                    => array(),
-				'cdn_ssl'                     => 0,
 				'cdn_reject_files'            => array(),
 				'do_cloudflare'               => 0,
 				'cloudflare_email'            => '',
@@ -195,7 +193,7 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 	}
 
 	// Deactivate CloudFlare completely if PHP Version is lower than 5.4.
-	if ( version_compare( $actual_version, '2.8.16', '<' ) && phpversion() < '5.4' ) {
+	if ( version_compare( $actual_version, '2.8.16', '<' ) ) {
 		$options                                = get_option( WP_ROCKET_SLUG );
 		$options['do_cloudflare']               = 0;
 		$options['cloudflare_email']            = '';
@@ -210,10 +208,23 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 	}
 
 	// Add a value to the new CF zone_id field if the CF domain is set.
-	if ( version_compare( $actual_version, '2.8.21', '<' ) && version_compare( phpversion(), '5.4' ) >= 0 ) {
+	if ( version_compare( $actual_version, '2.8.21', '<' ) ) {
 		$options = get_option( WP_ROCKET_SLUG );
 		if ( 0 < $options['do_cloudflare'] && '' !== $options['cloudflare_domain'] ) {
-			require WP_ROCKET_ADMIN_PATH . 'compat/cf-upgrader-5.4.php';
+			$cf_instance = get_rocket_cloudflare_api_instance();
+			if ( ! is_wp_error( $cf_instance ) ) {
+				try {
+					$zone_instance = new Cloudflare\Zone( $cf_instance );
+					$zone          = $zone_instance->zones( $options['cloudflare_domain'] );
+
+					if ( isset( $zone->result[0]->id ) ) {
+						$options['cloudflare_zone_id'] = $zone->result[0]->id;
+						update_option( WP_ROCKET_SLUG, $options );
+					}
+				} catch ( Exception $e ) {
+					// do nothing.
+				}
+			}
 		}
 	}
 

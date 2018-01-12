@@ -72,7 +72,7 @@ $rocket_lazyload_fields[] = array(
 	'parent'       => 'lazyload_iframes',
 	'type'         => 'helper_description',
 	'name'         => 'lazyload_youtube_description',
-	'description'  => __( 'This can significantly improve your loading time if you have a lot of YouTube videos on a page.', 'rocket' )
+	'description'  => __( 'This can significantly improve your loading time if you have a lot of YouTube videos on a page.', 'rocket' ),
 );
 $rocket_lazyload_fields[] = array(
 	'type'         => 'helper_performance',
@@ -157,45 +157,6 @@ add_settings_field(
 			'description'  => $rwl ? __( 'User cache is great when you have user-specific or restricted content on your website.', 'rocket' ) : __( '<a href="http://docs.wp-rocket.me/article/313-logged-in-user-cache" target="_blank">User cache</a> is great when you have user-specific or restricted content on your website.', 'rocket' ),
 		),
 	)
-);
-
-/**
- * SSL cache
- */
-$rocket_ssl_cache_fields = array();
-$rocket_maybe_ssl = rocket_is_ssl_website();
-
-$rocket_ssl_cache_fields[] = array(
-	'type'         => 'checkbox',
-	'label'        => __( 'Enable caching for pages with <code>https://</code>', 'rocket' ),
-	'label_for'    => 'cache_ssl',
-	'label_screen' => __( 'SSL cache:', 'rocket' ),
-	'name'         => 'cache_ssl',
-	'default'      => $rocket_maybe_ssl ? 1 : get_rocket_option( 'ssl', 0 ),
-	'readonly'     => $rocket_maybe_ssl,
-);
-
-// Dynamic description: 1. white-label or not.
-$rocket_ssl_cache_fields_desc = $rwl ? __( 'SSL cache works best when your entire website runs on HTTPS.', 'rocket' ) : __( '<a href="http://docs.wp-rocket.me/article/314-using-ssl-with-wp-rocket" target="_blank">SSL cache</a> works best when your entire website runs on HTTPS.', 'rocket' );
-
-// Dynamic description: 2. SSL detected
-if ( $rocket_maybe_ssl ) {
-	$rocket_ssl_cache_fields_desc = __( 'Your site runs on HTTPS. SSL cache has been applied automatically.', 'rocket' );
-}
-
-$rocket_ssl_cache_fields[] = array(
-	'type' => $rocket_maybe_ssl ? 'helper_detection' : 'helper_description',
-	'name' => 'ssl_cache_desc',
-	'description'  => $rocket_ssl_cache_fields_desc,
-);
-
-add_settings_field(
-	'rocket_ssl',
-	__( 'SSL cache:', 'rocket' ),
-	'rocket_field',
-	'rocket_basic',
-	'rocket_display_main_options',
-	$rocket_ssl_cache_fields
 );
 
 /**
