@@ -1,6 +1,3 @@
 linters:
-	phpcs:
-		standard: 'WordPress'
-		tab_width: 4
-		ignore: ['/min/*', '/inc/vendors/*', '/tests/*']
-		exclude: ['Generic.PHP.NoSilencedErrors.Discouraged', 'PEAR.Functions.FunctionCallSignature.Indent', 'Squiz.ControlStructures.ControlSignature.SpaceAfterCloseBrace', 'Squiz.Commenting.FileComment.Missing', 'Squiz.Commenting.FileComment.MissingPackageTag', 'Squiz.PHP.CommentedOutCode.Found', 'WordPress.VIP.AdminBarRemoval', 'WordPress.VIP.CronInterval.ChangeDetected', 'WordPress.VIP.DirectDatabaseQuery.DirectQuery', 'WordPress.VIP.DirectDatabaseQuery.NoCaching', 'WordPress.VIP.OrderByRand' 'WordPress.VIP.PostsPerPage.posts_per_page', 'WordPress.VIP.RestrictedFunctions', 'WordPress.VIP.RestrictedFunctions.urlencode', 'WordPress.VIP.RestrictedFunctions.wp_redirect', 'WordPress.VIP.RestrictedVariables.cache_constraints', 'WordPress.VIP.RestrictedVariables.user_meta', 'WordPress.VIP.SlowDBQuery.slow_db_query', 'WordPress.VIP.SuperGlobalInputUsage.AccessDetected', 'WordPress.VIP.TimezoneChange', 'WordPress.VIP.ValidatedSanitizedInput', 'WordPress.XSS.EscapeOutput']
+    phpcs:
+        standard: './phpcs.xml'

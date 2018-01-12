@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
  * Fix the capability for our capacity filter hook
@@ -53,20 +53,21 @@ function rocket_field( $args ) {
 		if ( isset( $args['display'] ) && ! $args['display'] ) {
 			continue;
 		}
-		$args['label_for'] 	= isset( $args['label_for'] ) ? $args['label_for'] : '';
-		$args['name'] 		= isset( $args['name'] ) ? $args['name'] : $args['label_for'];
-		$parent 			= isset( $args['parent'] ) ? 'data-parent="' . sanitize_html_class( $args['parent'] ) . '"' : null;
-		$placeholder 		= isset( $args['placeholder'] ) ? 'placeholder="' . $args['placeholder'] . '" ' : '';
-		$class				= isset( $args['class'] ) ? sanitize_html_class( $args['class'] ) : sanitize_html_class( $args['name'] );
-		$class 				.= ( $parent ) ? ' has-parent' : null;
-		$label 				= isset( $args['label'] ) ? $args['label'] : '';
-		$default			= isset( $args['default'] ) ? $args['default'] : '';
-		$readonly			= isset( $args['readonly'] ) && $args['readonly'] ? ' readonly="readonly" disabled="disabled"' : '';
-		$cols 				= isset( $args['cols'] ) ? (int) $args['cols'] : 50;
-		$rows 				= isset( $args['rows'] ) ? (int) $args['rows'] : 5;
+		$args['label_for']  = isset( $args['label_for'] ) ? $args['label_for'] : '';
+		$args['name']       = isset( $args['name'] ) ? $args['name'] : $args['label_for'];
+		$parent             = isset( $args['parent'] ) ? 'data-parent="' . sanitize_html_class( $args['parent'] ) . '"' : null;
+		$placeholder        = isset( $args['placeholder'] ) ? 'placeholder="' . $args['placeholder'] . '" ' : '';
+		$class              = isset( $args['class'] ) ? sanitize_html_class( $args['class'] ) : sanitize_html_class( $args['name'] );
+		$class              .= ( $parent ) ? ' has-parent' : null;
+		$label              = isset( $args['label'] ) ? $args['label'] : '';
+		$default            = isset( $args['default'] ) ? $args['default'] : '';
+		$readonly           = isset( $args['readonly'] ) && $args['readonly'] ? ' readonly="readonly" disabled="disabled"' : '';
+		$cols               = isset( $args['cols'] ) ? (int) $args['cols'] : 50;
+		$rows               = isset( $args['rows'] ) ? (int) $args['rows'] : 5;
 
 		if ( ! isset( $args['fieldset'] ) || 'start' === $args['fieldset'] ) {
-			printf( '<fieldset class="fieldname-%1$s fieldtype-%2$s %3$s">',
+			printf(
+				 '<fieldset class="fieldname-%1$s fieldtype-%2$s %3$s">',
 				sanitize_html_class( $args['name'] ),
 				sanitize_html_class( $args['type'] ),
 				isset( $args['parent'] ) ? 'fieldparent-' . sanitize_html_class( $args['parent'] ) : ''
@@ -74,60 +75,58 @@ function rocket_field( $args ) {
 		}
 
 		switch ( $args['type'] ) {
-			case 'number' :
-			case 'email' :
-			case 'text' :
-
+			case 'number':
+			case 'email':
+			case 'text':
 				$value = get_rocket_option( $args['name'] );
 				if ( false === $value ) {
 					$value = $default;
 				}
 
-				$value 			= esc_attr( $value );
+				$value          = esc_attr( $value );
 				$number_options = 'number' === $args['type'] ? ' min="0" class="small-text"' : '';
-				$autocomplete 	= in_array( $args['name'], array( 'consumer_key', 'consumer_email' ), true ) ? ' autocomplete="off"' : '';
-				$disabled 		= ( 'consumer_key' === $args['name'] && defined( 'WP_ROCKET_KEY' ) ) || ( 'consumer_email' === $args['name'] && defined( 'WP_ROCKET_EMAIL' ) ) ? ' disabled="disabled"' : $readonly;
+				$autocomplete   = in_array( $args['name'], array( 'consumer_key', 'consumer_email' ), true ) ? ' autocomplete="off"' : '';
+				$disabled       = ( 'consumer_key' === $args['name'] && defined( 'WP_ROCKET_KEY' ) ) || ( 'consumer_email' === $args['name'] && defined( 'WP_ROCKET_EMAIL' ) ) ? ' disabled="disabled"' : $readonly;
 				?>
 
 					<legend class="screen-reader-text"><span><?php echo $args['label_screen']; ?></span></legend>
 					<label><input<?php echo $autocomplete . $disabled; ?> type="<?php echo $args['type']; ?>"<?php echo $number_options; ?> id="<?php echo $args['label_for']; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]" value="<?php echo $value; ?>" <?php echo $placeholder; ?><?php echo $readonly; ?>/> <?php echo $label; ?></label>
 
 				<?php
-			break;
+				break;
 
-			case 'cloudflare_api_key' :
+			case 'cloudflare_api_key':
 				$value = get_rocket_option( $args['name'] );
 
 				if ( 'cloudflare_api_key' === $args['name'] && defined( 'WP_ROCKET_CF_API_KEY' ) ) {
 					$value = WP_ROCKET_CF_API_KEY;
 				}
 
-			    	$value 			= esc_attr( $value );
-			    	$disabled 		= ( 'cloudflare_api_key' === $args['name'] && defined( 'WP_ROCKET_CF_API_KEY' ) ) ? ' disabled="disabled"' : $readonly;
-			    	$cf_valid_credentials = false;
+					$value          = esc_attr( $value );
+					$disabled       = ( 'cloudflare_api_key' === $args['name'] && defined( 'WP_ROCKET_CF_API_KEY' ) ) ? ' disabled="disabled"' : $readonly;
+					$cf_valid_credentials = false;
 				if ( function_exists( 'rocket_cloudflare_valid_auth' ) ) {
 					$cf_valid_credentials = ( is_wp_error( rocket_cloudflare_valid_auth() ) ) ? false : true;
 				}
-			    	?>
-			    		<legend class="screen-reader-text"><span><?php echo $args['label_screen']; ?></span></legend>
-			    		<label>
-			    		    <input<?php echo $disabled; ?> type="text" id="<?php echo $args['label_for']; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]" value="<?php echo $value; ?>" <?php echo $placeholder; ?><?php echo $readonly; ?>/> <?php echo $label; ?>
-			    		    <?php if ( $cf_valid_credentials ) { ?>
-				    		    <span id="rocket-check-cloudflare-api-container" class="rocket-cloudflare-api-valid">
-								    <span class="dashicons dashicons-yes" aria-hidden="true"></span> <?php _e( 'Your Cloudflare credentials are valid.', 'rocket' ); ?>
+					?>
+						<legend class="screen-reader-text"><span><?php echo $args['label_screen']; ?></span></legend>
+						<label>
+							<input<?php echo $disabled; ?> type="text" id="<?php echo $args['label_for']; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]" value="<?php echo $value; ?>" <?php echo $placeholder; ?><?php echo $readonly; ?>/> <?php echo $label; ?>
+							<?php if ( $cf_valid_credentials ) { ?>
+								<span id="rocket-check-cloudflare-api-container" class="rocket-cloudflare-api-valid">
+									<span class="dashicons dashicons-yes" aria-hidden="true"></span> <?php _e( 'Your Cloudflare credentials are valid.', 'rocket' ); ?>
 								</span>
-			    		    <?php } elseif ( ! $cf_valid_credentials && $value ) { ?>
-				    		    <span id="rocket-check-cloudflare-api-container">
-								    <span class="dashicons dashicons-no" aria-hidden="true"></span> <?php _e( 'Your Cloudflare credentials are invalid!', 'rocket' ); ?>
+							<?php } elseif ( ! $cf_valid_credentials && $value ) { ?>
+								<span id="rocket-check-cloudflare-api-container">
+									<span class="dashicons dashicons-no" aria-hidden="true"></span> <?php _e( 'Your Cloudflare credentials are invalid!', 'rocket' ); ?>
 									</span>
-			    		    <?php } ?>
+							<?php } ?>
 						</label>
 
 				<?php
-			break;
+				break;
 
-			case 'textarea' :
-
+			case 'textarea':
 				$t_temp = get_rocket_option( $args['name'], '' );
 
 				if ( is_array( $t_temp ) ) {
@@ -142,23 +141,31 @@ function rocket_field( $args ) {
 				?>
 
 					<legend class="screen-reader-text"><span><?php echo $args['label_screen']; ?></span></legend>
-					<label><textarea id="<?php echo $args['label_for']; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]" cols="<?php echo $cols; ?>" rows="<?php echo $rows; ?>"<?php echo $readonly; echo $placeholder; ?>><?php echo esc_html( $value ); ?></textarea>
+					<label><textarea id="<?php echo $args['label_for']; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]" cols="<?php echo $cols; ?>" rows="<?php echo $rows; ?>" class="<?php echo $class; ?>"
+													<?php
+													echo $readonly;
+													echo $placeholder;
+													echo $parent;
+?>
+><?php echo esc_html( $value ); ?></textarea>
 					</label>
 
 				<?php
-			break;
+				break;
 
-			case 'checkbox' :
-				if ( isset( $args['label_screen'] ) ) { ?>
+			case 'checkbox':
+				if ( isset( $args['label_screen'] ) ) {
+				?>
 					<legend class="screen-reader-text"><span><?php echo $args['label_screen']; ?></span></legend>
 				<?php } ?>
 					<label><input type="checkbox" id="<?php echo $args['name']; ?>" class="<?php echo $class; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]" value="1"<?php echo $readonly; ?> <?php checked( get_rocket_option( $args['name'], $default ), 1 ); ?> <?php echo $parent; ?>/> <?php echo $args['label']; ?>
 					</label>
 
 			<?php
-			break;
+				break;
 
-			case 'select' : ?>
+			case 'select':
+				?>
 
 					<legend class="screen-reader-text"><span><?php echo $args['label_screen']; ?></span></legend>
 					<label>	<select id="<?php echo $args['name']; ?>" class="<?php echo $class; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]"<?php echo $readonly; ?> <?php echo $parent; ?>>
@@ -170,80 +177,69 @@ function rocket_field( $args ) {
 					</label>
 
 			<?php
-			break;
+				break;
 
-			case 'submit_optimize' : ?>
+			case 'submit_optimize':
+				?>
 
 			<input type="submit" name="wp_rocket_settings[submit_optimize]" id="rocket_submit_optimize" class="button button-primary" value="<?php _e( 'Save and optimize', 'rocket' ); ?>"> <a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_optimize_database' ), 'rocket_optimize_database' ); ?>" class="button button-secondary"><?php _e( 'Optimize', 'rocket' ); ?></a>
-			<?php break;
+			<?php
+				break;
 
-			case 'repeater' :
-
+			case 'repeater':
 				$fields = new WP_Rocket_Repeater_Field( $args );
 				$fields->render();
 
 				break;
 
-			case 'rocket_defered_module' :
-
-					rocket_defered_module();
-
-			break;
-
-			case 'helper_description' :
-
+			case 'helper_description':
 				$description = isset( $args['description'] ) ? sprintf( '<p class="description help %1$s" %2$s><span class="dashicons dashicons-info" aria-hidden="true"></span><strong class="screen-reader-text">%3$s</strong> %4$s</p>', $class, $parent, _x( 'Note:', 'screen-reader-text', 'rocket' ), $args['description'] ) : '';
 				echo apply_filters( 'rocket_help', $description, $args['name'], 'description' );
 
-			break;
+				break;
 
-			case 'helper_performance' :
-
+			case 'helper_performance':
 				$description = isset( $args['description'] ) ? sprintf( '<p class="description help tip--perf %1$s" %2$s><span class="dashicons dashicons-performance" aria-hidden="true"></span><strong class="screen-reader-text">%3$s</strong> <strong>%4$s</strong></p>', $class, $parent, _x( 'Performance tip:', 'screen-reader-text', 'rocket' ), $args['description'] ) : '';
 				echo apply_filters( 'rocket_help', $description, $args['name'], 'description' );
 
-			break;
+				break;
 
-			case 'helper_detection' :
-
+			case 'helper_detection':
 				$description = isset( $args['description'] ) ? sprintf( '<p class="description help tip--detect %1$s" %2$s><span class="dashicons dashicons-visibility" aria-hidden="true"></span><strong class="screen-reader-text">%3$s</strong> %4$s</p>', $class, $parent, _x( 'Third-party feature detected:', 'screen-reader-text', 'rocket' ), $args['description'] ) : '';
 				echo apply_filters( 'rocket_help', $description, $args['name'], 'description' );
 
-			break;
+				break;
 
-			case 'helper_help' :
-
+			case 'helper_help':
 				$description = isset( $args['description'] ) ? sprintf( '<p class="description help tip--use %1$s" %2$s>%3$s</p>', $class, $parent, $args['description'] ) : '';
 				echo apply_filters( 'rocket_help', $description, $args['name'], 'help' );
 
-			break;
+				break;
 
-			case 'helper_warning' :
-
+			case 'helper_warning':
 				$description = isset( $args['description'] ) ? sprintf( '<p class="description warning file-error %1$s" %2$s><span class="dashicons dashicons-warning" aria-hidden="true"></span><strong class="screen-reader-text">%3$s</strong> %4$s</p>', $class, $parent, _x( 'Warning:', 'screen-reader-text', 'rocket' ), $args['description'] ) : '';
 				echo apply_filters( 'rocket_help', $description, $args['name'], 'warning' );
 
-			break;
+				break;
 
-			case 'helper_panel_description' :
-
+			case 'helper_panel_description':
 				$description = isset( $args['description'] ) ? sprintf( '<div class="rocket-panel-description"><p class="%1$s" %2$s>%3$s</p></div>', $class, $parent, $args['description'] ) : '';
 				echo $description;
 
-			break;
+				break;
 
-			case 'rocket_export_form' :
+			case 'rocket_export_form':
 				?>
 				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_export' ), 'rocket_export' ); ?>" id="export" class="button button-secondary rocketicon"><?php _ex( 'Download settings', 'button text', 'rocket' ); ?></a>
 				<?php
-			break;
+				break;
 
-			case 'rocket_import_upload_form' :
-
+			case 'rocket_import_upload_form':
 				rocket_import_upload_form( 'rocket_importer' );
 
-			break;
-			default : 'Type manquant ou incorrect'; // ne pas traduire.
+				break;
+			default:
+				'Type manquant ou incorrect'; // ne pas traduire.
 
 		}
 
@@ -252,72 +248,6 @@ function rocket_field( $args ) {
 		}
 	}
 
-}
-
-/**
- * Used to display the defered module on settings form
- *
- * @since 1.1.0
- */
-function rocket_defered_module() {
-	?>
-	<fieldset>
-	<legend class="screen-reader-text"><span><?php _e( '<strong>JS</strong> files with Deferred Loading JavaScript', 'rocket' ); ?></span></legend>
-
-	<div id="rkt-drop-deferred" class="rkt-module rkt-module-drop">
-
-		<?php
-		$deferred_js_files = get_rocket_option( 'deferred_js_files' );
-
-		if ( $deferred_js_files ) {
-
-			foreach ( $deferred_js_files as $k => $_url ) { ?>
-
-				<p class="rkt-module-drag">
-					<span class="dashicons dashicons-sort rkt-module-move hide-if-no-js"></span>
-
-					<input style="width: 32em" type="text" placeholder="http://" class="deferred_js regular-text" name="wp_rocket_settings[deferred_js_files][<?php echo $k; ?>]" value="<?php echo esc_url( $_url ); ?>" />
-
-					<span class="dashicons dashicons-no rkt-module-remove hide-if-no-js"></span>
-				</p>
-				<!-- .rkt-module-drag -->
-
-			<?php
-			}
-		} else {
-			// If no files yet, use this template inside #rkt-drop-deferred.
-			?>
-
-			<p class="rkt-module-drag">
-				<span class="dashicons dashicons-sort rkt-module-move hide-if-no-js"></span>
-
-				<input style="width: 32em" type="text" placeholder="http://" class="deferred_js regular-text" name="wp_rocket_settings[deferred_js_files][0]" value="" />
-			</p>
-			<!-- .rkt-module-drag -->
-
-				<?php } ?>
-
-	</div>
-	<!-- .rkt-drop-deferred -->
-
-	<?php // Clone Template. ?>
-
-	<div class="rkt-module-model hide-if-js">
-
-		<p class="rkt-module-drag">
-			<span class="dashicons dashicons-sort rkt-module-move hide-if-no-js"></span>
-
-			<input style="width: 32em" type="text" placeholder="http://" class="deferred_js regular-text" name="wp_rocket_settings[deferred_js_files][]" value="" />
-
-			<span class="dashicons dashicons-no rkt-module-remove hide-if-no-js"></span>
-		</p>
-		<!-- .rkt-module-drag -->
-	</div>
-	<!-- .rkt-model-deferred-->
-
-	<p><a href="javascript:void(0)" class="rkt-module-clone hide-if-no-js button-secondary"><?php _e( 'Add URL', 'rocket' ); ?></a></p>
-
-<?php
 }
 
 /**
@@ -338,7 +268,8 @@ function rocket_cnames_module() {
 
 			if ( $cnames ) {
 
-				foreach ( $cnames as $k => $_url ) { ?>
+				foreach ( $cnames as $k => $_url ) {
+				?>
 
 				<p>
 
@@ -348,7 +279,19 @@ function rocket_cnames_module() {
 						<?php _e( 'reserved for', 'rocket' ); ?>
 						<select name="wp_rocket_settings[cdn_zone][<?php echo $k; ?>]">
 							<option value="all" <?php selected( $cnames_zone[ $k ], 'all' ); ?>><?php _e( 'All files', 'rocket' ); ?></option>
+							<?php
+							/**
+							 * Controls the inclusion of images option for the CDN dropdown
+							 *
+							 * @since 2.10.7
+							 * @author Remy Perona
+							 *
+							 * @param bool $allow true to add the option, false otherwise.
+							 */
+							if ( apply_filters( 'rocket_allow_cdn_images', true ) ) :
+							?>
 							<option value="images" <?php selected( $cnames_zone[ $k ], 'images' ); ?>><?php _e( 'Images', 'rocket' ); ?></option>
+							<?php endif; ?>
 							<option value="css_and_js" <?php selected( $cnames_zone[ $k ], 'css_and_js' ); ?>>CSS & JavaScript</option>
 							<option value="js" <?php selected( $cnames_zone[ $k ], 'js' ); ?>>JavaScript</option>
 							<option value="css" <?php selected( $cnames_zone[ $k ], 'css' ); ?>>CSS</option>
@@ -373,7 +316,12 @@ function rocket_cnames_module() {
 						<?php _e( 'reserved for', 'rocket' ); ?>
 						<select name="wp_rocket_settings[cdn_zone][]">
 							<option value="all"><?php _e( 'All files', 'rocket' ); ?></option>
+							<?php
+							// this filter is defined in inc/admin/options.php.
+							if ( apply_filters( 'rocket_allow_cdn_images', true ) ) :
+							?>
 							<option value="images"><?php _e( 'Images', 'rocket' ); ?></option>
+							<?php endif; ?>
 							<option value="css_and_js">CSS & JavaScript</option>
 							<option value="js">JavaScript</option>
 							<option value="css">CSS</option>
@@ -382,10 +330,9 @@ function rocket_cnames_module() {
 
 				</p>
 
-						<?php } ?>
+			<?php } ?>
 
 		</div>
-
 		<?php // Clone Template. ?>
 		<div class="rkt-module-model hide-if-js">
 
@@ -397,7 +344,12 @@ function rocket_cnames_module() {
 					<?php _e( 'reserved for', 'rocket' ); ?>
 					<select name="wp_rocket_settings[cdn_zone][]">
 						<option value="all"><?php _e( 'All files', 'rocket' ); ?></option>
+						<?php
+						// this filter is defined in inc/admin/options.php.
+						if ( apply_filters( 'rocket_allow_cdn_images', true ) ) :
+						?>
 						<option value="images"><?php _e( 'Images', 'rocket' ); ?></option>
+						<?php endif; ?>
 						<option value="css_and_js">CSS & JavaScript</option>
 						<option value="js">JavaScript</option>
 						<option value="css">CSS</option>
@@ -541,8 +493,6 @@ function rocket_display_options() {
 				'version',
 				'cloudflare_old_settings',
 				'cloudflare_zone_id',
-				'minify_css_legacy',
-				'minify_js_legacy',
 			)
 		);
 
@@ -558,9 +508,11 @@ function rocket_display_options() {
 				<a href="#tab_preload" class="nav-tab"><?php _e( 'Preload', 'rocket' ); ?></a>
 				<?php if ( get_rocket_option( 'do_cloudflare' ) ) { ?>
 					<a href="#tab_cloudflare" class="nav-tab">Cloudflare</a>
-				<?php }
+				<?php
+				}
 				/** This filter is documented in inc/admin/ui/modules/vanrish.php */
-				if ( apply_filters( 'rocket_display_varnish_options_tab', true ) ) { ?>
+				if ( apply_filters( 'rocket_display_varnish_options_tab', true ) ) {
+				?>
 				<a href="#tab_varnish" class="nav-tab">Varnish</a>
 				<?php } ?>
 				<?php if ( defined( 'WP_RWL' ) ) { ?>
@@ -572,7 +524,7 @@ function rocket_display_options() {
 				<?php } ?>
 			<?php } else { ?>
 				<a href="#tab_apikey" class="nav-tab"><?php _e( 'License', 'rocket' ); ?></a>
-			<?php }  ?>
+			<?php } ?>
 			<?php
 			do_action( 'rocket_tab', rocket_valid_key() );
 			?>
@@ -588,7 +540,8 @@ function rocket_display_options() {
 				<div class="rkt-tab" id="tab_cloudflare" <?php echo get_rocket_option( 'do_cloudflare' ) ? '' : 'style="display:none"'; ?>><?php do_settings_sections( 'rocket_cloudflare' ); ?></div>
 				<?php
 				/** This filter is documented in inc/admin/ui/modules/vanrish.php */
-				if ( apply_filters( 'rocket_display_varnish_options_tab', true ) ) { ?>
+				if ( apply_filters( 'rocket_display_varnish_options_tab', true ) ) {
+				?>
 					<div class="rkt-tab" id="tab_varnish"><?php do_settings_sections( 'rocket_varnish' ); ?></div>
 				<?php } ?>
 				<?php $class_hidden = ! defined( 'WP_RWL' ) ? ' hidden' : ''; ?>
@@ -637,10 +590,14 @@ function rocket_settings_callback( $inputs ) {
 	$inputs['minify_css'] = ! empty( $inputs['minify_css'] ) ? 1 : 0;
 	$inputs['minify_js']  = ! empty( $inputs['minify_js'] ) ? 1 : 0;
 
-	// Option: mobile cache
+	// Option: mobile cache.
 	if ( rocket_is_mobile_plugin_active() ) {
 		$inputs['cache_mobile'] = 1;
 		$inputs['do_caching_mobile_files'] = 1;
+	}
+
+	if ( empty( $inputs['lazyload_iframes'] ) ) {
+		$inputs['lazyload_youtube'] = 0;
 	}
 
 	/*
@@ -782,8 +739,11 @@ function rocket_settings_callback( $inputs ) {
 		$inputs['exclude_js'] = array();
 	}
 
-	// Option: Critical CSS
-	$inputs['critical_css'] = ! empty( $inputs['critical_css'] ) ? str_replace( array( '<style>', '</style>' ), '', $inputs['critical_css'] ) : '';
+	// Option: Async CSS.
+	$inputs['async_css'] = ! empty( $inputs['async_css'] ) ? 1 : 0;
+
+	// Option: Critical CSS.
+	$inputs['critical_css'] = ! empty( $inputs['critical_css'] ) ? str_replace( array( '<style>', '</style>' ), '', wp_kses( $inputs['critical_css'], array( "\'", '\"' ) ) ) : '';
 
 	/*
 	 * Option : JS files to exclude from defer JS
@@ -798,32 +758,6 @@ function rocket_settings_callback( $inputs ) {
 		$inputs['exclude_defer_js'] = array_filter( $inputs['exclude_defer_js'] );
 	} else {
 		$inputs['exclude_defer_js'] = array();
-	}
-
-	/*
-	 * Option : JS files with deferred loading
-	 */
-	if ( ! empty( $inputs['deferred_js_files'] ) ) {
-		$inputs['deferred_js_files'] = array_unique( $inputs['deferred_js_files'] );
-		$inputs['deferred_js_files'] = array_map( 'rocket_sanitize_js', $inputs['deferred_js_files'] );
-		$inputs['deferred_js_files'] = array_filter( $inputs['deferred_js_files'] );
-	} else {
-		$inputs['deferred_js_files'] = array();
-	}
-
-	/*
-	 * Option : JS files of the minification to insert in footer
-	 */
-	if ( ! empty( $inputs['minify_js_in_footer'] ) ) {
-		foreach ( $inputs['minify_js_in_footer'] as $k => $url ) {
-			if ( in_array( $url, $inputs['deferred_js_files'], true ) ) {
-				unset( $inputs['minify_js_in_footer'][ $k ] );
-			}
-		}
-
-		$inputs['minify_js_in_footer'] = array_filter( array_map( 'rocket_sanitize_js', array_unique( $inputs['minify_js_in_footer'] ) ) );
-	} else {
-		$inputs['minify_js_in_footer'] = array();
 	}
 
 	/**
@@ -886,10 +820,10 @@ function rocket_settings_callback( $inputs ) {
 	 * Option : WL
 	 */
 	$inputs['wl_plugin_name'] = isset( $inputs['wl_plugin_name'] ) ? wp_strip_all_tags( $inputs['wl_plugin_name'] ) : get_rocket_option( 'wl_plugin_name' );
-	$inputs['wl_plugin_URI']  = isset( $inputs['wl_plugin_URI'] )  ? esc_url( $inputs['wl_plugin_URI'] )            : get_rocket_option( 'wl_plugin_URI' );
-	$inputs['wl_author']      = isset( $inputs['wl_author'] )      ? wp_strip_all_tags( $inputs['wl_author'] )      : get_rocket_option( 'wl_author' );
-	$inputs['wl_author_URI']  = isset( $inputs['wl_author_URI'] )  ? esc_url( $inputs['wl_author_URI'] )            : get_rocket_option( 'wl_author_URI' );
-	$inputs['wl_description'] = isset( $inputs['wl_description'] ) ? (array) $inputs['wl_description']               : get_rocket_option( 'wl_description' );
+	$inputs['wl_plugin_URI']  = isset( $inputs['wl_plugin_URI'] ) ? esc_url( $inputs['wl_plugin_URI'] ) : get_rocket_option( 'wl_plugin_URI' );
+	$inputs['wl_author']      = isset( $inputs['wl_author'] ) ? wp_strip_all_tags( $inputs['wl_author'] ) : get_rocket_option( 'wl_author' );
+	$inputs['wl_author_URI']  = isset( $inputs['wl_author_URI'] ) ? esc_url( $inputs['wl_author_URI'] ) : get_rocket_option( 'wl_author_URI' );
+	$inputs['wl_description'] = isset( $inputs['wl_description'] ) ? (array) $inputs['wl_description'] : get_rocket_option( 'wl_description' );
 	$inputs['wl_plugin_slug'] = sanitize_key( $inputs['wl_plugin_name'] );
 
 	/*
@@ -916,10 +850,10 @@ function rocket_settings_callback( $inputs ) {
 			}
 		}
 
-		$inputs['cdn_cnames'] 	= array_values( $inputs['cdn_cnames'] );
+		$inputs['cdn_cnames']   = array_values( $inputs['cdn_cnames'] );
 		$inputs['cdn_cnames']   = array_map( 'untrailingslashit', $inputs['cdn_cnames'] );
 		ksort( $inputs['cdn_zone'] );
-		$inputs['cdn_zone'] 	= array_values( $inputs['cdn_zone'] );
+		$inputs['cdn_zone']     = array_values( $inputs['cdn_zone'] );
 	}
 
 	/*
@@ -954,43 +888,8 @@ function rocket_settings_callback( $inputs ) {
 
 	$filename_prefix = rocket_is_white_label() ? sanitize_title( get_rocket_option( 'wl_plugin_name' ) ) : 'wp-rocket';
 
-	if ( isset( $_FILES['import'] )
-		&& preg_match( '/' . $filename_prefix . '-settings-20\d{2}-\d{2}-\d{2}-[a-f0-9]{13}\.(?:txt|json)/', $_FILES['import']['name'] )
-		&& ( 'text/plain' === $_FILES['import']['type'] || 'application/json' === $_FILES['import']['type'] ) ) {
-		$file_name 			= $_FILES['import']['name'];
-		$file_type			= $_FILES['import']['type'];
-		$_post_action 		= $_POST['action'];
-		$_POST['action'] 	= 'wp_handle_sideload';
-		if ( 'text/plain' === $file_type ) {
-			$mimes = array( 'txt' => 'application/octet-stream' );
-		} elseif ( 'application/json' === $file_type ) {
-			$mimes = array( 'json' => 'text/plain' );
-		}
-		$file 				= wp_handle_sideload( $_FILES['import'], array( 'mimes' => $mimes ) );
-		$_POST['action'] 	= $_post_action;
-		$settings 			= rocket_direct_filesystem()->get_contents( $file['file'] );
-		if ( 'text/plain' === $file_type ) {
-			$gz 				= 'gz' . strrev( 'etalfni' );
-			$settings 			= $gz// ;
-			( $settings );
-			$settings 			= unserialize( $settings );
-		} elseif ( 'application/json' === $file_type ) {
-			$settings = (array) json_decode( $settings );
-		}
-		rocket_direct_filesystem()->put_contents( $file['file'], '' );
-		rocket_direct_filesystem()->delete( $file['file'] );
-
-		if ( is_array( $settings ) ) {
-			$settings['consumer_key']		= $inputs['consumer_key'];
-			$settings['consumer_email']		= $inputs['consumer_email'];
-			$settings['secret_key']			= $inputs['secret_key'];
-			$settings['secret_cache_key']	= $inputs['secret_cache_key'];
-			$settings['minify_css_key']		= $inputs['minify_css_key'];
-			$settings['minify_js_key']		= $inputs['minify_js_key'];
-			$settings['version']			= $inputs['version'];
-			$inputs = $settings;
-			add_settings_error( 'general', 'settings_updated', __( 'Settings imported and saved.', 'rocket' ), 'updated' );
-		}
+	if ( isset( $_FILES['import'] ) && 0 !== $_FILES['import']['size'] && $settings = rocket_handle_settings_import( $_FILES['import'], $filename_prefix, $inputs ) ) {
+		$inputs = $settings;
 	}
 
 	if ( ! rocket_valid_key() ) {
@@ -1043,11 +942,11 @@ function rocket_after_save_options( $oldvalue, $value ) {
 	);
 
 	// Create 2 arrays to compare.
-	$oldvalue_diff 	= array_diff_key( $oldvalue, $removed );
-	$value_diff 	= array_diff_key( $value, $removed );
+	$oldvalue_diff  = array_diff_key( $oldvalue, $removed );
+	$value_diff     = array_diff_key( $value, $removed );
 
 	// If it's different, clean the domain.
-	if ( md5( serialize( $oldvalue_diff ) ) !== md5( serialize( $value_diff ) ) ) {
+	if ( md5( wp_json_encode( $oldvalue_diff ) ) !== md5( wp_json_encode( $value_diff ) ) ) {
 		// Purge all cache files.
 		rocket_clean_domain();
 	}
@@ -1075,25 +974,6 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		);
 	}
 
-	if ( $oldvalue['minify_css'] !== $value['minify_css'] && 0 === $value['minify_css'] ) {
-		if ( ! isset( $value['minify_css_legacy'] ) || 0 !== $value['minify_css_legacy'] ) {
-			update_rocket_option( 'minify_css_legacy', 0 );
-			rocket_generate_config_file();
-		}
-	}
-
-	if ( $oldvalue['minify_js'] !== $value['minify_js'] && 0 === $value['minify_js'] ) {
-		if ( ! isset( $value['minify_js_legacy'] ) || 0 !== $value['minify_js_legacy'] ) {
-			update_rocket_option( 'minify_js_legacy', 0 );
-			rocket_generate_config_file();
-		}
-	}
-
-	// Performs the database optimization when settings are saved with the "save and optimize" submit button".
-	if ( ! empty( $_POST ) && isset( $_POST['wp_rocket_settings']['submit_optimize'] ) ) {
-		do_rocket_database_optimization();
-	}
-
 	// Update CloudFlare Development Mode.
 	$cloudflare_update_result = array();
 
@@ -1101,9 +981,17 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		$cloudflare_dev_mode_return = set_rocket_cloudflare_devmode( $value['cloudflare_devmode'] );
 
 		if ( is_wp_error( $cloudflare_dev_mode_return ) ) {
-			$cloudflare_update_result[] = array( 'result' => 'error', 'message' => sprintf( __( 'Cloudflare development mode error: %s', 'rocket' ), $cloudflare_dev_mode_return->get_error_message() ) );
+			$cloudflare_update_result[] = array(
+				'result' => 'error',
+				// translators: %s is the message returned by the CloudFlare API.
+				'message' => sprintf( __( 'Cloudflare development mode error: %s', 'rocket' ), $cloudflare_dev_mode_return->get_error_message() ),
+			);
 		} else {
-			$cloudflare_update_result[] = array( 'result' => 'success', 'message' => sprintf( __( 'Cloudflare development mode %s', 'rocket' ), $cloudflare_dev_mode_return ) );
+			$cloudflare_update_result[] = array(
+				'result' => 'success',
+				// translators: %s is the message returned by the CloudFlare API.
+				'message' => sprintf( __( 'Cloudflare development mode %s', 'rocket' ), $cloudflare_dev_mode_return ),
+			);
 		}
 	}
 
@@ -1115,9 +1003,21 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		$cf_cache_level_return = set_rocket_cloudflare_cache_level( $cf_cache_level );
 
 		if ( is_wp_error( $cf_cache_level_return ) ) {
-			$cloudflare_update_result[] = array( 'result' => 'error', 'message' => sprintf( __( 'Cloudflare cache level error: %s', 'rocket' ), $cf_cache_level_return->get_error_message() ) );
+			$cloudflare_update_result[] = array(
+				'result' => 'error',
+				// translators: %s is the message returned by the CloudFlare API.
+				'message' => sprintf( __( 'Cloudflare cache level error: %s', 'rocket' ), $cf_cache_level_return->get_error_message() ),
+			);
 		} else {
-			$cloudflare_update_result[] = array( 'result' => 'success', 'message' => sprintf( __( 'Cloudflare cache level set to %s', 'rocket' ), $cf_cache_level_return ) );
+			if ( 'aggressive' === $cf_cache_level_return ) {
+				$cf_cache_level_return = _x( 'Standard', 'Cloudflare caching level', 'rocket' );
+			}
+
+			$cloudflare_update_result[] = array(
+				'result' => 'success',
+				// translators: %s is the caching level returned by the CloudFlare API.
+				'message' => sprintf( __( 'Cloudflare cache level set to %s', 'rocket' ), $cf_cache_level_return ),
+			);
 		}
 
 		// Active Minification for HTML, CSS & JS.
@@ -1125,9 +1025,17 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		$cf_minify_return = set_rocket_cloudflare_minify( $cf_minify );
 
 		if ( is_wp_error( $cf_minify_return ) ) {
-			$cloudflare_update_result[] = array( 'result' => 'error', 'message' => sprintf( __( 'Cloudflare minification error: %s', 'rocket' ), $cf_minify_return->get_error_message() ) );
+			$cloudflare_update_result[] = array(
+				'result' => 'error',
+				// translators: %s is the message returned by the CloudFlare API.
+				'message' => sprintf( __( 'Cloudflare minification error: %s', 'rocket' ), $cf_minify_return->get_error_message() ),
+			);
 		} else {
-			$cloudflare_update_result[] = array( 'result' => 'success', 'message' => sprintf( __( 'Cloudflare minification %s', 'rocket' ), $cf_minify_return ) );
+			$cloudflare_update_result[] = array(
+				'result' => 'success',
+				// translators: %s is the message returned by the CloudFlare API.
+				'message' => sprintf( __( 'Cloudflare minification %s', 'rocket' ), $cf_minify_return ),
+			);
 		}
 
 		// Deactivate Rocket Loader to prevent conflicts.
@@ -1135,9 +1043,17 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		$cf_rocket_loader_return = set_rocket_cloudflare_rocket_loader( $cf_rocket_loader );
 
 		if ( is_wp_error( $cf_rocket_loader_return ) ) {
-			$cloudflare_update_result[] = array( 'result' => 'error', 'message' => sprintf( __( 'Cloudflare rocket loader error: %s', 'rocket' ), $cf_rocket_loader_return->get_error_message() ) );
+			$cloudflare_update_result[] = array(
+				'result' => 'error',
+				// translators: %s is the message returned by the CloudFlare API.
+				'message' => sprintf( __( 'Cloudflare rocket loader error: %s', 'rocket' ), $cf_rocket_loader_return->get_error_message() ),
+			);
 		} else {
-			$cloudflare_update_result[] = array( 'result' => 'success', 'message' => sprintf( __( 'Cloudflare rocket loader %s', 'rocket' ), $cf_rocket_loader_return ) );
+			$cloudflare_update_result[] = array(
+				'result' => 'success',
+				// translators: %s is the message returned by the CloudFlare API.
+				'message' => sprintf( __( 'Cloudflare rocket loader %s', 'rocket' ), $cf_rocket_loader_return ),
+			);
 		}
 
 		// Set Browser cache to 1 month.
@@ -1145,9 +1061,17 @@ function rocket_after_save_options( $oldvalue, $value ) {
 		$cf_browser_cache_return = set_rocket_cloudflare_browser_cache_ttl( $cf_browser_cache_ttl );
 
 		if ( is_wp_error( $cf_browser_cache_return ) ) {
-			$cloudflare_update_result[] = array( 'result' => 'error', 'message' => sprintf( __( 'Cloudflare browser cache error: %s', 'rocket' ), $cf_browser_cache_return->get_error_message() ) );
+			$cloudflare_update_result[] = array(
+				'result' => 'error',
+				// translators: %s is the message returned by the CloudFlare API.
+				'message' => sprintf( __( 'Cloudflare browser cache error: %s', 'rocket' ), $cf_browser_cache_return->get_error_message() ),
+			);
 		} else {
-			$cloudflare_update_result[] = array( 'result' => 'success', 'message' => sprintf( __( 'Cloudflare browser cache set to %s seconds', 'rocket' ), $cf_browser_cache_return ) );
+			$cloudflare_update_result[] = array(
+				'result' => 'success',
+				// translators: %s is the message returned by the CloudFlare API.
+				'message' => sprintf( __( 'Cloudflare browser cache set to %s seconds', 'rocket' ), $cf_browser_cache_return ),
+			);
 		}
 	}
 
@@ -1156,7 +1080,7 @@ function rocket_after_save_options( $oldvalue, $value ) {
 	}
 
 	// Regenerate advanced-cache.php file.
-	if ( ! empty( $_POST ) && ( ( isset( $oldvalue['do_caching_mobile_files'] ) && ! isset( $value['do_caching_mobile_files'] ) ) || ( ! isset( $oldvalue['do_caching_mobile_files'] ) &&  isset( $value['do_caching_mobile_files'] ) ) || ( isset( $oldvalue['do_caching_mobile_files'], $value['do_caching_mobile_files'] ) ) && $oldvalue['do_caching_mobile_files'] !== $value['do_caching_mobile_files'] ) ) {
+	if ( ! empty( $_POST ) && ( ( isset( $oldvalue['do_caching_mobile_files'] ) && ! isset( $value['do_caching_mobile_files'] ) ) || ( ! isset( $oldvalue['do_caching_mobile_files'] ) && isset( $value['do_caching_mobile_files'] ) ) || ( isset( $oldvalue['do_caching_mobile_files'], $value['do_caching_mobile_files'] ) ) && $oldvalue['do_caching_mobile_files'] !== $value['do_caching_mobile_files'] ) ) {
 		rocket_generate_advanced_cache_file();
 	}
 
@@ -1169,6 +1093,10 @@ function rocket_after_save_options( $oldvalue, $value ) {
 	// Set WP_CACHE constant in wp-config.php.
 	if ( ! defined( 'WP_CACHE' ) || ! WP_CACHE ) {
 		set_rocket_wp_cache_define( true );
+	}
+
+	if ( isset( $oldvalue['analytics_enabled'], $value['analytics_enabled'] ) && $oldvalue['analytics_enabled'] !== $value['analytics_enabled'] && 1 === (int) $value['analytics_enabled'] ) {
+		set_transient( 'rocket_analytics_optin', 1 );
 	}
 
 	// Redirect on the correct page slug name to avoid false negative error message.
@@ -1191,7 +1119,7 @@ add_action( 'update_option_' . WP_ROCKET_SLUG, 'rocket_after_save_options', 10, 
  * @param array $value An array of submitted options values.
  */
 function rocket_update_ssl_option_after_save_home_url( $oldvalue, $value ) {
-	if ( 'https' === parse_url( $value, PHP_URL_SCHEME ) ) {
+	if ( 'https' === rocket_extract_url_component( $value, PHP_URL_SCHEME ) ) {
 		update_rocket_option( 'cache_ssl', 1 );
 	}
 }
@@ -1207,7 +1135,7 @@ add_action( 'update_option_home', 'rocket_update_ssl_option_after_save_home_url'
  * @return array Updated submitted options values.
  */
 function rocket_pre_main_option( $newvalue, $oldvalue ) {
-	if ( ( isset( $newvalue['purge_cron_interval'], $oldvalue['purge_cron_interval'] ) && $newvalue['purge_cron_interval'] !== $oldvalue['purge_cron_interval'] ) || 	( isset( $newvalue['purge_cron_unit'], $oldvalue['purge_cron_unit'] ) && $newvalue['purge_cron_unit'] !== $oldvalue['purge_cron_unit'] ) ) {
+	if ( ( isset( $newvalue['purge_cron_interval'], $oldvalue['purge_cron_interval'] ) && $newvalue['purge_cron_interval'] !== $oldvalue['purge_cron_interval'] ) || ( isset( $newvalue['purge_cron_unit'], $oldvalue['purge_cron_unit'] ) && $newvalue['purge_cron_unit'] !== $oldvalue['purge_cron_unit'] ) ) {
 		// Clear WP Rocket cron.
 		if ( wp_next_scheduled( 'rocket_purge_time_event' ) ) {
 			wp_clear_scheduled_hook( 'rocket_purge_time_event' );
@@ -1232,7 +1160,6 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 	// Regenerate the minify key if JS files have been modified.
 	if ( ( isset( $newvalue['minify_js'], $oldvalue['minify_js'] ) && $newvalue['minify_js'] !== $oldvalue['minify_js'] )
 		|| ( isset( $newvalue['exclude_js'], $oldvalue['exclude_js'] ) && $newvalue['exclude_js'] !== $oldvalue['exclude_js'] )
-		|| ( isset( $newvalue['minify_js_in_footer'], $oldvalue['minify_js_in_footer'] ) && $newvalue['minify_js_in_footer'] !== $oldvalue['minify_js_in_footer'] )
 		|| ( isset( $oldvalue['cdn'] ) && ! isset( $newvalue['cdn'] ) || ! isset( $oldvalue['cdn'] ) && isset( $newvalue['cdn'] ) )
 	) {
 		$newvalue['minify_js_key'] = create_rocket_uniqid();
@@ -1258,7 +1185,8 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 		rocket_generate_advanced_cache_file();
 	}
 
-	if ( $keys = get_transient( WP_ROCKET_SLUG ) ) {
+	$keys = get_transient( WP_ROCKET_SLUG );
+	if ( $keys ) {
 		delete_transient( WP_ROCKET_SLUG );
 		$newvalue = array_merge( $newvalue, $keys );
 	}
@@ -1286,61 +1214,89 @@ function rocket_import_upload_form() {
 	$size = size_format( $bytes );
 	$upload_dir = wp_upload_dir();
 	if ( ! empty( $upload_dir['error'] ) ) {
-		?><div class="error"><p><?php _e( 'Before you can upload your import file, you will need to fix the following error:', 'rocket' ); ?></p>
-		<p><strong><?php echo $upload_dir['error']; ?></strong></p></div><?php
+		?>
+		<div class="error"><p><?php _e( 'Before you can upload your import file, you will need to fix the following error:', 'rocket' ); ?></p>
+		<p><strong><?php echo $upload_dir['error']; ?></strong></p></div>
+	<?php
 	} else {
 		?>
 		<p>
 		<input type="file" id="upload" name="import" size="25" />
 		<br />
-		<label for="upload"><?php echo apply_filters( 'rocket_help', sprintf( __( 'Choose a file from your computer (maximum size: %s)', 'rocket' ), $size ), 'upload', 'help' ); ?></label>
+		<label for="upload">
+		<?php
+		// translators: %s is the maximum upload size set on the current server.
+		echo apply_filters( 'rocket_help', sprintf( __( 'Choose a file from your computer (maximum size: %s)', 'rocket' ), $size ), 'upload', 'help' );
+		?>
+		</label>
 		<input type="hidden" name="max_file_size" value="<?php echo $bytes; ?>" />
 		</p>
-		<?php submit_button( __( 'Upload file and import settings', 'rocket' ), 'button', 'import' );
+		<?php
+		submit_button( __( 'Upload file and import settings', 'rocket' ), 'button', 'import' );
 	}
 }
 
 /**
- * Count the number of items concerned by the database cleanup
+ * Handle WP Rocket settings import.
  *
- * @since 2.8
+ * @since 2.10.7
  * @author Remy Perona
  *
- * @param string $type Item type to count.
- * @return int Number of items for this type
+ * @param array  $file_import File import data.
+ * @param string $filename_prefix import filename prefix.
+ * @param array  $inputs Original settings.
+ * @return bool|array False if there was an error, an array of imported settings otherwise.
  */
-function rocket_database_count_cleanup_items( $type ) {
-	global $wpdb;
-
-	$count = 0;
-
-	switch ( $type ) {
-		case 'revisions':
-			$count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(ID) FROM $wpdb->posts WHERE post_type = %s", 'revision' ) );
-			break;
-		case 'auto_drafts':
-			$count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(ID) FROM $wpdb->posts WHERE post_status = %s", 'auto-draft' ) );
-			break;
-		case 'trashed_posts':
-			$count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(ID) FROM $wpdb->posts WHERE post_status = %s", 'trash' ) );
-			break;
-		case 'spam_comments':
-			$count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(comment_ID) FROM $wpdb->comments WHERE comment_approved = %s", 'spam' ) );
-			break;
-		case 'trashed_comments':
-			$count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(comment_ID) FROM $wpdb->comments WHERE (comment_approved = %s OR comment_approved = %s)", 'trash', 'post-trashed' ) );
-			break;
-		case 'expired_transients':
-			$time = isset( $_SERVER['REQUEST_TIME'] ) ? (int) $_SERVER['REQUEST_TIME'] : time();
-			$count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(option_name) FROM $wpdb->options WHERE option_name LIKE %s AND option_value < %d;", '_transient_timeout%', $time ) );
-			break;
-		case 'all_transients':
-			$count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(option_id) FROM $wpdb->options WHERE option_name LIKE %s", '%_transient_%' ) );
-			break;
-		case 'optimize_tables':
-			$count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(table_name) FROM information_schema.tables WHERE table_schema = %s and Engine <> 'InnoDB' and data_free > 0", DB_NAME ) );
-			break;
+function rocket_handle_settings_import( $file_import, $filename_prefix, $inputs ) {
+	if ( ! isset( $file_import ) ) {
+		add_settings_error( 'general', 'settings_update_error', __( 'Settings import failed: no file uploaded.', 'rocket' ), 'error' );
+		return false;
 	}
 
-	return $count;
+	if ( ! preg_match( '/' . $filename_prefix . '-settings-20\d{2}-\d{2}-\d{2}-[a-f0-9]{13}\.(?:txt|json)/', $file_import['name'] ) ) {
+		add_settings_error( 'general', 'settings_update_error', __( 'Settings import failed: incorrect filename.', 'rocket' ), 'error' );
+		return false;
+	}
+
+	add_filter( 'upload_mimes', 'rocket_allow_json_mime_type' );
+
+	$file_data = wp_check_filetype_and_ext( $file_import['tmp_name'], $file_import['name'] );
+
+	if ( 'text/plain' !== $file_data['type'] && 'application/json' !== $file_data['type'] ) {
+		add_settings_error( 'general', 'settings_update_error', __( 'Settings import failed: incorrect filetype.', 'rocket' ), 'error' );
+		return false;
+	}
+
+	$_post_action 		= $_POST['action'];
+	$_POST['action'] 	= 'wp_handle_sideload';
+	$file 				= wp_handle_sideload( $file_import );
+	$_POST['action'] 	= $_post_action;
+	$settings 			= rocket_direct_filesystem()->get_contents( $file['file'] );
+	remove_filter( 'upload_mimes', 'rocket_allow_json_mime_type' );
+
+	if ( 'text/plain' === $file_data['type'] ) {
+		$gz                 = 'gz' . strrev( 'etalfni' );
+		$settings           = $gz// ;
+		( $settings );
+		$settings           = maybe_unserialize( $settings );
+	} elseif ( 'application/json' === $file_data['type'] ) {
+		$settings = json_decode( $settings, true );
+	}
+
+	rocket_put_content( $file['file'], '' );
+	rocket_direct_filesystem()->delete( $file['file'] );
+
+	if ( is_array( $settings ) ) {
+		$settings['consumer_key']     = $inputs['consumer_key'];
+		$settings['consumer_email']   = $inputs['consumer_email'];
+		$settings['secret_key']       = $inputs['secret_key'];
+		$settings['secret_cache_key'] = $inputs['secret_cache_key'];
+		$settings['minify_css_key']   = $inputs['minify_css_key'];
+		$settings['minify_js_key']    = $inputs['minify_js_key'];
+		$settings['version']          = $inputs['version'];
+
+		add_settings_error( 'general', 'settings_updated', __( 'Settings imported and saved.', 'rocket' ), 'updated' );
+
+		return $settings;
+	}
 }

@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
  * Add width and height attributes on all images
@@ -41,7 +41,7 @@ function rocket_specify_image_dimensions( $buffer ) {
 		preg_match( '/src=[\'"]([^\'"]+)/', $image, $src_match );
 
 		// Get infos of the URL.
-		$image_url = parse_url( $src_match[1] );
+		$image_url = wp_parse_url( $src_match[1] );
 
 		// Check if the link isn't external.
 		if ( empty( $image_url['host'] ) || rocket_remove_url_protocol( home_url() ) === $image_url['host'] ) {
@@ -66,7 +66,7 @@ function rocket_specify_image_dimensions( $buffer ) {
 			$image = str_replace( '<img', '<img ' . $sizes[3], $image );
 
 			// Replace image with new attributes.
-	        $buffer = str_replace( $tmp, $image, $buffer );
+			$buffer = str_replace( $tmp, $image, $buffer );
 		}
 	}
 

@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 add_settings_section( 'rocket_display_white_label', __( 'White Label', 'rocket' ), '__return_false', 'rocket_white_label' );
 add_settings_field(
@@ -86,7 +86,7 @@ add_settings_field(
 	array(
 		'button' => array(
 			'button_label' => __( 'Reset White Label values to default', 'rocket' ),
-			'url'		   => wp_nonce_url( admin_url( 'admin-post.php?action=rocket_resetwl' ), 'rocket_resetwl' ),
+			'url'          => wp_nonce_url( admin_url( 'admin-post.php?action=rocket_resetwl' ), 'rocket_resetwl' ),
 		),
 		'helper_warning' => array(
 			'name'         => 'wl_warning',

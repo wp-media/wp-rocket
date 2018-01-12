@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
  * Send data to Varnish
@@ -10,12 +10,12 @@ defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
  * @return void
  */
 function rocket_varnish_http_purge( $url ) {
-	list( $host, $path, $scheme, $query ) = get_rocket_parse_url( $url );
+	$parse_url = get_rocket_parse_url( $url );
 
 	$varnish_x_purgemethod = 'default';
 	$regex = '';
 
-	if ( 'vregex' === $query ) {
+	if ( 'vregex' === $parse_url['query'] ) {
 		$varnish_x_purgemethod = 'regex';
 		$regex = '.*';
 	}
@@ -40,8 +40,8 @@ function rocket_varnish_http_purge( $url ) {
 	 */
 	$scheme = apply_filters( 'rocket_varnish_http_purge_scheme', 'http' );
 
-	$host 	 = ( $varnish_ip ) ? $varnish_ip : $host;
-	$purgeme = $scheme . '://' . $host . $path . $regex;
+	$parse_url['host'] = ( $varnish_ip ) ? $varnish_ip : $parse_url['host'];
+	$purgeme           = $scheme . '://' . $parse_url['host'] . $parse_url['path'] . $regex;
 
 	wp_remote_request(
 		$purgeme,
@@ -56,7 +56,7 @@ function rocket_varnish_http_purge( $url ) {
 				 * @since 2.8.15
 				 * @param string The host
 				 */
-				'host'           => apply_filters( 'rocket_varnish_purge_request_host', $host ),
+				'host'           => apply_filters( 'rocket_varnish_purge_request_host', $parse_url['host'] ),
 				'X-Purge-Method' => $varnish_x_purgemethod,
 			),
 		)

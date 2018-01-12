@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 if ( class_exists( 'WpeCommon' ) && function_exists( 'wpe_param' ) ) :
 	/**

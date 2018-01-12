@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
  * A wrapper to easily get rocket option
@@ -58,12 +58,47 @@ function update_rocket_option( $key, $value ) {
 }
 
 /**
+ * Check whether the plugin is active by checking the active_plugins list.
+ *
+ * @since 1.3.0
+ *
+ * @source wp-admin/includes/plugin.php
+ *
+ * @param string $plugin Plugin folder/main file.
+ */
+function rocket_is_plugin_active( $plugin ) {
+	return in_array( $plugin, (array) get_option( 'active_plugins', array() ), true ) || rocket_is_plugin_active_for_network( $plugin );
+}
+
+/**
+ * Check whether the plugin is active for the entire network.
+ *
+ * @since 1.3.0
+ *
+ * @source wp-admin/includes/plugin.php
+ *
+ * @param string $plugin Plugin folder/main file.
+ */
+function rocket_is_plugin_active_for_network( $plugin ) {
+	if ( ! is_multisite() ) {
+		return false;
+	}
+
+	$plugins = get_site_option( 'active_sitewide_plugins' );
+	if ( isset( $plugins[ $plugin ] ) ) {
+		return true;
+	}
+
+	return false;
+}
+
+/**
  * Is we need to exclude some specifics options on a post.
  *
  * @since 2.5
  *
  * @param  string $option  The option name (lazyload, css, js, cdn).
- * @return bool 		   True if the option is deactivated
+ * @return bool            True if the option is deactivated
  */
 function is_rocket_post_excluded_option( $option ) {
 	global $post;
@@ -136,7 +171,7 @@ function is_rocket_cdn_on_ssl() {
  * return Array An array of domain names to DNS prefetch
  */
 function rocket_get_dns_prefetch_domains() {
-	$cdn_cnames    = get_rocket_cdn_cnames( array( 'all', 'images', 'css_and_js', 'css', 'js' ) );
+	$cdn_cnames = get_rocket_cdn_cnames( array( 'all', 'images', 'css_and_js', 'css', 'js' ) );
 
 	// Don't add CNAMES if CDN is disabled HTTPS pages or on specific posts.
 	if ( ! is_rocket_cdn_on_ssl() || is_rocket_post_excluded_option( 'cdn' ) ) {
@@ -173,7 +208,7 @@ function get_rocket_purge_cron_interval() {
 /**
  * Get all uri we don't cache
  *
- * @since 2.6	Using json_get_url_prefix() to auto-exclude the WordPress REST API
+ * @since 2.6   Using json_get_url_prefix() to auto-exclude the WordPress REST API
  * @since 2.4.1 Auto-exclude WordPress REST API
  * @since 2.0
  *
@@ -182,13 +217,7 @@ function get_rocket_purge_cron_interval() {
 function get_rocket_cache_reject_uri() {
 	$uri = get_rocket_option( 'cache_reject_uri', array() );
 
-	// Exclude cart & checkout pages from e-commerce plugins.
-	$uri = array_merge( $uri, get_rocket_ecommerce_exclude_pages() );
-
-	// Exclude hide login plugins.
-	$uri = array_merge( $uri, get_rocket_logins_exclude_pages() );
-
-	// Exclude feeds
+	// Exclude feeds.
 	$uri[] = '(.*)/' . $GLOBALS['wp_rewrite']->feed_base . '/?';
 
 	/**
@@ -345,12 +374,12 @@ function get_rocket_cdn_cnames( $zone = 'all' ) {
 	$hosts       = array();
 	$cnames      = get_rocket_option( 'cdn_cnames', array() );
 	$cnames_zone = get_rocket_option( 'cdn_zone', array() );
-	$zone 		 = is_array( $zone ) ? $zone : (array) $zone;
+	$zone        = is_array( $zone ) ? $zone : (array) $zone;
 
 	foreach ( $cnames as $k => $_urls ) {
 		if ( in_array( $cnames_zone[ $k ], $zone, true ) ) {
-			$_urls = explode( ',' , $_urls );
-			$_urls = array_map( 'trim' , $_urls );
+			$_urls = explode( ',', $_urls );
+			$_urls = array_map( 'trim', $_urls );
 
 			foreach ( $_urls as $url ) {
 				$hosts[] = $url;
@@ -394,103 +423,45 @@ function get_rocket_cache_query_string() {
 }
 
 /**
- * Get all CSS files to exclude to the minification.
+ * Get all files to exclude from minification/concatenation.
  *
- * @since 2.6
+ * @since 2.11
+ * @author Remy Perona
  *
- * @return array List of excluded CSS files.
+ * @param string $extension Type of files to exclude.
+ * @return array Array of excluded files.
  */
-function get_rocket_exclude_css() {
-	global $rocket_excluded_enqueue_css;
+function get_rocket_exclude_files( $extension ) {
+	if ( 'css' === $extension ) {
+		$excluded_files = get_rocket_option( 'exclude_css', array() );
+		/**
+		 * Filters CSS files to exclude from minification/concatenation.
+		 *
+		 * @since 2.6
+		 *
+		 * @param array $excluded_files List of excluded CSS files.
+		*/
+		$excluded_files = apply_filters( 'rocket_exclude_css', $excluded_files );
+	} elseif ( 'js' === $extension ) {
+		global $wp_scripts;
 
-	$css_files = get_rocket_option( 'exclude_css', array() );
-	$css_files = array_unique( array_merge( $css_files, (array) $rocket_excluded_enqueue_css ) );
+		$excluded_files = get_rocket_option( 'exclude_js', array() );
 
-	/**
-	 * Filter CSS files to exclude to the minification.
-	 *
-	 * @since 2.6
-	 *
-	 * @param array $css_files List of excluded CSS files.
-	*/
-	$css_files = apply_filters( 'rocket_exclude_css', $css_files );
+		if ( get_rocket_option( 'defer_all_js', 0 ) && get_rocket_option( 'defer_all_js_safe', 0 ) ) {
+			$excluded_files[] = rocket_clean_exclude_file( site_url( $wp_scripts->registered['jquery-core']->src ) );
+		}
 
-	return $css_files;
-}
-
-/**
- * Get all JS files to exclude to the minification.
- *
- * @since 2.6
- *
- * @return array List of excluded JS files.
- */
-function get_rocket_exclude_js() {
-	global $wp_scripts, $rocket_excluded_enqueue_js;
-
-	$js_files = get_rocket_option( 'exclude_js', array() );
-	$js_files = array_unique( array_merge( $js_files, (array) $rocket_excluded_enqueue_js ) );
-
-	if ( get_rocket_option( 'defer_all_js', 0 ) && get_rocket_option( 'defer_all_js_safe', 0 ) ) {
-		$js_files[] = $wp_scripts->registered['jquery-core']->src;
+		/**
+		 * Filter JS files to exclude from minification/concatenation.
+		 *
+		 * @since 2.6
+		 *
+		 * @param array $js_files List of excluded JS files.
+		*/
+		$excluded_files = apply_filters( 'rocket_exclude_js', $excluded_files );
 	}
 
-	/**
-	 * Filter JS files to exclude to the minification.
-	 *
-	 * @since 2.6
-	 *
-	 * @param array $css_files List of excluded JS files.
-	*/
-	$js_files = apply_filters( 'rocket_exclude_js', $js_files );
-
-	return $js_files;
-}
-
-/**
- * Get all JS files to move in the footer during the minification.
- *
- * @since 2.6
- *
- * @return array List of JS files.
- */
-function get_rocket_minify_js_in_footer() {
-	global $rocket_enqueue_js_in_footer, $wp_scripts;
-
-	$js_files = get_rocket_option( 'minify_js_in_footer', array() );
-	$js_files = array_map( 'rocket_set_internal_url_scheme', $js_files );
-	$js_files = array_unique( array_merge( $js_files, (array) $rocket_enqueue_js_in_footer ) );
-
-	/**
-	 * Filter JS files to move in the footer during the minification.
-	 *
-	 * @since 2.6
-	 *
-	 * @param array $js_files List of JS files.
-	*/
-	$js_files = apply_filters( 'rocket_minify_js_in_footer', $js_files );
-
-	return $js_files;
-}
-
-/**
- * Get list of JS files to deferred.
- *
- * @since 2.6
- *
- * @return array List of JS files.
- */
-function get_rocket_deferred_js_files() {
-	/**
-	 * Filter list of Deferred JavaScript files
-	 *
-	 * @since 1.1.0
-	 *
-	 * @param array List of Deferred JavaScript files
-	 */
-	$deferred_js_files = apply_filters( 'rocket_minify_deferred_js', get_rocket_option( 'deferred_js_files', array() ) );
-
-	return $deferred_js_files;
+	return $excluded_files;
 }
 
 /**
@@ -507,14 +478,13 @@ function get_rocket_exclude_defer_js() {
 	$exclude_defer_js = array();
 
 	if ( get_rocket_option( 'defer_all_js', 0 ) && get_rocket_option( 'defer_all_js_safe', 0 ) ) {
-		$jquery = $wp_scripts->registered['jquery-core']->src;
-		
+		$jquery = site_url( $wp_scripts->registered['jquery-core']->src );
+
 		if ( get_rocket_option( 'remove_query_strings', 0 ) ) {
-			$jquery = site_url( $jquery . '?ver=' . $wp_scripts->registered['jquery-core']->ver );
-			$exclude_defer_js[] = rocket_clean_exclude_file( get_rocket_browser_cache_busting( $jquery, 'script_loader_src' ) );
-		} else {
-			$exclude_defer_js[] = $jquery;
+			$jquery = get_rocket_browser_cache_busting( $jquery . '?ver=' . $wp_scripts->registered['jquery-core']->ver, 'script_loader_src' );
 		}
+
+		$exclude_defer_js[] = rocket_clean_exclude_file( $jquery );
 	}
 
 	/**
@@ -561,7 +531,8 @@ function get_rocket_exclude_async_css() {
  * @return bool true if everything is ok, false otherwise
  */
 function rocket_valid_key() {
-	if ( ! $rocket_secret_key = get_rocket_option( 'secret_key' ) ) {
+	$rocket_secret_key = get_rocket_option( 'secret_key' );
+	if ( ! $rocket_secret_key ) {
 		return false;
 	}
 
@@ -580,14 +551,18 @@ function rocket_check_key() {
 	$return = rocket_valid_key();
 
 	if ( ! rocket_valid_key() ) {
-		$response = wp_remote_get( WP_ROCKET_WEB_VALID, array( 'timeout' => 30 ) );
+		$response = wp_remote_get(
+			WP_ROCKET_WEB_VALID, array(
+				'timeout' => 30,
+			)
+		);
 
-		$json = ! is_wp_error( $response ) ? json_decode( $response['body'] ) : false;
+		$json           = ! is_wp_error( $response ) ? json_decode( $response['body'] ) : false;
 		$rocket_options = array();
 
 		if ( $json ) {
-			$rocket_options['consumer_key'] 	= $json->data->consumer_key;
-			$rocket_options['consumer_email']	= $json->data->consumer_email;
+			$rocket_options['consumer_key']   = $json->data->consumer_key;
+			$rocket_options['consumer_email'] = $json->data->consumer_email;
 
 			if ( $json->success ) {
 				$rocket_options['secret_key'] = $json->data->secret_key;
@@ -596,13 +571,13 @@ function rocket_check_key() {
 					$rocket_options['license'] = '1';
 				}
 			} else {
-
 				$messages = array(
 					'BAD_LICENSE' => __( 'Your license is not valid.', 'rocket' ),
 					'BAD_NUMBER'  => __( 'You cannot add more websites. Upgrade your account.', 'rocket' ),
-					'BAD_SITE'	  => __( 'This website is not allowed.', 'rocket' ),
-					'BAD_KEY'	  => __( 'This license key is not accepted.', 'rocket' ),
+					'BAD_SITE'    => __( 'This website is not allowed.', 'rocket' ),
+					'BAD_KEY'     => __( 'This license key is not accepted.', 'rocket' ),
 				);
+
 				$rocket_options['secret_key'] = '';
 
 				add_settings_error( 'general', 'settings_updated', $messages[ $json->data->reason ], 'error' );

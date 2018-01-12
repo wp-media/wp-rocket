@@ -94,7 +94,13 @@ class WP_Rocket_Formatting_Test extends WP_UnitTestCase {
 
 	function test_get_rocket_parse_url() {
 		$parsed_url             = get_rocket_parse_url( 'http://wordpress.dev/test/?query=toto' );
-		$expected_parsed_values = array( 'wordpress.dev', '/test/', 'http', 'query=toto' );
+		$expected_parsed_values = array( 
+			'host'   => 'wordpress.dev',
+			'path'   => '/test/',
+			'scheme' => 'http',
+			'query'  => 'query=toto',
+		);
+
 		$not_string             = get_rocket_parse_url( 123 );
 
 		$this->assertEquals( $expected_parsed_values, $parsed_url );
@@ -104,11 +110,22 @@ class WP_Rocket_Formatting_Test extends WP_UnitTestCase {
 	function test_rocket_get_cache_busting_paths() {
 		$cache_busting_paths = rocket_get_cache_busting_paths( 'wp-content-plugins-wp-rocket-js-lazyload-1.0.5.min.js', 'js' );
 		$expected_cache_busting_paths = array(
-			'bustingpath' => WP_CONTENT_DIR . '/cache/busting/1/',
+			'bustingpath' => WP_CONTENT_DIR . '/cache/busting/1',
 			'filepath'	  => WP_CONTENT_DIR . '/cache/busting/1/wp-content-plugins-wp-rocket-js-lazyload-1.0.5.min.js',
 			'url'		  => WP_CONTENT_URL . '/cache/busting/1/wp-content-plugins-wp-rocket-js-lazyload-1.0.5.min.js',
 		);
 
 		$this->assertEquals( $expected_cache_busting_paths, $cache_busting_paths );
+	}
+
+	function test_rocket_realpath() {
+		$relative_path = rocket_realpath( '/wp-content/plugins/plugin-test/inc/../assets/js/javascript.js', false );
+		$absolute_path = rocket_realpath( 'http://example.org/wp-content/plugins/plugin-test/inc/../assets/js/javascript.js' );
+
+		$expected_relative_path = '/wp-content/plugins/plugin-test/assets/js/javascript.js';
+		$expected_absolute_path = ABSPATH . 'wp-content/plugins/plugin-test/assets/js/javascript.js';
+
+		$this->assertEquals( $expected_relative_path, $relative_path );
+		$this->assertEquals( $expected_absolute_path, $absolute_path );
 	}
 }

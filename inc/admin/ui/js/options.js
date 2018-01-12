@@ -1,4 +1,17 @@
 jQuery( document ).ready( function($){
+	$( '#submit-support-button' ).prop( 'disabled', true );
+	var support_submit_disabled = true;
+
+	$( '#support_documentation_validation' ).change( function() {
+		if ( true === support_submit_disabled ) {
+			$( '#submit-support-button' ).prop( 'disabled', false );
+			support_submit_disabled = false;
+		} else if ( false === support_submit_disabled ) {
+			$( '#submit-support-button' ).prop( 'disabled', true );
+			support_submit_disabled = true;
+		}
+	});
+
 	// Fancybox
 	$(".fancybox").fancybox({'type' : 'iframe'});
 
@@ -20,23 +33,41 @@ jQuery( document ).ready( function($){
 
 	$inputs.on('change.wprocket', check_lazy);
 
-	// Display warning message if minification options are checked
+	// Display warning message if any minification options are checked
 	var $info_minify = $('.fieldname-minify_warning'),
-    	$inputs_minify = $('input[id^="minify"]'),
-		is_minify_checked = function(){
-		return $inputs_minify.filter(':checked').length > 0 ? true : false;
-    	},
+	    $inputs_minify = $('input[id^="minify"]'),
+	    is_minify_checked = function(){
+			return $inputs_minify.filter(':checked').length > 0 ? true : false;
+		},
 		check_minify = function(){
-			if( is_minify_checked() ) {
+			if( is_minify_checked() ){
 				$info_minify.fadeIn( 275 ).attr('aria-hidden', 'false' );
-      		} else {
+			} else {
 	  			$info_minify.fadeOut( 275 ).attr('aria-hidden', 'true' );
-      		}
-    	};
+			}
+		};
 
 	check_minify();
 
 	$inputs_minify.on('change.wprocket', check_minify);
+
+	// Display HTTP/2 warning message if CSS/JS minification options are checked
+	var $info_minify_js_css = $('.fieldname-minify_combine_http2_warning'),
+	    $inputs_minify_js_css = $('input#minify_css, input#minify_js'),
+	    is_minify_css_js_checked = function(){
+			return $inputs_minify_js_css.filter(':checked').length > 0 ? true : false;
+		},
+		check_minify_css_js = function(){
+			if( is_minify_css_js_checked() ){
+				$info_minify_js_css.fadeIn( 275 ).attr('aria-hidden', 'false' );
+			} else {
+	  			$info_minify_js_css.fadeOut( 275 ).attr('aria-hidden', 'true' );
+			}
+		};
+
+	check_minify_css_js();
+
+	$inputs_minify_js_css.on('change.wprocket', check_minify_css_js);
 
 	// Display warning message if purge interval is too low or too high
 	var $info_lifespan_less = $('.fieldname-purge_warning_less'),
@@ -80,27 +111,6 @@ jQuery( document ).ready( function($){
 
 	$inputs_render_blocking.on('change.wprocket', check_minify);
 
-	// Deferred JS
-	function rocket_deferred_rename()
-	{
-		$('#rkt-drop-deferred .rkt-module-drag').each( function(i){
-			var $item_t_input = $(this).find( 'input[type=text]' );
-			var $item_c_input = $(this).find( 'input[type=checkbox]' );
-			$($item_t_input).attr( 'name', 'wp_rocket_settings[deferred_js_files]['+i+']' );
-		});
-	}
-
-	var async_css 		 = $( '#async_css' );
-	var critical_css_row = $( '.critical-css-row' );
-
-	if ( ! async_css.is( ':checked' ) ) {
-		critical_css_row.hide();
-	}
-
-	async_css.change( function() {
-		critical_css_row.toggle( 'fast' );
-	});
-
 	var minify_css 		= $( '#minify_css' );
 	var concatenate_css	= $( '.fieldname-minify_concatenate_css' );
 	var exclude_css_row = $( '.exclude-css-row' );
@@ -113,7 +123,6 @@ jQuery( document ).ready( function($){
 	minify_css.change( function() {
 		if ( ! minify_css.is( ':checked' ) ) {
 			concatenate_css.find( '#minify_concatenate_css' ).prop( 'checked', false );
-			$( '.fieldname-minify_css_combine_all' ).hide();
 		}
 
 		concatenate_css.toggle( 'fast' );
@@ -132,45 +141,14 @@ jQuery( document ).ready( function($){
 	minify_js.change( function() {
 		if ( ! minify_js.is( ':checked' ) ) {
 			concatenate_js.find( '#minify_concatenate_js' ).prop( 'checked', false );
-			$( '.fieldname-minify_js_combine_all' ).hide();
 		}
 
 		concatenate_js.toggle( 'fast' );
 		exclude_js_row.toggle( 'fast' );
 	});
 
-	// Minify JS in footer
-	function rocket_minify_js_rename() {
-		$('#rkt-drop-minify_js_in_footer .rkt-module-drag').each( function(i){
-			var $item_t_input = $(this).find( 'input[type=text]' );
-			$($item_t_input).attr( 'name', 'wp_rocket_settings[minify_js_in_footer]['+i+']' );
-		});
-	}
-
-	$('.rkt-module-drop').sortable({
-		update : function() {
-			if ( $(this).attr('id') == 'rkt-drop-deferred' ) {
-				rocket_deferred_rename();
-			}
-
-			if ( $(this).attr('id') == 'rkt-drop-minify_js_in_footer' ) {
-				rocket_minify_js_rename();
-			}
-		},
-		axis: "y",
-		items: ".rkt-module-drag",
-		containment: "parent",
-		cursor: "move",
-		handle: ".rkt-module-move",
-		forcePlaceholderSize: true,
-		dropOnEmpty: false,
-		placeholder: 'sortable-placeholder',
-		tolerance: 'pointer',
-		revert: true,
-	});
-
 	// Remove input
-	$('.rkt-module-remove').css('cursor','pointer').live('click', function(e){
+	$('.rkt-module-remove').css('cursor','pointer').on('click', function(e){
 		e.preventDefault();
 		$(this).parent().css('background-color','red' ).slideUp( 'slow' , function(){$(this).remove(); } );
 	} );
@@ -182,10 +160,6 @@ jQuery( document ).ready( function($){
 
 		e.preventDefault();
 		$($('#' + moduleID ).siblings('.rkt-module-model:last')[0].innerHTML).appendTo('#' + moduleID);
-
-		if( moduleID == '' ) {
-			rocket_deferred_rename();
-		}
 
 	});
 
@@ -225,6 +199,7 @@ jQuery( document ).ready( function($){
 				$('#tab_basic').show();
 		}
 	}
+	// Context includes tab links in admin notices.
 	$( 'h2.nav-tab-wrapper .nav-tab, a[href^="#tab_"]', '#rocket_options' ).on( 'click', function(e){
 		e.preventDefault();
 		tab = $(this).attr( 'href' );
@@ -439,4 +414,11 @@ jQuery( document ).ready( function($){
         }
         return false;
     }
+
+	$( '.rocket-analytics-data-container' ).hide();
+	$( '.rocket-preview-analytics-data' ).on( 'click', function( e ) {
+		e.preventDefault();
+
+		$(this).parent().next( '.rocket-analytics-data-container' ).toggle();
+	} );
 } );
