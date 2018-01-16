@@ -493,6 +493,7 @@ function rocket_display_options() {
 				'version',
 				'cloudflare_old_settings',
 				'cloudflare_zone_id',
+				'sitemap_preload_url_crawl',
 			)
 		);
 
