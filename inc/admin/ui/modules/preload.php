@@ -19,15 +19,15 @@ $sitemap_preload_options = array(
 		'default'      => 0,
 	),
 	array(
-		'type'          => 'helper_description',
-		'name'          => 'sitemaps_preload_desc',
-		'description'   => $rwl ? __( 'Sitemap preloading runs automatically when the cache lifespan expires. You can also launch it manually from the upper toolbar menu, or from the Tools tab.', 'rocket' ) : __( '<a href="http://docs.wp-rocket.me/article/8-how-the-cache-is-preloaded" target="_blank">Sitemap preloading</a> runs automatically when the cache lifespan expires. You can also launch it manually from the upper toolbar menu, or from the Tools tab.', 'rocket' ),
+		'type'        => 'helper_description',
+		'name'        => 'sitemaps_preload_desc',
+		'description' => $rwl ? __( 'Sitemap preloading runs automatically when the cache lifespan expires. You can also launch it manually from the upper toolbar menu, or from the Tools tab.', 'rocket' ) : __( '<a href="http://docs.wp-rocket.me/article/8-how-the-cache-is-preloaded" target="_blank">Sitemap preloading</a> runs automatically when the cache lifespan expires. You can also launch it manually from the upper toolbar menu, or from the Tools tab.', 'rocket' ),
 	),
 );
 
 add_settings_field(
 	'rocket_sitemap_preload_activate',
-	 __( 'Sitemap preloading:', 'rocket' ),
+	__( 'Sitemap preloading:', 'rocket' ),
 	'rocket_field',
 	'rocket_preload',
 	'rocket_display_preload_options',
@@ -42,55 +42,11 @@ add_settings_field(
 );
 
 /**
- * Sitemap preload interval
- */
-add_settings_field(
-	'rocket_sitemap_preload_interval',
-	 __( 'Sitemap crawl interval:', 'rocket' ),
-	'rocket_field',
-	'rocket_preload',
-	'rocket_display_preload_options',
-	array(
-		array(
-			'type'         => 'select',
-			'label'        => '&#160;' . __( '<span class="screen-reader-text">This is the </span>waiting time between each URL crawl', 'rocket' ),
-			'label_for'    => 'sitemap_preload_url_crawl',
-			'label_screen' => __( 'Sets the intervall between each URL crawl', 'rocket' ),
-			/**
-			 * Filters the array of options interval for sitemap preload
-			 *
-			 * @since 2.8
-			 *
-			 * @param array $intervals Array of options interval defined by a $value => $label pair.
-			 */
-			'options'      => apply_filters(
-				'rocket_sitemap_preload_interval', array(
-					'250000'  => '250ms',
-					'500000'  => '500ms',
-					'750000'  => '750ms',
-					'1000000' => '1s',
-					'2000000' => '2s',
-				)
-			),
-		),
-		array(
-			'type'        => 'helper_description',
-			'name'        => 'sitemaps_preload_url_crawl_desc',
-		),
-		array(
-			'type'        => 'helper_warning',
-			'name'        => 'sitemaps_preload_url_crawl_warning',
-			'description' => __( 'Set a higher value if you notice any overload on your server!', 'rocket' ),
-		),
-	)
-);
-
-/**
  * Sitemaps for preloading
  */
 add_settings_field(
 	'rocket_sitemap_preload_files',
-	 __( 'Sitemaps for preloading:', 'rocket' ),
+	__( 'Sitemaps for preloading:', 'rocket' ),
 	'rocket_field',
 	'rocket_preload',
 	'rocket_display_preload_options',
@@ -158,9 +114,9 @@ add_settings_field(
 	'rocket_display_preload_options',
 	array(
 		array(
-			'type'         => 'helper_help',
-			'name'         => 'dns_prefetch_tip',
-			'description'  => __( 'Specify external hosts to be prefetched (no <code>http:</code>, one per line)', 'rocket' ),
+			'type'        => 'helper_help',
+			'name'        => 'dns_prefetch_tip',
+			'description' => __( 'Specify external hosts to be prefetched (no <code>http:</code>, one per line)', 'rocket' ),
 		),
 		array(
 			'type'         => 'textarea',
@@ -169,9 +125,9 @@ add_settings_field(
 			'placeholder'  => '//example.com',
 		),
 		array(
-			'type'         => 'helper_description',
-			'name'         => 'dns_prefetch',
-			'description'  => __( '<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-DNS-Prefetch-Control" target="_blank">DNS prefetching</a> can make external files load faster, especially on mobile networks.', 'rocket' ),
+			'type'        => 'helper_description',
+			'name'        => 'dns_prefetch',
+			'description' => __( '<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-DNS-Prefetch-Control" target="_blank">DNS prefetching</a> can make external files load faster, especially on mobile networks.', 'rocket' ),
 		),
 	)
 );
