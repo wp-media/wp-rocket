@@ -53,7 +53,7 @@ function get_rocket_cloudflare_instance() {
 			/* translators: %1$s = opening link; %2$s = closing link */
 			__( 'Read the %1$sdocumentation%2$s for further guidance.', 'rocket' ),
 			/* translators: Documentation exists in EN, DE, FR, ES, IT; use loaclised URL if applicable */
-			'<a href="' . __( 'http://docs.wp-rocket.me/article/18-using-wp-rocket-with-cloudflare', 'rocket' ) . '" target="__blank">',
+			'<a href="' . __( 'http://docs.wp-rocket.me/article/18-using-wp-rocket-with-cloudflare', 'rocket' ) . '" target="_blank">',
 			'</a>'
 		);
 
