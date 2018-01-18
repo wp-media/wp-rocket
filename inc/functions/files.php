@@ -131,10 +131,10 @@ function get_rocket_config_file() {
 
 	/**
 	 * Filters the activation of the cache for SSL pages
-	 * 
+	 *
 	 * @since 3.0
 	 * @author Remy Perona
-	 * 
+	 *
 	 * @param bool True to activate the cache, false otherwise.
 	 */
 	if ( rocket_is_ssl_website() && apply_filters( 'rocket_cache_ssl', true ) ) {
@@ -1101,9 +1101,7 @@ function rocket_find_wpconfig_path() {
  * @return string The footprint that will be printed
  */
 function get_rocket_footprint( $debug = true ) {
-	$footprint = ! rocket_is_white_label() ?
-					"\n" . '<!-- This website is like a Rocket, isn\'t it? Performance optimized by WP Rocket. Learn more: https://wp-rocket.me' :
-					"\n" . '<!-- Cached page for great performance';
+	$footprint = "\n" . '<!-- This website is like a Rocket, isn\'t it? Performance optimized by WP Rocket. Learn more: https://wp-rocket.me';
 	if ( $debug ) {
 		$footprint .= ' - Debug: cached@' . time();
 	}

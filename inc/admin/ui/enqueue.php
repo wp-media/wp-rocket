@@ -17,10 +17,7 @@ function rocket_add_admin_css_js() {
 	wp_enqueue_style( 'options-wp-rocket', WP_ROCKET_ADMIN_UI_CSS_URL . 'options.css', array(), WP_ROCKET_VERSION );
 	wp_enqueue_style( 'fancybox-wp-rocket', WP_ROCKET_ADMIN_UI_CSS_URL . 'fancybox/jquery.fancybox.css', array( 'options-wp-rocket' ), WP_ROCKET_VERSION );
 
-	$minify_text = rocket_is_white_label()
-		? __( 'This could break things!', 'rocket' ) . '<br><br>' .
-		__( 'If you notice any errors on your website after having activated this setting, just deactivate it again, and your site will be back to normal.', 'rocket' )
-		: __( 'This could break things!', 'rocket' ) . '<br>' .
+	$minify_text = __( 'This could break things!', 'rocket' ) . '<br>' .
 		__( 'Before you continue activating this setting, read the documentation:', 'rocket' ) .
 		sprintf(
 			'<br><br><span class="dashicons dashicons-media-text" aria-hidden="true"></span>&#160;<a href="%1$s?utm_source=wp-rocket&utm_medium=wp-admin&utm_term=doc-minification&utm_campaign=plugin" target="_blank">%2$s</a><br/><br/>',

@@ -79,7 +79,7 @@ function rocket_warning_plugin_modification() {
 		rocket_notice_html( array(
 			'status'         => 'warning',
 			'dismissible'    => '',
-			// translators: %s is WP Rocket plugin name (maybe white label).
+			// translators: %s is WP Rocket plugin name.
 			'message'        => sprintf( __( '<strong>%s</strong>: One or more plugins have been enabled or disabled, clear the cache if they affect the front end of your site.', 'rocket' ), WP_ROCKET_PLUGIN_NAME ),
 			'action'         => 'clear_cache',
 			'dismiss_button' => __FUNCTION__,
@@ -183,7 +183,7 @@ function rocket_plugins_to_deactivate() {
 		&& rocket_valid_key()
 	) {
 
-		// translators: %s is WP Rocket plugin name (maybe white label).
+		// translators: %s is WP Rocket plugin name.
 		$warning = '<p>' . sprintf( __( '<strong>%s</strong>: The following plugins are not compatible with this plugin and may cause unexpected results:', 'rocket' ), WP_ROCKET_PLUGIN_NAME ) . '</p>';
 
 		$warning .= '<ul class="rocket-plugins-error">';
@@ -513,7 +513,7 @@ function rocket_imagify_notice() {
 
 	$boxes = get_user_meta( $GLOBALS['current_user']->ID, 'rocket_boxes', true );
 
-	if ( defined( 'IMAGIFY_VERSION' ) || in_array( __FUNCTION__, (array) $boxes, true ) || 1 === get_option( 'wp_rocket_dismiss_imagify_notice' ) || rocket_is_white_label() || ! current_user_can( 'manage_options' ) ) {
+	if ( defined( 'IMAGIFY_VERSION' ) || in_array( __FUNCTION__, (array) $boxes, true ) || 1 === get_option( 'wp_rocket_dismiss_imagify_notice' ) || ! current_user_can( 'manage_options' ) ) {
 		return;
 	}
 
@@ -611,15 +611,14 @@ add_action( 'admin_notices', 'rocket_cloudflare_purge_result' );
  */
 function rocket_cloudflare_update_settings() {
 	global $current_user;
-	$screen              = get_current_screen();
-	$rocket_wl_name      = get_rocket_option( 'wl_plugin_name', null );
-	$wp_rocket_screen_id = isset( $rocket_wl_name ) ? 'settings_page_' . sanitize_key( $rocket_wl_name ) : 'settings_page_wprocket';
+	$screen = get_current_screen();
+
 	// This filter is documented in inc/admin-bar.php.
 	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
 		return;
 	}
 
-	if ( $screen->id !== $wp_rocket_screen_id ) {
+	if ( $screen->id !== 'settings_page_wprocket' ) {
 		return;
 	}
 
@@ -659,19 +658,15 @@ add_action( 'admin_notices', 'rocket_cloudflare_update_settings' );
  * @author Remy Perona
  */
 function rocket_analytics_optin_notice() {
-	if ( rocket_is_white_label() ) {
-		return;
-	}
 
-	$screen              = get_current_screen();
-	$rocket_wl_name      = get_rocket_option( 'wl_plugin_name', null );
-	$wp_rocket_screen_id = isset( $rocket_wl_name ) ? 'settings_page_' . sanitize_key( $rocket_wl_name ) : 'settings_page_wprocket';
+	$screen = get_current_screen();
+
 	// This filter is documented in inc/admin-bar.php.
 	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
 		return;
 	}
 
-	if ( $screen->id !== $wp_rocket_screen_id ) {
+	if ( $screen->id !== 'settings_page_wprocket' ) {
 		return;
 	}
 
@@ -728,19 +723,15 @@ add_action( 'admin_notices', 'rocket_analytics_optin_notice' );
  * @author Remy Perona
  */
 function rocket_analytics_optin_thankyou_notice() {
-	if ( rocket_is_white_label() ) {
-		return;
-	}
 
-	$screen              = get_current_screen();
-	$rocket_wl_name      = get_rocket_option( 'wl_plugin_name', null );
-	$wp_rocket_screen_id = isset( $rocket_wl_name ) ? 'settings_page_' . sanitize_key( $rocket_wl_name ) : 'settings_page_wprocket';
+	$screen = get_current_screen();
+
 	// This filter is documented in inc/admin-bar.php.
 	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
 		return;
 	}
 
-	if ( $screen->id !== $wp_rocket_screen_id ) {
+	if ( $screen->id !== 'settings_page_wprocket' ) {
 		return;
 	}
 
@@ -792,24 +783,22 @@ function rocket_clear_cache_notice() {
 
 	delete_transient( 'rocket_clear_cache' );
 
-	$formatted_plugin_name = '<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>';
-
 	switch ( $cleared_cache ) {
 		case 'all':
-			// translators: %s = plugin name (maybe white-labelled).
-			$notice = sprintf( __( '%s: Cache cleared.', 'rocket' ), $formatted_plugin_name );
+			// translators: %s = plugin name.
+			$notice = sprintf( __( '%s: Cache cleared.', 'rocket' ), '<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>' );
 			break;
 		case 'post':
-			// translators: %s = plugin name (maybe white-labelled).
-			$notice = sprintf( __( '%s: Post cache cleared.', 'rocket' ), $formatted_plugin_name );
+			// translators: %s = plugin name.
+			$notice = sprintf( __( '%s: Post cache cleared.', 'rocket' ), '<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>' );
 			break;
 		case 'term':
-			// translators: %s = plugin name (maybe white-labelled).
-			$notice = sprintf( __( '%s: Term cache cleared.', 'rocket' ), $formatted_plugin_name );
+			// translators: %s = plugin name.
+			$notice = sprintf( __( '%s: Term cache cleared.', 'rocket' ), '<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>' );
 			break;
 		case 'user':
-			// translators: %s = plugin name (maybe white-labelled).
-			$notice = sprintf( __( '%s: User cache cleared.', 'rocket' ), $formatted_plugin_name );
+			// translators: %s = plugin name).
+			$notice = sprintf( __( '%s: User cache cleared.', 'rocket' ), '<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>' );
 			break;
 		default:
 			$notice = '';
@@ -833,15 +822,14 @@ add_action( 'admin_notices', 'rocket_clear_cache_notice' );
  * @author Remy Perona
  */
 function rocket_sitemap_preload_running() {
-	$screen              = get_current_screen();
-	$rocket_wl_name      = get_rocket_option( 'wl_plugin_name', null );
-	$wp_rocket_screen_id = isset( $rocket_wl_name ) ? 'settings_page_' . sanitize_key( $rocket_wl_name ) : 'settings_page_wprocket';
+	$screen = get_current_screen();
+
 	// This filter is documented in inc/admin-bar.php.
 	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
 		return;
 	}
 
-	if ( $screen->id !== $wp_rocket_screen_id ) {
+	if ( $screen->id !== 'settings_page_wprocket' ) {
 		return;
 	}
 
@@ -865,15 +853,14 @@ add_action( 'admin_notices', 'rocket_sitemap_preload_running' );
  */
 function rocket_sitemap_preload_complete() {
 	global $current_user;
-	$screen              = get_current_screen();
-	$rocket_wl_name      = get_rocket_option( 'wl_plugin_name', null );
-	$wp_rocket_screen_id = isset( $rocket_wl_name ) ? 'settings_page_' . sanitize_key( $rocket_wl_name ) : 'settings_page_wprocket';
+	$screen = get_current_screen();
+
 	/** This filter is documented in inc/admin-bar.php */
 	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
 		return;
 	}
 
-	if ( $screen->id !== $wp_rocket_screen_id ) {
+	if ( $screen->id !== 'settings_page_wprocket' ) {
 		return;
 	}
 
@@ -1023,7 +1010,7 @@ function rocket_notice_html( $args ) {
 function rocket_notice_writing_permissions( $file ) {
 
 	$message = sprintf(
-		/* translators: %s = plugin name (maybe white labelled) */
+		// translators: %s = plugin name.
 		__( '%s cannot configure itself due to missing writing permissions.', 'rocket' ),
 		'<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>'
 	);
@@ -1034,15 +1021,13 @@ function rocket_notice_writing_permissions( $file ) {
 		'<code>' . $file . '</code>'
 	);
 
-	if ( ! rocket_is_white_label() ) {
-		$message .= '<br>' . sprintf(
-			/* translators: This is a doc title! %1$s = opening link; %2$s = closing link */
-			__( 'Troubleshoot: %1$sHow to make system files writeable%2$s', 'rocket' ),
-			/* translators: Documentation exists in EN, DE, FR, ES, IT; use loaclised URL if applicable */
-			'<a href="' . __( 'http://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-config-writeable', 'rocket' ) . '" target="_blank">',
-			'</a>'
-		);
-	}
+	$message .= '<br>' . sprintf(
+		/* translators: This is a doc title! %1$s = opening link; %2$s = closing link */
+		__( 'Troubleshoot: %1$sHow to make system files writeable%2$s', 'rocket' ),
+		/* translators: Documentation exists in EN, DE, FR, ES, IT; use loaclised URL if applicable */
+		'<a href="' . __( 'http://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-config-writeable', 'rocket' ) . '" target="_blank">',
+		'</a>'
+	);
 
 	return $message;
 }

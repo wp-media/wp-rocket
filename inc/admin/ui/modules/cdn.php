@@ -1,8 +1,6 @@
 <?php
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
-// Are we white-labeled?
-$rwl = rocket_is_white_label();
 
 add_settings_section( 'rocket_display_cdn_options', __( 'Content Delivery Network options', 'rocket' ), '__return_false', 'rocket_cdn' );
 $cloudflare_readonly = '';
@@ -29,8 +27,8 @@ add_settings_field(
 	$rocket_do_cloudflare_settings
 );
 
-/* Conditional panel caption if CF option is active */
-if ( 0 !== absint( get_rocket_option( 'do_cloudflare' ) ) && ! $rwl ) {
+// Conditional panel caption if CF option is active.
+if ( 0 !== absint( get_rocket_option( 'do_cloudflare' ) ) ) {
 
 	add_settings_field(
 		'rocket_cdn_options_panel',
@@ -71,10 +69,7 @@ $rocket_cdn_options = array(
 	array(
 		'type'        => 'helper_description',
 		'name'        => 'cdn',
-		'description' => $rwl ?
-		__( 'All URLs of static files (CSS, JS, images) will be rewritten to the CNAME(s) entered below.', 'rocket' ) :
-		/* translators: line-break recommended, but not mandatory; use URL of localised document if available in your language  */
-		__( 'All URLs of static files (CSS, JS, images) will be rewritten to the CNAME(s) entered below.<br>Read the documentation on <a href="http://docs.wp-rocket.me/article/42-using-wp-rocket-with-a-cdn" target="_blank">using WP Rocket with a CDN</a>.', 'rocket' ),
+		'description' => __( 'All URLs of static files (CSS, JS, images) will be rewritten to the CNAME(s) entered below.<br>Read the documentation on <a href="http://docs.wp-rocket.me/article/42-using-wp-rocket-with-a-cdn" target="_blank">using WP Rocket with a CDN</a>.', 'rocket' ),
 	),
 );
 

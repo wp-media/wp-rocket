@@ -188,16 +188,14 @@ class Rocket_Database_Optimization {
 	public function notice_process_running() {
 		global $current_user;
 
-		$screen              = get_current_screen();
-		$rocket_wl_name      = get_rocket_option( 'wl_plugin_name', null );
-		$wp_rocket_screen_id = isset( $rocket_wl_name ) ? 'settings_page_' . sanitize_key( $rocket_wl_name ) : 'settings_page_wprocket';
+		$screen = get_current_screen();
 
 		/** This filter is documented in inc/admin-bar.php */
 		if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
 			return;
 		}
 
-		if ( $screen->id !== $wp_rocket_screen_id ) {
+		if ( $screen->id !== 'settings_page_wprocket' ) {
 			return;
 		}
 
@@ -223,16 +221,14 @@ class Rocket_Database_Optimization {
 	public function notice_process_complete() {
 		global $current_user;
 
-		$screen              = get_current_screen();
-		$rocket_wl_name      = get_rocket_option( 'wl_plugin_name', null );
-		$wp_rocket_screen_id = isset( $rocket_wl_name ) ? 'settings_page_' . sanitize_key( $rocket_wl_name ) : 'settings_page_wprocket';
+		$screen = get_current_screen();
 
 		/** This filter is documented in inc/admin-bar.php */
 		if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
 			return;
 		}
 
-		if ( $screen->id !== $wp_rocket_screen_id ) {
+		if ( $screen->id !== 'settings_page_wprocket' ) {
 			return;
 		}
 

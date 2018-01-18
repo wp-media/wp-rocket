@@ -141,7 +141,6 @@ function rocket_first_install() {
 		)
 	);
 	rocket_dismiss_box( 'rocket_warning_plugin_modification' );
-	rocket_reset_white_label_values( false );
 }
 add_action( 'wp_rocket_first_install', 'rocket_first_install' );
 
@@ -258,31 +257,6 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		rocket_clean_minify();
 		rocket_clean_cache_busting();
 		rocket_generate_advanced_cache_file();
-	}
-
-	if ( version_compare( $actual_version, '2.11.2', '<' ) ) {
-		$options = get_option( WP_ROCKET_SLUG );
-		$options = is_array( $options ) ? $options : array();
-		$update  = false;
-
-		if ( ! isset( $options['wl_plugin_URI'] ) || 'http://www.wp-rocket.me' === $options['wl_plugin_URI'] ) {
-			$options['wl_plugin_URI'] = 'https://wp-rocket.me';
-			$update                   = true;
-		}
-
-		if ( ! isset( $options['wl_author'] ) || 'WP Rocket' === $options['wl_author'] ) {
-			$options['wl_author'] = 'WP Media';
-			$update               = true;
-		}
-
-		if ( ! isset( $options['wl_author_URI'] ) || 'http://www.wp-rocket.me' === $options['wl_author_URI'] ) {
-			$options['wl_author_URI'] = 'https://wp-media.me';
-			$update                   = true;
-		}
-
-		if ( $update ) {
-			update_option( WP_ROCKET_SLUG, $options );
-		}
 	}
 }
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );

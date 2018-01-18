@@ -107,7 +107,7 @@ function rocket_init_php_deprecated() {
 	require WP_ROCKET_FUNCTIONS_PATH . 'options.php';
 
 	// Last constants.
-	define( 'WP_ROCKET_PLUGIN_NAME', get_rocket_option( 'wl_plugin_name', 'WP Rocket' ) );
+	define( 'WP_ROCKET_PLUGIN_NAME', 'WP Rocket' );
 	define( 'WP_ROCKET_PLUGIN_SLUG', sanitize_key( WP_ROCKET_PLUGIN_NAME ) );
 
 	// Call defines and functions.
@@ -180,7 +180,7 @@ function rocket_init() {
 	require WP_ROCKET_FUNCTIONS_PATH . 'options.php';
 
 	// Last constants.
-	define( 'WP_ROCKET_PLUGIN_NAME', get_rocket_option( 'wl_plugin_name', 'WP Rocket' ) );
+	define( 'WP_ROCKET_PLUGIN_NAME', 'WP Rocket' );
 	define( 'WP_ROCKET_PLUGIN_SLUG', sanitize_key( WP_ROCKET_PLUGIN_NAME ) );
 
 	// Call defines and functions.
