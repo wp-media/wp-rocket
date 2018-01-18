@@ -77,26 +77,6 @@ function rocket_force_info_result( $res, $action, $args ) {
 				$res = new WP_Error( 'plugins_api_failed', sprintf( __( 'An unexpected error occurred. Something may be wrong with WP-Rocket.me or this server&#8217;s configuration. If you continue to have problems, <a href="%s">contact support</a>.', 'rocket' ), rocket_get_external_url( 'support' ) ), wp_remote_retrieve_body( $request ) );
 			}
 		}
-
-		if ( ! is_wp_error( $res ) && rocket_is_white_label() ) {
-
-			$res = (array) $res;
-
-			$res['name']                    = get_rocket_option( 'wl_plugin_name' );
-			$res['slug']                    = sanitize_key( $res['name'] );
-			$res['author']                  = get_rocket_option( 'wl_author' );
-			$res['homepage']                = get_rocket_option( 'wl_author_URI' );
-			$res['wl_plugin_URI']           = get_rocket_option( 'wl_plugin_URI' );
-			$res['author_profile']          = get_rocket_option( 'wl_author_URI' );
-			$res['sections']['changelog']   = str_replace( array( 'wp-rocket', 'rocket_' ), array( $res['slug'], $res['slug'] . '_' ), $res['sections']['changelog'] );
-			$res['sections']['changelog']   = str_replace( array( 'WP Rocket', 'WP&nbsp;Rocket', 'WP-Rocket' ), $res['name'], $res['sections']['changelog'] );
-			$res['sections']['description'] = implode( "\n", get_rocket_option( 'wl_description' ) );
-
-			unset( $res['sections']['installation'], $res['sections']['faq'], $res['contributors'], $res['banners'] );
-
-			$res = (object) $res;
-
-		}
 	}
 
 	return $res;

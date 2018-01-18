@@ -937,7 +937,130 @@ if ( ! function_exists( 'is_rocket_cache_ssl' ) ) {
 	 * @return bool True if option is activated
 	 */
 	function is_rocket_cache_ssl() {
+		_deprecated_function( __FUNCTION__, '3.0' );
 		return false;
 	}
 }
 
+if ( ! function_exists( 'rocket_reset_white_label_values_action' ) ) {
+	/**
+	 * Reset White Label values to WP Rocket default values
+	 *
+	 * @since 2.1
+	 * @deprecated 3.0
+	 */
+	function rocket_reset_white_label_values_action() {
+		_deprecated_function( __FUNCTION__, '3.0' );
+		if ( isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'rocket_resetwl' ) ) {
+			rocket_reset_white_label_values( true );
+		}
+		wp_safe_redirect( add_query_arg( 'page', 'wprocket', remove_query_arg( 'page', wp_get_referer() ) ) );
+		die();
+	}
+}
+
+if ( ! function_exists( 'rocket_white_label' ) ) {
+	/**
+	 * White Label the plugin, if you need to
+	 *
+	 * @since 2.1
+	 * @deprecated 3.0
+	 *
+	 * @param array $plugins An array of plugins installed.
+	 * @return array Updated array of plugins installed
+	 */
+	function rocket_white_label( $plugins ) {
+		_deprecated_function( __FUNCTION__, '3.0' );
+		$white_label_description = get_rocket_option( 'wl_description' );
+		// We change the plugin's header.
+		$plugins['wp-rocket/wp-rocket.php'] = array(
+			'Name'        => get_rocket_option( 'wl_plugin_name' ),
+			'PluginURI'   => get_rocket_option( 'wl_plugin_URI' ),
+			'Version'     => isset( $plugins['wp-rocket/wp-rocket.php']['Version'] ) ? $plugins['wp-rocket/wp-rocket.php']['Version'] : '',
+			'Description' => reset( ( $white_label_description ) ),
+			'Author'      => get_rocket_option( 'wl_author' ),
+			'AuthorURI'   => get_rocket_option( 'wl_author_URI' ),
+			'TextDomain'  => isset( $plugins['wp-rocket/wp-rocket.php']['TextDomain'] ) ? $plugins['wp-rocket/wp-rocket.php']['TextDomain'] : '',
+			'DomainPath'  => isset( $plugins['wp-rocket/wp-rocket.php']['DomainPath'] ) ? $plugins['wp-rocket/wp-rocket.php']['DomainPath'] : '',
+		);
+
+		// if white label, remove our names from contributors.
+		if ( rocket_is_white_label() ) {
+			remove_filter( 'plugin_row_meta', 'rocket_plugin_row_meta', 10, 2 );
+		}
+
+		return $plugins;
+	}
+}
+
+if ( ! function_exists( 'rocket_is_white_label' ) ) {
+	/**
+	 * Is this version White Labeled?
+	 *
+	 * @since 2.1
+	 * @deprecated 3.0
+	 */
+	function rocket_is_white_label() {
+		$options = '';
+		$names   = array(
+			'wl_plugin_name',
+			'wl_plugin_URI',
+			'wl_description',
+			'wl_author',
+			'wl_author_URI',
+		);
+
+		foreach ( $names as $value ) {
+			$option   = get_rocket_option( $value );
+			$options .= ! is_array( $option ) ? $option : reset( ( $option ) );
+		}
+
+		return '7ddca92d3d48d4da715a90ebcb3ec1f0' !== md5( $options );
+	}
+}
+
+if ( ! function_exists( 'rocket_reset_white_label_values' ) ) {
+	/**
+	 * Reset white label options
+	 *
+	 * @since 2.1
+	 * @deprecated 3.0
+	 *
+	 * @param bool $hack_post true if we need to modify the $_POST content, false otherwise.
+	 * @return void
+	 */
+	function rocket_reset_white_label_values( $hack_post ) {
+		// White Label default values - !!! DO NOT TRANSLATE !!!
+		$options                   = get_option( WP_ROCKET_SLUG );
+		$options['wl_plugin_name'] = 'WP Rocket';
+		$options['wl_plugin_slug'] = 'wprocket';
+		$options['wl_plugin_URI']  = 'https://wp-rocket.me';
+		$options['wl_description'] = array( 'The best WordPress performance plugin.' );
+		$options['wl_author']      = 'WP Media';
+		$options['wl_author_URI']  = 'https://wp-media.me';
+
+		if ( $hack_post ) {
+			// hack $_POST to force refresh of files, sorry.
+			$_POST['page'] = 'wprocket';
+		}
+
+		update_option( WP_ROCKET_SLUG, $options );
+	}
+}
+
+if ( ! function_exists( 'rocket_check_no_empty_name' ) ) {
+	/**
+	 * When you're doing an update, the constant does not contain yet your option or any value, reset and redirect!
+	 *
+	 * @since 2.1
+	 * @deprecated 3.0
+	 */
+	function rocket_check_no_empty_name() {
+		$wl_plugin_name = trim( get_rocket_option( 'wl_plugin_name' ) );
+
+		if ( empty( $wl_plugin_name ) ) {
+			wp_safe_redirect( $_SERVER['REQUEST_URI'] );
+			die();
+		}
+	}
+}

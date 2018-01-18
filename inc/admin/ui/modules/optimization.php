@@ -1,35 +1,29 @@
 <?php
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
-// Are we white-labeled?
-$rwl = rocket_is_white_label();
-
 add_settings_section( 'rocket_display_optimization_options', __( 'Files optimization', 'rocket' ), '__return_false', 'rocket_optimization' );
 
 /**
  * Panel caption
  */
-if ( ! $rwl ) {
-
-	add_settings_field(
-		'rocket_optimization_options_panel',
-		false,
-		'rocket_field',
-		'rocket_optimization',
-		'rocket_display_optimization_options',
+add_settings_field(
+	'rocket_optimization_options_panel',
+	false,
+	'rocket_field',
+	'rocket_optimization',
+	'rocket_display_optimization_options',
+	array(
 		array(
-			array(
-				'type'        => 'helper_panel_description',
-				'name'        => 'optimization_options_panel_caption',
-				'description' => sprintf(
-					'<span class="dashicons dashicons-admin-tools" aria-hidden="true"></span><strong>%1$s</strong>',
-					/* translators: line-break recommended, but not mandatory; use URL of localised document if available in your language  */
-					__( 'Heads up! These options are not equally suitable for all WordPress setups.<br>If you notice any visual issues on your site, just turn off the last option(s) you had activated here. <br>Read the documentation on <a href="http://docs.wp-rocket.me/article/19-resolving-issues-with-minification" target="_blank">troubleshooting file optimization</a>.', 'rocket' )
-				),
+			'type'        => 'helper_panel_description',
+			'name'        => 'optimization_options_panel_caption',
+			'description' => sprintf(
+				'<span class="dashicons dashicons-admin-tools" aria-hidden="true"></span><strong>%1$s</strong>',
+				/* translators: line-break recommended, but not mandatory; use URL of localised document if available in your language  */
+				__( 'Heads up! These options are not equally suitable for all WordPress setups.<br>If you notice any visual issues on your site, just turn off the last option(s) you had activated here. <br>Read the documentation on <a href="http://docs.wp-rocket.me/article/19-resolving-issues-with-minification" target="_blank">troubleshooting file optimization</a>.', 'rocket' )
 			),
-		)
-	);
-}
+		),
+	)
+);
 
 /**
  * Minification
@@ -58,7 +52,7 @@ if ( rocket_maybe_disable_minify_html() || rocket_maybe_disable_minify_css() || 
 	$disabled = rtrim( $disabled, ', ' );
 
 	$rocket_maybe_disable_minify['description'] = sprintf(
-		/* translators: %1$s = file types (CSS, JS, HTML); %2$s = “WP Rocket” or white-label plugin name */
+		// translators: %1$s = file types (CSS, JS, HTML); %2$s = “WP Rocket”.
 		__( 'Minification (%1$s) is currently activated in <strong>Autoptimize</strong>. If you want to use %2$s’s minification, disable those options in Autoptimize.', 'rocket' ), $disabled, WP_ROCKET_PLUGIN_NAME
 		);
 }
@@ -70,9 +64,7 @@ $rocket_minify_fields[] = array(
 	'type'        => 'helper_warning',
 	'name'        => 'minify_warning',
 	'description' => sprintf(
-		/* translators: %s = docs link, or nothing if white-label is enabled */
-		__( 'Deactivate if you notice any visually broken items on your website.%s', 'rocket' ),
-		$rwl ? '' : ' ' . __( '<a href="http://docs.wp-rocket.me/article/19-resolving-issues-with-minification" target="_blank">Why?</a>', 'rocket' )
+		__( 'Deactivate if you notice any visually broken items on your website. <a href="http://docs.wp-rocket.me/article/19-resolving-issues-with-minification" target="_blank">Why?</a>', 'rocket' )
 	),
 );
 
@@ -136,9 +128,7 @@ if (
 		'type'        => 'helper_warning',
 		'name'        => 'minify_concatenate_warning',
 		'description' => sprintf(
-			/* translators: %s = docs link, or nothing if white-label is enabled */
-			__( 'Deactivate if you notice any visually broken items on your website.%s', 'rocket' ),
-			$rwl ? '' : ' ' . __( '<a href="http://docs.wp-rocket.me/article/19-resolving-issues-with-minification" target="_blank">Why?</a>', 'rocket' )
+			__( 'Deactivate if you notice any visually broken items on your website. <a href="http://docs.wp-rocket.me/article/19-resolving-issues-with-minification" target="_blank">Why?</a>', 'rocket' )
 		),
 	);
 }
@@ -174,9 +164,7 @@ $rocket_concatenate_fields[] = array(
 	'type'        => 'helper_warning',
 	'name'        => 'minify_combine_http2_warning',
 	'description' => sprintf(
-		// Translators: %s = link to WP Rocket documentation.
-		__( 'These settings are not recommended if your site uses HTTP/2.%s', 'rocket' ),
-		$rwl ? '' : ' ' . __( '<a href="http://docs.wp-rocket.me/article/1009-configuration-for-http-2" target="_blank">More info</a>', 'rocket' )
+		__( 'These settings are not recommended if your site uses HTTP/2. <a href="http://docs.wp-rocket.me/article/1009-configuration-for-http-2" target="_blank">More info</a>', 'rocket' )
 	),
 );
 
@@ -293,9 +281,7 @@ $rocket_render_blocking[] = array(
 	'type'        => 'helper_warning',
 	'name'        => 'render_blocking_warning',
 	'description' => sprintf(
-		/* translators: %s = docs link, or nothing if white-label is enabled */
-		__( 'Deactivate if you notice any visually broken items on your website.%s', 'rocket' ),
-		$rwl ? '' : ' ' . __( '<a href="http://docs.wp-rocket.me/article/108-render-blocking-javascript-and-css-pagespeed" target="_blank">Why?</a>', 'rocket' )
+		__( 'Deactivate if you notice any visually broken items on your website. <a href="http://docs.wp-rocket.me/article/108-render-blocking-javascript-and-css-pagespeed" target="_blank">Why?</a>', 'rocket' )
 	),
 );
 
@@ -337,9 +323,7 @@ $rocket_render_blocking[] = array(
 	'type'        => 'helper_description',
 	'name'        => 'async_css_description',
 	'description' => sprintf(
-		/* translators: %s = docs link, or nothing if white-label is enabled */
-		__( 'Critical path CSS will be automatically generated.%s', 'rocket' ),
-		$rwl ? '' : ' ' . __( '<a href="http://docs.wp-rocket.me/article/108-render-blocking-javascript-and-css-pagespeed#critical-path-css" target="_blank">More info</a>', 'rocket' )
+		__( 'Critical path CSS will be automatically generated. <a href="http://docs.wp-rocket.me/article/108-render-blocking-javascript-and-css-pagespeed#critical-path-css" target="_blank">More info</a>', 'rocket' )
 	),
 );
 
@@ -365,9 +349,8 @@ $rocket_render_blocking[] = array(
 	'type'        => 'helper_description',
 	'name'        => 'critical_css_fallback_description',
 	'description' => sprintf(
-		// translators: %s = docs link, or nothing if white-label is enabled.
-		__( 'Provides a fallback if auto-generated critical path CSS is incomplete.%s', 'rocket' ),
-		$rwl ? '' : ' ' . __( '<a href="http://docs.wp-rocket.me/article/108-render-blocking-javascript-and-css-pagespeed#fallback" target="_blank">More info</a>' ) ),
+		__( 'Provides a fallback if auto-generated critical path CSS is incomplete. <a href="http://docs.wp-rocket.me/article/108-render-blocking-javascript-and-css-pagespeed#fallback" target="_blank">More info</a>', 'rocket' )
+	),
 );
 
 add_settings_field(

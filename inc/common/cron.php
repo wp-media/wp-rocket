@@ -20,7 +20,7 @@ function rocket_purge_cron_schedule( $schedules ) {
 	if ( 0 < (int) get_rocket_option( 'purge_cron_interval' ) ) {
 		$schedules['rocket_purge'] = array(
 			'interval'  => get_rocket_purge_cron_interval(),
-			// translators: %s = WP Rocket name (maybe white label).
+			// translators: %s = WP Rocket name.
 			'display'   => sprintf( __( '%s clear', 'rocket' ), WP_ROCKET_PLUGIN_NAME ),
 		);
 	}

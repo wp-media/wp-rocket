@@ -1,9 +1,6 @@
 <?php
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
-// Are we white-labeled?
-$rwl = rocket_is_white_label();
-
 $total = array();
 $database_optimization = new Rocket_Database_Optimization();
 
@@ -16,27 +13,24 @@ add_settings_section( 'rocket_display_database_options', __( 'Database Optimizat
 /**
  * Panel caption
  */
-if ( ! $rwl ) {
-
-	add_settings_field(
-		'rocket_database_options_panel',
-		false,
-		'rocket_field',
-		'rocket_database',
-		'rocket_display_database_options',
+add_settings_field(
+	'rocket_database_options_panel',
+	false,
+	'rocket_field',
+	'rocket_database',
+	'rocket_display_database_options',
+	array(
 		array(
-			array(
-				'type'         => 'helper_panel_description',
-				'name'         => 'database_options_panel_caption',
-				'description'  => sprintf(
-					'<span class="dashicons dashicons-backup" aria-hidden="true"></span><strong>%1$s</strong>',
-					/* translators: line break recommended, but not mandatory */
-					__( 'Backup your database before you run a cleanup!<br>Once a database optimization has been performed, there is no way to undo it.', 'rocket' )
-				),
+			'type'         => 'helper_panel_description',
+			'name'         => 'database_options_panel_caption',
+			'description'  => sprintf(
+				'<span class="dashicons dashicons-backup" aria-hidden="true"></span><strong>%1$s</strong>',
+				/* translators: line break recommended, but not mandatory */
+				__( 'Backup your database before you run a cleanup!<br>Once a database optimization has been performed, there is no way to undo it.', 'rocket' )
 			),
-		)
-	);
-}
+		),
+	)
+);
 
 /**
  * Posts

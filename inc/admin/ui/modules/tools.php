@@ -1,58 +1,52 @@
 <?php
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
-// Are we white-labeled?
-$rwl = rocket_is_white_label();
-
 add_settings_section( 'rocket_display_tools', __( 'Tools', 'rocket' ), '__return_false', 'rocket_tools' );
 
 /**
  * Beta testing
  */
-if ( ! $rwl ) {
-
-	add_settings_field(
-		'rocket_do_beta',
-		__( 'Beta testing:', 'rocket' ),
-		'rocket_field',
-		'rocket_tools',
-		'rocket_display_tools',
+add_settings_field(
+	'rocket_do_beta',
+	__( 'Beta testing:', 'rocket' ),
+	'rocket_field',
+	'rocket_tools',
+	'rocket_display_tools',
+	array(
 		array(
-			array(
-				'type'         => 'checkbox',
-				'label'        => __( 'Yes, I would like to receive beta versions of WP Rocket as updates. I understand that beta versions may contain unstable code, and I know how to roll back to a stable version manually if I have to.', 'rocket' ),
-				'label_for'    => 'do_beta',
-				'label_screen' => __( 'Beta Testing', 'rocket' ),
-			),
-		)
-	);
+			'type'         => 'checkbox',
+			'label'        => __( 'Yes, I would like to receive beta versions of WP Rocket as updates. I understand that beta versions may contain unstable code, and I know how to roll back to a stable version manually if I have to.', 'rocket' ),
+			'label_for'    => 'do_beta',
+			'label_screen' => __( 'Beta Testing', 'rocket' ),
+		),
+	)
+);
 
-	add_settings_field(
-		'rocket_analytics_enabled',
-		__( 'Analytics:', 'rocket' ),
-		'rocket_field',
-		'rocket_tools',
-		'rocket_display_tools',
+add_settings_field(
+	'rocket_analytics_enabled',
+	__( 'Analytics:', 'rocket' ),
+	'rocket_field',
+	'rocket_tools',
+	'rocket_display_tools',
+	array(
 		array(
-			array(
-				'type'         => 'checkbox',
-				'label'        => __( 'Allow WP Rocket to collect non-sensitive diagnostic data.', 'rocket' ),
-				'label_for'    => 'analytics_enabled',
-				'label_screen' => __( 'Analytics tracking', 'rocket' ),
+			'type'         => 'checkbox',
+			'label'        => __( 'Allow WP Rocket to collect non-sensitive diagnostic data.', 'rocket' ),
+			'label_for'    => 'analytics_enabled',
+			'label_screen' => __( 'Analytics tracking', 'rocket' ),
+		),
+		array(
+			'type'        => 'helper_help',
+			'name'        => 'analytics_description',
+			'description' => sprintf(
+				'<button class="hide-if-no-js button-rocket-reveal rocket-preview-analytics-data">%1$s</button><div class="rocket-analytics-data-container"><p class="description">%2$s</p>%3$s</div>',
+				__( 'What info will we collect?', 'rocket' ),
+				__( 'Below is a detailed view of all data WP Rocket will collect if granted permission. WP Rocket will never transmit any domain names or email addresses (except for license validation), IP addresses, or third-party API keys.', 'rocket' ),
+				rocket_data_collection_preview_table()
 			),
-			array(
-				'type'        => 'helper_help',
-				'name'        => 'analytics_description',
-				'description' => sprintf(
-					'<button class="hide-if-no-js button-rocket-reveal rocket-preview-analytics-data">%1$s</button><div class="rocket-analytics-data-container"><p class="description">%2$s</p>%3$s</div>',
-					__( 'What info will we collect?', 'rocket' ),
-					__( 'Below is a detailed view of all data WP Rocket will collect if granted permission. WP Rocket will never transmit any domain names or email addresses (except for license validation), IP addresses, or third-party API keys.', 'rocket' ),
-					rocket_data_collection_preview_table()
-				),
-			),
-		)
-	);
-}
+		),
+	)
+);
 
 /**
  * Clear cache
@@ -197,11 +191,7 @@ if ( current_user_can( 'update_plugins' ) ) {
 			),
 			'helper_description' => array(
 				'name'         => 'rollback',
-				'description'  => $rwl ? sprintf(
-					// translators: %s = version number.
-					__( 'Has version %1$s caused an issue on your website? You can roll back to the previous major version here.', 'rocket' ),
-					WP_ROCKET_VERSION
-				) : sprintf(
+				'description'  => sprintf(
 					// translators: %1$s = version number; %2$s = tab anchor.
 					__( 'Has version %1$s caused an issue on your website?<br>You can roll back to the previous major version here. Then <a href="%2$s">send us a support request</a>.', 'rocket' ),
 					WP_ROCKET_VERSION,

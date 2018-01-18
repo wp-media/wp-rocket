@@ -1,35 +1,29 @@
 <?php
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
-// Are we white-labeled?
-$rwl = rocket_is_white_label();
-
 add_settings_section( 'rocket_display_main_options', __( 'Basic options', 'rocket' ), '__return_false', 'rocket_basic' );
 
 /**
  * Panel caption
  */
-if ( ! $rwl ) {
-
-	add_settings_field(
-		'rocket_basic_options_panel',
-		false,
-		'rocket_field',
-		'rocket_basic',
-		'rocket_display_main_options',
+add_settings_field(
+	'rocket_basic_options_panel',
+	false,
+	'rocket_field',
+	'rocket_basic',
+	'rocket_display_main_options',
+	array(
 		array(
-			array(
-				'type'         => 'helper_panel_description',
-				'name'         => 'basic_options_panel_caption',
-				'description'  => sprintf(
-					'<span class="dashicons dashicons-performance" aria-hidden="true"></span><strong>%1$s</strong>',
-					/* translators: line break recommended, but not mandatory  */
-					__( 'Caching has been activated automatically, your website should load fast!<br>How about <a href="https://wp-rocket.me/blog/correctly-measure-websites-page-load-time/" target="_blank">testing your loading time</a>? Maybe you don’t even need to configure all these options.', 'rocket' )
-				),
+			'type'         => 'helper_panel_description',
+			'name'         => 'basic_options_panel_caption',
+			'description'  => sprintf(
+				'<span class="dashicons dashicons-performance" aria-hidden="true"></span><strong>%1$s</strong>',
+				/* translators: line break recommended, but not mandatory  */
+				__( 'Caching has been activated automatically, your website should load fast!<br>How about <a href="https://wp-rocket.me/blog/correctly-measure-websites-page-load-time/" target="_blank">testing your loading time</a>? Maybe you don’t even need to configure all these options.', 'rocket' )
 			),
-		)
-	);
-}
+		),
+	)
+);
 
 /**
  * LazyLoad
@@ -42,9 +36,7 @@ $rocket_lazyload_fields[] = array(
 	'type'        => 'helper_warning',
 	'name'        => 'lazyload_common_issues',
 	'description' => sprintf(
-		/* translators: %s = docs link, or nothing if white-label is enabled */
-		__( 'Deactivate if you notice any visually broken items on your website.%s', 'rocket' ),
-		$rwl ? '' : ' ' . __( '<a href="http://docs.wp-rocket.me/article/278-common-issues-with-lazyload" target="_blank">Why?</a>', 'rocket' )
+		__( 'Deactivate if you notice any visually broken items on your website. <a href="http://docs.wp-rocket.me/article/278-common-issues-with-lazyload" target="_blank">Why?</a>', 'rocket' )
 	),
 );
 
@@ -129,7 +121,7 @@ add_settings_field(
 			'parent'       => 'cache_mobile',
 			'type'         => 'helper_description',
 			'name'         => 'mobile',
-			'description'  => $rwl ? __( 'Mobile cache works safest with both options enabled. When in doubt, keep both.', 'rocket' ) : __( '<a href="http://docs.wp-rocket.me/article/708-mobile-caching" target="_blank">Mobile cache</a> works safest with both options enabled. When in doubt, keep both.', 'rocket' ),
+			'description'  => __( '<a href="http://docs.wp-rocket.me/article/708-mobile-caching" target="_blank">Mobile cache</a> works safest with both options enabled. When in doubt, keep both.', 'rocket' ),
 		),
 	)
 );
@@ -154,7 +146,7 @@ add_settings_field(
 		array(
 			'type'         => 'helper_description',
 			'name'         => 'user_cache_desc',
-			'description'  => $rwl ? __( 'User cache is great when you have user-specific or restricted content on your website.', 'rocket' ) : __( '<a href="http://docs.wp-rocket.me/article/313-logged-in-user-cache" target="_blank">User cache</a> is great when you have user-specific or restricted content on your website.', 'rocket' ),
+			'description'  => __( '<a href="http://docs.wp-rocket.me/article/313-logged-in-user-cache" target="_blank">User cache</a> is great when you have user-specific or restricted content on your website.', 'rocket' ),
 		),
 	)
 );
@@ -249,9 +241,7 @@ $rocket_purge_fields[] = array(
 	'type'         => 'helper_warning',
 	'name'         => 'purge_warning_less',
 	'description'  => sprintf(
-		/* translators: %s = docs link, or nothing if white-label is enabled */
-		__( 'Reduce lifespan to 10 hours or less if you notice issues that seem to appear periodically.%s', 'rocket' ),
-		$rwl ? '' : ' ' . __( '<a href="http://docs.wp-rocket.me/article/975-nonces-and-cache-lifespan" target="_blank">Why?</a>', 'rocket' )
+		__( 'Reduce lifespan to 10 hours or less if you notice issues that seem to appear periodically. <a href="http://docs.wp-rocket.me/article/975-nonces-and-cache-lifespan" target="_blank">Why?</a>', 'rocket' )
 	),
 );
 

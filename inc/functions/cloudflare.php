@@ -44,20 +44,18 @@ function get_rocket_cloudflare_instance() {
 	if ( ! isset( $cf_zone_id ) ) {
 
 		$msg = sprintf(
-			/* translators: %s = WP Rocket plugin name (maybe white label) */
+			// translators: %s = WP Rocket plugin name.
 			__( 'Missing Cloudflare zone ID. %s could not fix this automatically.', 'rocket' ),
 			WP_ROCKET_PLUGIN_NAME
 		);
 
-		if ( ! rocket_is_white_label() ) {
-			$msg .= ' ' . sprintf(
-				/* translators: %1$s = opening link; %2$s = closing link */
-				__( 'Read the %1$sdocumentation%2$s for further guidance.', 'rocket' ),
-				/* translators: Documentation exists in EN, DE, FR, ES, IT; use loaclised URL if applicable */
-				'<a href="' . __( 'http://docs.wp-rocket.me/article/18-using-wp-rocket-with-cloudflare', 'rocket' ) . '" target="__blank">',
-				'</a>'
-			);
-		}
+		$msg .= ' ' . sprintf(
+			/* translators: %1$s = opening link; %2$s = closing link */
+			__( 'Read the %1$sdocumentation%2$s for further guidance.', 'rocket' ),
+			/* translators: Documentation exists in EN, DE, FR, ES, IT; use loaclised URL if applicable */
+			'<a href="' . __( 'http://docs.wp-rocket.me/article/18-using-wp-rocket-with-cloudflare', 'rocket' ) . '" target="_blank">',
+			'</a>'
+		);
 
 		return new WP_Error( 'cloudflare_no_zone_id', $msg );
 	}

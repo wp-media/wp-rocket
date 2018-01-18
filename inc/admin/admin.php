@@ -10,13 +10,11 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  * @return array Updated array of links
  */
 function rocket_settings_action_links( $actions ) {
-	if ( ! rocket_is_white_label() ) {
-		array_unshift( $actions, sprintf( '<a href="%s">%s</a>', 'http://wp-rocket.me/support/', __( 'Support', 'rocket' ) ) );
+	array_unshift( $actions, sprintf( '<a href="%s">%s</a>', 'http://wp-rocket.me/support/', __( 'Support', 'rocket' ) ) );
 
-		array_unshift( $actions, sprintf( '<a href="%s">%s</a>', get_rocket_documentation_url(), __( 'Docs', 'rocket' ) ) );
+	array_unshift( $actions, sprintf( '<a href="%s">%s</a>', get_rocket_documentation_url(), __( 'Docs', 'rocket' ) ) );
 
-		array_unshift( $actions, sprintf( '<a href="%s">%s</a>', get_rocket_faq_url(), __( 'FAQ', 'rocket' ) ) );
-	}
+	array_unshift( $actions, sprintf( '<a href="%s">%s</a>', get_rocket_faq_url(), __( 'FAQ', 'rocket' ) ) );
 
 	array_unshift( $actions, sprintf( '<a href="%s">%s</a>', admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG ), __( 'Settings' ) ) );
 
@@ -199,67 +197,6 @@ function rocket_deactivate_plugin() {
 add_action( 'admin_post_deactivate_plugin', 'rocket_deactivate_plugin' );
 
 /**
- * Reset White Label values to WP Rocket default values
- *
- * @since 2.1
- */
-function rocket_reset_white_label_values_action() {
-	if ( isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'rocket_resetwl' ) ) {
-		rocket_reset_white_label_values( true );
-	}
-	wp_safe_redirect( add_query_arg( 'page', 'wprocket', remove_query_arg( 'page', wp_get_referer() ) ) );
-	die();
-}
-add_action( 'admin_post_rocket_resetwl', 'rocket_reset_white_label_values_action' );
-
-/**
- * White Label the plugin, if you need to
- *
- * @since 2.1
- *
- * @param array $plugins An array of plugins installed.
- * @return array Updated array of plugins installed
- */
-function rocket_white_label( $plugins ) {
-	$white_label_description = get_rocket_option( 'wl_description' );
-	// We change the plugin's header.
-	$plugins['wp-rocket/wp-rocket.php'] = array(
-		'Name'        => get_rocket_option( 'wl_plugin_name' ),
-		'PluginURI'   => get_rocket_option( 'wl_plugin_URI' ),
-		'Version'     => isset( $plugins['wp-rocket/wp-rocket.php']['Version'] ) ? $plugins['wp-rocket/wp-rocket.php']['Version'] : '',
-		'Description' => reset( ( $white_label_description ) ),
-		'Author'      => get_rocket_option( 'wl_author' ),
-		'AuthorURI'   => get_rocket_option( 'wl_author_URI' ),
-		'TextDomain'  => isset( $plugins['wp-rocket/wp-rocket.php']['TextDomain'] ) ? $plugins['wp-rocket/wp-rocket.php']['TextDomain'] : '',
-		'DomainPath'  => isset( $plugins['wp-rocket/wp-rocket.php']['DomainPath'] ) ? $plugins['wp-rocket/wp-rocket.php']['DomainPath'] : '',
-	);
-
-	// if white label, remove our names from contributors.
-	if ( rocket_is_white_label() ) {
-		remove_filter( 'plugin_row_meta', 'rocket_plugin_row_meta', 10, 2 );
-	}
-
-	return $plugins;
-}
-add_filter( 'all_plugins', 'rocket_white_label' );
-
-/**
- * When you're doing an update, the constant does not contain yet your option or any value, reset and redirect!
- *
- * @since 2.1
- */
-function rocket_check_no_empty_name() {
-	$wl_plugin_name = trim( get_rocket_option( 'wl_plugin_name' ) );
-
-	if ( empty( $wl_plugin_name ) ) {
-		rocket_reset_white_label_values( false );
-		wp_safe_redirect( $_SERVER['REQUEST_URI'] );
-		die();
-	}
-}
-add_action( 'admin_init', 'rocket_check_no_empty_name', 11 );
-
-/**
  * This function will force the direct download of the plugin's options, compressed.
  *
  * @since 2.2
@@ -269,9 +206,7 @@ function rocket_do_options_export() {
 		wp_nonce_ays( '' );
 	}
 
-	$filename_prefix = rocket_is_white_label() ? sanitize_title( get_rocket_option( 'wl_plugin_name' ) ) : 'wp-rocket';
-
-	$filename = sprintf( '%s-settings-%s-%s.json', $filename_prefix, date( 'Y-m-d' ), uniqid() );
+	$filename = sprintf( 'wp-rocket-settings-%s-%s.json', date( 'Y-m-d' ), uniqid() );
 	$gz       = 'gz' . strrev( 'etalfed' );
 	$options  = wp_json_encode( get_option( WP_ROCKET_SLUG ) ); // do not use get_rocket_option() here.
 	nocache_headers();
@@ -471,12 +406,6 @@ function rocket_analytics_data() {
 		'cloudflare_old_settings' => 1,
 		'submit_optimize'         => 1,
 		'analytics_enabled'       => 1,
-		'wl_author'               => 1,
-		'wl_author_URI'           => 1,
-		'wl_description'          => 1,
-		'wl_plugin_URI'           => 1,
-		'wl_plugin_name'          => 1,
-		'wl_plugin_slug'          => 1,
 	);
 
 	$theme  = wp_get_theme();
