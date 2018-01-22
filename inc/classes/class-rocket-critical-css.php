@@ -601,7 +601,7 @@ class Rocket_Critical_CSS {
 		}
 
 		// Don't apply on wp-login.php/wp-register.php.
-		if ( in_array( $pagenow, array( 'wp-login.php', 'wp-register.php' ), true ) ) {
+		if ( 'wp-login.php' === $pagenow || 'wp-register.php' === $pagenow ) {
 			return;
 		}
 
@@ -669,7 +669,7 @@ class Rocket_Critical_CSS {
 		}
 
 		// Don't apply on wp-login.php/wp-register.php.
-		if ( in_array( $pagenow, array( 'wp-login.php', 'wp-register.php' ), true ) ) {
+		if ( 'wp-login.php' === $pagenow || 'wp-register.php' === $pagenow ) {
 			return;
 		}
 
@@ -729,7 +729,7 @@ class Rocket_Critical_CSS {
 		}
 
 		// Don't apply on wp-login.php/wp-register.php.
-		if ( in_array( $pagenow, array( 'wp-login.php', 'wp-register.php' ), true ) ) {
+		if ( 'wp-login.php' === $pagenow || 'wp-register.php' === $pagenow ) {
 			return;
 		}
 
