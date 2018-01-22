@@ -96,6 +96,7 @@ class Rocket_Critical_CSS {
 		add_action( 'admin_notices', array( $this, 'warning_critical_css_dir_permissions' ) );
 		add_action( 'wp_head', array( $this, 'insert_load_css' ), PHP_INT_MAX );
 		add_action( 'wp_head', array( $this, 'insert_critical_css' ), 1 );
+		add_action( 'wp_footer', array( $this, 'remove_critical_css' ), PHP_INT_MAX );
 		add_filter( 'rocket_buffer', array( $this, 'async_css' ), 15 );
 		add_action( 'rocket_critical_css_generation_process_complete', 'rocket_clean_domain' );
 	}
@@ -114,7 +115,7 @@ class Rocket_Critical_CSS {
 		 *
 		 * @since 2.11.5
 		 * @author Remy Perona
-		 * 
+		 *
 		 * @param bool $do_rocket_critical_css_generation True to activate the automatic generation, false to prevent it.
 		 */
 		if ( apply_filters( 'do_rocket_critical_css_generation', true ) ) {
@@ -644,6 +645,66 @@ class Rocket_Critical_CSS {
 		echo '<style id="rocket-critical-css">' . wp_strip_all_tags( $critical_css_content ) . '</style>';
 	}
 
+	/**
+	 * Remove critical CSS once the page is fully loaded
+	 *
+	 * @since 2.11.5
+	 * @author Remy Perona
+	 */
+	public function remove_critical_css() {
+		global $pagenow;
+
+		if ( ! get_rocket_option( 'async_css' ) ) {
+			return;
+		}
+
+		if ( is_rocket_post_excluded_option( 'async_css' ) ) {
+			return;
+		}
+
+		$current_page_critical_css = $this->get_current_page_critical_css();
+
+		if ( ! $current_page_critical_css ) {
+			return;
+		}
+
+		// Don't apply on wp-login.php/wp-register.php.
+		if ( in_array( $pagenow, array( 'wp-login.php', 'wp-register.php' ), true ) ) {
+			return;
+		}
+
+		if ( ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) || ( defined( 'DONOTASYNCCSS' ) && DONOTASYNCCSS ) ) {
+			return;
+		}
+
+		// Don't apply if user is logged-in and cache for logged-in user is off.
+		if ( is_user_logged_in() && ! get_rocket_option( 'cache_logged_user' ) ) {
+			return;
+		}
+
+		// This filter is documented in inc/front/process.php.
+		$rocket_cache_search = apply_filters( 'rocket_cache_search', false );
+
+		// Don't apply on search page.
+		if ( is_search() && ! $rocket_cache_search ) {
+			return;
+		}
+
+		// Don't apply on excluded pages.
+		if ( in_array( $_SERVER['REQUEST_URI'], get_rocket_option( 'cache_reject_uri', array() ), true ) ) {
+			return;
+		}
+
+		// Don't apply on 404 page.
+		if ( is_404() ) {
+			return;
+		}
+
+		echo '<script>window.addEventListener("load", function(e) {
+			var rocketCriticalCSS = document.getElementById("rocket-critical-css");
+			rocketCriticalCSS.parentNode.removeChild(rocketCriticalCSS);
+		});</script>';
+	}
 
 	/**
 	 * Insert loadCSS script in <head>
