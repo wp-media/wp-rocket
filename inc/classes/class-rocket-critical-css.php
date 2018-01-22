@@ -107,26 +107,38 @@ class Rocket_Critical_CSS {
 	 * @author Remy Perona
 	 */
 	public function process_handler() {
-		$this->clean_critical_css();
+		/**
+		 * Filters the critical CSS generation process
+		 *
+		 * Use this filter to prevent the automatic critical CSS generation.
+		 *
+		 * @since 2.11.5
+		 * @author Remy Perona
+		 * 
+		 * @param bool $do_rocket_critical_css_generation True to activate the automatic generation, false to prevent it.
+		 */
+		if ( apply_filters( 'do_rocket_critical_css_generation', true ) ) {
+			$this->clean_critical_css();
 
-		if ( method_exists( $this->process, 'cancel_process' ) ) {
-			$this->process->cancel_process();
+			if ( method_exists( $this->process, 'cancel_process' ) ) {
+				$this->process->cancel_process();
+			}
+
+			$this->set_items();
+
+			foreach ( $this->items as $item ) {
+				$this->process->push_to_queue( $item );
+			}
+
+			$transient = array(
+				'generated' => 0,
+				'total'     => count( $this->items ),
+				'items'     => array(),
+			);
+
+			set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
+			$this->process->save()->dispatch();
 		}
-
-		$this->set_items();
-
-		foreach ( $this->items as $item ) {
-			$this->process->push_to_queue( $item );
-		}
-
-		$transient = array(
-			'generated' => 0,
-			'total'     => count( $this->items ),
-			'items'     => array(),
-		);
-
-		set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
-		$this->process->save()->dispatch();
 	}
 
 	/**
