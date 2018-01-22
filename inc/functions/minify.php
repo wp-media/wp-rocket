@@ -291,16 +291,20 @@ function get_rocket_minify_url( $files, $extension ) {
 		$filename   = md5( $files_hash . $minify_key ) . '.' . $extension;
 	}
 
-	$minified_content = rocket_minify( $file_path, $extension );
+	$minified_file = WP_ROCKET_MINIFY_CACHE_PATH . get_current_blog_id() . '/' . $filename;
 
-	if ( ! $minified_content ) {
-		return false;
-	}
+	if ( ! file_exists( $minified_file ) ) {
+		$minified_content = rocket_minify( $file_path, $extension );
 
-	$minify_filepath = rocket_write_minify_file( $minified_content, $filename );
+		if ( ! $minified_content ) {
+			return false;
+		}
 
-	if ( ! $minify_filepath ) {
-		return false;
+		$minify_filepath = rocket_write_minify_file( $minified_content, $minified_file );
+
+		if ( ! $minify_filepath ) {
+			return false;
+		}
 	}
 
 	$minify_url = get_rocket_cdn_url( WP_ROCKET_MINIFY_CACHE_URL . get_current_blog_id() . '/' . $filename, array( 'all', 'css_and_js', $extension ) );
@@ -372,22 +376,20 @@ function rocket_minify( $files, $extension ) {
  * @since 2.11
  * @author Remy Perona
  *
- * @param string $content  Minified content.
- * @param string $filename Name of the minified file.
+ * @param string $content       Minified content.
+ * @param string $minified_file Path to the minified file to write in.
  * @return bool True if successful, false otherwise
  */
-function rocket_write_minify_file( $content, $filename ) {
-	$minify_filepath = WP_ROCKET_MINIFY_CACHE_PATH . get_current_blog_id() . '/' . $filename;
-
-	if ( file_exists( $minify_filepath ) ) {
+function rocket_write_minify_file( $content, $minified_file ) {
+	if ( file_exists( $minified_file ) ) {
 		return true;
 	}
 
-	if ( ! rocket_mkdir_p( dirname( $minify_filepath ) ) ) {
+	if ( ! rocket_mkdir_p( dirname( $minified_file ) ) ) {
 		return false;
 	}
 
-	return rocket_put_content( $minify_filepath, $content );
+	return rocket_put_content( $minified_file, $content );
 }
 
 /**
