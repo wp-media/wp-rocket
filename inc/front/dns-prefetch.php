@@ -55,12 +55,6 @@ function rocket_dns_prefetch( $hints, $relation_type ) {
  * @return String Updated buffer
  */
 function rocket_dns_prefetch_buffer( $buffer ) {
-	
-	// Don't add prefix for uncached pages
-	if ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) {
-		return $buffer;
-	}
-	
 	$dns_link_tags = '';
 	$domains       = rocket_get_dns_prefetch_domains();
 
