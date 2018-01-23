@@ -27,7 +27,7 @@ if ( function_exists( 'wp_resource_hints' ) ) {
  */
 function rocket_dns_prefetch( $hints, $relation_type ) {
 	
-	// Don't add prefix for uncached pages
+	// Don't add prefecth for uncached pages
 	if ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) {
 		return $hints;
 	}
