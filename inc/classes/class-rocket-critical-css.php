@@ -96,7 +96,7 @@ class Rocket_Critical_CSS {
 		add_action( 'admin_notices', array( $this, 'warning_critical_css_dir_permissions' ) );
 		add_action( 'wp_head', array( $this, 'insert_load_css' ), PHP_INT_MAX );
 		if ( get_rocket_option( 'minify_concatenate_css' ) ) {
-			add_action( 'rocket_buffer', array( $this, 'insert_critical_css_buffer' ), 14 );
+			add_filter( 'rocket_buffer', array( $this, 'insert_critical_css_buffer' ), 14 );
 		} else {
 			add_action( 'wp_head', array( $this, 'insert_critical_css' ), 1 );
 		}
