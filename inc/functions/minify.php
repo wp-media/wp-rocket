@@ -45,7 +45,6 @@ function rocket_minify_files( $buffer, $extension ) {
 				$excluded_external_js = get_rocket_minify_excluded_external_js();
 				if ( ! isset( $excluded_external_js[ $host ] ) ) {
 					$external_js_files .= $tag[0];
-					$buffer             = str_replace( $tag[0], '', $buffer );
 				}
 			}
 			continue;
@@ -60,7 +59,6 @@ function rocket_minify_files( $buffer, $extension ) {
 					$external_js_files .= $tag[0];
 				}
 
-				$buffer = str_replace( $tag[0], '', $buffer );
 				continue;
 			}
 
@@ -115,7 +113,7 @@ function rocket_minify_files( $buffer, $extension ) {
 	}
 
 	if ( empty( $files ) ) {
-		return $original_buffer;
+		return $buffer;
 	}
 
 	if ( ! $concatenate ) {
@@ -150,6 +148,10 @@ function rocket_minify_files( $buffer, $extension ) {
 			return $original_buffer;
 		}
 
+		foreach ( $external_js_files as $external_js_file ) {
+			$buffer = str_replace( $external_js_file, '', $buffer );
+		}
+
 		$minify_header_tag = '<script src="' . $minify_header_url . '" data-minify="1"></script>';
 		$buffer            = preg_replace( '/<head(.*)>/U', '<head$1>' . $external_js_files . $minify_header_tag, $buffer, 1 );
 
@@ -160,6 +162,10 @@ function rocket_minify_files( $buffer, $extension ) {
 
 	if ( 'css' === $extension ) {
 		$minify_url = get_rocket_minify_url( $files, $extension );
+
+		if ( ! $minify_url ) {
+			return $original_buffer;
+		}
 
 		$minify_tag = '<link rel="stylesheet" href="' . $minify_url . '" data-minify="1" />';
 		return preg_replace( '/<head(.*)>/U', '<head$1>' . $minify_tag, $buffer, 1 );
