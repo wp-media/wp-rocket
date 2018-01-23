@@ -81,10 +81,10 @@ window.addEventListener(\'LazyLoad::Initialized\', function (e) {
 		/**
 		 * Filters the resolution of the YouTube thumbnail
 		 *
-		 * Accepted values: default, mqdefault, sddefault, hqdefault, maxresdefault
-		 *
 		 * @since 2.11.5
 		 * @author Arun Basil Lal
+		 *
+		 * @param string $thumbnail_resolution The resolution of the thumbnail. Accepted values: default, mqdefault, sddefault, hqdefault, maxresdefault
 		 */
 		$thumbnail_resolution = apply_filters( 'rocket_youtube_thumbnail_resolution', 'hqdefault');
 		
