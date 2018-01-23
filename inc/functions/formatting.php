@@ -282,7 +282,14 @@ function rocket_realpath( $file, $absolute = true, $hosts = '' ) {
 		}
 	}
 
-	return '/' . join( '/', $path );
+	$slash_prefix = '/';
+	
+	// Don't prefix slash on Windows servers
+	if ( 'WIN' === strtoupper( substr( PHP_OS, 0, 3 ) ) ) {
+		$slash_prefix = '';
+	}
+	
+	return $slash_prefix . join( '/', $path );
 }
 
 /**
