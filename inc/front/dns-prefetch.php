@@ -26,6 +26,12 @@ if ( function_exists( 'wp_resource_hints' ) ) {
  * @return Array URLs to print
  */
 function rocket_dns_prefetch( $hints, $relation_type ) {
+	
+	// Don't add prefix for uncached pages
+	if ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) {
+		return $hints;
+	}
+	
 	$domains = rocket_get_dns_prefetch_domains();
 
 	if ( (bool) $domains ) {
@@ -49,6 +55,12 @@ function rocket_dns_prefetch( $hints, $relation_type ) {
  * @return String Updated buffer
  */
 function rocket_dns_prefetch_buffer( $buffer ) {
+	
+	// Don't add prefix for uncached pages
+	if ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) {
+		return $buffer;
+	}
+	
 	$dns_link_tags = '';
 	$domains       = rocket_get_dns_prefetch_domains();
 
