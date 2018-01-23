@@ -95,7 +95,11 @@ class Rocket_Critical_CSS {
 		add_action( 'admin_notices', array( $this, 'critical_css_generation_complete_notice' ) );
 		add_action( 'admin_notices', array( $this, 'warning_critical_css_dir_permissions' ) );
 		add_action( 'wp_head', array( $this, 'insert_load_css' ), PHP_INT_MAX );
-		add_action( 'wp_head', array( $this, 'insert_critical_css' ), 1 );
+		if ( get_rocket_option( 'minify_concatenate_css' ) ) {
+			add_action( 'rocket_buffer', array( $this, 'insert_critical_css_buffer' ), 14 );
+		} else {
+			add_action( 'wp_head', array( $this, 'insert_critical_css' ), 1 );
+		}
 		add_action( 'wp_footer', array( $this, 'remove_critical_css' ), PHP_INT_MAX );
 		add_filter( 'rocket_buffer', array( $this, 'async_css' ), 15 );
 		add_action( 'rocket_critical_css_generation_process_complete', 'rocket_clean_domain' );
@@ -573,6 +577,37 @@ class Rocket_Critical_CSS {
 		}
 
 		$buffer = str_replace( '</body>', $noscripts . '</body>', $buffer );
+
+		return $buffer;
+	}
+
+	/**
+	 * Insert critical CSS before combined CSS when option is active
+	 *
+	 * @since 2.11.5
+	 * @author Remy Perona
+	 *
+	 * @param string $buffer HTML output of the page.
+	 * @return string Updated HTML output
+	 */
+	public function insert_critical_css_buffer( $buffer ) {
+		$current_page_critical_css = $this->get_current_page_critical_css();
+
+		if ( ! $current_page_critical_css ) {
+			return $buffer;
+		}
+
+		if ( 'fallback' === $current_page_critical_css ) {
+			$critical_css_content = get_rocket_option( 'critical_css', '' );
+		} else {
+			$critical_css_content = rocket_direct_filesystem()->get_contents( $this->get_current_page_critical_css() );
+		}
+
+		if ( ! $critical_css_content ) {
+			return $buffer;
+		}
+
+		$buffer = preg_replace( '/<head(.*)>/U', '<head$1><style id="rocket-critical-css">' . wp_strip_all_tags( $critical_css_content ) . '</style>', $buffer, 1 );
 
 		return $buffer;
 	}
