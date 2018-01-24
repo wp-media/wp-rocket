@@ -286,6 +286,30 @@ function rocket_realpath( $file, $absolute = true, $hosts = '' ) {
 }
 
 /**
+ * Get the absolute filesystem path of the WordPress home url.
+ *
+ * @since
+ * @author Chris Williams
+ *
+ * @return string The filesystem path of the WordPress home home url.
+ */
+function rocket_get_home_path() {
+	$home_url = trailingslashit( rocket_add_url_protocol( home_url() ) );
+	$site_url = trailingslashit( rocket_add_url_protocol( site_url() ) );
+
+	$home_path = wp_normalize_path( ABSPATH );
+
+	if ( ! empty( $home_url ) && 0 !== strcasecmp( $home_url, $site_url ) )  {
+		$wp_path_rel_to_home = str_replace( $home_url, '', $site_url ); /* $site_url - $home_url */
+		$home_path = rtrim( $home_path, $wp_path_rel_to_home );
+	}
+
+	$home_path = trailingslashit( $home_path );
+
+	return $home_path;
+}
+
+/**
  * Simple helper to get some external URLs.
  *
  * @since  2.10.10
