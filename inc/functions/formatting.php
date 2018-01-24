@@ -251,7 +251,7 @@ function rocket_get_cache_busting_paths( $filename, $extension ) {
 function rocket_realpath( $file, $absolute = true, $hosts = '' ) {
 	if ( $absolute ) {
 		$file_components = get_rocket_parse_url( $file );
-		$site_components = get_rocket_parse_url( site_url() );
+		$site_components = get_rocket_parse_url( home_url() );
 
 		if ( isset( $hosts[ $file_components['host'] ] ) && 'home' !== $hosts[ $file_components['host'] ] ) {
 			$site_url = trailingslashit( rocket_add_url_protocol( $file_components['host'] ) );
@@ -260,7 +260,7 @@ function rocket_realpath( $file, $absolute = true, $hosts = '' ) {
 				$site_url .= ltrim( $site_components['path'], '/' );
 			}
 		} else {
-			$site_url = trailingslashit( rocket_add_url_protocol( site_url() ) );
+			$site_url = trailingslashit( rocket_add_url_protocol( home_url() ) );
 		}
 
 		$abspath = wp_normalize_path( ABSPATH );
