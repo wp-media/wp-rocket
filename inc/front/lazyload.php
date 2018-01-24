@@ -502,9 +502,12 @@ function rocket_lazyload_on_srcset( $html ) {
 		$html = str_replace( 'srcset=', 'data-lazy-srcset=', $html );
 	}
 
-	if ( preg_match( '/sizes=("(?:[^"]+)"|\'(?:[^\']+)\'|(?:[^ >]+))/i', $html ) ) {
-		$html = str_replace( 'sizes=', 'data-lazy-sizes=', $html );
-	}
+	/**
+	 * Remove this until the lazyload script is updated to handle sizes.
+	 * if ( preg_match( '/sizes=("(?:[^"]+)"|\'(?:[^\']+)\'|(?:[^ >]+))/i', $html ) ) {
+	 *	$html = str_replace( 'sizes=', 'data-lazy-sizes=', $html );
+	 * }
+	 */
 
 	return $html;
 }
