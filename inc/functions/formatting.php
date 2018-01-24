@@ -263,8 +263,9 @@ function rocket_realpath( $file, $absolute = true, $hosts = '' ) {
 			$site_url = trailingslashit( rocket_add_url_protocol( home_url() ) );
 		}
 
-		$abspath = wp_normalize_path( ABSPATH );
-		$file    = str_replace( $site_url, $abspath, rocket_set_internal_url_scheme( $file ) );
+		$home_path = rocket_get_home_path();
+
+		$file    = str_replace( $site_url, $home_path, rocket_set_internal_url_scheme( $file ) );
 	}
 
 	$path = array();
