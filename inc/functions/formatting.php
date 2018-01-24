@@ -251,7 +251,7 @@ function rocket_get_cache_busting_paths( $filename, $extension ) {
 function rocket_realpath( $file, $absolute = true, $hosts = '' ) {
 	if ( $absolute ) {
 		$file_components = get_rocket_parse_url( $file );
-		$site_components = get_rocket_parse_url( site_url() );
+		$site_components = get_rocket_parse_url( home_url() );
 
 		if ( isset( $hosts[ $file_components['host'] ] ) && 'home' !== $hosts[ $file_components['host'] ] ) {
 			$site_url = trailingslashit( rocket_add_url_protocol( $file_components['host'] ) );
@@ -260,11 +260,12 @@ function rocket_realpath( $file, $absolute = true, $hosts = '' ) {
 				$site_url .= ltrim( $site_components['path'], '/' );
 			}
 		} else {
-			$site_url = trailingslashit( rocket_add_url_protocol( site_url() ) );
+			$site_url = trailingslashit( rocket_add_url_protocol( home_url() ) );
 		}
 
-		$abspath = wp_normalize_path( ABSPATH );
-		$file    = str_replace( $site_url, $abspath, rocket_set_internal_url_scheme( $file ) );
+		$home_path = rocket_get_home_path();
+
+		$file    = str_replace( $site_url, $home_path, rocket_set_internal_url_scheme( $file ) );
 	}
 
 	$path = array();
@@ -290,6 +291,30 @@ function rocket_realpath( $file, $absolute = true, $hosts = '' ) {
 	}
 	
 	return $slash_prefix . join( '/', $path );
+}
+
+/**
+ * Get the absolute filesystem path of the WordPress home url.
+ *
+ * @since
+ * @author Chris Williams
+ *
+ * @return string The filesystem path of the WordPress home home url.
+ */
+function rocket_get_home_path() {
+	$home_url = trailingslashit( rocket_add_url_protocol( home_url() ) );
+	$site_url = trailingslashit( rocket_add_url_protocol( site_url() ) );
+
+	$home_path = wp_normalize_path( ABSPATH );
+
+	if ( ! empty( $home_url ) && 0 !== strcasecmp( $home_url, $site_url ) )  {
+		$wp_path_rel_to_home = str_replace( $home_url, '', $site_url ); /* $site_url - $home_url */
+		$home_path = rtrim( $home_path, $wp_path_rel_to_home );
+	}
+
+	$home_path = trailingslashit( $home_path );
+
+	return $home_path;
 }
 
 /**
