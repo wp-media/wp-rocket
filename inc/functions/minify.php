@@ -35,7 +35,7 @@ function rocket_minify_files( $buffer, $extension ) {
 	$original_buffer   = $buffer;
 	$files             = array();
 	$excluded_files    = array();
-	$external_js_files = '';
+	$external_js_files = array();
 
 	foreach ( $tags_match as $tag ) {
 		// Don't minify external files.
@@ -44,7 +44,7 @@ function rocket_minify_files( $buffer, $extension ) {
 				$host                 = rocket_extract_url_component( $tag[1], PHP_URL_HOST );
 				$excluded_external_js = get_rocket_minify_excluded_external_js();
 				if ( ! isset( $excluded_external_js[ $host ] ) ) {
-					$external_js_files .= $tag[0];
+					$external_js_files[] = $tag[0];
 				}
 			}
 			continue;
@@ -54,9 +54,10 @@ function rocket_minify_files( $buffer, $extension ) {
 		if ( is_rocket_minify_excluded_file( $tag, $extension ) ) {
 			if ( $concatenate && 'js' === $extension && get_rocket_option( 'defer_all_js' ) && get_rocket_option( 'defer_all_js_safe' ) && false !== strpos( $tag[1], $wp_scripts->registered['jquery-core']->src ) ) {
 				if ( get_rocket_option( 'remove_query_strings' ) ) {
-					$external_js_files .= str_replace( $tag[1], get_rocket_browser_cache_busting( $tag[1], 'script_loader_src' ), $tag[0] );
+					$external_js_files['jquery-cache-busting'] = str_replace( $tag[1], get_rocket_browser_cache_busting( $tag[1], 'script_loader_src' ), $tag[0] );
+					$buffer                                    = str_replace( $tag[0], $external_js_files['jquery-cache-busting'], $buffer );
 				} else {
-					$external_js_files .= $tag[0];
+					$external_js_files[] = $tag[0];
 				}
 
 				continue;
@@ -153,7 +154,7 @@ function rocket_minify_files( $buffer, $extension ) {
 		}
 
 		$minify_header_tag = '<script src="' . $minify_header_url . '" data-minify="1"></script>';
-		$buffer            = preg_replace( '/<head(.*)>/U', '<head$1>' . $external_js_files . $minify_header_tag, $buffer, 1 );
+		$buffer            = preg_replace( '/<head(.*)>/U', '<head$1>' . implode( '', $external_js_files ) . $minify_header_tag, $buffer, 1 );
 
 		$minify_tag = '<script src="' . $minify_url . '" data-minify="1"></script>';
 		return str_replace( '</body>', $minify_tag . '</body>', $buffer );
