@@ -119,12 +119,23 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		}
 		$group = wp_get_object_terms( $post->ID, self::GROUP_TAXONOMY, array('fields' => 'names') );
 		$group = empty( $group ) ? '' : reset($group);
-		if ( $post->post_status == 'pending' ) {
-			$action = new ActionScheduler_Action( $hook, $args, $schedule, $group );
-		} else {
-			$action = new ActionScheduler_FinishedAction( $hook, $args, $schedule, $group );
+
+		switch ( $post->post_status ) {
+			case 'publish' :
+				$status = ActionScheduler_Store::STATUS_COMPLETE;
+				break;
+			default :
+				$status = $post->post_status;
+				break;
 		}
-		return $action;
+
+		if ( 'pending' === $status ) {
+			$action_class = 'ActionScheduler_StoredAction';
+		} else {
+			$action_class = 'ActionScheduler_FinishedAction';
+		}
+
+		return new $action_class( $hook, $args, $schedule, $group, $post->ID, $status, $post->post_password );
 	}
 
 	/**
