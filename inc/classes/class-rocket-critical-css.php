@@ -591,6 +591,14 @@ class Rocket_Critical_CSS {
 	 * @return string Updated HTML output
 	 */
 	public function insert_critical_css_buffer( $buffer ) {
+		if ( ! get_rocket_option( 'async_css' ) ) {
+			return $buffer;
+		}
+
+		if ( is_rocket_post_excluded_option( 'async_css' ) ) {
+			return $buffer;
+		}
+
 		$current_page_critical_css = $this->get_current_page_critical_css();
 
 		if ( ! $current_page_critical_css ) {
