@@ -93,7 +93,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 
 	public function fetch_action( $action_id ) {
 		$post = $this->get_post( $action_id );
-		if ( empty($post) || $post->post_type != self::POST_TYPE || $post->post_status == 'trash' ) {
+		if ( empty($post) || $post->post_type != self::POST_TYPE ) {
 			return $this->get_null_action();
 		}
 		return $this->make_action_from_post($post);
@@ -124,6 +124,9 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 			case 'publish' :
 				$status = ActionScheduler_Store::STATUS_COMPLETE;
 				break;
+			case 'trash' :
+				$status = ActionScheduler_Store::STATUS_CANCELED;
+				break;
 			default :
 				$status = $post->post_status;
 				break;
@@ -131,6 +134,8 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 
 		if ( 'pending' === $status ) {
 			$action_class = 'ActionScheduler_StoredAction';
+		} elseif ( ActionScheduler_Store::STATUS_CANCELED === $status ) {
+			$action_class = 'ActionScheduler_CanceledAction';
 		} else {
 			$action_class = 'ActionScheduler_FinishedAction';
 		}

@@ -64,7 +64,7 @@ class procedural_api_Test extends ActionScheduler_UnitTestCase {
 		$action = $store->fetch_action($action_id);
 
 		$this->assertNull($action->get_schedule()->next());
-		$this->assertEmpty($action->get_hook());
+		$this->assertEquals($hook, $action->get_hook() );
 	}
 
 	public function test_as_get_datetime_object_default() {
