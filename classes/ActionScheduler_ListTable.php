@@ -22,7 +22,12 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	/**
 	 *  The active data stores
 	 */
-	protected $stores;
+	protected $store;
+
+	/**
+	 *  A logger to use for getting action logs to display
+	 */
+	protected $logger;
 
 	/**
 	 * Bulk actions. The key of the array is the method name of the implementation:
@@ -42,7 +47,10 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	/**
 	 * Sets the current data store object into `store->action` and initialises the object.
 	 */
-	public function __construct() {
+	public function __construct( $store, $logger ) {
+
+		$this->store  = $store;
+		$this->logger = $logger;
 
 		$this->maybe_render_admin_notices();
 
@@ -67,11 +75,6 @@ class ActionScheduler_ListTable extends PP_List_Table {
 					__( 'Process the action now as if it were run as part of a queue', 'action-scheduler' ),
 				),
 			),
-		);
-
-		$this->stores = (object) array(
-			'action' => ActionScheduler_Store::instance(),
-			'log'    => ActionScheduler_Logger::instance(),
 		);
 
 		parent::__construct( array(
@@ -191,16 +194,16 @@ class ActionScheduler_ListTable extends PP_List_Table {
 
 		self::$did_notification = true;
 
-		if ( ActionScheduler_Store::instance()->get_claim_count() >= apply_filters( 'action_scheduler_queue_runner_concurrent_batches', 5 ) ) : ?>
+		if ( $this->store->get_claim_count() >= apply_filters( 'action_scheduler_queue_runner_concurrent_batches', 5 ) ) : ?>
 <div id="message" class="updated">
-	<p><?php printf( __( 'Maximum simulatenous batches already in progress (%s queues). No actions will be processed until the current batches are complete.', 'action-scheduler' ), ActionScheduler_Store::instance()->get_claim_count() ); ?></p>
+	<p><?php printf( __( 'Maximum simulatenous batches already in progress (%s queues). No actions will be processed until the current batches are complete.', 'action-scheduler' ), $this->store->get_claim_count() ); ?></p>
 </div>
 		<?php endif;
 		$notification = get_transient( 'actionscheduler_admin_executed' );
 		if ( is_array( $notification ) ) {
 			delete_transient( 'actionscheduler_admin_executed' );
 
-			$action = ActionScheduler::store()->fetch_action( $notification['action_id'] );
+			$action = $this->store->fetch_action( $notification['action_id'] );
 			$action_hook_html = '<strong>' . $action->get_hook() . '</strong>';
 			if ( 1 == $notification['success'] ): ?>
 				<div id="message" class="updated">
@@ -242,7 +245,7 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	 */
 	protected function bulk_delete( array $ids, $ids_sql ) {
 		foreach ( $ids as $id ) {
-			$this->stores->action->delete_action( $id );
+			$this->store->delete_action( $id );
 		}
 	}
 
@@ -288,17 +291,17 @@ class ActionScheduler_ListTable extends PP_List_Table {
 
 		$this->items = array();
 
-		$total_items = $this->stores->action->query_actions_count( $query );
+		$total_items = $this->store->query_actions_count( $query );
 
-		foreach ( $this->stores->action->query_actions( $query ) as $id ) {
-			$item = $this->stores->action->fetch_action( $id );
+		foreach ( $this->store->query_actions( $query ) as $id ) {
+			$item = $this->store->fetch_action( $id );
 			$this->items[ $id ] = array(
 				'ID'     => $id,
 				'hook'   => $item->get_hook(),
 				'status' => ActionScheduler::store()->get_status( $id ),
 				'args'   => $item->get_args(),
 				'group'  => $item->get_group(),
-				'log'    => $this->stores->log->get_logs( $id ),
+				'log'    => $this->logger->get_logs( $id ),
 				'recurrence' => $this->get_recurrence( $item ),
 				'scheduled'  => $item->get_schedule(),
 			);
@@ -349,7 +352,7 @@ class ActionScheduler_ListTable extends PP_List_Table {
 
 		$li = array();
 		foreach ( $statuses as $name => $status ) {
-			$total_items = $this->stores->action->query_actions_count( compact( 'status' ) );
+			$total_items = $this->store->query_actions_count( compact( 'status' ) );
 			if ( 0 === $total_items ) {
 				continue;
 			}
