@@ -298,7 +298,7 @@ class ActionScheduler_ListTable extends PP_List_Table {
 			$this->items[ $id ] = array(
 				'ID'     => $id,
 				'hook'   => $item->get_hook(),
-				'status' => ActionScheduler::store()->get_status( $id ),
+				'status' => $item->get_status(),
 				'args'   => $item->get_args(),
 				'group'  => $item->get_group(),
 				'log'    => $this->logger->get_logs( $id ),

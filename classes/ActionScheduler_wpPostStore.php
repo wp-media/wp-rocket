@@ -509,32 +509,6 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		}
 	}
 
-	public function get_status( $action_id ) {
-		/** @var \wpdb $wpdb */
-		global $wpdb;
-		$sql = $wpdb->prepare( "SELECT post_status FROM {$wpdb->posts} WHERE ID=%d AND post_type=%s", $action_id, self::POST_TYPE );
-		$status = $wpdb->get_var( $sql );
-		switch( $status ) {
-			case 'publish':
-				return self::STATUS_COMPLETE;
-			case 'pending':
-				return self::STATUS_PENDING;
-			case 'trash':
-				return self::STATUS_CANCELED;
-			case self::STATUS_FAILED:
-				return self::STATUS_FAILED;
-			case self::STATUS_RUNNING:
-				return self::STATUS_RUNNING;
-			default:
-				if ( $status === null ) {
-					throw new \InvalidArgumentException( __( 'Invalid action ID. No status found.', 'action-scheduler' ) );
-				} else {
-					throw new \RuntimeException( __( 'Unknown status found for action.', 'action-scheduler' ) );
-				}
-		}
-
-	}
-
 	/**
 	 * @param string $action_id
 	 *

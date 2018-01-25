@@ -120,13 +120,6 @@ abstract class ActionScheduler_Store {
 	abstract public function mark_complete( $action_id );
 
 	/**
-	 * @param string $action_id
-	 *
-	 * @return string
-	 */
-	abstract public function get_status( $action_id );
-
-	/**
 	 * @param string $claim_id
 	 * @return array
 	 */
