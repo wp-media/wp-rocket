@@ -374,6 +374,33 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		return $wpdb->get_col( $this->get_query_actions_sql( $query ) );
 	}
 
+	/**
+	 * Get a count of all actions in the store, grouped by status
+	 *
+	 * @return array
+	 */
+	public function actions_count() {
+
+		$actions_count_by_status = array();
+		$action_stati_and_labels = $this->get_status_labels();
+		$posts_count_by_status   = (array) wp_count_posts( self::POST_TYPE, 'readable' );
+
+		foreach ( $posts_count_by_status as $post_status_name => $count ) {
+
+			try {
+				$action_status_name = $this->get_action_status_by_post_status( $post_status_name );
+			} catch ( Exception $e ) {
+				// Ignore any post statuses that aren't for actions
+				continue;
+			}
+			if ( array_key_exists( $action_status_name, $action_stati_and_labels ) ) {
+				$actions_count_by_status[ $action_status_name ] = $count;
+			}
+		}
+
+		return $actions_count_by_status;
+	}
+
 	private function validate_sql_comparator( $comp ) {
 		if ( in_array($comp, array('!=', '>', '>=', '<', '<=', '=')) ) {
 			return $comp;

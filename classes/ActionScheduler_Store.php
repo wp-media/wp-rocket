@@ -51,6 +51,13 @@ abstract class ActionScheduler_Store {
 	abstract public function query_actions_count( $query = array() );
 
 	/**
+	 * Get a count of all actions in the store, grouped by status
+	 *
+	 * @return array
+	 */
+	abstract public function actions_count();
+
+	/**
 	 * @param string $action_id
 	 *
 	 * @return void
