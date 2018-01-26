@@ -120,27 +120,67 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		$group = wp_get_object_terms( $post->ID, self::GROUP_TAXONOMY, array('fields' => 'names') );
 		$group = empty( $group ) ? '' : reset($group);
 
-		switch ( $post->post_status ) {
-			case 'publish' :
-				$status = ActionScheduler_Store::STATUS_COMPLETE;
-				break;
-			case 'trash' :
-				$status = ActionScheduler_Store::STATUS_CANCELED;
-				break;
-			default :
-				$status = $post->post_status;
-				break;
-		}
+		$status = $this->get_action_status_by_post_status( $post->post_status );
 
-		if ( 'pending' === $status ) {
+		if ( self::STATUS_PENDING === $status ) {
 			$action_class = 'ActionScheduler_StoredAction';
-		} elseif ( ActionScheduler_Store::STATUS_CANCELED === $status ) {
+		} elseif ( self::STATUS_CANCELED === $status ) {
 			$action_class = 'ActionScheduler_CanceledAction';
 		} else {
 			$action_class = 'ActionScheduler_FinishedAction';
 		}
 
 		return new $action_class( $hook, $args, $schedule, $group, $post->ID, $status, $post->post_password );
+	}
+
+	/**
+	 * @param string $post_status
+	 *
+	 * @return string
+	 */
+	protected function get_action_status_by_post_status( $post_status ) {
+
+		switch ( $post_status ) {
+			case 'publish' :
+				$action_status = self::STATUS_COMPLETE;
+				break;
+			case 'trash' :
+				$action_status = self::STATUS_CANCELED;
+				break;
+			default :
+				if ( ! array_key_exists( $post_status, $this->get_status_labels() ) ) {
+					throw new InvalidArgumentException( sprintf( 'Invalid post status: "%s". No matching action status available.', $post_status ) );
+				}
+				$action_status = $post_status;
+				break;
+		}
+
+		return $action_status;
+	}
+
+	/**
+	 * @param string $action_status
+	 *
+	 * @return string
+	 */
+	protected function get_post_status_by_action_status( $action_status ) {
+
+		switch ( $action_status ) {
+			case self::STATUS_COMPLETE :
+				$post_status = 'publish';
+				break;
+			case self::STATUS_CANCELED :
+				$post_status = 'trash';
+				break;
+			default :
+				if ( ! array_key_exists( $action_status, $this->get_status_labels() ) ) {
+					throw new InvalidArgumentException( sprintf( 'Invalid action status: "%s".', $action_status ) );
+				}
+				$post_status = $action_status;
+				break;
+		}
+
+		return $post_status;
 	}
 
 	/**
@@ -173,23 +213,21 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 			$query .= " AND p.post_content=%s";
 			$args[] = json_encode($params['args']);
 		}
+
+		if ( ! empty( $params['status'] ) ) {
+			$query .= " AND p.post_status=%s";
+			$args[] = $this->get_post_status_by_action_status( $params['status'] );
+		}
+
 		switch ( $params['status'] ) {
 			case self::STATUS_COMPLETE:
-				$query .= " AND p.post_status='publish'";
+			case self::STATUS_RUNNING:
+			case self::STATUS_FAILED:
 				$order = 'DESC'; // Find the most recent action that matches
 				break;
 			case self::STATUS_PENDING:
-				$query .= " AND p.post_status='pending'";
-				$order = 'ASC'; // Find the next action that matches
-				break;
-			case self::STATUS_RUNNING:
-			case self::STATUS_FAILED:
-				$query .= " AND p.post_status=%s";
-				$args[] = $params['status'];
-				$order = 'DESC'; // Find the most recent action that matches
-				break;
 			default:
-				$order = 'ASC';
+				$order = 'ASC'; // Find the next action that matches
 				break;
 		}
 		$query .= " ORDER BY post_date_gmt $order LIMIT 1";
@@ -248,19 +286,9 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 			$sql_params[] = json_encode($query['args']);
 		}
 
-		switch ( $query['status'] ) {
-			case self::STATUS_COMPLETE:
-				$sql .= " AND p.post_status='publish'";
-				break;
-			case self::STATUS_CANCELED:
-				$sql .= " AND p.post_status='trash'";
-				break;
-			case self::STATUS_PENDING:
-			case self::STATUS_RUNNING:
-			case self::STATUS_FAILED:
-				$sql .= " AND p.post_status=%s";
-				$sql_params[] = $query['status'];
-				break;
+		if ( ! empty( $query['status'] ) ) {
+			$sql .= " AND p.post_status=%s";
+			$sql_params[] = $this->get_post_status_by_action_status( $query['status'] );
 		}
 
 		if ( $query['date'] instanceof DateTime ) {
