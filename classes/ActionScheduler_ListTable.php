@@ -337,39 +337,27 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	 * @return void
 	 */
 	public function display_filter_by_status() {
-		$statuses = array(
-			'pending'   => ActionScheduler_Store::STATUS_PENDING,
-			'running'   => ActionScheduler_Store::STATUS_RUNNING,
-			'complete'  => ActionScheduler_Store::STATUS_COMPLETE,
-			'failed'    => ActionScheduler_Store::STATUS_FAILED,
-		);
 
-		$li = array();
-		foreach ( $statuses as $name => $status ) {
-			$total_items = $this->store->query_actions_count( compact( 'status' ) );
-			if ( 0 === $total_items ) {
+		$status_list_items = array();
+
+		foreach ( $this->store->actions_count() as $status_name => $count ) {
+
+			if ( 0 === $count ) {
 				continue;
 			}
 
-			if ( $status === $this->get_request_status() ) {
-				$li[] =  '<li class="' . esc_attr( $name ) . '">'
-					. '<strong>'
-						. esc_html( ucfirst( $name ) )
-					. "</strong> (" . absint( $total_items ) . ")"
-				. '</li>';
-				continue;
+			if ( $status_name === $this->get_request_status() ) {
+				$status_list_item = '<li class="%1$s"><strong>%3$s</strong> (%4$d)</li>';
+			} else {
+				$status_list_item = '<li class="%1$s"><a href="%2$s">%3$s</a> (%4$d)</li>';
 			}
 
-			$li[] =  '<li class="' . esc_attr( $name ) . '">'
-				. '<a href="' . esc_url( add_query_arg( 'status', $status ) )  . '">'
-				. esc_html( ucfirst( $name ) )
-				. "</a> (" . absint( $total_items ) . ")"
-			. '</li>';
+			$status_list_items[] = sprintf( $status_list_item, esc_attr( $status_name ), esc_url( add_query_arg( 'status', $status_name ) ), esc_html( ucfirst( $status_name ) ), absint( $count ) );
 		}
 
-		if ( $li ) {
+		if ( $status_list_items ) {
 			echo '<ul class="subsubsub">';
-			echo implode( " | \n", $li );
+			echo implode( " | \n", $status_list_items );
 			echo '</ul>';
 		}
 	}
