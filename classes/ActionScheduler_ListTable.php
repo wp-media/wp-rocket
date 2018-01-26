@@ -323,14 +323,8 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	 * @return string
 	 */
 	public function get_request_status() {
-		$statuses = array(
-			ActionScheduler_Store::STATUS_PENDING,
-			ActionScheduler_Store::STATUS_COMPLETE,
-			ActionScheduler_Store::STATUS_FAILED,
-			ActionScheduler_Store::STATUS_RUNNING,
-		);
 
-		if ( ! empty( $_GET['status'] ) && in_array( $_GET['status'], $statuses ) ) {
+		if ( ! empty( $_GET['status'] ) && array_key_exists( $_GET['status'], $this->store->get_status_labels() ) ) {
 			return $_GET['status'];
 		}
 
