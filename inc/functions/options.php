@@ -339,16 +339,13 @@ function get_rocket_cdn_reject_files() {
 /**
  * Get all CNAMES
  *
+ * @since 3.0 Don't check for WP Rocket CDN option activated to be able to use the function on Hosting with CDN auto-enabled
  * @since 2.1
  *
  * @param string $zone (default: 'all') List of zones.
  * @return array List of CNAMES
  */
 function get_rocket_cdn_cnames( $zone = 'all' ) {
-	if ( (int) get_rocket_option( 'cdn' ) === 0 ) {
-		return array();
-	}
-
 	$hosts       = array();
 	$cnames      = get_rocket_option( 'cdn_cnames', array() );
 	$cnames_zone = get_rocket_option( 'cdn_zone', array() );
