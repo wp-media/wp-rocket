@@ -20,6 +20,49 @@ if ( isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ) {
 	}
 	add_action( 'after_rocket_clean_domain', 'rocket_clean_kinsta_cache' );
 
+	/**
+	 * Partially clear Kinsta cache when partially clearing WP Rocket cache
+	 *
+	 * @since 3.0
+	 * @author Remy Perona
+	 *
+	 * @param object $post Post object.
+	 * @return void
+	 */
+	function rocket_clean_kinsta_post_cache( $post ) {
+		global $KinstaCache;
+		$KinstaCache->KinstaCachePurge->initiate_purge( $post->ID, 'post' );
+	}
+	add_action( 'after_rocket_clean_post', 'rocket_clean_kinsta_post_cache', 10, 1 );
+
+	/**
+	 * Remove WP Rocket functions on WP core action hooks to prevent triggering a double cache clear.
+	 *
+	 * @since 3.0
+	 * @author Remy Perona
+	 *
+	 * @return void
+	 */
+	function rocket_remove_partial_purge_hooks() {
+		// WP core action hooks rocket_clean_post() gets hooked into.
+		$clean_post_hooks = array(
+			// Disables the refreshing of partial cache when content is edited.
+			'wp_trash_post',
+			'delete_post',
+			'clean_post_cache',
+			'wp_update_comment_count',
+		);
+
+		// Remove rocket_clean_post() from core action hooks.
+		array_map(
+			function( $hook ) {
+				remove_action( $hook, 'rocket_clean_post' );
+			},
+			$clean_post_hooks
+		);
+	}
+	add_action( 'rocket_loaded', 'rocket_remove_partial_purge_hooks' );
+
 	if ( Kinsta\CDNEnabler::cdn_is_enabled() ) {
 		/**
 		 * Add Kinsta CDN to WP Rocket CDN hosts list if enabled
