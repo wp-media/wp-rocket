@@ -168,7 +168,7 @@ function rocket_admin_bar( $wp_admin_bar ) {
 
 		}
 
-		if ( get_rocket_option( 'async_css' ) ) {
+		if ( get_rocket_option( 'async_css' ) && apply_filters( 'do_rocket_critical_css_generation', true ) ) {
 			// Regenerate Critical Path CSS.
 			$action = 'rocket_generate_critical_css';
 

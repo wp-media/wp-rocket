@@ -35,7 +35,7 @@ function rocket_minify_files( $buffer, $extension ) {
 	$original_buffer   = $buffer;
 	$files             = array();
 	$excluded_files    = array();
-	$external_js_files = '';
+	$external_js_files = array();
 
 	foreach ( $tags_match as $tag ) {
 		// Don't minify external files.
@@ -44,8 +44,7 @@ function rocket_minify_files( $buffer, $extension ) {
 				$host                 = rocket_extract_url_component( $tag[1], PHP_URL_HOST );
 				$excluded_external_js = get_rocket_minify_excluded_external_js();
 				if ( ! isset( $excluded_external_js[ $host ] ) ) {
-					$external_js_files .= $tag[0];
-					$buffer             = str_replace( $tag[0], '', $buffer );
+					$external_js_files[] = $tag[0];
 				}
 			}
 			continue;
@@ -55,12 +54,12 @@ function rocket_minify_files( $buffer, $extension ) {
 		if ( is_rocket_minify_excluded_file( $tag, $extension ) ) {
 			if ( $concatenate && 'js' === $extension && get_rocket_option( 'defer_all_js' ) && get_rocket_option( 'defer_all_js_safe' ) && false !== strpos( $tag[1], $wp_scripts->registered['jquery-core']->src ) ) {
 				if ( get_rocket_option( 'remove_query_strings' ) ) {
-					$external_js_files .= str_replace( $tag[1], get_rocket_browser_cache_busting( $tag[1], 'script_loader_src' ), $tag[0] );
+					$external_js_files['jquery-cache-busting'] = str_replace( $tag[1], get_rocket_browser_cache_busting( $tag[1], 'script_loader_src' ), $tag[0] );
+					$buffer                                    = str_replace( $tag[0], $external_js_files['jquery-cache-busting'], $buffer );
 				} else {
-					$external_js_files .= $tag[0];
+					$external_js_files[] = $tag[0];
 				}
 
-				$buffer = str_replace( $tag[0], '', $buffer );
 				continue;
 			}
 
@@ -115,7 +114,7 @@ function rocket_minify_files( $buffer, $extension ) {
 	}
 
 	if ( empty( $files ) ) {
-		return $original_buffer;
+		return $buffer;
 	}
 
 	if ( ! $concatenate ) {
@@ -150,8 +149,12 @@ function rocket_minify_files( $buffer, $extension ) {
 			return $original_buffer;
 		}
 
+		foreach ( $external_js_files as $external_js_file ) {
+			$buffer = str_replace( $external_js_file, '', $buffer );
+		}
+
 		$minify_header_tag = '<script src="' . $minify_header_url . '" data-minify="1"></script>';
-		$buffer            = preg_replace( '/<head(.*)>/U', '<head$1>' . $external_js_files . $minify_header_tag, $buffer, 1 );
+		$buffer            = preg_replace( '/<head(.*)>/U', '<head$1>' . implode( '', $external_js_files ) . $minify_header_tag, $buffer, 1 );
 
 		$minify_tag = '<script src="' . $minify_url . '" data-minify="1"></script>';
 		return str_replace( '</body>', $minify_tag . '</body>', $buffer );
@@ -160,6 +163,10 @@ function rocket_minify_files( $buffer, $extension ) {
 
 	if ( 'css' === $extension ) {
 		$minify_url = get_rocket_minify_url( $files, $extension );
+
+		if ( ! $minify_url ) {
+			return $original_buffer;
+		}
 
 		$minify_tag = '<link rel="stylesheet" href="' . $minify_url . '" data-minify="1" />';
 		return preg_replace( '/<head(.*)>/U', '<head$1>' . $minify_tag, $buffer, 1 );
@@ -291,16 +298,20 @@ function get_rocket_minify_url( $files, $extension ) {
 		$filename   = md5( $files_hash . $minify_key ) . '.' . $extension;
 	}
 
-	$minified_content = rocket_minify( $file_path, $extension );
+	$minified_file = WP_ROCKET_MINIFY_CACHE_PATH . get_current_blog_id() . '/' . $filename;
 
-	if ( ! $minified_content ) {
-		return false;
-	}
+	if ( ! file_exists( $minified_file ) ) {
+		$minified_content = rocket_minify( $file_path, $extension );
 
-	$minify_filepath = rocket_write_minify_file( $minified_content, $filename );
+		if ( ! $minified_content ) {
+			return false;
+		}
 
-	if ( ! $minify_filepath ) {
-		return false;
+		$minify_filepath = rocket_write_minify_file( $minified_content, $minified_file );
+
+		if ( ! $minify_filepath ) {
+			return false;
+		}
 	}
 
 	$minify_url = get_rocket_cdn_url( WP_ROCKET_MINIFY_CACHE_URL . get_current_blog_id() . '/' . $filename, array( 'all', 'css_and_js', $extension ) );
@@ -372,22 +383,20 @@ function rocket_minify( $files, $extension ) {
  * @since 2.11
  * @author Remy Perona
  *
- * @param string $content  Minified content.
- * @param string $filename Name of the minified file.
+ * @param string $content       Minified content.
+ * @param string $minified_file Path to the minified file to write in.
  * @return bool True if successful, false otherwise
  */
-function rocket_write_minify_file( $content, $filename ) {
-	$minify_filepath = WP_ROCKET_MINIFY_CACHE_PATH . get_current_blog_id() . '/' . $filename;
-
-	if ( file_exists( $minify_filepath ) ) {
+function rocket_write_minify_file( $content, $minified_file ) {
+	if ( file_exists( $minified_file ) ) {
 		return true;
 	}
 
-	if ( ! rocket_mkdir_p( dirname( $minify_filepath ) ) ) {
+	if ( ! rocket_mkdir_p( dirname( $minified_file ) ) ) {
 		return false;
 	}
 
-	return rocket_put_content( $minify_filepath, $content );
+	return rocket_put_content( $minified_file, $content );
 }
 
 /**

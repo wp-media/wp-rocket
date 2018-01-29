@@ -120,7 +120,7 @@ if ( function_exists( 'opcache_reset' ) ) {
 	);
 }
 
-if ( get_rocket_option( 'async_css' ) ) {
+if ( get_rocket_option( 'async_css' ) && apply_filters( 'do_rocket_critical_css_generation', true ) ) {
 	// Regenerate Critical Path CSS.
 	add_settings_field(
 		'rocket_regenerate_critical_path_css',

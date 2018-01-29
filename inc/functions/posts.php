@@ -131,7 +131,7 @@ function get_rocket_sample_permalink( $id, $title = null, $name = null ) {
 		$uri = untrailingslashit( $uri );
 
 		/** This filter is documented in wp-admin/edit-tag-form.php */
-		$uri = apply_filters( 'editable_slug', $uri, $tag );
+		$uri = apply_filters( 'editable_slug', $uri, $post );
 		if ( ! empty( $uri ) ) {
 			$uri .= '/';
 		}
@@ -139,7 +139,7 @@ function get_rocket_sample_permalink( $id, $title = null, $name = null ) {
 	}
 
 	/** This filter is documented in wp-admin/edit-tag-form.php */
-	$permalink         = array( $permalink, apply_filters( 'editable_slug', $post->post_name, $tag ) );
+	$permalink         = array( $permalink, apply_filters( 'editable_slug', $post->post_name, $post ) );
 	$post->post_status = $original_status;
 	$post->post_date   = $original_date;
 	$post->post_name   = $original_name;
