@@ -51,6 +51,7 @@ require WP_ROCKET_3RD_PARTY_PATH . 'plugins/mobile/wp-appkit.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/mobile/wp-touch.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/seo/yoast-seo.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/seo/all-in-one-seo-pack.php';
+require WP_ROCKET_3RD_PARTY_PATH . 'plugins/seo/premium-seo-pack.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/wp-rest-api.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/page-builder/beaver-builder.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/page-builder/thrive-visual-editor.php';
