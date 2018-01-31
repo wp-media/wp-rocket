@@ -20,7 +20,7 @@ if ( class_exists( 'Cookie_Notice' ) ) {
  * @param $cookies array List of dynamic cookies
  * @return array List of dynamic cookies with the Cookie Notice cookie appended
  */
-function rocket_get_cookie_notice_cookie($cookies) {
+function rocket_get_cookie_notice_cookie( $cookies ) {
 	
 	$cookies[] = 'cookie_notice_accepted';
 	return $cookies;
