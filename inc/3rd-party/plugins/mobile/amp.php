@@ -20,6 +20,7 @@ function rocket_disable_options_on_amp() {
 		remove_filter( 'rocket_buffer', 'rocket_minify_process', 13 );
 		remove_filter( 'rocket_buffer', 'rocket_defer_js', 14 );
 		remove_filter( 'rocket_buffer', array( Rocket_Critical_CSS::get_instance(), 'async_css' ), 15 );
+		remove_filter( 'rocket_buffer', array( Rocket_Critical_CSS::get_instance(), 'insert_critical_css_buffer' ), 14 );
 		remove_filter( 'rocket_buffer', 'rocket_minify_html', 20 );
 
 		add_filter( 'do_rocket_lazyload', '__return_false' );
