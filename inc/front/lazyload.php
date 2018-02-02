@@ -10,7 +10,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  * @since 1.0
  */
 function rocket_lazyload_script() {
-	if ( ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) ) {
+	if ( ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE && rocket_override_donotrocketoptimize_for_lazyload() ) ) {
 		return;
 	}
 
@@ -102,7 +102,7 @@ add_action( 'wp_footer', 'rocket_lazyload_script', PHP_INT_MAX );
  * @author Remy Perona
  */
 function rocket_lazyload_enqueue() {
-	if ( ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) ) {
+	if ( ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE && rocket_override_donotrocketoptimize_for_lazyload() ) ) {
 		return;
 	}
 
@@ -136,7 +136,7 @@ add_action( 'wp_enqueue_scripts', 'rocket_lazyload_enqueue', PHP_INT_MAX );
  */
 function rocket_lazyload_images( $html ) {
 	// Don't LazyLoad if process is stopped for these reasons.
-	if ( ! get_rocket_option( 'lazyload' ) || ! apply_filters( 'do_rocket_lazyload', true ) || is_feed() || is_preview() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) || ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) || empty( $html ) || ( defined( 'DONOTLAZYLOAD' ) && DONOTLAZYLOAD ) || wp_script_is( 'twentytwenty-twentytwenty', 'enqueued' ) ) {
+	if ( ! get_rocket_option( 'lazyload' ) || ! apply_filters( 'do_rocket_lazyload', true ) || is_feed() || is_preview() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) || ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE && rocket_override_donotrocketoptimize_for_lazyload() ) || empty( $html ) || ( defined( 'DONOTLAZYLOAD' ) && DONOTLAZYLOAD ) || wp_script_is( 'twentytwenty-twentytwenty', 'enqueued' ) ) {
 		return $html;
 	}
 
@@ -272,7 +272,7 @@ function rocket_is_excluded_lazyload( $string, $excluded_values ) {
  * @since 1.0
  */
 function rocket_lazyload_smilies() {
-	if ( ! get_rocket_option( 'lazyload' ) || ! apply_filters( 'do_rocket_lazyload', true, 'smilies' ) || ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) || ( defined( 'DONOTLAZYLOAD' ) && DONOTLAZYLOAD ) ) {
+	if ( ! get_rocket_option( 'lazyload' ) || ! apply_filters( 'do_rocket_lazyload', true, 'smilies' ) || ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE && rocket_override_donotrocketoptimize_for_lazyload() ) || ( defined( 'DONOTLAZYLOAD' ) && DONOTLAZYLOAD ) ) {
 		return;
 	}
 
@@ -399,7 +399,7 @@ function rocket_translate_smiley( $matches ) {
  */
 function rocket_lazyload_iframes( $html ) {
 	// Don't LazyLoad if process is stopped for these reasons.
-	if ( ! get_rocket_option( 'lazyload_iframes' ) || ! apply_filters( 'do_rocket_lazyload_iframes', true ) || is_feed() || is_preview() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) || empty( $html ) || ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) || ( defined( 'DONOTLAZYLOAD' ) && DONOTLAZYLOAD ) ) {
+	if ( ! get_rocket_option( 'lazyload_iframes' ) || ! apply_filters( 'do_rocket_lazyload_iframes', true ) || is_feed() || is_preview() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) || empty( $html ) || ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE && rocket_override_donotrocketoptimize_for_lazyload() ) || ( defined( 'DONOTLAZYLOAD' ) && DONOTLAZYLOAD ) ) {
 		return $html;
 	}
 
@@ -530,4 +530,17 @@ function rocket_lazyload_get_youtube_id_from_url( $url ) {
 		return $matches[1];
 	}
 	return false;
+}
+
+/**
+ * Add abillity to apply Lazyload while DONOTROCKETOPTIMIZE is defined.
+ *
+ * @return bool False if the filter returns true, true otherwise.
+ */
+function rocket_override_donotrocketoptimize_for_lazyload() {
+	if ( apply_filters( 'rocket_override_donotrocketoptimize_for_lazyload', false ) === true ) {
+		return false;
+	}
+
+	return true;
 }
