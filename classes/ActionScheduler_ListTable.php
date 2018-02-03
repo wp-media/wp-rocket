@@ -141,12 +141,12 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	/**
 	 * Returns the recurrence of an action or 'Non-repeating'. The output is human readable.
 	 *
-	 * @param ActionScheduler_Action $item
+	 * @param ActionScheduler_Action $action
 	 *
 	 * @return string
 	 */
-	protected function get_recurrence( $item ) {
-		$recurrence = $item->get_schedule();
+	protected function get_recurrence( $action ) {
+		$recurrence = $action->get_schedule();
 		if ( method_exists( $recurrence, 'interval_in_seconds' ) ) {
 			return self::human_interval( $recurrence->interval_in_seconds() );
 		}
@@ -294,16 +294,16 @@ class ActionScheduler_ListTable extends PP_List_Table {
 		$total_items = $this->store->query_actions_count( $query );
 
 		foreach ( $this->store->query_actions( $query ) as $id ) {
-			$item = $this->store->fetch_action( $id );
+			$action = $this->store->fetch_action( $id );
 			$this->items[ $id ] = array(
 				'ID'     => $id,
-				'hook'   => $item->get_hook(),
-				'status' => $item->get_status(),
-				'args'   => $item->get_args(),
-				'group'  => $item->get_group(),
+				'hook'   => $action->get_hook(),
+				'status' => $action->get_status(),
+				'args'   => $action->get_args(),
+				'group'  => $action->get_group(),
 				'log'    => $this->logger->get_logs( $id ),
-				'recurrence' => $this->get_recurrence( $item ),
-				'scheduled'  => $item->get_schedule(),
+				'recurrence' => $this->get_recurrence( $action ),
+				'scheduled'  => $action->get_schedule(),
 			);
 		}
 
