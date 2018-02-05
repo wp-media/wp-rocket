@@ -51,6 +51,7 @@ require WP_ROCKET_3RD_PARTY_PATH . 'plugins/mobile/wp-appkit.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/mobile/wp-touch.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/seo/yoast-seo.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/seo/all-in-one-seo-pack.php';
+require WP_ROCKET_3RD_PARTY_PATH . 'plugins/seo/premium-seo-pack.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/wp-rest-api.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/page-builder/beaver-builder.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/page-builder/thrive-visual-editor.php';
@@ -67,6 +68,7 @@ require WP_ROCKET_3RD_PARTY_PATH . 'plugins/advanced-custom-fields.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/wp-offload-s3.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/wp-offload-s3-assets.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/s2member.php';
+require WP_ROCKET_3RD_PARTY_PATH . 'plugins/cookie-notice.php';
 
 require WP_ROCKET_3RD_PARTY_PATH . 'themes/divi.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'themes/avada.php';
