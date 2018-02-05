@@ -489,6 +489,8 @@ function rocket_analytics_data() {
 		$data['web_server'] = 'IIS 7';
 	} elseif ( $is_IIS ) {
 		$data['web_server'] = 'IIS';
+	} else {
+		$data['web_server'] = 'unknown';
 	}
 
 	$data['php_version']       = preg_replace( '@^(\d\.\d+).*@', '\1', phpversion() );
