@@ -132,6 +132,13 @@ abstract class ActionScheduler_Store {
 	 */
 	abstract public function find_actions_by_claim_id( $claim_id );
 
+	protected function validate_sql_comparator( $comp ) {
+		if ( in_array($comp, array('!=', '>', '>=', '<', '<=', '=')) ) {
+			return $comp;
+		}
+		return '=';
+	}
+
 	/**
 	 * @return array
 	 */

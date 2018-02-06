@@ -401,13 +401,6 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		return $actions_count_by_status;
 	}
 
-	private function validate_sql_comparator( $comp ) {
-		if ( in_array($comp, array('!=', '>', '>=', '<', '<=', '=')) ) {
-			return $comp;
-		}
-		return '=';
-	}
-
 	/**
 	 * @param string $action_id
 	 *
