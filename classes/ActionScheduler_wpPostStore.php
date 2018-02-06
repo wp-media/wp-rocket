@@ -238,16 +238,15 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		return $id;
 	}
 
-
 	/**
 	 * Returns the SQL statement to query (or count) actions.
 	 *
 	 * @param array $query Filtering options
-	 * @param bool $count  Whether the SQL should return the IDs or count
+	 * @param string $select_or_count  Whether the SQL should select and return the IDs or just the row count
 	 *
 	 * @return string SQL statement. The returned SQL is already properly escaped.
 	 */
-	protected function get_query_actions_sql( array $query, $count = false ) {
+	protected function get_query_actions_sql( array $query, $select_or_count = 'select' ) {
 		$query = wp_parse_args( $query, array(
 			'hook' => '',
 			'args' => NULL,
@@ -266,7 +265,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 
 		/** @var wpdb $wpdb */
 		global $wpdb;
-		$sql  = $count ? 'SELECT count(p.ID)' : 'SELECT p.ID ';
+		$sql  = ( 'count' === $select_or_count ) ? 'SELECT count(p.ID)' : 'SELECT p.ID ';
 		$sql .= "FROM {$wpdb->posts} p";
 		$sql_params = array();
 		if ( !empty($query['group']) ) {
@@ -318,7 +317,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 			$sql_params[] = $query['claimed'];
 		}
 
-		if ( ! $count ) {
+		if ( 'select' === $select_or_count ) {
 			switch ( $query['orderby'] ) {
 				case 'hook':
 					$orderby = 'p.title';
@@ -360,7 +359,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		/** @var wpdb $wpdb */
 		global $wpdb;
 
-		return $wpdb->get_var( $this->get_query_actions_sql( $query, true ) );
+		return $wpdb->get_var( $this->get_query_actions_sql( $query, 'count' ) );
 	}
 
 	/**
@@ -371,7 +370,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		/** @var wpdb $wpdb */
 		global $wpdb;
 
-		return $wpdb->get_col( $this->get_query_actions_sql( $query ) );
+		return $wpdb->get_col( $this->get_query_actions_sql( $query, 'select' ) );
 	}
 
 	/**
