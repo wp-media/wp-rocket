@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
  * Add a link "Purge cache" in the post submit area
@@ -23,7 +23,12 @@ add_action( 'post_submitbox_start', 'rocket_post_submitbox_start' );
  */
 function rocket_cache_options_meta_boxes() {
 	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
-		$cpts = get_post_types( array( 'public' => true ), 'objects' );
+		$cpts = get_post_types(
+			array(
+				'public' => true,
+			),
+			'objects'
+		);
 		unset( $cpts['attachment'] );
 
 		foreach ( $cpts as $cpt => $cpt_object ) {
@@ -56,26 +61,28 @@ function rocket_display_cache_options_meta_boxes() {
 				if ( isset( $rejected_uris[ $path ] ) ) {
 					$reject_current_uri = true;
 				}
-			} ?>
+			}
+			?>
 			<input name="rocket_post_nocache" id="rocket_post_nocache" type="checkbox" title="<?php _e( 'Never cache this page', 'rocket' ); ?>" <?php checked( $reject_current_uri, true ); ?>><label for="rocket_post_nocache"><?php _e( 'Never cache this page', 'rocket' ); ?></label>
 		</div>
 
 		<div class="misc-pub-section">
-			<p><?php _e( 'Activate these options on this post:', 'rocket' );?></p>
+			<p><?php _e( 'Activate these options on this post:', 'rocket' ); ?></p>
 			<?php
 			$fields = array(
-				'lazyload'  	   => __( 'LazyLoad for images', 'rocket' ),
+				'lazyload'         => __( 'LazyLoad for images', 'rocket' ),
 				'lazyload_iframes' => __( 'LazyLoad for iframes/videos', 'rocket' ),
 				'minify_html'      => __( 'Minify/combine HTML', 'rocket' ),
 				'minify_css'       => __( 'Minify/combine CSS', 'rocket' ),
 				'minify_js'        => __( 'Minify/combine JS', 'rocket' ),
 				'cdn'              => __( 'CDN', 'rocket' ),
-				'async_css'		   => __( 'Async CSS', 'rocket' ),
-				'defer_all_js'	   => __( 'Defer JS', 'rocket' ),
+				'async_css'        => __( 'Async CSS', 'rocket' ),
+				'defer_all_js'     => __( 'Defer JS', 'rocket' ),
 			);
 
 			foreach ( $fields as $field => $label ) {
 				$disabled = disabled( ! get_rocket_option( $field ), true, false );
+				// translators: %s is the name of the option.
 				$title    = $disabled ? ' title="' . sprintf( __( 'Activate first the %s option.', 'rocket' ), esc_attr( $label ) ) . '"' : '';
 				$class    = $disabled ? ' class="rkt-disabled"' : '';
 				$checked   = ! $disabled ? checked( ! get_post_meta( $post->ID, '_rocket_exclude_' . $field, true ), true, false ) : '';

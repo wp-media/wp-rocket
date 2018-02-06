@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
  * Launch the Robot
@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
  * @return bool\void False if we don't want to launch the preload, void otherwise
  */
 function run_rocket_bot( $spider = 'cache-preload', $lang = '' ) {
-	$domain = parse_url( home_url(), PHP_URL_HOST );
+	$domain = rocket_extract_url_component( home_url(), PHP_URL_HOST );
 	if ( 'localhost' === $domain || pathinfo( $domain, PATHINFO_EXTENSION ) === 'dev' ) {
 		return false;
 	}
@@ -22,9 +22,9 @@ function run_rocket_bot( $spider = 'cache-preload', $lang = '' ) {
 	 *
 	 * @since 2.1
 	 *
-	 * @param bool 	 		 Do the job or not
+	 * @param bool           Do the job or not
 	 * @param string $spider The spider name
-	 * @param string $lang 	 The language code to preload
+	 * @param string $lang   The language code to preload
 	*/
 	if ( ! apply_filters( 'do_run_rocket_bot', true, $spider, $lang ) ) {
 		return false;
@@ -33,27 +33,26 @@ function run_rocket_bot( $spider = 'cache-preload', $lang = '' ) {
 	$urls = array();
 
 	switch ( $spider ) {
-		case 'cache-preload' :
-		    if ( ! get_rocket_option( 'manual_preload', true ) ) {
-			    return false;
-		    }
+		case 'cache-preload':
+			if ( ! get_rocket_option( 'manual_preload', true ) ) {
+				return false;
+			}
 
 			if ( ! $lang ) {
 				$urls = get_rocket_i18n_uri();
 			} else {
 				$urls[] = get_rocket_i18n_home_url( $lang );
 			}
-		break;
-		case 'cache-json' :
-		    if ( ! get_rocket_option( 'automatic_preload', true ) ) {
-			    return false;
-		    }
+			break;
+		case 'cache-json':
+			if ( ! get_rocket_option( 'automatic_preload', true ) ) {
+				return false;
+			}
 
 			$urls[] = WP_ROCKET_URL . 'cache.json';
-		break;
-		default :
+			break;
+		default:
 			return false;
-		break;
 	}
 
 	foreach ( $urls as $start_url ) {
@@ -62,7 +61,7 @@ function run_rocket_bot( $spider = 'cache-preload', $lang = '' ) {
 		 *
 		 * @since 1.1.0
 		 *
-		 * @param string $spider 	The spider name
+		 * @param string $spider    The spider name
 		 * @param string $start_url URL that crawl by the bot
 		*/
 		do_action( 'before_run_rocket_bot', $spider, $start_url );
@@ -81,7 +80,7 @@ function run_rocket_bot( $spider = 'cache-preload', $lang = '' ) {
 		 *
 		 * @since 1.1.0
 		 *
-		 * @param string $spider 	The spider name
+		 * @param string $spider    The spider name
 		 * @param string $start_url URL that crawl by the bot
 		*/
 		do_action( 'after_run_rocket_bot', $spider, $start_url );
@@ -104,6 +103,14 @@ function run_rocket_preload_cache( $spider, $do_sitemap_preload = true ) {
 	run_rocket_bot( $spider );
 
 	if ( $do_sitemap_preload & get_rocket_option( 'sitemap_preload', false ) ) {
+		$rocket_background_process = $GLOBALS['rocket_sitemap_background_process'];
+
+		if ( method_exists( $rocket_background_process, 'cancel_process' ) ) {
+			$rocket_background_process->cancel_process();
+		}
+
+		delete_transient( 'rocket_sitemap_preload_running' );
+		delete_transient( 'rocket_sitemap_preload_complete' );
 		run_rocket_sitemap_preload();
 	}
 }
@@ -140,7 +147,7 @@ function run_rocket_sitemap_preload() {
 		 *
 		 * @since 2.8
 		 *
-		 * @param string $sitemap_type 	the sitemap identifier
+		 * @param string $sitemap_type  the sitemap identifier
 		 * @param string $sitemap_url sitemap URL to be crawler
 		*/
 		do_action( 'before_run_rocket_sitemap_preload', $sitemap_type, $sitemap_url );
@@ -152,7 +159,7 @@ function run_rocket_sitemap_preload() {
 		 *
 		 * @since 2.8
 		 *
-		 * @param string $sitemap_type 	the sitemap identifier
+		 * @param string $sitemap_type  the sitemap identifier
 		 * @param string $sitemap_url sitemap URL crawled
 		*/
 		do_action( 'after_run_rocket_sitemap_preload', $sitemap_type, $sitemap_url );
@@ -169,6 +176,7 @@ function run_rocket_sitemap_preload() {
 		}
 	}
 
+	set_transient( 'rocket_sitemap_preload_running', 0 );
 	$rocket_background_process->save()->dispatch();
 }
 
@@ -225,7 +233,7 @@ function rocket_process_sitemap( $sitemap_url, $urls = array() ) {
 
 	if ( $url_count > 0 ) {
 		for ( $i = 0; $i < $url_count; $i++ ) {
-			$page_url = (string) $xml->url[ $i ]->loc;
+			$page_url   = (string) $xml->url[ $i ]->loc;
 			$tmp_urls[] = $page_url;
 		}
 	} else {
@@ -234,7 +242,7 @@ function rocket_process_sitemap( $sitemap_url, $urls = array() ) {
 		if ( $sitemap_children > 0 ) {
 			for ( $i = 0; $i < $sitemap_children; $i++ ) {
 				$sub_sitemap_url = (string) $xml->sitemap[ $i ]->loc;
-				$urls = rocket_process_sitemap( $sub_sitemap_url, $urls );
+				$urls            = rocket_process_sitemap( $sub_sitemap_url, $urls );
 			}
 		}
 	}

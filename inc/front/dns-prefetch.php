@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
  * Launch DNS Prefetching process
@@ -26,6 +26,12 @@ if ( function_exists( 'wp_resource_hints' ) ) {
  * @return Array URLs to print
  */
 function rocket_dns_prefetch( $hints, $relation_type ) {
+	
+	// Don't add prefecth for uncached pages
+	if ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) {
+		return $hints;
+	}
+	
 	$domains = rocket_get_dns_prefetch_domains();
 
 	if ( (bool) $domains ) {

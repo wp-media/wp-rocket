@@ -8,8 +8,8 @@ defined( 'ABSPATH' ) || die( 'Cheatin\' uh?' );
  */
 if ( class_exists( 'GeotWP\GeotargetingWP' ) ) :
 
-	add_filter( 'rocket_htaccess_mod_rewrite'	 , '__return_false' );
-	add_filter( 'rocket_cache_dynamic_cookies'	 , 'rocket_add_geotargetingwp_dynamic_cookies' );
+	add_filter( 'rocket_htaccess_mod_rewrite'    , '__return_false' );
+	add_filter( 'rocket_cache_dynamic_cookies'   , 'rocket_add_geotargetingwp_dynamic_cookies' );
 	add_filter( 'rocket_cache_mandatory_cookies' , 'rocket_add_geotargetingwp_mandatory_cookie' );
 
 	/**
@@ -34,8 +34,8 @@ endif;
  * @author Damian Logghe
  */
 function rocket_activate_geotargetingwp() {
-	add_filter( 'rocket_htaccess_mod_rewrite'	 , '__return_false' );
-	add_filter( 'rocket_cache_dynamic_cookies'	 , 'rocket_add_geotargetingwp_dynamic_cookies' );
+	add_filter( 'rocket_htaccess_mod_rewrite'    , '__return_false' );
+	add_filter( 'rocket_cache_dynamic_cookies'   , 'rocket_add_geotargetingwp_dynamic_cookies' );
 	add_filter( 'rocket_cache_mandatory_cookies' , 'rocket_add_geotargetingwp_mandatory_cookie' );
 
 	// Update the WP Rocket rules on the .htaccess file.
@@ -107,7 +107,7 @@ function rocket_add_geot_cookies( $cookies ) {
 	$enabled_cookies = apply_filters( 'rocket_geotargetingwp_enabled_cookies' , array( 'country' ) );
 	foreach ( $enabled_cookies as $enabled_cookie ) {
 		if ( ! in_array( 'geot_rocket_' . $enabled_cookie, $cookies, true ) ) {
-	        $cookies[] = 'geot_rocket_' . $enabled_cookie;
+			$cookies[] = 'geot_rocket_' . $enabled_cookie;
 		}
 	}
 	return $cookies;

@@ -1,17 +1,15 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 // Are we white-labeled?
 $rwl = rocket_is_white_label();
 
-$total_revisions          = rocket_database_count_cleanup_items( 'revisions' );
-$total_auto_draft         = rocket_database_count_cleanup_items( 'auto_drafts' );
-$total_trashed_posts      = rocket_database_count_cleanup_items( 'trashed_posts' );
-$total_spam_comments      = rocket_database_count_cleanup_items( 'spam_comments' );
-$total_trashed_comments   = rocket_database_count_cleanup_items( 'trashed_comments' );
-$total_expired_transients = rocket_database_count_cleanup_items( 'expired_transients' );
-$total_all_transients     = rocket_database_count_cleanup_items( 'all_transients' );
-$total_optimize_tables    = rocket_database_count_cleanup_items( 'optimize_tables' );
+$total = array();
+$database_optimization = new Rocket_Database_Optimization();
+
+foreach ( $database_optimization->options as $option ) {
+	$total[ $option ] = $database_optimization->count_cleanup_items( $option );
+}
 
 add_settings_section( 'rocket_display_database_options', __( 'Database Optimization', 'rocket' ), '__return_false', 'rocket_database' );
 
@@ -59,7 +57,8 @@ add_settings_field(
 		array(
 			'type'         => 'helper_description',
 			'name'         => 'revisions_desc',
-			'description'  => sprintf( _n( '%d revision in your database.', '%d revisions in your database.', $total_revisions, 'rocket' ), $total_revisions ),
+			// translators: %d is the number of revisions found in the database.
+			'description'  => sprintf( _n( '%d revision in your database.', '%d revisions in your database.', $total['revisions'], 'rocket' ), $total['revisions'] ),
 		),
 		array(
 			'type'         => 'checkbox',
@@ -70,7 +69,8 @@ add_settings_field(
 		array(
 			'type'         => 'helper_description',
 			'name'         => 'auto_drafts_desc',
-			'description'  => sprintf( _n( '%d draft in your database.', '%d drafts in your database.', $total_auto_draft, 'rocket' ), $total_auto_draft ),
+			// translators: %d is the number of drafts found in the database.
+			'description'  => sprintf( _n( '%d draft in your database.', '%d drafts in your database.', $total['auto_drafts'], 'rocket' ), $total['auto_drafts'] ),
 		),
 		array(
 			'type'         => 'checkbox',
@@ -81,7 +81,8 @@ add_settings_field(
 		array(
 			'type'         => 'helper_description',
 			'name'         => 'trashed_posts_desc',
-			'description'  => sprintf( _n( '%d trashed post in your database.', '%d trashed posts in your database.', $total_trashed_posts, 'rocket' ), $total_trashed_posts ),
+			// translators: %d is the number of trashed posts found in the database.
+			'description'  => sprintf( _n( '%d trashed post in your database.', '%d trashed posts in your database.', $total['trashed_posts'], 'rocket' ), $total['trashed_posts'] ),
 		),
 	)
 );
@@ -105,7 +106,8 @@ add_settings_field(
 		array(
 			'type'         => 'helper_description',
 			'name'         => 'spam_comments_desc',
-			'description'  => sprintf( _n( '%d spam comment in your database.', '%d spam comments in your database.', $total_spam_comments, 'rocket' ), $total_spam_comments ),
+			// translators: %d is the number of spam comments found in the database.
+			'description'  => sprintf( _n( '%d spam comment in your database.', '%d spam comments in your database.', $total['spam_comments'], 'rocket' ), $total['spam_comments'] ),
 		),
 		array(
 			'type'         => 'checkbox',
@@ -116,7 +118,8 @@ add_settings_field(
 		array(
 			'type'         => 'helper_description',
 			'name'         => 'trashed_comments_desc',
-			'description'  => sprintf( _n( '%d trashed comment in your database.', '%d trashed comments in your database.', $total_trashed_comments, 'rocket' ), $total_trashed_comments ),
+			// translators: %d is the number of trashed comments found in the database.
+			'description'  => sprintf( _n( '%d trashed comment in your database.', '%d trashed comments in your database.', $total['trashed_comments'], 'rocket' ), $total['trashed_comments'] ),
 		),
 	)
 );
@@ -140,7 +143,8 @@ add_settings_field(
 		array(
 			'type'         => 'helper_description',
 			'name'         => 'expired_transients_desc',
-			'description'  => sprintf( _n( '%d expired transient in your database.', '%d expired transients in your database.', $total_expired_transients, 'rocket' ), $total_expired_transients ),
+			// translators: %d is the number of expired transients found in the database.
+			'description'  => sprintf( _n( '%d expired transient in your database.', '%d expired transients in your database.', $total['expired_transients'], 'rocket' ), $total['expired_transients'] ),
 		),
 		array(
 			'type'         => 'checkbox',
@@ -151,7 +155,8 @@ add_settings_field(
 		array(
 			'type'         => 'helper_description',
 			'name'         => 'all_transients_desc',
-			'description'  => sprintf( _n( '%d transient in your database.', '%d transients in your database.', $total_all_transients, 'rocket' ), $total_all_transients ),
+			// translators: %d is the number of transients found in the database.
+			'description'  => sprintf( _n( '%d transient in your database.', '%d transients in your database.', $total['all_transients'], 'rocket' ), $total['all_transients'] ),
 		),
 	)
 );
@@ -175,7 +180,8 @@ add_settings_field(
 		array(
 			'type'         => 'helper_description',
 			'name'         => 'optimize_tables_desc',
-			'description'  => sprintf( _n( '%d table to optimize in your database.', '%d tables to optimize in your database.', $total_optimize_tables, 'rocket' ), $total_optimize_tables ),
+			// translators: %d is the number of tables to optimize in the database.
+			'description'  => sprintf( _n( '%d table to optimize in your database.', '%d tables to optimize in your database.', $total['optimize_tables'], 'rocket' ), $total['optimize_tables'] ),
 		),
 	)
 );
@@ -212,7 +218,7 @@ add_settings_field(
 );
 
 /* Little trickery to fetch submit button text from WP */
-$wp_submit_button_text = __( 'Save Changes' ); // just in case
+$wp_submit_button_text = __( 'Save Changes' ); // just in case.
 
 preg_match_all(
 	'/<input(.*?)type=\"submit\"(.*)value=\"(.*?)\"/i',

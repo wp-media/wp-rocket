@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 if ( class_exists( 'WPaaS\Plugin' ) ) :
 	add_filter( 'rocket_display_varnish_options_tab', '__return_false' );
@@ -77,6 +77,7 @@ HTACCESS;
 	 *
 	 * @since 2.9.5
 	 *
+	 * @param string $url URL to purge.
 	 * @return void
 	 */
 	function rocket_clean_file_godaddy( $url ) {
@@ -114,7 +115,7 @@ HTACCESS;
 	 */
 	function rocket_godaddy_request( $method, $url = null ) {
 		$url  = empty( $url ) ? home_url() : $url;
-		$host = parse_url( $url, PHP_URL_HOST );
+		$host = rocket_extract_url_component( $url, PHP_URL_HOST );
 		$url  = set_url_scheme( str_replace( $host, WPaas\Plugin::vip(), $url ), 'http' );
 
 		wp_cache_flush();

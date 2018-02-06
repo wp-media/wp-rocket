@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
  * Get CNAMES hosts
@@ -12,10 +12,11 @@ defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
 function get_rocket_cnames_host( $zones = array( 'all' ) ) {
 	$hosts = array();
 
-	if ( $cnames = get_rocket_cdn_cnames( $zones ) ) {
+	$cnames = get_rocket_cdn_cnames( $zones );
+	if ( $cnames ) {
 		foreach ( $cnames as $cname ) {
 			$cname = rocket_add_url_protocol( $cname );
-			$hosts[] = parse_url( $cname, PHP_URL_HOST );
+			$hosts[] = rocket_extract_url_component( $cname, PHP_URL_HOST );
 		}
 	}
 
@@ -40,25 +41,25 @@ function get_rocket_cdn_url( $url, $zone = array( 'all' ) ) {
 		return $url;
 	}
 
-	list( $host, $path, $scheme, $query ) = get_rocket_parse_url( $url );
-	$query = ! empty( $query ) ? '?' . $query : '';
+	$parse_url = get_rocket_parse_url( $url );
+	$parse_url['query'] = ! empty( $parse_url['query'] ) ? '?' . $parse_url['query'] : '';
 
 	// Exclude rejected & external files from CDN.
 	$rejected_files = get_rocket_cdn_reject_files();
-	if ( ( ! empty( $rejected_files ) && preg_match( '#(' . $rejected_files . ')#', $path ) ) || ( ! empty( $scheme ) && parse_url( home_url(), PHP_URL_HOST ) !== $host && ! in_array( $host, get_rocket_i18n_host(), true ) ) ) {
+	if ( ( ! empty( $rejected_files ) && preg_match( '#(' . $rejected_files . ')#', $parse_url['path'] ) ) || ( ! empty( $parse_url['scheme'] ) && rocket_extract_url_component( home_url(), PHP_URL_HOST ) !== $parse_url['host'] && ! in_array( $parse_url['host'], get_rocket_i18n_host(), true ) ) ) {
 		return $url;
 	}
 
-	if ( empty( $scheme ) ) {
+	if ( empty( $parse_url['scheme'] ) ) {
 		// Check if the URL is external.
-		if ( strpos( $path, $home ) === false && ! preg_match( '#(' . $wp_content_dirname . '|wp-includes)#', $path ) ) {
+		if ( strpos( $parse_url['path'], $home ) === false && ! preg_match( '#(' . $wp_content_dirname . '|wp-includes)#', $parse_url['path'] ) ) {
 			return $url;
 		} else {
-			$path = str_replace( $home, '', ltrim( $path, '//' ) );
+			$parse_url['path'] = str_replace( $home, '', ltrim( $parse_url['path'], '//' ) );
 		}
 	}
 
-	$url = untrailingslashit( $cnames[ ( abs( crc32( $path ) ) % count( $cnames ) ) ] ) . '/' . ltrim( $path, '/' ) . $query;
+	$url = untrailingslashit( $cnames[ ( abs( crc32( $parse_url['path'] ) ) % count( $cnames ) ) ] ) . '/' . ltrim( $parse_url['path'], '/' ) . $parse_url['query'];
 	$url = rocket_add_url_protocol( $url );
 	return $url;
 }
@@ -134,8 +135,8 @@ function rocket_cdn_css_properties( $buffer ) {
  *
  * @since 2.5.5
  *
- * @param 	string $html Original Output.
- * @return 	string $html Output that will be printed
+ * @param   string $html Original Output.
+ * @return  string $html Output that will be printed
  */
 function rocket_add_cdn_on_custom_attr( $html ) {
 	if ( preg_match( '/(data-lazy-src|data-lazyload|data-src|data-retina)=[\'"]?([^\'"\s>]+)[\'"]/i', $html, $matches ) ) {
