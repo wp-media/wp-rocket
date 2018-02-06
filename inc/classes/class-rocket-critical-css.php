@@ -508,6 +508,10 @@ class Rocket_Critical_CSS {
 		} else {
 			$name = 'front_page.css';
 		}
+		
+		if( $force_css = apply_filters( 'wp_rocket_critical_css_content', false, $name ) ) {
+			return $force_css;
+		}
 
 		$file = $this->critical_css_path . $name;
 
