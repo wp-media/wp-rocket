@@ -224,12 +224,14 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	 * @param array $row The array representation of the current row of the table
 	 */
 	public function column_scheduled( $row ) {
-		$next_timestamp = $row['scheduled']->next()->format( 'U' );
-		echo $row['scheduled']->next()->format( 'Y-m-d H:i:s' );
-		if ( gmdate( 'U' ) > $next_timestamp ) {
-			printf( __( ' (%s ago)', 'action-scheduler' ), human_time_diff( gmdate( 'U' ), $next_timestamp ) );
-		} else {
-			echo ' (' . human_time_diff( gmdate( 'U' ), $next_timestamp ) . ')';
+		if ( $row['scheduled']->next() ) {
+			$next_timestamp = $row['scheduled']->next()->format( 'U' );
+			echo $row['scheduled']->next()->format( 'Y-m-d H:i:s' );
+			if ( gmdate( 'U' ) > $next_timestamp ) {
+				printf( __( ' (%s ago)', 'action-scheduler' ), human_time_diff( gmdate( 'U' ), $next_timestamp ) );
+			} else {
+				echo ' (' . human_time_diff( gmdate( 'U' ), $next_timestamp ) . ')';
+			}
 		}
 	}
 
