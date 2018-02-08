@@ -53,7 +53,7 @@ class ActionScheduler_QueueRunner {
 		do_action( 'action_scheduler_before_process_queue' );
 		$this->run_cleanup();
 		$count = 0;
-		if ( $this->store->get_claim_count() < apply_filters( 'action_scheduler_queue_runner_concurrent_batches', 5 ) ) {
+		if ( $this->store->get_claim_count() < $this->get_concurrent_batch_count() ) {
 			$batch_size = apply_filters( 'action_scheduler_queue_runner_batch_size', 25 );
 			$this->monitor = new ActionScheduler_FatalErrorMonitor( $this->store );
 			$count = $this->do_batch( $batch_size );
@@ -62,6 +62,10 @@ class ActionScheduler_QueueRunner {
 
 		do_action( 'action_scheduler_after_process_queue' );
 		return $count;
+	}
+
+	public function get_concurrent_batch_count() {
+		return apply_filters( 'action_scheduler_queue_runner_concurrent_batches', 5 );
 	}
 
 	protected function run_cleanup() {
