@@ -179,7 +179,17 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	 * @return string
 	 */
 	public function column_args( array $row ) {
-		return '<code>' . json_encode( $row['args'] ) . '</code>';
+		if ( empty( $row['args'] ) ) {
+			return;
+		}
+
+		$row_html = '<ul>';
+		foreach ( $row['args'] as $key => $value ) {
+			$row_html .= sprintf( '<li><code>%s => %s</li></code>', $key, $value );
+		}
+		$row_html .= '</ul>';
+
+		return $row_html;
 	}
 
 	/**
