@@ -176,7 +176,7 @@ class ActionScheduler_AdminView {
 	 * even if an action is 1 day and 11 hours away, it will display "1 day". This funciton goes one step
 	 * further to display two degrees of accuracy.
 	 *
-	 * Based on Crontrol::interval() funciton by Edward Dale: https://wordpress.org/plugins/wp-crontrol/
+	 * Based on Crontrol::interval() function by Edward Dale: https://wordpress.org/plugins/wp-crontrol/
 	 *
 	 * @param int $interval A interval in seconds.
 	 * @return string A human friendly string representation of the interval.
