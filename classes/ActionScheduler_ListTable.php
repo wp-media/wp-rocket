@@ -67,9 +67,9 @@ class ActionScheduler_ListTable extends PP_List_Table {
 			'status' => __( 'Status', 'action-scheduler' ),
 			'args'   => __( 'Arguments', 'action-scheduler' ),
 			'group'  => __( 'Group', 'action-scheduler' ),
-			'recurrence' => __( 'Recurrence', 'action-scheduler' ),
-			'scheduled'  => __( 'Scheduled Date', 'action-scheduler' ),
-			'log'        => __( 'Log', 'action-scheduler' ),
+			'recurrence'  => __( 'Recurrence', 'action-scheduler' ),
+			'scheduled'   => __( 'Scheduled Date', 'action-scheduler' ),
+			'log_entries' => __( 'Log', 'action-scheduler' ),
 		);
 
 		$this->row_actions = array(
@@ -187,10 +187,10 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	 *
 	 * @param array $row Action array.
 	 */
-	public function column_log( array $row ) {
+	public function column_log_entries( array $row ) {
 		echo '<ol>';
 		$timezone = new DateTimezone( 'UTC' );
-		foreach ( $row['log'] as $log_entry ) {
+		foreach ( $row['log_entries'] as $log_entry ) {
 			$this->print_log_entry( $log_entry, $timezone );
 		}
 		echo '</ol>';
@@ -330,9 +330,9 @@ class ActionScheduler_ListTable extends PP_List_Table {
 				'status' => $action->get_status(),
 				'args'   => $action->get_args(),
 				'group'  => $action->get_group(),
-				'log'    => $this->logger->get_logs( $id ),
-				'recurrence' => $this->get_recurrence( $action ),
-				'scheduled'  => $action->get_schedule(),
+				'log_entries' => $this->logger->get_logs( $id ),
+				'recurrence'  => $this->get_recurrence( $action ),
+				'scheduled'   => $action->get_schedule(),
 			);
 		}
 
