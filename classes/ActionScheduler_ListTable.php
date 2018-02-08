@@ -164,8 +164,7 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	 * @return string
 	 */
 	protected function get_recurrence( $action ) {
-		$recurrence = $action->get_schedule();
-		if ( method_exists( $recurrence, 'interval_in_seconds' ) ) {
+		if ( $action->get_schedule()->is_recurring() ) {
 			return self::human_interval( $recurrence->interval_in_seconds() );
 		}
 		return __( 'Non-repeating', 'action-scheduler' );
