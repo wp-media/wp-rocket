@@ -126,36 +126,30 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	 * even if an action is 1 day and 11 hours away, it will display "1 day". This funciton goes one step
 	 * further to display two degrees of accuracy.
 	 *
-	 * Based on Crontrol::interval() function by Edward Dale: https://wordpress.org/plugins/wp-crontrol/
+	 * Inspired by the Crontrol::interval() function by Edward Dale: https://wordpress.org/plugins/wp-crontrol/
 	 *
 	 * @param int $interval A interval in seconds.
 	 * @return string A human friendly string representation of the interval.
 	 */
-	private static function human_interval( $interval ) {
+	private static function human_interval( $interval, $periods_to_include = 2 ) {
 
 		if ( $interval <= 0 ) {
 			return __( 'Now!', 'action-scheduler' );
 		}
 
-		// Step one: the first chunk
-		for ( $i = 0, $j = count( self::$time_periods ); $i < $j; $i++ ) {
-			$seconds = self::$time_periods[$i]['seconds'];
-			$name = self::$time_periods[$i]['names'];
+		$output = '';
 
-			if ( ( $count = floor( $interval / $seconds ) ) != 0 ) {
-				break;
-			}
-		}
+		for ( $time_period_index = 0, $periods_in_interval = 0, $periods_included = 0, $seconds_remaining = $interval; $time_period_index < count( self::$time_periods ) && $seconds_remaining > 0 && $periods_included < $periods_to_include; $time_period_index++ ) {
 
-		$output = sprintf( _n( $name[0], $name[1], $count, 'action-scheduler' ), $count );
+			$periods_in_interval = floor( $seconds_remaining / self::$time_periods[ $time_period_index ]['seconds'] );
 
-		if ( $i + 1 < $j ) {
-			$seconds2 = self::$time_periods[$i + 1]['seconds'];
-			$name2 = self::$time_periods[$i + 1]['names'];
-
-			if ( ( $count2 = floor( ( $interval - ( $seconds * $count ) ) / $seconds2 ) ) != 0 ) {
-				// add to output var
-				$output .= ' '.sprintf( _n( $name2[0], $name2[1], $count2, 'action-scheduler' ), $count2 );
+			if ( $periods_in_interval > 0 ) {
+				if ( ! empty( $output ) ) {
+					$output .= ' ';
+				}
+				$output .= sprintf( _n( self::$time_periods[ $time_period_index ]['names'][0], self::$time_periods[ $time_period_index ]['names'][1], $periods_in_interval, 'action-scheduler' ), $periods_in_interval );
+				$seconds_remaining -= $periods_in_interval * self::$time_periods[ $time_period_index ]['seconds'];
+				$periods_included++;
 			}
 		}
 
@@ -252,9 +246,9 @@ class ActionScheduler_ListTable extends PP_List_Table {
 			$next_timestamp = $row['scheduled']->next()->format( 'U' );
 			echo $row['scheduled']->next()->format( 'Y-m-d H:i:s' );
 			if ( gmdate( 'U' ) > $next_timestamp ) {
-				printf( __( ' (%s ago)', 'action-scheduler' ), human_time_diff( gmdate( 'U' ), $next_timestamp ) );
+				printf( __( ' (%s ago)', 'action-scheduler' ), self::human_interval( gmdate( 'U' ) - $next_timestamp ) );
 			} else {
-				echo ' (' . human_time_diff( gmdate( 'U' ), $next_timestamp ) . ')';
+				echo ' (' . self::human_interval( $next_timestamp - gmdate( 'U' ) ) . ')';
 			}
 		}
 	}
