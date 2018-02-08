@@ -43,6 +43,10 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	 */
 	protected static $did_notification = false;
 
+	/**
+	 * Array of seconds for common time periods, like week or month, alongside an internationalised string representation, i.e. "Day" or "Days"
+	 */
+	private static $time_periods;
 
 	/**
 	 * Sets the current data store object into `store->action` and initialises the object.
@@ -77,6 +81,37 @@ class ActionScheduler_ListTable extends PP_List_Table {
 			),
 		);
 
+		self::$time_periods = array(
+			array(
+				'seconds' => YEAR_IN_SECONDS,
+				'names'   => _n_noop( '%s year', '%s years', 'action-scheduler' ),
+			),
+			array(
+				'seconds' => MONTH_IN_SECONDS,
+				'names'   => _n_noop( '%s month', '%s months', 'action-scheduler' ),
+			),
+			array(
+				'seconds' => WEEK_IN_SECONDS,
+				'names'   => _n_noop( '%s week', '%s weeks', 'action-scheduler' ),
+			),
+			array(
+				'seconds' => DAY_IN_SECONDS,
+				'names'   => _n_noop( '%s day', '%s days', 'action-scheduler' ),
+			),
+			array(
+				'seconds' => HOUR_IN_SECONDS,
+				'names'   => _n_noop( '%s hour', '%s hours', 'action-scheduler' ),
+			),
+			array(
+				'seconds' => MINUTE_IN_SECONDS,
+				'names'   => _n_noop( '%s minute', '%s minutes', 'action-scheduler' ),
+			),
+			array(
+				'seconds' => 1,
+				'names'   => _n_noop( '%s second', '%s seconds', 'action-scheduler' ),
+			),
+		);
+
 		parent::__construct( array(
 			'singular' => __( 'action-scheduler', 'action-scheduler' ),
 			'plural'   => __( 'action-scheduler', 'action-scheduler' ),
@@ -98,25 +133,14 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	 */
 	private static function human_interval( $interval ) {
 
-		// array of time period chunks
-		$chunks = array(
-			array( YEAR_IN_SECONDS, _n_noop( '%s year', '%s years', 'action-scheduler' ) ),
-			array( MONTH_IN_SECONDS, _n_noop( '%s month', '%s months', 'action-scheduler' ) ),
-			array( WEEK_IN_SECONDS, _n_noop( '%s week', '%s weeks', 'action-scheduler' ) ),
-			array( DAY_IN_SECONDS, _n_noop( '%s day', '%s days', 'action-scheduler' ) ),
-			array( HOUR_IN_SECONDS, _n_noop( '%s hour', '%s hours', 'action-scheduler' ) ),
-			array( MINUTE_IN_SECONDS, _n_noop( '%s minute', '%s minutes', 'action-scheduler' ) ),
-			array(  1, _n_noop( '%s second', '%s seconds', 'action-scheduler' ) ),
-		);
-
 		if ( $interval <= 0 ) {
 			return __( 'Now!', 'action-scheduler' );
 		}
 
 		// Step one: the first chunk
-		for ( $i = 0, $j = count( $chunks ); $i < $j; $i++ ) {
-			$seconds = $chunks[$i][0];
-			$name = $chunks[$i][1];
+		for ( $i = 0, $j = count( self::$time_periods ); $i < $j; $i++ ) {
+			$seconds = self::$time_periods[$i]['seconds'];
+			$name = self::$time_periods[$i]['names'];
 
 			if ( ( $count = floor( $interval / $seconds ) ) != 0 ) {
 				break;
@@ -126,8 +150,8 @@ class ActionScheduler_ListTable extends PP_List_Table {
 		$output = sprintf( _n( $name[0], $name[1], $count, 'action-scheduler' ), $count );
 
 		if ( $i + 1 < $j ) {
-			$seconds2 = $chunks[$i + 1][0];
-			$name2 = $chunks[$i + 1][1];
+			$seconds2 = self::$time_periods[$i + 1]['seconds'];
+			$name2 = self::$time_periods[$i + 1]['names'];
 
 			if ( ( $count2 = floor( ( $interval - ( $seconds * $count ) ) / $seconds2 ) ) != 0 ) {
 				// add to output var
