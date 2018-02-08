@@ -251,14 +251,28 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	 * @param array $row The array representation of the current row of the table
 	 */
 	public function column_scheduled( $row ) {
-		if ( $row['scheduled']->next() ) {
-			$next_timestamp = $row['scheduled']->next()->format( 'U' );
-			echo $row['scheduled']->next()->format( 'Y-m-d H:i:s' );
-			if ( gmdate( 'U' ) > $next_timestamp ) {
-				printf( __( ' (%s ago)', 'action-scheduler' ), self::human_interval( gmdate( 'U' ) - $next_timestamp ) );
-			} else {
-				echo ' (' . self::human_interval( $next_timestamp - gmdate( 'U' ) ) . ')';
-			}
+		$this->print_next_scheduled( $row['scheduled'] );
+	}
+
+	/**
+	 * Prints the scheduled date in a human friendly format.
+	 *
+	 * @param ActionScheduler_Schedule $schedule
+	 */
+	protected function print_next_scheduled( ActionScheduler_Schedule $schedule ) {
+
+		if ( ! $schedule->next() ) {
+			return;
+		}
+
+		echo $schedule->next()->format( 'Y-m-d H:i:s' );
+
+		$next_timestamp = $schedule->next()->format( 'U' );
+
+		if ( gmdate( 'U' ) > $next_timestamp ) {
+			printf( __( ' (%s ago)', 'action-scheduler' ), self::human_interval( gmdate( 'U' ) - $next_timestamp ) );
+		} else {
+			echo ' (' . self::human_interval( $next_timestamp - gmdate( 'U' ) ) . ')';
 		}
 	}
 
