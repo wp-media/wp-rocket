@@ -274,9 +274,11 @@ class ActionScheduler_ListTable extends PP_List_Table {
 			return;
 		}
 
-		echo $schedule->next()->format( 'Y-m-d H:i:s' );
+		echo $schedule->next()->format( 'Y-m-d H:i:s e' );
 
 		$next_timestamp = $schedule->next()->format( 'U' );
+
+		echo '<br/>';
 
 		if ( gmdate( 'U' ) > $next_timestamp ) {
 			printf( __( ' (%s ago)', 'action-scheduler' ), self::human_interval( gmdate( 'U' ) - $next_timestamp ) );
