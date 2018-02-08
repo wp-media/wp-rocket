@@ -100,13 +100,13 @@ class ActionScheduler_ListTable extends PP_List_Table {
 
 		// array of time period chunks
 		$chunks = array(
-			array( 60 * 60 * 24 * 365 , _n_noop( '%s year', '%s years', 'action-scheduler' ) ),
-			array( 60 * 60 * 24 * 30 , _n_noop( '%s month', '%s months', 'action-scheduler' ) ),
-			array( 60 * 60 * 24 * 7, _n_noop( '%s week', '%s weeks', 'action-scheduler' ) ),
-			array( 60 * 60 * 24 , _n_noop( '%s day', '%s days', 'action-scheduler' ) ),
-			array( 60 * 60 , _n_noop( '%s hour', '%s hours', 'action-scheduler' ) ),
-			array( 60 , _n_noop( '%s minute', '%s minutes', 'action-scheduler' ) ),
-			array(  1 , _n_noop( '%s second', '%s seconds', 'action-scheduler' ) ),
+			array( YEAR_IN_SECONDS, _n_noop( '%s year', '%s years', 'action-scheduler' ) ),
+			array( MONTH_IN_SECONDS, _n_noop( '%s month', '%s months', 'action-scheduler' ) ),
+			array( WEEK_IN_SECONDS, _n_noop( '%s week', '%s weeks', 'action-scheduler' ) ),
+			array( DAY_IN_SECONDS, _n_noop( '%s day', '%s days', 'action-scheduler' ) ),
+			array( HOUR_IN_SECONDS, _n_noop( '%s hour', '%s hours', 'action-scheduler' ) ),
+			array( MINUTE_IN_SECONDS, _n_noop( '%s minute', '%s minutes', 'action-scheduler' ) ),
+			array(  1, _n_noop( '%s second', '%s seconds', 'action-scheduler' ) ),
 		);
 
 		if ( $interval <= 0 ) {
