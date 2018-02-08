@@ -68,7 +68,7 @@ class ActionScheduler_ListTable extends PP_List_Table {
 			'args'   => __( 'Arguments', 'action-scheduler' ),
 			'group'  => __( 'Group', 'action-scheduler' ),
 			'recurrence'  => __( 'Recurrence', 'action-scheduler' ),
-			'scheduled'   => __( 'Scheduled Date', 'action-scheduler' ),
+			'schedule'    => __( 'Scheduled Date', 'action-scheduler' ),
 			'log_entries' => __( 'Log', 'action-scheduler' ),
 		);
 
@@ -260,8 +260,8 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	 *
 	 * @param array $row The array representation of the current row of the table
 	 */
-	public function column_scheduled( $row ) {
-		$this->print_next_scheduled( $row['scheduled'] );
+	public function column_schedule( $row ) {
+		$this->print_next_scheduled( $row['schedule'] );
 	}
 
 	/**
@@ -356,7 +356,7 @@ class ActionScheduler_ListTable extends PP_List_Table {
 				'group'  => $action->get_group(),
 				'log_entries' => $this->logger->get_logs( $id ),
 				'recurrence'  => $this->get_recurrence( $action ),
-				'scheduled'   => $action->get_schedule(),
+				'schedule'    => $action->get_schedule(),
 			);
 		}
 
