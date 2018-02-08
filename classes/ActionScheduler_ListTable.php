@@ -240,14 +240,14 @@ class ActionScheduler_ListTable extends PP_List_Table {
 			delete_transient( 'actionscheduler_admin_executed' );
 
 			$action = $this->store->fetch_action( $notification['action_id'] );
-			$action_hook_html = '<strong>' . $action->get_hook() . '</strong>';
+			$action_hook_html = '<strong><code>' . $action->get_hook() . '</code></strong>';
 			if ( 1 == $notification['success'] ): ?>
 				<div id="message" class="updated">
-					<p><?php printf( __( 'Successfully executed the action: %s', 'action-scheduler' ), $action_hook_html ); ?></p>
+					<p><?php printf( __( 'Successfully executed action: %s', 'action-scheduler' ), $action_hook_html ); ?></p>
 				</div>
 			<?php else : ?>
 			<div id="message" class="error">
-				<p><?php printf( __( 'Could not execute the action: %s', 'action-scheduler' ), $action_hook_html ); ?></p>
+				<p><?php printf( __( 'Could not execute action: "%s". Error: %s', 'action-scheduler' ), $action_hook_html, esc_html( $notification['action_id'] ) ); ?></p>
 			</div>
 			<?php endif;
 		}
@@ -311,11 +311,13 @@ class ActionScheduler_ListTable extends PP_List_Table {
 		try {
 			ActionScheduler::runner()->process_action( $action_id );
 			$success = 1;
+			$error_message = '';
 		} catch ( Exception $e ) {
 			$success = 0;
+			$error_message = $e->getMessage();
 		}
 
-		set_transient( 'actionscheduler_admin_executed', compact( 'action_id', 'success' ), 30 );
+		set_transient( 'actionscheduler_admin_executed', compact( 'action_id', 'success', 'error_message' ), 30 );
 	}
 
 	/**
