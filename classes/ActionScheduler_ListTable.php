@@ -306,6 +306,8 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	/**
 	 * Implements the logic behind running an action. PP_Table_List validates the request and their
 	 * parameters are valid.
+	 *
+	 * @param int $action_id
 	 */
 	protected function row_action_run( $action_id ) {
 		try {
