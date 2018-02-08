@@ -16,7 +16,7 @@ class ActionScheduler_LogEntry {
 	 * @param Datetime $date    Datetime object with the time when this log entry was created. If this parameter is
 	 *                          not provided a new Datetime object (with current time) will be created.
 	 */
-	public function __construct( $action_id, $message, Datetime $date  = null ) {
+	public function __construct( $action_id, $message, Datetime $date = null ) {
 		$this->action_id = $action_id;
 		$this->message   = $message;
 		$this->date      = $date ? $date : new Datetime;
