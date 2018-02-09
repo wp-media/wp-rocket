@@ -4,6 +4,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 /**
  * A wrapper to easily get rocket option
  *
+ * @since 3.0 Use the new options classes
  * @since 1.3.0
  *
  * @param string $option  The option name.
@@ -11,39 +12,16 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  * @return mixed The option value
  */
 function get_rocket_option( $option, $default = false ) {
-	/**
-	 * Pre-filter any WP Rocket option before read
-	 *
-	 * @since 2.5
-	 *
-	 * @param variant $default The default value
-	*/
-	$value = apply_filters( 'pre_get_rocket_option_' . $option, null, $default );
-	if ( null !== $value ) {
-		return $value;
-	}
-	$options = get_option( WP_ROCKET_SLUG );
-	if ( 'consumer_key' === $option && defined( 'WP_ROCKET_KEY' ) ) {
-		return WP_ROCKET_KEY;
-	} elseif ( 'consumer_email' === $option && defined( 'WP_ROCKET_EMAIL' ) ) {
-		return WP_ROCKET_EMAIL;
-	}
+	$options_api = new Options( 'wp_rocket_' );
+	$options     = new Options_Data( 'settings', $this->options_api );
 
-	$value = isset( $options[ $option ] ) && '' !== $options[ $option ] ? $options[ $option ] : $default;
-
-	/**
-	 * Filter any WP Rocket option after read
-	 *
-	 * @since 2.5
-	 *
-	 * @param variant $default The default value
-	*/
-	return apply_filters( 'get_rocket_option_' . $option, $value, $default );
+	return $options->get( $option, $default );
 }
 
 /**
  * Update a WP Rocket option.
  *
+ * @since 3.0 Use the new options classes
  * @since 2.7
  *
  * @param  string $key    The option name.
@@ -51,10 +29,12 @@ function get_rocket_option( $option, $default = false ) {
  * @return void
  */
 function update_rocket_option( $key, $value ) {
-	$options         = get_option( WP_ROCKET_SLUG );
-	$options[ $key ] = $value;
+	$options_api = new Options( 'wp_rocket_' );
+	$options     = new Options_Data( 'settings', $this->options_api );
 
-	update_option( WP_ROCKET_SLUG, $options );
+	$options->set( $key, $value );
+
+	$options->update_option();
 }
 
 /**
