@@ -11,13 +11,6 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  */
 class Options_Data {
 	/**
-	 * Options instance
-	 *
-	 * @var Options instance
-	 */
-	private $options_api;
-
-	/**
 	 * Option data
 	 *
 	 * @var Array Array of data inside the option
@@ -25,22 +18,12 @@ class Options_Data {
 	private $options;
 
 	/**
-	 * Name of the option without prefix
-	 *
-	 * @var string option name
-	 */
-	private $name;
-
-	/**
 	 * Constructor
 	 *
-	 * @param string  $name option name.
-	 * @param Options $options_api Options instance.
+	 * @param Array $options Array of data coming from an option.
 	 */
-	public function __construct( $name, $options_api ) {
-		$this->options_api = $options_api;
-		$this->name        = $name;
-		$this->options     = $this->options_api->get( $this->name, array() );
+	public function __construct( $options ) {
+		$this->options = $options;
 	}
 
 	/**
@@ -139,17 +122,5 @@ class Options_Data {
 	 */
 	public function get_options() {
 		return $this->options;
-	}
-
-	/**
-	 * Updates the option with the new values
-	 *
-	 * @since 3.0
-	 * @author Remy Perona
-	 *
-	 * @return void
-	 */
-	public function update_option() {
-		$this->options_api->set( $this->name, $this->options );
 	}
 }
