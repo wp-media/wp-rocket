@@ -1,4 +1,7 @@
 <?php
+use WP_Rocket\Admin\Options;
+use WP_Rocket\Admin\Options_Data;
+
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
@@ -13,7 +16,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  */
 function get_rocket_option( $option, $default = false ) {
 	$options_api = new Options( 'wp_rocket_' );
-	$options     = new Options_Data( 'settings', $this->options_api );
+	$options     = new Options_Data( $options_api->get( 'settings', array() ) );
 
 	return $options->get( $option, $default );
 }
@@ -30,11 +33,10 @@ function get_rocket_option( $option, $default = false ) {
  */
 function update_rocket_option( $key, $value ) {
 	$options_api = new Options( 'wp_rocket_' );
-	$options     = new Options_Data( 'settings', $this->options_api );
+	$options     = new Options_Data( $options_api->get( 'settings', array() ) );
 
 	$options->set( $key, $value );
-
-	$options->update_option();
+	$options_api->set( 'settings', $options->get_options() );
 }
 
 /**
