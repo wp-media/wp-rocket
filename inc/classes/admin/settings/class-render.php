@@ -20,7 +20,7 @@ class Render extends Abstract_render {
 	 *
 	 * @var array
 	 */
-	private $settings;
+	private $settings = array();
 
 	/**
 	 * Hidden settings array
@@ -42,7 +42,7 @@ class Render extends Abstract_render {
 	 * @return void
 	 */
 	public function set_settings( $settings ) {
-		$this->settings = $settings;
+		$this->settings = (array) $settings;
 	}
 
 	/**
@@ -75,6 +75,20 @@ class Render extends Abstract_render {
 			$this->settings
 		);
 
+		/**
+		 * Filters WP Rocket settings page navigation items.
+		 *
+		 * @since 3.0
+		 * @author Remy Perona
+		 *
+		 * @param array $navigation {
+		 *     Items to populate the navigation.
+		 *
+		 *     @type string $id               Page section identifier.
+		 *     @type string $title            Menu title.
+		 *     @type string $menu_description Menu description.
+		 * }
+		 */
 		$navigation = apply_filters( 'rocket_settings_menu_navigation', $navigation );
 
 		echo $this->generate( 'navigation', $navigation );
@@ -117,7 +131,7 @@ class Render extends Abstract_render {
 	 * @return void
 	 */
 	public function render_settings_sections( $page ) {
-		if ( ! isset( $this->settings[ $page ], $this->settings[ $page ]['sections'] ) ) {
+		if ( ! isset( $this->settings[ $page ]['sections'] ) ) {
 			return;
 		}
 
@@ -137,7 +151,7 @@ class Render extends Abstract_render {
 	 * @return void
 	 */
 	public function render_settings_fields( $page, $section ) {
-		if ( ! isset( $this->settings[ $page ]['sections'][ $section ], $this->settings[ $page ]['sections'][ $section ]['fields'] ) ) {
+		if ( ! isset( $this->settings[ $page ]['sections'][ $section ]['fields'] ) ) {
 			return;
 		}
 
