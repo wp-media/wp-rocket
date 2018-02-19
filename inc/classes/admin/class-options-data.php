@@ -49,7 +49,7 @@ class Options_Data {
 	 * @param mixed  $default default value to return if key doesn't exist.
 	 * @return mixed
 	 */
-	public function get( $key, $default ) {
+	public function get( $key, $default = '' ) {
 		/**
 		 * Pre-filter any WP Rocket option before read
 		 *
