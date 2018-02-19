@@ -183,6 +183,9 @@ function rocket_init() {
 	define( 'WP_ROCKET_PLUGIN_NAME', 'WP Rocket' );
 	define( 'WP_ROCKET_PLUGIN_SLUG', sanitize_key( WP_ROCKET_PLUGIN_NAME ) );
 
+	$wp_rocket = new WP_Rocket\Plugin( WP_ROCKET_INC_PATH . 'views' );
+	$wp_rocket->load();
+
 	// Call defines and functions.
 	require WP_ROCKET_FUNCTIONS_PATH . 'files.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'posts.php';
@@ -225,7 +228,6 @@ function rocket_init() {
 		require WP_ROCKET_ADMIN_PATH . 'ajax.php';
 		require WP_ROCKET_ADMIN_PATH . 'upgrader.php';
 		require WP_ROCKET_ADMIN_PATH . 'updater.php';
-		require WP_ROCKET_ADMIN_PATH . 'class-repeater-field.php';
 		require WP_ROCKET_ADMIN_PATH . 'options.php';
 		require WP_ROCKET_ADMIN_PATH . 'admin.php';
 		require WP_ROCKET_ADMIN_UI_PATH . 'enqueue.php';
