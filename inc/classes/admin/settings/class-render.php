@@ -112,13 +112,13 @@ class Render extends Abstract_render {
 	}
 
 	/**
-	 * Render the import page section.
+	 * Render the tools page section.
 	 *
 	 * @since 3.0
 	 * @author Remy Perona
 	 */
-	public function render_import_section() {
-		echo $this->generate( 'page-sections/import' );
+	public function render_tools_section() {
+		echo $this->generate( 'page-sections/tools' );
 	}
 
 	/**
