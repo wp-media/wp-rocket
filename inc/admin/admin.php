@@ -506,7 +506,7 @@ function rocket_handle_settings_import() {
 		die();
 	}
 
-	if ( ! isset( $_FILES['import'] ) || 0 !== $_FILES['import']['size'] ) {
+	if ( ! isset( $_FILES['import'] ) || 0 === $_FILES['import']['size'] ) {
 		add_settings_error( 'general', 'settings_update_error', __( 'Settings import failed: no file uploaded.', 'rocket' ), 'error' );
 
 		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
