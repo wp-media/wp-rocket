@@ -120,7 +120,7 @@ function rocket_first_install() {
 				'database_all_transients'     => 0,
 				'database_optimize_tables'    => 0,
 				'schedule_automatic_cleanup'  => 0,
-				'automatic_cleanup_frequency' => '',
+				'automatic_cleanup_frequency' => 'daily',
 				'cdn'                         => 0,
 				'cdn_cnames'                  => array(),
 				'cdn_zone'                    => array(),
