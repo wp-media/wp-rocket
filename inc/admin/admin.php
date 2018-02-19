@@ -500,24 +500,15 @@ function rocket_handle_settings_import() {
 	check_ajax_refer( 'rocket_import_settings' );
 
 	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
-		add_settings_error( 'general', 'settings_update_error', __( 'Settings import failed: you do not have the permissions to do this.', 'rocket' ), 'error' );
-
-		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
-		die();
+		rocket_settings_import_redirect( __( 'Settings import failed: you do not have the permissions to do this.', 'rocket' ), 'error' );
 	}
 
 	if ( ! isset( $_FILES['import'] ) || 0 === $_FILES['import']['size'] ) {
-		add_settings_error( 'general', 'settings_update_error', __( 'Settings import failed: no file uploaded.', 'rocket' ), 'error' );
-
-		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
-		die();
+		rocket_settings_import_redirect( __( 'Settings import failed: no file uploaded.', 'rocket' ), 'error' );
 	}
 
 	if ( ! preg_match( '/wp-rocket-settings-20\d{2}-\d{2}-\d{2}-[a-f0-9]{13}\.(?:txt|json)/', $_FILES['import']['name'] ) ) {
-		add_settings_error( 'general', 'settings_update_error', __( 'Settings import failed: incorrect filename.', 'rocket' ), 'error' );
-
-		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
-		die();
+		rocket_settings_import_redirect( __( 'Settings import failed: incorrect filename.', 'rocket' ), 'error' );
 	}
 
 	add_filter( 'upload_mimes', 'rocket_allow_json_mime_type' );
@@ -525,10 +516,7 @@ function rocket_handle_settings_import() {
 	$file_data = wp_check_filetype_and_ext( $_FILES['import']['tmp_name'], $_FILES['import']['name'] );
 
 	if ( 'text/plain' !== $file_data['type'] && 'application/json' !== $file_data['type'] ) {
-		add_settings_error( 'general', 'settings_update_error', __( 'Settings import failed: incorrect filetype.', 'rocket' ), 'error' );
-
-		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
-		die();
+		rocket_settings_import_redirect( __( 'Settings import failed: incorrect filetype.', 'rocket' ), 'error' );
 	}
 
 	$_post_action    = $_POST['action'];
@@ -564,10 +552,7 @@ function rocket_handle_settings_import() {
 
 		$options_api->set( 'settings', $settings );
 
-		add_settings_error( 'general', 'settings_updated', __( 'Settings imported and saved.', 'rocket' ), 'updated' );
-
-		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
-		die();
+		rocket_settings_import_redirect( __( 'Settings imported and saved.', 'rocket' ), 'updated' );
 	}
 }
 add_action( 'admin_post_rocket_import_settings', 'rocket_handle_settings_import' );
