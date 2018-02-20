@@ -223,7 +223,14 @@ class Settings {
 
 		// Option : Purge interval.
 		$input['purge_cron_interval'] = isset( $input['purge_cron_interval'] ) ? (int) $input['purge_cron_interval'] : $this->options->get( 'purge_cron_interval' );
-		$input['purge_cron_unit']     = isset( $input['purge_cron_unit'] ) ? $input['purge_cron_unit'] : $this->options->get( 'purge_cron_unit' );
+
+		$allowed_cron_units = [
+			'MINUTE_IN_SECONDS' => 1,
+			'HOUR_IN_SECONDS'   => 1,
+			'DAY_IN_SECONDS'    => 1,
+		];
+
+		$input['purge_cron_unit'] = isset( $allowed_cron_units[ $input['purge_cron_unit'] ] ) ? $input['purge_cron_unit'] : $this->options->get( 'purge_cron_unit' );
 
 		// Force a minimum 10 minutes value for the purge interval.
 		if ( $input['purge_cron_interval'] < 10 && 'MINUTE_IN_SECONDS' === $input['purge_cron_unit'] ) {
@@ -240,7 +247,7 @@ class Settings {
 			}
 			$input['dns_prefetch'] = array_map( 'trim', $input['dns_prefetch'] );
 			$input['dns_prefetch'] = array_map( 'esc_url', $input['dns_prefetch'] );
-			$input['dns_prefetch'] = (array) array_filter( $input['dns_prefetch'] );
+			$input['dns_prefetch'] = array_filter( $input['dns_prefetch'] );
 			$input['dns_prefetch'] = array_unique( $input['dns_prefetch'] );
 		} else {
 			$input['dns_prefetch'] = [];
@@ -254,7 +261,7 @@ class Settings {
 			$input['cache_purge_pages'] = array_map( 'trim', $input['cache_purge_pages'] );
 			$input['cache_purge_pages'] = array_map( 'esc_url', $input['cache_purge_pages'] );
 			$input['cache_purge_pages'] = array_map( 'rocket_clean_exclude_file', $input['cache_purge_pages'] );
-			$input['cache_purge_pages'] = (array) array_filter( $input['cache_purge_pages'] );
+			$input['cache_purge_pages'] = array_filter( $input['cache_purge_pages'] );
 			$input['cache_purge_pages'] = array_unique( $input['cache_purge_pages'] );
 		} else {
 			$input['cache_purge_pages'] = [];
@@ -268,7 +275,7 @@ class Settings {
 			$input['cache_reject_uri'] = array_map( 'trim', $input['cache_reject_uri'] );
 			$input['cache_reject_uri'] = array_map( 'esc_url', $input['cache_reject_uri'] );
 			$input['cache_reject_uri'] = array_map( 'rocket_clean_exclude_file', $input['cache_reject_uri'] );
-			$input['cache_reject_uri'] = (array) array_filter( $input['cache_reject_uri'] );
+			$input['cache_reject_uri'] = array_filter( $input['cache_reject_uri'] );
 			$input['cache_reject_uri'] = array_unique( $input['cache_reject_uri'] );
 		} else {
 			$input['cache_reject_uri'] = [];
@@ -281,7 +288,7 @@ class Settings {
 			}
 			$input['cache_reject_cookies'] = array_map( 'trim', $input['cache_reject_cookies'] );
 			$input['cache_reject_cookies'] = array_map( 'rocket_sanitize_key', $input['cache_reject_cookies'] );
-			$input['cache_reject_cookies'] = (array) array_filter( $input['cache_reject_cookies'] );
+			$input['cache_reject_cookies'] = array_filter( $input['cache_reject_cookies'] );
 			$input['cache_reject_cookies'] = array_unique( $input['cache_reject_cookies'] );
 		} else {
 			$input['cache_reject_cookies'] = [];
@@ -294,7 +301,7 @@ class Settings {
 			}
 			$input['cache_query_strings'] = array_map( 'trim', $input['cache_query_strings'] );
 			$input['cache_query_strings'] = array_map( 'rocket_sanitize_key', $input['cache_query_strings'] );
-			$input['cache_query_strings'] = (array) array_filter( $input['cache_query_strings'] );
+			$input['cache_query_strings'] = array_filter( $input['cache_query_strings'] );
 			$input['cache_query_strings'] = array_unique( $input['cache_query_strings'] );
 		} else {
 			$input['cache_query_strings'] = [];
@@ -307,7 +314,7 @@ class Settings {
 			}
 			$input['cache_reject_ua'] = array_map( 'trim', $input['cache_reject_ua'] );
 			$input['cache_reject_ua'] = array_map( 'rocket_sanitize_ua', $input['cache_reject_ua'] );
-			$input['cache_reject_ua'] = (array) array_filter( $input['cache_reject_ua'] );
+			$input['cache_reject_ua'] = array_filter( $input['cache_reject_ua'] );
 			$input['cache_reject_ua'] = array_unique( $input['cache_reject_ua'] );
 		} else {
 			$input['cache_reject_ua'] = [];
@@ -321,7 +328,7 @@ class Settings {
 			$input['exclude_css'] = array_map( 'trim', $input['exclude_css'] );
 			$input['exclude_css'] = array_map( 'rocket_clean_exclude_file', $input['exclude_css'] );
 			$input['exclude_css'] = array_map( 'rocket_sanitize_css', $input['exclude_css'] );
-			$input['exclude_css'] = (array) array_filter( $input['exclude_css'] );
+			$input['exclude_css'] = array_filter( $input['exclude_css'] );
 			$input['exclude_css'] = array_unique( $input['exclude_css'] );
 		} else {
 			$input['exclude_css'] = [];
@@ -335,7 +342,7 @@ class Settings {
 			$input['exclude_js'] = array_map( 'trim', $input['exclude_js'] );
 			$input['exclude_js'] = array_map( 'rocket_clean_exclude_file', $input['exclude_js'] );
 			$input['exclude_js'] = array_map( 'rocket_sanitize_js', $input['exclude_js'] );
-			$input['exclude_js'] = (array) array_filter( $input['exclude_js'] );
+			$input['exclude_js'] = array_filter( $input['exclude_js'] );
 			$input['exclude_js'] = array_unique( $input['exclude_js'] );
 		} else {
 			$input['exclude_js'] = [];
@@ -357,7 +364,14 @@ class Settings {
 		$input['database_all_transients']     = ! empty( $input['database_all_transients'] ) ? 1 : 0;
 		$input['database_optimize_tables']    = ! empty( $input['database_optimize_tables'] ) ? 1 : 0;
 		$input['schedule_automatic_cleanup']  = ! empty( $input['schedule_automatic_cleanup'] ) ? 1 : 0;
-		$input['automatic_cleanup_frequency'] = ! empty( $input['automatic_cleanup_frequency'] ) ? $input['automatic_cleanup_frequency'] : '';
+
+		$allowed_cleanup_frequencies = [
+			'daily'   => 1,
+			'weekly'  => 1,
+			'monthly' => 1,
+		];
+
+		$input['automatic_cleanup_frequency'] = isset( $allowed_cleanup_frequencies[ $input['automatic_cleanup_frequency'] ] ) ? $input['automatic_cleanup_frequency'] : $this->options->get( 'automatic_cleanup_frequency' );
 
 		if ( 1 !== $input['schedule_automatic_cleanup'] && ( 'daily' !== $input['automatic_cleanup_frequency'] || 'weekly' !== $input['automatic_cleanup_frequency'] || 'monthly' !== $input['automatic_cleanup_frequency'] ) ) {
 			$input['automatic_cleanup_frequency'] = $this->options->get( 'automatic_cleanup_frequency' );
@@ -377,7 +391,7 @@ class Settings {
 			}
 			$input['sitemaps'] = array_map( 'trim', $input['sitemaps'] );
 			$input['sitemaps'] = array_map( 'rocket_sanitize_xml', $input['sitemaps'] );
-			$input['sitemaps'] = (array) array_filter( $input['sitemaps'] );
+			$input['sitemaps'] = array_filter( $input['sitemaps'] );
 			$input['sitemaps'] = array_unique( $input['sitemaps'] );
 		} else {
 			$input['sitemaps'] = [];
@@ -393,14 +407,20 @@ class Settings {
 		$input['do_cloudflare'] = ! empty( $input['do_cloudflare'] ) ? 1 : 0;
 
 		if ( defined( 'WP_ROCKET_CF_API_KEY' ) ) {
-			$input['cloudflare_api_key'] = $this->options->get( 'cloudflare_api_key' );
+			$input['cloudflare_api_key'] = WP_ROCKET_CF_API_KEY;
 		}
 
 		// Option : CDN.
 		$input['cdn'] = ! empty( $input['cdn'] ) ? 1 : 0;
 
 		// Option : CDN Cnames.
-		$input['cdn_cnames'] = isset( $input['cdn_cnames'] ) ? array_unique( array_filter( $input['cdn_cnames'] ) ) : [];
+		if ( isset( $input['cdn_cnames'] ) ) {
+			$input['cdn_cnames'] = array_map( 'sanitize_text_field', $input['cdn_cnames'] );
+			$input['cdn_cnames'] = array_filter( $input['cdn_cnames'] );
+			$input['cdn_cnames'] = array_unique( $input['cdn_cnames'] );
+		} else {
+			$input['cdn_cnames'] = [];
+		}
 
 		if ( ! $input['cdn_cnames'] ) {
 			$input['cdn_zone'] = [];
@@ -410,7 +430,15 @@ class Settings {
 				if ( ! isset( $input['cdn_cnames'][ $i ] ) ) {
 					unset( $input['cdn_zone'][ $i ] );
 				} else {
-					$input['cdn_zone'][ $i ] = isset( $input['cdn_zone'][ $i ] ) ? $input['cdn_zone'][ $i ] : 'all';
+					$allowed_cdn_zones = [
+						'all'        => 1,
+						'images'     => 1,
+						'css_and_js' => 1,
+						'css'        => 1,
+						'js'         => 1,
+					];
+
+					$input['cdn_zone'][ $i ] = isset( $allowed_cdn_zones[ $input['cdn_zone'][ $i ] ] ) ? $input['cdn_zone'][ $i ] : 'all';
 				}
 			}
 
@@ -429,7 +457,7 @@ class Settings {
 			}
 			$input['cdn_reject_files'] = array_map( 'trim', $input['cdn_reject_files'] );
 			$input['cdn_reject_files'] = array_map( 'rocket_clean_exclude_file', $input['cdn_reject_files'] );
-			$input['cdn_reject_files'] = (array) array_filter( $input['cdn_reject_files'] );
+			$input['cdn_reject_files'] = array_filter( $input['cdn_reject_files'] );
 			$input['cdn_reject_files'] = array_unique( $input['cdn_reject_files'] );
 		} else {
 			$input['cdn_reject_files'] = [];
