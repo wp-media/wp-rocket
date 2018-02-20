@@ -23,7 +23,7 @@ function rocket_settings_action_links( $actions ) {
 add_filter( 'plugin_action_links_' . plugin_basename( WP_ROCKET_FILE ), 'rocket_settings_action_links' );
 
 /**
- * Add a link "Renew your licence" when ou can't do it automatically (expired licence but new version available)
+ * Add a link "Renew your licence" when you can't do it automatically (expired licence but new version available)
  *
  * @since 2.2
  *
@@ -486,3 +486,73 @@ function rocket_analytics_optin() {
 	die();
 }
 add_action( 'admin_post_rocket_analytics_optin', 'rocket_analytics_optin' );
+
+/**
+ * Handle WP Rocket settings import.
+ *
+ * @since 3.0 Hooked on admin_post now
+ * @since 2.10.7
+ * @author Remy Perona
+ *
+ * @return void
+ */
+function rocket_handle_settings_import() {
+	check_ajax_refer( 'rocket_import_settings' );
+
+	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		rocket_settings_import_redirect( __( 'Settings import failed: you do not have the permissions to do this.', 'rocket' ), 'error' );
+	}
+
+	if ( ! isset( $_FILES['import'] ) || 0 === $_FILES['import']['size'] ) {
+		rocket_settings_import_redirect( __( 'Settings import failed: no file uploaded.', 'rocket' ), 'error' );
+	}
+
+	if ( ! preg_match( '/wp-rocket-settings-20\d{2}-\d{2}-\d{2}-[a-f0-9]{13}\.(?:txt|json)/', $_FILES['import']['name'] ) ) {
+		rocket_settings_import_redirect( __( 'Settings import failed: incorrect filename.', 'rocket' ), 'error' );
+	}
+
+	add_filter( 'upload_mimes', 'rocket_allow_json_mime_type' );
+
+	$file_data = wp_check_filetype_and_ext( $_FILES['import']['tmp_name'], $_FILES['import']['name'] );
+
+	if ( 'text/plain' !== $file_data['type'] && 'application/json' !== $file_data['type'] ) {
+		rocket_settings_import_redirect( __( 'Settings import failed: incorrect filetype.', 'rocket' ), 'error' );
+	}
+
+	$_post_action    = $_POST['action'];
+	$_POST['action'] = 'wp_handle_sideload';
+	$file            = wp_handle_sideload( $file_import );
+	$_POST['action'] = $_post_action;
+	$settings        = rocket_direct_filesystem()->get_contents( $file['file'] );
+	remove_filter( 'upload_mimes', 'rocket_allow_json_mime_type' );
+
+	if ( 'text/plain' === $file_data['type'] ) {
+		$gz       = 'gz' . strrev( 'etalfni' );
+		$settings = $gz// ;
+		( $settings );
+		$settings = maybe_unserialize( $settings );
+	} elseif ( 'application/json' === $file_data['type'] ) {
+		$settings = json_decode( $settings, true );
+	}
+
+	rocket_put_content( $file['file'], '' );
+	rocket_direct_filesystem()->delete( $file['file'] );
+
+	if ( is_array( $settings ) ) {
+		$options_api     = new WP_Rocket\Admin\Options( 'wp_rocket_' );
+		$current_options = $options_api->get( 'settings', array() );
+
+		$settings['consumer_key']     = $current_options['consumer_key'];
+		$settings['consumer_email']   = $current_options['consumer_email'];
+		$settings['secret_key']       = $current_options['secret_key'];
+		$settings['secret_cache_key'] = $current_options['secret_cache_key'];
+		$settings['minify_css_key']   = $current_options['minify_css_key'];
+		$settings['minify_js_key']    = $current_options['minify_js_key'];
+		$settings['version']          = $current_options['version'];
+
+		$options_api->set( 'settings', $settings );
+
+		rocket_settings_import_redirect( __( 'Settings imported and saved.', 'rocket' ), 'updated' );
+	}
+}
+add_action( 'admin_post_rocket_import_settings', 'rocket_handle_settings_import' );

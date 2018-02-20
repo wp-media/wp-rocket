@@ -439,3 +439,24 @@ function rocket_data_collection_preview_table() {
 
 	return $html;
 }
+
+/**
+ * Adds error message after settings import and redirects.
+ *
+ * @since 3.0
+ * @author Remy Perona
+ *
+ * @param string $message Message to display in the error notice.
+ * @param string $status  Status of the error.
+ * @return void
+ */
+function rocket_settings_import_redirect( $message, $status ) {
+	add_settings_error( 'general', 'settings_updated', $message, $status );
+
+	set_transient( 'settings_errors', get_settings_errors(), 30 );
+
+	$goback = add_query_arg( 'settings-updated', 'true', wp_get_referer() );
+	wp_safe_redirect( esc_url_raw( $goback ) );
+	die();
+}
+
