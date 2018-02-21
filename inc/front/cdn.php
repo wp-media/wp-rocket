@@ -1,6 +1,11 @@
 <?php
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
+// Nothing to do if XMLRPC request.
+if ( defined( 'XMLRPC_REQUEST' ) ) {
+	return;
+}
+
 /**
  * Replace URL by CDN of all thumbnails and smilies.
  *
