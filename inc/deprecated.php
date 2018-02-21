@@ -1645,7 +1645,7 @@ if ( ! function_exists( 'rocket_field' ) ) {
 					?>
 
 						<legend class="screen-reader-text"><span><?php echo $args['label_screen']; ?></span></legend>
-						<label>	<select id="<?php echo $args['name']; ?>" class="<?php echo $class; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]"<?php echo $readonly; ?> <?php echo $parent; ?>>
+						<label> <select id="<?php echo $args['name']; ?>" class="<?php echo $class; ?>" name="wp_rocket_settings[<?php echo $args['name']; ?>]"<?php echo $readonly; ?> <?php echo $parent; ?>>
 								<?php foreach ( $args['options'] as $val => $title ) { ?>
 									<option value="<?php echo $val; ?>" <?php selected( get_rocket_option( $args['name'] ), $val ); ?>><?php echo $title; ?></option>
 								<?php } ?>
@@ -2028,5 +2028,26 @@ if ( ! function_exists( 'rocket_display_options' ) ) {
 			<?php submit_button(); ?>
 		</form>
 	<?php
+	}
+}
+
+if ( ! function_exists( 'rocket_hidden_fields' ) ) {
+	/**
+	 * Function used to print all hidden fields from rocket to avoid the loss of these.
+	 *
+	 * @since 2.1
+	 * @deprecated 3.0
+	 *
+	 * @param array $fields An array of fields to add to WP Rocket settings.
+	 */
+	function rocket_hidden_fields( $fields ) {
+		_deprecated_function( __FUNCTION__, '3.0', 'WP_Rocket\Admin\Render->render_hidden_fields()' );
+		if ( ! is_array( $fields ) ) {
+			return;
+		}
+
+		foreach ( $fields as $field ) {
+			echo '<input type="hidden" name="wp_rocket_settings[' . $field . ']" value="' . esc_attr( get_rocket_option( $field ) ) . '" />';
+		}
 	}
 }
