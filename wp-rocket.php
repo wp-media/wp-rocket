@@ -337,6 +337,9 @@ function rocket_activation() {
 		require WP_ROCKET_INC_PATH . 'domain-mapping.php';
 	}
 
+	// Composer autoload.
+	require WP_ROCKET_PATH . 'vendor/autoload.php';
+
 	require WP_ROCKET_FUNCTIONS_PATH . 'options.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'files.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'formatting.php';
