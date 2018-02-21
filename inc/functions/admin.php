@@ -136,23 +136,6 @@ function rocket_add_own_ua( $r, $url ) {
 add_filter( 'http_request_args', 'rocket_add_own_ua', 10, 3 );
 
 /**
- * Function used to print all hidden fields from rocket to avoid the loss of these.
- *
- * @since 2.1
- *
- * @param array $fields An array of fields to add to WP Rocket settings.
- */
-function rocket_hidden_fields( $fields ) {
-	if ( ! is_array( $fields ) ) {
-		return;
-	}
-
-	foreach ( $fields as $field ) {
-		echo '<input type="hidden" name="wp_rocket_settings[' . $field . ']" value="' . esc_attr( get_rocket_option( $field ) ) . '" />';
-	}
-}
-
-/**
  * Gets names of all active plugins.
  *
  * @since 2.11 Only get the name
