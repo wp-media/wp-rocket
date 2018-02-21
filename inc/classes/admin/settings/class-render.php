@@ -201,6 +201,19 @@ class Render extends Abstract_render {
 	}
 
 	/**
+	 * Displays the text field template.
+	 *
+	 * @since 3.0
+	 * @author Remy Perona
+	 *
+	 * @param array $args Array of arguments to populate the template.
+	 * @return void
+	 */
+	public function text( $args ) {
+		echo $this->generate( 'fields/text', $args );
+	}
+
+	/**
 	 * Displays the checkbox field template.
 	 *
 	 * @since 3.0
@@ -210,6 +223,24 @@ class Render extends Abstract_render {
 	 * @return void
 	 */
 	public function checkbox( $args ) {
+		if ( isset( $args['input_attr'] ) ) {
+			$input_attr = '';
+
+			foreach ( $args['input_attr'] as $key => $value ) {
+				if ( 'disabled' === $key ) {
+					if ( 1 === $value ) {
+						$input_attr .= ' disabled';
+					}
+
+					continue;
+				}
+
+				$input_attr .= ' ' . esc_attr( $key ) . '="' . esc_attr( $value ) . '"';
+			}
+
+			$args['input_attr'] = $input_attr;
+		}
+
 		echo $this->generate( 'fields/checkbox', $args );
 	}
 
@@ -282,6 +313,19 @@ class Render extends Abstract_render {
 	 */
 	public function hidden( $args ) {
 		echo $this->generate( 'fields/hidden', $args );
+	}
+
+	/**
+	 * Displays the CDN CNAMES template.
+	 *
+	 * @since 3.0
+	 * @author Remy Perona
+	 *
+	 * @param array $args Array of arguments to populate the template.
+	 * @return void
+	 */
+	public function cnames( $args ) {
+		echo $this->generate( 'fields/cnames', $args );
 	}
 
 	/**
