@@ -183,36 +183,38 @@ class Page {
 			'dashboard',
 			[
 				'title'            => __( 'Dashboard', 'rocket' ),
-				'menu_description' => __( 'Control Panel', 'rocket' ),
+				'menu_description' => __( 'Get help, account info', 'rocket' ),
 			]
 		);
 
 		$this->settings->add_settings_sections(
 			[
-				'statuses' => [
-					'title' => __( 'My statuses', 'rocket' ),
-					'type'  => 'nocontainer',
-					'page'  => 'dashboard',
+				'status' => [
+					'title'       => __( 'My status', 'rocket' ),
+					'type'        => 'fields_container',
+					'help'        => '',
+					'description' => '',
+					'page'        => 'dashboard',
 				],
 			]
 		);
 
 		$this->settings->add_settings_fields(
 			[
-				'beta'      => [
+				'do_beta'           => [
 					'type'              => 'sliding_checkbox',
 					'label'             => __( 'Rocket Tester', 'rocket' ),
-					'description'       => __( 'I want to contribute to Beta test of WP Rocket', 'rocket' ),
-					'section'           => 'statuses',
+					'description'       => __( 'I am part of the WP Rocket Beta Testing Program.', 'rocket' ),
+					'section'           => 'status',
 					'page'              => 'dashboard',
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
-				'analytics' => [
+				'analytics_enabled' => [
 					'type'              => 'sliding_checkbox',
 					'label'             => __( 'Rocket Sharer', 'rocket' ),
-					'description'       => __( 'I share data to help improve WP Rocket', 'rocket' ),
-					'section'           => 'statuses',
+					'description'       => __( 'I agree to share anonymous data with the development team to help improve WP Rocket.', 'rocket' ),
+					'section'           => 'status',
 					'page'              => 'dashboard',
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
@@ -234,7 +236,7 @@ class Page {
 			'cache',
 			[
 				'title'            => __( 'Cache', 'rocket' ),
-				'menu_description' => __( 'Advanced Cache', 'rocket' ),
+				'menu_description' => __( 'Basic cache options', 'rocket' ),
 			]
 		);
 
@@ -243,21 +245,21 @@ class Page {
 				'mobile_cache_section' => [
 					'title'       => __( 'Mobile Cache', 'rocket' ),
 					'type'        => 'fields_container',
-					'description' => __( 'Serve cache to mobile devices', 'rocket' ),
-					'help'        => '1234',
+					'description' => __( 'Speed up your site for mobile visitors.', 'rocket' ),
+					'help'        => '',
 					'page'        => 'cache',
 				],
 				'user_cache_section'   => [
 					'title'       => __( 'User Cache', 'rocket' ),
 					'type'        => 'fields_container',
-					'description' => __( 'Each logged-in user will receive a specific cache version', 'rocket' ),
+					'description' => __( 'User cache is great when you have user-specific or restricted content on your website.', 'rocket' ),
 					'help'        => '1234',
 					'page'        => 'cache',
 				],
 				'cache_lifespan'       => [
 					'title'       => __( 'Cache Lifespan', 'rocket' ),
 					'type'        => 'fields_container',
-					'description' => __( 'Period of time', 'rocket' ),
+					'description' => __( 'Cache lifespan is the period of time after which all cache files are removed. Enable preloading for the cache to be rebuilt automatically after lifespan expiration.', 'rocket' ),
 					'help'        => '',
 					'page'        => 'cache',
 				],
@@ -268,7 +270,7 @@ class Page {
 			[
 				'user_cache'              => [
 					'type'              => 'checkbox',
-					'label'             => __( 'Enable caching for logged-in users', 'rocket' ),
+					'label'             => __( 'Enable caching for logged-in WordPress users', 'rocket' ),
 					'section'           => 'user_cache_section',
 					'page'              => 'cache',
 					'default'           => 0,
@@ -277,19 +279,28 @@ class Page {
 				'cache_mobile'            => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Enable caching for mobile devices', 'rocket' ),
+					'class'             => rocket_is_mobile_plugin_active() ? 'disabled' : '',
 					'section'           => 'mobile_cache_section',
 					'page'              => 'cache',
 					'default'           => 1,
 					'sanitize_callback' => 'sanitize_checkbox',
+					'input_attr'        => [
+						'disabled' => rocket_is_mobile_plugin_active() ? 1 : 0,
+					],
 				],
 				'do_caching_mobile_files' => [
 					'type'              => 'checkbox',
 					'parent'            => 'cache_mobile',
 					'label'             => __( 'Separate cache files for mobile devices', 'rocket' ),
+					'description'       => __( 'Mobile cache works safest with both options enabled. When in doubt, keep both.', 'rocket' ),
+					'class'             => rocket_is_mobile_plugin_active() ? 'disabled' : '',
 					'section'           => 'mobile_cache_section',
 					'page'              => 'cache',
-					'default'           => 0,
+					'default'           => rocket_is_mobile_plugin_active() ? 1 : 0,
 					'sanitize_callback' => 'sanitize_checkbox',
+					'input_attr'        => [
+						'disabled' => rocket_is_mobile_plugin_active() ? 1 : 0,
+					],
 				],
 				'purge_cron_interval'     => [
 					'type'              => 'number',
@@ -329,7 +340,7 @@ class Page {
 			'file_optimization',
 			[
 				'title'            => __( 'File optimization', 'rocket' ),
-				'menu_description' => '',
+				'menu_description' => __( 'Optimize CSS & JS', 'rocket' ),
 			]
 		);
 
@@ -364,10 +375,14 @@ class Page {
 				'minify_html'            => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Minify HTML', 'rocket' ),
+					'class'             => rocket_maybe_disable_minify_html() ? 'disabled' : '',
 					'section'           => 'basic',
 					'page'              => 'file_optimization',
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
+					'input_attr'        => [
+						'disabled' => rocket_maybe_disable_minify_html() ? 1 : 0,
+					],
 				],
 				'minify_google_fonts'    => [
 					'type'              => 'checkbox',
@@ -388,10 +403,14 @@ class Page {
 				'minify_css'             => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Minify CSS Files', 'rocket' ),
+					'class'             => rocket_maybe_disable_minify_css() ? 'disabled' : '',
 					'section'           => 'css',
 					'page'              => 'file_optimization',
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
+					'input_attr'        => [
+						'disabled' => rocket_maybe_disable_minify_css() ? 1 : 0,
+					],
 					'warning'           => [
 						'title'        => __( 'this could break things!', 'rocket' ),
 						'description'  => '',
@@ -435,9 +454,13 @@ class Page {
 				'minify_js'              => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Minify JS Files', 'rocket' ),
+					'class'             => rocket_maybe_disable_minify_js() ? 'disabled' : '',
 					'section'           => 'js',
 					'page'              => 'file_optimization',
 					'default'           => 0,
+					'input_attr'        => [
+						'disabled' => rocket_maybe_disable_minify_js() ? 1 : 0,
+					],
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
 				'minify_concatenate_js'  => [
@@ -614,9 +637,10 @@ class Page {
 			]
 		);
 
+		// Add this separately to be able to filter it easily.
 		$this->settings->add_settings_fields(
-			[
-				'sitemap_preload'   => [
+			apply_filters( 'rocket_sitemap_preload_options', [
+				'sitemap_preload' => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Activate sitemap-based cache preloading', 'rocket' ),
 					'description'       => '',
@@ -625,6 +649,11 @@ class Page {
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
+			] )
+		);
+
+		$this->settings->add_settings_fields(
+			[
 				'sitemaps'          => [
 					'type'              => 'textarea',
 					'label'             => __( 'Sitemaps for preloading', 'rocket' ),
@@ -782,6 +811,13 @@ class Page {
 	 * @return void
 	 */
 	public function database_section() {
+		$total                 = array();
+		$database_optimization = new \Rocket_Database_Optimization();
+
+		foreach ( $database_optimization->options as $option ) {
+			$total[ $option ] = $database_optimization->count_cleanup_items( $option );
+		}
+
 		$this->settings->add_page_section(
 			'database',
 			[
@@ -835,7 +871,8 @@ class Page {
 				'database_revisions'          => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Revisions', 'rocket' ),
-					'description'       => '',
+					// translators: %d is the number of revisions found in the database.
+					'description'       => sprintf( _n( '%d revision in your database.', '%d revisions in your database.', $total['revisions'], 'rocket' ), $total['revisions'] ),
 					'section'           => 'post_cleanup_section',
 					'page'              => 'database',
 					'default'           => 0,
@@ -844,7 +881,8 @@ class Page {
 				'database_auto_drafts'        => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Auto Drafts', 'rocket' ),
-					'description'       => '',
+					// translators: %d is the number of drafts found in the database.
+					'description'       => sprintf( _n( '%d draft in your database.', '%d drafts in your database.', $total['auto_drafts'], 'rocket' ), $total['auto_drafts'] ),
 					'section'           => 'post_cleanup_section',
 					'page'              => 'database',
 					'default'           => 0,
@@ -853,7 +891,8 @@ class Page {
 				'database_trashed_posts'      => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Trashed Posts', 'rocket' ),
-					'description'       => '',
+					// translators: %d is the number of trashed posts found in the database.
+					'description'       => sprintf( _n( '%d trashed post in your database.', '%d trashed posts in your database.', $total['trashed_posts'], 'rocket' ), $total['trashed_posts'] ),
 					'section'           => 'post_cleanup_section',
 					'page'              => 'database',
 					'default'           => 0,
@@ -862,7 +901,8 @@ class Page {
 				'database_spam_comments'      => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Spam Comments', 'rocket' ),
-					'description'       => '',
+					// translators: %d is the number of spam comments found in the database.
+					'description'       => sprintf( _n( '%d spam comment in your database.', '%d spam comments in your database.', $total['spam_comments'], 'rocket' ), $total['spam_comments'] ),
 					'section'           => 'comments_cleanup_section',
 					'page'              => 'database',
 					'default'           => 0,
@@ -871,7 +911,8 @@ class Page {
 				'database_trashed_comments'   => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Trashed Comments', 'rocket' ),
-					'description'       => '',
+					// translators: %d is the number of trashed comments found in the database.
+					'description'       => sprintf( _n( '%d trashed comment in your database.', '%d trashed comments in your database.', $total['trashed_comments'], 'rocket' ), $total['trashed_comments'] ),
 					'section'           => 'comments_cleanup_section',
 					'page'              => 'database',
 					'default'           => 0,
@@ -880,7 +921,8 @@ class Page {
 				'database_expired_transients' => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Expired transients', 'rocket' ),
-					'description'       => '',
+					// translators: %d is the number of expired transients found in the database.
+					'description'       => sprintf( _n( '%d expired transient in your database.', '%d expired transients in your database.', $total['expired_transients'], 'rocket' ), $total['expired_transients'] ),
 					'section'           => 'transients_cleanup_section',
 					'page'              => 'database',
 					'default'           => 0,
@@ -889,7 +931,8 @@ class Page {
 				'database_all_transients'     => [
 					'type'              => 'checkbox',
 					'label'             => __( 'All transients', 'rocket' ),
-					'description'       => '',
+					// translators: %d is the number of transients found in the database.
+					'description'       => sprintf( _n( '%d transient in your database.', '%d transients in your database.', $total['all_transients'], 'rocket' ), $total['all_transients'] ),
 					'section'           => 'transients_cleanup_section',
 					'page'              => 'database',
 					'default'           => 0,
@@ -898,7 +941,8 @@ class Page {
 				'database_optimize_tables'    => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Optimize Tables', 'rocket' ),
-					'description'       => '',
+					// translators: %d is the number of tables to optimize in the database.
+					'description'       => sprintf( _n( '%d table to optimize in your database.', '%d tables to optimize in your database.', $total['optimize_tables'], 'rocket' ), $total['optimize_tables'] ),
 					'section'           => 'database_cleanup_section',
 					'page'              => 'database',
 					'default'           => 0,
@@ -980,8 +1024,9 @@ class Page {
 				],
 				'cdn_cnames'       => [
 					'type'        => 'cnames',
-					'label'       => __( 'CDN Cname(s)', 'rocket' ),
-					'description' => '',
+					'label'       => __( 'CDN CNAME(s)', 'rocket' ),
+					'description' => __( 'Specify the CNAME(s) below', 'rocket' ),
+					'default'     => [],
 					'section'     => 'cdn_section',
 					'page'        => 'cdn',
 				],
