@@ -142,9 +142,10 @@ function rocket_cdn_images( $html ) {
 		$home_url           = home_url( '/' );
 		$wp_content_dirname = str_replace( $home_url, '', WP_CONTENT_URL );
 		
+		$custom_media_uploads_dirname = '';
 		$uploads_info = wp_upload_dir();
 		if ( ! empty($uploads_info['baseurl']) ) {
-			$wp_content_dirname .= '|' . trailingslashit( str_replace( $home_url, '/', $uploads_info['baseurl'] ) );	//	make sure https://www.site.com/images/ becomes /images/
+			$custom_media_uploads_dirname = '|' . trailingslashit( str_replace( $home_url, '/', $uploads_info['baseurl'] ) );	//	make sure https://www.site.com/images/ becomes /images/
 		}
 		
 		// Get all images of the content.
@@ -155,7 +156,7 @@ function rocket_cdn_images( $html ) {
 			list( $host, $path, $scheme, $query ) = get_rocket_parse_url( $image_url );
 			$path = trim( $path );
 
-			if ( empty( $path ) ||  ! preg_match( '#(' . $wp_content_dirname . '|wp-includes)#', $path ) ) {
+			if ( empty( $path ) ||  ! preg_match( '#(' . $wp_content_dirname . $custom_media_uploads_dirname . '|wp-includes)#', $path ) ) {
 				continue;
 			}
 
