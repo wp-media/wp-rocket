@@ -376,6 +376,7 @@ class Page {
 					'type'              => 'checkbox',
 					'label'             => __( 'Minify HTML', 'rocket' ),
 					'class'             => rocket_maybe_disable_minify_html() ? 'disabled' : '',
+					'description'       => __( 'Minifying HTML removes whitespace and comments to reduce the size.', 'rocket' ),
 					'section'           => 'basic',
 					'page'              => 'file_optimization',
 					'default'           => 0,
@@ -386,7 +387,8 @@ class Page {
 				],
 				'minify_google_fonts'    => [
 					'type'              => 'checkbox',
-					'label'             => __( 'Combine google fonts files', 'rocket' ),
+					'label'             => __( 'Combine Google fonts files', 'rocket' ),
+					'description'       => __( 'Combining Google fonts will reduce the number of HTTP requests.', 'rocket' ),
 					'section'           => 'basic',
 					'page'              => 'file_optimization',
 					'default'           => 0,
@@ -395,6 +397,7 @@ class Page {
 				'remove_query_strings'   => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Remove query strings from static resources', 'rocket' ),
+					'description'       => __( 'Removes the version query string from static files (e.g. style.css?ver=1.0 and encodes it into the filename instead (e.g. style-1.0.css. Can improve your GTMetrix score.', 'rocket' ),
 					'section'           => 'basic',
 					'page'              => 'file_optimization',
 					'default'           => 0,
@@ -403,6 +406,7 @@ class Page {
 				'minify_css'             => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Minify CSS Files', 'rocket' ),
+					'description'       => __( 'Minify CSS removes whitespace and comments to reduce the file size.', 'rocket' ),
 					'class'             => rocket_maybe_disable_minify_css() ? 'disabled' : '',
 					'section'           => 'css',
 					'page'              => 'file_optimization',
@@ -420,7 +424,8 @@ class Page {
 				'minify_concatenate_css' => [
 					'type'              => 'checkbox',
 					'parent'            => 'minify_css',
-					'label'             => __( 'Combine CSS Files', 'rocket' ),
+					'label'             => __( 'Combine CSS Files (Enable minify CSS files to select)', 'rocket' ),
+					'description'       => __( 'Combine CSS merges all your files into 1, reducing HTTP requests. Not recommended if your site uses HTTP/2', 'rocket' ),
 					'section'           => 'css',
 					'page'              => 'file_optimization',
 					'default'           => 0,
@@ -428,7 +433,8 @@ class Page {
 				],
 				'async_css'              => [
 					'type'              => 'checkbox',
-					'label'             => __( 'Optimize CSS Delivery', 'rocket' ),
+					'label'             => __( 'Optimize CSS delivery', 'rocket' ),
+					'description'       => __( 'Optimize CSS delivery eliminates render-blocking CSS on your website for faster perceived load time.', 'rocket' ),
 					'section'           => 'css',
 					'page'              => 'file_optimization',
 					'default'           => 0,
@@ -436,7 +442,8 @@ class Page {
 				],
 				'critical_css'           => [
 					'type'              => 'textarea',
-					'label'             => __( 'Critical CSS Fallback', 'rocket' ),
+					'label'             => __( 'Fallback critical CSS:', 'rocket' ),
+					'description'       => __( 'Provides a fallback if auto-generated critical path CSS is incomplete.', 'rocket' ),
 					'section'           => 'css',
 					'page'              => 'file_optimization',
 					'default'           => [],
@@ -445,7 +452,7 @@ class Page {
 				'exclude_css'            => [
 					'type'              => 'textarea',
 					'label'             => __( 'Excluded CSS Files', 'rocket' ),
-					'description'       => __( 'Specify URL', 'rocket' ),
+					'description'       => __( 'Specify URLs of CSS files to be excluded from minification and concatenation.', 'rocket' ),
 					'section'           => 'css',
 					'page'              => 'file_optimization',
 					'default'           => [],
@@ -453,7 +460,8 @@ class Page {
 				],
 				'minify_js'              => [
 					'type'              => 'checkbox',
-					'label'             => __( 'Minify JS Files', 'rocket' ),
+					'label'             => __( 'Minify JavaScript Files', 'rocket' ),
+					'description'       => __( 'Minify JavaScript removes whitespace and comments to reduce the file size.', 'rocket' ),
 					'class'             => rocket_maybe_disable_minify_js() ? 'disabled' : '',
 					'section'           => 'js',
 					'page'              => 'file_optimization',
@@ -465,7 +473,8 @@ class Page {
 				],
 				'minify_concatenate_js'  => [
 					'type'              => 'checkbox',
-					'label'             => __( 'Combine JS Files', 'rocket' ),
+					'label'             => __( 'Combine JavaScript files (Enable minify JS to select)', 'rocket' ),
+					'description'       => __( 'Combine Javascript files combines your site\'s JS info fewer files, reducing HTTP requests. Not recommended if your site uses HTTP/2', 'rocket' ),
 					'section'           => 'js',
 					'page'              => 'file_optimization',
 					'default'           => 0,
@@ -473,7 +482,8 @@ class Page {
 				],
 				'defer_all_js'           => [
 					'type'              => 'checkbox',
-					'label'             => __( 'Defer JS', 'rocket' ),
+					'label'             => __( 'Load JavaScript deferred', 'rocket' ),
+					'description'       => __( 'Load JavaScript deferred eliminates render-blocking JS on your site and can improve load time.', 'rocket' ),
 					'section'           => 'js',
 					'page'              => 'file_optimization',
 					'default'           => 0,
@@ -481,7 +491,8 @@ class Page {
 				],
 				'defer_all_js_safe'      => [
 					'type'              => 'checkbox',
-					'label'             => __( 'Safe Mode', 'rocket' ),
+					'label'             => __( 'Safe Mode (recommended)', 'rocket' ),
+					'description'       => __( 'Safe mode for deferred JS ensures support for inline jQuery references from themes and plugins by loading jQuery at the top of the document as a render-blocking script. Deactivating may result in broken functionality, test thoroughly!', 'rocket' ),
 					'section'           => 'js',
 					'page'              => 'file_optimization',
 					'default'           => 1,
@@ -490,7 +501,7 @@ class Page {
 				'exclude_js'             => [
 					'type'              => 'textarea',
 					'label'             => __( 'Excluded JS Files', 'rocket' ),
-					'description'       => __( 'Specify URL', 'rocket' ),
+					'description'       => __( 'Specify URLs of JS files to be excluded from minification and concatenation.', 'rocket' ),
 					'section'           => 'js',
 					'page'              => 'file_optimization',
 					'default'           => [],
@@ -513,30 +524,30 @@ class Page {
 			'media',
 			[
 				'title'            => __( 'Media', 'rocket' ),
-				'menu_description' => '',
+				'menu_description' => __( 'LazyLoad, emojis, embeds', 'rocket' ),
 			]
 		);
 
 		$this->settings->add_settings_sections(
 			[
 				'lazyload_section' => [
-					'title'       => __( 'Lazyload', 'rocket' ),
+					'title'       => __( 'LazyLoad', 'rocket' ),
 					'type'        => 'fields_container',
-					'description' => '',
+					'description' => __( 'It can improve actual and perceived loading time as images, iframes, and videos will be loaded only as they enter (or about to enter) the viewport and reduces the number of HTTP requests.', 'rocket' ),
 					'help'        => '',
 					'page'        => 'media',
 				],
 				'emoji_section'    => [
 					'title'       => __( 'Disable emoji', 'rocket' ),
 					'type'        => 'fields_container',
-					'description' => '',
+					'description' => __( 'Use default emoji of visitor\'s browser instead of loading emoji from WordPress.org', 'rocket' ),
 					'help'        => '',
 					'page'        => 'media',
 				],
 				'embeds_section'   => [
 					'title'       => __( 'Embeds', 'rocket' ),
 					'type'        => 'fields_container',
-					'description' => '',
+					'description' => __( 'Prevents others from embedding content from your site, prevents you from embedding content from other (non-whitelisted) sites, and removes JavaScript requests related to WordPress embeds', 'rocket' ),
 					'help'        => '',
 					'page'        => 'media',
 				],
@@ -547,7 +558,7 @@ class Page {
 			[
 				'lazyload'         => [
 					'type'              => 'checkbox',
-					'label'             => __( 'Enable lazyload for images', 'rocket' ),
+					'label'             => __( 'Enable for images', 'rocket' ),
 					'description'       => '',
 					'section'           => 'lazyload_section',
 					'page'              => 'media',
@@ -556,7 +567,7 @@ class Page {
 				],
 				'lazyload_iframes' => [
 					'type'              => 'checkbox',
-					'label'             => __( 'Enable lazyload for iframes and videos', 'rocket' ),
+					'label'             => __( 'Enable for iframes and videos', 'rocket' ),
 					'description'       => '',
 					'section'           => 'lazyload_section',
 					'page'              => 'media',
@@ -565,8 +576,8 @@ class Page {
 				],
 				'lazyload_youtube' => [
 					'type'              => 'checkbox',
-					'label'             => __( 'Replace Youtube iframe with preview image', 'rocket' ),
-					'description'       => '',
+					'label'             => __( 'Replace YouTube iframe with preview image', 'rocket' ),
+					'description'       => __( 'This can significantly improve your loading time if you have a lot of YouTube videos on a page.', 'rocket' ),
 					'section'           => 'lazyload_section',
 					'page'              => 'media',
 					'default'           => 0,
@@ -574,8 +585,8 @@ class Page {
 				],
 				'emoji'            => [
 					'type'              => 'checkbox',
-					'label'             => __( 'Use default emoji', 'rocket' ),
-					'description'       => '',
+					'label'             => __( 'Disable Emoji', 'rocket' ),
+					'description'       => __( 'Disable Emoji will reduce the number of external HTTP requests.', 'rocket' ),
 					'section'           => 'emoji_section',
 					'page'              => 'media',
 					'default'           => 1,
@@ -607,7 +618,7 @@ class Page {
 			'preload',
 			[
 				'title'            => __( 'Preload', 'rocket' ),
-				'menu_description' => '',
+				'menu_description' => __( 'Generate cache files', 'rocket' ),
 			]
 		);
 
@@ -616,21 +627,21 @@ class Page {
 				'sitemap_preload_section' => [
 					'title'       => __( 'Sitemap Preloading', 'rocket' ),
 					'type'        => 'fields_container',
-					'description' => '',
+					'description' => __( 'Sitemap preloading runs automatically when the cache lifespan expires. You can also launch it manually from the upper toolbar menu, or from Quick Actions on the WP Rocket Dashboard.', 'rocket' ),
 					'help'        => '',
 					'page'        => 'preload',
 				],
 				'preload_bot_section'     => [
 					'title'       => __( 'Preload Bot', 'rocket' ),
 					'type'        => 'fields_container',
-					'description' => '',
+					'description' => __( 'Bot-based preloading should only be used on well-performing servers. Once activated, it gets triggered automatically after you add or update content on your website. You can also launch it manually from the upper toolbar menu, or from Quick Actions on the WP Rocket Dashboard.', 'rocket' ),
 					'help'        => '',
 					'page'        => 'preload',
 				],
 				'dns_prefetch_section'    => [
 					'title'       => __( 'Prefetch DNS Requests', 'rocket' ),
 					'type'        => 'fields_container',
-					'description' => '',
+					'description' => __( 'DNS prefetching can make external files load faster, especially on mobile networks', 'rocket' ),
 					'help'        => '',
 					'page'        => 'preload',
 				],
@@ -657,7 +668,7 @@ class Page {
 				'sitemaps'          => [
 					'type'              => 'textarea',
 					'label'             => __( 'Sitemaps for preloading', 'rocket' ),
-					'description'       => '',
+					'description'       => __( 'Specify XML sitemap(s) to be used for preloading', 'rocket' ),
 					'section'           => 'sitemap_preload_section',
 					'page'              => 'preload',
 					'default'           => [],
@@ -684,7 +695,7 @@ class Page {
 				'dns_prefetch'      => [
 					'type'              => 'textarea',
 					'label'             => __( 'URLs to prefetch', 'rocket' ),
-					'description'       => '',
+					'description'       => __( 'Specify external hosts to be prefetched', 'rocket' ),
 					'section'           => 'dns_prefetch_section',
 					'page'              => 'preload',
 					'default'           => [],
@@ -707,7 +718,7 @@ class Page {
 			'advanced_cache',
 			[
 				'title'            => __( 'Advanced Rules', 'rocket' ),
-				'menu_description' => '',
+				'menu_description' => __( 'Fine-tune cache rules', 'rocket' ),
 			]
 		);
 
@@ -716,7 +727,7 @@ class Page {
 				'cache_reject_uri_section'     => [
 					'title'       => __( 'Never Cache URL(s)', 'rocket' ),
 					'type'        => 'fields_container',
-					'description' => '',
+					'description' => __( 'Sensitive pages like custom login/logout URLs should be excluded from cache. Cart, checkout and "my account" pages set in WooCommerce (and some other ecommerce plugins) will be detected and never cached by default.', 'rocket' ),
 					'help'        => '',
 					'page'        => 'advanced_cache',
 				],
@@ -744,7 +755,7 @@ class Page {
 				'cache_query_strings_section'  => [
 					'title'       => __( 'Cache Query String(s)', 'rocket' ),
 					'type'        => 'fields_container',
-					'description' => '',
+					'description' => __( 'Cache for query strings enables you to force caching for specific GET parameters.', 'rocket' ),
 					'help'        => '',
 					'page'        => 'advanced_cache',
 				],
@@ -756,7 +767,7 @@ class Page {
 				'cache_reject_uri'     => [
 					'type'              => 'textarea',
 					'label'             => '',
-					'description'       => '',
+					'description'       => __( 'Specify URLs of pages or posts that should never be cached', 'rocket' ),
 					'section'           => 'cache_reject_uri_section',
 					'page'              => 'advanced_cache',
 					'default'           => [],
@@ -765,7 +776,7 @@ class Page {
 				'cache_reject_cookies' => [
 					'type'              => 'textarea',
 					'label'             => '',
-					'description'       => '',
+					'description'       => __( 'Specify the IDs of cookies that, when set in the visitor\'s browser, should prevent a page from getting cached', 'rocket' ),
 					'section'           => 'cache_reject_cookies_section',
 					'page'              => 'advanced_cache',
 					'default'           => [],
@@ -774,7 +785,7 @@ class Page {
 				'cache_reject_ua'      => [
 					'type'              => 'textarea',
 					'label'             => '',
-					'description'       => '',
+					'description'       => __( 'Specify user agent strings that should never see cached pages', 'rocket' ),
 					'section'           => 'cache_reject_ua_section',
 					'page'              => 'advanced_cache',
 					'default'           => [],
@@ -783,7 +794,7 @@ class Page {
 				'cache_purge_pages'    => [
 					'type'              => 'textarea',
 					'label'             => '',
-					'description'       => '',
+					'description'       => __( 'Specify URLs you always want purged from cache whenever you update any post or page', 'rocket' ),
 					'section'           => 'cache_purge_pages_section',
 					'page'              => 'advanced_cache',
 					'default'           => [],
@@ -792,7 +803,7 @@ class Page {
 				'cache_query_strings'  => [
 					'type'              => 'textarea',
 					'label'             => '',
-					'description'       => '',
+					'description'       => __( 'Specify query strings for caching', 'rocket' ),
 					'section'           => 'cache_query_strings_section',
 					'page'              => 'advanced_cache',
 					'default'           => [],
@@ -822,7 +833,7 @@ class Page {
 			'database',
 			[
 				'title'            => __( 'Database', 'rocket' ),
-				'menu_description' => '',
+				'menu_description' => __( 'Optimize, reduce bloat', 'rocket' ),
 			]
 		);
 
@@ -831,28 +842,28 @@ class Page {
 				'post_cleanup_section'       => [
 					'title'       => __( 'Post Cleanup', 'rocket' ),
 					'type'        => 'fields_container',
-					'description' => '',
+					'description' => __( 'Post revisions and drafts will be permanently deleted. Do not use this option if you need to retain revisions or drafts.', 'rocket' ),
 					'help'        => '',
 					'page'        => 'database',
 				],
 				'comments_cleanup_section'   => [
 					'title'       => __( 'Comments Cleanup', 'rocket' ),
 					'type'        => 'fields_container',
-					'description' => '',
+					'description' => __( 'Spam and trashed comments will be permanently deleted.', 'rocket' ),
 					'help'        => '',
 					'page'        => 'database',
 				],
 				'transients_cleanup_section' => [
 					'title'       => __( 'Transients Cleanup', 'rocket' ),
 					'type'        => 'fields_container',
-					'description' => '',
+					'description' => __( 'Transients are temporary options; they are safe to remove. They will be automatically regenerated as your plugins require them.', 'rocket' ),
 					'help'        => '',
 					'page'        => 'database',
 				],
 				'database_cleanup_section'   => [
 					'title'       => __( 'Database Cleanup', 'rocket' ),
 					'type'        => 'fields_container',
-					'description' => '',
+					'description' => __( 'Reduces overhead of database tables', 'rocket' ),
 					'help'        => '',
 					'page'        => 'database',
 				],
@@ -988,7 +999,7 @@ class Page {
 			'cdn',
 			[
 				'title'            => __( 'CDN', 'rocket' ),
-				'menu_description' => '',
+				'menu_description' => __( 'Integrate your CDN', 'rocket' ),
 			]
 		);
 
@@ -997,7 +1008,7 @@ class Page {
 				'cdn_section'         => [
 					'title'       => __( 'CDN', 'rocket' ),
 					'type'        => 'fields_container',
-					'description' => '',
+					'description' => __( 'All URLs of static files (CSS, JS, images) will be rewritten to the CNAME(s) you provide.', 'rocket' ),
 					'help'        => '',
 					'page'        => 'cdn',
 				],
@@ -1033,7 +1044,7 @@ class Page {
 				'cdn_reject_files' => [
 					'type'              => 'textarea',
 					'label'             => '',
-					'description'       => '',
+					'description'       => __( 'Specify URL(s) of files that should not get served via CDN', 'rocket' ),
 					'section'           => 'exclude_cdn_section',
 					'page'              => 'cdn',
 					'default'           => [],
