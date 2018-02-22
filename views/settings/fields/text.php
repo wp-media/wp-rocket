@@ -12,6 +12,7 @@
  *     @type string $label       Field label.
  *     @type string $value       Field value.
  *     @type string $description Field description.
+ *     @type string $input_attr  Attributes for the input field.
  *     @type array  $warning {
  *         Warning panel content.
  *
@@ -24,5 +25,5 @@
 
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 ?>
-<input type="text" id="<?php echo esc_attr( $data['id'] ); ?>" class="" name="wp_rocket_settings[<?php echo esc_attr( $data['id'] ); ?>]" value="<?php echo esc_attr( $data['value'] ); ?>" > <label for="<?php echo esc_attr( $data['id'] ); ?>" class=""><?php echo $data['label']; ?></label>
+<input type="text" id="<?php echo esc_attr( $data['id'] ); ?>" class="" name="wp_rocket_settings[<?php echo esc_attr( $data['id'] ); ?>]" value="<?php echo esc_attr( $data['value'] ); ?>"<?php echo isset( $data['input_attr'] ) ? $data['input_attr'] : ''; ?>> <label for="<?php echo esc_attr( $data['id'] ); ?>" class=""><?php echo $data['label']; ?></label>
 
