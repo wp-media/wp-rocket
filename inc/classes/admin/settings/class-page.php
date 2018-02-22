@@ -126,16 +126,20 @@ class Page {
 	public function configure() {
 		register_setting( $this->slug, WP_ROCKET_SLUG, [ $this->settings, 'sanitize_callback' ] );
 
-		$this->dashboard_section();
-		$this->cache_section();
-		$this->assets_section();
-		$this->media_section();
-		$this->preload_section();
-		$this->advanced_cache_section();
-		$this->database_section();
-		$this->cdn_section();
-		$this->addons_section();
-		$this->cloudflare_section();
+		if ( rocket_valid_key() ) {
+			$this->dashboard_section();
+			$this->cache_section();
+			$this->assets_section();
+			$this->media_section();
+			$this->preload_section();
+			$this->advanced_cache_section();
+			$this->database_section();
+			$this->cdn_section();
+			$this->addons_section();
+			$this->cloudflare_section();
+		} else {
+			$this->license_section();
+		}
 
 		$this->render->set_settings( $this->settings->get_settings() );
 
@@ -170,6 +174,67 @@ class Page {
 	public function required_capability( $capability ) {
 		/** This filter is documented in inc/admin-bar.php */
 		return apply_filters( 'rocket_capacity', 'manage_options' );
+	}
+
+	/**
+	 * Registers License section
+	 *
+	 * @since 3.0
+	 * @author Remy Perona
+	 *
+	 * @return void
+	 */
+	private function license_section() {
+		$this->settings->add_page_section(
+			'license',
+			[
+				'title'            => __( 'License' ),
+				'menu_description' => '',
+			]
+		);
+
+		$this->settings->add_settings_sections(
+			[
+				'license_section' => [
+					'type'        => 'nocontainer',
+					'title'       => '',
+					'help'        => '',
+					'description' => '',
+					'page'        => 'license',
+				],
+			]
+		);
+
+		$this->settings->add_settings_fields(
+			[
+				'consumer_key'   => [
+					'type'              => 'text',
+					'label'             => __( 'API key', 'rocket' ),
+					'class'             => 'disabled',
+					'description'       => '',
+					'default'           => '',
+					'section'           => 'license_section',
+					'page'              => 'license',
+					'sanitize_callback' => 'sanitize_text_field',
+					'input_attr'        => [
+						'disabled' => 1,
+					],
+				],
+				'consumer_email' => [
+					'type'              => 'text',
+					'label'             => __( 'Email address', 'rocket' ),
+					'class'             => 'disabled',
+					'description'       => '',
+					'default'           => '',
+					'section'           => 'license_section',
+					'page'              => 'license',
+					'sanitize_callback' => 'sanitize_email',
+					'input_attr'        => [
+						'disabled' => 1,
+					],
+				],
+			]
+		);
 	}
 
 	/**
