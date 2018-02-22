@@ -223,6 +223,24 @@ class Render extends Abstract_render {
 	 * @return void
 	 */
 	public function text( $args ) {
+		if ( isset( $args['input_attr'] ) ) {
+			$input_attr = '';
+
+			foreach ( $args['input_attr'] as $key => $value ) {
+				if ( 'disabled' === $key ) {
+					if ( 1 === $value ) {
+						$input_attr .= ' disabled';
+					}
+
+					continue;
+				}
+
+				$input_attr .= ' ' . esc_attr( $key ) . '="' . esc_attr( $value ) . '"';
+			}
+
+			$args['input_attr'] = $input_attr;
+		}
+
 		echo $this->generate( 'fields/text', $args );
 	}
 
