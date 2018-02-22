@@ -280,7 +280,7 @@ class Page {
 				'analytics_enabled' => [
 					'type'              => 'sliding_checkbox',
 					'label'             => __( 'Rocket Sharer', 'rocket' ),
-					'description'       => __( 'I agree to share anonymous data with the development team to help improve WP Rocket.', 'rocket' ),
+					'description'       => __( 'I agree to share anonymous data with the development team to help improve WP Rocket. What info will we collect?', 'rocket' ),
 					'section'           => 'status',
 					'page'              => 'dashboard',
 					'default'           => 0,
