@@ -17,12 +17,14 @@
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 ?>
 <?php
-foreach ( $data as $section ) {
-?>
-<a href="#<?php echo $section['id']; ?>">
-	<?php echo $section['title']; ?>
-	<?php echo $section['menu_description']; ?>
-</a>
-<?php
+if ( rocket_valid_key() ) {
+	foreach ( $data as $section ) {
+	?>
+	<a href="#<?php echo $section['id']; ?>">
+		<?php echo $section['title']; ?>
+		<?php echo $section['menu_description']; ?>
+	</a>
+	<?php
+	}
 }
-?>
+
