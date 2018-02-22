@@ -124,7 +124,7 @@ class Page {
 	 * @return void
 	 */
 	public function configure() {
-		register_setting( $this->slug, $this->slug . '_settings', [ $this->settings, 'sanitize_callback' ] );
+		register_setting( $this->slug, WP_ROCKET_SLUG, [ $this->settings, 'sanitize_callback' ] );
 
 		$this->dashboard_section();
 		$this->cache_section();
