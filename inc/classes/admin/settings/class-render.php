@@ -201,6 +201,19 @@ class Render extends Abstract_render {
 	}
 
 	/**
+	 * Displays the add-ons container section template.
+	 *
+	 * @since 3.0
+	 * @author Remy Perona
+	 *
+	 * @param array $args Array of arguments to populate the template.
+	 * @return void
+	 */
+	public function addons_container( $args ) {
+		echo $this->generate( 'sections/addons-container', $args );
+	}
+
+	/**
 	 * Displays the text field template.
 	 *
 	 * @since 3.0
@@ -326,6 +339,32 @@ class Render extends Abstract_render {
 	 */
 	public function cnames( $args ) {
 		echo $this->generate( 'fields/cnames', $args );
+	}
+
+	/**
+	 * Displays the one-click add-on field template.
+	 *
+	 * @since 3.0
+	 * @author Remy Perona
+	 *
+	 * @param array $args Array of arguments to populate the template.
+	 * @return void
+	 */
+	public function one_click_addon( $args ) {
+		echo $this->generate( 'fields/one-click-addon', $args );
+	}
+
+	/**
+	 * Displays the Rocket add-on field template.
+	 *
+	 * @since 3.0
+	 * @author Remy Perona
+	 *
+	 * @param array $args Array of arguments to populate the template.
+	 * @return void
+	 */
+	public function rocket_addon( $args ) {
+		echo $this->generate( 'fields/rocket-addon', $args );
 	}
 
 	/**
