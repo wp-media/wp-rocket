@@ -134,6 +134,8 @@ class Page {
 		$this->advanced_cache_section();
 		$this->database_section();
 		$this->cdn_section();
+		$this->addons_section();
+		$this->cloudflare_section();
 
 		$this->render->set_settings( $this->settings->get_settings() );
 
@@ -1049,6 +1051,167 @@ class Page {
 					'page'              => 'cdn',
 					'default'           => [],
 					'sanitize_callback' => 'sanitize_textarea',
+				],
+			]
+		);
+	}
+
+	/**
+	 * Registers Add-ons section
+	 *
+	 * @since 3.0
+	 * @author Remy Perona
+	 *
+	 * @return void
+	 */
+	public function addons_section() {
+		$this->settings->add_page_section(
+			'addons',
+			[
+				'title'            => __( 'Add-ons', 'rocket' ),
+				'menu_description' => __( 'Add more features', 'rocket' ),
+			]
+		);
+
+		$this->settings->add_settings_sections(
+			[
+				'one_click' => [
+					'title'       => __( 'One-click Rocket Add-ons', 'rocket' ),
+					'description' => __( 'One-click add-ons are simple complementary features extending available options.', 'rocket' ),
+					'type'        => 'addons_container',
+					'page'        => 'addons',
+				],
+				'addons'    => [
+					'title'       => __( 'Rocket Add-ons', 'rocket' ),
+					'description' => __( 'Rocket Add-ons offer you an entire new tab in the left panel. Take a look inside to set your new options.', 'rocket' ),
+					'type'        => 'addons_container',
+					'page'        => 'addons',
+				],
+			]
+		);
+
+		$this->settings->add_settings_fields(
+			apply_filters( 'rocket_display_varnish_options_tab', [
+				'varnish_auto_purge' => [
+					'type'              => 'one_click_addon',
+					'label'             => __( 'Varnish', 'rocket' ),
+					'logo'              => '',
+					'title'             => __( 'If Varnish runs on your server, you must activate this add-on.', 'rocket' ),
+					'description'       => __( 'Varnish cache will be purged each time WP Rocket clears its cache to ensure content is always up-to-date. Learn more', 'rocket' ),
+					'section'           => 'one_click',
+					'page'              => 'addons',
+					'default'           => 0,
+					'sanitize_callback' => 'sanitize_textarea',
+				],
+			] )
+		);
+
+		$this->settings->add_settings_fields(
+			[
+				'do_cloudflare' => [
+					'type'              => 'rocket_addon',
+					'label'             => __( 'Cloudflare', 'rocket' ),
+					'logo'              => '',
+					'title'             => __( 'Integrate your Cloudflare account with this add-on.', 'rocket' ),
+					'description'       => __( 'Provide your account email, global API key, and domain to use options such as clearing the Cloudflare cache and enabling optimal settings with WP Rocket.', 'rocket' ),
+					'section'           => 'addons',
+					'page'              => 'addons',
+					'default'           => 0,
+					'sanitize_callback' => 'sanitize_textarea',
+				],
+			]
+		);
+	}
+
+	/**
+	 * Registers Cloudflare section
+	 *
+	 * @since 3.0
+	 * @author Remy Perona
+	 *
+	 * @return void
+	 */
+	public function cloudflare_section() {
+		$this->settings->add_page_section(
+			'do_cloudflare',
+			[
+				'title'            => __( 'Cloudflare', 'rocket' ),
+				'menu_description' => '',
+			]
+		);
+
+		$this->settings->add_settings_sections(
+			[
+				'cloudflare_credentials' => [
+					'type'        => 'fields_container',
+					'title'       => __( 'Cloudflare credentials', 'rocket' ),
+					'description' => '',
+					'help'        => '',
+					'page'        => 'do_cloudflare',
+				],
+				'cloudflare_settings'    => [
+					'type'        => 'fields_container',
+					'title'       => __( 'Cloudflare settings', 'rocket' ),
+					'description' => '',
+					'help'        => '',
+					'page'        => 'do_cloudflare',
+				],
+			]
+		);
+
+		$this->settings->add_settings_fields(
+			[
+				'cloudflare_api_key'          => [
+					'type'              => 'text',
+					'label'             => __( 'Global API key', 'rocket' ),
+					'description'       => __( 'Find your API key', 'rocket' ),
+					'default'           => '',
+					'section'           => 'cloudflare_credentials',
+					'page'              => 'do_cloudflare',
+					'sanitize_callback' => 'sanitize_text_field',
+				],
+				'cloudflare_email'            => [
+					'type'              => 'text',
+					'label'             => __( 'Account email', 'rocket' ),
+					'default'           => '',
+					'section'           => 'cloudflare_credentials',
+					'page'              => 'do_cloudflare',
+					'sanitize_callback' => 'sanitize_text_field',
+				],
+				'cloudflare_domain'           => [
+					'type'              => 'text',
+					'label'             => __( 'Domain', 'rocket' ),
+					'default'           => '',
+					'section'           => 'cloudflare_credentials',
+					'page'              => 'do_cloudflare',
+					'sanitize_callback' => 'sanitize_text_field',
+				],
+				'cloudflare_devmode'          => [
+					'type'              => 'sliding_checkbox',
+					'label'             => __( 'Development mode', 'rocket' ),
+					'description'       => __( 'Temporarily activate development mode on your website. This setting will automatically turn off after 3 hours. Learn more', 'rocket' ),
+					'default'           => 0,
+					'section'           => 'cloudflare_settings',
+					'page'              => 'do_cloudflare',
+					'sanitize_callback' => 'sanitize_checkbox',
+				],
+				'cloudflare_auto_settings'    => [
+					'type'              => 'sliding_checkbox',
+					'label'             => __( 'Optimal settings', 'rocket' ),
+					'description'       => __( 'Automatically enhances your Cloudflare configuration for speed, performance grade and compatibility.', 'rocket' ),
+					'default'           => 0,
+					'section'           => 'cloudflare_settings',
+					'page'              => 'do_cloudflare',
+					'sanitize_callback' => 'sanitize_checkbox',
+				],
+				'cloudflare_protocol_rewrite' => [
+					'type'              => 'sliding_checkbox',
+					'label'             => __( 'Relative protocol', 'rocket' ),
+					'description'       => __( 'Should only be used with Cloudflare\'s flexible SSL feature. URLs of static files (CSS, JS, images) will be rewritten to use // instead of http:// or https://.', 'rocket' ),
+					'default'           => 0,
+					'section'           => 'cloudflare_settings',
+					'page'              => 'do_cloudflare',
+					'sanitize_callback' => 'sanitize_checkbox',
 				],
 			]
 		);
