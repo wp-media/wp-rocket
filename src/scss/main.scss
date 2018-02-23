@@ -1,0 +1,37 @@
+// compressedFilenamePattern: ../../assets/css/$1.css
+
+/*-----------------------------------------------*\
+
+Author: Thomas Geisen (www.thomasgeisen.fr)
+Method : SUITCSS (modified)
+
+.ComponentName => Nom du composant (Ex : .SiteHeader)
+.ComponentName--modifierName => Modifier d'un composant (.SiteHeader--white, .SiteHeader--fixed)
+.ComponentName-descendantName => Nom d'un élément dans un composant (.SiteHeader-logo, .SiteHeader-menu)
+.ComponentName.isState => Etat du composant (.isActive, .isOpen)
+
+Plus d'information sur cette méthode ici : https://suitcss.github.io/ ou http://www.alsacreations.com/article/lire/1641-bonnes-pratiques-en-css-bem-et-oocss.html
+
+--- EVERY CLASS are prefixed with "wpr-"
+
+\*-----------------------------------------------*/
+
+@charset 'utf-8';
+
+//--> Abstracts
+@import "abstracts/_variables";
+@import "abstracts/_mixins";
+
+//--> Base
+@import "base/_base";
+@import "base/_utilities";
+@import "base/_icons";
+@import "base/_styles";
+
+//--> Layout
+@import "layout/_Header";
+@import "layout/_Sidebar";
+@import "layout/_Content";
+@import "layout/_Popin";
+
+//--> Components
