@@ -5,6 +5,7 @@ var buffer = require('vinyl-buffer');
 var browserify = require('browserify');
 var watchify = require('watchify');
 var babel = require('babelify');
+var uglify = require('gulp-uglify');
 var sass = require('gulp-sass');
 
 
@@ -33,6 +34,7 @@ function compile(watch) {
                 })
                 .pipe(source('app.js'))
                 .pipe(buffer())
+                .pipe(uglify())
                 .pipe(sourcemaps.init({loadMaps: true}))
                 .pipe(sourcemaps.write('./'))
                 .pipe(gulp.dest('assets/js'));
