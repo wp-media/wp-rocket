@@ -134,10 +134,10 @@ function is_rocket_cache_mobile() {
  *
  * @since 2.7
  *
- * @return bool True if option is activated
+ * @return bool True if option is activated and if mobile caching is enabled
  */
 function is_rocket_generate_caching_mobile_files() {
-	return get_rocket_option( 'do_caching_mobile_files', false );
+	return get_rocket_option( 'cache_mobile', false ) && get_rocket_option( 'do_caching_mobile_files', false );
 }
 
 /**
