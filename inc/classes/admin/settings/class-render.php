@@ -427,14 +427,24 @@ class Render extends Abstract_render {
 	 * @return void
 	 */
 	public function render_action_button( $type, $action, $args = array() ) {
-		if ( isset( $args['attributes'] ) ) {
+		$default = [
+			'label'      => '',
+			'action'     => '',
+			'url'        => '',
+			'parameter'  => '',
+			'attributes' => [],
+		];
+
+		$args = wp_parse_args( $args, $default );
+
+		if ( ! empty( $args['attributes'] ) ) {
 			$attributes = '';
 			foreach ( $args['attributes'] as $key => $value ) {
 				$attributes .= ' ' . sanitize_key( $key ) . '="' . esc_attr( $value ) . '"';
 			}
-		}
 
-		$args['attributes'] = $attributes;
+			$args['attributes'] = $attributes;
+		}
 
 		switch ( $type ) {
 			case 'link':
@@ -443,11 +453,19 @@ class Render extends Abstract_render {
 						$args['url'] = WP_ROCKET_WEB_MAIN . 'account/';
 						break;
 					case 'purge_cache':
+						$url = admin_url( 'admin-post.php?action=' . $action );
+
+						if ( isset( $args['parameters'] ) ) {
+							$url = add_query_arg( $args['parameters'], $url );
+						}
+
+						$args['url'] = wp_nonce_url( $url, $action . '_all' );
+						break;
 					case 'preload':
 					case 'rocket_purge_opcache':
 						$url = admin_url( 'admin-post.php?action=' . $action );
 
-						if ( isset( $args['parameters'] ) ) {
+						if ( ! empty( $args['parameters'] ) ) {
 							$url = add_query_arg( $args['parameters'], $url );
 						}
 
@@ -465,5 +483,17 @@ class Render extends Abstract_render {
 				echo $this->generate( 'buttons/button', $args );
 				break;
 		}
+	}
+
+	/**
+	 * Displays the documentation block.
+	 *
+	 * @since 3.0
+	 * @author Remy Perona
+	 *
+	 * @return void
+	 */
+	public function render_documentation_block() {
+		echo $this->generate( 'partials/documentation' );
 	}
 }
