@@ -317,7 +317,7 @@ function rocket_get_home_path() {
 
 	if ( ! empty( $home_url ) && 0 !== strcasecmp( $home_url, $site_url ) ) {
 		$wp_path_rel_to_home = str_replace( $home_url, '', $site_url ); /* $site_url - $home_url */
-		$home_path           = rtrim( $home_path, $wp_path_rel_to_home );
+		$home_path           = preg_replace( '/' . preg_quote( $wp_path_rel_to_home, '/' ) . '$/', '', $home_path );
 	}
 
 	$home_path = trailingslashit( $home_path );
