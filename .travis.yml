@@ -22,6 +22,8 @@ env:
     - WP_VERSION=4.5 WP_MULTISITE=1
     - WP_VERSION=4.4 WP_MULTISITE=1
 
+dist: precise
+
 # Grab the setup script and execute
 before_script:
     - source tests/travis/setup.sh $TRAVIS_PHP_VERSION
