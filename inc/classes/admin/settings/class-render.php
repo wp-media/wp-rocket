@@ -432,7 +432,7 @@ class Render extends Abstract_render {
 			'action'     => '',
 			'url'        => '',
 			'parameter'  => '',
-			'attributes' => [],
+			'attributes' => '',
 		];
 
 		$args = wp_parse_args( $args, $default );
