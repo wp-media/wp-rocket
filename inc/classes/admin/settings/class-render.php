@@ -107,6 +107,7 @@ class Render extends Abstract_render {
 
 		foreach ( $this->settings as $id => $args ) {
 			$id = str_replace( '_', '-', $id );
+
 			echo $this->generate( 'page-sections/' . $id, $args );
 		}
 	}
@@ -431,9 +432,9 @@ class Render extends Abstract_render {
 			foreach ( $args['attributes'] as $key => $value ) {
 				$attributes .= ' ' . sanitize_key( $key ) . '="' . esc_attr( $value ) . '"';
 			}
-
-			$args['attributes'] = $attributes;
 		}
+
+		$args['attributes'] = $attributes;
 
 		switch ( $type ) {
 			case 'link':
@@ -451,6 +452,9 @@ class Render extends Abstract_render {
 						}
 
 						$args['url'] = wp_nonce_url( $url, $action );
+						break;
+					case 'documentation':
+						$args['url'] = get_rocket_documentation_url();
 						break;
 				}
 
