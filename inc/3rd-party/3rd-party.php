@@ -48,7 +48,6 @@ require WP_ROCKET_3RD_PARTY_PATH . 'plugins/disqus.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/custom-login.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/mobile/amp.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/mobile/wp-appkit.php';
-require WP_ROCKET_3RD_PARTY_PATH . 'plugins/mobile/wp-touch.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/seo/yoast-seo.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/seo/all-in-one-seo-pack.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/seo/premium-seo-pack.php';
