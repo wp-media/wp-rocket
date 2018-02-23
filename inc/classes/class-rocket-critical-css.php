@@ -500,7 +500,7 @@ class Rocket_Critical_CSS {
 		} elseif ( is_tag() ) {
 			$name = 'post_tag.css';
 		} elseif ( is_tax() ) {
-			$taxonomy = get_queried_object()->term_name;
+			$taxonomy = get_queried_object()->taxonomy;
 			$name     = $taxonomy . '.css';
 		} elseif ( is_singular() ) {
 			$post_type = get_post_type();
