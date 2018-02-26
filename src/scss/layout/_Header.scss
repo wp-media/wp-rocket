@@ -7,6 +7,21 @@
 \*-----------------------------------------------*/
 
 .wpr-Header{
+    display: flex;
+    flex-direction: column;
     flex: 0 0 225px;
-    background: $cPurple;
+    background: $cPurpleDark1;
+
+    &-logo{
+        padding: $space*4 0 $space*3;
+        background: $cPurple;
+        text-align: center;
+    }
+
+    &-footer{
+        margin-top: auto;
+        padding: 0 20px;
+        @include font-size(11,48);
+        color: $cGreyDark1;
+    }
 }

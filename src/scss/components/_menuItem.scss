@@ -1,0 +1,66 @@
+// main: ../main.scss
+
+/*-----------------------------------------------*\
+
+    Navigation menu item
+
+\*-----------------------------------------------*/
+
+.wpr-menuItem{
+    position: relative;
+    display: block;
+    padding: 16px 20px 20px;
+    text-decoration: none;
+    color: #fff;
+    border-bottom: 1px solid rgba(255,255,255, 0.1);
+
+    &:last-child{
+        border-bottom: none;
+    }
+
+    &:before{
+        position: absolute;
+        top: calc(50% - 13px);
+        right: 20px;
+        @include font-size(26,26);
+        opacity: 0.4;
+    }
+
+    &:hover{
+        color: #fff;
+        background: $cPurpleLight1;
+        border-color: transparent;
+
+        .wpr-menuItem-description{
+            color: #fff;
+        }
+
+        &:before{
+            opacity: 1;
+        }
+
+        &:after{
+            content: '';
+            position: absolute;
+            display: block;
+            top: calc(50% - 12px);
+            right: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 12px 10px 12px 0;
+            border-color: transparent #ffffff transparent transparent;
+        }
+    }
+
+    &-title{
+        @include font-size(13,24);
+        letter-spacing: -0.006em;
+        text-transform: uppercase;
+    }
+
+    &-description{
+        color: $cGreyDark1;
+        @include font-size(12,16);
+    }
+}
