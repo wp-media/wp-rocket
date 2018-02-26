@@ -20,8 +20,11 @@
 
     &:before{
         position: absolute;
+        width: 26px;
+        height: 26px;
         top: calc(50% - 13px);
         right: 20px;
+        text-align: center;
         @include font-size(26,26);
         opacity: 0.4;
     }
@@ -63,4 +66,20 @@
         color: $cGreyDark1;
         @include font-size(12,16);
     }
+}
+
+
+// For each .itemMenu, ID will detect which icon will be used
+#wpr-nav{
+    &-dashboard{ @extend .wpr-icon-home; }
+    &-cache{ @extend .wpr-icon-files; }
+    &-file_optimization{ @extend .wpr-icon-stack; }
+    &-media{ @extend .wpr-icon-media; }
+    &-preload{ @extend .wpr-icon-refresh; }
+    &-advanced_cache{ @extend .wpr-icon-rules; }
+    &-database{ @extend .wpr-icon-database; }
+    &-cdn{ @extend .wpr-icon-cdn; }
+    &-addons{ @extend .wpr-icon-addons; }
+    &-do_cloudflare{ @extend .wpr-icon-addon; }
+    &-tools{ @extend .wpr-icon-tools; }
 }

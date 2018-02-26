@@ -18,7 +18,9 @@
 }
 
 [class^="wpr-icon-"]:before, [class*=" wpr-icon-"]:after,
-[class^="wpr-icon-"]:after, [class*=" wpr-icon-"]:before {
+[class^="wpr-icon-"]:after, [class*=" wpr-icon-"]:before,
+[id^="wpr-nav-"]:before, [id*=" wpr-nav-"]:after,
+[id^="wpr-nav-"]:after, [id*=" wpr-nav-"]:before {
 	font-family: 'wpr-icomoon';
 	speak: none;
 	font-style: normal;

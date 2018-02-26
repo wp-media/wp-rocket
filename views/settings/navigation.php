@@ -20,7 +20,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 if ( rocket_valid_key() ) {
 	foreach ( $data as $section ) {
 	?>
-	<a href="#<?php echo $section['id']; ?>" class="wpr-menuItem wpr-icon-home">
+	<a href="#<?php echo $section['id']; ?>" id="wpr-nav-<?php echo esc_attr( $section['id'] ); ?>" class="wpr-menuItem">
 		<div class="wpr-menuItem-title"><?php echo $section['title']; ?></div>
 		<div class="wpr-menuItem-description"><?php echo $section['menu_description']; ?></div>
 	</a>
