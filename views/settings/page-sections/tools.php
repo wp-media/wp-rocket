@@ -8,6 +8,6 @@
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 ?>
 
-<h2 id="import>"><?php esc_html_e( 'Import/Export', 'rocket' ); ?></h2>
+<h2 id="tools>"><?php esc_html_e( 'Import/Export', 'rocket' ); ?></h2>
 <?php
 $this->render_import_form();
