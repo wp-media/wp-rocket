@@ -61,6 +61,16 @@ class Page {
 	private $render;
 
 	/**
+	 * Current WP locale without the region (e.g. en, fr)
+	 *
+	 * @since 3.0
+	 * @author Remy Perona
+	 *
+	 * @var string
+	 */
+	private $locale;
+
+	/**
 	 * Constructor
 	 *
 	 * @since 3.0
@@ -76,6 +86,7 @@ class Page {
 		$this->capability = $args['capability'];
 		$this->settings   = $settings;
 		$this->render     = $render;
+		$this->locale     = current( array_slice( explode( '_', get_locale() ), 0, 1 ) );
 	}
 
 	/**
@@ -94,6 +105,7 @@ class Page {
 
 		add_action( 'admin_menu', [ $self, 'add_admin_page' ] );
 		add_action( 'admin_init', [ $self, 'configure' ] );
+		add_action( 'admin_footer', [ $self, 'insert_beacon' ] );
 		add_filter( 'option_page_capability_' . $self->slug, [ $self, 'required_capability' ] );
 	}
 
@@ -177,6 +189,84 @@ class Page {
 	}
 
 	/**
+	 * Insert HelpScout Beacon script
+	 *
+	 * @since 3.0
+	 * @author Remy Perona
+	 *
+	 * @return void
+	 */
+	public function insert_beacon() {
+		/** This filter is documented in inc/admin-bar.php */
+		if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+			return;
+		}
+
+		if ( get_current_screen()->id !== 'settings_page_wprocket' ) {
+			return;
+		}
+
+		switch ( $this->locale ) {
+			case 'fr':
+				$script = '<script>!function(e,o,n){window.HSCW=o,window.HS=n,n.beacon=n.beacon||{};var t=n.beacon;t.userConfig={},t.readyQueue=[],t.config=function(e){this.userConfig=e},t.ready=function(e){this.readyQueue.push(e)},o.config={docs:{enabled:!0,baseUrl:"//wp-rocket-fr.helpscoutdocs.com/"},contact:{enabled:!0,formId:"5d9279dc-1b2d-11e8-b466-0ec85169275a"}};var r=e.getElementsByTagName("script")[0],c=e.createElement("script");c.type="text/javascript",c.async=!0,c.src="https://djtflbt20bdde.cloudfront.net/",r.parentNode.insertBefore(c,r)}(document,window.HSCW||{},window.HS||{});</script>';
+
+				$script .= "<script>HS.beacon.ready( function() {
+					HS.beacon.suggest([
+						'5697d2dc9033603f7da31041',
+						'569564dfc69791436155e0b0',
+						'5697d03bc69791436155ed69',
+						'56967d73c69791436155e637',
+					]);
+				} );</script>";
+
+				$script .= "<script>HS.beacon.config({
+					showSubject: true,
+					translation: {
+						searchLabel: 'Comment pouvons-nous vous aider ?',
+						searchErrorLabel: 'Votre recherche a expiré. Veuillez vérifier votre connexion et réessayer.',
+						noResultsLabel: 'Aucun résultat trouvé pour',
+						contactLabel: 'Envoyer un message',
+						attachFileLabel: 'Joindre un fichier',
+						attachFileError: 'Le poids maximum de fichier est de 10Mo',
+						fileExtensionError: 'Le format du fichier attaché n\'est pas autorisé.',
+						nameLabel: 'Votre nom',
+						nameError: 'Veuillez entrer votre nom',
+						emailLabel: 'Adresse email',
+						emailError: 'Veuillez entrer une adresse email valide',
+						topicLabel: 'Sélectionnez un sujet',
+						topicError: 'Veuillez sélectionner un sujet dans la liste',
+						subjectLabel: 'Sujet',
+						subjectError: 'Veuillez entrer un sujet',
+						messageLabel: 'Comment pouvons-nous vous aider ?',
+						messageError: 'Veuillez entrer un message',
+						sendLabel: 'Envoyer',
+						contactSuccessLabel: 'Message envoyé !',
+						contactSuccessDescription: 'Merci de nous avoir contacté ! Un de nos rocketeers vous répondra rapidement.',
+					},
+				});</script>";
+				break;
+			default:
+				$script = '<script>!function(e,o,n){window.HSCW=o,window.HS=n,n.beacon=n.beacon||{};var t=n.beacon;t.userConfig={},t.readyQueue=[],t.config=function(e){this.userConfig=e},t.ready=function(e){this.readyQueue.push(e)},o.config={docs:{enabled:!0,baseUrl:"//wp-rocket.helpscoutdocs.com/"},contact:{enabled:!0,formId:"6e4a6b6e-1b2d-11e8-b466-0ec85169275a"}};var r=e.getElementsByTagName("script")[0],c=e.createElement("script");c.type="text/javascript",c.async=!0,c.src="https://djtflbt20bdde.cloudfront.net/",r.parentNode.insertBefore(c,r)}(document,window.HSCW||{},window.HS||{});</script>';
+
+				$script .= "<script>HS.beacon.ready( function() {
+					HS.beacon.suggest([
+						'5569b671e4b027e1978e3c51',
+						'556778c8e4b01a224b426fad',
+						'556ef48ce4b01a224b428691',
+						'54205957e4b099def9b55df0',
+					]);
+				} );</script>";
+
+				$script .= '<script>HS.beacon.config({
+					showSubject: true,
+				});</script>';
+				break;
+		}
+
+		echo $script;
+	}
+
+	/**
 	 * Registers License section
 	 *
 	 * @since 3.0
@@ -188,19 +278,15 @@ class Page {
 		$this->settings->add_page_section(
 			'license',
 			[
-				'title'            => __( 'License' ),
-				'menu_description' => '',
+				'title' => __( 'License' ),
 			]
 		);
 
 		$this->settings->add_settings_sections(
 			[
 				'license_section' => [
-					'type'        => 'nocontainer',
-					'title'       => '',
-					'help'        => '',
-					'description' => '',
-					'page'        => 'license',
+					'type' => 'nocontainer',
+					'page' => 'license',
 				],
 			]
 		);
@@ -211,8 +297,6 @@ class Page {
 					'type'              => 'text',
 					'label'             => __( 'API key', 'rocket' ),
 					'class'             => 'disabled',
-					'description'       => '',
-					'default'           => '',
 					'section'           => 'license_section',
 					'page'              => 'license',
 					'sanitize_callback' => 'sanitize_text_field',
@@ -224,8 +308,6 @@ class Page {
 					'type'              => 'text',
 					'label'             => __( 'Email address', 'rocket' ),
 					'class'             => 'disabled',
-					'description'       => '',
-					'default'           => '',
 					'section'           => 'license_section',
 					'page'              => 'license',
 					'sanitize_callback' => 'sanitize_email',
@@ -257,11 +339,8 @@ class Page {
 		$this->settings->add_settings_sections(
 			[
 				'status' => [
-					'title'       => __( 'My status', 'rocket' ),
-					'type'        => 'fields_container',
-					'help'        => '',
-					'description' => '',
-					'page'        => 'dashboard',
+					'title' => __( 'My status', 'rocket' ),
+					'page'  => 'dashboard',
 				],
 			]
 		);
@@ -313,21 +392,21 @@ class Page {
 					'title'       => __( 'Mobile Cache', 'rocket' ),
 					'type'        => 'fields_container',
 					'description' => __( 'Speed up your site for mobile visitors.', 'rocket' ),
-					'help'        => '',
+					'help'        => $this->get_beacon_suggest( 'mobile_cache', $this->locale ),
 					'page'        => 'cache',
 				],
 				'user_cache_section'   => [
 					'title'       => __( 'User Cache', 'rocket' ),
 					'type'        => 'fields_container',
 					'description' => __( 'User cache is great when you have user-specific or restricted content on your website.', 'rocket' ),
-					'help'        => '1234',
+					'help'        => $this->get_beacon_suggest( 'user_cache', $this->locale ),
 					'page'        => 'cache',
 				],
 				'cache_lifespan'       => [
 					'title'       => __( 'Cache Lifespan', 'rocket' ),
 					'type'        => 'fields_container',
 					'description' => __( 'Cache lifespan is the period of time after which all cache files are removed. Enable preloading for the cache to be rebuilt automatically after lifespan expiration.', 'rocket' ),
-					'help'        => '',
+					'help'        => $this->get_beacon_suggest( 'cache_lifespan', $this->locale ),
 					'page'        => 'cache',
 				],
 			]
@@ -414,25 +493,19 @@ class Page {
 		$this->settings->add_settings_sections(
 			[
 				'basic' => [
-					'title'       => __( 'Basic Settings', 'rocket' ),
-					'type'        => 'fields_container',
-					'description' => '',
-					'help'        => '',
-					'page'        => 'file_optimization',
+					'title' => __( 'Basic Settings', 'rocket' ),
+					'help'  => $this->get_beacon_suggest( 'basic', $this->locale ),
+					'page'  => 'file_optimization',
 				],
 				'css'   => [
-					'title'       => __( 'CSS Files', 'rocket' ),
-					'type'        => 'fields_container',
-					'description' => '',
-					'help'        => '',
-					'page'        => 'file_optimization',
+					'title' => __( 'CSS Files', 'rocket' ),
+					'help'  => $this->get_beacon_suggest( 'css', $this->locale ),
+					'page'  => 'file_optimization',
 				],
 				'js'    => [
-					'title'       => __( 'JS Files', 'rocket' ),
-					'type'        => 'fields_container',
-					'description' => '',
-					'help'        => '',
-					'page'        => 'file_optimization',
+					'title' => __( 'JS Files', 'rocket' ),
+					'help'  => $this->get_beacon_suggest( 'js', $this->locale ),
+					'page'  => 'file_optimization',
 				],
 			]
 		);
@@ -1325,5 +1398,47 @@ class Page {
 		];
 
 		return $navigation;
+	}
+
+	/**
+	 * Returns the IDs for the HelpScout docs for the corresponding section and language.
+	 *
+	 * @since 3.0
+	 * @author Remy Perona
+	 *
+	 * @param string $id   Section identifier.
+	 * @param string $lang Documentation language.
+	 *
+	 * @return string
+	 */
+	private function get_beacon_suggest( $id, $lang = 'en' ) {
+		$suggest = [
+			'user_cache'     => [
+				'en' => '56b55ba49033600da1c0b687,587920b5c697915403a0e1f4,560c66b0c697917e72165a6d',
+				'fr' => '56cb9ba990336008e9e9e3d9,5879230cc697915403a0e211,569410999033603f7da2fa94',
+			],
+			'mobile_cache'   => [
+				'en' => '577a5f1f903360258a10e52a,5678aa76c697914361558e92,5745b9a6c697917290ddc715',
+				'fr' => '589b17a02c7d3a784630b249,5a6b32830428632faf6233dc,58a480e5dd8c8e56bfa7b85c',
+			],
+			'cache_lifespan' => [
+				'en' => '555c7e9ee4b027e1978e17a5,5922fd0e0428634b4a33552c',
+				'fr' => '568f7df49033603f7da2ec72,598080e1042863033a1b890e',
+			],
+			'basic'          => [
+				'en' => '55231415e4b0221aadf25676,588286b32c7d3a4a60b95b6c,58869c492c7d3a7846303a3d',
+				'fr' => '569568269033603f7da30334,58e3be72dd8c8e5c57311c6e,59b7f049042863033a1cc5d0',
+			],
+			'css'            => [
+				'en' => '54205957e4b099def9b55df0,5419ec47e4b099def9b5565f,5578cfbbe4b027e1978e6bb1,5569b671e4b027e1978e3c51,5923772c2c7d3a074e8ab8b9',
+				'fr' => '56967d73c69791436155e637,56967e80c69791436155e646,56957209c69791436155e0f6,5697d2dc9033603f7da31041593fec6d2c7d3a0747cddb93',
+			],
+			'js'             => [
+				'en' => '54205957e4b099def9b55df0,5419ec47e4b099def9b5565f,5578cfbbe4b027e1978e6bb1,587904cf90336009736c678e,54b9509de4b07997ea3f27c7,59236dfb0428634b4a3358f9',
+				'fr' => '56967d73c69791436155e637,56967e80c69791436155e646,56957209c69791436155e0f6,58a337c12c7d3a576d352cde,56967eebc69791436155e649,593fe9882c7d3a0747cddb77',
+			],
+		];
+
+		return isset( $suggest[ $id ][ $lang ] ) ? $suggest[ $id ][ $lang ] : '';
 	}
 }
