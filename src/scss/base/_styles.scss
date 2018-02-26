@@ -1,1 +1,11 @@
 // main: ../main.scss
+
+.wpr-title1{
+    @include font-size(26,26);
+    letter-spacing: 0.001em;
+}
+
+.wpr-title2{
+    @include font-size(16,24);
+    letter-spacing: -0.002em;
+}

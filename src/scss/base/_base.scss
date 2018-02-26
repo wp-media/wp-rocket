@@ -7,6 +7,8 @@
 
 .wpr-body{
     display: flex;
+    color: #000;
+    @include font-size(13,20);
 }
 
 .wpr-body * {
