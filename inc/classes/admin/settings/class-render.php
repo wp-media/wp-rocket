@@ -496,4 +496,16 @@ class Render extends Abstract_render {
 	public function render_documentation_block() {
 		echo $this->generate( 'partials/documentation' );
 	}
+
+	/**
+	 * Displays the sidebar template.
+	 *
+	 * @since 3.0
+	 * @author Remy Perona
+	 *
+	 * @return void
+	 */
+	public function render_sidebar() {
+		echo $this->generate( 'partials/sidebar' );
+	}
 }
