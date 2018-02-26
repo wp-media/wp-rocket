@@ -18,7 +18,11 @@
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 ?>
 
-<h3><?php echo esc_html( $data['title'] ); ?></h3>
-<button data-beacon-id="<?php echo esc_attr( $data['help'] ); ?>"><?php _e( 'Need Help?', 'rocket' ); ?></button>
+
+<div class="wpr-optionHeader">
+	<h3 class="wpr-title2"><?php echo esc_html( $data['title'] ); ?></h3>
+    <button data-beacon-id="<?php echo esc_attr( $data['help'] ); ?>"><?php _e( 'Need Help?', 'rocket' ); ?></button>
+</div>
+
 <?php echo esc_html( $data['description'] ); ?>
 <?php $this->render_settings_fields( $data['page'], $data['id'] ); ?>

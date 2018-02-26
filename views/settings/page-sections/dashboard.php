@@ -18,12 +18,15 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 	<h2 class="wpr-title1 wpr-icon-home"><?php echo $data['title']; ?></h2>
 </div>
 
-<h3><?php esc_html_e( 'My account', 'rocket' ); ?></h3>
-<?php
-$this->render_action_button( 'button', 'refresh_account', [
-	'label' => __( 'Refresh info', 'rocket' ),
-] );
-?>
+<div class="wpr-optionHeader">
+	<h3 class="wpr-title2"><?php esc_html_e( 'My account', 'rocket' ); ?></h3>
+	<?php
+		$this->render_action_button( 'button', 'refresh_account', [
+			'label' => __( 'Refresh info', 'rocket' ),
+		] );
+	?>
+</div>
+
 <?php esc_html_e( 'License' ); ?>
 <?php esc_html_e( 'Expiration date' ); ?>
 <?php
@@ -36,7 +39,11 @@ $this->render_action_button( 'link', 'view_account', [
 	],
 ] );
 ?>
-<h3><?php esc_html_e( 'Quick Actions', 'rocket' ); ?></h3>
+
+<div class="wpr-optionHeader">
+	<h3 class="wpr-title2"><?php esc_html_e( 'Quick Actions', 'rocket' ); ?></h3>
+</div>
+
 <h4><?php esc_html_e( 'Remove all cached files', 'rocket' ); ?></h4>
 <?php
 $this->render_action_button( 'link', 'purge_cache', [
@@ -64,7 +71,11 @@ $this->render_action_button( 'link', 'rocket_purge_opcache', [
 <?php
 $this->render_settings_sections( $data['id'] );
 ?>
-<h3><?php esc_html_e( 'Frequently Asked Questions', 'rocket' ); ?></h3>
+
+<div class="wpr-optionHeader">
+	<h3 class="wpr-title2"><?php esc_html_e( 'Frequently Asked Questions', 'rocket' ); ?></h3>
+</div>
+
 <h4><?php esc_html_e( 'Still can not find a solution?', 'rocket' ); ?></h4>
 <p><?php esc_html_e( 'Submit a ticket and get help from our friendly and knowledgeable Rocketeers.', 'rocket' ); ?></h4>
 <?php
