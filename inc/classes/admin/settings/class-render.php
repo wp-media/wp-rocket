@@ -184,6 +184,7 @@ class Render extends Abstract_render {
 				'page'              => '',
 				'sanitize_callback' => 'sanitize_text_field',
 				'input_attr'        => [],
+				'warning'           => [],
 			];
 
 			$args = wp_parse_args( $args, $default );
