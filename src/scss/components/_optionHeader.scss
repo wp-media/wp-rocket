@@ -1,0 +1,19 @@
+// main: ../main.scss
+
+/*-----------------------------------------------*\
+
+    Header of option group
+
+\*-----------------------------------------------*/
+
+.wpr-optionHeader{
+    position: relative;
+    margin-top: $space*6;
+    border-bottom: 1px solid $cGrey;
+
+    .wpr-title2{
+        line-height: $space*3;
+        margin-bottom: 12px;
+        color: $cOrange;
+    }
+}
