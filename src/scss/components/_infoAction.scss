@@ -8,9 +8,9 @@
 
 .wpr-infoAction{
     height: 24px;
-    @include font-size(11,24);
+    @include font-size(13,24);
     vertical-align: middle;
-    letter-spacing: 0.05em;
+    letter-spacing: -0.03em;
     color: $cGreyDark2;
 
     &:before{
@@ -22,6 +22,8 @@
     &--help{
         text-transform: uppercase;
         color: $cBlueDark1;
+        @include font-size(11,24);
+        letter-spacing: 0.05em;
 
         &:before{
             color: $cBlue;
