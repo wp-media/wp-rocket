@@ -14,5 +14,9 @@
 
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 ?>
-<h2 id="<?php echo esc_attr( $data['id'] ); ?>"><?php echo esc_html( $data['title'] ); ?></h2>
+
+<div class="wpr-sectionHeader">
+	<h2 id="<?php echo esc_attr( $data['id'] ); ?>" class="wpr-title1 wpr-icon-files"><?php echo esc_html( $data['title'] ); ?></h2>
+</div>
+
 <?php $this->render_settings_sections( $data['id'] ); ?>

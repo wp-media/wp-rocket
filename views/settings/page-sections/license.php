@@ -14,7 +14,11 @@
 
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 ?>
-<h2 id="<?php echo esc_attr( $data['id'] ); ?>"><?php echo esc_html( $data['title'] ); ?></h2>
+
+<div class="wpr-sectionHeader">
+	<h2 id="<?php echo esc_attr( $data['id'] ); ?>" class="wpr-title1 wpr-icon-important"><?php echo esc_html( $data['title'] ); ?></h2>
+</div>
+
 <?php _e( 'WP Rocket was not able to automatically validate your license.', 'rocket' ); ?>
 <?php
 // translators: %1$s = tutorial URL, %2$s = support URL.

@@ -14,7 +14,10 @@
 
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 ?>
-<h2><?php echo $data['title']; ?></h2>
+<div class="wpr-sectionHeader">
+	<h2 class="wpr-title1 wpr-icon-home"><?php echo $data['title']; ?></h2>
+</div>
+
 <h3><?php esc_html_e( 'My account', 'rocket' ); ?></h3>
 <?php
 $this->render_action_button( 'button', 'refresh_account', [

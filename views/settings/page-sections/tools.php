@@ -8,6 +8,9 @@
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 ?>
 
-<h2 id="tools>"><?php esc_html_e( 'Import/Export', 'rocket' ); ?></h2>
+<div class="wpr-sectionHeader">
+	<h2 id="tools" class="wpr-title1 wpr-icon-tools"><?php esc_html_e( 'Import/Export', 'rocket' ); ?></h2>
+</div>
+
 <?php
 $this->render_import_form();
