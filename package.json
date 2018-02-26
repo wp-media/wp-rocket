@@ -18,6 +18,7 @@
     "gulp-sass": "latest",
     "gulp-sourcemaps": "latest",
     "gulp-uglify": "latest",
+    "gulp-rename": "latest",
     "vinyl-buffer": "latest",
     "vinyl-source-stream": "latest",
     "watchify": "latest"
