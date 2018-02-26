@@ -23,6 +23,9 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 	<?php
 		$this->render_action_button( 'button', 'refresh_account', [
 			'label' => __( 'Refresh info', 'rocket' ),
+			'attributes' => [
+				'class'  => 'wpr-infoAction wpr-icon-refresh',
+			],
 		] );
 	?>
 </div>

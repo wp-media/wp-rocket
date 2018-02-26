@@ -21,7 +21,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 <div class="wpr-optionHeader">
 	<h3 class="wpr-title2"><?php echo esc_html( $data['title'] ); ?></h3>
-    <button data-beacon-id="<?php echo esc_attr( $data['help'] ); ?>"><?php _e( 'Need Help?', 'rocket' ); ?></button>
+    <button data-beacon-id="<?php echo esc_attr( $data['help'] ); ?>" class="wpr-infoAction wpr-infoAction--help wpr-icon-help"><?php _e( 'Need Help?', 'rocket' ); ?></button>
 </div>
 
 <?php echo esc_html( $data['description'] ); ?>
