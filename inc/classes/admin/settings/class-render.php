@@ -106,7 +106,14 @@ class Render extends Abstract_render {
 		}
 
 		foreach ( $this->settings as $id => $args ) {
-			$id = str_replace( '_', '-', $id );
+			$default = [
+				'title'            => '',
+				'menu_description' => '',
+				'class'            => '',
+			];
+
+			$args = wp_parse_args( $args, $default );
+			$id   = str_replace( '_', '-', $id );
 
 			echo $this->generate( 'page-sections/' . $id, $args );
 		}
@@ -136,8 +143,18 @@ class Render extends Abstract_render {
 			return;
 		}
 
-		foreach ( $this->settings[ $page ]['sections'] as $settings_section ) {
-			call_user_func_array( array( $this, $settings_section['type'] ), array( $settings_section ) );
+		foreach ( $this->settings[ $page ]['sections'] as $args ) {
+			$default = [
+				'type'        => 'fields_container',
+				'title'       => '',
+				'description' => '',
+				'help'        => '',
+				'page'        => '',
+			];
+
+			$args = wp_parse_args( $args, $default );
+
+			call_user_func_array( array( $this, $args['type'] ), array( $args ) );
 		}
 	}
 
@@ -156,8 +173,22 @@ class Render extends Abstract_render {
 			return;
 		}
 
-		foreach ( $this->settings[ $page ]['sections'][ $section ]['fields'] as $field ) {
-			call_user_func_array( array( $this, $field['type'] ), array( $field ) );
+		foreach ( $this->settings[ $page ]['sections'][ $section ]['fields'] as $args ) {
+			$default = [
+				'type'              => 'text',
+				'label'             => '',
+				'description'       => '',
+				'class'             => '',
+				'default'           => '',
+				'section'           => '',
+				'page'              => '',
+				'sanitize_callback' => 'sanitize_text_field',
+				'input_attr'        => [],
+			];
+
+			$args = wp_parse_args( $args, $default );
+
+			call_user_func_array( array( $this, $args['type'] ), array( $args ) );
 		}
 	}
 
