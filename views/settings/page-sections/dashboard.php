@@ -62,6 +62,8 @@ $this->render_action_button( 'link', 'rocket_purge_opcache', [
 $this->render_settings_sections( $data['id'] );
 ?>
 <h3><?php esc_html_e( 'Frequently Asked Questions', 'rocket' ); ?></h3>
+<h4><?php esc_html_e( 'Still can not find a solution?', 'rocket' ); ?></h4>
+<p><?php esc_html_e( 'Submit a ticket and get help from our friendly and knowledgeable Rocketeers.', 'rocket' ); ?></h4>
 <?php
 $this->render_action_button( 'button', 'ask_support', [
 	'label' => __( 'Ask support', 'rocket' ),
