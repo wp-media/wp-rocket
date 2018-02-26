@@ -1,16 +1,16 @@
-// compressedFilenamePattern: ../../assets/css/$1.css
+// compressedFilenamePattern: ../../assets/css/wpr-admin.css
 
 /*-----------------------------------------------*\
 
 Author: Thomas Geisen (www.thomasgeisen.fr)
 Method : SUITCSS (modified)
 
-.ComponentName => Nom du composant (Ex : .SiteHeader)
-.ComponentName--modifierName => Modifier d'un composant (.SiteHeader--white, .SiteHeader--fixed)
-.ComponentName-descendantName => Nom d'un élément dans un composant (.SiteHeader-logo, .SiteHeader-menu)
-.ComponentName.isState => Etat du composant (.isActive, .isOpen)
+.ComponentName => Name of component (Ex : .SiteHeader)
+.ComponentName--modifierName => Modifier of component (.SiteHeader--white, .SiteHeader--fixed)
+.ComponentName-descendantName => Children of componant (.SiteHeader-logo, .SiteHeader-menu)
+.ComponentName.isState => State of component (.isActive, .isOpen)
 
-Plus d'information sur cette méthode ici : https://suitcss.github.io/ ou http://www.alsacreations.com/article/lire/1641-bonnes-pratiques-en-css-bem-et-oocss.html
+More informations here : https://suitcss.github.io/ or http://www.alsacreations.com/article/lire/1641-bonnes-pratiques-en-css-bem-et-oocss.html (french)
 
 --- EVERY CLASS are prefixed with "wpr-"
 

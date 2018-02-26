@@ -1,5 +1,14 @@
 // main: ../main.scss
 
+.wpr-wrap{
+    padding: 16px;
+    margin: 0 0 0 -20px;
+}
+
+.wpr-body{
+    display: flex;
+}
+
 .wpr-body * {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
