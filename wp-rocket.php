@@ -96,11 +96,6 @@ function rocket_init_php_deprecated() {
 		return;
 	}
 
-	// Nothing to do if XMLRPC request.
-	if ( defined( 'XMLRPC_REQUEST' ) ) {
-		return;
-	}
-
 	// Call defines and functions.
 	require WP_ROCKET_FUNCTIONS_PATH . 'options.php';
 
@@ -161,11 +156,6 @@ function rocket_init() {
 
 	// Nothing to do if autosave.
 	if ( defined( 'DOING_AUTOSAVE' ) ) {
-		return;
-	}
-
-	// Nothing to do if XMLRPC request.
-	if ( defined( 'XMLRPC_REQUEST' ) ) {
 		return;
 	}
 
