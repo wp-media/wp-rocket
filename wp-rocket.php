@@ -164,7 +164,9 @@ function rocket_init() {
 	$do_rocket_bot_cache_json = false;
 
 	// Composer autoload.
-	require WP_ROCKET_PATH . 'vendor/autoload.php';
+	if ( file_exists( WP_ROCKET_PATH . '/vendor/autoload.php' ) ) {
+		require WP_ROCKET_PATH . 'vendor/autoload.php';
+	}
 
 	// Call defines and functions.
 	require WP_ROCKET_FUNCTIONS_PATH . 'options.php';
