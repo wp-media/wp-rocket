@@ -31,7 +31,7 @@ if ( isset( $data['description'] ) ) {
 	echo esc_html( $data['description'] );
 }
 ?>
-<?php if ( isset( $data['warning'] ) ) { ?>
+<?php if ( ! empty( $data['warning'] ) ) { ?>
 <div>
 <?php echo esc_html( $data['warning']['title'] ); ?> <?php echo esc_html( $data['warning']['description'] ); ?>
 <button><?php echo esc_html( $data['warning']['button_label'] ); ?></button>
