@@ -674,21 +674,19 @@ class Page {
 					'title'       => __( 'LazyLoad', 'rocket' ),
 					'type'        => 'fields_container',
 					'description' => __( 'It can improve actual and perceived loading time as images, iframes, and videos will be loaded only as they enter (or about to enter) the viewport and reduces the number of HTTP requests.', 'rocket' ),
-					'help'        => '',
+					'help'        => $this->get_beacon_suggest( 'lazyload', $this->locale ),
 					'page'        => 'media',
 				],
 				'emoji_section'    => [
 					'title'       => __( 'Disable emoji', 'rocket' ),
 					'type'        => 'fields_container',
 					'description' => __( 'Use default emoji of visitor\'s browser instead of loading emoji from WordPress.org', 'rocket' ),
-					'help'        => '',
 					'page'        => 'media',
 				],
 				'embeds_section'   => [
 					'title'       => __( 'Embeds', 'rocket' ),
 					'type'        => 'fields_container',
 					'description' => __( 'Prevents others from embedding content from your site, prevents you from embedding content from other (non-whitelisted) sites, and removes JavaScript requests related to WordPress embeds', 'rocket' ),
-					'help'        => '',
 					'page'        => 'media',
 				],
 			]
@@ -699,7 +697,6 @@ class Page {
 				'lazyload'         => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Enable for images', 'rocket' ),
-					'description'       => '',
 					'section'           => 'lazyload_section',
 					'page'              => 'media',
 					'default'           => 0,
@@ -708,7 +705,6 @@ class Page {
 				'lazyload_iframes' => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Enable for iframes and videos', 'rocket' ),
-					'description'       => '',
 					'section'           => 'lazyload_section',
 					'page'              => 'media',
 					'default'           => 0,
@@ -735,7 +731,6 @@ class Page {
 				'embeds'           => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Disable WordPress embeds', 'rocket' ),
-					'description'       => '',
 					'section'           => 'embeds_section',
 					'page'              => 'media',
 					'default'           => 1,
@@ -768,21 +763,21 @@ class Page {
 					'title'       => __( 'Sitemap Preloading', 'rocket' ),
 					'type'        => 'fields_container',
 					'description' => __( 'Sitemap preloading runs automatically when the cache lifespan expires. You can also launch it manually from the upper toolbar menu, or from Quick Actions on the WP Rocket Dashboard.', 'rocket' ),
-					'help'        => '',
+					'help'        => $this->get_beacon_suggest( 'sitemap_preload', $this->locale ),
 					'page'        => 'preload',
 				],
 				'preload_bot_section'     => [
 					'title'       => __( 'Preload Bot', 'rocket' ),
 					'type'        => 'fields_container',
 					'description' => __( 'Bot-based preloading should only be used on well-performing servers. Once activated, it gets triggered automatically after you add or update content on your website. You can also launch it manually from the upper toolbar menu, or from Quick Actions on the WP Rocket Dashboard.', 'rocket' ),
-					'help'        => '',
+					'help'        => $this->get_beacon_suggest( 'preload_bot', $this->locale ),
 					'page'        => 'preload',
 				],
 				'dns_prefetch_section'    => [
 					'title'       => __( 'Prefetch DNS Requests', 'rocket' ),
 					'type'        => 'fields_container',
 					'description' => __( 'DNS prefetching can make external files load faster, especially on mobile networks', 'rocket' ),
-					'help'        => '',
+					'help'        => $this->get_beacon_suggest( 'dns_prefetch', $this->locale ),
 					'page'        => 'preload',
 				],
 			]
@@ -794,7 +789,6 @@ class Page {
 				'sitemap_preload' => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Activate sitemap-based cache preloading', 'rocket' ),
-					'description'       => '',
 					'section'           => 'sitemap_preload_section',
 					'page'              => 'preload',
 					'default'           => 0,
@@ -817,7 +811,6 @@ class Page {
 				'manual_preload'    => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Manual', 'rocket' ),
-					'description'       => '',
 					'section'           => 'preload_bot_section',
 					'page'              => 'preload',
 					'default'           => 0,
@@ -826,7 +819,6 @@ class Page {
 				'automatic_preload' => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Automatic', 'rocket' ),
-					'description'       => '',
 					'section'           => 'preload_bot_section',
 					'page'              => 'preload',
 					'default'           => 0,
@@ -868,35 +860,30 @@ class Page {
 					'title'       => __( 'Never Cache URL(s)', 'rocket' ),
 					'type'        => 'fields_container',
 					'description' => __( 'Sensitive pages like custom login/logout URLs should be excluded from cache. Cart, checkout and "my account" pages set in WooCommerce (and some other ecommerce plugins) will be detected and never cached by default.', 'rocket' ),
-					'help'        => '',
+					'help'        => $this->get_beacon_suggest( 'never_cache', $this->locale ),
 					'page'        => 'advanced_cache',
 				],
 				'cache_reject_cookies_section' => [
-					'title'       => __( 'Never Cache Cookies', 'rocket' ),
-					'type'        => 'fields_container',
-					'description' => '',
-					'help'        => '',
-					'page'        => 'advanced_cache',
+					'title' => __( 'Never Cache Cookies', 'rocket' ),
+					'type'  => 'fields_container',
+					'page'  => 'advanced_cache',
 				],
 				'cache_reject_ua_section'      => [
-					'title'       => __( 'Never Cache User Agent(s)', 'rocket' ),
-					'type'        => 'fields_container',
-					'description' => '',
-					'help'        => '',
-					'page'        => 'advanced_cache',
+					'title' => __( 'Never Cache User Agent(s)', 'rocket' ),
+					'type'  => 'fields_container',
+					'page'  => 'advanced_cache',
 				],
 				'cache_purge_pages_section'    => [
-					'title'       => __( 'Always Purge URL(s)', 'rocket' ),
-					'type'        => 'fields_container',
-					'description' => '',
-					'help'        => '',
-					'page'        => 'advanced_cache',
+					'title' => __( 'Always Purge URL(s)', 'rocket' ),
+					'type'  => 'fields_container',
+					'help'  => $this->get_beacon_suggest( 'always_purge', $this->locale ),
+					'page'  => 'advanced_cache',
 				],
 				'cache_query_strings_section'  => [
 					'title'       => __( 'Cache Query String(s)', 'rocket' ),
 					'type'        => 'fields_container',
 					'description' => __( 'Cache for query strings enables you to force caching for specific GET parameters.', 'rocket' ),
-					'help'        => '',
+					'help'        => $this->get_beacon_suggest( 'query_strings', $this->locale ),
 					'page'        => 'advanced_cache',
 				],
 			]
@@ -906,7 +893,6 @@ class Page {
 			[
 				'cache_reject_uri'     => [
 					'type'              => 'textarea',
-					'label'             => '',
 					'description'       => __( 'Specify URLs of pages or posts that should never be cached', 'rocket' ),
 					'section'           => 'cache_reject_uri_section',
 					'page'              => 'advanced_cache',
@@ -915,7 +901,6 @@ class Page {
 				],
 				'cache_reject_cookies' => [
 					'type'              => 'textarea',
-					'label'             => '',
 					'description'       => __( 'Specify the IDs of cookies that, when set in the visitor\'s browser, should prevent a page from getting cached', 'rocket' ),
 					'section'           => 'cache_reject_cookies_section',
 					'page'              => 'advanced_cache',
@@ -924,7 +909,6 @@ class Page {
 				],
 				'cache_reject_ua'      => [
 					'type'              => 'textarea',
-					'label'             => '',
 					'description'       => __( 'Specify user agent strings that should never see cached pages', 'rocket' ),
 					'section'           => 'cache_reject_ua_section',
 					'page'              => 'advanced_cache',
@@ -933,7 +917,6 @@ class Page {
 				],
 				'cache_purge_pages'    => [
 					'type'              => 'textarea',
-					'label'             => '',
 					'description'       => __( 'Specify URLs you always want purged from cache whenever you update any post or page', 'rocket' ),
 					'section'           => 'cache_purge_pages_section',
 					'page'              => 'advanced_cache',
@@ -942,7 +925,6 @@ class Page {
 				],
 				'cache_query_strings'  => [
 					'type'              => 'textarea',
-					'label'             => '',
 					'description'       => __( 'Specify query strings for caching', 'rocket' ),
 					'section'           => 'cache_query_strings_section',
 					'page'              => 'advanced_cache',
@@ -983,36 +965,31 @@ class Page {
 					'title'       => __( 'Post Cleanup', 'rocket' ),
 					'type'        => 'fields_container',
 					'description' => __( 'Post revisions and drafts will be permanently deleted. Do not use this option if you need to retain revisions or drafts.', 'rocket' ),
-					'help'        => '',
+					'help'        => $this->get_beacon_suggest( 'cleanup', $this->locale ),
 					'page'        => 'database',
 				],
 				'comments_cleanup_section'   => [
 					'title'       => __( 'Comments Cleanup', 'rocket' ),
 					'type'        => 'fields_container',
 					'description' => __( 'Spam and trashed comments will be permanently deleted.', 'rocket' ),
-					'help'        => '',
 					'page'        => 'database',
 				],
 				'transients_cleanup_section' => [
 					'title'       => __( 'Transients Cleanup', 'rocket' ),
 					'type'        => 'fields_container',
 					'description' => __( 'Transients are temporary options; they are safe to remove. They will be automatically regenerated as your plugins require them.', 'rocket' ),
-					'help'        => '',
 					'page'        => 'database',
 				],
 				'database_cleanup_section'   => [
 					'title'       => __( 'Database Cleanup', 'rocket' ),
 					'type'        => 'fields_container',
 					'description' => __( 'Reduces overhead of database tables', 'rocket' ),
-					'help'        => '',
 					'page'        => 'database',
 				],
 				'schedule_cleanup_section'   => [
-					'title'       => __( 'Automatic cleanup', 'rocket' ),
-					'type'        => 'fields_container',
-					'description' => '',
-					'help'        => '',
-					'page'        => 'database',
+					'title' => __( 'Automatic cleanup', 'rocket' ),
+					'type'  => 'fields_container',
+					'page'  => 'database',
 				],
 			]
 		);
@@ -1149,15 +1126,14 @@ class Page {
 					'title'       => __( 'CDN', 'rocket' ),
 					'type'        => 'fields_container',
 					'description' => __( 'All URLs of static files (CSS, JS, images) will be rewritten to the CNAME(s) you provide.', 'rocket' ),
-					'help'        => '',
+					'help'        => $this->get_beacon_suggest( 'cdn', $this->locale ),
 					'page'        => 'cdn',
 				],
 				'exclude_cdn_section' => [
-					'title'       => __( 'Exclude files from CDN', 'rocket ' ),
-					'type'        => 'fields_container',
-					'description' => '',
-					'help'        => '',
-					'page'        => 'cdn',
+					'title' => __( 'Exclude files from CDN', 'rocket ' ),
+					'type'  => 'fields_container',
+					'help'  => $this->get_beacon_suggest( 'exclude_cdn', $this->locale ),
+					'page'  => 'cdn',
 				],
 			]
 		);
@@ -1167,7 +1143,6 @@ class Page {
 				'cdn'              => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Enable Content Delivery Network', 'rocket' ),
-					'description'       => '',
 					'section'           => 'cdn_section',
 					'page'              => 'cdn',
 					'default'           => 0,
@@ -1183,7 +1158,6 @@ class Page {
 				],
 				'cdn_reject_files' => [
 					'type'              => 'textarea',
-					'label'             => '',
 					'description'       => __( 'Specify URL(s) of files that should not get served via CDN', 'rocket' ),
 					'section'           => 'exclude_cdn_section',
 					'page'              => 'cdn',
@@ -1281,18 +1255,16 @@ class Page {
 		$this->settings->add_settings_sections(
 			[
 				'cloudflare_credentials' => [
-					'type'        => 'fields_container',
-					'title'       => __( 'Cloudflare credentials', 'rocket' ),
-					'description' => '',
-					'help'        => '',
-					'page'        => 'do_cloudflare',
+					'type'  => 'fields_container',
+					'title' => __( 'Cloudflare credentials', 'rocket' ),
+					'help'  => $this->get_beacon_suggest( 'cloudflare_credentials', $this->locale ),
+					'page'  => 'do_cloudflare',
 				],
 				'cloudflare_settings'    => [
-					'type'        => 'fields_container',
-					'title'       => __( 'Cloudflare settings', 'rocket' ),
-					'description' => '',
-					'help'        => '',
-					'page'        => 'do_cloudflare',
+					'type'  => 'fields_container',
+					'title' => __( 'Cloudflare settings', 'rocket' ),
+					'help'  => $this->get_beacon_suggest( 'cloudflare_settings', $this->locale ),
+					'page'  => 'do_cloudflare',
 				],
 			]
 		);
@@ -1300,29 +1272,23 @@ class Page {
 		$this->settings->add_settings_fields(
 			[
 				'cloudflare_api_key'          => [
-					'type'              => 'text',
-					'label'             => __( 'Global API key', 'rocket' ),
-					'description'       => __( 'Find your API key', 'rocket' ),
-					'default'           => '',
-					'section'           => 'cloudflare_credentials',
-					'page'              => 'do_cloudflare',
-					'sanitize_callback' => 'sanitize_text_field',
+					'label'       => __( 'Global API key', 'rocket' ),
+					'description' => __( 'Find your API key', 'rocket' ),
+					'default'     => '',
+					'section'     => 'cloudflare_credentials',
+					'page'        => 'do_cloudflare',
 				],
 				'cloudflare_email'            => [
-					'type'              => 'text',
-					'label'             => __( 'Account email', 'rocket' ),
-					'default'           => '',
-					'section'           => 'cloudflare_credentials',
-					'page'              => 'do_cloudflare',
-					'sanitize_callback' => 'sanitize_text_field',
+					'label'   => __( 'Account email', 'rocket' ),
+					'default' => '',
+					'section' => 'cloudflare_credentials',
+					'page'    => 'do_cloudflare',
 				],
 				'cloudflare_domain'           => [
-					'type'              => 'text',
-					'label'             => __( 'Domain', 'rocket' ),
-					'default'           => '',
-					'section'           => 'cloudflare_credentials',
-					'page'              => 'do_cloudflare',
-					'sanitize_callback' => 'sanitize_text_field',
+					'label'   => __( 'Domain', 'rocket' ),
+					'default' => '',
+					'section' => 'cloudflare_credentials',
+					'page'    => 'do_cloudflare',
 				],
 				'cloudflare_devmode'          => [
 					'type'              => 'sliding_checkbox',
@@ -1413,29 +1379,81 @@ class Page {
 	 */
 	private function get_beacon_suggest( $id, $lang = 'en' ) {
 		$suggest = [
-			'user_cache'     => [
+			'user_cache'             => [
 				'en' => '56b55ba49033600da1c0b687,587920b5c697915403a0e1f4,560c66b0c697917e72165a6d',
 				'fr' => '56cb9ba990336008e9e9e3d9,5879230cc697915403a0e211,569410999033603f7da2fa94',
 			],
-			'mobile_cache'   => [
+			'mobile_cache'           => [
 				'en' => '577a5f1f903360258a10e52a,5678aa76c697914361558e92,5745b9a6c697917290ddc715',
 				'fr' => '589b17a02c7d3a784630b249,5a6b32830428632faf6233dc,58a480e5dd8c8e56bfa7b85c',
 			],
-			'cache_lifespan' => [
+			'cache_lifespan'         => [
 				'en' => '555c7e9ee4b027e1978e17a5,5922fd0e0428634b4a33552c',
 				'fr' => '568f7df49033603f7da2ec72,598080e1042863033a1b890e',
 			],
-			'basic'          => [
+			'basic'                  => [
 				'en' => '55231415e4b0221aadf25676,588286b32c7d3a4a60b95b6c,58869c492c7d3a7846303a3d',
 				'fr' => '569568269033603f7da30334,58e3be72dd8c8e5c57311c6e,59b7f049042863033a1cc5d0',
 			],
-			'css'            => [
+			'css'                    => [
 				'en' => '54205957e4b099def9b55df0,5419ec47e4b099def9b5565f,5578cfbbe4b027e1978e6bb1,5569b671e4b027e1978e3c51,5923772c2c7d3a074e8ab8b9',
 				'fr' => '56967d73c69791436155e637,56967e80c69791436155e646,56957209c69791436155e0f6,5697d2dc9033603f7da31041593fec6d2c7d3a0747cddb93',
 			],
-			'js'             => [
+			'js'                     => [
 				'en' => '54205957e4b099def9b55df0,5419ec47e4b099def9b5565f,5578cfbbe4b027e1978e6bb1,587904cf90336009736c678e,54b9509de4b07997ea3f27c7,59236dfb0428634b4a3358f9',
 				'fr' => '56967d73c69791436155e637,56967e80c69791436155e646,56957209c69791436155e0f6,58a337c12c7d3a576d352cde,56967eebc69791436155e649,593fe9882c7d3a0747cddb77',
+			],
+			'lazyload'               => [
+				'en' => '54b85754e4b0512429883a86,5418c792e4b0e7b8127bed99,569ec4a69033603f7da32c93,5419e246e4b099def9b5561e,5a299b332c7d3a1a640cb402',
+				'fr' => '56967a859033603f7da30858,56967952c69791436155e60a,56cb9c9d90336008e9e9e3dc,569676ea9033603f7da3083d,5a3a66f52c7d3a1943676524',
+			],
+			'sitemap_preload'        => [
+				'en' => '541780fde4b005ed2d11784c,5a71c8ab2c7d3a4a4198a9b3,55b282ede4b0b0593824f852',
+				'fr' => '5693d582c69791436155d645',
+			],
+			'preload_bot'            => [
+				'en' => '541780fde4b005ed2d11784c,55b282ede4b0b0593824f852,559113eae4b027e1978eba11',
+				'fr' => '5693d582c69791436155d645,569433d1c69791436155d99c',
+			],
+			'dns_prefetch'           => [
+				'en' => '541780fde4b005ed2d11784c',
+				'fr' => '5693d582c69791436155d645',
+			],
+			'never_cache'            => [
+				'en' => '5519ab03e4b061031402119f,559110d0e4b027e1978eba09,56b55ba49033600da1c0b687,553ac7bfe4b0eb143c62af44,587920b5c697915403a0e1f4,5569b671e4b027e1978e3c51',
+				'fr' => '56941c0cc69791436155d8ab,56943395c69791436155d99a,56cb9ba990336008e9e9e3d9,56942fc3c69791436155d987,5879230cc697915403a0e211,5697d2dc9033603f7da31041',
+			],
+			'always_purge'           => [
+				'en' => '555c7e9ee4b027e1978e17a,55151406e4b0610314020a3f,5632858890336002f86d903e,5792c0c1903360293603896b',
+				'fr' => '568f7df49033603f7da2ec72,5694194d9033603f7da2fb00,56951208c69791436155de2a,57a4a0c3c697910783242008',
+			],
+			'query_strings'          => [
+				'en' => '590a83610428634b4a32d52c',
+				'fr' => '597a04fd042863033a1b6da4',
+			],
+			'cleanup'                => [
+				'en' => '55dcaa28e4b01d7a6a9bd373,578cd762c6979160ca1441cd,5569d11ae4b01a224b427725',
+				'fr' => '5697cebbc69791436155ed5e,58b6e7a0dd8c8e56bfa819f5,5697cd85c69791436155ed50',
+			],
+			'cdn'                    => [
+				'en' => '54c7fa3de4b0512429885b5c,54205619e4b0e7b8127bf849,54a6d578e4b047ebb774a687,56b2b4459033603f7da37acf,566f749f9033603f7da28459,5434667fe4b0310ce5ee867a',
+				'fr' => '5696830b9033603f7da308ac,5696837e9033603f7da308ae,569685749033603f7da308c0,57a4961190336059d4edc9d8,5697d5f8c69791436155ed8e,569684d29033603f7da308b9',
+			],
+			'exclude_cdn'            => [
+				'en' => '5434667fe4b0310ce5ee867a',
+				'fr' => '569684d29033603f7da308b9',
+			],
+			'cloudflare_credentials' => [
+				'en' => '54205619e4b0e7b8127bf849',
+				'fr' => '5696837e9033603f7da308ae',
+			],
+			'cloudflare_settings'    => [
+				'en' => '54205619e4b0e7b8127bf849',
+				'fr' => '5696837e9033603f7da308ae',
+			],
+			'varnish'                => [
+				'en' => '56f48132c6979115a34095bd',
+				'fr' => '56fd2f789033601d6683e574',
 			],
 		];
 
