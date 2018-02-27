@@ -1,11 +1,6 @@
 <?php
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
-// Nothing to do if XMLRPC request.
-if ( defined( 'XMLRPC_REQUEST' ) ) {
-	return;
-}
-
 /**
  * Replace URL by CDN of all thumbnails and smilies.
  *
@@ -16,6 +11,10 @@ if ( defined( 'XMLRPC_REQUEST' ) ) {
  */
 function rocket_cdn_file( $url ) {
 	if ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) {
+		return $url;
+	}
+
+	if ( defined( 'XMLRPC_REQUEST' ) && XMLRPC_REQUEST ) {
 		return $url;
 	}
 
@@ -181,7 +180,7 @@ function rocket_cdn_images( $html ) {
 			// Image path is relative, apply the host to it.
 			if ( empty( $host ) ) {
 				$image_url = $home_url . ltrim( $image_url, '/' );
-				$host = rocket_extract_url_component( $image_url, PHP_URL_HOST );
+				$host      = rocket_extract_url_component( $image_url, PHP_URL_HOST );
 			}
 
 			// Check if the link isn't external.
@@ -332,7 +331,7 @@ function rocket_cdn_enqueue( $src ) {
 	}
 
 	if ( rocket_extract_url_component( $src, PHP_URL_HOST ) !== '' ) {
-		$src  = rocket_add_url_protocol( $src );
+		$src = rocket_add_url_protocol( $src );
 	}
 
 	$zone = array( 'all', 'css_and_js' );
