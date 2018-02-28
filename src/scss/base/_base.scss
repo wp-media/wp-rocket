@@ -22,6 +22,15 @@
     box-sizing: border-box;
 }
 
+h1,
+h2,
+h3,
+h4{
+    color: currentColor;
+    margin: 0;
+    font-weight: normal;
+}
+
 button{
     padding: 0;
     border: none;
