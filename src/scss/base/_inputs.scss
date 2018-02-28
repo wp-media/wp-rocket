@@ -17,15 +17,15 @@
 }
 
 // Hide default checkbox
-[type="checkbox"]:not(:checked),
-[type="checkbox"]:checked {
+.wpr-checkbox [type="checkbox"]:not(:checked),
+.wpr-checkbox [type="checkbox"]:checked {
     position: absolute;
     left: -9999px;
 }
 
 // Box to check
-[type="checkbox"]:not(:checked) + label:before,
-[type="checkbox"]:checked + label:before {
+.wpr-checkbox [type="checkbox"]:not(:checked) + label:before,
+.wpr-checkbox [type="checkbox"]:checked + label:before {
     content: '';
     position: absolute;
     left:0; top: 1px;
@@ -38,8 +38,8 @@
 
 
 // Check icon
-[type="checkbox"]:not(:checked) + label:after,
-[type="checkbox"]:checked + label:after {
+.wpr-checkbox [type="checkbox"]:not(:checked) + label:after,
+.wpr-checkbox [type="checkbox"]:checked + label:after {
     content: "\e921"; // wpr-icon-check2
     position: absolute;
     top: 2px; left: 2px;
@@ -51,18 +51,18 @@
 }
 
 // Not checked
-[type="checkbox"]:not(:checked) + label:after {
+.wpr-checkbox [type="checkbox"]:not(:checked) + label:after {
     opacity: 0;
     transform: scale(2);
 }
 
 // Checked
-[type="checkbox"]:checked + label:after {
+.wpr-checkbox [type="checkbox"]:checked + label:after {
     opacity: 1;
     transform: scale(1);
 }
 
-[type="checkbox"]:checked + label:before {
+.wpr-checkbox [type="checkbox"]:checked + label:before {
     background: $cPurpleDark1;
     border-color: $cPurpleDark1;
 }
