@@ -26,6 +26,12 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 	<?php endif; ?>
 </div>
 
-<?php echo esc_html( $data['description'] ); ?>
-<?php
-$this->render_settings_fields( $data['page'], $data['id'] );
+<div class="wpr-fieldsContainer">
+	<div class="wpr-fieldsContainer-description">
+		<?php echo esc_html( $data['description'] ); ?>
+	</div>
+
+	<fieldset class="wpr-fieldsContainer-fieldset">
+		<?php $this->render_settings_fields( $data['page'], $data['id'] ); ?>
+	</fieldset>
+</div>

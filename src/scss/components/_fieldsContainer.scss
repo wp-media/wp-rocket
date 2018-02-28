@@ -1,0 +1,23 @@
+// main: ../main.scss
+
+/*-----------------------------------------------*\
+
+    Group of fields (fieldset)
+
+\*-----------------------------------------------*/
+
+.wpr-fieldsContainer{
+    margin-top: $space;
+
+    &-description{
+        color: $cGreyDark2;
+    }
+
+    &-fieldset{
+        margin-top: $space*2;
+        background: $cGreyLight3;
+        padding: $space*2;
+        border: 1px solid $cGreyLight1;
+        border-radius: 2px;
+    }
+}
