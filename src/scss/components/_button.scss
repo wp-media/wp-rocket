@@ -1,0 +1,60 @@
+// main: ../main.scss
+
+/*-----------------------------------------------*\
+
+    Button call to action
+
+\*-----------------------------------------------*/
+
+.wpr-button{
+    position: relative;
+    display: inline-block;
+    width: auto;
+    padding: $space $space*3;
+    text-align: center;
+    background: $cOrange;
+    box-shadow: 0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08);
+    text-transform: uppercase;
+    text-decoration: none;
+    letter-spacing: -0.06em;
+    border-radius: 4px;
+    color: #fff;
+    @include transition(all, 200ms)
+    @include font-size(13,20);
+
+    &:hover{
+        color: #fff;
+        //transform: translateY(-2px);
+        //box-shadow: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08);
+    }
+
+    &--small{
+        padding: 5px 0;
+        letter-spacing: -0.05em;
+        @include font-size(11,20);
+    }
+
+    &--icon{
+        width: 160px;
+        padding-left: $space;
+        text-align: left;
+
+        &:before{
+            position: absolute;
+            right: $space;
+            @include font-size(15,20);
+        }
+    }
+
+    &--purple{
+        background: $cPurple;
+    }
+
+    &--blue{
+        background: $cBlue;
+    }
+
+    &--blueDark{
+        background: $cBlueDark1;
+    }
+}

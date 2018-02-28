@@ -28,3 +28,11 @@ button{
     background: none;
     cursor: pointer;
 }
+
+a{
+    color: currentColor;
+
+    &:hover{
+        color: currentColor;
+    }
+}

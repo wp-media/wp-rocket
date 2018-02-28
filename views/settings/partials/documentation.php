@@ -14,5 +14,6 @@ $this->render_action_button( 'link', 'documentation', [
 	'label'      => __( 'Read the documentation', 'rocket' ),
 	'attributes' => [
 		'target' => '_blank',
+		'class'  => 'wpr-button wpr-button--blueDark',
 	],
 ] );

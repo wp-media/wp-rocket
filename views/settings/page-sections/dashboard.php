@@ -38,7 +38,7 @@ $this->render_action_button( 'link', 'view_account', [
 	'icon'       => '',
 	'attributes' => [
 		'target' => '_blank',
-		'class'  => '',
+		'class'  => 'wpr-button wpr-button--icon wpr-button--small wpr-button--purple wpr-icon-user',
 	],
 ] );
 ?>
@@ -55,6 +55,9 @@ $this->render_action_button( 'link', 'purge_cache', [
 	'parameters' => [
 		'type' => 'all',
 	],
+	'attributes' => [
+		'class'  => 'wpr-button wpr-button--icon wpr-button--small wpr-icon-trash',
+	],
 ] );
 ?>
 <h4><?php esc_html_e( 'Start cache preloading', 'rocket' ); ?></h4>
@@ -62,6 +65,9 @@ $this->render_action_button( 'link', 'purge_cache', [
 $this->render_action_button( 'link', 'preload', [
 	'label' => __( 'Preload cache', 'rocket' ),
 	'icon'  => '',
+	'attributes' => [
+		'class'  => 'wpr-button wpr-button--icon wpr-button--small wpr-icon-refresh',
+	],
 ] );
 ?>
 <h4><?php esc_html_e( 'Purge OPCache content', 'rocket' ); ?></h4>
@@ -69,6 +75,9 @@ $this->render_action_button( 'link', 'preload', [
 $this->render_action_button( 'link', 'rocket_purge_opcache', [
 	'label' => __( 'Purge OPCache', 'rocket' ),
 	'icon'  => '',
+	'attributes' => [
+		'class'  => 'wpr-button wpr-button--icon wpr-button--small wpr-icon-trash',
+	],
 ] );
 ?>
 <?php
@@ -85,5 +94,8 @@ $this->render_settings_sections( $data['id'] );
 $this->render_action_button( 'button', 'ask_support', [
 	'label' => __( 'Ask support', 'rocket' ),
 	'icon'  => '',
+	'attributes' => [
+		'class'  => 'wpr-button wpr-button--icon wpr-button--small wpr-button--blue wpr-icon-help',
+	],
 ] );
 $this->render_documentation_block(); ?>
