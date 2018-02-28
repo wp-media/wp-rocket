@@ -8,7 +8,7 @@
 
 .wpr-fieldWarning{
     position: relative;
-    padding: $space*2 $space*2 $space*2 56px;
+    padding: $space*2 $space*2 $space*3 56px;
     background: $cPurpleDark1;
     margin: $space 0;
     color: #fff;
@@ -18,7 +18,7 @@
         position: absolute;
         display: block;
         top: -$space;
-        left: 22px;
+        left: 20px;
         width: 0;
         height: 0;
         border-style: solid;
