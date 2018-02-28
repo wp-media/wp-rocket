@@ -35,12 +35,13 @@ settings_errors( $data['slug'] ); ?>
 				<?php settings_fields( $data['slug'] ); ?>
 				<?php $this->render_form_sections(); ?>
 				<?php $this->render_hidden_fields(); ?>
-				<input type="submit" value="<?php esc_attr_e( 'Save Changes', 'rocket' ); ?>">
+				<input type="submit" class="wpr-button" value="<?php esc_attr_e( 'Save Changes', 'rocket' ); ?>">
 			</form>
+			<?php $this->render_tools_section(); ?>
 		</div>
 
 		<div class="wpr-Sidebar">
-			<?php $this->render_tools_section(); ?>
+			<?php $this->render_sidebar(); ?>
 		</div>
 
 	</div>
