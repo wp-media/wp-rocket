@@ -1,0 +1,24 @@
+// main: ../main.scss
+
+/*-----------------------------------------------*\
+
+    Field container
+
+\*-----------------------------------------------*/
+
+.wpr-field{
+    border-top: 1px solid $cGrey;
+    margin-top: $space*2;
+    padding-top: $space*2;
+
+    &:first-child{
+        margin-top: 0;
+        padding-top: 0;
+        border-top: none;
+    }
+
+    &-description{
+        margin-top: 8px;
+        color: $cGreyDark1;
+    }
+}
