@@ -813,7 +813,7 @@ function rocket_clean_term( $term_id, $taxonomy_slug ) {
 /**
  * Delete the caching files of a specific user
  *
- * $since 2.6.12
+ * @since 2.6.12
  *
  * @param int    $user_id  The user ID.
  * @param string $lang     The language code.
@@ -872,6 +872,19 @@ function rocket_clean_user( $user_id, $lang = '' ) {
 		*/
 		do_action( 'after_rocket_clean_user', $user_id, $lang );
 	}
+}
+
+/**
+ * Delete the caching files of the current user.
+ * 
+ * A wrapper for rocket_clean_user() function.
+ * @since 2.11.7
+ *
+ * @param string $lang The language code. Optional.
+ * @return void
+ */
+function rocket_clean_current_user( $lang = '' ) {
+	rocket_clean_user( get_current_user_id(), $lang );
 }
 
 /**
