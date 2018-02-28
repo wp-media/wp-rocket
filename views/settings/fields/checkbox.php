@@ -25,7 +25,8 @@
 
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 ?>
-<div class="wpr-field wpr-field--checkbox">
+
+<div class="wpr-field wpr-field--checkbox <?php echo ($data['parent']) ? 'wpr-field--children' : '';?>">
 	<input type="checkbox" id="<?php echo esc_attr( $data['id'] ); ?>" class="" name="wp_rocket_settings[<?php echo esc_attr( $data['id'] ); ?>]" value="1" <?php checked( $data['value'], 1 ); ?>
 	<?php echo isset( $data['input_attr'] ) ? $data['input_attr'] : ''; ?>>
 	<label for="<?php echo esc_attr( $data['id'] ); ?>" class=""><?php echo $data['label']; ?></label>
