@@ -1,0 +1,92 @@
+// main: ../../main.scss
+
+/*-----------------------------------------------*\
+
+    Custom radio (radio on/off)
+
+\*-----------------------------------------------*/
+
+
+.wpr-radio{
+    position: relative;
+    padding-left: $space*9;
+
+    label{
+        user-select: none;
+    }
+}
+
+// Hide default radio
+.wpr-radio [type="checkbox"]:not(:checked),
+.wpr-radio [type="checkbox"]:checked {
+    position: absolute;
+    left: -9999px;
+}
+
+.wpr-radio [type="checkbox"]:not(:checked) + label:before,
+.wpr-radio [type="checkbox"]:checked + label:before,
+.wpr-radio [type="checkbox"]:not(:checked) + label:after,
+.wpr-radio [type="checkbox"]:checked + label:after {
+	content: '';
+	position: absolute;
+}
+
+// The box
+.wpr-radio [type="checkbox"]:not(:checked) + label:before,
+.wpr-radio [type="checkbox"]:checked + label:before {
+	left:0;
+	width: 52px;
+    height: 22px;
+	background: #fff;
+	border-radius: 12px;
+    border: 1px solid $cGreyDark1;
+    @include transition(all, 150ms);
+}
+
+// The ball
+.wpr-radio [type="checkbox"]:not(:checked) + label:after,
+.wpr-radio [type="checkbox"]:checked + label:after {
+	width: 18px;
+    height: 18px;
+	border-radius: 100%;
+	background: $cGreyDark1;
+	top: 3px;
+    left: 3px;
+    @include transition(all, 150ms);
+}
+
+// Checked box
+.wpr-radio [type="checkbox"]:checked + label:before {
+	border-color: $cBlue;
+}
+
+// Checked ball
+.wpr-radio [type="checkbox"]:checked + label:after {
+	background: $cBlue;
+    left: 33px;
+}
+
+.wpr-radio [type="checkbox"]:checked + label .wpr-radio-ui,
+.wpr-radio [type="checkbox"]:not(:checked) + label .wpr-radio-ui:before,
+.wpr-radio [type="checkbox"]:checked + label .wpr-radio-ui:after {
+	position: absolute;
+	left: 4px;
+	width: 52px;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    @include font-size(11,24);
+	@include transition(all, 150ms);
+}
+
+// OFF text
+.wpr-radio [type="checkbox"]:not(:checked) + label .wpr-radio-ui:before {
+	content: "off";
+	left: 27px;
+    color: $cGreyDark2;
+}
+
+// ON text
+.wpr-radio [type="checkbox"]:checked + label .wpr-radio-ui:after {
+	content: "on";
+	color: $cBlueDark1;
+}

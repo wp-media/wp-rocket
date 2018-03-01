@@ -90,4 +90,15 @@
             margin-left: $space*4;
         }
     }
+
+    // Checkbox radio
+    &--radio{
+        .wpr-field-description{
+            margin-left: $space*9;
+        }
+
+        label{
+            @extend .wpr-title3;
+        }
+    }
 }
