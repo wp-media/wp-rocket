@@ -28,7 +28,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 <div class="wpr-fieldsContainer">
 	<div class="wpr-fieldsContainer-description">
-		<?php echo esc_html( $data['description'] ); ?>
+		<?php echo $data['description']; ?>
 	</div>
 
 	<fieldset class="wpr-fieldsContainer-fieldset">
