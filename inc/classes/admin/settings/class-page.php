@@ -108,7 +108,9 @@ class Page {
 		add_action( 'admin_menu', [ $self, 'add_admin_page' ] );
 		add_action( 'admin_init', [ $self, 'configure' ] );
 		add_action( 'admin_print_footer_scripts-settings_page_wprocket', [ $self, 'insert_beacon' ] );
+
 		add_filter( 'option_page_capability_' . $self->slug, [ $self, 'required_capability' ] );
+		add_filter( 'rocket_settings_menu_navigation', [ $self, 'add_menu_tools_page' ] );
 	}
 
 	/**
@@ -160,8 +162,6 @@ class Page {
 		$this->hidden_fields();
 
 		$this->render->set_hidden_settings( $this->settings->get_hidden_settings() );
-
-		add_filter( 'rocket_settings_menu_navigation', [ $this, 'add_menu_tools_page' ] );
 	}
 
 	/**
@@ -206,62 +206,112 @@ class Page {
 
 		switch ( $this->locale ) {
 			case 'FR':
-				$script = '<script>!function(e,o,n){window.HSCW=o,window.HS=n,n.beacon=n.beacon||{};var t=n.beacon;t.userConfig={},t.readyQueue=[],t.config=function(e){this.userConfig=e},t.ready=function(e){this.readyQueue.push(e)},o.config={docs:{enabled:!0,baseUrl:"https://wp-rocket-fr.helpscoutdocs.com/"},contact:{enabled:!0,formId:"5d9279dc-1b2d-11e8-b466-0ec85169275a"}};var r=e.getElementsByTagName("script")[0],c=e.createElement("script");c.type="text/javascript",c.async=!0,c.src="https://djtflbt20bdde.cloudfront.net/",r.parentNode.insertBefore(c,r)}(document,window.HSCW||{},window.HS||{});</script>';
-
-				$script .= "<script>HS.beacon.ready( function() {
-					HS.beacon.suggest([
-						'5697d2dc9033603f7da31041',
-						'569564dfc69791436155e0b0',
-						'5697d03bc69791436155ed69',
-						'56967d73c69791436155e637',
-					]);
-				} );</script>";
-
-				$script .= "<script>HS.beacon.config({
-					showSubject: true,
-					translation: {
-						searchLabel: 'Comment pouvons-nous vous aider ?',
-						searchErrorLabel: 'Votre recherche a expiré. Veuillez vérifier votre connexion et réessayer.',
-						noResultsLabel: 'Aucun résultat trouvé pour',
-						contactLabel: 'Envoyer un message',
-						attachFileLabel: 'Joindre un fichier',
-						attachFileError: 'Le poids maximum de fichier est de 10Mo',
-						fileExtensionError: 'Le format du fichier attaché n\'est pas autorisé.',
-						nameLabel: 'Votre nom',
-						nameError: 'Veuillez entrer votre nom',
-						emailLabel: 'Adresse email',
-						emailError: 'Veuillez entrer une adresse email valide',
-						topicLabel: 'Sélectionnez un sujet',
-						topicError: 'Veuillez sélectionner un sujet dans la liste',
-						subjectLabel: 'Sujet',
-						subjectError: 'Veuillez entrer un sujet',
-						messageLabel: 'Comment pouvons-nous vous aider ?',
-						messageError: 'Veuillez entrer un message',
-						sendLabel: 'Envoyer',
-						contactSuccessLabel: 'Message envoyé !',
-						contactSuccessDescription: 'Merci de nous avoir contacté ! Un de nos rocketeers vous répondra rapidement.',
-					},
-				});</script>";
+				$lang        = '-fr';
+				$form_id     = '5d9279dc-1b2d-11e8-b466-0ec85169275a';
+				$suggest     = wp_list_pluck( $this->get_default_documentation( 'FR' ), 'id' );
+				$translation = "searchLabel: 'Comment pouvons-nous vous aider ?',
+					searchErrorLabel: 'Votre recherche a expiré. Veuillez vérifier votre connexion et réessayer.',
+					noResultsLabel: 'Aucun résultat trouvé pour',
+					contactLabel: 'Envoyer un message',
+					attachFileLabel: 'Joindre un fichier',
+					attachFileError: 'Le poids maximum de fichier est de 10Mo',
+					fileExtensionError: 'Le format du fichier attaché n\'est pas autorisé.',
+					nameLabel: 'Votre nom',
+					nameError: 'Veuillez entrer votre nom',
+					emailLabel: 'Adresse email',
+					emailError: 'Veuillez entrer une adresse email valide',
+					topicLabel: 'Sélectionnez un sujet',
+					topicError: 'Veuillez sélectionner un sujet dans la liste',
+					subjectLabel: 'Sujet',
+					subjectError: 'Veuillez entrer un sujet',
+					messageLabel: 'Comment pouvons-nous vous aider ?',
+					messageError: 'Veuillez entrer un message',
+					sendLabel: 'Envoyer',
+					contactSuccessLabel: 'Message envoyé !',
+					contactSuccessDescription: 'Merci de nous avoir contacté ! Un de nos rocketeers vous répondra rapidement.',
+				";
 				break;
 			default:
-				$script = '<script>!function(e,o,n){window.HSCW=o,window.HS=n,n.beacon=n.beacon||{};var t=n.beacon;t.userConfig={},t.readyQueue=[],t.config=function(e){this.userConfig=e},t.ready=function(e){this.readyQueue.push(e)},o.config={docs:{enabled:!0,baseUrl:"https://wp-rocket.helpscoutdocs.com/"},contact:{enabled:!0,formId:"6e4a6b6e-1b2d-11e8-b466-0ec85169275a"}};var r=e.getElementsByTagName("script")[0],c=e.createElement("script");c.type="text/javascript",c.async=!0,c.src="https://djtflbt20bdde.cloudfront.net/",r.parentNode.insertBefore(c,r)}(document,window.HSCW||{},window.HS||{});</script>';
-
-				$script .= "<script>HS.beacon.ready( function() {
-					HS.beacon.suggest([
-						'5569b671e4b027e1978e3c51',
-						'556778c8e4b01a224b426fad',
-						'556ef48ce4b01a224b428691',
-						'54205957e4b099def9b55df0',
-					]);
-				} );</script>";
-
-				$script .= '<script>HS.beacon.config({
-					showSubject: true,
-				});</script>';
+				$lang        = '';
+				$form_id     = '6e4a6b6e-1b2d-11e8-b466-0ec85169275a';
+				$suggest     = wp_list_pluck( $this->get_default_documentation(), 'id' );
+				$translation = '';
 				break;
 		}
 
+		$script = '<script>!function(e,o,n){window.HSCW=o,window.HS=n,n.beacon=n.beacon||{};var t=n.beacon;t.userConfig={},t.readyQueue=[],t.config=function(e){this.userConfig=e},t.ready=function(e){this.readyQueue.push(e)},o.config={docs:{enabled:!0,baseUrl:"https://wp-rocket' . $lang . '.helpscoutdocs.com/"},contact:{enabled:!0,formId:"' . $form_id . '"}};var r=e.getElementsByTagName("script")[0],c=e.createElement("script");c.type="text/javascript",c.async=!0,c.src="https://djtflbt20bdde.cloudfront.net/",r.parentNode.insertBefore(c,r)}(document,window.HSCW||{},window.HS||{});
+			HS.beacon.ready( function() {
+				HS.beacon.suggest(' . wp_json_encode( $suggest ) . ');
+				HS.beacon.identify({
+					email: "' . get_rocket_option( 'consumer_email' ) . '"
+				});
+			} );
+			HS.beacon.config({
+				showSubject: true,
+				translation: {' . $translation . '}
+			});</script>';
+
 		echo $script;
+	}
+
+	/**
+	 * Returns default documentation items for FAQ and beacon.
+	 *
+	 * @since 3.0
+	 * @author Remy Perona
+	 *
+	 * @param string $lang Documentation language.
+	 * @return array
+	 */
+	private function get_default_documentation( $lang = 'EN' ) {
+		$documentation_items = [
+			'EN' => [
+				[
+					'id'    => '5569b671e4b027e1978e3c51',
+					'url'   => 'https://docs.wp-rocket.me/article/99-pages-are-not-cached-or-css-and-js-minification-are-not-working',
+					'title' => 'Pages Are Not Cached or CSS and JS Minification Are Not Working',
+				],
+				[
+					'id'    => '556778c8e4b01a224b426fad',
+					'url'   => 'https://docs.wp-rocket.me/article/85-google-page-speed-grade-does-not-improve',
+					'title' => 'Google PageSpeed Grade does not Improve',
+				],
+				[
+					'id'    => '556ef48ce4b01a224b428691',
+					'url'   => 'https://docs.wp-rocket.me/article/106-my-site-is-broken',
+					'title' => 'My Site Is Broken',
+				],
+				[
+					'id'    => '54205957e4b099def9b55df0',
+					'url'   => 'https://docs.wp-rocket.me/article/19-resolving-issues-with-file-optimization',
+					'title' => 'Resolving Issues with File Optimization',
+				],
+			],
+			'FR' => [
+				[
+					'id'    => '5697d2dc9033603f7da31041',
+					'url'   => 'https://fr.docs.wp-rocket.me/article/264-les-pages-ne-sont-pas-mises-en-cache-ou-la-minification-css-et-js-ne-fonctionne-pas',
+					'title' => 'Les pages ne sont pas mises en cache, ou la minification CSS et JS ne fonctionne pas',
+				],
+				[
+					'id'    => '569564dfc69791436155e0b0',
+					'url'   => 'https://fr.docs.wp-rocket.me/article/218-la-note-google-page-speed-ne-sameliore-pas',
+					'title' => "La note Google Page Speed ne s'améliore pas",
+				],
+				[
+					'id'    => '5697d03bc69791436155ed69',
+					'url'   => 'https://fr.docs.wp-rocket.me/article/263-site-casse',
+					'title' => 'Mon site est cassé',
+				],
+				[
+					'id'    => '56967d73c69791436155e637',
+					'url'   => 'https://fr.docs.wp-rocket.me/article/241-problemes-minification',
+					'title' => "Résoudre les problèmes avec l'optimisation des fichiers",
+				],
+			],
+		];
+
+		return isset( $documentation_items[ $lang ] ) ? $documentation_items[ $lang ] : $documentation_items['en'];
 	}
 
 	/**
@@ -331,6 +381,7 @@ class Page {
 			[
 				'title'            => __( 'Dashboard', 'rocket' ),
 				'menu_description' => __( 'Get help, account info', 'rocket' ),
+				'faq'              => $this->get_default_documentation( $this->locale ),
 			]
 		);
 
@@ -658,7 +709,7 @@ class Page {
 	 *
 	 * @return void
 	 */
-	public function media_section() {
+	private function media_section() {
 		$this->settings->add_page_section(
 			'media',
 			[
@@ -747,7 +798,7 @@ class Page {
 	 *
 	 * @return void
 	 */
-	public function preload_section() {
+	private function preload_section() {
 		$this->settings->add_page_section(
 			'preload',
 			[
@@ -844,7 +895,7 @@ class Page {
 	 *
 	 * @return void
 	 */
-	public function advanced_cache_section() {
+	private function advanced_cache_section() {
 		$this->settings->add_page_section(
 			'advanced_cache',
 			[
@@ -942,7 +993,7 @@ class Page {
 	 *
 	 * @return void
 	 */
-	public function database_section() {
+	private function database_section() {
 		$total                 = array();
 		$database_optimization = new \Rocket_Database_Optimization();
 
@@ -1110,7 +1161,7 @@ class Page {
 	 *
 	 * @return void
 	 */
-	public function cdn_section() {
+	private function cdn_section() {
 		$this->settings->add_page_section(
 			'cdn',
 			[
@@ -1175,7 +1226,7 @@ class Page {
 	 *
 	 * @return void
 	 */
-	public function addons_section() {
+	private function addons_section() {
 		$this->settings->add_page_section(
 			'addons',
 			[
@@ -1242,7 +1293,7 @@ class Page {
 	 *
 	 * @return void
 	 */
-	public function cloudflare_section() {
+	private function cloudflare_section() {
 		$this->settings->add_page_section(
 			'do_cloudflare',
 			[
