@@ -35,7 +35,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 	<?php if ( ! empty( $data['description'] ) ) { ?>
 	<div class="wpr-field-description">
-		<?php echo esc_html( $data['description'] ); ?>
+		<?php echo $data['description']; ?>
 	</div>
 	<?php } ?>
 </div>
