@@ -9,6 +9,13 @@
  *
  *     @type string $id    Page section identifier.
  *     @type string $title Page section title.
+ *     @type array  $faq   {
+ *         Items to populate the FAQ section.
+ *
+ *         @type string $id    Documentation item ID.
+ *         @type string $url   Documentation item URL.
+ *         @type string $title Documentation item title.
+ *     }
  * }
  */
 
@@ -92,7 +99,11 @@ $this->render_settings_sections( $data['id'] );
 <div class="wpr-optionHeader">
 	<h3 class="wpr-title2"><?php esc_html_e( 'Frequently Asked Questions', 'rocket' ); ?></h3>
 </div>
-
+<ul>
+<?php foreach ( $data['faq'] as $faq_item ) : ?>
+	<li><a href="<?php echo esc_attr( $faq_item['url'] ); ?>" data-beacon-article="<?php echo esc_attr( $faq_item['id'] ); ?>"><?php echo esc_html( $faq_item['title'] ); ?></a></li>
+<?php endforeach; ?>
+</ul>
 <h4><?php esc_html_e( 'Still can not find a solution?', 'rocket' ); ?></h4>
 <p><?php esc_html_e( 'Submit a ticket and get help from our friendly and knowledgeable Rocketeers.', 'rocket' ); ?></h4>
 <?php
