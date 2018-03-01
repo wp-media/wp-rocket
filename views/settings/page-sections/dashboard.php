@@ -41,18 +41,28 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 					?>
 			</div>
 
-			<?php esc_html_e( 'License' ); ?> Unlimited
-			<?php esc_html_e( 'Expiration date' ); ?> 31/12/2018
-			<?php
-			$this->render_action_button( 'link', 'view_account', [
-				'label'      => __( 'View my account', 'rocket' ),
-				'icon'       => '',
-				'attributes' => [
-					'target' => '_blank',
-					'class'  => 'wpr-button wpr-button--icon wpr-button--small wpr-button--purple wpr-icon-user',
-				],
-				] );
-			?>
+			<div class="wpr-field">
+				<div class="wpr-flex">
+					<div>
+						<span class="wpr-title3"><?php esc_html_e( 'License' ); ?></span>
+						<span class="wpr-infoAccount">Unlimited</span><br>
+						<span class="wpr-title3"><?php esc_html_e( 'Expiration date' ); ?></span>
+						<span class="wpr-infoAccount">31/12/2018</span>
+					</div>
+					<div>
+						<?php
+						$this->render_action_button( 'link', 'view_account', [
+							'label'      => __( 'View my account', 'rocket' ),
+							'icon'       => '',
+							'attributes' => [
+								'target' => '_blank',
+								'class'  => 'wpr-button wpr-button--icon wpr-button--small wpr-button--purple wpr-icon-user',
+							],
+							] );
+						?>
+					</div>
+				</div>
+			</div>
 
 			<?php
 				$this->render_settings_sections( $data['id'] );
@@ -67,7 +77,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 			<div class="wpr-fieldsContainer">
 				<fieldset class="wpr-fieldsContainer-fieldset">
 					<div class="wpr-field">
-						<h4><?php esc_html_e( 'Remove all cached files', 'rocket' ); ?></h4>
+						<h4 class="wpr-title3"><?php esc_html_e( 'Remove all cached files', 'rocket' ); ?></h4>
 						<?php
 						$this->render_action_button( 'link', 'purge_cache', [
 							'label'      => __( 'Clear cache', 'rocket' ),
@@ -83,7 +93,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 					</div>
 
 					<div class="wpr-field">
-						<h4><?php esc_html_e( 'Start cache preloading', 'rocket' ); ?></h4>
+						<h4 class="wpr-title3"><?php esc_html_e( 'Start cache preloading', 'rocket' ); ?></h4>
 						<?php
 						$this->render_action_button( 'link', 'preload', [
 							'label'      => __( 'Preload cache', 'rocket' ),
@@ -96,7 +106,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 					</div>
 
 					<div class="wpr-field">
-						<h4><?php esc_html_e( 'Purge OPCache content', 'rocket' ); ?></h4>
+						<h4 class="wpr-title3"><?php esc_html_e( 'Purge OPCache content', 'rocket' ); ?></h4>
 						<?php
 						$this->render_action_button( 'link', 'rocket_purge_opcache', [
 							'label'      => __( 'Purge OPCache', 'rocket' ),
