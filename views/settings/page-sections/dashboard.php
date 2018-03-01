@@ -116,21 +116,33 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 			<div class="wpr-optionHeader">
 				<h3 class="wpr-title2"><?php esc_html_e( 'Frequently Asked Questions', 'rocket' ); ?></h3>
 			</div>
-			<ul>
-			<?php foreach ( $data['faq'] as $faq_item ) : ?>
-				<li><a href="<?php echo esc_attr( $faq_item['url'] ); ?>" data-beacon-article="<?php echo esc_attr( $faq_item['id'] ); ?>"><?php echo esc_html( $faq_item['title'] ); ?></a></li>
-			<?php endforeach; ?>
-			</ul>
-			<h4><?php esc_html_e( 'Still can not find a solution?', 'rocket' ); ?></h4>
-			<p><?php esc_html_e( 'Submit a ticket and get help from our friendly and knowledgeable Rocketeers.', 'rocket' ); ?></p>
-			<?php
-			$this->render_action_button( 'button', 'ask_support', [
-				'label'      => __( 'Ask support', 'rocket' ),
-				'icon'       => '',
-				'attributes' => [
-					'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-button--blue wpr-icon-help',
-				],
-			] ); ?>
+			<fieldset class="wpr-fieldsContainer-fieldset">
+				<div class="wpr-field">
+					<ul class="wpr-field-list">
+					<?php foreach ( $data['faq'] as $faq_item ) : ?>
+						<li class="wpr-icon-information"><a href="<?php echo esc_attr( $faq_item['url'] ); ?>" data-beacon-article="<?php echo esc_attr( $faq_item['id'] ); ?>"><?php echo esc_html( $faq_item['title'] ); ?></a></li>
+					<?php endforeach; ?>
+					</ul>
+				</div>
+				<div class="wpr-field">
+					<div class="wpr-flex">
+						<div>
+							<h3 class="wpr-title2"><?php esc_html_e( 'Still can not find a solution?', 'rocket' ); ?></h3>
+							<p class="wpr-field-description"><?php esc_html_e( 'Submit a ticket and get help from our friendly and knowledgeable Rocketeers.', 'rocket' ); ?></p>
+						</div>
+						<div>
+							<?php
+							$this->render_action_button( 'button', 'ask_support', [
+								'label'      => __( 'Ask support', 'rocket' ),
+								'icon'       => '',
+								'attributes' => [
+									'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-button--blue wpr-icon-help',
+								],
+								] ); ?>
+						</div>
+					</div>
+				</div>
+			</fieldset>
 		</div>
 
 		<div class="wpr-Page-col wpr-Page-col--fixed">

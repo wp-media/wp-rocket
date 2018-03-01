@@ -23,8 +23,60 @@
 
     &-description{
         margin-top: 4px;
-        margin-left: $space*4;
         color: $cGreyDark1;
+    }
+
+    &-list{
+        margin: 0;
+        color: $cGreyDark2;
+
+        li{
+            &+li{
+                margin-top: $space*2;
+            }
+
+            &:before{
+                position: relative;
+                top: 3px;
+                margin-right: $space;
+                color: $cBlueDark1;
+                @include font-size(18,20);
+            }
+        }
+
+        a{
+            text-decoration: none;
+
+            &:hover{
+                color: $cBlue;
+            }
+        }
+    }
+
+    .wpr-button{
+        margin: $space 0;
+    }
+
+    .wpr-flex{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        & > div{
+            flex: 0 0 50%;
+
+            &:last-child{
+                text-align: right;
+            }
+        }
+    }
+
+    p{
+        margin-bottom: 0;
+    }
+
+    h4{
+        @include font-size(14,24);
     }
 
     // Children field
@@ -32,11 +84,10 @@
         padding-left: 32px;
     }
 
-    .wpr-button{
-        margin: $space 0;
-    }
-
-    h4{
-        @include font-size(14,24);
+    // Checkbox
+    &--checkbox{
+        .wpr-field-description{
+            margin-left: $space*4;
+        }
     }
 }

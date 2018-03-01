@@ -14,7 +14,16 @@
         display: block;
 
         .wpr-documentation{
-            margin-top: $space*6;
+            margin-top: 98px;
+            padding: $space*5 $space*2;
+
+            .wpr-button{
+                margin-top: $space;
+            }
+
+            i{
+                @include font-size(54,54);
+            }
         }
     }
 

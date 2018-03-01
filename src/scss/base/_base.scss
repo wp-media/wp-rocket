@@ -35,7 +35,7 @@ a{
     -ms-interpolation-mode: nearest-neighbor;
     image-rendering: optimizeQuality;
     text-rendering: optimizeLegibility;
-    
+
     display: flex;
     color: #000;
     @include font-size(13,20);
