@@ -86,7 +86,9 @@ class Page {
 		$this->capability = $args['capability'];
 		$this->settings   = $settings;
 		$this->render     = $render;
-		$this->locale     = current( array_slice( explode( '_', get_locale() ), 0, 1 ) );
+
+		$locale       = function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale();
+		$this->locale = current( array_slice( explode( '_', $locale ), 1, 1 ) );
 	}
 
 	/**
@@ -105,7 +107,7 @@ class Page {
 
 		add_action( 'admin_menu', [ $self, 'add_admin_page' ] );
 		add_action( 'admin_init', [ $self, 'configure' ] );
-		add_action( 'admin_footer', [ $self, 'insert_beacon' ] );
+		add_action( 'admin_print_footer_scripts-settings_page_wprocket', [ $self, 'insert_beacon' ] );
 		add_filter( 'option_page_capability_' . $self->slug, [ $self, 'required_capability' ] );
 	}
 
@@ -202,12 +204,8 @@ class Page {
 			return;
 		}
 
-		if ( get_current_screen()->id !== 'settings_page_wprocket' ) {
-			return;
-		}
-
 		switch ( $this->locale ) {
-			case 'fr':
+			case 'FR':
 				$script = '<script>!function(e,o,n){window.HSCW=o,window.HS=n,n.beacon=n.beacon||{};var t=n.beacon;t.userConfig={},t.readyQueue=[],t.config=function(e){this.userConfig=e},t.ready=function(e){this.readyQueue.push(e)},o.config={docs:{enabled:!0,baseUrl:"https://wp-rocket-fr.helpscoutdocs.com/"},contact:{enabled:!0,formId:"5d9279dc-1b2d-11e8-b466-0ec85169275a"}};var r=e.getElementsByTagName("script")[0],c=e.createElement("script");c.type="text/javascript",c.async=!0,c.src="https://djtflbt20bdde.cloudfront.net/",r.parentNode.insertBefore(c,r)}(document,window.HSCW||{},window.HS||{});</script>';
 
 				$script .= "<script>HS.beacon.ready( function() {
@@ -359,7 +357,8 @@ class Page {
 				'analytics_enabled' => [
 					'type'              => 'sliding_checkbox',
 					'label'             => __( 'Rocket Sharer', 'rocket' ),
-					'description'       => __( 'I agree to share anonymous data with the development team to help improve WP Rocket. What info will we collect?', 'rocket' ),
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'description'       => sprintf( __( 'I agree to share anonymous data with the development team to help improve WP Rocket. %1$sWhat info will we collect?%2$s', 'rocket' ), '<a href="#TB_inline&inlineId=rocket-analytics-info&width=720&height=510" title="WP Rocket Analytics" class="thickbox">', '</a>' ),
 					'section'           => 'status',
 					'page'              => 'dashboard',
 					'default'           => 0,
@@ -1377,83 +1376,83 @@ class Page {
 	 *
 	 * @return string
 	 */
-	private function get_beacon_suggest( $id, $lang = 'en' ) {
+	private function get_beacon_suggest( $id, $lang = 'EN' ) {
 		$suggest = [
 			'user_cache'             => [
-				'en' => '56b55ba49033600da1c0b687,587920b5c697915403a0e1f4,560c66b0c697917e72165a6d',
-				'fr' => '56cb9ba990336008e9e9e3d9,5879230cc697915403a0e211,569410999033603f7da2fa94',
+				'EN' => '56b55ba49033600da1c0b687,587920b5c697915403a0e1f4,560c66b0c697917e72165a6d',
+				'FR' => '56cb9ba990336008e9e9e3d9,5879230cc697915403a0e211,569410999033603f7da2fa94',
 			],
 			'mobile_cache'           => [
-				'en' => '577a5f1f903360258a10e52a,5678aa76c697914361558e92,5745b9a6c697917290ddc715',
-				'fr' => '589b17a02c7d3a784630b249,5a6b32830428632faf6233dc,58a480e5dd8c8e56bfa7b85c',
+				'EN' => '577a5f1f903360258a10e52a,5678aa76c697914361558e92,5745b9a6c697917290ddc715',
+				'FR' => '589b17a02c7d3a784630b249,5a6b32830428632faf6233dc,58a480e5dd8c8e56bfa7b85c',
 			],
 			'cache_lifespan'         => [
-				'en' => '555c7e9ee4b027e1978e17a5,5922fd0e0428634b4a33552c',
-				'fr' => '568f7df49033603f7da2ec72,598080e1042863033a1b890e',
+				'EN' => '555c7e9ee4b027e1978e17a5,5922fd0e0428634b4a33552c',
+				'FR' => '568f7df49033603f7da2ec72,598080e1042863033a1b890e',
 			],
 			'basic'                  => [
-				'en' => '55231415e4b0221aadf25676,588286b32c7d3a4a60b95b6c,58869c492c7d3a7846303a3d',
-				'fr' => '569568269033603f7da30334,58e3be72dd8c8e5c57311c6e,59b7f049042863033a1cc5d0',
+				'EN' => '55231415e4b0221aadf25676,588286b32c7d3a4a60b95b6c,58869c492c7d3a7846303a3d',
+				'FR' => '569568269033603f7da30334,58e3be72dd8c8e5c57311c6e,59b7f049042863033a1cc5d0',
 			],
 			'css'                    => [
-				'en' => '54205957e4b099def9b55df0,5419ec47e4b099def9b5565f,5578cfbbe4b027e1978e6bb1,5569b671e4b027e1978e3c51,5923772c2c7d3a074e8ab8b9',
-				'fr' => '56967d73c69791436155e637,56967e80c69791436155e646,56957209c69791436155e0f6,5697d2dc9033603f7da31041593fec6d2c7d3a0747cddb93',
+				'EN' => '54205957e4b099def9b55df0,5419ec47e4b099def9b5565f,5578cfbbe4b027e1978e6bb1,5569b671e4b027e1978e3c51,5923772c2c7d3a074e8ab8b9',
+				'FR' => '56967d73c69791436155e637,56967e80c69791436155e646,56957209c69791436155e0f6,5697d2dc9033603f7da31041593fec6d2c7d3a0747cddb93',
 			],
 			'js'                     => [
-				'en' => '54205957e4b099def9b55df0,5419ec47e4b099def9b5565f,5578cfbbe4b027e1978e6bb1,587904cf90336009736c678e,54b9509de4b07997ea3f27c7,59236dfb0428634b4a3358f9',
-				'fr' => '56967d73c69791436155e637,56967e80c69791436155e646,56957209c69791436155e0f6,58a337c12c7d3a576d352cde,56967eebc69791436155e649,593fe9882c7d3a0747cddb77',
+				'EN' => '54205957e4b099def9b55df0,5419ec47e4b099def9b5565f,5578cfbbe4b027e1978e6bb1,587904cf90336009736c678e,54b9509de4b07997ea3f27c7,59236dfb0428634b4a3358f9',
+				'FR' => '56967d73c69791436155e637,56967e80c69791436155e646,56957209c69791436155e0f6,58a337c12c7d3a576d352cde,56967eebc69791436155e649,593fe9882c7d3a0747cddb77',
 			],
 			'lazyload'               => [
-				'en' => '54b85754e4b0512429883a86,5418c792e4b0e7b8127bed99,569ec4a69033603f7da32c93,5419e246e4b099def9b5561e,5a299b332c7d3a1a640cb402',
-				'fr' => '56967a859033603f7da30858,56967952c69791436155e60a,56cb9c9d90336008e9e9e3dc,569676ea9033603f7da3083d,5a3a66f52c7d3a1943676524',
+				'EN' => '54b85754e4b0512429883a86,5418c792e4b0e7b8127bed99,569ec4a69033603f7da32c93,5419e246e4b099def9b5561e,5a299b332c7d3a1a640cb402',
+				'FR' => '56967a859033603f7da30858,56967952c69791436155e60a,56cb9c9d90336008e9e9e3dc,569676ea9033603f7da3083d,5a3a66f52c7d3a1943676524',
 			],
 			'sitemap_preload'        => [
-				'en' => '541780fde4b005ed2d11784c,5a71c8ab2c7d3a4a4198a9b3,55b282ede4b0b0593824f852',
-				'fr' => '5693d582c69791436155d645',
+				'EN' => '541780fde4b005ed2d11784c,5a71c8ab2c7d3a4a4198a9b3,55b282ede4b0b0593824f852',
+				'FR' => '5693d582c69791436155d645',
 			],
 			'preload_bot'            => [
-				'en' => '541780fde4b005ed2d11784c,55b282ede4b0b0593824f852,559113eae4b027e1978eba11',
-				'fr' => '5693d582c69791436155d645,569433d1c69791436155d99c',
+				'EN' => '541780fde4b005ed2d11784c,55b282ede4b0b0593824f852,559113eae4b027e1978eba11',
+				'FR' => '5693d582c69791436155d645,569433d1c69791436155d99c',
 			],
 			'dns_prefetch'           => [
-				'en' => '541780fde4b005ed2d11784c',
-				'fr' => '5693d582c69791436155d645',
+				'EN' => '541780fde4b005ed2d11784c',
+				'FR' => '5693d582c69791436155d645',
 			],
 			'never_cache'            => [
-				'en' => '5519ab03e4b061031402119f,559110d0e4b027e1978eba09,56b55ba49033600da1c0b687,553ac7bfe4b0eb143c62af44,587920b5c697915403a0e1f4,5569b671e4b027e1978e3c51',
-				'fr' => '56941c0cc69791436155d8ab,56943395c69791436155d99a,56cb9ba990336008e9e9e3d9,56942fc3c69791436155d987,5879230cc697915403a0e211,5697d2dc9033603f7da31041',
+				'EN' => '5519ab03e4b061031402119f,559110d0e4b027e1978eba09,56b55ba49033600da1c0b687,553ac7bfe4b0eb143c62af44,587920b5c697915403a0e1f4,5569b671e4b027e1978e3c51',
+				'FR' => '56941c0cc69791436155d8ab,56943395c69791436155d99a,56cb9ba990336008e9e9e3d9,56942fc3c69791436155d987,5879230cc697915403a0e211,5697d2dc9033603f7da31041',
 			],
 			'always_purge'           => [
-				'en' => '555c7e9ee4b027e1978e17a,55151406e4b0610314020a3f,5632858890336002f86d903e,5792c0c1903360293603896b',
-				'fr' => '568f7df49033603f7da2ec72,5694194d9033603f7da2fb00,56951208c69791436155de2a,57a4a0c3c697910783242008',
+				'EN' => '555c7e9ee4b027e1978e17a,55151406e4b0610314020a3f,5632858890336002f86d903e,5792c0c1903360293603896b',
+				'FR' => '568f7df49033603f7da2ec72,5694194d9033603f7da2fb00,56951208c69791436155de2a,57a4a0c3c697910783242008',
 			],
 			'query_strings'          => [
-				'en' => '590a83610428634b4a32d52c',
-				'fr' => '597a04fd042863033a1b6da4',
+				'EN' => '590a83610428634b4a32d52c',
+				'FR' => '597a04fd042863033a1b6da4',
 			],
 			'cleanup'                => [
-				'en' => '55dcaa28e4b01d7a6a9bd373,578cd762c6979160ca1441cd,5569d11ae4b01a224b427725',
-				'fr' => '5697cebbc69791436155ed5e,58b6e7a0dd8c8e56bfa819f5,5697cd85c69791436155ed50',
+				'EN' => '55dcaa28e4b01d7a6a9bd373,578cd762c6979160ca1441cd,5569d11ae4b01a224b427725',
+				'FR' => '5697cebbc69791436155ed5e,58b6e7a0dd8c8e56bfa819f5,5697cd85c69791436155ed50',
 			],
 			'cdn'                    => [
-				'en' => '54c7fa3de4b0512429885b5c,54205619e4b0e7b8127bf849,54a6d578e4b047ebb774a687,56b2b4459033603f7da37acf,566f749f9033603f7da28459,5434667fe4b0310ce5ee867a',
-				'fr' => '5696830b9033603f7da308ac,5696837e9033603f7da308ae,569685749033603f7da308c0,57a4961190336059d4edc9d8,5697d5f8c69791436155ed8e,569684d29033603f7da308b9',
+				'EN' => '54c7fa3de4b0512429885b5c,54205619e4b0e7b8127bf849,54a6d578e4b047ebb774a687,56b2b4459033603f7da37acf,566f749f9033603f7da28459,5434667fe4b0310ce5ee867a',
+				'FR' => '5696830b9033603f7da308ac,5696837e9033603f7da308ae,569685749033603f7da308c0,57a4961190336059d4edc9d8,5697d5f8c69791436155ed8e,569684d29033603f7da308b9',
 			],
 			'exclude_cdn'            => [
-				'en' => '5434667fe4b0310ce5ee867a',
-				'fr' => '569684d29033603f7da308b9',
+				'EN' => '5434667fe4b0310ce5ee867a',
+				'FR' => '569684d29033603f7da308b9',
 			],
 			'cloudflare_credentials' => [
-				'en' => '54205619e4b0e7b8127bf849',
-				'fr' => '5696837e9033603f7da308ae',
+				'EN' => '54205619e4b0e7b8127bf849',
+				'FR' => '5696837e9033603f7da308ae',
 			],
 			'cloudflare_settings'    => [
-				'en' => '54205619e4b0e7b8127bf849',
-				'fr' => '5696837e9033603f7da308ae',
+				'EN' => '54205619e4b0e7b8127bf849',
+				'FR' => '5696837e9033603f7da308ae',
 			],
 			'varnish'                => [
-				'en' => '56f48132c6979115a34095bd',
-				'fr' => '56fd2f789033601d6683e574',
+				'EN' => '56f48132c6979115a34095bd',
+				'FR' => '56fd2f789033601d6683e574',
 			],
 		];
 
