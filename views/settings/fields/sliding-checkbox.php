@@ -17,7 +17,6 @@
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 ?>
 <input type="checkbox" id="<?php echo esc_attr( $data['id'] ); ?>" class="" name="wp_rocket_settings[<?php echo esc_attr( $data['id'] ); ?>]" value="1" <?php checked( $data['value'], 1 ); ?>> <label for="<?php echo esc_attr( $data['id'] ); ?>" class=""><?php echo esc_html( $data['label'] ); ?></label>
-<p><?php echo esc_html( $data['description'] ); ?></p>
-
-
-
+<?php if ( ! empty( $data['description'] ) ) : ?>
+<p><?php echo $data['description']; ?></p>
+<?php endif; ?>
