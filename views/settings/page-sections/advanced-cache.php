@@ -18,6 +18,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 <div id="<?php echo esc_attr( $data['id'] ); ?>" class="wpr-Page">
 	<div class="wpr-sectionHeader">
 		<h2 class="wpr-title1 wpr-icon-rules"><?php echo esc_html( $data['title'] ); ?></h2>
+		<p><?php _e( 'These settings are for advanced cache management', 'rocket' ); ?></p>
 	</div>
 	<?php $this->render_settings_sections( $data['id'] ); ?>
 </div>
