@@ -9,7 +9,6 @@
 .wpr-sectionHeader{
     position: relative;
     border-bottom: 1px solid $cGrey;
-    margin-top: 48px; // To delete when load page with js
 
     &:before{
         content: '';

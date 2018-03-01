@@ -29,7 +29,8 @@
         opacity: 0.4;
     }
 
-    &:hover{
+    &:hover,
+    &.isActive{
         color: #fff;
         background: $cPurpleLight1;
         border-color: transparent;

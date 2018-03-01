@@ -1,5 +1,29 @@
 // main: ../main.scss
 
+h1,
+h2,
+h3,
+h4{
+    color: currentColor;
+    margin: 0;
+    font-weight: normal;
+}
+
+button{
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+a{
+    color: currentColor;
+
+    &:hover{
+        color: currentColor;
+    }
+}
+
 .wpr-wrap{
     padding: 16px;
     margin: 0 0 0 -20px;
@@ -22,26 +46,11 @@
     box-sizing: border-box;
 }
 
-h1,
-h2,
-h3,
-h4{
-    color: currentColor;
-    margin: 0;
-    font-weight: normal;
-}
+.wpr-page{
+    display: none;
+    margin-bottom: $space*4;
 
-button{
-    padding: 0;
-    border: none;
-    background: none;
-    cursor: pointer;
-}
-
-a{
-    color: currentColor;
-
-    &:hover{
-        color: currentColor;
+    &#dashboard{
+        display: block;
     }
 }
