@@ -16,7 +16,19 @@
 
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 ?>
-<input type="checkbox" id="<?php echo esc_attr( $data['id'] ); ?>" class="" name="wp_rocket_settings[<?php echo esc_attr( $data['id'] ); ?>]" value="1" <?php checked( $data['value'], 1 ); ?>> <label for="<?php echo esc_attr( $data['id'] ); ?>" class=""><?php echo esc_html( $data['label'] ); ?></label>
-<?php if ( ! empty( $data['description'] ) ) : ?>
-<p><?php echo $data['description']; ?></p>
-<?php endif; ?>
+
+<div class="wpr-field wpr-field--radio <?php echo isset( $data['parent'] ) ? 'wpr-field--children' : ''; ?>">
+	<div class="wpr-radio">
+        <input type="checkbox" id="<?php echo esc_attr( $data['id'] ); ?>" class="" name="wp_rocket_settings[<?php echo esc_attr( $data['id'] ); ?>]" value="1" <?php checked( $data['value'], 1 ); ?>>
+        <label for="<?php echo esc_attr( $data['id'] ); ?>" class="">
+			<span class="wpr-radio-ui"></span>
+			<?php echo esc_html( $data['label'] ); ?>
+		</label>
+    </div>
+
+    <?php if ( ! empty( $data['description'] ) ) : ?>
+        <div class="wpr-field-description">
+            <?php echo $data['description']; ?>
+        </div>
+    <?php endif; ?>
+</div>
