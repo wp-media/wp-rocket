@@ -311,7 +311,7 @@ class Page {
 			],
 		];
 
-		return isset( $documentation_items[ $lang ] ) ? $documentation_items[ $lang ] : $documentation_items['en'];
+		return isset( $documentation_items[ $lang ] ) ? $documentation_items[ $lang ] : $documentation_items['EN'];
 	}
 
 	/**
