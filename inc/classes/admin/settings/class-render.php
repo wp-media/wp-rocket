@@ -482,7 +482,7 @@ class Render extends Abstract_render {
 			case 'link':
 				switch ( $action ) {
 					case 'view_account':
-						$args['url'] = WP_ROCKET_WEB_MAIN . 'account/';
+						$args['url'] = rocket_get_external_url( 'account' );
 						break;
 					case 'purge_cache':
 						$url = admin_url( 'admin-post.php?action=' . $action );
