@@ -8,7 +8,7 @@
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 ?>
 
-<div id="tools" class="wpr-page">
+<div id="tools" class="wpr-Page">
 	<div class="wpr-sectionHeader">
 		<h2 class="wpr-title1 wpr-icon-tools"><?php esc_html_e( 'Import/Export', 'rocket' ); ?></h2>
 	</div>

@@ -8,12 +8,11 @@ document.addEventListener( 'DOMContentLoaded', function () {
 });
 
 
-
 /*-----------------------------------------------*\
 		CLASS PAGEMANAGER
 \*-----------------------------------------------*/
 /**
- * Manages the display of pages / section of the plugin
+ * Manages the display of pages / section for WP Rocket plugin
  *
  * Public method :
 	 change - Displays the corresponding page
@@ -26,17 +25,18 @@ function PageManager(aElem) {
 
     this.$menuItems = document.querySelectorAll('.wpr-menuItem');
     this.$submitButton = document.querySelector('.wpr-Content > form > input[type=submit]');
-    this.$pages = document.querySelectorAll('.wpr-page');
+    this.$pages = document.querySelectorAll('.wpr-Page');
     this.$sidebar = document.querySelector('.wpr-Sidebar');
     this.$menuItem = null;
     this.$page = null;
     this.pageId = null;
 
+
     // Click on menuItem
     for (var i = 0; i < this.$menuItems.length; i++) {
         refThis.$menuItems[i].onclick = function(event) {
             refThis.pageId = this.href.split('#')[1];
-            refThis.$page = document.querySelector('.wpr-page#' + refThis.pageId);
+            refThis.$page = document.querySelector('.wpr-Page#' + refThis.pageId);
             refThis.$menuItem = document.getElementById('wpr-nav-' + refThis.pageId);
 
             window.location.hash = refThis.pageId;
@@ -49,7 +49,7 @@ function PageManager(aElem) {
     // If hash already exist (after refresh page for example)
     if(window.location.hash){
         this.pageId = window.location.hash.split('#')[1];
-        this.$page = document.querySelector('.wpr-page#' + this.pageId);
+        this.$page = document.querySelector('.wpr-Page#' + this.pageId);
         this.$menuItem = document.getElementById('wpr-nav-' + this.pageId);
 
         this.change();
@@ -66,6 +66,7 @@ function PageManager(aElem) {
 */
 PageManager.prototype.change = function() {
 
+    // Scroll top
     document.documentElement.scrollTop = 0;
 
     // Hide other pages
@@ -84,8 +85,7 @@ PageManager.prototype.change = function() {
 
 
 
-
-    // Exception for tools
+    // Exception for dashboard
     if(this.pageId == "dashboard"){
         this.$sidebar.style.display = 'none';
     }

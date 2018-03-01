@@ -45,12 +45,3 @@ a{
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
-
-.wpr-page{
-    display: none;
-    margin-bottom: $space*4;
-
-    &#dashboard{
-        display: block;
-    }
-}

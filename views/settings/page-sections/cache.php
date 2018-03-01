@@ -15,7 +15,7 @@
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 ?>
 
-<div id="<?php echo esc_attr( $data['id'] ); ?>" class="wpr-page">
+<div id="<?php echo esc_attr( $data['id'] ); ?>" class="wpr-Page">
 	<div class="wpr-sectionHeader">
 		<h2 class="wpr-title1 wpr-icon-files"><?php echo esc_html( $data['title'] ); ?></h2>
 	</div>
