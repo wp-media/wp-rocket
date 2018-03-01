@@ -1,0 +1,24 @@
+// main: ../../main.scss
+
+/*-----------------------------------------------*\
+
+    textarea
+
+\*-----------------------------------------------*/
+
+
+.wpr-textarea{
+    margin-top: $space*2;
+
+    textarea{
+        padding: $space;
+        width: 100%;
+        height: $space*8;
+        font-family: Monaco;
+        color: $cBlack;
+        background: #fff;
+        border: 2px solid darken($cGrey, 10%);
+        border-radius: 3px;
+        @include font-size(12,16);
+    }
+}

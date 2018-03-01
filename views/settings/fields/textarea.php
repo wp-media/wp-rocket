@@ -16,4 +16,15 @@
 
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 ?>
-<textarea id="<?php echo esc_attr( $data['id'] ); ?>" name="wp_rocket_settings[<?php echo esc_attr( $data['id'] ); ?>]"><?php echo esc_textarea( $data['value'] ); ?></textarea>
+
+<div class="wpr-field wpr-field--textarea <?php echo isset( $data['parent'] ) ? 'wpr-field--children' : ''; ?>">
+    <?php if ( ! empty( $data['description'] ) ) { ?>
+        <div class="wpr-field-description">
+            <?php echo esc_html( $data['description'] ); ?>
+        </div>
+    <?php } ?>
+
+	<div class="wpr-textarea">
+        <textarea id="<?php echo esc_attr( $data['id'] ); ?>" name="wp_rocket_settings[<?php echo esc_attr( $data['id'] ); ?>]"><?php echo esc_textarea( $data['value'] ); ?></textarea>
+	</div>
+</div>
