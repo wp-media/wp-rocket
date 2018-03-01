@@ -20,7 +20,7 @@
 
     &-footer{
         margin-top: auto;
-        padding: 0 20px;
+        padding: $space*6 20px 0;
         @include font-size(11,48);
         color: $cGreyDark1;
     }

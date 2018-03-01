@@ -27,6 +27,7 @@ function PageManager(aElem) {
     this.$menuItems = document.querySelectorAll('.wpr-menuItem');
     this.$submitButton = document.querySelector('.wpr-Content > form > input[type=submit]');
     this.$pages = document.querySelectorAll('.wpr-page');
+    this.$sidebar = document.querySelector('.wpr-Sidebar');
     this.$menuItem = null;
     this.$page = null;
     this.pageId = null;
@@ -78,8 +79,16 @@ PageManager.prototype.change = function() {
     // Show current page
     this.$page.style.display = 'block';
     this.$submitButton.style.display = 'block';
+    this.$sidebar.style.display = 'block';
     this.$menuItem.classList.add('isActive');
 
+
+
+
+    // Exception for tools
+    if(this.pageId == "dashboard"){
+        this.$sidebar.style.display = 'none';
+    }
 
     // Exception for tools
     if(this.pageId == "tools"){
