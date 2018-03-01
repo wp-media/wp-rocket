@@ -35,3 +35,6 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 		<?php $this->render_settings_fields( $data['page'], $data['id'] ); ?>
 	</fieldset>
 </div>
+<?php if ( ! empty( $data['helper'] ) ) :
+	echo $data['helper'];
+endif;
