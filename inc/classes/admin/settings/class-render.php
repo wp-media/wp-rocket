@@ -495,6 +495,9 @@ class Render extends Abstract_render {
 						break;
 					case 'preload':
 					case 'rocket_purge_opcache':
+					case 'purge_cloudflare':
+					case 'rocket_rollback':
+					case 'rocket_export':
 						$url = admin_url( 'admin-post.php?action=' . $action );
 
 						if ( ! empty( $args['parameters'] ) ) {
