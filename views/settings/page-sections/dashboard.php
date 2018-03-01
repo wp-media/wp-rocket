@@ -41,8 +41,8 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 					?>
 			</div>
 
-			<?php esc_html_e( 'License' ); ?>
-			<?php esc_html_e( 'Expiration date' ); ?>
+			<?php esc_html_e( 'License' ); ?> Unlimited
+			<?php esc_html_e( 'Expiration date' ); ?> 31/12/2018
 			<?php
 			$this->render_action_button( 'link', 'view_account', [
 				'label'      => __( 'View my account', 'rocket' ),
