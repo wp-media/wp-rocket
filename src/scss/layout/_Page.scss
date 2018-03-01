@@ -12,9 +12,23 @@
 
     &#dashboard{ // Exception for dashboard
         display: block;
+
+        .wpr-documentation{
+            margin-top: $space*6;
+        }
     }
 
-    &-flex{
-        
+    &-row{
+        display: flex;
+        flex-direction: row;
+    }
+
+    &-col{
+        flex: 1 1 auto;
+    }
+
+    &-col--fixed{
+        margin-left: $space*3;
+        flex: 0 0 325px;
     }
 }
