@@ -31,4 +31,12 @@
     &--children{
         padding-left: 32px;
     }
+
+    .wpr-button{
+        margin: $space 0;
+    }
+
+    h4{
+        @include font-size(14,24);
+    }
 }

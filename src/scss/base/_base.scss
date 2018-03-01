@@ -30,17 +30,18 @@ a{
 }
 
 .wpr-body{
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -ms-interpolation-mode: nearest-neighbor;
+    image-rendering: optimizeQuality;
+    text-rendering: optimizeLegibility;
+    
     display: flex;
     color: #000;
     @include font-size(13,20);
 }
 
 .wpr-body * {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    -ms-interpolation-mode: nearest-neighbor;
-    image-rendering: optimizeQuality;
-    text-rendering: optimizeLegibility;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;

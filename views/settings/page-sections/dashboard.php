@@ -64,41 +64,51 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 				<h3 class="wpr-title2"><?php esc_html_e( 'Quick Actions', 'rocket' ); ?></h3>
 			</div>
 
-			<h4><?php esc_html_e( 'Remove all cached files', 'rocket' ); ?></h4>
-			<?php
-			$this->render_action_button( 'link', 'purge_cache', [
-				'label'      => __( 'Clear cache', 'rocket' ),
-				'icon'       => '',
-				'parameters' => [
-					'type' => 'all',
-				],
-				'attributes' => [
-					'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-icon-trash',
-				],
-				] );
-			?>
+			<div class="wpr-fieldsContainer">
+				<fieldset class="wpr-fieldsContainer-fieldset">
+					<div class="wpr-field">
+						<h4><?php esc_html_e( 'Remove all cached files', 'rocket' ); ?></h4>
+						<?php
+						$this->render_action_button( 'link', 'purge_cache', [
+							'label'      => __( 'Clear cache', 'rocket' ),
+							'icon'       => '',
+							'parameters' => [
+								'type' => 'all',
+							],
+							'attributes' => [
+								'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-icon-trash',
+							],
+							] );
+						?>
+					</div>
 
-			<h4><?php esc_html_e( 'Start cache preloading', 'rocket' ); ?></h4>
-			<?php
-			$this->render_action_button( 'link', 'preload', [
-				'label'      => __( 'Preload cache', 'rocket' ),
-				'icon'       => '',
-				'attributes' => [
-					'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-icon-refresh',
-				],
-				] );
-			?>
+					<div class="wpr-field">
+						<h4><?php esc_html_e( 'Start cache preloading', 'rocket' ); ?></h4>
+						<?php
+						$this->render_action_button( 'link', 'preload', [
+							'label'      => __( 'Preload cache', 'rocket' ),
+							'icon'       => '',
+							'attributes' => [
+								'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-icon-refresh',
+							],
+							] );
+						?>
+					</div>
 
-			<h4><?php esc_html_e( 'Purge OPCache content', 'rocket' ); ?></h4>
-			<?php
-			$this->render_action_button( 'link', 'rocket_purge_opcache', [
-				'label'      => __( 'Purge OPCache', 'rocket' ),
-				'icon'       => '',
-				'attributes' => [
-					'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-icon-trash',
-				],
-				] );
-			?>
+					<div class="wpr-field">
+						<h4><?php esc_html_e( 'Purge OPCache content', 'rocket' ); ?></h4>
+						<?php
+						$this->render_action_button( 'link', 'rocket_purge_opcache', [
+							'label'      => __( 'Purge OPCache', 'rocket' ),
+							'icon'       => '',
+							'attributes' => [
+								'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-icon-trash',
+							],
+							] );
+						?>
+					</div>
+				</fieldset>
+			</div>
 		</div>
 	</div>
 	<div class="wpr-Page-row">
