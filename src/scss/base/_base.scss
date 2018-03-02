@@ -18,6 +18,7 @@ button{
 
 a{
     color: currentColor;
+    @include transition(color, 200ms);
 
     &:hover{
         color: currentColor;

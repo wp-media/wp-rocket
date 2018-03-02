@@ -11,6 +11,10 @@
 
     &-description{
         color: $cGreyDark2;
+
+        a:hover{
+            color: $cBlue;
+        }
     }
 
     &-fieldset{

@@ -24,6 +24,10 @@
     &-description{
         margin-top: 4px;
         color: $cGreyDark1;
+
+        a:hover{
+            color: $cBlue;
+        }
     }
 
     &-description-label{
