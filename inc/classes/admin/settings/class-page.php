@@ -187,7 +187,7 @@ class Page {
 	 */
 	public function required_capability( $capability ) {
 		/** This filter is documented in inc/admin-bar.php */
-		return apply_filters( 'rocket_capacity', 'manage_options' );
+		return apply_filters( 'rocket_capacity', $capability );
 	}
 
 	/**
@@ -1463,12 +1463,12 @@ class Page {
 	 * @since 3.0
 	 * @author Remy Perona
 	 *
-	 * @param string $id   Section identifier.
-	 * @param string $lang Documentation language.
+	 * @param string $doc_id   Section identifier.
+	 * @param string $lang     Documentation language.
 	 *
 	 * @return string
 	 */
-	private function get_beacon_suggest( $id, $lang = 'en' ) {
+	private function get_beacon_suggest( $doc_id, $lang = 'en' ) {
 		$suggest = [
 			'faq'                    => [
 				'en' => [
@@ -1680,6 +1680,6 @@ class Page {
 			],
 		];
 
-		return isset( $suggest[ $id ][ $lang ] ) ? $suggest[ $id ][ $lang ] : $suggest[ $id ]['en'];
+		return isset( $suggest[ $doc_id ][ $lang ] ) ? $suggest[ $doc_id ][ $lang ] : $suggest[ $doc_id ]['en'];
 	}
 }
