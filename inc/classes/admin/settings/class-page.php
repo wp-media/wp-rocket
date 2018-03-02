@@ -284,7 +284,7 @@ class Page {
 				'consumer_key'   => [
 					'type'              => 'text',
 					'label'             => __( 'API key', 'rocket' ),
-					'class'             => 'disabled',
+					'class'             => 'wpr-isDisabled',
 					'section'           => 'license_section',
 					'page'              => 'license',
 					'sanitize_callback' => 'sanitize_text_field',
@@ -295,7 +295,7 @@ class Page {
 				'consumer_email' => [
 					'type'              => 'text',
 					'label'             => __( 'Email address', 'rocket' ),
-					'class'             => 'disabled',
+					'class'             => 'wpr-isDisabled',
 					'section'           => 'license_section',
 					'page'              => 'license',
 					'sanitize_callback' => 'sanitize_email',
@@ -420,7 +420,7 @@ class Page {
 				'cache_mobile'            => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Enable caching for mobile devices', 'rocket' ),
-					'class'             => rocket_is_mobile_plugin_active() ? 'disabled' : '',
+					'class'             => rocket_is_mobile_plugin_active() ? 'wpr-isDisabled' : '',
 					'section'           => 'mobile_cache_section',
 					'page'              => 'cache',
 					'default'           => 1,
@@ -435,7 +435,7 @@ class Page {
 					'label'             => __( 'Separate cache files for mobile devices', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 					'description'       => sprintf( __( '%1$sMobile cache%2$s works safest with both options enabled. When in doubt, keep both.', 'rocket' ), '<a href="' . $mobile_cache_beacon['url'] . '" data-beacon-article="' . $mobile_cache_beacon['id'] . '">', '</a>' ),
-					'class'             => rocket_is_mobile_plugin_active() ? 'disabled' : '',
+					'class'             => rocket_is_mobile_plugin_active() ? 'wpr-isDisabled' : '',
 					'section'           => 'mobile_cache_section',
 					'page'              => 'cache',
 					'default'           => rocket_is_mobile_plugin_active() ? 1 : 0,
@@ -515,7 +515,7 @@ class Page {
 				'minify_html'            => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Minify HTML', 'rocket' ),
-					'class'             => rocket_maybe_disable_minify_html() ? 'disabled' : '',
+					'class'             => rocket_maybe_disable_minify_html() ? 'wpr-isDisabled' : '',
 					'description'       => __( 'Minifying HTML removes whitespace and comments to reduce the size.', 'rocket' ),
 					'section'           => 'basic',
 					'page'              => 'file_optimization',
@@ -548,7 +548,7 @@ class Page {
 					'type'              => 'checkbox',
 					'label'             => __( 'Minify CSS Files', 'rocket' ),
 					'description'       => __( 'Minify CSS removes whitespace and comments to reduce the file size.', 'rocket' ),
-					'class'             => rocket_maybe_disable_minify_css() ? 'disabled' : '',
+					'class'             => rocket_maybe_disable_minify_css() ? 'wpr-isDisabled' : '',
 					'section'           => 'css',
 					'page'              => 'file_optimization',
 					'default'           => 0,
@@ -567,10 +567,14 @@ class Page {
 					'label'             => __( 'Combine CSS Files (Enable minify CSS files to select)', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 					'description'       => sprintf( __( 'Combine CSS merges all your files into 1, reducing HTTP requests. Not recommended if your site uses HTTP/2. %1$sMore info%2$s', 'rocket' ), '<a href="' . $combine_beacon['url'] . '" data-beacon-article="' . $combine_beacon['id'] . '">', '</a>' ),
+					'class'             => ! get_rocket_option( 'minify_css' ) ? 'wpr-isDisabled' : 0,
 					'section'           => 'css',
 					'page'              => 'file_optimization',
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
+					'input_attr'        => [
+						'disabled' => ! get_rocket_option( 'minify_css' ) ? 1 : 0,
+					],
 					'warning'           => [
 						'title'        => __( 'this could break things!', 'rocket' ),
 						'description'  => __( 'If you notice any errors on your website after having activated this setting, just deactivate it again, and your site will be back to normal.', 'rocket' ),
@@ -611,7 +615,7 @@ class Page {
 					'type'              => 'checkbox',
 					'label'             => __( 'Minify JavaScript Files', 'rocket' ),
 					'description'       => __( 'Minify JavaScript removes whitespace and comments to reduce the file size.', 'rocket' ),
-					'class'             => rocket_maybe_disable_minify_js() ? 'disabled' : '',
+					'class'             => rocket_maybe_disable_minify_js() ? 'wpr-isDisabled' : '',
 					'section'           => 'js',
 					'page'              => 'file_optimization',
 					'default'           => 0,
@@ -630,10 +634,14 @@ class Page {
 					'label'             => __( 'Combine JavaScript files (Enable minify JS to select)', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 					'description'       => sprintf( __( 'Combine Javascript files combines your site\'s JS info fewer files, reducing HTTP requests. Not recommended if your site uses HTTP/2. %1$sMore info%2$s', 'rocket' ), '<a href="' . $combine_beacon['url'] . '" data-beacon-article="' . $combine_beacon['id'] . '">', '</a>' ),
+					'class'             => ! get_rocket_option( 'minify_js' ) ? 'wpr-isDisabled' : 0,
 					'section'           => 'js',
 					'page'              => 'file_optimization',
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
+					'input_attr'        => [
+						'disabled' => ! get_rocket_option( 'minify_js' ) ? 1 : 0,
+					],
 					'warning'           => [
 						'title'        => __( 'this could break things!', 'rocket' ),
 						'description'  => __( 'If you notice any errors on your website after having activated this setting, just deactivate it again, and your site will be back to normal.', 'rocket' ),
