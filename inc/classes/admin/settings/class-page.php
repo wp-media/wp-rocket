@@ -659,6 +659,7 @@ class Page {
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
 				'defer_all_js_safe'      => [
+					'parent'            => 'defer_all_js',
 					'type'              => 'checkbox',
 					'label'             => __( 'Safe Mode (recommended)', 'rocket' ),
 					'description'       => __( 'Safe mode for deferred JS ensures support for inline jQuery references from themes and plugins by loading jQuery at the top of the document as a render-blocking script. Deactivating may result in broken functionality, test thoroughly!', 'rocket' ),
