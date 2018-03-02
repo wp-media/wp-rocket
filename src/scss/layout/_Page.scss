@@ -25,6 +25,10 @@
                 @include font-size(54,54);
             }
         }
+
+        .wpr-field-account{
+            padding-bottom: 0;
+        }
     }
 
     &-row{

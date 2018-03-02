@@ -41,7 +41,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 					?>
 			</div>
 
-			<div class="wpr-field">
+			<div class="wpr-field wpr-field-account">
 				<div class="wpr-flex">
 					<div>
 						<span class="wpr-title3"><?php esc_html_e( 'License' ); ?></span>
