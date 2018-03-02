@@ -14,79 +14,119 @@
     label{
         user-select: none;
     }
-}
 
-// Hide default radio
-.wpr-radio [type="checkbox"]:not(:checked),
-.wpr-radio [type="checkbox"]:checked {
-    position: absolute;
-    left: -9999px;
-}
+    // Hide default radio
+    [type="checkbox"]:not(:checked),
+    [type="checkbox"]:checked {
+        position: absolute;
+        left: -9999px;
+    }
 
-.wpr-radio [type="checkbox"]:not(:checked) + label:before,
-.wpr-radio [type="checkbox"]:checked + label:before,
-.wpr-radio [type="checkbox"]:not(:checked) + label:after,
-.wpr-radio [type="checkbox"]:checked + label:after {
-	content: '';
-	position: absolute;
-}
+    [type="checkbox"]:not(:checked) + label:before,
+    [type="checkbox"]:checked + label:before,
+    [type="checkbox"]:not(:checked) + label:after,
+    [type="checkbox"]:checked + label:after {
+        content: '';
+        position: absolute;
+    }
 
-// The box
-.wpr-radio [type="checkbox"]:not(:checked) + label:before,
-.wpr-radio [type="checkbox"]:checked + label:before {
-	left:0;
-	width: 52px;
-    height: 22px;
-	background: #fff;
-	border-radius: 12px;
-    border: 1px solid $cGreyDark1;
-    @include transition(all, 150ms);
-}
+    // The box
+    [type="checkbox"]:not(:checked) + label:before,
+    [type="checkbox"]:checked + label:before {
+        left:0;
+        width: 52px;
+        height: 22px;
+        background: #fff;
+        border-radius: 12px;
+        border: 1px solid $cGreyDark1;
+        @include transition(all, 150ms);
+    }
 
-// The ball
-.wpr-radio [type="checkbox"]:not(:checked) + label:after,
-.wpr-radio [type="checkbox"]:checked + label:after {
-	width: 18px;
-    height: 18px;
-	border-radius: 100%;
-	background: $cGreyDark1;
-	top: 3px;
-    left: 3px;
-    @include transition(all, 150ms);
-}
+    // The ball
+    [type="checkbox"]:not(:checked) + label:after,
+    [type="checkbox"]:checked + label:after {
+        width: 18px;
+        height: 18px;
+        border-radius: 100%;
+        background: $cGreyDark1;
+        top: 3px;
+        left: 3px;
+        @include transition(all, 150ms);
+    }
 
-// Checked box
-.wpr-radio [type="checkbox"]:checked + label:before {
-	border-color: $cBlue;
-}
+    // Checked box
+    [type="checkbox"]:checked + label:before {
+        border-color: $cBlue;
+    }
 
-// Checked ball
-.wpr-radio [type="checkbox"]:checked + label:after {
-	background: $cBlue;
-    left: 33px;
-}
+    // Checked ball
+    [type="checkbox"]:checked + label:after {
+        background: $cBlue;
+        left: 33px;
+    }
 
-.wpr-radio [type="checkbox"]:checked + label .wpr-radio-ui,
-.wpr-radio [type="checkbox"]:not(:checked) + label .wpr-radio-ui:before,
-.wpr-radio [type="checkbox"]:checked + label .wpr-radio-ui:after {
-	position: absolute;
-	left: 4px;
-	width: 52px;
-    text-transform: uppercase;
-    letter-spacing: -0.01em;
-    @include font-size(11,24);
-	@include transition(all, 150ms);
-}
+    [type="checkbox"]:checked + label .wpr-radio-ui,
+    [type="checkbox"]:not(:checked) + label .wpr-radio-ui:before,
+    [type="checkbox"]:checked + label .wpr-radio-ui:after {
+        position: absolute;
+        left: 4px;
+        width: 52px;
+        text-transform: uppercase;
+        letter-spacing: -0.01em;
+        @include font-size(11,24);
+        @include transition(all, 150ms);
+    }
 
-// OFF text
-.wpr-radio [type="checkbox"]:not(:checked) + label .wpr-radio-ui:before {
-	content: "off";
-	left: 27px;
-    color: $cGreyDark2;
-}
+    // OFF text
+    [type="checkbox"]:not(:checked) + label .wpr-radio-ui:before {
+        content: "off";
+        left: 27px;
+        color: $cGreyDark2;
+    }
 
-// ON text
-.wpr-radio [type="checkbox"]:checked + label .wpr-radio-ui:after {
-	content: "on";
-	color: $cBlueDark1;
+    // ON text
+    [type="checkbox"]:checked + label .wpr-radio-ui:after {
+        content: "on";
+        color: $cBlueDark1;
+    }
+
+
+    // Reverse label/checkbox
+    &--reverse{
+        padding-right: $space*9;
+        padding-left: 0;
+
+        // The box
+        [type="checkbox"]:not(:checked) + label:before,
+        [type="checkbox"]:checked + label:before {
+            right:0;
+            left: inherit;
+        }
+
+        // The ball
+        [type="checkbox"]:not(:checked) + label:after,
+        [type="checkbox"]:checked + label:after {
+            right: 33px;
+            left: inherit;
+        }
+
+        // Checked ball
+        [type="checkbox"]:checked + label:after {
+            right: 3px;
+            left: inherit;
+        }
+
+        [type="checkbox"]:checked + label .wpr-radio-ui,
+        [type="checkbox"]:not(:checked) + label .wpr-radio-ui:before,
+        [type="checkbox"]:checked + label .wpr-radio-ui:after {
+            right: -2px;
+            left: inherit;
+        }
+
+        // OFF text
+        [type="checkbox"]:not(:checked) + label .wpr-radio-ui:before {
+            right: -25px;
+            left: inherit;
+        }
+    }
 }

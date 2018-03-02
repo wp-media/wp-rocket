@@ -66,13 +66,13 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+    }
 
-        & > div{
-            flex: 0 0 50%;
+    .wpr-flex--egal > div{
+        flex: 0 0 50%;
 
-            &:last-child{
-                text-align: right;
-            }
+        &:last-child{
+            text-align: right;
         }
     }
 
@@ -83,6 +83,7 @@
     h4{
         @include font-size(14,24);
     }
+
 
     // Children field
     &--children{
@@ -112,6 +113,41 @@
         label{
             display: inline-block;
             margin-bottom: $space;
+        }
+    }
+
+    // addon
+    &--addon{
+        padding: $space*3 0;
+
+        .wpr-flex{
+            align-items: flex-start;
+        }
+
+        .wpr-flex > div{
+            text-align: left;
+        }
+
+        .wpr-field-title{
+            margin-bottom: $space*2;
+        }
+
+        .wpr-field-logo{
+            flex: 0 0 160px;
+        }
+
+        .wpr-field-text{
+            margin-left: $space*4;
+            flex: 1 1 auto;
+
+            a{
+                display: inline-block;
+                margin-top: $space*3;
+            }
+
+            .button{
+                margin-top: $space*3;
+            }
         }
     }
 }

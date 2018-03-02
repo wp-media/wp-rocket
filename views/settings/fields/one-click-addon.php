@@ -18,11 +18,37 @@
 
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 ?>
-<h4><?php echo esc_html( $data['label'] ); ?></h4>
-<label for="<?php echo esc_attr( $data['id'] ); ?>" class=""><?php esc_html_e( 'Add-on status', 'rocket' ); ?> </label> <input type="checkbox" id="<?php echo esc_attr( $data['id'] ); ?>" class="" name="wp_rocket_settings[<?php echo esc_attr( $data['id'] ); ?>]" value="1" <?php checked( $data['value'], 1 ); ?>>
-<?php echo esc_attr( $data['logo'] ); ?>
-<?php echo esc_html( $data['title'] ); ?>
-<?php
-if ( isset( $data['description'] ) ) {
-	echo $data['description'];
-}
+
+<div class="wpr-field">
+	<div class="wpr-flex">
+		<h4 class="wpr-title3"><?php echo esc_html( $data['label'] ); ?></h4>
+		<div class="wpr-radio wpr-radio--reverse">
+			<input type="checkbox" id="<?php echo esc_attr( $data['id'] ); ?>" class="" name="wp_rocket_settings[<?php echo esc_attr( $data['id'] ); ?>]" value="1" <?php checked( $data['value'], 1 ); ?>>
+			<label for="<?php echo esc_attr( $data['id'] ); ?>" class="">
+				<span class="wpr-radio-ui"></span>
+				<?php esc_html_e( 'Add-on status', 'rocket' ); ?>
+			</label>
+		</div>
+	</div>
+</div>
+
+<div class="wpr-field wpr-field--addon">
+	<div class="wpr-flex">
+		<div class="wpr-field-logo">
+			<!--<?php echo esc_attr( $data['logo'] ); ?>-->
+			<img src="<?php echo WP_ROCKET_ASSETS_IMG_URL; ?>/logo-varnish.png" width="131" height="148" alt="Logo Varnish">
+		</div>
+		<div class="wpr-field-text">
+			<?php if ( ! empty( $data['title'] ) ) { ?>
+				<div class="wpr-field-title">
+					<?php echo $data['title']; ?>
+				</div>
+			<?php } ?>
+			<?php if ( ! empty( $data['description'] ) ) { ?>
+				<div class="wpr-field-description">
+					<?php echo $data['description']; ?>
+				</div>
+			<?php } ?>
+		</div>
+	</div>
+</div>

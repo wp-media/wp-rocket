@@ -42,7 +42,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 			</div>
 
 			<div class="wpr-field wpr-field-account">
-				<div class="wpr-flex">
+				<div class="wpr-flex wpr-flex--egal">
 					<div>
 						<span class="wpr-title3"><?php esc_html_e( 'License' ); ?></span>
 						<span class="wpr-infoAccount">Unlimited</span><br>
@@ -135,7 +135,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 					</ul>
 				</div>
 				<div class="wpr-field">
-					<div class="wpr-flex">
+					<div class="wpr-flex wpr-flex--egal">
 						<div>
 							<h3 class="wpr-title2"><?php esc_html_e( 'Still can not find a solution?', 'rocket' ); ?></h3>
 							<p class="wpr-field-description"><?php esc_html_e( 'Submit a ticket and get help from our friendly and knowledgeable Rocketeers.', 'rocket' ); ?></p>
