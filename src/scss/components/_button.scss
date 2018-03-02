@@ -35,8 +35,9 @@
     }
 
     &--icon{
-        width: 160px;
+        min-width: 160px;
         padding-left: $space;
+        padding-right: $space*5;
         text-align: left;
 
         &:before{
@@ -51,7 +52,7 @@
     }
 
     &--blue{
-        width: 123px;
+        min-width: inherit;
         background: $cBlue;
     }
 
