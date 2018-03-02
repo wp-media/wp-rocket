@@ -25,6 +25,21 @@ a{
     }
 }
 
+input[type=submit]{
+    cursor: pointer;
+}
+
+a, button, input[type=submit]{
+    &:active{
+        outline: none;
+    }
+
+    &:focus{
+        color: currentColor;
+        box-shadow: none;
+    }
+}
+
 .wpr-wrap{
     padding: 16px;
     margin: 0 0 0 -20px;

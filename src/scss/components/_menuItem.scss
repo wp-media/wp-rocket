@@ -13,6 +13,8 @@
     text-decoration: none;
     color: #fff;
     border-bottom: 1px solid rgba(255,255,255, 0.1);
+    overflow: hidden;
+    @include transition(all, 100ms);
 
     &:last-child{
         border-bottom: none;
@@ -27,6 +29,22 @@
         text-align: center;
         @include font-size(26,26);
         opacity: 0.4;
+        @include transition(all, 150ms);
+    }
+
+    &:after{
+        content: '';
+        position: absolute;
+        display: block;
+        top: calc(50% - 12px);
+        right: 0;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 12px 10px 12px 0;
+        border-color: transparent #ffffff transparent transparent;
+        transform: translateX(12px);
+        @include transition(all, 200ms);
     }
 
     &:hover,
@@ -44,16 +62,16 @@
         }
 
         &:after{
-            content: '';
-            position: absolute;
-            display: block;
-            top: calc(50% - 12px);
-            right: 0;
-            width: 0;
-            height: 0;
-            border-style: solid;
-            border-width: 12px 10px 12px 0;
-            border-color: transparent #ffffff transparent transparent;
+            transform: translateX(0);
+        }
+    }
+
+    &:focus{
+        color: #fff;
+
+        &:before{
+            color: #fff;
+            opacity: 1;
         }
     }
 
@@ -66,6 +84,7 @@
     &-description{
         color: $cGreyDark1;
         @include font-size(12,16);
+        @include transition(all, 150ms);
     }
 }
 
