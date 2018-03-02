@@ -255,6 +255,48 @@ class Page {
 	}
 
 	/**
+	 * Gets customer data from WP Rocket website to display it in the dashboard
+	 *
+	 * @since 3.0
+	 * @author Remy Perona
+	 *
+	 * @return object
+	 */
+	private function get_customer_data() {
+		$customer_key   = defined( 'WP_ROCKET_KEY' ) ? WP_ROCKET_KEY : get_rocket_option( 'consumer_key', '' );
+		$customer_email = defined( 'WP_ROCKET_EMAIL' ) ? WP_ROCKET_EMAIL : get_rocket_option( 'consumer_email', '' );
+
+		if ( false !== get_transient( 'wp_rocket_customer_data' ) ) {
+			return get_transient( 'wp_rocket_customer_data' );
+		}
+
+		$response = wp_safe_remote_post(
+			WP_ROCKET_WEB_MAIN . 'stat/1.0/wp-rocket/user.php',
+			[
+				'body' => 'user_id=' . $customer_email . '&consumer_key=' . $customer_key,
+			]
+		);
+
+		if ( is_wp_error( $response ) ) {
+			return false;
+		}
+
+		$customer_data = json_decode( wp_remote_retrieve_body( $response ) );
+
+		if ( 1 <= $customer_data->licence_account && $customer_data->licence_account < 3 ) {
+			$customer_data->licence_account = 'single';
+		} elseif ( '-1' === $customer_data->licence_account ) {
+			$customer_data->licence_account = 'unlimited';
+		} else {
+			$customer_data->licence_account = 'plus';
+		}
+
+		set_transient( 'wp_rocket_customer_data', $customer_data, DAY_IN_SECONDS );
+
+		return $customer_data;
+	}
+
+	/**
 	 * Registers License section
 	 *
 	 * @since 3.0
@@ -322,6 +364,7 @@ class Page {
 				'title'            => __( 'Dashboard', 'rocket' ),
 				'menu_description' => __( 'Get help, account info', 'rocket' ),
 				'faq'              => $this->get_beacon_suggest( 'faq', $this->locale ),
+				'customer_data'    => $this->get_customer_data(),
 			]
 		);
 
