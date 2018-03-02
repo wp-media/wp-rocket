@@ -8,7 +8,7 @@
 
 
 .wpr-textarea{
-    margin-top: $space*2;
+    margin-top: $space;
 
     textarea{
         padding: $space;
@@ -20,5 +20,9 @@
         border: 2px solid darken($cGrey, 10%);
         border-radius: 3px;
         @include font-size(12,16);
+    }
+
+    & + .wpr-field-description{
+        color: $cGreenDark1;
     }
 }

@@ -101,4 +101,17 @@
             @extend .wpr-title3;
         }
     }
+
+    // textarea
+    &--textarea{
+        label{
+            display: inline-block;
+            margin-bottom: $space;
+        }
+
+        .wpr-field-description--label{
+            @include font-size(14,20);
+            color: $cGreyDark2;
+        }
+    }
 }

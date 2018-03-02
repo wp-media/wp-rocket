@@ -19,9 +19,11 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 ?>
 
 <div class="wpr-field wpr-field--textarea <?php echo isset( $data['parent'] ) ? 'wpr-field--children' : ''; ?>">
-	<?php echo $data['label']; ?>
+	<?php if ( ! empty( $data['label'] ) ) { ?>
+		<label for="<?php echo esc_attr( $data['id'] ); ?>" class="wpr-title3"><?php echo $data['label']; ?></label>
+	<?php } ?>
 	<?php if ( ! empty( $data['description'] ) ) { ?>
-		<div class="wpr-field-description">
+		<div class="wpr-field-description--label">
 			<?php echo $data['description']; ?>
 		</div>
 	<?php } ?>
