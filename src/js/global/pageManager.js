@@ -15,6 +15,7 @@ document.addEventListener( 'DOMContentLoaded', function () {
  * Manages the display of pages / section for WP Rocket plugin
  *
  * Public method :
+     detectID - Detect ID with hash
 	 change - Displays the corresponding page
  *
  */
@@ -32,33 +33,34 @@ function PageManager(aElem) {
     this.pageId = null;
 
 
-    // Click on menuItem
-    for (var i = 0; i < this.$menuItems.length; i++) {
-        refThis.$menuItems[i].onclick = function(event) {
-            refThis.pageId = this.href.split('#')[1];
-            refThis.$page = document.querySelector('.wpr-Page#' + refThis.pageId);
-            refThis.$menuItem = document.getElementById('wpr-nav-' + refThis.pageId);
-
-            window.location.hash = refThis.pageId;
-            refThis.change();
-
-            return false;
-        }
+    // If url page change
+    window.onhashchange = function() {
+        refThis.detectID();
     }
+
 
     // If hash already exist (after refresh page for example)
     if(window.location.hash){
-        this.pageId = window.location.hash.split('#')[1];
-        this.$page = document.querySelector('.wpr-Page#' + this.pageId);
-        this.$menuItem = document.getElementById('wpr-nav-' + this.pageId);
-
-        this.change();
+        this.detectID();
     }
     else{
         this.$menuItems[0].classList.add('isActive');
     }
 
 }
+
+
+/*
+* Page detect ID
+*/
+PageManager.prototype.detectID = function() {
+    this.pageId = window.location.hash.split('#')[1];
+    this.$page = document.querySelector('.wpr-Page#' + this.pageId);
+    this.$menuItem = document.getElementById('wpr-nav-' + this.pageId);
+
+    this.change();
+}
+
 
 
 /*
