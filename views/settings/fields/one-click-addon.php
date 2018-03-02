@@ -36,7 +36,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 	<div class="wpr-flex">
 		<div class="wpr-addon-logo">
 			<!--<?php echo esc_attr( $data['logo'] ); ?>-->
-			<img src="<?php echo WP_ROCKET_ASSETS_IMG_URL; ?>/logo-varnish.png" width="131" height="148" alt="Logo Varnish">
+			<img src="<?php echo WP_ROCKET_ASSETS_IMG_URL; ?>/logo-varnish.svg" width="152" height="135" alt="Logo Varnish">
 		</div>
 		<div class="wpr-addon-text">
 			<?php if ( ! empty( $data['title'] ) ) { ?>
