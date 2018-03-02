@@ -32,15 +32,15 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 	</div>
 </div>
 
-<div class="wpr-field wpr-field--addon">
+<div class="wpr-field wpr-addon">
 	<div class="wpr-flex">
-		<div class="wpr-field-logo">
+		<div class="wpr-addon-logo">
 			<!--<?php echo esc_attr( $data['logo'] ); ?>-->
 			<img src="<?php echo WP_ROCKET_ASSETS_IMG_URL; ?>/logo-varnish.png" width="131" height="148" alt="Logo Varnish">
 		</div>
-		<div class="wpr-field-text">
+		<div class="wpr-addon-text">
 			<?php if ( ! empty( $data['title'] ) ) { ?>
-				<div class="wpr-field-title">
+				<div class="wpr-addon-title">
 					<?php echo $data['title']; ?>
 				</div>
 			<?php } ?>
