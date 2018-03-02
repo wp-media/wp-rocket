@@ -16,12 +16,12 @@
  *         @type string $url   Documentation item URL.
  *         @type string $title Documentation item title.
  *     }
+ *     @type object $customer_data WP Rocket customer data.
  * }
  */
 
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 ?>
-
 <div id="<?php echo esc_attr( $data['id'] ); ?>" class="wpr-Page">
 	<div class="wpr-sectionHeader">
 		<h2 class="wpr-title1 wpr-icon-home"><?php echo $data['title']; ?></h2>
@@ -33,21 +33,22 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 				<h3 class="wpr-title2"><?php esc_html_e( 'My account', 'rocket' ); ?></h3>
 				<?php
 				$this->render_action_button( 'button', 'refresh_account', [
-					'label' => __( 'Refresh info', 'rocket' ),
+					'label'      => __( 'Refresh info', 'rocket' ),
 					'attributes' => [
-						'class'  => 'wpr-infoAction wpr-icon-refresh',
+						'class' => 'wpr-infoAction wpr-icon-refresh',
 					],
-					] );
-					?>
+				] );
+				?>
 			</div>
 
 			<div class="wpr-field wpr-field-account">
 				<div class="wpr-flex wpr-flex--egal">
 					<div>
 						<span class="wpr-title3"><?php esc_html_e( 'License' ); ?></span>
-						<span class="wpr-infoAccount">Unlimited</span><br>
+						<span class="wpr-infoAccount">
+						<?php echo $data['customer_data']->licence_account; ?></span><br>
 						<span class="wpr-title3"><?php esc_html_e( 'Expiration date' ); ?></span>
-						<span class="wpr-infoAccount">31/12/2018</span>
+						<span class="wpr-infoAccount"><?php echo date_i18n( get_option( 'date_format' ), $data['customer_data']->licence_expiration ); ?></span>
 					</div>
 					<div>
 						<?php
@@ -58,7 +59,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 								'target' => '_blank',
 								'class'  => 'wpr-button wpr-button--icon wpr-button--small wpr-button--purple wpr-icon-user',
 							],
-							] );
+						] );
 						?>
 					</div>
 				</div>
@@ -88,7 +89,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 							'attributes' => [
 								'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-icon-trash',
 							],
-							] );
+						] );
 						?>
 					</div>
 
@@ -101,7 +102,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 							'attributes' => [
 								'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-icon-refresh',
 							],
-							] );
+						] );
 						?>
 					</div>
 
@@ -114,7 +115,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 							'attributes' => [
 								'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-icon-trash',
 							],
-							] );
+						] );
 						?>
 					</div>
 				</fieldset>
@@ -148,7 +149,8 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 								'attributes' => [
 									'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-button--blue wpr-icon-help',
 								],
-								] ); ?>
+							] );
+							?>
 						</div>
 					</div>
 				</div>
