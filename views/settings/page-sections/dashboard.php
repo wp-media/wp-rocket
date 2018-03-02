@@ -161,10 +161,16 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 	</div>
 
 	<div id="rocket-analytics-info" class="screen-reader-text">
-		<p><?php _e( 'Below is a detailed view of all data WP Rocket will collect <strong>if granted permission.</strong>', 'rocket' ); ?>
-		<?php echo rocket_data_collection_preview_table(); ?>
-		<p><?php _e( 'WP Rocket will never transmit any domain names or email addresses (except for license validation), IP addresses, or third-party API keys.', 'rocket' ); ?></p>
-		<button><?php _e( 'Activate WP Rocket analytics', 'rocket' ); ?></button>
+		<div class="wpr-thickbox">
+			<p><?php _e( 'Below is a detailed view of all data WP Rocket will collect <strong>if granted permission.</strong>', 'rocket' ); ?></p>
+			<?php echo rocket_data_collection_preview_table(); ?>
+			<div class="wpr-thickbox-flex">
+				<p><?php _e( 'WP Rocket will never transmit any domain names or email addresses (except for license validation), IP addresses, or third-party API keys.', 'rocket' ); ?></p>
+				<div>
+					<button class="wpr-button wpr-button--small wpr-button--icon wpr-icon-check wpr-button--blue"><?php _e( 'Activate WP Rocket analytics', 'rocket' ); ?></button>
+				</div>
+			</div>
+		</div>
 	</div>
 
 	<?php add_thickbox(); ?>
