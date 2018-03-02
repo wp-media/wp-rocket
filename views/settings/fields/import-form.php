@@ -26,7 +26,7 @@ if ( ! empty( $data['upload_dir']['error'] ) ) {
 	?>
 	<form action="<?php echo admin_url( 'admin-post.php' ); ?>" method="POST" enctype="multipart/form-data" class="wpr-tools">
 		<div class="wpr-tools-col">
-			<label for="upload" class="wpr-title3 wpr-icon-import"><?php _e( 'Import settings', 'rocket' ); ?></label>
+			<label for="upload" class="wpr-title3 wpr-tools-label wpr-icon-import"><?php _e( 'Import settings', 'rocket' ); ?></label>
 			<div class="wpr-upload">
 				<input type="file" id="upload" name="import" size="25" />
 				<small for="upload" class="wpr-field-description">

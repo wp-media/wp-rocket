@@ -14,7 +14,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 	</div>
 	<div class="wpr-tools">
 		<div class="wpr-tools-col">
-			<label for="upload" class="wpr-title3 wpr-icon-export"><?php _e( 'Export settings', 'rocekt' ); ?></label>
+			<div class="wpr-title3 wpr-tools-label wpr-icon-export"><?php _e( 'Export settings', 'rocekt' ); ?></div>
 			<div class="wpr-field-description"><?php _e( 'Download a backup file of your settings', 'rocket' ); ?></div>
 		</div>
 		<div class="wpr-tools-col">
@@ -28,12 +28,12 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 			?>
 		</div>
 	</div>
-	
+
 	<?php $this->render_import_form(); ?>
 
 	<div class="wpr-tools">
 		<div class="wpr-tools-col">
-			<label for="upload" class="wpr-title3 wpr-icon-rollback"><?php _e( 'Rollback', 'rocekt' ); ?></label>
+			<div class="wpr-title3 wpr-tools-label wpr-icon-rollback"><?php _e( 'Rollback', 'rocekt' ); ?></div>
 			<div class="wpr-field-description">
 				<?php
 				// translators: %s = WP Rocket version number.
