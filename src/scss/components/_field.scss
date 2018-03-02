@@ -26,6 +26,11 @@
         color: $cGreyDark1;
     }
 
+    &-description-label{
+        @include font-size(14,20);
+        color: $cGreyDark2;
+    }
+
     &-list{
         margin: 0;
         color: $cGreyDark2;
@@ -107,11 +112,6 @@
         label{
             display: inline-block;
             margin-bottom: $space;
-        }
-
-        .wpr-field-description--label{
-            @include font-size(14,20);
-            color: $cGreyDark2;
         }
     }
 }

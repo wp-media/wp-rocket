@@ -24,8 +24,8 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 	<?php $this->render_settings_sections( $data['id'] ); ?>
 	<div class="wpr-optionHeader">
 		<h3 class="wpr-title2"><?php esc_html_e( 'Cloudflare Cache', 'rocket' ); ?></h3>
-	</div>
-	<p><?php esc_html_e( 'Purges cached resources for your website. Learn more', 'rocket' ); ?></p>
+	</div><br>
+	<p class="wpr-field-description"><?php esc_html_e( 'Purges cached resources for your website. Learn more', 'rocket' ); ?></p>
 	<?php
 	$this->render_action_button( 'link', 'purge_cloudflare', [
 		'label'      => __( 'Clear all Cloudflare cache files', 'rocket' ),

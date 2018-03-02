@@ -1,0 +1,27 @@
+// main: ../../main.scss
+
+/*-----------------------------------------------*\
+
+    textarea
+
+\*-----------------------------------------------*/
+
+
+.wpr-text{
+    label{
+        color: $cGreyDark2;
+    }
+
+    input[type=text]{
+        margin-top: 8px;
+        padding: 0 $space;
+        width: 100%;
+        height: $space*4;
+        font-family: Monaco;
+        color: $cBlack;
+        background: #fff;
+        border: 2px solid darken($cGrey, 10%);
+        border-radius: 3px;
+        @include font-size(12,16);
+    }
+}

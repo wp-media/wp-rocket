@@ -23,7 +23,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 		<label for="<?php echo esc_attr( $data['id'] ); ?>" class="wpr-title3"><?php echo $data['label']; ?></label>
 	<?php } ?>
 	<?php if ( ! empty( $data['description'] ) ) { ?>
-		<div class="wpr-field-description--label">
+		<div class="wpr-field-description-label">
 			<?php echo $data['description']; ?>
 		</div>
 	<?php } ?>
