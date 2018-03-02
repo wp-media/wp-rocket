@@ -24,23 +24,27 @@ if ( ! empty( $data['upload_dir']['error'] ) ) {
 <?php
 } else {
 	?>
-	<form action="<?php echo admin_url( 'admin-post.php' ); ?>" method="POST" enctype="multipart/form-data">
-	<p>
-	<input type="file" id="upload" name="import" size="25" />
-	<br />
-	<label for="upload">
-	<?php
-	// translators: %s is the maximum upload size set on the current server.
-	printf( __( 'Choose a file from your computer (maximum size: %s)', 'rocket' ), esc_html( $data['size'] ) );
-	?>
-	</label>
-	<input type="hidden" name="max_file_size" value="<?php echo esc_attr( $data['bytes'] ); ?>" />
-	</p>
-	<input type="hidden" name="action" value="<?php echo esc_attr( $data['action'] ); ?>" />
-	<?php
-	wp_nonce_field( $data['action'] );
-	?>
-	<input type="submit" class="wpr-button wpr-button--icon wpr-button--small wpr-button--purple" value="<?php echo esc_attr( $data['submit_text'] ); ?>" />
+	<form action="<?php echo admin_url( 'admin-post.php' ); ?>" method="POST" enctype="multipart/form-data" class="wpr-tools">
+		<div class="wpr-tools-col">
+			<label for="upload" class="wpr-title3 wpr-icon-import"><?php _e( 'Import settings', 'rocket' ); ?></label>
+			<div class="wpr-upload">
+				<input type="file" id="upload" name="import" size="25" />
+				<small for="upload" class="wpr-field-description">
+					<?php
+					// translators: %s is the maximum upload size set on the current server.
+					printf( __( 'Choose a file from your computer (maximum size: %s)', 'rocket' ), esc_html( $data['size'] ) );
+					?>
+				</small>
+			</div>
+			<input type="hidden" name="max_file_size" value="<?php echo esc_attr( $data['bytes'] ); ?>" />
+			<input type="hidden" name="action" value="<?php echo esc_attr( $data['action'] ); ?>" />
+		</div>
+		<div class="wpr-tools-col">
+			<?php
+			wp_nonce_field( $data['action'] );
+			?>
+			<input type="submit" class="wpr-button wpr-button--icon wpr-button--small wpr-button--purple" value="<?php echo esc_attr( $data['submit_text'] ); ?>" />
+		</div>
 	</form>
 	<?php
 }

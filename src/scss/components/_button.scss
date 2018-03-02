@@ -19,6 +19,7 @@
     letter-spacing: -0.06em;
     border-radius: 4px;
     color: #fff;
+    white-space: nowrap;
     @include transition(all, 200ms)
     @include font-size(13,20);
 
@@ -54,6 +55,10 @@
     &--blue{
         min-width: inherit;
         background: $cBlue;
+    }
+
+    &--red{
+        background: $cRed;
     }
 
     &--blueDark{

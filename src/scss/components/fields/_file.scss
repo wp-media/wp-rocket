@@ -1,0 +1,21 @@
+// main: ../../main.scss
+
+/*-----------------------------------------------*\
+
+    Type = File
+
+\*-----------------------------------------------*/
+
+
+.wpr-upload{
+    input[type=file]{
+        display: block;
+        width: auto;
+        margin: $space $space $space 0;
+        padding: $space;
+        border: 1px solid $cGrey;
+        background: $cGreyLight2;
+        color: $cBlack;
+        @include font-size(11,16);
+    }
+}
