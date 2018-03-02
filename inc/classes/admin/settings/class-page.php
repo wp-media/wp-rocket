@@ -564,7 +564,6 @@ class Page {
 				],
 				'minify_concatenate_css' => [
 					'type'              => 'checkbox',
-					'parent'            => 'minify_css',
 					'label'             => __( 'Combine CSS Files (Enable minify CSS files to select)', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 					'description'       => sprintf( __( 'Combine CSS merges all your files into 1, reducing HTTP requests. Not recommended if your site uses HTTP/2. %1$sMore info%2$s', 'rocket' ), '<a href="' . $combine_beacon['url'] . '" data-beacon-article="' . $combine_beacon['id'] . '">', '</a>' ),
