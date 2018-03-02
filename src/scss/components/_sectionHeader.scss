@@ -9,6 +9,7 @@
 .wpr-sectionHeader{
     position: relative;
     border-bottom: 1px solid $cGrey;
+    padding-bottom: $space*3;
 
     &:before{
         content: '';
@@ -23,7 +24,6 @@
 
     .wpr-title1{
         line-height: $space*6;
-        margin-bottom: $space*3;
 
         &:before{
             display: inline-block;
@@ -33,6 +33,18 @@
             background: $cOrangeLight4;
             color: $cOrange;
             text-align: center;
+            border-radius: 3px;
         }
+    }
+
+    &-title{
+        margin-top: $space;
+        padding-left: $space*9;
+    }
+
+    &-description{
+        color: $cGreyDark2;
+        margin-top: $space;
+        padding-left: $space*9;
     }
 }
