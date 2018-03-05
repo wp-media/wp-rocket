@@ -203,7 +203,7 @@ function rocket_cache_dynamic_resource( $src ) {
 	$hosts[]       = rocket_extract_url_component( home_url(), PHP_URL_HOST );
 	$hosts_index   = array_flip( $hosts );
 	$file          = get_rocket_parse_url( $full_src );
-	$file['query'] = str_replace( 'ver=' . $GLOBALS['wp_version'], '', $file['query'] );
+	$file['query'] = remove_query_arg( 'ver', $file['query'] );
 
 	if ( $file['query'] ) {
 		return $src;
