@@ -135,9 +135,9 @@ function get_rocket_browser_cache_busting( $src, $current_filter = '' ) {
 
 	if ( rocket_fetch_and_cache_busting( $abspath_src, $cache_busting_paths, $abspath_src, $current_filter ) ) {
 		return $cache_busting_paths['url'];
-	} else {
-		return $src;
 	}
+
+	return $src;
 }
 
 /**
@@ -199,10 +199,11 @@ function rocket_cache_dynamic_resource( $src ) {
 			break;
 	}
 
-	$hosts       = get_rocket_cnames_host( array( 'all', 'css_and_js', $extension ) );
-	$hosts[]     = rocket_extract_url_component( home_url(), PHP_URL_HOST );
-	$hosts_index = array_flip( $hosts );
-	$file        = get_rocket_parse_url( $full_src );
+	$hosts         = get_rocket_cnames_host( array( 'all', 'css_and_js', $extension ) );
+	$hosts[]       = rocket_extract_url_component( home_url(), PHP_URL_HOST );
+	$hosts_index   = array_flip( $hosts );
+	$file          = get_rocket_parse_url( $full_src );
+	$file['query'] = str_replace( 'ver=' . $GLOBALS['wp_version'], '', $file['query'] );
 
 	if ( $file['query'] ) {
 		return $src;
@@ -236,9 +237,9 @@ function rocket_cache_dynamic_resource( $src ) {
 
 	if ( rocket_fetch_and_cache_busting( $full_src, $cache_busting_paths, $abspath_src, $current_filter ) ) {
 		return $cache_busting_paths['url'];
-	} else {
-		return $src;
 	}
+
+	return $src;
 }
 add_filter( 'style_loader_src', 'rocket_cache_dynamic_resource', 16 );
 add_filter( 'script_loader_src', 'rocket_cache_dynamic_resource', 16 );
