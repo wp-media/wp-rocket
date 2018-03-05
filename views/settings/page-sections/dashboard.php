@@ -45,10 +45,10 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 				<div class="wpr-flex wpr-flex--egal">
 					<div>
 						<span class="wpr-title3"><?php esc_html_e( 'License' ); ?></span>
-						<span class="wpr-infoAccount">
+						<span class="wpr-infoAccount" id="wpr-account-data">
 						<?php echo $data['customer_data']->licence_account; ?></span><br>
 						<span class="wpr-title3"><?php esc_html_e( 'Expiration date' ); ?></span>
-						<span class="wpr-infoAccount"><?php echo date_i18n( get_option( 'date_format' ), $data['customer_data']->licence_expiration ); ?></span>
+						<span class="wpr-infoAccount" id="wpr-expiration-data"><?php echo $data['customer_data']->licence_expiration; ?></span>
 					</div>
 					<div>
 						<?php
