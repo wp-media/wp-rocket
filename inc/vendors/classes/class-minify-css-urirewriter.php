@@ -45,7 +45,11 @@ class Minify_CSS_UriRewriter {
 	public static function rewrite($css, $currentDir, $docRoot = null, $symlinks = array())
 	{
 		self::$_docRoot = self::_realpath(
+<<<<<<< HEAD
 			$docRoot ? $docRoot : rocket_get_home_path()
+=======
+			$docRoot ? $docRoot : ABSPATH
+>>>>>>> e20bbd177e74113c09bdbcb0c975653bacd5c2f1
 		);
 		self::$_currentDir = self::_realpath($currentDir);
 		self::$_symlinks = array();
