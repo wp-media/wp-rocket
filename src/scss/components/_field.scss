@@ -8,8 +8,10 @@
 
 .wpr-field{
     padding: $space*2 0;
+    @include transition(opacity,150ms);
 
-    & + .wpr-field{
+    & + .wpr-field,
+    & + .wpr-warningContainer{
         border-top: 1px solid $cGrey;
     }
 
@@ -118,5 +120,9 @@
             display: inline-block;
             margin-bottom: $space;
         }
+    }
+
+    &.wpr-isDisabled{
+        opacity: 0.4;
     }
 }

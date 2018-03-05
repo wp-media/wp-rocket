@@ -7,11 +7,16 @@
 \*-----------------------------------------------*/
 
 .wpr-fieldWarning{
+    display: none;
     position: relative;
     padding: $space*2 $space*2 $space*3 56px;
     background: $cPurpleDark1;
-    margin: $space 0;
+    margin: $space 0 0;
     color: #fff;
+
+    &.wpr-isOpen{
+        display: block;
+    }
 
     &:after{
         content: '';
@@ -57,4 +62,10 @@
     .wpr-button{
         margin-top: $space*2;
     }
+}
+
+.wpr-warningContainer + .wpr-warningContainer,
+.wpr-warningContainer + .wpr-field{
+    border-top: 1px solid $cGrey;
+    padding-top: 16px;
 }
