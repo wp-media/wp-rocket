@@ -24,4 +24,16 @@
         border: 1px solid $cGreyLight1;
         border-radius: 2px;
     }
+
+    &-helper{
+        margin-top: $space*2;
+        color: $cRedDark1;
+
+        &:before{
+            position: relative;
+            top: 3px;
+            @include font-size(18,18);
+            margin-right: $space/2;
+        }
+    }
 }

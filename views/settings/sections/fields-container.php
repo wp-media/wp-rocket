@@ -35,8 +35,10 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 	<fieldset class="wpr-fieldsContainer-fieldset">
 		<?php $this->render_settings_fields( $data['page'], $data['id'] ); ?>
 	</fieldset>
+
+	<?php if ( ! empty( $data['helper'] ) ) :?>
+		<div class="wpr-fieldsContainer-helper wpr-icon-important">
+			<?php echo $data['helper']; ?>
+		</div>
+	<?php endif; ?>
 </div>
-<?php
-if ( ! empty( $data['helper'] ) ) :
-	echo $data['helper'];
-endif;
