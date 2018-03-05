@@ -289,7 +289,7 @@ function rocket_realpath( $file ) {
 function rocket_url_to_path( $url, $hosts = '' ) {
 	$url_components  = get_rocket_parse_url( $url );
 	$site_components = get_rocket_parse_url( site_url() );
-	$site_url        = trailingslashit( rocket_add_url_protocol( site_url() ) );
+	$site_url        = trailingslashit( set_url_scheme( site_url() ) );
 
 	if ( isset( $hosts[ $url_components['host'] ] ) && 'home' !== $hosts[ $url_components['host'] ] ) {
 		$site_url = trailingslashit( rocket_add_url_protocol( $url_components['host'] ) );
