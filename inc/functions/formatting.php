@@ -260,7 +260,8 @@ function rocket_get_cache_busting_paths( $filename, $extension ) {
 function rocket_realpath( $file, $absolute = true, $hosts = '' ) {
 	if ( $absolute ) {
 		$file_components = get_rocket_parse_url( $file );
-		$site_components = get_rocket_parse_url( home_url() );
+		$site_components = get_rocket_parse_url( site_url() );
+		$site_url        = trailingslashit( rocket_add_url_protocol( site_url() ) );
 
 		if ( isset( $hosts[ $file_components['host'] ] ) && 'home' !== $hosts[ $file_components['host'] ] ) {
 			$site_url = trailingslashit( rocket_add_url_protocol( $file_components['host'] ) );
@@ -268,8 +269,6 @@ function rocket_realpath( $file, $absolute = true, $hosts = '' ) {
 			if ( $file_components['path'] !== $site_components['path'] ) {
 				$site_url .= ltrim( $site_components['path'], '/' );
 			}
-		} else {
-			$site_url = trailingslashit( rocket_add_url_protocol( home_url() ) );
 		}
 
 		$home_path = rocket_get_home_path();
@@ -302,17 +301,16 @@ function rocket_realpath( $file, $absolute = true, $hosts = '' ) {
 }
 
 /**
- * Get the absolute filesystem path of the WordPress home url.
+ * Get the absolute filesystem path to the root of the WordPress installation.
  *
  * @since 2.11.5
  * @author Chris Williams
  *
- * @return string The filesystem path of the WordPress home home url.
+ * @return string Full filesystem path to the root of the WordPress installation.
  */
 function rocket_get_home_path() {
-	$home_url = trailingslashit( rocket_add_url_protocol( home_url() ) );
-	$site_url = trailingslashit( rocket_add_url_protocol( site_url() ) );
-
+	$home_url  = trailingslashit( rocket_add_url_protocol( get_option( 'home' ) ) );
+	$site_url  = trailingslashit( rocket_add_url_protocol( get_option( 'siteurl' ) ) );
 	$home_path = wp_normalize_path( ABSPATH );
 
 	if ( ! empty( $home_url ) && 0 !== strcasecmp( $home_url, $site_url ) ) {
@@ -320,9 +318,7 @@ function rocket_get_home_path() {
 		$home_path           = preg_replace( '/' . preg_quote( $wp_path_rel_to_home, '/' ) . '$/', '', $home_path );
 	}
 
-	$home_path = trailingslashit( $home_path );
-
-	return $home_path;
+	return trailingslashit( $home_path );
 }
 
 /**
