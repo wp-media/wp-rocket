@@ -108,6 +108,7 @@ class Page {
 		add_action( 'admin_menu', [ $self, 'add_admin_page' ] );
 		add_action( 'admin_init', [ $self, 'configure' ] );
 		add_action( 'admin_print_footer_scripts-settings_page_wprocket', [ $self, 'insert_beacon' ] );
+		add_action( 'wp_ajax_rocket_refresh_customer_data', [ $self, 'refresh_customer_data' ] );
 
 		add_filter( 'option_page_capability_' . $self->slug, [ $self, 'required_capability' ] );
 		add_filter( 'rocket_settings_menu_navigation', [ $self, 'add_menu_tools_page' ] );
@@ -266,10 +267,6 @@ class Page {
 		$customer_key   = defined( 'WP_ROCKET_KEY' ) ? WP_ROCKET_KEY : get_rocket_option( 'consumer_key', '' );
 		$customer_email = defined( 'WP_ROCKET_EMAIL' ) ? WP_ROCKET_EMAIL : get_rocket_option( 'consumer_email', '' );
 
-		if ( false !== get_transient( 'wp_rocket_customer_data' ) ) {
-			return get_transient( 'wp_rocket_customer_data' );
-		}
-
 		$response = wp_safe_remote_post(
 			WP_ROCKET_WEB_MAIN . 'stat/1.0/wp-rocket/user.php',
 			[
@@ -278,7 +275,10 @@ class Page {
 		);
 
 		if ( is_wp_error( $response ) ) {
-			return false;
+			return (object) [
+				'licence_account'    => __( 'Unavailable', 'rocket' ),
+				'licence_expiration' => __( 'Unavailable', 'rocket' ),
+			];
 		}
 
 		$customer_data = json_decode( wp_remote_retrieve_body( $response ) );
@@ -291,9 +291,53 @@ class Page {
 			$customer_data->licence_account = 'plus';
 		}
 
+		$customer_data->licence_expiration = date_i18n( get_option( 'date_format' ), $customer_data->licence_expiration );
+
+		return $customer_data;
+	}
+
+	/**
+	 * Returns customer data from transient or request and save it if not cached
+	 *
+	 * @since 3.0
+	 * @author Remy Perona
+	 *
+	 * @return object
+	 */
+	private function customer_data() {
+		if ( false !== get_transient( 'wp_rocket_customer_data' ) ) {
+			return get_transient( 'wp_rocket_customer_data' );
+		}
+
+		$customer_data = $this->get_customer_data();
+
 		set_transient( 'wp_rocket_customer_data', $customer_data, DAY_IN_SECONDS );
 
 		return $customer_data;
+	}
+
+	/**
+	 * Gets customer data to refresh it on the dashboard with AJAX
+	 *
+	 * @since 3.0
+	 * @author Remy Perona
+	 *
+	 * @return string
+	 */
+	public function refresh_customer_data() {
+		check_ajax_referer( 'rocket-ajax' );
+
+		if ( ! current_user_can( apply_filters( 'rocket_capability', 'manage_options' ) ) ) {
+			wp_die();
+		}
+
+		delete_transient( 'wp_rocket_customer_data' );
+
+		$customer_data = $this->get_customer_data();
+
+		set_transient( 'wp_rocket_customer_data', $customer_data, DAY_IN_SECONDS );
+
+		return wp_send_json_success( $customer_data );
 	}
 
 	/**
@@ -364,7 +408,7 @@ class Page {
 				'title'            => __( 'Dashboard', 'rocket' ),
 				'menu_description' => __( 'Get help, account info', 'rocket' ),
 				'faq'              => $this->get_beacon_suggest( 'faq', $this->locale ),
-				'customer_data'    => $this->get_customer_data(),
+				'customer_data'    => $this->customer_data(),
 			]
 		);
 
@@ -1363,8 +1407,9 @@ class Page {
 		$this->settings->add_settings_fields(
 			[
 				'cloudflare_api_key'          => [
-					'label'       => __( 'Global API key', 'rocket' ),
-					'description' => __( 'Find your API key', 'rocket' ),
+					'label'       => _x( 'Global API key:', 'Cloudflare', 'rocket' ),
+					// translators: %s is the URL to the CloudFlare documentation.
+					'description' => sprintf( __( '<a href="%s" target="_blank">Find your API key</a>', 'rocket' ), 'https://support.cloudflare.com/hc/en-us/articles/200167836-Where-do-I-find-my-Cloudflare-API-key-' ),
 					'default'     => '',
 					'section'     => 'cloudflare_credentials',
 					'page'        => 'do_cloudflare',
