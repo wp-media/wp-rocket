@@ -78,6 +78,7 @@ add_action( 'admin_print_styles-settings_page_' . WP_ROCKET_PLUGIN_SLUG, 'rocket
  */
 function rocket_add_admin_css_js_everywhere() {
 	wp_enqueue_script( 'all-wp-rocket', WP_ROCKET_ADMIN_UI_JS_URL . 'all.js', array( 'jquery' ), WP_ROCKET_VERSION, true );
+	wp_localize_script( 'all-wp-rocket', 'ajax_data', array( 'nonce' => wp_create_nonce( 'rocket-ajax' ) ) );
 	wp_enqueue_style( 'admin-wp-rocket', WP_ROCKET_ADMIN_UI_CSS_URL . 'admin.css', array(), WP_ROCKET_VERSION );
 }
 add_action( 'admin_enqueue_scripts', 'rocket_add_admin_css_js_everywhere', 11 );
