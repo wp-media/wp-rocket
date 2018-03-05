@@ -109,6 +109,8 @@ class Page {
 		add_action( 'admin_init', [ $self, 'configure' ] );
 		add_action( 'admin_print_footer_scripts-settings_page_wprocket', [ $self, 'insert_beacon' ] );
 		add_action( 'wp_ajax_rocket_refresh_customer_data', [ $self, 'refresh_customer_data' ] );
+		add_action( 'wp_ajax_rocket_toggle_varnish', [ $self, 'toggle_varnish' ] );
+		add_action( 'wp_ajax_rocket_toggle_cloudflare', [ $self, 'toggle_cloudflare' ] );
 
 		add_filter( 'option_page_capability_' . $self->slug, [ $self, 'required_capability' ] );
 		add_filter( 'rocket_settings_menu_navigation', [ $self, 'add_menu_tools_page' ] );
@@ -338,6 +340,50 @@ class Page {
 		set_transient( 'wp_rocket_customer_data', $customer_data, DAY_IN_SECONDS );
 
 		return wp_send_json_success( $customer_data );
+	}
+
+	/**
+	 * Toggle varnish option value
+	 *
+	 * @since 3.0
+	 * @author Remy Perona
+	 *
+	 * @return void
+	 */
+	public function toggle_varnish() {
+		check_ajax_referer( 'rocket-ajax' );
+
+		if ( ! current_user_can( apply_filters( 'rocket_capability', 'manage_options' ) ) ) {
+			wp_die();
+		}
+
+		$value = 1 === (int) $_POST['varnish_auto_purge'] ? 1 : 0;
+
+		update_rocket_option( 'varnish_auto_purge', $value );
+
+		wp_die();
+	}
+
+	/**
+	 * Toggle varnish option value
+	 *
+	 * @since 3.0
+	 * @author Remy Perona
+	 *
+	 * @return void
+	 */
+	public function toggle_cloudflare() {
+		check_ajax_referer( 'rocket-ajax' );
+
+		if ( ! current_user_can( apply_filters( 'rocket_capability', 'manage_options' ) ) ) {
+			wp_die();
+		}
+
+		$value = 1 === (int) $_POST['do_cloudflare'] ? 1 : 0;
+
+		update_rocket_option( 'do_cloudflare', $value );
+
+		return wp_send_json_success( get_rocket_option( 'do_cloudflare' ) );
 	}
 
 	/**
@@ -1380,10 +1426,11 @@ class Page {
 	 */
 	private function cloudflare_section() {
 		$this->settings->add_page_section(
-			'do_cloudflare',
+			'cloudflare',
 			[
 				'title'            => __( 'Cloudflare', 'rocket' ),
 				'menu_description' => '',
+				'class'            => 'wpr-cloudflareToggle',
 			]
 		);
 
@@ -1393,13 +1440,13 @@ class Page {
 					'type'  => 'fields_container',
 					'title' => __( 'Cloudflare credentials', 'rocket' ),
 					'help'  => $this->get_beacon_suggest( 'cloudflare_credentials', $this->locale ),
-					'page'  => 'do_cloudflare',
+					'page'  => 'cloudflare',
 				],
 				'cloudflare_settings'    => [
 					'type'  => 'fields_container',
 					'title' => __( 'Cloudflare settings', 'rocket' ),
 					'help'  => $this->get_beacon_suggest( 'cloudflare_settings', $this->locale ),
-					'page'  => 'do_cloudflare',
+					'page'  => 'cloudflare',
 				],
 			]
 		);
@@ -1412,19 +1459,19 @@ class Page {
 					'description' => sprintf( __( '<a href="%s" target="_blank">Find your API key</a>', 'rocket' ), 'https://support.cloudflare.com/hc/en-us/articles/200167836-Where-do-I-find-my-Cloudflare-API-key-' ),
 					'default'     => '',
 					'section'     => 'cloudflare_credentials',
-					'page'        => 'do_cloudflare',
+					'page'        => 'cloudflare',
 				],
 				'cloudflare_email'            => [
 					'label'   => __( 'Account email', 'rocket' ),
 					'default' => '',
 					'section' => 'cloudflare_credentials',
-					'page'    => 'do_cloudflare',
+					'page'    => 'cloudflare',
 				],
 				'cloudflare_domain'           => [
 					'label'   => __( 'Domain', 'rocket' ),
 					'default' => '',
 					'section' => 'cloudflare_credentials',
-					'page'    => 'do_cloudflare',
+					'page'    => 'cloudflare',
 				],
 				'cloudflare_devmode'          => [
 					'type'              => 'sliding_checkbox',
@@ -1432,7 +1479,7 @@ class Page {
 					'description'       => __( 'Temporarily activate development mode on your website. This setting will automatically turn off after 3 hours. Learn more', 'rocket' ),
 					'default'           => 0,
 					'section'           => 'cloudflare_settings',
-					'page'              => 'do_cloudflare',
+					'page'              => 'cloudflare',
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
 				'cloudflare_auto_settings'    => [
@@ -1441,7 +1488,7 @@ class Page {
 					'description'       => __( 'Automatically enhances your Cloudflare configuration for speed, performance grade and compatibility.', 'rocket' ),
 					'default'           => 0,
 					'section'           => 'cloudflare_settings',
-					'page'              => 'do_cloudflare',
+					'page'              => 'cloudflare',
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
 				'cloudflare_protocol_rewrite' => [
@@ -1450,7 +1497,7 @@ class Page {
 					'description'       => __( 'Should only be used with Cloudflare\'s flexible SSL feature. URLs of static files (CSS, JS, images) will be rewritten to use // instead of http:// or https://.', 'rocket' ),
 					'default'           => 0,
 					'section'           => 'cloudflare_settings',
-					'page'              => 'do_cloudflare',
+					'page'              => 'cloudflare',
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
 			]
