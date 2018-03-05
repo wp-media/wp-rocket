@@ -4,19 +4,36 @@ document.addEventListener( 'DOMContentLoaded', function () {
     /*
     ** Warning fields
     */
-    //
-    // var $warningsTab = document.querySelectorAll('.wpr-field--parent');
-    //
-    // for (var i = 0; i < $warningsTab.length; i++) {
-    //
-    //
-    //     // Input checkbox
-    //     var $checkbox = $prev.querySelector('input[type=checkbox]');
-    //     $checkbox.onchange = function(){
-    //         //$warning.classList.add('wpr-isOpen');
-    //         return false;
-    //     };
-    // }
+
+    var $warning = document.querySelectorAll('.wpr-warningContainer');
+    var $warningCheckbox = [];
+
+    for (var i = 0; i < $warning.length; i++) {
+        // Input checkbox
+        $warningCheckbox[i] = $warning[i].querySelector('input[type=checkbox]');
+        wprShowWarning(i);
+    }
+
+    function wprShowWarning(i){
+        $warningCheckbox[i].onchange = function(){
+             var $warningField = $warning[i].querySelector('.wpr-fieldWarning');
+
+             // Check warning parent
+             if(this.checked){
+                 $warningField.classList.add('wpr-isOpen');
+                 this.checked = false;
+
+                 var $warningButton = $warningField.querySelector('.wpr-button');
+
+                 // Validate the warning
+                 $warningButton.onclick = function(){
+                    $warningCheckbox[i].checked = true;
+                    $warningField.classList.remove('wpr-isOpen');
+                    return false;
+                 }
+             }
+         };
+    }
 
 
 
