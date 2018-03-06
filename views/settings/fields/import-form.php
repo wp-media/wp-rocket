@@ -43,7 +43,7 @@ if ( ! empty( $data['upload_dir']['error'] ) ) {
 			<?php
 			wp_nonce_field( $data['action'] );
 			?>
-			<input type="submit" class="wpr-button wpr-button--icon wpr-button--small wpr-button--purple" value="<?php echo esc_attr( $data['submit_text'] ); ?>" />
+			<button type="submit" class="wpr-button wpr-button--icon wpr-button--small wpr-button--purple wpr-icon-chevron-up" value="<?php echo esc_attr( $data['submit_text'] ); ?>"><?php echo esc_attr( $data['submit_text'] ); ?></button>
 		</div>
 	</form>
 	<?php

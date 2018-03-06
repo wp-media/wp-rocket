@@ -47,9 +47,11 @@
 }
 .wpr-icon-chevron-down:before {
   content: "\e901";
+  transform: scale(0.6);
 }
 .wpr-icon-chevron-up:before {
   content: "\e902";
+  transform: scale(0.6);
 }
 .wpr-icon-rollback:before {
   content: "\e903";
