@@ -67,14 +67,6 @@ class Render extends Abstract_render {
 	 * @return void
 	 */
 	public function render_navigation() {
-		$navigation = array_map(
-			function( array $item ) {
-				unset( $item['sections'] );
-				return $item;
-			},
-			$this->settings
-		);
-
 		/**
 		 * Filters WP Rocket settings page navigation items.
 		 *
@@ -85,11 +77,33 @@ class Render extends Abstract_render {
 		 *     Items to populate the navigation.
 		 *
 		 *     @type string $id               Page section identifier.
-		 *     @type string $title            Menu title.
-		 *     @type string $menu_description Menu description.
+		 *     @type string $title            Menu item title.
+		 *     @type string $menu_description Menu item description.
+		 *     @type string $class            Menu item classes
 		 * }
 		 */
-		$navigation = apply_filters( 'rocket_settings_menu_navigation', $navigation );
+		$navigation = apply_filters( 'rocket_settings_menu_navigation', $this->settings );
+
+		$default = [
+			'id'               => '',
+			'title'            => '',
+			'menu_description' => '',
+			'class'            => '',
+		];
+
+		$navigation = array_map(
+			function( array $item ) use ( $default ) {
+				$item = wp_parse_args( $item, $default );
+
+				if ( ! empty( $item['class'] ) ) {
+					$item['class'] = implode( ' ', array_map( 'sanitize_html_class', $item['class'] ) );
+				}
+
+				unset( $item['sections'] );
+				return $item;
+			},
+			$navigation
+		);
 
 		echo $this->generate( 'navigation', $navigation );
 	}
@@ -149,6 +163,7 @@ class Render extends Abstract_render {
 				'title'       => '',
 				'description' => '',
 				'help'        => '',
+				'helper'      => '',
 				'page'        => '',
 			];
 
@@ -179,15 +194,43 @@ class Render extends Abstract_render {
 				'label'             => '',
 				'description'       => '',
 				'class'             => '',
+				'container_class'   => '',
 				'default'           => '',
+				'helper'            => '',
 				'section'           => '',
 				'page'              => '',
 				'sanitize_callback' => 'sanitize_text_field',
-				'input_attr'        => [],
+				'input_attr'        => '',
 				'warning'           => [],
 			];
 
 			$args = wp_parse_args( $args, $default );
+
+			if ( ! empty( $args['input_attr'] ) ) {
+				$input_attr = '';
+
+				foreach ( $args['input_attr'] as $key => $value ) {
+					if ( 'disabled' === $key ) {
+						if ( 1 === $value ) {
+							$input_attr .= ' disabled';
+						}
+
+						continue;
+					}
+
+					$input_attr .= ' ' . sanitize_key( $key ) . '="' . esc_attr( $value ) . '"';
+				}
+
+				$args['input_attr'] = $input_attr;
+			}
+
+			if ( ! empty( $args['class'] ) ) {
+				$args['class'] = implode( ' ', array_map( 'sanitize_html_class', $args['class'] ) );
+			}
+
+			if ( ! empty( $args['container_class'] ) ) {
+				$args['container_class'] = implode( ' ', array_map( 'sanitize_html_class', $args['container_class'] ) );
+			}
 
 			call_user_func_array( array( $this, $args['type'] ), array( $args ) );
 		}
@@ -256,24 +299,6 @@ class Render extends Abstract_render {
 	 * @return void
 	 */
 	public function text( $args ) {
-		if ( isset( $args['input_attr'] ) ) {
-			$input_attr = '';
-
-			foreach ( $args['input_attr'] as $key => $value ) {
-				if ( 'disabled' === $key ) {
-					if ( 1 === $value ) {
-						$input_attr .= ' disabled';
-					}
-
-					continue;
-				}
-
-				$input_attr .= ' ' . esc_attr( $key ) . '="' . esc_attr( $value ) . '"';
-			}
-
-			$args['input_attr'] = $input_attr;
-		}
-
 		echo $this->generate( 'fields/text', $args );
 	}
 
@@ -287,24 +312,6 @@ class Render extends Abstract_render {
 	 * @return void
 	 */
 	public function checkbox( $args ) {
-		if ( isset( $args['input_attr'] ) ) {
-			$input_attr = '';
-
-			foreach ( $args['input_attr'] as $key => $value ) {
-				if ( 'disabled' === $key ) {
-					if ( 1 === $value ) {
-						$input_attr .= ' disabled';
-					}
-
-					continue;
-				}
-
-				$input_attr .= ' ' . esc_attr( $key ) . '="' . esc_attr( $value ) . '"';
-			}
-
-			$args['input_attr'] = $input_attr;
-		}
-
 		echo $this->generate( 'fields/checkbox', $args );
 	}
 
@@ -322,7 +329,7 @@ class Render extends Abstract_render {
 			$args['value'] = implode( "\n", $args['value'] );
 		}
 
-		$args['value'] = ! empty( $args['value'] ) ? $args['value'] : '';
+		$args['value'] = empty( $args['value'] ) ? '' : $args['value'];
 
 		echo $this->generate( 'fields/textarea', $args );
 	}
@@ -521,26 +528,16 @@ class Render extends Abstract_render {
 	}
 
 	/**
-	 * Displays the documentation block.
+	 * Displays a partial template.
 	 *
 	 * @since 3.0
 	 * @author Remy Perona
 	 *
-	 * @return void
-	 */
-	public function render_documentation_block() {
-		echo $this->generate( 'partials/documentation' );
-	}
-
-	/**
-	 * Displays the sidebar template.
-	 *
-	 * @since 3.0
-	 * @author Remy Perona
+	 * @param string $part Partial template name.
 	 *
 	 * @return void
 	 */
-	public function render_sidebar() {
-		echo $this->generate( 'partials/sidebar' );
+	public function render_part( $part ) {
+		echo $this->generate( 'partials/' . $part );
 	}
 }
