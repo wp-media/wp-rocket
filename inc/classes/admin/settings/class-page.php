@@ -1504,18 +1504,25 @@ class Page {
 			]
 		);
 
+		if ( ! defined( 'WP_ROCKET_CF_API_KEY_HIDDEN' ) || ! WP_ROCKET_CF_API_KEY_HIDDEN ) {
+			$this->settings->add_settings_fields(
+				[
+					'cloudflare_api_key' => [
+						'label'       => _x( 'Global API key:', 'Cloudflare', 'rocket' ),
+						// translators: %s is the URL to the CloudFlare documentation.
+						'description' => sprintf( __( '<a href="%s" target="_blank">Find your API key</a>', 'rocket' ), 'https://support.cloudflare.com/hc/en-us/articles/200167836-Where-do-I-find-my-Cloudflare-API-key-' ),
+						'default'     => '',
+						'section'     => 'cloudflare_credentials',
+						'page'        => 'cloudflare',
+					],
+				]
+			);
+		}
+
 		$this->settings->add_settings_fields(
 			[
-				'cloudflare_api_key'          => [
-					'label'       => _x( 'Global API key:', 'Cloudflare', 'rocket' ),
-					// translators: %s is the URL to the CloudFlare documentation.
-					'description' => sprintf( __( '<a href="%s" target="_blank">Find your API key</a>', 'rocket' ), 'https://support.cloudflare.com/hc/en-us/articles/200167836-Where-do-I-find-my-Cloudflare-API-key-' ),
-					'default'     => '',
-					'section'     => 'cloudflare_credentials',
-					'page'        => 'cloudflare',
-				],
 				'cloudflare_email'            => [
-					'label'           => __( 'Account email', 'rocket' ),
+					'label'           => _x( 'Account email', 'Cloudflare', 'rocket' ),
 					'container_class' => [
 						'wpr-field--split',
 					],
@@ -1524,7 +1531,7 @@ class Page {
 					'page'            => 'cloudflare',
 				],
 				'cloudflare_domain'           => [
-					'label'           => __( 'Domain', 'rocket' ),
+					'label'           => _x( 'Domain', 'Cloudflare', 'rocket' ),
 					'container_class' => [
 						'wpr-field--split',
 					],
