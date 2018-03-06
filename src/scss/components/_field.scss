@@ -94,6 +94,11 @@
         @include font-size(14,24);
     }
 
+    &.wpr-isDisabled{
+        opacity: 0.4;
+    }
+
+
 
     // Children field
     &--children{
@@ -126,6 +131,7 @@
         }
     }
 
+    // Field like CNAME
     &--multiple{
         display: flex;
         align-items: center;
@@ -141,7 +147,16 @@
         }
     }
 
-    &.wpr-isDisabled{
-        opacity: 0.4;
+    // Fields 2 columns
+    &--split{
+        display: inline-block;
+        width: 50%;
+        padding-right: $space*2;
+        padding-bottom: 0;
+
+        & + .wpr-field--split{
+            padding-left: $space*2;
+            padding-right: 0;
+        }
     }
 }
