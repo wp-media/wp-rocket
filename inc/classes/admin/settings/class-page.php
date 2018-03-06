@@ -383,7 +383,7 @@ class Page {
 
 		update_rocket_option( 'do_cloudflare', $value );
 
-		return wp_send_json_success( get_rocket_option( 'do_cloudflare' ) );
+		wp_die();
 	}
 
 	/**
@@ -416,7 +416,10 @@ class Page {
 				'consumer_key'   => [
 					'type'              => 'text',
 					'label'             => __( 'API key', 'rocket' ),
-					'class'             => 'wpr-isDisabled',
+					'container_class'   => [
+						'wpr-field--split',
+						'wpr-isDisabled',
+					],
 					'section'           => 'license_section',
 					'page'              => 'license',
 					'sanitize_callback' => 'sanitize_text_field',
@@ -427,7 +430,10 @@ class Page {
 				'consumer_email' => [
 					'type'              => 'text',
 					'label'             => __( 'Email address', 'rocket' ),
-					'class'             => 'wpr-isDisabled',
+					'container_class'   => [
+						'wpr-field--split',
+						'wpr-isDisabled',
+					],
 					'section'           => 'license_section',
 					'page'              => 'license',
 					'sanitize_callback' => 'sanitize_email',
@@ -553,7 +559,10 @@ class Page {
 				'cache_mobile'            => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Enable caching for mobile devices', 'rocket' ),
-					'class'             => rocket_is_mobile_plugin_active() ? 'wpr-isDisabled' : '',
+					'container_class'   => [
+						rocket_is_mobile_plugin_active() ? 'wpr-isDisabled' : '',
+						'wpr-isParent',
+					],
 					'section'           => 'mobile_cache_section',
 					'page'              => 'cache',
 					'default'           => 1,
@@ -564,11 +573,13 @@ class Page {
 				],
 				'do_caching_mobile_files' => [
 					'type'              => 'checkbox',
-					'parent'            => 'cache_mobile',
 					'label'             => __( 'Separate cache files for mobile devices', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 					'description'       => sprintf( __( '%1$sMobile cache%2$s works safest with both options enabled. When in doubt, keep both.', 'rocket' ), '<a href="' . $mobile_cache_beacon['url'] . '" data-beacon-article="' . $mobile_cache_beacon['id'] . '">', '</a>' ),
-					'class'             => rocket_is_mobile_plugin_active() ? 'wpr-isDisabled' : '',
+					'container_class'   => [
+						rocket_is_mobile_plugin_active() ? 'wpr-isDisabled' : '',
+						'wpr-field--children',
+					],
 					'section'           => 'mobile_cache_section',
 					'page'              => 'cache',
 					'default'           => rocket_is_mobile_plugin_active() ? 1 : 0,
@@ -580,6 +591,9 @@ class Page {
 				'purge_cron_interval'     => [
 					'type'              => 'number',
 					'label'             => __( 'Clear cache after', 'rocket' ),
+					'container_class'   => [
+						'wpr-field--split',
+					],
 					'section'           => 'cache_lifespan',
 					'page'              => 'cache',
 					'default'           => 10,
@@ -588,6 +602,9 @@ class Page {
 				'purge_cron_unit'         => [
 					'type'              => 'select',
 					'label'             => __( 'Unit of time', 'rocket' ),
+					'container_class'   => [
+						'wpr-field--split',
+					],
 					'section'           => 'cache_lifespan',
 					'page'              => 'cache',
 					'default'           => 'HOUR_IN_SECONDS',
@@ -648,7 +665,9 @@ class Page {
 				'minify_html'            => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Minify HTML', 'rocket' ),
-					'class'             => rocket_maybe_disable_minify_html() ? 'wpr-isDisabled' : '',
+					'container_class'   => [
+						rocket_maybe_disable_minify_html() ? 'wpr-isDisabled' : '',
+					],
 					'description'       => __( 'Minifying HTML removes whitespace and comments to reduce the size.', 'rocket' ),
 					'section'           => 'basic',
 					'page'              => 'file_optimization',
@@ -681,7 +700,10 @@ class Page {
 					'type'              => 'checkbox',
 					'label'             => __( 'Minify CSS Files', 'rocket' ),
 					'description'       => __( 'Minify CSS removes whitespace and comments to reduce the file size.', 'rocket' ),
-					'class'             => rocket_maybe_disable_minify_css() ? 'wpr-isDisabled' : '',
+					'container_class'   => [
+						rocket_maybe_disable_minify_css() ? 'wpr-isDisabled' : '',
+						'wpr-field--parent',
+					],
 					'section'           => 'css',
 					'page'              => 'file_optimization',
 					'default'           => 0,
@@ -700,13 +722,16 @@ class Page {
 					'label'             => __( 'Combine CSS Files (Enable minify CSS files to select)', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 					'description'       => sprintf( __( 'Combine CSS merges all your files into 1, reducing HTTP requests. Not recommended if your site uses HTTP/2. %1$sMore info%2$s', 'rocket' ), '<a href="' . $combine_beacon['url'] . '" data-beacon-article="' . $combine_beacon['id'] . '">', '</a>' ),
-					'class'             => ! get_rocket_option( 'minify_css' ) ? 'wpr-isDisabled' : 0,
+					'container_class'   => [
+						get_rocket_option( 'minify_css' ) ? '' : 'wpr-isDisabled',
+						'wpr-field--parent',
+					],
 					'section'           => 'css',
 					'page'              => 'file_optimization',
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
 					'input_attr'        => [
-						'disabled' => ! get_rocket_option( 'minify_css' ) ? 1 : 0,
+						'disabled' => get_rocket_option( 'minify_css' ) ? 0 : 1,
 					],
 					'warning'           => [
 						'title'        => __( 'this could break things!', 'rocket' ),
@@ -748,7 +773,10 @@ class Page {
 					'type'              => 'checkbox',
 					'label'             => __( 'Minify JavaScript Files', 'rocket' ),
 					'description'       => __( 'Minify JavaScript removes whitespace and comments to reduce the file size.', 'rocket' ),
-					'class'             => rocket_maybe_disable_minify_js() ? 'wpr-isDisabled' : '',
+					'container_class'   => [
+						rocket_maybe_disable_minify_js() ? 'wpr-isDisabled' : '',
+						'wpr-field--parent',
+					],
 					'section'           => 'js',
 					'page'              => 'file_optimization',
 					'default'           => 0,
@@ -767,13 +795,16 @@ class Page {
 					'label'             => __( 'Combine JavaScript files (Enable minify JS to select)', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 					'description'       => sprintf( __( 'Combine Javascript files combines your site\'s JS info fewer files, reducing HTTP requests. Not recommended if your site uses HTTP/2. %1$sMore info%2$s', 'rocket' ), '<a href="' . $combine_beacon['url'] . '" data-beacon-article="' . $combine_beacon['id'] . '">', '</a>' ),
-					'class'             => ! get_rocket_option( 'minify_js' ) ? 'wpr-isDisabled' : 0,
+					'container_class'   => [
+						get_rocket_option( 'minify_js' ) ? '' : 'wpr-isDisabled',
+						'wpr-field--parent',
+					],
 					'section'           => 'js',
 					'page'              => 'file_optimization',
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
 					'input_attr'        => [
-						'disabled' => ! get_rocket_option( 'minify_js' ) ? 1 : 0,
+						'disabled' => get_rocket_option( 'minify_js' ) ? 0 : 1,
 					],
 					'warning'           => [
 						'title'        => __( 'this could break things!', 'rocket' ),
@@ -782,6 +813,9 @@ class Page {
 					],
 				],
 				'defer_all_js'           => [
+					'container_class'   => [
+						'wpr-isParent',
+					],
 					'type'              => 'checkbox',
 					'label'             => __( 'Load JavaScript deferred', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
@@ -792,7 +826,9 @@ class Page {
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
 				'defer_all_js_safe'      => [
-					'parent'            => 'defer_all_js',
+					'container_class'   => [
+						'wpr-field--children',
+					],
 					'type'              => 'checkbox',
 					'label'             => __( 'Safe Mode (recommended)', 'rocket' ),
 					'description'       => __( 'Safe mode for deferred JS ensures support for inline jQuery references from themes and plugins by loading jQuery at the top of the document as a render-blocking script. Deactivating may result in broken functionality, test thoroughly!', 'rocket' ),
@@ -867,6 +903,9 @@ class Page {
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
 				'lazyload_iframes' => [
+					'container_class'   => [
+						'wpr-isParent',
+					],
 					'type'              => 'checkbox',
 					'label'             => __( 'Enable for iframes and videos', 'rocket' ),
 					'section'           => 'lazyload_section',
@@ -875,6 +914,9 @@ class Page {
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
 				'lazyload_youtube' => [
+					'container_class'   => [
+						'wpr-field--children',
+					],
 					'type'              => 'checkbox',
 					'label'             => __( 'Replace YouTube iframe with preview image', 'rocket' ),
 					'description'       => __( 'This can significantly improve your loading time if you have a lot of YouTube videos on a page.', 'rocket' ),
@@ -958,6 +1000,9 @@ class Page {
 				'sitemap_preload' => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Activate sitemap-based cache preloading', 'rocket' ),
+					'container_class'   => [
+						'wpr-isParent',
+					],
 					'section'           => 'sitemap_preload_section',
 					'page'              => 'preload',
 					'default'           => 0,
@@ -1254,6 +1299,9 @@ class Page {
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
 				'schedule_automatic_cleanup'  => [
+					'container_class'   => [
+						'wpr-isParent',
+					],
 					'type'              => 'checkbox',
 					'label'             => __( 'Schedule Automatic Cleanup', 'rocket' ),
 					'description'       => '',
@@ -1263,6 +1311,9 @@ class Page {
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
 				'automatic_cleanup_frequency' => [
+					'container_class'   => [
+						'wpr-field--children',
+					],
 					'type'              => 'select',
 					'label'             => __( 'Frequency', 'rocket' ),
 					'description'       => '',
@@ -1430,7 +1481,9 @@ class Page {
 			[
 				'title'            => __( 'Cloudflare', 'rocket' ),
 				'menu_description' => '',
-				'class'            => 'wpr-cloudflareToggle',
+				'class'            => [
+					'wpr-cloudflareToggle',
+				],
 			]
 		);
 
@@ -1462,16 +1515,22 @@ class Page {
 					'page'        => 'cloudflare',
 				],
 				'cloudflare_email'            => [
-					'label'   => __( 'Account email', 'rocket' ),
-					'default' => '',
-					'section' => 'cloudflare_credentials',
-					'page'    => 'cloudflare',
+					'label'           => __( 'Account email', 'rocket' ),
+					'container_class' => [
+						'wpr-field--split',
+					],
+					'default'         => '',
+					'section'         => 'cloudflare_credentials',
+					'page'            => 'cloudflare',
 				],
 				'cloudflare_domain'           => [
-					'label'   => __( 'Domain', 'rocket' ),
-					'default' => '',
-					'section' => 'cloudflare_credentials',
-					'page'    => 'cloudflare',
+					'label'           => __( 'Domain', 'rocket' ),
+					'container_class' => [
+						'wpr-field--split',
+					],
+					'default'         => '',
+					'section'         => 'cloudflare_credentials',
+					'page'            => 'cloudflare',
 				],
 				'cloudflare_devmode'          => [
 					'type'              => 'sliding_checkbox',
