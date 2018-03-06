@@ -3,15 +3,6 @@
  * CNAMES template.
  *
  * @since 3.0
- *
- * @param array $data {
- *     Checkbox Field arguments.
- *
- *     @type string $id          Field identifier.
- *     @type string $parent      Parent field identifier.
- *     @type string $label       Field label.
- *     @type string $description Field description.
- * }
  */
 
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
@@ -20,9 +11,10 @@ $cnames      = get_rocket_option( 'cdn_cnames' );
 $cnames_zone = get_rocket_option( 'cdn_zone' );
 ?>
 
-<div class="wpr-field wpr-field--multiple <?php echo isset( $data['parent'] ) ? 'wpr-field--children' : ''; ?>">
-<? if ( $cnames ) {
-	foreach ( $cnames as $key => $url ) {
+<div class="wpr-field wpr-field--multiple">
+<?php
+if ( $cnames ) :
+	foreach ( $cnames as $key => $url ) :
 		?>
 
 	<div class="wpr-text">
@@ -58,8 +50,9 @@ $cnames_zone = get_rocket_option( 'cdn_zone' );
 		],
 	] );
 	?>
-	<?php }
-} else {
+	<?php
+	endforeach;
+else :
 	?>
 	<div class="wpr-text">
 		<input type="text" name="wp_rocket_settings[cdn_cnames][]" />
@@ -94,5 +87,5 @@ $cnames_zone = get_rocket_option( 'cdn_zone' );
 		],
 	] );
 	?>
-	<?php } ?>
+<?php endif; ?>
 </div>

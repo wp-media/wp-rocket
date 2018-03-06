@@ -39,16 +39,16 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 			<img src="<?php echo WP_ROCKET_ASSETS_IMG_URL; ?>/logo-cloudflare2.svg" width="153" height="51" alt="Logo Varnish">
 		</div>
 		<div class="wpr-addon-text">
-			<?php if ( ! empty( $data['title'] ) ) { ?>
+			<?php if ( ! empty( $data['title'] ) ) : ?>
 				<div class="wpr-addon-title">
 					<?php echo $data['title']; ?>
 				</div>
-			<?php } ?>
-			<?php if ( ! empty( $data['description'] ) ) { ?>
+			<?php endif; ?>
+			<?php if ( ! empty( $data['description'] ) ) : ?>
 				<div class="wpr-field-description">
 					<?php echo $data['description']; ?>
 				</div>
-			<?php } ?>
+			<?php endif; ?>
 			<a href="#<?php echo esc_attr( $data['id'] ); ?>" class="wpr-button wpr-button--small wpr-button--icon wpr-button--purple wpr-icon-chevron-right"><?php esc_html_e( 'Modify options', 'rocket' ); ?></a>
 		</div>
 	</div>
