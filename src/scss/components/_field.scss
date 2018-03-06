@@ -27,7 +27,8 @@
         margin-top: 4px;
         color: $cGreyDark1;
 
-        a:hover{
+        a:hover,
+        a:focus{
             color: $cBlue;
         }
     }
@@ -58,7 +59,8 @@
         a{
             text-decoration: none;
 
-            &:hover{
+            &:hover,
+            &:focus{
                 color: $cBlue;
             }
         }

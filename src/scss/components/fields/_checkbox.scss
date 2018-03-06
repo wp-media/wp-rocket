@@ -66,3 +66,14 @@
     background: $cPurpleDark1;
     border-color: $cPurpleDark1;
 }
+
+
+// Focus
+.wpr-checkbox [type="checkbox"]:checked:focus + label:before {
+    background: $cPurpleLight2;
+    border: 2px dotted $cPurpleLight2;
+}
+
+.wpr-checkbox [type="checkbox"]:focus + label:before {
+    border: 2px dotted $cGreyDark1;
+}

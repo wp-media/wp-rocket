@@ -129,4 +129,14 @@
             left: inherit;
         }
     }
+
+
+    // Focus
+    [type="checkbox"]:not(:checked):focus + label:before{
+        border: 1px dashed $cGreyDark1;
+    }
+
+    [type="checkbox"]:checked:focus + label:before {
+        border: 1px dashed $cBlue;
+    }
 }

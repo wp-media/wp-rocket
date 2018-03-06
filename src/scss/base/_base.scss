@@ -29,7 +29,7 @@ input[type=submit]{
     cursor: pointer;
 }
 
-a, button, input[type=submit]{
+a, button{
     &:active{
         outline: none;
     }

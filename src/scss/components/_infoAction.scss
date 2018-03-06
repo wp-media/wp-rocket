@@ -12,11 +12,13 @@
     vertical-align: middle;
     letter-spacing: -0.03em;
     color: $cGreyDark2;
+    @include transition(all,200ms);
 
     &:before{
         position: absolute;
         margin-left: -26px;
         @include font-size(18,24);
+        @include transition(all,200ms);
     }
 
     &--help{
@@ -27,6 +29,16 @@
 
         &:before{
             color: $cBlue;
+        }
+    }
+
+    &:hover,
+    &:focus{
+        color: $cOrange;
+        outline: none;
+
+        &:before{
+            color: $cOrangeLight2;
         }
     }
 }

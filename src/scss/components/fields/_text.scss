@@ -23,6 +23,12 @@
         border: 2px solid darken($cGrey, 10%);
         border-radius: 3px;
         @include font-size(12,16);
+
+        &:focus{
+            outline: none;
+            border-color: $cGreyDark1;
+            box-shadow: none;
+        }
     }
 
     input[type=number]{

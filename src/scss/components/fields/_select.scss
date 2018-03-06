@@ -21,5 +21,11 @@
         border-radius: 0;
         @extend .wpr-title3;
         letter-spacing: 0.011em;
+
+        &:focus{
+            outline: none;
+            border-color: $cGreyDark1;
+            box-shadow: none;
+        }
     }
 }

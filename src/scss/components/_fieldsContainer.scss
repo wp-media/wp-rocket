@@ -12,7 +12,8 @@
     &-description{
         color: $cGreyDark2;
 
-        a:hover{
+        a:hover,
+        a:focus{
             color: $cBlue;
         }
     }
