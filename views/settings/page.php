@@ -43,6 +43,5 @@ settings_errors( $data['slug'] ); ?>
 		<div class="wpr-Sidebar">
 			<?php $this->render_sidebar(); ?>
 		</div>
-
 	</div>
 </div>

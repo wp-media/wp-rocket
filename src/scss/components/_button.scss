@@ -48,6 +48,22 @@
         }
     }
 
+    // Fixed button help
+    &--fixed{
+        position: fixed;
+        display: flex;
+        padding: $space $space*2;
+        right: $space*3;
+        bottom: $space*4;
+        border-radius: $space*2;
+
+        &:before{
+            @include font-size(18,18);
+            margin-right: $space;
+        }
+    }
+
+    // Colored buttons
     &--purple{
         background: $cPurple;
     }
@@ -55,6 +71,11 @@
     &--blue{
         min-width: inherit;
         background: $cBlue;
+    }
+
+    &--lightBlue{
+        min-width: inherit;
+        background: $cBlueLight1;
     }
 
     &--red{

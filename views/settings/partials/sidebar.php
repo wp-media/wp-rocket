@@ -24,3 +24,5 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 </div>
 
 <?php $this->render_documentation_block(); ?>
+
+<button data-beacon-id="" class="wpr-button wpr-icon-help wpr-button--lightBlue wpr-button--fixed"><?php esc_html_e( 'Need Help?', 'rocket' ); ?></button>
