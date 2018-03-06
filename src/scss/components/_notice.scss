@@ -12,8 +12,12 @@
     background: $cPurple url('../img/bg-activated.svg') no-repeat 90% bottom;
     background-size: 350px;
     margin-top: $space*3;
-    padding: $space*3 25% $space*3 $space*5;
     border-radius: 4px;
+    overflow: hidden;
+
+    &-container{
+        padding: $space*3 25% $space*3 $space*5;
+    }
 
     &-supTitle{
         @include font-size(16,22);

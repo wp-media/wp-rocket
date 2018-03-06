@@ -28,12 +28,14 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 	</div>
 
 	<div class="wpr-notice">
-		<div class="wpr-notice-supTitle">Congratulations!</div>
-		<h2 class="wpr-notice-title">WP Rocket is now activated and already working for you.<br>
-		 Your website should be loading faster now!</h2>
-		<div class="wpr-notice-description">To guarantee fast websites, WP Rocket applies 80% of web performance best practices.<br> We also enable options that provide immediate benefits to your website.</div>
-		<div class="wpr-notice-continue">Continue to the options to further optimize your site!</div>
-		<button class="wpr-notice-close wpr-icon-close"></button>
+		<div class="wpr-notice-container">
+			<div class="wpr-notice-supTitle">Congratulations!</div>
+			<h2 class="wpr-notice-title">WP Rocket is now activated and already working for you.<br>
+				Your website should be loading faster now!</h2>
+				<div class="wpr-notice-description">To guarantee fast websites, WP Rocket applies 80% of web performance best practices.<br> We also enable options that provide immediate benefits to your website.</div>
+				<div class="wpr-notice-continue">Continue to the options to further optimize your site!</div>
+				<button class="wpr-notice-close wpr-icon-close"></button>
+		</div>
 	</div>
 
 	<div class="wpr-Page-row">
