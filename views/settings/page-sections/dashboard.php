@@ -169,7 +169,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 		</div>
 
 		<div class="wpr-Page-col wpr-Page-col--fixed">
-			<?php $this->render_documentation_block(); ?>
+			<?php $this->render_part( 'documentation' ); ?>
 		</div>
 	</div>
 
