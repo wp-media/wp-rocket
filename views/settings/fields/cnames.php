@@ -50,6 +50,14 @@ $cnames_zone = get_rocket_option( 'cdn_zone' );
 			<option value="css" <?php selected( $cnames_zone[ $key ], 'css' ); ?>><?php esc_html_e( 'CSS', 'rocket' ); ?></option>
 		</select>
 	</div>
+	<?php
+	$this->render_action_button( 'button', 'refresh_account', [
+		'label'      => __( 'Add CNAME', 'rocket' ),
+		'attributes' => [
+			'class' => 'wpr-button wpr-button--purple wpr-button--icon wpr-icon-plus',
+		],
+	] );
+	?>
 	<?php }
 } else {
 	?>
@@ -78,5 +86,13 @@ $cnames_zone = get_rocket_option( 'cdn_zone' );
 			<option value="css"><?php esc_html_e( 'CSS', 'rocket' ); ?></option>
 		</select>
 	</div>
+	<?php
+	$this->render_action_button( 'button', 'refresh_account', [
+		'label'      => __( 'Add CNAME', 'rocket' ),
+		'attributes' => [
+			'class' => 'wpr-button wpr-button--purple wpr-button--icon wpr-icon-plus',
+		],
+	] );
+	?>
 	<?php } ?>
 </div>
