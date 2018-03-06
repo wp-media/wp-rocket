@@ -18,12 +18,18 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 $cnames      = get_rocket_option( 'cdn_cnames' );
 $cnames_zone = get_rocket_option( 'cdn_zone' );
+?>
 
-if ( $cnames ) {
+<div class="wpr-field wpr-field--multiple <?php echo isset( $data['parent'] ) ? 'wpr-field--children' : ''; ?>">
+<? if ( $cnames ) {
 	foreach ( $cnames as $key => $url ) {
 		?>
+
+	<div class="wpr-text">
 		<input type="text" name="wp_rocket_settings[cdn_cnames][<?php echo esc_attr( $key ); ?>]" value="<?php echo esc_attr( $url ); ?>" />
-		<?php _e( 'reserved for', 'rocket' ); ?>
+	</div>
+	<div class="wpr-field-betweenText"><?php _e( 'reserved for', 'rocket' ); ?></div>
+	<div class="wpr-select">
 		<select name="wp_rocket_settings[cdn_zone][<?php echo esc_attr( $key ); ?>]">
 			<option value="all" <?php selected( $cnames_zone[ $key ], 'all' ); ?>><?php esc_html_e( 'All files', 'rocket' ); ?></option>
 			<?php
@@ -43,12 +49,15 @@ if ( $cnames ) {
 			<option value="js" <?php selected( $cnames_zone[ $key ], 'js' ); ?>><?php esc_html_e( 'JavaScript', 'rocket' ); ?></option>
 			<option value="css" <?php selected( $cnames_zone[ $key ], 'css' ); ?>><?php esc_html_e( 'CSS', 'rocket' ); ?></option>
 		</select>
-	<?php
-	}
+	</div>
+	<?php }
 } else {
 	?>
-	<input type="text" name="wp_rocket_settings[cdn_cnames][]" />
-		<?php _e( 'reserved for', 'rocket' ); ?>
+	<div class="wpr-text">
+		<input type="text" name="wp_rocket_settings[cdn_cnames][]" />
+	</div>
+	<div class="wpr-field-betweenText"><?php _e( 'reserved for', 'rocket' ); ?></div>
+	<div class="wpr-select">
 		<select name="wp_rocket_settings[cdn_zone][]">
 			<option value="all"><?php esc_html_e( 'All files', 'rocket' ); ?></option>
 			<?php
@@ -68,5 +77,6 @@ if ( $cnames ) {
 			<option value="js"><?php esc_html_e( 'JavaScript', 'rocket' ); ?></option>
 			<option value="css"><?php esc_html_e( 'CSS', 'rocket' ); ?></option>
 		</select>
-	<?php
-}
+	</div>
+	<?php } ?>
+</div>

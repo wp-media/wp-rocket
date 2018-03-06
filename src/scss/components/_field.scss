@@ -64,6 +64,10 @@
         }
     }
 
+    &-betweenText{
+        margin: 0 $space*2;
+    }
+
     .wpr-button{
         margin: $space 0;
     }
@@ -119,6 +123,16 @@
         label{
             display: inline-block;
             margin-bottom: $space;
+        }
+    }
+
+    &--multiple{
+        display: flex;
+        align-items: center;
+
+        .wpr-text{
+            position: relative;
+            top: -2px;
         }
     }
 
