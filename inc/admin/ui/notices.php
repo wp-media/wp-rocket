@@ -570,7 +570,7 @@ function rocket_imagify_notice() {
 
 	<?php
 }
-add_action( 'admin_notices', 'rocket_imagify_notice' );
+//add_action( 'admin_notices', 'rocket_imagify_notice' );
 
 /**
  * This notice is displayed after purging the CloudFlare cache
@@ -714,7 +714,7 @@ function rocket_analytics_optin_notice() {
 		'message' => $analytics_notice,
 	) );
 }
-add_action( 'admin_notices', 'rocket_analytics_optin_notice' );
+//add_action( 'admin_notices', 'rocket_analytics_optin_notice' );
 
 /**
  * Displays a notice after analytics opt-in

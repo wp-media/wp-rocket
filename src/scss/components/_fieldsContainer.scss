@@ -23,6 +23,27 @@
         padding: $space*2;
         border: 1px solid $cGreyLight1;
         border-radius: 2px;
+
+        &--split{
+            display: flex;
+
+            .wpr-field+.wpr-field{
+                border: none;
+            }
+
+            .wpr-field{
+                flex: 0 0 50%;
+                padding: 0;
+
+                &:first-child{
+                    padding-right: 15px;
+                }
+
+                &:last-child{
+                    padding-left: 15px;
+                }
+            }
+        }
     }
 
     &-helper{

@@ -12,4 +12,8 @@
     border: 1px solid $cGrey;
     border-left: none;
     flex: 1 1 auto;
+
+    form > input:last-child{
+        margin-top: $space*3;
+    }
 }

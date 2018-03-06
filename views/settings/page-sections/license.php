@@ -17,11 +17,19 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 <div class="wpr-sectionHeader">
 	<h2 id="<?php echo esc_attr( $data['id'] ); ?>" class="wpr-title1 wpr-icon-important"><?php echo esc_html( $data['title'] ); ?></h2>
-</div>
+	<div class="wpr-sectionHeader-title wpr-title3">
+		<?php _e( 'WP Rocket was not able to automatically validate your license.', 'rocket' ); ?>
+	</div>
+	<div class="wpr-sectionHeader-description">
+		<?php
+		// translators: %1$s = tutorial URL, %2$s = support URL.
+		printf( __( 'Follow this <a href="%1$s">tutorial</a>, or contact <a href="%2$s">support</a> to get the engine started.', 'rocket' ), '', '' );
+		?>
+	</div>
+</div><br>
 
-<?php _e( 'WP Rocket was not able to automatically validate your license.', 'rocket' ); ?>
-<?php
-// translators: %1$s = tutorial URL, %2$s = support URL.
-printf( __( 'Follow this <a href="%1$s">tutorial</a>, or contact <a href="%2$s">support</a> to get the engine started.', 'rocket' ), '', '' );
-?>
-<?php $this->render_settings_sections( $data['id'] ); ?>
+<div class="wpr-fieldsContainer">
+	<div class="wpr-fieldsContainer-fieldset wpr-fieldsContainer-fieldset--split">
+		<?php $this->render_settings_sections( $data['id'] ); ?>
+	</div>
+</div>
