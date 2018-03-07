@@ -25,4 +25,4 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 <?php $this->render_part( 'documentation' ); ?>
 
-<button data-beacon-id="" class="wpr-button wpr-icon-help wpr-button--lightBlue wpr-button--fixed"><?php esc_html_e( 'Need Help?', 'rocket' ); ?></button>
+<!-- <button data-beacon-id="" class="wpr-button wpr-icon-help wpr-button--lightBlue wpr-button--fixed"><?php esc_html_e( 'Need Help?', 'rocket' ); ?></button> -->
