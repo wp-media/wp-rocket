@@ -24,8 +24,8 @@ if ( defined( 'rtCamp\WP\Nginx\RT_WP_NGINX_HELPER_PATH' ) ) :
 	 *
 	 * @since 2.x.x
 	 */
-	function rocket_clean_wpengine() {
+	function rocket_clean_nginx_helper_cache() {
 		do_action( 'rt_nginx_helper_purge_all' );
 	}
-	add_action( 'after_rocket_clean_domain', 'rocket_clean_wpengine' );
+	add_action( 'after_rocket_clean_domain', 'rocket_clean_nginx_helper_cache' );
 endif;
