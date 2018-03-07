@@ -13,6 +13,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 settings_errors( $data['slug'] ); ?>
 <div class="wpr-wrap wrap">
+	<h1 class="screen-reader-text"><?php _e( 'WP Rocket Settings', 'rocket' ); ?></h1>
 	<div class="wpr-body">
 
 		<header class="wpr-Header">
