@@ -162,3 +162,18 @@
         }
     }
 }
+
+// Special for cache page
+#cache{
+    .wpr-field--split{
+        padding-top: 0;
+        width: auto;
+
+        & + .wpr-field--split{
+            position: relative;
+            padding-left: 0;
+            top: -2px;
+            border-top: none;
+        }
+    }
+}

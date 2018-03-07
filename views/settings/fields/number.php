@@ -18,8 +18,8 @@
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 ?>
 
-<div class="wpr-field wpr-field--text <?php echo $data['container_class']; ?>">
-	<div class="wpr-text">
+<div class="wpr-field wpr-field--text wpr-field--number <?php echo $data['container_class']; ?>">
+	<div class="wpr-text wpr-text--number">
 		<label for="<?php echo esc_attr( $data['id'] ); ?>"><?php echo $data['label']; ?></label>
 		<input type="number" id="<?php echo esc_attr( $data['id'] ); ?>" name="wp_rocket_settings[<?php echo esc_attr( $data['id'] ); ?>]" value="<?php echo esc_attr( $data['value'] ); ?>">
 	</div>

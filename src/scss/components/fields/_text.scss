@@ -34,4 +34,10 @@
     input[type=number]{
         width: 80px;
     }
+
+    &--number{
+        label{
+            margin-right: $space;
+        }
+    }
 }
