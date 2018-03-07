@@ -1,6 +1,6 @@
 <?php
 /**
- * One-click add-on block template.
+ * Rocket add-on block template.
  *
  * @since 3.0
  *
