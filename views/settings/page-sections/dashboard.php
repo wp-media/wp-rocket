@@ -29,11 +29,11 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 	<div class="wpr-notice">
 		<div class="wpr-notice-container">
-			<div class="wpr-notice-supTitle">Congratulations!</div>
-			<h2 class="wpr-notice-title">WP Rocket is now activated and already working for you.<br>
-				Your website should be loading faster now!</h2>
-				<div class="wpr-notice-description">To guarantee fast websites, WP Rocket applies 80% of web performance best practices.<br> We also enable options that provide immediate benefits to your website.</div>
-				<div class="wpr-notice-continue">Continue to the options to further optimize your site!</div>
+			<div class="wpr-notice-supTitle"><?php _e( 'Congratulations!', 'rocket' ); ?></div>
+			<h2 class="wpr-notice-title"><?php _e( 'WP Rocket is now activated and already working for you.<br>
+				Your website should be loading faster now!', 'rocket' ); ?></h2>
+				<div class="wpr-notice-description"><?php _e( 'To guarantee fast websites, WP Rocket applies 80% of web performance best practices.<br> We also enable options that provide immediate benefits to your website.', 'rocket' ); ?></div>
+				<div class="wpr-notice-continue"><?php _e( 'Continue to the options to further optimize your site!', 'rocket' ); ?></div>
 				<button class="wpr-notice-close wpr-icon-close"></button>
 		</div>
 	</div>
@@ -65,7 +65,6 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 						<?php
 						$this->render_action_button( 'link', 'view_account', [
 							'label'      => __( 'View my account', 'rocket' ),
-							'icon'       => '',
 							'attributes' => [
 								'target' => '_blank',
 								'class'  => 'wpr-button wpr-button--icon wpr-button--small wpr-button--purple wpr-icon-user',
@@ -93,7 +92,6 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 						<?php
 						$this->render_action_button( 'link', 'purge_cache', [
 							'label'      => __( 'Clear cache', 'rocket' ),
-							'icon'       => '',
 							'parameters' => [
 								'type' => 'all',
 							],
@@ -109,7 +107,6 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 						<?php
 						$this->render_action_button( 'link', 'preload', [
 							'label'      => __( 'Preload cache', 'rocket' ),
-							'icon'       => '',
 							'attributes' => [
 								'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-icon-refresh',
 							],
@@ -117,18 +114,32 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 						?>
 					</div>
 
+					<?php if ( function_exists( 'opcache_reset' ) ) : ?>
 					<div class="wpr-field">
 						<h4 class="wpr-title3"><?php esc_html_e( 'Purge OPCache content', 'rocket' ); ?></h4>
 						<?php
 						$this->render_action_button( 'link', 'rocket_purge_opcache', [
 							'label'      => __( 'Purge OPCache', 'rocket' ),
-							'icon'       => '',
 							'attributes' => [
 								'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-icon-trash',
 							],
 						] );
 						?>
 					</div>
+					<?php endif; ?>
+					<?php if ( get_rocket_option( 'async_css' ) ) : ?>
+					<div class="wpr-field">
+						<h4 class="wpr-title3"><?php esc_html_e( 'Regenerate Critical CSS', 'rocket' ); ?></h4>
+						<?php
+						$this->render_action_button( 'link', 'rocket_generate_critical_css', [
+							'label'      => __( 'Regenerate Critical CSS', 'rocket' ),
+							'attributes' => [
+								'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-icon-refresh',
+							],
+						] );
+						?>
+					</div>
+					<?php endif; ?>
 				</fieldset>
 			</div>
 		</div>
