@@ -1,6 +1,3 @@
-// Add jquery
-import '../lib/jquery.min.js';
-
 // Add greensock lib for animations
 import '../lib/greensock/TweenLite.min.js';
 import '../lib/greensock/TimelineLite.min.js';
