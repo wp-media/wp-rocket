@@ -374,6 +374,19 @@ class Render extends Abstract_render {
 	}
 
 	/**
+	 * Displays the clear cache lifespan block template.
+	 *
+	 * @since 3.0
+	 * @author Remy Perona
+	 *
+	 * @param array $args Array of arguments to populate the template.
+	 * @return void
+	 */
+	public function cache_lifespan( $args ) {
+		echo $this->generate( 'fields/cache-lifespan', $args );
+	}
+
+	/**
 	 * Displays the hidden field template.
 	 *
 	 * @since 3.0
