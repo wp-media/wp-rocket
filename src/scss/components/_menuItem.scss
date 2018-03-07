@@ -9,21 +9,19 @@
 .wpr-menuItem{
     position: relative;
     display: block;
-    padding: 16px 20px 20px;
+    padding: $space*2 20px 20px;
     text-decoration: none;
     color: #fff;
-    border-bottom: 1px solid rgba(255,255,255, 0.1);
+    border-top: 1px solid rgba(255,255,255, 0.1);
     overflow: hidden;
     @include transition(all, 100ms);
 
-    &:last-child{
-        border-bottom: none;
+    &:first-child{
+        border-top: none;
     }
 
     &:before{
         position: absolute;
-        width: 26px;
-        height: 26px;
         top: calc(50% - 13px);
         right: 20px;
         text-align: center;
@@ -73,6 +71,10 @@
             color: #fff;
             opacity: 1;
         }
+
+        &:after{
+            transform: translateX(0);
+        }
     }
 
     &-title{
@@ -85,6 +87,27 @@
         color: $cGreyDark1;
         @include font-size(12,16);
         @include transition(all, 150ms);
+    }
+
+    // Special for cloudflare
+    &.wpr-cloudflareToggle{
+        border: none;
+        padding: $space 20px $space 25px;
+
+        .wpr-menuItem-title{
+            display: inline-block;
+            @include font-size(12,24);
+            text-transform: inherit;
+        }
+
+        &:before{
+            position: relative;
+            display: inline-block;
+            top: 2px;
+            right: inherit;
+            margin-right: 8px;
+            @include font-size(16,16);
+        }
     }
 }
 
@@ -100,6 +123,6 @@
     &-database{ @extend .wpr-icon-database; }
     &-cdn{ @extend .wpr-icon-cdn; }
     &-addons{ @extend .wpr-icon-addons; }
-    &-do_cloudflare{ @extend .wpr-icon-addon; }
+    &-cloudflare{ @extend .wpr-icon-addon; }
     &-tools{ @extend .wpr-icon-tools; }
 }
