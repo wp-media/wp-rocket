@@ -22,7 +22,6 @@ class Render extends Abstract_Render {
 	 */
 	public function render_form() {
 		$args = [
-			'safe_mode_url'    => wp_nonce_url( admin_url( 'admin-post.php?action=rocket_safe_mode' ), 'rocket_safe_mode' ),
 			'deactivation_url' => wp_nonce_url( 'plugins.php?action=deactivate&amp;plugin=' . rawurlencode( 'wp-rocket/wp-rocket.php' ), 'deactivate-plugin_wp-rocket/wp-rocket.php' ),
 		];
 
