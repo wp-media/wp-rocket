@@ -17,12 +17,13 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 	<p><?php _e( 'Why Google PageSpeed grade should not matter', 'rocket' ); ?></p>
 	<a href="#" class="wpr-Sidebar-notice-link"><?php _e( 'Read more', 'rocket' ); ?></a>
 </div>
+<?php if ( ! get_rocket_option( 'user_cache', 0 ) ) : ?>
 <div class="wpr-Sidebar-info">
 	<i class="wpr-icon-information2"></i>
 	<h4><?php _e( 'You have not activated logged-in user cache.', 'rocket' ); ?></h4>
 	<p><?php _e( 'Use a private browser to check your website\'s speed and visual appearance.', 'rocket' ); ?></p>
 </div>
-
+<?php endif; ?>
 <?php $this->render_part( 'documentation' ); ?>
 
 <!-- <button data-beacon-id="" class="wpr-button wpr-icon-help wpr-button--lightBlue wpr-button--fixed"><?php esc_html_e( 'Need Help?', 'rocket' ); ?></button> -->
