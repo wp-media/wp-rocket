@@ -69,6 +69,7 @@ require WP_ROCKET_3RD_PARTY_PATH . 'plugins/wp-offload-s3.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/wp-offload-s3-assets.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/s2member.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/cookie-notice.php';
+require WP_ROCKET_3RD_PARTY_PATH . 'plugins/nginx-helper.php';
 
 require WP_ROCKET_3RD_PARTY_PATH . 'themes/divi.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'themes/avada.php';

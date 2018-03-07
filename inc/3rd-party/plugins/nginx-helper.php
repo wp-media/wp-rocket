@@ -25,7 +25,7 @@ if ( defined( 'rtCamp\WP\Nginx\RT_WP_NGINX_HELPER_PATH' ) ) :
 	function rocket_clean_wpengine() {
 		global $rt_wp_nginx_purger;
 		if ( method_exists( $rt_wp_nginx_purger, 'true_purge_all' ) ) {
-			$rt_wp_nginx_purger->true_purge_all();
+			do_action( 'rt_nginx_helper_purge_all' );
 		}
 	}
 	add_action( 'after_rocket_clean_domain', 'rocket_clean_wpengine' );
