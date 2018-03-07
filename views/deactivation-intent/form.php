@@ -38,7 +38,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 			<p><?php _e( 'This type of issue can usually be fixed by deactivating some options in WP Rocket.', 'rocket' ); ?></p>
 			<p><?php _e( 'Click "Activate Safe Mode" to quickly turn off additional options. Then check your site to see if the issue has resolved.', 'rocket' ); ?></p>
 			<button id="wpr-action-safe_mode"><?php _e( 'Activate safe mode', 'rocket' ); ?></button>
-			<p style="display:none;" class="show-if-safe-mode"><?php _e( 'Safe mode activated!', 'rocket' ); ?></p>
+			<p style="display:none;" class="show-if-safe-mode"><?php _e( 'Safe mode applied. Review your site in a private/logged out browser window.', 'rocket' ); ?></p>
 			<p style="display:none;" class="show-if-safe-mode"><?php _e( 'Is the issue fixed? Now you can reactivate options one at a time to determine which one caused the problem. <a href="http://docs.wp-rocket.me/article/19-resolving-issues-with-file-optimization" target="_blank">More info</a>', 'rocket' ); ?></p>
 		</div>
 		<div id="reason-score-panel">
