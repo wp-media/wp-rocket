@@ -71,7 +71,7 @@ class Deactivation_Intent {
 
 		add_action( 'admin_print_footer_scripts-plugins.php', [ $self, 'insert_mixpanel_tracking' ] );
 		add_action( 'admin_footer-plugins.php', [ $self, 'insert_deactivation_intent_form' ] );
-		add_action( 'admin_post_rocket_safe_mode', [ $self, 'activate_safe_mode' ] );
+		add_action( 'wp_ajax_rocket_safe_mode', [ $self, 'activate_safe_mode' ] );
 	}
 
 	/**
@@ -116,16 +116,17 @@ mixpanel.init("a36067b00a263cce0299cfd960e26ecf", {
 	 * @since 3.0
 	 * @author Remy Perona
 	 *
-	 * @return void
+	 * @return string
 	 */
 	public function activate_safe_mode() {
-		check_ajax_referer( 'rocket_safe_mode' );
+		check_ajax_referer( 'rocket-ajax' );
 
 		if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
 			wp_die();
 		}
 
 		$reset_options = [
+			'embeds'                 => 0,
 			'defer_all_js'           => 0,
 			'async_css'              => 0,
 			'lazyload'               => 0,
@@ -143,7 +144,6 @@ mixpanel.init("a36067b00a263cce0299cfd960e26ecf", {
 		$this->options->set_values( $reset_options );
 		$this->options->set( 'settings', $this->options->get_options() );
 
-		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
-		wp_die();
+		return wp_send_json_success();
 	}
 }
