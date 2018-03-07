@@ -509,6 +509,7 @@ class Page {
 	private function cache_section() {
 		$mobile_cache_beacon = $this->get_beacon_suggest( 'mobile_cache', $this->locale );
 		$user_cache_beacon   = $this->get_beacon_suggest( 'user_cache', $this->locale );
+		$nonce_beacon        = $this->get_beacon_suggest( 'nonce', $this->locale );
 
 		$this->settings->add_page_section(
 			'cache',
@@ -589,26 +590,14 @@ class Page {
 					],
 				],
 				'purge_cron_interval'     => [
-					'type'              => 'number',
-					'label'             => __( 'Clear cache after', 'rocket' ),
-					'container_class'   => [
-						'wpr-field--split',
-					],
+					'type'              => 'cache_lifespan',
+					'label'             => __( 'Specify time after which the global cache is cleared<br>(0 = unlimited )', 'rocket' ),
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'description'       => sprintf( __( 'Reduce lifespan to 10 hours or less if you notice issues that seem to appear periodically. %1$sWhy?%2$s', 'rocket' ), '<a href="' . $nonce_beacon['url'] . '" data-beacon-article="' . $nonce_beacon['id'] . '">', '</a>' ),
 					'section'           => 'cache_lifespan',
 					'page'              => 'cache',
 					'default'           => 10,
-					'sanitize_callback' => 'sanitize_text_field',
-				],
-				'purge_cron_unit'         => [
-					'type'              => 'select',
-					'label'             => __( 'Unit of time', 'rocket' ),
-					'container_class'   => [
-						'wpr-field--split',
-					],
-					'section'           => 'cache_lifespan',
-					'page'              => 'cache',
-					'default'           => 'HOUR_IN_SECONDS',
-					'sanitize_callback' => 'sanitize_text_field',
+					'sanitize_callback' => 'sanitize_cache_lifespan',
 					'choices'           => [
 						'MINUTE_IN_SECONDS' => __( 'Minutes', 'rocket' ),
 						'HOUR_IN_SECONDS'   => __( 'Hours', 'rocket' ),
@@ -1705,6 +1694,16 @@ class Page {
 			'cache_lifespan'         => [
 				'en' => '555c7e9ee4b027e1978e17a5,5922fd0e0428634b4a33552c',
 				'fr' => '568f7df49033603f7da2ec72,598080e1042863033a1b890e',
+			],
+			'nonce'                  => [
+				'en' => [
+					'id'  => '5922fd0e0428634b4a33552c',
+					'url' => 'http://docs.wp-rocket.me/article/975-nonces-and-cache-lifespan',
+				],
+				'fr' => [
+					'id'  => '598080e1042863033a1b890e',
+					'url' => 'http://fr.docs.wp-rocket.me/article/1015-nonces-delai-nettoyage-cache',   
+				],
 			],
 			'basic_section'          => [
 				'en' => '55231415e4b0221aadf25676,588286b32c7d3a4a60b95b6c,58869c492c7d3a7846303a3d',
