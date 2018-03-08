@@ -1,0 +1,25 @@
+// main: ../../main.scss
+
+/*-----------------------------------------------*\
+
+    Multiple field
+
+\*-----------------------------------------------*/
+
+
+// Field like CNAME
+
+.wpr-multiple{
+    display: flex;
+    align-items: center;
+
+    .wpr-text{
+        flex: 1 1 auto;
+        position: relative;
+        top: -2px;
+    }
+
+    .wpr-button{
+        margin-left: $space*2;
+    }
+}

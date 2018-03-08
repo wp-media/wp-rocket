@@ -23,11 +23,16 @@
         border: 2px solid darken($cGrey, 10%);
         border-radius: 3px;
         @include font-size(12,16);
+        @include transition(border,200ms);
 
         &:focus{
             outline: none;
             border-color: $cGreyDark1;
             box-shadow: none;
+        }
+
+        &.wpr-isError{
+            border-color: $cRed;
         }
     }
 
@@ -40,4 +45,5 @@
             margin-right: $space;
         }
     }
+
 }

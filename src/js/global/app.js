@@ -5,7 +5,7 @@ import '../lib/greensock/easing/EasePack.min.js';
 import '../lib/greensock/plugins/CSSPlugin.min.js';
 
 // Add scripts
-import '../global/main.js';
 import '../global/pageManager.js';
+import '../global/main.js';
 import '../global/fields.js';
 import '../global/beacons.js';

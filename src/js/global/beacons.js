@@ -1,6 +1,11 @@
 var $ = jQuery;
 $(document).ready(function(){
 
+
+    /***
+    * Show beacons on button "help" click
+    ***/
+
     var $help = $('.wpr-infoAction--help');
     $help.on('click', function(e){
         var ids = $(this).data('beacon-id');

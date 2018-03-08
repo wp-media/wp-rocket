@@ -2,9 +2,9 @@ var $ = jQuery;
 $(document).ready(function(){
 
 
-    /*
-    ** Check parent / show children
-    */
+    /***
+    * Check parent / show children
+    ***/
 
     var $fieldParent = $('.wpr-isParent');
     $fieldParent.change(function() {
@@ -30,9 +30,9 @@ $(document).ready(function(){
 
 
 
-    /*
-    ** Warning fields
-    */
+    /***
+    * Warning fields
+    ***/
 
     var $warningParent = $('.wpr-field--parent');
 
@@ -76,5 +76,37 @@ $(document).ready(function(){
         }
     }
 
+
+
+
+    /***
+    * Multiple field (for CNAME)
+    ***/
+
+    var $buttonMulti = $('.wpr-button--addMulti');
+
+    $buttonMulti.click(function() {
+        wprAddMulti($(this));
+        return false;
+    });
+
+    function wprAddMulti(aElem){
+        var $parent = aElem.parent();
+        var $fieldText = $parent.find('input[type=text]');
+
+        if($fieldText.val().length > 0){
+            $parent.clone().appendTo($parent.parent()).addClass('wpr-isHidden');
+            $fieldText.val('');
+            $fieldText.focus();
+        }
+        else{
+            $fieldText.addClass('wpr-isError');
+
+            setTimeout(function() {
+                $fieldText.removeClass('wpr-isError');
+                $fieldText.focus();
+            }, 500);
+        }
+    }
 
 });
