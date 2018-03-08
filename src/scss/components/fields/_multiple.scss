@@ -22,4 +22,45 @@
     .wpr-button{
         margin-left: $space*2;
     }
+
+    &-list{
+        display: none;
+        padding: $space 0;
+        margin: $space*2 0 0;
+        background: $cGreyLight2;
+        border-radius: 2px;
+
+        li{
+            margin-bottom: 0;
+            padding: $space/2 $space*2;
+            @include font-size(12,16);
+            font-family: Monaco;
+
+            span{
+                display: inline-block;
+                @include transition(all,150ms);
+            }
+        }
+    }
+
+    &-close{
+        position: relative;
+        top: 3px;
+        @include font-size(16,16);
+        margin-right: $space*2;
+        @include transition(color,200ms);
+
+        &:focus{
+            outline: none;
+        }
+
+        &:hover,
+        &:focus{
+            color: $cRed;
+
+            & + span{
+                color: $cRed;
+            }
+        }
+    }
 }
