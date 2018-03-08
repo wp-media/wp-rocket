@@ -173,19 +173,31 @@
             padding-right: 0;
         }
     }
-}
 
-// Special for cache page
-#cache{
-    .wpr-field--split{
-        padding-top: 0;
-        width: auto;
+    // Special for cache lifespan
+    &--cache{
+        .wpr-field--number,
+        .wpr-field--select{
+            display: inline-block;
+            padding-top: 0;
+            width: auto;
+            padding-bottom: 0;
+        }
 
-        & + .wpr-field--split{
+        .wpr-field--select{
             position: relative;
-            padding-left: 0;
+            padding-left: $space;
             top: -2px;
             border-top: none;
+        }
+
+        .wpr-field-description{
+            margin: $space 0;
+            color: $cGreenDark1;
+        }
+
+        .wpr-field-description-label{
+            color: $cBlack;
         }
     }
 }
