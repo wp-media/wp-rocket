@@ -1011,6 +1011,9 @@ class Page {
 				'sitemaps'          => [
 					'type'              => 'textarea',
 					'label'             => __( 'Sitemaps for preloading', 'rocket' ),
+					'container_class'   => [
+						'wpr-field--children',
+					],
 					'description'       => __( 'Specify XML sitemap(s) to be used for preloading', 'rocket' ),
 					'section'           => 'sitemap_preload_section',
 					'page'              => 'preload',
