@@ -1336,7 +1336,7 @@ class Page {
 	 */
 	private function cdn_section() {
 		$this->settings->add_page_section(
-			'cdn',
+			'page_cdn',
 			[
 				'title'            => __( 'CDN', 'rocket' ),
 				'menu_description' => __( 'Integrate your CDN', 'rocket' ),
@@ -1350,13 +1350,13 @@ class Page {
 					'type'        => 'fields_container',
 					'description' => __( 'All URLs of static files (CSS, JS, images) will be rewritten to the CNAME(s) you provide.', 'rocket' ),
 					'help'        => $this->get_beacon_suggest( 'cdn', $this->locale ),
-					'page'        => 'cdn',
+					'page'        => 'page_cdn',
 				],
 				'exclude_cdn_section' => [
 					'title' => __( 'Exclude files from CDN', 'rocket ' ),
 					'type'  => 'fields_container',
 					'help'  => $this->get_beacon_suggest( 'exclude_cdn', $this->locale ),
-					'page'  => 'cdn',
+					'page'  => 'page_cdn',
 				],
 			]
 		);
@@ -1367,7 +1367,7 @@ class Page {
 					'type'              => 'checkbox',
 					'label'             => __( 'Enable Content Delivery Network', 'rocket' ),
 					'section'           => 'cdn_section',
-					'page'              => 'cdn',
+					'page'              => 'page_cdn',
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
@@ -1377,14 +1377,14 @@ class Page {
 					'description' => __( 'Specify the CNAME(s) below', 'rocket' ),
 					'default'     => [],
 					'section'     => 'cdn_section',
-					'page'        => 'cdn',
+					'page'        => 'page_cdn',
 				],
 				'cdn_reject_files' => [
 					'type'              => 'textarea',
 					'description'       => __( 'Specify URL(s) of files that should not get served via CDN', 'rocket' ),
 					'helper'            => __( 'The domain part of the URL will be stripped automatically.<br>Use (.*).js wildcards to exclude all JS files located at a specific path.', 'rocket' ),
 					'section'           => 'exclude_cdn_section',
-					'page'              => 'cdn',
+					'page'              => 'page_cdn',
 					'default'           => [],
 					'sanitize_callback' => 'sanitize_textarea',
 				],
