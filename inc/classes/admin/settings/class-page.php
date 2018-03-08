@@ -751,6 +751,9 @@ class Page {
 				'exclude_css'            => [
 					'type'              => 'textarea',
 					'label'             => __( 'Excluded CSS Files', 'rocket' ),
+					'container_class'   => [
+						'wpr-field--children',
+					],
 					'description'       => __( 'Specify URLs of CSS files to be excluded from minification and concatenation.', 'rocket' ),
 					'helper'            => __( 'The domain part of the URL will be stripped automatically.<br>Use (.*).css wildcards to exclude all CSS files located at a specific path.', 'rocket' ),
 					'section'           => 'css',
@@ -829,6 +832,9 @@ class Page {
 				'exclude_js'             => [
 					'type'              => 'textarea',
 					'label'             => __( 'Excluded JS Files', 'rocket' ),
+					'container_class'   => [
+						'wpr-field--children',
+					],
 					'description'       => __( 'Specify URLs of JS files to be excluded from minification and concatenation.', 'rocket' ),
 					'helper'            => __( 'The domain part of the URL will be stripped automatically.<br>Use (.*).js wildcards to exclude all JS files located at a specific path.', 'rocket' ),
 					'section'           => 'js',
