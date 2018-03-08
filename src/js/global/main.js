@@ -1,4 +1,3 @@
-
 var $ = jQuery;
 $(document).ready(function(){
 
@@ -25,7 +24,7 @@ $(document).ready(function(){
 
 
 
- 
+
     /***
     * Hide / show cloudflare tab
     ***/
@@ -39,10 +38,10 @@ $(document).ready(function(){
 
     function wprDetectCloudflare(){
         if($checkboxCloudflare.is(':checked')){
-            TweenLite.set($menuItemCloudflare, {'display':'block'});
+            $menuItemCloudflare.css('display','block');
         }
         else{
-            TweenLite.set($menuItemCloudflare, {'display':'none'});
+            $menuItemCloudflare.css('display','none');
         }
     }
 

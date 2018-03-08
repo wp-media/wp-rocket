@@ -96,15 +96,27 @@
         @include font-size(14,24);
     }
 
+    // Disabled field
     &.wpr-isDisabled{
         opacity: 0.4;
+    }
+
+    // Parent field
+    &.wpr-isParent{
+        padding-bottom: 0;
     }
 
 
 
     // Children field
     &--children{
-        padding-left: 32px;
+        display: none;
+        padding-left: $space*4;
+
+        &.wpr-isOpen{
+            display: block;
+            margin-top: $space*2;
+        }
     }
 
     // Checkbox

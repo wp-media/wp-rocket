@@ -1,40 +1,31 @@
-document.addEventListener( 'DOMContentLoaded', function () {
+var $ = jQuery;
+$(document).ready(function(){
 
 
     /*
-    ** Disabled fields
+    ** Check parent / show children
     */
 
-    var $disabledFields = document.querySelectorAll('.wpr-isDisabled');
-    var $parentInput = [];
+    var $fieldParent = $('.wpr-isParent');
+    $fieldParent.change(function() {
+        wprShowChildren($(this));
+    }).trigger('change');
 
-    for (var i = 0; i < $disabledFields.length; i++) {
-        // Get prev element
-        var $prev = $disabledFields[i].parentNode.previousSibling;
-        while($prev && $prev.nodeType != 1) {
-            $prev = $prev.previousSibling;
+    function wprShowChildren(aElem){
+        // Get all children
+        var $children = aElem.nextUntil(':not(.wpr-field--children)','.wpr-field--children');
+
+        // Test check for switch
+        if(aElem.find('input[type=checkbox]').is(':checked')){
+            $children.addClass('wpr-isOpen');
         }
-        $parentInput[i] = $prev.querySelector('input[type=checkbox]');
-
-        wprShowDisabled(i);
+        else{
+            $children.removeClass('wpr-isOpen');
+            $children.each(function(){
+                $(this).find('input[type=checkbox]').attr('checked', false);
+            });
+        }
     }
-
-    function wprShowDisabled(i){
-        $parentInput[i].addEventListener('change',function(){
-            //console.log('ok disabled');
-             if(this.checked){
-                 $disabledFields[i].classList.remove('wpr-isDisabled');
-                 $disabledFields[i].querySelector('input[type=checkbox]').disabled = false;
-             }
-             else{
-                 $disabledFields[i].classList.add('wpr-isDisabled');
-                 $disabledFields[i].querySelector('input[type=checkbox]').disabled = true;
-                 $disabledFields[i].querySelector('input[type=checkbox]').checked = false;
-                 $disabledFields[i].parentNode.querySelector('.wpr-fieldWarning').classList.remove('wpr-isOpen');
-             }
-         });
-    }
-
 
 
 
@@ -43,41 +34,47 @@ document.addEventListener( 'DOMContentLoaded', function () {
     ** Warning fields
     */
 
-    var $warning = document.querySelectorAll('.wpr-warningContainer');
-    var $warningCheckbox = [];
+    var $warningParent = $('.wpr-field--parent');
 
-    for (var i = 0; i < $warning.length; i++) {
-        // Input checkbox
-        $warningCheckbox[i] = $warning[i].querySelector('input[type=checkbox]');
-        wprShowWarning(i);
-    }
+    $warningParent.change(function() {
+        wprShowWarning($(this));
+    });
 
-    function wprShowWarning(i){
-        $warningCheckbox[i].addEventListener('change',function(){
-            //console.log('ok warning');
-            var $warningField = $warning[i].querySelector('.wpr-fieldWarning');
+    function wprShowWarning(aElem){
+        var $warningField = aElem.next('.wpr-fieldWarning'),
+            $thisCheckbox = aElem.find('input[type=checkbox]'),
+            $nextWarning = aElem.parent().next('.wpr-warningContainer'),
+            $nextFields = $nextWarning.find('.wpr-field')
+        ;
 
-            // Check warning parent
-            if(this.checked){
-                $warningField.classList.add('wpr-isOpen');
-                this.checked = false;
+        // Check warning parent
+        if($thisCheckbox.is(':checked')){
+            $warningField.addClass('wpr-isOpen');
+            $thisCheckbox.attr('checked', false);
+            aElem.trigger('change');
 
-                var $warningButton = $warningField.querySelector('.wpr-button');
+            var $warningButton = $warningField.find('.wpr-button');
 
-                // Validate the warning
-                $warningButton.onclick = function(){
-                    $warningCheckbox[i].checked = true;
-                    $warningField.classList.remove('wpr-isOpen');
+            // Validate the warning
+            $warningButton.click(function(){
+                $thisCheckbox.attr('checked', true);
+                $warningField.removeClass('wpr-isOpen');
 
-                    // var event = new Event('change');
-                    //$warningCheckbox[i].dispatchEvent(event);
-                    
-                    return false;
+                // If next elem = disabled
+                if($nextWarning.length > 0){
+                    $nextFields.removeClass('wpr-isDisabled');
+                    $nextFields.find('input').attr('disabled', false);
                 }
-            }
-        });
-    }
 
+                return false;
+            });
+        }
+        else{
+            $nextFields.addClass('wpr-isDisabled');
+            $nextFields.find('input').attr('disabled', true);
+            $nextFields.find('input[type=checkbox]').attr('checked', false);
+        }
+    }
 
 
 });
