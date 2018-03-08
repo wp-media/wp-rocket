@@ -1429,24 +1429,33 @@ class Page {
 			]
 		);
 
-		$varnish_beacon = $this->get_beacon_suggest( 'varnish', $this->locale );
+		/**
+		 * Allow to display the "Varnish" tab in the settings page
+		 *
+		 * @since 2.7
+		 *
+		 * @param bool true will display the "Varnish" tab
+		*/
+		if ( apply_filters( 'rocket_display_varnish_options_tab', true ) ) {
+			$varnish_beacon = $this->get_beacon_suggest( 'varnish', $this->locale );
 
-		$this->settings->add_settings_fields(
-			apply_filters( 'rocket_display_varnish_options_tab', [
-				'varnish_auto_purge' => [
-					'type'              => 'one_click_addon',
-					'label'             => __( 'Varnish', 'rocket' ),
-					'logo'              => '',
-					'title'             => __( 'If Varnish runs on your server, you must activate this add-on.', 'rocket' ),
-					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'       => sprintf( __( 'Varnish cache will be purged each time WP Rocket clears its cache to ensure content is always up-to-date.<br>%1$sLearn more%2$s', 'rocket' ), '<a href="' . $varnish_beacon['url'] . '" data-beacon-article="' . $varnish_beacon['id'] . '">', '</a>' ),
-					'section'           => 'one_click',
-					'page'              => 'addons',
-					'default'           => 0,
-					'sanitize_callback' => 'sanitize_textarea',
-				],
-			] )
-		);
+			$this->settings->add_settings_fields(
+				[
+					'varnish_auto_purge' => [
+						'type'              => 'one_click_addon',
+						'label'             => __( 'Varnish', 'rocket' ),
+						'logo'              => '',
+						'title'             => __( 'If Varnish runs on your server, you must activate this add-on.', 'rocket' ),
+						// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+						'description'       => sprintf( __( 'Varnish cache will be purged each time WP Rocket clears its cache to ensure content is always up-to-date.<br>%1$sLearn more%2$s', 'rocket' ), '<a href="' . $varnish_beacon['url'] . '" data-beacon-article="' . $varnish_beacon['id'] . '">', '</a>' ),
+						'section'           => 'one_click',
+						'page'              => 'addons',
+						'default'           => 0,
+						'sanitize_callback' => 'sanitize_textarea',
+					],
+				]
+			);
+		}
 
 		$this->settings->add_settings_fields(
 			[
@@ -1711,7 +1720,7 @@ class Page {
 				],
 				'fr' => [
 					'id'  => '598080e1042863033a1b890e',
-					'url' => 'http://fr.docs.wp-rocket.me/article/1015-nonces-delai-nettoyage-cache',   
+					'url' => 'http://fr.docs.wp-rocket.me/article/1015-nonces-delai-nettoyage-cache',
 				],
 			],
 			'basic_section'          => [
