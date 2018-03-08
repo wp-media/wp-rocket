@@ -44,7 +44,14 @@ function PageManager(aElem) {
         this.detectID();
     }
     else{
-        this.$menuItems[0].classList.add('isActive');
+        var session = sessionStorage.getItem('wpr-hash');
+        if(session){
+            window.location.hash = session;
+            this.detectID();
+        }
+        else{
+            this.$menuItems[0].classList.add('isActive');
+        }
     }
 
 }
@@ -55,6 +62,8 @@ function PageManager(aElem) {
 */
 PageManager.prototype.detectID = function() {
     this.pageId = window.location.hash.split('#')[1];
+    sessionStorage.setItem('wpr-hash', this.pageId);
+
     this.$page = document.querySelector('.wpr-Page#' + this.pageId);
     this.$menuItem = document.getElementById('wpr-nav-' + this.pageId);
 
