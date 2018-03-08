@@ -8,3 +8,4 @@ import '../lib/greensock/plugins/CSSPlugin.min.js';
 import '../global/main.js';
 import '../global/pageManager.js';
 import '../global/fields.js';
+import '../global/beacons.js';
