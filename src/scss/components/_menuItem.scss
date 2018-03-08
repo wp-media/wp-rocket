@@ -109,6 +109,18 @@
             margin-right: 8px;
             @include font-size(16,16);
         }
+
+        &:after{
+            border-width: 9px 8px 9px 0;
+            top: calc(50% - 9px);
+            transform: translateX(8px);
+        }
+
+        &:hover{
+            &:after{
+                transform: translateX(0);
+            }
+        }
     }
 }
 
