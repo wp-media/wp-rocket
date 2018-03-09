@@ -16,54 +16,59 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 ?>
 <div class="wpr-Modal">
 	<div class="wpr-Modal-header">
-		<h2><?php _e( 'WP Rocket feedback', 'rocket' ); ?></h2>
+		<div>
+			<button class="wpr-Modal-return wpr-icon-chevron-left"><?php _e( 'Return', 'rocket' ); ?></button>
+			<h2><?php _e( 'WP Rocket feedback', 'rocket' ); ?></h2>
+		</div>
 		<button class="wpr-Modal-close wpr-icon-close"><?php _e( 'Close', 'rocket' ); ?></button>
 	</div>
 	<div class="wpr-Modal-content">
-		<h3><?php _e( 'May we have a little info about why you are deactivating?', 'rocket' ); ?></h3>
-		<ul>
-			<li>
-				<input type="radio" name="reason" id="reason-temporary" value="Temporary Deactivation">
-				<label for="reason-temporary"><?php _e( '<strong>It is a temporary deactivation.</strong> I am just debugging an issue.', 'rocket' ); ?></label>
-			</li>
-			<li>
-				<input type="radio" name="reason" id="reason-broke" value="Broken Layout">
-				<label for="reason-broke"><?php _e( 'The plugin <strong>broke my layout</strong> or some functionality.', 'rocket' ); ?></label>
-			</li>
-			<li>
-				<input type="radio" name="reason" id="reason-score" value="Score">
-				<label for="reason-score"><?php _e( 'My PageSpeed or GTMetrix <strong>score did not improve.</strong>', 'rocket' ); ?></label>
-			</li>
-			<li>
-				<input type="radio" name="reason" id="reason-loading" value="Loading Time">
-				<label for="reason-loading"><?php _e( 'I did not notice a difference in loading time.', 'rocket' ); ?></label>
-			</li>
-			<li>
-				<input type="radio" name="reason" id="reason-complicated" value="Complicated">
-				<label for="reason-complicated"><?php _e( 'The plugin is <strong>too complicated to configure.</strong>', 'rocket' ); ?></label>
-			</li>
-			<li>
-				<input type="radio" name="reason" id="reason-host" value="Host">
-				<label for="reason-host"><?php _e( 'My host already has its own caching system.', 'rocket' ); ?></label>
-				<div class="wpr-Modal-fieldHidden">
-					<label for="reason-hostname"><?php _e( 'What is the name of your web host?', 'rocket' ); ?></label>
-					<input type="text" name="reason-hostname" id="reason-hostname" value=""><label for="reason-hostname">
-				</div>
-			</li>
-			<li>
-				<input type="radio" name="reason" id="reason-other" value="Other">
-				<label for="reason-other"><?php _e( 'Other', 'rocket' ); ?></label>
-				<div class="wpr-Modal-fieldHidden">
-					<label for="reason-other-details"><?php _e( 'Let us know why you are deactivating WP Rocket so we can improve the plugin', 'rocket' ); ?></label>
-					<textarea name="reason-other-details" id="reason-other-details"></textarea>
-				</div>
-			</li>
-		</ul>
+		<div class="wpr-Modal-question wpr-isOpen">
+			<h3><?php _e( 'May we have a little info about why you are deactivating?', 'rocket' ); ?></h3>
+			<ul>
+				<li>
+					<input type="radio" name="reason" id="reason-temporary" value="Temporary Deactivation">
+					<label for="reason-temporary"><?php _e( '<strong>It is a temporary deactivation.</strong> I am just debugging an issue.', 'rocket' ); ?></label>
+				</li>
+				<li>
+					<input type="radio" name="reason" id="reason-broke" value="Broken Layout">
+					<label for="reason-broke"><?php _e( 'The plugin <strong>broke my layout</strong> or some functionality.', 'rocket' ); ?></label>
+				</li>
+				<li>
+					<input type="radio" name="reason" id="reason-score" value="Score">
+					<label for="reason-score"><?php _e( 'My PageSpeed or GTMetrix <strong>score did not improve.</strong>', 'rocket' ); ?></label>
+				</li>
+				<li>
+					<input type="radio" name="reason" id="reason-loading" value="Loading Time">
+					<label for="reason-loading"><?php _e( 'I did not notice a difference in loading time.', 'rocket' ); ?></label>
+				</li>
+				<li>
+					<input type="radio" name="reason" id="reason-complicated" value="Complicated">
+					<label for="reason-complicated"><?php _e( 'The plugin is <strong>too complicated to configure.</strong>', 'rocket' ); ?></label>
+				</li>
+				<li>
+					<input type="radio" name="reason" id="reason-host" value="Host">
+					<label for="reason-host"><?php _e( 'My host already has its own caching system.', 'rocket' ); ?></label>
+					<div class="wpr-Modal-fieldHidden">
+						<input type="text" name="reason-hostname" id="reason-hostname" value="" placeholder="<?php _e( 'What is the name of your web host?', 'rocket' ); ?>">
+					</div>
+				</li>
+				<li>
+					<input type="radio" name="reason" id="reason-other" value="Other">
+					<label for="reason-other"><?php _e( 'Other', 'rocket' ); ?></label>
+					<div class="wpr-Modal-fieldHidden">
+						<textarea name="reason-other-details" id="reason-other-details" placeholder="<?php _e( 'Let us know why you are deactivating WP Rocket so we can improve the plugin', 'rocket' ); ?>"></textarea>
+					</div>
+				</li>
+			</ul>
+		</div>
 		<div id="reason-broke-panel" class="wpr-Modal-hidden">
 			<h3><?php _e( 'The plugin broke my layout or some functionality', 'rocket' ); ?></h3>
 			<p><?php _e( 'This type of issue can usually be fixed by deactivating some options in WP Rocket.', 'rocket' ); ?></p>
 			<p><?php _e( 'Click "Activate Safe Mode" to quickly turn off additional options. Then check your site to see if the issue has resolved.', 'rocket' ); ?></p>
-			<button id="wpr-action-safe_mode"><?php _e( 'Activate safe mode', 'rocket' ); ?></button>
+			<div class="text-center">
+				<button id="wpr-action-safe_mode" class="wpr-button"><?php _e( 'Activate safe mode', 'rocket' ); ?></button>
+			</div>
 			<p style="display:none;" class="show-if-safe-mode"><?php _e( 'Safe mode applied. Review your site in a private/logged out browser window.', 'rocket' ); ?></p>
 			<p style="display:none;" class="show-if-safe-mode"><?php _e( 'Is the issue fixed? Now you can reactivate options one at a time to determine which one caused the problem. <a href="http://docs.wp-rocket.me/article/19-resolving-issues-with-file-optimization" target="_blank">More info</a>', 'rocket' ); ?></p>
 		</div>
@@ -92,7 +97,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 	</div>
 	<div class="wpr-Modal-footer">
 		<div>
-			<a href="<?php echo esc_attr( $data['deactivation_url'] ); ?>" class="button button-primary" id="mixpanel-send-deactivation"><?php _e( 'Send & Deactivate', 'rocket' ); ?></a>
+			<a href="<?php echo esc_attr( $data['deactivation_url'] ); ?>" class="button button-primary wpr-isDisabled" disabled id="mixpanel-send-deactivation"><?php _e( 'Send & Deactivate', 'rocket' ); ?></a>
 			<button class="wpr-Modal-cancel"><?php _e( 'Cancel', 'rocket' ); ?></button>
 		</div>
 		<a href="<?php echo esc_attr( $data['deactivation_url'] ); ?>" class="button button-secondary"><?php _e( 'Skip & Deactivate', 'rocket' ); ?></a>

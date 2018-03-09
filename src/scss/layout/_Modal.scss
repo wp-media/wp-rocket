@@ -63,6 +63,32 @@
         }
     }
 
+    &-return{
+        display: none;
+        border: none;
+        background: none;
+        cursor: pointer;
+        font-size: 0;
+        color: #777;
+        position: relative;
+        left: -8px;
+
+        &.wpr-isOpen{
+            display: inline-block;
+        }
+
+        &:before{
+            font-size: 14px;
+            display: inline-block;
+        }
+
+        &:hover,
+        &:focus{
+            outline: none;
+            color: #008ec2;
+        }
+    }
+
     &-cancel{
         color: #0073aa;
         text-decoration: underline;
@@ -77,16 +103,99 @@
         }
     }
 
+    &-question{
+        display: none;
+
+        &.wpr-isOpen{
+            display: block;
+        }
+    }
+
     &-content{
         padding: $space $space*4;
     }
 
     &-fieldHidden{
         display: none;
+        padding-left: 26px;
+        margin-top: $space;
+
+        &.wpr-isOpen{
+            display: block;
+        }
+
+        input[type=text],
+        textarea{
+            border: 2px solid #A9ADB0;
+            font-size: 12px;
+            border-radius: 3px;
+
+            &:focus{
+                outline: none;
+                border-color: #888;
+            }
+
+            &::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+                color: #ccc;
+            }
+            :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+               color: #ccc;
+               opacity:  1;
+            }
+            &::-moz-placeholder { /* Mozilla Firefox 19+ */
+               color: #ccc;
+               opacity:  1;
+            }
+            :-ms-input-placeholder { /* Internet Explorer 10-11 */
+               color: #ccc;
+            }
+            &::-ms-input-placeholder { /* Microsoft Edge */
+               color: #ccc;
+            }
+
+            &::placeholder { /* Most modern browsers support this now. */
+               color: #ccc;
+            }
+        }
+
+        input[type=text]{
+            width: 300px;
+            height: 30px;
+        }
+
+        textarea{
+            width: 100%;
+            height: 60px;
+            padding: 5px;
+        }
     }
 
     &-hidden{
         display: none;
+
+        &.wpr-isOpen{
+            display: block;
+        }
+
+        button{
+            cursor: pointer;
+            margin-bottom: 24px;
+        }
+
+        .text-center{
+            text-align: center;
+        }
+
+        h3{
+            display: none !important;
+        }
+    }
+
+    .button-primary{
+        &.wpr-isDisabled{
+            cursor: not-allowed;
+            pointer-events: none;
+        }
     }
 
     ul{
@@ -97,6 +206,7 @@
 
     h2,
     h3{
+        display: inline-block;
         font-weight: normal;
     }
 
