@@ -488,7 +488,7 @@ class Page {
 					'type'              => 'sliding_checkbox',
 					'label'             => __( 'Rocket Sharer', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'       => sprintf( __( 'I agree to share anonymous data with the development team to help improve WP Rocket. %1$sWhat info will we collect?%2$s', 'rocket' ), '<a href="#TB_inline&inlineId=rocket-analytics-info&width=720&height=510" title="WP Rocket Analytics" class="thickbox">', '</a>' ),
+					'description'       => sprintf( __( 'I agree to share anonymous data with the development team to help improve WP Rocket. %1$sWhat info will we collect?%2$s', 'rocket' ), '<button class="wpr-js-popin">', '</button>' ),
 					'section'           => 'status',
 					'page'              => 'dashboard',
 					'default'           => 0,
