@@ -139,7 +139,6 @@ function rocket_init_php_deprecated() {
 	}
 
 	if ( is_admin() ) {
-		require WP_ROCKET_ADMIN_PATH . 'ajax.php';
 		require WP_ROCKET_ADMIN_PATH . 'updater.php';
 		require WP_ROCKET_ADMIN_PATH . 'admin.php';
 		require WP_ROCKET_ADMIN_UI_PATH . 'enqueue.php';
@@ -229,7 +228,6 @@ function rocket_init() {
 	}
 
 	if ( is_admin() ) {
-		require WP_ROCKET_ADMIN_PATH . 'ajax.php';
 		require WP_ROCKET_ADMIN_PATH . 'upgrader.php';
 		require WP_ROCKET_ADMIN_PATH . 'updater.php';
 		require WP_ROCKET_ADMIN_PATH . 'options.php';
