@@ -91,10 +91,13 @@ for(h=0;h<k.length;h++)e(d,k[h]);a._i.push([b,c,f])};a.__SV=1.2;b=e.createElemen
 mixpanel.init("a36067b00a263cce0299cfd960e26ecf", {
 		'ip':false,
 		property_blacklist: ['$initial_referrer', '$current_url', '$initial_referring_domain', '$referrer', '$referring_domain']
-	} );</script><!-- end Mixpanel -->
-		<script>
-		mixpanel.track_links( '#mixpanel-send-deactivation', 'Deactivation Intent' );
-		</script>
+	} );
+
+		mixpanel.track_links( '#mixpanel-send-deactivation', 'Deactivation Intent', {
+			'Reason': 'placeholder',
+			'Details': 'placeholder',
+		} );
+		</script><!-- end Mixpanel -->
 	<?php
 	}
 
