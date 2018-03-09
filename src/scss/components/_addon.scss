@@ -1,0 +1,41 @@
+// main: ../main.scss
+
+/*-----------------------------------------------*\
+
+    Addon style
+
+\*-----------------------------------------------*/
+
+.wpr-addon{
+    padding: $space*3 0;
+
+    .wpr-flex{
+        align-items: flex-start;
+    }
+
+    .wpr-flex > div{
+        text-align: left;
+    }
+
+    .wpr-addon-title{
+        margin-bottom: $space*2;
+    }
+
+    .wpr-addon-logo{
+        flex: 0 0 160px;
+    }
+
+    .wpr-addon-text{
+        margin-left: $space*4;
+        flex: 1 1 auto;
+
+        a{
+            display: inline-block;
+            margin-top: $space*3;
+        }
+
+        .button{
+            margin-top: $space*3;
+        }
+    }
+}
