@@ -88,4 +88,28 @@ $(document).ready(function(){
     }
 
 
+
+
+    /***
+    * Tips on/off
+    ***/
+
+    var $wprButtonTips = $('.wpr-js-tips');
+
+    $wprButtonTips.change(function() {
+        wprDetectTips($(this));
+    }).trigger('change');
+
+    function wprDetectTips(aElem){
+        if(aElem.is(':checked')){
+            console.log('show');
+            $('.wpr-field-description').css('display','block');
+        }
+        else{
+            console.log('hide');
+            $('.wpr-field-description').css('display','none');
+        }
+    }
+
+
 });

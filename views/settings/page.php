@@ -39,6 +39,14 @@ settings_errors( $data['slug'] ); ?>
 				<input type="submit" class="wpr-button" value="<?php esc_attr_e( 'Save Changes', 'rocket' ); ?>">
 			</form>
 			<?php $this->render_tools_section(); ?>
+			<div class="wpr-Content-tips">
+				<div class="wpr-radio wpr-radio--reverse">
+					<input type="checkbox" class="wpr-js-tips" id="wpr-js-tips" value="1" checked>
+					<label for="wpr-js-tips">
+						<span class="wpr-radio-ui"></span>
+						Show Tips</label>
+				</div>
+			</div>
 		</section>
 
 		<aside class="wpr-Sidebar">
