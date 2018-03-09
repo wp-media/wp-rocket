@@ -78,7 +78,6 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 			<?php
 				$this->render_settings_sections( $data['id'] );
 			?>
-			<a href="javascript:void(0)" class="wpr-js-popin">What info will we collect?</a>
 		</div>
 
 		<div class="wpr-Page-col wpr-Page-col--fixed">
