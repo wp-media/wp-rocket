@@ -31,7 +31,7 @@ settings_errors( $data['slug'] ); ?>
 			</div>
 		</header>
 
-		<div class="wpr-Content">
+		<section class="wpr-Content">
 			<form action="options.php" method="POST" id="<?php echo esc_attr( $data['slug'] ); ?>_options">
 				<?php settings_fields( $data['slug'] ); ?>
 				<?php $this->render_form_sections(); ?>
@@ -39,10 +39,28 @@ settings_errors( $data['slug'] ); ?>
 				<input type="submit" class="wpr-button" value="<?php esc_attr_e( 'Save Changes', 'rocket' ); ?>">
 			</form>
 			<?php $this->render_tools_section(); ?>
-		</div>
+		</section>
 
-		<div class="wpr-Sidebar">
+		<aside class="wpr-Sidebar">
 			<?php $this->render_part( 'sidebar' ); ?>
+		</aside>
+	</div>
+
+	<div class="wpr-Popin">
+		<div class="wpr-Popin-header">
+			<h2 class="wpr-title1">Rocket Analytics</h2>
+			<button class="wpr-Popin-close wpr-icon-close"></button>
+		</div>
+		<div class="wpr-Popin-content">
+			<p><?php _e( 'Below is a detailed view of all data WP Rocket will collect <strong>if granted permission.</strong>', 'rocket' ); ?></p>
+			<?php echo rocket_data_collection_preview_table(); ?>
+			<div class="wpr-Popin-flex">
+				<p><?php _e( 'WP Rocket will never transmit any domain names or email addresses (except for license validation), IP addresses, or third-party API keys.', 'rocket' ); ?></p>
+				<div>
+					<button class="wpr-button wpr-button--small wpr-button--icon wpr-icon-check wpr-button--blue"><?php _e( 'Activate WP Rocket analytics', 'rocket' ); ?></button>
+				</div>
+			</div>
 		</div>
 	</div>
+	<div class="wpr-Popin-overlay"></div>
 </div>
