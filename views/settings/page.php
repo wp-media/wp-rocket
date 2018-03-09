@@ -44,7 +44,7 @@ settings_errors( $data['slug'] ); ?>
 					<input type="checkbox" class="wpr-js-tips" id="wpr-js-tips" value="1" checked>
 					<label for="wpr-js-tips">
 						<span class="wpr-radio-ui"></span>
-						Show Tips</label>
+						<?php __e( 'Show Tips', 'rocket' ); ?></label>
 				</div>
 			</div>
 		</section>
@@ -56,7 +56,7 @@ settings_errors( $data['slug'] ); ?>
 
 	<div class="wpr-Popin">
 		<div class="wpr-Popin-header">
-			<h2 class="wpr-title1">Rocket Analytics</h2>
+			<h2 class="wpr-title1"><?php __e( 'Rocket Analytics', 'rocket' ); ?></h2>
 			<button class="wpr-Popin-close wpr-icon-close"></button>
 		</div>
 		<div class="wpr-Popin-content">
