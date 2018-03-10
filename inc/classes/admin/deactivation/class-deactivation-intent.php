@@ -93,9 +93,11 @@ mixpanel.init("a36067b00a263cce0299cfd960e26ecf", {
 		property_blacklist: ['$initial_referrer', '$current_url', '$initial_referring_domain', '$referrer', '$referring_domain']
 	} );
 
-		mixpanel.track_links( '#mixpanel-send-deactivation', 'Deactivation Intent', {
-			'Reason': document.getElementById('wpr-reason').value,
-			'Details': document.getElementById('wpr-details').value,
+		mixpanel.track_links( '#mixpanel-send-deactivation', 'Deactivation Intent', function(ele) {
+			return {
+				'Reason': document.getElementById('wpr-reason').value,
+				'Details': document.getElementById('wpr-details').value,
+			}
 		} );
 		</script><!-- end Mixpanel -->
 	<?php
