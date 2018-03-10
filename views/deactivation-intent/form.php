@@ -61,6 +61,8 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 					</div>
 				</li>
 			</ul>
+			<input id="wpr-reason" type="hidden" value="">
+			<input id="wpr-details" type="hidden" value="">
 		</div>
 		<div id="reason-broke-panel" class="wpr-Modal-hidden">
 			<h3><?php _e( 'The plugin broke my layout or some functionality', 'rocket' ); ?></h3>

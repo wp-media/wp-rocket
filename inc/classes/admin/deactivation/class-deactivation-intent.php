@@ -94,8 +94,8 @@ mixpanel.init("a36067b00a263cce0299cfd960e26ecf", {
 	} );
 
 		mixpanel.track_links( '#mixpanel-send-deactivation', 'Deactivation Intent', {
-			'Reason': 'placeholder',
-			'Details': 'placeholder',
+			'Reason': document.getElementById('wpr-reason').value,
+			'Details': document.getElementById('wpr-details').value,
 		} );
 		</script><!-- end Mixpanel -->
 	<?php
