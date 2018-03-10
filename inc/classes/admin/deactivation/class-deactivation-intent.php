@@ -70,7 +70,7 @@ class Deactivation_Intent {
 		$self = new self( $render, $options_api, $options );
 
 		add_action( 'admin_print_footer_scripts-plugins.php', [ $self, 'insert_mixpanel_tracking' ] );
-		add_action( 'admin_footer-plugins.php', [ $self, 'insert_deactivation_intent_form' ] );
+		add_action( 'admin_footer', [ $self, 'insert_deactivation_intent_form' ] );
 		add_action( 'wp_ajax_rocket_safe_mode', [ $self, 'activate_safe_mode' ] );
 	}
 
@@ -110,6 +110,12 @@ mixpanel.init("a36067b00a263cce0299cfd960e26ecf", {
 	 * @return void
 	 */
 	public function insert_deactivation_intent_form() {
+		$current_screen = get_current_screen();
+
+		if ( 'plugins' !== $current_screen->id ) {
+			return;
+		}
+
 		$this->render->render_form();
 	}
 
