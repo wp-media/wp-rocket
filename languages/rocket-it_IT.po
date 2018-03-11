@@ -2,13 +2,13 @@
 # This file is distributed under the same license as the WP Rocket package.
 # Translators:
 # Alessandro Curci <hantarex@gmail.com>, 2014-2015
-# wpmedia <contact@wp-media.me>, 2016-2017
+# wpmedia <contact@wp-media.me>, 2016-2018
 msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2017-12-19 07:48-0500\n"
-"PO-Revision-Date: 2017-12-29 15:31+0000\n"
+"POT-Creation-Date: 2018-01-25 14:11-0500\n"
+"PO-Revision-Date: 2018-02-27 08:44+0000\n"
 "Last-Translator: wpmedia <contact@wp-media.me>\n"
 "Language-Team: Italian (Italy) (http://www.transifex.com/wp-media/wp-rocket/language/it_IT/)\n"
 "MIME-Version: 1.0\n"
@@ -407,7 +407,7 @@ msgid "Cancel"
 msgstr "Annulla"
 
 #: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/modules/tools.php:72
-#: inc/admin/ui/notices.php:935 inc/common/admin-bar.php:50
+#: inc/admin/ui/notices.php:936 inc/common/admin-bar.php:50
 #: inc/common/admin-bar.php:76 inc/common/admin-bar.php:118
 msgid "Clear cache"
 msgstr "Cancellare la cache"
@@ -1655,11 +1655,11 @@ msgstr "Permetti a WP Rocket di raccogliere alcuni dati di diagnostica non sensi
 msgid "Analytics tracking"
 msgstr "Tracciamento statistiche"
 
-#: inc/admin/ui/modules/tools.php:48 inc/admin/ui/notices.php:695
+#: inc/admin/ui/modules/tools.php:48 inc/admin/ui/notices.php:696
 msgid "What info will we collect?"
 msgstr "Quali dati raccogliamo?"
 
-#: inc/admin/ui/modules/tools.php:49 inc/admin/ui/notices.php:700
+#: inc/admin/ui/modules/tools.php:49 inc/admin/ui/notices.php:701
 msgid ""
 "Below is a detailed view of all data WP Rocket will collect if granted "
 "permission. WP Rocket will never transmit any domain names or email "
@@ -1728,7 +1728,7 @@ msgstr "Fai un backup delle tue impostazioni usando il pulsante “%s” qui sop
 msgid "Rollback:"
 msgstr "Tornare indietro:"
 
-#: inc/admin/ui/modules/tools.php:195 inc/admin/ui/notices.php:907
+#: inc/admin/ui/modules/tools.php:195 inc/admin/ui/notices.php:908
 #, php-format
 msgid "Re-install version %s"
 msgstr "Reinstallare la versione %s"
@@ -1819,108 +1819,108 @@ msgid ""
 "clear the cache if they affect the front end of your site."
 msgstr "<strong>%s</strong>: Uno o più plugin sono stati abilitati o disabilitati: cancella la cache se vedi qualche problema di visualizzazione sul tuo sito."
 
-#: inc/admin/ui/notices.php:186
+#: inc/admin/ui/notices.php:187
 #, php-format
 msgid ""
 "<strong>%s</strong>: The following plugins are not compatible with this "
 "plugin and may cause unexpected results:"
 msgstr "<strong>%s</strong>: I seguenti plugin non sono compatibili con questo plugin e possono causare risultati indesiderati:"
 
-#: inc/admin/ui/notices.php:192
+#: inc/admin/ui/notices.php:193
 msgid "Deactivate"
 msgstr "Disattivare"
 
-#: inc/admin/ui/notices.php:219
+#: inc/admin/ui/notices.php:220
 #, php-format
 msgid ""
 "%1$s: A custom permalink structure is required for the plugin to work "
 "properly. %2$sGo to permalinks settings%3$s"
 msgstr "%1$s: È necessario impostare una struttura dei permalink personalizzata per far funzionare correttamente il plugin. %2$sVai alle impostazioni dei permalink%3$s"
 
-#: inc/admin/ui/notices.php:488
+#: inc/admin/ui/notices.php:489
 #, php-format
 msgid ""
 "%1$s is good to go! %2$sTest your load time%4$s, or visit your "
 "%3$ssettings%4$s."
 msgstr "%1$s è pronto a partire! %2$sFai un test della velocità di caricamento%4$s, o verifica le tue %3$simpostazioni%4$s."
 
-#: inc/admin/ui/notices.php:545
+#: inc/admin/ui/notices.php:546
 msgid "Activate Imagify"
 msgstr "Attivare Imagify"
 
-#: inc/admin/ui/notices.php:545
+#: inc/admin/ui/notices.php:546
 msgid "Install Imagify for Free"
 msgstr "Installare Imagify gratuitamente"
 
-#: inc/admin/ui/notices.php:560
+#: inc/admin/ui/notices.php:561
 msgid ""
 "Speed up your website and boost your SEO by reducing image file sizes "
 "without losing quality with Imagify."
 msgstr "Velocizza il tuo sito web e dai un'accelerata al tuo SEO riducendo la dimensione dei file immagine senza perdere qualità grazie a Imagify."
 
-#: inc/admin/ui/notices.php:565
+#: inc/admin/ui/notices.php:566
 msgid "More details"
 msgstr "Maggiori informazioni"
 
-#: inc/admin/ui/notices.php:688
+#: inc/admin/ui/notices.php:689
 msgid ""
 "Would you allow WP Rocket to collect non-sensitive diagnostic data from this"
 " website?"
 msgstr "Vuoi permettere a WP Rocket di raccogliere da questo sito web dei dati di diagnostica non sensibili?"
 
-#: inc/admin/ui/notices.php:689
+#: inc/admin/ui/notices.php:690
 msgid "This would help us to improve WP Rocket for you in the future."
 msgstr "Questo in futuro ci permetterà di migliorare WP Rocket per te."
 
-#: inc/admin/ui/notices.php:709
+#: inc/admin/ui/notices.php:710
 msgid "Yes, allow"
 msgstr "Si, ve lo permetto"
 
-#: inc/admin/ui/notices.php:712
+#: inc/admin/ui/notices.php:713
 msgid "No, thanks"
 msgstr "No, grazie"
 
-#: inc/admin/ui/notices.php:755
+#: inc/admin/ui/notices.php:756
 msgid "Thank you!"
 msgstr "Grazie!"
 
-#: inc/admin/ui/notices.php:760
+#: inc/admin/ui/notices.php:761
 msgid "WP Rocket now collects these metrics from your website:"
 msgstr "WP Rocket ora collezionerà queste metriche dal tuo sito web:"
 
-#: inc/admin/ui/notices.php:799
+#: inc/admin/ui/notices.php:800
 #, php-format
 msgid "%s: Cache cleared."
 msgstr "%s: Cache cancellata."
 
-#: inc/admin/ui/notices.php:802
+#: inc/admin/ui/notices.php:803
 #, php-format
 msgid "%s: Post cache cleared."
 msgstr "%s: Cache dell'articolo cancellata."
 
-#: inc/admin/ui/notices.php:805
+#: inc/admin/ui/notices.php:806
 #, php-format
 msgid "%s: Term cache cleared."
 msgstr "%s: Cache del termine cancellata."
 
-#: inc/admin/ui/notices.php:808
+#: inc/admin/ui/notices.php:809
 #, php-format
 msgid "%s: User cache cleared."
 msgstr "%s: Cache utente cancellata."
 
-#: inc/admin/ui/notices.php:850
+#: inc/admin/ui/notices.php:851
 #, php-format
 msgid ""
 "Sitemap preload: %d uncached pages have now been preloaded. (refresh to see "
 "progress)"
 msgstr "Precaricamento sitemap: sono state precaricate %d pagine che non erano in cache. (Aggiorna per verificare il progresso)"
 
-#: inc/admin/ui/notices.php:884
+#: inc/admin/ui/notices.php:885
 #, php-format
 msgid "Sitemap preload: %d pages have been cached."
 msgstr "Precaricamento sitemap: è stata creata la cache per %d pagine."
 
-#: inc/admin/ui/notices.php:904
+#: inc/admin/ui/notices.php:905
 #, php-format
 msgid ""
 "%1$s %2$s requires at least PHP %3$s to function properly. To use this "
@@ -1929,34 +1929,34 @@ msgid ""
 "version by using the button below."
 msgstr "%1$s%2$s richiede almeno PHP %3$s per funzionare correttamente. Per usare questa versione, chiedi al tuo hosting di aggiornare il tuo server a PHP %3$s o superiore. Se non ti è possibile fare questo aggiornamento, puoi tornare alla versione precedente usando il bottone qui sotto."
 
-#: inc/admin/ui/notices.php:953
+#: inc/admin/ui/notices.php:954
 msgid "Force deactivation "
 msgstr "Forzare la disattivazione"
 
-#: inc/admin/ui/notices.php:966
+#: inc/admin/ui/notices.php:967
 msgid "The following code should have been written to this file:"
 msgstr "Sarebbe stato necessario scrivere il codice seguente su questo file:"
 
-#: inc/admin/ui/notices.php:974
+#: inc/admin/ui/notices.php:977
 msgid "Dismiss this notice."
 msgstr "Chiudi questa notifica."
 
-#: inc/admin/ui/notices.php:995
+#: inc/admin/ui/notices.php:998
 #, php-format
 msgid "%s cannot configure itself due to missing writing permissions."
 msgstr "%s non può configurarsi perché mancano dei permessi di scrittura."
 
-#: inc/admin/ui/notices.php:1001
+#: inc/admin/ui/notices.php:1004
 #, php-format
 msgid "Affected file/folder: %s"
 msgstr "File/cartella interessata: %s"
 
-#: inc/admin/ui/notices.php:1008
+#: inc/admin/ui/notices.php:1011
 #, php-format
 msgid "Troubleshoot: %1$sHow to make system files writeable%2$s"
 msgstr "Risoluzione del problema: %1$sCome rendere riscrivibili i file di sistema?%2$s"
 
-#: inc/admin/ui/notices.php:1010
+#: inc/admin/ui/notices.php:1013
 msgid ""
 "http://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
 "config-writeable"
@@ -1966,9 +1966,9 @@ msgstr "http://it.docs.wp-rocket.me/article/873-come-rendere-riscrivibili-i-file
 #, php-format
 msgid ""
 "An unexpected error occurred. Something may be wrong with WP-Rocket.me or "
-"this server&#8217;s configuration. If you continue to have problems, please "
-"try the <a href=\"%s\">support forums</a>."
-msgstr "Si è verificato un errore inaspettato. Ci potrebbe essere qualche problema su wp-rocket.me o con la configurazione di questo server. Se continui ad avere problemi, per favore consulta il <a href=\"%s\">forum di supporto</a>."
+"this server&#8217;s configuration. If you continue to have problems, <a "
+"href=\"%s\">contact support</a>."
+msgstr "Si è verificato un errore imprevisto. Potrebbe esserci qualcosa che non va su  wp-rocket.me o nella configurazione di questo server. Se il problema persiste, <a href=\"%s\">contatta il servizio di supporto</a>."
 
 #: inc/classes/class-rocket-background-critical-css-generation.php:96
 #: inc/classes/class-rocket-background-critical-css-generation.php:105
@@ -1997,14 +1997,14 @@ msgstr "Non è stato possibile salvare il contenuto del CSS critico come file in
 msgid "Critical CSS for %s generated."
 msgstr "Il CSS critico per %s è stato generato."
 
-#: inc/classes/class-rocket-critical-css.php:366
+#: inc/classes/class-rocket-critical-css.php:393
 #, php-format
 msgid ""
 "Critical CSS generation is currently running: %1$d of %2$d page types "
 "completed. (Refresh this page to view progress)"
 msgstr "La generazione del CSS critico è in corso: %1$d di %2$d tipi di pagina sono stati completati. (Aggiorna la pagina per vedere il progresso)"
 
-#: inc/classes/class-rocket-critical-css.php:410
+#: inc/classes/class-rocket-critical-css.php:437
 #, php-format
 msgid "Critical CSS generation finished for %1$d of %2$d page types."
 msgstr "La generazione del CSS critico è terminata per %1$d di %2$d tipi di pagina."
@@ -2064,8 +2064,8 @@ msgid "Cloudflare cache purge error: %s"
 msgstr "Errore durante la pulizia della cache Cloudflare: %s"
 
 #: inc/common/purge.php:517
-msgid "CloudFlare cache successfully purged"
-msgstr "La cache di Cloudflare è stata cancellata con successo"
+msgid "Cloudflare cache successfully purged"
+msgstr "La cache Cloudflare è stata purgata correttamente"
 
 #: inc/deprecated.php:449
 msgid "<strong>JS</strong> files with Deferred Loading JavaScript"
