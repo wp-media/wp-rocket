@@ -286,12 +286,12 @@ function get_rocket_minify_url( $files, $extension ) {
 
 	if ( is_string( $files ) ) {
 		$file      = get_rocket_parse_url( $files );
-		$file_path = rocket_realpath( strtok( $files, '?' ), true, $hosts_index );
+		$file_path = rocket_url_to_path( strtok( $files, '?' ), $hosts_index );
 		$unique_id = md5( $files . $minify_key );
-		$filename  = preg_replace( '/\.(' . $extension . ')$/', '-' . $unique_id . '.' . $extension, ltrim( rocket_realpath( $file['path'], false, $hosts_index ), '/' ) );
+		$filename  = preg_replace( '/\.(' . $extension . ')$/', '-' . $unique_id . '.' . $extension, ltrim( rocket_realpath( $file['path'] ), '/' ) );
 	} else {
 		foreach ( $files as $file ) {
-			$file_path[] = rocket_realpath( $file, true, $hosts_index );
+			$file_path[] = rocket_url_to_path( $file, $hosts_index );
 		}
 
 		$files_hash = implode( ',', $files );

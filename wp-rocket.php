@@ -3,7 +3,7 @@
  * Plugin Name: WP Rocket
  * Plugin URI: https://wp-rocket.me
  * Description: The best WordPress performance plugin.
- * Version: 2.11.6
+ * Version: 2.11.7
  * Code Name: Dagobah
  * Author: WP Media
  * Contributors: Jonathan Buttigieg, Julio Potier, Remy Perona
@@ -19,7 +19,7 @@
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 // Rocket defines.
-define( 'WP_ROCKET_VERSION'             , '2.11.6' );
+define( 'WP_ROCKET_VERSION'             , '2.11.7' );
 define( 'WP_ROCKET_PRIVATE_KEY'         , false );
 define( 'WP_ROCKET_SLUG'                , 'wp_rocket_settings' );
 define( 'WP_ROCKET_WEB_MAIN'            , false );
@@ -96,11 +96,6 @@ function rocket_init_php_deprecated() {
 		return;
 	}
 
-	// Nothing to do if XMLRPC request.
-	if ( defined( 'XMLRPC_REQUEST' ) ) {
-		return;
-	}
-
 	// Call defines and functions.
 	require WP_ROCKET_FUNCTIONS_PATH . 'options.php';
 
@@ -164,17 +159,14 @@ function rocket_init() {
 		return;
 	}
 
-	// Nothing to do if XMLRPC request.
-	if ( defined( 'XMLRPC_REQUEST' ) ) {
-		return;
-	}
-
 	// Necessary to call correctly WP Rocket Bot for cache json.
 	global $do_rocket_bot_cache_json;
 	$do_rocket_bot_cache_json = false;
 
 	// Composer autoload.
-	require WP_ROCKET_PATH . 'vendor/autoload.php';
+	if ( file_exists( WP_ROCKET_PATH . '/vendor/autoload.php' ) ) {
+		require WP_ROCKET_PATH . 'vendor/autoload.php';
+	}
 
 	// Call defines and functions.
 	require WP_ROCKET_FUNCTIONS_PATH . 'options.php';
