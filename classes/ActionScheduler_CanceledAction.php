@@ -8,7 +8,7 @@
  */
 class ActionScheduler_CanceledAction extends ActionScheduler_FinishedAction {
 
-	public function __construct( $hook, array $args = array(), ActionScheduler_Schedule $schedule = NULL, $group = '', $id = NULL, $status = '', $claim_id = '' ) {
+	public function __construct( $hook, array $args = array(), ActionScheduler_Schedule $schedule = NULL, $group = '' ) {
 		parent::__construct( $hook, $args, $schedule, $group );
 		$this->set_schedule( new ActionScheduler_NullSchedule() );
 	}
