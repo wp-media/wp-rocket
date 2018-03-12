@@ -13,30 +13,42 @@ class ActionScheduler_WPCLI_Scheduler_command extends WP_CLI_Command {
 	 * [--batch-size=<size>]
 	 * : The maximum number of actions to run. Defaults to 100.
 	 *
+	 * [--batches=<size>]
+	 * : Limit execution to a number of batches. Defaults to 0, meaning batches will continue being executed until all actions are complete.
+	 *
 	 * [--force]
 	 * : Whether to force execution despite the maximum number of concurrent processes being exceeded.
+	 *
+	 * @param array $args Positional arguments.
+	 * @param array $assoc_args Keyed arguments.
+	 * @throws \WP_CLI\ExitException When an error occurs.
 	 */
 	public function run( $args, $assoc_args ) {
 		// Handle passed arguments.
-		$batch = \WP_CLI\Utils\get_flag_value( $assoc_args, 'batch-size', 100 );
-		$force = \WP_CLI\Utils\get_flag_value( $assoc_args, 'force', false );
+		$batch   = absint( \WP_CLI\Utils\get_flag_value( $assoc_args, 'batch-size', 100 ) );
+		$batches = absint( \WP_CLI\Utils\get_flag_value( $assoc_args, 'batches', 0 ) );
+		$force   = \WP_CLI\Utils\get_flag_value( $assoc_args, 'force', false );
 
-		$completed = 0;
+		$batches_completed = 0;
+		$actions_completed = 0;
+		$unlimited         = $batches === 0;
 
 		try {
 			// Get the queue runner instance
 			$runner = new ActionScheduler_WPCLI_QueueRunner();
 
-			// Determine how many tasks will be run.
+			// Determine how many tasks will be run in the first batch.
 			$total = $runner->setup( $batch, $force );
-			WP_CLI::line(
-				sprintf(
-					_n( 'Found %d scheduled task', 'Found %d scheduled tasks', $total, 'action-scheduler' ),
-					number_format_i18n( $total )
-				)
-			);
 
-			$completed = $runner->run();
+			// Run actions for as long as possible.
+			while ( $total > 0 && ( $unlimited || $batches_completed < $batches ) ) {
+				$this->print_total_actions( $total );
+				$actions_completed += $runner->run();
+				$batches_completed++;
+
+				// Set up tasks for the next batch.
+				$total = $runner->setup( $batch, $force );
+			}
 		} catch ( Exception $e ) {
 			$this->print_error( $e );
 		}
@@ -44,6 +56,24 @@ class ActionScheduler_WPCLI_Scheduler_command extends WP_CLI_Command {
 		$this->print_total_batches( $batches_completed );
 		$this->print_success( $actions_completed );
 	}
+
+	/**
+	 * Print WP CLI message about how many actions are about to be processed.
+	 *
+	 * @author Jeremy Pry
+	 *
+	 * @param int $total
+	 */
+	protected function print_total_actions( $total ) {
+		WP_CLI::log(
+			sprintf(
+				/* translators: %d refers to how many scheduled taks were found to run */
+				_n( 'Found %d scheduled task', 'Found %d scheduled tasks', $total, 'action-scheduler' ),
+				number_format_i18n( $total )
+			)
+		);
+	}
+
 	/**
 	 * Print WP CLI message about how many batches of actions were processed.
 	 *
