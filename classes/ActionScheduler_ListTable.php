@@ -373,17 +373,17 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	}
 
 	/**
-	 * This function is used to filter the actions by a status. It will return the status based on a
-	 * a GET parameter or it will filter by 'pending' by default.
-	 * We filter by status because if we do not filter we have NullActions that are not rendered at the
-	 * moment.
+	 * Return the status filter for this request, if any, as long as its a valid status for the current datastore.
+	 * If it's not, return 'all' to display all actions.
 	 *
 	 * @return string
 	 */
 	public function get_request_status() {
 
-		if ( ! empty( $_GET['status'] ) && array_key_exists( $_GET['status'], $this->store->get_status_labels() ) ) {
-			return $_GET['status'];
+		$request_status = parent::get_request_status();
+
+		if ( ! empty( $request_status ) && array_key_exists( $request_status, $this->store->get_status_labels() ) ) {
+			return $request_status;
 		}
 
 		return ActionScheduler_Store::STATUS_PENDING;
