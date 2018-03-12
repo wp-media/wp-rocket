@@ -340,27 +340,17 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	}
 
 	/**
-	 * Similar method to query_actions() but returns the number of matching rows
-	 *
 	 * @param array $query
-	 * @return int
-	 */
-	public function query_actions_count( $query = array() ) {
-		/** @var wpdb $wpdb */
-		global $wpdb;
-
-		return $wpdb->get_var( $this->get_query_actions_sql( $query, 'count' ) );
-	}
-
-	/**
-	 * @param array $query
+	 * @param string $query_type Whether to select or count the results. Default, select.
 	 * @return array The IDs of actions matching the query
 	 */
-	public function query_actions( $query = array() ) {
+	public function query_actions( $query = array(), $query_type = 'select' ) {
 		/** @var wpdb $wpdb */
 		global $wpdb;
 
-		return $wpdb->get_col( $this->get_query_actions_sql( $query, 'select' ) );
+		$sql = $this->get_query_actions_sql( $query, $query_type );
+
+		return ( 'count' === $query_type ) ? $wpdb->get_var( $sql ) : $wpdb->get_col( $sql );
 	}
 
 	/**

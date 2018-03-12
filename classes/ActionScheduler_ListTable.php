@@ -349,6 +349,7 @@ class ActionScheduler_ListTable extends PP_List_Table {
 
 		$this->items = array();
 
+		$total_items = $this->store->query_actions( $query, 'count' );
 
 		$status_labels = $this->store->get_status_labels();
 
