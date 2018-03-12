@@ -349,14 +349,15 @@ class ActionScheduler_ListTable extends PP_List_Table {
 
 		$this->items = array();
 
-		$total_items = $this->store->query_actions_count( $query );
+
+		$status_labels = $this->store->get_status_labels();
 
 		foreach ( $this->store->query_actions( $query ) as $action_id ) {
 			$action = $this->store->fetch_action( $action_id );
 			$this->items[ $action_id ] = array(
 				'ID'     => $action_id,
 				'hook'   => $action->get_hook(),
-				'status' => $this->store->get_status( $action_id ),
+				'status' => $status_labels[ $this->store->get_status( $action_id ) ],
 				'args'   => $action->get_args(),
 				'group'  => $action->get_group(),
 				'log_entries' => $this->logger->get_logs( $action_id ),
