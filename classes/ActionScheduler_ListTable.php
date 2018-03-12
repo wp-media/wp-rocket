@@ -388,7 +388,7 @@ class ActionScheduler_ListTable extends PP_List_Table {
 			return $request_status;
 		}
 
-		return ActionScheduler_Store::STATUS_PENDING;
+		return 'all';
 	}
 
 	/**
@@ -400,7 +400,10 @@ class ActionScheduler_ListTable extends PP_List_Table {
 
 		$status_list_items = array();
 
-		foreach ( $this->store->action_counts() as $status_name => $count ) {
+		$action_counts = $this->store->action_counts();
+		$action_counts = array( 'all' => array_sum( $action_counts ) ) + $action_counts;
+
+		foreach ( $action_counts as $status_name => $count ) {
 
 			if ( 0 === $count ) {
 				continue;
