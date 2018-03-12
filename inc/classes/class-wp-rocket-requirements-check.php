@@ -113,7 +113,7 @@ class WP_Rocket_Requirements_Check {
 	 * @return bool
 	 */
 	private function php_passes() {
-		return version_compare( PHP_VERSION, $this->php_version ) >= 0 ? true : false;
+		return version_compare( PHP_VERSION, $this->php_version ) >= 0;
 	}
 
 	/**
@@ -127,7 +127,7 @@ class WP_Rocket_Requirements_Check {
 	private function wp_passes() {
 		global $wp_version;
 
-		return version_compare( $wp_version, $this->wp_version ) >= 0 ? true : false;
+		return version_compare( $wp_version, $this->wp_version ) >= 0;
 	}
 
 	/**
@@ -149,15 +149,15 @@ class WP_Rocket_Requirements_Check {
 
 		if ( ! $this->php_passes() ) {
 			// Translators: %1$s = PHP version required.
-			$message .= '<li>' . sprintf( __( 'PHP %1$s. To use this version, please ask your web host how to upgrade your server to PHP %1$s or higher.', 'rocket' ), $this->php_version ) . '</li>';
+			$message .= '<li>' . sprintf( __( 'PHP %1$s. To use this WP Rocket version, please ask your web host how to upgrade your server to PHP %1$s or higher.', 'rocket' ), $this->php_version ) . '</li>';
 		}
 
 		if ( ! $this->wp_passes() ) {
 			// Translators: %1$s = WordPress version required.
-			$message .= '<li>' . sprintf( __( 'WordPress %1$s. To use this version, please upgrade WordPress to version %1$s or higher.', 'rocket' ), $this->wp_version ) . '</li>';
+			$message .= '<li>' . sprintf( __( 'WordPress %1$s. To use this WP Rocket version, please upgrade WordPress to version %1$s or higher.', 'rocket' ), $this->wp_version ) . '</li>';
 		}
 
-		$message .= '</ul><p>If you are not able to upgrade, you can rollback to the previous version by using the button below.</p><p><a href="' . wp_nonce_url( admin_url( 'admin-post.php?action=rocket_rollback' ), 'rocket_rollback' ) . '" class="button">' .
+		$message .= '</ul><p>' . __( 'If you are not able to upgrade, you can rollback to the previous version by using the button below.', 'rocket' ) . '</p><p><a href="' . wp_nonce_url( admin_url( 'admin-post.php?action=rocket_rollback' ), 'rocket_rollback' ) . '" class="button">' .
 		// Translators: %s = Previous plugin version.
 		sprintf( __( 'Re-install version %s', 'rocket' ), $this->plugin_last_version )
 		. '</a></p>';
@@ -173,6 +173,10 @@ class WP_Rocket_Requirements_Check {
 	 */
 	public function rollback() {
 		check_ajax_referer( 'rocket_rollback' );
+
+		if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+			wp_die();
+		}
 
 		$consumer_key = isset( $this->options['consumer_key'] ) ? $this->options['consumer_key'] : false;
 
