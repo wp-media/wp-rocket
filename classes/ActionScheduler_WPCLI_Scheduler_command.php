@@ -47,10 +47,39 @@ class ActionScheduler_WPCLI_Scheduler_command extends WP_CLI_Command {
 			);
 		}
 
+		$this->print_total_batches( $batches_completed );
+		$this->print_success( $actions_completed );
+	}
+	/**
+	 * Print WP CLI message about how many batches of actions were processed.
+	 *
+	 * @author Jeremy Pry
+	 *
+	 * @param int $batches_completed
+	 */
+	protected function print_total_batches( $batches_completed ) {
+		WP_CLI::log(
+			sprintf(
+				/* translators: %d refers to the total number of batches executed */
+				_n( '%d batch executed.', '%d batches executed.', $batches_completed, 'action-scheduler' ),
+				number_format_i18n( $batches_completed )
+			)
+		);
+	}
+
+	/**
+	 * Print a success message with the number of completed actions.
+	 *
+	 * @author Jeremy Pry
+	 *
+	 * @param int $actions_completed
+	 */
+	protected function print_success( $actions_completed ) {
 		WP_CLI::success(
 			sprintf(
-				_n( '%d scheduled task completed.', '%d scheduled tasks completed.', $completed, 'action-scheduler' ),
-				number_format_i18n( $completed )
+				/* translators: %d refers to the total number of taskes completed */
+				_n( '%d scheduled task completed.', '%d scheduled tasks completed.', $actions_completed, 'action-scheduler' ),
+				number_format_i18n( $actions_completed )
 			)
 		);
 	}
