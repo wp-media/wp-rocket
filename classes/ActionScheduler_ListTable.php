@@ -56,6 +56,8 @@ class ActionScheduler_ListTable extends PP_List_Table {
 		$this->store  = $store;
 		$this->logger = $logger;
 
+		$request_status = $this->get_request_status();
+
 		$this->maybe_render_admin_notices();
 
 		$this->bulk_actions = array(
@@ -71,6 +73,10 @@ class ActionScheduler_ListTable extends PP_List_Table {
 			'schedule'    => __( 'Scheduled Date', 'action-scheduler' ),
 			'log_entries' => __( 'Log', 'action-scheduler' ),
 		);
+
+		if ( in_array( $request_status, array( 'in-progress', 'failed' ) ) ) {
+			$this->columns += array( 'claim_id' => __( 'Claim ID', 'action-scheduler' ) );
+		}
 
 		$this->row_actions = array(
 			'hook' => array(
@@ -362,6 +368,7 @@ class ActionScheduler_ListTable extends PP_List_Table {
 				'args'   => $action->get_args(),
 				'group'  => $action->get_group(),
 				'log_entries' => $this->logger->get_logs( $action_id ),
+				'claim_id'    => $this->store->get_claim_id( $action_id ),
 				'recurrence'  => $this->get_recurrence( $action ),
 				'schedule'    => $action->get_schedule(),
 			);
