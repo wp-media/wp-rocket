@@ -1,0 +1,47 @@
+// main: ../main.scss
+
+/*-----------------------------------------------*\
+
+    Page / section
+
+\*-----------------------------------------------*/
+
+.wpr-Page{
+    display: none;
+    margin-bottom: $space*4;
+
+    &#dashboard{ // Exception for dashboard
+        display: block;
+
+        .wpr-documentation{
+            margin-top: 98px;
+            padding: $space*5 $space*2;
+
+            .wpr-button{
+                margin-top: $space;
+            }
+
+            i{
+                @include font-size(54,54);
+            }
+        }
+
+        .wpr-field-account{
+            padding-bottom: 0;
+        }
+    }
+
+    &-row{
+        display: flex;
+        flex-direction: row;
+    }
+
+    &-col{
+        flex: 1 1 auto;
+    }
+
+    &-col--fixed{
+        margin-left: $space*3;
+        flex: 0 0 325px;
+    }
+}

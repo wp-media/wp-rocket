@@ -1,0 +1,21 @@
+// main: ../main.scss
+
+.wpr-title1{
+    @include font-size(26,26);
+    letter-spacing: 0.01em;
+}
+
+.wpr-title2{
+    @include font-size(16,24);
+    letter-spacing: -0.02em;
+}
+
+.wpr-title3{
+    @include font-size(14,24);
+    letter-spacing: -0.011em;
+}
+
+.wpr-infoAccount{
+    margin-left: 16px;
+    color: $cGreenDark1;
+}

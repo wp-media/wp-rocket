@@ -53,6 +53,10 @@ define( 'WP_ROCKET_ADMIN_UI_URL'        , WP_ROCKET_ADMIN_URL . 'ui/' );
 define( 'WP_ROCKET_ADMIN_UI_JS_URL'     , WP_ROCKET_ADMIN_UI_URL . 'js/' );
 define( 'WP_ROCKET_ADMIN_UI_CSS_URL'    , WP_ROCKET_ADMIN_UI_URL . 'css/' );
 define( 'WP_ROCKET_ADMIN_UI_IMG_URL'    , WP_ROCKET_ADMIN_UI_URL . 'img/' );
+define( 'WP_ROCKET_ASSETS_URL'          , WP_ROCKET_URL . 'assets/' );
+define( 'WP_ROCKET_ASSETS_JS_URL'       , WP_ROCKET_ASSETS_URL . 'js/' );
+define( 'WP_ROCKET_ASSETS_CSS_URL'      , WP_ROCKET_ASSETS_URL . 'css/' );
+define( 'WP_ROCKET_ASSETS_IMG_URL'      , WP_ROCKET_ASSETS_URL . 'img/' );
 define( 'WP_ROCKET_CACHE_URL'           , WP_CONTENT_URL . '/cache/wp-rocket/' );
 define( 'WP_ROCKET_MINIFY_CACHE_URL'    , WP_CONTENT_URL . '/cache/min/' );
 define( 'WP_ROCKET_CACHE_BUSTING_URL'   , WP_CONTENT_URL . '/cache/busting/' );
@@ -328,6 +332,9 @@ function rocket_activation() {
 	if ( defined( 'SUNRISE' ) && SUNRISE === 'on' && function_exists( 'domain_mapping_siteurl' ) ) {
 		require WP_ROCKET_INC_PATH . 'domain-mapping.php';
 	}
+
+	// Composer autoload.
+	require WP_ROCKET_PATH . 'vendor/autoload.php';
 
 	require WP_ROCKET_FUNCTIONS_PATH . 'options.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'files.php';

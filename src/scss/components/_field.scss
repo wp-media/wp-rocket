@@ -1,0 +1,195 @@
+// main: ../main.scss
+
+/*-----------------------------------------------*\
+
+    Field container
+
+\*-----------------------------------------------*/
+
+.wpr-field{
+    padding: $space*2 0;
+    @include transition(opacity,150ms);
+
+    & + .wpr-field,
+    & + .wpr-warningContainer{
+        border-top: 1px solid $cGrey;
+    }
+
+    &:first-child{
+        padding-top: 0;
+    }
+
+    &:last-child{
+        padding-bottom: 0;
+    }
+
+    &-description{
+        margin-top: 4px;
+        color: $cGreyDark1;
+
+        a:hover,
+        a:focus{
+            color: $cBlue;
+        }
+    }
+
+    &-description-label{
+        @include font-size(14,20);
+        color: $cGreyDark2;
+    }
+
+    &-list{
+        margin: 0;
+        color: $cGreyDark2;
+
+        li{
+            &+li{
+                margin-top: $space*2;
+            }
+
+            &:before{
+                position: relative;
+                top: 3px;
+                margin-right: $space;
+                color: $cBlueDark1;
+                @include font-size(18,20);
+            }
+        }
+
+        a{
+            text-decoration: none;
+
+            &:hover,
+            &:focus{
+                color: $cBlue;
+            }
+        }
+    }
+
+    &-betweenText{
+        margin: 0 $space*2;
+    }
+
+    .wpr-button{
+        margin: $space 0;
+    }
+
+    .wpr-flex{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .wpr-flex--egal > div{
+        flex: 0 0 50%;
+
+        &:last-child{
+            text-align: right;
+        }
+    }
+
+    p{
+        margin-bottom: 0;
+    }
+
+    h4{
+        @include font-size(14,24);
+    }
+
+    // Disabled field
+    &.wpr-isDisabled{
+        opacity: 0.4;
+    }
+
+    // Parent field
+    &.wpr-isParent{
+        padding-bottom: 0;
+    }
+
+    .wpr-isHidden{
+        display: none;
+    }
+
+
+
+    // Children field
+    &--children{
+        display: none;
+        padding-left: $space*4;
+
+        &.wpr-isOpen{
+            display: block;
+            margin-top: $space*2;
+        }
+
+        &.wpr-field--textarea{
+            padding-left: 0;
+        }
+    }
+
+    // Checkbox
+    &--checkbox{
+        .wpr-field-description{
+            margin-left: $space*4;
+        }
+    }
+
+    // Checkbox radio
+    &--radio{
+        .wpr-field-description{
+            margin-left: $space*9;
+        }
+
+        label{
+            @extend .wpr-title3;
+        }
+    }
+
+    // textarea
+    &--textarea{
+        label{
+            display: inline-block;
+            margin-bottom: $space;
+        }
+    }
+
+    // Fields 2 columns
+    &--split{
+        display: inline-block;
+        width: 50%;
+        padding-right: $space*2;
+        padding-bottom: 0;
+
+        & + .wpr-field--split{
+            padding-left: $space*2;
+            padding-right: 0;
+        }
+    }
+
+    // Special for cache lifespan
+    &--cache{
+        .wpr-field--number,
+        .wpr-field--select{
+            display: inline-block;
+            padding-top: 0;
+            width: auto;
+            padding-bottom: 0;
+        }
+
+        .wpr-field--select{
+            position: relative;
+            padding-left: $space;
+            top: -2px;
+            border-top: none;
+        }
+
+        .wpr-field-description{
+            margin: $space 0;
+            color: $cGreenDark1;
+        }
+
+        .wpr-field-description-label{
+            color: $cBlack;
+        }
+    }
+}
