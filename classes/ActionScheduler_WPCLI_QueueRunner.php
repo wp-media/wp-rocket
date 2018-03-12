@@ -142,7 +142,7 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 	 */
 	public function before_execute( $action_id ) {
 		/* translators: %s refers to the action ID */
-		WP_CLI::line( sprintf( __( 'Started processing action %s', 'action-scheduler' ), $action_id ) );
+		WP_CLI::log( sprintf( __( 'Started processing action %s', 'action-scheduler' ), $action_id ) );
 	}
 
 	/**
@@ -154,7 +154,7 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 	 */
 	public function after_execute( $action_id ) {
 		/* translators: %s refers to the action ID */
-		WP_CLI::line( sprintf( __( 'Completed processing action %s', 'action-scheduler' ), $action_id ) );
+		WP_CLI::log( sprintf( __( 'Completed processing action %s', 'action-scheduler' ), $action_id ) );
 	}
 
 	/**
