@@ -1,0 +1,29 @@
+// main: ../main.scss
+
+
+///* -- Font-size -- *\
+//    $size-value = Size of the font in px
+//    $line = Size of the line-height in px
+//*/
+
+@mixin font-size($size, $line){
+    font-size: ($size / 16) + rem;
+    line-height: $line / $size;
+}
+
+
+///* -- Transition -- *\
+//    $duration = Duration of the transition
+//*/
+
+@mixin transition($type, $duration, $ease: ease-out){
+    transition: $type $duration $ease;
+    -webkit-transition: $type $duration $ease;
+}
+
+
+///* -- Transform -- *\
+@mixin transform($string){
+    transform: $string;
+	-webkit-transform: $string;
+}

@@ -14,6 +14,10 @@ function rocket_cdn_file( $url ) {
 		return $url;
 	}
 
+	if ( defined( 'XMLRPC_REQUEST' ) && XMLRPC_REQUEST ) {
+		return $url;
+	}
+
 	$ext = pathinfo( $url, PATHINFO_EXTENSION );
 
 	if ( is_admin() || 'php' === $ext ) {
@@ -176,7 +180,7 @@ function rocket_cdn_images( $html ) {
 			// Image path is relative, apply the host to it.
 			if ( empty( $host ) ) {
 				$image_url = $home_url . ltrim( $image_url, '/' );
-				$host = rocket_extract_url_component( $image_url, PHP_URL_HOST );
+				$host      = rocket_extract_url_component( $image_url, PHP_URL_HOST );
 			}
 
 			// Check if the link isn't external.
@@ -327,7 +331,7 @@ function rocket_cdn_enqueue( $src ) {
 	}
 
 	if ( rocket_extract_url_component( $src, PHP_URL_HOST ) !== '' ) {
-		$src  = rocket_add_url_protocol( $src );
+		$src = rocket_add_url_protocol( $src );
 	}
 
 	$zone = array( 'all', 'css_and_js' );

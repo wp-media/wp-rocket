@@ -111,7 +111,7 @@ function get_rocket_browser_cache_busting( $src, $current_filter = '' ) {
 	}
 
 	$relative_src           = ltrim( $file['path'] . '?' . $file['query'], '/' );
-	$abspath_src            = rocket_realpath( strtok( $full_src, '?' ), true, $hosts_index );
+	$abspath_src            = rocket_url_to_path( strtok( $full_src, '?' ), $hosts_index );
 	$cache_busting_filename = preg_replace( '/\.(js|css)\?(?:timestamp|ver)=([^&]+)(?:.*)/', '-$2.$1', $relative_src );
 
 	if ( $cache_busting_filename === $relative_src ) {
@@ -119,13 +119,13 @@ function get_rocket_browser_cache_busting( $src, $current_filter = '' ) {
 	}
 
 	/*
-     * Filters the cache busting filename
-     *
-     * @since 2.9
-     * @author Remy Perona
-     *
-     * @param string $filename filename for the cache busting file
-     */
+	 * Filters the cache busting filename
+	 *
+	 * @since 2.9
+	 * @author Remy Perona
+	 *
+	 * @param string $filename filename for the cache busting file
+	 */
 	$cache_busting_filename = apply_filters( 'rocket_cache_busting_filename', $cache_busting_filename );
 	$cache_busting_paths    = rocket_get_cache_busting_paths( $cache_busting_filename, $extension );
 
@@ -135,9 +135,9 @@ function get_rocket_browser_cache_busting( $src, $current_filter = '' ) {
 
 	if ( rocket_fetch_and_cache_busting( $abspath_src, $cache_busting_paths, $abspath_src, $current_filter ) ) {
 		return $cache_busting_paths['url'];
-	} else {
-		return $src;
 	}
+
+	return $src;
 }
 
 /**
@@ -199,10 +199,11 @@ function rocket_cache_dynamic_resource( $src ) {
 			break;
 	}
 
-	$hosts       = get_rocket_cnames_host( array( 'all', 'css_and_js', $extension ) );
-	$hosts[]     = rocket_extract_url_component( home_url(), PHP_URL_HOST );
-	$hosts_index = array_flip( $hosts );
-	$file        = get_rocket_parse_url( $full_src );
+	$hosts         = get_rocket_cnames_host( array( 'all', 'css_and_js', $extension ) );
+	$hosts[]       = rocket_extract_url_component( home_url(), PHP_URL_HOST );
+	$hosts_index   = array_flip( $hosts );
+	$file          = get_rocket_parse_url( $full_src );
+	$file['query'] = remove_query_arg( 'ver', $file['query'] );
 
 	if ( $file['query'] ) {
 		return $src;
@@ -217,16 +218,16 @@ function rocket_cache_dynamic_resource( $src ) {
 	}
 
 	$relative_src = ltrim( $file['path'], '/' );
-	$abspath_src  = rocket_realpath( strtok( $full_src, '?' ), true, $hosts_index );
+	$abspath_src  = rocket_url_to_path( strtok( $full_src, '?' ), $hosts_index );
 
 	/*
-     * Filters the dynamic resource cache filename
-     *
-     * @since 2.9
-     * @author Remy Perona
-     *
-     * @param string $filename filename for the cache file
-     */
+	 * Filters the dynamic resource cache filename
+	 *
+	 * @since 2.9
+	 * @author Remy Perona
+	 *
+	 * @param string $filename filename for the cache file
+	 */
 	$cache_dynamic_resource_filename = apply_filters( 'rocket_dynamic_resource_cache_filename', preg_replace( '/\.(php)$/', '-' . $minify_key . '.' . $extension, $relative_src ) );
 	$cache_busting_paths             = rocket_get_cache_busting_paths( $cache_dynamic_resource_filename, $extension );
 
@@ -236,9 +237,9 @@ function rocket_cache_dynamic_resource( $src ) {
 
 	if ( rocket_fetch_and_cache_busting( $full_src, $cache_busting_paths, $abspath_src, $current_filter ) ) {
 		return $cache_busting_paths['url'];
-	} else {
-		return $src;
 	}
+
+	return $src;
 }
 add_filter( 'style_loader_src', 'rocket_cache_dynamic_resource', 16 );
 add_filter( 'script_loader_src', 'rocket_cache_dynamic_resource', 16 );
