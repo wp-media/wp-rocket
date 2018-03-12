@@ -199,26 +199,22 @@ class WP_Rocket_Requirements_Check {
 		$plugin_transient->response[ $plugin_folder . '/' . $plugin_file ] = $temp_object;
 		set_site_transient( 'update_plugins', $plugin_transient );
 
-		$transient = get_transient( 'rocket_warning_rollback' );
-
-		if ( false === $transient ) {
-			require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+		require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+		// translators: %s is the plugin name.
+		$title         = sprintf( __( '%s Update Rollback', 'rocket' ), $this->plugin_name );
+		$plugin        = 'wp-rocket/wp-rocket.php';
+		$nonce         = 'upgrade-plugin_' . $plugin;
+		$url           = 'update.php?action=upgrade-plugin&plugin=' . rawurlencode( $plugin );
+		$upgrader_skin = new Plugin_Upgrader_Skin( compact( 'title', 'nonce', 'url', 'plugin' ) );
+		$upgrader      = new Plugin_Upgrader( $upgrader_skin );
+		remove_filter( 'site_transient_update_plugins', 'rocket_check_update', 100 );
+		$upgrader->upgrade( $plugin );
+		wp_die(
 			// translators: %s is the plugin name.
-			$title         = sprintf( __( '%s Update Rollback', 'rocket' ), $this->plugin_name );
-			$plugin        = 'wp-rocket/wp-rocket.php';
-			$nonce         = 'upgrade-plugin_' . $plugin;
-			$url           = 'update.php?action=upgrade-plugin&plugin=' . rawurlencode( $plugin );
-			$upgrader_skin = new Plugin_Upgrader_Skin( compact( 'title', 'nonce', 'url', 'plugin' ) );
-			$upgrader      = new Plugin_Upgrader( $upgrader_skin );
-			remove_filter( 'site_transient_update_plugins', 'rocket_check_update', 100 );
-			$upgrader->upgrade( $plugin );
-			wp_die(
-				// translators: %s is the plugin name.
-				'', sprintf( __( '%s Update Rollback', 'rocket' ), $this->plugin_name ), array(
-					'response' => 200,
-				)
-			);
-		}
+			'', sprintf( __( '%s Update Rollback', 'rocket' ), $this->plugin_name ), array(
+				'response' => 200,
+			)
+		);
 	}
 
 	/**
