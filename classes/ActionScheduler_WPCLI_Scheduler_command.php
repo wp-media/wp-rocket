@@ -38,13 +38,7 @@ class ActionScheduler_WPCLI_Scheduler_command extends WP_CLI_Command {
 
 			$completed = $runner->run();
 		} catch ( Exception $e ) {
-			WP_CLI::error(
-				sprintf(
-					/* translators: %s refers to the exception error message. */
-					__( 'There was an error running the action scheduler: %s', 'action-scheduler' ),
-					$e->getMessage()
-				)
-			);
+			$this->print_error( $e );
 		}
 
 		$this->print_total_batches( $batches_completed );
@@ -63,6 +57,25 @@ class ActionScheduler_WPCLI_Scheduler_command extends WP_CLI_Command {
 				/* translators: %d refers to the total number of batches executed */
 				_n( '%d batch executed.', '%d batches executed.', $batches_completed, 'action-scheduler' ),
 				number_format_i18n( $batches_completed )
+			)
+		);
+	}
+
+	/**
+	 * Convert an exception into a WP CLI error.
+	 *
+	 * @author Jeremy Pry
+	 *
+	 * @param Exception $e The error object.
+	 *
+	 * @throws \WP_CLI\ExitException
+	 */
+	protected function print_error( Exception $e ) {
+		WP_CLI::error(
+			sprintf(
+				/* translators: %s refers to the exception error message. */
+				__( 'There was an error running the action scheduler: %s', 'action-scheduler' ),
+				$e->getMessage()
 			)
 		);
 	}
