@@ -29,12 +29,13 @@ class ActionScheduler_AdminView {
 		$self = self::instance();
 
 		if ( is_admin() && ( ! defined( 'DOING_AJAX' ) || false == DOING_AJAX ) ) {
+
 			if ( class_exists( 'WooCommerce' ) ) {
 				add_action( 'woocommerce_admin_status_content_action-scheduler', array( $self, 'render_admin_ui' ) );
 				add_filter( 'woocommerce_admin_status_tabs', array( $self, 'register_menu_woo_tab' ) );
-			} else {
-				add_action( 'admin_menu', array( $self, 'register_menu' ) );
 			}
+
+			add_action( 'admin_menu', array( $self, 'register_menu' ) );
 		}
 	}
 
