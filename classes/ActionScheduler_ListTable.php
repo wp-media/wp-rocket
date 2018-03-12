@@ -400,7 +400,7 @@ class ActionScheduler_ListTable extends PP_List_Table {
 
 		$status_list_items = array();
 
-		foreach ( $this->store->actions_count() as $status_name => $count ) {
+		foreach ( $this->store->action_counts() as $status_name => $count ) {
 
 			if ( 0 === $count ) {
 				continue;

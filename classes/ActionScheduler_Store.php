@@ -49,7 +49,7 @@ abstract class ActionScheduler_Store {
 	 *
 	 * @return array
 	 */
-	abstract public function actions_count();
+	abstract public function action_counts();
 
 	/**
 	 * @param string $action_id

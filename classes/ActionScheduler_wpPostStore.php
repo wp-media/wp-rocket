@@ -358,9 +358,9 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	 *
 	 * @return array
 	 */
-	public function actions_count() {
+	public function action_counts() {
 
-		$actions_count_by_status = array();
+		$action_counts_by_status = array();
 		$action_stati_and_labels = $this->get_status_labels();
 		$posts_count_by_status   = (array) wp_count_posts( self::POST_TYPE, 'readable' );
 
@@ -373,11 +373,11 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 				continue;
 			}
 			if ( array_key_exists( $action_status_name, $action_stati_and_labels ) ) {
-				$actions_count_by_status[ $action_status_name ] = $count;
+				$action_counts_by_status[ $action_status_name ] = $count;
 			}
 		}
 
-		return $actions_count_by_status;
+		return $action_counts_by_status;
 	}
 
 	/**
