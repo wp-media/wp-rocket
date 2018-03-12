@@ -91,8 +91,13 @@ class ActionScheduler_ListTable extends PP_List_Table {
 		$this->row_actions = array(
 			'hook' => array(
 				'run' => array(
-					__( 'Run', 'action-scheduler' ),
-					__( 'Process the action now as if it were run as part of a queue', 'action-scheduler' ),
+					'name'  => __( 'Run', 'action-scheduler' ),
+					'desc'  => __( 'Process the action now as if it were run as part of a queue', 'action-scheduler' ),
+				),
+				'cancel' => array(
+					'name'  => __( 'Cancel', 'action-scheduler' ),
+					'desc'  => __( 'Cancel the action now to avoid it being run in future', 'action-scheduler' ),
+					'class' => 'cancel trash',
 				),
 			),
 		);
@@ -251,21 +256,37 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	<p><?php printf( __( 'Maximum simulatenous batches already in progress (%s queues). No actions will be processed until the current batches are complete.', 'action-scheduler' ), $this->store->get_claim_count() ); ?></p>
 </div>
 		<?php endif;
-		$notification = get_transient( 'actionscheduler_admin_executed' );
+		$notification = get_transient( 'actionscheduler_admin_notice' );
 		if ( is_array( $notification ) ) {
-			delete_transient( 'actionscheduler_admin_executed' );
+			delete_transient( 'actionscheduler_admin_notice' );
 
 			$action = $this->store->fetch_action( $notification['action_id'] );
 			$action_hook_html = '<strong><code>' . $action->get_hook() . '</code></strong>';
-			if ( 1 == $notification['success'] ): ?>
-				<div id="message" class="updated">
-					<p><?php printf( __( 'Successfully executed action: %s', 'action-scheduler' ), $action_hook_html ); ?></p>
-				</div>
-			<?php else : ?>
-			<div id="message" class="error">
-				<p><?php printf( __( 'Could not execute action: "%s". Error: %s', 'action-scheduler' ), $action_hook_html, esc_html( $notification['action_id'] ) ); ?></p>
+			if ( 1 == $notification['success'] ) {
+				$class = 'updated';
+				switch ( $notification['row_action_type'] ) {
+					case 'run' :
+						$action_message_html = sprintf( __( 'Successfully executed action: %s', 'action-scheduler' ), $action_hook_html );
+						break;
+					case 'cancel' :
+						$action_message_html = sprintf( __( 'Successfully canceled action: %s', 'action-scheduler' ), $action_hook_html );
+						break;
+					default :
+						$action_message_html = sprintf( __( 'Successfully processed change for action: %s', 'action-scheduler' ), $action_hook_html );
+						break;
+				}
+			} else {
+				$class = 'error';
+				$action_message_html = sprintf( __( 'Could not process change for action: "%s" (ID: %d). Error: %s', 'action-scheduler' ), $action_hook_html, esc_html( $notification['action_id'] ), esc_html( $notification['error_message'] ) );
+			}
+
+			$action_message_html = apply_filters( 'actionscheduler_admin_notice_html', $action_message_html, $action, $notification );
+
+			?>
+			<div id="message" class="<?php echo $class; ?>">
+				<p><?php echo wp_kses_post( $action_message_html ); ?></p>
 			</div>
-			<?php endif;
+			<?php
 		}
 	}
 
@@ -325,9 +346,36 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	 *
 	 * @param int $action_id
 	 */
+	protected function row_action_cancel( $action_id ) {
+		$this->process_row_action( $action_id, 'cancel' );
+	}
+
+	/**
+	 * Implements the logic behind running an action. PP_Table_List validates the request and their
+	 * parameters are valid.
+	 *
+	 * @param int $action_id
+	 */
 	protected function row_action_run( $action_id ) {
+		$this->process_row_action( $action_id, 'run' );
+	}
+
+	/**
+	 * Implements the logic behind processing an action once an action link is clicked on the list table.
+	 *
+	 * @param int $action_id
+	 * @param string $row_action_type The type of action to perform on the action.
+	 */
+	protected function process_row_action( $action_id, $row_action_type ) {
 		try {
-			ActionScheduler::runner()->process_action( $action_id );
+			switch ( $row_action_type ) {
+				case 'run' :
+					ActionScheduler::runner()->process_action( $action_id );
+					break;
+				case 'cancel' :
+					$this->store->cancel_action( $action_id );
+					break;
+			}
 			$success = 1;
 			$error_message = '';
 		} catch ( Exception $e ) {
@@ -335,7 +383,7 @@ class ActionScheduler_ListTable extends PP_List_Table {
 			$error_message = $e->getMessage();
 		}
 
-		set_transient( 'actionscheduler_admin_executed', compact( 'action_id', 'success', 'error_message' ), 30 );
+		set_transient( 'actionscheduler_admin_notice', compact( 'action_id', 'success', 'error_message', 'row_action_type' ), 30 );
 	}
 
 	/**
