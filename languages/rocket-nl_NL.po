@@ -2,13 +2,13 @@
 # This file is distributed under the same license as the WP Rocket package.
 # Translators:
 # Dennis Hunink, 2015
-# Thom, 2014-2017
+# Thom, 2014-2018
 msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2017-12-19 07:48-0500\n"
-"PO-Revision-Date: 2017-12-22 15:13+0000\n"
+"POT-Creation-Date: 2018-01-25 14:11-0500\n"
+"PO-Revision-Date: 2018-03-03 10:13+0000\n"
 "Last-Translator: Thom\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/wp-media/wp-rocket/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
@@ -407,7 +407,7 @@ msgid "Cancel"
 msgstr "Annuleren"
 
 #: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/modules/tools.php:72
-#: inc/admin/ui/notices.php:935 inc/common/admin-bar.php:50
+#: inc/admin/ui/notices.php:936 inc/common/admin-bar.php:50
 #: inc/common/admin-bar.php:76 inc/common/admin-bar.php:118
 msgid "Clear cache"
 msgstr "Cache legen"
@@ -1377,7 +1377,7 @@ msgstr "Kan het prestatiecijfer op <a href=\"%s\" target=\"_blank\">GT Metrix</a
 msgid ""
 "Removes the version query string from static files (e.g. style.css?ver=1.0) "
 "and encodes it into the file name instead (e.g. style-1-0.css)."
-msgstr "Verwijdert de versie query string van statische bestanden (bv. style.css?ver=1.0) en codeert het in plaats daarvan in de bestandsnaam (bv. style-1-0.css)."
+msgstr "Verwijdert de versie query string van statische bestanden (bijv. style.css?ver=1.0) en codeert het in plaats daarvan in de bestandsnaam (bijv. style-1-0.css)."
 
 #: inc/admin/ui/modules/optimization.php:298
 msgid ""
@@ -1655,11 +1655,11 @@ msgstr "Toestaan dat WP Rocket niet-gevoelige diagnostische gegevens verzameld."
 msgid "Analytics tracking"
 msgstr "Analytics tracking"
 
-#: inc/admin/ui/modules/tools.php:48 inc/admin/ui/notices.php:695
+#: inc/admin/ui/modules/tools.php:48 inc/admin/ui/notices.php:696
 msgid "What info will we collect?"
 msgstr "Welke informatie zullen we verzamelen?"
 
-#: inc/admin/ui/modules/tools.php:49 inc/admin/ui/notices.php:700
+#: inc/admin/ui/modules/tools.php:49 inc/admin/ui/notices.php:701
 msgid ""
 "Below is a detailed view of all data WP Rocket will collect if granted "
 "permission. WP Rocket will never transmit any domain names or email "
@@ -1728,7 +1728,7 @@ msgstr "Maak een back-up van je instellingen met de \"%s\"-knop hierboven voorda
 msgid "Rollback:"
 msgstr "Terugdraaien:"
 
-#: inc/admin/ui/modules/tools.php:195 inc/admin/ui/notices.php:907
+#: inc/admin/ui/modules/tools.php:195 inc/admin/ui/notices.php:908
 #, php-format
 msgid "Re-install version %s"
 msgstr "Versie %s opnieuw installeren"
@@ -1819,108 +1819,108 @@ msgid ""
 "clear the cache if they affect the front end of your site."
 msgstr "<strong>%s</strong>: één of meerdere plugins zijn in- of uitgeschakeld, leeg de cache als dit van invloed is op de frontend van je site."
 
-#: inc/admin/ui/notices.php:186
+#: inc/admin/ui/notices.php:187
 #, php-format
 msgid ""
 "<strong>%s</strong>: The following plugins are not compatible with this "
 "plugin and may cause unexpected results:"
 msgstr "<strong>%s</strong>: de volgende plugins zijn niet compatibel met deze plugin en kunnen onverwachte resultaten veroorzaken:"
 
-#: inc/admin/ui/notices.php:192
+#: inc/admin/ui/notices.php:193
 msgid "Deactivate"
 msgstr "Deactiveren"
 
-#: inc/admin/ui/notices.php:219
+#: inc/admin/ui/notices.php:220
 #, php-format
 msgid ""
 "%1$s: A custom permalink structure is required for the plugin to work "
 "properly. %2$sGo to permalinks settings%3$s"
 msgstr "%1$s: een aangepaste permalinkstructuur is vereist door de plugin om juist te werken. %2$sGa naar permalink-instellingen%3$s"
 
-#: inc/admin/ui/notices.php:488
+#: inc/admin/ui/notices.php:489
 #, php-format
 msgid ""
 "%1$s is good to go! %2$sTest your load time%4$s, or visit your "
 "%3$ssettings%4$s."
 msgstr "%1$s is klaar voor gebruik! %2$sTest je laadtijd%4$s of bekijk je %3$sinstellingen%4$s."
 
-#: inc/admin/ui/notices.php:545
+#: inc/admin/ui/notices.php:546
 msgid "Activate Imagify"
 msgstr "Imagify activeren"
 
-#: inc/admin/ui/notices.php:545
+#: inc/admin/ui/notices.php:546
 msgid "Install Imagify for Free"
 msgstr "Imagify gratis installeren"
 
-#: inc/admin/ui/notices.php:560
+#: inc/admin/ui/notices.php:561
 msgid ""
 "Speed up your website and boost your SEO by reducing image file sizes "
 "without losing quality with Imagify."
 msgstr "Versnel je website en boost je SEO door het verkleinen van groottes van afbeeldingsbestanden zonder de kwaliteit te verliezen met Imagify."
 
-#: inc/admin/ui/notices.php:565
+#: inc/admin/ui/notices.php:566
 msgid "More details"
 msgstr "Meer details"
 
-#: inc/admin/ui/notices.php:688
+#: inc/admin/ui/notices.php:689
 msgid ""
 "Would you allow WP Rocket to collect non-sensitive diagnostic data from this"
 " website?"
 msgstr "Wil je toestaan dat WP Rocket niet-gevoelige diagnostische gegevens van deze website verzameld?"
 
-#: inc/admin/ui/notices.php:689
+#: inc/admin/ui/notices.php:690
 msgid "This would help us to improve WP Rocket for you in the future."
 msgstr "Dit helpt ons bij het verbeteren van WP Rocket in de toekomst."
 
-#: inc/admin/ui/notices.php:709
+#: inc/admin/ui/notices.php:710
 msgid "Yes, allow"
 msgstr "Ja, toestaan"
 
-#: inc/admin/ui/notices.php:712
+#: inc/admin/ui/notices.php:713
 msgid "No, thanks"
 msgstr "Nee, bedankt"
 
-#: inc/admin/ui/notices.php:755
+#: inc/admin/ui/notices.php:756
 msgid "Thank you!"
 msgstr "Bedankt!"
 
-#: inc/admin/ui/notices.php:760
+#: inc/admin/ui/notices.php:761
 msgid "WP Rocket now collects these metrics from your website:"
 msgstr "WP Rocket verzamelt nu deze gegevens van je website:"
 
-#: inc/admin/ui/notices.php:799
+#: inc/admin/ui/notices.php:800
 #, php-format
 msgid "%s: Cache cleared."
 msgstr "%s: cache geleegd."
 
-#: inc/admin/ui/notices.php:802
+#: inc/admin/ui/notices.php:803
 #, php-format
 msgid "%s: Post cache cleared."
 msgstr "%s: bericht-cache geleegd."
 
-#: inc/admin/ui/notices.php:805
+#: inc/admin/ui/notices.php:806
 #, php-format
 msgid "%s: Term cache cleared."
 msgstr "%s: term-cache geleegd."
 
-#: inc/admin/ui/notices.php:808
+#: inc/admin/ui/notices.php:809
 #, php-format
 msgid "%s: User cache cleared."
 msgstr "%s: gebruiker-cache geleegd."
 
-#: inc/admin/ui/notices.php:850
+#: inc/admin/ui/notices.php:851
 #, php-format
 msgid ""
 "Sitemap preload: %d uncached pages have now been preloaded. (refresh to see "
 "progress)"
 msgstr "Preloaden sitemap: %d niet-gecachte pagina's zijn nu gepreload. (Ververs om voortgang te bekijken)"
 
-#: inc/admin/ui/notices.php:884
+#: inc/admin/ui/notices.php:885
 #, php-format
 msgid "Sitemap preload: %d pages have been cached."
 msgstr "Preloaden sitemap: %d pagina's zijn gecacht."
 
-#: inc/admin/ui/notices.php:904
+#: inc/admin/ui/notices.php:905
 #, php-format
 msgid ""
 "%1$s %2$s requires at least PHP %3$s to function properly. To use this "
@@ -1929,34 +1929,34 @@ msgid ""
 "version by using the button below."
 msgstr "%1$s %2$s vereist minstens PHP %3$s om juist te functioneren. Om deze versie te gebruiken, moet je je webhost vragen hoe je je server naar PHP %3$s of hoger kunt upgraden. Als je niet kunt upgraden, kun je naar de vorige versie terugdraaien door de knop hieronder te gebruiken."
 
-#: inc/admin/ui/notices.php:953
+#: inc/admin/ui/notices.php:954
 msgid "Force deactivation "
 msgstr "Deactivatie forceren"
 
-#: inc/admin/ui/notices.php:966
+#: inc/admin/ui/notices.php:967
 msgid "The following code should have been written to this file:"
 msgstr "De volgende code moest naar dit bestand worden geschreven:"
 
-#: inc/admin/ui/notices.php:974
+#: inc/admin/ui/notices.php:977
 msgid "Dismiss this notice."
 msgstr "Negeer deze melding."
 
-#: inc/admin/ui/notices.php:995
+#: inc/admin/ui/notices.php:998
 #, php-format
 msgid "%s cannot configure itself due to missing writing permissions."
 msgstr "%s kan zichzelf door ontbrekende schrijfrechten niet configureren."
 
-#: inc/admin/ui/notices.php:1001
+#: inc/admin/ui/notices.php:1004
 #, php-format
 msgid "Affected file/folder: %s"
 msgstr "Betreffend(e) bestand/map: %s"
 
-#: inc/admin/ui/notices.php:1008
+#: inc/admin/ui/notices.php:1011
 #, php-format
 msgid "Troubleshoot: %1$sHow to make system files writeable%2$s"
 msgstr "Probleemoplossing: %1$shoe systeembestanden schrijfbaar te maken%2$s"
 
-#: inc/admin/ui/notices.php:1010
+#: inc/admin/ui/notices.php:1013
 msgid ""
 "http://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
 "config-writeable"
@@ -1966,9 +1966,9 @@ msgstr "http://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-w
 #, php-format
 msgid ""
 "An unexpected error occurred. Something may be wrong with WP-Rocket.me or "
-"this server&#8217;s configuration. If you continue to have problems, please "
-"try the <a href=\"%s\">support forums</a>."
-msgstr "Er trad een onverwachte fout op. Er kan iets mis zijn met WP-Rocket.me of de configuratie van deze server. Als je problemen blijft hebben, probeer dan de <a href=\"%s\">ondersteuningsforums</a>."
+"this server&#8217;s configuration. If you continue to have problems, <a "
+"href=\"%s\">contact support</a>."
+msgstr "Er deed zich een onverwachte fout voor. Er kan iets mis zijn met WP-Rocket.me of de configuratie van deze server. Als je deze problemen blijft houden, <a href=\"%s\">neem dan contact op met onze ondersteuning</a>."
 
 #: inc/classes/class-rocket-background-critical-css-generation.php:96
 #: inc/classes/class-rocket-background-critical-css-generation.php:105
@@ -1997,14 +1997,14 @@ msgstr "De kritieke CSS-inhoud kon niet als een bestand in %s worden opgeslagen.
 msgid "Critical CSS for %s generated."
 msgstr "Kritieke CSS voor %s gegenereerd."
 
-#: inc/classes/class-rocket-critical-css.php:366
+#: inc/classes/class-rocket-critical-css.php:393
 #, php-format
 msgid ""
 "Critical CSS generation is currently running: %1$d of %2$d page types "
 "completed. (Refresh this page to view progress)"
 msgstr "Genereren kritieke CSS draait momenteel: %1$d van %2$d paginatypes voltooid. (Ververs deze pagina om voortgang te bekijken)"
 
-#: inc/classes/class-rocket-critical-css.php:410
+#: inc/classes/class-rocket-critical-css.php:437
 #, php-format
 msgid "Critical CSS generation finished for %1$d of %2$d page types."
 msgstr "Genereren kritieke CSS voor %1$d van %2$d paginatypes afgerond."
@@ -2061,11 +2061,11 @@ msgstr "maandelijks"
 #: inc/common/purge.php:512
 #, php-format
 msgid "Cloudflare cache purge error: %s"
-msgstr "Fout bij legen Cloudflare cache: %s"
+msgstr "Fout bij legen Cloudflare-cache: %s"
 
 #: inc/common/purge.php:517
-msgid "CloudFlare cache successfully purged"
-msgstr "Cloudflare cache succesvol geleegd"
+msgid "Cloudflare cache successfully purged"
+msgstr "Cloudflare-cache succesvol geleegd"
 
 #: inc/deprecated.php:449
 msgid "<strong>JS</strong> files with Deferred Loading JavaScript"

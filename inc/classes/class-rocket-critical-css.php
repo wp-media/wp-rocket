@@ -95,7 +95,11 @@ class Rocket_Critical_CSS {
 		add_action( 'admin_notices', array( $this, 'critical_css_generation_complete_notice' ) );
 		add_action( 'admin_notices', array( $this, 'warning_critical_css_dir_permissions' ) );
 		add_action( 'wp_head', array( $this, 'insert_load_css' ), PHP_INT_MAX );
-		add_action( 'wp_head', array( $this, 'insert_critical_css' ), 1 );
+		if ( get_rocket_option( 'minify_concatenate_css' ) ) {
+			add_filter( 'rocket_buffer', array( $this, 'insert_critical_css_buffer' ), 14 );
+		} else {
+			add_action( 'wp_head', array( $this, 'insert_critical_css' ), 1 );
+		}
 		add_filter( 'rocket_buffer', array( $this, 'async_css' ), 15 );
 		add_action( 'rocket_critical_css_generation_process_complete', 'rocket_clean_domain' );
 	}
@@ -107,26 +111,38 @@ class Rocket_Critical_CSS {
 	 * @author Remy Perona
 	 */
 	public function process_handler() {
-		$this->clean_critical_css();
+		/**
+		 * Filters the critical CSS generation process
+		 *
+		 * Use this filter to prevent the automatic critical CSS generation.
+		 *
+		 * @since 2.11.5
+		 * @author Remy Perona
+		 *
+		 * @param bool $do_rocket_critical_css_generation True to activate the automatic generation, false to prevent it.
+		 */
+		if ( apply_filters( 'do_rocket_critical_css_generation', true ) ) {
+			$this->clean_critical_css();
 
-		if ( method_exists( $this->process, 'cancel_process' ) ) {
-			$this->process->cancel_process();
+			if ( method_exists( $this->process, 'cancel_process' ) ) {
+				$this->process->cancel_process();
+			}
+
+			$this->set_items();
+
+			foreach ( $this->items as $item ) {
+				$this->process->push_to_queue( $item );
+			}
+
+			$transient = array(
+				'generated' => 0,
+				'total'     => count( $this->items ),
+				'items'     => array(),
+			);
+
+			set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
+			$this->process->save()->dispatch();
 		}
-
-		$this->set_items();
-
-		foreach ( $this->items as $item ) {
-			$this->process->push_to_queue( $item );
-		}
-
-		$transient = array(
-			'generated' => 0,
-			'total'     => count( $this->items ),
-			'items'     => array(),
-		);
-
-		set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
-		$this->process->save()->dispatch();
 	}
 
 	/**
@@ -484,7 +500,7 @@ class Rocket_Critical_CSS {
 		} elseif ( is_tag() ) {
 			$name = 'post_tag.css';
 		} elseif ( is_tax() ) {
-			$taxonomy = get_queried_object()->term_name;
+			$taxonomy = get_queried_object()->taxonomy;
 			$name     = $taxonomy . '.css';
 		} elseif ( is_singular() ) {
 			$post_type = get_post_type();
@@ -550,7 +566,7 @@ class Rocket_Critical_CSS {
 			}
 
 			$preload = str_replace( 'stylesheet', 'preload', $tags_match[1][ $i ] );
-			$onload  = preg_replace( '~' . $tags_match[3][ $i ] . '~iU', ' as="style" onload=""' . $tags_match[3][ $i ] . '>', $tags_match[3][ $i ] );
+			$onload  = preg_replace( '~' . preg_quote( $tags_match[3][ $i ], '~' ) . '~iU', ' as="style" onload=""' . $tags_match[3][ $i ] . '>', $tags_match[3][ $i ] );
 			$tag     = str_replace( $tags_match[3][ $i ] . '>', $onload, $tag );
 			$tag     = str_replace( $tags_match[1][ $i ], $preload, $tag );
 			$tag     = str_replace( 'onload=""', 'onload="this.onload=null;this.rel=\'stylesheet\'"', $tag );
@@ -560,6 +576,45 @@ class Rocket_Critical_CSS {
 		}
 
 		$buffer = str_replace( '</body>', $noscripts . '</body>', $buffer );
+
+		return $buffer;
+	}
+
+	/**
+	 * Insert critical CSS before combined CSS when option is active
+	 *
+	 * @since 2.11.5
+	 * @author Remy Perona
+	 *
+	 * @param string $buffer HTML output of the page.
+	 * @return string Updated HTML output
+	 */
+	public function insert_critical_css_buffer( $buffer ) {
+		if ( ! get_rocket_option( 'async_css' ) ) {
+			return $buffer;
+		}
+
+		if ( is_rocket_post_excluded_option( 'async_css' ) ) {
+			return $buffer;
+		}
+
+		$current_page_critical_css = $this->get_current_page_critical_css();
+
+		if ( ! $current_page_critical_css ) {
+			return $buffer;
+		}
+
+		if ( 'fallback' === $current_page_critical_css ) {
+			$critical_css_content = get_rocket_option( 'critical_css', '' );
+		} else {
+			$critical_css_content = rocket_direct_filesystem()->get_contents( $this->get_current_page_critical_css() );
+		}
+
+		if ( ! $critical_css_content ) {
+			return $buffer;
+		}
+
+		$buffer = preg_replace( '/<head(.*)>/U', '<head$1><style id="rocket-critical-css">' . wp_strip_all_tags( $critical_css_content ) . '</style>', $buffer, 1 );
 
 		return $buffer;
 	}
@@ -588,7 +643,7 @@ class Rocket_Critical_CSS {
 		}
 
 		// Don't apply on wp-login.php/wp-register.php.
-		if ( in_array( $pagenow, array( 'wp-login.php', 'wp-register.php' ), true ) ) {
+		if ( 'wp-login.php' === $pagenow || 'wp-register.php' === $pagenow ) {
 			return;
 		}
 
@@ -632,7 +687,6 @@ class Rocket_Critical_CSS {
 		echo '<style id="rocket-critical-css">' . wp_strip_all_tags( $critical_css_content ) . '</style>';
 	}
 
-
 	/**
 	 * Insert loadCSS script in <head>
 	 *
@@ -656,7 +710,7 @@ class Rocket_Critical_CSS {
 		}
 
 		// Don't apply on wp-login.php/wp-register.php.
-		if ( in_array( $pagenow, array( 'wp-login.php', 'wp-register.php' ), true ) ) {
+		if ( 'wp-login.php' === $pagenow || 'wp-register.php' === $pagenow ) {
 			return;
 		}
 

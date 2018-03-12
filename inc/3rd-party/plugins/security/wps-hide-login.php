@@ -9,6 +9,7 @@ endif;
 /**
  * Exclude WPS Hide Login custom url from caching
  *
+ * @since 2.11.7 Login url is retrieved using new_login_url() method of WPS_Hide_Login() class.
  * @since 2.11 Moved to 3rd party file
  * @since 2.6
  *
@@ -16,7 +17,8 @@ endif;
  * @return array Updated array of URLs
  */
 function rocket_exlude_wps_hide_login_page( $urls ) {
-	$urls[] = rocket_clean_exclude_file( home_url( trailingslashit( get_option( 'whl_page' ) ) ) );
+	$wps_hide_login	= new WPS_Hide_Login();
+	$urls[] 		= rocket_clean_exclude_file( $wps_hide_login->new_login_url() );
 
 	return $urls;
 }
