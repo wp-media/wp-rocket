@@ -78,6 +78,16 @@ class ActionScheduler_ListTable extends PP_List_Table {
 			$this->columns += array( 'claim_id' => __( 'Claim ID', 'action-scheduler' ) );
 		}
 
+		$this->sort_by = array(
+			'schedule',
+			'hook',
+			'group',
+		);
+
+		if ( 'all' === $request_status ) {
+			$this->sort_by[] = 'status';
+		}
+
 		$this->row_actions = array(
 			'hook' => array(
 				'run' => array(
@@ -349,8 +359,8 @@ class ActionScheduler_ListTable extends PP_List_Table {
 			'per_page' => $per_page,
 			'offset'   => $this->get_items_offset(),
 			'status'   => $this->get_request_status(),
-			'orderby'  => 'modified',
-			'order'    => 'ASC',
+			'orderby'  => $this->get_request_orderby(),
+			'order'    => $this->get_request_order(),
 		);
 
 		$this->items = array();

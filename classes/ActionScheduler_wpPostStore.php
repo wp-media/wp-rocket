@@ -321,9 +321,13 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 				case 'group':
 					$orderby = 't.name';
 					break;
+				case 'status':
+					$orderby = 'p.post_status';
+					break;
 				case 'modified':
 					$orderby = 'p.post_modified';
 					break;
+				case 'schedule':
 				case 'date':
 				default:
 					$orderby = 'p.post_date_gmt';
