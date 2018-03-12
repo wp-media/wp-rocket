@@ -4,6 +4,37 @@
  * Class ActionScheduler_ActionFactory
  */
 class ActionScheduler_ActionFactory {
+
+	/**
+	 * @param string $status The action's status in the data store
+	 * @param string $hook The hook to trigger when this action runs
+	 * @param array $args Args to pass to callbacks when the hook is triggered
+	 * @param ActionScheduler_Schedule $schedule The action's schedule
+	 * @param string $group A group to put the action in
+	 *
+	 * @return ActionScheduler_StoredAction An instance of the stored action
+	 */
+	public function get_stored_action( $status, $hook, array $args = array(), ActionScheduler_Schedule $schedule = NULL, $group = '' ) {
+
+		switch ( $status ) {
+			case ActionScheduler_Store::STATUS_PENDING :
+				$action_class = 'ActionScheduler_Action';
+				break;
+			case ActionScheduler_Store::STATUS_CANCELED :
+				$action_class = 'ActionScheduler_CanceledAction';
+				break;
+			default :
+				$action_class = 'ActionScheduler_FinishedAction';
+				break;
+		}
+
+		$action_class = apply_filters( 'action_scheduler_stored_action_class', $action_class, $hook, $args, $schedule, $group );
+
+		$action = new $action_class( $hook, $args, $schedule, $group );
+
+		return apply_filters( 'action_scheduler_stored_action_instance', $action, $hook, $args, $schedule, $group );
+	}
+
 	/**
 	 * @param string $hook The hook to trigger when this action runs
 	 * @param array $args Args to pass when the hook is triggered
