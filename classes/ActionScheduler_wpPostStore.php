@@ -316,7 +316,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		if ( 'select' === $select_or_count ) {
 			switch ( $query['orderby'] ) {
 				case 'hook':
-					$orderby = 'p.title';
+					$orderby = 'p.post_title';
 					break;
 				case 'group':
 					$orderby = 't.name';
