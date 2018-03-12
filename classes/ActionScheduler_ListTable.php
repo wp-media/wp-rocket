@@ -30,6 +30,11 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	protected $logger;
 
 	/**
+	 *  A ActionScheduler_QueueRunner runner instance (or child class)
+	 */
+	protected $runner;
+
+	/**
 	 * Bulk actions. The key of the array is the method name of the implementation:
 	 *
 	 *     bulk_<key>(array $ids, string $sql_in).
@@ -51,10 +56,11 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	/**
 	 * Sets the current data store object into `store->action` and initialises the object.
 	 */
-	public function __construct( $store, $logger ) {
+	public function __construct( $store, $logger, ActionScheduler_QueueRunner $runner ) {
 
 		$this->store  = $store;
 		$this->logger = $logger;
+		$this->runner = $runner;
 
 		$request_status = $this->get_request_status();
 
@@ -251,7 +257,7 @@ class ActionScheduler_ListTable extends PP_List_Table {
 
 		self::$did_notification = true;
 
-		if ( $this->store->get_claim_count() >= ActionScheduler::runner()->get_concurrent_batch_count() ) : ?>
+		if ( $this->store->get_claim_count() >= $this->runner->get_concurrent_batch_count() ) : ?>
 <div id="message" class="updated">
 	<p><?php printf( __( 'Maximum simulatenous batches already in progress (%s queues). No actions will be processed until the current batches are complete.', 'action-scheduler' ), $this->store->get_claim_count() ); ?></p>
 </div>
@@ -370,7 +376,7 @@ class ActionScheduler_ListTable extends PP_List_Table {
 		try {
 			switch ( $row_action_type ) {
 				case 'run' :
-					ActionScheduler::runner()->process_action( $action_id );
+					$this->runner->process_action( $action_id );
 					break;
 				case 'cancel' :
 					$this->store->cancel_action( $action_id );

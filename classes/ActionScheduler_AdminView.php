@@ -70,7 +70,7 @@ class ActionScheduler_AdminView {
 	 * Renders the Admin UI
 	 */
 	public function render_admin_ui() {
-		$table = new ActionScheduler_ListTable( ActionScheduler::store(), ActionScheduler::logger() );
+		$table = new ActionScheduler_ListTable( ActionScheduler::store(), ActionScheduler::logger(), ActionScheduler::runner() );
 		$table->prepare_items();
 
 		echo '<h1>' . __( 'Scheduled Actions', 'action-scheduler' ) . '</h1>';
