@@ -75,16 +75,18 @@ add_action( 'admin_print_styles-settings_page_' . WP_ROCKET_PLUGIN_SLUG, 'rocket
  * Add the CSS and JS files needed by WP Rocket everywhere on admin pages
  *
  * @since 2.1
+ *
+ * @param string $hook Current admin page.
  */
-function rocket_add_admin_css_js_everywhere($hook) {
+function rocket_add_admin_css_js_everywhere( $hook ) {
 	wp_enqueue_script( 'all-wp-rocket', WP_ROCKET_ADMIN_UI_JS_URL . 'all.js', array( 'jquery' ), WP_ROCKET_VERSION, true );
 	wp_localize_script( 'all-wp-rocket', 'ajax_data', array( 'nonce' => wp_create_nonce( 'rocket-ajax' ) ) );
 	wp_enqueue_style( 'admin-wp-rocket', WP_ROCKET_ADMIN_UI_CSS_URL . 'admin.css', array(), WP_ROCKET_VERSION );
 
 	if ( 'plugins.php' === $hook ) {
 		wp_enqueue_style( 'wpr-admin-style', WP_ROCKET_ASSETS_CSS_URL . 'wpr-modal.css', null, WP_ROCKET_VERSION );
-		wp_enqueue_script( 'wpr-admin-js', WP_ROCKET_ASSETS_JS_URL . 'wpr-modal.js', null, WP_ROCKET_VERSION, true);
-    }
+		wp_enqueue_script( 'wpr-admin-js', WP_ROCKET_ASSETS_JS_URL . 'wpr-modal.js', null, WP_ROCKET_VERSION, true );
+	}
 }
 add_action( 'admin_enqueue_scripts', 'rocket_add_admin_css_js_everywhere', 11 );
 
@@ -119,7 +121,7 @@ add_action( 'admin_print_scripts', 'rocket_add_mixpanel_code' );
  * @since 2.7
  */
 function rocket_enqueue_modal_plugin() {
-	$boxes = get_user_meta( $GLOBALS['current_user']->ID, 'rocket_boxes', true );
+	$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
 
 	if ( defined( 'IMAGIFY_VERSION' ) || in_array( 'rocket_imagify_notice', (array) $boxes, true ) || 1 === get_option( 'wp_rocket_dismiss_imagify_notice' ) || ! current_user_can( 'manage_options' ) ) {
 		return;
