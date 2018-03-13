@@ -104,6 +104,11 @@
         &:last-child{
             text-align: right;
         }
+
+        .wpr-field-description{
+            font-style: normal;
+            color: $cGreyDark2;
+        }
     }
 
     p{
@@ -160,6 +165,7 @@
     &--radio{
         .wpr-field-description{
             margin-left: $space*9;
+            font-style: normal;
         }
 
         label{

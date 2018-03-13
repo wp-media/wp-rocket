@@ -23,5 +23,6 @@
         padding: $space*6 20px 0;
         @include font-size(11,48);
         color: $cGreyDark1;
+        font-weight: bold;
     }
 }
