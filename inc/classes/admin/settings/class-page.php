@@ -1445,7 +1445,11 @@ class Page {
 					'varnish_auto_purge' => [
 						'type'              => 'one_click_addon',
 						'label'             => __( 'Varnish', 'rocket' ),
-						'logo'              => '',
+						'logo'              => [
+							'url'    => WP_ROCKET_ASSETS_IMG_URL . '/logo-varnish.svg',
+							'width'  => 152,
+							'height' => 135,
+						],
 						'title'             => __( 'If Varnish runs on your server, you must activate this add-on.', 'rocket' ),
 						// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 						'description'       => sprintf( __( 'Varnish cache will be purged each time WP Rocket clears its cache to ensure content is always up-to-date.<br>%1$sLearn more%2$s', 'rocket' ), '<a href="' . esc_url( $varnish_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $varnish_beacon['id'] ) . '">', '</a>' ),
@@ -1463,7 +1467,11 @@ class Page {
 				'do_cloudflare' => [
 					'type'              => 'rocket_addon',
 					'label'             => __( 'Cloudflare', 'rocket' ),
-					'logo'              => '',
+					'logo'              => [
+						'url'    => WP_ROCKET_ASSETS_IMG_URL . '/logo-cloudflare2.svg',
+						'width'  => 153,
+						'height' => 51,
+					],
 					'title'             => __( 'Integrate your Cloudflare account with this add-on.', 'rocket' ),
 					'description'       => __( 'Provide your account email, global API key, and domain to use options such as clearing the Cloudflare cache and enabling optimal settings with WP Rocket.', 'rocket' ),
 					'section'           => 'addons',
