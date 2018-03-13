@@ -358,7 +358,7 @@ class Page {
 			wp_die();
 		}
 
-		$value = 1 === (int) $_POST['varnish_auto_purge'] ? 1 : 0;
+		$value = (int) ! empty( $_POST['varnish_auto_purge'] );
 
 		update_rocket_option( 'varnish_auto_purge', $value );
 
@@ -380,7 +380,7 @@ class Page {
 			wp_die();
 		}
 
-		$value = 1 === (int) $_POST['do_cloudflare'] ? 1 : 0;
+		$value = (int) ! empty( $_POST['do_cloudflare'] );
 
 		update_rocket_option( 'do_cloudflare', $value );
 
