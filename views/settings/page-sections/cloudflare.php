@@ -27,8 +27,11 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 	</div><br>
 	<p class="wpr-field-description">
 	<?php
-	// translators: %s is the URL to the CloudFlare documentation.
-	printf( __( 'Purges cached resources for your website. <a href="%s" target="_blank">Learn more</a>', 'rocket' ), 'https://support.cloudflare.com/hc/en-us/articles/200169246' );
+	printf(
+		// translators: %s is a "Learn more" link.
+		__( 'Purges cached resources for your website. %s', 'rocket' ),
+		'<a href="' . esc_url( __( 'https://support.cloudflare.com/hc/en-us/articles/200169246', 'rocket' ) ) . '" target="_blank">' . __( 'Learn more', 'rocket' ) . '</a>'
+	);
 	?>
 	</p>
 	<?php
