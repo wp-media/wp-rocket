@@ -23,7 +23,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 	<div class="wpr-sectionHeader-description">
 		<?php
 		// translators: %1$s = tutorial URL, %2$s = support URL.
-		printf( __( 'Follow this <a href="%1$s">tutorial</a>, or contact <a href="%2$s">support</a> to get the engine started.', 'rocket' ), '', '' );
+		printf( __( 'Follow this <a href="%1$s">tutorial</a>, or contact <a href="%2$s">support</a> to get the engine started.', 'rocket' ), __( 'https://docs.wp-rocket.me/article/100-resolving-problems-with-license-validation', 'rocket' ), rocket_get_external_url( 'support' ) );
 		?>
 	</div>
 </div><br>
