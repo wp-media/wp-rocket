@@ -166,6 +166,11 @@
         .wpr-field-description{
             margin-left: $space*9;
             font-style: normal;
+            color: $cGreyDark2;
+
+            button{
+                color: $cGreyDark2;
+            }
         }
 
         label{
