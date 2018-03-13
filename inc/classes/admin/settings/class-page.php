@@ -1517,8 +1517,7 @@ class Page {
 				[
 					'cloudflare_api_key' => [
 						'label'       => _x( 'Global API key:', 'Cloudflare', 'rocket' ),
-						// translators: %s is the URL to the CloudFlare documentation.
-						'description' => sprintf( __( '<a href="%s" target="_blank">Find your API key</a>', 'rocket' ), 'https://support.cloudflare.com/hc/en-us/articles/200167836-Where-do-I-find-my-Cloudflare-API-key-' ),
+						'description' => sprintf( '<a href="%1$s" target="_blank">%2$s</a>', esc_url( __( 'https://support.cloudflare.com/hc/en-us/articles/200167836-Where-do-I-find-my-Cloudflare-API-key-', 'rocket' ) ), _x( 'Find your API key', 'Cloudflare', 'rocket' ) ),
 						'default'     => '',
 						'section'     => 'cloudflare_credentials',
 						'page'        => 'cloudflare',
