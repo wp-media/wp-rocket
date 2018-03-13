@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "9c5425cb6724e56c1e01188ca31b6f3e",
+    "content-hash": "83c38b83625a0ab3d8a359f2b270103c",
     "packages": [
         {
             "name": "a5hleyrich/wp-background-processing",
@@ -408,11 +408,20 @@
             "time": "2018-02-16T01:57:48+00:00"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "1.0",
+            "alias_normalized": "1.0.0.0",
+            "version": "1.1.0.0",
+            "package": "a5hleyrich/wp-background-processing"
+        }
+    ],
     "minimum-stability": "stable",
     "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": [],
+    "platform": {
+        "php": ">=5.3.0"
+    },
     "platform-dev": []
 }

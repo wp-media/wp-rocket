@@ -4,6 +4,11 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 if ( defined( 'WPSEO_VERSION' ) && class_exists( 'WPSEO_Sitemaps_Router' ) ) :
 	$yoast_seo_xml = get_option( 'wpseo_xml' );
 
+	if ( version_compare( WPSEO_VERSION, '7.0' ) >= 0 ) {
+		$yoast_seo                         = get_option( 'wpseo' );
+		$yoast_seo_xml['enablexmlsitemap'] = $yoast_seo['enable_xml_sitemap'];
+	}
+
 	/**
 	 * Improvement with Yoast SEO: auto-detect the XML sitemaps for the preload option
 	 *

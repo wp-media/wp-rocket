@@ -10,7 +10,7 @@ var sass = require('gulp-sass');
 var rename = require("gulp-rename");
 
 
-/* Task to compile sass */
+/* Task to compile sass admin */
 gulp.task('sass', function () {
   return gulp.src('./src/scss/main.scss')
     .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
@@ -18,16 +18,27 @@ gulp.task('sass', function () {
     .pipe(gulp.dest('assets/css'));
 });
 
+/* Task to compile sass modal */
+gulp.task('sass_modal', function () {
+  return gulp.src('./src/scss/modal.scss')
+    .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
+    .pipe(rename('wpr-modal.css'))
+    .pipe(gulp.dest('assets/css'));
+});
+
  /* Task to watch sass changes */
 gulp.task('sass:watch', function () {
   gulp.watch('./src/scss/main.scss', ['sass']);
+  gulp.watch('./src/scss/modal.scss', ['sass_modal']);
 });
+
 
 
 /* Task to compile JS */
 function compile(watch) {
     var bundler = watchify(browserify('./src/js/global/app.js', {debug: true}).transform(babel));
 
+    // Admin JS
     function rebundle() {
         bundler.bundle()
                 .on('error', function (err) {
@@ -49,7 +60,7 @@ function compile(watch) {
         });
     }
 
-    rebundle();
+    rebundle(); 
 }
 
 function watch() {

@@ -16,7 +16,7 @@
     background: #fff;
     border-radius: 3px;
     transform: translateX(-50%) translateY(-50%);
-    z-index: 100000;
+    z-index: 1000;
 
     &-overlay{
         display: none;
@@ -27,7 +27,7 @@
         top: 0;
         left: 0;
         background: rgba(0,0,0,0.8);
-        z-index: 99999;
+        z-index: 999;
     }
 
     &-header{

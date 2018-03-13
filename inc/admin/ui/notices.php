@@ -878,54 +878,6 @@ function rocket_sitemap_preload_complete() {
 add_action( 'admin_notices', 'rocket_sitemap_preload_complete' );
 
 /**
- * Warns if PHP version is less than 5.4 and offers to rollback.
- *
- * @since 3.0 Updated minimum PHP version to 5.4 and minimum WordPress version to 4.2
- * @since 2.11
- * @author Remy Perona
- */
-function rocket_php_warning() {
-	global $wp_version;
-
-	if ( version_compare( PHP_VERSION, '5.4' ) >= 0 && version_compare( $wp_version, '4.2' ) >= 0 ) {
-		return;
-	}
-	/** This filter is documented in inc/admin-bar.php */
-	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
-		return;
-	}
-
-	// Translators: %1$s = Plugin name, %2$s = Plugin version.
-	$message = '<p>' . sprintf( __( 'To function properly, %1$s %2$s requires at least:', 'rocket' ), WP_ROCKET_PLUGIN_NAME, WP_ROCKET_VERSION ) . '</p><ul>';
-
-	if ( version_compare( PHP_VERSION, '5.4' ) < 0 ) {
-		// Translators: %1$s = PHP version required.
-		$message .= '<li>' . sprintf( __( 'PHP %1$s. To use this version, please ask your web host how to upgrade your server to PHP %1$s or higher.', 'rocket' ), '5.4' ) . '</li>';
-	}
-
-	if ( version_compare( $wp_version, '4.2' ) < 0 ) {
-		// Translators: %1$s = WordPress version required.
-		$message .= '<li>' . sprintf( __( 'WordPress %1$s. To use this version, please upgrade WordPress to version %1$s or higher.', 'rocket' ), '4.2' ) . '</li>';
-	}
-
-	$wp_rocket_rollback_version = version_compare( PHP_VERSION, '5.3' ) >= 0 ? WP_ROCKET_LASTVERSION : '2.10.12';
-
-	$message .= '</ul><p>If you are not able to upgrade, you can rollback to the previous version by using the button below.</p><p><a href="' . wp_nonce_url( admin_url( 'admin-post.php?action=rocket_rollback' ), 'rocket_rollback' ) . '" class="button">' .
-	// Translators: %s = Previous plugin version.
-	sprintf( __( 'Re-install version %s', 'rocket' ), $wp_rocket_rollback_version )
-	. '</a></p>';
-
-	rocket_notice_html(
-		array(
-			'status'      => 'error',
-			'dismissible' => '',
-			'message'     => $message,
-		)
-	);
-}
-add_action( 'admin_notices', 'rocket_php_warning' );
-
-/**
  * Outputs notice HTML
  *
  * @since 2.11

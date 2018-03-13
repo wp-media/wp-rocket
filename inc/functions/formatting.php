@@ -175,6 +175,7 @@ function rocket_get_domain( $url ) {
 /**
  * Extract and return host, path, query and scheme of an URL
  *
+ * @since 2.11.5 Supports UTF-8 URLs
  * @since 2.1 Add $query variable
  * @since 2.0
  *
@@ -186,11 +187,19 @@ function get_rocket_parse_url( $url ) {
 		return;
 	}
 
-	$url    = wp_parse_url( $url );
-	$host   = isset( $url['host'] ) ? strtolower( $url['host'] ) : '';
-	$path   = isset( $url['path'] ) ? $url['path'] : '';
-	$scheme = isset( $url['scheme'] ) ? $url['scheme'] : '';
-	$query  = isset( $url['query'] ) ? $url['query'] : '';
+	$encoded_url = preg_replace_callback(
+		'%[^:/@?&=#]+%usD',
+		function ( $matches ) {
+			return rawurlencode( $matches[0] );
+		},
+		$url
+	);
+
+	$url    = wp_parse_url( $encoded_url );
+	$host   = isset( $url['host'] ) ? strtolower( urldecode( $url['host'] ) ) : '';
+	$path   = isset( $url['path'] ) ? urldecode( $url['path'] ) : '';
+	$scheme = isset( $url['scheme'] ) ? urldecode( $url['scheme'] ) : '';
+	$query  = isset( $url['query'] ) ? urldecode( $url['query'] ) : '';
 
 	/**
 	 * Filter components of an URL
@@ -235,7 +244,7 @@ function rocket_extract_url_component( $url, $component ) {
 function rocket_get_cache_busting_paths( $filename, $extension ) {
 	$blog_id                = get_current_blog_id();
 	$cache_busting_path     = WP_ROCKET_CACHE_BUSTING_PATH . $blog_id;
-	$filename               = rocket_realpath( rtrim( str_replace( array( ' ', '%20' ), '-', $filename ) ), false, '' );
+	$filename               = rocket_realpath( rtrim( str_replace( array( ' ', '%20' ), '-', $filename ) ) );
 	$cache_busting_filepath = $cache_busting_path . $filename;
 	$cache_busting_url      = get_rocket_cdn_url( WP_ROCKET_CACHE_BUSTING_URL . $blog_id . $filename, array( 'all', 'css_and_js', $extension ) );
 
@@ -263,30 +272,10 @@ function rocket_get_cache_busting_paths( $filename, $extension ) {
  * @since 2.11
  * @author Remy Perona
  *
- * @param string $file     File to determine realpath for.
- * @param bool   $absolute True to return an absolute path, false to return a relative one.
- * @param array  $hosts    An array of possible hosts for the file.
+ * @param string $file File to determine realpath for.
  * @return string Resolved file path
  */
-function rocket_realpath( $file, $absolute = true, $hosts = '' ) {
-	if ( $absolute ) {
-		$file_components = get_rocket_parse_url( $file );
-		$site_components = get_rocket_parse_url( site_url() );
-
-		if ( isset( $hosts[ $file_components['host'] ] ) && 'home' !== $hosts[ $file_components['host'] ] ) {
-			$site_url = trailingslashit( rocket_add_url_protocol( $file_components['host'] ) );
-
-			if ( $file_components['path'] !== $site_components['path'] ) {
-				$site_url .= ltrim( $site_components['path'], '/' );
-			}
-		} else {
-			$site_url = trailingslashit( rocket_add_url_protocol( site_url() ) );
-		}
-
-		$abspath = wp_normalize_path( ABSPATH );
-		$file    = str_replace( $site_url, $abspath, rocket_set_internal_url_scheme( $file ) );
-	}
-
+function rocket_realpath( $file ) {
 	$path = array();
 
 	foreach ( explode( '/', $file ) as $part ) {
@@ -302,7 +291,62 @@ function rocket_realpath( $file, $absolute = true, $hosts = '' ) {
 		}
 	}
 
-	return '/' . join( '/', $path );
+	$prefix = 'WIN' === strtoupper( substr( PHP_OS, 0, 3 ) ) ? '' : '/';
+
+	return $prefix . join( '/', $path );
+}
+
+/**
+ * Converts an URL to an absolute path.
+ *
+ * @since 2.11.7
+ * @author Remy Perona
+ *
+ * @param string $url   URL to convert.
+ * @param array  $hosts An array of possible hosts for the URL.
+ * @return string
+ */
+function rocket_url_to_path( $url, $hosts = '' ) {
+	$url_components  = get_rocket_parse_url( $url );
+	$site_components = get_rocket_parse_url( site_url() );
+	$site_url        = trailingslashit( set_url_scheme( site_url() ) );
+
+	if ( isset( $hosts[ $url_components['host'] ] ) && 'home' !== $hosts[ $url_components['host'] ] ) {
+		$site_url = trailingslashit( rocket_add_url_protocol( $url_components['host'] ) );
+
+		if ( $url_components['path'] !== $site_components['path'] ) {
+			$site_url .= ltrim( $site_components['path'], '/' );
+		}
+	}
+
+	$home_path = rocket_get_home_path();
+	$file      = str_replace( $site_url, $home_path, rocket_set_internal_url_scheme( $url ) );
+
+	return rocket_realpath( $file );
+}
+
+/**
+ * Get the absolute filesystem path to the root of the WordPress installation.
+ *
+ * @since 2.11.7 copy function get_home_path() from WP core.
+ * @since 2.11.5
+ * @author Chris Williams
+ *
+ * @return string Full filesystem path to the root of the WordPress installation.
+ */
+function rocket_get_home_path() {
+	$home      = set_url_scheme( get_option( 'home' ), 'http' );
+	$siteurl   = set_url_scheme( get_option( 'siteurl' ), 'http' );
+	$home_path = ABSPATH;
+
+	if ( ! empty( $home ) && 0 !== strcasecmp( $home, $siteurl ) ) {
+		$wp_path_rel_to_home = str_ireplace( $home, '', $siteurl ); /* $siteurl - $home */
+		$pos                 = strripos( str_replace( '\\', '/', $_SERVER['SCRIPT_FILENAME'] ), trailingslashit( $wp_path_rel_to_home ) );
+		$home_path           = substr( $_SERVER['SCRIPT_FILENAME'], 0, $pos );
+		$home_path           = trailingslashit( $home_path );
+	}
+
+	return str_replace( '\\', '/', $home_path );
 }
 
 /**

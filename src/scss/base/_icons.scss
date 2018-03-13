@@ -45,6 +45,10 @@
 .wpr-icon-chevron-right:before {
   content: "\e900";
 }
+.wpr-icon-chevron-left:before {
+  content: "\e900";
+  transform: rotate(180deg);
+}
 .wpr-icon-chevron-down:before {
   content: "\e901";
   transform: scale(0.6);

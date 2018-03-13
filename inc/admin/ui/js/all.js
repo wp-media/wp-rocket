@@ -6,6 +6,7 @@ jQuery( document ).ready( function( $ ){
 	});
 
 	$('#wpr-action-refresh_account').on('click', function(e) {
+		var button = $(this);
 		e.preventDefault();
 
 		$.post(
@@ -55,4 +56,22 @@ jQuery( document ).ready( function( $ ){
 		);
 	});
 
+	$('#wpr-action-safe_mode').on('click', function(e) {
+		var button = $(this);
+		e.preventDefault();
+
+		$.post(
+			ajaxurl,
+			{
+				action: 'rocket_safe_mode',
+				_ajax_nonce: ajax_data.nonce,
+			},
+			function(response) {
+				if ( true === response.success ) {
+					button.hide();
+					$('.show-if-safe-mode').show();
+				}
+			}
+		);
+	});
 } );
