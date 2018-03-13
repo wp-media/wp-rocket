@@ -50,9 +50,7 @@ jQuery( document ).ready( function( $ ){
 				_ajax_nonce: ajax_data.nonce,
 				do_cloudflare: value
 			},
-			function(response) {
-				console.log( response.data );
-			}
+			function(response) {}
 		);
 	});
 

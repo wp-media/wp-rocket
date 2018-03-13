@@ -45,7 +45,6 @@ abstract class Abstract_Render implements Render_Interface {
 		$template_path = $this->get_template_path( $template );
 
 		if ( ! rocket_direct_filesystem()->is_readable( $template_path ) ) {
-			error_log( $template_path );
 			return;
 		}
 
