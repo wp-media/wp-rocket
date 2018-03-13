@@ -31,5 +31,6 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 			<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $value, $data['value'] ); ?>><?php echo esc_html( $label ); ?></option>
 		<?php endforeach; ?>
 		</select>
+		<label for="<?php echo esc_attr( $data['id'] ); ?>"><?php echo esc_html( $data['label'] ); ?></label>
 	</div>
 </div>
