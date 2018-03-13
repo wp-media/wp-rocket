@@ -79,7 +79,8 @@
 
     &-title{
         @include font-size(13,24);
-        letter-spacing: -0.006em;
+        font-weight: bold;
+        letter-spacing: -0.08px;
         text-transform: uppercase;
     }
 
@@ -99,6 +100,7 @@
             display: inline-block;
             @include font-size(12,24);
             text-transform: inherit;
+            font-weight: 600;
         }
 
         &:before{

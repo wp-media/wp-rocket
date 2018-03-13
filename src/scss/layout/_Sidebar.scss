@@ -38,6 +38,7 @@
         letter-spacing: -0.05em;
         text-transform: uppercase;
         text-decoration: none;
+        font-weight: bold;
 
         &:hover,
         &:focus{
@@ -53,6 +54,7 @@
 
         h4{
             padding-left: 48px;
+            font-weight: 500;
         }
 
         p{

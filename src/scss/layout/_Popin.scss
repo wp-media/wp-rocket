@@ -38,6 +38,7 @@
         padding: 0 $space*4;
         background: $cPurple;
         color: #fff;
+        font-weight: 600;
     }
 
     &-close{
@@ -72,14 +73,14 @@
     }
 
     .wp-rocket-data-table{
-        padding: $space*2 $space*3;
+        padding: 12px $space*3;
         background: $cGreyLight2 !important;
         border: none;
 
         td{
             width: 50%;
             color: $cBlack;
-            padding: 10px 0;
+            padding: $space 0;
             padding-left: 4px;
             border-bottom: 1px solid darken($cGrey,10%);
 
@@ -101,7 +102,7 @@
         }
 
         strong{
-            font-weight: normal;
+            font-weight: 500;
         }
 
         em{

@@ -16,7 +16,8 @@
     box-shadow: 0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08);
     text-transform: uppercase;
     text-decoration: none;
-    letter-spacing: -0.06em;
+    letter-spacing: -0.08px;
+    font-weight: bold;
     border-radius: 4px;
     color: #fff;
     white-space: nowrap;
@@ -34,7 +35,7 @@
 
     &--small{
         padding: 5px 0;
-        letter-spacing: -0.05em;
+        letter-spacing: -0.08px;
         @include font-size(11,20);
     }
 

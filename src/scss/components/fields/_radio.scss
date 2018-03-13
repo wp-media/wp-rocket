@@ -13,6 +13,7 @@
 
     label{
         user-select: none;
+        font-weight: bold;
     }
 
     // Hide default radio
@@ -73,6 +74,7 @@
         width: 52px;
         text-transform: uppercase;
         letter-spacing: -0.01em;
+        font-weight: bold;
         @include font-size(11,24);
         @include transition(all, 150ms);
     }

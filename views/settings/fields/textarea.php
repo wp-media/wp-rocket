@@ -20,10 +20,10 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 <div class="wpr-field wpr-field--textarea <?php echo $data['container_class']; ?>">
 	<?php if ( ! empty( $data['label'] ) ) : ?>
-		<label for="<?php echo esc_attr( $data['id'] ); ?>" class="wpr-title3"><?php echo $data['label']; ?></label>
+		<label for="<?php echo esc_attr( $data['id'] ); ?>" class="wpr-field-description-label"><?php echo $data['label']; ?></label>
 	<?php endif; ?>
 	<?php if ( ! empty( $data['description'] ) ) : ?>
-		<div class="wpr-field-description-label">
+		<div class="wpr-field-description">
 			<?php echo $data['description']; ?>
 		</div>
 	<?php endif; ?>
@@ -31,7 +31,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 		<textarea id="<?php echo esc_attr( $data['id'] ); ?>" name="wp_rocket_settings[<?php echo esc_attr( $data['id'] ); ?>]"><?php echo esc_textarea( $data['value'] ); ?></textarea>
 	</div>
 	<?php if ( ! empty( $data['helper'] ) ) : ?>
-		<div class="wpr-field-description">
+		<div class="wpr-field-description wpr-field-description-helper">
 			<?php echo $data['helper']; ?>
 		</div>
 	<?php endif; ?>

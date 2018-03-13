@@ -26,6 +26,7 @@
     &-description{
         margin-top: 4px;
         color: $cGreyDark1;
+        font-style: italic;
 
         .wpr-js-popin{
             color: $cGreyDark1;
@@ -41,16 +42,22 @@
         a:focus{
             color: $cBlue;
         }
+
+        &-helper{
+            color: $cGreenDark1;
+        }
     }
 
     &-description-label{
         @include font-size(14,20);
-        color: $cGreyDark2;
+        font-weight: bold !important;
+        //color: $cGreyDark2;
     }
 
     &-list{
         margin: 0;
         color: $cGreyDark2;
+        font-weight: 500;
 
         li{
             &+li{
@@ -78,6 +85,7 @@
 
     &-betweenText{
         margin: 0 $space*2;
+        font-weight: bold;
     }
 
     .wpr-button{
@@ -100,6 +108,10 @@
 
     p{
         margin-bottom: 0;
+    }
+
+    label{
+        font-weight: 500;
     }
 
     h4{
@@ -184,6 +196,7 @@
             padding-top: 0;
             width: auto;
             padding-bottom: 0;
+            font-weight: bold;
         }
 
         .wpr-field--select{
@@ -191,6 +204,14 @@
             padding-left: $space;
             top: -2px;
             border-top: none;
+        }
+
+        .wpr-field--number .wpr-text input[type=number]{
+            background: $cGreyLight2;
+            height: 35px;
+            border: 1px solid $cGrey;
+            font-family: inherit;
+            font-size: 1em;
         }
 
         .wpr-field-description{

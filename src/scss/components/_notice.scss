@@ -21,12 +21,14 @@
 
     &-supTitle{
         @include font-size(16,22);
+        font-weight: bold;
     }
 
     &-title{
         @include font-size(24,32);
         color: $cGreen;
         margin-top: $space*2;
+        font-weight: bold;
     }
 
     &-description{
