@@ -244,6 +244,18 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	}
 
 	/**
+	 * Only display row actions for pending actions.
+	 *
+	 * @param array $row     Row to render
+	 * @param $column_name   Current row
+	 */
+	protected function maybe_render_actions( $row, $column_name ) {
+		if ( 'pending' === strtolower( $row['status'] ) ) {
+			parent::maybe_render_actions( $row, $column_name );
+		}
+	}
+
+	/**
 	 * Renders admin notifications
 	 *
 	 * Notifications:
