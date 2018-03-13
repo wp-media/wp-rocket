@@ -97,6 +97,7 @@
         border: none;
         background: none;
         cursor: pointer;
+        font-weight: 500;
 
         &:hover{
             color: #008ec2;
@@ -191,6 +192,10 @@
         }
     }
 
+    .button{
+        font-weight: bold;
+    }
+
     .button-primary{
         &.wpr-isDisabled{
             cursor: not-allowed;
@@ -208,6 +213,14 @@
     h3{
         display: inline-block;
         font-weight: normal;
+    }
+
+    h2{
+        font-weight: 600;
+    }
+
+    h3{
+        font-weight: bold;
     }
 
     input[type=radio]{
