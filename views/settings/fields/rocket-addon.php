@@ -35,8 +35,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 <div class="wpr-field wpr-addon">
 	<div class="wpr-flex">
 		<div class="wpr-addon-logo">
-			<!--<?php echo esc_attr( $data['logo'] ); ?>-->
-			<img src="<?php echo WP_ROCKET_ASSETS_IMG_URL; ?>/logo-cloudflare2.svg" width="153" height="51" alt="Logo Varnish">
+			<img src="<?php echo esc_url( $data['logo']['url'] ); ?>>" width="<?php echo esc_attr( $data['logo']['width'] ); ?>>" height="<?php echo esc_attr( $data['logo']['height'] ); ?>>" alt="">
 		</div>
 		<div class="wpr-addon-text">
 			<?php if ( ! empty( $data['title'] ) ) : ?>
