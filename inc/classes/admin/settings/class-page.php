@@ -336,11 +336,7 @@ class Page {
 
 		delete_transient( 'wp_rocket_customer_data' );
 
-		$customer_data = $this->get_customer_data();
-
-		set_transient( 'wp_rocket_customer_data', $customer_data, DAY_IN_SECONDS );
-
-		return wp_send_json_success( $customer_data );
+		return wp_send_json_success( $this->customer_data() );
 	}
 
 	/**
