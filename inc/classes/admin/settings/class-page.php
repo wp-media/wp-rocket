@@ -287,11 +287,11 @@ class Page {
 		$customer_data = json_decode( wp_remote_retrieve_body( $response ) );
 
 		if ( 1 <= $customer_data->licence_account && $customer_data->licence_account < 3 ) {
-			$customer_data->licence_account = 'single';
+			$customer_data->licence_account = 'Single';
 		} elseif ( '-1' === $customer_data->licence_account ) {
-			$customer_data->licence_account = 'unlimited';
+			$customer_data->licence_account = 'Unlimited';
 		} else {
-			$customer_data->licence_account = 'plus';
+			$customer_data->licence_account = 'Plus';
 		}
 
 		$customer_data->licence_expiration = date_i18n( get_option( 'date_format' ), $customer_data->licence_expiration );
