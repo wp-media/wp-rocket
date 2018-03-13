@@ -310,7 +310,6 @@ class ActionScheduler_ListTable extends PP_List_Table {
 		}
 	}
 
-
 	/**
 	 * Prints the scheduled date in a human friendly format.
 	 *
@@ -351,8 +350,6 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	 * properly validated by the callee and it will delete the actions without any extra validation.
 	 *
 	 * @param array $ids
-	 *
-	 * @return void
 	 */
 	protected function bulk_delete( array $ids, $ids_sql ) {
 		foreach ( $ids as $id ) {
@@ -478,8 +475,6 @@ class ActionScheduler_ListTable extends PP_List_Table {
 
 	/**
 	 * Prints the available statuses so the user can click to filter.
-	 *
-	 * @return void
 	 */
 	public function display_filter_by_status() {
 
@@ -514,8 +509,6 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	 * Overrides the original display method to print the `display_filter_by_status()`. By overriding
 	 * this object it prints all the needed HTML already, making it easy to use from higher layers because
 	 * the object is 'self-contained' and 'self-sufficient'.
-	 *
-	 * @return void
 	 */
 	public function display() {
 		$this->display_filter_by_status();
