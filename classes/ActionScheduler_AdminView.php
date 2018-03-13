@@ -32,7 +32,7 @@ class ActionScheduler_AdminView {
 
 			if ( class_exists( 'WooCommerce' ) ) {
 				add_action( 'woocommerce_admin_status_content_action-scheduler', array( $self, 'render_admin_ui' ) );
-				add_filter( 'woocommerce_admin_status_tabs', array( $self, 'register_menu_woo_tab' ) );
+				add_filter( 'woocommerce_admin_status_tabs', array( $self, 'register_system_status_tab' ) );
 			}
 
 			add_action( 'admin_menu', array( $self, 'register_menu' ) );
@@ -43,7 +43,7 @@ class ActionScheduler_AdminView {
 	/**
 	 * Registers action-scheduler into WooCommerce > System status.
 	 */
-	public function register_menu_woo_tab( array $tabs ) {
+	public function register_system_status_tab( array $tabs ) {
 		$tabs[ 'action-scheduler' ] = __( 'Scheduled Actions', 'action-scheduler' );
 
 		return $tabs;
