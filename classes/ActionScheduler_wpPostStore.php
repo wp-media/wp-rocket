@@ -327,6 +327,9 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 				case 'modified':
 					$orderby = 'p.post_modified';
 					break;
+				case 'claim_id':
+					$orderby = 'p.post_password';
+					break;
 				case 'schedule':
 				case 'date':
 				default:

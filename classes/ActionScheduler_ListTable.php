@@ -92,6 +92,8 @@ class ActionScheduler_ListTable extends PP_List_Table {
 
 		if ( 'all' === $request_status ) {
 			$this->sort_by[] = 'status';
+		} elseif ( in_array( $request_status, array( 'in-progress', 'failed' ) ) ) {
+			$this->sort_by[] = 'claim_id';
 		}
 
 		$this->row_actions = array(
