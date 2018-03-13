@@ -56,7 +56,7 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	/**
 	 * Sets the current data store object into `store->action` and initialises the object.
 	 */
-	public function __construct( $store, $logger, ActionScheduler_QueueRunner $runner ) {
+	public function __construct( ActionScheduler_Store $store, ActionScheduler_Logger $logger, ActionScheduler_QueueRunner $runner ) {
 
 		$this->store  = $store;
 		$this->logger = $logger;
