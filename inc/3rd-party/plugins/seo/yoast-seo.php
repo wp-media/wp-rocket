@@ -6,7 +6,7 @@ if ( defined( 'WPSEO_VERSION' ) && class_exists( 'WPSEO_Sitemaps_Router' ) ) :
 
 	if ( version_compare( WPSEO_VERSION, '7.0' ) >= 0 ) {
 		$yoast_seo                         = get_option( 'wpseo' );
-		$yoast_seo_xml['enablexmlsitemap'] = $yoast_seo['enable_xml_sitemap'];
+		$yoast_seo_xml['enablexmlsitemap'] = isset( $yoast_seo['enable_xml_sitemap'] ) && $yoast_seo['enable_xml_sitemap'];
 	}
 
 	/**
