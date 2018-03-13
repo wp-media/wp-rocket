@@ -499,7 +499,7 @@ add_action( 'admin_post_rocket_analytics_optin', 'rocket_analytics_optin' );
  * @return void
  */
 function rocket_handle_settings_import() {
-	check_ajax_refer( 'rocket_import_settings' );
+	check_ajax_refer( 'rocket_import_settings', 'rocket_import_settings_nonce' );
 
 	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
 		rocket_settings_import_redirect( __( 'Settings import failed: you do not have the permissions to do this.', 'rocket' ), 'error' );

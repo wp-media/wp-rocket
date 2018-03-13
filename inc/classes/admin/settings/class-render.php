@@ -67,14 +67,6 @@ class Render extends Abstract_render {
 	 * @return void
 	 */
 	public function render_navigation() {
-		$navigation = array_map(
-			function( array $item ) {
-				unset( $item['sections'] );
-				return $item;
-			},
-			$this->settings
-		);
-
 		/**
 		 * Filters WP Rocket settings page navigation items.
 		 *
@@ -85,11 +77,33 @@ class Render extends Abstract_render {
 		 *     Items to populate the navigation.
 		 *
 		 *     @type string $id               Page section identifier.
-		 *     @type string $title            Menu title.
-		 *     @type string $menu_description Menu description.
+		 *     @type string $title            Menu item title.
+		 *     @type string $menu_description Menu item description.
+		 *     @type string $class            Menu item classes
 		 * }
 		 */
-		$navigation = apply_filters( 'rocket_settings_menu_navigation', $navigation );
+		$navigation = apply_filters( 'rocket_settings_menu_navigation', $this->settings );
+
+		$default = [
+			'id'               => '',
+			'title'            => '',
+			'menu_description' => '',
+			'class'            => '',
+		];
+
+		$navigation = array_map(
+			function( array $item ) use ( $default ) {
+				$item = wp_parse_args( $item, $default );
+
+				if ( ! empty( $item['class'] ) ) {
+					$item['class'] = implode( ' ', array_map( 'sanitize_html_class', $item['class'] ) );
+				}
+
+				unset( $item['sections'] );
+				return $item;
+			},
+			$navigation
+		);
 
 		echo $this->generate( 'navigation', $navigation );
 	}
@@ -106,7 +120,15 @@ class Render extends Abstract_render {
 		}
 
 		foreach ( $this->settings as $id => $args ) {
-			$id = str_replace( '_', '-', $id );
+			$default = [
+				'title'            => '',
+				'menu_description' => '',
+				'class'            => '',
+			];
+
+			$args = wp_parse_args( $args, $default );
+			$id   = str_replace( '_', '-', $id );
+
 			echo $this->generate( 'page-sections/' . $id, $args );
 		}
 	}
@@ -135,8 +157,19 @@ class Render extends Abstract_render {
 			return;
 		}
 
-		foreach ( $this->settings[ $page ]['sections'] as $settings_section ) {
-			call_user_func_array( array( $this, $settings_section['type'] ), array( $settings_section ) );
+		foreach ( $this->settings[ $page ]['sections'] as $args ) {
+			$default = [
+				'type'        => 'fields_container',
+				'title'       => '',
+				'description' => '',
+				'help'        => '',
+				'helper'      => '',
+				'page'        => '',
+			];
+
+			$args = wp_parse_args( $args, $default );
+
+			call_user_func_array( array( $this, $args['type'] ), array( $args ) );
 		}
 	}
 
@@ -155,8 +188,51 @@ class Render extends Abstract_render {
 			return;
 		}
 
-		foreach ( $this->settings[ $page ]['sections'][ $section ]['fields'] as $field ) {
-			call_user_func_array( array( $this, $field['type'] ), array( $field ) );
+		foreach ( $this->settings[ $page ]['sections'][ $section ]['fields'] as $args ) {
+			$default = [
+				'type'              => 'text',
+				'label'             => '',
+				'description'       => '',
+				'class'             => '',
+				'container_class'   => '',
+				'default'           => '',
+				'helper'            => '',
+				'section'           => '',
+				'page'              => '',
+				'sanitize_callback' => 'sanitize_text_field',
+				'input_attr'        => '',
+				'warning'           => [],
+			];
+
+			$args = wp_parse_args( $args, $default );
+
+			if ( ! empty( $args['input_attr'] ) ) {
+				$input_attr = '';
+
+				foreach ( $args['input_attr'] as $key => $value ) {
+					if ( 'disabled' === $key ) {
+						if ( 1 === $value ) {
+							$input_attr .= ' disabled';
+						}
+
+						continue;
+					}
+
+					$input_attr .= ' ' . sanitize_key( $key ) . '="' . esc_attr( $value ) . '"';
+				}
+
+				$args['input_attr'] = $input_attr;
+			}
+
+			if ( ! empty( $args['class'] ) ) {
+				$args['class'] = implode( ' ', array_map( 'sanitize_html_class', $args['class'] ) );
+			}
+
+			if ( ! empty( $args['container_class'] ) ) {
+				$args['container_class'] = implode( ' ', array_map( 'sanitize_html_class', $args['container_class'] ) );
+			}
+
+			call_user_func_array( array( $this, $args['type'] ), array( $args ) );
 		}
 	}
 
@@ -201,6 +277,32 @@ class Render extends Abstract_render {
 	}
 
 	/**
+	 * Displays the add-ons container section template.
+	 *
+	 * @since 3.0
+	 * @author Remy Perona
+	 *
+	 * @param array $args Array of arguments to populate the template.
+	 * @return void
+	 */
+	public function addons_container( $args ) {
+		echo $this->generate( 'sections/addons-container', $args );
+	}
+
+	/**
+	 * Displays the text field template.
+	 *
+	 * @since 3.0
+	 * @author Remy Perona
+	 *
+	 * @param array $args Array of arguments to populate the template.
+	 * @return void
+	 */
+	public function text( $args ) {
+		echo $this->generate( 'fields/text', $args );
+	}
+
+	/**
 	 * Displays the checkbox field template.
 	 *
 	 * @since 3.0
@@ -227,7 +329,7 @@ class Render extends Abstract_render {
 			$args['value'] = implode( "\n", $args['value'] );
 		}
 
-		$args['value'] = ! empty( $args['value'] ) ? $args['value'] : '';
+		$args['value'] = empty( $args['value'] ) ? '' : $args['value'];
 
 		echo $this->generate( 'fields/textarea', $args );
 	}
@@ -272,6 +374,19 @@ class Render extends Abstract_render {
 	}
 
 	/**
+	 * Displays the clear cache lifespan block template.
+	 *
+	 * @since 3.0
+	 * @author Remy Perona
+	 *
+	 * @param array $args Array of arguments to populate the template.
+	 * @return void
+	 */
+	public function cache_lifespan( $args ) {
+		echo $this->generate( 'fields/cache-lifespan', $args );
+	}
+
+	/**
 	 * Displays the hidden field template.
 	 *
 	 * @since 3.0
@@ -282,6 +397,45 @@ class Render extends Abstract_render {
 	 */
 	public function hidden( $args ) {
 		echo $this->generate( 'fields/hidden', $args );
+	}
+
+	/**
+	 * Displays the CDN CNAMES template.
+	 *
+	 * @since 3.0
+	 * @author Remy Perona
+	 *
+	 * @param array $args Array of arguments to populate the template.
+	 * @return void
+	 */
+	public function cnames( $args ) {
+		echo $this->generate( 'fields/cnames', $args );
+	}
+
+	/**
+	 * Displays the one-click add-on field template.
+	 *
+	 * @since 3.0
+	 * @author Remy Perona
+	 *
+	 * @param array $args Array of arguments to populate the template.
+	 * @return void
+	 */
+	public function one_click_addon( $args ) {
+		echo $this->generate( 'fields/one-click-addon', $args );
+	}
+
+	/**
+	 * Displays the Rocket add-on field template.
+	 *
+	 * @since 3.0
+	 * @author Remy Perona
+	 *
+	 * @param array $args Array of arguments to populate the template.
+	 * @return void
+	 */
+	public function rocket_addon( $args ) {
+		echo $this->generate( 'fields/rocket-addon', $args );
 	}
 
 	/**
@@ -311,5 +465,92 @@ class Render extends Abstract_render {
 		$args['submit_text'] = __( 'Upload file and import settings', 'rocket' );
 
 		echo $this->generate( 'fields/import-form', $args );
+	}
+
+	/**
+	 * Displays the button template.
+	 *
+	 * @since 3.0
+	 * @author Remy Perona
+	 *
+	 * @param string $type   Type of button (can be button or link).
+	 * @param string $action Action to be performed.
+	 * @param array  $args   Optional array of arguments to populate the button attributes.
+	 * @return void
+	 */
+	public function render_action_button( $type, $action, $args = array() ) {
+		$default = [
+			'label'      => '',
+			'action'     => '',
+			'url'        => '',
+			'parameter'  => '',
+			'attributes' => '',
+		];
+
+		$args = wp_parse_args( $args, $default );
+
+		if ( ! empty( $args['attributes'] ) ) {
+			$attributes = '';
+			foreach ( $args['attributes'] as $key => $value ) {
+				$attributes .= ' ' . sanitize_key( $key ) . '="' . esc_attr( $value ) . '"';
+			}
+
+			$args['attributes'] = $attributes;
+		}
+
+		switch ( $type ) {
+			case 'link':
+				switch ( $action ) {
+					case 'view_account':
+						$args['url'] = rocket_get_external_url( 'account' );
+						break;
+					case 'purge_cache':
+						$url = admin_url( 'admin-post.php?action=' . $action );
+
+						if ( isset( $args['parameters'] ) ) {
+							$url = add_query_arg( $args['parameters'], $url );
+						}
+
+						$args['url'] = wp_nonce_url( $url, $action . '_all' );
+						break;
+					case 'preload':
+					case 'rocket_purge_opcache':
+					case 'purge_cloudflare':
+					case 'rocket_rollback':
+					case 'rocket_export':
+						$url = admin_url( 'admin-post.php?action=' . $action );
+
+						if ( ! empty( $args['parameters'] ) ) {
+							$url = add_query_arg( $args['parameters'], $url );
+						}
+
+						$args['url'] = wp_nonce_url( $url, $action );
+						break;
+					case 'documentation':
+						$args['url'] = get_rocket_documentation_url();
+						break;
+				}
+
+				echo $this->generate( 'buttons/link', $args );
+				break;
+			default:
+				$args['action'] = $action;
+				echo $this->generate( 'buttons/button', $args );
+				break;
+		}
+	}
+
+	/**
+	 * Displays a partial template.
+	 *
+	 * @since 3.0
+	 * @author Remy Perona
+	 *
+	 * @param string $part Partial template name.
+	 *
+	 * @return void
+	 */
+	public function render_part( $part ) {
+		echo $this->generate( 'partials/' . $part );
 	}
 }

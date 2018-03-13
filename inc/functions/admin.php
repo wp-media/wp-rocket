@@ -38,7 +38,7 @@ function rocket_user_agent( $user_agent ) {
 		$consumer_email = (string) get_rocket_option( 'consumer_email' );
 	}
 
-	$bonus .= ! get_rocket_option( 'do_beta' ) ? '' : '+';
+	$bonus  = ! get_rocket_option( 'do_beta' ) ? '' : '+';
 	$new_ua = sprintf( '%s;WP-Rocket|%s%s|%s|%s|%s|;', $user_agent, WP_ROCKET_VERSION, $bonus, $consumer_key, $consumer_email, esc_url( home_url() ) );
 
 	return $new_ua;
@@ -134,23 +134,6 @@ function rocket_add_own_ua( $r, $url ) {
 	return $r;
 }
 add_filter( 'http_request_args', 'rocket_add_own_ua', 10, 3 );
-
-/**
- * Function used to print all hidden fields from rocket to avoid the loss of these.
- *
- * @since 2.1
- *
- * @param array $fields An array of fields to add to WP Rocket settings.
- */
-function rocket_hidden_fields( $fields ) {
-	if ( ! is_array( $fields ) ) {
-		return;
-	}
-
-	foreach ( $fields as $field ) {
-		echo '<input type="hidden" name="wp_rocket_settings[' . $field . ']" value="' . esc_attr( get_rocket_option( $field ) ) . '" />';
-	}
-}
 
 /**
  * Gets names of all active plugins.

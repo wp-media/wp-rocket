@@ -368,11 +368,24 @@ function rocket_get_external_url( $target, $query_args = array() ) {
 			$paths  = array(
 				'default' => 'support',
 				'fr_FR'   => 'fr/support',
-				'ca_FR'   => 'fr/support',
+				'fr_CA'   => 'fr/support',
 				'it_IT'   => 'it/supporto',
 				'de_DE'   => 'de/support',
 				'es_ES'   => 'es/soporte',
-				'gl_ES'   => 'es/soporte',
+			);
+
+			$url = isset( $paths[ $locale ] ) ? $paths[ $locale ] : $paths['default'];
+			$url = $site_url . $url . '/';
+			break;
+		case 'account':
+			$locale = function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale();
+			$paths  = array(
+				'default' => 'account',
+				'fr_FR'   => 'fr/compte',
+				'fr_CA'   => 'fr/compte',
+				'it_IT'   => 'it/account/',
+				'de_DE'   => 'de/konto/',
+				'es_ES'   => 'es/cuenta/',
 			);
 
 			$url = isset( $paths[ $locale ] ) ? $paths[ $locale ] : $paths['default'];

@@ -27,6 +27,16 @@
         margin-top: 4px;
         color: $cGreyDark1;
 
+        .wpr-js-popin{
+            color: $cGreyDark1;
+            text-decoration: underline;
+
+            &:hover,
+            &:focus{
+                color: $cBlue;
+            }
+        }
+
         a:hover,
         a:focus{
             color: $cBlue;
