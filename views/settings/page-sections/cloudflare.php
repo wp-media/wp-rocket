@@ -35,7 +35,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 	?>
 	</p>
 	<?php
-	$this->render_action_button( 'link', 'purge_cloudflare', [
+	$this->render_action_button( 'link', 'rocket_purge_cloudflare', [
 		'label'      => __( 'Clear all Cloudflare cache files', 'rocket' ),
 		'attributes' => [
 			'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-button--purple wpr-icon-trash',
