@@ -11,11 +11,11 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 <h3 class="wpr-Sidebar-title wpr-title2"><?php _e( 'How to correctly measure your website’s loading time?', 'rocket' ); ?></h3>
 <div class="wpr-Sidebar-notice">
 	<p><?php _e( 'Learn how to use best practices to correctly measure your site\'s performance.', 'rocket' ); ?></p>
-	<a href="https://wp-rocket.me/blog/correctly-measure-websites-page-load-time/" target="_blank" class="wpr-Sidebar-notice-link"><?php _e( 'Read our guide', 'rocket' ); ?></a>
+	<a href="<?php echo esc_url( __( 'https://wp-rocket.me/blog/correctly-measure-websites-page-load-time/', 'rocket' ) ); ?>" target="_blank" class="wpr-Sidebar-notice-link"><?php _e( 'Read our guide', 'rocket' ); ?></a>
 </div>
 <div class="wpr-Sidebar-notice">
 	<p><?php _e( 'Why Google PageSpeed grade should not matter', 'rocket' ); ?></p>
-	<a href="https://wp-rocket.me/blog/the-truth-about-google-pagespeed-insights/" target="_blank" class="wpr-Sidebar-notice-link"><?php _e( 'Read more', 'rocket' ); ?></a>
+	<a href="<?php echo esc_url( __( 'https://wp-rocket.me/blog/the-truth-about-google-pagespeed-insights/', 'rocket' ) ); ?>" target="_blank" class="wpr-Sidebar-notice-link"><?php _e( 'Read more', 'rocket' ); ?></a>
 </div>
 <?php if ( ! get_rocket_option( 'user_cache', 0 ) ) : ?>
 <div class="wpr-Sidebar-info">
@@ -24,6 +24,5 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 	<p><?php _e( 'Use a private browser to check your website\'s speed and visual appearance.', 'rocket' ); ?></p>
 </div>
 <?php endif; ?>
-<?php $this->render_part( 'documentation' ); ?>
+<?php $this->render_part( 'documentation' );
 
-<!-- <button data-beacon-id="" class="wpr-button wpr-icon-help wpr-button--lightBlue wpr-button--fixed"><?php esc_html_e( 'Need Help?', 'rocket' ); ?></button> -->
