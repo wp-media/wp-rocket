@@ -24,11 +24,11 @@ if ( ! empty( $data['upload_dir']['error'] ) ) {
 <?php
 } else {
 	?>
-	<form action="<?php echo admin_url( 'admin-post.php' ); ?>" method="POST" enctype="multipart/form-data" class="wpr-tools">
+	<form action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="POST" enctype="multipart/form-data" class="wpr-tools">
 		<div class="wpr-tools-col">
 			<label for="upload" class="wpr-title3 wpr-tools-label wpr-icon-import"><?php _e( 'Import settings', 'rocket' ); ?></label>
 			<div class="wpr-upload">
-				<input type="file" id="upload" name="import" size="25" />
+				<input type="file" accept=".txt,.json" id="upload" name="import" size="25" />
 				<small for="upload" class="wpr-field-description">
 					<?php
 					// translators: %s is the maximum upload size set on the current server.
