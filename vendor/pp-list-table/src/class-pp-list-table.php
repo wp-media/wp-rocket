@@ -247,20 +247,54 @@ abstract class PP_List_Table extends WP_List_Table {
 			return '';
 		}
 
-		$valid_orders = array_values( $this->sort_by );
-		if ( ! empty( $_GET['orderby'] ) && in_array( $_GET['orderby'], $valid_orders ) ) {
-			$by = wc_clean( $_GET['orderby'] );
+		$orderby = esc_sql( $this->get_request_orderby() );
+		$order   = esc_sql( $this->get_request_order() );
+
+		return "ORDER BY {$orderby} {$order}";
+	}
+
+	/**
+	 * Return the sortable column specified for this request to order the results by, if any.
+	 *
+	 * @return string
+	 */
+	protected function get_request_orderby() {
+
+		$valid_sortable_columns = array_values( $this->sort_by );
+
+		if ( ! empty( $_GET['orderby'] ) && in_array( $_GET['orderby'], $valid_sortable_columns ) ) {
+			$orderby = wc_clean( $_GET['orderby'] );
 		} else {
-			$by = $valid_orders[0];
+			$orderby = $valid_sortable_columns[0];
 		}
 
-		$by = esc_sql( $by );
-		if ( ! empty( $_GET['order'] ) && 'asc' === strtolower( $_GET['order'] ) ) {
-			$order = 'ASC';
-		} else {
+		return $orderby;
+	}
+
+	/**
+	 * Return the sortable column order specified for this request.
+	 *
+	 * @return string
+	 */
+	protected function get_request_order() {
+
+		if ( ! empty( $_GET['order'] ) && 'desc' === strtolower( $_GET['order'] ) ) {
 			$order = 'DESC';
+		} else {
+			$order = 'ASC';
 		}
-		return "ORDER BY {$by} {$order}";
+
+		return $order;
+	}
+
+	/**
+	 * Return the status filter for this request, if any.
+	 *
+	 * @return string
+	 */
+	protected function get_request_status() {
+		$status = ( ! empty( $_GET['status'] ) ) ? $_GET['status'] : '';
+		return $status;
 	}
 
 	/**
@@ -447,24 +481,22 @@ abstract class PP_List_Table extends WP_List_Table {
 		$row_id = $row[ $this->ID ];
 
 		echo '<div class="row-actions">';
-		foreach ( $this->row_actions[ $column_name ] as $action => $definition ) {
-			if ( is_array( $definition ) ) {
-				list( $title, $label ) = $definition;
-			} else {
-				$title = $label = $definition;
-			}
+		$action_count = 0;
+		foreach ( $this->row_actions[ $column_name ] as $action_key => $action ) {
 
-			if ( ! method_exists( $this, 'row_action_' . $action ) ) {
+			$action_count++;
+
+			if ( ! method_exists( $this, 'row_action_' . $action_key ) ) {
 				continue;
 			}
 
-			echo '<span class="' . esc_attr( $action ) . '">';
-			echo '<a href="' . add_query_arg( array(
-				'row_action' => $action,
-				'row_id' => $row_id,
-				'nonce'  => wp_create_nonce( $action . '::' . $row_id ),
-			) ) . '" title="' . esc_attr( $this->translate( $label ) ) . '">' . esc_html( $this->translate( $title ) ) . '</a>';
-			echo '</span>';
+			$action_link = ! empty( $action['link'] ) ? $action['link'] : add_query_arg( array( 'row_action' => $action_key, 'row_id' => $row_id, 'nonce'  => wp_create_nonce( $action_key . '::' . $row_id ) ) );
+			$span_class  = ! empty( $action['class'] ) ? $action['class'] : $action_key;
+			$separator   = ( $action_count < count( $this->row_actions[ $column_name ] ) ) ? ' | ' : '';
+
+			printf( '<span class="%s">', esc_attr( $span_class ) );
+			printf( '<a href="%1$s" title="%2$s">%3$s</a>', esc_url( $action_link ), esc_attr( $action['desc'] ), esc_html( $action['name'] ) );
+			printf( '%s</span>', $separator );
 		}
 		echo '</div>';
 	}
