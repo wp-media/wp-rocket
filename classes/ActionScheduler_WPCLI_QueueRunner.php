@@ -128,6 +128,7 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 
 		$completed = $this->progress_bar->current();
 		$this->finish_progress_bar();
+		$this->store->release_claim( $this->claim );
 		do_action( 'action_scheduler_after_process_queue' );
 
 		return $completed;
@@ -207,5 +208,15 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 		if ( is_callable( array( $wp_object_cache, '__remoteset' ) ) ) {
 			call_user_func( array( $wp_object_cache, '__remoteset' ) ); // important
 		}
+	}
+
+	/**
+	 * Destructor.
+	 *
+	 * Release our current claim when the object is destroyed. This helps ensure that the
+	 * claim is released, even if the batch doesn't run or is interrupted.
+	 */
+	public function __destruct() {
+		$this->store->release_claim( $this->claim );
 	}
 }
