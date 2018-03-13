@@ -239,7 +239,7 @@ class Page {
 				$lang        = '';
 				$form_id     = '6e4a6b6e-1b2d-11e8-b466-0ec85169275a';
 				$suggest     = wp_list_pluck( $this->get_beacon_suggest( 'faq' ), 'id' );
-				$translation = '';
+				$translation = '{}';
 				break;
 		}
 
