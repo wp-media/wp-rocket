@@ -698,7 +698,7 @@ class Page {
 						'disabled' => rocket_maybe_disable_minify_css() ? 1 : 0,
 					],
 					'warning'           => [
-						'title'        => __( 'this could break things!', 'rocket' ),
+						'title'        => __( 'This could break things!', 'rocket' ),
 						'description'  => __( 'If you notice any errors on your website after having activated this setting, just deactivate it again, and your site will be back to normal.', 'rocket' ),
 						'button_label' => __( 'Activate minify CSS', 'rocket' ),
 					],
@@ -720,7 +720,7 @@ class Page {
 						'disabled' => get_rocket_option( 'minify_css' ) ? 0 : 1,
 					],
 					'warning'           => [
-						'title'        => __( 'this could break things!', 'rocket' ),
+						'title'        => __( 'This could break things!', 'rocket' ),
 						'description'  => __( 'If you notice any errors on your website after having activated this setting, just deactivate it again, and your site will be back to normal.', 'rocket' ),
 						'button_label' => __( 'Activate combine CSS', 'rocket' ),
 					],
@@ -780,7 +780,7 @@ class Page {
 					],
 					'sanitize_callback' => 'sanitize_checkbox',
 					'warning'           => [
-						'title'        => __( 'this could break things!', 'rocket' ),
+						'title'        => __( 'This could break things!', 'rocket' ),
 						'description'  => __( 'If you notice any errors on your website after having activated this setting, just deactivate it again, and your site will be back to normal.', 'rocket' ),
 						'button_label' => __( 'Activate minify JavaScript', 'rocket' ),
 					],
@@ -802,7 +802,7 @@ class Page {
 						'disabled' => get_rocket_option( 'minify_js' ) ? 0 : 1,
 					],
 					'warning'           => [
-						'title'        => __( 'this could break things!', 'rocket' ),
+						'title'        => __( 'This could break things!', 'rocket' ),
 						'description'  => __( 'If you notice any errors on your website after having activated this setting, just deactivate it again, and your site will be back to normal.', 'rocket' ),
 						'button_label' => __( 'Activate combine JavaScript', 'rocket' ),
 					],
