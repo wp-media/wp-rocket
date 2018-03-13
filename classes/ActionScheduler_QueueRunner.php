@@ -3,18 +3,13 @@
 /**
  * Class ActionScheduler_QueueRunner
  */
-class ActionScheduler_QueueRunner {
+class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	const WP_CRON_HOOK = 'action_scheduler_run_queue';
 
 	const WP_CRON_SCHEDULE = 'every_minute';
 
 	/** @var ActionScheduler_QueueRunner  */
-	private static $runner = NULL;
-	/** @var ActionScheduler_Store */
-	private $store = NULL;
-
-	/** @var ActionScheduler_FatalErrorMonitor */
-	private $monitor = NULL;
+	private static $runner = null;
 
 	/**
 	 * @return ActionScheduler_QueueRunner
@@ -26,10 +21,6 @@ class ActionScheduler_QueueRunner {
 			self::$runner = new $class();
 		}
 		return self::$runner;
-	}
-
-	public function __construct( ActionScheduler_Store $store = NULL ) {
-		$this->store = $store ? $store : ActionScheduler_Store::instance();
 	}
 
 	/**
@@ -55,9 +46,7 @@ class ActionScheduler_QueueRunner {
 		$count = 0;
 		if ( $this->store->get_claim_count() < $this->get_concurrent_batch_count() ) {
 			$batch_size = apply_filters( 'action_scheduler_queue_runner_batch_size', 25 );
-			$this->monitor = new ActionScheduler_FatalErrorMonitor( $this->store );
 			$count = $this->do_batch( $batch_size );
-			unset( $this->monitor );
 		}
 
 		do_action( 'action_scheduler_after_process_queue' );
@@ -66,13 +55,6 @@ class ActionScheduler_QueueRunner {
 
 	public function get_concurrent_batch_count() {
 		return apply_filters( 'action_scheduler_queue_runner_concurrent_batches', 5 );
-	}
-
-	protected function run_cleanup() {
-		$cleaner = new ActionScheduler_QueueCleaner( $this->store );
-		$cleaner->delete_old_actions();
-		$cleaner->reset_timeouts();
-		$cleaner->mark_failures();
 	}
 
 	protected function do_batch( $size = 100 ) {
@@ -91,31 +73,6 @@ class ActionScheduler_QueueRunner {
 		$this->monitor->detach();
 		$this->clear_caches();
 		return $processed_actions;
-	}
-
-	public function process_action( $action_id ) {
-		try {
-			do_action( 'action_scheduler_before_execute', $action_id );
-			$action = $this->store->fetch_action( $action_id );
-			$this->store->log_execution( $action_id );
-			$action->execute();
-			do_action( 'action_scheduler_after_execute', $action_id );
-			$this->store->mark_complete( $action_id );
-		} catch ( Exception $e ) {
-			$this->store->mark_failure( $action_id );
-			do_action( 'action_scheduler_failed_execution', $action_id, $e );
-		}
-		$this->schedule_next_instance( $action );
-	}
-
-	protected function schedule_next_instance( ActionScheduler_Action $action ) {
-
-		$schedule = $action->get_schedule();
-		$next     = $schedule->next( as_get_datetime_object() );
-
-		if ( ! is_null( $next ) && $schedule->is_recurring() ) {
-			$this->store->save_action( $action, $next );
-		}
 	}
 
 	/**
@@ -143,4 +100,3 @@ class ActionScheduler_QueueRunner {
 		return $schedules;
 	}
 }
- 

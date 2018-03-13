@@ -74,5 +74,15 @@ class ActionScheduler_QueueCleaner {
 			do_action( 'action_scheduler_failed_action', $action_id, $timeout );
 		}
 	}
+
+	/**
+	 * Do all of the cleaning actions.
+	 *
+	 * @author Jeremy Pry
+	 */
+	public function clean() {
+		$this->delete_old_actions();
+		$this->reset_timeouts();
+		$this->mark_failures();
+	}
 }
- 
