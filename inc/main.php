@@ -74,7 +74,6 @@ function rocket_init() {
 	}
 
 	if ( is_admin() ) {
-		require WP_ROCKET_ADMIN_PATH . 'ajax.php';
 		require WP_ROCKET_ADMIN_PATH . 'upgrader.php';
 		require WP_ROCKET_ADMIN_PATH . 'updater.php';
 		require WP_ROCKET_ADMIN_PATH . 'options.php';
