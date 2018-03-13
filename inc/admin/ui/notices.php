@@ -94,7 +94,7 @@ add_action( 'admin_notices', 'rocket_warning_plugin_modification' );
  * @since 1.3.0
  */
 function rocket_plugins_to_deactivate() {
-	$plugins_to_deactivate = array();
+	$plugins = array();
 
 	// Deactivate all plugins who can cause conflicts with WP Rocket.
 	$plugins = array(
@@ -618,7 +618,7 @@ function rocket_cloudflare_update_settings() {
 		return;
 	}
 
-	if ( $screen->id !== 'settings_page_wprocket' ) {
+	if ( 'settings_page_wprocket' !== $screen->id ) {
 		return;
 	}
 
@@ -666,7 +666,7 @@ function rocket_analytics_optin_notice() {
 		return;
 	}
 
-	if ( $screen->id !== 'settings_page_wprocket' ) {
+	if ( 'settings_page_wprocket' !== $screen->id ) {
 		return;
 	}
 
@@ -714,7 +714,7 @@ function rocket_analytics_optin_notice() {
 		'message' => $analytics_notice,
 	) );
 }
-//add_action( 'admin_notices', 'rocket_analytics_optin_notice' );
+add_action( 'admin_notices', 'rocket_analytics_optin_notice' );
 
 /**
  * Displays a notice after analytics opt-in
@@ -731,7 +731,7 @@ function rocket_analytics_optin_thankyou_notice() {
 		return;
 	}
 
-	if ( $screen->id !== 'settings_page_wprocket' ) {
+	if ( 'settings_page_wprocket' !== $screen->id ) {
 		return;
 	}
 
@@ -829,7 +829,7 @@ function rocket_sitemap_preload_running() {
 		return;
 	}
 
-	if ( $screen->id !== 'settings_page_wprocket' ) {
+	if ( 'settings_page_wprocket' !== $screen->id ) {
 		return;
 	}
 
@@ -852,7 +852,6 @@ add_action( 'admin_notices', 'rocket_sitemap_preload_running' );
  * @author Remy Perona
  */
 function rocket_sitemap_preload_complete() {
-	global $current_user;
 	$screen = get_current_screen();
 
 	/** This filter is documented in inc/admin-bar.php */
@@ -860,7 +859,7 @@ function rocket_sitemap_preload_complete() {
 		return;
 	}
 
-	if ( $screen->id !== 'settings_page_wprocket' ) {
+	if ( 'settings_page_wprocket' !== $screen->id ) {
 		return;
 	}
 
