@@ -627,19 +627,25 @@ class Page {
 		$this->settings->add_settings_sections(
 			[
 				'basic' => [
-					'title' => __( 'Basic Settings', 'rocket' ),
-					'help'  => $this->get_beacon_suggest( 'basic_section', $this->locale ),
-					'page'  => 'file_optimization',
+					'title'  => __( 'Basic Settings', 'rocket' ),
+					'help'   => $this->get_beacon_suggest( 'basic_section', $this->locale ),
+					'page'   => 'file_optimization',
+					// translators: %1$s = type of minification (HTML, CSS or JS), %2$s = “WP Rocket”.
+					'helper' => rocket_maybe_disable_minify_html() ? sprintf( __( '%1$s Minification is currently activated in <strong>Autoptimize</strong>. If you want to use %2$s’s minification, disable those options in Autoptimize.', 'rocket' ), 'HTML', WP_ROCKET_PLUGIN_NAME ) : '',
 				],
 				'css'   => [
-					'title' => __( 'CSS Files', 'rocket' ),
-					'help'  => $this->get_beacon_suggest( 'css_section', $this->locale ),
-					'page'  => 'file_optimization',
+					'title'  => __( 'CSS Files', 'rocket' ),
+					'help'   => $this->get_beacon_suggest( 'css_section', $this->locale ),
+					'page'   => 'file_optimization',
+					// translators: %1$s = type of minification (HTML, CSS or JS), %2$s = “WP Rocket”.
+					'helper' => rocket_maybe_disable_minify_css() ? sprintf( __( '%1$s Minification is currently activated in <strong>Autoptimize</strong>. If you want to use %2$s’s minification, disable those options in Autoptimize.', 'rocket' ), 'CSS', WP_ROCKET_PLUGIN_NAME ) : '',
 				],
 				'js'    => [
-					'title' => __( 'JavaScript Files', 'rocket' ),
-					'help'  => $this->get_beacon_suggest( 'js_section', $this->locale ),
-					'page'  => 'file_optimization',
+					'title'  => __( 'JavaScript Files', 'rocket' ),
+					'help'   => $this->get_beacon_suggest( 'js_section', $this->locale ),
+					'page'   => 'file_optimization',
+					// translators: %1$s = type of minification (HTML, CSS or JS), %2$s = “WP Rocket”.
+					'helper' => rocket_maybe_disable_minify_js() ? sprintf( __( '%1$s Minification is currently activated in <strong>Autoptimize</strong>. If you want to use %2$s’s minification, disable those options in Autoptimize.', 'rocket' ), 'JS', WP_ROCKET_PLUGIN_NAME ) : '',
 				],
 			]
 		);
