@@ -246,9 +246,7 @@ class Page {
 		$script = '<script>!function(e,o,n){window.HSCW=o,window.HS=n,n.beacon=n.beacon||{};var t=n.beacon;t.userConfig={},t.readyQueue=[],t.config=function(e){this.userConfig=e},t.ready=function(e){this.readyQueue.push(e)},o.config={docs:{enabled:!0,baseUrl:"https://wp-rocket' . $lang . '.helpscoutdocs.com/"},contact:{enabled:!0,formId:"' . $form_id . '"}};var r=e.getElementsByTagName("script")[0],c=e.createElement("script");c.type="text/javascript",c.async=!0,c.src="https://djtflbt20bdde.cloudfront.net/",r.parentNode.insertBefore(c,r)}(document,window.HSCW||{},window.HS||{});
 			HS.beacon.ready( function() {
 				HS.beacon.suggest(' . wp_json_encode( $suggest ) . ');
-				HS.beacon.identify({
-					email: "' . get_rocket_option( 'consumer_email' ) . '"
-				});
+				HS.beacon.identify(' . wp_json_encode( $this->beacon_identify_data() ) . ');
 			} );
 			HS.beacon.config({
 				showSubject: true,
@@ -256,6 +254,65 @@ class Page {
 			});</script>';
 
 		echo $script;
+	}
+
+	/**
+	 * Returns Data to pass to the Beacon identify() method
+	 *
+	 * @since 3.0
+	 * @author Remy Perona
+	 *
+	 * @return array
+	 */
+	private function beacon_identify_data() {
+		global $wp_version;
+
+		$active_options  = [];
+		$options_to_send = [
+			'cache_mobile'            => 'Mobile Cache',
+			'do_caching_mobile_files' => 'Specific Cache for Mobile',
+			'cache_logged_user'       => 'User Cache',
+			'emoji'                   => 'Disable Emojis',
+			'embeds'                  => 'Disable Embeds',
+			'defer_all_js'            => 'Defer JS',
+			'defer_all_js_safe'       => 'Defer JS Safe',
+			'async_css'               => 'Async CSS',
+			'lazyload'                => 'Lazyload Images',
+			'lazyload_iframes'        => 'Lazyload Iframes',
+			'lazyload_youtube'        => 'Lazyload Youtube',
+			'minify_css'              => 'Minify CSS',
+			'minify_concatenate_css'  => 'Combine CSS',
+			'minify_js'               => 'Minify JS',
+			'minify_concatenate_js'   => 'Combine JS',
+			'minify_google_fonts'     => 'Combine Google Fonts',
+			'minify_html'             => 'Minify HTML',
+			'manual_preload'          => 'Manual Preload',
+			'automatic_preload'       => 'Automatic Preload',
+			'sitemap_preload'         => 'Sitemap Preload',
+			'remove_query_strings'    => 'Remove Query Strings',
+			'cdn'                     => 'CDN Enabled',
+			'do_cloudflare'           => 'Cloudflare Enabled',
+			'varnish_auto_purge'      => 'Varnish Purge Enabled',
+		];
+
+		$wpr_options = array_intersect_key( get_option( WP_ROCKET_SLUG ), $options_to_send );
+
+		foreach ( $wpr_options as $key => $value ) {
+			if ( 1 === $value ) {
+				$active_options[] = $options_to_send[ $key ];
+			}
+		}
+
+		$data = [
+			'email'                    => get_rocket_option( 'consumer_email' ),
+			'Website'                  => home_url(),
+			'WordPress Version'        => $wp_version,
+			'WP Rocket Version'        => WP_ROCKET_VERSION,
+			'Plugins Enabled'          => rocket_get_active_plugins(),
+			'WP Rocket Active Options' => $active_options,
+		];
+
+		return $data;
 	}
 
 	/**
