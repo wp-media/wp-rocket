@@ -33,4 +33,12 @@ $(document).ready(function(){
         });
     }
 
+    // Ask support
+    var $askSupport = $('.wpr-js-askSupport');
+    $askSupport.on('click', function(){
+        HS.beacon.open();
+        return false;
+    });
+
+
 });

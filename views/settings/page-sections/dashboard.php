@@ -169,7 +169,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 								'label'      => __( 'Ask support', 'rocket' ),
 								'icon'       => '',
 								'attributes' => [
-									'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-button--blue wpr-icon-help',
+									'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-button--blue wpr-icon-help wpr-js-askSupport',
 								],
 							] );
 							?>
