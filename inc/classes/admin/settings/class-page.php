@@ -617,7 +617,7 @@ class Page {
 		$this->settings->add_page_section(
 			'file_optimization',
 			[
-				'title'            => __( 'File optimization', 'rocket' ),
+				'title'            => __( 'File Optimization', 'rocket' ),
 				'menu_description' => __( 'Optimize CSS & JS', 'rocket' ),
 			]
 		);
@@ -635,16 +635,16 @@ class Page {
 					'page'  => 'file_optimization',
 				],
 				'js'    => [
-					'title' => __( 'JS Files', 'rocket' ),
+					'title' => __( 'JavaScript Files', 'rocket' ),
 					'help'  => $this->get_beacon_suggest( 'js_section', $this->locale ),
 					'page'  => 'file_optimization',
 				],
 			]
 		);
 
-		$remove_query_strings_beacon = $this->get_beacon_suggest( 'remove_query_strings', $this->locale );
-		$combine_beacon              = $this->get_beacon_suggest( 'combine', $this->locale );
-		$defer_beacon                = $this->get_beacon_suggest( 'defer', $this->locale );
+		$remove_qs_beacon = $this->get_beacon_suggest( 'remove_query_strings', $this->locale );
+		$combine_beacon   = $this->get_beacon_suggest( 'combine', $this->locale );
+		$defer_beacon     = $this->get_beacon_suggest( 'defer', $this->locale );
 
 		$this->settings->add_settings_fields(
 			[
@@ -665,8 +665,8 @@ class Page {
 				],
 				'minify_google_fonts'    => [
 					'type'              => 'checkbox',
-					'label'             => __( 'Combine Google fonts files', 'rocket' ),
-					'description'       => __( 'Combining Google fonts will reduce the number of HTTP requests.', 'rocket' ),
+					'label'             => __( 'Combine Google Fonts files', 'rocket' ),
+					'description'       => __( 'Combining Google Fonts will reduce the number of HTTP requests.', 'rocket' ),
 					'section'           => 'basic',
 					'page'              => 'file_optimization',
 					'default'           => 0,
@@ -676,7 +676,7 @@ class Page {
 					'type'              => 'checkbox',
 					'label'             => __( 'Remove query strings from static resources', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'       => sprintf( __( 'Removes the version query string from static files (e.g. style.css?ver=1.0 and encodes it into the filename instead (e.g. style-1.0.css. Can improve your GTMetrix score. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $remove_query_strings_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $remove_query_strings_beacon['id'] ) . '">', '</a>' ),
+					'description'       => sprintf( __( 'Removes the version query string from static files (e.g. style.css?ver=1.0 and encodes it into the filename instead (e.g. style-1.0.css). Can improve your GTMetrix score. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $remove_qs_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $remove_qs_beacon['id'] ) . '">', '</a>' ),
 					'section'           => 'basic',
 					'page'              => 'file_optimization',
 					'default'           => 0,
@@ -684,7 +684,7 @@ class Page {
 				],
 				'minify_css'             => [
 					'type'              => 'checkbox',
-					'label'             => __( 'Minify CSS Files', 'rocket' ),
+					'label'             => __( 'Minify CSS files', 'rocket' ),
 					'description'       => __( 'Minify CSS removes whitespace and comments to reduce the file size.', 'rocket' ),
 					'container_class'   => [
 						rocket_maybe_disable_minify_css() ? 'wpr-isDisabled' : '',
@@ -705,7 +705,7 @@ class Page {
 				],
 				'minify_concatenate_css' => [
 					'type'              => 'checkbox',
-					'label'             => __( 'Combine CSS Files (Enable minify CSS files to select)', 'rocket' ),
+					'label'             => __( 'Combine CSS files <em>(Enable minify CSS files to select)</em>', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 					'description'       => sprintf( __( 'Combine CSS merges all your files into 1, reducing HTTP requests. Not recommended if your site uses HTTP/2. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $combine_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $combine_beacon['id'] ) . '">', '</a>' ),
 					'container_class'   => [
@@ -766,7 +766,7 @@ class Page {
 				],
 				'minify_js'              => [
 					'type'              => 'checkbox',
-					'label'             => __( 'Minify JavaScript Files', 'rocket' ),
+					'label'             => __( 'Minify JavaScript files', 'rocket' ),
 					'description'       => __( 'Minify JavaScript removes whitespace and comments to reduce the file size.', 'rocket' ),
 					'container_class'   => [
 						rocket_maybe_disable_minify_js() ? 'wpr-isDisabled' : '',
@@ -787,7 +787,7 @@ class Page {
 				],
 				'minify_concatenate_js'  => [
 					'type'              => 'checkbox',
-					'label'             => __( 'Combine JavaScript files (Enable minify JS to select)', 'rocket' ),
+					'label'             => __( 'Combine JavaScript files <em>(Enable minify JS to select)</em>', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 					'description'       => sprintf( __( 'Combine Javascript files combines your site\'s JS info fewer files, reducing HTTP requests. Not recommended if your site uses HTTP/2. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $combine_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $combine_beacon['id'] ) . '">', '</a>' ),
 					'container_class'   => [
@@ -826,7 +826,7 @@ class Page {
 					],
 					'type'              => 'checkbox',
 					'label'             => __( 'Safe Mode (recommended)', 'rocket' ),
-					'description'       => __( 'Safe mode for deferred JS ensures support for inline jQuery references from themes and plugins by loading jQuery at the top of the document as a render-blocking script. Deactivating may result in broken functionality, test thoroughly!', 'rocket' ),
+					'description'       => __( 'Safe mode for deferred JS ensures support for inline jQuery references from themes and plugins by loading jQuery at the top of the document as a render-blocking script.<br><em>Deactivating may result in broken functionality, test thoroughly!</em>', 'rocket' ),
 					'section'           => 'js',
 					'page'              => 'file_optimization',
 					'default'           => 1,
@@ -834,11 +834,11 @@ class Page {
 				],
 				'exclude_js'             => [
 					'type'              => 'textarea',
-					'label'             => __( 'Excluded JS Files', 'rocket' ),
+					'label'             => __( 'Excluded JavaScript Files', 'rocket' ),
 					'container_class'   => [
 						'wpr-field--children',
 					],
-					'description'       => __( 'Specify URLs of JS files to be excluded from minification and concatenation.', 'rocket' ),
+					'description'       => __( 'Specify URLs of JavaScript files to be excluded from minification and concatenation.', 'rocket' ),
 					'helper'            => __( 'The domain part of the URL will be stripped automatically.<br>Use (.*).js wildcards to exclude all JS files located at a specific path.', 'rocket' ),
 					'section'           => 'js',
 					'page'              => 'file_optimization',
