@@ -464,7 +464,7 @@ class Page {
 		$this->settings->add_settings_sections(
 			[
 				'status' => [
-					'title' => __( 'My status', 'rocket' ),
+					'title' => __( 'My Status', 'rocket' ),
 					'page'  => 'dashboard',
 				],
 			]
@@ -483,7 +483,7 @@ class Page {
 				],
 				'analytics_enabled' => [
 					'type'              => 'sliding_checkbox',
-					'label'             => __( 'Rocket Sharer', 'rocket' ),
+					'label'             => __( 'Rocket Analytics', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 					'description'       => sprintf( __( 'I agree to share anonymous data with the development team to help improve WP Rocket. %1$sWhat info will we collect?%2$s', 'rocket' ), '<button class="wpr-js-popin">', '</button>' ),
 					'section'           => 'status',

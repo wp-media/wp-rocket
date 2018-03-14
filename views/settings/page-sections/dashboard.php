@@ -41,7 +41,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 	<div class="wpr-Page-row">
 		<div class="wpr-Page-col">
 			<div class="wpr-optionHeader">
-				<h3 class="wpr-title2"><?php esc_html_e( 'My account', 'rocket' ); ?></h3>
+				<h3 class="wpr-title2"><?php esc_html_e( 'My Account', 'rocket' ); ?></h3>
 				<?php
 				$this->render_action_button( 'button', 'refresh_account', [
 					'label'      => __( 'Refresh info', 'rocket' ),
@@ -58,7 +58,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 						<span class="wpr-title3"><?php esc_html_e( 'License' ); ?></span>
 						<span class="wpr-infoAccount" id="wpr-account-data">
 						<?php echo $data['customer_data']->licence_account; ?></span><br>
-						<span class="wpr-title3"><?php esc_html_e( 'Expiration date' ); ?></span>
+						<span class="wpr-title3"><?php esc_html_e( 'Expiration Date' ); ?></span>
 						<span class="wpr-infoAccount" id="wpr-expiration-data"><?php echo $data['customer_data']->licence_expiration; ?></span>
 					</div>
 					<div>
@@ -160,7 +160,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 				<div class="wpr-field">
 					<div class="wpr-flex wpr-flex--egal">
 						<div>
-							<h3 class="wpr-title2"><?php esc_html_e( 'Still can not find a solution?', 'rocket' ); ?></h3>
+							<h3 class="wpr-title2"><?php esc_html_e( 'Still cannot find a solution?', 'rocket' ); ?></h3>
 							<p class="wpr-field-description"><?php esc_html_e( 'Submit a ticket and get help from our friendly and knowledgeable Rocketeers.', 'rocket' ); ?></p>
 						</div>
 						<div>
