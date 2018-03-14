@@ -28,6 +28,7 @@ function PageManager(aElem) {
     this.$submitButton = document.querySelector('.wpr-Content > form > input[type=submit]');
     this.$pages = document.querySelectorAll('.wpr-Page');
     this.$sidebar = document.querySelector('.wpr-Sidebar');
+    this.$tips = document.querySelector('.wpr-Content-tips');
     this.$menuItem = null;
     this.$page = null;
     this.pageId = null;
@@ -92,6 +93,7 @@ PageManager.prototype.change = function() {
     this.$page.style.display = 'block';
     this.$submitButton.style.display = 'block';
     this.$sidebar.style.display = 'block';
+    this.$tips.style.display = 'block';
     this.$menuItem.classList.add('isActive');
 
 
@@ -99,10 +101,16 @@ PageManager.prototype.change = function() {
     // Exception for dashboard
     if(this.pageId == "dashboard"){
         this.$sidebar.style.display = 'none';
+        this.$tips.style.display = 'none';
     }
 
-    // Exception for tools
-    if(this.pageId == "tools"){
+    // Exception for addons
+    if(this.pageId == "addons"){
+        this.$submitButton.style.display = 'none';
+    }
+
+    // Exception for tools and addons
+    if(this.pageId == "tools" || this.pageId == "addons"){
         this.$submitButton.style.display = 'none';
     }
 };
