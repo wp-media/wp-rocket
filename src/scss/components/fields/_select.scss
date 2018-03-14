@@ -28,4 +28,10 @@
             box-shadow: none;
         }
     }
+
+    label{
+        @extend .wpr-title3;
+        font-weight: bold;
+        margin-left: $space;
+    }
 }
