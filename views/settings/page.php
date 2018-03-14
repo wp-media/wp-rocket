@@ -36,7 +36,7 @@ settings_errors( $data['slug'] ); ?>
 				<?php settings_fields( $data['slug'] ); ?>
 				<?php $this->render_form_sections(); ?>
 				<?php $this->render_hidden_fields(); ?>
-				<input type="submit" class="wpr-button" value="<?php esc_attr_e( 'Save Changes', 'rocket' ); ?>">
+				<input type="submit" class="wpr-button" value="<?php esc_attr_e( 'Save Options', 'rocket' ); ?>">
 			</form>
 			<?php $this->render_tools_section(); ?>
 			<div class="wpr-Content-tips">
