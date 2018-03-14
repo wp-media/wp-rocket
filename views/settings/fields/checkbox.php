@@ -28,7 +28,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 <?php if ( ! empty( $data['warning'] ) ) : ?>
 <div class="wpr-warningContainer">
-<?php endif ?>
+<?php endif; ?>
 
 	<div class="wpr-field wpr-field--checkbox <?php echo $data['container_class']; ?>">
 		<div class="wpr-checkbox">
@@ -37,11 +37,11 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 			<label for="<?php echo esc_attr( $data['id'] ); ?>" class=""><?php echo $data['label']; ?></label>
 		</div>
 
-		<?php if ( ! empty( $data['description'] ) ) { ?>
+		<?php if ( ! empty( $data['description'] ) ) : ?>
 		<div class="wpr-field-description">
 			<?php echo $data['description']; ?>
 		</div>
-		<?php } ?>
+		<?php endif; ?>
 	</div>
 
 <?php if ( ! empty( $data['warning'] ) ) : ?>
@@ -49,11 +49,11 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 		<div class="wpr-fieldWarning-title wpr-icon-important">
 			<?php echo esc_html( $data['warning']['title'] ); ?>
 		</div>
-		<?php if ( isset( $data['warning']['description'] ) ) { ?>
+		<?php if ( isset( $data['warning']['description'] ) ) : ?>
 			<div class="wpr-fieldWarning-description">
 				<?php echo esc_html( $data['warning']['description'] ); ?>
 			</div>
-		<?php } ?>
+		<?php endif; ?>
 		<button class="wpr-button wpr-button--small wpr-button--icon wpr-icon-check"><?php echo esc_html( $data['warning']['button_label'] ); ?></button>
 	</div>
 </div>
