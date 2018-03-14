@@ -42,6 +42,7 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 	 * @param bool $force      Whether to force running even with too many concurrent processes.
 	 *
 	 * @return int The number of actions that will be run.
+	 * @throws \WP_CLI\ExitException When there are too many concurrent batches.
 	 */
 	public function setup( $batch_size, $force = false ) {
 		$this->run_cleanup();
@@ -104,6 +105,7 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 	 *
 	 * @author Jeremy Pry
 	 * @return int The number of actions processed.
+	 * @throws \WP_CLI\ExitException When the claim is lost.
 	 */
 	public function run() {
 		do_action( 'action_scheduler_before_process_queue' );
@@ -126,6 +128,7 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 
 		$completed = $this->progress_bar->current();
 		$this->finish_progress_bar();
+		$this->store->release_claim( $this->claim );
 		do_action( 'action_scheduler_after_process_queue' );
 
 		return $completed;
@@ -140,7 +143,7 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 	 */
 	public function before_execute( $action_id ) {
 		/* translators: %s refers to the action ID */
-		WP_CLI::line( sprintf( __( 'Started processing action %s', 'action-scheduler' ), $action_id ) );
+		WP_CLI::log( sprintf( __( 'Started processing action %s', 'action-scheduler' ), $action_id ) );
 	}
 
 	/**
@@ -152,7 +155,7 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 	 */
 	public function after_execute( $action_id ) {
 		/* translators: %s refers to the action ID */
-		WP_CLI::line( sprintf( __( 'Completed processing action %s', 'action-scheduler' ), $action_id ) );
+		WP_CLI::log( sprintf( __( 'Completed processing action %s', 'action-scheduler' ), $action_id ) );
 	}
 
 	/**
@@ -162,6 +165,7 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 	 *
 	 * @param int       $action_id
 	 * @param Exception $exception
+	 * @throws \WP_CLI\ExitException With failure message.
 	 */
 	public function action_failed( $action_id, $exception ) {
 		WP_CLI::error(
