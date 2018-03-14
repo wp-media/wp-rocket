@@ -30,7 +30,8 @@ $(document).ready(function(){
     ***/
 
     var $checkboxCloudflare = $('#do_cloudflare');
-    var $menuItemCloudflare = $('.wpr-cloudflareToggle');
+    var $cloudflareToggle = $('.wpr-cloudflareToggle');
+    var $cloudflareToggleButton = $('.wpr-cloudflareToggleButton');
 
     $checkboxCloudflare.change(function() {
         wprDetectCloudflare();
@@ -38,10 +39,12 @@ $(document).ready(function(){
 
     function wprDetectCloudflare(){
         if($checkboxCloudflare.is(':checked')){
-            $menuItemCloudflare.css('display','block');
+            $cloudflareToggle.css('display','block');
+            $cloudflareToggleButton.css('display','inline-block');
         }
         else{
-            $menuItemCloudflare.css('display','none');
+            $cloudflareToggle.css('display','none');
+            $cloudflareToggleButton.css('display','none');
         }
     }
 
