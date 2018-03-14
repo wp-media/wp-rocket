@@ -27,7 +27,6 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 	</div>
 	<div class="wpr-fieldsContainer">
 		<div class="wpr-fieldsContainer-description">
-			<?php echo $data['description']; ?>
 			<?php
 			printf(
 				// translators: %s is a "Learn more" link.
