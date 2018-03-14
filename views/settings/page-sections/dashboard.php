@@ -26,7 +26,10 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 	<div class="wpr-sectionHeader">
 		<h2 class="wpr-title1 wpr-icon-home"><?php echo $data['title']; ?></h2>
 	</div>
+	<?php
+	$boxes = get_user_meta( $GLOBALS['current_user']->ID, 'rocket_boxes', true );
 
+	if ( ! in_array( 'rocket_activation_notice', (array) $boxes, true ) ) : ?>
 	<div class="wpr-notice">
 		<div class="wpr-notice-container">
 			<div class="wpr-notice-supTitle"><?php _e( 'Congratulations!', 'rocket' ); ?></div>
@@ -34,10 +37,10 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 				Your website should be loading faster now!', 'rocket' ); ?></h2>
 				<div class="wpr-notice-description"><?php _e( 'To guarantee fast websites, WP Rocket applies 80% of web performance best practices.<br> We also enable options that provide immediate benefits to your website.', 'rocket' ); ?></div>
 				<div class="wpr-notice-continue"><?php _e( 'Continue to the options to further optimize your site!', 'rocket' ); ?></div>
-				<button class="wpr-notice-close wpr-icon-close"></button>
+				<a class="wpr-notice-close wpr-icon-close rocket-dismiss" href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=rocket_activation_notice' ), 'rocket_ignore_rocket_activation_notice' ); ?>"><span class="screen-reader-text"><?php _e( 'Dismiss this notice.', 'rocket' ); ?></span></a>
 		</div>
 	</div>
-
+	<?php endif; ?>
 	<div class="wpr-Page-row">
 		<div class="wpr-Page-col">
 			<div class="wpr-optionHeader">
