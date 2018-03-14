@@ -22,8 +22,15 @@ $(document).ready(function(){
         ;
     }
 
+    /**
+     * Rocket Analytics notice info collect
+     */
+    $( '.rocket-analytics-data-container' ).hide();
+	$( '.rocket-preview-analytics-data' ).on( 'click', function( e ) {
+		e.preventDefault();
 
-
+		$(this).parent().next( '.rocket-analytics-data-container' ).toggle();
+	} );
 
     /***
     * Hide / show cloudflare tab

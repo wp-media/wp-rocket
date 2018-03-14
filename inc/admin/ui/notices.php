@@ -555,7 +555,7 @@ function rocket_imagify_notice() {
 		<a href="<?php echo $dismiss_url; ?>" class="rkt-cross"><span class="dashicons dashicons-no"></span></a>
 
 		<p class="rkt-imagify-logo">
-			<img src="<?php echo WP_ROCKET_ADMIN_UI_IMG_URL; ?>logo-imagify.png" srcset="<?php echo WP_ROCKET_ADMIN_UI_IMG_URL; ?>logo-imagify.svg 2x" alt="Imagify" width="150" height="18">
+			<img src="<?php echo WP_ROCKET_ASSETS_IMG_URL; ?>logo-imagify.png" srcset="<?php echo WP_ROCKET_ASSETS_IMG_URL; ?>logo-imagify.svg 2x" alt="Imagify" width="150" height="18">
 		</p>
 		<p class="rkt-imagify-msg">
 			<?php _e( 'Speed up your website and boost your SEO by reducing image file sizes without losing quality with Imagify.', 'rocket' ); ?>
