@@ -413,6 +413,7 @@ class Page {
 				'consumer_key'   => [
 					'type'              => 'text',
 					'label'             => __( 'API key', 'rocket' ),
+					'default'           => '',
 					'container_class'   => [
 						'wpr-field--split',
 						'wpr-isDisabled',
@@ -427,6 +428,7 @@ class Page {
 				'consumer_email' => [
 					'type'              => 'text',
 					'label'             => __( 'Email address', 'rocket' ),
+					'default'           => '',
 					'container_class'   => [
 						'wpr-field--split',
 						'wpr-isDisabled',
