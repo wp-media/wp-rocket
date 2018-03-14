@@ -28,7 +28,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 <?php if ( ! empty( $data['warning'] ) ) : ?>
 <div class="wpr-warningContainer">
-<? endif ?>
+<?php endif ?>
 
 	<div class="wpr-field wpr-field--checkbox <?php echo $data['container_class']; ?>">
 		<div class="wpr-checkbox">
