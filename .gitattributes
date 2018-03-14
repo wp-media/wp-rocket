@@ -11,3 +11,7 @@ phpcs.xml export-ignore
 .tx export-ignore
 LICENSE.md export-ignore
 CHANGELOG.md export-ignore
+src export-ignore
+.babelrc export-ignore
+gulpfile.js export-ignore
+package.json export-ignore
