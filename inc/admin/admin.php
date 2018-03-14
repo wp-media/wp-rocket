@@ -523,7 +523,7 @@ function rocket_handle_settings_import() {
 
 	$_post_action    = $_POST['action'];
 	$_POST['action'] = 'wp_handle_sideload';
-	$file            = wp_handle_sideload( $file_import );
+	$file            = wp_handle_sideload( $_FILES['import'] );
 	$_POST['action'] = $_post_action;
 	$settings        = rocket_direct_filesystem()->get_contents( $file['file'] );
 	remove_filter( 'upload_mimes', 'rocket_allow_json_mime_type' );
