@@ -48,7 +48,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 					<?php echo $data['description']; ?>
 				</div>
 			<?php endif; ?>
-			<a href="#<?php echo esc_attr( $data['id'] ); ?>" class="wpr-button wpr-button--small wpr-button--icon wpr-button--purple wpr-icon-chevron-right"><?php esc_html_e( 'Modify options', 'rocket' ); ?></a>
+			<a href="#cloudflare" class="wpr-button wpr-button--small wpr-button--icon wpr-button--purple wpr-icon-chevron-right wpr-cloudflareToggleButton"><?php esc_html_e( 'Modify options', 'rocket' ); ?></a>
 		</div>
 	</div>
 </div>
