@@ -45,6 +45,7 @@
         top: $space*3;
         right: $space*3;
         color: $cPurpleLight2;
+        text-decoration: none;
         @include font-size(24,24);
         @include transition(color, 200ms);
 
