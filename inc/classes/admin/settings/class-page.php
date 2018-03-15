@@ -113,6 +113,8 @@ class Page {
 
 		add_filter( 'option_page_capability_' . $self->slug, [ $self, 'required_capability' ] );
 		add_filter( 'rocket_settings_menu_navigation', [ $self, 'add_menu_tools_page' ] );
+		add_filter( 'pre_get_rocket_option_cache_mobile', [ $self, 'is_mobile_plugin_active'] );
+		add_filter( 'pre_get_rocket_option_do_caching_mobile_files', [ $self, 'is_mobile_plugin_active'] );
 	}
 
 	/**
@@ -426,6 +428,24 @@ class Page {
 	}
 
 	/**
+	 * Forces the value for the mobile options if a mobile plugin is active
+	 *
+	 * @since 3.0
+	 * @author Remy Perona
+	 *
+	 * @param mixed $value Option value.
+	 *
+	 * @return mixed
+	 */
+	public function is_mobile_plugin_active( $value ) {
+		if ( rocket_is_mobile_plugin_active() ) {
+			return 1;
+		}
+
+		return $value;
+	}
+
+	/**
 	 * Registers License section
 	 *
 	 * @since 3.0
@@ -567,6 +587,7 @@ class Page {
 					'type'        => 'fields_container',
 					'description' => __( 'Speed up your site for mobile visitors.', 'rocket' ),
 					'help'        => $this->get_beacon_suggest( 'mobile_cache_section', $this->locale ),
+					'helper'      => rocket_is_mobile_plugin_active() ? __( 'We detected you use a plugin that requires a separate cache for mobile, and automatically enabled this option for compatibility.', 'rocket' ) : '',
 					'page'        => 'cache',
 				],
 				'user_cache_section'   => [
@@ -625,7 +646,7 @@ class Page {
 					'parent'            => 'cache_mobile',
 					'section'           => 'mobile_cache_section',
 					'page'              => 'cache',
-					'default'           => rocket_is_mobile_plugin_active() ? 1 : 0,
+					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
 					'input_attr'        => [
 						'disabled' => rocket_is_mobile_plugin_active() ? 1 : 0,
