@@ -102,6 +102,7 @@ PageManager.prototype.change = function() {
     if(this.pageId == "dashboard"){
         this.$sidebar.style.display = 'none';
         this.$tips.style.display = 'none';
+        this.$submitButton.style.display = 'none';
     }
 
     // Exception for addons
