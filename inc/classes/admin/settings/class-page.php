@@ -267,7 +267,6 @@ class Page {
 	private function beacon_identify_data() {
 		global $wp_version;
 
-		$active_options  = [];
 		$options_to_send = [
 			'cache_mobile'            => 'Mobile Cache',
 			'do_caching_mobile_files' => 'Specific Cache for Mobile',
@@ -295,13 +294,8 @@ class Page {
 			'varnish_auto_purge'      => 'Varnish Purge Enabled',
 		];
 
-		$wpr_options = array_intersect_key( get_option( WP_ROCKET_SLUG ), $options_to_send );
-
-		foreach ( $wpr_options as $key => $value ) {
-			if ( 1 === $value ) {
-				$active_options[] = $options_to_send[ $key ];
-			}
-		}
+		$active_options = array_filter( (array) get_option( WP_ROCKET_SLUG ) );
+		$active_options = array_intersect_key( $options_to_send, $active_options );
 
 		$data = [
 			'email'                    => get_rocket_option( 'consumer_email' ),
