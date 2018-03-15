@@ -1074,6 +1074,7 @@ class Page {
 						'wpr-field--children',
 					],
 					'description'       => __( 'Specify XML sitemap(s) to be used for preloading', 'rocket' ),
+					'parent'            => 'sitemap_preload',
 					'section'           => 'sitemap_preload_section',
 					'page'              => 'preload',
 					'default'           => [],
