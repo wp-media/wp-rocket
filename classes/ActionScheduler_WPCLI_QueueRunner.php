@@ -38,13 +38,14 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 	 *
 	 * @author Jeremy Pry
 	 *
-	 * @param int  $batch_size The batch size to process.
-	 * @param bool $force      Whether to force running even with too many concurrent processes.
+	 * @param int    $batch_size The batch size to process.
+	 * @param string $group      The group of actions to claim with this batch.
+	 * @param bool   $force      Whether to force running even with too many concurrent processes.
 	 *
 	 * @return int The number of actions that will be run.
 	 * @throws \WP_CLI\ExitException When there are too many concurrent batches.
 	 */
-	public function setup( $batch_size, $force = false ) {
+	public function setup( $batch_size, $group = '', $force = false ) {
 		$this->run_cleanup();
 		$this->add_hooks();
 
@@ -60,7 +61,7 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 		}
 
 		// Stake a claim and store it.
-		$this->claim = $this->store->stake_claim( $batch_size );
+		$this->claim = $this->store->stake_claim( $batch_size, null, $group );
 		$this->monitor->attach( $this->claim );
 		$this->actions = $this->claim->get_actions();
 
