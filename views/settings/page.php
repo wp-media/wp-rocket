@@ -40,7 +40,7 @@ settings_errors( $data['slug'] ); ?>
 			</form>
 			<?php $this->render_tools_section(); ?>
 			<div class="wpr-Content-tips">
-				<div class="wpr-radio wpr-radio--reverse">
+				<div class="wpr-radio wpr-radio--reverse wpr-radio--tips">
 					<input type="checkbox" class="wpr-js-tips" id="wpr-js-tips" value="1" checked>
 					<label for="wpr-js-tips">
 						<span class="wpr-radio-ui"></span>

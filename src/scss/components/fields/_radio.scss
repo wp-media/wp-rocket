@@ -141,4 +141,29 @@
     [type="checkbox"]:checked:focus + label:before {
         border: 1px dashed $cBlue;
     }
+
+
+
+
+    // Change color for tips
+    &--tips{
+        // Checked box
+        [type="checkbox"]:checked + label:before {
+            border-color: $cGreen;
+        }
+
+        // Checked ball
+        [type="checkbox"]:checked + label:after {
+            background: $cGreen;
+        }
+
+        // ON text
+        [type="checkbox"]:checked + label .wpr-radio-ui:after {
+            color: $cGreenDark1;
+        }
+
+        [type="checkbox"]:checked:focus + label:before {
+            border: 1px dashed $cGreen;
+        }
+    }
 }
