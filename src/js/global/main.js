@@ -66,6 +66,7 @@ $(document).ready(function(){
     var $wprPopin = $('.wpr-Popin'),
         $wprPopinOverlay = $('.wpr-Popin-overlay'),
         $wprClosePopin = $('.wpr-Popin-close'),
+        $wprPopinButton = $('.wpr-Popin .wpr-button'),
         $wprOpenPopin = $('.wpr-js-popin')
     ;
 
@@ -76,6 +77,11 @@ $(document).ready(function(){
 
     $wprClosePopin.click(function() {
         wprCloseAnalytics();
+        return false;
+    });
+
+    $wprPopinButton.click(function() {
+        wprActivateAnalytics();
         return false;
     });
 
@@ -95,6 +101,11 @@ $(document).ready(function(){
           .set($wprPopin, {'display':'none'})
           .set($wprPopinOverlay, {'display':'none'})
         ;
+    }
+
+    function wprActivateAnalytics(){
+        wprCloseAnalytics();
+        $('#analytics_enabled').attr('checked', true);
     }
 
 
