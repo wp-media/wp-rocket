@@ -1478,13 +1478,13 @@ class Page {
 			[
 				'one_click' => [
 					'title'       => __( 'One-click Rocket Add-ons', 'rocket' ),
-					'description' => __( 'One-click add-ons are simple complementary features extending available options.', 'rocket' ),
+					'description' => __( 'One-Click Add-ons are features extending available options without configuration needed. Switch the option "on" to enable from this screen.', 'rocket' ),
 					'type'        => 'addons_container',
 					'page'        => 'addons',
 				],
 				'addons'    => [
 					'title'       => __( 'Rocket Add-ons', 'rocket' ),
-					'description' => __( 'Rocket Add-ons offer you an entire new tab in the left panel. Take a look inside to set your new options.', 'rocket' ),
+					'description' => __( 'Rocket Add-ons are complementary features extending available options.', 'rocket' ),
 					'type'        => 'addons_container',
 					'page'        => 'addons',
 				],
