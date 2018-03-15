@@ -46,7 +46,7 @@ $cnames_zone = get_rocket_option( 'cdn_zone' );
 				<option value="css"><?php esc_html_e( 'CSS', 'rocket' ); ?></option>
 			</select>
 		</div>
-		<button class='wpr-button wpr-button--purple wpr-button--icon wpr-icon-plus wpr-button--addMulti'>
+		<button class='wpr-button wpr-button--small wpr-button--purple wpr-button--icon wpr-icon-plus wpr-button--addMulti'>
 			<?php esc_html_e( 'Add CNAME', 'rocket' ); ?>
 		</button>
 	</div>

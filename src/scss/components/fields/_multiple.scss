@@ -21,6 +21,13 @@
 
     .wpr-button{
         margin-left: $space*2;
+        width: auto;
+        min-width: inherit;
+        padding-right: 30px;
+    }
+
+    select{
+        height: 30px;
     }
 
     &-list{
