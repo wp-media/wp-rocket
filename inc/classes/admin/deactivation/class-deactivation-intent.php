@@ -153,7 +153,7 @@ mixpanel.init("a36067b00a263cce0299cfd960e26ecf", {
 		];
 
 		$this->options->set_values( $reset_options );
-		$this->options->set( 'settings', $this->options->get_options() );
+		$this->options_api->set( 'settings', $this->options->get_options() );
 
 		return wp_send_json_success();
 	}

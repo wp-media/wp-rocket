@@ -9,7 +9,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 function rocket_add_admin_css_js() {
 	wp_enqueue_style( 'wpr-admin', WP_ROCKET_ASSETS_CSS_URL . 'wpr-admin.css', null, WP_ROCKET_VERSION );
 	wp_enqueue_script( 'wpr-admin', WP_ROCKET_ASSETS_JS_URL . 'wpr-admin.js', null, WP_ROCKET_VERSION, true );
-	wp_localize_script( 'wpr-admin', 'ajax_data', array( 'nonce' => wp_create_nonce( 'rocket-ajax' ) ) );
+	wp_localize_script( 'wpr-admin', 'rocket_ajax_data', array( 'nonce' => wp_create_nonce( 'rocket-ajax' ) ) );
 }
 add_action( 'admin_print_styles-settings_page_' . WP_ROCKET_PLUGIN_SLUG, 'rocket_add_admin_css_js' );
 
@@ -27,7 +27,7 @@ function rocket_add_admin_css_js_everywhere( $hook ) {
 	if ( 'plugins.php' === $hook ) {
 		wp_enqueue_style( 'wpr-modal', WP_ROCKET_ASSETS_CSS_URL . 'wpr-modal.css', null, WP_ROCKET_VERSION );
 		wp_enqueue_script( 'wpr-modal', WP_ROCKET_ASSETS_JS_URL . 'wpr-modal.js', null, WP_ROCKET_VERSION, true );
-		wp_localize_script( 'wpr-modal', 'ajax_data', array( 'nonce' => wp_create_nonce( 'rocket-ajax' ) ) );
+		wp_localize_script( 'wpr-modal', 'rocket_ajax_data', array( 'nonce' => wp_create_nonce( 'rocket-ajax' ) ) );
 	}
 }
 add_action( 'admin_enqueue_scripts', 'rocket_add_admin_css_js_everywhere', 11 );
