@@ -756,7 +756,7 @@ class Page {
 				],
 				'minify_concatenate_css' => [
 					'type'              => 'checkbox',
-					'label'             => __( 'Combine CSS files <em>(Enable minify CSS files to select)</em>', 'rocket' ),
+					'label'             => __( 'Combine CSS files <em>(Enable Minify CSS files to select)</em>', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 					'description'       => sprintf( __( 'Combine CSS merges all your files into 1, reducing HTTP requests. Not recommended if your site uses HTTP/2. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $combine_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $combine_beacon['id'] ) . '">', '</a>' ),
 					'container_class'   => [
@@ -840,7 +840,7 @@ class Page {
 				],
 				'minify_concatenate_js'  => [
 					'type'              => 'checkbox',
-					'label'             => __( 'Combine JavaScript files <em>(Enable minify JS to select)</em>', 'rocket' ),
+					'label'             => __( 'Combine JavaScript files <em>(Enable Minify JavaScript to select)</em>', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 					'description'       => sprintf( __( 'Combine Javascript files combines your site\'s JS info fewer files, reducing HTTP requests. Not recommended if your site uses HTTP/2. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $combine_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $combine_beacon['id'] ) . '">', '</a>' ),
 					'container_class'   => [
