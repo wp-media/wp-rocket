@@ -23,4 +23,9 @@
         @include font-size(36,36);
         margin-bottom: $space;
     }
+
+    .wpr-button{
+        padding-left: $space*2;
+        padding-right: $space*2;
+    }
 }

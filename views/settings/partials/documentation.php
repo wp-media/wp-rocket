@@ -18,7 +18,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 		'label'      => __( 'Read the documentation', 'rocket' ),
 		'attributes' => [
 			'target' => '_blank',
-			'class'  => 'wpr-button wpr-button--blueDark',
+			'class'  => 'wpr-button wpr-button--small wpr-button--blueDark',
 		],
 	] ); ?>
 
