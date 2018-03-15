@@ -33,7 +33,7 @@ function rocket_lazyload_script() {
 	echo '<script>(function(w, d){
 	var b = d.getElementsByTagName("body")[0];
 	var s = d.createElement("script"); s.async = true;
-	var v = !("IntersectionObserver" in w) ? "8.5.2" : "10.3.5";
+	var v = !("IntersectionObserver" in w) ? "8.6.0" : "10.4.2";
 	s.src = "' . get_rocket_cdn_url( WP_ROCKET_FRONT_JS_URL, array( 'all', 'css_and_js', 'js' ) ) . 'lazyload-" + v + "' . $suffix . '.js";
 	w.lazyLoadOptions = {
 		elements_selector: "img, iframe",
