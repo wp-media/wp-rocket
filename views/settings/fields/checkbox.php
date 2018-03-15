@@ -30,7 +30,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 <div class="wpr-warningContainer">
 <?php endif; ?>
 
-	<div class="wpr-field wpr-field--checkbox <?php echo $data['container_class']; ?>">
+	<div class="wpr-field wpr-field--checkbox <?php echo $data['container_class']; ?>"<?php echo $data['parent']; ?>>
 		<div class="wpr-checkbox">
 			<input type="checkbox" id="<?php echo esc_attr( $data['id'] ); ?>" class="" name="wp_rocket_settings[<?php echo esc_attr( $data['id'] ); ?>]" value="1" <?php checked( $data['value'], 1 ); ?>
 			<?php echo $data['input_attr']; ?>>

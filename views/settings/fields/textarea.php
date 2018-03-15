@@ -18,7 +18,7 @@
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 ?>
 
-<div class="wpr-field wpr-field--textarea <?php echo $data['container_class']; ?>">
+<div class="wpr-field wpr-field--textarea <?php echo $data['container_class']; ?>"<?php echo $data['parent']; ?>>
 	<?php if ( ! empty( $data['label'] ) ) : ?>
 		<label for="<?php echo esc_attr( $data['id'] ); ?>" class="wpr-field-description-label"><?php echo $data['label']; ?></label>
 	<?php endif; ?>

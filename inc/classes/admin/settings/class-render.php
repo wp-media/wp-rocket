@@ -197,6 +197,7 @@ class Render extends Abstract_render {
 				'container_class'   => '',
 				'default'           => '',
 				'helper'            => '',
+				'parent'            => '',
 				'section'           => '',
 				'page'              => '',
 				'sanitize_callback' => 'sanitize_text_field',
@@ -222,6 +223,10 @@ class Render extends Abstract_render {
 				}
 
 				$args['input_attr'] = $input_attr;
+			}
+
+			if ( ! empty( $args['parent'] ) ) {
+				$args['parent'] = ' data-parent="' . esc_attr( $args['parent'] ) . '"';
 			}
 
 			if ( ! empty( $args['class'] ) ) {

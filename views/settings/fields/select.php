@@ -24,7 +24,7 @@
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 ?>
 
-<div class="wpr-field wpr-field--select <?php echo $data['container_class']; ?>">
+<div class="wpr-field wpr-field--select <?php echo $data['container_class']; ?>"<?php echo $data['parent']; ?>>
 	<div class="wpr-select">
 		<select id="<?php echo esc_attr( $data['id'] ); ?>" name="wp_rocket_settings[<?php echo esc_attr( $data['id'] ); ?>]">
 		<?php foreach ( $data['choices'] as $value => $label ) : ?>
