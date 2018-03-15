@@ -6,7 +6,7 @@ $(document).ready(function(){
     * Check parent / show children
     ***/
 
-    var $fieldParent = $('.wpr-isParent input[type=checkbox], .wpr-field--parent input[type=checkbox]'),
+    var $fieldParent = $('.wpr-isParent input[type=checkbox]'),
         $fieldsChildren = $('.wpr-field--children')
     ;
 
@@ -18,17 +18,15 @@ $(document).ready(function(){
 
         var parentId = aElem.attr('id');
         var $children = $('[data-parent="' + parentId + '"]');
-        
-        // Test check for switch
-        if(aElem.is(':checked')){
-            $children.addClass('wpr-isOpen');
-        }
-        else{
-            $children.removeClass('wpr-isOpen');
-            $children.each(function(){
-                $(this).find('input[type=checkbox]').attr('checked', false);
-            });
-        }
+
+            // Test check for switch
+            if(aElem.is(':checked')){
+                $children.addClass('wpr-isOpen');
+            }
+            else{
+                $children.removeClass('wpr-isOpen');
+                $children.find('input[type=checkbox]').attr('checked', false);
+            }
     }
 
 
@@ -48,7 +46,9 @@ $(document).ready(function(){
         var $warningField = aElem.next('.wpr-fieldWarning'),
             $thisCheckbox = aElem.find('input[type=checkbox]'),
             $nextWarning = aElem.parent().next('.wpr-warningContainer'),
-            $nextFields = $nextWarning.find('.wpr-field')
+            $nextFields = $nextWarning.find('.wpr-field'),
+            parentId = aElem.find('input[type=checkbox]').attr('id'),
+            $children = $('[data-parent="' + parentId + '"]')
         ;
 
         // Check warning parent
@@ -57,12 +57,14 @@ $(document).ready(function(){
             $thisCheckbox.attr('checked', false);
             aElem.trigger('change');
 
+
             var $warningButton = $warningField.find('.wpr-button');
 
             // Validate the warning
             $warningButton.click(function(){
                 $thisCheckbox.attr('checked', true);
                 $warningField.removeClass('wpr-isOpen');
+                $children.addClass('wpr-isOpen');
 
                 // If next elem = disabled
                 if($nextWarning.length > 0){
@@ -77,6 +79,7 @@ $(document).ready(function(){
             $nextFields.addClass('wpr-isDisabled');
             $nextFields.find('input').attr('disabled', true);
             $nextFields.find('input[type=checkbox]').attr('checked', false);
+            $children.removeClass('wpr-isOpen');
         }
     }
 
