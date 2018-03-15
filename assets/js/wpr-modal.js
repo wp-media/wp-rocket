@@ -52,7 +52,7 @@ function ModalWpr(aElem) {
     this.radio = $('input[name=reason]', aElem);
     this.closer = $('.wpr-Modal-close, .wpr-Modal-cancel', aElem);
     this.return = $('.wpr-Modal-return', aElem);
-    this.opener = $('.plugins .deactivate');
+    this.opener = $('.plugins [data-slug="wp-rocket"] .deactivate');
     this.question = $('.wpr-Modal-question', aElem);
     this.button = $('.button-primary', aElem);
     this.title = $('.wpr-Modal-header h2', aElem);
