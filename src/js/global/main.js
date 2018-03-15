@@ -106,6 +106,7 @@ $(document).ready(function(){
     function wprActivateAnalytics(){
         wprCloseAnalytics();
         $('#analytics_enabled').attr('checked', true);
+        $('#analytics_enabled').trigger('change');
     }
 
 
