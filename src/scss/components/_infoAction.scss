@@ -27,7 +27,7 @@
         color: $cBlueDark1;
         font-weight: bold;
         @include font-size(11,24);
-        letter-spacing: 0.05em;
+        letter-spacing: 0;
 
         &:before{
             color: $cBlue;
