@@ -1416,6 +1416,10 @@ class Page {
 					'help'        => $this->get_beacon_suggest( 'cdn', $this->locale ),
 					'page'        => 'page_cdn',
 				],
+				'cnames_section'      => [
+					'type' => 'nocontainer',
+					'page' => 'page_cdn',
+				],
 				'exclude_cdn_section' => [
 					'title' => __( 'Exclude files from CDN', 'rocket ' ),
 					'type'  => 'fields_container',
@@ -1440,7 +1444,7 @@ class Page {
 					'label'       => __( 'CDN CNAME(s)', 'rocket' ),
 					'description' => __( 'Specify the CNAME(s) below', 'rocket' ),
 					'default'     => [],
-					'section'     => 'cdn_section',
+					'section'     => 'cnames_section',
 					'page'        => 'page_cdn',
 				],
 				'cdn_reject_files' => [
