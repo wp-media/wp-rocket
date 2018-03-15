@@ -6,17 +6,21 @@ $(document).ready(function(){
     * Check parent / show children
     ***/
 
-    var $fieldParent = $('.wpr-isParent');
+    var $fieldParent = $('.wpr-isParent input[type=checkbox], .wpr-field--parent input[type=checkbox]'),
+        $fieldsChildren = $('.wpr-field--children')
+    ;
+
     $fieldParent.change(function() {
         wprShowChildren($(this));
     }).trigger('change');
 
     function wprShowChildren(aElem){
-        // Get all children
-        var $children = aElem.nextUntil(':not(.wpr-field--children)','.wpr-field--children');
 
+        var parentId = aElem.attr('id');
+        var $children = $('[data-parent="' + parentId + '"]');
+        
         // Test check for switch
-        if(aElem.find('input[type=checkbox]').is(':checked')){
+        if(aElem.is(':checked')){
             $children.addClass('wpr-isOpen');
         }
         else{
