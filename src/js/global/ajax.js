@@ -23,33 +23,22 @@ $(document).ready(function(){
     });
 
     /**
-     * Save Varnish option value on change
+     * Save Toggle option values on change
      */
-    $('#varnish_auto_purge').on('change', function(e) {
+    $('.wpr-radio input[type=checkbox]').on('change', function(e) {
         e.preventDefault();
+        var name  = $(this).attr('id');
         var value = $(this).prop('checked') ? 1 : 0;
 
         $.post(
             ajaxurl,
             {
-                action: 'rocket_toggle_varnish',
+                action: 'rocket_toggle_option',
                 _ajax_nonce: ajax_data.nonce,
-                varnish_auto_purge: value
-            },
-            function(response) {}
-        );
-    });
-
-    $('#do_cloudflare').on('change', function(e) {
-        e.preventDefault();
-        var value = $(this).prop('checked') ? 1 : 0;
-
-        $.post(
-            ajaxurl,
-            {
-                action: 'rocket_toggle_cloudflare',
-                _ajax_nonce: ajax_data.nonce,
-                do_cloudflare: value
+                option: {
+                    name: name,
+                    value: value
+                }
             },
             function(response) {}
         );

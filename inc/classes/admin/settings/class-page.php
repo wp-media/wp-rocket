@@ -109,8 +109,7 @@ class Page {
 		add_action( 'admin_init', [ $self, 'configure' ] );
 		add_action( 'admin_print_footer_scripts-settings_page_wprocket', [ $self, 'insert_beacon' ] );
 		add_action( 'wp_ajax_rocket_refresh_customer_data', [ $self, 'refresh_customer_data' ] );
-		add_action( 'wp_ajax_rocket_toggle_varnish', [ $self, 'toggle_varnish' ] );
-		add_action( 'wp_ajax_rocket_toggle_cloudflare', [ $self, 'toggle_cloudflare' ] );
+		add_action( 'wp_ajax_rocket_toggle_option', [ $self, 'toggle_option' ] );
 
 		add_filter( 'option_page_capability_' . $self->slug, [ $self, 'required_capability' ] );
 		add_filter( 'rocket_settings_menu_navigation', [ $self, 'add_menu_tools_page' ] );
@@ -391,45 +390,37 @@ class Page {
 	}
 
 	/**
-	 * Toggle varnish option value
+	 * Toggle sliding checkboxes option value
 	 *
 	 * @since 3.0
 	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
-	public function toggle_varnish() {
+	public function toggle_option() {
 		check_ajax_referer( 'rocket-ajax' );
 
 		if ( ! current_user_can( apply_filters( 'rocket_capability', 'manage_options' ) ) ) {
 			wp_die();
 		}
 
-		$value = (int) ! empty( $_POST['varnish_auto_purge'] );
+		$whitelist = [
+			'do_beta'                     => 1,
+			'analytics_enabled'           => 1,
+			'varnish_auto_purge'          => 1,
+			'do_cloudflare'               => 1,
+			'cloudflare_devmode'          => 1,
+			'cloudflare_protocol_rewrite' => 1,
+			'cloudflare_auto_settings'    => 1,
+		];
 
-		update_rocket_option( 'varnish_auto_purge', $value );
-
-		wp_die();
-	}
-
-	/**
-	 * Toggle varnish option value
-	 *
-	 * @since 3.0
-	 * @author Remy Perona
-	 *
-	 * @return void
-	 */
-	public function toggle_cloudflare() {
-		check_ajax_referer( 'rocket-ajax' );
-
-		if ( ! current_user_can( apply_filters( 'rocket_capability', 'manage_options' ) ) ) {
+		if ( ! isset( $_POST['option']['name'] ) || ! isset( $whitelist[ $_POST['option']['name'] ] ) ) {
 			wp_die();
 		}
 
-		$value = (int) ! empty( $_POST['do_cloudflare'] );
+		$value = (int) ! empty( $_POST['option']['value'] );
 
-		update_rocket_option( 'do_cloudflare', $value );
+		update_rocket_option( $_POST['option']['name'], $value );
 
 		wp_die();
 	}
