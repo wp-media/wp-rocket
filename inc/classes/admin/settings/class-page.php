@@ -308,8 +308,8 @@ class Page {
 			'Website'                  => home_url(),
 			'WordPress Version'        => $wp_version,
 			'WP Rocket Version'        => WP_ROCKET_VERSION,
-			'Plugins Enabled'          => rocket_get_active_plugins(),
-			'WP Rocket Active Options' => $active_options,
+			'Plugins Enabled'          => implode( ' - ', rocket_get_active_plugins() ),
+			'WP Rocket Active Options' => implode( ' - ', $active_options ),
 		];
 
 		return $data;
