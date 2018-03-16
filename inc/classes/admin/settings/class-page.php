@@ -1146,9 +1146,33 @@ class Page {
 				'menu_description' => __( 'Fine-tune cache rules', 'rocket' ),
 			]
 		);
-
 		$ecommerce_beacon           = $this->get_beacon_suggest( 'ecommerce', $this->locale );
 		$cache_query_strings_beacon = $this->get_beacon_suggest( 'cache_query_strings', $this->locale );
+
+		$ecommerce_plugin = '';
+		$reject_uri_desc  = __( 'Sensitive pages like custom login/logout URLs should be excluded from cache.', 'rocket' );
+
+		if ( function_exists( 'WC' ) && function_exists( 'wc_get_page_id' ) ) {
+			$ecommerce_plugin = _x( 'WooCommerce', 'plugin name', 'rocket' );
+		} elseif ( function_exists( 'EDD' ) ) {
+			$ecommerce_plugin = _x( 'Easy Digital Downloads', 'plugin name', 'rocket' );
+		} elseif ( function_exists( 'it_exchange_get_page_type' ) && function_exists( 'it_exchange_get_page_url' ) ) {
+			$ecommerce_plugin = _x( 'iThemes Exchange', 'plugin name', 'rocket' );
+		} elseif ( defined( 'JIGOSHOP_VERSION' ) && function_exists( 'jigoshop_get_page_id' ) ) {
+			$ecommerce_plugin = _x( 'Jigoshop', 'plugin name', 'rocket' );
+		} elseif ( defined( 'WPSHOP_VERSION' ) && class_exists( 'wpshop_tools' ) && method_exists( 'wpshop_tools', 'get_page_id' ) ) {
+			$ecommerce_plugin = _x( 'WP-Shop', 'plugin name', 'rocket' );
+		}
+
+		if ( ! empty( $ecommerce_plugin ) ) {
+			$reject_uri_desc .= sprintf(
+					// translators: %1$s = opening <a> tag, %2$s = plugin name, %3$s closing </a> tag.
+					__( '<br>Cart, checkout and "my account" pages set in <strong>%1$s%2$s%3$s</strong> will be detected and never cached by default.', 'rocket' ),
+					'<a href="' . esc_url( $ecommerce_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $ecommerce_beacon['id'] ) . '" target="_blank">',
+					$ecommerce_plugin,
+					'</a>'
+			);
+		}
 
 		$this->settings->add_settings_sections(
 			[
@@ -1156,7 +1180,7 @@ class Page {
 					'title'       => __( 'Never Cache URL(s)', 'rocket' ),
 					'type'        => 'fields_container',
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description' => sprintf( __( 'Sensitive pages like custom login/logout URLs should be excluded from cache.<br>Cart, checkout and "my account" pages set in WooCommerce (and some other %1$secommerce plugins%2$s) will be detected and never cached by default.', 'rocket' ), '<a href="' . esc_url( $ecommerce_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $ecommerce_beacon['id'] ) . '">', '</a>' ),
+					'description' => $reject_uri_desc,
 					'help'        => $this->get_beacon_suggest( 'never_cache', $this->locale ),
 					'page'        => 'advanced_cache',
 				],
