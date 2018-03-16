@@ -239,10 +239,15 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	 *
 	 * @param array $query Filtering options
 	 * @param string $select_or_count  Whether the SQL should select and return the IDs or just the row count
-	 *
+	 * @throws InvalidArgumentException if $select_or_count not count or select
 	 * @return string SQL statement. The returned SQL is already properly escaped.
 	 */
 	protected function get_query_actions_sql( array $query, $select_or_count = 'select' ) {
+
+		if ( ! in_array( $select_or_count, array( 'select', 'count' ) ) ) {
+			throw new InvalidArgumentException(__('Invalid schedule. Cannot save action.', 'action-scheduler'));
+		}
+
 		$query = wp_parse_args( $query, array(
 			'hook' => '',
 			'args' => NULL,
