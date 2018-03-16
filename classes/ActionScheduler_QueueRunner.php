@@ -44,17 +44,13 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 		do_action( 'action_scheduler_before_process_queue' );
 		$this->run_cleanup();
 		$count = 0;
-		if ( $this->store->get_claim_count() < $this->get_concurrent_batch_count() ) {
+		if ( $this->store->get_claim_count() < $this->get_allowed_concurrent_batches() ) {
 			$batch_size = apply_filters( 'action_scheduler_queue_runner_batch_size', 25 );
 			$count = $this->do_batch( $batch_size );
 		}
 
 		do_action( 'action_scheduler_after_process_queue' );
 		return $count;
-	}
-
-	public function get_concurrent_batch_count() {
-		return apply_filters( 'action_scheduler_queue_runner_concurrent_batches', 5 );
 	}
 
 	protected function do_batch( $size = 100 ) {

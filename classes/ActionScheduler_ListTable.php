@@ -294,7 +294,7 @@ class ActionScheduler_ListTable extends PP_List_Table {
 
 		self::$did_notification = true;
 
-		if ( $this->store->get_claim_count() >= $this->runner->get_concurrent_batch_count() ) : ?>
+		if ( $this->store->get_claim_count() >= $this->runner->get_allowed_concurrent_batches() ) : ?>
 <div id="message" class="updated">
 	<p><?php printf( __( 'Maximum simulatenous batches already in progress (%s queues). No actions will be processed until the current batches are complete.', 'action-scheduler' ), $this->store->get_claim_count() ); ?></p>
 </div>
