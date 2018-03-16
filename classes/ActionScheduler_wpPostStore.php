@@ -133,7 +133,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 
 		switch ( $post_status ) {
 			case 'any' :
-				$post_status = 'all';
+				$action_status = 'all';
 				break;
 			case 'publish' :
 				$action_status = self::STATUS_COMPLETE;
