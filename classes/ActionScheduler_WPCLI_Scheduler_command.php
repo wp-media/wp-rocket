@@ -16,6 +16,9 @@ class ActionScheduler_WPCLI_Scheduler_command extends WP_CLI_Command {
 	 * [--batches=<size>]
 	 * : Limit execution to a number of batches. Defaults to 0, meaning batches will continue being executed until all actions are complete.
 	 *
+	 * [--cleanup-batch-size=<size>]
+	 * : The maximum number of actions to clean up. Defaults to the value of --batch-size.
+	 *
 	 * [--force]
 	 * : Whether to force execution despite the maximum number of concurrent processes being exceeded.
 	 *
@@ -27,6 +30,7 @@ class ActionScheduler_WPCLI_Scheduler_command extends WP_CLI_Command {
 		// Handle passed arguments.
 		$batch   = absint( \WP_CLI\Utils\get_flag_value( $assoc_args, 'batch-size', 100 ) );
 		$batches = absint( \WP_CLI\Utils\get_flag_value( $assoc_args, 'batches', 0 ) );
+		$clean   = absint( \WP_CLI\Utils\get_flag_value( $assoc_args, 'cleanup-batch-size', $batch ) );
 		$force   = \WP_CLI\Utils\get_flag_value( $assoc_args, 'force', false );
 
 		$batches_completed = 0;
@@ -34,8 +38,11 @@ class ActionScheduler_WPCLI_Scheduler_command extends WP_CLI_Command {
 		$unlimited         = $batches === 0;
 
 		try {
+			// Custom queue cleaner instance.
+			$cleaner = new ActionScheduler_QueueCleaner( null, $clean );
+
 			// Get the queue runner instance
-			$runner = new ActionScheduler_WPCLI_QueueRunner();
+			$runner = new ActionScheduler_WPCLI_QueueRunner( null, null, $cleaner );
 
 			// Determine how many tasks will be run in the first batch.
 			$total = $runner->setup( $batch, $force );
