@@ -32,6 +32,15 @@ class ActionScheduler_ActionFactory {
 
 		$action = new $action_class( $hook, $args, $schedule, $group );
 
+		/**
+		 * Allow 3rd party code to change the instantiated action for a given hook, args, schedule and group.
+		 *
+		 * @param ActionScheduler_Action $action The instantiated action.
+		 * @param string $hook The instantiated action's hook.
+		 * @param array $args The instantiated action's args.
+		 * @param ActionScheduler_Schedule $schedule The instantiated action's schedule.
+		 * @param string $group The instantiated action's group.
+		 */
 		return apply_filters( 'action_scheduler_stored_action_instance', $action, $hook, $args, $schedule, $group );
 	}
 

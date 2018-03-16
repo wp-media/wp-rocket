@@ -128,6 +128,7 @@ abstract class ActionScheduler_Store {
 	abstract public function get_status( $action_id );
 
 	/**
+	 * @param string $action_id
 	 * @return mixed
 	 */
 	abstract public function get_claim_id( $action_id );

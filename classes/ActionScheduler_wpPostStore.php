@@ -126,6 +126,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	/**
 	 * @param string $post_status
 	 *
+	 * @throws InvalidArgumentException if $post_status not in known status fields returned by $this->get_status_labels()
 	 * @return string
 	 */
 	protected function get_action_status_by_post_status( $post_status ) {
@@ -153,7 +154,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 
 	/**
 	 * @param string $action_status
-	 *
+	 * @throws InvalidArgumentException if $post_status not in known status fields returned by $this->get_status_labels()
 	 * @return string
 	 */
 	protected function get_post_status_by_action_status( $action_status ) {
@@ -559,10 +560,22 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		}
 	}
 
+	/**
+	 * Return an action's claim ID, as stored in the post password column
+	 *
+	 * @param string $action_id
+	 * @return mixed
+	 */
 	public function get_claim_id( $action_id ) {
 		return get_post_field( 'post_password', $action_id, 'raw' );
 	}
 
+	/**
+	 * Return an action's status, as stored in the post status column
+	 *
+	 * @param string $action_id
+	 * @return mixed
+	 */
 	public function get_status( $action_id ) {
 		$status = get_post_field( 'post_status', $action_id, 'raw' );
 

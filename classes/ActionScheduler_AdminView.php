@@ -42,18 +42,22 @@ class ActionScheduler_AdminView {
 
 	/**
 	 * Registers action-scheduler into WooCommerce > System status.
+	 *
+	 * @param array $tabs An associative array of tab key => label.
+	 * @return array $tabs An associative array of tab key => label, including Action Scheduler's tabs
 	 */
 	public function register_system_status_tab( array $tabs ) {
-		$tabs[ 'action-scheduler' ] = __( 'Scheduled Actions', 'action-scheduler' );
+		$tabs['action-scheduler'] = __( 'Scheduled Actions', 'action-scheduler' );
 
 		return $tabs;
 	}
 
 	/**
-	 * Registers action-scheduler under Tools.
+	 * Include Action Scheduler's administration under the Tools menu.
 	 *
-	 * This method is called if woocommerce is not activated and we can't register our page
-	 * to WooCommerce's System status page.
+	 * A menu under the Tools menu is important for backward compatibility (as that's
+	 * where it started), and also provides more convenient access than the WooCommerce
+	 * System Status page, and for sites where WooCommerce isn't active.
 	 */
 	public function register_menu() {
 		add_submenu_page(
