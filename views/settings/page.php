@@ -65,7 +65,7 @@ settings_errors( $data['slug'] ); ?>
 			<div class="wpr-Popin-flex">
 				<p><?php _e( 'WP Rocket will never transmit any domain names or email addresses (except for license validation), IP addresses, or third-party API keys.', 'rocket' ); ?></p>
 				<div>
-					<button class="wpr-button wpr-button--small wpr-button--icon wpr-icon-check wpr-button--blue"><?php _e( 'Activate WP Rocket analytics', 'rocket' ); ?></button>
+					<button class="wpr-button wpr-button--small wpr-button--icon wpr-icon-check wpr-button--blue"><?php _e( 'Activate Rocket analytics', 'rocket' ); ?></button>
 				</div>
 			</div>
 		</div>
