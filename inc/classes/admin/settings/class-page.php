@@ -1471,7 +1471,7 @@ class Page {
 				'cdn_reject_files' => [
 					'type'              => 'textarea',
 					'description'       => __( 'Specify URL(s) of files that should not get served via CDN', 'rocket' ),
-					'helper'            => __( 'The domain part of the URL will be stripped automatically.<br>Use (.*).js wildcards to exclude all JS files located at a specific path.', 'rocket' ),
+					'helper'            => __( 'The domain part of the URL will be stripped automatically.<br>Use (.*) wildcards to exclude all files of a given file type located at a specific path.', 'rocket' ),
 					'section'           => 'exclude_cdn_section',
 					'page'              => 'page_cdn',
 					'default'           => [],
