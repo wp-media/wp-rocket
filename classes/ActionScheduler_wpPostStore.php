@@ -360,7 +360,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	/**
 	 * @param array $query
 	 * @param string $query_type Whether to select or count the results. Default, select.
-	 * @return array The IDs of actions matching the query
+	 * @return string|array The IDs of actions matching the query
 	 */
 	public function query_actions( $query = array(), $query_type = 'select' ) {
 		/** @var wpdb $wpdb */
