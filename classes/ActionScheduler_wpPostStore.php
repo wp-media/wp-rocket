@@ -432,15 +432,18 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	}
 
 	/**
-	 * @param int $max_actions
+	 * @param int      $max_actions
 	 * @param DateTime $before_date Jobs must be schedule before this date. Defaults to now.
+	 * @param string   $group       Claim only actions in the given group.
 	 *
 	 * @return ActionScheduler_ActionClaim
+	 * @throws RuntimeException When there is an error staking a claim.
 	 */
-	public function stake_claim( $max_actions = 10, DateTime $before_date = NULL ){
+	public function stake_claim( $max_actions = 10, DateTime $before_date = null, $group = '' ) {
 		$claim_id = $this->generate_claim_id();
-		$this->claim_actions( $claim_id, $max_actions, $before_date );
+		$this->claim_actions( $claim_id, $max_actions, $before_date, $group );
 		$action_ids = $this->find_actions_by_claim_id( $claim_id );
+
 		return new ActionScheduler_ActionClaim( $claim_id, $action_ids );
 	}
 
@@ -462,25 +465,101 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	}
 
 	/**
-	 * @param string $claim_id
-	 * @param int $limit
+	 * @param string   $claim_id
+	 * @param int      $limit
 	 * @param DateTime $before_date Should use UTC timezone.
+	 * @param string   $group       Claim only actions in the given group.
+	 *
 	 * @return int The number of actions that were claimed
 	 * @throws RuntimeException
 	 */
-	protected function claim_actions( $claim_id, $limit, DateTime $before_date = NULL ) {
+	protected function claim_actions( $claim_id, $limit, DateTime $before_date = null, $group = '' ) {
 		/** @var wpdb $wpdb */
 		global $wpdb;
 
-		$date = is_null($before_date) ? as_get_datetime_object() : clone $before_date;
-		// can't use $wpdb->update() because of the <= condition, using post_modified to take advantage of indexes
-		$sql = "UPDATE {$wpdb->posts} SET post_password = %s, post_modified_gmt = %s, post_modified = %s WHERE post_type = %s AND post_status = %s AND post_password = '' AND post_date_gmt <= %s ORDER BY menu_order ASC, post_date_gmt ASC, ID ASC LIMIT %d";
-		$sql = $wpdb->prepare( $sql, array( $claim_id, current_time('mysql', true), current_time('mysql'), self::POST_TYPE, 'pending', $date->format('Y-m-d H:i:s'), $limit ) );
-		$rows_affected = $wpdb->query($sql);
-		if ( $rows_affected === false ) {
-			throw new RuntimeException(__('Unable to claim actions. Database error.', 'action-scheduler'));
+		$date = null === $before_date ? as_get_datetime_object() : clone $before_date;
+
+		// Set up a query for post IDs to use later.
+		$query      = new WP_Query();
+		$query_args = array(
+			'fields'           => 'ids',
+			'post_type'        => self::POST_TYPE,
+			'post_status'      => ActionScheduler_Store::STATUS_PENDING,
+			'has_password'     => false,
+			'posts_per_page'   => $limit,
+			'suppress_filters' => true,
+			'no_found_rows'    => true,
+			'orderby'          => array(
+				'menu_order' => 'ASC',
+				'date'       => 'ASC',
+				'ID'         => 'ASC',
+			),
+			'date_query'       => array(
+				'column' => 'post_date',
+				array(
+					'compare' => '<=',
+					'year'    => $date->format( 'Y' ),
+					'month'   => $date->format( 'n' ),
+					'day'     => $date->format( 'j' ),
+					'hour'    => $date->format( 'G' ),
+					'minute'  => $date->format( 'i' ),
+					'second'  => $date->format( 's' ),
+				),
+			),
+		);
+
+		// Check for a particular group.
+		if ( ! empty( $group ) && term_exists( $group, self::GROUP_TAXONOMY ) ) {
+			$query_args['tax_query'] = array(
+				array(
+					'taxonomy'         => self::GROUP_TAXONOMY,
+					'field'            => 'slug',
+					'terms'            => $group,
+					'include_children' => false,
+				),
+			);
 		}
-		return (int)$rows_affected;
+
+		// Gather relevant IDs.
+		$ids = $query->query( $query_args );
+
+		// If no posts found, then return early since we have nothing to update.
+		if ( 0 === count( $ids ) ) {
+			return 0;
+		}
+
+		/*
+		 * Build up custom query to update the affected posts. Parameters are built as a separate array
+		 * to make it easier to identify where they are in the query.
+		 *
+		 * We can't use $wpdb->update() here because of the "ID IN ..." clause.
+		 */
+		$update = "UPDATE {$wpdb->posts} SET post_password = %s, post_modified_gmt = %s, post_modified = %s";
+		$params = array(
+			$claim_id,
+			current_time( 'mysql', true ),
+			current_time( 'mysql' ),
+		);
+
+		// Build initial WHERE clause.
+		$where    = "WHERE post_type = %s AND post_status = %s AND post_password = ''";
+		$params[] = self::POST_TYPE;
+		$params[] = ActionScheduler_Store::STATUS_PENDING;
+
+		// Add the IDs to the WHERE clause. IDs not escaped because they came directly from a prior DB query.
+		$where .= ' AND ID IN (' . join( ',', $ids ) . ')';
+
+		// Add the ORDER BY clause and,ms limit.
+		$order    = 'ORDER BY menu_order ASC, post_date_gmt ASC, ID ASC LIMIT %d';
+		$params[] = $limit;
+
+		// Run the query and gather results.
+		$rows_affected = $wpdb->query( $wpdb->prepare( $update . $where . $order, $params ) );
+		if ( $rows_affected === false ) {
+			throw new RuntimeException( __( 'Unable to claim actions. Database error.', 'action-scheduler' ) );
+		}
+
+		return (int) $rows_affected;
 	}
 
 	/**
