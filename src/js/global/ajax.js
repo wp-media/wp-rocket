@@ -5,7 +5,10 @@ $(document).ready(function(){
      */
     $('#wpr-action-refresh_account').on('click', function(e) {
         var button = $(this);
+        var expire = $('#wpr-expiration-data');
+
         e.preventDefault();
+        expire.removeClass('wpr-isValid wpr-isInvalid');
 
         $.post(
             ajaxurl,
@@ -15,8 +18,8 @@ $(document).ready(function(){
             },
             function(response) {
                 if ( true === response.success ) {
-                    $('#wpr-account-data').html( response.data.licence_account);
-                    $('#wpr-expiration-data').html( response.data.licence_expiration);
+                    $('#wpr-account-data').html(response.data.licence_account);
+                    expire.addClass(response.data.class).html(response.data.licence_expiration);
                 }
             }
         );

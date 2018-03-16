@@ -62,7 +62,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 						<span class="wpr-infoAccount" id="wpr-account-data">
 						<?php echo $data['customer_data']->licence_account; ?></span><br>
 						<span class="wpr-title3"><?php esc_html_e( 'Expiration Date' ); ?></span>
-						<span class="wpr-infoAccount" id="wpr-expiration-data"><?php echo $data['customer_data']->licence_expiration; ?></span>
+						<span class="wpr-infoAccount <?php echo $data['customer_data']->class; ?>" id="wpr-expiration-data"><?php echo $data['customer_data']->licence_expiration; ?></span>
 					</div>
 					<div>
 						<?php
