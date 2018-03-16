@@ -1215,8 +1215,8 @@ class Page {
 			[
 				'cache_reject_uri'     => [
 					'type'              => 'textarea',
-					'description'       => __( 'Specify URLs of pages or posts that should never be cached', 'rocket' ),
-					'helper'            => __( 'Use (.*) wildcards to address multiple URLs under a given path.', 'rocket' ),
+					'description'       => __( 'Specify URLs of pages or posts that should never be cached (one per line)', 'rocket' ),
+					'helper'            => __( 'Use (.*) wildcards to address multiple URLs under a given path.<br>The domain part of the URL will be stripped automatically.', 'rocket' ),
 					'section'           => 'cache_reject_uri_section',
 					'page'              => 'advanced_cache',
 					'default'           => [],
@@ -1224,7 +1224,7 @@ class Page {
 				],
 				'cache_reject_cookies' => [
 					'type'              => 'textarea',
-					'description'       => __( 'Specify the IDs of cookies that, when set in the visitor\'s browser, should prevent a page from getting cached', 'rocket' ),
+					'description'       => __( 'Specify the IDs of cookies that, when set in the visitor\'s browser, should prevent a page from getting cached (one per line)', 'rocket' ),
 					'section'           => 'cache_reject_cookies_section',
 					'page'              => 'advanced_cache',
 					'default'           => [],
@@ -1232,7 +1232,7 @@ class Page {
 				],
 				'cache_reject_ua'      => [
 					'type'              => 'textarea',
-					'description'       => __( 'Specify user agent strings that should never see cached pages', 'rocket' ),
+					'description'       => __( 'Specify user agent strings that should never see cached pages (one per line)', 'rocket' ),
 					'helper'            => __( 'Use (.*) wildcards to detect parts of UA strings.', 'rocket' ),
 					'section'           => 'cache_reject_ua_section',
 					'page'              => 'advanced_cache',
@@ -1241,8 +1241,8 @@ class Page {
 				],
 				'cache_purge_pages'    => [
 					'type'              => 'textarea',
-					'description'       => __( 'Specify URLs you always want purged from cache whenever you update any post or page', 'rocket' ),
-					'helper'            => __( 'Use (.*) wildcards to address multiple URLs under a given path', 'rocket' ),
+					'description'       => __( 'Specify URLs you always want purged from cache whenever you update any post or page (one per line)', 'rocket' ),
+					'helper'            => __( 'Use (.*) wildcards to address multiple URLs under a given path.<br>The domain part of the URL will be stripped automatically.', 'rocket' ),
 					'section'           => 'cache_purge_pages_section',
 					'page'              => 'advanced_cache',
 					'default'           => [],
@@ -1250,7 +1250,7 @@ class Page {
 				],
 				'cache_query_strings'  => [
 					'type'              => 'textarea',
-					'description'       => __( 'Specify query strings for caching', 'rocket' ),
+					'description'       => __( 'Specify query strings for caching (one per line)', 'rocket' ),
 					'section'           => 'cache_query_strings_section',
 					'page'              => 'advanced_cache',
 					'default'           => [],
