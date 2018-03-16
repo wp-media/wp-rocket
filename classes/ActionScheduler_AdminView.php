@@ -26,7 +26,7 @@ class ActionScheduler_AdminView {
 	 * @codeCoverageIgnore
 	 */
 	public function init() {
-		$self = self::instance();
+		$self = $this->instance();
 
 		if ( is_admin() && ( ! defined( 'DOING_AJAX' ) || false == DOING_AJAX ) ) {
 
