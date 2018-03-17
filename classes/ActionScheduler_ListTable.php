@@ -231,7 +231,7 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	 */
 	public function column_args( array $row ) {
 		if ( empty( $row['args'] ) ) {
-			return;
+			return '';
 		}
 
 		$row_html = '<ul>';
