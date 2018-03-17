@@ -252,7 +252,7 @@ class ActionScheduler_ListTable extends PP_List_Table {
 		echo '<ol>';
 		$timezone = new DateTimezone( 'UTC' );
 		foreach ( $row['log_entries'] as $log_entry ) {
-			$this->print_log_entry( $log_entry, $timezone );
+			echo $this->get_log_entry_html( $log_entry, $timezone );
 		}
 		echo '</ol>';
 	}
@@ -260,12 +260,14 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	/**
 	 * Prints the logs entries inline. We do so to avoid loading Javascript and other hacks to show it in a modal.
 	 *
-	 * @param array $row Action array.
+	 * @param ActionScheduler_LogEntry $log_entry
+	 * @param DateTimezone $timezone
+	 * @param string
 	 */
-	protected function print_log_entry( ActionScheduler_LogEntry $log_entry, DateTimezone $timezone ) {
+	protected function get_log_entry_html( ActionScheduler_LogEntry $log_entry, DateTimezone $timezone ) {
 		$date = $log_entry->get_date();
 		$date->setTimezone( $timezone );
-		echo '<li><strong>' . esc_html( $date->format( 'Y-m-d H:i:s e' ) ) . '</strong><br/>' . esc_html( $log_entry->get_message() ) . '</li>';
+		return sprintf( '<li><strong>%s</strong><br/>%s</li>', esc_html( $date->format( 'Y-m-d H:i:s e' ) ), esc_html( $log_entry->get_message() ) );
 	}
 
 	/**
