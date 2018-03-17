@@ -102,10 +102,6 @@ class ActionScheduler_ListTable extends PP_List_Table {
 			'log_entries' => __( 'Log', 'action-scheduler' ),
 		);
 
-		if ( in_array( $request_status, array( 'in-progress', 'failed' ) ) ) {
-			$this->columns += array( 'claim_id' => __( 'Claim ID', 'action-scheduler' ) );
-		}
-
 		$this->sort_by = array(
 			'schedule',
 			'hook',
@@ -115,6 +111,7 @@ class ActionScheduler_ListTable extends PP_List_Table {
 		if ( 'all' === $request_status ) {
 			$this->sort_by[] = 'status';
 		} elseif ( in_array( $request_status, array( 'in-progress', 'failed' ) ) ) {
+			$this->columns  += array( 'claim_id' => __( 'Claim ID', 'action-scheduler' ) );
 			$this->sort_by[] = 'claim_id';
 		}
 
