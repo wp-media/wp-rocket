@@ -236,7 +236,7 @@ class ActionScheduler_ListTable extends PP_List_Table {
 
 		$row_html = '<ul>';
 		foreach ( $row['args'] as $key => $value ) {
-			$row_html .= sprintf( '<li><code>%s => %s</li></code>', $key, $value );
+			$row_html .= sprintf( '<li><code>%s => %s</code></li>', esc_html( $key ), esc_html( $value ) );
 		}
 		$row_html .= '</ul>';
 
