@@ -339,30 +339,33 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	 * @param array $row The array representation of the current row of the table
 	 */
 	public function column_schedule( $row ) {
-		$this->print_next_scheduled( $row['schedule'] );
+		echo $this->get_schedule_display_string( $row['schedule'] );
 	}
 
 	/**
-	 * Prints the scheduled date in a human friendly format.
+	 * Get the scheduled date in a human friendly format.
 	 *
 	 * @param ActionScheduler_Schedule $schedule
+	 * @return string
 	 */
-	protected function print_next_scheduled( ActionScheduler_Schedule $schedule ) {
+	protected function get_schedule_display_string( ActionScheduler_Schedule $schedule ) {
+
+		$schedule_display_string = ''
 
 		if ( ! $schedule->next() ) {
-			return;
+			return $schedule_display_string;
 		}
 
-		echo $schedule->next()->format( 'Y-m-d H:i:s e' );
 
 		$next_timestamp = $schedule->next()->format( 'U' );
 
-		echo '<br/>';
+		$schedule_display_string .= $schedule->next()->format( 'Y-m-d H:i:s e' );
+		$schedule_display_string .= '<br/>';
 
 		if ( gmdate( 'U' ) > $next_timestamp ) {
-			printf( __( ' (%s ago)', 'action-scheduler' ), self::human_interval( gmdate( 'U' ) - $next_timestamp ) );
+			$schedule_display_string .= sprintf( __( ' (%s ago)', 'action-scheduler' ), self::human_interval( gmdate( 'U' ) - $next_timestamp ) );
 		} else {
-			echo ' (' . self::human_interval( $next_timestamp - gmdate( 'U' ) ) . ')';
+			$schedule_display_string .= sprintf( __( ' (%s)', 'action-scheduler' ), self::human_interval( $next_timestamp - gmdate( 'U' ) ) );
 		}
 	}
 
