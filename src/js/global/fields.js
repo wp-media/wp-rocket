@@ -37,6 +37,12 @@ $(document).ready(function(){
     ***/
 
     var $warningParent = $('.wpr-field--parent');
+    var $warningParentInput = $('.wpr-field--parent input[type=checkbox]');
+
+    // If already checked
+    $warningParentInput.each(function(){
+        wprShowChildren($(this));
+    });
 
     $warningParent.change(function() {
         wprShowWarning($(this));
