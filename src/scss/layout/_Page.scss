@@ -51,6 +51,19 @@
         .wpr-field-account{
             padding-bottom: 0;
         }
+
+        .wpr-infoAccount{
+            font-weight: bold;
+            margin-left: $space;
+
+            &.wpr-isValid{
+                color: $cGreenDark1;
+            }
+
+            &.wpr-isInvalid{
+                color: $cRedDark1;
+            }
+        }
     }
 
     &-row{
