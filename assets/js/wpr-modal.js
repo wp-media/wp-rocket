@@ -94,6 +94,8 @@ function ModalWpr(aElem) {
     // Write text
     this.textFields.keyup(function() {
         refThis.hiddenDetails.val($(this).val());
+        refThis.button.removeClass('wpr-isDisabled');
+        refThis.button.removeAttr("disabled");
     });
 }
 
@@ -139,6 +141,8 @@ ModalWpr.prototype.change = function(aElem) {
           var field = aElem.siblings('.wpr-Modal-fieldHidden');
           field.addClass('wpr-isOpen');
           field.find('input, textarea').focus();
+          refThis.button.addClass('wpr-isDisabled');
+          refThis.button.attr("disabled", true);
       break;
     }
 };
