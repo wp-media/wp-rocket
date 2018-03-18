@@ -108,7 +108,7 @@ PageManager.prototype.getBodyTop = function() {
 PageManager.prototype.change = function() {
 
     var refThis = this;
-    document.documentElement.scrollTop = refThis.bodyTop; 
+    document.documentElement.scrollTop = refThis.bodyTop;
 
     // Hide other pages
     for (var i = 0; i < this.$pages.length; i++) {
@@ -137,15 +137,18 @@ PageManager.prototype.change = function() {
     // Exception for addons
     if(this.pageId == "addons"){
         this.$submitButton.style.display = 'none';
+        this.$tips.style.display = 'none';
     }
 
     // Exception for database
     if(this.pageId == "database"){
         this.$submitButton.value = this.$submitButton.dataset.optimizetext;
+        this.$tips.style.display = 'none';
     }
 
     // Exception for tools and addons
     if(this.pageId == "tools" || this.pageId == "addons"){
         this.$submitButton.style.display = 'none';
+        this.$tips.style.display = 'none';
     }
 };
