@@ -16,6 +16,7 @@ document.addEventListener( 'DOMContentLoaded', function () {
  *
  * Public method :
      detectID - Detect ID with hash
+     getBodyTop - Get body top position
 	 change - Displays the corresponding page
  *
  */
@@ -24,29 +25,46 @@ function PageManager(aElem) {
 
     var refThis = this;
 
+    this.$body = document.querySelector('.wpr-body');
     this.$menuItems = document.querySelectorAll('.wpr-menuItem');
     this.$submitButton = document.querySelector('.wpr-Content > form > input[type=submit]');
     this.$pages = document.querySelectorAll('.wpr-Page');
     this.$sidebar = document.querySelector('.wpr-Sidebar');
     this.$tips = document.querySelector('.wpr-Content-tips');
+    this.$links = document.querySelectorAll('.wpr-body a');
     this.$menuItem = null;
     this.$page = null;
     this.pageId = null;
+    this.bodyTop = 0;
     this.buttonText = this.$submitButton.value;
 
+    refThis.getBodyTop();
+
+    // Click link same hash
+    for (var i = 0; i < this.$links.length; i++) {
+        this.$links[i].onclick = function() {
+            refThis.getBodyTop();
+            if(this.href.split('#')[1] == refThis.pageId){
+                refThis.detectID();
+                return false;
+            }
+        };
+    }
 
     // If url page change
     window.onhashchange = function() {
         refThis.detectID();
     }
 
-
     // If hash already exist (after refresh page for example)
     if(window.location.hash){
+        this.bodyTop = 0;
         this.detectID();
     }
     else{
         var session = sessionStorage.getItem('wpr-hash');
+        this.bodyTop = 0;
+
         if(session){
             window.location.hash = session;
             this.detectID();
@@ -75,12 +93,22 @@ PageManager.prototype.detectID = function() {
 
 
 /*
+* Get body top position
+*/
+PageManager.prototype.getBodyTop = function() {
+    var bodyPos = this.$body.getBoundingClientRect();
+    this.bodyTop = bodyPos.top + window.pageYOffset - 47; // #wpadminbar + padding-top .wpr-wrap - 1 - 47
+}
+
+
+
+/*
 * Page change
 */
 PageManager.prototype.change = function() {
 
-    // Scroll top
-    document.documentElement.scrollTop = 0;
+    var refThis = this;
+    document.documentElement.scrollTop = refThis.bodyTop; 
 
     // Hide other pages
     for (var i = 0; i < this.$pages.length; i++) {
