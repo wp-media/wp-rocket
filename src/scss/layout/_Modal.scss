@@ -191,6 +191,14 @@
         h3{
             display: none !important;
         }
+
+        a{
+            color: #1B9AAA !important;
+
+            &:hover{
+                color: #0073aa !important;
+            }
+        }
     }
 
     .button{
