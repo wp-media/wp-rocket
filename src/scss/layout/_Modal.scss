@@ -199,6 +199,9 @@
 
     .button-primary{
         &.wpr-isDisabled{
+            opacity: 0.2;
+            border-bottom-width: 3px;
+            color: #fff !important;
             cursor: not-allowed;
             pointer-events: none;
         }
