@@ -26,6 +26,28 @@
             }
         }
 
+        .wpr-radio{
+            padding-left: $space*9;
+        }
+
+        .wpr-field--radio{
+            padding: $space*2 $space;
+
+            &:first-child{
+                padding-top: 0;
+            }
+
+            &:last-child{
+                padding-bottom: 0;
+            }
+
+            .wpr-field-description {
+                font-style: normal;
+                color: $cGreyDark2;
+                margin-left: $space*9;
+            }
+        }
+
         .wpr-field-account{
             padding-bottom: 0;
         }

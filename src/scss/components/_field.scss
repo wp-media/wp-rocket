@@ -159,10 +159,18 @@
 
     // Checkbox radio
     &--radio{
+        padding: $space*3 $space*2;
+
+        &:first-child{
+            padding-top: $space;
+        }
+
+        &:last-child{
+            padding-bottom: $space;
+        }
+
         .wpr-field-description{
-            margin-left: $space*9;
-            font-style: normal;
-            color: $cGreyDark2;
+            margin-left: $space*11;
 
             button{
                 color: $cGreyDark2;
@@ -177,7 +185,7 @@
     // textarea
     &--textarea{
         padding-right: 10%;
-        
+
         label{
             display: inline-block;
             margin-bottom: $space;
