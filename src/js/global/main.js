@@ -123,13 +123,12 @@ $(document).ready(function(){
     }).trigger('change');
 
     function wprDetectTips(aElem){
+        var $excluded = $('#dashboard .wpr-field-description, #tools .wpr-field-description, #addons .wpr-field-description, #database .wpr-field-description');
         if(aElem.is(':checked')){
-            console.log('show');
-            $('.wpr-field-description').css('display','block');
+            $('.wpr-field-description').not($excluded).css('display','block');
         }
         else{
-            console.log('hide');
-            $('.wpr-field-description').css('display','none');
+            $('.wpr-field-description').not($excluded).css('display','none');
         }
     }
 
