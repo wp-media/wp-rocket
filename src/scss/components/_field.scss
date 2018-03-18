@@ -148,10 +148,6 @@
             display: block;
             margin-top: $space*2;
         }
-
-        &.wpr-field--textarea{
-            padding-left: 0;
-        }
     }
 
     // Checkbox
@@ -180,6 +176,8 @@
 
     // textarea
     &--textarea{
+        padding-right: 10%;
+        
         label{
             display: inline-block;
             margin-bottom: $space;
