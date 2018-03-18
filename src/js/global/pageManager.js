@@ -32,6 +32,7 @@ function PageManager(aElem) {
     this.$menuItem = null;
     this.$page = null;
     this.pageId = null;
+    this.buttonText = this.$submitButton.value;
 
 
     // If url page change
@@ -89,13 +90,13 @@ PageManager.prototype.change = function() {
         this.$menuItems[i].classList.remove('isActive');
     }
 
-    // Show current page
+    // Show current default page
     this.$page.style.display = 'block';
     this.$submitButton.style.display = 'block';
     this.$sidebar.style.display = 'block';
     this.$tips.style.display = 'block';
     this.$menuItem.classList.add('isActive');
-
+    this.$submitButton.value = this.buttonText;
 
 
     // Exception for dashboard
@@ -108,6 +109,11 @@ PageManager.prototype.change = function() {
     // Exception for addons
     if(this.pageId == "addons"){
         this.$submitButton.style.display = 'none';
+    }
+
+    // Exception for database
+    if(this.pageId == "database"){
+        this.$submitButton.value = this.$submitButton.dataset.optimizetext;
     }
 
     // Exception for tools and addons
