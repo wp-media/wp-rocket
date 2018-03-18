@@ -130,10 +130,12 @@
             border: 2px solid #A9ADB0;
             font-size: 12px;
             border-radius: 3px;
+            @include transition(border, 150ms);
 
             &:focus{
                 outline: none;
-                border-color: #888;
+                box-shadow: none;
+                border-color: #777;
             }
 
             &::-webkit-input-placeholder { /* WebKit, Blink, Edge */
