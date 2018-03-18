@@ -38,6 +38,7 @@
         &:first-child{
             padding-left: $space*9;
             padding-right: $space*3;
+            min-width: 340px;
         }
 
         &:last-child{
@@ -47,6 +48,7 @@
 
     .wpr-button{
         margin-top: $space*3;
+        white-space: normal;
     }
 
     .wpr-field-description{

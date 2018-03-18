@@ -55,7 +55,8 @@
 }
 .wpr-icon-chevron-up:before {
   content: "\e902";
-  transform: scale(0.6);
+  top: 50%;
+  transform: translateY(-50%) scale(0.6);
 }
 .wpr-icon-rollback:before {
   content: "\e903";
