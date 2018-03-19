@@ -24,4 +24,5 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 		<?php _e( 'Backup your database before you run a cleanup!', 'rocket' ); ?>
 		<p><?php _e( 'Once a database optimization has been performed, there is not way to undo it.', 'rocket' ); ?></p>
 	</div>
+	<input type="submit" class="wpr-button" name="wp_rocket_settings[submit_optimize]" value="<?php esc_attr_e( 'Optimize', 'rocket' ); ?>">
 </div>

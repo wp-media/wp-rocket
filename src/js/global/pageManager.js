@@ -27,7 +27,7 @@ function PageManager(aElem) {
 
     this.$body = document.querySelector('.wpr-body');
     this.$menuItems = document.querySelectorAll('.wpr-menuItem');
-    this.$submitButton = document.querySelector('.wpr-Content > form > input[type=submit]');
+    this.$submitButton = document.querySelector('.wpr-Content > form > #wpr-options-submit');
     this.$pages = document.querySelectorAll('.wpr-Page');
     this.$sidebar = document.querySelector('.wpr-Sidebar');
     this.$tips = document.querySelector('.wpr-Content-tips');
@@ -150,7 +150,7 @@ PageManager.prototype.change = function() {
 
     // Exception for database
     if(this.pageId == "database"){
-        this.$submitButton.value = this.$submitButton.dataset.optimizetext;
+        this.$submitButton.style.display = 'none';
         this.$tips.style.display = 'none';
     }
 
