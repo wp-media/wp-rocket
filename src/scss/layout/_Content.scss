@@ -24,5 +24,9 @@
         right: $space*3;
         font-weight: bold;
         color: $cGreyDark2;
+
+        @include respond-to('sm') {
+            display: none !important;
+        }
     }
 }

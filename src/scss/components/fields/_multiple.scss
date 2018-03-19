@@ -13,6 +13,11 @@
     display: flex;
     align-items: center;
 
+    @include respond-to('xs') {
+        align-items: left;
+        flex-direction: column;
+    }
+
     .wpr-text{
         flex: 1 1 auto;
         position: relative;
@@ -24,6 +29,10 @@
         width: auto;
         min-width: inherit;
         padding-right: 30px;
+    }
+
+    input[type=text]{
+        min-width: 100px;
     }
 
     select{

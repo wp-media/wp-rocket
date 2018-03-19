@@ -16,6 +16,12 @@
     overflow: hidden;
     @include transition(all, 100ms);
 
+    @include respond-to('xs') {
+        width: 65px;
+        height: 50px;
+        padding: 0;
+    }
+
     &:first-child{
         border-top: none;
     }
@@ -82,12 +88,20 @@
         font-weight: bold;
         letter-spacing: -0.08px;
         text-transform: uppercase;
+
+        @include respond-to('xs') {
+            display: none !important;
+        }
     }
 
     &-description{
         color: $cGreyDark1;
         @include font-size(12,16);
         @include transition(all, 150ms);
+
+        @include respond-to('xs') {
+            display: none;
+        }
     }
 
     // Special for cloudflare
@@ -95,6 +109,10 @@
         display: none;
         border: none;
         padding: $space 20px $space 25px;
+
+        @include respond-to('xs') {
+            height: 35px;
+        }
 
         .wpr-menuItem-title{
             display: inline-block;

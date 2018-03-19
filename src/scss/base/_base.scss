@@ -44,6 +44,11 @@ a, button{
 .wpr-wrap{
     padding: 16px;
     margin: 0 0 0 -20px;
+
+    @include respond-to('xs') {
+        padding: 0;
+        margin: 0 0 0 -10px;
+    }
 }
 
 .wpr-body{
@@ -62,4 +67,10 @@ a, button{
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+}
+
+@include respond-to('xs') {
+    #hs-beacon{
+        display: none !important;
+    }
 }

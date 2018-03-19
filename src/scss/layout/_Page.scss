@@ -40,6 +40,10 @@
             margin-top: 98px;
             padding: 43px $space*2;
 
+            @include respond-to('sm') {
+                margin-top: $space*5;
+            }
+
             .wpr-button{
                 margin-top: $space;
             }
@@ -125,6 +129,10 @@
     &-row{
         display: flex;
         flex-direction: row;
+
+        @include respond-to('sm') {
+            flex-direction: column;
+        }
     }
 
     &-col{
@@ -134,5 +142,9 @@
     &-col--fixed{
         margin-left: $space*3;
         flex: 0 0 325px;
+
+        @include respond-to('sm') {
+            margin-left: 0;
+        }
     }
 }

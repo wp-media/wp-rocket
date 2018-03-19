@@ -96,13 +96,26 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+
+        @include respond-to('xs') {
+            text-align: left;
+            flex-direction: column;
+        }
     }
 
     .wpr-flex--egal > div{
         flex: 0 0 50%;
 
+        @include respond-to('xs') {
+            width: 100%;
+        }
+
         &:last-child{
             text-align: right;
+
+            @include respond-to('xs') {
+                text-align: left;
+            }
         }
 
         .wpr-field-description{

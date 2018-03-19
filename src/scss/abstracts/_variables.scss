@@ -2,6 +2,14 @@
 
 $space: 8px;
 
+//* -- Breakpoints -- */
+
+$breakpoints: (
+  'xs': (max-width: 783px),
+  'sm': (max-width: 960px)
+);
+
+
 //* -- Colorz -- */
 
 // Main colors

@@ -12,6 +12,10 @@
     flex-direction: row;
     padding: $space*4 0;
 
+    @include respond-to('xs') {
+        flex-direction: column;
+    }
+
     &:nth-child(2){
         margin-top: $space*2;
     }
@@ -43,6 +47,10 @@
 
         &:last-child{
             text-align: right;
+
+            @include respond-to('xs') {
+                text-align: left;
+            }
         }
     }
 

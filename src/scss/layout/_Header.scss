@@ -12,10 +12,33 @@
     flex: 0 0 225px;
     background: $cPurpleDark1;
 
+    @include respond-to('xs') {
+        flex: 0 0 50px;
+    }
+
     &-logo{
         padding: $space*4 0 $space*3;
         background: $cPurple;
         text-align: center;
+
+        @include respond-to('xs') {
+            padding: $space*2 0 $space;
+        }
+
+        &-desktop{
+            @include respond-to('xs') {
+                display: none;
+            }
+        }
+
+        &-mobile{
+            display: none;
+
+            @include respond-to('xs') {
+                display: inline-block;
+            }
+        }
+
     }
 
     &-footer{
@@ -24,5 +47,9 @@
         @include font-size(11,48);
         color: $cGreyDark1;
         font-weight: bold;
+
+        @include respond-to('xs') {
+            display: none;
+        }
     }
 }
