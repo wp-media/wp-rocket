@@ -80,12 +80,44 @@
             margin-left: $space;
             color: $cGreyDark1;
 
-            &.wpr-isValid{
-                color: $cGreenDark1;
+            &:before{
+                content: "";
+                position: relative;
+                display: inline-block;
+                width: 13px;
+                height: 13px;
+                background: $cGrey;
+                border-radius: 50%;
+                color: #fff;
+                margin-right: 6px;
+                text-align: center;
+                top: 2px;
+                @include font-size(8,13);
             }
+
+             &.wpr-isValid{
+                 color: $cGreenDark1;
+
+                 &:before{
+                     content: "\e920";
+                     font-family: 'wpr-icomoon';
+                 	 speak: none;
+                     background: $cGreen;
+                     top: -1px;
+                 }
+             }
 
             &.wpr-isInvalid{
                 color: $cRedDark1;
+
+                &:before{
+                    content: "!";
+                    font-weight: bold;
+                    @include font-size(10,13);
+                    speak: none;
+                    background: $cRed;
+                    top: -1px;
+                }
             }
         }
     }
