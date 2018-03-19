@@ -1,5 +1,5 @@
 document.addEventListener( 'DOMContentLoaded', function () {
-
+    
     var $pageManager = document.querySelector(".wpr-Content");
     if($pageManager){
         new PageManager($pageManager);
@@ -40,17 +40,6 @@ function PageManager(aElem) {
 
     refThis.getBodyTop();
 
-    // Click link same hash
-    for (var i = 0; i < this.$links.length; i++) {
-        this.$links[i].onclick = function() {
-            refThis.getBodyTop();
-            if(this.href.split('#')[1] == refThis.pageId){
-                refThis.detectID();
-                return false;
-            }
-        };
-    }
-
     // If url page change
     window.onhashchange = function() {
         refThis.detectID();
@@ -72,6 +61,25 @@ function PageManager(aElem) {
         else{
             this.$menuItems[0].classList.add('isActive');
         }
+    }
+
+    // Click link same hash
+    for (var i = 0; i < this.$links.length; i++) {
+        this.$links[i].onclick = function() {
+            refThis.getBodyTop();
+            if(this.href.split('#')[1] == refThis.pageId){
+                refThis.detectID();
+                return false;
+            }
+        };
+    }
+
+    // Click links not WP rocket to reset hash
+    var $otherlinks = document.querySelectorAll('#adminmenumain a, #wpadminbar a');
+    for (var i = 0; i < this.$links.length; i++) {
+        $otherlinks[i].onclick = function() {
+            sessionStorage.setItem('wpr-hash', '');
+        };
     }
 
 }

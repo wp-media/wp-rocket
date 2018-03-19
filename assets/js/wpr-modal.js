@@ -185,6 +185,8 @@ ModalWpr.prototype.open = function() {
     this.elem.css('display','block');
     this.overlay.css('display','block');
 
+    // Reset current tab wp-rocket
+    sessionStorage.setItem('wpr-hash', '');
 };
 
 
