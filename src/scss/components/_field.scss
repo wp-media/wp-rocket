@@ -50,8 +50,8 @@
 
     &-description-label{
         @include font-size(14,20);
-        font-weight: bold !important;
-        //color: $cGreyDark2;
+        font-weight: 500;
+        color: $cGreyDark2;
     }
 
     &-list{
@@ -192,16 +192,6 @@
 
         label{
             @extend .wpr-title3;
-        }
-    }
-
-    // textarea
-    &--textarea{
-        padding-right: 10%;
-
-        label{
-            display: inline-block;
-            margin-bottom: $space;
         }
     }
 

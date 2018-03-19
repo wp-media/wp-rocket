@@ -59,7 +59,7 @@ a, button{
     text-rendering: optimizeLegibility;
 
     display: flex;
-    color: #000;
+    color: $cBlack;
     @include font-size(13,20);
 }
 
