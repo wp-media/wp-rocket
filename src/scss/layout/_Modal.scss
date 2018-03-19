@@ -205,10 +205,12 @@
 
     .button{
         font-weight: 500;
+        box-shadow: none;
+        height: 30px;
+        border-bottom-width: 3px;
     }
 
     .button-primary{
-        border-bottom-width: 2px;
 
         &.wpr-isDisabled{
             opacity: 0.2;
