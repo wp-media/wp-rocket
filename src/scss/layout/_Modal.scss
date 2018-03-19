@@ -14,9 +14,14 @@
     top: 50%;
     left: 50%;
     background: #fff;
-    color: #0E1B23;
+    color: #444;
     transform: translateX(-50%) translateY(-50%);
     z-index: 100000;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -ms-interpolation-mode: nearest-neighbor;
+    image-rendering: optimizeQuality;
+    text-rendering: optimizeLegibility;
 
     &-overlay{
         display: none;
@@ -33,9 +38,12 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        height: $space*6;
         padding: 0 $space*2 0 $space*4;
         border-bottom: 1px solid #EEE;
+
+        & > div{
+            display: flex;
+        }
     }
 
     &-footer{
@@ -71,7 +79,8 @@
         font-size: 0;
         color: #777;
         position: relative;
-        left: -8px;
+        width: 28px;
+        left: -12px;
 
         &.wpr-isOpen{
             display: inline-block;
@@ -229,15 +238,20 @@
     h2,
     h3{
         display: inline-block;
-        font-weight: normal;
+        @include font-size(16,19);
     }
 
     h2{
+        max-width: 430px;
         font-weight: 600;
+        color: #23282D;
+        margin: 12px 0;
     }
 
     h3{
         font-weight: bold;
+        color: #3D474E;
+        margin: $space 0;
     }
 
     input[type=radio]{
