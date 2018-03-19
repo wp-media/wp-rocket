@@ -3,26 +3,59 @@ $(document).ready(function(){
     /**
      * Refresh License data
      */
+    var _isRefreshing = false;
     $('#wpr-action-refresh_account').on('click', function(e) {
-        var button = $(this);
-        var expire = $('#wpr-expiration-data');
+        if(!_isRefreshing){
+            var button = $(this);
+            var account = $('#wpr-account-data');
+            var expire = $('#wpr-expiration-data');
 
-        e.preventDefault();
-        expire.removeClass('wpr-isValid wpr-isInvalid');
+            e.preventDefault();
+            _isRefreshing = true;
+            button.blur();
+            button.addClass('wpr-isLoading');
+            expire.add(account).removeClass('wpr-isValid wpr-isInvalid');
 
-        $.post(
-            ajaxurl,
-            {
-                action: 'rocket_refresh_customer_data',
-                _ajax_nonce: rocket_ajax_data.nonce,
-            },
-            function(response) {
-                if ( true === response.success ) {
-                    $('#wpr-account-data').html(response.data.licence_account);
-                    expire.addClass(response.data.class).html(response.data.licence_expiration);
+            $.post(
+                ajaxurl,
+                {
+                    action: 'rocket_refresh_customer_data',
+                    _ajax_nonce: rocket_ajax_data.nonce,
+                },
+                function(response) {
+                    button.removeClass('wpr-isLoading');
+                    button.addClass('wpr-isHidden');
+
+                    if ( true === response.success ) {
+                        account.addClass(response.data.class).html(response.data.licence_account);
+                        expire.addClass(response.data.class).html(response.data.licence_expiration);
+                        setTimeout(function() {
+                            button.removeClass('wpr-icon-refresh wpr-isHidden');
+                            button.addClass('wpr-icon-check');
+                        }, 250);
+                    }
+                    else{
+                        setTimeout(function() {
+                            button.removeClass('wpr-icon-refresh wpr-isHidden');
+                            button.addClass('wpr-icon-close');
+                        }, 250);
+                    }
+
+                    setTimeout(function() {
+                        var vTL = new TimelineLite({onComplete:function(){
+                            _isRefreshing = false;
+                        }})
+                          .set(button, {css:{className:'+=wpr-isHidden'}})
+                          .set(button, {css:{className:'-=wpr-icon-check'}}, 0.25)
+                          .set(button, {css:{className:'-=wpr-icon-close'}})
+                          .set(button, {css:{className:'+=wpr-icon-refresh'}}, 0.25)
+                          .set(button, {css:{className:'-=wpr-isHidden'}})
+                        ;
+                    }, 2000);
                 }
-            }
-        );
+            );
+        }
+        return false;
     });
 
     /**

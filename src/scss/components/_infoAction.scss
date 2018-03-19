@@ -19,7 +19,7 @@
         position: absolute;
         margin-left: -26px;
         @include font-size(18,24);
-        @include transition(all,200ms);
+        @include transition(color,200ms);
     }
 
     &--help{
