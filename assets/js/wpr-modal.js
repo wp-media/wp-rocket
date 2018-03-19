@@ -94,8 +94,14 @@ function ModalWpr(aElem) {
     // Write text
     this.textFields.keyup(function() {
         refThis.hiddenDetails.val($(this).val());
-        refThis.button.removeClass('wpr-isDisabled');
-        refThis.button.removeAttr("disabled");
+        if(refThis.hiddenDetails.val() != ''){
+            refThis.button.removeClass('wpr-isDisabled');
+            refThis.button.removeAttr("disabled");
+        }
+        else{
+            refThis.button.addClass('wpr-isDisabled');
+            refThis.button.attr("disabled", true);
+        }
     });
 }
 
