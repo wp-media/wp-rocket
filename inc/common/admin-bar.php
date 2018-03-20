@@ -45,10 +45,10 @@ function rocket_admin_bar( $wp_admin_bar ) {
 			// Purge All.
 			$wp_admin_bar->add_menu(
 				array(
-					'parent'    => 'wp-rocket',
-					'id'        => 'purge-all',
-					'title'     => __( 'Clear cache', 'rocket' ),
-					'href'      => '#',
+					'parent' => 'wp-rocket',
+					'id'     => 'purge-all',
+					'title'  => __( 'Clear cache', 'rocket' ),
+					'href'   => '#',
 				)
 			);
 
@@ -71,10 +71,10 @@ function rocket_admin_bar( $wp_admin_bar ) {
 			// Purge All.
 			$wp_admin_bar->add_menu(
 				array(
-					'parent'    => 'wp-rocket',
-					'id'        => 'purge-all',
-					'title'     => __( 'Clear cache', 'rocket' ),
-					'href'      => '#',
+					'parent' => 'wp-rocket',
+					'id'     => 'purge-all',
+					'title'  => __( 'Clear cache', 'rocket' ),
+					'href'   => '#',
 				)
 			);
 
@@ -113,10 +113,10 @@ function rocket_admin_bar( $wp_admin_bar ) {
 			// Purge All.
 			$wp_admin_bar->add_menu(
 				array(
-					'parent'    => 'wp-rocket',
-					'id'        => 'purge-all',
-					'title'     => __( 'Clear cache', 'rocket' ),
-					'href'      => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . '&type=all' . $referer ), $action . '_all' ),
+					'parent' => 'wp-rocket',
+					'id'     => 'purge-all',
+					'title'  => __( 'Clear cache', 'rocket' ),
+					'href'   => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . '&type=all' . $referer ), $action . '_all' ),
 				)
 			);
 
@@ -127,7 +127,6 @@ function rocket_admin_bar( $wp_admin_bar ) {
 			// Purge a post.
 			global $pagenow, $post;
 			if ( $post && 'post.php' === $pagenow && isset( $_GET['action'], $_GET['post'] ) ) {
-				$pobject = get_post_type_object( $post->post_type );
 				$wp_admin_bar->add_menu(
 					array(
 						'parent' => 'wp-rocket',
@@ -226,12 +225,12 @@ function rocket_admin_bar( $wp_admin_bar ) {
 			} elseif ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) || rocket_is_plugin_active( 'qtranslate-x/qtranslate.php' ) || rocket_is_plugin_active( 'polylang/polylang.php' ) || rocket_is_plugin_active( 'polylang-pro/polylang.php' ) ) {
 
 				$wp_admin_bar->add_menu(
-					 array(
-						 'parent' => 'wp-rocket',
-						 'id'     => 'preload-cache',
-						 'title'  => __( 'Preload cache', 'rocket' ),
-						 'href'   => '#',
-					 )
+					array(
+						'parent' => 'wp-rocket',
+						'id'     => 'preload-cache',
+						'title'  => __( 'Preload cache', 'rocket' ),
+						'href'   => '#',
+					)
 				);
 
 				if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
@@ -244,22 +243,22 @@ function rocket_admin_bar( $wp_admin_bar ) {
 
 				foreach ( $langlinks as $lang ) {
 					$wp_admin_bar->add_menu(
-						 array(
-							 'parent' => 'preload-cache',
-							 'id'     => 'preload-cache-' . $lang['code'],
-							 'title'  => $lang['flag'] . '&nbsp;' . $lang['anchor'],
-							 'href'   => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . '&lang=' . $lang['code'] . $referer ), $action ),
-						 )
+						array(
+							'parent' => 'preload-cache',
+							'id'     => 'preload-cache-' . $lang['code'],
+							'title'  => $lang['flag'] . '&nbsp;' . $lang['anchor'],
+							'href'   => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . '&lang=' . $lang['code'] . $referer ), $action ),
+						)
 					);
 				}
 
 				$wp_admin_bar->add_menu(
-					 array(
-						 'parent' => 'preload-cache',
-						 'id'     => 'preload-cache-all',
-						 'title'  => '<div class="dashicons-before dashicons-admin-site" style="line-height:1.5;"> ' . __( 'All languages', 'rocket' ) . '</div>',
-						 'href'   => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . '&lang=all' . $referer ), $action ),
-					 )
+					array(
+						'parent' => 'preload-cache',
+						'id'     => 'preload-cache-all',
+						'title'  => '<div class="dashicons-before dashicons-admin-site" style="line-height:1.5;"> ' . __( 'All languages', 'rocket' ) . '</div>',
+						'href'   => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . '&lang=all' . $referer ), $action ),
+					)
 				);
 
 			} else {
@@ -302,7 +301,10 @@ function rocket_admin_bar( $wp_admin_bar ) {
 		'parent' => 'wp-rocket',
 		'id'     => 'support',
 		'title'  => __( 'Support', 'rocket' ),
-		'href'   => rocket_get_external_url( 'support' ),
+		'href'   => rocket_get_external_url( 'support', array(
+			'utm_source' => 'wp_plugin',
+			'utm_medium' => 'wp_rocket',
+		) ),
 	));
 }
 add_action( 'admin_bar_menu', 'rocket_admin_bar', PHP_INT_MAX );

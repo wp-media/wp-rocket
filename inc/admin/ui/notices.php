@@ -488,7 +488,7 @@ function rocket_thank_you_license() {
 			/* translators: %1$s = plugin name, %2$s + %3$s = opening links, %4$s = closing link */
 			__( '%1$s is good to go! %2$sTest your load time%4$s, or visit your %3$ssettings%4$s.', 'rocket' ),
 			'<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>',
-			'<a href="https://wp-rocket.me/blog/correctly-measure-websites-page-load-time/" target="_blank">',
+			'<a href="https://wp-rocket.me/blog/correctly-measure-websites-page-load-time/?utm_source=wp_plugin&utm_medium=wp_rocket" target="_blank">',
 			'<a href="' . admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG ) . '">',
 			'</a>'
 		);
@@ -976,7 +976,7 @@ function rocket_notice_writing_permissions( $file ) {
 		/* translators: This is a doc title! %1$s = opening link; %2$s = closing link */
 		__( 'Troubleshoot: %1$sHow to make system files writeable%2$s', 'rocket' ),
 		/* translators: Documentation exists in EN, DE, FR, ES, IT; use loaclised URL if applicable */
-		'<a href="' . __( 'http://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-config-writeable', 'rocket' ) . '" target="_blank">',
+		'<a href="' . __( 'https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket', 'rocket' ) . '" target="_blank">',
 		'</a>'
 	);
 

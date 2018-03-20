@@ -72,7 +72,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 				<button id="wpr-action-safe_mode" class="wpr-button"><?php _e( 'Activate safe mode', 'rocket' ); ?></button>
 			</div>
 			<p style="display:none;" class="show-if-safe-mode"><?php _e( 'Safe mode applied. Review your site in a private/logged out browser window.', 'rocket' ); ?></p>
-			<p style="display:none;" class="show-if-safe-mode"><?php _e( 'Is the issue fixed? Now you can reactivate options one at a time to determine which one caused the problem. <a href="http://docs.wp-rocket.me/article/19-resolving-issues-with-file-optimization" target="_blank">More info</a>', 'rocket' ); ?></p>
+			<p style="display:none;" class="show-if-safe-mode"><?php _e( 'Is the issue fixed? Now you can reactivate options one at a time to determine which one caused the problem. <a href="https://docs.wp-rocket.me/article/19-resolving-issues-with-file-optimization/?utm_source=wp_plugin&utm_medium=wp_rocket" target="_blank">More info</a>', 'rocket' ); ?></p>
 		</div>
 		<div id="reason-score-panel" class="wpr-Modal-hidden">
 			<h3><?php _e( 'My PageSpeed or GT Metrix score did not improve', 'rocket' ); ?></h3>
@@ -81,20 +81,20 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 			<blockquote cite="https://yoast.com/ask-yoast-google-page-speed/"><?php _e( '[Google] just looks at how fast your website loads for users, so you don’t have to obsess over that specific score. You have to make sure your website is as fast as you can get it.', 'rocket' ); ?></blockquote>
 			<cite><a href="https://yoast.com/ask-yoast-google-page-speed/" target="_blank">https://yoast.com/ask-yoast-google-page-speed/</a></cite>
 
-			<p><?php _e( 'How to measure the load time of your site:<br><a href="https://wp-rocket.me/blog/correctly-measure-websites-page-load-time/" target="_blank">https://wp-rocket.me/blog/correctly-measure-websites-page-load-time/</a>', 'rocket' ); ?></p>
-			<p><?php _e( 'Why you should not be chasing a PageSpeed score:<br><a href="https://wp-rocket.me/blog/the-truth-about-google-pagespeed-insights/" target="_blank">https://wp-rocket.me/blog/the-truth-about-google-pagespeed-insights/</a>', 'rocket' ); ?></p>
+			<p><?php _e( 'How to measure the load time of your site:<br><a href="https://wp-rocket.me/blog/correctly-measure-websites-page-load-time/?utm_source=wp_plugin&utm_medium=wp_rocket" target="_blank">https://wp-rocket.me/blog/correctly-measure-websites-page-load-time/</a>', 'rocket' ); ?></p>
+			<p><?php _e( 'Why you should not be chasing a PageSpeed score:<br><a href="https://wp-rocket.me/blog/the-truth-about-google-pagespeed-insights/?utm_source=wp_plugin&utm_medium=wp_rocket" target="_blank">https://wp-rocket.me/blog/the-truth-about-google-pagespeed-insights/</a>', 'rocket' ); ?></p>
 		</div>
 		<div id="reason-loading-panel" class="wpr-Modal-hidden">
 			<h3><?php _e( 'I did not notice a difference in loading time', 'rocket' ); ?></h3>
 			<p><?php _e( 'Make sure you look at your site while logged out to see the fast, cached pages!', 'rocket' ); ?>
-			<p><?php _e( 'The best way to see the improvement WP Rocket provides is to perform speed tests. Follow this guide to correctly measure the load time of your website:<br><a href="https://wp-rocket.me/blog/correctly-measure-websites-page-load-time/" target="_blank">https://wp-rocket.me/blog/correctly-measure-websites-page-load-time/</a>', 'rocket' ); ?>
+			<p><?php _e( 'The best way to see the improvement WP Rocket provides is to perform speed tests. Follow this guide to correctly measure the load time of your website:<br><a href="https://wp-rocket.me/blog/correctly-measure-websites-page-load-time/?utm_source=wp_plugin&utm_medium=wp_rocket" target="_blank">https://wp-rocket.me/blog/correctly-measure-websites-page-load-time/</a>', 'rocket' ); ?>
 		</div>
 		<div id="reason-complicated-panel" class="wpr-Modal-hidden">
 			<h3><?php _e( 'The plugin is too complicated to configure', 'rocket' ); ?></h3>
 			<p><?php _e( 'We are sorry to hear you are finding it difficult to use WP Rocket.', 'rocket' ); ?></p>
 			<p><?php _e( 'WP Rocket is the only caching plugin that provides 80% of best practices in speed optimization, by default. That means you do not have to do anything besides activate WP Rocket and your site will already be faster!', 'rocket' ); ?></p>
 			<p><?php _e( 'The additional options are not required for a fast site, they are for fine-tuning.', 'rocket' ); ?></p>
-			<p><?php _e( 'To see the benefit WP Rocket is already providing, measure the speed of your site using a tool like Pingdom:<br><a href="https://wp-rocket.me/blog/correctly-measure-websites-page-load-time/" target="_blank">https://wp-rocket.me/blog/correctly-measure-websites-page-load-time/</a>', 'rocket' ); ?></p>
+			<p><?php _e( 'To see the benefit WP Rocket is already providing, measure the speed of your site using a tool like Pingdom:<br><a href="https://wp-rocket.me/blog/correctly-measure-websites-page-load-time/?utm_source=wp_plugin&utm_medium=wp_rocket" target="_blank">https://wp-rocket.me/blog/correctly-measure-websites-page-load-time/</a>', 'rocket' ); ?></p>
 		</div>
 	</div>
 	<div class="wpr-Modal-footer">

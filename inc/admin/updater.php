@@ -6,24 +6,24 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  *
  * @since 1.0
  *
- * @param array  $r An array of HTTP request arguments.
+ * @param array  $request An array of HTTP request arguments.
  * @param string $url The request URL.
  * @return array Updated array of HTTP request arguments.
  */
-function rocket_updates_exclude( $r, $url ) {
-	if ( 0 !== strpos( $url, 'http://api.wordpress.org/plugins/update-check' ) || ! isset( $r['body']['plugins'] ) ) {
-		return $r; // Not a plugin update request. Stop immediately.
+function rocket_updates_exclude( $request, $url ) {
+	if ( 0 !== strpos( $url, 'http://api.wordpress.org/plugins/update-check' ) || ! isset( $request['body']['plugins'] ) ) {
+		return $request; // Not a plugin update request. Stop immediately.
 	}
 
-	$plugins = maybe_unserialize( $r['body']['plugins'] );
+	$plugins = maybe_unserialize( $request['body']['plugins'] );
 
 	if ( isset( $plugins->plugins[ plugin_basename( WP_ROCKET_FILE ) ], $plugins->active[ array_search( plugin_basename( WP_ROCKET_FILE ), $plugins->active, true ) ] ) ) {
 		unset( $plugins->plugins[ plugin_basename( WP_ROCKET_FILE ) ] );
 		unset( $plugins->active[ array_search( plugin_basename( WP_ROCKET_FILE ), $plugins->active, true ) ] );
 	}
 
-	$r['body']['plugins'] = maybe_serialize( $plugins );
-	return $r;
+	$request['body']['plugins'] = maybe_serialize( $plugins );
+	return $request;
 }
 add_filter( 'http_request_args', 'rocket_updates_exclude', 5, 2 );
 
@@ -68,13 +68,19 @@ function rocket_force_info_result( $res, $action, $args ) {
 
 		if ( is_wp_error( $request ) ) {
 			// translators: %s is an URL.
-			$res = new WP_Error( 'plugins_api_failed', sprintf( __( 'An unexpected error occurred. Something may be wrong with WP-Rocket.me or this server&#8217;s configuration. If you continue to have problems, <a href="%s">contact support</a>.', 'rocket' ), rocket_get_external_url( 'support' ) ), $request->get_error_message() );
+			$res = new WP_Error( 'plugins_api_failed', sprintf( __( 'An unexpected error occurred. Something may be wrong with WP-Rocket.me or this server&#8217;s configuration. If you continue to have problems, <a href="%s">contact support</a>.', 'rocket' ), rocket_get_external_url( 'support', array(
+				'utm_source' => 'wp_plugin',
+				'utm_medium' => 'wp_rocket',
+			) ) ), $request->get_error_message() );
 		} else {
 			$res = maybe_unserialize( wp_remote_retrieve_body( $request ) );
 
 			if ( ! is_object( $res ) && ! is_array( $res ) ) {
 				// translators: %s is an URL.
-				$res = new WP_Error( 'plugins_api_failed', sprintf( __( 'An unexpected error occurred. Something may be wrong with WP-Rocket.me or this server&#8217;s configuration. If you continue to have problems, <a href="%s">contact support</a>.', 'rocket' ), rocket_get_external_url( 'support' ) ), wp_remote_retrieve_body( $request ) );
+				$res = new WP_Error( 'plugins_api_failed', sprintf( __( 'An unexpected error occurred. Something may be wrong with WP-Rocket.me or this server&#8217;s configuration. If you continue to have problems, <a href="%s">contact support</a>.', 'rocket' ), rocket_get_external_url( 'support', array(
+					'utm_source' => 'wp_plugin',
+					'utm_medium' => 'wp_rocket',
+				) ) ), wp_remote_retrieve_body( $request ) );
 			}
 		}
 	}

@@ -61,12 +61,12 @@ function rocket_renew_all_boxes( $uid = null, $keep_this = array() ) {
 
 	// $keep_this works only for the current user.
 	if ( ! empty( $keep_this ) && null !== $uid ) {
-		if ( is_array( $keep_this ) ) {
-			foreach ( $keep_this as $kt ) {
-				rocket_dismiss_box( $kt );
-			}
-		} else {
-			rocket_dismiss_box( $keep_this );
+		if ( ! is_array( $keep_this ) ) {
+			$keep_this = (array) $keep_this;
+		}
+
+		foreach ( $keep_this as $kt ) {
+			rocket_dismiss_box( $kt );
 		}
 	}
 }
@@ -123,15 +123,15 @@ function create_rocket_uniqid() {
  *
  * @since 2.4
  *
- * @param array  $r An array of request arguments.
- * @param string $url Requested URL.
+ * @param array  $request An array of request arguments.
+ * @param string $url     Requested URL.
  * @return array An array of requested arguments
  */
-function rocket_add_own_ua( $r, $url ) {
+function rocket_add_own_ua( $request, $url ) {
 	if ( strpos( $url, 'wp-rocket.me' ) !== false ) {
-		$r['user-agent'] = rocket_user_agent( $r['user-agent'] );
+		$request['user-agent'] = rocket_user_agent( $request['user-agent'] );
 	}
-	return $r;
+	return $request;
 }
 add_filter( 'http_request_args', 'rocket_add_own_ua', 10, 3 );
 
@@ -176,7 +176,7 @@ function get_rocket_documentation_url() {
 	);
 	$lang   = get_locale();
 	$prefix = isset( $langs[ $lang ] ) ? $langs[ $lang ] : '';
-	$url    = "http://{$prefix}docs.wp-rocket.me/?utm_source=wp-rocket&utm_medium=wp-admin&utm_term=doc-support&utm_campaign=plugin";
+	$url    = "https://{$prefix}docs.wp-rocket.me/?utm_source=wp_plugin&utm_medium=wp_rocket";
 
 	return $url;
 }
@@ -197,7 +197,7 @@ function get_rocket_faq_url() {
 	);
 	$lang  = get_locale();
 	$faq   = isset( $langs[ $lang ] ) ? $langs[ $lang ] : 'docs.wp-rocket.me/category/65-faq';
-	$url   = "http://{$faq}/?utm_source=wp-rocket&utm_medium=wp-admin&utm_term=doc-faq&utm_campaign=plugin";
+	$url   = "https://{$faq}/?utm_source=wp_plugin&utm_medium=wp_rocket";
 
 	return $url;
 }
@@ -339,8 +339,7 @@ function rocket_allow_json_mime_type( $wp_get_mime_types ) {
  */
 function rocket_data_collection_preview_table() {
 
-	$data     = rocket_analytics_data();
-	$esc_data = esc_textarea( var_export( $data, true ) );
+	$data = rocket_analytics_data();
 
 	$html  = '<table class="wp-rocket-data-table widefat striped">';
 	$html .= '<tbody>';

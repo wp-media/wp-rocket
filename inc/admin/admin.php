@@ -10,7 +10,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  * @return array Updated array of links
  */
 function rocket_settings_action_links( $actions ) {
-	array_unshift( $actions, sprintf( '<a href="%s">%s</a>', 'http://wp-rocket.me/support/', __( 'Support', 'rocket' ) ) );
+	array_unshift( $actions, sprintf( '<a href="%s">%s</a>', 'https://wp-rocket.me/support/?utm_source=wp_plugin&utm_medium=wp_rocket', __( 'Support', 'rocket' ) ) );
 
 	array_unshift( $actions, sprintf( '<a href="%s">%s</a>', get_rocket_documentation_url(), __( 'Docs', 'rocket' ) ) );
 
@@ -408,9 +408,10 @@ function rocket_analytics_data() {
 		'analytics_enabled'       => 1,
 	);
 
-	$theme  = wp_get_theme();
-	$data   = array_diff_key( get_option( WP_ROCKET_SLUG ), $untracked_wp_rocket_options );
-	$locale = explode( '_', get_locale() );
+	$theme              = wp_get_theme();
+	$data               = array_diff_key( get_option( WP_ROCKET_SLUG ), $untracked_wp_rocket_options );
+	$locale             = explode( '_', get_locale() );
+	$data['web_server'] = 'Unknown';
 
 	if ( $is_nginx ) {
 		$data['web_server'] = 'NGINX';
@@ -420,8 +421,6 @@ function rocket_analytics_data() {
 		$data['web_server'] = 'IIS 7';
 	} elseif ( $is_IIS ) {
 		$data['web_server'] = 'IIS';
-	} else {
-		$data['web_server'] = 'unknown';
 	}
 
 	$data['php_version']       = preg_replace( '@^(\d\.\d+).*@', '\1', phpversion() );

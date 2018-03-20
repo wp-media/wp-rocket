@@ -113,8 +113,8 @@ class Page {
 
 		add_filter( 'option_page_capability_' . $self->slug, [ $self, 'required_capability' ] );
 		add_filter( 'rocket_settings_menu_navigation', [ $self, 'add_menu_tools_page' ] );
-		add_filter( 'pre_get_rocket_option_cache_mobile', [ $self, 'is_mobile_plugin_active'] );
-		add_filter( 'pre_get_rocket_option_do_caching_mobile_files', [ $self, 'is_mobile_plugin_active'] );
+		add_filter( 'pre_get_rocket_option_cache_mobile', [ $self, 'is_mobile_plugin_active' ] );
+		add_filter( 'pre_get_rocket_option_do_caching_mobile_files', [ $self, 'is_mobile_plugin_active' ] );
 	}
 
 	/**
@@ -342,7 +342,7 @@ class Page {
 		if ( 1 <= $customer_data->licence_account && $customer_data->licence_account < 3 ) {
 			$customer_data->licence_account = 'Single';
 		} elseif ( '-1' === $customer_data->licence_account ) {
-			$customer_data->licence_account = 'Unlimited';
+			$customer_data->licence_account = 'Infinite';
 		} else {
 			$customer_data->licence_account = 'Plus';
 		}
@@ -1758,44 +1758,44 @@ class Page {
 				'en' => [
 					[
 						'id'    => '5569b671e4b027e1978e3c51',
-						'url'   => 'https://docs.wp-rocket.me/article/99-pages-are-not-cached-or-css-and-js-minification-are-not-working',
+						'url'   => 'https://docs.wp-rocket.me/article/99-pages-are-not-cached-or-css-and-js-minification-are-not-working/?utm_source=wp_plugin&utm_medium=wp_rocket',
 						'title' => 'Pages Are Not Cached or CSS and JS Minification Are Not Working',
 					],
 					[
 						'id'    => '556778c8e4b01a224b426fad',
-						'url'   => 'https://docs.wp-rocket.me/article/85-google-page-speed-grade-does-not-improve',
+						'url'   => 'https://docs.wp-rocket.me/article/85-google-page-speed-grade-does-not-improve/?utm_source=wp_plugin&utm_medium=wp_rocket',
 						'title' => 'Google PageSpeed Grade does not Improve',
 					],
 					[
 						'id'    => '556ef48ce4b01a224b428691',
-						'url'   => 'https://docs.wp-rocket.me/article/106-my-site-is-broken',
+						'url'   => 'https://docs.wp-rocket.me/article/106-my-site-is-broken/?utm_source=wp_plugin&utm_medium=wp_rocket',
 						'title' => 'My Site Is Broken',
 					],
 					[
 						'id'    => '54205957e4b099def9b55df0',
-						'url'   => 'https://docs.wp-rocket.me/article/19-resolving-issues-with-file-optimization',
+						'url'   => 'https://docs.wp-rocket.me/article/19-resolving-issues-with-file-optimization/?utm_source=wp_plugin&utm_medium=wp_rocket',
 						'title' => 'Resolving Issues with File Optimization',
 					],
 				],
 				'fr' => [
 					[
 						'id'    => '5697d2dc9033603f7da31041',
-						'url'   => 'https://fr.docs.wp-rocket.me/article/264-les-pages-ne-sont-pas-mises-en-cache-ou-la-minification-css-et-js-ne-fonctionne-pas',
+						'url'   => 'https://fr.docs.wp-rocket.me/article/264-les-pages-ne-sont-pas-mises-en-cache-ou-la-minification-css-et-js-ne-fonctionne-pas/?utm_source=wp_plugin&utm_medium=wp_rocket',
 						'title' => 'Les pages ne sont pas mises en cache, ou la minification CSS et JS ne fonctionne pas',
 					],
 					[
 						'id'    => '569564dfc69791436155e0b0',
-						'url'   => 'https://fr.docs.wp-rocket.me/article/218-la-note-google-page-speed-ne-sameliore-pas',
+						'url'   => 'https://fr.docs.wp-rocket.me/article/218-la-note-google-page-speed-ne-sameliore-pas/?utm_source=wp_plugin&utm_medium=wp_rocket',
 						'title' => "La note Google Page Speed ne s'améliore pas",
 					],
 					[
 						'id'    => '5697d03bc69791436155ed69',
-						'url'   => 'https://fr.docs.wp-rocket.me/article/263-site-casse',
+						'url'   => 'https://fr.docs.wp-rocket.me/article/263-site-casse/?utm_source=wp_plugin&utm_medium=wp_rocket',
 						'title' => 'Mon site est cassé',
 					],
 					[
 						'id'    => '56967d73c69791436155e637',
-						'url'   => 'https://fr.docs.wp-rocket.me/article/241-problemes-minification',
+						'url'   => 'https://fr.docs.wp-rocket.me/article/241-problemes-minification/?utm_source=wp_plugin&utm_medium=wp_rocket',
 						'title' => "Résoudre les problèmes avec l'optimisation des fichiers",
 					],
 				],
@@ -1807,11 +1807,11 @@ class Page {
 			'user_cache'             => [
 				'en' => [
 					'id'  => '56b55ba49033600da1c0b687',
-					'url' => 'http://docs.wp-rocket.me/article/313-user-cache',
+					'url' => 'https://docs.wp-rocket.me/article/313-user-cache/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 				'fr' => [
 					'id'  => '56cb9ba990336008e9e9e3d9',
-					'url' => 'https://fr.docs.wp-rocket.me/article/333-cache-utilisateurs-connectes',
+					'url' => 'https://fr.docs.wp-rocket.me/article/333-cache-utilisateurs-connectes/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 			'mobile_cache_section'   => [
@@ -1821,11 +1821,11 @@ class Page {
 			'mobile_cache'           => [
 				'en' => [
 					'id'  => '577a5f1f903360258a10e52a',
-					'url' => 'https://docs.wp-rocket.me/article/708-mobile-caching',
+					'url' => 'https://docs.wp-rocket.me/article/708-mobile-caching/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 				'fr' => [
 					'id'  => '589b17a02c7d3a784630b249',
-					'url' => 'http://fr.docs.wp-rocket.me/article/934-mise-en-cache-pour-mobile',
+					'url' => 'https://fr.docs.wp-rocket.me/article/934-mise-en-cache-pour-mobile/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 			'cache_lifespan'         => [
@@ -1835,11 +1835,11 @@ class Page {
 			'nonce'                  => [
 				'en' => [
 					'id'  => '5922fd0e0428634b4a33552c',
-					'url' => 'http://docs.wp-rocket.me/article/975-nonces-and-cache-lifespan',
+					'url' => 'https://docs.wp-rocket.me/article/975-nonces-and-cache-lifespan/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 				'fr' => [
 					'id'  => '598080e1042863033a1b890e',
-					'url' => 'http://fr.docs.wp-rocket.me/article/1015-nonces-delai-nettoyage-cache',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1015-nonces-delai-nettoyage-cache/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 			'basic_section'          => [
@@ -1857,31 +1857,31 @@ class Page {
 			'remove_query_strings'   => [
 				'en' => [
 					'id'  => '55231415e4b0221aadf25676',
-					'url' => 'https://docs.wp-rocket.me/article/56-remove-query-string-from-static-resources',
+					'url' => 'https://docs.wp-rocket.me/article/56-remove-query-string-from-static-resources/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 				'fr' => [
 					'id'  => '569568269033603f7da30334',
-					'url' => 'https://fr.docs.wp-rocket.me/article/219-supprimer-les-chaines-de-requetes-sur-les-ressources-statiques',
+					'url' => 'https://fr.docs.wp-rocket.me/article/219-supprimer-les-chaines-de-requetes-sur-les-ressources-statiques/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 			'combine'                => [
 				'en' => [
 					'id'  => '596eaf7d2c7d3a73488b3661',
-					'url' => 'https://docs.wp-rocket.me/article/1009-configuration-for-http-2',
+					'url' => 'https://docs.wp-rocket.me/article/1009-configuration-for-http-2/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 				'fr' => [
 					'id'  => '59a418ad042863033a1c572e',
-					'url' => 'https://fr.docs.wp-rocket.me/article/1018-configuration-http-2',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1018-configuration-http-2/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 			'defer'                  => [
 				'en' => [
 					'id'  => '5578cfbbe4b027e1978e6bb1',
-					'url' => 'http://docs.wp-rocket.me/article/108-render-blocking-javascript-and-css-pagespeed',
+					'url' => 'https://docs.wp-rocket.me/article/108-render-blocking-javascript-and-css-pagespeed/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 				'fr' => [
 					'id'  => '56957209c69791436155e0f6',
-					'url' => 'http://fr.docs.wp-rocket.me/article/230-javascript-et-css-bloquant-le-rendu-pagespeed',
+					'url' => 'https://fr.docs.wp-rocket.me/article/230-javascript-et-css-bloquant-le-rendu-pagespeed/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 			'lazyload'               => [
@@ -1899,11 +1899,11 @@ class Page {
 			'bot'                    => [
 				'en' => [
 					'id'  => '541780fde4b005ed2d11784c',
-					'url' => 'http://docs.wp-rocket.me/article/8-how-the-cache-is-preloaded',
+					'url' => 'https://docs.wp-rocket.me/article/8-how-the-cache-is-preloaded/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 				'fr' => [
 					'id'  => '5693d582c69791436155d645',
-					'url' => 'http://fr.docs.wp-rocket.me/article/188-comment-est-pre-charge-le-cache',
+					'url' => 'https://fr.docs.wp-rocket.me/article/188-comment-est-pre-charge-le-cache/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 			'dns_prefetch'           => [
@@ -1925,21 +1925,21 @@ class Page {
 			'ecommerce'              => [
 				'en' => [
 					'id'  => '555c619ce4b027e1978e1767',
-					'url' => 'http://docs.wp-rocket.me/article/75-is-wp-rocket-compatible-with-e-commerce-plugins',
+					'url' => 'https://docs.wp-rocket.me/article/75-is-wp-rocket-compatible-with-e-commerce-plugins/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 				'fr' => [
 					'id'  => '568f8291c69791436155caea',
-					'url' => 'https://fr.docs.wp-rocket.me/article/176-compatibilite-extensions-e-commerce',
+					'url' => 'https://fr.docs.wp-rocket.me/article/176-compatibilite-extensions-e-commerce/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 			'cache_query_strings'    => [
 				'en' => [
 					'id'  => '590a83610428634b4a32d52c',
-					'url' => 'http://docs.wp-rocket.me/article/971-caching-query-strings',
+					'url' => 'https://docs.wp-rocket.me/article/971-caching-query-strings/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 				'fr' => [
 					'id'  => '597a04fd042863033a1b6da4',
-					'url' => 'http://fr.docs.wp-rocket.me/article/1014-cache-query-strings',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1014-cache-query-strings/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 			'cleanup'                => [
@@ -1965,11 +1965,11 @@ class Page {
 			'varnish'                => [
 				'en' => [
 					'id'  => '56f48132c6979115a34095bd',
-					'url' => 'http://docs.wp-rocket.me/article/493-using-varnish-with-wp-rocket',
+					'url' => 'https://docs.wp-rocket.me/article/493-using-varnish-with-wp-rocket/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 				'fr' => [
 					'id'  => '56fd2f789033601d6683e574',
-					'url' => 'http://fr.docs.wp-rocket.me/article/512-varnish-wp-rocket-2-7',
+					'url' => 'https://fr.docs.wp-rocket.me/article/512-varnish-wp-rocket-2-7/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 		];
