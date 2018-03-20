@@ -12,6 +12,7 @@
 .wpr-multiple{
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
 
     @include respond-to('xs') {
         align-items: center;

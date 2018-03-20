@@ -29,7 +29,7 @@
         font-weight: bold;
         color: $cGreyDark2;
 
-        @include respond-to('sm') {
+        @include respond-to('md') {
             display: none !important;
         }
     }

@@ -12,6 +12,14 @@
     flex-direction: row;
     padding: $space*4 0;
 
+    @include respond-to('md') {
+        flex-direction: column;
+    }
+
+    @include respond-to('sm') {
+        flex-direction: row;
+    }
+
     @include respond-to('xs') {
         flex-direction: column;
     }

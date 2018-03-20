@@ -12,6 +12,10 @@
     flex: 0 0 290px;
     padding: $space*3 $space*2;
 
+    @include respond-to('md') {
+        flex: 0 0 260px;
+    }
+
     @include respond-to('sm') {
         display: none !important;
     }
