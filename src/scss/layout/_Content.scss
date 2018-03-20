@@ -14,6 +14,10 @@
     border-left: none;
     flex: 1 1 auto;
 
+    @include respond-to('xs') {
+        padding: $space*3 $space*2;
+    }
+
     form > input:last-child{
         margin-top: $space*3;
     }
