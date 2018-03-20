@@ -8,7 +8,7 @@
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 ?>
 
-<h3 class="wpr-Sidebar-title wpr-title2"><?php _e( 'How to correctly measure your website’s loading time?', 'rocket' ); ?></h3>
+<h3 class="wpr-Sidebar-title wpr-title2"><?php _e( 'How to correctly measure your website’s loading time', 'rocket' ); ?></h3>
 <div class="wpr-Sidebar-notice">
 	<p><?php _e( 'Learn how to use best practices to correctly measure your site\'s performance.', 'rocket' ); ?></p>
 	<a href="<?php echo esc_url( __( 'https://wp-rocket.me/blog/correctly-measure-websites-page-load-time/?utm_source=wp_plugin&utm_medium=wp_rocket', 'rocket' ) ); ?>" target="_blank" class="wpr-Sidebar-notice-link"><?php _e( 'Read our guide', 'rocket' ); ?></a>
