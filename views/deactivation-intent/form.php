@@ -67,9 +67,9 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 		<div id="reason-broke-panel" class="wpr-Modal-hidden">
 			<h3><?php _e( 'The plugin broke my layout or some functionality', 'rocket' ); ?></h3>
 			<p><?php _e( 'This type of issue can usually be fixed by deactivating some options in WP Rocket.', 'rocket' ); ?></p>
-			<p><?php _e( 'Click "Activate Safe Mode" to quickly turn off additional options. Then check your site to see if the issue has resolved.', 'rocket' ); ?></p>
+			<p><?php _e( 'Click "Apply Safe Mode" to quickly disable LazyLoad, File Optimization, Embeds and CDN options. Then check your site to see if the issue has resolved.', 'rocket' ); ?></p>
 			<div class="text-center">
-				<button id="wpr-action-safe_mode" class="wpr-button"><?php _e( 'Activate safe mode', 'rocket' ); ?></button>
+				<button id="wpr-action-safe_mode" class="wpr-button"><?php _e( 'Apply safe mode', 'rocket' ); ?></button>
 			</div>
 			<p style="display:none;" class="show-if-safe-mode"><?php _e( 'Safe mode applied. Review your site in a private/logged out browser window.', 'rocket' ); ?></p>
 			<p style="display:none;" class="show-if-safe-mode"><?php _e( 'Is the issue fixed? Now you can reactivate options one at a time to determine which one caused the problem. <a href="https://docs.wp-rocket.me/article/19-resolving-issues-with-file-optimization/?utm_source=wp_plugin&utm_medium=wp_rocket" target="_blank">More info</a>', 'rocket' ); ?></p>
