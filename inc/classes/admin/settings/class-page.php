@@ -1218,7 +1218,7 @@ class Page {
 				'cache_reject_uri'     => [
 					'type'              => 'textarea',
 					'description'       => __( 'Specify URLs of pages or posts that should never be cached (one per line)', 'rocket' ),
-					'helper'            => __( 'Use (.*) wildcards to address multiple URLs under a given path.<br>The domain part of the URL will be stripped automatically.', 'rocket' ),
+					'helper'            => __( 'The domain part of the URL will be stripped automatically.<br>Use (.*) wildcards to address multiple URLs under a given path.', 'rocket' ),
 					'section'           => 'cache_reject_uri_section',
 					'page'              => 'advanced_cache',
 					'default'           => [],
@@ -1244,7 +1244,7 @@ class Page {
 				'cache_purge_pages'    => [
 					'type'              => 'textarea',
 					'description'       => __( 'Specify URLs you always want purged from cache whenever you update any post or page (one per line)', 'rocket' ),
-					'helper'            => __( 'Use (.*) wildcards to address multiple URLs under a given path.<br>The domain part of the URL will be stripped automatically.', 'rocket' ),
+					'helper'            => __( 'The domain part of the URL will be stripped automatically.<br>Use (.*) wildcards to address multiple URLs under a given path.', 'rocket' ),
 					'section'           => 'cache_purge_pages_section',
 					'page'              => 'advanced_cache',
 					'default'           => [],
