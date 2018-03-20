@@ -506,6 +506,12 @@ class Render extends Abstract_render {
 		switch ( $type ) {
 			case 'link':
 				switch ( $action ) {
+					case 'ask_support':
+						$args['url'] = rocket_get_external_url( 'support', array(
+							'utm_source' => 'wp_plugin',
+							'utm_medium' => 'wp_rocket',
+						) );
+					break;
 					case 'view_account':
 						$args['url'] = rocket_get_external_url( 'account', array(
 							'utm_source' => 'wp_plugin',

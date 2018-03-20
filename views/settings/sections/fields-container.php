@@ -23,7 +23,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 <div class="wpr-optionHeader">
 	<h3 class="wpr-title2"><?php echo esc_html( $data['title'] ); ?></h3>
 	<?php if ( ! empty( $data['help'] ) ) : ?>
-	<button data-beacon-id="<?php echo esc_attr( $data['help'] ); ?>" class="wpr-infoAction wpr-infoAction--help wpr-icon-help"><?php esc_html_e( 'Need Help?', 'rocket' ); ?></button>
+	<a href="<?php echo esc_url( $data['help']['url'] ); ?>" data-beacon-id="<?php echo esc_attr( $data['help']['id'] ); ?>" class="wpr-infoAction wpr-infoAction--help wpr-icon-help"><?php esc_html_e( 'Need Help?', 'rocket' ); ?></a>
 	<?php endif; ?>
 </div>
 
@@ -36,7 +36,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 		<?php $this->render_settings_fields( $data['page'], $data['id'] ); ?>
 	</fieldset>
 
-	<?php if ( ! empty( $data['helper'] ) ) :?>
+	<?php if ( ! empty( $data['helper'] ) ) : ?>
 		<div class="wpr-fieldsContainer-helper wpr-icon-important">
 			<?php echo $data['helper']; ?>
 		</div>

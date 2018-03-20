@@ -167,11 +167,11 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 						</div>
 						<div>
 							<?php
-							$this->render_action_button( 'button', 'ask_support', [
+							$this->render_action_button( 'link', 'ask_support', [
 								'label'      => __( 'Ask support', 'rocket' ),
-								'icon'       => '',
 								'attributes' => [
-									'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-button--blue wpr-icon-help wpr-js-askSupport',
+									'class'  => 'wpr-button wpr-button--icon wpr-button--small wpr-button--blue wpr-icon-help wpr-js-askSupport',
+									'target' => '_blank',
 								],
 							] );
 							?>
