@@ -12,9 +12,10 @@
 .wpr-multiple{
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
 
     @include respond-to('xs') {
-        align-items: left;
+        align-items: center;
         flex-direction: column;
     }
 
@@ -22,6 +23,10 @@
         flex: 1 1 auto;
         position: relative;
         top: -2px;
+
+        @include respond-to('xs') {
+            width: 100%;
+        }
     }
 
     .wpr-button{
@@ -29,6 +34,10 @@
         width: auto;
         min-width: inherit;
         padding-right: 30px;
+
+        @include respond-to('xs') {
+            margin-left: 0;
+        }
     }
 
     input[type=text]{

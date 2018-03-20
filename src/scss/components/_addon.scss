@@ -11,6 +11,10 @@
 
     .wpr-flex{
         align-items: flex-start;
+
+        @include respond-to('xs') {
+            align-items: center;
+        }
     }
 
     .wpr-flex > div{
@@ -27,12 +31,43 @@
     }
 
     .wpr-addon-logo{
+        text-align: center;
         flex: 0 0 160px;
+
+        @include respond-to('md') {
+            max-width: 100px;
+
+            img{
+                width: 100%;
+                height: auto;
+            }
+        }
+
+        @include respond-to('sm') {
+            max-width: 160px;
+        }
+
+        @include respond-to('xs') {
+            flex: 0 0 auto;
+            margin-bottom: $space*2;
+        }
     }
 
     .wpr-addon-text{
         margin-left: $space*4;
         flex: 1 1 auto;
+
+        @include respond-to('md') {
+            margin-left: $space*2;
+        }
+
+        @include respond-to('sm') {
+            margin-left: $space*4;
+        }
+
+        @include respond-to('xs') {
+            margin-left: 0;
+        }
 
         a{
             display: inline-block;

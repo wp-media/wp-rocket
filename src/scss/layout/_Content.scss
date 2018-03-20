@@ -14,18 +14,23 @@
     border-left: none;
     flex: 1 1 auto;
 
+    @include respond-to('xs') {
+        padding: $space*3 $space*2;
+    }
+
     form > input:last-child{
         margin-top: $space*3;
     }
 
     &-tips{
+        display: none !important; // Line to remove when tips OK
         position: absolute;
         top: $space*6;
         right: $space*3;
         font-weight: bold;
         color: $cGreyDark2;
 
-        @include respond-to('sm') {
+        @include respond-to('md') {
             display: none !important;
         }
     }

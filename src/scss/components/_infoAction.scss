@@ -13,6 +13,7 @@
     letter-spacing: -0.03em;
     font-weight: 500;
     color: $cGreyDark2;
+    white-space: nowrap;
     @include transition(all,200ms);
 
     &:before{
