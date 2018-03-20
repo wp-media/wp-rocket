@@ -834,7 +834,7 @@ class Page {
 				],
 				'critical_css'           => [
 					'type'              => 'textarea',
-					'label'             => __( 'Fallback critical CSS:', 'rocket' ),
+					'label'             => __( 'Fallback critical CSS', 'rocket' ),
 					'container_class'   => [
 						'wpr-field--children',
 					],
