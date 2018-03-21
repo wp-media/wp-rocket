@@ -532,6 +532,7 @@ class Render extends Abstract_render {
 					case 'rocket_purge_cloudflare':
 					case 'rocket_rollback':
 					case 'rocket_export':
+					case 'rocket_generate_critical_css':
 						$url = admin_url( 'admin-post.php?action=' . $action );
 
 						if ( ! empty( $args['parameters'] ) ) {
