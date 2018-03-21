@@ -148,6 +148,7 @@ mixpanel.init("a36067b00a263cce0299cfd960e26ecf", {
 			'minify_js'              => 0,
 			'minify_concatenate_js'  => 0,
 			'minify_html'            => 0,
+			'minify_google_fonts'    => 0,
 			'remove_query_strings'   => 0,
 			'cdn'                    => 0,
 		];
