@@ -14,6 +14,7 @@
     font-weight: 500;
     color: $cGreyDark2;
     white-space: nowrap;
+    text-decoration: none;
     @include transition(all,200ms);
 
     &:before{
