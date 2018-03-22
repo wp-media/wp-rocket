@@ -14,7 +14,7 @@ $(document).ready(function(){
             _isRefreshing = true;
             button.blur();
             button.addClass('wpr-isLoading');
-            expire.add(account).removeClass('wpr-isValid wpr-isInvalid');
+            expire.removeClass('wpr-isValid wpr-isInvalid');
 
             $.post(
                 ajaxurl,
@@ -27,7 +27,7 @@ $(document).ready(function(){
                     button.addClass('wpr-isHidden');
 
                     if ( true === response.success ) {
-                        account.addClass(response.data.class).html(response.data.licence_account);
+                        account.html(response.data.licence_account);
                         expire.addClass(response.data.class).html(response.data.licence_expiration);
                         setTimeout(function() {
                             button.removeClass('wpr-icon-refresh wpr-isHidden');
