@@ -9,7 +9,7 @@
 .wpr-menuItem{
     position: relative;
     display: block;
-    padding: $space*2 20px 20px;
+    padding: 13px 44px 15px 14px;
     text-decoration: none;
     color: #fff;
     border-top: 1px solid rgba(255,255,255, 0.1);
@@ -28,10 +28,10 @@
 
     &:before{
         position: absolute;
-        top: calc(50% - 13px);
+        top: calc(50% - 11px);
         right: 20px;
         text-align: center;
-        @include font-size(26,26);
+        @include font-size(23,23);
         opacity: 0.4;
         color: #fff;
         @include transition(all, 150ms);
@@ -85,7 +85,7 @@
     }
 
     &-title{
-        @include font-size(13,24);
+        @include font-size(13,19);
         font-weight: bold;
         letter-spacing: -0.08px;
         text-transform: uppercase;
@@ -97,6 +97,7 @@
     }
 
     &-description{
+        margin-top: 2px;
         color: $cGreyDark1;
         @include font-size(12,16);
         @include transition(all, 150ms);
