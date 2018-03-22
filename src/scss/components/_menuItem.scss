@@ -17,7 +17,7 @@
     @include transition(all, 100ms);
 
     @include respond-to('xs') {
-        width: 65px;
+        width: 61px;
         height: 50px;
         padding: 0;
     }
@@ -114,6 +114,7 @@
         padding: $space 20px $space 25px;
 
         @include respond-to('xs') {
+            padding: $space 20px $space 23px;
             height: 35px;
         }
 
@@ -151,7 +152,7 @@
 // For each .itemMenu, ID will detect which icon will be used
 #wpr-nav{
     &-dashboard{ @extend .wpr-icon-home; }
-    &-cache{ @extend .wpr-icon-files; }
+    &-cache{ @extend .wpr-icon-files; &:before{right: 22px}}
     &-file_optimization{ @extend .wpr-icon-stack; }
     &-media{ @extend .wpr-icon-media; }
     &-preload{ @extend .wpr-icon-refresh; }
@@ -160,5 +161,5 @@
     &-page_cdn{ @extend .wpr-icon-cdn; }
     &-addons{ @extend .wpr-icon-addons; }
     &-cloudflare{ @extend .wpr-icon-addon; }
-    &-tools{ @extend .wpr-icon-tools; }
+    &-tools{ @extend .wpr-icon-tools; &:before{right: 22px}}
 }
