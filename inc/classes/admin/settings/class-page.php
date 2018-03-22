@@ -600,7 +600,7 @@ class Page {
 					'title'       => __( 'User Cache', 'rocket' ),
 					'type'        => 'fields_container',
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description' => sprintf( __( '%1$sUser cache%2$s is great when you have user-specific or restricted content on your website.', 'rocket' ), '<a href="' . esc_url( $user_cache_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $user_cache_beacon['id'] ) . '">', '</a>' ),
+					'description' => sprintf( __( '%1$sUser cache%2$s is great when you have user-specific or restricted content on your website.', 'rocket' ), '<a href="' . esc_url( $user_cache_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $user_cache_beacon['id'] ) . '" target="_blank">', '</a>' ),
 					'help'        => [
 						'url' => $user_cache_beacon['url'],
 						'id'  => $this->get_beacon_suggest( 'user_cache_section', $this->locale ),
@@ -650,7 +650,7 @@ class Page {
 					'type'              => 'checkbox',
 					'label'             => __( 'Separate cache files for mobile devices', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'       => sprintf( __( '%1$sMobile cache%2$s works safest with both options enabled. When in doubt, keep both.', 'rocket' ), '<a href="' . esc_url( $mobile_cache_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $mobile_cache_beacon['id'] ) . '">', '</a>' ),
+					'description'       => sprintf( __( '%1$sMobile cache%2$s works safest with both options enabled. When in doubt, keep both.', 'rocket' ), '<a href="' . esc_url( $mobile_cache_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $mobile_cache_beacon['id'] ) . '" target="_blank">', '</a>' ),
 					'container_class'   => [
 						rocket_is_mobile_plugin_active() ? 'wpr-isDisabled' : '',
 						'wpr-field--children',
@@ -668,7 +668,7 @@ class Page {
 					'type'              => 'cache_lifespan',
 					'label'             => __( 'Specify time after which the global cache is cleared<br>(0 = unlimited )', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'       => sprintf( __( 'Reduce lifespan to 10 hours or less if you notice issues that seem to appear periodically. %1$sWhy?%2$s', 'rocket' ), '<a href="' . esc_url( $nonce_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $nonce_beacon['id'] ) . '">', '</a>' ),
+					'description'       => sprintf( __( 'Reduce lifespan to 10 hours or less if you notice issues that seem to appear periodically. %1$sWhy?%2$s', 'rocket' ), '<a href="' . esc_url( $nonce_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $nonce_beacon['id'] ) . '" target="_blank">', '</a>' ),
 					'section'           => 'cache_lifespan',
 					'page'              => 'cache',
 					'default'           => 10,
@@ -770,7 +770,7 @@ class Page {
 					'type'              => 'checkbox',
 					'label'             => __( 'Remove query strings from static resources', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'       => sprintf( __( 'Removes the version query string from static files (e.g. style.css?ver=1.0) and encodes it into the filename instead (e.g. style-1.0.css). Can improve your GTMetrix score. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $remove_qs_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $remove_qs_beacon['id'] ) . '">', '</a>' ),
+					'description'       => sprintf( __( 'Removes the version query string from static files (e.g. style.css?ver=1.0) and encodes it into the filename instead (e.g. style-1.0.css). Can improve your GTMetrix score. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $remove_qs_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $remove_qs_beacon['id'] ) . '" target="_blank">', '</a>' ),
 					'section'           => 'basic',
 					'page'              => 'file_optimization',
 					'default'           => 0,
@@ -801,7 +801,7 @@ class Page {
 					'type'              => 'checkbox',
 					'label'             => __( 'Combine CSS files <em>(Enable Minify CSS files to select)</em>', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'       => sprintf( __( 'Combine CSS merges all your files into 1, reducing HTTP requests. Not recommended if your site uses HTTP/2. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $combine_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $combine_beacon['id'] ) . '">', '</a>' ),
+					'description'       => sprintf( __( 'Combine CSS merges all your files into 1, reducing HTTP requests. Not recommended if your site uses HTTP/2. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $combine_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $combine_beacon['id'] ) . '" target="_blank">', '</a>' ),
 					'container_class'   => [
 						get_rocket_option( 'minify_css' ) ? '' : 'wpr-isDisabled',
 						'wpr-field--parent',
@@ -826,7 +826,7 @@ class Page {
 						'wpr-isParent',
 					],
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'       => sprintf( __( 'Optimize CSS delivery eliminates render-blocking CSS on your website for faster perceived load time. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $defer_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $defer_beacon['id'] ) . '">', '</a>' ),
+					'description'       => sprintf( __( 'Optimize CSS delivery eliminates render-blocking CSS on your website for faster perceived load time. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $defer_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $defer_beacon['id'] ) . '" target="_blank">', '</a>' ),
 					'section'           => 'css',
 					'page'              => 'file_optimization',
 					'default'           => 0,
@@ -839,7 +839,7 @@ class Page {
 						'wpr-field--children',
 					],
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'helper'            => sprintf( __( 'Provides a fallback if auto-generated critical path CSS is incomplete. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $defer_beacon['url'] ) . '#fallback" data-beacon-article="' . esc_attr( $defer_beacon['id'] ) . '">', '</a>' ),
+					'helper'            => sprintf( __( 'Provides a fallback if auto-generated critical path CSS is incomplete. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $defer_beacon['url'] ) . '#fallback" data-beacon-article="' . esc_attr( $defer_beacon['id'] ) . '" target="_blank">', '</a>' ),
 					'parent'            => 'async_css',
 					'section'           => 'css',
 					'page'              => 'file_optimization',
@@ -885,7 +885,7 @@ class Page {
 					'type'              => 'checkbox',
 					'label'             => __( 'Combine JavaScript files <em>(Enable Minify JavaScript files to select)</em>', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'       => sprintf( __( 'Combine Javascript files combines your site\'s JS info fewer files, reducing HTTP requests. Not recommended if your site uses HTTP/2. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $combine_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $combine_beacon['id'] ) . '">', '</a>' ),
+					'description'       => sprintf( __( 'Combine Javascript files combines your site\'s JS info fewer files, reducing HTTP requests. Not recommended if your site uses HTTP/2. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $combine_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $combine_beacon['id'] ) . '" target="_blank">', '</a>' ),
 					'container_class'   => [
 						get_rocket_option( 'minify_js' ) ? '' : 'wpr-isDisabled',
 						'wpr-field--parent',
@@ -910,7 +910,7 @@ class Page {
 					'type'              => 'checkbox',
 					'label'             => __( 'Load JavaScript deferred', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'       => sprintf( __( 'Load JavaScript deferred eliminates render-blocking JS on your site and can improve load time. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $defer_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $defer_beacon['id'] ) . '">', '</a>' ),
+					'description'       => sprintf( __( 'Load JavaScript deferred eliminates render-blocking JS on your site and can improve load time. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $defer_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $defer_beacon['id'] ) . '" target="_blank">', '</a>' ),
 					'section'           => 'js',
 					'page'              => 'file_optimization',
 					'default'           => 0,
@@ -1084,7 +1084,7 @@ class Page {
 					'title'       => __( 'Preload Bot', 'rocket' ),
 					'type'        => 'fields_container',
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag, %3$s = opening <a> tag, %4$s = closing </a> tag.
-					'description' => sprintf( __( '%1$sBot-based%2$s preloading should only be used on well-performing servers.<br>Once activated, it gets triggered automatically after you add or update content on your website.<br>You can also launch it manually from the upper toolbar menu, or from Quick Actions on the %3$sWP Rocket Dashboard%4$s.', 'rocket' ), '<a href="' . esc_url( $bot_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $bot_beacon['id'] ) . '">', '</a>', '<a href="#dashboard">', '</a>' ),
+					'description' => sprintf( __( '%1$sBot-based%2$s preloading should only be used on well-performing servers.<br>Once activated, it gets triggered automatically after you add or update content on your website.<br>You can also launch it manually from the upper toolbar menu, or from Quick Actions on the %3$sWP Rocket Dashboard%4$s.', 'rocket' ), '<a href="' . esc_url( $bot_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $bot_beacon['id'] ) . '" target="_blank">', '</a>', '<a href="#dashboard">', '</a>' ),
 					'helper'      => __( 'Deactivate these options if you notice any overload on your server!', 'rocket' ),
 					'help'        => [
 						'id'  => $this->get_beacon_suggest( 'preload_bot', $this->locale ),
@@ -1248,7 +1248,7 @@ class Page {
 					'title'       => __( 'Cache Query String(s)', 'rocket' ),
 					'type'        => 'fields_container',
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description' => sprintf( __( '%1$sCache for query strings%2$s enables you to force caching for specific GET parameters.', 'rocket' ), '<a href="' . esc_url( $cache_query_strings_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $cache_query_strings_beacon['id'] ) . '">', '</a>' ),
+					'description' => sprintf( __( '%1$sCache for query strings%2$s enables you to force caching for specific GET parameters.', 'rocket' ), '<a href="' . esc_url( $cache_query_strings_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $cache_query_strings_beacon['id'] ) . '" target="_blank">', '</a>' ),
 					'help'        => [
 						'id'  => $this->get_beacon_suggest( 'query_strings', $this->locale ),
 						'url' => $cache_query_strings_beacon['url'],
@@ -1622,7 +1622,7 @@ class Page {
 						],
 						'title'             => __( 'If Varnish runs on your server, you must activate this add-on.', 'rocket' ),
 						// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-						'description'       => sprintf( __( 'Varnish cache will be purged each time WP Rocket clears its cache to ensure content is always up-to-date.<br>%1$sLearn more%2$s', 'rocket' ), '<a href="' . esc_url( $varnish_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $varnish_beacon['id'] ) . '">', '</a>' ),
+						'description'       => sprintf( __( 'Varnish cache will be purged each time WP Rocket clears its cache to ensure content is always up-to-date.<br>%1$sLearn more%2$s', 'rocket' ), '<a href="' . esc_url( $varnish_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $varnish_beacon['id'] ) . '" target="_blank">', '</a>' ),
 						'section'           => 'one_click',
 						'page'              => 'addons',
 						'default'           => 0,

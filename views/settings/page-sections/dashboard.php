@@ -155,7 +155,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 				<div class="wpr-field">
 					<ul class="wpr-field-list">
 					<?php foreach ( $data['faq'] as $faq_item ) : ?>
-						<li class="wpr-icon-information"><a href="<?php echo esc_url( $faq_item['url'] ); ?>" data-beacon-article="<?php echo esc_attr( $faq_item['id'] ); ?>"><?php echo esc_html( $faq_item['title'] ); ?></a></li>
+						<li class="wpr-icon-information"><a href="<?php echo esc_url( $faq_item['url'] ); ?>" data-beacon-article="<?php echo esc_attr( $faq_item['id'] ); ?>" target="_blank"><?php echo esc_html( $faq_item['title'] ); ?></a></li>
 					<?php endforeach; ?>
 					</ul>
 				</div>
