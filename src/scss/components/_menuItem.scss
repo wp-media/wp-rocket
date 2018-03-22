@@ -33,6 +33,7 @@
         text-align: center;
         @include font-size(26,26);
         opacity: 0.4;
+        color: #fff;
         @include transition(all, 150ms);
     }
 
@@ -88,6 +89,7 @@
         font-weight: bold;
         letter-spacing: -0.08px;
         text-transform: uppercase;
+        color: #fff;
 
         @include respond-to('xs') {
             display: none !important;
