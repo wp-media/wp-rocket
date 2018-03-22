@@ -10,6 +10,28 @@
     display: none;
     margin-bottom: $space*4;
 
+    &-row{
+        display: flex;
+        flex-direction: row;
+
+        @include respond-to('md') {
+            flex-direction: column;
+        }
+    }
+
+    &-col{
+        flex: 1 1 auto;
+    }
+
+    &-col--fixed{
+        margin-left: $space*3;
+        flex: 0 0 325px;
+
+        @include respond-to('md') {
+            margin-left: 0;
+        }
+    }
+
     &#dashboard{ // Exception for dashboard
         display: block;
 
@@ -124,27 +146,9 @@
                 }
             }
         }
-    }
 
-    &-row{
-        display: flex;
-        flex-direction: row;
-
-        @include respond-to('md') {
-            flex-direction: column;
-        }
-    }
-
-    &-col{
-        flex: 1 1 auto;
-    }
-
-    &-col--fixed{
-        margin-left: $space*3;
-        flex: 0 0 325px;
-
-        @include respond-to('md') {
-            margin-left: 0;
+        #wpr-account-data:before{
+            content: none;
         }
     }
 }
