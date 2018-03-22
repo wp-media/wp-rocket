@@ -14,7 +14,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 	</div>
 	<div class="wpr-tools">
 		<div class="wpr-tools-col">
-			<div class="wpr-title3 wpr-tools-label wpr-icon-export"><?php _e( 'Export settings', 'rocekt' ); ?></div>
+			<div class="wpr-title3 wpr-tools-label wpr-icon-export"><?php _e( 'Export settings', 'rocket' ); ?></div>
 			<div class="wpr-field-description"><?php _e( 'Download a backup file of your settings', 'rocket' ); ?></div>
 		</div>
 		<div class="wpr-tools-col">
