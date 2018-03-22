@@ -13,6 +13,7 @@
     border: 1px solid $cGrey;
     border-left: none;
     flex: 1 1 auto;
+    max-width: 960px;
 
     @include respond-to('xs') {
         padding: $space*3 $space*2;
