@@ -58,9 +58,9 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 			<div class="wpr-field wpr-field-account">
 				<div class="wpr-flex wpr-flex--egal">
 					<div>
-						<span class="wpr-title3"><?php esc_html_e( 'License' ); ?></span>
+						<span class="wpr-title3"><?php esc_html_e( 'License', 'rocket' ); ?></span>
 						<span class="wpr-infoAccount <?php echo $data['customer_data']->class; ?>" id="wpr-account-data"><?php echo $data['customer_data']->licence_account; ?></span><br>
-						<span class="wpr-title3"><?php esc_html_e( 'Expiration Date' ); ?></span>
+						<span class="wpr-title3"><?php esc_html_e( 'Expiration Date', 'rocket' ); ?></span>
 						<span class="wpr-infoAccount <?php echo $data['customer_data']->class; ?>" id="wpr-expiration-data"><?php echo $data['customer_data']->licence_expiration; ?></span>
 					</div>
 					<div>
