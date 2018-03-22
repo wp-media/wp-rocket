@@ -161,6 +161,18 @@
             display: block;
             margin-top: $space*2;
         }
+
+        &.wpr-field--textarea{
+            padding-right: $space*10;
+
+            @include respond-to('md') {
+                padding-right: $space*4;
+            }
+
+            @include respond-to('xs') {
+                padding-right: 0;
+            }
+        }
     }
 
     // Checkbox
