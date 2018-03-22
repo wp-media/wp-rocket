@@ -107,8 +107,6 @@ class Rocket_Database_Optimization {
 	 * @see process_handler()
 	 */
 	public function save_optimize() {
-		check_admin_referer( WP_ROCKET_PLUGIN_SLUG . '-options' );
-
 		if ( empty( $_POST ) || ! isset( $_POST['wp_rocket_settings']['submit_optimize'] ) ) {
 			return;
 		}
