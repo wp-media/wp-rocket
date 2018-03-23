@@ -58,6 +58,33 @@ Among other tasks, from the admin screen you can:
 
 Still have questions? Check out the [FAQ below](#faq).
 
+## WP CLI
+
+Action Scheduler has custom [WP CLI](http://wp-cli.org) commands available for processing actions.
+
+For many sites, WP CLI is a much better choice for running queues of actions than the default WP Cron runner. These are some common cases where WP CLI is a better option:
+
+* long-running tasks - Tasks that take a significant amount of time to run
+* large queues - A large number of tasks will naturally take a longer time
+* other plugins with extensive WP Cron usage - WP Cron's limited resources are spread across more tasks
+
+With a regular web request, you may have to deal with script timeouts enforced by hosts, or other restraints that make it more challenging to run Action Scheduler tasks. Utilizing WP CLI to run commands directly on the server give you more freedom. This means that you typically don't have the same constraints of a normal web request.
+
+If you choose to utilize WP CLI exclusively, you can disable the normal WP CLI queue runner by installing the [Action Scheduler - Disable Default Queue Runner](https://github.com/Prospress/action-scheduler-disable-default-runner) plugin. Note that if you do this, you **must** run Action Scheduler manually.
+ 
+### Commands
+
+These are the commands available to use with Action Scheduler:
+
+* `action-scheduler run`
+    
+    Options:
+    * `--batch-size` - This is the number of actions to run in a single batch. The default is `100`.
+    * `--batches` - This is the number of batches to run. Using 0 means that batches will continue running until there are no more actions to run.
+    * `--force` - By default, Action Scheduler limits the number of concurrent batches that can be run at once to ensure the server does not get overwhelmed. Using the `--force` flag overrides this behavior to force the WP CLI queue to run.
+
+The best way to get a full list of commands and their available options is to use WP CLI itself. This can be done by running `wp action-scheduler` to list all Action Scheduler commands, or by including the `--help` flag with any of the individual commands. This will provide all relevant parameters and flags for the command.
+
 ## API Functions
 
 ### Action Scheduler API vs. WP-Cron API
@@ -283,15 +310,17 @@ By default, Action Scheduler is initiated by WP-Cron. However, it has no depende
 
 For example, you can start a queue directly by calling:
 
-```
+```php
 ActionScheduler::runner()->run();
 ```
 
 Or trigger the `'action_scheduler_run_queue'` hook and let Action Scheduler do it for you:
 
-```
+```php
 do_action( 'action_scheduler_run_queue' );
 ```
+
+Further customization can be done by extending the `ActionScheduler_Abstract_QueueRunner` class to create a custom Queue Runner. For an example of a customized queue runner, see the [`ActionScheduler_WPCLI_QueueRunner`](https://github.com/Prospress/action-scheduler/blob/master/classes/ActionScheduler_WPCLI_QueueRunner.php), which is used when running WP CLI.
 
 Want to create some other method for initiating Action Scheduler? [Open a new issue](https://github.com/Prospress/action-scheduler/issues/new), we'd love to help you with it.
 
@@ -351,7 +380,7 @@ Take a look at the `ActionScheduler_wpCommentLogger` class for an example implem
 
 ### I want to run Action Scheduler only on a dedicated application server in my cluster. Can I do that?
 
-Wow, now you're really asking the tough questions. In theory, yes, this is possbile. The `ActionScheduler_QueueRunner` class, which is responsible for running queues, is swappable via the `'action_scheduler_queue_runner_class'` filter.
+Wow, now you're really asking the tough questions. In theory, yes, this is possible. The `ActionScheduler_QueueRunner` class, which is responsible for running queues, is swappable via the `'action_scheduler_queue_runner_class'` filter.
 
 Because of this, you can effectively customise queue running however you need. Whether that means tweaking minor things, like not using WP-Cron at all to initiate queues by overriding `ActionScheduler_QueueRunner::init()`, or completely changing how and where queues are run, by overriding `ActionScheduler_QueueRunner::run()`.
 

@@ -97,6 +97,10 @@ abstract class ActionScheduler {
 		add_action( 'init', array( $admin_view, 'init' ), 0, 0 ); // run before $store::init()
 
 		require_once( self::plugin_path('functions.php') );
+
+		if ( defined( 'WP_CLI' ) && WP_CLI ) {
+			WP_CLI::add_command( 'action-scheduler', 'ActionScheduler_WPCLI_Scheduler_command' );
+		}
 	}
 
 
@@ -117,4 +121,3 @@ abstract class ActionScheduler {
 		return as_get_datetime_object( $when, $timezone );
 	}
 }
- 
