@@ -1583,14 +1583,21 @@ class Page {
 			]
 		);
 
+		if ( apply_filters( 'rocket_display_varnish_options_tab', true ) ) {
+			$this->settings->add_settings_sections(
+				[
+					'one_click' => [
+						'title'       => __( 'One-click Rocket Add-ons', 'rocket' ),
+						'description' => __( 'One-Click Add-ons are features extending available options without configuration needed. Switch the option "on" to enable from this screen.', 'rocket' ),
+						'type'        => 'addons_container',
+						'page'        => 'addons',
+					],
+				]
+			);
+		}
+
 		$this->settings->add_settings_sections(
 			[
-				'one_click' => [
-					'title'       => __( 'One-click Rocket Add-ons', 'rocket' ),
-					'description' => __( 'One-Click Add-ons are features extending available options without configuration needed. Switch the option "on" to enable from this screen.', 'rocket' ),
-					'type'        => 'addons_container',
-					'page'        => 'addons',
-				],
 				'addons'    => [
 					'title'       => __( 'Rocket Add-ons', 'rocket' ),
 					'description' => __( 'Rocket Add-ons are complementary features extending available options.', 'rocket' ),
@@ -1605,13 +1612,21 @@ class Page {
 		 *
 		 * @since 2.7
 		 *
-		 * @param bool true will display the "Varnish" tab
+		 * @param bool $display true will display the "Varnish" tab.
 		*/
 		if ( apply_filters( 'rocket_display_varnish_options_tab', true ) ) {
 			$varnish_beacon = $this->get_beacon_suggest( 'varnish', $this->locale );
 
 			$this->settings->add_settings_fields(
-				[
+				/**
+				 * Filters the Varnish field settings data
+				 *
+				 * @since 3.0
+				 * @author Remy Perona
+				 *
+				 * @param array $settings Field settings data.
+				 */
+				apply_filters( 'rocket_varnish_field_settings', [
 					'varnish_auto_purge' => [
 						'type'              => 'one_click_addon',
 						'label'             => __( 'Varnish', 'rocket' ),
@@ -1628,7 +1643,7 @@ class Page {
 						'default'           => 0,
 						'sanitize_callback' => 'sanitize_textarea',
 					],
-				]
+				] )
 			);
 		}
 

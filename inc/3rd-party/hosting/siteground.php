@@ -13,6 +13,7 @@ function rocket_clean_supercacher() {
 		$GLOBALS['sg_cachepress_supercacher']->purge_cache();
 	}
 }
-add_action( 'wp_ajax_sg-cachepress-purge'   , 'rocket_clean_domain', 0 );
+add_action( 'wp_ajax_sg-cachepress-purge', 'rocket_clean_domain', 0 );
 add_action( 'admin_post_sg-cachepress-purge', 'rocket_clean_domain', 0 );
-add_action( 'after_rocket_clean_domain'     , 'rocket_clean_supercacher' );
+add_action( 'after_rocket_clean_domain', 'rocket_clean_supercacher' );
+add_filter( 'rocket_display_varnish_options_tab', '__return_false' );

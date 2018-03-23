@@ -22,6 +22,17 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 	<div class="wpr-field">
 		<div class="wpr-flex">
 			<h4 class="wpr-title3"><?php echo esc_html( $data['label'] ); ?></h4>
+			<?php
+			/**
+			 * Filters the display of the input
+			 *
+			 * @since 3.0
+			 * @author Remy Perona
+			 *
+			 * @param bool $display True to display, false otherwise.
+			 */
+			if ( apply_filters( 'rocket_display_input_' . $data['id'], true ) ) :
+			?>
 			<div class="wpr-radio wpr-radio--reverse">
 				<input type="checkbox" id="<?php echo esc_attr( $data['id'] ); ?>" class="" name="wp_rocket_settings[<?php echo esc_attr( $data['id'] ); ?>]" value="1" <?php checked( $data['value'], 1 ); ?>>
 				<label for="<?php echo esc_attr( $data['id'] ); ?>" class="">
@@ -29,6 +40,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 					<?php esc_html_e( 'Add-on status', 'rocket' ); ?>
 				</label>
 			</div>
+			<?php endif; ?>
 		</div>
 	</div>
 

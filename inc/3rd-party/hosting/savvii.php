@@ -1,13 +1,24 @@
 <?php
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
-if ( class_exists( '\\Savvii\\CacheFlusherPlugin' ) & class_exists( '\\Savvii\\Options' ) ) :
+if ( class_exists( '\\Savvii\\CacheFlusherPlugin' ) & class_exists( '\\Savvii\\Options' ) ) {
 	/**
-	 * Don't display the Varnish options tab for Savvii users
+	 * Changes the text on the Varnish one-click block.
 	 *
-	 * @since 2.7
+	 * @since 3.0
+	 * @author Remy Perona
+	 *
+	 * @param array $settings Field settings data.
 	 */
-	add_filter( 'rocket_display_varnish_options_tab', '__return_false' );
+	function rocket_savvii_varnish_field( $settings ) {
+		// Translators: %s = Hosting name.
+		$settings['varnish_auto_purge']['title'] = sprintf( __( 'Your site is hosted on %s, we have enabled Varnish auto-purge for compatibility.', 'rocket' ), 'Savvii' );
+
+		return $settings;
+	}
+	add_filter( 'rocket_varnish_field_settings', 'rocket_savvii_varnish_field' );
+
+	add_filter( 'rocket_display_input_varnish_auto_purge', '__return_false' );
 
 	/**
 	 * Clear WP Rocket cache after purged the Varnish cache via Savvii Hosting
@@ -42,4 +53,4 @@ if ( class_exists( '\\Savvii\\CacheFlusherPlugin' ) & class_exists( '\\Savvii\\O
 		}
 	}
 	add_action( 'after_rocket_clean_domain', 'rocket_clean_savvii' );
-endif;
+}
