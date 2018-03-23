@@ -363,7 +363,6 @@ class ActionScheduler_ListTable extends PP_List_Table {
 			return $schedule_display_string;
 		}
 
-
 		$next_timestamp = $schedule->next()->format( 'U' );
 
 		$schedule_display_string .= $schedule->next()->format( 'Y-m-d H:i:s e' );
