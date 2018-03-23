@@ -44,6 +44,7 @@ class ActionScheduler_QueueCleaner {
 			ActionScheduler_Store::STATUS_COMPLETE,
 			ActionScheduler_Store::STATUS_CANCELED,
 		);
+
 		foreach ( $statuses_to_purge as $status ) {
 			$actions_to_delete = $this->store->query_actions( array(
 				'status'           => $status,
@@ -53,7 +54,25 @@ class ActionScheduler_QueueCleaner {
 			) );
 
 			foreach ( $actions_to_delete as $action_id ) {
-				$this->store->delete_action( $action_id );
+				try {
+					$this->store->delete_action( $action_id );
+				} catch ( Exception $e ) {
+
+					/**
+					 * Notify 3rd party code of exceptions when deleting a completed action older than the retention period
+					 *
+					 * This hook provides a way for 3rd party code to log or otherwise handle exceptions relating to their
+					 * actions.
+					 *
+					 * @since 1.6.0
+					 *
+					 * @param int $action_id The scheduled actions ID in the data store
+					 * @param Exception $e The exception thrown when attempting to delete the action from the data store
+					 * @param int $lifespan The retention period, in seconds, for old actions
+					 * @param int $count_of_actions_to_delete The number of old actions being deleted in this batch
+					 */
+					do_action( 'action_scheduler_failed_old_action_deletion', $action_id, $e, $lifespan, count( $actions_to_delete ) );
+				}
 			}
 		}
 	}
