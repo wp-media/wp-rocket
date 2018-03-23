@@ -244,14 +244,21 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	 * Prints the logs entries inline. We do so to avoid loading Javascript and other hacks to show it in a modal.
 	 *
 	 * @param array $row Action array.
+	 * @return string
 	 */
 	public function column_log_entries( array $row ) {
-		echo '<ol>';
+
+		$log_entries_html = '<ol>';
+
 		$timezone = new DateTimezone( 'UTC' );
+
 		foreach ( $row['log_entries'] as $log_entry ) {
-			echo $this->get_log_entry_html( $log_entry, $timezone );
+			$log_entries_html .= $this->get_log_entry_html( $log_entry, $timezone );
 		}
-		echo '</ol>';
+
+		$log_entries_html .= '</ol>';
+
+		return $log_entries_html;
 	}
 
 	/**
@@ -336,9 +343,10 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	 * Prints the scheduled date in a human friendly format.
 	 *
 	 * @param array $row The array representation of the current row of the table
+	 * @param string $ids_sql Inherited and unused
 	 */
 	public function column_schedule( $row ) {
-		echo $this->get_schedule_display_string( $row['schedule'] );
+		return $this->get_schedule_display_string( $row['schedule'] );
 	}
 
 	/**
