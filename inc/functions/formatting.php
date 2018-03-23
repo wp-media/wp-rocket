@@ -313,9 +313,16 @@ function rocket_realpath( $file ) {
  * @return string
  */
 function rocket_url_to_path( $url, $hosts = '' ) {
-	$url_components  = get_rocket_parse_url( $url );
-	$site_components = get_rocket_parse_url( site_url() );
-	$site_url        = trailingslashit( set_url_scheme( site_url() ) );
+	$url_components = get_rocket_parse_url( $url );
+	$site_url       = trailingslashit( set_url_scheme( site_url() ) );
+	$home_path      = ABSPATH;
+
+	if ( false !== strpos( rocket_extract_url_component( $url, PHP_URL_PATH ), rocket_extract_url_component( WP_CONTENT_URL, PHP_URL_PATH ) ) ) {
+		$site_url  = trailingslashit( set_url_scheme( WP_CONTENT_URL ) );
+		$home_path = trailingslashit( WP_CONTENT_DIR );
+	}
+
+	$site_components = get_rocket_parse_url( $site_url );
 
 	if ( isset( $hosts[ $url_components['host'] ] ) && 'home' !== $hosts[ $url_components['host'] ] ) {
 		$site_url = trailingslashit( rocket_add_url_protocol( $url_components['host'] ) );
@@ -325,34 +332,9 @@ function rocket_url_to_path( $url, $hosts = '' ) {
 		}
 	}
 
-	$home_path = rocket_get_home_path();
-	$file      = str_replace( $site_url, $home_path, rocket_set_internal_url_scheme( $url ) );
+	$file = str_replace( $site_url, $home_path, rocket_set_internal_url_scheme( $url ) );
 
 	return rocket_realpath( $file );
-}
-
-/**
- * Get the absolute filesystem path to the root of the WordPress installation.
- *
- * @since 2.11.7 copy function get_home_path() from WP core.
- * @since 2.11.5
- * @author Chris Williams
- *
- * @return string Full filesystem path to the root of the WordPress installation.
- */
-function rocket_get_home_path() {
-	$home      = set_url_scheme( get_option( 'home' ), 'http' );
-	$siteurl   = set_url_scheme( get_option( 'siteurl' ), 'http' );
-	$home_path = ABSPATH;
-
-	if ( ! empty( $home ) && 0 !== strcasecmp( $home, $siteurl ) ) {
-		$wp_path_rel_to_home = str_ireplace( $home, '', $siteurl ); /* $siteurl - $home */
-		$pos                 = strripos( str_replace( '\\', '/', $_SERVER['SCRIPT_FILENAME'] ), trailingslashit( $wp_path_rel_to_home ) );
-		$home_path           = substr( $_SERVER['SCRIPT_FILENAME'], 0, $pos );
-		$home_path           = trailingslashit( $home_path );
-	}
-
-	return str_replace( '\\', '/', $home_path );
 }
 
 /**

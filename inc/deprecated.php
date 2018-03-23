@@ -2157,3 +2157,32 @@ if ( ! function_exists( 'rocket_php_warning' ) ) {
 		. '</a></p></div>';
 	}
 }
+
+if ( ! function_exists( 'rocket_get_home_path' ) ) {
+	/**
+	 * Get the absolute filesystem path to the root of the WordPress installation.
+	 *
+	 * @since 2.11.7 copy function get_home_path() from WP core.
+	 * @since 2.11.5
+	 * @deprecated 3.0
+	 *
+	 * @author Chris Williams
+	 *
+	 * @return string Full filesystem path to the root of the WordPress installation.
+	 */
+	function rocket_get_home_path() {
+		_deprecated_function( __FUNCTION__, '3.0' );
+		$home      = set_url_scheme( get_option( 'home' ), 'http' );
+		$siteurl   = set_url_scheme( get_option( 'siteurl' ), 'http' );
+		$home_path = ABSPATH;
+
+		if ( ! empty( $home ) && 0 !== strcasecmp( $home, $siteurl ) ) {
+			$wp_path_rel_to_home = str_ireplace( $home, '', $siteurl ); /* $siteurl - $home */
+			$pos                 = strripos( str_replace( '\\', '/', $_SERVER['SCRIPT_FILENAME'] ), trailingslashit( $wp_path_rel_to_home ) );
+			$home_path           = substr( $_SERVER['SCRIPT_FILENAME'], 0, $pos );
+			$home_path           = trailingslashit( $home_path );
+		}
+
+		return str_replace( '\\', '/', $home_path );
+	}
+}
