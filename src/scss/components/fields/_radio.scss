@@ -81,14 +81,14 @@
 
     // OFF text
     [type="checkbox"]:not(:checked) + label .wpr-radio-ui:before {
-        content: "off";
+        content: attr(data-l10n-inactive);
         left: 27px;
         color: $cGreyDark2;
     }
 
     // ON text
     [type="checkbox"]:checked + label .wpr-radio-ui:after {
-        content: "on";
+        content: attr(data-l10n-active);
         color: $cBlueDark1;
     }
 

@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.0\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2018-03-22 14:30-0400\n"
+"POT-Creation-Date: 2018-03-23 11:31-0400\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1862,6 +1862,16 @@ msgstr ""
 
 #: views/settings/fields/rocket-addon.php:52
 msgid "Modify options"
+msgstr ""
+
+#: views/settings/fields/sliding-checkbox.php:24
+msgctxt "Active state of checkbox"
+msgid "On"
+msgstr ""
+
+#: views/settings/fields/sliding-checkbox.php:25
+msgctxt "Inactive state of checkbox"
+msgid "Off"
 msgstr ""
 
 #: views/settings/page-sections/cloudflare.php:26
