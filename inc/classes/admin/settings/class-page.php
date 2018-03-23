@@ -819,6 +819,20 @@ class Page {
 						'button_label' => __( 'Activate combine CSS', 'rocket' ),
 					],
 				],
+				'exclude_css'            => [
+					'type'              => 'textarea',
+					'label'             => __( 'Excluded CSS Files', 'rocket' ),
+					'description'       => __( 'Specify URLs of CSS files to be excluded from minification and concatenation.', 'rocket' ),
+					'helper'            => __( 'The domain part of the URL will be stripped automatically.<br>Use (.*).css wildcards to exclude all CSS files located at a specific path.', 'rocket' ),
+					'container_class'   => [
+						'wpr-field--children',
+					],
+					'parent'            => 'minify_css',
+					'section'           => 'css',
+					'page'              => 'file_optimization',
+					'default'           => [],
+					'sanitize_callback' => 'sanitize_textarea',
+				],
 				'async_css'              => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Optimize CSS delivery', 'rocket' ),
@@ -841,20 +855,6 @@ class Page {
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 					'helper'            => sprintf( __( 'Provides a fallback if auto-generated critical path CSS is incomplete. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $defer_beacon['url'] ) . '#fallback" data-beacon-article="' . esc_attr( $defer_beacon['id'] ) . '" target="_blank">', '</a>' ),
 					'parent'            => 'async_css',
-					'section'           => 'css',
-					'page'              => 'file_optimization',
-					'default'           => [],
-					'sanitize_callback' => 'sanitize_textarea',
-				],
-				'exclude_css'            => [
-					'type'              => 'textarea',
-					'label'             => __( 'Excluded CSS Files', 'rocket' ),
-					'description'       => __( 'Specify URLs of CSS files to be excluded from minification and concatenation.', 'rocket' ),
-					'helper'            => __( 'The domain part of the URL will be stripped automatically.<br>Use (.*).css wildcards to exclude all CSS files located at a specific path.', 'rocket' ),
-					'container_class'   => [
-						'wpr-field--children',
-					],
-					'parent'            => 'minify_css',
 					'section'           => 'css',
 					'page'              => 'file_optimization',
 					'default'           => [],
@@ -903,6 +903,20 @@ class Page {
 						'button_label' => __( 'Activate combine JavaScript', 'rocket' ),
 					],
 				],
+				'exclude_js'             => [
+					'type'              => 'textarea',
+					'label'             => __( 'Excluded JavaScript Files', 'rocket' ),
+					'description'       => __( 'Specify URLs of JavaScript files to be excluded from minification and concatenation.', 'rocket' ),
+					'helper'            => __( 'The domain part of the URL will be stripped automatically.<br>Use (.*).js wildcards to exclude all JS files located at a specific path.', 'rocket' ),
+					'container_class'   => [
+						'wpr-field--children',
+					],
+					'parent'            => 'minify_js',
+					'section'           => 'js',
+					'page'              => 'file_optimization',
+					'default'           => [],
+					'sanitize_callback' => 'sanitize_textarea',
+				],
 				'defer_all_js'           => [
 					'container_class'   => [
 						'wpr-isParent',
@@ -928,20 +942,6 @@ class Page {
 					'page'              => 'file_optimization',
 					'default'           => 1,
 					'sanitize_callback' => 'sanitize_checkbox',
-				],
-				'exclude_js'             => [
-					'type'              => 'textarea',
-					'label'             => __( 'Excluded JavaScript Files', 'rocket' ),
-					'description'       => __( 'Specify URLs of JavaScript files to be excluded from minification and concatenation.', 'rocket' ),
-					'helper'            => __( 'The domain part of the URL will be stripped automatically.<br>Use (.*).js wildcards to exclude all JS files located at a specific path.', 'rocket' ),
-					'container_class'   => [
-						'wpr-field--children',
-					],
-					'parent'            => 'minify_js',
-					'section'           => 'js',
-					'page'              => 'file_optimization',
-					'default'           => [],
-					'sanitize_callback' => 'sanitize_textarea',
 				],
 			]
 		);
