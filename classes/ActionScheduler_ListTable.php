@@ -161,8 +161,8 @@ class ActionScheduler_ListTable extends PP_List_Table {
 		);
 
 		parent::__construct( array(
-			'singular' => __( 'action-scheduler', 'action-scheduler' ),
-			'plural'   => __( 'action-scheduler', 'action-scheduler' ),
+			'singular' => 'action-scheduler',
+			'plural'   => 'action-scheduler',
 			'ajax'     => false,
 		) );
 	}
