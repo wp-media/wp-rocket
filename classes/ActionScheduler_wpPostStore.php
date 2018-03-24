@@ -567,7 +567,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	 * @return mixed
 	 */
 	public function get_claim_id( $action_id ) {
-		return get_post_field( 'post_password', $action_id, 'raw' );
+		return $this->get_post_column( $action_id, 'post_password' );
 	}
 
 	/**
@@ -577,13 +577,19 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	 * @return mixed
 	 */
 	public function get_status( $action_id ) {
-		$status = get_post_field( 'post_status', $action_id, 'raw' );
+		$status = $this->get_post_column( $action_id, 'post_status' );
 
 		if ( $status === null ) {
 			throw new \InvalidArgumentException( __( 'Invalid action ID. No status found.', 'action-scheduler' ) );
 		}
 
 		return $this->get_action_status_by_post_status( $status );
+	}
+
+	private function get_post_column( $action_id, $column_name ) {
+		/** @var \wpdb $wpdb */
+		global $wpdb;
+		return $wpdb->get_var( $wpdb->prepare( "SELECT {$column_name} FROM {$wpdb->posts} WHERE ID=%d AND post_type=%s", $action_id, self::POST_TYPE ) );
 	}
 
 	/**
