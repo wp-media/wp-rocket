@@ -472,6 +472,7 @@ abstract class PP_List_Table extends WP_List_Table {
 	 *
 	 * @param array $row     Row to render
 	 * @param $column_name   Current row
+	 * @return
 	 */
 	protected function maybe_render_actions( $row, $column_name ) {
 		if ( empty( $this->row_actions[ $column_name ] ) ) {
@@ -480,7 +481,7 @@ abstract class PP_List_Table extends WP_List_Table {
 
 		$row_id = $row[ $this->ID ];
 
-		echo '<div class="row-actions">';
+		$actions = '<div class="row-actions">';
 		$action_count = 0;
 		foreach ( $this->row_actions[ $column_name ] as $action_key => $action ) {
 
@@ -494,11 +495,12 @@ abstract class PP_List_Table extends WP_List_Table {
 			$span_class  = ! empty( $action['class'] ) ? $action['class'] : $action_key;
 			$separator   = ( $action_count < count( $this->row_actions[ $column_name ] ) ) ? ' | ' : '';
 
-			printf( '<span class="%s">', esc_attr( $span_class ) );
-			printf( '<a href="%1$s" title="%2$s">%3$s</a>', esc_url( $action_link ), esc_attr( $action['desc'] ), esc_html( $action['name'] ) );
-			printf( '%s</span>', $separator );
+			$actions .= sprintf( '<span class="%s">', esc_attr( $span_class ) );
+			$actions .= sprintf( '<a href="%1$s" title="%2$s">%3$s</a>', esc_url( $action_link ), esc_attr( $action['desc'] ), esc_html( $action['name'] ) );
+			$actions .= sprintf( '%s</span>', $separator );
 		}
-		echo '</div>';
+		$actions .= '</div>';
+		return $actions;
 	}
 
 	protected function process_row_actions() {
@@ -526,8 +528,9 @@ abstract class PP_List_Table extends WP_List_Table {
 	 * Default column formatting, it will escape everythig for security.
 	 */
 	public function column_default( $item, $column_name ) {
-		echo esc_html( $item[ $column_name ] );
-		$this->maybe_render_actions( $item, $column_name );
+		$column_html = esc_html( $item[ $column_name ] );
+		$column_html .= $this->maybe_render_actions( $item, $column_name );
+		return $column_html;
 	}
 
 	/**
