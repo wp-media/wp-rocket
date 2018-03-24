@@ -15,8 +15,6 @@ php:
     - "7.0"
     - "7.1"
 
-dist: precise
-
 # Specify versions of WordPress to test against
 # WP_VERSION = WordPress version number (use "master" for SVN trunk)
 # WP_MULTISITE = whether to test multisite (use either "0" or "1")
@@ -28,8 +26,6 @@ env:
     - WP_VERSION=4.7 WP_MULTISITE=1
     - WP_VERSION=4.6 WP_MULTISITE=1
 
-dist: precise
-
 # Grab the setup script and execute
 before_script:
     - source tests/travis/setup.sh $TRAVIS_PHP_VERSION
@@ -39,4 +35,3 @@ script:
 
 after_script:
   - bash <(curl -s https://codecov.io/bash)
-
