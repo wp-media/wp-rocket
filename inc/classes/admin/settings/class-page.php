@@ -1748,7 +1748,8 @@ class Page {
 				'cloudflare_devmode'          => [
 					'type'              => 'sliding_checkbox',
 					'label'             => __( 'Development mode', 'rocket' ),
-					'description'       => __( 'Temporarily activate development mode on your website. This setting will automatically turn off after 3 hours. Learn more', 'rocket' ),
+					// translators: %1$s = link opening tag, %2$s = link closing tag.
+					'description'       => sprintf( __( 'Temporarily activate development mode on your website. This setting will automatically turn off after 3 hours. %1$sLearn more%2$s', 'rocket' ), '<a href="https://support.cloudflare.com/hc/en-us/articles/200168246" target="_blank">', '</a>' ),
 					'default'           => 0,
 					'section'           => 'cloudflare_settings',
 					'page'              => 'cloudflare',
