@@ -1524,7 +1524,7 @@ class Page {
 					'page' => 'page_cdn',
 				],
 				'exclude_cdn_section' => [
-					'title' => __( 'Exclude files from CDN', 'rocket ' ),
+					'title' => __( 'Exclude files from CDN', 'rocket' ),
 					'type'  => 'fields_container',
 					'help'  => [
 						'id'  => $cdn_exclude_beacon['id'],

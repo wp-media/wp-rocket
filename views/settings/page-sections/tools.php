@@ -33,7 +33,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 	<div class="wpr-tools">
 		<div class="wpr-tools-col">
-			<div class="wpr-title3 wpr-tools-label wpr-icon-rollback"><?php _e( 'Rollback', 'rocekt' ); ?></div>
+			<div class="wpr-title3 wpr-tools-label wpr-icon-rollback"><?php _e( 'Rollback', 'rocket' ); ?></div>
 			<div class="wpr-field-description">
 				<?php
 				// translators: %s = WP Rocket version number.
