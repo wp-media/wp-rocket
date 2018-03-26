@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.0\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2018-03-23 11:31-0400\n"
+"POT-Creation-Date: 2018-03-26 09:38-0400\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -27,6 +27,14 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-2: vendor\n"
 "X-Poedit-SearchPathExcluded-3: node_modules\n"
 "X-Poedit-SearchPathExcluded-4: tests\n"
+
+#: inc/3rd-party/hosting/flywheel.php:15 inc/3rd-party/hosting/godaddy.php:15
+#: inc/3rd-party/hosting/pressidium.php:15 inc/3rd-party/hosting/savvii.php:15
+#: inc/3rd-party/hosting/wp-serveur.php:22 inc/3rd-party/hosting/wpengine.php:15
+#, php-format
+msgid ""
+"Your site is hosted on %s, we have enabled Varnish auto-purge for compatibility."
+msgstr ""
 
 #: inc/3rd-party/plugins/jetpack.php:86
 msgid "Jetpack XML Sitemaps"
@@ -622,40 +630,40 @@ msgid "Activate combine CSS"
 msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:824
+msgid "Excluded CSS Files"
+msgstr ""
+
+#: inc/classes/admin/settings/class-page.php:825
+msgid ""
+"Specify URLs of CSS files to be excluded from minification and concatenation."
+msgstr ""
+
+#: inc/classes/admin/settings/class-page.php:826
+msgid ""
+"The domain part of the URL will be stripped automatically.<br>Use (.*).css "
+"wildcards to exclude all CSS files located at a specific path."
+msgstr ""
+
+#: inc/classes/admin/settings/class-page.php:838
 msgid "Optimize CSS delivery"
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:829
+#: inc/classes/admin/settings/class-page.php:843
 #, php-format
 msgid ""
 "Optimize CSS delivery eliminates render-blocking CSS on your website for faster "
 "perceived load time. %1$sMore info%2$s"
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:837
+#: inc/classes/admin/settings/class-page.php:851
 msgid "Fallback critical CSS"
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:842
+#: inc/classes/admin/settings/class-page.php:856
 #, php-format
 msgid ""
 "Provides a fallback if auto-generated critical path CSS is incomplete. %1$sMore "
 "info%2$s"
-msgstr ""
-
-#: inc/classes/admin/settings/class-page.php:851
-msgid "Excluded CSS Files"
-msgstr ""
-
-#: inc/classes/admin/settings/class-page.php:852
-msgid ""
-"Specify URLs of CSS files to be excluded from minification and concatenation."
-msgstr ""
-
-#: inc/classes/admin/settings/class-page.php:853
-msgid ""
-"The domain part of the URL will be stripped automatically.<br>Use (.*).css "
-"wildcards to exclude all CSS files located at a specific path."
 msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:865
@@ -686,43 +694,43 @@ msgstr ""
 msgid "Activate combine JavaScript"
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:911
+#: inc/classes/admin/settings/class-page.php:908
+msgid "Excluded JavaScript Files"
+msgstr ""
+
+#: inc/classes/admin/settings/class-page.php:909
+msgid ""
+"Specify URLs of JavaScript files to be excluded from minification and "
+"concatenation."
+msgstr ""
+
+#: inc/classes/admin/settings/class-page.php:910
+msgid ""
+"The domain part of the URL will be stripped automatically.<br>Use (.*).js "
+"wildcards to exclude all JS files located at a specific path."
+msgstr ""
+
+#: inc/classes/admin/settings/class-page.php:925
 msgid "Load JavaScript deferred"
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:913
+#: inc/classes/admin/settings/class-page.php:927
 #, php-format
 msgid ""
 "Load JavaScript deferred eliminates render-blocking JS on your site and can "
 "improve load time. %1$sMore info%2$s"
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:924
-msgid "Safe Mode (recommended)"
+#: inc/classes/admin/settings/class-page.php:938
+msgid "Safe Mode for jQuery (recommended)"
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:925
+#: inc/classes/admin/settings/class-page.php:939
 msgid ""
-"Safe mode for deferred JS ensures support for inline jQuery references from "
-"themes and plugins by loading jQuery at the top of the document as a render-"
-"blocking script.<br><em>Deactivating may result in broken functionality, test "
-"thoroughly!</em>"
-msgstr ""
-
-#: inc/classes/admin/settings/class-page.php:934
-msgid "Excluded JavaScript Files"
-msgstr ""
-
-#: inc/classes/admin/settings/class-page.php:935
-msgid ""
-"Specify URLs of JavaScript files to be excluded from minification and "
-"concatenation."
-msgstr ""
-
-#: inc/classes/admin/settings/class-page.php:936
-msgid ""
-"The domain part of the URL will be stripped automatically.<br>Use (.*).js "
-"wildcards to exclude all JS files located at a specific path."
+"Safe mode for jQuery for deferred JS ensures support for inline jQuery "
+"references from themes and plugins by loading jQuery at the top of the document "
+"as a render-blocking script.<br><em>Deactivating may result in broken "
+"functionality, test thoroughly!</em>"
 msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:964
@@ -1178,124 +1186,125 @@ msgstr ""
 msgid "Add more features"
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:1589
+#: inc/classes/admin/settings/class-page.php:1590
 msgid "One-click Rocket Add-ons"
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:1590
+#: inc/classes/admin/settings/class-page.php:1591
 msgid ""
 "One-Click Add-ons are features extending available options without configuration "
 "needed. Switch the option \"on\" to enable from this screen."
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:1595
+#: inc/classes/admin/settings/class-page.php:1602
 msgid "Rocket Add-ons"
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:1596
+#: inc/classes/admin/settings/class-page.php:1603
 msgid "Rocket Add-ons are complementary features extending available options."
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:1617
+#: inc/classes/admin/settings/class-page.php:1632
 msgid "Varnish"
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:1623
+#: inc/classes/admin/settings/class-page.php:1638
 msgid "If Varnish runs on your server, you must activate this add-on."
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:1625
+#: inc/classes/admin/settings/class-page.php:1640
 #, php-format
 msgid ""
 "Varnish cache will be purged each time WP Rocket clears its cache to ensure "
 "content is always up-to-date.<br>%1$sLearn more%2$s"
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:1639
-#: inc/classes/admin/settings/class-page.php:1668
+#: inc/classes/admin/settings/class-page.php:1654
+#: inc/classes/admin/settings/class-page.php:1683
 msgid "Cloudflare"
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:1645
+#: inc/classes/admin/settings/class-page.php:1660
 msgid "Integrate your Cloudflare account with this add-on."
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:1646
+#: inc/classes/admin/settings/class-page.php:1661
 msgid ""
 "Provide your account email, global API key, and domain to use options such as "
 "clearing the Cloudflare cache and enabling optimal settings with WP Rocket."
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:1680
+#: inc/classes/admin/settings/class-page.php:1695
 msgid "Cloudflare credentials"
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:1689
+#: inc/classes/admin/settings/class-page.php:1704
 msgid "Cloudflare settings"
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:1703
+#: inc/classes/admin/settings/class-page.php:1718
 msgctxt "Cloudflare"
 msgid "Global API key:"
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:1704
+#: inc/classes/admin/settings/class-page.php:1719
 msgid ""
 "https://support.cloudflare.com/hc/en-us/articles/200167836-Where-do-I-find-my-"
 "Cloudflare-API-key-"
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:1704
+#: inc/classes/admin/settings/class-page.php:1719
 msgctxt "Cloudflare"
 msgid "Find your API key"
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:1716
+#: inc/classes/admin/settings/class-page.php:1731
 msgctxt "Cloudflare"
 msgid "Account email"
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:1725
+#: inc/classes/admin/settings/class-page.php:1740
 msgctxt "Cloudflare"
 msgid "Domain"
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:1735
+#: inc/classes/admin/settings/class-page.php:1750
 msgid "Development mode"
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:1736
+#: inc/classes/admin/settings/class-page.php:1752
+#, php-format
 msgid ""
 "Temporarily activate development mode on your website. This setting will "
-"automatically turn off after 3 hours. Learn more"
+"automatically turn off after 3 hours. %1$sLearn more%2$s"
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:1744
+#: inc/classes/admin/settings/class-page.php:1760
 msgid "Optimal settings"
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:1745
+#: inc/classes/admin/settings/class-page.php:1761
 msgid ""
 "Automatically enhances your Cloudflare configuration for speed, performance "
 "grade and compatibility."
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:1753
+#: inc/classes/admin/settings/class-page.php:1769
 msgid "Relative protocol"
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:1754
+#: inc/classes/admin/settings/class-page.php:1770
 msgid ""
 "Should only be used with Cloudflare's flexible SSL feature. URLs of static files "
 "(CSS, JS, images) will be rewritten to use // instead of http:// or https://."
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:1802 inc/deprecated.php:1995
+#: inc/classes/admin/settings/class-page.php:1818 inc/deprecated.php:1995
 #: views/settings/page-sections/tools.php:13
 msgid "Tools"
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:1803
+#: inc/classes/admin/settings/class-page.php:1819
 msgid "Import, Export, Rollback"
 msgstr ""
 
@@ -1855,7 +1864,7 @@ msgstr ""
 msgid "Import settings"
 msgstr ""
 
-#: views/settings/fields/one-click-addon.php:29
+#: views/settings/fields/one-click-addon.php:40
 #: views/settings/fields/rocket-addon.php:30
 msgid "Add-on status"
 msgstr ""
