@@ -72,8 +72,8 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 				<button id="wpr-action-safe_mode" class="wpr-button"><?php _e( 'Apply safe mode', 'rocket' ); ?></button>
 			</div>
 			<div class="wpr-Modal-safeMode wpr-icon-check show-if-safe-mode">
-				<div class="wpr-Modal-safeMode-title wpr-title3"><?php _e('Safe mode applied.', 'rocket'); ?></div>
-				<?php _e('Review your site in a private/logged out browser window.', 'rocket' ); ?>
+				<div class="wpr-Modal-safeMode-title wpr-title3"><?php _e( 'Safe mode applied.', 'rocket' ); ?></div>
+				<?php _e( 'Review your site in a private/logged out browser window.', 'rocket' ); ?>
 			</div>
 			<p class="show-if-safe-mode"><?php _e( 'Is the issue fixed? Now you can reactivate options one at a time to determine which one caused the problem. <a href="https://docs.wp-rocket.me/article/19-resolving-issues-with-file-optimization/?utm_source=wp_plugin&utm_medium=wp_rocket" target="_blank">More info</a>', 'rocket' ); ?></p>
 		</div>
