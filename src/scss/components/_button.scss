@@ -19,7 +19,7 @@
     letter-spacing: -0.08px;
     font-weight: bold;
     border-radius: 4px;
-    color: #fff;
+    color: #fff !important; // Issue #905 : !Important is here to avoid CSS overwritten by other plugins (same prefix ?)
     white-space: nowrap;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
@@ -28,7 +28,7 @@
 
     &:hover,
     &:focus{
-        color: #fff;
+        color: #fff !important;
         transform: translateY(-2px);
         box-shadow: 0 7px 14px rgba(50,50,93,.25), 0 3px 6px rgba(0,0,0,.2);
     }
