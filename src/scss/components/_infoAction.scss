@@ -7,6 +7,7 @@
 \*-----------------------------------------------*/
 
 .wpr-infoAction{
+    position: relative;
     height: 24px;
     @include font-size(13,24);
     vertical-align: middle;
