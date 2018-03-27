@@ -9,7 +9,7 @@
 .wpr-menuItem{
     position: relative;
     display: block;
-    padding: 13px 44px 15px 14px;
+    padding: $space*2 44px 18px 20px;
     text-decoration: none;
     color: #fff;
     border-top: 1px solid rgba(255,255,255, 0.1);
@@ -17,7 +17,7 @@
     @include transition(all, 100ms);
 
     @include respond-to('xs') {
-        width: 61px;
+        width: 57px;
         height: 50px;
         padding: 0;
     }
@@ -28,8 +28,8 @@
 
     &:before{
         position: absolute;
-        top: calc(50% - 11px);
-        right: 20px;
+        top: calc(50% - 12px);
+        right: 18px;
         text-align: center;
         @include font-size(23,23);
         opacity: 0.4;
@@ -111,7 +111,7 @@
     &.wpr-cloudflareToggle{
         display: none;
         border: none;
-        padding: $space 20px $space 25px;
+        padding: 10px 20px $space 25px;
 
         @include respond-to('xs') {
             padding: $space 20px $space 23px;
@@ -129,7 +129,7 @@
             position: relative;
             display: inline-block;
             top: 2px;
-            right: inherit;
+            right: 2px;
             margin-right: 8px;
             @include font-size(16,16);
         }
@@ -152,7 +152,7 @@
 // For each .itemMenu, ID will detect which icon will be used
 #wpr-nav{
     &-dashboard{ @extend .wpr-icon-home; }
-    &-cache{ @extend .wpr-icon-files; &:before{right: 22px}}
+    &-cache{ @extend .wpr-icon-files; &:before{right: 20px}}
     &-file_optimization{ @extend .wpr-icon-stack; }
     &-media{ @extend .wpr-icon-media; }
     &-preload{ @extend .wpr-icon-refresh; }
@@ -161,5 +161,5 @@
     &-page_cdn{ @extend .wpr-icon-cdn; }
     &-addons{ @extend .wpr-icon-addons; }
     &-cloudflare{ @extend .wpr-icon-addon; }
-    &-tools{ @extend .wpr-icon-tools; &:before{right: 22px}}
+    &-tools{ @extend .wpr-icon-tools; &:before{right: 20px}}
 }
