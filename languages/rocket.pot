@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.0\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2018-03-26 09:38-0400\n"
+"POT-Creation-Date: 2018-03-27 10:55-0400\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1733,11 +1733,15 @@ msgstr ""
 msgid "Apply safe mode"
 msgstr ""
 
-#: views/deactivation-intent/form.php:74
-msgid "Safe mode applied. Review your site in a private/logged out browser window."
+#: views/deactivation-intent/form.php:75
+msgid "Safe mode applied."
 msgstr ""
 
-#: views/deactivation-intent/form.php:75
+#: views/deactivation-intent/form.php:76
+msgid "Review your site in a private/logged out browser window."
+msgstr ""
+
+#: views/deactivation-intent/form.php:78
 msgid ""
 "Is the issue fixed? Now you can reactivate options one at a time to determine "
 "which one caused the problem. <a href=\"https://docs.wp-rocket.me/article/19-"
@@ -1745,29 +1749,29 @@ msgid ""
 "utm_source=wp_plugin&utm_medium=wp_rocket\" target=\"_blank\">More info</a>"
 msgstr ""
 
-#: views/deactivation-intent/form.php:78
+#: views/deactivation-intent/form.php:81
 msgid "My PageSpeed or GT Metrix score did not improve"
 msgstr ""
 
-#: views/deactivation-intent/form.php:79
+#: views/deactivation-intent/form.php:82
 msgid ""
 "WP Rocket makes your site faster. The PageSpeed grade or GTMetrix score are not "
 "indicators of speed.  Neither your real visitors, nor Google will ever see your "
 "website’s “grade”. Speed is the only metric that matters for SEO and conversions."
 msgstr ""
 
-#: views/deactivation-intent/form.php:80
+#: views/deactivation-intent/form.php:83
 msgid "Yoast, the expert on all things related to SEO for WordPress states:"
 msgstr ""
 
-#: views/deactivation-intent/form.php:81
+#: views/deactivation-intent/form.php:84
 msgid ""
 "[Google] just looks at how fast your website loads for users, so you don’t have "
 "to obsess over that specific score. You have to make sure your website is as "
 "fast as you can get it."
 msgstr ""
 
-#: views/deactivation-intent/form.php:84
+#: views/deactivation-intent/form.php:87
 msgid ""
 "How to measure the load time of your site:<br><a href=\"https://wp-rocket.me/"
 "blog/correctly-measure-websites-page-load-time/?"
@@ -1775,7 +1779,7 @@ msgid ""
 "me/blog/correctly-measure-websites-page-load-time/</a>"
 msgstr ""
 
-#: views/deactivation-intent/form.php:85
+#: views/deactivation-intent/form.php:88
 msgid ""
 "Why you should not be chasing a PageSpeed score:<br><a href=\"https://wp-rocket."
 "me/blog/the-truth-about-google-pagespeed-insights/?"
@@ -1783,16 +1787,16 @@ msgid ""
 "me/blog/the-truth-about-google-pagespeed-insights/</a>"
 msgstr ""
 
-#: views/deactivation-intent/form.php:88
+#: views/deactivation-intent/form.php:91
 msgid "I did not notice a difference in loading time"
 msgstr ""
 
-#: views/deactivation-intent/form.php:89
+#: views/deactivation-intent/form.php:92
 msgid ""
 "Make sure you look at your site while logged out to see the fast, cached pages!"
 msgstr ""
 
-#: views/deactivation-intent/form.php:90
+#: views/deactivation-intent/form.php:93
 msgid ""
 "The best way to see the improvement WP Rocket provides is to perform speed "
 "tests. Follow this guide to correctly measure the load time of your website:"
@@ -1801,15 +1805,15 @@ msgid ""
 "rocket.me/blog/correctly-measure-websites-page-load-time/</a>"
 msgstr ""
 
-#: views/deactivation-intent/form.php:93
+#: views/deactivation-intent/form.php:96
 msgid "The plugin is too complicated to configure"
 msgstr ""
 
-#: views/deactivation-intent/form.php:94
+#: views/deactivation-intent/form.php:97
 msgid "We are sorry to hear you are finding it difficult to use WP Rocket."
 msgstr ""
 
-#: views/deactivation-intent/form.php:95
+#: views/deactivation-intent/form.php:98
 #, php-format
 msgid ""
 "WP Rocket is the only caching plugin that provides 80% of best practices in "
@@ -1817,13 +1821,13 @@ msgid ""
 "besides activate WP Rocket and your site will already be faster!"
 msgstr ""
 
-#: views/deactivation-intent/form.php:96
+#: views/deactivation-intent/form.php:99
 msgid ""
 "The additional options are not required for a fast site, they are for fine-"
 "tuning."
 msgstr ""
 
-#: views/deactivation-intent/form.php:97
+#: views/deactivation-intent/form.php:100
 msgid ""
 "To see the benefit WP Rocket is already providing, measure the speed of your "
 "site using a tool like Pingdom:<br><a href=\"https://wp-rocket.me/blog/correctly-"
@@ -1832,15 +1836,15 @@ msgid ""
 "time/</a>"
 msgstr ""
 
-#: views/deactivation-intent/form.php:102
+#: views/deactivation-intent/form.php:105
 msgid "Send & Deactivate"
 msgstr ""
 
-#: views/deactivation-intent/form.php:103
+#: views/deactivation-intent/form.php:106
 msgid "Cancel"
 msgstr ""
 
-#: views/deactivation-intent/form.php:105
+#: views/deactivation-intent/form.php:108
 msgid "Skip & Deactivate"
 msgstr ""
 
