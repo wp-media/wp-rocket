@@ -212,6 +212,35 @@
         }
     }
 
+    &-safeMode{
+        position: relative;
+        padding: 10px 12px 10px 52px;
+        background: $cGreenLight4;
+        color: $cGreenDark1;
+        border-radius: 2px;
+        @include font-size(13,18);
+
+        &:before{
+            position: absolute;
+            display: block;
+            width: 24px;
+            height: 24px;
+            left: 12px;
+            top: 50%;
+            margin-top: -14px;
+            border-radius: 50%;
+            text-align: center;
+            border: 2px solid $cGreenDark1;
+            @include font-size(14,24);
+        }
+
+        &-title{
+            font-weight: bold;
+            letter-spacing: 0.011em;
+            text-transform: uppercase;
+        }
+    }
+
     .button{
         font-weight: 500;
         box-shadow: none;
@@ -220,7 +249,6 @@
     }
 
     .button-primary{
-
         &.wpr-isDisabled{
             opacity: 0.2;
             color: #fff !important;
@@ -257,5 +285,9 @@
     input[type=radio]{
         margin-top: 1px;
         margin-right: $space;
+    }
+
+    .show-if-safe-mode{
+        display: none;
     }
 }
