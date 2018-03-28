@@ -30,3 +30,25 @@ More informations here : https://suitcss.github.io/ or http://www.alsacreations.
 
 //--> Components
 @import "components/_button";
+
+
+
+// RTL Rules
+html[dir=rtl] .wpr-Modal{
+    &-header{
+        padding: 0 $space*4 0 $space*2;
+    }
+
+    &-return{
+        left: 12px;
+        transform: rotate(180deg);
+    }
+    &-safeMode{
+        padding: 10px 52px 10px 12px;
+
+        &:before{
+            left: inherit;
+            right: 12px;
+        }
+    }
+}
