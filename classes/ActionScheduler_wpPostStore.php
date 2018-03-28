@@ -61,7 +61,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	protected function save_post_array( $post_array ) {
 		add_filter( 'wp_insert_post_data', array( $this, 'filter_insert_post_data' ), 10, 1 );
 		$post_id = wp_insert_post($post_array);
-		remove_filter( 'wp_insert_post_data', array( $this, 'filter_insert_post_data' ), 10, 1 );
+		remove_filter( 'wp_insert_post_data', array( $this, 'filter_insert_post_data' ), 10 );
 
 		if ( is_wp_error($post_id) || empty($post_id) ) {
 			throw new RuntimeException(__('Unable to save action.', 'action-scheduler'));
@@ -517,7 +517,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 			'ID' => $action_id,
 			'post_status' => 'publish',
 		), TRUE);
-		remove_filter( 'wp_insert_post_data', array( $this, 'filter_insert_post_data' ), 10, 1 );
+		remove_filter( 'wp_insert_post_data', array( $this, 'filter_insert_post_data' ), 10 );
 		if ( is_wp_error($result) ) {
 			throw new RuntimeException($result->get_error_message());
 		}
@@ -537,4 +537,3 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		$taxonomy_registrar->register();
 	}
 }
- 
