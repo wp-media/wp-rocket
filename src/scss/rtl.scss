@@ -14,6 +14,11 @@ Method : SUITCSS (modified)
 @import "abstracts/_mixins";
 
 
+.wpr-wrap {
+    margin: 0 -20px 0 0;
+}
+
+
 // layout/Page
 .wpr-Page{
     &-col--fixed{
@@ -221,13 +226,13 @@ Method : SUITCSS (modified)
         [type="checkbox"]:checked + label .wpr-radio-ui,
         [type="checkbox"]:not(:checked) + label .wpr-radio-ui:before,
         [type="checkbox"]:checked + label .wpr-radio-ui:after {
-            right: -2px;
+            right: 15px;
             left: inherit;
         }
 
         // OFF text
         [type="checkbox"]:not(:checked) + label .wpr-radio-ui:before {
-            right: -25px;
+            right: 6px;
             left: inherit;
         }
     }
@@ -348,4 +353,31 @@ Method : SUITCSS (modified)
         margin-right: $space*11;
     }
 
+}
+
+
+// components/adblock
+.wpr-adblock{
+    img{
+        margin-right: 0;
+        margin-left: $space*2;
+    }
+    &-close{
+        right: inherit;
+        left: $space*3;
+    }
+}
+
+
+// components/notice
+.wpr-notice{
+    background-position: 10% bottom;
+
+    &-container{
+        padding: 24px 40px 24px 25%;
+    }
+    &-close{
+        right: inherit;
+        left: $space*3;
+    }
 }
