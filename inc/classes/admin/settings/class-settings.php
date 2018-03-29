@@ -203,6 +203,11 @@ class Settings {
 		$input['defer_all_js']      = ! empty( $input['defer_all_js'] ) ? 1 : 0;
 		$input['defer_all_js_safe'] = ! empty( $input['defer_all_js_safe'] ) ? 1 : 0;
 
+		// If Defer JS is deactivated, set Safe Mode for Jquery to active.
+		if ( 0 === $input['defer_all_js'] ) {
+			$input['defer_all_js_safe'] = 1;
+		}
+
 		// Force mobile cache & specific mobile cache if one of the mobile plugins is active.
 		if ( rocket_is_mobile_plugin_active() ) {
 			$input['cache_mobile']            = 1;
@@ -217,7 +222,7 @@ class Settings {
 		$input['lazyload_youtube'] = ! empty( $input['lazyload_youtube'] ) ? 1 : 0;
 
 		// If iframes lazyload is not checked, uncheck youtube thumbnail option too.
-		if ( empty( $input['lazyload_iframes'] ) ) {
+		if ( 0 === $input['lazyload_iframes'] ) {
 			$input['lazyload_youtube'] = 0;
 		}
 
@@ -365,13 +370,13 @@ class Settings {
 		$input['database_optimize_tables']    = ! empty( $input['database_optimize_tables'] ) ? 1 : 0;
 		$input['schedule_automatic_cleanup']  = ! empty( $input['schedule_automatic_cleanup'] ) ? 1 : 0;
 
-		$allowed_cleanup_frequencies = [
+		$cleanup_frequencies = [
 			'daily'   => 1,
 			'weekly'  => 1,
 			'monthly' => 1,
 		];
 
-		$input['automatic_cleanup_frequency'] = isset( $allowed_cleanup_frequencies[ $input['automatic_cleanup_frequency'] ] ) ? $input['automatic_cleanup_frequency'] : $this->options->get( 'automatic_cleanup_frequency' );
+		$input['automatic_cleanup_frequency'] = isset( $cleanup_frequencies[ $input['automatic_cleanup_frequency'] ] ) ? $input['automatic_cleanup_frequency'] : $this->options->get( 'automatic_cleanup_frequency' );
 
 		if ( 1 !== $input['schedule_automatic_cleanup'] && ( 'daily' !== $input['automatic_cleanup_frequency'] || 'weekly' !== $input['automatic_cleanup_frequency'] || 'monthly' !== $input['automatic_cleanup_frequency'] ) ) {
 			$input['automatic_cleanup_frequency'] = $this->options->get( 'automatic_cleanup_frequency' );
