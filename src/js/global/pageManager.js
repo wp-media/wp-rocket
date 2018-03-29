@@ -68,7 +68,8 @@ function PageManager(aElem) {
     for (var i = 0; i < this.$links.length; i++) {
         this.$links[i].onclick = function() {
             refThis.getBodyTop();
-            if(this.href.split('#')[1] == refThis.pageId){
+            var hrefSplit = this.href.split('#')[1];
+            if(hrefSplit == refThis.pageId && hrefSplit != undefined){
                 refThis.detectID();
                 return false;
             }
