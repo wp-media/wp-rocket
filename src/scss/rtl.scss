@@ -14,8 +14,20 @@ Method : SUITCSS (modified)
 @import "abstracts/_mixins";
 
 
+// base/base
 .wpr-wrap {
     margin: 0 -20px 0 0;
+}
+
+#hs-beacon{
+    iframe:nth-child(1){
+        right: inherit !important;
+        left: 18px !important;
+    }
+    iframe:nth-child(2){
+        right: inherit !important;
+        left: 6px !important;
+    }
 }
 
 
