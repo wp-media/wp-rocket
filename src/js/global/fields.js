@@ -25,7 +25,6 @@ $(document).ready(function(){
             }
             else{
                 $children.removeClass('wpr-isOpen');
-                $children.find('input[type=checkbox]').attr('checked', false);
             }
     }
 
