@@ -26,6 +26,18 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 	<div class="wpr-sectionHeader">
 		<h2 class="wpr-title1 wpr-icon-home"><?php echo $data['title']; ?></h2>
 	</div>
+
+	<div class="wpr-adblock">
+		<div class="wpr-adblock-container">
+			<img src="<?php echo WP_ROCKET_ASSETS_IMG_URL; ?>/logo-adblock.svg" width="52" height="52" alt="Logo Adblock">
+			<div>
+				<div class="wpr-adblock-title"><?php _e( 'WP Rocket : Ad blocker detected.', 'rocket' ); ?></div>
+				<h2 class="wpr-adblock-description"><?php _e( 'Disable it on your site to access our support features. <a href="https://docs.wp-rocket.me/article/1080-disable-ad-blocker-for-support-integration?preview=5ab91537042863794fbe9bfa" target="_blank">Learn more</a>', 'rocket' ); ?></h2>
+			</div>
+			<a class="wpr-adblock-close wpr-icon-close rocket-dismiss" href="#"><span class="screen-reader-text"><?php _e( 'Dismiss this notice.', 'rocket' ); ?></span></a>
+		</div>
+	</div>
+
 	<?php
 	$boxes = get_user_meta( $GLOBALS['current_user']->ID, 'rocket_boxes', true );
 
@@ -41,6 +53,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 		</div>
 	</div>
 	<?php endif; ?>
+
 	<div class="wpr-Page-row">
 		<div class="wpr-Page-col">
 			<div class="wpr-optionHeader">

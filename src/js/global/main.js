@@ -133,4 +133,32 @@ $(document).ready(function(){
     }
 
 
+
+    /***
+    * Detect Adblock
+    ***/
+
+    if(document.getElementById('LKgOcCRpwmAj')){
+        $('.wpr-adblock').css('display', 'none');
+    } else {
+        $('.wpr-adblock').css('display', 'block');
+    }
+
+    var $adblock = $('.wpr-adblock');
+    var $adblockClose = $('.wpr-adblock-close');
+
+    $adblockClose.click(function() {
+        wprCloseAdblockNotice();
+        return false;
+    });
+
+    function wprCloseAdblockNotice(){
+        var vTL = new TimelineLite()
+          .to($adblock, 1, {autoAlpha:0, x:40, ease:Power4.easeOut})
+          .to($adblock, 0.4, {height: 0, marginTop:0, ease:Power4.easeOut}, '=-.4')
+          .set($adblock, {'display':'none'})
+        ;
+    }
+
+
 });
