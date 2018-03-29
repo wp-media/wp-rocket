@@ -13,7 +13,7 @@
     border: 1px solid $cGrey;
     border-left: none;
     flex: 1 1 auto;
-    max-width: 960px;
+    max-width: calc(960px + 270px);
 
     @include respond-to('xs') {
         padding: $space*3 $space*2;
@@ -24,8 +24,8 @@
         color: #fff !important;
     }
 
-    &.isFull{
-        max-width: calc(960px + 270px);
+    &.isNotFull{
+        max-width: 960px;
     }
 
     &-tips{

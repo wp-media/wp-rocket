@@ -134,7 +134,7 @@ PageManager.prototype.change = function() {
     this.$tips.style.display = 'block';
     this.$menuItem.classList.add('isActive');
     this.$submitButton.value = this.buttonText;
-    this.$content.classList.remove('isFull');
+    this.$content.classList.add('isNotFull');
 
 
     // Exception for dashboard
@@ -142,7 +142,7 @@ PageManager.prototype.change = function() {
         this.$sidebar.style.display = 'none';
         this.$tips.style.display = 'none';
         this.$submitButton.style.display = 'none';
-        this.$content.classList.add('isFull');
+        this.$content.classList.remove('isNotFull');
     }
 
     // Exception for addons
