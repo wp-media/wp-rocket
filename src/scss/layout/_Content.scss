@@ -24,6 +24,10 @@
         color: #fff !important;
     }
 
+    &.isFull{
+        max-width: calc(960px + 270px);
+    }
+
     &-tips{
         display: none !important; // Line to remove when tips OK
         position: absolute;

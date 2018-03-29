@@ -1,5 +1,5 @@
 document.addEventListener( 'DOMContentLoaded', function () {
-    
+
     var $pageManager = document.querySelector(".wpr-Content");
     if($pageManager){
         new PageManager($pageManager);
@@ -30,6 +30,7 @@ function PageManager(aElem) {
     this.$submitButton = document.querySelector('.wpr-Content > form > #wpr-options-submit');
     this.$pages = document.querySelectorAll('.wpr-Page');
     this.$sidebar = document.querySelector('.wpr-Sidebar');
+    this.$content = document.querySelector('.wpr-Content');
     this.$tips = document.querySelector('.wpr-Content-tips');
     this.$links = document.querySelectorAll('.wpr-body a');
     this.$menuItem = null;
@@ -133,6 +134,7 @@ PageManager.prototype.change = function() {
     this.$tips.style.display = 'block';
     this.$menuItem.classList.add('isActive');
     this.$submitButton.value = this.buttonText;
+    this.$content.classList.remove('isFull');
 
 
     // Exception for dashboard
@@ -140,6 +142,7 @@ PageManager.prototype.change = function() {
         this.$sidebar.style.display = 'none';
         this.$tips.style.display = 'none';
         this.$submitButton.style.display = 'none';
+        this.$content.classList.add('isFull');
     }
 
     // Exception for addons
