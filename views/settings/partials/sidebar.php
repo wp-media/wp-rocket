@@ -17,7 +17,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 	<p><?php _e( 'Why Google PageSpeed grade should not matter', 'rocket' ); ?></p>
 	<a href="<?php echo esc_url( __( 'https://wp-rocket.me/blog/the-truth-about-google-pagespeed-insights/?utm_source=wp_plugin&utm_medium=wp_rocket', 'rocket' ) ); ?>" target="_blank" class="wpr-Sidebar-notice-link"><?php _e( 'Read more', 'rocket' ); ?></a>
 </div>
-<?php if ( ! get_rocket_option( 'user_cache', 0 ) ) : ?>
+<?php if ( ! get_rocket_option( 'cache_logged_user', 0 ) ) : ?>
 <div class="wpr-Sidebar-info">
 	<i class="wpr-icon-information2"></i>
 	<h4><?php _e( 'You have not activated logged-in user cache.', 'rocket' ); ?></h4>

@@ -623,7 +623,7 @@ class Page {
 
 		$this->settings->add_settings_fields(
 			[
-				'user_cache'              => [
+				'cache_logged_user'     => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Enable caching for logged-in WordPress users', 'rocket' ),
 					'section'           => 'user_cache_section',
