@@ -1,64 +1,6 @@
 <?php
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
-// WP <3.5 defines.
-if ( ! defined( 'SECOND_IN_SECONDS' ) ) {
-	define( 'SECOND_IN_SECONDS', 1 );
-}
-if ( ! defined( 'MINUTE_IN_SECONDS' ) ) {
-	define( 'MINUTE_IN_SECONDS', SECOND_IN_SECONDS * 60 );
-}
-if ( ! defined( 'HOUR_IN_SECONDS' ) ) {
-	define( 'HOUR_IN_SECONDS', 60 * MINUTE_IN_SECONDS );
-}
-if ( ! defined( 'DAY_IN_SECONDS' ) ) {
-	define( 'DAY_IN_SECONDS', 24 * HOUR_IN_SECONDS );
-}
-if ( ! defined( 'WEEK_IN_SECONDS' ) ) {
-	define( 'WEEK_IN_SECONDS', 7 * DAY_IN_SECONDS );
-}
-if ( ! defined( 'YEAR_IN_SECONDS' ) ) {
-	define( 'YEAR_IN_SECONDS', 365 * DAY_IN_SECONDS );
-}
-
-// copied from core to reduct backcompat to 3.1 and not 3.5.
-if ( ! function_exists( 'wp_send_json' ) ) {
-	/**
-	 * Send a JSON response back to an Ajax request.
-	 *
-	 * @since WordPress 3.5.0
-	 *
-	 * @param mixed $response Variable (usually an array or object) to encode as JSON, then print and die.
-	 */
-	function wp_send_json( $response ) {
-		@header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
-		echo json_encode( $response );
-		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-			wp_die();
-		} else {
-			die();
-		}
-	}
-}
-
-// copied from core to reduct backcompat to 3.1 and not 3.6.
-if ( ! function_exists( 'wp_unslash' ) ) {
-	/**
-	 * Remove slashes from a string or array of strings.
-	 *
-	 * This should be used to remove slashes from data passed to core API that
-	 * expects data to be unslashed.
-	 *
-	 * @since 3.6.0
-	 *
-	 * @param string|array $value String or array of strings to unslash.
-	 * @return string|array Unslashed $value
-	 */
-	function wp_unslash( $value ) {
-		return stripslashes_deep( $value );
-	}
-}
-
 // Copied from core for compatibility with WP < 4.6.
 // Removed the error triggering because it relies on another WP 4.6 function.
 if ( ! function_exists( 'apply_filters_deprecated' ) ) {
@@ -120,15 +62,15 @@ if ( ! function_exists( 'wp_parse_url' ) ) {
 	 */
 	function wp_parse_url( $url, $component = -1 ) {
 		$to_unset = array();
-		$url = strval( $url );
+		$url      = strval( $url );
 
 		if ( '//' === substr( $url, 0, 2 ) ) {
 			$to_unset[] = 'scheme';
-			$url = 'placeholder:' . $url;
+			$url        = 'placeholder:' . $url;
 		} elseif ( '/' === substr( $url, 0, 1 ) ) {
 			$to_unset[] = 'scheme';
 			$to_unset[] = 'host';
-			$url = 'placeholder://placeholder' . $url;
+			$url        = 'placeholder://placeholder' . $url;
 		}
 
 		$parts = @parse_url( $url );
@@ -214,82 +156,4 @@ if ( ! function_exists( '_wp_translate_php_url_constant_to_key' ) ) {
 	}
 }
 
-if ( ! function_exists( 'hash_equals' ) ) {
-	/**
-	 * Polyfill for hash_equals function not available before 5.6
-	 *
-	 * @since 2.10.6
-	 * @author Remy Perona
-	 *
-	 * @see   http://php.net/manual/fr/function.hash-equals.php
-	 *
-	 * @param string $known_string The string of known length to compare against.
-	 * @param string $user_string The user-supplied string.
-	 * @return bool Returns TRUE when the two strings are equal, FALSE otherwise.
-	 */
-	function hash_equals( $known_string, $user_string ) {
-		$ret = 0;
 
-		if ( strlen( $known_string ) !== strlen( $user_string ) ) {
-			$user_string = $known_string;
-			$ret = 1;
-		}
-
-				$res = $known_string ^ $user_string;
-
-		for ( $i = strlen( $res ) - 1; $i >= 0; --$i ) {
-			$ret |= ord( $res[ $i ] );
-		}
-
-				return ! $ret;
-	}
-}
-
-if ( ! function_exists( 'wp_json_encode' ) ) {
-	/**
-	 * Copied from core for compatibility with WP < 4.1
-	 * Encode a variable into JSON, with some sanity checks.
-	 *
-	 * @since 4.1.0
-	 *
-	 * @param mixed $data    Variable (usually an array or object) to encode as JSON.
-	 * @param int   $options Optional. Options to be passed to json_encode(). Default 0.
-	 * @param int   $depth   Optional. Maximum depth to walk through $data. Must be
-	 *                       greater than 0. Default 512.
-	 * @return string|false The JSON encoded string, or false if it cannot be encoded.
-	 */
-	function wp_json_encode( $data, $options = 0, $depth = 512 ) {
-		/*
-		 * json_encode() has had extra params added over the years.
-		 * $options was added in 5.3, and $depth in 5.5.
-		 * We need to make sure we call it with the correct arguments.
-		 */
-		if ( version_compare( PHP_VERSION, '5.5', '>=' ) ) {
-			$args = array( $data, $options, $depth );
-		} elseif ( version_compare( PHP_VERSION, '5.3', '>=' ) ) {
-			$args = array( $data, $options );
-		} else {
-			$args = array( $data );
-		}
-
-		// Prepare the data for JSON serialization.
-		$args[0] = _wp_json_prepare_data( $data );
-
-		$json = @call_user_func_array( 'json_encode', $args );
-
-		// If json_encode() was successful, no need to do more sanity checking.
-		// ... unless we're in an old version of PHP, and json_encode() returned
-		// a string containing 'null'. Then we need to do more sanity checking.
-		if ( false !== $json && ( version_compare( PHP_VERSION, '5.5', '>=' ) || false === strpos( $json, 'null' ) ) ) {
-			return $json;
-		}
-
-		try {
-			$args[0] = _wp_json_sanity_check( $data, $depth );
-		} catch ( Exception $e ) {
-			return false;
-		}
-
-		return call_user_func_array( 'json_encode', $args );
-	}
-}

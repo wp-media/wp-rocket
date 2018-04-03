@@ -9,13 +9,11 @@ require WP_ROCKET_3RD_PARTY_PATH . 'hosting/pagely.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'hosting/nginx.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'hosting/siteground.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'hosting/pressidium.php';
+require WP_ROCKET_3RD_PARTY_PATH . 'hosting/savvii.php';
+require WP_ROCKET_3RD_PARTY_PATH . 'hosting/godaddy.php';
+require WP_ROCKET_3RD_PARTY_PATH . 'hosting/kinsta.php';
 
-if ( version_compare( phpversion(), '5.3.0', '>=' ) ) {
-	require WP_ROCKET_3RD_PARTY_PATH . 'hosting/savvii.php';
-	require WP_ROCKET_3RD_PARTY_PATH . 'hosting/godaddy.php';
-	require WP_ROCKET_3RD_PARTY_PATH . 'plugins/geotargetingwp.php';
-}
-
+require WP_ROCKET_3RD_PARTY_PATH . 'plugins/geotargetingwp.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/slider/revslider.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/slider/layerslider.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/slider/meta-slider.php';

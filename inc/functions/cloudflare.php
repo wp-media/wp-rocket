@@ -44,26 +44,24 @@ function get_rocket_cloudflare_instance() {
 	if ( ! isset( $cf_zone_id ) ) {
 
 		$msg = sprintf(
-			/* translators: %s = WP Rocket plugin name (maybe white label) */
+			// translators: %s = WP Rocket plugin name.
 			__( 'Missing Cloudflare zone ID. %s could not fix this automatically.', 'rocket' ),
 			WP_ROCKET_PLUGIN_NAME
 		);
 
-		if ( ! rocket_is_white_label() ) {
-			$msg .= ' ' . sprintf(
-				/* translators: %1$s = opening link; %2$s = closing link */
-				__( 'Read the %1$sdocumentation%2$s for further guidance.', 'rocket' ),
-				/* translators: Documentation exists in EN, DE, FR, ES, IT; use loaclised URL if applicable */
-				'<a href="' . __( 'http://docs.wp-rocket.me/article/18-using-wp-rocket-with-cloudflare', 'rocket' ) . '" target="__blank">',
-				'</a>'
-			);
-		}
+		$msg .= ' ' . sprintf(
+			/* translators: %1$s = opening link; %2$s = closing link */
+			__( 'Read the %1$sdocumentation%2$s for further guidance.', 'rocket' ),
+			/* translators: Documentation exists in EN, DE, FR, ES, IT; use loaclised URL if applicable */
+			'<a href="' . __( 'https://docs.wp-rocket.me/article/18-using-wp-rocket-with-cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket', 'rocket' ) . '" target="_blank">',
+			'</a>'
+		);
 
 		return new WP_Error( 'cloudflare_no_zone_id', $msg );
 	}
 
 	$cf_instance = (object) [
-		'auth' => $cf_api_instance,
+		'auth'    => $cf_api_instance,
 		'zone_id' => $cf_zone_id,
 	];
 
@@ -116,7 +114,7 @@ function rocket_cloudflare_valid_auth() {
  */
 function get_rocket_cloudflare_zones() {
 	$cf_api_instance = get_rocket_cloudflare_api_instance();
-	$domains = array(
+	$domains         = array(
 		'' => __( 'Choose a domain from the list', 'rocket' ),
 	);
 
@@ -125,9 +123,9 @@ function get_rocket_cloudflare_zones() {
 	}
 
 	try {
-		$cf_zone_instance        = new Cloudflare\Zone( $cf_api_instance );
-		$cf_zones                = $cf_zone_instance->zones( null, 'active', null, 50 );
-		$cf_zones_list           = $cf_zones->result;
+		$cf_zone_instance = new Cloudflare\Zone( $cf_api_instance );
+		$cf_zones         = $cf_zone_instance->zones( null, 'active', null, 50 );
+		$cf_zones_list    = $cf_zones->result;
 
 		if ( ! (bool) $cf_zones_list ) {
 			$domains[] = __( 'No domain available in your Cloudflare account', 'rocket' );
@@ -168,7 +166,7 @@ function get_rocket_cloudflare_settings() {
 			$cf_minify_value = 'off';
 		}
 
-		$cf_settings_array  = array(
+		$cf_settings_array = array(
 			'cache_level'       => $cf_settings->result[5]->value,
 			'minify'            => $cf_minify_value,
 			'rocket_loader'     => $cf_settings->result[25]->value,
@@ -205,7 +203,7 @@ function set_rocket_cloudflare_devmode( $mode ) {
 
 	try {
 		$cf_settings = new Cloudflare\Zone\Settings( $GLOBALS['rocket_cloudflare']->auth );
-		$cf_return = $cf_settings->change_development_mode( $GLOBALS['rocket_cloudflare']->zone_id, $value );
+		$cf_return   = $cf_settings->change_development_mode( $GLOBALS['rocket_cloudflare']->zone_id, $value );
 
 		if ( ! isset( $cf_return->success ) || empty( $cf_return->success ) ) {
 			foreach ( $cf_return->errors as $error ) {
@@ -244,7 +242,7 @@ function set_rocket_cloudflare_cache_level( $mode ) {
 
 	try {
 		$cf_settings = new Cloudflare\Zone\Settings( $GLOBALS['rocket_cloudflare']->auth );
-		$cf_return = $cf_settings->change_cache_level( $GLOBALS['rocket_cloudflare']->zone_id, $mode );
+		$cf_return   = $cf_settings->change_cache_level( $GLOBALS['rocket_cloudflare']->zone_id, $mode );
 
 		if ( ! isset( $cf_return->success ) || empty( $cf_return->success ) ) {
 			foreach ( $cf_return->errors as $error ) {
@@ -285,7 +283,7 @@ function set_rocket_cloudflare_minify( $mode ) {
 
 	try {
 		$cf_settings = new Cloudflare\Zone\Settings( $GLOBALS['rocket_cloudflare']->auth );
-		$cf_return = $cf_settings->change_minify( $GLOBALS['rocket_cloudflare']->zone_id, $cf_minify_settings );
+		$cf_return   = $cf_settings->change_minify( $GLOBALS['rocket_cloudflare']->zone_id, $cf_minify_settings );
 
 		if ( ! isset( $cf_return->success ) || empty( $cf_return->success ) ) {
 			foreach ( $cf_return->errors as $error ) {
@@ -320,7 +318,7 @@ function set_rocket_cloudflare_rocket_loader( $mode ) {
 
 	try {
 		$cf_settings = new Cloudflare\Zone\Settings( $GLOBALS['rocket_cloudflare']->auth );
-		$cf_return = $cf_settings->change_rocket_loader( $GLOBALS['rocket_cloudflare']->zone_id, $mode );
+		$cf_return   = $cf_settings->change_rocket_loader( $GLOBALS['rocket_cloudflare']->zone_id, $mode );
 
 		if ( ! isset( $cf_return->success ) || empty( $cf_return->success ) ) {
 			foreach ( $cf_return->errors as $error ) {
@@ -354,7 +352,7 @@ function set_rocket_cloudflare_browser_cache_ttl( $mode ) {
 
 	try {
 		$cf_settings = new Cloudflare\Zone\Settings( $GLOBALS['rocket_cloudflare']->auth );
-		$cf_return = $cf_settings->change_browser_cache_ttl( $GLOBALS['rocket_cloudflare']->zone_id, (int) $mode );
+		$cf_return   = $cf_settings->change_browser_cache_ttl( $GLOBALS['rocket_cloudflare']->zone_id, (int) $mode );
 
 		if ( ! isset( $cf_return->success ) || empty( $cf_return->success ) ) {
 			foreach ( $cf_return->errors as $error ) {
@@ -427,18 +425,19 @@ function rocket_get_cloudflare_ips() {
 	if ( false === $cf_ips ) {
 		try {
 			$cf_ips_instance = new Cloudflare\IPs( $cf_instance );
-			$cf_ips = $cf_ips_instance->ips();
+			$cf_ips          = $cf_ips_instance->ips();
 
-			if ( isset( $cf_ips->success ) && $cf_ips->success ) {
-				set_transient( 'rocket_cloudflare_ips', $cf_ips, 2 * WEEK_IN_SECONDS );
-			} else {
+			if ( ! isset( $cf_ips->success ) || ! $cf_ips->success ) {
 				throw new Exception( 'Error connecting to Cloudflare' );
 			}
+
+			set_transient( 'rocket_cloudflare_ips', $cf_ips, 2 * WEEK_IN_SECONDS );
 		} catch ( Exception $e ) {
 			$cf_ips = (object) [
 				'success' => true,
-				'result' => (object) [],
+				'result'  => (object) [],
 			];
+
 			$cf_ips->result->ipv4_cidrs = array(
 				'103.21.244.0/22',
 				'103.22.200.0/22',

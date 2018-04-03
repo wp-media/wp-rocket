@@ -1,9 +1,13 @@
 <?php
+use WP_Rocket\Admin\Options;
+use WP_Rocket\Admin\Options_Data;
+
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
  * A wrapper to easily get rocket option
  *
+ * @since 3.0 Use the new options classes
  * @since 1.3.0
  *
  * @param string $option  The option name.
@@ -11,39 +15,16 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  * @return mixed The option value
  */
 function get_rocket_option( $option, $default = false ) {
-	/**
-	 * Pre-filter any WP Rocket option before read
-	 *
-	 * @since 2.5
-	 *
-	 * @param variant $default The default value
-	*/
-	$value = apply_filters( 'pre_get_rocket_option_' . $option, null, $default );
-	if ( null !== $value ) {
-		return $value;
-	}
-	$options = get_option( WP_ROCKET_SLUG );
-	if ( 'consumer_key' === $option && defined( 'WP_ROCKET_KEY' ) ) {
-		return WP_ROCKET_KEY;
-	} elseif ( 'consumer_email' === $option && defined( 'WP_ROCKET_EMAIL' ) ) {
-		return WP_ROCKET_EMAIL;
-	}
+	$options_api = new Options( 'wp_rocket_' );
+	$options     = new Options_Data( $options_api->get( 'settings', array() ) );
 
-	$value = isset( $options[ $option ] ) && '' !== $options[ $option ] ? $options[ $option ] : $default;
-
-	/**
-	 * Filter any WP Rocket option after read
-	 *
-	 * @since 2.5
-	 *
-	 * @param variant $default The default value
-	*/
-	return apply_filters( 'get_rocket_option_' . $option, $value, $default );
+	return $options->get( $option, $default );
 }
 
 /**
  * Update a WP Rocket option.
  *
+ * @since 3.0 Use the new options classes
  * @since 2.7
  *
  * @param  string $key    The option name.
@@ -51,10 +32,11 @@ function get_rocket_option( $option, $default = false ) {
  * @return void
  */
 function update_rocket_option( $key, $value ) {
-	$options         = get_option( WP_ROCKET_SLUG );
-	$options[ $key ] = $value;
+	$options_api = new Options( 'wp_rocket_' );
+	$options     = new Options_Data( $options_api->get( 'settings', array() ) );
 
-	update_option( WP_ROCKET_SLUG, $options );
+	$options->set( $key, $value );
+	$options_api->set( 'settings', $options->get_options() );
 }
 
 /**
@@ -141,28 +123,6 @@ function is_rocket_generate_caching_mobile_files() {
 }
 
 /**
- * Check if we need to cache SSL requests of the website (if available)
- *
- * @since 1.0
- * @access public
- * @return bool True if option is activated
- */
-function is_rocket_cache_ssl() {
-	return get_rocket_option( 'cache_ssl', false );
-}
-
-/**
- * Check if we need to disable CDN on SSL pages
- *
- * @since 2.5
- * @access public
- * @return bool True if option is activated
- */
-function is_rocket_cdn_on_ssl() {
-	return is_ssl() && get_rocket_option( 'cdn_ssl', 0 ) ? false : true;
-}
-
-/**
  * Get the domain names to DNS prefetch from WP Rocket options
  *
  * @since 2.8.9
@@ -174,7 +134,7 @@ function rocket_get_dns_prefetch_domains() {
 	$cdn_cnames = get_rocket_cdn_cnames( array( 'all', 'images', 'css_and_js', 'css', 'js' ) );
 
 	// Don't add CNAMES if CDN is disabled HTTPS pages or on specific posts.
-	if ( ! is_rocket_cdn_on_ssl() || is_rocket_post_excluded_option( 'cdn' ) ) {
+	if ( is_rocket_post_excluded_option( 'cdn' ) ) {
 		$cdn_cnames = array();
 	}
 
@@ -361,16 +321,13 @@ function get_rocket_cdn_reject_files() {
 /**
  * Get all CNAMES
  *
+ * @since 3.0 Don't check for WP Rocket CDN option activated to be able to use the function on Hosting with CDN auto-enabled
  * @since 2.1
  *
  * @param string $zone (default: 'all') List of zones.
  * @return array List of CNAMES
  */
 function get_rocket_cdn_cnames( $zone = 'all' ) {
-	if ( (int) get_rocket_option( 'cdn' ) === 0 ) {
-		return array();
-	}
-
 	$hosts       = array();
 	$cnames      = get_rocket_option( 'cdn_cnames', array() );
 	$cnames_zone = get_rocket_option( 'cdn_zone', array() );

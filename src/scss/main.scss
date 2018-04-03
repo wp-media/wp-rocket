@@ -1,0 +1,60 @@
+// compressedFilenamePattern: ../../assets/css/wpr-admin.css
+
+/*-----------------------------------------------*\
+
+Author: Thomas Geisen (www.thomasgeisen.fr)
+Method : SUITCSS (modified)
+
+.ComponentName => Name of component (Ex : .SiteHeader)
+.ComponentName--modifierName => Modifier of component (.SiteHeader--white, .SiteHeader--fixed)
+.ComponentName-descendantName => Children of componant (.SiteHeader-logo, .SiteHeader-menu)
+.ComponentName.isState => State of component (.isActive, .isOpen)
+
+More informations here : https://suitcss.github.io/ or http://www.alsacreations.com/article/lire/1641-bonnes-pratiques-en-css-bem-et-oocss.html (french)
+
+--- EVERY CLASS are prefixed with "wpr-"
+
+\*-----------------------------------------------*/
+
+@charset 'utf-8';
+
+//--> Abstracts
+@import "abstracts/_variables";
+@import "abstracts/_mixins";
+
+//--> Base
+@import "base/_base";
+@import "base/_utilities";
+@import "base/_icons";
+@import "base/_styles";
+
+//--> Layout
+@import "layout/_Header";
+@import "layout/_Sidebar";
+@import "layout/_Content";
+@import "layout/_Page";
+@import "layout/_Popin";
+
+//--> Components
+@import "components/_menuItem";
+@import "components/_sectionHeader";
+@import "components/_optionHeader";
+@import "components/_fieldsContainer";
+@import "components/_infoAction";
+@import "components/_button";
+@import "components/_field";
+@import "components/_fieldWarning";
+@import "components/_documentation";
+@import "components/_addon";
+@import "components/_notice";
+@import "components/_tools";
+@import "components/_adblock";
+
+//--> _fieldsContainer
+@import "components/fields/_checkbox";
+@import "components/fields/_radio";
+@import "components/fields/_select";
+@import "components/fields/_textarea";
+@import "components/fields/_text";
+@import "components/fields/_file";
+@import "components/fields/_multiple";

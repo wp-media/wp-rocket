@@ -1,0 +1,43 @@
+// main: ../main.scss
+
+/*-----------------------------------------------*\
+
+    Main content of the page
+
+\*-----------------------------------------------*/
+
+.wpr-Content{
+    position: relative;
+    background: #fff;
+    padding: $space*4 $space*3;
+    border: 1px solid $cGrey;
+    border-left: none;
+    flex: 1 1 auto;
+    max-width: calc(960px + 270px);
+
+    @include respond-to('xs') {
+        padding: $space*3 $space*2;
+    }
+
+    form > input:last-child{
+        margin-top: $space*3;
+        color: #fff !important;
+    }
+
+    &.isNotFull{
+        max-width: 960px;
+    }
+
+    &-tips{
+        display: none !important; // Line to remove when tips OK
+        position: absolute;
+        top: $space*6;
+        right: $space*3;
+        font-weight: bold;
+        color: $cGreyDark2;
+
+        @include respond-to('md') {
+            display: none !important;
+        }
+    }
+}

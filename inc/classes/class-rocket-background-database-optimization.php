@@ -63,7 +63,7 @@ class Rocket_Background_Database_Optimization extends WP_Background_Process {
 				if ( $query ) {
 					$number = 0;
 					foreach ( $query as $id ) {
-						$number += (int) wp_delete_post_revision( intval( $id ) );
+						$number += wp_delete_post_revision( intval( $id ) ) instanceof WP_Post ? 1 : 0;
 					}
 
 					$this->count[ $item ] = $number;
@@ -74,7 +74,7 @@ class Rocket_Background_Database_Optimization extends WP_Background_Process {
 				if ( $query ) {
 					$number = 0;
 					foreach ( $query as $id ) {
-						$number += (int) wp_delete_post( intval( $id ), true );
+						$number += wp_delete_post( intval( $id ), true ) instanceof WP_Post ? 1 : 0;
 					}
 
 					$this->count[ $item ] = $number;
@@ -85,7 +85,7 @@ class Rocket_Background_Database_Optimization extends WP_Background_Process {
 				if ( $query ) {
 					$number = 0;
 					foreach ( $query as $id ) {
-						$number += (int) wp_delete_post( $id, true );
+						$number += wp_delete_post( $id, true ) instanceof WP_Post ? 1 : 0;
 					}
 
 					$this->count[ $item ] = $number;
@@ -114,13 +114,13 @@ class Rocket_Background_Database_Optimization extends WP_Background_Process {
 				}
 				break;
 			case 'expired_transients':
-				$time = isset( $_SERVER['REQUEST_TIME'] ) ? (int) $_SERVER['REQUEST_TIME'] : time();
+				$time  = isset( $_SERVER['REQUEST_TIME'] ) ? (int) $_SERVER['REQUEST_TIME'] : time();
 				$query = $wpdb->get_col( "SELECT option_name FROM $wpdb->options WHERE option_name LIKE '_transient_timeout%' AND option_value < $time" );
 
 				if ( $query ) {
 					$number = 0;
 					foreach ( $query as $transient ) {
-						$key = str_replace( '_transient_timeout_', '', $transient );
+						$key     = str_replace( '_transient_timeout_', '', $transient );
 						$number += (int) delete_transient( $key );
 					}
 

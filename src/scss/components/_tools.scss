@@ -1,0 +1,75 @@
+// main: ../main.scss
+
+/*-----------------------------------------------*\
+
+    Tools style
+
+\*-----------------------------------------------*/
+
+.wpr-tools{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    padding: $space*4 0;
+
+    @include respond-to('md') {
+        flex-direction: column;
+    }
+
+    @include respond-to('sm') {
+        flex-direction: row;
+    }
+
+    @include respond-to('xs') {
+        flex-direction: column;
+    }
+
+    &:nth-child(2){
+        margin-top: $space*2;
+    }
+
+    & + .wpr-tools{
+        border-top: 1px solid $cGrey;
+    }
+
+    &-label{
+        display: block;
+
+        &:before{
+            position: absolute;
+            left: 0;
+            margin-top: 5px;
+            @include font-size(36,36);
+            color: $cOrange;
+        }
+    }
+
+    &-col{
+        flex: 1 1 auto;
+
+        &:first-child{
+            padding-left: $space*9;
+            padding-right: $space*3;
+            min-width: 340px;
+        }
+
+        &:last-child{
+            text-align: right;
+
+            @include respond-to('xs') {
+                text-align: left;
+            }
+        }
+    }
+
+    .wpr-button{
+        margin-top: $space*3;
+        white-space: normal;
+    }
+
+    .wpr-field-description{
+        font-style: normal;
+        color: $cGreyDark2;
+    }
+
+}

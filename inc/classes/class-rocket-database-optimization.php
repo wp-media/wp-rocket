@@ -57,7 +57,6 @@ class Rocket_Database_Optimization {
 		add_action( 'init', array( $self, 'database_optimization_scheduled' ) );
 		add_action( 'rocket_database_optimization_time_event', array( $self, 'process_handler' ) );
 		add_action( 'update_option_' . WP_ROCKET_SLUG, array( $self, 'save_optimize' ) );
-		add_action( 'admin_post_rocket_optimize_database', array( $self, 'optimize' ) );
 		add_action( 'admin_notices', array( $self, 'notice_process_running' ) );
 		add_action( 'admin_notices', array( $self, 'notice_process_complete' ) );
 	}
@@ -83,26 +82,6 @@ class Rocket_Database_Optimization {
 	}
 
 	/**
-	 * Launches the database optimization from admin
-	 *
-	 * @since 2.8
-	 * @author Remy Perona
-	 *
-	 * @see process_handler()
-	 */
-	public function optimize() {
-		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'rocket_optimize_database' ) ) {
-			wp_nonce_ays( '' );
-		}
-
-		$this->process_handler();
-
-		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
-		die();
-	}
-
-
-	/**
 	 * Plans database optimization cron
 	 * If the task is not programmed, it is automatically triggered
 	 *
@@ -120,7 +99,7 @@ class Rocket_Database_Optimization {
 	}
 
 	/**
-	 * Launches the database optimization when the settings are saved with save and optimize button
+	 * Launches the database optimization when the settings are saved with optimize button
 	 *
 	 * @since 2.8
 	 * @author Remy Perona
@@ -128,10 +107,15 @@ class Rocket_Database_Optimization {
 	 * @see process_handler()
 	 */
 	public function save_optimize() {
-		// Performs the database optimization when settings are saved with the "save and optimize" submit button".
-		if ( ! empty( $_POST ) && isset( $_POST['wp_rocket_settings']['submit_optimize'] ) ) {
-			$this->process_handler();
+		if ( empty( $_POST ) || ! isset( $_POST['wp_rocket_settings']['submit_optimize'] ) ) {
+			return;
 		}
+
+		if ( ! current_user_can( apply_filters( 'rocket_capability', 'manage_options' ) ) ) {
+			return;
+		}
+
+		$this->process_handler();
 	}
 
 	/**
@@ -186,18 +170,14 @@ class Rocket_Database_Optimization {
 	 * @author Remy Perona
 	 */
 	public function notice_process_running() {
-		global $current_user;
-
-		$screen              = get_current_screen();
-		$rocket_wl_name      = get_rocket_option( 'wl_plugin_name', null );
-		$wp_rocket_screen_id = isset( $rocket_wl_name ) ? 'settings_page_' . sanitize_key( $rocket_wl_name ) : 'settings_page_wprocket';
+		$screen = get_current_screen();
 
 		/** This filter is documented in inc/admin-bar.php */
 		if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
 			return;
 		}
 
-		if ( $screen->id !== $wp_rocket_screen_id ) {
+		if ( 'settings_page_wprocket' !== $screen->id ) {
 			return;
 		}
 
@@ -221,18 +201,14 @@ class Rocket_Database_Optimization {
 	 * @author Remy Perona
 	 */
 	public function notice_process_complete() {
-		global $current_user;
-
-		$screen              = get_current_screen();
-		$rocket_wl_name      = get_rocket_option( 'wl_plugin_name', null );
-		$wp_rocket_screen_id = isset( $rocket_wl_name ) ? 'settings_page_' . sanitize_key( $rocket_wl_name ) : 'settings_page_wprocket';
+		$screen = get_current_screen();
 
 		/** This filter is documented in inc/admin-bar.php */
 		if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
 			return;
 		}
 
-		if ( $screen->id !== $wp_rocket_screen_id ) {
+		if ( 'settings_page_wprocket' !== $screen->id ) {
 			return;
 		}
 
@@ -245,10 +221,16 @@ class Rocket_Database_Optimization {
 		delete_transient( 'rocket_database_optimization_process_complete' );
 		?>
 		<div class="notice notice-success is-dismissible">
-			<?php if ( empty( $optimized ) ) : ?>
-			<p><?php _e( 'Database optimization process is complete. Everything was already optimized!', 'rocket' ); ?></p>
-			<?php else : ?>
-			<p><?php _e( 'Database optimization process is complete. List of optimized items below:', 'rocket' ); ?></p>
+			<?php
+			$message = __( 'Database optimization process is complete. Everything was already optimized!', 'rocket' );
+
+			if ( ! empty( $optimized ) ) {
+				$message = __( 'Database optimization process is complete. List of optimized items below:', 'rocket' );
+			}
+			?>
+
+			<p><?php echo $message; ?></p>
+			<?php if ( ! empty( $optimized ) ) : ?>
 			<ul>
 			<?php foreach ( $optimized as $k => $number ) : ?>
 				<li>

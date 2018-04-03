@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="51px" height="52px" viewBox="0 0 51 52" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.2 (51160) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 15</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <filter x="-6.4%" y="-6.2%" width="112.8%" height="112.5%" filterUnits="objectBoundingBox" id="filter-1">
+            <feOffset dx="0" dy="0" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="1" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.0549019608   0 0 0 0 0.105882353   0 0 0 0 0.137254902  0 0 0 0.2 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+        <polygon id="path-2" points="0.807983683 14.5211701 14.1904548 0.159306609 32.2276986 0.159306609 46.1920163 14.5211701 46.1920163 33.4788299 32.2276986 47.8406934 14.1904548 47.8406934 0.807983683 33.4788299"></polygon>
+    </defs>
+    <g id="Dashboard-AdBlock" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Dashboard-Pop" transform="translate(-449.000000, -191.000000)">
+            <g id="Group-15" filter="url(#filter-1)" transform="translate(451.000000, 193.000000)">
+                <g id="Path-2">
+                    <use fill="#E2001E" fill-rule="evenodd" xlink:href="#path-2"></use>
+                    <path stroke="#FFFFFF" stroke-width="1.62253521" d="M1.61925129,14.8405591 L1.61925129,33.1594409 L14.543387,47.0294258 L31.8849718,47.0294258 L45.3807487,33.1494418 L45.3807487,14.8505582 L31.8849718,0.970574215 L14.543387,0.970574215 L1.61925129,14.8405591 Z"></path>
+                </g>
+                <g id="palm" transform="translate(12.051282, 7.200000)" fill="#FFFFFF" fill-rule="nonzero">
+                    <path d="M1.56666667,13.56 C0.964102564,13.56 0.602564103,13.92 0.602564103,14.52 L0.602564103,21.36 C0.602564103,24.6 1.92820513,27.6 4.33846154,29.88 L6.98974359,32.4 C7.83333333,33.12 8.91794872,33.6 10.0025641,33.6 L16.0282051,33.6 C20.125641,33.6 23.5,30.48 23.5,26.64 L23.5,7.68 C23.5,6.84 22.6564103,6 21.6923077,6 C20.7282051,6 19.8846154,6.72 19.8846154,7.68 L19.8846154,15 C19.8846154,15.36 19.6435897,15.6 19.2820513,15.6 C18.9205128,15.6 18.6794872,15.36 18.6794872,15 L18.6794872,4.68 C18.6794872,3.72 17.8358974,3 16.8717949,3 C15.9076923,3 15.0641026,3.72 15.0641026,4.68 L15.0641026,15 C15.0641026,15.36 14.8230769,15.6 14.4615385,15.6 C14.1,15.6 13.8589744,15.36 13.8589744,15 L13.8589744,1.68 C13.8589744,0.72 13.0153846,0 12.0512821,0 C11.0871795,0 10.2435897,0.72 10.2435897,1.68 L10.2435897,15 C10.2435897,15.36 10.0025641,15.6 9.64102564,15.6 C9.27948718,15.6 9.03846154,15.36 9.03846154,15 L9.03846154,4.68 C9.03846154,3.72 8.19487179,3 7.23076923,3 C6.26666667,3 5.42307692,3.72 5.42307692,4.68 L5.42307692,20.52 C5.42307692,20.88 5.18205128,21.12 4.82051282,21.12 C4.45897436,21.12 4.21794872,20.88 4.21794872,20.52 L4.21794872,15.96 C4.21794872,14.76 3.01282051,13.56 1.56666667,13.56 Z" id="Shape" transform="translate(12.051282, 16.800000) scale(-1, 1) translate(-12.051282, -16.800000) "></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
