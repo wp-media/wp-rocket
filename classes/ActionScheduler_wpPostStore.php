@@ -637,4 +637,3 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		$taxonomy_registrar->register();
 	}
 }
- 
