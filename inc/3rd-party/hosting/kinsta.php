@@ -15,8 +15,8 @@ if ( isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ) {
 	 * @return void
 	 */
 	function rocket_clean_kinsta_cache() {
-		global $KinstaCache;
-		$KinstaCache->KinstaCachePurge->purge_complete_caches();
+		global $kinsta_cache;
+		$kinsta_cache->kinsta_cache_purge->purge_complete_caches();
 	}
 	add_action( 'after_rocket_clean_domain', 'rocket_clean_kinsta_cache' );
 
@@ -30,8 +30,8 @@ if ( isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ) {
 	 * @return void
 	 */
 	function rocket_clean_kinsta_post_cache( $post ) {
-		global $KinstaCache;
-		$KinstaCache->KinstaCachePurge->initiate_purge( $post->ID, 'post' );
+		global $kinsta_cache;
+		$kinsta_cache->kinsta_cache_purge->initiate_purge( $post->ID, 'post' );
 	}
 	add_action( 'after_rocket_clean_post', 'rocket_clean_kinsta_post_cache', 10, 1 );
 
@@ -63,7 +63,7 @@ if ( isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ) {
 	}
 	add_action( 'rocket_loaded', 'rocket_remove_partial_purge_hooks' );
 
-	if ( Kinsta\CDNEnabler::cdn_is_enabled() ) {
+	if ( \Kinsta\CDN_Enabler::cdn_is_enabled() ) {
 		/**
 		 * Add Kinsta CDN to WP Rocket CDN hosts list if enabled
 		 *

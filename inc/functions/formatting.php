@@ -325,7 +325,7 @@ function rocket_url_to_path( $url, $hosts = '' ) {
 	$site_components = get_rocket_parse_url( $site_url );
 
 	if ( isset( $hosts[ $url_components['host'] ] ) && 'home' !== $hosts[ $url_components['host'] ] ) {
-		$site_url = trailingslashit( rocket_add_url_protocol( $url_components['host'] ) );
+		$site_url = trailingslashit( set_url_scheme( '//' . $url_components['host'], $url_components['scheme'] ) );
 
 		if ( $url_components['path'] !== $site_components['path'] ) {
 			$site_url .= ltrim( $site_components['path'], '/' );
