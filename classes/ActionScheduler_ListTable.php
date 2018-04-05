@@ -357,7 +357,7 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	 */
 	protected function get_schedule_display_string( ActionScheduler_Schedule $schedule ) {
 
-		$schedule_display_string = ''
+		$schedule_display_string = '';
 
 		if ( ! $schedule->next() ) {
 			return $schedule_display_string;
