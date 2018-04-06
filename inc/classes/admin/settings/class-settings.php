@@ -187,6 +187,8 @@ class Settings {
 
 		$input['cache_logged_user'] = ! empty( $input['cache_logged_user'] ) ? 1 : 0;
 
+		$input['cache_ssl'] = ! empty( $input['cache_ssl'] ) ? 1 : 0;
+
 		$input['cache_mobile']            = ! empty( $input['cache_mobile'] ) ? 1 : 0;
 		$input['do_caching_mobile_files'] = ! empty( $input['do_caching_mobile_files'] ) ? 1 : 0;
 
