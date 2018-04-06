@@ -7,7 +7,6 @@
 \*-----------------------------------------------*/
 
 .wpr-Page{
-    display: none;
     margin-bottom: $space*4;
 
     &-row{
@@ -33,7 +32,6 @@
     }
 
     &#dashboard{ // Exception for dashboard
-        display: block;
 
         #wpr-action-refresh_account{
             &:before{
@@ -127,7 +125,7 @@
                  &:before{
                      content: "\e920";
                      font-family: 'wpr-icomoon';
-                 	 speak: none;
+                     speak: none;
                      background: $cGreen;
                      top: -1px;
                  }
