@@ -376,7 +376,7 @@ class Settings {
 			'monthly' => 1,
 		];
 
-		$input['automatic_cleanup_frequency'] = isset( $input['automatic_cleanup_frequency'] ) && isset( $cleanup_frequencies[ $input['automatic_cleanup_frequency'] ] ) ? $input['automatic_cleanup_frequency'] : $this->options->get( 'automatic_cleanup_frequency' );
+		$input['automatic_cleanup_frequency'] = isset( $input['automatic_cleanup_frequency'], $cleanup_frequencies[ $input['automatic_cleanup_frequency'] ] ) ? $input['automatic_cleanup_frequency'] : $this->options->get( 'automatic_cleanup_frequency' );
 
 		if ( 1 !== $input['schedule_automatic_cleanup'] && ( 'daily' !== $input['automatic_cleanup_frequency'] || 'weekly' !== $input['automatic_cleanup_frequency'] || 'monthly' !== $input['automatic_cleanup_frequency'] ) ) {
 			$input['automatic_cleanup_frequency'] = $this->options->get( 'automatic_cleanup_frequency' );
