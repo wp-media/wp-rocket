@@ -249,6 +249,11 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 		$newvalue['cloudflare_old_settings'] = ( ! is_wp_error( $cf_settings ) ) ? implode( ',', array_filter( $cf_settings ) ) : '';
 	}
 
+	// Checked the SSL option if the whole website is on SSL.
+	if ( rocket_is_ssl_website() ) {
+		$newvalue['cache_ssl'] = 1;
+	}
+
 	if ( ! defined( 'WP_ROCKET_ADVANCED_CACHE' ) ) {
 		rocket_generate_advanced_cache_file();
 	}
@@ -272,8 +277,12 @@ add_filter( 'pre_update_option_' . WP_ROCKET_SLUG, 'rocket_pre_main_option', 10,
  * @param array $value     An array of submitted options values.
  */
 function rocket_update_ssl_option_after_save_home_url( $old_value, $value ) {
-	if ( $old_value !== $value ) {
-		rocket_generate_config_file();
+	if ( $old_value === $value ) {
+		return;
 	}
+
+	$scheme = rocket_extract_url_component( $value, PHP_URL_SCHEME );
+
+	update_rocket_option( 'cache_ssl', 'https' === $scheme ? 1 : 0 );
 }
 add_action( 'update_option_home', 'rocket_update_ssl_option_after_save_home_url', 10, 2 );
