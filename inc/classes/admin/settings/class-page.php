@@ -574,6 +574,7 @@ class Page {
 		$user_cache_beacon   = $this->get_beacon_suggest( 'user_cache', $this->locale );
 		$nonce_beacon        = $this->get_beacon_suggest( 'nonce', $this->locale );
 		$cache_life_beacon   = $this->get_beacon_suggest( 'cache_lifespan', $this->locale );
+		$cache_ssl_beacon    = $this->get_beacon_suggest( 'cache_ssl', $this->locale );
 
 		$this->settings->add_page_section(
 			'cache',
@@ -604,6 +605,20 @@ class Page {
 					'help'        => [
 						'url' => $user_cache_beacon['url'],
 						'id'  => $this->get_beacon_suggest( 'user_cache_section', $this->locale ),
+					],
+					'page'        => 'cache',
+				],
+				'cache_ssl_section'   => [
+					'title'       => __( 'SSL Cache', 'rocket' ),
+					'type'        => 'fields_container',
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'description' => sprintf( __( '%1$sSSL Cache%2$s works best when your entire website runs on HTTPS.', 'rocket' ), '<a href="' . esc_url( $cache_ssl_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $cache_ssl_beacon['id'] ) . '" target="_blank">', '</a>' ),
+					'class'       => [
+						rocket_is_ssl_website() ? 'wpr-isHidden' : '',
+					],
+					'help'        => [
+						'url' => $cache_ssl_beacon['url'],
+						'id'  => $cache_ssl_beacon['id'],
 					],
 					'page'        => 'cache',
 				],
@@ -663,6 +678,14 @@ class Page {
 					'input_attr'        => [
 						'disabled' => rocket_is_mobile_plugin_active() ? 1 : 0,
 					],
+				],
+				'cache_ssl'               => [
+					'type'              => 'checkbox',
+					'label'             => __( 'Enable caching for pages with <code>https://</code>', 'rocket' ),
+					'section'           => 'cache_ssl_section',
+					'page'              => 'cache',
+					'default'           => rocket_is_ssl_website() ? 1 : 0,
+					'sanitize_callback' => 'sanitize_checkbox',
 				],
 				'purge_cron_interval'     => [
 					'type'              => 'cache_lifespan',
@@ -1907,6 +1930,16 @@ class Page {
 				'fr' => [
 					'id'  => '589b17a02c7d3a784630b249',
 					'url' => 'https://fr.docs.wp-rocket.me/article/934-mise-en-cache-pour-mobile/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
+			'cache_ssl'              => [
+				'en' => [
+					'id'  => '56c24fd3903360436857f1ed',
+					'url' => 'https://docs.wp-rocket.me/article/314-using-ssl-with-wp-rocket/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '56cb9d24c6979102ccfc801c',
+					'url' => 'https://fr.docs.wp-rocket.me/article/335-utiliser-ssl-wp-rocket/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 			'cache_lifespan'         => [
