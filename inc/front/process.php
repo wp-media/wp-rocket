@@ -109,7 +109,7 @@ if ( ! empty( $_GET )
 }
 
 // Don't cache SSL.
-if ( ! isset( $rocket_cache_ssl ) && rocket_is_ssl() ) {
+if ( empty( $rocket_cache_ssl ) && rocket_is_ssl() ) {
 	rocket_define_donotoptimize_constant( true );
 	return;
 }
