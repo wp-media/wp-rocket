@@ -1,7 +1,3 @@
-# safelist
-branches:
-  only:
-  - transifex
 sudo: required
 after_success:
   - pip install virtualenv
