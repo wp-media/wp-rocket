@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2018-03-27 10:55-0400\n"
-"PO-Revision-Date: 2018-03-29 11:44+0000\n"
+"POT-Creation-Date: 2018-04-04 17:03-0400\n"
+"PO-Revision-Date: 2018-04-05 12:49+0000\n"
 "Last-Translator: Caspar Hübinger\n"
 "Language-Team: German (Germany) (http://www.transifex.com/wp-media/wp-rocket/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -170,7 +170,7 @@ msgstr "CloudFlare Browser Cache: %s Sekunden"
 
 #: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/notices.php:903
 #: inc/common/admin-bar.php:50 inc/common/admin-bar.php:76
-#: inc/common/admin-bar.php:118 views/settings/page-sections/dashboard.php:96
+#: inc/common/admin-bar.php:118 views/settings/page-sections/dashboard.php:113
 msgid "Clear cache"
 msgstr "Cache leeren"
 
@@ -366,7 +366,8 @@ msgstr "Deaktivierung forcieren"
 msgid "The following code should have been written to this file:"
 msgstr "Folgender Code hätte in diese Datei geschrieben werden sollen:"
 
-#: inc/admin/ui/notices.php:944 views/settings/page-sections/dashboard.php:40
+#: inc/admin/ui/notices.php:944 views/settings/page-sections/dashboard.php:42
+#: views/settings/page-sections/dashboard.php:56
 msgid "Dismiss this notice."
 msgstr "Diese Meldung ausblenden."
 
@@ -405,7 +406,7 @@ msgid "Unavailable"
 msgstr "Server nicht erreichbar"
 
 #: inc/classes/admin/settings/class-page.php:462 inc/deprecated.php:1998
-#: views/settings/page-sections/dashboard.php:61
+#: views/settings/page-sections/dashboard.php:78
 msgid "License"
 msgstr "Lizenz"
 
@@ -1326,7 +1327,7 @@ msgstr "Import, Export, Wiederherstellung"
 msgid "Upload file and import settings"
 msgstr "Datei hochladen und Einstellungen importieren."
 
-#: inc/classes/admin/settings/class-settings.php:480 inc/deprecated.php:1454
+#: inc/classes/admin/settings/class-settings.php:485 inc/deprecated.php:1454
 msgid "Settings saved."
 msgstr "Einstellungen gespeichert."
 
@@ -1445,7 +1446,7 @@ msgid "Clear Cloudflare cache"
 msgstr "Cloudflare-Cache leeren"
 
 #: inc/common/admin-bar.php:207 inc/common/admin-bar.php:231
-#: inc/common/admin-bar.php:270 views/settings/page-sections/dashboard.php:111
+#: inc/common/admin-bar.php:270 views/settings/page-sections/dashboard.php:128
 msgid "Preload cache"
 msgstr "Cache füllen"
 
@@ -1893,24 +1894,28 @@ msgstr "CSS"
 msgid "Import settings"
 msgstr "Einstellungen importieren"
 
-#: views/settings/fields/one-click-addon.php:40
-#: views/settings/fields/rocket-addon.php:30
-msgid "Add-on status"
-msgstr "Add-on Status"
-
-#: views/settings/fields/rocket-addon.php:52
-msgid "Modify options"
-msgstr "Einstellungen bearbeiten"
-
+#: views/settings/fields/one-click-addon.php:39
+#: views/settings/fields/rocket-addon.php:29
 #: views/settings/fields/sliding-checkbox.php:24
 msgctxt "Active state of checkbox"
 msgid "On"
 msgstr "an"
 
+#: views/settings/fields/one-click-addon.php:40
+#: views/settings/fields/rocket-addon.php:30
 #: views/settings/fields/sliding-checkbox.php:25
 msgctxt "Inactive state of checkbox"
 msgid "Off"
 msgstr "aus"
+
+#: views/settings/fields/one-click-addon.php:41
+#: views/settings/fields/rocket-addon.php:31
+msgid "Add-on status"
+msgstr "Add-on Status"
+
+#: views/settings/fields/rocket-addon.php:53
+msgid "Modify options"
+msgstr "Einstellungen bearbeiten"
 
 #: views/settings/page-sections/cloudflare.php:26
 msgid "Cloudflare Cache"
@@ -1933,17 +1938,28 @@ msgstr "Mehr erfahren"
 msgid "Clear all Cloudflare cache files"
 msgstr "Cloudflare Cache leeren"
 
-#: views/settings/page-sections/dashboard.php:35
+#: views/settings/page-sections/dashboard.php:39
+msgid "WP Rocket : Ad blocker detected."
+msgstr "WP Rocket: Ad Blocker ermittelt."
+
+#: views/settings/page-sections/dashboard.php:40
+msgid ""
+"Disable it on your site to access our support features. <a "
+"href=\"https://docs.wp-rocket.me/article/1080-disable-ad-blocker-for-"
+"support-integration\" target=\"_blank\">Learn more</a>"
+msgstr "Deaktiviere den Ad Blocker für diese Website, um unser Support-Formular nutzen zu können. <a href=\"https://docs.wp-rocket.me/article/1080-disable-ad-blocker-for-support-integration\" target=\"_blank\">Mehr erfahren</a>"
+
+#: views/settings/page-sections/dashboard.php:51
 msgid "Congratulations!"
 msgstr "Glückwunsch!"
 
-#: views/settings/page-sections/dashboard.php:36
+#: views/settings/page-sections/dashboard.php:52
 msgid ""
 "WP Rocket is now activated and already working for you.<br>\n"
 "\t\t\t\tYour website should be loading faster now!"
 msgstr "WP Rocket ist jetzt aktiviert und arbeitet bereits für dich.<br>Deine Website sollte bereits schneller laden!"
 
-#: views/settings/page-sections/dashboard.php:38
+#: views/settings/page-sections/dashboard.php:54
 #, php-format
 msgid ""
 "To guarantee fast websites, WP Rocket applies 80% of web performance best "
@@ -1951,65 +1967,65 @@ msgid ""
 "your website."
 msgstr "Um schnelle Websites zu garantieren, wendet WP Rocket 80% aller bewährten Techniken für bessere Web-Performance automatisch an.<br>Wir auto-aktivieren auch bestimmte Einstellungen, die deiner Website sofort zugute kommen."
 
-#: views/settings/page-sections/dashboard.php:39
+#: views/settings/page-sections/dashboard.php:55
 msgid "Continue to the options to further optimize your site!"
 msgstr "Für weitere Optimierung kannst du deine Einstellungen bearbeiten!"
 
-#: views/settings/page-sections/dashboard.php:47
+#: views/settings/page-sections/dashboard.php:64
 msgid "My Account"
 msgstr "Mein Konto"
 
-#: views/settings/page-sections/dashboard.php:50
+#: views/settings/page-sections/dashboard.php:67
 msgid "Refresh info"
 msgstr "Anzeige aktualisieren"
 
-#: views/settings/page-sections/dashboard.php:63
+#: views/settings/page-sections/dashboard.php:80
 msgid "Expiration Date"
 msgstr "Ablaufdatum"
 
-#: views/settings/page-sections/dashboard.php:69
+#: views/settings/page-sections/dashboard.php:86
 msgid "View my account"
 msgstr "Konto ansehen"
 
-#: views/settings/page-sections/dashboard.php:87
+#: views/settings/page-sections/dashboard.php:104
 msgid "Quick Actions"
 msgstr "Nützliche Links"
 
-#: views/settings/page-sections/dashboard.php:93
+#: views/settings/page-sections/dashboard.php:110
 msgid "Remove all cached files"
 msgstr "Alle Cache-Dateien entfernen"
 
-#: views/settings/page-sections/dashboard.php:108
+#: views/settings/page-sections/dashboard.php:125
 msgid "Start cache preloading"
 msgstr "Cache-Preload starten"
 
-#: views/settings/page-sections/dashboard.php:121
+#: views/settings/page-sections/dashboard.php:138
 msgid "Purge OPCache content"
 msgstr "Inhalt von OPCache löschen"
 
-#: views/settings/page-sections/dashboard.php:124
+#: views/settings/page-sections/dashboard.php:141
 msgid "Purge OPCache"
 msgstr "OPCache leeren"
 
-#: views/settings/page-sections/dashboard.php:134
-#: views/settings/page-sections/dashboard.php:137
+#: views/settings/page-sections/dashboard.php:151
+#: views/settings/page-sections/dashboard.php:154
 msgid "Regenerate Critical CSS"
 msgstr "Kritisches CSS neu generieren"
 
-#: views/settings/page-sections/dashboard.php:152
+#: views/settings/page-sections/dashboard.php:169
 msgid "Frequently Asked Questions"
 msgstr "Häufig gestellte Fragen"
 
-#: views/settings/page-sections/dashboard.php:165
+#: views/settings/page-sections/dashboard.php:182
 msgid "Still cannot find a solution?"
 msgstr "Noch keine Lösung gefunden?"
 
-#: views/settings/page-sections/dashboard.php:166
+#: views/settings/page-sections/dashboard.php:183
 msgid ""
 "Submit a ticket and get help from our friendly and knowledgeable Rocketeers."
 msgstr "Sende eine Support-Anfrage und lass dir von unseren freundlichen und kompetenten Rocketeers helfen."
 
-#: views/settings/page-sections/dashboard.php:171
+#: views/settings/page-sections/dashboard.php:188
 msgid "Ask support"
 msgstr "Support fragen"
 
