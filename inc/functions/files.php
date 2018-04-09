@@ -129,20 +129,8 @@ function get_rocket_config_file() {
 		$buffer .= '$rocket_common_cache_logged_users = 1;' . "\n";
 	}
 
-	/**
-	 * Filters the activation of the cache for SSL pages
-	 *
-	 * @since 3.0
-	 * @author Remy Perona
-	 *
-	 * @param bool True to activate the cache, false otherwise.
-	 */
-	if ( rocket_is_ssl_website() && apply_filters( 'rocket_cache_ssl', true ) ) {
-		$buffer .= '$rocket_cache_ssl = 1;' . "\n";
-	}
-
 	foreach ( $options as $option => $value ) {
-		if ( 'cache_mobile' === $option || 'do_caching_mobile_files' === $option || 'secret_cache_key' === $option ) {
+		if ( 'cache_ssl' === $option || 'cache_mobile' === $option || 'do_caching_mobile_files' === $option || 'secret_cache_key' === $option ) {
 			$buffer .= '$rocket_' . $option . ' = \'' . $value . '\';' . "\n";
 		}
 

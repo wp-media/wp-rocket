@@ -96,7 +96,7 @@ class WP_Rocket_Requirements_Check {
 
 			add_action( 'admin_notices', array( $this, 'notice' ) );
 			add_action( 'admin_post_rocket_rollback', array( $this, 'rollback' ) );
-			add_filter( 'http_request_args', 'add_own_ua', 10, 2 );
+			add_filter( 'http_request_args', array( $this, 'add_own_ua' ), 10, 2 );
 
 			return false;
 		}

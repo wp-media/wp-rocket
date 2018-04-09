@@ -162,12 +162,17 @@ class Render extends Abstract_render {
 				'type'        => 'fields_container',
 				'title'       => '',
 				'description' => '',
+				'class'       => '',
 				'help'        => '',
 				'helper'      => '',
 				'page'        => '',
 			];
 
 			$args = wp_parse_args( $args, $default );
+
+			if ( ! empty( $args['class'] ) ) {
+				$args['class'] = implode( ' ', array_map( 'sanitize_html_class', $args['class'] ) );
+			}
 
 			call_user_func_array( array( $this, $args['type'] ), array( $args ) );
 		}
