@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2018-03-27 10:55-0400\n"
-"PO-Revision-Date: 2018-03-31 08:23+0000\n"
-"Last-Translator: m615926 <m615926@gmail.com>\n"
+"POT-Creation-Date: 2018-04-04 17:03-0400\n"
+"PO-Revision-Date: 2018-04-05 12:46+0000\n"
+"Last-Translator: wpmedia <contact@wp-media.me>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/wp-media/wp-rocket/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -168,7 +168,7 @@ msgstr "CloudFlare 瀏覽器快取設定為 %s 秒"
 
 #: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/notices.php:903
 #: inc/common/admin-bar.php:50 inc/common/admin-bar.php:76
-#: inc/common/admin-bar.php:118 views/settings/page-sections/dashboard.php:96
+#: inc/common/admin-bar.php:118 views/settings/page-sections/dashboard.php:113
 msgid "Clear cache"
 msgstr "清除快取"
 
@@ -364,7 +364,8 @@ msgstr "強制停用"
 msgid "The following code should have been written to this file:"
 msgstr "下方這些程式碼應該被寫入到此檔案中："
 
-#: inc/admin/ui/notices.php:944 views/settings/page-sections/dashboard.php:40
+#: inc/admin/ui/notices.php:944 views/settings/page-sections/dashboard.php:42
+#: views/settings/page-sections/dashboard.php:56
 msgid "Dismiss this notice."
 msgstr "關閉提示。"
 
@@ -403,7 +404,7 @@ msgid "Unavailable"
 msgstr "無法使用"
 
 #: inc/classes/admin/settings/class-page.php:462 inc/deprecated.php:1998
-#: views/settings/page-sections/dashboard.php:61
+#: views/settings/page-sections/dashboard.php:78
 msgid "License"
 msgstr "註冊碼"
 
@@ -1316,7 +1317,7 @@ msgstr "匯入、匯出、還原"
 msgid "Upload file and import settings"
 msgstr "上傳檔案並匯入設定"
 
-#: inc/classes/admin/settings/class-settings.php:480 inc/deprecated.php:1454
+#: inc/classes/admin/settings/class-settings.php:485 inc/deprecated.php:1454
 msgid "Settings saved."
 msgstr "設定已儲存。"
 
@@ -1435,7 +1436,7 @@ msgid "Clear Cloudflare cache"
 msgstr "清理 CloudFlare 快取"
 
 #: inc/common/admin-bar.php:207 inc/common/admin-bar.php:231
-#: inc/common/admin-bar.php:270 views/settings/page-sections/dashboard.php:111
+#: inc/common/admin-bar.php:270 views/settings/page-sections/dashboard.php:128
 msgid "Preload cache"
 msgstr "預先載入快取"
 
@@ -1883,24 +1884,28 @@ msgstr "CSS"
 msgid "Import settings"
 msgstr "匯入設定"
 
-#: views/settings/fields/one-click-addon.php:40
-#: views/settings/fields/rocket-addon.php:30
-msgid "Add-on status"
-msgstr "附加功能狀態"
-
-#: views/settings/fields/rocket-addon.php:52
-msgid "Modify options"
-msgstr "修改選項"
-
+#: views/settings/fields/one-click-addon.php:39
+#: views/settings/fields/rocket-addon.php:29
 #: views/settings/fields/sliding-checkbox.php:24
 msgctxt "Active state of checkbox"
 msgid "On"
 msgstr "開啟"
 
+#: views/settings/fields/one-click-addon.php:40
+#: views/settings/fields/rocket-addon.php:30
 #: views/settings/fields/sliding-checkbox.php:25
 msgctxt "Inactive state of checkbox"
 msgid "Off"
 msgstr "關閉"
+
+#: views/settings/fields/one-click-addon.php:41
+#: views/settings/fields/rocket-addon.php:31
+msgid "Add-on status"
+msgstr "附加功能狀態"
+
+#: views/settings/fields/rocket-addon.php:53
+msgid "Modify options"
+msgstr "修改選項"
 
 #: views/settings/page-sections/cloudflare.php:26
 msgid "Cloudflare Cache"
@@ -1923,17 +1928,28 @@ msgstr "了解更多"
 msgid "Clear all Cloudflare cache files"
 msgstr "清除所有 CloudFlare 快取檔案"
 
-#: views/settings/page-sections/dashboard.php:35
+#: views/settings/page-sections/dashboard.php:39
+msgid "WP Rocket : Ad blocker detected."
+msgstr ""
+
+#: views/settings/page-sections/dashboard.php:40
+msgid ""
+"Disable it on your site to access our support features. <a "
+"href=\"https://docs.wp-rocket.me/article/1080-disable-ad-blocker-for-"
+"support-integration\" target=\"_blank\">Learn more</a>"
+msgstr ""
+
+#: views/settings/page-sections/dashboard.php:51
 msgid "Congratulations!"
 msgstr "恭喜！"
 
-#: views/settings/page-sections/dashboard.php:36
+#: views/settings/page-sections/dashboard.php:52
 msgid ""
 "WP Rocket is now activated and already working for you.<br>\n"
 "\t\t\t\tYour website should be loading faster now!"
 msgstr "WP Rocket 現在已啟用。<br>\n\t\t\t\t現在你的網站應該已經變快了！"
 
-#: views/settings/page-sections/dashboard.php:38
+#: views/settings/page-sections/dashboard.php:54
 #, php-format
 msgid ""
 "To guarantee fast websites, WP Rocket applies 80% of web performance best "
@@ -1941,65 +1957,65 @@ msgid ""
 "your website."
 msgstr "為了保證網站的速度，WP Rocket 可以讓 80% 的內容快速呈現。<br>我們也啟用了可以提升網站速度的設定。"
 
-#: views/settings/page-sections/dashboard.php:39
+#: views/settings/page-sections/dashboard.php:55
 msgid "Continue to the options to further optimize your site!"
 msgstr "繼續更多設定調整優化你的網站！"
 
-#: views/settings/page-sections/dashboard.php:47
+#: views/settings/page-sections/dashboard.php:64
 msgid "My Account"
 msgstr "我的帳號"
 
-#: views/settings/page-sections/dashboard.php:50
+#: views/settings/page-sections/dashboard.php:67
 msgid "Refresh info"
 msgstr "重新整理資訊"
 
-#: views/settings/page-sections/dashboard.php:63
+#: views/settings/page-sections/dashboard.php:80
 msgid "Expiration Date"
 msgstr "過期時間"
 
-#: views/settings/page-sections/dashboard.php:69
+#: views/settings/page-sections/dashboard.php:86
 msgid "View my account"
 msgstr "檢視我的帳號"
 
-#: views/settings/page-sections/dashboard.php:87
+#: views/settings/page-sections/dashboard.php:104
 msgid "Quick Actions"
 msgstr "快速操作"
 
-#: views/settings/page-sections/dashboard.php:93
+#: views/settings/page-sections/dashboard.php:110
 msgid "Remove all cached files"
 msgstr "移除所有快取檔案"
 
-#: views/settings/page-sections/dashboard.php:108
+#: views/settings/page-sections/dashboard.php:125
 msgid "Start cache preloading"
 msgstr "開始快取預先載入"
 
-#: views/settings/page-sections/dashboard.php:121
+#: views/settings/page-sections/dashboard.php:138
 msgid "Purge OPCache content"
 msgstr "清除 OPcache 內容"
 
-#: views/settings/page-sections/dashboard.php:124
+#: views/settings/page-sections/dashboard.php:141
 msgid "Purge OPCache"
 msgstr "清除 OPcache"
 
-#: views/settings/page-sections/dashboard.php:134
-#: views/settings/page-sections/dashboard.php:137
+#: views/settings/page-sections/dashboard.php:151
+#: views/settings/page-sections/dashboard.php:154
 msgid "Regenerate Critical CSS"
 msgstr "重新產生 Critical CSS"
 
-#: views/settings/page-sections/dashboard.php:152
+#: views/settings/page-sections/dashboard.php:169
 msgid "Frequently Asked Questions"
 msgstr "常見問題"
 
-#: views/settings/page-sections/dashboard.php:165
+#: views/settings/page-sections/dashboard.php:182
 msgid "Still cannot find a solution?"
 msgstr "仍然無法找到解決方案？"
 
-#: views/settings/page-sections/dashboard.php:166
+#: views/settings/page-sections/dashboard.php:183
 msgid ""
 "Submit a ticket and get help from our friendly and knowledgeable Rocketeers."
 msgstr "提送支援單或是在我們友善的知識庫中獲得幫助。"
 
-#: views/settings/page-sections/dashboard.php:171
+#: views/settings/page-sections/dashboard.php:188
 msgid "Ask support"
 msgstr "尋求支援"
 

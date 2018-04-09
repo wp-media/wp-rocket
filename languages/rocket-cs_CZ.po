@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2018-03-27 10:55-0400\n"
-"PO-Revision-Date: 2018-04-03 07:06+0000\n"
+"POT-Creation-Date: 2018-04-04 17:03-0400\n"
+"PO-Revision-Date: 2018-04-05 14:21+0000\n"
 "Last-Translator: Tomas Hrdina <mot2425@gmail.com>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/wp-media/wp-rocket/language/cs_CZ/)\n"
 "MIME-Version: 1.0\n"
@@ -166,7 +166,7 @@ msgstr "Cloudflare mezipaměť prohlížeče byla nastaven na %s sekund"
 
 #: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/notices.php:903
 #: inc/common/admin-bar.php:50 inc/common/admin-bar.php:76
-#: inc/common/admin-bar.php:118 views/settings/page-sections/dashboard.php:96
+#: inc/common/admin-bar.php:118 views/settings/page-sections/dashboard.php:113
 msgid "Clear cache"
 msgstr "Vymazat mezipaměť"
 
@@ -362,7 +362,8 @@ msgstr "Vynutit vypnutí "
 msgid "The following code should have been written to this file:"
 msgstr "Následující kód by měl být zapsán do tohoto souboru:"
 
-#: inc/admin/ui/notices.php:944 views/settings/page-sections/dashboard.php:40
+#: inc/admin/ui/notices.php:944 views/settings/page-sections/dashboard.php:42
+#: views/settings/page-sections/dashboard.php:56
 msgid "Dismiss this notice."
 msgstr "Zavřít toto oznámení."
 
@@ -401,7 +402,7 @@ msgid "Unavailable"
 msgstr "Nedostupné"
 
 #: inc/classes/admin/settings/class-page.php:462 inc/deprecated.php:1998
-#: views/settings/page-sections/dashboard.php:61
+#: views/settings/page-sections/dashboard.php:78
 msgid "License"
 msgstr "Licence"
 
@@ -1330,7 +1331,7 @@ msgstr "Import, export, návrat k předchozí verzi"
 msgid "Upload file and import settings"
 msgstr "Nahrát soubor a importovat nastavení"
 
-#: inc/classes/admin/settings/class-settings.php:480 inc/deprecated.php:1454
+#: inc/classes/admin/settings/class-settings.php:485 inc/deprecated.php:1454
 msgid "Settings saved."
 msgstr "Nastavení bylo uloženo."
 
@@ -1449,7 +1450,7 @@ msgid "Clear Cloudflare cache"
 msgstr "Vymazat mezipaměť Cloudflare"
 
 #: inc/common/admin-bar.php:207 inc/common/admin-bar.php:231
-#: inc/common/admin-bar.php:270 views/settings/page-sections/dashboard.php:111
+#: inc/common/admin-bar.php:270 views/settings/page-sections/dashboard.php:128
 msgid "Preload cache"
 msgstr "Přednačíst mezipaměť"
 
@@ -1897,24 +1898,28 @@ msgstr "CSS"
 msgid "Import settings"
 msgstr "Import nastavení"
 
-#: views/settings/fields/one-click-addon.php:40
-#: views/settings/fields/rocket-addon.php:30
-msgid "Add-on status"
-msgstr "Stav rozšíření"
-
-#: views/settings/fields/rocket-addon.php:52
-msgid "Modify options"
-msgstr "Upravit nastavení"
-
+#: views/settings/fields/one-click-addon.php:39
+#: views/settings/fields/rocket-addon.php:29
 #: views/settings/fields/sliding-checkbox.php:24
 msgctxt "Active state of checkbox"
 msgid "On"
 msgstr "Zap"
 
+#: views/settings/fields/one-click-addon.php:40
+#: views/settings/fields/rocket-addon.php:30
 #: views/settings/fields/sliding-checkbox.php:25
 msgctxt "Inactive state of checkbox"
 msgid "Off"
 msgstr "Vyp"
+
+#: views/settings/fields/one-click-addon.php:41
+#: views/settings/fields/rocket-addon.php:31
+msgid "Add-on status"
+msgstr "Stav rozšíření"
+
+#: views/settings/fields/rocket-addon.php:53
+msgid "Modify options"
+msgstr "Upravit nastavení"
 
 #: views/settings/page-sections/cloudflare.php:26
 msgid "Cloudflare Cache"
@@ -1937,17 +1942,28 @@ msgstr "Více informací"
 msgid "Clear all Cloudflare cache files"
 msgstr "Vymzata veškeré soubory Cloudflare mezipaměti"
 
-#: views/settings/page-sections/dashboard.php:35
+#: views/settings/page-sections/dashboard.php:39
+msgid "WP Rocket : Ad blocker detected."
+msgstr "WP Rocket: byl detekován Ad blocker."
+
+#: views/settings/page-sections/dashboard.php:40
+msgid ""
+"Disable it on your site to access our support features. <a "
+"href=\"https://docs.wp-rocket.me/article/1080-disable-ad-blocker-for-"
+"support-integration\" target=\"_blank\">Learn more</a>"
+msgstr "Zakažte jej pokud chcete využívat funkce technické podpory. <a href=\"https://docs.wp-rocket.me/article/1080-disable-ad-blocker-for-support-integration\" target=\"_blank\">Více informací</a>"
+
+#: views/settings/page-sections/dashboard.php:51
 msgid "Congratulations!"
 msgstr "Gratulujeme!"
 
-#: views/settings/page-sections/dashboard.php:36
+#: views/settings/page-sections/dashboard.php:52
 msgid ""
 "WP Rocket is now activated and already working for you.<br>\n"
 "\t\t\t\tYour website should be loading faster now!"
 msgstr "WP Rocket je aktivní a už pracuje.<br>\n\t\t\t\tVáš web by se teď měl načítat rychleji!"
 
-#: views/settings/page-sections/dashboard.php:38
+#: views/settings/page-sections/dashboard.php:54
 #, php-format
 msgid ""
 "To guarantee fast websites, WP Rocket applies 80% of web performance best "
@@ -1955,65 +1971,65 @@ msgid ""
 "your website."
 msgstr "Pro zajištění rychlého webu, WP Rocket aplikuje 80% nejčastěji používaných nastavení.<br> Dále jsou také aktivována nastavení s okamžitými výhodami pro váš web."
 
-#: views/settings/page-sections/dashboard.php:39
+#: views/settings/page-sections/dashboard.php:55
 msgid "Continue to the options to further optimize your site!"
 msgstr "Pokračujte na nastavení pro další optimalizaci webu!"
 
-#: views/settings/page-sections/dashboard.php:47
+#: views/settings/page-sections/dashboard.php:64
 msgid "My Account"
 msgstr "Účet"
 
-#: views/settings/page-sections/dashboard.php:50
+#: views/settings/page-sections/dashboard.php:67
 msgid "Refresh info"
 msgstr "Aktualizovat"
 
-#: views/settings/page-sections/dashboard.php:63
+#: views/settings/page-sections/dashboard.php:80
 msgid "Expiration Date"
 msgstr "Datum vypršení platnosti"
 
-#: views/settings/page-sections/dashboard.php:69
+#: views/settings/page-sections/dashboard.php:86
 msgid "View my account"
 msgstr "Zobrazit můj účet"
 
-#: views/settings/page-sections/dashboard.php:87
+#: views/settings/page-sections/dashboard.php:104
 msgid "Quick Actions"
 msgstr "Rychlé akce"
 
-#: views/settings/page-sections/dashboard.php:93
+#: views/settings/page-sections/dashboard.php:110
 msgid "Remove all cached files"
 msgstr "Odstranit veškeré soubory mezipaměti"
 
-#: views/settings/page-sections/dashboard.php:108
+#: views/settings/page-sections/dashboard.php:125
 msgid "Start cache preloading"
 msgstr "Zahájit přednačítání mezipaměti"
 
-#: views/settings/page-sections/dashboard.php:121
+#: views/settings/page-sections/dashboard.php:138
 msgid "Purge OPCache content"
 msgstr "Vyprázdnit obsah OPcache"
 
-#: views/settings/page-sections/dashboard.php:124
+#: views/settings/page-sections/dashboard.php:141
 msgid "Purge OPCache"
 msgstr "Vyprázdnit OPcache"
 
-#: views/settings/page-sections/dashboard.php:134
-#: views/settings/page-sections/dashboard.php:137
+#: views/settings/page-sections/dashboard.php:151
+#: views/settings/page-sections/dashboard.php:154
 msgid "Regenerate Critical CSS"
 msgstr "Znovu vygenerovat kritické CSS"
 
-#: views/settings/page-sections/dashboard.php:152
+#: views/settings/page-sections/dashboard.php:169
 msgid "Frequently Asked Questions"
 msgstr "Často kladené dotazy"
 
-#: views/settings/page-sections/dashboard.php:165
+#: views/settings/page-sections/dashboard.php:182
 msgid "Still cannot find a solution?"
 msgstr "Pořád nemůžete najít řešení?"
 
-#: views/settings/page-sections/dashboard.php:166
+#: views/settings/page-sections/dashboard.php:183
 msgid ""
 "Submit a ticket and get help from our friendly and knowledgeable Rocketeers."
 msgstr "Napište na technickou podporu, kde se vám budou věnovat naši odborníci."
 
-#: views/settings/page-sections/dashboard.php:171
+#: views/settings/page-sections/dashboard.php:188
 msgid "Ask support"
 msgstr "Zeptat se podpory"
 
