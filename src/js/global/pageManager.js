@@ -61,6 +61,7 @@ function PageManager(aElem) {
         }
         else{
             this.$menuItems[0].classList.add('isActive');
+            sessionStorage.setItem('wpr-hash', 'dashboard');
         }
     }
 
