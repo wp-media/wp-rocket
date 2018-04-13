@@ -84,9 +84,8 @@ class ActionScheduler_ListTable extends PP_List_Table {
 		$this->logger = $logger;
 		$this->runner = $runner;
 
-		$request_status = $this->get_request_status();
+		$this->table_header = __( 'Scheduled Actions', 'action-scheduler' );
 
-		$this->maybe_render_admin_notices();
 
 		$this->bulk_actions = array(
 			'delete' => __( 'Delete', 'action-scheduler' ),
@@ -293,19 +292,17 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	 *  1. When the maximum number of tasks are being executed simultaneously
 	 *  2. Notifications when a task us manually executed
 	 */
-	public function maybe_render_admin_notices() {
-		if ( self::$did_notification ) {
-			return;
+	public function display_admin_notices() {
+
+		if ( $this->store->get_claim_count() >= $this->runner->get_allowed_concurrent_batches() ) {
+			$this->admin_notices[] = array(
+				'class'   => 'updated',
+				'message' => sprintf( __( 'Maximum simulatenous batches already in progress (%s queues). No actions will be processed until the current batches are complete.', 'action-scheduler' ), $this->store->get_claim_count() ),
+			);
 		}
 
-		self::$did_notification = true;
-
-		if ( $this->store->get_claim_count() >= $this->runner->get_allowed_concurrent_batches() ) : ?>
-<div id="message" class="updated">
-	<p><?php printf( __( 'Maximum simulatenous batches already in progress (%s queues). No actions will be processed until the current batches are complete.', 'action-scheduler' ), $this->store->get_claim_count() ); ?></p>
-</div>
-		<?php endif;
 		$notification = get_transient( 'actionscheduler_admin_notice' );
+
 		if ( is_array( $notification ) ) {
 			delete_transient( 'actionscheduler_admin_notice' );
 
@@ -331,12 +328,13 @@ class ActionScheduler_ListTable extends PP_List_Table {
 
 			$action_message_html = apply_filters( 'actionscheduler_admin_notice_html', $action_message_html, $action, $notification );
 
-			?>
-			<div id="message" class="<?php echo $class; ?>">
-				<p><?php echo wp_kses_post( $action_message_html ); ?></p>
-			</div>
-			<?php
+			$this->admin_notices[] = array(
+				'class'   => $class,
+				'message' => $action_message_html,
+			);
 		}
+
+		parent::display_admin_notices();
 	}
 
 	/**
@@ -511,42 +509,8 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	/**
 	 * Prints the available statuses so the user can click to filter.
 	 */
-	public function display_filter_by_status() {
-
-		$status_list_items = array();
-
-		$action_counts = $this->store->action_counts();
-		$action_counts = array( 'all' => array_sum( $action_counts ) ) + $action_counts;
-
-		foreach ( $action_counts as $status_name => $count ) {
-
-			if ( 0 === $count ) {
-				continue;
-			}
-
-			if ( $status_name === $this->get_request_status() ) {
-				$status_list_item = '<li class="%1$s"><strong>%3$s</strong> (%4$d)</li>';
-			} else {
-				$status_list_item = '<li class="%1$s"><a href="%2$s">%3$s</a> (%4$d)</li>';
-			}
-
-			$status_list_items[] = sprintf( $status_list_item, esc_attr( $status_name ), esc_url( add_query_arg( 'status', $status_name ) ), esc_html( ucfirst( $status_name ) ), absint( $count ) );
-		}
-
-		if ( $status_list_items ) {
-			echo '<ul class="subsubsub">';
-			echo implode( " | \n", $status_list_items );
-			echo '</ul>';
-		}
-	}
-
-	/**
-	 * Overrides the original display method to print the `display_filter_by_status()`. By overriding
-	 * this object it prints all the needed HTML already, making it easy to use from higher layers because
-	 * the object is 'self-contained' and 'self-sufficient'.
-	 */
-	public function display() {
-		$this->display_filter_by_status();
-		parent::display();
+	protected function display_filter_by_status() {
+		$this->status_counts = $this->store->action_counts();
+		parent::display_filter_by_status();
 	}
 }
