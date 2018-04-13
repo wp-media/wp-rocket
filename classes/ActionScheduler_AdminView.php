@@ -77,8 +77,10 @@ class ActionScheduler_AdminView {
 		$table = new ActionScheduler_ListTable( ActionScheduler::store(), ActionScheduler::logger(), ActionScheduler::runner() );
 		$table->prepare_items();
 
+		echo '<div class="wrap">';
 		echo '<h1>' . __( 'Scheduled Actions', 'action-scheduler' ) . '</h1>';
 		$table->display();
+		echo '</div>';
 	}
 
 	/** Deprecated Functions **/
