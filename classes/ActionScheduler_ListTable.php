@@ -86,7 +86,6 @@ class ActionScheduler_ListTable extends PP_List_Table {
 
 		$this->table_header = __( 'Scheduled Actions', 'action-scheduler' );
 
-
 		$this->bulk_actions = array(
 			'delete' => __( 'Delete', 'action-scheduler' ),
 		);
@@ -107,7 +106,9 @@ class ActionScheduler_ListTable extends PP_List_Table {
 			'group',
 		);
 
-		if ( 'all' === $request_status ) {
+		$request_status = $this->get_request_status();
+
+		if ( empty( $request_status ) ) {
 			$this->sort_by[] = 'status';
 		} elseif ( in_array( $request_status, array( 'in-progress', 'failed' ) ) ) {
 			$this->columns  += array( 'claim_id' => __( 'Claim ID', 'action-scheduler' ) );
@@ -487,23 +488,6 @@ class ActionScheduler_ListTable extends PP_List_Table {
 			'per_page'    => $per_page,
 			'total_pages' => ceil( $total_items / $per_page ),
 		) );
-	}
-
-	/**
-	 * Return the status filter for this request, if any, as long as its a valid status for the current datastore.
-	 * If it's not, return 'all' to display all actions.
-	 *
-	 * @return string
-	 */
-	public function get_request_status() {
-
-		$request_status = parent::get_request_status();
-
-		if ( ! empty( $request_status ) && array_key_exists( $request_status, $this->store->get_status_labels() ) ) {
-			return $request_status;
-		}
-
-		return 'all';
 	}
 
 	/**

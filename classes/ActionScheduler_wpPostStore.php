@@ -132,9 +132,6 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	protected function get_action_status_by_post_status( $post_status ) {
 
 		switch ( $post_status ) {
-			case 'any' :
-				$action_status = 'all';
-				break;
 			case 'publish' :
 				$action_status = self::STATUS_COMPLETE;
 				break;
@@ -160,9 +157,6 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	protected function get_post_status_by_action_status( $action_status ) {
 
 		switch ( $action_status ) {
-			case 'all' :
-				$post_status = 'any';
-				break;
 			case self::STATUS_COMPLETE :
 				$post_status = 'publish';
 				break;
@@ -288,7 +282,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 			$sql_params[] = json_encode($query['args']);
 		}
 
-		if ( ! empty( $query['status'] ) && 'all' !== $query['status'] ) {
+		if ( ! empty( $query['status'] ) ) {
 			$sql .= " AND p.post_status=%s";
 			$sql_params[] = $this->get_post_status_by_action_status( $query['status'] );
 		}
