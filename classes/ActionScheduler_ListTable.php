@@ -106,6 +106,12 @@ class ActionScheduler_ListTable extends PP_List_Table {
 			'group',
 		);
 
+		$this->search_by = array(
+			'hook',
+			'args',
+			'claim_id',
+		);
+
 		$request_status = $this->get_request_status();
 
 		if ( empty( $request_status ) ) {
@@ -460,6 +466,7 @@ class ActionScheduler_ListTable extends PP_List_Table {
 			'status'   => $this->get_request_status(),
 			'orderby'  => $this->get_request_orderby(),
 			'order'    => $this->get_request_order(),
+			'search'   => $this->get_request_search_query(),
 		);
 
 		$this->items = array();
@@ -496,5 +503,12 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	protected function display_filter_by_status() {
 		$this->status_counts = $this->store->action_counts();
 		parent::display_filter_by_status();
+	}
+
+	/**
+	 * Get the text to display in the search box on the list table.
+	 */
+	protected function get_search_box_button_text() {
+		return __( 'Search hook, args and claim ID', 'action-scheduler' );
 	}
 }
