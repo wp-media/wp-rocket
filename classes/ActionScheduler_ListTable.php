@@ -373,6 +373,8 @@ class ActionScheduler_ListTable extends PP_List_Table {
 		} else {
 			$schedule_display_string .= sprintf( __( ' (%s)', 'action-scheduler' ), self::human_interval( $next_timestamp - gmdate( 'U' ) ) );
 		}
+
+		return $schedule_display_string;
 	}
 
 	/**
