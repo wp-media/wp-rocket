@@ -476,7 +476,11 @@ class ActionScheduler_ListTable extends PP_List_Table {
 		$status_labels = $this->store->get_status_labels();
 
 		foreach ( $this->store->query_actions( $query ) as $action_id ) {
-			$action = $this->store->fetch_action( $action_id );
+			try {
+				$action = $this->store->fetch_action( $action_id );
+			} catch ( Exception $e ) {
+				continue;
+			}
 			$this->items[ $action_id ] = array(
 				'ID'          => $action_id,
 				'hook'        => $action->get_hook(),
