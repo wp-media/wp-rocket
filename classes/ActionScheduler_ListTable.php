@@ -288,7 +288,7 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	 */
 	protected function maybe_render_actions( $row, $column_name ) {
 		if ( 'pending' === strtolower( $row['status'] ) ) {
-			parent::maybe_render_actions( $row, $column_name );
+			return parent::maybe_render_actions( $row, $column_name );
 		}
 	}
 
