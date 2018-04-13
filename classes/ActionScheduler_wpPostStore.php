@@ -263,6 +263,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 			'offset' => 0,
 			'orderby' => 'date',
 			'order' => 'ASC',
+			'search' => '',
 		) );
 
 		/** @var wpdb $wpdb */
@@ -317,6 +318,13 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		} elseif ( !is_null($query['claimed']) ) {
 			$sql .= " AND p.post_password = %s";
 			$sql_params[] = $query['claimed'];
+		}
+
+		if ( ! empty( $query['search'] ) ) {
+			$sql .= " AND (p.post_title LIKE %s OR p.post_content LIKE %s OR p.post_password LIKE %s)";
+			for( $i = 0; $i < 3; $i++ ) {
+				$sql_params[] = sprintf( '%%%s%%', $query['search'] );
+			}
 		}
 
 		if ( 'select' === $select_or_count ) {
