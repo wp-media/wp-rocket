@@ -78,6 +78,21 @@ abstract class PP_List_Table extends WP_List_Table {
 	protected $filter_by = array();
 
 	/**
+	 * @var array The status name => count combinations for this table's items. Used to display status filters.
+	 */
+	protected $status_counts = array();
+
+	/**
+	 * @var array Notices to display when loading the table. Array of arrays of form array( 'class' => {updated|error}, 'message' => 'This is the notice text display.' ).
+	 */
+	protected $admin_notices = array();
+
+	/**
+	 * @var string Localised string displayed in the <h1> element above the able.
+	 */
+	protected $table_header;
+
+	/**
 	 * Enables bulk actions. It must be an array where the key is the action name
 	 * and the value is the label (which is translated automatically). It is important
 	 * to notice that it will check that the method exists (`bulk_$name`) and will throw
@@ -295,6 +310,16 @@ abstract class PP_List_Table extends WP_List_Table {
 	protected function get_request_status() {
 		$status = ( ! empty( $_GET['status'] ) ) ? $_GET['status'] : '';
 		return $status;
+	}
+
+	/**
+	 * Return the search filter for this request, if any.
+	 *
+	 * @return string
+	 */
+	protected function get_request_search_query() {
+		$search_query = ( ! empty( $_GET['s'] ) ) ? $_GET['s'] : '';
+		return $search_query;
 	}
 
 	/**
@@ -534,11 +559,69 @@ abstract class PP_List_Table extends WP_List_Table {
 	}
 
 	/**
+	 * Display the table heading and search query, if any
+	 */
+	protected function display_header() {
+		echo '<h1 class="wp-heading-inline">' . esc_attr( $this->table_header ) . '</h1>';
+		if ( $this->get_request_search_query() ) {
+			echo '<span class="subtitle">' . esc_attr( $this->translate( sprintf( 'Search results for "%s"', $this->get_request_search_query() ) ) ) . '</span>';
+		}
+		echo '<hr class="wp-header-end">';
+	}
+
+	/**
+	 * Display the table heading and search query, if any
+	 */
+	protected function display_admin_notices() {
+		foreach ( $this->admin_notices as $notice ) {
+			echo '<div id="message" class="' . $notice['class'] . '">';
+			echo '	<p>' . wp_kses_post( $notice['message'] ) . '</p>';
+			echo '</div>';
+		}
+	}
+
+	/**
+	 * Prints the available statuses so the user can click to filter.
+	 */
+	protected function display_filter_by_status() {
+
+		$status_list_items = array();
+		$request_status    = $this->get_request_status();
+
+		// Helper to set 'all' filter when not set on status counts passed in
+		if ( ! isset( $this->status_counts['all'] ) ) {
+			$this->status_counts = array( 'all' => array_sum( $this->status_counts ) ) + $this->status_counts;
+		}
+
+		foreach ( $this->status_counts as $status_name => $count ) {
+
+			if ( 0 === $count ) {
+				continue;
+			}
+
+			if ( $status_name === $request_status || ( empty( $request_status ) && 'all' === $status_name ) ) {
+				$status_list_item = '<li class="%1$s"><strong>%3$s</strong> (%4$d)</li>';
+			} else {
+				$status_list_item = '<li class="%1$s"><a href="%2$s">%3$s</a> (%4$d)</li>';
+			}
+
+			$status_filter_url   = ( 'all' === $status_name ) ? remove_query_arg( 'status' ) : add_query_arg( 'status', $status_name );
+			$status_list_items[] = sprintf( $status_list_item, esc_attr( $status_name ), esc_url( $status_filter_url ), esc_html( ucfirst( $status_name ) ), absint( $count ) );
+		}
+
+		if ( $status_list_items ) {
+			echo '<ul class="subsubsub">';
+			echo implode( " | \n", $status_list_items );
+			echo '</ul>';
+		}
+	}
+
+	/**
 	 * Renders the table list, we override the original class to render the table inside a form
 	 * and to render any needed HTML (like the search box). By doing so the callee of a function can simple
 	 * forget about any extra HTML.
 	 */
-	public function display() {
+	protected function display_table() {
 		echo '<form id="' . esc_attr( $this->_args['plural'] ) . '-filter" method="get">';
 		foreach ( $_GET as $key => $value ) {
 			if ( '_' === $key[0] || 'paged' === $key ) {
@@ -547,9 +630,30 @@ abstract class PP_List_Table extends WP_List_Table {
 			echo '<input type="hidden" name="' . esc_attr( $key ) . '" value="' . esc_attr( $value ) . '" />';
 		}
 		if ( ! empty( $this->search_by ) ) {
-			echo $this->search_box( $this->translate( 'Search' ), 'plugin' ); // WPCS: XSS OK
+			echo $this->search_box( $this->get_search_box_button_text(), 'plugin' ); // WPCS: XSS OK
 		}
 		parent::display();
 		echo '</form>';
+	}
+
+	/**
+	 * Render the list table page, including header, notices, status filters and table.
+	 */
+	public function display_page() {
+		$this->prepare_items();
+
+		echo '<div class="wrap">';
+		$this->display_header();
+		$this->display_admin_notices();
+		$this->display_filter_by_status();
+		$this->display_table();
+		echo '</div>';
+	}
+
+	/**
+	 * Get the text to display in the search box on the list table.
+	 */
+	protected function get_search_box_placeholder() {
+		return $this->translate( 'Search' );
 	}
 }
