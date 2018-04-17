@@ -1348,8 +1348,8 @@ class Page {
 		$total                 = array();
 		$database_optimization = new \Rocket_Database_Optimization();
 
-		foreach ( $database_optimization->options as $option ) {
-			$total[ $option ] = $database_optimization->count_cleanup_items( $option );
+		foreach ( array_keys( $database_optimization->get_options() ) as $key ) {
+			$total[ $key ] = $database_optimization->count_cleanup_items( $key );
 		}
 
 		$this->settings->add_page_section(
@@ -1406,7 +1406,7 @@ class Page {
 					'type'              => 'checkbox',
 					'label'             => __( 'Revisions', 'rocket' ),
 					// translators: %s is the number of revisions found in the database. It's a formatted number, don't use %d.
-					'description'       => sprintf( _n( '%s revision in your database.', '%s revisions in your database.', $total['revisions'], 'rocket' ), number_format_i18n( $total['revisions'] ) ),
+					'description'       => sprintf( _n( '%s revision in your database.', '%s revisions in your database.', $total['database_revisions'], 'rocket' ), number_format_i18n( $total['database_revisions'] ) ),
 					'section'           => 'post_cleanup_section',
 					'page'              => 'database',
 					'default'           => 0,
@@ -1416,7 +1416,7 @@ class Page {
 					'type'              => 'checkbox',
 					'label'             => __( 'Auto Drafts', 'rocket' ),
 					// translators: %s is the number of revisions found in the database. It's a formatted number, don't use %d.
-					'description'       => sprintf( _n( '%s draft in your database.', '%s drafts in your database.', $total['auto_drafts'], 'rocket' ), number_format_i18n( $total['auto_drafts'] ) ),
+					'description'       => sprintf( _n( '%s draft in your database.', '%s drafts in your database.', $total['database_auto_drafts'], 'rocket' ), number_format_i18n( $total['database_auto_drafts'] ) ),
 					'section'           => 'post_cleanup_section',
 					'page'              => 'database',
 					'default'           => 0,
@@ -1426,7 +1426,7 @@ class Page {
 					'type'              => 'checkbox',
 					'label'             => __( 'Trashed Posts', 'rocket' ),
 					// translators: %s is the number of revisions found in the database. It's a formatted number, don't use %d.
-					'description'       => sprintf( _n( '%s trashed post in your database.', '%s trashed posts in your database.', $total['trashed_posts'], 'rocket' ), $total['trashed_posts'] ),
+					'description'       => sprintf( _n( '%s trashed post in your database.', '%s trashed posts in your database.', $total['database_trashed_posts'], 'rocket' ), $total['database_trashed_posts'] ),
 					'section'           => 'post_cleanup_section',
 					'page'              => 'database',
 					'default'           => 0,
@@ -1436,7 +1436,7 @@ class Page {
 					'type'              => 'checkbox',
 					'label'             => __( 'Spam Comments', 'rocket' ),
 					// translators: %s is the number of revisions found in the database. It's a formatted number, don't use %d.
-					'description'       => sprintf( _n( '%s spam comment in your database.', '%s spam comments in your database.', $total['spam_comments'], 'rocket' ), number_format_i18n( $total['spam_comments'] ) ),
+					'description'       => sprintf( _n( '%s spam comment in your database.', '%s spam comments in your database.', $total['database_spam_comments'], 'rocket' ), number_format_i18n( $total['database_spam_comments'] ) ),
 					'section'           => 'comments_cleanup_section',
 					'page'              => 'database',
 					'default'           => 0,
@@ -1446,7 +1446,7 @@ class Page {
 					'type'              => 'checkbox',
 					'label'             => __( 'Trashed Comments', 'rocket' ),
 					// translators: %s is the number of revisions found in the database. It's a formatted number, don't use %d.
-					'description'       => sprintf( _n( '%s trashed comment in your database.', '%s trashed comments in your database.', $total['trashed_comments'], 'rocket' ), number_format_i18n( $total['trashed_comments'] ) ),
+					'description'       => sprintf( _n( '%s trashed comment in your database.', '%s trashed comments in your database.', $total['database_trashed_comments'], 'rocket' ), number_format_i18n( $total['database_trashed_comments'] ) ),
 					'section'           => 'comments_cleanup_section',
 					'page'              => 'database',
 					'default'           => 0,
@@ -1456,7 +1456,7 @@ class Page {
 					'type'              => 'checkbox',
 					'label'             => __( 'Expired transients', 'rocket' ),
 					// translators: %s is the number of revisions found in the database. It's a formatted number, don't use %d.
-					'description'       => sprintf( _n( '%s expired transient in your database.', '%s expired transients in your database.', $total['expired_transients'], 'rocket' ), number_format_i18n( $total['expired_transients'] ) ),
+					'description'       => sprintf( _n( '%s expired transient in your database.', '%s expired transients in your database.', $total['database_expired_transients'], 'rocket' ), number_format_i18n( $total['database_expired_transients'] ) ),
 					'section'           => 'transients_cleanup_section',
 					'page'              => 'database',
 					'default'           => 0,
@@ -1466,7 +1466,7 @@ class Page {
 					'type'              => 'checkbox',
 					'label'             => __( 'All transients', 'rocket' ),
 					// translators: %s is the number of revisions found in the database. It's a formatted number, don't use %d.
-					'description'       => sprintf( _n( '%s transient in your database.', '%s transients in your database.', $total['all_transients'], 'rocket' ), number_format_i18n( $total['all_transients'] ) ),
+					'description'       => sprintf( _n( '%s transient in your database.', '%s transients in your database.', $total['database_all_transients'], 'rocket' ), number_format_i18n( $total['database_all_transients'] ) ),
 					'section'           => 'transients_cleanup_section',
 					'page'              => 'database',
 					'default'           => 0,
@@ -1476,7 +1476,7 @@ class Page {
 					'type'              => 'checkbox',
 					'label'             => __( 'Optimize Tables', 'rocket' ),
 					// translators: %s is the number of revisions found in the database. It's a formatted number, don't use %d.
-					'description'       => sprintf( _n( '%s table to optimize in your database.', '%s tables to optimize in your database.', $total['optimize_tables'], 'rocket' ), number_format_i18n( $total['optimize_tables'] ) ),
+					'description'       => sprintf( _n( '%s table to optimize in your database.', '%s tables to optimize in your database.', $total['database_optimize_tables'], 'rocket' ), number_format_i18n( $total['database_optimize_tables'] ) ),
 					'section'           => 'database_cleanup_section',
 					'page'              => 'database',
 					'default'           => 0,
