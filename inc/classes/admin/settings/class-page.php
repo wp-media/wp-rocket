@@ -145,7 +145,17 @@ class Page {
 	 */
 	public function configure() {
 		register_setting( $this->slug, WP_ROCKET_SLUG, [ $this->settings, 'sanitize_callback' ] );
+	}
 
+	/**
+	 * Renders the settings page
+	 *
+	 * @since 3.0
+	 * @author Remy Perona
+	 *
+	 * @return void
+	 */
+	public function render_page() {
 		if ( rocket_valid_key() ) {
 			$this->dashboard_section();
 			$this->cache_section();
@@ -166,17 +176,7 @@ class Page {
 		$this->hidden_fields();
 
 		$this->render->set_hidden_settings( $this->settings->get_hidden_settings() );
-	}
 
-	/**
-	 * Renders the settings page
-	 *
-	 * @since 3.0
-	 * @author Remy Perona
-	 *
-	 * @return void
-	 */
-	public function render_page() {
 		echo $this->render->generate( 'page', [ 'slug' => $this->slug ] );
 	}
 
@@ -608,7 +608,7 @@ class Page {
 					],
 					'page'        => 'cache',
 				],
-				'cache_ssl_section'   => [
+				'cache_ssl_section'    => [
 					'title'       => __( 'SSL Cache', 'rocket' ),
 					'type'        => 'fields_container',
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
@@ -638,7 +638,7 @@ class Page {
 
 		$this->settings->add_settings_fields(
 			[
-				'cache_logged_user'     => [
+				'cache_logged_user'       => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Enable caching for logged-in WordPress users', 'rocket' ),
 					'section'           => 'user_cache_section',
@@ -1621,7 +1621,7 @@ class Page {
 
 		$this->settings->add_settings_sections(
 			[
-				'addons'    => [
+				'addons' => [
 					'title'       => __( 'Rocket Add-ons', 'rocket' ),
 					'description' => __( 'Rocket Add-ons are complementary features extending available options.', 'rocket' ),
 					'type'        => 'addons_container',
