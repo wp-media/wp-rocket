@@ -371,7 +371,7 @@ function rocket_minify( $files, $extension ) {
 			*/
 			$document_root = apply_filters( 'rocket_min_documentRoot', ABSPATH );
 
-			$file_content = rocket_cdn_css_properties( Minify_CSS_UriRewriter::rewrite( $file_content, dirname( $file ) ), $document_root );
+			$file_content = rocket_cdn_css_properties( Minify_CSS_UriRewriter::rewrite( $file_content, dirname( $file ), $document_root ) );
 		}
 
 		$minify->add( $file_content );
