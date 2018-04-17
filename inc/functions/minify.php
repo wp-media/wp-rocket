@@ -362,7 +362,16 @@ function rocket_minify( $files, $extension ) {
 	foreach ( $files as $file ) {
 		$file_content = rocket_direct_filesystem()->get_contents( $file );
 		if ( 'css' === $extension ) {
-			$file_content = rocket_cdn_css_properties( Minify_CSS_UriRewriter::rewrite( $file_content, dirname( $file ) ) );
+			/**
+			 * Filters the Document Root path to use during CSS minification to rewrite paths
+			 *
+			 * @since 2.7
+			 *
+			 * @param string The Document Root path.
+			*/
+			$document_root = apply_filters( 'rocket_min_documentRoot', ABSPATH );
+
+			$file_content = rocket_cdn_css_properties( Minify_CSS_UriRewriter::rewrite( $file_content, dirname( $file ), $document_root ) );
 		}
 
 		$minify->add( $file_content );
