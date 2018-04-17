@@ -86,9 +86,7 @@ class Rocket_Database_Optimization {
 			$this->process->cancel_process();
 		}
 
-		foreach ( $options as $option ) {
-			$this->process->push_to_queue( $option );
-		}
+		array_map( array( $this->process, 'push_to_queue' ), $options );
 
 		$this->process->save()->dispatch();
 	}
@@ -119,11 +117,7 @@ class Rocket_Database_Optimization {
 	public function cron_optimize() {
 		$items = [];
 
-		foreach ( array_keys( $this->options ) as $key ) {
-			if ( get_rocket_option( $key, 0 ) ) {
-				$items[] = $key;
-			}
-		}
+		$items = array_filter( array_keys( $this->options ), 'get_rocket_option' );
 
 		if ( empty( $items ) ) {
 			return;
@@ -201,10 +195,10 @@ class Rocket_Database_Optimization {
 				break;
 			case 'database_expired_transients':
 				$time  = isset( $_SERVER['REQUEST_TIME'] ) ? (int) $_SERVER['REQUEST_TIME'] : time();
-				$count = $wpdb->get_var( "SELECT COUNT(option_name) FROM $wpdb->options WHERE option_name LIKE '\_transient\_timeout%' AND option_value < $time" );
+				$count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(option_name) FROM $wpdb->options WHERE option_name LIKE %s AND option_value < %d", $wpdb->esc_like( '_transient_timeout' ) . '%', $time ) );
 				break;
 			case 'database_all_transients':
-				$count = $wpdb->get_var( "SELECT COUNT(option_id) FROM $wpdb->options WHERE option_name LIKE '\_transient\_%' OR option_name LIKE '\_site\_transient\_%'" );
+				$count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(option_id) FROM $wpdb->options WHERE option_name LIKE %s OR option_name LIKE %s", $wpdb->esc_like( '_transient_' ) . '%', $wpdb->esc_like( '_site_transient_' ) . '%' ) );
 				break;
 			case 'database_optimize_tables':
 				$count = $wpdb->get_var( "SELECT COUNT(table_name) FROM information_schema.tables WHERE table_schema = '" . DB_NAME . "' and Engine <> 'InnoDB' and data_free > 0" );
