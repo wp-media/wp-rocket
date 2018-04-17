@@ -12,6 +12,7 @@
  *     @type string $value       Field value.
  *     @type string $description Field description.
  *     @type string $helper      Field helper text.
+ *     @type string $placeholder Field placeholder.
  * }
  */
 
@@ -28,7 +29,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 		</div>
 	<?php endif; ?>
 	<div class="wpr-textarea">
-		<textarea id="<?php echo esc_attr( $data['id'] ); ?>" name="wp_rocket_settings[<?php echo esc_attr( $data['id'] ); ?>]"><?php echo esc_textarea( $data['value'] ); ?></textarea>
+		<textarea id="<?php echo esc_attr( $data['id'] ); ?>" name="wp_rocket_settings[<?php echo esc_attr( $data['id'] ); ?>]" placeholder="<?php echo esc_attr( $data['placeholder'] ); ?>"><?php echo esc_textarea( $data['value'] ); ?></textarea>
 	</div>
 	<?php if ( ! empty( $data['helper'] ) ) : ?>
 		<div class="wpr-field-description wpr-field-description-helper">
