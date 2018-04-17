@@ -1091,10 +1091,10 @@ function rocket_fetch_and_cache_busting( $src, $cache_busting_paths, $abspath_sr
 		 *
 		 * @param string The Document Root path.
 		*/
-		$min_documentroot = apply_filters( 'rocket_min_documentRoot', ABSPATH );
+		$document_root = apply_filters( 'rocket_min_documentRoot', ABSPATH );
 
 		// Rewrite import/url in CSS content to add the absolute path to the file.
-		$content = Minify_CSS_UriRewriter::rewrite( $content, dirname( $abspath_src ), $min_documentroot );
+		$content = Minify_CSS_UriRewriter::rewrite( $content, dirname( $abspath_src ), $document_root );
 	}
 
 	if ( ! rocket_direct_filesystem()->is_dir( $cache_busting_paths['bustingpath'] ) ) {
