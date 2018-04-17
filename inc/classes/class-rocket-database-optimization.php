@@ -115,8 +115,6 @@ class Rocket_Database_Optimization {
 	 * @author Remy Perona
 	 */
 	public function cron_optimize() {
-		$items = [];
-
 		$items = array_filter( array_keys( $this->options ), 'get_rocket_option' );
 
 		if ( empty( $items ) ) {
