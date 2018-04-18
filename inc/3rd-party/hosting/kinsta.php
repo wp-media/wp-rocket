@@ -36,7 +36,7 @@ if ( isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ) {
 			global $kinsta_cache;
 			$kinsta_cache->kinsta_cache_purge->initiate_purge( $post->ID, 'post' );
 		}
-		add_action( 'after_rocket_clean_post', 'rocket_clean_kinsta_post_cache', 10, 1 );
+		add_action( 'after_rocket_clean_post', 'rocket_clean_kinsta_post_cache' );
 
 		/**
 		 * Clears Kinsta cache for the homepage URL when using "Purge this URL" from the admin bar on the front end
@@ -54,6 +54,7 @@ if ( isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ) {
 
 			wp_remote_get( $url, array(
 				'blocking' => false,
+				'timeout'  => 0.01,
 			) );
 		}
 		add_action( 'after_rocket_clean_home', 'rocket_clean_kinsta_cache_home', 10, 2 );
@@ -72,6 +73,7 @@ if ( isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ) {
 
 			wp_remote_get( $url, array(
 				'blocking' => false,
+				'timeout'  => 0.01,
 			) );
 		}
 		add_action( 'after_rocket_clean_file', 'rocket_clean_kinsta_cache_url' );
