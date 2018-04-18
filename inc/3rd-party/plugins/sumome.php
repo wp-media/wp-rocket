@@ -1,7 +1,12 @@
 <?php 
 /**
  * Compatibility with SumoMe
+ *
+ * Prevents conflict with SumoMe and the WP Rocket UI by removing SumoMe
+ * styles and scripts on WP Rocket admin pages.
+ *
  * @link https://wordpress.org/plugins/sumome/
+ * @since 3.0.4
  */
 defined( 'ABSPATH' ) || die( 'Cheatin\' uh?' );
 
@@ -17,7 +22,7 @@ if ( class_exists( 'WP_Plugin_SumoMe' ) ) {
 		
 		// Retun on all pages but WP Rocket settings page
 		$screen = get_current_screen();
-		if ( $screen->id != 'settings_page_wprocket' ) {
+		if ( $screen->id !== 'settings_page_wprocket' ) {
 			return;
 		}
 
@@ -36,7 +41,7 @@ if ( class_exists( 'WP_Plugin_SumoMe' ) ) {
 		
 		// Retun on all pages but WP Rocket settings page
 		$screen = get_current_screen();
-		if ( $screen->id != 'settings_page_wprocket' ) {
+		if ( $screen->id !== 'settings_page_wprocket' ) {
 			return;
 		}
 		
