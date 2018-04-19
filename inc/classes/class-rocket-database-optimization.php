@@ -136,9 +136,15 @@ class Rocket_Database_Optimization {
 	 * @return array
 	 */
 	public function save_optimize( $value ) {
+		if ( empty( $_POST ) ) {
+			return $value;
+		}
+
 		if ( empty( $value ) || ! isset( $value['submit_optimize'] ) ) {
 			return $value;
 		}
+
+		unset( $value['submit_optimize'] );
 
 		if ( ! current_user_can( apply_filters( 'rocket_capability', 'manage_options' ) ) ) {
 			return $value;
