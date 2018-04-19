@@ -1182,7 +1182,7 @@ class Page {
 				'dns_prefetch'      => [
 					'type'              => 'textarea',
 					'label'             => __( 'URLs to prefetch', 'rocket' ),
-					'description'       => __( 'Specify external hosts to be prefetched', 'rocket' ),
+					'description'       => __( 'Specify external hosts to be prefetched (no <code>http:</code>, one per line)', 'rocket' ),
 					'placeholder'       => '//example.com',
 					'section'           => 'dns_prefetch_section',
 					'page'              => 'preload',
