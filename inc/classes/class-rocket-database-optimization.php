@@ -9,21 +9,21 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  */
 class Rocket_Database_Optimization {
 	/**
-	 * Process
+	 * Rocket_Background_Database_Optimization instance
 	 *
 	 * @since 2.11
-	 * @var object $process Background Process instance.
+	 * @var Rocket_Background_Database_Optimization $process Background Process instance.
 	 * @access protected
 	 */
 	protected $process;
 
 	/**
-	 * Process
+	 * Array of option name/label pairs.
 	 *
 	 * @var array
-	 * @access public
+	 * @access private
 	 */
-	public $options;
+	private $options;
 
 	/**
 	 * Class constructor.
@@ -34,15 +34,27 @@ class Rocket_Database_Optimization {
 	public function __construct() {
 		$this->process = new Rocket_Background_Database_Optimization();
 		$this->options = array(
-			'revisions',
-			'auto_drafts',
-			'trashed_posts',
-			'spam_comments',
-			'trashed_comments',
-			'expired_transients',
-			'all_transients',
-			'optimize_tables',
+			'database_revisions'          => __( 'Revisions', 'rocket' ),
+			'database_auto_drafts'        => __( 'Auto Drafts', 'rocket' ),
+			'database_trashed_posts'      => __( 'Trashed Posts', 'rocket' ),
+			'database_spam_comments'      => __( 'Spam Comments', 'rocket' ),
+			'database_trashed_comments'   => __( 'Trashed Comments', 'rocket' ),
+			'database_expired_transients' => __( 'Expired transients', 'rocket' ),
+			'database_all_transients'     => __( 'Transients', 'rocket' ),
+			'database_optimize_tables'    => __( 'Tables', 'rocket' ),
 		);
+	}
+
+	/**
+	 * Get Database options
+	 *
+	 * @since 3.0.4
+	 * @author Remy Perona
+	 *
+	 * @return array
+	 */
+	public function get_options() {
+		return $this->options;
 	}
 
 	/**
@@ -55,8 +67,8 @@ class Rocket_Database_Optimization {
 		$self = new self();
 
 		add_action( 'init', array( $self, 'database_optimization_scheduled' ) );
-		add_action( 'rocket_database_optimization_time_event', array( $self, 'process_handler' ) );
-		add_action( 'update_option_' . WP_ROCKET_SLUG, array( $self, 'save_optimize' ) );
+		add_action( 'rocket_database_optimization_time_event', array( $self, 'cron_optimize' ) );
+		add_filter( 'pre_update_option_' . WP_ROCKET_SLUG, array( $self, 'save_optimize' ) );
 		add_action( 'admin_notices', array( $self, 'notice_process_running' ) );
 		add_action( 'admin_notices', array( $self, 'notice_process_complete' ) );
 	}
@@ -66,17 +78,15 @@ class Rocket_Database_Optimization {
 	 *
 	 * @since 2.11
 	 * @author Remy Perona
+	 *
+	 * @param array $options WP Rocket Database options.
 	 */
-	public function process_handler() {
+	private function process_handler( $options ) {
 		if ( method_exists( $this->process, 'cancel_process' ) ) {
 			$this->process->cancel_process();
 		}
 
-		foreach ( $this->options as $option ) {
-			if ( get_rocket_option( 'database_' . $option, false ) ) {
-				$this->process->push_to_queue( $option );
-			}
-		}
+		array_map( array( $this->process, 'push_to_queue' ), $options );
 
 		$this->process->save()->dispatch();
 	}
@@ -99,23 +109,62 @@ class Rocket_Database_Optimization {
 	}
 
 	/**
+	 * Database Optimization cron callback
+	 *
+	 * @since 3.0.4
+	 * @author Remy Perona
+	 */
+	public function cron_optimize() {
+		$items = array_filter( array_keys( $this->options ), 'get_rocket_option' );
+
+		if ( empty( $items ) ) {
+			return;
+		}
+
+		$this->process_handler( $items );
+	}
+
+	/**
 	 * Launches the database optimization when the settings are saved with optimize button
 	 *
 	 * @since 2.8
 	 * @author Remy Perona
 	 *
 	 * @see process_handler()
+	 *
+	 * @param array $value The new, unserialized option value.
+	 * @return array
 	 */
-	public function save_optimize() {
-		if ( empty( $_POST ) || ! isset( $_POST['wp_rocket_settings']['submit_optimize'] ) ) {
-			return;
+	public function save_optimize( $value ) {
+		if ( empty( $_POST ) ) {
+			return $value;
 		}
+
+		if ( empty( $value ) || ! isset( $value['submit_optimize'] ) ) {
+			return $value;
+		}
+
+		unset( $value['submit_optimize'] );
 
 		if ( ! current_user_can( apply_filters( 'rocket_capability', 'manage_options' ) ) ) {
-			return;
+			return $value;
 		}
 
-		$this->process_handler();
+		$items = [];
+
+		foreach ( $value as $key => $option_value ) {
+			if ( isset( $this->options[ $key ] ) && 1 === $option_value ) {
+				$items[] = $key;
+			}
+		}
+
+		if ( empty( $items ) ) {
+			return $value;
+		}
+
+		$this->process_handler( $items );
+
+		return $value;
 	}
 
 	/**
@@ -133,29 +182,29 @@ class Rocket_Database_Optimization {
 		$count = 0;
 
 		switch ( $type ) {
-			case 'revisions':
+			case 'database_revisions':
 				$count = $wpdb->get_var( "SELECT COUNT(ID) FROM $wpdb->posts WHERE post_type = 'revision'" );
 				break;
-			case 'auto_drafts':
+			case 'database_auto_drafts':
 				$count = $wpdb->get_var( "SELECT COUNT(ID) FROM $wpdb->posts WHERE post_status = 'auto-draft'" );
 				break;
-			case 'trashed_posts':
+			case 'database_trashed_posts':
 				$count = $wpdb->get_var( "SELECT COUNT(ID) FROM $wpdb->posts WHERE post_status = 'trash'" );
 				break;
-			case 'spam_comments':
+			case 'database_spam_comments':
 				$count = $wpdb->get_var( "SELECT COUNT(comment_ID) FROM $wpdb->comments WHERE comment_approved = 'spam'" );
 				break;
-			case 'trashed_comments':
+			case 'database_trashed_comments':
 				$count = $wpdb->get_var( "SELECT COUNT(comment_ID) FROM $wpdb->comments WHERE (comment_approved = 'trash' OR comment_approved = 'post-trashed')" );
 				break;
-			case 'expired_transients':
+			case 'database_expired_transients':
 				$time  = isset( $_SERVER['REQUEST_TIME'] ) ? (int) $_SERVER['REQUEST_TIME'] : time();
-				$count = $wpdb->get_var( "SELECT COUNT(option_name) FROM $wpdb->options WHERE option_name LIKE '_transient_timeout%' AND option_value < $time" );
+				$count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(option_name) FROM $wpdb->options WHERE option_name LIKE %s AND option_value < %d", $wpdb->esc_like( '_transient_timeout' ) . '%', $time ) );
 				break;
-			case 'all_transients':
-				$count = $wpdb->get_var( "SELECT COUNT(option_id) FROM $wpdb->options WHERE option_name LIKE '_transient_%' OR option_name LIKE '_site_transient_%'" );
+			case 'database_all_transients':
+				$count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(option_id) FROM $wpdb->options WHERE option_name LIKE %s OR option_name LIKE %s", $wpdb->esc_like( '_transient_' ) . '%', $wpdb->esc_like( '_site_transient_' ) . '%' ) );
 				break;
-			case 'optimize_tables':
+			case 'database_optimize_tables':
 				$count = $wpdb->get_var( "SELECT COUNT(table_name) FROM information_schema.tables WHERE table_schema = '" . DB_NAME . "' and Engine <> 'InnoDB' and data_free > 0" );
 				break;
 		}
@@ -232,20 +281,11 @@ class Rocket_Database_Optimization {
 			<p><?php echo $message; ?></p>
 			<?php if ( ! empty( $optimized ) ) : ?>
 			<ul>
-			<?php foreach ( $optimized as $k => $number ) : ?>
+			<?php foreach ( $optimized as $key => $number ) : ?>
 				<li>
 				<?php
 					/* translators: %1$d = number of items optimized, %2$s = type of optimization */
-					printf( __( '%1$d %2$s optimized.', 'rocket' ), $number, $k );
-
-					/**
-					 * “I feel like I’m kind of lazy, but I keep the yard looking good.”
-					 * —Kris Kristofferson
-					 *
-					 * We shall do the same, shan’t we?
-					 *
-					 * @todo Replace $k in the printf() arguments with something nicer to read.
-					 */
+					printf( __( '%1$d %2$s optimized.', 'rocket' ), $number, $this->options[ $key ] );
 				?>
 				</li>
 			<?php endforeach; ?>

@@ -202,6 +202,7 @@ class Render extends Abstract_render {
 				'container_class'   => '',
 				'default'           => '',
 				'helper'            => '',
+				'placeholder'       => '',
 				'parent'            => '',
 				'section'           => '',
 				'page'              => '',

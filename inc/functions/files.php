@@ -77,44 +77,6 @@ function get_rocket_config_file() {
 	$buffer  = '<?php' . "\n";
 	$buffer .= 'defined( \'ABSPATH\' ) or die( \'Cheatin\\\' uh?\' );' . "\n\n";
 
-	if ( apply_filters( 'rocket_override_min_documentRoot', false ) ) {
-		/**
-		 * Filter the Document Root path to use during the minification
-		 *
-		 * @since 2.7
-		 *
-		 * @param string The Document Root path.
-		*/
-		$min_documentroot = apply_filters( 'rocket_min_documentRoot', ABSPATH );
-
-		$buffer .= '$min_documentRoot = \'' . $min_documentroot . '\';' . "\n";
-	}
-
-	if ( apply_filters( 'rocket_override_min_cachepath', false ) ) {
-		/**
-		 * Filter the temp directory path to use during the minification
-		 *
-		 * @since 2.8.3
-		 *
-		 * @param string The temp path, empty to leave Minify guessing it automatically.
-		*/
-		$min_cachepath = apply_filters( 'rocket_min_cachePath', '' );
-
-		$buffer .= '$min_cachePath = \'' . $min_cachepath . '\';' . "\n";
-	}
-
-	/**
-	 * Filters the preservation of the CSS comments during minification
-	 *
-	 * @author Remy Perona
-	 * @since 2.9
-	 *
-	 * @param bool False to not preserve the comments, true to preserve.
-	 */
-	if ( apply_filters( 'rocket_minification_preserve_css_comments', false ) ) {
-		$buffer .= '$min_preserve_css_comments = true;' . "\n";
-	}
-
 	$buffer .= '$rocket_cookie_hash = \'' . COOKIEHASH . '\'' . ";\n";
 
 	/**
@@ -1122,8 +1084,17 @@ function rocket_fetch_and_cache_busting( $src, $cache_busting_paths, $abspath_sr
 	}
 
 	if ( 'style_loader_src' === $current_filter ) {
+		/**
+		 * Filters the Document Root path to use during CSS minification to rewrite paths
+		 *
+		 * @since 2.7
+		 *
+		 * @param string The Document Root path.
+		*/
+		$document_root = apply_filters( 'rocket_min_documentRoot', ABSPATH );
+
 		// Rewrite import/url in CSS content to add the absolute path to the file.
-		$content = Minify_CSS_UriRewriter::rewrite( $content, dirname( $abspath_src ) );
+		$content = Minify_CSS_UriRewriter::rewrite( $content, dirname( $abspath_src ), $document_root );
 	}
 
 	if ( ! rocket_direct_filesystem()->is_dir( $cache_busting_paths['bustingpath'] ) ) {

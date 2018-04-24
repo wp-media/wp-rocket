@@ -23,4 +23,18 @@ if ( rocket_is_plugin_active( 'sg-cachepress/sg-cachepress.php' ) ) {
 			$sg_cachepress_supercacher->purge_cache();
 		}
 	}
+	
+	/**
+	 * Force WP Rocket caching on SG Optimizer versions before 4.0.5
+	 * 
+	 * @author Arun Basil Lal
+	 *
+	 * @link https://github.com/wp-media/wp-rocket/issues/925
+	 * @since 3.0.4
+	 */
+	$sg_optimizer_plugin_data = get_file_data( WP_PLUGIN_DIR . '/sg-cachepress/sg-cachepress.php', array( 'Version' => 'Version' ) );
+	
+	if ( version_compare( $sg_optimizer_plugin_data['Version'], '4.0.5' ) < 0 ) {
+		add_filter( 'do_rocket_generate_caching_files', '__return_true', 11 );
+	}
 }
