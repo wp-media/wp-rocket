@@ -292,6 +292,8 @@ class ActionScheduler_ListTable extends PP_List_Table {
 		if ( 'pending' === strtolower( $row['status'] ) ) {
 			return parent::maybe_render_actions( $row, $column_name );
 		}
+
+		return '';
 	}
 
 	/**
