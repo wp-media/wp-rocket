@@ -14,7 +14,7 @@ class ActionScheduler_ActionFactory {
 	 *
 	 * @return ActionScheduler_StoredAction An instance of the stored action
 	 */
-	public function get_stored_action( $status, $hook, array $args = array(), ActionScheduler_Schedule $schedule = NULL, $group = '' ) {
+	public function get_stored_action( $status, $hook, array $args = array(), ActionScheduler_Schedule $schedule = null, $group = '' ) {
 
 		switch ( $status ) {
 			case ActionScheduler_Store::STATUS_PENDING :
@@ -52,7 +52,7 @@ class ActionScheduler_ActionFactory {
 	 *
 	 * @return string The ID of the stored action
 	 */
-	public function single( $hook, $args = array(), $when = NULL, $group = '' ) {
+	public function single( $hook, $args = array(), $when = null, $group = '' ) {
 		$date = as_get_datetime_object( $when );
 		$schedule = new ActionScheduler_SimpleSchedule( $date );
 		$action = new ActionScheduler_Action( $hook, $args, $schedule, $group );
@@ -68,7 +68,7 @@ class ActionScheduler_ActionFactory {
 	 *
 	 * @return string The ID of the stored action
 	 */
-	public function recurring( $hook, $args = array(), $first = NULL, $interval = NULL, $group = '' ) {
+	public function recurring( $hook, $args = array(), $first = null, $interval = null, $group = '' ) {
 		if ( empty($interval) ) {
 			return $this->single( $hook, $args, $first, $group );
 		}
@@ -88,7 +88,7 @@ class ActionScheduler_ActionFactory {
 	 *
 	 * @return string The ID of the stored action
 	 */
-	public function cron( $hook, $args = array(), $first = NULL, $schedule = NULL, $group = '' ) {
+	public function cron( $hook, $args = array(), $first = null, $schedule = null, $group = '' ) {
 		if ( empty($schedule) ) {
 			return $this->single( $hook, $args, $first, $group );
 		}
