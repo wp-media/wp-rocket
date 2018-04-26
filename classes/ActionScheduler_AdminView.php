@@ -123,6 +123,8 @@ class ActionScheduler_AdminView {
 	 */
 	public function list_table_columns( $columns ) {
 		_deprecated_function( __METHOD__, '1.6' );
+
+		return $columns;
 	}
 
 	/**
