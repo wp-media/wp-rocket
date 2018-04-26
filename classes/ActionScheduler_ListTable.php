@@ -306,7 +306,7 @@ class ActionScheduler_ListTable extends PP_List_Table {
 		if ( $this->store->get_claim_count() >= $this->runner->get_allowed_concurrent_batches() ) {
 			$this->admin_notices[] = array(
 				'class'   => 'updated',
-				'message' => sprintf( __( 'Maximum simulatenous batches already in progress (%s queues). No actions will be processed until the current batches are complete.', 'action-scheduler' ), $this->store->get_claim_count() ),
+				'message' => sprintf( __( 'Maximum simultaneous batches already in progress (%s queues). No actions will be processed until the current batches are complete.', 'action-scheduler' ), $this->store->get_claim_count() ),
 			);
 		}
 
