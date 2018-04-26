@@ -26,16 +26,14 @@ class ActionScheduler_AdminView {
 	 * @codeCoverageIgnore
 	 */
 	public function init() {
-		$self = $this->instance();
-
 		if ( is_admin() && ( ! defined( 'DOING_AJAX' ) || false == DOING_AJAX ) ) {
 
 			if ( class_exists( 'WooCommerce' ) ) {
-				add_action( 'woocommerce_admin_status_content_action-scheduler', array( $self, 'render_admin_ui' ) );
-				add_filter( 'woocommerce_admin_status_tabs', array( $self, 'register_system_status_tab' ) );
+				add_action( 'woocommerce_admin_status_content_action-scheduler', array( $this, 'render_admin_ui' ) );
+				add_filter( 'woocommerce_admin_status_tabs', array( $this, 'register_system_status_tab' ) );
 			}
 
-			add_action( 'admin_menu', array( $self, 'register_menu' ) );
+			add_action( 'admin_menu', array( $this, 'register_menu' ) );
 		}
 	}
 
