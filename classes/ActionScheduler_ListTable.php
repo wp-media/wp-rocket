@@ -177,7 +177,7 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	 * Convert an interval of seconds into a two part human friendly string.
 	 *
 	 * The WordPress human_time_diff() function only calculates the time difference to one degree, meaning
-	 * even if an action is 1 day and 11 hours away, it will display "1 day". This funciton goes one step
+	 * even if an action is 1 day and 11 hours away, it will display "1 day". This function goes one step
 	 * further to display two degrees of accuracy.
 	 *
 	 * Inspired by the Crontrol::interval() function by Edward Dale: https://wordpress.org/plugins/wp-crontrol/
@@ -272,7 +272,7 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	 *
 	 * @param ActionScheduler_LogEntry $log_entry
 	 * @param DateTimezone $timezone
-	 * @param string
+	 * @return string
 	 */
 	protected function get_log_entry_html( ActionScheduler_LogEntry $log_entry, DateTimezone $timezone ) {
 		$date = $log_entry->get_date();
@@ -283,8 +283,10 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	/**
 	 * Only display row actions for pending actions.
 	 *
-	 * @param array $row     Row to render
-	 * @param $column_name   Current row
+	 * @param array  $row         Row to render
+	 * @param string $column_name Current row
+	 *
+	 * @return string
 	 */
 	protected function maybe_render_actions( $row, $column_name ) {
 		if ( 'pending' === strtolower( $row['status'] ) ) {
@@ -348,7 +350,8 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	 * Prints the scheduled date in a human friendly format.
 	 *
 	 * @param array $row The array representation of the current row of the table
-	 * @param string $ids_sql Inherited and unused
+	 *
+	 * @return string
 	 */
 	public function column_schedule( $row ) {
 		return $this->get_schedule_display_string( $row['schedule'] );

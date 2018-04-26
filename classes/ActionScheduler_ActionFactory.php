@@ -12,7 +12,7 @@ class ActionScheduler_ActionFactory {
 	 * @param ActionScheduler_Schedule $schedule The action's schedule
 	 * @param string $group A group to put the action in
 	 *
-	 * @return ActionScheduler_StoredAction An instance of the stored action
+	 * @return ActionScheduler_Action An instance of the stored action
 	 */
 	public function get_stored_action( $status, $hook, array $args = array(), ActionScheduler_Schedule $schedule = null, $group = '' ) {
 
@@ -109,4 +109,3 @@ class ActionScheduler_ActionFactory {
 		return $store->save_action( $action );
 	}
 }
- 
