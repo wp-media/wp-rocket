@@ -28,7 +28,7 @@ class ActionScheduler_ActionFactory {
 				break;
 		}
 
-		$action_class = apply_filters( 'action_scheduler_stored_action_class', $action_class, $hook, $args, $schedule, $group );
+		$action_class = apply_filters( 'action_scheduler_stored_action_class', $action_class, $status, $hook, $args, $schedule, $group );
 
 		$action = new $action_class( $hook, $args, $schedule, $group );
 
