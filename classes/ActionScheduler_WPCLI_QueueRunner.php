@@ -105,7 +105,6 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 	 *
 	 * @author Jeremy Pry
 	 * @return int The number of actions processed.
-	 * @throws \WP_CLI\ExitException When the claim is lost.
 	 */
 	public function run() {
 		do_action( 'action_scheduler_before_process_queue' );
@@ -113,8 +112,8 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 		foreach ( $this->actions as $action_id ) {
 			// Error if we lost the claim.
 			if ( ! in_array( $action_id, $this->store->find_actions_by_claim_id( $this->claim->get_id() ) ) ) {
-				$this->finish_progress_bar();
-				WP_CLI::error( __( 'The claim has been lost. Aborting.', 'action-scheduler' ) );
+				WP_CLI::warning( __( 'The claim has been lost. Aborting current batch.', 'action-scheduler' ) );
+				break;
 			}
 
 			$this->process_action( $action_id );
