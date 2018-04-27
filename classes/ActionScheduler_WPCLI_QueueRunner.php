@@ -92,15 +92,6 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 	}
 
 	/**
-	 * Ensure the progress bar has finished properly.
-	 *
-	 * @author Jeremy Pry
-	 */
-	protected function finish_progress_bar() {
-		$this->progress_bar->finish();
-	}
-
-	/**
 	 * Process actions in the queue.
 	 *
 	 * @author Jeremy Pry
@@ -126,7 +117,7 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 		}
 
 		$completed = $this->progress_bar->current();
-		$this->finish_progress_bar();
+		$this->progress_bar->finish();
 		$this->store->release_claim( $this->claim );
 		do_action( 'action_scheduler_after_process_queue' );
 
