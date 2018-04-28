@@ -16,7 +16,7 @@ if ( version_compare( $wp_version, '4.2' ) >= 0 && get_rocket_option( 'emoji', 0
 		remove_filter( 'comment_text_rss'       , 'wp_staticize_emoji' );
 		remove_filter( 'wp_mail'                , 'wp_staticize_emoji_for_email' );
 		remove_action( 'wp_print_styles'	, 'print_emoji_styles' ); 		
-		add_filter( 'emoji_svg_url'		, '__return_false' )
+		add_filter( 'emoji_svg_url'		, '__return_false' );
 	}
 	add_action( 'init', 'rocket_disable_emoji' );
 
