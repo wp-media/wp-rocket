@@ -24,4 +24,8 @@ if( false !== getenv( 'WP_TESTS_DIR' ) ) {
 	require dirname( dirname( dirname( dirname( dirname( dirname( __FILE__ ) ) ) ) ) ) . '/tests/phpunit/includes/bootstrap.php';
 }
 
-include_once('ActionScheduler_UnitTestCase.php');
+if ( class_exists( 'PHPUnit\Framework\TestResult' ) ) { // PHPUnit 6.0 or newer
+	include_once('ActionScheduler_UnitTestCase.php');
+} else {
+	include_once('phpunit/deprecated/ActionScheduler_UnitTestCase.php');
+}

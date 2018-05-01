@@ -71,6 +71,15 @@ abstract class ActionScheduler_Abstract_QueueRunner {
 	}
 
 	/**
+	 * Get the number of concurrent batches a runner allows.
+	 *
+	 * @return int
+	 */
+	public function get_allowed_concurrent_batches() {
+		return apply_filters( 'action_scheduler_queue_runner_concurrent_batches', 5 );
+	}
+
+	/**
 	 * Process actions in the queue.
 	 *
 	 * @author Jeremy Pry

@@ -39,7 +39,7 @@ class ActionScheduler_wpPostStore_Test extends ActionScheduler_UnitTestCase {
 		$store->cancel_action( $action_id );
 
 		$fetched = $store->fetch_action( $action_id );
-		$this->assertInstanceOf( 'ActionScheduler_NullAction', $fetched );
+		$this->assertInstanceOf( 'ActionScheduler_CanceledAction', $fetched );
 	}
 
 	public function test_claim_actions() {

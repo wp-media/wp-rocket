@@ -49,7 +49,10 @@ class ActionScheduler_wpCommentLogger extends ActionScheduler_Logger {
 		if ( empty($comment) || $comment->comment_type != self::TYPE ) {
 			return new ActionScheduler_NullLogEntry();
 		}
-		return new ActionScheduler_LogEntry( $comment->comment_post_ID, $comment->comment_content, $comment->comment_type );
+
+		$date = as_get_datetime_object( $comment->comment_date_gmt );
+		$date->setTimezone( ActionScheduler_TimezoneHelper::get_local_timezone() );
+		return new ActionScheduler_LogEntry( $comment->comment_post_ID, $comment->comment_content, $date );
 	}
 
 	/**

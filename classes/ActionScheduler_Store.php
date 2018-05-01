@@ -45,6 +45,13 @@ abstract class ActionScheduler_Store {
 	abstract public function query_actions( $query = array() );
 
 	/**
+	 * Get a count of all actions in the store, grouped by status
+	 *
+	 * @return array
+	 */
+	abstract public function action_counts();
+
+	/**
 	 * @param string $action_id
 	 *
 	 * @return void
@@ -121,10 +128,40 @@ abstract class ActionScheduler_Store {
 	abstract public function get_status( $action_id );
 
 	/**
+	 * @param string $action_id
+	 * @return mixed
+	 */
+	abstract public function get_claim_id( $action_id );
+
+	/**
 	 * @param string $claim_id
 	 * @return array
 	 */
 	abstract public function find_actions_by_claim_id( $claim_id );
+
+	/**
+	 * @param string $comparison_operator
+	 * @return string
+	 */
+	protected function validate_sql_comparator( $comparison_operator ) {
+		if ( in_array( $comparison_operator, array('!=', '>', '>=', '<', '<=', '=') ) ) {
+			return $comparison_operator;
+		}
+		return '=';
+	}
+
+	/**
+	 * @return array
+	 */
+	public function get_status_labels() {
+		return array(
+			self::STATUS_COMPLETE => __( 'Complete', 'action-scheduler' ),
+			self::STATUS_PENDING  => __( 'Pending', 'action-scheduler' ),
+			self::STATUS_RUNNING  => __( 'In-progress', 'action-scheduler' ),
+			self::STATUS_FAILED   => __( 'Failed', 'action-scheduler' ),
+			self::STATUS_CANCELED => __( 'Canceled', 'action-scheduler' ),
+		);
+	}
 
 	public function init() {}
 

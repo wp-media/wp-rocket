@@ -41,6 +41,7 @@ if ( ! function_exists( 'action_scheduler_register_1_dot_6_dot_0_dev' ) ) {
 	}
 
 	function action_scheduler_initialize_1_dot_6_dot_0_dev() {
+		require_once( dirname( __FILE__ ) . '/vendor/pp-list-table/autoload.php' );
 		require_once( 'classes/ActionScheduler.php' );
 		ActionScheduler::init( __FILE__ );
 	}

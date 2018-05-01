@@ -93,7 +93,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 
 	public function fetch_action( $action_id ) {
 		$post = $this->get_post( $action_id );
-		if ( empty($post) || $post->post_type != self::POST_TYPE || $post->post_status == 'trash' ) {
+		if ( empty($post) || $post->post_type != self::POST_TYPE ) {
 			return $this->get_null_action();
 		}
 		return $this->make_action_from_post($post);
@@ -119,12 +119,59 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		}
 		$group = wp_get_object_terms( $post->ID, self::GROUP_TAXONOMY, array('fields' => 'names') );
 		$group = empty( $group ) ? '' : reset($group);
-		if ( $post->post_status == 'pending' ) {
-			$action = new ActionScheduler_Action( $hook, $args, $schedule, $group );
-		} else {
-			$action = new ActionScheduler_FinishedAction( $hook, $args, $schedule, $group );
+
+		return ActionScheduler::factory()->get_stored_action( $this->get_action_status_by_post_status( $post->post_status ), $hook, $args, $schedule, $group );
+	}
+
+	/**
+	 * @param string $post_status
+	 *
+	 * @throws InvalidArgumentException if $post_status not in known status fields returned by $this->get_status_labels()
+	 * @return string
+	 */
+	protected function get_action_status_by_post_status( $post_status ) {
+
+		switch ( $post_status ) {
+			case 'publish' :
+				$action_status = self::STATUS_COMPLETE;
+				break;
+			case 'trash' :
+				$action_status = self::STATUS_CANCELED;
+				break;
+			default :
+				if ( ! array_key_exists( $post_status, $this->get_status_labels() ) ) {
+					throw new InvalidArgumentException( sprintf( 'Invalid post status: "%s". No matching action status available.', $post_status ) );
+				}
+				$action_status = $post_status;
+				break;
 		}
-		return $action;
+
+		return $action_status;
+	}
+
+	/**
+	 * @param string $action_status
+	 * @throws InvalidArgumentException if $post_status not in known status fields returned by $this->get_status_labels()
+	 * @return string
+	 */
+	protected function get_post_status_by_action_status( $action_status ) {
+
+		switch ( $action_status ) {
+			case self::STATUS_COMPLETE :
+				$post_status = 'publish';
+				break;
+			case self::STATUS_CANCELED :
+				$post_status = 'trash';
+				break;
+			default :
+				if ( ! array_key_exists( $action_status, $this->get_status_labels() ) ) {
+					throw new InvalidArgumentException( sprintf( 'Invalid action status: "%s".', $action_status ) );
+				}
+				$post_status = $action_status;
+				break;
+		}
+
+		return $post_status;
 	}
 
 	/**
@@ -157,23 +204,21 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 			$query .= " AND p.post_content=%s";
 			$args[] = json_encode($params['args']);
 		}
+
+		if ( ! empty( $params['status'] ) ) {
+			$query .= " AND p.post_status=%s";
+			$args[] = $this->get_post_status_by_action_status( $params['status'] );
+		}
+
 		switch ( $params['status'] ) {
 			case self::STATUS_COMPLETE:
-				$query .= " AND p.post_status='publish'";
+			case self::STATUS_RUNNING:
+			case self::STATUS_FAILED:
 				$order = 'DESC'; // Find the most recent action that matches
 				break;
 			case self::STATUS_PENDING:
-				$query .= " AND p.post_status='pending'";
-				$order = 'ASC'; // Find the next action that matches
-				break;
-			case self::STATUS_RUNNING:
-			case self::STATUS_FAILED:
-				$query .= " AND p.post_status=%s";
-				$args[] = $params['status'];
-				$order = 'DESC'; // Find the most recent action that matches
-				break;
 			default:
-				$order = 'ASC';
+				$order = 'ASC'; // Find the next action that matches
 				break;
 		}
 		$query .= " ORDER BY post_date_gmt $order LIMIT 1";
@@ -185,10 +230,19 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	}
 
 	/**
-	 * @param array $query
-	 * @return array The IDs of actions matching the query
+	 * Returns the SQL statement to query (or count) actions.
+	 *
+	 * @param array $query Filtering options
+	 * @param string $select_or_count  Whether the SQL should select and return the IDs or just the row count
+	 * @throws InvalidArgumentException if $select_or_count not count or select
+	 * @return string SQL statement. The returned SQL is already properly escaped.
 	 */
-	public function query_actions( $query = array() ) {
+	protected function get_query_actions_sql( array $query, $select_or_count = 'select' ) {
+
+		if ( ! in_array( $select_or_count, array( 'select', 'count' ) ) ) {
+			throw new InvalidArgumentException(__('Invalid schedule. Cannot save action.', 'action-scheduler'));
+		}
+
 		$query = wp_parse_args( $query, array(
 			'hook' => '',
 			'args' => NULL,
@@ -203,11 +257,13 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 			'offset' => 0,
 			'orderby' => 'date',
 			'order' => 'ASC',
+			'search' => '',
 		) );
 
 		/** @var wpdb $wpdb */
 		global $wpdb;
-		$sql = "SELECT p.ID FROM {$wpdb->posts} p";
+		$sql  = ( 'count' === $select_or_count ) ? 'SELECT count(p.ID)' : 'SELECT p.ID ';
+		$sql .= "FROM {$wpdb->posts} p";
 		$sql_params = array();
 		if ( !empty($query['group']) ) {
 			$sql .= " INNER JOIN {$wpdb->term_relationships} tr ON tr.object_id=p.ID";
@@ -226,16 +282,9 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 			$sql_params[] = json_encode($query['args']);
 		}
 
-		switch ( $query['status'] ) {
-			case self::STATUS_COMPLETE:
-				$sql .= " AND p.post_status='publish'";
-				break;
-			case self::STATUS_PENDING:
-			case self::STATUS_RUNNING:
-			case self::STATUS_FAILED:
-				$sql .= " AND p.post_status=%s";
-				$sql_params[] = $query['status'];
-				break;
+		if ( ! empty( $query['status'] ) ) {
+			$sql .= " AND p.post_status=%s";
+			$sql_params[] = $this->get_post_status_by_action_status( $query['status'] );
 		}
 
 		if ( $query['date'] instanceof DateTime ) {
@@ -265,44 +314,91 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 			$sql_params[] = $query['claimed'];
 		}
 
-		switch ( $query['orderby'] ) {
-			case 'hook':
-				$orderby = 'p.title';
-				break;
-			case 'group':
-				$orderby = 't.name';
-				break;
-			case 'modified':
-				$orderby = 'p.post_modified';
-				break;
-			case 'date':
-			default:
-				$orderby = 'p.post_date_gmt';
-				break;
-		}
-		if ( strtoupper($query['order']) == 'ASC' ) {
-			$order = 'ASC';
-		} else {
-			$order = 'DESC';
-		}
-		$sql .= " ORDER BY $orderby $order";
-		if ( $query['per_page'] > 0 ) {
-			$sql .= " LIMIT %d, %d";
-			$sql_params[] = $query['offset'];
-			$sql_params[] = $query['per_page'];
+		if ( ! empty( $query['search'] ) ) {
+			$sql .= " AND (p.post_title LIKE %s OR p.post_content LIKE %s OR p.post_password LIKE %s)";
+			for( $i = 0; $i < 3; $i++ ) {
+				$sql_params[] = sprintf( '%%%s%%', $query['search'] );
+			}
 		}
 
-		$sql = $wpdb->prepare( $sql, $sql_params );
+		if ( 'select' === $select_or_count ) {
+			switch ( $query['orderby'] ) {
+				case 'hook':
+					$orderby = 'p.post_title';
+					break;
+				case 'group':
+					$orderby = 't.name';
+					break;
+				case 'status':
+					$orderby = 'p.post_status';
+					break;
+				case 'modified':
+					$orderby = 'p.post_modified';
+					break;
+				case 'claim_id':
+					$orderby = 'p.post_password';
+					break;
+				case 'schedule':
+				case 'date':
+				default:
+					$orderby = 'p.post_date_gmt';
+					break;
+			}
+			if ( 'ASC' === strtoupper( $query['order'] ) ) {
+				$order = 'ASC';
+			} else {
+				$order = 'DESC';
+			}
+			$sql .= " ORDER BY $orderby $order";
+			if ( $query['per_page'] > 0 ) {
+				$sql .= " LIMIT %d, %d";
+				$sql_params[] = $query['offset'];
+				$sql_params[] = $query['per_page'];
+			}
+		}
 
-		$id = $wpdb->get_col($sql);
-		return $id;
+		return $wpdb->prepare( $sql, $sql_params );
 	}
 
-	private function validate_sql_comparator( $comp ) {
-		if ( in_array($comp, array('!=', '>', '>=', '<', '<=', '=')) ) {
-			return $comp;
+	/**
+	 * @param array $query
+	 * @param string $query_type Whether to select or count the results. Default, select.
+	 * @return string|array The IDs of actions matching the query
+	 */
+	public function query_actions( $query = array(), $query_type = 'select' ) {
+		/** @var wpdb $wpdb */
+		global $wpdb;
+
+		$sql = $this->get_query_actions_sql( $query, $query_type );
+
+		return ( 'count' === $query_type ) ? $wpdb->get_var( $sql ) : $wpdb->get_col( $sql );
+	}
+
+	/**
+	 * Get a count of all actions in the store, grouped by status
+	 *
+	 * @return array
+	 */
+	public function action_counts() {
+
+		$action_counts_by_status = array();
+		$action_stati_and_labels = $this->get_status_labels();
+		$posts_count_by_status   = (array) wp_count_posts( self::POST_TYPE, 'readable' );
+
+		foreach ( $posts_count_by_status as $post_status_name => $count ) {
+
+			try {
+				$action_status_name = $this->get_action_status_by_post_status( $post_status_name );
+			} catch ( Exception $e ) {
+				// Ignore any post statuses that aren't for actions
+				continue;
+			}
+			if ( array_key_exists( $action_status_name, $action_stati_and_labels ) ) {
+				$action_counts_by_status[ $action_status_name ] = $count;
+			}
 		}
-		return '=';
+
+		return $action_counts_by_status;
 	}
 
 	/**
@@ -466,30 +562,36 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		}
 	}
 
+	/**
+	 * Return an action's claim ID, as stored in the post password column
+	 *
+	 * @param string $action_id
+	 * @return mixed
+	 */
+	public function get_claim_id( $action_id ) {
+		return $this->get_post_column( $action_id, 'post_password' );
+	}
+
+	/**
+	 * Return an action's status, as stored in the post status column
+	 *
+	 * @param string $action_id
+	 * @return mixed
+	 */
 	public function get_status( $action_id ) {
-		/** @var \wpdb $wpdb */
-		global $wpdb;
-		$sql = $wpdb->prepare( "SELECT post_status FROM {$wpdb->posts} WHERE ID=%d AND post_type=%s", $action_id, self::POST_TYPE );
-		$status = $wpdb->get_var( $sql );
-		switch( $status ) {
-			case 'publish':
-				return self::STATUS_COMPLETE;
-			case 'pending':
-				return self::STATUS_PENDING;
-			case 'trash':
-				return self::STATUS_CANCELED;
-			case self::STATUS_FAILED:
-				return self::STATUS_FAILED;
-			case self::STATUS_RUNNING:
-				return self::STATUS_RUNNING;
-			default:
-				if ( $status === null ) {
-					throw new \InvalidArgumentException( __( 'Invalid action ID. No status found.', 'action-scheduler' ) );
-				} else {
-					throw new \RuntimeException( __( 'Unknown status found for action.', 'action-scheduler' ) );
-				}
+		$status = $this->get_post_column( $action_id, 'post_status' );
+
+		if ( $status === null ) {
+			throw new \InvalidArgumentException( __( 'Invalid action ID. No status found.', 'action-scheduler' ) );
 		}
 
+		return $this->get_action_status_by_post_status( $status );
+	}
+
+	private function get_post_column( $action_id, $column_name ) {
+		/** @var \wpdb $wpdb */
+		global $wpdb;
+		return $wpdb->get_var( $wpdb->prepare( "SELECT {$column_name} FROM {$wpdb->posts} WHERE ID=%d AND post_type=%s", $action_id, self::POST_TYPE ) );
 	}
 
 	/**

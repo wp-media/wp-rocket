@@ -46,7 +46,19 @@ class ActionScheduler_wpCommentLogger_Test extends ActionScheduler_UnitTestCase 
 		$logger = ActionScheduler::logger();
 		$logs = $logger->get_logs( $action_id );
 		$expected = new ActionScheduler_LogEntry( $action_id, 'action created' );
-		$this->assertTrue( in_array( $expected, $logs ) );
+		$this->assertTrue( in_array( $this->log_entry_to_array( $expected ) , $this->log_entry_to_array( $logs ) ) );
+	}
+
+	protected function log_entry_to_array( $logs ) {
+		if ( $logs instanceof ActionScheduler_LogEntry ) {
+			return array( 'action_id' => $logs->get_action_id(), 'message' => $logs->get_message() );
+		}
+
+		foreach ( $logs as $id => $log) {
+			$logs[ $id ] = array( 'action_id' => $log->get_action_id(), 'message' => $log->get_message() );
+		}
+
+		return $logs;
 	}
 
 	public function test_execution_comments() {
@@ -59,8 +71,8 @@ class ActionScheduler_wpCommentLogger_Test extends ActionScheduler_UnitTestCase 
 		$runner->run();
 
 		$logs = $logger->get_logs( $action_id );
-		$this->assertTrue( in_array( $started, $logs ) );
-		$this->assertTrue( in_array( $finished, $logs ) );
+		$this->assertTrue( in_array( $this->log_entry_to_array( $started ), $this->log_entry_to_array( $logs ) ) );
+		$this->assertTrue( in_array( $this->log_entry_to_array( $finished ), $this->log_entry_to_array( $logs ) ) );
 	}
 
 	public function test_failed_execution_comments() {
@@ -76,9 +88,9 @@ class ActionScheduler_wpCommentLogger_Test extends ActionScheduler_UnitTestCase 
 		$runner->run();
 
 		$logs = $logger->get_logs( $action_id );
-		$this->assertTrue( in_array( $started, $logs ) );
-		$this->assertFalse( in_array( $finished, $logs ) );
-		$this->assertTrue( in_array( $failed, $logs ) );
+		$this->assertTrue( in_array( $this->log_entry_to_array( $started ), $this->log_entry_to_array( $logs ) ) );
+		$this->assertFalse( in_array( $this->log_entry_to_array( $finished ), $this->log_entry_to_array( $logs ) ) );
+		$this->assertTrue( in_array( $this->log_entry_to_array( $failed ), $this->log_entry_to_array( $logs ) ) );
 	}
 
 	public function test_fatal_error_comments() {
@@ -108,7 +120,7 @@ class ActionScheduler_wpCommentLogger_Test extends ActionScheduler_UnitTestCase 
 		$logger = ActionScheduler::logger();
 		$logs = $logger->get_logs( $action_id );
 		$expected = new ActionScheduler_LogEntry( $action_id, 'action canceled' );
-		$this->assertTrue( in_array( $expected, $logs ) );
+		$this->assertTrue( in_array( $this->log_entry_to_array( $expected ), $this->log_entry_to_array( $logs ) ) );
 	}
 
 	public function _a_hook_callback_that_throws_an_exception() {
