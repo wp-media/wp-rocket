@@ -112,4 +112,25 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 
 		return absint( apply_filters( 'action_scheduler_maximum_execution_time', $maximum_execution_time ) );
 	}
+
+	/**
+	 * Get the number of seconds a batch has run for.
+	 *
+	 * @param int $start_time The timestamp the batch started.
+	 * @return int The number of seconds.
+	 */
+	protected function get_execution_time( $start_time ) {
+		$execution_time = microtime( true ) - $start_time;
+
+		// Get the CPU time if the hosting environment uses it rather than wall-clock time to calculate a process's execution time.
+		if ( function_exists( 'getrusage' ) && apply_filters( 'action_scheduler_use_cpu_execution_time', defined( 'PANTHEON_ENVIRONMENT' ) ) ) {
+			$resource_usages = getrusage();
+
+			if ( isset( $resource_usages['ru_stime.tv_usec'], $resource_usages['ru_stime.tv_usec'] ) ) {
+				$execution_time = $resource_usages['ru_stime.tv_sec'] + ( $resource_usages['ru_stime.tv_usec'] / 1000000 );
+			}
+		}
+
+		return $execution_time;
+	}
 }
