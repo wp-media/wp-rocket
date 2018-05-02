@@ -95,4 +95,21 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 
 		return $schedules;
 	}
+
+	/**
+	 * Get the maximum number of seconds a batch can run for.
+	 *
+	 * @return int The number of seconds.
+	 */
+	protected function get_maximum_execution_time() {
+
+		// There are known hosts with a strict 60 second execution time.
+		if ( defined( 'WPENGINE_ACCOUNT' ) || defined( 'PANTHEON_ENVIRONMENT' ) ) {
+			$maximum_execution_time = 60;
+		} else {
+			$maximum_execution_time = ini_get( 'max_execution_time' );
+		}
+
+		return absint( apply_filters( 'action_scheduler_maximum_execution_time', $maximum_execution_time ) );
+	}
 }
