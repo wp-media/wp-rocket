@@ -56,8 +56,21 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	protected function do_batch( $size = 100 ) {
 		$claim = $this->store->stake_claim($size);
 		$this->monitor->attach($claim);
-		$processed_actions = 0;
+		$processed_actions      = 0;
+		$maximum_execution_time = $this->get_maximum_execution_time();
+		$start_time             = microtime( true );
+
 		foreach ( $claim->get_actions() as $action_id ) {
+			if ( 0 !== $processed_actions ) {
+				$time_elapsed            = $this->get_execution_time( $start_time );
+				$average_processing_time = $time_elapsed / $processed_actions;
+
+				// Bail early if the time it has taken to process this batch is approaching the maximum execution time.
+				if ( $time_elapsed + ( $average_processing_time * 2 ) > $maximum_execution_time ) {
+					break;
+				}
+			}
+
 			// bail if we lost the claim
 			if ( ! in_array( $action_id, $this->store->find_actions_by_claim_id( $claim->get_id() ) ) ) {
 				break;
