@@ -12,6 +12,13 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	private static $runner = null;
 
 	/**
+	 * The PHP request start time.
+	 *
+	 * @var int
+	 */
+	private $request_start_time;
+
+	/**
 	 * @return ActionScheduler_QueueRunner
 	 * @codeCoverageIgnore
 	 */
@@ -36,6 +43,8 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 		}
 
 		add_action( self::WP_CRON_HOOK, array( self::instance(), 'run' ) );
+
+		add_action( 'init', array( $this, 'set_request_start_time' ), 2 ); // needs to run on priority < 10 to run before wp_cron()
 	}
 
 	public function run() {
@@ -58,11 +67,10 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 		$this->monitor->attach($claim);
 		$processed_actions      = 0;
 		$maximum_execution_time = $this->get_maximum_execution_time();
-		$start_time             = microtime( true );
 
 		foreach ( $claim->get_actions() as $action_id ) {
 			if ( 0 !== $processed_actions ) {
-				$time_elapsed            = $this->get_execution_time( $start_time );
+				$time_elapsed            = $this->get_execution_time();
 				$average_processing_time = $time_elapsed / $processed_actions;
 
 				// Bail early if the time it has taken to process this batch is approaching the maximum execution time.
@@ -129,11 +137,10 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	/**
 	 * Get the number of seconds a batch has run for.
 	 *
-	 * @param int $start_time The timestamp the batch started.
 	 * @return int The number of seconds.
 	 */
-	protected function get_execution_time( $start_time ) {
-		$execution_time = microtime( true ) - $start_time;
+	protected function get_execution_time() {
+		$execution_time = microtime( true ) - $this->request_start_time;
 
 		// Get the CPU time if the hosting environment uses it rather than wall-clock time to calculate a process's execution time.
 		if ( function_exists( 'getrusage' ) && apply_filters( 'action_scheduler_use_cpu_execution_time', defined( 'PANTHEON_ENVIRONMENT' ) ) ) {
@@ -145,5 +152,14 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 		}
 
 		return $execution_time;
+	}
+
+	/**
+	 * Set the PHP Request start time to track the execution time.
+	 */
+	public function set_request_start_time() {
+		if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
+			$this->request_start_time = microtime( true );
+		}
 	}
 }
