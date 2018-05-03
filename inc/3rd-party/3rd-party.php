@@ -20,7 +20,6 @@ require WP_ROCKET_3RD_PARTY_PATH . 'plugins/slider/meta-slider.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/slider/soliloquy.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/i18n/wpml.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/i18n/polylang.php';
-require WP_ROCKET_3RD_PARTY_PATH . 'plugins/ecommerce/woocommerce.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/ecommerce/aelia-currencyswitcher.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/ecommerce/aelia-prices-by-country.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/ecommerce/aelia-tax-display-by-country.php';
