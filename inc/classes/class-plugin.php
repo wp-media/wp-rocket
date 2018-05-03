@@ -8,6 +8,7 @@ use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Admin\Deactivation\Deactivation_Intent;
 use WP_Rocket\Admin\Deactivation\Render as Deactivation_Intent_Render;
+use WP_Rocket\Third_Party\Plugins;
 
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
@@ -76,5 +77,8 @@ class Plugin {
 
 			Deactivation_Intent::load( new Deactivation_Intent_Render( $this->template_path . '/deactivation-intent' ), $this->options_api, $this->options );
 		}
+
+		$woocommerce = Plugins\Ecommerce\WC_Factory::create();
+		$woocommerce->init();
 	}
 }
