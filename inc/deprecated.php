@@ -2186,3 +2186,155 @@ if ( ! function_exists( 'rocket_get_home_path' ) ) {
 		return str_replace( '\\', '/', $home_path );
 	}
 }
+
+if ( ! function_exists( 'rocket_clean_cache_after_woocommerce_save_product_variation' ) ) {
+	/**
+	 * Clean product cache on variation update
+	 *
+	 * @since 2.9
+	 * @deprecated 3.1
+	 * @see WP_Rocket\Third_Party\Plugins\Ecommerce\WooCommerce::clean_cache_after_woocommerce_save_product_variation()
+	 * @author Remy Perona
+	 *
+	 * @param int $variation_id ID of the variation.
+	 */
+	function rocket_clean_cache_after_woocommerce_save_product_variation( $variation_id ) {
+		_deprecated_function( __FUNCTION__, '3.1', 'WP_Rocket\Third_Party\Plugins\Ecommerce\WooCommerce::clean_cache_after_woocommerce_save_product_variation()' );
+		$product_id = wp_get_post_parent_id( $variation_id );
+		if ( $product_id ) {
+			rocket_clean_post( $product_id );
+		}
+	}
+}
+
+if ( ! function_exists( 'rocket_cache_v_query_string' ) ) {
+	/**
+	 * Automatically cache v query string when WC geolocation with cache compatibility option is active
+	 *
+	 * @since 2.8.6
+	 * @deprecated 3.1
+	 * @see WP_Rocket\Third_Party\Plugins\Ecommerce\WooCommerce::cache_geolocation_query_string()
+	 * @author Rémy Perona
+	 *
+	 * @param array $query_strings list of query strings to cache.
+	 * @return array Updated list of query strings to cache
+	 */
+	function rocket_cache_v_query_string( $query_strings ) {
+		_deprecated_function( __FUNCTION__, '3.1', 'WP_Rocket\Third_Party\Plugins\Ecommerce\WooCommerce::cache_geolocation_query_string()' );
+		if ( 'geolocation_ajax' === get_option( 'woocommerce_default_customer_address' ) ) {
+			$query_strings[] = 'v';
+		}
+
+		return $query_strings;
+	}
+}
+
+if ( ! function_exists( 'rocket_exclude_woocommerce_pages' ) ) {
+	/**
+	 * Exclude WooCommerce cart, checkout and account pages from caching
+	 *
+	 * @since 2.11 Moved to 3rd party
+	 * @since 2.4
+	 * @deprecated 3.1
+	 * @see WP_Rocket\Third_Party\Plugins\Ecommerce\WooCommerce::exclude_pages()
+	 *
+	 * @param array $urls An array of excluded pages.
+	 * @return array Updated array of excluded pages
+	 */
+	function rocket_exclude_woocommerce_pages( $urls ) {
+		_deprecated_function( __FUNCTION__, '3.1', 'WP_Rocket\Third_Party\Plugins\Ecommerce\WooCommerce::exclude_pages()' );
+		if ( function_exists( 'WC' ) && function_exists( 'wc_get_page_id' ) ) {
+			if ( wc_get_page_id( 'checkout' ) && wc_get_page_id( 'checkout' ) !== -1 && wc_get_page_id( 'checkout' ) !== (int) get_option( 'page_on_front' ) ) {
+				$checkout_urls = get_rocket_i18n_translated_post_urls( wc_get_page_id( 'checkout' ), 'page', '(.*)' );
+				$urls = array_merge( $urls, $checkout_urls );
+			}
+
+			if ( wc_get_page_id( 'cart' ) && wc_get_page_id( 'cart' ) !== -1 && wc_get_page_id( 'cart' ) !== (int) get_option( 'page_on_front' ) ) {
+				$cart_urls = get_rocket_i18n_translated_post_urls( wc_get_page_id( 'cart' ) );
+				$urls = array_merge( $urls, $cart_urls );
+			}
+
+			if ( wc_get_page_id( 'myaccount' ) && wc_get_page_id( 'myaccount' ) !== -1 && wc_get_page_id( 'myaccount' ) !== (int) get_option( 'page_on_front' ) ) {
+				$cart_urls = get_rocket_i18n_translated_post_urls( wc_get_page_id( 'myaccount' ), 'page', '(.*)' );
+				$urls = array_merge( $urls, $cart_urls );
+			}
+		}
+
+		return $urls;
+	}
+}
+
+if ( ! function_exists( 'rocket_activate_woocommerce' ) ) {
+	/**
+	 * Add query string to exclusion when activating the plugin
+	 *
+	 * @since 2.8.6
+	 * @deprecated 3.1
+	 * @see WP_Rocket\Third_Party\Plugins\Ecommerce\WooCommerce::activate_woocommerce()
+	 * @author Rémy Perona
+	 */
+	function rocket_activate_woocommerce() {
+		_deprecated_function( __FUNCTION__, '3.1', 'WP_Rocket\Third_Party\Plugins\Ecommerce\WooCommerce::activate_woocommerce()' );
+		add_filter( 'rocket_cache_reject_uri', 'rocket_exclude_woocommerce_pages' );
+		add_filter( 'rocket_cache_query_strings', 'rocket_cache_v_query_string' );
+
+		// Update .htaccess file rules.
+		flush_rocket_htaccess();
+
+		// Regenerate the config file.
+		rocket_generate_config_file();
+	}
+}
+
+if ( ! function_exists( 'rocket_deactivate_woocommerce' ) ) {
+	/**
+	 * Remove query string from exclusion when deactivating the plugin
+	 *
+	 * @since 2.8.6
+	 * @deprecated 3.1
+	 * @see WP_Rocket\Third_Party\Plugins\Ecommerce\WooCommerce::deactivate_woocommerce()
+	 * @author Rémy Perona
+	 */
+	function rocket_deactivate_woocommerce() {
+		_deprecated_function( __FUNCTION__, '3.1', 'WP_Rocket\Third_Party\Plugins\Ecommerce\WooCommerce::deactivate_woocommerce()' );
+		remove_filter( 'rocket_cache_reject_uri', 'rocket_exclude_woocommerce_pages' );
+		remove_filter( 'rocket_cache_query_strings', 'rocket_cache_v_query_string' );
+
+		// Update .htaccess file rules.
+		flush_rocket_htaccess();
+
+		// Regenerate the config file.
+		rocket_generate_config_file();
+	}
+}
+
+if ( ! function_exists( 'rocket_exclude_wc_rest_api' ) ) {
+	/**
+	 * Exclude WooCommerce REST API URL from cache
+	 *
+	 * @since 2.6.5
+	 * @deprecated 3.1
+	 * @see WP_Rocket\Third_Party\Plugins\Ecommerce\WooCommerce::exclude_wc_rest_api()
+	 *
+	 * @param array $uri URLs to exclude from cache.
+	 * @return array Updated list of URLs to exclude from cache
+	 */
+	function rocket_exclude_wc_rest_api( $uri ) {
+		_deprecated_function( __FUNCTION__, '3.1', 'WP_Rocket\Third_Party\Plugins\Ecommerce\WooCommerce::exclude_wc_rest_api()' );
+		/**
+		  * By default, don't cache the WooCommerce REST API.
+		  *
+		  * @since 2.6.5
+		  *
+		  * @param bool false will force to cache the WooCommerce REST API
+		 */
+		$rocket_cache_reject_wc_rest_api = apply_filters( 'rocket_cache_reject_wc_rest_api', true );
+
+		// Exclude WooCommerce REST API.
+		if ( $rocket_cache_reject_wc_rest_api ) {
+			$uri[] = rocket_clean_exclude_file( home_url( '/wc-api/v(.*)' ) );
+		}
+
+		return $uri;
+	}
+}
