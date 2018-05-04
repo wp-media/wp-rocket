@@ -183,7 +183,7 @@ class WooCommerce_Compatibility {
 	private function exclude_page( $page_id, $post_type = 'page', $pattern = '' ) {
 		$urls = array();
 
-		if ( ! $page_id || -1 === $page_id || (int) get_option( 'page_on_front' ) === $page_id ) {
+		if ( $page_id <= 0 || (int) get_option( 'page_on_front' ) === $page_id ) {
 			return $urls;
 		}
 
@@ -338,11 +338,11 @@ class WooCommerce_Compatibility {
 			return false;
 		}
 
-		if ( isset( $_COOKIE['woocommerce_cart_hash'] ) && ! empty( $_COOKIE['woocommerce_cart_hash'] ) ) {
+		if ( ! empty( $_COOKIE['woocommerce_cart_hash'] ) ) {
 			return false;
 		}
 
-		if ( isset( $_COOKIE['woocommerce_items_in_cart'] ) && ! empty( $_COOKIE['woocommerce_items_in_cart'] ) ) {
+		if ( ! empty( $_COOKIE['woocommerce_items_in_cart'] ) ) {
 			return false;
 		}
 
