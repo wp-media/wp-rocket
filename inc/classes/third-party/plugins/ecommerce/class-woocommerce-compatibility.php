@@ -22,18 +22,18 @@ class WooCommerce_Compatibility {
 	 * @return void
 	 */
 	public function init() {
-		add_action( 'activate_woocommerce/woocommerce.php', array( $this, 'activate_woocommerce' ), 11 );
-		add_action( 'deactivate_woocommerce/woocommerce.php', array( $this, 'deactivate_woocommerce' ), 11 );
+		add_action( 'activate_woocommerce/woocommerce.php', [ $this, 'activate_woocommerce' ], 11 );
+		add_action( 'deactivate_woocommerce/woocommerce.php', [ $this, 'deactivate_woocommerce' ], 11 );
 
 		if ( class_exists( 'WooCommerce' ) ) {
 			add_action( 'update_option_woocommerce_cart_page_id', 'rocket_after_update_single_options', 10, 2 );
 			add_action( 'update_option_woocommerce_checkout_page_id', 'rocket_after_update_single_options', 10, 2 );
 			add_action( 'update_option_woocommerce_myaccount_page_id', 'rocket_after_update_single_options', 10, 2 );
 			add_action( 'update_option_woocommerce_default_customer_address', 'rocket_after_update_single_options', 10, 2 );
-			add_action( 'woocommerce_save_product_variation', array( $this, 'clean_cache_after_woocommerce_save_product_variation' ) );
-			add_action( 'transition_post_status', array( $this, 'maybe_exclude_page' ), 10, 3 );
-			add_filter( 'rocket_cache_reject_uri', array( $this, 'exclude_pages' ) );
-			add_filter( 'rocket_cache_query_strings', array( $this, 'cache_geolocation_query_string' ) );
+			add_action( 'woocommerce_save_product_variation', [ $this, 'clean_cache_after_woocommerce_save_product_variation' ] );
+			add_action( 'transition_post_status', [ $this, 'maybe_exclude_page' ], 10, 3 );
+			add_filter( 'rocket_cache_reject_uri', [ $this, 'exclude_pages' ] );
+			add_filter( 'rocket_cache_query_strings', [ $this, 'cache_geolocation_query_string' ] );
 			// Prevent conflict with WooCommerce when clean_post_cache is called.
 			add_filter( 'delete_transient_wc_products_onsale', 'wp_suspend_cache_invalidation' );
 
@@ -46,14 +46,14 @@ class WooCommerce_Compatibility {
 			 * @param bool true to activate, false to deactivate.
 			 */
 			if ( apply_filters( 'rocket_cache_wc_empty_cart', true ) ) {
-				add_action( 'plugins_loaded', array( $this, 'serve_cache_empty_cart' ), 11 );
-				add_action( 'template_redirect', array( $this, 'cache_empty_cart' ), -1 );
-				add_action( 'switch_theme', array( $this, 'delete_cache_empty_cart' ) );
+				add_action( 'plugins_loaded', [ $this, 'serve_cache_empty_cart' ], 11 );
+				add_action( 'template_redirect', [ $this, 'cache_empty_cart' ], -1 );
+				add_action( 'switch_theme', [ $this, 'delete_cache_empty_cart' ] );
 			}
 		}
 
 		if ( class_exists( 'WC_API' ) ) {
-			add_filter( 'rocket_cache_reject_uri', array( $this, 'exclude_wc_rest_api' ) );
+			add_filter( 'rocket_cache_reject_uri', [ $this, 'exclude_wc_rest_api' ] );
 		}
 	}
 
@@ -64,9 +64,9 @@ class WooCommerce_Compatibility {
 	 * @author Rémy Perona
 	 */
 	public function activate_woocommerce() {
-		add_filter( 'rocket_cache_reject_uri', array( $this, 'exclude_pages' ) );
-		add_filter( 'rocket_cache_reject_uri', array( $this, 'exclude_wc_rest_api' ) );
-		add_filter( 'rocket_cache_query_strings', array( $this, 'cache_geolocation_query_string' ) );
+		add_filter( 'rocket_cache_reject_uri', [ $this, 'exclude_pages' ] );
+		add_filter( 'rocket_cache_reject_uri', [ $this, 'exclude_wc_rest_api' ] );
+		add_filter( 'rocket_cache_query_strings', [ $this, 'cache_geolocation_query_string' ] );
 
 		// Update .htaccess file rules.
 		flush_rocket_htaccess();
@@ -83,9 +83,9 @@ class WooCommerce_Compatibility {
 	 * @author Rémy Perona
 	 */
 	public function deactivate_woocommerce() {
-		remove_filter( 'rocket_cache_reject_uri', array( $this, 'exclude_pages' ) );
-		remove_filter( 'rocket_cache_reject_uri', array( $this, 'exclude_wc_rest_api' ) );
-		remove_filter( 'rocket_cache_query_strings', array( $this, 'cache_geolocation_query_string' ) );
+		remove_filter( 'rocket_cache_reject_uri', [ $this, 'exclude_pages' ] );
+		remove_filter( 'rocket_cache_reject_uri', [ $this, 'exclude_wc_rest_api' ] );
+		remove_filter( 'rocket_cache_query_strings', [ $this, 'cache_geolocation_query_string' ] );
 
 		// Update .htaccess file rules.
 		flush_rocket_htaccess();
@@ -181,7 +181,7 @@ class WooCommerce_Compatibility {
 	 * @return array
 	 */
 	private function exclude_page( $page_id, $post_type = 'page', $pattern = '' ) {
-		$urls = array();
+		$urls = [];
 
 		if ( $page_id <= 0 || (int) get_option( 'page_on_front' ) === $page_id ) {
 			return $urls;
@@ -291,7 +291,7 @@ class WooCommerce_Compatibility {
 			return;
 		}
 
-		ob_start( array( $this, 'save_cache_empty_cart' ) );
+		ob_start( [ $this, 'save_cache_empty_cart' ] );
 	}
 
 	/**
