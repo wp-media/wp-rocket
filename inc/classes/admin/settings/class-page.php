@@ -1679,6 +1679,27 @@ class Page {
 
 		$this->settings->add_settings_fields(
 			[
+				'google_analytics_cache' => [
+					'type'              => 'one_click_addon',
+					'label'             => __( 'Google Analytics Cache', 'rocket' ),
+					'logo'              => [
+						'url'    => '',
+						'width'  => '',
+						'height' => '',
+					],
+					'title'             => __( 'Local cache for Google Analytics Script.', 'rocket' ),
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'description'       => '',
+					'section'           => 'one_click',
+					'page'              => 'addons',
+					'default'           => 0,
+					'sanitize_callback' => 'sanitize_checkbox',
+				],
+			]
+		);
+
+		$this->settings->add_settings_fields(
+			[
 				'do_cloudflare' => [
 					'type'              => 'rocket_addon',
 					'label'             => __( 'Cloudflare', 'rocket' ),
