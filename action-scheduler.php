@@ -8,8 +8,7 @@
  * Version: 1.6.0-dev
  * License: GPLv3
  *
- *
- * Copyright 2017 Prospress, Inc.  (email : freedoms@prospress.com)
+ * Copyright 2018 Prospress, Inc.  (email : freedoms@prospress.com)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
