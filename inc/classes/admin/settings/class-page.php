@@ -416,6 +416,7 @@ class Page {
 			'cloudflare_devmode'          => 1,
 			'cloudflare_protocol_rewrite' => 1,
 			'cloudflare_auto_settings'    => 1,
+			'google_analytics_cache'      => 1,
 		];
 
 		if ( ! isset( $_POST['option']['name'] ) || ! isset( $whitelist[ $_POST['option']['name'] ] ) ) {
