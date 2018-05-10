@@ -64,7 +64,7 @@ class ActionScheduler_QueueCleaner {
 					 * This hook provides a way for 3rd party code to log or otherwise handle exceptions relating to their
 					 * actions.
 					 *
-					 * @since 1.6.0
+					 * @since 2.0.0
 					 *
 					 * @param int $action_id The scheduled actions ID in the data store
 					 * @param Exception $e The exception thrown when attempting to delete the action from the data store
