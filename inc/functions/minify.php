@@ -153,8 +153,10 @@ function rocket_minify_files( $buffer, $extension ) {
 			$buffer = str_replace( $external_js_file, '', $buffer );
 		}
 
-		$minify_header_tag = '<script src="' . $minify_header_url . '" data-minify="1"></script>';
-		$buffer            = preg_replace( '/<head(.*)>/U', '<head$1>' . implode( '', $external_js_files ) . $minify_header_tag, $buffer, 1 );
+		if ( $minify_header_url ) {
+			$minify_header_tag = '<script src="' . $minify_header_url . '" data-minify="1"></script>';
+			$buffer            = preg_replace( '/<head(.*)>/U', '<head$1>' . implode( '', $external_js_files ) . $minify_header_tag, $buffer, 1 );
+		}
 
 		$minify_tag = '<script src="' . $minify_url . '" data-minify="1"></script>';
 		return str_replace( '</body>', $minify_tag . '</body>', $buffer );
