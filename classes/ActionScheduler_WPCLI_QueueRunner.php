@@ -75,7 +75,7 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 	protected function add_hooks() {
 		add_action( 'action_scheduler_before_execute', array( $this, 'before_execute' ) );
 		add_action( 'action_scheduler_after_execute', array( $this, 'after_execute' ) );
-		add_action( 'action_scheduler_failed_execution', array( $this, 'action_failed' ) );
+		add_action( 'action_scheduler_failed_execution', array( $this, 'action_failed' ), 10, 2 );
 	}
 
 	/**
