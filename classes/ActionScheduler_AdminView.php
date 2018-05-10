@@ -79,7 +79,7 @@ class ActionScheduler_AdminView {
 	/** Deprecated Functions **/
 
 	public function action_scheduler_post_type_args( $args ) {
-		_deprecated_function( __METHOD__, '1.6' );
+		_deprecated_function( __METHOD__, '2.0.0' );
 
 		return $args;
 	}
@@ -91,7 +91,7 @@ class ActionScheduler_AdminView {
 	 * @return array $views An associative array of views and view labels which can be used to filter the 'scheduled-action' posts displayed on the Scheduled Actions administration screen.
 	 */
 	public function list_table_views( $views ) {
-		_deprecated_function( __METHOD__, '1.6' );
+		_deprecated_function( __METHOD__, '2.0.0' );
 
 		return $views;
 	}
@@ -105,7 +105,7 @@ class ActionScheduler_AdminView {
 	 * @return array $actions An associative array of actions which can be performed on the 'scheduled-action' post type.
 	 */
 	public function bulk_actions( $actions ) {
-		_deprecated_function( __METHOD__, '1.6' );
+		_deprecated_function( __METHOD__, '2.0.0' );
 
 		return $actions;
 	}
@@ -120,7 +120,7 @@ class ActionScheduler_AdminView {
 	 * @return array $columns An associative array of columns that are use for the table on the Scheduled Actions administration screen.
 	 */
 	public function list_table_columns( $columns ) {
-		_deprecated_function( __METHOD__, '1.6' );
+		_deprecated_function( __METHOD__, '2.0.0' );
 
 		return $columns;
 	}
@@ -132,7 +132,7 @@ class ActionScheduler_AdminView {
 	 * @return array $columns An associative array of columns that can be used to sort the table on the Scheduled Actions administration screen.
 	 */
 	public static function list_table_sortable_columns( $columns ) {
-		_deprecated_function( __METHOD__, '1.6' );
+		_deprecated_function( __METHOD__, '2.0.0' );
 
 		return $columns;
 	}
@@ -145,7 +145,7 @@ class ActionScheduler_AdminView {
 	 * @return void
 	 */
 	public static function list_table_column_content( $column_name, $post_id ) {
-		_deprecated_function( __METHOD__, '1.6' );
+		_deprecated_function( __METHOD__, '2.0.0' );
 	}
 
 	/**
@@ -157,7 +157,7 @@ class ActionScheduler_AdminView {
 	 * @return array $actions An associative array of actions which can be performed on the 'scheduled-action' post type.
 	 */
 	public static function row_actions( $actions, $post ) {
-		_deprecated_function( __METHOD__, '1.6' );
+		_deprecated_function( __METHOD__, '2.0.0' );
 
 		return $actions;
 	}
@@ -168,7 +168,7 @@ class ActionScheduler_AdminView {
 	 * @codeCoverageIgnore
 	 */
 	public static function maybe_execute_action() {
-		_deprecated_function( __METHOD__, '1.6' );
+		_deprecated_function( __METHOD__, '2.0.0' );
 	}
 
 	/**
@@ -184,7 +184,7 @@ class ActionScheduler_AdminView {
 	 * @return string A human friendly string representation of the interval.
 	 */
 	public static function admin_notices() {
-		_deprecated_function( __METHOD__, '1.6' );
+		_deprecated_function( __METHOD__, '2.0.0' );
 	}
 
 	/**
@@ -195,7 +195,7 @@ class ActionScheduler_AdminView {
 	 * @return string MySQL orderby string.
 	 */
 	public function custom_orderby( $orderby, $query ){
-		_deprecated_function( __METHOD__, '1.6' );
+		_deprecated_function( __METHOD__, '2.0.0' );
 	}
 
 	/**
@@ -206,7 +206,7 @@ class ActionScheduler_AdminView {
 	 * @return string MySQL search string.
 	 */
 	public function search_post_password( $search, $query ) {
-		_deprecated_function( __METHOD__, '1.6' );
+		_deprecated_function( __METHOD__, '2.0.0' );
 	}
 
 	/**
@@ -216,7 +216,7 @@ class ActionScheduler_AdminView {
 	 * @return array
 	 */
 	public function post_updated_messages( $messages ) {
-		_deprecated_function( __METHOD__, '1.6' );
+		_deprecated_function( __METHOD__, '2.0.0' );
 
 		return $messages;
 	}
