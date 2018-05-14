@@ -208,7 +208,7 @@ function rocket_process_sitemap( $sitemap_url, $urls = array() ) {
 		'sslverify'  => apply_filters( 'https_local_ssl_verify', true ),
 	) );
 
-	$sitemap = wp_remote_get( esc_url( $sitemap_url ) );
+	$sitemap = wp_remote_get( esc_url( $sitemap_url ), $args );
 
 	if ( is_wp_error( $sitemap ) ) {
 		return array();
