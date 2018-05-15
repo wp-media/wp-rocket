@@ -129,7 +129,6 @@ function rocket_first_install() {
 				'do_cloudflare'               => 0,
 				'cloudflare_email'            => '',
 				'cloudflare_api_key'          => '',
-				'cloudflare_domain'           => '',
 				'cloudflare_zone_id'          => '',
 				'cloudflare_devmode'          => 0,
 				'cloudflare_protocol_rewrite' => 0,
