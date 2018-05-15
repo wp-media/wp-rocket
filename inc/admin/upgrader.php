@@ -197,7 +197,6 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		$options['do_cloudflare']               = 0;
 		$options['cloudflare_email']            = '';
 		$options['cloudflare_api_key']          = '';
-		$options['cloudflare_domain']           = '';
 		$options['cloudflare_devmode']          = 0;
 		$options['cloudflare_protocol_rewrite'] = 0;
 		$options['cloudflare_auto_settings']    = 0;
