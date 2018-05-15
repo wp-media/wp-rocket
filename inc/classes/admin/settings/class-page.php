@@ -1759,18 +1759,12 @@ class Page {
 			[
 				'cloudflare_email'            => [
 					'label'           => _x( 'Account email', 'Cloudflare', 'rocket' ),
-					'container_class' => [
-						'wpr-field--split',
-					],
 					'default'         => '',
 					'section'         => 'cloudflare_credentials',
 					'page'            => 'cloudflare',
 				],
-				'cloudflare_domain'           => [
-					'label'           => _x( 'Domain', 'Cloudflare', 'rocket' ),
-					'container_class' => [
-						'wpr-field--split',
-					],
+				'cloudflare_zone_id'          => [
+					'label'           => _x( 'Zone ID', 'Cloudflare', 'rocket' ),
 					'default'         => '',
 					'section'         => 'cloudflare_credentials',
 					'page'            => 'cloudflare',
@@ -1827,7 +1821,6 @@ class Page {
 				'minify_js_key',
 				'version',
 				'cloudflare_old_settings',
-				'cloudflare_zone_id',
 				'sitemap_preload_url_crawl',
 			]
 		);
