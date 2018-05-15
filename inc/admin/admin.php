@@ -401,7 +401,6 @@ function rocket_analytics_data() {
 		'minify_js_key'           => 1,
 		'cloudflare_email'        => 1,
 		'cloudflare_api_key'      => 1,
-		'cloudflare_domain'       => 1,
 		'cloudflare_zone_id'      => 1,
 		'cloudflare_old_settings' => 1,
 		'submit_optimize'         => 1,
