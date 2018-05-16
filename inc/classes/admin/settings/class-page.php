@@ -1642,15 +1642,15 @@ class Page {
 			[
 				'google_analytics_cache' => [
 					'type'              => 'one_click_addon',
-					'label'             => __( 'Google Analytics Cache', 'rocket' ),
+					'label'             => __( 'Google Tracking', 'rocket' ),
 					'logo'              => [
-						'url'    => '',
-						'width'  => '',
-						'height' => '',
+						'url'    => WP_ROCKET_ASSETS_IMG_URL . '/logo-google-analytics.svg',
+						'width'  => 153,
+						'height' => 111,
 					],
-					'title'             => __( 'Local cache for Google Analytics Script.', 'rocket' ),
+					'title'             => __( 'Improve browser caching for Google Analytics and Google Tag Manager', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'       => '',
+					'description'       => 'WP Rocket will host these Google scripts locally on your server to help satisfy the PageSpeed recommendation for <em>Leverage browser caching</em>.',
 					'section'           => 'one_click',
 					'page'              => 'addons',
 					'default'           => 0,
