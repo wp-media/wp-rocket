@@ -102,7 +102,8 @@ class Google_Tracking_Cache_Busting_Subscriber {
 		}
 
 		$processor = $this->busting_factory->type( 'ga' );
-		$crawler   = $this->crawler::create( $html );
+		$crawler   = $this->crawler;
+		$crawler   = $crawler::create( $html );
 		$html      = $processor->replace_url( $crawler );
 
 		if ( $processor->is_replaced() ) {
