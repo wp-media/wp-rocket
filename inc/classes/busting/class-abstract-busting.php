@@ -59,7 +59,7 @@ abstract class Abstract_Busting {
 	 * @author Remy Perona
 	 *
 	 * @param string $url The URL to request.
-	 * @return mixed
+	 * @return string|bool
 	 */
 	protected function get_file_content( $url ) {
 		$content = wp_remote_retrieve_body( wp_remote_get( $url ) );
