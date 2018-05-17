@@ -48,8 +48,9 @@ settings_errors( $data['slug'] ); ?>
 				<div class="wpr-radio wpr-radio--reverse wpr-radio--tips">
 					<input type="checkbox" class="wpr-js-tips" id="wpr-js-tips" value="1" checked>
 					<label for="wpr-js-tips">
-						<span class="wpr-radio-ui"></span>
-						<?php _e( 'Show Tips', 'rocket' ); ?></label>
+						<span data-l10n-active="<?php echo esc_attr_x( 'On', 'Active state of checkbox', 'rocket' ); ?>" 
+  data-l10n-inactive="<?php echo esc_attr_x( 'Off', 'Inactive state of checkbox', 'rocket' ); ?>" class="wpr-radio-ui"></span>
+						<?php _e( 'Show Sidebar', 'rocket' ); ?></label>
 				</div>
 			</div>
 		</section>
