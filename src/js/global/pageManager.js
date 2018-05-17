@@ -134,13 +134,13 @@ PageManager.prototype.change = function() {
     this.$page.style.display = 'block';
     this.$submitButton.style.display = 'block';
 
-    if ( null == localStorage.getItem( 'wpr-show-sidebar' ) ) {
+    if ( null === localStorage.getItem( 'wpr-show-sidebar' ) ) {
         localStorage.setItem( 'wpr-show-sidebar', 'on' );
     }
 
-    if ( 'on' == localStorage.getItem('wpr-show-sidebar') ) {
+    if ( 'on' === localStorage.getItem('wpr-show-sidebar') ) {
         this.$sidebar.style.display = 'block';
-    } else if ( 'off' == localStorage.getItem('wpr-show-sidebar') ) {
+    } else if ( 'off' === localStorage.getItem('wpr-show-sidebar') ) {
         this.$sidebar.style.display = 'none';
         document.querySelector('#wpr-js-tips').removeAttribute( 'checked' );
     }
