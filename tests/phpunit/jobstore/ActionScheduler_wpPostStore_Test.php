@@ -59,6 +59,30 @@ class ActionScheduler_wpPostStore_Test extends ActionScheduler_UnitTestCase {
 		$this->assertEqualSets( array_slice( $created_actions, 3, 3 ), $claim->get_actions() );
 	}
 
+	public function test_claim_actions_order() {
+		$store           = new ActionScheduler_wpPostStore();
+		$schedule        = new ActionScheduler_SimpleSchedule( as_get_datetime_object( '-1 hour' ) );
+		$created_actions = array(
+			$store->save_action( new ActionScheduler_Action( 'my_hook', array( 1 ), $schedule, 'my_group' ) ),
+			$store->save_action( new ActionScheduler_Action( 'my_hook', array( 1 ), $schedule, 'my_group' ) ),
+		);
+
+		$claim = $store->stake_claim();
+		$this->assertInstanceof( 'ActionScheduler_ActionClaim', $claim );
+
+		// Verify uniqueness of action IDs.
+		$this->assertEquals( 2, count( array_unique( $created_actions ) ) );
+
+		// Verify the count and order of the actions.
+		$claimed_actions = $claim->get_actions();
+		$this->assertCount( 2, $claimed_actions );
+		$this->assertEquals( $created_actions, $claimed_actions );
+
+		// Verify the reversed order doesn't pass.
+		$reversed_actions = array_reverse( $created_actions );
+		$this->assertNotEquals( $reversed_actions, $claimed_actions );
+	}
+
 	public function test_duplicate_claim() {
 		$created_actions = array();
 		$store = new ActionScheduler_wpPostStore();
@@ -212,4 +236,3 @@ class ActionScheduler_wpPostStore_Test extends ActionScheduler_UnitTestCase {
 		$this->assertEquals( ActionScheduler_Store::STATUS_FAILED, $store->get_status( $action_id ) );
 	}
 }
- 
