@@ -47,6 +47,13 @@ class Plugin {
 	private $template_path;
 
 	/**
+	 * Instance of Busting\Busting_Factory class
+	 *
+	 * @var Busting\Busting_Factory
+	 */
+	private $busting_factory;
+
+	/**
 	 * Instance of the HtmlPageCrawler
 	 *
 	 * @var HtmlPageCrawler;
