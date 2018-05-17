@@ -1649,8 +1649,7 @@ class Page {
 						'height' => 111,
 					],
 					'title'             => __( 'Improve browser caching for Google Analytics and Google Tag Manager', 'rocket' ),
-					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'       => 'WP Rocket will host these Google scripts locally on your server to help satisfy the PageSpeed recommendation for <em>Leverage browser caching</em>.',
+					'description'       => __( 'WP Rocket will host these Google scripts locally on your server to help satisfy the PageSpeed recommendation for <em>Leverage browser caching</em>.', 'rocket' ),
 					'section'           => 'one_click',
 					'page'              => 'addons',
 					'default'           => 0,
