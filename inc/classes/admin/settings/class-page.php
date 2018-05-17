@@ -416,6 +416,7 @@ class Page {
 			'cloudflare_devmode'          => 1,
 			'cloudflare_protocol_rewrite' => 1,
 			'cloudflare_auto_settings'    => 1,
+			'google_analytics_cache'      => 1,
 		];
 
 		if ( ! isset( $_POST['option']['name'] ) || ! isset( $whitelist[ $_POST['option']['name'] ] ) ) {
@@ -1637,6 +1638,26 @@ class Page {
 			]
 		);
 
+		$this->settings->add_settings_fields(
+			[
+				'google_analytics_cache' => [
+					'type'              => 'one_click_addon',
+					'label'             => __( 'Google Tracking', 'rocket' ),
+					'logo'              => [
+						'url'    => WP_ROCKET_ASSETS_IMG_URL . 'logo-google-analytics.svg',
+						'width'  => 153,
+						'height' => 111,
+					],
+					'title'             => __( 'Improve browser caching for Google Analytics and Google Tag Manager', 'rocket' ),
+					'description'       => __( 'WP Rocket will host these Google scripts locally on your server to help satisfy the PageSpeed recommendation for <em>Leverage browser caching</em>.', 'rocket' ),
+					'section'           => 'one_click',
+					'page'              => 'addons',
+					'default'           => 0,
+					'sanitize_callback' => 'sanitize_checkbox',
+				],
+			]
+		);
+
 		/**
 		 * Allow to display the "Varnish" tab in the settings page
 		 *
@@ -1661,7 +1682,7 @@ class Page {
 						'type'              => 'one_click_addon',
 						'label'             => __( 'Varnish', 'rocket' ),
 						'logo'              => [
-							'url'    => WP_ROCKET_ASSETS_IMG_URL . '/logo-varnish.svg',
+							'url'    => WP_ROCKET_ASSETS_IMG_URL . 'logo-varnish.svg',
 							'width'  => 152,
 							'height' => 135,
 						],
@@ -1683,7 +1704,7 @@ class Page {
 					'type'              => 'rocket_addon',
 					'label'             => __( 'Cloudflare', 'rocket' ),
 					'logo'              => [
-						'url'    => WP_ROCKET_ASSETS_IMG_URL . '/logo-cloudflare2.svg',
+						'url'    => WP_ROCKET_ASSETS_IMG_URL . 'logo-cloudflare2.svg',
 						'width'  => 153,
 						'height' => 51,
 					],

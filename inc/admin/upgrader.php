@@ -138,6 +138,7 @@ function rocket_first_install() {
 				'varnish_auto_purge'          => 0,
 				'do_beta'                     => 0,
 				'analytics_enabled'           => 0,
+				'google_analytics_cache'      => 0,
 			)
 		)
 	);
