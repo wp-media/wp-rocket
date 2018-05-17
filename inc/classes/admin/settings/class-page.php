@@ -1644,7 +1644,7 @@ class Page {
 					'type'              => 'one_click_addon',
 					'label'             => __( 'Google Tracking', 'rocket' ),
 					'logo'              => [
-						'url'    => WP_ROCKET_ASSETS_IMG_URL . '/logo-google-analytics.svg',
+						'url'    => WP_ROCKET_ASSETS_IMG_URL . 'logo-google-analytics.svg',
 						'width'  => 153,
 						'height' => 111,
 					],
@@ -1683,7 +1683,7 @@ class Page {
 						'type'              => 'one_click_addon',
 						'label'             => __( 'Varnish', 'rocket' ),
 						'logo'              => [
-							'url'    => WP_ROCKET_ASSETS_IMG_URL . '/logo-varnish.svg',
+							'url'    => WP_ROCKET_ASSETS_IMG_URL . 'logo-varnish.svg',
 							'width'  => 152,
 							'height' => 135,
 						],
@@ -1705,7 +1705,7 @@ class Page {
 					'type'              => 'rocket_addon',
 					'label'             => __( 'Cloudflare', 'rocket' ),
 					'logo'              => [
-						'url'    => WP_ROCKET_ASSETS_IMG_URL . '/logo-cloudflare2.svg',
+						'url'    => WP_ROCKET_ASSETS_IMG_URL . 'logo-cloudflare2.svg',
 						'width'  => 153,
 						'height' => 51,
 					],
