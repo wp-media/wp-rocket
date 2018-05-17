@@ -1051,7 +1051,9 @@ function rocket_find_wpconfig_path() {
  * @return string The footprint that will be printed
  */
 function get_rocket_footprint( $debug = true ) {
-	$footprint = "\n" . '<!-- This website is like a Rocket, isn\'t it? Performance optimized by ' . WP_ROCKET_PLUGIN_NAME . '. Learn more: https://wp-rocket.me';
+	$footprint = defined( 'WP_RWL' ) ? 
+					"\n" . '<!-- Cached for great performance' : 
+					"\n" . '<!-- This website is like a Rocket, isn\'t it? Performance optimized by ' . WP_ROCKET_PLUGIN_NAME . '. Learn more: https://wp-rocket.me';
 	if ( $debug ) {
 		$footprint .= ' - Debug: cached@' . time();
 	}
