@@ -17,11 +17,6 @@ function rocket_init() {
 		return;
 	}
 
-	// Nothing to do if XMLRPC request.
-	if ( defined( 'XMLRPC_REQUEST' ) ) {
-		return;
-	}
-
 	// Necessary to call correctly WP Rocket Bot for cache json.
 	global $do_rocket_bot_cache_json;
 	$do_rocket_bot_cache_json = false;
