@@ -39,7 +39,11 @@ settings_errors( $data['slug'] ); ?>
 				<?php $this->render_hidden_fields(); ?>
 				<input type="submit" class="wpr-button" id="wpr-options-submit" value="<?php esc_attr_e( 'Save Changes', 'rocket' ); ?>">
 			</form>
-			<?php $this->render_tools_section(); ?>
+			<?php
+			if ( rocket_valid_key() ) {
+				$this->render_tools_section();
+			}
+			?>
 			<div class="wpr-Content-tips">
 				<div class="wpr-radio wpr-radio--reverse wpr-radio--tips">
 					<input type="checkbox" class="wpr-js-tips" id="wpr-js-tips" value="1" checked>
