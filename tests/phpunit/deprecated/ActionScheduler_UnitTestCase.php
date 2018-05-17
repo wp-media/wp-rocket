@@ -8,6 +8,15 @@ class ActionScheduler_UnitTestCase extends WP_UnitTestCase {
 	protected $existing_timezone;
 
 	/**
+	 * Counts the number of test cases executed by run(TestResult result).
+	 *
+	 * @return int
+	 */
+	public function count() {
+		return 'UTC' == date_default_timezone_get() ? 2 : 3;
+	}
+
+	/**
 	 * We want to run every test multiple times using a different timezone to make sure
 	 * that they are unaffected by changes to PHP's timezone.
 	 */
@@ -33,4 +42,3 @@ class ActionScheduler_UnitTestCase extends WP_UnitTestCase {
 		return $result;
 	}
 }
- 
