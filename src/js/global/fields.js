@@ -88,89 +88,18 @@ $(document).ready(function(){
         }
     }
 
+    /**
+     * CNAMES add/remove lines
+     */
+    $(document).on('click', '.wpr-multiple-close', function(e) {
+		e.preventDefault();
+		$(this).parent().slideUp( 'slow' , function(){$(this).remove(); } );
+	} );
 
-
-
-    /***
-    * Multiple field (for CNAME)
-    ***/
-
-    var $buttonMulti = $('.wpr-button--addMulti');
-    var $buttonClose = $('.wpr-multiple-close');
-    var $multipleListes = $('.wpr-multiple-list');
-
-    $multipleListes.each(function(){
-        if($(this).find('.wpr-multiple-line').length > 0){
-            $(this).css('display','block');
-        }
+	$('.wpr-button--addMulti').on('click', function(e) {
+		e.preventDefault();
+        $($('#wpr-cname-model').html()).appendTo('#wpr-cnames-list');
     });
 
-    $buttonMulti.click(function() {
-        wprAddMulti($(this));
-        return false;
-    });
-
-    $buttonClose.click(function() {
-        wprRemoveMulti($(this));
-        return false;
-    });
-
-    // Add
-    function wprAddMulti(aElem){
-        var $parent = aElem.parent(),
-            $fieldText = $parent.find('input[type=text]'),
-            $multipleListe = $parent.parents('.wpr-field').find('.wpr-multiple-list')
-        ;
-
-        if($fieldText.val().length > 0){
-            $parent.clone().appendTo($parent.parent()).addClass('wpr-isHidden');
-            $multipleListe.append('<li class="wpr-multiple-line">' +
-                                    '<button class="wpr-multiple-close wpr-icon-close"></button>' +
-                                    '<span>'+ $fieldText.val() +'</span>' +
-                                    '</li>');
-            $multipleListe.css('display','block');
-            var $newLine = $multipleListe.find('.wpr-multiple-line:last-child');
-
-            TweenLite.fromTo($newLine, 0.5, {x:20, autoAlpha:0}, {x: 0, autoAlpha:1, ease:Power4.easeOut});
-
-            $fieldText.val('');
-            $fieldText.focus();
-        }
-        else{
-            $fieldText.addClass('wpr-isError');
-
-            setTimeout(function() {
-                $fieldText.removeClass('wpr-isError');
-                $fieldText.focus();
-            }, 500);
-        }
-
-        $buttonClose = $('.wpr-multiple-close');
-        $buttonClose.click(function() {
-            wprRemoveMulti($(this));
-            return false;
-        });
-    }
-
-
-    // Remove
-    function wprRemoveMulti(aElem){
-        var $parent = aElem.parent(),
-            index = $parent.index('.wpr-multiple-list li'),
-            $thisField = $parent.parents('.wpr-field').find('.wpr-isHidden')[index],
-            $thisList = $parent.parent(),
-            $thisLine = $thisList.find('.wpr-multiple-line')[index]
-        ;
-
-        TweenLite.to($thisLine, 0.5, {x: 20, autoAlpha:0, ease:Power4.easeOut, onComplete:function(){
-            $thisLine.remove();
-            $thisField.remove();
-
-            if($thisList.find('.wpr-multiple-line').length < 1){
-                $thisList.css('display','none');
-            }
-        }});
-
-    }
 
 });
