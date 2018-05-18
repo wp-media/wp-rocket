@@ -1045,13 +1045,16 @@ function rocket_find_wpconfig_path() {
 /**
  * Get WP Rocket footprint
  *
+ * @since 3.0.5 White label footprint if WP_ROCKET_WHITE_LABEL_FOOTPRINT is defined.
  * @since 2.0
  *
  * @param bool $debug (default: true) If true, adds the date of generation cache file.
  * @return string The footprint that will be printed
  */
 function get_rocket_footprint( $debug = true ) {
-	$footprint = "\n" . '<!-- This website is like a Rocket, isn\'t it? Performance optimized by ' . WP_ROCKET_PLUGIN_NAME . '. Learn more: https://wp-rocket.me';
+	$footprint = defined( 'WP_ROCKET_WHITE_LABEL_FOOTPRINT' ) ? 
+					"\n" . '<!-- Cached for great performance' : 
+					"\n" . '<!-- This website is like a Rocket, isn\'t it? Performance optimized by ' . WP_ROCKET_PLUGIN_NAME . '. Learn more: https://wp-rocket.me';
 	if ( $debug ) {
 		$footprint .= ' - Debug: cached@' . time();
 	}
