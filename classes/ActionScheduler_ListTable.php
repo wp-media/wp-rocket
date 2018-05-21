@@ -313,10 +313,10 @@ class ActionScheduler_ListTable extends PP_List_Table {
 			);
 		}
 
-		$notification = get_transient( 'actionscheduler_admin_notice' );
+		$notification = get_transient( 'action_scheduler_admin_notice' );
 
 		if ( is_array( $notification ) ) {
-			delete_transient( 'actionscheduler_admin_notice' );
+			delete_transient( 'action_scheduler_admin_notice' );
 
 			$action = $this->store->fetch_action( $notification['action_id'] );
 			$action_hook_html = '<strong><code>' . $action->get_hook() . '</code></strong>';
@@ -338,7 +338,7 @@ class ActionScheduler_ListTable extends PP_List_Table {
 				$action_message_html = sprintf( __( 'Could not process change for action: "%s" (ID: %d). Error: %s', 'action-scheduler' ), $action_hook_html, esc_html( $notification['action_id'] ), esc_html( $notification['error_message'] ) );
 			}
 
-			$action_message_html = apply_filters( 'actionscheduler_admin_notice_html', $action_message_html, $action, $notification );
+			$action_message_html = apply_filters( 'action_scheduler_admin_notice_html', $action_message_html, $action, $notification );
 
 			$this->admin_notices[] = array(
 				'class'   => $class,
@@ -446,7 +446,7 @@ class ActionScheduler_ListTable extends PP_List_Table {
 			$error_message = $e->getMessage();
 		}
 
-		set_transient( 'actionscheduler_admin_notice', compact( 'action_id', 'success', 'error_message', 'row_action_type' ), 30 );
+		set_transient( 'action_scheduler_admin_notice', compact( 'action_id', 'success', 'error_message', 'row_action_type' ), 30 );
 	}
 
 	/**
