@@ -11,9 +11,9 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	/** @var DateTimeZone */
 	protected $local_timezone = NULL;
 
-	public function save_action( ActionScheduler_Action $action, DateTime $date = NULL ){
+	public function save_action( ActionScheduler_Action $action, DateTime $scheduled_date = NULL ){
 		try {
-			$post_array = $this->create_post_array( $action, $date );
+			$post_array = $this->create_post_array( $action, $scheduled_date );
 			$post_id = $this->save_post_array( $post_array );
 			$this->save_post_schedule( $post_id, $action->get_schedule() );
 			$this->save_action_group( $post_id, $action->get_group() );
@@ -24,14 +24,14 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		}
 	}
 
-	protected function create_post_array( ActionScheduler_Action $action, DateTime $date = NULL ) {
+	protected function create_post_array( ActionScheduler_Action $action, DateTime $scheduled_date = NULL ) {
 		$post = array(
 			'post_type' => self::POST_TYPE,
 			'post_title' => $action->get_hook(),
 			'post_content' => json_encode($action->get_args()),
 			'post_status' => ( $action->is_finished() ? 'publish' : 'pending' ),
-			'post_date_gmt' => $this->get_timestamp($action, $date),
-			'post_date' => $this->get_local_timestamp($action, $date),
+			'post_date_gmt' => $this->get_timestamp($action, $scheduled_date),
+			'post_date' => $this->get_local_timestamp($action, $scheduled_date),
 		);
 		return $post;
 	}
