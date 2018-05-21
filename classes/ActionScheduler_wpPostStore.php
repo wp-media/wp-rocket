@@ -36,10 +36,6 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		return $post;
 	}
 
-	protected function get_local_timezone() {
-		return ActionScheduler_TimezoneHelper::get_local_timezone();
-	}
-
 	protected function save_post_array( $post_array ) {
 		add_filter( 'wp_insert_post_data', array( $this, 'filter_insert_post_data' ), 10, 1 );
 		$post_id = wp_insert_post($post_array);

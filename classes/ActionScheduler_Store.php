@@ -185,6 +185,15 @@ abstract class ActionScheduler_Store {
 	}
 
 	/**
+	 * Get the site's local time. Wrapper for ActionScheduler_TimezoneHelper::get_local_timezone().
+	 *
+	 * @return DateTimeZone
+	 */
+	protected function get_local_timezone() {
+		return ActionScheduler_TimezoneHelper::get_local_timezone();
+	}
+
+	/**
 	 * @return array
 	 */
 	public function get_status_labels() {
