@@ -16,13 +16,13 @@ abstract class ActionScheduler_Store {
 
 	/**
 	 * @param ActionScheduler_Action $action
-	 * @param DateTime $date Optional date of the first instance
+	 * @param DateTime $scheduled_date Optional Date of the first instance
 	 *        to store. Otherwise uses the first date of the action's
 	 *        schedule.
 	 *
 	 * @return string The action ID
 	 */
-	abstract public function save_action( ActionScheduler_Action $action, DateTime $date = NULL );
+	abstract public function save_action( ActionScheduler_Action $action, DateTime $scheduled_date = NULL );
 
 	/**
 	 * @param string $action_id
