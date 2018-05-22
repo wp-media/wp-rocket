@@ -63,7 +63,7 @@ class Google_Tracking_Cache_Busting_Subscriber {
 		add_filter( 'rocket_buffer', [ $self, 'cache_busting_google_tracking' ] );
 		add_action( 'init', [ $self, 'schedule_tracking_cache_update' ] );
 		add_action( 'rocket_google_tracking_cache_update', [ $self, 'update_tracking_cache' ] );
-		add_filter( 'cron_schedules', [ $self, 'rocket_purge_cron_schedule' ] );
+		add_filter( 'cron_schedules', [ $self, 'add_schedule' ] );
 	}
 
 	/**
