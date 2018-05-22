@@ -12,9 +12,10 @@ class Google_Tag_Manager extends Abstract_Busting {
 	 * {@inheritdoc}
 	 */
 	public function __construct( $busting_path, $busting_url ) {
-		parent::__construct( $busting_path, $busting_url );
-
-		$this->filename = 'gtm-local';
+		$blog_id            = get_current_blog_id();
+		$this->busting_path = $busting_path . $blog_id . '/';
+		$this->busting_url  = $busting_url . $blog_id . '/';
+		$this->filename     = 'gtm-local.js';
 	}
 
 	/**
@@ -33,7 +34,7 @@ class Google_Tag_Manager extends Abstract_Busting {
 			return $crawler->saveHTML();
 		}
 
-		if ( ! $this->save( $url, $this->filename ) ) {
+		if ( ! $this->save( $url ) ) {
 			return $crawler->saveHTML();
 		}
 
