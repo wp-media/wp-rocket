@@ -23,34 +23,11 @@ abstract class Abstract_Busting {
 	protected $busting_url;
 
 	/**
-	 * Flag to track the replacement
-	 *
-	 * @var bool
-	 */
-	protected $is_replaced;
-
-	/**
 	 * Filename for the cache busting file.
 	 *
 	 * @var string
 	 */
 	protected $filename;
-
-	/**
-	 * Constructor
-	 *
-	 * @since 3.1
-	 * @author Remy Perona
-	 *
-	 * @param string $busting_path Cache busting files base path.
-	 * @param string $busting_url  Cache busting base URL.
-	 */
-	public function __construct( $busting_path, $busting_url ) {
-		$blog_id            = get_current_blog_id();
-		$this->busting_path = $busting_path . $blog_id . '/';
-		$this->busting_url  = $busting_url . $blog_id . '/';
-		$this->is_replaced  = false;
-	}
 
 	/**
 	 * Gets the content of an URL
@@ -78,11 +55,10 @@ abstract class Abstract_Busting {
 	 * @author Remy Perona
 	 *
 	 * @param string $url      URL to get the content from.
-	 * @param string $filename Filename to use for the file.
 	 * @return bool
 	 */
-	public function save( $url, $filename ) {
-		$path = $this->busting_path . $filename . '.js';
+	public function save( $url ) {
+		$path = $this->busting_path . $this->filename;
 
 		if ( \rocket_direct_filesystem()->exists( $path ) ) {
 			return true;
@@ -92,6 +68,10 @@ abstract class Abstract_Busting {
 
 		if ( ! $content ) {
 			return false;
+		}
+
+		if ( ! \rocket_direct_filesystem()->exists( $this->busting_path ) ) {
+			\rocket_mkdir_p( $this->busting_path );
 		}
 
 		if ( ! \rocket_put_content( $path, $content ) ) {
@@ -111,7 +91,7 @@ abstract class Abstract_Busting {
 	 */
 	protected function get_busting_url() {
 		// This filter is documented in inc/functions/minify.php.
-		return apply_filters( 'rocket_js_url', get_rocket_cdn_url( $this->busting_url . $this->filename . '.js', array( 'all', 'css_and_js', 'js' ) ) );
+		return apply_filters( 'rocket_js_url', get_rocket_cdn_url( $this->busting_url . $this->filename, array( 'all', 'css_and_js', 'js' ) ) );
 	}
 
 	/**
