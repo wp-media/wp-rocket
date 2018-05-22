@@ -63,6 +63,7 @@ class Google_Tracking_Cache_Busting_Subscriber {
 		add_filter( 'rocket_buffer', [ $self, 'cache_busting_google_tracking' ] );
 		add_action( 'init', [ $self, 'schedule_tracking_cache_update' ] );
 		add_action( 'rocket_google_tracking_cache_update', [ $self, 'update_tracking_cache' ] );
+		add_filter( 'cron_schedules', [ $self, 'rocket_purge_cron_schedule' ] );
 	}
 
 	/**
@@ -149,5 +150,27 @@ class Google_Tracking_Cache_Busting_Subscriber {
 		$processor = $this->busting_factory->type( 'ga' );
 
 		return $processor->save( 'https://www.google-analytics.com/analytics.js', 'ga-local' );
+	}
+
+	/**
+	 * Adds weekly interval to cron schedules
+	 *
+	 * @since 3.1
+	 * @author Remy Perona
+	 *
+	 * @param Array $schedules An array of intervals used by cron jobs.
+	 * @return Array
+	 */
+	public function add_schedule( $schedules ) {
+		if ( ! $this->options->get( 'google_analytics_cache', 0 ) ) {
+			return;
+		}
+
+		$schedules['weekly'] = array(
+			'interval' => 604800,
+			'display'  => __( 'weekly', 'rocket' ),
+		);
+
+		return $schedules;
 	}
 }
