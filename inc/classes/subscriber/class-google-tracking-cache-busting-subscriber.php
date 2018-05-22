@@ -61,9 +61,11 @@ class Google_Tracking_Cache_Busting_Subscriber {
 		$self = new self( $busting_factory, $crawler, $options );
 
 		add_filter( 'rocket_buffer', [ $self, 'cache_busting_google_tracking' ] );
+		add_filter( 'cron_schedules', [ $self, 'add_schedule' ] );
+
 		add_action( 'init', [ $self, 'schedule_tracking_cache_update' ] );
 		add_action( 'rocket_google_tracking_cache_update', [ $self, 'update_tracking_cache' ] );
-		add_filter( 'cron_schedules', [ $self, 'add_schedule' ] );
+		add_action( 'after_rocket_clean_cache_busting', [ $self, 'delete_tracking_cache' ] );
 	}
 
 	/**
@@ -149,7 +151,7 @@ class Google_Tracking_Cache_Busting_Subscriber {
 
 		$processor = $this->busting_factory->type( 'ga' );
 
-		return $processor->save( 'https://www.google-analytics.com/analytics.js', 'ga-local' );
+		return $processor->save( 'https://www.google-analytics.com/analytics.js' );
 	}
 
 	/**
@@ -172,5 +174,28 @@ class Google_Tracking_Cache_Busting_Subscriber {
 		);
 
 		return $schedules;
+	}
+
+	/**
+	 * Deletes the GA busting file.
+	 *
+	 * @since 3.1
+	 * @author Remy Perona
+	 *
+	 * @param string $ext File extension type.
+	 * @return bool
+	 */
+	public function delete_tracking_cache( $ext ) {
+		if ( 'js' !== $ext ) {
+			return false;
+		}
+
+		if ( ! $this->options->get( 'google_analytics_cache', 0 ) ) {
+			return false;
+		}
+
+		$processor = $this->busting_factory->type( 'ga' );
+
+		return $processor->delete();
 	}
 }
