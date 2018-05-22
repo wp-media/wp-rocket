@@ -16,13 +16,21 @@ class Google_Analytics extends Abstract_Busting {
 	protected $url;
 
 	/**
+	 * Flag to track the replacement
+	 *
+	 * @var bool
+	 */
+	protected $is_replaced;
+
+	/**
 	 * {@inheritdoc}
 	 */
 	public function __construct( $busting_path, $busting_url ) {
-		parent::__construct( $busting_path, $busting_url );
-
-		$this->filename = 'ga-local';
-		$this->url      = 'https://www.google-analytics.com/analytics.js';
+		$this->busting_path = $busting_path . 'google-tracking/';
+		$this->busting_url  = $busting_url . 'google-tracking/';
+		$this->is_replaced  = false;
+		$this->filename     = 'ga-local.js';
+		$this->url          = 'https://www.google-analytics.com/analytics.js';
 	}
 
 	/**
@@ -35,7 +43,7 @@ class Google_Analytics extends Abstract_Busting {
 			return $crawler->saveHTML();
 		}
 
-		if ( ! $this->save( $this->url, $this->filename ) ) {
+		if ( ! $this->save( $this->url ) ) {
 			return $crawler->saveHTML();
 		}
 
@@ -91,5 +99,19 @@ class Google_Analytics extends Abstract_Busting {
 	 */
 	public function is_replaced() {
 		return $this->is_replaced;
+	}
+
+	/**
+	 * Deletes the GA busting file
+	 *
+	 * @since 3.1
+	 * @author Remy Perona
+	 *
+	 * @return bool
+	 */
+	public function delete() {
+		$file = $this->busting_path . $this->filename;
+		error_log( $file );
+		return \rocket_direct_filesystem()->delete( $file, false, 'f' );
 	}
 }
