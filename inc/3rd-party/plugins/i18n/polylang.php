@@ -16,9 +16,14 @@ if ( defined( 'POLYLANG_VERSION' ) && POLYLANG_VERSION ) :
 	}
 	add_action( 'after_rocket_clean_domain', 'rocket_force_clean_domain_on_polylang' );
 	
-	// Add Polylang's language cookie as a mandatory cookie if Polylang module 'Detect browser language' is enabled.
+	// Filter mandatory cookies and WP Rocket rewrite rules if Polylang module 'Detect browser language' is enabled.
 	if ( function_exists( 'PLL' ) && PLL()->options['browser'] ) {
+		
+		// Add Polylang's language cookie as a mandatory cookie.
 		add_filter( 'rocket_cache_mandatory_cookies', 'rocket_add_polylang_mandatory_cookie' );
+		
+		// Remove WP Rocket rewrite rules from .htaccess file.
+		add_filter( 'rocket_htaccess_mod_rewrite', '__return_false' );
 	}
 endif;
 
@@ -42,7 +47,7 @@ function rocket_add_polylang_mandatory_cookie( $cookies ) {
 }
 
 /**
- * Add mandatory cookie to WP Rocket config on Polylang activation. 
+ * Add mandatory cookie to WP Rocket config and remove rewrite rules from .htaccess on Polylang activation. 
  * 
  * Add mandatory cookie only if the Polylang module 'Detect browser language' is active. 
  * Also purge the homepage cache. 
@@ -60,8 +65,14 @@ function rocket_activate_polylang() {
 		// Add Polylang's language cookie as a mandatory cookie.
 		add_filter( 'rocket_cache_mandatory_cookies', 'rocket_add_polylang_mandatory_cookie' );
 		
+		// Remove WP Rocket rewrite rules from .htaccess file.
+		add_filter( 'rocket_htaccess_mod_rewrite', '__return_false' );
+		
 		// Regenerate the config file.
 		rocket_generate_config_file();
+		
+		// Regenerate .htaccess file.
+		flush_rocket_htaccess();
 		
 		// Purge homepage cache.
 		rocket_clean_home();
@@ -70,7 +81,7 @@ function rocket_activate_polylang() {
 add_action( 'activate_polylang/polylang.php', 'rocket_activate_polylang', 11 );
 
 /**
- * Remove mandatory cookie when Polylang is deactivated.
+ * Remove mandatory cookie and add rewrite rules back to .htaccess when Polylang is deactivated.
  *
  * @author Arun Basil Lal
  * @since 3.0.5
@@ -79,14 +90,21 @@ function rocket_deactivate_polylang() {
 	
 	// Remove Polylang's language cookie as a mandatory cookie.
 	remove_filter( 'rocket_cache_mandatory_cookies', 'rocket_add_polylang_mandatory_cookie' ); 
+	
+	// Add back WP Rocket rewrite rules from .htaccess file.
+	remove_filter( 'rocket_htaccess_mod_rewrite', '__return_false' );
 
 	// Regenerate the config file.
 	rocket_generate_config_file();
+	
+	// Regenerate .htaccess file.
+	flush_rocket_htaccess();
 }
 add_action( 'deactivate_polylang/polylang.php', 'rocket_deactivate_polylang', 11 );
 
 /**
- * Update mandatory cookie in WP Rocket config file when Detect browser language module is enabled / disabled. 
+ * Update mandatory cookie in WP Rocket config file and remove rewrite rules from .htaccess 
+ * when Detect browser language module is enabled / disabled. 
  * 
  * @param $value (array) Array containing Polylang settings before its written to db.
  * @return (array) Array with Polylang settings. Settings are unchanged, we just use the filter as an action. 
@@ -101,15 +119,30 @@ function rocket_detect_browser_language_status_change( $value ) {
 		// Add Polylang's language cookie as a mandatory cookie.
 		add_filter( 'rocket_cache_mandatory_cookies', 'rocket_add_polylang_mandatory_cookie' );
 		
+		// Remove WP Rocket rewrite rules from .htaccess file.
+		add_filter( 'rocket_htaccess_mod_rewrite', '__return_false' );
+		
 		// Regenerate the config file.
 		rocket_generate_config_file();
+		
+		// Regenerate .htaccess file.
+		flush_rocket_htaccess();
+		
+		// Purge homepage cache.
+		rocket_clean_home();
 	} else {
 		
 		// Remove Polylang's language cookie as a mandatory cookie.
-		remove_filter( 'rocket_cache_mandatory_cookies', 'rocket_add_polylang_mandatory_cookie' );
+		remove_filter( 'rocket_cache_mandatory_cookies', 'rocket_add_polylang_mandatory_cookie' ); 
 		
+		// Add back WP Rocket rewrite rules from .htaccess file.
+		remove_filter( 'rocket_htaccess_mod_rewrite', '__return_false' );
+
 		// Regenerate the config file.
 		rocket_generate_config_file();
+		
+		// Regenerate .htaccess file.
+		flush_rocket_htaccess();
 	}
 	
 	return $value;
