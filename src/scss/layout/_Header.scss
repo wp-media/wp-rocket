@@ -10,7 +10,6 @@
     display: flex;
     flex-direction: column;
     flex: 0 0 225px;
-    background: $cPurpleDark1;
 
     @include respond-to('xs') {
         flex: 0 0 50px;
@@ -18,7 +17,6 @@
 
     &-logo{
         padding: $space*4 0 $space*3;
-        background: $cPurple;
         text-align: center;
 
         @include respond-to('xs') {
@@ -45,7 +43,8 @@
         margin-top: auto;
         padding: $space*6 20px 0;
         @include font-size(11,48);
-        color: $cGreyDark1;
+        color: $cGreyDark2;
+        opacity: 0.6;
         font-weight: bold;
 
         @include respond-to('xs') {

@@ -28,7 +28,7 @@
 .wpr-checkbox [type="checkbox"]:checked + label:before {
     content: '';
     position: absolute;
-    left:0; top: 1px;
+    left:0; top: 4px;
     width: 14px; height: 14px;
     border: 2px solid $cGreyDark1;
     border-radius: 3px;
@@ -42,7 +42,7 @@
 .wpr-checkbox [type="checkbox"]:checked + label:after {
     content: "\e921"; // wpr-icon-check2
     position: absolute;
-    top: 2px; left: 2px;
+    top: 5px; left: 2px;
     color: #fff;
     font-family: 'wpr-icomoon';
     speak: none;

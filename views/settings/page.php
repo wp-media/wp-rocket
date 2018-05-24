@@ -18,8 +18,8 @@ settings_errors( $data['slug'] ); ?>
 
 		<header class="wpr-Header">
 			<div class="wpr-Header-logo">
-				<img src="<?php echo WP_ROCKET_ASSETS_IMG_URL; ?>/logo-wprocket-light.svg" width="163" height="44" alt="Logo WP Rocket" class="wpr-Header-logo-desktop">
-				<img src="<?php echo WP_ROCKET_ASSETS_IMG_URL; ?>/picto-wprocket-light.svg" width="28" height="50" alt="Logo WP Rocket" class="wpr-Header-logo-mobile">
+				<img src="<?php echo WP_ROCKET_ASSETS_IMG_URL; ?>/logo-wprocket-dark.svg" width="163" height="44" alt="Logo WP Rocket" class="wpr-Header-logo-desktop">
+				<img src="<?php echo WP_ROCKET_ASSETS_IMG_URL; ?>/picto-wprocket-dark.svg" width="28" height="50" alt="Logo WP Rocket" class="wpr-Header-logo-mobile">
 			</div>
 			<div class="wpr-Header-nav">
 				<?php $this->render_navigation(); ?>
