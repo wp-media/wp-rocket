@@ -63,7 +63,7 @@ function rocket_activate_polylang() {
 		// Regenerate the config file.
 		rocket_generate_config_file();
 		
-		// Purge homepage cache
+		// Purge homepage cache.
 		rocket_clean_home();
 	}
 }
