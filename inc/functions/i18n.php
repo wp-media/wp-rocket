@@ -317,7 +317,7 @@ function get_rocket_i18n_subdomains() {
 		if ( 3 === (int) $GLOBALS['q_config']['url_mode'] || 4 === (int) $GLOBALS['q_config']['url_mode'] ) {
 			$urls = get_rocket_i18n_uri();
 		}
-	} elseif ( rocket_is_plugin_active( 'polylang/polylang.php' ) || rocket_is_plugin_active( 'polylang-pro/polylang.php' ) ) {
+	} elseif ( ( rocket_is_plugin_active( 'polylang/polylang.php' ) || rocket_is_plugin_active( 'polylang-pro/polylang.php' ) ) && isset( $GLOBALS['polylang'] ) ) {
 		$pll = function_exists( 'PLL' ) ? PLL() : $GLOBALS['polylang'];
 
 		if ( isset( $pll ) && ( 2 === (int) $pll->options['force_lang'] || 3 === (int) $pll->options['force_lang'] ) ) {
