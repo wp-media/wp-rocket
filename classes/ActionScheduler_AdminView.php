@@ -142,7 +142,6 @@ class ActionScheduler_AdminView {
 	 *
 	 * @param string $column_name The key for the column for which we should output our content.
 	 * @param int $post_id The ID of the 'scheduled-action' post for which this row relates.
-	 * @return void
 	 */
 	public static function list_table_column_content( $column_name, $post_id ) {
 		_deprecated_function( __METHOD__, '2.0.0' );

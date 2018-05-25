@@ -24,7 +24,6 @@ class ActionScheduler_Action {
 
 	/**
 	 * @param string $hook
-	 * @return void
 	 */
 	protected function set_hook( $hook ) {
 		$this->hook = $hook;
@@ -74,4 +73,3 @@ class ActionScheduler_Action {
 		return FALSE;
 	}
 }
- 
