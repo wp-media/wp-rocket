@@ -30,32 +30,10 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 			'post_title' => $action->get_hook(),
 			'post_content' => json_encode($action->get_args()),
 			'post_status' => ( $action->is_finished() ? 'publish' : 'pending' ),
-			'post_date_gmt' => $this->get_timestamp($action, $scheduled_date),
-			'post_date' => $this->get_local_timestamp($action, $scheduled_date),
+			'post_date_gmt' => $this->get_scheduled_date_string( $action, $scheduled_date ),
+			'post_date'     => $this->get_scheduled_date_string_local( $action, $scheduled_date ),
 		);
 		return $post;
-	}
-
-	protected function get_timestamp( ActionScheduler_Action $action, DateTime $date = NULL ) {
-		$next = is_null($date) ? $action->get_schedule()->next() : $date;
-		if ( !$next ) {
-			throw new InvalidArgumentException(__('Invalid schedule. Cannot save action.', 'action-scheduler'));
-		}
-		$next->setTimezone(new DateTimeZone('UTC'));
-		return $next->format('Y-m-d H:i:s');
-	}
-
-	protected function get_local_timestamp( ActionScheduler_Action $action, DateTime $date = NULL ) {
-		$next = is_null($date) ? $action->get_schedule()->next() : $date;
-		if ( !$next ) {
-			throw new InvalidArgumentException(__('Invalid schedule. Cannot save action.', 'action-scheduler'));
-		}
-		$next->setTimezone($this->get_local_timezone());
-		return $next->format('Y-m-d H:i:s');
-	}
-
-	protected function get_local_timezone() {
-		return ActionScheduler_TimezoneHelper::get_local_timezone();
 	}
 
 	protected function save_post_array( $post_array ) {

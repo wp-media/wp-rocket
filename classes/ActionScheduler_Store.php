@@ -151,6 +151,49 @@ abstract class ActionScheduler_Store {
 	}
 
 	/**
+	 * Get the time MySQL formated date/time string for an action's (next) scheduled date.
+	 *
+	 * @param ActionScheduler_Action $action
+	 * @param DateTime $scheduled_date (optional)
+	 * @return string
+	 */
+	protected function get_scheduled_date_string( ActionScheduler_Action $action, DateTime $scheduled_date = NULL ) {
+		$next = null === $scheduled_date ? $action->get_schedule()->next() : $scheduled_date;
+		if ( ! $next ) {
+			throw new InvalidArgumentException( __( 'Invalid schedule. Cannot save action.', 'action-scheduler' ) );
+		}
+		$next->setTimezone( new DateTimeZone( 'UTC' ) );
+
+		return $next->format( 'Y-m-d H:i:s' );
+	}
+
+	/**
+	 * Get the time MySQL formated date/time string for an action's (next) scheduled date.
+	 *
+	 * @param ActionScheduler_Action $action
+	 * @param DateTime $scheduled_date (optional)
+	 * @return string
+	 */
+	protected function get_scheduled_date_string_local( ActionScheduler_Action $action, DateTime $scheduled_date = NULL ) {
+		$next = null === $scheduled_date ? $action->get_schedule()->next() : $scheduled_date;
+		if ( ! $next ) {
+			throw new InvalidArgumentException( __( 'Invalid schedule. Cannot save action.', 'action-scheduler' ) );
+		}
+		$next->setTimezone( $this->get_local_timezone() );
+
+		return $next->format( 'Y-m-d H:i:s' );
+	}
+
+	/**
+	 * Get the site's local time. Wrapper for ActionScheduler_TimezoneHelper::get_local_timezone().
+	 *
+	 * @return DateTimeZone
+	 */
+	protected function get_local_timezone() {
+		return ActionScheduler_TimezoneHelper::get_local_timezone();
+	}
+
+	/**
 	 * @return array
 	 */
 	public function get_status_labels() {
@@ -176,4 +219,3 @@ abstract class ActionScheduler_Store {
 		return self::$store;
 	}
 }
- 
