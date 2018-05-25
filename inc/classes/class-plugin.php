@@ -8,7 +8,8 @@ use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Admin\Deactivation\Deactivation_Intent;
 use WP_Rocket\Admin\Deactivation\Render as Deactivation_Intent_Render;
-use WP_Rocket\Third_Party\Plugins;
+use WP_Rocket\Subscriber\Third_Party\Plugins;
+use WP_Rocket\Event_Management\Event_Manager;
 
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
@@ -44,6 +45,15 @@ class Plugin {
 	private $template_path;
 
 	/**
+	 * Event_Manager instance
+	 *
+	 * @since 3.1
+	 *
+	 * @var Event_Manager
+	 */
+	private $event_manager;
+
+	/**
 	 * Constructor
 	 *
 	 * @since 3.0
@@ -51,6 +61,7 @@ class Plugin {
 	 * @param string $template_path Path to the views.
 	 */
 	public function __construct( $template_path ) {
+		$this->event_manager = new Event_Manager();
 		$this->options_api   = new Options( 'wp_rocket_' );
 		$this->options       = new Options_Data( $this->options_api->get( 'settings', array() ) );
 		$this->template_path = $template_path;
@@ -78,6 +89,12 @@ class Plugin {
 			Deactivation_Intent::load( new Deactivation_Intent_Render( $this->template_path . '/deactivation-intent' ), $this->options_api, $this->options );
 		}
 
-		Plugins\Ecommerce\WC_Factory::create()->init();
+		$subscribers = [
+			new Plugins\Ecommerce\WooCommerce_Compatibility(),
+		];
+
+		foreach ( $subscribers as $subscriber ) {
+			$this->event_manager->add_subscriber( $subscriber );
+		}
 	}
 }
