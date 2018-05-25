@@ -244,7 +244,7 @@ class ActionScheduler_ListTable extends PP_List_Table {
 		}
 		$row_html .= '</ul>';
 
-		return $row_html;
+		return apply_filters( 'action_scheduler_list_table_column_args', $row_html, $row );
 	}
 
 	/**
