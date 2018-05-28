@@ -383,7 +383,6 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	 * @param string $action_id
 	 *
 	 * @throws InvalidArgumentException
-	 * @return void
 	 */
 	public function cancel_action( $action_id ) {
 		$post = get_post($action_id);
@@ -515,8 +514,6 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 
 	/**
 	 * @param string $action_id
-	 *
-	 * @return void
 	 */
 	public function unclaim_action( $action_id ) {
 		/** @var wpdb $wpdb */
@@ -574,8 +571,6 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 
 	/**
 	 * @param string $action_id
-	 *
-	 * @return void
 	 */
 	public function log_execution( $action_id ) {
 		/** @var wpdb $wpdb */

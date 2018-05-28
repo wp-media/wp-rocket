@@ -64,8 +64,6 @@ function wc_schedule_cron_action( $timestamp, $schedule, $hook, $args = array(),
  * @param string $hook The hook that the job will trigger
  * @param array $args Args that would have been passed to the job
  * @param string $group
- *
- * @return void
  */
 function wc_unschedule_action( $hook, $args = array(), $group = '' ) {
 	$params = array();

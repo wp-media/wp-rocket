@@ -90,8 +90,6 @@ class ActionScheduler_wpCommentLogger extends ActionScheduler_Logger {
 
 	/**
 	 * @param WP_Comment_Query $query
-	 *
-	 * @return void
 	 */
 	public function filter_comment_queries( $query ) {
 		foreach ( array('ID', 'parent', 'post_author', 'post_name', 'post_parent', 'type', 'post_type', 'post_id', 'post_ID') as $key ) {
@@ -208,8 +206,6 @@ class ActionScheduler_wpCommentLogger extends ActionScheduler_Logger {
 	/**
 	 * Delete comment count cache whenever there is new comment or the status of a comment changes. Cache
 	 * will be regenerated next time ActionScheduler_wpCommentLogger::filter_comment_count() is called.
-	 *
-	 * @return void
 	 */
 	public function delete_comment_count_cache() {
 		delete_transient( 'as_comment_count' );
