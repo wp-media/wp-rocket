@@ -56,7 +56,7 @@ $cnames_zone = get_rocket_option( 'cdn_zone' );
 				<?php
 			endforeach;
 		else : ?>
-			<div class="wpr-multiple">
+			<div class="wpr-multiple wpr-multiple-default">
 				<div class="wpr-text">
 					<input type="text" name="wp_rocket_settings[cdn_cnames][]" />
 				</div>
