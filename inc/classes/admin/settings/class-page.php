@@ -1763,12 +1763,18 @@ class Page {
 				'cloudflare_email'            => [
 					'label'           => _x( 'Account email', 'Cloudflare', 'rocket' ),
 					'default'         => '',
+					'container_class'   => [
+						'wpr-field--split',
+					],
 					'section'         => 'cloudflare_credentials',
 					'page'            => 'cloudflare',
 				],
 				'cloudflare_zone_id'          => [
 					'label'           => _x( 'Zone ID', 'Cloudflare', 'rocket' ),
 					'default'         => '',
+					'container_class'   => [
+						'wpr-field--split',
+					],
 					'section'         => 'cloudflare_credentials',
 					'page'            => 'cloudflare',
 				],
