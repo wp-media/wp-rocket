@@ -11,6 +11,7 @@ if ( class_exists( 'WpieCookieAllow' ) ) :
 	add_filter( 'rocket_cache_dynamic_cookies', 'rocket_add_weepie_cookie_allow_dynamic_cookies' );
 	add_action( 'update_option_wpca_settings_general', 'rocket_after_update_wp_cookie_allow_options', 10, 2 );
 	add_filter( 'rocket_htaccess_mod_rewrite', '__return_false' );
+	add_filter( 'wpca_do_ob_start', '__return_false' );
 endif;
 
 /**
