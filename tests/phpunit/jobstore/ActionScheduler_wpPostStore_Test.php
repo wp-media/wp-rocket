@@ -246,4 +246,29 @@ class ActionScheduler_wpPostStore_Test extends ActionScheduler_UnitTestCase {
 		$store->mark_failure( $action_id );
 		$this->assertEquals( ActionScheduler_Store::STATUS_FAILED, $store->get_status( $action_id ) );
 	}
+
+	/**
+	 * @issue 121
+	 */
+	public function test_claim_actions_by_group() {
+		$group1   = md5( rand() );
+		$store    = new ActionScheduler_wpPostStore();
+		$schedule = new ActionScheduler_SimpleSchedule( as_get_datetime_object( '-1 hour' ) );
+
+		$action1 = $store->save_action( new ActionScheduler_Action( __METHOD__, array(), $schedule, $group1 ) );
+		$action2 = $store->save_action( new ActionScheduler_Action( __METHOD__, array(), $schedule ) );
+
+		// Claiming no group should include all actions.
+		$claim = $store->stake_claim( 10 );
+		$this->assertEquals( 2, count( $claim->get_actions() ) );
+		$this->assertTrue( in_array( $action1, $claim->get_actions() ) );
+		$this->assertTrue( in_array( $action2, $claim->get_actions() ) );
+		$store->release_claim( $claim );
+
+		// Claiming a group should claim only actions in that group.
+		$claim = $store->stake_claim( 10, null, $group1 );
+		$this->assertEquals( 1, count( $claim->get_actions() ) );
+		$this->assertTrue( in_array( $action1, $claim->get_actions() ) );
+		$store->release_claim( $claim );
+	}
 }
