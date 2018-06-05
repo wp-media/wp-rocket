@@ -106,7 +106,7 @@ function rocket_add_weepie_cookie_allow_mandatory_cookie( $cookies ) {
  * @return array Updated cookies list
  */
 function rocket_add_weepie_cookie_allow_dynamic_cookies( $cookies ) {
-	if ( ! rocket_do_weepie_cookie_allow_cookies() || version_compare( WpieCookieAllow::VERSION, '3.2', '<' ) ) {
+	if ( ! rocket_do_weepie_cookie_allow_cookies() || version_compare( WpieCookieAllow::VERSION, '3.2' ) < 0 ) {
 		return $cookies;
 	}
 
@@ -134,7 +134,7 @@ function rocket_do_weepie_cookie_allow_cookies() {
 	}
 
 	if ( ! isset( $options['general_cookies_before_consent'] ) || 3 === (int) $options['general_cookies_before_consent'] ) {
-			return false;
+		return false;
 	}
 
 	return true;
@@ -166,7 +166,7 @@ function rocket_get_weepie_cookie_allow_options() {
 
 	$wpml_languages = apply_filters( 'wpml_active_languages', null, 'orderby=id&order=desc' );
 
-	if ( ! isset( $wpml_languages[ $wpml_current_language ], $wpml_languages[ $wpml_current_language ]['default_locale'] ) ) {
+	if ( ! isset( $wpml_languages[ $wpml_current_language ]['default_locale'] ) ) {
 		return $options;
 	}
 
