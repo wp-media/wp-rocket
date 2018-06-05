@@ -112,9 +112,12 @@ class Page {
 		add_action( 'wp_ajax_rocket_toggle_option', [ $self, 'toggle_option' ] );
 
 		add_filter( 'option_page_capability_' . $self->slug, [ $self, 'required_capability' ] );
-		add_filter( 'rocket_settings_menu_navigation', [ $self, 'add_menu_tools_page' ] );
 		add_filter( 'pre_get_rocket_option_cache_mobile', [ $self, 'is_mobile_plugin_active' ] );
 		add_filter( 'pre_get_rocket_option_do_caching_mobile_files', [ $self, 'is_mobile_plugin_active' ] );
+
+		if ( \rocket_valid_key() ) {
+			add_filter( 'rocket_settings_menu_navigation', [ $self, 'add_menu_tools_page' ] );
+		}
 	}
 
 	/**
@@ -1759,19 +1762,19 @@ class Page {
 			[
 				'cloudflare_email'            => [
 					'label'           => _x( 'Account email', 'Cloudflare', 'rocket' ),
-					'container_class' => [
+					'default'         => '',
+					'container_class'   => [
 						'wpr-field--split',
 					],
-					'default'         => '',
 					'section'         => 'cloudflare_credentials',
 					'page'            => 'cloudflare',
 				],
-				'cloudflare_domain'           => [
-					'label'           => _x( 'Domain', 'Cloudflare', 'rocket' ),
-					'container_class' => [
+				'cloudflare_zone_id'          => [
+					'label'           => _x( 'Zone ID', 'Cloudflare', 'rocket' ),
+					'default'         => '',
+					'container_class'   => [
 						'wpr-field--split',
 					],
-					'default'         => '',
 					'section'         => 'cloudflare_credentials',
 					'page'            => 'cloudflare',
 				],
@@ -1827,7 +1830,6 @@ class Page {
 				'minify_js_key',
 				'version',
 				'cloudflare_old_settings',
-				'cloudflare_zone_id',
 				'sitemap_preload_url_crawl',
 			]
 		);

@@ -52,7 +52,7 @@ function PageManager(aElem) {
         this.detectID();
     }
     else{
-        var session = sessionStorage.getItem('wpr-hash');
+        var session = localStorage.getItem('wpr-hash');
         this.bodyTop = 0;
 
         if(session){
@@ -61,7 +61,7 @@ function PageManager(aElem) {
         }
         else{
             this.$menuItems[0].classList.add('isActive');
-            sessionStorage.setItem('wpr-hash', 'dashboard');
+            localStorage.setItem('wpr-hash', 'dashboard');
             window.location.hash = '#dashboard';
         }
     }
@@ -82,7 +82,7 @@ function PageManager(aElem) {
     var $otherlinks = document.querySelectorAll('#adminmenumain a, #wpadminbar a');
     for (var i = 0; i < this.$links.length; i++) {
         $otherlinks[i].onclick = function() {
-            sessionStorage.setItem('wpr-hash', '');
+            localStorage.setItem('wpr-hash', '');
         };
     }
 
@@ -94,7 +94,7 @@ function PageManager(aElem) {
 */
 PageManager.prototype.detectID = function() {
     this.pageId = window.location.hash.split('#')[1];
-    sessionStorage.setItem('wpr-hash', this.pageId);
+    localStorage.setItem('wpr-hash', this.pageId);
 
     this.$page = document.querySelector('.wpr-Page#' + this.pageId);
     this.$menuItem = document.getElementById('wpr-nav-' + this.pageId);
@@ -133,7 +133,18 @@ PageManager.prototype.change = function() {
     // Show current default page
     this.$page.style.display = 'block';
     this.$submitButton.style.display = 'block';
-    this.$sidebar.style.display = 'block';
+
+    if ( null === localStorage.getItem( 'wpr-show-sidebar' ) ) {
+        localStorage.setItem( 'wpr-show-sidebar', 'on' );
+    }
+
+    if ( 'on' === localStorage.getItem('wpr-show-sidebar') ) {
+        this.$sidebar.style.display = 'block';
+    } else if ( 'off' === localStorage.getItem('wpr-show-sidebar') ) {
+        this.$sidebar.style.display = 'none';
+        document.querySelector('#wpr-js-tips').removeAttribute( 'checked' );
+    }
+
     this.$tips.style.display = 'block';
     this.$menuItem.classList.add('isActive');
     this.$submitButton.value = this.buttonText;
@@ -151,18 +162,15 @@ PageManager.prototype.change = function() {
     // Exception for addons
     if(this.pageId == "addons"){
         this.$submitButton.style.display = 'none';
-        this.$tips.style.display = 'none';
     }
 
     // Exception for database
     if(this.pageId == "database"){
         this.$submitButton.style.display = 'none';
-        this.$tips.style.display = 'none';
     }
 
     // Exception for tools and addons
     if(this.pageId == "tools" || this.pageId == "addons"){
         this.$submitButton.style.display = 'none';
-        this.$tips.style.display = 'none';
     }
 };

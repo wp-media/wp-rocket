@@ -1045,13 +1045,16 @@ function rocket_find_wpconfig_path() {
 /**
  * Get WP Rocket footprint
  *
+ * @since 3.0.5 White label footprint if WP_ROCKET_WHITE_LABEL_FOOTPRINT is defined.
  * @since 2.0
  *
  * @param bool $debug (default: true) If true, adds the date of generation cache file.
  * @return string The footprint that will be printed
  */
 function get_rocket_footprint( $debug = true ) {
-	$footprint = "\n" . '<!-- This website is like a Rocket, isn\'t it? Performance optimized by ' . WP_ROCKET_PLUGIN_NAME . '. Learn more: https://wp-rocket.me';
+	$footprint = defined( 'WP_ROCKET_WHITE_LABEL_FOOTPRINT' ) ? 
+					"\n" . '<!-- Cached for great performance' : 
+					"\n" . '<!-- This website is like a Rocket, isn\'t it? Performance optimized by ' . WP_ROCKET_PLUGIN_NAME . '. Learn more: https://wp-rocket.me';
 	if ( $debug ) {
 		$footprint .= ' - Debug: cached@' . time();
 	}
@@ -1091,7 +1094,7 @@ function rocket_fetch_and_cache_busting( $src, $cache_busting_paths, $abspath_sr
 		 *
 		 * @param string The Document Root path.
 		*/
-		$document_root = apply_filters( 'rocket_min_documentRoot', ABSPATH );
+		$document_root = apply_filters( 'rocket_min_documentRoot', wp_normalize_path( dirname( $_SERVER['SCRIPT_FILENAME'] ) ) );
 
 		// Rewrite import/url in CSS content to add the absolute path to the file.
 		$content = Minify_CSS_UriRewriter::rewrite( $content, dirname( $abspath_src ), $document_root );

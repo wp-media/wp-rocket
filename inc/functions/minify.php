@@ -369,7 +369,7 @@ function rocket_minify( $files, $extension ) {
 			 *
 			 * @param string The Document Root path.
 			*/
-			$document_root = apply_filters( 'rocket_min_documentRoot', ABSPATH );
+			$document_root = apply_filters( 'rocket_min_documentRoot', wp_normalize_path( $_SERVER['DOCUMENT_ROOT'] ) );
 
 			$file_content = rocket_cdn_css_properties( Minify_CSS_UriRewriter::rewrite( $file_content, dirname( $file ), $document_root ) );
 		}

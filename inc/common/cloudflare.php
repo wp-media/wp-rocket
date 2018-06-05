@@ -55,7 +55,7 @@ function rocket_set_real_ip_cloudflare() {
 
 	// Let people know that the CF WP plugin is turned on.
 	if ( ! headers_sent() ) {
-		header( 'X-CF-Powered-By: WP Rocket' . WP_ROCKET_VERSION );
+		header( 'X-CF-Powered-By: WP Rocket ' . WP_ROCKET_VERSION );
 	}
 }
 add_action( 'init', 'rocket_set_real_ip_cloudflare', 1 );

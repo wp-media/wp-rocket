@@ -317,12 +317,18 @@ function rocket_url_to_path( $url, $hosts = '' ) {
 	$site_url       = trailingslashit( set_url_scheme( site_url() ) );
 	$home_path      = ABSPATH;
 
-	if ( false !== strpos( rocket_extract_url_component( $url, PHP_URL_PATH ), rocket_extract_url_component( WP_CONTENT_URL, PHP_URL_PATH ) ) ) {
+	if ( false !== strpos( $url_components['path'], rocket_extract_url_component( WP_CONTENT_URL, PHP_URL_PATH ) ) ) {
 		$site_url  = trailingslashit( set_url_scheme( WP_CONTENT_URL ) );
 		$home_path = trailingslashit( WP_CONTENT_DIR );
 	}
 
 	$site_components = get_rocket_parse_url( $site_url );
+
+	if ( '' === $url_components['host'] ) {
+		$url_components['scheme'] = $site_components['scheme'];
+		$url_components['host']   = $site_components['host'];
+		$url                      = trailingslashit( set_url_scheme( '//' . $url_components['host'], $url_components['scheme'] ) ) . ltrim( $url, '/' );
+	}
 
 	if ( isset( $hosts[ $url_components['host'] ] ) && 'home' !== $hosts[ $url_components['host'] ] ) {
 		$site_url = trailingslashit( set_url_scheme( '//' . $url_components['host'], $url_components['scheme'] ) );

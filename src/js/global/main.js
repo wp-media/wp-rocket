@@ -113,22 +113,23 @@ $(document).ready(function(){
 
 
     /***
-    * Tips on/off
+    * Sidebar on/off
     ***/
-
+    var $wprSidebar    = $( '.wpr-Sidebar' );
     var $wprButtonTips = $('.wpr-js-tips');
 
     $wprButtonTips.change(function() {
         wprDetectTips($(this));
-    }).trigger('change');
+    });
 
     function wprDetectTips(aElem){
-        var $excluded = $('#dashboard .wpr-field-description, #tools .wpr-field-description, #addons .wpr-field-description, #database .wpr-field-description');
         if(aElem.is(':checked')){
-            $('.wpr-field-description').not($excluded).css('display','block');
+            $wprSidebar.css('display','block');
+            localStorage.setItem( 'wpr-show-sidebar', 'on' );
         }
         else{
-            $('.wpr-field-description').not($excluded).css('display','none');
+            $wprSidebar.css('display','none');
+            localStorage.setItem( 'wpr-show-sidebar', 'off' );
         }
     }
 

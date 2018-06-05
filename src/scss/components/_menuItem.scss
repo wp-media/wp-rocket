@@ -11,8 +11,9 @@
     display: block;
     padding: $space*2 44px 18px 20px;
     text-decoration: none;
-    color: #fff;
-    border-top: 1px solid rgba(255,255,255, 0.1);
+    color: $cBlack;
+    border-top: 1px solid $cGrey;
+    border-left: 2px solid transparent;
     overflow: hidden;
     @include transition(all, 100ms);
 
@@ -22,65 +23,38 @@
         padding: 0;
     }
 
-    &:first-child{
-        border-top: none;
-    }
-
     &:before{
         position: absolute;
         top: calc(50% - 12px);
         right: 18px;
         text-align: center;
         @include font-size(23,23);
+        color: $cBlack;
         opacity: 0.4;
-        color: #fff;
         @include transition(all, 150ms);
-    }
-
-    &:after{
-        content: '';
-        position: absolute;
-        display: block;
-        top: calc(50% - 12px);
-        right: 0;
-        width: 0;
-        height: 0;
-        border-style: solid;
-        border-width: 12px 10px 12px 0;
-        border-color: transparent #ffffff transparent transparent;
-        transform: translateX(12px);
-        @include transition(all, 200ms);
     }
 
     &:hover,
     &.isActive{
-        color: #fff;
-        background: $cPurpleLight1;
-        border-color: transparent;
+        color: $cBlack;
+        background: $cWhite;
+        border-left: 2px solid $cOrange;
 
-        .wpr-menuItem-description{
-            color: #fff;
+        .wpr-menuItem-title{
+            color: $cOrange;
         }
 
         &:before{
+            color: $cOrange;
             opacity: 1;
-        }
-
-        &:after{
-            transform: translateX(0);
         }
     }
 
     &:focus{
-        color: #fff;
+        color: $cBlack;
 
         &:before{
-            color: #fff;
-            opacity: 1;
-        }
-
-        &:after{
-            transform: translateX(0);
+            color: $cBlack;
         }
     }
 
@@ -89,7 +63,7 @@
         font-weight: bold;
         letter-spacing: -0.08px;
         text-transform: uppercase;
-        color: #fff;
+        color: $cBlack;
 
         @include respond-to('xs') {
             display: none !important;
@@ -98,8 +72,8 @@
 
     &-description{
         margin-top: 2px;
-        color: $cGreyDark1;
-        @include font-size(12,16);
+        color: $cGreyDark3;
+        @include font-size(13,16);
         @include transition(all, 150ms);
 
         @include respond-to('xs') {
@@ -110,7 +84,6 @@
     // Special for cloudflare
     &.wpr-cloudflareToggle{
         display: none;
-        border: none;
         padding: 10px 20px $space 25px;
 
         @include respond-to('xs') {
@@ -120,7 +93,7 @@
 
         .wpr-menuItem-title{
             display: inline-block;
-            @include font-size(12,24);
+            @include font-size(13,24);
             text-transform: inherit;
             font-weight: 600;
         }
@@ -132,18 +105,6 @@
             right: 2px;
             margin-right: 8px;
             @include font-size(16,16);
-        }
-
-        &:after{
-            border-width: 9px 8px 9px 0;
-            top: calc(50% - 9px);
-            transform: translateX(8px);
-        }
-
-        &:hover{
-            &:after{
-                transform: translateX(0);
-            }
         }
     }
 }
