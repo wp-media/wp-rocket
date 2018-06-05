@@ -202,8 +202,6 @@ function rocket_process_sitemap( $sitemap_url, $urls = array() ) {
 	 * @param array $args Arguments for the request.
 	 */
 	$args = apply_filters( 'rocket_preload_sitemap_request_args', array(
-		'timeout'    => 0.01,
-		'blocking'   => false,
 		'user-agent' => 'WP Rocket/Sitemaps',
 		'sslverify'  => apply_filters( 'https_local_ssl_verify', true ),
 	) );
