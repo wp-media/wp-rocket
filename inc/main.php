@@ -42,7 +42,6 @@ function rocket_init() {
 	require WP_ROCKET_FUNCTIONS_PATH . 'admin.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'formatting.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'cdn.php';
-	require WP_ROCKET_FUNCTIONS_PATH . 'minify.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'i18n.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'bots.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'htaccess.php';
@@ -82,7 +81,6 @@ function rocket_init() {
 		require WP_ROCKET_ADMIN_UI_PATH . 'notices.php';
 		require WP_ROCKET_ADMIN_UI_PATH . 'meta-boxes.php';
 	} elseif ( rocket_valid_key() ) {
-		require WP_ROCKET_FRONT_PATH . 'minify.php';
 		require WP_ROCKET_FRONT_PATH . 'cookie.php';
 		require WP_ROCKET_FRONT_PATH . 'images.php';
 		require WP_ROCKET_FRONT_PATH . 'enqueue.php';
