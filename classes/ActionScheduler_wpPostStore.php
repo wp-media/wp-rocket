@@ -438,6 +438,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	 *
 	 * @return ActionScheduler_ActionClaim
 	 * @throws RuntimeException When there is an error staking a claim.
+	 * @throws InvalidArgumentException When the given group is not valid.
 	 */
 	public function stake_claim( $max_actions = 10, DateTime $before_date = null, $group = '' ) {
 		$claim_id = $this->generate_claim_id();
@@ -471,62 +472,22 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	 * @param string   $group       Claim only actions in the given group.
 	 *
 	 * @return int The number of actions that were claimed
-	 * @throws RuntimeException
+	 * @throws RuntimeException When there is a database error.
+	 * @throws InvalidArgumentException When the group is invalid.
 	 */
 	protected function claim_actions( $claim_id, $limit, DateTime $before_date = null, $group = '' ) {
-		/** @var wpdb $wpdb */
-		global $wpdb;
+		// Set up initial variables.
+		$date      = null === $before_date ? as_get_datetime_object() : clone $before_date;
+		$limit_ids = ! empty( $group );
+		$ids       = $limit_ids ? $this->get_actions_by_group( $group, $limit, $date ) : array();
 
-		$date = null === $before_date ? as_get_datetime_object() : clone $before_date;
-
-		// Set up a query for post IDs to use later.
-		$query      = new WP_Query();
-		$query_args = array(
-			'fields'           => 'ids',
-			'post_type'        => self::POST_TYPE,
-			'post_status'      => ActionScheduler_Store::STATUS_PENDING,
-			'has_password'     => false,
-			'posts_per_page'   => $limit,
-			'suppress_filters' => true,
-			'no_found_rows'    => true,
-			'orderby'          => array(
-				'menu_order' => 'ASC',
-				'date'       => 'ASC',
-				'ID'         => 'ASC',
-			),
-			'date_query'       => array(
-				'column' => 'post_date',
-				array(
-					'compare' => '<=',
-					'year'    => $date->format( 'Y' ),
-					'month'   => $date->format( 'n' ),
-					'day'     => $date->format( 'j' ),
-					'hour'    => $date->format( 'G' ),
-					'minute'  => $date->format( 'i' ),
-					'second'  => $date->format( 's' ),
-				),
-			),
-		);
-
-		// Check for a particular group.
-		if ( ! empty( $group ) && term_exists( $group, self::GROUP_TAXONOMY ) ) {
-			$query_args['tax_query'] = array(
-				array(
-					'taxonomy'         => self::GROUP_TAXONOMY,
-					'field'            => 'slug',
-					'terms'            => $group,
-					'include_children' => false,
-				),
-			);
-		}
-
-		// Gather relevant IDs.
-		$ids = $query->query( $query_args );
-
-		// If no posts found, then return early since we have nothing to update.
-		if ( 0 === count( $ids ) ) {
+		// If limiting by IDs and no posts found, then return early since we have nothing to update.
+		if ( $limit_ids && 0 === count( $ids ) ) {
 			return 0;
 		}
+
+		/** @var wpdb $wpdb */
+		global $wpdb;
 
 		/*
 		 * Build up custom query to update the affected posts. Parameters are built as a separate array
@@ -546,20 +507,86 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		$params[] = self::POST_TYPE;
 		$params[] = ActionScheduler_Store::STATUS_PENDING;
 
-		// Add the IDs to the WHERE clause. IDs not escaped because they came directly from a prior DB query.
-		$where .= ' AND ID IN (' . join( ',', $ids ) . ')';
+		/*
+		 * Add the IDs to the WHERE clause. IDs not escaped because they came directly from a prior DB query.
+		 *
+		 * If we're not limiting by IDs, then include the post_date_gmt clause.
+		 */
+		if ( $limit_ids ) {
+			$where .= ' AND ID IN (' . join( ',', $ids ) . ')';
+		} else {
+			$where .= ' AND post_date_gmt <= %s';
+			$params[] = $date->format( 'Y-m-d H:i:s' );
+		}
 
 		// Add the ORDER BY clause and,ms limit.
 		$order    = 'ORDER BY menu_order ASC, post_date_gmt ASC, ID ASC LIMIT %d';
 		$params[] = $limit;
 
 		// Run the query and gather results.
-		$rows_affected = $wpdb->query( $wpdb->prepare( $update . $where . $order, $params ) );
+		$rows_affected = $wpdb->query( $wpdb->prepare( "{$update} {$where} {$order}", $params ) );
 		if ( $rows_affected === false ) {
 			throw new RuntimeException( __( 'Unable to claim actions. Database error.', 'action-scheduler' ) );
 		}
 
 		return (int) $rows_affected;
+	}
+
+	/**
+	 * Get IDs of actions within a certain group and up to a certain date/time.
+	 *
+	 * @param string   $group The group to use in finding actions.
+	 * @param int      $limit The number of actions to retrieve.
+	 * @param DateTime $date  DateTime object representing cutoff time for actions. Actions retrieved will be
+	 *                        up to and including this DateTime.
+	 *
+	 * @return array IDs of actions in the appropriate group and before the appropriate time.
+	 * @throws InvalidArgumentException When the group does not exist.
+	 */
+	protected function get_actions_by_group( $group, $limit, DateTime $date ) {
+		// Ensure the group exists before continuing.
+		if ( ! term_exists( $group, self::GROUP_TAXONOMY )) {
+			throw new InvalidArgumentException( __( 'The group "%s" does not exist.', 'action-scheduler' ), $group );
+		}
+
+		// Set up a query for post IDs to use later.
+		$query      = new WP_Query();
+		$query_args = array(
+			'fields'           => 'ids',
+			'post_type'        => self::POST_TYPE,
+			'post_status'      => ActionScheduler_Store::STATUS_PENDING,
+			'has_password'     => false,
+			'posts_per_page'   => $limit * 3,
+			'suppress_filters' => true,
+			'no_found_rows'    => true,
+			'orderby'          => array(
+				'menu_order' => 'ASC',
+				'date'       => 'ASC',
+				'ID'         => 'ASC',
+			),
+			'date_query'       => array(
+				'column' => 'post_date',
+				array(
+					'compare' => '<=',
+					'year'    => $date->format( 'Y' ),
+					'month'   => $date->format( 'n' ),
+					'day'     => $date->format( 'j' ),
+					'hour'    => $date->format( 'G' ),
+					'minute'  => $date->format( 'i' ),
+					'second'  => $date->format( 's' ),
+				),
+			),
+			'tax_query' => array(
+				array(
+					'taxonomy'         => self::GROUP_TAXONOMY,
+					'field'            => 'slug',
+					'terms'            => $group,
+					'include_children' => false,
+				),
+			),
+		);
+
+		return $query->query( $query_args );
 	}
 
 	/**
