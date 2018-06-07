@@ -114,6 +114,38 @@ function rocket_init() {
 add_action( 'plugins_loaded', 'rocket_init' );
 
 /**
+ * Dynamically defines page hook name for settings page.
+ *
+ * This avoids hard-coding `settings_page` as a partial of the page slug,
+ * since it can be changed to `admin_page` (possibly other values, too) in
+ * certain environments.
+ *
+ * @since
+ * @author Caspar Hübinger
+ *
+ * @see    wp-admin/admin.php
+ * @uses   get_plugin_page_hook()
+ *
+ * @return void
+ */
+function rocket_define_settings_page_hook() {
+
+	$plugin_page = $GLOBALS['plugin_page']; // wprocket
+	$parent_page = $GLOBALS['pagenow'];     // options-general.php
+
+	$page_hook = get_plugin_page_hook( $plugin_page, $parent_page );
+
+	if ( ! empty( $page_hook ) ) {
+		// This will be only available on WP Rocket’s settings page itself!
+		define( 'WP_ROCKET_SETTINGS_PAGE_HOOK', $page_hook );
+	} else {
+		// Fallback.
+		define( 'WP_ROCKET_SETTINGS_PAGE_HOOK', 'settings_page_wprocket' );
+	}
+}
+add_action( 'admin_init', 'rocket_define_settings_page_hook', 0 );
+
+/**
  * Tell WP what to do when plugin is deactivated.
  *
  * @since 1.0

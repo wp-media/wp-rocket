@@ -2,6 +2,23 @@
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
+ * Enqueue assets on settings page only.
+ *
+ * @since
+ * @author Caspar Hübinger
+ *
+ * @uses   WP_ROCKET_SETTINGS_PAGE_HOOK
+ * @see    /inc/main.php::rocket_define_settings_page_hook()
+ *
+ * @return void
+ */
+function rocket_settings_page_print_assets() {
+	add_action( 'admin_print_styles-' . WP_ROCKET_SETTINGS_PAGE_HOOK, 'rocket_add_admin_css_js' );
+	add_action( 'admin_print_styles-' . WP_ROCKET_SETTINGS_PAGE_HOOK, 'rocket_enqueue_modal_plugin' );
+}
+add_action( 'admin_init', 'rocket_settings_page_print_assets' );
+
+/**
  * Add the CSS and JS files for WP Rocket options page
  *
  * @since 1.0.0
@@ -17,7 +34,6 @@ function rocket_add_admin_css_js() {
 	}
 
 }
-add_action( 'admin_print_styles-settings_page_' . WP_ROCKET_PLUGIN_SLUG, 'rocket_add_admin_css_js' );
 
 /**
  * Add the CSS and JS files needed by WP Rocket everywhere on admin pages
@@ -82,4 +98,3 @@ function rocket_enqueue_modal_plugin() {
 }
 add_action( 'admin_print_styles-media-new.php', 'rocket_enqueue_modal_plugin' );
 add_action( 'admin_print_styles-upload.php', 'rocket_enqueue_modal_plugin' );
-add_action( 'admin_print_styles-settings_page_' . WP_ROCKET_PLUGIN_SLUG, 'rocket_enqueue_modal_plugin' );

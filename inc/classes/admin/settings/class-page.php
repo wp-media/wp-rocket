@@ -107,7 +107,8 @@ class Page {
 
 		add_action( 'admin_menu', [ $self, 'add_admin_page' ] );
 		add_action( 'admin_init', [ $self, 'configure' ] );
-		add_action( 'admin_print_footer_scripts-settings_page_wprocket', [ $self, 'insert_beacon' ] );
+		add_action( 'admin_init', [ $self, 'print_footer_scripts_page_hook' ] );
+
 		add_action( 'wp_ajax_rocket_refresh_customer_data', [ $self, 'refresh_customer_data' ] );
 		add_action( 'wp_ajax_rocket_toggle_option', [ $self, 'toggle_option' ] );
 
@@ -118,6 +119,21 @@ class Page {
 		if ( \rocket_valid_key() ) {
 			add_filter( 'rocket_settings_menu_navigation', [ $self, 'add_menu_tools_page' ] );
 		}
+	}
+
+	/**
+	 * Prints footer scripts via dynamic admin page hook.
+	 *
+	 * @since
+	 * @author Caspar Hübinger
+	 *
+	 * @uses   WP_ROCKET_SETTINGS_PAGE_HOOK
+	 * @see    /inc/main.php::rocket_define_settings_page_hook()
+	 *
+	 * @return void
+	 */
+	public function print_footer_scripts_page_hook() {
+		add_action( 'admin_print_footer_scripts-' . WP_ROCKET_SETTINGS_PAGE_HOOK, [ $this, 'insert_beacon' ] );
 	}
 
 	/**
@@ -1763,18 +1779,12 @@ class Page {
 				'cloudflare_email'            => [
 					'label'           => _x( 'Account email', 'Cloudflare', 'rocket' ),
 					'default'         => '',
-					'container_class'   => [
-						'wpr-field--split',
-					],
 					'section'         => 'cloudflare_credentials',
 					'page'            => 'cloudflare',
 				],
 				'cloudflare_zone_id'          => [
 					'label'           => _x( 'Zone ID', 'Cloudflare', 'rocket' ),
 					'default'         => '',
-					'container_class'   => [
-						'wpr-field--split',
-					],
 					'section'         => 'cloudflare_credentials',
 					'page'            => 'cloudflare',
 				],
