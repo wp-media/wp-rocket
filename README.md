@@ -81,9 +81,30 @@ These are the commands available to use with Action Scheduler:
     Options:
     * `--batch-size` - This is the number of actions to run in a single batch. The default is `100`.
     * `--batches` - This is the number of batches to run. Using 0 means that batches will continue running until there are no more actions to run.
+    * `--group` - Process only actions in a specific group, like `'woocommerce-memberships'`. By default, actions in any group (or no group) will be processed.
     * `--force` - By default, Action Scheduler limits the number of concurrent batches that can be run at once to ensure the server does not get overwhelmed. Using the `--force` flag overrides this behavior to force the WP CLI queue to run.
 
 The best way to get a full list of commands and their available options is to use WP CLI itself. This can be done by running `wp action-scheduler` to list all Action Scheduler commands, or by including the `--help` flag with any of the individual commands. This will provide all relevant parameters and flags for the command.
+
+### Improving Performance with `--group`
+
+Being able to run queues for specific groups of actions is valuable at scale. Why? Because it means you can restrict the concurrency for similar actions.
+
+For example, let's say you have 300,000 actions queued up comprised of:
+
+* 100,000 renewals payments
+* 100,000 email notifications
+* 100,000 membership status updates
+
+Action Scheduler's default WP Cron queue runner will process them all together. e.g. when it claims a batch of actions, some may be emails, some membership updates and some renewals.
+
+When you add concurrency to that, you can end up with issues. For example, if you have 3 queues running, they may all be attempting to process similar actions at the same time, which can lead to querying the same database tables with similar queries. Depending on the code/queries running, this can lead to database locks or other issues.
+
+If you can batch based on each action's group, then you can improve performance by processing like actions consecutively, but still processing the full set of actions concurrently.
+
+For example, if one queue is created to process emails, another to process membership updates, and another to process renewal payments, then the same queries won't be run at the same time, and 3 separate queues will be able to run more efficiently.
+
+The WP CLI runner can achieve this using the `--group` option.
 
 ## API Functions
 
