@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\Subscriber;
+namespace WP_Rocket\Subscriber\Optimization;
 
 use MatthiasMullie\Minify;
 use WP_Rocket\Admin\Options_Data as Options;
