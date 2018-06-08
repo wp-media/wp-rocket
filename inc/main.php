@@ -130,12 +130,13 @@ add_action( 'plugins_loaded', 'rocket_init' );
  */
 function rocket_define_settings_page_hook() {
 
-	$plugin_page = $GLOBALS['plugin_page']; // wprocket
-	$parent_page = $GLOBALS['pagenow'];     // options-general.php
+	if ( isset( $GLOBALS['plugin_page'] ) && 'wp-rocket' === $GLOBALS['plugin_page'] ) {
 
-	$page_hook = get_plugin_page_hook( $plugin_page, $parent_page );
+		$plugin_page = $GLOBALS['plugin_page']; // wprocket
+		$parent_page = $GLOBALS['pagenow'];     // options-general.php
 
-	if ( 'wprocket' === $plugin_page && ! empty( $page_hook ) ) {
+		$page_hook = get_plugin_page_hook( $plugin_page, $parent_page );
+
 		// This will be only available on WP Rocket’s settings page itself!
 		define( 'WP_ROCKET_SETTINGS_PAGE_HOOK', $page_hook );
 	} else {
