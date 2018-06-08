@@ -62,9 +62,9 @@ class Minify_HTML_Subscriber {
 			return $html;
 		}
 
-		$html_options = array(
+		$html_options = [
 			'cssMinifier' => [ $this, 'minify_inline_css' ],
-		);
+		];
 
 		/**
 		 * Filter options of minify inline HTML
