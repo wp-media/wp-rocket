@@ -135,7 +135,7 @@ function rocket_define_settings_page_hook() {
 
 	$page_hook = get_plugin_page_hook( $plugin_page, $parent_page );
 
-	if ( ! empty( $page_hook ) ) {
+	if ( 'wprocket' === $plugin_page && ! empty( $page_hook ) ) {
 		// This will be only available on WP Rocket’s settings page itself!
 		define( 'WP_ROCKET_SETTINGS_PAGE_HOOK', $page_hook );
 	} else {
