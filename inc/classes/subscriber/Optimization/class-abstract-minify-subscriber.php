@@ -109,7 +109,7 @@ abstract class Minify_Subscriber {
 			return $url;
 		}
 
-		if ( false !== strpos( $url, 'https://' ) ) {
+		if ( 0 === strpos( $url, 'https://' ) ) {
 			return $url;
 		}
 
