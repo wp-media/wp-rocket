@@ -1,6 +1,8 @@
 <?php
 namespace WP_Rocket\Optimization\CSS;
 
+use Wa72\HtmlPageDom\HtmlPageCrawler;
+
 /**
  * Combine Google Fonts
  *
@@ -46,7 +48,7 @@ class Combine_Google_Fonts {
 	 *
 	 * @param HtmlPageCrawler $crawler Crawler instance.
 	 */
-	public function __construct( $crawler ) {
+	public function __construct( HtmlPageCrawler $crawler ) {
 		$this->crawler = $crawler;
 		$this->fonts   = [];
 		$this->subsets = [];
@@ -116,21 +118,20 @@ class Combine_Google_Fonts {
 	 */
 	protected function parse( $nodes ) {
 		$nodes->each( function( \Wa72\HtmlPageDom\HtmlPageCrawler $node, $i ) {
-			// Get fonts name.
-			$font = str_replace( array( '%7C', '%7c' ), '|', $node->attr( 'href' ) );
-			$font = explode( 'family=', $font );
-			$font = isset( $font[1] ) ? explode( '&', $font[1] ) : array();
+			$query = \rocket_extract_url_component( $node->attr( 'href' ), PHP_URL_QUERY );
+
+			if ( ! isset( $query ) ) {
+				return;
+			}
+
+			$query = html_entity_decode( $query );
+			$font  = wp_parse_args( $query );
 
 			// Add font to the collection.
-			$this->fonts = array_merge( $this->fonts, explode( '|', reset( $font ) ) );
+			$this->fonts[] = rawurlencode( htmlentities( $font['family'] ) );
 
 			// Add subset to collection.
-			$subset = ( is_array( $font ) ) ? end( $font ) : '';
-
-			if ( false !== strpos( $subset, 'subset=' ) ) {
-				$subset        = explode( 'subset=', $subset );
-				$this->subsets = array_merge( $this->subsets, explode( ',', $subset[1] ) );
-			}
+			$this->subsets[] = isset( $font['subset'] ) ? rawurlencode( htmlentities( $font['subset'] ) ) : '';
 		} );
 
 		// Concatenate fonts tag.
