@@ -111,7 +111,7 @@ class Google_Analytics extends Abstract_Busting {
 	 */
 	public function delete() {
 		$file = $this->busting_path . $this->filename;
-		error_log( $file );
+
 		return \rocket_direct_filesystem()->delete( $file, false, 'f' );
 	}
 }
