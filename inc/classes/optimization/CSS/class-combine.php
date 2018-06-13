@@ -144,7 +144,7 @@ class Combine extends Abstract_CSS_Optimization {
 				return false;
 			}
 
-			$minify_filepath = $this->write_minify_file( $minified_content, $minified_file );
+			$minify_filepath = $this->write_file( $minified_content, $minified_file );
 
 			if ( ! $minify_filepath ) {
 				return false;
