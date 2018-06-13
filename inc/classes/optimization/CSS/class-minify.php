@@ -84,7 +84,7 @@ class Minify extends Abstract_CSS_Optimization {
 				return false;
 			}
 
-			$save_minify_file = $this->write_minify_file( $minified_content, $minified_file );
+			$save_minify_file = $this->write_file( $minified_content, $minified_file );
 
 			if ( ! $save_minify_file ) {
 				return false;
