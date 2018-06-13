@@ -19,6 +19,9 @@ class ActionScheduler_WPCLI_Scheduler_command extends WP_CLI_Command {
 	 * [--cleanup-batch-size=<size>]
 	 * : The maximum number of actions to clean up. Defaults to the value of --batch-size.
 	 *
+	 * [--hooks=<hooks>]
+	 * : Only run actions with the specified hook. Omitting this option runs actions with any hook.
+	 *
 	 * [--group=<group>]
 	 * : Only run actions from the specified group. Omitting this option runs actions from all groups.
 	 *
@@ -34,6 +37,7 @@ class ActionScheduler_WPCLI_Scheduler_command extends WP_CLI_Command {
 		$batch   = absint( \WP_CLI\Utils\get_flag_value( $assoc_args, 'batch-size', 100 ) );
 		$batches = absint( \WP_CLI\Utils\get_flag_value( $assoc_args, 'batches', 0 ) );
 		$clean   = absint( \WP_CLI\Utils\get_flag_value( $assoc_args, 'cleanup-batch-size', $batch ) );
+		$hooks   = \WP_CLI\Utils\get_flag_value( $assoc_args, 'hooks', array() );
 		$group   = \WP_CLI\Utils\get_flag_value( $assoc_args, 'group', '' );
 		$force   = \WP_CLI\Utils\get_flag_value( $assoc_args, 'force', false );
 
@@ -49,7 +53,7 @@ class ActionScheduler_WPCLI_Scheduler_command extends WP_CLI_Command {
 			$runner = new ActionScheduler_WPCLI_QueueRunner( null, null, $cleaner );
 
 			// Determine how many tasks will be run in the first batch.
-			$total = $runner->setup( $batch, $group, $force );
+			$total = $runner->setup( $batch, $hooks, $group, $force );
 
 			// Run actions for as long as possible.
 			while ( $total > 0 ) {
