@@ -94,25 +94,25 @@ abstract class Abstract_Optimization {
 	}
 
 	/**
-	 * Writes the minified content to a file
+	 * Writes the content to a file
 	 *
-	 * @since 2.11
+	 * @since 3.1
 	 * @author Remy Perona
 	 *
-	 * @param string $content       Minified content.
-	 * @param string $minified_file Path to the minified file to write in.
-	 * @return bool True if successful, false otherwise
+	 * @param string $content       Content to write.
+	 * @param string $file          Path to the file to write in.
+	 * @return bool
 	 */
-	protected function write_minify_file( $content, $minified_file ) {
-		if ( rocket_direct_filesystem()->exists( $minified_file ) ) {
+	protected function write_file( $content, $file ) {
+		if ( rocket_direct_filesystem()->is_readable( $file ) ) {
 			return true;
 		}
 
-		if ( ! rocket_mkdir_p( dirname( $minified_file ) ) ) {
+		if ( ! rocket_mkdir_p( dirname( $file ) ) ) {
 			return false;
 		}
 
-		return rocket_put_content( $minified_file, $content );
+		return rocket_put_content( $file, $content );
 	}
 
 	/**
