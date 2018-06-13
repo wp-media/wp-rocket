@@ -550,7 +550,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	protected function get_actions_by_group( $group, $limit, DateTime $date ) {
 		// Ensure the group exists before continuing.
 		if ( ! term_exists( $group, self::GROUP_TAXONOMY )) {
-			throw new InvalidArgumentException( __( 'The group "%s" does not exist.', 'action-scheduler' ), $group );
+			throw new InvalidArgumentException( sprintf( __( 'The group "%s" does not exist.', 'action-scheduler' ), $group ) );
 		}
 
 		// Set up a query for post IDs to use later.
