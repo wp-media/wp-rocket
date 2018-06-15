@@ -129,4 +129,14 @@ class procedural_api_Test extends ActionScheduler_UnitTestCase {
 		// Just in cases
 		date_default_timezone_set( $timezone_default );
 	}
+
+	public function test_as_get_datetime_object_type() {
+		$f   = 'Y-m-d H:i:s';
+		$now = as_get_datetime_object();
+		$this->assertInstanceOf( 'ActionScheduler_DateTime', $now );
+
+		$dateTime   = new DateTime( 'now', new DateTimeZone( 'UTC' ) );
+		$asDateTime = as_get_datetime_object( $dateTime );
+		$this->assertEquals( $dateTime->format( $f ), $asDateTime->format( $f ) );
+	}
 }
