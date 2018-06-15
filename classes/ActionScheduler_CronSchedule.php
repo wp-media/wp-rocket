@@ -36,7 +36,7 @@ class ActionScheduler_CronSchedule implements ActionScheduler_Schedule {
 	 * @return array
 	 */
 	public function __sleep() {
-		$this->start_timestamp = $this->start->format('U');
+		$this->start_timestamp = $this->start->getTimestamp();
 		return array(
 			'start_timestamp',
 			'cron'

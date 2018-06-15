@@ -15,9 +15,9 @@ class ActionScheduler_IntervalSchedule_Test extends ActionScheduler_UnitTestCase
 		$now = time();
 		$start = $now - 30;
 		$schedule = new ActionScheduler_IntervalSchedule( as_get_datetime_object("@$start"), MINUTE_IN_SECONDS );
-		$this->assertEquals( $start, $schedule->next()->format('U') );
-		$this->assertEquals( $now + MINUTE_IN_SECONDS, $schedule->next(as_get_datetime_object())->format('U') );
-		$this->assertEquals( $start, $schedule->next(as_get_datetime_object("@$start"))->format('U') );
+		$this->assertEquals( $start, $schedule->next()->getTimestamp() );
+		$this->assertEquals( $now + MINUTE_IN_SECONDS, $schedule->next(as_get_datetime_object())->getTimestamp() );
+		$this->assertEquals( $start, $schedule->next(as_get_datetime_object("@$start"))->getTimestamp() );
 	}
 
 	public function test_is_recurring() {
@@ -26,4 +26,3 @@ class ActionScheduler_IntervalSchedule_Test extends ActionScheduler_UnitTestCase
 		$this->assertTrue( $schedule->is_recurring() );
 	}
 }
- 

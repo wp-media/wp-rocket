@@ -24,7 +24,7 @@ class ActionScheduler_wpPostStore_Test extends ActionScheduler_UnitTestCase {
 		$action_id   = $store->save_action( $action, $time );
 		$action_date = $store->get_date( $action_id );
 
-		$this->assertEquals( $time->format( 'U' ), $action_date->format( 'U' ) );
+		$this->assertEquals( $time->getTimestamp(), $action_date->getTimestamp() );
 	}
 
 	public function test_retrieve_action() {
@@ -37,7 +37,7 @@ class ActionScheduler_wpPostStore_Test extends ActionScheduler_UnitTestCase {
 		$retrieved = $store->fetch_action($action_id);
 		$this->assertEquals($action->get_hook(), $retrieved->get_hook());
 		$this->assertEqualSets($action->get_args(), $retrieved->get_args());
-		$this->assertEquals($action->get_schedule()->next()->format('U'), $retrieved->get_schedule()->next()->format('U'));
+		$this->assertEquals($action->get_schedule()->next()->getTimestamp(), $retrieved->get_schedule()->next()->getTimestamp());
 		$this->assertEquals($action->get_group(), $retrieved->get_group());
 	}
 
@@ -216,19 +216,19 @@ class ActionScheduler_wpPostStore_Test extends ActionScheduler_UnitTestCase {
 		$store = new ActionScheduler_wpPostStore();
 		$action_id = $store->save_action($action);
 
-		$this->assertEquals( $store->get_date($action_id)->format('U'), $time->format('U') );
+		$this->assertEquals( $store->get_date($action_id)->getTimestamp(), $time->getTimestamp() );
 
 		$action = $store->fetch_action($action_id);
 		$action->execute();
 		$now = as_get_datetime_object();
 		$store->mark_complete( $action_id );
 
-		$this->assertEquals( $store->get_date($action_id)->format('U'), $now->format('U') );
+		$this->assertEquals( $store->get_date($action_id)->getTimestamp(), $now->getTimestamp() );
 
 		$next = $action->get_schedule()->next( $now );
 		$new_action_id = $store->save_action( $action, $next );
 
-		$this->assertEquals( (int)($now->format('U')) + HOUR_IN_SECONDS, $store->get_date($new_action_id)->format('U') );
+		$this->assertEquals( (int)($now->getTimestamp()) + HOUR_IN_SECONDS, $store->get_date($new_action_id)->getTimestamp() );
 	}
 
 	public function test_get_status() {
