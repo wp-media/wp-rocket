@@ -138,6 +138,8 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 		// There are known hosts with a strict 60 second execution time.
 		if ( defined( 'WPENGINE_ACCOUNT' ) || defined( 'PANTHEON_ENVIRONMENT' ) ) {
 			$maximum_execution_time = 60;
+		} elseif ( false !== strpos( getenv( 'HOSTNAME' ), '.siteground.' ) ) {
+			$maximum_execution_time = 120;
 		} else {
 			$maximum_execution_time = ini_get( 'max_execution_time' );
 		}
