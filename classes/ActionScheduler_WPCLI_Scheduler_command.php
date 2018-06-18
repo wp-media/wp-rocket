@@ -20,7 +20,7 @@ class ActionScheduler_WPCLI_Scheduler_command extends WP_CLI_Command {
 	 * : The maximum number of actions to clean up. Defaults to the value of --batch-size.
 	 *
 	 * [--hooks=<hooks>]
-	 * : Only run actions with the specified hook. Omitting this option runs actions with any hook.
+	 * : Only run actions with the specified hook. Omitting this option runs actions with any hook. Define multiple hooks as a comma separated string (without spaces), e.g. `--hooks=hook_one,hook_two,hook_three`
 	 *
 	 * [--group=<group>]
 	 * : Only run actions from the specified group. Omitting this option runs actions from all groups.
@@ -37,7 +37,7 @@ class ActionScheduler_WPCLI_Scheduler_command extends WP_CLI_Command {
 		$batch   = absint( \WP_CLI\Utils\get_flag_value( $assoc_args, 'batch-size', 100 ) );
 		$batches = absint( \WP_CLI\Utils\get_flag_value( $assoc_args, 'batches', 0 ) );
 		$clean   = absint( \WP_CLI\Utils\get_flag_value( $assoc_args, 'cleanup-batch-size', $batch ) );
-		$hooks   = \WP_CLI\Utils\get_flag_value( $assoc_args, 'hooks', array() );
+		$hooks   = explode( ',', trim( \WP_CLI\Utils\get_flag_value( $assoc_args, 'hooks', array() ) ) );
 		$group   = \WP_CLI\Utils\get_flag_value( $assoc_args, 'group', '' );
 		$force   = \WP_CLI\Utils\get_flag_value( $assoc_args, 'force', false );
 
