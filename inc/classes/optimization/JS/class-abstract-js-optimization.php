@@ -39,15 +39,14 @@ class Abstract_JS_Optimization extends Abstract_Optimization {
 	 * @since 2.11
 	 * @author Remy Perona
 	 *
-	 * @return string
+	 * @return string A list of files to exclude, ready to be used in a regex pattern.
 	 */
 	protected function get_excluded_files() {
-		global $wp_scripts;
-
 		$excluded_files = $this->options->get( 'exclude_js', array() );
+		$jquery_url     = $this->get_jquery_url();
 
-		if ( $this->options->get( 'defer_all_js', 0 ) && $this->options->get( 'defer_all_js_safe', 0 ) ) {
-			$excluded_files[] = rocket_clean_exclude_file( site_url( $wp_scripts->registered['jquery-core']->src ) );
+		if ( $jquery_url ) {
+			$excluded_files[] = $jquery_url;
 		}
 
 		/**
@@ -64,7 +63,8 @@ class Abstract_JS_Optimization extends Abstract_Optimization {
 		}
 
 		foreach ( $excluded_files as $i => $excluded_file ) {
-			$excluded_files[ $i ] = str_replace( '#', '\#', $excluded_file );
+			// Escape characters for future use in regex pattern.
+			$excluded_files[ $i ] = preg_quote( $excluded_file, '#' );
 		}
 
 		return implode( '|', $excluded_files );
@@ -134,5 +134,31 @@ class Abstract_JS_Optimization extends Abstract_Optimization {
 		 * @param string $minify_url Minified file URL.
 		*/
 		return apply_filters( 'rocket_js_url', $minify_url );
+	}
+
+	/**
+	 * Gets jQuery URL if defer JS safe mode is active
+	 *
+	 * @since 3.1
+	 * @author Remy Perona
+	 *
+	 * @return bool\string
+	 */
+	protected function get_jquery_url() {
+		global $wp_scripts;
+
+		if ( ! $this->options->get( 'defer_all_js', 0 ) && ! $this->options->get( 'defer_all_js_safe', 0 ) ) {
+			return false;
+		}
+
+		if ( ! isset( $wp_scripts->registered['jquery-core']->src ) ) {
+			return false;
+		}
+
+		if ( '' === \rocket_extract_url_component( $wp_scripts->registered['jquery-core']->src, PHP_URL_HOST ) ) {
+			return rocket_clean_exclude_file( site_url( $wp_scripts->registered['jquery-core']->src ) );
+		}
+
+		return $wp_scripts->registered['jquery-core']->src;
 	}
 }

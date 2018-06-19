@@ -99,7 +99,7 @@ class Combine extends Abstract_JS_Optimization {
 
 			if ( $src ) {
 				if ( $this->is_external_file( $src ) ) {
-					foreach ( $this->is_excluded_external_file() as $excluded_external_file ) {
+					foreach ( $this->get_excluded_external_file_path() as $excluded_external_file ) {
 						if ( false !== strpos( $src, $excluded_external_file ) ) {
 							return;
 						}
@@ -110,7 +110,9 @@ class Combine extends Abstract_JS_Optimization {
 					return;
 				}
 
-				if ( $this->options->get( 'defer_all_js' ) && $this->options->get( 'defer_all_js_safe' ) && false !== strpos( $src, $wp_scripts->registered['jquery-core']->src ) ) {
+				$jquery_url = $this->get_jquery_url();
+
+				if ( $jquery_url && false !== strpos( $src, $jquery_url ) ) {
 					return;
 				}
 			} elseif ( is_null( $src ) ) {
@@ -121,7 +123,7 @@ class Combine extends Abstract_JS_Optimization {
 				}
 
 				$inline_js = $node->html();
-				foreach ( $this->is_excluded_inline_content() as $excluded_inline_content ) {
+				foreach ( $this->get_excluded_inline_content() as $excluded_inline_content ) {
 					if ( false !== strpos( $inline_js, $excluded_inline_content ) ) {
 						return;
 					}
@@ -182,7 +184,7 @@ class Combine extends Abstract_JS_Optimization {
 	 */
 	protected function inject_combined_url( $minify_url ) {
 		try {
-			$this->crawler->filter( 'body' )->append( '<script src="' . $minify_url . '" data-minify="1" />' );
+			$this->crawler->filter( 'body' )->append( '<script src="' . esc_url( $minify_url ) . '" data-minify="1" />' );
 		} catch ( Exception $e ) {
 			return false;
 		}
@@ -283,7 +285,7 @@ class Combine extends Abstract_JS_Optimization {
 	 *
 	 * @return array
 	 */
-	protected function is_excluded_inline_content() {
+	protected function get_excluded_inline_content() {
 		/**
 		 * Filters inline JS excluded from being combined
 		 *
@@ -315,7 +317,7 @@ class Combine extends Abstract_JS_Optimization {
 	 *
 	 * @return array
 	 */
-	protected function is_excluded_external_file() {
+	protected function get_excluded_external_file_path() {
 		/**
 		 * Filters JS externals files to exclude from the combine process
 		 *
