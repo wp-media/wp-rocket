@@ -50,7 +50,9 @@ class WooCommerce_Compatibility implements Event_Manager_Aware_Subscriber_Interf
 			$events['delete_transient_wc_products_onsale'] = 'suspend_cache_invalidation';
 			$events['woocommerce_save_product_variation']  = 'clean_cache_after_woocommerce_save_product_variation';
 			$events['transition_post_status']              = [ 'maybe_exclude_page', 10, 3 ];
-			$events['rocket_cache_reject_uri']             = 'exclude_pages';
+			$events['rocket_cache_reject_uri']             = [
+				[ 'exclude_pages' ],
+			];
 			$events['rocket_cache_query_strings']          = 'cache_geolocation_query_string';
 
 			/**
@@ -66,6 +68,10 @@ class WooCommerce_Compatibility implements Event_Manager_Aware_Subscriber_Interf
 				$events['template_redirect'] = [ 'cache_empty_cart', -1 ];
 				$events['switch_theme']      = 'delete_cache_empty_cart';
 			}
+		}
+
+		if ( class_exists( 'WC_API' ) ) {
+			$events['rocket_cache_reject_uri'][] = [ 'exclude_wc_rest_api' ];
 		}
 
 		return $events;
@@ -172,10 +178,6 @@ class WooCommerce_Compatibility implements Event_Manager_Aware_Subscriber_Interf
 	 * @return array Updated array of excluded pages
 	 */
 	public function exclude_pages( $urls ) {
-		if ( class_exists( 'WC_API' ) ) {
-			$urls[] = $this->get_wc_api_endpoint();
-		}
-
 		if ( ! function_exists( 'wc_get_page_id' ) ) {
 			return $urls;
 		}
@@ -241,7 +243,7 @@ class WooCommerce_Compatibility implements Event_Manager_Aware_Subscriber_Interf
 	 * @return string
 	 */
 	private function get_wc_api_endpoint() {
-		return rocket_clean_exclude_file( home_url( '/wc-api/v(.*)' ) );
+		return home_url( '/wc-api/v(.*)' );
 	}
 
 	/**
