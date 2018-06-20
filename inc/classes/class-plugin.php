@@ -48,22 +48,6 @@ class Plugin {
 	private $template_path;
 
 	/**
-	 * Event_Manager instance
-	 *
-	 * @since 3.1
-	 *
-	 * @var Event_Manager
-	 */
-	private $event_manager;
-
-	/**
-	 * Instance of Busting\Busting_Factory class
-	 *
-	 * @var Busting\Busting_Factory
-	 */
-	private $busting_factory;
-
-	/**
 	 * Instance of the HtmlPageCrawler
 	 *
 	 * @var HtmlPageCrawler;
@@ -77,12 +61,10 @@ class Plugin {
 	 * @param string $template_path Path to the views.
 	 */
 	public function __construct( $template_path ) {
-		$this->event_manager   = new Event_Manager();
-		$this->options_api     = new Options( 'wp_rocket_' );
-		$this->options         = new Options_Data( $this->options_api->get( 'settings', array() ) );
-		$this->template_path   = $template_path;
-		$this->crawler         = new HtmlPageCrawler();
-		$this->busting_factory = new Busting\Busting_Factory( WP_ROCKET_CACHE_BUSTING_PATH, WP_ROCKET_CACHE_BUSTING_URL );
+		$this->options_api   = new Options( 'wp_rocket_' );
+		$this->options       = new Options_Data( $this->options_api->get( 'settings', array() ) );
+		$this->template_path = $template_path;
+		$this->crawler       = new HtmlPageCrawler();
 	}
 
 	/**
@@ -93,6 +75,8 @@ class Plugin {
 	 * @return void
 	 */
 	public function load() {
+		$event_manager = new Event_Manager();
+
 		if ( is_admin() ) {
 			$settings_page_args = [
 				'slug'       => WP_ROCKET_PLUGIN_SLUG,
@@ -109,12 +93,14 @@ class Plugin {
 
 		$subscribers = [
 			new Plugins\Ecommerce\WooCommerce_Compatibility(),
+			new Subscriber\Google_Tracking_Cache_Busting_Subscriber( new Busting\Busting_Factory( WP_ROCKET_CACHE_BUSTING_PATH, WP_ROCKET_CACHE_BUSTING_URL ), $this->crawler, $this->options ),
+			new Subscriber\Optimization\Minify_HTML_Subscriber( $this->options ),
+			new Subscriber\Optimization\Combine_Google_Fonts_Subscriber( $this->options, $this->crawler ),
+			new Subscriber\Optimization\Minify_CSS_Subscriber( $this->options, $this->crawler ),
 		];
 
 		foreach ( $subscribers as $subscriber ) {
-			$this->event_manager->add_subscriber( $subscriber );
+			$event_manager->add_subscriber( $subscriber );
 		}
-
-		Subscriber\Google_Tracking_Cache_Busting_Subscriber::init( $this->busting_factory, $this->crawler, $this->options );
 	}
 }
