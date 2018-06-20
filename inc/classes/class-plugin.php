@@ -10,6 +10,9 @@ use WP_Rocket\Admin\Deactivation\Deactivation_Intent;
 use WP_Rocket\Admin\Deactivation\Render as Deactivation_Intent_Render;
 use WP_Rocket\Subscriber\Third_Party\Plugins;
 use WP_Rocket\Event_Management\Event_Manager;
+use WP_Rocket\Busting\Busting_Factory;
+use WP_Rocket\Subscriber;
+use \Wa72\HtmlPageDom\HtmlPageCrawler;
 
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
@@ -54,6 +57,19 @@ class Plugin {
 	private $event_manager;
 
 	/**
+	 * Instance of Busting\Busting_Factory class
+	 *
+	 * @var Busting\Busting_Factory
+	 */
+	private $busting_factory;
+
+	/**
+	 * Instance of the HtmlPageCrawler
+	 *
+	 * @var HtmlPageCrawler;
+	 */
+	private $crawler;
+	/**
 	 * Constructor
 	 *
 	 * @since 3.0
@@ -61,10 +77,12 @@ class Plugin {
 	 * @param string $template_path Path to the views.
 	 */
 	public function __construct( $template_path ) {
-		$this->event_manager = new Event_Manager();
-		$this->options_api   = new Options( 'wp_rocket_' );
-		$this->options       = new Options_Data( $this->options_api->get( 'settings', array() ) );
-		$this->template_path = $template_path;
+		$this->event_manager   = new Event_Manager();
+		$this->options_api     = new Options( 'wp_rocket_' );
+		$this->options         = new Options_Data( $this->options_api->get( 'settings', array() ) );
+		$this->template_path   = $template_path;
+		$this->crawler         = new HtmlPageCrawler();
+		$this->busting_factory = new Busting\Busting_Factory( WP_ROCKET_CACHE_BUSTING_PATH, WP_ROCKET_CACHE_BUSTING_URL );
 	}
 
 	/**
@@ -96,5 +114,7 @@ class Plugin {
 		foreach ( $subscribers as $subscriber ) {
 			$this->event_manager->add_subscriber( $subscriber );
 		}
+
+		Subscriber\Google_Tracking_Cache_Busting_Subscriber::init( $this->busting_factory, $this->crawler, $this->options );
 	}
 }
