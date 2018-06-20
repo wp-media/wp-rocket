@@ -1,6 +1,8 @@
 <?php
 namespace WP_Rocket\Subscriber;
 
+use WP_Rocket\Event_Management\Event_Manager;
+use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Busting\Busting_Factory;
 use WP_Rocket\Admin\Options_Data as Options;
 use Wa72\HtmlPageDom\HtmlPageCrawler;
@@ -11,7 +13,7 @@ use Wa72\HtmlPageDom\HtmlPageCrawler;
  * @since 3.1
  * @author Remy Perona
  */
-class Google_Tracking_Cache_Busting_Subscriber {
+class Google_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface {
 	/**
 	 * Instance of the Busting Factory class
 	 *
@@ -47,25 +49,29 @@ class Google_Tracking_Cache_Busting_Subscriber {
 	}
 
 	/**
-	 * Custom constructor
-	 *
-	 * @since 3.1
-	 * @author Remy Perona
-	 *
-	 * @param Busting_Factory $busting_factory Instance of the Busting Factory class.
-	 * @param HtmlPageCrawler $crawler Instance of the HtmlPageCrawler class.
-	 * @param Options         $options Instance of the Option_Data class.
-	 * @return void
+	 * @inheritDoc
 	 */
-	public static function init( Busting_Factory $busting_factory, HtmlPageCrawler $crawler, Options $options ) {
-		$self = new self( $busting_factory, $crawler, $options );
+	public static function get_subscribed_events() {
+		$events = [
+			'cron_schedules'                      => 'add_schedule',
+			'init'                                => 'schedule_tracking_cache_update',
+			'rocket_google_tracking_cache_update' => 'update_tracking_cache',
+			'after_rocket_clean_cache_busting'    => 'delete_tracking_cache',
+		];
 
-		add_filter( 'rocket_buffer', [ $self, 'cache_busting_google_tracking' ] );
-		add_filter( 'cron_schedules', [ $self, 'add_schedule' ] );
+		/**
+		 * Filters application of hooks on rocket_buffer filter
+		 *
+		 * @since 3.1
+		 * @author Remy Perona
+		 *
+		 * @param bool $enable Enable application of hooks.
+		 */
+		if ( apply_filters( 'rocket_buffer_enable', true ) ) {
+			$events['rocket_buffer'] = 'cache_busting_google_tracking';
+		}
 
-		add_action( 'init', [ $self, 'schedule_tracking_cache_update' ] );
-		add_action( 'rocket_google_tracking_cache_update', [ $self, 'update_tracking_cache' ] );
-		add_action( 'after_rocket_clean_cache_busting', [ $self, 'delete_tracking_cache' ] );
+		return $events;
 	}
 
 	/**

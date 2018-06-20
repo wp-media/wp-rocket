@@ -1,8 +1,9 @@
 <?php
 namespace WP_Rocket\Subscriber\Optimization;
 
-use MatthiasMullie\Minify;
+use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Admin\Options_Data as Options;
+use MatthiasMullie\Minify;
 
 /**
  * HTML minification subscriber
@@ -10,7 +11,7 @@ use WP_Rocket\Admin\Options_Data as Options;
  * @since 3.1
  * @author Remy Perona
  */
-class Minify_HTML_Subscriber {
+class Minify_HTML_Subscriber implements Subscriber_Interface {
 	/**
 	 * Plugin options
 	 *
@@ -34,18 +35,14 @@ class Minify_HTML_Subscriber {
 	}
 
 	/**
-	 * Custom constructor
-	 *
-	 * @since 3.1
-	 * @author Remy Perona
-	 *
-	 * @param Options $options Plugin options.
-	 * @return void
+	 * @inheritDoc
 	 */
-	public static function init( Options $options ) {
-		$self = new self( $options );
-
-		add_filter( 'rocket_buffer', [ $self, 'process' ], 20 );
+	public static function get_subscribed_events() {
+		if ( apply_filters( 'rocket_buffer_enable', true ) ) {
+			return [
+				'rocket_buffer' => [ 'process', 20 ],
+			];
+		}
 	}
 
 	/**
