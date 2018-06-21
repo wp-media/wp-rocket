@@ -1,13 +1,15 @@
 <?php
 namespace WP_Rocket\Admin\Deactivation;
 
+use WP_Rocket\Event_Management\Subscriber_Interface;
+
 /**
  * Deactivation intent form on plugins page
  *
  * @since 3.0
  * @author Remy Perona
  */
-class Deactivation_Intent {
+class Deactivation_Intent implements Subscriber_Interface {
 	/**
 	 * Render Interface
 	 *
@@ -55,23 +57,14 @@ class Deactivation_Intent {
 	}
 
 	/**
-	 * Custom constructor
-	 *
-	 * @since 3.0
-	 * @author Remy Perona
-	 *
-	 * @param \WP_Rocket\Interfaces\Render_Interface $render      Render interface.
-	 * @param \WP_Rocket\Admin\Options               $options_api Options instance.
-	 * @param \WP_Rocket\Admin\Options_Data          $options     Options_Data instance.
-	 *
-	 * @return void
+	 * @inheritDoc
 	 */
-	public static function load( \WP_Rocket\Interfaces\Render_Interface $render, \WP_Rocket\Admin\Options $options_api, \WP_Rocket\Admin\Options_Data $options ) {
-		$self = new self( $render, $options_api, $options );
-
-		add_action( 'admin_print_footer_scripts-plugins.php', [ $self, 'insert_mixpanel_tracking' ] );
-		add_action( 'admin_footer', [ $self, 'insert_deactivation_intent_form' ] );
-		add_action( 'wp_ajax_rocket_safe_mode', [ $self, 'activate_safe_mode' ] );
+	public static function get_subscribed_events() {
+		return [
+			'admin_print_footer_scripts-plugins.php' => 'insert_mixpanel_tracking',
+			'admin_footer'                           => 'insert_deactivation_intent_form',
+			'wp_ajax_rocket_safe_mode'               => 'activate_safe_mode',
+		];
 	}
 
 	/**

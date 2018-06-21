@@ -15,7 +15,7 @@ class Combine_Google_Fonts_Subscriber extends Minify_Subscriber {
 	/**
 	 * @inheritDoc
 	 */
-	public static function get_subscriber_events() {
+	public static function get_subscribed_events() {
 		if ( apply_filters( 'rocket_buffer_enable', true ) ) {
 			return [
 				'rocket_buffer' => [ 'process', 13 ],

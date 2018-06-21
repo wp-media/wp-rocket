@@ -84,20 +84,20 @@ class Plugin {
 				'capability' => apply_filters( 'rocket_capacity', 'manage_options' ),
 			];
 
-			$settings        = new Settings( $this->options );
-			$settings_render = new Settings_Render( $this->template_path . '/settings' );
-			Settings_Page::register( $settings_page_args, $settings, $settings_render );
-
-			Deactivation_Intent::load( new Deactivation_Intent_Render( $this->template_path . '/deactivation-intent' ), $this->options_api, $this->options );
+			$subscribers = [
+				new Settings_Page( $settings_page_args, new Settings( $this->options ), new Settings_Render( $this->template_path . '/settings' ) ),
+				new Deactivation_Intent( new Deactivation_Intent_Render( $this->template_path . '/deactivation-intent' ), $this->options_api, $this->options ),
+			];
+		} elseif ( \rocket_valid_key() ) {
+			$subscribers = [
+				new Plugins\Ecommerce\WooCommerce_Compatibility(),
+				new Subscriber\Google_Tracking_Cache_Busting_Subscriber( new Busting\Busting_Factory( WP_ROCKET_CACHE_BUSTING_PATH, WP_ROCKET_CACHE_BUSTING_URL ), $this->crawler, $this->options ),
+				new Subscriber\Optimization\Minify_HTML_Subscriber( $this->options ),
+				new Subscriber\Optimization\Combine_Google_Fonts_Subscriber( $this->options, $this->crawler ),
+				new Subscriber\Optimization\Minify_CSS_Subscriber( $this->options, $this->crawler ),
+				new Subscriber\Optimization\Minify_JS_Subscriber( $this->options, $this->crawler )
+			];
 		}
-
-		$subscribers = [
-			new Plugins\Ecommerce\WooCommerce_Compatibility(),
-			new Subscriber\Google_Tracking_Cache_Busting_Subscriber( new Busting\Busting_Factory( WP_ROCKET_CACHE_BUSTING_PATH, WP_ROCKET_CACHE_BUSTING_URL ), $this->crawler, $this->options ),
-			new Subscriber\Optimization\Minify_HTML_Subscriber( $this->options ),
-			new Subscriber\Optimization\Combine_Google_Fonts_Subscriber( $this->options, $this->crawler ),
-			new Subscriber\Optimization\Minify_CSS_Subscriber( $this->options, $this->crawler ),
-		];
 
 		foreach ( $subscribers as $subscriber ) {
 			$event_manager->add_subscriber( $subscriber );
