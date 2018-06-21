@@ -37,7 +37,8 @@ class ActionScheduler_WPCLI_Scheduler_command extends WP_CLI_Command {
 		$batch   = absint( \WP_CLI\Utils\get_flag_value( $assoc_args, 'batch-size', 100 ) );
 		$batches = absint( \WP_CLI\Utils\get_flag_value( $assoc_args, 'batches', 0 ) );
 		$clean   = absint( \WP_CLI\Utils\get_flag_value( $assoc_args, 'cleanup-batch-size', $batch ) );
-		$hooks   = explode( ',', trim( \WP_CLI\Utils\get_flag_value( $assoc_args, 'hooks', array() ) ) );
+		$hooks   = explode( ',', WP_CLI\Utils\get_flag_value( $assoc_args, 'hooks', '' ) );
+		$hooks   = array_filter( array_map( 'trim', $hooks ) );
 		$group   = \WP_CLI\Utils\get_flag_value( $assoc_args, 'group', '' );
 		$force   = \WP_CLI\Utils\get_flag_value( $assoc_args, 'force', false );
 
