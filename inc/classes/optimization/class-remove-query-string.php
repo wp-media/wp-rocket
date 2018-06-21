@@ -78,6 +78,8 @@ class Remove_Query_String extends Abstract_Optimization {
 		 * @param array $excluded_files An array of filepath to exclude.
 		 */
 		$this->excluded_files = apply_filters( 'rocket_exclude_cache_busting', array() );
+		$delimiter            = array_fill( 0, count( $this->excluded_files ), '#' );
+		$this->excluded_files = array_map( 'preg_quote', $this->excluded_files, $delimiter );
 		$this->excluded_files = implode( '|', $this->excluded_files );
 	}
 
@@ -227,7 +229,7 @@ class Remove_Query_String extends Abstract_Optimization {
 	 * @return bool
 	 */
 	protected function is_excluded( $url ) {
-		if ( preg_match( '#^(' . $this->excluded_files . ')$#', rocket_clean_exclude_file( $url ) ) ) {
+		if ( preg_match( '#^' . $this->excluded_files . '$#', rocket_clean_exclude_file( $url ) ) ) {
 			return true;
 		}
 

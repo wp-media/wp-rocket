@@ -77,6 +77,8 @@ class Cache_Dynamic_Resource extends Abstract_Optimization {
 		 */
 		$this->excluded_files   = apply_filters( 'rocket_exclude_static_dynamic_resources', array() );
 		$this->excluded_files[] = '/wp-admin/admin-ajax.php';
+		$delimiter              = array_fill( 0, count( $this->excluded_files ), '#' );
+		$this->excluded_files   = array_map( 'preg_quote', $this->excluded_files, $delimiter );
 		$this->excluded_files   = implode( '|', $this->excluded_files );
 	}
 
@@ -100,7 +102,7 @@ class Cache_Dynamic_Resource extends Abstract_Optimization {
 		*
 		* @param string $filename filename for the cache file
 		*/
-		$filename = apply_filters( 'rocket_dynamic_resource_cache_filename', preg_replace( '/\.(php)$/', '-' . $this->minify_key . '.' . $this->extension, $path ) );
+		$filename = apply_filters( 'rocket_dynamic_resource_cache_filename', preg_replace( '/\.php$/', '-' . $this->minify_key . '.' . $this->extension, $path ) );
 		$filename = rocket_realpath( rtrim( str_replace( array( ' ', '%20' ), '-', $filename ) ) );
 		$filepath = $this->busting_path . $filename;
 
@@ -155,7 +157,9 @@ class Cache_Dynamic_Resource extends Abstract_Optimization {
 	 * @return boolean
 	 */
 	public function is_excluded_file( $src ) {
-		if ( false !== strpos( $src, '.php' ) ) {
+		$file = get_rocket_parse_url( $src );
+
+		if ( ! preg_match( '#.php$#', $file['path'] ) ) {
 			return true;
 		}
 
@@ -163,11 +167,10 @@ class Cache_Dynamic_Resource extends Abstract_Optimization {
 			return true;
 		}
 
-		if ( preg_match( '#^(' . $this->excluded_files . ')$#', rocket_clean_exclude_file( $src ) ) ) {
+		if ( preg_match( '#^' . $this->excluded_files . '$#', rocket_clean_exclude_file( $src ) ) ) {
 			return true;
 		}
 
-		$file          = get_rocket_parse_url( $src );
 		$file['query'] = remove_query_arg( 'ver', $file['query'] );
 
 		if ( $file['query'] ) {
@@ -237,7 +240,7 @@ class Cache_Dynamic_Resource extends Abstract_Optimization {
 	 * @author Remy Perona
 	 *
 	 * @param string $url URL to get the content from.
-	 * @return string
+	 * @return string|bool
 	 */
 	protected function get_url_content( $url ) {
 		$content       = wp_remote_retrieve_body( wp_remote_get( $url ) );
