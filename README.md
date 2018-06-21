@@ -81,6 +81,7 @@ These are the commands available to use with Action Scheduler:
     Options:
     * `--batch-size` - This is the number of actions to run in a single batch. The default is `100`.
     * `--batches` - This is the number of batches to run. Using 0 means that batches will continue running until there are no more actions to run.
+    * `--hooks` - Process only actions with specific hook or hooks, like `'woocommerce_scheduled_subscription_payment'`. By default, actions with any hook will be processed. Define multiple hooks as a comma separated string (without spaces), e.g. `--hooks=woocommerce_scheduled_subscription_trial_end,woocommerce_scheduled_subscription_payment,woocommerce_scheduled_subscription_expiration`
     * `--group` - Process only actions in a specific group, like `'woocommerce-memberships'`. By default, actions in any group (or no group) will be processed.
     * `--force` - By default, Action Scheduler limits the number of concurrent batches that can be run at once to ensure the server does not get overwhelmed. Using the `--force` flag overrides this behavior to force the WP CLI queue to run.
 

@@ -72,11 +72,12 @@ abstract class ActionScheduler_Store {
 	/**
 	 * @param int      $max_actions
 	 * @param DateTime $before_date Claim only actions schedule before the given date. Defaults to now.
+	 * @param array    $hooks       Claim only actions with a hook or hooks.
 	 * @param string   $group       Claim only actions in the given group.
 	 *
 	 * @return ActionScheduler_ActionClaim
 	 */
-	abstract public function stake_claim( $max_actions = 10, DateTime $before_date = null, $group = '' );
+	abstract public function stake_claim( $max_actions = 10, DateTime $before_date = null, $hooks = array(), $group = '' );
 
 	/**
 	 * @return int

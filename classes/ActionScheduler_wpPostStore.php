@@ -438,15 +438,16 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	/**
 	 * @param int      $max_actions
 	 * @param DateTime $before_date Jobs must be schedule before this date. Defaults to now.
+	 * @param array    $hooks       Claim only actions with a hook or hooks.
 	 * @param string   $group       Claim only actions in the given group.
 	 *
 	 * @return ActionScheduler_ActionClaim
 	 * @throws RuntimeException When there is an error staking a claim.
 	 * @throws InvalidArgumentException When the given group is not valid.
 	 */
-	public function stake_claim( $max_actions = 10, DateTime $before_date = null, $group = '' ) {
+	public function stake_claim( $max_actions = 10, DateTime $before_date = null, $hooks = array(), $group = '' ) {
 		$claim_id = $this->generate_claim_id();
-		$this->claim_actions( $claim_id, $max_actions, $before_date, $group );
+		$this->claim_actions( $claim_id, $max_actions, $before_date, $hooks, $group );
 		$action_ids = $this->find_actions_by_claim_id( $claim_id );
 
 		return new ActionScheduler_ActionClaim( $claim_id, $action_ids );
@@ -473,13 +474,14 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	 * @param string   $claim_id
 	 * @param int      $limit
 	 * @param DateTime $before_date Should use UTC timezone.
+	 * @param array    $hooks       Claim only actions with a hook or hooks.
 	 * @param string   $group       Claim only actions in the given group.
 	 *
 	 * @return int The number of actions that were claimed
 	 * @throws RuntimeException When there is a database error.
 	 * @throws InvalidArgumentException When the group is invalid.
 	 */
-	protected function claim_actions( $claim_id, $limit, DateTime $before_date = null, $group = '' ) {
+	protected function claim_actions( $claim_id, $limit, DateTime $before_date = null, $hooks = array(), $group = '' ) {
 		// Set up initial variables.
 		$date      = null === $before_date ? as_get_datetime_object() : clone $before_date;
 		$limit_ids = ! empty( $group );
@@ -510,6 +512,12 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		$where    = "WHERE post_type = %s AND post_status = %s AND post_password = ''";
 		$params[] = self::POST_TYPE;
 		$params[] = ActionScheduler_Store::STATUS_PENDING;
+
+		if ( ! empty( $hooks ) ) {
+			$placeholders = array_fill( 0, count( $hooks ), '%s' );
+			$where       .= ' AND post_title IN (' . join( ', ', $placeholders ) . ')';
+			$params       = array_merge( $params, array_values( $hooks ) );
+		}
 
 		/*
 		 * Add the IDs to the WHERE clause. IDs not escaped because they came directly from a prior DB query.
@@ -550,7 +558,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	protected function get_actions_by_group( $group, $limit, DateTime $date ) {
 		// Ensure the group exists before continuing.
 		if ( ! term_exists( $group, self::GROUP_TAXONOMY )) {
-			throw new InvalidArgumentException( __( 'The group "%s" does not exist.', 'action-scheduler' ), $group );
+			throw new InvalidArgumentException( sprintf( __( 'The group "%s" does not exist.', 'action-scheduler' ), $group ) );
 		}
 
 		// Set up a query for post IDs to use later.
