@@ -32,7 +32,7 @@ class ActionScheduler_SimpleSchedule implements ActionScheduler_Schedule {
 	 * @return array
 	 */
 	public function __sleep() {
-		$this->timestamp = $this->date->format('U');
+		$this->timestamp = $this->date->getTimestamp();
 		return array(
 			'timestamp',
 		);
@@ -42,4 +42,3 @@ class ActionScheduler_SimpleSchedule implements ActionScheduler_Schedule {
 		$this->date = as_get_datetime_object($this->timestamp);
 	}
 }
- 

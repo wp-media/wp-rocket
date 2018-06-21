@@ -49,7 +49,7 @@ class ActionScheduler_IntervalSchedule implements ActionScheduler_Schedule {
 	 * @return array
 	 */
 	public function __sleep() {
-		$this->start_timestamp = $this->start->format('U');
+		$this->start_timestamp = $this->start->getTimestamp();
 		return array(
 			'start_timestamp',
 			'interval_in_seconds'
@@ -60,4 +60,3 @@ class ActionScheduler_IntervalSchedule implements ActionScheduler_Schedule {
 		$this->start = as_get_datetime_object($this->start_timestamp);
 	}
 }
- 

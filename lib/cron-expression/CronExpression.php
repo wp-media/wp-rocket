@@ -240,10 +240,10 @@ class CronExpression
             $currentTime = new DateTime($currentTime);
             $currentTime->setTime($currentTime->format('H'), $currentTime->format('i'), 0);
             $currentDate = $currentTime->format('Y-m-d H:i');
-            $currentTime = (int)($currentTime->format('U'));
+            $currentTime = (int)($currentTime->getTimestamp());
         }
 
-        return $this->getNextRunDate($currentDate, 0, true)->format('U') == $currentTime;
+        return $this->getNextRunDate($currentDate, 0, true)->getTimestamp() == $currentTime;
     }
 
     /**

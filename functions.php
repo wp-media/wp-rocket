@@ -172,15 +172,15 @@ function wc_get_scheduled_actions( $args = array(), $return_format = OBJECT ) {
  * @param mixed $date_string A date/time string. Valid formats are explained in http://php.net/manual/en/datetime.formats.php
  * @param string $timezone A timezone identifier, like UTC or Europe/Lisbon. The list of valid identifiers is available http://php.net/manual/en/timezones.php
  *
- * @return DateTime
+ * @return ActionScheduler_DateTime
  */
 function as_get_datetime_object( $date_string = null, $timezone = 'UTC' ) {
-	if ( is_object($date_string) && $date_string instanceof DateTime ) {
-		$date = $date_string->setTimezone(new DateTimeZone( $timezone ) );
+	if ( is_object( $date_string ) && $date_string instanceof DateTime ) {
+		$date = new ActionScheduler_DateTime( $date_string->format( 'Y-m-d H:i:s' ), new DateTimeZone( $timezone ) );
 	} elseif ( is_numeric( $date_string ) ) {
-		$date = new DateTime( '@'.$date_string, new DateTimeZone( $timezone ) );
+		$date = new ActionScheduler_DateTime( '@' . $date_string, new DateTimeZone( $timezone ) );
 	} else {
-		$date = new DateTime( $date_string, new DateTimeZone( $timezone ) );
+		$date = new ActionScheduler_DateTime( $date_string, new DateTimeZone( $timezone ) );
 	}
 	return $date;
 }
