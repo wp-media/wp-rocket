@@ -159,7 +159,7 @@ class Cache_Dynamic_Resource extends Abstract_Optimization {
 	public function is_excluded_file( $src ) {
 		$file = get_rocket_parse_url( $src );
 
-		if ( ! preg_match( '#.php$#', $file['path'] ) ) {
+		if ( ! preg_match( '#\.php$#', $file['path'] ) ) {
 			return true;
 		}
 
