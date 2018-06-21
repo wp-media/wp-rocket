@@ -65,7 +65,7 @@ class Cache_Dynamic_Resource_Subscriber {
 				break;
 		}
 
-		if ( ! $this->cache_resource->is_excluded_file( $src ) ) {
+		if ( $this->cache_resource->is_excluded_file( $src ) ) {
 			return $src;
 		}
 

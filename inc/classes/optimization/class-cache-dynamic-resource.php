@@ -155,26 +155,26 @@ class Cache_Dynamic_Resource extends Abstract_Optimization {
 	 * @return boolean
 	 */
 	public function is_excluded_file( $src ) {
-		if ( false === strpos( $src, '.php' ) ) {
-			return false;
+		if ( false !== strpos( $src, '.php' ) ) {
+			return true;
 		}
 
 		if ( $this->is_external_file( $src ) ) {
-			return false;
+			return true;
 		}
 
 		if ( preg_match( '#^(' . $this->excluded_files . ')$#', rocket_clean_exclude_file( $src ) ) ) {
-			return false;
+			return true;
 		}
 
 		$file          = get_rocket_parse_url( $src );
 		$file['query'] = remove_query_arg( 'ver', $file['query'] );
 
 		if ( $file['query'] ) {
-			return false;
+			return true;
 		}
 
-		return true;
+		return false;
 	}
 
 	/**
