@@ -63,7 +63,7 @@ class ActionScheduler_WPCLI_Scheduler_command extends WP_CLI_Command {
 				$batches_completed++;
 
 				// Maybe set up tasks for the next batch.
-				$total = ( $unlimited || $batches_completed < $batches ) ? $runner->setup( $batch, $force ) : 0;
+				$total = ( $unlimited || $batches_completed < $batches ) ? $runner->setup( $batch, $hooks, $group, $force ) : 0;
 			}
 		} catch ( Exception $e ) {
 			$this->print_error( $e );
