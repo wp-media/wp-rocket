@@ -150,7 +150,7 @@ class Combine_Google_Fonts {
 	 */
 	protected function combine() {
 		try {
-			$this->crawler->filter( 'head' )->prepend( $this->get_combine_tag() );
+			$this->crawler->filter( 'title' )->after( $this->get_combine_tag() );
 		} catch ( Exception $e ) {
 			return false;
 		}
