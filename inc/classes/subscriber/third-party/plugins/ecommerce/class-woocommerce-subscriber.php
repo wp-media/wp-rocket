@@ -14,7 +14,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  * @since 3.1
  * @author Remy Perona
  */
-class WooCommerce_Compatibility implements Event_Manager_Aware_Subscriber_Interface {
+class WooCommerce_Subscriber implements Event_Manager_Aware_Subscriber_Interface {
 	use \WP_Rocket\Traits\Config_Updater;
 
 	/**
