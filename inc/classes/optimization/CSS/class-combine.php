@@ -95,7 +95,7 @@ class Combine extends Abstract_CSS_Optimization {
 	}
 
 	/**
-	 * Adds the combined CSS URL to the HTML
+	 * Adds the combined CSS URL to the HTML after the title tag
 	 *
 	 * @since 3.1
 	 * @author Remy Perona
@@ -105,7 +105,7 @@ class Combine extends Abstract_CSS_Optimization {
 	 */
 	protected function inject_combined_url( $minify_url ) {
 		try {
-			$this->crawler->filter( 'head' )->prepend( '<link rel="stylesheet" href="' . $minify_url . '" data-minify="1" />' );
+			$this->crawler->filter( 'title' )->after( '<link rel="stylesheet" href="' . $minify_url . '" data-minify="1" />' );
 		} catch ( Exception $e ) {
 			return false;
 		}
