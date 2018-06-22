@@ -12,6 +12,8 @@ use WP_Rocket\Subscriber\Third_Party\Plugins;
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\Busting\Busting_Factory;
 use WP_Rocket\Subscriber;
+use WP_Rocket\Optimization\Cache_Dynamic_Resource;
+use WP_Rocket\Optimization\Remove_Query_String;
 use \Wa72\HtmlPageDom\HtmlPageCrawler;
 
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
@@ -90,12 +92,14 @@ class Plugin {
 			];
 		} elseif ( \rocket_valid_key() ) {
 			$subscribers = [
-				new Plugins\Ecommerce\WooCommerce_Compatibility(),
+				new Plugins\Ecommerce\WooCommerce_Subscriber(),
 				new Subscriber\Google_Tracking_Cache_Busting_Subscriber( new Busting\Busting_Factory( WP_ROCKET_CACHE_BUSTING_PATH, WP_ROCKET_CACHE_BUSTING_URL ), $this->crawler, $this->options ),
 				new Subscriber\Optimization\Minify_HTML_Subscriber( $this->options ),
 				new Subscriber\Optimization\Combine_Google_Fonts_Subscriber( $this->options, $this->crawler ),
 				new Subscriber\Optimization\Minify_CSS_Subscriber( $this->options, $this->crawler ),
-				new Subscriber\Optimization\Minify_JS_Subscriber( $this->options, $this->crawler )
+				new Subscriber\Optimization\Minify_JS_Subscriber( $this->options, $this->crawler ),
+				new Subscriber\Optimization\Cache_Dynamic_Resource_Subscriber( new Cache_Dynamic_Resource( $this->options, WP_ROCKET_CACHE_BUSTING_PATH, WP_ROCKET_CACHE_BUSTING_URL ) ),
+				new Subscriber\Optimization\Remove_Query_String_Subscriber( new Remove_Query_String( $this->options, WP_ROCKET_CACHE_BUSTING_PATH, WP_ROCKET_CACHE_BUSTING_URL ), $this->crawler ),
 			];
 		}
 
