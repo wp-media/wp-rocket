@@ -8,9 +8,12 @@ use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Admin\Deactivation\Deactivation_Intent;
 use WP_Rocket\Admin\Deactivation\Render as Deactivation_Intent_Render;
-use WP_Rocket\Third_Party\Plugins;
+use WP_Rocket\Subscriber\Third_Party\Plugins;
+use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\Busting\Busting_Factory;
 use WP_Rocket\Subscriber;
+use WP_Rocket\Optimization\Cache_Dynamic_Resource;
+use WP_Rocket\Optimization\Remove_Query_String;
 use \Wa72\HtmlPageDom\HtmlPageCrawler;
 
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
@@ -47,13 +50,6 @@ class Plugin {
 	private $template_path;
 
 	/**
-	 * Instance of Busting\Busting_Factory class
-	 *
-	 * @var Busting\Busting_Factory
-	 */
-	private $busting_factory;
-
-	/**
 	 * Instance of the HtmlPageCrawler
 	 *
 	 * @var HtmlPageCrawler;
@@ -67,11 +63,10 @@ class Plugin {
 	 * @param string $template_path Path to the views.
 	 */
 	public function __construct( $template_path ) {
-		$this->options_api     = new Options( 'wp_rocket_' );
-		$this->options         = new Options_Data( $this->options_api->get( 'settings', array() ) );
-		$this->template_path   = $template_path;
-		$this->crawler         = new HtmlPageCrawler();
-		$this->busting_factory = new Busting\Busting_Factory( WP_ROCKET_CACHE_BUSTING_PATH, WP_ROCKET_CACHE_BUSTING_URL );
+		$this->options_api   = new Options( 'wp_rocket_' );
+		$this->options       = new Options_Data( $this->options_api->get( 'settings', array() ) );
+		$this->template_path = $template_path;
+		$this->crawler       = new HtmlPageCrawler();
 	}
 
 	/**
@@ -82,6 +77,8 @@ class Plugin {
 	 * @return void
 	 */
 	public function load() {
+		$event_manager = new Event_Manager();
+
 		if ( is_admin() ) {
 			$settings_page_args = [
 				'slug'       => WP_ROCKET_PLUGIN_SLUG,
@@ -89,15 +86,25 @@ class Plugin {
 				'capability' => apply_filters( 'rocket_capacity', 'manage_options' ),
 			];
 
-			$settings        = new Settings( $this->options );
-			$settings_render = new Settings_Render( $this->template_path . '/settings' );
-			Settings_Page::register( $settings_page_args, $settings, $settings_render );
-
-			Deactivation_Intent::load( new Deactivation_Intent_Render( $this->template_path . '/deactivation-intent' ), $this->options_api, $this->options );
+			$subscribers = [
+				new Settings_Page( $settings_page_args, new Settings( $this->options ), new Settings_Render( $this->template_path . '/settings' ) ),
+				new Deactivation_Intent( new Deactivation_Intent_Render( $this->template_path . '/deactivation-intent' ), $this->options_api, $this->options ),
+			];
+		} elseif ( \rocket_valid_key() ) {
+			$subscribers = [
+				new Plugins\Ecommerce\WooCommerce_Subscriber(),
+				new Subscriber\Google_Tracking_Cache_Busting_Subscriber( new Busting\Busting_Factory( WP_ROCKET_CACHE_BUSTING_PATH, WP_ROCKET_CACHE_BUSTING_URL ), $this->crawler, $this->options ),
+				new Subscriber\Optimization\Minify_HTML_Subscriber( $this->options ),
+				new Subscriber\Optimization\Combine_Google_Fonts_Subscriber( $this->options, $this->crawler ),
+				new Subscriber\Optimization\Minify_CSS_Subscriber( $this->options, $this->crawler ),
+				new Subscriber\Optimization\Minify_JS_Subscriber( $this->options, $this->crawler ),
+				new Subscriber\Optimization\Cache_Dynamic_Resource_Subscriber( new Cache_Dynamic_Resource( $this->options, WP_ROCKET_CACHE_BUSTING_PATH, WP_ROCKET_CACHE_BUSTING_URL ) ),
+				new Subscriber\Optimization\Remove_Query_String_Subscriber( new Remove_Query_String( $this->options, WP_ROCKET_CACHE_BUSTING_PATH, WP_ROCKET_CACHE_BUSTING_URL ), $this->crawler ),
+			];
 		}
 
-		Plugins\Ecommerce\WC_Factory::create()->init();
-
-		Subscriber\Google_Tracking_Cache_Busting_Subscriber::init( $this->busting_factory, $this->crawler, $this->options );
+		foreach ( $subscribers as $subscriber ) {
+			$event_manager->add_subscriber( $subscriber );
+		}
 	}
 }

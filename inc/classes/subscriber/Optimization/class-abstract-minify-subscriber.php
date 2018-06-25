@@ -1,13 +1,14 @@
 <?php
 namespace WP_Rocket\Subscriber\Optimization;
 
+use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Admin\Options_Data as Options;
 use Wa72\HtmlPageDom\HtmlPageCrawler;
 
 /**
  * Undocumented class
  */
-abstract class Minify_Subscriber {
+abstract class Minify_Subscriber implements Subscriber_Interface {
 	/**
 	 * Plugin options
 	 *

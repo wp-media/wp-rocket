@@ -14,20 +14,21 @@ use \MatthiasMullie\Minify;
  */
 class Minify_JS_Subscriber extends Minify_Subscriber {
 	/**
-	 * Custom Constructor
-	 *
-	 * @since 3.1
-	 * @author Remy Perona
-	 *
-	 * @param Options         $options Plugin options.
-	 * @param HtmlPageCrawler $crawler Crawler instance.
+	 * @inheritDoc
 	 */
-	public static function init( Options $options, HtmlPageCrawler $crawler ) {
-		$self = new self( $options, $crawler );
+	public static function get_subscribed_events() {
+		$events = [
+			'rocket_js_url' => [
+				[ 'fix_ssl_minify' ],
+				[ 'i18n_multidomain_url' ],
+			],
+		];
 
-		add_filter( 'rocket_buffer', [ $self, 'process' ], 14 );
-		add_filter( 'rocket_js_url', [ $self, 'fix_ssl_minify' ] );
-		add_filter( 'rocket_js_url', [ $self, 'i18n_multidomain_url' ] );
+		if ( apply_filters( 'rocket_buffer_enable', true ) ) {
+			$events['rocket_buffer'] = [ 'process', 14 ];
+		}
+
+		return $events;
 	}
 
 	/**

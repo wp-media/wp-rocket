@@ -1,6 +1,8 @@
 <?php
 namespace WP_Rocket\Admin\Settings;
 
+use WP_Rocket\Event_Management\Subscriber_Interface;
+
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
@@ -9,7 +11,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  * @since 3.0
  * @author Remy Perona
  */
-class Page {
+class Page implements Subscriber_Interface {
 	/**
 	 * Plugin slug
 	 *
@@ -92,29 +94,20 @@ class Page {
 	}
 
 	/**
-	 * Registers the class and hooks
-	 *
-	 * @since 3.0
-	 * @author Remy Perona
-	 *
-	 * @param array                                  $args     Array of required arguments to add the admin page.
-	 * @param Settings                               $settings Instance of Settings class.
-	 * @param \WP_Rocket\Interfaces\Render_Interface $render   Implementation of Render interface.
-	 * @return void
+	 * @inheritDoc
 	 */
-	public static function register( $args, Settings $settings, $render ) {
-		$self = new self( $args, $settings, $render );
-
-		add_action( 'admin_menu', [ $self, 'add_admin_page' ] );
-		add_action( 'admin_init', [ $self, 'configure' ] );
-		add_action( 'admin_print_footer_scripts-settings_page_wprocket', [ $self, 'insert_beacon' ] );
-		add_action( 'wp_ajax_rocket_refresh_customer_data', [ $self, 'refresh_customer_data' ] );
-		add_action( 'wp_ajax_rocket_toggle_option', [ $self, 'toggle_option' ] );
-
-		add_filter( 'option_page_capability_' . $self->slug, [ $self, 'required_capability' ] );
-		add_filter( 'rocket_settings_menu_navigation', [ $self, 'add_menu_tools_page' ] );
-		add_filter( 'pre_get_rocket_option_cache_mobile', [ $self, 'is_mobile_plugin_active' ] );
-		add_filter( 'pre_get_rocket_option_do_caching_mobile_files', [ $self, 'is_mobile_plugin_active' ] );
+	public static function get_subscribed_events() {
+		return [
+			'admin_menu'                                        => 'add_admin_page',
+			'admin_init'                                        => 'configure',
+			'admin_print_footer_scripts-settings_page_wprocket' => 'insert_beacon',
+			'wp_ajax_rocket_refresh_customer_data'              => 'refresh_customer_data',
+			'wp_ajax_rocket_toggle_option'                      => 'toggle_option',
+			'option_page_capability_' . WP_ROCKET_PLUGIN_SLUG   => 'required_capability',
+			'rocket_settings_menu_navigation'                   => 'add_menu_tools_page',
+			'pre_get_rocket_option_cache_mobile'                => 'is_mobile_plugin_active',
+			'pre_get_rocket_option_do_caching_mobile_files'     => 'is_mobile_plugin_active',
+		];
 	}
 
 	/**

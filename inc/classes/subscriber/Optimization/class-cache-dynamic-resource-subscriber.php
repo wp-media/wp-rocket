@@ -2,6 +2,7 @@
 namespace WP_Rocket\Subscriber\Optimization;
 
 use WP_Rocket\Optimization\Cache_Dynamic_Resource;
+use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
  * Hooks into WordPress to replace dynamic php file by static files
@@ -9,7 +10,7 @@ use WP_Rocket\Optimization\Cache_Dynamic_Resource;
  * @since 3.1
  * @author Remy Perona
  */
-class Cache_Dynamic_Resource_Subscriber {
+class Cache_Dynamic_Resource_Subscriber implements Subscriber_Interface {
 	/**
 	 * Cache dynamic resource instance.
 	 *
@@ -35,11 +36,11 @@ class Cache_Dynamic_Resource_Subscriber {
 	/**
 	 * @inheritDoc
 	 */
-	public static function init( Cache_Dynamic_Resource $cache_resource ) {
-		$self = new self( $cache_resource );
-
-		add_filter( 'style_loader_src', [ $self, 'cache_dynamic_resource' ], 16 );
-		add_filter( 'script_loader_src', [ $self, 'cache_dynamic_resource' ], 16 );
+	public static function get_subscribed_events() {
+		return [
+			'style_loader_src'  => [ 'cache_dynamic_resource', 16 ],
+			'script_loader_src' => [ 'cache_dynamic_resource', 16 ],
+		];
 	}
 
 	/**

@@ -13,18 +13,14 @@ use Wa72\HtmlPageDom\HtmlPageCrawler;
  */
 class Combine_Google_Fonts_Subscriber extends Minify_Subscriber {
 	/**
-	 * Custom Constructor
-	 *
-	 * @since 3.1
-	 * @author Remy Perona
-	 *
-	 * @param Options         $options Plugin options.
-	 * @param HtmlPageCrawler $crawler Crawler instance.
+	 * @inheritDoc
 	 */
-	public static function init( Options $options, HtmlPageCrawler $crawler ) {
-		$self = new self( $options, $crawler );
-
-		add_filter( 'rocket_buffer', [ $self, 'process' ], 13 );
+	public static function get_subscribed_events() {
+		if ( apply_filters( 'rocket_buffer_enable', true ) ) {
+			return [
+				'rocket_buffer' => [ 'process', 13 ],
+			];
+		}
 	}
 
 	/**

@@ -49,10 +49,10 @@ class Remove_Query_String_Subscriber extends Minify_Subscriber {
 	/**
 	 * @inheritDoc
 	 */
-	public static function init( Remove_Query_String $remove_query_string, HtmlPageCrawler $crawler ) {
-		$self = new self( $remove_query_string, $crawler );
-
-		add_filter( 'rocket_buffer', [ $self, 'process' ], 19 );
+	public static function get_subscribed_events() {
+		return [
+			'rocket_buffer' => [ 'process', 19 ],
+		];
 	}
 
 	/**
