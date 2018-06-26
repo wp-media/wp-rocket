@@ -96,7 +96,7 @@ $wp_rocket_requirement_checks = new WP_Rocket_Requirements_Check( array(
 	'plugin_file'         => WP_ROCKET_FILE,
 	'plugin_version'      => WP_ROCKET_VERSION,
 	'plugin_last_version' => WP_ROCKET_LASTVERSION,
-	'wp_version'          => '4.2',
+	'wp_version'          => '4.7',
 	'php_version'         => '5.4',
 ) );
 
