@@ -3245,3 +3245,45 @@ if ( ! function_exists( 'get_rocket_browser_cache_busting' ) ) {
 		return $src;
 	}
 }
+
+if ( ! function_exists( 'rocket_dns_prefetch_buffer' ) ) {
+	/**
+	 * Inserts html code for domain names to DNS prefetch in the buffer before creating the cache file
+	 *
+	 * @since 2.0
+	 * @deprecated 3.1
+	 * @author Jonathan Buttigieg
+	 *
+	 * @param String $buffer HTML content.
+	 * @return String Updated buffer
+	 */
+	function rocket_dns_prefetch_buffer( $buffer ) {
+		_deprecated_function( __FUNCTION__, '3.1' );
+		$dns_link_tags = '';
+		$domains       = rocket_get_dns_prefetch_domains();
+
+		if ( (bool) $domains ) {
+			foreach ( $domains as $domain ) {
+				$dns_link_tags .= '<link rel="dns-prefetch" href="' . esc_url( $domain ) . '" />';
+			}
+		}
+
+		$old_ie_conditional_tag = '';
+
+		/**
+		 * Allow to print an empty IE conditional tag to speed up old IE versions to load CSS & JS files
+		 *
+		 * @since 2.6.5
+		 *
+		 * @param bool true will print the IE conditional tag
+		 */
+		if ( apply_filters( 'do_rocket_old_ie_prefetch_conditional_tag', true ) ) {
+			$old_ie_conditional_tag = '<!--[if IE]><![endif]-->';
+		}
+
+		// Insert all DNS prefecth tags in head.
+		$buffer = preg_replace( '/<head(.*)>/', '<head$1>' . $old_ie_conditional_tag . $dns_link_tags, $buffer, 1 );
+
+		return $buffer;
+	}
+}
