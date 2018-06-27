@@ -8,8 +8,8 @@
 
 .wpr-notice{
     position: relative;
-    color: #fff;
-    background: $cPurple url('../img/bg-activated.svg') no-repeat 90% bottom;
+    color: $cGreyDark1;
+    background: $cGreenLight4 url('../img/bg-activated.svg') no-repeat 90% bottom;
     background-size: 350px;
     margin-top: $space*3;
     border-radius: 4px;
@@ -37,20 +37,20 @@
     }
 
     &-continue{
-        color: $cPurpleLight4;
+        color: $cGreyDark2;
     }
 
     &-close{
         position: absolute;
         top: $space*3;
         right: $space*3;
-        color: $cPurpleLight2;
+        color: $cGreyDark2;
         text-decoration: none;
         @include font-size(24,24);
         @include transition(color, 200ms);
 
         &:hover{
-            color: #fff;
+            color: $cGreyDark1;
         }
 
         &:focus{

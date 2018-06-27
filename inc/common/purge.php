@@ -37,6 +37,7 @@ add_filter( 'widget_update_callback', 'rocket_widget_update_callback' );
 /**
  * Update cache when a post is updated or commented
  *
+ * @since 3.0.5 Don't purge for attachment post type
  * @since 2.8   Only add post type archive if post type is not post
  * @since 2.6   Purge the page defined in "Posts page" option
  * @since 2.5.5 Don't cache for auto-draft post status
@@ -66,7 +67,7 @@ function rocket_clean_post( $post_id ) {
 	}
 
 	// No purge for specific conditions.
-	if ( 'auto-draft' === $post->post_status || empty( $post->post_type ) || 'nav_menu_item' === $post->post_type ) {
+	if ( 'auto-draft' === $post->post_status || empty( $post->post_type ) || 'nav_menu_item' === $post->post_type || 'attachment' === $post->post_type ) {
 		return;
 	}
 

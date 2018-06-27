@@ -18,8 +18,8 @@ settings_errors( $data['slug'] ); ?>
 
 		<header class="wpr-Header">
 			<div class="wpr-Header-logo">
-				<img src="<?php echo WP_ROCKET_ASSETS_IMG_URL; ?>/logo-wprocket-light.svg" width="163" height="44" alt="Logo WP Rocket" class="wpr-Header-logo-desktop">
-				<img src="<?php echo WP_ROCKET_ASSETS_IMG_URL; ?>/picto-wprocket-light.svg" width="28" height="50" alt="Logo WP Rocket" class="wpr-Header-logo-mobile">
+				<img src="<?php echo WP_ROCKET_ASSETS_IMG_URL; ?>/logo-wprocket-dark.svg" width="163" height="44" alt="Logo WP Rocket" class="wpr-Header-logo-desktop">
+				<img src="<?php echo WP_ROCKET_ASSETS_IMG_URL; ?>/picto-wprocket-dark.svg" width="28" height="50" alt="Logo WP Rocket" class="wpr-Header-logo-mobile">
 			</div>
 			<div class="wpr-Header-nav">
 				<?php $this->render_navigation(); ?>
@@ -39,13 +39,18 @@ settings_errors( $data['slug'] ); ?>
 				<?php $this->render_hidden_fields(); ?>
 				<input type="submit" class="wpr-button" id="wpr-options-submit" value="<?php esc_attr_e( 'Save Changes', 'rocket' ); ?>">
 			</form>
-			<?php $this->render_tools_section(); ?>
+			<?php
+			if ( rocket_valid_key() ) {
+				$this->render_tools_section();
+			}
+			?>
 			<div class="wpr-Content-tips">
 				<div class="wpr-radio wpr-radio--reverse wpr-radio--tips">
 					<input type="checkbox" class="wpr-js-tips" id="wpr-js-tips" value="1" checked>
 					<label for="wpr-js-tips">
-						<span class="wpr-radio-ui"></span>
-						<?php _e( 'Show Tips', 'rocket' ); ?></label>
+						<span data-l10n-active="<?php echo esc_attr_x( 'On', 'Active state of checkbox', 'rocket' ); ?>" 
+  data-l10n-inactive="<?php echo esc_attr_x( 'Off', 'Inactive state of checkbox', 'rocket' ); ?>" class="wpr-radio-ui"></span>
+						<?php _e( 'Show Sidebar', 'rocket' ); ?></label>
 				</div>
 			</div>
 		</section>
