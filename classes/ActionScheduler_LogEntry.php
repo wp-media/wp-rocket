@@ -33,12 +33,12 @@ class ActionScheduler_LogEntry {
 		/*
 		 * ActionScheduler_wpCommentLogger::get_entry() previously passed a 3rd param of $comment->comment_type
 		 * to ActionScheduler_LogEntry::__construct(), goodness knows why, and the Follow-up Emails plugin
-		 * hard-codes loading its own version of ActionScheduler_wpCommentLogger without that out-dated method,
+		 * hard-codes loading its own version of ActionScheduler_wpCommentLogger with that out-dated method,
 		 * goodness knows why, so we need to guard against that here instead of using a DateTime type declaration
 		 * for the constructor's 3rd param of $date and causing a fatal error with older versions of FUE.
 		 */
 		if ( null !== $date && ! is_a( $date, 'DateTime' ) ) {
-			_deprecated_argument( __METHOD__, '2.0.0', 'The third parameter must be a valid DateTime instance, or null.' );
+			_doing_it_wrong( __METHOD__, 'The third parameter must be a valid DateTime instance, or null.', '2.0.0' );
 			$date = null;
 		}
 
