@@ -260,7 +260,13 @@ function get_rocket_i18n_to_preserve( $current_lang ) {
 		return $langs_to_preserve;
 	}
 
+	// Must not be an empty string.
 	if ( empty( $current_lang ) ) {
+		return $langs_to_preserve;
+	}
+
+	// Must not be anything else but a string.
+	if ( ! is_string( $current_lang ) ) {
 		return $langs_to_preserve;
 	}
 
