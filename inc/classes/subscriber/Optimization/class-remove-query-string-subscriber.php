@@ -69,11 +69,9 @@ class Remove_Query_String_Subscriber extends Minify_Subscriber {
 			return $html;
 		}
 
-		list( $html, $conditionals ) = $this->extract_ie_conditionals( $html );
-
 		$this->remove_query_string->set_crawler( $this->crawler, $html );
 
-		return $this->inject_ie_conditionals( $this->remove_query_string->optimize(), $conditionals );
+		return $this->remove_query_string->optimize();
 	}
 
 	/**

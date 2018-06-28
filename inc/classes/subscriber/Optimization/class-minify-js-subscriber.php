@@ -39,8 +39,6 @@ class Minify_JS_Subscriber extends Minify_Subscriber {
 			return $html;
 		}
 
-		list( $html, $conditionals ) = $this->extract_ie_conditionals( $html );
-
 		$crawler = $this->crawler;
 		$crawler = $crawler::create( $html );
 
@@ -50,7 +48,7 @@ class Minify_JS_Subscriber extends Minify_Subscriber {
 			$this->set_optimization_type( new JS\Minify( $crawler, $this->options ) );
 		}
 
-		return $this->inject_ie_conditionals( $this->optimize(), $conditionals );
+		return $this->optimize();
 	}
 
 	/**

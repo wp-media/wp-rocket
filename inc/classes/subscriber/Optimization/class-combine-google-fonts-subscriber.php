@@ -37,14 +37,12 @@ class Combine_Google_Fonts_Subscriber extends Minify_Subscriber {
 			return $html;
 		}
 
-		list( $html, $conditionals ) = $this->extract_ie_conditionals( $html );
-
 		$crawler = $this->crawler;
 		$crawler = $crawler::create( $html );
 
 		$this->set_optimization_type( new CSS\Combine_Google_Fonts( $crawler ) );
 
-		return $this->inject_ie_conditionals( $this->optimize(), $conditionals );
+		return $this->optimize();
 	}
 
 	/**
