@@ -69,6 +69,8 @@ class Combine extends Abstract_CSS_Optimization {
 			return $node;
 		} );
 
+		$combine_nodes = array_filter( array_unique( $combine_nodes ) );
+
 		if ( empty( $combine_nodes ) ) {
 			return $this->crawler->saveHTML();
 		}
