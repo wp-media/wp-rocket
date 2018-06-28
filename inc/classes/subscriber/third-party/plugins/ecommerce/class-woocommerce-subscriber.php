@@ -287,7 +287,7 @@ class WooCommerce_Subscriber implements Event_Manager_Aware_Subscriber_Interface
 		if ( false !== $cart ) {
 			@header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
 			echo $cart;
-			wp_die();
+			die();
 		}
 	}
 
