@@ -154,45 +154,4 @@ abstract class Minify_Subscriber implements Subscriber_Interface {
 
 		return str_replace( $url_host, $_SERVER['HTTP_HOST'], $url );
 	}
-
-	/**
-	 * Extracts IE conditionals tags and replace them with placeholders
-	 *
-	 * @since 1.0
-	 *
-	 * @param string $html HTML content.
-	 * @return array
-	 */
-	protected function extract_ie_conditionals( $html ) {
-		preg_match_all( '/<!--\[if[^\]]*?\]>.*?<!\[endif\]-->/is', $html, $conditionals_match );
-		$html = preg_replace( '/<!--\[if[^\]]*?\]>.*?<!\[endif\]-->/is', '{{WP_ROCKET_CONDITIONAL}}', $html );
-
-		$conditionals = array();
-		foreach ( $conditionals_match[0] as $conditional ) {
-			$conditionals[] = $conditional;
-		}
-
-		return array( $html, $conditionals );
-	}
-
-	/**
-	 * Replaces WP Rocket placeholders with IE condtional tags
-	 *
-	 * @since 1.0
-	 *
-	 * @param string $html HTML content.
-	 * @param array  $conditionals An array of IE conditional tags.
-	 * @return string
-	 */
-	protected function inject_ie_conditionals( $html, $conditionals ) {
-		foreach ( $conditionals as $conditional ) {
-			if ( false === strpos( $html, '{{WP_ROCKET_CONDITIONAL}}' ) ) {
-				continue;
-			}
-
-			$html = preg_replace( '/{{WP_ROCKET_CONDITIONAL}}/', $conditional, $html, 1 );
-		}
-
-		return $html;
-	}
 }
