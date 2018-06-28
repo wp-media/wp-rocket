@@ -23,6 +23,16 @@ class Combine extends Abstract_JS_Optimization {
 	private $minifier;
 
 	/**
+	 * JQuery URL
+	 *
+	 * @since 3.1
+	 * @author Remy Perona
+	 *
+	 * @var bool|string
+	 */
+	private $jquery_url;
+
+	/**
 	 * Constructor
 	 *
 	 * @since 3.1
@@ -35,7 +45,8 @@ class Combine extends Abstract_JS_Optimization {
 	public function __construct( HtmlPageCrawler $crawler, Options $options, Minify\JS $minifier ) {
 		parent::__construct( $crawler, $options );
 
-		$this->minifier = $minifier;
+		$this->minifier   = $minifier;
+		$this->jquery_url = $this->get_jquery_url();
 	}
 
 	/**
@@ -110,9 +121,7 @@ class Combine extends Abstract_JS_Optimization {
 					return;
 				}
 
-				$jquery_url = $this->get_jquery_url();
-
-				if ( $jquery_url && false !== strpos( $src, $jquery_url ) ) {
+				if ( $this->jquery_url && false !== strpos( $src, $this->jquery_url ) ) {
 					return;
 				}
 			} elseif ( is_null( $src ) ) {

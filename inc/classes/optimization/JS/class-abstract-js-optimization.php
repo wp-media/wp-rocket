@@ -147,7 +147,7 @@ class Abstract_JS_Optimization extends Abstract_Optimization {
 	protected function get_jquery_url() {
 		global $wp_scripts;
 
-		if ( ! $this->options->get( 'defer_all_js', 0 ) && ! $this->options->get( 'defer_all_js_safe', 0 ) ) {
+		if ( ! $this->options->get( 'defer_all_js', 0 ) || ! $this->options->get( 'defer_all_js_safe', 0 ) ) {
 			return false;
 		}
 
