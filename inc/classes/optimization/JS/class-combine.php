@@ -384,8 +384,6 @@ class Combine extends Abstract_JS_Optimization {
 			'app.ecwid.com',
 			'www.industriejobs.de',
 			's.gravatar.com',
-			'cdn.jsdelivr.net',
-			'cdnjs.cloudflare.com',
 		] );
 	}
 }
