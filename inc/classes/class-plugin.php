@@ -103,8 +103,10 @@ class Plugin {
 			];
 		}
 
-		foreach ( $subscribers as $subscriber ) {
-			$event_manager->add_subscriber( $subscriber );
+		if ( isset( $subscribers ) ) {
+			foreach ( $subscribers as $subscriber ) {
+				$event_manager->add_subscriber( $subscriber );
+			}
 		}
 	}
 }
