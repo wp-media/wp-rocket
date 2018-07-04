@@ -318,11 +318,11 @@ class Page implements Subscriber_Interface {
 		$response = wp_safe_remote_post(
 			WP_ROCKET_WEB_MAIN . 'stat/1.0/wp-rocket/user.php',
 			[
-				'body' => 'user_id=' . $customer_email . '&consumer_key=' . $customer_key,
+				'body' => 'user_id=' . rawurlencode( $customer_email ) . '&consumer_key=' . $customer_key,
 			]
 		);
 
-		if ( is_wp_error( $response ) ) {
+		if ( 200 !== wp_remote_retrieve_response_code( $response )  ) {
 			return (object) [
 				'licence_account'    => __( 'Unavailable', 'rocket' ),
 				'licence_expiration' => __( 'Unavailable', 'rocket' ),
