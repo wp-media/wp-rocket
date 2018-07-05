@@ -2,6 +2,7 @@
 namespace WP_Rocket\Optimization\JS;
 
 use WP_Rocket\Admin\Options_Data as Options;
+use WP_Rocket\Optimization\Assets_Local_Cache;
 use Wa72\HtmlPageDom\HtmlPageCrawler;
 use MatthiasMullie\Minify;
 
@@ -23,6 +24,16 @@ class Combine extends Abstract_JS_Optimization {
 	private $minifier;
 
 	/**
+	 * Assets local cache instance
+	 *
+	 * @since 3.1
+	 * @author Remy Perona
+	 *
+	 * @var Assets_Local_Cache
+	 */
+	private $local_cache;
+
+	/**
 	 * JQuery URL
 	 *
 	 * @since 3.1
@@ -38,15 +49,17 @@ class Combine extends Abstract_JS_Optimization {
 	 * @since 3.1
 	 * @author Remy Perona
 	 *
-	 * @param HtmlPageCrawler $crawler  Crawler instance.
-	 * @param Options         $options  Plugin options instance.
-	 * @param Minify\JS       $minifier Minifier instance.
+	 * @param HtmlPageCrawler    $crawler  Crawler instance.
+	 * @param Options            $options  Plugin options instance.
+	 * @param Minify\JS          $minifier Minifier instance.
+	 * @param Assets_Local_Cache $local_cache Assets local cache instance.
 	 */
-	public function __construct( HtmlPageCrawler $crawler, Options $options, Minify\JS $minifier ) {
+	public function __construct( HtmlPageCrawler $crawler, Options $options, Minify\JS $minifier, Assets_Local_Cache $local_cache ) {
 		parent::__construct( $crawler, $options );
 
-		$this->minifier   = $minifier;
-		$this->jquery_url = $this->get_jquery_url();
+		$this->minifier    = $minifier;
+		$this->local_cache = $local_cache;
+		$this->jquery_url  = $this->get_jquery_url();
 	}
 
 	/**
@@ -104,8 +117,6 @@ class Combine extends Abstract_JS_Optimization {
 	 */
 	protected function parse( $nodes ) {
 		$combine_nodes = $nodes->each( function( \Wa72\HtmlPageDom\HtmlPageCrawler $node, $i ) {
-			global $wp_scripts;
-
 			$src = $node->attr( 'src' );
 
 			if ( $src ) {
@@ -167,7 +178,7 @@ class Combine extends Abstract_JS_Optimization {
 
 				$this->add_to_minify( $file_content );
 			} elseif ( $src && $this->is_external_file( $src ) ) {
-				$file_content = $this->get_url_content( rocket_add_url_protocol( $src ) );
+				$file_content = $this->local_cache->get_content( rocket_add_url_protocol( $src ) );
 				$content     .= $file_content;
 
 				$this->add_to_minify( $file_content );
@@ -265,25 +276,6 @@ class Combine extends Abstract_JS_Optimization {
 	 */
 	protected function add_to_minify( $content ) {
 		$this->minifier->add( $content );
-	}
-
-	/**
-	 * Gets content from an URL
-	 *
-	 * @since 3.1
-	 * @author Remy Perona
-	 *
-	 * @param string $url URL to get the content from.
-	 * @return string
-	 */
-	protected function get_url_content( $url ) {
-		$content = wp_remote_retrieve_body( wp_remote_get( $url ) );
-
-		if ( ! $content ) {
-			return false;
-		}
-
-		return $content;
 	}
 
 	/**
