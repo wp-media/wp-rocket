@@ -388,6 +388,21 @@ function rocket_clean_minify( $extensions = array( 'js', 'css' ) ) {
 			rocket_direct_filesystem()->delete( $item );
 		}
 	}
+
+	$third_party = WP_ROCKET_MINIFY_CACHE_PATH . '3rd-party';
+
+	try {
+		$files = new FilesystemIterator( $third_party );
+
+		foreach ( $files as $file ) {
+			if ( rocket_direct_filesystem()->is_file( $file ) ) {
+				rocket_direct_filesystem()->delete( $file );
+			}
+		}
+	} catch ( Exception $e ) {
+		// No logging yet.
+		return;
+	}
 }
 
 /**
