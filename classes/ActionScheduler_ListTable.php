@@ -2,8 +2,10 @@
 
 /**
  * Implements the admin view of the actions.
+ * @codeCoverageIgnore
  */
-class ActionScheduler_ListTable extends PP_List_Table {
+class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
+
 	/**
 	 * The package name.
 	 *
@@ -404,7 +406,7 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	}
 
 	/**
-	 * Implements the logic behind running an action. PP_Table_List validates the request and their
+	 * Implements the logic behind running an action. ActionScheduler_Abstract_ListTable validates the request and their
 	 * parameters are valid.
 	 *
 	 * @param int $action_id
@@ -414,7 +416,7 @@ class ActionScheduler_ListTable extends PP_List_Table {
 	}
 
 	/**
-	 * Implements the logic behind running an action. PP_Table_List validates the request and their
+	 * Implements the logic behind running an action. ActionScheduler_Abstract_ListTable validates the request and their
 	 * parameters are valid.
 	 *
 	 * @param int $action_id
