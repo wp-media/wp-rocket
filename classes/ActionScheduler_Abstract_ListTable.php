@@ -5,7 +5,7 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 }
 
 /**
- * Prospress List Table class
+ * Action Scheduler Abstract List Table class
  *
  * This abstract class enhances WP_List_Table making it ready to use.
  *
@@ -18,13 +18,10 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
  *  - Sortable columns
  *  - Automatic translations of the columns
  *
- * @class       PP_List_Table
- * @package     Propspress Utils
- * @subpackage  Propspress Utils
- * @category    Class
- * @since       0.0.1
+ * @codeCoverageIgnore
+ * @since  2.0.0
  */
-abstract class PP_List_Table extends WP_List_Table {
+abstract class ActionScheduler_Abstract_ListTable extends WP_List_Table {
 
 	/**
 	 * The table name
