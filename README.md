@@ -87,6 +87,28 @@ These are the commands available to use with Action Scheduler:
 
 The best way to get a full list of commands and their available options is to use WP CLI itself. This can be done by running `wp action-scheduler` to list all Action Scheduler commands, or by including the `--help` flag with any of the individual commands. This will provide all relevant parameters and flags for the command.
 
+### Cautionary Note on Action Dependencies when using `--group` or `--hooks` Options
+
+The `--group` and `--hooks` options should be used with caution if you have an implicit dependency between scheduled actions based on their schedule.
+
+For example, consider two scheduled actions for the same subscription:
+
+* `scheduled_payment` scheduled for `2015-11-13 00:00:00` and
+* `scheduled_expiration` scheduled for `2015-11-13 00:01:00`.
+
+Under normal conditions, Action Scheduler will ensure the `scheduled_payment` action is run before the `scheduled_expiration` action. Becuase that's how they are scheduled.
+
+However, when using the `--hooks` option, the `scheduled_payment` and `scheduled_expiration` actions will be processed in separate queues. As a result, this dependency is not guaranteed.
+
+For example, consider a site with both:
+
+* 100,000 `scheduled_payment` actions, scheduled for `2015-11-13 00:00:00`
+* 100 `scheduled_expiration` actions, scheduled for `2015-11-13 00:01:00`
+
+If two queue runners are running alongside each other with each runner dedicated to just one of these hooks, the queue runner handling expiration hooks will complete the processing of the expiration hooks more quickly than the queue runner handling all the payment actions.
+
+**Because of this, the `--group` and `--hooks` options should be used with caution to avoid processing actions with an implicit dependency based on their schedule in separate queues.**
+
 ### Improving Performance with `--group` or `--hooks`
 
 Being able to run queues for specific hooks or groups of actions is valuable at scale. Why? Because it means you can restrict the concurrency for similar actions.
