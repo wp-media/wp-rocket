@@ -62,7 +62,7 @@ Still have questions? Check out the [FAQ below](#faq).
 
 Action Scheduler has custom [WP CLI](http://wp-cli.org) commands available for processing actions.
 
-For many sites, WP CLI is a much better choice for running queues of actions than the default WP Cron runner. These are some common cases where WP CLI is a better option:
+For large sites, WP CLI is a much better choice for running queues of actions than the default WP Cron runner. These are some common cases where WP CLI is a better option:
 
 * long-running tasks - Tasks that take a significant amount of time to run
 * large queues - A large number of tasks will naturally take a longer time
@@ -70,7 +70,7 @@ For many sites, WP CLI is a much better choice for running queues of actions tha
 
 With a regular web request, you may have to deal with script timeouts enforced by hosts, or other restraints that make it more challenging to run Action Scheduler tasks. Utilizing WP CLI to run commands directly on the server give you more freedom. This means that you typically don't have the same constraints of a normal web request.
 
-If you choose to utilize WP CLI exclusively, you can disable the normal WP CLI queue runner by installing the [Action Scheduler - Disable Default Queue Runner](https://github.com/Prospress/action-scheduler-disable-default-runner) plugin. Note that if you do this, you **must** run Action Scheduler manually.
+If you choose to utilize WP CLI exclusively, you can disable the normal WP CLI queue runner by installing the [Action Scheduler - Disable Default Queue Runner](https://github.com/Prospress/action-scheduler-disable-default-runner) plugin. Note that if you do this, you **must** run Action Scheduler via WP CLI or another method, otherwise no scheduled actions will be processed.
  
 ### Commands
 
@@ -87,9 +87,9 @@ These are the commands available to use with Action Scheduler:
 
 The best way to get a full list of commands and their available options is to use WP CLI itself. This can be done by running `wp action-scheduler` to list all Action Scheduler commands, or by including the `--help` flag with any of the individual commands. This will provide all relevant parameters and flags for the command.
 
-### Improving Performance with `--group`
+### Improving Performance with `--group` or `--hooks`
 
-Being able to run queues for specific groups of actions is valuable at scale. Why? Because it means you can restrict the concurrency for similar actions.
+Being able to run queues for specific hooks or groups of actions is valuable at scale. Why? Because it means you can restrict the concurrency for similar actions.
 
 For example, let's say you have 300,000 actions queued up comprised of:
 
