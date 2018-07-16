@@ -1607,18 +1607,16 @@ class Page implements Subscriber_Interface {
 			]
 		);
 
-		if ( apply_filters( 'rocket_display_varnish_options_tab', true ) ) {
-			$this->settings->add_settings_sections(
-				[
-					'one_click' => [
-						'title'       => __( 'One-click Rocket Add-ons', 'rocket' ),
-						'description' => __( 'One-Click Add-ons are features extending available options without configuration needed. Switch the option "on" to enable from this screen.', 'rocket' ),
-						'type'        => 'addons_container',
-						'page'        => 'addons',
-					],
-				]
-			);
-		}
+		$this->settings->add_settings_sections(
+			[
+				'one_click' => [
+					'title'       => __( 'One-click Rocket Add-ons', 'rocket' ),
+					'description' => __( 'One-Click Add-ons are features extending available options without configuration needed. Switch the option "on" to enable from this screen.', 'rocket' ),
+					'type'        => 'addons_container',
+					'page'        => 'addons',
+				],
+			]
+		);
 
 		$this->settings->add_settings_sections(
 			[
