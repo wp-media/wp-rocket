@@ -85,7 +85,7 @@ class Google_Analytics extends Abstract_Busting {
 	 * {@inheritdoc}
 	 */
 	protected function replace( $node ) {
-			$node->html( str_replace( $this->url, $this->get_busting_url(), $node->html() ) );
+			$node->html( preg_replace( '/(?:https?:)?\/\/www.google-analytics.com\/analytics.js/i', $this->get_busting_url(), $node->html() ) );
 			$this->is_replaced = true;
 	}
 
