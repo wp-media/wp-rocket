@@ -289,7 +289,7 @@ function set_rocket_wp_cache_define( $turn_it_on ) {
 	 *
 	 * @param string $turn_it_on The value of WP_CACHE constant.
 	*/
-	apply_filters( 'set_rocket_wp_cache_define', $turn_it_on );
+	$turn_it_on = apply_filters( 'set_rocket_wp_cache_define', $turn_it_on );
 
 	// Lets find out if the constant WP_CACHE is defined or not.
 	$is_wp_cache_exist = false;
