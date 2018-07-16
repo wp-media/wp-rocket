@@ -11,16 +11,11 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  */
 function rocket_disable_options_on_amp() {
 	if ( defined( 'AMP_QUERY_VAR' ) && function_exists( 'is_amp_endpoint' ) && is_amp_endpoint() ) {
-		if ( function_exists( 'wp_resource_hints' ) ) {
-			remove_filter( 'wp_resource_hints', 'rocket_dns_prefetch', 10, 2 );
-		} else {
-			remove_filter( 'rocket_buffer', 'rocket_dns_prefetch_buffer', 12 );
-		}
-
+		remove_filter( 'wp_resource_hints', 'rocket_dns_prefetch', 10, 2 );
 		add_filter( 'rocket_buffer_enable', '__return_false' );
-		remove_filter( 'rocket_buffer', 'rocket_defer_js', 14 );
-		remove_filter( 'rocket_buffer', array( Rocket_Critical_CSS::get_instance(), 'async_css' ), 15 );
-		remove_filter( 'rocket_buffer', array( Rocket_Critical_CSS::get_instance(), 'insert_critical_css_buffer' ), 14 );
+		remove_filter( 'rocket_buffer', 'rocket_defer_js', 15 );
+		remove_filter( 'rocket_buffer', array( Rocket_Critical_CSS::get_instance(), 'async_css' ), 20 );
+		remove_filter( 'rocket_buffer', array( Rocket_Critical_CSS::get_instance(), 'insert_critical_css_buffer' ), 20 );
 
 		add_filter( 'do_rocket_lazyload', '__return_false' );
 
