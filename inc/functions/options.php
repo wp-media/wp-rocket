@@ -133,8 +133,8 @@ function is_rocket_generate_caching_mobile_files() {
 function rocket_get_dns_prefetch_domains() {
 	$cdn_cnames = get_rocket_cdn_cnames( array( 'all', 'images', 'css_and_js', 'css', 'js' ) );
 
-	// Don't add CNAMES if CDN is disabled HTTPS pages or on specific posts.
-	if ( is_rocket_post_excluded_option( 'cdn' ) ) {
+	// Don't add CNAMES if CDN is disabled.
+	if ( ! get_rocket_option( 'cdn' ) || is_rocket_post_excluded_option( 'cdn' ) ) {
 		$cdn_cnames = array();
 	}
 
