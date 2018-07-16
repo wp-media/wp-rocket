@@ -78,6 +78,7 @@ class Plugin {
 	 */
 	public function load() {
 		$event_manager = new Event_Manager();
+		$subscribers   = [];
 
 		if ( is_admin() ) {
 			$settings_page_args = [
@@ -92,8 +93,6 @@ class Plugin {
 			];
 		} elseif ( \rocket_valid_key() ) {
 			$subscribers = [
-				new Plugins\Ecommerce\WooCommerce_Subscriber(),
-				new Subscriber\Google_Tracking_Cache_Busting_Subscriber( new Busting\Busting_Factory( WP_ROCKET_CACHE_BUSTING_PATH, WP_ROCKET_CACHE_BUSTING_URL ), $this->crawler, $this->options ),
 				new Subscriber\Optimization\Minify_HTML_Subscriber( $this->options ),
 				new Subscriber\Optimization\Combine_Google_Fonts_Subscriber( $this->options, $this->crawler ),
 				new Subscriber\Optimization\Minify_CSS_Subscriber( $this->options, $this->crawler ),
@@ -103,10 +102,11 @@ class Plugin {
 			];
 		}
 
-		if ( isset( $subscribers ) ) {
-			foreach ( $subscribers as $subscriber ) {
-				$event_manager->add_subscriber( $subscriber );
-			}
+		$subscribers[] = new Plugins\Ecommerce\WooCommerce_Subscriber();
+		$subscribers[] = new Subscriber\Google_Tracking_Cache_Busting_Subscriber( new Busting\Busting_Factory( WP_ROCKET_CACHE_BUSTING_PATH, WP_ROCKET_CACHE_BUSTING_URL ), $this->crawler, $this->options );
+
+		foreach ( $subscribers as $subscriber ) {
+			$event_manager->add_subscriber( $subscriber );
 		}
 	}
 }
