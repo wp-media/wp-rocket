@@ -315,6 +315,7 @@ class Combine extends Abstract_JS_Optimization {
 			'vtn_player_type',
 			'ven_video_key',
 			'ANS_customer_id',
+			'tdBlock',
 		] );
 	}
 
