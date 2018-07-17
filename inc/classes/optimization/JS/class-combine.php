@@ -344,6 +344,7 @@ class Combine extends Abstract_JS_Optimization {
 			'intensedebate.com',
 			'scripts.chitika.net/',
 			'jotform.com/',
+			'gist.github.com',
 			'forms.aweber.com',
 			'video.unrulymedia.com',
 			'stats.wp.com',
