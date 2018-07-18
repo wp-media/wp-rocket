@@ -93,6 +93,7 @@ class Plugin {
 			];
 		} elseif ( \rocket_valid_key() ) {
 			$subscribers = [
+				new Subscriber\Optimization\Scripts_Escaping_Subscriber(),
 				new Subscriber\Optimization\Minify_HTML_Subscriber( $this->options ),
 				new Subscriber\Optimization\Combine_Google_Fonts_Subscriber( $this->options, $this->crawler ),
 				new Subscriber\Optimization\Minify_CSS_Subscriber( $this->options, $this->crawler ),
