@@ -138,6 +138,10 @@ class Combine extends Abstract_JS_Optimization {
 			} elseif ( is_null( $src ) ) {
 				$type = $node->attr( 'type' );
 
+				if ( 'text/template' === $type ) {
+					return;
+				}
+
 				if ( 'application/ld+json' === $type ) {
 					return;
 				}
