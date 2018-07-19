@@ -1639,7 +1639,7 @@ class Page implements Subscriber_Interface {
 						'width'  => 153,
 						'height' => 111,
 					],
-					'title'             => __( 'Improve browser caching for Google Analytics and Google Tag Manager', 'rocket' ),
+					'title'             => __( 'Improve browser caching for Google Analytics', 'rocket' ),
 					'description'       => __( 'WP Rocket will host these Google scripts locally on your server to help satisfy the PageSpeed recommendation for <em>Leverage browser caching</em>.', 'rocket' ),
 					'section'           => 'one_click',
 					'page'              => 'addons',
