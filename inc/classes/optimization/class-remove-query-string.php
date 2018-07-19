@@ -259,6 +259,10 @@ class Remove_Query_String extends Abstract_Optimization {
 		$relative_src = ltrim( $parsed_url['path'] . '?' . $parsed_url['query'], '/' );
 		$filename     = preg_replace( '/\.(' . $extension . ')\?(?:timestamp|ver)=([^&]+)(?:.*)/', '-$2.$1', $relative_src );
 
+		if ( $relative_src === $filename ) {
+			return $url;
+		}
+
 		$busting_file = $this->busting_path . $filename;
 
 		if ( ! rocket_direct_filesystem()->is_readable( $busting_file ) ) {
