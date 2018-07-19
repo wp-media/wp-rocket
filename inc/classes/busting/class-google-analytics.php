@@ -114,4 +114,16 @@ class Google_Analytics extends Abstract_Busting {
 
 		return \rocket_direct_filesystem()->delete( $file, false, 'f' );
 	}
+
+	/**
+	 * Gets the Google Analytics URL
+	 *
+	 * @since 3.1
+	 * @author Remy Perona
+	 *
+	 * @return string
+	 */
+	public function get_url() {
+		return $this->url;
+	}
 }
