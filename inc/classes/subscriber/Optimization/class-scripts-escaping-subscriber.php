@@ -37,6 +37,10 @@ class Scripts_Escaping_Subscriber implements Subscriber_Interface {
 	public function escape_html_in_scripts( $html ) {
 		preg_match_all( '/<script[^>]*?>(.*)<\/script>/msU', $html, $matches );
 
+		if ( empty( $matches[1] ) ) {
+			return $html;
+		}
+
 		foreach ( $matches[1] as $k => $match ) {
 			if ( empty( $match ) ) {
 				continue;
@@ -60,6 +64,10 @@ class Scripts_Escaping_Subscriber implements Subscriber_Interface {
 	 */
 	public function unescape_html_in_scripts( $html ) {
 		preg_match_all( '/<script[^>]*?>(.*)<\/script>/msU', $html, $matches );
+
+		if ( empty( $matches[1] ) ) {
+			return $html;
+		}
 
 		foreach ( $matches[1] as $k => $match ) {
 			if ( empty( $match ) ) {
