@@ -25,6 +25,7 @@ class Minify_JS_Subscriber extends Minify_Subscriber {
 			],
 		];
 
+		/** This action is documented in inc/classes/subscriber/class-google-tracking-cache-busting-subscriber.php */
 		if ( apply_filters( 'rocket_buffer_enable', true ) ) {
 			$events['rocket_buffer'] = [ 'process', 14 ];
 		}

@@ -16,6 +16,7 @@ class Combine_Google_Fonts_Subscriber extends Minify_Subscriber {
 	 * @inheritDoc
 	 */
 	public static function get_subscribed_events() {
+		/** This action is documented in inc/classes/subscriber/class-google-tracking-cache-busting-subscriber.php */
 		if ( apply_filters( 'rocket_buffer_enable', true ) ) {
 			return [
 				'rocket_buffer' => [ 'process', 13 ],

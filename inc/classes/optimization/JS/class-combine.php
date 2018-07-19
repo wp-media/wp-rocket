@@ -138,6 +138,10 @@ class Combine extends Abstract_JS_Optimization {
 			} elseif ( is_null( $src ) ) {
 				$type = $node->attr( 'type' );
 
+				if ( 'text/template' === $type || 'text/html' === $type ) {
+					return;
+				}
+
 				if ( 'application/ld+json' === $type ) {
 					return;
 				}
@@ -184,6 +188,7 @@ class Combine extends Abstract_JS_Optimization {
 				$this->add_to_minify( $file_content );
 			} elseif ( is_null( $src ) ) {
 				$inline_js = rtrim( $node->html(), ";\n\t\r" ) . ';';
+				$inline_js = str_replace( '<\/', '</', $inline_js );
 				$content  .= $inline_js;
 
 				$this->add_to_minify( $inline_js );
