@@ -1629,6 +1629,8 @@ class Page implements Subscriber_Interface {
 			]
 		);
 
+		$ga_beacon = $this->get_beacon_suggest( 'google_tracking', $this->locale );
+
 		$this->settings->add_settings_fields(
 			[
 				'google_analytics_cache' => [
@@ -1640,7 +1642,8 @@ class Page implements Subscriber_Interface {
 						'height' => 111,
 					],
 					'title'             => __( 'Improve browser caching for Google Analytics', 'rocket' ),
-					'description'       => __( 'WP Rocket will host these Google scripts locally on your server to help satisfy the PageSpeed recommendation for <em>Leverage browser caching</em>.', 'rocket' ),
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'description'       => sprintf( __( 'WP Rocket will host these Google scripts locally on your server to help satisfy the PageSpeed recommendation for <em>Leverage browser caching</em>.<br>%1$sLearn more%2$s', 'rocket' ), '<a href="' . esc_url( $ga_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $ga_beacon['id'] ) . '" target="_blank">', '</a>' ),
 					'section'           => 'one_click',
 					'page'              => 'addons',
 					'default'           => 0,
@@ -2178,6 +2181,12 @@ class Page implements Subscriber_Interface {
 				'fr' => [
 					'id'  => '56fd2f789033601d6683e574',
 					'url' => 'https://fr.docs.wp-rocket.me/article/512-varnish-wp-rocket-2-7/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
+			'google_tracking'        => [
+				'en' => [
+					'id'  => '5b4693220428630abc0bf97b',
+					'url' => 'https://docs.wp-rocket.me/article/1103-google-tracking-add-on/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 		];
