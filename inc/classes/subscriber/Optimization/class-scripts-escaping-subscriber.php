@@ -46,6 +46,7 @@ class Scripts_Escaping_Subscriber implements Subscriber_Interface {
 				continue;
 			}
 
+			$match = str_replace( '<\/', '<#\/', $match );
 			$match = str_replace( '</', '<\/', $match );
 			$html  = str_replace( $matches[1][ $k ], $match, $html );
 		}
@@ -75,6 +76,7 @@ class Scripts_Escaping_Subscriber implements Subscriber_Interface {
 			}
 
 			$match = str_replace( '<\/', '</', $match );
+			$match = str_replace( '<#\/', '<\/', $match );
 			$html  = str_replace( $matches[1][ $k ], $match, $html );
 		}
 
