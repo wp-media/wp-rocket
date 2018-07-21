@@ -35,6 +35,8 @@ class Scripts_Escaping_Subscriber implements Subscriber_Interface {
 	 * @return string
 	 */
 	public function escape_html_in_scripts( $html ) {
+		$html = preg_replace( '/(<noscript[^>]*?>.*<\/noscript>)/msU', "<!--$0-->", $html );
+
 		preg_match_all( '/<script[^>]*?>(.*)<\/script>/msU', $html, $matches );
 
 		if ( empty( $matches[1] ) ) {
@@ -79,6 +81,8 @@ class Scripts_Escaping_Subscriber implements Subscriber_Interface {
 			$match = str_replace( '<#\/', '<\/', $match );
 			$html  = str_replace( $matches[1][ $k ], $match, $html );
 		}
+		$html = str_replace( '<!--<noscript>', '<noscript>', $html );
+		$html = str_replace( '</noscript>-->', '</noscript>', $html );
 
 		return $html;
 	}
