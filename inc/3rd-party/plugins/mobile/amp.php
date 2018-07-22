@@ -10,14 +10,12 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  * @author Remy Perona
  */
 function rocket_disable_options_on_amp() {
-	if ( defined( 'AMP_QUERY_VAR' ) && function_exists( 'is_amp_endpoint' ) && is_amp_endpoint() ) {
-		remove_filter( 'wp_resource_hints', 'rocket_dns_prefetch', 10, 2 );
-		add_filter( 'rocket_buffer_enable', '__return_false' );
-		remove_filter( 'rocket_buffer', 'rocket_defer_js', 15 );
-		remove_filter( 'rocket_buffer', array( Rocket_Critical_CSS::get_instance(), 'async_css' ), 20 );
-		remove_filter( 'rocket_buffer', array( Rocket_Critical_CSS::get_instance(), 'insert_critical_css_buffer' ), 20 );
+	global $wp_filter;
 
+	if ( function_exists( 'is_amp_endpoint' ) && is_amp_endpoint() ) {
+		remove_filter( 'wp_resource_hints', 'rocket_dns_prefetch', 10, 2 );
 		add_filter( 'do_rocket_lazyload', '__return_false' );
+		unset( $wp_filter['rocket_buffer'] );
 
 		// this filter is documented in inc/front/protocol.php.
 		$do_rocket_protocol_rewrite = apply_filters( 'do_rocket_protocol_rewrite', false );
