@@ -14,15 +14,12 @@ class Scripts_Escaping_Subscriber implements Subscriber_Interface {
 	 * @inheritDoc
 	 */
 	public static function get_subscribed_events() {
-		/** This action is documented in inc/classes/subscriber/class-google-tracking-cache-busting-subscriber.php */
-		if ( apply_filters( 'rocket_buffer_enable', true ) ) {
-			return [
-				'rocket_buffer' => [
-					[ 'escape_html_in_scripts', 1 ],
-					[ 'unescape_html_in_scripts', PHP_INT_MAX ],
-				],
-			];
-		}
+		return [
+			'rocket_buffer' => [
+				[ 'escape_html_in_scripts', 1 ],
+				[ 'unescape_html_in_scripts', 20 ],
+			],
+		];
 	}
 
 	/**
