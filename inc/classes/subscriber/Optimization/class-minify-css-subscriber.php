@@ -22,12 +22,8 @@ class Minify_CSS_Subscriber extends Minify_Subscriber {
 				[ 'fix_ssl_minify' ],
 				[ 'i18n_multidomain_url' ],
 			],
+			'rocket_buffer'  => [ 'process', 16 ],
 		];
-
-		/** This action is documented in inc/classes/subscriber/class-google-tracking-cache-busting-subscriber.php */
-		if ( apply_filters( 'rocket_buffer_enable', true ) ) {
-			$events['rocket_buffer'] = [ 'process', 16 ];
-		}
 
 		return $events;
 	}

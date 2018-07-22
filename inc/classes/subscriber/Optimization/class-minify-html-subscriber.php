@@ -38,12 +38,9 @@ class Minify_HTML_Subscriber implements Subscriber_Interface {
 	 * @inheritDoc
 	 */
 	public static function get_subscribed_events() {
-		/** This action is documented in inc/classes/subscriber/class-google-tracking-cache-busting-subscriber.php */
-		if ( apply_filters( 'rocket_buffer_enable', true ) ) {
-			return [
-				'rocket_buffer' => [ 'process', 21 ],
-			];
-		}
+		return [
+			'rocket_buffer' => [ 'process', 21 ],
+		];
 	}
 
 	/**

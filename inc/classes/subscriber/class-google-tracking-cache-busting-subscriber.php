@@ -57,19 +57,8 @@ class Google_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface {
 			'init'                                => 'schedule_tracking_cache_update',
 			'rocket_google_tracking_cache_update' => 'update_tracking_cache',
 			'after_rocket_clean_cache_busting'    => 'delete_tracking_cache',
+			'rocket_buffer'                       => 'cache_busting_google_tracking',
 		];
-
-		/**
-		 * Filters application of hooks on rocket_buffer filter
-		 *
-		 * @since 3.1
-		 * @author Remy Perona
-		 *
-		 * @param bool $enable Enable application of hooks.
-		 */
-		if ( apply_filters( 'rocket_buffer_enable', true ) ) {
-			$events['rocket_buffer'] = 'cache_busting_google_tracking';
-		}
 
 		return $events;
 	}
