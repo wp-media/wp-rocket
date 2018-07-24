@@ -3,7 +3,6 @@ namespace WP_Rocket\Optimization\CSS;
 
 use WP_Rocket\Optimization\Abstract_Optimization;
 use WP_Rocket\Admin\Options_Data as Options;
-use Wa72\HtmlPageDom\HtmlPageCrawler;
 
 /**
  * Abstract class for CSS Optimization
@@ -20,12 +19,9 @@ abstract class Abstract_CSS_Optimization extends Abstract_Optimization {
 	 * @since 3.1
 	 * @author Remy Perona
 	 *
-	 * @param HtmlPageCrawler $crawler Crawler instance.
-	 * @param Options         $options Options instance.
+	 * @param Options $options Options instance.
 	 */
-	public function __construct( HtmlPageCrawler $crawler, Options $options ) {
-		parent::__construct( $crawler );
-
+	public function __construct( Options $options ) {
 		$this->options          = $options;
 		$this->minify_key       = $this->options->get( 'minify_css_key', create_rocket_uniqid() );
 		$this->excluded_files   = $this->get_excluded_files();
@@ -104,26 +100,24 @@ abstract class Abstract_CSS_Optimization extends Abstract_Optimization {
 	 * @since 2.11
 	 * @author Remy Perona
 	 *
-	 * @param HtmlPageCrawler $node Node corresponding to a CSS file.
+	 * @param Array $tag Tag corresponding to a CSS file.
 	 * @return bool True if it is a file excluded, false otherwise
 	 */
-	protected function is_minify_excluded_file( $node ) {
+	protected function is_minify_excluded_file( $tag ) {
 		// File should not be minified.
-		if ( $node->attr( 'data-minify' ) || $node->attr( 'data-no-minify' ) ) {
+		if ( false !== strpos( $tag[0], 'data-minify=' ) || false !== strpos( $tag[0], 'data-no-minify=' ) ) {
 			return true;
 		}
 
-		$media = $node->attr( 'media' );
-
-		if ( $media && ! preg_match( '/(all|screen)/iU', $media ) ) {
+		if ( false !== strpos( $tag[0], 'media=' ) && ! preg_match( '/media=["\'](?:["\']|[^"\']*?(all|screen)[^"\']*?["\'])/iU', $tag[0] ) ) {
 			return true;
 		}
 
-		if ( $media && false !== strpos( $media, 'only screen and' ) ) {
+		if ( false !== strpos( $tag[0], 'only screen and' ) ) {
 			return true;
 		}
 
-		$file_path = rocket_extract_url_component( $node->attr( 'href' ), PHP_URL_PATH );
+		$file_path = rocket_extract_url_component( $tag[2], PHP_URL_PATH );
 
 		// File extension is not css.
 		if ( pathinfo( $file_path, PATHINFO_EXTENSION ) !== self::FILE_TYPE ) {
