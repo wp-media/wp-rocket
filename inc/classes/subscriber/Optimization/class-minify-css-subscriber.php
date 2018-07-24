@@ -3,7 +3,6 @@ namespace WP_Rocket\Subscriber\Optimization;
 
 use WP_Rocket\Admin\Options_Data as Options;
 use WP_Rocket\Optimization\CSS;
-use Wa72\HtmlPageDom\HtmlPageCrawler;
 use \MatthiasMullie\Minify;
 
 /**
@@ -36,16 +35,13 @@ class Minify_CSS_Subscriber extends Minify_Subscriber {
 			return $html;
 		}
 
-		$crawler = $this->crawler;
-		$crawler = $crawler::create( $html );
-
 		if ( $this->options->get( 'minify_css' ) && $this->options->get( 'minify_concatenate_css' ) ) {
-			$this->set_optimization_type( new CSS\Combine( $crawler, $this->options, new Minify\CSS() ) );
+			$this->set_optimization_type( new CSS\Combine( $this->options, new Minify\CSS() ) );
 		} elseif ( $this->options->get( 'minify_css' ) && ! $this->options->get( 'minify_concatenate_css' ) ) {
-			$this->set_optimization_type( new CSS\Minify( $crawler, $this->options ) );
+			$this->set_optimization_type( new CSS\Minify( $this->options ) );
 		}
 
-		return $this->optimize();
+		return $this->optimize( $html );
 	}
 
 	/**
