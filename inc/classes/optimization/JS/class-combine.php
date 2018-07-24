@@ -139,7 +139,7 @@ class Combine extends Abstract_JS_Optimization {
 					return;
 				}
 
-				if ( $this->jquery_url && false !== strpos( $src, $this->jquery_url ) ) {
+				if ( $this->jquery_url && false !== strpos( $matches[2], $this->jquery_url ) ) {
 					return;
 				}
 
