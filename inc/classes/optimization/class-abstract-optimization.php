@@ -1,8 +1,6 @@
 <?php
 namespace WP_Rocket\Optimization;
 
-use Wa72\HtmlPageDom\HtmlPageCrawler;
-
 /**
  * Base abstract class for files optimization
  *
@@ -11,48 +9,23 @@ use Wa72\HtmlPageDom\HtmlPageCrawler;
  */
 abstract class Abstract_Optimization {
 	/**
-	 * Crawler Instance
-	 *
-	 * @since 3.1
-	 * @author Remy Perona
-	 *
-	 * @var HtmlPageCrawler
-	 */
-	protected $crawler;
-
-	/**
-	 * Constructor
-	 *
-	 * @since 3.1
-	 * @author Remy Perona
-	 *
-	 * @param HtmlPageCrawler $crawler Crawler instance.
-	 */
-	public function __construct( HtmlPageCrawler $crawler ) {
-		$this->crawler = $crawler;
-	}
-
-	/**
 	 * Finds nodes matching the pattern in the HTML
 	 *
 	 * @since 3.1
 	 * @author Remy Perona
 	 *
 	 * @param string $pattern Pattern to match.
-	 * @return bool|HtmlPageCrawler
+	 * @param string $html HTML content.
+	 * @return bool|array
 	 */
-	protected function find( $pattern ) {
-		try {
-			$nodes = $this->crawler->filter( $pattern );
-		} catch ( Exception $e ) {
+	protected function find( $pattern, $html ) {
+		preg_match_all( '/' . $pattern . '/Umsi', $html, $matches, PREG_SET_ORDER );
+
+		if ( empty( $matches ) ) {
 			return false;
 		}
 
-		if ( 0 === $nodes->count() ) {
-			return false;
-		}
-
-		return $nodes;
+		return $matches;
 	}
 
 	/**
