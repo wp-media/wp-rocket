@@ -16,50 +16,48 @@ class Minify extends Abstract_JS_Optimization {
 	 * @since 3.1
 	 * @author Remy Perona
 	 *
+	 * @param string $html HTML content.
 	 * @return string
 	 */
-	public function optimize() {
-		$nodes = $this->find( 'script[src*=".js"]' );
+	public function optimize( $html ) {
+		$scripts = $this->find( '<script\s+([^>]+[\s\'\"])?src\s*=\s*[\'\"]\s*?([^\'\"]+\.js(?:\?[^\'\"]*)?)\s*?[\'\"]([^>]+)?\/?>', $html );
 
-		if ( ! $nodes ) {
-			return $this->crawler->saveHTML();
+		if ( ! $scripts ) {
+			return $html;
 		}
 
-		$nodes->each( function( \Wa72\HtmlPageDom\HtmlPageCrawler $node, $i ) {
+		foreach ( $scripts as $script ) {
 			global $wp_scripts;
 
-			$src = $node->attr( 'src' );
-
-			if ( preg_match( '/[-.]min\.js/iU', $src ) ) {
-				return;
+			if ( preg_match( '/[-.]min\.js/iU', $script[2] ) ) {
+				continue;
 			}
 
-			if ( $this->is_external_file( $src ) ) {
-				return;
+			if ( $this->is_external_file( $script[2] ) ) {
+				continue;
 			}
 
-			if ( $this->is_minify_excluded_file( $node ) ) {
-				return;
+			if ( $this->is_minify_excluded_file( $script ) ) {
+				continue;
 			}
 
 			// Don't minify jQuery included in WP core since it's already minified but without .min in the filename.
-			if ( ! empty( $wp_scripts->registered['jquery-core']->src ) && false !== strpos( $src, $wp_scripts->registered['jquery-core']->src ) ) {
-				return;
+			if ( ! empty( $wp_scripts->registered['jquery-core']->src ) && false !== strpos( $script[2], $wp_scripts->registered['jquery-core']->src ) ) {
+				continue;
 			}
 
-			$minify_url = $this->replace_url( $src );
+			$minify_url = $this->replace_url( $script[2] );
 
 			if ( ! $minify_url ) {
-				return;
+				continue;
 			}
 
-			$node->attr( 'src', $minify_url );
-			$node->attr( 'data-minify', '1' );
+			$replace_script = str_replace( $script[2], $minify_url, $script[0] );
+			$replace_script = str_replace( '<script', '<script data-minify="1"', $replace_script );
+			$html           = str_replace( $script[0], $replace_script, $html );
+		}
 
-			return;
-		} );
-
-		return $this->crawler->saveHTML();
+		return $html;
 	}
 
 	/**
