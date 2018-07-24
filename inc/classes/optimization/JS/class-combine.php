@@ -129,7 +129,7 @@ class Combine extends Abstract_JS_Optimization {
 			if ( isset( $matches[2] ) ) {
 				if ( $this->is_external_file( $matches[2] ) ) {
 					foreach ( $this->get_excluded_external_file_path() as $excluded_file ) {
-						if ( false !== strpos( $src, $excluded_file ) ) {
+						if ( false !== strpos( $matches[2], $excluded_file ) ) {
 							return;
 						}
 					}
