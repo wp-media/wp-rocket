@@ -2,7 +2,6 @@
 namespace WP_Rocket\Optimization\CSS;
 
 use WP_Rocket\Admin\Options_Data as Options;
-use Wa72\HtmlPageDom\HtmlPageCrawler;
 use MatthiasMullie\Minify;
 
 /**
@@ -30,89 +29,64 @@ class Combine extends Abstract_CSS_Optimization {
 	 * @since 3.1
 	 * @author Remy Perona
 	 *
-	 * @param HtmlPageCrawler $crawler  Crawler instance.
-	 * @param Options         $options  Options instance.
-	 * @param Minify\CSS      $minifier Minifier instance.
+	 * @param Options    $options  Options instance.
+	 * @param Minify\CSS $minifier Minifier instance.
 	 */
-	public function __construct( HtmlPageCrawler $crawler, Options $options, Minify\CSS $minifier ) {
-		parent::__construct( $crawler, $options );
+	public function __construct( Options $options, Minify\CSS $minifier ) {
+		parent::__construct( $options );
 
 		$this->minifier = $minifier;
 	}
 
 	/**
-	 * Combines multiple Google Fonts links into one
+	 * Minifies and combines all CSS files into one
 	 *
 	 * @since 3.1
 	 * @author Remy Perona
 	 *
+	 * @param string $html HTML content.
 	 * @return string
 	 */
-	public function optimize() {
-		$nodes = $this->find( 'link[href*=".css"]' );
+	public function optimize( $html ) {
+		$styles = $this->find( '<link\s+([^>]+[\s\'\"])?href\s*=\s*[\'\"]\s*?([^\'\"]+\.css(?:\?[^\'\"]*)?)\s*?[\'\"]([^>]+)?\/?>', $html );
 
-		if ( ! $nodes ) {
-			return $this->crawler->saveHTML();
+		if ( ! $styles ) {
+			return $html;
 		}
 
-		$combine_nodes = $nodes->each( function( \Wa72\HtmlPageDom\HtmlPageCrawler $node, $i ) {
-			$src = $node->attr( 'href' );
-
-			if ( $this->is_external_file( $src ) ) {
+		$styles = array_map( function( $style ) {
+			if ( $this->is_external_file( $style[2] ) ) {
 				return;
 			}
 
-			if ( $this->is_minify_excluded_file( $node ) ) {
+			if ( $this->is_minify_excluded_file( $style ) ) {
 				return;
 			}
 
-			return $node;
-		} );
+			return $style;
+		}, $styles );
 
-		$combine_nodes = array_filter( array_unique( $combine_nodes ) );
-
-		if ( empty( $combine_nodes ) ) {
-			return $this->crawler->saveHTML();
+		if ( empty( $styles ) ) {
+			return $html;
 		}
 
-		$urls = array_map( function( $node ) {
-			return $node->attr( 'href' );
-		}, $combine_nodes );
+		$urls = array_map( function( $style ) {
+			return $style[2];
+		}, $styles );
 
 		$minify_url = $this->combine( $urls );
 
 		if ( ! $minify_url ) {
-			return $this->crawler->saveHTML();
+			return $html;
 		}
 
-		if ( ! $this->inject_combined_url( $minify_url ) ) {
-			return $this->crawler->saveHTML();
+		$html = str_replace( '</title>', '</title><link rel="stylesheet" href="' . $minify_url . '" data-minify="1" />', $html );
+
+		foreach ( $styles as $style ) {
+			$html = str_replace( $style[0], '', $html );
 		}
 
-		foreach ( $combine_nodes as $node ) {
-			$node->remove();
-		}
-
-		return $this->crawler->saveHTML();
-	}
-
-	/**
-	 * Adds the combined CSS URL to the HTML after the title tag
-	 *
-	 * @since 3.1
-	 * @author Remy Perona
-	 *
-	 * @param string $minify_url URL to insert.
-	 * @return bool
-	 */
-	protected function inject_combined_url( $minify_url ) {
-		try {
-			$this->crawler->filter( 'title' )->after( '<link rel="stylesheet" href="' . $minify_url . '" data-minify="1" />' );
-		} catch ( Exception $e ) {
-			return false;
-		}
-
-		return true;
+		return $html;
 	}
 
 	/**
