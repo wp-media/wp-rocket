@@ -48,7 +48,7 @@ class Combine extends Abstract_CSS_Optimization {
 	 * @return string
 	 */
 	public function optimize( $html ) {
-		$styles = $this->find( '<link\s+([^>]+[\s\'\"])?href\s*=\s*[\'\"]\s*?([^\'\"]+\.css(?:\?[^\'\"]*)?)\s*?[\'\"]([^>]+)?\/?>', $html );
+		$styles = $this->find( '<link\s+([^>]+[\s\'"])?href\s*=\s*[\'"]\s*?([^\'"]+\.css(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>', $html );
 
 		if ( ! $styles ) {
 			return $html;

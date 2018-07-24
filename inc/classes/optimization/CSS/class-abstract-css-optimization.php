@@ -109,7 +109,7 @@ abstract class Abstract_CSS_Optimization extends Abstract_Optimization {
 			return true;
 		}
 
-		if ( false !== strpos( $tag[0], 'media=' ) && ! preg_match( '/media=["\'](?:["\']|[^"\']*?(all|screen)[^"\']*?["\'])/iU', $tag[0] ) ) {
+		if ( false !== strpos( $tag[0], 'media=' ) && ! preg_match( '/media=["\'](?:\s*|[^"\']*?\b(all|screen)\b[^"\']*?)["\']/i', $tag[0] ) ) {
 			return true;
 		}
 

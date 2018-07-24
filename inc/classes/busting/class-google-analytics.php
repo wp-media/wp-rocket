@@ -47,7 +47,7 @@ class Google_Analytics extends Abstract_Busting {
 			return $html;
 		}
 
-		$replace_tag = preg_replace( '/(?:https?:)?\/\/www.google-analytics.com\/analytics.js/i', $this->get_busting_url(), $tag[0] );
+		$replace_tag = preg_replace( '/(?:https?:)?\/\/www\.google-analytics\.com\/analytics\.js/i', $this->get_busting_url(), $tag[0] );
 		$html        = str_replace( $tag[0], $replace_tag, $html );
 
 		$this->is_replaced = true;

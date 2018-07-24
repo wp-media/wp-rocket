@@ -95,7 +95,7 @@ class Remove_Query_String extends Abstract_Optimization {
 	 * @return string
 	 */
 	public function remove_query_strings_css( $html ) {
-		$styles = $this->find( '<link\s+([^>]+[\s\'\"])?href\s*=\s*[\'\"]\s*?([^\'\"]+\.css(?:\?[^\'\"]*)?)\s*?[\'\"]([^>]+)?\/?>', $html );
+		$styles = $this->find( '<link\s+([^>]+[\s\'"])?href\s*=\s*[\'"]\s*?([^\'"]+\.css(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>', $html );
 
 		if ( ! $styles ) {
 			return $html;
@@ -133,7 +133,7 @@ class Remove_Query_String extends Abstract_Optimization {
 	 * @return string
 	 */
 	public function remove_query_strings_js( $html ) {
-		$scripts = $this->find( '<script\s+([^>]+[\s\'\"])?src\s*=\s*[\'\"]\s*?([^\'\"]+\.js(?:\?[^\'\"]*)?)\s*?[\'\"]([^>]+)?\/?>', $html );
+		$scripts = $this->find( '<script\s+([^>]+[\s\'"])?src\s*=\s*[\'"]\s*?([^\'"]+\.js(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>', $html );
 
 		if ( ! $scripts ) {
 			return $html;

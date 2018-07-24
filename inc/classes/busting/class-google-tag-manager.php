@@ -25,7 +25,7 @@ class Google_Tag_Manager extends Abstract_Busting {
 	 * {@inheritdoc}
 	 */
 	public function replace_url( $html ) {
-		$script = $this->find( '<script(\s+[^>]+)?\s+src\s*=\s*[\'\"]\s*?((?:https?:)?\/\/www\.googletagmanager\.com(?:.+)?)\s*?[\'\"]([^>]+)?\/?>', $html );
+		$script = $this->find( '<script(\s+[^>]+)?\s+src\s*=\s*[\'"]\s*?((?:https?:)?\/\/www\.googletagmanager\.com(?:.+)?)\s*?[\'"]([^>]+)?\/?>', $html );
 
 		if ( ! $script ) {
 			return $html;

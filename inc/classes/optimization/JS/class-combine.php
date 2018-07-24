@@ -124,7 +124,7 @@ class Combine extends Abstract_JS_Optimization {
 	 */
 	protected function parse( $scripts ) {
 		$scripts = array_map( function( $script ) {
-			preg_match( '/<script\s+([^>]+[\s\'\"])?src\s*=\s*[\'\"]\s*?([^\'\"]+\.js(?:\?[^\'\"]*)?)\s*?[\'\"]([^>]+)?\/?>/Umsi', $script[0], $matches );
+			preg_match( '/<script\s+([^>]+[\s\'"])?src\s*=\s*[\'"]\s*?([^\'"]+\.js(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>/Umsi', $script[0], $matches );
 
 			if ( isset( $matches[2] ) ) {
 				if ( $this->is_external_file( $matches[2] ) ) {
