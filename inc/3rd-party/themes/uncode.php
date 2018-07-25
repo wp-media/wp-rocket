@@ -36,6 +36,8 @@ if ( 'uncode' === strtolower( $current_theme->get( 'Name' ) ) || 'uncode' === st
 		$inline_js[] = 'SiteParameters';
 		$inline_js[] = 'script-';
 		$inline_js[] = 'initBox';
+		$inline_js[] = 'initHeader';
+		$inline_js[] = 'fixMenuHeight';
 
 		return $inline_js;
 	}
