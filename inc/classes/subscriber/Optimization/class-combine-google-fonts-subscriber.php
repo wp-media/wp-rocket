@@ -3,7 +3,6 @@ namespace WP_Rocket\Subscriber\Optimization;
 
 use WP_Rocket\Admin\Options_Data as Options;
 use WP_Rocket\Optimization\CSS;
-use Wa72\HtmlPageDom\HtmlPageCrawler;
 
 /**
  * Combine Google Fonts subscriber
@@ -17,7 +16,7 @@ class Combine_Google_Fonts_Subscriber extends Minify_Subscriber {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_buffer' => [ 'process', 13 ],
+			'rocket_buffer' => [ 'process', 17 ],
 		];
 	}
 
@@ -35,12 +34,9 @@ class Combine_Google_Fonts_Subscriber extends Minify_Subscriber {
 			return $html;
 		}
 
-		$crawler = $this->crawler;
-		$crawler = $crawler::create( $html );
+		$this->set_optimization_type( new CSS\Combine_Google_Fonts() );
 
-		$this->set_optimization_type( new CSS\Combine_Google_Fonts( $crawler ) );
-
-		return $this->optimize();
+		return $this->optimize( $html );
 	}
 
 	/**

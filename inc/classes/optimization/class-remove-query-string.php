@@ -3,7 +3,6 @@ namespace WP_Rocket\Optimization;
 
 use WP_Rocket\Admin\Options_Data as Options;
 use WP_Rocket\Optimization\Abstract_Optimization;
-use Wa72\HtmlPageDom\HtmlPageCrawler;
 
 /**
  * Remove query string from static resources
@@ -87,76 +86,79 @@ class Remove_Query_String extends Abstract_Optimization {
 	}
 
 	/**
-	 * Set DOM crawler from provided HTML content
+	 * Remove query strings for CSS files that have one
 	 *
 	 * @since 3.1
 	 * @author Remy Perona
 	 *
-	 * @param HtmlPageCrawler $crawler Crawler instance.
-	 * @param string          $html   HTML content.
-	 * @return void
+	 * @param string $html HTML content.
+	 * @return string
 	 */
-	public function set_crawler( HtmlPageCrawler $crawler, $html ) {
-		$this->crawler = $crawler::create( $html );
+	public function remove_query_strings_css( $html ) {
+		$styles = $this->find( '<link\s+([^>]+[\s\'"])?href\s*=\s*[\'"]\s*?([^\'"]+\.css(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>', $html );
+
+		if ( ! $styles ) {
+			return $html;
+		}
+
+		foreach ( $styles as $style ) {
+			$url = $style[2];
+
+			$url = $this->can_replace( $url );
+
+			if ( ! $url ) {
+				continue;
+			}
+
+			$optimized_url = $this->replace_url( $url, 'css' );
+
+			if ( ! $optimized_url ) {
+				continue;
+			}
+
+			$replace_style = str_replace( $style[2], $optimized_url, $style[0] );
+			$html          = str_replace( $style[0], $replace_style, $html );
+		}
+
+		return $html;
 	}
 
 	/**
-	 * Remove query strings for CSS/JS files that have one
+	 * Remove query strings for JS files that have one
 	 *
 	 * @since 3.1
 	 * @author Remy Perona
 	 *
+	 * @param string $html HTML content.
 	 * @return string
 	 */
-	public function optimize() {
-		$style_nodes  = $this->find( 'link[href*=".css"]' );
-		$script_nodes = $this->find( 'script[src*=".js"]' );
+	public function remove_query_strings_js( $html ) {
+		$scripts = $this->find( '<script\s+([^>]+[\s\'"])?src\s*=\s*[\'"]\s*?([^\'"]+\.js(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>', $html );
 
-		if ( ! $style_nodes && ! $script_nodes ) {
-			return $this->crawler->saveHTML();
+		if ( ! $scripts ) {
+			return $html;
 		}
 
-		if ( $style_nodes ) {
-			$style_nodes->each( function( \Wa72\HtmlPageDom\HtmlPageCrawler $node, $i ) {
-				$url = $node->attr( 'href' );
+		foreach ( $scripts as $script ) {
+			$url = $script[2];
 
-				$url = $this->can_replace( $url );
+			$url = $this->can_replace( $url );
 
-				if ( ! $url ) {
-					return;
-				}
+			if ( ! $url ) {
+				continue;
+			}
 
-				$optimized_url = $this->replace_url( $url, 'css' );
+			$optimized_url = $this->replace_url( $url, 'js' );
 
-				if ( ! $optimized_url ) {
-					return;
-				}
+			if ( ! $optimized_url ) {
+				continue;
+			}
 
-				$node->attr( 'href', $optimized_url );
-			} );
+			$replace_script = str_replace( $script[2], $optimized_url, $script[0] );
+			$html           = str_replace( $script[0], $replace_script, $html );
 		}
 
-		if ( $script_nodes ) {
-			$script_nodes->each( function( \Wa72\HtmlPageDom\HtmlPageCrawler $node, $i ) {
-				$url = $node->attr( 'src' );
-
-				$url = $this->can_replace( $url );
-
-				if ( ! $url ) {
-					return;
-				}
-
-				$optimized_url = $this->replace_url( $url, 'js' );
-
-				if ( ! $optimized_url ) {
-					return;
-				}
-
-				$node->attr( 'src', $optimized_url );
-			} );
-		}
-
-		return $this->crawler->saveHTML();
+		return $html;
 	}
 
 	/**

@@ -1,8 +1,6 @@
 <?php
 namespace WP_Rocket\Optimization\CSS;
 
-use Wa72\HtmlPageDom\HtmlPageCrawler;
-
 /**
  * Combine Google Fonts
  *
@@ -10,16 +8,6 @@ use Wa72\HtmlPageDom\HtmlPageCrawler;
  * @author Remy Perona
  */
 class Combine_Google_Fonts {
-	/**
-	 * Crawler Instance
-	 *
-	 * @since 3.1
-	 * @author Remy Perona
-	 *
-	 * @var HtmlPageCrawler
-	 */
-	protected $crawler;
-
 	/**
 	 * Found fonts
 	 *
@@ -45,11 +33,8 @@ class Combine_Google_Fonts {
 	 *
 	 * @since 3.1
 	 * @author Remy Perona
-	 *
-	 * @param HtmlPageCrawler $crawler Crawler instance.
 	 */
-	public function __construct( HtmlPageCrawler $crawler ) {
-		$this->crawler = $crawler;
+	public function __construct() {
 		$this->fonts   = [];
 		$this->subsets = [];
 	}
@@ -60,28 +45,30 @@ class Combine_Google_Fonts {
 	 * @since 3.1
 	 * @author Remy Perona
 	 *
+	 * @param string $html HTML content.
 	 * @return string
 	 */
-	public function optimize() {
-		$nodes = $this->find( 'link[href*="fonts.googleapis.com/css"]' );
+	public function optimize( $html ) {
+		$html_nocomments = preg_replace( '/<!--(.*)-->/Uis', '', $html );
+		$fonts           = $this->find( '<link(?:\s+(?:(?!href\s*=\s*)[^>])+)?(?:\s+href\s*=\s*([\'"])((?:https?:)?\/\/fonts\.googleapis\.com\/css(?:(?!\1).)+)\1)(?:\s+[^>]*)?>', $html_nocomments );
 
-		if ( ! $nodes ) {
-			return $this->crawler->saveHTML();
+		if ( ! $fonts ) {
+			return $html;
 		}
 
-		$this->parse( $nodes );
+		$this->parse( $fonts );
 
 		if ( empty( $this->fonts ) ) {
-			return $this->crawler->saveHTML();
+			return $html;
 		}
 
-		if ( ! $this->combine() ) {
-			return $this->crawler->saveHTML();
+		$html = str_replace( '</title>', '</title>' . $this->get_combine_tag(), $html );
+
+		foreach ( $fonts as $font ) {
+			$html = str_replace( $font[0], '', $html );
 		}
 
-		$nodes->remove();
-
-		return $this->crawler->saveHTML();
+		return $html;
 	}
 
 	/**
@@ -91,34 +78,31 @@ class Combine_Google_Fonts {
 	 * @author Remy Perona
 	 *
 	 * @param string $pattern Pattern to search for.
-	 * @return bool\HtmlPageCrawler
+	 * @param string $html HTML content.
+	 * @return bool|array
 	 */
-	protected function find( $pattern ) {
-		try {
-			$nodes = $this->crawler->filter( $pattern );
-		} catch ( Exception $e ) {
+	protected function find( $pattern, $html ) {
+		preg_match_all( '/' . $pattern . '/Umsi', $html, $matches, PREG_SET_ORDER );
+
+		if ( count( $matches ) <= 1 ) {
 			return false;
 		}
 
-		if ( $nodes->count() <= 1 ) {
-			return false;
-		}
-
-		return $nodes;
+		return $matches;
 	}
 
 	/**
-	 * Parses found nodes to extract fonts and subsets
+	 * Parses found matches to extract fonts and subsets
 	 *
 	 * @since 3.1
 	 * @author Remy Perona
 	 *
-	 * @param HtmlageCrawler $nodes Found nodes for the pattern.
+	 * @param Array $matches Found matches for the pattern.
 	 * @return void
 	 */
-	protected function parse( $nodes ) {
-		$nodes->each( function( \Wa72\HtmlPageDom\HtmlPageCrawler $node, $i ) {
-			$query = \rocket_extract_url_component( $node->attr( 'href' ), PHP_URL_QUERY );
+	protected function parse( $matches ) {
+		foreach ( $matches as $match ) {
+			$query = \rocket_extract_url_component( $match[2], PHP_URL_QUERY );
 
 			if ( ! isset( $query ) ) {
 				return;
@@ -132,30 +116,12 @@ class Combine_Google_Fonts {
 
 			// Add subset to collection.
 			$this->subsets[] = isset( $font['subset'] ) ? rawurlencode( htmlentities( $font['subset'] ) ) : '';
-		} );
+		}
 
 		// Concatenate fonts tag.
 		$this->subsets = ( $this->subsets ) ? '&subset=' . implode( ',', array_filter( array_unique( $this->subsets ) ) ) : '';
 		$this->fonts   = implode( '|', array_filter( array_unique( $this->fonts ) ) );
 		$this->fonts   = str_replace( '|', '%7C', $this->fonts );
-	}
-
-	/**
-	 * Inserts the combined Google fonts link
-	 *
-	 * @since 3.1
-	 * @author Remy Perona
-	 *
-	 * @return bool
-	 */
-	protected function combine() {
-		try {
-			$this->crawler->filter( 'title' )->after( $this->get_combine_tag() );
-		} catch ( Exception $e ) {
-			return false;
-		}
-
-		return true;
 	}
 
 	/**

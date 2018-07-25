@@ -24,59 +24,35 @@ class Google_Tag_Manager extends Abstract_Busting {
 	/**
 	 * {@inheritdoc}
 	 */
-	public function replace_url( $crawler ) {
-		$node = $this->find( $crawler );
+	public function replace_url( $html ) {
+		$script = $this->find( '<script(\s+[^>]+)?\s+src\s*=\s*[\'"]\s*?((?:https?:)?\/\/www\.googletagmanager\.com(?:.+)?)\s*?[\'"]([^>]+)?\/?>', $html );
 
-		if ( ! $node ) {
-			return $crawler->saveHTML();
+		if ( ! $script ) {
+			return $html;
 		}
 
-		$url = $this->get_url( $node );
-
-		if ( ! $url ) {
-			return $crawler->saveHTML();
+		if ( ! $this->save( $script[2] ) ) {
+			return $html;
 		}
 
-		if ( ! $this->save( $url ) ) {
-			return $crawler->saveHTML();
-		}
+		$replace_script = str_replace( $script[2], $this->get_busting_url(), $script[0] );
+		$replace_script = str_replace( '<script', '<script data-no-minify="1"', $replace_script );
+		$html           = str_replace( $script[0], $replace_script, $html );
 
-		$this->replace( $node );
-
-		return $crawler->saveHTML();
+		return $html;
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	protected function find( $crawler ) {
-		try {
-			$node = $crawler->filter( 'script[src^="https://www.googletagmanager.com"]' );
-		} catch ( Exception $e ) {
+	protected function find( $pattern, $html ) {
+		preg_match_all( '/' . $pattern . '/Umsi', $html, $matches, PREG_SET_ORDER );
+
+		if ( empty( $matches ) ) {
 			return false;
 		}
 
-		if ( ! $node->count() ) {
-			return false;
-		}
-
-		return $node;
-	}
-
-	/**
-	 * Gets the URL from the node
-	 *
-	 * @param HtmlPageCrawler $node HtmlPageCrawler instance.
-	 * @return mixed
-	 */
-	private function get_url( $node ) {
-		try {
-			$url = $node->attr( 'src' );
-		} catch ( Exception $e ) {
-			return false;
-		}
-
-		return $url;
+		return $matches[0];
 	}
 
 	/**
@@ -129,12 +105,5 @@ class Google_Tag_Manager extends Abstract_Busting {
 		}
 
 		return str_replace( $this->ga_busting->get_url(), $this->ga_busting->get_busting_url(), $content );
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	protected function replace( $node ) {
-		$node->attr( 'src', $this->get_busting_url() )->attr( 'data-no-minify', 1 );
 	}
 }

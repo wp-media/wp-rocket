@@ -3,7 +3,6 @@ namespace WP_Rocket\Subscriber\Optimization;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Admin\Options_Data as Options;
-use Wa72\HtmlPageDom\HtmlPageCrawler;
 
 /**
  * Undocumented class
@@ -18,16 +17,6 @@ abstract class Minify_Subscriber implements Subscriber_Interface {
 	 * @var Options
 	 */
 	protected $options;
-
-	/**
-	 * Crawler instance
-	 *
-	 * @since 3.1
-	 * @author Remy Perona
-	 *
-	 * @var HtmlPageCrawler
-	 */
-	protected $crawler;
 
 	/**
 	 * Optimizer instance
@@ -45,12 +34,10 @@ abstract class Minify_Subscriber implements Subscriber_Interface {
 	 * @since 3.1
 	 * @author Remy Perona
 	 *
-	 * @param Options         $options Plugin options.
-	 * @param HtmlPageCrawler $crawler Crawler instance.
+	 * @param Options $options Plugin options.
 	 */
-	public function __construct( Options $options, HtmlPageCrawler $crawler ) {
+	public function __construct( Options $options ) {
 		$this->options = $options;
-		$this->crawler = $crawler;
 	}
 
 	/**
@@ -91,10 +78,11 @@ abstract class Minify_Subscriber implements Subscriber_Interface {
 	 * @since 3.1
 	 * @author Remy Perona
 	 *
+	 * @param string $html HTML content.
 	 * @return string
 	 */
-	protected function optimize() {
-		return $this->optimizer->optimize();
+	protected function optimize( $html ) {
+		return $this->optimizer->optimize( $html );
 	}
 
 	/**

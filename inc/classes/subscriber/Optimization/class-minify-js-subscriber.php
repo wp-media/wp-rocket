@@ -4,7 +4,6 @@ namespace WP_Rocket\Subscriber\Optimization;
 use WP_Rocket\Optimization\JS;
 use WP_Rocket\Optimization\Assets_Local_Cache;
 use WP_Rocket\Admin\Options_Data as Options;
-use Wa72\HtmlPageDom\HtmlPageCrawler;
 use \MatthiasMullie\Minify;
 
 /**
@@ -37,16 +36,13 @@ class Minify_JS_Subscriber extends Minify_Subscriber {
 			return $html;
 		}
 
-		$crawler = $this->crawler;
-		$crawler = $crawler::create( $html );
-
 		if ( $this->options->get( 'minify_js' ) && $this->options->get( 'minify_concatenate_js' ) ) {
-			$this->set_optimization_type( new JS\Combine( $crawler, $this->options, new Minify\JS(), new Assets_Local_Cache( WP_ROCKET_MINIFY_CACHE_PATH ) ) );
+			$this->set_optimization_type( new JS\Combine( $this->options, new Minify\JS(), new Assets_Local_Cache( WP_ROCKET_MINIFY_CACHE_PATH ) ) );
 		} elseif ( $this->options->get( 'minify_js' ) && ! $this->options->get( 'minify_concatenate_js' ) ) {
-			$this->set_optimization_type( new JS\Minify( $crawler, $this->options ) );
+			$this->set_optimization_type( new JS\Minify( $this->options ) );
 		}
 
-		return $this->optimize();
+		return $this->optimize( $html );
 	}
 
 	/**

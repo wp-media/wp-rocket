@@ -18,43 +18,41 @@ class Minify extends Abstract_CSS_Optimization {
 	 * @since 3.1
 	 * @author Remy Perona
 	 *
+	 * @param string $html HTML content.
 	 * @return string
 	 */
-	public function optimize() {
-		$nodes = $this->find( 'link[href*=".css"]' );
+	public function optimize( $html ) {
+		$styles = $this->find( '<link\s+([^>]+[\s"\'])?href\s*=\s*[\'"]\s*?([^\'"]+\.css(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>', $html );
 
-		if ( ! $nodes ) {
-			return $this->crawler->saveHTML();
+		if ( ! $styles ) {
+			return $html;
 		}
 
-		$nodes->each( function( \Wa72\HtmlPageDom\HtmlPageCrawler $node, $i ) {
-			$src = $node->attr( 'href' );
-
-			if ( preg_match( '/(?:-|\.)min.css/iU', $src ) ) {
-				return;
+		foreach ( $styles as $style ) {
+			if ( preg_match( '/(?:-|\.)min.css/iU', $style[2] ) ) {
+				continue;
 			}
 
-			if ( $this->is_external_file( $src ) ) {
-				return;
+			if ( $this->is_external_file( $style[2] ) ) {
+				continue;
 			}
 
-			if ( $this->is_minify_excluded_file( $node ) ) {
-				return;
+			if ( $this->is_minify_excluded_file( $style ) ) {
+				continue;
 			}
 
-			$minify_url = $this->replace_url( $src );
+			$minify_url = $this->replace_url( $style[2] );
 
 			if ( ! $minify_url ) {
-				return;
+				continue;
 			}
 
-			$node->attr( 'href', $minify_url );
-			$node->attr( 'data-minify', '1' );
+			$replace_style = str_replace( $style[2], $minify_url, $style[0] );
+			$replace_style = str_replace( '<link', '<link data-minify="1"', $replace_style );
+			$html          = str_replace( $style[0], $replace_style, $html );
+		}
 
-			return;
-		} );
-
-		return $this->crawler->saveHTML();
+		return $html;
 	}
 
 	/**

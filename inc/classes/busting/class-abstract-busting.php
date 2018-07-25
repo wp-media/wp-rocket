@@ -100,10 +100,10 @@ abstract class Abstract_Busting {
 	 * @since 3.1
 	 * @author Remy Perona
 	 *
-	 * @param HtmlPageCrawler $crawler Instance of HtmlPageCrawler class.
+	 * @param string $html HTML content.
 	 * @return string
 	 */
-	abstract public function replace_url( $crawler );
+	abstract public function replace_url( $html );
 
 	/**
 	 * Searches for element(s) in the DOM
@@ -111,19 +111,9 @@ abstract class Abstract_Busting {
 	 * @since 3.1
 	 * @author Remy Perona
 	 *
-	 * @param HtmlPageCrawler $crawler Instance of HtmlPageCrawler class.
+	 * @param string $pattern Pattern to match.
+	 * @param string $html    HTML content.
 	 * @return string
 	 */
-	abstract protected function find( $crawler );
-
-	/**
-	 * Replaces element(s) in the DOM and return the final HTML
-	 *
-	 * @since 3.1
-	 * @author Remy Perona
-	 *
-	 * @param HtmlPageCrawler $node Instance of HtmlPageCrawler class.
-	 * @return string
-	 */
-	abstract protected function replace( $node );
+	abstract protected function find( $pattern, $html );
 }
