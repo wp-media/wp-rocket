@@ -154,6 +154,10 @@ class Combine extends Abstract_JS_Optimization {
 					return;
 				}
 
+				if ( false !== strpos( $matches_inline[1], 'src=' ) ) {
+					return;
+				}
+
 				foreach ( $this->get_excluded_inline_content() as $excluded_content ) {
 					if ( false !== strpos( $matches_inline[2], $excluded_content ) ) {
 						return;
