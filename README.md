@@ -137,13 +137,13 @@ The Action Scheduler API functions are designed to mirror the WordPress [WP-Cron
 
 Functions return similar values and accept similar arguments to their WP-Cron counterparts. The notable differences are:
 
-* `wc_schedule_single_action()` & `wc_schedule_recurring_action()` will return the post ID of the scheduled action rather than boolean indicating whether the event was scheduled
-* `wc_schedule_recurring_action()` takes an interval in seconds as the recurring interval rather than an arbitrary string
-* `wc_schedule_single_action()` & `wc_schedule_recurring_action()` can accept a `$group` parameter to group different actions for the one plugin together.
-* the `wp_` prefix is substituted with `wc_` and the term `event` is replaced with `action`
+* `as_schedule_single_action()` & `as_schedule_recurring_action()` will return the post ID of the scheduled action rather than boolean indicating whether the event was scheduled
+* `as_schedule_recurring_action()` takes an interval in seconds as the recurring interval rather than an arbitrary string
+* `as_schedule_single_action()` & `as_schedule_recurring_action()` can accept a `$group` parameter to group different actions for the one plugin together.
+* the `wp_` prefix is substituted with `as_` and the term `event` is replaced with `action`
 
 
-#### Function Reference / `wc_schedule_single_action()`
+#### Function Reference / `as_schedule_single_action()`
 
 ##### Description
 
@@ -152,7 +152,7 @@ Schedule an action to run one time.
 ##### Usage
 
 ```php
-<?php wc_schedule_single_action( $timestamp, $hook, $args, $group ); ?>
+<?php as_schedule_single_action( $timestamp, $hook, $args, $group ); ?>
 ````
 
 ##### Parameters
@@ -167,7 +167,7 @@ Schedule an action to run one time.
 (integer) the action's ID in the [posts](http://codex.wordpress.org/Database_Description#Table_Overview) table.
 
 
-#### Function Reference / `wc_schedule_recurring_action()`
+#### Function Reference / `as_schedule_recurring_action()`
 
 ##### Description
 
@@ -176,7 +176,7 @@ Schedule an action to run repeatedly with a specified interval in seconds.
 ##### Usage
 
 ```php
-<?php wc_schedule_recurring_action( $timestamp, $interval_in_seconds, $hook, $args, $group ); ?>
+<?php as_schedule_recurring_action( $timestamp, $interval_in_seconds, $hook, $args, $group ); ?>
 ````
 
 ##### Parameters
@@ -192,7 +192,7 @@ Schedule an action to run repeatedly with a specified interval in seconds.
 (integer) the action's ID in the [posts](http://codex.wordpress.org/Database_Description#Table_Overview) table.
 
 
-#### Function Reference / `wc_schedule_cron_action()`
+#### Function Reference / `as_schedule_cron_action()`
 
 ##### Description
 
@@ -201,7 +201,7 @@ Schedule an action that recurs on a cron-like schedule.
 ##### Usage
 
 ```php
-<?php wc_schedule_cron_action( $timestamp, $schedule, $hook, $args, $group ); ?>
+<?php as_schedule_cron_action( $timestamp, $schedule, $hook, $args, $group ); ?>
 ````
 
 ##### Parameters
@@ -217,7 +217,7 @@ Schedule an action that recurs on a cron-like schedule.
 (integer) the action's ID in the [posts](http://codex.wordpress.org/Database_Description#Table_Overview) table.
 
 
-#### Function Reference / `wc_unschedule_action()`
+#### Function Reference / `as_unschedule_action()`
 
 ##### Description
 
@@ -226,7 +226,7 @@ Cancel the next occurrence of a job.
 ##### Usage
 
 ```php
-<?php wc_unschedule_action( $hook, $args, $group ); ?>
+<?php as_unschedule_action( $hook, $args, $group ); ?>
 ````
 
 ##### Parameters
@@ -240,7 +240,7 @@ Cancel the next occurrence of a job.
 (null)
 
 
-#### Function Reference / `wc_next_scheduled_action()`
+#### Function Reference / `as_next_scheduled_action()`
 
 ##### Description
 
@@ -249,7 +249,7 @@ Returns the next timestamp for a scheduled action.
 ##### Usage
 
 ```php
-<?php wc_next_scheduled_action( $hook, $args, $group ); ?>
+<?php as_next_scheduled_action( $hook, $args, $group ); ?>
 ````
 
 ##### Parameters
@@ -263,7 +263,7 @@ Returns the next timestamp for a scheduled action.
 (integer|boolean) The timestamp for the next occurrence, or false if nothing was found.
 
 
-#### Function Reference / `wc_get_scheduled_actions()`
+#### Function Reference / `as_get_scheduled_actions()`
 
 ##### Description
 
@@ -272,7 +272,7 @@ Find scheduled actions.
 ##### Usage
 
 ```php
-<?php wc_get_scheduled_actions( $args, $return_format ); ?>
+<?php as_get_scheduled_actions( $args, $return_format ); ?>
 ````
 
 ##### Parameters
