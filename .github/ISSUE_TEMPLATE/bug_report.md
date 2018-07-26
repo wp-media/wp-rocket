@@ -4,6 +4,10 @@ about: Create a report to help us improve
 
 ---
 
+**Before submitting an issue please check that you’ve completed the following steps:**
+- Made sure you’re on the latest version
+- Used the search feature to ensure that the bug hasn’t been reported before
+
 **Describe the bug**
 A clear and concise description of what the bug is.
 
