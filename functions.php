@@ -14,7 +14,7 @@
  *
  * @return string The job ID
  */
-function wc_schedule_single_action( $timestamp, $hook, $args = array(), $group = '' ) {
+function as_schedule_single_action( $timestamp, $hook, $args = array(), $group = '' ) {
 	return ActionScheduler::factory()->single( $hook, $args, $timestamp, $group );
 }
 
@@ -29,7 +29,7 @@ function wc_schedule_single_action( $timestamp, $hook, $args = array(), $group =
  *
  * @return string The job ID
  */
-function wc_schedule_recurring_action( $timestamp, $interval_in_seconds, $hook, $args = array(), $group = '' ) {
+function as_schedule_recurring_action( $timestamp, $interval_in_seconds, $hook, $args = array(), $group = '' ) {
 	return ActionScheduler::factory()->recurring( $hook, $args, $timestamp, $interval_in_seconds, $group );
 }
 
@@ -54,7 +54,7 @@ function wc_schedule_recurring_action( $timestamp, $interval_in_seconds, $hook, 
  *
  * @return string The job ID
  */
-function wc_schedule_cron_action( $timestamp, $schedule, $hook, $args = array(), $group = '' ) {
+function as_schedule_cron_action( $timestamp, $schedule, $hook, $args = array(), $group = '' ) {
 	return ActionScheduler::factory()->cron( $hook, $args, $timestamp, $schedule, $group );
 }
 
@@ -65,7 +65,7 @@ function wc_schedule_cron_action( $timestamp, $schedule, $hook, $args = array(),
  * @param array $args Args that would have been passed to the job
  * @param string $group
  */
-function wc_unschedule_action( $hook, $args = array(), $group = '' ) {
+function as_unschedule_action( $hook, $args = array(), $group = '' ) {
 	$params = array();
 	if ( is_array($args) ) {
 		$params['args'] = $args;
@@ -88,7 +88,7 @@ function wc_unschedule_action( $hook, $args = array(), $group = '' ) {
  *
  * @return int|bool The timestamp for the next occurrence, or false if nothing was found
  */
-function wc_next_scheduled_action( $hook, $args = NULL, $group = '' ) {
+function as_next_scheduled_action( $hook, $args = NULL, $group = '' ) {
 	$params = array();
 	if ( is_array($args) ) {
 		$params['args'] = $args;
@@ -130,7 +130,7 @@ function wc_next_scheduled_action( $hook, $args = NULL, $group = '' ) {
  *
  * @return array
  */
-function wc_get_scheduled_actions( $args = array(), $return_format = OBJECT ) {
+function as_get_scheduled_actions( $args = array(), $return_format = OBJECT ) {
 	$store = ActionScheduler::store();
 	foreach ( array('date', 'modified') as $key ) {
 		if ( isset($args[$key]) ) {
