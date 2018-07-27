@@ -31,7 +31,7 @@
     </rule>
     <rule ref="WordPress.NamingConventions.PrefixAllGlobals">
         <properties>
-            <property name="prefixes" type="array" value="rocket_,WP_Rocket_" />
+            <property name="prefixes" type="array" value="rocket" />
         </properties>
     </rule>
     <rule ref="WordPress.Files.FileName">
