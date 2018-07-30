@@ -60,7 +60,7 @@ class Abstract_JS_Optimization extends Abstract_Optimization {
 
 		foreach ( $excluded_files as $i => $excluded_file ) {
 			// Escape characters for future use in regex pattern.
-			$excluded_files[ $i ] = preg_quote( $excluded_file, '#' );
+			$excluded_files[ $i ] = str_replace( '#', '\#', $excluded_file );
 		}
 
 		return implode( '|', $excluded_files );
@@ -101,6 +101,7 @@ class Abstract_JS_Optimization extends Abstract_Optimization {
 		}
 
 		if ( ! empty( $this->excluded_files ) ) {
+			error_log( '#^(' . $this->excluded_files . ')$#' );
 			// File is excluded from minification/concatenation.
 			if ( preg_match( '#^(' . $this->excluded_files . ')$#', $file_path ) ) {
 				return true;
