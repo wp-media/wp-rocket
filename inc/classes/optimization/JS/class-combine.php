@@ -298,13 +298,14 @@ class Combine extends Abstract_JS_Optimization {
 			'edToolbar',
 			'gtag',
 			'_gaq.push',
+			'_gaLt',
 			'GoogleAnalyticsObject',
 			'syntaxhighlighter',
 			'adsbygoogle',
 			'_stq',
 			'nonce',
 			'post_id',
-			'logHuman',
+			'LogHuman',
 			'idcomments_acct',
 			'ch_client',
 			'sc_online_t',
@@ -376,6 +377,7 @@ class Combine extends Abstract_JS_Optimization {
 			'app.ecwid.com',
 			'www.industriejobs.de',
 			's.gravatar.com',
+			'googlesyndication.com',
 		] );
 	}
 }
