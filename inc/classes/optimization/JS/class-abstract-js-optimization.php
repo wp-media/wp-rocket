@@ -101,7 +101,6 @@ class Abstract_JS_Optimization extends Abstract_Optimization {
 		}
 
 		if ( ! empty( $this->excluded_files ) ) {
-			error_log( '#^(' . $this->excluded_files . ')$#' );
 			// File is excluded from minification/concatenation.
 			if ( preg_match( '#^(' . $this->excluded_files . ')$#', $file_path ) ) {
 				return true;
