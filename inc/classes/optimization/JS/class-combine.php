@@ -378,6 +378,7 @@ class Combine extends Abstract_JS_Optimization {
 			'www.industriejobs.de',
 			's.gravatar.com',
 			'googlesyndication.com',
+			'a.optmstr.com',
 		] );
 	}
 }
