@@ -1,6 +1,7 @@
 <?php
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Logger;
 
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
@@ -468,7 +469,8 @@ function rocket_check_key() {
 			)
 		);
 
-		$json           = ! is_wp_error( $response ) ? json_decode( $response['body'] ) : false;
+		$body           = wp_remote_retrieve_body( $response );
+		$json           = json_decode( $body );
 		$rocket_options = array();
 
 		if ( $json ) {
@@ -481,6 +483,8 @@ function rocket_check_key() {
 				if ( ! get_rocket_option( 'license' ) ) {
 					$rocket_options['license'] = '1';
 				}
+
+				Logger::info( 'License validation succeeded.' );
 			} else {
 				$messages = array(
 					'BAD_LICENSE' => __( 'Your license is not valid.', 'rocket' ),
@@ -492,10 +496,24 @@ function rocket_check_key() {
 				$rocket_options['secret_key'] = '';
 
 				add_settings_error( 'general', 'settings_updated', $messages[ $json->data->reason ], 'error' );
+
+				Logger::error( 'License validation failed.', [
+					'response_error' => Logger::esc_html( $json->data->reason ),
+				] );
 			}
 
 			set_transient( WP_ROCKET_SLUG, $rocket_options );
 			$return = (array) $rocket_options;
+		} elseif ( is_wp_error( $response ) ) {
+			Logger::error( 'License validation failed.', [
+				'request_error' => $response->get_error_messages(),
+			] );
+		} elseif ( '' !== $body ) {
+			Logger::error( 'License validation failed.', [
+				'response_body' => Logger::esc_html( $body ),
+			] );
+		} else {
+			Logger::error( 'License validation failed. No body available in response.' );
 		}
 	}
 
