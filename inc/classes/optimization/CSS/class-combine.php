@@ -2,6 +2,7 @@
 namespace WP_Rocket\Optimization\CSS;
 
 use WP_Rocket\Admin\Options_Data as Options;
+use WP_Rocket\Logger;
 use MatthiasMullie\Minify;
 
 /**
@@ -48,18 +49,34 @@ class Combine extends Abstract_CSS_Optimization {
 	 * @return string
 	 */
 	public function optimize( $html ) {
+		Logger::info( 'CSS COMBINE PROCESS STARTED.', [ 'css combine process' ] );
+
 		$styles = $this->find( '<link\s+([^>]+[\s\'"])?href\s*=\s*[\'"]\s*?([^\'"]+\.css(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>', $html );
 
 		if ( ! $styles ) {
+			Logger::info( 'No `<link>` tags found.', [ 'css combine process' ] );
 			return $html;
 		}
 
+		Logger::info( 'Found ' . count( $styles ) . ' `<link>` tags.', [
+			'css combine process',
+			'tags' => array_map( [ 'Logger', 'esc_html' ], $styles ),
+		] );
+
 		$styles = array_map( function( $style ) {
 			if ( $this->is_external_file( $style[2] ) ) {
+				Logger::info( 'Style is external.', [
+					'css combine process',
+					'tag' => Logger::esc_html( $style[0] ),
+				] );
 				return;
 			}
 
 			if ( $this->is_minify_excluded_file( $style ) ) {
+				Logger::info( 'Style is excluded.', [
+					'css combine process',
+					'tag' => Logger::esc_html( $style[0] ),
+				] );
 				return;
 			}
 
@@ -67,8 +84,14 @@ class Combine extends Abstract_CSS_Optimization {
 		}, $styles );
 
 		if ( empty( $styles ) ) {
+			Logger::info( 'No `<link>` tags to optimize.', [ 'css combine process' ] );
 			return $html;
 		}
+
+		Logger::info( count( $styles ) . ' `<link>` tags remaining.', [
+			'css combine process',
+			'tags' => array_map( [ 'Logger', 'esc_html' ], $styles ),
+		] );
 
 		$urls = array_map( function( $style ) {
 			return $style[2];
@@ -77,6 +100,7 @@ class Combine extends Abstract_CSS_Optimization {
 		$minify_url = $this->combine( $urls );
 
 		if ( ! $minify_url ) {
+			Logger::error( 'CSS combine process failed.', [ 'css combine process' ] );
 			return $html;
 		}
 
@@ -85,6 +109,11 @@ class Combine extends Abstract_CSS_Optimization {
 		foreach ( $styles as $style ) {
 			$html = str_replace( $style[0], '', $html );
 		}
+
+		Logger::info( 'Combined CSS file successfully added.', [
+			'css combine process',
+			'url' => Logger::esc_html( $minify_url ),
+		] );
 
 		return $html;
 	}
@@ -117,14 +146,32 @@ class Combine extends Abstract_CSS_Optimization {
 			$minified_content = $this->minify( $file_path );
 
 			if ( ! $minified_content ) {
+				Logger::error( 'No minified content.', [
+					'css combine process',
+					'path' => Logger::esc_html( $minified_file ),
+				] );
 				return false;
 			}
 
 			$minify_filepath = $this->write_file( $minified_content, $minified_file );
 
 			if ( ! $minify_filepath ) {
+				Logger::error( 'Minified CSS file could not be created.', [
+					'css combine process',
+					'path' => Logger::esc_html( $minified_file ),
+				] );
 				return false;
 			}
+
+			Logger::info( 'Combined CSS file successfully created.', [
+				'css combine process',
+				'path' => Logger::esc_html( $minified_file ),
+			] );
+		} else {
+			Logger::info( 'Combined CSS file already exists.', [
+				'css combine process',
+				'path' => Logger::esc_html( $minified_file ),
+			] );
 		}
 
 		return $this->get_minify_url( $filename );
