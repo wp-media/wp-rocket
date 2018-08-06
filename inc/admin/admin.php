@@ -1,4 +1,6 @@
 <?php
+use WP_Rocket\Logger;
+
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
@@ -486,6 +488,75 @@ function rocket_analytics_optin() {
 	die();
 }
 add_action( 'admin_post_rocket_analytics_optin', 'rocket_analytics_optin' );
+
+/**
+ * Download the log file.
+ *
+ * @since  3.2
+ * @author Grégory Viguier
+ */
+function rocket_download_debug_file() {
+	if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'download_debug_file' ) ) {
+		wp_nonce_ays( '' );
+	}
+
+	/** This filter is documented in inc/admin-bar.php */
+	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
+		die();
+	}
+
+	$contents = Logger::get_log_file_contents();
+
+	if ( is_wp_error( $contents ) ) {
+		add_settings_error( 'general', $contents->get_error_code(), $contents->get_error_message(), 'error' );
+		set_transient( 'settings_errors', get_settings_errors(), 30 );
+
+		wp_safe_redirect( esc_url_raw( add_query_arg( 'settings-updated', 1, wp_get_referer() ) ) );
+		die();
+	}
+
+	nocache_headers();
+	@header( 'Content-Type: text/x-log' );
+	@header( 'Content-Disposition: attachment; filename="' . Logger::LOG_FILE_NAME . '"' );
+	@header( 'Content-Transfer-Encoding: binary' );
+	@header( 'Content-Length: ' . strlen( $contents ) );
+	@header( 'Connection: close' );
+	echo $contents;
+	exit();
+}
+add_action( 'admin_post_rocket_download_debug_file', 'rocket_download_debug_file' );
+
+/**
+ * Delete the log file.
+ *
+ * @since  3.2
+ * @author Grégory Viguier
+ */
+function rocket_delete_debug_file() {
+	if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'delete_debug_file' ) ) {
+		wp_nonce_ays( '' );
+	}
+
+	$redirect = wp_get_referer();
+
+	/** This filter is documented in inc/admin-bar.php */
+	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		wp_safe_redirect( esc_url_raw( $redirect ) );
+		die();
+	}
+
+	if ( ! Logger::delete_log_file() ) {
+		add_settings_error( 'general', 'debug_file_not_deleted', __( 'The debug file could not be deleted.', 'rocket' ), 'error' );
+		set_transient( 'settings_errors', get_settings_errors(), 30 );
+
+		$redirect = add_query_arg( 'settings-updated', 1, $redirect );
+	}
+
+	wp_safe_redirect( esc_url_raw( $redirect ) );
+	die();
+}
+add_action( 'admin_post_rocket_delete_debug_file', 'rocket_delete_debug_file' );
 
 /**
  * Handle WP Rocket settings import.
