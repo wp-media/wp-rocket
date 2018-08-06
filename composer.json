@@ -35,7 +35,8 @@
 		"a5hleyrich/wp-background-processing": "1.1 as 1.0",
 		"composer/installers": "~1.0",
 		"jamesryanbell/cloudflare": "^1.11",
-		"matthiasmullie/minify": "1.3.*"
+		"matthiasmullie/minify": "1.3.*",
+		"monolog/monolog": "^1.0"
 	},
 	"require-dev": {
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.4.4",
