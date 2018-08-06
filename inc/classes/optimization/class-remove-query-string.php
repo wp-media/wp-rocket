@@ -79,11 +79,9 @@ class Remove_Query_String extends Abstract_Optimization {
 		$this->excluded_files = apply_filters( 'rocket_exclude_cache_busting', array() );
 
 		if ( ! empty( $this->excluded_files ) ) {
-			$delimiter = array_fill( 0, count( $this->excluded_files ), '#' );
-
 			foreach ( $this->excluded_files as $i => $excluded_file ) {
 				// Escape character for future use in regex pattern.
-				$this->excluded_files[ $i ] = str_replace( $delimiter, '\\' . $delimiter, $excluded_file );
+				$this->excluded_files[ $i ] = str_replace( '#', '\#', $excluded_file );
 			}
 
 			$this->excluded_files = implode( '|', $this->excluded_files );
