@@ -7,6 +7,7 @@ phpunit.xml export-ignore
 README.md export-ignore
 .gitattributes export-ignore
 .gitignore export-ignore
+.github export-ignore
 phpcs.xml export-ignore
 .tx export-ignore
 LICENSE.md export-ignore
