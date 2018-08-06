@@ -1,4 +1,6 @@
 <?php
+use WP_Rocket\Logger;
+
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
@@ -246,6 +248,17 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 		delete_transient( WP_ROCKET_SLUG );
 		$newvalue = array_merge( $newvalue, $keys );
 	}
+
+	// Enable or disable debug mode.
+	if ( ! empty( $_POST ) ) {
+		if ( ! empty( $newvalue['debug_enabled'] ) ) {
+			Logger::enable_debug();
+		} else {
+			Logger::disable_debug();
+		}
+	}
+
+	unset( $newvalue['debug_enabled'] );
 
 	return $newvalue;
 }
