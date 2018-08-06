@@ -1,6 +1,8 @@
 <?php
 namespace WP_Rocket\Admin\Settings;
 
+use WP_Rocket\Event_Management\Subscriber_Interface;
+
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
@@ -9,7 +11,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  * @since 3.0
  * @author Remy Perona
  */
-class Page {
+class Page implements Subscriber_Interface {
 	/**
 	 * Plugin slug
 	 *
@@ -92,32 +94,20 @@ class Page {
 	}
 
 	/**
-	 * Registers the class and hooks
-	 *
-	 * @since 3.0
-	 * @author Remy Perona
-	 *
-	 * @param array                                  $args     Array of required arguments to add the admin page.
-	 * @param Settings                               $settings Instance of Settings class.
-	 * @param \WP_Rocket\Interfaces\Render_Interface $render   Implementation of Render interface.
-	 * @return void
+	 * @inheritDoc
 	 */
-	public static function register( $args, Settings $settings, $render ) {
-		$self = new self( $args, $settings, $render );
-
-		add_action( 'admin_menu', [ $self, 'add_admin_page' ] );
-		add_action( 'admin_init', [ $self, 'configure' ] );
-		add_action( 'admin_print_footer_scripts-settings_page_wprocket', [ $self, 'insert_beacon' ] );
-		add_action( 'wp_ajax_rocket_refresh_customer_data', [ $self, 'refresh_customer_data' ] );
-		add_action( 'wp_ajax_rocket_toggle_option', [ $self, 'toggle_option' ] );
-
-		add_filter( 'option_page_capability_' . $self->slug, [ $self, 'required_capability' ] );
-		add_filter( 'pre_get_rocket_option_cache_mobile', [ $self, 'is_mobile_plugin_active' ] );
-		add_filter( 'pre_get_rocket_option_do_caching_mobile_files', [ $self, 'is_mobile_plugin_active' ] );
-
-		if ( \rocket_valid_key() ) {
-			add_filter( 'rocket_settings_menu_navigation', [ $self, 'add_menu_tools_page' ] );
-		}
+	public static function get_subscribed_events() {
+		return [
+			'admin_menu'                                        => 'add_admin_page',
+			'admin_init'                                        => 'configure',
+			'admin_print_footer_scripts-settings_page_wprocket' => 'insert_beacon',
+			'wp_ajax_rocket_refresh_customer_data'              => 'refresh_customer_data',
+			'wp_ajax_rocket_toggle_option'                      => 'toggle_option',
+			'option_page_capability_' . WP_ROCKET_PLUGIN_SLUG   => 'required_capability',
+			'rocket_settings_menu_navigation'                   => 'add_menu_tools_page',
+			'pre_get_rocket_option_cache_mobile'                => 'is_mobile_plugin_active',
+			'pre_get_rocket_option_do_caching_mobile_files'     => 'is_mobile_plugin_active',
+		];
 	}
 
 	/**
@@ -328,11 +318,11 @@ class Page {
 		$response = wp_safe_remote_post(
 			WP_ROCKET_WEB_MAIN . 'stat/1.0/wp-rocket/user.php',
 			[
-				'body' => 'user_id=' . $customer_email . '&consumer_key=' . $customer_key,
+				'body' => 'user_id=' . rawurlencode( $customer_email ) . '&consumer_key=' . $customer_key,
 			]
 		);
 
-		if ( is_wp_error( $response ) ) {
+		if ( 200 !== wp_remote_retrieve_response_code( $response )  ) {
 			return (object) [
 				'licence_account'    => __( 'Unavailable', 'rocket' ),
 				'licence_expiration' => __( 'Unavailable', 'rocket' ),
@@ -419,6 +409,7 @@ class Page {
 			'cloudflare_devmode'          => 1,
 			'cloudflare_protocol_rewrite' => 1,
 			'cloudflare_auto_settings'    => 1,
+			'google_analytics_cache'      => 1,
 		];
 
 		if ( ! isset( $_POST['option']['name'] ) || ! isset( $whitelist[ $_POST['option']['name'] ] ) ) {
@@ -1616,18 +1607,16 @@ class Page {
 			]
 		);
 
-		if ( apply_filters( 'rocket_display_varnish_options_tab', true ) ) {
-			$this->settings->add_settings_sections(
-				[
-					'one_click' => [
-						'title'       => __( 'One-click Rocket Add-ons', 'rocket' ),
-						'description' => __( 'One-Click Add-ons are features extending available options without configuration needed. Switch the option "on" to enable from this screen.', 'rocket' ),
-						'type'        => 'addons_container',
-						'page'        => 'addons',
-					],
-				]
-			);
-		}
+		$this->settings->add_settings_sections(
+			[
+				'one_click' => [
+					'title'       => __( 'One-click Rocket Add-ons', 'rocket' ),
+					'description' => __( 'One-Click Add-ons are features extending available options without configuration needed. Switch the option "on" to enable from this screen.', 'rocket' ),
+					'type'        => 'addons_container',
+					'page'        => 'addons',
+				],
+			]
+		);
 
 		$this->settings->add_settings_sections(
 			[
@@ -1636,6 +1625,29 @@ class Page {
 					'description' => __( 'Rocket Add-ons are complementary features extending available options.', 'rocket' ),
 					'type'        => 'addons_container',
 					'page'        => 'addons',
+				],
+			]
+		);
+
+		$ga_beacon = $this->get_beacon_suggest( 'google_tracking', $this->locale );
+
+		$this->settings->add_settings_fields(
+			[
+				'google_analytics_cache' => [
+					'type'              => 'one_click_addon',
+					'label'             => __( 'Google Tracking', 'rocket' ),
+					'logo'              => [
+						'url'    => WP_ROCKET_ASSETS_IMG_URL . 'logo-google-analytics.svg',
+						'width'  => 153,
+						'height' => 111,
+					],
+					'title'             => __( 'Improve browser caching for Google Analytics', 'rocket' ),
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'description'       => sprintf( __( 'WP Rocket will host these Google scripts locally on your server to help satisfy the PageSpeed recommendation for <em>Leverage browser caching</em>.<br>%1$sLearn more%2$s', 'rocket' ), '<a href="' . esc_url( $ga_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $ga_beacon['id'] ) . '" target="_blank">', '</a>' ),
+					'section'           => 'one_click',
+					'page'              => 'addons',
+					'default'           => 0,
+					'sanitize_callback' => 'sanitize_checkbox',
 				],
 			]
 		);
@@ -1664,7 +1676,7 @@ class Page {
 						'type'              => 'one_click_addon',
 						'label'             => __( 'Varnish', 'rocket' ),
 						'logo'              => [
-							'url'    => WP_ROCKET_ASSETS_IMG_URL . '/logo-varnish.svg',
+							'url'    => WP_ROCKET_ASSETS_IMG_URL . 'logo-varnish.svg',
 							'width'  => 152,
 							'height' => 135,
 						],
@@ -1686,7 +1698,7 @@ class Page {
 					'type'              => 'rocket_addon',
 					'label'             => __( 'Cloudflare', 'rocket' ),
 					'logo'              => [
-						'url'    => WP_ROCKET_ASSETS_IMG_URL . '/logo-cloudflare2.svg',
+						'url'    => WP_ROCKET_ASSETS_IMG_URL . 'logo-cloudflare2.svg',
 						'width'  => 153,
 						'height' => 51,
 					],
@@ -2169,6 +2181,12 @@ class Page {
 				'fr' => [
 					'id'  => '56fd2f789033601d6683e574',
 					'url' => 'https://fr.docs.wp-rocket.me/article/512-varnish-wp-rocket-2-7/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
+			'google_tracking'        => [
+				'en' => [
+					'id'  => '5b4693220428630abc0bf97b',
+					'url' => 'https://docs.wp-rocket.me/article/1103-google-tracking-add-on/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 		];

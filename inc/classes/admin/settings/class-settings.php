@@ -237,7 +237,7 @@ class Settings {
 			'DAY_IN_SECONDS'    => 1,
 		];
 
-		$input['purge_cron_unit'] = isset( $allowed_cron_units[ $input['purge_cron_unit'] ] ) ? $input['purge_cron_unit'] : $this->options->get( 'purge_cron_unit' );
+		$input['purge_cron_unit'] = isset( $input['purge_cron_unit'], $allowed_cron_units[ $input['purge_cron_unit'] ] ) ? $input['purge_cron_unit'] : $this->options->get( 'purge_cron_unit' );
 
 		// Force a minimum 10 minutes value for the purge interval.
 		if ( $input['purge_cron_interval'] < 10 && 'MINUTE_IN_SECONDS' === $input['purge_cron_unit'] ) {

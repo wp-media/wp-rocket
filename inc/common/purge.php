@@ -460,9 +460,7 @@ function do_admin_post_rocket_purge_opcache() {
 		wp_nonce_ays( '' );
 	}
 
-	if ( function_exists( 'opcache_reset' ) ) {
-		@opcache_reset();
-	}
+	rocket_reset_opcache();
 
 	wp_redirect( wp_get_referer() );
 	die();

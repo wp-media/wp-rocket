@@ -133,8 +133,8 @@ function is_rocket_generate_caching_mobile_files() {
 function rocket_get_dns_prefetch_domains() {
 	$cdn_cnames = get_rocket_cdn_cnames( array( 'all', 'images', 'css_and_js', 'css', 'js' ) );
 
-	// Don't add CNAMES if CDN is disabled HTTPS pages or on specific posts.
-	if ( is_rocket_post_excluded_option( 'cdn' ) ) {
+	// Don't add CNAMES if CDN is disabled.
+	if ( ! get_rocket_option( 'cdn' ) || is_rocket_post_excluded_option( 'cdn' ) ) {
 		$cdn_cnames = array();
 	}
 
@@ -380,48 +380,6 @@ function get_rocket_cache_query_string() {
 }
 
 /**
- * Get all files to exclude from minification/concatenation.
- *
- * @since 2.11
- * @author Remy Perona
- *
- * @param string $extension Type of files to exclude.
- * @return array Array of excluded files.
- */
-function get_rocket_exclude_files( $extension ) {
-	if ( 'css' === $extension ) {
-		$excluded_files = get_rocket_option( 'exclude_css', array() );
-		/**
-		 * Filters CSS files to exclude from minification/concatenation.
-		 *
-		 * @since 2.6
-		 *
-		 * @param array $excluded_files List of excluded CSS files.
-		*/
-		$excluded_files = apply_filters( 'rocket_exclude_css', $excluded_files );
-	} elseif ( 'js' === $extension ) {
-		global $wp_scripts;
-
-		$excluded_files = get_rocket_option( 'exclude_js', array() );
-
-		if ( get_rocket_option( 'defer_all_js', 0 ) && get_rocket_option( 'defer_all_js_safe', 0 ) ) {
-			$excluded_files[] = rocket_clean_exclude_file( site_url( $wp_scripts->registered['jquery-core']->src ) );
-		}
-
-		/**
-		 * Filter JS files to exclude from minification/concatenation.
-		 *
-		 * @since 2.6
-		 *
-		 * @param array $js_files List of excluded JS files.
-		*/
-		$excluded_files = apply_filters( 'rocket_exclude_js', $excluded_files );
-	}
-
-	return $excluded_files;
-}
-
-/**
  * Get list of JS files to be excluded from defer JS.
  *
  * @since 2.10
@@ -436,10 +394,6 @@ function get_rocket_exclude_defer_js() {
 
 	if ( get_rocket_option( 'defer_all_js', 0 ) && get_rocket_option( 'defer_all_js_safe', 0 ) ) {
 		$jquery = site_url( $wp_scripts->registered['jquery-core']->src );
-
-		if ( get_rocket_option( 'remove_query_strings', 0 ) ) {
-			$jquery = get_rocket_browser_cache_busting( $jquery . '?ver=' . $wp_scripts->registered['jquery-core']->ver, 'script_loader_src' );
-		}
 
 		$exclude_defer_js[] = rocket_clean_exclude_file( $jquery );
 	}

@@ -289,7 +289,7 @@ function set_rocket_wp_cache_define( $turn_it_on ) {
 	 *
 	 * @param string $turn_it_on The value of WP_CACHE constant.
 	*/
-	apply_filters( 'set_rocket_wp_cache_define', $turn_it_on );
+	$turn_it_on = apply_filters( 'set_rocket_wp_cache_define', $turn_it_on );
 
 	// Lets find out if the constant WP_CACHE is defined or not.
 	$is_wp_cache_exist = false;
@@ -337,11 +337,8 @@ function set_rocket_wp_cache_define( $turn_it_on ) {
  * @return void
  */
 function rocket_clean_minify( $extensions = array( 'js', 'css' ) ) {
-	if ( version_compare( PHP_VERSION, '5.3' ) < 0 ) {
-		return;
-	}
-
 	$extensions = is_string( $extensions ) ? (array) $extensions : $extensions;
+
 	try {
 		$dir = new RecursiveDirectoryIterator( WP_ROCKET_MINIFY_CACHE_PATH . get_current_blog_id(), FilesystemIterator::SKIP_DOTS );
 	} catch ( Exception $e ) {
@@ -391,6 +388,21 @@ function rocket_clean_minify( $extensions = array( 'js', 'css' ) ) {
 			rocket_direct_filesystem()->delete( $item );
 		}
 	}
+
+	$third_party = WP_ROCKET_MINIFY_CACHE_PATH . '3rd-party';
+
+	try {
+		$files = new FilesystemIterator( $third_party );
+
+		foreach ( $files as $file ) {
+			if ( rocket_direct_filesystem()->is_file( $file ) ) {
+				rocket_direct_filesystem()->delete( $file );
+			}
+		}
+	} catch ( Exception $e ) {
+		// No logging yet.
+		return;
+	}
 }
 
 /**
@@ -403,10 +415,6 @@ function rocket_clean_minify( $extensions = array( 'js', 'css' ) ) {
  * @return void
  */
 function rocket_clean_cache_busting( $extensions = array( 'js', 'css' ) ) {
-	if ( version_compare( PHP_VERSION, '5.3' ) < 0 ) {
-		return;
-	}
-
 	$extensions = is_string( $extensions ) ? (array) $extensions : $extensions;
 
 	try {

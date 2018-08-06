@@ -28,13 +28,6 @@ if ( class_exists( 'FlywheelNginxCompat' ) ) :
 	add_filter( 'do_rocket_varnish_http_purge', '__return_true' );
 
 	/**
-	 * Don't display the Varnish options tab for Flywheel users
-	 *
-	 * @since 2.7
-	 */
-	add_filter( 'rocket_display_varnish_options_tab', '__return_false' );
-
-	/**
 	 * Set up the right Varnish IP for Flywheel
 	 *
 	 * @since 2.6.8

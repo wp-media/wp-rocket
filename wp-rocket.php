@@ -3,7 +3,7 @@
  * Plugin Name: WP Rocket
  * Plugin URI: https://wp-rocket.me
  * Description: The best WordPress performance plugin.
- * Version: 3.0.5.1
+ * Version: 3.1
  * Code Name: Dagobah
  * Author: WP Media
  * Contributors: Jonathan Buttigieg, Julio Potier, Remy Perona
@@ -19,7 +19,7 @@
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 // Rocket defines.
-define( 'WP_ROCKET_VERSION'             , '3.0.5.1' );
+define( 'WP_ROCKET_VERSION'             , '3.1' );
 define( 'WP_ROCKET_PRIVATE_KEY'         , false );
 define( 'WP_ROCKET_SLUG'                , 'wp_rocket_settings' );
 define( 'WP_ROCKET_WEB_MAIN'            , false );
@@ -64,7 +64,7 @@ if ( ! defined( 'CHMOD_WP_ROCKET_CACHE_DIRS' ) ) {
 	define( 'CHMOD_WP_ROCKET_CACHE_DIRS', 0755 );
 }
 if ( ! defined( 'WP_ROCKET_LASTVERSION' ) ) {
-	define( 'WP_ROCKET_LASTVERSION', '2.11.7' );
+	define( 'WP_ROCKET_LASTVERSION', '3.0.5.1' );
 }
 
 require WP_ROCKET_INC_PATH . 'compat.php';
@@ -96,7 +96,7 @@ $wp_rocket_requirement_checks = new WP_Rocket_Requirements_Check( array(
 	'plugin_file'         => WP_ROCKET_FILE,
 	'plugin_version'      => WP_ROCKET_VERSION,
 	'plugin_last_version' => WP_ROCKET_LASTVERSION,
-	'wp_version'          => '4.2',
+	'wp_version'          => '4.7',
 	'php_version'         => '5.4',
 ) );
 

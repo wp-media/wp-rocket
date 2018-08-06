@@ -1,219 +1,9 @@
 <?php
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
-/*
+/**
  * Deprecated functions come here to die.
  */
-
-
-if ( ! function_exists( 'get_rocket_pages_not_cached' ) ) :
-	/**
-	 * Get all pages we don't cache (string)
-	 *
-	 * @since 1.0
-	 * @deprecated 2.0
-	 * @deprecated Use get_rocket_cache_reject_uri()
-	 */
-	function get_rocket_pages_not_cached() {
-		_deprecated_function( __FUNCTION__, '2.0', 'get_rocket_cache_reject_uri()' );
-		return get_rocket_cache_reject_uri();
-	}
-endif;
-
-if ( ! function_exists( 'get_rocket_cookies_not_cached' ) ) :
-	/**
-	 * Get all cookie names we don't cache (string)
-	 *
-	 * @since 1.0
-	 * @deprecated 2.0
-	 * @deprecated Use get_rocket_cache_reject_cookies()
-	 */
-	function get_rocket_cookies_not_cached() {
-		_deprecated_function( __FUNCTION__, '2.0', 'get_rocket_cache_reject_cookies()' );
-		return get_rocket_cache_reject_cookies();
-	}
-endif;
-
-if ( ! function_exists( 'get_rocket_cron_interval' ) ) :
-	/**
-	 * Get the interval task cron purge in seconds
-	 * This setting can be changed from the options page of the plugin
-	 *
-	 * @since 1.0
-	 * @deprecated 2.0
-	 * @deprecated Use get_rocket_purge_cron_interval()
-	 */
-	function get_rocket_cron_interval() {
-		_deprecated_function( __FUNCTION__, '2.0', 'get_rocket_purge_cron_interval()' );
-		return get_rocket_purge_cron_interval();
-	}
-endif;
-
-if ( ! function_exists( 'run_rocket_bot_for_all_langs' ) ) :
-	/**
-	 * Launch the Cache Preload Robot for all active langs
-	 *
-	 * @since 2.0
-	 * @deprecated 2.2
-	 * @deprecated Use run_rocket_bot()
-	 */
-	function run_rocket_bot_for_all_langs() {
-		_deprecated_function( __FUNCTION__, '2.2', 'run_rocket_bot()' );
-		return run_rocket_bot( 'cache-preload' );
-	}
-endif;
-
-if ( ! function_exists( 'run_rocket_bot_for_selected_lang' ) ) :
-	/**
-	 * Launch the Cache Preload Robot for a selected lang
-	 *
-	 * @since 2.0
-	 * @deprecated 2.2
-	 * @deprecated Use run_rocket_bot()
-	 *
-	 * @param string $lang Language to preload.
-	 */
-	function run_rocket_bot_for_selected_lang( $lang ) {
-		_deprecated_function( __FUNCTION__, '2.2', 'run_rocket_bot()' );
-		return run_rocket_bot( 'cache-preload', $lang );
-	}
-endif;
-
-if ( ! function_exists( 'get_rocket_home_url' ) ) :
-	/**
-	 * Returns a full and correct home_url without subdmain, see rocket_get_domain()
-	 *
-	 * @since 1.0
-	 * @deprecated 2.2
-	 *
-	 * @param string $url URL to format.
-	 */
-	function get_rocket_home_url( $url = null ) {
-		_deprecated_function( __FUNCTION__, '2.2' );
-		return false;
-	}
-	endif;
-
-if ( ! function_exists( 'rocket_has_translation_plugin_active' ) ) :
-	/**
-	 * Check if a translation plugin is activated (WPML or qTranslate)
-	 *
-	 * @since 2.0
-	 * @deprecated 2.2
-	 * @deprecated Use rocket_has_i18n()
-	 */
-	function rocket_has_translation_plugin_active() {
-		_deprecated_function( __FUNCTION__, '2.2', 'rocket_has_i18n()' );
-		return rocket_has_i18n();
-	}
-	endif;
-
-if ( ! function_exists( 'get_rocket_all_active_langs' ) ) :
-	/**
-	 * Get URI all of active languages
-	 *
-	 * @since 2.0
-	 * @deprecated 2.2
-	 * @deprecated Use get_rocket_i18n_code()
-	 */
-	function get_rocket_all_active_langs() {
-		_deprecated_function( __FUNCTION__, '2.2', 'get_rocket_i18n_code()' );
-		return get_rocket_i18n_code();
-	}
-endif;
-
-if ( ! function_exists( 'get_rocket_all_active_langs_uri' ) ) :
-	/**
-	 * Get URI all of active languages
-	 *
-	 * @since 2.0
-	 * @deprecated 2.2
-	 * @deprecated Use get_rocket_i18n_uri()
-	 */
-	function get_rocket_all_active_langs_uri() {
-		_deprecated_function( __FUNCTION__, '2.2', 'get_rocket_i18n_uri()' );
-		return get_rocket_i18n_uri();
-	}
-endif;
-
-if ( ! function_exists( 'get_rocket_parse_url_for_lang' ) ) :
-	/**
-	 * Extract and return host, path and scheme for a specific lang
-	 *
-	 * @since 2.0
-	 * @deprecated 2.2
-	 * @deprecated Use get_rocket_parse_url()
-	 *
-	 * @param string $lang Language to get.
-	 */
-	function get_rocket_parse_url_for_lang( $lang ) {
-		_deprecated_function( __FUNCTION__, '2.2', 'get_rocket_parse_url()' );
-		return get_rocket_parse_url( get_rocket_i18n_home_url( $lang ) );
-	}
-endif;
-
-if ( ! function_exists( 'rocket_clean_domain_for_selected_lang' ) ) :
-	/**
-	 * Remove only cache files of selected lang
-	 *
-	 * @since 2.0
-	 * @deprecated 2.2
-	 * @deprecated Use rocket_clean_domain()
-	 *
-	 * @param string $lang Language to clean.
-	 */
-	function rocket_clean_domain_for_selected_lang( $lang ) {
-		_deprecated_function( __FUNCTION__, '2.2', 'rocket_clean_domain()' );
-		return rocket_clean_domain( $lang );
-	}
-endif;
-
-if ( ! function_exists( 'rocket_clean_domain_for_all_langs' ) ) :
-	/**
-	 * Remove cache files of all langs
-	 *
-	 * @since 2.0
-	 * @deprecated 2.2
-	 * @deprecated Use rocket_clean_domain()
-	 */
-	function rocket_clean_domain_for_all_langs() {
-		_deprecated_function( __FUNCTION__, '2.2', 'rocket_clean_domain()' );
-		return rocket_clean_domain();
-	}
-endif;
-
-if ( ! function_exists( 'get_rocket_langs_to_preserve' ) ) :
-	/**
-	 * Get folder paths to preserve languages ​​when purging a domain
-	 * This function is required when the domains of languages (​​other than the default) are managed by subfolders
-	 * By default, when you clear the cache of the french website with the domain example.com, all subdirectory like /en/ and /de/ are deleted.
-	 * But, if you have a domain for your english and german websites with example.com/en/ and example.com/de/, you want to keep the /en/ and /de/ directory when the french domain is cleared.
-	 *
-	 * @since 2.0
-	 * @deprecated 2.2
-	 * @deprecated Use get_rocket_i18n_to_preserve()
-	 *
-	 * @param string $current_lang Language to preserve.
-	 */
-	function get_rocket_langs_to_preserve( $current_lang ) {
-		_deprecated_function( __FUNCTION__, '2.2', 'get_rocket_i18n_to_preserve()' );
-		return get_rocket_i18n_to_preserve( $current_lang );
-	}
-endif;
-
-if ( ! function_exists( 'get_rocket_subdomains_langs' ) ) :
-	/**
-	 * Get subdomains URL of all languages
-	 *
-	 * @since 2.0
-	 * @deprecated 2.2
-	 * @deprecated Use get_rocket_i18n_subdomains()
-	 */
-	function get_rocket_subdomains_langs() {
-		_deprecated_function( __FUNCTION__, '2.2', 'get_rocket_i18n_subdomains()' );
-		return get_rocket_i18n_subdomains();
-	}
-endif;
 
 if ( ! function_exists( 'rocket_replace_domain_mapping_siteurl' ) ) :
 	/**
@@ -2184,5 +1974,1316 @@ if ( ! function_exists( 'rocket_get_home_path' ) ) {
 		}
 
 		return str_replace( '\\', '/', $home_path );
+	}
+}
+
+if ( ! function_exists( 'rocket_clean_cache_after_woocommerce_save_product_variation' ) ) {
+	/**
+	 * Clean product cache on variation update
+	 *
+	 * @since 2.9
+	 * @deprecated 3.1
+	 * @see WP_Rocket\Third_Party\Plugins\Ecommerce\WooCommerce::clean_cache_after_woocommerce_save_product_variation()
+	 * @author Remy Perona
+	 *
+	 * @param int $variation_id ID of the variation.
+	 */
+	function rocket_clean_cache_after_woocommerce_save_product_variation( $variation_id ) {
+		_deprecated_function( __FUNCTION__, '3.1', 'WP_Rocket\Third_Party\Plugins\Ecommerce\WooCommerce::clean_cache_after_woocommerce_save_product_variation()' );
+		$product_id = wp_get_post_parent_id( $variation_id );
+		if ( $product_id ) {
+			rocket_clean_post( $product_id );
+		}
+	}
+}
+
+if ( ! function_exists( 'rocket_cache_v_query_string' ) ) {
+	/**
+	 * Automatically cache v query string when WC geolocation with cache compatibility option is active
+	 *
+	 * @since 2.8.6
+	 * @deprecated 3.1
+	 * @see WP_Rocket\Third_Party\Plugins\Ecommerce\WooCommerce::cache_geolocation_query_string()
+	 * @author Rémy Perona
+	 *
+	 * @param array $query_strings list of query strings to cache.
+	 * @return array Updated list of query strings to cache
+	 */
+	function rocket_cache_v_query_string( $query_strings ) {
+		_deprecated_function( __FUNCTION__, '3.1', 'WP_Rocket\Third_Party\Plugins\Ecommerce\WooCommerce::cache_geolocation_query_string()' );
+		if ( 'geolocation_ajax' === get_option( 'woocommerce_default_customer_address' ) ) {
+			$query_strings[] = 'v';
+		}
+
+		return $query_strings;
+	}
+}
+
+if ( ! function_exists( 'rocket_exclude_woocommerce_pages' ) ) {
+	/**
+	 * Exclude WooCommerce cart, checkout and account pages from caching
+	 *
+	 * @since 2.11 Moved to 3rd party
+	 * @since 2.4
+	 * @deprecated 3.1
+	 * @see WP_Rocket\Third_Party\Plugins\Ecommerce\WooCommerce::exclude_pages()
+	 *
+	 * @param array $urls An array of excluded pages.
+	 * @return array Updated array of excluded pages
+	 */
+	function rocket_exclude_woocommerce_pages( $urls ) {
+		_deprecated_function( __FUNCTION__, '3.1', 'WP_Rocket\Third_Party\Plugins\Ecommerce\WooCommerce::exclude_pages()' );
+		if ( function_exists( 'WC' ) && function_exists( 'wc_get_page_id' ) ) {
+			if ( wc_get_page_id( 'checkout' ) && wc_get_page_id( 'checkout' ) !== -1 && wc_get_page_id( 'checkout' ) !== (int) get_option( 'page_on_front' ) ) {
+				$checkout_urls = get_rocket_i18n_translated_post_urls( wc_get_page_id( 'checkout' ), 'page', '(.*)' );
+				$urls = array_merge( $urls, $checkout_urls );
+			}
+
+			if ( wc_get_page_id( 'cart' ) && wc_get_page_id( 'cart' ) !== -1 && wc_get_page_id( 'cart' ) !== (int) get_option( 'page_on_front' ) ) {
+				$cart_urls = get_rocket_i18n_translated_post_urls( wc_get_page_id( 'cart' ) );
+				$urls = array_merge( $urls, $cart_urls );
+			}
+
+			if ( wc_get_page_id( 'myaccount' ) && wc_get_page_id( 'myaccount' ) !== -1 && wc_get_page_id( 'myaccount' ) !== (int) get_option( 'page_on_front' ) ) {
+				$cart_urls = get_rocket_i18n_translated_post_urls( wc_get_page_id( 'myaccount' ), 'page', '(.*)' );
+				$urls = array_merge( $urls, $cart_urls );
+			}
+		}
+
+		return $urls;
+	}
+}
+
+if ( ! function_exists( 'rocket_activate_woocommerce' ) ) {
+	/**
+	 * Add query string to exclusion when activating the plugin
+	 *
+	 * @since 2.8.6
+	 * @deprecated 3.1
+	 * @see WP_Rocket\Third_Party\Plugins\Ecommerce\WooCommerce::activate_woocommerce()
+	 * @author Rémy Perona
+	 */
+	function rocket_activate_woocommerce() {
+		_deprecated_function( __FUNCTION__, '3.1', 'WP_Rocket\Third_Party\Plugins\Ecommerce\WooCommerce::activate_woocommerce()' );
+		add_filter( 'rocket_cache_reject_uri', 'rocket_exclude_woocommerce_pages' );
+		add_filter( 'rocket_cache_query_strings', 'rocket_cache_v_query_string' );
+
+		// Update .htaccess file rules.
+		flush_rocket_htaccess();
+
+		// Regenerate the config file.
+		rocket_generate_config_file();
+	}
+}
+
+if ( ! function_exists( 'rocket_deactivate_woocommerce' ) ) {
+	/**
+	 * Remove query string from exclusion when deactivating the plugin
+	 *
+	 * @since 2.8.6
+	 * @deprecated 3.1
+	 * @see WP_Rocket\Third_Party\Plugins\Ecommerce\WooCommerce::deactivate_woocommerce()
+	 * @author Rémy Perona
+	 */
+	function rocket_deactivate_woocommerce() {
+		_deprecated_function( __FUNCTION__, '3.1', 'WP_Rocket\Third_Party\Plugins\Ecommerce\WooCommerce::deactivate_woocommerce()' );
+		remove_filter( 'rocket_cache_reject_uri', 'rocket_exclude_woocommerce_pages' );
+		remove_filter( 'rocket_cache_query_strings', 'rocket_cache_v_query_string' );
+
+		// Update .htaccess file rules.
+		flush_rocket_htaccess();
+
+		// Regenerate the config file.
+		rocket_generate_config_file();
+	}
+}
+
+if ( ! function_exists( 'rocket_exclude_wc_rest_api' ) ) {
+	/**
+	 * Exclude WooCommerce REST API URL from cache
+	 *
+	 * @since 2.6.5
+	 * @deprecated 3.1
+	 * @see WP_Rocket\Third_Party\Plugins\Ecommerce\WooCommerce::exclude_wc_rest_api()
+	 *
+	 * @param array $uri URLs to exclude from cache.
+	 * @return array Updated list of URLs to exclude from cache
+	 */
+	function rocket_exclude_wc_rest_api( $uri ) {
+		_deprecated_function( __FUNCTION__, '3.1', 'WP_Rocket\Third_Party\Plugins\Ecommerce\WooCommerce::exclude_wc_rest_api()' );
+		/**
+		  * By default, don't cache the WooCommerce REST API.
+		  *
+		  * @since 2.6.5
+		  *
+		  * @param bool false will force to cache the WooCommerce REST API
+		 */
+		$rocket_cache_reject_wc_rest_api = apply_filters( 'rocket_cache_reject_wc_rest_api', true );
+
+		// Exclude WooCommerce REST API.
+		if ( $rocket_cache_reject_wc_rest_api ) {
+			$uri[] = rocket_clean_exclude_file( home_url( '/wc-api/v(.*)' ) );
+		}
+
+		return $uri;
+	}
+}
+
+if ( ! function_exists( 'rocket_minify_process' ) ) {
+	/**
+	 * Launch WP Rocket minification process (HTML, CSS and JavaScript)
+	 *
+	 * @since 2.10  New process for minification without concatenation
+	 * @since 1.3.0 This process is called via the new filter rocket_buffer
+	 * @since 1.1.6 Minify inline CSS and JavaScript
+	 * @since 1.0
+	 * @deprecated 3.1
+	 *
+	 * @param string $buffer HTML content.
+	 * @return string Modified HTML content
+	 */
+	function rocket_minify_process( $buffer ) {
+		_deprecated_function( __FUNCTION__, '3.1' );
+
+		$enable_css          = get_rocket_option( 'minify_css' );
+		$enable_js           = get_rocket_option( 'minify_js' );
+		$enable_google_fonts = get_rocket_option( 'minify_google_fonts' );
+
+		if ( $enable_css || $enable_js || $enable_google_fonts ) {
+			list( $buffer, $conditionals ) = rocket_extract_ie_conditionals( $buffer );
+		}
+
+		// Minify JavaScript.
+		if ( $enable_js && ( ! defined( 'DONOTROCKETOPTIMIZE' ) || ! DONOTROCKETOPTIMIZE ) && ( ! defined( 'DONOTMINIFYJS' ) || ! DONOTMINIFYJS ) && ! is_rocket_post_excluded_option( 'minify_js' ) ) {
+			$buffer = rocket_minify_files( $buffer, 'js' );
+		}
+
+		// Minify CSS.
+		if ( $enable_css && ( ! defined( 'DONOTROCKETOPTIMIZE' ) || ! DONOTROCKETOPTIMIZE ) && ( ! defined( 'DONOTMINIFYCSS' ) || ! DONOTMINIFYCSS ) && ! is_rocket_post_excluded_option( 'minify_css' ) ) {
+			$buffer = rocket_minify_files( $buffer, 'css' );
+		}
+
+		// Concatenate Google Fonts.
+		if ( $enable_google_fonts ) {
+			$buffer = rocket_concatenate_google_fonts( $buffer );
+		}
+
+		if ( $enable_css || $enable_js || $enable_google_fonts ) {
+			$buffer = rocket_inject_ie_conditionals( $buffer, $conditionals );
+		}
+
+		return $buffer;
+	}
+}
+
+if ( ! function_exists( 'rocket_minify_html' ) ) {
+	/**
+	 * Minifies inline HTML
+	 *
+	 * @since 2.10 Do the HTML minification independently and hook it later to prevent conflicts
+	 * @since 1.1.12
+	 * @deprecated 3.1
+	 *
+	 * @param string $buffer HTML content.
+	 * @return string Updated HTML content
+	 */
+	function rocket_minify_html( $buffer ) {
+		_deprecated_function( __FUNCTION__, '3.1' );
+
+		if ( ! get_rocket_option( 'minify_html' ) || is_rocket_post_excluded_option( 'minify_html' ) ) {
+			return $buffer;
+		}
+
+		$html_options = array(
+			'cssMinifier' => 'rocket_minify_inline_css',
+		);
+
+		/**
+		 * Filter options of minify inline HTML
+		 *
+		 * @since 1.1.12
+		 *
+		 * @param array $html_options Options of minify inline HTML.
+		 */
+		$html_options = apply_filters( 'rocket_minify_html_options', $html_options );
+
+		return Minify_HTML::minify( $buffer, $html_options );
+	}
+}
+
+if ( ! function_exists( 'rocket_fix_ssl_minify' ) ) {
+	/**
+	 * Fix issue with SSL and minification
+	 *
+	 * @since 2.3
+	 * @deprecated 3.1
+	 *
+	 * @param string $url An url to filter to set the scheme to https if needed.
+	 * @return string Updated URL
+	 */
+	function rocket_fix_ssl_minify( $url ) {
+		_deprecated_function( __FUNCTION__, '3.1' );
+
+		if ( is_ssl() && false === strpos( $url, 'https://' ) && ! in_array( rocket_extract_url_component( $url, PHP_URL_HOST ), get_rocket_cnames_host( array( 'all', 'css_js', 'css', 'js' ) ), true ) ) {
+			$url = str_replace( 'http://', 'https://', $url );
+		}
+
+		return $url;
+	}
+}
+
+if ( ! function_exists( 'rocket_minify_i18n_multidomain' ) ) {
+	/**
+	 * Compatibility with multilingual plugins & multidomain configuration
+	 *
+	 * @since 2.6.13 Regression Fix: Apply CDN on minified CSS and JS files by checking the CNAME host
+	 * @since 2.6.8
+	 * @deprecated 3.1
+	 *
+	 * @param string $url Minified file URL.
+	 * @return string Updated minified file URL
+	 */
+	function rocket_minify_i18n_multidomain( $url ) {
+		_deprecated_function( __FUNCTION__, '3.1' );
+
+		if ( ! rocket_has_i18n() ) {
+			return $url;
+		}
+
+		$url_host = rocket_extract_url_component( $url, PHP_URL_HOST );
+		$zone     = array( 'all', 'css_and_js' );
+		$current_filter = current_filter();
+
+		// Add only CSS zone.
+		if ( 'rocket_css_url' === $current_filter ) {
+			$zone[] = 'css';
+		}
+
+		// Add only JS zone.
+		if ( 'rocket_js_url' === $current_filter ) {
+			$zone[] = 'js';
+		}
+
+		$cnames = get_rocket_cdn_cnames( $zone );
+		$cnames = array_map( 'rocket_remove_url_protocol' , $cnames );
+
+		if ( $url_host !== $_SERVER['HTTP_HOST'] && in_array( $_SERVER['HTTP_HOST'], get_rocket_i18n_host(), true ) && ! in_array( $url_host, $cnames, true ) ) {
+			$url = str_replace( $url_host, $_SERVER['HTTP_HOST'], $url );
+		}
+
+		return $url;
+	}
+}
+
+if ( ! function_exists( 'rocket_get_js_enqueued_in_head' ) ) {
+	/**
+	 * Get all src for JS files already enqueued in head
+	 *
+	 * @since 2.10
+	 * @deprecated 3.1
+	 * @author Remy Perona
+	 */
+	function rocket_get_js_enqueued_in_head() {
+		_deprecated_function( __FUNCTION__, '3.1' );
+
+		global $wp_scripts, $rocket_js_enqueued_in_head;
+
+		if ( ! (bool) $wp_scripts->done ) {
+			return;
+		}
+
+		foreach ( $wp_scripts->done as $handle ) {
+			if ( ! empty( $wp_scripts->registered[ $handle ]->src ) ) {
+				$rocket_js_enqueued_in_head[] = str_replace( '#', '\#', rocket_clean_exclude_file( $wp_scripts->registered[ $handle ]->src ) );
+			}
+		}
+	}
+}
+
+if ( ! function_exists( 'get_rocket_exclude_files' ) ) {
+	/**
+	 * Get all files to exclude from minification/concatenation.
+	 *
+	 * @since 2.11
+	 * @deprecated 3.1
+	 * @author Remy Perona
+	 *
+	 * @param string $extension Type of files to exclude.
+	 * @return array Array of excluded files.
+	 */
+	function get_rocket_exclude_files( $extension ) {
+		_deprecated_function( __FUNCTION__, '3.1' );
+
+		if ( 'css' === $extension ) {
+			$excluded_files = get_rocket_option( 'exclude_css', array() );
+			/**
+			 * Filters CSS files to exclude from minification/concatenation.
+			 *
+			 * @since 2.6
+			 *
+			 * @param array $excluded_files List of excluded CSS files.
+			*/
+			$excluded_files = apply_filters( 'rocket_exclude_css', $excluded_files );
+		} elseif ( 'js' === $extension ) {
+			global $wp_scripts;
+
+			$excluded_files = get_rocket_option( 'exclude_js', array() );
+
+			if ( get_rocket_option( 'defer_all_js', 0 ) && get_rocket_option( 'defer_all_js_safe', 0 ) ) {
+				$excluded_files[] = rocket_clean_exclude_file( site_url( $wp_scripts->registered['jquery-core']->src ) );
+			}
+
+			/**
+			 * Filter JS files to exclude from minification/concatenation.
+			 *
+			 * @since 2.6
+			 *
+			 * @param array $js_files List of excluded JS files.
+			*/
+			$excluded_files = apply_filters( 'rocket_exclude_js', $excluded_files );
+		}
+
+		return $excluded_files;
+	}
+}
+
+if ( ! function_exists( 'rocket_concatenate_google_fonts' ) ) {
+	/**
+	 * Concatenates Google Fonts tags (http://fonts.googleapis.com/css?...)
+	 *
+	 * @since 2.3
+	 * @deprecated 3.1
+	 *
+	 * @param string $buffer HTML content.
+	 * @return string Modified HTML content
+	 */
+	function rocket_concatenate_google_fonts( $buffer ) {
+		_deprecated_function( __FUNCTION__, '3.1' );
+
+		// Get all Google Fonts CSS files.
+		$buffer_without_comments = preg_replace( '/<!--(.*)-->/Uis', '', $buffer );
+		preg_match_all( '/<link(?:\s+(?:(?!href\s*=\s*)[^>])+)?(?:\s+href\s*=\s*([\'"])((?:https?:)?\/\/fonts\.googleapis\.com\/css(?:(?!\1).)+)\1)(?:\s+[^>]*)?>/iU', $buffer_without_comments, $matches );
+
+		if ( ! $matches[2] || 1 === count( $matches ) ) {
+			return $buffer;
+		}
+
+		$fonts   = array();
+		$subsets = array();
+
+		foreach ( $matches[2] as $k => $font ) {
+			// Get fonts name.
+			$font = str_replace( array( '%7C', '%7c' ), '|', $font );
+			$font = explode( 'family=', $font );
+			$font = ( isset( $font[1] ) ) ? explode( '&', $font[1] ) : array();
+
+			// Add font to the collection.
+			$fonts = array_merge( $fonts, explode( '|', reset( $font ) ) );
+
+			// Add subset to collection.
+			$subset = ( is_array( $font ) ) ? end( $font ) : '';
+			if ( false !== strpos( $subset, 'subset=' ) ) {
+				$subset  = explode( 'subset=', $subset );
+				$subsets = array_merge( $subsets, explode( ',', $subset[1] ) );
+			}
+
+			// Delete the Google Fonts tag.
+			$buffer = str_replace( $matches[0][ $k ], '', $buffer );
+		}
+
+		// Concatenate fonts tag.
+		$subsets = ( $subsets ) ? '&subset=' . implode( ',', array_filter( array_unique( $subsets ) ) ) : '';
+		$fonts   = implode( '|', array_filter( array_unique( $fonts ) ) );
+		$fonts   = str_replace( '|', '%7C', $fonts );
+
+		if ( ! empty( $fonts ) ) {
+			$fonts  = '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=' . $fonts . $subsets . '" />';
+			$buffer = preg_replace( '/<head(.*)>/U', '<head$1>' . $fonts, $buffer, 1 );
+		}
+
+		return $buffer;
+	}
+}
+
+if ( ! function_exists( 'rocket_minify_inline_css' ) ) {
+	/**
+	 * Minifies inline CSS
+	 *
+	 * @since 1.1.6
+	 * @deprecated 3.1
+	 *
+	 * @param string $css HTML content.
+	 * @return string Updated HTML content
+	 */
+	function rocket_minify_inline_css( $css ) {
+		_deprecated_function( __FUNCTION__, '3.1' );
+
+		$minify = new Minify\CSS( $css );
+		return $minify->minify();
+	}
+}
+
+if ( ! function_exists( 'rocket_minify_inline_js' ) ) {
+	/**
+	 * Minifies inline JavaScript
+	 *
+	 * @since 1.1.6
+	 * @deprecated 3.1
+	 *
+	 * @param string $js HTML content.
+	 * @return string Updated HTML content
+	 */
+	function rocket_minify_inline_js( $js ) {
+		_deprecated_function( __FUNCTION__, '3.1' );
+
+		$minify = new Minify\JS( $js );
+		return $minify->minify();
+	}
+}
+
+if ( ! function_exists( 'rocket_extract_ie_conditionals' ) ) {
+	/**
+	 * Extracts IE conditionals tags and replace them with placeholders
+	 *
+	 * @since 1.0
+	 * @deprecated 3.1
+	 *
+	 * @param string $buffer HTML content.
+	 * @return string Updated HTML content
+	 */
+	function rocket_extract_ie_conditionals( $buffer ) {
+		_deprecated_function( __FUNCTION__, '3.1' );
+
+		preg_match_all( '/<!--\[if[^\]]*?\]>.*?<!\[endif\]-->/is', $buffer, $conditionals_match );
+		$buffer = preg_replace( '/<!--\[if[^\]]*?\]>.*?<!\[endif\]-->/is', '{{WP_ROCKET_CONDITIONAL}}', $buffer );
+
+		$conditionals = array();
+		foreach ( $conditionals_match[0] as $conditional ) {
+			$conditionals[] = $conditional;
+		}
+
+		return array( $buffer, $conditionals );
+	}
+}
+
+if ( ! function_exists( 'rocket_inject_ie_conditionals' ) ) {
+	/**
+	 * Replaces WP Rocket placeholders with IE condtional tags
+	 *
+	 * @since 1.0
+	 * @deprecated 3.1
+	 *
+	 * @param string $buffer HTML content.
+	 * @param array  $conditionals An array of HTML conditional tags.
+	 * @return string Updated HTML content
+	 */
+	function rocket_inject_ie_conditionals( $buffer, $conditionals ) {
+		_deprecated_function( __FUNCTION__, '3.1' );
+
+		foreach ( $conditionals as $conditional ) {
+			if ( false !== strpos( $buffer, '{{WP_ROCKET_CONDITIONAL}}' ) ) {
+				$buffer = preg_replace( '/{{WP_ROCKET_CONDITIONAL}}/', $conditional, $buffer, 1 );
+			} else {
+				break;
+			}
+		}
+		return $buffer;
+	}
+}
+
+if ( ! function_exists( 'rocket_minify_files' ) ) {
+	/**
+	 * Parses the buffer to minify the CSS and JS files
+	 *
+	 * @since 2.11
+	 * @since 2.1
+	 * @deprecated 3.1
+	 *
+	 * @param string $buffer    HTML output.
+	 * @param string $extension Type of files to minify.
+	 * @return string Updated HTML output.
+	 */
+	function rocket_minify_files( $buffer, $extension ) {
+		_deprecated_function( __FUNCTION__, '3.1' );
+
+		global $wp_scripts, $rocket_js_enqueued_in_head;
+		if ( 'css' === $extension ) {
+			$concatenate = get_rocket_option( 'minify_concatenate_css', false ) ? true : false;
+			// Get all css files with this regex.
+			preg_match_all( apply_filters( 'rocket_minify_css_regex_pattern', '/<link\s*.+href=[\'|"]([^\'|"]+\.css?.+)[\'|"](.+)>/iU' ), $buffer, $tags_match, PREG_SET_ORDER );
+		}
+
+		if ( 'js' === $extension ) {
+			$js_files_in_head = '';
+			$concatenate      = get_rocket_option( 'minify_concatenate_js', false ) ? true : false;
+			if ( $rocket_js_enqueued_in_head && is_array( $rocket_js_enqueued_in_head ) ) {
+				$js_files_in_head = implode( '|', $rocket_js_enqueued_in_head );
+			}
+
+			// Get all js files with this regex.
+			preg_match_all( apply_filters( 'rocket_minify_js_regex_pattern', '#<script[^>]+?src=[\'|"]([^\'|"]+\.js?.+)[\'|"].*>(?:<\/script>)#iU' ), $buffer, $tags_match, PREG_SET_ORDER );
+		}
+
+		$original_buffer   = $buffer;
+		$files             = array();
+		$excluded_files    = array();
+		$external_js_files = array();
+
+		foreach ( $tags_match as $tag ) {
+			// Don't minify external files.
+			if ( is_rocket_external_file( $tag[1], $extension ) ) {
+				if ( 'js' === $extension && $concatenate ) {
+					$host                 = rocket_extract_url_component( $tag[1], PHP_URL_HOST );
+					$excluded_external_js = get_rocket_minify_excluded_external_js();
+					if ( ! isset( $excluded_external_js[ $host ] ) ) {
+						$external_js_files[] = $tag[0];
+					}
+				}
+				continue;
+			}
+
+			// Don't minify excluded files.
+			if ( is_rocket_minify_excluded_file( $tag, $extension ) ) {
+				if ( $concatenate && 'js' === $extension && get_rocket_option( 'defer_all_js' ) && get_rocket_option( 'defer_all_js_safe' ) && false !== strpos( $tag[1], $wp_scripts->registered['jquery-core']->src ) ) {
+					if ( get_rocket_option( 'remove_query_strings' ) ) {
+						$external_js_files['jquery-cache-busting'] = str_replace( $tag[1], get_rocket_browser_cache_busting( $tag[1], 'script_loader_src' ), $tag[0] );
+						$buffer                                    = str_replace( $tag[0], $external_js_files['jquery-cache-busting'], $buffer );
+					} else {
+						$external_js_files[] = $tag[0];
+					}
+
+					continue;
+				}
+
+				$excluded_files[] = $tag;
+				continue;
+			}
+
+			if ( $concatenate ) {
+				if ( 'js' === $extension ) {
+					$file_path = rocket_clean_exclude_file( $tag[1] );
+
+					if ( ! empty( $js_files_in_head ) && preg_match( '#(' . $js_files_in_head . ')#', $file_path ) ) {
+						$files['header'][] = strtok( $tag[1], '?' );
+					} else {
+						$files['footer'][] = strtok( $tag[1], '?' );
+					}
+				} else {
+					$files[] = strtok( $tag[1], '?' );
+				}
+
+				$buffer = str_replace( $tag[0], '', $buffer );
+				continue;
+			}
+
+			// Don't minify if file is already minified.
+			if ( preg_match( '/(?:-|\.)min.' . $extension . '/iU', $tag[1] ) ) {
+				$excluded_files[] = $tag;
+				continue;
+			}
+
+			// Don't minify jQuery included in WP core since it's already minified but without .min in the filename.
+			if ( ! empty( $wp_scripts->registered['jquery-core']->src ) && false !== strpos( $tag[1], $wp_scripts->registered['jquery-core']->src ) ) {
+				$excluded_files[] = $tag;
+				continue;
+			}
+
+			$files[] = $tag;
+		}
+
+		if ( get_rocket_option( 'remove_query_strings' ) ) {
+			foreach ( $excluded_files as $tag ) {
+				if ( 'css' === $extension ) {
+					$tag_cache_busting = str_replace( $tag[1], get_rocket_browser_cache_busting( $tag[1], 'style_loader_src' ), $tag[0] );
+				}
+
+				if ( 'js' === $extension ) {
+					$tag_cache_busting = str_replace( $tag[1], get_rocket_browser_cache_busting( $tag[1], 'script_loader_src' ), $tag[0] );
+				}
+
+				$buffer = str_replace( $tag[0], $tag_cache_busting, $buffer );
+			}
+		}
+
+		if ( empty( $files ) ) {
+			return $buffer;
+		}
+
+		if ( ! $concatenate ) {
+			foreach ( $files as $tag ) {
+				$minify_url = get_rocket_minify_url( $tag[1], $extension );
+
+				if ( ! $minify_url ) {
+					continue;
+				}
+
+				$minify_tag = str_replace( $tag[1], $minify_url, $tag[0] );
+
+				if ( 'css' === $extension ) {
+					$minify_tag = str_replace( $tag[2], ' data-minify="1" ' . $tag[2], $minify_tag );
+				}
+
+				if ( 'js' === $extension ) {
+					$minify_tag = str_replace( '></script>', ' data-minify="1"></script>', $minify_tag );
+				}
+
+				$buffer = str_replace( $tag[0], $minify_tag, $buffer );
+			}
+
+			return $buffer;
+		}
+
+		if ( 'js' === $extension ) {
+			$minify_header_url = get_rocket_minify_url( $files['header'], $extension );
+			$minify_url        = get_rocket_minify_url( $files['footer'], $extension );
+
+			if ( ! $minify_header_url && ! $minify_url ) {
+				return $original_buffer;
+			}
+
+			foreach ( $external_js_files as $external_js_file ) {
+				$buffer = str_replace( $external_js_file, '', $buffer );
+			}
+
+			$minify_header_tag = '<script src="' . $minify_header_url . '" data-minify="1"></script>';
+			$buffer            = preg_replace( '/<head(.*)>/U', '<head$1>' . implode( '', $external_js_files ) . $minify_header_tag, $buffer, 1 );
+
+			$minify_tag = '<script src="' . $minify_url . '" data-minify="1"></script>';
+			return str_replace( '</body>', $minify_tag . '</body>', $buffer );
+
+		}
+
+		if ( 'css' === $extension ) {
+			$minify_url = get_rocket_minify_url( $files, $extension );
+
+			if ( ! $minify_url ) {
+				return $original_buffer;
+			}
+
+			$minify_tag = '<link rel="stylesheet" href="' . $minify_url . '" data-minify="1" />';
+			return preg_replace( '/<head(.*)>/U', '<head$1>' . $minify_tag, $buffer, 1 );
+		}
+	}
+}
+
+if ( ! function_exists( 'is_rocket_external_file' ) ) {
+	/**
+	 * Determines if the file is external
+	 *
+	 * @since 2.11
+	 * @deprecated 3.1
+	 * @author Remy Perona
+	 *
+	 * @param string $url       URL of the file.
+	 * @param string $extension File extension.
+	 * @return bool True if external, false otherwise
+	 */
+	function is_rocket_external_file( $url, $extension ) {
+		_deprecated_function( __FUNCTION__, '3.1' );
+
+		$file       = get_rocket_parse_url( $url );
+		$wp_content = get_rocket_parse_url( WP_CONTENT_URL );
+		$hosts      = get_rocket_cnames_host( array( 'all', 'css_and_js', $extension ) );
+		$hosts[]    = $wp_content['host'];
+		$langs      = get_rocket_i18n_uri();
+
+		// Get host for all langs.
+		if ( $langs ) {
+			foreach ( $langs as $lang ) {
+				$hosts[] = rocket_extract_url_component( $lang, PHP_URL_HOST );
+			}
+		}
+
+		$hosts_index = array_flip( array_unique( $hosts ) );
+
+		// URL has domain and domain is not part of the internal domains.
+		if ( isset( $file['host'] ) && ! empty( $file['host'] ) && ! isset( $hosts_index[ $file['host'] ] ) ) {
+			return true;
+		}
+
+		// URL has no domain and doesn't contain the WP_CONTENT path or wp-includes.
+		if ( ! isset( $file['host'] ) && ! preg_match( '#(' . $wp_content['path'] . '|wp-includes)#', $file['path'] ) ) {
+			return true;
+		}
+
+		return false;
+	}
+}
+
+if ( ! function_exists( 'is_rocket_minify_excluded_file' ) ) {
+	/**
+	 * Determines if it is a file excluded from minification
+	 *
+	 * @since 2.11
+	 * @deprecated 3.1
+	 * @author Remy Perona
+	 *
+	 * @param array  $tag       Array containing the matches from the regex.
+	 * @param string $extension File extension.
+	 * @return bool True if it is a file excluded, false otherwise
+	 */
+	function is_rocket_minify_excluded_file( $tag, $extension ) {
+		_deprecated_function( __FUNCTION__, '3.1' );
+
+		// File should not be minified.
+		if ( false !== strpos( $tag[0], 'data-minify=' ) || false !== strpos( $tag[0], 'data-no-minify=' ) ) {
+			return true;
+		}
+
+		if ( 'css' === $extension ) {
+			// CSS file media attribute is not all or screen.
+			if ( false !== strpos( $tag[0], 'media=' ) && ! preg_match( '/media=["\'](?:["\']|[^"\']*?(all|screen)[^"\']*?["\'])/iU', $tag[0] ) ) {
+				return true;
+			}
+
+			if ( false !== strpos( $tag[0], 'only screen and' ) ) {
+				return true;
+			}
+		}
+
+		$file_path = rocket_extract_url_component( $tag[1], PHP_URL_PATH );
+
+		// File extension is not .css or .js.
+		if ( pathinfo( $file_path, PATHINFO_EXTENSION ) !== $extension ) {
+			return true;
+		}
+
+		$excluded_files = get_rocket_exclude_files( $extension );
+
+		if ( ! empty( $excluded_files ) ) {
+			foreach ( $excluded_files as $i => $excluded_file ) {
+				$excluded_files[ $i ] = str_replace( '#', '\#', $excluded_file );
+			}
+
+			$excluded_files = implode( '|', $excluded_files );
+
+			// File is excluded from minification/concatenation.
+			if ( preg_match( '#^(' . $excluded_files . ')$#', $file_path ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+}
+
+if ( ! function_exists( 'get_rocket_minify_url' ) ) {
+	/**
+	 * Creates the minify URL if the minification is successful
+	 *
+	 * @since 2.11
+	 * @deprecated 3.1
+	 * @author Remy Perona
+	 *
+	 * @param string|array $files     Original file(s) URL(s).
+	 * @param string       $extension File(s) extension.
+	 * @return string|bool The minify URL if successful, false otherwise
+	 */
+	function get_rocket_minify_url( $files, $extension ) {
+		_deprecated_function( __FUNCTION__, '3.1' );
+
+		if ( empty( $files ) ) {
+			return false;
+		}
+
+		$hosts         = get_rocket_cnames_host( array( 'all', 'css_and_js', $extension ) );
+		$hosts['home'] = rocket_extract_url_component( home_url(), PHP_URL_HOST );
+		$hosts_index   = array_flip( $hosts );
+		$minify_key    = get_rocket_option( 'minify_' . $extension . '_key', create_rocket_uniqid() );
+
+		if ( is_string( $files ) ) {
+			$file      = get_rocket_parse_url( $files );
+			$file_path = rocket_url_to_path( strtok( $files, '?' ), $hosts_index );
+			$unique_id = md5( $files . $minify_key );
+			$filename  = preg_replace( '/\.(' . $extension . ')$/', '-' . $unique_id . '.' . $extension, ltrim( rocket_realpath( $file['path'] ), '/' ) );
+		} else {
+			foreach ( $files as $file ) {
+				$file_path[] = rocket_url_to_path( $file, $hosts_index );
+			}
+
+			$files_hash = implode( ',', $files );
+			$filename   = md5( $files_hash . $minify_key ) . '.' . $extension;
+		}
+
+		$minified_file = WP_ROCKET_MINIFY_CACHE_PATH . get_current_blog_id() . '/' . $filename;
+
+		if ( ! file_exists( $minified_file ) ) {
+			$minified_content = rocket_minify( $file_path, $extension );
+
+			if ( ! $minified_content ) {
+				return false;
+			}
+
+			$minify_filepath = rocket_write_minify_file( $minified_content, $minified_file );
+
+			if ( ! $minify_filepath ) {
+				return false;
+			}
+		}
+
+		$minify_url = get_rocket_cdn_url( WP_ROCKET_MINIFY_CACHE_URL . get_current_blog_id() . '/' . $filename, array( 'all', 'css_and_js', $extension ) );
+
+		if ( 'css' === $extension ) {
+			/**
+			 * Filters CSS file URL with CDN hostname
+			 *
+			 * @since 2.1
+			 *
+			 * @param string $minify_url Minified file URL.
+			*/
+			return apply_filters( 'rocket_css_url', $minify_url );
+		}
+
+		if ( 'js' === $extension ) {
+			/**
+			 * Filters JavaScript file URL with CDN hostname
+			 *
+			 * @since 2.1
+			 *
+			 * @param string $minify_url Minified file URL.
+			*/
+			return apply_filters( 'rocket_js_url', $minify_url );
+
+		}
+	}
+}
+
+if ( ! function_exists( 'rocket_minify' ) ) {
+	/**
+	 * Minifies the content
+	 *
+	 * @since 2.11
+	 * @deprecated 3.1
+	 * @author Remy Perona
+	 *
+	 * @param string|array $files     File(s) to minify.
+	 * @param string       $extension File(s) extension.
+	 * @return string|bool Minified content, false if empty
+	 */
+	function rocket_minify( $files, $extension ) {
+		_deprecated_function( __FUNCTION__, '3.1' );
+
+		if ( 'css' === $extension ) {
+			$minify = new Minify\CSS();
+		} elseif ( 'js' === $extension ) {
+			$minify = new Minify\JS();
+		}
+
+		$files = (array) $files;
+
+		foreach ( $files as $file ) {
+			$file_content = rocket_direct_filesystem()->get_contents( $file );
+			if ( 'css' === $extension ) {
+				/**
+				 * Filters the Document Root path to use during CSS minification to rewrite paths
+				 *
+				 * @since 2.7
+				 *
+				 * @param string The Document Root path.
+				*/
+				$document_root = apply_filters( 'rocket_min_documentRoot', ABSPATH );
+
+				$file_content = rocket_cdn_css_properties( Minify_CSS_UriRewriter::rewrite( $file_content, dirname( $file ), $document_root ) );
+			}
+
+			$minify->add( $file_content );
+		}
+
+		$minified_content = $minify->minify();
+
+		if ( empty( $minified_content ) ) {
+			return false;
+		}
+
+		return $minified_content;
+	}
+}
+
+if ( ! function_exists( 'rocket_write_minify_file' ) ) {
+	/**
+	 * Writes the minified content to a file
+	 *
+	 * @since 2.11
+	 * @deprecated 3.1
+	 * @author Remy Perona
+	 *
+	 * @param string $content       Minified content.
+	 * @param string $minified_file Path to the minified file to write in.
+	 * @return bool True if successful, false otherwise
+	 */
+	function rocket_write_minify_file( $content, $minified_file ) {
+		_deprecated_function( __FUNCTION__, '3.1' );
+
+		if ( file_exists( $minified_file ) ) {
+			return true;
+		}
+
+		if ( ! rocket_mkdir_p( dirname( $minified_file ) ) ) {
+			return false;
+		}
+
+		return rocket_put_content( $minified_file, $content );
+	}
+}
+
+if ( ! function_exists( 'get_rocket_minify_excluded_external_js' ) ) {
+	/**
+	 * Get all JS externals files to exclude of the minification process
+	 *
+	 * @since 2.6
+	 * @deprecated 3.1
+	 *
+	 * @return array Array of excluded external JS
+	 */
+	function get_rocket_minify_excluded_external_js() {
+		_deprecated_function( __FUNCTION__, '3.1' );
+
+		/**
+		 * Filters JS externals files to exclude from the minification process (do not move into the header)
+		 *
+		 * @since 2.2
+		 *
+		 * @param array $hostnames Hostname of JS files to exclude.
+		 */
+		$excluded_external_js = apply_filters(
+			'rocket_minify_excluded_external_js', array(
+				'forms.aweber.com',
+				'video.unrulymedia.com',
+				'gist.github.com',
+				'stats.wp.com',
+				'stats.wordpress.com',
+				'www.statcounter.com',
+				'widget.rafflecopter.com',
+				'widget-prime.rafflecopter.com',
+				'widget.supercounters.com',
+				'releases.flowplayer.org',
+				'tools.meetaffiliate.com',
+				'c.ad6media.fr',
+				'cdn.stickyadstv.com',
+				'www.smava.de',
+				'contextual.media.net',
+				'app.getresponse.com',
+				'ap.lijit.com',
+				'adserver.reklamstore.com',
+				's0.wp.com',
+				'wprp.zemanta.com',
+				'files.bannersnack.com',
+				'smarticon.geotrust.com',
+				'js.gleam.io',
+				'script.ioam.de',
+				'ir-na.amazon-adsystem.com',
+				'web.ventunotech.com',
+				'verify.authorize.net',
+				'ads.themoneytizer.com',
+				'embed.finanzcheck.de',
+				'imagesrv.adition.com',
+				'js.juicyads.com',
+				'form.jotformeu.com',
+				'speakerdeck.com',
+				'content.jwplatform.com',
+				'ads.investingchannel.com',
+				'app.ecwid.com',
+				'www.industriejobs.de',
+				's.gravatar.com',
+				'cdn.jsdelivr.net',
+				'cdnjs.cloudflare.com',
+				'code.jquery.com',
+			)
+		);
+
+		return array_flip( $excluded_external_js );
+	}
+}
+
+if ( ! function_exists( 'rocket_cache_dynamic_resource' ) ) {
+	/**
+	 * Create a static file for dynamically generated CSS/JS from PHP
+	 *
+	 * @since 2.9
+	 * @deprecated 3.1
+	 * @author Remy Perona
+	 *
+	 * @param string $src dynamic CSS/JS file URL.
+	 * @return string URL of the generated static file
+	 */
+	function rocket_cache_dynamic_resource( $src ) {
+		_deprecated_function( __FUNCTION__, '3.1' );
+		global $pagenow;
+
+		if ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) {
+			return $src;
+		}
+
+		if ( is_user_logged_in() && ! get_rocket_option( 'cache_logged_user' ) ) {
+			return $src;
+		}
+
+		if ( 'wp-login.php' === $pagenow ) {
+			return $src;
+		}
+
+		if ( false === strpos( $src, '.php' ) ) {
+			return $src;
+		}
+
+		/**
+		 * Filters files to exclude from static dynamic resources
+		 *
+		 * @since 2.9.3
+		 * @author Remy Perona
+		 *
+		 * @param array $excluded_files An array of filepath to exclude.
+		 */
+		$excluded_files   = apply_filters( 'rocket_exclude_static_dynamic_resources', array() );
+		$excluded_files[] = '/wp-admin/admin-ajax.php';
+		$excluded_files   = array_flip( $excluded_files );
+
+		if ( isset( $excluded_files[ rocket_clean_exclude_file( $src ) ] ) ) {
+			return $src;
+		}
+
+		$full_src = ( substr( $src, 0, 2 ) === '//' ) ? rocket_add_url_protocol( $src ) : $src;
+
+		$current_filter = current_filter();
+
+		switch ( $current_filter ) {
+			case 'script_loader_src':
+				$extension  = 'js';
+				$minify_key = get_rocket_option( 'minify_js_key' );
+				break;
+			case 'style_loader_src':
+				$extension  = 'css';
+				$minify_key = get_rocket_option( 'minify_css_key' );
+				break;
+		}
+
+		$hosts         = get_rocket_cnames_host( array( 'all', 'css_and_js', $extension ) );
+		$hosts[]       = rocket_extract_url_component( home_url(), PHP_URL_HOST );
+		$hosts_index   = array_flip( $hosts );
+		$file          = get_rocket_parse_url( $full_src );
+		$file['query'] = remove_query_arg( 'ver', $file['query'] );
+
+		if ( $file['query'] ) {
+			return $src;
+		}
+
+		if ( '' === $file['host'] ) {
+			$full_src = home_url() . $src;
+		}
+
+		if ( strpos( $full_src, '://' ) !== false && ! isset( $hosts_index[ $file['host'] ] ) ) {
+			return $src;
+		}
+
+		$relative_src = ltrim( $file['path'], '/' );
+		$abspath_src  = rocket_url_to_path( strtok( $full_src, '?' ), $hosts_index );
+
+		/*
+		* Filters the dynamic resource cache filename
+		*
+		* @since 2.9
+		* @author Remy Perona
+		*
+		* @param string $filename filename for the cache file
+		*/
+		$cache_dynamic_resource_filename = apply_filters( 'rocket_dynamic_resource_cache_filename', preg_replace( '/\.(php)$/', '-' . $minify_key . '.' . $extension, $relative_src ) );
+		$cache_busting_paths             = rocket_get_cache_busting_paths( $cache_dynamic_resource_filename, $extension );
+
+		if ( file_exists( $cache_busting_paths['filepath'] ) && is_readable( $cache_busting_paths['filepath'] ) ) {
+			return $cache_busting_paths['url'];
+		}
+
+		if ( rocket_fetch_and_cache_busting( $full_src, $cache_busting_paths, $abspath_src, $current_filter ) ) {
+			return $cache_busting_paths['url'];
+		}
+
+		return $src;
+	}
+}
+
+if ( ! function_exists( 'rocket_browser_cache_busting' ) ) {
+	/**
+	 * Wrapper for get_rocket_browser_cache_busting except when minification is active.
+	 *
+	 * @since 2.9
+	 * @deprecated 3.1
+	 * @author Remy Perona
+	 *
+	 * @param string $src CSS/JS file URL.
+	 * @return string updated CSS/JS file URL.
+	 */
+	function rocket_browser_cache_busting( $src ) {
+		_deprecated_function( __FUNCTION__, '3.1' );
+		$current_filter = current_filter();
+
+		if ( 'style_loader_src' === $current_filter && get_rocket_option( 'minify_css' ) && ( ! defined( 'DONOTMINIFYCSS' ) || ! DONOTMINIFYCSS ) && ! is_rocket_post_excluded_option( 'minify_css' ) ) {
+			return $src;
+		}
+
+		if ( 'script_loader_src' === $current_filter && get_rocket_option( 'minify_js' ) && ( ! defined( 'DONOTMINIFYJS' ) || ! DONOTMINIFYJS ) && ! is_rocket_post_excluded_option( 'minify_js' ) ) {
+			return $src;
+		}
+
+		return get_rocket_browser_cache_busting( $src, $current_filter );
+	}
+}
+
+if ( ! function_exists( 'get_rocket_browser_cache_busting' ) ) {
+	/**
+	 * Create a cache busting file with the version in the filename
+	 *
+	 * @since 2.9
+	 * @deprecated 3.1
+	 * @author Remy Perona
+	 *
+	 * @param string $src CSS/JS file URL.
+	 * @param string $current_filter Current WordPress filter.
+	 * @return string updated CSS/JS file URL
+	 */
+	function get_rocket_browser_cache_busting( $src, $current_filter = '' ) {
+		_deprecated_function( __FUNCTION__, '3.1' );
+		global $pagenow;
+
+		if ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) {
+			return $src;
+		}
+
+		if ( ! get_rocket_option( 'remove_query_strings' ) ) {
+			return $src;
+		}
+
+		if ( is_user_logged_in() && ! get_rocket_option( 'cache_logged_user', 0 ) ) {
+			return $src;
+		}
+
+		if ( 'wp-login.php' === $pagenow ) {
+			return $src;
+		}
+
+		if ( false === strpos( $src, '.css' ) && false === strpos( $src, '.js' ) ) {
+			return $src;
+		}
+
+		if ( false !== strpos( $src, 'ver=' . $GLOBALS['wp_version'] ) ) {
+			$src = rtrim( str_replace( array( 'ver=' . $GLOBALS['wp_version'], '?&', '&&' ), array( '', '?', '&' ), $src ), '?&' );
+		}
+
+		/**
+		 * Filters files to exclude from cache busting
+		 *
+		 * @since 2.9.3
+		 * @author Remy Perona
+		 *
+		 * @param array $excluded_files An array of filepath to exclude.
+		 */
+		$excluded_files = apply_filters( 'rocket_exclude_cache_busting', array() );
+		$excluded_files = implode( '|', $excluded_files );
+
+		if ( preg_match( '#^(' . $excluded_files . ')$#', rocket_clean_exclude_file( $src ) ) ) {
+			return $src;
+		}
+
+		if ( empty( $current_filter ) ) {
+			$current_filter = current_filter();
+		}
+
+		$full_src = ( substr( $src, 0, 2 ) === '//' ) ? rocket_add_url_protocol( $src ) : $src;
+
+		switch ( $current_filter ) {
+			case 'script_loader_src':
+				$extension = 'js';
+				break;
+			case 'style_loader_src':
+				$extension = 'css';
+				break;
+		}
+
+		$hosts         = get_rocket_cnames_host( array( 'all', 'css_and_js', $extension ) );
+		$hosts['home'] = rocket_extract_url_component( home_url(), PHP_URL_HOST );
+		$hosts_index   = array_flip( $hosts );
+		$file          = get_rocket_parse_url( $full_src );
+
+		if ( '' === $file['host'] ) {
+			$full_src = home_url() . $src;
+		}
+
+		if ( false !== strpos( $full_src, '://' ) && ! isset( $hosts_index[ $file['host'] ] ) ) {
+			return $src;
+		}
+
+		if ( empty( $file['query'] ) ) {
+			return $src;
+		}
+
+		$relative_src           = ltrim( $file['path'] . '?' . $file['query'], '/' );
+		$abspath_src            = rocket_url_to_path( strtok( $full_src, '?' ), $hosts_index );
+		$cache_busting_filename = preg_replace( '/\.(js|css)\?(?:timestamp|ver)=([^&]+)(?:.*)/', '-$2.$1', $relative_src );
+
+		if ( $cache_busting_filename === $relative_src ) {
+			return $src;
+		}
+
+		/*
+		* Filters the cache busting filename
+		*
+		* @since 2.9
+		* @author Remy Perona
+		*
+		* @param string $filename filename for the cache busting file
+		*/
+		$cache_busting_filename = apply_filters( 'rocket_cache_busting_filename', $cache_busting_filename );
+		$cache_busting_paths    = rocket_get_cache_busting_paths( $cache_busting_filename, $extension );
+
+		if ( file_exists( $cache_busting_paths['filepath'] ) && is_readable( $cache_busting_paths['filepath'] ) ) {
+			return $cache_busting_paths['url'];
+		}
+
+		if ( rocket_fetch_and_cache_busting( $abspath_src, $cache_busting_paths, $abspath_src, $current_filter ) ) {
+			return $cache_busting_paths['url'];
+		}
+
+		return $src;
+	}
+}
+
+if ( ! function_exists( 'rocket_dns_prefetch_buffer' ) ) {
+	/**
+	 * Inserts html code for domain names to DNS prefetch in the buffer before creating the cache file
+	 *
+	 * @since 2.0
+	 * @deprecated 3.1
+	 * @author Jonathan Buttigieg
+	 *
+	 * @param String $buffer HTML content.
+	 * @return String Updated buffer
+	 */
+	function rocket_dns_prefetch_buffer( $buffer ) {
+		_deprecated_function( __FUNCTION__, '3.1' );
+		$dns_link_tags = '';
+		$domains       = rocket_get_dns_prefetch_domains();
+
+		if ( (bool) $domains ) {
+			foreach ( $domains as $domain ) {
+				$dns_link_tags .= '<link rel="dns-prefetch" href="' . esc_url( $domain ) . '" />';
+			}
+		}
+
+		$old_ie_conditional_tag = '';
+
+		/**
+		 * Allow to print an empty IE conditional tag to speed up old IE versions to load CSS & JS files
+		 *
+		 * @since 2.6.5
+		 *
+		 * @param bool true will print the IE conditional tag
+		 */
+		if ( apply_filters( 'do_rocket_old_ie_prefetch_conditional_tag', true ) ) {
+			$old_ie_conditional_tag = '<!--[if IE]><![endif]-->';
+		}
+
+		// Insert all DNS prefecth tags in head.
+		$buffer = preg_replace( '/<head(.*)>/', '<head$1>' . $old_ie_conditional_tag . $dns_link_tags, $buffer, 1 );
+
+		return $buffer;
 	}
 }
