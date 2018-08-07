@@ -315,5 +315,10 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 
 		rocket_generate_config_file();
 	}
+
+	if ( version_compare( $actual_version, '3.2', '<' ) ) {
+		// Regenerate advanced-cache.php file.
+		rocket_generate_advanced_cache_file();
+	}
 }
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );
