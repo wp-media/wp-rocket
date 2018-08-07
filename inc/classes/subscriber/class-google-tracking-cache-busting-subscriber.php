@@ -148,7 +148,7 @@ class Google_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface {
 	 */
 	public function add_schedule( $schedules ) {
 		if ( ! $this->options->get( 'google_analytics_cache', 0 ) ) {
-			return;
+			return $schedules;
 		}
 
 		$schedules['weekly'] = array(
