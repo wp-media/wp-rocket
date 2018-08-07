@@ -34,7 +34,7 @@ class Minify extends Abstract_CSS_Optimization {
 
 		Logger::info( 'Found ' . count( $styles ) . ' `<link>` tags.', [
 			'css minification process',
-			'tags' => array_map( [ 'Logger', 'esc_html' ], $styles ),
+			'tags' => array_map( [ '\WP_Rocket\Logger', 'esc_html' ], $styles ),
 		] );
 
 		foreach ( $styles as $style ) {

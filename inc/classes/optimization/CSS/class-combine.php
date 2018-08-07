@@ -60,7 +60,7 @@ class Combine extends Abstract_CSS_Optimization {
 
 		Logger::info( 'Found ' . count( $styles ) . ' `<link>` tags.', [
 			'css combine process',
-			'tags' => array_map( [ 'Logger', 'esc_html' ], $styles ),
+			'tags' => array_map( [ '\WP_Rocket\Logger', 'esc_html' ], $styles ),
 		] );
 
 		$styles = array_map( function( $style ) {
@@ -90,7 +90,7 @@ class Combine extends Abstract_CSS_Optimization {
 
 		Logger::info( count( $styles ) . ' `<link>` tags remaining.', [
 			'css combine process',
-			'tags' => array_map( [ 'Logger', 'esc_html' ], $styles ),
+			'tags' => array_map( [ '\WP_Rocket\Logger', 'esc_html' ], $styles ),
 		] );
 
 		$urls = array_map( function( $style ) {

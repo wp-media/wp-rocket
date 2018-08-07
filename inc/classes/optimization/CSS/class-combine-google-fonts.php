@@ -63,7 +63,7 @@ class Combine_Google_Fonts {
 
 		Logger::info( 'Found ' . count( $fonts ) . ' Google Fonts.', [
 			'GF combine process',
-			'tags' => array_map( [ 'Logger', 'esc_html' ], $fonts ),
+			'tags' => array_map( [ '\WP_Rocket\Logger', 'esc_html' ], $fonts ),
 		] );
 
 		$this->parse( $fonts );

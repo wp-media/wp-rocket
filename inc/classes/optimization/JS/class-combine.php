@@ -92,7 +92,7 @@ class Combine extends Abstract_JS_Optimization {
 
 		Logger::info( 'Found ' . count( $scripts ) . ' `<script>` tags.', [
 			'js combine process',
-			'tags' => array_map( [ 'Logger', 'esc_html' ], $scripts ),
+			'tags' => array_map( [ '\WP_Rocket\Logger', 'esc_html' ], $scripts ),
 		] );
 
 		$combine_scripts = $this->parse( $scripts );
@@ -104,7 +104,7 @@ class Combine extends Abstract_JS_Optimization {
 
 		Logger::info( count( $combine_scripts ) . ' `<script>` tags remaining.', [
 			'js combine process',
-			'tags' => array_map( [ 'Logger', 'esc_html' ], $combine_scripts ),
+			'tags' => array_map( [ '\WP_Rocket\Logger', 'esc_html' ], $combine_scripts ),
 		] );
 
 		$content = $this->get_content();

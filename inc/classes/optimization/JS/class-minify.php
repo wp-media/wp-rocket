@@ -32,7 +32,7 @@ class Minify extends Abstract_JS_Optimization {
 
 		Logger::info( 'Found ' . count( $scripts ) . ' <link> tags.', [
 			'js minification process',
-			'tags' => array_map( [ 'Logger', 'esc_html' ], $scripts ),
+			'tags' => array_map( [ '\WP_Rocket\Logger', 'esc_html' ], $scripts ),
 		] );
 
 		foreach ( $scripts as $script ) {
