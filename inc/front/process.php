@@ -3,19 +3,6 @@ use WP_Rocket\Logger;
 
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
-$rocket_path = realpath( dirname( dirname( __DIR__ ) ) ) . '/';
-
-// Composer autoload.
-if ( ! file_exists( $rocket_path . 'vendor/autoload.php' ) ) {
-	// Et paf des chocapics.
-	rocket_define_donotoptimize_constant( true );
-	unset( $rocket_path );
-	return;
-}
-
-require $rocket_path . 'vendor/autoload.php';
-unset( $rocket_path );
-
 Logger::info( 'CACHING PROCESS STARTED.', [ 'caching process' ] );
 
 // Don't cache robots.txt && .htaccess directory (it's happened sometimes with weird server configuration).
