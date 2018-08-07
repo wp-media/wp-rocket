@@ -3,6 +3,12 @@ use WP_Rocket\Logger;
 
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
+if ( ! class_exists( '\WP_Rocket\Logger' ) ) {
+	// Et paf des chocapics.
+	rocket_define_donotoptimize_constant( true );
+	return;
+}
+
 Logger::info( 'CACHING PROCESS STARTED.', [ 'caching process' ] );
 
 // Don't cache robots.txt && .htaccess directory (it's happened sometimes with weird server configuration).
