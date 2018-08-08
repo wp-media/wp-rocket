@@ -83,6 +83,8 @@ class Combine extends Abstract_CSS_Optimization {
 			return $style;
 		}, $styles );
 
+		$styles = array_filter( $styles );
+
 		if ( empty( $styles ) ) {
 			Logger::debug( 'No `<link>` tags to optimize.', [ 'css combine process' ] );
 			return $html;
