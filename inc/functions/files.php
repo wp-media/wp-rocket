@@ -17,10 +17,10 @@ function get_rocket_advanced_cache_file() {
 	$buffer .= 'define( \'WP_ROCKET_ADVANCED_CACHE\', true );' . "\n";
 
 	// Get cache path.
-	$buffer .= '$rocket_cache_path = \'' . WP_ROCKET_CACHE_PATH . '\';' . "\n";
+	$buffer .= '$rocket_cache_path  = \'' . WP_ROCKET_CACHE_PATH . '\';' . "\n";
 
 	// Get config path.
-	$buffer .= '$rocket_config_path  = \'' . WP_ROCKET_CONFIG_PATH . '\';' . "\n\n";
+	$buffer .= '$rocket_config_path = \'' . WP_ROCKET_CONFIG_PATH . '\';' . "\n\n";
 
 	// Include the Mobile Detect class if we have to create a different caching file for mobile.
 	if ( is_rocket_generate_caching_mobile_files() ) {
