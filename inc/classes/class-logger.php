@@ -446,42 +446,34 @@ class Logger {
 	/** ----------------------------------------------------------------------------------------- */
 
 	/**
-	 * Escaping for HTML blocks.
+	 * Remove cookies related to WP auth.
 	 *
 	 * @since  3.2
 	 * @access public
 	 * @author Grégory Viguier
 	 *
-	 * @param  mixed $text Text to escape. If an array or an object, it is passed to var_export() first.
-	 * @return string
+	 * @param  array $cookies An array of cookies.
+	 * @return array
 	 */
-	public static function esc_html( $text ) {
-		static $charset;
-
-		if ( is_array( $text ) || is_object( $text ) ) {
-			$text = call_user_func( 'var_export', $text, true );
-		};
-
-		if ( function_exists( '\esc_html' ) ) {
-			return \esc_html( $text );
+	public static function remove_auth_cookies( $cookies = [] ) {
+		if ( ! $cookies || ! is_array( $cookies ) ) {
+			$cookies = $_COOKIE;
 		}
 
-		$text = (string) $text;
+		unset( $cookies['wordpress_test_cookie'] );
 
-		if ( 0 === strlen( $text ) ) {
-			return '';
+		if ( ! $cookies ) {
+			return [];
 		}
 
-		// Don't bother if there are no specialchars - saves some processing.
-		if ( ! preg_match( '/[&<>"\']/', $text ) ) {
-			return $text;
+		$pattern = strtolower( '@^WordPress(?:user|pass|_sec|_logged_in)?_@' ); // Trolling PHPCS.
+
+		foreach ( $cookies as $cookie_name => $value ) {
+			if ( preg_match( $pattern, $cookie_name ) ) {
+				unset( $cookies[ $cookie_name ] );
+			}
 		}
 
-		if ( ! isset( $charset ) ) {
-			$charset = ini_get( 'default_charset' );
-			$charset = $charset ? $charset : 'UTF-8';
-		}
-
-		return @htmlspecialchars( $text, ENT_QUOTES, $charset, false );
+		return $cookies;
 	}
 }

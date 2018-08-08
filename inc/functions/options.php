@@ -498,7 +498,7 @@ function rocket_check_key() {
 				add_settings_error( 'general', 'settings_updated', $messages[ $json->data->reason ], 'error' );
 
 				Logger::error( 'License validation failed.', [
-					'response_error' => Logger::esc_html( $json->data->reason ),
+					'response_error' => $json->data->reason,
 				] );
 			}
 
@@ -510,7 +510,7 @@ function rocket_check_key() {
 			] );
 		} elseif ( '' !== $body ) {
 			Logger::error( 'License validation failed.', [
-				'response_body' => Logger::esc_html( $body ),
+				'response_body' => $body,
 			] );
 		} else {
 			Logger::error( 'License validation failed. No body available in response.' );

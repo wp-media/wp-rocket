@@ -17,7 +17,7 @@ if ( strstr( $_SERVER['REQUEST_URI'], 'robots.txt' ) || strstr( $_SERVER['REQUES
 
 	Logger::debug( 'File not cached.', [
 		'caching process',
-		'request_uri' => Logger::esc_html( $_SERVER['REQUEST_URI'] ),
+		'request_uri' => $_SERVER['REQUEST_URI'],
 	] );
 	return;
 }
@@ -31,7 +31,7 @@ if ( strtolower( $_SERVER['REQUEST_URI'] ) !== '/index.php' && in_array( pathinf
 
 	Logger::debug( 'Extension not cached.', [
 		'caching process',
-		'request_uri' => Logger::esc_html( $_SERVER['REQUEST_URI'] ),
+		'request_uri' => $_SERVER['REQUEST_URI'],
 	] );
 	return;
 }
@@ -42,7 +42,7 @@ if ( is_admin() ) {
 
 	Logger::debug( 'Admin not cached.', [
 		'caching process',
-		'request_uri' => Logger::esc_html( $_SERVER['REQUEST_URI'] ),
+		'request_uri' => $_SERVER['REQUEST_URI'],
 	] );
 	return;
 }
@@ -53,7 +53,7 @@ if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 
 	Logger::debug( 'Ajax not cached.', [
 		'caching process',
-		'request_uri' => Logger::esc_html( $_SERVER['REQUEST_URI'] ),
+		'request_uri' => $_SERVER['REQUEST_URI'],
 	] );
 	return;
 }
@@ -64,7 +64,7 @@ if ( isset( $_POST['wp_customize'] ) ) {
 
 	Logger::debug( 'Customizer preview not cached.', [
 		'caching process',
-		'request_uri' => Logger::esc_html( $_SERVER['REQUEST_URI'] ),
+		'request_uri' => $_SERVER['REQUEST_URI'],
 	] );
 	return;
 }
@@ -75,8 +75,8 @@ if ( ! isset( $_SERVER['REQUEST_METHOD'] ) || 'GET' !== $_SERVER['REQUEST_METHOD
 
 	Logger::debug( 'Request method not cached.', [
 		'caching process',
-		'request_uri'    => Logger::esc_html( $_SERVER['REQUEST_URI'] ),
-		'request_method' => Logger::esc_html( $_SERVER['REQUEST_METHOD'] ),
+		'request_uri'    => $_SERVER['REQUEST_URI'],
+		'request_method' => $_SERVER['REQUEST_METHOD'],
 	] );
 	return;
 }
@@ -152,7 +152,7 @@ if ( ! empty( $_GET )
 
 	Logger::debug( 'Query strings not cached.', [
 		'caching process',
-		'request_uri' => Logger::esc_html( $_SERVER['REQUEST_URI'] ),
+		'request_uri' => $_SERVER['REQUEST_URI'],
 	] );
 	return;
 }
@@ -163,7 +163,7 @@ if ( empty( $rocket_cache_ssl ) && is_ssl() ) {
 
 	Logger::debug( 'SSL not cached.', [
 		'caching process',
-		'request_uri' => Logger::esc_html( $_SERVER['REQUEST_URI'] ),
+		'request_uri' => $_SERVER['REQUEST_URI'],
 	] );
 	return;
 }
@@ -174,7 +174,7 @@ if ( isset( $rocket_cache_reject_uri ) && preg_match( '#^(' . $rocket_cache_reje
 
 	Logger::debug( 'Regected URI not cached.', [
 		'caching process',
-		'request_uri' => Logger::esc_html( $_SERVER['REQUEST_URI'] ),
+		'request_uri' => $_SERVER['REQUEST_URI'],
 	] );
 	return;
 }
@@ -185,7 +185,7 @@ if ( isset( $rocket_cache_reject_cookies ) && preg_match( '#(' . $rocket_cache_r
 
 	Logger::debug( 'Cookie not cached.', [
 		'caching process',
-		'cookies' => Logger::esc_html( $_COOKIE ),
+		'cookies' => Logger::remove_auth_cookies(),
 	] );
 	return;
 }
@@ -206,7 +206,7 @@ if ( ! isset( $allowed_ips[ $ip ] ) && isset( $rocket_cache_mandatory_cookies ) 
 
 	Logger::debug( 'Missing cookie: page not cached.', [
 		'caching process',
-		'cookies' => Logger::esc_html( $_COOKIE ),
+		'cookies' => Logger::remove_auth_cookies(),
 	] );
 	return;
 }
@@ -217,7 +217,7 @@ if ( isset( $rocket_cache_reject_ua, $_SERVER['HTTP_USER_AGENT'] ) && ! empty( $
 
 	Logger::debug( 'User agent not cached.', [
 		'caching process',
-		'user_agent' => Logger::esc_html( $_SERVER['HTTP_USER_AGENT'] ),
+		'user_agent' => $_SERVER['HTTP_USER_AGENT'],
 	] );
 	return;
 }
@@ -228,7 +228,7 @@ if ( ! isset( $rocket_cache_mobile ) && isset( $_SERVER['HTTP_USER_AGENT'] ) && 
 
 	Logger::debug( 'Mobile user agent not cached.', [
 		'caching process',
-		'user_agent' => Logger::esc_html( $_SERVER['HTTP_USER_AGENT'] ),
+		'user_agent' => $_SERVER['HTTP_USER_AGENT'],
 	] );
 	return;
 }
@@ -290,7 +290,7 @@ $rocket_cache_filepath = $request_uri_path . '/' . $filename . '.html';
 
 Logger::debug( 'Looking for cache file.', [
 	'caching process',
-	'path' => Logger::esc_html( $rocket_cache_filepath ),
+	'path' => $rocket_cache_filepath,
 ] );
 
 // Serve the cache file if exist.
@@ -298,7 +298,7 @@ rocket_serve_cache_file( $rocket_cache_filepath );
 
 Logger::debug( 'Creating new cache file.', [
 	'caching process',
-	'path' => Logger::esc_html( $rocket_cache_filepath ),
+	'path' => $rocket_cache_filepath,
 ] );
 
 ob_start( 'do_rocket_callback' );
@@ -438,8 +438,8 @@ function rocket_serve_cache_file( $rocket_cache_filepath ) {
 
 			Logger::info( 'Serving `304` gzip cache file.', [
 				'caching process',
-				'path'     => Logger::esc_html( $rocket_cache_filepath_gzip ),
-				'modified' => Logger::esc_html( $http_if_modified_since ),
+				'path'     => $rocket_cache_filepath_gzip,
+				'modified' => $http_if_modified_since,
 			] );
 			exit;
 		}
@@ -449,8 +449,8 @@ function rocket_serve_cache_file( $rocket_cache_filepath ) {
 
 		Logger::info( 'Serving gzip cache file.', [
 			'caching process',
-			'path'     => Logger::esc_html( $rocket_cache_filepath_gzip ),
-			'modified' => Logger::esc_html( $http_if_modified_since ),
+			'path'     => $rocket_cache_filepath_gzip,
+			'modified' => $http_if_modified_since,
 		] );
 		exit;
 	}
@@ -473,8 +473,8 @@ function rocket_serve_cache_file( $rocket_cache_filepath ) {
 
 			Logger::info( 'Serving `304` cache file.', [
 				'caching process',
-				'path'     => Logger::esc_html( $rocket_cache_filepath ),
-				'modified' => Logger::esc_html( $http_if_modified_since ),
+				'path'     => $rocket_cache_filepath,
+				'modified' => $http_if_modified_since,
 			] );
 			exit;
 		}
@@ -484,8 +484,8 @@ function rocket_serve_cache_file( $rocket_cache_filepath ) {
 
 		Logger::info( 'Serving cache file.', [
 			'caching process',
-			'path'     => Logger::esc_html( $rocket_cache_filepath ),
-			'modified' => Logger::esc_html( $http_if_modified_since ),
+			'path'     => $rocket_cache_filepath,
+			'modified' => $http_if_modified_since,
 		] );
 		exit;
 	}

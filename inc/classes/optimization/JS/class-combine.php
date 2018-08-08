@@ -90,9 +90,9 @@ class Combine extends Abstract_JS_Optimization {
 			return $html;
 		}
 
-		Logger::debug( 'Found ' . count( $scripts ) . ' `<script>` tags.', [
+		Logger::debug( 'Found ' . count( $scripts ) . ' `<script>` tag(s).', [
 			'js combine process',
-			'tags' => array_map( [ '\WP_Rocket\Logger', 'esc_html' ], $scripts ),
+			'tags' => $scripts,
 		] );
 
 		$combine_scripts = $this->parse( $scripts );
@@ -102,9 +102,9 @@ class Combine extends Abstract_JS_Optimization {
 			return $html;
 		}
 
-		Logger::debug( count( $combine_scripts ) . ' `<script>` tags remaining.', [
+		Logger::debug( count( $combine_scripts ) . ' `<script>` tag(s) remaining.', [
 			'js combine process',
-			'tags' => array_map( [ '\WP_Rocket\Logger', 'esc_html' ], $combine_scripts ),
+			'tags' => $combine_scripts,
 		] );
 
 		$content = $this->get_content();
@@ -129,7 +129,7 @@ class Combine extends Abstract_JS_Optimization {
 
 		Logger::info( 'Combined JS file successfully added.', [
 			'js combine process',
-			'url' => Logger::esc_html( $minify_url ),
+			'url' => $minify_url,
 		] );
 
 		return $html;
@@ -154,7 +154,7 @@ class Combine extends Abstract_JS_Optimization {
 						if ( false !== strpos( $matches[2], $excluded_file ) ) {
 							Logger::debug( 'Script is external.', [
 								'js combine process',
-								'tag' => Logger::esc_html( $matches[0] ),
+								'tag' => $matches[0],
 							] );
 							return;
 						}
@@ -164,7 +164,7 @@ class Combine extends Abstract_JS_Optimization {
 				if ( $this->is_minify_excluded_file( $matches ) ) {
 					Logger::debug( 'Script is excluded.', [
 						'js combine process',
-						'tag' => Logger::esc_html( $matches[0] ),
+						'tag' => $matches[0],
 					] );
 					return;
 				}
@@ -172,7 +172,7 @@ class Combine extends Abstract_JS_Optimization {
 				if ( $this->jquery_url && false !== strpos( $matches[2], $this->jquery_url ) ) {
 					Logger::debug( 'Script is jQuery.', [
 						'js combine process',
-						'tag' => Logger::esc_html( $matches[0] ),
+						'tag' => $matches[0],
 					] );
 					return;
 				}
@@ -187,7 +187,7 @@ class Combine extends Abstract_JS_Optimization {
 				if ( preg_match( '/type\s*=\s*["\']?(?:text|application)\/(?:template|html|ld\+json)["\']?/i', $matches_inline[1] ) ) {
 					Logger::debug( 'Inline script is not JS.', [
 						'js combine process',
-						'attributes' => Logger::esc_html( $matches_inline[1] ),
+						'attributes' => $matches_inline[1],
 					] );
 					return;
 				}
@@ -195,7 +195,7 @@ class Combine extends Abstract_JS_Optimization {
 				if ( false !== strpos( $matches_inline[1], 'src=' ) ) {
 					Logger::debug( 'Inline script has a `src` attribute.', [
 						'js combine process',
-						'attributes' => Logger::esc_html( $matches_inline[1] ),
+						'attributes' => $matches_inline[1],
 					] );
 					return;
 				}
@@ -204,7 +204,7 @@ class Combine extends Abstract_JS_Optimization {
 					if ( false !== strpos( $matches_inline[2], $excluded_content ) ) {
 						Logger::debug( 'Inline script has excluded content.', [
 							'js combine process',
-							'excluded_content' => Logger::esc_html( $excluded_content ),
+							'excluded_content' => $excluded_content,
 						] );
 						return;
 					}

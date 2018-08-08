@@ -34,14 +34,14 @@ class Minify extends Abstract_CSS_Optimization {
 
 		Logger::debug( 'Found ' . count( $styles ) . ' `<link>` tags.', [
 			'css minification process',
-			'tags' => array_map( [ '\WP_Rocket\Logger', 'esc_html' ], $styles ),
+			'tags' => $styles,
 		] );
 
 		foreach ( $styles as $style ) {
 			if ( preg_match( '/(?:-|\.)min.css/iU', $style[2] ) ) {
 				Logger::debug( 'Style is already minified.', [
 					'css minification process',
-					'tag' => Logger::esc_html( $style[0] ),
+					'tag' => $style[0],
 				] );
 				continue;
 			}
@@ -49,7 +49,7 @@ class Minify extends Abstract_CSS_Optimization {
 			if ( $this->is_external_file( $style[2] ) ) {
 				Logger::debug( 'Style is external.', [
 					'css minification process',
-					'tag' => Logger::esc_html( $style[0] ),
+					'tag' => $style[0],
 				] );
 				continue;
 			}
@@ -57,7 +57,7 @@ class Minify extends Abstract_CSS_Optimization {
 			if ( $this->is_minify_excluded_file( $style ) ) {
 				Logger::debug( 'Style is excluded.', [
 					'css minification process',
-					'tag' => Logger::esc_html( $style[0] ),
+					'tag' => $style[0],
 				] );
 				continue;
 			}
@@ -67,7 +67,7 @@ class Minify extends Abstract_CSS_Optimization {
 			if ( ! $minify_url ) {
 				Logger::error( 'Style minification failed.', [
 					'css minification process',
-					'tag' => Logger::esc_html( $style[0] ),
+					'tag' => $style[0],
 				] );
 				continue;
 			}
@@ -78,7 +78,7 @@ class Minify extends Abstract_CSS_Optimization {
 
 			Logger::info( 'Style minification succeeded.', [
 				'css minification process',
-				'url' => Logger::esc_html( $minify_url ),
+				'url' => $minify_url,
 			] );
 		}
 
@@ -111,7 +111,7 @@ class Minify extends Abstract_CSS_Optimization {
 			if ( ! $minified_content ) {
 				Logger::error( 'No minified content.', [
 					'css minification process',
-					'path' => Logger::esc_html( $minified_file ),
+					'path' => $minified_file,
 				] );
 				return false;
 			}
@@ -121,19 +121,19 @@ class Minify extends Abstract_CSS_Optimization {
 			if ( ! $save_minify_file ) {
 				Logger::error( 'Minified CSS file could not be created.', [
 					'css minification process',
-					'path' => Logger::esc_html( $minified_file ),
+					'path' => $minified_file,
 				] );
 				return false;
 			}
 
 			Logger::debug( 'Minified CSS file successfully created.', [
 				'css minification process',
-				'path' => Logger::esc_html( $minified_file ),
+				'path' => $minified_file,
 			] );
 		} else {
 			Logger::debug( 'Minified CSS file already exists.', [
 				'css minification process',
-				'path' => Logger::esc_html( $minified_file ),
+				'path' => $minified_file,
 			] );
 		}
 

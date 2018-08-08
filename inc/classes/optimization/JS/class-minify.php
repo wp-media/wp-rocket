@@ -32,7 +32,7 @@ class Minify extends Abstract_JS_Optimization {
 
 		Logger::debug( 'Found ' . count( $scripts ) . ' <link> tags.', [
 			'js minification process',
-			'tags' => array_map( [ '\WP_Rocket\Logger', 'esc_html' ], $scripts ),
+			'tags' => $scripts,
 		] );
 
 		foreach ( $scripts as $script ) {
@@ -41,7 +41,7 @@ class Minify extends Abstract_JS_Optimization {
 			if ( preg_match( '/[-.]min\.js/iU', $script[2] ) ) {
 				Logger::debug( 'Script is already minified.', [
 					'js minification process',
-					'tag' => Logger::esc_html( $script[0] ),
+					'tag' => $script[0],
 				] );
 				continue;
 			}
@@ -49,7 +49,7 @@ class Minify extends Abstract_JS_Optimization {
 			if ( $this->is_external_file( $script[2] ) ) {
 				Logger::debug( 'Script is external.', [
 					'js minification process',
-					'tag' => Logger::esc_html( $script[0] ),
+					'tag' => $script[0],
 				] );
 				continue;
 			}
@@ -57,7 +57,7 @@ class Minify extends Abstract_JS_Optimization {
 			if ( $this->is_minify_excluded_file( $script ) ) {
 				Logger::debug( 'Script is excluded.', [
 					'js minification process',
-					'tag' => Logger::esc_html( $script[0] ),
+					'tag' => $script[0],
 				] );
 				continue;
 			}
@@ -66,7 +66,7 @@ class Minify extends Abstract_JS_Optimization {
 			if ( ! empty( $wp_scripts->registered['jquery-core']->src ) && false !== strpos( $script[2], $wp_scripts->registered['jquery-core']->src ) ) {
 				Logger::debug( 'jQuery script is already minified.', [
 					'js minification process',
-					'tag' => Logger::esc_html( $script[0] ),
+					'tag' => $script[0],
 				] );
 				continue;
 			}
@@ -76,7 +76,7 @@ class Minify extends Abstract_JS_Optimization {
 			if ( ! $minify_url ) {
 				Logger::error( 'Script minification failed.', [
 					'js minification process',
-					'tag' => Logger::esc_html( $script[0] ),
+					'tag' => $script[0],
 				] );
 				continue;
 			}
@@ -87,7 +87,7 @@ class Minify extends Abstract_JS_Optimization {
 
 			Logger::info( 'Script minification succeeded.', [
 				'js minification process',
-				'url' => Logger::esc_html( $minify_url ),
+				'url' => $minify_url,
 			] );
 		}
 
@@ -120,7 +120,7 @@ class Minify extends Abstract_JS_Optimization {
 			if ( ! $minified_content ) {
 				Logger::error( 'No minified content.', [
 					'js minification process',
-					'path' => Logger::esc_html( $minified_file ),
+					'path' => $minified_file,
 				] );
 				return false;
 			}
@@ -130,19 +130,19 @@ class Minify extends Abstract_JS_Optimization {
 			if ( ! $save_minify_file ) {
 				Logger::error( 'Minified JS file could not be created.', [
 					'js minification process',
-					'path' => Logger::esc_html( $minified_file ),
+					'path' => $minified_file,
 				] );
 				return false;
 			}
 
 			Logger::debug( 'Minified JS file successfully created.', [
 				'js minification process',
-				'path' => Logger::esc_html( $minified_file ),
+				'path' => $minified_file,
 			] );
 		} else {
 			Logger::debug( 'Minified JS file already exists.', [
 				'js minification process',
-				'path' => Logger::esc_html( $minified_file ),
+				'path' => $minified_file,
 			] );
 		}
 
