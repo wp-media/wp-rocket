@@ -206,46 +206,6 @@ class Logger {
 		return $logger;
 	}
 
-	/**
-	 * Escaping for HTML blocks.
-	 *
-	 * @since  3.2
-	 * @access public
-	 * @author Grégory Viguier
-	 *
-	 * @param  mixed $text Text to escape. If an array or an object, it is passed to var_export() first.
-	 * @return string
-	 */
-	public static function esc_html( $text ) {
-		static $charset;
-
-		if ( is_array( $text ) || is_object( $text ) ) {
-			$text = call_user_func( 'var_export', $text, true );
-		};
-
-		if ( function_exists( '\esc_html' ) ) {
-			return \esc_html( $text );
-		}
-
-		$text = (string) $text;
-
-		if ( 0 === strlen( $text ) ) {
-			return '';
-		}
-
-		// Don't bother if there are no specialchars - saves some processing.
-		if ( ! preg_match( '/[&<>"\']/', $text ) ) {
-			return $text;
-		}
-
-		if ( ! isset( $charset ) ) {
-			$charset = ini_get( 'default_charset' );
-			$charset = $charset ? $charset : 'UTF-8';
-		}
-
-		return @htmlspecialchars( $text, ENT_QUOTES, $charset, false );
-	}
-
 
 	/** ----------------------------------------------------------------------------------------- */
 	/** LOG FILE ================================================================================ */
@@ -478,5 +438,50 @@ class Logger {
 		// Save the file.
 		$chmod = defined( 'FS_CHMOD_FILE' ) ? FS_CHMOD_FILE : 0644;
 		$filesystem->put_contents( $file_path, $content, $chmod );
+	}
+
+
+	/** ----------------------------------------------------------------------------------------- */
+	/** TOOLS =================================================================================== */
+	/** ----------------------------------------------------------------------------------------- */
+
+	/**
+	 * Escaping for HTML blocks.
+	 *
+	 * @since  3.2
+	 * @access public
+	 * @author Grégory Viguier
+	 *
+	 * @param  mixed $text Text to escape. If an array or an object, it is passed to var_export() first.
+	 * @return string
+	 */
+	public static function esc_html( $text ) {
+		static $charset;
+
+		if ( is_array( $text ) || is_object( $text ) ) {
+			$text = call_user_func( 'var_export', $text, true );
+		};
+
+		if ( function_exists( '\esc_html' ) ) {
+			return \esc_html( $text );
+		}
+
+		$text = (string) $text;
+
+		if ( 0 === strlen( $text ) ) {
+			return '';
+		}
+
+		// Don't bother if there are no specialchars - saves some processing.
+		if ( ! preg_match( '/[&<>"\']/', $text ) ) {
+			return $text;
+		}
+
+		if ( ! isset( $charset ) ) {
+			$charset = ini_get( 'default_charset' );
+			$charset = $charset ? $charset : 'UTF-8';
+		}
+
+		return @htmlspecialchars( $text, ENT_QUOTES, $charset, false );
 	}
 }
