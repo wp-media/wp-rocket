@@ -463,6 +463,8 @@ function rocket_check_key() {
 	$return = rocket_valid_key();
 
 	if ( ! rocket_valid_key() ) {
+		Logger::info( 'LICENSE VALIDATION PROCESS STARTED.' );
+
 		$response = wp_remote_get(
 			WP_ROCKET_WEB_VALID, array(
 				'timeout' => 30,
