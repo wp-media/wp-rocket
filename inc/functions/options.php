@@ -463,7 +463,7 @@ function rocket_check_key() {
 	$return = rocket_valid_key();
 
 	if ( ! rocket_valid_key() ) {
-		Logger::info( 'LICENSE VALIDATION PROCESS STARTED.' );
+		Logger::info( 'LICENSE VALIDATION PROCESS STARTED.', [ 'license validation process' ] );
 
 		$response = wp_remote_get(
 			WP_ROCKET_WEB_VALID, array(
@@ -486,7 +486,7 @@ function rocket_check_key() {
 					$rocket_options['license'] = '1';
 				}
 
-				Logger::info( 'License validation succeeded.' );
+				Logger::info( 'License validation succeeded.', [ 'license validation process' ] );
 			} else {
 				$messages = array(
 					'BAD_LICENSE' => __( 'Your license is not valid.', 'rocket' ),
@@ -500,6 +500,7 @@ function rocket_check_key() {
 				add_settings_error( 'general', 'settings_updated', $messages[ $json->data->reason ], 'error' );
 
 				Logger::error( 'License validation failed.', [
+					'license validation process',
 					'response_error' => $json->data->reason,
 				] );
 			}
@@ -508,14 +509,16 @@ function rocket_check_key() {
 			$return = (array) $rocket_options;
 		} elseif ( is_wp_error( $response ) ) {
 			Logger::error( 'License validation failed.', [
+				'license validation process',
 				'request_error' => $response->get_error_messages(),
 			] );
 		} elseif ( '' !== $body ) {
 			Logger::error( 'License validation failed.', [
+				'license validation process',
 				'response_body' => $body,
 			] );
 		} else {
-			Logger::error( 'License validation failed. No body available in response.' );
+			Logger::error( 'License validation failed. No body available in response.', [ 'license validation process' ] );
 		}
 	}
 
