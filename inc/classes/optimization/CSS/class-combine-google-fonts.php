@@ -57,11 +57,11 @@ class Combine_Google_Fonts {
 		$fonts           = $this->find( '<link(?:\s+(?:(?!href\s*=\s*)[^>])+)?(?:\s+href\s*=\s*([\'"])((?:https?:)?\/\/fonts\.googleapis\.com\/css(?:(?!\1).)+)\1)(?:\s+[^>]*)?>', $html_nocomments );
 
 		if ( ! $fonts ) {
-			Logger::info( 'No Google Fonts found.', [ 'GF combine process' ] );
+			Logger::debug( 'No Google Fonts found.', [ 'GF combine process' ] );
 			return $html;
 		}
 
-		Logger::info( 'Found ' . count( $fonts ) . ' Google Fonts.', [
+		Logger::debug( 'Found ' . count( $fonts ) . ' Google Fonts.', [
 			'GF combine process',
 			'tags' => array_map( [ '\WP_Rocket\Logger', 'esc_html' ], $fonts ),
 		] );
@@ -69,7 +69,7 @@ class Combine_Google_Fonts {
 		$this->parse( $fonts );
 
 		if ( empty( $this->fonts ) ) {
-			Logger::info( 'No Google Fonts left to combine.', [ 'GF combine process' ] );
+			Logger::debug( 'No Google Fonts left to combine.', [ 'GF combine process' ] );
 			return $html;
 		}
 

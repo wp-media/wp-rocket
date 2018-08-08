@@ -15,7 +15,7 @@ Logger::info( 'CACHING PROCESS STARTED.', [ 'caching process' ] );
 if ( strstr( $_SERVER['REQUEST_URI'], 'robots.txt' ) || strstr( $_SERVER['REQUEST_URI'], '.htaccess' ) ) {
 	rocket_define_donotoptimize_constant( true );
 
-	Logger::info( 'File not cached.', [
+	Logger::debug( 'File not cached.', [
 		'caching process',
 		'request_uri' => Logger::esc_html( $_SERVER['REQUEST_URI'] ),
 	] );
@@ -29,7 +29,7 @@ $request_uri = reset( $request_uri );
 if ( strtolower( $_SERVER['REQUEST_URI'] ) !== '/index.php' && in_array( pathinfo( $request_uri, PATHINFO_EXTENSION ), array( 'php', 'xml', 'xsl' ), true ) ) {
 	rocket_define_donotoptimize_constant( true );
 
-	Logger::info( 'Extension not cached.', [
+	Logger::debug( 'Extension not cached.', [
 		'caching process',
 		'request_uri' => Logger::esc_html( $_SERVER['REQUEST_URI'] ),
 	] );
@@ -40,7 +40,7 @@ if ( strtolower( $_SERVER['REQUEST_URI'] ) !== '/index.php' && in_array( pathinf
 if ( is_admin() ) {
 	rocket_define_donotoptimize_constant( true );
 
-	Logger::info( 'Admin not cached.', [
+	Logger::debug( 'Admin not cached.', [
 		'caching process',
 		'request_uri' => Logger::esc_html( $_SERVER['REQUEST_URI'] ),
 	] );
@@ -51,7 +51,7 @@ if ( is_admin() ) {
 if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 	rocket_define_donotoptimize_constant( true );
 
-	Logger::info( 'Ajax not cached.', [
+	Logger::debug( 'Ajax not cached.', [
 		'caching process',
 		'request_uri' => Logger::esc_html( $_SERVER['REQUEST_URI'] ),
 	] );
@@ -62,7 +62,7 @@ if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 if ( isset( $_POST['wp_customize'] ) ) {
 	rocket_define_donotoptimize_constant( true );
 
-	Logger::info( 'Customizer preview not cached.', [
+	Logger::debug( 'Customizer preview not cached.', [
 		'caching process',
 		'request_uri' => Logger::esc_html( $_SERVER['REQUEST_URI'] ),
 	] );
@@ -73,7 +73,7 @@ if ( isset( $_POST['wp_customize'] ) ) {
 if ( ! isset( $_SERVER['REQUEST_METHOD'] ) || 'GET' !== $_SERVER['REQUEST_METHOD'] ) {
 	rocket_define_donotoptimize_constant( true );
 
-	Logger::info( 'Request method not cached.', [
+	Logger::debug( 'Request method not cached.', [
 		'caching process',
 		'request_uri'    => Logger::esc_html( $_SERVER['REQUEST_URI'] ),
 		'request_method' => Logger::esc_html( $_SERVER['REQUEST_METHOD'] ),
@@ -150,7 +150,7 @@ if ( ! empty( $_GET )
 ) {
 	rocket_define_donotoptimize_constant( true );
 
-	Logger::info( 'Query strings not cached.', [
+	Logger::debug( 'Query strings not cached.', [
 		'caching process',
 		'request_uri' => Logger::esc_html( $_SERVER['REQUEST_URI'] ),
 	] );
@@ -161,7 +161,7 @@ if ( ! empty( $_GET )
 if ( empty( $rocket_cache_ssl ) && is_ssl() ) {
 	rocket_define_donotoptimize_constant( true );
 
-	Logger::info( 'SSL not cached.', [
+	Logger::debug( 'SSL not cached.', [
 		'caching process',
 		'request_uri' => Logger::esc_html( $_SERVER['REQUEST_URI'] ),
 	] );
@@ -172,7 +172,7 @@ if ( empty( $rocket_cache_ssl ) && is_ssl() ) {
 if ( isset( $rocket_cache_reject_uri ) && preg_match( '#^(' . $rocket_cache_reject_uri . ')$#', $request_uri ) ) {
 	rocket_define_donotoptimize_constant( true );
 
-	Logger::info( 'Regected URI not cached.', [
+	Logger::debug( 'Regected URI not cached.', [
 		'caching process',
 		'request_uri' => Logger::esc_html( $_SERVER['REQUEST_URI'] ),
 	] );
@@ -183,7 +183,7 @@ if ( isset( $rocket_cache_reject_uri ) && preg_match( '#^(' . $rocket_cache_reje
 if ( isset( $rocket_cache_reject_cookies ) && preg_match( '#(' . $rocket_cache_reject_cookies . ')#', var_export( $_COOKIE, true ) ) ) {
 	rocket_define_donotoptimize_constant( true );
 
-	Logger::info( 'Cookie not cached.', [
+	Logger::debug( 'Cookie not cached.', [
 		'caching process',
 		'cookies' => Logger::esc_html( $_COOKIE ),
 	] );
@@ -204,7 +204,7 @@ $allowed_ips = array(
 if ( ! isset( $allowed_ips[ $ip ] ) && isset( $rocket_cache_mandatory_cookies ) && ! preg_match( '#(' . $rocket_cache_mandatory_cookies . ')#', var_export( $_COOKIE, true ) ) ) {
 	rocket_define_donotoptimize_constant( true );
 
-	Logger::info( 'Missing cookie: page not cached.', [
+	Logger::debug( 'Missing cookie: page not cached.', [
 		'caching process',
 		'cookies' => Logger::esc_html( $_COOKIE ),
 	] );
@@ -215,7 +215,7 @@ if ( ! isset( $allowed_ips[ $ip ] ) && isset( $rocket_cache_mandatory_cookies ) 
 if ( isset( $rocket_cache_reject_ua, $_SERVER['HTTP_USER_AGENT'] ) && ! empty( $rocket_cache_reject_ua ) && preg_match( '#(' . $rocket_cache_reject_ua . ')#', $_SERVER['HTTP_USER_AGENT'] ) ) {
 	rocket_define_donotoptimize_constant( true );
 
-	Logger::info( 'User agent not cached.', [
+	Logger::debug( 'User agent not cached.', [
 		'caching process',
 		'user_agent' => Logger::esc_html( $_SERVER['HTTP_USER_AGENT'] ),
 	] );
@@ -226,7 +226,7 @@ if ( isset( $rocket_cache_reject_ua, $_SERVER['HTTP_USER_AGENT'] ) && ! empty( $
 if ( ! isset( $rocket_cache_mobile ) && isset( $_SERVER['HTTP_USER_AGENT'] ) && ( preg_match( '#^.*(2.0\ MMP|240x320|400X240|AvantGo|BlackBerry|Blazer|Cellphone|Danger|DoCoMo|Elaine/3.0|EudoraWeb|Googlebot-Mobile|hiptop|IEMobile|KYOCERA/WX310K|LG/U990|MIDP-2.|MMEF20|MOT-V|NetFront|Newt|Nintendo\ Wii|Nitro|Nokia|Opera\ Mini|Palm|PlayStation\ Portable|portalmmm|Proxinet|ProxiNet|SHARP-TQ-GX10|SHG-i900|Small|SonyEricsson|Symbian\ OS|SymbianOS|TS21i-10|UP.Browser|UP.Link|webOS|Windows\ CE|WinWAP|YahooSeeker/M1A1-R2D2|iPhone|iPod|Android|BlackBerry9530|LG-TU915\ Obigo|LGE\ VX|webOS|Nokia5800).*#i', $_SERVER['HTTP_USER_AGENT'] ) || preg_match( '#^(w3c\ |w3c-|acs-|alav|alca|amoi|audi|avan|benq|bird|blac|blaz|brew|cell|cldc|cmd-|dang|doco|eric|hipt|htc_|inno|ipaq|ipod|jigs|kddi|keji|leno|lg-c|lg-d|lg-g|lge-|lg/u|maui|maxo|midp|mits|mmef|mobi|mot-|moto|mwbp|nec-|newt|noki|palm|pana|pant|phil|play|port|prox|qwap|sage|sams|sany|sch-|sec-|send|seri|sgh-|shar|sie-|siem|smal|smar|sony|sph-|symb|t-mo|teli|tim-|tosh|tsm-|upg1|upsi|vk-v|voda|wap-|wapa|wapi|wapp|wapr|webc|winw|winw|xda\ |xda-).*#i', substr( $_SERVER['HTTP_USER_AGENT'], 0, 4 ) ) ) ) {
 	rocket_define_donotoptimize_constant( true );
 
-	Logger::info( 'Mobile user agent not cached.', [
+	Logger::debug( 'Mobile user agent not cached.', [
 		'caching process',
 		'user_agent' => Logger::esc_html( $_SERVER['HTTP_USER_AGENT'] ),
 	] );
@@ -288,7 +288,7 @@ if ( ! empty( $rocket_cache_dynamic_cookies ) ) {
 $request_uri_path      = preg_replace_callback( '/%[0-9A-F]{2}/', 'rocket_urlencode_lowercase', $request_uri_path );
 $rocket_cache_filepath = $request_uri_path . '/' . $filename . '.html';
 
-Logger::info( 'Looking for cache file.', [
+Logger::debug( 'Looking for cache file.', [
 	'caching process',
 	'path' => Logger::esc_html( $rocket_cache_filepath ),
 ] );
@@ -296,7 +296,7 @@ Logger::info( 'Looking for cache file.', [
 // Serve the cache file if exist.
 rocket_serve_cache_file( $rocket_cache_filepath );
 
-Logger::info( 'Creating new cache file.', [
+Logger::debug( 'Creating new cache file.', [
 	'caching process',
 	'path' => Logger::esc_html( $rocket_cache_filepath ),
 ] );

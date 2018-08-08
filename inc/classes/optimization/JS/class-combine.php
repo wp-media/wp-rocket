@@ -86,11 +86,11 @@ class Combine extends Abstract_JS_Optimization {
 		$scripts = $this->find( '<script.*<\/script>', $html );
 
 		if ( ! $scripts ) {
-			Logger::info( 'No `<script>` tags found.', [ 'js combine process' ] );
+			Logger::debug( 'No `<script>` tags found.', [ 'js combine process' ] );
 			return $html;
 		}
 
-		Logger::info( 'Found ' . count( $scripts ) . ' `<script>` tags.', [
+		Logger::debug( 'Found ' . count( $scripts ) . ' `<script>` tags.', [
 			'js combine process',
 			'tags' => array_map( [ '\WP_Rocket\Logger', 'esc_html' ], $scripts ),
 		] );
@@ -98,11 +98,11 @@ class Combine extends Abstract_JS_Optimization {
 		$combine_scripts = $this->parse( $scripts );
 
 		if ( empty( $combine_scripts ) ) {
-			Logger::info( 'No `<script>` tags to optimize.', [ 'js combine process' ] );
+			Logger::debug( 'No `<script>` tags to optimize.', [ 'js combine process' ] );
 			return $html;
 		}
 
-		Logger::info( count( $combine_scripts ) . ' `<script>` tags remaining.', [
+		Logger::debug( count( $combine_scripts ) . ' `<script>` tags remaining.', [
 			'js combine process',
 			'tags' => array_map( [ '\WP_Rocket\Logger', 'esc_html' ], $combine_scripts ),
 		] );
@@ -110,7 +110,7 @@ class Combine extends Abstract_JS_Optimization {
 		$content = $this->get_content();
 
 		if ( empty( $content ) ) {
-			Logger::info( 'No JS content.', [ 'js combine process' ] );
+			Logger::debug( 'No JS content.', [ 'js combine process' ] );
 			return $html;
 		}
 
@@ -152,7 +152,7 @@ class Combine extends Abstract_JS_Optimization {
 				if ( $this->is_external_file( $matches[2] ) ) {
 					foreach ( $this->get_excluded_external_file_path() as $excluded_file ) {
 						if ( false !== strpos( $matches[2], $excluded_file ) ) {
-							Logger::info( 'Script is external.', [
+							Logger::debug( 'Script is external.', [
 								'js combine process',
 								'tag' => Logger::esc_html( $matches[0] ),
 							] );
@@ -162,7 +162,7 @@ class Combine extends Abstract_JS_Optimization {
 				}
 
 				if ( $this->is_minify_excluded_file( $matches ) ) {
-					Logger::info( 'Script is excluded.', [
+					Logger::debug( 'Script is excluded.', [
 						'js combine process',
 						'tag' => Logger::esc_html( $matches[0] ),
 					] );
@@ -170,7 +170,7 @@ class Combine extends Abstract_JS_Optimization {
 				}
 
 				if ( $this->jquery_url && false !== strpos( $matches[2], $this->jquery_url ) ) {
-					Logger::info( 'Script is jQuery.', [
+					Logger::debug( 'Script is jQuery.', [
 						'js combine process',
 						'tag' => Logger::esc_html( $matches[0] ),
 					] );
@@ -185,7 +185,7 @@ class Combine extends Abstract_JS_Optimization {
 				preg_match( '/<script\b([^>]*)>(?:\/\*\s*<!\[CDATA\[\s*\*\/)?\s*([\s\S]*?)\s*(?:\/\*\s*\]\]>\s*\*\/)?<\/script>/msi', $script[0], $matches_inline );
 
 				if ( preg_match( '/type\s*=\s*["\']?(?:text|application)\/(?:template|html|ld\+json)["\']?/i', $matches_inline[1] ) ) {
-					Logger::info( 'Inline script is not JS.', [
+					Logger::debug( 'Inline script is not JS.', [
 						'js combine process',
 						'attributes' => Logger::esc_html( $matches_inline[1] ),
 					] );
@@ -193,7 +193,7 @@ class Combine extends Abstract_JS_Optimization {
 				}
 
 				if ( false !== strpos( $matches_inline[1], 'src=' ) ) {
-					Logger::info( 'Inline script has a `src` attribute.', [
+					Logger::debug( 'Inline script has a `src` attribute.', [
 						'js combine process',
 						'attributes' => Logger::esc_html( $matches_inline[1] ),
 					] );
@@ -202,7 +202,7 @@ class Combine extends Abstract_JS_Optimization {
 
 				foreach ( $this->get_excluded_inline_content() as $excluded_content ) {
 					if ( false !== strpos( $matches_inline[2], $excluded_content ) ) {
-						Logger::info( 'Inline script has excluded content.', [
+						Logger::debug( 'Inline script has excluded content.', [
 							'js combine process',
 							'excluded_content' => Logger::esc_html( $excluded_content ),
 						] );

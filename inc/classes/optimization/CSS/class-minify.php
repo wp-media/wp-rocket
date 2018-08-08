@@ -28,18 +28,18 @@ class Minify extends Abstract_CSS_Optimization {
 		$styles = $this->find( '<link\s+([^>]+[\s"\'])?href\s*=\s*[\'"]\s*?([^\'"]+\.css(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>', $html );
 
 		if ( ! $styles ) {
-			Logger::info( 'No `<link>` tags found.', [ 'css minification process' ] );
+			Logger::debug( 'No `<link>` tags found.', [ 'css minification process' ] );
 			return $html;
 		}
 
-		Logger::info( 'Found ' . count( $styles ) . ' `<link>` tags.', [
+		Logger::debug( 'Found ' . count( $styles ) . ' `<link>` tags.', [
 			'css minification process',
 			'tags' => array_map( [ '\WP_Rocket\Logger', 'esc_html' ], $styles ),
 		] );
 
 		foreach ( $styles as $style ) {
 			if ( preg_match( '/(?:-|\.)min.css/iU', $style[2] ) ) {
-				Logger::info( 'Style is already minified.', [
+				Logger::debug( 'Style is already minified.', [
 					'css minification process',
 					'tag' => Logger::esc_html( $style[0] ),
 				] );
@@ -47,7 +47,7 @@ class Minify extends Abstract_CSS_Optimization {
 			}
 
 			if ( $this->is_external_file( $style[2] ) ) {
-				Logger::info( 'Style is external.', [
+				Logger::debug( 'Style is external.', [
 					'css minification process',
 					'tag' => Logger::esc_html( $style[0] ),
 				] );
@@ -55,7 +55,7 @@ class Minify extends Abstract_CSS_Optimization {
 			}
 
 			if ( $this->is_minify_excluded_file( $style ) ) {
-				Logger::info( 'Style is excluded.', [
+				Logger::debug( 'Style is excluded.', [
 					'css minification process',
 					'tag' => Logger::esc_html( $style[0] ),
 				] );
@@ -126,12 +126,12 @@ class Minify extends Abstract_CSS_Optimization {
 				return false;
 			}
 
-			Logger::info( 'Minified CSS file successfully created.', [
+			Logger::debug( 'Minified CSS file successfully created.', [
 				'css minification process',
 				'path' => Logger::esc_html( $minified_file ),
 			] );
 		} else {
-			Logger::info( 'Minified CSS file already exists.', [
+			Logger::debug( 'Minified CSS file already exists.', [
 				'css minification process',
 				'path' => Logger::esc_html( $minified_file ),
 			] );
