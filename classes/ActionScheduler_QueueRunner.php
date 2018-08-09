@@ -50,7 +50,7 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	}
 
 	public function run() {
-		@ini_set( 'memory_limit', apply_filters( 'admin_memory_limit', WP_MAX_MEMORY_LIMIT ) );
+		ActionScheduler_Compatibility::raise_memory_limit();
 		@set_time_limit( apply_filters( 'action_scheduler_queue_runner_time_limit', 600 ) );
 		do_action( 'action_scheduler_before_process_queue' );
 		$this->run_cleanup();
