@@ -302,6 +302,7 @@ class Combine extends Abstract_JS_Optimization {
 			'GoogleAnalyticsObject',
 			'syntaxhighlighter',
 			'adsbygoogle',
+			'ci_cap_',
 			'_stq',
 			'nonce',
 			'post_id',
