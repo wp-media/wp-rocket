@@ -132,6 +132,46 @@ abstract class ActionScheduler_Abstract_QueueRunner {
 	}
 
 	/**
+	 * Get memory limit
+	 *
+	 * Based on WP_Background_Process::get_memory_limit()
+	 *
+	 * @return int
+	 */
+	protected function get_memory_limit() {
+		if ( function_exists( 'ini_get' ) ) {
+			$memory_limit = ini_get( 'memory_limit' );
+		} else {
+			$memory_limit = '128M'; // Sensible default, and minimum required by WooCommerce
+		}
+
+		if ( ! $memory_limit || -1 === $memory_limit || '-1' === $memory_limit ) {
+			// Unlimited, set to 32GB.
+			$memory_limit = '32G';
+		}
+
+		return ActionScheduler_Compatibility::convert_hr_to_bytes( $memory_limit );
+	}
+
+	/**
+	 * Memory exceeded
+	 *
+	 * Ensures the batch process never exceeds 90% of the maximum WordPress memory.
+	 *
+	 * Based on WP_Background_Process::memory_exceeded()
+	 *
+	 * @return bool
+	 */
+	protected function memory_exceeded() {
+
+		$memory_limit    = $this->get_memory_limit() * 0.90;
+		$current_memory  = memory_get_usage( true );
+		$memory_exceeded = $current_memory >= $memory_limit;
+
+		return apply_filters( 'action_scheduler_memory_exceeded', $memory_exceeded, $this );
+	}
+
+	/**
 	 * Process actions in the queue.
 	 *
 	 * @author Jeremy Pry
