@@ -54,7 +54,8 @@ class Combine extends Abstract_CSS_Optimization {
 			return $html;
 		}
 
-		$styles = array_map( function( $style ) {
+		$files  = [];
+		$styles = array_map( function( $style ) use ( &$files ) {
 			if ( $this->is_external_file( $style[2] ) ) {
 				return;
 			}
@@ -63,6 +64,14 @@ class Combine extends Abstract_CSS_Optimization {
 				return;
 			}
 
+			$style_filepath = $this->get_file_path( $style[2] );
+
+			if ( ! $style_filepath ) {
+				return;
+			}
+
+			$files[] = $style_filepath;
+
 			return $style;
 		}, $styles );
 
@@ -70,11 +79,7 @@ class Combine extends Abstract_CSS_Optimization {
 			return $html;
 		}
 
-		$urls = array_map( function( $style ) {
-			return $style[2];
-		}, $styles );
-
-		$minify_url = $this->combine( $urls );
+		$minify_url = $this->combine( $files );
 
 		if ( ! $minify_url ) {
 			return $html;
@@ -95,26 +100,22 @@ class Combine extends Abstract_CSS_Optimization {
 	 * @since 2.11
 	 * @author Remy Perona
 	 *
-	 * @param string $urls Original file URL.
+	 * @param array $files Files to minify.
 
 	 * @return string|bool The minify URL if successful, false otherwise
 	 */
-	protected function combine( $urls ) {
-		if ( empty( $urls ) ) {
+	protected function combine( $files ) {
+		if ( empty( $files ) ) {
 			return false;
 		}
 
-		foreach ( $urls as $url ) {
-			$file_path[] = $this->get_file_path( $url );
-		}
-
-		$file_hash = implode( ',', $urls );
+		$file_hash = implode( ',', $files );
 		$filename  = md5( $file_hash . $this->minify_key ) . '.css';
 
 		$minified_file = $this->minify_base_path . $filename;
 
 		if ( ! rocket_direct_filesystem()->exists( $minified_file ) ) {
-			$minified_content = $this->minify( $file_path );
+			$minified_content = $this->minify( $files );
 
 			if ( ! $minified_content ) {
 				return false;
