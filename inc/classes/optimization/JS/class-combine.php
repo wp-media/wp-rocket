@@ -302,6 +302,7 @@ class Combine extends Abstract_JS_Optimization {
 			'GoogleAnalyticsObject',
 			'syntaxhighlighter',
 			'adsbygoogle',
+			'ci_cap_',
 			'_stq',
 			'nonce',
 			'post_id',
@@ -384,6 +385,7 @@ class Combine extends Abstract_JS_Optimization {
 			'a.optmnstr.com',
 			'ads.adthrive.com',
 			'mediavine.com',
+			'js.hsforms.net',
 		] );
 	}
 }
