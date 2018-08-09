@@ -12,16 +12,6 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	private static $runner = null;
 
 	/**
-	 * The created time.
-	 *
-	 * Represents when the queue runner was constructed and used when calculating how long a PHP request has been running.
-	 * For this reason it should be as close as possible to the PHP request start time.
-	 *
-	 * @var int
-	 */
-	private $created_time;
-
-	/**
 	 * @return ActionScheduler_QueueRunner
 	 * @codeCoverageIgnore
 	 */
@@ -42,7 +32,6 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	 */
 	public function __construct( ActionScheduler_Store $store = null, ActionScheduler_FatalErrorMonitor $monitor = null, ActionScheduler_QueueCleaner $cleaner = null ) {
 		parent::__construct( $store, $monitor, $cleaner );
-		$this->created_time = microtime( true );
 	}
 
 	/**
@@ -126,44 +115,5 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 		);
 
 		return $schedules;
-	}
-
-	/**
-	 * Get the maximum number of seconds a batch can run for.
-	 *
-	 * @return int The number of seconds.
-	 */
-	protected function get_maximum_execution_time() {
-
-		// There are known hosts with a strict 60 second execution time.
-		if ( defined( 'WPENGINE_ACCOUNT' ) || defined( 'PANTHEON_ENVIRONMENT' ) ) {
-			$maximum_execution_time = 60;
-		} elseif ( false !== strpos( getenv( 'HOSTNAME' ), '.siteground.' ) ) {
-			$maximum_execution_time = 120;
-		} else {
-			$maximum_execution_time = ini_get( 'max_execution_time' );
-		}
-
-		return absint( apply_filters( 'action_scheduler_maximum_execution_time', $maximum_execution_time ) );
-	}
-
-	/**
-	 * Get the number of seconds a batch has run for.
-	 *
-	 * @return int The number of seconds.
-	 */
-	protected function get_execution_time() {
-		$execution_time = microtime( true ) - $this->created_time;
-
-		// Get the CPU time if the hosting environment uses it rather than wall-clock time to calculate a process's execution time.
-		if ( function_exists( 'getrusage' ) && apply_filters( 'action_scheduler_use_cpu_execution_time', defined( 'PANTHEON_ENVIRONMENT' ) ) ) {
-			$resource_usages = getrusage();
-
-			if ( isset( $resource_usages['ru_stime.tv_usec'], $resource_usages['ru_stime.tv_usec'] ) ) {
-				$execution_time = $resource_usages['ru_stime.tv_sec'] + ( $resource_usages['ru_stime.tv_usec'] / 1000000 );
-			}
-		}
-
-		return $execution_time;
 	}
 }
