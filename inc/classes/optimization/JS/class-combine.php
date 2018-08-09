@@ -317,6 +317,7 @@ class Combine extends Abstract_JS_Optimization {
 			'tdBlock',
 			'tdLocalCache',
 			'lazyLoadOptions',
+			'adthrive',
 		] );
 	}
 
