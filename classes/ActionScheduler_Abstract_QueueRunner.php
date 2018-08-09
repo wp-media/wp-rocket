@@ -132,6 +132,23 @@ abstract class ActionScheduler_Abstract_QueueRunner {
 	}
 
 	/**
+	 * Check if the host's max execution time is (likely) to be exceeded if processing more actions.
+	 *
+	 * @param int $processed_actions The number of actions processed so far - used to determine the likelihood of exceeding the time limit if processing another action
+	 * @return bool
+	 */
+	protected function time_likely_to_be_exceeded( $processed_actions ) {
+
+		$execution_time        = $this->get_execution_time();
+		$max_execution_time    = $this->get_maximum_execution_time();
+		$time_per_action       = $execution_time / $processed_actions;
+		$estimated_time        = $execution_time + ( $time_per_action * 2 );
+		$likely_to_be_exceeded = $estimated_time > $this->get_maximum_execution_time();
+
+		return apply_filters( 'action_scheduler_maximum_execution_time_likely_to_be_exceeded', $likely_to_be_exceeded, $this, $processed_actions, $execution_time, $max_execution_time );
+	}
+
+	/**
 	 * Get memory limit
 	 *
 	 * Based on WP_Background_Process::get_memory_limit()
@@ -169,6 +186,19 @@ abstract class ActionScheduler_Abstract_QueueRunner {
 		$memory_exceeded = $current_memory >= $memory_limit;
 
 		return apply_filters( 'action_scheduler_memory_exceeded', $memory_exceeded, $this );
+	}
+
+	/**
+	 * See if the batch limits have been exceeded, which is when memory usage is almost at
+	 * the maximum limit, or the time to process more actions will exceed the max time limit.
+	 *
+	 * Based on WC_Background_Process::batch_limits_exceeded()
+	 *
+	 * @param int $processed_actions The number of actions processed so far - used to determine the likelihood of exceeding the time limit if processing another action
+	 * @return bool
+	 */
+	protected function batch_limits_exceeded( $processed_actions ) {
+		return $this->memory_exceeded() || $this->time_likely_to_be_exceeded( $processed_actions );
 	}
 
 	/**

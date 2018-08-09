@@ -54,39 +54,35 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 		@set_time_limit( apply_filters( 'action_scheduler_queue_runner_time_limit', 600 ) );
 		do_action( 'action_scheduler_before_process_queue' );
 		$this->run_cleanup();
-		$count = 0;
+		$processed_actions = 0;
 		if ( $this->store->get_claim_count() < $this->get_allowed_concurrent_batches() ) {
 			$batch_size = apply_filters( 'action_scheduler_queue_runner_batch_size', 25 );
-			$count = $this->do_batch( $batch_size );
+			do {
+				$processed_actions_in_batch = $this->do_batch( $batch_size );
+				$processed_actions         += $processed_actions_in_batch;
+			} while ( $processed_actions_in_batch > 0 && ! $this->batch_limits_exceeded( $processed_actions ) ); // keep going until we run out of actions, time, or memory
 		}
 
 		do_action( 'action_scheduler_after_process_queue' );
-		return $count;
+		return $processed_actions;
 	}
 
 	protected function do_batch( $size = 100 ) {
 		$claim = $this->store->stake_claim($size);
 		$this->monitor->attach($claim);
-		$processed_actions      = 0;
-		$maximum_execution_time = $this->get_maximum_execution_time();
+		$processed_actions = 0;
 
 		foreach ( $claim->get_actions() as $action_id ) {
-			if ( 0 !== $processed_actions ) {
-				$time_elapsed            = $this->get_execution_time();
-				$average_processing_time = $time_elapsed / $processed_actions;
-
-				// Bail early if the time it has taken to process this batch is approaching the maximum execution time.
-				if ( $time_elapsed + ( $average_processing_time * 2 ) > $maximum_execution_time ) {
-					break;
-				}
-			}
-
 			// bail if we lost the claim
 			if ( ! in_array( $action_id, $this->store->find_actions_by_claim_id( $claim->get_id() ) ) ) {
 				break;
 			}
 			$this->process_action( $action_id );
 			$processed_actions++;
+
+			if ( $this->batch_limits_exceeded( $processed_actions ) ) {
+				break;
+			}
 		}
 		$this->store->release_claim($claim);
 		$this->monitor->detach();
