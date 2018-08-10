@@ -12,7 +12,7 @@ function rocket_need_api_key() {
 		<p><strong><?php echo WP_ROCKET_PLUGIN_NAME; ?></strong>: <?php _e( 'There seems to be an issue with outgoing connections from your server. Resolve per documentation, or contact support.', 'rocket' ); ?>
 		</p>
 	</div>
-<?php
+	<?php
 }
 
 /**
@@ -443,3 +443,89 @@ function rocket_settings_import_redirect( $message, $status ) {
 	die();
 }
 
+/**
+ * Is WP a MultiSite and a subfolder install?
+ *
+ * @since  3.1.1
+ * @author Grégory Viguier
+ *
+ * @return bool
+ */
+function rocket_is_subfolder_install() {
+	global $wpdb;
+	static $subfolder_install;
+
+	if ( isset( $subfolder_install ) ) {
+		return $subfolder_install;
+	}
+
+	if ( is_multisite() ) {
+		$subfolder_install = ! is_subdomain_install();
+	} elseif ( ! is_null( $wpdb->sitemeta ) ) {
+		$subfolder_install = ! $wpdb->get_var( "SELECT meta_value FROM $wpdb->sitemeta WHERE site_id = 1 AND meta_key = 'subdomain_install'" );
+	} else {
+		$subfolder_install = false;
+	}
+
+	return $subfolder_install;
+}
+
+/**
+ * Get the name of the "home directory", in case the home URL is not at the domain's root.
+ * It can be seen like the `RewriteBase` from the .htaccess file, but without the trailing slash.
+ *
+ * @since  3.1.1
+ * @author Grégory Viguier
+ *
+ * @return string
+ */
+function rocket_get_home_dirname() {
+	static $home_root;
+
+	if ( isset( $home_root ) ) {
+		return $home_root;
+	}
+
+	$home_root = wp_parse_url( rocket_get_main_home_url() );
+
+	if ( ! empty( $home_root['path'] ) ) {
+		$home_root = '/' . trim( $home_root['path'], '/' );
+		$home_root = rtrim( $home_root, '/' );
+	} else {
+		$home_root = '';
+	}
+
+	return $home_root;
+}
+
+/**
+ * Get the URL of the site's root. It corresponds to the main site's home page URL.
+ *
+ * @since  3.1.1
+ * @author Grégory Viguier
+ *
+ * @return string
+ */
+function rocket_get_main_home_url() {
+	static $root_url;
+
+	if ( isset( $root_url ) ) {
+		return $root_url;
+	}
+
+	if ( ! is_multisite() || is_main_site() ) {
+		$root_url = home_url( '/' );
+		return $root_url;
+	}
+
+	$current_network = get_network();
+
+	if ( $current_network ) {
+		$root_url = set_url_scheme( 'https://' . $current_network->domain . $current_network->path );
+		$root_url = trailingslashit( $root_url );
+	} else {
+		$root_url = home_url( '/' );
+	}
+
+	return $root_url;
+}

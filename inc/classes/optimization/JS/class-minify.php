@@ -79,22 +79,31 @@ class Minify extends Abstract_JS_Optimization {
 		$filename  = preg_replace( '/\.js$/', '-' . $unique_id . '.js', ltrim( rocket_realpath( rocket_extract_url_component( $url, PHP_URL_PATH ) ), '/' ) );
 
 		$minified_file = $this->minify_base_path . $filename;
+		$minified_url  = $this->get_minify_url( $filename );
 
-		if ( ! rocket_direct_filesystem()->exists( $minified_file ) ) {
-			$minified_content = $this->minify( $this->get_file_path( $url ) );
-
-			if ( ! $minified_content ) {
-				return false;
-			}
-
-			$save_minify_file = $this->write_file( $minified_content, $minified_file );
-
-			if ( ! $save_minify_file ) {
-				return false;
-			}
+		if ( rocket_direct_filesystem()->exists( $minified_file ) ) {
+			return $minified_url;
 		}
 
-		return $this->get_minify_url( $filename );
+		$file_path = $this->get_file_path( $url );
+
+		if ( ! $file_path ) {
+			return false;
+		}
+
+		$minified_content = $this->minify( $file_path );
+
+		if ( ! $minified_content ) {
+			return false;
+		}
+
+		$save_minify_file = $this->write_file( $minified_content, $minified_file );
+
+		if ( ! $save_minify_file ) {
+			return false;
+		}
+
+		return $minified_url;
 	}
 
 	/**

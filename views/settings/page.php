@@ -42,7 +42,6 @@ settings_errors( $data['slug'] ); ?>
 			<?php
 			if ( rocket_valid_key() ) {
 				$this->render_tools_section();
-			}
 			?>
 			<div class="wpr-Content-tips">
 				<div class="wpr-radio wpr-radio--reverse wpr-radio--tips">
@@ -53,6 +52,9 @@ settings_errors( $data['slug'] ); ?>
 						<?php _e( 'Show Sidebar', 'rocket' ); ?></label>
 				</div>
 			</div>
+			<?php
+			}
+			?>
 		</section>
 
 		<aside class="wpr-Sidebar">

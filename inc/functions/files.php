@@ -179,6 +179,8 @@ function rocket_generate_config_file() {
 	list( $config_files_path, $buffer ) = get_rocket_config_file();
 
 	if ( count( $config_files_path ) ) {
+		rocket_init_config_dir();
+
 		foreach ( $config_files_path as $file ) {
 			rocket_put_content( $file, $buffer );
 		}
@@ -1060,8 +1062,8 @@ function rocket_find_wpconfig_path() {
  * @return string The footprint that will be printed
  */
 function get_rocket_footprint( $debug = true ) {
-	$footprint = defined( 'WP_ROCKET_WHITE_LABEL_FOOTPRINT' ) ? 
-					"\n" . '<!-- Cached for great performance' : 
+	$footprint = defined( 'WP_ROCKET_WHITE_LABEL_FOOTPRINT' ) ?
+					"\n" . '<!-- Cached for great performance' :
 					"\n" . '<!-- This website is like a Rocket, isn\'t it? Performance optimized by ' . WP_ROCKET_PLUGIN_NAME . '. Learn more: https://wp-rocket.me';
 	if ( $debug ) {
 		$footprint .= ' - Debug: cached@' . time();
