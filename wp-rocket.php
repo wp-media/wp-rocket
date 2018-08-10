@@ -6,7 +6,6 @@
  * Version: 3.1.1
  * Code Name: Dagobah
  * Author: WP Media
- * Contributors: Jonathan Buttigieg, Julio Potier, Remy Perona
  * Author URI: http://wp-media.me
  * Licence: GPLv2 or later
  *
