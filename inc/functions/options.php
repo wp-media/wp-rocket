@@ -166,31 +166,72 @@ function get_rocket_purge_cron_interval() {
 }
 
 /**
- * Get all uri we don't cache
+ * Get all uri we don't cache.
  *
- * @since 2.6   Using json_get_url_prefix() to auto-exclude the WordPress REST API
- * @since 2.4.1 Auto-exclude WordPress REST API
+ * @since 2.6   Using json_get_url_prefix() to auto-exclude the WordPress REST API.
+ * @since 2.4.1 Auto-exclude WordPress REST API.
  * @since 2.0
  *
- * @return array List of rejected uri
+ * @return string A pipe separated list of rejected uri.
  */
 function get_rocket_cache_reject_uri() {
-	$uri = get_rocket_option( 'cache_reject_uri', array() );
+	$uris      = get_rocket_option( 'cache_reject_uri', array() );
+	$home_root = rocket_get_home_dirname();
+
+	if ( '' !== $home_root ) {
+		// The site is not at the domain root, it's in a folder.
+		$home_root_escaped = preg_quote( $home_root, '/' );
+		$home_root_len     = strlen( $home_root );
+
+		foreach ( $uris as $i => $uri ) {
+			/**
+			 * Since these URIs can be regex patterns like `/homeroot(/.+)/`, we can't simply search for the string `/homeroot/` (nor `/homeroot`).
+			 * So this pattern searchs for `/homeroot/` and `/homeroot(/`.
+			 */
+			if ( ! preg_match( '/' . $home_root_escaped . '\(?\//', $uri ) ) {
+				// Reject URIs located outside site's folder.
+				unset( $uris[ $i ] );
+			} else {
+				// Remove the home directory.
+				$uris[ $i ] = substr( $uri, $home_root_len );
+			}
+		}
+	}
 
 	// Exclude feeds.
-	$uri[] = '(.*)/' . $GLOBALS['wp_rewrite']->feed_base . '/?';
+	$uris[] = '/(.+/)?' . $GLOBALS['wp_rewrite']->feed_base . '/?';
 
 	/**
 	 * Filter the rejected uri
 	 *
 	 * @since 2.1
 	 *
-	 * @param array $uri List of rejected uri
+	 * @param array $uris List of rejected uri
 	*/
-	$uri = apply_filters( 'rocket_cache_reject_uri', $uri );
+	$uris = apply_filters( 'rocket_cache_reject_uri', $uris );
+	$uris = array_filter( $uris );
 
-	$uri = implode( '|', array_filter( $uri ) );
-	return $uri;
+	if ( ! $uris ) {
+		return '';
+	}
+
+	if ( '' !== $home_root ) {
+		foreach ( $uris as $i => $uri ) {
+			if ( preg_match( '/' . $home_root_escaped . '\(?\//', $uri ) ) {
+				// Remove the home directory from the new URIs.
+				$uris[ $i ] = substr( $uri, $home_root_len );
+			}
+		}
+	}
+
+	$uris = implode( '|', $uris );
+
+	if ( '' !== $home_root ) {
+		// Add the home directory back.
+		$uris = $home_root . '(' . $uris . ')';
+	}
+
+	return $uris;
 }
 
 /**
