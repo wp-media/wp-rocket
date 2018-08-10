@@ -133,6 +133,13 @@ class Combine extends Abstract_JS_Optimization {
 							return;
 						}
 					}
+
+					$this->scripts[] = [
+						'type'    => 'url',
+						'content' => $matches[2],
+					];
+
+					return $script;
 				}
 
 				if ( $this->is_minify_excluded_file( $matches ) ) {
@@ -143,14 +150,20 @@ class Combine extends Abstract_JS_Optimization {
 					return;
 				}
 
+				$file_path = $this->get_file_path( $matches[2] );
+
+				if ( ! $file_path ) {
+					return;
+				}
+
 				$this->scripts[] = [
-					'type'    => 'url',
-					'content' => $matches[2],
+					'type'    => 'file',
+					'content' => $file_path,
 				];
 			} elseif ( ! isset( $matches[2] ) ) {
 				preg_match( '/<script\b([^>]*)>(?:\/\*\s*<!\[CDATA\[\s*\*\/)?\s*([\s\S]*?)\s*(?:\/\*\s*\]\]>\s*\*\/)?<\/script>/msi', $script[0], $matches_inline );
 
-				if ( preg_match( '/type\s*=\s*["\']?(?:text|application)\/(?:template|html|ld\+json)["\']?/i', $matches_inline[1] ) ) {
+				if ( preg_match( '/type\s*=\s*["\']?(?:text|application)\/(?:(?:x\-)?template|html|ld\+json)["\']?/i', $matches_inline[1] ) ) {
 					return;
 				}
 
@@ -188,13 +201,12 @@ class Combine extends Abstract_JS_Optimization {
 		$content = '';
 
 		foreach ( $this->scripts as $script ) {
-			if ( 'url' === $script['type'] && ! $this->is_external_file( $script['content'] ) ) {
-				$file         = $this->get_file_path( $script['content'] );
-				$file_content = $this->get_file_content( $file );
+			if ( 'file' === $script['type'] ) {
+				$file_content = $this->get_file_content( $script['content'] );
 				$content     .= $file_content;
 
 				$this->add_to_minify( $file_content );
-			} elseif ( 'url' === $script['type'] && $this->is_external_file( $script['content'] ) ) {
+			} elseif ( 'url' === $script['type'] ) {
 				$file_content = $this->local_cache->get_content( rocket_add_url_protocol( $script['content'] ) );
 				$content     .= $file_content;
 
@@ -302,6 +314,7 @@ class Combine extends Abstract_JS_Optimization {
 			'GoogleAnalyticsObject',
 			'syntaxhighlighter',
 			'adsbygoogle',
+			'ci_cap_',
 			'_stq',
 			'nonce',
 			'post_id',
@@ -317,6 +330,7 @@ class Combine extends Abstract_JS_Optimization {
 			'tdBlock',
 			'tdLocalCache',
 			'lazyLoadOptions',
+			'adthrive',
 		] );
 	}
 
@@ -380,7 +394,10 @@ class Combine extends Abstract_JS_Optimization {
 			's.gravatar.com',
 			'googlesyndication.com',
 			'a.optmstr.com',
-			'a.optmnstr.com',			
+			'a.optmnstr.com',
+			'adthrive.com',
+			'mediavine.com',
+			'js.hsforms.net',
 		] );
 	}
 }

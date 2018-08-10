@@ -1,4 +1,6 @@
 <?php
+use MatthiasMullie\Minify;
+
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**

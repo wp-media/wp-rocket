@@ -50,7 +50,11 @@ Method : SUITCSS (modified)
     border-right: none;
 }
 
-
+// Show sidebar
+.wpr-Content-tips {
+    right: unset;
+    left: 24px;
+}
 
 // layout/Sidebar
 .wpr-Sidebar{
