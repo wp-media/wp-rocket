@@ -518,13 +518,7 @@ function rocket_get_main_home_url() {
 		return $root_url;
 	}
 
-	$current_network = false;
-
-	if ( function_exists( 'get_network' ) ) {
-		$current_network = get_network();
-	} elseif ( function_exists( 'get_current_site' ) ) {
-		$current_network = get_current_site();
-	}
+	$current_network = get_network();
 
 	if ( $current_network ) {
 		$root_url = set_url_scheme( 'https://' . $current_network->domain . $current_network->path );
