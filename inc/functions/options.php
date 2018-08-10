@@ -191,10 +191,11 @@ function get_rocket_cache_reject_uri() {
 			if ( ! preg_match( '/' . $home_root_escaped . '\(?\//', $uri ) ) {
 				// Reject URIs located outside site's folder.
 				unset( $uris[ $i ] );
-			} else {
-				// Remove the home directory.
-				$uris[ $i ] = substr( $uri, $home_root_len );
+				continue;
 			}
+
+			// Remove the home directory.
+			$uris[ $i ] = substr( $uri, $home_root_len );
 		}
 	}
 
