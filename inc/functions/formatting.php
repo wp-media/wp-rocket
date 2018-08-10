@@ -328,8 +328,8 @@ function rocket_url_to_path( $url, $hosts = '' ) {
 		$url = str_replace( $url_host, wp_parse_url( site_url(), PHP_URL_HOST ), $url );
 	}
 
-	$root_url = preg_replace( '/https?:/', '', $root_url );
-	$url      = preg_replace( '/https?:/', '', $url );
+	$root_url = preg_replace( '/^https?:/', '', $root_url );
+	$url      = preg_replace( '/^https?:/', '', $url );
 	$file     = str_replace( $root_url, $root_dir, $url );
 	$file     = rocket_realpath( $file );
 
