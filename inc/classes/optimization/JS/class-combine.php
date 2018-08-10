@@ -150,7 +150,7 @@ class Combine extends Abstract_JS_Optimization {
 			} elseif ( ! isset( $matches[2] ) ) {
 				preg_match( '/<script\b([^>]*)>(?:\/\*\s*<!\[CDATA\[\s*\*\/)?\s*([\s\S]*?)\s*(?:\/\*\s*\]\]>\s*\*\/)?<\/script>/msi', $script[0], $matches_inline );
 
-				if ( preg_match( '/type\s*=\s*["\']?(?:text|application)\/(?:template|html|ld\+json)["\']?/i', $matches_inline[1] ) ) {
+				if ( preg_match( '/type\s*=\s*["\']?(?:text|application)\/(?:(?:x\-)?template|html|ld\+json)["\']?/i', $matches_inline[1] ) ) {
 					return;
 				}
 
