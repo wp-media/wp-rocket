@@ -35,6 +35,12 @@ abstract class ActionScheduler_Abstract_QueueRunner {
 	public function process_action( $action_id ) {
 		try {
 			do_action( 'action_scheduler_before_execute', $action_id );
+
+			if ( ActionScheduler_Store::STATUS_PENDING !== $this->store->get_status( $action_id ) ) {
+				do_action( 'action_scheduler_execution_ignored', $action_id );
+				return;
+			}
+
 			$action = $this->store->fetch_action( $action_id );
 			$this->store->log_execution( $action_id );
 			$action->execute();
