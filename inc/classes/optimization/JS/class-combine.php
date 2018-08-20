@@ -330,9 +330,10 @@ class Combine extends Abstract_JS_Optimization {
 			'tdBlock',
 			'tdLocalCache',
 			'td_live_css_uid',
-			'tdAjaxCount',			
+			'tdAjaxCount',
 			'lazyLoadOptions',
 			'adthrive',
+			'google_tag_params',
 		] );
 	}
 
@@ -400,6 +401,7 @@ class Combine extends Abstract_JS_Optimization {
 			'adthrive.com',
 			'mediavine.com',
 			'js.hsforms.net',
+			'googleadservices.com',
 		] );
 	}
 }
