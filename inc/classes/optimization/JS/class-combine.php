@@ -333,6 +333,7 @@ class Combine extends Abstract_JS_Optimization {
 			'tdAjaxCount',
 			'lazyLoadOptions',
 			'adthrive',
+			'google_tag_params',
 			'clicky_custom',
 			'clicky_site_ids',
 			'NSLPopupCenter',
@@ -403,6 +404,7 @@ class Combine extends Abstract_JS_Optimization {
 			'adthrive.com',
 			'mediavine.com',
 			'js.hsforms.net',
+			'googleadservices.com',
 		] );
 	}
 }
