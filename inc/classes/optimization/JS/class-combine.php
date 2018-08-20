@@ -80,7 +80,8 @@ class Combine extends Abstract_JS_Optimization {
 	 * @return string
 	 */
 	public function optimize( $html ) {
-		$scripts = $this->find( '<script.*<\/script>', $html );
+		$html_nocomments = preg_replace( '/<!--(.*)-->/Uis', '', $html );
+		$scripts         = $this->find( '<script.*<\/script>', $html_nocomments );
 
 		if ( ! $scripts ) {
 			return $html;

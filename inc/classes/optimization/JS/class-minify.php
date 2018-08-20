@@ -20,7 +20,8 @@ class Minify extends Abstract_JS_Optimization {
 	 * @return string
 	 */
 	public function optimize( $html ) {
-		$scripts = $this->find( '<script\s+([^>]+[\s\'"])?src\s*=\s*[\'"]\s*?([^\'"]+\.js(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>', $html );
+		$html_nocomments = preg_replace( '/<!--(.*)-->/Uis', '', $html );
+		$scripts         = $this->find( '<script\s+([^>]+[\s\'"])?src\s*=\s*[\'"]\s*?([^\'"]+\.js(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>', $html_nocomments );
 
 		if ( ! $scripts ) {
 			return $html;

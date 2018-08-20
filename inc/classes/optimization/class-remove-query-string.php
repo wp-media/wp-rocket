@@ -98,7 +98,8 @@ class Remove_Query_String extends Abstract_Optimization {
 	 * @return string
 	 */
 	public function remove_query_strings_css( $html ) {
-		$styles = $this->find( '<link\s+([^>]+[\s\'"])?href\s*=\s*[\'"]\s*?([^\'"]+\.css(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>', $html );
+		$html_nocomments = preg_replace( '/<!--(.*)-->/Uis', '', $html );
+		$styles          = $this->find( '<link\s+([^>]+[\s\'"])?href\s*=\s*[\'"]\s*?([^\'"]+\.css(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>', $html_nocomments );
 
 		if ( ! $styles ) {
 			return $html;
@@ -136,7 +137,8 @@ class Remove_Query_String extends Abstract_Optimization {
 	 * @return string
 	 */
 	public function remove_query_strings_js( $html ) {
-		$scripts = $this->find( '<script\s+([^>]+[\s\'"])?src\s*=\s*[\'"]\s*?([^\'"]+\.js(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>', $html );
+		$html_nocomments = preg_replace( '/<!--(.*)-->/Uis', '', $html );
+		$scripts         = $this->find( '<script\s+([^>]+[\s\'"])?src\s*=\s*[\'"]\s*?([^\'"]+\.js(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>', $html_nocomments );
 
 		if ( ! $scripts ) {
 			return $html;
