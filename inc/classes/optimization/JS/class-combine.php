@@ -334,6 +334,9 @@ class Combine extends Abstract_JS_Optimization {
 			'lazyLoadOptions',
 			'adthrive',
 			'google_tag_params',
+			'clicky_custom',
+			'clicky_site_ids',
+			'NSLPopupCenter',
 		] );
 	}
 
