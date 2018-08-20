@@ -18,7 +18,16 @@ function rocket_lazyload_script() {
 		return;
 	}
 
-	$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+	$suffix   = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+	$elements = [];
+
+	if ( get_rocket_option( 'lazyload' ) ) {
+		$elements[] = 'img';
+	}
+
+	if ( get_rocket_option( 'lazyload_iframes' ) ) {
+		$elements[] = 'iframe';
+	}
 
 	/**
 	 * Filters the threshold at which lazyload is triggered
@@ -36,14 +45,14 @@ function rocket_lazyload_script() {
 	var v = !("IntersectionObserver" in w) ? "8.12" : "10.12";
 	s.src = "' . get_rocket_cdn_url( WP_ROCKET_FRONT_JS_URL, array( 'all', 'css_and_js', 'js' ) ) . 'lazyload-" + v + "' . $suffix . '.js";
 	w.lazyLoadOptions = {
-		elements_selector: "img, iframe",
+		elements_selector: "' . esc_attr( implode( ',', $elements ) ) . '",
 		data_src: "lazy-src",
 		data_srcset: "lazy-srcset",
 		data_sizes: "lazy-sizes",
 		skip_invisible: false,
 		class_loading: "lazyloading",
 		class_loaded: "lazyloaded",
-		threshold: ' . $threshold . ',
+		threshold: ' . esc_attr( $threshold ) . ',
 		callback_load: function(element) {
 			if ( element.tagName === "IFRAME" && element.dataset.rocketLazyload == "fitvidscompatible" ) {
 				if (element.classList.contains("lazyloaded") ) {
