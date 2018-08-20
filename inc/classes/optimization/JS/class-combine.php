@@ -333,6 +333,7 @@ class Combine extends Abstract_JS_Optimization {
 			'tdAjaxCount',
 			'lazyLoadOptions',
 			'adthrive',
+			'loadCSS',
 			'google_tag_params',
 			'clicky_custom',
 			'clicky_site_ids',
