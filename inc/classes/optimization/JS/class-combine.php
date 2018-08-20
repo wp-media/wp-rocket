@@ -163,7 +163,7 @@ class Combine extends Abstract_JS_Optimization {
 			} elseif ( ! isset( $matches[2] ) ) {
 				preg_match( '/<script\b([^>]*)>(?:\/\*\s*<!\[CDATA\[\s*\*\/)?\s*([\s\S]*?)\s*(?:\/\*\s*\]\]>\s*\*\/)?<\/script>/msi', $script[0], $matches_inline );
 
-				if ( preg_match( '/type\s*=\s*["\']?(?:text|application)\/(?:(?:x\-)?template|tpl|html|ld\+json)["\']?/i', $matches_inline[1] ) ) {
+				if ( strpos( $matches_inline[1], 'type' ) !== 'false' && ! preg_match( '/type\s*=\s*["\']?(?:text|application)\/(?:(?:x\-)?javascript|ecmascript)["\']?/i', $matches_inline[1] ) ) {
 					return;
 				}
 
@@ -334,6 +334,10 @@ class Combine extends Abstract_JS_Optimization {
 			'lazyLoadOptions',
 			'adthrive',
 			'loadCSS',
+			'google_tag_params',
+			'clicky_custom',
+			'clicky_site_ids',
+			'NSLPopupCenter',
 		] );
 	}
 
@@ -401,6 +405,7 @@ class Combine extends Abstract_JS_Optimization {
 			'adthrive.com',
 			'mediavine.com',
 			'js.hsforms.net',
+			'googleadservices.com',
 		] );
 	}
 }
