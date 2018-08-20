@@ -329,6 +329,8 @@ class Combine extends Abstract_JS_Optimization {
 			'ANS_customer_id',
 			'tdBlock',
 			'tdLocalCache',
+			'td_live_css_uid',
+			'tdAjaxCount',			
 			'lazyLoadOptions',
 			'adthrive',
 		] );
