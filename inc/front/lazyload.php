@@ -531,8 +531,13 @@ function rocket_lazyload_get_youtube_id_from_url( $url ) {
 	$pattern = '#^(?:https?://)?(?:www\.)?(?:youtu\.be|youtube\.com|youtube-nocookie\.com)/(?:embed/|v/|watch/?\?v=)([\w-]{11})#iU';
 	$result  = preg_match( $pattern, $url, $matches );
 
-	if ( $result ) {
-		return $matches[1];
+	if ( ! $result ) {
+		return false;
 	}
-	return false;
+
+	if ( 'videoseries' === $matches[1] ) {
+		return false;
+	}
+
+	return $matches[1];
 }
