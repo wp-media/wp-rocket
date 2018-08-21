@@ -5,7 +5,6 @@ use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Busting\Busting_Factory;
 use WP_Rocket\Admin\Options_Data as Options;
-use Wa72\HtmlPageDom\HtmlPageCrawler;
 
 /**
  * Event subscriber for Google tracking cache busting
@@ -22,13 +21,6 @@ class Google_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface {
 	private $busting_factory;
 
 	/**
-	 * Instance of the HtmlPageCrawler class
-	 *
-	 * @var HtmlPageCrawler
-	 */
-	private $crawler;
-
-	/**
 	 * Instance of the Option_Data class
 	 *
 	 * @var Options
@@ -39,12 +31,10 @@ class Google_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface {
 	 * Constructor
 	 *
 	 * @param Busting_Factory $busting_factory Instance of the Busting Factory class.
-	 * @param HtmlPageCrawler $crawler Instance of the HtmlPageCrawler class.
 	 * @param Options         $options Instance of the Option_Data class.
 	 */
-	public function __construct( Busting_Factory $busting_factory, HtmlPageCrawler $crawler, Options $options ) {
+	public function __construct( Busting_Factory $busting_factory, Options $options ) {
 		$this->busting_factory = $busting_factory;
-		$this->crawler         = $crawler;
 		$this->options         = $options;
 	}
 
@@ -57,19 +47,8 @@ class Google_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface {
 			'init'                                => 'schedule_tracking_cache_update',
 			'rocket_google_tracking_cache_update' => 'update_tracking_cache',
 			'after_rocket_clean_cache_busting'    => 'delete_tracking_cache',
+			'rocket_buffer'                       => 'cache_busting_google_tracking',
 		];
-
-		/**
-		 * Filters application of hooks on rocket_buffer filter
-		 *
-		 * @since 3.1
-		 * @author Remy Perona
-		 *
-		 * @param bool $enable Enable application of hooks.
-		 */
-		if ( apply_filters( 'rocket_buffer_enable', true ) ) {
-			$events['rocket_buffer'] = 'cache_busting_google_tracking';
-		}
 
 		return $events;
 	}
@@ -111,9 +90,7 @@ class Google_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface {
 		}
 
 		$processor = $this->busting_factory->type( 'ga' );
-		$crawler   = $this->crawler;
-		$crawler   = $crawler::create( $html );
-		$html      = $processor->replace_url( $crawler );
+		$html      = $processor->replace_url( $html );
 
 		if ( $processor->is_replaced() ) {
 			return $html;
@@ -121,7 +98,7 @@ class Google_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface {
 
 		$processor = $this->busting_factory->type( 'gtm' );
 
-		return $processor->replace_url( $crawler );
+		return $processor->replace_url( $html );
 	}
 
 	/**
@@ -171,7 +148,7 @@ class Google_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface {
 	 */
 	public function add_schedule( $schedules ) {
 		if ( ! $this->options->get( 'google_analytics_cache', 0 ) ) {
-			return;
+			return $schedules;
 		}
 
 		$schedules['weekly'] = array(

@@ -95,12 +95,8 @@ class Rocket_Critical_CSS {
 		add_action( 'admin_notices', array( $this, 'critical_css_generation_complete_notice' ) );
 		add_action( 'admin_notices', array( $this, 'warning_critical_css_dir_permissions' ) );
 		add_action( 'wp_head', array( $this, 'insert_load_css' ), PHP_INT_MAX );
-		if ( get_rocket_option( 'minify_concatenate_css' ) ) {
-			add_filter( 'rocket_buffer', array( $this, 'insert_critical_css_buffer' ), 14 );
-		} else {
-			add_action( 'wp_head', array( $this, 'insert_critical_css' ), 1 );
-		}
-		add_filter( 'rocket_buffer', array( $this, 'async_css' ), 15 );
+		add_filter( 'rocket_buffer', array( $this, 'insert_critical_css_buffer' ), 20 );
+		add_filter( 'rocket_buffer', array( $this, 'async_css' ), 20 );
 		add_action( 'rocket_critical_css_generation_process_complete', 'rocket_clean_domain' );
 	}
 

@@ -48,9 +48,9 @@ function rocket_defer_js( $buffer ) {
 		}
 
 		$deferred_tag = str_replace( '></script>', ' defer></script>', $tag );
-		$buffer = str_replace( $tag, $deferred_tag, $buffer );
+		$buffer       = str_replace( $tag, $deferred_tag, $buffer );
 	}
 
 	return $buffer;
 }
-add_filter( 'rocket_buffer', 'rocket_defer_js', 14 );
+add_filter( 'rocket_buffer', 'rocket_defer_js', 15 );

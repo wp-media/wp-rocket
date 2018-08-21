@@ -2,8 +2,8 @@
 namespace WP_Rocket\Subscriber\Optimization;
 
 use WP_Rocket\Optimization\JS;
+use WP_Rocket\Optimization\Assets_Local_Cache;
 use WP_Rocket\Admin\Options_Data as Options;
-use Wa72\HtmlPageDom\HtmlPageCrawler;
 use \MatthiasMullie\Minify;
 
 /**
@@ -22,11 +22,8 @@ class Minify_JS_Subscriber extends Minify_Subscriber {
 				[ 'fix_ssl_minify' ],
 				[ 'i18n_multidomain_url' ],
 			],
+			'rocket_buffer' => [ 'process', 14 ],
 		];
-
-		if ( apply_filters( 'rocket_buffer_enable', true ) ) {
-			$events['rocket_buffer'] = [ 'process', 14 ];
-		}
 
 		return $events;
 	}
@@ -39,18 +36,13 @@ class Minify_JS_Subscriber extends Minify_Subscriber {
 			return $html;
 		}
 
-		list( $html, $conditionals ) = $this->extract_ie_conditionals( $html );
-
-		$crawler = $this->crawler;
-		$crawler = $crawler::create( $html );
-
 		if ( $this->options->get( 'minify_js' ) && $this->options->get( 'minify_concatenate_js' ) ) {
-			$this->set_optimization_type( new JS\Combine( $crawler, $this->options, new Minify\JS() ) );
+			$this->set_optimization_type( new JS\Combine( $this->options, new Minify\JS(), new Assets_Local_Cache( WP_ROCKET_MINIFY_CACHE_PATH ) ) );
 		} elseif ( $this->options->get( 'minify_js' ) && ! $this->options->get( 'minify_concatenate_js' ) ) {
-			$this->set_optimization_type( new JS\Minify( $crawler, $this->options ) );
+			$this->set_optimization_type( new JS\Minify( $this->options ) );
 		}
 
-		return $this->inject_ie_conditionals( $this->optimize(), $conditionals );
+		return $this->optimize( $html );
 	}
 
 	/**

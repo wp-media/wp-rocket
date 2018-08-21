@@ -77,9 +77,13 @@ class Cache_Dynamic_Resource extends Abstract_Optimization {
 		 */
 		$this->excluded_files   = apply_filters( 'rocket_exclude_static_dynamic_resources', array() );
 		$this->excluded_files[] = '/wp-admin/admin-ajax.php';
-		$delimiter              = array_fill( 0, count( $this->excluded_files ), '#' );
-		$this->excluded_files   = array_map( 'preg_quote', $this->excluded_files, $delimiter );
-		$this->excluded_files   = implode( '|', $this->excluded_files );
+
+		foreach ( $this->excluded_files as $i => $excluded_file ) {
+			// Escape character for future use in regex pattern.
+			$this->excluded_files[ $i ] = str_replace( '#', '\#', $excluded_file );
+		}
+
+		$this->excluded_files = implode( '|', $this->excluded_files );
 	}
 
 	/**
@@ -247,6 +251,10 @@ class Cache_Dynamic_Resource extends Abstract_Optimization {
 		$absolute_path = $this->get_file_path( $url );
 
 		if ( ! $content ) {
+			return false;
+		}
+
+		if ( ! $absolute_path ) {
 			return false;
 		}
 

@@ -2,7 +2,7 @@
 namespace WP_Rocket\Optimization\JS;
 
 use WP_Rocket\Admin\Options_Data as Options;
-use Wa72\HtmlPageDom\HtmlPageCrawler;
+use WP_Rocket\Optimization\Assets_Local_Cache;
 use MatthiasMullie\Minify;
 
 /**
@@ -23,63 +23,94 @@ class Combine extends Abstract_JS_Optimization {
 	private $minifier;
 
 	/**
+	 * Assets local cache instance
+	 *
+	 * @since 3.1
+	 * @author Remy Perona
+	 *
+	 * @var Assets_Local_Cache
+	 */
+	private $local_cache;
+
+	/**
+	 * JQuery URL
+	 *
+	 * @since 3.1
+	 * @author Remy Perona
+	 *
+	 * @var bool|string
+	 */
+	private $jquery_url;
+
+	/**
+	 * Scripts to combine
+	 *
+	 * @since 3.1
+	 * @author Remy Perona
+	 *
+	 * @var array
+	 */
+	private $scripts = [];
+
+	/**
 	 * Constructor
 	 *
 	 * @since 3.1
 	 * @author Remy Perona
 	 *
-	 * @param HtmlPageCrawler $crawler  Crawler instance.
-	 * @param Options         $options  Plugin options instance.
-	 * @param Minify\JS       $minifier Minifier instance.
+	 * @param Options            $options  Plugin options instance.
+	 * @param Minify\JS          $minifier Minifier instance.
+	 * @param Assets_Local_Cache $local_cache Assets local cache instance.
 	 */
-	public function __construct( HtmlPageCrawler $crawler, Options $options, Minify\JS $minifier ) {
-		parent::__construct( $crawler, $options );
+	public function __construct( Options $options, Minify\JS $minifier, Assets_Local_Cache $local_cache ) {
+		parent::__construct( $options );
 
-		$this->minifier = $minifier;
+		$this->minifier    = $minifier;
+		$this->local_cache = $local_cache;
+		$this->jquery_url  = $this->get_jquery_url();
 	}
 
 	/**
-	 * Combines multiple Google Fonts links into one
+	 * Minifies and combines JavaScripts into one
 	 *
 	 * @since 3.1
 	 * @author Remy Perona
 	 *
+	 * @param string $html HTML content.
 	 * @return string
 	 */
-	public function optimize() {
-		$nodes = $this->find( 'script' );
+	public function optimize( $html ) {
+		$scripts = $this->find( '<script.*<\/script>', $html );
 
-		if ( ! $nodes ) {
-			return $this->crawler->saveHTML();
+		if ( ! $scripts ) {
+			return $html;
 		}
 
-		$combine_nodes = $this->parse( $nodes );
+		$combine_scripts = $this->parse( $scripts );
 
-		if ( empty( $combine_nodes ) ) {
-			return $this->crawler->saveHTML();
+		if ( empty( $combine_scripts ) ) {
+			return $html;
 		}
 
-		$content = $this->get_content( $combine_nodes );
+		$content = $this->get_content();
 
 		if ( empty( $content ) ) {
-			return $this->crawler->saveHTML();
+			return $html;
 		}
 
 		$minify_url = $this->combine( $content );
 
 		if ( ! $minify_url ) {
-			return $this->crawler->saveHTML();
+			return $html;
 		}
 
-		if ( ! $this->inject_combined_url( $minify_url ) ) {
-			return $this->crawler->saveHTML();
+		$html = str_replace( '</body>', '<script src="' . esc_url( $minify_url ) . '" data-minify="1"></script></body>', $html );
+
+		foreach ( $combine_scripts as $script ) {
+			$html = str_replace( $script[0], '', $html );
 		}
 
-		foreach ( $combine_nodes as $node ) {
-			$node->remove();
-		}
-
-		return $this->crawler->saveHTML();
+		return $html;
 	}
 
 	/**
@@ -88,52 +119,74 @@ class Combine extends Abstract_JS_Optimization {
 	 * @since 3.1
 	 * @author Remy Perona
 	 *
-	 * @param HtmlPageCrawler $nodes NodeS corresponding to JS file or content.
+	 * @param Array $scripts scripts corresponding to JS file or content.
 	 * @return array
 	 */
-	protected function parse( $nodes ) {
-		$combine_nodes = $nodes->each( function( \Wa72\HtmlPageDom\HtmlPageCrawler $node, $i ) {
-			global $wp_scripts;
+	protected function parse( $scripts ) {
+		$scripts = array_map( function( $script ) {
+			preg_match( '/<script\s+([^>]+[\s\'"])?src\s*=\s*[\'"]\s*?([^\'"]+\.js(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>/Umsi', $script[0], $matches );
 
-			$src = $node->attr( 'src' );
-
-			if ( $src ) {
-				if ( $this->is_external_file( $src ) ) {
-					foreach ( $this->get_excluded_external_file_path() as $excluded_external_file ) {
-						if ( false !== strpos( $src, $excluded_external_file ) ) {
+			if ( isset( $matches[2] ) ) {
+				if ( $this->is_external_file( $matches[2] ) ) {
+					foreach ( $this->get_excluded_external_file_path() as $excluded_file ) {
+						if ( false !== strpos( $matches[2], $excluded_file ) ) {
 							return;
 						}
 					}
+
+					$this->scripts[] = [
+						'type'    => 'url',
+						'content' => $matches[2],
+					];
+
+					return $script;
 				}
 
-				if ( $this->is_minify_excluded_file( $node ) ) {
+				if ( $this->is_minify_excluded_file( $matches ) ) {
 					return;
 				}
 
-				$jquery_url = $this->get_jquery_url();
-
-				if ( $jquery_url && false !== strpos( $src, $jquery_url ) ) {
-					return;
-				}
-			} elseif ( is_null( $src ) ) {
-				$type = $node->attr( 'type' );
-
-				if ( 'application/ld+json' === $type ) {
+				if ( $this->jquery_url && false !== strpos( $matches[2], $this->jquery_url ) ) {
 					return;
 				}
 
-				$inline_js = $node->html();
-				foreach ( $this->get_excluded_inline_content() as $excluded_inline_content ) {
-					if ( false !== strpos( $inline_js, $excluded_inline_content ) ) {
+				$file_path = $this->get_file_path( $matches[2] );
+
+				if ( ! $file_path ) {
+					return;
+				}
+
+				$this->scripts[] = [
+					'type'    => 'file',
+					'content' => $file_path,
+				];
+			} elseif ( ! isset( $matches[2] ) ) {
+				preg_match( '/<script\b([^>]*)>(?:\/\*\s*<!\[CDATA\[\s*\*\/)?\s*([\s\S]*?)\s*(?:\/\*\s*\]\]>\s*\*\/)?<\/script>/msi', $script[0], $matches_inline );
+
+				if ( preg_match( '/type\s*=\s*["\']?(?:text|application)\/(?:(?:x\-)?template|html|ld\+json)["\']?/i', $matches_inline[1] ) ) {
+					return;
+				}
+
+				if ( false !== strpos( $matches_inline[1], 'src=' ) ) {
+					return;
+				}
+
+				foreach ( $this->get_excluded_inline_content() as $excluded_content ) {
+					if ( false !== strpos( $matches_inline[2], $excluded_content ) ) {
 						return;
 					}
 				}
+
+				$this->scripts[] = [
+					'type'    => 'inline',
+					'content' => $matches_inline[2],
+				];
 			}
 
-			return $node;
-		} );
+			return $script;
+		}, $scripts );
 
-		return array_filter( array_unique( $combine_nodes ) );
+		return array_filter( $scripts );
 	}
 
 	/**
@@ -142,28 +195,24 @@ class Combine extends Abstract_JS_Optimization {
 	 * @since 3.1
 	 * @author Remy Perona
 	 *
-	 * @param array $nodes Array of nodes.
 	 * @return string
 	 */
-	protected function get_content( $nodes ) {
+	protected function get_content() {
 		$content = '';
 
-		foreach ( $nodes as $node ) {
-			$src = $node->attr( 'src' );
-
-			if ( $src && ! $this->is_external_file( $src ) ) {
-				$file         = $this->get_file_path( $src );
-				$file_content = $this->get_file_content( $file );
+		foreach ( $this->scripts as $script ) {
+			if ( 'file' === $script['type'] ) {
+				$file_content = $this->get_file_content( $script['content'] );
 				$content     .= $file_content;
 
 				$this->add_to_minify( $file_content );
-			} elseif ( $src && $this->is_external_file( $src ) ) {
-				$file_content = $this->get_url_content( rocket_add_url_protocol( $src ) );
+			} elseif ( 'url' === $script['type'] ) {
+				$file_content = $this->local_cache->get_content( rocket_add_url_protocol( $script['content'] ) );
 				$content     .= $file_content;
 
 				$this->add_to_minify( $file_content );
-			} elseif ( is_null( $src ) ) {
-				$inline_js = rtrim( $node->html(), ";\n\t\r" ) . ';';
+			} elseif ( 'inline' === $script['type'] ) {
+				$inline_js = rtrim( $script['content'], ";\n\t\r" ) . ';';
 				$content  .= $inline_js;
 
 				$this->add_to_minify( $inline_js );
@@ -171,25 +220,6 @@ class Combine extends Abstract_JS_Optimization {
 		}
 
 		return $content;
-	}
-
-	/**
-	 * Adds the combined CSS URL to the HTML
-	 *
-	 * @since 3.1
-	 * @author Remy Perona
-	 *
-	 * @param string $minify_url URL to insert.
-	 * @return bool
-	 */
-	protected function inject_combined_url( $minify_url ) {
-		try {
-			$this->crawler->filter( 'body' )->append( '<script src="' . esc_url( $minify_url ) . '" data-minify="1" />' );
-		} catch ( Exception $e ) {
-			return false;
-		}
-
-		return true;
 	}
 
 	/**
@@ -259,25 +289,6 @@ class Combine extends Abstract_JS_Optimization {
 	}
 
 	/**
-	 * Gets content from an URL
-	 *
-	 * @since 3.1
-	 * @author Remy Perona
-	 *
-	 * @param string $url URL to get the content from.
-	 * @return string
-	 */
-	protected function get_url_content( $url ) {
-		$content = wp_remote_retrieve_body( wp_remote_get( $url ) );
-
-		if ( ! $content ) {
-			return false;
-		}
-
-		return $content;
-	}
-
-	/**
 	 * Patterns in content excluded from being combined
 	 *
 	 * @since 3.1
@@ -299,13 +310,27 @@ class Combine extends Abstract_JS_Optimization {
 			'edToolbar',
 			'gtag',
 			'_gaq.push',
+			'_gaLt',
 			'GoogleAnalyticsObject',
 			'syntaxhighlighter',
 			'adsbygoogle',
+			'ci_cap_',
 			'_stq',
 			'nonce',
 			'post_id',
-			'logHuman',
+			'LogHuman',
+			'idcomments_acct',
+			'ch_client',
+			'sc_online_t',
+			'_stq',
+			'bannersnack_embed',
+			'vtn_player_type',
+			'ven_video_key',
+			'ANS_customer_id',
+			'tdBlock',
+			'tdLocalCache',
+			'lazyLoadOptions',
+			'adthrive',
 		] );
 	}
 
@@ -329,9 +354,7 @@ class Combine extends Abstract_JS_Optimization {
 			'html5.js',
 			'show_ads.js',
 			'histats.com/js',
-			'statcounter.com/counter/counter.js',
 			'ws.amazon.com/widgets',
-			'media.fastclick.net',
 			'/ads/',
 			'intensedebate.com',
 			'scripts.chitika.net/',
@@ -339,28 +362,22 @@ class Combine extends Abstract_JS_Optimization {
 			'gist.github.com',
 			'forms.aweber.com',
 			'video.unrulymedia.com',
-			'gist.github.com',
 			'stats.wp.com',
 			'stats.wordpress.com',
-			'www.statcounter.com',
 			'widget.rafflecopter.com',
 			'widget-prime.rafflecopter.com',
-			'widget.supercounters.com',
 			'releases.flowplayer.org',
-			'tools.meetaffiliate.com',
 			'c.ad6media.fr',
 			'cdn.stickyadstv.com',
 			'www.smava.de',
 			'contextual.media.net',
 			'app.getresponse.com',
-			'ap.lijit.com',
 			'adserver.reklamstore.com',
 			's0.wp.com',
 			'wprp.zemanta.com',
 			'files.bannersnack.com',
 			'smarticon.geotrust.com',
 			'js.gleam.io',
-			'script.ioam.de',
 			'ir-na.amazon-adsystem.com',
 			'web.ventunotech.com',
 			'verify.authorize.net',
@@ -375,8 +392,12 @@ class Combine extends Abstract_JS_Optimization {
 			'app.ecwid.com',
 			'www.industriejobs.de',
 			's.gravatar.com',
-			'cdn.jsdelivr.net',
-			'cdnjs.cloudflare.com',
+			'googlesyndication.com',
+			'a.optmstr.com',
+			'a.optmnstr.com',
+			'adthrive.com',
+			'mediavine.com',
+			'js.hsforms.net',
 		] );
 	}
 }

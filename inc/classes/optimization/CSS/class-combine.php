@@ -2,7 +2,6 @@
 namespace WP_Rocket\Optimization\CSS;
 
 use WP_Rocket\Admin\Options_Data as Options;
-use Wa72\HtmlPageDom\HtmlPageCrawler;
 use MatthiasMullie\Minify;
 
 /**
@@ -30,87 +29,69 @@ class Combine extends Abstract_CSS_Optimization {
 	 * @since 3.1
 	 * @author Remy Perona
 	 *
-	 * @param HtmlPageCrawler $crawler  Crawler instance.
-	 * @param Options         $options  Options instance.
-	 * @param Minify\CSS      $minifier Minifier instance.
+	 * @param Options    $options  Options instance.
+	 * @param Minify\CSS $minifier Minifier instance.
 	 */
-	public function __construct( HtmlPageCrawler $crawler, Options $options, Minify\CSS $minifier ) {
-		parent::__construct( $crawler, $options );
+	public function __construct( Options $options, Minify\CSS $minifier ) {
+		parent::__construct( $options );
 
 		$this->minifier = $minifier;
 	}
 
 	/**
-	 * Combines multiple Google Fonts links into one
+	 * Minifies and combines all CSS files into one
 	 *
 	 * @since 3.1
 	 * @author Remy Perona
 	 *
+	 * @param string $html HTML content.
 	 * @return string
 	 */
-	public function optimize() {
-		$nodes = $this->find( 'link[href*=".css"]' );
+	public function optimize( $html ) {
+		$styles = $this->find( '<link\s+([^>]+[\s\'"])?href\s*=\s*[\'"]\s*?([^\'"]+\.css(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>', $html );
 
-		if ( ! $nodes ) {
-			return $this->crawler->saveHTML();
+		if ( ! $styles ) {
+			return $html;
 		}
 
-		$combine_nodes = $nodes->each( function( \Wa72\HtmlPageDom\HtmlPageCrawler $node, $i ) {
-			$src = $node->attr( 'href' );
-
-			if ( $this->is_external_file( $src ) ) {
+		$files  = [];
+		$styles = array_map( function( $style ) use ( &$files ) {
+			if ( $this->is_external_file( $style[2] ) ) {
 				return;
 			}
 
-			if ( $this->is_minify_excluded_file( $node ) ) {
+			if ( $this->is_minify_excluded_file( $style ) ) {
 				return;
 			}
 
-			return $node;
-		} );
+			$style_filepath = $this->get_file_path( $style[2] );
 
-		if ( empty( $combine_nodes ) ) {
-			return $this->crawler->saveHTML();
+			if ( ! $style_filepath ) {
+				return;
+			}
+
+			$files[] = $style_filepath;
+
+			return $style;
+		}, $styles );
+
+		if ( empty( $styles ) ) {
+			return $html;
 		}
 
-		$urls = array_map( function( $node ) {
-			return $node->attr( 'href' );
-		}, $combine_nodes );
-
-		$minify_url = $this->combine( $urls );
+		$minify_url = $this->combine( $files );
 
 		if ( ! $minify_url ) {
-			return $this->crawler->saveHTML();
+			return $html;
 		}
 
-		if ( ! $this->inject_combined_url( $minify_url ) ) {
-			return $this->crawler->saveHTML();
+		$html = str_replace( '</title>', '</title><link rel="stylesheet" href="' . $minify_url . '" data-minify="1" />', $html );
+
+		foreach ( $styles as $style ) {
+			$html = str_replace( $style[0], '', $html );
 		}
 
-		foreach ( $combine_nodes as $node ) {
-			$node->remove();
-		}
-
-		return $this->crawler->saveHTML();
-	}
-
-	/**
-	 * Adds the combined CSS URL to the HTML after the title tag
-	 *
-	 * @since 3.1
-	 * @author Remy Perona
-	 *
-	 * @param string $minify_url URL to insert.
-	 * @return bool
-	 */
-	protected function inject_combined_url( $minify_url ) {
-		try {
-			$this->crawler->filter( 'title' )->after( '<link rel="stylesheet" href="' . $minify_url . '" data-minify="1" />' );
-		} catch ( Exception $e ) {
-			return false;
-		}
-
-		return true;
+		return $html;
 	}
 
 	/**
@@ -119,26 +100,22 @@ class Combine extends Abstract_CSS_Optimization {
 	 * @since 2.11
 	 * @author Remy Perona
 	 *
-	 * @param string $urls Original file URL.
+	 * @param array $files Files to minify.
 
 	 * @return string|bool The minify URL if successful, false otherwise
 	 */
-	protected function combine( $urls ) {
-		if ( empty( $urls ) ) {
+	protected function combine( $files ) {
+		if ( empty( $files ) ) {
 			return false;
 		}
 
-		foreach ( $urls as $url ) {
-			$file_path[] = $this->get_file_path( $url );
-		}
-
-		$file_hash = implode( ',', $urls );
+		$file_hash = implode( ',', $files );
 		$filename  = md5( $file_hash . $this->minify_key ) . '.css';
 
 		$minified_file = $this->minify_base_path . $filename;
 
 		if ( ! rocket_direct_filesystem()->exists( $minified_file ) ) {
-			$minified_content = $this->minify( $file_path );
+			$minified_content = $this->minify( $files );
 
 			if ( ! $minified_content ) {
 				return false;

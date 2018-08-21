@@ -12,7 +12,7 @@ function rocket_need_api_key() {
 		<p><strong><?php echo WP_ROCKET_PLUGIN_NAME; ?></strong>: <?php _e( 'There seems to be an issue with outgoing connections from your server. Resolve per documentation, or contact support.', 'rocket' ); ?>
 		</p>
 	</div>
-<?php
+	<?php
 }
 
 /**
@@ -442,4 +442,3 @@ function rocket_settings_import_redirect( $message, $status ) {
 	wp_safe_redirect( esc_url_raw( $goback ) );
 	die();
 }
-

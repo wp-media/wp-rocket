@@ -13,11 +13,11 @@ function rocket_varnish_http_purge( $url ) {
 	$parse_url = get_rocket_parse_url( $url );
 
 	$varnish_x_purgemethod = 'default';
-	$regex = '';
+	$regex                 = '';
 
 	if ( 'vregex' === $parse_url['query'] ) {
 		$varnish_x_purgemethod = 'regex';
-		$regex = '.*';
+		$regex                 = '.*';
 	}
 
 	/**
@@ -28,7 +28,7 @@ function rocket_varnish_http_purge( $url ) {
 	*/
 	$varnish_ip = apply_filters( 'rocket_varnish_ip', '' );
 
-	if ( defined( 'WP_ROCKET_VARNISH_IP' ) && ! WP_ROCKET_VARNISH_IP ) {
+	if ( defined( 'WP_ROCKET_VARNISH_IP' ) && ! $varnish_ip ) {
 		$varnish_ip = WP_ROCKET_VARNISH_IP;
 	}
 
@@ -49,7 +49,15 @@ function rocket_varnish_http_purge( $url ) {
 			'method'      => 'PURGE',
 			'blocking'    => false,
 			'redirection' => 0,
-			'headers'     => array(
+			/**
+			 * Filters the headers to send with the Varnish purge request
+			 *
+			 * @since 3.1
+			 * @author Remy Perona
+			 *
+			 * @param array $headers Headers to send.
+			 */
+			'headers'     => apply_filters( 'rocket_varnish_purge_headers', array(
 				/**
 				 * Filters the host value passed in the request headers
 				 *
@@ -58,7 +66,7 @@ function rocket_varnish_http_purge( $url ) {
 				 */
 				'host'           => apply_filters( 'rocket_varnish_purge_request_host', $parse_url['host'] ),
 				'X-Purge-Method' => $varnish_x_purgemethod,
-			),
+			) ),
 		)
 	);
 }

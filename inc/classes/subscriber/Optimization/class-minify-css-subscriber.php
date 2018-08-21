@@ -3,7 +3,6 @@ namespace WP_Rocket\Subscriber\Optimization;
 
 use WP_Rocket\Admin\Options_Data as Options;
 use WP_Rocket\Optimization\CSS;
-use Wa72\HtmlPageDom\HtmlPageCrawler;
 use \MatthiasMullie\Minify;
 
 /**
@@ -22,11 +21,8 @@ class Minify_CSS_Subscriber extends Minify_Subscriber {
 				[ 'fix_ssl_minify' ],
 				[ 'i18n_multidomain_url' ],
 			],
+			'rocket_buffer'  => [ 'process', 16 ],
 		];
-
-		if ( apply_filters( 'rocket_buffer_enable', true ) ) {
-			$events['rocket_buffer'] = [ 'process', 16 ];
-		}
 
 		return $events;
 	}
@@ -39,18 +35,13 @@ class Minify_CSS_Subscriber extends Minify_Subscriber {
 			return $html;
 		}
 
-		list( $html, $conditionals ) = $this->extract_ie_conditionals( $html );
-
-		$crawler = $this->crawler;
-		$crawler = $crawler::create( $html );
-
 		if ( $this->options->get( 'minify_css' ) && $this->options->get( 'minify_concatenate_css' ) ) {
-			$this->set_optimization_type( new CSS\Combine( $crawler, $this->options, new Minify\CSS() ) );
+			$this->set_optimization_type( new CSS\Combine( $this->options, new Minify\CSS() ) );
 		} elseif ( $this->options->get( 'minify_css' ) && ! $this->options->get( 'minify_concatenate_css' ) ) {
-			$this->set_optimization_type( new CSS\Minify( $crawler, $this->options ) );
+			$this->set_optimization_type( new CSS\Minify( $this->options ) );
 		}
 
-		return $this->inject_ie_conditionals( $this->optimize(), $conditionals );
+		return $this->optimize( $html );
 	}
 
 	/**

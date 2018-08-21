@@ -36,57 +36,50 @@ class Google_Analytics extends Abstract_Busting {
 	/**
 	 * {@inheritdoc}
 	 */
-	public function replace_url( $crawler ) {
-		$node = $this->find( $crawler );
+	public function replace_url( $html ) {
+		$tag = $this->find( '<script[^>]*?>(.*)<\/script>', $html );
 
-		if ( ! $node ) {
-			return $crawler->saveHTML();
+		if ( ! $tag ) {
+			return $html;
 		}
 
 		if ( ! $this->save( $this->url ) ) {
-			return $crawler->saveHTML();
+			return $html;
 		}
 
-		$this->replace( $node );
+		$replace_tag = preg_replace( '/(?:https?:)?\/\/www\.google-analytics\.com\/analytics\.js/i', $this->get_busting_url(), $tag );
+		$html        = str_replace( $tag, $replace_tag, $html );
 
-		return $crawler->saveHTML();
+		$this->is_replaced = true;
+
+		return $html;
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	protected function find( $crawler ) {
-		try {
-			$nodes = $crawler->filter( 'script:not([src])' );
-		} catch ( Exception $e ) {
-			return false;
-		}
-
-		if ( ! $nodes->count() ) {
-			return false;
-		}
-
-		$matches = $nodes->each( function( \Wa72\HtmlPageDom\HtmlPageCrawler $node, $i ) {
-			if ( false !== \strpos( $node->html(), 'GoogleAnalyticsObject' ) ) {
-				return $node;
-			}
-
-			return false;
-		} );
+	protected function find( $pattern, $html ) {
+		preg_match_all( '/' . $pattern . '/Umsi', $html, $matches, PREG_SET_ORDER );
 
 		if ( empty( $matches ) ) {
 			return false;
 		}
 
-		return current( array_filter( array_unique( $matches ) ) );
-	}
+		$matches = array_map( function( $match ) {
+			if ( false === \strpos( $match[1], 'GoogleAnalyticsObject' ) ) {
+				return;
+			}
 
-	/**
-	 * {@inheritdoc}
-	 */
-	protected function replace( $node ) {
-			$node->html( str_replace( $this->url, $this->get_busting_url(), $node->html() ) );
-			$this->is_replaced = true;
+			return $match[0];
+		}, $matches );
+
+		$matches = array_values( array_filter( $matches ) );
+
+		if ( empty( $matches ) ) {
+			return false;
+		}
+
+		return $matches[0];
 	}
 
 	/**
@@ -113,5 +106,17 @@ class Google_Analytics extends Abstract_Busting {
 		$file = $this->busting_path . $this->filename;
 
 		return \rocket_direct_filesystem()->delete( $file, false, 'f' );
+	}
+
+	/**
+	 * Gets the Google Analytics URL
+	 *
+	 * @since 3.1
+	 * @author Remy Perona
+	 *
+	 * @return string
+	 */
+	public function get_url() {
+		return $this->url;
 	}
 }

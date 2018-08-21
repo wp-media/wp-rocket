@@ -18,43 +18,41 @@ class Minify extends Abstract_CSS_Optimization {
 	 * @since 3.1
 	 * @author Remy Perona
 	 *
+	 * @param string $html HTML content.
 	 * @return string
 	 */
-	public function optimize() {
-		$nodes = $this->find( 'link[href*=".css"]' );
+	public function optimize( $html ) {
+		$styles = $this->find( '<link\s+([^>]+[\s"\'])?href\s*=\s*[\'"]\s*?([^\'"]+\.css(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>', $html );
 
-		if ( ! $nodes ) {
-			return $this->crawler->saveHTML();
+		if ( ! $styles ) {
+			return $html;
 		}
 
-		$nodes->each( function( \Wa72\HtmlPageDom\HtmlPageCrawler $node, $i ) {
-			$src = $node->attr( 'href' );
-
-			if ( preg_match( '/(?:-|\.)min.css/iU', $src ) ) {
-				return;
+		foreach ( $styles as $style ) {
+			if ( preg_match( '/(?:-|\.)min.css/iU', $style[2] ) ) {
+				continue;
 			}
 
-			if ( $this->is_external_file( $src ) ) {
-				return;
+			if ( $this->is_external_file( $style[2] ) ) {
+				continue;
 			}
 
-			if ( $this->is_minify_excluded_file( $node ) ) {
-				return;
+			if ( $this->is_minify_excluded_file( $style ) ) {
+				continue;
 			}
 
-			$minify_url = $this->replace_url( $src );
+			$minify_url = $this->replace_url( $style[2] );
 
 			if ( ! $minify_url ) {
-				return;
+				continue;
 			}
 
-			$node->attr( 'href', $minify_url );
-			$node->attr( 'data-minify', '1' );
+			$replace_style = str_replace( $style[2], $minify_url, $style[0] );
+			$replace_style = str_replace( '<link', '<link data-minify="1"', $replace_style );
+			$html          = str_replace( $style[0], $replace_style, $html );
+		}
 
-			return;
-		} );
-
-		return $this->crawler->saveHTML();
+		return $html;
 	}
 
 	/**
@@ -76,22 +74,31 @@ class Minify extends Abstract_CSS_Optimization {
 		$filename  = preg_replace( '/\.(css)$/', '-' . $unique_id . '.css', ltrim( rocket_realpath( rocket_extract_url_component( $url, PHP_URL_PATH ) ), '/' ) );
 
 		$minified_file = $this->minify_base_path . $filename;
+		$minify_url    = $this->get_minify_url( $filename );
 
-		if ( ! rocket_direct_filesystem()->exists( $minified_file ) ) {
-			$minified_content = $this->minify( $this->get_file_path( $url ) );
-
-			if ( ! $minified_content ) {
-				return false;
-			}
-
-			$save_minify_file = $this->write_file( $minified_content, $minified_file );
-
-			if ( ! $save_minify_file ) {
-				return false;
-			}
+		if ( rocket_direct_filesystem()->exists( $minified_file ) ) {
+			return $minify_url;
 		}
 
-		return $this->get_minify_url( $filename );
+		$file_path = $this->get_file_path( $url );
+
+		if ( ! $file_path ) {
+			return false;
+		}
+
+		$minified_content = $this->minify( $file_path );
+
+		if ( ! $minified_content ) {
+			return false;
+		}
+
+		$save_minify_file = $this->write_file( $minified_content, $minified_file );
+
+		if ( ! $save_minify_file ) {
+			return false;
+		}
+
+		return $minify_url;
 	}
 
 	/**

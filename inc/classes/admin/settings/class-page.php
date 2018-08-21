@@ -318,11 +318,11 @@ class Page implements Subscriber_Interface {
 		$response = wp_safe_remote_post(
 			WP_ROCKET_WEB_MAIN . 'stat/1.0/wp-rocket/user.php',
 			[
-				'body' => 'user_id=' . $customer_email . '&consumer_key=' . $customer_key,
+				'body' => 'user_id=' . rawurlencode( $customer_email ) . '&consumer_key=' . $customer_key,
 			]
 		);
 
-		if ( is_wp_error( $response ) ) {
+		if ( 200 !== wp_remote_retrieve_response_code( $response )  ) {
 			return (object) [
 				'licence_account'    => __( 'Unavailable', 'rocket' ),
 				'licence_expiration' => __( 'Unavailable', 'rocket' ),
@@ -1607,18 +1607,16 @@ class Page implements Subscriber_Interface {
 			]
 		);
 
-		if ( apply_filters( 'rocket_display_varnish_options_tab', true ) ) {
-			$this->settings->add_settings_sections(
-				[
-					'one_click' => [
-						'title'       => __( 'One-click Rocket Add-ons', 'rocket' ),
-						'description' => __( 'One-Click Add-ons are features extending available options without configuration needed. Switch the option "on" to enable from this screen.', 'rocket' ),
-						'type'        => 'addons_container',
-						'page'        => 'addons',
-					],
-				]
-			);
-		}
+		$this->settings->add_settings_sections(
+			[
+				'one_click' => [
+					'title'       => __( 'One-click Rocket Add-ons', 'rocket' ),
+					'description' => __( 'One-Click Add-ons are features extending available options without configuration needed. Switch the option "on" to enable from this screen.', 'rocket' ),
+					'type'        => 'addons_container',
+					'page'        => 'addons',
+				],
+			]
+		);
 
 		$this->settings->add_settings_sections(
 			[
@@ -1631,6 +1629,8 @@ class Page implements Subscriber_Interface {
 			]
 		);
 
+		$ga_beacon = $this->get_beacon_suggest( 'google_tracking', $this->locale );
+
 		$this->settings->add_settings_fields(
 			[
 				'google_analytics_cache' => [
@@ -1641,8 +1641,9 @@ class Page implements Subscriber_Interface {
 						'width'  => 153,
 						'height' => 111,
 					],
-					'title'             => __( 'Improve browser caching for Google Analytics and Google Tag Manager', 'rocket' ),
-					'description'       => __( 'WP Rocket will host these Google scripts locally on your server to help satisfy the PageSpeed recommendation for <em>Leverage browser caching</em>.', 'rocket' ),
+					'title'             => __( 'Improve browser caching for Google Analytics', 'rocket' ),
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'description'       => sprintf( __( 'WP Rocket will host these Google scripts locally on your server to help satisfy the PageSpeed recommendation for <em>Leverage browser caching</em>.<br>%1$sLearn more%2$s', 'rocket' ), '<a href="' . esc_url( $ga_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $ga_beacon['id'] ) . '" target="_blank">', '</a>' ),
 					'section'           => 'one_click',
 					'page'              => 'addons',
 					'default'           => 0,
@@ -2180,6 +2181,12 @@ class Page implements Subscriber_Interface {
 				'fr' => [
 					'id'  => '56fd2f789033601d6683e574',
 					'url' => 'https://fr.docs.wp-rocket.me/article/512-varnish-wp-rocket-2-7/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
+			'google_tracking'        => [
+				'en' => [
+					'id'  => '5b4693220428630abc0bf97b',
+					'url' => 'https://docs.wp-rocket.me/article/1103-google-tracking-add-on/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 		];

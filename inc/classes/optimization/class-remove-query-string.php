@@ -3,7 +3,6 @@ namespace WP_Rocket\Optimization;
 
 use WP_Rocket\Admin\Options_Data as Options;
 use WP_Rocket\Optimization\Abstract_Optimization;
-use Wa72\HtmlPageDom\HtmlPageCrawler;
 
 /**
  * Remove query string from static resources
@@ -78,82 +77,91 @@ class Remove_Query_String extends Abstract_Optimization {
 		 * @param array $excluded_files An array of filepath to exclude.
 		 */
 		$this->excluded_files = apply_filters( 'rocket_exclude_cache_busting', array() );
-		$delimiter            = array_fill( 0, count( $this->excluded_files ), '#' );
-		$this->excluded_files = array_map( 'preg_quote', $this->excluded_files, $delimiter );
-		$this->excluded_files = implode( '|', $this->excluded_files );
+
+		if ( ! empty( $this->excluded_files ) ) {
+			foreach ( $this->excluded_files as $i => $excluded_file ) {
+				// Escape character for future use in regex pattern.
+				$this->excluded_files[ $i ] = str_replace( '#', '\#', $excluded_file );
+			}
+
+			$this->excluded_files = implode( '|', $this->excluded_files );
+		}
 	}
 
 	/**
-	 * Set DOM crawler from provided HTML content
+	 * Remove query strings for CSS files that have one
 	 *
 	 * @since 3.1
 	 * @author Remy Perona
 	 *
-	 * @param HtmlPageCrawler $crawler Crawler instance.
-	 * @param string          $html   HTML content.
-	 * @return void
-	 */
-	public function set_crawler( HtmlPageCrawler $crawler, $html ) {
-		$this->crawler = $crawler::create( $html );
-	}
-
-	/**
-	 * Remove query strings for CSS/JS files that have one
-	 *
-	 * @since 3.1
-	 * @author Remy Perona
-	 *
+	 * @param string $html HTML content.
 	 * @return string
 	 */
-	public function optimize() {
-		$style_nodes  = $this->find( 'link[href*=".css"]' );
-		$script_nodes = $this->find( 'script[src*=".js"]' );
+	public function remove_query_strings_css( $html ) {
+		$styles = $this->find( '<link\s+([^>]+[\s\'"])?href\s*=\s*[\'"]\s*?([^\'"]+\.css(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>', $html );
 
-		if ( ! $style_nodes && ! $script_nodes ) {
-			return $this->crawler->saveHTML();
+		if ( ! $styles ) {
+			return $html;
 		}
 
-		if ( $style_nodes ) {
-			$style_nodes->each( function( \Wa72\HtmlPageDom\HtmlPageCrawler $node, $i ) {
-				$url = $node->attr( 'href' );
+		foreach ( $styles as $style ) {
+			$url = $style[2];
 
-				$url = $this->can_replace( $url );
+			$url = $this->can_replace( $url );
 
-				if ( ! $url ) {
-					return;
-				}
+			if ( ! $url ) {
+				continue;
+			}
 
-				$optimized_url = $this->replace_url( $url, 'css' );
+			$optimized_url = $this->replace_url( $url, 'css' );
 
-				if ( ! $optimized_url ) {
-					return;
-				}
+			if ( ! $optimized_url ) {
+				continue;
+			}
 
-				$node->attr( 'href', $optimized_url );
-			} );
+			$replace_style = str_replace( $style[2], $optimized_url, $style[0] );
+			$html          = str_replace( $style[0], $replace_style, $html );
 		}
 
-		if ( $script_nodes ) {
-			$script_nodes->each( function( \Wa72\HtmlPageDom\HtmlPageCrawler $node, $i ) {
-				$url = $node->attr( 'src' );
+		return $html;
+	}
 
-				$url = $this->can_replace( $url );
+	/**
+	 * Remove query strings for JS files that have one
+	 *
+	 * @since 3.1
+	 * @author Remy Perona
+	 *
+	 * @param string $html HTML content.
+	 * @return string
+	 */
+	public function remove_query_strings_js( $html ) {
+		$scripts = $this->find( '<script\s+([^>]+[\s\'"])?src\s*=\s*[\'"]\s*?([^\'"]+\.js(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>', $html );
 
-				if ( ! $url ) {
-					return;
-				}
-
-				$optimized_url = $this->replace_url( $url, 'js' );
-
-				if ( ! $optimized_url ) {
-					return;
-				}
-
-				$node->attr( 'src', $optimized_url );
-			} );
+		if ( ! $scripts ) {
+			return $html;
 		}
 
-		return $this->crawler->saveHTML();
+		foreach ( $scripts as $script ) {
+			$url = $script[2];
+
+			$url = $this->can_replace( $url );
+
+			if ( ! $url ) {
+				continue;
+			}
+
+			$optimized_url = $this->replace_url( $url, 'js' );
+
+			if ( ! $optimized_url ) {
+				continue;
+			}
+
+			$replace_script = str_replace( $script[2], $optimized_url, $script[0] );
+			$html           = str_replace( $script[0], $replace_script, $html );
+		}
+
+		return $html;
 	}
 
 	/**
@@ -229,7 +237,7 @@ class Remove_Query_String extends Abstract_Optimization {
 	 * @return bool
 	 */
 	protected function is_excluded( $url ) {
-		if ( preg_match( '#^' . $this->excluded_files . '$#', rocket_clean_exclude_file( $url ) ) ) {
+		if ( ! empty( $this->excluded_files ) && preg_match( '#^' . $this->excluded_files . '$#', rocket_clean_exclude_file( $url ) ) ) {
 			return true;
 		}
 
@@ -256,26 +264,38 @@ class Remove_Query_String extends Abstract_Optimization {
 		$relative_src = ltrim( $parsed_url['path'] . '?' . $parsed_url['query'], '/' );
 		$filename     = preg_replace( '/\.(' . $extension . ')\?(?:timestamp|ver)=([^&]+)(?:.*)/', '-$2.$1', $relative_src );
 
-		$busting_file = $this->busting_path . $filename;
-
-		if ( ! rocket_direct_filesystem()->is_readable( $busting_file ) ) {
-			$file            = $this->get_file_path( $url );
-			$busting_content = $this->get_file_content( $file );
-
-			if ( ! $busting_content ) {
-				return false;
-			}
-
-			if ( 'css' === $extension ) {
-				$busting_content = $this->rewrite_paths( $file, $busting_content );
-			}
-
-			if ( ! $this->write_file( $busting_content, $busting_file ) ) {
-				return false;
-			}
+		if ( $relative_src === $filename ) {
+			return $url;
 		}
 
-		return $this->get_busting_url( $filename, $extension );
+		$busting_file = $this->busting_path . $filename;
+		$busting_url  = $this->get_busting_url( $filename, $extension );
+
+		if ( rocket_direct_filesystem()->is_readable( $busting_file ) ) {
+			return $busting_url;
+		}
+
+		$file = $this->get_file_path( $url );
+
+		if ( ! $file ) {
+			return false;
+		}
+
+		$busting_content = $this->get_file_content( $file );
+
+		if ( ! $busting_content ) {
+			return false;
+		}
+
+		if ( 'css' === $extension ) {
+			$busting_content = $this->rewrite_paths( $file, $busting_content );
+		}
+
+		if ( ! $this->write_file( $busting_content, $busting_file ) ) {
+			return false;
+		}
+
+		return $busting_url;
 	}
 
 	/**

@@ -226,8 +226,6 @@ function rocket_cdn_inline_styles( $html ) {
 	$zone = array(
 		'all',
 		'images',
-		'css_and_js',
-		'css',
 	);
 
 	$cnames = get_rocket_cdn_cnames( $zone );

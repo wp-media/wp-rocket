@@ -3,7 +3,6 @@ namespace WP_Rocket\Subscriber\Optimization;
 
 use WP_Rocket\Optimization\Remove_Query_String;
 use WP_Rocket\Subscriber\Optimization\Minify_Subscriber;
-use Wa72\HtmlPageDom\HtmlPageCrawler;
 
 /**
  * Hooks into WordPress to remove query strings for static files
@@ -23,27 +22,15 @@ class Remove_Query_String_Subscriber extends Minify_Subscriber {
 	protected $remove_query_string;
 
 	/**
-	 * Crawler instance.
-	 *
-	 * @since 3.1
-	 * @author Remy Perona
-	 *
-	 * @var HtmlPageCrawler
-	 */
-	protected $crawler;
-
-	/**
 	 * Constructor
 	 *
 	 * @since 3.1
 	 * @author Remy Perona
 	 *
 	 * @param Remove_Query_String $remove_query_string Remove Query String instance.
-	 * @param HtmlPageCrawler     $crawler             Crawler instance.
 	 */
-	public function __construct( Remove_Query_String $remove_query_string, HtmlPageCrawler $crawler ) {
+	public function __construct( Remove_Query_String $remove_query_string ) {
 		$this->remove_query_string = $remove_query_string;
-		$this->crawler             = $crawler;
 	}
 
 	/**
@@ -69,11 +56,10 @@ class Remove_Query_String_Subscriber extends Minify_Subscriber {
 			return $html;
 		}
 
-		list( $html, $conditionals ) = $this->extract_ie_conditionals( $html );
+		$html = $this->remove_query_string->remove_query_strings_css( $html );
+		$html = $this->remove_query_string->remove_query_strings_js( $html );
 
-		$this->remove_query_string->set_crawler( $this->crawler, $html );
-
-		return $this->inject_ie_conditionals( $this->remove_query_string->optimize(), $conditionals );
+		return $html;
 	}
 
 	/**

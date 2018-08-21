@@ -10,6 +10,8 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  * @return array Updated URLs
  */
 function rocket_exclude_wp_rest_api( $uri ) {
+	global $wp_rewrite;
+
 	/**
 	 * By default, don't cache the WP REST API.
 	 *
@@ -17,16 +19,28 @@ function rocket_exclude_wp_rest_api( $uri ) {
 	 *
 	 * @param bool false will force to cache the WP REST API
 	 */
-	$rocket_cache_reject_wp_rest_api = apply_filters( 'rocket_cache_reject_wp_rest_api', true );
+	$reject_wp_rest_api = apply_filters( 'rocket_cache_reject_wp_rest_api', true );
 
-	// Exclude WP REST API.
-	if ( function_exists( 'json_get_url_prefix' ) && $rocket_cache_reject_wp_rest_api ) {
-		$uri[] = '/' . json_get_url_prefix() . '/(.*)';
+	if ( ! $reject_wp_rest_api ) {
+		return $uri;
 	}
 
-	if ( class_exists( 'WP_REST_Controller' ) && $rocket_cache_reject_wp_rest_api ) {
-		$uri[] = '/wp-json/(.*)';
-	}
+	/**
+	 * `(/[^/]+)?` is used instead of `(/.+)?` to match only one level.
+	 * This prevents to match a taxonomy term named `wp-json` (on multisite, the main site's posts and taxonomy archives are prefixed with `blog` => example.com/blog/category/wp-json/).
+	 */
+	$prefix = rocket_is_subfolder_install() ? '(/[^/]+)?' : '';
+	$index  = ! empty( $wp_rewrite->index ) ? $wp_rewrite->index : 'index.php';
+	$index  = preg_quote( $index, '/' );
+	$suffix = rest_get_url_prefix();
+	$suffix = preg_quote( trim( $suffix, '/' ), '/' );
+
+	/**
+	 * Results in:
+	 * - Single site:        (/index\.php)?/wp\-json(/.*|$)
+	 * - Multisite: (/[^/]+)?(/index\.php)?/wp\-json(/.*|$)
+	 */
+	$uri[] = $prefix . '/(' . $index . '/)?' . $suffix . '(/.*|$)';
 
 	return $uri;
 }

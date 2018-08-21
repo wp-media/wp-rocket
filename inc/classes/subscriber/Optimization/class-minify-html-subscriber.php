@@ -38,11 +38,9 @@ class Minify_HTML_Subscriber implements Subscriber_Interface {
 	 * @inheritDoc
 	 */
 	public static function get_subscribed_events() {
-		if ( apply_filters( 'rocket_buffer_enable', true ) ) {
-			return [
-				'rocket_buffer' => [ 'process', 20 ],
-			];
-		}
+		return [
+			'rocket_buffer' => [ 'process', 21 ],
+		];
 	}
 
 	/**
