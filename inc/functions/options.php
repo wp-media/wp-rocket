@@ -432,7 +432,10 @@ function get_rocket_cache_query_string() {
 function get_rocket_exclude_defer_js() {
 	global $wp_scripts;
 
-	$exclude_defer_js = array();
+	$exclude_defer_js = [
+		'gist.github.com',
+		'content.jwplatform.com',
+	];
 
 	if ( get_rocket_option( 'defer_all_js', 0 ) && get_rocket_option( 'defer_all_js_safe', 0 ) ) {
 		$jquery = site_url( $wp_scripts->registered['jquery-core']->src );
@@ -449,6 +452,10 @@ function get_rocket_exclude_defer_js() {
 	 * @param array $exclude_defer_js An array of URLs for the JS files to be excluded.
 	 */
 	$exclude_defer_js = apply_filters( 'rocket_exclude_defer_js', $exclude_defer_js );
+
+	foreach ( $exclude_defer_js as $i => $exclude ) {
+		$exclude_defer_js[ $i ] = str_replace( '#', '\#', $exclude );
+	}
 
 	return $exclude_defer_js;
 }
