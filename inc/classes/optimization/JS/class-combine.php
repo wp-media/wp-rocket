@@ -164,7 +164,7 @@ class Combine extends Abstract_JS_Optimization {
 			} elseif ( ! isset( $matches[2] ) ) {
 				preg_match( '/<script\b([^>]*)>(?:\/\*\s*<!\[CDATA\[\s*\*\/)?\s*([\s\S]*?)\s*(?:\/\*\s*\]\]>\s*\*\/)?<\/script>/msi', $script[0], $matches_inline );
 
-				if ( strpos( $matches_inline[1], 'type' ) !== 'false' && ! preg_match( '/type\s*=\s*["\']?(?:text|application)\/(?:(?:x\-)?javascript|ecmascript)["\']?/i', $matches_inline[1] ) ) {
+				if ( strpos( $matches_inline[1], 'type' ) !== false && ! preg_match( '/type\s*=\s*["\']?(?:text|application)\/(?:(?:x\-)?javascript|ecmascript)["\']?/i', $matches_inline[1] ) ) {
 					return;
 				}
 
