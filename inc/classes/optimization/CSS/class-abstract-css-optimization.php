@@ -3,10 +3,6 @@ namespace WP_Rocket\Optimization\CSS;
 
 use WP_Rocket\Optimization\Abstract_Optimization;
 use WP_Rocket\Admin\Options_Data as Options;
-<<<<<<< HEAD
-use Wa72\HtmlPageDom\HtmlPageCrawler;
-=======
->>>>>>> master
 
 /**
  * Abstract class for CSS Optimization

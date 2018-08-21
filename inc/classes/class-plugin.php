@@ -49,12 +49,6 @@ class Plugin {
 	private $template_path;
 
 	/**
-	 * Instance of the HtmlPageCrawler
-	 *
-	 * @var HtmlPageCrawler;
-	 */
-	private $crawler;
-	/**
 	 * Constructor
 	 *
 	 * @since 3.0
@@ -65,7 +59,6 @@ class Plugin {
 		$this->options_api   = new Options( 'wp_rocket_' );
 		$this->options       = new Options_Data( $this->options_api->get( 'settings', array() ) );
 		$this->template_path = $template_path;
-		$this->crawler       = new HtmlPageCrawler();
 	}
 
 	/**
