@@ -80,7 +80,8 @@ class Combine extends Abstract_JS_Optimization {
 	 * @return string
 	 */
 	public function optimize( $html ) {
-		$scripts = $this->find( '<script.*<\/script>', $html );
+		$html_nocomments = preg_replace( '/<!--(.*)-->/Uis', '', $html );
+		$scripts         = $this->find( '<script.*<\/script>', $html_nocomments );
 
 		if ( ! $scripts ) {
 			return $html;
@@ -163,7 +164,7 @@ class Combine extends Abstract_JS_Optimization {
 			} elseif ( ! isset( $matches[2] ) ) {
 				preg_match( '/<script\b([^>]*)>(?:\/\*\s*<!\[CDATA\[\s*\*\/)?\s*([\s\S]*?)\s*(?:\/\*\s*\]\]>\s*\*\/)?<\/script>/msi', $script[0], $matches_inline );
 
-				if ( preg_match( '/type\s*=\s*["\']?(?:text|application)\/(?:(?:x\-)?template|html|ld\+json)["\']?/i', $matches_inline[1] ) ) {
+				if ( strpos( $matches_inline[1], 'type' ) !== false && ! preg_match( '/type\s*=\s*["\']?(?:text|application)\/(?:(?:x\-)?javascript|ecmascript)["\']?/i', $matches_inline[1] ) ) {
 					return;
 				}
 
@@ -329,8 +330,18 @@ class Combine extends Abstract_JS_Optimization {
 			'ANS_customer_id',
 			'tdBlock',
 			'tdLocalCache',
+			'td_live_css_uid',
+			'tdAjaxCount',
 			'lazyLoadOptions',
 			'adthrive',
+			'loadCSS',
+			'google_tag_params',
+			'clicky_custom',
+			'clicky_site_ids',
+			'NSLPopupCenter',
+			'_paq',
+			'gtm',
+			'dataLayer',
 		] );
 	}
 
@@ -398,6 +409,7 @@ class Combine extends Abstract_JS_Optimization {
 			'adthrive.com',
 			'mediavine.com',
 			'js.hsforms.net',
+			'googleadservices.com',
 		] );
 	}
 }
