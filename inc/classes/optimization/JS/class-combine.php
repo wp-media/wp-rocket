@@ -340,6 +340,8 @@ class Combine extends Abstract_JS_Optimization {
 			'clicky_site_ids',
 			'NSLPopupCenter',
 			'_paq',
+			'gtm',
+			'dataLayer',
 		] );
 	}
 
