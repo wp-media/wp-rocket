@@ -162,6 +162,10 @@ class Combine extends Abstract_JS_Optimization {
 					'content' => $file_path,
 				];
 			} elseif ( ! isset( $matches[2] ) ) {
+				if ( ! $this->options->get( 'combine_inline_js' ) ) {
+					return;
+				}
+
 				preg_match( '/<script\b([^>]*)>(?:\/\*\s*<!\[CDATA\[\s*\*\/)?\s*([\s\S]*?)\s*(?:\/\*\s*\]\]>\s*\*\/)?<\/script>/msi', $script[0], $matches_inline );
 
 				if ( strpos( $matches_inline[1], 'type' ) !== false && ! preg_match( '/type\s*=\s*["\']?(?:text|application)\/(?:(?:x\-)?javascript|ecmascript)["\']?/i', $matches_inline[1] ) ) {
