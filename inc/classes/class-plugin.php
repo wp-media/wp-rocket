@@ -49,12 +49,6 @@ class Plugin {
 	private $template_path;
 
 	/**
-	 * Instance of the HtmlPageCrawler
-	 *
-	 * @var HtmlPageCrawler;
-	 */
-	private $crawler;
-	/**
 	 * Constructor
 	 *
 	 * @since 3.0

@@ -9,7 +9,10 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  */
 if ( defined( 'GIVE_VERSION' ) && function_exists( 'give_get_settings' ) ) {
 	add_filter( 'rocket_cache_reject_uri', 'rocket_add_give_exclude_pages' );
-	add_action( 'update_option_give_settings', 'rocket_after_update_single_options', 10, 2 );
+
+	if ( is_admin() ) {
+		add_action( 'update_option_give_settings', 'rocket_after_update_single_options', 10, 2 );
+	}
 }
 
 /**
