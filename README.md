@@ -74,7 +74,7 @@ git subtree add --prefix libraries/action-scheduler subtree-action-scheduler mas
 
 This will add the `master` branch of Action Scheduler to your repository in the folder `libraries/action-scheduler`.
 
-You can change teh `--prefix` to change where the code is included. Or change the `master` branch to a tag, like `2.1.0` to include only a stable version.
+You can change the `--prefix` to change where the code is included. Or change the `master` branch to a tag, like `2.1.0` to include only a stable version.
 
 ##### Step 3. Update the Subtree
 
@@ -92,7 +92,6 @@ To load Action Scheduler, you only need to include `action-scheduler.php` file, 
 ```php
 <?php
 require_once( plugin_dir_path( __FILE__ ) . '/libraries/action-scheduler/action-scheduler.php' );
-?>
 ```
 
 There is no need to call any functions or do else to initialize Action Scheduler.
@@ -113,7 +112,7 @@ Action Scheduler includes the necessary file headers to be used as a plugin.
 
 To install it as a plugin:
 
-1. Download the archive of the latest [stable release](https://github.com/Prospress/action-scheduler/releases)
+1. Download the .zip archive of the latest [stable release](https://github.com/Prospress/action-scheduler/releases)
 1. Go to the **Plugins > Add New > Upload** administration screen on your WordPress site
 1. Select the archive file you just downloaded
 1. Click **Install Now**
