@@ -322,7 +322,7 @@ class Page implements Subscriber_Interface {
 			]
 		);
 
-		if ( 200 !== wp_remote_retrieve_response_code( $response )  ) {
+		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
 			return (object) [
 				'licence_account'    => __( 'Unavailable', 'rocket' ),
 				'licence_expiration' => __( 'Unavailable', 'rocket' ),
@@ -453,7 +453,7 @@ class Page implements Subscriber_Interface {
 		$this->settings->add_page_section(
 			'license',
 			[
-				'title' => __( 'License' ),
+				'title' => __( 'License', 'rocket' ),
 			]
 		);
 
@@ -919,6 +919,24 @@ class Page implements Subscriber_Interface {
 						'title'        => __( 'This could break things!', 'rocket' ),
 						'description'  => __( 'If you notice any errors on your website after having activated this setting, just deactivate it again, and your site will be back to normal.', 'rocket' ),
 						'button_label' => __( 'Activate combine JavaScript', 'rocket' ),
+					],
+				],
+				'combine_inline_js'  => [
+					'type'              => 'checkbox',
+					'label'             => __( 'Combine Inline JavaScript', 'rocket' ),
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'description'       => __( 'Extract inline scripts from the HTML and combine them too. <br><strong>Warning:</strong> this can make WP Rocket\'s cache size grow quickly, so only enable this if you know what you are doing.', 'rocket' ),
+					'container_class'   => [
+						get_rocket_option( 'minify_concatenate_js' ) ? '' : 'wpr-isDisabled',
+						'wpr-field--children',
+					],
+					'parent'            => 'minify_concatenate_js',
+					'section'           => 'js',
+					'page'              => 'file_optimization',
+					'default'           => 0,
+					'sanitize_callback' => 'sanitize_checkbox',
+					'input_attr'        => [
+						'disabled' => get_rocket_option( 'minify_concatenate_js' ) ? 0 : 1,
 					],
 				],
 				'exclude_js'             => [
