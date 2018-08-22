@@ -356,6 +356,20 @@ class Settings {
 			$input['exclude_js'] = [];
 		}
 
+		// Option: inline JS patterns to exclude from combine JS.
+		if ( ! empty( $input['exclude_inline_js'] ) ) {
+			$input['exclude_inline_js'] = sanitize_textarea_field( $input['exclude_inline_js'] );
+		} else {
+			$input['exclude_inline_js'] = [];
+		}
+
+		// Option: Third Party JS patterns to exclude from combine JS.
+		if ( ! empty( $input['exclude_inline_js'] ) ) {
+			$input['exclude_third_party_js'] = sanitize_textarea_field( $input['exclude_inline_js'] );
+		} else {
+			$input['exclude_third_party_js'] = [];
+		}
+
 		// Option: Async CSS.
 		$input['async_css'] = ! empty( $input['async_css'] ) ? 1 : 0;
 
