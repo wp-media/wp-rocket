@@ -924,7 +924,6 @@ class Page implements Subscriber_Interface {
 				'combine_inline_js'  => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Combine Inline JavaScript', 'rocket' ),
-					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 					'description'       => __( 'Extract inline scripts from the HTML and combine them too. <br><strong>Warning:</strong> this can make WP Rocket\'s cache size grow quickly, so only enable this if you know what you are doing.', 'rocket' ),
 					'container_class'   => [
 						get_rocket_option( 'minify_concatenate_js' ) ? '' : 'wpr-isDisabled',
@@ -935,6 +934,40 @@ class Page implements Subscriber_Interface {
 					'page'              => 'file_optimization',
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
+					'input_attr'        => [
+						'disabled' => get_rocket_option( 'minify_concatenate_js' ) ? 0 : 1,
+					],
+				],
+				'exclude_inline_js'  => [
+					'type'              => 'textarea',
+					'label'             => __( 'Excluded Inline JavaScript', 'rocket' ),
+					'description'       => __( 'Specify patterns of inline JavaScript to be excluded from concatenation.', 'rocket' ),
+					'container_class'   => [
+						get_rocket_option( 'minify_concatenate_js' ) ? '' : 'wpr-isDisabled',
+						'wpr-field--children',
+					],
+					'parent'            => 'minify_concatenate_js',
+					'section'           => 'js',
+					'page'              => 'file_optimization',
+					'default'           => [],
+					'sanitize_callback' => 'sanitize_textarea',
+					'input_attr'        => [
+						'disabled' => get_rocket_option( 'minify_concatenate_js' ) ? 0 : 1,
+					],
+				],
+				'exclude_third_party_js'  => [
+					'type'              => 'textarea',
+					'label'             => __( 'Excluded Third Party JavaScript', 'rocket' ),
+					'description'       => __( 'Specify patterns of third party JavaScript to be excluded from concatenation.', 'rocket' ),
+					'container_class'   => [
+						get_rocket_option( 'minify_concatenate_js' ) ? '' : 'wpr-isDisabled',
+						'wpr-field--children',
+					],
+					'parent'            => 'minify_concatenate_js',
+					'section'           => 'js',
+					'page'              => 'file_optimization',
+					'default'           => [],
+					'sanitize_callback' => 'sanitize_textarea',
 					'input_attr'        => [
 						'disabled' => get_rocket_option( 'minify_concatenate_js' ) ? 0 : 1,
 					],
