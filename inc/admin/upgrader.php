@@ -151,15 +151,17 @@ function rocket_first_install() {
 				'cache_ssl'                   => rocket_is_ssl_website() ? 1 : 0,
 				'emoji'                       => 1,
 				'embeds'                      => 1,
-				'cache_reject_uri'            => array(),
-				'cache_reject_cookies'        => array(),
-				'cache_reject_ua'             => array(),
-				'cache_query_strings'         => array(),
-				'cache_purge_pages'           => array(),
+				'cache_reject_uri'            => [],
+				'cache_reject_cookies'        => [],
+				'cache_reject_ua'             => [],
+				'cache_query_strings'         => [],
+				'cache_purge_pages'           => [],
 				'purge_cron_interval'         => 10,
 				'purge_cron_unit'             => 'HOUR_IN_SECONDS',
-				'exclude_css'                 => array(),
-				'exclude_js'                  => array(),
+				'exclude_css'                 => [],
+				'exclude_js'                  => [],
+				'exclude_inline_js'           => [],
+				'exclude_third_party_js'      => [],
 				'defer_all_js'                => 0,
 				'defer_all_js_safe'           => 1,
 				'async_css'                   => 0,
@@ -180,7 +182,7 @@ function rocket_first_install() {
 				'automatic_preload'           => 0,
 				'sitemap_preload'             => 0,
 				'sitemap_preload_url_crawl'   => '500000',
-				'sitemaps'                    => array(),
+				'sitemaps'                    => [],
 				'remove_query_strings'        => 0,
 				'dns_prefetch'                => 0,
 				'database_revisions'          => 0,
@@ -194,9 +196,9 @@ function rocket_first_install() {
 				'schedule_automatic_cleanup'  => 0,
 				'automatic_cleanup_frequency' => 'daily',
 				'cdn'                         => 0,
-				'cdn_cnames'                  => array(),
-				'cdn_zone'                    => array(),
-				'cdn_reject_files'            => array(),
+				'cdn_cnames'                  => [],
+				'cdn_zone'                    => [],
+				'cdn_reject_files'            => [],
 				'do_cloudflare'               => 0,
 				'cloudflare_email'            => '',
 				'cloudflare_api_key'          => '',
@@ -319,6 +321,12 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 
 	if ( version_compare( $actual_version, '3.1.1', '<' ) ) {
 		rocket_generate_config_file();
+	}
+
+	if ( version_compare( $actual_version, '3.1.3', '<' ) ) {
+		if ( get_rocket_option( 'minify_concatenate_js' ) ) {
+			update_rocket_option( 'combine_inline_js', 1 );
+		}
 	}
 }
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );
