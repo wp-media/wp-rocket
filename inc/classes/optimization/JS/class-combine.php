@@ -411,6 +411,7 @@ class Combine extends Abstract_JS_Optimization {
 			'mediavine.com',
 			'js.hsforms.net',
 			'googleadservices.com',
+			'f.convertkit.com',
 		] );
 	}
 }
