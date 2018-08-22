@@ -176,6 +176,12 @@ class Combine extends Abstract_JS_Optimization {
 					return;
 				}
 
+				$matches_inline[2] = str_replace( array( "\r", "\n" ), '', $matches_inline[2] );
+
+				if ( in_array( $matches_inline[2], $this->get_localized_scripts() ) ) {
+					return;
+				}
+
 				foreach ( $this->get_excluded_inline_content() as $excluded_content ) {
 					if ( false !== strpos( $matches_inline[2], $excluded_content ) ) {
 						return;
@@ -426,5 +432,35 @@ class Combine extends Abstract_JS_Optimization {
 		 * @param array $pattern Patterns to match.
 		 */
 		return apply_filters( 'rocket_minify_excluded_external_js', $excluded_external );
+	}
+
+	/**
+	 * Gets all localized scripts data to exclude them from combine.
+	 *
+	 * @since 3.1.3
+	 * @author Remy Perona
+	 *
+	 * @return array
+	 */
+	protected function get_localized_scripts() {
+		static $localized_scripts;
+
+		if ( isset( $localized_scripts ) ) {
+			return $localized_scripts;
+		}
+
+		$localized_scripts = [];
+
+		foreach ( array_unique( wp_scripts()->queue ) as $item ) {
+			$data = wp_scripts()->print_extra_script( $item, false );
+
+			if ( empty( $data ) ) {
+				continue;
+			}
+
+			$localized_scripts[] = '/* <![CDATA[ */' . $data . '/* ]]> */';
+		}
+
+		return $localized_scripts;
 	}
 }
