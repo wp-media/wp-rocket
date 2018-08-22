@@ -302,14 +302,7 @@ class Combine extends Abstract_JS_Optimization {
 	 * @return array
 	 */
 	protected function get_excluded_inline_content() {
-		/**
-		 * Filters inline JS excluded from being combined
-		 *
-		 * @since 3.1
-		 *
-		 * @param array $pattern Patterns to match.
-		 */
-		return apply_filters( 'rocket_excluded_inline_js_content', [
+		$defaults = [
 			'document.write',
 			'google_ad',
 			'edToolbar',
@@ -347,7 +340,19 @@ class Combine extends Abstract_JS_Optimization {
 			'_paq',
 			'gtm',
 			'dataLayer',
-		] );
+		];
+
+		$excluded_inline = $this->options->get( 'exclude_inline_js', [] );
+		$excluded_inline = array_merge( $defaults, $excluded_inline );
+
+		/**
+		 * Filters inline JS excluded from being combined
+		 *
+		 * @since 3.1
+		 *
+		 * @param array $pattern Patterns to match.
+		 */
+		return apply_filters( 'rocket_excluded_inline_js_content', $excluded_inline );
 	}
 
 	/**
@@ -359,14 +364,7 @@ class Combine extends Abstract_JS_Optimization {
 	 * @return array
 	 */
 	protected function get_excluded_external_file_path() {
-		/**
-		 * Filters JS externals files to exclude from the combine process
-		 *
-		 * @since 2.2
-		 *
-		 * @param array $pattern Patterns to match.
-		 */
-		return apply_filters( 'rocket_minify_excluded_external_js', [
+		$defaults = [
 			'html5.js',
 			'show_ads.js',
 			'histats.com/js',
@@ -415,6 +413,18 @@ class Combine extends Abstract_JS_Optimization {
 			'mediavine.com',
 			'js.hsforms.net',
 			'googleadservices.com',
-		] );
+		];
+
+		$excluded_external = $this->options->get( 'exclude_third_party_js', [] );
+		$excluded_external = array_merge( $defaults, $excluded_external );
+
+		/**
+		 * Filters JS externals files to exclude from the combine process
+		 *
+		 * @since 2.2
+		 *
+		 * @param array $pattern Patterns to match.
+		 */
+		return apply_filters( 'rocket_minify_excluded_external_js', $excluded_external );
 	}
 }
