@@ -955,28 +955,11 @@ class Page implements Subscriber_Interface {
 						'disabled' => get_rocket_option( 'minify_concatenate_js' ) ? 0 : 1,
 					],
 				],
-				'exclude_third_party_js'  => [
-					'type'              => 'textarea',
-					'label'             => __( 'Excluded Third Party JavaScript', 'rocket' ),
-					'description'       => __( 'Specify patterns of third party JavaScript to be excluded from concatenation.', 'rocket' ),
-					'container_class'   => [
-						get_rocket_option( 'minify_concatenate_js' ) ? '' : 'wpr-isDisabled',
-						'wpr-field--children',
-					],
-					'parent'            => 'minify_concatenate_js',
-					'section'           => 'js',
-					'page'              => 'file_optimization',
-					'default'           => [],
-					'sanitize_callback' => 'sanitize_textarea',
-					'input_attr'        => [
-						'disabled' => get_rocket_option( 'minify_concatenate_js' ) ? 0 : 1,
-					],
-				],
 				'exclude_js'             => [
 					'type'              => 'textarea',
 					'label'             => __( 'Excluded JavaScript Files', 'rocket' ),
 					'description'       => __( 'Specify URLs of JavaScript files to be excluded from minification and concatenation.', 'rocket' ),
-					'helper'            => __( 'The domain part of the URL will be stripped automatically.<br>Use (.*).js wildcards to exclude all JS files located at a specific path.', 'rocket' ),
+					'helper'            => __( 'Use (.*).js wildcards to exclude all JS files located at a specific path.', 'rocket' ),
 					'container_class'   => [
 						'wpr-field--children',
 					],
