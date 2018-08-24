@@ -346,7 +346,9 @@ class Combine extends Abstract_JS_Optimization {
 			'_paq',
 			'gtm',
 			'dataLayer',
-      		'RecaptchaLoad',
+			'RecaptchaLoad',
+			'WPCOM_sharing_counts',
+			'jetpack_remote_comment',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
