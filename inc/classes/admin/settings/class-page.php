@@ -959,7 +959,7 @@ class Page implements Subscriber_Interface {
 					'type'              => 'textarea',
 					'label'             => __( 'Excluded JavaScript Files', 'rocket' ),
 					'description'       => __( 'Specify URLs of JavaScript files to be excluded from minification and concatenation.', 'rocket' ),
-					'helper'            => __( 'Use (.*).js wildcards to exclude all JS files located at a specific path.', 'rocket' ),
+					'helper'            => __( 'The domain part of the URL will be stripped automatically for internal URLs.<br>Use (.*).js wildcards to exclude all JS files located at a specific path.', 'rocket' ),
 					'container_class'   => [
 						'wpr-field--children',
 					],
