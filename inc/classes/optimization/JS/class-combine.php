@@ -343,6 +343,7 @@ class Combine extends Abstract_JS_Optimization {
 			'_paq',
 			'gtm',
 			'dataLayer',
+			'RecaptchaLoad',
 		] );
 	}
 
@@ -412,6 +413,7 @@ class Combine extends Abstract_JS_Optimization {
 			'js.hsforms.net',
 			'googleadservices.com',
 			'f.convertkit.com',
+			'recaptcha/api.js',
 		] );
 	}
 }
