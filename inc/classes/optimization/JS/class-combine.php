@@ -346,10 +346,10 @@ class Combine extends Abstract_JS_Optimization {
 			'_paq',
 			'gtm',
 			'dataLayer',
+      		'RecaptchaLoad',
 		];
 
-		$excluded_inline = $this->options->get( 'exclude_inline_js', [] );
-		$excluded_inline = array_merge( $defaults, $excluded_inline );
+		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
 
 		/**
 		 * Filters inline JS excluded from being combined
@@ -419,6 +419,8 @@ class Combine extends Abstract_JS_Optimization {
 			'mediavine.com',
 			'js.hsforms.net',
 			'googleadservices.com',
+			'f.convertkit.com',
+			'recaptcha/api.js',
 		];
 
 		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );
