@@ -344,6 +344,8 @@ class Combine extends Abstract_JS_Optimization {
 			'gtm',
 			'dataLayer',
 			'RecaptchaLoad',
+			'WPCOM_sharing_counts',
+			'jetpack_remote_comment',
 		] );
 	}
 
