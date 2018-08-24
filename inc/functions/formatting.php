@@ -17,8 +17,7 @@ function rocket_clean_exclude_file( $file ) {
 		return false;
 	}
 
-	$path = rocket_extract_url_component( $file, PHP_URL_PATH );
-	return $path;
+	return wp_parse_url( $file, PHP_URL_PATH );
 }
 
 /**
