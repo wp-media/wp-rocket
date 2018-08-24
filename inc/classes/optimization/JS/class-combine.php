@@ -421,8 +421,7 @@ class Combine extends Abstract_JS_Optimization {
 			'googleadservices.com',
 		];
 
-		$excluded_external = $this->options->get( 'exclude_third_party_js', [] );
-		$excluded_external = array_merge( $defaults, $excluded_external );
+		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );
 
 		/**
 		 * Filters JS externals files to exclude from the combine process
