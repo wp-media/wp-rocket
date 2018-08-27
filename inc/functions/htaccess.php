@@ -338,7 +338,7 @@ function get_rocket_htaccess_mod_deflate() {
 			$rules .= 'RequestHeader append Accept-Encoding "gzip,deflate" env=HAVE_Accept-Encoding' . PHP_EOL;
 			$rules .= '# Don’t compress images and other uncompressible content' . PHP_EOL;
 			$rules .= 'SetEnvIfNoCase Request_URI \\' . PHP_EOL;
-			$rules .= '\\.(?:gif|jpe?g|png|rar|zip|exe|flv|mov|wma|mp3|avi|swf|mp?g|mp4|webm|webp)$ no-gzip dont-vary' . PHP_EOL;
+			$rules .= '\\.(?:gif|jpe?g|png|rar|zip|exe|flv|mov|wma|mp3|avi|swf|mp?g|mp4|webm|webp|pdf)$ no-gzip dont-vary' . PHP_EOL;
 			$rules .= '</IfModule>' . PHP_EOL;
 		$rules .= '</IfModule>' . PHP_EOL . PHP_EOL;
 		$rules .= '# Compress all output labeled with one of the following MIME-types' . PHP_EOL;

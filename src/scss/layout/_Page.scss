@@ -1,0 +1,152 @@
+// main: ../main.scss
+
+/*-----------------------------------------------*\
+
+    Page / section
+
+\*-----------------------------------------------*/
+
+.wpr-Page{
+    margin-bottom: $space*4;
+
+    &-row{
+        display: flex;
+        flex-direction: row;
+
+        @include respond-to('md') {
+            flex-direction: column;
+        }
+    }
+
+    &-col{
+        flex: 1 1 auto;
+    }
+
+    &-col--fixed{
+        margin-left: $space*3;
+        flex: 0 0 325px;
+
+        @include respond-to('md') {
+            margin-left: 0;
+        }
+    }
+
+    &#dashboard{ // Exception for dashboard
+
+        #wpr-action-refresh_account{
+            &:before{
+                transition: all 200ms ease-out;
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            &.wpr-isLoading:before{
+                animation: loading 1.2s infinite;
+            }
+            &.wpr-isHidden:before{
+                opacity: 0;
+            }
+            &.wpr-isShown:before{
+                opacity: 1;
+            }
+        }
+
+        @keyframes loading {
+            from{transform: rotate(0);}
+            to{transform: rotate(360deg);}
+        }
+
+        .wpr-documentation{
+            margin-top: 98px;
+            padding: 43px $space*2;
+
+            @include respond-to('md') {
+                margin-top: $space*5;
+            }
+
+            .wpr-button{
+                margin-top: $space;
+            }
+
+            i{
+                @include font-size(54,54);
+            }
+        }
+
+        .wpr-radio{
+            padding-left: $space*9;
+        }
+
+        .wpr-field--radio{
+            padding: $space*2 $space;
+
+            &:first-child{
+                padding-top: 0;
+            }
+
+            &:last-child{
+                padding-bottom: 0;
+            }
+
+            .wpr-field-description {
+                font-style: normal;
+                color: $cGreyDark2;
+                margin-left: $space*9;
+            }
+        }
+
+        .wpr-field-account{
+            padding-bottom: 0;
+        }
+
+        .wpr-infoAccount{
+            font-weight: bold;
+            margin-left: $space;
+            color: $cGreyDark1;
+
+            &:before{
+                content: "";
+                position: relative;
+                display: inline-block;
+                width: 13px;
+                height: 13px;
+                background: $cGrey;
+                border-radius: 50%;
+                color: #fff;
+                margin-right: 6px;
+                text-align: center;
+                top: 2px;
+                @include font-size(8,13);
+            }
+
+             &.wpr-isValid{
+                 color: $cGreenDark1;
+
+                 &:before{
+                     content: "\e920";
+                     font-family: 'wpr-icomoon';
+                     speak: none;
+                     background: $cGreen;
+                     top: -1px;
+                 }
+             }
+
+            &.wpr-isInvalid{
+                color: $cRedDark1;
+
+                &:before{
+                    content: "!";
+                    font-weight: bold;
+                    @include font-size(10,13);
+                    speak: none;
+                    background: $cRed;
+                    top: -1px;
+                }
+            }
+        }
+
+        #wpr-account-data:before{
+            content: none;
+        }
+    }
+}

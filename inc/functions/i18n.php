@@ -260,6 +260,16 @@ function get_rocket_i18n_to_preserve( $current_lang ) {
 		return $langs_to_preserve;
 	}
 
+	// Must not be an empty string.
+	if ( empty( $current_lang ) ) {
+		return $langs_to_preserve;
+	}
+
+	// Must not be anything else but a string.
+	if ( ! is_string( $current_lang ) ) {
+		return $langs_to_preserve;
+	}
+
 	$langs = get_rocket_i18n_code();
 
 	// Unset current lang to the preserve dirs.
@@ -271,8 +281,8 @@ function get_rocket_i18n_to_preserve( $current_lang ) {
 
 	// Stock all URLs of langs to preserve.
 	foreach ( $langs as $lang ) {
-		list( $host, $path ) = get_rocket_parse_url( get_rocket_i18n_home_url( $lang ) );
-		$langs_to_preserve[] = WP_ROCKET_CACHE_PATH . $host . '(.*)/' . trim( $path, '/' );
+		$parse_url = get_rocket_parse_url( get_rocket_i18n_home_url( $lang ) );
+		$langs_to_preserve[] = WP_ROCKET_CACHE_PATH . $parse_url['host'] . '(.*)/' . trim( $parse_url['path'], '/' );
 	}
 
 	/**
@@ -313,7 +323,7 @@ function get_rocket_i18n_subdomains() {
 		if ( 3 === (int) $GLOBALS['q_config']['url_mode'] || 4 === (int) $GLOBALS['q_config']['url_mode'] ) {
 			$urls = get_rocket_i18n_uri();
 		}
-	} elseif ( rocket_is_plugin_active( 'polylang/polylang.php' ) || rocket_is_plugin_active( 'polylang-pro/polylang.php' ) ) {
+	} elseif ( ( rocket_is_plugin_active( 'polylang/polylang.php' ) || rocket_is_plugin_active( 'polylang-pro/polylang.php' ) ) && isset( $GLOBALS['polylang'] ) ) {
 		$pll = function_exists( 'PLL' ) ? PLL() : $GLOBALS['polylang'];
 
 		if ( isset( $pll ) && ( 2 === (int) $pll->options['force_lang'] || 3 === (int) $pll->options['force_lang'] ) ) {

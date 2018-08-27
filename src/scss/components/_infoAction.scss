@@ -1,0 +1,53 @@
+// main: ../main.scss
+
+/*-----------------------------------------------*\
+
+    Link action inside .optionHeader (ex: Need help ?)
+
+\*-----------------------------------------------*/
+
+.wpr-infoAction{
+    position: relative;
+    height: 24px;
+    @include font-size(13,24);
+    vertical-align: middle;
+    letter-spacing: -0.03em;
+    font-weight: 500;
+    color: $cGreyDark2;
+    white-space: nowrap;
+    text-decoration: none;
+    @include transition(all,200ms);
+
+    &:before{
+        position: absolute;
+        margin-left: -26px;
+        @include font-size(18,24);
+        @include transition(color,200ms);
+    }
+
+    &--help{
+        text-transform: uppercase;
+        color: $cBlueDark1;
+        font-weight: bold;
+        @include font-size(12,24);
+        letter-spacing: 0;
+
+        @include respond-to('xs') {
+            display: none;
+        }
+
+        &:before{
+            color: $cBlue;
+        }
+    }
+
+    &:hover,
+    &:focus{
+        color: $cOrange;
+        outline: none;
+
+        &:before{
+            color: $cOrangeLight2;
+        }
+    }
+}

@@ -14,4 +14,5 @@ if ( defined( 'FL_BUILDER_VERSION' ) ) :
 		rocket_clean_cache_busting();
 	}
 	add_action( 'fl_builder_before_save_layout', 'rocket_beaver_builder_clean_domain', 10, 4 );
+	add_action( 'fl_builder_cache_cleared', 'rocket_beaver_builder_clean_domain' );
 endif;

@@ -20,7 +20,7 @@ function rocket_purge_cron_schedule( $schedules ) {
 	if ( 0 < (int) get_rocket_option( 'purge_cron_interval' ) ) {
 		$schedules['rocket_purge'] = array(
 			'interval'  => get_rocket_purge_cron_interval(),
-			// translators: %s = WP Rocket name (maybe white label).
+			// translators: %s = WP Rocket name.
 			'display'   => sprintf( __( '%s clear', 'rocket' ), WP_ROCKET_PLUGIN_NAME ),
 		);
 	}
@@ -70,34 +70,7 @@ function do_rocket_purge_cron() {
 	// Purge domain cache files.
 	rocket_clean_domain();
 
-	// Run WP Rocket sitemap preload if activated.
-	if ( get_rocket_option( 'sitemap_preload', 0 ) ) {
-		run_rocket_sitemap_preload();
-	}
+	// Run WP Rocket Bot for preload cache files.
+	run_rocket_preload_cache( 'cache-preload' );
 }
 add_action( 'rocket_purge_time_event', 'do_rocket_purge_cron' );
-
-/**
- * Planning database optimization cron
- * If the task is not programmed, it is automatically triggered
- *
- * @since 2.8
- * @author Remy Perona
- */
-function rocket_database_optimization_scheduled() {
-	if ( get_rocket_option( 'schedule_automatic_cleanup', false ) ) {
-		if ( ! wp_next_scheduled( 'rocket_database_optimization_time_event' ) ) {
-			wp_schedule_event( time(), get_rocket_option( 'automatic_cleanup_frequency', 'weekly' ), 'rocket_database_optimization_time_event' );
-		}
-	}
-}
-add_action( 'init', 'rocket_database_optimization_scheduled' );
-
-/**
- * This event is launched when the cron is triggered
- * Performs the database optimization
- *
- * @since 2.8
- * @author Remy Perona
- */
-add_action( 'rocket_database_optimization_time_event', 'do_rocket_database_optimization' );

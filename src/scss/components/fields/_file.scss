@@ -1,0 +1,27 @@
+// main: ../../main.scss
+
+/*-----------------------------------------------*\
+
+    Type = File
+
+\*-----------------------------------------------*/
+
+
+.wpr-upload{
+    input[type=file]{
+        display: block;
+        width: 252px;
+        margin: $space $space $space 0;
+        padding: $space;
+        border: 1px solid $cGrey;
+        background: $cGreyLight2;
+        color: $cBlack;
+        @include font-size(11,16);
+
+        &:focus{
+            outline: none;
+            border-color: $cGreyDark1;
+            box-shadow: none;
+        }
+    }
+}

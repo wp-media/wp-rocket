@@ -2,7 +2,24 @@
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 if ( class_exists( 'WPaaS\Plugin' ) ) :
-	add_filter( 'rocket_display_varnish_options_tab', '__return_false' );
+	/**
+	 * Changes the text on the Varnish one-click block.
+	 *
+	 * @since 3.0
+	 * @author Remy Perona
+	 *
+	 * @param array $settings Field settings data.
+	 */
+	function rocket_godaddy_varnish_field( $settings ) {
+		// Translators: %s = Hosting name.
+		$settings['varnish_auto_purge']['title'] = sprintf( __( 'Your site is hosted on %s, we have enabled Varnish auto-purge for compatibility.', 'rocket' ), 'GoDaddy' );
+
+		return $settings;
+	}
+	add_filter( 'rocket_varnish_field_settings', 'rocket_godaddy_varnish_field' );
+
+	add_filter( 'rocket_display_input_varnish_auto_purge', '__return_false' );
+
 	add_filter( 'set_rocket_wp_cache_define', '__return_true' );
 
 	/**
@@ -95,7 +112,7 @@ HTACCESS;
 	 * @return void
 	 */
 	function rocket_clean_home_godaddy( $root, $lang ) {
-		$home_url = trailingslashit( get_rocket_i18n_home_url( $lang ) );
+		$home_url            = trailingslashit( get_rocket_i18n_home_url( $lang ) );
 		$home_pagination_url = $home_url . trailingslashit( $GLOBALS['wp_rewrite']->pagination_base );
 
 		rocket_godaddy_request( 'PURGE', $home_url );

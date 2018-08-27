@@ -1,0 +1,79 @@
+// main: ../../main.scss
+
+/*-----------------------------------------------*\
+
+    Custom checkbox
+
+\*-----------------------------------------------*/
+
+
+.wpr-checkbox{
+    position: relative;
+    padding-left: $space*4;
+
+    label{
+        user-select: none;
+    }
+}
+
+// Hide default checkbox
+.wpr-checkbox [type="checkbox"]:not(:checked),
+.wpr-checkbox [type="checkbox"]:checked {
+    position: absolute;
+    left: -9999px;
+}
+
+// Box to check
+.wpr-checkbox [type="checkbox"]:not(:checked) + label:before,
+.wpr-checkbox [type="checkbox"]:checked + label:before {
+    content: '';
+    position: absolute;
+    left:0; top: 4px;
+    width: 14px; height: 14px;
+    border: 2px solid $cGreyDark1;
+    border-radius: 3px;
+    @include transition(all, 150ms);
+}
+
+
+
+// Check icon
+.wpr-checkbox [type="checkbox"]:not(:checked) + label:after,
+.wpr-checkbox [type="checkbox"]:checked + label:after {
+    content: "\e921"; // wpr-icon-check2
+    position: absolute;
+    top: 5px; left: 2px;
+    color: #fff;
+    font-family: 'wpr-icomoon';
+    speak: none;
+    @include font-size(14,18);
+    @include transition(all, 150ms);
+}
+
+// Not checked
+.wpr-checkbox [type="checkbox"]:not(:checked) + label:after {
+    opacity: 0;
+    transform: scale(2);
+}
+
+// Checked
+.wpr-checkbox [type="checkbox"]:checked + label:after {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.wpr-checkbox [type="checkbox"]:checked + label:before {
+    background: $cPurpleDark1;
+    border-color: $cPurpleDark1;
+}
+
+
+// Focus
+.wpr-checkbox [type="checkbox"]:checked:focus + label:before {
+    background: $cPurpleLight2;
+    border: 2px dotted $cPurpleLight2;
+}
+
+.wpr-checkbox [type="checkbox"]:focus + label:before {
+    border: 2px dotted $cGreyDark1;
+}

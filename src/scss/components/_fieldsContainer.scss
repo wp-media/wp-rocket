@@ -1,0 +1,66 @@
+// main: ../main.scss
+
+/*-----------------------------------------------*\
+
+    Group of fields (fieldset)
+
+\*-----------------------------------------------*/
+
+.wpr-fieldsContainer{
+    margin-top: $space;
+
+    &-description{
+        color: $cGreyDark2;
+
+        a:hover,
+        a:focus{
+            color: $cBlue;
+        }
+    }
+
+    &-fieldset{
+        margin-top: $space*2;
+        background: $cGreyLight3;
+        padding: $space*2;
+        border: 1px solid $cGreyLight1;
+        border-radius: 2px;
+
+        &--split{
+            display: flex;
+
+            .wpr-field+.wpr-field{
+                border: none;
+            }
+
+            .wpr-field{
+                flex: 0 0 50%;
+                padding: 0;
+
+                &:first-child{
+                    padding-right: 15px;
+                }
+
+                &:last-child{
+                    padding-left: 15px;
+                }
+            }
+        }
+    }
+
+    &-helper{
+        margin-top: $space*2;
+        color: $cRedDark1;
+        font-weight: 500;
+
+        &:before{
+            position: relative;
+            top: 3px;
+            @include font-size(18,18);
+            margin-right: $space/2;
+        }
+    }
+}
+
+.wpr-fieldsContainer.wpr-isHidden{
+    display: none;
+}
