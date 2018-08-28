@@ -174,7 +174,7 @@ class Combine extends Abstract_JS_Optimization {
 
 				$matches_inline[2] = str_replace( array( "\r", "\n" ), '', $matches_inline[2] );
 
-				if ( in_array( $matches_inline[2], $this->get_localized_scripts() ) ) {
+				if ( in_array( $matches_inline[2], $this->get_localized_scripts(), true ) ) {
 					return;
 				}
 
