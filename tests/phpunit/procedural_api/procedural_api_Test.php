@@ -5,48 +5,6 @@
  */
 class procedural_api_Test extends ActionScheduler_UnitTestCase {
 
-	public function provider_time_hook_args_group() {
-		$time  = time() + 60 * 2;
-		$hook  = md5( rand() );
-		$args  = array( rand(), rand() );
-		$group = 'test_group';
-
-		return array(
-
-			// Test with no args or group
-			array(
-				'time'  => $time,
-				'hook'  => $hook,
-				'args'  => array(),
-				'group' => '',
-			),
-
-			// Test with args but no group
-			array(
-				'time'  => $time,
-				'hook'  => $hook,
-				'args'  => $args,
-				'group' => '',
-			),
-
-			// Test with group but no args
-			array(
-				'time'  => $time,
-				'hook'  => $hook,
-				'args'  => array(),
-				'group' => $group,
-			),
-
-			// Test with args & group
-			array(
-				'time'  => $time,
-				'hook'  => $hook,
-				'args'  => $args,
-				'group' => $group,
-			),
-		);
-	}
-
 	public function test_schedule_action() {
 		$time = time();
 		$hook = md5(rand());
@@ -92,21 +50,74 @@ class procedural_api_Test extends ActionScheduler_UnitTestCase {
 		$this->assertEquals( $time->getTimestamp(), $next );
 	}
 
-	public function test_unschedule() {
-		$time = time();
-		$hook = md5(rand());
-		$action_id = as_schedule_single_action( $time, $hook );
+	public function provider_time_hook_args_group() {
+		$time  = time() + 60 * 2;
+		$hook  = md5( rand() );
+		$args  = array( rand(), rand() );
+		$group = 'test_group';
 
-		as_unschedule_action( $hook );
+		return array(
 
-		$next = as_next_scheduled_action( $hook );
-		$this->assertFalse($next);
+			// Test with no args or group
+			array(
+				'time'  => $time,
+				'hook'  => $hook,
+				'args'  => array(),
+				'group' => '',
+			),
+
+			// Test with args but no group
+			array(
+				'time'  => $time,
+				'hook'  => $hook,
+				'args'  => $args,
+				'group' => '',
+			),
+
+			// Test with group but no args
+			array(
+				'time'  => $time,
+				'hook'  => $hook,
+				'args'  => array(),
+				'group' => $group,
+			),
+
+			// Test with args & group
+			array(
+				'time'  => $time,
+				'hook'  => $hook,
+				'args'  => $args,
+				'group' => $group,
+			),
+		);
+	}
+
+	/**
+	 * @dataProvider provider_time_hook_args_group
+	 */
+	public function test_unschedule( $time, $hook, $args, $group ) {
+
+		$action_id_unscheduled = as_schedule_single_action( $time, $hook, $args, $group );
+		$action_scheduled_time = $time + 1;
+		$action_id_scheduled   = as_schedule_single_action( $action_scheduled_time, $hook, $args, $group );
+
+		as_unschedule_action( $hook, $args, $group );
+
+		$next = as_next_scheduled_action( $hook, $args, $group );
+		$this->assertEquals( $action_scheduled_time, $next );
 
 		$store = ActionScheduler::store();
-		$action = $store->fetch_action($action_id);
+		$unscheduled_action = $store->fetch_action( $action_id_unscheduled );
 
-		$this->assertNull($action->get_schedule()->next());
-		$this->assertEquals($hook, $action->get_hook() );
+		// Make sure the next scheduled action is unscheduled
+		$this->assertEquals( $hook, $unscheduled_action->get_hook() );
+		$this->assertNull( $unscheduled_action->get_schedule()->next() );
+
+		// Make sure other scheduled actions are not unscheduled
+		$scheduled_action = $store->fetch_action( $action_id_scheduled );
+
+		$this->assertEquals( $hook, $scheduled_action->get_hook() );
+		$this->assertEquals( $action_scheduled_time, $scheduled_action->get_schedule()->next()->getTimestamp() );
 	}
 
 	/**
