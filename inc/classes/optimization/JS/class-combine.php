@@ -348,6 +348,7 @@ class Combine extends Abstract_JS_Optimization {
 			'jetpack_remote_comment',
 			'scrapeazon',
 			'subscribe-field',
+			'contextly',
 		] );
 	}
 
