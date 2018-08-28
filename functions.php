@@ -71,6 +71,8 @@ function as_schedule_cron_action( $timestamp, $schedule, $hook, $args = array(),
  * @param string $hook The hook that the job will trigger
  * @param array $args Args that would have been passed to the job
  * @param string $group
+ *
+ * @return string The scheduled action ID if a scheduled action was found, or empty string if no matching action found.
  */
 function as_unschedule_action( $hook, $args = array(), $group = '' ) {
 	$params = array();
@@ -81,11 +83,12 @@ function as_unschedule_action( $hook, $args = array(), $group = '' ) {
 		$params['group'] = $group;
 	}
 	$job_id = ActionScheduler::store()->find_action( $hook, $params );
-	if ( empty($job_id) ) {
-		return;
+
+	if ( ! empty( $job_id ) ) {
+		ActionScheduler::store()->cancel_action( $job_id );
 	}
 
-	ActionScheduler::store()->cancel_action( $job_id );
+	return $job_id;
 }
 
 /**
