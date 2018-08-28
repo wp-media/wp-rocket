@@ -38,7 +38,7 @@ class Abstract_JS_Optimization extends Abstract_Optimization {
 	 * @return string A list of files to exclude, ready to be used in a regex pattern.
 	 */
 	protected function get_excluded_files() {
-		$excluded_files = $this->options->get( 'exclude_js', array() );
+		$excluded_files = $this->options->get( 'exclude_js', [] );
 		$jquery_url     = $this->get_jquery_url();
 
 		if ( $jquery_url ) {
