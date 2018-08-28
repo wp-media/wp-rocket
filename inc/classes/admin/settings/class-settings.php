@@ -201,7 +201,6 @@ class Settings {
 
 		$input['minify_concatenate_css'] = ! empty( $input['minify_concatenate_css'] ) ? 1 : 0;
 		$input['minify_concatenate_js']  = ! empty( $input['minify_concatenate_js'] ) ? 1 : 0;
-		$input['combine_inline_js']      = ! empty( $input['combine_inline_js'] ) ? 1 : 0;
 
 		$input['defer_all_js']      = ! empty( $input['defer_all_js'] ) ? 1 : 0;
 		$input['defer_all_js_safe'] = ! empty( $input['defer_all_js_safe'] ) ? 1 : 0;

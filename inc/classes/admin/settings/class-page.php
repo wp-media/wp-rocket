@@ -905,7 +905,7 @@ class Page implements Subscriber_Interface {
 					'type'              => 'checkbox',
 					'label'             => __( 'Combine JavaScript files <em>(Enable Minify JavaScript files to select)</em>', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'       => sprintf( __( 'Combine Javascript files combines your site\'s JS info fewer files, reducing HTTP requests. Not recommended if your site uses HTTP/2. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $combine_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $combine_beacon['id'] ) . '" target="_blank">', '</a>' ),
+					'description'       => sprintf( __( 'Combine JavaScript files combines your site’s internal, 3rd party and inline JS reducing HTTP requests. Not recommended if your site uses HTTP/2. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $combine_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $combine_beacon['id'] ) . '" target="_blank">', '</a>' ),
 					'container_class'   => [
 						get_rocket_option( 'minify_js' ) ? '' : 'wpr-isDisabled',
 						'wpr-field--parent',
@@ -921,23 +921,6 @@ class Page implements Subscriber_Interface {
 						'title'        => __( 'This could break things!', 'rocket' ),
 						'description'  => __( 'If you notice any errors on your website after having activated this setting, just deactivate it again, and your site will be back to normal.', 'rocket' ),
 						'button_label' => __( 'Activate combine JavaScript', 'rocket' ),
-					],
-				],
-				'combine_inline_js'  => [
-					'type'              => 'checkbox',
-					'label'             => __( 'Combine Inline JavaScript', 'rocket' ),
-					'description'       => __( 'Extract inline scripts from the HTML and combine them too. <br><strong>Warning:</strong> this can make WP Rocket\'s cache size grow quickly, so only enable this if you know what you are doing.', 'rocket' ),
-					'container_class'   => [
-						get_rocket_option( 'minify_concatenate_js' ) ? '' : 'wpr-isDisabled',
-						'wpr-field--children',
-					],
-					'parent'            => 'minify_concatenate_js',
-					'section'           => 'js',
-					'page'              => 'file_optimization',
-					'default'           => 0,
-					'sanitize_callback' => 'sanitize_checkbox',
-					'input_attr'        => [
-						'disabled' => get_rocket_option( 'minify_concatenate_js' ) ? 0 : 1,
 					],
 				],
 				'exclude_inline_js'  => [
