@@ -545,7 +545,7 @@ class Settings {
 		}
 
 		$hosts   = get_rocket_cnames_host( [ 'all', 'css_and_js', 'css', 'js' ] );
-		$hosts[] = wp_parse_url( 'WP_CONTENT_URL', PHP_URL_HOST );
+		$hosts[] = wp_parse_url( WP_CONTENT_URL, PHP_URL_HOST );
 		$langs   = get_rocket_i18n_uri();
 
 		// Get host for all langs.
@@ -557,11 +557,6 @@ class Settings {
 
 		$hosts_index = array_flip( array_unique( $hosts ) );
 
-		// URL has domain and domain is not part of the internal domains.
-		if ( ! isset( $hosts_index[ $file_host ] ) ) {
-			return false;
-		}
-
-		return true;
+		return isset( $hosts_index[ $file_host ] );
 	}
 }
