@@ -54,7 +54,7 @@ if ( realpath( $rocket_config_path . $host . '.php' ) && 0 === stripos( realpath
 } else {
 	$path = str_replace( '\\', '/', strtok( $_SERVER['REQUEST_URI'], '?' ) );
 	$path = preg_replace( '|(?<=.)/+|', '/', $path );
-	$path = explode( '%2F', trim( rawurlencode( $path ), '%2F' ) );
+	$path = explode( '%2F', preg_replace( '/^(?:%2F)*(.*?)(?:%2F)*$/', '$1', rawurlencode( $path ) ) );
 
 	foreach ( $path as $p ) {
 		static $dir;
