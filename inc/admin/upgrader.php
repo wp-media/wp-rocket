@@ -320,11 +320,5 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 	if ( version_compare( $actual_version, '3.1.1', '<' ) ) {
 		rocket_generate_config_file();
 	}
-
-	if ( version_compare( $actual_version, '3.1.3', '<' ) ) {
-		if ( get_rocket_option( 'minify_concatenate_js' ) ) {
-			update_rocket_option( 'combine_inline_js', 1 );
-		}
-	}
 }
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );
