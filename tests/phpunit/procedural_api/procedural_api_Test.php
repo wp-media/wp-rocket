@@ -5,6 +5,48 @@
  */
 class procedural_api_Test extends ActionScheduler_UnitTestCase {
 
+	public function provider_time_hook_args_group() {
+		$time  = time() + 60 * 2;
+		$hook  = md5( rand() );
+		$args  = array( rand(), rand() );
+		$group = 'test_group';
+
+		return array(
+
+			// Test with no args or group
+			array(
+				'time'  => $time,
+				'hook'  => $hook,
+				'args'  => array(),
+				'group' => '',
+			),
+
+			// Test with args but no group
+			array(
+				'time'  => $time,
+				'hook'  => $hook,
+				'args'  => $args,
+				'group' => '',
+			),
+
+			// Test with group but no args
+			array(
+				'time'  => $time,
+				'hook'  => $hook,
+				'args'  => array(),
+				'group' => $group,
+			),
+
+			// Test with args & group
+			array(
+				'time'  => $time,
+				'hook'  => $hook,
+				'args'  => $args,
+				'group' => $group,
+			),
+		);
+	}
+
 	public function test_schedule_action() {
 		$time = time();
 		$hook = md5(rand());
@@ -65,6 +107,33 @@ class procedural_api_Test extends ActionScheduler_UnitTestCase {
 
 		$this->assertNull($action->get_schedule()->next());
 		$this->assertEquals($hook, $action->get_hook() );
+	}
+
+	/**
+	 * @dataProvider provider_time_hook_args_group
+	 */
+	public function test_unschedule_all( $time, $hook, $args, $group ) {
+
+		$hook       = md5( $hook );
+		$action_ids = array();
+
+		for ( $i = 0; $i < 3; $i++ ) {
+			$action_ids[] = as_schedule_single_action( $time, $hook, $args, $group );
+		}
+
+		as_unschedule_all_actions( $hook, $args, $group );
+
+		$next = as_next_scheduled_action( $hook );
+		$this->assertFalse($next);
+
+		$store = ActionScheduler::store();
+
+		foreach ( $action_ids as $action_id ) {
+			$action = $store->fetch_action($action_id);
+
+			$this->assertNull($action->get_schedule()->next());
+			$this->assertEquals($hook, $action->get_hook() );
+		}
 	}
 
 	public function test_as_get_datetime_object_default() {
