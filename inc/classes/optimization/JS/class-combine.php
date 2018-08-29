@@ -164,11 +164,17 @@ class Combine extends Abstract_JS_Optimization {
 			} elseif ( ! isset( $matches[2] ) ) {
 				preg_match( '/<script\b([^>]*)>(?:\/\*\s*<!\[CDATA\[\s*\*\/)?\s*([\s\S]*?)\s*(?:\/\*\s*\]\]>\s*\*\/)?<\/script>/msi', $script[0], $matches_inline );
 
-				if ( strpos( $matches_inline[1], 'type' ) !== 'false' && ! preg_match( '/type\s*=\s*["\']?(?:text|application)\/(?:(?:x\-)?javascript|ecmascript)["\']?/i', $matches_inline[1] ) ) {
+				if ( strpos( $matches_inline[1], 'type' ) !== false && ! preg_match( '/type\s*=\s*["\']?(?:text|application)\/(?:(?:x\-)?javascript|ecmascript)["\']?/i', $matches_inline[1] ) ) {
 					return;
 				}
 
 				if ( false !== strpos( $matches_inline[1], 'src=' ) ) {
+					return;
+				}
+
+				$matches_inline[2] = str_replace( array( "\r", "\n" ), '', $matches_inline[2] );
+
+				if ( in_array( $matches_inline[2], $this->get_localized_scripts(), true ) ) {
 					return;
 				}
 
@@ -298,14 +304,7 @@ class Combine extends Abstract_JS_Optimization {
 	 * @return array
 	 */
 	protected function get_excluded_inline_content() {
-		/**
-		 * Filters inline JS excluded from being combined
-		 *
-		 * @since 3.1
-		 *
-		 * @param array $pattern Patterns to match.
-		 */
-		return apply_filters( 'rocket_excluded_inline_js_content', [
+		$defaults = [
 			'document.write',
 			'google_ad',
 			'edToolbar',
@@ -330,6 +329,7 @@ class Combine extends Abstract_JS_Optimization {
 			'ANS_customer_id',
 			'tdBlock',
 			'tdLocalCache',
+			'"url":',
 			'td_live_css_uid',
 			'tdAjaxCount',
 			'lazyLoadOptions',
@@ -342,7 +342,24 @@ class Combine extends Abstract_JS_Optimization {
 			'_paq',
 			'gtm',
 			'dataLayer',
-		] );
+			'RecaptchaLoad',
+			'WPCOM_sharing_counts',
+			'jetpack_remote_comment',
+      'scrapeazon',
+			'subscribe-field',
+			'contextly',
+		];
+
+		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
+
+		/**
+		 * Filters inline JS excluded from being combined
+		 *
+		 * @since 3.1
+		 *
+		 * @param array $pattern Patterns to match.
+		 */
+		return apply_filters( 'rocket_excluded_inline_js_content', $excluded_inline );
 	}
 
 	/**
@@ -354,14 +371,7 @@ class Combine extends Abstract_JS_Optimization {
 	 * @return array
 	 */
 	protected function get_excluded_external_file_path() {
-		/**
-		 * Filters JS externals files to exclude from the combine process
-		 *
-		 * @since 2.2
-		 *
-		 * @param array $pattern Patterns to match.
-		 */
-		return apply_filters( 'rocket_minify_excluded_external_js', [
+		$defaults = [
 			'html5.js',
 			'show_ads.js',
 			'histats.com/js',
@@ -410,6 +420,49 @@ class Combine extends Abstract_JS_Optimization {
 			'mediavine.com',
 			'js.hsforms.net',
 			'googleadservices.com',
-		] );
+			'f.convertkit.com',
+			'recaptcha/api.js',
+		];
+
+		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );
+
+		/**
+		 * Filters JS externals files to exclude from the combine process
+		 *
+		 * @since 2.2
+		 *
+		 * @param array $pattern Patterns to match.
+		 */
+		return apply_filters( 'rocket_minify_excluded_external_js', $excluded_external );
+	}
+
+	/**
+	 * Gets all localized scripts data to exclude them from combine.
+	 *
+	 * @since 3.1.3
+	 * @author Remy Perona
+	 *
+	 * @return array
+	 */
+	protected function get_localized_scripts() {
+		static $localized_scripts;
+
+		if ( isset( $localized_scripts ) ) {
+			return $localized_scripts;
+		}
+
+		$localized_scripts = [];
+
+		foreach ( array_unique( wp_scripts()->queue ) as $item ) {
+			$data = wp_scripts()->print_extra_script( $item, false );
+
+			if ( empty( $data ) ) {
+				continue;
+			}
+
+			$localized_scripts[] = '/* <![CDATA[ */' . $data . '/* ]]> */';
+		}
+
+		return $localized_scripts;
 	}
 }

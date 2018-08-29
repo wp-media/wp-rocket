@@ -540,7 +540,7 @@ function get_rocket_htaccess_etag() {
  * @return string $rules Rules that will be printed
  */
 function get_rocket_htaccess_web_fonts_access() {
-	if ( false === get_rocket_option( 'cdn', false ) ) {
+	if ( ! get_rocket_option( 'cdn', false ) ) {
 		return;
 	}
 
