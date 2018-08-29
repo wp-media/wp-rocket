@@ -346,13 +346,37 @@ class Settings {
 			if ( ! is_array( $input['exclude_js'] ) ) {
 				$input['exclude_js'] = explode( "\n", $input['exclude_js'] );
 			}
-			$input['exclude_js'] = array_map( 'trim', $input['exclude_js'] );
-			$input['exclude_js'] = array_map( 'rocket_clean_exclude_file', $input['exclude_js'] );
-			$input['exclude_js'] = array_map( 'rocket_sanitize_js', $input['exclude_js'] );
+
+			$input['exclude_js'] = array_map( function( $file ) {
+				if ( $this->is_internal_file( $file ) ) {
+					$file = trim( $file );
+					$file = rocket_clean_exclude_file( $file );
+					$file = rocket_sanitize_js( $file );
+
+					return $file;
+				}
+
+				return sanitize_text_field( $file );
+			}, $input['exclude_js'] );
+
 			$input['exclude_js'] = array_filter( $input['exclude_js'] );
 			$input['exclude_js'] = array_unique( $input['exclude_js'] );
 		} else {
 			$input['exclude_js'] = [];
+		}
+
+		// Option: inline JS patterns to exclude from combine JS.
+		if ( ! empty( $input['exclude_inline_js'] ) ) {
+			if ( ! is_array( $input['exclude_inline_js'] ) ) {
+				$input['exclude_inline_js'] = explode( "\n", $input['exclude_inline_js'] );
+			}
+
+			$input['exclude_inline_js'] = array_map( 'sanitize_text_field', $input['exclude_inline_js'] );
+
+			$input['exclude_inline_js'] = array_filter( $input['exclude_inline_js'] );
+			$input['exclude_inline_js'] = array_unique( $input['exclude_inline_js'] );
+		} else {
+			$input['exclude_inline_js'] = [];
 		}
 
 		// Option: Async CSS.
@@ -502,5 +526,37 @@ class Settings {
 	 */
 	public function sanitize_checkbox( $value ) {
 		return isset( $value ) ? 1 : 0;
+	}
+
+	/**
+	 * Checks if the passed value is an internal URL (default domain or CDN/Multilingual)
+	 *
+	 * @since 3.1.3
+	 * @author Remy Perona
+	 *
+	 * @param string $file string to test.
+	 * @return boolean
+	 */
+	private function is_internal_file( $file ) {
+		$file_host = wp_parse_url( $file, PHP_URL_HOST );
+
+		if ( ! $file_host ) {
+			return false;
+		}
+
+		$hosts   = get_rocket_cnames_host( [ 'all', 'css_and_js', 'css', 'js' ] );
+		$hosts[] = wp_parse_url( WP_CONTENT_URL, PHP_URL_HOST );
+		$langs   = get_rocket_i18n_uri();
+
+		// Get host for all langs.
+		if ( $langs ) {
+			foreach ( $langs as $lang ) {
+				$hosts[] = wp_parse_url( $lang, PHP_URL_HOST );
+			}
+		}
+
+		$hosts_index = array_flip( array_unique( $hosts ) );
+
+		return isset( $hosts_index[ $file_host ] );
 	}
 }
