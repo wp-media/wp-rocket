@@ -611,6 +611,7 @@ class Rocket_Critical_CSS {
 		}
 
 		$buffer = preg_replace( '/<head(.*)>/U', '<head$1><style id="rocket-critical-css">' . wp_strip_all_tags( $critical_css_content ) . '</style>', $buffer, 1 );
+		$buffer = str_replace( '</body>', '<script>function wprRemoveCPCSS(){document.getElementById("rocket-critical-css").outerHTML=""}if(window.addEventListener){window.addEventListener("load",wprRemoveCPCSS,false);}else if(window.attachEvent){window.attachEvent("onload",wprRemoveCPCSS);}</script></body>', $buffer );
 
 		return $buffer;
 	}
