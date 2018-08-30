@@ -348,6 +348,7 @@ class Combine extends Abstract_JS_Optimization {
       'scrapeazon',
 			'subscribe-field',
 			'contextly',
+			'wprRemoveCPCSS',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
