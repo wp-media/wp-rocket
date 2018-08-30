@@ -492,7 +492,7 @@ add_action( 'admin_post_rocket_analytics_optin', 'rocket_analytics_optin' );
 /**
  * Download the log file.
  *
- * @since  3.2
+ * @since  3.1.4
  * @author Grégory Viguier
  */
 function rocket_download_debug_file() {
@@ -530,7 +530,7 @@ add_action( 'admin_post_rocket_download_debug_file', 'rocket_download_debug_file
 /**
  * Delete the log file.
  *
- * @since  3.2
+ * @since  3.1.4
  * @author Grégory Viguier
  */
 function rocket_delete_debug_file() {

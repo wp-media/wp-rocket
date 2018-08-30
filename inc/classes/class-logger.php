@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 /**
  * Class used to log events.
  *
- * @since  3.2
+ * @since  3.1.4
  * @author Grégory Viguier
  */
 class Logger {
@@ -22,7 +22,7 @@ class Logger {
 	 * Logger name.
 	 *
 	 * @var    string
-	 * @since  3.2
+	 * @since  3.1.4
 	 * @author Grégory Viguier
 	 */
 	const LOGGER_NAME = 'wp_rocket';
@@ -31,7 +31,7 @@ class Logger {
 	 * Name of the logs file.
 	 *
 	 * @var    string
-	 * @since  3.2
+	 * @since  3.1.4
 	 * @author Grégory Viguier
 	 */
 	const LOG_FILE_NAME = 'wp-rocket-debug.log';
@@ -44,7 +44,7 @@ class Logger {
 	/**
 	 * Adds a log record at the DEBUG level.
 	 *
-	 * @since  3.2
+	 * @since  3.1.4
 	 * @access public
 	 * @author Grégory Viguier
 	 *
@@ -59,7 +59,7 @@ class Logger {
 	/**
 	 * Adds a log record at the INFO level.
 	 *
-	 * @since  3.2
+	 * @since  3.1.4
 	 * @access public
 	 * @author Grégory Viguier
 	 *
@@ -74,7 +74,7 @@ class Logger {
 	/**
 	 * Adds a log record at the NOTICE level.
 	 *
-	 * @since  3.2
+	 * @since  3.1.4
 	 * @access public
 	 * @author Grégory Viguier
 	 *
@@ -89,7 +89,7 @@ class Logger {
 	/**
 	 * Adds a log record at the WARNING level.
 	 *
-	 * @since  3.2
+	 * @since  3.1.4
 	 * @access public
 	 * @author Grégory Viguier
 	 *
@@ -104,7 +104,7 @@ class Logger {
 	/**
 	 * Adds a log record at the ERROR level.
 	 *
-	 * @since  3.2
+	 * @since  3.1.4
 	 * @access public
 	 * @author Grégory Viguier
 	 *
@@ -119,7 +119,7 @@ class Logger {
 	/**
 	 * Adds a log record at the CRITICAL level.
 	 *
-	 * @since  3.2
+	 * @since  3.1.4
 	 * @access public
 	 * @author Grégory Viguier
 	 *
@@ -134,7 +134,7 @@ class Logger {
 	/**
 	 * Adds a log record at the ALERT level.
 	 *
-	 * @since  3.2
+	 * @since  3.1.4
 	 * @access public
 	 * @author Grégory Viguier
 	 *
@@ -149,7 +149,7 @@ class Logger {
 	/**
 	 * Adds a log record at the EMERGENCY level.
 	 *
-	 * @since  3.2
+	 * @since  3.1.4
 	 * @access public
 	 * @author Grégory Viguier
 	 *
@@ -164,7 +164,7 @@ class Logger {
 	/**
 	 * Get the logger instance.
 	 *
-	 * @since  3.2
+	 * @since  3.1.4
 	 * @access public
 	 * @author Grégory Viguier
 	 *
@@ -214,7 +214,7 @@ class Logger {
 	/**
 	 * Get the path to the log file.
 	 *
-	 * @since  3.2
+	 * @since  3.1.4
 	 * @access public
 	 * @author Grégory Viguier
 	 *
@@ -227,7 +227,7 @@ class Logger {
 	/**
 	 * Get the log file contents.
 	 *
-	 * @since  3.2
+	 * @since  3.1.4
 	 * @access public
 	 * @author Grégory Viguier
 	 *
@@ -253,7 +253,7 @@ class Logger {
 	/**
 	 * Get the log file size and number of entries.
 	 *
-	 * @since  3.2
+	 * @since  3.1.4
 	 * @access public
 	 * @author Grégory Viguier
 	 *
@@ -297,7 +297,7 @@ class Logger {
 	/**
 	 * Delete the log file.
 	 *
-	 * @since  3.2
+	 * @since  3.1.4
 	 * @access public
 	 * @author Grégory Viguier
 	 *
@@ -320,7 +320,7 @@ class Logger {
 	/**
 	 * Get the formatter used for the log file.
 	 *
-	 * @since  3.2
+	 * @since  3.1.4
 	 * @access public
 	 * @author Grégory Viguier
 	 *
@@ -355,7 +355,7 @@ class Logger {
 	/**
 	 * Tell if debug is enabled.
 	 *
-	 * @since  3.2
+	 * @since  3.1.4
 	 * @access public
 	 * @author Grégory Viguier
 	 *
@@ -368,7 +368,7 @@ class Logger {
 	/**
 	 * Enable debug mode by adding a constant in the `wp-config.php` file.
 	 *
-	 * @since  3.2
+	 * @since  3.1.4
 	 * @access public
 	 * @author Grégory Viguier
 	 */
@@ -379,7 +379,7 @@ class Logger {
 	/**
 	 * Disable debug mode by removing the constant in the `wp-config.php` file.
 	 *
-	 * @since  3.2
+	 * @since  3.1.4
 	 * @access public
 	 * @author Grégory Viguier
 	 */
@@ -390,7 +390,7 @@ class Logger {
 	/**
 	 * Enable or disable debug mode by adding or removing a constant in the `wp-config.php` file.
 	 *
-	 * @since  3.2
+	 * @since  3.1.4
 	 * @access public
 	 * @author Grégory Viguier
 	 *
@@ -448,7 +448,7 @@ class Logger {
 	/**
 	 * Remove cookies related to WP auth.
 	 *
-	 * @since  3.2
+	 * @since  3.1.4
 	 * @access public
 	 * @author Grégory Viguier
 	 *
