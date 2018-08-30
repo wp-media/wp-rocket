@@ -23,7 +23,8 @@ class Minify extends Abstract_JS_Optimization {
 	public function optimize( $html ) {
 		Logger::info( 'JS MINIFICATION PROCESS STARTED.', [ 'js minification process' ] );
 
-		$scripts = $this->find( '<script\s+([^>]+[\s\'"])?src\s*=\s*[\'"]\s*?([^\'"]+\.js(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>', $html );
+		$html_nocomments = preg_replace( '/<!--(.*)-->/Uis', '', $html );
+		$scripts         = $this->find( '<script\s+([^>]+[\s\'"])?src\s*=\s*[\'"]\s*?([^\'"]+\.js(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>', $html_nocomments );
 
 		if ( ! $scripts ) {
 			Logger::debug( 'No `<script>` tags found.', [ 'js minification process' ] );
@@ -113,40 +114,52 @@ class Minify extends Abstract_JS_Optimization {
 		$filename  = preg_replace( '/\.js$/', '-' . $unique_id . '.js', ltrim( rocket_realpath( rocket_extract_url_component( $url, PHP_URL_PATH ) ), '/' ) );
 
 		$minified_file = $this->minify_base_path . $filename;
+		$minified_url  = $this->get_minify_url( $filename );
 
-		if ( ! rocket_direct_filesystem()->exists( $minified_file ) ) {
-			$minified_content = $this->minify( $this->get_file_path( $url ) );
-
-			if ( ! $minified_content ) {
-				Logger::error( 'No minified content.', [
-					'js minification process',
-					'path' => $minified_file,
-				] );
-				return false;
-			}
-
-			$save_minify_file = $this->write_file( $minified_content, $minified_file );
-
-			if ( ! $save_minify_file ) {
-				Logger::error( 'Minified JS file could not be created.', [
-					'js minification process',
-					'path' => $minified_file,
-				] );
-				return false;
-			}
-
-			Logger::debug( 'Minified JS file successfully created.', [
-				'js minification process',
-				'path' => $minified_file,
-			] );
-		} else {
+		if ( rocket_direct_filesystem()->exists( $minified_file ) ) {
 			Logger::debug( 'Minified JS file already exists.', [
 				'js minification process',
 				'path' => $minified_file,
 			] );
+			return $minified_url;
 		}
 
-		return $this->get_minify_url( $filename );
+		$file_path = $this->get_file_path( $url );
+
+		if ( ! $file_path ) {
+			Logger::error( 'Couldn’t get the file path from the URL.', [
+				'js minification process',
+				'url' => $url,
+			] );
+			return false;
+		}
+
+		$minified_content = $this->minify( $file_path );
+
+		if ( ! $minified_content ) {
+			Logger::error( 'No minified content.', [
+				'js minification process',
+				'path' => $minified_file,
+			] );
+			return false;
+		}
+
+		$save_minify_file = $this->write_file( $minified_content, $minified_file );
+
+		if ( ! $save_minify_file ) {
+			Logger::error( 'Minified JS file could not be created.', [
+				'js minification process',
+				'path' => $minified_file,
+			] );
+			return false;
+		}
+
+		Logger::debug( 'Minified JS file successfully created.', [
+			'js minification process',
+			'path' => $minified_file,
+		] );
+
+		return $minified_url;
 	}
 
 	/**

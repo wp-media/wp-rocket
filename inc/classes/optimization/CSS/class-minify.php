@@ -25,7 +25,8 @@ class Minify extends Abstract_CSS_Optimization {
 	public function optimize( $html ) {
 		Logger::info( 'CSS MINIFICATION PROCESS STARTED.', [ 'css minification process' ] );
 
-		$styles = $this->find( '<link\s+([^>]+[\s"\'])?href\s*=\s*[\'"]\s*?([^\'"]+\.css(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>', $html );
+		$html_nocomments = preg_replace( '/<!--(.*)-->/Uis', '', $html );
+		$styles          = $this->find( '<link\s+([^>]+[\s"\'])?href\s*=\s*[\'"]\s*?([^\'"]+\.css(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>', $html_nocomments );
 
 		if ( ! $styles ) {
 			Logger::debug( 'No `<link>` tags found.', [ 'css minification process' ] );
@@ -104,40 +105,52 @@ class Minify extends Abstract_CSS_Optimization {
 		$filename  = preg_replace( '/\.(css)$/', '-' . $unique_id . '.css', ltrim( rocket_realpath( rocket_extract_url_component( $url, PHP_URL_PATH ) ), '/' ) );
 
 		$minified_file = $this->minify_base_path . $filename;
+		$minify_url    = $this->get_minify_url( $filename );
 
-		if ( ! rocket_direct_filesystem()->exists( $minified_file ) ) {
-			$minified_content = $this->minify( $this->get_file_path( $url ) );
-
-			if ( ! $minified_content ) {
-				Logger::error( 'No minified content.', [
-					'css minification process',
-					'path' => $minified_file,
-				] );
-				return false;
-			}
-
-			$save_minify_file = $this->write_file( $minified_content, $minified_file );
-
-			if ( ! $save_minify_file ) {
-				Logger::error( 'Minified CSS file could not be created.', [
-					'css minification process',
-					'path' => $minified_file,
-				] );
-				return false;
-			}
-
-			Logger::debug( 'Minified CSS file successfully created.', [
-				'css minification process',
-				'path' => $minified_file,
-			] );
-		} else {
+		if ( rocket_direct_filesystem()->exists( $minified_file ) ) {
 			Logger::debug( 'Minified CSS file already exists.', [
 				'css minification process',
 				'path' => $minified_file,
 			] );
+			return $minify_url;
 		}
 
-		return $this->get_minify_url( $filename );
+		$file_path = $this->get_file_path( $url );
+
+		if ( ! $file_path ) {
+			Logger::error( 'Couldn’t get the file path from the URL.', [
+				'css minification process',
+				'url' => $url,
+			] );
+			return false;
+		}
+
+		$minified_content = $this->minify( $file_path );
+
+		if ( ! $minified_content ) {
+			Logger::error( 'No minified content.', [
+				'css minification process',
+				'path' => $minified_file,
+			] );
+			return false;
+		}
+
+		$save_minify_file = $this->write_file( $minified_content, $minified_file );
+
+		if ( ! $save_minify_file ) {
+			Logger::error( 'Minified CSS file could not be created.', [
+				'css minification process',
+				'path' => $minified_file,
+			] );
+			return false;
+		}
+
+		Logger::debug( 'Minified CSS file successfully created.', [
+			'css minification process',
+			'path' => $minified_file,
+		] );
+
+		return $minify_url;
 	}
 
 	/**

@@ -83,7 +83,8 @@ class Combine extends Abstract_JS_Optimization {
 	public function optimize( $html ) {
 		Logger::info( 'JS COMBINE PROCESS STARTED.', [ 'js combine process' ] );
 
-		$scripts = $this->find( '<script.*<\/script>', $html );
+		$html_nocomments = preg_replace( '/<!--(.*)-->/Uis', '', $html );
+		$scripts         = $this->find( '<script.*<\/script>', $html_nocomments );
 
 		if ( ! $scripts ) {
 			Logger::debug( 'No `<script>` tags found.', [ 'js combine process' ] );
@@ -159,6 +160,13 @@ class Combine extends Abstract_JS_Optimization {
 							return;
 						}
 					}
+
+					$this->scripts[] = [
+						'type'    => 'url',
+						'content' => $matches[2],
+					];
+
+					return $script;
 				}
 
 				if ( $this->is_minify_excluded_file( $matches ) ) {
@@ -177,14 +185,20 @@ class Combine extends Abstract_JS_Optimization {
 					return;
 				}
 
+				$file_path = $this->get_file_path( $matches[2] );
+
+				if ( ! $file_path ) {
+					return;
+				}
+
 				$this->scripts[] = [
-					'type'    => 'url',
-					'content' => $matches[2],
+					'type'    => 'file',
+					'content' => $file_path,
 				];
 			} else {
 				preg_match( '/<script\b([^>]*)>(?:\/\*\s*<!\[CDATA\[\s*\*\/)?\s*([\s\S]*?)\s*(?:\/\*\s*\]\]>\s*\*\/)?<\/script>/msi', $script[0], $matches_inline );
 
-				if ( preg_match( '/type\s*=\s*["\']?(?:text|application)\/(?:template|html|ld\+json)["\']?/i', $matches_inline[1] ) ) {
+				if ( strpos( $matches_inline[1], 'type' ) !== false && ! preg_match( '/type\s*=\s*["\']?(?:text|application)\/(?:(?:x\-)?javascript|ecmascript)["\']?/i', $matches_inline[1] ) ) {
 					Logger::debug( 'Inline script is not JS.', [
 						'js combine process',
 						'attributes' => $matches_inline[1],
@@ -197,6 +211,12 @@ class Combine extends Abstract_JS_Optimization {
 						'js combine process',
 						'attributes' => $matches_inline[1],
 					] );
+					return;
+				}
+
+				$test_localize_script = str_replace( array( "\r", "\n" ), '', $matches_inline[2] );
+
+				if ( in_array( $test_localize_script, $this->get_localized_scripts(), true ) ) {
 					return;
 				}
 
@@ -234,13 +254,12 @@ class Combine extends Abstract_JS_Optimization {
 		$content = '';
 
 		foreach ( $this->scripts as $script ) {
-			if ( 'url' === $script['type'] && ! $this->is_external_file( $script['content'] ) ) {
-				$file         = $this->get_file_path( $script['content'] );
-				$file_content = $this->get_file_content( $file );
+			if ( 'file' === $script['type'] ) {
+				$file_content = $this->get_file_content( $script['content'] );
 				$content     .= $file_content;
 
 				$this->add_to_minify( $file_content );
-			} elseif ( 'url' === $script['type'] && $this->is_external_file( $script['content'] ) ) {
+			} elseif ( 'url' === $script['type'] ) {
 				$file_content = $this->local_cache->get_content( rocket_add_url_protocol( $script['content'] ) );
 				$content     .= $file_content;
 
@@ -331,14 +350,7 @@ class Combine extends Abstract_JS_Optimization {
 	 * @return array
 	 */
 	protected function get_excluded_inline_content() {
-		/**
-		 * Filters inline JS excluded from being combined
-		 *
-		 * @since 3.1
-		 *
-		 * @param array $pattern Patterns to match.
-		 */
-		return apply_filters( 'rocket_excluded_inline_js_content', [
+		$defaults = [
 			'document.write',
 			'google_ad',
 			'edToolbar',
@@ -348,6 +360,7 @@ class Combine extends Abstract_JS_Optimization {
 			'GoogleAnalyticsObject',
 			'syntaxhighlighter',
 			'adsbygoogle',
+			'ci_cap_',
 			'_stq',
 			'nonce',
 			'post_id',
@@ -362,8 +375,37 @@ class Combine extends Abstract_JS_Optimization {
 			'ANS_customer_id',
 			'tdBlock',
 			'tdLocalCache',
+			'"url":',
+			'td_live_css_uid',
+			'tdAjaxCount',
 			'lazyLoadOptions',
-		] );
+			'adthrive',
+			'loadCSS',
+			'google_tag_params',
+			'clicky_custom',
+			'clicky_site_ids',
+			'NSLPopupCenter',
+			'_paq',
+			'gtm',
+			'dataLayer',
+			'RecaptchaLoad',
+			'WPCOM_sharing_counts',
+			'jetpack_remote_comment',
+			'scrapeazon',
+			'subscribe-field',
+			'contextly',
+		];
+
+		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
+
+		/**
+		 * Filters inline JS excluded from being combined
+		 *
+		 * @since 3.1
+		 *
+		 * @param array $pattern Patterns to match.
+		 */
+		return apply_filters( 'rocket_excluded_inline_js_content', $excluded_inline );
 	}
 
 	/**
@@ -375,14 +417,7 @@ class Combine extends Abstract_JS_Optimization {
 	 * @return array
 	 */
 	protected function get_excluded_external_file_path() {
-		/**
-		 * Filters JS externals files to exclude from the combine process
-		 *
-		 * @since 2.2
-		 *
-		 * @param array $pattern Patterns to match.
-		 */
-		return apply_filters( 'rocket_minify_excluded_external_js', [
+		$defaults = [
 			'html5.js',
 			'show_ads.js',
 			'histats.com/js',
@@ -427,6 +462,53 @@ class Combine extends Abstract_JS_Optimization {
 			'googlesyndication.com',
 			'a.optmstr.com',
 			'a.optmnstr.com',
-		] );
+			'adthrive.com',
+			'mediavine.com',
+			'js.hsforms.net',
+			'googleadservices.com',
+			'f.convertkit.com',
+			'recaptcha/api.js',
+		];
+
+		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );
+
+		/**
+		 * Filters JS externals files to exclude from the combine process
+		 *
+		 * @since 2.2
+		 *
+		 * @param array $pattern Patterns to match.
+		 */
+		return apply_filters( 'rocket_minify_excluded_external_js', $excluded_external );
+	}
+
+	/**
+	 * Gets all localized scripts data to exclude them from combine.
+	 *
+	 * @since 3.1.3
+	 * @author Remy Perona
+	 *
+	 * @return array
+	 */
+	protected function get_localized_scripts() {
+		static $localized_scripts;
+
+		if ( isset( $localized_scripts ) ) {
+			return $localized_scripts;
+		}
+
+		$localized_scripts = [];
+
+		foreach ( array_unique( wp_scripts()->queue ) as $item ) {
+			$data = wp_scripts()->print_extra_script( $item, false );
+
+			if ( empty( $data ) ) {
+				continue;
+			}
+
+			$localized_scripts[] = '/* <![CDATA[ */' . $data . '/* ]]> */';
+		}
+
+		return $localized_scripts;
 	}
 }
