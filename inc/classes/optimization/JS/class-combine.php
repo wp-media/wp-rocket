@@ -172,9 +172,9 @@ class Combine extends Abstract_JS_Optimization {
 					return;
 				}
 
-				$matches_inline[2] = str_replace( array( "\r", "\n" ), '', $matches_inline[2] );
+				$test_localize_script = str_replace( array( "\r", "\n" ), '', $matches_inline[2] );
 
-				if ( in_array( $matches_inline[2], $this->get_localized_scripts(), true ) ) {
+				if ( in_array( $test_localize_script, $this->get_localized_scripts(), true ) ) {
 					return;
 				}
 
