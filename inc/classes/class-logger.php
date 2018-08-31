@@ -221,6 +221,11 @@ class Logger {
 	 * @return string
 	 */
 	public static function get_log_file_path() {
+		if ( defined( 'WP_ROCKET_DEBUG_LOG_FILE' ) && WP_ROCKET_DEBUG_LOG_FILE && is_string( WP_ROCKET_DEBUG_LOG_FILE ) ) {
+			// Make sure the file uses a ".log" extension.
+			return preg_replace( '/\.[^.]*$/', '', WP_ROCKET_DEBUG_LOG_FILE ) . '.log';
+		}
+
 		return WP_CONTENT_DIR . '/wp-rocket-config/' . static::LOG_FILE_NAME;
 	}
 
@@ -292,6 +297,33 @@ class Logger {
 		$bytes    = str_replace( ' ', ' ', $bytes ); // Non-breaking space character.
 
 		return compact( 'entries', 'bytes' );
+	}
+
+	/**
+	 * Get the log file extension related to the formatter in use. This can be used when the file is downloaded.
+	 *
+	 * @since  3.1.4
+	 * @access public
+	 * @author Grégory Viguier
+	 *
+	 * @return string The corresponding file extension with the heading dot.
+	 */
+	public static function get_log_file_extension() {
+		$formatter = static::get_stream_formatter();
+
+		if ( ! $formatter ) {
+			return '.log';
+		}
+
+		if ( $formatter instanceof HtmlFormatter ) {
+			return '.html';
+		}
+
+		if ( $formatter instanceof LineFormatter ) {
+			return '.txt';
+		}
+
+		return '.log';
 	}
 
 	/**

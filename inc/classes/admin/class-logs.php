@@ -59,9 +59,12 @@ class Logs implements Subscriber_Interface {
 			$this->redirect( add_query_arg( 'settings-updated', 1, wp_get_referer() ) );
 		}
 
+		$file_name = Logger::get_log_file_path();
+		$file_name = basename( $file_name, '.log' ) . Logger::get_log_file_extension();
+
 		nocache_headers();
 		@header( 'Content-Type: text/x-log' );
-		@header( 'Content-Disposition: attachment; filename="' . Logger::LOG_FILE_NAME . '"' );
+		@header( 'Content-Disposition: attachment; filename="' . $file_name . '"' );
 		@header( 'Content-Transfer-Encoding: binary' );
 		@header( 'Content-Length: ' . strlen( $contents ) );
 		@header( 'Connection: close' );
