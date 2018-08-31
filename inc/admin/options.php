@@ -249,17 +249,6 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 		$newvalue = array_merge( $newvalue, $keys );
 	}
 
-	// Enable or disable debug mode.
-	if ( ! empty( $_POST ) ) {
-		if ( ! empty( $newvalue['debug_enabled'] ) ) {
-			Logger::enable_debug();
-		} else {
-			Logger::disable_debug();
-		}
-	}
-
-	unset( $newvalue['debug_enabled'] );
-
 	return $newvalue;
 }
 add_filter( 'pre_update_option_' . WP_ROCKET_SLUG, 'rocket_pre_main_option', 10, 2 );

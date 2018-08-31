@@ -25,9 +25,41 @@ class Logs implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
+			'pre_update_option_' . WP_ROCKET_SLUG   => [ 'enable_debug', 10, 2 ],
 			'admin_post_rocket_download_debug_file' => 'download_debug_file',
 			'admin_post_rocket_delete_debug_file'   => 'delete_debug_file',
 		];
+	}
+
+	/** ----------------------------------------------------------------------------------------- */
+	/** DEBUG ACTIVATION ======================================================================== */
+	/** ----------------------------------------------------------------------------------------- */
+
+	/**
+	 * Enable or disable the debug mode when settings are saved.
+	 *
+	 * @since  3.1.4
+	 * @access public
+	 * @author Grégory Viguier
+	 *
+	 * @param  array $newvalue An array of submitted options values.
+	 * @param  array $oldvalue An array of previous options values.
+	 * @return array           Updated submitted options values.
+	 */
+	public function enable_debug( $newvalue, $oldvalue ) {
+		if ( empty( $_POST ) ) {
+			return $newvalue;
+		}
+
+		if ( ! empty( $newvalue['debug_enabled'] ) ) {
+			Logger::enable_debug();
+		} else {
+			Logger::disable_debug();
+		}
+
+		unset( $newvalue['debug_enabled'] );
+
+		return $newvalue;
 	}
 
 	/** ----------------------------------------------------------------------------------------- */
