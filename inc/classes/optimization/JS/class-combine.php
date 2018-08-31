@@ -345,10 +345,11 @@ class Combine extends Abstract_JS_Optimization {
 			'RecaptchaLoad',
 			'WPCOM_sharing_counts',
 			'jetpack_remote_comment',
-      'scrapeazon',
+			'scrapeazon',
 			'subscribe-field',
 			'contextly',
 			'wprRemoveCPCSS',
+			'_mmunch',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
@@ -423,6 +424,7 @@ class Combine extends Abstract_JS_Optimization {
 			'googleadservices.com',
 			'f.convertkit.com',
 			'recaptcha/api.js',
+			'mailmunch.co',
 		];
 
 		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );
