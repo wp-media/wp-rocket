@@ -265,6 +265,12 @@ class Logger {
 	 * @return array|object An array of statistics on success. A WP_Error object on failure.
 	 */
 	public static function get_log_file_stats() {
+		$formatter = static::get_stream_formatter();
+
+		if ( ! $formatter ) {
+			return new \WP_Error( 'no_stream_formatter', __( 'The logs are not saved into a file.', 'rocket' ) );
+		}
+
 		$filesystem = \rocket_direct_filesystem();
 		$file_path  = static::get_log_file_path();
 
@@ -278,19 +284,15 @@ class Logger {
 			return new \WP_Error( 'file_not_read', __( 'The log file could not be read.', 'rocket' ) );
 		}
 
-		$formatter = static::get_stream_formatter();
-		$entries   = 0;
-
-		if ( $formatter ) {
-			if ( $formatter instanceof HtmlFormatter ) {
-				$entries = preg_split( '@<h1 @', $contents );
-			} elseif ( $formatter instanceof LineFormatter ) {
-				$entries = preg_split( '@^\[\d{4,}-\d{2,}-\d{2,} \d{2,}:\d{2,}:\d{2,}] @m', $contents );
-			}
-
-			$entries = $entries ? number_format_i18n( count( $entries ) ) : '0';
+		if ( $formatter instanceof HtmlFormatter ) {
+			$entries = preg_split( '@<h1 @', $contents );
+		} elseif ( $formatter instanceof LineFormatter ) {
+			$entries = preg_split( '@^\[\d{4,}-\d{2,}-\d{2,} \d{2,}:\d{2,}:\d{2,}] @m', $contents );
+		} else {
+			$entries = 0;
 		}
 
+		$entries  = $entries ? number_format_i18n( count( $entries ) ) : '0';
 		$bytes    = $filesystem->size( $file_path );
 		$decimals = $bytes > pow( 1024, 3 ) ? 1 : 0;
 		$bytes    = @size_format( $bytes, $decimals );

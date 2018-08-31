@@ -540,13 +540,13 @@ class Page implements Subscriber_Interface {
 			if ( ! is_wp_error( $stats ) ) {
 				// translators: %1$s = formatted file size, %2$s = formatted number of entries (don't use %2$d).
 				$log_description .= '<br/>' . sprintf( __( 'Files size: %1$s. Number of entries: %2$s.', 'rocket' ), '<strong>' . esc_html( $stats['bytes'] ) . '</strong>', '<strong>' . esc_html( $stats['entries'] ) . '</strong>' );
+
+				// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+				$log_description .= '<br/>' . sprintf( __( '%1$sDownload the file%2$s.', 'rocket' ), '<a href="' . esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=rocket_download_debug_file' ), 'download_debug_file' ) ) . '">', '</a>' );
+
+				// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+				$log_description .= ' - ' . sprintf( __( '%1$sDelete the file%2$s.', 'rocket' ), '<a href="' . esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=rocket_delete_debug_file' ), 'delete_debug_file' ) ) . '">', '</a>' );
 			}
-
-			// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-			$log_description .= '<br/>' . sprintf( __( '%1$sDownload the file%2$s.', 'rocket' ), '<a href="' . esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=rocket_download_debug_file' ), 'download_debug_file' ) ) . '">', '</a>' );
-
-			// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-			$log_description .= ' - ' . sprintf( __( '%1$sDelete the file%2$s.', 'rocket' ), '<a href="' . esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=rocket_delete_debug_file' ), 'delete_debug_file' ) ) . '">', '</a>' );
 		}
 
 		$this->settings->add_settings_fields(
@@ -975,7 +975,7 @@ class Page implements Subscriber_Interface {
 					'label'             => __( 'Excluded JavaScript Files', 'rocket' ),
 					'description'       => __( 'Specify URLs of JavaScript files to be excluded from minification and concatenation (one per line).', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'helper'            => __( '<strong>Internal:</strong> The domain part of the URL will be stripped automatically. Use (.*).js wildcards to exclude all JS files located at a specific path.', 'rocket' ) . '<br>' . 
+					'helper'            => __( '<strong>Internal:</strong> The domain part of the URL will be stripped automatically. Use (.*).js wildcards to exclude all JS files located at a specific path.', 'rocket' ) . '<br>' .
 					sprintf( __( '<strong>3rd Party:</strong> Use URL full path, including domain name, to exclude external JS. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $exclude_js_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $exclude_js_beacon['id'] ) . '" rel="noopener noreferrer" target="_blank">', '</a>' ),
 					'container_class'   => [
 						'wpr-field--children',
