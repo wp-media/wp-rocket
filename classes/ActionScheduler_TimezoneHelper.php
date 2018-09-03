@@ -5,6 +5,24 @@
  */
 abstract class ActionScheduler_TimezoneHelper {
 	private static $local_timezone = NULL;
+
+	/**
+	 * Get timezone offset in seconds.
+	 *
+	 * @since  2.1.0
+	 * @return float
+	 */
+	protected static function get_local_timezone_offset() {
+		$timezone = get_option( 'timezone_string' );
+
+		if ( $timezone ) {
+			$timezone_object = new DateTimeZone( $timezone );
+			return $timezone_object->getOffset( new DateTime( 'now' ) );
+		} else {
+			return floatval( get_option( 'gmt_offset', 0 ) ) * HOUR_IN_SECONDS;
+		}
+	}
+
 	public static function get_local_timezone( $reset = FALSE ) {
 		if ( $reset ) {
 			self::$local_timezone = NULL;
