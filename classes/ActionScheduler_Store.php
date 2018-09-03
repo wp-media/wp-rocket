@@ -168,8 +168,8 @@ abstract class ActionScheduler_Store {
 		if ( ! $next ) {
 			throw new InvalidArgumentException( __( 'Invalid schedule. Cannot save action.', 'action-scheduler' ) );
 		}
-		$next->setTimezone( $this->get_local_timezone() );
 
+		ActionScheduler_TimezoneHelper::set_local_timezone( $next );
 		return $next->format( 'Y-m-d H:i:s' );
 	}
 

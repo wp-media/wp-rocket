@@ -26,7 +26,7 @@ class ActionScheduler_wpCommentLogger extends ActionScheduler_Logger {
 
 	protected function create_wp_comment( $action_id, $message, DateTime $date ) {
 		$comment_date_gmt = $date->format('Y-m-d H:i:s');
-		$date->setTimezone( ActionScheduler_TimezoneHelper::get_local_timezone() );
+		ActionScheduler_TimezoneHelper::set_local_timezone( $date );
 		$comment_data = array(
 			'comment_post_ID' => $action_id,
 			'comment_date' => $date->format('Y-m-d H:i:s'),
@@ -51,7 +51,7 @@ class ActionScheduler_wpCommentLogger extends ActionScheduler_Logger {
 		}
 
 		$date = as_get_datetime_object( $comment->comment_date_gmt );
-		$date->setTimezone( ActionScheduler_TimezoneHelper::get_local_timezone() );
+		ActionScheduler_TimezoneHelper::set_local_timezone( $date );
 		return new ActionScheduler_LogEntry( $comment->comment_post_ID, $comment->comment_content, $date );
 	}
 

@@ -7,6 +7,24 @@ abstract class ActionScheduler_TimezoneHelper {
 	private static $local_timezone = NULL;
 
 	/**
+	 * Set a DateTime's timezone to the WordPress site's timezone, or a UTC offset
+	 * if no timezone string is available.
+	 *
+	 * @since  2.1.0
+	 * @return DateTime
+	 */
+	public static function set_local_timezone( ActionScheduler_DateTime $date ) {
+
+		if ( get_option( 'timezone_string' ) ) {
+			$date->setTimezone( new DateTimeZone( self::get_local_timezone_string() ) );
+		} else {
+			$date->setUtcOffset( self::get_local_timezone_offset() );
+		}
+
+		return $date;
+	}
+
+	/**
 	 * Helper to retrieve the timezone string for a site until a WP core method exists
 	 * (see https://core.trac.wordpress.org/ticket/24730).
 	 *
