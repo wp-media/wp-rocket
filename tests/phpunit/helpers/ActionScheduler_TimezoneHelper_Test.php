@@ -18,9 +18,12 @@ class ActionScheduler_TimezoneHelper_Test extends ActionScheduler_UnitTestCase {
 		};
 
 		add_filter( 'option_timezone_string', $timezone_filter );
-		$timezone = ActionScheduler_TimezoneHelper::get_local_timezone( true );
+
+		$date     = new ActionScheduler_DateTime();
+		$timezone = ActionScheduler_TimezoneHelper::set_local_timezone( $date )->getTimezone();
 		$this->assertInstanceOf( 'DateTimeZone', $timezone );
 		$this->assertEquals( $timezone_string, $timezone->getName() );
+
 		remove_filter( 'option_timezone_string', $timezone_filter );
 	}
 
@@ -44,29 +47,16 @@ class ActionScheduler_TimezoneHelper_Test extends ActionScheduler_UnitTestCase {
 			return $gmt_offset;
 		};
 
+		$date = new ActionScheduler_DateTime();
+
 		add_filter( 'option_gmt_offset', $gmt_filter );
-		try {
-			$timezone = ActionScheduler_TimezoneHelper::get_local_timezone( true );
-		} catch ( Exception $_e ) {
-			$e = $_e;
-			// Handle outside this block...
-		}
+		ActionScheduler_TimezoneHelper::set_local_timezone( $date );
 		remove_filter( 'option_gmt_offset', $gmt_filter );
 
-		if ( isset( $e ) ) {
-			if ( false !== stripos( $e->getMessage(), 'unknown or bad timezone' ) ) {
-				$this->fail( sprintf( 'GMT offset [%s] caused fatal error.', $gmt_offset ) );
-			} else {
-				throw $e;
-			}
-		}
+		$offset_in_seconds = $gmt_offset * HOUR_IN_SECONDS;
 
-		$this->assertInstanceOf( 'DateTimeZone', $timezone );
-		$this->assertNotEquals(
-			'UTC',
-			$timezone->getName(),
-			sprintf( 'GMT offset [%s] transformed into UTC', $gmt_offset )
-		);
+		$this->assertEquals( $offset_in_seconds, $date->getOffset() );
+		$this->assertEquals( $offset_in_seconds, $date->getOffsetTimestamp() - $date->getTimestamp() );
 	}
 
 	public function local_timezone_offsets_provider() {
@@ -121,9 +111,11 @@ class ActionScheduler_TimezoneHelper_Test extends ActionScheduler_UnitTestCase {
 			return $gmt_offset;
 		};
 
+		$date = new ActionScheduler_DateTime();
+
 		add_filter( 'option_gmt_offset', $gmt_filter );
 		try {
-			$timezone = ActionScheduler_TimezoneHelper::get_local_timezone( true );
+			$timezone = ActionScheduler_TimezoneHelper::set_local_timezone( $date )->getTimezone();
 		} catch ( Exception $_e ) {
 			$e = $_e;
 			// Handle outside this block...

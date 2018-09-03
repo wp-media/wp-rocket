@@ -174,15 +174,6 @@ abstract class ActionScheduler_Store {
 	}
 
 	/**
-	 * Get the site's local time. Wrapper for ActionScheduler_TimezoneHelper::get_local_timezone().
-	 *
-	 * @return DateTimeZone
-	 */
-	protected function get_local_timezone() {
-		return ActionScheduler_TimezoneHelper::get_local_timezone();
-	}
-
-	/**
 	 * @return array
 	 */
 	public function get_status_labels() {
@@ -206,5 +197,16 @@ abstract class ActionScheduler_Store {
 			self::$store = new $class();
 		}
 		return self::$store;
+	}
+
+	/**
+	 * Get the site's local time.
+	 *
+	 * @deprecated 2.1.0
+	 * @return DateTimeZone
+	 */
+	protected function get_local_timezone() {
+		_deprecated_function( __FUNCTION__, '2.1.0', 'ActionScheduler_TimezoneHelper::set_local_timezone()' );
+		return ActionScheduler_TimezoneHelper::get_local_timezone();
 	}
 }
