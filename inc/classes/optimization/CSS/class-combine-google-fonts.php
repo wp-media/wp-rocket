@@ -1,6 +1,8 @@
 <?php
 namespace WP_Rocket\Optimization\CSS;
 
+use WP_Rocket\Logger;
+
 /**
  * Combine Google Fonts
  *
@@ -49,16 +51,25 @@ class Combine_Google_Fonts {
 	 * @return string
 	 */
 	public function optimize( $html ) {
+		Logger::info( 'GOOGLE FONTS COMBINE PROCESS STARTED.', [ 'GF combine process' ] );
+
 		$html_nocomments = $this->hide_comments( $html );
 		$fonts           = $this->find( '<link(?:\s+(?:(?!href\s*=\s*)[^>])+)?(?:\s+href\s*=\s*([\'"])((?:https?:)?\/\/fonts\.googleapis\.com\/css(?:(?!\1).)+)\1)(?:\s+[^>]*)?>', $html_nocomments );
 
 		if ( ! $fonts ) {
+			Logger::debug( 'No Google Fonts found.', [ 'GF combine process' ] );
 			return $html;
 		}
+
+		Logger::debug( 'Found ' . count( $fonts ) . ' Google Fonts.', [
+			'GF combine process',
+			'tags' => $fonts,
+		] );
 
 		$this->parse( $fonts );
 
 		if ( empty( $this->fonts ) ) {
+			Logger::debug( 'No Google Fonts left to combine.', [ 'GF combine process' ] );
 			return $html;
 		}
 
@@ -67,6 +78,11 @@ class Combine_Google_Fonts {
 		foreach ( $fonts as $font ) {
 			$html = str_replace( $font[0], '', $html );
 		}
+
+		Logger::info( 'Google Fonts successfully combined.', [
+			'GF combine process',
+			'url' => $this->fonts . $this->subsets,
+		] );
 
 		return $html;
 	}
