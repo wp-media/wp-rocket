@@ -2,7 +2,6 @@
 namespace WP_Rocket\Admin\Settings;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
-use WP_Rocket\Logger;
 
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
@@ -532,23 +531,6 @@ class Page implements Subscriber_Interface {
 			]
 		);
 
-		$log_description = __( 'Create a debug log file.', 'rocket' );
-
-		if ( rocket_direct_filesystem()->exists( Logger::get_log_file_path() ) ) {
-			$stats = Logger::get_log_file_stats();
-
-			if ( ! is_wp_error( $stats ) ) {
-				// translators: %1$s = formatted file size, %2$s = formatted number of entries (don't use %2$d).
-				$log_description .= '<br/>' . sprintf( __( 'Files size: %1$s. Number of entries: %2$s.', 'rocket' ), '<strong>' . esc_html( $stats['bytes'] ) . '</strong>', '<strong>' . esc_html( $stats['entries'] ) . '</strong>' );
-
-				// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-				$log_description .= '<br/>' . sprintf( __( '%1$sDownload the file%2$s.', 'rocket' ), '<a href="' . esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=rocket_download_debug_file' ), 'download_debug_file' ) ) . '">', '</a>' );
-
-				// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-				$log_description .= ' - ' . sprintf( __( '%1$sDelete the file%2$s.', 'rocket' ), '<a href="' . esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=rocket_delete_debug_file' ), 'delete_debug_file' ) ) . '">', '</a>' );
-			}
-		}
-
 		$this->settings->add_settings_fields(
 			[
 				'do_beta'           => [
@@ -568,15 +550,6 @@ class Page implements Subscriber_Interface {
 					'section'           => 'status',
 					'page'              => 'dashboard',
 					'default'           => 0,
-					'sanitize_callback' => 'sanitize_checkbox',
-				],
-				'debug_enabled'     => [
-					'type'              => 'sliding_checkbox',
-					'label'             => __( 'Debug mode', 'rocket' ),
-					'description'       => $log_description,
-					'section'           => 'status',
-					'page'              => 'dashboard',
-					'default'           => Logger::debug_enabled(),
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
 			]
