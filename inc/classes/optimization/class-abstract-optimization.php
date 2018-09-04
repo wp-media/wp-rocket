@@ -128,7 +128,7 @@ abstract class Abstract_Optimization {
 	 * @return string
 	 */
 	protected function hide_comments( $html ) {
-		$html = preg_replace( '#<!--\s?noptimize\s?-->.*?<!--\s?/\s?noptimize\s?-->#is', '', $html );
+		$html = preg_replace( '#<!--\s*noptimize\s*-->.*?<!--\s*/\s*noptimize\s*-->#is', '', $html );
 		$html = preg_replace( '/<!--(.*)-->/Uis', '', $html );
 
 		return $html;
