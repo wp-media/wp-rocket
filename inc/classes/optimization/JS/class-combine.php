@@ -83,7 +83,7 @@ class Combine extends Abstract_JS_Optimization {
 	public function optimize( $html ) {
 		Logger::info( 'JS COMBINE PROCESS STARTED.', [ 'js combine process' ] );
 
-		$html_nocomments = preg_replace( '/<!--(.*)-->/Uis', '', $html );
+		$html_nocomments = $this->hide_comments( $html );
 		$scripts         = $this->find( '<script.*<\/script>', $html_nocomments );
 
 		if ( ! $scripts ) {

@@ -23,7 +23,7 @@ class Minify extends Abstract_JS_Optimization {
 	public function optimize( $html ) {
 		Logger::info( 'JS MINIFICATION PROCESS STARTED.', [ 'js minification process' ] );
 
-		$html_nocomments = preg_replace( '/<!--(.*)-->/Uis', '', $html );
+		$html_nocomments = $this->hide_comments( $html );
 		$scripts         = $this->find( '<script\s+([^>]+[\s\'"])?src\s*=\s*[\'"]\s*?([^\'"]+\.js(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>', $html_nocomments );
 
 		if ( ! $scripts ) {

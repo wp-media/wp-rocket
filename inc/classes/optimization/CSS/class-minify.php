@@ -25,7 +25,7 @@ class Minify extends Abstract_CSS_Optimization {
 	public function optimize( $html ) {
 		Logger::info( 'CSS MINIFICATION PROCESS STARTED.', [ 'css minification process' ] );
 
-		$html_nocomments = preg_replace( '/<!--(.*)-->/Uis', '', $html );
+		$html_nocomments = $this->hide_comments( $html );
 		$styles          = $this->find( '<link\s+([^>]+[\s"\'])?href\s*=\s*[\'"]\s*?([^\'"]+\.css(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>', $html_nocomments );
 
 		if ( ! $styles ) {
