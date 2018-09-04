@@ -49,7 +49,7 @@ class Combine_Google_Fonts {
 	 * @return string
 	 */
 	public function optimize( $html ) {
-		$html_nocomments = preg_replace( '/<!--(.*)-->/Uis', '', $html );
+		$html_nocomments = $this->hide_comments( $html );
 		$fonts           = $this->find( '<link(?:\s+(?:(?!href\s*=\s*)[^>])+)?(?:\s+href\s*=\s*([\'"])((?:https?:)?\/\/fonts\.googleapis\.com\/css(?:(?!\1).)+)\1)(?:\s+[^>]*)?>', $html_nocomments );
 
 		if ( ! $fonts ) {

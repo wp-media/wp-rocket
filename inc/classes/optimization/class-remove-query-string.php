@@ -137,7 +137,7 @@ class Remove_Query_String extends Abstract_Optimization {
 	 * @return string
 	 */
 	public function remove_query_strings_js( $html ) {
-		$html_nocomments = preg_replace( '/<!--(.*)-->/Uis', '', $html );
+		$html_nocomments = $this->hide_comments( $html );
 		$scripts         = $this->find( '<script\s+([^>]+[\s\'"])?src\s*=\s*[\'"]\s*?([^\'"]+\.js(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>', $html_nocomments );
 
 		if ( ! $scripts ) {
