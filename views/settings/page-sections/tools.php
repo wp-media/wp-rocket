@@ -75,6 +75,7 @@ if ( rocket_direct_filesystem()->exists( Logger::get_log_file_path() ) ) {
 		</div>
 	</div>
 
+	<!-- Temporary hide the option. The logger can still be activated by adding the following to the wp-config.php file: define( 'WP_ROCKET_DEBUG', true );
 	<div class="wpr-tools">
 		<div class="wpr-tools-col wpr-radio">
 			<div class="wpr-title3 wpr-tools-label">
@@ -93,4 +94,5 @@ if ( rocket_direct_filesystem()->exists( Logger::get_log_file_path() ) ) {
 			<?php echo $log_description; ?>
 		</div>
 	</div>
+	-->
 </div>
