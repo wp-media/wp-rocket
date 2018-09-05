@@ -396,6 +396,16 @@ class Combine extends Abstract_JS_Optimization {
 			'contextly',
 			'wprRemoveCPCSS',
 			'_mmunch',
+			'gt_request_uri',
+			'doGTranslate',
+			'docTitle',
+			'bs_ajax_paginate_',
+			'bs_deferred_loading_',
+			'theChampRedirectionUrl',
+			'theChampFBCommentUrl',
+			'ESSB_CACHE_URL',
+			'oneall_social_login_providers_',
+			'betterads_screen_width',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
