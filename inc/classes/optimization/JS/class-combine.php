@@ -406,6 +406,7 @@ class Combine extends Abstract_JS_Optimization {
 			'ESSB_CACHE_URL',
 			'oneall_social_login_providers_',
 			'betterads_screen_width',
+			'woocommerce_wishlist_add_to_wishlist_url',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
