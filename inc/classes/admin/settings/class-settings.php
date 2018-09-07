@@ -210,12 +210,6 @@ class Settings {
 			$input['defer_all_js_safe'] = 1;
 		}
 
-		// Force mobile cache & specific mobile cache if one of the mobile plugins is active.
-		if ( rocket_is_mobile_plugin_active() ) {
-			$input['cache_mobile']            = 1;
-			$input['do_caching_mobile_files'] = 1;
-		}
-
 		$input['embeds'] = ! empty( $input['embeds'] ) ? 1 : 0;
 		$input['emoji']  = ! empty( $input['emoji'] ) ? 1 : 0;
 

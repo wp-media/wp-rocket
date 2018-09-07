@@ -105,8 +105,6 @@ class Page implements Subscriber_Interface {
 			'wp_ajax_rocket_toggle_option'                      => 'toggle_option',
 			'option_page_capability_' . WP_ROCKET_PLUGIN_SLUG   => 'required_capability',
 			'rocket_settings_menu_navigation'                   => 'add_menu_tools_page',
-			'pre_get_rocket_option_cache_mobile'                => 'is_mobile_plugin_active',
-			'pre_get_rocket_option_do_caching_mobile_files'     => 'is_mobile_plugin_active',
 		];
 	}
 
@@ -425,9 +423,11 @@ class Page implements Subscriber_Interface {
 	}
 
 	/**
-	 * Forces the value for the mobile options if a mobile plugin is active
+	 * Forces the value for the mobile options if a mobile plugin is active.
 	 *
-	 * @since 3.0
+	 * @since  3.0
+	 * @since  3.1.4 Not used anymore.
+	 * @see    \WP_Rocket\Subscriber\Third_Party\Plugins\Mobile_Subscriber::is_mobile_plugin_active_callback()
 	 * @author Remy Perona
 	 *
 	 * @param mixed $value Option value.

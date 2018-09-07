@@ -73,6 +73,8 @@ class Plugin {
 		$event_manager = new Event_Manager();
 		$subscribers   = [];
 
+		$event_manager->add_subscriber( new Plugins\Mobile_Subscriber() );
+
 		if ( is_admin() ) {
 			$settings_page_args = [
 				'slug'       => WP_ROCKET_PLUGIN_SLUG,
