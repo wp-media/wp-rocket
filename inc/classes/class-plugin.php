@@ -73,8 +73,6 @@ class Plugin {
 		$event_manager = new Event_Manager();
 		$subscribers   = [];
 
-		$event_manager->add_subscriber( new Plugins\Mobile_Subscriber() );
-
 		if ( is_admin() ) {
 			$settings_page_args = [
 				'slug'       => WP_ROCKET_PLUGIN_SLUG,
@@ -99,6 +97,7 @@ class Plugin {
 			];
 		}
 
+		$subscribers[] = new Plugins\Mobile_Subscriber();
 		$subscribers[] = new Plugins\Ecommerce\WooCommerce_Subscriber();
 		$subscribers[] = new Subscriber\Google_Tracking_Cache_Busting_Subscriber( new Busting\Busting_Factory( WP_ROCKET_CACHE_BUSTING_PATH, WP_ROCKET_CACHE_BUSTING_URL ), $this->options );
 
