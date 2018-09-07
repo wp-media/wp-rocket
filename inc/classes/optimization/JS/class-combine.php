@@ -53,6 +53,16 @@ class Combine extends Abstract_JS_Optimization {
 	private $scripts = [];
 
 	/**
+	 * Inline scripts excluded from combined and moved after the combined file
+	 *
+	 * @since 3.1.5
+	 * @author Remy Perona
+	 *
+	 * @var array
+	 */
+	private $move_after = [];
+
+	/**
 	 * Constructor
 	 *
 	 * @since 3.1
@@ -105,7 +115,16 @@ class Combine extends Abstract_JS_Optimization {
 			return $html;
 		}
 
-		$html = str_replace( '</body>', '<script src="' . esc_url( $minify_url ) . '" data-minify="1"></script></body>', $html );
+		$move_after = '';
+
+		if ( ! empty( $this->move_after ) ) {
+			foreach ( $this->move_after as $script ) {
+				$move_after .= $script;
+				$html        = str_replace( $script, '', $html );
+			}
+		}
+
+		$html = str_replace( '</body>', '<script src="' . esc_url( $minify_url ) . '" data-minify="1"></script>' . $move_after . '</body>', $html );
 
 		foreach ( $combine_scripts as $script ) {
 			$html = str_replace( $script[0], '', $html );
@@ -180,6 +199,13 @@ class Combine extends Abstract_JS_Optimization {
 
 				foreach ( $this->get_excluded_inline_content() as $excluded_content ) {
 					if ( false !== strpos( $matches_inline[2], $excluded_content ) ) {
+						return;
+					}
+				}
+
+				foreach ( $this->get_move_after_inline_scripts() as $move_after_script ) {
+					if ( false !== strpos( $matches_inline[2], $move_after_script ) ) {
+						$this->move_after[] = $script[0];
 						return;
 					}
 				}
@@ -330,7 +356,6 @@ class Combine extends Abstract_JS_Optimization {
 			'tdBlock',
 			'tdLocalCache',
 			'"url":',
-			'td_live_css_uid',
 			'tdAjaxCount',
 			'lazyLoadOptions',
 			'adthrive',
@@ -345,7 +370,6 @@ class Combine extends Abstract_JS_Optimization {
 			'RecaptchaLoad',
 			'WPCOM_sharing_counts',
 			'jetpack_remote_comment',
-      'scrapeazon',
 			'subscribe-field',
 			'contextly',
 		];
@@ -434,6 +458,47 @@ class Combine extends Abstract_JS_Optimization {
 		 * @param array $pattern Patterns to match.
 		 */
 		return apply_filters( 'rocket_minify_excluded_external_js', $excluded_external );
+	}
+
+	/**
+	 * Patterns of inline JS to move after the combined JS file
+	 *
+	 * @since 3.1.5
+	 * @author Remy Perona
+	 *
+	 * @return array
+	 */
+	protected function get_move_after_inline_scripts() {
+		$move_after_scripts = [
+			'ec:',
+			'clear_better_facebook_comments',
+			'vc-row-destroy-equal-heights-',
+			'dfd-icon-list-',
+			'SFM_template',
+			'WLTChangeState',
+			'wlt_star_',
+			'wlt_pop_distance_',
+			'map_fusion_map_',
+			'smart_list_tip',
+			'gd-wgt-pagi-',
+			'data-rf-id=',
+			'tvc_po=',
+			'scrapeazon',
+			'startclock',
+			'it_logo_field_owl-box_',
+			'td_live_css_uid',
+			'wpvl_paramReplace',
+		];
+
+		/**
+		 * Filters inline JS to move after the combined JS file
+		 *
+		 * @since 3.1.5
+		 * @author Remy Perona
+		 *
+		 * @param array $move_after_scripts Patterns to match.
+		 */
+		return apply_filters( 'rocket_move_after_combine_js', $move_after_scripts );
 	}
 
 	/**
