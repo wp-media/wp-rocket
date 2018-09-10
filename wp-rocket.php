@@ -3,7 +3,7 @@
  * Plugin Name: WP Rocket
  * Plugin URI: https://wp-rocket.me
  * Description: The best WordPress performance plugin.
- * Version: 3.1.3.2
+ * Version: 3.1.4-beta2
  * Code Name: Dagobah
  * Author: WP Media
  * Author URI: http://wp-media.me
@@ -18,7 +18,9 @@
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 // Rocket defines.
-define( 'WP_ROCKET_VERSION'             , '3.1.3.2' );
+define( 'WP_ROCKET_VERSION'             , '3.1.4-beta2' );
+define( 'WP_ROCKET_WP_VERSION'          , '4.7' );
+define( 'WP_ROCKET_PHP_VERSION'         , '5.4' );
 define( 'WP_ROCKET_PRIVATE_KEY'         , false );
 define( 'WP_ROCKET_SLUG'                , 'wp_rocket_settings' );
 define( 'WP_ROCKET_WEB_MAIN'            , false );
@@ -95,8 +97,8 @@ $wp_rocket_requirement_checks = new WP_Rocket_Requirements_Check( array(
 	'plugin_file'         => WP_ROCKET_FILE,
 	'plugin_version'      => WP_ROCKET_VERSION,
 	'plugin_last_version' => WP_ROCKET_LASTVERSION,
-	'wp_version'          => '4.7',
-	'php_version'         => '5.4',
+	'wp_version'          => WP_ROCKET_WP_VERSION,
+	'php_version'         => WP_ROCKET_PHP_VERSION,
 ) );
 
 if ( $wp_rocket_requirement_checks->check() ) {
