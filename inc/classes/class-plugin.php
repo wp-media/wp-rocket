@@ -1,6 +1,7 @@
 <?php
 namespace WP_Rocket;
 
+use WP_Rocket\Admin\Logs;
 use WP_Rocket\Admin\Settings\Page as Settings_Page;
 use WP_Rocket\Admin\Settings\Settings;
 use WP_Rocket\Admin\Settings\Render as Settings_Render;
@@ -49,12 +50,6 @@ class Plugin {
 	private $template_path;
 
 	/**
-	 * Instance of the HtmlPageCrawler
-	 *
-	 * @var HtmlPageCrawler;
-	 */
-	private $crawler;
-	/**
 	 * Constructor
 	 *
 	 * @since 3.0
@@ -88,6 +83,7 @@ class Plugin {
 			$subscribers = [
 				new Settings_Page( $settings_page_args, new Settings( $this->options ), new Settings_Render( $this->template_path . '/settings' ) ),
 				new Deactivation_Intent( new Deactivation_Intent_Render( $this->template_path . '/deactivation-intent' ), $this->options_api, $this->options ),
+				new Logs(),
 			];
 		} elseif ( \rocket_valid_key() ) {
 			$subscribers = [

@@ -254,6 +254,10 @@ class Cache_Dynamic_Resource extends Abstract_Optimization {
 			return false;
 		}
 
+		if ( ! $absolute_path ) {
+			return false;
+		}
+
 		if ( 'css' === $this->extension ) {
 			$content = $this->rewrite_paths( $absolute_path, $content );
 		}

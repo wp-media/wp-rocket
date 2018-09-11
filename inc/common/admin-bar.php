@@ -16,7 +16,7 @@ function rocket_admin_bar( $wp_admin_bar ) {
 		return;
 	}
 
-	$referer = '&_wp_http_referer=' . rawurlencode( wp_unslash( $_SERVER['REQUEST_URI'] ) );
+	$referer = '&_wp_http_referer=' . rawurlencode( wp_unslash( remove_query_arg( 'fl_builder', $_SERVER['REQUEST_URI'] ) ) );
 	$action  = 'purge_cache';
 
 	// Parent.

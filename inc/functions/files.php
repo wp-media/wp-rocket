@@ -17,25 +17,26 @@ function get_rocket_advanced_cache_file() {
 	$buffer .= 'define( \'WP_ROCKET_ADVANCED_CACHE\', true );' . "\n";
 
 	// Get cache path.
-	$buffer .= '$rocket_cache_path = \'' . WP_ROCKET_CACHE_PATH . '\';' . "\n";
+	$buffer .= '$rocket_cache_path  = \'' . WP_ROCKET_CACHE_PATH . '\';' . "\n";
 
 	// Get config path.
 	$buffer .= '$rocket_config_path = \'' . WP_ROCKET_CONFIG_PATH . '\';' . "\n\n";
 
 	// Include the Mobile Detect class if we have to create a different caching file for mobile.
 	if ( is_rocket_generate_caching_mobile_files() ) {
-		$buffer .= 'if ( file_exists( \'' . WP_ROCKET_VENDORS_PATH . 'classes/class-rocket-mobile-detect.php' . '\' ) && ! class_exists( \'Rocket_Mobile_Detect\' ) ) {' . "\n";
-		$buffer .= "\t" . 'include_once \'' . WP_ROCKET_VENDORS_PATH . 'classes/class-rocket-mobile-detect.php' . '\';' . "\n";
-		$buffer .= '}' . "\n";
+		$buffer .= "if ( file_exists( '" . WP_ROCKET_VENDORS_PATH . "classes/class-rocket-mobile-detect.php' ) && ! class_exists( 'Rocket_Mobile_Detect' ) ) {\n";
+		$buffer .= "\tinclude_once '" . WP_ROCKET_VENDORS_PATH . "classes/class-rocket-mobile-detect.php';\n";
+		$buffer .= "}\n";
 	}
 
 	// Include the process file in buffer.
-	$buffer .= 'if ( file_exists( \'' . WP_ROCKET_FRONT_PATH . 'process.php' . '\' ) ) {' . "\n";
-	$buffer .= "\t" . 'include \'' . WP_ROCKET_FRONT_PATH . 'process.php' . '\';' . "\n";
-	$buffer .= '} else {' . "\n";
+	$buffer .= "if ( file_exists( '" . WP_ROCKET_FRONT_PATH . "process.php' ) && file_exists( '" . WP_ROCKET_PATH . "vendor/autoload.php' ) && version_compare( phpversion(), '" . WP_ROCKET_PHP_VERSION . "' ) >= 0 ) {\n";
+	$buffer .= "\tinclude '" . WP_ROCKET_PATH . "vendor/autoload.php';\n";
+	$buffer .= "\tinclude '" . WP_ROCKET_FRONT_PATH . "process.php';\n";
+	$buffer .= "} else {\n";
 	// Add a constant to provent include issue.
-	$buffer .= "\t" . 'define( \'WP_ROCKET_ADVANCED_CACHE_PROBLEM\', true );' . "\n";
-	$buffer .= '}';
+	$buffer .= "\tdefine( 'WP_ROCKET_ADVANCED_CACHE_PROBLEM', true );\n";
+	$buffer .= "}\n";
 
 	/**
 	 * Filter the content of advanced-cache.php file
@@ -50,13 +51,20 @@ function get_rocket_advanced_cache_file() {
 }
 
 /**
- * Create advanced-cache.php file
+ * Create advanced-cache.php file.
  *
  * @since 2.0
  *
  * @return void
  */
 function rocket_generate_advanced_cache_file() {
+	static $done = false;
+
+	if ( $done ) {
+		return;
+	}
+	$done = true;
+
 	rocket_put_content( WP_CONTENT_DIR . '/advanced-cache.php', get_rocket_advanced_cache_file() );
 }
 
@@ -179,6 +187,8 @@ function rocket_generate_config_file() {
 	list( $config_files_path, $buffer ) = get_rocket_config_file();
 
 	if ( count( $config_files_path ) ) {
+		rocket_init_config_dir();
+
 		foreach ( $config_files_path as $file ) {
 			rocket_put_content( $file, $buffer );
 		}
@@ -1060,8 +1070,8 @@ function rocket_find_wpconfig_path() {
  * @return string The footprint that will be printed
  */
 function get_rocket_footprint( $debug = true ) {
-	$footprint = defined( 'WP_ROCKET_WHITE_LABEL_FOOTPRINT' ) ? 
-					"\n" . '<!-- Cached for great performance' : 
+	$footprint = defined( 'WP_ROCKET_WHITE_LABEL_FOOTPRINT' ) ?
+					"\n" . '<!-- Cached for great performance' :
 					"\n" . '<!-- This website is like a Rocket, isn\'t it? Performance optimized by ' . WP_ROCKET_PLUGIN_NAME . '. Learn more: https://wp-rocket.me';
 	if ( $debug ) {
 		$footprint .= ' - Debug: cached@' . time();

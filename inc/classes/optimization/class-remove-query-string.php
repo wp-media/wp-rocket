@@ -98,7 +98,8 @@ class Remove_Query_String extends Abstract_Optimization {
 	 * @return string
 	 */
 	public function remove_query_strings_css( $html ) {
-		$styles = $this->find( '<link\s+([^>]+[\s\'"])?href\s*=\s*[\'"]\s*?([^\'"]+\.css(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>', $html );
+		$html_nocomments = preg_replace( '/<!--(.*)-->/Uis', '', $html );
+		$styles          = $this->find( '<link\s+([^>]+[\s\'"])?href\s*=\s*[\'"]\s*?([^\'"]+\.css(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>', $html_nocomments );
 
 		if ( ! $styles ) {
 			return $html;
@@ -136,7 +137,8 @@ class Remove_Query_String extends Abstract_Optimization {
 	 * @return string
 	 */
 	public function remove_query_strings_js( $html ) {
-		$scripts = $this->find( '<script\s+([^>]+[\s\'"])?src\s*=\s*[\'"]\s*?([^\'"]+\.js(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>', $html );
+		$html_nocomments = $this->hide_comments( $html );
+		$scripts         = $this->find( '<script\s+([^>]+[\s\'"])?src\s*=\s*[\'"]\s*?([^\'"]+\.js(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>', $html_nocomments );
 
 		if ( ! $scripts ) {
 			return $html;
@@ -269,25 +271,33 @@ class Remove_Query_String extends Abstract_Optimization {
 		}
 
 		$busting_file = $this->busting_path . $filename;
+		$busting_url  = $this->get_busting_url( $filename, $extension );
 
-		if ( ! rocket_direct_filesystem()->is_readable( $busting_file ) ) {
-			$file            = $this->get_file_path( $url );
-			$busting_content = $this->get_file_content( $file );
-
-			if ( ! $busting_content ) {
-				return false;
-			}
-
-			if ( 'css' === $extension ) {
-				$busting_content = $this->rewrite_paths( $file, $busting_content );
-			}
-
-			if ( ! $this->write_file( $busting_content, $busting_file ) ) {
-				return false;
-			}
+		if ( rocket_direct_filesystem()->is_readable( $busting_file ) ) {
+			return $busting_url;
 		}
 
-		return $this->get_busting_url( $filename, $extension );
+		$file = $this->get_file_path( $url );
+
+		if ( ! $file ) {
+			return false;
+		}
+
+		$busting_content = $this->get_file_content( $file );
+
+		if ( ! $busting_content ) {
+			return false;
+		}
+
+		if ( 'css' === $extension ) {
+			$busting_content = $this->rewrite_paths( $file, $busting_content );
+		}
+
+		if ( ! $this->write_file( $busting_content, $busting_file ) ) {
+			return false;
+		}
+
+		return $busting_url;
 	}
 
 	/**
