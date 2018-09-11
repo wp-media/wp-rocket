@@ -41,10 +41,13 @@ define( 'WP_ROCKET_FUNCTIONS_PATH'      , realpath( WP_ROCKET_INC_PATH . 'functi
 define( 'WP_ROCKET_VENDORS_PATH'        , realpath( WP_ROCKET_INC_PATH . 'vendors' ) . '/' );
 define( 'WP_ROCKET_3RD_PARTY_PATH'      , realpath( WP_ROCKET_INC_PATH . '3rd-party' ) . '/' );
 define( 'WP_ROCKET_CONFIG_PATH'         , WP_CONTENT_DIR . '/wp-rocket-config/' );
-define( 'WP_ROCKET_CACHE_PATH'          , WP_CONTENT_DIR . '/cache/wp-rocket/' );
-define( 'WP_ROCKET_MINIFY_CACHE_PATH'   , WP_CONTENT_DIR . '/cache/min/' );
-define( 'WP_ROCKET_CACHE_BUSTING_PATH'  , WP_CONTENT_DIR . '/cache/busting/' );
-define( 'WP_ROCKET_CRITICAL_CSS_PATH'    , WP_CONTENT_DIR . '/cache/critical-css/' );
+if ( ! defined( 'WP_ROCKET_CACHE_ROOT_PATH' ) ) {
+	define( 'WP_ROCKET_CACHE_ROOT_PATH', WP_CONTENT_DIR . '/cache/' );
+}
+define( 'WP_ROCKET_CACHE_PATH'          , WP_ROCKET_CACHE_ROOT_PATH . 'wp-rocket/' );
+define( 'WP_ROCKET_MINIFY_CACHE_PATH'   , WP_ROCKET_CACHE_ROOT_PATH . 'min/' );
+define( 'WP_ROCKET_CACHE_BUSTING_PATH'  , WP_ROCKET_CACHE_ROOT_PATH . 'busting/' );
+define( 'WP_ROCKET_CRITICAL_CSS_PATH'   , WP_ROCKET_CACHE_ROOT_PATH . 'critical-css/' );
 define( 'WP_ROCKET_URL'                 , plugin_dir_url( WP_ROCKET_FILE ) );
 define( 'WP_ROCKET_INC_URL'             , WP_ROCKET_URL . 'inc/' );
 define( 'WP_ROCKET_FRONT_URL'           , WP_ROCKET_INC_URL . 'front/' );
@@ -58,9 +61,12 @@ define( 'WP_ROCKET_ASSETS_URL'          , WP_ROCKET_URL . 'assets/' );
 define( 'WP_ROCKET_ASSETS_JS_URL'       , WP_ROCKET_ASSETS_URL . 'js/' );
 define( 'WP_ROCKET_ASSETS_CSS_URL'      , WP_ROCKET_ASSETS_URL . 'css/' );
 define( 'WP_ROCKET_ASSETS_IMG_URL'      , WP_ROCKET_ASSETS_URL . 'img/' );
-define( 'WP_ROCKET_CACHE_URL'           , WP_CONTENT_URL . '/cache/wp-rocket/' );
-define( 'WP_ROCKET_MINIFY_CACHE_URL'    , WP_CONTENT_URL . '/cache/min/' );
-define( 'WP_ROCKET_CACHE_BUSTING_URL'   , WP_CONTENT_URL . '/cache/busting/' );
+if ( ! defined( 'WP_ROCKET_CACHE_ROOT_URL' ) ) {
+	define( 'WP_ROCKET_CACHE_ROOT_URL', WP_CONTENT_URL . '/cache/' );
+}
+define( 'WP_ROCKET_CACHE_URL'           , WP_ROCKET_CACHE_ROOT_URL . 'wp-rocket/' );
+define( 'WP_ROCKET_MINIFY_CACHE_URL'    , WP_ROCKET_CACHE_ROOT_URL . 'min/' );
+define( 'WP_ROCKET_CACHE_BUSTING_URL'   , WP_ROCKET_CACHE_ROOT_URL . 'busting/' );
 if ( ! defined( 'CHMOD_WP_ROCKET_CACHE_DIRS' ) ) {
 	define( 'CHMOD_WP_ROCKET_CACHE_DIRS', 0755 );
 }
