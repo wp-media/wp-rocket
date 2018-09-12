@@ -4,6 +4,7 @@ namespace WP_Rocket;
 use WP_Rocket\Admin\Settings\Page as Settings_Page;
 use WP_Rocket\Admin\Settings\Settings;
 use WP_Rocket\Admin\Settings\Render as Settings_Render;
+use WP_Rocket\Admin\Settings\Beacon;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Admin\Deactivation\Deactivation_Intent;
@@ -49,12 +50,6 @@ class Plugin {
 	private $template_path;
 
 	/**
-	 * Instance of the HtmlPageCrawler
-	 *
-	 * @var HtmlPageCrawler;
-	 */
-	private $crawler;
-	/**
 	 * Constructor
 	 *
 	 * @since 3.0
@@ -63,7 +58,7 @@ class Plugin {
 	 */
 	public function __construct( $template_path ) {
 		$this->options_api   = new Options( 'wp_rocket_' );
-		$this->options       = new Options_Data( $this->options_api->get( 'settings', array() ) );
+		$this->options       = new Options_Data( $this->options_api->get( 'settings', [] ) );
 		$this->template_path = $template_path;
 	}
 
@@ -85,9 +80,12 @@ class Plugin {
 				'capability' => apply_filters( 'rocket_capacity', 'manage_options' ),
 			];
 
+			$beacon = new Beacon( $this->options );
+
 			$subscribers = [
-				new Settings_Page( $settings_page_args, new Settings( $this->options ), new Settings_Render( $this->template_path . '/settings' ) ),
+				new Settings_Page( $settings_page_args, new Settings( $this->options ), new Settings_Render( $this->template_path . '/settings' ), $beacon ),
 				new Deactivation_Intent( new Deactivation_Intent_Render( $this->template_path . '/deactivation-intent' ), $this->options_api, $this->options ),
+				new Subscriber\Admin\Settings\Beacon_Subscriber( $beacon ),
 			];
 		} elseif ( \rocket_valid_key() ) {
 			$subscribers = [
