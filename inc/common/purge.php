@@ -347,19 +347,6 @@ function run_rocket_bot_after_clean_term( $post, $purge_urls, $lang ) {
 add_action( 'after_rocket_clean_term', 'run_rocket_bot_after_clean_term', 10, 3 );
 
 /**
- * Run WP Rocket Bot when a post is added, updated or deleted
- *
- * @since 1.3.2
- */
-function do_rocket_bot_cache_json() {
-	global $do_rocket_bot_cache_json;
-	if ( $do_rocket_bot_cache_json ) {
-		run_rocket_preload_cache( 'cache-json', false );
-	}
-}
-add_action( 'shutdown', 'do_rocket_bot_cache_json' );
-
-/**
  * Purge Cache file System in Admin Bar
  *
  * @since 1.3.0 Compatibility with WPML
@@ -466,30 +453,6 @@ function do_admin_post_rocket_purge_opcache() {
 	die();
 }
 add_action( 'admin_post_rocket_purge_opcache', 'do_admin_post_rocket_purge_opcache' );
-
-/**
- * Preload cache system in Admin Bar
- * It launch the WP Rocket Bot
- *
- * @since 1.3.0 Compatibility with WPML
- * @since 1.0 (delete in 1.1.6 and re-add in 1.1.9)
- */
-function do_admin_post_rocket_preload_cache() {
-	if ( isset( $_GET['_wpnonce'] ) ) {
-
-		if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'preload' ) ) {
-			wp_nonce_ays( '' );
-		}
-
-		$lang = isset( $_GET['lang'] ) && 'all' !== $_GET['lang'] ? sanitize_key( $_GET['lang'] ) : '';
-		run_rocket_preload_cache( 'cache-preload' );
-
-		wp_redirect( wp_get_referer() );
-		die();
-	}
-}
-add_action( 'admin_post_preload',        'do_admin_post_rocket_preload_cache' );
-add_action( 'admin_post_nopriv_preload', 'do_admin_post_rocket_preload_cache' );
 
 /**
  * Purge CloudFlare cache
