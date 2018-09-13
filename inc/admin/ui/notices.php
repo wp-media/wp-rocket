@@ -816,68 +816,6 @@ function rocket_clear_cache_notice() {
 add_action( 'admin_notices', 'rocket_clear_cache_notice' );
 
 /**
- * This notice is displayed when the sitemap preload is running
- *
- * @since 2.11
- * @author Remy Perona
- */
-function rocket_sitemap_preload_running() {
-	$screen = get_current_screen();
-
-	// This filter is documented in inc/admin-bar.php.
-	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
-		return;
-	}
-
-	if ( 'settings_page_wprocket' !== $screen->id ) {
-		return;
-	}
-
-	$running = get_transient( 'rocket_sitemap_preload_running' );
-	if ( false === $running ) {
-		return;
-	}
-
-	rocket_notice_html( array(
-		// translators: %d = Number of pages preloaded.
-		'message' => sprintf( __( 'Sitemap preload: %d uncached pages have now been preloaded. (refresh to see progress)', 'rocket' ), $running ),
-	) );
-}
-add_action( 'admin_notices', 'rocket_sitemap_preload_running' );
-
-/**
- * This notice is displayed after the sitemap preload is complete
- *
- * @since 2.11
- * @author Remy Perona
- */
-function rocket_sitemap_preload_complete() {
-	$screen = get_current_screen();
-
-	/** This filter is documented in inc/admin-bar.php */
-	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
-		return;
-	}
-
-	if ( 'settings_page_wprocket' !== $screen->id ) {
-		return;
-	}
-
-	$result = get_transient( 'rocket_sitemap_preload_complete' );
-	if ( false === $result ) {
-		return;
-	}
-
-	delete_transient( 'rocket_sitemap_preload_complete' );
-
-	rocket_notice_html( array(
-		// translators: %d is the number of pages preloaded.
-		'message' => sprintf( __( 'Sitemap preload: %d pages have been cached.', 'rocket' ), $result ),
-	) );
-}
-add_action( 'admin_notices', 'rocket_sitemap_preload_complete' );
-
-/**
  * Outputs notice HTML
  *
  * @since 2.11
