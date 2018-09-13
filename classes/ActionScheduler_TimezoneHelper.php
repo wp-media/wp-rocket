@@ -11,7 +11,10 @@ abstract class ActionScheduler_TimezoneHelper {
 	 * if no timezone string is available.
 	 *
 	 * @since  2.1.0
-	 * @return DateTime
+	 *
+	 * @param ActionScheduler_DateTime $date
+	 *
+	 * @return ActionScheduler_DateTime
 	 */
 	public static function set_local_timezone( ActionScheduler_DateTime $date ) {
 

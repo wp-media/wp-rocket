@@ -18,13 +18,13 @@ class ActionScheduler_wpCommentLogger extends ActionScheduler_Logger {
 		if ( empty($date) ) {
 			$date = as_get_datetime_object();
 		} else {
-			$date = clone $date;
+			$date = as_get_datetime_object( clone $date );
 		}
 		$comment_id = $this->create_wp_comment( $action_id, $message, $date );
 		return $comment_id;
 	}
 
-	protected function create_wp_comment( $action_id, $message, DateTime $date ) {
+	protected function create_wp_comment( $action_id, $message, ActionScheduler_DateTime $date ) {
 		$comment_date_gmt = $date->format('Y-m-d H:i:s');
 		ActionScheduler_TimezoneHelper::set_local_timezone( $date );
 		$comment_data = array(
