@@ -257,51 +257,6 @@ if ( ! function_exists( 'run_rocket_bot' ) ) :
 	}
 endif;
 
-if ( ! function_exists( 'run_rocket_preload_cache' ) ) :
-	/**
-	 * Launches the preload
-	 *
-	 * @since 2.8
-	 * @author Remy Perona
-	 * @deprecated 2.11
-	 *
-	 * @param string $spider The spider name.
-	 * @param bool   $do_sitemap_preload Do the sitemap preload.
-	 *
-	 * @return void
-	 */
-	function run_rocket_preload_cache( $spider, $do_sitemap_preload = true ) {
-		_deprecated_function( __FUNCTION__, '3.2' );
-
-		// Preload cache.
-		run_rocket_bot( $spider );
-
-		if ( $do_sitemap_preload & get_rocket_option( 'sitemap_preload', false ) ) {
-			$rocket_background_process = $GLOBALS['rocket_sitemap_background_process'];
-
-			if ( method_exists( $rocket_background_process, 'cancel_process' ) ) {
-				$rocket_background_process->cancel_process();
-			}
-
-			delete_transient( 'rocket_sitemap_preload_running' );
-			delete_transient( 'rocket_sitemap_preload_complete' );
-			run_rocket_sitemap_preload();
-		}
-	}
-endif;
-
-if ( ! function_exists( 'do_rocket_bot_cache_json' ) ) :
-	/**
-	 * Run WP Rocket Bot when a post is added, updated or deleted
-	 *
-	 * @since 1.3.2
-	 * @deprecated 2.11
-	 */
-	function do_rocket_bot_cache_json() {
-		_deprecated_function( __FUNCTION__, '3.2' );
-		return false;
-	}
-endif;
 
 /**
  * Get list of JS files to deferred.
