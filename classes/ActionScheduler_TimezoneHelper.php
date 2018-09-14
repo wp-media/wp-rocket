@@ -12,11 +12,15 @@ abstract class ActionScheduler_TimezoneHelper {
 	 *
 	 * @since  2.1.0
 	 *
-	 * @param ActionScheduler_DateTime $date
-	 *
+	 * @param DateTime $date
 	 * @return ActionScheduler_DateTime
 	 */
-	public static function set_local_timezone( ActionScheduler_DateTime $date ) {
+	public static function set_local_timezone( DateTime $date ) {
+
+		// Accept a DateTime for easier backward compatibility, even though we require methods on ActionScheduler_DateTime
+		if ( ! is_a( $date, 'ActionScheduler_DateTime' ) ) {
+			$date = as_get_datetime_object( $date->format( 'U' ) );
+		}
 
 		if ( get_option( 'timezone_string' ) ) {
 			$date->setTimezone( new DateTimeZone( self::get_local_timezone_string() ) );

@@ -32,6 +32,13 @@ class ActionScheduler_wpCommentLogger_Test extends ActionScheduler_UnitTestCase 
 
 		$this->assertEquals( $action_id, $entry->get_action_id() );
 		$this->assertEquals( $message, $entry->get_message() );
+
+		$date      = new ActionScheduler_DateTime( 'now', new DateTimeZone( 'UTC' ) );
+		$log_id    = $logger->log( $action_id, $message, $date );
+		$entry     = $logger->get_entry( $log_id );
+
+		$this->assertEquals( $action_id, $entry->get_action_id() );
+		$this->assertEquals( $message, $entry->get_message() );
 	}
 
 	public function test_null_log_entry() {
