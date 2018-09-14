@@ -420,18 +420,18 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	 * @param string $action_id
 	 *
 	 * @throws InvalidArgumentException
-	 * @return DateTime The date the action is schedule to run, or the date that it ran.
+	 * @return ActionScheduler_DateTime The date the action is schedule to run, or the date that it ran.
 	 */
 	public function get_date( $action_id ) {
-		$date = $this->get_date_gmt( $action_id );
-		return $date->setTimezone( $this->get_local_timezone() );
+		$next = $this->get_date_gmt( $action_id );
+		return ActionScheduler_TimezoneHelper::set_local_timezone( $next );
 	}
 
 	/**
 	 * @param string $action_id
 	 *
 	 * @throws InvalidArgumentException
-	 * @return DateTime The date the action is schedule to run, or the date that it ran.
+	 * @return ActionScheduler_DateTime The date the action is schedule to run, or the date that it ran.
 	 */
 	public function get_date_gmt( $action_id ) {
 		$post = get_post($action_id);
