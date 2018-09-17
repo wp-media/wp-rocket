@@ -56,7 +56,7 @@ class Combine extends Abstract_JS_Optimization {
 	/**
 	 * Inline scripts excluded from combined and moved after the combined file
 	 *
-	 * @since 3.2
+	 * @since 3.1.4
 	 * @author Remy Perona
 	 *
 	 * @var array
@@ -521,7 +521,7 @@ class Combine extends Abstract_JS_Optimization {
 	/**
 	 * Patterns of inline JS to move after the combined JS file
 	 *
-	 * @since 3.2
+	 * @since 3.1.4
 	 * @author Remy Perona
 	 *
 	 * @return array
@@ -553,7 +553,7 @@ class Combine extends Abstract_JS_Optimization {
 		/**
 		 * Filters inline JS to move after the combined JS file
 		 *
-		 * @since 3.2
+		 * @since 3.1.4
 		 * @author Remy Perona
 		 *
 		 * @param array $move_after_scripts Patterns to match.
