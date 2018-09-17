@@ -107,7 +107,7 @@ mixpanel.init("a36067b00a263cce0299cfd960e26ecf", {
 	public function insert_deactivation_intent_form() {
 		$current_screen = get_current_screen();
 
-		if ( 'plugins' !== $current_screen->id ) {
+		if ( 'plugins' !== $current_screen->id && 'plugins-network' !== $current_screen->id ) {
 			return;
 		}
 

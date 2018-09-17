@@ -1,6 +1,7 @@
 <?php
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Logger;
 
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
@@ -166,31 +167,73 @@ function get_rocket_purge_cron_interval() {
 }
 
 /**
- * Get all uri we don't cache
+ * Get all uri we don't cache.
  *
- * @since 2.6   Using json_get_url_prefix() to auto-exclude the WordPress REST API
- * @since 2.4.1 Auto-exclude WordPress REST API
+ * @since 2.6   Using json_get_url_prefix() to auto-exclude the WordPress REST API.
+ * @since 2.4.1 Auto-exclude WordPress REST API.
  * @since 2.0
  *
- * @return array List of rejected uri
+ * @return string A pipe separated list of rejected uri.
  */
 function get_rocket_cache_reject_uri() {
-	$uri = get_rocket_option( 'cache_reject_uri', array() );
+	$uris      = get_rocket_option( 'cache_reject_uri', array() );
+	$home_root = rocket_get_home_dirname();
+
+	if ( '' !== $home_root ) {
+		// The site is not at the domain root, it's in a folder.
+		$home_root_escaped = preg_quote( $home_root, '/' );
+		$home_root_len     = strlen( $home_root );
+
+		foreach ( $uris as $i => $uri ) {
+			/**
+			 * Since these URIs can be regex patterns like `/homeroot(/.+)/`, we can't simply search for the string `/homeroot/` (nor `/homeroot`).
+			 * So this pattern searchs for `/homeroot/` and `/homeroot(/`.
+			 */
+			if ( ! preg_match( '/' . $home_root_escaped . '\(?\//', $uri ) ) {
+				// Reject URIs located outside site's folder.
+				unset( $uris[ $i ] );
+				continue;
+			}
+
+			// Remove the home directory.
+			$uris[ $i ] = substr( $uri, $home_root_len );
+		}
+	}
 
 	// Exclude feeds.
-	$uri[] = '(.*)/' . $GLOBALS['wp_rewrite']->feed_base . '/?';
+	$uris[] = '/(.+/)?' . $GLOBALS['wp_rewrite']->feed_base . '/?';
 
 	/**
 	 * Filter the rejected uri
 	 *
 	 * @since 2.1
 	 *
-	 * @param array $uri List of rejected uri
+	 * @param array $uris List of rejected uri
 	*/
-	$uri = apply_filters( 'rocket_cache_reject_uri', $uri );
+	$uris = apply_filters( 'rocket_cache_reject_uri', $uris );
+	$uris = array_filter( $uris );
 
-	$uri = implode( '|', array_filter( $uri ) );
-	return $uri;
+	if ( ! $uris ) {
+		return '';
+	}
+
+	if ( '' !== $home_root ) {
+		foreach ( $uris as $i => $uri ) {
+			if ( preg_match( '/' . $home_root_escaped . '\(?\//', $uri ) ) {
+				// Remove the home directory from the new URIs.
+				$uris[ $i ] = substr( $uri, $home_root_len );
+			}
+		}
+	}
+
+	$uris = implode( '|', $uris );
+
+	if ( '' !== $home_root ) {
+		// Add the home directory back.
+		$uris = $home_root . '(' . $uris . ')';
+	}
+
+	return $uris;
 }
 
 /**
@@ -390,7 +433,10 @@ function get_rocket_cache_query_string() {
 function get_rocket_exclude_defer_js() {
 	global $wp_scripts;
 
-	$exclude_defer_js = array();
+	$exclude_defer_js = [
+		'gist.github.com',
+		'content.jwplatform.com',
+	];
 
 	if ( get_rocket_option( 'defer_all_js', 0 ) && get_rocket_option( 'defer_all_js_safe', 0 ) ) {
 		$jquery = site_url( $wp_scripts->registered['jquery-core']->src );
@@ -407,6 +453,10 @@ function get_rocket_exclude_defer_js() {
 	 * @param array $exclude_defer_js An array of URLs for the JS files to be excluded.
 	 */
 	$exclude_defer_js = apply_filters( 'rocket_exclude_defer_js', $exclude_defer_js );
+
+	foreach ( $exclude_defer_js as $i => $exclude ) {
+		$exclude_defer_js[ $i ] = str_replace( '#', '\#', $exclude );
+	}
 
 	return $exclude_defer_js;
 }
@@ -462,13 +512,16 @@ function rocket_check_key() {
 	$return = rocket_valid_key();
 
 	if ( ! rocket_valid_key() ) {
+		Logger::info( 'LICENSE VALIDATION PROCESS STARTED.', [ 'license validation process' ] );
+
 		$response = wp_remote_get(
 			WP_ROCKET_WEB_VALID, array(
 				'timeout' => 30,
 			)
 		);
 
-		$json           = ! is_wp_error( $response ) ? json_decode( $response['body'] ) : false;
+		$body           = wp_remote_retrieve_body( $response );
+		$json           = json_decode( $body );
 		$rocket_options = array();
 
 		if ( $json ) {
@@ -481,6 +534,8 @@ function rocket_check_key() {
 				if ( ! get_rocket_option( 'license' ) ) {
 					$rocket_options['license'] = '1';
 				}
+
+				Logger::info( 'License validation succeeded.', [ 'license validation process' ] );
 			} else {
 				$messages = array(
 					'BAD_LICENSE' => __( 'Your license is not valid.', 'rocket' ),
@@ -492,12 +547,116 @@ function rocket_check_key() {
 				$rocket_options['secret_key'] = '';
 
 				add_settings_error( 'general', 'settings_updated', $messages[ $json->data->reason ], 'error' );
+
+				Logger::error( 'License validation failed.', [
+					'license validation process',
+					'response_error' => $json->data->reason,
+				] );
 			}
 
 			set_transient( WP_ROCKET_SLUG, $rocket_options );
 			$return = (array) $rocket_options;
+		} elseif ( is_wp_error( $response ) ) {
+			Logger::error( 'License validation failed.', [
+				'license validation process',
+				'request_error' => $response->get_error_messages(),
+			] );
+		} elseif ( '' !== $body ) {
+			Logger::error( 'License validation failed.', [
+				'license validation process',
+				'response_body' => $body,
+			] );
+		} else {
+			Logger::error( 'License validation failed. No body available in response.', [ 'license validation process' ] );
 		}
 	}
 
 	return $return;
+}
+
+/**
+ * Is WP a MultiSite and a subfolder install?
+ *
+ * @since  3.1.1
+ * @author Grégory Viguier
+ *
+ * @return bool
+ */
+function rocket_is_subfolder_install() {
+	global $wpdb;
+	static $subfolder_install;
+
+	if ( isset( $subfolder_install ) ) {
+		return $subfolder_install;
+	}
+
+	if ( is_multisite() ) {
+		$subfolder_install = ! is_subdomain_install();
+	} elseif ( ! is_null( $wpdb->sitemeta ) ) {
+		$subfolder_install = ! $wpdb->get_var( "SELECT meta_value FROM $wpdb->sitemeta WHERE site_id = 1 AND meta_key = 'subdomain_install'" );
+	} else {
+		$subfolder_install = false;
+	}
+
+	return $subfolder_install;
+}
+
+/**
+ * Get the name of the "home directory", in case the home URL is not at the domain's root.
+ * It can be seen like the `RewriteBase` from the .htaccess file, but without the trailing slash.
+ *
+ * @since  3.1.1
+ * @author Grégory Viguier
+ *
+ * @return string
+ */
+function rocket_get_home_dirname() {
+	static $home_root;
+
+	if ( isset( $home_root ) ) {
+		return $home_root;
+	}
+
+	$home_root = wp_parse_url( rocket_get_main_home_url() );
+
+	if ( ! empty( $home_root['path'] ) ) {
+		$home_root = '/' . trim( $home_root['path'], '/' );
+		$home_root = rtrim( $home_root, '/' );
+	} else {
+		$home_root = '';
+	}
+
+	return $home_root;
+}
+
+/**
+ * Get the URL of the site's root. It corresponds to the main site's home page URL.
+ *
+ * @since  3.1.1
+ * @author Grégory Viguier
+ *
+ * @return string
+ */
+function rocket_get_main_home_url() {
+	static $root_url;
+
+	if ( isset( $root_url ) ) {
+		return $root_url;
+	}
+
+	if ( ! is_multisite() || is_main_site() ) {
+		$root_url = home_url( '/' );
+		return $root_url;
+	}
+
+	$current_network = get_network();
+
+	if ( $current_network ) {
+		$root_url = set_url_scheme( 'https://' . $current_network->domain . $current_network->path );
+		$root_url = trailingslashit( $root_url );
+	} else {
+		$root_url = home_url( '/' );
+	}
+
+	return $root_url;
 }

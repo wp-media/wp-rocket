@@ -204,7 +204,7 @@ class Page implements Subscriber_Interface {
 			]
 		);
 
-		if ( 200 !== wp_remote_retrieve_response_code( $response )  ) {
+		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
 			return (object) [
 				'licence_account'    => __( 'Unavailable', 'rocket' ),
 				'licence_expiration' => __( 'Unavailable', 'rocket' ),
@@ -286,6 +286,7 @@ class Page implements Subscriber_Interface {
 		$whitelist = [
 			'do_beta'                     => 1,
 			'analytics_enabled'           => 1,
+			'debug_enabled'               => 1,
 			'varnish_auto_purge'          => 1,
 			'do_cloudflare'               => 1,
 			'cloudflare_devmode'          => 1,
@@ -335,7 +336,7 @@ class Page implements Subscriber_Interface {
 		$this->settings->add_page_section(
 			'license',
 			[
-				'title' => __( 'License' ),
+				'title' => __( 'License', 'rocket' ),
 			]
 		);
 
@@ -591,10 +592,12 @@ class Page implements Subscriber_Interface {
 	 * @return void
 	 */
 	private function assets_section() {
-		$remove_qs_beacon = $this->beacon->get_suggest( 'remove_query_strings' );
-		$combine_beacon   = $this->beacon->get_suggest( 'combine' );
-		$defer_beacon     = $this->beacon->get_suggest( 'defer' );
-		$files_beacon     = $this->beacon->get_suggest( 'file_optimization' );
+		$remove_qs_beacon  = $this->beacon->get_suggest( 'remove_query_strings' );
+		$combine_beacon    = $this->beacon->get_suggest( 'combine' );
+		$defer_beacon      = $this->beacon->get_suggest( 'defer' );
+		$files_beacon      = $this->beacon->get_suggest( 'file_optimization' );
+		$inline_js_beacon  = $this->beacon->get_suggest( 'exclude_inline_js' );
+		$exclude_js_beacon = $this->beacon->get_suggest( 'exclude_js' );
 
 		$this->settings->add_page_section(
 			'file_optimization',
@@ -721,7 +724,7 @@ class Page implements Subscriber_Interface {
 				'exclude_css'            => [
 					'type'              => 'textarea',
 					'label'             => __( 'Excluded CSS Files', 'rocket' ),
-					'description'       => __( 'Specify URLs of CSS files to be excluded from minification and concatenation.', 'rocket' ),
+					'description'       => __( 'Specify URLs of CSS files to be excluded from minification and concatenation (one per line).', 'rocket' ),
 					'helper'            => __( 'The domain part of the URL will be stripped automatically.<br>Use (.*).css wildcards to exclude all CSS files located at a specific path.', 'rocket' ),
 					'container_class'   => [
 						'wpr-field--children',
@@ -785,7 +788,7 @@ class Page implements Subscriber_Interface {
 					'type'              => 'checkbox',
 					'label'             => __( 'Combine JavaScript files <em>(Enable Minify JavaScript files to select)</em>', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'       => sprintf( __( 'Combine Javascript files combines your site\'s JS info fewer files, reducing HTTP requests. Not recommended if your site uses HTTP/2. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $combine_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $combine_beacon['id'] ) . '" target="_blank">', '</a>' ),
+					'description'       => sprintf( __( 'Combine JavaScript files combines your site’s internal, 3rd party and inline JS reducing HTTP requests. Not recommended if your site uses HTTP/2. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $combine_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $combine_beacon['id'] ) . '" target="_blank">', '</a>' ),
 					'container_class'   => [
 						get_rocket_option( 'minify_js' ) ? '' : 'wpr-isDisabled',
 						'wpr-field--parent',
@@ -803,11 +806,32 @@ class Page implements Subscriber_Interface {
 						'button_label' => __( 'Activate combine JavaScript', 'rocket' ),
 					],
 				],
+				'exclude_inline_js'  => [
+					'type'              => 'textarea',
+					'label'             => __( 'Excluded Inline JavaScript', 'rocket' ),
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'description'       => sprintf( __( 'Specify patterns of inline JavaScript to be excluded from concatenation (one per line). %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $inline_js_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $inline_js_beacon['id'] ) . '" rel="noopener noreferrer" target="_blank">', '</a>' ),
+					'container_class'   => [
+						get_rocket_option( 'minify_concatenate_js' ) ? '' : 'wpr-isDisabled',
+						'wpr-field--children',
+					],
+					'placeholder'       => 'recaptcha',
+					'parent'            => 'minify_concatenate_js',
+					'section'           => 'js',
+					'page'              => 'file_optimization',
+					'default'           => [],
+					'sanitize_callback' => 'sanitize_textarea',
+					'input_attr'        => [
+						'disabled' => get_rocket_option( 'minify_concatenate_js' ) ? 0 : 1,
+					],
+				],
 				'exclude_js'             => [
 					'type'              => 'textarea',
 					'label'             => __( 'Excluded JavaScript Files', 'rocket' ),
-					'description'       => __( 'Specify URLs of JavaScript files to be excluded from minification and concatenation.', 'rocket' ),
-					'helper'            => __( 'The domain part of the URL will be stripped automatically.<br>Use (.*).js wildcards to exclude all JS files located at a specific path.', 'rocket' ),
+					'description'       => __( 'Specify URLs of JavaScript files to be excluded from minification and concatenation (one per line).', 'rocket' ),
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'helper'            => __( '<strong>Internal:</strong> The domain part of the URL will be stripped automatically. Use (.*).js wildcards to exclude all JS files located at a specific path.', 'rocket' ) . '<br>' .
+					sprintf( __( '<strong>3rd Party:</strong> Use URL full path, including domain name, to exclude external JS. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $exclude_js_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $exclude_js_beacon['id'] ) . '" rel="noopener noreferrer" target="_blank">', '</a>' ),
 					'container_class'   => [
 						'wpr-field--children',
 					],
@@ -1460,7 +1484,7 @@ class Page implements Subscriber_Interface {
 				],
 				'cdn_reject_files' => [
 					'type'              => 'textarea',
-					'description'       => __( 'Specify URL(s) of files that should not get served via CDN', 'rocket' ),
+					'description'       => __( 'Specify URL(s) of files that should not get served via CDN (one per line).', 'rocket' ),
 					'helper'            => __( 'The domain part of the URL will be stripped automatically.<br>Use (.*) wildcards to exclude all files of a given file type located at a specific path.', 'rocket' ),
 					'placeholder'       => '/wp-content/plugins/some-plugins/(.*).css',
 					'section'           => 'exclude_cdn_section',

@@ -38,7 +38,7 @@ class Abstract_JS_Optimization extends Abstract_Optimization {
 	 * @return string A list of files to exclude, ready to be used in a regex pattern.
 	 */
 	protected function get_excluded_files() {
-		$excluded_files = $this->options->get( 'exclude_js', array() );
+		$excluded_files = $this->options->get( 'exclude_js', [] );
 		$jquery_url     = $this->get_jquery_url();
 
 		if ( $jquery_url ) {
@@ -75,7 +75,7 @@ class Abstract_JS_Optimization extends Abstract_Optimization {
 	 * @return array
 	 */
 	public function get_zones() {
-		return array( 'all', 'css_and_js', self::FILE_TYPE );
+		return [ 'all', 'css_and_js', self::FILE_TYPE ];
 	}
 
 	/**
@@ -151,7 +151,7 @@ class Abstract_JS_Optimization extends Abstract_Optimization {
 			return false;
 		}
 
-		if ( '' === \rocket_extract_url_component( $wp_scripts->registered['jquery-core']->src, PHP_URL_HOST ) ) {
+		if ( '' === wp_parse_url( $wp_scripts->registered['jquery-core']->src, PHP_URL_HOST ) ) {
 			return rocket_clean_exclude_file( site_url( $wp_scripts->registered['jquery-core']->src ) );
 		}
 

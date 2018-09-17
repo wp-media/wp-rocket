@@ -17,6 +17,7 @@
 	<exclude-pattern>/tests/*</exclude-pattern>
 
 	<rule ref="WordPress">
+        <exclude name="Generic.Functions.FunctionCallArgumentSpacing.TooMuchSpaceAfterComma"/>
 		<exclude name="Generic.PHP.NoSilencedErrors.Discouraged"/>
         <exclude name="PEAR.Functions.FunctionCallSignature.Indent"/>
         <exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterCloseBrace"/>
@@ -31,7 +32,7 @@
     </rule>
     <rule ref="WordPress.NamingConventions.PrefixAllGlobals">
         <properties>
-            <property name="prefixes" type="array" value="rocket" />
+            <property name="prefixes" type="array" value="rocket,wp_rocket" />
         </properties>
     </rule>
     <rule ref="WordPress.Files.FileName">

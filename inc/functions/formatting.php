@@ -17,8 +17,7 @@ function rocket_clean_exclude_file( $file ) {
 		return false;
 	}
 
-	$path = rocket_extract_url_component( $file, PHP_URL_PATH );
-	return $path;
+	return wp_parse_url( $file, PHP_URL_PATH );
 }
 
 /**
@@ -310,37 +309,34 @@ function rocket_realpath( $file ) {
  *
  * @param string $url   URL to convert.
  * @param array  $hosts An array of possible hosts for the URL.
- * @return string
+ * @return string|bool
  */
 function rocket_url_to_path( $url, $hosts = '' ) {
-	$url_components = get_rocket_parse_url( $url );
-	$site_url       = trailingslashit( set_url_scheme( site_url() ) );
-	$home_path      = ABSPATH;
+	$root_dir = trailingslashit( dirname( WP_CONTENT_DIR ) );
+	$root_url = str_replace( wp_basename( WP_CONTENT_DIR ), '', WP_CONTENT_URL );
+	$url_host = wp_parse_url( $url, PHP_URL_HOST );
 
-	if ( false !== strpos( $url_components['path'], rocket_extract_url_component( WP_CONTENT_URL, PHP_URL_PATH ) ) ) {
-		$site_url  = trailingslashit( set_url_scheme( WP_CONTENT_URL ) );
-		$home_path = trailingslashit( WP_CONTENT_DIR );
+	// relative path.
+	if ( null === $url_host ) {
+		$subdir_levels = substr_count( preg_replace( '/https?:\/\//','', site_url() ), '/' );
+		$url           = site_url() . str_repeat( '/..', $subdir_levels ) . $url;
 	}
 
-	$site_components = get_rocket_parse_url( $site_url );
-
-	if ( '' === $url_components['host'] ) {
-		$url_components['scheme'] = $site_components['scheme'];
-		$url_components['host']   = $site_components['host'];
-		$url                      = trailingslashit( set_url_scheme( '//' . $url_components['host'], $url_components['scheme'] ) ) . ltrim( $url, '/' );
+	// CDN.
+	if ( isset( $hosts[ $url_host ] ) && 'home' !== $hosts[ $url_host ] ) {
+		$url = str_replace( $url_host, wp_parse_url( site_url(), PHP_URL_HOST ), $url );
 	}
 
-	if ( isset( $hosts[ $url_components['host'] ] ) && 'home' !== $hosts[ $url_components['host'] ] ) {
-		$site_url = trailingslashit( set_url_scheme( '//' . $url_components['host'], $url_components['scheme'] ) );
+	$root_url = preg_replace( '/^https?:/', '', $root_url );
+	$url      = preg_replace( '/^https?:/', '', $url );
+	$file     = str_replace( $root_url, $root_dir, $url );
+	$file     = rocket_realpath( $file );
 
-		if ( $url_components['path'] !== $site_components['path'] ) {
-			$site_url .= ltrim( $site_components['path'], '/' );
-		}
+	if ( ! rocket_direct_filesystem()->is_readable( $file ) ) {
+		return false;
 	}
 
-	$file = str_replace( $site_url, $home_path, rocket_set_internal_url_scheme( $url ) );
-
-	return rocket_realpath( $file );
+	return $file;
 }
 
 /**

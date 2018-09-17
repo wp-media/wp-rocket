@@ -18,6 +18,14 @@ gulp.task('sass', function () {
     .pipe(gulp.dest('assets/css'));
 });
 
+/* Task to compile sass admin RTL */
+gulp.task('sass_rtl', function () {
+    return gulp.src('./src/scss/rtl.scss')
+      .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
+      .pipe(rename('wpr-admin-rtl.css'))
+      .pipe(gulp.dest('assets/css'));
+  });
+
 /* Task to compile sass modal */
 gulp.task('sass_modal', function () {
   return gulp.src('./src/scss/modal.scss')

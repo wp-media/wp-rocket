@@ -2,8 +2,13 @@ This file contains a list of people who have made large contributions to WP Rock
 
 Developers:
 	Jonathan Buttigieg <jonathan@wp-rocket.me>
-	Julio Potier <julio@wp-rocket.me>
 	Remy Perona <remy@wp-rocket.me>
+	Gregory Viguier <gregory@wp-rocket.me>
+	Arun Basil Lal <arun@wp-rocket.me>
 
 UX:
 	Caspar Hübinger <caspar@wp-rocket.me>
+	Thomas Geisen
+
+Previous contributors:
+	Julio Potier
