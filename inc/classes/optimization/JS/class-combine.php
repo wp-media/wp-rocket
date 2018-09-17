@@ -402,7 +402,6 @@ class Combine extends Abstract_JS_Optimization {
 			'tdBlock',
 			'tdLocalCache',
 			'"url":',
-			'tdAjaxCount',
 			'lazyLoadOptions',
 			'adthrive',
 			'loadCSS',
@@ -418,7 +417,6 @@ class Combine extends Abstract_JS_Optimization {
 			'jetpack_remote_comment',
 			'subscribe-field',
 			'contextly',
-			'wprRemoveCPCSS',
 			'_mmunch',
 			'gt_request_uri',
 			'doGTranslate',
@@ -530,7 +528,9 @@ class Combine extends Abstract_JS_Optimization {
 	 */
 	protected function get_move_after_inline_scripts() {
 		$move_after_scripts = [
-			'ec:',
+			'map_fusion_map_',
+			'ec:addProduct',
+			'ec:addImpression',
 			'clear_better_facebook_comments',
 			'vc-row-destroy-equal-heights-',
 			'dfd-icon-list-',
@@ -538,7 +538,6 @@ class Combine extends Abstract_JS_Optimization {
 			'WLTChangeState',
 			'wlt_star_',
 			'wlt_pop_distance_',
-			'map_fusion_map_',
 			'smart_list_tip',
 			'gd-wgt-pagi-',
 			'data-rf-id=',
@@ -548,6 +547,7 @@ class Combine extends Abstract_JS_Optimization {
 			'it_logo_field_owl-box_',
 			'td_live_css_uid',
 			'wpvl_paramReplace',
+			'tdAjaxCount',
 		];
 
 		/**
