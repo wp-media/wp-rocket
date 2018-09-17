@@ -3,6 +3,7 @@ namespace WP_Rocket\Optimization\JS;
 
 use WP_Rocket\Admin\Options_Data as Options;
 use WP_Rocket\Optimization\Assets_Local_Cache;
+use WP_Rocket\Logger;
 use MatthiasMullie\Minify;
 
 /**
@@ -53,6 +54,16 @@ class Combine extends Abstract_JS_Optimization {
 	private $scripts = [];
 
 	/**
+	 * Inline scripts excluded from combined and moved after the combined file
+	 *
+	 * @since 3.1.5
+	 * @author Remy Perona
+	 *
+	 * @var array
+	 */
+	private $move_after = [];
+
+	/**
 	 * Constructor
 	 *
 	 * @since 3.1
@@ -80,36 +91,66 @@ class Combine extends Abstract_JS_Optimization {
 	 * @return string
 	 */
 	public function optimize( $html ) {
-		$html_nocomments = preg_replace( '/<!--(.*)-->/Uis', '', $html );
+		Logger::info( 'JS COMBINE PROCESS STARTED.', [ 'js combine process' ] );
+
+		$html_nocomments = $this->hide_comments( $html );
 		$scripts         = $this->find( '<script.*<\/script>', $html_nocomments );
 
 		if ( ! $scripts ) {
+			Logger::debug( 'No `<script>` tags found.', [ 'js combine process' ] );
 			return $html;
 		}
+
+		Logger::debug( 'Found ' . count( $scripts ) . ' `<script>` tag(s).', [
+			'js combine process',
+			'tags' => $scripts,
+		] );
 
 		$combine_scripts = $this->parse( $scripts );
 
 		if ( empty( $combine_scripts ) ) {
+			Logger::debug( 'No `<script>` tags to optimize.', [ 'js combine process' ] );
 			return $html;
 		}
+
+		Logger::debug( count( $combine_scripts ) . ' `<script>` tag(s) remaining.', [
+			'js combine process',
+			'tags' => $combine_scripts,
+		] );
 
 		$content = $this->get_content();
 
 		if ( empty( $content ) ) {
+			Logger::debug( 'No JS content.', [ 'js combine process' ] );
 			return $html;
 		}
 
 		$minify_url = $this->combine( $content );
 
 		if ( ! $minify_url ) {
+			Logger::error( 'JS combine process failed.', [ 'js combine process' ] );
 			return $html;
 		}
 
-		$html = str_replace( '</body>', '<script src="' . esc_url( $minify_url ) . '" data-minify="1"></script></body>', $html );
+		$move_after = '';
+
+		if ( ! empty( $this->move_after ) ) {
+			foreach ( $this->move_after as $script ) {
+				$move_after .= $script;
+				$html        = str_replace( $script, '', $html );
+			}
+		}
+
+		$html = str_replace( '</body>', '<script src="' . esc_url( $minify_url ) . '" data-minify="1"></script>' . $move_after . '</body>', $html );
 
 		foreach ( $combine_scripts as $script ) {
 			$html = str_replace( $script[0], '', $html );
 		}
+
+		Logger::info( 'Combined JS file successfully added.', [
+			'js combine process',
+			'url' => $minify_url,
+		] );
 
 		return $html;
 	}
@@ -131,6 +172,10 @@ class Combine extends Abstract_JS_Optimization {
 				if ( $this->is_external_file( $matches[2] ) ) {
 					foreach ( $this->get_excluded_external_file_path() as $excluded_file ) {
 						if ( false !== strpos( $matches[2], $excluded_file ) ) {
+							Logger::debug( 'Script is external.', [
+								'js combine process',
+								'tag' => $matches[0],
+							] );
 							return;
 						}
 					}
@@ -144,10 +189,18 @@ class Combine extends Abstract_JS_Optimization {
 				}
 
 				if ( $this->is_minify_excluded_file( $matches ) ) {
+					Logger::debug( 'Script is excluded.', [
+						'js combine process',
+						'tag' => $matches[0],
+					] );
 					return;
 				}
 
 				if ( $this->jquery_url && false !== strpos( $matches[2], $this->jquery_url ) ) {
+					Logger::debug( 'Script is jQuery.', [
+						'js combine process',
+						'tag' => $matches[0],
+					] );
 					return;
 				}
 
@@ -161,25 +214,44 @@ class Combine extends Abstract_JS_Optimization {
 					'type'    => 'file',
 					'content' => $file_path,
 				];
-			} elseif ( ! isset( $matches[2] ) ) {
+			} else {
 				preg_match( '/<script\b([^>]*)>(?:\/\*\s*<!\[CDATA\[\s*\*\/)?\s*([\s\S]*?)\s*(?:\/\*\s*\]\]>\s*\*\/)?<\/script>/msi', $script[0], $matches_inline );
 
 				if ( strpos( $matches_inline[1], 'type' ) !== false && ! preg_match( '/type\s*=\s*["\']?(?:text|application)\/(?:(?:x\-)?javascript|ecmascript)["\']?/i', $matches_inline[1] ) ) {
+					Logger::debug( 'Inline script is not JS.', [
+						'js combine process',
+						'attributes' => $matches_inline[1],
+					] );
 					return;
 				}
 
 				if ( false !== strpos( $matches_inline[1], 'src=' ) ) {
+					Logger::debug( 'Inline script has a `src` attribute.', [
+						'js combine process',
+						'attributes' => $matches_inline[1],
+					] );
 					return;
 				}
 
-				$matches_inline[2] = str_replace( array( "\r", "\n" ), '', $matches_inline[2] );
+				$test_localize_script = str_replace( array( "\r", "\n" ), '', $matches_inline[2] );
 
-				if ( in_array( $matches_inline[2], $this->get_localized_scripts(), true ) ) {
+				if ( in_array( $test_localize_script, $this->get_localized_scripts(), true ) ) {
 					return;
 				}
 
 				foreach ( $this->get_excluded_inline_content() as $excluded_content ) {
 					if ( false !== strpos( $matches_inline[2], $excluded_content ) ) {
+						Logger::debug( 'Inline script has excluded content.', [
+							'js combine process',
+							'excluded_content' => $excluded_content,
+						] );
+						return;
+					}
+				}
+
+				foreach ( $this->get_move_after_inline_scripts() as $move_after_script ) {
+					if ( false !== strpos( $matches_inline[2], $move_after_script ) ) {
+						$this->move_after[] = $script[0];
 						return;
 					}
 				}
@@ -330,8 +402,6 @@ class Combine extends Abstract_JS_Optimization {
 			'tdBlock',
 			'tdLocalCache',
 			'"url":',
-			'td_live_css_uid',
-			'tdAjaxCount',
 			'lazyLoadOptions',
 			'adthrive',
 			'loadCSS',
@@ -345,9 +415,20 @@ class Combine extends Abstract_JS_Optimization {
 			'RecaptchaLoad',
 			'WPCOM_sharing_counts',
 			'jetpack_remote_comment',
-      'scrapeazon',
 			'subscribe-field',
 			'contextly',
+			'_mmunch',
+			'gt_request_uri',
+			'doGTranslate',
+			'docTitle',
+			'bs_ajax_paginate_',
+			'bs_deferred_loading_',
+			'theChampRedirectionUrl',
+			'theChampFBCommentUrl',
+			'ESSB_CACHE_URL',
+			'oneall_social_login_providers_',
+			'betterads_screen_width',
+			'woocommerce_wishlist_add_to_wishlist_url',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
@@ -422,6 +503,7 @@ class Combine extends Abstract_JS_Optimization {
 			'googleadservices.com',
 			'f.convertkit.com',
 			'recaptcha/api.js',
+			'mailmunch.co',
 		];
 
 		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );
@@ -434,6 +516,49 @@ class Combine extends Abstract_JS_Optimization {
 		 * @param array $pattern Patterns to match.
 		 */
 		return apply_filters( 'rocket_minify_excluded_external_js', $excluded_external );
+	}
+
+	/**
+	 * Patterns of inline JS to move after the combined JS file
+	 *
+	 * @since 3.1.5
+	 * @author Remy Perona
+	 *
+	 * @return array
+	 */
+	protected function get_move_after_inline_scripts() {
+		$move_after_scripts = [
+			'map_fusion_map_',
+			'ec:addProduct',
+			'ec:addImpression',
+			'clear_better_facebook_comments',
+			'vc-row-destroy-equal-heights-',
+			'dfd-icon-list-',
+			'SFM_template',
+			'WLTChangeState',
+			'wlt_star_',
+			'wlt_pop_distance_',
+			'smart_list_tip',
+			'gd-wgt-pagi-',
+			'data-rf-id=',
+			'tvc_po=',
+			'scrapeazon',
+			'startclock',
+			'it_logo_field_owl-box_',
+			'td_live_css_uid',
+			'wpvl_paramReplace',
+			'tdAjaxCount',
+		];
+
+		/**
+		 * Filters inline JS to move after the combined JS file
+		 *
+		 * @since 3.1.5
+		 * @author Remy Perona
+		 *
+		 * @param array $move_after_scripts Patterns to match.
+		 */
+		return apply_filters( 'rocket_move_after_combine_js', $move_after_scripts );
 	}
 
 	/**

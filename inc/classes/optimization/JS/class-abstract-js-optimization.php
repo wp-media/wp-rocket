@@ -75,7 +75,7 @@ class Abstract_JS_Optimization extends Abstract_Optimization {
 	 * @return array
 	 */
 	public function get_zones() {
-		return array( 'all', 'css_and_js', self::FILE_TYPE );
+		return [ 'all', 'css_and_js', self::FILE_TYPE ];
 	}
 
 	/**
@@ -151,7 +151,7 @@ class Abstract_JS_Optimization extends Abstract_Optimization {
 			return false;
 		}
 
-		if ( '' === \rocket_extract_url_component( $wp_scripts->registered['jquery-core']->src, PHP_URL_HOST ) ) {
+		if ( '' === wp_parse_url( $wp_scripts->registered['jquery-core']->src, PHP_URL_HOST ) ) {
 			return rocket_clean_exclude_file( site_url( $wp_scripts->registered['jquery-core']->src ) );
 		}
 
