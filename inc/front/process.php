@@ -85,7 +85,8 @@ if ( ! isset( $_SERVER['REQUEST_METHOD'] ) || 'GET' !== $_SERVER['REQUEST_METHOD
 $rocket_config_path      = WP_CONTENT_DIR . '/wp-rocket-config/';
 $real_rocket_config_path = realpath( $rocket_config_path ) . DIRECTORY_SEPARATOR;
 
-$host = ( isset( $_SERVER['HTTP_HOST'] ) ) ? $_SERVER['HTTP_HOST'] : time();
+$host = isset( $_SERVER['HTTP_HOST'] ) ? $_SERVER['HTTP_HOST'] : (string) time();
+$host = preg_replace( '/:\d+$/', '', $host );
 $host = trim( strtolower( $host ), '.' );
 $host = rawurlencode( $host );
 

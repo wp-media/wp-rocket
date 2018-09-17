@@ -63,14 +63,14 @@ class Page implements Subscriber_Interface {
 	private $render;
 
 	/**
-	 * Current WP locale without the region (e.g. en, fr)
+	 * Beacon instance
 	 *
-	 * @since 3.0
+	 * @since 3.2
 	 * @author Remy Perona
 	 *
-	 * @var string
+	 * @var Beacon
 	 */
-	private $locale;
+	private $beacon;
 
 	/**
 	 * Constructor
@@ -81,16 +81,15 @@ class Page implements Subscriber_Interface {
 	 * @param array                                  $args     Array of required arguments to add the admin page.
 	 * @param Settings                               $settings Instance of Settings class.
 	 * @param \WP_Rocket\Interfaces\Render_Interface $render   Implementation of Render interface.
+	 * @param Beacon                                 $beacon   Beacon instance.
 	 */
-	public function __construct( $args, Settings $settings, \WP_Rocket\Interfaces\Render_Interface $render ) {
+	public function __construct( $args, Settings $settings, \WP_Rocket\Interfaces\Render_Interface $render, Beacon $beacon ) {
 		$this->slug       = $args['slug'];
 		$this->title      = $args['title'];
 		$this->capability = $args['capability'];
 		$this->settings   = $settings;
 		$this->render     = $render;
-
-		$locale       = function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale();
-		$this->locale = current( array_slice( explode( '_', $locale ), 0, 1 ) );
+		$this->beacon     = $beacon;
 	}
 
 	/**
@@ -100,7 +99,6 @@ class Page implements Subscriber_Interface {
 		return [
 			'admin_menu'                                        => 'add_admin_page',
 			'admin_init'                                        => 'configure',
-			'admin_print_footer_scripts-settings_page_wprocket' => 'insert_beacon',
 			'wp_ajax_rocket_refresh_customer_data'              => 'refresh_customer_data',
 			'wp_ajax_rocket_toggle_option'                      => 'toggle_option',
 			'option_page_capability_' . WP_ROCKET_PLUGIN_SLUG   => 'required_capability',
@@ -183,122 +181,6 @@ class Page implements Subscriber_Interface {
 	public function required_capability( $capability ) {
 		/** This filter is documented in inc/admin-bar.php */
 		return apply_filters( 'rocket_capacity', $capability );
-	}
-
-	/**
-	 * Insert HelpScout Beacon script
-	 *
-	 * @since 3.0
-	 * @author Remy Perona
-	 *
-	 * @return void
-	 */
-	public function insert_beacon() {
-		/** This filter is documented in inc/admin-bar.php */
-		if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
-			return;
-		}
-
-		switch ( $this->locale ) {
-			case 'fr':
-				$lang        = '-fr';
-				$form_id     = '5d9279dc-1b2d-11e8-b466-0ec85169275a';
-				$suggest     = wp_list_pluck( $this->get_beacon_suggest( 'faq', 'fr' ), 'id' );
-				$translation = wp_json_encode( [
-					'searchLabel'               => 'Comment pouvons-nous vous aider ?',
-					'searchErrorLabel'          => 'Votre recherche a expiré. Veuillez vérifier votre connexion et réessayer.',
-					'noResultsLabel'            => 'Aucun résultat trouvé pour',
-					'contactLabel'              => 'Envoyer un message',
-					'attachFileLabel'           => 'Joindre un fichier',
-					'attachFileError'           => 'Le poids maximum de fichier est de 10Mo',
-					'fileExtensionError'        => 'Le format du fichier attaché n\'est pas autorisé.',
-					'nameLabel'                 => 'Votre nom',
-					'nameError'                 => 'Veuillez entrer votre nom',
-					'emailLabel'                => 'Adresse email',
-					'emailError'                => 'Veuillez entrer une adresse email valide',
-					'topicLabel'                => 'Sélectionnez un sujet',
-					'topicError'                => 'Veuillez sélectionner un sujet dans la liste',
-					'subjectLabel'              => 'Sujet',
-					'subjectError'              => 'Veuillez entrer un sujet',
-					'messageLabel'              => 'Comment pouvons-nous vous aider ?',
-					'messageError'              => 'Veuillez entrer un message',
-					'sendLabel'                 => 'Envoyer',
-					'contactSuccessLabel'       => 'Message envoyé !',
-					'contactSuccessDescription' => 'Merci de nous avoir contacté ! Un de nos rocketeers vous répondra rapidement.',
-				] );
-				break;
-			default:
-				$lang        = '';
-				$form_id     = '6e4a6b6e-1b2d-11e8-b466-0ec85169275a';
-				$suggest     = wp_list_pluck( $this->get_beacon_suggest( 'faq' ), 'id' );
-				$translation = '{}';
-				break;
-		}
-
-		$script = '<script>!function(e,o,n){window.HSCW=o,window.HS=n,n.beacon=n.beacon||{};var t=n.beacon;t.userConfig={},t.readyQueue=[],t.config=function(e){this.userConfig=e},t.ready=function(e){this.readyQueue.push(e)},o.config={docs:{enabled:!0,baseUrl:"https://wp-rocket' . $lang . '.helpscoutdocs.com/"},contact:{enabled:!0,formId:"' . $form_id . '"}};var r=e.getElementsByTagName("script")[0],c=e.createElement("script");c.type="text/javascript",c.async=!0,c.src="https://djtflbt20bdde.cloudfront.net/",r.parentNode.insertBefore(c,r)}(document,window.HSCW||{},window.HS||{});
-			HS.beacon.ready( function() {
-				HS.beacon.suggest(' . wp_json_encode( $suggest ) . ');
-				HS.beacon.identify(' . wp_json_encode( $this->beacon_identify_data() ) . ');
-			} );
-			HS.beacon.config({
-				showSubject: true,
-				translation: ' . $translation . '
-			});</script>';
-
-		echo $script;
-	}
-
-	/**
-	 * Returns Data to pass to the Beacon identify() method
-	 *
-	 * @since 3.0
-	 * @author Remy Perona
-	 *
-	 * @return array
-	 */
-	private function beacon_identify_data() {
-		global $wp_version;
-
-		$options_to_send = [
-			'cache_mobile'            => 'Mobile Cache',
-			'do_caching_mobile_files' => 'Specific Cache for Mobile',
-			'cache_logged_user'       => 'User Cache',
-			'emoji'                   => 'Disable Emojis',
-			'embeds'                  => 'Disable Embeds',
-			'defer_all_js'            => 'Defer JS',
-			'defer_all_js_safe'       => 'Defer JS Safe',
-			'async_css'               => 'Optimize CSS Delivery',
-			'lazyload'                => 'Lazyload Images',
-			'lazyload_iframes'        => 'Lazyload Iframes',
-			'lazyload_youtube'        => 'Lazyload Youtube',
-			'minify_css'              => 'Minify CSS',
-			'minify_concatenate_css'  => 'Combine CSS',
-			'minify_js'               => 'Minify JS',
-			'minify_concatenate_js'   => 'Combine JS',
-			'minify_google_fonts'     => 'Combine Google Fonts',
-			'minify_html'             => 'Minify HTML',
-			'manual_preload'          => 'Manual Preload',
-			'automatic_preload'       => 'Automatic Preload',
-			'sitemap_preload'         => 'Sitemap Preload',
-			'remove_query_strings'    => 'Remove Query Strings',
-			'cdn'                     => 'CDN Enabled',
-			'do_cloudflare'           => 'Cloudflare Enabled',
-			'varnish_auto_purge'      => 'Varnish Purge Enabled',
-		];
-
-		$active_options = array_filter( (array) get_option( WP_ROCKET_SLUG ) );
-		$active_options = array_intersect_key( $options_to_send, $active_options );
-
-		$data = [
-			'email'                    => get_rocket_option( 'consumer_email' ),
-			'Website'                  => home_url(),
-			'WordPress Version'        => $wp_version,
-			'WP Rocket Version'        => WP_ROCKET_VERSION,
-			'Plugins Enabled'          => implode( ' - ', rocket_get_active_plugins() ),
-			'WP Rocket Active Options' => implode( ' - ', $active_options ),
-		];
-
-		return $data;
 	}
 
 	/**
@@ -517,7 +399,7 @@ class Page implements Subscriber_Interface {
 			[
 				'title'            => __( 'Dashboard', 'rocket' ),
 				'menu_description' => __( 'Get help, account info', 'rocket' ),
-				'faq'              => $this->get_beacon_suggest( 'faq', $this->locale ),
+				'faq'              => $this->beacon->get_suggest( 'faq' ),
 				'customer_data'    => $this->customer_data(),
 			]
 		);
@@ -565,11 +447,11 @@ class Page implements Subscriber_Interface {
 	 * @return void
 	 */
 	private function cache_section() {
-		$mobile_cache_beacon = $this->get_beacon_suggest( 'mobile_cache', $this->locale );
-		$user_cache_beacon   = $this->get_beacon_suggest( 'user_cache', $this->locale );
-		$nonce_beacon        = $this->get_beacon_suggest( 'nonce', $this->locale );
-		$cache_life_beacon   = $this->get_beacon_suggest( 'cache_lifespan', $this->locale );
-		$cache_ssl_beacon    = $this->get_beacon_suggest( 'cache_ssl', $this->locale );
+		$mobile_cache_beacon = $this->beacon->get_suggest( 'mobile_cache' );
+		$user_cache_beacon   = $this->beacon->get_suggest( 'user_cache' );
+		$nonce_beacon        = $this->beacon->get_suggest( 'nonce' );
+		$cache_life_beacon   = $this->beacon->get_suggest( 'cache_lifespan' );
+		$cache_ssl_beacon    = $this->beacon->get_suggest( 'cache_ssl' );
 
 		$this->settings->add_page_section(
 			'cache',
@@ -587,7 +469,7 @@ class Page implements Subscriber_Interface {
 					'description' => __( 'Speed up your site for mobile visitors.', 'rocket' ),
 					'help'        => [
 						'url' => $mobile_cache_beacon['url'],
-						'id'  => $this->get_beacon_suggest( 'mobile_cache_section', $this->locale ),
+						'id'  => $this->beacon->get_suggest( 'mobile_cache_section' ),
 					],
 					'helper'      => rocket_is_mobile_plugin_active() ? __( 'We detected you use a plugin that requires a separate cache for mobile, and automatically enabled this option for compatibility.', 'rocket' ) : '',
 					'page'        => 'cache',
@@ -599,7 +481,7 @@ class Page implements Subscriber_Interface {
 					'description' => sprintf( __( '%1$sUser cache%2$s is great when you have user-specific or restricted content on your website.', 'rocket' ), '<a href="' . esc_url( $user_cache_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $user_cache_beacon['id'] ) . '" target="_blank">', '</a>' ),
 					'help'        => [
 						'url' => $user_cache_beacon['url'],
-						'id'  => $this->get_beacon_suggest( 'user_cache_section', $this->locale ),
+						'id'  => $this->beacon->get_suggest( 'user_cache_section' ),
 					],
 					'page'        => 'cache',
 				],
@@ -624,7 +506,7 @@ class Page implements Subscriber_Interface {
 					'description' => sprintf( __( 'Cache lifespan is the period of time after which all cache files are removed.<br>Enable %1$spreloading%2$s for the cache to be rebuilt automatically after lifespan expiration.', 'rocket' ), '<a href="#preload">', '</a>' ),
 					'help'        => [
 						'url' => $cache_life_beacon['url'],
-						'id'  => $this->get_beacon_suggest( 'cache_lifespan_section', $this->locale ),
+						'id'  => $this->beacon->get_suggest( 'cache_lifespan_section' ),
 					],
 					'page'        => 'cache',
 				],
@@ -710,12 +592,12 @@ class Page implements Subscriber_Interface {
 	 * @return void
 	 */
 	private function assets_section() {
-		$remove_qs_beacon  = $this->get_beacon_suggest( 'remove_query_strings', $this->locale );
-		$combine_beacon    = $this->get_beacon_suggest( 'combine', $this->locale );
-		$defer_beacon      = $this->get_beacon_suggest( 'defer', $this->locale );
-		$files_beacon      = $this->get_beacon_suggest( 'file_optimization', $this->locale );
-		$inline_js_beacon  = $this->get_beacon_suggest( 'exclude_inline_js', $this->locale );
-		$exclude_js_beacon = $this->get_beacon_suggest( 'exclude_js', $this->locale );
+		$remove_qs_beacon  = $this->beacon->get_suggest( 'remove_query_strings' );
+		$combine_beacon    = $this->beacon->get_suggest( 'combine' );
+		$defer_beacon      = $this->beacon->get_suggest( 'defer' );
+		$files_beacon      = $this->beacon->get_suggest( 'file_optimization' );
+		$inline_js_beacon  = $this->beacon->get_suggest( 'exclude_inline_js' );
+		$exclude_js_beacon = $this->beacon->get_suggest( 'exclude_js' );
 
 		$this->settings->add_page_section(
 			'file_optimization',
@@ -731,7 +613,7 @@ class Page implements Subscriber_Interface {
 					'title'  => __( 'Basic Settings', 'rocket' ),
 					'help'   => [
 						'url' => $remove_qs_beacon['url'],
-						'id'  => $this->get_beacon_suggest( 'basic_section', $this->locale ),
+						'id'  => $this->beacon->get_suggest( 'basic_section' ),
 					],
 					'page'   => 'file_optimization',
 					// translators: %1$s = type of minification (HTML, CSS or JS), %2$s = “WP Rocket”.
@@ -740,7 +622,7 @@ class Page implements Subscriber_Interface {
 				'css'   => [
 					'title'  => __( 'CSS Files', 'rocket' ),
 					'help'   => [
-						'id'  => $this->get_beacon_suggest( 'css_section', $this->locale ),
+						'id'  => $this->beacon->get_suggest( 'css_section' ),
 						'url' => $files_beacon['url'],
 					],
 					'page'   => 'file_optimization',
@@ -750,7 +632,7 @@ class Page implements Subscriber_Interface {
 				'js'    => [
 					'title'  => __( 'JavaScript Files', 'rocket' ),
 					'help'   => [
-						'id'  => $this->get_beacon_suggest( 'js_section', $this->locale ),
+						'id'  => $this->beacon->get_suggest( 'js_section' ),
 						'url' => $files_beacon['url'],
 					],
 					'page'   => 'file_optimization',
@@ -999,7 +881,7 @@ class Page implements Subscriber_Interface {
 	 * @return void
 	 */
 	private function media_section() {
-		$lazyload_beacon = $this->get_beacon_suggest( 'lazyload', $this->locale );
+		$lazyload_beacon = $this->beacon->get_suggest( 'lazyload' );
 
 		$this->settings->add_page_section(
 			'media',
@@ -1016,7 +898,7 @@ class Page implements Subscriber_Interface {
 					'type'        => 'fields_container',
 					'description' => __( 'It can improve actual and perceived loading time as images, iframes, and videos will be loaded only as they enter (or about to enter) the viewport and reduces the number of HTTP requests.', 'rocket' ),
 					'help'        => [
-						'id'  => $this->get_beacon_suggest( 'lazyload_section', $this->locale ),
+						'id'  => $this->beacon->get_suggest( 'lazyload_section' ),
 						'url' => $lazyload_beacon['url'],
 					],
 					'page'        => 'media',
@@ -1108,7 +990,7 @@ class Page implements Subscriber_Interface {
 			]
 		);
 
-		$bot_beacon = $this->get_beacon_suggest( 'bot', $this->locale );
+		$bot_beacon = $this->beacon->get_suggest( 'bot' );
 
 		$this->settings->add_settings_sections(
 			[
@@ -1118,7 +1000,7 @@ class Page implements Subscriber_Interface {
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 					'description' => sprintf( __( 'Sitemap preloading runs automatically when the cache lifespan expires. You can also launch it manually from the upper toolbar menu, or from Quick Actions on the %1$sWP Rocket Dashboard%2$s.', 'rocket' ), '<a href="#dashboard">', '</a>' ),
 					'help'        => [
-						'id'  => $this->get_beacon_suggest( 'sitemap_preload', $this->locale ),
+						'id'  => $this->beacon->get_suggest( 'sitemap_preload' ),
 						'url' => $bot_beacon['url'],
 					],
 					'page'        => 'preload',
@@ -1130,7 +1012,7 @@ class Page implements Subscriber_Interface {
 					'description' => sprintf( __( '%1$sBot-based%2$s preloading should only be used on well-performing servers.<br>Once activated, it gets triggered automatically after you add or update content on your website.<br>You can also launch it manually from the upper toolbar menu, or from Quick Actions on the %3$sWP Rocket Dashboard%4$s.', 'rocket' ), '<a href="' . esc_url( $bot_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $bot_beacon['id'] ) . '" target="_blank">', '</a>', '<a href="#dashboard">', '</a>' ),
 					'helper'      => __( 'Deactivate these options if you notice any overload on your server!', 'rocket' ),
 					'help'        => [
-						'id'  => $this->get_beacon_suggest( 'preload_bot', $this->locale ),
+						'id'  => $this->beacon->get_suggest( 'preload_bot' ),
 						'url' => $bot_beacon['url'],
 					],
 					'page'        => 'preload',
@@ -1140,7 +1022,7 @@ class Page implements Subscriber_Interface {
 					'type'        => 'fields_container',
 					'description' => __( 'DNS prefetching can make external files load faster, especially on mobile networks', 'rocket' ),
 					'help'        => [
-						'id'  => $this->get_beacon_suggest( 'dns_prefetch', $this->locale ),
+						'id'  => $this->beacon->get_suggest( 'dns_prefetch' ),
 						'url' => $bot_beacon['url'],
 					],
 					'page'        => 'preload',
@@ -1227,10 +1109,10 @@ class Page implements Subscriber_Interface {
 				'menu_description' => __( 'Fine-tune cache rules', 'rocket' ),
 			]
 		);
-		$ecommerce_beacon           = $this->get_beacon_suggest( 'ecommerce', $this->locale );
-		$cache_query_strings_beacon = $this->get_beacon_suggest( 'cache_query_strings', $this->locale );
-		$never_cache_beacon         = $this->get_beacon_suggest( 'exclude_cache', $this->locale );
-		$always_purge_beacon        = $this->get_beacon_suggest( 'always_purge', $this->locale );
+		$ecommerce_beacon           = $this->beacon->get_suggest( 'ecommerce' );
+		$cache_query_strings_beacon = $this->beacon->get_suggest( 'cache_query_strings' );
+		$never_cache_beacon         = $this->beacon->get_suggest( 'exclude_cache' );
+		$always_purge_beacon        = $this->beacon->get_suggest( 'always_purge' );
 
 		$ecommerce_plugin = '';
 		$reject_uri_desc  = __( 'Sensitive pages like custom login/logout URLs should be excluded from cache.', 'rocket' );
@@ -1265,7 +1147,7 @@ class Page implements Subscriber_Interface {
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 					'description' => $reject_uri_desc,
 					'help'        => [
-						'id'  => $this->get_beacon_suggest( 'never_cache', $this->locale ),
+						'id'  => $this->beacon->get_suggest( 'never_cache' ),
 						'url' => $never_cache_beacon['url'],
 					],
 					'page'        => 'advanced_cache',
@@ -1284,7 +1166,7 @@ class Page implements Subscriber_Interface {
 					'title' => __( 'Always Purge URL(s)', 'rocket' ),
 					'type'  => 'fields_container',
 					'help'  => [
-						'id'  => $this->get_beacon_suggest( 'always_purge_section', $this->locale ),
+						'id'  => $this->beacon->get_suggest( 'always_purge_section' ),
 						'url' => $always_purge_beacon['url'],
 					],
 					'page'  => 'advanced_cache',
@@ -1295,7 +1177,7 @@ class Page implements Subscriber_Interface {
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 					'description' => sprintf( __( '%1$sCache for query strings%2$s enables you to force caching for specific GET parameters.', 'rocket' ), '<a href="' . esc_url( $cache_query_strings_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $cache_query_strings_beacon['id'] ) . '" target="_blank">', '</a>' ),
 					'help'        => [
-						'id'  => $this->get_beacon_suggest( 'query_strings', $this->locale ),
+						'id'  => $this->beacon->get_suggest( 'query_strings' ),
 						'url' => $cache_query_strings_beacon['url'],
 					],
 					'page'        => 'advanced_cache',
@@ -1378,7 +1260,7 @@ class Page implements Subscriber_Interface {
 			]
 		);
 
-		$database_beacon = $this->get_beacon_suggest( 'slow_admin', $this->locale );
+		$database_beacon = $this->beacon->get_suggest( 'slow_admin' );
 
 		$this->settings->add_settings_sections(
 			[
@@ -1387,7 +1269,7 @@ class Page implements Subscriber_Interface {
 					'type'        => 'fields_container',
 					'description' => __( 'Post revisions and drafts will be permanently deleted. Do not use this option if you need to retain revisions or drafts.', 'rocket' ),
 					'help'        => [
-						'id'  => $this->get_beacon_suggest( 'cleanup', $this->locale ),
+						'id'  => $this->beacon->get_suggest( 'cleanup' ),
 						'url' => $database_beacon['url'],
 					],
 					'page'        => 'database',
@@ -1551,8 +1433,8 @@ class Page implements Subscriber_Interface {
 			]
 		);
 
-		$cdn_beacon         = $this->get_beacon_suggest( 'cdn', $this->locale );
-		$cdn_exclude_beacon = $this->get_beacon_suggest( 'exclude_cdn', $this->locale );
+		$cdn_beacon         = $this->beacon->get_suggest( 'cdn' );
+		$cdn_exclude_beacon = $this->beacon->get_suggest( 'exclude_cdn' );
 
 		$this->settings->add_settings_sections(
 			[
@@ -1561,7 +1443,7 @@ class Page implements Subscriber_Interface {
 					'type'        => 'fields_container',
 					'description' => __( 'All URLs of static files (CSS, JS, images) will be rewritten to the CNAME(s) you provide.', 'rocket' ),
 					'help'        => [
-						'id'  => $this->get_beacon_suggest( 'cdn_section', $this->locale ),
+						'id'  => $this->beacon->get_suggest( 'cdn_section' ),
 						'url' => $cdn_beacon['url'],
 					],
 					'page'        => 'page_cdn',
@@ -1653,7 +1535,7 @@ class Page implements Subscriber_Interface {
 			]
 		);
 
-		$ga_beacon = $this->get_beacon_suggest( 'google_tracking', $this->locale );
+		$ga_beacon = $this->beacon->get_suggest( 'google_tracking' );
 
 		$this->settings->add_settings_fields(
 			[
@@ -1684,7 +1566,7 @@ class Page implements Subscriber_Interface {
 		 * @param bool $display true will display the "Varnish" tab.
 		*/
 		if ( apply_filters( 'rocket_display_varnish_options_tab', true ) ) {
-			$varnish_beacon = $this->get_beacon_suggest( 'varnish', $this->locale );
+			$varnish_beacon = $this->beacon->get_suggest( 'varnish' );
 
 			$this->settings->add_settings_fields(
 				/**
@@ -1763,7 +1645,7 @@ class Page implements Subscriber_Interface {
 					'type'  => 'fields_container',
 					'title' => __( 'Cloudflare credentials', 'rocket' ),
 					'help'  => [
-						'id'  => $this->get_beacon_suggest( 'cloudflare_credentials', $this->locale ),
+						'id'  => $this->beacon->get_suggest( 'cloudflare_credentials' ),
 						'url' => '',
 					],
 					'page'  => 'cloudflare',
@@ -1772,7 +1654,7 @@ class Page implements Subscriber_Interface {
 					'type'  => 'fields_container',
 					'title' => __( 'Cloudflare settings', 'rocket' ),
 					'help'  => [
-						'id'  => $this->get_beacon_suggest( 'cloudflare_settings', $this->locale ),
+						'id'  => $this->beacon->get_suggest( 'cloudflare_settings' ),
 						'url' => '',
 					],
 					'page'  => 'cloudflare',
@@ -1888,345 +1770,5 @@ class Page implements Subscriber_Interface {
 		];
 
 		return $navigation;
-	}
-
-	/**
-	 * Returns the IDs for the HelpScout docs for the corresponding section and language.
-	 *
-	 * @since 3.0
-	 * @author Remy Perona
-	 *
-	 * @param string $doc_id   Section identifier.
-	 * @param string $lang     Documentation language.
-	 *
-	 * @return string
-	 */
-	private function get_beacon_suggest( $doc_id, $lang = 'en' ) {
-		$suggest = [
-			'faq'                    => [
-				'en' => [
-					[
-						'id'    => '5569b671e4b027e1978e3c51',
-						'url'   => 'https://docs.wp-rocket.me/article/99-pages-are-not-cached-or-css-and-js-minification-are-not-working/?utm_source=wp_plugin&utm_medium=wp_rocket',
-						'title' => 'Pages Are Not Cached or CSS and JS Minification Are Not Working',
-					],
-					[
-						'id'    => '556778c8e4b01a224b426fad',
-						'url'   => 'https://docs.wp-rocket.me/article/85-google-page-speed-grade-does-not-improve/?utm_source=wp_plugin&utm_medium=wp_rocket',
-						'title' => 'Google PageSpeed Grade does not Improve',
-					],
-					[
-						'id'    => '556ef48ce4b01a224b428691',
-						'url'   => 'https://docs.wp-rocket.me/article/106-my-site-is-broken/?utm_source=wp_plugin&utm_medium=wp_rocket',
-						'title' => 'My Site Is Broken',
-					],
-					[
-						'id'    => '54205957e4b099def9b55df0',
-						'url'   => 'https://docs.wp-rocket.me/article/19-resolving-issues-with-file-optimization/?utm_source=wp_plugin&utm_medium=wp_rocket',
-						'title' => 'Resolving Issues with File Optimization',
-					],
-				],
-				'fr' => [
-					[
-						'id'    => '5697d2dc9033603f7da31041',
-						'url'   => 'https://fr.docs.wp-rocket.me/article/264-les-pages-ne-sont-pas-mises-en-cache-ou-la-minification-css-et-js-ne-fonctionne-pas/?utm_source=wp_plugin&utm_medium=wp_rocket',
-						'title' => 'Les pages ne sont pas mises en cache, ou la minification CSS et JS ne fonctionne pas',
-					],
-					[
-						'id'    => '569564dfc69791436155e0b0',
-						'url'   => 'https://fr.docs.wp-rocket.me/article/218-la-note-google-page-speed-ne-sameliore-pas/?utm_source=wp_plugin&utm_medium=wp_rocket',
-						'title' => "La note Google Page Speed ne s'améliore pas",
-					],
-					[
-						'id'    => '5697d03bc69791436155ed69',
-						'url'   => 'https://fr.docs.wp-rocket.me/article/263-site-casse/?utm_source=wp_plugin&utm_medium=wp_rocket',
-						'title' => 'Mon site est cassé',
-					],
-					[
-						'id'    => '56967d73c69791436155e637',
-						'url'   => 'https://fr.docs.wp-rocket.me/article/241-problemes-minification/?utm_source=wp_plugin&utm_medium=wp_rocket',
-						'title' => "Résoudre les problèmes avec l'optimisation des fichiers",
-					],
-				],
-			],
-			'user_cache_section'     => [
-				'en' => '56b55ba49033600da1c0b687,587920b5c697915403a0e1f4,560c66b0c697917e72165a6d',
-				'fr' => '56cb9ba990336008e9e9e3d9,5879230cc697915403a0e211,569410999033603f7da2fa94',
-			],
-			'user_cache'             => [
-				'en' => [
-					'id'  => '56b55ba49033600da1c0b687',
-					'url' => 'https://docs.wp-rocket.me/article/313-user-cache/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-				'fr' => [
-					'id'  => '56cb9ba990336008e9e9e3d9',
-					'url' => 'https://fr.docs.wp-rocket.me/article/333-cache-utilisateurs-connectes/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-			],
-			'mobile_cache_section'   => [
-				'en' => '577a5f1f903360258a10e52a,5678aa76c697914361558e92,5745b9a6c697917290ddc715',
-				'fr' => '589b17a02c7d3a784630b249,5a6b32830428632faf6233dc,58a480e5dd8c8e56bfa7b85c',
-			],
-			'mobile_cache'           => [
-				'en' => [
-					'id'  => '577a5f1f903360258a10e52a',
-					'url' => 'https://docs.wp-rocket.me/article/708-mobile-caching/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-				'fr' => [
-					'id'  => '589b17a02c7d3a784630b249',
-					'url' => 'https://fr.docs.wp-rocket.me/article/934-mise-en-cache-pour-mobile/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-			],
-			'cache_ssl'              => [
-				'en' => [
-					'id'  => '56c24fd3903360436857f1ed',
-					'url' => 'https://docs.wp-rocket.me/article/314-using-ssl-with-wp-rocket/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-				'fr' => [
-					'id'  => '56cb9d24c6979102ccfc801c',
-					'url' => 'https://fr.docs.wp-rocket.me/article/335-utiliser-ssl-wp-rocket/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-			],
-			'cache_lifespan'         => [
-				'en' => [
-					'id'  => '555c7e9ee4b027e1978e17a5',
-					'url' => 'https://docs.wp-rocket.me/article/78-how-often-is-the-cache-updated/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-				'fr' => [
-					'id'  => '568f7df49033603f7da2ec72',
-					'url' => 'https://fr.docs.wp-rocket.me/article/171-intervalle-cache/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-			],
-			'cache_lifespan_section' => [
-				'en' => '555c7e9ee4b027e1978e17a5,5922fd0e0428634b4a33552c',
-				'fr' => '568f7df49033603f7da2ec72,598080e1042863033a1b890e',
-			],
-			'nonce'                  => [
-				'en' => [
-					'id'  => '5922fd0e0428634b4a33552c',
-					'url' => 'https://docs.wp-rocket.me/article/975-nonces-and-cache-lifespan/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-				'fr' => [
-					'id'  => '598080e1042863033a1b890e',
-					'url' => 'https://fr.docs.wp-rocket.me/article/1015-nonces-delai-nettoyage-cache/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-			],
-			'basic_section'          => [
-				'en' => '55231415e4b0221aadf25676,588286b32c7d3a4a60b95b6c,58869c492c7d3a7846303a3d',
-				'fr' => '569568269033603f7da30334,58e3be72dd8c8e5c57311c6e,59b7f049042863033a1cc5d0',
-			],
-			'css_section'            => [
-				'en' => '54205957e4b099def9b55df0,5419ec47e4b099def9b5565f,5578cfbbe4b027e1978e6bb1,5569b671e4b027e1978e3c51,5923772c2c7d3a074e8ab8b9',
-				'fr' => '56967d73c69791436155e637,56967e80c69791436155e646,56957209c69791436155e0f6,5697d2dc9033603f7da31041593fec6d2c7d3a0747cddb93',
-			],
-			'js_section'             => [
-				'en' => '54205957e4b099def9b55df0,5419ec47e4b099def9b5565f,5578cfbbe4b027e1978e6bb1,587904cf90336009736c678e,54b9509de4b07997ea3f27c7,59236dfb0428634b4a3358f9',
-				'fr' => '56967d73c69791436155e637,56967e80c69791436155e646,56957209c69791436155e0f6,58a337c12c7d3a576d352cde,56967eebc69791436155e649,593fe9882c7d3a0747cddb77',
-			],
-			'remove_query_strings'   => [
-				'en' => [
-					'id'  => '55231415e4b0221aadf25676',
-					'url' => 'https://docs.wp-rocket.me/article/56-remove-query-string-from-static-resources/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-				'fr' => [
-					'id'  => '569568269033603f7da30334',
-					'url' => 'https://fr.docs.wp-rocket.me/article/219-supprimer-les-chaines-de-requetes-sur-les-ressources-statiques/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-			],
-			'file_optimization'      => [
-				'en' => [
-					'id'  => '54205957e4b099def9b55df0',
-					'url' => 'https://docs.wp-rocket.me/article/19-resolving-issues-with-file-optimization/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-				'fr' => [
-					'id'  => '56967d73c69791436155e637',
-					'url' => 'https://fr.docs.wp-rocket.me/article/241-problemes-minification/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-			],
-			'combine'                => [
-				'en' => [
-					'id'  => '596eaf7d2c7d3a73488b3661',
-					'url' => 'https://docs.wp-rocket.me/article/1009-configuration-for-http-2/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-				'fr' => [
-					'id'  => '59a418ad042863033a1c572e',
-					'url' => 'https://fr.docs.wp-rocket.me/article/1018-configuration-http-2/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-			],
-			'exclude_inline_js'      => [
-				'en' => [
-					'id'  => '5b4879100428630abc0c0713',
-					'url' => 'https://docs.wp-rocket.me/article/1104-excluding-inline-js-from-combine/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-			],
-			'exclude_js'             => [
-				'en' => [
-					'id'  => '54b9509de4b07997ea3f27c7',
-					'url' => 'https://docs.wp-rocket.me/article/39-excluding-external-js-from-concatenation/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-			],
-			'defer'                  => [
-				'en' => [
-					'id'  => '5578cfbbe4b027e1978e6bb1',
-					'url' => 'https://docs.wp-rocket.me/article/108-render-blocking-javascript-and-css-pagespeed/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-				'fr' => [
-					'id'  => '56957209c69791436155e0f6',
-					'url' => 'https://fr.docs.wp-rocket.me/article/230-javascript-et-css-bloquant-le-rendu-pagespeed/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-			],
-			'lazyload'               => [
-				'en' => [
-					'id'  => '54b85754e4b0512429883a86',
-					'url' => 'https://docs.wp-rocket.me/article/38-lazyload-plugin-compatibility/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-				'fr' => [
-					'id'  => '56967a859033603f7da30858',
-					'url' => 'https://fr.docs.wp-rocket.me/article/237-compatibilite-des-extensions-avec-le-lazyload/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-			],
-			'lazyload_section'       => [
-				'en' => '54b85754e4b0512429883a86,5418c792e4b0e7b8127bed99,569ec4a69033603f7da32c93,5419e246e4b099def9b5561e,5a299b332c7d3a1a640cb402',
-				'fr' => '56967a859033603f7da30858,56967952c69791436155e60a,56cb9c9d90336008e9e9e3dc,569676ea9033603f7da3083d,5a3a66f52c7d3a1943676524',
-			],
-			'sitemap_preload'        => [
-				'en' => '541780fde4b005ed2d11784c,5a71c8ab2c7d3a4a4198a9b3,55b282ede4b0b0593824f852',
-				'fr' => '5693d582c69791436155d645',
-			],
-			'preload_bot'            => [
-				'en' => '541780fde4b005ed2d11784c,55b282ede4b0b0593824f852,559113eae4b027e1978eba11',
-				'fr' => '5693d582c69791436155d645,569433d1c69791436155d99c',
-			],
-			'bot'                    => [
-				'en' => [
-					'id'  => '541780fde4b005ed2d11784c',
-					'url' => 'https://docs.wp-rocket.me/article/8-how-the-cache-is-preloaded/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-				'fr' => [
-					'id'  => '5693d582c69791436155d645',
-					'url' => 'https://fr.docs.wp-rocket.me/article/188-comment-est-pre-charge-le-cache/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-			],
-			'dns_prefetch'           => [
-				'en' => '541780fde4b005ed2d11784c',
-				'fr' => '5693d582c69791436155d645',
-			],
-			'never_cache'            => [
-				'en' => '5519ab03e4b061031402119f,559110d0e4b027e1978eba09,56b55ba49033600da1c0b687,553ac7bfe4b0eb143c62af44,587920b5c697915403a0e1f4,5569b671e4b027e1978e3c51',
-				'fr' => '56941c0cc69791436155d8ab,56943395c69791436155d99a,56cb9ba990336008e9e9e3d9,56942fc3c69791436155d987,5879230cc697915403a0e211,5697d2dc9033603f7da31041',
-			],
-			'always_purge_section'   => [
-				'en' => '555c7e9ee4b027e1978e17a,55151406e4b0610314020a3f,5632858890336002f86d903e,5792c0c1903360293603896b',
-				'fr' => '568f7df49033603f7da2ec72,5694194d9033603f7da2fb00,56951208c69791436155de2a,57a4a0c3c697910783242008',
-			],
-			'query_strings'          => [
-				'en' => '590a83610428634b4a32d52c',
-				'fr' => '597a04fd042863033a1b6da4',
-			],
-			'ecommerce'              => [
-				'en' => [
-					'id'  => '555c619ce4b027e1978e1767',
-					'url' => 'https://docs.wp-rocket.me/article/75-is-wp-rocket-compatible-with-e-commerce-plugins/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-				'fr' => [
-					'id'  => '568f8291c69791436155caea',
-					'url' => 'https://fr.docs.wp-rocket.me/article/176-compatibilite-extensions-e-commerce/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-			],
-			'cache_query_strings'    => [
-				'en' => [
-					'id'  => '590a83610428634b4a32d52c',
-					'url' => 'https://docs.wp-rocket.me/article/971-caching-query-strings/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-				'fr' => [
-					'id'  => '597a04fd042863033a1b6da4',
-					'url' => 'https://fr.docs.wp-rocket.me/article/1014-cache-query-strings/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-			],
-			'exclude_cache'          => [
-				'en' => [
-					'id'  => '5519ab03e4b061031402119f',
-					'url' => 'https://docs.wp-rocket.me/article/54-exclude-pages-from-the-cache/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-				'fr' => [
-					'id'  => '56941c0cc69791436155d8ab',
-					'url' => 'https://fr.docs.wp-rocket.me/article/196-exclure-pages-cache/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-			],
-			'always_purge'           => [
-				'en' => [
-					'id'  => '555c7e9ee4b027e1978e17a5',
-					'url' => 'https://docs.wp-rocket.me/article/78-how-often-is-the-cache-updated/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-				'fr' => [
-					'id'  => '568f7df49033603f7da2ec72',
-					'url' => 'https://fr.docs.wp-rocket.me/article/171-intervalle-cache/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-			],
-			'cleanup'                => [
-				'en' => '55dcaa28e4b01d7a6a9bd373,578cd762c6979160ca1441cd,5569d11ae4b01a224b427725',
-				'fr' => '5697cebbc69791436155ed5e,58b6e7a0dd8c8e56bfa819f5,5697cd85c69791436155ed50',
-			],
-			'slow_admin'             => [
-				'en' => [
-					'id'  => '55dcaa28e4b01d7a6a9bd373',
-					'url' => 'https://docs.wp-rocket.me/article/121-wp-admin-area-is-slow/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-				'fr' => [
-					'id'  => '5697cebbc69791436155ed5e',
-					'url' => 'https://fr.docs.wp-rocket.me/article/260-la-zone-d-administration-wp-est-lente/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-			],
-			'cdn_section'            => [
-				'en' => '54c7fa3de4b0512429885b5c,54205619e4b0e7b8127bf849,54a6d578e4b047ebb774a687,56b2b4459033603f7da37acf,566f749f9033603f7da28459,5434667fe4b0310ce5ee867a',
-				'fr' => '5696830b9033603f7da308ac,5696837e9033603f7da308ae,569685749033603f7da308c0,57a4961190336059d4edc9d8,5697d5f8c69791436155ed8e,569684d29033603f7da308b9',
-			],
-			'cdn'                    => [
-				'en' => [
-					'id'  => '54c7fa3de4b0512429885b5c',
-					'url' => 'https://docs.wp-rocket.me/article/42-using-wp-rocket-with-a-cdn/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-				'fr' => [
-					'id'  => '5696830b9033603f7da308ac',
-					'url' => 'https://fr.docs.wp-rocket.me/article/246-utiliser-wp-rocket-avec-un-cdn/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-			],
-			'exclude_cdn'            => [
-				'en' => [
-					'id'  => '5434667fe4b0310ce5ee867a',
-					'url' => 'https://docs.wp-rocket.me/article/24-resolving-issues-with-cdn-and-fonts-icons/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-				'fr' => [
-					'id'  => '569684d29033603f7da308b9',
-					'url' => 'https://fr.docs.wp-rocket.me/article/248-resoudre-des-problemes-avec-cdn-et-les-polices-icones/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-			],
-			'cloudflare_credentials' => [
-				'en' => '54205619e4b0e7b8127bf849',
-				'fr' => '5696837e9033603f7da308ae',
-			],
-			'cloudflare_settings'    => [
-				'en' => '54205619e4b0e7b8127bf849',
-				'fr' => '5696837e9033603f7da308ae',
-			],
-			'varnish'                => [
-				'en' => [
-					'id'  => '56f48132c6979115a34095bd',
-					'url' => 'https://docs.wp-rocket.me/article/493-using-varnish-with-wp-rocket/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-				'fr' => [
-					'id'  => '56fd2f789033601d6683e574',
-					'url' => 'https://fr.docs.wp-rocket.me/article/512-varnish-wp-rocket-2-7/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-			],
-			'google_tracking'        => [
-				'en' => [
-					'id'  => '5b4693220428630abc0bf97b',
-					'url' => 'https://docs.wp-rocket.me/article/1103-google-tracking-add-on/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-			],
-		];
-
-		return isset( $suggest[ $doc_id ][ $lang ] ) ? $suggest[ $doc_id ][ $lang ] : $suggest[ $doc_id ]['en'];
 	}
 }
