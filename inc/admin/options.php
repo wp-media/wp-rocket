@@ -1,4 +1,6 @@
 <?php
+use WP_Rocket\Logger;
+
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
