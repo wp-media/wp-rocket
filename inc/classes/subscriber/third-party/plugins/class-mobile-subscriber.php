@@ -8,7 +8,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 /**
  * Class that handles events related to plugins that add mobile themes.
  *
- * @since  3.1.5
+ * @since  3.2
  * @author Grégory Viguier
  */
 class Mobile_Subscriber implements Subscriber_Interface {
@@ -16,7 +16,7 @@ class Mobile_Subscriber implements Subscriber_Interface {
 	/**
 	 * Options to activate when a mobile plugin is active.
 	 *
-	 * @since  3.1.5
+	 * @since  3.2
 	 * @access protected
 	 * @author Grégory Viguier
 	 *
@@ -30,7 +30,7 @@ class Mobile_Subscriber implements Subscriber_Interface {
 	/**
 	 * Cache the value of self::is_mobile_plugin_active().
 	 *
-	 * @since  3.1.5
+	 * @since  3.2
 	 * @access protected
 	 * @author Grégory Viguier
 	 *
@@ -42,7 +42,7 @@ class Mobile_Subscriber implements Subscriber_Interface {
 	/**
 	 * Returns an array of events that this subscriber wants to listen to.
 	 *
-	 * @since  3.1.5
+	 * @since  3.2
 	 * @access public
 	 * @author Grégory Viguier
 	 *
@@ -95,7 +95,7 @@ class Mobile_Subscriber implements Subscriber_Interface {
 	 * Callback triggered after the option `active_plugins` is created.
 	 * This should normally never be triggered.
 	 *
-	 * @since  3.1.5
+	 * @since  3.2
 	 * @access public
 	 * @author Grégory Viguier
 	 *
@@ -109,7 +109,7 @@ class Mobile_Subscriber implements Subscriber_Interface {
 	/**
 	 * Callback triggered after the option `active_plugins` is updated.
 	 *
-	 * @since  3.1.5
+	 * @since  3.2
 	 * @access public
 	 * @author Grégory Viguier
 	 *
@@ -124,7 +124,7 @@ class Mobile_Subscriber implements Subscriber_Interface {
 	 * Callback triggered after the option `active_plugins` is deleted.
 	 * Very low probability to be triggered.
 	 *
-	 * @since  3.1.5
+	 * @since  3.2
 	 * @access public
 	 * @author Grégory Viguier
 	 */
@@ -136,7 +136,7 @@ class Mobile_Subscriber implements Subscriber_Interface {
 	 * Callback triggered after the option `active_sitewide_plugins` is created.
 	 * This should normally never be triggered.
 	 *
-	 * @since  3.1.5
+	 * @since  3.2
 	 * @access public
 	 * @author Grégory Viguier
 	 *
@@ -153,7 +153,7 @@ class Mobile_Subscriber implements Subscriber_Interface {
 	/**
 	 * Callback triggered after the option `active_sitewide_plugins` is updated.
 	 *
-	 * @since  3.1.5
+	 * @since  3.2
 	 * @access public
 	 * @author Grégory Viguier
 	 *
@@ -172,7 +172,7 @@ class Mobile_Subscriber implements Subscriber_Interface {
 	 * Callback triggered after the option `active_sitewide_plugins` is deleted.
 	 * Very low probability to be triggered.
 	 *
-	 * @since  3.1.5
+	 * @since  3.2
 	 * @access public
 	 * @author Grégory Viguier
 	 *
@@ -188,7 +188,7 @@ class Mobile_Subscriber implements Subscriber_Interface {
 	/**
 	 * Enable mobile caching when a mobile plugin is activated, or revert it back to its previous state when a mobile plugin is deactivated.
 	 *
-	 * @since  3.1.5
+	 * @since  3.2
 	 * @access public
 	 * @author Grégory Viguier
 	 *
@@ -208,7 +208,7 @@ class Mobile_Subscriber implements Subscriber_Interface {
 	/**
 	 * Forces the values for the mobile options if a mobile plugin is active.
 	 *
-	 * @since  3.1.5
+	 * @since  3.2
 	 * @access public
 	 * @author Grégory Viguier
 	 *
@@ -226,7 +226,7 @@ class Mobile_Subscriber implements Subscriber_Interface {
 	/**
 	 * Forces the value for a mobile option if a mobile plugin is active.
 	 *
-	 * @since  3.1.5
+	 * @since  3.2
 	 * @access public
 	 * @author Grégory Viguier
 	 *
@@ -248,7 +248,7 @@ class Mobile_Subscriber implements Subscriber_Interface {
 	/**
 	 * Update the config file and the advanced cache file.
 	 *
-	 * @since  3.1.5
+	 * @since  3.2
 	 * @access public
 	 * @author Grégory Viguier
 	 */
@@ -265,7 +265,7 @@ class Mobile_Subscriber implements Subscriber_Interface {
 	/**
 	 * Reset `is_mobile_plugin_active()` cache.
 	 *
-	 * @since  3.1.5
+	 * @since  3.2
 	 * @access public
 	 * @author Grégory Viguier
 	 */
@@ -277,7 +277,7 @@ class Mobile_Subscriber implements Subscriber_Interface {
 	/**
 	 * Get the concerned plugins.
 	 *
-	 * @since  3.1.5
+	 * @since  3.2
 	 * @access public
 	 * @author Grégory Viguier
 	 *
@@ -299,7 +299,7 @@ class Mobile_Subscriber implements Subscriber_Interface {
 	/**
 	 * Tell if a mobile plugin is active.
 	 *
-	 * @since  3.1.5
+	 * @since  3.2
 	 * @access public
 	 * @author Grégory Viguier
 	 *
