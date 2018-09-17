@@ -417,7 +417,6 @@ class Combine extends Abstract_JS_Optimization {
 			'jetpack_remote_comment',
 			'subscribe-field',
 			'contextly',
-			'wprRemoveCPCSS',
 			'_mmunch',
 			'gt_request_uri',
 			'doGTranslate',
