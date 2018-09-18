@@ -286,6 +286,7 @@ class Page implements Subscriber_Interface {
 		$whitelist = [
 			'do_beta'                     => 1,
 			'analytics_enabled'           => 1,
+			'debug_enabled'               => 1,
 			'varnish_auto_purge'          => 1,
 			'do_cloudflare'               => 1,
 			'cloudflare_devmode'          => 1,
@@ -591,12 +592,12 @@ class Page implements Subscriber_Interface {
 	 * @return void
 	 */
 	private function assets_section() {
-		$remove_qs_beacon  = $this->get_beacon_suggest( 'remove_query_strings', $this->locale );
-		$combine_beacon    = $this->get_beacon_suggest( 'combine', $this->locale );
-		$defer_beacon      = $this->get_beacon_suggest( 'defer', $this->locale );
-		$files_beacon      = $this->get_beacon_suggest( 'file_optimization', $this->locale );
-		$inline_js_beacon  = $this->get_beacon_suggest( 'exclude_inline_js', $this->locale );
-		$exclude_js_beacon = $this->get_beacon_suggest( 'exclude_js', $this->locale );
+		$remove_qs_beacon  = $this->beacon->get_suggest( 'remove_query_strings' );
+		$combine_beacon    = $this->beacon->get_suggest( 'combine' );
+		$defer_beacon      = $this->beacon->get_suggest( 'defer' );
+		$files_beacon      = $this->beacon->get_suggest( 'file_optimization' );
+		$inline_js_beacon  = $this->beacon->get_suggest( 'exclude_inline_js' );
+		$exclude_js_beacon = $this->beacon->get_suggest( 'exclude_js' );
 
 		$this->settings->add_page_section(
 			'file_optimization',
@@ -829,7 +830,7 @@ class Page implements Subscriber_Interface {
 					'label'             => __( 'Excluded JavaScript Files', 'rocket' ),
 					'description'       => __( 'Specify URLs of JavaScript files to be excluded from minification and concatenation (one per line).', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'helper'            => __( '<strong>Internal:</strong> The domain part of the URL will be stripped automatically. Use (.*).js wildcards to exclude all JS files located at a specific path.', 'rocket' ) . '<br>' . 
+					'helper'            => __( '<strong>Internal:</strong> The domain part of the URL will be stripped automatically. Use (.*).js wildcards to exclude all JS files located at a specific path.', 'rocket' ) . '<br>' .
 					sprintf( __( '<strong>3rd Party:</strong> Use URL full path, including domain name, to exclude external JS. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $exclude_js_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $exclude_js_beacon['id'] ) . '" rel="noopener noreferrer" target="_blank">', '</a>' ),
 					'container_class'   => [
 						'wpr-field--children',

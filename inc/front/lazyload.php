@@ -424,6 +424,11 @@ function rocket_lazyload_iframes( $html ) {
 			continue;
 		}
 
+		// Don't lazyload if iframe is google recaptcha fallback.
+		if ( strpos( $iframe[0], 'recaptcha/api/fallback' ) ) {
+			continue;
+		}
+
 		if ( get_rocket_option( 'lazyload_youtube' ) && false !== strpos( $iframe[1], 'youtube' ) ) {
 			$youtube_id = rocket_lazyload_get_youtube_id_from_url( $iframe[1] );
 
