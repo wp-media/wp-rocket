@@ -280,3 +280,73 @@ if ( ! function_exists( 'rocket_sitemap_preload_running' ) ) {
 		) );
 	}
 }
+
+if ( ! function_exists( 'run_rocket_bot_after_clean_post' ) ) {
+	/**
+	 * Actions to be done after the purge cache files of a post
+	 * By Default, this hook call the WP Rocket Bot (cache json)
+	 *
+	 * @deprecated 3.2
+	 * @since 1.3.0
+	 *
+	 * @param object $post The post object.
+	 * @param array  $purge_urls An array of URLs to clean.
+	 * @param string $lang The language to clean.
+	 */
+	function run_rocket_bot_after_clean_post( $post, $purge_urls, $lang ) {
+		_deprecated_function( __FUNCTION__, '3.2' );
+		// Run robot only if post is published.
+		if ( 'publish' !== $post->post_status ) {
+			return false;
+		}
+
+		// Add Homepage URL to $purge_urls for bot crawl.
+		array_push( $purge_urls, get_rocket_i18n_home_url( $lang ) );
+
+		// Add default WordPress feeds (posts & comments).
+		array_push( $purge_urls, get_feed_link() );
+		array_push( $purge_urls, get_feed_link( 'comments_' ) );
+
+		// Get the author page.
+		$purge_author = array( get_author_posts_url( $post->post_author ) );
+
+		// Get all dates archive page.
+		$purge_dates = get_rocket_post_dates_urls( $post->ID );
+
+		// Remove dates archives page and author page to preload cache.
+		$purge_urls = array_diff( $purge_urls, $purge_dates, $purge_author );
+
+		// Create json file and run WP Rocket Bot.
+		$json_encode_urls = '["' . implode( '","', array_filter( $purge_urls ) ) . '"]';
+		if ( rocket_put_content( WP_ROCKET_PATH . 'cache.json', $json_encode_urls ) ) {
+			global $do_rocket_bot_cache_json;
+			$do_rocket_bot_cache_json = true;
+		}
+	}
+}
+
+if ( ! function_exists( 'run_rocket_bot_after_clean_term' ) ) {
+	/**
+	 * Actions to be done after the purge cache files of a term
+	 * By Default, this hook call the WP Rocket Bot (cache json)
+	 *
+	 * @deprecated 3.2
+	 * @since 2.6.8
+	 *
+	 * @param object $post The post object.
+	 * @param array  $purge_urls An array of URLs to clean.
+	 * @param string $lang The language to clean.
+	 */
+	function run_rocket_bot_after_clean_term( $post, $purge_urls, $lang ) {
+		_deprecated_function( __FUNCTION__, '3.2' );
+		// Add Homepage URL to $purge_urls for bot crawl.
+		array_push( $purge_urls, get_rocket_i18n_home_url( $lang ) );
+
+		// Create json file and run WP Rocket Bot.
+		$json_encode_urls = '["' . implode( '","', array_filter( $purge_urls ) ) . '"]';
+		if ( rocket_put_content( WP_ROCKET_PATH . 'cache.json', $json_encode_urls ) ) {
+			global $do_rocket_bot_cache_json;
+			$do_rocket_bot_cache_json = true;
+		}
+	}
+}
