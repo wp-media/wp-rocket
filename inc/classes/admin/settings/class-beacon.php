@@ -320,6 +320,18 @@ class Beacon {
 					'url' => 'https://fr.docs.wp-rocket.me/article/1018-configuration-http-2/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
+			'exclude_inline_js'      => [
+				'en' => [
+					'id'  => '5b4879100428630abc0c0713',
+					'url' => 'https://docs.wp-rocket.me/article/1104-excluding-inline-js-from-combine/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
+			'exclude_js'             => [
+				'en' => [
+					'id'  => '54b9509de4b07997ea3f27c7',
+					'url' => 'https://docs.wp-rocket.me/article/39-excluding-external-js-from-concatenation/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
 			'defer'                  => [
 				'en' => [
 					'id'  => '5578cfbbe4b027e1978e6bb1',
