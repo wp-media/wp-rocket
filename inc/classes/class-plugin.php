@@ -101,6 +101,7 @@ class Plugin {
 			];
 		}
 
+		$subscribers[] = new Plugins\Mobile_Subscriber();
 		$subscribers[] = new Plugins\Ecommerce\WooCommerce_Subscriber();
 		$subscribers[] = new Plugins\Security\Sucuri_Subscriber();
 		$subscribers[] = new Subscriber\Google_Tracking_Cache_Busting_Subscriber( new Busting\Busting_Factory( WP_ROCKET_CACHE_BUSTING_PATH, WP_ROCKET_CACHE_BUSTING_URL ), $this->options );
