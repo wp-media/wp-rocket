@@ -42,7 +42,7 @@ function rocket_lazyload_script() {
 	echo '<script>(function(w, d){
 	var b = d.getElementsByTagName("body")[0];
 	var s = d.createElement("script"); s.async = true;
-	s.src = !("IntersectionObserver" in w) ? "' . get_rocket_cdn_url( WP_ROCKET_FRONT_JS_URL, array( 'all', 'css_and_js', 'js' ) ) . 'lazyload-8.12' . $suffix . '.js" : "' . get_rocket_cdn_url( WP_ROCKET_FRONT_JS_URL, array( 'all', 'css_and_js', 'js' ) ) . 'lazyload-10.12' . $suffix . '.js";
+	s.src = !("IntersectionObserver" in w) ? "' . get_rocket_cdn_url( WP_ROCKET_FRONT_JS_URL, array( 'all', 'css_and_js', 'js' ) ) . 'lazyload-8.15.2' . $suffix . '.js" : "' . get_rocket_cdn_url( WP_ROCKET_FRONT_JS_URL, array( 'all', 'css_and_js', 'js' ) ) . 'lazyload-10.17' . $suffix . '.js";
 	w.lazyLoadOptions = {
 		elements_selector: "' . esc_attr( implode( ',', $elements ) ) . '",
 		data_src: "lazy-src",
