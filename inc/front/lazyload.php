@@ -42,7 +42,7 @@ function rocket_lazyload_script() {
 	echo '<script>(function(w, d){
 	var b = d.getElementsByTagName("body")[0];
 	var s = d.createElement("script"); s.async = true;
-	s.src = !("IntersectionObserver" in w) ? "' . get_rocket_cdn_url( WP_ROCKET_FRONT_JS_URL, array( 'all', 'css_and_js', 'js' ) ) . 'lazyload-8.12' . $suffix . '.js" : "' . get_rocket_cdn_url( WP_ROCKET_FRONT_JS_URL, array( 'all', 'css_and_js', 'js' ) ) . 'lazyload-10.12' . $suffix . '.js";
+	s.src = !("IntersectionObserver" in w) ? "' . get_rocket_cdn_url( WP_ROCKET_FRONT_JS_URL, array( 'all', 'css_and_js', 'js' ) ) . 'lazyload-8.15.2' . $suffix . '.js" : "' . get_rocket_cdn_url( WP_ROCKET_FRONT_JS_URL, array( 'all', 'css_and_js', 'js' ) ) . 'lazyload-10.17' . $suffix . '.js";
 	w.lazyLoadOptions = {
 		elements_selector: "' . esc_attr( implode( ',', $elements ) ) . '",
 		data_src: "lazy-src",
@@ -269,6 +269,48 @@ function rocket_is_excluded_lazyload( $string, $excluded_values ) {
 
 	return false;
 }
+
+/**
+ * Applies lazyload on images displayed using wp_get_attachment_image()
+ *
+ * @since 3.2
+ * @author Remy Perona
+ *
+ * @param array $attr Attributes for the image markup.
+ * @return array
+ */
+function rocket_lazyload_get_attachment_image( $attr ) {
+	// Don't LazyLoad if the thumbnail is in admin, a feed, REST API or a post preview.
+	if ( ! get_rocket_option( 'lazyload' ) || is_admin() || is_feed() || is_preview() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) || empty( $attr['src'] ) || ( defined( 'DONOTLAZYLOAD' ) && DONOTLAZYLOAD ) || wp_script_is( 'twentytwenty-twentytwenty', 'enqueued' ) ) {
+		return $attr;
+	}
+
+	/**
+	 * Filters the application of the lazyload
+	 *
+	 * @param bool $do_rocket_lazyload True to apply, false to prevent.
+	 */
+	if ( ! apply_filters( 'do_rocket_lazyload', true ) ) {
+		return $attr;
+	}
+
+	$attr['data-lazy-src'] = $attr['src'];
+	// this filter is documented in inc/front/lazyload.php.
+	$attr['src'] = apply_filters( 'rocket_lazyload_placeholder', 'data:image/gif;base64,R0lGODdhAQABAPAAAP///wAAACwAAAAAAQABAEACAkQBADs=' );
+
+	if ( isset( $attr['srcset'] ) ) {
+		$attr['data-lazy-srcset'] = $attr['srcset'];
+		unset( $attr['srcset'] );
+	}
+
+	if ( isset( $attr['sizes'] ) ) {
+		$attr['data-lazy-sizes'] = $attr['sizes'];
+		unset( $attr['sizes'] );
+	}
+
+	return $attr;
+}
+add_filter( 'wp_get_attachment_image_attributes', 'rocket_lazyload_get_attachment_image', 11 );
 
 /**
  * Replace WordPress smilies by Lazy Load
