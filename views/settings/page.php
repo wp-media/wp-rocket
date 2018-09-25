@@ -62,10 +62,25 @@ settings_errors( $data['slug'] ); ?>
 		</aside>
 	</div>
 
-	<div class="wpr-Popin">
+	<div class="wpr-Popin wpr-Popin-Beta">
+		<div class="wpr-Popin-header">
+			<h2 class="wpr-title1"><?php esc_html_e( 'Rocket Tester', 'rocket' ); ?></h2>
+			<button class="wpr-Popin-close wpr-Popin-Beta-close wpr-icon-close"></button>
+		</div>
+		<div class="wpr-Popin-content">
+			<p><?php esc_html_e( 'Below is a detailed view of all data WP Rocket will collect <strong>if granted permission.</strong>', 'rocket' ); ?></p>
+			<div class="wpr-Popin-flex">
+				<p><?php esc_html_e( 'WP Rocket will never transmit any domain names or email addresses (except for license validation), IP addresses, or third-party API keys.', 'rocket' ); ?></p>
+				<div>
+					<button class="wpr-button wpr-button--small wpr-button--icon wpr-icon-check wpr-button--blue"><?php esc_html_e( 'Be a Rocket Tester', 'rocket' ); ?></button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="wpr-Popin wpr-Popin-Analytics">
 		<div class="wpr-Popin-header">
 			<h2 class="wpr-title1"><?php _e( 'Rocket Analytics', 'rocket' ); ?></h2>
-			<button class="wpr-Popin-close wpr-icon-close"></button>
+			<button class="wpr-Popin-close wpr-Popin-Analytics-close wpr-icon-close"></button>
 		</div>
 		<div class="wpr-Popin-content">
 			<p><?php _e( 'Below is a detailed view of all data WP Rocket will collect <strong>if granted permission.</strong>', 'rocket' ); ?></p>
