@@ -492,6 +492,12 @@ class Beacon {
 					'url' => 'https://docs.wp-rocket.me/article/1103-google-tracking-add-on/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
+			'facebook_tracking'      => [
+				'en' => [
+					'id'  => '',
+					'url' => 'https://docs.wp-rocket.me/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
 		];
 
 		return isset( $suggest[ $doc_id ][ $this->locale ] ) ? $suggest[ $doc_id ][ $this->locale ] : $suggest[ $doc_id ]['en'];

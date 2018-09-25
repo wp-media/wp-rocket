@@ -291,6 +291,7 @@ class Page implements Subscriber_Interface {
 			'cloudflare_protocol_rewrite' => 1,
 			'cloudflare_auto_settings'    => 1,
 			'google_analytics_cache'      => 1,
+			'facebook_pixel_cache'        => 1,
 		];
 
 		if ( ! isset( $_POST['option']['name'] ) || ! isset( $whitelist[ $_POST['option']['name'] ] ) ) {
@@ -1550,6 +1551,29 @@ class Page implements Subscriber_Interface {
 					'title'             => __( 'Improve browser caching for Google Analytics', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 					'description'       => sprintf( __( 'WP Rocket will host these Google scripts locally on your server to help satisfy the PageSpeed recommendation for <em>Leverage browser caching</em>.<br>%1$sLearn more%2$s', 'rocket' ), '<a href="' . esc_url( $ga_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $ga_beacon['id'] ) . '" target="_blank">', '</a>' ),
+					'section'           => 'one_click',
+					'page'              => 'addons',
+					'default'           => 0,
+					'sanitize_callback' => 'sanitize_checkbox',
+				],
+			]
+		);
+
+		$fb_beacon = $this->beacon->get_suggest( 'facebook_tracking' );
+
+		$this->settings->add_settings_fields(
+			[
+				'facebook_pixel_cache' => [
+					'type'              => 'one_click_addon',
+					'label'             => __( 'Facebook Pixel', 'rocket' ),
+					'logo'              => [
+						'url'    => WP_ROCKET_ASSETS_IMG_URL . 'logo-facebook.svg',
+						'width'  => 114,
+						'height' => 114,
+					],
+					'title'             => __( 'Improve browser caching for Facebook Pixel', 'rocket' ),
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'description'       => sprintf( __( 'WP Rocket will host these Facebook Pixels locally on your server to help satisfy the PageSpeed recommendation for <em>Leverage browser caching</em>.<br>%1$sLearn more%2$s', 'rocket' ), '<a href="' . esc_url( $fb_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $fb_beacon['id'] ) . '" target="_blank">', '</a>' ),
 					'section'           => 'one_click',
 					'page'              => 'addons',
 					'default'           => 0,
