@@ -24,15 +24,9 @@
 		"issues": "https://github.com/wp-media/wp-rocket/issues",
 		"source": "https://github.com/wp-media/wp-rocket"
 	},
-	"repositories": [
-		{
-			"type": "vcs",
-			"url": "https://github.com/tabrisrp/wp-background-processing"
-		}
-	],
     "require": {
 		"php": ">=5.4.0",
-		"a5hleyrich/wp-background-processing": "1.1 as 1.0",
+		"tabrisrp/wp-background-processing": "1.1",
 		"composer/installers": "~1.0",
 		"jamesryanbell/cloudflare": "^1.11",
 		"matthiasmullie/minify": "1.3.*",
