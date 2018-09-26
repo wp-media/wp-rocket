@@ -7,7 +7,7 @@ if ( defined( 'WP_ROCKET_VERSION' ) ) {
 define( 'WP_ROCKET_VERSION', '2.11.3' );
 define( 'WP_ROCKET_PRIVATE_KEY', FALSE );
 define( 'WP_ROCKET_SLUG', 'wp_rocket_settings' );
-define( 'WP_ROCKET_WEB_MAIN', FALSE );
+define( 'WP_ROCKET_WEB_MAIN' ) or define( 'WP_ROCKET_WEB_MAIN', FALSE );
 define( 'WP_ROCKET_WEB_API', WP_ROCKET_WEB_MAIN . 'api/wp-rocket/' );
 define( 'WP_ROCKET_WEB_CHECK', WP_ROCKET_WEB_MAIN . 'check_update.php' );
 define( 'WP_ROCKET_WEB_VALID', WP_ROCKET_WEB_MAIN . 'valid_key.php' );
