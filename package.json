@@ -11,7 +11,7 @@
   "devDependencies": {
     "babel-core": "^6.26.3",
     "babel-preset-env": "^1.7.0",
-    "babelify": "latest",
+    "babelify": "^8",
     "browserify": "^16.2.2",
     "gulp": "latest",
     "gulp-concat": "latest",
