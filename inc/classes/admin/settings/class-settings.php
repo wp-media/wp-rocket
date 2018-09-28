@@ -443,8 +443,9 @@ class Settings {
 			'disable'            => 1,
 		];
 		$input['control_heartbeat']           = ! empty( $input['control_heartbeat'] ) ? 1 : 0;
-		$input['heartbeat_frontend_behavior'] = isset( $input['heartbeat_frontend_behavior'], $choices[ $input['heartbeat_frontend_behavior'] ] ) ? $input['heartbeat_frontend_behavior'] : '';
-		$input['heartbeat_backend_behavior']  = isset( $input['heartbeat_backend_behavior'], $choices[ $input['heartbeat_backend_behavior'] ] ) ? $input['heartbeat_backend_behavior'] : '';
+		$input['heartbeat_site_behavior'] = isset( $input['heartbeat_site_behavior'], $choices[ $input['heartbeat_site_behavior'] ] ) ? $input['heartbeat_site_behavior'] : '';
+		$input['heartbeat_admin_behavior']  = isset( $input['heartbeat_admin_behavior'], $choices[ $input['heartbeat_admin_behavior'] ] ) ? $input['heartbeat_admin_behavior'] : '';
+		$input['heartbeat_editor_behavior']   = isset( $input['heartbeat_editor_behavior'], $choices[ $input['heartbeat_editor_behavior'] ] ) ? $input['heartbeat_editor_behavior'] : '';
 
 		// Option : CDN.
 		$input['cdn'] = ! empty( $input['cdn'] ) ? 1 : 0;

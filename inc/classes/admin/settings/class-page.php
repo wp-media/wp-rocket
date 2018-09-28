@@ -293,8 +293,9 @@ class Page implements Subscriber_Interface {
 			'cloudflare_auto_settings'    => 1,
 			'google_analytics_cache'      => 1,
 			'control_heartbeat'           => 1,
-			'heartbeat_frontend_behavior' => 1,
-			'heartbeat_backend_behavior'  => 1,
+			'heartbeat_site_behavior'     => 1,
+			'heartbeat_admin_behavior'    => 1,
+			'heartbeat_editor_behavior'   => 1,
 		];
 
 		if ( ! isset( $_POST['option']['name'] ) || ! isset( $whitelist[ $_POST['option']['name'] ] ) ) {
@@ -1775,52 +1776,43 @@ class Page implements Subscriber_Interface {
 
 		$this->settings->add_settings_sections(
 			[
-				'heartbeat_backend' => [
+				'heartbeat_settings' => [
 					'type'  => 'fields_container',
-					'title' => __( 'Heartbeat settings for backend', 'rocket' ),
+					'title' => __( 'Heartbeat settings', 'rocket' ),
 					'page'  => 'heartbeat',
 					'help'  => [
 						'id'  => $this->beacon->get_suggest( 'heartbeat_settings' ),
 						'url' => '',
 					],
 				],
-				'heartbeat_frontend' => [
-					'type'  => 'fields_container',
-					'title' => __( 'Heartbeat settings for frontend', 'rocket' ),
-					'page'  => 'heartbeat',
-				],
 			]
 		);
 
+		$fields_default = [
+			'type'              => 'select',
+			'default'           => '',
+			'section'           => 'heartbeat_settings',
+			'page'              => 'heartbeat',
+			'sanitize_callback' => 'sanitize_text_field',
+			'choices'           => [
+				''                   => __( 'Do not limit', 'rocket' ),
+				'reduce_periodicity' => __( 'Reduce activity', 'rocket' ),
+				'disable'            => __( 'Disable', 'rocket' ),
+			],
+		];
+
 		$this->settings->add_settings_fields(
 			[
-				'heartbeat_backend_behavior'  => [
-					'type'              => 'select',
-					'label'             => __( 'Behavior', 'rocket' ),
-					'description'       => __( 'Reducing activity with change Heartbeat periodicity from one hit each minute to one hit every 2 minutes.', 'rocket' ) . '<br/>' . __( 'Disabling entirely Heatbeat may break plugins and themes using this API.', 'rocket' ),
-					'default'           => '',
-					'section'           => 'heartbeat_backend',
-					'page'              => 'heartbeat',
-					'sanitize_callback' => 'sanitize_text_field',
-					'choices'           => [
-						''                   => __( 'Do not limit', 'rocket' ),
-						'reduce_periodicity' => __( 'Reduce activity', 'rocket' ),
-						'disable'            => __( 'Disable', 'rocket' ),
-					],
-				],
-				'heartbeat_frontend_behavior' => [
-					'type'              => 'select',
-					'label'             => __( 'Behavior', 'rocket' ),
-					'default'           => '',
-					'section'           => 'heartbeat_frontend',
-					'page'              => 'heartbeat',
-					'sanitize_callback' => 'sanitize_text_field',
-					'choices'           => [
-						''                   => __( 'Do not limit', 'rocket' ),
-						'reduce_periodicity' => __( 'Reduce activity', 'rocket' ),
-						'disable'            => __( 'Disable', 'rocket' ),
-					],
-				],
+				'heartbeat_admin_behavior'  => array_merge( $fields_default, [
+					'label'       => __( 'Behavior in backend', 'rocket' ),
+					'description' => __( 'Reducing activity with change Heartbeat periodicity from one hit each minute to one hit every 2 minutes.', 'rocket' ) . '<br/>' . __( 'Disabling entirely Heatbeat may break plugins and themes using this API.', 'rocket' ),
+				] ),
+				'heartbeat_editor_behavior' => array_merge( $fields_default, [
+					'label' => __( 'Behavior in post editor', 'rocket' ),
+				] ),
+				'heartbeat_site_behavior'   => array_merge( $fields_default, [
+					'label' => __( 'Behavior in frontend', 'rocket' ),
+				] ),
 			]
 		);
 	}
