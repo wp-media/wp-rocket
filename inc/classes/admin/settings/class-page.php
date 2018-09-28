@@ -836,7 +836,7 @@ class Page implements Subscriber_Interface {
 					'description'       => __( 'Specify URLs of JavaScript files to be excluded from minification and concatenation (one per line).', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 					'helper'            => __( '<strong>Internal:</strong> The domain part of the URL will be stripped automatically. Use (.*).js wildcards to exclude all JS files located at a specific path.', 'rocket' ) . '<br>' .
-					sprintf( __( '<strong>3rd Party:</strong> Use URL full path, including domain name, to exclude external JS. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $exclude_js_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $exclude_js_beacon['id'] ) . '" rel="noopener noreferrer" target="_blank">', '</a>' ),
+					sprintf( __( '<strong>3rd Party:</strong> Use either the full URL path or only the domain name, to exclude external JS. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $exclude_js_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $exclude_js_beacon['id'] ) . '" rel="noopener noreferrer" target="_blank">', '</a>' ),
 					'container_class'   => [
 						'wpr-field--children',
 					],

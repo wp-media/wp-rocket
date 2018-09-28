@@ -32,9 +32,10 @@ $(document).ready(function(){
 		$(this).parent().next( '.rocket-analytics-data-container' ).toggle();
 	} );
 
-	/**
-	 * Hide / show Rocket addon tabs.
-	 */
+	/***
+	* Hide / show Rocket addon tabs.
+	***/
+
 	$( '.wpr-toggle-button' ).each( function() {
 		var $button   = $( this );
 		var $checkbox = $button.closest( '.wpr-fieldsContainer-fieldset' ).find( '.wpr-radio :checkbox' );
@@ -59,42 +60,45 @@ $(document).ready(function(){
 	* Show popin analytics
 	***/
 
-	var $wprPopin = $('.wpr-Popin'),
+	var $wprAnalyticsPopin = $('.wpr-Popin-Analytics'),
 		$wprPopinOverlay = $('.wpr-Popin-overlay'),
-		$wprClosePopin = $('.wpr-Popin-close'),
-		$wprPopinButton = $('.wpr-Popin .wpr-button'),
-		$wprOpenPopin = $('.wpr-js-popin')
+		$wprAnalyticsClosePopin = $('.wpr-Popin-Analytics-close'),
+		$wprAnalyticsPopinButton = $('.wpr-Popin-Analytics .wpr-button'),
+		$wprAnalyticsOpenPopin = $('.wpr-js-popin')
 	;
 
-	$wprOpenPopin.click(function() {
+	$wprAnalyticsOpenPopin.click(function(e) {
+		e.preventDefault();
 		wprOpenAnalytics();
 		return false;
 	});
 
-	$wprClosePopin.click(function() {
+	$wprAnalyticsClosePopin.click(function(e) {
+		e.preventDefault();
 		wprCloseAnalytics();
 		return false;
 	});
 
-	$wprPopinButton.click(function() {
+	$wprAnalyticsPopinButton.click(function(e) {
+		e.preventDefault();
 		wprActivateAnalytics();
 		return false;
 	});
 
 	function wprOpenAnalytics(){
 		var vTL = new TimelineLite()
-		  .set($wprPopin, {'display':'block'})
+		  .set($wprAnalyticsPopin, {'display':'block'})
 		  .set($wprPopinOverlay, {'display':'block'})
 		  .fromTo($wprPopinOverlay, 0.6, {autoAlpha:0},{autoAlpha:1, ease:Power4.easeOut})
-		  .fromTo($wprPopin, 0.6, {autoAlpha:0, marginTop: -24}, {autoAlpha:1, marginTop:0, ease:Power4.easeOut}, '=-.5')
+		  .fromTo($wprAnalyticsPopin, 0.6, {autoAlpha:0, marginTop: -24}, {autoAlpha:1, marginTop:0, ease:Power4.easeOut}, '=-.5')
 		;
 	}
 
 	function wprCloseAnalytics(){
 		var vTL = new TimelineLite()
-		  .fromTo($wprPopin, 0.6, {autoAlpha:1, marginTop: 0}, {autoAlpha:0, marginTop:-24, ease:Power4.easeOut})
+		  .fromTo($wprAnalyticsPopin, 0.6, {autoAlpha:1, marginTop: 0}, {autoAlpha:0, marginTop:-24, ease:Power4.easeOut})
 		  .fromTo($wprPopinOverlay, 0.6, {autoAlpha:1},{autoAlpha:0, ease:Power4.easeOut}, '=-.5')
-		  .set($wprPopin, {'display':'none'})
+		  .set($wprAnalyticsPopin, {'display':'none'})
 		  .set($wprPopinOverlay, {'display':'none'})
 		;
 	}
@@ -105,8 +109,55 @@ $(document).ready(function(){
 		$('#analytics_enabled').trigger('change');
 	}
 
+	/***
+	* Show popin beta test
+	***/
 
+	var $wprBetaPopin = $('.wpr-Popin-Beta'),
+	$wprBetaClosePopin = $('.wpr-Popin-Beta-close'),
+	$wprBetaPopinButton = $('.wpr-Popin-Beta .wpr-button'),
+	$wprBetaOpenPopin = $('#do_beta');
 
+	$wprBetaOpenPopin.change(function(e) {
+		if ($wprBetaOpenPopin.is(':checked')) {
+			wprOpenBeta();
+			return false;
+		}
+	});
+
+	$wprBetaClosePopin.click(function() {
+		wprDeactivateBeta();
+		return false;
+	});
+
+	$wprBetaPopinButton.click(function() {
+		wprCloseBeta();
+		return false;
+	});
+
+	function wprOpenBeta(){
+		var vTL = new TimelineLite()
+			.set($wprBetaPopin, {'display':'block'})
+			.set($wprPopinOverlay, {'display':'block'})
+			.fromTo($wprPopinOverlay, 0.6, {autoAlpha:0},{autoAlpha:1, ease:Power4.easeOut})
+			.fromTo($wprBetaPopin, 0.6, {autoAlpha:0, marginTop: -24}, {autoAlpha:1, marginTop:0, ease:Power4.easeOut}, '=-.5')
+		;
+	}
+
+	function wprCloseBeta(){
+		var vTL = new TimelineLite()
+			.fromTo($wprBetaPopin, 0.6, {autoAlpha:1, marginTop: 0}, {autoAlpha:0, marginTop:-24, ease:Power4.easeOut})
+			.fromTo($wprPopinOverlay, 0.6, {autoAlpha:1},{autoAlpha:0, ease:Power4.easeOut}, '=-.5')
+			.set($wprBetaPopin, {'display':'none'})
+			.set($wprPopinOverlay, {'display':'none'})
+		;
+	}
+
+	function wprDeactivateBeta(){
+		wprCloseBeta();
+		$('#do_beta').attr('checked', false);
+		$('#do_beta').trigger('change');
+	}
 
 	/***
 	* Sidebar on/off
@@ -156,6 +207,5 @@ $(document).ready(function(){
 		  .set($adblock, {'display':'none'})
 		;
 	}
-
 
 });
