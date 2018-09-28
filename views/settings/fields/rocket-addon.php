@@ -39,7 +39,7 @@ $settings_page = ! empty( $data['settings_page'] ) ? $data['settings_page'] : ''
 	<div class="wpr-field wpr-addon">
 		<div class="wpr-flex">
 			<div class="wpr-addon-logo">
-				<img src="<?php echo esc_url( $data['logo']['url'] ); ?>" width="<?php echo esc_attr( $data['logo']['width'] ); ?>>" height="<?php echo esc_attr( $data['logo']['height'] ); ?>>" alt="">
+				<img src="<?php echo esc_url( $data['logo']['url'] ); ?>" width="<?php echo esc_attr( $data['logo']['width'] ); ?>" height="<?php echo esc_attr( $data['logo']['height'] ); ?>" alt="">
 			</div>
 			<div class="wpr-addon-text">
 				<?php if ( ! empty( $data['title'] ) ) : ?>
