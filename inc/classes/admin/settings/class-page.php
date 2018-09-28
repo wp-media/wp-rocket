@@ -156,6 +156,7 @@ class Page implements Subscriber_Interface {
 			$this->cdn_section();
 			$this->addons_section();
 			$this->cloudflare_section();
+			$this->heartbeat_section();
 		} else {
 			$this->license_section();
 		}
@@ -291,6 +292,9 @@ class Page implements Subscriber_Interface {
 			'cloudflare_protocol_rewrite' => 1,
 			'cloudflare_auto_settings'    => 1,
 			'google_analytics_cache'      => 1,
+			'control_heartbeat'           => 1,
+			'heartbeat_frontend_behavior' => 1,
+			'heartbeat_backend_behavior'  => 1,
 		];
 
 		if ( ! isset( $_POST['option']['name'] ) || ! isset( $whitelist[ $_POST['option']['name'] ] ) ) {
@@ -1612,8 +1616,30 @@ class Page implements Subscriber_Interface {
 					'description'       => __( 'Provide your account email, global API key, and domain to use options such as clearing the Cloudflare cache and enabling optimal settings with WP Rocket.', 'rocket' ),
 					'section'           => 'addons',
 					'page'              => 'addons',
+					'settings_page'     => 'cloudflare',
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_textarea',
+				],
+			]
+		);
+
+		$this->settings->add_settings_fields(
+			[
+				'control_heartbeat' => [
+					'type'              => 'rocket_addon',
+					'label'             => __( 'Heartbeat', 'rocket' ),
+					'logo'              => [
+						'url'    => WP_ROCKET_ASSETS_IMG_URL . 'logo-heartbeat.svg',
+						'width'  => 153,
+						'height' => 139,
+					],
+					'title'             => __( 'Reduce or disable Heartbeat activity.', 'rocket' ),
+					'description'       => __( 'Disabling or reducing Heartbeat activity helps you save some of your server&rsquo;s ressources.', 'rocket' ),
+					'section'           => 'addons',
+					'page'              => 'addons',
+					'settings_page'     => 'heartbeat',
+					'default'           => 0,
+					'sanitize_callback' => 'sanitize_checkbox',
 				],
 			]
 		);
@@ -1723,6 +1749,77 @@ class Page implements Subscriber_Interface {
 					'section'           => 'cloudflare_settings',
 					'page'              => 'cloudflare',
 					'sanitize_callback' => 'sanitize_checkbox',
+				],
+			]
+		);
+	}
+
+	/**
+	 * Registers Heartbeat section.
+	 *
+	 * @since  3.2
+	 * @access public
+	 * @author Grégory Viguier
+	 */
+	private function heartbeat_section() {
+		$this->settings->add_page_section(
+			'heartbeat',
+			[
+				'title'            => __( 'Heartbeat', 'rocket' ),
+				'menu_description' => '',
+				'class'            => [
+					'wpr-heartbeatToggle',
+				],
+			]
+		);
+
+		$this->settings->add_settings_sections(
+			[
+				'heartbeat_backend' => [
+					'type'  => 'fields_container',
+					'title' => __( 'Heartbeat settings for backend', 'rocket' ),
+					'page'  => 'heartbeat',
+					'help'  => [
+						'id'  => $this->beacon->get_suggest( 'heartbeat_settings' ),
+						'url' => '',
+					],
+				],
+				'heartbeat_frontend' => [
+					'type'  => 'fields_container',
+					'title' => __( 'Heartbeat settings for frontend', 'rocket' ),
+					'page'  => 'heartbeat',
+				],
+			]
+		);
+
+		$this->settings->add_settings_fields(
+			[
+				'heartbeat_backend_behavior'  => [
+					'type'              => 'select',
+					'label'             => __( 'Behavior', 'rocket' ),
+					'description'       => __( 'Reducing activity with change Heartbeat periodicity from one hit each minute to one hit every 2 minutes.', 'rocket' ) . '<br/>' . __( 'Disabling entirely Heatbeat may break plugins and themes using this API.', 'rocket' ),
+					'default'           => '',
+					'section'           => 'heartbeat_backend',
+					'page'              => 'heartbeat',
+					'sanitize_callback' => 'sanitize_text_field',
+					'choices'           => [
+						''                   => __( 'Do not limit', 'rocket' ),
+						'reduce_periodicity' => __( 'Reduce activity', 'rocket' ),
+						'disable'            => __( 'Disable', 'rocket' ),
+					],
+				],
+				'heartbeat_frontend_behavior' => [
+					'type'              => 'select',
+					'label'             => __( 'Behavior', 'rocket' ),
+					'default'           => '',
+					'section'           => 'heartbeat_frontend',
+					'page'              => 'heartbeat',
+					'sanitize_callback' => 'sanitize_text_field',
+					'choices'           => [
+						''                   => __( 'Do not limit', 'rocket' ),
+						'reduce_periodicity' => __( 'Reduce activity', 'rocket' ),
+						'disable'            => __( 'Disable', 'rocket' ),
+					],
 				],
 			]
 		);
