@@ -1661,7 +1661,8 @@ class Page implements Subscriber_Interface {
 				'title'            => __( 'Cloudflare', 'rocket' ),
 				'menu_description' => '',
 				'class'            => [
-					'wpr-cloudflareToggle',
+					'wpr-subMenuItem',
+					'wpr-addonSubMenuItem',
 				],
 			]
 		);
@@ -1769,7 +1770,8 @@ class Page implements Subscriber_Interface {
 				'title'            => __( 'Heartbeat', 'rocket' ),
 				'menu_description' => '',
 				'class'            => [
-					'wpr-heartbeatToggle',
+					'wpr-subMenuItem',
+					'wpr-addonSubMenuItem',
 				],
 			]
 		);
