@@ -486,6 +486,10 @@ class Beacon {
 					'url' => 'https://fr.docs.wp-rocket.me/article/512-varnish-wp-rocket-2-7/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
+			'heartbeat_settings'    => [
+				'en' => '??????????????????',
+				'fr' => '??????????????????',
+			],
 			'google_tracking'        => [
 				'en' => [
 					'id'  => '5b4693220428630abc0bf97b',
