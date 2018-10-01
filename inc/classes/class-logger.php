@@ -186,7 +186,7 @@ class Logger {
 		 *     - Keep default formats, allow line breaks in messages, hide empty contexts and extras.
 		 *     - `$formatter = new LineFormatter( null, null, true, true );`.
 		 */
-		$handler   = new StreamHandler( static::get_log_file_path(), $log_level );
+		$handler   = new Secure_Stream_Logger( static::get_log_file_path(), $log_level );
 		$formatter = new HtmlFormatter();
 
 		$handler->setFormatter( $formatter );
@@ -352,15 +352,15 @@ class Logger {
 	}
 
 	/**
-	 * Get the formatter used for the log file.
+	 * Get the handler used for the log file.
 	 *
-	 * @since  3.1.4
+	 * @since  3.2
 	 * @access public
 	 * @author Grégory Viguier
 	 *
 	 * @return object|bool The formatter object on success. False on failure.
 	 */
-	public static function get_stream_formatter() {
+	public static function get_stream_handler() {
 		$handlers = static::get_logger()->getHandlers();
 
 		if ( ! $handlers ) {
@@ -373,6 +373,25 @@ class Logger {
 				break;
 			}
 		}
+
+		if ( empty( $handler ) ) {
+			return false;
+		}
+
+		return $handler;
+	}
+
+	/**
+	 * Get the formatter used for the log file.
+	 *
+	 * @since  3.1.4
+	 * @access public
+	 * @author Grégory Viguier
+	 *
+	 * @return object|bool The formatter object on success. False on failure.
+	 */
+	public static function get_stream_formatter() {
+		$handler = static::get_stream_handler();
 
 		if ( empty( $handler ) ) {
 			return false;
