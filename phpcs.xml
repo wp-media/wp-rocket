@@ -40,4 +40,19 @@
             <property name="strict_class_file_names" value="false" />
         </properties>
     </rule>
+	<rule ref="WordPress.PHP.DevelopmentFunctions.error_log_set_error_handler">
+		<exclude-pattern>inc/classes/class-secure-stream-logger.php</exclude-pattern>
+	</rule>
+	<rule ref="WordPress.WP.AlternativeFunctions.file_system_read_fopen">
+		<exclude-pattern>inc/classes/class-secure-stream-logger.php</exclude-pattern>
+	</rule>
+	<rule ref="WordPress.WP.AlternativeFunctions.file_system_read_fwrite">
+		<exclude-pattern>inc/classes/class-secure-stream-logger.php</exclude-pattern>
+	</rule>
+	<rule ref="WordPress.WP.AlternativeFunctions.file_system_read_fclose">
+		<exclude-pattern>inc/classes/class-secure-stream-logger.php</exclude-pattern>
+	</rule>
+	<rule ref="WordPress.PHP.NoSilencedErrors.Discouraged">
+		<exclude-pattern>inc/classes/class-secure-stream-logger.php</exclude-pattern>
+	</rule>
 </ruleset>
