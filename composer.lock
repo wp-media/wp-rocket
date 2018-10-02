@@ -4,8 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "16685a5fcd77e23c02c2b323e5c5b9c1",
-    "content-hash": "75c99f1d3c27d87f30ed6927c2be8847",
+    "content-hash": "98f17ced281a2de0aaa09fdb7fd3fca6",
     "packages": [
         {
             "name": "a5hleyrich/wp-background-processing",
@@ -43,7 +42,7 @@
             "support": {
                 "source": "https://github.com/Tabrisrp/wp-background-processing/tree/v1.1"
             },
-            "time": "2018-01-26 13:20:33"
+            "time": "2018-01-26T13:20:33+00:00"
         },
         {
             "name": "composer/installers",
@@ -163,7 +162,7 @@
                 "zend",
                 "zikula"
             ],
-            "time": "2018-08-27 06:10:37"
+            "time": "2018-08-27T06:10:37+00:00"
         },
         {
             "name": "jamesryanbell/cloudflare",
@@ -204,7 +203,7 @@
                 "api",
                 "cloudflare"
             ],
-            "time": "2017-08-04 19:01:02"
+            "time": "2017-08-04T19:01:02+00:00"
         },
         {
             "name": "matthiasmullie/minify",
@@ -264,7 +263,7 @@
                 "minifier",
                 "minify"
             ],
-            "time": "2018-04-18 08:50:35"
+            "time": "2018-04-18T08:50:35+00:00"
         },
         {
             "name": "matthiasmullie/path-converter",
@@ -313,7 +312,7 @@
                 "paths",
                 "relative"
             ],
-            "time": "2018-02-02 11:30:10"
+            "time": "2018-02-02T11:30:10+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -391,7 +390,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2017-06-19 01:22:40"
+            "time": "2017-06-19T01:22:40+00:00"
         },
         {
             "name": "psr/log",
@@ -438,7 +437,7 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2016-10-10 12:19:37"
+            "time": "2016-10-10T12:19:37+00:00"
         }
     ],
     "packages-dev": [
@@ -508,7 +507,7 @@
                 "stylecheck",
                 "tests"
             ],
-            "time": "2017-12-06 16:27:17"
+            "time": "2017-12-06T16:27:17+00:00"
         },
         {
             "name": "phpcompatibility/php-compatibility",
@@ -561,7 +560,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2018-07-17 13:42:26"
+            "time": "2018-07-17T13:42:26+00:00"
         },
         {
             "name": "phpcompatibility/phpcompatibility-wp",
@@ -607,7 +606,7 @@
                 "standards",
                 "wordpress"
             ],
-            "time": "2018-07-16 22:10:02"
+            "time": "2018-07-16T22:10:02+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
@@ -658,7 +657,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2018-09-23 23:08:17"
+            "time": "2018-09-23T23:08:17+00:00"
         },
         {
             "name": "wp-coding-standards/wpcs",
@@ -701,7 +700,7 @@
                 "standards",
                 "wordpress"
             ],
-            "time": "2018-09-10 17:04:05"
+            "time": "2018-09-10T17:04:05+00:00"
         }
     ],
     "aliases": [],
