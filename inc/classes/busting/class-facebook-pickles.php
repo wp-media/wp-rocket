@@ -21,7 +21,7 @@ class Facebook_Pickles extends Abstract_Busting {
 	/**
 	 * Flag to track the replacement.
 	 *
-	 * @var bool
+	 * @var    bool
 	 * @since  3.2
 	 * @access protected
 	 * @author Grégory Viguier
@@ -97,7 +97,7 @@ class Facebook_Pickles extends Abstract_Busting {
 		}
 
 		foreach ( $matches as list( $tag, $script ) ) {
-			if ( $script && preg_match( '@fbq\(["\']init["\'],@', $script ) ) {
+			if ( $script && preg_match( '@fbq\s*\(\s*["\']init["\']\s*,@', $script ) ) {
 				return $tag;
 			}
 		}
@@ -125,14 +125,16 @@ class Facebook_Pickles extends Abstract_Busting {
 	 * @access public
 	 * @author Grégory Viguier
 	 *
-	 * @param string $url URL to get the content from.
-	 * @return bool
+	 * @param  string $url URL to get the content from.
+	 * @return bool        True on success. False on failure.
 	 */
 	public function save( $url ) {
 		$locale = $this->get_locale_from_url( $url );
 		$path   = $this->get_busting_file_path( $locale );
 
 		if ( \rocket_direct_filesystem()->exists( $path ) ) {
+			// If a previous version is present, it is kept in place.
+			$events_content = null;
 			return true;
 		}
 
@@ -147,13 +149,13 @@ class Facebook_Pickles extends Abstract_Busting {
 	 * @author Grégory Viguier
 	 *
 	 * @param  string $url URL to get the content from.
-	 * @return bool
+	 * @return bool        True on success. False on failure.
 	 */
 	public function refresh_save( $url ) {
 		$content = $this->get_file_content( $url );
 
 		if ( ! $content ) {
-			// If a previous version is present, it is kept in place.
+			// Error, we couldn't fetch the file content.
 			return false;
 		}
 
