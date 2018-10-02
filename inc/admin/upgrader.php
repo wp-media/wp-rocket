@@ -323,5 +323,15 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 	if ( version_compare( $actual_version, '3.1.4', '<' ) ) {
 		rocket_generate_advanced_cache_file();
 	}
+
+	if ( version_compare( $actual_version, '3.2', '<' ) ) {
+		$options = get_option( WP_ROCKET_SLUG );
+
+		if ( 1 === (int) $options['automatic_preload'] ) {
+			$options['manual_preload'] = 1;
+		}
+
+		update_option( WP_ROCKET_SLUG, $options );
+	}
 }
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );
