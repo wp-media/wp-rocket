@@ -840,6 +840,9 @@ function rocket_notice_html( $args ) {
 		case 'clear_cache':
 			$args['action'] = '<a class="wp-core-ui button" href="' . wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=all' ), 'purge_cache_all' ) . '">' . __( 'Clear cache', 'rocket' ) . '</a>';
 			break;
+		case 'stop_preload':
+			$args['action'] = '<a class="wp-core-ui button" href="' . wp_nonce_url( admin_url( 'admin-post.php?action=rocket_stop_preload&type=all' ), 'rocket_stop_preload' ) . '">' . __( 'Stop Preload', 'rocket' ) . '</a>';
+			break;
 		case 'force_deactivation':
 			/**
 			 * Allow a "force deactivation" link to be printed, use at your own risks
