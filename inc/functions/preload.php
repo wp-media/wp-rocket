@@ -24,7 +24,7 @@ function run_rocket_bot( $spider = 'cache-preload', $lang = '' ) {
 		$urls[] = get_rocket_i18n_home_url( $lang );
 	}
 
-	$homepage_preload = new WP_Rocket\Preload\Homepage( new WP_Rocket\Preload\Sitemap_Process() );
+	$homepage_preload = new WP_Rocket\Preload\Homepage( new WP_Rocket\Preload\Full_Process() );
 
 	$homepage_preload->cancel_preload();
 	$homepage_preload->preload( $urls );
@@ -57,7 +57,7 @@ function run_rocket_sitemap_preload() {
 		return;
 	}
 
-	$sitemap_preload = new WP_Rocket\Preload\Sitemap( new WP_Rocket\Preload\Sitemap_Process() );
+	$sitemap_preload = new WP_Rocket\Preload\Sitemap( new WP_Rocket\Preload\Full_Process() );
 
 	$sitemap_preload->cancel_preload();
 	$sitemap_preload->run_preload( $sitemaps );
