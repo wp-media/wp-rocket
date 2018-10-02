@@ -32,12 +32,8 @@ class Sitemap_Preload_Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'admin_notices'                   => [
-				[ 'notice_sitemap_preload_running' ],
-				[ 'notice_sitemap_preload_complete' ],
-			],
-			'rocket_purge_time_event'         => [ 'preload', 11 ],
-			'pagely_cache_purge_after'        => [ 'preload', 11 ],
+			'rocket_purge_time_event'         => [ 'preload', 12 ],
+			'pagely_cache_purge_after'        => [ 'preload', 12 ],
 			'update_option_' . WP_ROCKET_SLUG => [ 'maybe_cancel_preload', 10, 2 ],
 		];
 	}
@@ -71,69 +67,6 @@ class Sitemap_Preload_Subscriber implements Subscriber_Interface {
 
 		$this->sitemap_preload->cancel_preload();
 		$this->sitemap_preload->run_preload( $sitemaps );
-	}
-
-	/**
-	 * This notice is displayed when the sitemap preload is running
-	 *
-	 * @since 3.2
-	 * @author Remy Perona
-	 */
-	public function notice_sitemap_preload_running() {
-		$screen = get_current_screen();
-
-		// This filter is documented in inc/admin-bar.php.
-		if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
-			return;
-		}
-
-		if ( 'settings_page_wprocket' !== $screen->id ) {
-			return;
-		}
-
-		$running = get_transient( 'rocket_sitemap_preload_running' );
-
-		if ( false === $running ) {
-			return;
-		}
-
-		\rocket_notice_html( [
-			// translators: %1$d = Number of pages preloaded.
-			'message'     => sprintf( __( 'Sitemap preload: %1$d uncached pages have now been preloaded. (refresh to see progress)', 'rocket' ), $running ),
-			'dismissible' => 'notice-sitemap-preload-running',
-		] );
-	}
-
-	/**
-	 * This notice is displayed after the sitemap preload is complete
-	 *
-	 * @since 3.2
-	 * @author Remy Perona
-	 */
-	public function notice_sitemap_preload_complete() {
-		$screen = get_current_screen();
-
-		/** This filter is documented in inc/admin-bar.php */
-		if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
-			return;
-		}
-
-		if ( 'settings_page_wprocket' !== $screen->id ) {
-			return;
-		}
-
-		$result = get_transient( 'rocket_sitemap_preload_complete' );
-
-		if ( false === $result ) {
-			return;
-		}
-
-		delete_transient( 'rocket_sitemap_preload_complete' );
-
-		\rocket_notice_html( [
-			// translators: %d is the number of pages preloaded.
-			'message' => sprintf( __( 'Sitemap preload: %d pages have been cached.', 'rocket' ), $result ),
-		] );
 	}
 
 	/**
