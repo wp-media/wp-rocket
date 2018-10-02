@@ -10,28 +10,46 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  * @return  string  $buffer The content of avanced-cache.php file
  */
 function get_rocket_advanced_cache_file() {
-	$buffer  = '<?php' . "\n";
-	$buffer .= 'defined( \'ABSPATH\' ) or die( \'Cheatin\\\' uh?\' );' . "\n\n";
+	$buffer  = "<?php\n";
+	$buffer .= "defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );\n\n";
 
 	// Add a constant to be sure this is our file.
-	$buffer .= 'define( \'WP_ROCKET_ADVANCED_CACHE\', true );' . "\n";
+	$buffer .= "define( 'WP_ROCKET_ADVANCED_CACHE', true );\n";
 
 	// Get cache path.
-	$buffer .= '$rocket_cache_path  = \'' . WP_ROCKET_CACHE_PATH . '\';' . "\n";
+	$buffer .= '$rocket_cache_path  = \'' . WP_ROCKET_CACHE_PATH . "';\n";
 
 	// Get config path.
-	$buffer .= '$rocket_config_path = \'' . WP_ROCKET_CONFIG_PATH . '\';' . "\n\n";
+	$buffer .= '$rocket_config_path = \'' . WP_ROCKET_CONFIG_PATH . "';\n\n";
 
 	// Include the Mobile Detect class if we have to create a different caching file for mobile.
 	if ( is_rocket_generate_caching_mobile_files() ) {
 		$buffer .= "if ( file_exists( '" . WP_ROCKET_VENDORS_PATH . "classes/class-rocket-mobile-detect.php' ) && ! class_exists( 'Rocket_Mobile_Detect' ) ) {\n";
 		$buffer .= "\tinclude_once '" . WP_ROCKET_VENDORS_PATH . "classes/class-rocket-mobile-detect.php';\n";
-		$buffer .= "}\n";
+		$buffer .= "}\n\n";
 	}
 
+	// Register a class autoloader and include the process file.
+	$buffer .= "if ( file_exists( '" . WP_ROCKET_FRONT_PATH . "process.php' ) && version_compare( phpversion(), '" . WP_ROCKET_PHP_VERSION . "' ) >= 0 ) {\n\n";
+
+	// Class autoloader.
+	$buffer .= "\tspl_autoload_register( function( \$class ) {\n";
+	$buffer .= "\t\t\$rocket_path    = '" . WP_ROCKET_PATH . "';\n";
+	$buffer .= "\t\t\$rocket_classes = [\n";
+	$buffer .= "\t\t\t'WP_Rocket\\\\Logger'               => \$rocket_path . 'inc/classes/class-logger.php',\n";
+	$buffer .= "\t\t\t'WP_Rocket\\\\Secure_Stream_Logger' => \$rocket_path . 'inc/classes/class-secure-stream-logger.php',\n";
+	$buffer .= "\t\t];\n\n";
+	$buffer .= "\t\tif ( isset( \$rocket_classes[ \$class ] ) ) {\n";
+	$buffer .= "\t\t\t\$file = \$rocket_classes[ \$class ];\n";
+	$buffer .= "\t\t} else {\n";
+	$buffer .= "\t\t\t\$file = \$rocket_path . 'vendor/monolog/monolog/src/' . str_replace( \$class, '\\\\', '/' ) . '.php';\n";
+	$buffer .= "\t\t}\n\n";
+	$buffer .= "\t\tif ( file_exists( \$file ) ) {\n";
+	$buffer .= "\t\t\trequire \$file;\n";
+	$buffer .= "\t\t}\n";
+	$buffer .= "\t} );\n\n";
+
 	// Include the process file in buffer.
-	$buffer .= "if ( file_exists( '" . WP_ROCKET_FRONT_PATH . "process.php' ) && file_exists( '" . WP_ROCKET_PATH . "vendor/autoload.php' ) && version_compare( phpversion(), '" . WP_ROCKET_PHP_VERSION . "' ) >= 0 ) {\n";
-	$buffer .= "\tinclude '" . WP_ROCKET_PATH . "vendor/autoload.php';\n";
 	$buffer .= "\tinclude '" . WP_ROCKET_FRONT_PATH . "process.php';\n";
 	$buffer .= "} else {\n";
 	// Add a constant to provent include issue.
