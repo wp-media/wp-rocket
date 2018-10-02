@@ -47,75 +47,7 @@ if ( ! function_exists( 'do_rocket_bot_cache_json' ) ) :
 	}
 endif;
 
-if ( ! function_exists( 'run_rocket_sitemap_preload' ) ) {
-	/**
-	 * Launches the sitemap preload
-	 *
-	 * @since 2.8
-	 * @author Remy Perona
-	 *
-	 * @return bool\void False if no sitemaps, void otherwise
-	 */
-	function run_rocket_sitemap_preload() {
-		_deprecated_function( __FUNCTION__, '3.2' );
-		/*
-		* Filters the sitemaps list to preload
-		*
-		* @since 2.8
-		*
-		* @param array Array of sitemaps URL
-		*/
-		$sitemaps = apply_filters( 'rocket_sitemap_preload_list', get_rocket_option( 'sitemaps', false ) );
-
-		if ( ! $sitemaps ) {
-			return false;
-		}
-
-		$sitemaps                  = array_flip( array_flip( $sitemaps ) );
-		$urls_group                = array();
-		$rocket_background_process = $GLOBALS['rocket_sitemap_background_process'];
-
-		foreach ( $sitemaps as $sitemap_type => $sitemap_url ) {
-			/**
-			 * Fires before WP Rocket sitemap preload is called for a sitemap URL
-			 *
-			 * @since 2.8
-			 *
-			 * @param string $sitemap_type  the sitemap identifier
-			 * @param string $sitemap_url sitemap URL to be crawler
-			*/
-			do_action( 'before_run_rocket_sitemap_preload', $sitemap_type, $sitemap_url );
-
-			$urls_group[] = rocket_process_sitemap( $sitemap_url );
-
-			/**
-			 * Fires after WP Rocket sitemap preload was called for a sitemap URL
-			 *
-			 * @since 2.8
-			 *
-			 * @param string $sitemap_type  the sitemap identifier
-			 * @param string $sitemap_url sitemap URL crawled
-			*/
-			do_action( 'after_run_rocket_sitemap_preload', $sitemap_type, $sitemap_url );
-		}
-
-		foreach ( $urls_group as $urls ) {
-			if ( empty( $urls ) ) {
-				continue;
-			}
-
-			$urls = array_flip( array_flip( $urls ) );
-			foreach ( $urls as $url ) {
-				$rocket_background_process->push_to_queue( $url );
-			}
-		}
-
-		set_transient( 'rocket_sitemap_preload_running', 0 );
-		$rocket_background_process->save()->dispatch();
-	}
-}
-
-if ( ! function_exists( 'run_rocket_sitemap_preload' ) ) {
+if ( ! function_exists( 'rocket_process_sitemap' ) ) {
 	/**
 	 * Processes the sitemaps recursively
 	 *
@@ -184,32 +116,6 @@ if ( ! function_exists( 'run_rocket_sitemap_preload' ) ) {
 
 		$urls = array_merge( $urls, $tmp_urls );
 		return $urls;
-	}
-}
-
-if ( ! function_exists( 'do_admin_post_rocket_preload_cache' )  ) {
-	/**
-	 * Preload cache system in Admin Bar
-	 * It launch the WP Rocket Bot
-	 *
-	 * @since 1.3.0 Compatibility with WPML
-	 * @since 1.0 (delete in 1.1.6 and re-add in 1.1.9)
-	 * @deprecated 3.2
-	 */
-	function do_admin_post_rocket_preload_cache() {
-		_deprecated_function( __FUNCTION__, '3.2' );
-		if ( isset( $_GET['_wpnonce'] ) ) {
-
-			if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'preload' ) ) {
-				wp_nonce_ays( '' );
-			}
-
-			$lang = isset( $_GET['lang'] ) && 'all' !== $_GET['lang'] ? sanitize_key( $_GET['lang'] ) : '';
-			run_rocket_preload_cache( 'cache-preload' );
-
-			wp_redirect( wp_get_referer() );
-			die();
-		}
 	}
 }
 
