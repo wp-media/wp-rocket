@@ -41,8 +41,12 @@ function get_rocket_advanced_cache_file() {
 	$buffer .= "\t\t];\n\n";
 	$buffer .= "\t\tif ( isset( \$rocket_classes[ \$class ] ) ) {\n";
 	$buffer .= "\t\t\t\$file = \$rocket_classes[ \$class ];\n";
+	$buffer .= "\t\t} elseif ( strpos( \$class, 'Monolog\\\\' ) === 0 ) {\n";
+	$buffer .= "\t\t\t\$file = \$rocket_path . 'vendor/monolog/monolog/src/' . str_replace( '\\\\', '/', \$class ) . '.php';\n";
+	$buffer .= "\t\t} elseif ( strpos( \$class, 'Psr\\\\Log\\\\' ) === 0 ) {\n";
+	$buffer .= "\t\t\t\$file = \$rocket_path . 'vendor/psr/log/' . str_replace( '\\\\', '/', \$class ) . '.php';\n";
 	$buffer .= "\t\t} else {\n";
-	$buffer .= "\t\t\t\$file = \$rocket_path . 'vendor/monolog/monolog/src/' . str_replace( \$class, '\\\\', '/' ) . '.php';\n";
+	$buffer .= "\t\t\treturn;\n";
 	$buffer .= "\t\t}\n\n";
 	$buffer .= "\t\tif ( file_exists( \$file ) ) {\n";
 	$buffer .= "\t\t\trequire \$file;\n";

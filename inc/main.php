@@ -11,8 +11,12 @@ spl_autoload_register( function( $class ) {
 
 	if ( isset( $rocket_classes[ $class ] ) ) {
 		$file = $rocket_classes[ $class ];
+	} elseif ( strpos( $class, 'Monolog\\' ) === 0 ) {
+		$file = $rocket_path . 'vendor/monolog/monolog/src/' . str_replace( '\\', '/', $class ) . '.php';
+	} elseif ( strpos( $class, 'Psr\\Log\\' ) === 0 ) {
+		$file = $rocket_path . 'vendor/psr/log/' . str_replace( '\\', '/', $class ) . '.php';
 	} else {
-		$file = $rocket_path . 'vendor/monolog/monolog/src/' . str_replace( $class, '\\', '/' ) . '.php';
+		return;
 	}
 
 	if ( file_exists( $file ) ) {
