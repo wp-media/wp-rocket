@@ -87,7 +87,7 @@ class Plugin {
 				new Settings_Page( $settings_page_args, new Settings( $this->options ), new Settings_Render( $this->template_path . '/settings' ), $beacon ),
 				new Deactivation_Intent( new Deactivation_Intent_Render( $this->template_path . '/deactivation-intent' ), $this->options_api, $this->options ),
 				new Subscriber\Admin\Settings\Beacon_Subscriber( $beacon ),
-				new Logs(),
+				//new Logs(),
 			];
 		} elseif ( \rocket_valid_key() ) {
 			$subscribers = [
