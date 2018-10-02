@@ -104,9 +104,9 @@ class Plugin {
 
 		$subscribers[] = new Plugins\Ecommerce\WooCommerce_Subscriber();
 		$subscribers[] = new Subscriber\Google_Tracking_Cache_Busting_Subscriber( new Busting\Busting_Factory( WP_ROCKET_CACHE_BUSTING_PATH, WP_ROCKET_CACHE_BUSTING_URL ), $this->options );
-		$subscribers[] = new Subscriber\Preload\Sitemap_Preload_Subscriber( new Preload\Sitemap( new Preload\Sitemap_Process() ), $this->options );
+		$subscribers[] = new Subscriber\Preload\Preload_Subscriber( new Preload\Homepage( new Preload\Full_Process() ), $this->options );
+		$subscribers[] = new Subscriber\Preload\Sitemap_Preload_Subscriber( new Preload\Sitemap( new Preload\Full_Process() ), $this->options );
 		$subscribers[] = new Subscriber\Preload\Partial_Preload_Subscriber( new Preload\Partial_Process(), $this->options );
-		$subscribers[] = new Subscriber\Preload\Homepage_Subscriber( new Preload\Homepage( new Preload\Sitemap_Process() ), $this->options );
 
 		foreach ( $subscribers as $subscriber ) {
 			$event_manager->add_subscriber( $subscriber );
