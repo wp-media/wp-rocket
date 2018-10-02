@@ -4,14 +4,14 @@ namespace WP_Rocket\Preload;
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
- * Extends the background process class for the sitemap preload background process.
+ * Extends the background process class for the preload background process.
  *
  * @since 3.2
  * @author Remy Perona
  *
  * @see WP_Background_Process
  */
-class Sitemap_Process extends \WP_Background_Process {
+class Full_Process extends \WP_Background_Process {
 	/**
 	 * Prefix
 	 *
@@ -30,7 +30,7 @@ class Sitemap_Process extends \WP_Background_Process {
 	 *
 	 * @var string
 	 */
-	protected $action = 'sitemap_preload';
+	protected $action = 'preload';
 
 	/**
 	 * Preload the URL provided by $item
@@ -63,8 +63,8 @@ class Sitemap_Process extends \WP_Background_Process {
 
 		wp_remote_get( esc_url_raw( $item ), $args );
 
-		$count = get_transient( 'rocket_sitemap_preload_running' );
-		set_transient( 'rocket_sitemap_preload_running', $count + 1 );
+		$count = get_transient( 'rocket_preload_running' );
+		set_transient( 'rocket_preload_running', $count + 1 );
 
 		usleep( get_rocket_option( 'sitemap_preload_url_crawl', '500000' ) );
 
@@ -99,9 +99,9 @@ class Sitemap_Process extends \WP_Background_Process {
 	 * @since 3.2
 	 * @author Remy Perona
 	 */
-	protected function complete() {
-		set_transient( 'rocket_sitemap_preload_complete', get_transient( 'rocket_sitemap_preload_running' ) );
-		delete_transient( 'rocket_sitemap_preload_running' );
+	public function complete() {
+		set_transient( 'rocket_preload_complete', get_transient( 'rocket_preload_running' ) );
+		delete_transient( 'rocket_preload_running' );
 		parent::complete();
 	}
 
