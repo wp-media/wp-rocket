@@ -7,29 +7,7 @@ namespace WP_Rocket\Preload;
  * @since 3.2
  * @author Remy Perona
  */
-class Homepage {
-	/**
-	 * Preload Process instance
-	 *
-	 * @since 3.2
-	 * @author Remy Perona
-	 *
-	 * @var Sitemap_Process
-	 */
-	private $preload_process;
-
-	/**
-	 * Constructor
-	 *
-	 * @since 3.2
-	 * @author Remy Perona
-	 *
-	 * @param Sitemap_Process $preload_process Preload process instance.
-	 */
-	public function __construct( Sitemap_Process $preload_process ) {
-		$this->preload_process = $preload_process;
-	}
-
+class Homepage extends Abstract_Preload {
 	/**
 	 * Gets the internal URLs on the homepage and sends them to the preload queue
 	 *
@@ -66,23 +44,7 @@ class Homepage {
 			);
 		}
 
+		set_transient( 'rocket_preload_running', 0 );
 		$this->preload_process->save()->dispatch();
-	}
-
-	/**
-	 * Cancels any preload process running
-	 *
-	 * @since 3.2
-	 * @author Remy Perona
-	 *
-	 * @return void
-	 */
-	public function cancel_preload() {
-		if ( \method_exists( $this->preload_process, 'cancel_process' ) ) {
-			$this->preload_process->cancel_process();
-		}
-
-		delete_transient( 'rocket_sitemap_preload_running' );
-		delete_transient( 'rocket_sitemap_preload_complete' );
 	}
 }

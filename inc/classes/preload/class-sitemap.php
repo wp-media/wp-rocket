@@ -7,27 +7,7 @@ namespace WP_Rocket\Preload;
  * @since 3.2
  * @author Remy Perona
  */
-class Sitemap {
-	/**
-	 * Background Process instance
-	 *
-	 * @since 3.2
-	 * @var Sitemap_Process
-	 */
-	private $sitemap_process;
-
-	/**
-	 * Constructor
-	 *
-	 * @since 3.2
-	 * @author Remy Perona
-	 *
-	 * @param Sitemap_Process $sitemap_process Background Process instance.
-	 */
-	public function __construct( Sitemap_Process $sitemap_process ) {
-		$this->sitemap_process = $sitemap_process;
-	}
-
+class Sitemap extends Abstract_Preload {
 	/**
 	 * Launches the sitemap preload
 	 *
@@ -71,27 +51,12 @@ class Sitemap {
 
 			$urls = array_flip( array_flip( $urls ) );
 			foreach ( $urls as $url ) {
-				$this->sitemap_process->push_to_queue( $url );
+				$this->preload_process->push_to_queue( $url );
 			}
 		}
 
-		set_transient( 'rocket_sitemap_preload_running', 0 );
-		$this->sitemap_process->save()->dispatch();
-	}
-
-	/**
-	 * Cancels the sitemap preload process
-	 *
-	 * @since 3.2
-	 * @author Remy Perona
-	 */
-	public function cancel_preload() {
-		if ( \method_exists( $this->sitemap_process, 'cancel_process' ) ) {
-			$this->sitemap_process->cancel_process();
-		}
-
-		delete_transient( 'rocket_sitemap_preload_running' );
-		delete_transient( 'rocket_sitemap_preload_complete' );
+		set_transient( 'rocket_preload_running', 0 );
+		$this->preload_process->save()->dispatch();
 	}
 
 	/**
