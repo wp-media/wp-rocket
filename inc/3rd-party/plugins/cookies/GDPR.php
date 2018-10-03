@@ -8,6 +8,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin\' uh?' );
 if ( class_exists( 'GDPR' ) ) {
 	// Create cache version based on value set in gdpr[] cookies
 	add_filter( 'rocket_cache_mandatory_cookies', 'rocket_get_GDPR_cookies' );
+	add_filter( 'rocket_cache_dynamic_cookies', 'rocket_get_GDPR_cookies' );
 }
 /**
  * Return the cookie names set by GDPR plugin
@@ -32,6 +33,7 @@ function rocket_get_GDPR_cookies( $cookies ) {
 function rocket_add_GDPR_mandatory_cookies() {
 	// Create cache version based on value set in GDPR cookies
 	add_filter( 'rocket_cache_mandatory_cookies', 'rocket_get_GDPR_cookies' );
+	add_filter( 'rocket_cache_dynamic_cookies', 'rocket_get_GDPR_cookies' );
 	// Update the WP Rocket rules on the .htaccess file.
 	flush_rocket_htaccess();
 	// Regenerate the config file.
@@ -49,6 +51,7 @@ add_action( 'activate_GDPR/gdpr.php', 'rocket_add_GDPR_mandatory_cookies', 11 );
 function rocket_remove_GDPR_mandatory_cookies() {
 	// Delete the dynamic cookie filter
 	remove_filter( 'rocket_cache_mandatory_cookies', 'rocket_get_GDPR_cookies' );
+	remove_filter( 'rocket_cache_dynamic_cookies', 'rocket_get_GDPR_cookies' );
 	// Update the WP Rocket rules on the .htaccess file.
 	flush_rocket_htaccess();
 	// Regenerate the config file.
