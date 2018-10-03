@@ -326,6 +326,8 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 	}
 
 	if ( version_compare( $actual_version, '3.2', '<' ) ) {
+		rocket_generate_config_file();
+
 		// Create a .htaccess file in the log folder.
 		$handler = \WP_Rocket\Logger::get_stream_handler();
 
