@@ -81,7 +81,6 @@ class Preload_Subscriber implements Subscriber_Interface {
 			$urls = (array) get_rocket_i18n_home_url( $lang );
 		}
 
-		$this->homepage_preloader->cancel_preload();
 		$this->homepage_preloader->preload( $urls );
 	}
 

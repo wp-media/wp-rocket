@@ -65,7 +65,6 @@ class Sitemap_Preload_Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$this->sitemap_preload->cancel_preload();
 		$this->sitemap_preload->run_preload( $sitemaps );
 	}
 
