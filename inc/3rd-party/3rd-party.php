@@ -36,6 +36,7 @@ require WP_ROCKET_3RD_PARTY_PATH . 'plugins/age-verify.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/appbanners.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/autoptimize.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/envira-gallery.php';
+require WP_ROCKET_3RD_PARTY_PATH . 'plugins/cookies/cookie-notice.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/cookies/eu-cookie-law.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/cookies/weepie-cookie-allow.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/rating/kk-star-ratings.php';
@@ -65,7 +66,6 @@ require WP_ROCKET_3RD_PARTY_PATH . 'plugins/advanced-custom-fields.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/wp-offload-s3.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/wp-offload-s3-assets.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/s2member.php';
-require WP_ROCKET_3RD_PARTY_PATH . 'plugins/cookie-notice.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/sumome.php';
 
 require WP_ROCKET_3RD_PARTY_PATH . 'themes/divi.php';
