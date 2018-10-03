@@ -332,6 +332,21 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		}
 
 		update_option( WP_ROCKET_SLUG, $options );
+
+		// Create a .htaccess file in the log folder.
+		$handler = \WP_Rocket\Logger::get_stream_handler();
+
+		if ( method_exists( $handler, 'create_htaccess_file' ) ) {
+			try {
+				$success = $handler->create_htaccess_file();
+			} catch ( \Exception $e ) {
+				$success = false;
+			}
+
+			if ( ! $success ) {
+				\WP_Rocket\Logger::delete_log_file();
+			}
+		}
 	}
 }
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );

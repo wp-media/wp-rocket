@@ -89,7 +89,7 @@ class Plugin {
 				new Settings_Page( $settings_page_args, new Settings( $this->options ), new Settings_Render( $this->template_path . '/settings' ), $beacon ),
 				new Deactivation_Intent( new Deactivation_Intent_Render( $this->template_path . '/deactivation-intent' ), $this->options_api, $this->options ),
 				new Subscriber\Admin\Settings\Beacon_Subscriber( $beacon ),
-				new Logs(),
+				//new Logs(),
 			];
 		} elseif ( \rocket_valid_key() ) {
 			$subscribers = [
@@ -103,7 +103,9 @@ class Plugin {
 			];
 		}
 
+		$subscribers[] = new Plugins\Mobile_Subscriber();
 		$subscribers[] = new Plugins\Ecommerce\WooCommerce_Subscriber();
+		$subscribers[] = new Plugins\Security\Sucuri_Subscriber();
 		$subscribers[] = new Subscriber\Google_Tracking_Cache_Busting_Subscriber( new Busting\Busting_Factory( WP_ROCKET_CACHE_BUSTING_PATH, WP_ROCKET_CACHE_BUSTING_URL ), $this->options );
 		$subscribers[] = new Subscriber\Preload\Preload_Subscriber( new Preload\Homepage( $preload_process ), $this->options );
 		$subscribers[] = new Subscriber\Preload\Sitemap_Preload_Subscriber( new Preload\Sitemap( $preload_process ), $this->options );

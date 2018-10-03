@@ -103,8 +103,6 @@ class Page implements Subscriber_Interface {
 			'wp_ajax_rocket_toggle_option'                      => 'toggle_option',
 			'option_page_capability_' . WP_ROCKET_PLUGIN_SLUG   => 'required_capability',
 			'rocket_settings_menu_navigation'                   => 'add_menu_tools_page',
-			'pre_get_rocket_option_cache_mobile'                => 'is_mobile_plugin_active',
-			'pre_get_rocket_option_do_caching_mobile_files'     => 'is_mobile_plugin_active',
 		];
 	}
 
@@ -307,9 +305,11 @@ class Page implements Subscriber_Interface {
 	}
 
 	/**
-	 * Forces the value for the mobile options if a mobile plugin is active
+	 * Forces the value for the mobile options if a mobile plugin is active.
 	 *
-	 * @since 3.0
+	 * @since  3.0
+	 * @since  3.2 Not used anymore.
+	 * @see    \WP_Rocket\Subscriber\Third_Party\Plugins\Mobile_Subscriber::is_mobile_plugin_active_callback()
 	 * @author Remy Perona
 	 *
 	 * @param mixed $value Option value.
@@ -831,7 +831,7 @@ class Page implements Subscriber_Interface {
 					'description'       => __( 'Specify URLs of JavaScript files to be excluded from minification and concatenation (one per line).', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 					'helper'            => __( '<strong>Internal:</strong> The domain part of the URL will be stripped automatically. Use (.*).js wildcards to exclude all JS files located at a specific path.', 'rocket' ) . '<br>' .
-					sprintf( __( '<strong>3rd Party:</strong> Use URL full path, including domain name, to exclude external JS. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $exclude_js_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $exclude_js_beacon['id'] ) . '" rel="noopener noreferrer" target="_blank">', '</a>' ),
+					sprintf( __( '<strong>3rd Party:</strong> Use either the full URL path or only the domain name, to exclude external JS. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $exclude_js_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $exclude_js_beacon['id'] ) . '" rel="noopener noreferrer" target="_blank">', '</a>' ),
 					'container_class'   => [
 						'wpr-field--children',
 					],
