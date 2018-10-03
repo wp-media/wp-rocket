@@ -37,10 +37,10 @@ abstract class Abstract_Preload {
 	 * @return void
 	 */
 	public function cancel_preload() {
+		delete_transient( 'rocket_preload_running' );
+
 		if ( \method_exists( $this->preload_process, 'cancel_process' ) ) {
 			$this->preload_process->cancel_process();
 		}
-
-		$this->preload_process->complete();
 	}
 }
