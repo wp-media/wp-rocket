@@ -264,7 +264,7 @@ $filename = 'index';
 if ( isset( $rocket_cache_mobile, $rocket_do_caching_mobile_files ) && class_exists( 'Rocket_Mobile_Detect' ) ) {
 	$detect = new Rocket_Mobile_Detect();
 
-	if ( $detect->isMobile() && ! $detect->isTablet() ) {
+	if ( $detect->isMobile() && ! $detect->isTablet() && ! $rocket_cache_mobile_files_tablet || ( $detect->isMobile() || $detect->isTablet() ) && $rocket_cache_mobile_files_tablet ) {
 		$filename .= '-mobile';
 	}
 }
