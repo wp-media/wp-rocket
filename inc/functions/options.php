@@ -338,11 +338,11 @@ function get_rocket_cache_reject_ua() {
 }
 
 /**
- * Get all files we don't allow to get in CDN
+ * Get all files we don't allow to get in CDN.
  *
  * @since 2.5
  *
- * @return array List of rejected files
+ * @return string A pipe-separated list of rejected files.
  */
 function get_rocket_cdn_reject_files() {
 	$files = get_rocket_option( 'cdn_reject_files', array() );
@@ -356,9 +356,7 @@ function get_rocket_cdn_reject_files() {
 	*/
 	$files = apply_filters( 'rocket_cdn_reject_files', $files );
 
-	$files = implode( '|', array_filter( $files ) );
-
-	return $files;
+	return implode( '|', array_filter( $files ) );
 }
 
 /**
@@ -371,18 +369,21 @@ function get_rocket_cdn_reject_files() {
  * @return array List of CNAMES
  */
 function get_rocket_cdn_cnames( $zone = 'all' ) {
-	$hosts       = array();
-	$cnames      = get_rocket_option( 'cdn_cnames', array() );
-	$cnames_zone = get_rocket_option( 'cdn_zone', array() );
-	$zone        = is_array( $zone ) ? $zone : (array) $zone;
+	$hosts  = array();
+	$cnames = get_rocket_option( 'cdn_cnames', array() );
 
-	foreach ( $cnames as $k => $_urls ) {
-		if ( in_array( $cnames_zone[ $k ], $zone, true ) ) {
-			$_urls = explode( ',', $_urls );
-			$_urls = array_map( 'trim', $_urls );
+	if ( $cnames ) {
+		$cnames_zone = get_rocket_option( 'cdn_zone', array() );
+		$zone        = is_array( $zone ) ? $zone : (array) $zone;
 
-			foreach ( $_urls as $url ) {
-				$hosts[] = $url;
+		foreach ( $cnames as $k => $_urls ) {
+			if ( in_array( $cnames_zone[ $k ], $zone, true ) ) {
+				$_urls = explode( ',', $_urls );
+				$_urls = array_map( 'trim', $_urls );
+
+				foreach ( $_urls as $url ) {
+					$hosts[] = $url;
+				}
 			}
 		}
 	}
