@@ -33,25 +33,15 @@ function get_rocket_advanced_cache_file() {
 	$buffer .= "if ( file_exists( '" . WP_ROCKET_FRONT_PATH . "process.php' ) && version_compare( phpversion(), '" . WP_ROCKET_PHP_VERSION . "' ) >= 0 ) {\n\n";
 
 	// Class autoloader.
-	$buffer .= "\tspl_autoload_register( function( \$class ) {\n";
-	$buffer .= "\t\t\$rocket_path    = '" . WP_ROCKET_PATH . "';\n";
-	$buffer .= "\t\t\$rocket_classes = [\n";
-	$buffer .= "\t\t\t'WP_Rocket\\\\Logger'               => \$rocket_path . 'inc/classes/class-logger.php',\n";
-	$buffer .= "\t\t\t'WP_Rocket\\\\Secure_Stream_Logger' => \$rocket_path . 'inc/classes/class-secure-stream-logger.php',\n";
-	$buffer .= "\t\t];\n\n";
-	$buffer .= "\t\tif ( isset( \$rocket_classes[ \$class ] ) ) {\n";
-	$buffer .= "\t\t\t\$file = \$rocket_classes[ \$class ];\n";
-	$buffer .= "\t\t} elseif ( strpos( \$class, 'Monolog\\\\' ) === 0 ) {\n";
-	$buffer .= "\t\t\t\$file = \$rocket_path . 'vendor/monolog/monolog/src/' . str_replace( '\\\\', '/', \$class ) . '.php';\n";
-	$buffer .= "\t\t} elseif ( strpos( \$class, 'Psr\\\\Log\\\\' ) === 0 ) {\n";
-	$buffer .= "\t\t\t\$file = \$rocket_path . 'vendor/psr/log/' . str_replace( '\\\\', '/', \$class ) . '.php';\n";
-	$buffer .= "\t\t} else {\n";
-	$buffer .= "\t\t\treturn;\n";
-	$buffer .= "\t\t}\n\n";
-	$buffer .= "\t\tif ( file_exists( \$file ) ) {\n";
-	$buffer .= "\t\t\trequire \$file;\n";
-	$buffer .= "\t\t}\n";
-	$buffer .= "\t} );\n\n";
+	$autoloader = rocket_direct_filesystem()->get_contents( WP_ROCKET_INC_PATH . 'process-autoloader.php' );
+
+	if ( $autoloader ) {
+		$autoloader = preg_replace( '@^<\?php\s*@', '', $autoloader );
+		$autoloader = str_replace( [ "\n", "\n\t\n" ], [ "\n\t", "\n\n" ], trim( $autoloader ) );
+		$autoloader = str_replace( 'WP_ROCKET_PATH', "'" . WP_ROCKET_PATH . "'", $autoloader );
+
+		$buffer .= "\t$autoloader\n\n";
+	}
 
 	// Include the process file in buffer.
 	$buffer .= "\tinclude '" . WP_ROCKET_FRONT_PATH . "process.php';\n";
