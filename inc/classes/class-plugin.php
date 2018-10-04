@@ -15,6 +15,7 @@ use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\Busting\Busting_Factory;
 use WP_Rocket\Subscriber;
 use WP_Rocket\Optimization\Cache_Dynamic_Resource;
+use WP_Rocket\Optimization\CDN_Favicons;
 use WP_Rocket\Optimization\Remove_Query_String;
 
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
@@ -97,6 +98,7 @@ class Plugin {
 				new Subscriber\Optimization\Minify_CSS_Subscriber( $this->options ),
 				new Subscriber\Optimization\Minify_JS_Subscriber( $this->options ),
 				new Subscriber\Optimization\Cache_Dynamic_Resource_Subscriber( new Cache_Dynamic_Resource( $this->options, WP_ROCKET_CACHE_BUSTING_PATH, WP_ROCKET_CACHE_BUSTING_URL ) ),
+				new Subscriber\Optimization\CDN_Favicons_Subscriber( new CDN_Favicons( $this->options ) ),
 				new Subscriber\Optimization\Remove_Query_String_Subscriber( new Remove_Query_String( $this->options, WP_ROCKET_CACHE_BUSTING_PATH, WP_ROCKET_CACHE_BUSTING_URL ) ),
 			];
 		}
