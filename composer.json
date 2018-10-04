@@ -48,12 +48,6 @@
 		"classmap": [
 			"inc/classes",
 			"inc/vendors/classes"
-		],
-		"exclude-from-classmap": [
-			"vendor/monolog/monolog/src/",
-			"vendor/psr/log/",
-			"inc/classes/class-logger.php",
-			"inc/classes/class-secure-stream-logger.php"
 		]
 	}
 }

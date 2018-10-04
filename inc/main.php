@@ -1,29 +1,6 @@
 <?php
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
-// Debug logger autoload.
-spl_autoload_register( function( $class ) {
-	$rocket_path    = WP_ROCKET_PATH;
-	$rocket_classes = [
-		'WP_Rocket\\Logger'               => $rocket_path . 'inc/classes/class-logger.php',
-		'WP_Rocket\\Secure_Stream_Logger' => $rocket_path . 'inc/classes/class-secure-stream-logger.php',
-	];
-
-	if ( isset( $rocket_classes[ $class ] ) ) {
-		$file = $rocket_classes[ $class ];
-	} elseif ( strpos( $class, 'Monolog\\' ) === 0 ) {
-		$file = $rocket_path . 'vendor/monolog/monolog/src/' . str_replace( '\\', '/', $class ) . '.php';
-	} elseif ( strpos( $class, 'Psr\\Log\\' ) === 0 ) {
-		$file = $rocket_path . 'vendor/psr/log/' . str_replace( '\\', '/', $class ) . '.php';
-	} else {
-		return;
-	}
-
-	if ( file_exists( $file ) ) {
-		require $file;
-	}
-} );
-
 // Composer autoload.
 if ( file_exists( WP_ROCKET_PATH . 'vendor/autoload.php' ) ) {
 	require WP_ROCKET_PATH . 'vendor/autoload.php';
