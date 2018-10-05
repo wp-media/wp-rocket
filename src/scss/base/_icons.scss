@@ -136,3 +136,9 @@
 .wpr-icon-close:before {
   content: "\e922";
 }
+.wpr-icon-imagify:before {
+  content: url('../img/imagify.svg');
+}
+.wpr-icon-imagify-hover:before {
+  content: url('../img/imagify-hover.svg');
+}

@@ -1,0 +1,90 @@
+// main: ../main.scss
+
+/*-----------------------------------------------*\
+
+    Imagify Tab style
+
+\*-----------------------------------------------*/
+.wpr-imagify {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-top: 30px;
+
+    &-description {
+        width: calc(100% / 3 * 1);
+        padding-right: 60px;
+
+        @include respond-to('md') {
+            width: auto;
+            padding-right: 0;
+        }
+    }
+
+    &-screenshot {
+        width: calc(100% / 3 * 2);
+
+        @include respond-to('md') {
+            margin-top: 60px;
+            width: auto;
+        }
+    }
+
+    &-screenshot img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    &-more, &-name {
+        color: #00a8dc;
+        font-weight: 700;
+        margin-bottom: 0;
+    }
+
+    &-more::before {
+        content: '\2713';
+        color: #000;
+        font-size: 2rem;
+        margin-right: 5px;
+    }
+
+    p {
+        font-size: 1rem;
+    }
+
+    p:first-child {
+        margin-top: 0;
+    }
+
+    ul {
+        margin-top: 0;
+        margin-left: 40px;
+        list-style-type: '>'; 
+    }
+
+    li {
+        padding-left: 7px;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+        a:hover {
+            color: #00a8dc;
+        }
+
+    .button-primary {
+        background: #2abb9b;
+        border: 1px solid #bebebe;
+        box-shadow: none;
+        font-size: 1rem;
+        font-weight: 700;
+        height: auto;
+        line-height: 1;
+        margin-top: 60px;
+        padding: 20px 45px;
+        text-shadow: none;
+        text-transform: uppercase;
+    }
+}
