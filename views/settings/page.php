@@ -41,7 +41,7 @@ settings_errors( $data['slug'] ); ?>
 			</form>
 			<?php
 			if ( rocket_valid_key() ) {
-				if ( ! \Imagify_Partner::is_imagify_activated() ) {
+				if ( ! \Imagify_Partner::has_imagify_api_key() ) {
 					$this->render_imagify_section();
 				}
 
