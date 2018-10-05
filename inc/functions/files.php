@@ -10,28 +10,40 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  * @return  string  $buffer The content of avanced-cache.php file
  */
 function get_rocket_advanced_cache_file() {
-	$buffer  = '<?php' . "\n";
-	$buffer .= 'defined( \'ABSPATH\' ) or die( \'Cheatin\\\' uh?\' );' . "\n\n";
+	$buffer  = "<?php\n";
+	$buffer .= "defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );\n\n";
 
 	// Add a constant to be sure this is our file.
-	$buffer .= 'define( \'WP_ROCKET_ADVANCED_CACHE\', true );' . "\n";
+	$buffer .= "define( 'WP_ROCKET_ADVANCED_CACHE', true );\n";
 
 	// Get cache path.
-	$buffer .= '$rocket_cache_path  = \'' . WP_ROCKET_CACHE_PATH . '\';' . "\n";
+	$buffer .= '$rocket_cache_path  = \'' . WP_ROCKET_CACHE_PATH . "';\n";
 
 	// Get config path.
-	$buffer .= '$rocket_config_path = \'' . WP_ROCKET_CONFIG_PATH . '\';' . "\n\n";
+	$buffer .= '$rocket_config_path = \'' . WP_ROCKET_CONFIG_PATH . "';\n\n";
 
 	// Include the Mobile Detect class if we have to create a different caching file for mobile.
 	if ( is_rocket_generate_caching_mobile_files() ) {
 		$buffer .= "if ( file_exists( '" . WP_ROCKET_VENDORS_PATH . "classes/class-rocket-mobile-detect.php' ) && ! class_exists( 'Rocket_Mobile_Detect' ) ) {\n";
 		$buffer .= "\tinclude_once '" . WP_ROCKET_VENDORS_PATH . "classes/class-rocket-mobile-detect.php';\n";
-		$buffer .= "}\n";
+		$buffer .= "}\n\n";
+	}
+
+	// Register a class autoloader and include the process file.
+	$buffer .= "if ( file_exists( '" . WP_ROCKET_FRONT_PATH . "process.php' ) && version_compare( phpversion(), '" . WP_ROCKET_PHP_VERSION . "' ) >= 0 ) {\n\n";
+
+	// Class autoloader.
+	$autoloader = rocket_direct_filesystem()->get_contents( WP_ROCKET_INC_PATH . 'process-autoloader.php' );
+
+	if ( $autoloader ) {
+		$autoloader = preg_replace( '@^<\?php\s*@', '', $autoloader );
+		$autoloader = str_replace( [ "\n", "\n\t\n" ], [ "\n\t", "\n\n" ], trim( $autoloader ) );
+		$autoloader = str_replace( 'WP_ROCKET_PATH', "'" . WP_ROCKET_PATH . "'", $autoloader );
+
+		$buffer .= "\t$autoloader\n\n";
 	}
 
 	// Include the process file in buffer.
-	$buffer .= "if ( file_exists( '" . WP_ROCKET_FRONT_PATH . "process.php' ) && file_exists( '" . WP_ROCKET_PATH . "vendor/autoload.php' ) && version_compare( phpversion(), '" . WP_ROCKET_PHP_VERSION . "' ) >= 0 ) {\n";
-	$buffer .= "\tinclude '" . WP_ROCKET_PATH . "vendor/autoload.php';\n";
 	$buffer .= "\tinclude '" . WP_ROCKET_FRONT_PATH . "process.php';\n";
 	$buffer .= "} else {\n";
 	// Add a constant to provent include issue.
@@ -98,6 +110,17 @@ function get_rocket_config_file() {
 	if ( apply_filters( 'rocket_common_cache_logged_users', false ) ) {
 		$buffer .= '$rocket_common_cache_logged_users = 1;' . "\n";
 	}
+
+	/**
+	 * Filters the use of the mobile cache version for tablets
+	 * 'desktop' will serve desktop to tablets, 'mobile' will serve mobile to tablets
+	 *
+	 * @since 3.2
+	 * @author Remy Perona
+	 *
+	 * @param string $tablet_version valid values are 'mobile' or 'desktop'
+	 */
+	$buffer .= '$rocket_cache_mobile_files_tablet = ' . apply_filters( 'rocket_cache_mobile_files_tablet', 'desktop' ) . ';' . "\n";
 
 	foreach ( $options as $option => $value ) {
 		if ( 'cache_ssl' === $option || 'cache_mobile' === $option || 'do_caching_mobile_files' === $option || 'secret_cache_key' === $option ) {

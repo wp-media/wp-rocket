@@ -134,6 +134,16 @@ class Render extends Abstract_render {
 	}
 
 	/**
+	 * Render the Imagify page section.
+	 *
+	 * @since 3.2
+	 * @author Remy Perona
+	 */
+	public function render_imagify_section() {
+		echo $this->generate( 'page-sections/imagify' );
+	}
+
+	/**
 	 * Render the tools page section.
 	 *
 	 * @since 3.0

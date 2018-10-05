@@ -11,9 +11,6 @@ defined( 'ABSPATH' ) || die( 'Cheatin\' uh?' );
 function rocket_clear_cache_after_pagely() {
 	// Clear all caching files.
 	rocket_clean_domain();
-
-	// Preload cache.
-	run_rocket_preload_cache( 'cache-preload' );
 }
 add_action( 'pagely_cache_purge_after', 'rocket_clear_cache_after_pagely' );
 
@@ -25,9 +22,9 @@ add_action( 'pagely_cache_purge_after', 'rocket_clear_cache_after_pagely' );
  * @return void
  */
 function rocket_clean_pagely() {
-    if ( class_exists( 'PagelyCachePurge' ) ) {
-            $purger = new PagelyCachePurge();
-            $purger->purgeAll();
-    }
+	if ( class_exists( 'PagelyCachePurge' ) ) {
+			$purger = new PagelyCachePurge();
+			$purger->purgeAll();
+	}
 }
 add_action( 'after_rocket_clean_domain', 'rocket_clean_pagely' );
