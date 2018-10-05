@@ -66,7 +66,7 @@ class Full_Process extends \WP_Background_Process {
 		$count = get_transient( 'rocket_preload_running' );
 		set_transient( 'rocket_preload_running', $count + 1 );
 
-		usleep( get_rocket_option( 'sitemap_preload_url_crawl', '500000' ) );
+		usleep( absint( get_rocket_option( 'sitemap_preload_url_crawl', 500000 ) ) );
 
 		return false;
 	}

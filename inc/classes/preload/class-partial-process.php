@@ -60,7 +60,7 @@ class Partial_Process extends \WP_Background_Process {
 
 		wp_remote_get( esc_url_raw( $item ), $args );
 
-		usleep( get_rocket_option( 'sitemap_preload_url_crawl', '500000' ) );
+		usleep( absint( get_rocket_option( 'sitemap_preload_url_crawl', 500000 ) ) );
 
 		return false;
 	}
