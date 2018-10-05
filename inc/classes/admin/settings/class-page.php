@@ -102,7 +102,10 @@ class Page implements Subscriber_Interface {
 			'wp_ajax_rocket_refresh_customer_data'              => 'refresh_customer_data',
 			'wp_ajax_rocket_toggle_option'                      => 'toggle_option',
 			'option_page_capability_' . WP_ROCKET_PLUGIN_SLUG   => 'required_capability',
-			'rocket_settings_menu_navigation'                   => 'add_menu_tools_page',
+			'rocket_settings_menu_navigation'                   => [
+				'add_menu_tools_page',
+				[ 'add_imagify_page', 9 ],
+			],
 		];
 	}
 
@@ -1767,6 +1770,29 @@ class Page implements Subscriber_Interface {
 			'id'               => 'tools',
 			'title'            => __( 'Tools', 'rocket' ),
 			'menu_description' => __( 'Import, Export, Rollback', 'rocket' ),
+		];
+
+		return $navigation;
+	}
+
+	/**
+	 * Add Imagify section to navigation
+	 *
+	 * @since 3.2
+	 * @author Remy Perona
+	 *
+	 * @param array $navigation Array of menu items.
+	 * @return array
+	 */
+	public function add_imagify_page( $navigation ) {
+		if ( \Imagify_Partner::is_imagify_activated() ) {
+			return $navigation;
+		}
+
+		$navigation['imagify'] = [
+			'id'               => 'imagify',
+			'title'            => __( 'Image Optimization', 'rocket' ),
+			'menu_description' => __( 'Compress your images', 'rocket' ),
 		];
 
 		return $navigation;
