@@ -41,6 +41,10 @@ settings_errors( $data['slug'] ); ?>
 			</form>
 			<?php
 			if ( rocket_valid_key() ) {
+				if ( ! \Imagify_Partner::is_imagify_activated() ) {
+					$this->render_imagify_section();
+				}
+
 				$this->render_tools_section();
 			?>
 			<div class="wpr-Content-tips">
