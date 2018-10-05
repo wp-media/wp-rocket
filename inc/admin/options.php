@@ -35,6 +35,16 @@ function rocket_after_save_options( $oldvalue, $value ) {
 	if ( md5( wp_json_encode( $oldvalue_diff ) ) !== md5( wp_json_encode( $value_diff ) ) ) {
 		// Purge all cache files.
 		rocket_clean_domain();
+
+		wp_remote_get(
+			home_url(),
+			[
+				'timeout'    => 0.01,
+				'blocking'   => false,
+				'user-agent' => 'WP Rocket/Homepage Preload',
+				'sslverify'  => apply_filters( 'https_local_ssl_verify', true ),
+			]
+		);
 	}
 
 	// Purge all minify cache files.
@@ -49,15 +59,6 @@ function rocket_after_save_options( $oldvalue, $value ) {
 	// Purge all cache busting files.
 	if ( ! empty( $_POST ) && ( $oldvalue['remove_query_strings'] !== $value['remove_query_strings'] ) ) {
 		rocket_clean_cache_busting();
-		wp_remote_get(
-			home_url(),
-			array(
-				'timeout'    => 0.01,
-				'blocking'   => false,
-				'user-agent' => 'wprocketbot',
-				'sslverify'  => apply_filters( 'https_local_ssl_verify', true ),
-			)
-		);
 	}
 
 	// Update CloudFlare Development Mode.

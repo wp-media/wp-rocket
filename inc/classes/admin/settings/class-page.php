@@ -997,25 +997,13 @@ class Page implements Subscriber_Interface {
 
 		$this->settings->add_settings_sections(
 			[
-				'sitemap_preload_section' => [
-					'title'       => __( 'Sitemap Preloading', 'rocket' ),
+				'preload_section' => [
+					'title'       => __( 'Preload', 'rocket' ),
 					'type'        => 'fields_container',
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description' => sprintf( __( 'Sitemap preloading runs automatically when the cache lifespan expires. You can also launch it manually from the upper toolbar menu, or from Quick Actions on the %1$sWP Rocket Dashboard%2$s.', 'rocket' ), '<a href="#dashboard">', '</a>' ),
+					'description' => sprintf( __( 'When you enable preloading WP Rocket will generate the cache starting with the links on your homepage followed by the sitemaps you specify. Preloading is automatically triggered when you add or update content and can also be manually triggered from the admin bar or from the %1$sWP Rocket Dashboard%2$s.', 'rocket' ), '<a href="#dashboard">', '</a>' ),
 					'help'        => [
 						'id'  => $this->beacon->get_suggest( 'sitemap_preload' ),
-						'url' => $bot_beacon['url'],
-					],
-					'page'        => 'preload',
-				],
-				'preload_bot_section'     => [
-					'title'       => __( 'Preload Bot', 'rocket' ),
-					'type'        => 'fields_container',
-					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag, %3$s = opening <a> tag, %4$s = closing </a> tag.
-					'description' => sprintf( __( '%1$sBot-based%2$s preloading should only be used on well-performing servers.<br>Once activated, it gets triggered automatically after you add or update content on your website.<br>You can also launch it manually from the upper toolbar menu, or from Quick Actions on the %3$sWP Rocket Dashboard%4$s.', 'rocket' ), '<a href="' . esc_url( $bot_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $bot_beacon['id'] ) . '" target="_blank">', '</a>', '<a href="#dashboard">', '</a>' ),
-					'helper'      => __( 'Deactivate these options if you notice any overload on your server!', 'rocket' ),
-					'help'        => [
-						'id'  => $this->beacon->get_suggest( 'preload_bot' ),
 						'url' => $bot_beacon['url'],
 					],
 					'page'        => 'preload',
@@ -1033,6 +1021,21 @@ class Page implements Subscriber_Interface {
 			]
 		);
 
+		$this->settings->add_settings_fields(
+			[
+				'manual_preload'    => [
+					'type'              => 'checkbox',
+					'label'             => __( 'Activate Preloading', 'rocket' ),
+					'section'           => 'preload_section',
+					'page'              => 'preload',
+					'default'           => 1,
+					'container_class'   => [
+						'wpr-isParent',
+					],
+					'sanitize_callback' => 'sanitize_checkbox',
+				],
+			] );
+
 		// Add this separately to be able to filter it easily.
 		$this->settings->add_settings_fields(
 			apply_filters( 'rocket_sitemap_preload_options', [
@@ -1041,8 +1044,10 @@ class Page implements Subscriber_Interface {
 					'label'             => __( 'Activate sitemap-based cache preloading', 'rocket' ),
 					'container_class'   => [
 						'wpr-isParent',
+						'wpr-field--children',
 					],
-					'section'           => 'sitemap_preload_section',
+					'parent'            => 'manual_preload',
+					'section'           => 'preload_section',
 					'page'              => 'preload',
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
@@ -1052,7 +1057,7 @@ class Page implements Subscriber_Interface {
 
 		$this->settings->add_settings_fields(
 			[
-				'sitemaps'          => [
+				'sitemaps'     => [
 					'type'              => 'textarea',
 					'label'             => __( 'Sitemaps for preloading', 'rocket' ),
 					'container_class'   => [
@@ -1061,28 +1066,12 @@ class Page implements Subscriber_Interface {
 					'description'       => __( 'Specify XML sitemap(s) to be used for preloading', 'rocket' ),
 					'placeholder'       => 'http://example.com/sitemap.xml',
 					'parent'            => 'sitemap_preload',
-					'section'           => 'sitemap_preload_section',
+					'section'           => 'preload_section',
 					'page'              => 'preload',
 					'default'           => [],
 					'sanitize_callback' => 'sanitize_textarea',
 				],
-				'manual_preload'    => [
-					'type'              => 'checkbox',
-					'label'             => __( 'Manual', 'rocket' ),
-					'section'           => 'preload_bot_section',
-					'page'              => 'preload',
-					'default'           => 0,
-					'sanitize_callback' => 'sanitize_checkbox',
-				],
-				'automatic_preload' => [
-					'type'              => 'checkbox',
-					'label'             => __( 'Automatic', 'rocket' ),
-					'section'           => 'preload_bot_section',
-					'page'              => 'preload',
-					'default'           => 0,
-					'sanitize_callback' => 'sanitize_checkbox',
-				],
-				'dns_prefetch'      => [
+				'dns_prefetch' => [
 					'type'              => 'textarea',
 					'label'             => __( 'URLs to prefetch', 'rocket' ),
 					'description'       => __( 'Specify external hosts to be prefetched (no <code>http:</code>, one per line)', 'rocket' ),

@@ -16,6 +16,7 @@ use WP_Rocket\Busting\Busting_Factory;
 use WP_Rocket\Subscriber;
 use WP_Rocket\Optimization\Cache_Dynamic_Resource;
 use WP_Rocket\Optimization\Remove_Query_String;
+use WP_Rocket\Preload;
 
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
@@ -71,8 +72,9 @@ class Plugin {
 	 * @return void
 	 */
 	public function load() {
-		$event_manager = new Event_Manager();
-		$subscribers   = [];
+		$event_manager   = new Event_Manager();
+		$preload_process = new Preload\Full_Process();
+		$subscribers     = [];
 
 		if ( is_admin() ) {
 			if ( ! \Imagify_Partner::has_imagify_api_key() ) {
@@ -111,6 +113,9 @@ class Plugin {
 		$subscribers[] = new Plugins\Ecommerce\WooCommerce_Subscriber();
 		$subscribers[] = new Plugins\Security\Sucuri_Subscriber();
 		$subscribers[] = new Subscriber\Google_Tracking_Cache_Busting_Subscriber( new Busting\Busting_Factory( WP_ROCKET_CACHE_BUSTING_PATH, WP_ROCKET_CACHE_BUSTING_URL ), $this->options );
+		$subscribers[] = new Subscriber\Preload\Preload_Subscriber( new Preload\Homepage( $preload_process ), $this->options );
+		$subscribers[] = new Subscriber\Preload\Sitemap_Preload_Subscriber( new Preload\Sitemap( $preload_process ), $this->options );
+		$subscribers[] = new Subscriber\Preload\Partial_Preload_Subscriber( new Preload\Partial_Process(), $this->options );
 
 		foreach ( $subscribers as $subscriber ) {
 			$event_manager->add_subscriber( $subscriber );

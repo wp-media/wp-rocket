@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "98f17ced281a2de0aaa09fdb7fd3fca6",
+    "content-hash": "07dc5c205bcf9569b87ca2aede0ccb42",
     "packages": [
         {
             "name": "a5hleyrich/wp-background-processing",
-            "version": "v1.1",
+            "version": "v1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Tabrisrp/wp-background-processing.git",
-                "reference": "53ac0b4562292984d0d5d20efd8fea18b97dc608"
+                "reference": "9356c01cbea6e4bebff79eff5790a19f1022842b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Tabrisrp/wp-background-processing/zipball/53ac0b4562292984d0d5d20efd8fea18b97dc608",
-                "reference": "53ac0b4562292984d0d5d20efd8fea18b97dc608",
+                "url": "https://api.github.com/repos/Tabrisrp/wp-background-processing/zipball/9356c01cbea6e4bebff79eff5790a19f1022842b",
+                "reference": "9356c01cbea6e4bebff79eff5790a19f1022842b",
                 "shasum": ""
             },
             "require": {
@@ -40,9 +40,9 @@
             ],
             "description": "WP Background Processing can be used to fire off non-blocking asynchronous requests or as a background processing tool, allowing you to queue tasks.",
             "support": {
-                "source": "https://github.com/Tabrisrp/wp-background-processing/tree/v1.1"
+                "source": "https://github.com/Tabrisrp/wp-background-processing/tree/v1.2"
             },
-            "time": "2018-01-26T13:20:33+00:00"
+            "time": "2018-10-03T13:17:46+00:00"
         },
         {
             "name": "composer/installers",
