@@ -18,6 +18,10 @@ class Sitemap extends Abstract_Preload {
 	 * @return void
 	 */
 	public function run_preload( $sitemaps ) {
+		if ( ! $sitemaps ) {
+			return;
+		}
+
 		$urls_group = [];
 
 		foreach ( $sitemaps as $sitemap_type => $sitemap_url ) {
@@ -44,11 +48,13 @@ class Sitemap extends Abstract_Preload {
 			do_action( 'after_run_rocket_sitemap_preload', $sitemap_type, $sitemap_url );
 		}
 
-		foreach ( $urls_group as $urls ) {
-			if ( empty( $urls ) ) {
-				continue;
-			}
+		$urls_group = array_filter( $urls_group );
 
+		if ( ! $urls_group ) {
+			return;
+		}
+
+		foreach ( $urls_group as $urls ) {
 			$urls = array_flip( array_flip( $urls ) );
 			foreach ( $urls as $url ) {
 				$this->preload_process->push_to_queue( $url );
