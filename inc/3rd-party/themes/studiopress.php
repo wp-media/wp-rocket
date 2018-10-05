@@ -22,7 +22,8 @@ function rocket_clear_cache_after_studiopress_accelerator() {
 			rocket_clean_domain();
 
 			// Preload cache.
-			run_rocket_preload_cache( 'cache-preload' );
+			run_rocket_bot();
+			run_rocket_sitemap_preload();
 		}
 	}
 }
