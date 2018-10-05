@@ -327,7 +327,7 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 	if ( version_compare( $actual_version, '3.2', '<' ) ) {
 		$options = get_option( WP_ROCKET_SLUG );
 
-		if ( 1 === (int) $options['automatic_preload'] ) {
+		if ( ! empty( $options['automatic_preload'] ) ) {
 			$options['manual_preload'] = 1;
 		}
 
