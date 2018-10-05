@@ -29,7 +29,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 			</ul>
 			<?php
 			if ( ! \Imagify_Partner::is_imagify_activated() ) {
-				$imagify = new \Imagify_Partner( 8 );
+				$imagify = new \Imagify_Partner( 'wp-rocket' );
 
 				if ( \Imagify_Partner::is_imagify_installed() ) {
 					$button_text = __( 'Activate Imagify', 'rocket' );
