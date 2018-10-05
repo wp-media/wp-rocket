@@ -14,7 +14,12 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 	</div>
 	<div class="wpr-imagify">
 		<div class="wpr-imagify-description">
-			<p><?php _e( '<strong>WP ROCKET</strong> created <strong>IMAGIFY</strong> <strong>for best-in-class image optimization.</strong>', 'rocket' ); ?></p>
+			<p>
+			<?php
+			// Translators: %1$s = <strong>, %2$s = </strong>, %3$s = <span class="imagify-name">, %4$s = </span>.
+			printf( __( '%1$sWP ROCKET%2$s created %3$sIMAGIFY%4$s %1$sfor best-in-class image optimization.%2$s', 'rocket' ), '<strong>', '</strong>', '<span class="wpr-imagify-name">', '</span>' );
+			?>
+			</p>
 			<p><?php esc_html_e( 'Compress image to make your website faster, all while maintaining image quality.', 'rocket' ); ?></p>
 			<p class="wpr-imagify-more"><?php esc_html_e( 'More on Imagify:', 'rocket' ); ?></p>
 			<ul>
