@@ -71,19 +71,21 @@ function run_rocket_sitemap_preload() {
  * @deprecated 3.2
  */
 function do_admin_post_rocket_preload_cache() {
-	if ( isset( $_GET['_wpnonce'] ) ) {
-
-		if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'preload' ) ) {
-			wp_nonce_ays( '' );
-		}
-
-		$lang = isset( $_GET['lang'] ) && 'all' !== $_GET['lang'] ? sanitize_key( $_GET['lang'] ) : '';
-		run_rocket_bot( 'cache-preload', $lang );
-		run_rocket_sitemap_preload();
-
+	if ( empty( $_GET['_wpnonce'] ) ) {
 		wp_safe_redirect( wp_get_referer() );
 		die();
 	}
+
+	if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'preload' ) ) {
+		wp_nonce_ays( '' );
+	}
+
+	$lang = isset( $_GET['lang'] ) && 'all' !== $_GET['lang'] ? sanitize_key( $_GET['lang'] ) : '';
+	run_rocket_bot( 'cache-preload', $lang );
+	run_rocket_sitemap_preload();
+
+	wp_safe_redirect( wp_get_referer() );
+	die();
 }
 add_action( 'admin_post_nopriv_preload', 'do_admin_post_rocket_preload_cache' );
 add_action( 'admin_post_preload', 'do_admin_post_rocket_preload_cache' );
