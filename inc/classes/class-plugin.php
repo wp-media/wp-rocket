@@ -78,6 +78,7 @@ class Plugin {
 			if ( ! \Imagify_Partner::has_imagify_api_key() ) {
 				$imagify = new \Imagify_Partner( 8 );
 				$imagify->init();
+				remove_action( 'imagify_assets_enqueued', 'imagify_dequeue_sweetalert_wprocket' );
 			}
 
 			$settings_page_args = [
