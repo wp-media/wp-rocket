@@ -332,6 +332,8 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		}
 
 		update_option( WP_ROCKET_SLUG, $options );
+		rocket_generate_config_file();
+		rocket_generate_advanced_cache_file();
 
 		// Create a .htaccess file in the log folder.
 		$handler = \WP_Rocket\Logger::get_stream_handler();
