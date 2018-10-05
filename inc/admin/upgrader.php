@@ -330,12 +330,30 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 	}
 
 	if ( version_compare( $actual_version, '3.2', '<' ) ) {
+		// Default Heartbeat settings.
 		$options                              = get_option( WP_ROCKET_SLUG, [] );
 		$options['heartbeat_site_behavior']   = 'reduce_periodicity';
 		$options['heartbeat_admin_behavior']  = 'reduce_periodicity';
 		$options['heartbeat_editor_behavior'] = 'reduce_periodicity';
 
 		update_option( WP_ROCKET_SLUG, $options );
+
+		rocket_generate_advanced_cache_file();
+
+		// Create a .htaccess file in the log folder.
+		$handler = \WP_Rocket\Logger::get_stream_handler();
+
+		if ( method_exists( $handler, 'create_htaccess_file' ) ) {
+			try {
+				$success = $handler->create_htaccess_file();
+			} catch ( \Exception $e ) {
+				$success = false;
+			}
+
+			if ( ! $success ) {
+				\WP_Rocket\Logger::delete_log_file();
+			}
+		}
 	}
 }
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );
