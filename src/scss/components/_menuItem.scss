@@ -123,4 +123,7 @@
     &-addons{ @extend .wpr-icon-addons; }
     &-cloudflare{ @extend .wpr-icon-addon; }
     &-tools{ @extend .wpr-icon-tools; &:before{right: 20px}}
+    &-imagify{ @extend .wpr-icon-imagify; }
+    &-imagify:hover{ @extend .wpr-icon-imagify-hover; }
+    &-imagify.isActive{ @extend .wpr-icon-imagify-hover; }
 }
