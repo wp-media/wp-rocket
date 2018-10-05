@@ -75,10 +75,10 @@ class Preload_Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	protected function preload( $lang = '' ) {
-		$urls = get_rocket_i18n_uri();
-
 		if ( $lang ) {
 			$urls = (array) get_rocket_i18n_home_url( $lang );
+		} else {
+			$urls = get_rocket_i18n_uri();
 		}
 
 		$this->homepage_preloader->preload( $urls );
@@ -207,6 +207,12 @@ class Preload_Subscriber implements Subscriber_Interface {
 	public function do_admin_post_stop_preload() {
 		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'rocket_stop_preload' ) ) {
 			wp_nonce_ays( '' );
+		}
+
+		/** This filter is documented in inc/admin-bar.php */
+		if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+			wp_safe_redirect( wp_get_referer() );
+			die();
 		}
 
 		$this->homepage_preloader->cancel_preload();
