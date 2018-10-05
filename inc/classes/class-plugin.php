@@ -75,6 +75,11 @@ class Plugin {
 		$subscribers   = [];
 
 		if ( is_admin() ) {
+			if ( ! \Imagify_Partner::has_imagify_api_key() ) {
+				$imagify = new \Imagify_Partner( 8 );
+				$imagify->init();
+			}
+
 			$settings_page_args = [
 				'slug'       => WP_ROCKET_PLUGIN_SLUG,
 				'title'      => WP_ROCKET_PLUGIN_NAME,
