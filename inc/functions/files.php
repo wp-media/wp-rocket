@@ -120,7 +120,7 @@ function get_rocket_config_file() {
 	 *
 	 * @param string $tablet_version valid values are 'mobile' or 'desktop'
 	 */
-	$buffer .= '$rocket_cache_mobile_files_tablet = ' . apply_filters( 'rocket_cache_mobile_files_tablet', 'desktop' ) . ';' . "\n";
+	$buffer .= '$rocket_cache_mobile_files_tablet = \'' . apply_filters( 'rocket_cache_mobile_files_tablet', 'desktop' ) . '\';' . "\n";
 
 	foreach ( $options as $option => $value ) {
 		if ( 'cache_ssl' === $option || 'cache_mobile' === $option || 'do_caching_mobile_files' === $option || 'secret_cache_key' === $option ) {
