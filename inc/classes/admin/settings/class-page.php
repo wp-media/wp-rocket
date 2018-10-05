@@ -1785,7 +1785,7 @@ class Page implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function add_imagify_page( $navigation ) {
-		if ( \Imagify_Partner::is_imagify_activated() ) {
+		if ( \Imagify_Partner::has_imagify_api_key() ) {
 			return $navigation;
 		}
 
