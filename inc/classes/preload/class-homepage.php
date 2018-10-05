@@ -25,17 +25,29 @@ class Homepage extends Abstract_Preload {
 				return;
 			}
 
-			$content   = wp_remote_retrieve_body( $response );
-			$home_host = wp_parse_url( $home_url, PHP_URL_HOST );
+			$content = wp_remote_retrieve_body( $response );
 
 			preg_match_all( '/<a\s+(?:[^>]+?[\s"\']|)href\s*=\s*(["\'])(?<href>[^"\']+)\1/imU', $content, $links );
 
 			array_walk(
 				$links['href'],
-				function( $link ) use ( $home_host ) {
-					$host = wp_parse_url( $link, PHP_URL_HOST );
+				function( $link ) use ( $home_url ) {
+					$link = \rocket_add_url_protocol( $link );
 
-					if ( $home_host !== $host ) {
+					if ( $link === $home_url ) {
+						return;
+					}
+
+					$home_host = wp_parse_url( $home_url, PHP_URL_HOST );
+					$link_data = wp_parse_url( $link );
+
+					if ( $home_host !== $link_data['host'] ) {
+						return;
+					}
+
+					$cache_query_strings = implode( '|', \get_rocket_cache_query_string() );
+
+					if ( ! empty( $link_data['query'] ) && ! preg_match( '/(' . $cache_query_strings . ')/iU', $link_data['query'] ) ) {
 						return;
 					}
 
