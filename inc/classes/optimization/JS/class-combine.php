@@ -429,6 +429,7 @@ class Combine extends Abstract_JS_Optimization {
 			'oneall_social_login_providers_',
 			'betterads_screen_width',
 			'woocommerce_wishlist_add_to_wishlist_url',
+			'arf_conditional_logic',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
@@ -545,7 +546,7 @@ class Combine extends Abstract_JS_Optimization {
 			'scrapeazon',
 			'startclock',
 			'it_logo_field_owl-box_',
-			'td_live_css_uid',
+			'td_live_css_uid',			
 			'wpvl_paramReplace',
 			'tdAjaxCount',
 		];
