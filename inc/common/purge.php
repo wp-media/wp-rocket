@@ -19,7 +19,7 @@ add_action( 'edit_link'                                             , 'rocket_cl
 add_action( 'delete_link'                                           , 'rocket_clean_domain' );  // When a link is deleted.
 add_action( 'customize_save'                                        , 'rocket_clean_domain' );  // When customizer is saved.
 add_action( 'update_option_theme_mods_' . get_option( 'stylesheet' ), 'rocket_clean_domain' ); // When location of a menu is updated.
-
+add_action( 'upgrader_process_complete'                             , 'rocket_clean_domain' );  // When a theme or plugin is updated.
 /**
  * Purge cache When a widget is updated
  *
