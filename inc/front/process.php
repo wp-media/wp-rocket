@@ -76,7 +76,7 @@ if ( ! isset( $_SERVER['REQUEST_METHOD'] ) || 'GET' !== $_SERVER['REQUEST_METHOD
 	Logger::debug( 'Request method not cached.', [
 		'caching process',
 		'request_uri'    => $_SERVER['REQUEST_URI'],
-		'request_method' => $_SERVER['REQUEST_METHOD'],
+		'request_method' => isset( $_SERVER['REQUEST_METHOD'] ) ? $_SERVER['REQUEST_METHOD'] : 'Undefined',
 	] );
 	return;
 }
