@@ -338,11 +338,11 @@ function get_rocket_cache_reject_ua() {
 }
 
 /**
- * Get all files we don't allow to get in CDN
+ * Get all files we don't allow to get in CDN.
  *
  * @since 2.5
  *
- * @return array List of rejected files
+ * @return string A pipe-separated list of rejected files.
  */
 function get_rocket_cdn_reject_files() {
 	$files = get_rocket_option( 'cdn_reject_files', array() );
@@ -356,28 +356,31 @@ function get_rocket_cdn_reject_files() {
 	*/
 	$files = apply_filters( 'rocket_cdn_reject_files', $files );
 
-	$files = implode( '|', array_filter( $files ) );
-
-	return $files;
+	return implode( '|', array_filter( $files ) );
 }
 
 /**
- * Get all CNAMES
+ * Get all CNAMES.
  *
- * @since 3.0 Don't check for WP Rocket CDN option activated to be able to use the function on Hosting with CDN auto-enabled
  * @since 2.1
+ * @since 3.0 Don't check for WP Rocket CDN option activated to be able to use the function on Hosting with CDN auto-enabled.
  *
- * @param string $zone (default: 'all') List of zones.
- * @return array List of CNAMES
+ * @param  string $zone List of zones. Default is 'all'.
+ * @return array        List of CNAMES
  */
 function get_rocket_cdn_cnames( $zone = 'all' ) {
-	$hosts       = array();
-	$cnames      = get_rocket_option( 'cdn_cnames', array() );
-	$cnames_zone = get_rocket_option( 'cdn_zone', array() );
-	$zone        = is_array( $zone ) ? $zone : (array) $zone;
+	$hosts  = [];
+	$cnames = get_rocket_option( 'cdn_cnames', [] );
 
-	foreach ( $cnames as $k => $_urls ) {
-		if ( in_array( $cnames_zone[ $k ], $zone, true ) ) {
+	if ( $cnames ) {
+		$cnames_zone = get_rocket_option( 'cdn_zone', [] );
+		$zone        = (array) $zone;
+
+		foreach ( $cnames as $k => $_urls ) {
+			if ( ! in_array( $cnames_zone[ $k ], $zone, true ) ) {
+				continue;
+			}
+
 			$_urls = explode( ',', $_urls );
 			$_urls = array_map( 'trim', $_urls );
 
@@ -393,7 +396,7 @@ function get_rocket_cdn_cnames( $zone = 'all' ) {
 	 * @since 2.7
 	 *
 	 * @param array $hosts List of CNAMES.
-	*/
+	 */
 	$hosts = apply_filters( 'rocket_cdn_cnames', $hosts );
 	$hosts = array_filter( $hosts );
 
