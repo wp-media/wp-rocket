@@ -370,10 +370,10 @@ function get_rocket_cdn_reject_files() {
  */
 function get_rocket_cdn_cnames( $zone = 'all' ) {
 	$hosts  = [];
-	$cnames = get_rocket_option( 'cdn_cnames', array() );
+	$cnames = get_rocket_option( 'cdn_cnames', [] );
 
 	if ( $cnames ) {
-		$cnames_zone = get_rocket_option( 'cdn_zone', array() );
+		$cnames_zone = get_rocket_option( 'cdn_zone', [] );
 		$zone        = (array) $zone;
 
 		foreach ( $cnames as $k => $_urls ) {
