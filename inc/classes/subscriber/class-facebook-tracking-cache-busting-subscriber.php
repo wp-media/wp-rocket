@@ -12,6 +12,15 @@ use WP_Rocket\Admin\Options_Data as Options;
  * @author Grégory Viguier
  */
 class Facebook_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface {
+
+	/**
+	 * Name of the cron.
+	 *
+	 * @var    string
+	 * @since  3.2
+	 * @author Grégory Viguier
+	 */
+	const CRON_NAME = 'rocket_facebook_tracking_cache_update';
 	/**
 	 * Instance of the Busting Factory class.
 	 *
@@ -40,7 +49,7 @@ class Facebook_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface
 	 * @author Grégory Viguier
 	 *
 	 * @param Busting_Factory $busting_factory Instance of the Busting Factory class.
-	 * @param Options         $options Instance of the Option_Data class.
+	 * @param Options         $options         Instance of the Options class.
 	 */
 	public function __construct( Busting_Factory $busting_factory, Options $options ) {
 		$this->busting_factory = $busting_factory;
@@ -58,11 +67,11 @@ class Facebook_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface
 	 */
 	public static function get_subscribed_events() {
 		$events = [
-			'cron_schedules'                        => 'add_schedule',
-			'init'                                  => 'schedule_tracking_cache_update',
-			'rocket_facebook_tracking_cache_update' => 'update_tracking_cache',
-			'after_rocket_clean_cache_busting'      => 'delete_tracking_cache',
-			'rocket_buffer'                         => 'cache_busting_facebook_tracking',
+			'cron_schedules'                   => 'add_schedule',
+			'init'                             => 'schedule_cache_update',
+			self::CRON_NAME                    => 'update_cache',
+			'after_rocket_clean_cache_busting' => 'delete_cache',
+			'rocket_buffer'                    => 'cache_busting_facebook_tracking',
 		];
 
 		return $events;
@@ -83,28 +92,33 @@ class Facebook_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface
 			return $schedules;
 		}
 
-		$schedules['weekly'] = array(
+		$schedules['weekly'] = [
 			'interval' => 604800,
 			'display'  => __( 'weekly', 'rocket' ),
-		);
+		];
 
 		return $schedules;
 	}
 
 	/**
-	 * Schedule the auto-update of the cache busting files.
+	 * (Un)Schedule the auto-update of the cache busting files.
 	 *
 	 * @since  3.2
 	 * @access public
 	 * @author Grégory Viguier
 	 */
-	public function schedule_tracking_cache_update() {
+	public function schedule_cache_update() {
+		$scheduled  = wp_next_scheduled( self::CRON_NAME );
+
 		if ( ! $this->is_busting_active() ) {
+			if ( $scheduled ) {
+				wp_clear_scheduled_hook( self::CRON_NAME );
+			}
 			return;
 		}
 
-		if ( ! wp_next_scheduled( 'rocket_facebook_tracking_cache_update' ) ) {
-			wp_schedule_event( time(), 'weekly', 'rocket_facebook_tracking_cache_update' );
+		if ( ! $scheduled ) {
+			wp_schedule_event( time(), 'weekly', self::CRON_NAME );
 		}
 	}
 
@@ -117,14 +131,12 @@ class Facebook_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface
 	 *
 	 * @return bool
 	 */
-	public function update_tracking_cache() {
+	public function update_cache() {
 		if ( ! $this->is_busting_active() ) {
 			return false;
 		}
 
-		$processor = $this->busting_factory->type( 'fbpix' );
-
-		return $processor->refresh_save_all();
+		return $this->busting_factory->type( 'fbpix' )->refresh_all();
 	}
 
 	/**
@@ -137,28 +149,22 @@ class Facebook_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface
 	 * @param  string $ext File extension type.
 	 * @return bool
 	 */
-	public function delete_tracking_cache( $ext ) {
-		if ( 'js' !== $ext ) {
+	public function delete_cache( $ext ) {
+		if ( 'js' !== $ext || ! $this->is_busting_active() ) {
 			return false;
 		}
 
-		if ( ! $this->is_busting_active() ) {
-			return false;
-		}
-
-		$processor = $this->busting_factory->type( 'fbpix' );
-
-		return $processor->delete();
+		return $this->busting_factory->type( 'fbpix' )->delete_all();
 	}
 
 	/**
-	 * Process the cache busting on the HTML content.
+	 * Process the cache busting on the HTML contents.
 	 *
 	 * @since  3.2
 	 * @access public
 	 * @author Grégory Viguier
 	 *
-	 * @param  string $html HTML content.
+	 * @param  string $html HTML contents.
 	 * @return string
 	 */
 	public function cache_busting_facebook_tracking( $html ) {
@@ -166,9 +172,7 @@ class Facebook_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface
 			return $html;
 		}
 
-		$processor = $this->busting_factory->type( 'fbpix' );
-
-		return $processor->replace_url( $html );
+		return $this->busting_factory->type( 'fbpix' )->replace_url( $html );
 	}
 
 	/**
