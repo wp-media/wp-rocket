@@ -1513,7 +1513,7 @@ class Page implements Subscriber_Interface {
 			'heartbeat',
 			[
 				'title'            => __( 'Heartbeat', 'rocket' ),
-				'menu_description' => __( 'Control Heartbeat’s behavior', 'rocket' ),
+				'menu_description' => __( 'Control WordPress Heartbeat API', 'rocket' ),
 			]
 		);
 
@@ -1521,7 +1521,7 @@ class Page implements Subscriber_Interface {
 			[
 				'heartbeat_section'  => [
 					'title'       => __( 'Heartbeat', 'rocket' ),
-					'description' => __( 'Disabling or reducing Heartbeat activity helps you save some of your server&rsquo;s ressources.', 'rocket' ),
+					'description' => __( 'Reducing or disabling the Heartbeat API’s activity can help save some of your server’s resources.', 'rocket' ),
 					'type'        => 'fields_container',
 					'page'        => 'heartbeat',
 					'help'        => [
@@ -1530,9 +1530,10 @@ class Page implements Subscriber_Interface {
 					],
 				],
 				'heartbeat_settings' => [
-					'title' => __( 'Reduce or disable Heartbeat activity', 'rocket' ),
-					'type'  => 'fields_container',
-					'page'  => 'heartbeat',
+					'title'       => __( 'Reduce or disable Heartbeat activity', 'rocket' ),
+					'description' => __( 'Reducing activity will change Heartbeat periodicity from one hit each minute to one hit every 2 minutes.', 'rocket' ) . '<br/>' . __( 'Disabling entirely Heatbeat may break plugins and themes using this API.', 'rocket' ),
+					'type'        => 'fields_container',
+					'page'        => 'heartbeat',
 				],
 			]
 		);
@@ -1562,7 +1563,7 @@ class Page implements Subscriber_Interface {
 				],
 				'heartbeat_admin_behavior'  => array_merge( $fields_default, [
 					'label'       => __( 'Behavior in backend', 'rocket' ),
-					'description' => __( 'Reducing activity will change Heartbeat periodicity from one hit each minute to one hit every 2 minutes.', 'rocket' ) . '<br/>' . __( 'Disabling entirely Heatbeat may break plugins and themes using this API.', 'rocket' ),
+					'description' => '',
 				] ),
 				'heartbeat_editor_behavior' => array_merge( $fields_default, [
 					'label' => __( 'Behavior in post editor', 'rocket' ),

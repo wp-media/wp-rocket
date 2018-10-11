@@ -123,4 +123,7 @@
     &-addons{ @extend .wpr-icon-addons; }
     &-cloudflare{ @extend .wpr-icon-addon; }
     &-tools{ @extend .wpr-icon-tools; &:before{right: 20px}}
+    &-heartbeat { @extend .wpr-icon-heartbeat; }
+    &-heartbeat:hover { @extend .wpr-icon-heartbeat-hover; }
+    &-heartbeat.isActive { @extend .wpr-icon-heartbeat-hover; }
 }
