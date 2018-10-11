@@ -638,12 +638,9 @@ class Facebook_Pickles {
 		$filesystem = \rocket_direct_filesystem();
 		$files      = $this->get_all_files();
 
-		if ( false === $files ) {
-			return false;
-		}
-
 		if ( ! $files ) {
-			return true;
+			// No files (or there's an error).
+			return false !== $files;
 		}
 
 		$error_paths = [];
@@ -655,7 +652,7 @@ class Facebook_Pickles {
 		}
 
 		if ( $error_paths ) {
-			Logger::error( 'Local file could not be deleted.', [
+			Logger::error( 'Local file(s) could not be deleted.', [
 				'fb pixel',
 				'paths' => $error_paths,
 			] );
@@ -680,7 +677,7 @@ class Facebook_Pickles {
 	/** ----------------------------------------------------------------------------------------- */
 
 	/**
-	 * Get all cache files in the directory.
+	 * Get all cached files in the directory.
 	 *
 	 * @since  3.2
 	 * @access private
@@ -707,7 +704,7 @@ class Facebook_Pickles {
 		$dir = $filesystem->dirlist( $dir_path );
 
 		if ( false === $dir ) {
-			Logger::error( 'could not get the directory contents.', [
+			Logger::error( 'Could not get the directory contents.', [
 				'fb pixel',
 				'path' => $dir_path,
 			] );
@@ -1053,7 +1050,7 @@ class Facebook_Pickles {
 	}
 
 	/**
-	 * Get the contents of an URL.
+	 * Get the contents of a URL.
 	 *
 	 * @since  3.2
 	 * @access private
