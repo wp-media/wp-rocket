@@ -1562,7 +1562,7 @@ class Page implements Subscriber_Interface {
 				],
 				'heartbeat_admin_behavior'  => array_merge( $fields_default, [
 					'label'       => __( 'Behavior in backend', 'rocket' ),
-					'description' => __( 'Reducing activity with change Heartbeat periodicity from one hit each minute to one hit every 2 minutes.', 'rocket' ) . '<br/>' . __( 'Disabling entirely Heatbeat may break plugins and themes using this API.', 'rocket' ),
+					'description' => __( 'Reducing activity will change Heartbeat periodicity from one hit each minute to one hit every 2 minutes.', 'rocket' ) . '<br/>' . __( 'Disabling entirely Heatbeat may break plugins and themes using this API.', 'rocket' ),
 				] ),
 				'heartbeat_editor_behavior' => array_merge( $fields_default, [
 					'label' => __( 'Behavior in post editor', 'rocket' ),
