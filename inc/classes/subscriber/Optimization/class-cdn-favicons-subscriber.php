@@ -77,7 +77,7 @@ class CDN_Favicons_Subscriber extends Minify_Subscriber {
 	}
 
 	/**
-	 * If the site uses the site ison feature, remove our filter that adds the CDN to images from the library.
+	 * If the site uses the site icon feature, remove our filter that adds the CDN to images from the library.
 	 * This allows the class CDN_Favicons to properly handle exclusions.
 	 *
 	 * @since  3.2

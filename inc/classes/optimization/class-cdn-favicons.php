@@ -166,24 +166,26 @@ class CDN_Favicons extends Abstract_Optimization {
 			// Cache the excluded files.
 			$this->excluded_files_regex = \get_rocket_cdn_reject_files();
 
-			if ( $this->excluded_files_regex ) {
-				$this->excluded_files_regex = explode( '|', $this->excluded_files_regex );
-				$this->excluded_files_regex = array_map( 'trim', $this->excluded_files_regex );
-				$this->excluded_files_regex = array_filter( $this->excluded_files_regex );
-
-				if ( $this->excluded_files_regex ) {
-					foreach ( $this->excluded_files_regex as $i => $excluded_file ) {
-						// Escape character for future use in regex pattern.
-						$this->excluded_files_regex[ $i ] = str_replace( '#', '\#', $excluded_file );
-					}
-
-					$this->excluded_files_regex = implode( '|', $this->excluded_files_regex );
-				} else {
-					$this->excluded_files_regex = '';
-				}
-			} else {
+			if ( ! $this->excluded_files_regex ) {
 				$this->excluded_files_regex = '';
+				return false;
 			}
+
+			$this->excluded_files_regex = explode( '|', $this->excluded_files_regex );
+			$this->excluded_files_regex = array_map( 'trim', $this->excluded_files_regex );
+			$this->excluded_files_regex = array_filter( $this->excluded_files_regex );
+
+			if ( ! $this->excluded_files_regex ) {
+				$this->excluded_files_regex = '';
+				return false;
+			}
+
+			foreach ( $this->excluded_files_regex as $i => $excluded_file ) {
+				// Escape character for future use in regex pattern.
+				$this->excluded_files_regex[ $i ] = str_replace( '#', '\#', $excluded_file );
+			}
+
+			$this->excluded_files_regex = implode( '|', $this->excluded_files_regex );
 		}
 
 		if ( $this->excluded_files_regex && preg_match( '#^' . $this->excluded_files_regex . '$#', \rocket_clean_exclude_file( $url ) ) ) {

@@ -360,30 +360,32 @@ function get_rocket_cdn_reject_files() {
 }
 
 /**
- * Get all CNAMES
+ * Get all CNAMES.
  *
- * @since 3.0 Don't check for WP Rocket CDN option activated to be able to use the function on Hosting with CDN auto-enabled
  * @since 2.1
+ * @since 3.0 Don't check for WP Rocket CDN option activated to be able to use the function on Hosting with CDN auto-enabled.
  *
- * @param string $zone (default: 'all') List of zones.
- * @return array List of CNAMES
+ * @param  string $zone List of zones. Default is 'all'.
+ * @return array        List of CNAMES
  */
 function get_rocket_cdn_cnames( $zone = 'all' ) {
-	$hosts  = array();
+	$hosts  = [];
 	$cnames = get_rocket_option( 'cdn_cnames', array() );
 
 	if ( $cnames ) {
 		$cnames_zone = get_rocket_option( 'cdn_zone', array() );
-		$zone        = is_array( $zone ) ? $zone : (array) $zone;
+		$zone        = (array) $zone;
 
 		foreach ( $cnames as $k => $_urls ) {
-			if ( in_array( $cnames_zone[ $k ], $zone, true ) ) {
-				$_urls = explode( ',', $_urls );
-				$_urls = array_map( 'trim', $_urls );
+			if ( ! in_array( $cnames_zone[ $k ], $zone, true ) ) {
+				continue;
+			}
 
-				foreach ( $_urls as $url ) {
-					$hosts[] = $url;
-				}
+			$_urls = explode( ',', $_urls );
+			$_urls = array_map( 'trim', $_urls );
+
+			foreach ( $_urls as $url ) {
+				$hosts[] = $url;
 			}
 		}
 	}
@@ -394,7 +396,7 @@ function get_rocket_cdn_cnames( $zone = 'all' ) {
 	 * @since 2.7
 	 *
 	 * @param array $hosts List of CNAMES.
-	*/
+	 */
 	$hosts = apply_filters( 'rocket_cdn_cnames', $hosts );
 	$hosts = array_filter( $hosts );
 
