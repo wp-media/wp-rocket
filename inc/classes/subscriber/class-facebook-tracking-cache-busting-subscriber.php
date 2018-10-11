@@ -49,7 +49,7 @@ class Facebook_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface
 	 * @author Grégory Viguier
 	 *
 	 * @param Busting_Factory $busting_factory Instance of the Busting Factory class.
-	 * @param Options         $options         Instance of the Options class.
+	 * @param Options         $options         Instance of the Options_Data class.
 	 */
 	public function __construct( Busting_Factory $busting_factory, Options $options ) {
 		$this->busting_factory = $busting_factory;
@@ -136,6 +136,8 @@ class Facebook_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface
 			return false;
 		}
 
+		$html = $this->busting_factory->type( 'fbsdk' )->refresh();
+
 		return $this->busting_factory->type( 'fbpix' )->refresh_all();
 	}
 
@@ -154,6 +156,8 @@ class Facebook_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface
 			return false;
 		}
 
+		$html = $this->busting_factory->type( 'fbsdk' )->delete();
+
 		return $this->busting_factory->type( 'fbpix' )->delete_all();
 	}
 
@@ -171,6 +175,8 @@ class Facebook_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface
 		if ( ! $this->is_allowed() ) {
 			return $html;
 		}
+
+		$html = $this->busting_factory->type( 'fbsdk' )->replace_url( $html );
 
 		return $this->busting_factory->type( 'fbpix' )->replace_url( $html );
 	}

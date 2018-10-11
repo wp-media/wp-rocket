@@ -43,6 +43,8 @@ class Busting_Factory {
 		switch ( $type ) {
 			case 'fbpix':
 				return new Facebook_Pickles( $this->busting_path, $this->busting_url );
+			case 'fbsdk':
+				return new Facebook_SDK( $this->busting_path, $this->busting_url );
 			case 'ga':
 				return new Google_Analytics( $this->busting_path, $this->busting_url );
 			case 'gtm':
