@@ -1,4 +1,6 @@
 <?php
+use WP_Rocket\Logger\Logger;
+
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
@@ -344,7 +346,7 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		rocket_generate_advanced_cache_file();
 
 		// Create a .htaccess file in the log folder.
-		$handler = \WP_Rocket\Logger::get_stream_handler();
+		$handler = Logger::get_stream_handler();
 
 		if ( method_exists( $handler, 'create_htaccess_file' ) ) {
 			try {
@@ -354,7 +356,7 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 			}
 
 			if ( ! $success ) {
-				\WP_Rocket\Logger::delete_log_file();
+				Logger::delete_log_file();
 			}
 		}
 	}

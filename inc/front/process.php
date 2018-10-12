@@ -1,9 +1,9 @@
 <?php
-use WP_Rocket\Logger;
+use WP_Rocket\Logger\Logger;
 
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
-if ( ! class_exists( '\WP_Rocket\Logger' ) ) {
+if ( ! class_exists( '\WP_Rocket\Logger\Logger' ) ) {
 	// Et paf des chocapics.
 	rocket_define_donotoptimize_constant( true );
 	return;
