@@ -167,6 +167,7 @@ if ( ! function_exists( 'get_rocket_ecommerce_exclude_pages' ) ) :
 	}
 endif;
 
+
 /**
  * Get list of JS files to deferred.
  *

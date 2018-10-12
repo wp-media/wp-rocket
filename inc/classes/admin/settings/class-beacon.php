@@ -135,8 +135,7 @@ class Beacon {
 			'minify_concatenate_js'   => 'Combine JS',
 			'minify_google_fonts'     => 'Combine Google Fonts',
 			'minify_html'             => 'Minify HTML',
-			'manual_preload'          => 'Manual Preload',
-			'automatic_preload'       => 'Automatic Preload',
+			'manual_preload'          => 'Preload',
 			'sitemap_preload'         => 'Sitemap Preload',
 			'remove_query_strings'    => 'Remove Query Strings',
 			'cdn'                     => 'CDN Enabled',
@@ -485,6 +484,10 @@ class Beacon {
 					'id'  => '56fd2f789033601d6683e574',
 					'url' => 'https://fr.docs.wp-rocket.me/article/512-varnish-wp-rocket-2-7/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
+			],
+			'heartbeat_settings'    => [
+				'en' => '??????????????????',
+				'fr' => '??????????????????',
 			],
 			'google_tracking'        => [
 				'en' => [

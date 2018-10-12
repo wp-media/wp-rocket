@@ -1,4 +1,6 @@
 <?php
+use WP_Rocket\Logger\Logger;
+
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
@@ -176,8 +178,7 @@ function rocket_first_install() {
 				'minify_concatenate_js'       => 0,
 				'minify_google_fonts'         => 1,
 				'minify_html'                 => 0,
-				'manual_preload'              => 0,
-				'automatic_preload'           => 0,
+				'manual_preload'              => 1,
 				'sitemap_preload'             => 0,
 				'sitemap_preload_url_crawl'   => '500000',
 				'sitemaps'                    => [],
@@ -205,6 +206,10 @@ function rocket_first_install() {
 				'cloudflare_protocol_rewrite' => 0,
 				'cloudflare_auto_settings'    => 0,
 				'cloudflare_old_settings'     => '',
+				'control_heartbeat'           => 0,
+				'heartbeat_site_behavior'     => 'reduce_periodicity',
+				'heartbeat_admin_behavior'    => 'reduce_periodicity',
+				'heartbeat_editor_behavior'   => 'reduce_periodicity',
 				'varnish_auto_purge'          => 0,
 				'do_beta'                     => 0,
 				'analytics_enabled'           => 0,
@@ -324,6 +329,37 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 
 	if ( version_compare( $actual_version, '3.1.4', '<' ) ) {
 		rocket_generate_advanced_cache_file();
+	}
+
+	if ( version_compare( $actual_version, '3.2', '<' ) ) {
+		// Default Heartbeat settings.
+		$options                              = get_option( WP_ROCKET_SLUG, [] );
+		$options['heartbeat_site_behavior']   = 'reduce_periodicity';
+		$options['heartbeat_admin_behavior']  = 'reduce_periodicity';
+		$options['heartbeat_editor_behavior'] = 'reduce_periodicity';
+
+		if ( ! empty( $options['automatic_preload'] ) ) {
+			$options['manual_preload'] = 1;
+		}
+
+		update_option( WP_ROCKET_SLUG, $options );
+		rocket_generate_config_file();
+		rocket_generate_advanced_cache_file();
+
+		// Create a .htaccess file in the log folder.
+		$handler = Logger::get_stream_handler();
+
+		if ( method_exists( $handler, 'create_htaccess_file' ) ) {
+			try {
+				$success = $handler->create_htaccess_file();
+			} catch ( \Exception $e ) {
+				$success = false;
+			}
+
+			if ( ! $success ) {
+				Logger::delete_log_file();
+			}
+		}
 	}
 }
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );

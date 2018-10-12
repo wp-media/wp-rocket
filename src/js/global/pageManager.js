@@ -170,7 +170,7 @@ PageManager.prototype.change = function() {
     }
 
     // Exception for tools and addons
-    if(this.pageId == "tools" || this.pageId == "addons"){
+    if(this.pageId == "tools" || this.pageId == "addons" || this.pageId == "imagify"){
         this.$submitButton.style.display = 'none';
     }
 };

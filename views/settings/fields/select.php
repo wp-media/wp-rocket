@@ -33,4 +33,10 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 		</select>
 		<label for="<?php echo esc_attr( $data['id'] ); ?>"><?php echo esc_html( $data['label'] ); ?></label>
 	</div>
+
+	<?php if ( ! empty( $data['description'] ) ) : ?>
+		<div class="wpr-field-description">
+			<?php echo $data['description']; ?>
+		</div>
+	<?php endif; ?>
 </div>

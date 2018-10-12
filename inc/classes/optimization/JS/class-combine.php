@@ -3,7 +3,7 @@ namespace WP_Rocket\Optimization\JS;
 
 use WP_Rocket\Admin\Options_Data as Options;
 use WP_Rocket\Optimization\Assets_Local_Cache;
-use WP_Rocket\Logger;
+use WP_Rocket\Logger\Logger;
 use MatthiasMullie\Minify;
 
 /**

@@ -19,7 +19,10 @@ if ( isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ) {
 		 */
 		function rocket_clean_kinsta_cache() {
 			global $kinsta_cache;
-			$kinsta_cache->kinsta_cache_purge->purge_complete_caches();
+
+			if ( ! empty( $kinsta_cache->kinsta_cache_purge ) ) {
+				$kinsta_cache->kinsta_cache_purge->purge_complete_caches();
+			}
 		}
 		add_action( 'after_rocket_clean_domain', 'rocket_clean_kinsta_cache' );
 
