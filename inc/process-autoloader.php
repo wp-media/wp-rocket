@@ -3,8 +3,9 @@
 spl_autoload_register( function( $class ) {
 	$rocket_path    = WP_ROCKET_PATH;
 	$rocket_classes = [
-		'WP_Rocket\\Logger'               => $rocket_path . 'inc/classes/class-logger.php',
-		'WP_Rocket\\Secure_Stream_Logger' => $rocket_path . 'inc/classes/class-secure-stream-logger.php',
+		'WP_Rocket\\Logger'                => $rocket_path . 'inc/classes/class-logger.php',
+		'WP_Rocket\\Logger_HTML_Formatter' => $rocket_path . 'inc/classes/class-logger-html-formatter.php',
+		'WP_Rocket\\Secure_Stream_Logger'  => $rocket_path . 'inc/classes/class-secure-stream-logger.php',
 	];
 
 	if ( isset( $rocket_classes[ $class ] ) ) {

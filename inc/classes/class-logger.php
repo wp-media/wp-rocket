@@ -4,9 +4,8 @@ namespace WP_Rocket;
 use Monolog\Logger as Monologger;
 use Monolog\Registry;
 use Monolog\Handler\StreamHandler;
-use Monolog\Formatter\HtmlFormatter;
-use Monolog\Formatter\LineFormatter;
 use Monolog\Processor;
+use WP_Rocket\Logger_HTML_Formatter as HtmlFormatter;
 
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
