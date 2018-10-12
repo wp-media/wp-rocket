@@ -3,9 +3,10 @@ namespace WP_Rocket;
 
 use Monolog\Logger as Monologger;
 use Monolog\Registry;
-use Monolog\Handler\StreamHandler;
 use Monolog\Processor;
+use Monolog\Handler\StreamHandler as MonoStreamHandler;
 use WP_Rocket\Logger_HTML_Formatter as HtmlFormatter;
+use WP_Rocket\Secure_Stream_Logger as StreamHandler;
 
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
@@ -180,12 +181,8 @@ class Logger {
 		/**
 		 * File handler.
 		 * HTML formatter is used.
-		 *
-		 * Note, if Inline formatter is used:
-		 *     - Keep default formats, allow line breaks in messages, hide empty contexts and extras.
-		 *     - `$formatter = new LineFormatter( null, null, true, true );`.
 		 */
-		$handler   = new Secure_Stream_Logger( static::get_log_file_path(), $log_level );
+		$handler   = new StreamHandler( static::get_log_file_path(), $log_level );
 		$formatter = new HtmlFormatter();
 
 		$handler->setFormatter( $formatter );
@@ -367,7 +364,7 @@ class Logger {
 		}
 
 		foreach ( $handlers as $_handler ) {
-			if ( $_handler instanceof StreamHandler ) {
+			if ( $_handler instanceof MonoStreamHandler ) {
 				$handler = $_handler;
 				break;
 			}
