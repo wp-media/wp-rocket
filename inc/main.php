@@ -152,9 +152,14 @@ function rocket_deactivation() {
 		)
 	);
 
+	// Delete transients.
 	delete_transient( 'rocket_check_licence_30' );
 	delete_transient( 'rocket_check_licence_1' );
 	delete_site_transient( 'update_wprocket_response' );
+
+	// Unschedule WP Cron events.
+	wp_clear_scheduled_hook( 'rocket_facebook_tracking_cache_update' );
+	wp_clear_scheduled_hook( 'rocket_google_tracking_cache_update' );
 }
 register_deactivation_hook( WP_ROCKET_FILE, 'rocket_deactivation' );
 
