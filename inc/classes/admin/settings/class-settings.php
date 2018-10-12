@@ -404,7 +404,6 @@ class Settings {
 
 		// Options: Activate bot preload.
 		$input['manual_preload']    = ! empty( $input['manual_preload'] ) ? 1 : 0;
-		$input['automatic_preload'] = ! empty( $input['automatic_preload'] ) ? 1 : 0;
 
 		// Option: activate sitemap preload.
 		$input['sitemap_preload'] = ! empty( $input['sitemap_preload'] ) ? 1 : 0;

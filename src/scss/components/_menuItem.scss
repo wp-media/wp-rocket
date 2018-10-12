@@ -126,4 +126,7 @@
     &-heartbeat { @extend .wpr-icon-heartbeat; }
     &-heartbeat:hover { @extend .wpr-icon-heartbeat-hover; }
     &-heartbeat.isActive { @extend .wpr-icon-heartbeat-hover; }
+    &-imagify{ @extend .wpr-icon-imagify; }
+    &-imagify:hover{ @extend .wpr-icon-imagify-hover; }
+    &-imagify.isActive{ @extend .wpr-icon-imagify-hover; }
 }

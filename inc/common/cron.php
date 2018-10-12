@@ -69,8 +69,5 @@ add_action( 'init', 'rocket_purge_cron_scheduled' );
 function do_rocket_purge_cron() {
 	// Purge domain cache files.
 	rocket_clean_domain();
-
-	// Run WP Rocket Bot for preload cache files.
-	run_rocket_preload_cache( 'cache-preload' );
 }
 add_action( 'rocket_purge_time_event', 'do_rocket_purge_cron' );

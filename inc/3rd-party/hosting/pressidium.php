@@ -33,7 +33,8 @@ if ( defined( 'WP_NINUKIS_WP_NAME' ) ) {
 			rocket_clean_domain();
 
 			// Preload cache.
-			run_rocket_preload_cache( 'cache-preload' );
+			run_rocket_bot();
+			run_rocket_sitemap_preload();
 		}
 	}
 	add_action( 'admin_init', 'rocket_clear_cache_after_pressidium' );

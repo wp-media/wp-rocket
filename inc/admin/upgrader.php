@@ -176,8 +176,7 @@ function rocket_first_install() {
 				'minify_concatenate_js'       => 0,
 				'minify_google_fonts'         => 1,
 				'minify_html'                 => 0,
-				'manual_preload'              => 0,
-				'automatic_preload'           => 0,
+				'manual_preload'              => 1,
 				'sitemap_preload'             => 0,
 				'sitemap_preload_url_crawl'   => '500000',
 				'sitemaps'                    => [],
@@ -336,8 +335,12 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		$options['heartbeat_admin_behavior']  = 'reduce_periodicity';
 		$options['heartbeat_editor_behavior'] = 'reduce_periodicity';
 
-		update_option( WP_ROCKET_SLUG, $options );
+		if ( ! empty( $options['automatic_preload'] ) ) {
+			$options['manual_preload'] = 1;
+		}
 
+		update_option( WP_ROCKET_SLUG, $options );
+		rocket_generate_config_file();
 		rocket_generate_advanced_cache_file();
 
 		// Create a .htaccess file in the log folder.

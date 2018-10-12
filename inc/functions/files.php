@@ -111,6 +111,17 @@ function get_rocket_config_file() {
 		$buffer .= '$rocket_common_cache_logged_users = 1;' . "\n";
 	}
 
+	/**
+	 * Filters the use of the mobile cache version for tablets
+	 * 'desktop' will serve desktop to tablets, 'mobile' will serve mobile to tablets
+	 *
+	 * @since 3.2
+	 * @author Remy Perona
+	 *
+	 * @param string $tablet_version valid values are 'mobile' or 'desktop'
+	 */
+	$buffer .= '$rocket_cache_mobile_files_tablet = \'' . apply_filters( 'rocket_cache_mobile_files_tablet', 'desktop' ) . '\';' . "\n";
+
 	foreach ( $options as $option => $value ) {
 		if ( 'cache_ssl' === $option || 'cache_mobile' === $option || 'do_caching_mobile_files' === $option || 'secret_cache_key' === $option ) {
 			$buffer .= '$rocket_' . $option . ' = \'' . $value . '\';' . "\n";
