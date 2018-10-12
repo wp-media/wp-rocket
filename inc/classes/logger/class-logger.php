@@ -1,12 +1,12 @@
 <?php
-namespace WP_Rocket;
+namespace WP_Rocket\Logger;
 
 use Monolog\Logger as Monologger;
 use Monolog\Registry;
 use Monolog\Processor;
 use Monolog\Handler\StreamHandler as MonoStreamHandler;
-use WP_Rocket\Logger_HTML_Formatter as HtmlFormatter;
-use WP_Rocket\Secure_Stream_Logger as StreamHandler;
+use WP_Rocket\Logger\HTML_Formatter as HtmlFormatter;
+use WP_Rocket\Logger\Stream_Handler as StreamHandler;
 
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
@@ -14,6 +14,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  * Class used to log events.
  *
  * @since  3.1.4
+ * @since  3.2 Changed namespace from \WP_Rocket to \WP_Rocket\Logger.
  * @author Grégory Viguier
  */
 class Logger {

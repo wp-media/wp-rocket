@@ -1,23 +1,24 @@
 <?php
-namespace WP_Rocket;
+namespace WP_Rocket\Logger;
 
 use Monolog\Handler\StreamHandler;
 
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
- * Class used to log events into a local file.
+ * Class used to log records into a local file.
  *
  * @since  3.2
  * @author Grégory Viguier
  */
-class Secure_Stream_Logger extends StreamHandler {
+class Stream_Handler extends StreamHandler {
 
 	/**
 	 * Tell if the .htaccess file exists.
 	 *
 	 * @var    bool
 	 * @since  3.2
+	 * @access private
 	 * @author Grégory Viguier
 	 */
 	private $htaccess_exists;
@@ -27,6 +28,7 @@ class Secure_Stream_Logger extends StreamHandler {
 	 *
 	 * @var    bool
 	 * @since  3.2
+	 * @access private
 	 * @author Grégory Viguier
 	 */
 	private $has_error;
@@ -36,6 +38,7 @@ class Secure_Stream_Logger extends StreamHandler {
 	 *
 	 * @var    string
 	 * @since  3.2
+	 * @access private
 	 * @author Grégory Viguier
 	 */
 	private $error_message;
@@ -115,6 +118,7 @@ class Secure_Stream_Logger extends StreamHandler {
 	 * Temporary error handler that "cleans" the error messages.
 	 *
 	 * @since  3.2
+	 * @access private
 	 * @see    parent::customErrorHandler()
 	 * @author Grégory Viguier
 	 *
@@ -129,6 +133,7 @@ class Secure_Stream_Logger extends StreamHandler {
 	 * A dirname() that also works for streams, by removing the protocol.
 	 *
 	 * @since  3.2
+	 * @access private
 	 * @see    parent::getDirFromStream()
 	 * @author Grégory Viguier
 	 *

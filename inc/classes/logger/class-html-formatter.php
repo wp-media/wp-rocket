@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket;
+namespace WP_Rocket\Logger;
 
 use Monolog\Formatter\HtmlFormatter;
 
@@ -11,7 +11,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  * @since  3.2
  * @author Grégory Viguier
  */
-class Logger_HTML_Formatter extends HtmlFormatter {
+class HTML_Formatter extends HtmlFormatter {
 
 	/**
 	 * Formats a log record.
