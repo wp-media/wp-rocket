@@ -82,7 +82,7 @@
     }
 
     // Special for cloudflare
-    &.wpr-cloudflareToggle{
+    &.wpr-subMenuItem{
         display: none;
         padding: 10px 20px $space 25px;
 
@@ -123,6 +123,9 @@
     &-addons{ @extend .wpr-icon-addons; }
     &-cloudflare{ @extend .wpr-icon-addon; }
     &-tools{ @extend .wpr-icon-tools; &:before{right: 20px}}
+    &-heartbeat { @extend .wpr-icon-heartbeat; }
+    &-heartbeat:hover { @extend .wpr-icon-heartbeat-hover; }
+    &-heartbeat.isActive { @extend .wpr-icon-heartbeat-hover; }
     &-imagify{ @extend .wpr-icon-imagify; }
     &-imagify:hover{ @extend .wpr-icon-imagify-hover; }
     &-imagify.isActive{ @extend .wpr-icon-imagify-hover; }

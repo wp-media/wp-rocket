@@ -435,6 +435,18 @@ class Settings {
 			$input['cloudflare_api_key'] = WP_ROCKET_CF_API_KEY;
 		}
 
+		// Options : Heartbeat.
+		$choices = [
+			''                   => 1,
+			'reduce_periodicity' => 1,
+			'disable'            => 1,
+		];
+
+		$input['control_heartbeat']         = ! empty( $input['control_heartbeat'] ) ? 1 : 0;
+		$input['heartbeat_site_behavior']   = isset( $input['heartbeat_site_behavior'], $choices[ $input['heartbeat_site_behavior'] ] ) ? $input['heartbeat_site_behavior'] : '';
+		$input['heartbeat_admin_behavior']  = isset( $input['heartbeat_admin_behavior'], $choices[ $input['heartbeat_admin_behavior'] ] ) ? $input['heartbeat_admin_behavior'] : '';
+		$input['heartbeat_editor_behavior'] = isset( $input['heartbeat_editor_behavior'], $choices[ $input['heartbeat_editor_behavior'] ] ) ? $input['heartbeat_editor_behavior'] : '';
+
 		// Option : CDN.
 		$input['cdn'] = ! empty( $input['cdn'] ) ? 1 : 0;
 

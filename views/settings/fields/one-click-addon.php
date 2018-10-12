@@ -36,7 +36,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 			<div class="wpr-radio wpr-radio--reverse">
 				<input type="checkbox" id="<?php echo esc_attr( $data['id'] ); ?>" class="" name="wp_rocket_settings[<?php echo esc_attr( $data['id'] ); ?>]" value="1" <?php checked( $data['value'], 1 ); ?>>
 				<label for="<?php echo esc_attr( $data['id'] ); ?>" class="">
-					<span data-l10n-active="<?php echo esc_attr_x( 'On', 'Active state of checkbox', 'rocket' ); ?>" 
+					<span data-l10n-active="<?php echo esc_attr_x( 'On', 'Active state of checkbox', 'rocket' ); ?>"
   data-l10n-inactive="<?php echo esc_attr_x( 'Off', 'Inactive state of checkbox', 'rocket' ); ?>" class="wpr-radio-ui"></span>
 					<?php esc_html_e( 'Add-on status', 'rocket' ); ?>
 				</label>
@@ -48,7 +48,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 	<div class="wpr-field wpr-addon">
 		<div class="wpr-flex">
 			<div class="wpr-addon-logo">
-				<img src="<?php echo esc_url( $data['logo']['url'] ); ?>" width="<?php echo esc_attr( $data['logo']['width'] ); ?>>" height="<?php echo esc_attr( $data['logo']['height'] ); ?>>" alt="">
+				<img src="<?php echo esc_url( $data['logo']['url'] ); ?>" width="<?php echo esc_attr( $data['logo']['width'] ); ?>" height="<?php echo esc_attr( $data['logo']['height'] ); ?>" alt="">
 			</div>
 			<div class="wpr-addon-text">
 				<?php if ( ! empty( $data['title'] ) ) : ?>

@@ -204,6 +204,10 @@ function rocket_first_install() {
 				'cloudflare_protocol_rewrite' => 0,
 				'cloudflare_auto_settings'    => 0,
 				'cloudflare_old_settings'     => '',
+				'control_heartbeat'           => 0,
+				'heartbeat_site_behavior'     => 'reduce_periodicity',
+				'heartbeat_admin_behavior'    => 'reduce_periodicity',
+				'heartbeat_editor_behavior'   => 'reduce_periodicity',
 				'varnish_auto_purge'          => 0,
 				'do_beta'                     => 0,
 				'analytics_enabled'           => 0,
@@ -325,7 +329,11 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 	}
 
 	if ( version_compare( $actual_version, '3.2', '<' ) ) {
-		$options = get_option( WP_ROCKET_SLUG );
+		// Default Heartbeat settings.
+		$options                              = get_option( WP_ROCKET_SLUG, [] );
+		$options['heartbeat_site_behavior']   = 'reduce_periodicity';
+		$options['heartbeat_admin_behavior']  = 'reduce_periodicity';
+		$options['heartbeat_editor_behavior'] = 'reduce_periodicity';
 
 		if ( ! empty( $options['automatic_preload'] ) ) {
 			$options['manual_preload'] = 1;

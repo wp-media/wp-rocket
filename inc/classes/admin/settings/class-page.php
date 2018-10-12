@@ -157,6 +157,7 @@ class Page implements Subscriber_Interface {
 			$this->advanced_cache_section();
 			$this->database_section();
 			$this->cdn_section();
+			$this->heartbeat_section();
 			$this->addons_section();
 			$this->cloudflare_section();
 		} else {
@@ -294,6 +295,10 @@ class Page implements Subscriber_Interface {
 			'cloudflare_protocol_rewrite' => 1,
 			'cloudflare_auto_settings'    => 1,
 			'google_analytics_cache'      => 1,
+			'control_heartbeat'           => 1,
+			'heartbeat_site_behavior'     => 1,
+			'heartbeat_admin_behavior'    => 1,
+			'heartbeat_editor_behavior'   => 1,
 		];
 
 		if ( ! isset( $_POST['option']['name'] ) || ! isset( $whitelist[ $_POST['option']['name'] ] ) ) {
@@ -1489,6 +1494,80 @@ class Page implements Subscriber_Interface {
 	}
 
 	/**
+	 * Registers Heartbeat section.
+	 *
+	 * @since  3.2
+	 * @access public
+	 * @author Grégory Viguier
+	 */
+	private function heartbeat_section() {
+		$this->settings->add_page_section(
+			'heartbeat',
+			[
+				'title'            => __( 'Heartbeat', 'rocket' ),
+				'menu_description' => __( 'Control WordPress Heartbeat API', 'rocket' ),
+			]
+		);
+
+		$this->settings->add_settings_sections(
+			[
+				'heartbeat_section'  => [
+					'title'       => __( 'Heartbeat', 'rocket' ),
+					'description' => __( 'Reducing or disabling the Heartbeat API’s activity can help save some of your server’s resources.', 'rocket' ),
+					'type'        => 'fields_container',
+					'page'        => 'heartbeat',
+					'help'        => [
+						'id'  => $this->beacon->get_suggest( 'heartbeat_settings' ),
+						'url' => '',
+					],
+				],
+				'heartbeat_settings' => [
+					'title'       => __( 'Reduce or disable Heartbeat activity', 'rocket' ),
+					'description' => __( 'Reducing activity will change Heartbeat periodicity from one hit each minute to one hit every 2 minutes.', 'rocket' ) . '<br/>' . __( 'Disabling entirely Heatbeat may break plugins and themes using this API.', 'rocket' ),
+					'type'        => 'fields_container',
+					'page'        => 'heartbeat',
+				],
+			]
+		);
+
+		$fields_default = [
+			'type'              => 'select',
+			'page'              => 'heartbeat',
+			'section'           => 'heartbeat_settings',
+			'sanitize_callback' => 'sanitize_text_field',
+			'default'           => 'reduce_periodicity',
+			'choices'           => [
+				''                   => __( 'Do not limit', 'rocket' ),
+				'reduce_periodicity' => __( 'Reduce activity', 'rocket' ),
+				'disable'            => __( 'Disable', 'rocket' ),
+			],
+		];
+
+		$this->settings->add_settings_fields(
+			[
+				'control_heartbeat'         => [
+					'type'              => 'checkbox',
+					'label'             => __( 'Control Heartbeat', 'rocket' ),
+					'page'              => 'heartbeat',
+					'section'           => 'heartbeat_section',
+					'sanitize_callback' => 'sanitize_checkbox',
+					'default'           => 0,
+				],
+				'heartbeat_admin_behavior'  => array_merge( $fields_default, [
+					'label'       => __( 'Behavior in backend', 'rocket' ),
+					'description' => '',
+				] ),
+				'heartbeat_editor_behavior' => array_merge( $fields_default, [
+					'label' => __( 'Behavior in post editor', 'rocket' ),
+				] ),
+				'heartbeat_site_behavior'   => array_merge( $fields_default, [
+					'label' => __( 'Behavior in frontend', 'rocket' ),
+				] ),
+			]
+		);
+	}
+
+	/**
 	 * Registers Add-ons section
 	 *
 	 * @since 3.0
@@ -1604,6 +1683,7 @@ class Page implements Subscriber_Interface {
 					'description'       => __( 'Provide your account email, global API key, and domain to use options such as clearing the Cloudflare cache and enabling optimal settings with WP Rocket.', 'rocket' ),
 					'section'           => 'addons',
 					'page'              => 'addons',
+					'settings_page'     => 'cloudflare',
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_textarea',
 				],
@@ -1626,7 +1706,8 @@ class Page implements Subscriber_Interface {
 				'title'            => __( 'Cloudflare', 'rocket' ),
 				'menu_description' => '',
 				'class'            => [
-					'wpr-cloudflareToggle',
+					'wpr-subMenuItem',
+					'wpr-addonSubMenuItem',
 				],
 			]
 		);
