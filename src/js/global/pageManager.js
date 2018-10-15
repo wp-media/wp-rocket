@@ -170,7 +170,13 @@ PageManager.prototype.change = function() {
     }
 
     // Exception for tools and addons
-    if(this.pageId == "tools" || this.pageId == "addons" || this.pageId == "imagify"){
+    if(this.pageId == "tools" || this.pageId == "addons"){
+        this.$submitButton.style.display = 'none';
+    }
+
+    if (this.pageId == "imagify") {
+        this.$sidebar.style.display = 'none';
+        this.$tips.style.display = 'none';
         this.$submitButton.style.display = 'none';
     }
 };
