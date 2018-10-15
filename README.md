@@ -14,6 +14,17 @@ We have [documentation](http://docs.wp-rocket.me/?utm_source=github&utm_medium=w
 
 You can also check out our [changelog](https://wp-rocket.me/changelog/?utm_source=github&utm_medium=wp_rocket_profile).
 
+## Composer installation
+
+You can use composer to install the plugin as a dependency:
+
+`composer require wp-media/wp-rocket`
+
+To be able to validate your license and use the plugin, you will also have to manually define 2 constants in your wp-config.php file:
+
+`WP_ROCKET_EMAIL` which is the email for your WP Rocket account
+`WP_ROCKET_KEY` which is your API Key
+
 ## Support
 
 Need help with something? Open a [ticket](https://wp-rocket.me/support/?utm_source=github&utm_medium=wp_rocket_profile) and we will be happy to help you out!
