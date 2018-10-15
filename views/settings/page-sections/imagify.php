@@ -42,7 +42,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 			?>
 		</div>
 		<div class="wpr-imagify-screenshot">
-			<img src="<?php echo esc_url( WP_ROCKET_ASSETS_IMG_URL . 'imagify.jpg' ); ?>" alt="" width="613" height="394">
+			<img src="https://wp-rocket.me/wp-content/uploads/1/imagify.jpg" alt="" width="613" height="394">
 		</div>
 	</div>
 </div>
