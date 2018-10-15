@@ -18,7 +18,9 @@ You can also check out our [changelog](https://wp-rocket.me/changelog/?utm_sourc
 
 You can use composer to install the plugin as a dependency:
 
-```composer require wp-media/wp-rocket```
+```
+composer require wp-media/wp-rocket
+```
 
 To be able to validate your license and use the plugin, you will also have to manually define 2 constants in your wp-config.php file:
 
