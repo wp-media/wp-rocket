@@ -338,7 +338,7 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		$options['heartbeat_admin_behavior']  = 'reduce_periodicity';
 		$options['heartbeat_editor_behavior'] = 'reduce_periodicity';
 
-		if ( ! empty( $options['automatic_preload'] ) ) {
+		if ( ! empty( $options['automatic_preload'] ) || ! empty( $options['sitemap_preload'] ) ) {
 			$options['manual_preload'] = 1;
 		}
 
