@@ -11,7 +11,9 @@ defined( 'ABSPATH' ) || die( 'Cheatin\' uh?' );
 
 if ( class_exists( 'Cookie_Notice' ) ) {
 	// Don't add the WP Rocket rewrite rules to avoid issues.
-	add_filter( 'rocket_htaccess_mod_rewrite',    '__return_false' );
+	if ( ! class_exists( 'CC4R_options' ) || ! CC4R_options::rewrite_enabled() ) {
+		add_filter( 'rocket_htaccess_mod_rewrite',    '__return_false' );
+	}
 	// Create cache version based on value set in cookie_notice_accepted cookie.
 	add_filter( 'rocket_cache_dynamic_cookies',   'rocket_get_cookie_notice_cookie' );
 	add_filter( 'rocket_cache_mandatory_cookies', 'rocket_get_cookie_notice_cookie' );
@@ -39,7 +41,9 @@ function rocket_get_cookie_notice_cookie( $cookies ) {
  */
 function rocket_add_cookie_notice_dynamic_cookie() {
 	// Don't add the WP Rocket rewrite rules to avoid issues.
-	add_filter( 'rocket_htaccess_mod_rewrite',    '__return_false' );
+	if ( ! class_exists( 'CC4R_options' ) || ! CC4R_options::rewrite_enabled() ) {
+		add_filter( 'rocket_htaccess_mod_rewrite',    '__return_false' );
+	}
 	// Create cache version based on value set in cookie_notice_accepted cookie.
 	add_filter( 'rocket_cache_dynamic_cookies',   'rocket_get_cookie_notice_cookie' );
 	add_filter( 'rocket_cache_mandatory_cookies', 'rocket_get_cookie_notice_cookie' );
@@ -62,7 +66,9 @@ add_action( 'activate_cookie-notice/cookie-notice.php', 'rocket_add_cookie_notic
  * @author Arun Basil Lal
  */
 function rocket_remove_cookie_notice_dynamic_cookie() {
-	remove_filter( 'rocket_htaccess_mod_rewrite',    '__return_false' );
+	if ( ! class_exists( 'CC4R_options' ) || ! CC4R_options::rewrite_enabled() ) {
+		remove_filter( 'rocket_htaccess_mod_rewrite',    '__return_false' );
+	}
 	remove_filter( 'rocket_cache_dynamic_cookies',   'rocket_get_cookie_notice_cookie' );
 	remove_filter( 'rocket_cache_mandatory_cookies', 'rocket_get_cookie_notice_cookie' );
 
