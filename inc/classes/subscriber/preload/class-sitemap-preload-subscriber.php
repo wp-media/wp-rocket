@@ -47,7 +47,7 @@ class Sitemap_Preload_Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function preload() {
-		if ( ! $this->options->get( 'sitemap_preload' ) ) {
+		if ( ! $this->options->get( 'sitemap_preload' ) || ! $this->options->get( 'manual_preload' ) ) {
 			return;
 		}
 
