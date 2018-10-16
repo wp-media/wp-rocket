@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Busting;
 
-use WP_Rocket\Logger;
+use WP_Rocket\Logger\Logger;
 
 /**
  * Manages the cache busting of the Facebook Pixel files.
