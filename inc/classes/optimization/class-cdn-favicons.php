@@ -90,7 +90,7 @@ class CDN_Favicons extends Abstract_Optimization {
 		}
 
 		foreach ( $favicon_tags as $favicon_tag ) {
-			if ( ! preg_match( '@[\s\'"](?:href|content)\s*=\s*["\']\s*(?<url>(?:https?:)?//[^"\']+)\s*["\']@i', $favicon_tag[0], $matches ) ) {
+			if ( ! preg_match( '@[\s\'"](?:href|content)\s*=\s*["\']\s*(?<url>[^"\']+)\s*["\']@i', $favicon_tag[0], $matches ) ) {
 				continue;
 			}
 
