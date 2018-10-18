@@ -168,15 +168,15 @@ class Facebook_Pickles {
 	public function replace_url( $html ) {
 		$this->is_replaced = false;
 
-		$tag = $this->find( '<script[^>]*?>(.*)<\/script>', $html );
+		$tags = $this->find_tags( $html );
 
-		if ( ! $tag ) {
+		if ( ! $tags ) {
 			return $html;
 		}
 
 		Logger::info( 'FACEBOOK PIXEL CACHING PROCESS STARTED.', [
 			'fb pixel',
-			'tag' => $tag,
+			'tag' => $tags['tag_to_search'],
 		] );
 
 		$all_files = [];
@@ -185,7 +185,7 @@ class Facebook_Pickles {
 		 * Fetch the main file: https://connect.facebook.net/{{locale}}/fbevents.js.
 		 */
 		$version       = $this->get_most_recent_local_version();
-		$locale        = $this->get_locale_from_url( $tag );
+		$locale        = $this->get_locale_from_url( $tags['tag_to_search'] );
 		$main_file_url = $this->get_main_file_url( $locale );
 
 		if ( $version ) {
@@ -204,7 +204,7 @@ class Facebook_Pickles {
 		/**
 		 * Grab some data from the main file and the inline tag: app_id and version.
 		 */
-		$variables = $this->get_variables( $main_file_contents, $tag );
+		$variables = $this->get_variables( $main_file_contents, $tags['tag_to_search'] );
 
 		if ( ! $variables ) {
 			return $html;
@@ -263,14 +263,14 @@ class Facebook_Pickles {
 		/**
 		 * Finally, replace the main file URL by the local one in the inline script tag.
 		 */
-		$replace_tag = preg_replace( '@(?:https?:)?//connect\.facebook\.net/[a-zA-Z_-]+/fbevents\.js@i', $busting_file_url, $tag, -1, $count );
+		$replace_tag = preg_replace( '@(?:https?:)?//connect\.facebook\.net/[a-zA-Z_-]+/fbevents\.js@i', $busting_file_url, $tags['tag_to_replace'], -1, $count );
 
-		if ( ! $count || false === strpos( $html, $tag ) ) {
+		if ( ! $count || false === strpos( $html, $tags['tag_to_replace'] ) ) {
 			Logger::error( 'The local file URL could not be replaced in the page contents.', [ 'fb pixel' ] );
 			return $html;
 		}
 
-		$html = str_replace( $tag, $replace_tag, $html );
+		$html = str_replace( $tags['tag_to_replace'], $replace_tag, $html );
 
 		$this->is_replaced = true;
 
@@ -311,29 +311,86 @@ class Facebook_Pickles {
 	/** ----------------------------------------------------------------------------------------- */
 
 	/**
-	 * Search for an element in the DOM.
+	 * Search for elements in the DOM.
 	 *
 	 * @since  3.2
 	 * @access private
 	 * @author Grégory Viguier
 	 *
-	 * @param  string $pattern Pattern to match.
-	 * @param  string $html    HTML contents.
-	 * @return string|bool     The matched HTML on success. False if nothing is found.
+	 * @param  string $html HTML contents.
+	 * @return array|bool   {
+	 *     An array on success, described as below. False if nothing is found.
+	 *
+	 *     @type string $tag_to_replace The script tag that contains the facebook.net URL: this is the tag that will be replaced in the page HTML.
+	 *     @type string $tag_to_search  It contains both app ID and facebook.net URL: this is what will be searched in for this data.
+	 *
+	 *     When the app ID and the URL are in the same tag, $tag_to_replace and $tag_to_search are the same.
+	 * }
 	 */
-	private function find( $pattern, $html ) {
-		preg_match_all( '/' . $pattern . '/Umsi', $html, $matches, PREG_SET_ORDER );
+	private function find_tags( $html ) {
+		preg_match_all( '@<script[^>]*?>(.*)</script>@Umsi', $html, $matches, PREG_SET_ORDER );
 
 		if ( empty( $matches ) ) {
 			return false;
 		}
 
+		$tags = [
+			'app_id' => [],
+			'url'    => [],
+			'both'   => [],
+		];
+
 		foreach ( $matches as list( $tag, $script ) ) {
-			if ( $script && preg_match( '@fbq\s*\(\s*["\']init["\']\s*,\s*["\']' . self::APP_ID_CAPTURE . '["\']\s*\)\s*;@', $script, $matches ) ) {
-				if ( (int) $matches['app_id'] > 0 ) {
-					return $tag;
+			if ( ! trim( $script ) ) {
+				continue;
+			}
+
+			$has_app_id = false;
+			$has_url    = false;
+
+			if ( preg_match( '@fbq\s*\(\s*["\']init["\']\s*,\s*["\']' . self::APP_ID_CAPTURE . '["\']@', $script, $matches_init ) ) {
+				if ( (int) $matches_init['app_id'] > 0 ) {
+					$has_app_id = true;
 				}
 			}
+
+			$has_url = (bool) $this->get_locale_from_url( $script );
+
+			if ( $has_app_id && $has_url ) {
+				// OK we have both.
+				$tags['both'] = $tag;
+				break;
+			}
+
+			if ( $has_app_id ) {
+				$tags['app_id'] = $tag;
+
+				if ( $tags['url'] ) {
+					// OK we have both.
+					break;
+				}
+			} elseif ( $has_url ) {
+				$tags['url'] = $tag;
+
+				if ( $tags['app_id'] ) {
+					// OK we have both.
+					break;
+				}
+			}
+		}
+
+		if ( ! empty( $tags['both'] ) ) {
+			return [
+				'tag_to_replace' => $tags['both'],
+				'tag_to_search'  => $tags['both'],
+			];
+		}
+
+		if ( ! empty( $tags['app_id'] ) && ! empty( $tags['url'] ) ) {
+			return [
+				'tag_to_replace' => $tags['url'],
+				'tag_to_search'  => $tags['url'] . $tags['app_id'],
+			];
 		}
 
 		return false;
@@ -360,7 +417,7 @@ class Facebook_Pickles {
 
 		if ( isset( $tag_contents ) ) {
 			// Retrieve the app ID from the tag contents.
-			preg_match( '@fbq\s*\(\s*["\']init["\']\s*,\s*["\']' . self::APP_ID_CAPTURE . '["\']\s*\)\s*;@', $tag_contents, $matches );
+			preg_match( '@fbq\s*\(\s*["\']init["\']\s*,\s*["\']' . self::APP_ID_CAPTURE . '["\']@', $tag_contents, $matches );
 
 			if ( empty( $matches['app_id'] ) ) {
 				Logger::error( 'The app ID could not be retrieved from the inline script contents.', [ 'fb pixel' ] );
