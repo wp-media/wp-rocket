@@ -83,6 +83,7 @@ function do_admin_post_rocket_preload_cache() {
 	$lang = isset( $_GET['lang'] ) && 'all' !== $_GET['lang'] ? sanitize_key( $_GET['lang'] ) : '';
 	run_rocket_bot( 'cache-preload', $lang );
 	run_rocket_sitemap_preload();
+	set_transient( 'rocket_preload_triggered', 1 );
 
 	wp_safe_redirect( wp_get_referer() );
 	die();
