@@ -39,7 +39,7 @@ require WP_ROCKET_3RD_PARTY_PATH . 'plugins/envira-gallery.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/cookies/cookie-notice.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/cookies/eu-cookie-law.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/cookies/weepie-cookie-allow.php';
-require WP_ROCKET_3RD_PARTY_PATH . 'plugins/cookies/GDPR.php';
+require WP_ROCKET_3RD_PARTY_PATH . 'plugins/cookies/gdpr.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/rating/kk-star-ratings.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/rating/wp-postratings.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/wp-print.php';
