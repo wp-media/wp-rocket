@@ -22,10 +22,35 @@ function rocket_after_save_options( $oldvalue, $value ) {
 	}
 
 	// These values do not need to clean the cache domain.
-	$removed = array(
-		'purge_cron_interval' => true,
-		'purge_cron_unit'     => true,
-	);
+	$removed = [
+		'cache_mobile'                => true,
+		'purge_cron_interval'         => true,
+		'purge_cron_unit'             => true,
+		'sitemap_preload'             => true,
+		'sitemaps'                    => true,
+		'database_revisions'          => true,
+		'database_auto_drafts'        => true,
+		'database_trashed_posts'      => true,
+		'database_spam_comments'      => true,
+		'database_trashed_comments'   => true,
+		'database_expired_transients' => true,
+		'database_all_transients'     => true,
+		'database_optimize_tables'    => true,
+		'schedule_automatic_cleanup'  => true,
+		'automatic_cleanup_frequency' => true,
+		'do_cloudflare'               => true,
+		'cloudflare_email'            => true,
+		'cloudflare_api_key'          => true,
+		'cloudflare_zone_id'          => true,
+		'cloudflare_devmode'          => true,
+		'cloudflare_auto_settings'    => true,
+		'cloudflare_old_settings'     => true,
+		'heartbeat_admin_behavior'    => true,
+		'heartbeat_editor_behavior'   => true,
+		'varnish_auto_purge'          => true,
+		'do_beta'                     => true,
+		'analytics_enabled'           => true,
+	];
 
 	// Create 2 arrays to compare.
 	$oldvalue_diff = array_diff_key( $oldvalue, $removed );
