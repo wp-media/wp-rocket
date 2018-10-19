@@ -301,6 +301,11 @@ function do_admin_post_rocket_purge_cache() {
 			wp_nonce_ays( '' );
 		}
 
+		// This filter is documented in inc/admin-bar.php.
+		if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+			return;
+		}
+
 		switch ( $_type ) {
 
 			// Clear all cache domain.
@@ -383,6 +388,11 @@ function do_admin_post_rocket_purge_opcache() {
 		wp_nonce_ays( '' );
 	}
 
+	// This filter is documented in inc/admin-bar.php.
+	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		return;
+	}
+
 	rocket_reset_opcache();
 
 	wp_redirect( wp_get_referer() );
@@ -398,6 +408,11 @@ add_action( 'admin_post_rocket_purge_opcache', 'do_admin_post_rocket_purge_opcac
 function do_admin_post_rocket_purge_cloudflare() {
 	if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'rocket_purge_cloudflare' ) ) {
 		wp_nonce_ays( '' );
+	}
+
+	// This filter is documented in inc/admin-bar.php.
+	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		return;
 	}
 
 	// Purge CloudFlare.
