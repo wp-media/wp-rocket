@@ -52,6 +52,7 @@ class Preload_Subscriber implements Subscriber_Interface {
 	public static function get_subscribed_events() {
 		return [
 			'admin_notices'                   => [
+				[ 'notice_preload_triggered'],
 				[ 'notice_preload_running' ],
 				[ 'notice_preload_complete' ],
 			],
@@ -125,9 +126,86 @@ class Preload_Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function maybe_launch_preload( $old_value, $value ) {
-		if ( isset( $old_value['manual_preload'], $value['manual_preload'] ) && $old_value['manual_preload'] !== $value['manual_preload'] && 1 === (int) $value['manual_preload'] ) {
+		// These values are ignored because they don't impact the cache content.
+		$ignored_options = [
+			'cache_mobile'                => true,
+			'purge_cron_interval'         => true,
+			'purge_cron_unit'             => true,
+			'sitemap_preload'             => true,
+			'sitemaps'                    => true,
+			'database_revisions'          => true,
+			'database_auto_drafts'        => true,
+			'database_trashed_posts'      => true,
+			'database_spam_comments'      => true,
+			'database_trashed_comments'   => true,
+			'database_expired_transients' => true,
+			'database_all_transients'     => true,
+			'database_optimize_tables'    => true,
+			'schedule_automatic_cleanup'  => true,
+			'automatic_cleanup_frequency' => true,
+			'do_cloudflare'               => true,
+			'cloudflare_email'            => true,
+			'cloudflare_api_key'          => true,
+			'cloudflare_zone_id'          => true,
+			'cloudflare_devmode'          => true,
+			'cloudflare_auto_settings'    => true,
+			'cloudflare_old_settings'     => true,
+			'heartbeat_admin_behavior'    => true,
+			'heartbeat_editor_behavior'   => true,
+			'varnish_auto_purge'          => true,
+			'do_beta'                     => true,
+			'analytics_enabled'           => true,
+		];
+
+		// Create 2 arrays to compare.
+		$old_value_diff = array_diff_key( $old_value, $ignored_options );
+		$value_diff     = array_diff_key( $value, $ignored_options );
+
+		// If it's different, preload.
+		if ( md5( wp_json_encode( $old_value_diff ) ) === md5( wp_json_encode( $value_diff ) ) ) {
+			return;
+		}
+
+		if ( isset( $value['manual_preload'] ) && 1 === (int) $value['manual_preload'] ) {
 			$this->preload();
 		}
+	}
+
+	/**
+	 * This notice is displayed when the preload is triggered from a different page than WP Rocket settings page
+	 *
+	 * @since 3.2
+	 * @author Remy Perona
+	 */
+	public function notice_preload_triggered() {
+		$screen = get_current_screen();
+
+		// This filter is documented in inc/admin-bar.php.
+		if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+			return;
+		}
+
+		if ( 'settings_page_wprocket' === $screen->id ) {
+			return;
+		}
+
+		if ( false === get_transient( 'rocket_preload_triggered' ) ) {
+			return;
+		}
+
+		delete_transient( 'rocket_preload_triggered' );
+
+		\rocket_notice_html(
+			[
+				'status'  => 'info',
+				'message' => sprintf(
+					// Translators: %1$s = opening link tag, %2$s = closing link tag.
+					__( 'Preload: WP Rocket has started preloading your website. Go to the %1$sWP Rocket settings%2$s page to track progress.', 'rocket' ),
+					'<a href="' . esc_url( admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG ) ) . '">',
+					'</a>'
+				),
+			]
+		);
 	}
 
 	/**
