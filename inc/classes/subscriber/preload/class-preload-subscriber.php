@@ -201,7 +201,7 @@ class Preload_Subscriber implements Subscriber_Interface {
 				'message' => sprintf(
 					// Translators: %1$s = opening link tag, %2$s = closing link tag.
 					__( 'Preload: WP Rocket has started preloading your website. Go to the %1$sWP Rocket settings%2$s page to track progress.', 'rocket' ),
-					'<a href="' . admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG ) . '">',
+					'<a href="' . esc_url( admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG ) ) . '">',
 					'</a>'
 				),
 			]
