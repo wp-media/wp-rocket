@@ -160,6 +160,7 @@ class Page implements Subscriber_Interface {
 			$this->heartbeat_section();
 			$this->addons_section();
 			$this->cloudflare_section();
+			$this->sucuri_section();
 		} else {
 			$this->license_section();
 		}
@@ -296,6 +297,8 @@ class Page implements Subscriber_Interface {
 			'cloudflare_auto_settings'    => 1,
 			'google_analytics_cache'      => 1,
 			'facebook_pixel_cache'        => 1,
+			'sucury_waf_cache_sync'       => 1,
+			'sucury_waf_api_key'          => 1,
 		];
 
 		if ( ! isset( $_POST['option']['name'] ) || ! isset( $whitelist[ $_POST['option']['name'] ] ) ) {
@@ -1683,7 +1686,7 @@ class Page implements Subscriber_Interface {
 						'section'           => 'one_click',
 						'page'              => 'addons',
 						'default'           => 0,
-						'sanitize_callback' => 'sanitize_textarea',
+						'sanitize_callback' => 'sanitize_checkbox',
 					],
 				] )
 			);
@@ -1705,7 +1708,37 @@ class Page implements Subscriber_Interface {
 					'page'              => 'addons',
 					'settings_page'     => 'cloudflare',
 					'default'           => 0,
-					'sanitize_callback' => 'sanitize_textarea',
+					'sanitize_callback' => 'sanitize_checkbox',
+				],
+			]
+		);
+
+		if ( defined( 'WP_ROCKET_SUCURI_API_KEY_HIDDEN' ) && WP_ROCKET_SUCURI_API_KEY_HIDDEN ) {
+			// No need to display the dedicated tab if there is nothing to display on it.
+			$description   = __( 'Clear the Sucuri cache when WP Rocket’s cache is cleared.', 'rocket' );
+			$settings_page = false;
+		} else {
+			$description   = __( 'Provide your API key to clear the Sucuri cache when WP Rocket’s cache is cleared.', 'rocket' );
+			$settings_page = 'sucuri_cache';
+		}
+
+		$this->settings->add_settings_fields(
+			[
+				'sucury_waf_cache_sync' => [
+					'type'              => 'rocket_addon',
+					'label'             => __( 'Sucury cache sync', 'rocket' ),
+					'logo'              => [
+						'url'    => WP_ROCKET_ASSETS_IMG_URL . 'logo-sucuri.png',
+						'width'  => 152,
+						'height' => 56,
+					],
+					'title'             => __( 'Synchronize Sucuri cache with this add-on.', 'rocket' ),
+					'description'       => $description,
+					'section'           => 'addons',
+					'page'              => 'addons',
+					'settings_page'     => $settings_page,
+					'default'           => 0,
+					'sanitize_callback' => 'sanitize_checkbox',
 				],
 			]
 		);
@@ -1816,6 +1849,57 @@ class Page implements Subscriber_Interface {
 					'section'           => 'cloudflare_settings',
 					'page'              => 'cloudflare',
 					'sanitize_callback' => 'sanitize_checkbox',
+				],
+			]
+		);
+	}
+
+	/**
+	 * Registers Sucuri cache section.
+	 *
+	 * @since  3.2
+	 * @access private
+	 * @author Grégory Viguier
+	 */
+	private function sucuri_section() {
+		if ( defined( 'WP_ROCKET_SUCURI_API_KEY_HIDDEN' ) && WP_ROCKET_SUCURI_API_KEY_HIDDEN ) {
+			return;
+		}
+
+		$this->settings->add_page_section(
+			'sucuri_cache',
+			[
+				'title'            => __( 'Sucuri Cache', 'rocket' ),
+				'menu_description' => '',
+				'class'            => [
+					'wpr-subMenuItem',
+					'wpr-addonSubMenuItem',
+				],
+			]
+		);
+
+		$this->settings->add_settings_sections(
+			[
+				'sucuri_credentials' => [
+					'type'  => 'fields_container',
+					'title' => __( 'Sucuri credentials', 'rocket' ),
+					'help'  => [
+						'id'  => $this->beacon->get_suggest( 'sucuri_credentials' ),
+						'url' => '',
+					],
+					'page'  => 'sucuri_cache',
+				],
+			]
+		);
+
+		$this->settings->add_settings_fields(
+			[
+				'sucury_waf_api_key' => [
+					'label'       => _x( 'Firewall API key (for plugin):', 'Sucuri', 'rocket' ),
+					'description' => sprintf( '<a href="%1$s" target="_blank">%2$s</a>', 'https://kb.sucuri.net/firewall/Performance/clearing-cache', _x( 'Find your API key', 'Sucuri', 'rocket' ) ),
+					'default'     => '',
+					'section'     => 'sucuri_credentials',
+					'page'        => 'sucuri_cache',
 				],
 			]
 		);
