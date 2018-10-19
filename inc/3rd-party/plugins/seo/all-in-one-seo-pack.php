@@ -2,14 +2,14 @@
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 if ( defined( 'AIOSEOP_VERSION' ) ) :
-	$all_in_one_seo_xml_options = get_option( 'aioseop_options' );
+	$aioseosp_options = get_option( 'aioseop_options' );
 	/**
 	 * Improvement with All in One SEO Pack: auto-detect the XML sitemaps for the preload option
 	 *
 	 * @since 2.8
 	 * @author Remy Perona
 	 */
-	if ( isset( $all_in_one_seo_xml_options['modules']['aiosp_feature_manager_options']['aiosp_feature_manager_enable_sitemap'] ) && 'on' === $all_in_one_seo_xml_options['modules']['aiosp_feature_manager_options']['aiosp_feature_manager_enable_sitemap'] ) {
+	if ( isset( $aioseosp_options['modules']['aiosp_feature_manager_options']['aiosp_feature_manager_enable_sitemap'] ) && 'on' === $aioseosp_options['modules']['aiosp_feature_manager_options']['aiosp_feature_manager_enable_sitemap'] ) {
 		/**
 		 * Add All in One SEO Sitemap option to WP Rocket options
 		 *
@@ -52,10 +52,17 @@ if ( defined( 'AIOSEOP_VERSION' ) ) :
 		 * @return Array Updated array of sitemaps to preload
 		 */
 		function rocket_add_all_in_one_seo_sitemap( $sitemaps ) {
-			if ( get_rocket_option( 'all_in_one_seo_xml_sitemap', false ) ) {
-				$all_in_one_seo_xml = get_option( 'aioseop_options' );
-				$sitemaps[]         = trailingslashit( home_url() ) . $all_in_one_seo_xml['modules']['aiosp_sitemap_options']['aiosp_sitemap_filename'] . '.xml';
+			if ( ! get_rocket_option( 'all_in_one_seo_xml_sitemap', false ) ) {
+				return $sitemaps;
 			}
+
+			$aioseosp_options = get_option( 'aioseop_options' );
+
+			if ( ! isset( $aioseosp_options['modules']['aiosp_feature_manager_options']['aiosp_feature_manager_enable_sitemap'] ) || 'on' !== $aioseosp_options['modules']['aiosp_feature_manager_options']['aiosp_feature_manager_enable_sitemap'] ) {
+				return $sitemaps;
+			}
+
+			$sitemaps[] = trailingslashit( home_url() ) . apply_filters( 'aiosp_sitemap_filename', 'sitemap' ) . '.xml';
 
 			return $sitemaps;
 		}
