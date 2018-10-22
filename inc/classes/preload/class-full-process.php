@@ -46,6 +46,10 @@ class Full_Process extends \WP_Background_Process {
 			return false;
 		}
 
+		if ( false !== get_transient( 'rocket_preload_cancelled' ) ) {
+			return false;
+		}
+
 		/**
 		 * Filters the arguments for the preload request
 		 *
