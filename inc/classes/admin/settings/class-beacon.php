@@ -501,8 +501,8 @@ class Beacon {
 			],
 			'facebook_tracking'      => [
 				'en' => [
-					'id'  => '',
-					'url' => 'https://docs.wp-rocket.me/?utm_source=wp_plugin&utm_medium=wp_rocket',
+					'id'  => '5bc904e7042863158cc79d57',
+					'url' => 'https://docs.wp-rocket.me/article/1117-facebook-pixel-add-on/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 		];
