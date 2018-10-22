@@ -205,12 +205,40 @@ class CDN_Favicons extends Abstract_Optimization {
 	 * @return bool
 	 */
 	protected function has_cdn_already( $url ) {
-		if ( ! is_string( $this->cnames_regex ) ) {
-			$this->cnames_regex = array_map( 'preg_quote', $this->get_cnames() );
-			$this->cnames_regex = implode( '|', $this->cnames_regex );
+		if ( is_string( $this->cnames_regex ) ) {
+			if ( '' === $this->cnames_regex ) {
+				return false;
+			}
+
+			return preg_match( '@^(https?:)?//(' . $this->cnames_regex . ')/@i', $url );
 		}
 
-		return preg_match( '/^(https?:)?\/\/(' . $this->cnames_regex . ')\//i', $url );
+		$this->cnames_regex = $this->get_cnames();
+
+		if ( ! $this->cnames_regex ) {
+			$this->cnames_regex = '';
+			return false;
+		}
+
+		foreach ( $this->cnames_regex as $i => $cname ) {
+			$cname = preg_replace( '@^(https?:)?//@i', '', $cname );
+			$cname = preg_replace( '@/+@', '/', $cname );
+			$cname = rtrim( $cname, '/' );
+
+			if ( '' !== $cname ) {
+				$this->cnames_regex[ $i ] = preg_quote( $this->cnames_regex[ $i ], '@' );
+			} else {
+				unset( $this->cnames_regex[ $i ] );
+			}
+		}
+
+		$this->cnames_regex = implode( '|', $this->cnames_regex );
+
+		if ( '' === $this->cnames_regex ) {
+			return false;
+		}
+
+		return preg_match( '@^(https?:)?//(' . $this->cnames_regex . ')/@i', $url );
 	}
 
 	/**
