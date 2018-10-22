@@ -1720,14 +1720,14 @@ class Page implements Subscriber_Interface {
 			$settings_page = false;
 		} else {
 			$description   = __( 'Provide your API key to clear the Sucuri cache when WP Rocket’s cache is cleared.', 'rocket' );
-			$settings_page = 'sucuri_cache';
+			$settings_page = 'sucuri';
 		}
 
 		$this->settings->add_settings_fields(
 			[
 				'sucury_waf_cache_sync' => [
 					'type'              => 'rocket_addon',
-					'label'             => __( 'Sucury cache sync', 'rocket' ),
+					'label'             => __( 'Sucuri', 'rocket' ),
 					'logo'              => [
 						'url'    => WP_ROCKET_ASSETS_IMG_URL . 'logo-sucuri.png',
 						'width'  => 152,
@@ -1870,9 +1870,9 @@ class Page implements Subscriber_Interface {
 		$sucuri_beacon = $this->beacon->get_suggest( 'sucuri_credentials' );
 
 		$this->settings->add_page_section(
-			'sucuri_cache',
+			'sucuri',
 			[
-				'title'            => __( 'Sucuri Cache', 'rocket' ),
+				'title'            => __( 'Sucuri', 'rocket' ),
 				'menu_description' => '',
 				'class'            => [
 					'wpr-subMenuItem',
@@ -1890,7 +1890,7 @@ class Page implements Subscriber_Interface {
 						'id'  => $sucuri_beacon['id'],
 						'url' => $sucuri_beacon['url'],
 					],
-					'page'  => 'sucuri_cache',
+					'page'  => 'sucuri',
 				],
 			]
 		);
@@ -1902,7 +1902,7 @@ class Page implements Subscriber_Interface {
 					'description' => sprintf( '<a href="%1$s" target="_blank">%2$s</a>', 'https://kb.sucuri.net/firewall/Performance/clearing-cache', _x( 'Find your API key', 'Sucuri', 'rocket' ) ),
 					'default'     => '',
 					'section'     => 'sucuri_credentials',
-					'page'        => 'sucuri_cache',
+					'page'        => 'sucuri',
 				],
 			]
 		);
