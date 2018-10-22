@@ -1501,6 +1501,7 @@ class Page implements Subscriber_Interface {
 	 * @author Grégory Viguier
 	 */
 	private function heartbeat_section() {
+		$heartbeat_beacon = $this->beacon->get_suggest( 'heartbeat_settings' );
 		$this->settings->add_page_section(
 			'heartbeat',
 			[
@@ -1517,13 +1518,13 @@ class Page implements Subscriber_Interface {
 					'type'        => 'fields_container',
 					'page'        => 'heartbeat',
 					'help'        => [
-						'id'  => $this->beacon->get_suggest( 'heartbeat_settings' ),
-						'url' => '',
+						'id'  => $heartbeat_beacon['id'],
+						'url' => $heartbeat_beacon['url'],
 					],
 				],
 				'heartbeat_settings' => [
 					'title'       => __( 'Reduce or disable Heartbeat activity', 'rocket' ),
-					'description' => __( 'Reducing activity will change Heartbeat periodicity from one hit each minute to one hit every 2 minutes.', 'rocket' ) . '<br/>' . __( 'Disabling entirely Heatbeat may break plugins and themes using this API.', 'rocket' ),
+					'description' => __( 'Reducing activity will change Heartbeat frequency from one hit each minute to one hit every 2 minutes.', 'rocket' ) . '<br/>' . __( 'Disabling Heartbeat entirely may break plugins and themes using this API.', 'rocket' ),
 					'type'        => 'fields_container',
 					'page'        => 'heartbeat',
 				],
@@ -1866,6 +1867,8 @@ class Page implements Subscriber_Interface {
 			return;
 		}
 
+		$sucuri_beacon = $this->beacon->get_suggest( 'sucuri_credentials' );
+
 		$this->settings->add_page_section(
 			'sucuri_cache',
 			[
@@ -1884,8 +1887,8 @@ class Page implements Subscriber_Interface {
 					'type'  => 'fields_container',
 					'title' => __( 'Sucuri credentials', 'rocket' ),
 					'help'  => [
-						'id'  => $this->beacon->get_suggest( 'sucuri_credentials' ),
-						'url' => '',
+						'id'  => $sucuri_beacon['id'],
+						'url' => $sucuri_beacon['url'],
 					],
 					'page'  => 'sucuri_cache',
 				],
