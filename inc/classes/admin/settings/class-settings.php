@@ -403,7 +403,7 @@ class Settings {
 		}
 
 		// Options: Activate bot preload.
-		$input['manual_preload']    = ! empty( $input['manual_preload'] ) ? 1 : 0;
+		$input['manual_preload'] = ! empty( $input['manual_preload'] ) ? 1 : 0;
 
 		// Option: activate sitemap preload.
 		$input['sitemap_preload'] = ! empty( $input['sitemap_preload'] ) ? 1 : 0;
@@ -421,6 +421,8 @@ class Settings {
 			$input['sitemaps'] = [];
 		}
 
+		// Options : CloudFlare.
+		$input['do_cloudflare']               = ! empty( $input['do_cloudflare'] ) ? 1 : 0;
 		$input['cloudflare_email']            = isset( $input['cloudflare_email'] ) ? sanitize_email( $input['cloudflare_email'] ) : '';
 		$input['cloudflare_api_key']          = isset( $input['cloudflare_api_key'] ) ? sanitize_text_field( $input['cloudflare_api_key'] ) : '';
 		$input['cloudflare_zone_id']          = isset( $input['cloudflare_zone_id'] ) ? sanitize_text_field( $input['cloudflare_zone_id'] ) : '';
@@ -428,11 +430,23 @@ class Settings {
 		$input['cloudflare_auto_settings']    = ( isset( $input['cloudflare_auto_settings'] ) && is_numeric( $input['cloudflare_auto_settings'] ) ) ? (int) $input['cloudflare_auto_settings'] : 0;
 		$input['cloudflare_protocol_rewrite'] = ! empty( $input['cloudflare_protocol_rewrite'] ) ? 1 : 0;
 
-		// Option : CloudFlare.
-		$input['do_cloudflare'] = ! empty( $input['do_cloudflare'] ) ? 1 : 0;
-
 		if ( defined( 'WP_ROCKET_CF_API_KEY' ) ) {
 			$input['cloudflare_api_key'] = WP_ROCKET_CF_API_KEY;
+		}
+
+		// Options: Sucuri cache.
+		$input['sucury_waf_cache_sync'] = ! empty( $input['sucury_waf_cache_sync'] ) ? 1 : 0;
+
+		if ( defined( 'WP_ROCKET_SUCURI_API_KEY' ) ) {
+			$input['sucury_waf_api_key'] = WP_ROCKET_SUCURI_API_KEY;
+		} else {
+			$input['sucury_waf_api_key'] = isset( $input['sucury_waf_api_key'] ) ? sanitize_text_field( $input['sucury_waf_api_key'] ) : '';
+		}
+
+		$input['sucury_waf_api_key'] = trim( $input['sucury_waf_api_key'] );
+
+		if ( $input['sucury_waf_api_key'] && ! preg_match( '@^[a-z0-9]{32}/[a-z0-9]{32}$@', $input['sucury_waf_api_key'] ) ) {
+			$input['sucury_waf_api_key'] = '';
 		}
 
 		// Options : Heartbeat.

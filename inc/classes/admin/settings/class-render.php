@@ -546,6 +546,7 @@ class Render extends Abstract_render {
 					case 'preload':
 					case 'rocket_purge_opcache':
 					case 'rocket_purge_cloudflare':
+					case 'rocket_purge_sucuri':
 					case 'rocket_rollback':
 					case 'rocket_export':
 					case 'rocket_generate_critical_css':
