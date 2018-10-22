@@ -302,7 +302,7 @@ function do_admin_post_rocket_purge_cache() {
 		}
 
 		// This filter is documented in inc/admin-bar.php.
-		if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
 			return;
 		}
 
@@ -389,7 +389,7 @@ function do_admin_post_rocket_purge_opcache() {
 	}
 
 	// This filter is documented in inc/admin-bar.php.
-	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
 		return;
 	}
 
@@ -411,7 +411,7 @@ function do_admin_post_rocket_purge_cloudflare() {
 	}
 
 	// This filter is documented in inc/admin-bar.php.
-	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
 		return;
 	}
 
