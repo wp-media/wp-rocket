@@ -476,8 +476,10 @@ class Beacon {
 				'fr' => '5696837e9033603f7da308ae',
 			],
 			'sucuri_credentials'     => [
-				'en' => '??????????????????',
-				'fr' => '??????????????????',
+				'en' => [
+					'id'  => '5bce07be2c7d3a04dd5bf94d',
+					'url' => 'https://docs.wp-rocket.me/article/1120-sucuri-add-on/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
 			],
 			'varnish'                => [
 				'en' => [
@@ -489,9 +491,11 @@ class Beacon {
 					'url' => 'https://fr.docs.wp-rocket.me/article/512-varnish-wp-rocket-2-7/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
-			'heartbeat_settings'    => [
-				'en' => '??????????????????',
-				'fr' => '??????????????????',
+			'heartbeat_settings'     => [
+				'en' => [
+					'id'  => '5bcdfecd042863158cc7b672',
+					'url' => 'https://docs.wp-rocket.me/article/1119-control-wordpress-heartbeat-api/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
 			],
 			'google_tracking'        => [
 				'en' => [
