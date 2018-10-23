@@ -155,6 +155,8 @@ class Preload_Subscriber implements Subscriber_Interface {
 			'varnish_auto_purge'          => true,
 			'do_beta'                     => true,
 			'analytics_enabled'           => true,
+			'sucury_waf_cache_sync'       => true,
+			'sucury_waf_api_key'          => true,
 		];
 
 		// Create 2 arrays to compare.
@@ -167,6 +169,8 @@ class Preload_Subscriber implements Subscriber_Interface {
 		}
 
 		if ( isset( $value['manual_preload'] ) && 1 === (int) $value['manual_preload'] ) {
+			$this->homepage_preloader->cancel_preload();
+			usleep( 1000000 );
 			$this->preload();
 		}
 	}
