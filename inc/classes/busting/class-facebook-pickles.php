@@ -1046,7 +1046,7 @@ class Facebook_Pickles {
 	private function get_plugin_file_paths( $variables ) {
 		$paths        = [];
 		$plugin_names = [
-			'identify',
+			'identity',
 			'microdata',
 			'inferredevents',
 			'dwell',
