@@ -54,7 +54,7 @@ abstract class Abstract_Busting {
 	 * @since 3.1
 	 * @author Remy Perona
 	 *
-	 * @param string $url      URL to get the content from.
+	 * @param string $url URL to get the content from.
 	 * @return bool
 	 */
 	public function save( $url ) {
@@ -64,9 +64,25 @@ abstract class Abstract_Busting {
 			return true;
 		}
 
+		return $this->refresh_save( $url );
+	}
+
+	/**
+	 * Saves the content of the URL to bust to the busting file.
+	 *
+	 * @since  3.2
+	 * @access public
+	 * @author Grégory Viguier
+	 *
+	 * @param  string $url URL to get the content from.
+	 * @return bool
+	 */
+	public function refresh_save( $url ) {
+		$path    = $this->busting_path . $this->filename;
 		$content = $this->get_file_content( $url );
 
 		if ( ! $content ) {
+			// If a previous version is present, it is kept in place.
 			return false;
 		}
 

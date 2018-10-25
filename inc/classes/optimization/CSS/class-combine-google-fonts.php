@@ -2,7 +2,7 @@
 namespace WP_Rocket\Optimization\CSS;
 
 use WP_Rocket\Optimization\Abstract_Optimization;
-use WP_Rocket\Logger;
+use WP_Rocket\Logger\Logger;
 
 /**
  * Combine Google Fonts

@@ -1,12 +1,12 @@
 <?php
-namespace WP_Rocket;
+namespace WP_Rocket\Logger;
 
 use Monolog\Logger as Monologger;
 use Monolog\Registry;
-use Monolog\Handler\StreamHandler;
-use Monolog\Formatter\HtmlFormatter;
-use Monolog\Formatter\LineFormatter;
 use Monolog\Processor;
+use Monolog\Handler\StreamHandler as MonoStreamHandler;
+use WP_Rocket\Logger\HTML_Formatter as HtmlFormatter;
+use WP_Rocket\Logger\Stream_Handler as StreamHandler;
 
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
@@ -14,6 +14,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  * Class used to log events.
  *
  * @since  3.1.4
+ * @since  3.2 Changed namespace from \WP_Rocket to \WP_Rocket\Logger.
  * @author Grégory Viguier
  */
 class Logger {
@@ -181,10 +182,6 @@ class Logger {
 		/**
 		 * File handler.
 		 * HTML formatter is used.
-		 *
-		 * Note, if Inline formatter is used:
-		 *     - Keep default formats, allow line breaks in messages, hide empty contexts and extras.
-		 *     - `$formatter = new LineFormatter( null, null, true, true );`.
 		 */
 		$handler   = new StreamHandler( static::get_log_file_path(), $log_level );
 		$formatter = new HtmlFormatter();
@@ -352,6 +349,36 @@ class Logger {
 	}
 
 	/**
+	 * Get the handler used for the log file.
+	 *
+	 * @since  3.2
+	 * @access public
+	 * @author Grégory Viguier
+	 *
+	 * @return object|bool The formatter object on success. False on failure.
+	 */
+	public static function get_stream_handler() {
+		$handlers = static::get_logger()->getHandlers();
+
+		if ( ! $handlers ) {
+			return false;
+		}
+
+		foreach ( $handlers as $_handler ) {
+			if ( $_handler instanceof MonoStreamHandler ) {
+				$handler = $_handler;
+				break;
+			}
+		}
+
+		if ( empty( $handler ) ) {
+			return false;
+		}
+
+		return $handler;
+	}
+
+	/**
 	 * Get the formatter used for the log file.
 	 *
 	 * @since  3.1.4
@@ -361,18 +388,7 @@ class Logger {
 	 * @return object|bool The formatter object on success. False on failure.
 	 */
 	public static function get_stream_formatter() {
-		$handlers = static::get_logger()->getHandlers();
-
-		if ( ! $handlers ) {
-			return false;
-		}
-
-		foreach ( $handlers as $_handler ) {
-			if ( $_handler instanceof StreamHandler ) {
-				$handler = $_handler;
-				break;
-			}
-		}
+		$handler = static::get_stream_handler();
 
 		if ( empty( $handler ) ) {
 			return false;

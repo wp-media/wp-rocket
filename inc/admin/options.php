@@ -1,5 +1,5 @@
 <?php
-use WP_Rocket\Logger;
+use WP_Rocket\Logger\Logger;
 
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
@@ -22,10 +22,37 @@ function rocket_after_save_options( $oldvalue, $value ) {
 	}
 
 	// These values do not need to clean the cache domain.
-	$removed = array(
-		'purge_cron_interval' => true,
-		'purge_cron_unit'     => true,
-	);
+	$removed = [
+		'cache_mobile'                => true,
+		'purge_cron_interval'         => true,
+		'purge_cron_unit'             => true,
+		'sitemap_preload'             => true,
+		'sitemaps'                    => true,
+		'database_revisions'          => true,
+		'database_auto_drafts'        => true,
+		'database_trashed_posts'      => true,
+		'database_spam_comments'      => true,
+		'database_trashed_comments'   => true,
+		'database_expired_transients' => true,
+		'database_all_transients'     => true,
+		'database_optimize_tables'    => true,
+		'schedule_automatic_cleanup'  => true,
+		'automatic_cleanup_frequency' => true,
+		'do_cloudflare'               => true,
+		'cloudflare_email'            => true,
+		'cloudflare_api_key'          => true,
+		'cloudflare_zone_id'          => true,
+		'cloudflare_devmode'          => true,
+		'cloudflare_auto_settings'    => true,
+		'cloudflare_old_settings'     => true,
+		'heartbeat_admin_behavior'    => true,
+		'heartbeat_editor_behavior'   => true,
+		'varnish_auto_purge'          => true,
+		'do_beta'                     => true,
+		'analytics_enabled'           => true,
+		'sucury_waf_cache_sync'       => true,
+		'sucury_waf_api_key'          => true,
+	];
 
 	// Create 2 arrays to compare.
 	$oldvalue_diff = array_diff_key( $oldvalue, $removed );
@@ -35,6 +62,16 @@ function rocket_after_save_options( $oldvalue, $value ) {
 	if ( md5( wp_json_encode( $oldvalue_diff ) ) !== md5( wp_json_encode( $value_diff ) ) ) {
 		// Purge all cache files.
 		rocket_clean_domain();
+
+		wp_remote_get(
+			home_url(),
+			[
+				'timeout'    => 0.01,
+				'blocking'   => false,
+				'user-agent' => 'WP Rocket/Homepage Preload',
+				'sslverify'  => apply_filters( 'https_local_ssl_verify', true ),
+			]
+		);
 	}
 
 	// Purge all minify cache files.
@@ -49,15 +86,6 @@ function rocket_after_save_options( $oldvalue, $value ) {
 	// Purge all cache busting files.
 	if ( ! empty( $_POST ) && ( $oldvalue['remove_query_strings'] !== $value['remove_query_strings'] ) ) {
 		rocket_clean_cache_busting();
-		wp_remote_get(
-			home_url(),
-			array(
-				'timeout'    => 0.01,
-				'blocking'   => false,
-				'user-agent' => 'wprocketbot',
-				'sslverify'  => apply_filters( 'https_local_ssl_verify', true ),
-			)
-		);
 	}
 
 	// Update CloudFlare Development Mode.

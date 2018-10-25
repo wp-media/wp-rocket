@@ -283,83 +283,6 @@ function rocket_post_purge_urls_for_qtranslate( $urls ) {
 add_filter( 'rocket_post_purge_urls', 'rocket_post_purge_urls_for_qtranslate' );
 
 /**
- * Actions to be done after the purge cache files of a post
- * By Default, this hook call the WP Rocket Bot (cache json)
- *
- * @since 1.3.0
- *
- * @param object $post The post object.
- * @param array  $purge_urls An array of URLs to clean.
- * @param string $lang The language to clean.
- */
-function run_rocket_bot_after_clean_post( $post, $purge_urls, $lang ) {
-	// Run robot only if post is published.
-	if ( 'publish' !== $post->post_status ) {
-		return false;
-	}
-
-	// Add Homepage URL to $purge_urls for bot crawl.
-	array_push( $purge_urls, get_rocket_i18n_home_url( $lang ) );
-
-	// Add default WordPress feeds (posts & comments).
-	array_push( $purge_urls, get_feed_link() );
-	array_push( $purge_urls, get_feed_link( 'comments_' ) );
-
-	// Get the author page.
-	$purge_author = array( get_author_posts_url( $post->post_author ) );
-
-	// Get all dates archive page.
-	$purge_dates = get_rocket_post_dates_urls( $post->ID );
-
-	// Remove dates archives page and author page to preload cache.
-	$purge_urls = array_diff( $purge_urls, $purge_dates, $purge_author );
-
-	// Create json file and run WP Rocket Bot.
-	$json_encode_urls = '["' . implode( '","', array_filter( $purge_urls ) ) . '"]';
-	if ( rocket_put_content( WP_ROCKET_PATH . 'cache.json', $json_encode_urls ) ) {
-		global $do_rocket_bot_cache_json;
-		$do_rocket_bot_cache_json = true;
-	}
-}
-add_action( 'after_rocket_clean_post', 'run_rocket_bot_after_clean_post', 10, 3 );
-
-/**
- * Actions to be done after the purge cache files of a term
- * By Default, this hook call the WP Rocket Bot (cache json)
- *
- * @since 2.6.8
- *
- * @param object $post The post object.
- * @param array  $purge_urls An array of URLs to clean.
- * @param string $lang The language to clean.
- */
-function run_rocket_bot_after_clean_term( $post, $purge_urls, $lang ) {
-	// Add Homepage URL to $purge_urls for bot crawl.
-	array_push( $purge_urls, get_rocket_i18n_home_url( $lang ) );
-
-	// Create json file and run WP Rocket Bot.
-	$json_encode_urls = '["' . implode( '","', array_filter( $purge_urls ) ) . '"]';
-	if ( rocket_put_content( WP_ROCKET_PATH . 'cache.json', $json_encode_urls ) ) {
-		global $do_rocket_bot_cache_json;
-		$do_rocket_bot_cache_json = true;
-	}
-}
-add_action( 'after_rocket_clean_term', 'run_rocket_bot_after_clean_term', 10, 3 );
-
-/**
- * Run WP Rocket Bot when a post is added, updated or deleted
- *
- * @since 1.3.2
- */
-function do_rocket_bot_cache_json() {
-	global $do_rocket_bot_cache_json;
-	if ( $do_rocket_bot_cache_json ) {
-		run_rocket_preload_cache( 'cache-json', false );
-	}
-}
-add_action( 'shutdown', 'do_rocket_bot_cache_json' );
-
-/**
  * Purge Cache file System in Admin Bar
  *
  * @since 1.3.0 Compatibility with WPML
@@ -376,6 +299,11 @@ function do_admin_post_rocket_purge_cache() {
 
 		if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'purge_cache_' . $_GET['type'] ) ) {
 			wp_nonce_ays( '' );
+		}
+
+		// This filter is documented in inc/admin-bar.php.
+		if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+			return;
 		}
 
 		switch ( $_type ) {
@@ -460,36 +388,17 @@ function do_admin_post_rocket_purge_opcache() {
 		wp_nonce_ays( '' );
 	}
 
+	// This filter is documented in inc/admin-bar.php.
+	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		return;
+	}
+
 	rocket_reset_opcache();
 
 	wp_redirect( wp_get_referer() );
 	die();
 }
 add_action( 'admin_post_rocket_purge_opcache', 'do_admin_post_rocket_purge_opcache' );
-
-/**
- * Preload cache system in Admin Bar
- * It launch the WP Rocket Bot
- *
- * @since 1.3.0 Compatibility with WPML
- * @since 1.0 (delete in 1.1.6 and re-add in 1.1.9)
- */
-function do_admin_post_rocket_preload_cache() {
-	if ( isset( $_GET['_wpnonce'] ) ) {
-
-		if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'preload' ) ) {
-			wp_nonce_ays( '' );
-		}
-
-		$lang = isset( $_GET['lang'] ) && 'all' !== $_GET['lang'] ? sanitize_key( $_GET['lang'] ) : '';
-		run_rocket_preload_cache( 'cache-preload' );
-
-		wp_redirect( wp_get_referer() );
-		die();
-	}
-}
-add_action( 'admin_post_preload',        'do_admin_post_rocket_preload_cache' );
-add_action( 'admin_post_nopriv_preload', 'do_admin_post_rocket_preload_cache' );
 
 /**
  * Purge CloudFlare cache
@@ -499,6 +408,11 @@ add_action( 'admin_post_nopriv_preload', 'do_admin_post_rocket_preload_cache' );
 function do_admin_post_rocket_purge_cloudflare() {
 	if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'rocket_purge_cloudflare' ) ) {
 		wp_nonce_ays( '' );
+	}
+
+	// This filter is documented in inc/admin-bar.php.
+	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		return;
 	}
 
 	// Purge CloudFlare.

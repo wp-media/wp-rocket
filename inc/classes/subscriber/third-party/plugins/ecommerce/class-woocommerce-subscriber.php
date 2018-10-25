@@ -47,7 +47,6 @@ class WooCommerce_Subscriber implements Event_Manager_Aware_Subscriber_Interface
 			$events['update_option_woocommerce_default_customer_address'] = [ 'after_update_single_option', 10, 2 ];
 
 			$events['shutdown']                            = 'maybe_update_config';
-			$events['delete_transient_wc_products_onsale'] = 'suspend_cache_invalidation';
 			$events['woocommerce_save_product_variation']  = 'clean_cache_after_woocommerce_save_product_variation';
 			$events['transition_post_status']              = [ 'maybe_exclude_page', 10, 3 ];
 			$events['rocket_cache_reject_uri']             = [
@@ -378,17 +377,5 @@ class WooCommerce_Subscriber implements Event_Manager_Aware_Subscriber_Interface
 	 */
 	public function delete_cache_empty_cart() {
 		delete_transient( 'rocket_get_refreshed_fragments_cache' );
-	}
-
-	/**
-	 * Turns cache invalidation on
-	 *
-	 * @since 3.1
-	 * @author Remy Perona
-	 *
-	 * @return bool
-	 */
-	public function suspend_cache_invalidation() {
-		return wp_suspend_cache_invalidation();
 	}
 }

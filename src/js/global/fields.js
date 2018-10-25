@@ -22,9 +22,23 @@ $(document).ready(function(){
             // Test check for switch
             if(aElem.is(':checked')){
                 $children.addClass('wpr-isOpen');
+
+                $children.each(function() {
+                    if ( $(this).find('input[type=checkbox]').is(':checked')) {
+                        var id = $(this).find('input[type=checkbox]').attr('id');
+
+                        $('[data-parent="' + id + '"]').addClass('wpr-isOpen');
+                    }
+                });
             }
             else{
                 $children.removeClass('wpr-isOpen');
+
+                $children.each(function() {
+                    var id = $(this).find('input[type=checkbox]').attr('id');
+
+                    $('[data-parent="' + id + '"]').removeClass('wpr-isOpen');
+                });
             }
     }
 
