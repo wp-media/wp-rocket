@@ -125,57 +125,19 @@ if ( defined( 'O2SWITCH_VARNISH_PURGE_KEY' ) ) {
 	}
 
 	/**
-	 * Remove expiration on HTML to prevent issue with Varnish cache
+	 * Remove expiration on HTML to prevent issue with Varnish cache.
 	 *
 	 * @since 3.1
 	 * @author Remy Perona
 	 *
-	 * @param string $rules htaccess rules.
-	 * @return Updated htaccess rules
+	 * @param  string $rules htaccess rules.
+	 * @return string        Updated htaccess rules.
 	 */
 	function rocket_o2switch_remove_html_expire( $rules ) {
-		$rules = <<<HTACCESS
-# Expires headers (for better cache control)
-<IfModule mod_expires.c>
-	ExpiresActive on
-	# Perhaps better to whitelist expires rules? Perhaps.
-	ExpiresDefault                          "access plus 1 month"
-	# cache.appcache needs re-requests in FF 3.6 (thanks Remy ~Introducing HTML5)
-	ExpiresByType text/cache-manifest       "access plus 0 seconds"
-	# Data
-	ExpiresByType text/xml                  "access plus 0 seconds"
-	ExpiresByType application/xml           "access plus 0 seconds"
-	ExpiresByType application/json          "access plus 0 seconds"
-	# Feed
-	ExpiresByType application/rss+xml       "access plus 1 hour"
-	ExpiresByType application/atom+xml      "access plus 1 hour"
-	# Favicon (cannot be renamed)
-	ExpiresByType image/x-icon              "access plus 1 week"
-	# Media: images, video, audio
-	ExpiresByType image/gif                 "access plus 1 month"
-	ExpiresByType image/png                 "access plus 1 month"
-	ExpiresByType image/jpeg                "access plus 1 month"
-	ExpiresByType video/ogg                 "access plus 1 month"
-	ExpiresByType audio/ogg                 "access plus 1 month"
-	ExpiresByType video/mp4                 "access plus 1 month"
-	ExpiresByType video/webm                "access plus 1 month"
-	# HTC files  (css3pie)
-	ExpiresByType text/x-component          "access plus 1 month"
-	# Webfonts
-	ExpiresByType application/x-font-ttf    "access plus 1 month"
-	ExpiresByType font/opentype             "access plus 1 month"
-	ExpiresByType application/x-font-woff   "access plus 1 month"
-	ExpiresByType application/x-font-woff2  "access plus 1 month"
-	ExpiresByType image/svg+xml             "access plus 1 month"
-	ExpiresByType application/vnd.ms-fontobject "access plus 1 month"
-	# CSS and JavaScript
-	ExpiresByType text/css                  "access plus 1 year"
-	ExpiresByType application/javascript    "access plus 1 year"
-</IfModule>
-
-HTACCESS;
+		$rules = preg_replace( '@\s*#\s*Your document html@', '', $rules );
+		$rules = preg_replace( '@\s*ExpiresByType text/html\s*"access plus \d+ (seconds|minutes|hour|week|month|year)"@', '', $rules );
 
 		return $rules;
 	}
-	add_filter( 'rocket_htaccess_mod_expires', 'rocket_o2switch_remove_html_expire' );
+	add_filter( 'rocket_htaccess_mod_expires', 'rocket_o2switch_remove_html_expire', 5 );
 }
