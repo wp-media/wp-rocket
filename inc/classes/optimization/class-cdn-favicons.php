@@ -80,10 +80,11 @@ class CDN_Favicons extends Abstract_Optimization {
 		 *     <link rel="icon shortcut" href="https://example.com/favicon.png" />
 		 *     <link rel="apple-touch-icon" href="https://example.com/apple-touch-icon.png" />
 		 *     <link rel="apple-touch-icon-precomposed" href="https://example.com/apple-touch-icon.png" />
+		 *     <link rel="mask-icon" href="https://example.com/safari-pinned-tab.svg" />
 		 *     <meta name="msapplication-TileImage" content="https://example.com/mstile.png" />
 		 * Tags with attribute values without quotes are not matched.
 		 */
-		$favicon_tags = $this->find( '<(?:link|meta)\s(?:[^>]+[\s"\'])?(?:rel|name)\s*=\s*["\']\s*(?:icon|shortcut\s+icon|icon\s+shortcut|apple-touch-icon(?:-precomposed)?|msapplication-TileImage)\s*["\'][^>]*>', $html_nocomments );
+		$favicon_tags = $this->find( '<(?:link|meta)\s(?:[^>]+[\s"\'])?(?:rel|name)\s*=\s*["\']\s*(?:icon|shortcut\s+icon|icon\s+shortcut|apple-touch-icon(?:-precomposed)?|mask-icon|msapplication-TileImage)\s*["\'][^>]*>', $html_nocomments );
 
 		if ( ! $favicon_tags ) {
 			return $html;
