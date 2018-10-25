@@ -295,24 +295,7 @@ function rocket_after_update_array_options( $old_value, $value ) {
  * @return true if a mobile plugin in the list is active, false otherwise.
  **/
 function rocket_is_mobile_plugin_active() {
-	$mobile_plugins = array(
-		'wptouch/wptouch.php',
-		'wiziapp-create-your-own-native-iphone-app/wiziapp.php',
-		'wordpress-mobile-pack/wordpress-mobile-pack.php',
-		'wp-mobilizer/wp-mobilizer.php',
-		'wp-mobile-edition/wp-mobile-edition.php',
-		'device-theme-switcher/dts_controller.php',
-		'wp-mobile-detect/wp-mobile-detect.php',
-		'easy-social-share-buttons3/easy-social-share-buttons3.php',
-	);
-
-	foreach ( $mobile_plugins as $mobile_plugin ) {
-		if ( is_plugin_active( $mobile_plugin ) ) {
-			return true;
-		}
-	}
-
-	return false;
+	return \WP_Rocket\Subscriber\Third_Party\Plugins\Mobile_Subscriber::is_mobile_plugin_active();
 }
 
 /**

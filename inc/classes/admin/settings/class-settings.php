@@ -210,12 +210,6 @@ class Settings {
 			$input['defer_all_js_safe'] = 1;
 		}
 
-		// Force mobile cache & specific mobile cache if one of the mobile plugins is active.
-		if ( rocket_is_mobile_plugin_active() ) {
-			$input['cache_mobile']            = 1;
-			$input['do_caching_mobile_files'] = 1;
-		}
-
 		$input['embeds'] = ! empty( $input['embeds'] ) ? 1 : 0;
 		$input['emoji']  = ! empty( $input['emoji'] ) ? 1 : 0;
 
@@ -409,8 +403,7 @@ class Settings {
 		}
 
 		// Options: Activate bot preload.
-		$input['manual_preload']    = ! empty( $input['manual_preload'] ) ? 1 : 0;
-		$input['automatic_preload'] = ! empty( $input['automatic_preload'] ) ? 1 : 0;
+		$input['manual_preload'] = ! empty( $input['manual_preload'] ) ? 1 : 0;
 
 		// Option: activate sitemap preload.
 		$input['sitemap_preload'] = ! empty( $input['sitemap_preload'] ) ? 1 : 0;
@@ -428,6 +421,8 @@ class Settings {
 			$input['sitemaps'] = [];
 		}
 
+		// Options : CloudFlare.
+		$input['do_cloudflare']               = ! empty( $input['do_cloudflare'] ) ? 1 : 0;
 		$input['cloudflare_email']            = isset( $input['cloudflare_email'] ) ? sanitize_email( $input['cloudflare_email'] ) : '';
 		$input['cloudflare_api_key']          = isset( $input['cloudflare_api_key'] ) ? sanitize_text_field( $input['cloudflare_api_key'] ) : '';
 		$input['cloudflare_zone_id']          = isset( $input['cloudflare_zone_id'] ) ? sanitize_text_field( $input['cloudflare_zone_id'] ) : '';
@@ -435,12 +430,36 @@ class Settings {
 		$input['cloudflare_auto_settings']    = ( isset( $input['cloudflare_auto_settings'] ) && is_numeric( $input['cloudflare_auto_settings'] ) ) ? (int) $input['cloudflare_auto_settings'] : 0;
 		$input['cloudflare_protocol_rewrite'] = ! empty( $input['cloudflare_protocol_rewrite'] ) ? 1 : 0;
 
-		// Option : CloudFlare.
-		$input['do_cloudflare'] = ! empty( $input['do_cloudflare'] ) ? 1 : 0;
-
 		if ( defined( 'WP_ROCKET_CF_API_KEY' ) ) {
 			$input['cloudflare_api_key'] = WP_ROCKET_CF_API_KEY;
 		}
+
+		// Options: Sucuri cache.
+		$input['sucury_waf_cache_sync'] = ! empty( $input['sucury_waf_cache_sync'] ) ? 1 : 0;
+
+		if ( defined( 'WP_ROCKET_SUCURI_API_KEY' ) ) {
+			$input['sucury_waf_api_key'] = WP_ROCKET_SUCURI_API_KEY;
+		} else {
+			$input['sucury_waf_api_key'] = isset( $input['sucury_waf_api_key'] ) ? sanitize_text_field( $input['sucury_waf_api_key'] ) : '';
+		}
+
+		$input['sucury_waf_api_key'] = trim( $input['sucury_waf_api_key'] );
+
+		if ( $input['sucury_waf_api_key'] && ! preg_match( '@^[a-z0-9]{32}/[a-z0-9]{32}$@', $input['sucury_waf_api_key'] ) ) {
+			$input['sucury_waf_api_key'] = '';
+		}
+
+		// Options : Heartbeat.
+		$choices = [
+			''                   => 1,
+			'reduce_periodicity' => 1,
+			'disable'            => 1,
+		];
+
+		$input['control_heartbeat']         = ! empty( $input['control_heartbeat'] ) ? 1 : 0;
+		$input['heartbeat_site_behavior']   = isset( $input['heartbeat_site_behavior'], $choices[ $input['heartbeat_site_behavior'] ] ) ? $input['heartbeat_site_behavior'] : '';
+		$input['heartbeat_admin_behavior']  = isset( $input['heartbeat_admin_behavior'], $choices[ $input['heartbeat_admin_behavior'] ] ) ? $input['heartbeat_admin_behavior'] : '';
+		$input['heartbeat_editor_behavior'] = isset( $input['heartbeat_editor_behavior'], $choices[ $input['heartbeat_editor_behavior'] ] ) ? $input['heartbeat_editor_behavior'] : '';
 
 		// Option : CDN.
 		$input['cdn'] = ! empty( $input['cdn'] ) ? 1 : 0;

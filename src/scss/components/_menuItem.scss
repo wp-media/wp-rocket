@@ -81,8 +81,8 @@
         }
     }
 
-    // Special for cloudflare
-    &.wpr-cloudflareToggle{
+    // Special for Addons
+    &.wpr-subMenuItem{
         display: none;
         padding: 10px 20px $space 25px;
 
@@ -121,6 +121,15 @@
     &-database{ @extend .wpr-icon-database; }
     &-page_cdn{ @extend .wpr-icon-cdn; }
     &-addons{ @extend .wpr-icon-addons; }
-    &-cloudflare{ @extend .wpr-icon-addon; }
     &-tools{ @extend .wpr-icon-tools; &:before{right: 20px}}
+    &-heartbeat { @extend .wpr-icon-heartbeat; }
+    &-heartbeat:hover { @extend .wpr-icon-heartbeat-hover; }
+    &-heartbeat.isActive { @extend .wpr-icon-heartbeat-hover; }
+    &-imagify{ @extend .wpr-icon-imagify; }
+    &-imagify:hover{ @extend .wpr-icon-imagify-hover; }
+    &-imagify.isActive{ @extend .wpr-icon-imagify-hover; }
+}
+
+.wpr-addonSubMenuItem {
+    @extend .wpr-icon-addon;
 }
