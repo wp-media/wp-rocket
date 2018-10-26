@@ -743,30 +743,31 @@ function rocket_clean_domain( $lang = '' ) {
 }
 
 /**
- * Delete the caching files of a specific term
+ * Delete the caching files of a specific term.
  *
  * $since 2.6.8
  *
- * @param int    $term_id       The term ID.
- * @param string $taxonomy_slug The taxonomy slug.
+ * @param  int    $term_id       The term ID.
+ * @param  string $taxonomy_slug The taxonomy slug.
  * @return void
  */
 function rocket_clean_term( $term_id, $taxonomy_slug ) {
-	$purge_urls = array();
+	$purge_urls = [];
 
 	// Get all term infos.
 	$term = get_term_by( 'id', $term_id, $taxonomy_slug );
 
 	// Get the term language.
-	$lang = false;
+	$i18n_plugin = rocket_has_i18n();
 
-	// WPML.
-	if ( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) && ! rocket_is_plugin_active( 'woocommerce-multilingual/wpml-woocommerce.php' ) ) {
+	if ( 'wpml' === $i18n_plugin && ! rocket_is_plugin_active( 'woocommerce-multilingual/wpml-woocommerce.php' ) ) {
+		// WPML.
 		$lang = $GLOBALS['sitepress']->get_language_for_element( $term_id, 'tax_' . $taxonomy_slug );
-
+	} elseif ( 'polylang' === $i18n_plugin ) {
 		// Polylang.
-	} elseif ( rocket_is_plugin_active( 'polylang/polylang.php' ) || rocket_is_plugin_active( 'polylang-pro/polylang.php' ) ) {
 		$lang = pll_get_term_language( $term_id );
+	} else {
+		$lang = false;
 	}
 
 	// Get permalink.
