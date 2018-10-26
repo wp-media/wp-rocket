@@ -121,6 +121,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 						?>
 					</div>
 
+					<?php if ( get_rocket_option( 'manual_preload' ) ) : ?>
 					<div class="wpr-field">
 						<h4 class="wpr-title3"><?php esc_html_e( 'Start cache preloading', 'rocket' ); ?></h4>
 						<?php
@@ -132,6 +133,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 						] );
 						?>
 					</div>
+					<?php endif; ?>
 
 					<?php if ( function_exists( 'opcache_reset' ) ) : ?>
 					<div class="wpr-field">
