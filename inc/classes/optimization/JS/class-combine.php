@@ -559,6 +559,7 @@ class Combine extends Abstract_JS_Optimization {
 			'tdAjaxCount',
 			'mec_skin_',
 			'_wca',
+			'_taboola',
 		];
 
 		/**
