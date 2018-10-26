@@ -341,17 +341,20 @@ class Settings {
 				$input['exclude_js'] = explode( "\n", $input['exclude_js'] );
 			}
 
-			$input['exclude_js'] = array_map( function( $file ) {
-				if ( $this->is_internal_file( $file ) ) {
-					$file = trim( $file );
-					$file = rocket_clean_exclude_file( $file );
-					$file = rocket_sanitize_js( $file );
+			$input['exclude_js'] = array_map(
+				function( $file ) {
+					if ( $this->is_internal_file( $file ) ) {
+						$file = trim( $file );
+						$file = rocket_clean_exclude_file( $file );
+						$file = rocket_sanitize_js( $file );
 
-					return $file;
-				}
+						return $file;
+					}
 
-				return sanitize_text_field( $file );
-			}, $input['exclude_js'] );
+					return sanitize_text_field( \rocket_remove_url_protocol( $file ) );
+				},
+				$input['exclude_js']
+			);
 
 			$input['exclude_js'] = array_filter( $input['exclude_js'] );
 			$input['exclude_js'] = array_unique( $input['exclude_js'] );
