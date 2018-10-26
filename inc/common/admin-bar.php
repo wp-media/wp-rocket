@@ -93,7 +93,7 @@ function rocket_admin_bar( $wp_admin_bar ) {
 				}
 
 				if ( 'wpml' !== $i18n_plugin ) {
-					// Add subemnu "All langs".
+					// Add subemnu "All langs" (the one for WPML is already printed).
 					$wp_admin_bar->add_menu(
 						[
 							'parent' => 'purge-all',
@@ -241,7 +241,7 @@ function rocket_admin_bar( $wp_admin_bar ) {
 					}
 
 					if ( 'wpml' !== $i18n_plugin ) {
-						// Add subemnu "All langs".
+						// Add subemnu "All langs" (the one for WPML is already printed).
 						$wp_admin_bar->add_menu(
 							[
 								'parent' => 'preload-cache',
