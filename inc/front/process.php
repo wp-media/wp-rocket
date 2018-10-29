@@ -460,6 +460,7 @@ function rocket_serve_cache_file( $rocket_cache_filepath ) {
 	// Check if cache file exist.
 	if ( isset( $_SERVER['HTTP_ACCEPT_ENCODING'] ) && false !== strpos( $_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip' ) && file_exists( $rocket_cache_filepath_gzip ) && is_readable( $rocket_cache_filepath_gzip ) ) {
 		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s', filemtime( $rocket_cache_filepath_gzip ) ) . ' GMT' );
+		header( 'Content-Encoding: gzip' );
 
 		// Getting If-Modified-Since headers sent by the client.
 		if ( function_exists( 'apache_request_headers' ) ) {
@@ -483,7 +484,7 @@ function rocket_serve_cache_file( $rocket_cache_filepath ) {
 		}
 
 		// Serve the cache if file isn't store in the client browser cache.
-		readgzfile( $rocket_cache_filepath_gzip );
+		readfile( $rocket_cache_filepath_gzip );
 
 		Logger::info( 'Serving gzip cache file.', [
 			'caching process',
