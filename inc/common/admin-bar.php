@@ -68,16 +68,21 @@ function rocket_admin_bar( $wp_admin_bar ) {
 			);
 
 			// Add submenu for each active langs.
-			if ( 'wpml' === $i18n_plugin ) {
-				$langlinks = get_rocket_wpml_langs_for_admin_bar();
-			} elseif ( 'qtranslate' === $i18n_plugin ) {
-				$langlinks = get_rocket_qtranslate_langs_for_admin_bar();
-			} elseif ( 'qtranslate-x' === $i18n_plugin ) {
-				$langlinks = get_rocket_qtranslate_langs_for_admin_bar( 'x' );
-			} elseif ( 'polylang' === $i18n_plugin ) {
-				$langlinks = get_rocket_polylang_langs_for_admin_bar();
-			} else {
-				$langlinks = [];
+			switch ( $i18n_plugin ) {
+				case 'wpml':
+					$langlinks = get_rocket_wpml_langs_for_admin_bar();
+					break;
+				case 'qtranslate':
+					$langlinks = get_rocket_qtranslate_langs_for_admin_bar();
+					break;
+				case 'qtranslate-x':
+					$langlinks = get_rocket_qtranslate_langs_for_admin_bar( 'x' );
+					break;
+				case 'polylang':
+					$langlinks = get_rocket_polylang_langs_for_admin_bar();
+					break;
+				default:
+					$langlinks = [];
 			}
 
 			if ( $langlinks ) {
@@ -215,16 +220,21 @@ function rocket_admin_bar( $wp_admin_bar ) {
 
 				// Add submenu for each active langs.
 				if ( ! isset( $langlinks ) ) {
-					if ( 'wpml' === $i18n_plugin ) {
-						$langlinks = get_rocket_wpml_langs_for_admin_bar();
-					} elseif ( 'qtranslate' === $i18n_plugin ) {
-						$langlinks = get_rocket_qtranslate_langs_for_admin_bar();
-					} elseif ( 'qtranslate-x' === $i18n_plugin ) {
-						$langlinks = get_rocket_qtranslate_langs_for_admin_bar( 'x' );
-					} elseif ( 'polylang' === $i18n_plugin ) {
-						$langlinks = get_rocket_polylang_langs_for_admin_bar();
-					} else {
-						$langlinks = [];
+					switch ( $i18n_plugin ) {
+						case 'wpml':
+							$langlinks = get_rocket_wpml_langs_for_admin_bar();
+							break;
+						case 'qtranslate':
+							$langlinks = get_rocket_qtranslate_langs_for_admin_bar();
+							break;
+						case 'qtranslate-x':
+							$langlinks = get_rocket_qtranslate_langs_for_admin_bar( 'x' );
+							break;
+						case 'polylang':
+							$langlinks = get_rocket_polylang_langs_for_admin_bar();
+							break;
+						default:
+							$langlinks = [];
 					}
 				}
 

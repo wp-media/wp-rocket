@@ -417,7 +417,7 @@ function get_rocket_i18n_home_url( $lang = '' ) {
  * @return array
  */
 function get_rocket_i18n_translated_post_urls( $post_id, $post_type = 'page', $regex = null ) {
-	$path = rocket_extract_url_component( get_permalink( $post_id ), PHP_URL_PATH );
+	$path = wp_parse_url( get_permalink( $post_id ), PHP_URL_PATH );
 
 	if ( empty( $path ) ) {
 		return [];
@@ -432,7 +432,7 @@ function get_rocket_i18n_translated_post_urls( $post_id, $post_type = 'page', $r
 
 		if ( $langs ) {
 			foreach ( $langs as $lang ) {
-				$urls[] = rocket_extract_url_component( get_permalink( icl_object_id( $post_id, $post_type, true, $lang ) ), PHP_URL_PATH ) . $regex;
+				$urls[] = wp_parse_url( get_permalink( icl_object_id( $post_id, $post_type, true, $lang ) ), PHP_URL_PATH ) . $regex;
 			}
 		}
 	}
@@ -441,16 +441,16 @@ function get_rocket_i18n_translated_post_urls( $post_id, $post_type = 'page', $r
 	if ( 'qtranslate' === $i18n_plugin || 'qtranslate-x' === $i18n_plugin ) {
 		$langs  = $GLOBALS['q_config']['enabled_languages'];
 		$langs  = array_diff( $langs, array( $GLOBALS['q_config']['default_language'] ) );
-		$urls[] = rocket_extract_url_component( get_permalink( $post_id ), PHP_URL_PATH ) . $regex;
+		$urls[] = wp_parse_url( get_permalink( $post_id ), PHP_URL_PATH ) . $regex;
 
 		if ( $langs ) {
 			$url = get_permalink( $post_id );
 
 			foreach ( $langs as $lang ) {
 				if ( 'qtranslate' === $i18n_plugin ) {
-					$urls[] = rocket_extract_url_component( qtrans_convertURL( $url, $lang, true ), PHP_URL_PATH ) . $regex;
+					$urls[] = wp_parse_url( qtrans_convertURL( $url, $lang, true ), PHP_URL_PATH ) . $regex;
 				} elseif ( 'qtranslate-x' === $i18n_plugin ) {
-					$urls[] = rocket_extract_url_component( qtranxf_convertURL( $url, $lang, true ), PHP_URL_PATH ) . $regex;
+					$urls[] = wp_parse_url( qtranxf_convertURL( $url, $lang, true ), PHP_URL_PATH ) . $regex;
 				}
 			}
 		}
@@ -466,7 +466,7 @@ function get_rocket_i18n_translated_post_urls( $post_id, $post_type = 'page', $r
 
 		if ( ! empty( $translations ) ) {
 			foreach ( $translations as $post_id ) {
-				$urls[] = rocket_extract_url_component( get_permalink( $post_id ), PHP_URL_PATH ) . $regex;
+				$urls[] = wp_parse_url( get_permalink( $post_id ), PHP_URL_PATH ) . $regex;
 			}
 		}
 	}
