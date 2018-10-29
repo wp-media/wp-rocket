@@ -78,15 +78,16 @@ function rocket_clean_post( $post_id ) {
 	}
 
 	// Get the post language.
-	$lang = false;
+	$i18n_plugin = rocket_has_i18n();
 
-	// WPML.
-	if ( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) && ! rocket_is_plugin_active( 'woocommerce-multilingual/wpml-woocommerce.php' ) ) {
+	if ( 'wpml' === $i18n_plugin && ! rocket_is_plugin_active( 'woocommerce-multilingual/wpml-woocommerce.php' ) ) {
+		// WPML.
 		$lang = $GLOBALS['sitepress']->get_language_for_element( $post_id, 'post_' . get_post_type( $post_id ) );
-
+	} elseif ( 'polylang' === $i18n_plugin ) {
 		// Polylang.
-	} elseif ( rocket_is_plugin_active( 'polylang/polylang.php' ) || rocket_is_plugin_active( 'polylang-pro/polylang.php' ) ) {
 		$lang = pll_get_post_language( $post_id );
+	} else {
+		$lang = false;
 	}
 
 	// Get the permalink structure.
@@ -248,32 +249,39 @@ add_filter( 'rocket_clean_files', 'rocket_clean_files_users' );
 
 /**
  * Return all translated version of a post when qTranslate is used.
- * Use the "rocket_post_purge_urls" filter to insert URLs of traduction post
+ * Use the "rocket_post_purge_urls" filter to insert URLs of traduction post.
  *
  * @since 1.3.5
  *
- * @param array $urls An array of URLs to clean.
- * @return array Updated array of URLs to clean
+ * @param  array $urls An array of URLs to clean.
+ * @return array       Updated array of URLs to clean
  */
 function rocket_post_purge_urls_for_qtranslate( $urls ) {
-	if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) || rocket_is_plugin_active( 'qtranslate-x/qtranslate.php' ) ) {
+	global $q_config;
 
-		global $q_config;
+	if ( ! $urls ) {
+		return [];
+	}
 
-		// Get all languages.
-		$enabled_languages = $q_config['enabled_languages'];
+	$i18n_plugin = rocket_has_i18n();
 
-		// Remove default language.
-		$enabled_languages = array_diff( $enabled_languages, array( $q_config['default_language'] ) );
+	if ( 'qtranslate' !== $i18n_plugin && 'qtranslate-x' !== $i18n_plugin ) {
+		return $urls;
+	}
 
-		// Add translate URLs.
-		foreach ( $urls as $url ) {
-			foreach ( $enabled_languages as $lang ) {
-				if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
-					$urls[] = qtrans_convertURL( $url, $lang, true );
-				} elseif ( rocket_is_plugin_active( 'qtranslate-x/qtranslate.php' ) ) {
-					$urls[] = qtranxf_convertURL( $url, $lang, true );
-				}
+	// Get all languages.
+	$enabled_languages = $q_config['enabled_languages'];
+
+	// Remove default language.
+	$enabled_languages = array_diff( $enabled_languages, [ $q_config['default_language'] ] );
+
+	// Add translate URLs.
+	foreach ( $urls as $url ) {
+		foreach ( $enabled_languages as $lang ) {
+			if ( 'qtranslate' === $i18n_plugin ) {
+				$urls[] = qtrans_convertURL( $url, $lang, true );
+			} elseif ( 'qtranslate-x' === $i18n_plugin ) {
+				$urls[] = qtranxf_convertURL( $url, $lang, true );
 			}
 		}
 	}
