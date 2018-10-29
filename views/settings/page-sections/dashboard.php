@@ -28,7 +28,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 	</div>
 
 	<?php
-		$rocket_boxes = get_user_meta( $GLOBALS['current_user']->ID, 'rocket_boxes', true );
+		$rocket_boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
 
 	if ( ! in_array( 'rocket_adblock_notice', (array) $rocket_boxes, true ) ) :
 		?>
@@ -51,10 +51,9 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 		<div class="wpr-notice-container">
 			<div class="wpr-notice-supTitle"><?php esc_html_e( 'Congratulations!', 'rocket' ); ?></div>
 			<h2 class="wpr-notice-title">
-			<?php
-				esc_html_e( 'WP Rocket is now activated and already working for you.<br>
-				Your website should be loading faster now!', 'rocket' );
-			?>
+			<?php esc_html_e( 'WP Rocket is now activated and already working for you.', 'rocket' ); ?>
+			<br>
+			<?php esc_html_e( 'Your website should be loading faster now!', 'rocket' ); ?>
 			</h2>
 				<div class="wpr-notice-description"><?php esc_html_e( 'To guarantee fast websites, WP Rocket applies 80% of web performance best practices.<br> We also enable options that provide immediate benefits to your website.', 'rocket' ); ?></div>
 				<div class="wpr-notice-continue"><?php esc_html_e( 'Continue to the options to further optimize your site!', 'rocket' ); ?></div>
