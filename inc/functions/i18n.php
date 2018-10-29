@@ -335,30 +335,34 @@ function get_rocket_i18n_subdomains() {
 		return [];
 	}
 
-	if ( 'wpml' === $i18n_plugin ) {
+	switch ( $i18n_plugin ) {
 		// WPML.
-		$option = get_option( 'icl_sitepress_settings' );
+		case 'wpml':
+			$option = get_option( 'icl_sitepress_settings' );
 
-		if ( 2 === (int) $option['language_negotiation_type'] || 1 === (int) $option['language_negotiation_type'] && true === $option['urls']['directory_for_default_language'] ) {
-			return get_rocket_i18n_uri();
-		}
-	} elseif ( 'qtranslate' === $i18n_plugin ) {
+			if ( 2 === (int) $option['language_negotiation_type'] || 1 === (int) $option['language_negotiation_type'] && true === $option['urls']['directory_for_default_language'] ) {
+				return get_rocket_i18n_uri();
+			}
+			break;
 		// qTranslate.
-		if ( 3 === (int) $GLOBALS['q_config']['url_mode'] ) {
-			return get_rocket_i18n_uri();
-		}
-	} elseif ( 'qtranslate-x' === $i18n_plugin ) {
+		case 'qtranslate':
+			if ( 3 === (int) $GLOBALS['q_config']['url_mode'] ) {
+				return get_rocket_i18n_uri();
+			}
+			break;
 		// qTranslate-x.
-		if ( 3 === (int) $GLOBALS['q_config']['url_mode'] || 4 === (int) $GLOBALS['q_config']['url_mode'] ) {
-			return get_rocket_i18n_uri();
-		}
-	} elseif ( 'polylang' === $i18n_plugin ) {
+		case 'qtranslate-x':
+			if ( 3 === (int) $GLOBALS['q_config']['url_mode'] || 4 === (int) $GLOBALS['q_config']['url_mode'] ) {
+				return get_rocket_i18n_uri();
+			}
+			break;
 		// Polylang, Polylang Pro.
-		$pll = function_exists( 'PLL' ) ? PLL() : $GLOBALS['polylang'];
+		case 'polylang':
+			$pll = function_exists( 'PLL' ) ? PLL() : $GLOBALS['polylang'];
 
-		if ( ! empty( $pll ) && is_object( $pll ) && ( 2 === (int) $pll->options['force_lang'] || 3 === (int) $pll->options['force_lang'] ) ) {
-			return get_rocket_i18n_uri();
-		}
+			if ( ! empty( $pll ) && is_object( $pll ) && ( 2 === (int) $pll->options['force_lang'] || 3 === (int) $pll->options['force_lang'] ) ) {
+				return get_rocket_i18n_uri();
+			}
 	}
 
 	return [];
@@ -379,28 +383,23 @@ function get_rocket_i18n_home_url( $lang = '' ) {
 		return home_url();
 	}
 
-	if ( 'wpml' === $i18n_plugin ) {
+	switch ( $i18n_plugin ) {
 		// WPML.
-		return $GLOBALS['sitepress']->language_url( $lang );
-	}
-
-	if ( 'qtranslate' === $i18n_plugin ) {
+		case 'wpml':
+			return $GLOBALS['sitepress']->language_url( $lang );
 		// qTranslate.
-		return qtrans_convertURL( home_url(), $lang, true );
-	}
-
-	if ( 'qtranslate-x' === $i18n_plugin ) {
+		case 'qtranslate':
+			return qtrans_convertURL( home_url(), $lang, true );
 		// qTranslate-x.
-		return qtranxf_convertURL( home_url(), $lang, true );
-	}
-
-	if ( 'polylang' === $i18n_plugin ) {
+		case 'qtranslate-x':
+			return qtranxf_convertURL( home_url(), $lang, true );
 		// Polylang, Polylang Pro.
-		$pll = function_exists( 'PLL' ) ? PLL() : $GLOBALS['polylang'];
+		case 'polylang':
+			$pll = function_exists( 'PLL' ) ? PLL() : $GLOBALS['polylang'];
 
-		if ( ! empty( $pll->options['force_lang'] ) && isset( $pll->links ) ) {
-			return pll_home_url( $lang );
-		}
+			if ( ! empty( $pll->options['force_lang'] ) && isset( $pll->links ) ) {
+				return pll_home_url( $lang );
+			}
 	}
 
 	return home_url();
@@ -426,49 +425,49 @@ function get_rocket_i18n_translated_post_urls( $post_id, $post_type = 'page', $r
 	$i18n_plugin = rocket_has_i18n();
 	$urls        = [];
 
-	// WPML.
-	if ( 'wpml' === $i18n_plugin && $langs ) {
-		$langs = get_rocket_i18n_code();
+	switch ( $i18n_plugin ) {
+		// WPML.
+		case 'wpml':
+			$langs = get_rocket_i18n_code();
 
-		if ( $langs ) {
-			foreach ( $langs as $lang ) {
-				$urls[] = wp_parse_url( get_permalink( icl_object_id( $post_id, $post_type, true, $lang ) ), PHP_URL_PATH ) . $regex;
-			}
-		}
-	}
-
-	// qTranslate & qTranslate-x.
-	if ( 'qtranslate' === $i18n_plugin || 'qtranslate-x' === $i18n_plugin ) {
-		$langs  = $GLOBALS['q_config']['enabled_languages'];
-		$langs  = array_diff( $langs, array( $GLOBALS['q_config']['default_language'] ) );
-		$urls[] = wp_parse_url( get_permalink( $post_id ), PHP_URL_PATH ) . $regex;
-
-		if ( $langs ) {
-			$url = get_permalink( $post_id );
-
-			foreach ( $langs as $lang ) {
-				if ( 'qtranslate' === $i18n_plugin ) {
-					$urls[] = wp_parse_url( qtrans_convertURL( $url, $lang, true ), PHP_URL_PATH ) . $regex;
-				} elseif ( 'qtranslate-x' === $i18n_plugin ) {
-					$urls[] = wp_parse_url( qtranxf_convertURL( $url, $lang, true ), PHP_URL_PATH ) . $regex;
+			if ( $langs ) {
+				foreach ( $langs as $lang ) {
+					$urls[] = wp_parse_url( get_permalink( icl_object_id( $post_id, $post_type, true, $lang ) ), PHP_URL_PATH ) . $regex;
 				}
 			}
-		}
-	}
+			break;
+		// qTranslate & qTranslate-x.
+		case 'qtranslate':
+		case 'qtranslate-x':
+			$langs  = $GLOBALS['q_config']['enabled_languages'];
+			$langs  = array_diff( $langs, array( $GLOBALS['q_config']['default_language'] ) );
+			$urls[] = wp_parse_url( get_permalink( $post_id ), PHP_URL_PATH ) . $regex;
 
-	// Polylang.
-	if ( 'polylang' === $i18n_plugin ) {
-		if ( function_exists( 'PLL' ) && is_object( PLL()->model ) ) {
-			$translations = pll_get_post_translations( $post_id );
-		} elseif ( ! empty( $GLOBALS['polylang']->model ) && is_object( $GLOBALS['polylang']->model ) ) {
-			$translations = $GLOBALS['polylang']->model->get_translations( 'page', $post_id );
-		}
+			if ( $langs ) {
+				$url = get_permalink( $post_id );
 
-		if ( ! empty( $translations ) ) {
-			foreach ( $translations as $post_id ) {
-				$urls[] = wp_parse_url( get_permalink( $post_id ), PHP_URL_PATH ) . $regex;
+				foreach ( $langs as $lang ) {
+					if ( 'qtranslate' === $i18n_plugin ) {
+						$urls[] = wp_parse_url( qtrans_convertURL( $url, $lang, true ), PHP_URL_PATH ) . $regex;
+					} elseif ( 'qtranslate-x' === $i18n_plugin ) {
+						$urls[] = wp_parse_url( qtranxf_convertURL( $url, $lang, true ), PHP_URL_PATH ) . $regex;
+					}
+				}
 			}
-		}
+			break;
+		// Polylang.
+		case 'polylang':
+			if ( function_exists( 'PLL' ) && is_object( PLL()->model ) ) {
+				$translations = pll_get_post_translations( $post_id );
+			} elseif ( ! empty( $GLOBALS['polylang']->model ) && is_object( $GLOBALS['polylang']->model ) ) {
+				$translations = $GLOBALS['polylang']->model->get_translations( 'page', $post_id );
+			}
+
+			if ( ! empty( $translations ) ) {
+				foreach ( $translations as $post_id ) {
+					$urls[] = wp_parse_url( get_permalink( $post_id ), PHP_URL_PATH ) . $regex;
+				}
+			}
 	}
 
 	if ( trim( $path, '/' ) !== '' ) {
