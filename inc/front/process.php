@@ -149,7 +149,7 @@ $rocket_remove_query_strings = [
 ];
 
 if ( ! empty( $_GET ) ) {
-	$params = array_diff_key( $_GET, $rocket_remove_query_strings );
+	$params = array_intersect_key( $_GET, $rocket_remove_query_strings );
 
 	if ( ! empty( $params ) ) {
 		ksort( $params );
@@ -172,7 +172,7 @@ $rocket_ignore_query_strings = [
 ];
 
 if ( ! empty( $_GET )
-	&& ( ! array_diff_key( $_GET, $rocket_ignore_query_strings ) )
+	&& ( ! (bool) array_intersect_key( $_GET, $rocket_ignore_query_strings ) )
 	&& ( ! isset( $rocket_cache_query_strings ) || ! array_intersect( array_keys( $_GET ), $rocket_cache_query_strings ) )
 ) {
 	rocket_define_donotoptimize_constant( true );
