@@ -8,14 +8,14 @@ endif;
 
 /**
  * Compatibility with WP Offload S3 assets addon.
- * 
+ *
  * @since 2.10.7
  * @author Remy Perona
  */
 function rocket_as3cf_assets_compatibility() {
 	global $as3cf_assets;
 
-	if ( $as3cf_assets->is_plugin_setup() && 1 === (int) $as3cf_assets->get_setting( 'enable-addon' ) ) {
+	if ( isset( $as3cf_assets) && $as3cf_assets->is_plugin_setup() && 1 === (int) $as3cf_assets->get_setting( 'enable-addon' ) ) {
 			// Disable WP Rocket CDN option.
 			add_filter( 'rocket_readonly_cdn_option', '__return_true' );
 	}
@@ -28,7 +28,7 @@ function rocket_as3cf_assets_compatibility() {
  * @author Remy Perona
  *
  * @param string $old_value Previous assets option value.
- * @param string $value New assets option value.
+ * @param string $new_value New assets option value.
  */
 function rocket_maybe_deactivate_cdn( $old_value, $new_value ) {
 	if ( $old_value['enable-addon'] !== $new_value['enable-addon'] && 1 === (int) $new_value['enable-addon'] ) {

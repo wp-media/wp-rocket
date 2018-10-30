@@ -1,19 +1,21 @@
 <?php
-defined( 'WP_UNINSTALL_PLUGIN' ) or die( 'Cheatin&#8217; uh?' );
+defined( 'WP_UNINSTALL_PLUGIN' ) || die( 'Cheatin&#8217; uh?' );
 
 // Delete all transients.
 delete_site_transient( 'update_wprocket' );
 delete_site_transient( 'update_wprocket_response' );
 delete_transient( 'wp_rocket_settings' );
 delete_transient( 'rocket_cloudflare_ips' );
+delete_transient( 'rocket_send_analytics_data' );
 
 // Delete WP Rocket options.
 delete_option( 'wp_rocket_settings' );
+delete_option( 'rocket_analytics_notice_displayed' );
 
 // Delete Compatibility options.
 delete_option( 'rocket_jetpack_eu_cookie_widget' );
 
-// Delete all user meta related to WP Rocket
+// Delete all user meta related to WP Rocket.
 delete_metadata( 'user', '', 'rocket_boxes', '', true );
 
 // Clear scheduled WP Rocket Cron.
@@ -34,10 +36,11 @@ function rocket_uninstall_rrmdir( $dir ) {
 		return;
 	}
 
-	if ( $globs = glob( $dir . '/*', GLOB_NOSORT ) ) {
-	    foreach ( $globs as $file ) {
+	$globs = glob( $dir . '/*', GLOB_NOSORT );
+	if ( $globs ) {
+		foreach ( $globs as $file ) {
 			is_dir( $file ) ? rocket_uninstall_rrmdir( $file ) : @unlink( $file );
-	    }
+		}
 	}
 
 	@rmdir( $dir );

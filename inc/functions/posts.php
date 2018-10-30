@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
  * Get all terms archives urls associated to a specific post
@@ -10,7 +10,7 @@ defined( 'ABSPATH' ) or	die( 'Cheatin&#8217; uh?' );
  * @return array $urls List of taxonomies URLs
  */
 function get_rocket_post_terms_urls( $post_id ) {
-	$urls = array();
+	$urls       = array();
 	$taxonomies = get_object_taxonomies( get_post_type( $post_id ), 'objects' );
 
 	foreach ( $taxonomies as $taxonomy ) {
@@ -99,13 +99,13 @@ function get_rocket_sample_permalink( $id, $title = null, $name = null ) {
 	$ptype = get_post_type_object( $post->post_type );
 
 	$original_status = $post->post_status;
-	$original_date = $post->post_date;
-	$original_name = $post->post_name;
+	$original_date   = $post->post_date;
+	$original_name   = $post->post_name;
 
 	// Hack: get_permalink() would return ugly permalink for drafts, so we will fake that our post is published.
 	if ( in_array( $post->post_status, array( 'draft', 'pending' ), true ) ) {
 		$post->post_status = 'publish';
-		$post->post_name = sanitize_title( $post->post_name ? $post->post_name : $post->post_title, $post->ID );
+		$post->post_name   = sanitize_title( $post->post_name ? $post->post_name : $post->post_title, $post->ID );
 	}
 
 	// If the user wants to set a new name -- override the current one.
@@ -131,7 +131,7 @@ function get_rocket_sample_permalink( $id, $title = null, $name = null ) {
 		$uri = untrailingslashit( $uri );
 
 		/** This filter is documented in wp-admin/edit-tag-form.php */
-		$uri = apply_filters( 'editable_slug', $uri );
+		$uri = apply_filters( 'editable_slug', $uri, $post );
 		if ( ! empty( $uri ) ) {
 			$uri .= '/';
 		}
@@ -139,10 +139,10 @@ function get_rocket_sample_permalink( $id, $title = null, $name = null ) {
 	}
 
 	/** This filter is documented in wp-admin/edit-tag-form.php */
-	$permalink = array( $permalink, apply_filters( 'editable_slug', $post->post_name ) );
+	$permalink         = array( $permalink, apply_filters( 'editable_slug', $post->post_name, $post ) );
 	$post->post_status = $original_status;
-	$post->post_date = $original_date;
-	$post->post_name = $original_name;
+	$post->post_date   = $original_date;
+	$post->post_name   = $original_name;
 	unset( $post->filter );
 
 	return $permalink;

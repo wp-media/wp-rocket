@@ -1,0 +1,31 @@
+// main: ../main.scss
+
+/*-----------------------------------------------*\
+
+    Documentation
+
+\*-----------------------------------------------*/
+
+.wpr-documentation{
+    padding: $space*3 $space*2;
+    border-radius: 4px;
+    color: #fff;
+    text-align: center;
+    background: $cBlueLight1;
+
+    p{
+        margin: $space 0 $space*2;
+        font-weight: 500;
+    }
+
+    i{
+        display: block;
+        @include font-size(36,36);
+        margin-bottom: $space;
+    }
+
+    .wpr-button{
+        padding-left: $space*2;
+        padding-right: $space*2;
+    }
+}

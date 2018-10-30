@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
  * When WP sets the update_plugins site transient, we set our own transient, then see rocket_add_response_to_updates
@@ -10,7 +10,7 @@ defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
  */
 function rocket_check_update( $value ) {
 	$timer_update_wprocket = (int) get_site_transient( 'update_wprocket' );
-	$temp_object = get_site_transient( 'update_wprocket_response' );
+	$temp_object           = get_site_transient( 'update_wprocket_response' );
 	if ( ( ! isset( $_GET['rocket_force_update'] ) || defined( 'WP_INSTALLING' ) ) &&
 		( 12 * HOUR_IN_SECONDS ) > ( time() - $timer_update_wprocket ) // retry in 12 hours.
 	) {
@@ -28,15 +28,19 @@ function rocket_check_update( $value ) {
 		$_SERVER['REQUEST_URI'] = remove_query_arg( 'rocket_force_update' );
 	}
 
-	$plugin_folder	= plugin_basename( dirname( WP_ROCKET_FILE ) );
-	$plugin_file	= basename( WP_ROCKET_FILE );
-	$version		= true;
+	$plugin_folder = plugin_basename( dirname( WP_ROCKET_FILE ) );
+	$plugin_file   = basename( WP_ROCKET_FILE );
+	$version       = true;
 	if ( ! $value ) {
-		$value = new stdClass;
+		$value               = new stdClass();
 		$value->last_checked = time();
 	}
 
-	$response = wp_remote_get( WP_ROCKET_WEB_CHECK, array( 'timeout' => 30 ) );
+	$response = wp_remote_get(
+		WP_ROCKET_WEB_CHECK, array(
+			'timeout' => 30,
+		)
+	);
 	if ( ! is_a( $response, 'WP_Error' ) && 200 === $response['response']['code'] && strlen( $response['body'] ) > 32 ) {
 
 		set_site_transient( 'update_wprocket', time() );
@@ -47,11 +51,11 @@ function rocket_check_update( $value ) {
 		}
 
 		$temp_array = array(
-			'slug'			=> $plugin_folder,
-			'plugin'		=> $plugin_folder . '/' . $plugin_file,
-			'new_version'	=> $version,
-			'url'			=> 'http://wp-rocket.me',
-			'package'		=> $url,
+			'slug'        => $plugin_folder,
+			'plugin'      => $plugin_folder . '/' . $plugin_file,
+			'new_version' => $version,
+			'url'         => 'https://wp-rocket.me',
+			'package'     => $url,
 		);
 
 		$temp_object = (object) $temp_array;

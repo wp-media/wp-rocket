@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'Cheatin&#8217; uh?' );
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
  * Set Real IP from CloudFlare
@@ -14,7 +14,7 @@ function rocket_set_real_ip_cloudflare() {
 	$is_cf = ( isset( $_SERVER['HTTP_CF_CONNECTING_IP'] ) ) ? true : false;
 
 	if ( ! $is_cf ) {
-	    return;
+		return;
 	}
 
 	// only run this logic if the REMOTE_ADDR is populated, to avoid causing notices in CLI mode.
@@ -53,15 +53,9 @@ function rocket_set_real_ip_cloudflare() {
 		}
 	}
 
-	// Let people know that the CF WP plugin is turned on, except if white label is active.
+	// Let people know that the CF WP plugin is turned on.
 	if ( ! headers_sent() ) {
-		if ( rocket_is_white_label() ) {
-			$powered_by = get_rocket_option( 'wl_plugin_name' );
-		} else {
-			$powered_by = 'WP Rocket ' . WP_ROCKET_VERSION;
-		}
-
-		header( 'X-CF-Powered-By: ' . $powered_by );
+		header( 'X-CF-Powered-By: WP Rocket ' . WP_ROCKET_VERSION );
 	}
 }
-add_action( 'init', 'rocket_set_real_ip_cloudflare' , 1 );
+add_action( 'init', 'rocket_set_real_ip_cloudflare', 1 );

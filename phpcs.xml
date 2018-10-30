@@ -5,33 +5,39 @@
 	<arg name="extensions" value="php"/>
 	<!--<arg value="s"/>-->
 
+    <!-- Run against the PHPCompatibility ruleset -->
+    <rule ref="PHPCompatibility"/>
+    <!-- Check for cross-version support for PHP 5.4 and higher. -->
+    <config name="testVersion" value="5.4-"/>
+    <config name="minimum_supported_wp_version" value="4.7"/>
+
 	<file>.</file>
-	<exclude-pattern>/min/*</exclude-pattern>
+	<exclude-pattern>/vendor/*</exclude-pattern>
 	<exclude-pattern>/inc/vendors/*</exclude-pattern>
 	<exclude-pattern>/tests/*</exclude-pattern>
 
 	<rule ref="WordPress">
+        <exclude name="Generic.Functions.FunctionCallArgumentSpacing.TooMuchSpaceAfterComma"/>
 		<exclude name="Generic.PHP.NoSilencedErrors.Discouraged"/>
         <exclude name="PEAR.Functions.FunctionCallSignature.Indent"/>
         <exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterCloseBrace"/>
         <exclude name="Squiz.Commenting.FileComment.Missing"/>
         <exclude name="Squiz.Commenting.FileComment.MissingPackageTag"/>
         <exclude name="Squiz.PHP.CommentedOutCode.Found"/>
-        <exclude name="WordPress.VIP.AdminBarRemoval"/>
-        <exclude name="WordPress.VIP.CronInterval.ChangeDetected"/>
-        <exclude name="WordPress.VIP.DirectDatabaseQuery.DirectQuery"/>
-        <exclude name="WordPress.VIP.DirectDatabaseQuery.NoCaching"/>
-        <exclude name="WordPress.VIP.OrderByRand"/>
-        <exclude name="WordPress.VIP.PostsPerPage.posts_per_page"/>
-        <exclude name="WordPress.VIP.RestrictedFunctions"/>
-        <exclude name="WordPress.VIP.RestrictedFunctions.urlencode"/>
-        <exclude name="WordPress.VIP.RestrictedFunctions.wp_redirect"/>
-        <exclude name="WordPress.VIP.RestrictedVariables.cache_constraints"/>
-        <exclude name="WordPress.VIP.RestrictedVariables.user_meta"/>
-        <exclude name="WordPress.VIP.SlowDBQuery.slow_db_query"/>
-        <exclude name="WordPress.VIP.SuperGlobalInputUsage.AccessDetected"/>
-        <exclude name="WordPress.VIP.TimezoneChange"/>
-        <exclude name="WordPress.VIP.ValidatedSanitizedInput"/>
-        <exclude name="WordPress.XSS.EscapeOutput"/>
 	</rule>
+    <rule ref="WordPress.WP.I18n">
+        <properties>
+            <property name="text_domain" type="array" value="rocket" />
+        </properties>
+    </rule>
+    <rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+        <properties>
+            <property name="prefixes" type="array" value="rocket,wp_rocket" />
+        </properties>
+    </rule>
+    <rule ref="WordPress.Files.FileName">
+        <properties>
+            <property name="strict_class_file_names" value="false" />
+        </properties>
+    </rule>
 </ruleset>

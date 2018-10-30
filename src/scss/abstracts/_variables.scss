@@ -1,0 +1,73 @@
+// main: ../main.scss
+
+$space: 8px;
+
+//* -- Breakpoints -- */
+
+$breakpoints: (
+  'xs': (max-width: 783px),
+  'sm': (max-width: 1083px),
+  'md': (max-width: 1239px)
+);
+
+
+//* -- Colorz -- */
+
+// Main colors
+$cBlack: #121116;
+$cWhite: #fff;
+$cBlue: #1EADBF;
+$cGreen: #3ECE9D;
+$cGrey: #E0E4E9;
+$cOrange: #F56640;
+$cPurple: #2D1656;
+$cRed: #D33F49;
+
+
+// Fifty shades of Blue
+$cBlueLight1: #40BACB;
+$cBlueLight2: #6ACCDA;
+$cBlueLight3: #97E2EC;
+$cBlueLight4: #CFF5FA;
+$cBlueDark1: #02707F;
+
+
+// Fifty shades of Green
+$cGreenLight1: #75DAB2;
+$cGreenLight2: #A0E5C8;
+$cGreenLight3: #C6F0DE;
+$cGreenLight4: #EBFAF5;
+$cGreenDark1: #00A66B;
+
+
+// Fifty shades of Grey
+$cGreyLight1: #E8EBEE;
+$cGreyLight2: #F2F3F6;
+$cGreyLight3: #F9FAFB;
+$cGreyDark1: #444444;
+$cGreyDark2: #666666;
+$cGreyDark3: #72777C;
+
+
+// Fifty shades of Orange
+$cOrangeLight1: #FC8665;
+$cOrangeLight2: #FFA58B;
+$cOrangeLight3: #FFC3B1;
+$cOrangeLight4: #FDE0D9;
+$cOrangeDark1: #AC2B15;
+
+
+// Fifty shades of Purple
+$cPurpleLight1: #462E72;
+$cPurpleLight2: #665090;
+$cPurpleLight3: #8977AB;
+$cPurpleLight4: #B6AACE;
+$cPurpleDark1: #19073B;
+
+
+// Fifty shades of Red
+$cRedLight1: #E55C7D;
+$cRedLight2: #F08DA1;
+$cRedLight3: #F7BAC7;
+$cRedLight4: #FAE6EE;
+$cRedDark1: #D60E5B;

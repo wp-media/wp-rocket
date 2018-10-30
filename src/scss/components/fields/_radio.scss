@@ -1,0 +1,169 @@
+// main: ../../main.scss
+
+/*-----------------------------------------------*\
+
+    Custom radio (radio on/off)
+
+\*-----------------------------------------------*/
+
+
+.wpr-radio{
+    position: relative;
+    padding-left: $space*11;
+
+    label{
+        user-select: none;
+        font-weight: bold;
+    }
+
+    // Hide default radio
+    [type="checkbox"]:not(:checked),
+    [type="checkbox"]:checked {
+        position: absolute;
+        left: -9999px;
+    }
+
+    [type="checkbox"]:not(:checked) + label:before,
+    [type="checkbox"]:checked + label:before,
+    [type="checkbox"]:not(:checked) + label:after,
+    [type="checkbox"]:checked + label:after {
+        content: '';
+        position: absolute;
+    }
+
+    // The box
+    [type="checkbox"]:not(:checked) + label:before,
+    [type="checkbox"]:checked + label:before {
+        left:0;
+        width: 52px;
+        height: 22px;
+        background: #fff;
+        border-radius: 12px;
+        border: 1px solid $cGreyDark1;
+        @include transition(all, 150ms);
+    }
+
+    // The ball
+    [type="checkbox"]:not(:checked) + label:after,
+    [type="checkbox"]:checked + label:after {
+        width: 18px;
+        height: 18px;
+        border-radius: 100%;
+        background: $cGreyDark1;
+        top: 3px;
+        left: 3px;
+        @include transition(all, 150ms);
+    }
+
+    // Checked box
+    [type="checkbox"]:checked + label:before {
+        border-color: $cBlue;
+    }
+
+    // Checked ball
+    [type="checkbox"]:checked + label:after {
+        background: $cBlue;
+        left: 33px;
+    }
+
+    [type="checkbox"]:checked + label .wpr-radio-ui,
+    [type="checkbox"]:not(:checked) + label .wpr-radio-ui:before,
+    [type="checkbox"]:checked + label .wpr-radio-ui:after {
+        position: absolute;
+        left: 4px;
+        width: 52px;
+        text-transform: uppercase;
+        letter-spacing: -0.01em;
+        font-weight: bold;
+        @include font-size(11,24);
+        @include transition(all, 150ms);
+    }
+
+    // OFF text
+    [type="checkbox"]:not(:checked) + label .wpr-radio-ui:before {
+        content: attr(data-l10n-inactive);
+        left: 27px;
+        color: $cGreyDark2;
+    }
+
+    // ON text
+    [type="checkbox"]:checked + label .wpr-radio-ui:after {
+        content: attr(data-l10n-active);
+        color: $cBlueDark1;
+    }
+
+
+    // Reverse label/checkbox
+    &--reverse{
+        padding-right: $space*9;
+        padding-left: 0;
+
+        // The box
+        [type="checkbox"]:not(:checked) + label:before,
+        [type="checkbox"]:checked + label:before {
+            right:0;
+            left: inherit;
+        }
+
+        // The ball
+        [type="checkbox"]:not(:checked) + label:after,
+        [type="checkbox"]:checked + label:after {
+            right: 33px;
+            left: inherit;
+        }
+
+        // Checked ball
+        [type="checkbox"]:checked + label:after {
+            right: 3px;
+            left: inherit;
+        }
+
+        [type="checkbox"]:checked + label .wpr-radio-ui,
+        [type="checkbox"]:not(:checked) + label .wpr-radio-ui:before,
+        [type="checkbox"]:checked + label .wpr-radio-ui:after {
+            right: -2px;
+            left: inherit;
+        }
+
+        // OFF text
+        [type="checkbox"]:not(:checked) + label .wpr-radio-ui:before {
+            right: -25px;
+            left: inherit;
+        }
+    }
+
+
+    // Focus
+    [type="checkbox"]:not(:checked):focus + label:before{
+        border: 1px dashed $cGreyDark1;
+    }
+
+    [type="checkbox"]:checked:focus + label:before {
+        border: 1px dashed $cBlue;
+    }
+
+
+
+
+    // Change color for tips
+    &--tips{
+        // Checked box
+        [type="checkbox"]:checked + label:before {
+            border-color: $cGreen;
+        }
+
+        // Checked ball
+        [type="checkbox"]:checked + label:after {
+            background: $cGreen;
+        }
+
+        // ON text
+        [type="checkbox"]:checked + label .wpr-radio-ui:after {
+            color: $cGreenDark1;
+        }
+
+        [type="checkbox"]:checked:focus + label:before {
+            border: 1px dashed $cGreen;
+        }
+    }
+}

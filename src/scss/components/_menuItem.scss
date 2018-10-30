@@ -1,0 +1,126 @@
+// main: ../main.scss
+
+/*-----------------------------------------------*\
+
+    Navigation menu item
+
+\*-----------------------------------------------*/
+
+.wpr-menuItem{
+    position: relative;
+    display: block;
+    padding: $space*2 44px 18px 20px;
+    text-decoration: none;
+    color: $cBlack;
+    border-top: 1px solid $cGrey;
+    border-left: 2px solid transparent;
+    overflow: hidden;
+    @include transition(all, 100ms);
+
+    @include respond-to('xs') {
+        width: 57px;
+        height: 50px;
+        padding: 0;
+    }
+
+    &:before{
+        position: absolute;
+        top: calc(50% - 12px);
+        right: 18px;
+        text-align: center;
+        @include font-size(23,23);
+        color: $cBlack;
+        opacity: 0.4;
+        @include transition(all, 150ms);
+    }
+
+    &:hover,
+    &.isActive{
+        color: $cBlack;
+        background: $cWhite;
+        border-left: 2px solid $cOrange;
+
+        .wpr-menuItem-title{
+            color: $cOrange;
+        }
+
+        &:before{
+            color: $cOrange;
+            opacity: 1;
+        }
+    }
+
+    &:focus{
+        color: $cBlack;
+
+        &:before{
+            color: $cBlack;
+        }
+    }
+
+    &-title{
+        @include font-size(13,19);
+        font-weight: bold;
+        letter-spacing: -0.08px;
+        text-transform: uppercase;
+        color: $cBlack;
+
+        @include respond-to('xs') {
+            display: none !important;
+        }
+    }
+
+    &-description{
+        margin-top: 2px;
+        color: $cGreyDark3;
+        @include font-size(13,16);
+        @include transition(all, 150ms);
+
+        @include respond-to('xs') {
+            display: none;
+        }
+    }
+
+    // Special for cloudflare
+    &.wpr-cloudflareToggle{
+        display: none;
+        padding: 10px 20px $space 25px;
+
+        @include respond-to('xs') {
+            padding: $space 20px $space 23px;
+            height: 35px;
+        }
+
+        .wpr-menuItem-title{
+            display: inline-block;
+            @include font-size(13,24);
+            text-transform: inherit;
+            font-weight: 600;
+        }
+
+        &:before{
+            position: relative;
+            display: inline-block;
+            top: 2px;
+            right: 2px;
+            margin-right: 8px;
+            @include font-size(16,16);
+        }
+    }
+}
+
+
+// For each .itemMenu, ID will detect which icon will be used
+#wpr-nav{
+    &-dashboard{ @extend .wpr-icon-home; }
+    &-cache{ @extend .wpr-icon-files; &:before{right: 20px}}
+    &-file_optimization{ @extend .wpr-icon-stack; }
+    &-media{ @extend .wpr-icon-media; }
+    &-preload{ @extend .wpr-icon-refresh; }
+    &-advanced_cache{ @extend .wpr-icon-rules; }
+    &-database{ @extend .wpr-icon-database; }
+    &-page_cdn{ @extend .wpr-icon-cdn; }
+    &-addons{ @extend .wpr-icon-addons; }
+    &-cloudflare{ @extend .wpr-icon-addon; }
+    &-tools{ @extend .wpr-icon-tools; &:before{right: 20px}}
+}
