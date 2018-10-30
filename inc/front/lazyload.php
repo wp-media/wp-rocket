@@ -280,7 +280,7 @@ function rocket_is_excluded_lazyload( $string, $excluded_values ) {
  * @return array
  */
 function rocket_lazyload_get_attachment_image( $attr ) {
-	if ( ! defined( 'DONOTROCKETOPTIMIZE' ) || ! DONOTROCKETOPTIMIZE ) {
+	if ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) {
 		return $attr;
 	}
 
