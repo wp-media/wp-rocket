@@ -6,18 +6,12 @@ $(document).ready(function(){
     * Check parent / show children
     ***/
 
-    var $fieldParent = $('.wpr-isParent input[type=checkbox]'),
-        $fieldsChildren = $('.wpr-field--children')
-    ;
-
-    $fieldParent.change(function() {
-        wprShowChildren($(this));
-    }).trigger('change');
-
     function wprShowChildren(aElem){
+        var parentId, $children;
 
-        var parentId = aElem.attr('id');
-        var $children = $('[data-parent="' + parentId + '"]');
+        aElem     = $( aElem );
+        parentId  = aElem.attr('id');
+        $children = $('[data-parent="' + parentId + '"]');
 
             // Test check for switch
             if(aElem.is(':checked')){
@@ -41,6 +35,62 @@ $(document).ready(function(){
                 });
             }
     }
+
+    /**
+     * Tell if the given child field has an active parent field.
+     *
+     * @param  object $field A jQuery object of a ".wpr-field" field.
+     * @return bool|null
+     */
+    function wprIsParentActive( $field ) {
+        var $parent;
+
+        if ( ! $field.length ) {
+            // ¯\_(ツ)_/¯
+            return null;
+        }
+
+        $parent = $field.data( 'parent' );
+
+        if ( typeof $parent !== 'string' ) {
+            // This field has no parent field: then we can display it.
+            return true;
+        }
+
+        $parent = $parent.replace( /^\s+|\s+$/g, '' );
+
+        if ( '' === $parent ) {
+            // This field has no parent field: then we can display it.
+            return true;
+        }
+
+        $parent = $( '#' + $parent );
+
+        if ( ! $parent.length ) {
+            // This field's parent is missing: let's consider it's not active then.
+            return false;
+        }
+
+        if ( ! $parent.is( ':checked' ) ) {
+            // This field's parent is not checked: don't display the field then.
+            return false;
+        }
+
+        // Go recursive to the last parent.
+        return wprIsParentActive( $parent.closest( '.wpr-field' ) );
+    }
+
+    // Display/Hide childern fields on checkbox change.
+    $( '.wpr-isParent input[type=checkbox]' ).change( 'wprShowChildren' );
+
+    // On page load, display the active fields.
+    $( '.wpr-field--children' ).each( function() {
+        var $field = $( this );
+
+        if ( wprIsParentActive( $field ) ) {
+            $field.addClass( 'wpr-isOpen' );
+        }
+    } );
 
 
 
