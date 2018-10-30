@@ -280,6 +280,10 @@ function rocket_is_excluded_lazyload( $string, $excluded_values ) {
  * @return array
  */
 function rocket_lazyload_get_attachment_image( $attr ) {
+	if ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) {
+		return $attr;
+	}
+
 	// Don't LazyLoad if the thumbnail is in admin, a feed, REST API or a post preview.
 	if ( ! get_rocket_option( 'lazyload' ) || is_admin() || is_feed() || is_preview() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) || empty( $attr['src'] ) || ( defined( 'DONOTLAZYLOAD' ) && DONOTLAZYLOAD ) || wp_script_is( 'twentytwenty-twentytwenty', 'enqueued' ) ) {
 		return $attr;

@@ -89,9 +89,7 @@ class CDN_Favicons_Subscriber extends Minify_Subscriber {
 			return;
 		}
 
-		$this->attachment_url_filter_removed = true;
-
-		remove_filter( 'wp_get_attachment_url', 'rocket_cdn_file', PHP_INT_MAX );
+		$this->attachment_url_filter_removed = remove_filter( 'wp_get_attachment_url', 'rocket_cdn_file', PHP_INT_MAX );
 	}
 
 	/**
