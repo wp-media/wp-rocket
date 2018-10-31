@@ -434,6 +434,11 @@ class Combine extends Abstract_JS_Optimization {
 			'heateorSsHorSharingShortUrl',
 			'TL_Const',
 			'bimber_front_microshare',
+			'setAttribute("id"',
+			'TribeEventsPro',
+			'peepsotimedata',
+			'wphc_data',
+			'hc_rand_id',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
