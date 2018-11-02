@@ -77,4 +77,19 @@ class ActionScheduler_Compatibility {
 		}
 		return false;
 	}
+
+	/**
+	 * Attempts to raise the PHP timeout for time intensive processes.
+	 *
+	 * Only allows raising the existing limit and prevents lowering it. Wrapper for wc_set_time_limit(), when available.
+	 *
+	 * @param int The time limit in seconds.
+	 */
+	public static function increase_time_limit( $limit = 0 ) {
+		if ( function_exists( 'wc_set_time_limit' ) ) {
+			return wc_set_time_limit( $limit );
+		} elseif ( function_exists( 'set_time_limit' ) && false === strpos( ini_get( 'disable_functions' ), 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
+			@set_time_limit( $limit );
+		}
+	}
 }
