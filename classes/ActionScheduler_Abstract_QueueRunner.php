@@ -118,7 +118,7 @@ abstract class ActionScheduler_Abstract_QueueRunner {
 	}
 
 	/**
-	 * Get the number of seconds a batch has run for.
+	 * Get the number of seconds the process has been running.
 	 *
 	 * @return int The number of seconds.
 	 */
