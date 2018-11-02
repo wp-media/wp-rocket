@@ -12,4 +12,4 @@ template: |
   **Fixed**
   **Security**
 
-change-template: '* $TITLE (PR $NUMBER)'
+change-template: '* $TITLE (PR #$NUMBER)'
