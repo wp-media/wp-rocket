@@ -149,7 +149,7 @@ abstract class ActionScheduler_Abstract_QueueRunner {
 		$max_execution_time    = $this->get_maximum_execution_time();
 		$time_per_action       = $execution_time / $processed_actions;
 		$estimated_time        = $execution_time + ( $time_per_action * 2 );
-		$likely_to_be_exceeded = $estimated_time > $this->get_maximum_execution_time();
+		$likely_to_be_exceeded = $estimated_time > $max_execution_time;
 
 		return apply_filters( 'action_scheduler_maximum_execution_time_likely_to_be_exceeded', $likely_to_be_exceeded, $this, $processed_actions, $execution_time, $max_execution_time );
 	}
