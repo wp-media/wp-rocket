@@ -86,13 +86,12 @@ class ActionScheduler_Compatibility {
 	 * @param int The time limit in seconds.
 	 */
 	public static function raise_time_limit( $limit = 0 ) {
-
 		if ( $limit < ini_get( 'max_execution_time' ) ) {
 			return;
 		}
 
 		if ( function_exists( 'wc_set_time_limit' ) ) {
-			return wc_set_time_limit( $limit );
+			wc_set_time_limit( $limit );
 		} elseif ( function_exists( 'set_time_limit' ) && false === strpos( ini_get( 'disable_functions' ), 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
 			@set_time_limit( $limit );
 		}
