@@ -518,6 +518,10 @@ class Beacon {
 					'id'  => '5bc904e7042863158cc79d57',
 					'url' => 'https://docs.wp-rocket.me/article/1117-facebook-pixel-add-on/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
+				'fr' => [
+					'id'  => '5bcf3d35042863215a46bb7f',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1123-add-on-facebook-pixel/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
 			],
 		];
 
