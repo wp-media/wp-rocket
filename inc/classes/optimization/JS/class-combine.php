@@ -439,6 +439,7 @@ class Combine extends Abstract_JS_Optimization {
 			'peepsotimedata',
 			'wphc_data',
 			'hc_rand_id',
+			'AfsAnalyticsObject',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
