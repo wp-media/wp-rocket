@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Optimization\CSS;
 
-use WP_Rocket\Logger;
+use WP_Rocket\Logger\Logger;
 use MatthiasMullie\Minify as Minifier;
 
 /**

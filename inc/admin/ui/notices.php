@@ -166,6 +166,10 @@ function rocket_plugins_to_deactivate() {
 		$plugins['cloudflare'] = 'cloudflare/cloudflare.php';
 	}
 
+	if ( get_rocket_option( 'control_heartbeat' ) ) {
+		$plugins['heartbeat-control'] = 'heartbeat-control/heartbeat-control.php';
+	}
+
 	/**
 	 * Filter the recommended plugins to deactivate to prevent conflicts
 	 *
@@ -499,80 +503,6 @@ function rocket_thank_you_license() {
 add_action( 'admin_notices', 'rocket_thank_you_license' );
 
 /**
- * Add a message about Imagify on the "Upload New Media" screen and WP Rocket options page.
- *
- * @since 2.7
- */
-function rocket_imagify_notice() {
-	$current_screen = get_current_screen();
-
-	// Add the notice only on the "WP Rocket" settings, "Media Library" & "Upload New Media" screens.
-	if ( 'admin_notices' === current_filter() && ( isset( $current_screen ) && 'settings_page_wprocket' !== $current_screen->base ) ) {
-		return;
-	}
-
-	$boxes = get_user_meta( $GLOBALS['current_user']->ID, 'rocket_boxes', true );
-
-	if ( defined( 'IMAGIFY_VERSION' ) || in_array( __FUNCTION__, (array) $boxes, true ) || 1 === get_option( 'wp_rocket_dismiss_imagify_notice' ) || ! current_user_can( 'manage_options' ) ) {
-		return;
-	}
-
-	$imagify_plugin       = 'imagify/imagify.php';
-	$is_imagify_installed = rocket_is_plugin_installed( $imagify_plugin );
-
-	$action_url = $is_imagify_installed ?
-	rocket_get_plugin_activation_link( $imagify_plugin )
-		:
-	wp_nonce_url( add_query_arg(
-		array(
-			'action' => 'install-plugin',
-			'plugin' => 'imagify',
-		),
-		admin_url( 'update.php' )
-	), 'install-plugin_imagify' );
-
-	$details_url = add_query_arg(
-		array(
-			'tab'       => 'plugin-information',
-			'plugin'    => 'imagify',
-			'TB_iframe' => true,
-			'width'     => 722,
-			'height'    => 949,
-		),
-		admin_url( 'plugin-install.php' )
-	);
-
-	$classes = $is_imagify_installed ? '' : ' install-now';
-	$cta_txt = $is_imagify_installed ? esc_html__( 'Activate Imagify', 'rocket' ) : esc_html__( 'Install Imagify for Free', 'rocket' );
-
-	$dismiss_url = wp_nonce_url(
-		admin_url( 'admin-post.php?action=rocket_ignore&box=' . __FUNCTION__ ),
-		'rocket_ignore_' . __FUNCTION__
-	);
-	?>
-
-	<div id="plugin-filter" class="updated plugin-card plugin-card-imagify rkt-imagify-notice">
-		<a href="<?php echo $dismiss_url; ?>" class="rkt-cross"><span class="dashicons dashicons-no"></span></a>
-
-		<p class="rkt-imagify-logo">
-			<img src="<?php echo WP_ROCKET_ASSETS_IMG_URL; ?>logo-imagify.png" srcset="<?php echo WP_ROCKET_ASSETS_IMG_URL; ?>logo-imagify.svg 2x" alt="Imagify" width="150" height="18">
-		</p>
-		<p class="rkt-imagify-msg">
-			<?php _e( 'Speed up your website and boost your SEO by reducing image file sizes without losing quality with Imagify.', 'rocket' ); ?>
-		</p>
-		<p class="rkt-imagify-cta">
-			<a data-slug="imagify" href="<?php echo $action_url; ?>" class="button button-primary<?php echo $classes; ?>"><?php echo $cta_txt; ?></a>
-			<?php if ( ! $is_imagify_installed ) : ?>
-			<br><a data-slug="imagify" data-name="Imagify Image Optimizer" class="thickbox open-plugin-details-modal" href="<?php echo $details_url; ?>"><?php _e( 'More details', 'rocket' ); ?></a>
-			<?php endif; ?>
-		</p>
-	</div>
-
-	<?php
-}
-add_action( 'admin_notices', 'rocket_imagify_notice' );
-
-/**
  * This notice is displayed after purging the CloudFlare cache
  *
  * @since 2.9
@@ -816,68 +746,6 @@ function rocket_clear_cache_notice() {
 add_action( 'admin_notices', 'rocket_clear_cache_notice' );
 
 /**
- * This notice is displayed when the sitemap preload is running
- *
- * @since 2.11
- * @author Remy Perona
- */
-function rocket_sitemap_preload_running() {
-	$screen = get_current_screen();
-
-	// This filter is documented in inc/admin-bar.php.
-	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
-		return;
-	}
-
-	if ( 'settings_page_wprocket' !== $screen->id ) {
-		return;
-	}
-
-	$running = get_transient( 'rocket_sitemap_preload_running' );
-	if ( false === $running ) {
-		return;
-	}
-
-	rocket_notice_html( array(
-		// translators: %d = Number of pages preloaded.
-		'message' => sprintf( __( 'Sitemap preload: %d uncached pages have now been preloaded. (refresh to see progress)', 'rocket' ), $running ),
-	) );
-}
-add_action( 'admin_notices', 'rocket_sitemap_preload_running' );
-
-/**
- * This notice is displayed after the sitemap preload is complete
- *
- * @since 2.11
- * @author Remy Perona
- */
-function rocket_sitemap_preload_complete() {
-	$screen = get_current_screen();
-
-	/** This filter is documented in inc/admin-bar.php */
-	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
-		return;
-	}
-
-	if ( 'settings_page_wprocket' !== $screen->id ) {
-		return;
-	}
-
-	$result = get_transient( 'rocket_sitemap_preload_complete' );
-	if ( false === $result ) {
-		return;
-	}
-
-	delete_transient( 'rocket_sitemap_preload_complete' );
-
-	rocket_notice_html( array(
-		// translators: %d is the number of pages preloaded.
-		'message' => sprintf( __( 'Sitemap preload: %d pages have been cached.', 'rocket' ), $result ),
-	) );
-}
-add_action( 'admin_notices', 'rocket_sitemap_preload_complete' );
-
-/**
  * Outputs notice HTML
  *
  * @since 2.11
@@ -901,6 +769,9 @@ function rocket_notice_html( $args ) {
 	switch ( $args['action'] ) {
 		case 'clear_cache':
 			$args['action'] = '<a class="wp-core-ui button" href="' . wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=all' ), 'purge_cache_all' ) . '">' . __( 'Clear cache', 'rocket' ) . '</a>';
+			break;
+		case 'stop_preload':
+			$args['action'] = '<a class="wp-core-ui button" href="' . wp_nonce_url( admin_url( 'admin-post.php?action=rocket_stop_preload&type=all' ), 'rocket_stop_preload' ) . '">' . __( 'Stop Preload', 'rocket' ) . '</a>';
 			break;
 		case 'force_deactivation':
 			/**

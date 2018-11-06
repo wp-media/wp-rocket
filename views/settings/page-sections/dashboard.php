@@ -34,7 +34,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 	?>
 	<div class="wpr-adblock">
 		<div class="wpr-adblock-container">
-			<img src="<?php echo WP_ROCKET_ASSETS_IMG_URL; ?>/logo-adblock.svg" width="52" height="52" alt="Logo Adblock">
+			<img src="<?php echo WP_ROCKET_ASSETS_IMG_URL; ?>logo-adblock.svg" width="52" height="52" alt="Logo Adblock">
 			<div>
 				<div class="wpr-adblock-title"><?php _e( 'WP Rocket : Ad blocker detected.', 'rocket' ); ?></div>
 				<h2 class="wpr-adblock-description"><?php _e( 'Disable it on your site to access our support features. <a href="https://docs.wp-rocket.me/article/1080-disable-ad-blocker-for-support-integration" target="_blank">Learn more</a>', 'rocket' ); ?></h2>
@@ -121,6 +121,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 						?>
 					</div>
 
+					<?php if ( get_rocket_option( 'manual_preload' ) ) : ?>
 					<div class="wpr-field">
 						<h4 class="wpr-title3"><?php esc_html_e( 'Start cache preloading', 'rocket' ); ?></h4>
 						<?php
@@ -132,6 +133,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 						] );
 						?>
 					</div>
+					<?php endif; ?>
 
 					<?php if ( function_exists( 'opcache_reset' ) ) : ?>
 					<div class="wpr-field">

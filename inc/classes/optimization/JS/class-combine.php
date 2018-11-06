@@ -3,7 +3,7 @@ namespace WP_Rocket\Optimization\JS;
 
 use WP_Rocket\Admin\Options_Data as Options;
 use WP_Rocket\Optimization\Assets_Local_Cache;
-use WP_Rocket\Logger;
+use WP_Rocket\Logger\Logger;
 use MatthiasMullie\Minify;
 
 /**
@@ -56,7 +56,7 @@ class Combine extends Abstract_JS_Optimization {
 	/**
 	 * Inline scripts excluded from combined and moved after the combined file
 	 *
-	 * @since 3.1.5
+	 * @since 3.1.4
 	 * @author Remy Perona
 	 *
 	 * @var array
@@ -429,6 +429,17 @@ class Combine extends Abstract_JS_Optimization {
 			'oneall_social_login_providers_',
 			'betterads_screen_width',
 			'woocommerce_wishlist_add_to_wishlist_url',
+			'arf_conditional_logic',
+			'theChampFBCommentUrl',
+			'heateorSsHorSharingShortUrl',
+			'TL_Const',
+			'bimber_front_microshare',
+			'setAttribute("id"',
+			'TribeEventsPro',
+			'peepsotimedata',
+			'wphc_data',
+			'hc_rand_id',
+			'AfsAnalyticsObject',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
@@ -504,6 +515,10 @@ class Combine extends Abstract_JS_Optimization {
 			'f.convertkit.com',
 			'recaptcha/api.js',
 			'mailmunch.co',
+			'apps.shareaholic.com',
+			'dsms0mj1bbhn4.cloudfront.net',
+			'nutrifox.com',
+			'code.tidio.co',
 		];
 
 		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );
@@ -521,7 +536,7 @@ class Combine extends Abstract_JS_Optimization {
 	/**
 	 * Patterns of inline JS to move after the combined JS file
 	 *
-	 * @since 3.1.5
+	 * @since 3.1.4
 	 * @author Remy Perona
 	 *
 	 * @return array
@@ -545,15 +560,18 @@ class Combine extends Abstract_JS_Optimization {
 			'scrapeazon',
 			'startclock',
 			'it_logo_field_owl-box_',
-			'td_live_css_uid',
+			'td_live_css_uid',			
 			'wpvl_paramReplace',
 			'tdAjaxCount',
+			'mec_skin_',
+			'_wca',
+			'_taboola',
 		];
 
 		/**
 		 * Filters inline JS to move after the combined JS file
 		 *
-		 * @since 3.1.5
+		 * @since 3.1.4
 		 * @author Remy Perona
 		 *
 		 * @param array $move_after_scripts Patterns to match.

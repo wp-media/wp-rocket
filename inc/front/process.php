@@ -1,9 +1,9 @@
 <?php
-use WP_Rocket\Logger;
+use WP_Rocket\Logger\Logger;
 
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
-if ( ! class_exists( '\WP_Rocket\Logger' ) ) {
+if ( ! class_exists( '\WP_Rocket\Logger\Logger' ) ) {
 	// Et paf des chocapics.
 	rocket_define_donotoptimize_constant( true );
 	return;
@@ -76,7 +76,7 @@ if ( ! isset( $_SERVER['REQUEST_METHOD'] ) || 'GET' !== $_SERVER['REQUEST_METHOD
 	Logger::debug( 'Request method not cached.', [
 		'caching process',
 		'request_uri'    => $_SERVER['REQUEST_URI'],
-		'request_method' => $_SERVER['REQUEST_METHOD'],
+		'request_method' => isset( $_SERVER['REQUEST_METHOD'] ) ? $_SERVER['REQUEST_METHOD'] : 'Undefined',
 	] );
 	return;
 }
@@ -261,10 +261,10 @@ else {
 $filename = 'index';
 
 // Rename the caching filename for mobile.
-if ( isset( $rocket_cache_mobile, $rocket_do_caching_mobile_files ) && class_exists( 'Rocket_Mobile_Detect' ) ) {
+if ( isset( $rocket_cache_mobile, $rocket_do_caching_mobile_files, $rocket_cache_mobile_files_tablet ) && class_exists( 'Rocket_Mobile_Detect' ) ) {
 	$detect = new Rocket_Mobile_Detect();
 
-	if ( $detect->isMobile() && ! $detect->isTablet() ) {
+	if ( $detect->isMobile() && ! $detect->isTablet() && 'desktop' === $rocket_cache_mobile_files_tablet || ( $detect->isMobile() || $detect->isTablet() ) && 'mobile' === $rocket_cache_mobile_files_tablet ) {
 		$filename .= '-mobile';
 	}
 }
@@ -276,7 +276,18 @@ if ( ( is_ssl() && ! empty( $rocket_cache_ssl ) ) ) {
 
 // Rename the caching filename depending to dynamic cookies.
 if ( ! empty( $rocket_cache_dynamic_cookies ) ) {
-	foreach ( $rocket_cache_dynamic_cookies as $cookie_name ) {
+	foreach ( $rocket_cache_dynamic_cookies as $key => $cookie_name ) {
+		if ( is_array( $cookie_name ) && isset( $_COOKIE[ $key ] ) ) {
+			foreach ( $cookie_name as $cookie_key ) {
+				if ( '' !== $_COOKIE[ $key ][ $cookie_key ] ) {
+					$cache_key = $_COOKIE[ $key ][ $cookie_key ];
+					$cache_key = preg_replace( '/[^a-z0-9_\-]/i', '-', $cache_key );
+					$filename .= '-' . $cache_key;
+				}
+			}
+			continue;
+		}
+
 		if ( isset( $_COOKIE[ $cookie_name ] ) && '' !== $_COOKIE[ $cookie_name ] ) {
 			$cache_key = $_COOKIE[ $cookie_name ];
 			$cache_key = preg_replace( '/[^a-z0-9_\-]/i', '-', $cache_key );

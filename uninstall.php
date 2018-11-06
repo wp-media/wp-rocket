@@ -1,6 +1,10 @@
 <?php
 defined( 'WP_UNINSTALL_PLUGIN' ) || die( 'Cheatin&#8217; uh?' );
 
+if ( ! defined( 'WP_ROCKET_CACHE_ROOT_PATH' ) ) {
+	define( 'WP_ROCKET_CACHE_ROOT_PATH', WP_CONTENT_DIR . '/cache/' );
+}
+
 // Delete all transients.
 delete_site_transient( 'update_wprocket' );
 delete_site_transient( 'update_wprocket_response' );
@@ -47,7 +51,7 @@ function rocket_uninstall_rrmdir( $dir ) {
 
 }
 
-rocket_uninstall_rrmdir( WP_CONTENT_DIR . '/cache/wp-rocket/' );
-rocket_uninstall_rrmdir( WP_CONTENT_DIR . '/cache/min/' );
-rocket_uninstall_rrmdir( WP_CONTENT_DIR . '/cache/busting/' );
+rocket_uninstall_rrmdir( WP_ROCKET_CACHE_ROOT_PATH . 'wp-rocket/' );
+rocket_uninstall_rrmdir( WP_ROCKET_CACHE_ROOT_PATH . 'min/' );
+rocket_uninstall_rrmdir( WP_ROCKET_CACHE_ROOT_PATH . 'busting/' );
 rocket_uninstall_rrmdir( WP_CONTENT_DIR . '/wp-rocket-config/' );

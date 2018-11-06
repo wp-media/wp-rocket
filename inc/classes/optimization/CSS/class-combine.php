@@ -2,7 +2,7 @@
 namespace WP_Rocket\Optimization\CSS;
 
 use WP_Rocket\Admin\Options_Data as Options;
-use WP_Rocket\Logger;
+use WP_Rocket\Logger\Logger;
 use MatthiasMullie\Minify;
 
 /**

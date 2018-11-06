@@ -56,24 +56,21 @@ class Google_Tag_Manager extends Abstract_Busting {
 	}
 
 	/**
-	 * Saves the content of the URL to bust to the busting file if it doesn't exist yet.
+	 * Saves the content of the URL to bust to the busting file.
 	 *
-	 * @since 3.1
-	 * @author Remy Perona
+	 * @since  3.2
+	 * @access public
+	 * @author Grégory Viguier
 	 *
-	 * @param string $url      URL to get the content from.
+	 * @param  string $url URL to get the content from.
 	 * @return bool
 	 */
-	public function save( $url ) {
-		$path = $this->busting_path . $this->filename;
-
-		if ( \rocket_direct_filesystem()->exists( $path ) ) {
-			return true;
-		}
-
+	public function refresh_save( $url ) {
+		$path    = $this->busting_path . $this->filename;
 		$content = $this->get_file_content( $url );
 
 		if ( ! $content ) {
+			// If a previous version is present, it is kept in place.
 			return false;
 		}
 

@@ -1,7 +1,7 @@
 <?php
 namespace WP_Rocket\Admin;
 
-use WP_Rocket\Logger;
+use WP_Rocket\Logger\Logger;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
