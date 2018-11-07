@@ -477,6 +477,8 @@ function rocket_serve_cache_file( $rocket_cache_filepath ) {
 		if ( $http_if_modified_since && ( strtotime( $http_if_modified_since ) === @filemtime( $rocket_cache_filepath_gzip ) ) ) {
 			// Client's cache is current, so we just respond '304 Not Modified'.
 			header( $_SERVER['SERVER_PROTOCOL'] . ' 304 Not Modified', true, 304 );
+			header( 'Expires: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
+			header( 'Cache-Control: no-cache, must-revalidate' );
 
 			Logger::info( 'Serving `304` gzip cache file.', [
 				'caching process',
@@ -512,6 +514,8 @@ function rocket_serve_cache_file( $rocket_cache_filepath ) {
 		if ( $http_if_modified_since && ( strtotime( $http_if_modified_since ) === @filemtime( $rocket_cache_filepath ) ) ) {
 			// Client's cache is current, so we just respond '304 Not Modified'.
 			header( $_SERVER['SERVER_PROTOCOL'] . ' 304 Not Modified', true, 304 );
+			header( 'Expires: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
+			header( 'Cache-Control: no-cache, must-revalidate' );
 
 			Logger::info( 'Serving `304` cache file.', [
 				'caching process',
