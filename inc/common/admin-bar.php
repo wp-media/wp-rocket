@@ -197,7 +197,7 @@ function rocket_admin_bar( $wp_admin_bar ) {
 
 		$action = 'preload';
 		// Go robot gogo!
-		if ( get_rocket_option( 'manual_preload', 1 ) || get_rocket_option( 'sitemap_preload', false ) ) {
+		if ( get_rocket_option( 'manual_preload', 1 ) ) {
 			if ( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
 
 				$wp_admin_bar->add_menu(

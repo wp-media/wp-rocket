@@ -363,5 +363,10 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 			}
 		}
 	}
+
+	if ( version_compare( $actual_version, '3.2.0.1', '<' ) ) {
+		flush_rocket_htaccess();
+		wp_safe_remote_get( esc_url( home_url() ) );
+	}
 }
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );
