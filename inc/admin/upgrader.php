@@ -363,5 +363,9 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 			}
 		}
 	}
+
+	if ( version_compare( $actual_version, '3.2.1', '<' ) ) {
+		rocket_generate_config_file();
+	}
 }
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );

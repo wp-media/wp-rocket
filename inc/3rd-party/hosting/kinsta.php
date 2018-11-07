@@ -5,6 +5,8 @@ if ( isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ) {
 
 	add_filter( 'do_rocket_generate_caching_files', '__return_false', PHP_INT_MAX );
 	add_filter( 'rocket_display_varnish_options_tab', '__return_false' );
+	// Prevent mandatory cookies on hosting with server cache.
+	add_filter( 'rocket_cache_mandatory_cookies', '__return_empty_array', PHP_INT_MAX );
 
 	global $kinsta_cache;
 

@@ -21,6 +21,8 @@ if ( class_exists( 'WPaaS\Plugin' ) ) :
 	add_filter( 'rocket_display_input_varnish_auto_purge', '__return_false' );
 
 	add_filter( 'set_rocket_wp_cache_define', '__return_true' );
+	// Prevent mandatory cookies on hosting with server cache.
+	add_filter( 'rocket_cache_mandatory_cookies', '__return_empty_array', PHP_INT_MAX );
 
 	/**
 	 * Remove expiration on HTML to prevent issue with Varnish cache.
