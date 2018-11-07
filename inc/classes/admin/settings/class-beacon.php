@@ -62,28 +62,30 @@ class Beacon {
 				$lang        = '-fr';
 				$form_id     = '5d9279dc-1b2d-11e8-b466-0ec85169275a';
 				$suggest     = wp_list_pluck( $this->get_suggest( 'faq', 'fr' ), 'id' );
-				$translation = wp_json_encode( [
-					'searchLabel'               => 'Comment pouvons-nous vous aider ?',
-					'searchErrorLabel'          => 'Votre recherche a expiré. Veuillez vérifier votre connexion et réessayer.',
-					'noResultsLabel'            => 'Aucun résultat trouvé pour',
-					'contactLabel'              => 'Envoyer un message',
-					'attachFileLabel'           => 'Joindre un fichier',
-					'attachFileError'           => 'Le poids maximum de fichier est de 10Mo',
-					'fileExtensionError'        => 'Le format du fichier attaché n\'est pas autorisé.',
-					'nameLabel'                 => 'Votre nom',
-					'nameError'                 => 'Veuillez entrer votre nom',
-					'emailLabel'                => 'Adresse email',
-					'emailError'                => 'Veuillez entrer une adresse email valide',
-					'topicLabel'                => 'Sélectionnez un sujet',
-					'topicError'                => 'Veuillez sélectionner un sujet dans la liste',
-					'subjectLabel'              => 'Sujet',
-					'subjectError'              => 'Veuillez entrer un sujet',
-					'messageLabel'              => 'Comment pouvons-nous vous aider ?',
-					'messageError'              => 'Veuillez entrer un message',
-					'sendLabel'                 => 'Envoyer',
-					'contactSuccessLabel'       => 'Message envoyé !',
-					'contactSuccessDescription' => 'Merci de nous avoir contacté ! Un de nos rocketeers vous répondra rapidement.',
-				] );
+				$translation = wp_json_encode(
+					[
+						'searchLabel'               => 'Comment pouvons-nous vous aider ?',
+						'searchErrorLabel'          => 'Votre recherche a expiré. Veuillez vérifier votre connexion et réessayer.',
+						'noResultsLabel'            => 'Aucun résultat trouvé pour',
+						'contactLabel'              => 'Envoyer un message',
+						'attachFileLabel'           => 'Joindre un fichier',
+						'attachFileError'           => 'Le poids maximum de fichier est de 10Mo',
+						'fileExtensionError'        => 'Le format du fichier attaché n\'est pas autorisé.',
+						'nameLabel'                 => 'Votre nom',
+						'nameError'                 => 'Veuillez entrer votre nom',
+						'emailLabel'                => 'Adresse email',
+						'emailError'                => 'Veuillez entrer une adresse email valide',
+						'topicLabel'                => 'Sélectionnez un sujet',
+						'topicError'                => 'Veuillez sélectionner un sujet dans la liste',
+						'subjectLabel'              => 'Sujet',
+						'subjectError'              => 'Veuillez entrer un sujet',
+						'messageLabel'              => 'Comment pouvons-nous vous aider ?',
+						'messageError'              => 'Veuillez entrer un message',
+						'sendLabel'                 => 'Envoyer',
+						'contactSuccessLabel'       => 'Message envoyé !',
+						'contactSuccessDescription' => 'Merci de nous avoir contacté ! Un de nos rocketeers vous répondra rapidement.',
+					]
+				);
 				break;
 			default:
 				$lang        = '';
@@ -145,12 +147,14 @@ class Beacon {
 
 		$active_options = array_filter( $this->options->get_options() );
 		$active_options = array_intersect_key( $options_to_send, $active_options );
+		$theme          = wp_get_theme();
 
 		$data = [
 			'email'                    => $this->options->get( 'consumer_email' ),
 			'Website'                  => home_url(),
 			'WordPress Version'        => $wp_version,
 			'WP Rocket Version'        => WP_ROCKET_VERSION,
+			'Theme'                    => $theme->get( 'Name' ),
 			'Plugins Enabled'          => implode( ' - ', rocket_get_active_plugins() ),
 			'WP Rocket Active Options' => implode( ' - ', $active_options ),
 		];
