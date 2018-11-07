@@ -36,4 +36,7 @@ if ( class_exists( 'FlywheelNginxCompat' ) ) :
 		return '127.0.0.1';
 	}
 	add_filter( 'rocket_varnish_ip', 'rocket_varnish_ip_on_flywheel' );
+
+	// Prevent mandatory cookies on hosting with server cache.
+	add_filter( 'rocket_cache_mandatory_cookies', '__return_empty_array', PHP_INT_MAX );
 endif;
