@@ -148,8 +148,10 @@ $rocket_remove_query_strings = [
 	'usqp'            => 1,
 ];
 
+$params = [];
+
 if ( ! empty( $_GET ) ) {
-	$params = array_intersect_key( $_GET, $rocket_remove_query_strings );
+	$params = array_diff_key( $_GET, $rocket_remove_query_strings );
 
 	if ( ! empty( $params ) ) {
 		ksort( $params );
@@ -171,9 +173,9 @@ $rocket_ignore_query_strings = [
 	'lp-variation-id' => 1,
 ];
 
-if ( ! empty( $_GET )
-	&& ( ! (bool) array_intersect_key( $_GET, $rocket_ignore_query_strings ) )
-	&& ( ! isset( $rocket_cache_query_strings ) || ! array_intersect( array_keys( $_GET ), $rocket_cache_query_strings ) )
+if ( ! empty( $params )
+	&& ( ! (bool) array_intersect_key( $params, $rocket_ignore_query_strings ) )
+	&& ( ! isset( $rocket_cache_query_strings ) || ! array_intersect( array_keys( $params ), $rocket_cache_query_strings ) )
 ) {
 	rocket_define_donotoptimize_constant( true );
 
