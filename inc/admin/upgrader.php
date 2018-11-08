@@ -364,6 +364,11 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		}
 	}
 
+	if ( version_compare( $actual_version, '3.2.0.1', '<' ) ) {
+		flush_rocket_htaccess();
+		wp_safe_remote_get( esc_url( home_url() ) );
+	}
+
 	if ( version_compare( $actual_version, '3.2.1', '<' ) ) {
 		flush_rocket_htaccess();
 		rocket_generate_config_file();

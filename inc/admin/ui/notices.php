@@ -166,6 +166,10 @@ function rocket_plugins_to_deactivate() {
 		$plugins['cloudflare'] = 'cloudflare/cloudflare.php';
 	}
 
+	if ( get_rocket_option( 'control_heartbeat' ) ) {
+		$plugins['heartbeat-control'] = 'heartbeat-control/heartbeat-control.php';
+	}
+
 	/**
 	 * Filter the recommended plugins to deactivate to prevent conflicts
 	 *

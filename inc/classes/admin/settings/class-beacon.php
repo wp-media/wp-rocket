@@ -484,6 +484,10 @@ class Beacon {
 					'id'  => '5bce07be2c7d3a04dd5bf94d',
 					'url' => 'https://docs.wp-rocket.me/article/1120-sucuri-add-on/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
+				'fr' => [
+					'id'  => '5bcf39c72c7d3a4db66085b9',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1122-sucuri-add-on/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
 			],
 			'varnish'                => [
 				'en' => [
@@ -500,6 +504,10 @@ class Beacon {
 					'id'  => '5bcdfecd042863158cc7b672',
 					'url' => 'https://docs.wp-rocket.me/article/1119-control-wordpress-heartbeat-api/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
+				'fr' => [
+					'id'  => '5bcf4378042863215a46bc00',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1124-controler-api-wordpress-heartbeat/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
 			],
 			'google_tracking'        => [
 				'en' => [
@@ -511,6 +519,10 @@ class Beacon {
 				'en' => [
 					'id'  => '5bc904e7042863158cc79d57',
 					'url' => 'https://docs.wp-rocket.me/article/1117-facebook-pixel-add-on/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '5bcf3d35042863215a46bb7f',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1123-add-on-facebook-pixel/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 		];

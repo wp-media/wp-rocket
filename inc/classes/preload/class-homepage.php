@@ -18,8 +18,17 @@ class Homepage extends Abstract_Preload {
 	 * @return void
 	 */
 	public function preload( $urls ) {
+		// This filter is documented in inc/classes/preload/class-partial-process.php.
+		$args = apply_filters(
+			'rocket_partial_preload_url_request_args',
+			[
+				'user-agent' => 'WP Rocket/Partial_Preload',
+				'sslverify'  => apply_filters( 'https_local_ssl_verify', true ),
+			]
+		);
+
 		foreach ( $urls as $home_url ) {
-			$response = wp_remote_get( $home_url );
+			$response = wp_remote_get( $home_url, $args );
 
 			if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
 				return;

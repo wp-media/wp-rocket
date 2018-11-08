@@ -204,7 +204,8 @@ function rocket_admin_bar( $wp_admin_bar ) {
 		 */
 		$action = 'preload';
 
-		if ( get_rocket_option( 'manual_preload', 1 ) || get_rocket_option( 'sitemap_preload', false ) ) {
+		// Go robot gogo!
+		if ( get_rocket_option( 'manual_preload', 1 ) ) {
 			$i18n_plugin = rocket_has_i18n();
 
 			if ( $i18n_plugin ) {

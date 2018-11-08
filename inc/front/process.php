@@ -221,16 +221,38 @@ if ( isset( $rocket_cache_reject_cookies ) && preg_match( '#(' . $rocket_cache_r
 
 $ip          = rocket_get_ip();
 $allowed_ips = array(
-	'85.17.131.209'  => 0, // Pingdom Tools - Amsterdam.
-	'173.208.58.138' => 1, // Pingdom Tools - New-York.
-	'50.22.90.226'   => 2, // Pingdom Tools - Dallas.
-	'209.58.131.213' => 3, // Pingdom Tools - San Jose.
-	'168.1.92.52'    => 4, // Pingdom Tools - Melbourne.
-	'5.178.78.78'    => 5, // Pingdom Tools - Stockholm.
+	'208.70.247.157' => '', // GT Metrix - Vancouver 1.
+	'204.187.14.70'  => '', // GT Metrix - Vancouver 2.
+	'204.187.14.71'  => '', // GT Metrix - Vancouver 3.
+	'204.187.14.72'  => '', // GT Metrix - Vancouver 4.
+	'204.187.14.73'  => '', // GT Metrix - Vancouver 5.
+	'204.187.14.74'  => '', // GT Metrix - Vancouver 6.
+	'204.187.14.75'  => '', // GT Metrix - Vancouver 7.
+	'204.187.14.76'  => '', // GT Metrix - Vancouver 8.
+	'204.187.14.77'  => '', // GT Metrix - Vancouver 9.
+	'204.187.14.78'  => '', // GT Metrix - Vancouver 10.
+	'199.10.31.194'  => '', // GT Metrix - Vancouver 11.
+	'13.85.80.124'   => '', // GT Metrix - Dallas 1.
+	'13.84.146.132'  => '', // GT Metrix - Dallas 2.
+	'13.84.146.226'  => '', // GT Metrix - Dallas 3.
+	'40.74.254.217'  => '', // GT Metrix - Dallas 4.
+	'13.84.43.227'   => '', // GT Metrix - Dallas 5.
+	'172.255.61.34'  => '', // GT Metrix - London 1.
+	'172.255.61.35'  => '', // GT Metrix - London 2.
+	'172.255.61.36'  => '', // GT Metrix - London 3.
+	'172.255.61.37'  => '', // GT Metrix - London 4.
+	'172.255.61.38'  => '', // GT Metrix - London 5.
+	'172.255.61.39'  => '', // GT Metrix - London 6.
+	'172.255.61.40'  => '', // GT Metrix - London 7.
+	'13.70.66.20'    => '', // GT Metrix - Sydney.
+	'191.235.85.154' => '', // GT Metrix - São Paulo 1.
+	'191.235.86.0'   => '', // GT Metrix - São Paulo 2.
+	'52.66.75.147'   => '', // GT Metrix - Mumbai.
+	'52.175.28.116'  => '', // GT Metrix - Hong Kong.
 );
 
 // Don't cache page when these cookies don't exist.
-if ( ! isset( $allowed_ips[ $ip ] ) && isset( $rocket_cache_mandatory_cookies ) && ! preg_match( '#(' . $rocket_cache_mandatory_cookies . ')#', var_export( $_COOKIE, true ) ) ) {
+if ( ( ! isset( $allowed_ips[ $ip ] ) && ! preg_match( '#(PingdomPageSpeed|DareBoost|Google|PTST|WP Rocket)#i', $_SERVER['HTTP_USER_AGENT'] ) ) && isset( $rocket_cache_mandatory_cookies ) && ! preg_match( '#(' . $rocket_cache_mandatory_cookies . ')#', var_export( $_COOKIE, true ) ) ) {
 	rocket_define_donotoptimize_constant( true );
 
 	Logger::debug( 'Missing cookie: page not cached.', [
