@@ -185,7 +185,7 @@ if ( ! empty( $params )
 	] );
 	return;
 }
-
+die();
 // Don't cache SSL.
 if ( empty( $rocket_cache_ssl ) && is_ssl() ) {
 	rocket_define_donotoptimize_constant( true );
