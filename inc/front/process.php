@@ -83,7 +83,7 @@ if ( ! isset( $_SERVER['REQUEST_METHOD'] ) || 'GET' !== $_SERVER['REQUEST_METHOD
 
 // Get the correct config file.
 $rocket_config_path      = WP_CONTENT_DIR . '/wp-rocket-config/';
-$real_rocket_config_path = realpath( $rocket_config_path ) . DIRECTORY_SEPARATOR;
+$rocket_real_config_path = realpath( $rocket_config_path ) . DIRECTORY_SEPARATOR;
 
 $host = isset( $_SERVER['HTTP_HOST'] ) ? $_SERVER['HTTP_HOST'] : (string) time();
 $host = preg_replace( '/:\d+$/', '', $host );
@@ -91,7 +91,7 @@ $host = trim( strtolower( $host ), '.' );
 $host = rawurlencode( $host );
 
 $continue = false;
-if ( realpath( $rocket_config_path . $host . '.php' ) && 0 === stripos( realpath( $rocket_config_path . $host . '.php' ), $real_rocket_config_path ) ) {
+if ( realpath( $rocket_config_path . $host . '.php' ) && 0 === stripos( realpath( $rocket_config_path . $host . '.php' ), $rocket_real_config_path ) ) {
 	include $rocket_config_path . $host . '.php';
 	$continue = true;
 } else {
@@ -102,13 +102,13 @@ if ( realpath( $rocket_config_path . $host . '.php' ) && 0 === stripos( realpath
 	foreach ( $path as $p ) {
 		static $dir;
 
-		if ( realpath( $rocket_config_path . $host . '.' . $p . '.php' ) && 0 === stripos( realpath( $rocket_config_path . $host . '.' . $p . '.php' ), $real_rocket_config_path ) ) {
+		if ( realpath( $rocket_config_path . $host . '.' . $p . '.php' ) && 0 === stripos( realpath( $rocket_config_path . $host . '.' . $p . '.php' ), $rocket_real_config_path ) ) {
 			include $rocket_config_path . $host . '.' . $p . '.php';
 			$continue = true;
 			break;
 		}
 
-		if ( realpath( $rocket_config_path . $host . '.' . $dir . $p . '.php' ) && 0 === stripos( realpath( $rocket_config_path . $host . '.' . $dir . $p . '.php' ), $real_rocket_config_path ) ) {
+		if ( realpath( $rocket_config_path . $host . '.' . $dir . $p . '.php' ) && 0 === stripos( realpath( $rocket_config_path . $host . '.' . $dir . $p . '.php' ), $rocket_real_config_path ) ) {
 			include $rocket_config_path . $host . '.' . $dir . $p . '.php';
 			$continue = true;
 			break;
@@ -126,28 +126,56 @@ if ( ! $continue ) {
 	return;
 }
 
-$request_uri = ( isset( $rocket_cache_query_strings ) && array_intersect( array_keys( $_GET ), $rocket_cache_query_strings ) ) || isset( $_GET['lp-variation-id'] ) || isset( $_GET['lang'] ) || isset( $_GET['s'] ) ? $_SERVER['REQUEST_URI'] : $request_uri;
-
 /**
- * Don't cache with variables but the cache is enabled if the visitor comes from an RSS feed, a Facebook action or Google Adsense tracking
+ * Don't cache with query strings parameters but the cache is served if the visitor comes from an RSS feed, a Facebook action or Google Adsense tracking
  *
  * @since 2.3 Add query strings which can be cached via the options page.
- * @since 2.1 Add compatibilty with WordPress Landing Pages (permalink_name and lp-variation-id)
+ * @since 2.1 Add compatibility with WordPress Landing Pages (permalink_name and lp-variation-id)
  * @since 2.1 Add compabitiliy with qTranslate and translation plugin with query string "lang"
  */
-if ( ! empty( $_GET )
-	&& ( ! isset( $_GET['utm_source'], $_GET['utm_medium'], $_GET['utm_campaign'] ) )
-	&& ( ! isset( $_GET['utm_expid'] ) )
-	&& ( ! isset( $_GET['fb_action_ids'], $_GET['fb_action_types'], $_GET['fb_source'] ) )
-	&& ( ! isset( $_GET['gclid'] ) )
-	&& ( ! isset( $_GET['permalink_name'] ) )
-	&& ( ! isset( $_GET['lp-variation-id'] ) )
-	&& ( ! isset( $_GET['lang'] ) )
-	&& ( ! isset( $_GET['s'] ) )
-	&& ( ! isset( $_GET['age-verified'] ) )
-	&& ( ! isset( $_GET['ao_noptimize'] ) )
-	&& ( ! isset( $_GET['usqp'] ) )
-	&& ( ! isset( $rocket_cache_query_strings ) || ! array_intersect( array_keys( $_GET ), $rocket_cache_query_strings ) )
+$rocket_remove_query_strings = [
+	'utm_source'      => 1,
+	'utm_medium'      => 1,
+	'utm_campaign'    => 1,
+	'utm_expid'       => 1,
+	'fb_action_ids'   => 1,
+	'fb_action_types' => 1,
+	'fb_source'       => 1,
+	'fbclid'          => 1,
+	'gclid'           => 1,
+	'age-verified'    => 1,
+	'ao_noptimize'    => 1,
+	'usqp'            => 1,
+];
+
+$params = [];
+
+if ( ! empty( $_GET ) ) {
+	$params = array_diff_key( $_GET, $rocket_remove_query_strings );
+
+	if ( ! empty( $params ) ) {
+		ksort( $params );
+
+		$query_string = '?';
+
+		foreach ( $params as $key => $value ) {
+			$query_string .= $key . '=' . $value . '&';
+		}
+
+		$request_uri .= rtrim( $query_string, '&' );
+	}
+}
+
+$rocket_ignore_query_strings = [
+	'lang'            => 1,
+	's'               => 1,
+	'permalink_name'  => 1,
+	'lp-variation-id' => 1,
+];
+
+if ( ! empty( $params )
+	&& ( ! (bool) array_intersect_key( $params, $rocket_ignore_query_strings ) )
+	&& ( ! isset( $rocket_cache_query_strings ) || ! array_intersect( array_keys( $params ), $rocket_cache_query_strings ) )
 ) {
 	rocket_define_donotoptimize_constant( true );
 
@@ -320,6 +348,9 @@ if ( ! empty( $rocket_cache_dynamic_cookies ) ) {
 
 // Caching file path.
 $request_uri_path      = preg_replace_callback( '/%[0-9A-F]{2}/', 'rocket_urlencode_lowercase', $request_uri_path );
+// Directories in Windows can't contain question marks
+$request_uri_path = str_replace( '?', '_', $request_uri_path );
+
 $rocket_cache_filepath = $request_uri_path . '/' . $filename . '.html';
 
 Logger::debug( 'Looking for cache file.', [
@@ -456,6 +487,7 @@ function rocket_serve_cache_file( $rocket_cache_filepath ) {
 	// Check if cache file exist.
 	if ( isset( $_SERVER['HTTP_ACCEPT_ENCODING'] ) && false !== strpos( $_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip' ) && file_exists( $rocket_cache_filepath_gzip ) && is_readable( $rocket_cache_filepath_gzip ) ) {
 		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s', filemtime( $rocket_cache_filepath_gzip ) ) . ' GMT' );
+		header( 'Content-Encoding: gzip' );
 
 		// Getting If-Modified-Since headers sent by the client.
 		if ( function_exists( 'apache_request_headers' ) ) {
@@ -469,6 +501,8 @@ function rocket_serve_cache_file( $rocket_cache_filepath ) {
 		if ( $http_if_modified_since && ( strtotime( $http_if_modified_since ) === @filemtime( $rocket_cache_filepath_gzip ) ) ) {
 			// Client's cache is current, so we just respond '304 Not Modified'.
 			header( $_SERVER['SERVER_PROTOCOL'] . ' 304 Not Modified', true, 304 );
+			header( 'Expires: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
+			header( 'Cache-Control: no-cache, must-revalidate' );
 
 			Logger::info( 'Serving `304` gzip cache file.', [
 				'caching process',
@@ -479,7 +513,7 @@ function rocket_serve_cache_file( $rocket_cache_filepath ) {
 		}
 
 		// Serve the cache if file isn't store in the client browser cache.
-		readgzfile( $rocket_cache_filepath_gzip );
+		readfile( $rocket_cache_filepath_gzip );
 
 		Logger::info( 'Serving gzip cache file.', [
 			'caching process',
@@ -504,6 +538,8 @@ function rocket_serve_cache_file( $rocket_cache_filepath ) {
 		if ( $http_if_modified_since && ( strtotime( $http_if_modified_since ) === @filemtime( $rocket_cache_filepath ) ) ) {
 			// Client's cache is current, so we just respond '304 Not Modified'.
 			header( $_SERVER['SERVER_PROTOCOL'] . ' 304 Not Modified', true, 304 );
+			header( 'Expires: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
+			header( 'Cache-Control: no-cache, must-revalidate' );
 
 			Logger::info( 'Serving `304` cache file.', [
 				'caching process',

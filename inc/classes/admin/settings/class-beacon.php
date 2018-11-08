@@ -147,12 +147,14 @@ class Beacon {
 
 		$active_options = array_filter( $this->options->get_options() );
 		$active_options = array_intersect_key( $options_to_send, $active_options );
+		$theme          = wp_get_theme();
 
 		$data = [
 			'email'                    => $this->options->get( 'consumer_email' ),
 			'Website'                  => home_url(),
 			'WordPress Version'        => $wp_version,
 			'WP Rocket Version'        => WP_ROCKET_VERSION,
+			'Theme'                    => $theme->get( 'Name' ),
 			'Plugins Enabled'          => implode( ' - ', rocket_get_active_plugins() ),
 			'WP Rocket Active Options' => implode( ' - ', $active_options ),
 		];

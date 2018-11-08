@@ -33,6 +33,16 @@ class Partial_Preload_Subscriber implements Subscriber_Interface {
 	private $options;
 
 	/**
+	 * Stores the URLs to preload
+	 *
+	 * @since 3.2.1
+	 * @author Remy Perona
+	 *
+	 * @var array
+	 */
+	private $urls = [];
+
+	/**
 	 * Constructor
 	 *
 	 * @since 3.2
@@ -53,6 +63,7 @@ class Partial_Preload_Subscriber implements Subscriber_Interface {
 		return [
 			'after_rocket_clean_post' => [ 'preload_after_clean_post', 10, 3 ],
 			'after_rocket_clean_term' => [ 'preload_after_clean_term', 10, 3 ],
+			'shutdown'                => [ 'maybe_dispatch', 0 ],
 		];
 	}
 
@@ -89,11 +100,7 @@ class Partial_Preload_Subscriber implements Subscriber_Interface {
 
 		$purge_urls = array_filter( $purge_urls );
 
-		foreach ( $purge_urls as $url ) {
-			$this->partial_preload->push_to_queue( $url );
-		}
-
-		$this->partial_preload->save()->dispatch();
+		$this->urls = array_merge( $this->urls, $purge_urls );
 	}
 
 	/**
@@ -115,7 +122,33 @@ class Partial_Preload_Subscriber implements Subscriber_Interface {
 
 		$purge_urls = array_filter( $purge_urls );
 
-		foreach ( $purge_urls as $url ) {
+		$this->urls = array_merge( $this->urls, $purge_urls );
+	}
+
+	/**
+	 * Starts the partial preload process if there is any URLs saved
+	 *
+	 * @since 3.2.1
+	 * @author Remy Perona
+	 *
+	 * @return void
+	 */
+	public function maybe_dispatch() {
+		if ( ! is_admin() ) {
+			return;
+		}
+
+		if ( wp_doing_ajax() ) {
+			return;
+		}
+
+		if ( empty( $this->urls ) ) {
+			return;
+		}
+
+		$this->urls = array_unique( $this->urls );
+
+		foreach ( $this->urls as $url ) {
 			$this->partial_preload->push_to_queue( $url );
 		}
 
