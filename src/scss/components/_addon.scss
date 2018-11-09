@@ -1,0 +1,81 @@
+// main: ../main.scss
+
+/*-----------------------------------------------*\
+
+    Addon style
+
+\*-----------------------------------------------*/
+
+.wpr-addon{
+    padding: $space*3 0;
+
+    .wpr-flex{
+        align-items: flex-start;
+
+        @include respond-to('xs') {
+            align-items: center;
+        }
+    }
+
+    .wpr-flex > div{
+        text-align: left;
+    }
+
+    .wpr-addon-title{
+        margin-bottom: $space*2;
+        font-weight: 500;
+    }
+
+    .wpr-field-description{
+        font-style: normal;
+    }
+
+    .wpr-addon-logo{
+        text-align: center;
+        flex: 0 0 160px;
+
+        @include respond-to('md') {
+            max-width: 100px;
+
+            img{
+                width: 100%;
+                height: auto;
+            }
+        }
+
+        @include respond-to('sm') {
+            max-width: 160px;
+        }
+
+        @include respond-to('xs') {
+            flex: 0 0 auto;
+            margin-bottom: $space*2;
+        }
+    }
+
+    .wpr-addon-text{
+        margin-left: $space*4;
+        flex: 1 1 auto;
+
+        @include respond-to('md') {
+            margin-left: $space*2;
+        }
+
+        @include respond-to('sm') {
+            margin-left: $space*4;
+        }
+
+        @include respond-to('xs') {
+            margin-left: 0;
+        }
+
+        a{
+            display: inline-block;
+            margin-top: $space*3;
+        }
+
+        .button{
+            margin-top: $space*3;
+        }
+    }
+}

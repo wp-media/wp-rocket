@@ -1,0 +1,30 @@
+// main: ../main.scss
+
+/*-----------------------------------------------*\
+
+    Header of option group
+
+\*-----------------------------------------------*/
+
+.wpr-optionHeader{
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    margin-top: $space*6;
+    padding-bottom: 9px;
+    border-bottom: 1px solid $cGrey;
+
+    .wpr-title2{
+        line-height: $space*3;
+        color: $cOrange;
+        padding-right: $space*5;
+    }
+
+    .wpr-infoAction{
+        margin-right: $space;
+    }
+}
+
+.wpr-optionHeader.wpr-isHidden{
+    display: none;
+}

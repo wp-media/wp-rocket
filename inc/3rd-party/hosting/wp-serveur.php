@@ -1,20 +1,33 @@
 <?php
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
-if ( defined( 'DB_HOST' ) && strpos( DB_HOST , '.wpserveur.net' ) !== false ) :
+if ( defined( 'DB_HOST' ) && strpos( DB_HOST, '.wpserveur.net' ) !== false ) {
 	/**
 	 * Allow to purge Varnish on WP Serveur websites
 	 *
 	 * @since 2.6.11
 	 */
 	add_filter( 'do_rocket_varnish_http_purge', '__return_true' );
+	// Prevent mandatory cookies on hosting with server cache.
+	add_filter( 'rocket_cache_mandatory_cookies', '__return_empty_array', PHP_INT_MAX );
 
 	/**
-	 * Don't display the Varnish options tab for WP Serveur users
+	 * Changes the text on the Varnish one-click block.
 	 *
-	 * @since 2.7
+	 * @since 3.0
+	 * @author Remy Perona
+	 *
+	 * @param array $settings Field settings data.
 	 */
-	add_filter( 'rocket_display_varnish_options_tab', '__return_false' );
+	function rocket_wpserveur_varnish_field( $settings ) {
+		// Translators: %s = Hosting name.
+		$settings['varnish_auto_purge']['title'] = sprintf( __( 'Your site is hosted on %s, we have enabled Varnish auto-purge for compatibility.', 'rocket' ), 'WP Serveur' );
+
+		return $settings;
+	}
+	add_filter( 'rocket_varnish_field_settings', 'rocket_wpserveur_varnish_field' );
+
+	add_filter( 'rocket_display_input_varnish_auto_purge', '__return_false' );
 
 	/**
 	 * Conflict with WP Serveur hosting: don't apply inline JS on all pages
@@ -31,4 +44,4 @@ if ( defined( 'DB_HOST' ) && strpos( DB_HOST , '.wpserveur.net' ) !== false ) :
 		return $html_options;
 	}
 	add_action( 'rocket_minify_html_options', 'rocket_deactivate_inline_js_on_wp_serveur' );
-endif;
+}

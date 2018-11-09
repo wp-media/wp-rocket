@@ -1,0 +1,37 @@
+// main: ../../main.scss
+
+/*-----------------------------------------------*\
+
+    Type = select
+
+\*-----------------------------------------------*/
+
+
+.wpr-select{
+    position: relative;
+
+    select{
+        margin: 0;
+        padding: 0 $space;
+        height: 36px;
+        border: 1px solid $cGrey;
+        background: $cGreyLight2;
+        color: $cBlack;
+        box-shadow: none;
+        border-radius: 0;
+        @extend .wpr-title3;
+        letter-spacing: 0.011em;
+
+        &:focus{
+            outline: none;
+            border-color: $cGreyDark1;
+            box-shadow: none;
+        }
+    }
+
+    label{
+        @extend .wpr-title3;
+        font-weight: bold;
+        margin-left: $space;
+    }
+}

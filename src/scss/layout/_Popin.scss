@@ -1,0 +1,118 @@
+// main: ../main.scss
+
+/*-----------------------------------------------*\
+
+    Popin analytics
+
+\*-----------------------------------------------*/
+
+.wpr-Popin{
+    display: none;
+    position: fixed;
+    width: 772px;
+    height: auto;
+    top: 50%;
+    left: 50%;
+    background: #fff;
+    border-radius: 3px;
+    transform: translateX(-50%) translateY(-50%);
+    z-index: 100000;
+
+    &-overlay{
+        display: none;
+        position: fixed;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background: rgba(0,0,0,0.8);
+        z-index: 99999;
+    }
+
+    &-header{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: $space*8;
+        padding: 0 $space*4;
+        background: $cPurple;
+        color: #fff;
+        font-weight: 600;
+    }
+
+    &-close{
+        color: $cPurpleLight2;
+        @include font-size(24,24);
+        @include transition(color, 200ms);
+
+        &:hover,
+        &:focus{
+            color: #fff;
+            outline: none;
+        }
+    }
+
+    &-content{
+        padding: $space $space*4;
+        color: $cGreyDark2;
+    }
+
+    &-flex{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        div{
+            margin-left: $space*4;
+        }
+    }
+
+    p{
+        margin: $space*2 0;
+    }
+
+    .wp-rocket-data-table{
+        padding: 12px $space*3;
+        background: $cGreyLight2 !important;
+        border: none;
+
+        td{
+            width: 50%;
+            color: $cBlack;
+            padding: $space 0;
+            padding-left: 4px;
+            border-bottom: 1px solid darken($cGrey,10%);
+
+            &:not(.column-primary){
+                font-family: "Monaco";
+                @include font-size(12,20);
+                color: $cGreyDark2;
+                letter-spacing: -0.01em;
+            }
+        }
+
+        tr{
+            background: $cGreyLight2;
+            border-bottom: 1px solid $cGrey;
+
+            &:last-child td{
+                border-bottom: none;
+            }
+        }
+
+        strong{
+            font-weight: 500;
+        }
+
+        em{
+            font-style: normal;
+        }
+
+        code{
+            padding: 0;
+            margin: 0;
+            background: transparent;
+        }
+    }
+}

@@ -1,0 +1,54 @@
+// main: ../main.scss
+
+/*-----------------------------------------------*\
+
+    Header / Navigation (left bar)
+
+\*-----------------------------------------------*/
+
+.wpr-Header{
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 225px;
+
+    @include respond-to('xs') {
+        flex: 0 0 50px;
+    }
+
+    &-logo{
+        padding: $space*4 0 $space*3;
+        text-align: center;
+
+        @include respond-to('xs') {
+            padding: $space*2 0 $space;
+        }
+
+        &-desktop{
+            @include respond-to('xs') {
+                display: none;
+            }
+        }
+
+        &-mobile{
+            display: none;
+
+            @include respond-to('xs') {
+                display: inline-block;
+            }
+        }
+
+    }
+
+    &-footer{
+        margin-top: auto;
+        padding: $space*6 20px 0;
+        @include font-size(11,48);
+        color: $cGreyDark2;
+        opacity: 0.6;
+        font-weight: bold;
+
+        @include respond-to('xs') {
+            display: none;
+        }
+    }
+}

@@ -141,47 +141,70 @@ function get_rocket_polylang_langs_for_admin_bar() {
 }
 
 /**
- * Check if a translation plugin is activated
+ * Tell if a translation plugin is activated.
  *
  * @since 2.0
+ * @since 3.2.1 Return an identifier on success instead of true.
  *
- * @return bool True if a plugin is activated
+ * @return string|bool An identifier corresponding to the active plugin. False otherwize.
  */
 function rocket_has_i18n() {
-	if ( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' )  // WPML.
-		|| rocket_is_plugin_active( 'qtranslate/qtranslate.php' )               // qTranslate.
-		|| rocket_is_plugin_active( 'qtranslate-x/qtranslate.php' )             // qTranslate-x.
-		|| rocket_is_plugin_active( 'polylang/polylang.php' )                   // Polylang.
-		|| rocket_is_plugin_active( 'polylang-pro/polylang.php' ) ) {           // Polylang Pro.
-		return true;
+	global $sitepress, $q_config, $polylang;
+
+	if ( ! empty( $sitepress ) && is_object( $sitepress ) && method_exists( $sitepress, 'get_active_languages' ) ) {
+		// WPML.
+		return 'wpml';
+	}
+
+	if ( ! empty( $polylang ) && function_exists( 'pll_languages_list' ) ) {
+		// Polylang, Polylang Pro.
+		return 'polylang';
+	}
+
+	if ( ! empty( $q_config ) && is_array( $q_config ) ) {
+		if ( function_exists( 'qtrans_convertURL' ) ) {
+			// qTranslate.
+			return 'qtranslate';
+		}
+		if ( function_exists( 'qtranxf_convertURL' ) ) {
+			// qTranslate-x.
+			return 'qtranslate-x';
+		}
 	}
 
 	return false;
 }
 
 /**
- * Get infos of all active languages
+ * Get infos of all active languages.
  *
  * @since 2.0
  *
- * @return array List of language code
+ * @return array A list of language codes.
  */
 function get_rocket_i18n_code() {
-	if ( ! rocket_has_i18n() ) {
+	$i18n_plugin = rocket_has_i18n();
+
+	if ( ! $i18n_plugin ) {
 		return false;
 	}
 
-	if ( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
+	if ( 'wpml' === $i18n_plugin ) {
+		// WPML.
 		return array_keys( $GLOBALS['sitepress']->get_active_languages() );
 	}
 
-	if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) || rocket_is_plugin_active( 'qtranslate-x/qtranslate.php' ) ) {
-		return $GLOBALS['q_config']['enabled_languages'];
+	if ( 'qtranslate' === $i18n_plugin || 'qtranslate-x' === $i18n_plugin ) {
+		// qTranslate, qTranslate-x.
+		return ! empty( $GLOBALS['q_config']['enabled_languages'] ) ? $GLOBALS['q_config']['enabled_languages'] : [];
 	}
 
-	if ( rocket_is_plugin_active( 'polylang/polylang.php' ) || rocket_is_plugin_active( 'polylang-pro/polylang.php' ) ) {
+	if ( 'polylang' === $i18n_plugin ) {
+		// Polylang, Polylang Pro.
 		return pll_languages_list();
 	}
+
+	return false;
 }
 
 /**
@@ -205,90 +228,97 @@ function get_rocket_i18n_host() {
 }
 
 /**
- * Get all active languages URI
+ * Get all active languages URI.
  *
  * @since 2.0
  *
- * @return array $urls List of all active languages URI
+ * @return array $urls List of all active languages URI.
  */
 function get_rocket_i18n_uri() {
-	$urls = array();
-	if ( ! rocket_has_i18n() ) {
-		$urls[] = home_url();
-		return $urls;
-	}
+	$i18n_plugin = rocket_has_i18n();
+	$urls        = [];
 
-	if ( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
-		$langs = get_rocket_i18n_code();
-		foreach ( $langs as $lang ) {
+	if ( 'wpml' === $i18n_plugin ) {
+		// WPML.
+		foreach ( get_rocket_i18n_code() as $lang ) {
 			$urls[] = $GLOBALS['sitepress']->language_url( $lang );
 		}
-	} elseif ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) || rocket_is_plugin_active( 'qtranslate-x/qtranslate.php' ) ) {
-		$langs = get_rocket_i18n_code();
-		foreach ( $langs as $lang ) {
-			if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
+	} elseif ( 'qtranslate' === $i18n_plugin || 'qtranslate-x' === $i18n_plugin ) {
+		// qTranslate, qTranslate-x.
+		foreach ( get_rocket_i18n_code() as $lang ) {
+			if ( 'qtranslate' === $i18n_plugin ) {
 				$urls[] = qtrans_convertURL( home_url(), $lang, true );
-			} elseif ( rocket_is_plugin_active( 'qtranslate-x/qtranslate.php' ) ) {
+			} else {
 				$urls[] = qtranxf_convertURL( home_url(), $lang, true );
 			}
 		}
-	} elseif ( rocket_is_plugin_active( 'polylang/polylang.php' ) || rocket_is_plugin_active( 'polylang-pro/polylang.php' ) ) {
+	} elseif ( 'polylang' === $i18n_plugin ) {
+		// Polylang, Polylang Pro.
 		$pll = function_exists( 'PLL' ) ? PLL() : $GLOBALS['polylang'];
 
-		if ( isset( $pll ) ) {
+		if ( ! empty( $pll ) && is_object( $pll ) ) {
 			$urls = wp_list_pluck( $pll->model->get_languages_list(), 'home_url' );
 		}
+	}
+
+	if ( empty( $urls ) ) {
+		$urls[] = home_url();
 	}
 
 	return $urls;
 }
 
 /**
- * Get directories paths to preserve languages ​​when purging a domain
- * This function is required when the domains of languages (​​other than the default) are managed by subdirectories
+ * Get directories paths to preserve languages ​​when purging a domain.
+ * This function is required when the domains of languages (​​other than the default) are managed by subdirectories.
  * By default, when you clear the cache of the french website with the domain example.com, all subdirectory like /en/ and /de/ are deleted.
  * But, if you have a domain for your english and german websites with example.com/en/ and example.com/de/, you want to keep the /en/ and /de/ directory when the french domain is cleared.
  *
  * @since 2.0
  *
- * @param string $current_lang The current language code.
- * @return array $langs_to_preserve List of directories path to preserve
+ * @param  string $current_lang The current language code.
+ * @return array                A list of directories path to preserve.
  */
 function get_rocket_i18n_to_preserve( $current_lang ) {
-	$langs_to_preserve = array();
-	if ( ! rocket_has_i18n() ) {
-		return $langs_to_preserve;
+	// Must not be an empty string.
+	if ( empty( $current_lang ) ) {
+		return [];
 	}
 
-	if ( empty( $current_lang ) ) {
-		return $langs_to_preserve;
+	// Must not be anything else but a string.
+	if ( ! is_string( $current_lang ) ) {
+		return [];
+	}
+
+	$i18n_plugin = rocket_has_i18n();
+
+	if ( ! $i18n_plugin ) {
+		return [];
 	}
 
 	$langs = get_rocket_i18n_code();
 
-	// Unset current lang to the preserve dirs.
-	$langs = array_flip( $langs );
-	if ( isset( $langs[ $current_lang ] ) ) {
-		unset( $langs[ $current_lang ] );
-	}
-	$langs = array_flip( $langs );
+	// Remove current lang to the preserve dirs.
+	$langs = array_diff( $langs, [ $current_lang ] );
 
 	// Stock all URLs of langs to preserve.
-	foreach ( $langs as $lang ) {
-		$parse_url = get_rocket_parse_url( get_rocket_i18n_home_url( $lang ) );
-		$langs_to_preserve[] = WP_ROCKET_CACHE_PATH . $parse_url['host'] . '(.*)/' . trim( $parse_url['path'], '/' );
+	$langs_to_preserve = [];
+
+	if ( $langs ) {
+		foreach ( $langs as $lang ) {
+			$parse_url           = get_rocket_parse_url( get_rocket_i18n_home_url( $lang ) );
+			$langs_to_preserve[] = WP_ROCKET_CACHE_PATH . $parse_url['host'] . '(.*)/' . trim( $parse_url['path'], '/' );
+		}
 	}
 
 	/**
-	 * Filter directories path to preserve of cache purge
+	 * Filter directories path to preserve of cache purge.
 	 *
 	 * @since 2.1
 	 *
-	 * @param array $langs_to_preserve List of directories path to preserve
+	 * @param array $langs_to_preserve List of directories path to preserve.
 	*/
-	$langs_to_preserve = apply_filters( 'rocket_langs_to_preserve', $langs_to_preserve );
-
-	return $langs_to_preserve;
+	return apply_filters( 'rocket_langs_to_preserve', $langs_to_preserve );
 }
 
 /**
@@ -299,121 +329,145 @@ function get_rocket_i18n_to_preserve( $current_lang ) {
  * @return array $urls List of languages subdomains URLs
  */
 function get_rocket_i18n_subdomains() {
-	if ( ! rocket_has_i18n() ) {
-		return false;
+	$i18n_plugin = rocket_has_i18n();
+
+	if ( ! $i18n_plugin ) {
+		return [];
 	}
 
-	$urls = array();
-	if ( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
-		$option = get_option( 'icl_sitepress_settings' );
-		if ( 2 === (int) $option['language_negotiation_type'] || 1 === (int) $option['language_negotiation_type'] && true === $option['urls']['directory_for_default_language'] ) {
-			$urls = get_rocket_i18n_uri();
-		}
-	} elseif ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
-		if ( 3 === (int) $GLOBALS['q_config']['url_mode'] ) {
-			$urls = get_rocket_i18n_uri();
-		}
-	} elseif ( rocket_is_plugin_active( 'qtranslate-x/qtranslate.php' ) ) {
-		if ( 3 === (int) $GLOBALS['q_config']['url_mode'] || 4 === (int) $GLOBALS['q_config']['url_mode'] ) {
-			$urls = get_rocket_i18n_uri();
-		}
-	} elseif ( rocket_is_plugin_active( 'polylang/polylang.php' ) || rocket_is_plugin_active( 'polylang-pro/polylang.php' ) ) {
-		$pll = function_exists( 'PLL' ) ? PLL() : $GLOBALS['polylang'];
+	switch ( $i18n_plugin ) {
+		// WPML.
+		case 'wpml':
+			$option = get_option( 'icl_sitepress_settings' );
 
-		if ( isset( $pll ) && ( 2 === (int) $pll->options['force_lang'] || 3 === (int) $pll->options['force_lang'] ) ) {
-			$urls = get_rocket_i18n_uri();
-		}
+			if ( 2 === (int) $option['language_negotiation_type'] || 1 === (int) $option['language_negotiation_type'] && true === $option['urls']['directory_for_default_language'] ) {
+				return get_rocket_i18n_uri();
+			}
+			break;
+		// qTranslate.
+		case 'qtranslate':
+			if ( 3 === (int) $GLOBALS['q_config']['url_mode'] ) {
+				return get_rocket_i18n_uri();
+			}
+			break;
+		// qTranslate-x.
+		case 'qtranslate-x':
+			if ( 3 === (int) $GLOBALS['q_config']['url_mode'] || 4 === (int) $GLOBALS['q_config']['url_mode'] ) {
+				return get_rocket_i18n_uri();
+			}
+			break;
+		// Polylang, Polylang Pro.
+		case 'polylang':
+			$pll = function_exists( 'PLL' ) ? PLL() : $GLOBALS['polylang'];
+
+			if ( ! empty( $pll ) && is_object( $pll ) && ( 2 === (int) $pll->options['force_lang'] || 3 === (int) $pll->options['force_lang'] ) ) {
+				return get_rocket_i18n_uri();
+			}
 	}
 
-	return $urls;
+	return [];
 }
 
 /**
- * Get home URL of a specific lang
+ * Get home URL of a specific lang.
  *
  * @since 2.2
  *
- * @param string $lang (default: '') The language code.
+ * @param  string $lang The language code. Default is an empty string.
  * @return string $url
  */
 function get_rocket_i18n_home_url( $lang = '' ) {
-	$url = home_url();
-	if ( ! rocket_has_i18n() ) {
-		return $url;
+	$i18n_plugin = rocket_has_i18n();
+
+	if ( ! $i18n_plugin ) {
+		return home_url();
 	}
 
-	if ( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
-		$url = $GLOBALS['sitepress']->language_url( $lang );
-	} elseif ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
-		$url = qtrans_convertURL( home_url(), $lang, true );
-	} elseif ( rocket_is_plugin_active( 'qtranslate-x/qtranslate.php' ) ) {
-		$url = qtranxf_convertURL( home_url(), $lang, true );
-	} elseif ( rocket_is_plugin_active( 'polylang/polylang.php' ) || rocket_is_plugin_active( 'polylang-pro/polylang.php' ) ) {
-		$pll = function_exists( 'PLL' ) ? PLL() : $GLOBALS['polylang'];
+	switch ( $i18n_plugin ) {
+		// WPML.
+		case 'wpml':
+			return $GLOBALS['sitepress']->language_url( $lang );
+		// qTranslate.
+		case 'qtranslate':
+			return qtrans_convertURL( home_url(), $lang, true );
+		// qTranslate-x.
+		case 'qtranslate-x':
+			return qtranxf_convertURL( home_url(), $lang, true );
+		// Polylang, Polylang Pro.
+		case 'polylang':
+			$pll = function_exists( 'PLL' ) ? PLL() : $GLOBALS['polylang'];
 
-		if ( ! empty( $pll->options['force_lang'] ) && isset( $pll->links ) ) {
-			$url = pll_home_url( $lang );
-		}
+			if ( ! empty( $pll->options['force_lang'] ) && isset( $pll->links ) ) {
+				return pll_home_url( $lang );
+			}
 	}
 
-	return $url;
+	return home_url();
 }
 
 /**
  * Get all translated path of a specific post with ID.
  *
- * @since   2.4
+ * @since 2.4
  *
- * @param   int    $post_id    Post ID.
- * @param   string $post_type  Post Type.
- * @param   string $regex      Regex to include at the end.
- * @return  array   $urls
+ * @param  int    $post_id   Post ID.
+ * @param  string $post_type Post Type.
+ * @param  string $regex     Regex to include at the end.
+ * @return array
  */
 function get_rocket_i18n_translated_post_urls( $post_id, $post_type = 'page', $regex = null ) {
-	$urls  = array();
-	$path  = rocket_extract_url_component( get_permalink( $post_id ), PHP_URL_PATH );
-	$langs = get_rocket_i18n_code();
+	$path = wp_parse_url( get_permalink( $post_id ), PHP_URL_PATH );
 
 	if ( empty( $path ) ) {
-		return $urls;
+		return [];
 	}
 
-	// WPML.
-	if ( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
-		foreach ( $langs as $lang ) {
-			$urls[] = rocket_extract_url_component( get_permalink( icl_object_id( $post_id, $post_type, true, $lang ) ), PHP_URL_PATH ) . $regex;
-		}
-	}
+	$i18n_plugin = rocket_has_i18n();
+	$urls        = [];
 
-	// qTranslate & qTranslate-x.
-	if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) || rocket_is_plugin_active( 'qtranslate-x/qtranslate.php' ) ) {
-		$langs  = $GLOBALS['q_config']['enabled_languages'];
-		$langs  = array_diff( $langs, array( $GLOBALS['q_config']['default_language'] ) );
-		$url    = get_permalink( $post_id );
-		$urls[] = rocket_extract_url_component( get_permalink( $post_id ), PHP_URL_PATH ) . $regex;
+	switch ( $i18n_plugin ) {
+		// WPML.
+		case 'wpml':
+			$langs = get_rocket_i18n_code();
 
-		foreach ( $langs as $lang ) {
-			if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
-				$urls[] = rocket_extract_url_component( qtrans_convertURL( $url, $lang, true ), PHP_URL_PATH ) . $regex;
-			} elseif ( rocket_is_plugin_active( 'qtranslate-x/qtranslate.php' ) ) {
-				$urls[] = rocket_extract_url_component( qtranxf_convertURL( $url, $lang, true ), PHP_URL_PATH ) . $regex;
+			if ( $langs ) {
+				foreach ( $langs as $lang ) {
+					$urls[] = wp_parse_url( get_permalink( icl_object_id( $post_id, $post_type, true, $lang ) ), PHP_URL_PATH ) . $regex;
+				}
 			}
-		}
-	}
+			break;
+		// qTranslate & qTranslate-x.
+		case 'qtranslate':
+		case 'qtranslate-x':
+			$langs  = $GLOBALS['q_config']['enabled_languages'];
+			$langs  = array_diff( $langs, array( $GLOBALS['q_config']['default_language'] ) );
+			$urls[] = wp_parse_url( get_permalink( $post_id ), PHP_URL_PATH ) . $regex;
 
-	// Polylang.
-	if ( rocket_is_plugin_active( 'polylang/polylang.php' ) || rocket_is_plugin_active( 'polylang-pro/polylang.php' ) ) {
-		if ( function_exists( 'PLL' ) && is_object( PLL()->model ) ) {
-			$translations = pll_get_post_translations( $post_id );
-		} elseif ( is_object( $GLOBALS['polylang']->model ) ) {
-			$translations = $GLOBALS['polylang']->model->get_translations( 'page', $post_id );
-		}
+			if ( $langs ) {
+				$url = get_permalink( $post_id );
 
-		if ( ! empty( $translations ) ) {
-			foreach ( $translations as $post_id ) {
-				$urls[] = rocket_extract_url_component( get_permalink( $post_id ), PHP_URL_PATH ) . $regex;
+				foreach ( $langs as $lang ) {
+					if ( 'qtranslate' === $i18n_plugin ) {
+						$urls[] = wp_parse_url( qtrans_convertURL( $url, $lang, true ), PHP_URL_PATH ) . $regex;
+					} elseif ( 'qtranslate-x' === $i18n_plugin ) {
+						$urls[] = wp_parse_url( qtranxf_convertURL( $url, $lang, true ), PHP_URL_PATH ) . $regex;
+					}
+				}
 			}
-		}
+			break;
+		// Polylang.
+		case 'polylang':
+			if ( function_exists( 'PLL' ) && is_object( PLL()->model ) ) {
+				$translations = pll_get_post_translations( $post_id );
+			} elseif ( ! empty( $GLOBALS['polylang']->model ) && is_object( $GLOBALS['polylang']->model ) ) {
+				$translations = $GLOBALS['polylang']->model->get_translations( 'page', $post_id );
+			}
+
+			if ( ! empty( $translations ) ) {
+				foreach ( $translations as $post_id ) {
+					$urls[] = wp_parse_url( get_permalink( $post_id ), PHP_URL_PATH ) . $regex;
+				}
+			}
 	}
 
 	if ( trim( $path, '/' ) !== '' ) {

@@ -1,9 +1,7 @@
 <?php
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
-global $wp_version;
-
-if ( version_compare( $wp_version, '4.4' ) >= 0 && get_rocket_option( 'embeds', 0 ) ) :
+if ( get_rocket_option( 'embeds', 0 ) ) {
 	/**
 	 * Disable embeds on init.
 	 *
@@ -15,7 +13,6 @@ if ( version_compare( $wp_version, '4.4' ) >= 0 && get_rocket_option( 'embeds', 
 	 * @author Remy Perona
 	 */
 	function rocket_disable_embeds_init() {
-		/* @var WP $wp */
 		global $wp;
 
 		// Remove the embed query var.
@@ -80,4 +77,4 @@ if ( version_compare( $wp_version, '4.4' ) >= 0 && get_rocket_option( 'embeds', 
 
 		return $rules;
 	}
-endif;
+}

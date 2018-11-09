@@ -1,13 +1,26 @@
 <?php
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
-if ( class_exists( 'WpeCommon' ) && function_exists( 'wpe_param' ) ) :
+if ( class_exists( 'WpeCommon' ) && function_exists( 'wpe_param' ) ) {
 	/**
-	 * Don't display the Varnish options tab for WP Engine users
+	 * Changes the text on the Varnish one-click block.
 	 *
-	 * @since 2.7
+	 * @since 3.0
+	 * @author Remy Perona
+	 *
+	 * @param array $settings Field settings data.
 	 */
-	add_filter( 'rocket_display_varnish_options_tab', '__return_false' );
+	function rocket_wpengine_varnish_field( $settings ) {
+		// Translators: %s = Hosting name.
+		$settings['varnish_auto_purge']['title'] = sprintf( __( 'Your site is hosted on %s, we have enabled Varnish auto-purge for compatibility.', 'rocket' ), 'WP Engine' );
+
+		return $settings;
+	}
+	add_filter( 'rocket_varnish_field_settings', 'rocket_wpengine_varnish_field' );
+
+	add_filter( 'rocket_display_input_varnish_auto_purge', '__return_false' );
+	// Prevent mandatory cookies on hosting with server cache.
+	add_filter( 'rocket_cache_mandatory_cookies', '__return_empty_array', PHP_INT_MAX );
 
 	/**
 	 * Always keep WP_CACHE constant to true
@@ -36,7 +49,8 @@ if ( class_exists( 'WpeCommon' ) && function_exists( 'wpe_param' ) ) :
 	function rocket_run_rocket_bot_after_wpengine() {
 		if ( wpe_param( 'purge-all' ) && defined( 'PWP_NAME' ) && check_admin_referer( PWP_NAME . '-config' ) ) {
 			// Preload cache.
-			run_rocket_preload_cache( 'cache-preload' );
+			run_rocket_bot();
+			run_rocket_sitemap_preload();
 		}
 	}
 	add_action( 'admin_init', 'rocket_run_rocket_bot_after_wpengine' );
@@ -77,11 +91,10 @@ if ( class_exists( 'WpeCommon' ) && function_exists( 'wpe_param' ) ) :
 
 		$native_schema = $is_ssl ? 'https' : 'http';
 
+		$domains = $wpe_netdna_domains;
 		// Determine the CDN, if any.
 		if ( $is_ssl ) {
 			$domains = $wpe_netdna_domains_secure;
-		} else {
-			$domains = $wpe_netdna_domains;
 		}
 
 			$wpengine   = WpeCommon::instance();
@@ -93,4 +106,4 @@ if ( class_exists( 'WpeCommon' ) && function_exists( 'wpe_param' ) ) :
 
 		return $cdn_domain;
 	}
-endif;
+}

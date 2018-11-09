@@ -58,40 +58,40 @@ class Rocket_Background_Database_Optimization extends WP_Background_Process {
 		global $wpdb;
 
 		switch ( $item ) {
-			case 'revisions':
+			case 'database_revisions':
 				$query = $wpdb->get_col( "SELECT ID FROM $wpdb->posts WHERE post_type = 'revision'" );
 				if ( $query ) {
 					$number = 0;
 					foreach ( $query as $id ) {
-						$number += (int) wp_delete_post_revision( intval( $id ) );
+						$number += wp_delete_post_revision( intval( $id ) ) instanceof WP_Post ? 1 : 0;
 					}
 
 					$this->count[ $item ] = $number;
 				}
 				break;
-			case 'auto_drafts':
+			case 'database_auto_drafts':
 				$query = $wpdb->get_col( "SELECT ID FROM $wpdb->posts WHERE post_status = 'auto-draft'" );
 				if ( $query ) {
 					$number = 0;
 					foreach ( $query as $id ) {
-						$number += (int) wp_delete_post( intval( $id ), true );
+						$number += wp_delete_post( intval( $id ), true ) instanceof WP_Post ? 1 : 0;
 					}
 
 					$this->count[ $item ] = $number;
 				}
 				break;
-			case 'trashed_posts':
+			case 'database_trashed_posts':
 				$query = $wpdb->get_col( "SELECT ID FROM $wpdb->posts WHERE post_status = 'trash'" );
 				if ( $query ) {
 					$number = 0;
 					foreach ( $query as $id ) {
-						$number += (int) wp_delete_post( $id, true );
+						$number += wp_delete_post( $id, true ) instanceof WP_Post ? 1 : 0;
 					}
 
 					$this->count[ $item ] = $number;
 				}
 				break;
-			case 'spam_comments':
+			case 'database_spam_comments':
 				$query = $wpdb->get_col( "SELECT comment_ID FROM $wpdb->comments WHERE comment_approved = 'spam'" );
 				if ( $query ) {
 					$number = 0;
@@ -102,7 +102,7 @@ class Rocket_Background_Database_Optimization extends WP_Background_Process {
 					$this->count[ $item ] = $number;
 				}
 				break;
-			case 'trashed_comments':
+			case 'database_trashed_comments':
 				$query = $wpdb->get_col( "SELECT comment_ID FROM $wpdb->comments WHERE (comment_approved = 'trash' OR comment_approved = 'post-trashed')" );
 				if ( $query ) {
 					$number = 0;
@@ -113,22 +113,22 @@ class Rocket_Background_Database_Optimization extends WP_Background_Process {
 					$this->count[ $item ] = $number;
 				}
 				break;
-			case 'expired_transients':
-				$time = isset( $_SERVER['REQUEST_TIME'] ) ? (int) $_SERVER['REQUEST_TIME'] : time();
-				$query = $wpdb->get_col( "SELECT option_name FROM $wpdb->options WHERE option_name LIKE '_transient_timeout%' AND option_value < $time" );
+			case 'database_expired_transients':
+				$time  = isset( $_SERVER['REQUEST_TIME'] ) ? (int) $_SERVER['REQUEST_TIME'] : time();
+				$query = $wpdb->get_col( $wpdb->prepare( "SELECT option_name FROM $wpdb->options WHERE option_name LIKE %s AND option_value < %d", $wpdb->esc_like( '_transient_timeout' ) . '%', $time ) );
 
 				if ( $query ) {
 					$number = 0;
 					foreach ( $query as $transient ) {
-						$key = str_replace( '_transient_timeout_', '', $transient );
+						$key     = str_replace( '_transient_timeout_', '', $transient );
 						$number += (int) delete_transient( $key );
 					}
 
 					$this->count[ $item ] = $number;
 				}
 				break;
-			case 'all_transients':
-				$query = $wpdb->get_col( "SELECT option_name FROM $wpdb->options WHERE option_name LIKE '_transient_%' OR option_name LIKE '_site_transient_%'" );
+			case 'database_all_transients':
+				$query = $wpdb->get_col( $wpdb->prepare( "SELECT option_name FROM $wpdb->options WHERE option_name LIKE %s OR option_name LIKE %s", $wpdb->esc_like( '_transient_' ) . '%', $wpdb->esc_like( '_site_transient_' ) . '%' ) );
 				if ( $query ) {
 					$number = 0;
 					foreach ( $query as $transient ) {
@@ -142,7 +142,7 @@ class Rocket_Background_Database_Optimization extends WP_Background_Process {
 					$this->count[ $item ] = $number;
 				}
 				break;
-			case 'optimize_tables':
+			case 'database_optimize_tables':
 				$query = $wpdb->get_results( "SELECT table_name, data_free FROM information_schema.tables WHERE table_schema = '" . DB_NAME . "' and Engine <> 'InnoDB' and data_free > 0" );
 				if ( $query ) {
 					$number = 0;

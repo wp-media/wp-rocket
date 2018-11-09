@@ -37,7 +37,7 @@ class Minify_CSS_UriRewriter {
 	 * the doc root in the link paths (the array keys). E.g.:
 	 * <code>
 	 * array('//symlink' => '/real/target/path') // unix
-	 * array('//static' => 'D:\\staticStorage')	 // Windows
+	 * array('//static' => 'D:\\staticStorage')  // Windows
 	 * </code>
 	 *
 	 * @return string
@@ -58,7 +58,7 @@ class Minify_CSS_UriRewriter {
 			self::$_symlinks[$link] = self::_realpath($target);
 		}
 
-		self::$debugText .= "docRoot	: " . self::$_docRoot . "\n"
+		self::$debugText .= "docRoot    : " . self::$_docRoot . "\n"
 						  . "currentDir : " . self::$_currentDir . "\n";
 		if (self::$_symlinks) {
 			self::$debugText .= "symlinks : " . var_export(self::$_symlinks, 1) . "\n";
@@ -117,18 +117,18 @@ class Minify_CSS_UriRewriter {
 	 *
 	 * <code>
 	 * Minify_CSS_UriRewriter::rewriteRelative(
-	 *		 '../img/hello.gif'
-	 *	   , '/home/user/www/css'  // path of CSS file
-	 *	   , '/home/user/www'	   // doc root
+	 *       '../img/hello.gif'
+	 *     , '/home/user/www/css'  // path of CSS file
+	 *     , '/home/user/www'      // doc root
 	 * );
 	 * // returns '/img/hello.gif'
 	 *
 	 * // example where static files are stored in a symlinked directory
 	 * Minify_CSS_UriRewriter::rewriteRelative(
-	 *		 'hello.gif'
-	 *	   , '/var/staticFiles/theme'
-	 *	   , '/home/user/www'
-	 *	   , array('/home/user/www/static' => '/var/staticFiles')
+	 *       'hello.gif'
+	 *     , '/var/staticFiles/theme'
+	 *     , '/home/user/www'
+	 *     , array('/home/user/www/static' => '/var/staticFiles')
 	 * );
 	 * // returns '/static/theme/hello.gif'
 	 * </code>
@@ -156,8 +156,8 @@ class Minify_CSS_UriRewriter {
 		$path = strtr($realCurrentDir, '/', DIRECTORY_SEPARATOR);
 		$path .= DIRECTORY_SEPARATOR . strtr($uri, '/', DIRECTORY_SEPARATOR);
 
-		self::$debugText .= "file-relative URI	: {$uri}\n"
-						  . "path prepended		: {$path}\n";
+		self::$debugText .= "file-relative URI  : {$uri}\n"
+						  . "path prepended     : {$path}\n";
 
 		// "unresolve" a symlink back to doc root
 		foreach ($symlinks as $link => $target) {
@@ -173,7 +173,7 @@ class Minify_CSS_UriRewriter {
 		// strip doc root
 		$path = substr($path, strlen($realDocRoot));
 
-		self::$debugText .= "docroot stripped	: {$path}\n";
+		self::$debugText .= "docroot stripped   : {$path}\n";
 
 		// fix to root-relative URI
 		$uri = strtr($path, '/\\', '//');
@@ -265,11 +265,11 @@ class Minify_CSS_UriRewriter {
 	private static function _trimUrls($css)
 	{
 		$pattern = '/
-			url\\(		# url(
+			url\\(      # url(
 			\\s*
-			([^\\)]+?)	# 1 = URI (assuming does not contain ")")
+			([^\\)]+?)  # 1 = URI (assuming does not contain ")")
 			\\s*
-			\\)			# )
+			\\)         # )
 		/x';
 
 		return preg_replace($pattern, 'url($1)', $css);

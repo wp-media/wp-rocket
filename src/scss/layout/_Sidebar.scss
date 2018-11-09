@@ -1,0 +1,87 @@
+// main: ../main.scss
+
+/*-----------------------------------------------*\
+
+    Sidebar (right)
+
+\*-----------------------------------------------*/
+
+.wpr-Sidebar{
+    position: relative;
+    display: none;
+    flex: 0 0 290px;
+    padding: $space*3 $space*2;
+
+    @include respond-to('md') {
+        flex: 0 0 260px;
+    }
+
+    @include respond-to('sm') {
+        display: none !important;
+    }
+
+    &-title{
+        margin-bottom: $space*4;
+    }
+
+    &-notice{
+        padding: $space $space*2;
+        margin-bottom: $space*2;
+        background: #fff;
+        border: 1px solid $cGreyLight1;
+        border-left: 2px solid $cBlue;
+        border-radius: 0 3px 3px 0;
+        color: $cGreyDark2;
+
+        p{
+            margin: 0;
+        }
+    }
+
+    &-notice-link{
+        display: inline-block;
+        margin-top: $space;
+        @include font-size(11,20);
+        color: $cBlueDark1;
+        letter-spacing: -0.05em;
+        text-transform: uppercase;
+        text-decoration: none;
+        font-weight: bold;
+
+        &:hover,
+        &:focus{
+            color: $cBlueLight1;
+        }
+    }
+
+    &-info{
+        padding: $space*2;
+        background: $cGreenLight4;
+        margin-bottom: $space*2;
+        border-radius: 3px;
+
+        h4{
+            padding-left: 48px;
+            font-weight: 500;
+        }
+
+        p{
+            margin: $space 0 0;
+            @include font-size(11,16);
+            color: $cGreyDark2;
+        }
+
+        i{
+            position: absolute;
+            display: block;
+            margin-top: -1px;
+            width: $space*5;
+            height: $space*5;
+            color: $cGreenDark1;
+            @include font-size(17,40);
+            background:$cGreenLight3;
+            border-radius: 3px;
+            text-align: center;
+        }
+    }
+}

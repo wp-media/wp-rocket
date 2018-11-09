@@ -1,0 +1,26 @@
+{
+  "name": "lib-sass",
+  "version": "1.0.0",
+  "description": "Compress and minify SASS and JS with Gulp",
+  "main": "src/js/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0",
+    "babelify": "^8",
+    "browserify": "^16.2.2",
+    "gulp": "^3.9.1",
+    "gulp-concat": "latest",
+    "gulp-rename": "^1.4.0",
+    "gulp-sass": "^4.0.1",
+    "gulp-sourcemaps": "latest",
+    "gulp-uglify": "^3.0.1",
+    "vinyl-buffer": "latest",
+    "vinyl-source-stream": "latest",
+    "watchify": "latest"
+  }
+}

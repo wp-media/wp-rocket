@@ -37,6 +37,7 @@ add_filter( 'widget_update_callback', 'rocket_widget_update_callback' );
 /**
  * Update cache when a post is updated or commented
  *
+ * @since 3.0.5 Don't purge for attachment post type
  * @since 2.8   Only add post type archive if post type is not post
  * @since 2.6   Purge the page defined in "Posts page" option
  * @since 2.5.5 Don't cache for auto-draft post status
@@ -66,7 +67,7 @@ function rocket_clean_post( $post_id ) {
 	}
 
 	// No purge for specific conditions.
-	if ( 'auto-draft' === $post->post_status || empty( $post->post_type ) || 'nav_menu_item' === $post->post_type ) {
+	if ( 'auto-draft' === $post->post_status || empty( $post->post_type ) || 'nav_menu_item' === $post->post_type || 'attachment' === $post->post_type ) {
 		return;
 	}
 
@@ -77,15 +78,16 @@ function rocket_clean_post( $post_id ) {
 	}
 
 	// Get the post language.
-	$lang = false;
+	$i18n_plugin = rocket_has_i18n();
 
-	// WPML.
-	if ( rocket_is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) && ! rocket_is_plugin_active( 'woocommerce-multilingual/wpml-woocommerce.php' ) ) {
+	if ( 'wpml' === $i18n_plugin && ! rocket_is_plugin_active( 'woocommerce-multilingual/wpml-woocommerce.php' ) ) {
+		// WPML.
 		$lang = $GLOBALS['sitepress']->get_language_for_element( $post_id, 'post_' . get_post_type( $post_id ) );
-
+	} elseif ( 'polylang' === $i18n_plugin ) {
 		// Polylang.
-	} elseif ( rocket_is_plugin_active( 'polylang/polylang.php' ) || rocket_is_plugin_active( 'polylang-pro/polylang.php' ) ) {
 		$lang = pll_get_post_language( $post_id );
+	} else {
+		$lang = false;
 	}
 
 	// Get the permalink structure.
@@ -247,32 +249,39 @@ add_filter( 'rocket_clean_files', 'rocket_clean_files_users' );
 
 /**
  * Return all translated version of a post when qTranslate is used.
- * Use the "rocket_post_purge_urls" filter to insert URLs of traduction post
+ * Use the "rocket_post_purge_urls" filter to insert URLs of traduction post.
  *
  * @since 1.3.5
  *
- * @param array $urls An array of URLs to clean.
- * @return array Updated array of URLs to clean
+ * @param  array $urls An array of URLs to clean.
+ * @return array       Updated array of URLs to clean
  */
 function rocket_post_purge_urls_for_qtranslate( $urls ) {
-	if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) || rocket_is_plugin_active( 'qtranslate-x/qtranslate.php' ) ) {
+	global $q_config;
 
-		global $q_config;
+	if ( ! $urls ) {
+		return [];
+	}
 
-		// Get all languages.
-		$enabled_languages = $q_config['enabled_languages'];
+	$i18n_plugin = rocket_has_i18n();
 
-		// Remove default language.
-		$enabled_languages = array_diff( $enabled_languages, array( $q_config['default_language'] ) );
+	if ( 'qtranslate' !== $i18n_plugin && 'qtranslate-x' !== $i18n_plugin ) {
+		return $urls;
+	}
 
-		// Add translate URLs.
-		foreach ( $urls as $url ) {
-			foreach ( $enabled_languages as $lang ) {
-				if ( rocket_is_plugin_active( 'qtranslate/qtranslate.php' ) ) {
-					$urls[] = qtrans_convertURL( $url, $lang, true );
-				} elseif ( rocket_is_plugin_active( 'qtranslate-x/qtranslate.php' ) ) {
-					$urls[] = qtranxf_convertURL( $url, $lang, true );
-				}
+	// Get all languages.
+	$enabled_languages = $q_config['enabled_languages'];
+
+	// Remove default language.
+	$enabled_languages = array_diff( $enabled_languages, [ $q_config['default_language'] ] );
+
+	// Add translate URLs.
+	foreach ( $urls as $url ) {
+		foreach ( $enabled_languages as $lang ) {
+			if ( 'qtranslate' === $i18n_plugin ) {
+				$urls[] = qtrans_convertURL( $url, $lang, true );
+			} elseif ( 'qtranslate-x' === $i18n_plugin ) {
+				$urls[] = qtranxf_convertURL( $url, $lang, true );
 			}
 		}
 	}
@@ -280,83 +289,6 @@ function rocket_post_purge_urls_for_qtranslate( $urls ) {
 	return $urls;
 }
 add_filter( 'rocket_post_purge_urls', 'rocket_post_purge_urls_for_qtranslate' );
-
-/**
- * Actions to be done after the purge cache files of a post
- * By Default, this hook call the WP Rocket Bot (cache json)
- *
- * @since 1.3.0
- *
- * @param object $post The post object.
- * @param array  $purge_urls An array of URLs to clean.
- * @param string $lang The language to clean.
- */
-function run_rocket_bot_after_clean_post( $post, $purge_urls, $lang ) {
-	// Run robot only if post is published.
-	if ( 'publish' !== $post->post_status ) {
-		return false;
-	}
-
-	// Add Homepage URL to $purge_urls for bot crawl.
-	array_push( $purge_urls, get_rocket_i18n_home_url( $lang ) );
-
-	// Add default WordPress feeds (posts & comments).
-	array_push( $purge_urls, get_feed_link() );
-	array_push( $purge_urls, get_feed_link( 'comments_' ) );
-
-	// Get the author page.
-	$purge_author = array( get_author_posts_url( $post->post_author ) );
-
-	// Get all dates archive page.
-	$purge_dates = get_rocket_post_dates_urls( $post->ID );
-
-	// Remove dates archives page and author page to preload cache.
-	$purge_urls = array_diff( $purge_urls, $purge_dates, $purge_author );
-
-	// Create json file and run WP Rocket Bot.
-	$json_encode_urls = '["' . implode( '","', array_filter( $purge_urls ) ) . '"]';
-	if ( rocket_put_content( WP_ROCKET_PATH . 'cache.json', $json_encode_urls ) ) {
-		global $do_rocket_bot_cache_json;
-		$do_rocket_bot_cache_json = true;
-	}
-}
-add_action( 'after_rocket_clean_post', 'run_rocket_bot_after_clean_post', 10, 3 );
-
-/**
- * Actions to be done after the purge cache files of a term
- * By Default, this hook call the WP Rocket Bot (cache json)
- *
- * @since 2.6.8
- *
- * @param object $post The post object.
- * @param array  $purge_urls An array of URLs to clean.
- * @param string $lang The language to clean.
- */
-function run_rocket_bot_after_clean_term( $post, $purge_urls, $lang ) {
-	// Add Homepage URL to $purge_urls for bot crawl.
-	array_push( $purge_urls, get_rocket_i18n_home_url( $lang ) );
-
-	// Create json file and run WP Rocket Bot.
-	$json_encode_urls = '["' . implode( '","', array_filter( $purge_urls ) ) . '"]';
-	if ( rocket_put_content( WP_ROCKET_PATH . 'cache.json', $json_encode_urls ) ) {
-		global $do_rocket_bot_cache_json;
-		$do_rocket_bot_cache_json = true;
-	}
-}
-add_action( 'after_rocket_clean_term', 'run_rocket_bot_after_clean_term', 10, 3 );
-
-/**
- * Run WP Rocket Bot when a post is added, updated or deleted
- *
- * @since 1.3.2
- */
-function do_rocket_bot_cache_json() {
-	global $do_rocket_bot_cache_json;
-	if ( $do_rocket_bot_cache_json ) {
-		run_rocket_preload_cache( 'cache-json', false );
-	}
-}
-add_action( 'shutdown', 'do_rocket_bot_cache_json' );
 
 /**
  * Purge Cache file System in Admin Bar
@@ -375,6 +307,11 @@ function do_admin_post_rocket_purge_cache() {
 
 		if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'purge_cache_' . $_GET['type'] ) ) {
 			wp_nonce_ays( '' );
+		}
+
+		// This filter is documented in inc/admin-bar.php.
+		if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+			return;
 		}
 
 		switch ( $_type ) {
@@ -459,38 +396,17 @@ function do_admin_post_rocket_purge_opcache() {
 		wp_nonce_ays( '' );
 	}
 
-	if ( function_exists( 'opcache_reset' ) ) {
-		@opcache_reset();
+	// This filter is documented in inc/admin-bar.php.
+	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		return;
 	}
+
+	rocket_reset_opcache();
 
 	wp_redirect( wp_get_referer() );
 	die();
 }
 add_action( 'admin_post_rocket_purge_opcache', 'do_admin_post_rocket_purge_opcache' );
-
-/**
- * Preload cache system in Admin Bar
- * It launch the WP Rocket Bot
- *
- * @since 1.3.0 Compatibility with WPML
- * @since 1.0 (delete in 1.1.6 and re-add in 1.1.9)
- */
-function do_admin_post_rocket_preload_cache() {
-	if ( isset( $_GET['_wpnonce'] ) ) {
-
-		if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'preload' ) ) {
-			wp_nonce_ays( '' );
-		}
-
-		$lang = isset( $_GET['lang'] ) && 'all' !== $_GET['lang'] ? sanitize_key( $_GET['lang'] ) : '';
-		run_rocket_preload_cache( 'cache-preload' );
-
-		wp_redirect( wp_get_referer() );
-		die();
-	}
-}
-add_action( 'admin_post_preload',        'do_admin_post_rocket_preload_cache' );
-add_action( 'admin_post_nopriv_preload', 'do_admin_post_rocket_preload_cache' );
 
 /**
  * Purge CloudFlare cache
@@ -500,6 +416,11 @@ add_action( 'admin_post_nopriv_preload', 'do_admin_post_rocket_preload_cache' );
 function do_admin_post_rocket_purge_cloudflare() {
 	if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'rocket_purge_cloudflare' ) ) {
 		wp_nonce_ays( '' );
+	}
+
+	// This filter is documented in inc/admin-bar.php.
+	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		return;
 	}
 
 	// Purge CloudFlare.

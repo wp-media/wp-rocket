@@ -18,7 +18,16 @@ function rocket_lazyload_script() {
 		return;
 	}
 
-	$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+	$suffix   = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+	$elements = [];
+
+	if ( get_rocket_option( 'lazyload' ) ) {
+		$elements[] = 'img';
+	}
+
+	if ( get_rocket_option( 'lazyload_iframes' ) ) {
+		$elements[] = 'iframe';
+	}
 
 	/**
 	 * Filters the threshold at which lazyload is triggered
@@ -33,16 +42,16 @@ function rocket_lazyload_script() {
 	echo '<script>(function(w, d){
 	var b = d.getElementsByTagName("body")[0];
 	var s = d.createElement("script"); s.async = true;
-	var v = !("IntersectionObserver" in w) ? "8.5.2" : "10.3.5";
-	s.src = "' . get_rocket_cdn_url( WP_ROCKET_FRONT_JS_URL, array( 'all', 'css_and_js', 'js' ) ) . 'lazyload-" + v + "' . $suffix . '.js";
+	s.src = !("IntersectionObserver" in w) ? "' . get_rocket_cdn_url( WP_ROCKET_FRONT_JS_URL, array( 'all', 'css_and_js', 'js' ) ) . 'lazyload-8.15.2' . $suffix . '.js" : "' . get_rocket_cdn_url( WP_ROCKET_FRONT_JS_URL, array( 'all', 'css_and_js', 'js' ) ) . 'lazyload-10.17' . $suffix . '.js";
 	w.lazyLoadOptions = {
-		elements_selector: "img, iframe",
+		elements_selector: "' . esc_attr( implode( ',', $elements ) ) . '",
 		data_src: "lazy-src",
 		data_srcset: "lazy-srcset",
+		data_sizes: "lazy-sizes",
 		skip_invisible: false,
 		class_loading: "lazyloading",
 		class_loaded: "lazyloaded",
-		threshold: ' . $threshold . ',
+		threshold: ' . esc_attr( $threshold ) . ',
 		callback_load: function(element) {
 			if ( element.tagName === "IFRAME" && element.dataset.rocketLazyload == "fitvidscompatible" ) {
 				if (element.classList.contains("lazyloaded") ) {
@@ -77,7 +86,6 @@ window.addEventListener(\'LazyLoad::Initialized\', function (e) {
 </script>';
 
 	if ( get_rocket_option( 'lazyload_youtube' ) ) {
-		
 		/**
 		 * Filters the resolution of the YouTube thumbnail
 		 *
@@ -86,10 +94,10 @@ window.addEventListener(\'LazyLoad::Initialized\', function (e) {
 		 *
 		 * @param string $thumbnail_resolution The resolution of the thumbnail. Accepted values: default, mqdefault, sddefault, hqdefault, maxresdefault
 		 */
-		$thumbnail_resolution = apply_filters( 'rocket_youtube_thumbnail_resolution', 'hqdefault');
-		
+		$thumbnail_resolution = apply_filters( 'rocket_youtube_thumbnail_resolution', 'hqdefault' );
+
 		echo <<<HTML
-		<script>function lazyLoadThumb(e){var t='<img src="https://i.ytimg.com/vi/ID/$thumbnail_resolution.jpg">',a='<div class="play"></div>';return t.replace("ID",e)+a}function lazyLoadYoutubeIframe(){var e=document.createElement("iframe"),t="https://www.youtube.com/embed/ID?autoplay=1";e.setAttribute("src",t.replace("ID",this.dataset.id)),e.setAttribute("frameborder","0"),e.setAttribute("allowfullscreen","1"),this.parentNode.replaceChild(e,this)}document.addEventListener("DOMContentLoaded",function(){var e,t,a=document.getElementsByClassName("rll-youtube-player");for(t=0;t<a.length;t++)e=document.createElement("div"),e.setAttribute("data-id",a[t].dataset.id),e.innerHTML=lazyLoadThumb(a[t].dataset.id),e.onclick=lazyLoadYoutubeIframe,a[t].appendChild(e)});</script>
+		<script>function lazyLoadThumb(e){var t='<img src="https://i.ytimg.com/vi/ID/$thumbnail_resolution.jpg">',a='<div class="play"></div>';return t.replace("ID",e)+a}function lazyLoadYoutubeIframe(){var e=document.createElement("iframe"),t="https://www.youtube.com/embed/ID?autoplay=1";t+=0===this.dataset.query.length?'':'&'+this.dataset.query;e.setAttribute("src",t.replace("ID",this.dataset.id)),e.setAttribute("frameborder","0"),e.setAttribute("allowfullscreen","1"),this.parentNode.replaceChild(e,this)}document.addEventListener("DOMContentLoaded",function(){var e,t,a=document.getElementsByClassName("rll-youtube-player");for(t=0;t<a.length;t++)e=document.createElement("div"),e.setAttribute("data-id",a[t].dataset.id),e.setAttribute("data-query", a[t].dataset.query),e.innerHTML=lazyLoadThumb(a[t].dataset.id),e.onclick=lazyLoadYoutubeIframe,a[t].appendChild(e)});</script>
 HTML;
 	}
 }
@@ -111,7 +119,7 @@ function rocket_lazyload_enqueue() {
 	}
 
 	if ( get_rocket_option( 'lazyload_youtube' ) ) {
-		$css = '.rll-youtube-player{position:relative;padding-bottom:56.23%;height:0;overflow:hidden;max-width:100%;background:#000;margin:5px}.rll-youtube-player iframe{position:absolute;top:0;left:0;width:100%;height:100%;z-index:100;background:0 0}.rll-youtube-player img{bottom:0;display:block;left:0;margin:auto;max-width:100%;width:100%;position:absolute;right:0;top:0;border:none;height:auto;cursor:pointer;-webkit-transition:.4s all;-moz-transition:.4s all;transition:.4s all}.rll-youtube-player img:hover{-webkit-filter:brightness(75%)}.rll-youtube-player .play{height:72px;width:72px;left:50%;top:50%;margin-left:-36px;margin-top:-36px;position:absolute;background:url(' . WP_ROCKET_FRONT_URL . 'img/play.png) no-repeat;cursor:pointer}';
+		$css = '.rll-youtube-player{position:relative;padding-bottom:56.23%;height:0;overflow:hidden;max-width:100%;background:#000;margin:5px}.rll-youtube-player iframe{position:absolute;top:0;left:0;width:100%;height:100%;z-index:100;background:0 0}.rll-youtube-player img{bottom:0;display:block;left:0;margin:auto;max-width:100%;width:100%;position:absolute;right:0;top:0;border:none;height:auto;cursor:pointer;-webkit-transition:.4s all;-moz-transition:.4s all;transition:.4s all}.rll-youtube-player img:hover{-webkit-filter:brightness(75%)}.rll-youtube-player .play{height:72px;width:72px;left:50%;top:50%;margin-left:-36px;margin-top:-36px;position:absolute;background:url(' . WP_ROCKET_FRONT_URL . 'img/youtube.png) no-repeat;cursor:pointer}';
 
 		wp_register_style( 'rocket-lazyload', false );
 		wp_enqueue_style( 'rocket-lazyload' );
@@ -298,40 +306,40 @@ add_action( 'init', 'rocket_lazyload_smilies' );
 function rocket_convert_smilies( $text ) {
 	global $wp_smiliessearch;
 
-	$output = '';
-	if ( get_option( 'use_smilies' ) && ! empty( $wp_smiliessearch ) ) {
-		// HTML loop taken from texturize function, could possible be consolidated.
-		$textarr = preg_split( '/(<.*>)/U', $text, -1, PREG_SPLIT_DELIM_CAPTURE ); // capture the tags as well as in between.
-		$stop    = count( $textarr );// loop stuff.
-
-		// Ignore proessing of specific tags.
-		$tags_to_ignore       = 'code|pre|style|script|textarea';
-		$ignore_block_element = '';
-
-		for ( $i = 0; $i < $stop; $i++ ) {
-			$content = $textarr[ $i ];
-
-			// If we're in an ignore block, wait until we find its closing tag.
-			if ( '' === $ignore_block_element && preg_match( '/^<(' . $tags_to_ignore . ')>/', $content, $matches ) ) {
-				$ignore_block_element = $matches[1];
-			}
-
-			// If it's not a tag and not in ignore block.
-			if ( '' === $ignore_block_element && strlen( $content ) > 0 && '<' !== $content[0] ) {
-				$content = preg_replace_callback( $wp_smiliessearch, 'rocket_translate_smiley', $content );
-			}
-
-			// did we exit ignore block.
-			if ( '' !== $ignore_block_element && '</' . $ignore_block_element . '>' === $content ) {
-				$ignore_block_element = '';
-			}
-
-			$output .= $content;
-		}
-	} else {
-		// return default text.
-		$output = $text;
+	if ( ! get_option( 'use_smilies' ) || empty( $wp_smiliessearch ) ) {
+		return $text;
 	}
+
+	$output = '';
+	// HTML loop taken from texturize function, could possible be consolidated.
+	$textarr = preg_split( '/(<.*>)/U', $text, -1, PREG_SPLIT_DELIM_CAPTURE ); // capture the tags as well as in between.
+	$stop    = count( $textarr );// loop stuff.
+
+	// Ignore proessing of specific tags.
+	$tags_to_ignore       = 'code|pre|style|script|textarea';
+	$ignore_block_element = '';
+
+	for ( $i = 0; $i < $stop; $i++ ) {
+		$content = $textarr[ $i ];
+
+		// If we're in an ignore block, wait until we find its closing tag.
+		if ( '' === $ignore_block_element && preg_match( '/^<(' . $tags_to_ignore . ')>/', $content, $matches ) ) {
+			$ignore_block_element = $matches[1];
+		}
+
+		// If it's not a tag and not in ignore block.
+		if ( '' === $ignore_block_element && strlen( $content ) > 0 && '<' !== $content[0] ) {
+			$content = preg_replace_callback( $wp_smiliessearch, 'rocket_translate_smiley', $content );
+		}
+
+		// did we exit ignore block.
+		if ( '' !== $ignore_block_element && '</' . $ignore_block_element . '>' === $content ) {
+			$ignore_block_element = '';
+		}
+
+		$output .= $content;
+	}
+
 	return $output;
 }
 
@@ -375,18 +383,14 @@ function rocket_translate_smiley( $matches ) {
 	$src_url = apply_filters( 'smilies_src', includes_url( "images/smilies/$img" ), $img, site_url() );
 
 	// Don't LazyLoad if process is stopped for these reasons.
-	if ( ! is_feed() && ! is_preview() ) {
-
-		/** This filter is documented in inc/front/lazyload.php */
-		$placeholder = apply_filters( 'rocket_lazyload_placeholder', 'data:image/gif;base64,R0lGODdhAQABAPAAAP///wAAACwAAAAAAQABAEACAkQBADs=' );
-
-		return sprintf( ' <img src="%s" data-lazy-src="%s" alt="%s" class="wp-smiley" /> ', $placeholder, esc_url( $src_url ), esc_attr( $smiley ) );
-
-	} else {
-
+	if ( is_feed() || is_preview() ) {
 		return sprintf( ' <img src="%s" alt="%s" class="wp-smiley" /> ', esc_url( $src_url ), esc_attr( $smiley ) );
-
 	}
+
+	/** This filter is documented in inc/front/lazyload.php */
+	$placeholder = apply_filters( 'rocket_lazyload_placeholder', 'data:image/gif;base64,R0lGODdhAQABAPAAAP///wAAACwAAAAAAQABAEACAkQBADs=' );
+
+	return sprintf( ' <img src="%s" data-lazy-src="%s" alt="%s" class="wp-smiley" /> ', $placeholder, esc_url( $src_url ), esc_attr( $smiley ) );
 }
 
 /**
@@ -403,8 +407,7 @@ function rocket_lazyload_iframes( $html ) {
 		return $html;
 	}
 
-	$matches = array();
-	preg_match_all( '/<iframe(?:\s.*)?\ssrc=["\'](.*)["\'](.*)><\/iframe>/iU', $html, $matches, PREG_SET_ORDER );
+	preg_match_all( '/<iframe.*\ssrc=["|\'](.+)["|\'].*(>\s*<\/iframe>)/iU', $html, $matches, PREG_SET_ORDER );
 
 	if ( empty( $matches ) ) {
 		return $html;
@@ -421,12 +424,19 @@ function rocket_lazyload_iframes( $html ) {
 			continue;
 		}
 
+		// Don't lazyload if iframe is google recaptcha fallback.
+		if ( strpos( $iframe[0], 'recaptcha/api/fallback' ) ) {
+			continue;
+		}
+
 		if ( get_rocket_option( 'lazyload_youtube' ) && false !== strpos( $iframe[1], 'youtube' ) ) {
 			$youtube_id = rocket_lazyload_get_youtube_id_from_url( $iframe[1] );
 
 			if ( ! $youtube_id ) {
 				continue;
 			}
+
+			$query = wp_parse_url( $iframe[1], PHP_URL_QUERY );
 
 			/**
 			 * Filter the LazyLoad HTML output on Youtube iframes
@@ -435,35 +445,38 @@ function rocket_lazyload_iframes( $html ) {
 			 *
 			 * @param array $html Output that will be printed.
 			 */
-			$youtube_lazyload  = apply_filters( 'rocket_lazyload_youtube_html', '<div class="rll-youtube-player" data-id="' . $youtube_id . '"></div>' );
+			$youtube_lazyload  = apply_filters( 'rocket_lazyload_youtube_html', '<div class="rll-youtube-player" data-id="' . esc_attr( $youtube_id ) . '" data-query="' . esc_attr( $query ) . '"></div>' );
 			$youtube_lazyload .= '<noscript>' . $iframe[0] . '</noscript>';
 
 			$html = str_replace( $iframe[0], $youtube_lazyload, $html );
-		} else {
-			/**
-			 * Filter the LazyLoad placeholder on src attribute
-			 *
-			 * @since 2.11
-			 *
-			 * @param string $placeholder placeholder that will be printed.
-			 */
-			$placeholder = apply_filters( 'rocket_lazyload_placeholder', 'about:blank' );
-
-			$iframe_noscript = '<noscript>' . $iframe[0] . '</noscript>';
-
-			$iframe_lazyload = str_replace( $iframe[1], $placeholder, $iframe[0] );
-			/**
-			 * Filter the LazyLoad HTML output on iframes
-			 *
-			 * @since 2.11
-			 *
-			 * @param array $html Output that will be printed.
-			 */
-			$iframe_lazyload  = apply_filters( 'rocket_lazyload_iframe_html', str_replace( $iframe[2], $iframe[2] . ' data-rocket-lazyload="fitvidscompatible" data-lazy-src="' . $iframe[1] . '"', $iframe[0] ) );
-			$iframe_lazyload .= $iframe_noscript;
-
-			$html = str_replace( $iframe[0], $iframe_lazyload, $html );
+			continue;
 		}
+
+		/**
+		 * Filter the LazyLoad placeholder on src attribute
+		 *
+		 * @since 2.11
+		 *
+		 * @param string $placeholder placeholder that will be printed.
+		 */
+		$placeholder = apply_filters( 'rocket_lazyload_placeholder', 'about:blank' );
+
+		$iframe_noscript = '<noscript>' . $iframe[0] . '</noscript>';
+
+		$iframe_lazyload = str_replace( $iframe[1], $placeholder, $iframe[0] );
+		$iframe_lazyload = str_replace( $iframe[2], ' data-rocket-lazyload="fitvidscompatible" data-lazy-src="' . esc_url( $iframe[1] ) . '"' . $iframe[2], $iframe_lazyload );
+
+		/**
+		 * Filter the LazyLoad HTML output on iframes
+		 *
+		 * @since 2.11
+		 *
+		 * @param array $html Output that will be printed.
+		 */
+		$iframe_lazyload  = apply_filters( 'rocket_lazyload_iframe_html', $iframe_lazyload );
+		$iframe_lazyload .= $iframe_noscript;
+
+		$html = str_replace( $iframe[0], $iframe_lazyload, $html );
 	}
 
 	return $html;
@@ -502,12 +515,9 @@ function rocket_lazyload_on_srcset( $html ) {
 		$html = str_replace( 'srcset=', 'data-lazy-srcset=', $html );
 	}
 
-	/**
-	 * Remove this until the lazyload script is updated to handle sizes.
-	 * if ( preg_match( '/sizes=("(?:[^"]+)"|\'(?:[^\']+)\'|(?:[^ >]+))/i', $html ) ) {
-	 *	$html = str_replace( 'sizes=', 'data-lazy-sizes=', $html );
-	 * }
-	 */
+	if ( preg_match( '/sizes=("(?:[^"]+)"|\'(?:[^\']+)\'|(?:[^ >]+))/i', $html ) ) {
+		$html = str_replace( 'sizes=', 'data-lazy-sizes=', $html );
+	}
 
 	return $html;
 }
@@ -523,11 +533,16 @@ add_filter( 'rocket_lazyload_html', 'rocket_lazyload_on_srcset' );
  * @return string     Youtube video id or false if none found.
  */
 function rocket_lazyload_get_youtube_id_from_url( $url ) {
-	$pattern = '#^(?:https?://)?(?:www\.)?(?:youtu\.be/|youtube\.com(?:/embed/|/v/|/watch\?v=))([\w-]{11})#iU';
+	$pattern = '#^(?:https?://)?(?:www\.)?(?:youtu\.be|youtube\.com|youtube-nocookie\.com)/(?:embed/|v/|watch/?\?v=)([\w-]{11})#iU';
 	$result  = preg_match( $pattern, $url, $matches );
 
-	if ( $result ) {
-		return $matches[1];
+	if ( ! $result ) {
+		return false;
 	}
-	return false;
+
+	if ( 'videoseries' === $matches[1] ) {
+		return false;
+	}
+
+	return $matches[1];
 }

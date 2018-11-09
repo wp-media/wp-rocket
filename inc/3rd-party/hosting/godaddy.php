@@ -2,63 +2,44 @@
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 if ( class_exists( 'WPaaS\Plugin' ) ) :
-	add_filter( 'rocket_display_varnish_options_tab', '__return_false' );
+	/**
+	 * Changes the text on the Varnish one-click block.
+	 *
+	 * @since 3.0
+	 * @author Remy Perona
+	 *
+	 * @param array $settings Field settings data.
+	 */
+	function rocket_godaddy_varnish_field( $settings ) {
+		// Translators: %s = Hosting name.
+		$settings['varnish_auto_purge']['title'] = sprintf( __( 'Your site is hosted on %s, we have enabled Varnish auto-purge for compatibility.', 'rocket' ), 'GoDaddy' );
+
+		return $settings;
+	}
+	add_filter( 'rocket_varnish_field_settings', 'rocket_godaddy_varnish_field' );
+
+	add_filter( 'rocket_display_input_varnish_auto_purge', '__return_false' );
+
 	add_filter( 'set_rocket_wp_cache_define', '__return_true' );
+	// Prevent mandatory cookies on hosting with server cache.
+	add_filter( 'rocket_cache_mandatory_cookies', '__return_empty_array', PHP_INT_MAX );
 
 	/**
-	 * Remove expiration on HTML to prevent issue with Varnish cache
+	 * Remove expiration on HTML to prevent issue with Varnish cache.
 	 *
 	 * @since 2.9.5
 	 * @author Remy Perona
 	 *
-	 * @param string $rules htaccess rules.
-	 * @return Updated htaccess rules
+	 * @param  string $rules htaccess rules.
+	 * @return string        Updated htaccess rules.
 	 */
 	function rocket_remove_html_expire_goddady( $rules ) {
-		$rules = <<<HTACCESS
-# Expires headers (for better cache control)
-<IfModule mod_expires.c>
-	ExpiresActive on
-	# Perhaps better to whitelist expires rules? Perhaps.
-	ExpiresDefault                          "access plus 1 month"
-	# cache.appcache needs re-requests in FF 3.6 (thanks Remy ~Introducing HTML5)
-	ExpiresByType text/cache-manifest       "access plus 0 seconds"
-	# Data
-	ExpiresByType text/xml                  "access plus 0 seconds"
-	ExpiresByType application/xml           "access plus 0 seconds"
-	ExpiresByType application/json          "access plus 0 seconds"
-	# Feed
-	ExpiresByType application/rss+xml       "access plus 1 hour"
-	ExpiresByType application/atom+xml      "access plus 1 hour"
-	# Favicon (cannot be renamed)
-	ExpiresByType image/x-icon              "access plus 1 week"
-	# Media: images, video, audio
-	ExpiresByType image/gif                 "access plus 1 month"
-	ExpiresByType image/png                 "access plus 1 month"
-	ExpiresByType image/jpeg                "access plus 1 month"
-	ExpiresByType video/ogg                 "access plus 1 month"
-	ExpiresByType audio/ogg                 "access plus 1 month"
-	ExpiresByType video/mp4                 "access plus 1 month"
-	ExpiresByType video/webm                "access plus 1 month"
-	# HTC files  (css3pie)
-	ExpiresByType text/x-component          "access plus 1 month"
-	# Webfonts
-	ExpiresByType application/x-font-ttf    "access plus 1 month"
-	ExpiresByType font/opentype             "access plus 1 month"
-	ExpiresByType application/x-font-woff   "access plus 1 month"
-	ExpiresByType application/x-font-woff2  "access plus 1 month"
-	ExpiresByType image/svg+xml             "access plus 1 month"
-	ExpiresByType application/vnd.ms-fontobject "access plus 1 month"
-	# CSS and JavaScript
-	ExpiresByType text/css                  "access plus 1 year"
-	ExpiresByType application/javascript    "access plus 1 year"
-</IfModule>
-
-HTACCESS;
+		$rules = preg_replace( '@\s*#\s*Your document html@', '', $rules );
+		$rules = preg_replace( '@\s*ExpiresByType text/html\s*"access plus \d+ (seconds|minutes|hour|week|month|year)"@', '', $rules );
 
 		return $rules;
 	}
-	add_filter( 'rocket_htaccess_mod_expires', 'rocket_remove_html_expire_goddady' );
+	add_filter( 'rocket_htaccess_mod_expires', 'rocket_remove_html_expire_goddady', 5 );
 
 	/**
 	 * Call the Varnish server to purge the cache with GoDaddy.
@@ -95,7 +76,7 @@ HTACCESS;
 	 * @return void
 	 */
 	function rocket_clean_home_godaddy( $root, $lang ) {
-		$home_url = trailingslashit( get_rocket_i18n_home_url( $lang ) );
+		$home_url            = trailingslashit( get_rocket_i18n_home_url( $lang ) );
 		$home_pagination_url = $home_url . trailingslashit( $GLOBALS['wp_rewrite']->pagination_base );
 
 		rocket_godaddy_request( 'PURGE', $home_url );

@@ -1,0 +1,50 @@
+// main: ../main.scss
+
+/*-----------------------------------------------*\
+
+    Section header of the page
+
+\*-----------------------------------------------*/
+
+.wpr-sectionHeader{
+    position: relative;
+    border-bottom: 1px solid $cGrey;
+    padding-bottom: $space*3;
+
+    &:before{
+        content: '';
+        position: absolute;
+        display: block;
+        width: 48px;
+        height: 2px;
+        bottom: -1px;
+        left: 0;
+        background: $cOrange;
+    }
+
+    .wpr-title1{
+        line-height: $space*6;
+
+        &:before{
+            display: inline-block;
+            width: $space*6;
+            height: $space*6;
+            margin-right: $space*3;
+            background: $cOrangeLight4;
+            color: $cOrange;
+            text-align: center;
+            border-radius: 3px;
+        }
+    }
+
+    &-title{
+        margin-top: $space;
+        padding-left: $space*9;
+    }
+
+    &-description{
+        color: $cGreyDark2;
+        margin-top: $space;
+        padding-left: $space*9;
+    }
+}

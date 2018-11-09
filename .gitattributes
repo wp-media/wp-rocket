@@ -5,9 +5,15 @@ bin export-ignore
 tests export-ignore
 phpunit.xml export-ignore
 README.md export-ignore
+CONTRIBUTOR.md export-ignore
 .gitattributes export-ignore
 .gitignore export-ignore
+.github export-ignore
 phpcs.xml export-ignore
 .tx export-ignore
 LICENSE.md export-ignore
 CHANGELOG.md export-ignore
+src export-ignore
+.babelrc export-ignore
+gulpfile.js export-ignore
+package.json export-ignore
