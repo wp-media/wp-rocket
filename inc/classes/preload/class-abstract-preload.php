@@ -43,4 +43,16 @@ abstract class Abstract_Preload {
 			$this->preload_process->cancel_process();
 		}
 	}
+
+	/**
+	 * Checks if a process is already running
+	 *
+	 * @since 3.2.1.1
+	 * @author Remy Perona
+	 *
+	 * @return boolean
+	 */
+	public function is_process_running() {
+		return $this->preload_process->is_process_running();
+	}
 }

@@ -109,5 +109,17 @@ class Full_Process extends \WP_Background_Process {
 		parent::complete();
 	}
 
+	/**
+	 * Checks if a process is already running
+	 *
+	 * @since 3.2.1.1
+	 * @author Remy Perona
+	 *
+	 * @see WP_Background_Process::is_process_running()
+	 * @return boolean
+	 */
+	public function is_process_running() {
+		return parent::is_process_running();
+	}
 }
 
