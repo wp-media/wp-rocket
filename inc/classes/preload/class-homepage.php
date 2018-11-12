@@ -41,13 +41,6 @@ class Homepage extends Abstract_Preload {
 			array_walk(
 				$links['href'],
 				function( $link ) use ( $home_url ) {
-          
-					// make the URL absolute
-					$link_data = wp_parse_url( $url );
-					if( empty($link_data['host']) ) {
-						$url = home_url($url);
-					}
-          
 					$link = \rocket_add_url_protocol( $link );
 
 					if ( $link === $home_url ) {
