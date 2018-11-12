@@ -38,23 +38,17 @@ class Homepage extends Abstract_Preload {
 
 			preg_match_all( '/<a\s+(?:[^>]+?[\s"\']|)href\s*=\s*(["\'])(?<href>[^"\']+)\1/imU', $content, $links );
 
-			$links['href'] = array_unique($links['href']);
-      
-			$home_host = wp_parse_url( $home_url, PHP_URL_HOST );
-
 			array_walk(
 				$links['href'],
-				function( $link ) use ( $home_url, $home_host ) {
-          
-					$link = html_entity_decode($link); // & symbols in URLs are changed to &#038; when using WP Menu editor
-          
+				function( $link ) use ( $home_url ) {
 					$link = \rocket_add_url_protocol( $link );
 
 					if ( $link === $home_url ) {
 						return;
 					}
-          
-					$link_data = wp_parse_url( $link );          
+
+					$home_host = wp_parse_url( $home_url, PHP_URL_HOST );
+					$link_data = wp_parse_url( $link );
 
 					if ( $home_host !== $link_data['host'] ) {
 						return;
