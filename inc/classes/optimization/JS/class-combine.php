@@ -560,12 +560,15 @@ class Combine extends Abstract_JS_Optimization {
 			'scrapeazon',
 			'startclock',
 			'it_logo_field_owl-box_',
-			'td_live_css_uid',			
+			'td_live_css_uid',
 			'wpvl_paramReplace',
 			'tdAjaxCount',
 			'mec_skin_',
 			'_wca',
 			'_taboola',
+			'fbq(\'trackCustom\'',
+			'fbq(\'track\'',
+			'data.token',
 		];
 
 		/**
