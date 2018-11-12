@@ -64,7 +64,7 @@ class Sucuri_Subscriber implements Subscriber_Interface {
 			'after_rocket_clean_term'        => 'maybe_clean_firewall_cache',
 			'after_rocket_clean_user'        => 'maybe_clean_firewall_cache',
 			'after_rocket_clean_home'        => 'maybe_clean_firewall_cache',
-			'after_rocket_clean_file'        => 'maybe_clean_firewall_cache',
+			'after_rocket_clean_files'       => 'maybe_clean_firewall_cache',
 			'admin_post_rocket_purge_sucuri' => 'do_admin_post_rocket_purge_sucuri',
 			'admin_notices'                  => 'maybe_print_notice',
 		];
@@ -82,9 +82,19 @@ class Sucuri_Subscriber implements Subscriber_Interface {
 	 * @author Grégory Viguier
 	 */
 	public function maybe_clean_firewall_cache() {
-		if ( $this->options->get( 'sucury_waf_cache_sync', 0 ) ) {
-			$this->clean_firewall_cache();
+		static $done = false;
+
+		if ( $done ) {
+			return;
 		}
+
+		$done = true;
+
+		if ( ! $this->options->get( 'sucury_waf_cache_sync', 0 ) ) {
+			return;
+		}
+
+		$this->clean_firewall_cache();
 	}
 
 	/**
