@@ -146,6 +146,7 @@ $rocket_remove_query_strings = [
 	'age-verified'    => 1,
 	'ao_noptimize'    => 1,
 	'usqp'            => 1,
+	'cn-reloaded'     => 1,
 ];
 
 $params = [];
