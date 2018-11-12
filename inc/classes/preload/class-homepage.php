@@ -48,6 +48,12 @@ class Homepage extends Abstract_Preload {
           
 					$link = html_entity_decode($link); // & symbols in URLs are changed to &#038; when using WP Menu editor
           
+					// make the URL absolute
+					$link_data = wp_parse_url( $link );
+					if( empty($link_data['host']) ) {
+						$link = home_url($link);
+					}
+          
 					$link = \rocket_add_url_protocol( $link );
 
 					if ( $link === $home_url ) {
