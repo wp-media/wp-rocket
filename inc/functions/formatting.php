@@ -109,7 +109,7 @@ function rocket_remove_url_protocol( $url, $no_dots = false ) {
 }
 
 /**
- * Add HTTP protocol to an url that does not have
+ * Add HTTP protocol to an url that does not have and add host if missing too
  *
  * @since 2.2.1
  *
@@ -117,7 +117,14 @@ function rocket_remove_url_protocol( $url, $no_dots = false ) {
  * @return string $url The URL with protocol
  */
 function rocket_add_url_protocol( $url ) {
-	if ( strpos( $url, 'http://' ) === false && strpos( $url, 'https://' ) === false ) {
+  
+	$link_data = wp_parse_url( $url );
+
+	if( empty($link_data['host']) ) {
+		$url = home_url($url);
+	}
+  
+	if ( strpos( $url, 'http://' ) === false && strpos( $url, 'https://' ) === false && strpos( $url, '/' ) !== 0 && strpos( $url, '#' ) !== 0 ) {
 		if ( substr( $url, 0, 2 ) !== '//' ) {
 			$url = '//' . $url;
 		}
