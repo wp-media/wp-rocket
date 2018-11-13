@@ -50,7 +50,7 @@ class Homepage extends Abstract_Preload {
 			'rocket_partial_preload_url_request_args',
 			[
 				'user-agent' => 'WP Rocket/Partial_Preload',
-				'sslverify'  => apply_filters( 'https_local_ssl_verify', true ),
+				'sslverify'  => apply_filters( 'https_local_ssl_verify', true ), // WPCS: prefix ok.
 			]
 		);
 
