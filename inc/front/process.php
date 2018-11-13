@@ -160,6 +160,14 @@ if ( ! empty( $_GET ) ) {
 		$query_string = '?';
 
 		foreach ( $params as $key => $value ) {
+			if ( is_array( $value ) ) {
+				foreach ( $value as $index => $array_value ) {
+					$query_string .= $key . '[' . $index . ']' . '=' . $array_value . '&';
+				}
+
+				continue;
+			}
+
 			$query_string .= $key . '=' . $value . '&';
 		}
 
