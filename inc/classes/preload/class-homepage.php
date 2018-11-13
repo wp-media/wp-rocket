@@ -14,11 +14,11 @@ class Homepage extends Abstract_Preload {
 	 * @since 3.2
 	 * @author Remy Perona
 	 *
-	 * @param array $urls Homepages URLs to preload.
+	 * @param array $home_urls Homepages URLs to preload.
 	 * @return void
 	 */
-	public function preload( $urls ) {
-		foreach ( $urls as $home_url ) {
+	public function preload( $home_urls ) {
+		foreach ( $home_urls as $home_url ) {
 			$urls      = $this->get_urls( $home_url );
 			$home_host = wp_parse_url( $home_url, PHP_URL_HOST );
 
