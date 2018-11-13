@@ -46,10 +46,6 @@ class Full_Process extends \WP_Background_Process {
 			return false;
 		}
 
-		if ( false !== get_transient( 'rocket_preload_cancelled' ) ) {
-			return false;
-		}
-
 		/**
 		 * Filters the arguments for the preload request
 		 *
@@ -96,6 +92,10 @@ class Full_Process extends \WP_Background_Process {
 		/** This filter is documented in inc/front/htaccess.php */
 		if ( apply_filters( 'rocket_url_no_dots', false ) ) {
 			$url['host'] = str_replace( '.', '_', $url['host'] );
+		}
+
+		if ( empty( $url['path'] ) ) {
+			$url['path'] = '/';
 		}
 
 		$file_cache_path = WP_ROCKET_CACHE_PATH . $url['host'] . strtolower( $url['path'] ) . 'index' . $https . '.html';
