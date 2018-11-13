@@ -75,17 +75,24 @@ class Partial_Process extends \WP_Background_Process {
 	 * @return bool
 	 */
 	protected function is_already_cached( $item ) {
-		$host = ( isset( $_SERVER['HTTP_HOST'] ) ) ? $_SERVER['HTTP_HOST'] : (string) time();
-		$host = preg_replace( '/:\d+$/', '', $host );
-		$host = trim( strtolower( $host ), '.' );
-		$host = rawurlencode( $host );
+		static $https;
+
+		if ( ! isset( $https ) ) {
+			$https = ( is_ssl() && get_rocket_option( 'cache_ssl' ) ) ? '-https' : '';
+		}
+
+		$url = get_rocket_parse_url( $item );
 
 		/** This filter is documented in inc/front/htaccess.php */
 		if ( apply_filters( 'rocket_url_no_dots', false ) ) {
-			$host = str_replace( '.', '_', $host );
+			$url['host'] = str_replace( '.', '_', $url['host'] );
 		}
 
-		$file_cache_path = WP_ROCKET_CACHE_PATH . $host . '/' . $item . '/index.html';
+		if ( empty( $url['path'] ) ) {
+			$url['path'] = '/';
+		}
+
+		$file_cache_path = WP_ROCKET_CACHE_PATH . $url['host'] . strtolower( $url['path'] ) . 'index' . $https . '.html';
 
 		return rocket_direct_filesystem()->exists( $file_cache_path );
 	}
