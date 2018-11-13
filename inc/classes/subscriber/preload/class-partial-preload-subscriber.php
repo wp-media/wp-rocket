@@ -149,6 +149,12 @@ class Partial_Preload_Subscriber implements Subscriber_Interface {
 		$this->urls = array_unique( $this->urls );
 
 		foreach ( $this->urls as $url ) {
+			$path = wp_parse_url( $url, PHP_URL_PATH );
+
+			if ( isset( $path ) && preg_match( '#^(' . \get_rocket_cache_reject_uri() . ')$#', $path ) ) {
+				continue;
+			}
+
 			$this->partial_preload->push_to_queue( $url );
 		}
 
