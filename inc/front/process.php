@@ -157,21 +157,7 @@ if ( ! empty( $_GET ) ) {
 	if ( ! empty( $params ) ) {
 		ksort( $params );
 
-		$query_string = '?';
-
-		foreach ( $params as $key => $value ) {
-			if ( is_array( $value ) ) {
-				foreach ( $value as $index => $array_value ) {
-					$query_string .= $key . '[' . $index . ']' . '=' . $array_value . '&';
-				}
-
-				continue;
-			}
-
-			$query_string .= $key . '=' . $value . '&';
-		}
-
-		$request_uri .= rtrim( $query_string, '&' );
+		$request_uri .= http_build_query( $params );
 	}
 }
 
