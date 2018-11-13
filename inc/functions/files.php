@@ -503,32 +503,45 @@ function rocket_clean_cache_busting( $extensions = array( 'js', 'css' ) ) {
 
 
 /**
- * Delete one or several cache files
+ * Delete one or several cache files.
  *
- * @since 2.0   Delete cache files for all users
- * @since 1.1.0 Add filter rocket_clean_files
+ * @since 2.0   Delete cache files for all users.
+ * @since 1.1.0 Add filter rocket_clean_files.
  * @since 1.0
  *
- * @param string|array $urls URLs of cache files to be deleted.
+ * @param  string|array $urls URLs of cache files to be deleted.
  * @return void
  */
 function rocket_clean_files( $urls ) {
-	if ( is_string( $urls ) ) {
-		$urls = (array) $urls;
-	}
+	$urls = (array) $urls;
 
 	/**
-	 * Filter URLs that the cache file to be deleted
+	 * Filter URLs that the cache file to be deleted.
 	 *
 	 * @since 1.1.0
+	 *
 	 * @param array URLs that will be returned.
 	*/
 	$urls = apply_filters( 'rocket_clean_files', $urls );
-	$urls = array_filter( $urls );
+	$urls = array_filter( (array) $urls );
+
+	if ( ! $urls ) {
+		return;
+	}
+
+	/**
+	 * Fires before all cache files are deleted.
+	 *
+	 * @since  3.2.2
+	 * @author Grégory Viguier
+	 *
+	 * @param array $urls The URLs corresponding to the deleted cache files.
+	*/
+	do_action( 'before_rocket_clean_files', $urls );
 
 	foreach ( $urls as $url ) {
 		/**
-		 * Fires before the cache file is deleted
+		 * Fires before the cache file is deleted.
 		 *
 		 * @since 1.0
 		 *
@@ -542,6 +555,7 @@ function rocket_clean_files( $urls ) {
 		}
 
 		$dirs = glob( WP_ROCKET_CACHE_PATH . rocket_remove_url_protocol( $url ), GLOB_NOSORT );
+
 		if ( $dirs ) {
 			foreach ( $dirs as $dir ) {
 				rocket_rrmdir( $dir );
@@ -549,7 +563,7 @@ function rocket_clean_files( $urls ) {
 		}
 
 		/**
-		 * Fires after the cache file is deleted
+		 * Fires after the cache file is deleted.
 		 *
 		 * @since 1.0
 		 *
@@ -557,6 +571,16 @@ function rocket_clean_files( $urls ) {
 		*/
 		do_action( 'after_rocket_clean_file', $url );
 	}
+
+	/**
+	 * Fires after all cache files are deleted.
+	 *
+	 * @since  3.2.2
+	 * @author Grégory Viguier
+	 *
+	 * @param array $urls The URLs corresponding to the deleted cache files.
+	*/
+	do_action( 'after_rocket_clean_files', $urls );
 }
 
 /**
