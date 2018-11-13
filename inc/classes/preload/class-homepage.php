@@ -77,7 +77,7 @@ class Homepage extends Abstract_Preload {
 			);
 		}
 
-		set_transient( 'rocket_preload_running', 0 );
+		set_transient( 'rocket_preload_running', 1 );
 		$this->preload_process->save()->dispatch();
 	}
 }
