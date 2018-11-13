@@ -98,7 +98,7 @@ class Full_Process extends \WP_Background_Process {
 			$url['host'] = str_replace( '.', '_', $url['host'] );
 		}
 
-		$file_cache_path = WP_ROCKET_CACHE_PATH . $url['host'] . strtolower( $url['path'] ) . 'index.html';
+		$file_cache_path = WP_ROCKET_CACHE_PATH . $url['host'] . strtolower( $url['path'] ) . 'index' . $https . '.html';
 
 		return rocket_direct_filesystem()->exists( $file_cache_path );
 	}
