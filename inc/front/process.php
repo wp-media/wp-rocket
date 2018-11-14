@@ -146,6 +146,7 @@ $rocket_remove_query_strings = [
 	'age-verified'    => 1,
 	'ao_noptimize'    => 1,
 	'usqp'            => 1,
+	'cn-reloaded'     => 1,
 ];
 
 $params = [];
@@ -156,13 +157,7 @@ if ( ! empty( $_GET ) ) {
 	if ( ! empty( $params ) ) {
 		ksort( $params );
 
-		$query_string = '?';
-
-		foreach ( $params as $key => $value ) {
-			$query_string .= $key . '=' . $value . '&';
-		}
-
-		$request_uri .= rtrim( $query_string, '&' );
+		$request_uri .= http_build_query( $params );
 	}
 }
 
@@ -252,7 +247,7 @@ $allowed_ips = array(
 );
 
 // Don't cache page when these cookies don't exist.
-if ( ( ! isset( $allowed_ips[ $ip ] ) && ! preg_match( '#(PingdomPageSpeed|DareBoost|Google|PTST|WP Rocket)#i', $_SERVER['HTTP_USER_AGENT'] ) ) && isset( $rocket_cache_mandatory_cookies ) && ! preg_match( '#(' . $rocket_cache_mandatory_cookies . ')#', var_export( $_COOKIE, true ) ) ) {
+if ( ( ! isset( $allowed_ips[ $ip ] ) && ( isset( $_SERVER['HTTP_USER_AGENT'] ) ) && ! preg_match( '#(PingdomPageSpeed|DareBoost|Google|PTST|WP Rocket)#i', $_SERVER['HTTP_USER_AGENT'] ) ) && isset( $rocket_cache_mandatory_cookies ) && ! preg_match( '#(' . $rocket_cache_mandatory_cookies . ')#', var_export( $_COOKIE, true ) ) ) {
 	rocket_define_donotoptimize_constant( true );
 
 	Logger::debug( 'Missing cookie: page not cached.', [
@@ -487,7 +482,6 @@ function rocket_serve_cache_file( $rocket_cache_filepath ) {
 	// Check if cache file exist.
 	if ( isset( $_SERVER['HTTP_ACCEPT_ENCODING'] ) && false !== strpos( $_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip' ) && file_exists( $rocket_cache_filepath_gzip ) && is_readable( $rocket_cache_filepath_gzip ) ) {
 		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s', filemtime( $rocket_cache_filepath_gzip ) ) . ' GMT' );
-		header( 'Content-Encoding: gzip' );
 
 		// Getting If-Modified-Since headers sent by the client.
 		if ( function_exists( 'apache_request_headers' ) ) {
@@ -513,7 +507,7 @@ function rocket_serve_cache_file( $rocket_cache_filepath ) {
 		}
 
 		// Serve the cache if file isn't store in the client browser cache.
-		readfile( $rocket_cache_filepath_gzip );
+		readgzfile( $rocket_cache_filepath_gzip );
 
 		Logger::info( 'Serving gzip cache file.', [
 			'caching process',

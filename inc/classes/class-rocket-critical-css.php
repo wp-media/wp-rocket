@@ -610,7 +610,7 @@ class Rocket_Critical_CSS {
 			return $buffer;
 		}
 
-		$buffer = preg_replace( '/<head(.*)>/U', '<head$1><style id="rocket-critical-css">' . wp_strip_all_tags( $critical_css_content ) . '</style>', $buffer, 1 );
+		$buffer = preg_replace( '#</title>#iU', '</title><style id="rocket-critical-css">' . wp_strip_all_tags( $critical_css_content ) . '</style>', $buffer, 1 );
 
 		return $buffer;
 	}

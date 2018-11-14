@@ -405,10 +405,10 @@ function get_rocket_htaccess_mod_expires() {
 	# Favicon (cannot be renamed)
 	ExpiresByType image/x-icon                  "access plus 1 week"
 	# Media: images, video, audio
-	ExpiresByType image/gif                     "access plus 1 month"
-	ExpiresByType image/png                     "access plus 1 month"
-	ExpiresByType image/jpeg                    "access plus 1 month"
-	ExpiresByType image/webp                    "access plus 1 month"
+	ExpiresByType image/gif                     "access plus 4 months"
+	ExpiresByType image/png                     "access plus 4 months"
+	ExpiresByType image/jpeg                    "access plus 4 months"
+	ExpiresByType image/webp                    "access plus 4 months"
 	ExpiresByType video/ogg                     "access plus 1 month"
 	ExpiresByType audio/ogg                     "access plus 1 month"
 	ExpiresByType video/mp4                     "access plus 1 month"

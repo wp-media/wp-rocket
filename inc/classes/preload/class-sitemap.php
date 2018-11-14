@@ -57,6 +57,12 @@ class Sitemap extends Abstract_Preload {
 		foreach ( $urls_group as $urls ) {
 			$urls = array_flip( array_flip( $urls ) );
 			foreach ( $urls as $url ) {
+				$path = wp_parse_url( $url, PHP_URL_PATH );
+
+				if ( isset( $path ) && preg_match( '#^(' . \get_rocket_cache_reject_uri() . ')$#', $path ) ) {
+					continue;
+				}
+
 				$this->preload_process->push_to_queue( $url );
 			}
 		}

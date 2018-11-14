@@ -117,6 +117,7 @@ function rocket_remove_url_protocol( $url, $no_dots = false ) {
  * @return string $url The URL with protocol
  */
 function rocket_add_url_protocol( $url ) {
+  
 	if ( strpos( $url, 'http://' ) === false && strpos( $url, 'https://' ) === false ) {
 		if ( substr( $url, 0, 2 ) !== '//' ) {
 			$url = '//' . $url;
