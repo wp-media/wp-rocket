@@ -94,10 +94,11 @@ function get_rocket_config_file() {
 		return;
 	}
 
-	$buffer  = '<?php' . "\n";
-	$buffer .= 'defined( \'ABSPATH\' ) or die( \'Cheatin\\\' uh?\' );' . "\n\n";
+	$buffer  = "<?php\n";
+	$buffer .= "defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );\n\n";
 
-	$buffer .= '$rocket_cookie_hash = \'' . COOKIEHASH . '\'' . ";\n";
+	$buffer .= '$rocket_cookie_hash = \'' . COOKIEHASH . "';\n";
+	$buffer .= '$rocket_logged_in_cookie = \'' . LOGGED_IN_COOKIE . "';\n";
 
 	/**
 	 * Filters the activation of the common cache for logged-in users.
@@ -120,45 +121,52 @@ function get_rocket_config_file() {
 	 *
 	 * @param string $tablet_version valid values are 'mobile' or 'desktop'
 	 */
-	$buffer .= '$rocket_cache_mobile_files_tablet = \'' . apply_filters( 'rocket_cache_mobile_files_tablet', 'desktop' ) . '\';' . "\n";
+	$buffer .= '$rocket_cache_mobile_files_tablet = \'' . apply_filters( 'rocket_cache_mobile_files_tablet', 'desktop' ) . "';\n";
 
 	foreach ( $options as $option => $value ) {
-		if ( 'cache_ssl' === $option || 'cache_mobile' === $option || 'do_caching_mobile_files' === $option || 'secret_cache_key' === $option ) {
-			$buffer .= '$rocket_' . $option . ' = \'' . $value . '\';' . "\n";
+		if ( 'cache_ssl' === $option || 'cache_mobile' === $option || 'do_caching_mobile_files' === $option ) {
+			$buffer .= '$rocket_' . $option . ' = ' . (int) $value . ";\n";
+		}
+
+		if ( 'secret_cache_key' === $option ) {
+			$buffer .= '$rocket_' . $option . ' = \'' . $value . "';\n";
 		}
 
 		if ( 'cache_reject_uri' === $option ) {
-			$buffer .= '$rocket_' . $option . ' = \'' . get_rocket_cache_reject_uri() . '\';' . "\n";
+			$buffer .= '$rocket_' . $option . ' = \'' . get_rocket_cache_reject_uri() . "';\n";
 		}
 
 		if ( 'cache_query_strings' === $option ) {
-			$buffer .= '$rocket_' . $option . ' = ' . var_export( get_rocket_cache_query_string(), true ) . ';' . "\n";
+			$buffer .= '$rocket_' . $option . ' = ' . call_user_func( 'var_export', get_rocket_cache_query_string(), true ) . ";\n";
 		}
 
 		if ( 'cache_reject_cookies' === $option ) {
 			$cookies = get_rocket_cache_reject_cookies();
 
-			if ( get_rocket_option( 'cache_logged_user' ) ) {
-				$logged_in_cookie = str_replace( COOKIEHASH, '', LOGGED_IN_COOKIE );
-				$cookies          = str_replace( $logged_in_cookie . '|', '', $cookies );
+			if ( $cookies && get_rocket_option( 'cache_logged_user' ) ) {
+				// Make sure the "logged-in cookies" are not rejected.
+				$logged_in_cookie = explode( COOKIEHASH, LOGGED_IN_COOKIE );
+				$logged_in_cookie = array_map( 'preg_quote', $logged_in_cookie );
+				$logged_in_cookie = implode( '[^|]*', $logged_in_cookie );
+				$cookies          = preg_replace( '/\|' . $logged_in_cookie . '\|/', '|', '|' . $cookies . '|' );
 				$cookies          = trim( $cookies, '|' );
 			}
 
-			$buffer .= '$rocket_' . $option . ' = \'' . $cookies . '\';' . "\n";
+			$buffer .= '$rocket_' . $option . ' = \'' . $cookies . "';\n";
 		}
 
 		if ( 'cache_reject_ua' === $option ) {
-			$buffer .= '$rocket_' . $option . ' = \'' . get_rocket_cache_reject_ua() . '\';' . "\n";
+			$buffer .= '$rocket_' . $option . ' = \'' . get_rocket_cache_reject_ua() . "';\n";
 		}
 	}
 
-	$buffer .= '$rocket_cache_mandatory_cookies = ' . var_export( get_rocket_cache_mandatory_cookies(), true ) . ';' . "\n";
+	$buffer .= '$rocket_cache_mandatory_cookies = ' . call_user_func( 'var_export', get_rocket_cache_mandatory_cookies(), true ) . ";\n";
 
-	$buffer .= '$rocket_cache_dynamic_cookies = ' . var_export( get_rocket_cache_dynamic_cookies(), true ) . ';' . "\n";
+	$buffer .= '$rocket_cache_dynamic_cookies = ' . call_user_func( 'var_export', get_rocket_cache_dynamic_cookies(), true ) . ";\n";
 
 	/** This filter is documented in inc/front/htaccess.php */
 	if ( apply_filters( 'rocket_url_no_dots', false ) ) {
-		$buffer .= '$rocket_url_no_dots = \'1\';';
+		$buffer .= '$rocket_url_no_dots = 1;';
 	}
 
 	$config_files_path = array();
@@ -194,6 +202,8 @@ function get_rocket_config_file() {
 	 * @param array $config_files_path  Names of all config files.
 	*/
 	$buffer = apply_filters( 'rocket_config_file', $buffer, $config_files_path );
+	$buffer = preg_replace( '@array\s+\(@i', 'array(', $buffer );
+	$buffer = preg_replace( '@array\(\s+\)@i', 'array()', $buffer );
 
 	return array( $config_files_path, $buffer );
 }
