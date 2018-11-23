@@ -1,10 +1,3 @@
----
-description: A scalable, traceable job queue for background processing large queues of tasks in WordPress. Designed for distribution in plugins and themes - no server access required.
----
-# Action Scheduler - Job Queue for WordPress
-
-A scalable, traceable job queue for background processing large queues of tasks in WordPress. Specifically designed for distribution in plugins and themes - no server access required.
-
 ## Overview
 
 Action Scheduler uses a WordPress [custom post type](http://codex.wordpress.org/Post_Types), creatively named `scheduled-action`, to store the hook name, arguments and scheduled date for an action that should be triggered at some time in the future.
