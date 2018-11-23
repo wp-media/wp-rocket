@@ -24,7 +24,7 @@ abstract class Abstract_Buffer {
 	protected $process_id;
 
 	/**
-	 * List of the tests to do.
+	 * List of tests to perform.
 	 *
 	 * @var    array
 	 * @since  3.3
@@ -70,32 +70,24 @@ abstract class Abstract_Buffer {
 	/** ----------------------------------------------------------------------------------------- */
 
 	/**
-	 * Tell if the process should be initiated.
-	 *
-	 * @since  3.3
-	 * @access protected
-	 * @author Grégory Viguier
-	 *
-	 * @return bool
-	 */
-	protected function can_init_process() {
-		return $this->tests->can_init_process();
-	}
-
-	/**
-	 * Maybe launch the process.
+	 * Launch the process if the tests succeed.
+	 * This should be the first thing to use after initializing the class.
 	 *
 	 * @since  3.3
 	 * @access public
+	 * @see    $this->tests->can_init_process()
 	 * @author Grégory Viguier
 	 */
 	abstract public function maybe_init_process();
 
 	/**
-	 * Process the page buffer.
+	 * Process the page buffer if the 2nd set of tests succeed.
+	 * It should be used like this:
+	 *     ob_start( [ $this, 'maybe_process_buffer' ] );
 	 *
 	 * @since  3.3
 	 * @access public
+	 * @see    $this->tests->can_process_buffer()
 	 * @author Grégory Viguier
 	 *
 	 * @param  string $buffer The buffer content.
@@ -198,7 +190,7 @@ abstract class Abstract_Buffer {
 	 * @param  string $buffer The buffer content.
 	 * @return bool
 	 */
-	final protected function is_html( $buffer ) {
+	protected function is_html( $buffer ) {
 		return preg_match( '/(<\/html>)/i', $buffer );
 	}
 }

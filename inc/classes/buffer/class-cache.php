@@ -86,7 +86,7 @@ class Cache extends Abstract_Buffer {
 	 * @author Grégory Viguier
 	 */
 	public function maybe_init_process() {
-		if ( ! $this->can_init_process() ) {
+		if ( ! $this->tests->can_init_process() ) {
 			$this->log_last_test_error();
 			return;
 		}
