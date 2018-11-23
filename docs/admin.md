@@ -7,8 +7,6 @@ The administration interface is accesible through both:
 1. **Tools > Scheduled Actions**
 1. **WooCommerce > Status > Scheduled Actions**, when WooCommerce is installed.
 
-![](https://cldup.com/5BA2BNB1sw.png)
-
 Among other tasks, from the admin screen you can:
 
 * run a pending action
@@ -16,4 +14,6 @@ Among other tasks, from the admin screen you can:
 * view the log entries for a specific action to find out why it failed.
 * sort scheduled actions by hook name, scheduled date, claim ID or group name.
 
-Still have questions? Check out the [FAQ below](#faq).
+Still have questions? Check out the [FAQ](/faq).
+
+![](https://cldup.com/5BA2BNB1sw.png)

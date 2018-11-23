@@ -36,6 +36,6 @@ Actions can also be grouped together using a custom taxonomy named `action-group
 
 ## Credits
 
-This extension is developed and maintained as a collaboration between the teams at [Prospress](http://prospress.com/) and [Flightless](https://flightless.us/).
+Developed and maintained by [Prospress](http://prospress.com/) in collaboration with [Flightless](https://flightless.us/).
 
-Collaboration is cool. We'd love to work with you to improve Action Scheduler. Pull Requests welcome.
+Collaboration is cool. We'd love to work with you to improve Action Scheduler. [Pull Requests](https://github.com/prospress/action-scheduler/pulls) welcome.

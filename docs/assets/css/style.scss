@@ -3,7 +3,12 @@
 
 @import "{{ site.theme }}";
 
+.container {
+	max-width: 700px;
+}
+
 footer {
 	margin-top: 6em;
+	padding: 1.6em 0;
 	border-top: 1px dashed #b5e853;
 }
