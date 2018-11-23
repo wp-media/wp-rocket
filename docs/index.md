@@ -1,7 +1,5 @@
 {% include menu.md %}
 
-A scalable, traceable job queue for background processing large sets of actions in WordPress. Designed to be distributed in plugins and themes.
-
 ## Overview
 
 Action Scheduler uses a WordPress [custom post type](http://codex.wordpress.org/Post_Types), creatively named `scheduled-action`, to store the hook name, arguments and scheduled date for an action that should be triggered at some time in the future.

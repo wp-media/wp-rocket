@@ -1,10 +1,10 @@
-## Performance Tuning
+# Performance Tuning
 
 By default, Action Scheduler will process a minimum of 1,200 actions per hour. On servers which allow long running PHP processes, this will be significantly higher as processes will be able loop over queues indefinitely.
 
 The batch size and number of concurrent queues that may be processed simultaneously is low by default to ensure the scheduler runs on low powered servers; however, you can configure these settings to increase performance on your site.
 
-#### Increasing Batch Size
+## Increasing Batch Size
 
 By default, Action Scheduler will claim a batch of 20 actions. This small batch size is to minimise the risk of causing a fatal error due to memory exhaustion.
 
@@ -21,7 +21,7 @@ add_filter( 'action_scheduler_queue_runner_batch_size', 'eg_increase_action_sche
 ?>
 ```
 
-### Increasing Concurrent Batches
+## Increasing Concurrent Batches
 
 By default, Action Scheduler will run up to 5 concurrent batches of actions. This is to prevent consuming all the available connections or processes on your webserver.
 

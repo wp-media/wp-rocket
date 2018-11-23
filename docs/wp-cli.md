@@ -1,4 +1,4 @@
-## WP CLI
+# WP CLI
 
 Action Scheduler has custom [WP CLI](http://wp-cli.org) commands available for processing actions.
 
@@ -12,7 +12,7 @@ With a regular web request, you may have to deal with script timeouts enforced b
 
 If you choose to utilize WP CLI exclusively, you can disable the normal WP CLI queue runner by installing the [Action Scheduler - Disable Default Queue Runner](https://github.com/Prospress/action-scheduler-disable-default-runner) plugin. Note that if you do this, you **must** run Action Scheduler via WP CLI or another method, otherwise no scheduled actions will be processed.
  
-### Commands
+## Commands
 
 These are the commands available to use with Action Scheduler:
 
@@ -27,7 +27,7 @@ These are the commands available to use with Action Scheduler:
 
 The best way to get a full list of commands and their available options is to use WP CLI itself. This can be done by running `wp action-scheduler` to list all Action Scheduler commands, or by including the `--help` flag with any of the individual commands. This will provide all relevant parameters and flags for the command.
 
-### Cautionary Note on Action Dependencies when using `--group` or `--hooks` Options
+## Cautionary Note on Action Dependencies when using `--group` or `--hooks` Options
 
 The `--group` and `--hooks` options should be used with caution if you have an implicit dependency between scheduled actions based on their schedule.
 
@@ -49,7 +49,7 @@ If two queue runners are running alongside each other with each runner dedicated
 
 **Because of this, the `--group` and `--hooks` options should be used with caution to avoid processing actions with an implicit dependency based on their schedule in separate queues.**
 
-### Improving Performance with `--group` or `--hooks`
+## Improving Performance with `--group` or `--hooks`
 
 Being able to run queues for specific hooks or groups of actions is valuable at scale. Why? Because it means you can restrict the concurrency for similar actions.
 

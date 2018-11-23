@@ -1,6 +1,6 @@
-## API Functions
+# API Functions
 
-### Action Scheduler API vs. WP-Cron API
+## Action Scheduler API vs. WP-Cron API
 
 The Action Scheduler API functions are designed to mirror the WordPress [WP-Cron API functions](http://codex.wordpress.org/Category:WP-Cron_Functions).
 
@@ -11,49 +11,49 @@ Functions return similar values and accept similar arguments to their WP-Cron co
 * `as_schedule_single_action()` & `as_schedule_recurring_action()` can accept a `$group` parameter to group different actions for the one plugin together.
 * the `wp_` prefix is substituted with `as_` and the term `event` is replaced with `action`
 
-### API Function Availability
+## API Function Availability
 
 As mentioned in the [Usage - Load Order](#load-order) section, Action Scheduler will initialize itself on the `'init'` hook with priority `1`. While API functions are loaded prior to this and call be called, they should not be called until after `'init'` with priority `1`, because each component, like the data store, has not yet been initialized.
 
 Do not use Action Scheduler API functions prior to `'init'` hook with priority `1`. Doing so could lead to unexpected results, like data being stored in the incorrect location.
 
-#### Function Reference / `as_schedule_single_action()`
+## Function Reference / `as_schedule_single_action()`
 
-##### Description
+### Description
 
 Schedule an action to run one time.
 
-##### Usage
+### Usage
 
 ```php
 <?php as_schedule_single_action( $timestamp, $hook, $args, $group ); ?>
 ````
 
-##### Parameters
+### Parameters
 
 - **$timestamp** (integer)(required) The Unix timestamp representing the date you want the action to run. Default: _none_.
 - **$hook** (string)(required) Name of the action hook. Default: _none_.
 - **$args** (array) Arguments to pass to callbacks when the hook triggers. Default: _`array()`_.
 - **$group** (array) The group to assign this job to. Default: _''_.
 
-##### Return value
+### Return value
 
 (integer) the action's ID in the [posts](http://codex.wordpress.org/Database_Description#Table_Overview) table.
 
 
-#### Function Reference / `as_schedule_recurring_action()`
+## Function Reference / `as_schedule_recurring_action()`
 
-##### Description
+### Description
 
 Schedule an action to run repeatedly with a specified interval in seconds.
 
-##### Usage
+### Usage
 
 ```php
 <?php as_schedule_recurring_action( $timestamp, $interval_in_seconds, $hook, $args, $group ); ?>
 ````
 
-##### Parameters
+### Parameters
 
 - **$timestamp** (integer)(required) The Unix timestamp representing the date you want the action to run. Default: _none_.
 - **$interval_in_seconds** (integer)(required) How long to wait between runs. Default: _none_.
@@ -61,24 +61,24 @@ Schedule an action to run repeatedly with a specified interval in seconds.
 - **$args** (array) Arguments to pass to callbacks when the hook triggers. Default: _`array()`_.
 - **$group** (array) The group to assign this job to. Default: _''_.
 
-##### Return value
+### Return value
 
 (integer) the action's ID in the [posts](http://codex.wordpress.org/Database_Description#Table_Overview) table.
 
 
-#### Function Reference / `as_schedule_cron_action()`
+## Function Reference / `as_schedule_cron_action()`
 
-##### Description
+### Description
 
 Schedule an action that recurs on a cron-like schedule.
 
-##### Usage
+### Usage
 
 ```php
 <?php as_schedule_cron_action( $timestamp, $schedule, $hook, $args, $group ); ?>
 ````
 
-##### Parameters
+### Parameters
 
 - **$timestamp** (integer)(required) The Unix timestamp representing the date you want the action to run. Default: _none_.
 - **$schedule** (string)(required) $schedule A cron-link schedule string, see http://en.wikipedia.org/wiki/Cron. Default: _none_.
@@ -86,70 +86,70 @@ Schedule an action that recurs on a cron-like schedule.
 - **$args** (array) Arguments to pass to callbacks when the hook triggers. Default: _`array()`_.
 - **$group** (array) The group to assign this job to. Default: _''_.
 
-##### Return value
+### Return value
 
 (integer) the action's ID in the [posts](http://codex.wordpress.org/Database_Description#Table_Overview) table.
 
 
-#### Function Reference / `as_unschedule_action()`
+## Function Reference / `as_unschedule_action()`
 
-##### Description
+### Description
 
 Cancel the next occurrence of a job.
 
-##### Usage
+### Usage
 
 ```php
 <?php as_unschedule_action( $hook, $args, $group ); ?>
 ````
 
-##### Parameters
+### Parameters
 
 - **$hook** (string)(required) Name of the action hook. Default: _none_.
 - **$args** (array) Arguments to pass to callbacks when the hook triggers. Default: _`array()`_.
 - **$group** (array) The group to assign this job to. Default: _''_.
 
-##### Return value
+### Return value
 
 (null)
 
 
-#### Function Reference / `as_next_scheduled_action()`
+## Function Reference / `as_next_scheduled_action()`
 
-##### Description
+### Description
 
 Returns the next timestamp for a scheduled action.
 
-##### Usage
+### Usage
 
 ```php
 <?php as_next_scheduled_action( $hook, $args, $group ); ?>
 ````
 
-##### Parameters
+### Parameters
 
 - **$hook** (string)(required) Name of the action hook. Default: _none_.
 - **$args** (array) Arguments to pass to callbacks when the hook triggers. Default: _`array()`_.
 - **$group** (array) The group to assign this job to. Default: _''_.
 
-##### Return value
+### Return value
 
 (integer|boolean) The timestamp for the next occurrence, or false if nothing was found.
 
 
-#### Function Reference / `as_get_scheduled_actions()`
+## Function Reference / `as_get_scheduled_actions()`
 
-##### Description
+### Description
 
 Find scheduled actions.
 
-##### Usage
+### Usage
 
 ```php
 <?php as_get_scheduled_actions( $args, $return_format ); ?>
 ````
 
-##### Parameters
+### Parameters
 
 - **$args** (array) Arguments to search and filter results by. Possible arguments, with their default values:
     * `'hook' => ''` - the name of the action that will be triggered
@@ -167,6 +167,6 @@ Find scheduled actions.
     * `'order' => 'ASC'`
 - **$return_format** (string) The format in which to return the scheduled actions: 'OBJECT', 'ARRAY_A', or 'ids'. Default: _'OBJECT'_.
 
-##### Return value
+### Return value
 
 (array) Array of the actions matching the criteria specified with `$args`.
