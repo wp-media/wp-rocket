@@ -308,7 +308,7 @@ class Tests {
 	}
 
 	/**
-	 * Tell if the buffer should be processed
+	 * Tell if the buffer should be processed.
 	 *
 	 * @since  3.3
 	 * @access public
