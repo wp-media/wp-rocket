@@ -1,16 +1,18 @@
 ## Overview
 
-Action Scheduler is a library for triggering an action hook to run at some time in the future. The hook can also be scheduled to run on one or more occassions.
+Action Scheduler is a library for triggering a hook to run at some time in the future. Each hook can be scheduled with unique data, to allow callbacks to perform operations on that data. The hook can also be scheduled to run on one or more occassions.
 
-Think of it like an extension to `do_action()` which adds the ability to delay and repeat the hook.
+Think of it like an extension to `do_action()` which adds the ability to delay and repeat a hook.
 
-### Battle-tested
+### Battle-Tested
 
-Every month, Action Scheduler processes millions of payments for [Subscriptions](https://woocommerce.com/products/woocommerce-subscriptions/), as well as webhooks for [WooCommerce](https://wordpress.org/plugins/woocommerce/), emails and other events for a range of other plugins.
+Every month, Action Scheduler processes millions of payments for [Subscriptions](https://woocommerce.com/products/woocommerce-subscriptions/), webhooks for [WooCommerce](https://wordpress.org/plugins/woocommerce/), as well as emails and other events for a range of other plugins.
 
-It's been seen on live sites processing queues in excess of 50,000 jobs and doing resource intensive operations, like processing payments and creating orders, at a rate of over 150 / minute.
+It's been seen on live sites processing queues in excess of 50,000 jobs and doing resource intensive operations, like processing payments and creating orders, at a sustained rate of over 10,000 / hour without negatively impacting normal site operations.
 
-This is all done on infrastructure and WordPress sites outside the control of the plugin author.
+This is all on infrastructure and WordPress sites outside the control of the plugin author.
+
+If your plugin needs background processing, especially of large sets of tasks, Action Scheduler can help.
 
 ### How it Works
 
