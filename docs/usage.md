@@ -17,7 +17,7 @@ The example code below shows everything needed to schedule a function to run at 
  * The callback to run when the 'eg_midnight_log' scheduled action is run.
  */
 function eg_log_action_data() {
-	error_log( 'It's just after midnight on ' . date( 'Y-m-d' ) );
+	error_log( 'It is just after midnight on ' . date( 'Y-m-d' ) );
 }
 
 /**
