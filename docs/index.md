@@ -1,8 +1,22 @@
 ## Overview
 
+Action Scheduler is a library for triggering an action hook to run at some time in the future. The hook can also be scheduled to run on one or more occassions.
+
+Think of it like an extension to `do_action()` which adds the ability to delay and repeat the hook.
+
+### Battle-tested
+
+Every month, Action Scheduler processes millions of payments for [Subscriptions](https://woocommerce.com/products/woocommerce-subscriptions/), as well as webhooks for [WooCommerce](https://wordpress.org/plugins/woocommerce/), emails and other events for a range of other plugins.
+
+It's been seen on live sites processing queues in excess of 50,000 jobs and doing resource intensive operations, like processing payments and creating orders, at a rate of over 150 / minute.
+
+This is all done on infrastructure and WordPress sites outside the control of the plugin author.
+
+### How it Works
+
 Action Scheduler uses a WordPress [custom post type](http://codex.wordpress.org/Post_Types), creatively named `scheduled-action`, to store the hook name, arguments and scheduled date for an action that should be triggered at some time in the future.
 
-The scheduler will run every minute by attaching itself as a callback to the `'action_scheduler_run_schedule'` hook, which is scheduled using WordPress's built-in [WP-Cron](http://codex.wordpress.org/Function_Reference/wp_cron) system.
+The scheduler will attempt to run every minute by attaching itself as a callback to the `'action_scheduler_run_schedule'` hook, which is scheduled using WordPress's built-in [WP-Cron](http://codex.wordpress.org/Function_Reference/wp_cron) system.
 
 When triggered, Action Scheduler will check for posts of the `scheduled-action` type that have a `post_date` at or before this point in time i.e. actions scheduled to run now or at sometime in the past.
 

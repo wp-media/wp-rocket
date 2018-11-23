@@ -1,6 +1,10 @@
 # API Reference
 
-## Action Scheduler API vs. WP-Cron API
+Action Scheduler provides a range of functions for scheduling hooks to run at some time in the future on one or more occassions.
+
+To understand the scheduling functoins, it can help to think of them as extensions to WordPress' `do_action()` function that add the ability to delay and repeat when the hook will be triggered.
+
+## WP-Cron APIs vs. Action Scheduler APIs
 
 The Action Scheduler API functions are designed to mirror the WordPress [WP-Cron API functions](http://codex.wordpress.org/Category:WP-Cron_Functions).
 
