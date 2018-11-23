@@ -1,4 +1,7 @@
-# WP CLI
+---
+title: WP CLI
+description: Process large queues of jobs with Action Scheduler and WP CLI.
+---
 
 Action Scheduler has custom [WP CLI](http://wp-cli.org) commands available for processing actions.
 

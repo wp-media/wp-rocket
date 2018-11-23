@@ -1,4 +1,7 @@
-# API Reference
+---
+title: API Reference
+description:
+---
 
 ## Action Scheduler API vs. WP-Cron API
 
