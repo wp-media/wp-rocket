@@ -113,8 +113,7 @@ function get_rocket_htaccess_marker() {
 	$marker .= get_rocket_htaccess_mod_expires();
 	$marker .= get_rocket_htaccess_mod_deflate();
 
-	/** This filter is documented in inc/front/process.php */
-	if ( apply_filters( 'do_rocket_generate_caching_files', true ) && ! is_rocket_generate_caching_mobile_files() ) {
+	if ( \WP_Rocket\Buffer\Cache::can_generate_caching_files() && ! is_rocket_generate_caching_mobile_files() ) {
 		$marker .= get_rocket_htaccess_mod_rewrite();
 	}
 
