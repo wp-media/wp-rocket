@@ -1,7 +1,4 @@
----
-title: Performance Tuning
-description: Tweak Action Scheduler to process actions via WP Cron faster.
----
+# Performance Tuning
 
 By default, Action Scheduler will process a minimum of 1,200 actions per hour. On servers which allow long running PHP processes, this will be significantly higher as processes will be able loop over queues indefinitely.
 

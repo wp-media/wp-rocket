@@ -1,7 +1,4 @@
----
-title: FAQ
-description:
----
+## FAQ
 
 ### Is it safe to release Action Scheduler in my plugin? Won't its functions conflict with another copy of the library?
 

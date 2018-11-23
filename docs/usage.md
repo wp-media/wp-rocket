@@ -1,7 +1,4 @@
----
-title: Usage
-description: Include Action Scheduler in your theme or plugin. Schedule an action. Done.
----
+# Usage
 
 There are two ways to install Action Scheduler:
 

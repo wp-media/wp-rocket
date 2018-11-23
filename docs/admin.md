@@ -1,7 +1,4 @@
----
-title: Scheduled Actions Administration Screen
-description:
----
+# Scheduled Actions Administration Screen
 
 Action Scheduler has a built in administration screen for monitoring, debugging and manually triggering scheduled actions.
 
