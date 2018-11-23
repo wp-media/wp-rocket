@@ -2,3 +2,8 @@
 ---
 
 @import "{{ site.theme }}";
+
+footer {
+	margin-top: 6em;
+	border-top: 1px dashed #b5e853;
+}
