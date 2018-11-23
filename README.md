@@ -6,7 +6,7 @@ Action Scheduler works by triggering an action hook to run at some time in the f
 
 Think of it like an extension to `do_action()` with the ability to delay and repeat an action hook.
 
-### Battle-tested Background Processing
+## Battle-Tested Background Processing
 
 Every month, Action Scheduler processes millions of payments for [Subscriptions](https://woocommerce.com/products/woocommerce-subscriptions/), webhooks for [WooCommerce](https://wordpress.org/plugins/woocommerce/), as well as emails and other events for a range of other plugins.
 
@@ -14,7 +14,9 @@ It's been seen on live sites processing queues in excess of 50,000 jobs and doin
 
 This is all on infrastructure and WordPress sites outside the control of the plugin author.
 
-### Learn More
+If your plugin needs background processing, especially of large sets of tasks, Action Scheduler can help.
+
+## Learn More
 
 To learn more about how to Action Scheduler works, and how to use it in your plugin, check out the docs on [ActionScheduler.org](https://actionscheduler.org).
 
@@ -25,7 +27,7 @@ There you will find:
 * [API Reference](https://actionscheduler.org/api/): complete reference guide for all API functions
 * [Administration](https://actionscheduler.org/admin/): guide to managing scheduled actions via the administration screen
 
-### Credits
+## Credits
 
 Action Scheduler is developed and maintained by [Prospress](http://prospress.com/) in collaboration with [Flightless](https://flightless.us/).
 
