@@ -1,4 +1,9 @@
-{% include menu.md %}
+---
+description: A scalable, traceable job queue for background processing large queues of tasks in WordPress. Designed for distribution in plugins and themes - no server access required.
+---
+# Action Scheduler - Job Queue for WordPress
+
+A scalable, traceable job queue for background processing large queues of tasks in WordPress. Specifically designed for distribution in plugins and themes - no server access required.
 
 ## Overview
 
@@ -41,5 +46,3 @@ Actions can also be grouped together using a custom taxonomy named `action-group
 This extension is developed and maintained as a collaboration between the teams at [Prospress](http://prospress.com/) and [Flightless](https://flightless.us/).
 
 Collaboration is cool. We'd love to work with you to improve Action Scheduler. Pull Requests welcome.
-
-{% include footer.md %}
