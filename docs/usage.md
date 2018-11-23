@@ -10,31 +10,29 @@ Using Action Scheduler requires:
 
 To schedule an action, call the [API function](/api/) for the desired schedule type passing in the required parameters.
 
-The example code below shows everything needed to schedule a function to run at midnight, if it's not already schedule, to log some data:
+The example code below shows everything needed to schedule a function to run at midnight, if it's not already scheduled:
 
 ```php
-/**
- * The callback to run when the 'eg_midnight_log' scheduled action is run.
- */
-function eg_log_action_data() {
-	error_log( 'It is just after midnight on ' . date( 'Y-m-d' ) );
-}
+require_once( plugin_dir_path( __FILE__ ) . '/libraries/action-scheduler/action-scheduler.php' );
 
 /**
- * Attach the callback to the hook 'eg_midnight_log'
- */
-add_action( 'eg_midnight_log', 'eg_log_action_data' );
-
-/**
- * Schedule an action with the hook 'eg_midnight_log' to run at middnight each day
+ * Schedule an action with the hook 'eg_midnight_log' to run at midnight each day
  * so that our callback is run then.
  */
-function eg_schedule_midnight_action() {
+function eg_log_action_data() {
 	if ( false === as_next_scheduled_action( 'eg_midnight_log' ) ) {
 		as_schedule_recurring_action( strtotime( 'midnight tonight' ), DAY_IN_SECONDS, 'eg_midnight_log' );
 	}
 }
+add_action( 'init', 'eg_log_action_data' );
 
+/**
+ * A callback to run when the 'eg_midnight_log' scheduled action is run.
+ */
+function eg_log_action_data() {
+	error_log( 'It is just after midnight on ' . date( 'Y-m-d' ) );
+}
+add_action( 'eg_midnight_log', 'eg_log_action_data' );
 ```
 
 For more details on all available API functions, and the data they accept, refer to the [API Reference](/api/).
