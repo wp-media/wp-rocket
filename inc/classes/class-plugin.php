@@ -100,6 +100,7 @@ class Plugin {
 			];
 		} elseif ( \rocket_valid_key() ) {
 			$subscribers = [
+				new Subscriber\Optimization\Buffer_Subscriber(),
 				new Subscriber\Optimization\IE_Conditionals_Subscriber(),
 				new Subscriber\Optimization\Minify_HTML_Subscriber( $this->options ),
 				new Subscriber\Optimization\Combine_Google_Fonts_Subscriber( $this->options ),
