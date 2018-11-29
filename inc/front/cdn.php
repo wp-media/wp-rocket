@@ -326,7 +326,7 @@ function rocket_cdn_custom_files( $html ) {
 
 	if ( in_array( 'all', $zones, true ) ) {
 		$cdn_zones[] = 'all';
-		$file_types  = array_merge( $file_types, $other_types );
+		$file_types  = array_merge( $file_types, $image_types, $other_types );
 	}
 
 	$cnames = get_rocket_cdn_cnames( $cdn_zones );
