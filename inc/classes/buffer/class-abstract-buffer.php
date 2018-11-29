@@ -191,6 +191,6 @@ abstract class Abstract_Buffer {
 	 * @return bool
 	 */
 	protected function is_html( $buffer ) {
-		return preg_match( '/(<\/html>)/i', $buffer );
+		return preg_match( '/<\/html>/i', $buffer );
 	}
 }
