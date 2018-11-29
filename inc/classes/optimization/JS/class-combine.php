@@ -439,6 +439,7 @@ class Combine extends Abstract_JS_Optimization {
 			'peepsotimedata',
 			'wphc_data',
 			'hc_rand_id',
+			'RBL_ADD',
 			'AfsAnalyticsObject',
 		];
 
