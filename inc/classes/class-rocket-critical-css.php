@@ -250,7 +250,13 @@ class Rocket_Critical_CSS {
 		 * @param array $excluded_post_types An array of post types names.
 		 * @return array
 		 */
-		$excluded_post_types = apply_filters( 'rocket_cpcss_excluded_post_types', array() );
+		$excluded_post_types = apply_filters(
+			'rocket_cpcss_excluded_post_types',
+			[
+				'elementor_library',
+				'oceanwp_library',
+			]
+		);
 
 		$post_types = array_diff( $post_types, $excluded_post_types );
 		$post_types = esc_sql( $post_types );
