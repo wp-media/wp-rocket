@@ -222,7 +222,7 @@ class Tests {
 
 		// Don't process these pages.
 		if ( $this->has_test( 'uri' ) && ! $this->can_process_uri() ) {
-			$this->set_error( 'Regected URI not processed.' );
+			$this->set_error( 'Rejected URI not processed.' );
 			return false;
 		}
 
@@ -820,7 +820,7 @@ class Tests {
 			'cache_query_strings'       => [],
 			'cache_reject_cookies'      => '',
 			'cache_reject_ua'           => '',
-			'cache_mandatory_cookies'   => [],
+			'cache_mandatory_cookies'   => '',
 			'cache_dynamic_cookies'     => [],
 			'url_no_dots'               => 0,
 		];

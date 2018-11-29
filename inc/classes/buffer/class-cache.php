@@ -119,7 +119,7 @@ class Cache extends Abstract_Buffer {
 		 * No cache file yet: launch caching process.
 		 */
 		$this->log(
-			'Creating new cache file.',
+			'Start buffer.',
 			[
 				'path' => $cache_filepath,
 			]
