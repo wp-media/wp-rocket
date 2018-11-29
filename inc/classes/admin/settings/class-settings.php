@@ -351,7 +351,7 @@ class Settings {
 						return $file;
 					}
 
-					return sanitize_text_field( \rocket_remove_url_protocol( $file ) );
+					return sanitize_text_field( \rocket_remove_url_protocol( strtok( $file, '?' ) ) );
 				},
 				$input['exclude_js']
 			);
