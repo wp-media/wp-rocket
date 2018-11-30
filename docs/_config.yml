@@ -4,3 +4,4 @@ theme: jekyll-theme-hacker
 permalink: /:slug/
 plugins:
   - jekyll-seo-tag
+  - jekyll-sitemap
