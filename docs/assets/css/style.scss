@@ -3,6 +3,19 @@
 
 @import "{{ site.theme }}";
 
+a {
+	text-shadow: none;
+}
+
+header h1 a {
+	color: #b5e853;
+	text-decoration: none;
+}
+
+header h1 a:hover {
+	text-decoration: underline;
+}
+
 .container {
 	max-width: 700px;
 }
