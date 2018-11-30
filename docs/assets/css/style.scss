@@ -5,15 +5,15 @@
 
 a {
 	text-shadow: none;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
 }
 
 header h1 a {
 	color: #b5e853;
-	text-decoration: none;
-}
-
-header h1 a:hover {
-	text-decoration: underline;
 }
 
 .container {
