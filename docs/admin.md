@@ -1,3 +1,6 @@
+---
+description: Learn how to administer background jobs with the Action Scheduler job queue for WordPress.
+---
 # Scheduled Actions Administration Screen
 
 Action Scheduler has a built in administration screen for monitoring, debugging and manually triggering scheduled actions.

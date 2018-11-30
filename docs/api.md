@@ -1,3 +1,6 @@
+---
+description: Reference guide for background processing functions provided by the Action Scheduler job queue for WordPress.
+---
 # API Reference
 
 Action Scheduler provides a range of functions for scheduling hooks to run at some time in the future on one or more occassions.

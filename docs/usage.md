@@ -1,3 +1,6 @@
+---
+description: Learn how to use the Action Scheduler background processing job queue for WordPress in your WordPress plugin.
+---
 # Usage
 
 Using Action Scheduler requires:

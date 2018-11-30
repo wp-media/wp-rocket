@@ -1,3 +1,6 @@
+---
+description: Learn how to do WordPress background processing at scale with WP CLI and the Action Scheduler job queue.
+---
 # WP CLI
 
 Action Scheduler has custom [WP CLI](http://wp-cli.org) commands available for processing actions.
