@@ -1,4 +1,4 @@
-# Action Scheduler - WordPress Job Queue [![Build Status](https://travis-ci.org/Prospress/action-scheduler.png?branch=master)](https://travis-ci.org/Prospress/action-scheduler) [![codecov](https://codecov.io/gh/Prospress/action-scheduler/branch/master/graph/badge.svg)](https://codecov.io/gh/Prospress/action-scheduler)
+# Action Scheduler - Job Queue for WordPress [![Build Status](https://travis-ci.org/Prospress/action-scheduler.png?branch=master)](https://travis-ci.org/Prospress/action-scheduler) [![codecov](https://codecov.io/gh/Prospress/action-scheduler/branch/master/graph/badge.svg)](https://codecov.io/gh/Prospress/action-scheduler)
 
 Action Scheduler is a scalable, traceable job queue for background processing large sets of actions in WordPress. It's specially designed to be distributed in WordPress plugins.
 
