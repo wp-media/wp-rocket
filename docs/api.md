@@ -33,7 +33,7 @@ Schedule an action to run one time.
 ### Usage
 
 ```php
-<?php as_schedule_single_action( $timestamp, $hook, $args, $group ); ?>
+as_schedule_single_action( $timestamp, $hook, $args, $group )
 ````
 
 ### Parameters
@@ -57,7 +57,7 @@ Schedule an action to run repeatedly with a specified interval in seconds.
 ### Usage
 
 ```php
-<?php as_schedule_recurring_action( $timestamp, $interval_in_seconds, $hook, $args, $group ); ?>
+as_schedule_recurring_action( $timestamp, $interval_in_seconds, $hook, $args, $group )
 ````
 
 ### Parameters
@@ -82,7 +82,7 @@ Schedule an action that recurs on a cron-like schedule.
 ### Usage
 
 ```php
-<?php as_schedule_cron_action( $timestamp, $schedule, $hook, $args, $group ); ?>
+as_schedule_cron_action( $timestamp, $schedule, $hook, $args, $group )
 ````
 
 ### Parameters
@@ -107,7 +107,7 @@ Cancel the next occurrence of a job.
 ### Usage
 
 ```php
-<?php as_unschedule_action( $hook, $args, $group ); ?>
+as_unschedule_action( $hook, $args, $group )
 ````
 
 ### Parameters
@@ -130,7 +130,7 @@ Returns the next timestamp for a scheduled action.
 ### Usage
 
 ```php
-<?php as_next_scheduled_action( $hook, $args, $group ); ?>
+as_next_scheduled_action( $hook, $args, $group )
 ````
 
 ### Parameters
@@ -153,7 +153,7 @@ Find scheduled actions.
 ### Usage
 
 ```php
-<?php as_get_scheduled_actions( $args, $return_format ); ?>
+as_get_scheduled_actions( $args, $return_format )
 ````
 
 ### Parameters
