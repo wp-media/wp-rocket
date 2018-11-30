@@ -26,7 +26,7 @@ There you will find:
 * [WP CLI guide](https://actionscheduler.org/wp-cli/): instructions on running Action Scheduler at scale via WP CLI
 * [API Reference](https://actionscheduler.org/api/): complete reference guide for all API functions
 * [Administration Guide](https://actionscheduler.org/admin/): guide to managing scheduled actions via the administration screen
-* [Performance Tuning Guide](https://actionscheduler.org/perf/): instructions for running Action Scheduler at scale via the default WP Cron queue runner
+* [Guide to Background Processing at Scale](https://actionscheduler.org/perf/): instructions for running Action Scheduler at scale via the default WP Cron queue runner
 
 ## Credits
 

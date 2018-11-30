@@ -2,7 +2,7 @@
 title: WordPress Background Processing at Scale - Action Scheduler Job Queue
 description: Learn how to do WordPress background processing at scale by tuning the Action Scheduler job queue's default WP Cron runner.
 ---
-# Performance Tuning
+# Background Processing at Scale
 
 Action Scheduler's default processing is designed to work reliably across all different hosting environments. In order to achieve that, the default processing thresholds are very conservative.
 
