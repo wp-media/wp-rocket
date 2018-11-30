@@ -1886,11 +1886,11 @@ class Page implements Subscriber_Interface {
 				'sucuri_credentials' => [
 					'type'  => 'fields_container',
 					'title' => __( 'Sucuri credentials', 'rocket' ),
+					'page'  => 'sucuri',
 					'help'  => [
 						'id'  => $sucuri_beacon['id'],
 						'url' => $sucuri_beacon['url'],
 					],
-					'page'  => 'sucuri',
 				],
 			]
 		);
@@ -1898,7 +1898,7 @@ class Page implements Subscriber_Interface {
 		$this->settings->add_settings_fields(
 			[
 				'sucury_waf_api_key' => [
-					'label'       => _x( 'Firewall API key (for plugin):', 'Sucuri', 'rocket' ),
+					'label'       => _x( 'Firewall API key (for plugin), must be in format <code>{32 characters}/{32 characters}</code>:', 'Sucuri', 'rocket' ),
 					'description' => sprintf( '<a href="%1$s" target="_blank">%2$s</a>', 'https://kb.sucuri.net/firewall/Performance/clearing-cache', _x( 'Find your API key', 'Sucuri', 'rocket' ) ),
 					'default'     => '',
 					'section'     => 'sucuri_credentials',

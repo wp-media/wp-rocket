@@ -452,6 +452,10 @@ class Settings {
 
 		if ( ! Sucuri_Subscriber::is_api_key_valid( $input['sucury_waf_api_key'] ) ) {
 			$input['sucury_waf_api_key'] = '';
+
+			if ( empty( $input['ignore'] ) ) {
+				add_settings_error( 'general', 'sucuri_waf_api_key_invalid', __( 'The API key for the Sucuri firewall must be in format <code>{32 characters}/{32 characters}</code>.', 'rocket' ), 'error' );
+			}
 		}
 
 		// Options : Heartbeat.
