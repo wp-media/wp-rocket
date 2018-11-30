@@ -1,6 +1,8 @@
 <?php
 namespace WP_Rocket\Admin\Settings;
 
+use \WP_Rocket\Subscriber\Third_Party\Plugins\Security\Sucuri_Subscriber;
+
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
@@ -437,7 +439,7 @@ class Settings {
 			$input['cloudflare_api_key'] = WP_ROCKET_CF_API_KEY;
 		}
 
-		// Options: Sucuri cache.
+		// Options: Sucuri cache. And yeah, there's a typo, but now it's too late to fix ^^'.
 		$input['sucury_waf_cache_sync'] = ! empty( $input['sucury_waf_cache_sync'] ) ? 1 : 0;
 
 		if ( defined( 'WP_ROCKET_SUCURI_API_KEY' ) ) {
@@ -448,7 +450,7 @@ class Settings {
 
 		$input['sucury_waf_api_key'] = trim( $input['sucury_waf_api_key'] );
 
-		if ( $input['sucury_waf_api_key'] && ! preg_match( '@^[a-z0-9]{32}/[a-z0-9]{32}$@', $input['sucury_waf_api_key'] ) ) {
+		if ( ! Sucuri_Subscriber::is_api_key_valid( $input['sucury_waf_api_key'] ) ) {
 			$input['sucury_waf_api_key'] = '';
 		}
 
