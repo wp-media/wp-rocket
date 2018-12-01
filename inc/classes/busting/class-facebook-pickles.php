@@ -340,7 +340,9 @@ class Facebook_Pickles {
 			'both'   => [],
 		];
 
-		foreach ( $matches as list( $tag, $script ) ) {
+		foreach ( $matches as $match ) {
+			list( $tag, $script ) = $match;
+
 			if ( ! trim( $script ) ) {
 				continue;
 			}
