@@ -13,9 +13,9 @@ It just so happens, this functionality also creates a robust job queue for backg
 
 Every month, Action Scheduler processes millions of payments for [Subscriptions](https://woocommerce.com/products/woocommerce-subscriptions/), webhooks for [WooCommerce](https://wordpress.org/plugins/woocommerce/), as well as emails and other events for a range of other plugins.
 
-It's been seen on live sites processing queues in excess of 50,000 jobs and doing resource intensive operations, like processing payments and creating orders, at a sustained rate of over 10,000 / hour without negatively impacting normal site operations.
+It's been seen on live sites processing queues in excess of 50,000 jobs and doing resource intensive operations, like processing payments and creating orders, in 10 concurrent queues at a rate of over 10,000 actions / hour without negatively impacting normal site operations.
 
-This is all on infrastructure and WordPress sites outside the control of the plugin author.
+This is all possible on infrastructure and WordPress sites outside the control of the plugin author.
 
 Action Scheduler is specifically designed for distribution in WordPress plugins (and themes) - no server access required. If your plugin needs background processing, especially of large sets of tasks, Action Scheduler can help.
 
