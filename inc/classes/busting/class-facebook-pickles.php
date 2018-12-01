@@ -408,7 +408,7 @@ class Facebook_Pickles {
 	 * @return array|bool {
 	 *     An array of values. False on failure.
 	 *
-	 *     @type int    $app_id  The app ID.
+	 *     @type string $app_id  The app ID.
 	 *     @type string $version The file version.
 	 * }
 	 */
@@ -424,7 +424,7 @@ class Facebook_Pickles {
 				return false;
 			}
 
-			$variables['app_id'] = (int) $matches['app_id'];
+			$variables['app_id'] = $matches['app_id'];
 		}
 
 		if ( isset( $main_file_contents ) ) {
@@ -1038,7 +1038,7 @@ class Facebook_Pickles {
 	 * @param  array $variables {
 	 *     An array of variable values.
 	 *
-	 *     @type int    $app_id  The app ID.
+	 *     @type string $app_id  The app ID.
 	 *     @type string $version The file version.
 	 * }
 	 * @return array|bool An array of file paths on success. False on failure.
