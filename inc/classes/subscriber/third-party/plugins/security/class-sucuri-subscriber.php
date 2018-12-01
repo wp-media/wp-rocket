@@ -173,6 +173,24 @@ class Sucuri_Subscriber implements Subscriber_Interface {
 	/** ----------------------------------------------------------------------------------------- */
 
 	/**
+	 * Tell if a API key is well formatted.
+	 *
+	 * @since  3.2.3
+	 * @access public
+	 * @author Grégory Viguier
+	 *
+	 * @param  string $api_key An API kay.
+	 * @return array|bool      An array with the keys 'k' and 's' (required by the API) if valid. False otherwise.
+	 */
+	public static function is_api_key_valid( $api_key ) {
+		if ( '' !== $api_key && preg_match( '@^(?<k>[a-z0-9]{32})/(?<s>[a-z0-9]{32})$@', $api_key, $matches ) ) {
+			return $matches;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Clear Sucuri firewall cache.
 	 *
 	 * @since  3.2
@@ -224,7 +242,9 @@ class Sucuri_Subscriber implements Subscriber_Interface {
 			return new \WP_Error( 'no_sucuri_api_key', __( 'Sucuri firewall API key was not found.', 'rocket' ) );
 		}
 
-		if ( ! preg_match( '@^(?<k>[a-z0-9]{32})/(?<s>[a-z0-9]{32})$@', $api_key, $matches ) ) {
+		$matches = self::is_api_key_valid( $api_key );
+
+		if ( ! $matches ) {
 			Logger::error( 'API key is invalid.', [
 				'sucuri firewall cache',
 			] );
