@@ -153,7 +153,6 @@ function rocket_first_install() {
 				'cache_ssl'                   => rocket_is_ssl_website() ? 1 : 0,
 				'emoji'                       => 1,
 				'embeds'                      => 1,
-				'invalidate_domain_cache'     => 1,
 				'cache_reject_uri'            => [],
 				'cache_reject_cookies'        => [],
 				'cache_reject_ua'             => [],
@@ -218,6 +217,7 @@ function rocket_first_install() {
 				'facebook_pixel_cache'        => 0,
 				'sucury_waf_cache_sync'       => 0,
 				'sucury_waf_api_key'          => '',
+				'invalidate_domain_cache'     => 1,
 			)
 		)
 	);
