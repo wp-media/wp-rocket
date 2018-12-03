@@ -157,6 +157,7 @@ add_filter( 'the_content', 'rocket_lazyload_images', PHP_INT_MAX );
 add_filter( 'widget_text', 'rocket_lazyload_images', PHP_INT_MAX );
 add_filter( 'get_image_tag', 'rocket_lazyload_images', PHP_INT_MAX );
 add_filter( 'post_thumbnail_html', 'rocket_lazyload_images', PHP_INT_MAX );
+add_filter( 'genesis_get_image', 'rocket_lazyload_images', PHP_INT_MAX );
 
 /**
  * Used to check if we have to LazyLoad this or not
