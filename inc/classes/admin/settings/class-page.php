@@ -518,6 +518,12 @@ class Page implements Subscriber_Interface {
 					],
 					'page'        => 'cache',
 				],
+				'domain_cache_invalidation_section'   => [
+					'title'       => __( 'Domain Cache Invalidation', 'rocket' ),
+					'type'        => 'fields_container',
+					'description' => __( 'Delegate deletion of the domain cache directory to a background process by invalidating the old cache.<br>Can be useful when running a huge website as the invalidation process is almost instant, and direct deletion can take a long time.', 'rocket' ),
+					'page'        => 'cache',
+				],
 			]
 		);
 
@@ -586,6 +592,14 @@ class Page implements Subscriber_Interface {
 						'HOUR_IN_SECONDS'   => __( 'Hours', 'rocket' ),
 						'DAY_IN_SECONDS'    => __( 'Days', 'rocket' ),
 					],
+				],
+				'invalidate_domain_cache' => [
+					'type'              => 'checkbox',
+					'label'             => __( 'Enable domain cache invalidation', 'rocket' ),
+					'section'           => 'domain_cache_invalidation_section',
+					'page'              => 'cache',
+					'default'           => 0,
+					'sanitize_callback' => 'sanitize_checkbox',
 				],
 			]
 		);

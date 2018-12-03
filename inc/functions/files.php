@@ -745,7 +745,7 @@ function rocket_clean_domain( $lang = '' ) {
 		*/
 		do_action( 'before_rocket_clean_domain', $root, $lang, $url );
 
-		$invalidate = 1; //get_rocket_option( 'invalidate_domain_cache' );
+		$invalidate = get_rocket_option( 'invalidate_domain_cache' );
 
 		// Delete cache domain files.
 		$dirs = glob( $root . '*', GLOB_NOSORT );
