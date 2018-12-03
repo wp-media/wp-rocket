@@ -117,7 +117,7 @@ function rocket_remove_url_protocol( $url, $no_dots = false ) {
  * @return string $url The URL with protocol
  */
 function rocket_add_url_protocol( $url ) {
-  
+
 	if ( strpos( $url, 'http://' ) === false && strpos( $url, 'https://' ) === false ) {
 		if ( substr( $url, 0, 2 ) !== '//' ) {
 			$url = '//' . $url;
@@ -201,11 +201,12 @@ function get_rocket_parse_url( $url ) {
 		$url
 	);
 
-	$url    = wp_parse_url( $encoded_url );
-	$host   = isset( $url['host'] ) ? strtolower( urldecode( $url['host'] ) ) : '';
-	$path   = isset( $url['path'] ) ? urldecode( $url['path'] ) : '';
-	$scheme = isset( $url['scheme'] ) ? urldecode( $url['scheme'] ) : '';
-	$query  = isset( $url['query'] ) ? urldecode( $url['query'] ) : '';
+	$url      = wp_parse_url( $encoded_url );
+	$host     = isset( $url['host'] ) ? strtolower( urldecode( $url['host'] ) ) : '';
+	$path     = isset( $url['path'] ) ? urldecode( $url['path'] ) : '';
+	$scheme   = isset( $url['scheme'] ) ? urldecode( $url['scheme'] ) : '';
+	$query    = isset( $url['query'] ) ? urldecode( $url['query'] ) : '';
+	$fragment = isset( $url['fragment'] ) ? urldecode( $url['fragment'] ) : '';
 
 	/**
 	 * Filter components of an URL
@@ -214,12 +215,16 @@ function get_rocket_parse_url( $url ) {
 	 *
 	 * @param array Components of an URL
 	*/
-	return apply_filters( 'rocket_parse_url', array(
-		'host'   => $host,
-		'path'   => $path,
-		'scheme' => $scheme,
-		'query'  => $query,
-	) );
+	return apply_filters(
+		'rocket_parse_url',
+		[
+			'host'     => $host,
+			'path'     => $path,
+			'scheme'   => $scheme,
+			'query'    => $query,
+			'fragment' => $fragment,
+		]
+	);
 }
 
 
@@ -319,7 +324,7 @@ function rocket_url_to_path( $url, $hosts = '' ) {
 
 	// relative path.
 	if ( null === $url_host ) {
-		$subdir_levels = substr_count( preg_replace( '/https?:\/\//','', site_url() ), '/' );
+		$subdir_levels = substr_count( preg_replace( '/https?:\/\//', '', site_url() ), '/' );
 		$url           = site_url() . str_repeat( '/..', $subdir_levels ) . $url;
 	}
 
