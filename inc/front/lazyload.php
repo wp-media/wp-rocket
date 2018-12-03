@@ -436,7 +436,7 @@ function rocket_lazyload_iframes( $html ) {
 				continue;
 			}
 
-			$query = wp_parse_url( $iframe[1], PHP_URL_QUERY );
+			$query = wp_parse_url( htmlspecialchars_decode( $iframe[1] ), PHP_URL_QUERY );
 
 			/**
 			 * Filter the LazyLoad HTML output on Youtube iframes
