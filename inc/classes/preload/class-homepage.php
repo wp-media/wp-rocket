@@ -21,7 +21,7 @@ class Homepage extends Abstract_Preload {
 		foreach ( $home_urls as $home_url ) {
 			$urls = $this->get_urls( $home_url );
 
-			if ( ! $urls || empty( $urls ) ) {
+			if ( ! $urls ) {
 				continue;
 			}
 
@@ -47,7 +47,7 @@ class Homepage extends Abstract_Preload {
 	 * @author Remy Perona
 	 *
 	 * @param string $url URL to get content and links from.
-	 * @return array
+	 * @return bool|array
 	 */
 	private function get_urls( $url ) {
 		// This filter is documented in inc/classes/preload/class-partial-process.php.
