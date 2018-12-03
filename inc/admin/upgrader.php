@@ -153,6 +153,7 @@ function rocket_first_install() {
 				'cache_ssl'                   => rocket_is_ssl_website() ? 1 : 0,
 				'emoji'                       => 1,
 				'embeds'                      => 1,
+				'invalidate_domain_cache'     => 1,
 				'cache_reject_uri'            => [],
 				'cache_reject_cookies'        => [],
 				'cache_reject_ua'             => [],
@@ -381,6 +382,13 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 
 	if ( version_compare( $actual_version, '3.2.2', '<' ) ) {
 		flush_rocket_htaccess();
+	}
+
+	if( version_compare( $actual_version, '3.2.3', '< ') ) {
+		$options = get_option( WP_ROCKET_SLUG );
+		$options['invalidate_domain_cache'] = 0;
+
+		update_option( WP_ROCKET_SLUG, $options );
 	}
 }
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );
