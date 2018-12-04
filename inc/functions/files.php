@@ -953,7 +953,20 @@ function rocket_clean_cache_dir() {
 function rocket_invalidate_dir( $dir ) {
 	$dir = untrailingslashit( $dir );
 
-	do_action( 'before_rocket_invalidate_dir', $dir );
+	$parentDir = dirname( $dir );
+	// Format of new directory name: invalid_UNIQIDHASH_dirname
+	$newName = $parentDir . '/' . 'invalid_' . uniqid() . '_' . basename( $dir );
+
+	/**
+	 * Fires before the directory is invalidated
+	 * 
+	 * @since 3.2.3
+	 * @author dotSILENT
+	 * 
+	 * @param string $dir File/Directory to invalidate
+	 * @param string $newName The new name (full path) after invalidation
+	 */
+	do_action( 'before_rocket_invalidate_dir', $dir, $newName );
 
 	if( ! rocket_direct_filesystem()->is_dir( $dir ) ) {
 		// just delete it since it's a single file
@@ -961,18 +974,21 @@ function rocket_invalidate_dir( $dir ) {
 		return true;
 	}
 
-	$parentDir = dirname( $dir );
-	// Format of new directory name: invalid_UNIQIDHASH_dirname
-	$newName = 'invalid_' . uniqid() . '_' . basename( $dir );
-
-	if( ! rename($dir, $parentDir . '/' . $newName) ) {
+	if( ! rename($dir, $newName) ) {
 		// Failed to rename, fall back to default behaviour
 		return false;
 	}
 
-	// TODO queue the deletion of this invalidated directory
-
-	do_action( 'after_rocket_invalidate_dir', $dir );
+	/**
+	 * Fires after the directory was invalidated
+	 * 
+	 * @since 3.2.3
+	 * @author dotSILENT
+	 * 
+	 * @param string $dir File/Directory that was invalidated
+	 * @param string $newName The new invalidated name (full path) of the directory
+	 */
+	do_action( 'after_rocket_invalidate_dir', $dir, $newName );
 	return true;
 }
 

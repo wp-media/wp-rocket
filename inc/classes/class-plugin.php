@@ -120,6 +120,7 @@ class Plugin {
 		$subscribers[] = new Subscriber\Preload\Preload_Subscriber( new Preload\Homepage( $preload_process ), $this->options );
 		$subscribers[] = new Subscriber\Preload\Sitemap_Preload_Subscriber( new Preload\Sitemap( $preload_process ), $this->options );
 		$subscribers[] = new Subscriber\Preload\Partial_Preload_Subscriber( new Preload\Partial_Process(), $this->options );
+		$subscribers[] = new Subscriber\Domain_Cache_Deletion_Subscriber( new \Domain_Cache_Deletion_Process() );
 
 		foreach ( $subscribers as $subscriber ) {
 			$event_manager->add_subscriber( $subscriber );
