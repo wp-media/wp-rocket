@@ -157,6 +157,7 @@ add_filter( 'the_content', 'rocket_lazyload_images', PHP_INT_MAX );
 add_filter( 'widget_text', 'rocket_lazyload_images', PHP_INT_MAX );
 add_filter( 'get_image_tag', 'rocket_lazyload_images', PHP_INT_MAX );
 add_filter( 'post_thumbnail_html', 'rocket_lazyload_images', PHP_INT_MAX );
+add_filter( 'genesis_get_image', 'rocket_lazyload_images', PHP_INT_MAX );
 
 /**
  * Used to check if we have to LazyLoad this or not
@@ -436,7 +437,7 @@ function rocket_lazyload_iframes( $html ) {
 				continue;
 			}
 
-			$query = wp_parse_url( $iframe[1], PHP_URL_QUERY );
+			$query = wp_parse_url( htmlspecialchars_decode( $iframe[1] ), PHP_URL_QUERY );
 
 			/**
 			 * Filter the LazyLoad HTML output on Youtube iframes

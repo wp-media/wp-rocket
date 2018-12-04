@@ -27,7 +27,7 @@ $cnames_zone = get_rocket_option( 'cdn_zone' );
 				?>
 					<div class="wpr-multiple">
 						<div class="wpr-text">
-							<input type="text" name="wp_rocket_settings[cdn_cnames][<?php echo esc_attr( $key ); ?>]" value="<?php echo esc_attr( $url ); ?>" />
+							<input type="text" name="wp_rocket_settings[cdn_cnames][<?php echo esc_attr( $key ); ?>]" value="<?php echo esc_attr( $url ); ?>" placeholder="cdn.example.com" />
 						</div>
 						<div class="wpr-field-betweenText"><?php _e( 'reserved for', 'rocket' ); ?></div>
 						<div class="wpr-select">
@@ -58,7 +58,7 @@ $cnames_zone = get_rocket_option( 'cdn_zone' );
 		else : ?>
 			<div class="wpr-multiple wpr-multiple-default">
 				<div class="wpr-text">
-					<input type="text" name="wp_rocket_settings[cdn_cnames][]" />
+					<input type="text" name="wp_rocket_settings[cdn_cnames][]" placeholder="cdn.example.com" />
 				</div>
 				<div class="wpr-field-betweenText"><?php _e( 'reserved for', 'rocket' ); ?></div>
 				<div class="wpr-select">
@@ -88,7 +88,7 @@ $cnames_zone = get_rocket_option( 'cdn_zone' );
 		<div id="wpr-cname-model" class="wpr-isHidden">
 			<div class="wpr-multiple">
 				<div class="wpr-text">
-					<input type="text" name="wp_rocket_settings[cdn_cnames][]" />
+					<input type="text" name="wp_rocket_settings[cdn_cnames][]" placeholder="cdn.example.com" />
 				</div>
 				<div class="wpr-field-betweenText"><?php _e( 'reserved for', 'rocket' ); ?></div>
 				<div class="wpr-select">

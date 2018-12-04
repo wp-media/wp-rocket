@@ -157,9 +157,9 @@ class Facebook_SDK extends Abstract_Busting {
 			return false;
 		}
 
-		foreach ( $matches as list( $tag, $script ) ) {
-			if ( $script && preg_match( '@//connect\.facebook\.net/[a-zA-Z_-]+/sdk\.js@i', $script ) ) {
-				return $tag;
+		foreach ( $matches as $match ) {
+			if ( trim( $match[1] ) && preg_match( '@//connect\.facebook\.net/[a-zA-Z_-]+/sdk\.js@i', $match[1] ) ) {
+				return $match[0];
 			}
 		}
 
