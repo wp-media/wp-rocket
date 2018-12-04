@@ -440,6 +440,7 @@ class Combine extends Abstract_JS_Optimization {
 			'wphc_data',
 			'hc_rand_id',
 			'AfsAnalyticsObject',
+			'_thriveCurrentPost',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
