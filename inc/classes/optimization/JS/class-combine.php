@@ -521,6 +521,7 @@ class Combine extends Abstract_JS_Optimization {
 			'dsms0mj1bbhn4.cloudfront.net',
 			'nutrifox.com',
 			'code.tidio.co',
+			'widget.reviewability.com',
 		];
 
 		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );
