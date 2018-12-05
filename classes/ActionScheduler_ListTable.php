@@ -222,9 +222,16 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 	 */
 	protected function get_recurrence( $action ) {
 		$recurrence = $action->get_schedule();
-		if ( method_exists( $recurrence, 'interval_in_seconds' ) ) {
-			return sprintf( __( 'Every %s', 'action-scheduler' ), self::human_interval( $recurrence->interval_in_seconds() ) );
+		if ( $recurrence->is_recurring() ) {
+			if ( method_exists( $recurrence, 'interval_in_seconds' ) ) {
+				return sprintf( __( 'Every %s', 'action-scheduler' ), self::human_interval( $recurrence->interval_in_seconds() ) );
+			}
+
+			if ( method_exists( $recurrence, 'get_recurrence' ) ) {
+				return sprintf( __( 'Cron %s', 'action-scheduler' ), $recurrence->get_recurrence() );
+			}
 		}
+
 		return __( 'Non-repeating', 'action-scheduler' );
 	}
 
