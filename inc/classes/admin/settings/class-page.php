@@ -1766,14 +1766,17 @@ class Page implements Subscriber_Interface {
 			]
 		);
 
+		$beacon_cf_credentials = $this->beacon->get_suggest( 'cloudflare_credentials' );
+		$beacon_cf_settings    = $this->beacon->get_suggest( 'cloudflare_settings' );
+
 		$this->settings->add_settings_sections(
 			[
 				'cloudflare_credentials' => [
 					'type'  => 'fields_container',
 					'title' => __( 'Cloudflare credentials', 'rocket' ),
 					'help'  => [
-						'id'  => $this->beacon->get_suggest( 'cloudflare_credentials' ),
-						'url' => '',
+						'id'  => $beacon_cf_credentials['id'],
+						'url' => $beacon_cf_credentials['url'],
 					],
 					'page'  => 'cloudflare',
 				],
@@ -1781,8 +1784,8 @@ class Page implements Subscriber_Interface {
 					'type'  => 'fields_container',
 					'title' => __( 'Cloudflare settings', 'rocket' ),
 					'help'  => [
-						'id'  => $this->beacon->get_suggest( 'cloudflare_settings' ),
-						'url' => '',
+						'id'  => $beacon_cf_settings['id'],
+						'url' => $beacon_cf_settings['url'],
 					],
 					'page'  => 'cloudflare',
 				],
