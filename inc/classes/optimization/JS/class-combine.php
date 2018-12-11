@@ -401,6 +401,7 @@ class Combine extends Abstract_JS_Optimization {
 			'ANS_customer_id',
 			'tdBlock',
 			'tdLocalCache',
+			'wpRestNonce',
 			'"url":',
 			'lazyLoadOptions',
 			'adthrive',
@@ -425,10 +426,24 @@ class Combine extends Abstract_JS_Optimization {
 			'bs_deferred_loading_',
 			'theChampRedirectionUrl',
 			'theChampFBCommentUrl',
+			'theChampRegRedirectionUrl',
 			'ESSB_CACHE_URL',
 			'oneall_social_login_providers_',
 			'betterads_screen_width',
 			'woocommerce_wishlist_add_to_wishlist_url',
+			'arf_conditional_logic',
+			'heateorSsHorSharingShortUrl',
+			'TL_Const',
+			'bimber_front_microshare',
+			'setAttribute("id"',
+			'TribeEventsPro',
+			'peepsotimedata',
+			'wphc_data',
+			'hc_rand_id',
+			'RBL_ADD',
+			'AfsAnalyticsObject',
+			'_thriveCurrentPost',
+			'esc_login_url',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
@@ -504,6 +519,11 @@ class Combine extends Abstract_JS_Optimization {
 			'f.convertkit.com',
 			'recaptcha/api.js',
 			'mailmunch.co',
+			'apps.shareaholic.com',
+			'dsms0mj1bbhn4.cloudfront.net',
+			'nutrifox.com',
+			'code.tidio.co',
+			'widget.reviewability.com',
 		];
 
 		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );
@@ -548,6 +568,14 @@ class Combine extends Abstract_JS_Optimization {
 			'td_live_css_uid',
 			'wpvl_paramReplace',
 			'tdAjaxCount',
+			'mec_skin_',
+			'_wca',
+			'_taboola',
+			'fbq(\'trackCustom\'',
+			'fbq(\'track\'',
+			'data.token',
+			'sharrre',
+			'dfads_ajax_load_ads',
 		];
 
 		/**

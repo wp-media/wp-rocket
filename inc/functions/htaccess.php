@@ -385,45 +385,49 @@ function get_rocket_htaccess_mod_deflate() {
  * @return string $rules Rules that will be printed
  */
 function get_rocket_htaccess_mod_expires() {
-	$rules = '# Expires headers (for better cache control)' . PHP_EOL;
-	$rules .= '<IfModule mod_expires.c>' . PHP_EOL;
-	  $rules .= 'ExpiresActive on' . PHP_EOL . PHP_EOL;
-	  $rules .= '# Perhaps better to whitelist expires rules? Perhaps.' . PHP_EOL;
-	  $rules .= 'ExpiresDefault                          "access plus 1 month"' . PHP_EOL . PHP_EOL;
-	  $rules .= '# cache.appcache needs re-requests in FF 3.6 (thanks Remy ~Introducing HTML5)' . PHP_EOL;
-	  $rules .= 'ExpiresByType text/cache-manifest       "access plus 0 seconds"' . PHP_EOL . PHP_EOL;
-	  $rules .= '# Your document html' . PHP_EOL;
-	  $rules .= 'ExpiresByType text/html                 "access plus 0 seconds"' . PHP_EOL . PHP_EOL;
-	  $rules .= '# Data' . PHP_EOL;
-	  $rules .= 'ExpiresByType text/xml                  "access plus 0 seconds"' . PHP_EOL;
-	  $rules .= 'ExpiresByType application/xml           "access plus 0 seconds"' . PHP_EOL;
-	  $rules .= 'ExpiresByType application/json          "access plus 0 seconds"' . PHP_EOL . PHP_EOL;
-	  $rules .= '# Feed' . PHP_EOL;
-	  $rules .= 'ExpiresByType application/rss+xml       "access plus 1 hour"' . PHP_EOL;
-	  $rules .= 'ExpiresByType application/atom+xml      "access plus 1 hour"' . PHP_EOL . PHP_EOL;
-	  $rules .= '# Favicon (cannot be renamed)' . PHP_EOL;
-	  $rules .= 'ExpiresByType image/x-icon              "access plus 1 week"' . PHP_EOL . PHP_EOL;
-	  $rules .= '# Media: images, video, audio' . PHP_EOL;
-	  $rules .= 'ExpiresByType image/gif                 "access plus 1 month"' . PHP_EOL;
-	  $rules .= 'ExpiresByType image/png                 "access plus 1 month"' . PHP_EOL;
-	  $rules .= 'ExpiresByType image/jpeg                "access plus 1 month"' . PHP_EOL;
-	  $rules .= 'ExpiresByType video/ogg                 "access plus 1 month"' . PHP_EOL;
-	  $rules .= 'ExpiresByType audio/ogg                 "access plus 1 month"' . PHP_EOL;
-	  $rules .= 'ExpiresByType video/mp4                 "access plus 1 month"' . PHP_EOL;
-	  $rules .= 'ExpiresByType video/webm                "access plus 1 month"' . PHP_EOL . PHP_EOL;
-	  $rules .= '# HTC files  (css3pie)' . PHP_EOL;
-	  $rules .= 'ExpiresByType text/x-component          "access plus 1 month"' . PHP_EOL . PHP_EOL;
-	  $rules .= '# Webfonts' . PHP_EOL;
-	  $rules .= 'ExpiresByType application/x-font-ttf    "access plus 1 month"' . PHP_EOL;
-	  $rules .= 'ExpiresByType font/opentype             "access plus 1 month"' . PHP_EOL;
-	  $rules .= 'ExpiresByType application/x-font-woff   "access plus 1 month"' . PHP_EOL;
-	  $rules .= 'ExpiresByType application/x-font-woff2  "access plus 1 month"' . PHP_EOL;
-	  $rules .= 'ExpiresByType image/svg+xml             "access plus 1 month"' . PHP_EOL;
-	  $rules .= 'ExpiresByType application/vnd.ms-fontobject "access plus 1 month"' . PHP_EOL . PHP_EOL;
-	  $rules .= '# CSS and JavaScript' . PHP_EOL;
-	  $rules .= 'ExpiresByType text/css                  "access plus 1 year"' . PHP_EOL;
-	  $rules .= 'ExpiresByType application/javascript    "access plus 1 year"' . PHP_EOL . PHP_EOL;
-	$rules .= '</IfModule>' . PHP_EOL . PHP_EOL;
+	$rules = <<<HTACCESS
+# Expires headers (for better cache control)
+<IfModule mod_expires.c>
+	ExpiresActive on
+	# Perhaps better to whitelist expires rules? Perhaps.
+	ExpiresDefault                              "access plus 1 month"
+	# cache.appcache needs re-requests in FF 3.6 (thanks Remy ~Introducing HTML5)
+	ExpiresByType text/cache-manifest           "access plus 0 seconds"
+	# Your document html
+	ExpiresByType text/html                     "access plus 0 seconds"
+	# Data
+	ExpiresByType text/xml                      "access plus 0 seconds"
+	ExpiresByType application/xml               "access plus 0 seconds"
+	ExpiresByType application/json              "access plus 0 seconds"
+	# Feed
+	ExpiresByType application/rss+xml           "access plus 1 hour"
+	ExpiresByType application/atom+xml          "access plus 1 hour"
+	# Favicon (cannot be renamed)
+	ExpiresByType image/x-icon                  "access plus 1 week"
+	# Media: images, video, audio
+	ExpiresByType image/gif                     "access plus 4 months"
+	ExpiresByType image/png                     "access plus 4 months"
+	ExpiresByType image/jpeg                    "access plus 4 months"
+	ExpiresByType image/webp                    "access plus 4 months"
+	ExpiresByType video/ogg                     "access plus 1 month"
+	ExpiresByType audio/ogg                     "access plus 1 month"
+	ExpiresByType video/mp4                     "access plus 1 month"
+	ExpiresByType video/webm                    "access plus 1 month"
+	# HTC files  (css3pie)
+	ExpiresByType text/x-component              "access plus 1 month"
+	# Webfonts
+	ExpiresByType application/x-font-ttf        "access plus 1 month"
+	ExpiresByType font/opentype                 "access plus 1 month"
+	ExpiresByType application/x-font-woff       "access plus 1 month"
+	ExpiresByType application/x-font-woff2      "access plus 1 month"
+	ExpiresByType image/svg+xml                 "access plus 1 month"
+	ExpiresByType application/vnd.ms-fontobject "access plus 1 month"
+	# CSS and JavaScript
+	ExpiresByType text/css                      "access plus 1 year"
+	ExpiresByType application/javascript        "access plus 1 year"
+</IfModule>
+
+HTACCESS;
 
 	/**
 	 * Filter rules to improve performances with Expires Headers
@@ -431,7 +435,7 @@ function get_rocket_htaccess_mod_expires() {
 	 * @since 1.0
 	 *
 	 * @param string $rules Rules that will be printed.
-	*/
+	 */
 	$rules = apply_filters( 'rocket_htaccess_mod_expires', $rules );
 
 	return $rules;

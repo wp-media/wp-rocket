@@ -250,7 +250,13 @@ class Rocket_Critical_CSS {
 		 * @param array $excluded_post_types An array of post types names.
 		 * @return array
 		 */
-		$excluded_post_types = apply_filters( 'rocket_cpcss_excluded_post_types', array() );
+		$excluded_post_types = apply_filters(
+			'rocket_cpcss_excluded_post_types',
+			[
+				'elementor_library',
+				'oceanwp_library',
+			]
+		);
 
 		$post_types = array_diff( $post_types, $excluded_post_types );
 		$post_types = esc_sql( $post_types );
@@ -610,7 +616,7 @@ class Rocket_Critical_CSS {
 			return $buffer;
 		}
 
-		$buffer = preg_replace( '/<head(.*)>/U', '<head$1><style id="rocket-critical-css">' . wp_strip_all_tags( $critical_css_content ) . '</style>', $buffer, 1 );
+		$buffer = preg_replace( '#</title>#iU', '</title><style id="rocket-critical-css">' . wp_strip_all_tags( $critical_css_content ) . '</style>', $buffer, 1 );
 
 		return $buffer;
 	}

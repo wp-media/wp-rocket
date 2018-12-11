@@ -157,6 +157,7 @@ add_filter( 'the_content', 'rocket_lazyload_images', PHP_INT_MAX );
 add_filter( 'widget_text', 'rocket_lazyload_images', PHP_INT_MAX );
 add_filter( 'get_image_tag', 'rocket_lazyload_images', PHP_INT_MAX );
 add_filter( 'post_thumbnail_html', 'rocket_lazyload_images', PHP_INT_MAX );
+add_filter( 'genesis_get_image', 'rocket_lazyload_images', PHP_INT_MAX );
 
 /**
  * Used to check if we have to LazyLoad this or not
@@ -269,48 +270,6 @@ function rocket_is_excluded_lazyload( $string, $excluded_values ) {
 
 	return false;
 }
-
-/**
- * Applies lazyload on images displayed using wp_get_attachment_image()
- *
- * @since 3.2
- * @author Remy Perona
- *
- * @param array $attr Attributes for the image markup.
- * @return array
- */
-function rocket_lazyload_get_attachment_image( $attr ) {
-	// Don't LazyLoad if the thumbnail is in admin, a feed, REST API or a post preview.
-	if ( ! get_rocket_option( 'lazyload' ) || is_admin() || is_feed() || is_preview() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) || empty( $attr['src'] ) || ( defined( 'DONOTLAZYLOAD' ) && DONOTLAZYLOAD ) || wp_script_is( 'twentytwenty-twentytwenty', 'enqueued' ) ) {
-		return $attr;
-	}
-
-	/**
-	 * Filters the application of the lazyload
-	 *
-	 * @param bool $do_rocket_lazyload True to apply, false to prevent.
-	 */
-	if ( ! apply_filters( 'do_rocket_lazyload', true ) ) {
-		return $attr;
-	}
-
-	$attr['data-lazy-src'] = $attr['src'];
-	// this filter is documented in inc/front/lazyload.php.
-	$attr['src'] = apply_filters( 'rocket_lazyload_placeholder', 'data:image/gif;base64,R0lGODdhAQABAPAAAP///wAAACwAAAAAAQABAEACAkQBADs=' );
-
-	if ( isset( $attr['srcset'] ) ) {
-		$attr['data-lazy-srcset'] = $attr['srcset'];
-		unset( $attr['srcset'] );
-	}
-
-	if ( isset( $attr['sizes'] ) ) {
-		$attr['data-lazy-sizes'] = $attr['sizes'];
-		unset( $attr['sizes'] );
-	}
-
-	return $attr;
-}
-add_filter( 'wp_get_attachment_image_attributes', 'rocket_lazyload_get_attachment_image', 11 );
 
 /**
  * Replace WordPress smilies by Lazy Load
@@ -478,7 +437,7 @@ function rocket_lazyload_iframes( $html ) {
 				continue;
 			}
 
-			$query = wp_parse_url( $iframe[1], PHP_URL_QUERY );
+			$query = wp_parse_url( htmlspecialchars_decode( $iframe[1] ), PHP_URL_QUERY );
 
 			/**
 			 * Filter the LazyLoad HTML output on Youtube iframes

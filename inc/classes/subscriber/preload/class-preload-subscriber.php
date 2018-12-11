@@ -126,6 +126,10 @@ class Preload_Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function maybe_launch_preload( $old_value, $value ) {
+		if ( $this->homepage_preloader->is_process_running() ) {
+			return;
+		}
+
 		// These values are ignored because they don't impact the cache content.
 		$ignored_options = [
 			'cache_mobile'                => true,
@@ -169,8 +173,6 @@ class Preload_Subscriber implements Subscriber_Interface {
 		}
 
 		if ( isset( $value['manual_preload'] ) && 1 === (int) $value['manual_preload'] ) {
-			$this->homepage_preloader->cancel_preload();
-			usleep( 1000000 );
 			$this->preload();
 		}
 	}

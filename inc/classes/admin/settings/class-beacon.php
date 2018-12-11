@@ -62,28 +62,30 @@ class Beacon {
 				$lang        = '-fr';
 				$form_id     = '5d9279dc-1b2d-11e8-b466-0ec85169275a';
 				$suggest     = wp_list_pluck( $this->get_suggest( 'faq', 'fr' ), 'id' );
-				$translation = wp_json_encode( [
-					'searchLabel'               => 'Comment pouvons-nous vous aider ?',
-					'searchErrorLabel'          => 'Votre recherche a expiré. Veuillez vérifier votre connexion et réessayer.',
-					'noResultsLabel'            => 'Aucun résultat trouvé pour',
-					'contactLabel'              => 'Envoyer un message',
-					'attachFileLabel'           => 'Joindre un fichier',
-					'attachFileError'           => 'Le poids maximum de fichier est de 10Mo',
-					'fileExtensionError'        => 'Le format du fichier attaché n\'est pas autorisé.',
-					'nameLabel'                 => 'Votre nom',
-					'nameError'                 => 'Veuillez entrer votre nom',
-					'emailLabel'                => 'Adresse email',
-					'emailError'                => 'Veuillez entrer une adresse email valide',
-					'topicLabel'                => 'Sélectionnez un sujet',
-					'topicError'                => 'Veuillez sélectionner un sujet dans la liste',
-					'subjectLabel'              => 'Sujet',
-					'subjectError'              => 'Veuillez entrer un sujet',
-					'messageLabel'              => 'Comment pouvons-nous vous aider ?',
-					'messageError'              => 'Veuillez entrer un message',
-					'sendLabel'                 => 'Envoyer',
-					'contactSuccessLabel'       => 'Message envoyé !',
-					'contactSuccessDescription' => 'Merci de nous avoir contacté ! Un de nos rocketeers vous répondra rapidement.',
-				] );
+				$translation = wp_json_encode(
+					[
+						'searchLabel'               => 'Comment pouvons-nous vous aider ?',
+						'searchErrorLabel'          => 'Votre recherche a expiré. Veuillez vérifier votre connexion et réessayer.',
+						'noResultsLabel'            => 'Aucun résultat trouvé pour',
+						'contactLabel'              => 'Envoyer un message',
+						'attachFileLabel'           => 'Joindre un fichier',
+						'attachFileError'           => 'Le poids maximum de fichier est de 10Mo',
+						'fileExtensionError'        => 'Le format du fichier attaché n\'est pas autorisé.',
+						'nameLabel'                 => 'Votre nom',
+						'nameError'                 => 'Veuillez entrer votre nom',
+						'emailLabel'                => 'Adresse email',
+						'emailError'                => 'Veuillez entrer une adresse email valide',
+						'topicLabel'                => 'Sélectionnez un sujet',
+						'topicError'                => 'Veuillez sélectionner un sujet dans la liste',
+						'subjectLabel'              => 'Sujet',
+						'subjectError'              => 'Veuillez entrer un sujet',
+						'messageLabel'              => 'Comment pouvons-nous vous aider ?',
+						'messageError'              => 'Veuillez entrer un message',
+						'sendLabel'                 => 'Envoyer',
+						'contactSuccessLabel'       => 'Message envoyé !',
+						'contactSuccessDescription' => 'Merci de nous avoir contacté ! Un de nos rocketeers vous répondra rapidement.',
+					]
+				);
 				break;
 			default:
 				$lang        = '';
@@ -145,12 +147,14 @@ class Beacon {
 
 		$active_options = array_filter( $this->options->get_options() );
 		$active_options = array_intersect_key( $options_to_send, $active_options );
+		$theme          = wp_get_theme();
 
 		$data = [
 			'email'                    => $this->options->get( 'consumer_email' ),
 			'Website'                  => home_url(),
 			'WordPress Version'        => $wp_version,
 			'WP Rocket Version'        => WP_ROCKET_VERSION,
+			'Theme'                    => $theme->get( 'Name' ),
 			'Plugins Enabled'          => implode( ' - ', rocket_get_active_plugins() ),
 			'WP Rocket Active Options' => implode( ' - ', $active_options ),
 		];
@@ -468,17 +472,33 @@ class Beacon {
 				],
 			],
 			'cloudflare_credentials' => [
-				'en' => '54205619e4b0e7b8127bf849',
-				'fr' => '5696837e9033603f7da308ae',
+				'en' => [
+					'id'  => '54205619e4b0e7b8127bf849',
+					'url' => 'https://docs.wp-rocket.me/article/18-using-wp-rocket-with-cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '5696837e9033603f7da308ae',
+					'url' => 'https://fr.docs.wp-rocket.me/article/247-utiliser-wp-rocket-avec-cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
 			],
 			'cloudflare_settings'    => [
-				'en' => '54205619e4b0e7b8127bf849',
-				'fr' => '5696837e9033603f7da308ae',
+				'en' => [
+					'id'  => '54205619e4b0e7b8127bf849',
+					'url' => 'https://docs.wp-rocket.me/article/18-using-wp-rocket-with-cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '5696837e9033603f7da308ae',
+					'url' => 'https://fr.docs.wp-rocket.me/article/247-utiliser-wp-rocket-avec-cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
 			],
 			'sucuri_credentials'     => [
 				'en' => [
 					'id'  => '5bce07be2c7d3a04dd5bf94d',
 					'url' => 'https://docs.wp-rocket.me/article/1120-sucuri-add-on/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '5bcf39c72c7d3a4db66085b9',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1122-sucuri-add-on/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 			'varnish'                => [
@@ -496,6 +516,10 @@ class Beacon {
 					'id'  => '5bcdfecd042863158cc7b672',
 					'url' => 'https://docs.wp-rocket.me/article/1119-control-wordpress-heartbeat-api/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
+				'fr' => [
+					'id'  => '5bcf4378042863215a46bc00',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1124-controler-api-wordpress-heartbeat/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
 			],
 			'google_tracking'        => [
 				'en' => [
@@ -507,6 +531,10 @@ class Beacon {
 				'en' => [
 					'id'  => '5bc904e7042863158cc79d57',
 					'url' => 'https://docs.wp-rocket.me/article/1117-facebook-pixel-add-on/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '5bcf3d35042863215a46bb7f',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1123-add-on-facebook-pixel/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 		];

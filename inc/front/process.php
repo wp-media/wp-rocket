@@ -83,7 +83,7 @@ if ( ! isset( $_SERVER['REQUEST_METHOD'] ) || 'GET' !== $_SERVER['REQUEST_METHOD
 
 // Get the correct config file.
 $rocket_config_path      = WP_CONTENT_DIR . '/wp-rocket-config/';
-$real_rocket_config_path = realpath( $rocket_config_path ) . DIRECTORY_SEPARATOR;
+$rocket_real_config_path = realpath( $rocket_config_path ) . DIRECTORY_SEPARATOR;
 
 $host = isset( $_SERVER['HTTP_HOST'] ) ? $_SERVER['HTTP_HOST'] : (string) time();
 $host = preg_replace( '/:\d+$/', '', $host );
@@ -91,7 +91,7 @@ $host = trim( strtolower( $host ), '.' );
 $host = rawurlencode( $host );
 
 $continue = false;
-if ( realpath( $rocket_config_path . $host . '.php' ) && 0 === stripos( realpath( $rocket_config_path . $host . '.php' ), $real_rocket_config_path ) ) {
+if ( realpath( $rocket_config_path . $host . '.php' ) && 0 === stripos( realpath( $rocket_config_path . $host . '.php' ), $rocket_real_config_path ) ) {
 	include $rocket_config_path . $host . '.php';
 	$continue = true;
 } else {
@@ -102,13 +102,13 @@ if ( realpath( $rocket_config_path . $host . '.php' ) && 0 === stripos( realpath
 	foreach ( $path as $p ) {
 		static $dir;
 
-		if ( realpath( $rocket_config_path . $host . '.' . $p . '.php' ) && 0 === stripos( realpath( $rocket_config_path . $host . '.' . $p . '.php' ), $real_rocket_config_path ) ) {
+		if ( realpath( $rocket_config_path . $host . '.' . $p . '.php' ) && 0 === stripos( realpath( $rocket_config_path . $host . '.' . $p . '.php' ), $rocket_real_config_path ) ) {
 			include $rocket_config_path . $host . '.' . $p . '.php';
 			$continue = true;
 			break;
 		}
 
-		if ( realpath( $rocket_config_path . $host . '.' . $dir . $p . '.php' ) && 0 === stripos( realpath( $rocket_config_path . $host . '.' . $dir . $p . '.php' ), $real_rocket_config_path ) ) {
+		if ( realpath( $rocket_config_path . $host . '.' . $dir . $p . '.php' ) && 0 === stripos( realpath( $rocket_config_path . $host . '.' . $dir . $p . '.php' ), $rocket_real_config_path ) ) {
 			include $rocket_config_path . $host . '.' . $dir . $p . '.php';
 			$continue = true;
 			break;
@@ -126,28 +126,51 @@ if ( ! $continue ) {
 	return;
 }
 
-$request_uri = ( isset( $rocket_cache_query_strings ) && array_intersect( array_keys( $_GET ), $rocket_cache_query_strings ) ) || isset( $_GET['lp-variation-id'] ) || isset( $_GET['lang'] ) || isset( $_GET['s'] ) ? $_SERVER['REQUEST_URI'] : $request_uri;
-
 /**
- * Don't cache with variables but the cache is enabled if the visitor comes from an RSS feed, a Facebook action or Google Adsense tracking
+ * Don't cache with query strings parameters but the cache is served if the visitor comes from an RSS feed, a Facebook action or Google Adsense tracking
  *
  * @since 2.3 Add query strings which can be cached via the options page.
- * @since 2.1 Add compatibilty with WordPress Landing Pages (permalink_name and lp-variation-id)
+ * @since 2.1 Add compatibility with WordPress Landing Pages (permalink_name and lp-variation-id)
  * @since 2.1 Add compabitiliy with qTranslate and translation plugin with query string "lang"
  */
-if ( ! empty( $_GET )
-	&& ( ! isset( $_GET['utm_source'], $_GET['utm_medium'], $_GET['utm_campaign'] ) )
-	&& ( ! isset( $_GET['utm_expid'] ) )
-	&& ( ! isset( $_GET['fb_action_ids'], $_GET['fb_action_types'], $_GET['fb_source'] ) )
-	&& ( ! isset( $_GET['gclid'] ) )
-	&& ( ! isset( $_GET['permalink_name'] ) )
-	&& ( ! isset( $_GET['lp-variation-id'] ) )
-	&& ( ! isset( $_GET['lang'] ) )
-	&& ( ! isset( $_GET['s'] ) )
-	&& ( ! isset( $_GET['age-verified'] ) )
-	&& ( ! isset( $_GET['ao_noptimize'] ) )
-	&& ( ! isset( $_GET['usqp'] ) )
-	&& ( ! isset( $rocket_cache_query_strings ) || ! array_intersect( array_keys( $_GET ), $rocket_cache_query_strings ) )
+$rocket_remove_query_strings = [
+	'utm_source'      => 1,
+	'utm_medium'      => 1,
+	'utm_campaign'    => 1,
+	'utm_expid'       => 1,
+	'fb_action_ids'   => 1,
+	'fb_action_types' => 1,
+	'fb_source'       => 1,
+	'fbclid'          => 1,
+	'gclid'           => 1,
+	'age-verified'    => 1,
+	'ao_noptimize'    => 1,
+	'usqp'            => 1,
+	'cn-reloaded'     => 1,
+];
+
+$params = [];
+
+if ( ! empty( $_GET ) ) {
+	$params = array_diff_key( $_GET, $rocket_remove_query_strings );
+
+	if ( ! empty( $params ) ) {
+		ksort( $params );
+
+		$request_uri .= http_build_query( $params );
+	}
+}
+
+$rocket_ignore_query_strings = [
+	'lang'            => 1,
+	's'               => 1,
+	'permalink_name'  => 1,
+	'lp-variation-id' => 1,
+];
+
+if ( ! empty( $params )
+	&& ( ! (bool) array_intersect_key( $params, $rocket_ignore_query_strings ) )
+	&& ( ! isset( $rocket_cache_query_strings ) || ! array_intersect( array_keys( $params ), $rocket_cache_query_strings ) )
 ) {
 	rocket_define_donotoptimize_constant( true );
 
@@ -193,16 +216,38 @@ if ( isset( $rocket_cache_reject_cookies ) && preg_match( '#(' . $rocket_cache_r
 
 $ip          = rocket_get_ip();
 $allowed_ips = array(
-	'85.17.131.209'  => 0, // Pingdom Tools - Amsterdam.
-	'173.208.58.138' => 1, // Pingdom Tools - New-York.
-	'50.22.90.226'   => 2, // Pingdom Tools - Dallas.
-	'209.58.131.213' => 3, // Pingdom Tools - San Jose.
-	'168.1.92.52'    => 4, // Pingdom Tools - Melbourne.
-	'5.178.78.78'    => 5, // Pingdom Tools - Stockholm.
+	'208.70.247.157' => '', // GT Metrix - Vancouver 1.
+	'204.187.14.70'  => '', // GT Metrix - Vancouver 2.
+	'204.187.14.71'  => '', // GT Metrix - Vancouver 3.
+	'204.187.14.72'  => '', // GT Metrix - Vancouver 4.
+	'204.187.14.73'  => '', // GT Metrix - Vancouver 5.
+	'204.187.14.74'  => '', // GT Metrix - Vancouver 6.
+	'204.187.14.75'  => '', // GT Metrix - Vancouver 7.
+	'204.187.14.76'  => '', // GT Metrix - Vancouver 8.
+	'204.187.14.77'  => '', // GT Metrix - Vancouver 9.
+	'204.187.14.78'  => '', // GT Metrix - Vancouver 10.
+	'199.10.31.194'  => '', // GT Metrix - Vancouver 11.
+	'13.85.80.124'   => '', // GT Metrix - Dallas 1.
+	'13.84.146.132'  => '', // GT Metrix - Dallas 2.
+	'13.84.146.226'  => '', // GT Metrix - Dallas 3.
+	'40.74.254.217'  => '', // GT Metrix - Dallas 4.
+	'13.84.43.227'   => '', // GT Metrix - Dallas 5.
+	'172.255.61.34'  => '', // GT Metrix - London 1.
+	'172.255.61.35'  => '', // GT Metrix - London 2.
+	'172.255.61.36'  => '', // GT Metrix - London 3.
+	'172.255.61.37'  => '', // GT Metrix - London 4.
+	'172.255.61.38'  => '', // GT Metrix - London 5.
+	'172.255.61.39'  => '', // GT Metrix - London 6.
+	'172.255.61.40'  => '', // GT Metrix - London 7.
+	'13.70.66.20'    => '', // GT Metrix - Sydney.
+	'191.235.85.154' => '', // GT Metrix - São Paulo 1.
+	'191.235.86.0'   => '', // GT Metrix - São Paulo 2.
+	'52.66.75.147'   => '', // GT Metrix - Mumbai.
+	'52.175.28.116'  => '', // GT Metrix - Hong Kong.
 );
 
 // Don't cache page when these cookies don't exist.
-if ( ! isset( $allowed_ips[ $ip ] ) && isset( $rocket_cache_mandatory_cookies ) && ! preg_match( '#(' . $rocket_cache_mandatory_cookies . ')#', var_export( $_COOKIE, true ) ) ) {
+if ( ( ! isset( $allowed_ips[ $ip ] ) && ( isset( $_SERVER['HTTP_USER_AGENT'] ) ) && ! preg_match( '#(PingdomPageSpeed|DareBoost|Google|PTST|WP Rocket)#i', $_SERVER['HTTP_USER_AGENT'] ) ) && isset( $rocket_cache_mandatory_cookies ) && ! preg_match( '#(' . $rocket_cache_mandatory_cookies . ')#', var_export( $_COOKIE, true ) ) ) {
 	rocket_define_donotoptimize_constant( true );
 
 	Logger::debug( 'Missing cookie: page not cached.', [
@@ -298,6 +343,9 @@ if ( ! empty( $rocket_cache_dynamic_cookies ) ) {
 
 // Caching file path.
 $request_uri_path      = preg_replace_callback( '/%[0-9A-F]{2}/', 'rocket_urlencode_lowercase', $request_uri_path );
+// Directories in Windows can't contain question marks
+$request_uri_path = str_replace( '?', '_', $request_uri_path );
+
 $rocket_cache_filepath = $request_uri_path . '/' . $filename . '.html';
 
 Logger::debug( 'Looking for cache file.', [
@@ -447,6 +495,8 @@ function rocket_serve_cache_file( $rocket_cache_filepath ) {
 		if ( $http_if_modified_since && ( strtotime( $http_if_modified_since ) === @filemtime( $rocket_cache_filepath_gzip ) ) ) {
 			// Client's cache is current, so we just respond '304 Not Modified'.
 			header( $_SERVER['SERVER_PROTOCOL'] . ' 304 Not Modified', true, 304 );
+			header( 'Expires: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
+			header( 'Cache-Control: no-cache, must-revalidate' );
 
 			Logger::info( 'Serving `304` gzip cache file.', [
 				'caching process',
@@ -482,6 +532,8 @@ function rocket_serve_cache_file( $rocket_cache_filepath ) {
 		if ( $http_if_modified_since && ( strtotime( $http_if_modified_since ) === @filemtime( $rocket_cache_filepath ) ) ) {
 			// Client's cache is current, so we just respond '304 Not Modified'.
 			header( $_SERVER['SERVER_PROTOCOL'] . ' 304 Not Modified', true, 304 );
+			header( 'Expires: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
+			header( 'Cache-Control: no-cache, must-revalidate' );
 
 			Logger::info( 'Serving `304` cache file.', [
 				'caching process',

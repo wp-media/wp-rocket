@@ -46,10 +46,6 @@ class Full_Process extends \WP_Background_Process {
 			return false;
 		}
 
-		if ( false !== get_transient( 'rocket_preload_cancelled' ) ) {
-			return false;
-		}
-
 		/**
 		 * Filters the arguments for the preload request
 		 *
@@ -85,6 +81,12 @@ class Full_Process extends \WP_Background_Process {
 	 * @return bool
 	 */
 	protected function is_already_cached( $item ) {
+		static $https;
+
+		if ( ! isset( $https ) ) {
+			$https = ( is_ssl() && get_rocket_option( 'cache_ssl' ) ) ? '-https' : '';
+		}
+
 		$url = get_rocket_parse_url( $item );
 
 		/** This filter is documented in inc/front/htaccess.php */
@@ -92,7 +94,11 @@ class Full_Process extends \WP_Background_Process {
 			$url['host'] = str_replace( '.', '_', $url['host'] );
 		}
 
-		$file_cache_path = WP_ROCKET_CACHE_PATH . $url['host'] . '/' . strtolower( $url['path'] ) . '/index.html';
+		if ( empty( $url['path'] ) ) {
+			$url['path'] = '/';
+		}
+
+		$file_cache_path = WP_ROCKET_CACHE_PATH . $url['host'] . strtolower( $url['path'] ) . 'index' . $https . '.html';
 
 		return rocket_direct_filesystem()->exists( $file_cache_path );
 	}
@@ -109,5 +115,17 @@ class Full_Process extends \WP_Background_Process {
 		parent::complete();
 	}
 
+	/**
+	 * Checks if a process is already running
+	 *
+	 * @since 3.2.1.1
+	 * @author Remy Perona
+	 *
+	 * @see WP_Background_Process::is_process_running()
+	 * @return boolean
+	 */
+	public function is_process_running() {
+		return parent::is_process_running();
+	}
 }
 
