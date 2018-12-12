@@ -401,6 +401,7 @@ class Combine extends Abstract_JS_Optimization {
 			'ANS_customer_id',
 			'tdBlock',
 			'tdLocalCache',
+			'wpRestNonce',
 			'"url":',
 			'lazyLoadOptions',
 			'adthrive',
@@ -425,12 +426,12 @@ class Combine extends Abstract_JS_Optimization {
 			'bs_deferred_loading_',
 			'theChampRedirectionUrl',
 			'theChampFBCommentUrl',
+			'theChampRegRedirectionUrl',
 			'ESSB_CACHE_URL',
 			'oneall_social_login_providers_',
 			'betterads_screen_width',
 			'woocommerce_wishlist_add_to_wishlist_url',
 			'arf_conditional_logic',
-			'theChampFBCommentUrl',
 			'heateorSsHorSharingShortUrl',
 			'TL_Const',
 			'bimber_front_microshare',
@@ -439,7 +440,10 @@ class Combine extends Abstract_JS_Optimization {
 			'peepsotimedata',
 			'wphc_data',
 			'hc_rand_id',
+			'RBL_ADD',
 			'AfsAnalyticsObject',
+			'_thriveCurrentPost',
+			'esc_login_url',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
@@ -519,6 +523,7 @@ class Combine extends Abstract_JS_Optimization {
 			'dsms0mj1bbhn4.cloudfront.net',
 			'nutrifox.com',
 			'code.tidio.co',
+			'widget.reviewability.com',
 		];
 
 		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );
@@ -569,6 +574,8 @@ class Combine extends Abstract_JS_Optimization {
 			'fbq(\'trackCustom\'',
 			'fbq(\'track\'',
 			'data.token',
+			'sharrre',
+			'dfads_ajax_load_ads',
 		];
 
 		/**

@@ -44,6 +44,10 @@ class IE_Conditionals_Subscriber implements Subscriber_Interface {
 	public function extract_ie_conditionals( $html ) {
 		preg_match_all( '/<!--\[if[^\]]*?\]>.*?<!\[endif\]-->/is', $html, $conditionals_match );
 
+		if ( ! $conditionals_match ) {
+			return $html;
+		}
+
 		$html = preg_replace( '/<!--\[if[^\]]*?\]>.*?<!\[endif\]-->/is', '{{WP_ROCKET_CONDITIONAL}}', $html );
 
 		foreach ( $conditionals_match[0] as $conditional ) {
@@ -68,7 +72,12 @@ class IE_Conditionals_Subscriber implements Subscriber_Interface {
 				break;
 			}
 
-			$html = preg_replace( '/{{WP_ROCKET_CONDITIONAL}}/', $conditional, $html, 1 );
+			// Prevent scripts containing things like "\\s" to be striped of a backslash when put back in content.
+			if ( preg_match( '@^(?<opening><!--\[if[^\]]*?\]>\s*?(?:<!-->)?\s*<script(?:\s[^>]*?>))\s*(?<content>.*?)\s*(?<closing></script>\s*(?:<!--)?\s*?<!\[endif\]-->)$@is', $conditional, $matches ) ) {
+				$conditional = $matches['opening'] . preg_replace( '#(?<!\\\\)(\\$|\\\\)#', '\\\\$1', $matches['content'] ) . $matches['closing'];
+			}
+
+			$html = preg_replace( '/\{\{WP_ROCKET_CONDITIONAL\}\}/', $conditional, $html, 1 );
 		}
 
 		return $html;

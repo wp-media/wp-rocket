@@ -19,7 +19,12 @@ class Homepage extends Abstract_Preload {
 	 */
 	public function preload( $home_urls ) {
 		foreach ( $home_urls as $home_url ) {
-			$urls      = $this->get_urls( $home_url );
+			$urls = $this->get_urls( $home_url );
+
+			if ( ! $urls ) {
+				continue;
+			}
+
 			$home_host = wp_parse_url( $home_url, PHP_URL_HOST );
 
 			foreach ( $urls as $url ) {
@@ -42,7 +47,7 @@ class Homepage extends Abstract_Preload {
 	 * @author Remy Perona
 	 *
 	 * @param string $url URL to get content and links from.
-	 * @return array
+	 * @return bool|array
 	 */
 	private function get_urls( $url ) {
 		// This filter is documented in inc/classes/preload/class-partial-process.php.
@@ -57,7 +62,7 @@ class Homepage extends Abstract_Preload {
 		$response = wp_remote_get( $url, $args );
 
 		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
-			return;
+			return false;
 		}
 
 		$content = wp_remote_retrieve_body( $response );
@@ -81,13 +86,13 @@ class Homepage extends Abstract_Preload {
 	private function should_preload( $url, $home_url, $home_host ) {
 		$url = html_entity_decode( $url ); // & symbols in URLs are changed to &#038; when using WP Menu editor
 
-		$url_data = wp_parse_url( $url );
+		$url_data = get_rocket_parse_url( $url );
 
 		if ( empty( $url_data ) ) {
 			return false;
 		}
 
-		if ( isset( $url_data['fragment'] ) ) {
+		if ( ! empty( $url_data['fragment'] ) ) {
 			return false;
 		}
 
@@ -109,7 +114,7 @@ class Homepage extends Abstract_Preload {
 			return false;
 		}
 
-		if ( preg_match( '#^(' . \get_rocket_cache_reject_uri() . ')$#', $url_data['path'] ) ) {
+		if ( ! empty( $url_data['path'] ) && preg_match( '#^(' . \get_rocket_cache_reject_uri() . ')$#', $url_data['path'] ) ) {
 			return false;
 		}
 

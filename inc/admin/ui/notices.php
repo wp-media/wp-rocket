@@ -209,6 +209,40 @@ function rocket_plugins_to_deactivate() {
 add_action( 'admin_notices', 'rocket_plugins_to_deactivate' );
 
 /**
+ * Displays a warning if Rocket Footer JS plugin is active
+ *
+ * @since 3.2.3
+ * @author Remy Perona
+ *
+ * @return void
+ */
+function rocket_warning_footer_js_plugin() {
+	$screen = get_current_screen();
+
+	// This filter is documented in inc/admin-bar.php.
+	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		return;
+	}
+
+	if ( 'settings_page_wprocket' !== $screen->id ) {
+		return;
+	}
+
+	if ( ! is_plugin_active( 'rocket-footer-js/rocket-footer-js.php' ) ) {
+		return;
+	}
+
+	rocket_notice_html(
+		[
+			'status'         => 'warning',
+			'message'        => __( 'WP Rocket Footer JS is not an official add-on. It prevents some options in WP Rocket from working correctly. Please deactivate it if you have problems.', 'rocket' ),
+			'dismiss_button' => true,
+		]
+	);
+}
+add_action( 'admin_notices', 'rocket_warning_footer_js_plugin' );
+
+/**
  * This warning is displayed when there is no permalink structure in the configuration.
  *
  * @since 1.0
