@@ -11,9 +11,16 @@ if ( rocket_is_plugin_active( 'sg-cachepress/sg-cachepress.php' ) ) {
 	 * @return string
 	 */
 	function rocket_get_sg_optimizer_version() {
-		$sg_optimizer = get_file_data( WP_PLUGIN_DIR . '/sg-cachepress/sg-cachepress.php', array( 'Version' => 'Version' ) );
+		static $version;
 
-		return $sg_optimizer['Version'];
+		if ( isset( $version ) ) {
+			return $version;
+		}
+
+		$sg_optimizer = get_file_data( WP_PLUGIN_DIR . '/sg-cachepress/sg-cachepress.php', array( 'Version' => 'Version' ) );
+		$version      = $sg_optimizer['Version'];
+
+		return $version;
 	}
 
 	/**
