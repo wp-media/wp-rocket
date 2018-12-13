@@ -508,42 +508,7 @@ function rocket_handle_settings_import() {
 	}
 
 	add_filter( 'mime_types', 'rocket_allow_json_mime_type' );
-
-	add_filter(
-		'wp_check_filetype_and_ext',
-		function( $wp_check_filetype_and_ext, $file, $filename, $mimes ) {
-			if ( ! empty( $wp_check_filetype_and_ext['ext'] ) && ! empty( $wp_check_filetype_and_ext['type'] ) ) {
-				return $wp_check_filetype_and_ext;
-			}
-
-			$wp_filetype = wp_check_filetype( $filename, $mimes );
-
-			if ( 'json' !== $wp_filetype['ext'] ) {
-				return $wp_check_filetype_and_ext;
-			}
-
-			if ( empty( $wp_filetype['type'] ) ) {
-				// In case some other filter messed it up.
-				$wp_filetype['type'] = 'application/json';
-			}
-
-			if ( ! extension_loaded( 'fileinfo' ) ) {
-				return $wp_check_filetype_and_ext;
-			}
-
-			$finfo     = finfo_open( FILEINFO_MIME_TYPE );
-			$real_mime = finfo_file( $finfo, $file );
-			finfo_close( $finfo );
-
-			if ( 'text/plain' !== $real_mime ) {
-				return $wp_check_filetype_and_ext;
-			}
-
-			$wp_check_filetype_and_ext = array_merge( $wp_check_filetype_and_ext, $wp_filetype );
-
-			return $wp_check_filetype_and_ext;
-		},
-	10, 4 );
+	add_filter( 'wp_check_filetype_and_ext', 'rocket_check_json_filetype', 10, 4 );
 
 	$file_data = wp_check_filetype_and_ext( $_FILES['import']['tmp_name'], $_FILES['import']['name'] );
 
@@ -562,6 +527,7 @@ function rocket_handle_settings_import() {
 	$_POST['action'] = $_post_action;
 	$settings        = rocket_direct_filesystem()->get_contents( $file['file'] );
 	remove_filter( 'mime_types', 'rocket_allow_json_mime_type' );
+	remove_filter( 'wp_check_filetype_and_ext', 'rocket_check_json_filetype', 10 );
 
 	if ( 'text/plain' === $file_data['type'] ) {
 		$gz       = 'gz' . strrev( 'etalfni' );
