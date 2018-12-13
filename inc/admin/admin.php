@@ -507,7 +507,8 @@ function rocket_handle_settings_import() {
 		rocket_settings_import_redirect( __( 'Settings import failed: incorrect filename.', 'rocket' ), 'error' );
 	}
 
-	add_filter( 'upload_mimes', 'rocket_allow_json_mime_type' );
+	add_filter( 'mime_types', 'rocket_allow_json_mime_type' );
+	add_filter( 'wp_check_filetype_and_ext', 'rocket_check_json_filetype', 10, 4 );
 
 	$file_data = wp_check_filetype_and_ext( $_FILES['import']['tmp_name'], $_FILES['import']['name'] );
 
@@ -518,9 +519,15 @@ function rocket_handle_settings_import() {
 	$_post_action    = $_POST['action'];
 	$_POST['action'] = 'wp_handle_sideload';
 	$file            = wp_handle_sideload( $_FILES['import'] );
+
+	if ( isset( $file['error'] ) ) {
+		rocket_settings_import_redirect( __( 'Settings import failed: ', 'rocket' ) . $file['error'], 'error' );
+	}
+
 	$_POST['action'] = $_post_action;
 	$settings        = rocket_direct_filesystem()->get_contents( $file['file'] );
-	remove_filter( 'upload_mimes', 'rocket_allow_json_mime_type' );
+	remove_filter( 'mime_types', 'rocket_allow_json_mime_type' );
+	remove_filter( 'wp_check_filetype_and_ext', 'rocket_check_json_filetype', 10 );
 
 	if ( 'text/plain' === $file_data['type'] ) {
 		$gz       = 'gz' . strrev( 'etalfni' );
@@ -529,6 +536,10 @@ function rocket_handle_settings_import() {
 		$settings = maybe_unserialize( $settings );
 	} elseif ( 'application/json' === $file_data['type'] ) {
 		$settings = json_decode( $settings, true );
+
+		if ( null === $settings ) {
+			rocket_settings_import_redirect( __( 'Settings import failed: unexpected file content.', 'rocket' ), 'error' );
+		}
 	}
 
 	rocket_put_content( $file['file'], '' );
