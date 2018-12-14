@@ -290,7 +290,7 @@ class Remove_Query_String extends Abstract_Optimization {
 		}
 
 		if ( 'css' === $extension ) {
-			$busting_content = $this->rewrite_paths( $file, $busting_content );
+			$busting_content = $this->rewrite_paths( $file, $busting_file, $busting_content );
 		}
 
 		if ( ! $this->write_file( $busting_content, $busting_file ) ) {
