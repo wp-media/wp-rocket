@@ -465,7 +465,12 @@ function rocket_clean_cache_theme_update( $wp_upgrader, $hook_extra ) {
 
 	$current_theme = wp_get_theme();
 
-	if ( ! in_array( $current_theme->get_template(), $hook_extra['themes'], true ) ) {
+	$themes = [
+		$current_theme->get_template(), // Parent theme.
+		$current_theme->get_stylesheet(), // Child theme.
+	];
+
+	if ( ! array_intersect( $hook_extra['themes'], $themes ) ) {
 		return;
 	}
 
