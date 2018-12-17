@@ -80,15 +80,16 @@ function rocket_clean_post( $post_id ) {
 
 	// Get the post language.
 	$i18n_plugin = rocket_has_i18n();
+	$lang        = false;
 
 	if ( 'wpml' === $i18n_plugin && ! rocket_is_plugin_active( 'woocommerce-multilingual/wpml-woocommerce.php' ) ) {
 		// WPML.
 		$lang = $GLOBALS['sitepress']->get_language_for_element( $post_id, 'post_' . get_post_type( $post_id ) );
 	} elseif ( 'polylang' === $i18n_plugin ) {
 		// Polylang.
-		$lang = pll_get_post_language( $post_id );
-	} else {
-		$lang = false;
+		if ( function_exists( 'pll_get_post_language' ) ) {
+			$lang = pll_get_post_language( $post_id );
+		}
 	}
 
 	// Get the permalink structure.
