@@ -2,23 +2,24 @@
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 // Launch hooks that deletes all the cache domain.
-add_action( 'switch_theme'                                          , 'rocket_clean_domain' );  // When user change theme.
-add_action( 'user_register'                                         , 'rocket_clean_domain' );  // When a user is added.
-add_action( 'profile_update'                                        , 'rocket_clean_domain' );  // When a user is updated.
-add_action( 'deleted_user'                                          , 'rocket_clean_domain' );  // When a user is deleted.
-add_action( 'wp_update_nav_menu'                                    , 'rocket_clean_domain' );  // When a custom menu is update.
-add_action( 'update_option_sidebars_widgets'                        , 'rocket_clean_domain' );  // When you change the order of widgets.
-add_action( 'update_option_category_base'                           , 'rocket_clean_domain' );  // When category permalink prefix is update.
-add_action( 'update_option_tag_base'                                , 'rocket_clean_domain' );  // When tag permalink prefix is update.
-add_action( 'permalink_structure_changed'                           , 'rocket_clean_domain' );  // When permalink structure is update.
-add_action( 'create_term'                                           , 'rocket_clean_domain' );  // When a term is created.
-add_action( 'edited_terms'                                          , 'rocket_clean_domain' );  // When a term is updated.
-add_action( 'delete_term'                                           , 'rocket_clean_domain' );  // When a term is deleted.
-add_action( 'add_link'                                              , 'rocket_clean_domain' );  // When a link is added.
-add_action( 'edit_link'                                             , 'rocket_clean_domain' );  // When a link is updated.
-add_action( 'delete_link'                                           , 'rocket_clean_domain' );  // When a link is deleted.
-add_action( 'customize_save'                                        , 'rocket_clean_domain' );  // When customizer is saved.
+add_action( 'switch_theme', 'rocket_clean_domain' );  // When user change theme.
+add_action( 'user_register', 'rocket_clean_domain' );  // When a user is added.
+add_action( 'profile_update', 'rocket_clean_domain' );  // When a user is updated.
+add_action( 'deleted_user', 'rocket_clean_domain' );  // When a user is deleted.
+add_action( 'wp_update_nav_menu', 'rocket_clean_domain' );  // When a custom menu is update.
+add_action( 'update_option_sidebars_widgets', 'rocket_clean_domain' );  // When you change the order of widgets.
+add_action( 'update_option_category_base', 'rocket_clean_domain' );  // When category permalink prefix is update.
+add_action( 'update_option_tag_base', 'rocket_clean_domain' );  // When tag permalink prefix is update.
+add_action( 'permalink_structure_changed', 'rocket_clean_domain' );  // When permalink structure is update.
+add_action( 'create_term', 'rocket_clean_domain' );  // When a term is created.
+add_action( 'edited_terms', 'rocket_clean_domain' );  // When a term is updated.
+add_action( 'delete_term', 'rocket_clean_domain' );  // When a term is deleted.
+add_action( 'add_link', 'rocket_clean_domain' );  // When a link is added.
+add_action( 'edit_link', 'rocket_clean_domain' );  // When a link is updated.
+add_action( 'delete_link', 'rocket_clean_domain' );  // When a link is deleted.
+add_action( 'customize_save', 'rocket_clean_domain' );  // When customizer is saved.
 add_action( 'update_option_theme_mods_' . get_option( 'stylesheet' ), 'rocket_clean_domain' ); // When location of a menu is updated.
+add_action( 'upgrader_process_complete', 'rocket_clean_cache_theme_update', 10, 2 );  // When a theme is updated.
 
 /**
  * Purge cache When a widget is updated
@@ -380,7 +381,7 @@ function do_admin_post_rocket_purge_cache() {
 				break;
 		}
 
-		wp_redirect( wp_get_referer() );
+		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
 		die();
 	}
 }
@@ -403,7 +404,7 @@ function do_admin_post_rocket_purge_opcache() {
 
 	rocket_reset_opcache();
 
-	wp_redirect( wp_get_referer() );
+	wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
 	die();
 }
 add_action( 'admin_post_rocket_purge_opcache', 'do_admin_post_rocket_purge_opcache' );
@@ -441,7 +442,37 @@ function do_admin_post_rocket_purge_cloudflare() {
 
 	set_transient( $GLOBALS['current_user']->ID . '_cloudflare_purge_result', $cf_purge_result );
 
-	wp_redirect( wp_get_referer() );
+	wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
 	die();
 }
 add_action( 'admin_post_rocket_purge_cloudflare', 'do_admin_post_rocket_purge_cloudflare' );
+
+/**
+ * Clean the cache when the current theme is updated
+ *
+ * @param WP_Upgrader $wp_upgrader WP_Upgrader instance.
+ * @param array       $hook_extra  Array of bulk item update data.
+ * @return void
+ */
+function rocket_clean_cache_theme_update( $wp_upgrader, $hook_extra ) {
+	if ( 'update' !== $hook_extra['action'] ) {
+		return;
+	}
+
+	if ( 'theme' !== $hook_extra['type'] ) {
+		return;
+	}
+
+	$current_theme = wp_get_theme();
+
+	$themes = [
+		$current_theme->get_template(), // Parent theme.
+		$current_theme->get_stylesheet(), // Child theme.
+	];
+
+	if ( ! array_intersect( $hook_extra['themes'], $themes ) ) {
+		return;
+	}
+
+	rocket_clean_domain();
+}
