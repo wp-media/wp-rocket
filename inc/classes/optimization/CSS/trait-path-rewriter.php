@@ -109,15 +109,15 @@ trait Path_Rewriter {
 		);
 
 		// find all relative urls in css.
-		$matches = array();
+		$matches = [];
 		foreach ( $relativeRegexes as $relativeRegex ) {
 			if ( preg_match_all( $relativeRegex, $content, $regexMatches, PREG_SET_ORDER ) ) {
 				$matches = array_merge( $matches, $regexMatches );
 			}
 		}
 
-		$search  = array();
-		$replace = array();
+		$search  = [];
+		$replace = [];
 
 		// loop all urls.
 		foreach ( $matches as $match ) {
@@ -157,9 +157,9 @@ trait Path_Rewriter {
 
 			// build replacement.
 			$search[] = $match[0];
-			if ( $type === 'url' ) {
+			if ( 'url' === $type ) {
 				$replace[] = 'url(' . $url . ')';
-			} elseif ( $type === 'import' ) {
+			} elseif ( 'import' === $type ) {
 				$replace[] = '@import "' . $url . '"';
 			}
 		}
