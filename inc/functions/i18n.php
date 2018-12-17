@@ -157,6 +157,12 @@ function rocket_has_i18n() {
 	}
 
 	if ( ! empty( $polylang ) && function_exists( 'pll_languages_list' ) ) {
+		$languages = pll_languages_list();
+
+		if ( empty( $languages ) ) {
+			return false;
+		}
+
 		// Polylang, Polylang Pro.
 		return 'polylang';
 	}
