@@ -319,7 +319,7 @@ function rocket_realpath( $file ) {
  */
 function rocket_url_to_path( $url, $hosts = '' ) {
 	$root_dir = trailingslashit( dirname( WP_CONTENT_DIR ) );
-	$root_url = str_replace( wp_basename( WP_CONTENT_DIR ), '', WP_CONTENT_URL );
+	$root_url = str_replace( wp_basename( WP_CONTENT_DIR ), '', content_url() );
 	$url_host = wp_parse_url( $url, PHP_URL_HOST );
 
 	// relative path.
