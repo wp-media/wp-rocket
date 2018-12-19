@@ -340,7 +340,7 @@ function get_rocket_i18n_subdomains() {
 		case 'wpml':
 			$option = get_option( 'icl_sitepress_settings' );
 
-			if ( 2 === (int) $option['language_negotiation_type'] || 1 === (int) $option['language_negotiation_type'] && true === $option['urls']['directory_for_default_language'] ) {
+			if ( 2 === (int) $option['language_negotiation_type'] ) {
 				return get_rocket_i18n_uri();
 			}
 			break;
