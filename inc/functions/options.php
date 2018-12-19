@@ -176,6 +176,12 @@ function get_rocket_purge_cron_interval() {
  * @return string A pipe separated list of rejected uri.
  */
 function get_rocket_cache_reject_uri() {
+	static $uris;
+
+	if ( $uris ) {
+		return $uris;
+	}
+
 	$uris      = get_rocket_option( 'cache_reject_uri', array() );
 	$home_root = rocket_get_home_dirname();
 
@@ -642,11 +648,14 @@ function rocket_get_home_dirname() {
  * @return string
  */
 function rocket_get_main_home_url() {
+	global $wpml_url_filters;
 	static $root_url;
 
 	if ( isset( $root_url ) ) {
 		return $root_url;
 	}
+
+	remove_filter( 'home_url', [ $wpml_url_filters, 'home_url_filter' ], -10 );
 
 	if ( ! is_multisite() || is_main_site() ) {
 		$root_url = home_url( '/' );
@@ -661,6 +670,8 @@ function rocket_get_main_home_url() {
 	} else {
 		$root_url = home_url( '/' );
 	}
+
+	add_filter( 'home_url', [ $wpml_url_filters, 'home_url_filter' ], -10, 4 );
 
 	return $root_url;
 }
