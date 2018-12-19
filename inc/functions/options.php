@@ -604,6 +604,7 @@ function rocket_check_key() {
 	Logger::info( 'License validation succeeded.', [ 'license validation process' ] );
 
 	set_transient( WP_ROCKET_SLUG, $rocket_options );
+	delete_transient( 'rocket_check_key_errors' );
 
 	return $rocket_options;
 }
