@@ -478,3 +478,33 @@ function get_rocket_i18n_translated_post_urls( $post_id, $post_type = 'page', $r
 
 	return $urls;
 }
+
+/**
+ * Returns the home URL, without WPML filters if the plugin is active
+ *
+ * @since 3.2.4
+ * @author Remy Perona
+ *
+ * @param string $path Path to add to the home URL.
+ * @return string
+ */
+function rocket_get_home_url( $path = '' ) {
+	global $wpml_url_filters;
+	static $home_url;
+
+	if ( $home_url ) {
+		return $home_url;
+	}
+
+	if ( 'wpml' !== rocket_has_i18n() ) {
+		return home_url( $path );
+	}
+
+	remove_filter( 'home_url', [ $wpml_url_filters, 'home_url_filter' ], -10 );
+
+	$home_url = home_url( $path );
+
+	add_filter( 'home_url', [ $wpml_url_filters, 'home_url_filter' ], -10, 4 );
+
+	return $home_url;
+}

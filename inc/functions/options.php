@@ -648,17 +648,14 @@ function rocket_get_home_dirname() {
  * @return string
  */
 function rocket_get_main_home_url() {
-	global $wpml_url_filters;
 	static $root_url;
 
 	if ( isset( $root_url ) ) {
 		return $root_url;
 	}
 
-	remove_filter( 'home_url', [ $wpml_url_filters, 'home_url_filter' ], -10 );
-
 	if ( ! is_multisite() || is_main_site() ) {
-		$root_url = home_url( '/' );
+		$root_url = rocket_get_home_url( '/' );
 		return $root_url;
 	}
 
@@ -668,10 +665,8 @@ function rocket_get_main_home_url() {
 		$root_url = set_url_scheme( 'https://' . $current_network->domain . $current_network->path );
 		$root_url = trailingslashit( $root_url );
 	} else {
-		$root_url = home_url( '/' );
+		$root_url = rocket_get_home_url( '/' );
 	}
-
-	add_filter( 'home_url', [ $wpml_url_filters, 'home_url_filter' ], -10, 4 );
 
 	return $root_url;
 }

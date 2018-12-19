@@ -319,13 +319,7 @@ function rocket_maybe_generate_advanced_cache_file() {
  * @since 2.6.5
  */
 function rocket_maybe_generate_config_files() {
-	global $wpml_url_filters;
-
-	remove_filter( 'home_url', [ $wpml_url_filters, 'home_url_filter' ], -10 );
-
-	$home = get_rocket_parse_url( home_url() );
-
-	add_filter( 'home_url', [ $wpml_url_filters, 'home_url_filter' ], -10, 4 );
+	$home = get_rocket_parse_url( rocket_get_home_url() );
 
 	$path = ( ! empty( $home['path'] ) ) ? str_replace( '/', '.', untrailingslashit( $home['path'] ) ) : '';
 
