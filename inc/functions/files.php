@@ -88,6 +88,8 @@ function rocket_generate_advanced_cache_file() {
  * @return array Names of all config files & The content that will be printed
  */
 function get_rocket_config_file() {
+	global $wpml_url_filters;
+
 	$options = get_option( WP_ROCKET_SLUG );
 
 	if ( ! $options ) {
@@ -161,11 +163,15 @@ function get_rocket_config_file() {
 		$buffer .= '$rocket_url_no_dots = \'1\';';
 	}
 
-	$config_files_path = array();
-	$urls              = array( home_url() );
+	remove_filter( 'home_url', [ $wpml_url_filters, 'home_url_filter' ], -10 );
 
+	$config_files_path = [];
+	$urls              = [ home_url() ];
+
+	add_filter( 'home_url', [ $wpml_url_filters, 'home_url_filter' ], -10, 4 );
 	// Check if a translation plugin is activated and this configuration is in subdomain.
 	$subdomains = get_rocket_i18n_subdomains();
+
 	if ( $subdomains ) {
 		$urls = $subdomains;
 	}
@@ -195,7 +201,7 @@ function get_rocket_config_file() {
 	*/
 	$buffer = apply_filters( 'rocket_config_file', $buffer, $config_files_path );
 
-	return array( $config_files_path, $buffer );
+	return [ $config_files_path, $buffer ];
 }
 
 /**
