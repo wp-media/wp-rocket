@@ -147,7 +147,7 @@ function rocket_cdn_images( $html ) {
 
 		$cnames             = array_flip( $cnames );
 		$home_url           = home_url( '/' );
-		$wp_content_dirname = str_replace( $home_url, '', WP_CONTENT_URL );
+		$wp_content_dirname = str_replace( $home_url, '', content_url() );
 
 		$custom_media_uploads_dirname = '';
 		$uploads_info                 = wp_upload_dir();
