@@ -85,11 +85,9 @@ function rocket_clean_post( $post_id ) {
 	if ( 'wpml' === $i18n_plugin && ! rocket_is_plugin_active( 'woocommerce-multilingual/wpml-woocommerce.php' ) ) {
 		// WPML.
 		$lang = $GLOBALS['sitepress']->get_language_for_element( $post_id, 'post_' . get_post_type( $post_id ) );
-	} elseif ( 'polylang' === $i18n_plugin ) {
+	} elseif ( 'polylang' === $i18n_plugin && function_exists( 'pll_get_post_language' ) ) {
 		// Polylang.
-		if ( function_exists( 'pll_get_post_language' ) ) {
-			$lang = pll_get_post_language( $post_id );
-		}
+		$lang = pll_get_post_language( $post_id );
 	}
 
 	// Get the permalink structure.
