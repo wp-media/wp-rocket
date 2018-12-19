@@ -7,10 +7,20 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  * @since 1.0
  */
 function rocket_need_api_key() {
+	$message = '';
+	$errors  = get_transient( 'rocket_check_key_errors' );
+
+	if ( false !== $errors ) {
+		foreach ( $errors as $error ) {
+			$message .= '<p>' . esc_html( $error ) . '</p>';
+		}
+	}
+
 	?>
 	<div class="notice notice-warning">
-		<p><strong><?php echo WP_ROCKET_PLUGIN_NAME; ?></strong>: <?php _e( 'There seems to be an issue with outgoing connections from your server. Resolve per documentation, or contact support.', 'rocket' ); ?>
+		<p><strong><?php echo esc_html( WP_ROCKET_PLUGIN_NAME ); ?></strong>: <?php esc_html_e( 'There seems to be an issue validating your license. You can see the error message(s) below. Resolve per documentation, or contact support.', 'rocket' ); ?>
 		</p>
+		<?php echo $message; ?>
 	</div>
 	<?php
 }
