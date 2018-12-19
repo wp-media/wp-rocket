@@ -329,10 +329,6 @@ function rocket_maybe_generate_config_files() {
 
 	$path = ( ! empty( $home['path'] ) ) ? str_replace( '/', '.', untrailingslashit( $home['path'] ) ) : '';
 
-	if ( 'wpml' === rocket_has_i18n() && false !== strpos( $path, 'all' ) ) {
-		return;
-	}
-
 	if ( ! file_exists( WP_ROCKET_CONFIG_PATH . strtolower( $home['host'] ) . $path . '.php' ) ) {
 		rocket_generate_config_file();
 	}
