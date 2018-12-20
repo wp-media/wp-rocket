@@ -18,7 +18,17 @@ function rocket_need_api_key() {
 
 	?>
 	<div class="notice notice-warning">
-		<p><strong><?php echo esc_html( WP_ROCKET_PLUGIN_NAME ); ?></strong>: <?php esc_html_e( 'There seems to be an issue validating your license. You can see the error message(s) below. Resolve per documentation, or contact support.', 'rocket' ); ?>
+		<p>
+		<?php
+		echo esc_html(
+			sprintf(
+				// translators: 1 and 2 can be…anything.
+				__( '%1$s: %2$s', 'rocket' ),
+				'<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>',
+				_n( 'There seems to be an issue validating your license. You can see the error message below. Resolve per documentation, or contact support.', 'There seems to be an issue validating your license. You can see the error messages below. Resolve per documentation, or contact support.', count( $errors ), 'rocket' )
+			)
+		);
+		?>
 		</p>
 		<?php echo $message; ?>
 	</div>
