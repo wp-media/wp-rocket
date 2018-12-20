@@ -33,7 +33,7 @@ class Sitemap extends Abstract_Preload {
 			 * @param string $sitemap_type  the sitemap identifier
 			 * @param string $sitemap_url sitemap URL to be crawler
 			*/
-			do_action( 'before_run_rocket_sitemap_preload', $sitemap_type, $sitemap_url );
+			do_action( 'before_run_rocket_sitemap_preload', $sitemap_type, $sitemap_url ); // WPCS: prefix ok.
 
 			$urls_group[] = $this->process_sitemap( $sitemap_url );
 
@@ -45,7 +45,7 @@ class Sitemap extends Abstract_Preload {
 			 * @param string $sitemap_type  the sitemap identifier
 			 * @param string $sitemap_url sitemap URL crawled
 			*/
-			do_action( 'after_run_rocket_sitemap_preload', $sitemap_type, $sitemap_url );
+			do_action( 'after_run_rocket_sitemap_preload', $sitemap_type, $sitemap_url ); // WPCS: prefix ok.
 		}
 
 		$urls_group = array_filter( $urls_group );
@@ -78,8 +78,8 @@ class Sitemap extends Abstract_Preload {
 	 * @author Remy Perona
 	 *
 	 * @param string $sitemap_url URL of the sitemap.
-	 * @param array  $urls An array of URLs.
-	 * @return array Empty array or array containing URLs
+	 * @param array  $urls        An array of URLs.
+	 * @return array
 	 */
 	public function process_sitemap( $sitemap_url, $urls = [] ) {
 		$tmp_urls = [];
@@ -92,20 +92,32 @@ class Sitemap extends Abstract_Preload {
 		 *
 		 * @param array $args Arguments for the request.
 		 */
-		$args = apply_filters( 'rocket_preload_sitemap_request_args', array(
-			'user-agent' => 'WP Rocket/Sitemaps',
-			'sslverify'  => apply_filters( 'https_local_ssl_verify', true ),
-		) );
+		$args = apply_filters(
+			'rocket_preload_sitemap_request_args',
+			[
+				'user-agent' => 'WP Rocket/Sitemaps',
+				'sslverify'  => apply_filters( 'https_local_ssl_verify', true ), // WPCS: prefix ok.
+			]
+		);
 
 		$sitemap = wp_remote_get( esc_url( $sitemap_url ), $args );
+		$errors  = get_transient( 'rocket_preload_errors' );
 
 		if ( is_wp_error( $sitemap ) ) {
+			// Translators: %1$s is a XML sitemap URL, %2$s is the error message.
+			$errors['errors'][] = sprintf( __( 'Could not gather links from %1$s because of the following error: %2$s', 'rocket' ), $sitemap_url, $sitemap->get_error_message() );
+
+			set_transient( 'rocket_preload_errors', $errors );
 			return [];
 		}
 
 		$xml_data = wp_remote_retrieve_body( $sitemap );
 
 		if ( empty( $xml_data ) ) {
+			// Translators: %1$s is a XML sitemap URL.
+			$errors['errors'][] = sprintf( __( 'Could not gather links from %1$s because the file is empty.', 'rocket' ), $sitemap_url );
+
+			set_transient( 'rocket_preload_errors', $errors );
 			return [];
 		}
 
@@ -114,7 +126,22 @@ class Sitemap extends Abstract_Preload {
 		$xml = simplexml_load_string( $xml_data );
 
 		if ( false === $xml ) {
+			$xml_errors = libxml_get_errors();
 			libxml_clear_errors();
+
+			foreach ( $xml_errors as $xml_error ) {
+				$message .= '<p>' . $xml_error . '</p>';
+			}
+
+			// Translators: %1$s is a XML sitemap URL.
+			$errors['errors'][] = sprintf(
+				// Translators: %1$s is a XML sitemap URL, %2$s is the error message.
+				_n( 'Could not gather links from %1$s because of the following error: %2$s', 'Could not gather links from %1$s because of the following errors: %2$s', count( $xml_errors ), 'rocket' ),
+				$sitemap_url,
+				$message
+			);
+
+			set_transient( 'rocket_preload_errors', $errors );
 			return [];
 		}
 
