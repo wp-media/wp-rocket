@@ -490,21 +490,26 @@ function get_rocket_i18n_translated_post_urls( $post_id, $post_type = 'page', $r
  */
 function rocket_get_home_url( $path = '' ) {
 	global $wpml_url_filters;
-	static $home_url;
+	static $home_url = [];
+	static $has_wpml;
 
-	if ( $home_url ) {
-		return $home_url;
+	if ( isset( $home_url[ $path ] ) ) {
+		return $home_url[ $path ];
 	}
 
-	if ( 'wpml' !== rocket_has_i18n() ) {
-		return home_url( $path );
+	if ( ! isset( $has_wpml ) ) {
+		$has_wpml = $wpml_url_filters && is_object( $wpml_url_filters ) && method_exists( $wpml_url_filters, 'home_url_filter' );
 	}
 
-	remove_filter( 'home_url', [ $wpml_url_filters, 'home_url_filter' ], -10 );
+	if ( $has_wpml ) {
+		remove_filter( 'home_url', [ $wpml_url_filters, 'home_url_filter' ], -10 );
+	}
 
-	$home_url = home_url( $path );
+	$home_url[ $path ] = home_url( $path );
 
-	add_filter( 'home_url', [ $wpml_url_filters, 'home_url_filter' ], -10, 4 );
+	if ( $has_wpml ) {
+		add_filter( 'home_url', [ $wpml_url_filters, 'home_url_filter' ], -10, 4 );
+	}
 
-	return $home_url;
+	return $home_url[ $path ];
 }
