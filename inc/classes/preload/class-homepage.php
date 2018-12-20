@@ -61,7 +61,21 @@ class Homepage extends Abstract_Preload {
 
 		$response = wp_remote_get( $url, $args );
 
+		$errors = get_transient( 'rocket_preload_errors' );
+
+		if ( is_wp_error( $response ) ) {
+			// Translators: %1$s is an URL, %2$s is the error message.
+			$errors['errors'][] = sprintf( __( 'Could not gather links on %1$s because of the following error: %2$s', 'rocket' ), $url, $response->get_error_message() );
+
+			set_transient( 'rocket_preload_errors', $errors );
+			return false;
+		}
+
 		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
+			// Translators: %1$s is an URL, %2$s is the HTTP response code.
+			$errors['errors'][] = sprintf( __( 'Could not gather links on %1$s because it returned the following response code: %2$s', 'rocket' ), $url, wp_remote_retrieve_response_code( $response ) );
+
+			set_transient( 'rocket_preload_errors', $errors );
 			return false;
 		}
 
