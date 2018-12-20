@@ -85,6 +85,11 @@ abstract class ActionScheduler {
 		self::$plugin_file = $plugin_file;
 		spl_autoload_register( array( __CLASS__, 'autoload' ) );
 
+		/**
+		 * Fires in the early stages of Action Scheduler init hook.
+		 */
+		do_action( 'action_scheduler_pre_init' );
+
 		$store = self::store();
 		add_action( 'init', array( $store, 'init' ), 1, 0 );
 
