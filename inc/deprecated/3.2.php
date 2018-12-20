@@ -331,3 +331,20 @@ if ( ! function_exists( 'run_rocket_bot_after_clean_term' ) ) {
 		}
 	}
 }
+
+if ( ! function_exists( 'rocket_clean_directory_for_default_language_on_wpml' ) ) {
+	/**
+	 * Conflict with WPML: Clear the homepage when the "Use directory for default language" option is activated.
+	 *
+	 * @since 2.6.8
+	 * @deprecated 3.2.4
+	 */
+	function rocket_clean_directory_for_default_language_on_wpml() {
+		_deprecated_function( __FUNCTION__, '3.2.4' );
+		$option = get_option( 'icl_sitepress_settings' );
+
+		if ( 1 === $option['language_negotiation_type'] && $option['urls']['directory_for_default_language'] ) {
+			rocket_clean_files( home_url() );
+		}
+	}
+}
