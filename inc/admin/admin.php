@@ -319,7 +319,8 @@ function rocket_maybe_generate_advanced_cache_file() {
  * @since 2.6.5
  */
 function rocket_maybe_generate_config_files() {
-	$home = get_rocket_parse_url( home_url() );
+	$home = get_rocket_parse_url( rocket_get_home_url() );
+
 	$path = ( ! empty( $home['path'] ) ) ? str_replace( '/', '.', untrailingslashit( $home['path'] ) ) : '';
 
 	if ( ! file_exists( WP_ROCKET_CONFIG_PATH . strtolower( $home['host'] ) . $path . '.php' ) ) {

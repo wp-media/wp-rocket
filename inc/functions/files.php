@@ -161,11 +161,12 @@ function get_rocket_config_file() {
 		$buffer .= '$rocket_url_no_dots = \'1\';';
 	}
 
-	$config_files_path = array();
-	$urls              = array( home_url() );
+	$config_files_path = [];
+	$urls              = [ rocket_get_home_url() ];
 
 	// Check if a translation plugin is activated and this configuration is in subdomain.
 	$subdomains = get_rocket_i18n_subdomains();
+
 	if ( $subdomains ) {
 		$urls = $subdomains;
 	}
@@ -195,7 +196,7 @@ function get_rocket_config_file() {
 	*/
 	$buffer = apply_filters( 'rocket_config_file', $buffer, $config_files_path );
 
-	return array( $config_files_path, $buffer );
+	return [ $config_files_path, $buffer ];
 }
 
 /**
