@@ -236,10 +236,10 @@ class Preload_Subscriber implements Subscriber_Interface {
 
 		if ( false === $running ) {
 			return;
-		}
+		}   
 
-		// translators: %1$d = Number of pages preloaded.
-		$message = '<p>' . sprintf( __( 'Preload: %1$d uncached pages have now been preloaded. (refresh to see progress)', 'rocket' ), $running ) . '</p>';
+		// translators: %1$s = Number of pages preloaded.
+		$message = '<p>' . sprintf( _n( 'Preload: %1$s uncached page has now been preloaded. (refresh to see progress)', 'Preload: %1$s uncached pages have now been preloaded. (refresh to see progress)', $running, 'rocket' ), number_format_i18n( $running ) ) . '</p>';
 
 		$errors = get_transient( 'rocket_preload_errors' );
 
