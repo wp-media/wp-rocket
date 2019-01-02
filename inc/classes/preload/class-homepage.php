@@ -59,9 +59,10 @@ class Homepage extends Abstract_Preload {
 			]
 		);
 
-		$response = wp_remote_get( $url, $args );
-
-		$errors = get_transient( 'rocket_preload_errors' );
+		$response         = wp_remote_get( $url, $args );
+		$errors           = get_transient( 'rocket_preload_errors' );
+		$errors           = is_array( $errors ) ? $errors : [];
+		$errors['errors'] = isset( $errors['errors'] ) && is_array( $errors['errors'] ) ? $errors['errors'] : [];
 
 		if ( is_wp_error( $response ) ) {
 			// Translators: %1$s is an URL, %2$s is the error message.

@@ -100,8 +100,10 @@ class Sitemap extends Abstract_Preload {
 			]
 		);
 
-		$sitemap = wp_remote_get( esc_url( $sitemap_url ), $args );
-		$errors  = get_transient( 'rocket_preload_errors' );
+		$sitemap          = wp_remote_get( esc_url( $sitemap_url ), $args );
+		$errors           = get_transient( 'rocket_preload_errors' );
+		$errors           = is_array( $errors ) ? $errors : [];
+		$errors['errors'] = isset( $errors['errors'] ) && is_array( $errors['errors'] ) ? $errors['errors'] : [];
 
 		if ( is_wp_error( $sitemap ) ) {
 			// Translators: %1$s is a XML sitemap URL, %2$s is the error message.
