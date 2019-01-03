@@ -161,6 +161,7 @@ class Preload_Subscriber implements Subscriber_Interface {
 			'analytics_enabled'           => true,
 			'sucury_waf_cache_sync'       => true,
 			'sucury_waf_api_key'          => true,
+			'domain_cache_invalidation'   => true,
 		];
 
 		// Create 2 arrays to compare.

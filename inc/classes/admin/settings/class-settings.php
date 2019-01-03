@@ -194,6 +194,9 @@ class Settings {
 		$input['cache_mobile']            = ! empty( $input['cache_mobile'] ) ? 1 : 0;
 		$input['do_caching_mobile_files'] = ! empty( $input['do_caching_mobile_files'] ) ? 1 : 0;
 
+		// Option: Domain Cache Invalidation
+		$input['invalidate_domain_cache'] = ! empty( $input['invalidate_domain_cache'] ) ? 1 : 0;
+
 		$input['minify_google_fonts'] = ! empty( $input['minify_google_fonts'] ) ? 1 : 0;
 		$input['minify_html']         = ! empty( $input['minify_html'] ) ? 1 : 0;
 

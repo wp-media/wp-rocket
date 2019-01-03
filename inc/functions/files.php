@@ -745,11 +745,27 @@ function rocket_clean_domain( $lang = '' ) {
 		*/
 		do_action( 'before_rocket_clean_domain', $root, $lang, $url );
 
+		$invalidate = get_rocket_option( 'invalidate_domain_cache' );
+		/** 
+		 * Delete the trailing slash if invalidation is enabled & clearing all languages
+		 * This way, we clear the entire domain at once and don't need to even look into the directories
+		*/
+		if( $invalidate && ! $lang ) {
+			$root = untrailingslashit( $root );
+		}
+		
 		// Delete cache domain files.
 		$dirs = glob( $root . '*', GLOB_NOSORT );
 		if ( $dirs ) {
 			foreach ( $dirs as $dir ) {
-				rocket_rrmdir( $dir, get_rocket_i18n_to_preserve( $lang ) );
+				if( $invalidate) {
+					if( ! rocket_invalidate_dir( $dir ) ) {
+						// Failed to invalidate, fall back to rocket_rrmdir
+						rocket_rrmdir( $dir, get_rocket_i18n_to_preserve( $lang ) );
+					}
+				} else {
+					rocket_rrmdir( $dir, get_rocket_i18n_to_preserve( $lang ) );
+				}
 			}
 		}
 
@@ -931,6 +947,56 @@ function rocket_clean_cache_dir() {
 	 * @since 2.6.8
 	*/
 	do_action( 'after_rocket_clean_cache_dir' );
+}
+
+/**
+ * Invalidate directory by renaming it and queueing the deletion with WP Background Process
+ * 
+ * @author dotSILENT
+ *
+ * @param string $dir File/Directory to invalidate.
+ * @return bool
+ */
+function rocket_invalidate_dir( $dir ) {
+	$dir = untrailingslashit( $dir );
+
+	$parentDir = dirname( $dir );
+	// Format of new directory name: invalid_UNIQIDHASH_dirname
+	$newName = $parentDir . '/' . 'invalid_' . uniqid() . '_' . basename( $dir );
+
+	/**
+	 * Fires before the directory is invalidated
+	 * 
+	 * @since 3.2.3
+	 * @author dotSILENT
+	 * 
+	 * @param string $dir File/Directory to invalidate
+	 * @param string $newName The new name (full path) after invalidation
+	 */
+	do_action( 'before_rocket_invalidate_dir', $dir, $newName );
+
+	if( ! rocket_direct_filesystem()->is_dir( $dir ) ) {
+		// just delete it since it's a single file
+		rocket_direct_filesystem()->delete( $dir );
+		return true;
+	}
+
+	if( ! rename($dir, $newName) ) {
+		// Failed to rename, fall back to default behaviour
+		return false;
+	}
+
+	/**
+	 * Fires after the directory was invalidated
+	 * 
+	 * @since 3.2.3
+	 * @author dotSILENT
+	 * 
+	 * @param string $dir File/Directory that was invalidated
+	 * @param string $newName The new invalidated name (full path) of the directory
+	 */
+	do_action( 'after_rocket_invalidate_dir', $dir, $newName );
+	return true;
 }
 
 /**
