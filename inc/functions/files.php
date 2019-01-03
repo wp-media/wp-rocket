@@ -746,7 +746,14 @@ function rocket_clean_domain( $lang = '' ) {
 		do_action( 'before_rocket_clean_domain', $root, $lang, $url );
 
 		$invalidate = get_rocket_option( 'invalidate_domain_cache' );
-
+		/** 
+		 * Delete the trailing slash if invalidation is enabled & clearing all languages
+		 * This way, we clear the entire domain at once and don't need to even look into the directories
+		*/
+		if( $invalidate && ! $lang ) {
+			$root = untrailingslashit( $root );
+		}
+		
 		// Delete cache domain files.
 		$dirs = glob( $root . '*', GLOB_NOSORT );
 		if ( $dirs ) {

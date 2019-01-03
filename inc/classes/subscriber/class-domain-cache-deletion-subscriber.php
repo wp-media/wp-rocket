@@ -62,7 +62,8 @@ class Domain_Cache_Deletion_Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function delete_after_invalidate_dir( $oldName, $newName ) {
-		$this->invalidated_dirs[] = basename( $newName ); // we don't need to store the entire path, it's also safer this way
+		// Store only the path relative to WP_ROCKET_CACHE_PATH, it's safer this way because the process can only delete wp-rocket relative paths
+		$this->invalidated_dirs[] = str_replace( WP_ROCKET_CACHE_PATH, '', $newName );
 	}
 
 	/**
