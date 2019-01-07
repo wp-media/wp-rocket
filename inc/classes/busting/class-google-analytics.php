@@ -62,6 +62,16 @@ class Google_Analytics extends Abstract_Busting {
 	protected $is_replaced = false;
 
 	/**
+	 * Filesystem object.
+	 *
+	 * @var    object
+	 * @since  3.2.4
+	 * @access protected
+	 * @author Grégory Viguier
+	 */
+	protected $filesystem = false;
+
+	/**
 	 * Constructor.
 	 *
 	 * @since  3.1
@@ -74,6 +84,7 @@ class Google_Analytics extends Abstract_Busting {
 	public function __construct( $busting_path, $busting_url ) {
 		$this->busting_path = $busting_path . 'google-tracking/';
 		$this->busting_url  = $busting_url . 'google-tracking/';
+		$this->filesystem   = \rocket_direct_filesystem();
 	}
 
 	/** ----------------------------------------------------------------------------------------- */
@@ -439,14 +450,13 @@ class Google_Analytics extends Abstract_Busting {
 	 * @return bool|bool A list of file names (as array keys) and versions (as array values). False on failure.
 	 */
 	private function get_all_files() {
-		$filesystem = \rocket_direct_filesystem();
-		$dir_path   = \rtrim( $this->busting_path, '\\/' );
+		$dir_path = \rtrim( $this->busting_path, '\\/' );
 
-		if ( ! $filesystem->exists( $dir_path ) ) {
+		if ( ! $this->filesystem->exists( $dir_path ) ) {
 			return [];
 		}
 
-		if ( ! $filesystem->is_readable( $dir_path ) ) {
+		if ( ! $this->filesystem->is_readable( $dir_path ) ) {
 			Logger::error(
 				'Directory is not readable.',
 				[
@@ -457,7 +467,7 @@ class Google_Analytics extends Abstract_Busting {
 			return false;
 		}
 
-		$dir = $filesystem->dirlist( $dir_path );
+		$dir = $this->filesystem->dirlist( $dir_path );
 
 		if ( false === $dir ) {
 			Logger::error(
@@ -509,12 +519,11 @@ class Google_Analytics extends Abstract_Busting {
 			return true;
 		}
 
-		$filesystem  = \rocket_direct_filesystem();
 		$has_deleted = false;
 		$error_paths = [];
 
 		foreach ( $files as $file_name ) {
-			if ( ! $filesystem->delete( $this->busting_path . $file_name, false, 'f' ) ) {
+			if ( ! $this->filesystem->delete( $this->busting_path . $file_name, false, 'f' ) ) {
 				$error_paths[] = $this->busting_path . $file_name;
 			} else {
 				$has_deleted = true;
@@ -579,13 +588,11 @@ class Google_Analytics extends Abstract_Busting {
 	 * @return bool
 	 */
 	private function is_busting_dir_writable() {
-		$filesystem = \rocket_direct_filesystem();
-
-		if ( ! $filesystem->exists( $this->busting_path ) ) {
+		if ( ! $this->filesystem->exists( $this->busting_path ) ) {
 			\rocket_mkdir_p( $this->busting_path );
 		}
 
-		if ( ! $filesystem->is_writable( $this->busting_path ) ) {
+		if ( ! $this->filesystem->is_writable( $this->busting_path ) ) {
 			Logger::error(
 				'Directory is not writable.',
 				[
@@ -636,9 +643,7 @@ class Google_Analytics extends Abstract_Busting {
 	 * @return string|bool       The contents on success, false on failure.
 	 */
 	private function get_file_contents( $file_path ) {
-		$filesystem = \rocket_direct_filesystem();
-
-		if ( ! $filesystem->exists( $file_path ) ) {
+		if ( ! $this->filesystem->exists( $file_path ) ) {
 			Logger::error(
 				'Local file does not exist.',
 				[
@@ -649,7 +654,7 @@ class Google_Analytics extends Abstract_Busting {
 			return false;
 		}
 
-		if ( ! $filesystem->is_readable( $file_path ) ) {
+		if ( ! $this->filesystem->is_readable( $file_path ) ) {
 			Logger::error(
 				'Local file is not readable.',
 				[
@@ -660,7 +665,7 @@ class Google_Analytics extends Abstract_Busting {
 			return false;
 		}
 
-		$content = $filesystem->get_contents( $file_path );
+		$content = $this->filesystem->get_contents( $file_path );
 
 		if ( ! $content ) {
 			Logger::error(
