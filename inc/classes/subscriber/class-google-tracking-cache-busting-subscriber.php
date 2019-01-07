@@ -134,7 +134,7 @@ class Google_Tracking_Cache_Busting_Subscriber implements Subscriber_Interface {
 
 		$processor = $this->busting_factory->type( 'ga' );
 
-		return $processor->refresh_save( 'https://www.google-analytics.com/analytics.js' );
+		return $processor->refresh_save( $processor->get_url() );
 	}
 
 	/**
