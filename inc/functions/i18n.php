@@ -263,7 +263,7 @@ function get_rocket_i18n_uri() {
 		$pll = function_exists( 'PLL' ) ? PLL() : $GLOBALS['polylang'];
 
 		if ( ! empty( $pll ) && is_object( $pll ) ) {
-			$urls = wp_list_pluck( $pll->model->get_languages_list(), 'home_url' );
+			$urls = wp_list_pluck( $pll->model->get_languages_list(), 'search_url' );
 		}
 	}
 
