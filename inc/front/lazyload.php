@@ -77,10 +77,10 @@ window.addEventListener(\'LazyLoad::Initialized\', function (e) {
 			lazyLoadInstance.update();
 		} );
 	} );
-	
+
 	var b      = document.getElementsByTagName("body")[0];
 	var config = { childList: true, subtree: true };
-	
+
 	observer.observe(b, config);
 }, false);
 </script>';
@@ -408,7 +408,7 @@ function rocket_lazyload_iframes( $html ) {
 		return $html;
 	}
 
-	preg_match_all( '/<iframe.*\ssrc=["|\'](.+)["|\'].*(>\s*<\/iframe>)/iU', $html, $matches, PREG_SET_ORDER );
+	preg_match_all( '@<iframe(?<atts>\s.+)>.*</iframe>@iUs', $html, $matches, PREG_SET_ORDER );
 
 	if ( empty( $matches ) ) {
 		return $html;
@@ -430,27 +430,36 @@ function rocket_lazyload_iframes( $html ) {
 			continue;
 		}
 
-		if ( get_rocket_option( 'lazyload_youtube' ) && false !== strpos( $iframe[1], 'youtube' ) ) {
-			$youtube_id = rocket_lazyload_get_youtube_id_from_url( $iframe[1] );
+		// Given the previous regex pattern, $iframe['atts'] starts with a whitespace character.
+		if ( ! preg_match( '@\ssrc\s*=\s*(\'|")(?<src>.*)\1@iUs', $iframe['atts'], $atts ) ) {
+			continue;
+		}
 
-			if ( ! $youtube_id ) {
+		$iframe['src'] = trim( $atts['src'] );
+
+		if ( '' === $iframe['src'] ) {
+			continue;
+		}
+
+		if ( get_rocket_option( 'lazyload_youtube' ) ) {
+			$youtube_id = rocket_lazyload_get_youtube_id_from_url( $iframe['src'] );
+
+			if ( $youtube_id ) {
+				$query = wp_parse_url( htmlspecialchars_decode( $iframe['src'] ), PHP_URL_QUERY );
+
+				/**
+				 * Filter the LazyLoad HTML output on Youtube iframes
+				 *
+				 * @since 2.11
+				 *
+				 * @param array $html Output that will be printed.
+				 */
+				$youtube_lazyload  = apply_filters( 'rocket_lazyload_youtube_html', '<div class="rll-youtube-player" data-id="' . esc_attr( $youtube_id ) . '" data-query="' . esc_attr( $query ) . '"></div>' );
+				$youtube_lazyload .= '<noscript>' . $iframe[0] . '</noscript>';
+
+				$html = str_replace( $iframe[0], $youtube_lazyload, $html );
 				continue;
 			}
-
-			$query = wp_parse_url( htmlspecialchars_decode( $iframe[1] ), PHP_URL_QUERY );
-
-			/**
-			 * Filter the LazyLoad HTML output on Youtube iframes
-			 *
-			 * @since 2.11
-			 *
-			 * @param array $html Output that will be printed.
-			 */
-			$youtube_lazyload  = apply_filters( 'rocket_lazyload_youtube_html', '<div class="rll-youtube-player" data-id="' . esc_attr( $youtube_id ) . '" data-query="' . esc_attr( $query ) . '"></div>' );
-			$youtube_lazyload .= '<noscript>' . $iframe[0] . '</noscript>';
-
-			$html = str_replace( $iframe[0], $youtube_lazyload, $html );
-			continue;
 		}
 
 		/**
@@ -462,10 +471,8 @@ function rocket_lazyload_iframes( $html ) {
 		 */
 		$placeholder = apply_filters( 'rocket_lazyload_placeholder', 'about:blank' );
 
-		$iframe_noscript = '<noscript>' . $iframe[0] . '</noscript>';
-
-		$iframe_lazyload = str_replace( $iframe[1], $placeholder, $iframe[0] );
-		$iframe_lazyload = str_replace( $iframe[2], ' data-rocket-lazyload="fitvidscompatible" data-lazy-src="' . esc_url( $iframe[1] ) . '"' . $iframe[2], $iframe_lazyload );
+		$placeholder_atts = str_replace( $iframe['src'], $placeholder, $iframe['atts'] );
+		$iframe_lazyload  = str_replace( $iframe['atts'], $placeholder_atts . ' data-rocket-lazyload="fitvidscompatible" data-lazy-src="' . esc_url( $iframe['src'] ) . '"', $iframe[0] );
 
 		/**
 		 * Filter the LazyLoad HTML output on iframes
@@ -475,7 +482,7 @@ function rocket_lazyload_iframes( $html ) {
 		 * @param array $html Output that will be printed.
 		 */
 		$iframe_lazyload  = apply_filters( 'rocket_lazyload_iframe_html', $iframe_lazyload );
-		$iframe_lazyload .= $iframe_noscript;
+		$iframe_lazyload .= '<noscript>' . $iframe[0] . '</noscript>';
 
 		$html = str_replace( $iframe[0], $iframe_lazyload, $html );
 	}
@@ -534,7 +541,7 @@ add_filter( 'rocket_lazyload_html', 'rocket_lazyload_on_srcset' );
  * @return string     Youtube video id or false if none found.
  */
 function rocket_lazyload_get_youtube_id_from_url( $url ) {
-	$pattern = '#^(?:https?://)?(?:www\.)?(?:youtu\.be|youtube\.com|youtube-nocookie\.com)/(?:embed/|v/|watch/?\?v=)([\w-]{11})#iU';
+	$pattern = '#^(?:https?:)?(?://)?(?:www\.)?(?:youtu\.be|youtube\.com|youtube-nocookie\.com)/(?:embed/|v/|watch/?\?v=)([\w-]{11})#iU';
 	$result  = preg_match( $pattern, $url, $matches );
 
 	if ( ! $result ) {

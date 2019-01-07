@@ -486,7 +486,7 @@ class Logger {
 		}
 
 		// Save the file.
-		$chmod = defined( 'FS_CHMOD_FILE' ) ? FS_CHMOD_FILE : 0644;
+		$chmod = rocket_get_filesystem_perms( 'file' );
 		$filesystem->put_contents( $file_path, $content, $chmod );
 	}
 

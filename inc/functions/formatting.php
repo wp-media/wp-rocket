@@ -319,13 +319,13 @@ function rocket_realpath( $file ) {
  */
 function rocket_url_to_path( $url, $hosts = '' ) {
 	$root_dir = trailingslashit( dirname( WP_CONTENT_DIR ) );
-	$root_url = str_replace( wp_basename( WP_CONTENT_DIR ), '', WP_CONTENT_URL );
+	$root_url = str_replace( wp_basename( WP_CONTENT_DIR ), '', content_url() );
 	$url_host = wp_parse_url( $url, PHP_URL_HOST );
 
 	// relative path.
 	if ( null === $url_host ) {
 		$subdir_levels = substr_count( preg_replace( '/https?:\/\//', '', site_url() ), '/' );
-		$url           = site_url() . str_repeat( '/..', $subdir_levels ) . $url;
+		$url           = trailingslashit( site_url() . str_repeat( '/..', $subdir_levels ) ) . ltrim( $url, '/' );
 	}
 
 	// CDN.

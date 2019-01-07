@@ -7,10 +7,30 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  * @since 1.0
  */
 function rocket_need_api_key() {
+	$message = '';
+	$errors  = get_transient( 'rocket_check_key_errors' );
+
+	if ( false !== $errors ) {
+		foreach ( $errors as $error ) {
+			$message .= '<p>' . esc_html( $error ) . '</p>';
+		}
+	}
+
 	?>
 	<div class="notice notice-warning">
-		<p><strong><?php echo WP_ROCKET_PLUGIN_NAME; ?></strong>: <?php _e( 'There seems to be an issue with outgoing connections from your server. Resolve per documentation, or contact support.', 'rocket' ); ?>
+		<p>
+		<?php
+		echo esc_html(
+			sprintf(
+				// translators: 1 and 2 can be…anything.
+				__( '%1$s: %2$s', 'rocket' ),
+				'<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>',
+				_n( 'There seems to be an issue validating your license. You can see the error message below. Resolve per documentation, or contact support.', 'There seems to be an issue validating your license. You can see the error messages below. Resolve per documentation, or contact support.', count( $errors ), 'rocket' )
+			)
+		);
+		?>
 		</p>
+		<?php echo $message; ?>
 	</div>
 	<?php
 }
@@ -311,6 +331,53 @@ function rocket_allow_json_mime_type( $wp_get_mime_types ) {
 	$wp_get_mime_types['json'] = 'application/json';
 
 	return $wp_get_mime_types;
+}
+
+/**
+ * Forces the correct file type for JSON file if the WP checks is incorrect
+ *
+ * @since 3.2.3.1
+ * @author Gregory Viguier
+ *
+ * @param array  $wp_check_filetype_and_ext File data array containing 'ext', 'type', and
+ *                                         'proper_filename' keys.
+ * @param string $file                     Full path to the file.
+ * @param string $filename                 The name of the file (may differ from $file due to
+ *                                         $file being in a tmp directory).
+ * @param array  $mimes                     Key is the file extension with value as the mime type.
+ * @return array
+ */
+function rocket_check_json_filetype( $wp_check_filetype_and_ext, $file, $filename, $mimes ) {
+	if ( ! empty( $wp_check_filetype_and_ext['ext'] ) && ! empty( $wp_check_filetype_and_ext['type'] ) ) {
+		return $wp_check_filetype_and_ext;
+	}
+
+	$wp_filetype = wp_check_filetype( $filename, $mimes );
+
+	if ( 'json' !== $wp_filetype['ext'] ) {
+		return $wp_check_filetype_and_ext;
+	}
+
+	if ( empty( $wp_filetype['type'] ) ) {
+		// In case some other filter messed it up.
+		$wp_filetype['type'] = 'application/json';
+	}
+
+	if ( ! extension_loaded( 'fileinfo' ) ) {
+		return $wp_check_filetype_and_ext;
+	}
+
+	$finfo     = finfo_open( FILEINFO_MIME_TYPE );
+	$real_mime = finfo_file( $finfo, $file );
+	finfo_close( $finfo );
+
+	if ( 'text/plain' !== $real_mime ) {
+		return $wp_check_filetype_and_ext;
+	}
+
+	$wp_check_filetype_and_ext = array_merge( $wp_check_filetype_and_ext, $wp_filetype );
+
+	return $wp_check_filetype_and_ext;
 }
 
 /**

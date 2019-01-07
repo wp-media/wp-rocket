@@ -176,6 +176,12 @@ function get_rocket_purge_cron_interval() {
  * @return string A pipe separated list of rejected uri.
  */
 function get_rocket_cache_reject_uri() {
+	static $uris;
+
+	if ( $uris ) {
+		return $uris;
+	}
+
 	$uris      = get_rocket_option( 'cache_reject_uri', array() );
 	$home_root = rocket_get_home_dirname();
 
@@ -510,72 +516,103 @@ function rocket_valid_key() {
  * @since 2.9.7 Remove arguments ($type & $data).
  * @since 2.9.7 Stop to auto-check the validation each 1 & 30 days.
  * @since 2.2 The function do the live check and update the option.
+ *
+ * @return bool|array
  */
 function rocket_check_key() {
 	// Recheck the license.
 	$return = rocket_valid_key();
 
-	if ( ! rocket_valid_key() ) {
-		Logger::info( 'LICENSE VALIDATION PROCESS STARTED.', [ 'license validation process' ] );
-
-		$response = wp_remote_get(
-			WP_ROCKET_WEB_VALID, array(
-				'timeout' => 30,
-			)
-		);
-
-		$body           = wp_remote_retrieve_body( $response );
-		$json           = json_decode( $body );
-		$rocket_options = array();
-
-		if ( $json ) {
-			$rocket_options['consumer_key']   = $json->data->consumer_key;
-			$rocket_options['consumer_email'] = $json->data->consumer_email;
-
-			if ( $json->success ) {
-				$rocket_options['secret_key'] = $json->data->secret_key;
-
-				if ( ! get_rocket_option( 'license' ) ) {
-					$rocket_options['license'] = '1';
-				}
-
-				Logger::info( 'License validation succeeded.', [ 'license validation process' ] );
-			} else {
-				$messages = array(
-					'BAD_LICENSE' => __( 'Your license is not valid.', 'rocket' ),
-					'BAD_NUMBER'  => __( 'You cannot add more websites. Upgrade your account.', 'rocket' ),
-					'BAD_SITE'    => __( 'This website is not allowed.', 'rocket' ),
-					'BAD_KEY'     => __( 'This license key is not accepted.', 'rocket' ),
-				);
-
-				$rocket_options['secret_key'] = '';
-
-				add_settings_error( 'general', 'settings_updated', $messages[ $json->data->reason ], 'error' );
-
-				Logger::error( 'License validation failed.', [
-					'license validation process',
-					'response_error' => $json->data->reason,
-				] );
-			}
-
-			set_transient( WP_ROCKET_SLUG, $rocket_options );
-			$return = (array) $rocket_options;
-		} elseif ( is_wp_error( $response ) ) {
-			Logger::error( 'License validation failed.', [
-				'license validation process',
-				'request_error' => $response->get_error_messages(),
-			] );
-		} elseif ( '' !== $body ) {
-			Logger::error( 'License validation failed.', [
-				'license validation process',
-				'response_body' => $body,
-			] );
-		} else {
-			Logger::error( 'License validation failed. No body available in response.', [ 'license validation process' ] );
-		}
+	if ( $return ) {
+		return $return;
 	}
 
-	return $return;
+	Logger::info( 'LICENSE VALIDATION PROCESS STARTED.', [ 'license validation process' ] );
+
+	$response = wp_remote_get(
+		WP_ROCKET_WEB_VALID,
+		[
+			'timeout' => 30,
+		]
+	);
+
+	if ( is_wp_error( $response ) ) {
+		Logger::error( 'License validation failed.', [
+			'license validation process',
+			'request_error' => $response->get_error_messages(),
+		] );
+
+		set_transient( 'rocket_check_key_errors', [ $response->get_error_messages() ] );
+
+		return $return;
+	}
+
+	$body = wp_remote_retrieve_body( $response );
+	$json = json_decode( $body );
+
+	if ( null === $json ) {
+		if ( '' !== $body ) {
+			Logger::error(
+				'License validation failed.',
+				[
+					'license validation process',
+					'response_body' => $body,
+				]
+			);
+
+			set_transient( 'rocket_check_key_errors', [ __( 'License validation failed. Unexpected response from the validation server.', 'rocket' ) ] );
+
+			return $return;
+		}
+
+		Logger::error( 'License validation failed. No body available in response.', [ 'license validation process' ] );
+
+		set_transient( 'rocket_check_key_errors', [ __( 'License validation failed. No body available in response.', 'rocket' ) ] );
+
+		return $return;
+	}
+
+	$rocket_options                   = [];
+	$rocket_options['consumer_key']   = $json->data->consumer_key;
+	$rocket_options['consumer_email'] = $json->data->consumer_email;
+
+	if ( ! $json->success ) {
+		$messages = array(
+			'BAD_LICENSE' => __( 'Your license is not valid.', 'rocket' ),
+			'BAD_NUMBER'  => __( 'You cannot add more websites. Upgrade your account.', 'rocket' ),
+			'BAD_SITE'    => __( 'This website is not allowed.', 'rocket' ),
+			'BAD_KEY'     => __( 'This license key is not accepted.', 'rocket' ),
+		);
+
+		$rocket_options['secret_key'] = '';
+
+		// Translators: %s = error message returned.
+		set_transient( 'rocket_check_key_errors', [ sprintf( __( 'License validation failed: %s', 'rocket' ), $messages[ $json->data->reason ] ) ] );
+
+		Logger::error(
+			'License validation failed.',
+			[
+				'license validation process',
+				'response_error' => $json->data->reason,
+			]
+		);
+
+		set_transient( WP_ROCKET_SLUG, $rocket_options );
+		return $rocket_options;
+	}
+
+	$rocket_options['secret_key'] = $json->data->secret_key;
+
+	if ( ! get_rocket_option( 'license' ) ) {
+		$rocket_options['license'] = '1';
+	}
+
+	Logger::info( 'License validation succeeded.', [ 'license validation process' ] );
+
+	set_transient( WP_ROCKET_SLUG, $rocket_options );
+	delete_transient( 'rocket_check_key_errors' );
+
+	return $rocket_options;
 }
 
 /**
@@ -649,7 +686,7 @@ function rocket_get_main_home_url() {
 	}
 
 	if ( ! is_multisite() || is_main_site() ) {
-		$root_url = home_url( '/' );
+		$root_url = rocket_get_home_url( '/' );
 		return $root_url;
 	}
 
@@ -659,7 +696,7 @@ function rocket_get_main_home_url() {
 		$root_url = set_url_scheme( 'https://' . $current_network->domain . $current_network->path );
 		$root_url = trailingslashit( $root_url );
 	} else {
-		$root_url = home_url( '/' );
+		$root_url = rocket_get_home_url( '/' );
 	}
 
 	return $root_url;
