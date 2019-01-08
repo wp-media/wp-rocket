@@ -18,7 +18,7 @@ if ( 'impreza' === strtolower( $current_theme->get( 'Name' ) ) || 'impreza' === 
 
 		return $excluded_js;
 	}
-    add_filter( 'rocket_exclude_js', 'rocket_exclude_js_impreza' );
-    add_filter( 'rocket_exclude_defer_js', 'rocket_exclude_js_impreza' );
-    add_filter( 'rocket_exclude_cache_busting', 'rocket_exclude_js_impreza' );
+	add_filter( 'rocket_exclude_js', 'rocket_exclude_js_impreza' );
+	add_filter( 'rocket_exclude_defer_js', 'rocket_exclude_js_impreza' );
+	add_filter( 'rocket_exclude_cache_busting', 'rocket_exclude_js_impreza' );
 }
