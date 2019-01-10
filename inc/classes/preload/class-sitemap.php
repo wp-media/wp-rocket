@@ -132,7 +132,9 @@ class Sitemap extends Abstract_Preload {
 			libxml_clear_errors();
 
 			foreach ( $xml_errors as $xml_error ) {
-				$message .= '<p>' . $xml_error . '</p>';
+				if ( isset( $xml_error->message ) ) {
+					$message .= '<p>' . $xml_error->message . '</p>';
+				}
 			}
 
 			// Translators: %1$s is a XML sitemap URL.
