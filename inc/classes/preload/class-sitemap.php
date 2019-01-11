@@ -136,21 +136,10 @@ class Sitemap extends Abstract_Preload {
 		$xml = simplexml_load_string( $xml_data );
 
 		if ( false === $xml ) {
-			$xml_errors = libxml_get_errors();
-			libxml_clear_errors();
-
-			foreach ( $xml_errors as $xml_error ) {
-				if ( isset( $xml_error->message ) ) {
-					$message .= '<p>' . $xml_error->message . '</p>';
-				}
-			}
-
-			// Translators: %1$s is a XML sitemap URL.
 			$errors['errors'][] = sprintf(
-				// Translators: %1$s is a XML sitemap URL, %2$s is the error message.
-				_n( 'Could not gather links from %1$s because of the following error: %2$s', 'Could not gather links from %1$s because of the following errors: %2$s', count( $xml_errors ), 'rocket' ),
-				$sitemap_url,
-				$message
+				// Translators: %1$s is a XML sitemap URL.
+				__( 'Could not gather links from %1$s because of an error during the XML sitemap parsing.', 'rocket' ),
+				$sitemap_url
 			);
 
 			set_transient( 'rocket_preload_errors', $errors );
