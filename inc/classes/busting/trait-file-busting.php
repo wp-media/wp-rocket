@@ -103,6 +103,68 @@ trait File_Busting {
 	}
 
 	/**
+	 * Get all cached files in the directory.
+	 * In a perfect world, there should be only one.
+	 *
+	 * @since  3.2.4
+	 * @access private
+	 * @author Grégory Viguier
+	 *
+	 * @return bool|bool A list of file names (as array keys) and versions (as array values). False on failure.
+	 */
+	private function get_all_files() {
+		$dir_path = \rtrim( $this->busting_path, '\\/' );
+
+		if ( ! $this->filesystem->exists( $dir_path ) ) {
+			return [];
+		}
+
+		if ( ! $this->filesystem->is_readable( $dir_path ) ) {
+			Logger::error(
+				'Directory is not readable.',
+				[
+					self::LOGGER_CONTEXT,
+					'path' => $dir_path,
+				]
+			);
+			return false;
+		}
+
+		$dir = $this->filesystem->dirlist( $dir_path );
+
+		if ( false === $dir ) {
+			Logger::error(
+				'Could not get the directory contents.',
+				[
+					self::LOGGER_CONTEXT,
+					'path' => $dir_path,
+				]
+			);
+			return false;
+		}
+
+		if ( ! $dir ) {
+			return [];
+		}
+
+		$list    = [];
+		$pattern = $this->escape_file_name( $this->filename );
+		$pattern = \sprintf( $pattern, '(?<version>(?:[a-f0-9]{32}|local))' );
+
+		foreach ( $dir as $entry ) {
+			if ( 'f' !== $entry['type'] ) {
+				continue;
+			}
+
+			if ( \preg_match( '/^' . $pattern . '$/', $entry['name'], $matches ) ) {
+				$list[ $entry['name'] ] = $matches['version'];
+			}
+		}
+
+		return $list;
+	}
+
+	/**
 	 * Get the final URL for the current cache busting file.
 	 *
 	 * @since  3.2.4
