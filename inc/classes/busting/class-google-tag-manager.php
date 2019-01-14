@@ -17,7 +17,7 @@ class Google_Tag_Manager extends Abstract_Busting {
 	 * Context used for the logger.
 	 *
 	 * @var    string
-	 * @since  3.2.5
+	 * @since  3.2.4
 	 * @author Grégory Viguier
 	 */
 	const LOGGER_CONTEXT = 'gg tag manager';
@@ -27,7 +27,7 @@ class Google_Tag_Manager extends Abstract_Busting {
 	 * %s is a "version": a md5 hash of the file contents.
 	 *
 	 * @var    string
-	 * @since  3.2.5
+	 * @since  3.2.4
 	 * @access protected
 	 * @author Grégory Viguier
 	 */
@@ -37,7 +37,7 @@ class Google_Tag_Manager extends Abstract_Busting {
 	 * Current file version (local): a md5 hash of the file contents.
 	 *
 	 * @var    string
-	 * @since  3.2.5
+	 * @since  3.2.4
 	 * @access protected
 	 * @author Grégory Viguier
 	 */
@@ -47,7 +47,7 @@ class Google_Tag_Manager extends Abstract_Busting {
 	 * Filesystem object.
 	 *
 	 * @var    object
-	 * @since  3.2.5
+	 * @since  3.2.4
 	 * @access protected
 	 * @author Grégory Viguier
 	 */
@@ -57,7 +57,7 @@ class Google_Tag_Manager extends Abstract_Busting {
 	 * Google_Analytics object.
 	 *
 	 * @var    object
-	 * @since  3.2.5
+	 * @since  3.2.4
 	 * @access protected
 	 * @author Grégory Viguier
 	 */
@@ -190,7 +190,7 @@ class Google_Tag_Manager extends Abstract_Busting {
 	 * Get all cached files in the directory.
 	 * In a perfect world, there should be only one.
 	 *
-	 * @since  3.2.5
+	 * @since  3.2.4
 	 * @access private
 	 * @author Grégory Viguier
 	 *
