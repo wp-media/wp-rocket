@@ -96,6 +96,7 @@ class Preload_Subscriber implements Subscriber_Interface {
 			return;
 		}
 
+		delete_transient( 'rocket_preload_errors' );
 		$this->preload();
 	}
 
@@ -111,6 +112,7 @@ class Preload_Subscriber implements Subscriber_Interface {
 	 */
 	public function maybe_cancel_preload( $old_value, $value ) {
 		if ( isset( $old_value['manual_preload'], $value['manual_preload'] ) && $old_value['manual_preload'] !== $value['manual_preload'] && 0 === (int) $value['manual_preload'] ) {
+			delete_transient( 'rocket_preload_errors' );
 			$this->homepage_preloader->cancel_preload();
 		}
 	}
@@ -236,7 +238,7 @@ class Preload_Subscriber implements Subscriber_Interface {
 
 		if ( false === $running ) {
 			return;
-		}   
+		}
 
 		// translators: %1$s = Number of pages preloaded.
 		$message = '<p>' . sprintf( _n( 'Preload: %1$s uncached page has now been preloaded. (refresh to see progress)', 'Preload: %1$s uncached pages have now been preloaded. (refresh to see progress)', $running, 'rocket' ), number_format_i18n( $running ) ) . '</p>';
