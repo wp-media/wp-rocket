@@ -36,7 +36,7 @@ class Homepage extends Abstract_Preload {
 			}
 		}
 
-		set_transient( 'rocket_preload_running', 1 );
+		set_transient( 'rocket_preload_running', 0 );
 		$this->preload_process->save()->dispatch();
 	}
 
@@ -66,7 +66,7 @@ class Homepage extends Abstract_Preload {
 
 		if ( is_wp_error( $response ) ) {
 			// Translators: %1$s is an URL, %2$s is the error message.
-			$errors['errors'][] = sprintf( __( 'Could not gather links on %1$s because of the following error: %2$s', 'rocket' ), $url, $response->get_error_message() );
+			$errors['errors'][] = sprintf( __( 'Preload encountered an error. Your homepage %1$s is not accessible due to the following error: %2$s', 'rocket' ), $url, $response->get_error_message() );
 
 			set_transient( 'rocket_preload_errors', $errors );
 			return false;
@@ -74,7 +74,7 @@ class Homepage extends Abstract_Preload {
 
 		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
 			// Translators: %1$s is an URL, %2$s is the HTTP response code.
-			$errors['errors'][] = sprintf( __( 'Could not gather links on %1$s because it returned the following response code: %2$s', 'rocket' ), $url, wp_remote_retrieve_response_code( $response ) );
+			$errors['errors'][] = sprintf( __( 'Preload encountered an error. Your homepage %1$s is not accessible due to the following response: %2$s. Please make sure your homepage is accessible in your browser.', 'rocket' ), $url, wp_remote_retrieve_response_code( $response ) );
 
 			set_transient( 'rocket_preload_errors', $errors );
 			return false;
