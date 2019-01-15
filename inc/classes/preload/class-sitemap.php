@@ -115,7 +115,7 @@ class Sitemap extends Abstract_Preload {
 
 		if ( 200 !== wp_remote_retrieve_response_code( $sitemap ) ) {
 			// Translators: %1$s is an URL, %2$s is the HTTP response code.
-			$errors['errors'][] = sprintf( __( 'Could not gather links on %1$s because it returned the following response code: %2$s', 'rocket' ), $sitemap, wp_remote_retrieve_response_code( $sitemap ) );
+			$errors['errors'][] = sprintf( __( 'Could not gather links on %1$s because it returned the following response code: %2$s', 'rocket' ), $sitemap_url, wp_remote_retrieve_response_code( $sitemap ) );
 
 			set_transient( 'rocket_preload_errors', $errors );
 			return [];
