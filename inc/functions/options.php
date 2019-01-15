@@ -542,7 +542,7 @@ function rocket_check_key() {
 			'request_error' => $response->get_error_messages(),
 		] );
 
-		set_transient( 'rocket_check_key_errors', [ $response->get_error_messages() ] );
+		set_transient( 'rocket_check_key_errors', $response->get_error_messages() );
 
 		return $return;
 	}
@@ -551,23 +551,41 @@ function rocket_check_key() {
 	$json = json_decode( $body );
 
 	if ( null === $json ) {
-		if ( '' !== $body ) {
-			Logger::error(
-				'License validation failed.',
-				[
-					'license validation process',
-					'response_body' => $body,
-				]
-			);
+		if ( '' === $body ) {
+			Logger::error( 'License validation failed. No body available in response.', [ 'license validation process' ] );
 
-			set_transient( 'rocket_check_key_errors', [ __( 'License validation failed. Unexpected response from the validation server.', 'rocket' ) ] );
+			set_transient( 'rocket_check_key_errors', [ __( 'License validation failed. No body available in response.', 'rocket' ) ] );
 
 			return $return;
 		}
 
-		Logger::error( 'License validation failed. No body available in response.', [ 'license validation process' ] );
+		Logger::error(
+			'License validation failed.',
+			[
+				'license validation process',
+				'response_body' => $body,
+			]
+		);
 
-		set_transient( 'rocket_check_key_errors', [ __( 'License validation failed. No body available in response.', 'rocket' ) ] );
+		if ( 'NULLED' === $body ) {
+			set_transient( 'rocket_check_key_errors', [ __( 'License validation failed. You are using a nulled version of the plugin.', 'rocket' ) ] );
+
+			return $return;
+		}
+
+		if ( 'BAD_USER' === $body ) {
+			set_transient( 'rocket_check_key_errors', [ __( 'License validation failed. This user account does not exist in our database.', 'rocket' ) ] );
+
+			return $return;
+		}
+
+		if ( 'USER_BLACKLISTED' === $body ) {
+			set_transient( 'rocket_check_key_errors', [ __( 'License validation failed. This user account is blacklisted.', 'rocket' ) ] );
+
+			return $return;
+		}
+
+		set_transient( 'rocket_check_key_errors', [ __( 'License validation failed. Unexpected response from the validation server.', 'rocket' ) ] );
 
 		return $return;
 	}
