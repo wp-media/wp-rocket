@@ -39,7 +39,7 @@ function rocket_upgrader() {
 	}
 
 	if ( ! rocket_valid_key() && current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) &&
-		( ! isset( $_GET['page'] ) || 'wprocket' !== $_GET['page'] ) ) {
+		( isset( $_GET['page'] ) && 'wprocket' === $_GET['page'] ) ) {
 		add_action( 'admin_notices', 'rocket_need_api_key' );
 	}
 }

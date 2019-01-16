@@ -107,7 +107,15 @@ class Sitemap extends Abstract_Preload {
 
 		if ( is_wp_error( $sitemap ) ) {
 			// Translators: %1$s is a XML sitemap URL, %2$s is the error message.
-			$errors['errors'][] = sprintf( __( 'Could not gather links from %1$s because of the following error: %2$s', 'rocket' ), $sitemap_url, $sitemap->get_error_message() );
+			$errors['errors'][] = sprintf( __( 'Sitemap preload encountered an error. Your sitemap %1$s is not accessible due to the following error: %2$s', 'rocket' ), $sitemap_url, $sitemap->get_error_message() );
+
+			set_transient( 'rocket_preload_errors', $errors );
+			return [];
+		}
+
+		if ( 200 !== wp_remote_retrieve_response_code( $sitemap ) ) {
+			// Translators: %1$s is an URL, %2$s is the HTTP response code.
+			$errors['errors'][] = sprintf( __( 'Sitemap preload encountered an error. Your sitemap %1$s is not accessible due to the following response code: %2$s. Please make sure you have entered the correct URL. Visit it in your browser to make sure it is accessible.', 'rocket' ), $sitemap_url, wp_remote_retrieve_response_code( $sitemap ) );
 
 			set_transient( 'rocket_preload_errors', $errors );
 			return [];
@@ -117,7 +125,7 @@ class Sitemap extends Abstract_Preload {
 
 		if ( empty( $xml_data ) ) {
 			// Translators: %1$s is a XML sitemap URL.
-			$errors['errors'][] = sprintf( __( 'Could not gather links from %1$s because the file is empty.', 'rocket' ), $sitemap_url );
+			$errors['errors'][] = sprintf( __( 'Sitemap preload encountered an error. Could not collect links from %1$s because the file is empty.', 'rocket' ), $sitemap_url );
 
 			set_transient( 'rocket_preload_errors', $errors );
 			return [];
@@ -128,19 +136,10 @@ class Sitemap extends Abstract_Preload {
 		$xml = simplexml_load_string( $xml_data );
 
 		if ( false === $xml ) {
-			$xml_errors = libxml_get_errors();
-			libxml_clear_errors();
-
-			foreach ( $xml_errors as $xml_error ) {
-				$message .= '<p>' . $xml_error . '</p>';
-			}
-
-			// Translators: %1$s is a XML sitemap URL.
 			$errors['errors'][] = sprintf(
-				// Translators: %1$s is a XML sitemap URL, %2$s is the error message.
-				_n( 'Could not gather links from %1$s because of the following error: %2$s', 'Could not gather links from %1$s because of the following errors: %2$s', count( $xml_errors ), 'rocket' ),
-				$sitemap_url,
-				$message
+				// Translators: %1$s is a XML sitemap URL.
+				__( 'Sitemap preload encountered an error. Could not collect links from %1$s because of an error during the XML sitemap parsing.', 'rocket' ),
+				$sitemap_url
 			);
 
 			set_transient( 'rocket_preload_errors', $errors );
