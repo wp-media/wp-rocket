@@ -173,7 +173,7 @@ trait File_Busting {
 	 *
 	 * @return string|bool URL of the file. False if the file does not exist.
 	 */
-	protected function get_busting_url() {
+	public function get_busting_url() {
 		return $this->get_busting_file_url( $this->get_busting_version() );
 	}
 
