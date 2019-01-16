@@ -163,4 +163,59 @@ class Sitemap extends Abstract_Preload {
 		$urls = array_merge( $urls, $tmp_urls );
 		return $urls;
 	}
+	
+	/**
+	 * Get URLs from WordPress
+	 * 
+	 * Used as a fallback when extracting URLs from sitemap fails.
+	 *
+	 * @since 3.2.4
+	 * @author Arun Basil Lal
+	 * 
+	 * @link https://github.com/wp-media/wp-rocket/issues/1306
+	 *
+	 * @return array $urls Array of permalinks.
+	 */
+	public function get_urls() {
+		
+		$urls = [];
+		
+		// Get public post types
+		$post_types = get_post_types( array( 'public' => true ) );
+		$post_types = array_filter( $post_types, 'is_post_type_viewable' );
+		
+		/**
+		 * Filters the arguments for get_posts
+		 *
+		 * @since 3.2.4
+		 * @author Arun Basil Lal
+		 *
+		 * @param array $args Arguments for get_posts
+		 */
+		$args = apply_filters(
+			'rocket_preload_sitemap_fallback_request_args',
+			[
+				'numberposts' 		=> 1000,
+				'posts_per_page'  	=> -1,
+				'post_type'			=> $post_types,
+			]
+		);
+		
+		$all_posts = get_posts( $args );
+
+		foreach( $all_posts as $post ) {
+			
+			if ( ! is_object( $post ) ) {
+				continue;
+			}
+			
+			$permalink = get_permalink( $post );
+			
+			if ( $permalink !== false ) {
+				$urls[] = $permalink;
+			}
+		}
+		
+		return $urls;
+	}
 }
