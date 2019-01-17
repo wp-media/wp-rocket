@@ -116,6 +116,19 @@ class Sitemap extends Abstract_Preload {
 		if ( 200 !== wp_remote_retrieve_response_code( $sitemap ) ) {
 			// Translators: %1$s is an URL, %2$s is the HTTP response code.
 			$errors['errors'][] = sprintf( __( 'Sitemap preload encountered an error. Your sitemap %1$s is not accessible due to the following response code: %2$s. Please make sure you have entered the correct URL. Visit it in your browser to make sure it is accessible.', 'rocket' ), $sitemap_url, wp_remote_retrieve_response_code( $sitemap ) );
+			
+			// Attempt to use the fallback method.
+			$fallback_urls = $this->get_urls();
+			
+			if ( ! empty( $fallback_urls ) ) {
+				
+				$urls = array_merge( $urls, $fallback_urls );
+				
+				$errors['errors'][] = __( 'WP Rocket will use a fallback method to preload your website.', 'rocket' );
+				set_transient( 'rocket_preload_errors', $errors );
+				
+				return $urls;
+			}
 
 			set_transient( 'rocket_preload_errors', $errors );
 			return [];
@@ -126,6 +139,19 @@ class Sitemap extends Abstract_Preload {
 		if ( empty( $xml_data ) ) {
 			// Translators: %1$s is a XML sitemap URL.
 			$errors['errors'][] = sprintf( __( 'Sitemap preload encountered an error. Could not collect links from %1$s because the file is empty.', 'rocket' ), $sitemap_url );
+			
+			// Attempt to use the fallback method.
+			$fallback_urls = $this->get_urls();
+			
+			if ( ! empty( $fallback_urls ) ) {
+				
+				$urls = array_merge( $urls, $fallback_urls );
+				
+				$errors['errors'][] = __( 'WP Rocket will use a fallback method to preload your website.', 'rocket' );
+				set_transient( 'rocket_preload_errors', $errors );
+				
+				return $urls;
+			}
 
 			set_transient( 'rocket_preload_errors', $errors );
 			return [];
@@ -141,6 +167,19 @@ class Sitemap extends Abstract_Preload {
 				__( 'Sitemap preload encountered an error. Could not collect links from %1$s because of an error during the XML sitemap parsing.', 'rocket' ),
 				$sitemap_url
 			);
+			
+			// Attempt to use the fallback method.
+			$fallback_urls = $this->get_urls();
+			
+			if ( ! empty( $fallback_urls ) ) {
+				
+				$urls = array_merge( $urls, $fallback_urls );
+				
+				$errors['errors'][] = __( 'WP Rocket will use a fallback method to preload your website.', 'rocket' );
+				set_transient( 'rocket_preload_errors', $errors );
+				
+				return $urls;
+			}
 
 			set_transient( 'rocket_preload_errors', $errors );
 			return [];
