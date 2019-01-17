@@ -195,6 +195,7 @@ class Sitemap extends Abstract_Preload {
 		$args = apply_filters(
 			'rocket_preload_sitemap_fallback_request_args',
 			[
+				'fields'			=> 'ids',
 				'numberposts' 		=> 1000,
 				'posts_per_page'  	=> -1,
 				'post_type'			=> $post_types,
@@ -204,10 +205,6 @@ class Sitemap extends Abstract_Preload {
 		$all_posts = get_posts( $args );
 
 		foreach( $all_posts as $post ) {
-			
-			if ( ! is_object( $post ) ) {
-				continue;
-			}
 			
 			$permalink = get_permalink( $post );
 			
