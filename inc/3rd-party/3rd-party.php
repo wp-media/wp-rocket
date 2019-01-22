@@ -26,6 +26,7 @@ require WP_ROCKET_3RD_PARTY_PATH . 'plugins/ecommerce/aelia-prices-by-country.ph
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/ecommerce/aelia-tax-display-by-country.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/ecommerce/woocommerce-multilingual.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/ecommerce/woocommerce-currency-converter-widget.php';
+require WP_ROCKET_3RD_PARTY_PATH . 'plugins/ecommerce/woocs-currencyswitcher.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/ecommerce/edd-software-licencing.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/ecommerce/easy-digital-downloads.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/ecommerce/ithemes-exchange.php';
