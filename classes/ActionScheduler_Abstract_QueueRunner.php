@@ -86,7 +86,7 @@ abstract class ActionScheduler_Abstract_QueueRunner extends ActionScheduler_Abst
 	 * @author Jeremy Pry
 	 */
 	protected function run_cleanup() {
-		$this->cleaner->clean();
+		$this->cleaner->clean( 10 * $this->get_time_limit() );
 	}
 
 	/**
