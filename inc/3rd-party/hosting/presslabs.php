@@ -39,7 +39,11 @@ if ( defined( 'PL_INSTANCE_REF' ) && class_exists( '\Presslabs\Cache\CacheHandle
 	 *
 	 * @return void
 	 */
-	function rocket_presslabs_clean_post( $post, $permalink ) {
+	function rocket_presslabs_clean_post( $post = false, $permalink = false ) {
+		if ( ! $post || ! $permalink ) {
+			return;
+		}
+
 		$cache_handler = new \Presslabs\Cache\CacheHandler();
 
 		$cache_handler->invalidate_url( $permalink[0], true );
