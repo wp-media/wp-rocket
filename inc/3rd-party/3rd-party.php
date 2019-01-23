@@ -13,6 +13,7 @@ require WP_ROCKET_3RD_PARTY_PATH . 'hosting/savvii.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'hosting/godaddy.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'hosting/kinsta.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'hosting/o2switch.php';
+require WP_ROCKET_3RD_PARTY_PATH . 'hosting/presslabs.php';
 
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/geotargetingwp.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/slider/revslider.php';
