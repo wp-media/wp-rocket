@@ -57,7 +57,7 @@ abstract class ActionScheduler_Abstract_QueueRunner extends ActionScheduler_Abst
 			$action = $this->store->fetch_action( $action_id );
 			$this->store->log_execution( $action_id );
 			$action->execute();
-			do_action( 'action_scheduler_after_execute', $action_id );
+			do_action( 'action_scheduler_after_execute', $action_id, $action );
 			$this->store->mark_complete( $action_id );
 		} catch ( Exception $e ) {
 			$this->store->mark_failure( $action_id );
