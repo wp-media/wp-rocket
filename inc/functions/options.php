@@ -553,8 +553,9 @@ function rocket_check_key() {
 	if ( null === $json ) {
 		if ( '' === $body ) {
 			Logger::error( 'License validation failed. No body available in response.', [ 'license validation process' ] );
-
-			set_transient( 'rocket_check_key_errors', [ __( 'License validation failed. No body available in response.', 'rocket' ) ] );
+			// Translators: %1$s = opening em tag, %2$s = closing em tag, %3$s = opening link tag, %4$s closing link tag.
+			$message = __( 'License validation failed. Our server could not resolve the request from your website.', 'rocket' ) . '<br>' . sprintf( __( 'Try clicking %1$sSave Changes%2$s below. If the error persists, follow %3$sthis guide%4$s.', 'rocket' ), '<em>', '</em>', '<a href="https://docs.wp-rocket.me/article/100-resolving-problems-with-license-validation#general">', '</a>' );
+			set_transient( 'rocket_check_key_errors', [ $message ] );
 
 			return $return;
 		}
@@ -568,24 +569,32 @@ function rocket_check_key() {
 		);
 
 		if ( 'NULLED' === $body ) {
-			set_transient( 'rocket_check_key_errors', [ __( 'License validation failed. You are using a nulled version of the plugin.', 'rocket' ) ] );
+			// Translators: %1$s = opening link tag, %2$s = closing link tag.
+			$message = __( 'License validation failed. You may be using a nulled version of the plugin. Please do the following:', 'rocket' ) . '<ul><li>' . sprintf( __( 'Login to your WP Rocket %1$saccount%2$s', 'rocket' ), '<a href="https://wp-rocket.me/account/" rel="noopener noreferrer" target=_"blank">', '</a>' ) . '</li><li>' . __( 'Download the zip file', 'rocket' ) . '<li></li>' . __( 'Reinstall', 'rocket' ) . '</li></ul>' . sprintf( __( 'If you do not have a WP Rocket account, please %1$spurchase a license%2$s.', 'rocket' ), '<a href="https://wp-rocket.me/" rel="noopener noreferrer" target="_blank">', '</a>' );
+			set_transient( 'rocket_check_key_errors', [ $message ] );
 
 			return $return;
 		}
 
 		if ( 'BAD_USER' === $body ) {
-			set_transient( 'rocket_check_key_errors', [ __( 'License validation failed. This user account does not exist in our database.', 'rocket' ) ] );
+			// Translators: %1$s = opening link tag, %2$s = closing link tag.
+			$message = __( 'License validation failed. This user account does not exist in our database.', 'rocket' ) . '<br>' . sprintf( __( 'To resolve, please contact support.', 'rocket' ), '<a href="https://wp-rocket.me/support/" rel="noopener noreferrer" target=_"blank">', '</a>' );
+			set_transient( 'rocket_check_key_errors', [ $message ] );
 
 			return $return;
 		}
 
 		if ( 'USER_BLACKLISTED' === $body ) {
-			set_transient( 'rocket_check_key_errors', [ __( 'License validation failed. This user account is blacklisted.', 'rocket' ) ] );
+			// Translators: %1$s = opening link tag, %2$s = closing link tag.
+			$message = __( 'License validation failed. This user account is blacklisted.', 'rocket' ) . '<br>' . sprintf( __( 'Please see %1$sthis guide%2$s for more info.', 'rocket' ), '<a href="https://docs.wp-rocket.me/article/100-resolving-problems-with-license-validation#errors" rel="noopener noreferrer" target=_"blank">', '</a>' );
+			set_transient( 'rocket_check_key_errors', [ $message ] );
 
 			return $return;
 		}
 
-		set_transient( 'rocket_check_key_errors', [ __( 'License validation failed. Unexpected response from the validation server.', 'rocket' ) ] );
+		// Translators: %1$s = opening em tag, %2$s = closing em tag, %3$s = opening link tag, %4$s closing link tag.
+		$message = __( 'License validation failed. Our server could not resolve the request from your website.', 'rocket' ) . '<br>' . sprintf( __( 'Try clicking %1$sSave Changes%2$s below. If the error persists, follow %3$sthis guide%4$s.', 'rocket' ), '<em>', '</em>', '<a href="https://docs.wp-rocket.me/article/100-resolving-problems-with-license-validation#general" rel="noopener noreferrer" target=_"blank">', '</a>' );
+		set_transient( 'rocket_check_key_errors', [ $message ] );
 
 		return $return;
 	}
@@ -596,10 +605,14 @@ function rocket_check_key() {
 
 	if ( ! $json->success ) {
 		$messages = array(
-			'BAD_LICENSE' => __( 'Your license is not valid.', 'rocket' ),
-			'BAD_NUMBER'  => __( 'You cannot add more websites. Upgrade your account.', 'rocket' ),
-			'BAD_SITE'    => __( 'This website is not allowed.', 'rocket' ),
-			'BAD_KEY'     => __( 'This license key is not accepted.', 'rocket' ),
+			// Translators: %1$s = opening link tag, %2$s = closing link tag.
+			'BAD_LICENSE' => __( 'Your license is not valid.', 'rocket' ) . '<br>'  . sprintf( __( 'Make sure you have an active %1$sWP Rocket license%2$s.', 'rocket' ), '<a href="https://wp-rocket.me/" rel="noopener noreferrer" target="_blank">', '</a>' ),
+			// Translators: %1$s = opening link tag, %2$s = closing link tag, %3$s = opening link tag.
+			'BAD_NUMBER'  => __( 'You have added as many sites as your current license allows.', 'rocket' ) . '<br>' .  sprintf( __( 'Upgrade your %1$saccount%2$s or %3$stransfer your license%2$s to this domain.', 'rocket' ), '<a href="https://wp-rocket.me/account/" rel="noopener noreferrer" target=_"blank">', '</a>', '<a href="https://docs.wp-rocket.me/article/28-transfering-your-license-to-another-site" rel="noopener noreferrer" target=_"blank">' ),
+			// Translators: %1$s = opening link tag, %2$s = closing link tag.
+			'BAD_SITE'    => __( 'This website is not allowed.', 'rocket' ) . '<br>' . sprintf( __( 'Please %1$scontact support%2$s.', 'rocket' ), '<a href="https://wp-rocket.me/support/" rel="noopener noreferrer" target=_"blank">', '</a>' ),
+			// Translators: %1$s = opening link tag, %2$s = closing link tag.
+			'BAD_KEY'     => __( 'This license key is not recognized.', 'rocket' ) . '<ul><li>' . sprintf( __( 'Login to your WP Rocket %1$saccount%2$s', 'rocket' ), '<a href="https://wp-rocket.me/account/" rel="noopener noreferrer" target=_"blank">', '</a>' ) . '</li><li>' . __( 'Download the zip file', 'rocket' ) . '<li></li>' . __( 'Reinstall', 'rocket' ) . '</li></ul>' . sprintf( __( 'If the issue persists, please %1$scontact support%2$s.', 'rocket'), '<a href="https://wp-rocket.me/support/" rel="noopener noreferrer" target=_"blank">', '</a>' ),
 		);
 
 		$rocket_options['secret_key'] = '';
