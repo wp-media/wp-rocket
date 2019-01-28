@@ -106,8 +106,8 @@ class Sitemap extends Abstract_Preload {
 		$errors['errors'] = isset( $errors['errors'] ) && is_array( $errors['errors'] ) ? $errors['errors'] : [];
 
 		if ( is_wp_error( $sitemap ) ) {
-			// Translators: %1$s is a XML sitemap URL, %2$s is the error message.
-			$errors['errors'][] = sprintf( __( 'Sitemap preload encountered an error. Could not gather links on %1$s because of the following error: %2$s', 'rocket' ), $sitemap_url, $sitemap->get_error_message() );
+			// Translators: %1$s is a XML sitemap URL, %2$s is the error message, %3$s = opening link tag, %4$s = closing link tag..
+			$errors['errors'][] = sprintf( __( 'Sitemap preload encountered an error. Could not gather links on %1$s because of the following error: %2$s. %3$sLearn more%4$s.', 'rocket' ), $sitemap_url, $sitemap->get_error_message(), '<a href="https://docs.wp-rocket.me/article/1065-sitemap-preload-is-slow-or-some-pages-are-not-preloaded-at-all#failed-preload" rel="noopener noreferrer" target=_"blank">', '</a>' );
 
 			set_transient( 'rocket_preload_errors', $errors );
 			return [];

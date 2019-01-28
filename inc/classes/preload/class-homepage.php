@@ -66,7 +66,7 @@ class Homepage extends Abstract_Preload {
 
 		if ( is_wp_error( $response ) ) {
 			// Translators: %1$s is an URL, %2$s is the error message, %3$s = opening link tag, %4$s = closing link tag.
-			$errors['errors'][] = sprintf( __( 'Preload encountered an error. Could not gather links on %1$s because of the following error: %2$s. Learn more.', 'rocket' ), $url, $response->get_error_message(), '<a href="https://docs.wp-rocket.me/article/1065-sitemap-preload-is-slow-or-some-pages-are-not-preloaded-at-all#failed-preload" rel="noopener noreferrer" target=_"blank">', '</a>' );
+			$errors['errors'][] = sprintf( __( 'Preload encountered an error. Could not gather links on %1$s because of the following error: %2$s. %3$sLearn more%4$s.', 'rocket' ), $url, $response->get_error_message(), '<a href="https://docs.wp-rocket.me/article/1065-sitemap-preload-is-slow-or-some-pages-are-not-preloaded-at-all#failed-preload" rel="noopener noreferrer" target=_"blank">', '</a>' );
 
 			set_transient( 'rocket_preload_errors', $errors );
 			return false;
