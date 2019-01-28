@@ -8,9 +8,10 @@ if ( defined( 'PL_INSTANCE_REF' ) && class_exists( '\Presslabs\Cache\CacheHandle
 
 	add_action( 'pl_pre_cache_refresh', 'rocket_clean_post', 0 );
 	add_action( 'after_rocket_clean_domain', 'rocket_presslabs_clear_cache' );
-	add_action( 'after_rocket_clean_minify', 'rocket_presslabs_clear_cache' );
-	add_filter( 'rocket_display_varnish_options_tab', '__return_false' );
 	add_action( 'after_rocket_clean_post', 'rocket_presslabs_clean_post', 2 );
+	add_filter( 'rocket_display_varnish_options_tab', '__return_false' );
+	add_filter( 'do_rocket_generate_caching_files', '__return_false', PHP_INT_MAX );
+	add_filter( 'rocket_cache_mandatory_cookies', '__return_empty_array', PHP_INT_MAX );
 
 	/**
 	 * We clear the entire cache on the Presslabs nodes with the
