@@ -12,7 +12,7 @@ function rocket_need_api_key() {
 
 	if ( false !== $errors ) {
 		foreach ( $errors as $error ) {
-			$message .= '<p>' . esc_html( $error ) . '</p>';
+			$message .= '<p>' . $error . '</p>';
 		}
 	}
 
