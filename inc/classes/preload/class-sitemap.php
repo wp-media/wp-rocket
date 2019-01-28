@@ -106,26 +106,52 @@ class Sitemap extends Abstract_Preload {
 		$errors['errors'] = isset( $errors['errors'] ) && is_array( $errors['errors'] ) ? $errors['errors'] : [];
 
 		if ( is_wp_error( $sitemap ) ) {
-			// Translators: %1$s is a XML sitemap URL, %2$s is the error message.
-			$errors['errors'][] = sprintf( __( 'Sitemap preload encountered an error. Your sitemap %1$s is not accessible due to the following error: %2$s', 'rocket' ), $sitemap_url, $sitemap->get_error_message() );
+			// Translators: %1$s is a XML sitemap URL, %2$s is the error message, %3$s = opening link tag, %4$s = closing link tag..
+			$errors['errors'][] = sprintf( __( 'Sitemap preload encountered an error. Could not gather links on %1$s because of the following error: %2$s. %3$sLearn more%4$s.', 'rocket' ), $sitemap_url, $sitemap->get_error_message(), '<a href="https://docs.wp-rocket.me/article/1065-sitemap-preload-is-slow-or-some-pages-are-not-preloaded-at-all#failed-preload" rel="noopener noreferrer" target=_"blank">', '</a>' );
 
 			set_transient( 'rocket_preload_errors', $errors );
 			return [];
 		}
 
-		if ( 200 !== wp_remote_retrieve_response_code( $sitemap ) ) {
-			// Translators: %1$s is an URL, %2$s is the HTTP response code.
-			$errors['errors'][] = sprintf( __( 'Sitemap preload encountered an error. Your sitemap %1$s is not accessible due to the following response code: %2$s. Please make sure you have entered the correct URL. Visit it in your browser to make sure it is accessible.', 'rocket' ), $sitemap_url, wp_remote_retrieve_response_code( $sitemap ) );
+		$response_code = wp_remote_retrieve_response_code( $sitemap );
 
-			set_transient( 'rocket_preload_errors', $errors );
+		if ( 200 !== $response_code ) {
+			switch ( $response_code ) {
+				case 401:
+				case 403:
+					// Translators: %1$s is an URL, %2$s is the HTTP response code, %3$s = opening link tag, %4$s = closing link tag.
+					$errors['errors'][] = sprintf( __( 'Sitemap preload encountered an error. %1$s is not accessible to due to the following response code: %2$s. Security measures could be preventing access. %3$sLearn more%4$s.', 'rocket' ), $sitemap_url, $response_code, '<a href="https://docs.wp-rocket.me/article/1065-sitemap-preload-is-slow-or-some-pages-are-not-preloaded-at-all#failed-preload" rel="noopener noreferrer" target=_"blank">', '</a>' );
+
+					set_transient( 'rocket_preload_errors', $errors );
+					break;
+				case 404:
+					// Translators: %1$s is an URL, %2$s = opening link tag, %3$s = closing link tag.
+					$errors['errors'][] = sprintf( __( 'Sitemap preload encountered an error. %1$s is not accessible to due to the following response code: 404. Please make sure you entered the correct sitemap URL and it is accessible in your browser. %2$sLearn more%3$s.', 'rocket' ), $sitemap_url, '<a href="https://docs.wp-rocket.me/article/1065-sitemap-preload-is-slow-or-some-pages-are-not-preloaded-at-all#failed-preload" rel="noopener noreferrer" target=_"blank">', '</a>' );
+
+					set_transient( 'rocket_preload_errors', $errors );
+					break;
+				case 500:
+					// Translators: %1$s is an URL, %2$s = opening link tag, %3$s = closing link tag.
+					$errors['errors'][] = sprintf( __( 'Sitemap preload encountered an error. %1$s is not accessible to due to the following response code: 500. Please check with your web host about server access. %2$sLearn more%3$s.', 'rocket' ), $sitemap_url, '<a href="https://docs.wp-rocket.me/article/1065-sitemap-preload-is-slow-or-some-pages-are-not-preloaded-at-all#failed-preload" rel="noopener noreferrer" target=_"blank">', '</a>' );
+
+					set_transient( 'rocket_preload_errors', $errors );
+					break;
+				default:
+					// Translators: %1$s is an URL, %2$s is the HTTP response code, %3$s = opening link tag, %4$s = closing link tag.
+					$errors['errors'][] = sprintf( __( 'Sitemap preload encountered an error. Could not gather links on %1$s because it returned the following response code: %2$s. %3$sLearn more%4$s.', 'rocket' ), $sitemap_url, $response_code, '<a href="https://docs.wp-rocket.me/article/1065-sitemap-preload-is-slow-or-some-pages-are-not-preloaded-at-all#failed-preload" rel="noopener noreferrer" target=_"blank">', '</a>' );
+
+					set_transient( 'rocket_preload_errors', $errors );
+					break;
+			}
+
 			return [];
 		}
 
 		$xml_data = wp_remote_retrieve_body( $sitemap );
 
 		if ( empty( $xml_data ) ) {
-			// Translators: %1$s is a XML sitemap URL.
-			$errors['errors'][] = sprintf( __( 'Sitemap preload encountered an error. Could not collect links from %1$s because the file is empty.', 'rocket' ), $sitemap_url );
+			// Translators: %1$s is a XML sitemap URL, %2$s = opening link tag, %3$s = closing link tag.
+			$errors['errors'][] = sprintf( __( 'Sitemap preload encountered an error. Could not collect links from %1$s because the file is empty. %2$sLearn more%3$s.', 'rocket' ), $sitemap_url, '<a href="https://docs.wp-rocket.me/article/1065-sitemap-preload-is-slow-or-some-pages-are-not-preloaded-at-all#failed-preload" rel="noopener noreferrer" target=_"blank">', '</a>' );
 
 			set_transient( 'rocket_preload_errors', $errors );
 			return [];
@@ -137,9 +163,11 @@ class Sitemap extends Abstract_Preload {
 
 		if ( false === $xml ) {
 			$errors['errors'][] = sprintf(
-				// Translators: %1$s is a XML sitemap URL.
-				__( 'Sitemap preload encountered an error. Could not collect links from %1$s because of an error during the XML sitemap parsing.', 'rocket' ),
-				$sitemap_url
+				// Translators: %1$s is a XML sitemap URL, %2$s = opening link tag, %3$s = closing link tag.
+				__( 'Sitemap preload encountered an error. Could not collect links from %1$s because of an error during the XML sitemap parsing. %2$sLearn more%3$s.', 'rocket' ),
+				$sitemap_url,
+				'<a href="https://docs.wp-rocket.me/article/1065-sitemap-preload-is-slow-or-some-pages-are-not-preloaded-at-all#failed-preload" rel="noopener noreferrer" target=_"blank">',
+				'</a>'
 			);
 
 			set_transient( 'rocket_preload_errors', $errors );
