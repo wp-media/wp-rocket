@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.2\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2019-01-16 10:15-0500\n"
+"POT-Creation-Date: 2019-01-28 14:04-0500\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1608,45 +1608,91 @@ msgstr ""
 #: inc/classes/preload/class-homepage.php:69
 #, php-format
 msgid ""
-"Preload encountered an error. Your homepage %1$s is not accessible due to the "
-"following error: %2$s"
+"Preload encountered an error. Could not gather links on %1$s because of the "
+"following error: %2$s. %3$sLearn more%4$s."
 msgstr ""
 
-#: inc/classes/preload/class-homepage.php:77
+#: inc/classes/preload/class-homepage.php:82
 #, php-format
 msgid ""
-"Preload encountered an error. Your homepage %1$s is not accessible due to the "
-"following response: %2$s. Please make sure your homepage is accessible in your "
-"browser."
+"Preload encountered an error. %1$s is not accessible to due to the following "
+"response code: %2$s. Security measures could be preventing access. %3$sLearn more"
+"%4$s."
+msgstr ""
+
+#: inc/classes/preload/class-homepage.php:88
+#, php-format
+msgid ""
+"Preload encountered an error. %1$s is not accessible to due to the following "
+"response code: 404. Please make sure your homepage is accessible in your "
+"browser. %2$sLearn more%3$s."
+msgstr ""
+
+#: inc/classes/preload/class-homepage.php:94
+#, php-format
+msgid ""
+"Preload encountered an error. %1$s is not accessible to due to the following "
+"response code: 500. Please check with your web host about server access. "
+"%2$sLearn more%3$s."
+msgstr ""
+
+#: inc/classes/preload/class-homepage.php:100
+#, php-format
+msgid ""
+"Preload encountered an error. Could not gather links on %1$s because it returned "
+"the following response code: %2$s. %3$sLearn more%4$s."
 msgstr ""
 
 #: inc/classes/preload/class-sitemap.php:110
 #, php-format
 msgid ""
-"Sitemap preload encountered an error. Your sitemap %1$s is not accessible due to "
-"the following error: %2$s"
+"Sitemap preload encountered an error. Could not gather links on %1$s because of "
+"the following error: %2$s. %3$sLearn more%4$s."
 msgstr ""
 
-#: inc/classes/preload/class-sitemap.php:118
+#: inc/classes/preload/class-sitemap.php:123
 #, php-format
 msgid ""
-"Sitemap preload encountered an error. Your sitemap %1$s is not accessible due to "
-"the following response code: %2$s. Please make sure you have entered the correct "
-"URL. Visit it in your browser to make sure it is accessible."
+"Sitemap preload encountered an error. %1$s is not accessible to due to the "
+"following response code: %2$s. Security measures could be preventing access. "
+"%3$sLearn more%4$s."
 msgstr ""
 
-#: inc/classes/preload/class-sitemap.php:128
+#: inc/classes/preload/class-sitemap.php:129
 #, php-format
 msgid ""
-"Sitemap preload encountered an error. Could not collect links from %1$s because "
-"the file is empty."
+"Sitemap preload encountered an error. %1$s is not accessible to due to the "
+"following response code: 404. Please make sure you entered the correct sitemap "
+"URL and it is accessible in your browser. %2$sLearn more%3$s."
+msgstr ""
+
+#: inc/classes/preload/class-sitemap.php:135
+#, php-format
+msgid ""
+"Sitemap preload encountered an error. %1$s is not accessible to due to the "
+"following response code: 500. Please check with your web host about server "
+"access. %2$sLearn more%3$s."
 msgstr ""
 
 #: inc/classes/preload/class-sitemap.php:141
 #, php-format
 msgid ""
+"Sitemap preload encountered an error. Could not gather links on %1$s because it "
+"returned the following response code: %2$s. %3$sLearn more%4$s."
+msgstr ""
+
+#: inc/classes/preload/class-sitemap.php:154
+#, php-format
+msgid ""
 "Sitemap preload encountered an error. Could not collect links from %1$s because "
-"of an error during the XML sitemap parsing."
+"the file is empty. %2$sLearn more%3$s."
+msgstr ""
+
+#: inc/classes/preload/class-sitemap.php:167
+#, php-format
+msgid ""
+"Sitemap preload encountered an error. Could not collect links from %1$s because "
+"of an error during the XML sitemap parsing. %2$sLearn more%3$s."
 msgstr ""
 
 #: inc/classes/subscriber/class-facebook-tracking-cache-busting-subscriber.php:97
@@ -1662,7 +1708,7 @@ msgid ""
 "settings%2$s page to track progress."
 msgstr ""
 
-#: inc/classes/subscriber/preload/class-preload-subscriber.php:244
+#: inc/classes/subscriber/preload/class-preload-subscriber.php:245
 #, php-format
 msgid ""
 "Preload: %1$s uncached page has now been preloaded. (refresh to see progress)"
@@ -1671,14 +1717,14 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/classes/subscriber/preload/class-preload-subscriber.php:249
+#: inc/classes/subscriber/preload/class-preload-subscriber.php:251
 msgid "The following error happened during gathering of the URLs to preload:"
 msgid_plural ""
 "The following errors happened during gathering of the URLs to preload:"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/classes/subscriber/preload/class-preload-subscriber.php:295
+#: inc/classes/subscriber/preload/class-preload-subscriber.php:298
 #, php-format
 msgid "Preload: %d pages have been cached."
 msgstr ""
@@ -1924,11 +1970,11 @@ msgstr ""
 
 #: inc/functions/admin.php:23
 msgid ""
-"There seems to be an issue validating your license. You can see the error "
-"message below. Resolve per documentation, or contact support."
+"There seems to be an issue validating your license. Please see the error message "
+"below."
 msgid_plural ""
 "There seems to be an issue validating your license. You can see the error "
-"messages below. Resolve per documentation, or contact support."
+"messages below."
 msgstr[0] ""
 msgstr[1] ""
 
@@ -2004,44 +2050,99 @@ msgstr ""
 msgid "No domain available in your Cloudflare account"
 msgstr ""
 
-#: inc/functions/options.php:557
-msgid "License validation failed. No body available in response."
+#: inc/functions/options.php:557 inc/functions/options.php:596
+msgid ""
+"License validation failed. Our server could not resolve the request from your "
+"website."
 msgstr ""
 
-#: inc/functions/options.php:571
-msgid "License validation failed. You are using a nulled version of the plugin."
+#: inc/functions/options.php:557 inc/functions/options.php:596
+#, php-format
+msgid ""
+"Try clicking %1$sSave Changes%2$s below. If the error persists, follow %3$sthis "
+"guide%4$s."
 msgstr ""
 
-#: inc/functions/options.php:577
+#: inc/functions/options.php:573
+msgid ""
+"License validation failed. You may be using a nulled version of the plugin. "
+"Please do the following:"
+msgstr ""
+
+#: inc/functions/options.php:573 inc/functions/options.php:615
+#, php-format
+msgid "Login to your WP Rocket %1$saccount%2$s"
+msgstr ""
+
+#: inc/functions/options.php:573 inc/functions/options.php:615
+msgid "Download the zip file"
+msgstr ""
+
+#: inc/functions/options.php:573 inc/functions/options.php:615
+msgid "Reinstall"
+msgstr ""
+
+#: inc/functions/options.php:573
+#, php-format
+msgid "If you do not have a WP Rocket account, please %1$spurchase a license%2$s."
+msgstr ""
+
+#: inc/functions/options.php:581
 msgid ""
 "License validation failed. This user account does not exist in our database."
 msgstr ""
 
-#: inc/functions/options.php:583
+#: inc/functions/options.php:581
+msgid "To resolve, please contact support."
+msgstr ""
+
+#: inc/functions/options.php:589
 msgid "License validation failed. This user account is blacklisted."
 msgstr ""
 
-#: inc/functions/options.php:588
-msgid "License validation failed. Unexpected response from the validation server."
+#: inc/functions/options.php:589
+#, php-format
+msgid "Please see %1$sthis guide%2$s for more info."
 msgstr ""
 
-#: inc/functions/options.php:599
+#: inc/functions/options.php:609
 msgid "Your license is not valid."
 msgstr ""
 
-#: inc/functions/options.php:600
-msgid "You cannot add more websites. Upgrade your account."
+#: inc/functions/options.php:609
+#, php-format
+msgid "Make sure you have an active %1$sWP Rocket license%2$s."
 msgstr ""
 
-#: inc/functions/options.php:601
+#: inc/functions/options.php:611
+msgid "You have added as many sites as your current license allows."
+msgstr ""
+
+#: inc/functions/options.php:611
+#, php-format
+msgid ""
+"Upgrade your %1$saccount%2$s or %3$stransfer your license%2$s to this domain."
+msgstr ""
+
+#: inc/functions/options.php:613
 msgid "This website is not allowed."
 msgstr ""
 
-#: inc/functions/options.php:602
-msgid "This license key is not accepted."
+#: inc/functions/options.php:613
+#, php-format
+msgid "Please %1$scontact support%2$s."
 msgstr ""
 
-#: inc/functions/options.php:608
+#: inc/functions/options.php:615
+msgid "This license key is not recognized."
+msgstr ""
+
+#: inc/functions/options.php:615
+#, php-format
+msgid "If the issue persists, please %1$scontact support%2$s."
+msgstr ""
+
+#: inc/functions/options.php:621
 #, php-format
 msgid "License validation failed: %s"
 msgstr ""
