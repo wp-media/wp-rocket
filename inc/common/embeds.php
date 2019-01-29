@@ -69,6 +69,10 @@ if ( get_rocket_option( 'embeds', 0 ) ) {
 	 * @return array Rewrite rules without embeds rules.
 	 */
 	function rocket_disable_embeds_rewrites( $rules ) {
+		if ( empty( $rules ) ) {
+			return $rules;
+		}
+
 		foreach ( $rules as $rule => $rewrite ) {
 			if ( false !== strpos( $rewrite, 'embed=true' ) ) {
 				unset( $rules[ $rule ] );
