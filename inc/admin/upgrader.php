@@ -38,9 +38,8 @@ function rocket_upgrader() {
 		update_option( WP_ROCKET_SLUG, $options );
 	}
 
-	/** This filter is documented in inc/admin-bar.php */
 	if ( ! rocket_valid_key() && current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) &&
-		( ! isset( $_GET['page'] ) || 'wprocket' !== $_GET['page'] ) ) {
+		( isset( $_GET['page'] ) && 'wprocket' === $_GET['page'] ) ) {
 		add_action( 'admin_notices', 'rocket_need_api_key' );
 	}
 }
@@ -381,6 +380,11 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 
 	if ( version_compare( $actual_version, '3.2.2', '<' ) ) {
 		flush_rocket_htaccess();
+	}
+
+	if ( version_compare( $actual_version, '3.2.4', '<' ) ) {
+		flush_rocket_htaccess();
+		rocket_generate_config_file();
 	}
 }
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );

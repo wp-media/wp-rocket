@@ -157,6 +157,12 @@ function rocket_has_i18n() {
 	}
 
 	if ( ! empty( $polylang ) && function_exists( 'pll_languages_list' ) ) {
+		$languages = pll_languages_list();
+
+		if ( empty( $languages ) ) {
+			return false;
+		}
+
 		// Polylang, Polylang Pro.
 		return 'polylang';
 	}
@@ -257,7 +263,7 @@ function get_rocket_i18n_uri() {
 		$pll = function_exists( 'PLL' ) ? PLL() : $GLOBALS['polylang'];
 
 		if ( ! empty( $pll ) && is_object( $pll ) ) {
-			$urls = wp_list_pluck( $pll->model->get_languages_list(), 'home_url' );
+			$urls = wp_list_pluck( $pll->model->get_languages_list(), 'search_url' );
 		}
 	}
 
@@ -340,7 +346,7 @@ function get_rocket_i18n_subdomains() {
 		case 'wpml':
 			$option = get_option( 'icl_sitepress_settings' );
 
-			if ( 2 === (int) $option['language_negotiation_type'] || 1 === (int) $option['language_negotiation_type'] && true === $option['urls']['directory_for_default_language'] ) {
+			if ( 2 === (int) $option['language_negotiation_type'] ) {
 				return get_rocket_i18n_uri();
 			}
 			break;
@@ -477,4 +483,39 @@ function get_rocket_i18n_translated_post_urls( $post_id, $post_type = 'page', $r
 	$urls = array_unique( $urls );
 
 	return $urls;
+}
+
+/**
+ * Returns the home URL, without WPML filters if the plugin is active
+ *
+ * @since 3.2.4
+ * @author Remy Perona
+ *
+ * @param string $path Path to add to the home URL.
+ * @return string
+ */
+function rocket_get_home_url( $path = '' ) {
+	global $wpml_url_filters;
+	static $home_url = [];
+	static $has_wpml;
+
+	if ( isset( $home_url[ $path ] ) ) {
+		return $home_url[ $path ];
+	}
+
+	if ( ! isset( $has_wpml ) ) {
+		$has_wpml = $wpml_url_filters && is_object( $wpml_url_filters ) && method_exists( $wpml_url_filters, 'home_url_filter' );
+	}
+
+	if ( $has_wpml ) {
+		remove_filter( 'home_url', [ $wpml_url_filters, 'home_url_filter' ], -10 );
+	}
+
+	$home_url[ $path ] = home_url( $path );
+
+	if ( $has_wpml ) {
+		add_filter( 'home_url', [ $wpml_url_filters, 'home_url_filter' ], -10, 4 );
+	}
+
+	return $home_url[ $path ];
 }

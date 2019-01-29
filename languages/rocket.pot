@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.2\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2018-10-25 10:59-0400\n"
+"POT-Creation-Date: 2019-01-07 11:41-0500\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -31,14 +31,14 @@ msgstr ""
 
 #: inc/3rd-party/hosting/flywheel.php:15 inc/3rd-party/hosting/godaddy.php:15
 #: inc/3rd-party/hosting/o2switch.php:15 inc/3rd-party/hosting/pressidium.php:15
-#: inc/3rd-party/hosting/savvii.php:15 inc/3rd-party/hosting/wp-serveur.php:22
+#: inc/3rd-party/hosting/savvii.php:15 inc/3rd-party/hosting/wp-serveur.php:24
 #: inc/3rd-party/hosting/wpengine.php:15
 #, php-format
 msgid ""
 "Your site is hosted on %s, we have enabled Varnish auto-purge for compatibility."
 msgstr ""
 
-#: inc/3rd-party/hosting/kinsta.php:148
+#: inc/3rd-party/hosting/kinsta.php:150
 #, php-format
 msgid ""
 "Your installation seems to be missing core Kinsta files managing Cache clearing "
@@ -57,6 +57,8 @@ msgstr ""
 
 #: inc/3rd-party/plugins/jetpack.php:96
 #: inc/3rd-party/plugins/seo/all-in-one-seo-pack.php:88
+#: inc/3rd-party/plugins/seo/rank-math-seo.php:34
+#: inc/3rd-party/plugins/seo/the-seo-framework.php:123
 #: inc/3rd-party/plugins/seo/yoast-seo.php:86
 #, php-format
 msgid ""
@@ -68,11 +70,19 @@ msgstr ""
 msgid "All in One SEO XML sitemap"
 msgstr ""
 
+#: inc/3rd-party/plugins/seo/rank-math-seo.php:32
+msgid "Rank Math XML sitemap"
+msgstr ""
+
+#: inc/3rd-party/plugins/seo/the-seo-framework.php:121
+msgid "The SEO Framework XML sitemap"
+msgstr ""
+
 #: inc/3rd-party/plugins/seo/yoast-seo.php:84
 msgid "Yoast SEO XML sitemap"
 msgstr ""
 
-#: inc/admin/admin.php:13 inc/common/admin-bar.php:303
+#: inc/admin/admin.php:13 inc/common/admin-bar.php:311
 #: inc/deprecated/deprecated.php:1789
 msgid "Support"
 msgstr ""
@@ -81,11 +91,11 @@ msgstr ""
 msgid "Docs"
 msgstr ""
 
-#: inc/admin/admin.php:17 inc/common/admin-bar.php:294
+#: inc/admin/admin.php:17 inc/common/admin-bar.php:299
 msgid "FAQ"
 msgstr ""
 
-#: inc/admin/admin.php:19 inc/common/admin-bar.php:36
+#: inc/admin/admin.php:19 inc/common/admin-bar.php:46
 msgid "Settings"
 msgstr ""
 
@@ -93,30 +103,43 @@ msgstr ""
 msgid "Clear this cache"
 msgstr ""
 
-#: inc/admin/admin.php:256 inc/admin/admin.php:266
+#: inc/admin/admin.php:249 inc/admin/admin.php:263
 #: inc/classes/class-wp-rocket-requirements-check.php:204
 #: inc/classes/class-wp-rocket-requirements-check.php:214
 #, php-format
 msgid "%s Update Rollback"
 msgstr ""
 
-#: inc/admin/admin.php:503
+#: inc/admin/admin.php:289
+#, php-format
+msgid "%1$sReturn to WP Rocket%2$s or %3$sgo to Plugins page%2$s"
+msgstr ""
+
+#: inc/admin/admin.php:528
 msgid "Settings import failed: you do not have the permissions to do this."
 msgstr ""
 
-#: inc/admin/admin.php:507
+#: inc/admin/admin.php:532
 msgid "Settings import failed: no file uploaded."
 msgstr ""
 
-#: inc/admin/admin.php:511
+#: inc/admin/admin.php:536
 msgid "Settings import failed: incorrect filename."
 msgstr ""
 
-#: inc/admin/admin.php:519
+#: inc/admin/admin.php:545
 msgid "Settings import failed: incorrect filetype."
 msgstr ""
 
-#: inc/admin/admin.php:555
+#: inc/admin/admin.php:553
+msgid "Settings import failed: "
+msgstr ""
+
+#: inc/admin/admin.php:570
+msgid "Settings import failed: unexpected file content."
+msgstr ""
+
+#: inc/admin/admin.php:591
 msgid "Settings imported and saved."
 msgstr ""
 
@@ -175,9 +198,9 @@ msgstr ""
 msgid "Cloudflare browser cache set to %s seconds"
 msgstr ""
 
-#: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/notices.php:767
-#: inc/common/admin-bar.php:50 inc/common/admin-bar.php:76
-#: inc/common/admin-bar.php:118 views/settings/page-sections/dashboard.php:113
+#: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/notices.php:805
+#: inc/common/admin-bar.php:65 inc/common/admin-bar.php:118
+#: views/settings/page-sections/dashboard.php:130
 msgid "Clear cache"
 msgstr ""
 
@@ -254,120 +277,126 @@ msgid ""
 "the cache if they affect the front end of your site."
 msgstr ""
 
-#: inc/admin/ui/notices.php:187
+#: inc/admin/ui/notices.php:191
 #, php-format
 msgid ""
 "<strong>%s</strong>: The following plugins are not compatible with this plugin "
 "and may cause unexpected results:"
 msgstr ""
 
-#: inc/admin/ui/notices.php:193
+#: inc/admin/ui/notices.php:197
 msgid "Deactivate"
 msgstr ""
 
-#: inc/admin/ui/notices.php:220
+#: inc/admin/ui/notices.php:238
+msgid ""
+"WP Rocket Footer JS is not an official add-on. It prevents some options in WP "
+"Rocket from working correctly. Please deactivate it if you have problems."
+msgstr ""
+
+#: inc/admin/ui/notices.php:258
 #, php-format
 msgid ""
 "%1$s: A custom permalink structure is required for the plugin to work properly. "
 "%2$sGo to permalinks settings%3$s"
 msgstr ""
 
-#: inc/admin/ui/notices.php:489
+#: inc/admin/ui/notices.php:527
 #, php-format
 msgid ""
 "%1$s is good to go! %2$sTest your load time%4$s, or visit your %3$ssettings%4$s."
 msgstr ""
 
-#: inc/admin/ui/notices.php:610
+#: inc/admin/ui/notices.php:648
 msgid ""
 "Would you allow WP Rocket to collect non-sensitive diagnostic data from this "
 "website?"
 msgstr ""
 
-#: inc/admin/ui/notices.php:611
+#: inc/admin/ui/notices.php:649
 msgid "This would help us to improve WP Rocket for you in the future."
 msgstr ""
 
-#: inc/admin/ui/notices.php:617
+#: inc/admin/ui/notices.php:655
 msgid "What info will we collect?"
 msgstr ""
 
-#: inc/admin/ui/notices.php:622
+#: inc/admin/ui/notices.php:660
 msgid ""
 "Below is a detailed view of all data WP Rocket will collect if granted "
 "permission. WP Rocket will never transmit any domain names or email addresses "
 "(except for license validation), IP addresses, or third-party API keys."
 msgstr ""
 
-#: inc/admin/ui/notices.php:631
+#: inc/admin/ui/notices.php:669
 msgid "Yes, allow"
 msgstr ""
 
-#: inc/admin/ui/notices.php:634
+#: inc/admin/ui/notices.php:672
 msgid "No, thanks"
 msgstr ""
 
-#: inc/admin/ui/notices.php:673
+#: inc/admin/ui/notices.php:711
 msgid "Thank you!"
 msgstr ""
 
-#: inc/admin/ui/notices.php:678
+#: inc/admin/ui/notices.php:716
 msgid "WP Rocket now collects these metrics from your website:"
 msgstr ""
 
-#: inc/admin/ui/notices.php:715
+#: inc/admin/ui/notices.php:753
 #, php-format
 msgid "%s: Cache cleared."
 msgstr ""
 
-#: inc/admin/ui/notices.php:719
+#: inc/admin/ui/notices.php:757
 #, php-format
 msgid "%s: Post cache cleared."
 msgstr ""
 
-#: inc/admin/ui/notices.php:723
+#: inc/admin/ui/notices.php:761
 #, php-format
 msgid "%s: Term cache cleared."
 msgstr ""
 
-#: inc/admin/ui/notices.php:727
+#: inc/admin/ui/notices.php:765
 #, php-format
 msgid "%s: User cache cleared."
 msgstr ""
 
-#: inc/admin/ui/notices.php:770
+#: inc/admin/ui/notices.php:808
 msgid "Stop Preload"
 msgstr ""
 
-#: inc/admin/ui/notices.php:788
+#: inc/admin/ui/notices.php:826
 msgid "Force deactivation "
 msgstr ""
 
-#: inc/admin/ui/notices.php:801
+#: inc/admin/ui/notices.php:839
 msgid "The following code should have been written to this file:"
 msgstr ""
 
-#: inc/admin/ui/notices.php:811 views/settings/page-sections/dashboard.php:42
-#: views/settings/page-sections/dashboard.php:56
+#: inc/admin/ui/notices.php:849 views/settings/page-sections/dashboard.php:42
+#: views/settings/page-sections/dashboard.php:60
 msgid "Dismiss this notice."
 msgstr ""
 
-#: inc/admin/ui/notices.php:832
+#: inc/admin/ui/notices.php:870
 #, php-format
 msgid "%s cannot configure itself due to missing writing permissions."
 msgstr ""
 
-#: inc/admin/ui/notices.php:838
+#: inc/admin/ui/notices.php:876
 #, php-format
 msgid "Affected file/folder: %s"
 msgstr ""
 
-#: inc/admin/ui/notices.php:844
+#: inc/admin/ui/notices.php:882
 #, php-format
 msgid "Troubleshoot: %1$sHow to make system files writeable%2$s"
 msgstr ""
 
-#: inc/admin/ui/notices.php:846
+#: inc/admin/ui/notices.php:884
 msgid ""
 "https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
 "config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
@@ -391,7 +420,7 @@ msgid "Unavailable"
 msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:347 inc/deprecated/deprecated.php:1791
-#: views/settings/page-sections/dashboard.php:78
+#: views/settings/page-sections/dashboard.php:87
 msgid "License"
 msgstr ""
 
@@ -1345,7 +1374,7 @@ msgid ""
 msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1730
-#: inc/classes/admin/settings/class-page.php:1875
+#: inc/classes/admin/settings/class-page.php:1878
 msgid "Sucuri"
 msgstr ""
 
@@ -1353,100 +1382,102 @@ msgstr ""
 msgid "Synchronize Sucuri cache with this add-on."
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:1773
+#: inc/classes/admin/settings/class-page.php:1776
 msgid "Cloudflare credentials"
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:1782
+#: inc/classes/admin/settings/class-page.php:1785
 msgid "Cloudflare settings"
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:1796
+#: inc/classes/admin/settings/class-page.php:1799
 msgctxt "Cloudflare"
 msgid "Global API key:"
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:1797
+#: inc/classes/admin/settings/class-page.php:1800
 msgid ""
 "https://support.cloudflare.com/hc/en-us/articles/200167836-Where-do-I-find-my-"
 "Cloudflare-API-key-"
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:1797
+#: inc/classes/admin/settings/class-page.php:1800
 msgctxt "Cloudflare"
 msgid "Find your API key"
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:1809
+#: inc/classes/admin/settings/class-page.php:1812
 msgctxt "Cloudflare"
 msgid "Account email"
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:1818
+#: inc/classes/admin/settings/class-page.php:1821
 msgctxt "Cloudflare"
 msgid "Zone ID"
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:1828
+#: inc/classes/admin/settings/class-page.php:1831
 msgid "Development mode"
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:1830
+#: inc/classes/admin/settings/class-page.php:1833
 #, php-format
 msgid ""
 "Temporarily activate development mode on your website. This setting will "
 "automatically turn off after 3 hours. %1$sLearn more%2$s"
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:1838
+#: inc/classes/admin/settings/class-page.php:1841
 msgid "Optimal settings"
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:1839
+#: inc/classes/admin/settings/class-page.php:1842
 msgid ""
 "Automatically enhances your Cloudflare configuration for speed, performance "
 "grade and compatibility."
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:1847
+#: inc/classes/admin/settings/class-page.php:1850
 msgid "Relative protocol"
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:1848
+#: inc/classes/admin/settings/class-page.php:1851
 msgid ""
 "Should only be used with Cloudflare's flexible SSL feature. URLs of static files "
 "(CSS, JS, images) will be rewritten to use // instead of http:// or https://."
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:1888
+#: inc/classes/admin/settings/class-page.php:1891
 msgid "Sucuri credentials"
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:1901
+#: inc/classes/admin/settings/class-page.php:1904
 msgctxt "Sucuri"
-msgid "Firewall API key (for plugin):"
+msgid ""
+"Firewall API key (for plugin), must be in format <code>{32 characters}/{32 "
+"characters}</code>:"
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:1902
+#: inc/classes/admin/settings/class-page.php:1905
 msgctxt "Sucuri"
 msgid "Find your API key"
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:1948
+#: inc/classes/admin/settings/class-page.php:1951
 #: inc/deprecated/deprecated.php:1788 views/settings/page-sections/tools.php:33
 msgid "Tools"
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:1949
+#: inc/classes/admin/settings/class-page.php:1952
 msgid "Import, Export, Rollback"
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:1971
+#: inc/classes/admin/settings/class-page.php:1974
 #: views/settings/page-sections/imagify.php:13
 msgid "Image Optimization"
 msgstr ""
 
-#: inc/classes/admin/settings/class-page.php:1972
+#: inc/classes/admin/settings/class-page.php:1975
 msgid "Compress your images"
 msgstr ""
 
@@ -1455,7 +1486,13 @@ msgstr ""
 msgid "Upload file and import settings"
 msgstr ""
 
-#: inc/classes/admin/settings/class-settings.php:531
+#: inc/classes/admin/settings/class-settings.php:457
+msgid ""
+"The API key for the Sucuri firewall must be in format <code>{32 characters}/{32 "
+"characters}</code>."
+msgstr ""
+
+#: inc/classes/admin/settings/class-settings.php:540
 #: inc/deprecated/deprecated.php:1247
 msgid "Settings saved."
 msgstr ""
@@ -1487,14 +1524,14 @@ msgstr ""
 msgid "Critical CSS for %s generated."
 msgstr ""
 
-#: inc/classes/class-rocket-critical-css.php:388
+#: inc/classes/class-rocket-critical-css.php:394
 #, php-format
 msgid ""
 "Critical CSS generation is currently running: %1$d of %2$d page types completed. "
 "(Refresh this page to view progress)"
 msgstr ""
 
-#: inc/classes/class-rocket-critical-css.php:432
+#: inc/classes/class-rocket-critical-css.php:438
 #, php-format
 msgid "Critical CSS generation finished for %1$d of %2$d page types."
 msgstr ""
@@ -1568,13 +1605,39 @@ msgstr ""
 msgid "The logs are not saved into a file."
 msgstr ""
 
+#: inc/classes/preload/class-homepage.php:69
+#, php-format
+msgid "Could not gather links on %1$s because of the following error: %2$s"
+msgstr ""
+
+#: inc/classes/preload/class-homepage.php:77
+#, php-format
+msgid ""
+"Could not gather links on %1$s because it returned the following response code: "
+"%2$s"
+msgstr ""
+
+#: inc/classes/preload/class-sitemap.php:110
+#: inc/classes/preload/class-sitemap.php:141
+#, php-format
+msgid "Could not gather links from %1$s because of the following error: %2$s"
+msgid_plural ""
+"Could not gather links from %1$s because of the following errors: %2$s"
+msgstr[0] ""
+msgstr[1] ""
+
+#: inc/classes/preload/class-sitemap.php:120
+#, php-format
+msgid "Could not gather links from %1$s because the file is empty."
+msgstr ""
+
 #: inc/classes/subscriber/class-facebook-tracking-cache-busting-subscriber.php:97
 #: inc/classes/subscriber/class-google-tracking-cache-busting-subscriber.php:156
 #: inc/common/cron.php:33
 msgid "weekly"
 msgstr ""
 
-#: inc/classes/subscriber/preload/class-preload-subscriber.php:207
+#: inc/classes/subscriber/preload/class-preload-subscriber.php:209
 #, php-format
 msgid ""
 "Preload: WP Rocket has started preloading your website. Go to the %1$sWP Rocket "
@@ -1584,67 +1647,77 @@ msgstr ""
 #: inc/classes/subscriber/preload/class-preload-subscriber.php:242
 #, php-format
 msgid ""
-"Preload: %1$d uncached pages have now been preloaded. (refresh to see progress)"
-msgstr ""
+"Preload: %1$s uncached page has now been preloaded. (refresh to see progress)"
+msgid_plural ""
+"Preload: %1$s uncached pages have now been preloaded. (refresh to see progress)"
+msgstr[0] ""
+msgstr[1] ""
 
-#: inc/classes/subscriber/preload/class-preload-subscriber.php:278
+#: inc/classes/subscriber/preload/class-preload-subscriber.php:247
+msgid "The following error happened during gathering of the URLs to preload:"
+msgid_plural ""
+"The following errors happened during gathering of the URLs to preload:"
+msgstr[0] ""
+msgstr[1] ""
+
+#: inc/classes/subscriber/preload/class-preload-subscriber.php:293
 #, php-format
 msgid "Preload: %d pages have been cached."
 msgstr ""
 
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:113
+#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:123
 #, php-format
 msgid "Sucuri cache purge error: %s"
 msgstr ""
 
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:118
+#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:128
 msgid ""
 "The Sucuri cache is being cleared. Note that it may take up to two minutes for "
 "it to be fully flushed."
 msgstr ""
 
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:214
+#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:242
 msgid "Sucuri firewall API key was not found."
 msgstr ""
 
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:221
+#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:251
 msgid "Sucuri firewall API key is invalid."
 msgstr ""
 
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:260
+#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:290
 msgid "Error when contacting Sucuri firewall API."
 msgstr ""
 
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:270
+#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:300
 #, php-format
 msgid "Error when contacting Sucuri firewall API. Error message was: %s"
 msgstr ""
 
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:281
+#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:311
 msgid "Could not get a response from the Sucuri firewall API."
 msgstr ""
 
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:292
+#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:322
 msgid "Got an invalid response from the Sucuri firewall API."
 msgstr ""
 
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:302
+#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:332
 msgid "The Sucuri firewall API returned an unknown error."
 msgstr ""
 
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:305
+#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:335
 #, php-format
 msgid "The Sucuri firewall API returned the following error: %s"
 msgid_plural "The Sucuri firewall API returned the following errors: %s"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/common/admin-bar.php:106 inc/common/admin-bar.php:259
+#: inc/common/admin-bar.php:106 inc/common/admin-bar.php:260
 #: inc/functions/i18n.php:39 inc/functions/i18n.php:48
 msgid "All languages"
 msgstr ""
 
-#: inc/common/admin-bar.php:134
+#: inc/common/admin-bar.php:133
 msgid "Clear this post"
 msgstr ""
 
@@ -1656,20 +1729,20 @@ msgstr ""
 msgid "Purge OPcache"
 msgstr ""
 
-#: inc/common/admin-bar.php:178
+#: inc/common/admin-bar.php:180
 msgid "Regenerate Critical Path CSS"
 msgstr ""
 
-#: inc/common/admin-bar.php:192
+#: inc/common/admin-bar.php:196
 msgid "Clear Cloudflare cache"
 msgstr ""
 
-#: inc/common/admin-bar.php:207 inc/common/admin-bar.php:231
-#: inc/common/admin-bar.php:270 views/settings/page-sections/dashboard.php:128
+#: inc/common/admin-bar.php:217 inc/common/admin-bar.php:272
+#: views/settings/page-sections/dashboard.php:150
 msgid "Preload cache"
 msgstr ""
 
-#: inc/common/admin-bar.php:284 views/settings/partials/documentation.php:13
+#: inc/common/admin-bar.php:287 views/settings/partials/documentation.php:13
 msgid "Documentation"
 msgstr ""
 
@@ -1682,12 +1755,12 @@ msgstr ""
 msgid "monthly"
 msgstr ""
 
-#: inc/common/purge.php:425
+#: inc/common/purge.php:435
 #, php-format
 msgid "Cloudflare cache purge error: %s"
 msgstr ""
 
-#: inc/common/purge.php:430
+#: inc/common/purge.php:440
 msgid "Cloudflare cache successfully purged"
 msgstr ""
 
@@ -1831,49 +1904,58 @@ msgid ""
 "the button below."
 msgstr ""
 
-#: inc/functions/admin.php:12
-msgid ""
-"There seems to be an issue with outgoing connections from your server. Resolve "
-"per documentation, or contact support."
+#: inc/functions/admin.php:26
+#, php-format
+msgid "%1$s: %2$s"
 msgstr ""
 
-#: inc/functions/admin.php:333
+#: inc/functions/admin.php:28
+msgid ""
+"There seems to be an issue validating your license. You can see the error "
+"message below. Resolve per documentation, or contact support."
+msgid_plural ""
+"There seems to be an issue validating your license. You can see the error "
+"messages below. Resolve per documentation, or contact support."
+msgstr[0] ""
+msgstr[1] ""
+
+#: inc/functions/admin.php:400
 msgid "Server type:"
 msgstr ""
 
-#: inc/functions/admin.php:342
+#: inc/functions/admin.php:409
 msgid "PHP version number:"
 msgstr ""
 
-#: inc/functions/admin.php:351
+#: inc/functions/admin.php:418
 msgid "WordPress version number:"
 msgstr ""
 
-#: inc/functions/admin.php:360
+#: inc/functions/admin.php:427
 msgid "WordPress multisite:"
 msgstr ""
 
-#: inc/functions/admin.php:369
+#: inc/functions/admin.php:436
 msgid "Current theme:"
 msgstr ""
 
-#: inc/functions/admin.php:378
+#: inc/functions/admin.php:445
 msgid "Current site language:"
 msgstr ""
 
-#: inc/functions/admin.php:387
+#: inc/functions/admin.php:454
 msgid "Active plugins:"
 msgstr ""
 
-#: inc/functions/admin.php:390
+#: inc/functions/admin.php:457
 msgid "Plugin names of all active plugins"
 msgstr ""
 
-#: inc/functions/admin.php:396
+#: inc/functions/admin.php:463
 msgid "Anonymized WP Rocket settings:"
 msgstr ""
 
-#: inc/functions/admin.php:399
+#: inc/functions/admin.php:466
 msgid "Which WP Rocket settings are active"
 msgstr ""
 
@@ -1909,20 +1991,33 @@ msgstr ""
 msgid "No domain available in your Cloudflare account"
 msgstr ""
 
-#: inc/functions/options.php:544
+#: inc/functions/options.php:563
+msgid "License validation failed. Unexpected response from the validation server."
+msgstr ""
+
+#: inc/functions/options.php:570
+msgid "License validation failed. No body available in response."
+msgstr ""
+
+#: inc/functions/options.php:581
 msgid "Your license is not valid."
 msgstr ""
 
-#: inc/functions/options.php:545
+#: inc/functions/options.php:582
 msgid "You cannot add more websites. Upgrade your account."
 msgstr ""
 
-#: inc/functions/options.php:546
+#: inc/functions/options.php:583
 msgid "This website is not allowed."
 msgstr ""
 
-#: inc/functions/options.php:547
+#: inc/functions/options.php:584
 msgid "This license key is not accepted."
+msgstr ""
+
+#: inc/functions/options.php:590
+#, php-format
+msgid "License validation failed: %s"
 msgstr ""
 
 #: inc/vendors/classes/class-imagify-partner.php:531
@@ -2206,90 +2301,88 @@ msgstr ""
 msgid "WP Rocket : Ad blocker detected."
 msgstr ""
 
-#: views/settings/page-sections/dashboard.php:40
-msgid ""
-"Disable it on your site to access our support features. <a href=\"https://docs."
-"wp-rocket.me/article/1080-disable-ad-blocker-for-support-integration\" target="
-"\"_blank\">Learn more</a>"
-msgstr ""
-
-#: views/settings/page-sections/dashboard.php:51
+#: views/settings/page-sections/dashboard.php:52
 msgid "Congratulations!"
 msgstr ""
 
-#: views/settings/page-sections/dashboard.php:52
-msgid ""
-"WP Rocket is now activated and already working for you.<br>\n"
-"\t\t\t\tYour website should be loading faster now!"
+#: views/settings/page-sections/dashboard.php:54
+msgid "WP Rocket is now activated and already working for you."
 msgstr ""
 
-#: views/settings/page-sections/dashboard.php:54
+#: views/settings/page-sections/dashboard.php:56
+msgid "Your website should be loading faster now!"
+msgstr ""
+
+#: views/settings/page-sections/dashboard.php:58
 #, php-format
 msgid ""
 "To guarantee fast websites, WP Rocket applies 80% of web performance best "
-"practices.<br> We also enable options that provide immediate benefits to your "
-"website."
+"practices."
 msgstr ""
 
-#: views/settings/page-sections/dashboard.php:55
+#: views/settings/page-sections/dashboard.php:58
+msgid "We also enable options that provide immediate benefits to your website."
+msgstr ""
+
+#: views/settings/page-sections/dashboard.php:59
 msgid "Continue to the options to further optimize your site!"
 msgstr ""
 
-#: views/settings/page-sections/dashboard.php:64
+#: views/settings/page-sections/dashboard.php:69
 msgid "My Account"
 msgstr ""
 
-#: views/settings/page-sections/dashboard.php:67
+#: views/settings/page-sections/dashboard.php:75
 msgid "Refresh info"
 msgstr ""
 
-#: views/settings/page-sections/dashboard.php:80
+#: views/settings/page-sections/dashboard.php:89
 msgid "Expiration Date"
 msgstr ""
 
-#: views/settings/page-sections/dashboard.php:86
+#: views/settings/page-sections/dashboard.php:98
 msgid "View my account"
 msgstr ""
 
-#: views/settings/page-sections/dashboard.php:104
+#: views/settings/page-sections/dashboard.php:118
 msgid "Quick Actions"
 msgstr ""
 
-#: views/settings/page-sections/dashboard.php:110
+#: views/settings/page-sections/dashboard.php:124
 msgid "Remove all cached files"
 msgstr ""
 
-#: views/settings/page-sections/dashboard.php:125
+#: views/settings/page-sections/dashboard.php:144
 msgid "Start cache preloading"
 msgstr ""
 
-#: views/settings/page-sections/dashboard.php:138
+#: views/settings/page-sections/dashboard.php:162
 msgid "Purge OPCache content"
 msgstr ""
 
-#: views/settings/page-sections/dashboard.php:141
+#: views/settings/page-sections/dashboard.php:168
 msgid "Purge OPCache"
 msgstr ""
 
-#: views/settings/page-sections/dashboard.php:151
-#: views/settings/page-sections/dashboard.php:154
+#: views/settings/page-sections/dashboard.php:179
+#: views/settings/page-sections/dashboard.php:185
 msgid "Regenerate Critical CSS"
 msgstr ""
 
-#: views/settings/page-sections/dashboard.php:169
+#: views/settings/page-sections/dashboard.php:201
 msgid "Frequently Asked Questions"
 msgstr ""
 
-#: views/settings/page-sections/dashboard.php:182
+#: views/settings/page-sections/dashboard.php:214
 msgid "Still cannot find a solution?"
 msgstr ""
 
-#: views/settings/page-sections/dashboard.php:183
+#: views/settings/page-sections/dashboard.php:215
 msgid ""
 "Submit a ticket and get help from our friendly and knowledgeable Rocketeers."
 msgstr ""
 
-#: views/settings/page-sections/dashboard.php:188
+#: views/settings/page-sections/dashboard.php:223
 msgid "Ask support"
 msgstr ""
 

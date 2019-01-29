@@ -117,6 +117,10 @@ class Cache_Dynamic_Resource extends Abstract_Optimization {
 				return $src;
 			}
 
+			if ( 'css' === $this->extension ) {
+				$content = $this->rewrite_paths( $this->get_file_path( $src ), $filepath, $content );
+			}
+
 			if ( ! $this->write_file( $content, $filepath ) ) {
 				return $src;
 			}
@@ -247,19 +251,10 @@ class Cache_Dynamic_Resource extends Abstract_Optimization {
 	 * @return string|bool
 	 */
 	protected function get_url_content( $url ) {
-		$content       = wp_remote_retrieve_body( wp_remote_get( $url ) );
-		$absolute_path = $this->get_file_path( $url );
+		$content  = wp_remote_retrieve_body( wp_remote_get( $url ) );
 
 		if ( ! $content ) {
 			return false;
-		}
-
-		if ( ! $absolute_path ) {
-			return false;
-		}
-
-		if ( 'css' === $this->extension ) {
-			$content = $this->rewrite_paths( $absolute_path, $content );
 		}
 
 		return $content;

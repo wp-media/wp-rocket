@@ -253,6 +253,7 @@ function rocket_rollback() {
 	$upgrader      = new Plugin_Upgrader( $upgrader_skin );
 
 	remove_filter( 'site_transient_update_plugins', 'rocket_check_update', 1 );
+	add_filter( 'update_plugin_complete_actions', 'rocket_rollback_add_return_link' );
 
 	$upgrader->upgrade( $plugin );
 
@@ -266,6 +267,33 @@ function rocket_rollback() {
 	);
 }
 add_action( 'admin_post_rocket_rollback', 'rocket_rollback' );
+
+/**
+ * After a rollback has been done, replace the "return to" link by a link pointing to WP Rocket's tools page.
+ * A link to the plugins page is kept in case the plugin is not reactivated correctly.
+ *
+ * @since  3.2.4
+ * @author Grégory Viguier
+ * @author Arun Basil Lal
+ *
+ * @param  array $update_actions Array of plugin action links.
+ * @return array                 The array of links where the "return to" link has been replaced.
+ */
+function rocket_rollback_add_return_link( $update_actions ) {
+	if ( ! isset( $update_actions['plugins_page'] ) ) {
+		return $update_actions;
+	}
+
+	$update_actions['plugins_page'] = sprintf(
+		/* translators: 1 and 3 are link openings, 2 is a link closing. */
+		__( '%1$sReturn to WP Rocket%2$s or %3$sgo to Plugins page%2$s', 'rocket' ),
+		'<a href="' . esc_url( admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG ) . '#tools' ) . '" target="_parent">',
+		'</a>',
+		'<a href="' . esc_url( admin_url( 'plugins.php' ) ) . '" target="_parent">'
+	);
+
+	return $update_actions;
+}
 
 if ( ! defined( 'DOING_AJAX' ) && ! defined( 'DOING_AUTOSAVE' ) ) {
 	add_action( 'admin_init', 'rocket_init_cache_dir' );
@@ -291,7 +319,8 @@ function rocket_maybe_generate_advanced_cache_file() {
  * @since 2.6.5
  */
 function rocket_maybe_generate_config_files() {
-	$home = get_rocket_parse_url( home_url() );
+	$home = get_rocket_parse_url( rocket_get_home_url() );
+
 	$path = ( ! empty( $home['path'] ) ) ? str_replace( '/', '.', untrailingslashit( $home['path'] ) ) : '';
 
 	if ( ! file_exists( WP_ROCKET_CONFIG_PATH . strtolower( $home['host'] ) . $path . '.php' ) ) {
