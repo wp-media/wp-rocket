@@ -13,7 +13,15 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 function flush_rocket_htaccess( $remove_rules = false ) {
 	global $is_apache;
 
-	if ( ! $is_apache ) {
+	/**
+	 * Filters disabling of WP Rocket htaccess rules
+	 *
+	 * @since 3.2.5
+	 * @author Remy Perona
+	 *
+	 * @param bool $disable True to disable, false otherwise.
+	 */
+	if ( ! $is_apache || apply_filters( 'rocket_disable_htaccess', false ) ) {
 		return false;
 	}
 
