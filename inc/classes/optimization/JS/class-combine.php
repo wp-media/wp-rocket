@@ -444,6 +444,13 @@ class Combine extends Abstract_JS_Optimization {
 			'AfsAnalyticsObject',
 			'_thriveCurrentPost',
 			'esc_login_url',
+			'fwduvpMainPlaylist',
+			'Bibblio.initRelatedContent',
+			'showUFC()',
+			'#iphorm-',
+			'#fancy-',
+			'ult-carousel-',
+			'theChampLJAuthUrl',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
