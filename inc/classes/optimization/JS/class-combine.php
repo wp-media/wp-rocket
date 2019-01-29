@@ -451,6 +451,7 @@ class Combine extends Abstract_JS_Optimization {
 			'#fancy-',
 			'ult-carousel-',
 			'theChampLJAuthUrl',
+			'fbq',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
