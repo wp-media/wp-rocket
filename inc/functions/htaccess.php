@@ -21,7 +21,7 @@ function flush_rocket_htaccess( $remove_rules = false ) {
 	 *
 	 * @param bool $disable True to disable, false otherwise.
 	 */
-	if ( ! $is_apache || apply_filters( 'rocket_disable_htaccess', false ) ) {
+	if ( ! $is_apache || ( apply_filters( 'rocket_disable_htaccess', false ) && ! $remove_rules ) ) {
 		return false;
 	}
 
