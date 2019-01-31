@@ -454,7 +454,7 @@ class Settings {
 			$input['sucury_waf_api_key'] = '';
 
 			if ( $input['sucury_waf_cache_sync'] && empty( $input['ignore'] ) ) {
-				add_settings_error( 'general', 'sucuri_waf_api_key_invalid', __( 'The API key for the Sucuri firewall must be in format <code>{32 characters}/{32 characters}</code>.', 'rocket' ), 'error' );
+				add_settings_error( 'general', 'sucuri_waf_api_key_invalid', __( 'Sucuri Add-on: The API key for the Sucuri firewall must be in format <code>{32 characters}/{32 characters}</code>.', 'rocket' ), 'error' );
 			}
 		}
 
