@@ -584,6 +584,7 @@ class Combine extends Abstract_JS_Optimization {
 			'data.token',
 			'sharrre',
 			'dfads_ajax_load_ads',
+			'tie_postviews',
 		];
 
 		/**
