@@ -446,6 +446,7 @@ function get_rocket_exclude_defer_js() {
 		'gist.github.com',
 		'content.jwplatform.com',
 		'js.hsforms.net',
+		'google.com/recaptcha',
 	];
 
 	if ( get_rocket_option( 'defer_all_js', 0 ) && get_rocket_option( 'defer_all_js_safe', 0 ) ) {
