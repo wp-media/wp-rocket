@@ -452,6 +452,7 @@ class Combine extends Abstract_JS_Optimization {
 			'ult-carousel-',
 			'theChampLJAuthUrl',
 			'f._fbq',
+			'Insticator',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
@@ -584,6 +585,7 @@ class Combine extends Abstract_JS_Optimization {
 			'data.token',
 			'sharrre',
 			'dfads_ajax_load_ads',
+			'tie_postviews',
 		];
 
 		/**

@@ -348,3 +348,54 @@ if ( ! function_exists( 'rocket_clean_directory_for_default_language_on_wpml' ) 
 		}
 	}
 }
+
+if ( ! function_exists( 'rocket_fetch_and_cache_busting' ) ) {
+	/**
+	 * Fetch and save the cache busting file content
+	 *
+	 * @since 2.10
+	 * @deprecated 3.2.5
+	 * @author Remy Perona
+	 *
+	 * @param string $src                 Original URL of the asset.
+	 * @param array  $cache_busting_paths Paths used to generated the cache busting file.
+	 * @param string $abspath_src         Absolute path to the asset.
+	 * @param string $current_filter      Current filter value.
+	 * @return bool true if successful, false otherwise
+	 */
+	function rocket_fetch_and_cache_busting( $src, $cache_busting_paths, $abspath_src, $current_filter ) {
+		_deprecated_function( __FUNCTION__, '3.2.5' );
+		if ( wp_is_stream( $src ) ) {
+			$response = wp_remote_get( $src );
+			$content  = wp_remote_retrieve_body( $response );
+		} else {
+			$content = rocket_direct_filesystem()->get_contents( $src );
+		}
+
+		if ( ! $content ) {
+			return false;
+		}
+
+		if ( 'style_loader_src' === $current_filter ) {
+			/**
+			 * Filters the Document Root path to use during CSS minification to rewrite paths
+			 *
+			 * @since 2.7
+			 *
+			 * @param string The Document Root path.
+			*/
+			$document_root = apply_filters( 'rocket_min_documentRoot', wp_normalize_path( dirname( $_SERVER['SCRIPT_FILENAME'] ) ) );
+
+			// Rewrite import/url in CSS content to add the absolute path to the file.
+			$content = Minify_CSS_UriRewriter::rewrite( $content, dirname( $abspath_src ), $document_root );
+		}
+
+		if ( ! rocket_direct_filesystem()->is_dir( $cache_busting_paths['bustingpath'] ) ) {
+			rocket_mkdir_p( $cache_busting_paths['bustingpath'] );
+		}
+
+		rocket_mkdir_p( dirname( $cache_busting_paths['filepath'] ) );
+
+		return rocket_put_content( $cache_busting_paths['filepath'], $content );
+	}
+}

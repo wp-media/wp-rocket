@@ -43,7 +43,11 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 		</div>
 		<?php endif; ?>
 	</div>
-
+<?php if ( ! empty( $data['helper'] ) ) : ?>
+	<div class="wpr-field-description wpr-field-description-helper wpr-icon-important">
+		<?php echo $data['helper']; ?>
+	</div>
+<?php endif; ?>
 <?php if ( ! empty( $data['warning'] ) ) : ?>
 	<div class="wpr-fieldWarning">
 		<div class="wpr-fieldWarning-title wpr-icon-important">
