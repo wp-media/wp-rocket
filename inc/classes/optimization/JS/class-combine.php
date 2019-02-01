@@ -451,6 +451,7 @@ class Combine extends Abstract_JS_Optimization {
 			'#fancy-',
 			'ult-carousel-',
 			'theChampLJAuthUrl',
+			'f._fbq',
 			'Insticator',
 		];
 
