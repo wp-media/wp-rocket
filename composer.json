@@ -42,7 +42,7 @@
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.4.4",
 		"phpcompatibility/phpcompatibility-wp": "*",
 		"squizlabs/php_codesniffer": "^3.2",
-		"wp-coding-standards/wpcs": "^1.0.0"
+		"wp-coding-standards/wpcs": "^2.0.0"
 	},
 	"autoload": {
 		"classmap": [
