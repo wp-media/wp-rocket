@@ -1467,24 +1467,29 @@ class Page implements Subscriber_Interface {
 		);
 
 		$maybe_display_cdn_helper = '';
+		$addons                   = [];
+
 		if ( get_rocket_option( 'do_cloudflare' ) ) {
-			$maybe_display_cdn_helper = sprintf(
-				// translators: %1$s = opening em tag, %2$s = add-on name, %3$s = closing em tag.
-				__( '%1$s%2$s Add-on%3$s is currently enabled. Configuration of the CDN settings is not required for %2$s to work on your site.', 'rocket' ),
-				'<em>',
-				'Cloudflare',
-				'</em>'
-			) . '<br>';
+			$addons[] = 'Cloudflare';
 		}
 
 		if ( get_rocket_option( 'sucury_waf_cache_sync' ) ) {
-			$maybe_display_cdn_helper .= sprintf(
-				// translators: %1$s = opening em tag, %2$s = add-on name, %3$s = closing em tag.
-				__( '%1$s%2$s Add-on%3$s is currently enabled. Configuration of the CDN settings is not required for %2$s to work on your site.', 'rocket' ),
+			$addons[] = 'Sucuri';
+		}
+
+		if ( ! empty( $addons ) ) {
+			$maybe_display_cdn_helper = sprintf(
+				// translators: %1$s = opening em tag, %2$s = add-on name(s), %3$s = closing em tag.
+				_n(
+					'%1$s%2$s Add-on%3$s is currently enabled. Configuration of the CDN settings is not required for %2$s to work on your site.',
+					'%1$s%2$s Add-ons%3$s are currently enabled. Configuration of the CDN settings is not required for %2$s to work on your site.',
+					count( $addons ),
+					'rocket'
+				),
 				'<em>',
-				'Sucuri',
+				implode( ' and ', $addons ),
 				'</em>'
-			);
+			) . '<br>';
 		}
 
 		$this->settings->add_settings_fields(
