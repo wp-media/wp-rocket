@@ -60,7 +60,7 @@ function flush_rocket_htaccess( $remove_rules = false ) {
 	 * @param boolean $remove_empty_lines True to remove, false otherwise.
 	 */
 	if ( apply_filters( 'rocket_remove_empty_lines', true ) ) {
-		$ftmp = preg_replace( "/\n+/", PHP_EOL, $ftmp );
+		$ftmp = preg_replace( "/\n+/", "\n", $ftmp );
 	}
 
 	// Make sure the WP rules are still there.
