@@ -13,7 +13,15 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 function flush_rocket_htaccess( $remove_rules = false ) {
 	global $is_apache;
 
-	if ( ! $is_apache ) {
+	/**
+	 * Filters disabling of WP Rocket htaccess rules
+	 *
+	 * @since 3.2.5
+	 * @author Remy Perona
+	 *
+	 * @param bool $disable True to disable, false otherwise.
+	 */
+	if ( ! $is_apache || ( apply_filters( 'rocket_disable_htaccess', false ) && ! $remove_rules ) ) {
 		return false;
 	}
 
@@ -52,7 +60,7 @@ function flush_rocket_htaccess( $remove_rules = false ) {
 	 * @param boolean $remove_empty_lines True to remove, false otherwise.
 	 */
 	if ( apply_filters( 'rocket_remove_empty_lines', true ) ) {
-		$ftmp = preg_replace( "/\n+/", PHP_EOL, $ftmp );
+		$ftmp = preg_replace( "/\n+/", "\n", $ftmp );
 	}
 
 	// Make sure the WP rules are still there.

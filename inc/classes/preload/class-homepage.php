@@ -50,11 +50,18 @@ class Homepage extends Abstract_Preload {
 	 * @return bool|array
 	 */
 	private function get_urls( $url ) {
-		// This filter is documented in inc/classes/preload/class-partial-process.php.
+		/**
+		 * Filters the arguments for the partial preload request
+		 *
+		 * @since 3.2
+		 * @author Remy Perona
+		 *
+		 * @param array $args Request arguments.
+		 */
 		$args = apply_filters(
-			'rocket_partial_preload_url_request_args',
+			'rocket_homepage_preload_url_request_args',
 			[
-				'user-agent' => 'WP Rocket/Partial_Preload',
+				'user-agent' => 'WP Rocket/Homepage_Preload',
 				'sslverify'  => apply_filters( 'https_local_ssl_verify', true ), // WPCS: prefix ok.
 			]
 		);

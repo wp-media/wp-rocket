@@ -1438,7 +1438,12 @@ class Page implements Subscriber_Interface {
 				'cdn_section'         => [
 					'title'       => __( 'CDN', 'rocket' ),
 					'type'        => 'fields_container',
-					'description' => __( 'All URLs of static files (CSS, JS, images) will be rewritten to the CNAME(s) you provide.', 'rocket' ),
+					'description' => __( 'All URLs of static files (CSS, JS, images) will be rewritten to the CNAME(s) you provide.', 'rocket' ) . '<br><em>' . sprintf(
+						// translators: %1$s = opening link tag, %2$s = closing link tag.
+						__( 'Not required for services like Cloudflare and Sucuri. Please see our available %1$sAdd-ons%2$s.', 'rocket' ),
+						'<a href="#addons">',
+						'</a>'
+					) . '</em>',
 					'help'        => [
 						'id'  => $this->beacon->get_suggest( 'cdn_section' ),
 						'url' => $cdn_beacon['url'],
@@ -1461,11 +1466,38 @@ class Page implements Subscriber_Interface {
 			]
 		);
 
+		$maybe_display_cdn_helper = '';
+		$addons                   = [];
+
+		if ( get_rocket_option( 'do_cloudflare' ) ) {
+			$addons[] = 'Cloudflare';
+		}
+
+		if ( get_rocket_option( 'sucury_waf_cache_sync' ) ) {
+			$addons[] = 'Sucuri';
+		}
+
+		if ( ! empty( $addons ) ) {
+			$maybe_display_cdn_helper = sprintf(
+				// translators: %1$s = opening em tag, %2$s = add-on name(s), %3$s = closing em tag.
+				_n(
+					'%1$s%2$s Add-on%3$s is currently enabled. Configuration of the CDN settings is not required for %2$s to work on your site.',
+					'%1$s%2$s Add-ons%3$s are currently enabled. Configuration of the CDN settings is not required for %2$s to work on your site.',
+					count( $addons ),
+					'rocket'
+				),
+				'<em>',
+				implode( ' and ', $addons ),
+				'</em>'
+			) . '<br>';
+		}
+
 		$this->settings->add_settings_fields(
 			[
 				'cdn'              => [
 					'type'              => 'checkbox',
 					'label'             => __( 'Enable Content Delivery Network', 'rocket' ),
+					'helper'            => $maybe_display_cdn_helper,
 					'section'           => 'cdn_section',
 					'page'              => 'page_cdn',
 					'default'           => 0,
