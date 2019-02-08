@@ -371,27 +371,32 @@ function rocket_warning_htaccess_permissions() {
 	$htaccess_file = get_home_path() . '.htaccess';
 
 	// This filter is documented in inc/admin-bar.php.
-	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
-		&& ( ! rocket_direct_filesystem()->is_writable( $htaccess_file ) )
-		&& $is_apache
-		&& rocket_valid_key() ) {
-
-		$boxes = get_user_meta( $GLOBALS['current_user']->ID, 'rocket_boxes', true );
-
-		if ( in_array( __FUNCTION__, (array) $boxes, true ) ) {
+	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
+		|| ( rocket_direct_filesystem()->is_writable( $htaccess_file ) )
+		|| ! $is_apache
+		// This filter is documented in inc/functions/htaccess.php.
+		|| apply_filters( 'rocket_disable_htaccess', false )
+		|| ! rocket_valid_key() ) {
 			return;
-		}
+	}
 
-		$message = rocket_notice_writing_permissions( '.htaccess' );
+	$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
 
-		rocket_notice_html( array(
+	if ( in_array( __FUNCTION__, (array) $boxes, true ) ) {
+		return;
+	}
+
+	$message = rocket_notice_writing_permissions( '.htaccess' );
+
+	rocket_notice_html(
+		[
 			'status'           => 'error',
 			'dismissible'      => '',
 			'message'          => $message,
 			'dismiss_button'   => __FUNCTION__,
 			'readonly_content' => get_rocket_htaccess_marker(),
-		) );
-	}
+		]
+	);
 }
 add_action( 'admin_notices', 'rocket_warning_htaccess_permissions' );
 

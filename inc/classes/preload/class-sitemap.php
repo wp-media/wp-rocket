@@ -184,6 +184,10 @@ class Sitemap extends Abstract_Preload {
 			return [];
 		}
 
+		if ( ! function_exists( 'simplexml_load_string' ) ) {
+			return [];
+		}
+
 		libxml_use_internal_errors( true );
 
 		$xml = simplexml_load_string( $xml_data );

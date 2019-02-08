@@ -95,6 +95,14 @@ add_action( 'upgrader_process_complete', 'rocket_maybe_reset_opcache', 20, 2 );
 function rocket_reset_opcache() {
 	static $can_reset;
 
+	/**
+	 * Triggers before WP Rocket tries to reset OPCache
+	 *
+	 * @since 3.2.5
+	 * @author Remy Perona
+	 */
+	do_action( 'rocket_before_reset_opcache' );
+
 	if ( ! isset( $can_reset ) ) {
 		if ( ! function_exists( 'opcache_reset' ) ) {
 			$can_reset = false;
@@ -118,6 +126,14 @@ function rocket_reset_opcache() {
 	}
 
 	opcache_reset();
+
+	/**
+	 * Triggers after WP Rocket tries to reset OPCache
+	 *
+	 * @since 3.2.5
+	 * @author Remy Perona
+	 */
+	do_action( 'rocket_after_reset_opcache' );
 }
 
 /**

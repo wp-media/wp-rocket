@@ -147,6 +147,7 @@ $rocket_remove_query_strings = [
 	'ao_noptimize'    => 1,
 	'usqp'            => 1,
 	'cn-reloaded'     => 1,
+	'_ga'             => 1,
 ];
 
 $params = [];
