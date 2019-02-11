@@ -11,7 +11,7 @@ function rocket_post_submitbox_start() {
 	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
 		global $post;
 		$url = wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=post-' . $post->ID ), 'purge_cache_post-' . $post->ID );
-		printf( '<div id="purge-action"><a class="button-secondary" href="%s">%s</a></div>', $url, __( 'Clear cache', 'rocket' ) );
+		printf( '<div id="purge-action"><a class="button-secondary" href="%s">%s</a></div>', esc_url( $url ), esc_html__( 'Clear cache', 'rocket' ) );
 	}
 }
 add_action( 'post_submitbox_start', 'rocket_post_submitbox_start' );
@@ -33,7 +33,7 @@ function rocket_cache_options_meta_boxes() {
 
 		foreach ( $cpts as $cpt => $cpt_object ) {
 			$label = $cpt_object->labels->singular_name;
-			add_meta_box( 'rocket_post_exclude', sprintf( __( 'Cache Options', 'rocket' ), $label ), 'rocket_display_cache_options_meta_boxes', $cpt, 'side', 'core' );
+			add_meta_box( 'rocket_post_exclude', sprintf( __( 'WP Rocket Options', 'rocket' ), $label ), 'rocket_display_cache_options_meta_boxes', $cpt, 'side', 'core' );
 		}
 	}
 }
@@ -56,18 +56,18 @@ function rocket_display_cache_options_meta_boxes() {
 				$reject_current_uri = false;
 			if ( 'post-new.php' !== $pagenow ) {
 				$rejected_uris = array_flip( get_rocket_option( 'cache_reject_uri' ) );
-				$path = rocket_clean_exclude_file( get_permalink( $post->ID ) );
+				$path          = rocket_clean_exclude_file( get_permalink( $post->ID ) );
 
 				if ( isset( $rejected_uris[ $path ] ) ) {
 					$reject_current_uri = true;
 				}
 			}
 			?>
-			<input name="rocket_post_nocache" id="rocket_post_nocache" type="checkbox" title="<?php _e( 'Never cache this page', 'rocket' ); ?>" <?php checked( $reject_current_uri, true ); ?>><label for="rocket_post_nocache"><?php _e( 'Never cache this page', 'rocket' ); ?></label>
+			<input name="rocket_post_nocache" id="rocket_post_nocache" type="checkbox" title="<?php esc_html_e( 'Never cache this page', 'rocket' ); ?>" <?php checked( $reject_current_uri, true ); ?>><label for="rocket_post_nocache"><?php esc_html_e( 'Never cache this page', 'rocket' ); ?></label>
 		</div>
 
 		<div class="misc-pub-section">
-			<p><?php _e( 'Activate these options on this post:', 'rocket' ); ?></p>
+			<p><?php esc_html_e( 'Activate these options on this post:', 'rocket' ); ?></p>
 			<?php
 			$fields = array(
 				'lazyload'         => __( 'LazyLoad for images', 'rocket' ),
@@ -83,23 +83,28 @@ function rocket_display_cache_options_meta_boxes() {
 			foreach ( $fields as $field => $label ) {
 				$disabled = disabled( ! get_rocket_option( $field ), true, false );
 				// translators: %s is the name of the option.
-				$title    = $disabled ? ' title="' . sprintf( __( 'Activate first the %s option.', 'rocket' ), esc_attr( $label ) ) . '"' : '';
-				$class    = $disabled ? ' class="rkt-disabled"' : '';
-				$checked   = ! $disabled ? checked( ! get_post_meta( $post->ID, '_rocket_exclude_' . $field, true ), true, false ) : '';
-					?>
+				$title   = $disabled ? ' title="' . esc_attr( sprintf( __( 'Activate first the %s option.', 'rocket' ), $label ) ) . '"' : '';
+				$class   = $disabled ? ' class="rkt-disabled"' : '';
+				$checked = ! $disabled ? checked( ! get_post_meta( $post->ID, '_rocket_exclude_' . $field, true ), true, false ) : '';
+				?>
 
-				<input name="rocket_post_exclude_hidden[<?php echo $field; ?>]" type="hidden" value="on">
-				<input name="rocket_post_exclude[<?php echo $field; ?>]" id="rocket_post_exclude_<?php echo $field; ?>" type="checkbox"<?php echo $title; ?><?php echo $checked; ?><?php echo $disabled; ?>>
-				<label for="rocket_post_exclude_<?php echo $field; ?>"<?php echo $title; ?><?php echo $class; ?>><?php echo $label; ?></label><br>
+				<input name="rocket_post_exclude_hidden[<?php echo esc_attr( $field ); ?>]" type="hidden" value="on">
+				<input name="rocket_post_exclude[<?php echo esc_attr( $field ); ?>]" id="rocket_post_exclude_<?php echo esc_attr( $field ); ?>" type="checkbox"<?php echo $title; ?><?php echo $checked; ?><?php echo $disabled; ?>>
+				<label for="rocket_post_exclude_<?php echo esc_attr( $field ); ?>"<?php echo $title; ?><?php echo $class; ?>><?php echo $label; ?></label><br>
 
 				<?php
 			}
 			?>
 
-			<p class="rkt-note"><?php _e( '<strong>Note:</strong> None of these options will be applied if this post has been excluded from cache in the global cache settings.', 'rocket' ); ?></p>
+			<p class="rkt-note">
+			<?php
+			// translators: %1$s = opening strong tag, %2$s = closing strong tag.
+			printf( esc_html__( '%1$sNote:%2$s None of these options will be applied if this post has been excluded from cache in the global cache settings.', 'rocket' ), '<strong>', '</strong>' );
+			?>
+			</p>
 		</div>
 
-	<?php
+		<?php
 	}
 }
 
@@ -117,8 +122,8 @@ function rocket_save_metabox_options() {
 		// No cache field.
 		if ( 'publish' === $_POST['post_status'] ) {
 			$new_cache_reject_uri = $cache_reject_uri = get_rocket_option( 'cache_reject_uri' );
-			$rejected_uris = array_flip( $cache_reject_uri );
-			$path = rocket_clean_exclude_file( get_permalink( $_POST['post_ID'] ) );
+			$rejected_uris        = array_flip( $cache_reject_uri );
+			$path                 = rocket_clean_exclude_file( get_permalink( $_POST['post_ID'] ) );
 
 			if ( isset( $_POST['rocket_post_nocache'] ) && $_POST['rocket_post_nocache'] ) {
 				if ( ! isset( $rejected_uris[ $path ] ) ) {

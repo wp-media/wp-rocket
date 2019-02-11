@@ -35,6 +35,7 @@ class Sitemap_Preload_Subscriber implements Subscriber_Interface {
 			'rocket_purge_time_event'         => [ 'preload', 12 ],
 			'pagely_cache_purge_after'        => [ 'preload', 12 ],
 			'update_option_' . WP_ROCKET_SLUG => [ 'maybe_cancel_preload', 10, 2 ],
+			'admin_notices'                   => [ 'simplexml_notice' ],
 		];
 	}
 
@@ -82,5 +83,47 @@ class Sitemap_Preload_Subscriber implements Subscriber_Interface {
 		if ( isset( $old_value['sitemap_preload'], $value['sitemap_preload'] ) && $old_value['sitemap_preload'] !== $value['sitemap_preload'] && 0 === (int) $value['sitemap_preload'] ) {
 			$this->sitemap_preload->cancel_preload();
 		}
+	}
+
+	/**
+	 * Displays a notice if SimpleXML PHP extension is not enabled
+	 *
+	 * @since 3.2.5
+	 * @author Remy Perona
+	 * @return void
+	 */
+	public function simplexml_notice() {
+		$screen = get_current_screen();
+
+		// This filter is documented in inc/admin-bar.php.
+		if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+			return;
+		}
+
+		if ( 'settings_page_wprocket' !== $screen->id ) {
+			return;
+		}
+
+		if ( ! $this->options->get( 'sitemap_preload' ) ) {
+			return;
+		}
+
+		if ( function_exists( 'simplexml_load_string' ) ) {
+			return;
+		}
+
+		$message = sprintf(
+			// Translators: %1$s = opening link tag, %2$s = closing link tag.
+			__( '%1$sSimpleXML PHP extension%2$s is not enabled on your server. Please contact your host to enable it before running sitemap-based cache preloading.', 'rocket' ),
+			'<a href="http://php.net/manual/en/book.simplexml.php" target="_blank" rel="noopener noreferrer">',
+			'</a>'
+		);
+
+		\rocket_notice_html(
+			[
+				'status'  => 'warning',
+				'message' => $message,
+			]
+		);
 	}
 }
