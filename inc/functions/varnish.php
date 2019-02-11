@@ -38,10 +38,10 @@ function rocket_varnish_http_purge( $url ) {
 	 * @since 2.7.3
 	 * @param string The HTTP protocol
 	 */
-	$scheme = apply_filters( 'rocket_varnish_http_purge_scheme', 'http' );
+        $scheme = apply_filters( 'rocket_varnish_http_purge_scheme', $parse_url['scheme']);
 
-	$parse_url['host'] = ( $varnish_ip ) ? $varnish_ip : $parse_url['host'];
-	$purgeme           = $scheme . '://' . $parse_url['host'] . $parse_url['path'] . $regex;
+        $parse_url['host'] = ( $varnish_ip ) ? $varnish_ip : str_replace('*','',$parse_url['host']);
+        $purgeme           = $scheme . '://' . $parse_url['host'] . $parse_url['path'] . $regex;
 
 	wp_remote_request(
 		$purgeme,
