@@ -323,12 +323,14 @@ if ( ( is_ssl() && ! empty( $rocket_cache_ssl ) ) ) {
 // Rename the caching filename depending to dynamic cookies.
 if ( ! empty( $rocket_cache_dynamic_cookies ) ) {
 	foreach ( $rocket_cache_dynamic_cookies as $key => $cookie_name ) {
-		if ( is_array( $cookie_name ) && isset( $_COOKIE[ $key ] ) ) {
-			foreach ( $cookie_name as $cookie_key ) {
-				if ( '' !== $_COOKIE[ $key ][ $cookie_key ] ) {
-					$cache_key = $_COOKIE[ $key ][ $cookie_key ];
-					$cache_key = preg_replace( '/[^a-z0-9_\-]/i', '-', $cache_key );
-					$filename .= '-' . $cache_key;
+		if ( is_array( $cookie_name ) ) {
+			if ( isset( $_COOKIE[ $key ] ) ) { 
+				foreach ( $cookie_name as $cookie_key ) {
+					if ( '' !== $_COOKIE[ $key ][ $cookie_key ] ) {
+						$cache_key = $_COOKIE[ $key ][ $cookie_key ];
+						$cache_key = preg_replace( '/[^a-z0-9_\-]/i', '-', $cache_key );
+						$filename .= '-' . $cache_key;
+					}
 				}
 			}
 			continue;
