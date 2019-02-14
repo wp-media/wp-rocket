@@ -133,7 +133,7 @@ if ( ! $continue ) {
  * @since 2.1 Add compatibility with WordPress Landing Pages (permalink_name and lp-variation-id)
  * @since 2.1 Add compabitiliy with qTranslate and translation plugin with query string "lang"
  */
-$rocket_remove_query_strings = [
+$rocket_remove_query_strings = apply_filters( 'rocket_remove_query_strings', [
 	'utm_source'      => 1,
 	'utm_medium'      => 1,
 	'utm_campaign'    => 1,
@@ -148,7 +148,7 @@ $rocket_remove_query_strings = [
 	'usqp'            => 1,
 	'cn-reloaded'     => 1,
 	'_ga'             => 1,
-];
+]);
 
 $params = [];
 
