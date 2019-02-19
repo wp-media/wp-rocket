@@ -62,7 +62,7 @@ class Homepage extends Abstract_Preload {
 			'rocket_homepage_preload_url_request_args',
 			[
 				'user-agent' => 'WP Rocket/Homepage_Preload',
-				'sslverify'  => apply_filters( 'https_local_ssl_verify', true ), // WPCS: prefix ok.
+				'sslverify'  => apply_filters( 'https_local_ssl_verify', false ), // WPCS: prefix ok.
 			]
 		);
 

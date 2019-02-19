@@ -96,7 +96,7 @@ class Sitemap extends Abstract_Preload {
 			'rocket_preload_sitemap_request_args',
 			[
 				'user-agent' => 'WP Rocket/Sitemaps',
-				'sslverify'  => apply_filters( 'https_local_ssl_verify', true ), // WPCS: prefix ok.
+				'sslverify'  => apply_filters( 'https_local_ssl_verify', false ), // WPCS: prefix ok.
 			]
 		);
 
