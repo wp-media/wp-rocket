@@ -227,7 +227,7 @@ class Homepage extends Abstract_Preload {
 
 		$file_types = implode( '|', $file_types );
 
-		if ( preg_match( '#\.' . $file_types . '$#iU', $url ) ) {
+		if ( preg_match( '#\.(?:' . $file_types . ')$#iU', $url ) ) {
 			return true;
 		}
 
