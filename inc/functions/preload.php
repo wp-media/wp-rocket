@@ -91,6 +91,8 @@ function do_admin_post_rocket_preload_cache() {
 		die();
 	}
 
+	delete_transient( 'rocket_preload_errors' );
+
 	$lang = isset( $_GET['lang'] ) && 'all' !== $_GET['lang'] ? sanitize_key( $_GET['lang'] ) : '';
 	run_rocket_bot( 'cache-preload', $lang );
 	run_rocket_sitemap_preload();
