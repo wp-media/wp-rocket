@@ -61,8 +61,9 @@ class Homepage extends Abstract_Preload {
 		$args = apply_filters(
 			'rocket_homepage_preload_url_request_args',
 			[
+				'timeout'    => 10,
 				'user-agent' => 'WP Rocket/Homepage_Preload',
-				'sslverify'  => apply_filters( 'https_local_ssl_verify', true ), // WPCS: prefix ok.
+				'sslverify'  => apply_filters( 'https_local_ssl_verify', false ), // WPCS: prefix ok.
 			]
 		);
 
@@ -227,7 +228,7 @@ class Homepage extends Abstract_Preload {
 
 		$file_types = implode( '|', $file_types );
 
-		if ( preg_match( '#\.' . $file_types . '$#iU', $url ) ) {
+		if ( preg_match( '#\.(?:' . $file_types . ')$#iU', $url ) ) {
 			return true;
 		}
 
