@@ -147,7 +147,7 @@ class Combine extends Abstract_CSS_Optimization {
 		$minified_file = $this->minify_base_path . $filename;
 
 		if ( ! rocket_direct_filesystem()->exists( $minified_file ) ) {
-			$minified_content = $this->minify( $files );
+			$minified_content = $this->minify( $files, $minified_file );
 
 			if ( ! $minified_content ) {
 				Logger::error( 'No minified content.', [
@@ -187,13 +187,14 @@ class Combine extends Abstract_CSS_Optimization {
 	 * @since 2.11
 	 * @author Remy Perona
 	 *
-	 * @param string|array $files     Files to minify.
-	 * @return string|bool Minified content, false if empty
+	 * @param string|array $files         Files to minify.
+	 * @param string       $minified_file Target filepath.
+	 * @return string|bool
 	 */
-	protected function minify( $files ) {
+	protected function minify( $files, $minified_file ) {
 		foreach ( $files as $file ) {
 			$file_content = $this->get_file_content( $file );
-			$file_content = $this->rewrite_paths( $file, $file_content );
+			$file_content = $this->rewrite_paths( $file, $minified_file, $file_content );
 
 			$this->minifier->add( $file_content );
 		}

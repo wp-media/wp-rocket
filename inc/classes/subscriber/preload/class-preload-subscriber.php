@@ -52,7 +52,7 @@ class Preload_Subscriber implements Subscriber_Interface {
 	public static function get_subscribed_events() {
 		return [
 			'admin_notices'                   => [
-				[ 'notice_preload_triggered'],
+				[ 'notice_preload_triggered' ],
 				[ 'notice_preload_running' ],
 				[ 'notice_preload_complete' ],
 			],
@@ -96,6 +96,7 @@ class Preload_Subscriber implements Subscriber_Interface {
 			return;
 		}
 
+		delete_transient( 'rocket_preload_errors' );
 		$this->preload();
 	}
 
@@ -111,6 +112,7 @@ class Preload_Subscriber implements Subscriber_Interface {
 	 */
 	public function maybe_cancel_preload( $old_value, $value ) {
 		if ( isset( $old_value['manual_preload'], $value['manual_preload'] ) && $old_value['manual_preload'] !== $value['manual_preload'] && 0 === (int) $value['manual_preload'] ) {
+			delete_transient( 'rocket_preload_errors' );
 			$this->homepage_preloader->cancel_preload();
 		}
 	}
@@ -215,7 +217,7 @@ class Preload_Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * This notice is displayed when the sitemap preload is running
+	 * This notice is displayed when the preload is running
 	 *
 	 * @since 3.2
 	 * @author Remy Perona
@@ -238,10 +240,25 @@ class Preload_Subscriber implements Subscriber_Interface {
 			return;
 		}
 
+		$status = 'success';
+		// translators: %1$s = Number of pages preloaded.
+		$message = '<p>' . sprintf( _n( 'Preload: %1$s uncached page has now been preloaded. (refresh to see progress)', 'Preload: %1$s uncached pages have now been preloaded. (refresh to see progress)', $running, 'rocket' ), number_format_i18n( $running ) ) . '</p>';
+
+		$errors = get_transient( 'rocket_preload_errors' );
+
+		if ( false !== $errors ) {
+			$status   = 'warning';
+			$message .= '<p>' . _n( 'The following error happened during gathering of the URLs to preload:', 'The following errors happened during gathering of the URLs to preload:', count( $errors['errors'] ), 'rocket' ) . '</p>';
+
+			foreach ( $errors['errors'] as $error ) {
+				$message .= '<p>' . $error . '</p>';
+			}
+		}
+
 		\rocket_notice_html(
 			[
-				// translators: %1$d = Number of pages preloaded.
-				'message'     => sprintf( __( 'Preload: %1$d uncached pages have now been preloaded. (refresh to see progress)', 'rocket' ), $running ),
+				'status'      => $status,
+				'message'     => $message,
 				'dismissible' => 'notice-preload-running',
 				'action'      => 'stop_preload',
 			]
@@ -273,6 +290,7 @@ class Preload_Subscriber implements Subscriber_Interface {
 		}
 
 		delete_transient( 'rocket_preload_complete' );
+		delete_transient( 'rocket_preload_errors' );
 
 		\rocket_notice_html(
 			[

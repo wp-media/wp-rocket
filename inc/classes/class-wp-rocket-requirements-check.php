@@ -207,7 +207,7 @@ class WP_Rocket_Requirements_Check {
 		$url           = 'update.php?action=upgrade-plugin&plugin=' . rawurlencode( $plugin );
 		$upgrader_skin = new Plugin_Upgrader_Skin( compact( 'title', 'nonce', 'url', 'plugin' ) );
 		$upgrader      = new Plugin_Upgrader( $upgrader_skin );
-		remove_filter( 'site_transient_update_plugins', 'rocket_check_update', 100 );
+		remove_filter( 'site_transient_update_plugins', 'rocket_check_update', 1 );
 		$upgrader->upgrade( $plugin );
 		wp_die(
 			// translators: %s is the plugin name.

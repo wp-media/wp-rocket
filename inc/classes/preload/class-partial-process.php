@@ -54,7 +54,7 @@ class Partial_Process extends \WP_Background_Process {
 				'timeout'    => 0.01,
 				'blocking'   => false,
 				'user-agent' => 'WP Rocket/Partial_Preload',
-				'sslverify'  => apply_filters( 'https_local_ssl_verify', true ),
+				'sslverify'  => apply_filters( 'https_local_ssl_verify', false ),
 			]
 		);
 

@@ -1,7 +1,7 @@
 <?php
 defined( 'ABSPATH' ) || die( 'Cheatin\' uh?' );
 
-if ( class_exists( 'WPS_Hide_Login' ) || class_exists( 'WPS\WPS_Hide_Login\Plugin ' ) ) :
+if ( class_exists( 'WPS_Hide_Login' ) || defined( 'WPS_HIDE_LOGIN_VERSION' ) ) :
 	add_action( 'update_option_whl_page', 'rocket_after_update_single_options', 10, 2 );
 	add_filter( 'rocket_cache_reject_uri', 'rocket_exlude_wps_hide_login_page' );
 endif;
