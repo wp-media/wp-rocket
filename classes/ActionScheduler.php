@@ -60,9 +60,17 @@ abstract class ActionScheduler {
 	public static function autoload( $class ) {
 		$d = DIRECTORY_SEPARATOR;
 		if ( 'Deprecated' === substr( $class, -10 ) ) {
-			$dir = self::plugin_path('deprecated'.$d);
+			$dir = self::plugin_path( 'deprecated' . $d );
 		} elseif ( strpos( $class, 'ActionScheduler' ) === 0 ) {
-			$dir = self::plugin_path('classes'.$d);
+			$segments = explode( '_', $class );
+			switch ( $segments[1] ) {
+				case 'WPCLI':
+					$dir = self::plugin_path( 'classes' . $d  . 'WP_CLI' . $d );
+					break;				
+				default:
+					$dir = self::plugin_path( 'classes' . $d );
+					break;
+			}
 		} elseif ( strpos( $class, 'CronExpression' ) === 0 ) {
 			$dir = self::plugin_path('lib'.$d.'cron-expression'.$d);
 		} else {
