@@ -63,10 +63,15 @@ abstract class ActionScheduler {
 			$dir = self::plugin_path( 'deprecated' . $d );
 		} elseif ( strpos( $class, 'ActionScheduler' ) === 0 ) {
 			$segments = explode( '_', $class );
-			switch ( $segments[1] ) {
+			$type = isset( $segments[ 1 ] ) ? $segments[ 1 ] : '';
+
+			switch ( $type ) {
 				case 'WPCLI':
 					$dir = self::plugin_path( 'classes' . $d  . 'WP_CLI' . $d );
-					break;				
+					break;
+				case 'wpPostStore':
+					$dir = self::plugin_path( 'classes' . $d  . 'data-stores' . $d );
+					break;
 				default:
 					$dir = self::plugin_path( 'classes' . $d );
 					break;
