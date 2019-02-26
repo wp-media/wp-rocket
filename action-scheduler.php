@@ -25,7 +25,7 @@
  *
  */
 
-if ( ! function_exists( 'action_scheduler_register_2_dot_2_dot_0' ) ) {
+if ( ! function_exists( 'action_scheduler_register_3_dot_0_dot_0' ) ) {
 
 	if ( ! class_exists( 'ActionScheduler_Versions' ) ) {
 		require_once( 'classes/ActionScheduler_Versions.php' );
@@ -34,12 +34,12 @@ if ( ! function_exists( 'action_scheduler_register_2_dot_2_dot_0' ) ) {
 
 	add_action( 'plugins_loaded', 'action_scheduler_register_2_dot_2_dot_0', 0, 0 );
 
-	function action_scheduler_register_2_dot_2_dot_0() {
+	function action_scheduler_register_3_dot_0_dot_0() {
 		$versions = ActionScheduler_Versions::instance();
 		$versions->register( '2.2.0', 'action_scheduler_initialize_2_dot_2_dot_0' );
 	}
 
-	function action_scheduler_initialize_2_dot_2_dot_0() {
+	function action_scheduler_initialize_3_dot_0_dot_0() {
 		require_once( 'classes/ActionScheduler.php' );
 		ActionScheduler::init( __FILE__ );
 	}
