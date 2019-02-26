@@ -61,6 +61,8 @@ abstract class ActionScheduler {
 		$d = DIRECTORY_SEPARATOR;
 		if ( 'Deprecated' === substr( $class, -10 ) ) {
 			$dir = self::plugin_path( 'deprecated' . $d );
+		} elseif ( self::is_class_abstract( $class ) ) {
+			$dir = self::plugin_path( 'classes' . $d  . 'abstracts' . $d );
 		} elseif ( strpos( $class, 'ActionScheduler' ) === 0 ) {
 			$segments = explode( '_', $class );
 			$type = isset( $segments[ 1 ] ) ? $segments[ 1 ] : '';
@@ -126,6 +128,27 @@ abstract class ActionScheduler {
 		}
 	}
 
+	/**
+	 * Determine if the class is one of our abstract classes.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param string $class The class name.
+	 *
+	 * @return bool
+	 */
+	protected static function is_class_abstract( $class ) {
+		static $abstracts = array(
+			'ActionScheduler'                      => true,
+			'ActionScheduler_Abstract_ListTable'   => true,
+			'ActionScheduler_Abstract_QueueRunner' => true,
+			'ActionScheduler_Logger'               => true,
+			'ActionScheduler_Store'                => true,
+			'ActionScheduler_TimezoneHelper'       => true,
+		);
+
+		return isset( $abstracts[ $class ] ) && $abstracts[ $class ];
+	}
 
 	final public function __clone() {
 		trigger_error("Singleton. No cloning allowed!", E_USER_ERROR);
