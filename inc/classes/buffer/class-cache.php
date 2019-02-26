@@ -320,7 +320,7 @@ class Cache extends Abstract_Buffer {
 
 		// Rename the caching filename for mobile.
 		if ( $cache_mobile && $do_caching_mobile_files && $cache_mobile_files_tablet && class_exists( 'Rocket_Mobile_Detect' ) ) {
-			$detect = new Rocket_Mobile_Detect();
+			$detect = new \Rocket_Mobile_Detect();
 
 			if ( $detect->isMobile() && ! $detect->isTablet() && 'desktop' === $cache_mobile_files_tablet || ( $detect->isMobile() || $detect->isTablet() ) && 'mobile' === $cache_mobile_files_tablet ) {
 				$filename .= '-mobile';
