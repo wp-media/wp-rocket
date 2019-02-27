@@ -40,7 +40,7 @@ if ( ! function_exists( 'action_scheduler_register_2_dot_2_dot_0' ) ) {
 	}
 
 	function action_scheduler_initialize_2_dot_2_dot_0() {
-		require_once( 'classes/ActionScheduler.php' );
+		require_once( 'classes/abstracts/ActionScheduler.php' );
 		ActionScheduler::init( __FILE__ );
 	}
 
