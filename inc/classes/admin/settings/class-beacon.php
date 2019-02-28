@@ -472,12 +472,24 @@ class Beacon {
 				],
 			],
 			'cloudflare_credentials' => [
-				'en' => '54205619e4b0e7b8127bf849',
-				'fr' => '5696837e9033603f7da308ae',
+				'en' => [
+					'id'  => '54205619e4b0e7b8127bf849',
+					'url' => 'https://docs.wp-rocket.me/article/18-using-wp-rocket-with-cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '5696837e9033603f7da308ae',
+					'url' => 'https://fr.docs.wp-rocket.me/article/247-utiliser-wp-rocket-avec-cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
 			],
 			'cloudflare_settings'    => [
-				'en' => '54205619e4b0e7b8127bf849',
-				'fr' => '5696837e9033603f7da308ae',
+				'en' => [
+					'id'  => '54205619e4b0e7b8127bf849',
+					'url' => 'https://docs.wp-rocket.me/article/18-using-wp-rocket-with-cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '5696837e9033603f7da308ae',
+					'url' => 'https://fr.docs.wp-rocket.me/article/247-utiliser-wp-rocket-avec-cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
 			],
 			'sucuri_credentials'     => [
 				'en' => [

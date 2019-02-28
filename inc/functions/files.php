@@ -161,11 +161,12 @@ function get_rocket_config_file() {
 		$buffer .= '$rocket_url_no_dots = \'1\';';
 	}
 
-	$config_files_path = array();
-	$urls              = array( home_url() );
+	$config_files_path = [];
+	$urls              = [ rocket_get_home_url() ];
 
 	// Check if a translation plugin is activated and this configuration is in subdomain.
 	$subdomains = get_rocket_i18n_subdomains();
+
 	if ( $subdomains ) {
 		$urls = $subdomains;
 	}
@@ -195,7 +196,7 @@ function get_rocket_config_file() {
 	*/
 	$buffer = apply_filters( 'rocket_config_file', $buffer, $config_files_path );
 
-	return array( $config_files_path, $buffer );
+	return [ $config_files_path, $buffer ];
 }
 
 /**
@@ -357,7 +358,7 @@ function set_rocket_wp_cache_define( $turn_it_on ) {
 	@fclose( $handle );
 
 	// Update the writing permissions of wp-config.php file.
-	$chmod = defined( 'FS_CHMOD_FILE' ) ? FS_CHMOD_FILE : 0644;
+	$chmod = rocket_get_filesystem_perms( 'file' );
 	rocket_direct_filesystem()->chmod( $config_file_path, $chmod );
 }
 
@@ -1021,7 +1022,7 @@ function rocket_direct_filesystem() {
  * @return bool
  */
 function rocket_mkdir( $dir ) {
-	$chmod = defined( 'FS_CHMOD_DIR' ) ? FS_CHMOD_DIR : ( fileperms( WP_CONTENT_DIR ) & 0777 | 0755 );
+	$chmod = rocket_get_filesystem_perms( 'dir' );
 	return rocket_direct_filesystem()->mkdir( $dir, $chmod );
 }
 
@@ -1074,8 +1075,75 @@ function rocket_mkdir_p( $target ) {
  * @return bool
  */
 function rocket_put_content( $file, $content ) {
-	$chmod = defined( 'FS_CHMOD_FILE' ) ? FS_CHMOD_FILE : 0644;
+	$chmod = rocket_get_filesystem_perms( 'file' );
 	return rocket_direct_filesystem()->put_contents( $file, $content, $chmod );
+}
+
+/**
+ * Get the permissions to apply to files and folders.
+ *
+ * Reminder:
+ * `$perm = fileperms( $file );`
+ *
+ *  WHAT                                         | TYPE   | FILE   | FOLDER |
+ * ----------------------------------------------+--------+--------+--------|
+ * `$perm`                                       | int    | 33188  | 16877  |
+ * `substr( decoct( $perm ), -4 )`               | string | '0644' | '0755' |
+ * `substr( sprintf( '%o', $perm ), -4 )`        | string | '0644' | '0755' |
+ * `$perm & 0777`                                | int    | 420    | 493    |
+ * `decoct( $perm & 0777 )`                      | string | '644'  | '755'  |
+ * `substr( sprintf( '%o', $perm & 0777 ), -4 )` | string | '644'  | '755'  |
+ *
+ * @since  3.2.4
+ * @author Grégory Viguier
+ *
+ * @param  string $type The type: 'dir' or 'file'.
+ * @return int          Octal integer.
+ */
+function rocket_get_filesystem_perms( $type ) {
+	static $perms = [];
+
+	// Allow variants.
+	switch ( $type ) {
+		case 'dir':
+		case 'dirs':
+		case 'folder':
+		case 'folders':
+			$type = 'dir';
+			break;
+
+		case 'file':
+		case 'files':
+			$type = 'file';
+			break;
+
+		default:
+			return 0755;
+	}
+
+	if ( isset( $perms[ $type ] ) ) {
+		return $perms[ $type ];
+	}
+
+	// If the constants are not defined, use fileperms() like WordPress does.
+	switch ( $type ) {
+		case 'dir':
+			if ( defined( 'FS_CHMOD_DIR' ) ) {
+				$perms[ $type ] = FS_CHMOD_DIR;
+			} else {
+				$perms[ $type ] = fileperms( ABSPATH ) & 0777 | 0755;
+			}
+			break;
+
+		case 'file':
+			if ( defined( 'FS_CHMOD_FILE' ) ) {
+				$perms[ $type ] = FS_CHMOD_FILE;
+			} else {
+				$perms[ $type ] = fileperms( ABSPATH . 'index.php' ) & 0777 | 0644;
+			}
+	}
+
+	return $perms[ $type ];
 }
 
 /**
@@ -1126,51 +1194,4 @@ function get_rocket_footprint( $debug = true ) {
 	}
 	$footprint .= ' -->';
 	return $footprint;
-}
-
-/**
- * Fetch and save the cache busting file content
- *
- * @since 2.10
- * @author Remy Perona
- *
- * @param string $src                 Original URL of the asset.
- * @param array  $cache_busting_paths Paths used to generated the cache busting file.
- * @param string $abspath_src         Absolute path to the asset.
- * @param string $current_filter      Current filter value.
- * @return bool true if successful, false otherwise
- */
-function rocket_fetch_and_cache_busting( $src, $cache_busting_paths, $abspath_src, $current_filter ) {
-	if ( wp_is_stream( $src ) ) {
-		$response = wp_remote_get( $src );
-		$content  = wp_remote_retrieve_body( $response );
-	} else {
-		$content = rocket_direct_filesystem()->get_contents( $src );
-	}
-
-	if ( ! $content ) {
-		return false;
-	}
-
-	if ( 'style_loader_src' === $current_filter ) {
-		/**
-		 * Filters the Document Root path to use during CSS minification to rewrite paths
-		 *
-		 * @since 2.7
-		 *
-		 * @param string The Document Root path.
-		*/
-		$document_root = apply_filters( 'rocket_min_documentRoot', wp_normalize_path( dirname( $_SERVER['SCRIPT_FILENAME'] ) ) );
-
-		// Rewrite import/url in CSS content to add the absolute path to the file.
-		$content = Minify_CSS_UriRewriter::rewrite( $content, dirname( $abspath_src ), $document_root );
-	}
-
-	if ( ! rocket_direct_filesystem()->is_dir( $cache_busting_paths['bustingpath'] ) ) {
-		rocket_mkdir_p( $cache_busting_paths['bustingpath'] );
-	}
-
-	rocket_mkdir_p( dirname( $cache_busting_paths['filepath'] ) );
-
-	return rocket_put_content( $cache_busting_paths['filepath'], $content );
 }

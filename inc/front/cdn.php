@@ -147,7 +147,7 @@ function rocket_cdn_images( $html ) {
 
 		$cnames             = array_flip( $cnames );
 		$home_url           = home_url( '/' );
-		$wp_content_dirname = str_replace( $home_url, '', WP_CONTENT_URL );
+		$wp_content_dirname = str_replace( $home_url, '', content_url() );
 
 		$custom_media_uploads_dirname = '';
 		$uploads_info                 = wp_upload_dir();
@@ -326,7 +326,7 @@ function rocket_cdn_custom_files( $html ) {
 
 	if ( in_array( 'all', $zones, true ) ) {
 		$cdn_zones[] = 'all';
-		$file_types  = array_merge( $file_types, $other_types );
+		$file_types  = array_merge( $file_types, $image_types, $other_types );
 	}
 
 	$cnames = get_rocket_cdn_cnames( $cdn_zones );

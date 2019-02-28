@@ -38,9 +38,8 @@ function rocket_upgrader() {
 		update_option( WP_ROCKET_SLUG, $options );
 	}
 
-	/** This filter is documented in inc/admin-bar.php */
 	if ( ! rocket_valid_key() && current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) &&
-		( ! isset( $_GET['page'] ) || 'wprocket' !== $_GET['page'] ) ) {
+		( isset( $_GET['page'] ) && 'wprocket' === $_GET['page'] ) ) {
 		add_action( 'admin_notices', 'rocket_need_api_key' );
 	}
 }
@@ -96,6 +95,14 @@ add_action( 'upgrader_process_complete', 'rocket_maybe_reset_opcache', 20, 2 );
 function rocket_reset_opcache() {
 	static $can_reset;
 
+	/**
+	 * Triggers before WP Rocket tries to reset OPCache
+	 *
+	 * @since 3.2.5
+	 * @author Remy Perona
+	 */
+	do_action( 'rocket_before_reset_opcache' );
+
 	if ( ! isset( $can_reset ) ) {
 		if ( ! function_exists( 'opcache_reset' ) ) {
 			$can_reset = false;
@@ -119,6 +126,14 @@ function rocket_reset_opcache() {
 	}
 
 	opcache_reset();
+
+	/**
+	 * Triggers after WP Rocket tries to reset OPCache
+	 *
+	 * @since 3.2.5
+	 * @author Remy Perona
+	 */
+	do_action( 'rocket_after_reset_opcache' );
 }
 
 /**
@@ -152,7 +167,7 @@ function rocket_first_install() {
 				'cache_logged_user'           => 0,
 				'cache_ssl'                   => rocket_is_ssl_website() ? 1 : 0,
 				'emoji'                       => 1,
-				'embeds'                      => 1,
+				'embeds'                      => 0,
 				'cache_reject_uri'            => [],
 				'cache_reject_cookies'        => [],
 				'cache_reject_ua'             => [],
@@ -381,6 +396,11 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 
 	if ( version_compare( $actual_version, '3.2.2', '<' ) ) {
 		flush_rocket_htaccess();
+	}
+
+	if ( version_compare( $actual_version, '3.2.4', '<' ) ) {
+		flush_rocket_htaccess();
+		rocket_generate_config_file();
 	}
 }
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );

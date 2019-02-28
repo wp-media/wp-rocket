@@ -232,44 +232,68 @@ function rocket_rollback() {
 
 	$plugin_transient = get_site_transient( 'update_plugins' );
 	$plugin_folder    = plugin_basename( dirname( WP_ROCKET_FILE ) );
-	$plugin_file      = basename( WP_ROCKET_FILE );
-	$version          = WP_ROCKET_LASTVERSION;
-	$c_key            = get_rocket_option( 'consumer_key' );
-	$url              = sprintf( 'https://wp-rocket.me/%s/wp-rocket_%s.zip', $c_key, $version );
-	$temp_array       = array(
-		'slug'        => $plugin_folder,
-		'new_version' => $version,
-		'url'         => 'https://wp-rocket.me',
-		'package'     => $url,
-	);
+	$plugin           = $plugin_folder . '/' . basename( WP_ROCKET_FILE );
 
-	$temp_object = (object) $temp_array;
-	$plugin_transient->response[ $plugin_folder . '/' . $plugin_file ] = $temp_object;
+	$plugin_transient->response[ $plugin ] = (object) [
+		'slug'        => $plugin_folder,
+		'new_version' => WP_ROCKET_LASTVERSION,
+		'url'         => 'https://wp-rocket.me',
+		'package'     => sprintf( 'https://wp-rocket.me/%s/wp-rocket_%s.zip', get_rocket_option( 'consumer_key' ), WP_ROCKET_LASTVERSION ),
+	];
+
 	set_site_transient( 'update_plugins', $plugin_transient );
 
-	$c_key     = get_rocket_option( 'consumer_key' );
-	$transient = get_transient( 'rocket_warning_rollback' );
+	require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
 
-	if ( false === $transient ) {
-		require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+	// translators: %s is the plugin name.
+	$title         = sprintf( __( '%s Update Rollback', 'rocket' ), WP_ROCKET_PLUGIN_NAME );
+	$nonce         = 'upgrade-plugin_' . $plugin;
+	$url           = 'update.php?action=upgrade-plugin&plugin=' . rawurlencode( $plugin );
+	$upgrader_skin = new Plugin_Upgrader_Skin( compact( 'title', 'nonce', 'url', 'plugin' ) );
+	$upgrader      = new Plugin_Upgrader( $upgrader_skin );
+
+	remove_filter( 'site_transient_update_plugins', 'rocket_check_update', 1 );
+	add_filter( 'update_plugin_complete_actions', 'rocket_rollback_add_return_link' );
+
+	$upgrader->upgrade( $plugin );
+
+	wp_die(
+		'',
 		// translators: %s is the plugin name.
-		$title         = sprintf( __( '%s Update Rollback', 'rocket' ), WP_ROCKET_PLUGIN_NAME );
-		$plugin        = 'wp-rocket/wp-rocket.php';
-		$nonce         = 'upgrade-plugin_' . $plugin;
-		$url           = 'update.php?action=upgrade-plugin&plugin=' . rawurlencode( $plugin );
-		$upgrader_skin = new Plugin_Upgrader_Skin( compact( 'title', 'nonce', 'url', 'plugin' ) );
-		$upgrader      = new Plugin_Upgrader( $upgrader_skin );
-		remove_filter( 'site_transient_update_plugins', 'rocket_check_update', 100 );
-		$upgrader->upgrade( $plugin );
-		wp_die(
-			// translators: %s is the plugin name.
-			'', sprintf( __( '%s Update Rollback', 'rocket' ), WP_ROCKET_PLUGIN_NAME ), array(
-				'response' => 200,
-			)
-		);
-	}
+		esc_html( sprintf( __( '%s Update Rollback', 'rocket' ), WP_ROCKET_PLUGIN_NAME ) ),
+		[
+			'response' => 200,
+		]
+	);
 }
 add_action( 'admin_post_rocket_rollback', 'rocket_rollback' );
+
+/**
+ * After a rollback has been done, replace the "return to" link by a link pointing to WP Rocket's tools page.
+ * A link to the plugins page is kept in case the plugin is not reactivated correctly.
+ *
+ * @since  3.2.4
+ * @author Grégory Viguier
+ * @author Arun Basil Lal
+ *
+ * @param  array $update_actions Array of plugin action links.
+ * @return array                 The array of links where the "return to" link has been replaced.
+ */
+function rocket_rollback_add_return_link( $update_actions ) {
+	if ( ! isset( $update_actions['plugins_page'] ) ) {
+		return $update_actions;
+	}
+
+	$update_actions['plugins_page'] = sprintf(
+		/* translators: 1 and 3 are link openings, 2 is a link closing. */
+		__( '%1$sReturn to WP Rocket%2$s or %3$sgo to Plugins page%2$s', 'rocket' ),
+		'<a href="' . esc_url( admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG ) . '#tools' ) . '" target="_parent">',
+		'</a>',
+		'<a href="' . esc_url( admin_url( 'plugins.php' ) ) . '" target="_parent">'
+	);
+
+	return $update_actions;
+}
 
 if ( ! defined( 'DOING_AJAX' ) && ! defined( 'DOING_AUTOSAVE' ) ) {
 	add_action( 'admin_init', 'rocket_init_cache_dir' );
@@ -295,7 +319,8 @@ function rocket_maybe_generate_advanced_cache_file() {
  * @since 2.6.5
  */
 function rocket_maybe_generate_config_files() {
-	$home = get_rocket_parse_url( home_url() );
+	$home = get_rocket_parse_url( rocket_get_home_url() );
+
 	$path = ( ! empty( $home['path'] ) ) ? str_replace( '/', '.', untrailingslashit( $home['path'] ) ) : '';
 
 	if ( ! file_exists( WP_ROCKET_CONFIG_PATH . strtolower( $home['host'] ) . $path . '.php' ) ) {
@@ -511,7 +536,8 @@ function rocket_handle_settings_import() {
 		rocket_settings_import_redirect( __( 'Settings import failed: incorrect filename.', 'rocket' ), 'error' );
 	}
 
-	add_filter( 'upload_mimes', 'rocket_allow_json_mime_type' );
+	add_filter( 'mime_types', 'rocket_allow_json_mime_type' );
+	add_filter( 'wp_check_filetype_and_ext', 'rocket_check_json_filetype', 10, 4 );
 
 	$file_data = wp_check_filetype_and_ext( $_FILES['import']['tmp_name'], $_FILES['import']['name'] );
 
@@ -522,9 +548,15 @@ function rocket_handle_settings_import() {
 	$_post_action    = $_POST['action'];
 	$_POST['action'] = 'wp_handle_sideload';
 	$file            = wp_handle_sideload( $_FILES['import'] );
+
+	if ( isset( $file['error'] ) ) {
+		rocket_settings_import_redirect( __( 'Settings import failed: ', 'rocket' ) . $file['error'], 'error' );
+	}
+
 	$_POST['action'] = $_post_action;
 	$settings        = rocket_direct_filesystem()->get_contents( $file['file'] );
-	remove_filter( 'upload_mimes', 'rocket_allow_json_mime_type' );
+	remove_filter( 'mime_types', 'rocket_allow_json_mime_type' );
+	remove_filter( 'wp_check_filetype_and_ext', 'rocket_check_json_filetype', 10 );
 
 	if ( 'text/plain' === $file_data['type'] ) {
 		$gz       = 'gz' . strrev( 'etalfni' );
@@ -533,6 +565,10 @@ function rocket_handle_settings_import() {
 		$settings = maybe_unserialize( $settings );
 	} elseif ( 'application/json' === $file_data['type'] ) {
 		$settings = json_decode( $settings, true );
+
+		if ( null === $settings ) {
+			rocket_settings_import_redirect( __( 'Settings import failed: unexpected file content.', 'rocket' ), 'error' );
+		}
 	}
 
 	rocket_put_content( $file['file'], '' );

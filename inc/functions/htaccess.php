@@ -2,49 +2,74 @@
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
- * Used to flush the .htaccess file
+ * Used to flush the .htaccess file.
  *
- * @since 1.1.0 Remove empty spacings when .htaccess is generated
  * @since 1.0
+ * @since 1.1.0 Remove empty spacings when .htaccess is generated.
  *
- * @param bool $force (default: false).
- * @return void
+ * @param  bool $remove_rules True to remove WPR rules, false to renew them. Default is false.
+ * @return bool               True on success, false otherwise.
  */
-function flush_rocket_htaccess( $force = false ) {
+function flush_rocket_htaccess( $remove_rules = false ) {
 	global $is_apache;
 
-	if ( ! $is_apache ) {
-		return;
+	/**
+	 * Filters disabling of WP Rocket htaccess rules
+	 *
+	 * @since 3.2.5
+	 * @author Remy Perona
+	 *
+	 * @param bool $disable True to disable, false otherwise.
+	 */
+	if ( ! $is_apache || ( apply_filters( 'rocket_disable_htaccess', false ) && ! $remove_rules ) ) {
+		return false;
 	}
 
-	$rules = '';
 	$htaccess_file = get_home_path() . '.htaccess';
 
-	if ( rocket_direct_filesystem()->is_writable( $htaccess_file ) ) {
-		// Get content of .htaccess file.
-		$ftmp = rocket_direct_filesystem()->get_contents( $htaccess_file );
-
-		// Remove the WP Rocket marker.
-		$ftmp = preg_replace( '/# BEGIN WP Rocket(.*)# END WP Rocket/isU', '', $ftmp );
-
-		/**
-		 * Determine if empty lines should be removed in the .htaccess file
-		 *
-		 * @since 2.10.7
-		 * @author Remy Perona
-		 * @param boolean $remove_empty_lines True to remove, false otherwise.
-		 */
-		if ( apply_filters( 'rocket_remove_empty_lines', true ) ) {
-			$ftmp = str_replace( "\n\n" , "\n" , $ftmp );
-		}
-
-		if ( false === $force ) {
-			$rules = get_rocket_htaccess_marker();
-		}
-
-		// Update the .htacces file.
-		rocket_put_content( $htaccess_file, $rules . $ftmp );
+	if ( ! rocket_direct_filesystem()->is_writable( $htaccess_file ) ) {
+		// The file is not writable or does not exist.
+		return false;
 	}
+
+	// Get content of .htaccess file.
+	$ftmp = rocket_direct_filesystem()->get_contents( $htaccess_file );
+
+	if ( false === $ftmp ) {
+		// Could not get the file contents.
+		return false;
+	}
+
+	// Check if the file contains the WP rules, before modifying anything.
+	$has_wp_rules = rocket_has_wp_htaccess_rules( $ftmp );
+
+	// Remove the WP Rocket marker.
+	$ftmp = preg_replace( '/\s*# BEGIN WP Rocket.*# END WP Rocket\s*?/isU', PHP_EOL . PHP_EOL, $ftmp );
+	$ftmp = ltrim( $ftmp );
+
+	if ( ! $remove_rules ) {
+		$ftmp = get_rocket_htaccess_marker() . PHP_EOL . $ftmp;
+	}
+
+	/**
+	 * Determine if empty lines should be removed in the .htaccess file.
+	 *
+	 * @since  2.10.7
+	 * @author Remy Perona
+	 *
+	 * @param boolean $remove_empty_lines True to remove, false otherwise.
+	 */
+	if ( apply_filters( 'rocket_remove_empty_lines', true ) ) {
+		$ftmp = preg_replace( "/\n+/", "\n", $ftmp );
+	}
+
+	// Make sure the WP rules are still there.
+	if ( $has_wp_rules && ! rocket_has_wp_htaccess_rules( $ftmp ) ) {
+		return false;
+	}
+
+	// Update the .htacces file.
+	return rocket_put_content( $htaccess_file, $ftmp );
 }
 
 /**
@@ -95,7 +120,7 @@ function rocket_htaccess_rules_test( $rules_name ) {
  */
 function get_rocket_htaccess_marker() {
 	// Recreate WP Rocket marker.
-	$marker  = '# BEGIN WP Rocket v' . WP_ROCKET_VERSION . PHP_EOL;
+	$marker = '# BEGIN WP Rocket v' . WP_ROCKET_VERSION . PHP_EOL;
 
 	/**
 	 * Add custom rules before rules added by WP Rocket
@@ -576,4 +601,32 @@ function get_rocket_htaccess_web_fonts_access() {
 	$rules = apply_filters( 'rocket_htaccess_web_fonts_access', $rules );
 
 	return $rules;
+}
+
+/**
+ * Tell if WP rewrite rules are present in a given string.
+ *
+ * @since  3.2.4
+ * @author Grégory Viguier
+ *
+ * @param  string $content Htaccess content.
+ * @return bool
+ */
+function rocket_has_wp_htaccess_rules( $content ) {
+	if ( is_multisite() ) {
+		$has_wp_rules = strpos( $content, '# add a trailing slash to /wp-admin' ) !== false;
+	} else {
+		$has_wp_rules = strpos( $content, '# BEGIN WordPress' ) !== false;
+	}
+
+	/**
+	 * Tell if WP rewrite rules are present in a given string.
+	 *
+	 * @since  3.2.4
+	 * @author Grégory Viguier
+	 *
+	 * @param bool   $has_wp_rules True when present. False otherwise.
+	 * @param string $content      .htaccess content.
+	 */
+	return apply_filters( 'rocket_has_wp_htaccess_rules', $has_wp_rules, $content );
 }
