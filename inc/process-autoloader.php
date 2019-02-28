@@ -4,10 +4,9 @@ spl_autoload_register(
 	function( $class ) {
 		$rocket_path    = WP_ROCKET_PATH;
 		$rocket_classes = [
-			'WP_Rocket\\Buffer\\Abstract_Buffer' => $rocket_path . 'inc/classes/buffer/class-abstract-buffer.php',
-			'WP_Rocket\\Buffer\\Cache'           => $rocket_path . 'inc/classes/buffer/class-cache.php',
-			'WP_Rocket\\Buffer\\Cachable_Tests'  => $rocket_path . 'inc/classes/buffer/class-cachable-tests.php',
-			'WP_Rocket\\Buffer\\Tests'           => $rocket_path . 'inc/classes/buffer/class-tests.php',
+			'WP_Rocket\\Buffer\\Abstract_Buffer' => $rocket_path . 'inc/classes/Buffer/class-abstract-buffer.php',
+			'WP_Rocket\\Buffer\\Cache'           => $rocket_path . 'inc/classes/Buffer/class-cache.php',
+			'WP_Rocket\\Buffer\\Tests'           => $rocket_path . 'inc/classes/Buffer/class-tests.php',
 			'WP_Rocket\\Logger\\HTML_Formatter'  => $rocket_path . 'inc/classes/logger/class-html-formatter.php',
 			'WP_Rocket\\Logger\\Logger'          => $rocket_path . 'inc/classes/logger/class-logger.php',
 			'WP_Rocket\\Logger\\Stream_Handler'  => $rocket_path . 'inc/classes/logger/class-stream-handler.php',
