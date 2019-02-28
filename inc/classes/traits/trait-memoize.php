@@ -1,8 +1,6 @@
 <?php
 namespace WP_Rocket\Traits;
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
-
 /**
  * Statically store values.
  *
