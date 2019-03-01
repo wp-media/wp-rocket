@@ -21,6 +21,9 @@ class Optimization_Subscribers extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
+		'config',
+		'tests',
+		'buffer_subscriber',
 		'cache_dynamic_resource',
 		'cdn_favicons',
 		'remove_query_string',
@@ -46,6 +49,12 @@ class Optimization_Subscribers extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
+		$this->getContainer()->add( 'config', 'WP_Rocket\Buffer\Config' )
+			->withArgument( WP_ROCKET_CONFIG_PATH );
+		$this->getContainer()->add( 'tests', 'WP_Rocket\Buffer\Tests' )
+			->withArgument( $this->getContainer()->get( 'config' ) );
+		$this->getContainer()->add( 'buffer_subscriber', 'WP_Rocket\Subscriber\Optimization\Buffer_Subscriber' )
+			->withArgument( $this->getContainer()->get( 'tests' ) );
 		$this->getContainer()->add( 'cache_dynamic_resource', 'WP_Rocket\Optimization\Cache_Dynamic_Resource' )
 			->withArgument( $this->getContainer()->get( 'options' ) )
 			->withArgument( WP_ROCKET_CACHE_BUSTING_PATH )
