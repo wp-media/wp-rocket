@@ -13,14 +13,11 @@ class Tests {
 	use \WP_Rocket\Traits\Memoize;
 
 	/**
-	 * Path to the directory containing the config files.
+	 * Config instance
 	 *
-	 * @var    string
-	 * @since  3.3
-	 * @access private
-	 * @author Grégory Viguier
+	 * @var Config
 	 */
-	private static $config_dir_path;
+	private $config;
 
 	/**
 	 * Values of $_COOKIE to use for some tests.
@@ -31,16 +28,6 @@ class Tests {
 	 * @author Grégory Viguier
 	 */
 	private static $cookies;
-
-	/**
-	 * Values of $_SERVER to use for some tests.
-	 *
-	 * @var    array
-	 * @since  3.3
-	 * @access private
-	 * @author Grégory Viguier
-	 */
-	private static $server;
 
 	/**
 	 * Values of $_POST to use for some tests.
@@ -70,7 +57,18 @@ class Tests {
 	 * @access private
 	 * @author Grégory Viguier
 	 */
-	private $tests = [];
+	private $tests = [
+		'query_string'     => 1,
+		'ssl'              => 1,
+		'uri'              => 1,
+		'rejected_cookie'  => 1,
+		'mandatory_cookie' => 1,
+		'user_agent'       => 1,
+		'mobile'           => 1,
+		'donotcachepage'   => 1,
+		'wp_404'           => 1,
+		'search'           => 1,
+	];
 
 	/**
 	 * Information about the last "error".
@@ -93,34 +91,28 @@ class Tests {
 	 * @access public
 	 * @author Grégory Viguier
 	 *
-	 * @param array $args {
+	 * @param Config $config Config instance.
+	 * @param array  $args {
 	 *     An array of arguments.
 	 *
-	 *     @type string $config_dir_path Path to the directory containing the config files.
 	 *     @type array  $cookies         Values of $_COOKIE to use for the tests. Default is $_COOKIE.
-	 *     @type array  $server          Values of $_SERVER to use for the tests. Default is $_SERVER.
 	 *     @type array  $post            Values of $_POST to use for the tests. Default is $_POST
 	 *     @type array  $get             Values of $_GET to use for the tests. Default is $_GET.
 	 *     @type array  $tests           List of complementary tests to perform. Optional.
 	 * }
 	 */
-	public function __construct( array $args ) {
+	public function __construct( Config $config, array $args = [] ) {
+		$this->config = $config;
+
 		if ( ! empty( $args['tests'] ) ) {
 			$this->set_tests( (array) $args['tests'] );
-		}
-
-		if ( isset( self::$config_dir_path ) ) {
-			// Make sure to keep the same values all along.
-			return;
 		}
 
 		// Provide fallback values.
 		if ( ! isset( $args['cookies'] ) && ! empty( $_COOKIE ) && is_array( $_COOKIE ) ) {
 			$args['cookies'] = $_COOKIE;
 		}
-		if ( ! isset( $args['server'] ) && ! empty( $_SERVER ) && is_array( $_SERVER ) ) {
-			$args['server'] = $_SERVER;
-		}
+
 		if ( ! isset( $args['post'] ) && ! empty( $_POST ) && is_array( $_POST ) ) { // WPCS: CSRF ok.
 			$args['post'] = $_POST; // WPCS: CSRF ok.
 		}
@@ -128,12 +120,9 @@ class Tests {
 			$args['get'] = $_GET; // WPCS: CSRF ok.
 		}
 
-		// Set properties.
-		self::$config_dir_path = rtrim( $args['config_dir_path'], '/' ) . '/';
-		self::$cookies         = ! empty( $args['cookies'] ) && is_array( $args['cookies'] ) ? $args['cookies'] : [];
-		self::$server          = ! empty( $args['server'] ) && is_array( $args['server'] ) ? $args['server'] : [];
-		self::$post            = ! empty( $args['post'] ) && is_array( $args['post'] ) ? $args['post'] : [];
-		self::$get             = ! empty( $args['get'] ) && is_array( $args['get'] ) ? $args['get'] : [];
+		self::$cookies = ! empty( $args['cookies'] ) && is_array( $args['cookies'] ) ? $args['cookies'] : [];
+		self::$post    = ! empty( $args['post'] ) && is_array( $args['post'] ) ? $args['post'] : [];
+		self::$get     = ! empty( $args['get'] ) && is_array( $args['get'] ) ? $args['get'] : [];
 
 		if ( self::$post ) {
 			self::$post = array_intersect_key(
@@ -176,7 +165,7 @@ class Tests {
 
 		// Don't cache if in admin or ajax.
 		if ( $this->is_admin() ) {
-			$this->set_error( 'Admin and ajax not processed.' );
+			$this->set_error( 'Admin and AJAX not processed.' );
 			return false;
 		}
 
@@ -187,9 +176,9 @@ class Tests {
 		}
 
 		// Don't process without GET method.
-		if ( ! $this->is_get_method() ) {
+		if ( ! $this->is_allowed_request_method() ) {
 			$this->set_error(
-				'Request method not processed.',
+				'Request method not allowed.',
 				[
 					'request_method' => $this->get_request_method(),
 				]
@@ -203,7 +192,7 @@ class Tests {
 		}
 
 		// Exit if no config file exists.
-		if ( ! $this->has_config_file() ) {
+		if ( ! $this->config->has_config_file() ) {
 			$this->set_error( 'No config file found.' );
 			return false;
 		}
@@ -229,7 +218,7 @@ class Tests {
 		// Don't process page with these cookies.
 		if ( $this->has_test( 'rejected_cookie' ) && $this->has_rejected_cookie() ) {
 			$this->set_error(
-				'Cookie not processed.',
+				'Excluded cookie found.',
 				[
 					'cookies' => self::$cookies,
 				]
@@ -240,7 +229,7 @@ class Tests {
 		// Don't process page when these cookies don't exist.
 		if ( $this->has_test( 'mandatory_cookie' ) && ! $this->is_speed_tool() && ! $this->has_mandatory_cookie() ) {
 			$this->set_error(
-				'Missing cookie: page not processed.',
+				'Missing mandatory cookie: page not processed.',
 				[
 					'cookies' => self::$cookies,
 				]
@@ -251,9 +240,9 @@ class Tests {
 		// Don't process page with these user agents.
 		if ( $this->has_test( 'user_agent' ) && ! $this->can_process_user_agent() ) {
 			$this->set_error(
-				'User agent not processed.',
+				'Excluded User agent.',
 				[
-					'user_agent' => $this->get_server_input( 'HTTP_USER_AGENT' ),
+					'user_agent' => $this->config->get_server_input( 'HTTP_USER_AGENT' ),
 				]
 			);
 			return false;
@@ -262,9 +251,9 @@ class Tests {
 		// Don't process if mobile detection is activated.
 		if ( $this->has_test( 'mobile' ) && ! $this->can_process_mobile() ) {
 			$this->set_error(
-				'Mobile user agent not processed.',
+				'Excluded Mobile user agent.',
 				[
-					'user_agent' => $this->get_server_input( 'HTTP_USER_AGENT' ),
+					'user_agent' => $this->config->get_server_input( 'HTTP_USER_AGENT' ),
 				]
 			);
 			return false;
@@ -286,8 +275,8 @@ class Tests {
 	 *                           Possible values are: 'query_string', 'ssl', 'uri', 'rejected_cookie', 'mandatory_cookie', 'user_agent', 'mobile'.
 	 * @return bool
 	 */
-	public function has_test( $test_name = false ) {
-		if ( ! $test_name ) {
+	public function has_test( $test_name = '' ) {
+		if ( empty( $test_name ) ) {
 			return ! empty( $this->tests );
 		}
 
@@ -304,7 +293,9 @@ class Tests {
 	 * @param array $tests An array of test names.
 	 */
 	public function set_tests( array $tests ) {
-		$this->tests = array_flip( $tests );
+		$tests = array_flip( $tests );
+
+		array_merge( $this->tests, $tests );
 	}
 
 	/**
@@ -431,9 +422,9 @@ class Tests {
 			'xsl' => 1,
 		];
 
-		$is = $extension && isset( $extensions[ $extension ] );
+		$is_rejected = $extension && isset( $extensions[ $extension ] );
 
-		return self::memoize( __FUNCTION__, [], $is );
+		return self::memoize( __FUNCTION__, [], $is_rejected );
 	}
 
 	/**
@@ -465,7 +456,7 @@ class Tests {
 	}
 
 	/**
-	 * Tell if we're in a GET request.
+	 * Tell if the request method is allowed to be cached.
 	 *
 	 * @since  3.3
 	 * @access public
@@ -473,8 +464,8 @@ class Tests {
 	 *
 	 * @return bool
 	 */
-	public function is_get_method() {
-		return 'GET' === $this->get_request_method();
+	public function is_allowed_request_method() {
+		return ( 'GET' || 'HEAD' ) === $this->get_request_method();
 	}
 
 	/** ----------------------------------------------------------------------------------------- */
@@ -514,7 +505,7 @@ class Tests {
 		}
 
 		// The page can be processed if at least one of these parameters is present.
-		$allowed_params = $this->get_config( 'cache_query_strings' );
+		$allowed_params = $this->config->get_config( 'cache_query_strings' );
 
 		if ( ! $allowed_params ) {
 			// We have query strings but none is in the list set by the user.
@@ -536,7 +527,7 @@ class Tests {
 	 * @return bool
 	 */
 	public function can_process_ssl() {
-		return ! $this->is_ssl() || $this->get_config( 'cache_ssl' );
+		return ! $this->is_ssl() || $this->config->get_config( 'cache_ssl' );
 	}
 
 	/**
@@ -554,7 +545,7 @@ class Tests {
 		}
 
 		// URIs not to cache.
-		$uri_pattern = $this->get_config( 'cache_reject_uri' );
+		$uri_pattern = $this->config->get_config( 'cache_reject_uri' );
 
 		if ( ! $uri_pattern ) {
 			return self::memoize( __FUNCTION__, [], true );
@@ -583,7 +574,7 @@ class Tests {
 			return self::memoize( __FUNCTION__, [], false );
 		}
 
-		$rejected_cookies = $this->get_rejected_cookies();
+		$rejected_cookies = $this->config->get_rejected_cookies();
 
 		if ( ! $rejected_cookies ) {
 			return self::memoize( __FUNCTION__, [], false );
@@ -612,7 +603,7 @@ class Tests {
 			return self::get_memoized( __FUNCTION__ );
 		}
 
-		$mandatory_cookies = $this->get_mandatory_cookies();
+		$mandatory_cookies = $this->config->get_mandatory_cookies();
 
 		if ( ! $mandatory_cookies ) {
 			return self::memoize( __FUNCTION__, [], true );
@@ -645,17 +636,17 @@ class Tests {
 			return self::get_memoized( __FUNCTION__ );
 		}
 
-		if ( ! $this->get_server_input( 'HTTP_USER_AGENT' ) ) {
+		if ( ! $this->config->get_server_input( 'HTTP_USER_AGENT' ) ) {
 			return self::memoize( __FUNCTION__, [], true );
 		}
 
-		$rejected_uas = $this->get_config( 'cache_reject_ua' );
+		$rejected_uas = $this->config->get_config( 'cache_reject_ua' );
 
 		if ( ! $rejected_uas ) {
 			return self::memoize( __FUNCTION__, [], true );
 		}
 
-		$can = ! preg_match( '#' . $rejected_uas . '#', $this->get_server_input( 'HTTP_USER_AGENT' ) );
+		$can = ! preg_match( '#' . $rejected_uas . '#', $this->config->get_server_input( 'HTTP_USER_AGENT' ) );
 
 		return self::memoize( __FUNCTION__, [], $can );
 	}
@@ -674,23 +665,23 @@ class Tests {
 			return self::get_memoized( __FUNCTION__ );
 		}
 
-		if ( ! $this->get_server_input( 'HTTP_USER_AGENT' ) ) {
+		if ( ! $this->config->get_server_input( 'HTTP_USER_AGENT' ) ) {
 			return self::memoize( __FUNCTION__, [], true );
 		}
 
-		if ( $this->get_config( 'cache_mobile' ) ) {
+		if ( $this->config->get_config( 'cache_mobile' ) ) {
 			return self::memoize( __FUNCTION__, [], true );
 		}
 
 		$uas = '2.0\ MMP|240x320|400X240|AvantGo|BlackBerry|Blazer|Cellphone|Danger|DoCoMo|Elaine/3.0|EudoraWeb|Googlebot-Mobile|hiptop|IEMobile|KYOCERA/WX310K|LG/U990|MIDP-2.|MMEF20|MOT-V|NetFront|Newt|Nintendo\ Wii|Nitro|Nokia|Opera\ Mini|Palm|PlayStation\ Portable|portalmmm|Proxinet|ProxiNet|SHARP-TQ-GX10|SHG-i900|Small|SonyEricsson|Symbian\ OS|SymbianOS|TS21i-10|UP.Browser|UP.Link|webOS|Windows\ CE|WinWAP|YahooSeeker/M1A1-R2D2|iPhone|iPod|Android|BlackBerry9530|LG-TU915\ Obigo|LGE\ VX|webOS|Nokia5800';
 
-		if ( preg_match( '#^.*(' . $uas . ').*#i', $this->get_server_input( 'HTTP_USER_AGENT' ) ) ) {
+		if ( preg_match( '#^.*(' . $uas . ').*#i', $this->config->get_server_input( 'HTTP_USER_AGENT' ) ) ) {
 			return self::memoize( __FUNCTION__, [], false );
 		}
 
 		$uas = 'w3c\ |w3c-|acs-|alav|alca|amoi|audi|avan|benq|bird|blac|blaz|brew|cell|cldc|cmd-|dang|doco|eric|hipt|htc_|inno|ipaq|ipod|jigs|kddi|keji|leno|lg-c|lg-d|lg-g|lge-|lg/u|maui|maxo|midp|mits|mmef|mobi|mot-|moto|mwbp|nec-|newt|noki|palm|pana|pant|phil|play|port|prox|qwap|sage|sams|sany|sch-|sec-|send|seri|sgh-|shar|sie-|siem|smal|smar|sony|sph-|symb|t-mo|teli|tim-|tosh|tsm-|upg1|upsi|vk-v|voda|wap-|wapa|wapi|wapp|wapr|webc|winw|winw|xda\ |xda-';
 
-		if ( preg_match( '#^(' . $uas . ').*#i', $this->get_server_input( 'HTTP_USER_AGENT' ) ) ) {
+		if ( preg_match( '#^(' . $uas . ').*#i', $this->config->get_server_input( 'HTTP_USER_AGENT' ) ) ) {
 			return self::memoize( __FUNCTION__, [], false );
 		}
 
@@ -767,198 +758,8 @@ class Tests {
 	}
 
 	/** ----------------------------------------------------------------------------------------- */
-	/** CONFIGURATION =========================================================================== */
-	/** ----------------------------------------------------------------------------------------- */
-
-	/**
-	 * Get a specific config/option value.
-	 *
-	 * @since  3.3
-	 * @access public
-	 * @author Grégory Viguier
-	 *
-	 * @param  string $config_name Name of a specific config/option.
-	 * @return mixed
-	 */
-	public function get_config( $config_name ) {
-		$config = $this->get_configs();
-		return isset( $config[ $config_name ] ) ? $config[ $config_name ] : null;
-	}
-
-	/**
-	 * Get the whole current configuration.
-	 *
-	 * @since  3.3
-	 * @access public
-	 * @author Grégory Viguier
-	 *
-	 * @return array|bool An array containing the configuration. False on failure.
-	 */
-	public function get_configs() {
-		if ( self::is_memoized( __FUNCTION__ ) ) {
-			return self::get_memoized( __FUNCTION__ );
-		}
-
-		$config_file_path = $this->get_config_file_path();
-
-		if ( ! $config_file_path ) {
-			return self::memoize( __FUNCTION__, [], false );
-		}
-
-		include $config_file_path;
-
-		$config = [
-			'cookie_hash'               => '',
-			'logged_in_cookie'          => '',
-			'common_cache_logged_users' => 0,
-			'cache_mobile_files_tablet' => 'desktop',
-			'cache_ssl'                 => 0,
-			'cache_mobile'              => 0,
-			'do_caching_mobile_files'   => 0,
-			'secret_cache_key'          => '',
-			'cache_reject_uri'          => '',
-			'cache_query_strings'       => [],
-			'cache_reject_cookies'      => '',
-			'cache_reject_ua'           => '',
-			'cache_mandatory_cookies'   => '',
-			'cache_dynamic_cookies'     => [],
-			'url_no_dots'               => 0,
-		];
-
-		foreach ( $config as $entry_name => $entry_value ) {
-			$var_name = 'rocket_' . $entry_name;
-
-			if ( isset( $$var_name ) ) {
-				$config[ $entry_name ] = $$var_name;
-			}
-		}
-
-		return self::memoize( __FUNCTION__, [], $config );
-	}
-
-	/**
-	 * Get the path to an existing config file.
-	 *
-	 * @since  3.3
-	 * @access protected
-	 * @author Grégory Viguier
-	 *
-	 * @return string|bool The path to the file. False if no file is found.
-	 */
-	protected function get_config_file_path() {
-		if ( self::is_memoized( __FUNCTION__ ) ) {
-			return self::get_memoized( __FUNCTION__ );
-		}
-
-		$config_dir_real_path = realpath( self::$config_dir_path ) . DIRECTORY_SEPARATOR;
-
-		$host = $this->get_host();
-
-		if ( realpath( self::$config_dir_path . $host . '.php' ) && 0 === stripos( realpath( self::$config_dir_path . $host . '.php' ), $config_dir_real_path ) ) {
-			$config_file_path = self::$config_dir_path . $host . '.php';
-			return self::memoize( __FUNCTION__, [], $config_file_path );
-		}
-
-		$path = str_replace( '\\', '/', strtok( $this->get_server_input( 'REQUEST_URI', '' ), '?' ) );
-		$path = preg_replace( '|(?<=.)/+|', '/', $path );
-		$path = explode( '%2F', preg_replace( '/^(?:%2F)*(.*?)(?:%2F)*$/', '$1', rawurlencode( $path ) ) );
-
-		foreach ( $path as $p ) {
-			if ( realpath( self::$config_dir_path . $host . '.' . $p . '.php' ) && 0 === stripos( realpath( self::$config_dir_path . $host . '.' . $p . '.php' ), $config_dir_real_path ) ) {
-				$config_file_path = self::$config_dir_path . $host . '.' . $p . '.php';
-				return self::memoize( __FUNCTION__, [], $config_file_path );
-			}
-
-			if ( realpath( self::$config_dir_path . $host . '.' . $dir . $p . '.php' ) && 0 === stripos( realpath( self::$config_dir_path . $host . '.' . $dir . $p . '.php' ), $config_dir_real_path ) ) {
-				$config_file_path = self::$config_dir_path . $host . '.' . $dir . $p . '.php';
-				return self::memoize( __FUNCTION__, [], $config_file_path );
-			}
-
-			$dir .= $p . '.';
-		}
-
-		return self::memoize( __FUNCTION__, [], false );
-	}
-
-	/**
-	 * Tell if a config file has been found.
-	 *
-	 * @since  3.3
-	 * @access protected
-	 * @author Grégory Viguier
-	 *
-	 * @return bool
-	 */
-	protected function has_config_file() {
-		return (bool) $this->get_config_file_path();
-	}
-
-	/** ----------------------------------------------------------------------------------------- */
-	/** SPECIFIC CONFIG GETTERS ================================================================= */
-	/** ----------------------------------------------------------------------------------------- */
-
-	/**
-	 * Get rejected cookies as a regex pattern.
-	 * `#` is used as pattern delimiter.
-	 *
-	 * @since  3.3
-	 * @access protected
-	 * @author Grégory Viguier
-	 *
-	 * @return string
-	 */
-	protected function get_rejected_cookies() {
-		$rejected_cookies = $this->get_config( 'cache_reject_cookies' );
-
-		if ( '' === $rejected_cookies ) {
-			return $rejected_cookies;
-		}
-
-		return '#' . $rejected_cookies . '#';
-	}
-
-	/**
-	 * Get mandatory cookies as a regex pattern.
-	 * `#` is used as pattern delimiter.
-	 *
-	 * @since  3.3
-	 * @access protected
-	 * @author Grégory Viguier
-	 *
-	 * @return string
-	 */
-	protected function get_mandatory_cookies() {
-		$mandatory_cookies = $this->get_config( 'cache_mandatory_cookies' );
-
-		if ( '' === $mandatory_cookies ) {
-			return $mandatory_cookies;
-		}
-
-		return '#' . $mandatory_cookies . '#';
-	}
-
-	/** ----------------------------------------------------------------------------------------- */
 	/** $_SERVER ================================================================================ */
 	/** ----------------------------------------------------------------------------------------- */
-
-	/**
-	 * Get a $_SERVER entry.
-	 *
-	 * @since  3.3
-	 * @access public
-	 * @author Grégory Viguier
-	 *
-	 * @param  string $entry_name Name of the entry.
-	 * @param  mixed  $default    Value to return if the entry is not set.
-	 * @return mixed
-	 */
-	public function get_server_input( $entry_name, $default = null ) {
-		if ( ! isset( self::$server[ $entry_name ] ) ) {
-			return $default;
-		}
-
-		return self::$server[ $entry_name ];
-	}
 
 	/**
 	 * Get the IP address from which the user is viewing the current page.
@@ -985,11 +786,11 @@ class Tests {
 		);
 
 		foreach ( $keys as $key ) {
-			if ( ! $this->get_server_input( $key ) ) {
+			if ( ! $this->config->get_server_input( $key ) ) {
 				continue;
 			}
 
-			$ip = explode( ',', $this->get_server_input( $key ) );
+			$ip = explode( ',', $this->config->get_server_input( $key ) );
 			$ip = end( $ip );
 
 			if ( false !== filter_var( $ip, FILTER_VALIDATE_IP ) ) {
@@ -998,27 +799,6 @@ class Tests {
 		}
 
 		return self::memoize( __FUNCTION__, [], '0.0.0.0' );
-	}
-
-	/**
-	 * Get the host, to use for config and cache file path.
-	 *
-	 * @since  3.3
-	 * @access public
-	 * @author Grégory Viguier
-	 *
-	 * @return string
-	 */
-	public function get_host() {
-		if ( self::is_memoized( __FUNCTION__ ) ) {
-			return self::get_memoized( __FUNCTION__ );
-		}
-
-		$host = $this->get_server_input( 'HTTP_HOST', (string) time() );
-		$host = preg_replace( '/:\d+$/', '', $host );
-		$host = trim( strtolower( $host ), '.' );
-
-		return self::memoize( __FUNCTION__, [], rawurlencode( $host ) );
 	}
 
 	/**
@@ -1070,13 +850,13 @@ class Tests {
 			return self::memoize( __FUNCTION__, [], true );
 		}
 
-		if ( ! $this->get_server_input( 'HTTP_USER_AGENT' ) ) {
+		if ( ! $this->config->get_server_input( 'HTTP_USER_AGENT' ) ) {
 			return self::memoize( __FUNCTION__, [], false );
 		}
 
-		$is = preg_match( '#PingdomPageSpeed|DareBoost|Google|PTST|WP Rocket#i', $this->get_server_input( 'HTTP_USER_AGENT' ) );
+		$user_agent = preg_match( '#PingdomPageSpeed|DareBoost|Google|PTST|WP Rocket#i', $this->config->get_server_input( 'HTTP_USER_AGENT' ) );
 
-		return self::memoize( __FUNCTION__, [], $is );
+		return self::memoize( __FUNCTION__, [], $user_agent );
 	}
 
 	/**
@@ -1090,15 +870,15 @@ class Tests {
 	 * @return bool True if SSL, otherwise false.
 	 */
 	public function is_ssl() {
-		if ( null !== $this->get_server_input( 'HTTPS' ) ) {
-			if ( 'on' === strtolower( $this->get_server_input( 'HTTPS' ) ) ) {
+		if ( null !== $this->config->get_server_input( 'HTTPS' ) ) {
+			if ( 'on' === strtolower( $this->config->get_server_input( 'HTTPS' ) ) ) {
 				return true;
 			}
 
-			if ( '1' === (string) $this->get_server_input( 'HTTPS' ) ) {
+			if ( '1' === (string) $this->config->get_server_input( 'HTTPS' ) ) {
 				return true;
 			}
-		} elseif ( '443' === (string) $this->get_server_input( 'SERVER_PORT' ) ) {
+		} elseif ( '443' === (string) $this->config->get_server_input( 'SERVER_PORT' ) ) {
 			return true;
 		}
 		return false;
@@ -1118,11 +898,11 @@ class Tests {
 	 * @return string
 	 */
 	public function get_raw_request_uri() {
-		if ( '' === $this->get_server_input( 'REQUEST_URI', '' ) ) {
+		if ( '' === $this->config->get_server_input( 'REQUEST_URI', '' ) ) {
 			return '';
 		}
 
-		return '/' . ltrim( $this->get_server_input( 'REQUEST_URI' ), '/' );
+		return '/' . ltrim( $this->config->get_server_input( 'REQUEST_URI' ), '/' );
 	}
 
 	/**
@@ -1181,11 +961,11 @@ class Tests {
 	 * @return string
 	 */
 	public function get_request_method() {
-		if ( '' === $this->get_server_input( 'REQUEST_METHOD', '' ) ) {
+		if ( '' === $this->config->get_server_input( 'REQUEST_METHOD', '' ) ) {
 			return '';
 		}
 
-		return strtoupper( $this->get_server_input( 'REQUEST_METHOD' ) );
+		return strtoupper( $this->config->get_server_input( 'REQUEST_METHOD' ) );
 	}
 
 	/** ----------------------------------------------------------------------------------------- */
@@ -1222,6 +1002,8 @@ class Tests {
 				'age-verified'    => 1,
 				'ao_noptimize'    => 1,
 				'usqp'            => 1,
+				'cn-reloaded'     => 1,
+				'_ga'             => 1,
 			]
 		);
 
@@ -1260,19 +1042,6 @@ class Tests {
 	 */
 	public function get_cookies() {
 		return self::$cookies;
-	}
-
-	/**
-	 * Get the `server` property.
-	 *
-	 * @since  3.3
-	 * @access public
-	 * @author Grégory Viguier
-	 *
-	 * @return array
-	 */
-	public function get_server() {
-		return self::$server;
 	}
 
 	/**
