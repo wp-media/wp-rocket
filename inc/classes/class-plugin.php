@@ -18,6 +18,9 @@ use WP_Rocket\Optimization\Cache_Dynamic_Resource;
 use WP_Rocket\Optimization\CDN_Favicons;
 use WP_Rocket\Optimization\Remove_Query_String;
 use WP_Rocket\Preload;
+use WP_Rocket\Buffer\Optimization;
+use WP_Rocket\Buffer\Config;
+use WP_Rocket\Buffer\Tests;
 
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
@@ -99,8 +102,15 @@ class Plugin {
 				//new Logs(),
 			];
 		} elseif ( \rocket_valid_key() ) {
+			$tests       = new Tests(
+				new Config(
+					[
+						'config_dir_path' => WP_ROCKET_CONFIG_PATH,
+					]
+				)
+			);
 			$subscribers = [
-				new Subscriber\Optimization\Buffer_Subscriber(),
+				new Subscriber\Optimization\Buffer_Subscriber( new Optimization( $tests ) ),
 				new Subscriber\Optimization\IE_Conditionals_Subscriber(),
 				new Subscriber\Optimization\Minify_HTML_Subscriber( $this->options ),
 				new Subscriber\Optimization\Combine_Google_Fonts_Subscriber( $this->options ),
