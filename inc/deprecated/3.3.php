@@ -193,7 +193,7 @@ if ( ! function_exists( 'rocket_define_donotoptimize_constant' ) ) :
 	 * @param bool $value true or false.
 	 */
 	function rocket_define_donotoptimize_constant( $value ) {
-		_deprecated_function( __FUNCTION__ . '()', '3.3', '\WP_Rocket\Buffer\Abstract_Buffer->define_donotoptimize()' );
+		_deprecated_function( __FUNCTION__ . '()', '3.3', '\WP_Rocket\Buffer\Cache->define_donotoptimize_true()' );
 
 		if ( ! defined( 'DONOTROCKETOPTIMIZE' ) ) {
 			define( 'DONOTROCKETOPTIMIZE', (bool) $value );
@@ -256,3 +256,28 @@ if ( ! function_exists( 'rocket_get_ip' ) ) :
 		return '0.0.0.0';
 	}
 endif;
+
+if ( ! function_exists( 'get_rocket_footprint' ) ) :
+	/**
+	 * Get WP Rocket footprint
+	 *
+	 * @deprecated 3.3
+	 * @since 3.0.5 White label footprint if WP_ROCKET_WHITE_LABEL_FOOTPRINT is defined.
+	 * @since 2.0
+	 *
+	 * @param bool $debug (default: true) If true, adds the date of generation cache file.
+	 * @return string The footprint that will be printed
+	 */
+	function get_rocket_footprint( $debug = true ) {
+		_deprecated_function( __FUNCTION__ . '()', '3.3', '\WP_Rocket\Buffer\Cache->get_rocket_footprint()' );
+		$footprint = defined( 'WP_ROCKET_WHITE_LABEL_FOOTPRINT' ) ?
+						"\n" . '<!-- Cached for great performance' :
+						"\n" . '<!-- This website is like a Rocket, isn\'t it? Performance optimized by ' . WP_ROCKET_PLUGIN_NAME . '. Learn more: https://wp-rocket.me';
+		if ( $debug ) {
+			$footprint .= ' - Debug: cached@' . time();
+		}
+		$footprint .= ' -->';
+		return $footprint;
+	}
+endif;
+
