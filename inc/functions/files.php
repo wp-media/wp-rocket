@@ -14,13 +14,7 @@ function get_rocket_advanced_cache_file() {
 	$buffer .= "defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );\n\n";
 
 	// Add a constant to be sure this is our file.
-	$buffer .= "define( 'WP_ROCKET_ADVANCED_CACHE', true );\n";
-
-	// Get cache path.
-	$buffer .= '$rocket_cache_path  = \'' . WP_ROCKET_CACHE_PATH . "';\n";
-
-	// Get config path.
-	$buffer .= '$rocket_config_path = \'' . WP_ROCKET_CONFIG_PATH . "';\n\n";
+	$buffer .= "define( 'WP_ROCKET_ADVANCED_CACHE', true );\n\n";
 
 	// Include the Mobile Detect class if we have to create a different caching file for mobile.
 	if ( is_rocket_generate_caching_mobile_files() ) {
@@ -30,7 +24,7 @@ function get_rocket_advanced_cache_file() {
 	}
 
 	// Register a class autoloader and include the process file.
-	$buffer .= "if ( file_exists( '" . WP_ROCKET_FRONT_PATH . "process.php' ) && version_compare( phpversion(), '" . WP_ROCKET_PHP_VERSION . "' ) >= 0 ) {\n\n";
+	$buffer .= "if ( version_compare( phpversion(), '" . WP_ROCKET_PHP_VERSION . "' ) >= 0 ) {\n\n";
 
 	// Class autoloader.
 	$autoloader = rocket_direct_filesystem()->get_contents( WP_ROCKET_INC_PATH . 'process-autoloader.php' );
@@ -43,8 +37,29 @@ function get_rocket_advanced_cache_file() {
 		$buffer .= "\t$autoloader\n\n";
 	}
 
-	// Include the process file in buffer.
-	$buffer .= "\tinclude '" . WP_ROCKET_FRONT_PATH . "process.php';\n";
+	// Initialize the Cache class and process.
+	$buffer .= "\t" . 'if ( ! class_exists( \'\WP_Rocket\Buffer\Cache\' ) ) {
+		if ( ! defined( \'DONOTROCKETOPTIMIZE\' ) ) {
+			define( \'DONOTROCKETOPTIMIZE\', true ); // WPCS: prefix ok.
+		}
+		return;
+	}
+	
+	$rocket_config_class = new \WP_Rocket\Buffer\Config(
+		[
+			\'config_dir_path\' => \'' . WP_ROCKET_CONFIG_PATH . '\',
+		]
+	);
+	
+	( new \WP_Rocket\Buffer\Cache(
+		new \WP_Rocket\Buffer\Tests(
+			$rocket_config_class
+		),
+		$rocket_config_class,
+		[
+			\'cache_dir_path\' => \'' . WP_ROCKET_CACHE_PATH . '\',
+		]
+	) )->maybe_init_process();;' . "\n";
 	$buffer .= "} else {\n";
 	// Add a constant to provent include issue.
 	$buffer .= "\tdefine( 'WP_ROCKET_ADVANCED_CACHE_PROBLEM', true );\n";
@@ -1184,24 +1199,4 @@ function rocket_find_wpconfig_path() {
 
 	// No writable file found.
 	return false;
-}
-
-/**
- * Get WP Rocket footprint
- *
- * @since 3.0.5 White label footprint if WP_ROCKET_WHITE_LABEL_FOOTPRINT is defined.
- * @since 2.0
- *
- * @param bool $debug (default: true) If true, adds the date of generation cache file.
- * @return string The footprint that will be printed
- */
-function get_rocket_footprint( $debug = true ) {
-	$footprint = defined( 'WP_ROCKET_WHITE_LABEL_FOOTPRINT' ) ?
-					"\n" . '<!-- Cached for great performance' :
-					"\n" . '<!-- This website is like a Rocket, isn\'t it? Performance optimized by ' . WP_ROCKET_PLUGIN_NAME . '. Learn more: https://wp-rocket.me';
-	if ( $debug ) {
-		$footprint .= ' - Debug: cached@' . time();
-	}
-	$footprint .= ' -->';
-	return $footprint;
 }
