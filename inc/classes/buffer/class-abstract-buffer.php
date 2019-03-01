@@ -3,8 +3,6 @@ namespace WP_Rocket\Buffer;
 
 use WP_Rocket\Logger\Logger;
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
-
 /**
  * Handle page cache and optimizations.
  *
@@ -24,19 +22,9 @@ abstract class Abstract_Buffer {
 	protected $process_id;
 
 	/**
-	 * List of tests to perform.
-	 *
-	 * @var    array
-	 * @since  3.3
-	 * @access protected
-	 * @author Grégory Viguier
-	 */
-	protected $tests_array;
-
-	/**
 	 * Instance of the Tests class.
 	 *
-	 * @var    \WP_Rocket\Buffer\Tests
+	 * @var    Tests
 	 * @since  3.3
 	 * @access protected
 	 * @author Grégory Viguier
@@ -50,19 +38,10 @@ abstract class Abstract_Buffer {
 	 * @access public
 	 * @author Grégory Viguier
 	 *
-	 * @param array $args  {
-	 *     An array of arguments.
-	 *
-	 *     @type string $config_dir_path Path to the directory containing the config files.
-	 * }
+	 * @param Tests $tests Tests instance.
 	 */
-	public function __construct( array $args ) {
-		$this->tests = new Tests(
-			[
-				'config_dir_path' => $args['config_dir_path'],
-				'tests'           => $this->tests_array,
-			]
-		);
+	public function __construct( Tests $tests ) {
+		$this->tests = $tests;
 	}
 
 	/** ----------------------------------------------------------------------------------------- */
@@ -164,21 +143,6 @@ abstract class Abstract_Buffer {
 	/** ----------------------------------------------------------------------------------------- */
 	/** VARIOUS TOOLS =========================================================================== */
 	/** ----------------------------------------------------------------------------------------- */
-
-	/**
-	 * Declares and sets value of constant preventing Optimizations.
-	 *
-	 * @since  3.3
-	 * @access public
-	 * @author Grégory Viguier
-	 *
-	 * @param bool $value True or false. Default is true.
-	 */
-	final public function define_donotoptimize( $value = true ) {
-		if ( ! defined( 'DONOTROCKETOPTIMIZE' ) ) {
-			define( 'DONOTROCKETOPTIMIZE', (bool) $value );
-		}
-	}
 
 	/**
 	 * Tell if the page content is HTML.
