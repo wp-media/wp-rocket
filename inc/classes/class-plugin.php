@@ -87,6 +87,7 @@ class Plugin {
 			$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Optimization_Subscribers' );
 
 			$subscribers = [
+				'buffer_subscriber',
 				'ie_conditionals_subscriber',
 				'minify_html_subscriber',
 				'combine_google_fonts_subscriber',
