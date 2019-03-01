@@ -402,5 +402,9 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		flush_rocket_htaccess();
 		rocket_generate_config_file();
 	}
+ 
+	if ( version_compare( $actual_version, '3.3', '<' ) ) {
+		rocket_generate_config_file();
+	}
 }
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );
