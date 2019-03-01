@@ -1,8 +1,6 @@
 <?php
 namespace WP_Rocket\Buffer;
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
-
 /**
  * Handle page optimizations.
  *
@@ -22,25 +20,11 @@ class Optimization extends Abstract_Buffer {
 	protected $process_id = 'optimization process';
 
 	/**
-	 * List of the tests to do.
+	 * Tests instance
 	 *
-	 * @var    array
-	 * @since  3.3
-	 * @access protected
-	 * @author Grégory Viguier
+	 * @var Tests
 	 */
-	protected $tests_array = [
-		'query_string',
-		'ssl',
-		'uri',
-		'rejected_cookie',
-		'mandatory_cookie',
-		'user_agent',
-		'mobile',
-		'donotcachepage',
-		'wp_404',
-		'search',
-	];
+	protected $tests;
 
 	/**
 	 * Constructor.
@@ -49,14 +33,10 @@ class Optimization extends Abstract_Buffer {
 	 * @access public
 	 * @author Grégory Viguier
 	 *
-	 * @param array $args  {
-	 *     An array of arguments.
-	 *
-	 *     @type string $config_dir_path Path to the directory containing the config files.
-	 * }
+	 * @param Tests $tests Tests instance.
 	 */
-	public function __construct( array $args ) {
-		parent::__construct( $args );
+	public function __construct( Tests $tests ) {
+		parent::__construct( $tests );
 
 		$this->log( 'OPTIMIZATION PROCESS STARTED.', [], 'info' );
 	}
@@ -103,10 +83,9 @@ class Optimization extends Abstract_Buffer {
 
 		/**
 		 * This hook is used for:
-		 * - Add width and height attributes on images
-		 * - Deferred JavaScript files
-		 * - DNS Prefechting
-		 * - Minification HTML/CSS/JavaScript
+		 * - Async CSS files
+		 * - Defer JavaScript files
+		 * - Minify/Combine HTML/CSS/JavaScript
 		 * - CDN
 		 * - LazyLoad
 		 *
