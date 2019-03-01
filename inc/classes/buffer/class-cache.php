@@ -22,25 +22,18 @@ class Cache extends Abstract_Buffer {
 	protected $process_id = 'caching process';
 
 	/**
-	 * List of the tests to do.
+	 * Tests instance
 	 *
-	 * @var    array
-	 * @since  3.3
-	 * @access protected
-	 * @author Grégory Viguier
+	 * @var Tests
 	 */
-	protected $tests_array = [
-		'query_string',
-		'ssl',
-		'uri',
-		'rejected_cookie',
-		'mandatory_cookie',
-		'user_agent',
-		'mobile',
-		'donotcachepage',
-		'wp_404',
-		'search',
-	];
+	protected $tests;
+
+	/**
+	 * Config instance
+	 *
+	 * @var Config
+	 */
+	private $config;
 
 	/**
 	 * Path to the directory containing the cache files.
@@ -59,17 +52,19 @@ class Cache extends Abstract_Buffer {
 	 * @access public
 	 * @author Grégory Viguier
 	 *
-	 * @param array $args  {
+	 * @param Tests  $tests Tests instance.
+	 * @param Config $config Config instance.
+	 * @param array  $args  {
 	 *     An array of arguments.
 	 *
 	 *     @type string $cache_dir_path  Path to the directory containing the cache files.
-	 *     @type string $config_dir_path Path to the directory containing the config files.
 	 * }
 	 */
-	public function __construct( array $args ) {
+	public function __construct( Tests $tests, Config $config, array $args ) {
+		$this->config         = $config;
 		$this->cache_dir_path = rtrim( $args['cache_dir_path'], '/' ) . '/';
 
-		parent::__construct( $args );
+		parent::__construct( $tests );
 
 		$this->log( 'CACHING PROCESS STARTED.', [], 'info' );
 	}
@@ -87,6 +82,7 @@ class Cache extends Abstract_Buffer {
 	 */
 	public function maybe_init_process() {
 		if ( ! $this->tests->can_init_process() ) {
+			$this->define_donotoptimize_true();
 			$this->log_last_test_error();
 			return;
 		}
@@ -104,7 +100,7 @@ class Cache extends Abstract_Buffer {
 		);
 
 		$cache_filepath_gzip = $cache_filepath . '_gzip';
-		$accept_encoding     = $this->tests->get_server_input( 'HTTP_ACCEPT_ENCODING' );
+		$accept_encoding     = $this->config->get_server_input( 'HTTP_ACCEPT_ENCODING' );
 
 		// Check if cache file exist.
 		if ( $accept_encoding && false !== strpos( $accept_encoding, 'gzip' ) && is_readable( $cache_filepath_gzip ) ) {
@@ -145,18 +141,14 @@ class Cache extends Abstract_Buffer {
 			header( 'Content-Encoding: gzip' );
 		}
 
-		// Getting If-Modified-Since headers sent by the client.
-		if ( function_exists( 'apache_request_headers' ) ) {
-			$headers                = apache_request_headers();
-			$http_if_modified_since = isset( $headers['If-Modified-Since'] ) ? $headers['If-Modified-Since'] : '';
-		} else {
-			$http_if_modified_since = $this->tests->get_server_input( 'HTTP_IF_MODIFIED_SINCE', '' );
-		}
+		$if_modified_since = $this->get_if_modified_since();
 
 		// Checking if the client is validating his cache and if it is current.
-		if ( $http_if_modified_since && ( strtotime( $http_if_modified_since ) === @filemtime( $cache_filepath ) ) ) {
+		if ( $if_modified_since && ( strtotime( $if_modified_since ) === @filemtime( $cache_filepath ) ) ) {
 			// Client's cache is current, so we just respond '304 Not Modified'.
-			header( $this->tests->get_server_input( 'SERVER_PROTOCOL', '' ) . ' 304 Not Modified', true, 304 );
+			header( $this->config->get_server_input( 'SERVER_PROTOCOL', '' ) . ' 304 Not Modified', true, 304 );
+			header( 'Expires: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
+			header( 'Cache-Control: no-cache, must-revalidate' );
 
 			$this->log(
 				'Serving `304` ' . ( $is_gzip ? ' gzip' : '' ) . 'cache file.',
@@ -176,7 +168,7 @@ class Cache extends Abstract_Buffer {
 			'Serving ' . ( $is_gzip ? ' gzip' : '' ) . 'cache file.',
 			[
 				'path'     => $cache_filepath,
-				'modified' => $http_if_modified_since,
+				'modified' => $if_modified_since,
 			],
 			'info'
 		);
@@ -194,8 +186,6 @@ class Cache extends Abstract_Buffer {
 	 * @return string         The buffered content.
 	 */
 	public function maybe_process_buffer( $buffer ) {
-		global $is_nginx;
-
 		if ( ! $this->tests->can_process_buffer( $buffer ) ) {
 			$this->log_last_test_error();
 			return $buffer;
@@ -207,7 +197,7 @@ class Cache extends Abstract_Buffer {
 		if ( ! static::can_generate_caching_files() ) {
 			// Not allowed to generate cache files.
 			if ( $is_html ) {
-				$footprint = get_rocket_footprint( false );
+				$footprint = $this->get_rocket_footprint();
 			}
 
 			$this->log(
@@ -226,26 +216,17 @@ class Cache extends Abstract_Buffer {
 		rocket_mkdir_p( $cache_dir_path );
 
 		if ( $is_html ) {
-			$footprint = get_rocket_footprint();
+			$footprint = $this->get_rocket_footprint( time() );
 		}
 
 		// Save the cache file.
 		rocket_put_content( $cache_filepath, $buffer . $footprint );
 
-		if ( get_rocket_option( 'do_caching_mobile_files' ) ) {
-			if ( $is_nginx ) {
-				// Create a hidden empty file for mobile detection on NGINX with the Rocket NGINX configuration.
-				$nginx_mobile_detect_file = $cache_dir_path . '/.mobile-active';
-
-				if ( ! rocket_direct_filesystem()->exists( $nginx_mobile_detect_file ) ) {
-					rocket_direct_filesystem()->touch( $nginx_mobile_detect_file );
-				}
-			}
-		}
-
 		if ( function_exists( 'gzencode' ) ) {
 			rocket_put_content( $cache_filepath . '_gzip', gzencode( $buffer . $footprint, apply_filters( 'rocket_gzencode_level_compression', 3 ) ) );
 		}
+
+		$this->maybe_create_nginx_mobile_file( $cache_dir_path );
 
 		// Send headers with the last modified time of the cache file.
 		if ( file_exists( $cache_filepath ) ) {
@@ -253,7 +234,7 @@ class Cache extends Abstract_Buffer {
 		}
 
 		if ( $is_html ) {
-			$footprint = get_rocket_footprint( false );
+			$footprint = $this->get_rocket_footprint();
 		}
 
 		$this->log(
@@ -283,84 +264,25 @@ class Cache extends Abstract_Buffer {
 			return $request_uri_path;
 		}
 
-		$host = $this->tests->get_host();
+		$cookies          = $this->tests->get_cookies();
+		$request_uri_path = $this->get_request_cache_path( $cookies );
+		$filename         = 'index';
 
-		if ( $this->tests->get_config( 'url_no_dots' ) ) {
-			$host = str_replace( '.', '_', $host );
-		}
-
-		$request_uri              = $this->tests->get_clean_request_uri();
-		$cookie_hash              = $this->tests->get_config( 'cookie_hash' );
-		$logged_in_cookie         = $this->tests->get_config( 'logged_in_cookie' );
-		$cookies                  = $this->tests->get_cookies();
-		$logged_in_cookie_no_hash = str_replace( $cookie_hash, '', $logged_in_cookie );
-
-		// Get cache folder of host name.
-		if ( $logged_in_cookie && isset( $cookies[ $logged_in_cookie ] ) && ! $this->tests->has_rejected_cookie( $logged_in_cookie_no_hash ) ) {
-			if ( $this->tests->get_config( 'common_cache_logged_users' ) ) {
-				$request_uri_path = $this->cache_dir_path . $host . '-loggedin' . rtrim( $request_uri, '/' );
-			} else {
-				$user_key = explode( '|', $cookies[ $logged_in_cookie ] );
-				$user_key = reset( $user_key );
-				$user_key = $user_key . '-' . $this->tests->get_config( 'secret_cache_key' );
-
-				// Get cache folder of host name.
-				$request_uri_path = $this->cache_dir_path . $host . '-' . $user_key . rtrim( $request_uri, '/' );
-			}
-		}
-		else {
-			$request_uri_path = $this->cache_dir_path . $host . rtrim( $request_uri, '/' );
-		}
-
-		$filename = 'index';
-
-		$cache_mobile              = $this->tests->get_config( 'cache_mobile' );
-		$do_caching_mobile_files   = $this->tests->get_config( 'do_caching_mobile_files' );
-		$cache_mobile_files_tablet = $this->tests->get_config( 'cache_mobile_files_tablet' );
-
-		// Rename the caching filename for mobile.
-		if ( $cache_mobile && $do_caching_mobile_files && $cache_mobile_files_tablet && class_exists( 'Rocket_Mobile_Detect' ) ) {
-			$detect = new \Rocket_Mobile_Detect();
-
-			if ( $detect->isMobile() && ! $detect->isTablet() && 'desktop' === $cache_mobile_files_tablet || ( $detect->isMobile() || $detect->isTablet() ) && 'mobile' === $cache_mobile_files_tablet ) {
-				$filename .= '-mobile';
-			}
-		}
+		$filename = $this->maybe_mobile_filename( $filename );
 
 		// Rename the caching filename for SSL URLs.
-		if ( is_ssl() && $this->tests->get_config( 'cache_ssl' ) ) {
+		if ( is_ssl() && $this->config->get_config( 'cache_ssl' ) ) {
 			$filename .= '-https';
 		}
 
-		// Rename the caching filename depending to dynamic cookies.
-		$cache_dynamic_cookies = $this->tests->get_config( 'cache_dynamic_cookies' );
+		$filename = $this->maybe_dynamic_cookies_filename( $filename, $cookies );
 
-		if ( $cache_dynamic_cookies ) {
-			foreach ( $cache_dynamic_cookies as $key => $cookie_name ) {
-				if ( is_array( $cookie_name ) && isset( $cookies[ $key ] ) ) {
-					foreach ( $cookie_name as $cookie_key ) {
-						if ( '' !== $cookies[ $key ][ $cookie_key ] ) {
-							$cache_key = $cookies[ $key ][ $cookie_key ];
-							$cache_key = preg_replace( '/[^a-z0-9_\-]/i', '-', $cache_key );
-							$filename .= '-' . $cache_key;
-						}
-					}
-					continue;
-				}
-
-				if ( isset( $cookies[ $cookie_name ] ) && '' !== $cookies[ $cookie_name ] ) {
-					$cache_key = $cookies[ $cookie_name ];
-					$cache_key = preg_replace( '/[^a-z0-9_\-]/i', '-', $cache_key );
-					$filename .= '-' . $cache_key;
-				}
-			}
-		}
-
-		// Caching file path.
+		// Ensure proper formatting of the path.
 		$request_uri_path = preg_replace_callback( '/%[0-9A-F]{2}/', [ $this, 'reset_lowercase' ], $request_uri_path );
 		// Directories in Windows can't contain question marks.
-		$request_uri_path  = str_replace( '?', '_', $request_uri_path );
-		$request_uri_path .= '/' . $filename . '.html';
+		$request_uri_path = str_replace( '?', '_', $request_uri_path );
+		// Limit filename max length to 255 characters.
+		$request_uri_path .= '/' . substr( $filename, 0, 250 ) . '.html';
 
 		return $request_uri_path;
 	}
@@ -368,6 +290,82 @@ class Cache extends Abstract_Buffer {
 	/** ----------------------------------------------------------------------------------------- */
 	/** VARIOUS TOOLS =========================================================================== */
 	/** ----------------------------------------------------------------------------------------- */
+	/**
+	 * Declares and sets value of constant preventing Optimizations.
+	 *
+	 * @since  3.3
+	 * @access private
+	 * @author Grégory Viguier
+	 */
+	final private function define_donotoptimize_true() {
+		if ( ! defined( 'DONOTROCKETOPTIMIZE' ) ) {
+			define( 'DONOTROCKETOPTIMIZE', true ); // WPCS: prefix ok.
+		}
+	}
+
+	/**
+	 * Gets If-modified-since header value
+	 *
+	 * @since 3.3
+	 * @access private
+	 * @author Remy Perona
+	 * @return string
+	 */
+	private function get_if_modified_since() {
+		if ( function_exists( 'apache_request_headers' ) ) {
+			$headers = apache_request_headers();
+
+			return isset( $headers['If-Modified-Since'] ) ? $headers['If-Modified-Since'] : '';
+		}
+
+		return $this->config->get_server_input( 'HTTP_IF_MODIFIED_SINCE', '' );
+	}
+
+	/**
+	 * Get WP Rocket footprint
+	 *
+	 * @since 3.0.5 White label footprint if WP_ROCKET_WHITE_LABEL_FOOTPRINT is defined.
+	 * @since 2.0
+	 *
+	 * @param int $time UNIX timestamp when the cache file was saved.
+	 * @return string The footprint that will be printed
+	 */
+	private function get_rocket_footprint( $time = '' ) {
+		$footprint = defined( 'WP_ROCKET_WHITE_LABEL_FOOTPRINT' ) ?
+						"\n" . '<!-- Cached for great performance' :
+						"\n" . '<!-- This website is like a Rocket, isn\'t it? Performance optimized by ' . WP_ROCKET_PLUGIN_NAME . '. Learn more: https://wp-rocket.me';
+		if ( ! empty( $time ) ) {
+			$footprint .= ' - Debug: cached@' . $time;
+		}
+		$footprint .= ' -->';
+		return $footprint;
+	}
+
+	/**
+	 * Create a hidden empty file for mobile detection on NGINX with the Rocket NGINX configuration.
+	 *
+	 * @param string $cache_dir_path Path to the current cache directory.
+	 * @return void
+	 */
+	private function maybe_create_nginx_mobile_file( $cache_dir_path ) {
+		global $is_nginx;
+
+		if ( ! $this->config->get_config( 'do_caching_mobile_files' ) ) {
+			return;
+		}
+
+		if ( ! $is_nginx ) {
+			return;
+		}
+
+		$nginx_mobile_detect = $cache_dir_path . '/.mobile-active';
+
+		if ( rocket_direct_filesystem()->exists( $nginx_mobile_detect ) ) {
+			return;
+		}
+
+		rocket_direct_filesystem()->touch( $nginx_mobile_detect );
+	}
 
 	/**
 	 * Tell if generating cache files is allowed.
@@ -386,7 +384,112 @@ class Cache extends Abstract_Buffer {
 		 *
 		 * @param bool True will force the cache file generation.
 		 */
-		return (bool) apply_filters( 'do_rocket_generate_caching_files', true );
+		return (bool) apply_filters( 'do_rocket_generate_caching_files', true ); // WPCS: prefix ok.
+	}
+
+	/**
+	 * Gets the base cache path for the current request
+	 *
+	 * @since 3.3
+	 * @author Remy Perona
+	 *
+	 * @param array $cookies Cookies for the current request.
+	 * @return string
+	 */
+	private function get_request_cache_path( $cookies ) {
+		$host = $this->config->get_host();
+
+		if ( $this->config->get_config( 'url_no_dots' ) ) {
+			$host = str_replace( '.', '_', $host );
+		}
+
+		$request_uri              = $this->tests->get_clean_request_uri();
+		$cookie_hash              = $this->config->get_config( 'cookie_hash' );
+		$logged_in_cookie         = $this->config->get_config( 'logged_in_cookie' );
+		$logged_in_cookie_no_hash = str_replace( $cookie_hash, '', $logged_in_cookie );
+
+		// Get cache folder of host name.
+		if ( $logged_in_cookie && isset( $cookies[ $logged_in_cookie ] ) && ! $this->tests->has_rejected_cookie( $logged_in_cookie_no_hash ) ) {
+			if ( $this->config->get_config( 'common_cache_logged_users' ) ) {
+				return $this->cache_dir_path . $host . '-loggedin' . rtrim( $request_uri, '/' );
+			}
+
+			$user_key = explode( '|', $cookies[ $logged_in_cookie ] );
+			$user_key = reset( $user_key );
+			$user_key = $user_key . '-' . $this->config->get_config( 'secret_cache_key' );
+
+			// Get cache folder of host name.
+			return $this->cache_dir_path . $host . '-' . $user_key . rtrim( $request_uri, '/' );
+		}
+
+		return $this->cache_dir_path . $host . rtrim( $request_uri, '/' );
+	}
+
+	/**
+	 * Modifies the filename if the request is from a mobile device.
+	 *
+	 * @since 3.3
+	 * @author Remy Perona
+	 *
+	 * @param string $filename Cache filename.
+	 * @return string
+	 */
+	private function maybe_mobile_filename( $filename ) {
+		$cache_mobile_files_tablet = $this->config->get_config( 'cache_mobile_files_tablet' );
+
+		if ( ! ( $this->config->get_config( 'cache_mobile' ) && $this->config->get_config( 'do_caching_mobile_files' ) ) ) {
+			return $filename;
+		}
+
+		if ( ! $cache_mobile_files_tablet ) {
+			return $filename;
+		}
+
+		if ( ! class_exists( 'Rocket_Mobile_Detect' ) ) {
+			return $filename;
+		}
+
+		$detect = new \Rocket_Mobile_Detect();
+
+		if ( $detect->isMobile() && ! $detect->isTablet() && 'desktop' === $cache_mobile_files_tablet || ( $detect->isMobile() || $detect->isTablet() ) && 'mobile' === $cache_mobile_files_tablet ) {
+				return $filename .= '-mobile';
+		}
+	}
+
+	/**
+	 * Modifies the filename if dynamic cookies are set
+	 *
+	 * @param string $filename Cache filename.
+	 * @param array  $cookies  Cookies for the request.
+	 * @return string
+	 */
+	private function maybe_dynamic_cookies_filename( $filename, $cookies ) {
+		$cache_dynamic_cookies = $this->config->get_config( 'cache_dynamic_cookies' );
+
+		if ( ! $cache_dynamic_cookies ) {
+			return $filename;
+		}
+
+		foreach ( $cache_dynamic_cookies as $key => $cookie_name ) {
+			if ( is_array( $cookie_name ) && isset( $cookies[ $key ] ) ) {
+				foreach ( $cookie_name as $cookie_key ) {
+					if ( '' !== $cookies[ $key ][ $cookie_key ] ) {
+						$cache_key = $cookies[ $key ][ $cookie_key ];
+						$cache_key = preg_replace( '/[^a-z0-9_\-]/i', '-', $cache_key );
+						$filename .= '-' . $cache_key;
+					}
+				}
+				continue;
+			}
+
+			if ( isset( $cookies[ $cookie_name ] ) && '' !== $cookies[ $cookie_name ] ) {
+				$cache_key = $cookies[ $cookie_name ];
+				$cache_key = preg_replace( '/[^a-z0-9_\-]/i', '-', $cache_key );
+				$filename .= '-' . $cache_key;
+			}
+		}
+
+		return $filename;
 	}
 
 	/**
