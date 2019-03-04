@@ -12,6 +12,7 @@ class ActionScheduler_MigrationRunner {
 	private $batch_fetcher;
 	private $action_migrator;
 	private $log_migrator;
+	private $progress_bar;
 
 	public function __construct( ActionScheduler_MigrationConfig $config ) {
 		$this->source_store       = $config->get_source_store();
@@ -27,14 +28,24 @@ class ActionScheduler_MigrationRunner {
 			$this->log_migrator    = new ActionScheduler_LogMigrator( $this->source_logger, $this->destination_logger );
 			$this->action_migrator = new ActionScheduler_ActionMigrator( $this->source_store, $this->destination_store, $this->log_migrator );
 		}
+
+		if ( defined( 'WP_CLI' ) && WP_CLI ) {
+			$this->progress_bar = $config->get_progress_bar();
+		}
 	}
 
 	public function run( $batch_size = 10 ) {
 		$batch = $this->batch_fetcher->fetch( $batch_size );
+		$batch_size = count( $batch );
+
+		if ( $this->progress_bar ) {
+			$this->progress_bar->set_message( sprintf( _n( 'Migrating %d action', 'Migrating %d actions', $batch_size, 'action-scheduler' ), number_format_i18n( $batch_size ) ) );
+			$this->progress_bar->set_count( $batch_size );
+		}
 
 		$this->migrate_actions( $batch );
 
-		return count( $batch );
+		return $batch_size;
 	}
 
 	public function migrate_actions( array $action_ids ) {
@@ -54,6 +65,14 @@ class ActionScheduler_MigrationRunner {
 					get_class( $this->destination_store )
 				) );
 			}
+
+			if ( $this->progress_bar ) {
+				$this->progress_bar->tick();
+			}
+		}
+
+		if ( $this->progress_bar ) {
+			$this->progress_bar->finish();
 		}
 
 		add_action( 'action_scheduler_stored_action', array( \ActionScheduler::logger(), 'log_stored_action' ), 10 , 1 );

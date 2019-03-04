@@ -24,6 +24,9 @@ class ActionScheduler_MigrationConfig {
 	/** @var Logger */
 	private $destination_logger;
 
+	/** @var Progress bar */
+	private $progress_bar;
+
 	/** @var bool */
 	private $dry_run = false;
 
@@ -112,6 +115,20 @@ class ActionScheduler_MigrationConfig {
 	 */
 	public function set_dry_run( $dry_run ) {
 		$this->dry_run = (bool) $dry_run;
+	}
+
+	/**
+	 * @return ActionScheduler_WPCLI_ProgressBar
+	 */
+	public function get_progress_bar() {
+		return $this->progress_bar;
+	}
+
+	/**
+	 * @param ActionScheduler_WPCLI_ProgressBar $progress_bar
+	 */
+	public function set_progress_bar( ActionScheduler_WPCLI_ProgressBar $progress_bar ) {
+		$this->progress_bar = $progress_bar;
 	}
 
 }

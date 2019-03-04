@@ -109,6 +109,10 @@ class ActionScheduler_Data {
 		$config->set_destination_store( new ActionScheduler_DBStoreMigrator() );
 		$config->set_destination_logger( new ActionScheduler_DBLogger() );
 
+		if ( defined( 'WP_CLI' ) && WP_CLI ) {
+			$config->set_progress_bar( new ActionScheduler_WPCLI_ProgressBar( '', 0 ) );
+		}
+
 		return apply_filters( 'action_scheduler/migration_config', $config );
 	}
 
