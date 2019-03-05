@@ -23,6 +23,7 @@ class Optimization_Subscribers extends AbstractServiceProvider {
 	protected $provides = [
 		'config',
 		'tests',
+		'buffer_optimization',
 		'buffer_subscriber',
 		'cache_dynamic_resource',
 		'cdn_favicons',
@@ -53,8 +54,10 @@ class Optimization_Subscribers extends AbstractServiceProvider {
 			->withArgument( WP_ROCKET_CONFIG_PATH );
 		$this->getContainer()->add( 'tests', 'WP_Rocket\Buffer\Tests' )
 			->withArgument( $this->getContainer()->get( 'config' ) );
-		$this->getContainer()->add( 'buffer_subscriber', 'WP_Rocket\Subscriber\Optimization\Buffer_Subscriber' )
+		$this->getContainer()->add( 'buffer_optimization', 'WP_Rocket\Buffer\Optimization' )
 			->withArgument( $this->getContainer()->get( 'tests' ) );
+		$this->getContainer()->add( 'buffer_subscriber', 'WP_Rocket\Subscriber\Optimization\Buffer_Subscriber' )
+			->withArgument( $this->getContainer()->get( 'buffer_optimization' ) );
 		$this->getContainer()->add( 'cache_dynamic_resource', 'WP_Rocket\Optimization\Cache_Dynamic_Resource' )
 			->withArgument( $this->getContainer()->get( 'options' ) )
 			->withArgument( WP_ROCKET_CACHE_BUSTING_PATH )
