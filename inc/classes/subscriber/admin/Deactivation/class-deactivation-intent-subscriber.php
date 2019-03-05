@@ -1,7 +1,12 @@
 <?php
-namespace WP_Rocket\Admin\Deactivation;
+namespace WP_Rocket\Subscriber\Admin\Deactivation;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\Interfaces\Render_Interface;
+use WP_Rocket\Admin\Options;
+use WP_Rocket\Admin\Options_Data;
+
+defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
  * Deactivation intent form on plugins page
@@ -9,14 +14,14 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  * @since 3.0
  * @author Remy Perona
  */
-class Deactivation_Intent implements Subscriber_Interface {
+class Deactivation_Intent_Subscriber implements Subscriber_Interface {
 	/**
 	 * Render Interface
 	 *
 	 * @since 3.0
 	 * @author Remy Perona
 	 *
-	 * @var \WP_Rocket\Interfaces\Render_Interface
+	 * @var Render_Interface
 	 */
 	private $render;
 
@@ -26,7 +31,7 @@ class Deactivation_Intent implements Subscriber_Interface {
 	 * @since 3.0
 	 * @author Remy Perona
 	 *
-	 * @var \WP_Rocket\Admin\Options
+	 * @var Options
 	 */
 	private $options_api;
 
@@ -36,7 +41,7 @@ class Deactivation_Intent implements Subscriber_Interface {
 	 * @since 3.0
 	 * @author Remy Perona
 	 *
-	 * @var \WP_Rocket\Admin\Options_Data
+	 * @var Options_Data
 	 */
 	private $options;
 
@@ -46,11 +51,11 @@ class Deactivation_Intent implements Subscriber_Interface {
 	 * @since 3.0
 	 * @author Remy Perona
 	 *
-	 * @param \WP_Rocket\Interfaces\Render_Interface $render      Render interface.
-	 * @param \WP_Rocket\Admin\Options               $options_api Options instance.
-	 * @param \WP_Rocket\Admin\Options_Data          $options     Options_Data instance.
+	 * @param Render_Interface $render      Render interface.
+	 * @param Options          $options_api Options instance.
+	 * @param Options_Data     $options     Options_Data instance.
 	 */
-	public function __construct( \WP_Rocket\Interfaces\Render_Interface $render, \WP_Rocket\Admin\Options $options_api, \WP_Rocket\Admin\Options_Data $options ) {
+	public function __construct( Render_Interface $render, Options $options_api, Options_Data $options ) {
 		$this->render      = $render;
 		$this->options_api = $options_api;
 		$this->options     = $options;
@@ -93,7 +98,7 @@ mixpanel.init("a36067b00a263cce0299cfd960e26ecf", {
 			}
 		} );
 		</script><!-- end Mixpanel -->
-	<?php
+		<?php
 	}
 
 	/**
