@@ -465,7 +465,16 @@ class Tests {
 	 * @return bool
 	 */
 	public function is_allowed_request_method() {
-		return ( 'GET' || 'HEAD' ) === $this->get_request_method();
+		$allowed = [
+			'GET'  => 1,
+			'HEAD' => 1,
+		];
+
+		if ( isset( $allowed[ $this->get_request_method() ] ) ) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/** ----------------------------------------------------------------------------------------- */
