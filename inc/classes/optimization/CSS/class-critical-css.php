@@ -72,28 +72,26 @@ class Critical_CSS {
 		 *
 		 * @param bool $do_rocket_critical_css_generation True to activate the automatic generation, false to prevent it.
 		 */
-		if ( apply_filters( 'do_rocket_critical_css_generation', true ) ) {
-			$this->clean_critical_css();
-
-			if ( method_exists( $this->process, 'cancel_process' ) ) {
-				$this->process->cancel_process();
-			}
-
-			$this->set_items();
-
-			foreach ( $this->items as $item ) {
-				$this->process->push_to_queue( $item );
-			}
-
-			$transient = [
-				'generated' => 0,
-				'total'     => count( $this->items ),
-				'items'     => [],
-			];
-
-			set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
-			$this->process->save()->dispatch();
+		if ( ! apply_filters( 'do_rocket_critical_css_generation', true ) ) { // WPCS: prefix ok.
+			return;
 		}
+
+		$this->clean_critical_css();
+
+		$this->stop_generation();
+
+		$this->set_items();
+
+		array_map( [ $this->process, 'push_to_queue' ], $this->items );
+
+		$transient = [
+			'generated' => 0,
+			'total'     => count( $this->items ),
+			'items'     => [],
+		];
+
+		set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
+		$this->process->save()->dispatch();
 	}
 
 	/**
@@ -126,6 +124,10 @@ class Critical_CSS {
 			$files = new RecursiveIteratorIterator( $directory, RecursiveIteratorIterator::CHILD_FIRST );
 		} catch ( Exception $e ) {
 			// no logging yet.
+			return;
+		}
+
+		if ( ! $files ) {
 			return;
 		}
 
