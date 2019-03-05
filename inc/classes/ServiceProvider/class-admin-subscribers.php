@@ -44,7 +44,7 @@ class Admin_Subscribers extends AbstractServiceProvider {
 			->withArgument( $this->getContainer()->get( 'deactivation_intent_render' ) )
 			->withArgument( $this->getContainer()->get( 'options_api' ) )
 			->withArgument( $this->getContainer()->get( 'options' ) );
-			$this->getContainer()->add( 'beacon_subscriber', 'WP_Rocket\Subscriber\Admin\Settings\Beacon_Subscriber' )
+		$this->getContainer()->add( 'beacon_subscriber', 'WP_Rocket\Subscriber\Admin\Settings\Beacon_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'beacon' ) );
 	}
 }
