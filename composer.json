@@ -52,7 +52,6 @@
 		],
 		"exclude-from-classmap": [
 			"inc/vendors/classes/class-rocket-mobile-detect.php",
-			"inc/classes/Buffer/class-cache.php",
 			"inc/classes/class-wp-rocket-requirements-check.php"
 		]
 	}
