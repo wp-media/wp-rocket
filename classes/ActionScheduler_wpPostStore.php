@@ -627,15 +627,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 			),
 			'date_query'       => array(
 				'column' => 'post_date',
-				array(
-					'compare' => '<=',
-					'year'    => $date->format( 'Y' ),
-					'month'   => $date->format( 'n' ),
-					'day'     => $date->format( 'j' ),
-					'hour'    => $date->format( 'G' ),
-					'minute'  => $date->format( 'i' ),
-					'second'  => $date->format( 's' ),
-				),
+				'before' => $date->format( 'Y-m-d H:i:s' ),
 			),
 			'tax_query' => array(
 				array(
