@@ -626,8 +626,9 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 				'ID'         => 'ASC',
 			),
 			'date_query'       => array(
-				'column' => 'post_date',
-				'before' => $date->format( 'Y-m-d H:i:s' ),
+				'column' => 'post_date_gmt',
+				'before' => $date->format( 'Y-m-d H:i' ),
+				'inclusive' => true,
 			),
 			'tax_query' => array(
 				array(
