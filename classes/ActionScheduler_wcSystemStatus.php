@@ -16,6 +16,11 @@ class ActionScheduler_wcSystemStatus {
 		$this->store = $store;
 	}
 
+	/**
+	 * Display action data, including number of actions grouped by status and the oldest & newest action in each status.
+	 *
+	 * Helpful to identify issues, like a clogged queue.
+	 */
 	public function print() {
 		$action_counts     = $this->store->action_counts();
 		$status_labels     = $this->store->get_status_labels();
