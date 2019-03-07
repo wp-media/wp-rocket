@@ -78,6 +78,7 @@ abstract class ActionScheduler {
 					$dir = $classes_dir . 'WP_CLI' . $d;
 					break;
 				case 'wpPostStore':
+				case 'wpCommentLogger':
 					$dir = $classes_dir . 'data-stores' . $d;
 					break;
 				default:
