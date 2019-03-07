@@ -232,6 +232,7 @@ function rocket_first_install() {
 				'facebook_pixel_cache'        => 0,
 				'sucury_waf_cache_sync'       => 0,
 				'sucury_waf_api_key'          => '',
+				'nginx_auto_purge'            => 0,
 			)
 		)
 	);
