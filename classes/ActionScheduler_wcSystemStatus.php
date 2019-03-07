@@ -96,6 +96,12 @@ class ActionScheduler_wcSystemStatus {
 				</tr>
 			</thead>
 			<tbody>
+				<tr>
+					<td><strong><?php esc_html_e( 'Action Status', 'action-scheduler' ); ?></strong></td>
+					<td><strong><?php esc_html_e( 'Count', 'action-scheduler' ); ?></strong></td>
+					<td><strong><?php esc_html_e( 'Oldest Scheduled Date', 'action-scheduler' ); ?></strong></td>
+					<td><strong><?php esc_html_e( 'Newest Scheduled Date', 'action-scheduler' ); ?></strong></td>
+				</tr>
 				<?php
 				foreach ( $action_counts as $status => $count ) {
 					printf(
