@@ -97,7 +97,7 @@ class ActionScheduler_wcSystemStatus {
 		<table class="wc_status_table widefat" cellspacing="0">
 			<thead>
 				<tr>
-					<th colspan="5" data-export-label="Action Scheduler"><h2><?php esc_html_e( 'Action Scheduler', 'action-scheduler' ); ?><?php echo wc_help_tip( esc_html__( 'This section shows scheduled action counts.', 'action-scheduler' ) ); ?></h2></th>
+					<th colspan="4" data-export-label="Action Scheduler"><h2><?php esc_html_e( 'Action Scheduler', 'action-scheduler' ); ?><?php echo wc_help_tip( esc_html__( 'This section shows scheduled action counts.', 'action-scheduler' ) ); ?></h2></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -110,8 +110,8 @@ class ActionScheduler_wcSystemStatus {
 				<?php
 				foreach ( $action_counts as $status => $count ) {
 					printf(
-						'<tr><td>%s</td><td class="help">&nbsp;</td><td>%s</td><td>%s</td><td>%s</td></tr>',
-						esc_html( $labels[ $status ] ),
+						'<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>',
+						esc_html( $status_labels[ $status ] ),
 						number_format_i18n( $count ),
 						$oldest_and_newest[ $status ]['oldest'],
 						$oldest_and_newest[ $status ]['newest']
