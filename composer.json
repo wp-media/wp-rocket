@@ -37,7 +37,8 @@
 		"jamesryanbell/cloudflare": "^1.11",
 		"league/container": "2.4.1",
 		"matthiasmullie/minify": "1.3.*",
-		"monolog/monolog": "^1.0"
+		"monolog/monolog": "^1.0",
+		"wp-media/rocket-lazyload-common": "^2.2"
 	},
 	"require-dev": {
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.4.4",

@@ -82,11 +82,6 @@ function rocket_init() {
 			require WP_ROCKET_FRONT_PATH . 'deferred-js.php';
 		}
 
-		// Don't insert the LazyLoad file if Rocket LazyLoad is activated.
-		if ( ! rocket_is_plugin_active( 'rocket-lazy-load/rocket-lazy-load.php' ) ) {
-			require WP_ROCKET_FRONT_PATH . 'lazyload.php';
-		}
-
 		require WP_ROCKET_FRONT_PATH . 'protocol.php';
 	}
 

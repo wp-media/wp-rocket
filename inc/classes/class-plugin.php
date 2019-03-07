@@ -97,6 +97,12 @@ class Plugin {
 				'cdn_favicons_subscriber',
 				'remove_query_string_subscriber',
 			];
+
+			// Don't insert the LazyLoad file if Rocket LazyLoad is activated.
+			if ( ! rocket_is_plugin_active( 'rocket-lazy-load/rocket-lazy-load.php' ) ) {
+				$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Lazyload' );
+				$subscribers[] = 'lazyload_subscriber';
+			}
 		}
 
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Addons_Subscribers' );
