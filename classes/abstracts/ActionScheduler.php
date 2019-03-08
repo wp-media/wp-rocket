@@ -65,10 +65,14 @@ abstract class ActionScheduler {
 			$dir = self::plugin_path( 'deprecated' . $d );
 		} elseif ( self::is_class_abstract( $class ) ) {
 			$dir = $classes_dir . 'abstracts' . $d;
+		} elseif ( self::is_class_migration( $class ) ) {
+			$dir = $classes_dir . 'migration' . $d;
 		} elseif ( 'Schedule' === substr( $class, -8 ) ) {
 			$dir = $classes_dir . 'schedules' . $d;
 		} elseif ( 'Action' === substr( $class, -6 ) ) {
 			$dir = $classes_dir . 'actions' . $d;
+		} elseif ( 'Schema' === substr( $class, -6 ) ) {
+			$dir = $classes_dir . 'schema' . $d;
 		} elseif ( strpos( $class, 'ActionScheduler' ) === 0 ) {
 			$segments = explode( '_', $class );
 			$type = isset( $segments[ 1 ] ) ? $segments[ 1 ] : '';
@@ -77,6 +81,9 @@ abstract class ActionScheduler {
 				case 'WPCLI':
 					$dir = $classes_dir . 'WP_CLI' . $d;
 					break;
+				case 'DBLogger':
+				case 'DBStore':
+				case 'HybridStore':
 				case 'wpPostStore':
 				case 'wpCommentLogger':
 					$dir = $classes_dir . 'data-stores' . $d;
@@ -150,11 +157,39 @@ abstract class ActionScheduler {
 			'ActionScheduler_Abstract_ListTable'   => true,
 			'ActionScheduler_Abstract_QueueRunner' => true,
 			'ActionScheduler_Logger'               => true,
+			'ActionScheduler_Schema'               => true,
 			'ActionScheduler_Store'                => true,
 			'ActionScheduler_TimezoneHelper'       => true,
 		);
 
 		return isset( $abstracts[ $class ] ) && $abstracts[ $class ];
+	}
+
+	/**
+	 * Determine if the class is one of our migration classes.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param string $class The class name.
+	 *
+	 * @return bool
+	 */
+	protected static function is_class_migration( $class ) {
+		static $migration_segments = array(
+			'ActionMigrator'     => true,
+			'BatchFetcher'       => true,
+			'DBStoreMigrator'    => true,
+			'DryRun'             => true,
+			'LogMigrator'        => true,
+			'MigrationConfig'    => true,
+			'MigrationRunner'    => true,
+			'MigrationScheduler' => true,
+		);
+
+		$segments = explode( '_', $class );
+		$segment = isset( $segments[ 1 ] ) ? $segments[ 1 ] : '';
+
+		return isset( $migration_segments[ $segment ] ) && $migration_segments[ $segment ];
 	}
 
 	final public function __clone() {
