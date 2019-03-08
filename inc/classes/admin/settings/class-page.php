@@ -1728,12 +1728,12 @@ class Page {
 					'label'             => __( 'NGINX FastCGI Cache', 'rocket' ),
 					'logo'              => [
 						'url'    => WP_ROCKET_ASSETS_IMG_URL . 'logo-nginx.svg',
-						'width'  => 152,
-						'height' => 135,
+						'width'  => 146,
+						'height' => 166,
 					],
 					'title'             => __( 'If NGINX FastCGI Cache runs on your server, you must activate this add-on.', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'       => sprintf( __( 'NGINX FastCGI cache will be purged each time WP Rocket clears its cache to ensure content is always up-to-date.<br>%1$sLearn more%2$s', 'rocket' ), '<a href="' . esc_url( $varnish_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $varnish_beacon['id'] ) . '" target="_blank">', '</a>' ),
+					'description'       => sprintf( __( 'NGINX FastCGI cache will be purged each time WP Rocket clears its cache to ensure content is always up-to-date.<br>Requires server to have NGINX FastCGI active and <code>ngx_cache_purge</code> module installed.<br>%1$sLearn more%2$s', 'rocket' ), '<a href="' . esc_url( $varnish_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $varnish_beacon['id'] ) . '" target="_blank">', '</a>' ),
 					'section'           => 'one_click',
 					'page'              => 'addons',
 					'default'           => 0,
