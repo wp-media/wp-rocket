@@ -119,6 +119,7 @@ class Plugin {
 			'db_optimization_subscriber',
 			'mobile_subscriber',
 			'woocommerce_subscriber',
+			'nginx_subscriber',
 		];
 
 		$subscribers = array_merge( $subscribers, $common_subscribers );
