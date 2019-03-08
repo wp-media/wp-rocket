@@ -99,8 +99,6 @@ class ActionScheduler_wcSystemStatus {
 				<tr>
 					<th colspan="5" data-export-label="Action Scheduler"><h2><?php esc_html_e( 'Action Scheduler', 'action-scheduler' ); ?><?php echo wc_help_tip( esc_html__( 'This section shows scheduled action counts.', 'action-scheduler' ) ); ?></h2></th>
 				</tr>
-			</thead>
-			<tbody>
 				<tr>
 					<td><strong><?php esc_html_e( 'Action Status', 'action-scheduler' ); ?></strong></td>
 					<td class="help">&nbsp;</td>
@@ -108,11 +106,13 @@ class ActionScheduler_wcSystemStatus {
 					<td><strong><?php esc_html_e( 'Oldest Scheduled Date', 'action-scheduler' ); ?></strong></td>
 					<td><strong><?php esc_html_e( 'Newest Scheduled Date', 'action-scheduler' ); ?></strong></td>
 				</tr>
+			</thead>
+			<tbody>
 				<?php
 				foreach ( $action_counts as $status => $count ) {
 					// WC uses the 3rd column for export, so we need to display more data in that (hidden when viewed as part of the table) and add an empty 2nd column.
 					printf(
-						'<tr><td>%s</td><td>&nbsp;</td><td>%s</td><td>%s</td><td>%s</td></tr>',
+						'<tr><td>%1$s</td><td>&nbsp;</td><td>%2$s<span style="display: none;">, Oldest: %3$s, Newest: %4$s</span></td><td>%3$s</td><td>%4$s</td></tr>',
 						esc_html( $status_labels[ $status ] ),
 						number_format_i18n( $count ),
 						$oldest_and_newest[ $status ]['oldest'],
