@@ -75,7 +75,7 @@ if ( ! defined( 'CHMOD_WP_ROCKET_CACHE_DIRS' ) ) {
 	define( 'CHMOD_WP_ROCKET_CACHE_DIRS', 0755 );
 }
 if ( ! defined( 'WP_ROCKET_LASTVERSION' ) ) {
-	define( 'WP_ROCKET_LASTVERSION', '3.1.4' );
+	define( 'WP_ROCKET_LASTVERSION', '3.2.6' );
 }
 
 require WP_ROCKET_INC_PATH . 'compat.php';
