@@ -59,27 +59,34 @@ abstract class ActionScheduler {
 
 	public static function autoload( $class ) {
 		$d = DIRECTORY_SEPARATOR;
+		$classes_dir = self::plugin_path( 'classes' . $d );
+
 		if ( 'Deprecated' === substr( $class, -10 ) ) {
 			$dir = self::plugin_path( 'deprecated' . $d );
 		} elseif ( self::is_class_abstract( $class ) ) {
-			$dir = self::plugin_path( 'classes' . $d  . 'abstracts' . $d );
+			$dir = $classes_dir . 'abstracts' . $d;
+		} elseif ( 'Schedule' === substr( $class, -8 ) ) {
+			$dir = $classes_dir . 'schedules' . $d;
+		} elseif ( 'Action' === substr( $class, -6 ) ) {
+			$dir = $classes_dir . 'actions' . $d;
 		} elseif ( strpos( $class, 'ActionScheduler' ) === 0 ) {
 			$segments = explode( '_', $class );
 			$type = isset( $segments[ 1 ] ) ? $segments[ 1 ] : '';
 
 			switch ( $type ) {
 				case 'WPCLI':
-					$dir = self::plugin_path( 'classes' . $d  . 'WP_CLI' . $d );
+					$dir = $classes_dir . 'WP_CLI' . $d;
 					break;
 				case 'wpPostStore':
-					$dir = self::plugin_path( 'classes' . $d  . 'data-stores' . $d );
+				case 'wpCommentLogger':
+					$dir = $classes_dir . 'data-stores' . $d;
 					break;
 				default:
-					$dir = self::plugin_path( 'classes' . $d );
+					$dir = $classes_dir;
 					break;
 			}
 		} elseif ( strpos( $class, 'CronExpression' ) === 0 ) {
-			$dir = self::plugin_path('lib'.$d.'cron-expression'.$d);
+			$dir = self::plugin_path( 'lib' . $d . 'cron-expression' . $d );
 		} else {
 			return;
 		}
