@@ -560,7 +560,7 @@ class Tests {
 			return self::memoize( __FUNCTION__, [], true );
 		}
 
-		$can = ! preg_match( '#^' . $uri_pattern . '$#i', $this->get_clean_request_uri() );
+		$can = ! preg_match( '#^(' . $uri_pattern . ')$#i', $this->get_clean_request_uri() );
 
 		return self::memoize( __FUNCTION__, [], $can );
 	}
