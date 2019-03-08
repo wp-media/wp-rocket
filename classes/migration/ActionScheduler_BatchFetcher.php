@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Action_Scheduler\Custom_Tables\Migration;
+namespace Action_Scheduler\Migration;
 
 
 use ActionScheduler_Store as Store;

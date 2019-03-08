@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Action_Scheduler\Custom_Tables;
+namespace Action_Scheduler;
 
 
-use Action_Scheduler\Custom_Tables\Migration\ActionScheduler_MigrationConfig;
-use Action_Scheduler\Custom_Tables\Migration\ActionScheduler_MigrationRunner;
+use Action_Scheduler\Migration\ActionScheduler_MigrationConfig;
+use Action_Scheduler\Migration\ActionScheduler_MigrationRunner;
 use ActionScheduler_Action;
 use ActionScheduler_ActionClaim;
 use ActionScheduler_Store as Store;

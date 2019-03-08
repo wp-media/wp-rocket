@@ -1,12 +1,12 @@
 <?php
 
 
-namespace Action_Scheduler\Custom_Tables;
+namespace Action_Scheduler;
 
 /**
  * Class ActionScheduler_Abstract_Schema
  *
- * @package Action_Scheduler\Custom_Tables
+ * @package Action_Scheduler
  *
  * @codeCoverageIgnore
  *
@@ -98,7 +98,7 @@ abstract class ActionScheduler_Abstract_Schema {
 			$updated = dbDelta( $definition );
 			foreach ( $updated as $updated_table => $update_description ) {
 				if ( strpos( $update_description, 'Created table' ) === 0 ) {
-					do_action( 'action_scheduler/custom_tables/created_table', $updated_table, $table );
+					do_action( 'action_scheduler/created_table', $updated_table, $table );
 				}
 			}
 		}

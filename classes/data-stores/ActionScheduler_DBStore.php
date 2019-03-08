@@ -1,6 +1,6 @@
 <?php
 
-namespace Action_Scheduler\Custom_Tables;
+namespace Action_Scheduler;
 
 use ActionScheduler_Action;
 use ActionScheduler_ActionClaim;

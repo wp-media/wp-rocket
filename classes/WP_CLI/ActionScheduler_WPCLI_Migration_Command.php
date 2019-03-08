@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Action_Scheduler\Custom_Tables\WP_CLI;
+namespace Action_Scheduler\WP_CLI;
 
-use Action_Scheduler\Custom_Tables\Migration\ActionScheduler_MigrationConfig;
-use Action_Scheduler\Custom_Tables\Migration\ActionScheduler_MigrationRunner;
-use Action_Scheduler\Custom_Tables\Migration\ActionScheduler_MigrationScheduler;
+use Action_Scheduler\Migration\ActionScheduler_MigrationConfig;
+use Action_Scheduler\Migration\ActionScheduler_MigrationRunner;
+use Action_Scheduler\Migration\ActionScheduler_MigrationScheduler;
 use Action_Scheduler\Custom_Tables\Plugin;
 use WP_CLI;
 use WP_CLI_Command;
@@ -13,7 +13,7 @@ use WP_CLI_Command;
 /**
  * Class ActionScheduler_WPCLI_Migration_Command
  *
- * @package Action_Scheduler\Custom_Tables\WP_CLI
+ * @package Action_Scheduler\WP_CLI
  *
  * @codeCoverageIgnore
  */

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Action_Scheduler\Custom_Tables\Migration;
+namespace Action_Scheduler\Migration;
 
 
 use Action_Scheduler\Custom_Tables\Plugin;
@@ -42,7 +42,7 @@ class ActionScheduler_MigrationScheduler {
 	public function mark_complete() {
 		$this->unschedule_migration();
 		update_option( self::STATUS_FLAG, self::STATUS_COMPLETE );
-		do_action( 'action_scheduler/custom_tables/migration_complete' );
+		do_action( 'action_scheduler/migration_complete' );
 	}
 
 	/**
@@ -85,14 +85,14 @@ class ActionScheduler_MigrationScheduler {
 	 * @return int Seconds between migration runs. Defaults to two minutes.
 	 */
 	private function get_schedule_interval() {
-		return (int) apply_filters( 'action_scheduler/custom_tables/migration_interval', 2 * MINUTE_IN_SECONDS );
+		return (int) apply_filters( 'action_scheduler/migration_interval', 2 * MINUTE_IN_SECONDS );
 	}
 
 	/**
 	 * @return int Number of actions to migrate in each batch. Defaults to 1000.
 	 */
 	private function get_batch_size() {
-		return (int) apply_filters( 'action_scheduler/custom_tables/migration_batch_size', 1000 );
+		return (int) apply_filters( 'action_scheduler/migration_batch_size', 1000 );
 	}
 
 	/**

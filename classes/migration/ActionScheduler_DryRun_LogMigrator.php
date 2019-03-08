@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Action_Scheduler\Custom_Tables\Migration;
+namespace Action_Scheduler\Migration;
 
 
 class ActionScheduler_DryRun_LogMigrator extends ActionScheduler_LogMigrator {
