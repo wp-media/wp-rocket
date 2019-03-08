@@ -2,6 +2,7 @@
 namespace WP_Rocket\Subscriber\Third_Party\Cache;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Logger\Logger;
 
 /**
@@ -11,6 +12,22 @@ use WP_Rocket\Logger\Logger;
  * @author Remy Perona
  */
 class NGINX_Subscriber implements Subscriber_Interface {
+	/**
+	 * Options instance
+	 *
+	 * @var Options_data
+	 */
+	private $options;
+
+	/**
+	 * Constructor
+	 *
+	 * @param Options_Data $options Options instance.
+	 */
+	public function __construct( Options_Data $options ) {
+		$this->options = $options;
+	}
+
 	/**
 	 * @inheritDoc
 	 */
@@ -34,6 +51,10 @@ class NGINX_Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function clean_domain( $root, $lang, $url ) {
+		if ( ! $this->options->get( 'nginx_auto_purge' ) ) {
+			return;
+		}
+
 		$this->send_purge_request( $url );
 	}
 
@@ -46,6 +67,10 @@ class NGINX_Subscriber implements Subscriber_Interface {
 	 * @param string $url The url to purge.
 	 */
 	public function clean_file( $url ) {
+		if ( ! $this->options->get( 'nginx_auto_purge' ) ) {
+			return;
+		}
+
 		$url = str_replace( '*', '', $url );
 		$this->send_purge_request( $url );
 	}
@@ -60,6 +85,10 @@ class NGINX_Subscriber implements Subscriber_Interface {
 	 * @param string $lang The current lang to purge.
 	 */
 	public function clean_home( $root, $lang ) {
+		if ( ! $this->options->get( 'nginx_auto_purge' ) ) {
+			return;
+		}
+
 		$url = trailingslashit( get_rocket_i18n_home_url( $lang ) );
 
 		$this->send_purge_request( $url );
