@@ -21,6 +21,7 @@ if ( defined( 'O2SWITCH_VARNISH_PURGE_KEY' ) ) {
 	add_filter( 'rocket_display_input_varnish_auto_purge', '__return_false' );
 	// Prevent mandatory cookies on hosting with server cache.
 	add_filter( 'rocket_cache_mandatory_cookies', '__return_empty_array', PHP_INT_MAX );
+	add_filter( 'rocket_display_nginx_addon', '__return_false' );
 
 	/**
 	 * Purge all the domain
