@@ -51,7 +51,7 @@ class Optimization_Subscribers extends AbstractServiceProvider {
 	 */
 	public function register() {
 		$this->getContainer()->add( 'config', 'WP_Rocket\Buffer\Config' )
-			->withArgument( WP_ROCKET_CONFIG_PATH );
+			->withArgument( [ 'config_dir_path' => WP_ROCKET_CONFIG_PATH ] );
 		$this->getContainer()->add( 'tests', 'WP_Rocket\Buffer\Tests' )
 			->withArgument( $this->getContainer()->get( 'config' ) );
 		$this->getContainer()->add( 'buffer_optimization', 'WP_Rocket\Buffer\Optimization' )
