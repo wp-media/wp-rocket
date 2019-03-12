@@ -113,7 +113,7 @@ class ActionScheduler_Data {
 	}
 
 	public function hook_admin_notices() {
-		if ( $this->migration_scheduler->is_migration_complete() ) {
+		if ( $this->store_classname || $this->migration_scheduler->is_migration_complete() ) {
 			return;
 		}
 		add_action( 'admin_notices', array( $this, 'display_migration_notice' ), 10, 0 );

@@ -3,6 +3,7 @@
 
 namespace Action_Scheduler\Migration;
 
+use ActionScheduler_Data;
 
 class ActionScheduler_MigrationScheduler {
 	const STATUS_FLAG     = 'action_scheduler_migration_status';
@@ -31,6 +32,7 @@ class ActionScheduler_MigrationScheduler {
 	public function run_migration() {
 		$migration_runner = $this->get_migration_runner();
 		$count            = $migration_runner->run( $this->get_batch_size() );
+
 		if ( $count === 0 ) {
 			$this->mark_complete();
 		} else {
