@@ -21,6 +21,7 @@ if ( class_exists( '\\Savvii\\CacheFlusherPlugin' ) & class_exists( '\\Savvii\\O
 	add_filter( 'rocket_display_input_varnish_auto_purge', '__return_false' );
 	// Prevent mandatory cookies on hosting with server cache.
 	add_filter( 'rocket_cache_mandatory_cookies', '__return_empty_array', PHP_INT_MAX );
+	add_filter( 'rocket_display_nginx_addon', '__return_false' );
 
 	/**
 	 * Clear WP Rocket cache after purged the Varnish cache via Savvii Hosting

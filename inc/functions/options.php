@@ -243,31 +243,36 @@ function get_rocket_cache_reject_uri() {
 }
 
 /**
- * Get all cookie names we don't cache
+ * Get all cookie names we don't cache.
  *
  * @since 2.0
  *
- * @return array List of rejected cookies
+ * @return string A pipe separated list of rejected cookies.
  */
 function get_rocket_cache_reject_cookies() {
-	$cookies   = get_rocket_option( 'cache_reject_cookies', array() );
-	$cookies[] = str_replace( COOKIEHASH, '', LOGGED_IN_COOKIE );
+	$logged_in_cookie = explode( COOKIEHASH, LOGGED_IN_COOKIE );
+	$logged_in_cookie = array_map( 'preg_quote', $logged_in_cookie );
+	$logged_in_cookie = implode( '.+', $logged_in_cookie );
+
+	$cookies   = get_rocket_option( 'cache_reject_cookies', [] );
+	$cookies[] = $logged_in_cookie;
 	$cookies[] = 'wp-postpass_';
 	$cookies[] = 'wptouch_switch_toggle';
 	$cookies[] = 'comment_author_';
 	$cookies[] = 'comment_author_email_';
 
 	/**
-	 * Filter the rejected cookies
+	 * Filter the rejected cookies.
 	 *
 	 * @since 2.1
 	 *
-	 * @param array $cookies List of rejected cookies
+	 * @param array $cookies List of rejected cookies.
 	*/
-	$cookies = apply_filters( 'rocket_cache_reject_cookies', $cookies );
+	$cookies = (array) apply_filters( 'rocket_cache_reject_cookies', $cookies );
+	$cookies = array_filter( $cookies );
+	$cookies = array_flip( array_flip( $cookies ) );
 
-	$cookies = implode( '|', array_filter( $cookies ) );
-	return $cookies;
+	return implode( '|', $cookies );
 }
 
 /**
@@ -275,23 +280,23 @@ function get_rocket_cache_reject_cookies() {
  *
  * @since 2.7
  *
- * @return array List of mandatory cookies.
+ * @return string A pipe separated list of mandatory cookies.
  */
 function get_rocket_cache_mandatory_cookies() {
-	$cookies = array();
+	$cookies = [];
 
 	/**
-	 * Filter list of mandatory cookies
+	 * Filter list of mandatory cookies.
 	 *
 	 * @since 2.7
 	 *
-	 * @param array List of mandatory cookies
+	 * @param array $cookies List of mandatory cookies.
 	 */
-	$cookies = apply_filters( 'rocket_cache_mandatory_cookies', $cookies );
+	$cookies = (array) apply_filters( 'rocket_cache_mandatory_cookies', $cookies );
 	$cookies = array_filter( $cookies );
+	$cookies = array_flip( array_flip( $cookies ) );
 
-	$cookies = implode( '|', $cookies );
-	return $cookies;
+	return implode( '|', $cookies );
 }
 
 /**
@@ -302,30 +307,31 @@ function get_rocket_cache_mandatory_cookies() {
  * @return array List of dynamic cookies.
  */
 function get_rocket_cache_dynamic_cookies() {
-	$cookies = array();
+	$cookies = [];
 
 	/**
-	 * Filter list of dynamic cookies
+	 * Filter list of dynamic cookies.
 	 *
 	 * @since 2.7
 	 *
-	 * @param array List of dynamic cookies
+	 * @param array $cookies List of dynamic cookies.
 	 */
-	$cookies = apply_filters( 'rocket_cache_dynamic_cookies', $cookies );
+	$cookies = (array) apply_filters( 'rocket_cache_dynamic_cookies', $cookies );
 	$cookies = array_filter( $cookies );
+	$cookies = array_flip( array_flip( $cookies ) );
 
 	return $cookies;
 }
 
 /**
- * Get all User-Agent we don't allow to get cache files
+ * Get all User-Agent we don't allow to get cache files.
  *
  * @since 2.3.5
  *
- * @return array List of rejected User-Agent
+ * @return string A pipe separated list of rejected User-Agent.
  */
 function get_rocket_cache_reject_ua() {
-	$ua   = get_rocket_option( 'cache_reject_ua', array() );
+	$ua   = get_rocket_option( 'cache_reject_ua', [] );
 	$ua[] = 'facebookexternalhit';
 
 	/**
@@ -333,14 +339,14 @@ function get_rocket_cache_reject_ua() {
 	 *
 	 * @since 2.3.5
 	 *
-	 * @param array $ua List of rejected User-Agent
+	 * @param array $ua List of rejected User-Agent.
 	*/
-	$ua = apply_filters( 'rocket_cache_reject_ua', $ua );
+	$ua = (array) apply_filters( 'rocket_cache_reject_ua', $ua );
+	$ua = array_filter( $ua );
+	$ua = array_flip( array_flip( $ua ) );
+	$ua = implode( '|', $ua );
 
-	$ua = implode( '|', array_filter( $ua ) );
-	$ua = str_replace( array( ' ', '\\\\ ' ), '\\ ', $ua );
-
-	return $ua;
+	return str_replace( array( ' ', '\\\\ ' ), '\\ ', $ua );
 }
 
 /**
@@ -351,18 +357,20 @@ function get_rocket_cache_reject_ua() {
  * @return string A pipe-separated list of rejected files.
  */
 function get_rocket_cdn_reject_files() {
-	$files = get_rocket_option( 'cdn_reject_files', array() );
+	$files = get_rocket_option( 'cdn_reject_files', [] );
 
 	/**
-	 * Filter the rejected files
+	 * Filter the rejected files.
 	 *
 	 * @since 2.5
 	 *
-	 * @param array $files List of rejected files
+	 * @param array $files List of rejected files.
 	*/
-	$files = apply_filters( 'rocket_cdn_reject_files', $files );
+	$files = (array) apply_filters( 'rocket_cdn_reject_files', $files );
+	$files = array_filter( $files );
+	$files = array_flip( array_flip( $files ) );
 
-	return implode( '|', array_filter( $files ) );
+	return implode( '|', $files );
 }
 
 /**
@@ -403,8 +411,9 @@ function get_rocket_cdn_cnames( $zone = 'all' ) {
 	 *
 	 * @param array $hosts List of CNAMES.
 	 */
-	$hosts = apply_filters( 'rocket_cdn_cnames', $hosts );
+	$hosts = (array) apply_filters( 'rocket_cdn_cnames', $hosts );
 	$hosts = array_filter( $hosts );
+	$hosts = array_flip( array_flip( $hosts ) );
 
 	return $hosts;
 }
@@ -417,7 +426,7 @@ function get_rocket_cdn_cnames( $zone = 'all' ) {
  * @return array List of query strings which can be cached.
  */
 function get_rocket_cache_query_string() {
-	$query_strings = get_rocket_option( 'cache_query_strings', array() );
+	$query_strings = get_rocket_option( 'cache_query_strings', [] );
 
 	/**
 	 * Filter query strings which can be cached.
@@ -426,7 +435,9 @@ function get_rocket_cache_query_string() {
 	 *
 	 * @param array $query_strings List of query strings which can be cached.
 	*/
-	$query_strings = apply_filters( 'rocket_cache_query_strings', $query_strings );
+	$query_strings = (array) apply_filters( 'rocket_cache_query_strings', $query_strings );
+	$query_strings = array_filter( $query_strings );
+	$query_strings = array_flip( array_flip( $query_strings ) );
 
 	return $query_strings;
 }
@@ -489,7 +500,9 @@ function get_rocket_exclude_async_css() {
 	 *
 	 * @param array $exclude_async_css An array of URLs for the CSS files to be excluded.
 	 */
-	$exclude_async_css = apply_filters( 'rocket_exclude_async_css', array() );
+	$exclude_async_css = (array) apply_filters( 'rocket_exclude_async_css', [] );
+	$exclude_async_css = array_filter( $exclude_async_css );
+	$exclude_async_css = array_flip( array_flip( $exclude_async_css ) );
 
 	return $exclude_async_css;
 }

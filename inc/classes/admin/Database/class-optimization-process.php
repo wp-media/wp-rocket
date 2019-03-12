@@ -1,4 +1,6 @@
 <?php
+namespace WP_Rocket\Admin\Database;
+
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
@@ -9,7 +11,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  *
  * @see WP_Background_Process
  */
-class Rocket_Background_Database_Optimization extends WP_Background_Process {
+class Optimization_Process extends \WP_Background_Process {
 	/**
 	 * Prefix
 	 *
@@ -32,7 +34,7 @@ class Rocket_Background_Database_Optimization extends WP_Background_Process {
 	 * @access protected
 	 * @var array $count An array of indexed number of optimized items.
 	 */
-	protected $count = array();
+	protected $count = [];
 
 	/**
 	 * Dispatch
