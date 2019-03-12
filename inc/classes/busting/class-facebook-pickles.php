@@ -668,7 +668,7 @@ class Facebook_Pickles {
 
 		wp_remote_get( $home_url, [
 			'user-agent' => 'WP Rocket/Homepage Preload',
-			'sslverify'  => apply_filters( 'https_local_ssl_verify', true ),
+			'sslverify'  => apply_filters( 'https_local_ssl_verify', false ),
 		] );
 
 		/**

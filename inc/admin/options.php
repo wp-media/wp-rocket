@@ -69,7 +69,7 @@ function rocket_after_save_options( $oldvalue, $value ) {
 				'timeout'    => 0.01,
 				'blocking'   => false,
 				'user-agent' => 'WP Rocket/Homepage Preload',
-				'sslverify'  => apply_filters( 'https_local_ssl_verify', true ),
+				'sslverify'  => apply_filters( 'https_local_ssl_verify', false ),
 			]
 		);
 	}

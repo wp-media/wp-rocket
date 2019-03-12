@@ -10,6 +10,7 @@ if ( defined( 'DB_HOST' ) && strpos( DB_HOST, '.wpserveur.net' ) !== false ) {
 	add_filter( 'do_rocket_varnish_http_purge', '__return_true' );
 	// Prevent mandatory cookies on hosting with server cache.
 	add_filter( 'rocket_cache_mandatory_cookies', '__return_empty_array', PHP_INT_MAX );
+	add_filter( 'rocket_display_nginx_addon', '__return_false' );
 
 	/**
 	 * Changes the text on the Varnish one-click block.

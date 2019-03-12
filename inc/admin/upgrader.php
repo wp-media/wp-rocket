@@ -232,6 +232,7 @@ function rocket_first_install() {
 				'facebook_pixel_cache'        => 0,
 				'sucury_waf_cache_sync'       => 0,
 				'sucury_waf_api_key'          => '',
+				'nginx_auto_purge'            => 0,
 			)
 		)
 	);
@@ -400,6 +401,10 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 
 	if ( version_compare( $actual_version, '3.2.4', '<' ) ) {
 		flush_rocket_htaccess();
+		rocket_generate_config_file();
+	}
+ 
+	if ( version_compare( $actual_version, '3.3', '<' ) ) {
 		rocket_generate_config_file();
 	}
 }
