@@ -318,7 +318,7 @@ function get_rocket_cache_dynamic_cookies() {
 	 */
 	$cookies = (array) apply_filters( 'rocket_cache_dynamic_cookies', $cookies );
 	$cookies = array_filter( $cookies );
-	$cookies = array_flip( array_flip( $cookies ) );
+	$cookies = array_unique( $cookiess );
 
 	return $cookies;
 }
