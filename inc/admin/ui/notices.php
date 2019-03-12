@@ -145,6 +145,7 @@ function rocket_plugins_to_deactivate() {
 		$plugins['scripts-gzip']            = 'scripts-gzip/scripts_gzip.php';
 		$plugins['minqueue']                = 'minqueue/plugin.php';
 		$plugins['dependency-minification'] = 'dependency-minification/dependency-minification.php';
+		$plugins['fast-velocity-minify']    = 'fast-velocity-minify/fvm.php';
 	}
 
 	if ( get_rocket_option( 'minify_css' ) || get_rocket_option( 'minify_js' ) ) {
