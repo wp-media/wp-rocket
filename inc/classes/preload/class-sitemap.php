@@ -267,10 +267,10 @@ class Sitemap extends Abstract_Preload {
 		$args = apply_filters(
 			'rocket_preload_sitemap_fallback_request_args',
 			[
-				'fields'			=> 'ids',
+				'fields'		=> 'ids',
 				'numberposts'		=> 1000,
 				'posts_per_page'	=> -1,
-				'post_type'			=> $post_types,
+				'post_type'		=> $post_types,
 			]
 		);
 		
