@@ -1,16 +1,5 @@
 <?php
 
-namespace Action_Scheduler;
-
-use ActionScheduler_Action;
-use ActionScheduler_ActionClaim;
-use ActionScheduler_CanceledAction;
-use ActionScheduler_FinishedAction;
-use ActionScheduler_NullAction;
-use ActionScheduler_NullSchedule;
-use ActionScheduler_Store;
-use ActionScheduler_TimezoneHelper;
-
 class ActionScheduler_DBStore extends ActionScheduler_Store {
 
 

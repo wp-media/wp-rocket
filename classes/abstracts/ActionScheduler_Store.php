@@ -10,6 +10,7 @@ abstract class ActionScheduler_Store {
 	const STATUS_RUNNING  = 'in-progress';
 	const STATUS_FAILED   = 'failed';
 	const STATUS_CANCELED = 'canceled';
+	const DEFAULT_CLASS   = 'ActionScheduler_wpPostStore';
 
 	/** @var ActionScheduler_Store */
 	private static $store = NULL;
@@ -192,8 +193,8 @@ abstract class ActionScheduler_Store {
 	 * @return ActionScheduler_Store
 	 */
 	public static function instance() {
-		if ( empty(self::$store) ) {
-			$class = apply_filters('action_scheduler_store_class', 'ActionScheduler_wpPostStore');
+		if ( empty( self::$store ) ) {
+			$class = apply_filters( 'action_scheduler_store_class', self::DEFAULT_CLASS );
 			self::$store = new $class();
 		}
 		return self::$store;

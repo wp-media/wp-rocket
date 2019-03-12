@@ -1,15 +1,6 @@
 <?php
 
-
-namespace Action_Scheduler;
-
-
-use ActionScheduler_LogEntry;
-use ActionScheduler_NullLogEntry;
-use ActionScheduler_TimezoneHelper;
-use DateTime;
-
-class ActionScheduler_DBLogger extends \ActionScheduler_Logger {
+class ActionScheduler_DBLogger extends ActionScheduler_Logger {
 
 	/**
 	 * @param string   $action_id

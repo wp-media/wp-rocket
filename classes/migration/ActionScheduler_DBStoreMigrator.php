@@ -1,10 +1,6 @@
 <?php
 
-namespace Action_Scheduler;
-
-use ActionScheduler_Action;
-
-class ActionScheduler_DBStoreMigrator extends DB_Store {
+class ActionScheduler_DBStoreMigrator extends ActionScheduler_DBStore {
 
 	/**
 	 * Save an action with optional last attempt date.

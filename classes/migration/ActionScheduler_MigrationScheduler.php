@@ -4,13 +4,11 @@
 namespace Action_Scheduler\Migration;
 
 
-use Action_Scheduler\Custom_Tables\Plugin;
-
 class ActionScheduler_MigrationScheduler {
-	const STATUS_FLAG     = 'action_scheduler_custom_tables_migration_status';
+	const STATUS_FLAG     = 'action_scheduler_migration_status';
 	const STATUS_COMPLETE = 'complete';
-	const HOOK            = 'action_scheduler/custom_tables/migration_hook';
-	const GROUP           = 'action-scheduler-custom-tables';
+	const HOOK            = 'action_scheduler/migration_hook';
+	const GROUP           = 'action-scheduler-DB-tables';
 
 	/**
 	 * Set up the callback for the scheduled job
@@ -99,7 +97,7 @@ class ActionScheduler_MigrationScheduler {
 	 * @return ActionScheduler_MigrationRunner
 	 */
 	private function get_migration_runner() {
-		$config = Plugin::instance()->get_migration_config_object();
+		$config = ActionScheduler_Data::instance()->get_migration_config_object();
 
 		return new ActionScheduler_MigrationRunner( $config );
 	}

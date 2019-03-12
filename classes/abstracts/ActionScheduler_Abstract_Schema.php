@@ -1,8 +1,6 @@
 <?php
 
 
-namespace Action_Scheduler;
-
 /**
  * Class ActionScheduler_Abstract_Schema
  *

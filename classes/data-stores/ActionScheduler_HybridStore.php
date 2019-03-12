@@ -1,15 +1,8 @@
 <?php
 
-
-namespace Action_Scheduler;
-
-
-use Action_Scheduler\Migration\ActionScheduler_MigrationConfig;
-use Action_Scheduler\Migration\ActionScheduler_MigrationRunner;
-use ActionScheduler_Action;
-use ActionScheduler_ActionClaim;
 use ActionScheduler_Store as Store;
-use DateTime;
+use Action_Scheduler\Migration\ActionScheduler_MigrationRunner;
+//use DateTime;
 
 /**
  * Class ActionScheduler_HybridStore
@@ -39,7 +32,7 @@ class ActionScheduler_HybridStore extends Store {
 	public function __construct( ActionScheduler_MigrationConfig $config = null ) {
 		$this->demarkation_id = (int) get_option( self::DEMARKATION_OPTION, 0 );
 		if ( empty( $config ) ) {
-			$config = Plugin::instance()->get_migration_config_object();
+			$config = ActionScheduler_Data::instance()->get_migration_config_object();
 		}
 		$this->primary_store    = $config->get_destination_store();
 		$this->secondary_store  = $config->get_source_store();
@@ -50,10 +43,10 @@ class ActionScheduler_HybridStore extends Store {
 	 * @codeCoverageIgnore
 	 */
 	public function init() {
-		add_action( 'action_scheduler/custom_tables/created_table', [ $this, 'set_autoincrement' ], 10, 2 );
+		add_action( 'action_scheduler/created_table', [ $this, 'set_autoincrement' ], 10, 2 );
 		$this->primary_store->init();
 		$this->secondary_store->init();
-		remove_action( 'action_scheduler/custom_tables/created_table', [ $this, 'set_autoincrement' ], 10 );
+		remove_action( 'action_scheduler/created_table', [ $this, 'set_autoincrement' ], 10 );
 	}
 
 	/**
