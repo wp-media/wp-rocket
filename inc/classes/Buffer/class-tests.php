@@ -1003,6 +1003,7 @@ class Tests {
 				'utm_medium'      => 1,
 				'utm_campaign'    => 1,
 				'utm_expid'       => 1,
+				'utm_term'        => 1,
 				'fb_action_ids'   => 1,
 				'fb_action_types' => 1,
 				'fb_source'       => 1,
