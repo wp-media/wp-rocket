@@ -114,12 +114,7 @@ class Sitemap extends Abstract_Preload {
 			$fallback_urls = $this->get_urls();
 			
 			if ( ! empty( $fallback_urls ) ) {
-				
 				$urls = array_merge( $urls, $fallback_urls );
-				
-				$errors['errors'][] = __( 'WP Rocket will use a fallback method to preload your website.', 'rocket' );
-				set_transient( 'rocket_preload_errors', $errors );
-				
 				return $urls;
 			}
 
@@ -158,12 +153,7 @@ class Sitemap extends Abstract_Preload {
 			$fallback_urls = $this->get_urls();
 			
 			if ( ! empty( $fallback_urls ) ) {
-				
 				$urls = array_merge( $urls, $fallback_urls );
-				
-				$errors['errors'][] = __( 'WP Rocket will use a fallback method to preload your website.', 'rocket' );
-				set_transient( 'rocket_preload_errors', $errors );
-				
 				return $urls;
 			}
 			
@@ -182,12 +172,7 @@ class Sitemap extends Abstract_Preload {
 			$fallback_urls = $this->get_urls();
 			
 			if ( ! empty( $fallback_urls ) ) {
-				
 				$urls = array_merge( $urls, $fallback_urls );
-				
-				$errors['errors'][] = __( 'WP Rocket will use a fallback method to preload your website.', 'rocket' );
-				set_transient( 'rocket_preload_errors', $errors );
-				
 				return $urls;
 			}
 
@@ -201,12 +186,7 @@ class Sitemap extends Abstract_Preload {
 			$fallback_urls = $this->get_urls();
 			
 			if ( ! empty( $fallback_urls ) ) {
-				
 				$urls = array_merge( $urls, $fallback_urls );
-				
-				$errors['errors'][] = __( 'WP Rocket will use a fallback method to preload your website.', 'rocket' );
-				set_transient( 'rocket_preload_errors', $errors );
-				
 				return $urls;
 			}
 			
@@ -230,12 +210,7 @@ class Sitemap extends Abstract_Preload {
 			$fallback_urls = $this->get_urls();
 			
 			if ( ! empty( $fallback_urls ) ) {
-				
 				$urls = array_merge( $urls, $fallback_urls );
-				
-				$errors['errors'][] = __( 'WP Rocket will use a fallback method to preload your website.', 'rocket' );
-				set_transient( 'rocket_preload_errors', $errors );
-				
 				return $urls;
 			}
 
@@ -266,7 +241,7 @@ class Sitemap extends Abstract_Preload {
 	 * 
 	 * Used as a fallback when extracting URLs from sitemap fails.
 	 *
-	 * @since 3.2.5
+	 * @since 3.3
 	 * @author Arun Basil Lal
 	 * 
 	 * @link https://github.com/wp-media/wp-rocket/issues/1306
@@ -284,7 +259,7 @@ class Sitemap extends Abstract_Preload {
 		/**
 		 * Filters the arguments for get_posts
 		 *
-		 * @since 3.2.4
+		 * @since 3.3
 		 * @author Arun Basil Lal
 		 *
 		 * @param array $args Arguments for get_posts
@@ -293,8 +268,8 @@ class Sitemap extends Abstract_Preload {
 			'rocket_preload_sitemap_fallback_request_args',
 			[
 				'fields'			=> 'ids',
-				'numberposts' 		=> 1000,
-				'posts_per_page'  	=> -1,
+				'numberposts'		=> 1000,
+				'posts_per_page'	=> -1,
 				'post_type'			=> $post_types,
 			]
 		);
