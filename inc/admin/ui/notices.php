@@ -100,6 +100,7 @@ function rocket_plugins_to_deactivate() {
 	$plugins = array(
 		'w3-total-cache'                             => 'w3-total-cache/w3-total-cache.php',
 		'wp-super-cache'                             => 'wp-super-cache/wp-cache.php',
+		'litespeed-cache'                            => 'litespeed-cache/litespeed-cache.php',
 		'quick-cache'                                => 'quick-cache/quick-cache.php',
 		'hyper-cache'                                => 'hyper-cache/plugin.php',
 		'hyper-cache-extended'                       => 'hyper-cache-extended/plugin.php',
