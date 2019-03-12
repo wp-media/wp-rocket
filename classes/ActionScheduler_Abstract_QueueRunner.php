@@ -63,7 +63,10 @@ abstract class ActionScheduler_Abstract_QueueRunner extends ActionScheduler_Abst
 			$this->store->mark_failure( $action_id );
 			do_action( 'action_scheduler_failed_execution', $action_id, $e );
 		}
-		$this->schedule_next_instance( $action );
+
+		if ( isset( $action ) && is_a( $action, 'ActionScheduler_Action' ) ) {
+			$this->schedule_next_instance( $action );
+		}
 	}
 
 	/**
