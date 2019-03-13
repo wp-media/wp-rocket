@@ -437,7 +437,7 @@ class Cache extends Abstract_Buffer {
 	private function maybe_mobile_filename( $filename ) {
 		$cache_mobile_files_tablet = $this->config->get_config( 'cache_mobile_files_tablet' );
 
-		if ( ! ( $this->config->get_config( 'cache_mobile' ) && $this->config->get_config( 'do_caching_mobile_files' ) ) ) {
+		if ( ! ( $this->config->get_config( 'cache_mobile' ) && ! $this->config->get_config( 'do_caching_mobile_files' ) ) ) {
 			return $filename;
 		}
 
