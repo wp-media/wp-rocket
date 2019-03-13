@@ -9,6 +9,17 @@ namespace WP_Rocket\Preload;
  */
 class Sitemap extends Abstract_Preload {
 	/**
+	 * Flag to track sitemap read failures
+	 * 
+	 * @since 3.3
+	 * @author Arun Basil Lal
+	 * 
+	 * @var bool
+	 * @access private
+	 */
+	private $sitemap_error = false;
+	
+	/**
 	 * Launches the sitemap preload
 	 *
 	 * @since 3.2
@@ -46,6 +57,15 @@ class Sitemap extends Abstract_Preload {
 			 * @param string $sitemap_url sitemap URL crawled
 			*/
 			do_action( 'after_run_rocket_sitemap_preload', $sitemap_type, $sitemap_url ); // WPCS: prefix ok.
+		}
+		
+		if ( true === $this->sitemap_error ) {
+			// Attempt to use the fallback method.
+			$fallback_urls = $this->get_urls();
+			
+			if ( ! empty( $fallback_urls ) ) {
+				$urls_group[] = $fallback_urls;
+			}
 		}
 
 		$urls_group = array_filter( $urls_group );
@@ -110,14 +130,8 @@ class Sitemap extends Abstract_Preload {
 			// Translators: %1$s is a XML sitemap URL, %2$s is the error message, %3$s = opening link tag, %4$s = closing link tag..
 			$errors['errors'][] = sprintf( __( 'Sitemap preload encountered an error. Could not gather links on %1$s because of the following error: %2$s. %3$sLearn more%4$s.', 'rocket' ), $sitemap_url, $sitemap->get_error_message(), '<a href="https://docs.wp-rocket.me/article/1065-sitemap-preload-is-slow-or-some-pages-are-not-preloaded-at-all#failed-preload" rel="noopener noreferrer" target=_"blank">', '</a>' );
 			
-			// Attempt to use the fallback method.
-			$fallback_urls = $this->get_urls();
+			$this->sitemap_error = true;
 			
-			if ( ! empty( $fallback_urls ) ) {
-				$urls = array_merge( $urls, $fallback_urls );
-				return $urls;
-			}
-
 			set_transient( 'rocket_preload_errors', $errors );
 			return [];
 		}
@@ -149,13 +163,7 @@ class Sitemap extends Abstract_Preload {
 					break;
 			}
 			
-			// Attempt to use the fallback method.
-			$fallback_urls = $this->get_urls();
-			
-			if ( ! empty( $fallback_urls ) ) {
-				$urls = array_merge( $urls, $fallback_urls );
-				return $urls;
-			}
+			$this->sitemap_error = true;
 			
 			set_transient( 'rocket_preload_errors', $errors );
 			return [];
@@ -167,29 +175,16 @@ class Sitemap extends Abstract_Preload {
 
 			// Translators: %1$s is a XML sitemap URL, %2$s = opening link tag, %3$s = closing link tag.
 			$errors['errors'][] = sprintf( __( 'Sitemap preload encountered an error. Could not collect links from %1$s because the file is empty. %2$sLearn more%3$s.', 'rocket' ), $sitemap_url, '<a href="https://docs.wp-rocket.me/article/1065-sitemap-preload-is-slow-or-some-pages-are-not-preloaded-at-all#failed-preload" rel="noopener noreferrer" target=_"blank">', '</a>' );
-
-			// Attempt to use the fallback method.
-			$fallback_urls = $this->get_urls();
 			
-			if ( ! empty( $fallback_urls ) ) {
-				$urls = array_merge( $urls, $fallback_urls );
-				return $urls;
-			}
-
+			$this->sitemap_error = true;
+			
 			set_transient( 'rocket_preload_errors', $errors );
 			return [];
 		}
 
 		if ( ! function_exists( 'simplexml_load_string' ) ) {
 			
-			// Attempt to use the fallback method.
-			$fallback_urls = $this->get_urls();
-			
-			if ( ! empty( $fallback_urls ) ) {
-				$urls = array_merge( $urls, $fallback_urls );
-				return $urls;
-			}
-			
+			$this->sitemap_error = true;
 			return [];
 		}
 
@@ -206,14 +201,8 @@ class Sitemap extends Abstract_Preload {
 				'</a>'
 			);
 			
-			// Attempt to use the fallback method.
-			$fallback_urls = $this->get_urls();
+			$this->sitemap_error = true;
 			
-			if ( ! empty( $fallback_urls ) ) {
-				$urls = array_merge( $urls, $fallback_urls );
-				return $urls;
-			}
-
 			set_transient( 'rocket_preload_errors', $errors );
 			return [];
 		}
