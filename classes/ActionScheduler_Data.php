@@ -44,13 +44,13 @@ class ActionScheduler_Data {
 	 */
 	public function get_store_class( $class ) {
 		if ( $this->migration_scheduler->is_migration_complete() ) {
-			return ActionScheduler_DBStore::class;
+			return 'ActionScheduler_DBStore';
 		} elseif ( ActionScheduler_Store::DEFAULT_CLASS !== $class && ! apply_filters( 'action_scheduler_migrate_custom_data_store', false ) ) {
 			$this->store_classname = $class;
 			return $class;
 		} else {
 
-			return ActionScheduler_HybridStore::class;
+			return 'ActionScheduler_HybridStore';
 		}
 	}
 
@@ -67,7 +67,7 @@ class ActionScheduler_Data {
 		if ( $this->store_classname ) {
 			return $class;
 		} else {
-			return ActionScheduler_DBLogger::class;
+			return 'ActionScheduler_DBLogger';
 		}
 	}
 
@@ -116,7 +116,7 @@ class ActionScheduler_Data {
 		if ( $this->migration_scheduler->is_migration_complete() ) {
 			return;
 		}
-		add_action( 'admin_notices', [ $this, 'display_migration_notice' ], 10, 0 );
+		add_action( 'admin_notices', array( $this, 'display_migration_notice' ), 10, 0 );
 	}
 
 	public function display_migration_notice() {
@@ -124,14 +124,14 @@ class ActionScheduler_Data {
 	}
 
 	private function hook() {
-		add_filter( 'action_scheduler_store_class', [ $this, 'get_store_class' ], 100, 1 );
-		add_filter( 'action_scheduler_logger_class', [ $this, 'get_logger_class' ], 100, 1 );
-		add_action( 'init', [ $this, 'maybe_hook_migration' ] );
-		add_action( 'shutdown', [ $this, 'schedule_migration' ], 0, 0 );
+		add_filter( 'action_scheduler_store_class', array( $this, 'get_store_class' ), 100, 1 );
+		add_filter( 'action_scheduler_logger_class', array( $this, 'get_logger_class' ), 100, 1 );
+		add_action( 'init', array( $this, 'maybe_hook_migration' ) );
+		add_action( 'shutdown', array( $this, 'schedule_migration' ), 0, 0 );
 
 		// Action Scheduler may be displayed as a Tools screen or WooCommerce > Status administration screen
-		add_action( 'load-tools_page_action-scheduler', [ $this, 'hook_admin_notices' ], 10, 0 );
-		add_action( 'load-woocommerce_page_wc-status', [ $this, 'hook_admin_notices' ], 10, 0 );
+		add_action( 'load-tools_page_action-scheduler', array( $this, 'hook_admin_notices' ), 10, 0 );
+		add_action( 'load-woocommerce_page_wc-status', array( $this, 'hook_admin_notices' ), 10, 0 );
 	}
 
 	/**
@@ -148,7 +148,9 @@ class ActionScheduler_Data {
 	}
 
 	public static function init() {
-		self::instance()->hook();
+		if ( self::instance()->migration_scheduler->dependencies_met() ) {
+			self::instance()->hook();
+		}
 	}
 
 	public static function instance() {

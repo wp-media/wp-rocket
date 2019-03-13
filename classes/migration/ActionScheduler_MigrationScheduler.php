@@ -9,19 +9,20 @@ class ActionScheduler_MigrationScheduler {
 	const STATUS_COMPLETE = 'complete';
 	const HOOK            = 'action_scheduler/migration_hook';
 	const GROUP           = 'action-scheduler-DB-tables';
+	const MIN_PHP_VERSION = '5.5';
 
 	/**
 	 * Set up the callback for the scheduled job
 	 */
 	public function hook() {
-		add_action( self::HOOK, [ $this, 'run_migration' ], 10, 0 );
+		add_action( self::HOOK, array( $this, 'run_migration' ), 10, 0 );
 	}
 
 	/**
 	 * Remove the callback for the scheduled job
 	 */
 	public function unhook() {
-		remove_action( self::HOOK, [ $this, 'run_migration' ], 10 );
+		remove_action( self::HOOK, array( $this, 'run_migration' ), 10 );
 	}
 
 	/**
@@ -69,7 +70,7 @@ class ActionScheduler_MigrationScheduler {
 			$when = time();
 		}
 
-		return as_schedule_single_action( $when, self::HOOK, [], self::GROUP );
+		return as_schedule_single_action( $when, self::HOOK, array(), self::GROUP );
 	}
 
 	/**
@@ -77,6 +78,13 @@ class ActionScheduler_MigrationScheduler {
 	 */
 	public function unschedule_migration() {
 		as_unschedule_action( self::HOOK, null, self::GROUP );
+	}
+
+	/**
+	 * @return bool Environment dependencies met for database data store.
+	 */
+	public function dependencies_met() {
+		return version_compare( PHP_VERSION, self::MIN_PHP_VERSION, '>=' );
 	}
 
 	/**
