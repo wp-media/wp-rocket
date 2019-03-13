@@ -31,7 +31,7 @@ class Pressable_Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Wrapper for __return_false() WP function
+	 * Return false
 	 *
 	 * @since 3.3
 	 * @author Remy Perona
@@ -39,11 +39,11 @@ class Pressable_Subscriber implements Subscriber_Interface {
 	 * @return bool
 	 */
 	public function return_false() {
-		__return_false();
+		return false;
 	}
 
 	/**
-	 * Wrapper for __return_empty_array() WP function
+	 * Return empty array
 	 *
 	 * @since 3.3
 	 * @author Remy Perona
@@ -51,7 +51,7 @@ class Pressable_Subscriber implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function return_empty_array() {
-		__return_empty_array();
+		return [];
 	}
 
 	/**
@@ -89,10 +89,6 @@ class Pressable_Subscriber implements Subscriber_Interface {
 	 * @return string
 	 */
 	public function fix_wp_includes_path( $file ) {
-		if ( ! preg_match( '#^(.+)(wp-includes(?:.+))$#is', $file ) ) {
-			return $file;
-		}
-
 		return preg_replace( '#^(.+)(wp-includes(?:.+))$#is', ABSPATH . '$2', $file );
 	}
 
