@@ -5,10 +5,16 @@
  * @package test_cases\logging
  */
 class ActionScheduler_wpCommentLogger_Test extends ActionScheduler_UnitTestCase {
+	private $use_comment_logger;
+
 	public function test_default_logger() {
 		$logger = ActionScheduler::logger();
 		$this->assertInstanceOf( 'ActionScheduler_Logger', $logger );
-		$this->assertInstanceOf( 'ActionScheduler_wpCommentLogger', $logger );
+		if ( $this->using_comment_logger() ) {
+			$this->assertInstanceOf( 'ActionScheduler_wpCommentLogger', $logger );
+		} else {
+			$this->assertNotInstanceOf( 'ActionScheduler_wpCommentLogger', $logger );
+		}
 	}
 
 	public function test_add_log_entry() {
@@ -147,6 +153,10 @@ class ActionScheduler_wpCommentLogger_Test extends ActionScheduler_UnitTestCase 
 	}
 
 	public function test_filtering_of_get_comments() {
+		if ( ! $this->using_comment_logger() ) {
+			return;
+		}
+
 		$post_id = $this->factory->post->create_object(array(
 			'post_title' => __FUNCTION__,
 		));
@@ -180,6 +190,15 @@ class ActionScheduler_wpCommentLogger_Test extends ActionScheduler_UnitTestCase 
 		// Expecting two: one when the action is created, another when we added our custom log
 		$this->assertCount( 2, $comments );
 		$this->assertContains( $log_id, wp_list_pluck($comments, 'comment_ID'));
+	}
+
+	private function using_comment_logger() {
+		if ( null === $this->use_comment_logger ) {
+			$scheduler = new Action_Scheduler\Migration\ActionScheduler_MigrationScheduler();
+			$this->use_comment_logger = ! $scheduler->dependencies_met();
+		}
+
+		return $this->use_comment_logger;
 	}
 }
  
