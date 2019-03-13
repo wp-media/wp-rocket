@@ -201,6 +201,8 @@ class Config {
 		$path = explode( '%2F', preg_replace( '/^(?:%2F)*(.*?)(?:%2F)*$/', '$1', rawurlencode( $path ) ) );
 
 		foreach ( $path as $p ) {
+			static $dir;
+
 			if ( realpath( self::$config_dir_path . $host . '.' . $p . '.php' ) && 0 === stripos( realpath( self::$config_dir_path . $host . '.' . $p . '.php' ), $config_dir_real_path ) ) {
 				$config_file_path = self::$config_dir_path . $host . '.' . $p . '.php';
 				return self::memoize( __FUNCTION__, [], $config_file_path );
