@@ -109,6 +109,7 @@ class Plugin {
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Preload_Subscribers' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Common_Subscribers' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Third_Party_Subscribers' );
+		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Hostings_Subscribers' );
 
 		$common_subscribers = [
 			'sucuri_subscriber',
@@ -120,6 +121,7 @@ class Plugin {
 			'mobile_subscriber',
 			'woocommerce_subscriber',
 			'nginx_subscriber',
+			'pressable_subscriber',
 		];
 
 		$subscribers = array_merge( $subscribers, $common_subscribers );
