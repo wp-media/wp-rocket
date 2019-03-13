@@ -344,8 +344,9 @@ function rocket_url_to_path( $url, $hosts = '' ) {
 	 * @author Remy Perona
 	 *
 	 * @param string $file Absolute path to the file.
+	 * @param string $url  URL of the asset.
 	 */
-	$file = apply_filters( 'rocket_url_to_path', $file );
+	$file = apply_filters( 'rocket_url_to_path', $file, $url );
 
 	if ( ! rocket_direct_filesystem()->is_readable( $file ) ) {
 		return false;
