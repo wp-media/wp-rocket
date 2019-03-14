@@ -885,7 +885,8 @@ class Page {
 				'lazyload_section' => [
 					'title'       => __( 'LazyLoad', 'rocket' ),
 					'type'        => 'fields_container',
-					'description' => __( 'It can improve actual and perceived loading time as images, iframes, and videos will be loaded only as they enter (or about to enter) the viewport and reduces the number of HTTP requests.', 'rocket' ),
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'description' => sprintf( __( 'It can improve actual and perceived loading time as images, iframes, and videos will be loaded only as they enter (or about to enter) the viewport and reduces the number of HTTP requests. %1$sMore Info%2$s', 'rocket' ), '<a href="' . esc_url( $lazyload_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $lazyload_beacon['id'] ) . '" target="_blank">', '</a>' ),
 					'help'        => [
 						'id'  => $this->beacon->get_suggest( 'lazyload_section' ),
 						'url' => $lazyload_beacon['url'],
