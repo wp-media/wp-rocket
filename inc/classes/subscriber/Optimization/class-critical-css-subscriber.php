@@ -248,7 +248,7 @@ class Critical_CSS_Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		if ( ! $this->critical_css->get_current_page_cpcss() ) {
+		if ( ! $this->critical_css->get_current_page_critical_css() ) {
 			return;
 		}
 
