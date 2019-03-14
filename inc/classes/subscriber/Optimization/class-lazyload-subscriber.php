@@ -293,6 +293,7 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 		}
 
 		$buffer = $this->ignore_scripts( $html );
+		$buffer = $this->ignoreNoScripts($html);
 
 		if ( $this->options->get( 'lazyload_iframes' ) && $this->can_lazyload_iframes() ) {
 			$args = [
@@ -431,5 +432,15 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 		 * @param bool $do_rocket_lazyload_iframes True to apply lazyload, false otherwise.
 		 */
 		return apply_filters( 'do_rocket_lazyload_iframes', true ); // WPCS: prefix ok.
+	}
+
+	/**
+	 * Remove noscript tags from the HTML to parse
+	 *
+	 * @param string $html HTML content.
+	 * @return string
+	 */
+	private function ignoreNoScripts( $html ) {
+		return preg_replace( '#<noscript>(?:.+)</noscript>#Umsi', '', $html );
 	}
 }
