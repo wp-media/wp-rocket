@@ -68,6 +68,7 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	}
 
 	protected function do_batch( $size = 100 ) {
+error_log( 'batch ' . $size );
 		$claim = $this->store->stake_claim($size);
 		$this->monitor->attach($claim);
 		$processed_actions = 0;

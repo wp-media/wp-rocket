@@ -77,7 +77,7 @@ class ActionScheduler_Data {
 	 * @return void
 	 */
 	public function register_cli_command() {
-		if ( class_exists( 'WP_CLI_Command' ) && ! $this->migration_scheduler->is_migration_complete() ) {
+		if ( defined( 'WP_CLI' ) && WP_CLI && ! $this->migration_scheduler->is_migration_complete() && $this->migration_scheduler->dependencies_met() ) {
 			$command = new ActionScheduler_WPCLI_Migration_Command();
 			$command->register();
 		}

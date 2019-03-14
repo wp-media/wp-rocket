@@ -61,4 +61,9 @@ class ActionScheduler_MigrationRunner {
 
 		do_action( 'action_scheduler/migration_batch_complete', $action_ids );
 	}
+
+	public function init_destination() {
+		$this->destination_store->init();
+		$this->destination_logger->init();
+	}
 }

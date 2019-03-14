@@ -18,6 +18,11 @@ use WP_CLI_Command;
  * @codeCoverageIgnore
  */
 class ActionScheduler_WPCLI_Migration_Command extends WP_CLI_Command {
+
+	/**
+	 * Migrates actions to the DB tables store
+	 */
+
 	private $total_processed = 0;
 
 	/**
@@ -28,8 +33,8 @@ class ActionScheduler_WPCLI_Migration_Command extends WP_CLI_Command {
 			return;
 		}
 
-		WP_CLI::add_command( 'action-scheduler custom-tables migrate', [ $this, 'migrate' ], [
-			'shortdesc' => 'Migrates actions to the custom tables store',
+		WP_CLI::add_command( 'action-scheduler db-tables migrate', [ $this, 'migrate' ], [
+			'shortdesc' => 'Migrates actions to the DB tables store',
 			'synopsis'  => [
 				[
 					'type'        => 'assoc',
@@ -62,8 +67,9 @@ class ActionScheduler_WPCLI_Migration_Command extends WP_CLI_Command {
 		$this->init_logging();
 
 		$config = $this->get_migration_config( $assoc_args );
+		$runner = new ActionScheduler_MigrationRunner( $config );
+		$runner->init_destination();
 
-		$runner     = new ActionScheduler_MigrationRunner( $config );
 		$batch_size = isset( $assoc_args[ 'batch-size' ] ) ? (int) $assoc_args[ 'batch-size' ] : 100;
 
 		do {
