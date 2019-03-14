@@ -28,8 +28,6 @@ class Optimization_Subscribers extends AbstractServiceProvider {
 		'cache_dynamic_resource',
 		'cdn_favicons',
 		'remove_query_string',
-		'critical_css_generation',
-		'critical_css',
 		'ie_conditionals_subscriber',
 		'minify_html_subscriber',
 		'combine_google_fonts_subscriber',
@@ -38,7 +36,6 @@ class Optimization_Subscribers extends AbstractServiceProvider {
 		'cache_dynamic_resource_subscriber',
 		'cdn_favicons_subscriber',
 		'remove_query_string_subscriber',
-		'critical_css_subscriber',
 	];
 
 	/**
@@ -68,9 +65,6 @@ class Optimization_Subscribers extends AbstractServiceProvider {
 			->withArgument( $this->getContainer()->get( 'options' ) )
 			->withArgument( WP_ROCKET_CACHE_BUSTING_PATH )
 			->withArgument( WP_ROCKET_CACHE_BUSTING_URL );
-		$this->getContainer()->add( 'critical_css_generation', 'WP_Rocket\Optimization\CSS\Critical_CSS_Generation' );
-		$this->getContainer()->add( 'critical_css', 'WP_Rocket\Optimization\CSS\Critical_CSS' )
-			->withArgument( $this->getContainer()->get( 'critical_css_generation' ) );
 		$this->getContainer()->add( 'ie_conditionals_subscriber', 'WP_Rocket\Subscriber\Optimization\IE_Conditionals_Subscriber' );
 		$this->getContainer()->add( 'minify_html_subscriber', 'WP_Rocket\Subscriber\Optimization\Minify_HTML_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'options' ) );
@@ -86,8 +80,5 @@ class Optimization_Subscribers extends AbstractServiceProvider {
 			->withArgument( $this->getContainer()->get( 'cdn_favicons' ) );
 		$this->getContainer()->add( 'remove_query_string_subscriber', 'WP_Rocket\Subscriber\Optimization\Remove_Query_String_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'remove_query_string' ) );
-		$this->getContainer()->add( 'critical_css_subscriber', 'WP_Rocket\Subscriber\Optimization\Critical_CSS_Subscriber' )
-			->withArgument( $this->getContainer()->get( 'critical_css' ) )
-			->withArgument( $this->getContainer()->get( 'options' ) );
 	}
 }

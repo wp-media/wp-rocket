@@ -114,15 +114,15 @@ class Critical_CSS {
 	 */
 	public function clean_critical_css() {
 		try {
-			$directory = new RecursiveDirectoryIterator( $this->critical_css_path, FilesystemIterator::SKIP_DOTS );
-		} catch ( Exception $e ) {
+			$directory = new \RecursiveDirectoryIterator( $this->critical_css_path, \FilesystemIterator::SKIP_DOTS );
+		} catch ( \Exception $e ) {
 			// no logging yet.
 			return;
 		}
 
 		try {
-			$files = new RecursiveIteratorIterator( $directory, RecursiveIteratorIterator::CHILD_FIRST );
-		} catch ( Exception $e ) {
+			$files = new \RecursiveIteratorIterator( $directory, \RecursiveIteratorIterator::CHILD_FIRST );
+		} catch ( \Exception $e ) {
 			// no logging yet.
 			return;
 		}

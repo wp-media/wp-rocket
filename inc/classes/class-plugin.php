@@ -112,6 +112,7 @@ class Plugin {
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Hostings_Subscribers' );
 
 		$common_subscribers = [
+			'critical_css_subscriber',
 			'sucuri_subscriber',
 			'preload_subscriber',
 			'sitemap_preload_subscriber',
