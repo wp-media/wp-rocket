@@ -293,7 +293,7 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 		}
 
 		$buffer = $this->ignore_scripts( $html );
-		$buffer = $this->ignoreNoScripts($html);
+		$buffer = $this->ignore_noscripts( $buffer );
 
 		if ( $this->options->get( 'lazyload_iframes' ) && $this->can_lazyload_iframes() ) {
 			$args = [
@@ -440,7 +440,7 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 	 * @param string $html HTML content.
 	 * @return string
 	 */
-	private function ignoreNoScripts( $html ) {
+	private function ignore_noscripts( $html ) {
 		return preg_replace( '#<noscript>(?:.+)</noscript>#Umsi', '', $html );
 	}
 }
