@@ -20,12 +20,29 @@ class NGINX_Subscriber implements Subscriber_Interface {
 	private $options;
 
 	/**
+	 * NGINX cache path
+	 *
+	 * @var string
+	 */
+	private $cache_path;
+
+	/**
 	 * Constructor
 	 *
 	 * @param Options_Data $options Options instance.
 	 */
 	public function __construct( Options_Data $options ) {
 		$this->options = $options;
+
+		/**
+		 * Filters the default value for the NGINX cache path
+		 *
+		 * @since 3.3
+		 * @author Remy Perona
+		 *
+		 * @param string $cache_path Absolute path to NGINX cache folder.
+		 */
+		$this->cache_path = apply_filters( 'rocket_nginx_cache_path', '/var/run/nginx-cache' );
 	}
 
 	/**
@@ -55,7 +72,7 @@ class NGINX_Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$this->send_purge_request( $url );
+		$this->purge_cache( $this->cache_path );
 	}
 
 	/**
@@ -134,5 +151,34 @@ class NGINX_Subscriber implements Subscriber_Interface {
 			Logger::error( 'URL currently not NGINX cached: ' . $purge_url, [ 'NGINX Add-on'] );
 			return;
 		}
+	}
+
+	/**
+	 * Purge NGINX cache folder
+	 *
+	 * @since 3.3
+	 * @author Remy Perona
+	 *
+	 * @param string $dir Absolute NGINX cache folder path.
+	 * @return void
+	 */
+	private function purge_cache( $dir ) {
+		if ( ! \rocket_direct_filesystem()->exists( $dir ) ) {
+			return;
+		}
+
+		$files = new \RecursiveIteratorIterator(
+			new \RecursiveDirectoryIterator(
+				$dir,
+				\RecursiveDirectoryIterator::SKIP_DOTS
+			),
+			\RecursiveIteratorIterator::CHILD_FIRST
+		);
+
+		foreach ( $files as $file ) {
+			\rocket_direct_filesystem()->delete( $file->getRealPath(), true );
+		}
+
+		Logger::info( 'NGINX Cache fully purged', [ 'NGINX Add-on' ] );
 	}
 }
