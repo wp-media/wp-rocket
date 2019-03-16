@@ -395,13 +395,13 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 
 		$schedule_display_string = '';
 
-		if ( ! $schedule->next() ) {
+		if ( ! $schedule->get_start() ) {
 			return '0000-00-00 00:00:00';
 		}
 
-		$next_timestamp = $schedule->next()->getTimestamp();
+		$next_timestamp = $schedule->get_start()->getTimestamp();
 
-		$schedule_display_string .= $schedule->next()->format( 'Y-m-d H:i:s O' );
+		$schedule_display_string .= $schedule->get_start()->format( 'Y-m-d H:i:s O' );
 		$schedule_display_string .= '<br/>';
 
 		if ( gmdate( 'U' ) > $next_timestamp ) {

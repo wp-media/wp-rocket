@@ -81,6 +81,7 @@ abstract class ActionScheduler_Abstract_QueueRunner extends ActionScheduler_Abst
 		$next     = $schedule->next( as_get_datetime_object() );
 
 		if ( ! is_null( $next ) && $schedule->is_recurring() ) {
+			$schedule->set_next( $next );
 			$this->store->save_action( $action, $next );
 		}
 	}
