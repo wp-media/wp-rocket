@@ -405,6 +405,7 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 	}
 
 	if ( version_compare( $actual_version, '3.3', '<' ) ) {
+		rocket_generate_advanced_cache_file();
 		rocket_generate_config_file();
 		rocket_clean_domain();
 	}
