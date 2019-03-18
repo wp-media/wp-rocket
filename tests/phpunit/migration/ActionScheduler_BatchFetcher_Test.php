@@ -1,6 +1,5 @@
 <?php
 
-
 use Action_Scheduler\Migration\ActionScheduler_BatchFetcher;
 use ActionScheduler_wpPostStore as PostStore;
 

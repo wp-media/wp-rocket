@@ -130,5 +130,4 @@ class ActionScheduler_MigrationConfig {
 	public function set_progress_bar( ActionScheduler_WPCLI_ProgressBar $progress_bar ) {
 		$this->progress_bar = $progress_bar;
 	}
-
 }

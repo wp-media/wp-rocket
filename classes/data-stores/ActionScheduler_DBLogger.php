@@ -92,5 +92,4 @@ class ActionScheduler_DBLogger extends ActionScheduler_Logger {
 		global $wpdb;
 		$wpdb->delete( $wpdb->actionscheduler_logs, [ 'action_id' => $action_id, ], [ '%d' ] );
 	}
-
 }
