@@ -537,6 +537,12 @@ class Beacon {
 					'url' => 'https://fr.docs.wp-rocket.me/article/1123-add-on-facebook-pixel/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
+			'nginx'                  => [
+				'en' => [
+					'id'  => '5c9032472c7d3a154461060b',
+					'url' => 'https://docs.wp-rocket.me/article/1143-nginx-fastcgi-cache-add-on/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
 		];
 
 		return isset( $suggest[ $doc_id ][ $this->locale ] ) ? $suggest[ $doc_id ][ $this->locale ] : $suggest[ $doc_id ]['en'];
