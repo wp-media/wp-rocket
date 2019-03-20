@@ -40,7 +40,7 @@ class Page_Subscriber implements Subscriber_Interface {
 			'wp_ajax_rocket_toggle_option'         => 'toggle_option',
 			'option_page_capability_' . WP_ROCKET_PLUGIN_SLUG => 'required_capability',
 			'rocket_settings_menu_navigation'      => [
-				'add_menu_tools_page',
+				[ 'add_menu_tools_page' ],
 				[ 'add_imagify_page', 9 ],
 			],
 		];
