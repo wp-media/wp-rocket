@@ -34,8 +34,8 @@ class Optimization_Subscriber implements Subscriber_Interface {
 			'rocket_database_optimization_time_event' => 'cron_optimize',
 			'pre_update_option_' . WP_ROCKET_SLUG     => 'save_optimize',
 			'admin_notices'                           => [
-				'notice_process_running',
-				'notice_process_complete',
+				[ 'notice_process_running' ],
+				[ 'notice_process_complete' ],
 			],
 		];
 	}
@@ -101,10 +101,11 @@ class Optimization_Subscriber implements Subscriber_Interface {
 			return $value;
 		}
 
-		$items = [];
+		$items      = [];
+		$db_options = $this->optimize->get_options();
 
 		foreach ( $value as $key => $option_value ) {
-			if ( isset( $this->options[ $key ] ) && 1 === $option_value ) {
+			if ( isset( $db_options[ $key ] ) && 1 === $option_value ) {
 				$items[] = $key;
 			}
 		}
@@ -172,6 +173,7 @@ class Optimization_Subscriber implements Subscriber_Interface {
 			return;
 		}
 
+		$db_options = $this->optimize->get_options();
 		delete_transient( 'rocket_database_optimization_process_complete' );
 
 		$message = esc_html__( 'Database optimization process is complete. Everything was already optimized!', 'rocket' );
@@ -185,7 +187,7 @@ class Optimization_Subscriber implements Subscriber_Interface {
 			foreach ( $optimized as $key => $number ) {
 				$message .= '<li>' .
 					/* translators: %1$d = number of items optimized, %2$s = type of optimization */
-					sprintf( esc_html__( '%1$d %2$s optimized.', 'rocket' ), $number, $this->options[ $key ] )
+					sprintf( esc_html__( '%1$d %2$s optimized.', 'rocket' ), $number, $db_options[ $key ] )
 				. '</li>';
 			}
 			$message .= '</ul>';
