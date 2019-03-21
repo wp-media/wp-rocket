@@ -137,10 +137,6 @@ class Cache extends Abstract_Buffer {
 	private function serve_cache_file_type( $cache_filepath, $is_gzip ) {
 		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s', filemtime( $cache_filepath ) ) . ' GMT' );
 
-		if ( $is_gzip ) {
-			header( 'Content-Encoding: gzip' );
-		}
-
 		$if_modified_since = $this->get_if_modified_since();
 
 		// Checking if the client is validating his cache and if it is current.
