@@ -3,6 +3,7 @@
 use Action_Scheduler\Migration\ActionScheduler_MigrationConfig;
 use Action_Scheduler\Migration\ActionScheduler_MigrationScheduler;
 use Action_Scheduler\WP_CLI\ActionScheduler_WPCLI_Migration_Command;
+use Action_Scheduler\WP_CLI\ActionScheduler_WPCLI_ProgressBar;
 
 /**
  * Class ActionScheduler_Data
@@ -25,6 +26,12 @@ class ActionScheduler_Data {
 	/** @var string */
 	private $store_classname;
 
+	/** @var string */
+	private $logger_classname;
+
+	/** @var bool */
+	private $migrate_custom_store;
+
 	/**
 	 * ActionScheduler_Data constructor.
 	 *
@@ -45,11 +52,10 @@ class ActionScheduler_Data {
 	public function get_store_class( $class ) {
 		if ( $this->migration_scheduler->is_migration_complete() ) {
 			return 'ActionScheduler_DBStore';
-		} elseif ( ActionScheduler_Store::DEFAULT_CLASS !== $class && ! apply_filters( 'action_scheduler_migrate_custom_data_store', false ) ) {
+		} elseif ( ActionScheduler_Store::DEFAULT_CLASS !== $class ) {
 			$this->store_classname = $class;
 			return $class;
 		} else {
-
 			return 'ActionScheduler_HybridStore';
 		}
 	}
@@ -65,6 +71,7 @@ class ActionScheduler_Data {
 		ActionScheduler_Store::instance();
 
 		if ( $this->store_classname ) {
+			$this->logger_classname = $class;
 			return $class;
 		} else {
 			return 'ActionScheduler_DBLogger';
@@ -77,7 +84,7 @@ class ActionScheduler_Data {
 	 * @return void
 	 */
 	public function register_cli_command() {
-		if ( defined( 'WP_CLI' ) && WP_CLI && ! $this->migration_scheduler->is_migration_complete() && $this->migration_scheduler->dependencies_met() ) {
+		if ( defined( 'WP_CLI' ) && WP_CLI && $this->allow_custom_migration() && ! $this->migration_scheduler->is_migration_complete() && $this->migration_scheduler->dependencies_met() ) {
 			$command = new ActionScheduler_WPCLI_Migration_Command();
 			$command->register();
 		}
@@ -102,10 +109,12 @@ class ActionScheduler_Data {
 	 * @return Migration\Migration_Config
 	 */
 	public function get_migration_config_object() {
-//@todo: use filter to get source class, if not default class then apply a filter to verify migration
+		$source_store = $this->store_classname ? new $this->store_classname() : new ActionScheduler_wpPostStore();
+		$source_logger = $this->logger_classname ? new $this->logger_classname() : new ActionScheduler_wpCommentLogger();
+
 		$config = new ActionScheduler_MigrationConfig();
-		$config->set_source_store( new \ActionScheduler_wpPostStore() );
-		$config->set_source_logger( new \ActionScheduler_wpCommentLogger() );
+		$config->set_source_store( $source_store );
+		$config->set_source_logger( $source_logger );
 		$config->set_destination_store( new ActionScheduler_DBStoreMigrator() );
 		$config->set_destination_logger( new ActionScheduler_DBLogger() );
 
@@ -117,7 +126,7 @@ class ActionScheduler_Data {
 	}
 
 	public function hook_admin_notices() {
-		if ( $this->store_classname || $this->migration_scheduler->is_migration_complete() ) {
+		if ( ! $this->allow_custom_migration() || $this->migration_scheduler->is_migration_complete() ) {
 			return;
 		}
 		add_action( 'admin_notices', array( $this, 'display_migration_notice' ), 10, 0 );
@@ -144,11 +153,20 @@ class ActionScheduler_Data {
 	 * @author Jeremy Pry
 	 */
 	public function maybe_hook_migration() {
-		if ( $this->migration_scheduler->is_migration_complete() ) {
+		if ( ! $this->allow_custom_migration() || $this->migration_scheduler->is_migration_complete() ) {
 			return;
 		}
 
 		$this->migration_scheduler->hook();
+		$this->register_cli_command();
+	}
+
+	public function allow_custom_migration() {
+		if ( null === $this->migrate_custom_store ) {
+			$this->migrate_custom_store = apply_filters( 'action_scheduler_migrate_custom_data_store', false );
+		}
+
+		return empty( $this->store_classname ) || $this->migrate_custom_store;
 	}
 
 	public static function init() {

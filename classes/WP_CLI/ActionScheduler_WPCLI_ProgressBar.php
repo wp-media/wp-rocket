@@ -1,5 +1,8 @@
 <?php
 
+namespace Action_Scheduler\WP_CLI;
+
+
 /**
  * WP_CLI progress bar for the Action Scheduler by Prospress.
  */
@@ -117,11 +120,11 @@ class ActionScheduler_WPCLI_ProgressBar {
 	 */
 	protected function free_memory( $sleep_time = 0 ) {
 		if ( 0 < $sleep_time ) {
-			WP_CLI::warning( sprintf( _n( 'Stopped the insanity for %d second', 'Stopped the insanity for %d seconds', $sleep_time, 'action-scheduler' ), $sleep_time ) );
+			\WP_CLI::warning( sprintf( _n( 'Stopped the insanity for %d second', 'Stopped the insanity for %d seconds', $sleep_time, 'action-scheduler' ), $sleep_time ) );
 			sleep( $sleep_time );
 		}
 
-		WP_CLI::warning( __( 'Attempting to reduce used memory...', 'action-scheduler' ) );
+		\WP_CLI::warning( __( 'Attempting to reduce used memory...', 'action-scheduler' ) );
 
 		/**
 		 * @var $wpdb            \wpdb

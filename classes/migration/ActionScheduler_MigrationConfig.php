@@ -3,6 +3,7 @@
 
 namespace Action_Scheduler\Migration;
 
+use Action_Scheduler\WP_CLI\ActionScheduler_WPCLI_ProgressBar;
 use ActionScheduler_Logger as Logger;
 use ActionScheduler_Store as Store;
 
