@@ -446,6 +446,7 @@ function get_rocket_exclude_defer_js() {
 		'gist.github.com',
 		'content.jwplatform.com',
 		'js.hsforms.net',
+		'www.uplaunch.com',
 		'google.com/recaptcha',
 	];
 
