@@ -55,8 +55,8 @@ class ActionScheduler_MigrationRunner {
 	public function migrate_actions( array $action_ids ) {
 		do_action( 'action_scheduler/migration_batch_starting', $action_ids );
 
-		remove_action( 'action_scheduler_stored_action', array( \ActionScheduler::logger(), 'log_stored_action' ), 10 );
-		remove_action( 'action_scheduler_stored_action', array( $this->destination_logger, 'log_stored_action' ), 10 );
+		\ActionScheduler::logger()->unhook_stored_action();
+		$this->destination_logger->unhook_stored_action();
 
 		foreach ( $action_ids as $source_action_id ) {
 			$destination_action_id = $this->action_migrator->migrate( $source_action_id );
@@ -79,8 +79,8 @@ class ActionScheduler_MigrationRunner {
 			$this->progress_bar->finish();
 		}
 
-		add_action( 'action_scheduler_stored_action', array( \ActionScheduler::logger(), 'log_stored_action' ), 10 , 1 );
-		add_action( 'action_scheduler_stored_action', array( $this->destination_logger, 'log_stored_action' ), 10, 1 );
+		\ActionScheduler::logger()->hook_stored_action();
+		$this->destination_logger->hook_stored_action();
 
 		do_action( 'action_scheduler/migration_batch_complete', $action_ids );
 	}
@@ -88,5 +88,13 @@ class ActionScheduler_MigrationRunner {
 	public function init_destination() {
 		$this->destination_store->init();
 		$this->destination_logger->init();
+	}
+
+	public function get_destination_store() {
+		return $this->destination_store;
+	}
+
+	public function get_destination_logger() {
+		return $this->destination_logger;
 	}
 }

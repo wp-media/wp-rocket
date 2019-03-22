@@ -41,7 +41,18 @@ class ActionScheduler_MigrationScheduler {
 	}
 
 	public function mark_complete() {
+		$migration_runner   = $this->get_migration_runner();
+		$destination_store  = $migration_runner->get_destination_store();
+		$destination_logger = $migration_runner->get_destination_logger();
+
+		$action_id = $destination_store->find_action( self::HOOK );
+		if ( $action_id ) {
+			$destination_logger->hook_stored_action();
+			$destination_store->mark_complete( $action_id );
+		}
+
 		$this->unschedule_migration();
+
 		update_option( self::STATUS_FLAG, self::STATUS_COMPLETE );
 		do_action( 'action_scheduler/migration_complete' );
 	}
@@ -68,6 +79,12 @@ class ActionScheduler_MigrationScheduler {
 	 * @return string The action ID
 	 */
 	public function schedule_migration( $when = 0 ) {
+		$next = as_next_scheduled_action( self::HOOK );
+
+		if ( ! empty( $next ) ) {
+			return $next;
+		}
+
 		if ( empty( $when ) ) {
 			$when = time();
 		}

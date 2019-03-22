@@ -1,5 +1,7 @@
 <?php
 
+use Action_Scheduler\WP_CLI\ActionScheduler_WPCLI_ProgressBar;
+
 /**
  * WP CLI Queue runner.
  *
@@ -112,7 +114,6 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 
 			$this->process_action( $action_id );
 			$this->progress_bar->tick();
-			$this->maybe_stop_the_insanity();
 		}
 
 		$completed = $this->progress_bar->current();
@@ -173,6 +174,7 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 	 * Sleep and help avoid hitting memory limit
 	 *
 	 * @param int $sleep_time Amount of seconds to sleep
+	 * @deprecated 3.0.0
 	 */
 	protected function stop_the_insanity( $sleep_time = 0 ) {
 		if ( 0 < $sleep_time ) {

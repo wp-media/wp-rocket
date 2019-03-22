@@ -20,7 +20,7 @@ use Action_Scheduler\WP_CLI\ActionScheduler_WPCLI_ProgressBar;
 class ActionScheduler_Data {
 	private static $instance;
 
-	/** @var Migration_Scheduler */
+	/** @var ActionScheduler_MigrationScheduler */
 	private $migration_scheduler;
 
 	/** @var string */
