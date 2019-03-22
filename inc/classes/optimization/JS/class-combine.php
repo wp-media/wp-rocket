@@ -532,6 +532,7 @@ class Combine extends Abstract_JS_Optimization {
 			'dsms0mj1bbhn4.cloudfront.net',
 			'nutrifox.com',
 			'code.tidio.co',
+			'www.uplaunch.com',
 			'widget.reviewability.com',
 		];
 
