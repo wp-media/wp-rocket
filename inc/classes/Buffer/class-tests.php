@@ -191,9 +191,15 @@ class Tests {
 			return true;
 		}
 
+		$config = $this->config->get_config_file_path();
 		// Exit if no config file exists.
-		if ( ! $this->config->has_config_file() ) {
-			$this->set_error( 'No config file found.' );
+		if ( ! $config['success'] ) {
+			$this->set_error(
+				'No config file found.',
+				[
+					'config_path' => $config['path'],
+				]
+			);
 			return false;
 		}
 
