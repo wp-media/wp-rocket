@@ -153,32 +153,32 @@ class Tests {
 
 		// Don't process robots.txt && .htaccess files (it has happened sometimes with weird server configuration).
 		if ( $this->is_rejected_file() ) {
-			$this->set_error( 'File not processed.' );
+			$this->set_error( 'Robots.txt or .htaccess file is excluded.' );
 			return false;
 		}
 
 		// Don't process disallowed file extensions (like php, xml, xsl).
 		if ( $this->is_rejected_extension() ) {
-			$this->set_error( 'File extension not processed.' );
+			$this->set_error( 'PHP, XML, or XSL file is excluded.' );
 			return false;
 		}
 
 		// Don't cache if in admin or ajax.
 		if ( $this->is_admin() ) {
-			$this->set_error( 'Admin and AJAX not processed.' );
+			$this->set_error( 'Admin or AJAX URL is excluded.' );
 			return false;
 		}
 
 		// Don't process the customizer preview.
 		if ( $this->is_customizer_preview() ) {
-			$this->set_error( 'Customizer preview not processed.' );
+			$this->set_error( 'Customizer preview is excluded.' );
 			return false;
 		}
 
 		// Don't process without GET method.
 		if ( ! $this->is_allowed_request_method() ) {
 			$this->set_error(
-				'Request method not allowed.',
+				'Request method is not allowed. Page cannot be cached.',
 				[
 					'request_method' => $this->get_request_method(),
 				]
@@ -199,19 +199,19 @@ class Tests {
 
 		// Don’t process with query strings parameters, but the processed content is served if the visitor comes from an RSS feed, a Facebook action or Google Adsense tracking.
 		if ( $this->has_test( 'query_string' ) && ! $this->can_process_query_string() ) {
-			$this->set_error( 'Query strings not processed.' );
+			$this->set_error( 'Query string URL is excluded.' );
 			return false;
 		}
 
 		// Don't process SSL.
 		if ( $this->has_test( 'ssl' ) && ! $this->can_process_ssl() ) {
-			$this->set_error( 'SSL not processed.' );
+			$this->set_error( 'SSL cache not applied to page.' );
 			return false;
 		}
 
 		// Don't process these pages.
 		if ( $this->has_test( 'uri' ) && ! $this->can_process_uri() ) {
-			$this->set_error( 'Rejected URI not processed.' );
+			$this->set_error( 'Page is excluded.' );
 			return false;
 		}
 
@@ -240,7 +240,7 @@ class Tests {
 		// Don't process page with these user agents.
 		if ( $this->has_test( 'user_agent' ) && ! $this->can_process_user_agent() ) {
 			$this->set_error(
-				'Excluded User agent.',
+				'User Agent is excluded.',
 				[
 					'user_agent' => $this->config->get_server_input( 'HTTP_USER_AGENT' ),
 				]
@@ -251,7 +251,7 @@ class Tests {
 		// Don't process if mobile detection is activated.
 		if ( $this->has_test( 'mobile' ) && ! $this->can_process_mobile() ) {
 			$this->set_error(
-				'Excluded Mobile user agent.',
+				'Mobile User Agent is excluded.',
 				[
 					'user_agent' => $this->config->get_server_input( 'HTTP_USER_AGENT' ),
 				]
@@ -313,37 +313,37 @@ class Tests {
 
 		if ( ! function_exists( 'rocket_mkdir_p' ) ) {
 			// Uh?
-			$this->set_error( 'WP Rocket not found.' );
+			$this->set_error( 'WP Rocket not found - page cannot be cached.' );
 			return false;
 		}
 
 		if ( strlen( $buffer ) <= 255 ) {
 			// Buffer length must be > 255 (IE does not read pages under 255 c).
-			$this->set_error( 'Content under 255 caracters.' );
+			$this->set_error( 'Buffer content under 255 caracters.' );
 			return false;
 		}
 
 		if ( http_response_code() !== 200 ) {
 			// Only cache 200.
-			$this->set_error( 'Not a 200 HTTP response.' );
+			$this->set_error( 'Page is not a 200 HTTP response and cannot be cached.' );
 			return false;
 		}
 
 		if ( $this->has_test( 'donotcachepage' ) && $this->has_donotcachepage() ) {
 			// Don't process templates that use the DONOTCACHEPAGE constant.
-			$this->set_error( 'DONOTCACHEPAGE defined.' );
+			$this->set_error( 'DONOTCACHEPAGE is defined. Page cannot be cached.' );
 			return false;
 		}
 
 		if ( $this->has_test( 'wp_404' ) && $this->is_404() ) {
 			// Don't process WP 404 page.
-			$this->set_error( 'WP 404 page not processed.' );
+			$this->set_error( 'WP 404 page is excluded.' );
 			return false;
 		}
 
 		if ( $this->has_test( 'search' ) && $this->is_search() ) {
 			// Don't process search results.
-			$this->set_error( 'Search page not processed.' );
+			$this->set_error( 'Search page is excluded.' );
 			return false;
 		}
 
