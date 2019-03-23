@@ -226,18 +226,18 @@ class Tests {
 			$this->set_error(
 				'Excluded cookie found.',
 				[
-					'cookies' => self::$cookies,
+					'excluded_cookies' => $this->has_rejected_cookie(),
 				]
 			);
 			return false;
 		}
 
 		// Don't process page when these cookies don't exist.
-		if ( $this->has_test( 'mandatory_cookie' ) && ! $this->is_speed_tool() && ! $this->has_mandatory_cookie() ) {
+		if ( $this->has_test( 'mandatory_cookie' ) && ! $this->is_speed_tool() && is_array( $this->has_mandatory_cookie() ) ) {
 			$this->set_error(
 				'Missing mandatory cookie: page not processed.',
 				[
-					'cookies' => self::$cookies,
+					'missing_cookies' => $this->has_mandatory_cookie(),
 				]
 			);
 			return false;
@@ -578,7 +578,7 @@ class Tests {
 	 * @access public
 	 * @author Grégory Viguier
 	 *
-	 * @return bool
+	 * @return bool|array
 	 */
 	public function has_rejected_cookie() {
 		if ( self::is_memoized( __FUNCTION__ ) ) {
@@ -595,10 +595,16 @@ class Tests {
 			return self::memoize( __FUNCTION__, [], false );
 		}
 
+		$excluded_cookies = [];
+
 		foreach ( array_keys( self::$cookies ) as $cookie_name ) {
 			if ( preg_match( $rejected_cookies, $cookie_name ) ) {
-				return self::memoize( __FUNCTION__, [], true );
+				$excluded_cookies[] = $cookie_name;
 			}
+		}
+
+		if ( ! empty( $excluded_cookies ) ) {
+			return self::memoize( __FUNCTION__, [], $excluded_cookies );
 		}
 
 		return self::memoize( __FUNCTION__, [], false );
@@ -611,7 +617,7 @@ class Tests {
 	 * @access public
 	 * @author Grégory Viguier
 	 *
-	 * @return bool
+	 * @return bool|array
 	 */
 	public function has_mandatory_cookie() {
 		if ( self::is_memoized( __FUNCTION__ ) ) {
@@ -624,17 +630,23 @@ class Tests {
 			return self::memoize( __FUNCTION__, [], true );
 		}
 
+		$missing_cookies = array_flip( explode( '|', $this->config->get_config( 'cache_mandatory_cookies' ) ) );
+
 		if ( ! self::$cookies ) {
-			return self::memoize( __FUNCTION__, [], false );
+			return self::memoize( __FUNCTION__, [], $missing_cookies );
 		}
 
 		foreach ( array_keys( self::$cookies ) as $cookie_name ) {
 			if ( preg_match( $mandatory_cookies, $cookie_name ) ) {
-				return self::memoize( __FUNCTION__, [], true );
+				unset( $missing_cookies[ $cookie_name ] );
 			}
 		}
 
-		return self::memoize( __FUNCTION__, [], false );
+		if ( empty( $missing_cookies ) ) {
+			return self::memoize( __FUNCTION__, [], true );
+		}
+
+		return self::memoize( __FUNCTION__, [], array_flip( $missing_cookies ) );
 	}
 
 	/**
