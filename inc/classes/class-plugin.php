@@ -114,6 +114,8 @@ class Plugin {
 		$common_subscribers = [
 			'critical_css_subscriber',
 			'sucuri_subscriber',
+			'facebook_tracking_subscriber',
+			'google_tracking_subscriber',
 			'preload_subscriber',
 			'sitemap_preload_subscriber',
 			'partial_preload_subscriber',
