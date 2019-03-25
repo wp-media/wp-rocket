@@ -542,6 +542,10 @@ class Beacon {
 					'id'  => '5c9032472c7d3a154461060b',
 					'url' => 'https://docs.wp-rocket.me/article/1143-nginx-fastcgi-cache-add-on/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
+				'fr' => [
+					'id'  => '5c98e2860428633d2cf400a5',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1145-add-on-nginx-fastcgi-cache/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
 			],
 		];
 
