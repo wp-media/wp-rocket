@@ -29,14 +29,18 @@ class ActionScheduler_WPCLI extends WP_CLI_Command {
 	 * : Whether to force execution despite the maximum number of concurrent processes being exceeded.
 	 *
 	 * [--time]
-	 * : Whether to print timestamp on each line. Also accepts a string of charactes for the timestamps format.
+	 * : Whether to print timestamp on each line.
+	 *
+	 * [--time-format=<format>]
+	 * : Format for the timestamp. Defaults to Y-m-d H:i:s T.
 	 *
 	 * @param array $args Positional arguments.
 	 * @param array $assoc_args Keyed arguments.
 	 * @throws \WP_CLI\ExitException When an error occurs.
 	 */
 	public function run( $args, $assoc_args ) {
-		new ActionScheduler_WPCLI_Command_Run( $args, $assoc_args );
+		$command = new ActionScheduler_WPCLI_Command_Run( $args, $assoc_args );
+		$command->execute();
 	}
 
 }

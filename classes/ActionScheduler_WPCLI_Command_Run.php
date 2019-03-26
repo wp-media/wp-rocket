@@ -118,5 +118,4 @@ class ActionScheduler_WPCLI_Command_Run extends ActionScheduler_Abstract_WPCLI_C
 			)
 		);
 	}
-
 }
