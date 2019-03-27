@@ -109,7 +109,7 @@ abstract class ActionScheduler {
 		}
 
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
-			WP_CLI::add_command( 'action-scheduler', 'ActionScheduler_WPCLI_Scheduler_command' );
+			WP_CLI::add_command( 'action-scheduler', 'ActionScheduler_WPCLI' );
 		}
 	}
 
