@@ -1,22 +1,46 @@
 <?php
 
 /**
- * Action Scheduler WP CLI command to run the queue.
+ * Commands for the Action Scheduler by Prospress.
  */
-class ActionScheduler_WPCLI_Command_Run extends ActionScheduler_Abstract_WPCLI_Command {
+class ActionScheduler_WPCLI_Scheduler_command extends WP_CLI_Command {
 
 	/**
-	 * Execute command.
+	 * Run the Action Scheduler
+	 *
+	 * ## OPTIONS
+	 *
+	 * [--batch-size=<size>]
+	 * : The maximum number of actions to run. Defaults to 100.
+	 *
+	 * [--batches=<size>]
+	 * : Limit execution to a number of batches. Defaults to 0, meaning batches will continue being executed until all actions are complete.
+	 *
+	 * [--cleanup-batch-size=<size>]
+	 * : The maximum number of actions to clean up. Defaults to the value of --batch-size.
+	 *
+	 * [--hooks=<hooks>]
+	 * : Only run actions with the specified hook. Omitting this option runs actions with any hook. Define multiple hooks as a comma separated string (without spaces), e.g. `--hooks=hook_one,hook_two,hook_three`
+	 *
+	 * [--group=<group>]
+	 * : Only run actions from the specified group. Omitting this option runs actions from all groups.
+	 *
+	 * [--force]
+	 * : Whether to force execution despite the maximum number of concurrent processes being exceeded.
+	 *
+	 * @param array $args Positional arguments.
+	 * @param array $assoc_args Keyed arguments.
+	 * @throws \WP_CLI\ExitException When an error occurs.
 	 */
-	public function execute() {
+	public function run( $args, $assoc_args ) {
 		// Handle passed arguments.
-		$batch   = absint( \WP_CLI\Utils\get_flag_value( $this->assoc_args, 'batch-size', 100 ) );
-		$batches = absint( \WP_CLI\Utils\get_flag_value( $this->assoc_args, 'batches', 0 ) );
-		$clean   = absint( \WP_CLI\Utils\get_flag_value( $this->assoc_args, 'cleanup-batch-size', $batch ) );
-		$hooks   = explode( ',', WP_CLI\Utils\get_flag_value( $this->assoc_args, 'hooks', '' ) );
+		$batch   = absint( \WP_CLI\Utils\get_flag_value( $assoc_args, 'batch-size', 100 ) );
+		$batches = absint( \WP_CLI\Utils\get_flag_value( $assoc_args, 'batches', 0 ) );
+		$clean   = absint( \WP_CLI\Utils\get_flag_value( $assoc_args, 'cleanup-batch-size', $batch ) );
+		$hooks   = explode( ',', WP_CLI\Utils\get_flag_value( $assoc_args, 'hooks', '' ) );
 		$hooks   = array_filter( array_map( 'trim', $hooks ) );
-		$group   = \WP_CLI\Utils\get_flag_value( $this->assoc_args, 'group', '' );
-		$force   = \WP_CLI\Utils\get_flag_value( $this->assoc_args, 'force', false );
+		$group   = \WP_CLI\Utils\get_flag_value( $assoc_args, 'group', '' );
+		$force   = \WP_CLI\Utils\get_flag_value( $assoc_args, 'force', false );
 
 		$batches_completed = 0;
 		$actions_completed = 0;
@@ -57,7 +81,7 @@ class ActionScheduler_WPCLI_Command_Run extends ActionScheduler_Abstract_WPCLI_C
 	 * @param int $total
 	 */
 	protected function print_total_actions( $total ) {
-		$this->log(
+		WP_CLI::log(
 			sprintf(
 				/* translators: %d refers to how many scheduled taks were found to run */
 				_n( 'Found %d scheduled task', 'Found %d scheduled tasks', $total, 'action-scheduler' ),
@@ -74,7 +98,7 @@ class ActionScheduler_WPCLI_Command_Run extends ActionScheduler_Abstract_WPCLI_C
 	 * @param int $batches_completed
 	 */
 	protected function print_total_batches( $batches_completed ) {
-		$this->log(
+		WP_CLI::log(
 			sprintf(
 				/* translators: %d refers to the total number of batches executed */
 				_n( '%d batch executed.', '%d batches executed.', $batches_completed, 'action-scheduler' ),
@@ -93,7 +117,7 @@ class ActionScheduler_WPCLI_Command_Run extends ActionScheduler_Abstract_WPCLI_C
 	 * @throws \WP_CLI\ExitException
 	 */
 	protected function print_error( Exception $e ) {
-		$this->error(
+		WP_CLI::error(
 			sprintf(
 				/* translators: %s refers to the exception error message. */
 				__( 'There was an error running the action scheduler: %s', 'action-scheduler' ),
@@ -110,7 +134,7 @@ class ActionScheduler_WPCLI_Command_Run extends ActionScheduler_Abstract_WPCLI_C
 	 * @param int $actions_completed
 	 */
 	protected function print_success( $actions_completed ) {
-		$this->success(
+		WP_CLI::success(
 			sprintf(
 				/* translators: %d refers to the total number of taskes completed */
 				_n( '%d scheduled task completed.', '%d scheduled tasks completed.', $actions_completed, 'action-scheduler' ),
