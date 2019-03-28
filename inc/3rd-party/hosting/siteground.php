@@ -66,6 +66,7 @@ if ( rocket_is_plugin_active( 'sg-cachepress/sg-cachepress.php' ) ) {
 		add_action( 'admin_post_sg-cachepress-purge', 'rocket_clean_domain', 0 );
 		add_action( 'after_rocket_clean_domain', 'rocket_clean_supercacher' );
 		add_filter( 'rocket_display_varnish_options_tab', '__return_false' );
+		add_filter( 'rocket_display_nginx_addon', '__return_false' );
 		// Prevent mandatory cookies on hosting with server cache.
 		add_filter( 'rocket_cache_mandatory_cookies', '__return_empty_array', PHP_INT_MAX );
 

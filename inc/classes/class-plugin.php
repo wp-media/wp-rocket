@@ -1,23 +1,9 @@
 <?php
 namespace WP_Rocket;
 
-use WP_Rocket\Admin\Logs;
-use WP_Rocket\Admin\Settings\Page as Settings_Page;
-use WP_Rocket\Admin\Settings\Settings;
-use WP_Rocket\Admin\Settings\Render as Settings_Render;
-use WP_Rocket\Admin\Settings\Beacon;
-use WP_Rocket\Admin\Options;
-use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Admin\Deactivation\Deactivation_Intent;
-use WP_Rocket\Admin\Deactivation\Render as Deactivation_Intent_Render;
-use WP_Rocket\Subscriber\Third_Party\Plugins;
+use League\Container\Container;
 use WP_Rocket\Event_Management\Event_Manager;
-use WP_Rocket\Busting\Busting_Factory;
-use WP_Rocket\Subscriber;
-use WP_Rocket\Optimization\Cache_Dynamic_Resource;
-use WP_Rocket\Optimization\CDN_Favicons;
-use WP_Rocket\Optimization\Remove_Query_String;
-use WP_Rocket\Preload;
+use WP_Rocket\Admin\Options;
 
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
@@ -25,32 +11,15 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  * Assembly class
  */
 class Plugin {
-	/**
-	 * Instance of Options class
-	 *
-	 * @since 3.0
-	 *
-	 * @var Options instance
-	 */
-	private $options_api;
 
 	/**
-	 * Instance of Options_Data class
+	 * Instance of Container class
 	 *
-	 * @since 3.0
+	 * @since 3.3
 	 *
-	 * @var Options_Data instance
+	 * @var Container instance
 	 */
-	private $options;
-
-	/**
-	 * Path to the HTML templates
-	 *
-	 * @since 3.0
-	 *
-	 * @var string
-	 */
-	private $template_path;
+	private $container;
 
 	/**
 	 * Constructor
@@ -60,9 +29,8 @@ class Plugin {
 	 * @param string $template_path Path to the views.
 	 */
 	public function __construct( $template_path ) {
-		$this->options_api   = new Options( 'wp_rocket_' );
-		$this->options       = new Options_Data( $this->options_api->get( 'settings', [] ) );
-		$this->template_path = $template_path;
+		$this->container = new Container();
+		$this->container->add( 'template_path', $template_path );
 	}
 
 	/**
@@ -73,9 +41,23 @@ class Plugin {
 	 * @return void
 	 */
 	public function load() {
-		$event_manager   = new Event_Manager();
-		$preload_process = new Preload\Full_Process();
-		$subscribers     = [];
+		$this->container->add(
+			'event_manager',
+			function() {
+				return new Event_Manager();
+			}
+		);
+		$this->container->add(
+			'options_api',
+			function() {
+				return new Options( 'wp_rocket_' );
+			}
+		);
+
+		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Options' );
+		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Database' );
+
+		$subscribers = [];
 
 		if ( is_admin() ) {
 			if ( ! \Imagify_Partner::has_imagify_api_key() ) {
@@ -84,45 +66,71 @@ class Plugin {
 				remove_action( 'imagify_assets_enqueued', 'imagify_dequeue_sweetalert_wprocket' );
 			}
 
-			$settings_page_args = [
-				'slug'       => WP_ROCKET_PLUGIN_SLUG,
-				'title'      => WP_ROCKET_PLUGIN_NAME,
-				'capability' => apply_filters( 'rocket_capacity', 'manage_options' ),
-			];
-
-			$beacon = new Beacon( $this->options );
+			$this->container->add(
+				'settings_page_config',
+				[
+					'slug'       => WP_ROCKET_PLUGIN_SLUG,
+					'title'      => WP_ROCKET_PLUGIN_NAME,
+					'capability' => apply_filters( 'rocket_capacity', 'manage_options' ),
+				]
+			);
+			$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Beacon' );
+			$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Settings' );
+			$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Admin_Subscribers' );
 
 			$subscribers = [
-				new Settings_Page( $settings_page_args, new Settings( $this->options ), new Settings_Render( $this->template_path . '/settings' ), $beacon ),
-				new Deactivation_Intent( new Deactivation_Intent_Render( $this->template_path . '/deactivation-intent' ), $this->options_api, $this->options ),
-				new Subscriber\Admin\Settings\Beacon_Subscriber( $beacon ),
-				//new Logs(),
+				'beacon_subscriber',
+				'settings_page_subscriber',
+				'deactivation_intent_subscriber',
 			];
 		} elseif ( \rocket_valid_key() ) {
+			$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Optimization_Subscribers' );
+
 			$subscribers = [
-				new Subscriber\Optimization\IE_Conditionals_Subscriber(),
-				new Subscriber\Optimization\Minify_HTML_Subscriber( $this->options ),
-				new Subscriber\Optimization\Combine_Google_Fonts_Subscriber( $this->options ),
-				new Subscriber\Optimization\Minify_CSS_Subscriber( $this->options ),
-				new Subscriber\Optimization\Minify_JS_Subscriber( $this->options ),
-				new Subscriber\Optimization\Cache_Dynamic_Resource_Subscriber( new Cache_Dynamic_Resource( $this->options, WP_ROCKET_CACHE_BUSTING_PATH, WP_ROCKET_CACHE_BUSTING_URL ) ),
-				new Subscriber\Optimization\CDN_Favicons_Subscriber( new CDN_Favicons( $this->options ) ),
-				new Subscriber\Optimization\Remove_Query_String_Subscriber( new Remove_Query_String( $this->options, WP_ROCKET_CACHE_BUSTING_PATH, WP_ROCKET_CACHE_BUSTING_URL ) ),
+				'buffer_subscriber',
+				'ie_conditionals_subscriber',
+				'minify_html_subscriber',
+				'combine_google_fonts_subscriber',
+				'minify_css_subscriber',
+				'minify_js_subscriber',
+				'cache_dynamic_resource_subscriber',
+				'cdn_favicons_subscriber',
+				'remove_query_string_subscriber',
 			];
+
+			// Don't insert the LazyLoad file if Rocket LazyLoad is activated.
+			if ( ! rocket_is_plugin_active( 'rocket-lazy-load/rocket-lazy-load.php' ) ) {
+				$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Lazyload' );
+				$subscribers[] = 'lazyload_subscriber';
+			}
 		}
 
-		$subscribers[] = new Plugins\Mobile_Subscriber();
-		$subscribers[] = new Plugins\Ecommerce\WooCommerce_Subscriber();
-		$subscribers[] = new Plugins\Security\Sucuri_Subscriber( $this->options );
-		$subscribers[] = new Subscriber\Facebook_Tracking_Cache_Busting_Subscriber( new Busting\Busting_Factory( WP_ROCKET_CACHE_BUSTING_PATH, WP_ROCKET_CACHE_BUSTING_URL ), $this->options );
-		$subscribers[] = new Subscriber\Google_Tracking_Cache_Busting_Subscriber( new Busting\Busting_Factory( WP_ROCKET_CACHE_BUSTING_PATH, WP_ROCKET_CACHE_BUSTING_URL ), $this->options );
-		$subscribers[] = new Subscriber\Heartbeat_Subscriber( $this->options );
-		$subscribers[] = new Subscriber\Preload\Preload_Subscriber( new Preload\Homepage( $preload_process ), $this->options );
-		$subscribers[] = new Subscriber\Preload\Sitemap_Preload_Subscriber( new Preload\Sitemap( $preload_process ), $this->options );
-		$subscribers[] = new Subscriber\Preload\Partial_Preload_Subscriber( new Preload\Partial_Process(), $this->options );
+		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Addons_Subscribers' );
+		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Preload_Subscribers' );
+		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Common_Subscribers' );
+		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Third_Party_Subscribers' );
+		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Hostings_Subscribers' );
+
+		$common_subscribers = [
+			'critical_css_subscriber',
+			'sucuri_subscriber',
+			'facebook_tracking_subscriber',
+			'google_tracking_subscriber',
+			'preload_subscriber',
+			'sitemap_preload_subscriber',
+			'partial_preload_subscriber',
+			'heartbeat_subscriber',
+			'db_optimization_subscriber',
+			'mobile_subscriber',
+			'woocommerce_subscriber',
+			'nginx_subscriber',
+			'pressable_subscriber',
+		];
+
+		$subscribers = array_merge( $subscribers, $common_subscribers );
 
 		foreach ( $subscribers as $subscriber ) {
-			$event_manager->add_subscriber( $subscriber );
+			$this->container->get( 'event_manager' )->add_subscriber( $this->container->get( $subscriber ) );
 		}
 	}
 }

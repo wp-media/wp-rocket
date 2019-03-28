@@ -100,6 +100,7 @@ function rocket_plugins_to_deactivate() {
 	$plugins = array(
 		'w3-total-cache'                             => 'w3-total-cache/w3-total-cache.php',
 		'wp-super-cache'                             => 'wp-super-cache/wp-cache.php',
+		'litespeed-cache'                            => 'litespeed-cache/litespeed-cache.php',
 		'quick-cache'                                => 'quick-cache/quick-cache.php',
 		'hyper-cache'                                => 'hyper-cache/plugin.php',
 		'hyper-cache-extended'                       => 'hyper-cache-extended/plugin.php',
@@ -144,6 +145,7 @@ function rocket_plugins_to_deactivate() {
 		$plugins['scripts-gzip']            = 'scripts-gzip/scripts_gzip.php';
 		$plugins['minqueue']                = 'minqueue/plugin.php';
 		$plugins['dependency-minification'] = 'dependency-minification/dependency-minification.php';
+		$plugins['fast-velocity-minify']    = 'fast-velocity-minify/fvm.php';
 	}
 
 	if ( get_rocket_option( 'minify_css' ) || get_rocket_option( 'minify_js' ) ) {

@@ -12,9 +12,10 @@
     <config name="minimum_supported_wp_version" value="4.7"/>
 
 	<file>.</file>
-	<exclude-pattern>/vendor/*</exclude-pattern>
+	<exclude-pattern>/inc/deprecated/3.3.php</exclude-pattern>
 	<exclude-pattern>/inc/vendors/*</exclude-pattern>
 	<exclude-pattern>/tests/*</exclude-pattern>
+	<exclude-pattern>/vendor/*</exclude-pattern>
 
 	<rule ref="WordPress">
         <exclude name="Generic.Functions.FunctionCallArgumentSpacing.TooMuchSpaceAfterComma"/>
@@ -52,7 +53,11 @@
 	<rule ref="WordPress.WP.AlternativeFunctions.file_system_read_fclose">
 		<exclude-pattern>inc/classes/class-secure-stream-logger.php</exclude-pattern>
 	</rule>
+	<rule ref="WordPress.WP.AlternativeFunctions.file_system_read_readfile">
+		<exclude-pattern>inc/classes/buffer/class-cache.php</exclude-pattern>
+	</rule>
 	<rule ref="WordPress.PHP.NoSilencedErrors.Discouraged">
+		<exclude-pattern>inc/classes/buffer/class-cache.php</exclude-pattern>
 		<exclude-pattern>inc/classes/class-secure-stream-logger.php</exclude-pattern>
 	</rule>
 </ruleset>
