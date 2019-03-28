@@ -1,7 +1,7 @@
 <?php
 /*
  * Plugin Name: Action Scheduler
- * Plugin URI: https://github.com/prospress/action-scheduler
+ * Plugin URI: https://actionscheduler.org
  * Description: A robust scheduling library for use in WordPress plugins.
  * Author: Prospress
  * Author URI: http://prospress.com/
