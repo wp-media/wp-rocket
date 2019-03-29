@@ -138,7 +138,7 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 		$polyfill = apply_filters( 'rocket_lazyload_polyfill', false );
 
 		$args = [
-			'base_url'  => WP_ROCKET_ASSETS_JS_URL . 'lazyload/',
+			'base_url'  => get_rocket_cdn_url( WP_ROCKET_ASSETS_JS_URL . 'lazyload/' ),
 			'threshold' => $threshold,
 			'version'   => '11.0.3',
 			'polyfill'  => $polyfill,
