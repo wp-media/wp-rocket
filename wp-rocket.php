@@ -6,7 +6,7 @@
  * Version: 3.3
  * Code Name: Dagobah
  * Author: WP Media
- * Author URI: http://wp-media.me
+ * Author URI: https://wp-media.me
  * Licence: GPLv2 or later
  *
  * Text Domain: rocket
