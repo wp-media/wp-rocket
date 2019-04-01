@@ -153,32 +153,32 @@ class Tests {
 
 		// Don't process robots.txt && .htaccess files (it has happened sometimes with weird server configuration).
 		if ( $this->is_rejected_file() ) {
-			$this->set_error( 'File not processed.' );
+			$this->set_error( 'Robots.txt or .htaccess file is excluded.' );
 			return false;
 		}
 
 		// Don't process disallowed file extensions (like php, xml, xsl).
 		if ( $this->is_rejected_extension() ) {
-			$this->set_error( 'File extension not processed.' );
+			$this->set_error( 'PHP, XML, or XSL file is excluded.' );
 			return false;
 		}
 
 		// Don't cache if in admin or ajax.
 		if ( $this->is_admin() ) {
-			$this->set_error( 'Admin and AJAX not processed.' );
+			$this->set_error( 'Admin or AJAX URL is excluded.' );
 			return false;
 		}
 
 		// Don't process the customizer preview.
 		if ( $this->is_customizer_preview() ) {
-			$this->set_error( 'Customizer preview not processed.' );
+			$this->set_error( 'Customizer preview is excluded.' );
 			return false;
 		}
 
 		// Don't process without GET method.
 		if ( ! $this->is_allowed_request_method() ) {
 			$this->set_error(
-				'Request method not allowed.',
+				'Request method is not allowed. Page cannot be cached.',
 				[
 					'request_method' => $this->get_request_method(),
 				]
@@ -191,27 +191,33 @@ class Tests {
 			return true;
 		}
 
+		$config = $this->config->get_config_file_path();
 		// Exit if no config file exists.
-		if ( ! $this->config->has_config_file() ) {
-			$this->set_error( 'No config file found.' );
+		if ( ! $config['success'] ) {
+			$this->set_error(
+				'No config file found.',
+				[
+					'config_path' => $config['path'],
+				]
+			);
 			return false;
 		}
 
 		// Don’t process with query strings parameters, but the processed content is served if the visitor comes from an RSS feed, a Facebook action or Google Adsense tracking.
 		if ( $this->has_test( 'query_string' ) && ! $this->can_process_query_string() ) {
-			$this->set_error( 'Query strings not processed.' );
+			$this->set_error( 'Query string URL is excluded.' );
 			return false;
 		}
 
 		// Don't process SSL.
 		if ( $this->has_test( 'ssl' ) && ! $this->can_process_ssl() ) {
-			$this->set_error( 'SSL not processed.' );
+			$this->set_error( 'SSL cache not applied to page.' );
 			return false;
 		}
 
 		// Don't process these pages.
 		if ( $this->has_test( 'uri' ) && ! $this->can_process_uri() ) {
-			$this->set_error( 'Rejected URI not processed.' );
+			$this->set_error( 'Page is excluded.' );
 			return false;
 		}
 
@@ -220,18 +226,18 @@ class Tests {
 			$this->set_error(
 				'Excluded cookie found.',
 				[
-					'cookies' => self::$cookies,
+					'excluded_cookies' => $this->has_rejected_cookie(),
 				]
 			);
 			return false;
 		}
 
 		// Don't process page when these cookies don't exist.
-		if ( $this->has_test( 'mandatory_cookie' ) && ! $this->is_speed_tool() && ! $this->has_mandatory_cookie() ) {
+		if ( $this->has_test( 'mandatory_cookie' ) && ! $this->is_speed_tool() && is_array( $this->has_mandatory_cookie() ) ) {
 			$this->set_error(
 				'Missing mandatory cookie: page not processed.',
 				[
-					'cookies' => self::$cookies,
+					'missing_cookies' => $this->has_mandatory_cookie(),
 				]
 			);
 			return false;
@@ -240,7 +246,7 @@ class Tests {
 		// Don't process page with these user agents.
 		if ( $this->has_test( 'user_agent' ) && ! $this->can_process_user_agent() ) {
 			$this->set_error(
-				'Excluded User agent.',
+				'User Agent is excluded.',
 				[
 					'user_agent' => $this->config->get_server_input( 'HTTP_USER_AGENT' ),
 				]
@@ -251,7 +257,7 @@ class Tests {
 		// Don't process if mobile detection is activated.
 		if ( $this->has_test( 'mobile' ) && ! $this->can_process_mobile() ) {
 			$this->set_error(
-				'Excluded Mobile user agent.',
+				'Mobile User Agent is excluded.',
 				[
 					'user_agent' => $this->config->get_server_input( 'HTTP_USER_AGENT' ),
 				]
@@ -313,37 +319,37 @@ class Tests {
 
 		if ( ! function_exists( 'rocket_mkdir_p' ) ) {
 			// Uh?
-			$this->set_error( 'WP Rocket not found.' );
+			$this->set_error( 'WP Rocket not found - page cannot be cached.' );
 			return false;
 		}
 
 		if ( strlen( $buffer ) <= 255 ) {
 			// Buffer length must be > 255 (IE does not read pages under 255 c).
-			$this->set_error( 'Content under 255 caracters.' );
+			$this->set_error( 'Buffer content under 255 caracters.' );
 			return false;
 		}
 
 		if ( http_response_code() !== 200 ) {
 			// Only cache 200.
-			$this->set_error( 'Not a 200 HTTP response.' );
+			$this->set_error( 'Page is not a 200 HTTP response and cannot be cached.' );
 			return false;
 		}
 
 		if ( $this->has_test( 'donotcachepage' ) && $this->has_donotcachepage() ) {
 			// Don't process templates that use the DONOTCACHEPAGE constant.
-			$this->set_error( 'DONOTCACHEPAGE defined.' );
+			$this->set_error( 'DONOTCACHEPAGE is defined. Page cannot be cached.' );
 			return false;
 		}
 
 		if ( $this->has_test( 'wp_404' ) && $this->is_404() ) {
 			// Don't process WP 404 page.
-			$this->set_error( 'WP 404 page not processed.' );
+			$this->set_error( 'WP 404 page is excluded.' );
 			return false;
 		}
 
 		if ( $this->has_test( 'search' ) && $this->is_search() ) {
 			// Don't process search results.
-			$this->set_error( 'Search page not processed.' );
+			$this->set_error( 'Search page is excluded.' );
 			return false;
 		}
 
@@ -572,7 +578,7 @@ class Tests {
 	 * @access public
 	 * @author Grégory Viguier
 	 *
-	 * @return bool
+	 * @return bool|array
 	 */
 	public function has_rejected_cookie() {
 		if ( self::is_memoized( __FUNCTION__ ) ) {
@@ -589,10 +595,16 @@ class Tests {
 			return self::memoize( __FUNCTION__, [], false );
 		}
 
+		$excluded_cookies = [];
+
 		foreach ( array_keys( self::$cookies ) as $cookie_name ) {
 			if ( preg_match( $rejected_cookies, $cookie_name ) ) {
-				return self::memoize( __FUNCTION__, [], true );
+				$excluded_cookies[] = $cookie_name;
 			}
+		}
+
+		if ( ! empty( $excluded_cookies ) ) {
+			return self::memoize( __FUNCTION__, [], $excluded_cookies );
 		}
 
 		return self::memoize( __FUNCTION__, [], false );
@@ -605,7 +617,7 @@ class Tests {
 	 * @access public
 	 * @author Grégory Viguier
 	 *
-	 * @return bool
+	 * @return bool|array
 	 */
 	public function has_mandatory_cookie() {
 		if ( self::is_memoized( __FUNCTION__ ) ) {
@@ -618,17 +630,23 @@ class Tests {
 			return self::memoize( __FUNCTION__, [], true );
 		}
 
+		$missing_cookies = array_flip( explode( '|', $this->config->get_config( 'cache_mandatory_cookies' ) ) );
+
 		if ( ! self::$cookies ) {
-			return self::memoize( __FUNCTION__, [], false );
+			return self::memoize( __FUNCTION__, [], $missing_cookies );
 		}
 
 		foreach ( array_keys( self::$cookies ) as $cookie_name ) {
 			if ( preg_match( $mandatory_cookies, $cookie_name ) ) {
-				return self::memoize( __FUNCTION__, [], true );
+				unset( $missing_cookies[ $cookie_name ] );
 			}
 		}
 
-		return self::memoize( __FUNCTION__, [], false );
+		if ( empty( $missing_cookies ) ) {
+			return self::memoize( __FUNCTION__, [], true );
+		}
+
+		return self::memoize( __FUNCTION__, [], array_flip( $missing_cookies ) );
 	}
 
 	/**
@@ -1004,6 +1022,7 @@ class Tests {
 				'utm_campaign'    => 1,
 				'utm_expid'       => 1,
 				'utm_term'        => 1,
+				'utm_content'     => 1,
 				'fb_action_ids'   => 1,
 				'fb_action_types' => 1,
 				'fb_source'       => 1,

@@ -320,8 +320,8 @@ class Beacon {
 					'url' => 'https://docs.wp-rocket.me/article/1141-using-lazyload-in-wp-rocket/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 				'fr' => [
-					'id'  => '56967a859033603f7da30858',
-					'url' => 'https://fr.docs.wp-rocket.me/article/237-compatibilite-des-extensions-avec-le-lazyload/?utm_source=wp_plugin&utm_medium=wp_rocket',
+					'id'  => '5c98ff532c7d3a1544614cf4',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1146-utiliser-lazyload-images-wp-rocket/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 			'lazyload_section'       => [
@@ -504,6 +504,16 @@ class Beacon {
 				'fr' => [
 					'id'  => '5bcf3d35042863215a46bb7f',
 					'url' => 'https://fr.docs.wp-rocket.me/article/1123-add-on-facebook-pixel/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
+			'nginx'                  => [
+				'en' => [
+					'id'  => '5c9032472c7d3a154461060b',
+					'url' => 'https://docs.wp-rocket.me/article/1143-nginx-fastcgi-cache-add-on/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '5c98e2860428633d2cf400a5',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1145-add-on-nginx-fastcgi-cache/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 		];

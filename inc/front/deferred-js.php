@@ -11,6 +11,10 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  * @return string Updated HTML content
  */
 function rocket_defer_js( $buffer ) {
+	if ( ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) || ( defined( 'DONOTASYNCCSS' ) && DONOTASYNCCSS ) ) {
+		return;
+	}
+
 	if ( ! get_rocket_option( 'defer_all_js' ) ) {
 		return $buffer;
 	}

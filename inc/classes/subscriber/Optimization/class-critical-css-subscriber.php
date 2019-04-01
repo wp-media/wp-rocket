@@ -36,9 +36,9 @@ class Critical_CSS_Subscriber implements Subscriber_Interface {
 				[ 'stop_process_on_deactivation', 11, 2 ],
 			],
 			'admin_notices'                           => [
-				'critical_css_generation_running_notice',
-				'critical_css_generation_complete_notice',
-				'warning_critical_css_dir_permissions',
+				[ 'critical_css_generation_running_notice' ],
+				[ 'critical_css_generation_complete_notice' ],
+				[ 'warning_critical_css_dir_permissions' ],
 			],
 			'wp_head'                                 => [ 'insert_load_css', PHP_INT_MAX ],
 			'rocket_buffer'                           => [
@@ -309,6 +309,10 @@ JS;
 	 * @return string Updated HTML output
 	 */
 	public function insert_critical_css_buffer( $buffer ) {
+		if ( ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) || ( defined( 'DONOTASYNCCSS' ) && DONOTASYNCCSS ) ) {
+			return;
+		}
+
 		if ( ! $this->options->get( 'async_css' ) ) {
 			return $buffer;
 		}
@@ -348,6 +352,10 @@ JS;
 	 * @return string Updated HTML code
 	 */
 	public function async_css( $buffer ) {
+		if ( ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) || ( defined( 'DONOTASYNCCSS' ) && DONOTASYNCCSS ) ) {
+			return;
+		}
+
 		if ( ! $this->options->get( 'async_css' ) ) {
 			return $buffer;
 		}

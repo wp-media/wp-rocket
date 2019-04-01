@@ -99,7 +99,6 @@ function rocket_add_aelia_currencyswitcher_mandatory_cookie( $cookies ) {
 
 	if ( ! empty( $acs_options['ipgeolocation_enabled'] ) ) {
 		$cookies[] = 'aelia_cs_selected_currency';
-		$cookies[] = 'aelia_customer_country';
 	}
 
 	return $cookies;

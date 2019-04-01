@@ -104,11 +104,11 @@ class Cache extends Abstract_Buffer {
 
 		// Check if cache file exist.
 		if ( $accept_encoding && false !== strpos( $accept_encoding, 'gzip' ) && is_readable( $cache_filepath_gzip ) ) {
-			$this->serve_cache_file_type( $cache_filepath_gzip, true );
+			$this->serve_gzip_cache_file( $cache_filepath_gzip );
 		}
 
 		if ( is_readable( $cache_filepath ) ) {
-			$this->serve_cache_file_type( $cache_filepath, false );
+			$this->serve_cache_file( $cache_filepath );
 		}
 
 		/**
@@ -132,14 +132,9 @@ class Cache extends Abstract_Buffer {
 	 * @author Grégory Viguier
 	 *
 	 * @param string $cache_filepath Path to the cache file.
-	 * @param bool   $is_gzip        True for gzip. False otherwise.
 	 */
-	private function serve_cache_file_type( $cache_filepath, $is_gzip ) {
+	private function serve_cache_file( $cache_filepath ) {
 		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s', filemtime( $cache_filepath ) ) . ' GMT' );
-
-		if ( $is_gzip ) {
-			header( 'Content-Encoding: gzip' );
-		}
 
 		$if_modified_since = $this->get_if_modified_since();
 
@@ -151,10 +146,10 @@ class Cache extends Abstract_Buffer {
 			header( 'Cache-Control: no-cache, must-revalidate' );
 
 			$this->log(
-				'Serving `304` ' . ( $is_gzip ? ' gzip' : '' ) . 'cache file.',
+				'Serving `304` cache file.',
 				[
 					'path'     => $cache_filepath,
-					'modified' => $http_if_modified_since,
+					'modified' => $if_modified_since,
 				],
 				'info'
 			);
@@ -165,7 +160,53 @@ class Cache extends Abstract_Buffer {
 		readfile( $cache_filepath );
 
 		$this->log(
-			'Serving ' . ( $is_gzip ? ' gzip' : '' ) . 'cache file.',
+			'Serving cache file.',
+			[
+				'path'     => $cache_filepath,
+				'modified' => $if_modified_since,
+			],
+			'info'
+		);
+		exit;
+	}
+
+	/**
+	 * Serve a gzipped cache file.
+	 *
+	 * @since  3.3
+	 * @access private
+	 * @author Grégory Viguier
+	 *
+	 * @param string $cache_filepath Path to the gzip cache file.
+	 */
+	private function serve_gzip_cache_file( $cache_filepath ) {
+		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s', filemtime( $cache_filepath ) ) . ' GMT' );
+
+		$if_modified_since = $this->get_if_modified_since();
+
+		// Checking if the client is validating his cache and if it is current.
+		if ( $if_modified_since && ( strtotime( $if_modified_since ) === @filemtime( $cache_filepath ) ) ) {
+			// Client's cache is current, so we just respond '304 Not Modified'.
+			header( $this->config->get_server_input( 'SERVER_PROTOCOL', '' ) . ' 304 Not Modified', true, 304 );
+			header( 'Expires: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
+			header( 'Cache-Control: no-cache, must-revalidate' );
+
+			$this->log(
+				'Serving `304` gzip cache file.',
+				[
+					'path'     => $cache_filepath,
+					'modified' => $if_modified_since,
+				],
+				'info'
+			);
+			exit;
+		}
+
+		// Serve the cache if file isn't store in the client browser cache.
+		readgzfile( $cache_filepath );
+
+		$this->log(
+			'Serving gzip cache file.',
 			[
 				'path'     => $cache_filepath,
 				'modified' => $if_modified_since,

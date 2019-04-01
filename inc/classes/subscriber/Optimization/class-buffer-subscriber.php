@@ -38,7 +38,7 @@ class Buffer_Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'template_redirect' => [ 'start_content_process', PHP_INT_MAX - 9 ],
+			'template_redirect' => [ 'start_content_process', 2 ],
 		];
 	}
 
@@ -50,6 +50,6 @@ class Buffer_Subscriber implements Subscriber_Interface {
 	 * @author Grégory Viguier
 	 */
 	public function start_content_process() {
-		$this->optimizer->maybe_init_process();
+		return $this->optimizer->maybe_init_process();
 	}
 }

@@ -117,11 +117,11 @@ class Config {
 
 		$config_file_path = $this->get_config_file_path();
 
-		if ( ! $config_file_path ) {
+		if ( ! $config_file_path['success'] ) {
 			return self::memoize( __FUNCTION__, [], false );
 		}
 
-		include $config_file_path;
+		include $config_file_path['path'];
 
 		$config = [
 			'cookie_hash'               => '',
@@ -182,7 +182,7 @@ class Config {
 	 *
 	 * @return string|bool The path to the file. False if no file is found.
 	 */
-	protected function get_config_file_path() {
+	public function get_config_file_path() {
 		if ( self::is_memoized( __FUNCTION__ ) ) {
 			return self::get_memoized( __FUNCTION__ );
 		}
@@ -193,7 +193,14 @@ class Config {
 
 		if ( realpath( self::$config_dir_path . $host . '.php' ) && 0 === stripos( realpath( self::$config_dir_path . $host . '.php' ), $config_dir_real_path ) ) {
 			$config_file_path = self::$config_dir_path . $host . '.php';
-			return self::memoize( __FUNCTION__, [], $config_file_path );
+			return self::memoize(
+				__FUNCTION__,
+				[],
+				[
+					'success' => true,
+					'path'    => $config_file_path,
+				]
+			);
 		}
 
 		$path = str_replace( '\\', '/', strtok( $this->get_server_input( 'REQUEST_URI', '' ), '?' ) );
@@ -205,31 +212,39 @@ class Config {
 
 			if ( realpath( self::$config_dir_path . $host . '.' . $p . '.php' ) && 0 === stripos( realpath( self::$config_dir_path . $host . '.' . $p . '.php' ), $config_dir_real_path ) ) {
 				$config_file_path = self::$config_dir_path . $host . '.' . $p . '.php';
-				return self::memoize( __FUNCTION__, [], $config_file_path );
+				return self::memoize(
+					__FUNCTION__,
+					[],
+					[
+						'success' => true,
+						'path'    => $config_file_path,
+					]
+				);
 			}
 
 			if ( realpath( self::$config_dir_path . $host . '.' . $dir . $p . '.php' ) && 0 === stripos( realpath( self::$config_dir_path . $host . '.' . $dir . $p . '.php' ), $config_dir_real_path ) ) {
 				$config_file_path = self::$config_dir_path . $host . '.' . $dir . $p . '.php';
-				return self::memoize( __FUNCTION__, [], $config_file_path );
+				return self::memoize(
+					__FUNCTION__,
+					[],
+					[
+						'success' => true,
+						'path'    => $config_file_path,
+					]
+				);
 			}
 
 			$dir .= $p . '.';
 		}
 
-		return self::memoize( __FUNCTION__, [], false );
-	}
-
-	/**
-	 * Tell if a config file has been found.
-	 *
-	 * @since  3.3
-	 * @access public
-	 * @author Grégory Viguier
-	 *
-	 * @return bool
-	 */
-	public function has_config_file() {
-		return (bool) $this->get_config_file_path();
+		return self::memoize(
+			__FUNCTION__,
+			[],
+			[
+				'success' => false,
+				'path'    => self::$config_dir_path . $host . implode( '/', $path ) . '.php',
+			]
+		);
 	}
 
 	/** ----------------------------------------------------------------------------------------- */
