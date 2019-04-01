@@ -347,16 +347,16 @@ class Beacon {
 			],
 			'lazyload'               => [
 				'en' => [
-					'id'  => '54b85754e4b0512429883a86',
-					'url' => 'https://docs.wp-rocket.me/article/38-lazyload-plugin-compatibility/?utm_source=wp_plugin&utm_medium=wp_rocket',
+					'id'  => '5c884cf80428633d2cf38314',
+					'url' => 'https://docs.wp-rocket.me/article/1141-using-lazyload-in-wp-rocket/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 				'fr' => [
-					'id'  => '56967a859033603f7da30858',
-					'url' => 'https://fr.docs.wp-rocket.me/article/237-compatibilite-des-extensions-avec-le-lazyload/?utm_source=wp_plugin&utm_medium=wp_rocket',
+					'id'  => '5c98ff532c7d3a1544614cf4',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1146-utiliser-lazyload-images-wp-rocket/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 			'lazyload_section'       => [
-				'en' => '54b85754e4b0512429883a86,5418c792e4b0e7b8127bed99,569ec4a69033603f7da32c93,5419e246e4b099def9b5561e,5a299b332c7d3a1a640cb402',
+				'en' => '5c884cf80428633d2cf38314,54b85754e4b0512429883a86,5418c792e4b0e7b8127bed99,569ec4a69033603f7da32c93,5419e246e4b099def9b5561e,5a299b332c7d3a1a640cb402',
 				'fr' => '56967a859033603f7da30858,56967952c69791436155e60a,56cb9c9d90336008e9e9e3dc,569676ea9033603f7da3083d,5a3a66f52c7d3a1943676524',
 			],
 			'sitemap_preload'        => [
@@ -535,6 +535,16 @@ class Beacon {
 				'fr' => [
 					'id'  => '5bcf3d35042863215a46bb7f',
 					'url' => 'https://fr.docs.wp-rocket.me/article/1123-add-on-facebook-pixel/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
+			'nginx'                  => [
+				'en' => [
+					'id'  => '5c9032472c7d3a154461060b',
+					'url' => 'https://docs.wp-rocket.me/article/1143-nginx-fastcgi-cache-add-on/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '5c98e2860428633d2cf400a5',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1145-add-on-nginx-fastcgi-cache/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 		];

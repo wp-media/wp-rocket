@@ -337,6 +337,16 @@ function rocket_url_to_path( $url, $hosts = '' ) {
 	$url      = preg_replace( '/^https?:/', '', $url );
 	$file     = str_replace( $root_url, $root_dir, $url );
 	$file     = rocket_realpath( $file );
+	/**
+	 * Filters the absolute path to the asset file
+	 *
+	 * @since 3.3
+	 * @author Remy Perona
+	 *
+	 * @param string $file Absolute path to the file.
+	 * @param string $url  URL of the asset.
+	 */
+	$file = apply_filters( 'rocket_url_to_path', $file, $url );
 
 	if ( ! rocket_direct_filesystem()->is_readable( $file ) ) {
 		return false;
