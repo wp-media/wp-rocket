@@ -25,6 +25,7 @@ class Third_Party_Subscribers extends AbstractServiceProvider {
 		'woocommerce_subscriber',
 		'nginx_subscriber',
 		'syntaxhighlighter_subscriber',
+		'elementor_subscriber',
 	];
 
 	/**
@@ -38,6 +39,7 @@ class Third_Party_Subscribers extends AbstractServiceProvider {
 	public function register() {
 		$this->getContainer()->add( 'mobile_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Mobile_Subscriber' );
 		$this->getContainer()->add( 'woocommerce_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Ecommerce\WooCommerce_Subscriber' );
+		$this->getContainer()->add( 'elementor_subscriber', 'WP_Rocket\Subscriber\Third_Party\Themes\Elementor_Subscriber' );
 		$this->getContainer()->add( 'nginx_subscriber', 'WP_Rocket\Subscriber\Third_Party\Cache\NGINX_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'options' ) );
 		$this->getContainer()->add( 'syntaxhighlighter_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\SyntaxHighlighter_Subscriber' );

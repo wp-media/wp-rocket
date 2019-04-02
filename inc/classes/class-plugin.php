@@ -126,6 +126,7 @@ class Plugin {
 			'nginx_subscriber',
 			'pressable_subscriber',
 			'syntaxhighlighter_subscriber',
+			'elementor_subscriber',
 		];
 
 		$subscribers = array_merge( $subscribers, $common_subscribers );
