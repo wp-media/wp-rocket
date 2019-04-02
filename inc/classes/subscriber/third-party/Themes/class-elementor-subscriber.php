@@ -1,6 +1,7 @@
 <?php
 namespace WP_Rocket\Subscriber\Third_Party\Themes;
 
+use WP_Rocket\Event_Management\Subscriber_Interface;
 /**
  * Compatibility file for Elementor plugin
  *
