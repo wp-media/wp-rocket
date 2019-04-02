@@ -125,6 +125,7 @@ class Plugin {
 			'woocommerce_subscriber',
 			'nginx_subscriber',
 			'pressable_subscriber',
+			'syntaxhighlighter_subscriber',
 		];
 
 		$subscribers = array_merge( $subscribers, $common_subscribers );
