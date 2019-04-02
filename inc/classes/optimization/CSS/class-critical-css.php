@@ -168,6 +168,9 @@ class Critical_CSS {
 			[
 				'elementor_library',
 				'oceanwp_library',
+				'tbuilder_layout',
+				'tbuilder_layout_part',
+				'slider',
 			]
 		);
 
