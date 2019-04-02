@@ -453,6 +453,11 @@ class Combine extends Abstract_JS_Optimization {
 			'theChampLJAuthUrl',
 			'f._fbq',
 			'Insticator',
+			'w2dc_js_objects',
+			'cherry_ajax',
+			'ad_block_',
+			'elementorFrontendConfig',
+			'omapi_localized',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
@@ -587,6 +592,7 @@ class Combine extends Abstract_JS_Optimization {
 			'sharrre',
 			'dfads_ajax_load_ads',
 			'tie_postviews',
+			'wmp_update',
 		];
 
 		/**
