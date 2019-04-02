@@ -125,6 +125,7 @@ class Plugin {
 			'woocommerce_subscriber',
 			'nginx_subscriber',
 			'pressable_subscriber',
+			'syntaxhighlighter_subscriber',
 			'elementor_subscriber',
 		];
 
