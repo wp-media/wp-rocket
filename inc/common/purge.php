@@ -60,6 +60,8 @@ function rocket_clean_post( $post_id, $post = null ) {
 		return;
 	}
 
+	$done[ $post_id ] = 1;
+
 	if ( defined( 'DOING_AUTOSAVE' ) ) {
 		return;
 	}
@@ -67,7 +69,7 @@ function rocket_clean_post( $post_id, $post = null ) {
 	$purge_urls = [];
 
 	// Get all post infos if the $post object was not supplied.
-	if ( empty( $post ) ) {
+	if ( is_null( $post ) ) {
 		$post = get_post( $post_id );
 	}
 
@@ -232,8 +234,6 @@ function rocket_clean_post( $post_id, $post = null ) {
 	 * @param string  $lang       The post language
 	 */
 	do_action( 'after_rocket_clean_post', $post, $purge_urls, $lang );
-
-	$done[ $post_id ] = 1;
 }
 add_action( 'wp_trash_post',           'rocket_clean_post' );
 add_action( 'delete_post',             'rocket_clean_post' );
