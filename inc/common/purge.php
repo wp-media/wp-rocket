@@ -50,17 +50,26 @@ add_filter( 'widget_update_callback', 'rocket_widget_update_callback' );
  * @since 1.1.3 Use clean_post_cache instead of transition_post_status, transition_comment_status and preprocess_comment
  * @since 1.0
  *
- * @param int $post_id The post ID.
+ * @param int     $post_id The post ID.
+ * @param WP_Post $post    WP_Post object.
  */
-function rocket_clean_post( $post_id ) {
+function rocket_clean_post( $post_id, $post = '' ) {
+	static $done = [];
+
+	if ( isset( $done[ $post_id ] ) ) {
+		return;
+	}
+
 	if ( defined( 'DOING_AUTOSAVE' ) ) {
 		return;
 	}
 
-	$purge_urls = array();
+	$purge_urls = [];
 
-	// Get all post infos.
-	$post = get_post( $post_id );
+	// Get all post infos if the $post object was not supplied.
+	if ( empty( $post ) ) {
+		$post = get_post( $post_id );
+	}
 
 	// Return if $post is not an object.
 	if ( ! is_object( $post ) ) {
@@ -94,7 +103,7 @@ function rocket_clean_post( $post_id ) {
 	$permalink_structure = get_rocket_sample_permalink( $post_id );
 
 	// Get permalink.
-	$permalink = str_replace( array( '%postname%', '%pagename%' ), $permalink_structure[1], $permalink_structure[0] );
+	$permalink = str_replace( [ '%postname%', '%pagename%' ], $permalink_structure[1], $permalink_structure[0] );
 
 	// Add permalink.
 	if ( rocket_extract_url_component( $permalink, PHP_URL_PATH ) !== '/' ) {
@@ -189,9 +198,9 @@ function rocket_clean_post( $post_id ) {
 	 *
 	 * @since 1.3.0
 	 *
-	 * @param obj    $post       The post object
-	 * @param array  $purge_urls URLs cache files to remove
-	 * @param string $lang       The post language
+	 * @param WP_Post $post       The post object
+	 * @param array   $purge_urls URLs cache files to remove
+	 * @param string  $lang       The post language
 	 */
 	do_action( 'before_rocket_clean_post', $post, $purge_urls, $lang );
 
@@ -218,16 +227,18 @@ function rocket_clean_post( $post_id ) {
 	 *
 	 * @since 1.3.0
 	 *
-	 * @param obj    $post       The post object
-	 * @param array  $purge_urls URLs cache files to remove
-	 * @param string $lang       The post language
+	 * @param WP_Post $post       The post object
+	 * @param array   $purge_urls URLs cache files to remove
+	 * @param string  $lang       The post language
 	 */
 	do_action( 'after_rocket_clean_post', $post, $purge_urls, $lang );
+
+	$done[ $post_id ] = 1;
 }
-add_action( 'wp_trash_post'             , 'rocket_clean_post' );
-add_action( 'delete_post'               , 'rocket_clean_post' );
-add_action( 'clean_post_cache'          , 'rocket_clean_post' );
-add_action( 'wp_update_comment_count'   , 'rocket_clean_post' );
+add_action( 'wp_trash_post',           'rocket_clean_post' );
+add_action( 'delete_post',             'rocket_clean_post' );
+add_action( 'clean_post_cache',        'rocket_clean_post' );
+add_action( 'wp_update_comment_count', 'rocket_clean_post' );
 
 /**
  * Add pattern to clean files of connected users
