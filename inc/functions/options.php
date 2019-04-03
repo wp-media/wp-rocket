@@ -414,6 +414,7 @@ function get_rocket_cdn_cnames( $zone = 'all' ) {
 	$hosts = (array) apply_filters( 'rocket_cdn_cnames', $hosts );
 	$hosts = array_filter( $hosts );
 	$hosts = array_flip( array_flip( $hosts ) );
+	$hosts = array_values( $hosts );
 
 	return $hosts;
 }
