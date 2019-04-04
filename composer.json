@@ -41,8 +41,10 @@
 		"wp-media/rocket-lazyload-common": "^2.2"
 	},
 	"require-dev": {
+		"brain/monkey": "^2.0",
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.4.4",
 		"phpcompatibility/phpcompatibility-wp": "*",
+		"phpunit/phpunit": "^5.7",
 		"squizlabs/php_codesniffer": "^3.2",
 		"wp-coding-standards/wpcs": "^2.0.0"
 	},
@@ -55,5 +57,9 @@
 			"inc/vendors/classes/class-rocket-mobile-detect.php",
 			"inc/classes/class-wp-rocket-requirements-check.php"
 		]
-	}
+	},
+	"scripts": {
+		"test-unit":"\"vendor/bin/phpunit\" --testsuite unit --colors=always",
+		"test-integration": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist"
+}
 }
