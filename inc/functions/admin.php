@@ -7,12 +7,25 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  * @since 1.0
  */
 function rocket_need_api_key() {
+	$message = '';
+	$errors  = get_transient( 'rocket_check_key_errors' );
+
+	if ( false !== $errors ) {
+		foreach ( $errors as $error ) {
+			$message .= '<p>' . $error . '</p>';
+		}
+	}
+
 	?>
-	<div class="notice notice-warning">
-		<p><strong><?php echo WP_ROCKET_PLUGIN_NAME; ?></strong>: <?php _e( 'There seems to be an issue with outgoing connections from your server. Resolve per documentation, or contact support.', 'rocket' ); ?>
+	<div class="notice notice-error">
+		<p><strong><?php echo esc_html( WP_ROCKET_PLUGIN_NAME ); ?></strong>
+		<?php
+		echo esc_html( _n( 'There seems to be an issue validating your license. Please see the error message below.', 'There seems to be an issue validating your license. You can see the error messages below.', count( $errors ), 'rocket' ) );
+		?>
 		</p>
+		<?php echo $message; ?>
 	</div>
-<?php
+	<?php
 }
 
 /**
@@ -38,9 +51,9 @@ function rocket_user_agent( $user_agent ) {
 		$consumer_email = (string) get_rocket_option( 'consumer_email' );
 	}
 
-	$bonus = ! rocket_is_white_label() ? '' : '*';
-	$bonus .= ! get_rocket_option( 'do_beta' ) ? '' : '+';
-	$new_ua = sprintf( '%s;WP-Rocket|%s%s|%s|%s|%s|;', $user_agent, WP_ROCKET_VERSION, $bonus, $consumer_key, $consumer_email, esc_url( home_url() ) );
+	$bonus       = ! get_rocket_option( 'do_beta' ) ? '' : '+';
+	$php_version = preg_replace( '@^(\d\.\d+).*@', '\1', phpversion() );
+	$new_ua      = sprintf( '%s;WP-Rocket|%s%s|%s|%s|%s|%s;', $user_agent, WP_ROCKET_VERSION, $bonus, $consumer_key, $consumer_email, esc_url( home_url() ), $php_version );
 
 	return $new_ua;
 }
@@ -62,12 +75,12 @@ function rocket_renew_all_boxes( $uid = null, $keep_this = array() ) {
 
 	// $keep_this works only for the current user.
 	if ( ! empty( $keep_this ) && null !== $uid ) {
-		if ( is_array( $keep_this ) ) {
-			foreach ( $keep_this as $kt ) {
-				rocket_dismiss_box( $kt );
-			}
-		} else {
-			rocket_dismiss_box( $keep_this );
+		if ( ! is_array( $keep_this ) ) {
+			$keep_this = (array) $keep_this;
+		}
+
+		foreach ( $keep_this as $kt ) {
+			rocket_dismiss_box( $kt );
 		}
 	}
 }
@@ -111,55 +124,6 @@ function rocket_dismiss_box( $function ) {
 }
 
 /**
- * Is this version White Labeled?
- *
- * @since 2.1
- */
-function rocket_is_white_label() {
-	$options = '';
-	$names   = array(
-		'wl_plugin_name',
-		'wl_plugin_URI',
-		'wl_description',
-		'wl_author',
-		'wl_author_URI',
-	);
-
-	foreach ( $names as $value ) {
-		$option   = get_rocket_option( $value );
-		$options .= ! is_array( $option ) ? $option : reset( ( $option ) );
-	}
-
-	return '7ddca92d3d48d4da715a90ebcb3ec1f0' !== md5( $options );
-}
-
-/**
- * Reset white label options
- *
- * @since 2.1
- *
- * @param bool $hack_post true if we need to modify the $_POST content, false otherwise.
- * @return void
- */
-function rocket_reset_white_label_values( $hack_post ) {
-	// White Label default values - !!! DO NOT TRANSLATE !!!
-	$options = get_option( WP_ROCKET_SLUG );
-	$options['wl_plugin_name']	= 'WP Rocket';
-	$options['wl_plugin_slug']	= 'wprocket';
-	$options['wl_plugin_URI']	= 'https://wp-rocket.me';
-	$options['wl_description']	= array( 'The best WordPress performance plugin.' );
-	$options['wl_author']		= 'WP Media';
-	$options['wl_author_URI']	= 'https://wp-media.me';
-
-	if ( $hack_post ) {
-		// hack $_POST to force refresh of files, sorry.
-		$_POST['page'] = 'wprocket';
-	}
-
-	update_option( WP_ROCKET_SLUG, $options );
-}
-
-/**
  * Create a unique id for some Rocket options and functions
  *
  * @since 2.1
@@ -173,34 +137,17 @@ function create_rocket_uniqid() {
  *
  * @since 2.4
  *
- * @param array  $r An array of request arguments.
- * @param string $url Requested URL.
+ * @param array  $request An array of request arguments.
+ * @param string $url     Requested URL.
  * @return array An array of requested arguments
  */
-function rocket_add_own_ua( $r, $url ) {
+function rocket_add_own_ua( $request, $url ) {
 	if ( strpos( $url, 'wp-rocket.me' ) !== false ) {
-		$r['user-agent'] = rocket_user_agent( $r['user-agent'] );
+		$request['user-agent'] = rocket_user_agent( $request['user-agent'] );
 	}
-	return $r;
+	return $request;
 }
 add_filter( 'http_request_args', 'rocket_add_own_ua', 10, 3 );
-
-/**
- * Function used to print all hidden fields from rocket to avoid the loss of these.
- *
- * @since 2.1
- *
- * @param array $fields An array of fields to add to WP Rocket settings.
- */
-function rocket_hidden_fields( $fields ) {
-	if ( ! is_array( $fields ) ) {
-		return;
-	}
-
-	foreach ( $fields as $field ) {
-		echo '<input type="hidden" name="wp_rocket_settings[' . $field . ']" value="' . esc_attr( get_rocket_option( $field ) ) . '" />';
-	}
-}
 
 /**
  * Gets names of all active plugins.
@@ -219,32 +166,6 @@ function rocket_get_active_plugins() {
 	}
 
 	return $plugins;
-}
-
-/**
- * Sanitizes a string key like the sanitize_key() WordPress function without forcing lowercase.
- *
- * @since 2.7
- *
- * @param string $key A string to sanitize.
- * @return string Sanitized string
- */
-function rocket_sanitize_key( $key ) {
-	$key = preg_replace( '/[^a-z0-9_\-]/i', '', $key );
-	return $key;
-}
-
-/**
- * Used to sanitize values of the "Never send cache pages for these user agents" option.
- *
- * @since 2.6.4
- *
- * @param string $ua User Agent string to sanitize.
- * @return string Sanitized user agent string
- */
-function rocket_sanitize_ua( $ua ) {
-	$ua = preg_replace( '/[^a-z0-9._\(\)\*\-\/\s\x5c]/i', '', $ua );
-	return $ua;
 }
 
 /**
@@ -269,7 +190,7 @@ function get_rocket_documentation_url() {
 	);
 	$lang   = get_locale();
 	$prefix = isset( $langs[ $lang ] ) ? $langs[ $lang ] : '';
-	$url    = "http://{$prefix}docs.wp-rocket.me/?utm_source=wp-rocket&utm_medium=wp-admin&utm_term=doc-support&utm_campaign=plugin";
+	$url    = "https://{$prefix}docs.wp-rocket.me/?utm_source=wp_plugin&utm_medium=wp_rocket";
 
 	return $url;
 }
@@ -283,14 +204,14 @@ function get_rocket_documentation_url() {
  * @return string URL in the correct language
  */
 function get_rocket_faq_url() {
-	$langs  = array(
+	$langs = array(
 		'fr_FR' => 'fr.docs.wp-rocket.me/category/146-faq',
 		'it_IT' => 'it.docs.wp-rocket.me/category/321-domande-frequenti',
 		'de_DE' => 'de.docs.wp-rocket.me/category/285-haufig-gestellte-fragen-faq',
 	);
-	$lang   = get_locale();
-	$faq    = isset( $langs[ $lang ] ) ? $langs[ $lang ] : 'docs.wp-rocket.me/category/65-faq';
-	$url    = "http://{$faq}/?utm_source=wp-rocket&utm_medium=wp-admin&utm_term=doc-faq&utm_campaign=plugin";
+	$lang  = get_locale();
+	$faq   = isset( $langs[ $lang ] ) ? $langs[ $lang ] : 'docs.wp-rocket.me/category/65-faq';
+	$url   = "https://{$faq}/?utm_source=wp_plugin&utm_medium=wp_rocket";
 
 	return $url;
 }
@@ -387,24 +308,7 @@ function rocket_after_update_array_options( $old_value, $value ) {
  * @return true if a mobile plugin in the list is active, false otherwise.
  **/
 function rocket_is_mobile_plugin_active() {
-	$mobile_plugins = array(
-		'wptouch/wptouch.php',
-		'wiziapp-create-your-own-native-iphone-app/wiziapp.php',
-		'wordpress-mobile-pack/wordpress-mobile-pack.php',
-		'wp-mobilizer/wp-mobilizer.php',
-		'wp-mobile-edition/wp-mobile-edition.php',
-		'device-theme-switcher/dts_controller.php',
-		'wp-mobile-detect/wp-mobile-detect.php',
-		'easy-social-share-buttons3/easy-social-share-buttons3.php',
-	);
-
-	foreach ( $mobile_plugins as $mobile_plugin ) {
-		if ( is_plugin_active( $mobile_plugin ) ) {
-			return true;
-		}
-	}
-
-	return false;
+	return \WP_Rocket\Subscriber\Third_Party\Plugins\Mobile_Subscriber::is_mobile_plugin_active();
 }
 
 /**
@@ -423,6 +327,53 @@ function rocket_allow_json_mime_type( $wp_get_mime_types ) {
 }
 
 /**
+ * Forces the correct file type for JSON file if the WP checks is incorrect
+ *
+ * @since 3.2.3.1
+ * @author Gregory Viguier
+ *
+ * @param array  $wp_check_filetype_and_ext File data array containing 'ext', 'type', and
+ *                                         'proper_filename' keys.
+ * @param string $file                     Full path to the file.
+ * @param string $filename                 The name of the file (may differ from $file due to
+ *                                         $file being in a tmp directory).
+ * @param array  $mimes                     Key is the file extension with value as the mime type.
+ * @return array
+ */
+function rocket_check_json_filetype( $wp_check_filetype_and_ext, $file, $filename, $mimes ) {
+	if ( ! empty( $wp_check_filetype_and_ext['ext'] ) && ! empty( $wp_check_filetype_and_ext['type'] ) ) {
+		return $wp_check_filetype_and_ext;
+	}
+
+	$wp_filetype = wp_check_filetype( $filename, $mimes );
+
+	if ( 'json' !== $wp_filetype['ext'] ) {
+		return $wp_check_filetype_and_ext;
+	}
+
+	if ( empty( $wp_filetype['type'] ) ) {
+		// In case some other filter messed it up.
+		$wp_filetype['type'] = 'application/json';
+	}
+
+	if ( ! extension_loaded( 'fileinfo' ) ) {
+		return $wp_check_filetype_and_ext;
+	}
+
+	$finfo     = finfo_open( FILEINFO_MIME_TYPE );
+	$real_mime = finfo_file( $finfo, $file );
+	finfo_close( $finfo );
+
+	if ( 'text/plain' !== $real_mime ) {
+		return $wp_check_filetype_and_ext;
+	}
+
+	$wp_check_filetype_and_ext = array_merge( $wp_check_filetype_and_ext, $wp_filetype );
+
+	return $wp_check_filetype_and_ext;
+}
+
+/**
  * Lists Data collected for analytics
  *
  * @since  2.11
@@ -432,8 +383,7 @@ function rocket_allow_json_mime_type( $wp_get_mime_types ) {
  */
 function rocket_data_collection_preview_table() {
 
-	$data     = rocket_analytics_data();
-	$esc_data = esc_textarea( var_export( $data, true ) );
+	$data = rocket_analytics_data();
 
 	$html  = '<table class="wp-rocket-data-table widefat striped">';
 	$html .= '<tbody>';
@@ -514,4 +464,24 @@ function rocket_data_collection_preview_table() {
 	$html .= '</table>';
 
 	return $html;
+}
+
+/**
+ * Adds error message after settings import and redirects.
+ *
+ * @since 3.0
+ * @author Remy Perona
+ *
+ * @param string $message Message to display in the error notice.
+ * @param string $status  Status of the error.
+ * @return void
+ */
+function rocket_settings_import_redirect( $message, $status ) {
+	add_settings_error( 'general', 'settings_updated', $message, $status );
+
+	set_transient( 'settings_errors', get_settings_errors(), 30 );
+
+	$goback = add_query_arg( 'settings-updated', 'true', wp_get_referer() );
+	wp_safe_redirect( esc_url_raw( $goback ) );
+	die();
 }

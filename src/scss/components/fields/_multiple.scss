@@ -1,0 +1,94 @@
+// main: ../../main.scss
+
+/*-----------------------------------------------*\
+
+    Multiple field
+
+\*-----------------------------------------------*/
+
+
+// Field like CNAME
+
+.wpr-multiple{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    @include respond-to('xs') {
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .wpr-text{
+        flex: 1 1 auto;
+        position: relative;
+        top: -2px;
+
+        @include respond-to('xs') {
+            width: 100%;
+        }
+    }
+
+    .wpr-button{
+        margin-left: $space*2;
+        width: auto;
+        min-width: inherit;
+        padding-right: 30px;
+
+        @include respond-to('xs') {
+            margin-left: 0;
+        }
+    }
+
+    input[type=text]{
+        flex-grow: 2;
+    }
+
+    select{
+        height: 30px;
+    }
+
+    &-default {
+        margin-right: 20px;
+    }
+
+    &-list{
+        display: none;
+        padding: $space 0;
+        margin: $space*2 0 0;
+        background: $cGreyLight2;
+        border-radius: 2px;
+
+        li{
+            margin-bottom: 0;
+            padding: $space/2 $space*2;
+            @include font-size(13,16);
+            font-family: Monaco;
+
+            span{
+                display: inline-block;
+                @include transition(all,150ms);
+            }
+        }
+    }
+
+    &-close{
+        position: relative;
+        top: 3px;
+        @include font-size(16,16);
+        @include transition(color,200ms);
+
+        &:focus{
+            outline: none;
+        }
+
+        &:hover,
+        &:focus{
+            color: $cRed;
+
+            & + span{
+                color: $cRed;
+            }
+        }
+    }
+}

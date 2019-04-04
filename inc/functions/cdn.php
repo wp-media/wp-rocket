@@ -15,7 +15,7 @@ function get_rocket_cnames_host( $zones = array( 'all' ) ) {
 	$cnames = get_rocket_cdn_cnames( $zones );
 	if ( $cnames ) {
 		foreach ( $cnames as $cname ) {
-			$cname = rocket_add_url_protocol( $cname );
+			$cname   = rocket_add_url_protocol( $cname );
 			$hosts[] = rocket_extract_url_component( $cname, PHP_URL_HOST );
 		}
 	}
@@ -37,11 +37,11 @@ function get_rocket_cdn_url( $url, $zone = array( 'all' ) ) {
 	$wp_content_dirname = ltrim( str_replace( home_url(), '', WP_CONTENT_URL ), '/' ) . '/';
 	$home               = home_url();
 
-	if ( ( defined( 'DONOTCDN' ) && DONOTCDN ) || (int) get_rocket_option( 'cdn' ) === 0 || empty( $cnames ) || ! is_rocket_cdn_on_ssl() || is_rocket_post_excluded_option( 'cdn' ) ) {
+	if ( ( defined( 'DONOTCDN' ) && DONOTCDN ) || (int) get_rocket_option( 'cdn' ) === 0 || empty( $cnames ) || is_rocket_post_excluded_option( 'cdn' ) ) {
 		return $url;
 	}
 
-	$parse_url = get_rocket_parse_url( $url );
+	$parse_url          = get_rocket_parse_url( $url );
 	$parse_url['query'] = ! empty( $parse_url['query'] ) ? '?' . $parse_url['query'] : '';
 
 	// Exclude rejected & external files from CDN.
@@ -85,7 +85,7 @@ function rocket_cdn_url( $url, $zone = array( 'all' ) ) {
  * @return string modified file content
  */
 function rocket_cdn_css_properties( $buffer ) {
-	$zone = array(
+	$zone   = array(
 		'all',
 		'images',
 		'css_and_js',
@@ -94,11 +94,11 @@ function rocket_cdn_css_properties( $buffer ) {
 	$cnames = get_rocket_cdn_cnames( $zone );
 
 	/**
-	  * Filters the application of the CDN on CSS properties
-	  *
-	  * @since 2.6
-	  *
-	  * @param bool true to apply CDN to properties, false otherwise
+	 * Filters the application of the CDN on CSS properties
+	 *
+	 * @since 2.6
+	 *
+	 * @param bool true to apply CDN to properties, false otherwise
 	 */
 	$do_rocket_cdn_css_properties = apply_filters( 'do_rocket_cdn_css_properties', true );
 
@@ -111,7 +111,7 @@ function rocket_cdn_css_properties( $buffer ) {
 	if ( is_array( $matches ) ) {
 		$i = 0;
 		foreach ( $matches[1] as $url ) {
-			$url      = trim( $url," \t\n\r\0\x0B\"'" );
+			$url = trim( $url, " \t\n\r\0\x0B\"'" );
 			/**
 			 * Filters the URL of the CSS property
 			 *

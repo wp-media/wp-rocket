@@ -1,0 +1,263 @@
+// main: ../main.scss
+
+/*-----------------------------------------------*\
+
+    Field container
+
+\*-----------------------------------------------*/
+
+.wpr-field{
+    padding: $space*2 0;
+    @include transition(opacity,150ms);
+
+    & + .wpr-field,
+    & + .wpr-warningContainer{
+        border-top: 1px solid $cGrey;
+    }
+
+    &:first-child{
+        padding-top: 0;
+    }
+
+    &:last-child{
+        padding-bottom: 0;
+    }
+
+    &-description{
+        margin-top: 4px;
+        color: $cGreyDark2;
+        @include font-size(13,20);
+
+        .wpr-js-popin{
+            color: $cGreyDark1;
+            text-decoration: underline;
+
+            &:hover,
+            &:focus{
+                color: $cBlue;
+            }
+        }
+
+        a:hover,
+        a:focus{
+            color: $cBlue;
+        }
+
+        &-helper{
+            color: $cGreenDark1;
+        }
+    }
+
+    &-description-label{
+        @include font-size(14,20);
+        font-weight: 500;
+        color: $cGreyDark2;
+    }
+
+    &-list{
+        margin: 0;
+        color: $cGreyDark2;
+        font-weight: 500;
+
+        li{
+            &+li{
+                margin-top: $space*2;
+            }
+
+            &:before{
+                position: relative;
+                top: 3px;
+                margin-right: $space;
+                color: $cBlueDark1;
+                @include font-size(18,20);
+            }
+        }
+
+        a{
+            text-decoration: none;
+
+            &:hover,
+            &:focus{
+                color: $cBlue;
+            }
+        }
+    }
+
+    &-betweenText{
+        margin: 0 $space*2;
+        font-weight: bold;
+    }
+
+    .wpr-button{
+        margin: $space 0;
+    }
+
+    .wpr-flex{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        @include respond-to('xs') {
+            text-align: left;
+            flex-direction: column;
+        }
+    }
+
+    .wpr-flex--egal > div{
+        flex: 0 0 50%;
+
+        @include respond-to('xs') {
+            width: 100%;
+        }
+
+        &:last-child{
+            text-align: right;
+
+            @include respond-to('xs') {
+                text-align: left;
+            }
+        }
+
+        .wpr-field-description{
+            font-style: normal;
+            color: $cGreyDark2;
+        }
+    }
+
+    p{
+        margin-bottom: 0;
+    }
+
+    label{
+        font-weight: 500;
+    }
+
+    h4{
+        @include font-size(14,24);
+    }
+
+    // Disabled field
+    &.wpr-isDisabled{
+        opacity: 0.55;
+    }
+
+    // Parent field
+    &.wpr-isParent{
+        padding-bottom: 0;
+    }
+
+    .wpr-isHidden{
+        display: none;
+    }
+
+
+
+    // Children field
+    &--children{
+        display: none;
+        padding-left: $space*4;
+
+        &.wpr-isOpen{
+            display: block;
+            margin-top: $space*2;
+        }
+
+        &.wpr-field--textarea{
+            padding-right: $space*10;
+
+            @include respond-to('md') {
+                padding-right: $space*4;
+            }
+
+            @include respond-to('xs') {
+                padding-right: 0;
+            }
+        }
+    }
+
+    // Checkbox
+    &--checkbox{
+        .wpr-field-description{
+            margin-left: $space*4;
+        }
+    }
+
+    // Checkbox radio
+    &--radio{
+        padding: $space*3 $space*2;
+
+        &:first-child{
+            padding-top: $space;
+        }
+
+        &:last-child{
+            padding-bottom: $space;
+        }
+
+        .wpr-field-description{
+            margin-left: $space*11;
+
+            button{
+                color: $cGreyDark2;
+            }
+        }
+
+        label{
+            @extend .wpr-title3;
+        }
+    }
+
+    // Fields 2 columns
+    &--split{
+        display: inline-block;
+        width: 50%;
+        padding-right: $space*2;
+        padding-bottom: 0;
+
+        & + .wpr-field--split{
+            padding-left: $space*2;
+            padding-right: 0;
+
+            &:nth-child(2){
+                padding-top: 0;
+                border-top: none;
+            }
+        }
+    }
+
+    // Special for cache lifespan
+    &--cache{
+        .wpr-field--number,
+        .wpr-field--select{
+            display: inline-block;
+            padding-top: 0;
+            width: auto;
+            padding-bottom: 0;
+            font-weight: bold;
+        }
+
+        .wpr-field--select{
+            position: relative;
+            padding-left: $space;
+            top: -2px;
+            border-top: none;
+        }
+
+        .wpr-field--number .wpr-text input[type=number]{
+            background: $cGreyLight2;
+            height: 35px;
+            border: 1px solid $cGrey;
+            font-family: inherit;
+            font-size: 1em;
+        }
+
+        .wpr-field-description{
+            margin: $space 0;
+            color: $cGreenDark1;
+        }
+
+        .wpr-field-description-label{
+            color: $cBlack;
+        }
+    }
+}

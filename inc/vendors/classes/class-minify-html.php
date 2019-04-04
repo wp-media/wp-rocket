@@ -161,7 +161,7 @@ class Minify_HTML
 
     protected function _commentCB($m)
     {
-        return (0 === strpos($m[1], '[') || false !== strpos($m[1], '<![') || 0 === strpos($m[1], 'esi') || 0 === strpos($m[1], 'noindex') || 0 === strpos($m[1], '/noindex') || 0 === strpos($m[1], 'start_content') || 0 === strpos($m[1], 'end_content'))
+        return (false !== strpos($m[1], 'ngg_resource_manager_marker') || 0 === strpos($m[1], '[') || false !== strpos($m[1], '<![') || 0 === strpos($m[1], 'esi') || 0 === strpos($m[1], 'noindex') || 0 === strpos($m[1], '/noindex') || 0 === strpos($m[1], 'start_content') || 0 === strpos($m[1], 'end_content'))
             ? $m[0]
             : '';
     }

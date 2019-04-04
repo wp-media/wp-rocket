@@ -1,0 +1,35 @@
+// main: ../../main.scss
+
+/*-----------------------------------------------*\
+
+    Type = textearea
+
+\*-----------------------------------------------*/
+
+
+.wpr-textarea{
+    margin-top: $space;
+
+    textarea{
+        padding: $space;
+        width: 100%;
+        height: 100px;
+        font-family: Monaco;
+        color: $cBlack;
+        background: #fff;
+        border: 2px solid darken($cGrey, 10%);
+        border-radius: 3px;
+        @include font-size(13,16);
+        @include transition(border,200ms);
+
+        &:focus{
+            outline: none;
+            border-color: $cGreyDark1;
+            box-shadow: none;
+        }
+    }
+
+    & + .wpr-field-description{
+        color: $cGreenDark1;
+    }
+}

@@ -1,0 +1,60 @@
+// main: ../main.scss
+
+/*-----------------------------------------------*\
+
+    Notice for first time on dashboard
+
+\*-----------------------------------------------*/
+
+.wpr-notice{
+    position: relative;
+    color: $cGreyDark1;
+    background: $cGreenLight4 url('../img/bg-activated.svg') no-repeat 90% bottom;
+    background-size: 350px;
+    margin-top: $space*3;
+    border-radius: 4px;
+    overflow: hidden;
+
+    &-container{
+        padding: $space*3 25% $space*3 $space*5;
+    }
+
+    &-supTitle{
+        @include font-size(16,22);
+        font-weight: bold;
+    }
+
+    &-title{
+        @include font-size(24,32);
+        color: $cGreen;
+        margin-top: $space*2;
+        font-weight: bold;
+    }
+
+    &-description{
+        @include font-size(14,22);
+        margin: $space*2 0 $space*3;
+    }
+
+    &-continue{
+        color: $cGreyDark2;
+    }
+
+    &-close{
+        position: absolute;
+        top: $space*3;
+        right: $space*3;
+        color: $cGreyDark2;
+        text-decoration: none;
+        @include font-size(24,24);
+        @include transition(color, 200ms);
+
+        &:hover{
+            color: $cGreyDark1;
+        }
+
+        &:focus{
+            outline: none;
+        }
+    }
+}

@@ -1,0 +1,97 @@
+// main: ../main.scss
+
+/*-----------------------------------------------*\
+
+    Button call to action
+
+\*-----------------------------------------------*/
+
+.wpr-button{
+    position: relative;
+    display: inline-block;
+    width: auto;
+    padding: $space $space*3;
+    text-align: center;
+    background: $cOrange;
+    box-shadow: 0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08);
+    text-transform: uppercase;
+    text-decoration: none;
+    letter-spacing: -0.08px;
+    font-weight: bold;
+    border-radius: 4px;
+    color: #fff !important; // Issue #905 : !Important is here to avoid CSS overwritten by other plugins (same prefix ?)
+    white-space: nowrap;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    @include transition(all, 200ms)
+    @include font-size(13,20);
+
+    &:hover,
+    &:focus{
+        color: #fff !important;
+        transform: translateY(-2px);
+        box-shadow: 0 7px 14px rgba(50,50,93,.25), 0 3px 6px rgba(0,0,0,.2);
+    }
+
+    &--small{
+        padding: 5px 0;
+        letter-spacing: -0.08px;
+        @include font-size(11,20);
+    }
+
+    &--icon{
+        min-width: 160px;
+        padding-left: $space;
+        padding-right: $space*5;
+        text-align: left;
+
+        &:before{
+            position: absolute;
+            right: $space;
+            @include font-size(15,20);
+        }
+    }
+
+    // Fixed button help
+    &--fixed{
+        position: fixed;
+        display: flex;
+        padding: $space $space*2;
+        right: $space*3;
+        bottom: $space*4;
+        border-radius: $space*2;
+
+        &:before{
+            @include font-size(18,18);
+            margin-right: $space;
+        }
+    }
+
+    // Colored buttons
+    &--purple{
+        background: $cPurple;
+    }
+
+    &--blue{
+        min-width: inherit;
+        background: $cBlue;
+    }
+
+    &--lightBlue{
+        min-width: inherit;
+        background: $cBlueLight1;
+    }
+
+    &--red{
+        background: $cRed;
+    }
+
+    &--blueDark{
+        background: $cBlueDark1;
+    }
+
+    &:focus{
+        outline: none;
+        color: #fff !important;
+    }
+}

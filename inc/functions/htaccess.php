@@ -2,49 +2,74 @@
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
- * Used to flush the .htaccess file
+ * Used to flush the .htaccess file.
  *
- * @since 1.1.0 Remove empty spacings when .htaccess is generated
  * @since 1.0
+ * @since 1.1.0 Remove empty spacings when .htaccess is generated.
  *
- * @param bool $force (default: false).
- * @return void
+ * @param  bool $remove_rules True to remove WPR rules, false to renew them. Default is false.
+ * @return bool               True on success, false otherwise.
  */
-function flush_rocket_htaccess( $force = false ) {
+function flush_rocket_htaccess( $remove_rules = false ) {
 	global $is_apache;
 
-	if ( ! $is_apache ) {
-		return;
+	/**
+	 * Filters disabling of WP Rocket htaccess rules
+	 *
+	 * @since 3.2.5
+	 * @author Remy Perona
+	 *
+	 * @param bool $disable True to disable, false otherwise.
+	 */
+	if ( ! $is_apache || ( apply_filters( 'rocket_disable_htaccess', false ) && ! $remove_rules ) ) {
+		return false;
 	}
 
-	$rules = '';
 	$htaccess_file = get_home_path() . '.htaccess';
 
-	if ( rocket_direct_filesystem()->is_writable( $htaccess_file ) ) {
-		// Get content of .htaccess file.
-		$ftmp = rocket_direct_filesystem()->get_contents( $htaccess_file );
-
-		// Remove the WP Rocket marker.
-		$ftmp = preg_replace( '/# BEGIN WP Rocket(.*)# END WP Rocket/isU', '', $ftmp );
-
-		/**
-		 * Determine if empty lines should be removed in the .htaccess file
-		 *
-		 * @since 2.10.7
-		 * @author Remy Perona
-		 * @param boolean $remove_empty_lines True to remove, false otherwise.
-		 */
-		if ( apply_filters( 'rocket_remove_empty_lines', true ) ) {
-			$ftmp = str_replace( "\n\n" , "\n" , $ftmp );
-		}
-
-		if ( false === $force ) {
-			$rules = get_rocket_htaccess_marker();
-		}
-
-		// Update the .htacces file.
-		rocket_put_content( $htaccess_file, $rules . $ftmp );
+	if ( ! rocket_direct_filesystem()->is_writable( $htaccess_file ) ) {
+		// The file is not writable or does not exist.
+		return false;
 	}
+
+	// Get content of .htaccess file.
+	$ftmp = rocket_direct_filesystem()->get_contents( $htaccess_file );
+
+	if ( false === $ftmp ) {
+		// Could not get the file contents.
+		return false;
+	}
+
+	// Check if the file contains the WP rules, before modifying anything.
+	$has_wp_rules = rocket_has_wp_htaccess_rules( $ftmp );
+
+	// Remove the WP Rocket marker.
+	$ftmp = preg_replace( '/\s*# BEGIN WP Rocket.*# END WP Rocket\s*?/isU', PHP_EOL . PHP_EOL, $ftmp );
+	$ftmp = ltrim( $ftmp );
+
+	if ( ! $remove_rules ) {
+		$ftmp = get_rocket_htaccess_marker() . PHP_EOL . $ftmp;
+	}
+
+	/**
+	 * Determine if empty lines should be removed in the .htaccess file.
+	 *
+	 * @since  2.10.7
+	 * @author Remy Perona
+	 *
+	 * @param boolean $remove_empty_lines True to remove, false otherwise.
+	 */
+	if ( apply_filters( 'rocket_remove_empty_lines', true ) ) {
+		$ftmp = preg_replace( "/\n+/", "\n", $ftmp );
+	}
+
+	// Make sure the WP rules are still there.
+	if ( $has_wp_rules && ! rocket_has_wp_htaccess_rules( $ftmp ) ) {
+		return false;
+	}
+
+	// Update the .htacces file.
+	return rocket_put_content( $htaccess_file, $ftmp );
 }
 
 /**
@@ -95,7 +120,7 @@ function rocket_htaccess_rules_test( $rules_name ) {
  */
 function get_rocket_htaccess_marker() {
 	// Recreate WP Rocket marker.
-	$marker  = '# BEGIN WP Rocket v' . WP_ROCKET_VERSION . PHP_EOL;
+	$marker = '# BEGIN WP Rocket v' . WP_ROCKET_VERSION . PHP_EOL;
 
 	/**
 	 * Add custom rules before rules added by WP Rocket
@@ -113,8 +138,7 @@ function get_rocket_htaccess_marker() {
 	$marker .= get_rocket_htaccess_mod_expires();
 	$marker .= get_rocket_htaccess_mod_deflate();
 
-	/** This filter is documented in inc/front/process.php */
-	if ( apply_filters( 'do_rocket_generate_caching_files', true ) && ! is_rocket_generate_caching_mobile_files() ) {
+	if ( \WP_Rocket\Buffer\Cache::can_generate_caching_files() && ! is_rocket_generate_caching_mobile_files() ) {
 		$marker .= get_rocket_htaccess_mod_rewrite();
 	}
 
@@ -338,7 +362,7 @@ function get_rocket_htaccess_mod_deflate() {
 			$rules .= 'RequestHeader append Accept-Encoding "gzip,deflate" env=HAVE_Accept-Encoding' . PHP_EOL;
 			$rules .= '# Don’t compress images and other uncompressible content' . PHP_EOL;
 			$rules .= 'SetEnvIfNoCase Request_URI \\' . PHP_EOL;
-			$rules .= '\\.(?:gif|jpe?g|png|rar|zip|exe|flv|mov|wma|mp3|avi|swf|mp?g|mp4|webm|webp)$ no-gzip dont-vary' . PHP_EOL;
+			$rules .= '\\.(?:gif|jpe?g|png|rar|zip|exe|flv|mov|wma|mp3|avi|swf|mp?g|mp4|webm|webp|pdf)$ no-gzip dont-vary' . PHP_EOL;
 			$rules .= '</IfModule>' . PHP_EOL;
 		$rules .= '</IfModule>' . PHP_EOL . PHP_EOL;
 		$rules .= '# Compress all output labeled with one of the following MIME-types' . PHP_EOL;
@@ -385,45 +409,49 @@ function get_rocket_htaccess_mod_deflate() {
  * @return string $rules Rules that will be printed
  */
 function get_rocket_htaccess_mod_expires() {
-	$rules = '# Expires headers (for better cache control)' . PHP_EOL;
-	$rules .= '<IfModule mod_expires.c>' . PHP_EOL;
-	  $rules .= 'ExpiresActive on' . PHP_EOL . PHP_EOL;
-	  $rules .= '# Perhaps better to whitelist expires rules? Perhaps.' . PHP_EOL;
-	  $rules .= 'ExpiresDefault                          "access plus 1 month"' . PHP_EOL . PHP_EOL;
-	  $rules .= '# cache.appcache needs re-requests in FF 3.6 (thanks Remy ~Introducing HTML5)' . PHP_EOL;
-	  $rules .= 'ExpiresByType text/cache-manifest       "access plus 0 seconds"' . PHP_EOL . PHP_EOL;
-	  $rules .= '# Your document html' . PHP_EOL;
-	  $rules .= 'ExpiresByType text/html                 "access plus 0 seconds"' . PHP_EOL . PHP_EOL;
-	  $rules .= '# Data' . PHP_EOL;
-	  $rules .= 'ExpiresByType text/xml                  "access plus 0 seconds"' . PHP_EOL;
-	  $rules .= 'ExpiresByType application/xml           "access plus 0 seconds"' . PHP_EOL;
-	  $rules .= 'ExpiresByType application/json          "access plus 0 seconds"' . PHP_EOL . PHP_EOL;
-	  $rules .= '# Feed' . PHP_EOL;
-	  $rules .= 'ExpiresByType application/rss+xml       "access plus 1 hour"' . PHP_EOL;
-	  $rules .= 'ExpiresByType application/atom+xml      "access plus 1 hour"' . PHP_EOL . PHP_EOL;
-	  $rules .= '# Favicon (cannot be renamed)' . PHP_EOL;
-	  $rules .= 'ExpiresByType image/x-icon              "access plus 1 week"' . PHP_EOL . PHP_EOL;
-	  $rules .= '# Media: images, video, audio' . PHP_EOL;
-	  $rules .= 'ExpiresByType image/gif                 "access plus 1 month"' . PHP_EOL;
-	  $rules .= 'ExpiresByType image/png                 "access plus 1 month"' . PHP_EOL;
-	  $rules .= 'ExpiresByType image/jpeg                "access plus 1 month"' . PHP_EOL;
-	  $rules .= 'ExpiresByType video/ogg                 "access plus 1 month"' . PHP_EOL;
-	  $rules .= 'ExpiresByType audio/ogg                 "access plus 1 month"' . PHP_EOL;
-	  $rules .= 'ExpiresByType video/mp4                 "access plus 1 month"' . PHP_EOL;
-	  $rules .= 'ExpiresByType video/webm                "access plus 1 month"' . PHP_EOL . PHP_EOL;
-	  $rules .= '# HTC files  (css3pie)' . PHP_EOL;
-	  $rules .= 'ExpiresByType text/x-component          "access plus 1 month"' . PHP_EOL . PHP_EOL;
-	  $rules .= '# Webfonts' . PHP_EOL;
-	  $rules .= 'ExpiresByType application/x-font-ttf    "access plus 1 month"' . PHP_EOL;
-	  $rules .= 'ExpiresByType font/opentype             "access plus 1 month"' . PHP_EOL;
-	  $rules .= 'ExpiresByType application/x-font-woff   "access plus 1 month"' . PHP_EOL;
-	  $rules .= 'ExpiresByType application/x-font-woff2  "access plus 1 month"' . PHP_EOL;
-	  $rules .= 'ExpiresByType image/svg+xml             "access plus 1 month"' . PHP_EOL;
-	  $rules .= 'ExpiresByType application/vnd.ms-fontobject "access plus 1 month"' . PHP_EOL . PHP_EOL;
-	  $rules .= '# CSS and JavaScript' . PHP_EOL;
-	  $rules .= 'ExpiresByType text/css                  "access plus 1 year"' . PHP_EOL;
-	  $rules .= 'ExpiresByType application/javascript    "access plus 1 year"' . PHP_EOL . PHP_EOL;
-	$rules .= '</IfModule>' . PHP_EOL . PHP_EOL;
+	$rules = <<<HTACCESS
+# Expires headers (for better cache control)
+<IfModule mod_expires.c>
+	ExpiresActive on
+	# Perhaps better to whitelist expires rules? Perhaps.
+	ExpiresDefault                              "access plus 1 month"
+	# cache.appcache needs re-requests in FF 3.6 (thanks Remy ~Introducing HTML5)
+	ExpiresByType text/cache-manifest           "access plus 0 seconds"
+	# Your document html
+	ExpiresByType text/html                     "access plus 0 seconds"
+	# Data
+	ExpiresByType text/xml                      "access plus 0 seconds"
+	ExpiresByType application/xml               "access plus 0 seconds"
+	ExpiresByType application/json              "access plus 0 seconds"
+	# Feed
+	ExpiresByType application/rss+xml           "access plus 1 hour"
+	ExpiresByType application/atom+xml          "access plus 1 hour"
+	# Favicon (cannot be renamed)
+	ExpiresByType image/x-icon                  "access plus 1 week"
+	# Media: images, video, audio
+	ExpiresByType image/gif                     "access plus 4 months"
+	ExpiresByType image/png                     "access plus 4 months"
+	ExpiresByType image/jpeg                    "access plus 4 months"
+	ExpiresByType image/webp                    "access plus 4 months"
+	ExpiresByType video/ogg                     "access plus 1 month"
+	ExpiresByType audio/ogg                     "access plus 1 month"
+	ExpiresByType video/mp4                     "access plus 1 month"
+	ExpiresByType video/webm                    "access plus 1 month"
+	# HTC files  (css3pie)
+	ExpiresByType text/x-component              "access plus 1 month"
+	# Webfonts
+	ExpiresByType application/x-font-ttf        "access plus 1 month"
+	ExpiresByType font/opentype                 "access plus 1 month"
+	ExpiresByType application/x-font-woff       "access plus 1 month"
+	ExpiresByType application/x-font-woff2      "access plus 1 month"
+	ExpiresByType image/svg+xml                 "access plus 1 month"
+	ExpiresByType application/vnd.ms-fontobject "access plus 1 month"
+	# CSS and JavaScript
+	ExpiresByType text/css                      "access plus 1 year"
+	ExpiresByType application/javascript        "access plus 1 year"
+</IfModule>
+
+HTACCESS;
 
 	/**
 	 * Filter rules to improve performances with Expires Headers
@@ -431,7 +459,7 @@ function get_rocket_htaccess_mod_expires() {
 	 * @since 1.0
 	 *
 	 * @param string $rules Rules that will be printed.
-	*/
+	 */
 	$rules = apply_filters( 'rocket_htaccess_mod_expires', $rules );
 
 	return $rules;
@@ -540,7 +568,7 @@ function get_rocket_htaccess_etag() {
  * @return string $rules Rules that will be printed
  */
 function get_rocket_htaccess_web_fonts_access() {
-	if ( false === get_rocket_option( 'cdn', false ) ) {
+	if ( ! get_rocket_option( 'cdn', false ) ) {
 		return;
 	}
 
@@ -572,4 +600,32 @@ function get_rocket_htaccess_web_fonts_access() {
 	$rules = apply_filters( 'rocket_htaccess_web_fonts_access', $rules );
 
 	return $rules;
+}
+
+/**
+ * Tell if WP rewrite rules are present in a given string.
+ *
+ * @since  3.2.4
+ * @author Grégory Viguier
+ *
+ * @param  string $content Htaccess content.
+ * @return bool
+ */
+function rocket_has_wp_htaccess_rules( $content ) {
+	if ( is_multisite() ) {
+		$has_wp_rules = strpos( $content, '# add a trailing slash to /wp-admin' ) !== false;
+	} else {
+		$has_wp_rules = strpos( $content, '# BEGIN WordPress' ) !== false;
+	}
+
+	/**
+	 * Tell if WP rewrite rules are present in a given string.
+	 *
+	 * @since  3.2.4
+	 * @author Grégory Viguier
+	 *
+	 * @param bool   $has_wp_rules True when present. False otherwise.
+	 * @param string $content      .htaccess content.
+	 */
+	return apply_filters( 'rocket_has_wp_htaccess_rules', $has_wp_rules, $content );
 }

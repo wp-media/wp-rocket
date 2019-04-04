@@ -1,0 +1,54 @@
+// main: ../main.scss
+
+
+///* -- Font-size -- *\
+//    $size-value = Size of the font in px
+//    $line = Size of the line-height in px
+//*/
+
+@mixin font-size($size, $line){
+    font-size: ($size / 16) + rem;
+    line-height: $line / $size;
+}
+
+
+///* -- Transition -- *\
+//    $duration = Duration of the transition
+//*/
+
+@mixin transition($type, $duration, $ease: ease-out){
+    transition: $type $duration $ease;
+    -webkit-transition: $type $duration $ease;
+}
+
+
+///* -- Transform -- *\
+@mixin transform($string){
+    transform: $string;
+	-webkit-transform: $string;
+}
+
+
+// Responsive breakpoint manager
+// $breakpoint = xs,sm
+// @requires $breakpoints in variables.scss
+@mixin respond-to($breakpoint) {
+  $raw-query: map-get($breakpoints, $breakpoint);
+
+  @if $raw-query {
+    $query: if(
+      type-of($raw-query) == 'string',
+      unquote($raw-query),
+      inspect($raw-query)
+    );
+
+    @media #{$query} {
+      @content;
+    }
+  } @else {
+    @error 'No value found for `#{$breakpoint}`. '
+         + 'Please make sure it is defined in `$breakpoints` map.';
+  }
+}
+
+// How to use : @include respond-to($breakpoint) { color: #000;}

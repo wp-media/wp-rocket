@@ -1,0 +1,76 @@
+// main: ../main.scss
+
+h1,
+h2,
+h3,
+h4{
+    color: currentColor;
+    margin: 0;
+    font-weight: normal;
+}
+
+button{
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+a{
+    color: currentColor;
+    @include transition(color, 200ms);
+
+    &:hover{
+        color: currentColor;
+    }
+}
+
+input[type=submit]{
+    cursor: pointer;
+    border: none;
+}
+
+a, button{
+    &:active{
+        outline: none;
+    }
+
+    &:focus{
+        color: currentColor;
+        box-shadow: none;
+    }
+}
+
+.wpr-wrap{
+    padding: 16px;
+    margin: 0 0 0 -20px;
+
+    @include respond-to('xs') {
+        padding: 0;
+        margin: 0 0 0 -10px;
+    }
+}
+
+.wpr-body{
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -ms-interpolation-mode: nearest-neighbor;
+    image-rendering: optimizeQuality;
+    text-rendering: optimizeLegibility;
+
+    display: flex;
+    color: $cBlack;
+    @include font-size(14,21);
+}
+
+.wpr-body * {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+@include respond-to('xs') {
+    #hs-beacon{
+        display: none !important;
+    }
+}

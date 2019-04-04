@@ -1,0 +1,72 @@
+// main: ../main.scss
+
+/*-----------------------------------------------*\
+
+    Field warning
+
+\*-----------------------------------------------*/
+
+.wpr-fieldWarning{
+    display: none;
+    position: relative;
+    padding: $space*2 $space*2 $space*3 56px;
+    background: $cPurpleDark1;
+    margin: $space 0 0;
+    color: #fff;
+
+    &.wpr-isOpen{
+        display: block;
+    }
+
+    &:after{
+        content: '';
+        position: absolute;
+        display: block;
+        top: -$space;
+        left: 20px;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 0 12px 8px 12px;
+        border-color: transparent transparent $cPurpleDark1 transparent;
+    }
+
+    &:before{
+        content: '';
+        position: absolute;
+        display: block;
+        width: calc(100% + 32px);
+        height: 100%;
+        top: 0;
+        left: -$space*2;
+        background: $cPurpleDark1;
+    }
+
+    &-title{
+        position: relative;
+        color: $cOrange;
+        @include font-size(14,20);
+        font-weight: bold;
+
+        &:before{
+            position: absolute;
+            left: -36px;
+            @include font-size(24,20);
+        }
+    }
+
+    &-description{
+        position: relative;
+        margin-top: $space;
+    }
+
+    .wpr-button{
+        margin-top: $space*2;
+    }
+}
+
+.wpr-warningContainer + .wpr-warningContainer,
+.wpr-warningContainer + .wpr-field{
+    border-top: 1px solid $cGrey;
+    padding-top: 16px;
+}

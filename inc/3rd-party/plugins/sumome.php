@@ -1,0 +1,52 @@
+<?php 
+/**
+ * Compatibility with SumoMe
+ *
+ * Prevents conflict with SumoMe and the WP Rocket UI by removing SumoMe
+ * styles and scripts on WP Rocket admin pages.
+ *
+ * @link https://wordpress.org/plugins/sumome/
+ * @since 3.0.4
+ */
+defined( 'ABSPATH' ) || die( 'Cheatin\' uh?' );
+
+if ( class_exists( 'WP_Plugin_SumoMe' ) ) {
+	
+	/**
+	 * Dequeue SumoMe styles
+	 *
+	 * @since 3.0.4
+	 * @author Arun Basil Lal
+	 */
+	function rocket_dequeue_sumo_me_css() {
+		
+		// Retun on all pages but WP Rocket settings page
+		$screen = get_current_screen();
+		if ( $screen->id !== 'settings_page_wprocket' ) {
+			return;
+		}
+
+		wp_dequeue_style( 'sumome-admin-styles' );
+		wp_dequeue_style( 'sumome-admin-media' );
+	}
+	add_action( 'admin_enqueue_scripts', 'rocket_dequeue_sumo_me_css', PHP_INT_MAX );
+
+	/**
+	 * Dequeue SumoMe inline script
+	 *
+	 * @since 3.0.4
+	 * @author Arun Basil Lal
+	 */
+	function rocket_dequeue_sumo_me_js() {
+		
+		// Retun on all pages but WP Rocket settings page
+		$screen = get_current_screen();
+		if ( $screen->id !== 'settings_page_wprocket' ) {
+			return;
+		}
+		
+		global $wp_plugin_sumome;
+		remove_action( 'admin_footer', array( $wp_plugin_sumome, 'append_admin_script_code' ) );
+	}
+	add_action( 'admin_head', 'rocket_dequeue_sumo_me_js' );
+}

@@ -1,0 +1,150 @@
+// main: ../main.scss
+
+/*-----------------------------------------------*\
+
+	Icons in a font-icon with icomoon (https://icomoon.io/app)
+
+\*-----------------------------------------------*/
+
+@font-face {
+	font-family: 'wpr-icomoon';
+	src:url('../fonts/icomoon.eot?-4yq2oj');
+	src:url('../fonts/icomoon.eot?#iefix-4yq2oj') format('embedded-opentype'),
+		url('../fonts/icomoon.woff?-4yq2oj') format('woff'),
+		url('../fonts/icomoon.ttf?-4yq2oj') format('truetype'),
+		url('../fonts/icomoon.svg?-4yq2oj#icomoon') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+[class^="wpr-icon-"]:before, [class*=" wpr-icon-"]:after,
+[class^="wpr-icon-"]:after, [class*=" wpr-icon-"]:before,
+[id^="wpr-nav-"]:before, [id*=" wpr-nav-"]:after,
+[id^="wpr-nav-"]:after, [id*=" wpr-nav-"]:before {
+	font-family: 'wpr-icomoon';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+[class^="wpr-icon-"] span.hidden,
+[class*=" wpr-icon-"] span.hidden{
+    display: inline-block;
+    height: 0;
+    width: 0;
+    overflow: hidden;
+}
+
+
+.wpr-icon-chevron-right:before {
+  content: "\e900";
+}
+.wpr-icon-chevron-left:before {
+  content: "\e900";
+  transform: rotate(180deg);
+}
+.wpr-icon-chevron-down:before {
+  content: "\e901";
+  transform: scale(0.6);
+}
+.wpr-icon-chevron-up:before {
+  content: "\e902";
+  top: 50%;
+  transform: translateY(-50%) scale(0.6);
+}
+.wpr-icon-rollback:before {
+  content: "\e903";
+}
+.wpr-icon-addon:before {
+  content: "\e904";
+}
+.wpr-icon-addons:before {
+  content: "\e905";
+}
+.wpr-icon-book:before {
+  content: "\e906";
+}
+.wpr-icon-cdn:before {
+  content: "\e907";
+}
+.wpr-icon-database:before {
+  content: "\e908";
+}
+.wpr-icon-export:before {
+  content: "\e909";
+}
+.wpr-icon-files:before {
+  content: "\e90a";
+}
+.wpr-icon-help:before {
+  content: "\e90b";
+}
+.wpr-icon-home:before {
+  content: "\e90c";
+}
+.wpr-icon-import:before {
+  content: "\e90d";
+}
+.wpr-icon-important:before {
+  content: "\e90e";
+}
+.wpr-icon-information:before {
+  content: "\e90f";
+}
+.wpr-icon-information2:before {
+  content: "\e910";
+}
+.wpr-icon-interrogation:before {
+  content: "\e911";
+}
+.wpr-icon-media:before {
+  content: "\e912";
+}
+.wpr-icon-plus:before {
+  content: "\e913";
+}
+.wpr-icon-refresh:before {
+  content: "\e914";
+}
+.wpr-icon-rules:before {
+  content: "\e915";
+}
+.wpr-icon-stack:before {
+  content: "\e916";
+}
+.wpr-icon-tools:before {
+  content: "\e917";
+}
+.wpr-icon-trash:before {
+  content: "\e918";
+}
+.wpr-icon-user:before {
+  content: "\e919";
+}
+.wpr-icon-check:before {
+  content: "\e920";
+}
+.wpr-icon-check2:before {
+  content: "\e921";
+}
+.wpr-icon-close:before {
+  content: "\e922";
+}
+.wpr-icon-heartbeat:before {
+  content: url('../img/heartbeat.svg');
+}
+.wpr-icon-heartbeat-hover:before {
+  content: url('../img/heartbeat-hover.svg');
+}
+.wpr-icon-imagify:before {
+  content: url('../img/imagify.svg');
+}
+.wpr-icon-imagify-hover:before {
+  content: url('../img/imagify-hover.svg');
+}
