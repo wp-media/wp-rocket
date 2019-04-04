@@ -4,6 +4,8 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 global $nginx_helper;
 
 if ( isset( $nginx_helper ) ) :
+	global $nginx_purger;
+
 	/**
 	 * Clear WP Rocket cache after the NGINX cache is purged from Nginx Helper.
 	 *
@@ -36,6 +38,63 @@ if ( isset( $nginx_helper ) ) :
 		rocket_clean_domain();
 	}
 	add_action( 'admin_init', 'rocket_clear_cache_after_nginx_helper_purge' );
+
+	/**
+	 * Clears NGINX cache for the homepage URL when using "Purge this URL" from the admin bar on the front end
+	 *
+	 * @since 3.3.0.1
+	 * @author Remy Perona
+	 *
+	 * @param string $root WP Rocket root cache path.
+	 * @param string $lang Current language.
+	 * @return void
+	 */
+	function rocket_clean_nginx_cache_home( $root = '', $lang = '' ) {
+		global $nginx_purger;
+
+		if ( ! isset( $nginx_purger ) ) {
+			return;
+		}
+
+		$url = get_rocket_i18n_home_url( $lang );
+
+		$nginx_purger->purge_url( $url );
+	}
+	add_action( 'after_rocket_clean_home', 'rocket_clean_nginx_cache_home', 10, 2 );
+
+	/**
+	 * Clears NGINX cache for a specific URL when using "Purge this URL" from the admin bar on the front end
+	 *
+	 * @since 3.3.0.1
+	 * @author Remy Perona
+	 *
+	 * @param string $url URL to purge.
+	 * @return void
+	 */
+	function rocket_clean_nginx_cache_url( $url ) {
+		global $nginx_purger;
+
+		if ( ! isset( $nginx_purger ) ) {
+			return;
+		}
+
+		if ( ! isset( $_GET['type'], $_GET['_wpnonce'] ) ) { // WPCS: csrf ok.
+			return;
+		}
+
+		if ( false !== strpos( $url, 'index.html' ) ) {
+			return;
+		}
+
+		if ( 'page' === substr( $url, -4 ) ) {
+			return;
+		}
+
+		$url = str_replace( '*', '', $url );
+
+		$nginx_purger->purge_url( $url );
+	}
+	add_action( 'after_rocket_clean_file', 'rocket_clean_nginx_cache_url' );
 
 	/**
 	 * Clean the NGINX cache using Nginx Helper after WP Rocket's cache is purged.
