@@ -14,11 +14,11 @@ if ( isset( $nginx_helper ) ) :
 	 * @return void
 	 */
 	function rocket_clear_cache_after_nginx_helper_purge() {
-		if ( ! isset( $_GET['nginx_helper_action'], $_GET['_wpnonce'] ) ) {
+		if ( ! isset( $_GET['nginx_helper_action'] ) ) {
 			return;
 		}
 
-		if ( ! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'nginx_helper-purge_all' ) ) {
+		if ( ! check_admin_referer( 'nginx_helper-purge_all' ) ) {
 			return;
 		}
 
@@ -30,14 +30,50 @@ if ( isset( $nginx_helper ) ) :
 			return;
 		}
 
-		if ( ! check_admin_referer( 'nginx_helper-purge_all' ) ) {
-			return;
-		}
-
 		// Clear all caching files.
 		rocket_clean_domain();
 	}
 	add_action( 'admin_init', 'rocket_clear_cache_after_nginx_helper_purge' );
+
+	/**
+	 * Clear WP Rocket cache for the current page after the NGINX cache is purged from Nginx Helper.
+	 *
+	 * @since 3.3.0.1
+	 *
+	 * @return void
+	 */
+	function rocket_clear_current_page_after_nginx_helper_purge() {
+		if ( ! isset( $_GET['nginx_helper_action'], $_GET['_wpnonce'] ) ) {
+			return;
+		}
+
+		if ( ! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'nginx_helper-purge_all' ) ) {
+			return;
+		}
+
+		if ( is_admin() ) {
+			return;
+		}
+
+		if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+			return;
+		}
+
+		$referer = wp_get_referer();
+
+		if ( 0 !== strpos( $referer, 'http' ) ) {
+			$parse_url = get_rocket_parse_url( untrailingslashit( home_url() ) );
+			$referer   = $parse_url['scheme'] . '://' . $parse_url['host'] . $referer;
+		}
+
+		if ( home_url( '/' ) === $referer ) {
+			rocket_clean_home();
+			return;
+		}
+
+		rocket_clean_files( $referer );
+	}
+	add_action( 'init', 'rocket_clear_current_page_after_nginx_helper_purge' );
 
 	/**
 	 * Clears NGINX cache for the homepage URL when using "Purge this URL" from the admin bar on the front end
