@@ -24,7 +24,7 @@ $(document).ready(function(){
                         window.Beacon("open");
                     }, 200);
                 } else {
-                    window.Beacon("article", aID);
+                    window.Beacon("article", aID.toString());
                 }
             
         }
