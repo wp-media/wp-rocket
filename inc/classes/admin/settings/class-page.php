@@ -279,7 +279,6 @@ class Page {
 			'facebook_pixel_cache'        => 1,
 			'sucury_waf_cache_sync'       => 1,
 			'sucury_waf_api_key'          => 1,
-			'nginx_auto_purge'            => 1,
 		];
 
 		if ( ! isset( $_POST['option']['name'] ) || ! isset( $whitelist[ $_POST['option']['name'] ] ) ) {
@@ -1719,38 +1718,6 @@ class Page {
 						],
 					]
 				)
-			);
-		}
-
-		/**
-		 * Allow to display the NGINX Cache Add-on in the settings page
-		 *
-		 * @since 3.3
-		 *
-		 * @param bool $display True to display, false otherwise.
-		*/
-		if ( apply_filters( 'rocket_display_nginx_addon', true ) ) {
-			$nginx_beacon = $this->beacon->get_suggest( 'nginx' );
-
-			$this->settings->add_settings_fields(
-				[
-					'nginx_auto_purge' => [
-						'type'              => 'one_click_addon',
-						'label'             => __( 'NGINX FastCGI Cache', 'rocket' ),
-						'logo'              => [
-							'url'    => WP_ROCKET_ASSETS_IMG_URL . 'logo-nginx.svg',
-							'width'  => 146,
-							'height' => 166,
-						],
-						'title'             => __( 'If NGINX FastCGI Cache runs on your server, you must activate this add-on.', 'rocket' ),
-						// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-						'description'       => sprintf( __( 'NGINX FastCGI cache will be purged each time WP Rocket clears its cache to ensure content is always up-to-date.<br>Requires server to have NGINX FastCGI cache active and %3$s<code>ngx_cache_purge</code>%2$s module installed.<br>%1$sLearn more%2$s', 'rocket' ), '<a href="' . esc_url( $nginx_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $nginx_beacon['id'] ) . '" target="_blank">', '</a>', '<a href="https://github.com/FRiCKLE/ngx_cache_purge" target="_blank">' ),
-						'section'           => 'one_click',
-						'page'              => 'addons',
-						'default'           => 0,
-						'sanitize_callback' => 'sanitize_checkbox',
-					],
-				]
 			);
 		}
 

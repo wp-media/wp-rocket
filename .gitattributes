@@ -3,7 +3,7 @@
 .stickler.yml export-ignore
 bin export-ignore
 tests export-ignore
-phpunit.xml export-ignore
+phpunit.xml.dist export-ignore
 README.md export-ignore
 CONTRIBUTOR.md export-ignore
 .gitattributes export-ignore

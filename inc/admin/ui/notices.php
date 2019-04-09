@@ -132,6 +132,7 @@ function rocket_plugins_to_deactivate() {
 		$plugins['jquery-image-lazy-loading'] = 'jquery-image-lazy-loading/jq_img_lazy_load.php';
 		$plugins['advanced-lazy-load']        = 'advanced-lazy-load/advanced_lazyload.php';
 		$plugins['crazy-lazy']                = 'crazy-lazy/crazy-lazy.php';
+		$plugins['specify-image-dimensions']  = 'specify-image-dimensions/specify-image-dimensions.php';
 	}
 
 	if ( get_rocket_option( 'lazyload_iframes' ) ) {

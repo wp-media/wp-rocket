@@ -3,10 +3,10 @@
  * Plugin Name: WP Rocket
  * Plugin URI: https://wp-rocket.me
  * Description: The best WordPress performance plugin.
- * Version: 3.3
+ * Version: 3.3.0.1
  * Code Name: Dagobah
  * Author: WP Media
- * Author URI: http://wp-media.me
+ * Author URI: https://wp-media.me
  * Licence: GPLv2 or later
  *
  * Text Domain: rocket
@@ -18,7 +18,7 @@
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 // Rocket defines.
-define( 'WP_ROCKET_VERSION',               '3.3' );
+define( 'WP_ROCKET_VERSION',               '3.3.0.1' );
 define( 'WP_ROCKET_WP_VERSION',            '4.7' );
 define( 'WP_ROCKET_PHP_VERSION',           '5.4' );
 define( 'WP_ROCKET_PRIVATE_KEY',           false );

@@ -81,7 +81,9 @@ $(document).ready(function(){
     }
 
     // Display/Hide childern fields on checkbox change.
-    $( '.wpr-isParent input[type=checkbox]' ).change( 'wprShowChildren' );
+    $( '.wpr-isParent input[type=checkbox]' ).change( function() {
+        wprShowChildren($(this));
+    });
 
     // On page load, display the active fields.
     $( '.wpr-field--children' ).each( function() {

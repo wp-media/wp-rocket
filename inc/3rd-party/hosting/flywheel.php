@@ -19,7 +19,12 @@ if ( class_exists( 'FlywheelNginxCompat' ) ) {
 	add_filter( 'rocket_varnish_field_settings', 'rocket_flywheel_varnish_field' );
 
 	add_filter( 'rocket_display_input_varnish_auto_purge', '__return_false' );
-	add_filter( 'rocket_display_nginx_addon', '__return_false' );
+
+	/**
+	 * Allow to purge Varnish on Flywheel websites
+	 *
+	 * @since 2.6.8
+	 */
 	add_filter( 'do_rocket_varnish_http_purge', '__return_true' );
 	add_filter( 'do_rocket_generate_caching_files', '__return_false' );
 

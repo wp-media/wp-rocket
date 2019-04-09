@@ -80,7 +80,7 @@ function PageManager(aElem) {
 
     // Click links not WP rocket to reset hash
     var $otherlinks = document.querySelectorAll('#adminmenumain a, #wpadminbar a');
-    for (var i = 0; i < this.$links.length; i++) {
+    for (var i = 0; i < $otherlinks.length; i++) {
         $otherlinks[i].onclick = function() {
             localStorage.setItem('wpr-hash', '');
         };
