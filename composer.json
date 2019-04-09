@@ -58,8 +58,14 @@
 			"inc/classes/class-wp-rocket-requirements-check.php"
 		]
 	},
+	"autoload-dev": {
+		"psr-4": {
+			"WP_Rocket\\Tests\\Unit\\": "tests/Unit",
+			"WP_Rocket\\Tests\\Integration\\": "tests/Integration"
+		}
+	},
 	"scripts": {
 		"test-unit":"\"vendor/bin/phpunit\" --testsuite unit --colors=always",
 		"test-integration": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist"
-}
+	}
 }
