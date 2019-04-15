@@ -33,6 +33,6 @@ class Hostings_Subscribers extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
-		$this->getContainer()->add( 'pressable_subscriber', 'WP_Rocket\Subscriber\Third_Party\Hostings\Pressable_Subscriber' );
+		$this->getContainer()->share( 'pressable_subscriber', 'WP_Rocket\Subscriber\Third_Party\Hostings\Pressable_Subscriber' );
 	}
 }

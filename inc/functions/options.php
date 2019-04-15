@@ -414,6 +414,7 @@ function get_rocket_cdn_cnames( $zone = 'all' ) {
 	$hosts = (array) apply_filters( 'rocket_cdn_cnames', $hosts );
 	$hosts = array_filter( $hosts );
 	$hosts = array_flip( array_flip( $hosts ) );
+	$hosts = array_values( $hosts );
 
 	return $hosts;
 }
@@ -457,7 +458,9 @@ function get_rocket_exclude_defer_js() {
 		'gist.github.com',
 		'content.jwplatform.com',
 		'js.hsforms.net',
+		'www.uplaunch.com',
 		'google.com/recaptcha',
+		'widget.reviews.co.uk',
 	];
 
 	if ( get_rocket_option( 'defer_all_js', 0 ) && get_rocket_option( 'defer_all_js_safe', 0 ) ) {

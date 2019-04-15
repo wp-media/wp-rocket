@@ -83,7 +83,7 @@ add_filter( 'rocket_inputs_sanitize', 'rank_math_rocket_sitemap_option_sanitize'
  */
 function rank_math_rocket_sitemap( $sitemaps ) {
 	if ( get_rocket_option( 'rank_math_xml_sitemap', false ) ) {
-		$sitemaps[] = \RankMath\Modules\Sitemap\Router::get_base_url( 'sitemap_index.xml' );
+		$sitemaps[] = \RankMath\Sitemap\Router::get_base_url( 'sitemap_index.xml' );
 	}
 
 	return $sitemaps;

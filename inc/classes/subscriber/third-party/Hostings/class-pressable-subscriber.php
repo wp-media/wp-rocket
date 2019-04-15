@@ -21,7 +21,6 @@ class Pressable_Subscriber implements Subscriber_Interface {
 		return [
 			'do_rocket_generate_caching_files'   => [ 'return_false', PHP_INT_MAX ],
 			'rocket_display_varnish_options_tab' => 'return_false',
-			'rocket_display_nginx_addon'         => 'return_false',
 			'rocket_cache_mandatory_cookies'     => [ 'return_empty_array', PHP_INT_MAX ],
 			'wp_rocket_loaded'                   => 'remove_advanced_cache_notices',
 			'after_rocket_clean_domain'          => 'purge_pressable_cache',

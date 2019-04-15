@@ -105,7 +105,7 @@ $(document).ready(function(){
 
 	function wprActivateAnalytics(){
 		wprCloseAnalytics();
-		$('#analytics_enabled').attr('checked', true);
+		$('#analytics_enabled').prop('checked', true);
 		$('#analytics_enabled').trigger('change');
 	}
 
@@ -155,7 +155,7 @@ $(document).ready(function(){
 
 	function wprDeactivateBeta(){
 		wprCloseBeta();
-		$('#do_beta').attr('checked', false);
+		$('#do_beta').prop('checked', false);
 		$('#do_beta').trigger('change');
 	}
 

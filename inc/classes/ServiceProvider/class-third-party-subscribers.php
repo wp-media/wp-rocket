@@ -23,7 +23,8 @@ class Third_Party_Subscribers extends AbstractServiceProvider {
 	protected $provides = [
 		'mobile_subscriber',
 		'woocommerce_subscriber',
-		'nginx_subscriber',
+		'syntaxhighlighter_subscriber',
+		'elementor_subscriber',
 	];
 
 	/**
@@ -35,9 +36,10 @@ class Third_Party_Subscribers extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
-		$this->getContainer()->add( 'mobile_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Mobile_Subscriber' );
-		$this->getContainer()->add( 'woocommerce_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Ecommerce\WooCommerce_Subscriber' );
-		$this->getContainer()->add( 'nginx_subscriber', 'WP_Rocket\Subscriber\Third_Party\Cache\NGINX_Subscriber' )
+		$this->getContainer()->share( 'mobile_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Mobile_Subscriber' );
+		$this->getContainer()->share( 'woocommerce_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Ecommerce\WooCommerce_Subscriber' );
+		$this->getContainer()->share( 'elementor_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\PageBuilder\Elementor_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'options' ) );
+		$this->getContainer()->share( 'syntaxhighlighter_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\SyntaxHighlighter_Subscriber' );
 	}
 }

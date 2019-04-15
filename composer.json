@@ -41,10 +41,12 @@
 		"wp-media/rocket-lazyload-common": "^2.2"
 	},
 	"require-dev": {
-		"dealerdirect/phpcodesniffer-composer-installer": "^0.4.4",
+		"brain/monkey": "^2.0",
+		"dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
 		"phpcompatibility/phpcompatibility-wp": "*",
+		"phpunit/phpunit": "^5.7",
 		"squizlabs/php_codesniffer": "^3.2",
-		"wp-coding-standards/wpcs": "^2.0.0"
+		"wp-coding-standards/wpcs": "^2.1.0"
 	},
 	"autoload": {
 		"classmap": [
@@ -55,5 +57,15 @@
 			"inc/vendors/classes/class-rocket-mobile-detect.php",
 			"inc/classes/class-wp-rocket-requirements-check.php"
 		]
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"WP_Rocket\\Tests\\Unit\\": "tests/Unit",
+			"WP_Rocket\\Tests\\Integration\\": "tests/Integration"
+		}
+	},
+	"scripts": {
+		"test-unit":"\"vendor/bin/phpunit\" --testsuite unit --colors=always",
+		"test-integration": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist"
 	}
 }

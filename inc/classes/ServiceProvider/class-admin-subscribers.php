@@ -36,15 +36,15 @@ class Admin_Subscribers extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register() {
-		$this->getContainer()->add( 'settings_page_subscriber', 'WP_Rocket\Subscriber\Admin\Settings\Page_Subscriber' )
+		$this->getContainer()->share( 'settings_page_subscriber', 'WP_Rocket\Subscriber\Admin\Settings\Page_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'settings_page' ) );
 		$this->getContainer()->add( 'deactivation_intent_render', 'WP_Rocket\Admin\Deactivation\Render' )
 			->withArgument( $this->getContainer()->get( 'template_path' ) . '/deactivation-intent' );
-		$this->getContainer()->add( 'deactivation_intent_subscriber', 'WP_Rocket\Subscriber\Admin\Deactivation\Deactivation_Intent_Subscriber' )
+		$this->getContainer()->share( 'deactivation_intent_subscriber', 'WP_Rocket\Subscriber\Admin\Deactivation\Deactivation_Intent_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'deactivation_intent_render' ) )
 			->withArgument( $this->getContainer()->get( 'options_api' ) )
 			->withArgument( $this->getContainer()->get( 'options' ) );
-		$this->getContainer()->add( 'beacon_subscriber', 'WP_Rocket\Subscriber\Admin\Settings\Beacon_Subscriber' )
+		$this->getContainer()->share( 'beacon_subscriber', 'WP_Rocket\Subscriber\Admin\Settings\Beacon_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'beacon' ) );
 	}
 }

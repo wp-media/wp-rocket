@@ -39,13 +39,13 @@ class Addons_Subscribers extends AbstractServiceProvider {
 		$this->getContainer()->add( 'busting_factory', 'WP_Rocket\Busting\Busting_Factory' )
 			->withArgument( WP_ROCKET_CACHE_BUSTING_PATH )
 			->withArgument( WP_ROCKET_CACHE_BUSTING_URL );
-		$this->getContainer()->add( 'facebook_tracking_subscriber', 'WP_Rocket\Subscriber\Facebook_Tracking_Cache_Busting_Subscriber' )
+		$this->getContainer()->share( 'facebook_tracking_subscriber', 'WP_Rocket\Subscriber\Facebook_Tracking_Cache_Busting_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'busting_factory' ) )
 			->withArgument( $this->getContainer()->get( 'options' ) );
-		$this->getContainer()->add( 'google_tracking_subscriber', 'WP_Rocket\Subscriber\Google_Tracking_Cache_Busting_Subscriber' )
+		$this->getContainer()->share( 'google_tracking_subscriber', 'WP_Rocket\Subscriber\Google_Tracking_Cache_Busting_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'busting_factory' ) )
 			->withArgument( $this->getContainer()->get( 'options' ) );
-		$this->getContainer()->add( 'sucuri_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Security\Sucuri_Subscriber' )
+		$this->getContainer()->share( 'sucuri_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Security\Sucuri_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'options' ) );
 
 	}

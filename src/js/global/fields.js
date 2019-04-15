@@ -81,7 +81,9 @@ $(document).ready(function(){
     }
 
     // Display/Hide childern fields on checkbox change.
-    $( '.wpr-isParent input[type=checkbox]' ).change( 'wprShowChildren' );
+    $( '.wpr-isParent input[type=checkbox]' ).change( function() {
+        wprShowChildren($(this));
+    });
 
     // On page load, display the active fields.
     $( '.wpr-field--children' ).each( function() {
@@ -123,7 +125,7 @@ $(document).ready(function(){
         // Check warning parent
         if($thisCheckbox.is(':checked')){
             $warningField.addClass('wpr-isOpen');
-            $thisCheckbox.attr('checked', false);
+            $thisCheckbox.prop('checked', false);
             aElem.trigger('change');
 
 
@@ -131,14 +133,14 @@ $(document).ready(function(){
 
             // Validate the warning
             $warningButton.click(function(){
-                $thisCheckbox.attr('checked', true);
+                $thisCheckbox.prop('checked', true);
                 $warningField.removeClass('wpr-isOpen');
                 $children.addClass('wpr-isOpen');
 
                 // If next elem = disabled
                 if($nextWarning.length > 0){
                     $nextFields.removeClass('wpr-isDisabled');
-                    $nextFields.find('input').attr('disabled', false);
+                    $nextFields.find('input').prop('disabled', false);
                 }
 
                 return false;
@@ -146,8 +148,8 @@ $(document).ready(function(){
         }
         else{
             $nextFields.addClass('wpr-isDisabled');
-            $nextFields.find('input').attr('disabled', true);
-            $nextFields.find('input[type=checkbox]').attr('checked', false);
+            $nextFields.find('input').prop('disabled', true);
+            $nextFields.find('input[type=checkbox]').prop('checked', false);
             $children.removeClass('wpr-isOpen');
         }
     }
