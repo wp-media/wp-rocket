@@ -460,6 +460,7 @@ function get_rocket_exclude_defer_js() {
 		'js.hsforms.net',
 		'www.uplaunch.com',
 		'google.com/recaptcha',
+		'widget.reviews.co.uk',
 	];
 
 	if ( get_rocket_option( 'defer_all_js', 0 ) && get_rocket_option( 'defer_all_js_safe', 0 ) ) {
