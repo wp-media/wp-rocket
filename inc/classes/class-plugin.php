@@ -135,6 +135,7 @@ class Plugin {
 			'pressable_subscriber',
 			'syntaxhighlighter_subscriber',
 			'elementor_subscriber',
+			'ngg_subscriber',
 		];
 
 		$subscribers = array_merge( $subscribers, $common_subscribers );
