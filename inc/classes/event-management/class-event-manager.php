@@ -35,9 +35,7 @@ class Event_Manager {
 			$subscriber->set_event_manager( $this );
 		}
 
-		$events = $subscriber->get_subscribed_events();
-
-		if ( empty( $events ) ) {
+		if ( ! (bool) $subscriber->get_subscribed_events() ) {
 			return;
 		}
 
