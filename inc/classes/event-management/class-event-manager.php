@@ -35,6 +35,10 @@ class Event_Manager {
 			$subscriber->set_event_manager( $this );
 		}
 
+		if ( ! (bool) $subscriber->get_subscribed_events() ) {
+			return;
+		}
+
 		foreach ( $subscriber->get_subscribed_events() as $hook_name => $parameters ) {
 			$this->add_subscriber_callback( $subscriber, $hook_name, $parameters );
 		}
