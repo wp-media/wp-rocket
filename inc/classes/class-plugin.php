@@ -136,6 +136,7 @@ class Plugin {
 			'syntaxhighlighter_subscriber',
 			'elementor_subscriber',
 			'bridge_subscriber',
+			'ngg_subscriber',
 		];
 
 		$subscribers = array_merge( $subscribers, $common_subscribers );

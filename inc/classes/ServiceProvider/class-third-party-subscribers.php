@@ -26,6 +26,7 @@ class Third_Party_Subscribers extends AbstractServiceProvider {
 		'syntaxhighlighter_subscriber',
 		'elementor_subscriber',
 		'bridge_subscriber',
+		'ngg_subscriber',
 	];
 
 	/**
@@ -43,5 +44,6 @@ class Third_Party_Subscribers extends AbstractServiceProvider {
 			->withArgument( $this->getContainer()->get( 'options' ) );
 		$this->getContainer()->share( 'syntaxhighlighter_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\SyntaxHighlighter_Subscriber' );
 		$this->getContainer()->share( 'bridge_subscriber', 'WP_Rocket\Subscriber\Third_Party\Themes\Bridge_Subscriber' );
+		$this->getContainer()->share( 'ngg_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\NGG_Subscriber' );
 	}
 }
