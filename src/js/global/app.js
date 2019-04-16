@@ -9,5 +9,5 @@ import '../lib/greensock/plugins/ScrollToPlugin.min.js';
 import '../global/pageManager.js';
 import '../global/main.js';
 import '../global/fields.js';
-import '../global/beacons.js';
+import '../global/beacon.js';
 import '../global/ajax.js';

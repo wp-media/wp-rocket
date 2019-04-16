@@ -11,6 +11,10 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  * @return array Updated array of HTTP request arguments.
  */
 function rocket_updates_exclude( $request, $url ) {
+	if ( ! is_string( $url ) ) {
+		return $request;
+	}
+
 	if ( 0 !== strpos( $url, 'http://api.wordpress.org/plugins/update-check' ) || ! isset( $request['body']['plugins'] ) ) {
 		return $request; // Not a plugin update request. Stop immediately.
 	}

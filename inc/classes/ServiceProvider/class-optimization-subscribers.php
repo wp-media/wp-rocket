@@ -53,7 +53,7 @@ class Optimization_Subscribers extends AbstractServiceProvider {
 			->withArgument( $this->getContainer()->get( 'config' ) );
 		$this->getContainer()->add( 'buffer_optimization', 'WP_Rocket\Buffer\Optimization' )
 			->withArgument( $this->getContainer()->get( 'tests' ) );
-		$this->getContainer()->add( 'buffer_subscriber', 'WP_Rocket\Subscriber\Optimization\Buffer_Subscriber' )
+		$this->getContainer()->share( 'buffer_subscriber', 'WP_Rocket\Subscriber\Optimization\Buffer_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'buffer_optimization' ) );
 		$this->getContainer()->add( 'cache_dynamic_resource', 'WP_Rocket\Optimization\Cache_Dynamic_Resource' )
 			->withArgument( $this->getContainer()->get( 'options' ) )
@@ -65,20 +65,20 @@ class Optimization_Subscribers extends AbstractServiceProvider {
 			->withArgument( $this->getContainer()->get( 'options' ) )
 			->withArgument( WP_ROCKET_CACHE_BUSTING_PATH )
 			->withArgument( WP_ROCKET_CACHE_BUSTING_URL );
-		$this->getContainer()->add( 'ie_conditionals_subscriber', 'WP_Rocket\Subscriber\Optimization\IE_Conditionals_Subscriber' );
-		$this->getContainer()->add( 'minify_html_subscriber', 'WP_Rocket\Subscriber\Optimization\Minify_HTML_Subscriber' )
+		$this->getContainer()->share( 'ie_conditionals_subscriber', 'WP_Rocket\Subscriber\Optimization\IE_Conditionals_Subscriber' );
+		$this->getContainer()->share( 'minify_html_subscriber', 'WP_Rocket\Subscriber\Optimization\Minify_HTML_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'options' ) );
-		$this->getContainer()->add( 'combine_google_fonts_subscriber', 'WP_Rocket\Subscriber\Optimization\Combine_Google_Fonts_Subscriber' )
+		$this->getContainer()->share( 'combine_google_fonts_subscriber', 'WP_Rocket\Subscriber\Optimization\Combine_Google_Fonts_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'options' ) );
-		$this->getContainer()->add( 'minify_css_subscriber', 'WP_Rocket\Subscriber\Optimization\Minify_CSS_Subscriber' )
+		$this->getContainer()->share( 'minify_css_subscriber', 'WP_Rocket\Subscriber\Optimization\Minify_CSS_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'options' ) );
-		$this->getContainer()->add( 'minify_js_subscriber', 'WP_Rocket\Subscriber\Optimization\Minify_JS_Subscriber' )
+		$this->getContainer()->share( 'minify_js_subscriber', 'WP_Rocket\Subscriber\Optimization\Minify_JS_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'options' ) );
-		$this->getContainer()->add( 'cache_dynamic_resource_subscriber', 'WP_Rocket\Subscriber\Optimization\Cache_Dynamic_Resource_Subscriber' )
+		$this->getContainer()->share( 'cache_dynamic_resource_subscriber', 'WP_Rocket\Subscriber\Optimization\Cache_Dynamic_Resource_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'cache_dynamic_resource' ) );
-		$this->getContainer()->add( 'cdn_favicons_subscriber', 'WP_Rocket\Subscriber\Optimization\CDN_Favicons_Subscriber' )
+		$this->getContainer()->share( 'cdn_favicons_subscriber', 'WP_Rocket\Subscriber\Optimization\CDN_Favicons_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'cdn_favicons' ) );
-		$this->getContainer()->add( 'remove_query_string_subscriber', 'WP_Rocket\Subscriber\Optimization\Remove_Query_String_Subscriber' )
+		$this->getContainer()->share( 'remove_query_string_subscriber', 'WP_Rocket\Subscriber\Optimization\Remove_Query_String_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'remove_query_string' ) );
 	}
 }

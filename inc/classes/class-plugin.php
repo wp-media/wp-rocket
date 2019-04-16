@@ -30,6 +30,15 @@ class Plugin {
 	 */
 	public function __construct( $template_path ) {
 		$this->container = new Container();
+
+		$container = $this->container;
+		add_filter(
+			'rocket_container',
+			function() use ( $container ) {
+				return $container;
+			}
+		);
+
 		$this->container->add( 'template_path', $template_path );
 	}
 
@@ -41,7 +50,7 @@ class Plugin {
 	 * @return void
 	 */
 	public function load() {
-		$this->container->add(
+		$this->container->share(
 			'event_manager',
 			function() {
 				return new Event_Manager();
@@ -124,6 +133,10 @@ class Plugin {
 			'mobile_subscriber',
 			'woocommerce_subscriber',
 			'pressable_subscriber',
+			'syntaxhighlighter_subscriber',
+			'elementor_subscriber',
+			'bridge_subscriber',
+			'ngg_subscriber',
 		];
 
 		$subscribers = array_merge( $subscribers, $common_subscribers );

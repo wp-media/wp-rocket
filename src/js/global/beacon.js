@@ -1,11 +1,9 @@
 var $ = jQuery;
 $(document).ready(function(){
-
-
-    /**
-     * Show beacons on button "help" click
-     */
-    HS.beacon.ready( function(){
+    if ('Beacon' in window) {
+        /**
+         * Show beacons on button "help" click
+         */
         var $help = $('.wpr-infoAction--help');
         $help.on('click', function(e){
             var ids = $(this).data('beacon-id');
@@ -18,17 +16,15 @@ $(document).ready(function(){
             if ( aID.length === 0 ) {
                 return;
             }
-            
-                var refThis = HS.beacon;
 
                 if ( aID.length > 1 ) {
-                    refThis.suggest(aID);
+                    window.Beacon("suggest", aID);
 
                     setTimeout(function() {
-                        refThis.open();
+                        window.Beacon("open");
                     }, 200);
                 } else {
-                    refThis.show(aID);
+                    window.Beacon("article", aID.toString());
                 }
             
         }
@@ -36,10 +32,9 @@ $(document).ready(function(){
         // Ask support
         var $askSupport = $('.wpr-js-askSupport');
         $askSupport.on('click', function(){
-            HS.beacon.open();
+            window.Beacon("open");
+            window.Beacon("navigate", "/ask/message/");
             return false;
         });
-
-    });
-
+    }
 });

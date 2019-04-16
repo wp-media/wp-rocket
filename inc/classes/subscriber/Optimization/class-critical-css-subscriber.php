@@ -190,6 +190,10 @@ class Critical_CSS_Subscriber implements Subscriber_Interface {
 			$message .= '</ul>';
 		}
 
+		if ( 'error' === $status || 'warning' === $status ) {
+			$message .= '<p>' . __( 'Critical CSS generation encountered one or more errors.', 'rocket' ) . ' ' . '<a href="https://docs.wp-rocket.me/article/108-render-blocking-javascript-and-css-pagespeed#errors" target="_blank" rel="noreferer noopener">' . __( 'Learn more.', 'rocket' ) . '</a>';
+		}
+
 		rocket_notice_html(
 			[
 				'status'  => $status,

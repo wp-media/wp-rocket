@@ -45,13 +45,13 @@ class Preload_Subscribers extends AbstractServiceProvider {
 			->withArgument( $this->getContainer()->get( 'full_preload_process' ) );
 		$this->getContainer()->add( 'sitemap_preload', 'WP_Rocket\Preload\Sitemap' )
 			->withArgument( $this->getContainer()->get( 'full_preload_process' ) );
-		$this->getContainer()->add( 'preload_subscriber', 'WP_Rocket\Subscriber\Preload\Preload_Subscriber' )
+		$this->getContainer()->share( 'preload_subscriber', 'WP_Rocket\Subscriber\Preload\Preload_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'homepage_preload' ) )
 			->withArgument( $this->getContainer()->get( 'options' ) );
-		$this->getContainer()->add( 'sitemap_preload_subscriber', 'WP_Rocket\Subscriber\Preload\Sitemap_Preload_Subscriber' )
+		$this->getContainer()->share( 'sitemap_preload_subscriber', 'WP_Rocket\Subscriber\Preload\Sitemap_Preload_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'sitemap_preload' ) )
 			->withArgument( $this->getContainer()->get( 'options' ) );
-		$this->getContainer()->add( 'partial_preload_subscriber', 'WP_Rocket\Subscriber\Preload\Partial_Preload_Subscriber' )
+		$this->getContainer()->share( 'partial_preload_subscriber', 'WP_Rocket\Subscriber\Preload\Partial_Preload_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'partial_preload_process' ) )
 			->withArgument( $this->getContainer()->get( 'options' ) );
 	}
