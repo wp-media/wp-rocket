@@ -142,6 +142,10 @@ function create_rocket_uniqid() {
  * @return array An array of requested arguments
  */
 function rocket_add_own_ua( $request, $url ) {
+	if ( ! is_string( $url ) ) {
+		return $request;
+	}
+
 	if ( strpos( $url, 'wp-rocket.me' ) !== false ) {
 		$request['user-agent'] = rocket_user_agent( $request['user-agent'] );
 	}
