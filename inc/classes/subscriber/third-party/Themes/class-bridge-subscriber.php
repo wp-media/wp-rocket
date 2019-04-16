@@ -9,7 +9,7 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  * @since 3.3.1
  * @author Remy Perona
  */
-class Bridge implements Subscriber_Interface {
+class Bridge_Subscriber implements Subscriber_Interface {
 	/**
 	 * @inheritDoc
 	 */
