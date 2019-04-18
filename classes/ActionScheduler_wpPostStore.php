@@ -138,10 +138,11 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 
 			$schedule = get_post_meta( $post->ID, self::SCHEDULE_META_KEY, true );
 			if ( empty( $schedule ) || ! is_a( $schedule, 'ActionScheduler_Schedule' ) ) {
-				$schedule = new ActionScheduler_NullSchedule();
+				throw ActionScheduler_InvalidActionException::from_decoding_args( $post->ID );
 			}
 		} catch ( ActionScheduler_InvalidActionException $exception ) {
 			$schedule = new ActionScheduler_NullSchedule();
+			$args = array();
 		}
 
 		$group = wp_get_object_terms( $post->ID, self::GROUP_TAXONOMY, array('fields' => 'names') );
