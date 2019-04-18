@@ -42,7 +42,6 @@ class ActionScheduler_wpPostStore_Test extends ActionScheduler_UnitTestCase {
 	}
 
 	/**
-	 * @expectedException ActionScheduler_InvalidActionException
 	 * @dataProvider provide_bad_args
 	 *
 	 * @param string $content
@@ -55,7 +54,8 @@ class ActionScheduler_wpPostStore_Test extends ActionScheduler_UnitTestCase {
 			'post_content' => $content,
 		) );
 
-		$store->fetch_action( $post_id );
+		$fetched = $store->fetch_action( $post_id );
+		$this->assertInstanceOf( 'ActionScheduler_NullSchedule', $fetched->get_schedule() );
 	}
 
 	public function provide_bad_args() {
