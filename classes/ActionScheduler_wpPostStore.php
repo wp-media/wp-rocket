@@ -131,13 +131,19 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 
 	protected function make_action_from_post( $post ) {
 		$hook = $post->post_title;
-		$args = json_decode( $post->post_content, true );
-		$this->validate_args( $args, $post->ID );
 
-		$schedule = get_post_meta( $post->ID, self::SCHEDULE_META_KEY, true );
-		if ( empty( $schedule ) || ! is_a( $schedule, 'ActionScheduler_Schedule' ) ) {
+		try {
+			$args = json_decode( $post->post_content, true );
+			$this->validate_args( $args, $post->ID );
+
+			$schedule = get_post_meta( $post->ID, self::SCHEDULE_META_KEY, true );
+			if ( empty( $schedule ) || ! is_a( $schedule, 'ActionScheduler_Schedule' ) ) {
+				$schedule = new ActionScheduler_NullSchedule();
+			}
+		} catch ( ActionScheduler_InvalidActionException $exception ) {
 			$schedule = new ActionScheduler_NullSchedule();
 		}
+
 		$group = wp_get_object_terms( $post->ID, self::GROUP_TAXONOMY, array('fields' => 'names') );
 		$group = empty( $group ) ? '' : reset($group);
 
