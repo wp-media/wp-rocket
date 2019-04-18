@@ -85,48 +85,58 @@ class Beacon {
 	private function identify_data() {
 		global $wp_version;
 
-		$options_to_send = [
+		$options_to_send_1 = [
 			'cache_mobile'            => 'Mobile Cache',
 			'do_caching_mobile_files' => 'Specific Cache for Mobile',
 			'cache_logged_user'       => 'User Cache',
 			'emoji'                   => 'Disable Emojis',
 			'embeds'                  => 'Disable Embeds',
-			'defer_all_js'            => 'Defer JS',
-			'defer_all_js_safe'       => 'Defer JS Safe',
-			'async_css'               => 'Optimize CSS Delivery',
 			'lazyload'                => 'Lazyload Images',
 			'lazyload_iframes'        => 'Lazyload Iframes',
 			'lazyload_youtube'        => 'Lazyload Youtube',
-			'minify_css'              => 'Minify CSS',
-			'minify_concatenate_css'  => 'Combine CSS',
-			'minify_js'               => 'Minify JS',
-			'minify_concatenate_js'   => 'Combine JS',
-			'minify_google_fonts'     => 'Combine Google Fonts',
-			'minify_html'             => 'Minify HTML',
 			'manual_preload'          => 'Preload',
 			'sitemap_preload'         => 'Sitemap Preload',
-			'remove_query_strings'    => 'Remove Query Strings',
-			'cdn'                     => 'CDN Enabled',
-			'do_cloudflare'           => 'Cloudflare Enabled',
-			'varnish_auto_purge'      => 'Varnish Purge Enabled',
-			'google_analytics_cache'  => 'Google Tracking Add-on',
-			'facebook_pixel_cache'    => 'Facebook Tracking Add-on',
-			'control_heartbeat'       => 'Hearbeat Control',
-			'sucury_waf_cache_sync'   => 'Sucuri Add-on',
 		];
 
-		$active_options = array_filter( $this->options->get_options() );
-		$active_options = array_intersect_key( $options_to_send, $active_options );
-		$theme          = wp_get_theme();
+		$options_to_send_2 = [
+			'defer_all_js'           => 'Defer JS',
+			'defer_all_js_safe'      => 'Defer JS Safe',
+			'async_css'              => 'Optimize CSS Delivery',
+			'minify_css'             => 'Minify CSS',
+			'minify_concatenate_css' => 'Combine CSS',
+			'minify_js'              => 'Minify JS',
+			'minify_concatenate_js'  => 'Combine JS',
+			'minify_google_fonts'    => 'Combine Google Fonts',
+			'minify_html'            => 'Minify HTML',
+			'remove_query_strings'   => 'Remove Query Strings',
+		];
+
+		$options_to_send_3 = [
+			'cdn'                    => 'CDN Enabled',
+			'do_cloudflare'          => 'Cloudflare Enabled',
+			'varnish_auto_purge'     => 'Varnish Purge Enabled',
+			'google_analytics_cache' => 'Google Tracking Add-on',
+			'facebook_pixel_cache'   => 'Facebook Tracking Add-on',
+			'control_heartbeat'      => 'Hearbeat Control',
+			'sucury_waf_cache_sync'  => 'Sucuri Add-on',
+		];
+
+		$active_options   = array_filter( $this->options->get_options() );
+		$active_options_1 = array_intersect_key( $options_to_send_1, $active_options );
+		$active_options_2 = array_intersect_key( $options_to_send_2, $active_options );
+		$active_options_3 = array_intersect_key( $options_to_send_3, $active_options );
+		$theme            = wp_get_theme();
 
 		return [
-			'email'                    => $this->options->get( 'consumer_email' ),
-			'Website'                  => home_url(),
-			'WordPress Version'        => $wp_version,
-			'WP Rocket Version'        => WP_ROCKET_VERSION,
-			'Theme'                    => $theme->get( 'Name' ),
-			'Plugins Enabled'          => implode( ' - ', rocket_get_active_plugins() ),
-			'WP Rocket Active Options' => implode( ' - ', $active_options ),
+			'email'                      => $this->options->get( 'consumer_email' ),
+			'Website'                    => home_url(),
+			'WordPress Version'          => $wp_version,
+			'WP Rocket Version'          => WP_ROCKET_VERSION,
+			'Theme'                      => $theme->get( 'Name' ),
+			'Plugins Enabled'            => substr( implode( ' - ', rocket_get_active_plugins() ), 0, 200 ),
+			'WP Rocket Active Options 1' => implode( ' - ', $active_options_1 ),
+			'WP Rocket Active Options 2' => implode( ' - ', $active_options_2 ),
+			'WP Rocket Active Options 3' => implode( ' - ', $active_options_3 ),
 		];
 	}
 
