@@ -65,7 +65,7 @@ class Optimization_Process extends \WP_Background_Process {
 				if ( $query ) {
 					$number = 0;
 					foreach ( $query as $id ) {
-						$number += wp_delete_post_revision( intval( $id ) ) instanceof WP_Post ? 1 : 0;
+						$number += wp_delete_post_revision( intval( $id ) ) instanceof \WP_Post ? 1 : 0;
 					}
 
 					$this->count[ $item ] = $number;
@@ -76,7 +76,7 @@ class Optimization_Process extends \WP_Background_Process {
 				if ( $query ) {
 					$number = 0;
 					foreach ( $query as $id ) {
-						$number += wp_delete_post( intval( $id ), true ) instanceof WP_Post ? 1 : 0;
+						$number += wp_delete_post( intval( $id ), true ) instanceof \WP_Post ? 1 : 0;
 					}
 
 					$this->count[ $item ] = $number;
@@ -87,7 +87,7 @@ class Optimization_Process extends \WP_Background_Process {
 				if ( $query ) {
 					$number = 0;
 					foreach ( $query as $id ) {
-						$number += wp_delete_post( $id, true ) instanceof WP_Post ? 1 : 0;
+						$number += wp_delete_post( $id, true ) instanceof \WP_Post ? 1 : 0;
 					}
 
 					$this->count[ $item ] = $number;
