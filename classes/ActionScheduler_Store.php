@@ -188,6 +188,13 @@ abstract class ActionScheduler_Store {
 
 	public function init() {}
 
+	/**
+	 * Mark an action that failed to fetch correctly as failed.
+	 *
+	 * @since 2.2.6
+	 *
+	 * @param int $action_id The ID of the action.
+	 */
 	public function mark_failed_fetch_action( $action_id ) {
 		self::$store->mark_failure( $action_id );
 	}
