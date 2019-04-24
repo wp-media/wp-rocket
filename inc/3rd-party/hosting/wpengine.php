@@ -21,6 +21,7 @@ if ( class_exists( 'WpeCommon' ) && function_exists( 'wpe_param' ) ) {
 	add_filter( 'rocket_display_input_varnish_auto_purge', '__return_false' );
 	// Prevent mandatory cookies on hosting with server cache.
 	add_filter( 'rocket_cache_mandatory_cookies', '__return_empty_array', PHP_INT_MAX );
+	add_filter( 'rocket_advanced_cache_file', '__return_empty_string' );
 
 	/**
 	 * Always keep WP_CACHE constant to true
