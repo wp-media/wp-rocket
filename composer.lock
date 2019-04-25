@@ -586,16 +586,16 @@
         },
         {
             "name": "wp-media/rocket-lazyload-common",
-            "version": "v2.3.1",
+            "version": "v2.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wp-media/rocket-lazyload-common.git",
-                "reference": "49d3b8ced04a2046a90a2f1ee214e650bba3e86a"
+                "reference": "f8d6e045c2f195e2d14d62222009aaac4faa5f18"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wp-media/rocket-lazyload-common/zipball/49d3b8ced04a2046a90a2f1ee214e650bba3e86a",
-                "reference": "49d3b8ced04a2046a90a2f1ee214e650bba3e86a",
+                "url": "https://api.github.com/repos/wp-media/rocket-lazyload-common/zipball/f8d6e045c2f195e2d14d62222009aaac4faa5f18",
+                "reference": "f8d6e045c2f195e2d14d62222009aaac4faa5f18",
                 "shasum": ""
             },
             "require": {
@@ -630,7 +630,7 @@
                 }
             ],
             "description": "Common Code between WP Rocket and Lazyload by WP Rocket",
-            "time": "2019-04-15T15:02:37+00:00"
+            "time": "2019-04-24T20:56:29+00:00"
         }
     ],
     "packages-dev": [
@@ -2410,7 +2410,7 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v4.2.5",
+            "version": "v4.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
