@@ -881,7 +881,7 @@ class Tests {
 			return self::memoize( __FUNCTION__, [], false );
 		}
 
-		$user_agent = preg_match( '#PingdomPageSpeed|DareBoost|Google|PTST|WP Rocket#i', $this->config->get_server_input( 'HTTP_USER_AGENT' ) );
+		$user_agent = preg_match( '#PingdomPageSpeed|DareBoost|Google|PTST|Chrome-Lighthouse|WP Rocket#i', $this->config->get_server_input( 'HTTP_USER_AGENT' ) );
 
 		return self::memoize( __FUNCTION__, [], $user_agent );
 	}
