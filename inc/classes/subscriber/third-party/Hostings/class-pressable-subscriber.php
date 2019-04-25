@@ -22,7 +22,7 @@ class Pressable_Subscriber implements Subscriber_Interface {
 			'do_rocket_generate_caching_files'   => [ 'return_false', PHP_INT_MAX ],
 			'rocket_display_varnish_options_tab' => 'return_false',
 			'rocket_cache_mandatory_cookies'     => [ 'return_empty_array', PHP_INT_MAX ],
-			'wp_rocket_loaded'                   => 'remove_advanced_cache_notices',
+			'admin_init'                         => 'remove_advanced_cache_notices',
 			'after_rocket_clean_domain'          => 'purge_pressable_cache',
 			'rocket_url_to_path'                 => 'fix_wp_includes_path',
 			'rocket_cdn_cnames'                  => [ 'add_pressable_cdn_cname', 1 ],
