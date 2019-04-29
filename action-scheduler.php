@@ -1,14 +1,14 @@
 <?php
 /*
  * Plugin Name: Action Scheduler
- * Plugin URI: https://github.com/prospress/action-scheduler
+ * Plugin URI: https://actionscheduler.org
  * Description: A robust scheduling library for use in WordPress plugins.
  * Author: Prospress
- * Author URI: http://prospress.com/
+ * Author URI: https://prospress.com/
  * Version: 3.0.0
  * License: GPLv3
  *
- * Copyright 2018 Prospress, Inc.  (email : freedoms@prospress.com)
+ * Copyright 2019 Prospress, Inc.  (email : freedoms@prospress.com)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
 

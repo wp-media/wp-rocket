@@ -22,12 +22,12 @@ require_once( plugin_dir_path( __FILE__ ) . '/libraries/action-scheduler/action-
  * Schedule an action with the hook 'eg_midnight_log' to run at midnight each day
  * so that our callback is run then.
  */
-function eg_log_action_data() {
+function eg_schedule_midnight_log() {
 	if ( false === as_next_scheduled_action( 'eg_midnight_log' ) ) {
 		as_schedule_recurring_action( strtotime( 'midnight tonight' ), DAY_IN_SECONDS, 'eg_midnight_log' );
 	}
 }
-add_action( 'init', 'eg_log_action_data' );
+add_action( 'init', 'eg_schedule_midnight_log' );
 
 /**
  * A callback to run when the 'eg_midnight_log' scheduled action is run.
