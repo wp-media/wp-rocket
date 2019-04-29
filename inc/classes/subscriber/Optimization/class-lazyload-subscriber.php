@@ -251,7 +251,8 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 
 		$this->assets->insertYoutubeThumbnailCSS(
 			[
-				'base_url' => get_rocket_cdn_url( WP_ROCKET_ASSETS_URL ),
+				'base_url'          => get_rocket_cdn_url( WP_ROCKET_ASSETS_URL ),
+				'responsive_embeds' => current_theme_supports( 'responsive-embeds' ),
 			]
 		);
 	}
