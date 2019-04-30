@@ -202,7 +202,7 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 		 *
 		 * @param string $thumbnail_resolution The resolution of the thumbnail. Accepted values: default, mqdefault, hqdefault, sddefault, maxresdefault
 		 */
-		$thumbnail_resolution = apply_filters( 'rocket_lazyload_youtube_thumbnail_resolution', 'hqdefault' );
+		$thumbnail_resolution = apply_filters( 'rocket_lazyload_youtube_thumbnail_resolution', $thumbnail_resolution );
 
 		$this->assets->insertYoutubeThumbnailScript(
 			[
