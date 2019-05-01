@@ -329,6 +329,10 @@ function set_rocket_wp_cache_define( $turn_it_on ) {
 		return;
 	}
 
+	if ( defined( 'IS_PRESSABLE' ) && IS_PRESSABLE ) {
+		return;
+	}
+
 	// Get path of the config file.
 	$config_file_path = rocket_find_wpconfig_path();
 	if ( ! $config_file_path ) {
