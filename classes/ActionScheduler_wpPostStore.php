@@ -300,7 +300,11 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		$sql  = ( 'count' === $select_or_count ) ? 'SELECT count(p.ID)' : 'SELECT p.ID ';
 		$sql .= "FROM {$wpdb->posts} p";
 		$sql_params = array();
-		if ( ! empty( $query['group'] ) || 'group' === $query['orderby'] ) {
+		if ( empty( $query['group'] ) && 'group' === $query['orderby'] ) {
+			$sql .= " LEFT JOIN {$wpdb->term_relationships} tr ON tr.object_id=p.ID";
+			$sql .= " LEFT JOIN {$wpdb->term_taxonomy} tt ON tr.term_taxonomy_id=tt.term_taxonomy_id";
+			$sql .= " LEFT JOIN {$wpdb->terms} t ON tt.term_id=t.term_id";
+		} elseif ( ! empty( $query['group'] ) ) {
 			$sql .= " INNER JOIN {$wpdb->term_relationships} tr ON tr.object_id=p.ID";
 			$sql .= " INNER JOIN {$wpdb->term_taxonomy} tt ON tr.term_taxonomy_id=tt.term_taxonomy_id";
 			$sql .= " INNER JOIN {$wpdb->terms} t ON tt.term_id=t.term_id";
