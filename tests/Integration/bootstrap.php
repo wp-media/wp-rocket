@@ -41,7 +41,7 @@ function WPRocketPluginGetWPTestsDir()
 $rocket_tests_dir = WPRocketPluginGetWPTestsDir();
 
 // Give access to tests_add_filter() function.
-require_once $_tests_dir . '/includes/functions.php';
+require_once $rocket_tests_dir . '/includes/functions.php';
 
 /**
  * Manually load the plugin being tested.
