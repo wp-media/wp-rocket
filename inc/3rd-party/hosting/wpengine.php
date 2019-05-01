@@ -22,6 +22,10 @@ if ( class_exists( 'WpeCommon' ) && function_exists( 'wpe_param' ) ) {
 	// Prevent mandatory cookies on hosting with server cache.
 	add_filter( 'rocket_cache_mandatory_cookies', '__return_empty_array', PHP_INT_MAX );
 	add_filter( 'rocket_advanced_cache_file', '__return_empty_string' );
+	add_action( 'admin_init', function() {
+		remove_action( 'admin_notices', 'rocket_warning_advanced_cache_permissions' );
+		remove_action( 'admin_notices', 'rocket_warning_advanced_cache_not_ours' );
+	});
 
 	/**
 	 * Always keep WP_CACHE constant to true
