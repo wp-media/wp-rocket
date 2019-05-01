@@ -1,8 +1,6 @@
 <?php
 namespace WP_Rocket\Buffer;
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
-
 /**
  * Handle the tests for page cache and optimizations.
  *
@@ -883,7 +881,7 @@ class Tests {
 
 		$user_agent = preg_match( '#PingdomPageSpeed|DareBoost|Google|PTST|Chrome-Lighthouse|WP Rocket#i', $this->config->get_server_input( 'HTTP_USER_AGENT' ) );
 
-		return self::memoize( __FUNCTION__, [], $user_agent );
+		return self::memoize( __FUNCTION__, [], (bool) $user_agent );
 	}
 
 	/**
