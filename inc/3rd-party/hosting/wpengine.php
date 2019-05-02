@@ -111,4 +111,27 @@ if ( class_exists( 'WpeCommon' ) && function_exists( 'wpe_param' ) ) {
 
 		return $cdn_domain;
 	}
+
+	/**
+	 * Add WP Rocket footprint on Buffer
+	 *
+	 * @since 3.3.2
+	 * @author Remy Perona
+	 *
+	 * @param string $buffer HTML content
+	 * @return string
+	 */
+	function rocket_wpengine_add_footprint( $buffer ) {
+		if (! preg_match( '/<\/html>/i', $buffer ) ) {
+			return $buffer;
+		}
+
+		$footprint = defined( 'WP_ROCKET_WHITE_LABEL_FOOTPRINT' ) ?
+						"\n" . '<!-- Optimized for great performance' :
+						"\n" . '<!-- This website is like a Rocket, isn\'t it? Performance optimized by ' . WP_ROCKET_PLUGIN_NAME . '. Learn more: https://wp-rocket.me';
+		$footprint .= ' -->';
+
+		return $buffer . $footprint;
+	}
+	add_filter( 'rocket_buffer', 'rocket_wpengine_add_footprint', 50 );
 }
