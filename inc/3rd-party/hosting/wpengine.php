@@ -21,6 +21,11 @@ if ( class_exists( 'WpeCommon' ) && function_exists( 'wpe_param' ) ) {
 	add_filter( 'rocket_display_input_varnish_auto_purge', '__return_false' );
 	// Prevent mandatory cookies on hosting with server cache.
 	add_filter( 'rocket_cache_mandatory_cookies', '__return_empty_array', PHP_INT_MAX );
+	add_filter( 'rocket_advanced_cache_file', '__return_empty_string' );
+	add_action( 'admin_init', function() {
+		remove_action( 'admin_notices', 'rocket_warning_advanced_cache_permissions' );
+		remove_action( 'admin_notices', 'rocket_warning_advanced_cache_not_ours' );
+	});
 
 	/**
 	 * Always keep WP_CACHE constant to true
@@ -106,4 +111,27 @@ if ( class_exists( 'WpeCommon' ) && function_exists( 'wpe_param' ) ) {
 
 		return $cdn_domain;
 	}
+
+	/**
+	 * Add WP Rocket footprint on Buffer
+	 *
+	 * @since 3.3.2
+	 * @author Remy Perona
+	 *
+	 * @param string $buffer HTML content
+	 * @return string
+	 */
+	function rocket_wpengine_add_footprint( $buffer ) {
+		if (! preg_match( '/<\/html>/i', $buffer ) ) {
+			return $buffer;
+		}
+
+		$footprint = defined( 'WP_ROCKET_WHITE_LABEL_FOOTPRINT' ) ?
+						"\n" . '<!-- Optimized for great performance' :
+						"\n" . '<!-- This website is like a Rocket, isn\'t it? Performance optimized by ' . WP_ROCKET_PLUGIN_NAME . '. Learn more: https://wp-rocket.me';
+		$footprint .= ' -->';
+
+		return $buffer . $footprint;
+	}
+	add_filter( 'rocket_buffer', 'rocket_wpengine_add_footprint', 50 );
 }

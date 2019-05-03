@@ -140,7 +140,7 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 		$args = [
 			'base_url'  => get_rocket_cdn_url( WP_ROCKET_ASSETS_JS_URL . 'lazyload/' ),
 			'threshold' => $threshold,
-			'version'   => '11.0.3',
+			'version'   => '11.0.6',
 			'polyfill'  => $polyfill,
 		];
 
@@ -187,11 +187,22 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 		 * Filters the resolution of the YouTube thumbnail
 		 *
 		 * @since 1.4.8
+		 * @deprecated 3.3
 		 * @author Arun Basil Lal
 		 *
 		 * @param string $thumbnail_resolution The resolution of the thumbnail. Accepted values: default, mqdefault, hqdefault, sddefault, maxresdefault
 		 */
-		$thumbnail_resolution = apply_filters( 'rocket_lazyload_youtube_thumbnail_resolution', 'hqdefault' );
+		$thumbnail_resolution = apply_filters_deprecated( 'rocket_youtube_thumbnail_resolution', ['hqdefault'], '3.3', 'rocket_lazyload_youtube_thumbnail_resolution' );
+
+		/**
+		 * Filters the resolution of the YouTube thumbnail
+		 *
+		 * @since 1.4.8
+		 * @author Arun Basil Lal
+		 *
+		 * @param string $thumbnail_resolution The resolution of the thumbnail. Accepted values: default, mqdefault, hqdefault, sddefault, maxresdefault
+		 */
+		$thumbnail_resolution = apply_filters( 'rocket_lazyload_youtube_thumbnail_resolution', $thumbnail_resolution );
 
 		$this->assets->insertYoutubeThumbnailScript(
 			[
@@ -240,7 +251,8 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 
 		$this->assets->insertYoutubeThumbnailCSS(
 			[
-				'base_url' => get_rocket_cdn_url( WP_ROCKET_ASSETS_URL ),
+				'base_url'          => get_rocket_cdn_url( WP_ROCKET_ASSETS_URL ),
+				'responsive_embeds' => current_theme_supports( 'responsive-embeds' ),
 			]
 		);
 	}

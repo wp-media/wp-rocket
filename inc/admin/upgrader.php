@@ -408,5 +408,12 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		rocket_generate_config_file();
 		rocket_clean_domain();
 	}
+
+	if ( version_compare( $actual_version, '3.3.2', '<' ) ) {
+		rocket_generate_advanced_cache_file();
+		flush_rocket_htaccess();
+		rocket_generate_config_file();
+		rocket_clean_domain();
+	}
 }
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );
