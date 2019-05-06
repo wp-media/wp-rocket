@@ -171,6 +171,9 @@ class Critical_CSS {
 				'tbuilder_layout',
 				'tbuilder_layout_part',
 				'slider',
+				'karma-slider',
+				'tt-gallery',
+				'xlwcty_thankyou',
 			]
 		);
 
@@ -224,6 +227,9 @@ class Critical_CSS {
 			[
 				'post_format',
 				'product_shipping_class',
+				'karma-slider-category',
+				'truethemes-gallery-category',
+				'coupon_campaign',
 			]
 		);
 
