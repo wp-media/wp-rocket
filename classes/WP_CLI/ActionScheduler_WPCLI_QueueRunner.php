@@ -177,6 +177,8 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 	 * @deprecated 3.0.0
 	 */
 	protected function stop_the_insanity( $sleep_time = 0 ) {
+		_deprecated_function( 'ActionScheduler_WPCLI_QueueRunner::stop_the_insanity', '3.0.0', 'ActionScheduler_WPCLI_ProgressBar::free_memory' );
+
 		if ( 0 < $sleep_time ) {
 			WP_CLI::warning( sprintf( 'Stopped the insanity for %d %s', $sleep_time, _n( 'second', 'seconds', $sleep_time ) ) );
 			sleep( $sleep_time );
