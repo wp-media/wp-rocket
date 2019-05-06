@@ -458,6 +458,12 @@ class Combine extends Abstract_JS_Optimization {
 			'ad_block_',
 			'elementorFrontendConfig',
 			'omapi_localized',
+			'zeen_',
+			'disqusIdentifier',
+			'currentAjaxUrl',
+			'geodir_event_call_calendar_',
+			'atatags-',
+			'hbspt.forms.create',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
@@ -593,6 +599,7 @@ class Combine extends Abstract_JS_Optimization {
 			'dfads_ajax_load_ads',
 			'tie_postviews',
 			'wmp_update',
+			'h5ab-print-article',
 		];
 
 		/**
