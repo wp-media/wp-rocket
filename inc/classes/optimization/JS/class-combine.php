@@ -593,6 +593,8 @@ class Combine extends Abstract_JS_Optimization {
 			'dfads_ajax_load_ads',
 			'tie_postviews',
 			'wmp_update',
+			'gform_ajax_frame_',
+			'gform_post_render',
 		];
 
 		/**
