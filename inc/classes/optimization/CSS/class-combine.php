@@ -112,16 +112,35 @@ class Combine extends Abstract_CSS_Optimization {
 			return $html;
 		}
 
-		$html = str_replace( '</title>', '</title><link rel="stylesheet" href="' . $minify_url . '" data-minify="1" />', $html );
-
-		foreach ( $styles as $style ) {
-			$html = str_replace( $style[0], '', $html );
-		}
+		$html = $this->insert_combined_css( $html, $minify_url, $styles );
 
 		Logger::info( 'Combined CSS file successfully added.', [
 			'css combine process',
 			'url' => $minify_url,
 		] );
+
+		return $html;
+	}
+
+	/**
+	 * Insert the combined CSS file and remove the original CSS tags
+	 *
+	 * The combined CSS file is added after the closing </title> tag, and the replacement occurs only once. The original CSS tags are then removed from the HTML.
+	 *
+	 * @since 3.3.3
+	 * @author Remy Perona
+	 *
+	 * @param string $html      HTML content.
+	 * @param string $css_url   Combined CSS file URL.
+	 * @param array  $to_remove An array of CSS tags to remove.
+	 * @return string
+	 */
+	public function insert_combined_css( $html, $css_url, array $to_remove ) {
+		$html = preg_replace('/<\/title>/i', '$0<link rel="stylesheet" href="' . $css_url . '" data-minify="1" />', $html, 1 );
+
+		foreach ( $to_remove as $style ) {
+			$html = str_replace( $style[0], '', $html );
+		}
 
 		return $html;
 	}
