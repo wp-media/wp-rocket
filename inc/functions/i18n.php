@@ -526,13 +526,13 @@ function rocket_get_home_url( $path = '' ) {
  * @since 3.3.3
  * @author Remy Perona
  *
- * @return string
+ * @return string|bool
  */
 function rocket_get_current_language() {
 	$i18n_plugin = rocket_has_i18n();
 
 	if ( ! $i18n_plugin ) {
-		return '';
+		return false;
 	}
 
 	if ( 'polylang' === $i18n_plugin && function_exists( 'pll_current_language' ) ) {
@@ -541,5 +541,5 @@ function rocket_get_current_language() {
 		return apply_filters( 'wpml_current_language', NULL );
 	}
 
-	return '';
+	return false;
 }
