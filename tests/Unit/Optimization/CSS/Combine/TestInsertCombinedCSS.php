@@ -8,6 +8,7 @@ use Brain\Monkey\Functions;
 
 class TestInsertCombinedCSS extends TestCase {
     protected function setUp() {
+        define( 'ABSPATH', 'path' );
         parent::setUp();
         Monkey\setUp();
     }
