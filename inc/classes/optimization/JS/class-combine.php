@@ -464,6 +464,7 @@ class Combine extends Abstract_JS_Optimization {
 			'geodir_event_call_calendar_',
 			'atatags-',
 			'hbspt.forms.create',
+			'function(c,h,i,m,p)',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
