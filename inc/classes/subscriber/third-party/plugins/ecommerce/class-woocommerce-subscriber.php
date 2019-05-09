@@ -321,6 +321,12 @@ class WooCommerce_Subscriber implements Event_Manager_Aware_Subscriber_Interface
 	 * @return string
 	 */
 	private function get_cache_empty_cart() {
+		$lang = rocket_get_current_language();
+
+		if ( $lang ) {
+			return get_transient( 'rocket_get_refreshed_fragments_cache_' . $lang );
+		}
+
 		return get_transient( 'rocket_get_refreshed_fragments_cache' );
 	}
 
@@ -334,6 +340,14 @@ class WooCommerce_Subscriber implements Event_Manager_Aware_Subscriber_Interface
 	 * @return string
 	 */
 	private function save_cache_empty_cart( $content ) {
+		$lang = rocket_get_current_language();
+	
+		if ( $lang ) {
+			set_transient( 'rocket_get_refreshed_fragments_cache_' . $lang, $content, 7 * DAY_IN_SECONDS );
+
+			return $content;
+		}
+		
 		set_transient( 'rocket_get_refreshed_fragments_cache', $content, 7 * DAY_IN_SECONDS );
 
 		return $content;
@@ -376,6 +390,14 @@ class WooCommerce_Subscriber implements Event_Manager_Aware_Subscriber_Interface
 	 * @return void
 	 */
 	public function delete_cache_empty_cart() {
+		$langs = get_rocket_i18n_code();
+
+		if ( $langs ) {
+			foreach ( $langs as $lang ) {
+				delete_transient( 'rocket_get_refreshed_fragments_cache_' . $lang );
+			}
+		}
+
 		delete_transient( 'rocket_get_refreshed_fragments_cache' );
 	}
 }
