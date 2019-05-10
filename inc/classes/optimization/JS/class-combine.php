@@ -459,6 +459,7 @@ class Combine extends Abstract_JS_Optimization {
 			'elementorFrontendConfig',
 			'omapi_localized',
 			'_atrk_opts',
+			'quicklinkOptions',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
@@ -596,6 +597,7 @@ class Combine extends Abstract_JS_Optimization {
 			'wmp_update',
 			'gform_ajax_frame_',
 			'gform_post_render',
+			'mts_view_count',
 		];
 
 		/**
