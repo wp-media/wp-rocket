@@ -460,6 +460,7 @@ class Combine extends Abstract_JS_Optimization {
 			'omapi_localized',
 			'_atrk_opts',
 			'quicklinkOptions',
+			'ct_checkjs_',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
