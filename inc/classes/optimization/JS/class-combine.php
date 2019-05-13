@@ -465,6 +465,9 @@ class Combine extends Abstract_JS_Optimization {
 			'atatags-',
 			'hbspt.forms.create',
 			'function(c,h,i,m,p)',
+			'_atrk_opts',
+			'quicklinkOptions',
+			'ct_checkjs_',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
@@ -601,6 +604,10 @@ class Combine extends Abstract_JS_Optimization {
 			'tie_postviews',
 			'wmp_update',
 			'h5ab-print-article',
+			'gform_ajax_frame_',
+			'gform_post_render',
+			'mts_view_count',
+			'act_css_tooltip',
 		];
 
 		/**
