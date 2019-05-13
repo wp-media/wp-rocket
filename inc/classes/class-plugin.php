@@ -91,6 +91,7 @@ class Plugin {
 				'beacon_subscriber',
 				'settings_page_subscriber',
 				'deactivation_intent_subscriber',
+				'hummingbird_subscriber',
 			];
 		} elseif ( \rocket_valid_key() ) {
 			$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Optimization_Subscribers' );
