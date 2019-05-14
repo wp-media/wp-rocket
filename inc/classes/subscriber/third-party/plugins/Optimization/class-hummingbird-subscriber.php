@@ -53,7 +53,7 @@ class Hummingbird_Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		if ( ! is_plugin_active( 'hummingbird-performance/wp-hummingbird.php' ) ) {
+		if ( ! is_plugin_active( 'hummingbird-performance/wp-hummingbird.php' ) && ! is_plugin_active( 'wp-hummingbird/wp-hummingbird.php' ) ) {
 			return;
 		}
 
@@ -198,7 +198,7 @@ class Hummingbird_Subscriber implements Subscriber_Interface {
 			return false;
 		}
 
-		if ( $gzip->is_htaccess_written( 'gzip' ) && 'apache' === $gzip->get_server_type() ) {
+		if ( $gzip::is_htaccess_written( 'gzip' ) && 'apache' === $gzip::get_server_type() ) {
 			// Translators: %1$s = Plugin name, %2$s = <em>, %3$s = </em>.
 			$this->errors[] = sprintf( _x( '%1$s %2$sGZIP compression%3$s conflicts with WP Rocket %2$sGZIP compression%3$s', 'Hummingbird notice', 'rocket' ), 'Hummingbird', '<em>', '</em>' );
 			return true;
@@ -234,7 +234,7 @@ class Hummingbird_Subscriber implements Subscriber_Interface {
 			return false;
 		}
 
-		if ( $caching->is_htaccess_written( 'caching' ) && 'apache' === $caching->get_server_type() ) {
+		if ( $caching::is_htaccess_written( 'caching' ) && 'apache' === $caching::get_server_type() ) {
 			// Translators: %1$s = Plugin name, %2$s = <em>, %3$s = </em>.
 			$this->errors[] = sprintf( _x( '%1$s %2$sbrowser caching%3$s conflicts with WP Rocket %2$sbrowser caching%3$s', 'Hummingbird notice', 'rocket' ), 'Hummingbird', '<em>', '</em>' );
 			return true;
