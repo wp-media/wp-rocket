@@ -175,10 +175,6 @@ function rocket_plugins_to_deactivate() {
 		$plugins['heartbeat-control'] = 'heartbeat-control/heartbeat-control.php';
 	}
 
-	if ( get_rocket_option( 'async_css' ) ) {
-		$plugins['wp-criticalcss'] = 'wp-criticalcss/wp-criticalcss.php';
-	}
-
 	/**
 	 * Filter the recommended plugins to deactivate to prevent conflicts
 	 *
