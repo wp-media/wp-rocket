@@ -519,3 +519,27 @@ function rocket_get_home_url( $path = '' ) {
 
 	return $home_url[ $path ];
 }
+
+/**
+ * Gets the current language if Polylang or WPML is used
+ *
+ * @since 3.3.3
+ * @author Remy Perona
+ *
+ * @return string|bool
+ */
+function rocket_get_current_language() {
+	$i18n_plugin = rocket_has_i18n();
+
+	if ( ! $i18n_plugin ) {
+		return false;
+	}
+
+	if ( 'polylang' === $i18n_plugin && function_exists( 'pll_current_language' ) ) {
+		return pll_current_language();
+	} else if ( 'wpml' === $i18n_plugin ) {
+		return apply_filters( 'wpml_current_language', NULL );
+	}
+
+	return false;
+}

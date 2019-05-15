@@ -39,7 +39,7 @@ class Lazyload extends AbstractServiceProvider {
 		$this->getContainer()->add( 'lazyload_assets', 'RocketLazyload\Assets' );
 		$this->getContainer()->add( 'lazyload_image', 'RocketLazyload\Image' );
 		$this->getContainer()->add( 'lazyload_iframe', 'RocketLazyload\Iframe' );
-		$this->getContainer()->add( 'lazyload_subscriber', 'WP_Rocket\Subscriber\Optimization\Lazyload_Subscriber' )
+		$this->getContainer()->share( 'lazyload_subscriber', 'WP_Rocket\Subscriber\Optimization\Lazyload_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'options' ) )
 			->withArgument( $this->getContainer()->get( 'lazyload_assets' ) )
 			->withArgument( $this->getContainer()->get( 'lazyload_image' ) )

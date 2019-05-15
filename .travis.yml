@@ -11,6 +11,8 @@ notifications:
 branches:
   only:
   - master
+  - develop
+  - /branch-.*$/
 cache:
   directories:
   - vendor

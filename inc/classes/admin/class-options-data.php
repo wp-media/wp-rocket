@@ -1,8 +1,6 @@
 <?php
 namespace WP_Rocket\Admin;
 
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
-
 /**
  * Manages the data inside an option.
  *

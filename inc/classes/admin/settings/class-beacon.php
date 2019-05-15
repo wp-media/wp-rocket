@@ -69,13 +69,69 @@ class Beacon {
 		return '<script type="text/javascript">!function(e,t,n){function a(){var e=t.getElementsByTagName("script")[0],n=t.createElement("script");n.type="text/javascript",n.async=!0,n.src="https://beacon-v2.helpscout.net",e.parentNode.insertBefore(n,e)}if(e.Beacon=n=function(t,n,a){e.Beacon.readyQueue.push({method:t,options:n,data:a})},n.readyQueue=[],"complete"===t.readyState)return a();e.attachEvent?e.attachEvent("onload",a):e.addEventListener("load",a,!1)}(window,document,window.Beacon||function(){});</script>
 			<script type="text/javascript">window.Beacon(\'init\', \'' . $form_id . '\')</script>
 			<script>window.Beacon("identify", ' . wp_json_encode( $this->identify_data() ) . ');</script>
+			<script>window.Beacon("session-data", ' . wp_json_encode( $this->session_data() ) . ');</script>
 			<script>window.addEventListener("hashchange", function () {
 				window.Beacon("suggest");
 			  }, false);</script>';
 	}
 
 	/**
-	 * Returns Data to pass to the Beacon identify() method
+	 * Returns Session specific data to pass to Beacon
+	 *
+	 * @since 3.3.3
+	 * @author Remy Perona
+	 *
+	 * @return array
+	 */
+	private function session_data() {
+		global $wp_version;
+
+		$options_to_send = [
+			'cache_mobile'            => 'Mobile Cache',
+			'do_caching_mobile_files' => 'Specific Cache for Mobile',
+			'cache_logged_user'       => 'User Cache',
+			'emoji'                   => 'Disable Emojis',
+			'embeds'                  => 'Disable Embeds',
+			'defer_all_js'            => 'Defer JS',
+			'defer_all_js_safe'       => 'Defer JS Safe',
+			'async_css'               => 'Optimize CSS Delivery',
+			'lazyload'                => 'Lazyload Images',
+			'lazyload_iframes'        => 'Lazyload Iframes',
+			'lazyload_youtube'        => 'Lazyload Youtube',
+			'minify_css'              => 'Minify CSS',
+			'minify_concatenate_css'  => 'Combine CSS',
+			'minify_js'               => 'Minify JS',
+			'minify_concatenate_js'   => 'Combine JS',
+			'minify_google_fonts'     => 'Combine Google Fonts',
+			'minify_html'             => 'Minify HTML',
+			'manual_preload'          => 'Preload',
+			'sitemap_preload'         => 'Sitemap Preload',
+			'remove_query_strings'    => 'Remove Query Strings',
+			'cdn'                     => 'CDN Enabled',
+			'do_cloudflare'           => 'Cloudflare Enabled',
+			'varnish_auto_purge'      => 'Varnish Purge Enabled',
+			'google_analytics_cache'  => 'Google Tracking Add-on',
+			'facebook_pixel_cache'    => 'Facebook Tracking Add-on',
+			'control_heartbeat'       => 'Hearbeat Control',
+			'sucury_waf_cache_sync'   => 'Sucuri Add-on',
+		];
+
+		$active_options = array_filter( $this->options->get_options() );
+		$active_options = array_intersect_key( $options_to_send, $active_options );
+		$theme          = wp_get_theme();
+
+		return [
+			'Website'                  => home_url(),
+			'WordPress Version'        => $wp_version,
+			'WP Rocket Version'        => WP_ROCKET_VERSION,
+			'Theme'                    => $theme->get( 'Name' ),
+			'Plugins Enabled'          => substr( implode( ' - ', rocket_get_active_plugins() ), 0, 200 ),
+			'WP Rocket Active Options' => implode( ' - ', $active_options ),
+		];
+	}
+
+	/**
+	 * Returns Identify data to pass to Beacon
 	 *
 	 * @since 3.0
 	 * @author Remy Perona
@@ -83,60 +139,9 @@ class Beacon {
 	 * @return array
 	 */
 	private function identify_data() {
-		global $wp_version;
-
-		$options_to_send_1 = [
-			'cache_mobile'            => 'Mobile Cache',
-			'do_caching_mobile_files' => 'Specific Cache for Mobile',
-			'cache_logged_user'       => 'User Cache',
-			'emoji'                   => 'Disable Emojis',
-			'embeds'                  => 'Disable Embeds',
-			'lazyload'                => 'Lazyload Images',
-			'lazyload_iframes'        => 'Lazyload Iframes',
-			'lazyload_youtube'        => 'Lazyload Youtube',
-			'manual_preload'          => 'Preload',
-			'sitemap_preload'         => 'Sitemap Preload',
-		];
-
-		$options_to_send_2 = [
-			'defer_all_js'           => 'Defer JS',
-			'defer_all_js_safe'      => 'Defer JS Safe',
-			'async_css'              => 'Optimize CSS Delivery',
-			'minify_css'             => 'Minify CSS',
-			'minify_concatenate_css' => 'Combine CSS',
-			'minify_js'              => 'Minify JS',
-			'minify_concatenate_js'  => 'Combine JS',
-			'minify_google_fonts'    => 'Combine Google Fonts',
-			'minify_html'            => 'Minify HTML',
-			'remove_query_strings'   => 'Remove Query Strings',
-		];
-
-		$options_to_send_3 = [
-			'cdn'                    => 'CDN Enabled',
-			'do_cloudflare'          => 'Cloudflare Enabled',
-			'varnish_auto_purge'     => 'Varnish Purge Enabled',
-			'google_analytics_cache' => 'Google Tracking Add-on',
-			'facebook_pixel_cache'   => 'Facebook Tracking Add-on',
-			'control_heartbeat'      => 'Hearbeat Control',
-			'sucury_waf_cache_sync'  => 'Sucuri Add-on',
-		];
-
-		$active_options   = array_filter( $this->options->get_options() );
-		$active_options_1 = array_intersect_key( $options_to_send_1, $active_options );
-		$active_options_2 = array_intersect_key( $options_to_send_2, $active_options );
-		$active_options_3 = array_intersect_key( $options_to_send_3, $active_options );
-		$theme            = wp_get_theme();
-
 		return [
-			'email'                      => $this->options->get( 'consumer_email' ),
-			'Website'                    => home_url(),
-			'WordPress Version'          => $wp_version,
-			'WP Rocket Version'          => WP_ROCKET_VERSION,
-			'Theme'                      => $theme->get( 'Name' ),
-			'Plugins Enabled'            => substr( implode( ' - ', rocket_get_active_plugins() ), 0, 200 ),
-			'WP Rocket Active Options 1' => implode( ' - ', $active_options_1 ),
-			'WP Rocket Active Options 2' => implode( ' - ', $active_options_2 ),
-			'WP Rocket Active Options 3' => implode( ' - ', $active_options_3 ),
+			'email'   => $this->options->get( 'consumer_email' ),
+			'Website' => home_url(),
 		];
 	}
 
