@@ -458,6 +458,8 @@ class Combine extends Abstract_JS_Optimization {
 			'ad_block_',
 			'elementorFrontendConfig',
 			'omapi_localized',
+			'dataTable({',
+			'rankMath = {',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
