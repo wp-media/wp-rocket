@@ -125,7 +125,7 @@ class Critical_CSS_Generation extends \WP_Background_Process {
 				}
 
 				$file_path     = $critical_css_path . '/' . $item['type'] . '.css';
-				$cpcss_content = wp_kses( $job_data->data->critical_path, [ "\'", '\"' ] );
+				$cpcss_content = wp_strip_all_tags( $job_data->data->critical_path, true );
 				$result        = rocket_put_content( $file_path, $cpcss_content );
 
 				if ( ! $result ) {

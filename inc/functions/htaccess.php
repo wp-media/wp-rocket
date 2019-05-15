@@ -440,10 +440,10 @@ function get_rocket_htaccess_mod_expires() {
 	# HTC files  (css3pie)
 	ExpiresByType text/x-component              "access plus 1 month"
 	# Webfonts
-	ExpiresByType application/x-font-ttf        "access plus 1 month"
-	ExpiresByType font/opentype                 "access plus 1 month"
-	ExpiresByType application/x-font-woff       "access plus 1 month"
-	ExpiresByType application/x-font-woff2      "access plus 1 month"
+	ExpiresByType font/ttf                      "access plus 4 months"
+	ExpiresByType font/otf                      "access plus 4 months"
+	ExpiresByType font/woff                     "access plus 4 months"
+	ExpiresByType font/woff2                    "access plus 4 months"
 	ExpiresByType image/svg+xml                 "access plus 1 month"
 	ExpiresByType application/vnd.ms-fontobject "access plus 1 month"
 	# CSS and JavaScript

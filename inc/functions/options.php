@@ -169,6 +169,7 @@ function get_rocket_purge_cron_interval() {
 /**
  * Get all uri we don't cache.
  *
+ * @since 3.3.2 Exclude embedded URLs
  * @since 2.6   Using json_get_url_prefix() to auto-exclude the WordPress REST API.
  * @since 2.4.1 Auto-exclude WordPress REST API.
  * @since 2.0
@@ -208,6 +209,9 @@ function get_rocket_cache_reject_uri() {
 
 	// Exclude feeds.
 	$uris[] = '/(.+/)?' . $GLOBALS['wp_rewrite']->feed_base . '/?';
+
+	// Exlude embedded URLs.
+	$uris[] = '/(?:.+/)?embed/';
 
 	/**
 	 * Filter the rejected uri

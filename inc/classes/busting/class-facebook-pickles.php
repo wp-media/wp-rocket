@@ -1050,7 +1050,7 @@ class Facebook_Pickles {
 		$plugin_names = [
 			'identity',
 			'microdata',
-			'inferredevents',
+			'inferredEvents',
 			'dwell',
 			'sessions',
 			'timespent',

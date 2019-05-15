@@ -178,6 +178,7 @@ function rocket_activation() {
 	require WP_ROCKET_FUNCTIONS_PATH . 'htaccess.php';
 	require WP_ROCKET_3RD_PARTY_PATH . 'hosting/godaddy.php';
 	require WP_ROCKET_3RD_PARTY_PATH . 'hosting/o2switch.php';
+	require WP_ROCKET_3RD_PARTY_PATH . 'hosting/wpengine.php';
 
 	if ( rocket_valid_key() ) {
 		// Add All WP Rocket rules of the .htaccess file.

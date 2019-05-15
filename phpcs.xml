@@ -14,7 +14,8 @@
 	<file>.</file>
 	<exclude-pattern>/inc/deprecated/3.3.php</exclude-pattern>
 	<exclude-pattern>/inc/vendors/*</exclude-pattern>
-	<exclude-pattern>/tests/*</exclude-pattern>
+	<exclude-pattern>/tests/Integration/*</exclude-pattern>
+	<exclude-pattern>/tests/Unit/*</exclude-pattern>
 	<exclude-pattern>/vendor/*</exclude-pattern>
 
 	<rule ref="WordPress">

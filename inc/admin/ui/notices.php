@@ -94,10 +94,10 @@ add_action( 'admin_notices', 'rocket_warning_plugin_modification' );
  * @since 1.3.0
  */
 function rocket_plugins_to_deactivate() {
-	$plugins = array();
+	$plugins = [];
 
 	// Deactivate all plugins who can cause conflicts with WP Rocket.
-	$plugins = array(
+	$plugins = [
 		'w3-total-cache'                             => 'w3-total-cache/w3-total-cache.php',
 		'wp-super-cache'                             => 'wp-super-cache/wp-cache.php',
 		'litespeed-cache'                            => 'litespeed-cache/litespeed-cache.php',
@@ -124,7 +124,9 @@ function rocket_plugins_to_deactivate() {
 		'check-and-enable-gzip-compression'          => 'check-and-enable-gzip-compression/richards-toolbox.php',
 		'leverage-browser-caching-ninjas'            => 'leverage-browser-caching-ninjas/leverage-browser-caching-ninja.php',
 		'force-gzip'                                 => 'force-gzip/force-gzip.php',
-	);
+		'enable-gzip-compression'                    => 'enable-gzip-compression/enable-gzip-compression.php',
+		'leverage-browser-caching'                   => 'leverage-browser-caching/leverage-browser-caching.php',
+	];
 
 	if ( get_rocket_option( 'lazyload' ) ) {
 		$plugins['bj-lazy-load']              = 'bj-lazy-load/bj-lazy-load.php';
@@ -202,11 +204,11 @@ function rocket_plugins_to_deactivate() {
 
 		$warning .= '</ul>';
 
-		rocket_notice_html( array(
+		rocket_notice_html( [
 			'status'      => 'error',
 			'dismissible' => '',
 			'message'     => $warning,
-		) );
+		] );
 	}
 }
 add_action( 'admin_notices', 'rocket_plugins_to_deactivate' );

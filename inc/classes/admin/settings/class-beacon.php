@@ -69,20 +69,21 @@ class Beacon {
 		return '<script type="text/javascript">!function(e,t,n){function a(){var e=t.getElementsByTagName("script")[0],n=t.createElement("script");n.type="text/javascript",n.async=!0,n.src="https://beacon-v2.helpscout.net",e.parentNode.insertBefore(n,e)}if(e.Beacon=n=function(t,n,a){e.Beacon.readyQueue.push({method:t,options:n,data:a})},n.readyQueue=[],"complete"===t.readyState)return a();e.attachEvent?e.attachEvent("onload",a):e.addEventListener("load",a,!1)}(window,document,window.Beacon||function(){});</script>
 			<script type="text/javascript">window.Beacon(\'init\', \'' . $form_id . '\')</script>
 			<script>window.Beacon("identify", ' . wp_json_encode( $this->identify_data() ) . ');</script>
+			<script>window.Beacon("session-data", ' . wp_json_encode( $this->session_data() ) . ');</script>
 			<script>window.addEventListener("hashchange", function () {
 				window.Beacon("suggest");
 			  }, false);</script>';
 	}
 
 	/**
-	 * Returns Data to pass to the Beacon identify() method
+	 * Returns Session specific data to pass to Beacon
 	 *
-	 * @since 3.0
+	 * @since 3.3.3
 	 * @author Remy Perona
 	 *
 	 * @return array
 	 */
-	private function identify_data() {
+	private function session_data() {
 		global $wp_version;
 
 		$options_to_send = [
@@ -113,7 +114,6 @@ class Beacon {
 			'facebook_pixel_cache'    => 'Facebook Tracking Add-on',
 			'control_heartbeat'       => 'Hearbeat Control',
 			'sucury_waf_cache_sync'   => 'Sucuri Add-on',
-			'nginx_auto_purge'        => 'NGINX Cache Add-on',
 		];
 
 		$active_options = array_filter( $this->options->get_options() );
@@ -121,13 +121,27 @@ class Beacon {
 		$theme          = wp_get_theme();
 
 		return [
-			'email'                    => $this->options->get( 'consumer_email' ),
 			'Website'                  => home_url(),
 			'WordPress Version'        => $wp_version,
 			'WP Rocket Version'        => WP_ROCKET_VERSION,
 			'Theme'                    => $theme->get( 'Name' ),
-			'Plugins Enabled'          => implode( ' - ', rocket_get_active_plugins() ),
+			'Plugins Enabled'          => substr( implode( ' - ', rocket_get_active_plugins() ), 0, 200 ),
 			'WP Rocket Active Options' => implode( ' - ', $active_options ),
+		];
+	}
+
+	/**
+	 * Returns Identify data to pass to Beacon
+	 *
+	 * @since 3.0
+	 * @author Remy Perona
+	 *
+	 * @return array
+	 */
+	private function identify_data() {
+		return [
+			'email'   => $this->options->get( 'consumer_email' ),
+			'Website' => home_url(),
 		];
 	}
 
@@ -504,16 +518,6 @@ class Beacon {
 				'fr' => [
 					'id'  => '5bcf3d35042863215a46bb7f',
 					'url' => 'https://fr.docs.wp-rocket.me/article/1123-add-on-facebook-pixel/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-			],
-			'nginx'                  => [
-				'en' => [
-					'id'  => '5c9032472c7d3a154461060b',
-					'url' => 'https://docs.wp-rocket.me/article/1143-nginx-fastcgi-cache-add-on/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-				'fr' => [
-					'id'  => '5c98e2860428633d2cf400a5',
-					'url' => 'https://fr.docs.wp-rocket.me/article/1145-add-on-nginx-fastcgi-cache/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 		];

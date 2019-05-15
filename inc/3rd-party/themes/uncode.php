@@ -59,4 +59,25 @@ if ( 'uncode' === strtolower( $current_theme->get( 'Name' ) ) || 'uncode' === st
 		return $exclude_defer_js;
 	}
 	add_filter( 'rocket_exclude_defer_js', 'rocket_exclude_defer_js_uncode' );
+
+	/**
+	 * Excludes Uncode JS files from remove query strings
+	 *
+	 * @since 3.3.3.
+	 * @author Remy Perona
+	 *
+	 * @param array $exclude_busting Array of JS filepaths to be excluded.
+	 * @return array
+	 */
+	function rocket_exclude_busting_uncode( $exclude_busting ) {
+		$exclude_busting[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/init.js' );
+		$exclude_busting[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/min/init.min.js' );
+		$exclude_busting[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/app.js' );
+		$exclude_busting[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/app.min.js' );
+		$exclude_busting[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/plugins.js' );
+		$exclude_busting[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/plugins.min.js' );
+
+		return $exclude_busting;
+	}
+	add_filter( 'rocket_exclude_cache_busting', 'rocket_exclude_busting_uncode' );
 }
