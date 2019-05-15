@@ -458,6 +458,8 @@ class Combine extends Abstract_JS_Optimization {
 			'ad_block_',
 			'elementorFrontendConfig',
 			'omapi_localized',
+			'dataTable({',
+			'rankMath = {',
 			'_atrk_opts',
 			'quicklinkOptions',
 			'ct_checkjs_',
