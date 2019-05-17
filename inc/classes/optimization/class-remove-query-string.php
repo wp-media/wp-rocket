@@ -105,7 +105,6 @@ class Remove_Query_String extends Abstract_Optimization {
 			$excluded_files[ $i ] = str_replace( '#', '\#', $excluded_file );
 		}
 
-
 		$excluded_files = implode( '|', $excluded_files );
 
 		return $excluded_files;
@@ -262,7 +261,9 @@ class Remove_Query_String extends Abstract_Optimization {
 	 * @return bool
 	 */
 	protected function is_excluded( $url ) {
-		if ( ! empty( $this->get_excluded_files() ) && preg_match( '#^' . $this->get_excluded_files() . '$#', rocket_clean_exclude_file( $url ) ) ) {
+		$excluded_files = $this->get_excluded_files();
+
+		if ( ! empty( $excluded_files ) && preg_match( '#^' . $excluded_files . '$#', rocket_clean_exclude_file( $url ) ) ) {
 			return true;
 		}
 
