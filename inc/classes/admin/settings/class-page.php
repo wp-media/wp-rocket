@@ -473,20 +473,6 @@ class Page {
 					],
 					'page'        => 'cache',
 				],
-				'cache_ssl_section'    => [
-					'title'       => __( 'SSL Cache', 'rocket' ),
-					'type'        => 'fields_container',
-					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description' => sprintf( __( '%1$sSSL Cache%2$s works best when your entire website runs on HTTPS.', 'rocket' ), '<a href="' . esc_url( $cache_ssl_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $cache_ssl_beacon['id'] ) . '" target="_blank">', '</a>' ),
-					'class'       => [
-						rocket_is_ssl_website() ? 'wpr-isHidden' : '',
-					],
-					'help'        => [
-						'url' => $cache_ssl_beacon['url'],
-						'id'  => $cache_ssl_beacon['id'],
-					],
-					'page'        => 'cache',
-				],
 				'cache_lifespan'       => [
 					'title'       => __( 'Cache Lifespan', 'rocket' ),
 					'type'        => 'fields_container',
@@ -543,14 +529,6 @@ class Page {
 					'input_attr'        => [
 						'disabled' => rocket_is_mobile_plugin_active() ? 1 : 0,
 					],
-				],
-				'cache_ssl'               => [
-					'type'              => 'checkbox',
-					'label'             => __( 'Enable caching for pages with <code>https://</code>', 'rocket' ),
-					'section'           => 'cache_ssl_section',
-					'page'              => 'cache',
-					'default'           => rocket_is_ssl_website() ? 1 : 0,
-					'sanitize_callback' => 'sanitize_checkbox',
 				],
 				'purge_cron_interval'     => [
 					'type'              => 'cache_lifespan',
