@@ -876,6 +876,8 @@ class Page {
 						'url' => $lazyload_beacon['url'],
 					],
 					'page'        => 'media',
+					// translators: %1$s = “WP Rocket”.
+					'helper' => rocket_maybe_disable_lazyload() ? sprintf( __( 'Lazyload is currently activated in <strong>Autoptimize</strong>. If you want to use %1$s’s lazyload, disable this option in Autoptimize.', 'rocket' ), WP_ROCKET_PLUGIN_NAME ) : '',
 				],
 				'emoji_section'    => [
 					'title'       => __( 'Emoji 👻', 'rocket' ),
@@ -901,9 +903,16 @@ class Page {
 					'page'              => 'media',
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
+					'container_class'   => [
+						rocket_maybe_disable_lazyload() ? 'wpr-isDisabled' : '',
+					],
+					'input_attr'        => [
+						'disabled' => rocket_maybe_disable_lazyload() ? 1 : 0,
+					],
 				],
 				'lazyload_iframes' => [
 					'container_class'   => [
+						rocket_maybe_disable_lazyload() ? 'wpr-isDisabled' : '',
 						'wpr-isParent',
 					],
 					'type'              => 'checkbox',
@@ -912,9 +921,13 @@ class Page {
 					'page'              => 'media',
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
+					'input_attr'        => [
+						'disabled' => rocket_maybe_disable_lazyload() ? 1 : 0,
+					],
 				],
 				'lazyload_youtube' => [
 					'container_class'   => [
+						rocket_maybe_disable_lazyload() ? 'wpr-isDisabled' : '',
 						'wpr-field--children',
 					],
 					'type'              => 'checkbox',
@@ -925,6 +938,9 @@ class Page {
 					'page'              => 'media',
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
+					'input_attr'        => [
+						'disabled' => rocket_maybe_disable_lazyload() ? 1 : 0,
+					],
 				],
 				'emoji'            => [
 					'type'              => 'checkbox',
