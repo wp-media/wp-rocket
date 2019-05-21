@@ -137,6 +137,7 @@ class Plugin {
 			'syntaxhighlighter_subscriber',
 			'elementor_subscriber',
 			'bridge_subscriber',
+			'enfold_subscriber',
 			'ngg_subscriber',
 		];
 
