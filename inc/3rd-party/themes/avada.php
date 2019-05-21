@@ -6,7 +6,7 @@ $current_theme = wp_get_theme();
 if ( 'Avada' === $current_theme->get( 'Name' ) ) {
 	// When Avada theme purge its own cache.
 	add_action( 'avada_clear_dynamic_css_cache',  'rocket_clean_domain' );
-	
+
 	/**
 	 * Conflict with Avada theme and WP Rocket CDN
 	 *
@@ -18,17 +18,22 @@ if ( 'Avada' === $current_theme->get( 'Name' ) ) {
 	 */
 	function rocket_fix_cdn_for_avada_theme( $vars, $handle ) {
 		if ( 'avada-dynamic' === $handle && get_rocket_option( 'cdn' ) ) {
-	
-			$src = get_rocket_cdn_url( get_template_directory_uri() . '/assets/less/theme/dynamic.less' );
+			$src                        = get_rocket_cdn_url( get_template_directory_uri() . '/assets/less/theme/dynamic.less' );
 			$vars['template-directory'] = sprintf( '~"%s"', dirname( dirname( dirname( dirname( $src ) ) ) ) );
-			$vars['lessurl'] = sprintf( '~"%s"', dirname( $src ) );
+			$vars['lessurl']            = sprintf( '~"%s"', dirname( $src ) );
 		}
 		return $vars;
 	}
 	add_filter( 'less_vars', 'rocket_fix_cdn_for_avada_theme', 11, 2 );
 
-	$avada_options = get_option( 'avada_theme_options' );
-
+	/**
+	 * Exclude fusion styles from cache busting to prevent cache dir issues
+	 *
+	 * @author Remy Perona
+	 *
+	 * @param array $excluded_files An array of excluded files.
+	 * @return array
+	 */
 	function rocket_exclude_avada_dynamic_css( $excluded_files ) {
 		$upload_dir = wp_upload_dir();
 
@@ -37,4 +42,41 @@ if ( 'Avada' === $current_theme->get( 'Name' ) ) {
 		return $excluded_files;
 	}
 	add_filter( 'rocket_exclude_cache_busting', 'rocket_exclude_avada_dynamic_css' );
+
+	/**
+	 * Deactivate WP Rocket lazyload if Avada lazyload is enabled
+	 *
+	 * @since 3.3.4
+	 * @author Remy Perona
+	 *
+	 * @param string $old_value Previous Avada option value.
+	 * @param string $value New Avada option value.
+	 * @return void
+	 */
+	function rocket_avada_maybe_deactivate_lazyload( $old_value, $value ) {
+		if ( $value['lazy_load'] !== $old_value['lazy_load'] && 1 === (int) $value['lazy_load'] ) {
+			update_rocket_option( 'lazyload', 0 );
+		}
+	}
+	add_action( 'update_option_avada_theme_options', 'rocket_avada_maybe_deactivate_lazyload', 10, 2 );
 }
+
+/**
+ * Disable WP Rocket lazyload field if Avada lazyload is enabled
+ *
+ * @since 3.3.4
+ * @author Remy Perona
+ *
+ * @return bool
+ */
+function rocket_avada_maybe_disable_lazyload() {
+	$avada_options = get_option( 'avada_theme_options' );
+	$current_theme = wp_get_theme();
+
+	if ( 'Avada' === $current_theme->get( 'Name' ) && 1 === (int) $avada_options['lazy_load'] ) {
+		return true;
+	}
+
+	return false;
+}
+
