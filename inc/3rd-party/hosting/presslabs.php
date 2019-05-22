@@ -97,4 +97,5 @@ if ( defined( 'PL_INSTANCE_REF' ) && class_exists( '\Presslabs\Cache\CacheHandle
 		}
 		add_filter( 'rocket_cdn_cnames', 'rocket_add_pl_cdn', 1 );
 	}
+  }
 }
