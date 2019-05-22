@@ -11,6 +11,7 @@ if ( defined( 'PL_INSTANCE_REF' ) && class_exists( '\Presslabs\Cache\CacheHandle
 	add_filter( 'rocket_cache_mandatory_cookies', '__return_empty_array', PHP_INT_MAX );
 	add_action( 'after_rocket_clean_home', 'rocket_pl_clean_home', 10, 2 );
 	add_action( 'after_rocket_clean_file', 'rocket_pl_clean_post', 2 );
+    add_action( 'pl_pre_url_button_cache_refresh', 'rocket_clean_files' );
 	add_action( 'wp_rocket_loaded', 'rocket_remove_partial_purge_hooks' );
 
 	/**
