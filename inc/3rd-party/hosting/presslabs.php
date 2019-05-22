@@ -1,6 +1,7 @@
 <?php
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
+if ( defined( 'PL_INSTANCE_REF' ) && class_exists( '\Presslabs\Cache\CacheHandler' ) ) {
 
 	add_action( 'pl_pre_cache_refresh', 'rocket_clean_post', 0 );
 	add_action( 'after_rocket_clean_domain', 'rocket_pl_clear_cache' );
