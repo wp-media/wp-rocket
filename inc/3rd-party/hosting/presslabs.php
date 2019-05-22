@@ -2,33 +2,16 @@
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 if ( defined( 'PL_INSTANCE_REF' ) && class_exists( '\Presslabs\Cache\CacheHandler' ) ) {
-
-	add_action( 'pl_pre_cache_refresh', 'rocket_clean_post', 0 );
-	add_action( 'after_rocket_clean_domain', 'rocket_pl_clear_cache' );
-	add_action( 'after_rocket_clean_post', 'rocket_pl_clean_post', 2 );
+	if ( file_exists( WP_CONTENT_DIR . '/advanced-cache.php' ) ) {	
+		require_once WP_CONTENT_DIR . '/advanced-cache.php';
+        
+	add_action( 'pl_pre_cache_refresh', 'rocket_clean_files', 0 );
 	add_filter( 'rocket_display_varnish_options_tab', '__return_false' );
 	add_filter( 'do_rocket_generate_caching_files', '__return_false', PHP_INT_MAX );
 	add_filter( 'rocket_cache_mandatory_cookies', '__return_empty_array', PHP_INT_MAX );
 	add_action( 'after_rocket_clean_home', 'rocket_pl_clean_home', 10, 2 );
-	add_action( 'after_rocket_clean_file', 'rocket_pl_clean_url' );
-	add_action( 'pl_pre_url_button_cache_refresh', 'after_rocket_clean_file' );
+	add_action( 'after_rocket_clean_file', 'rocket_pl_clean_post', 2 );
 	add_action( 'wp_rocket_loaded', 'rocket_remove_partial_purge_hooks' );
-
-	/**
-	 * We clear the entire cache on the Presslabs nodes with the
-	 * exception of images on the CDN.
-	 *
-	 * @since 3.3
-	 *
-	 * @return void
-	 */
-	function rocket_pl_clear_cache() {
-		$cache_handler = new \Presslabs\Cache\CacheHandler();
-
-		$cache_handler->purge_cache( 'pages' );
-		$cache_handler->purge_cache( 'listing' );
-		$cache_handler->purge_cache( 'assets' );
-	}
 
 	/**
 	 * We clear the cache only on the post, homepage and listings when
@@ -70,29 +53,6 @@ if ( defined( 'PL_INSTANCE_REF' ) && class_exists( '\Presslabs\Cache\CacheHandle
 
 		$cache_handler = new \Presslabs\Cache\CacheHandler();
 		$cache_handler->invalidate_url( home_url( '/' ), true );
-	}
-
-	/**
-	 * We clear the cache for a specific URL when using
-	 * "Purge this URL" from the admin bar on any page using the url
-	 *
-	 * @since 3.3
-	 *
-	 * @param string $url URL to purge.
-	 * @return void
-	 */
-	function rocket_pl_clean_url( $urls = false) {
-		if ( ! $urls ) {
-			return;
-		}
-
-		$urls = (array) $urls;
-
-		$cache_handler = new \Presslabs\Cache\CacheHandler();
-
-		foreach ($urls as $url) {
-			$cache_handler->invalidate_url( $url, true );
-		}
 	}
 
 	/**
