@@ -115,7 +115,7 @@ class Critical_CSS {
 	public function clean_critical_css() {
 		try {
 			$directory = new \RecursiveDirectoryIterator( $this->critical_css_path, \FilesystemIterator::SKIP_DOTS );
-		} catch ( \Exception $e ) {
+		} catch ( \UnexpectedValueException $e ) {
 			// no logging yet.
 			return;
 		}
