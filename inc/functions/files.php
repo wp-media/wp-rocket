@@ -404,14 +404,14 @@ function rocket_clean_minify( $extensions = array( 'js', 'css' ) ) {
 
 	try {
 		$dir = new RecursiveDirectoryIterator( WP_ROCKET_MINIFY_CACHE_PATH . get_current_blog_id(), FilesystemIterator::SKIP_DOTS );
-	} catch ( Exception $e ) {
+	} catch ( \UnexpectedValueException $e ) {
 		// No logging yet.
 		return;
 	}
 
 	try {
 		$iterator = new RecursiveIteratorIterator( $dir, RecursiveIteratorIterator::CHILD_FIRST );
-	} catch ( Exception $e ) {
+	} catch ( \Exception $e ) {
 		// No logging yet.
 		return;
 	}
@@ -431,7 +431,7 @@ function rocket_clean_minify( $extensions = array( 'js', 'css' ) ) {
 			foreach ( $files as $file ) {
 				rocket_direct_filesystem()->delete( $file[0] );
 			}
-		} catch ( Exception $e ) {
+		} catch ( \InvalidArgumentException $e ) {
 			// No logging yet.
 			return;
 		}
@@ -462,7 +462,7 @@ function rocket_clean_minify( $extensions = array( 'js', 'css' ) ) {
 				rocket_direct_filesystem()->delete( $file );
 			}
 		}
-	} catch ( Exception $e ) {
+	} catch ( \UnexpectedValueException $e ) {
 		// No logging yet.
 		return;
 	}
@@ -482,34 +482,34 @@ function rocket_clean_cache_busting( $extensions = array( 'js', 'css' ) ) {
 
 	try {
 		$dir = new RecursiveDirectoryIterator( WP_ROCKET_CACHE_BUSTING_PATH . get_current_blog_id(), FilesystemIterator::SKIP_DOTS );
-	} catch ( Exception $e ) {
+	} catch ( \UnexpectedValueException $e ) {
 		// No logging yet.
 		return;
 	}
 
 	try {
 		$iterator = new RecursiveIteratorIterator( $dir, RecursiveIteratorIterator::CHILD_FIRST );
-	} catch ( Exception $e ) {
+	} catch ( \Exception $e ) {
 		// No logging yet.
 		return;
 	}
 
 	foreach ( $extensions as $ext ) {
 		/**
-		 * Fires before the minify cache files are deleted
+		 * Fires before the cache busting files are deleted
 		 *
-		 * @since 2.1
+		 * @since 2.9
 		 *
-		 * @param string $ext File extensions to minify.
+		 * @param string $ext File extensions to clean.
 		*/
-		do_action( 'before_rocket_clean_minify', $ext );
+		do_action( 'before_rocket_clean_busting', $ext );
 
 		try {
 			$files = new RegexIterator( $iterator, '#.*\.' . $ext . '#', RegexIterator::GET_MATCH );
 			foreach ( $files as $file ) {
 				rocket_direct_filesystem()->delete( $file[0] );
 			}
-		} catch ( Exception $e ) {
+		} catch ( \InvalidArgumentException $e ) {
 			// No logging yet.
 			return;
 		}
