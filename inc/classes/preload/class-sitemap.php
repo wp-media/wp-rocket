@@ -10,15 +10,15 @@ namespace WP_Rocket\Preload;
 class Sitemap extends Abstract_Preload {
 	/**
 	 * Flag to track sitemap read failures
-	 * 
+	 *
 	 * @since 3.3
 	 * @author Arun Basil Lal
-	 * 
+	 *
 	 * @var bool
 	 * @access private
 	 */
 	private $sitemap_error = false;
-	
+
 	/**
 	 * Launches the sitemap preload
 	 *
@@ -58,11 +58,11 @@ class Sitemap extends Abstract_Preload {
 			*/
 			do_action( 'after_run_rocket_sitemap_preload', $sitemap_type, $sitemap_url ); // WPCS: prefix ok.
 		}
-		
+
 		if ( true === $this->sitemap_error ) {
 			// Attempt to use the fallback method.
 			$fallback_urls = $this->get_urls();
-			
+
 			if ( ! empty( $fallback_urls ) ) {
 				$urls_group[] = $fallback_urls;
 			}
@@ -74,6 +74,8 @@ class Sitemap extends Abstract_Preload {
 			return;
 		}
 
+		$preload = 0;
+
 		foreach ( $urls_group as $urls ) {
 			$urls = array_flip( array_flip( $urls ) );
 			foreach ( $urls as $url ) {
@@ -84,7 +86,12 @@ class Sitemap extends Abstract_Preload {
 				}
 
 				$this->preload_process->push_to_queue( $url );
+				$preload++;
 			}
+		}
+
+		if ( 0 === $preload ) {
+			return;
 		}
 
 		set_transient( 'rocket_preload_running', 0 );
@@ -129,9 +136,9 @@ class Sitemap extends Abstract_Preload {
 		if ( is_wp_error( $sitemap ) ) {
 			// Translators: %1$s is a XML sitemap URL, %2$s is the error message, %3$s = opening link tag, %4$s = closing link tag..
 			$errors['errors'][] = sprintf( __( 'Sitemap preload encountered an error. Could not gather links on %1$s because of the following error: %2$s. %3$sLearn more%4$s.', 'rocket' ), $sitemap_url, $sitemap->get_error_message(), '<a href="https://docs.wp-rocket.me/article/1065-sitemap-preload-is-slow-or-some-pages-are-not-preloaded-at-all#failed-preload" rel="noopener noreferrer" target=_"blank">', '</a>' );
-			
+
 			$this->sitemap_error = true;
-			
+
 			set_transient( 'rocket_preload_errors', $errors );
 			return [];
 		}
@@ -162,9 +169,9 @@ class Sitemap extends Abstract_Preload {
 
 					break;
 			}
-			
+
 			$this->sitemap_error = true;
-			
+
 			set_transient( 'rocket_preload_errors', $errors );
 			return [];
 		}
@@ -175,15 +182,15 @@ class Sitemap extends Abstract_Preload {
 
 			// Translators: %1$s is a XML sitemap URL, %2$s = opening link tag, %3$s = closing link tag.
 			$errors['errors'][] = sprintf( __( 'Sitemap preload encountered an error. Could not collect links from %1$s because the file is empty. %2$sLearn more%3$s.', 'rocket' ), $sitemap_url, '<a href="https://docs.wp-rocket.me/article/1065-sitemap-preload-is-slow-or-some-pages-are-not-preloaded-at-all#failed-preload" rel="noopener noreferrer" target=_"blank">', '</a>' );
-			
+
 			$this->sitemap_error = true;
-			
+
 			set_transient( 'rocket_preload_errors', $errors );
 			return [];
 		}
 
 		if ( ! function_exists( 'simplexml_load_string' ) ) {
-			
+
 			$this->sitemap_error = true;
 			return [];
 		}
@@ -200,9 +207,9 @@ class Sitemap extends Abstract_Preload {
 				'<a href="https://docs.wp-rocket.me/article/1065-sitemap-preload-is-slow-or-some-pages-are-not-preloaded-at-all#failed-preload" rel="noopener noreferrer" target=_"blank">',
 				'</a>'
 			);
-			
+
 			$this->sitemap_error = true;
-			
+
 			set_transient( 'rocket_preload_errors', $errors );
 			return [];
 		}
@@ -224,27 +231,27 @@ class Sitemap extends Abstract_Preload {
 		$urls = array_merge( $urls, $tmp_urls );
 		return $urls;
 	}
-	
+
 	/**
 	 * Get URLs from WordPress
-	 * 
+	 *
 	 * Used as a fallback when extracting URLs from sitemap fails.
 	 *
 	 * @since 3.3
 	 * @author Arun Basil Lal
-	 * 
+	 *
 	 * @link https://github.com/wp-media/wp-rocket/issues/1306
 	 *
 	 * @return array $urls Array of permalinks.
 	 */
 	public function get_urls() {
-		
+
 		$urls = [];
-		
-		// Get public post types
+
+		// Get public post types.
 		$post_types = get_post_types( array( 'public' => true ) );
 		$post_types = array_filter( $post_types, 'is_post_type_viewable' );
-		
+
 		/**
 		 * Filters the arguments for get_posts
 		 *
@@ -256,24 +263,23 @@ class Sitemap extends Abstract_Preload {
 		$args = apply_filters(
 			'rocket_preload_sitemap_fallback_request_args',
 			[
-				'fields'		=> 'ids',
-				'numberposts'		=> 1000,
-				'posts_per_page'	=> -1,
-				'post_type'		=> $post_types,
+				'fields'         => 'ids',
+				'numberposts'    => 1000,
+				'posts_per_page' => -1,
+				'post_type'      => $post_types,
 			]
 		);
-		
+
 		$all_posts = get_posts( $args );
 
-		foreach( $all_posts as $post ) {
-			
+		foreach ( $all_posts as $post ) {
 			$permalink = get_permalink( $post );
-			
-			if ( $permalink !== false ) {
+
+			if ( false !== $permalink ) {
 				$urls[] = $permalink;
 			}
 		}
-		
+
 		return $urls;
 	}
 }
