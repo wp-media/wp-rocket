@@ -54,7 +54,7 @@ if ( 'Avada' === $current_theme->get( 'Name' ) ) {
 	 * @return void
 	 */
 	function rocket_avada_maybe_deactivate_lazyload( $old_value, $value ) {
-		if ( $value['lazy_load'] !== $old_value['lazy_load'] && 1 === (int) $value['lazy_load'] ) {
+		if ( empty( $old_value['lazy_load'] ) && ! empty( $value['lazy_load'] ) ) {
 			update_rocket_option( 'lazyload', 0 );
 		}
 	}
@@ -73,7 +73,7 @@ function rocket_avada_maybe_disable_lazyload() {
 	$avada_options = get_option( 'avada_theme_options' );
 	$current_theme = wp_get_theme();
 
-	if ( 'Avada' === $current_theme->get( 'Name' ) && 1 === (int) $avada_options['lazy_load'] ) {
+	if ( 'Avada' === $current_theme->get( 'Name' ) && ! empty( $avada_options['lazy_load'] ) ) {
 		return true;
 	}
 

@@ -22,7 +22,7 @@ if ( class_exists( 'autoptimizeConfig' ) ) :
 	 * @return void
 	 */
 	function rocket_maybe_deactivate_lazyload( $old_value, $value ) {
-		if ( $value['autoptimize_imgopt_checkbox_field_3'] !== $old_value['autoptimize_imgopt_checkbox_field_3'] && 1 === (int) $value['autoptimize_imgopt_checkbox_field_3'] ) {
+		if ( empty( $old_value['autoptimize_imgopt_checkbox_field_3'] ) && ! empty( $value['autoptimize_imgopt_checkbox_field_3'] ) ) {
 			update_rocket_option( 'lazyload', 0 );
 			update_rocket_option( 'lazyload_iframes', 0 );
 			update_rocket_option( 'lazyload_youtube', 0 );
@@ -125,7 +125,7 @@ function rocket_activate_autoptimize() {
 
 	$lazyload = get_option( 'autoptimize_imgopt_settings' );
 
-	if ( 1 === (int) $lazyload['autoptimize_imgopt_checkbox_field_3'] ) {
+	if ( ! empty( $lazyload['autoptimize_imgopt_checkbox_field_3'] ) ) {
 		update_rocket_option( 'lazyload', 0 );
 		update_rocket_option( 'lazyload_iframes', 0 );
 		update_rocket_option( 'lazyload_youtube', 0 );
@@ -144,7 +144,7 @@ add_action( 'activate_autoptimize/autoptimize.php', 'rocket_activate_autoptimize
 function rocket_maybe_disable_lazyload() {
 	$lazyload = get_option( 'autoptimize_imgopt_settings' );
 
-	if ( is_plugin_active( 'autoptimize/autoptimize.php' ) && 1 === (int) $lazyload['autoptimize_imgopt_checkbox_field_3'] ) {
+	if ( is_plugin_active( 'autoptimize/autoptimize.php' ) && ! empty( $lazyload['autoptimize_imgopt_checkbox_field_3'] ) ) {
 		return true;
 	}
 
