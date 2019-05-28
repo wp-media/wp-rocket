@@ -18,5 +18,10 @@ if (! file_exists($rocket_common_autoload_path . 'autoload.php')) {
     die('Whoops, we need Composer before we start running tests.  Please type: `composer install`.  When done, try running `phpunit` again.');
 }
 
+if ( ! defined( 'ABSPATH' ) ) {
+    define( 'ABSPATH', WP_ROCKET_PLUGIN_ROOT );
+}
+
 require_once $rocket_common_autoload_path . 'autoload.php';
+
 unset($rocket_common_autoload_path);
