@@ -290,7 +290,7 @@ add_filter( 'pre_update_option_' . WP_ROCKET_SLUG, 'rocket_pre_main_option', 10,
  * @param array $value     An array of submitted options values.
  */
 function rocket_update_ssl_option_after_save_home_url( $old_value, $value ) {
-	if ( $old_value === $value ) {
+	if ( $old_value === $value || get_rocket_option( 'cache_ssl' ) ) {
 		return;
 	}
 
