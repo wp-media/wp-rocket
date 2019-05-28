@@ -16,7 +16,7 @@ class Enfold_Subscriber implements Subscriber_Interface {
 	public static function get_subscribed_events() {
 		$current_theme = wp_get_theme();
 
-		if ( 'Enfold' !== $current_theme->get( 'Name' ) ) {
+		if ( 'Enfold' !== $current_theme->get( 'Name' ) || 'Enfold' !== $current_theme->get( 'Template' ) ) {
 			return [];
 		}
 
