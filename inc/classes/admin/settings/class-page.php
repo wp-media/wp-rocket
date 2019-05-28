@@ -1945,6 +1945,7 @@ class Page {
 				'version',
 				'cloudflare_old_settings',
 				'sitemap_preload_url_crawl',
+				'cache_ssl',
 			]
 		);
 	}
