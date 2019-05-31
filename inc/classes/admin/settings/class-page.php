@@ -473,20 +473,6 @@ class Page {
 					],
 					'page'        => 'cache',
 				],
-				'cache_ssl_section'    => [
-					'title'       => __( 'SSL Cache', 'rocket' ),
-					'type'        => 'fields_container',
-					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description' => sprintf( __( '%1$sSSL Cache%2$s works best when your entire website runs on HTTPS.', 'rocket' ), '<a href="' . esc_url( $cache_ssl_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $cache_ssl_beacon['id'] ) . '" target="_blank">', '</a>' ),
-					'class'       => [
-						rocket_is_ssl_website() ? 'wpr-isHidden' : '',
-					],
-					'help'        => [
-						'url' => $cache_ssl_beacon['url'],
-						'id'  => $cache_ssl_beacon['id'],
-					],
-					'page'        => 'cache',
-				],
 				'cache_lifespan'       => [
 					'title'       => __( 'Cache Lifespan', 'rocket' ),
 					'type'        => 'fields_container',
@@ -543,14 +529,6 @@ class Page {
 					'input_attr'        => [
 						'disabled' => rocket_is_mobile_plugin_active() ? 1 : 0,
 					],
-				],
-				'cache_ssl'               => [
-					'type'              => 'checkbox',
-					'label'             => __( 'Enable caching for pages with <code>https://</code>', 'rocket' ),
-					'section'           => 'cache_ssl_section',
-					'page'              => 'cache',
-					'default'           => rocket_is_ssl_website() ? 1 : 0,
-					'sanitize_callback' => 'sanitize_checkbox',
 				],
 				'purge_cron_interval'     => [
 					'type'              => 'cache_lifespan',
@@ -898,6 +876,8 @@ class Page {
 						'url' => $lazyload_beacon['url'],
 					],
 					'page'        => 'media',
+					// translators: %1$s = “WP Rocket”.
+					'helper'      => rocket_maybe_disable_lazyload() ? sprintf( __( 'Lazyload is currently activated in <strong>Autoptimize</strong>. If you want to use %1$s’s lazyload, disable this option in Autoptimize.', 'rocket' ), WP_ROCKET_PLUGIN_NAME ) : '',
 				],
 				'emoji_section'    => [
 					'title'       => __( 'Emoji 👻', 'rocket' ),
@@ -923,9 +903,17 @@ class Page {
 					'page'              => 'media',
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
+					'container_class'   => [
+						( rocket_avada_maybe_disable_lazyload() || rocket_maybe_disable_lazyload() ) ? 'wpr-isDisabled' : '',
+					],
+					'input_attr'        => [
+						'disabled' => ( rocket_avada_maybe_disable_lazyload() || rocket_maybe_disable_lazyload() ) ? 1 : 0,
+					],
+					'description'       => rocket_avada_maybe_disable_lazyload() ? _x('Lazyload for images is currently activated in Avada. If you want to use WP Rocket’s LazyLoad, disable this option in Avada.', 'Avada', 'rocket' ) : '',
 				],
 				'lazyload_iframes' => [
 					'container_class'   => [
+						rocket_maybe_disable_lazyload() ? 'wpr-isDisabled' : '',
 						'wpr-isParent',
 					],
 					'type'              => 'checkbox',
@@ -934,9 +922,13 @@ class Page {
 					'page'              => 'media',
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
+					'input_attr'        => [
+						'disabled' => rocket_maybe_disable_lazyload() ? 1 : 0,
+					],
 				],
 				'lazyload_youtube' => [
 					'container_class'   => [
+						rocket_maybe_disable_lazyload() ? 'wpr-isDisabled' : '',
 						'wpr-field--children',
 					],
 					'type'              => 'checkbox',
@@ -947,6 +939,9 @@ class Page {
 					'page'              => 'media',
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
+					'input_attr'        => [
+						'disabled' => rocket_maybe_disable_lazyload() ? 1 : 0,
+					],
 				],
 				'emoji'            => [
 					'type'              => 'checkbox',
@@ -1967,6 +1962,7 @@ class Page {
 				'version',
 				'cloudflare_old_settings',
 				'sitemap_preload_url_crawl',
+				'cache_ssl',
 			]
 		);
 	}

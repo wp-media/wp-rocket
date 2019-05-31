@@ -465,6 +465,8 @@ class Combine extends Abstract_JS_Optimization {
 			'atatags-',
 			'hbspt.forms.create',
 			'function(c,h,i,m,p)',
+			'dataTable({',
+			'rankMath = {',
 			'_atrk_opts',
 			'quicklinkOptions',
 			'ct_checkjs_',
