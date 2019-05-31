@@ -39,10 +39,7 @@ class Elementor_Subscriber implements Subscriber_Interface {
 		}
 
 		return [
-			'wp_rocket_loaded'                    => [
-				'remove_widget_callback',
-				'cdn_lazyload_compatibility',
-			],
+			'wp_rocket_loaded'                    => 'remove_widget_callback',
 			'added_post_meta'                     => [ 'maybe_clear_cache', 10, 3 ],
 			'deleted_post_meta'                   => [ 'maybe_clear_cache', 10, 3 ],
 			'elementor/core/files/clear_cache'    => 'clear_cache',
@@ -61,21 +58,6 @@ class Elementor_Subscriber implements Subscriber_Interface {
 	 */
 	public function remove_widget_callback() {
 		remove_filter( 'widget_update_callback', 'rocket_widget_update_callback' );
-	}
-
-	/**
-	 * Removes filters and change filter priority for WP Rocket CDN
-	 *
-	 * @since 3.3.4
-	 * @author Remy Perona
-	 *
-	 * @return void
-	 */
-	public function cdn_lazyload_compatibility() {
-		remove_filter( 'wp_get_attachment_image_src', 'rocket_cdn_attachment_image_src', PHP_INT_MAX );
-		remove_filter( 'wp_get_attachment_url',  'rocket_cdn_file', PHP_INT_MAX );
-		remove_filter( 'rocket_buffer', 'rocket_cdn_images', PHP_INT_MAX );
-		add_filter( 'rocket_buffer', 'rocket_cdn_images', 24 );
 	}
 
 	/**
