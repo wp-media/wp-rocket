@@ -86,7 +86,6 @@ function rocket_avada_maybe_disable_lazyload() {
  * @since 3.3.4
  * @author Vasilis Manthos
  *
- * @return bool
  */
 function rocket_avada_clear_cache_fusion_patcher() {
 	rocket_clean_domain();
