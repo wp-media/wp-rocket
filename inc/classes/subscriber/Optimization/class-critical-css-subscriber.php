@@ -83,7 +83,7 @@ class Critical_CSS_Subscriber implements Subscriber_Interface {
 	public function generate_critical_css_on_activation( $old_value, $value ) {
 		if ( isset( $old_value['async_css'], $value['async_css'] ) && ( $old_value['async_css'] !== $value['async_css'] ) && 1 === (int) $value['async_css'] ) {
 			try {
-				if ( ( new \FilesystemIterator( WP_ROCKET_CRITICAL_CSS_PATH . get_current_blog_id(), \FilesystemIterator::SKIP_DOTS ) )->valid() ) {
+				if ( ( new \FilesystemIterator( $this->critical_css->get_critical_css_path(), \FilesystemIterator::SKIP_DOTS ) )->valid() ) {
 					return;
 				}
 			} catch ( \UnexpectedValueException $e ) {
