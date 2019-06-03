@@ -76,6 +76,10 @@ class Critical_CSS {
 			return;
 		}
 
+		if ( get_transient( 'rocket_critical_css_generation_process_running' ) ) {
+			return;
+		}
+
 		$this->clean_critical_css();
 
 		$this->stop_generation();
@@ -307,6 +311,8 @@ class Critical_CSS {
 	 * @return bool|string False if critical CSS file doesn't exist, file path otherwise
 	 */
 	public function get_current_page_critical_css() {
+		$name = 'front_page.css';
+
 		if ( is_home() && 'page' === get_option( 'show_on_front' ) ) {
 			$name = 'home.css';
 		} elseif ( is_front_page() ) {
@@ -321,8 +327,6 @@ class Critical_CSS {
 		} elseif ( is_singular() ) {
 			$post_type = get_post_type();
 			$name      = $post_type . '.css';
-		} else {
-			$name = 'front_page.css';
 		}
 
 		$file = $this->critical_css_path . $name;
