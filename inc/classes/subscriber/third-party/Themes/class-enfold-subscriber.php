@@ -26,7 +26,7 @@ class Enfold_Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Disable lazyload for background images when using Bridge theme
+	 * Disable lazyload for background images when using Enfold theme
 	 *
 	 * @since 3.3.4
 	 * @author Remy Perona
