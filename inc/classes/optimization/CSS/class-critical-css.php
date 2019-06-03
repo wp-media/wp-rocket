@@ -33,9 +33,9 @@ class Critical_CSS {
 	 *
 	 * @since 2.11
 	 * @var string path to the critical css directory
-	 * @access public
+	 * @access private
 	 */
-	public $critical_css_path;
+	private $critical_css_path;
 
 	/**
 	 * Class constructor.
@@ -53,6 +53,18 @@ class Critical_CSS {
 		];
 
 		$this->critical_css_path = WP_ROCKET_CRITICAL_CSS_PATH . get_current_blog_id() . '/';
+	}
+
+	/**
+	 * Returns the current site critical CSS path
+	 *
+	 * @since 3.3.5
+	 * @author Remy Perona
+	 *
+	 * @return string
+	 */
+	public function get_critical_css_path() {
+		return $this->critical_css_path;
 	}
 
 	/**
