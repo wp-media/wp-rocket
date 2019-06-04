@@ -168,13 +168,14 @@ function rocket_has_i18n() {
 	}
 
 	if ( ! empty( $q_config ) && is_array( $q_config ) ) {
-		if ( function_exists( 'qtrans_convertURL' ) ) {
-			// qTranslate.
-			return 'qtranslate';
-		}
 		if ( function_exists( 'qtranxf_convertURL' ) ) {
 			// qTranslate-x.
 			return 'qtranslate-x';
+		}
+
+		if ( function_exists( 'qtrans_convertURL' ) ) {
+			// qTranslate.
+			return 'qtranslate';
 		}
 	}
 
