@@ -58,7 +58,7 @@ if ( 'Avada' === $current_theme->get( 'Name' ) ) {
 			update_rocket_option( 'lazyload', 0 );
 		}
 	}
-	add_action( 'update_option_avada_theme_options', 'rocket_avada_maybe_deactivate_lazyload', 10, 2 );
+	add_action( 'update_option_fusion_options', 'rocket_avada_maybe_deactivate_lazyload', 10, 2 );
 }
 
 /**
@@ -70,7 +70,7 @@ if ( 'Avada' === $current_theme->get( 'Name' ) ) {
  * @return bool
  */
 function rocket_avada_maybe_disable_lazyload() {
-	$avada_options = get_option( 'avada_theme_options' );
+	$avada_options = get_option( 'fusion_options' );
 	$current_theme = wp_get_theme();
 
 	if ( 'Avada' === $current_theme->get( 'Name' ) && ! empty( $avada_options['lazy_load'] ) ) {
@@ -81,14 +81,12 @@ function rocket_avada_maybe_disable_lazyload() {
 }
 
 /**
- * Clear's WP Rocket's cache after Avada's Fusion Patcher flushes their caches
+ * Clears WP Rocket's cache after Avada's Fusion Patcher flushes their caches
  *
- * @since 3.3.4
+ * @since 3.3.5
  * @author Vasilis Manthos
- *
  */
 function rocket_avada_clear_cache_fusion_patcher() {
 	rocket_clean_domain();
 }
-
 add_action( 'fusion_cache_reset_after', 'rocket_avada_clear_cache_fusion_patcher' );

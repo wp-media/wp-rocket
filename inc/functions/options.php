@@ -456,8 +456,6 @@ function get_rocket_cache_query_string() {
  * @return array An array of URLs for the JS files to be excluded.
  */
 function get_rocket_exclude_defer_js() {
-	global $wp_scripts;
-
 	$exclude_defer_js = [
 		'gist.github.com',
 		'content.jwplatform.com',
@@ -468,7 +466,7 @@ function get_rocket_exclude_defer_js() {
 	];
 
 	if ( get_rocket_option( 'defer_all_js', 0 ) && get_rocket_option( 'defer_all_js_safe', 0 ) ) {
-		$jquery            = site_url( $wp_scripts->registered['jquery-core']->src );
+		$jquery            = site_url( wp_scripts()->registered['jquery-core']->src );
 		$jetpack_jquery    = 'c0.wp.com/c/(?:.+)/wp-includes/js/jquery/jquery.js';
 		$googleapis_jquery = 'ajax.googleapis.com/ajax/libs/jquery/(?:.+)/jquery(?:\.min)?.js';
 
