@@ -46,13 +46,14 @@ class WooCommerce_Subscriber implements Event_Manager_Aware_Subscriber_Interface
 			$events['update_option_woocommerce_myaccount_page_id']        = [ 'after_update_single_option', 10, 2 ];
 			$events['update_option_woocommerce_default_customer_address'] = [ 'after_update_single_option', 10, 2 ];
 
-			$events['shutdown']                            = 'maybe_update_config';
-			$events['woocommerce_save_product_variation']  = 'clean_cache_after_woocommerce_save_product_variation';
-			$events['transition_post_status']              = [ 'maybe_exclude_page', 10, 3 ];
-			$events['rocket_cache_reject_uri']             = [
+			$events['shutdown']                           = 'maybe_update_config';
+			$events['woocommerce_save_product_variation'] = 'clean_cache_after_woocommerce_save_product_variation';
+			$events['transition_post_status']             = [ 'maybe_exclude_page', 10, 3 ];
+			$events['rocket_cache_reject_uri']            = [
 				[ 'exclude_pages' ],
 			];
-			$events['rocket_cache_query_strings']          = 'cache_geolocation_query_string';
+			$events['rocket_cache_query_strings']         = 'cache_geolocation_query_string';
+			$events['rocket_cpcss_excluded_taxonomies']   = 'exclude_product_attributes_cpcss';
 
 			/**
 			 * Filters activation of WooCommerce empty cart caching
@@ -341,13 +342,13 @@ class WooCommerce_Subscriber implements Event_Manager_Aware_Subscriber_Interface
 	 */
 	private function save_cache_empty_cart( $content ) {
 		$lang = rocket_get_current_language();
-	
+
 		if ( $lang ) {
 			set_transient( 'rocket_get_refreshed_fragments_cache_' . $lang, $content, 7 * DAY_IN_SECONDS );
 
 			return $content;
 		}
-		
+
 		set_transient( 'rocket_get_refreshed_fragments_cache', $content, 7 * DAY_IN_SECONDS );
 
 		return $content;
@@ -399,5 +400,22 @@ class WooCommerce_Subscriber implements Event_Manager_Aware_Subscriber_Interface
 		}
 
 		delete_transient( 'rocket_get_refreshed_fragments_cache' );
+	}
+
+	/**
+	 * Excludes WC product attributes taxonomies from CPCSS generation
+	 *
+	 * @since 3.3.5
+	 * @author Remy Perona
+	 *
+	 * @param array $excluded_taxonomies Taxonomies excluded from CPCSS generation.
+	 * @return array
+	 */
+	public function exclude_product_attributes_cpcss( $excluded_taxonomies ) {
+		if ( ! function_exists( 'wc_get_attribute_taxonomy_names' ) ) {
+			return $excluded_taxonomies;
+		}
+
+		return array_merge( $excluded_taxonomies, wc_get_attribute_taxonomy_names() );
 	}
 }
