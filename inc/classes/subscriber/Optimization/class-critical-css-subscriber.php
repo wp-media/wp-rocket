@@ -81,7 +81,15 @@ class Critical_CSS_Subscriber implements Subscriber_Interface {
 	 * @param array $value     New values for WP Rocket settings.
 	 */
 	public function generate_critical_css_on_activation( $old_value, $value ) {
-		if ( ! empty( $_POST[ WP_ROCKET_SLUG ] ) && isset( $old_value['async_css'], $value['async_css'] ) && ( $old_value['async_css'] !== $value['async_css'] ) && 1 === (int) $value['async_css'] ) {
+		if ( isset( $old_value['async_css'], $value['async_css'] ) && ( $old_value['async_css'] !== $value['async_css'] ) && 1 === (int) $value['async_css'] ) {
+			try {
+				if ( ( new \FilesystemIterator( $this->critical_css->get_critical_css_path(), \FilesystemIterator::SKIP_DOTS ) )->valid() ) {
+					return;
+				}
+			} catch ( \UnexpectedValueException $e ) {
+				return;
+			}
+
 			$this->critical_css->process_handler();
 		}
 	}
