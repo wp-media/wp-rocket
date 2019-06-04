@@ -13,14 +13,6 @@ class TestExcludeDeferJS extends TestCase {
         parent::setUp();
         Monkey\setUp();
 
-        global $wp_scripts;
-        $wp_scripts = new \stdClass();
-        $jquery = new \stdClass();
-        $jquery->src = '/wp-includes/js/jquery/jquery.js';
-        $wp_scripts->registered = [
-            'jquery-core' => $jquery,
-        ];
-
         require( WP_ROCKET_PLUGIN_ROOT . 'inc/functions/options.php' );
     }
 
@@ -51,6 +43,16 @@ class TestExcludeDeferJS extends TestCase {
         Functions\when( 'get_rocket_option' )->justReturn(1);
         Functions\when('site_url')->returnArg();
         Functions\when('rocket_clean_exclude_file')->returnArg();
+        Functions\when('wp_scripts')->alias(function() {
+            $wp_scripts = new \stdClass();
+            $jquery = new \stdClass();
+            $jquery->src = '/wp-includes/js/jquery/jquery.js';
+            $wp_scripts->registered = [
+                'jquery-core' => $jquery,
+            ];
+
+            return $wp_scripts;
+        });
 
         $exclude_defer_js = [
             'gist.github.com',
