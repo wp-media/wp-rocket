@@ -10,6 +10,10 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  * @return Object Cloudflare\Api instance if crendentials are set, WP_Error otherwise
  */
 function get_rocket_cloudflare_api_instance() {
+	if ( ! function_exists( 'curl_init' ) || ! function_exists( 'curl_exec' ) ) {
+		return new WP_Error( 'curl_disabled', __( 'Curl functions are disabled, they are required for the Cloudflare Add-on to work correctly.', 'rocket' ) );
+	}
+
 	$cf_email   = get_rocket_option( 'cloudflare_email', null );
 	$cf_api_key = ( defined( 'WP_ROCKET_CF_API_KEY' ) ) ? WP_ROCKET_CF_API_KEY : get_rocket_option( 'cloudflare_api_key', null );
 
