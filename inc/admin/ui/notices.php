@@ -385,6 +385,10 @@ function rocket_warning_htaccess_permissions() {
 			return;
 	}
 
+	if ( rocket_check_htaccess_rules() ) {
+		return;
+	}
+
 	$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
 
 	if ( in_array( __FUNCTION__, (array) $boxes, true ) ) {
@@ -393,15 +397,19 @@ function rocket_warning_htaccess_permissions() {
 
 	$message = rocket_notice_writing_permissions( '.htaccess' );
 
+	add_filter( 'rocket_htaccess_mod_rewrite', '__return_false' );
+
 	rocket_notice_html(
 		[
-			'status'           => 'error',
+			'status'           => 'warning',
 			'dismissible'      => '',
 			'message'          => $message,
 			'dismiss_button'   => __FUNCTION__,
 			'readonly_content' => get_rocket_htaccess_marker(),
 		]
 	);
+
+	remove_filter( 'rocket_htaccess_mod_rewrite', '__return_false' );
 }
 add_action( 'admin_notices', 'rocket_warning_htaccess_permissions' );
 
