@@ -172,7 +172,7 @@ function rocket_cdn_images( $html ) {
 
 			// Image path is relative, apply the host to it.
 			if ( empty( $host ) ) {
-				$image_url = $home_url . ltrim( $image_url, '/' );
+				$image_url = home_url( '/' ) . ltrim( $image_url, '/' );
 				$host      = rocket_extract_url_component( $image_url, PHP_URL_HOST );
 			}
 
