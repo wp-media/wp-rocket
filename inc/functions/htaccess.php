@@ -198,33 +198,33 @@ function get_rocket_htaccess_mod_rewrite() {
 	}
 
 	/**
-	  * Replace the dots by underscores to avoid some bugs on some shared hosting services on filenames (not multisite compatible!)
-	  *
-	  * @since 1.3.0
-	  *
-	  * @param bool true will replace the . by _.
+	 * Replace the dots by underscores to avoid some bugs on some shared hosting services on filenames (not multisite compatible!)
+	 *
+	 * @since 1.3.0
+	 *
+	 * @param bool true will replace the . by _.
 	 */
 	$http_host = apply_filters( 'rocket_url_no_dots', false ) ? rocket_remove_url_protocol( home_url() ) : '%{HTTP_HOST}';
 
 	/**
-	  * Allow the path to be fully printed or dependant od %DOCUMENT_ROOT (forced for 1&1 by default)
-	  *
-	  * @since 1.3.0
-	  *
-	  * @param bool true will force the path to be full.
+	 * Allow the path to be fully printed or dependant od %DOCUMENT_ROOT (forced for 1&1 by default)
+	 *
+	 * @since 1.3.0
+	 *
+	 * @param bool true will force the path to be full.
 	 */
 	$is_1and1_or_force = apply_filters( 'rocket_force_full_path', strpos( $_SERVER['DOCUMENT_ROOT'], '/kunden/' ) === 0 );
 
-	$rules = '';
+	$rules      = '';
 	$gzip_rules = '';
-	$enc = '';
+	$enc        = '';
 
 	/**
-	  * Allow to serve gzip cache file
-	  *
-	  * @since 2.4
-	  *
-	  * @param bool true will force to serve gzip cache file.
+	 * Allow to serve gzip cache file
+	 *
+	 * @since 2.4
+	 *
+	 * @param bool true will force to serve gzip cache file.
 	 */
 	if ( function_exists( 'gzencode' ) && apply_filters( 'rocket_force_gzip_htaccess_rules', true ) ) {
 		$rules = '<IfModule mod_mime.c>' . PHP_EOL;
@@ -628,4 +628,28 @@ function rocket_has_wp_htaccess_rules( $content ) {
 	 * @param string $content      .htaccess content.
 	 */
 	return apply_filters( 'rocket_has_wp_htaccess_rules', $has_wp_rules, $content );
+}
+
+/**
+ * Check if WP Rocket htaccess rules are already present in the file
+ *
+ * @since 3.3.5
+ * @author Remy Perona
+ *
+ * @return bool
+ */
+function rocket_check_htaccess_rules() {
+	$htaccess_file = get_home_path() . '.htaccess';
+
+	if ( ! rocket_direct_filesystem()->is_readable( $htaccess_file ) ) {
+		return false;
+	}
+
+	$htaccess = rocket_direct_filesystem()->get_contents( $htaccess_file );
+
+	if ( preg_match( '/\s*# BEGIN WP Rocket.*# END WP Rocket\s*?/isU', $htaccess ) ) {
+		return true;
+	}
+
+	return false;
 }
