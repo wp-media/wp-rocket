@@ -27,6 +27,7 @@ wp_clear_scheduled_hook( 'rocket_purge_time_event' );
 wp_clear_scheduled_hook( 'rocket_database_optimization_time_event' );
 wp_clear_scheduled_hook( 'rocket_google_tracking_cache_update' );
 wp_clear_scheduled_hook( 'rocket_facebook_tracking_cache_update' );
+wp_clear_scheduled_hook( 'rocket_cache_dir_size_check' );
 
 /**
  * Remove all cache files.
