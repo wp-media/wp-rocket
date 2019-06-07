@@ -137,8 +137,8 @@ class Plugin {
 			'syntaxhighlighter_subscriber',
 			'elementor_subscriber',
 			'bridge_subscriber',
-			'enfold_subscriber',
 			'ngg_subscriber',
+			'cache_dir_size_check_subscriber',
 		];
 
 		$subscribers = array_merge( $subscribers, $common_subscribers );

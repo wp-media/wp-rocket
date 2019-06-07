@@ -79,3 +79,14 @@ function rocket_avada_maybe_disable_lazyload() {
 
 	return false;
 }
+
+/**
+ * Clears WP Rocket's cache after Avada's Fusion Patcher flushes their caches
+ *
+ * @since 3.3.5
+ * @author Vasilis Manthos
+ */
+function rocket_avada_clear_cache_fusion_patcher() {
+	rocket_clean_domain();
+}
+add_action( 'fusion_cache_reset_after', 'rocket_avada_clear_cache_fusion_patcher' );

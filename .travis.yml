@@ -1,10 +1,7 @@
 sudo: false
 language: php
 notifications:
-  slack:
-    secure: AhtX1RztruH3HYMnXGH1IcGXWRNTdnjJIRVMHI4zeKQfFaomyJstLK6LD43vKxEaefMrHALhcB7csEvcQYBmlgvNgxOzcjHuGE5BVPW2OM6OUt/lv8r6979o0iIKC1dS7Ngc6S41UqWUy7CzmSxNSiapxT+gg0P7T2mHcYCrIrNb14gLLW8oKlem9JxG2Os1U47PGe9n5vNymCdLERprnzuDYkyYkzwLjNFwsl8rkFTU1mSScI6K+O/sbKNe1UEBXzJYAcB0Ta0j7ORPwJua0j+qAcqm9d9QUpzsrQyXev69yGCa0eSDDSiRWUIidpn3wq1uEHYjkFPF1XaXeUJYU9tvan1H7wjynCFmzJAQnxnEGOR8LwE+r6aYgWQfbwSIrxw+Hnc6CK90tA79mgsZoRxeHnLZo+hukeaXIUWn3kNCiRR/vWtwd67bzG3LOq4evDs34a1CzfdJWF17nAoilDI7kKUyXo/I4lbwPB1aveoCracTDKuCSl+IjQkSTH2a2afYk6pibFImAN73G50IFqk5DVgVwGMlCI6WvXs8FN1Mi9vR49F+Sxe5gCPx/Vdx9sGIfQEGC628sO92TKASEdcAjMtxaCKMZUnlBG9M0IyIb7RP2Uh3twTOaWaowZ81Zcs8hY2pFPQTLUpBS+XOqP7WmbPsDD+V+c0r613qSeE=
-    on_success: change
-    on_failure: change
+  slack: wp-media:nnBz5DMaiRLNaEqIStaUgygW
   email:
     on_success: never
     on_failure: never
@@ -24,7 +21,7 @@ matrix:
   - php: 7.2
     env: WP_VERSION=latest
   - php: 7.2
-    env: WP_VERSION=4.7.12
+    env: WP_VERSION=4.7.13
   - php: 7.1
     env: WP_VERSION=latest
   - php: 7.0
