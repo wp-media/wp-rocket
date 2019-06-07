@@ -316,8 +316,8 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 		}
 
 		if ( $this->options->get( 'lazyload' ) && $this->can_lazyload_images() ) {
-			$html = $this->image->lazyloadImages( $html, $buffer );
 			$html = $this->image->lazyloadPictures( $html, $buffer );
+			$html = $this->image->lazyloadImages( $html, $buffer );
 
 			/**
 			 * Filters the application of lazyload on background images
