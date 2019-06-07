@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.3\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2019-05-30 20:10-0400\n"
+"POT-Creation-Date: 2019-06-07 13:12-0400\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -198,7 +198,7 @@ msgstr ""
 msgid "Cloudflare browser cache set to %s seconds"
 msgstr ""
 
-#: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/notices.php:815
+#: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/notices.php:836
 #: inc/common/admin-bar.php:65 inc/common/admin-bar.php:118
 #: views/settings/page-sections/dashboard.php:115
 msgid "Clear cache"
@@ -302,104 +302,120 @@ msgid ""
 "%2$sGo to permalinks settings%3$s"
 msgstr ""
 
-#: inc/admin/ui/notices.php:537
+#: inc/admin/ui/notices.php:400
+#, php-format
+msgid "%s could not modify the .htaccess file due to missing writing permissions."
+msgstr ""
+
+#: inc/admin/ui/notices.php:406 inc/admin/ui/notices.php:913
+#, php-format
+msgid "Troubleshoot: %1$sHow to make system files writeable%2$s"
+msgstr ""
+
+#: inc/admin/ui/notices.php:408 inc/admin/ui/notices.php:915
+msgid ""
+"https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
+"config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
+msgstr ""
+
+#: inc/admin/ui/notices.php:414
+msgid ""
+"Don’t worry, WP Rocket’s page caching and settings will still function correctly."
+msgstr ""
+
+#: inc/admin/ui/notices.php:414
+msgid ""
+"For optimal performance, adding the following lines into your .htaccess is "
+"recommended (not required):"
+msgstr ""
+
+#: inc/admin/ui/notices.php:558
 #, php-format
 msgid ""
 "%1$s is good to go! %2$sTest your load time%4$s, or visit your %3$ssettings%4$s."
 msgstr ""
 
-#: inc/admin/ui/notices.php:658
+#: inc/admin/ui/notices.php:679
 msgid ""
 "Would you allow WP Rocket to collect non-sensitive diagnostic data from this "
 "website?"
 msgstr ""
 
-#: inc/admin/ui/notices.php:659
+#: inc/admin/ui/notices.php:680
 msgid "This would help us to improve WP Rocket for you in the future."
 msgstr ""
 
-#: inc/admin/ui/notices.php:665
+#: inc/admin/ui/notices.php:686
 msgid "What info will we collect?"
 msgstr ""
 
-#: inc/admin/ui/notices.php:670
+#: inc/admin/ui/notices.php:691
 msgid ""
 "Below is a detailed view of all data WP Rocket will collect if granted "
 "permission. WP Rocket will never transmit any domain names or email addresses "
 "(except for license validation), IP addresses, or third-party API keys."
 msgstr ""
 
-#: inc/admin/ui/notices.php:679
+#: inc/admin/ui/notices.php:700
 msgid "Yes, allow"
 msgstr ""
 
-#: inc/admin/ui/notices.php:682
+#: inc/admin/ui/notices.php:703
 msgid "No, thanks"
 msgstr ""
 
-#: inc/admin/ui/notices.php:721
+#: inc/admin/ui/notices.php:742
 msgid "Thank you!"
 msgstr ""
 
-#: inc/admin/ui/notices.php:726
+#: inc/admin/ui/notices.php:747
 msgid "WP Rocket now collects these metrics from your website:"
 msgstr ""
 
-#: inc/admin/ui/notices.php:763
+#: inc/admin/ui/notices.php:784
 #, php-format
 msgid "%s: Cache cleared."
 msgstr ""
 
-#: inc/admin/ui/notices.php:767
+#: inc/admin/ui/notices.php:788
 #, php-format
 msgid "%s: Post cache cleared."
 msgstr ""
 
-#: inc/admin/ui/notices.php:771
+#: inc/admin/ui/notices.php:792
 #, php-format
 msgid "%s: Term cache cleared."
 msgstr ""
 
-#: inc/admin/ui/notices.php:775
+#: inc/admin/ui/notices.php:796
 #, php-format
 msgid "%s: User cache cleared."
 msgstr ""
 
-#: inc/admin/ui/notices.php:818
+#: inc/admin/ui/notices.php:839
 msgid "Stop Preload"
 msgstr ""
 
-#: inc/admin/ui/notices.php:836
+#: inc/admin/ui/notices.php:857
 msgid "Force deactivation "
 msgstr ""
 
-#: inc/admin/ui/notices.php:849
+#: inc/admin/ui/notices.php:870
 msgid "The following code should have been written to this file:"
 msgstr ""
 
-#: inc/admin/ui/notices.php:859 views/settings/page-sections/dashboard.php:45
+#: inc/admin/ui/notices.php:880 views/settings/page-sections/dashboard.php:45
 msgid "Dismiss this notice."
 msgstr ""
 
-#: inc/admin/ui/notices.php:880
+#: inc/admin/ui/notices.php:901
 #, php-format
 msgid "%s cannot configure itself due to missing writing permissions."
 msgstr ""
 
-#: inc/admin/ui/notices.php:886
+#: inc/admin/ui/notices.php:907
 #, php-format
 msgid "Affected file/folder: %s"
-msgstr ""
-
-#: inc/admin/ui/notices.php:892
-#, php-format
-msgid "Troubleshoot: %1$sHow to make system files writeable%2$s"
-msgstr ""
-
-#: inc/admin/ui/notices.php:894
-msgid ""
-"https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
-"config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
 msgstr ""
 
 #: inc/admin/updater.php:75 inc/admin/updater.php:84
@@ -1674,24 +1690,31 @@ msgid ""
 "of an error during the XML sitemap parsing. %2$sLearn more%3$s."
 msgstr ""
 
-#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:130
+#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:138
 #, php-format
 msgid ""
 "Critical CSS generation is currently running: %1$d of %2$d page types completed. "
 "(Refresh this page to view progress)"
 msgstr ""
 
-#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:181
+#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:189
 #, php-format
 msgid "Critical CSS generation finished for %1$d of %2$d page types."
 msgstr ""
 
-#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:194
+#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:202
 msgid "Critical CSS generation encountered one or more errors."
 msgstr ""
 
-#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:194
+#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:202
 msgid "Learn more."
+msgstr ""
+
+#: inc/classes/subscriber/Tools/class-cache-dir-size-check-subscriber.php:50
+#: inc/classes/subscriber/class-facebook-tracking-cache-busting-subscriber.php:97
+#: inc/classes/subscriber/class-google-tracking-cache-busting-subscriber.php:156
+#: inc/common/cron.php:33
+msgid "weekly"
 msgstr ""
 
 #: inc/classes/subscriber/admin/Database/class-optimization-subscriber.php:148
@@ -1728,12 +1751,6 @@ msgstr ""
 
 #: inc/classes/subscriber/admin/Settings/class-page-subscriber.php:161
 msgid "Compress your images"
-msgstr ""
-
-#: inc/classes/subscriber/class-facebook-tracking-cache-busting-subscriber.php:97
-#: inc/classes/subscriber/class-google-tracking-cache-busting-subscriber.php:156
-#: inc/common/cron.php:33
-msgid "weekly"
 msgstr ""
 
 #: inc/classes/subscriber/preload/class-preload-subscriber.php:211
@@ -2114,131 +2131,137 @@ msgstr ""
 msgid "Which WP Rocket settings are active"
 msgstr ""
 
-#: inc/functions/cloudflare.php:17
+#: inc/functions/cloudflare.php:14
+msgid ""
+"Curl functions are disabled, they are required for the Cloudflare Add-on to work "
+"correctly."
+msgstr ""
+
+#: inc/functions/cloudflare.php:21
 msgid "Cloudflare Email and API key are not set"
 msgstr ""
 
-#: inc/functions/cloudflare.php:48
+#: inc/functions/cloudflare.php:52
 #, php-format
 msgid "Missing Cloudflare zone ID. %s could not fix this automatically."
 msgstr ""
 
-#: inc/functions/cloudflare.php:54
+#: inc/functions/cloudflare.php:58
 #, php-format
 msgid "Read the %1$sdocumentation%2$s for further guidance."
 msgstr ""
 
-#: inc/functions/cloudflare.php:56
+#: inc/functions/cloudflare.php:60
 msgid ""
 "https://docs.wp-rocket.me/article/18-using-wp-rocket-with-cloudflare/?"
 "utm_source=wp_plugin&utm_medium=wp_rocket"
 msgstr ""
 
-#: inc/functions/cloudflare.php:96
+#: inc/functions/cloudflare.php:100
 msgid "Connection to Cloudflare failed"
 msgstr ""
 
-#: inc/functions/cloudflare.php:118
+#: inc/functions/cloudflare.php:122
 msgid "Choose a domain from the list"
 msgstr ""
 
-#: inc/functions/cloudflare.php:131
+#: inc/functions/cloudflare.php:135
 msgid "No domain available in your Cloudflare account"
 msgstr ""
 
-#: inc/functions/options.php:582 inc/functions/options.php:621
+#: inc/functions/options.php:580 inc/functions/options.php:619
 msgid ""
 "License validation failed. Our server could not resolve the request from your "
 "website."
 msgstr ""
 
-#: inc/functions/options.php:582 inc/functions/options.php:621
+#: inc/functions/options.php:580 inc/functions/options.php:619
 #, php-format
 msgid ""
 "Try clicking %1$sSave Changes%2$s below. If the error persists, follow %3$sthis "
 "guide%4$s."
 msgstr ""
 
-#: inc/functions/options.php:598
+#: inc/functions/options.php:596
 msgid ""
 "License validation failed. You may be using a nulled version of the plugin. "
 "Please do the following:"
 msgstr ""
 
-#: inc/functions/options.php:598 inc/functions/options.php:640
+#: inc/functions/options.php:596 inc/functions/options.php:638
 #, php-format
 msgid "Login to your WP Rocket %1$saccount%2$s"
 msgstr ""
 
-#: inc/functions/options.php:598 inc/functions/options.php:640
+#: inc/functions/options.php:596 inc/functions/options.php:638
 msgid "Download the zip file"
 msgstr ""
 
-#: inc/functions/options.php:598 inc/functions/options.php:640
+#: inc/functions/options.php:596 inc/functions/options.php:638
 msgid "Reinstall"
 msgstr ""
 
-#: inc/functions/options.php:598
+#: inc/functions/options.php:596
 #, php-format
 msgid "If you do not have a WP Rocket account, please %1$spurchase a license%2$s."
 msgstr ""
 
-#: inc/functions/options.php:606
+#: inc/functions/options.php:604
 msgid ""
 "License validation failed. This user account does not exist in our database."
 msgstr ""
 
-#: inc/functions/options.php:606
+#: inc/functions/options.php:604
 msgid "To resolve, please contact support."
 msgstr ""
 
-#: inc/functions/options.php:614
+#: inc/functions/options.php:612
 msgid "License validation failed. This user account is blacklisted."
 msgstr ""
 
-#: inc/functions/options.php:614
+#: inc/functions/options.php:612
 #, php-format
 msgid "Please see %1$sthis guide%2$s for more info."
 msgstr ""
 
-#: inc/functions/options.php:634
+#: inc/functions/options.php:632
 msgid "Your license is not valid."
 msgstr ""
 
-#: inc/functions/options.php:634
+#: inc/functions/options.php:632
 #, php-format
 msgid "Make sure you have an active %1$sWP Rocket license%2$s."
 msgstr ""
 
-#: inc/functions/options.php:636
+#: inc/functions/options.php:634
 msgid "You have added as many sites as your current license allows."
 msgstr ""
 
-#: inc/functions/options.php:636
+#: inc/functions/options.php:634
 #, php-format
 msgid ""
 "Upgrade your %1$saccount%2$s or %3$stransfer your license%2$s to this domain."
 msgstr ""
 
-#: inc/functions/options.php:638
+#: inc/functions/options.php:636
 msgid "This website is not allowed."
 msgstr ""
 
-#: inc/functions/options.php:638
+#: inc/functions/options.php:636
 #, php-format
 msgid "Please %1$scontact support%2$s."
 msgstr ""
 
-#: inc/functions/options.php:640
+#: inc/functions/options.php:638
 msgid "This license key is not recognized."
 msgstr ""
 
-#: inc/functions/options.php:640
+#: inc/functions/options.php:638
 #, php-format
 msgid "If the issue persists, please %1$scontact support%2$s."
 msgstr ""
 
-#: inc/functions/options.php:646
+#: inc/functions/options.php:644
 #, php-format
 msgid "License validation failed: %s"
 msgstr ""
