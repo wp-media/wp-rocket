@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.3\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2019-05-30 20:10-0400\n"
+"POT-Creation-Date: 2019-06-07 13:12-0400\n"
 "PO-Revision-Date: 2019-05-15 16:03+0000\n"
 "Last-Translator: BouRock, 2019\n"
 "Language-Team: Turkish (Turkey) (https://www.transifex.com/wp-media/teams/18133/tr_TR/)\n"
@@ -210,7 +210,7 @@ msgstr "Cloudflare tarayıcı önbelleği hatası: %s"
 msgid "Cloudflare browser cache set to %s seconds"
 msgstr "Cloudflare tarayıcı önbelleği %s saniyeye ayarlandı"
 
-#: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/notices.php:815
+#: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/notices.php:836
 #: inc/common/admin-bar.php:65 inc/common/admin-bar.php:118
 #: views/settings/page-sections/dashboard.php:115
 msgid "Clear cache"
@@ -326,7 +326,44 @@ msgstr ""
 "%1$s: Özel bir kalıcı bağlantı yapısı eklentinin düzgün bir şekilde "
 "çalışması için gereklidir. %2$sKalıcı bağlantılar ayarlarına gidin%3$s"
 
-#: inc/admin/ui/notices.php:537
+#: inc/admin/ui/notices.php:400
+#, php-format
+msgid ""
+"%s could not modify the .htaccess file due to missing writing permissions."
+msgstr ""
+"Eksik yazma izinlerinden dolayı %s .htaccess dosyasını yapılandıramadı."
+
+#: inc/admin/ui/notices.php:406 inc/admin/ui/notices.php:913
+#, php-format
+msgid "Troubleshoot: %1$sHow to make system files writeable%2$s"
+msgstr ""
+"Sorun giderme: %1$sSistem dosyalarını nasıl yazılabilir yaparsınız%2$s"
+
+#: inc/admin/ui/notices.php:408 inc/admin/ui/notices.php:915
+msgid ""
+"https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
+"config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
+msgstr ""
+"https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
+"config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
+
+#: inc/admin/ui/notices.php:414
+msgid ""
+"Don’t worry, WP Rocket’s page caching and settings will still function "
+"correctly."
+msgstr ""
+"Endişelenmeyin, WP Rocket'in sayfa önbelleklemesi ve ayarları hala düzgün "
+"çalışacaktır."
+
+#: inc/admin/ui/notices.php:414
+msgid ""
+"For optimal performance, adding the following lines into your .htaccess is "
+"recommended (not required):"
+msgstr ""
+"En iyi performans için .htaccess dosyanıza aşağıdaki satırları eklemeniz "
+"önerilir (gerekli değil):"
+
+#: inc/admin/ui/notices.php:558
 #, php-format
 msgid ""
 "%1$s is good to go! %2$sTest your load time%4$s, or visit your "
@@ -335,7 +372,7 @@ msgstr ""
 "%1$s gitmeye hazır! %2$sYükleme sürenizi deneyin%4$s, ya da "
 "%3$sayarlarınızı%4$s ziyaret edin."
 
-#: inc/admin/ui/notices.php:658
+#: inc/admin/ui/notices.php:679
 msgid ""
 "Would you allow WP Rocket to collect non-sensitive diagnostic data from this"
 " website?"
@@ -343,16 +380,16 @@ msgstr ""
 "WP Rocket’in hassas olmayan tanılama verilerini bu web sitesinden "
 "toplamasına izin verir misiniz?"
 
-#: inc/admin/ui/notices.php:659
+#: inc/admin/ui/notices.php:680
 msgid "This would help us to improve WP Rocket for you in the future."
 msgstr ""
 "Bu bize gelecekte WP Rocket’i sizin için iyileştirmemize yardımcı olacak."
 
-#: inc/admin/ui/notices.php:665
+#: inc/admin/ui/notices.php:686
 msgid "What info will we collect?"
 msgstr "Ne tür bilgi toplayacağız?"
 
-#: inc/admin/ui/notices.php:670
+#: inc/admin/ui/notices.php:691
 msgid ""
 "Below is a detailed view of all data WP Rocket will collect if granted "
 "permission. WP Rocket will never transmit any domain names or email "
@@ -364,81 +401,67 @@ msgstr ""
 "adresini (lisans doğrulaması hariç), IP adreslerini, ya da üçüncü taraf API "
 "anahtarlarını iletmeyecek."
 
-#: inc/admin/ui/notices.php:679
+#: inc/admin/ui/notices.php:700
 msgid "Yes, allow"
 msgstr "Evet, izin ver"
 
-#: inc/admin/ui/notices.php:682
+#: inc/admin/ui/notices.php:703
 msgid "No, thanks"
 msgstr "Hayır, teşekkürler"
 
-#: inc/admin/ui/notices.php:721
+#: inc/admin/ui/notices.php:742
 msgid "Thank you!"
 msgstr "Teşekkür ederim!"
 
-#: inc/admin/ui/notices.php:726
+#: inc/admin/ui/notices.php:747
 msgid "WP Rocket now collects these metrics from your website:"
 msgstr "WP Rocket web sitenizden şimdi şu ölçümleri toplar:"
 
-#: inc/admin/ui/notices.php:763
+#: inc/admin/ui/notices.php:784
 #, php-format
 msgid "%s: Cache cleared."
 msgstr "%s: Önbellek temizlendi."
 
-#: inc/admin/ui/notices.php:767
+#: inc/admin/ui/notices.php:788
 #, php-format
 msgid "%s: Post cache cleared."
 msgstr "%s: Yazı önbelleği temizlendi."
 
-#: inc/admin/ui/notices.php:771
+#: inc/admin/ui/notices.php:792
 #, php-format
 msgid "%s: Term cache cleared."
 msgstr "%s: Terim önbelleği temizlendi."
 
-#: inc/admin/ui/notices.php:775
+#: inc/admin/ui/notices.php:796
 #, php-format
 msgid "%s: User cache cleared."
 msgstr "%s: Kullanıcı önbelleği temizlendi."
 
-#: inc/admin/ui/notices.php:818
+#: inc/admin/ui/notices.php:839
 msgid "Stop Preload"
 msgstr "Önyüklemeyi durdur"
 
-#: inc/admin/ui/notices.php:836
+#: inc/admin/ui/notices.php:857
 msgid "Force deactivation "
 msgstr "Devre dışı bırakmaya zorla"
 
-#: inc/admin/ui/notices.php:849
+#: inc/admin/ui/notices.php:870
 msgid "The following code should have been written to this file:"
 msgstr "Aşağıdaki kod bu dosyaya yazılmalıdır:"
 
-#: inc/admin/ui/notices.php:859 views/settings/page-sections/dashboard.php:45
+#: inc/admin/ui/notices.php:880 views/settings/page-sections/dashboard.php:45
 msgid "Dismiss this notice."
 msgstr "Bu bildirimi anımsatma."
 
-#: inc/admin/ui/notices.php:880
+#: inc/admin/ui/notices.php:901
 #, php-format
 msgid "%s cannot configure itself due to missing writing permissions."
 msgstr "Eksik yazma izinlerinden dolayı %s kendini yapılandıramıyor."
 
-#: inc/admin/ui/notices.php:886
+#: inc/admin/ui/notices.php:907
 #, php-format
 msgid "Affected file/folder: %s"
 msgstr "Etkilenen dosya/klasör: %s"
-
-#: inc/admin/ui/notices.php:892
-#, php-format
-msgid "Troubleshoot: %1$sHow to make system files writeable%2$s"
-msgstr ""
-"Sorun giderme: %1$sSistem dosyalarını nasıl yazılabilir yaparsınız%2$s"
-
-#: inc/admin/ui/notices.php:894
-msgid ""
-"https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
-"config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
-msgstr ""
-"https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
-"config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
 
 #: inc/admin/updater.php:75 inc/admin/updater.php:84
 #, php-format
@@ -1939,7 +1962,7 @@ msgstr ""
 "ayrıştırması sırasında bir hata olduğundan, %1$s adresinden gelen "
 "bağlantılar toplanamadı. %2$sDaha fazla bilgi edinin%3$s."
 
-#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:130
+#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:138
 #, php-format
 msgid ""
 "Critical CSS generation is currently running: %1$d of %2$d page types "
@@ -1948,18 +1971,25 @@ msgstr ""
 "Önemli CSS oluşturma şu anda çalışıyor: %1$d / %2$d sayfa türü tamamlandı. "
 "(İlerlemeyi görmek için bu sayfayı yenileyin)"
 
-#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:181
+#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:189
 #, php-format
 msgid "Critical CSS generation finished for %1$d of %2$d page types."
 msgstr "Önemli CSS oluşturma, %1$d / %2$d sayfa türü için bitti."
 
-#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:194
+#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:202
 msgid "Critical CSS generation encountered one or more errors."
 msgstr "Önemli CSS oluşturma, bir ya da daha fazla hata ile karşılaştı."
 
-#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:194
+#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:202
 msgid "Learn more."
 msgstr "Daha fazla bilgi edinin."
+
+#: inc/classes/subscriber/Tools/class-cache-dir-size-check-subscriber.php:50
+#: inc/classes/subscriber/class-facebook-tracking-cache-busting-subscriber.php:97
+#: inc/classes/subscriber/class-google-tracking-cache-busting-subscriber.php:156
+#: inc/common/cron.php:33
+msgid "weekly"
+msgstr "haftalık"
 
 #: inc/classes/subscriber/admin/Database/class-optimization-subscriber.php:148
 msgid "Database optimization process is running"
@@ -2000,12 +2030,6 @@ msgstr "Resim İyileştirme"
 #: inc/classes/subscriber/admin/Settings/class-page-subscriber.php:161
 msgid "Compress your images"
 msgstr "Resimlerinizi sıkıştırın"
-
-#: inc/classes/subscriber/class-facebook-tracking-cache-busting-subscriber.php:97
-#: inc/classes/subscriber/class-google-tracking-cache-busting-subscriber.php:156
-#: inc/common/cron.php:33
-msgid "weekly"
-msgstr "haftalık"
 
 #: inc/classes/subscriber/preload/class-preload-subscriber.php:211
 #, php-format
@@ -2440,21 +2464,29 @@ msgstr "İsimsizleştirilmiş WP Rocket ayarları:"
 msgid "Which WP Rocket settings are active"
 msgstr "Hangi WP Rocket ayarları aktif"
 
-#: inc/functions/cloudflare.php:17
+#: inc/functions/cloudflare.php:14
+msgid ""
+"Curl functions are disabled, they are required for the Cloudflare Add-on to "
+"work correctly."
+msgstr ""
+"Curl işlevleri etkisizleştirildi, Cloudflare Eklentisi'nin düzgün çalışması "
+"için gereklidirler."
+
+#: inc/functions/cloudflare.php:21
 msgid "Cloudflare Email and API key are not set"
 msgstr "Cloudflare Epostası ve API anahtarı ayarlı değil"
 
-#: inc/functions/cloudflare.php:48
+#: inc/functions/cloudflare.php:52
 #, php-format
 msgid "Missing Cloudflare zone ID. %s could not fix this automatically."
 msgstr "Eksik Cloudflare zone ID. %s bunu otomatik olarak düzeltemedi."
 
-#: inc/functions/cloudflare.php:54
+#: inc/functions/cloudflare.php:58
 #, php-format
 msgid "Read the %1$sdocumentation%2$s for further guidance."
 msgstr "İleriki rehberlik için %1$sbelgeleri%2$s okuyun."
 
-#: inc/functions/cloudflare.php:56
+#: inc/functions/cloudflare.php:60
 msgid ""
 "https://docs.wp-rocket.me/article/18-using-wp-rocket-with-"
 "cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket"
@@ -2462,19 +2494,19 @@ msgstr ""
 "https://docs.wp-rocket.me/article/18-using-wp-rocket-with-"
 "cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket"
 
-#: inc/functions/cloudflare.php:96
+#: inc/functions/cloudflare.php:100
 msgid "Connection to Cloudflare failed"
 msgstr "Cloudflare’a bağlantı başarısız oldu"
 
-#: inc/functions/cloudflare.php:118
+#: inc/functions/cloudflare.php:122
 msgid "Choose a domain from the list"
 msgstr "Listeden bir etki alanı seçin"
 
-#: inc/functions/cloudflare.php:131
+#: inc/functions/cloudflare.php:135
 msgid "No domain available in your Cloudflare account"
 msgstr "Cloudflare hesabınızda hiç etki alanı mevcut değil"
 
-#: inc/functions/options.php:582 inc/functions/options.php:621
+#: inc/functions/options.php:580 inc/functions/options.php:619
 msgid ""
 "License validation failed. Our server could not resolve the request from "
 "your website."
@@ -2482,7 +2514,7 @@ msgstr ""
 "Lisans doğrulama başarısız oldu. Sunucumuz web sitenizden gelen isteği "
 "çözemedi."
 
-#: inc/functions/options.php:582 inc/functions/options.php:621
+#: inc/functions/options.php:580 inc/functions/options.php:619
 #, php-format
 msgid ""
 "Try clicking %1$sSave Changes%2$s below. If the error persists, follow "
@@ -2491,7 +2523,7 @@ msgstr ""
 "Aşağıda %1$sDeğişiklikleri Kaydet%2$s düğmesine tıklamaya çalışın. Eğer hata"
 " devam ederse, %3$sbu kılavuzu%4$s takip edin."
 
-#: inc/functions/options.php:598
+#: inc/functions/options.php:596
 msgid ""
 "License validation failed. You may be using a nulled version of the plugin. "
 "Please do the following:"
@@ -2499,60 +2531,60 @@ msgstr ""
 "Lisans doğrulama başarısız oldu. Eklentinin nulled sürümünü kullanıyorsunuz."
 " Lütfen aşağıdakini yapın:"
 
-#: inc/functions/options.php:598 inc/functions/options.php:640
+#: inc/functions/options.php:596 inc/functions/options.php:638
 #, php-format
 msgid "Login to your WP Rocket %1$saccount%2$s"
 msgstr "WP Rocket %1$shesabınıza%2$s oturum açın"
 
-#: inc/functions/options.php:598 inc/functions/options.php:640
+#: inc/functions/options.php:596 inc/functions/options.php:638
 msgid "Download the zip file"
 msgstr "Zip dosyasını indir"
 
-#: inc/functions/options.php:598 inc/functions/options.php:640
+#: inc/functions/options.php:596 inc/functions/options.php:638
 msgid "Reinstall"
 msgstr "Yeniden Yükle"
 
-#: inc/functions/options.php:598
+#: inc/functions/options.php:596
 #, php-format
 msgid ""
 "If you do not have a WP Rocket account, please %1$spurchase a license%2$s."
 msgstr ""
 "Eğer bir WP Rocket hesabınız yoksa, lütfen %1$sbir lisans satın alın%2$s."
 
-#: inc/functions/options.php:606
+#: inc/functions/options.php:604
 msgid ""
 "License validation failed. This user account does not exist in our database."
 msgstr ""
 "Lisans doğrulama başarısız oldu. Bu kullanıcı veritabanımızda mevcut değil."
 
-#: inc/functions/options.php:606
+#: inc/functions/options.php:604
 msgid "To resolve, please contact support."
 msgstr "Çözmek için lütfen destek ile iletişime geçin."
 
-#: inc/functions/options.php:614
+#: inc/functions/options.php:612
 msgid "License validation failed. This user account is blacklisted."
 msgstr ""
 "Lisans doğrulama başarısız oldu. Bu kullanıcı hesabı kara listeye alınmış."
 
-#: inc/functions/options.php:614
+#: inc/functions/options.php:612
 #, php-format
 msgid "Please see %1$sthis guide%2$s for more info."
 msgstr "Daha fazla bilgi için lütfen %1$sbu kılavuza%2$s bakın."
 
-#: inc/functions/options.php:634
+#: inc/functions/options.php:632
 msgid "Your license is not valid."
 msgstr "Lisansınız geçerli değil."
 
-#: inc/functions/options.php:634
+#: inc/functions/options.php:632
 #, php-format
 msgid "Make sure you have an active %1$sWP Rocket license%2$s."
 msgstr "Aktif bir %1$sWP Rocket lisansına%2$s sahip olduğunuzdan emin olun."
 
-#: inc/functions/options.php:636
+#: inc/functions/options.php:634
 msgid "You have added as many sites as your current license allows."
 msgstr "Şu anki lisansınızın izin verdiği kadar çok site eklediniz."
 
-#: inc/functions/options.php:636
+#: inc/functions/options.php:634
 #, php-format
 msgid ""
 "Upgrade your %1$saccount%2$s or %3$stransfer your license%2$s to this "
@@ -2561,25 +2593,25 @@ msgstr ""
 "%1$sHesabınızı%2$s yükseltin ya da %3$slisansınızı bu etki alanına "
 "aktarın%2$s."
 
-#: inc/functions/options.php:638
+#: inc/functions/options.php:636
 msgid "This website is not allowed."
 msgstr "Bu web sitesine izin verilmedi."
 
-#: inc/functions/options.php:638
+#: inc/functions/options.php:636
 #, php-format
 msgid "Please %1$scontact support%2$s."
 msgstr "Lütfen %1$sdestek ile iletişime geçin%2$s."
 
-#: inc/functions/options.php:640
+#: inc/functions/options.php:638
 msgid "This license key is not recognized."
 msgstr "Bu lisans anahtarı tanınmadı."
 
-#: inc/functions/options.php:640
+#: inc/functions/options.php:638
 #, php-format
 msgid "If the issue persists, please %1$scontact support%2$s."
 msgstr "Eğer sorun devam ederse, lütfen %1$sdestek ile iletişime geçin%2$s."
 
-#: inc/functions/options.php:646
+#: inc/functions/options.php:644
 #, php-format
 msgid "License validation failed: %s"
 msgstr "Lisans doğrulama başarısız oldu: %s"
