@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Rocket 3.3\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2019-05-30 20:10-0400\n"
+"POT-Creation-Date: 2019-06-07 13:12-0400\n"
 "PO-Revision-Date: 2019-05-15 16:03+0000\n"
 "Last-Translator: Jean-Francois Arseneault <jfarseneault@s2bsolution.com>, 2019\n"
 "Language-Team: French (Canada) (https://www.transifex.com/wp-media/teams/18133/fr_CA/)\n"
@@ -212,7 +212,7 @@ msgstr "Erreur du cache navigateur Cloudflare : %s"
 msgid "Cloudflare browser cache set to %s seconds"
 msgstr "Cache navigateur de Cloudflare défini à %s secondes"
 
-#: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/notices.php:815
+#: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/notices.php:836
 #: inc/common/admin-bar.php:65 inc/common/admin-bar.php:118
 #: views/settings/page-sections/dashboard.php:115
 msgid "Clear cache"
@@ -328,7 +328,46 @@ msgstr ""
 "%1$s: Une structure de permalien personnalisée est requise pour que cette "
 "extension fonctionne. %2$sRendez-vous aux réglages des permaliens%3$s"
 
-#: inc/admin/ui/notices.php:537
+#: inc/admin/ui/notices.php:400
+#, php-format
+msgid ""
+"%s could not modify the .htaccess file due to missing writing permissions."
+msgstr ""
+"%s n'a pas pu modifier le fichier .htaccess dû à l'absence de permissions "
+"d'écriture.."
+
+#: inc/admin/ui/notices.php:406 inc/admin/ui/notices.php:913
+#, php-format
+msgid "Troubleshoot: %1$sHow to make system files writeable%2$s"
+msgstr ""
+"Pour résoudre le problème : %1$sComment rendre les fichiers systèmes "
+"accessible à l'écriture%2$s"
+
+#: inc/admin/ui/notices.php:408 inc/admin/ui/notices.php:915
+msgid ""
+"https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
+"config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
+msgstr ""
+"https://fr.docs.wp-rocket.me/article/945-fichiers-systemes-accessible-"
+"ecriture/?utm_source=wp_plugin&utm_medium=wp_rocket"
+
+#: inc/admin/ui/notices.php:414
+msgid ""
+"Don’t worry, WP Rocket’s page caching and settings will still function "
+"correctly."
+msgstr ""
+"Pas d'inquiétude, la mise en cache de pages et les paramètres fonctionneront"
+" correctement."
+
+#: inc/admin/ui/notices.php:414
+msgid ""
+"For optimal performance, adding the following lines into your .htaccess is "
+"recommended (not required):"
+msgstr ""
+"Pour une performance optimale, il est recommandé d'ajouter les lignes "
+"suivantes à votre fichier .htaccess (optionnel) :"
+
+#: inc/admin/ui/notices.php:558
 #, php-format
 msgid ""
 "%1$s is good to go! %2$sTest your load time%4$s, or visit your "
@@ -337,7 +376,7 @@ msgstr ""
 "%1$s est prêt à décoller ! %2$sTestez votre temps de chargement%4$s, ou "
 "jetez un oeil aux %3$sréglages%4$s."
 
-#: inc/admin/ui/notices.php:658
+#: inc/admin/ui/notices.php:679
 msgid ""
 "Would you allow WP Rocket to collect non-sensitive diagnostic data from this"
 " website?"
@@ -345,15 +384,15 @@ msgstr ""
 "Autorisez-vous WP Rocket à recueillir des données de diagnostic non-"
 "sensibles de ce site web ?"
 
-#: inc/admin/ui/notices.php:659
+#: inc/admin/ui/notices.php:680
 msgid "This would help us to improve WP Rocket for you in the future."
 msgstr "Cela nous aiderait à améliorer WP Rocket pour vous dans le futur."
 
-#: inc/admin/ui/notices.php:665
+#: inc/admin/ui/notices.php:686
 msgid "What info will we collect?"
 msgstr "Quelles infos recueillerons-nous ?"
 
-#: inc/admin/ui/notices.php:670
+#: inc/admin/ui/notices.php:691
 msgid ""
 "Below is a detailed view of all data WP Rocket will collect if granted "
 "permission. WP Rocket will never transmit any domain names or email "
@@ -365,84 +404,69 @@ msgstr ""
 "jamais de noms de domaine ou d'adresses courriel (sauf pour la validation de"
 " licence), d'adresses IP ou de clés d’API tierce-partie."
 
-#: inc/admin/ui/notices.php:679
+#: inc/admin/ui/notices.php:700
 msgid "Yes, allow"
 msgstr "Oui, autoriser"
 
-#: inc/admin/ui/notices.php:682
+#: inc/admin/ui/notices.php:703
 msgid "No, thanks"
 msgstr "Non, merci"
 
-#: inc/admin/ui/notices.php:721
+#: inc/admin/ui/notices.php:742
 msgid "Thank you!"
 msgstr "Merci!"
 
-#: inc/admin/ui/notices.php:726
+#: inc/admin/ui/notices.php:747
 msgid "WP Rocket now collects these metrics from your website:"
 msgstr "WP Rocket recueille désormais ces données de votre site web :"
 
-#: inc/admin/ui/notices.php:763
+#: inc/admin/ui/notices.php:784
 #, php-format
 msgid "%s: Cache cleared."
 msgstr "%s : Cache vidé."
 
-#: inc/admin/ui/notices.php:767
+#: inc/admin/ui/notices.php:788
 #, php-format
 msgid "%s: Post cache cleared."
 msgstr "%s : Cache des articles vidé."
 
-#: inc/admin/ui/notices.php:771
+#: inc/admin/ui/notices.php:792
 #, php-format
 msgid "%s: Term cache cleared."
 msgstr "%s : Cache des termes vidé."
 
-#: inc/admin/ui/notices.php:775
+#: inc/admin/ui/notices.php:796
 #, php-format
 msgid "%s: User cache cleared."
 msgstr "%s : Cache des utilisateurs vidé."
 
-#: inc/admin/ui/notices.php:818
+#: inc/admin/ui/notices.php:839
 msgid "Stop Preload"
 msgstr "Cesser le pré-chargement"
 
-#: inc/admin/ui/notices.php:836
+#: inc/admin/ui/notices.php:857
 msgid "Force deactivation "
 msgstr "Forcer la désactivation "
 
-#: inc/admin/ui/notices.php:849
+#: inc/admin/ui/notices.php:870
 msgid "The following code should have been written to this file:"
 msgstr "Le code suivant aurait dû être écrit dans ce fichier :"
 
-#: inc/admin/ui/notices.php:859 views/settings/page-sections/dashboard.php:45
+#: inc/admin/ui/notices.php:880 views/settings/page-sections/dashboard.php:45
 msgid "Dismiss this notice."
 msgstr "Ne pas tenir compte de cet avertissement."
 
-#: inc/admin/ui/notices.php:880
+#: inc/admin/ui/notices.php:901
 #, php-format
 msgid "%s cannot configure itself due to missing writing permissions."
 msgstr ""
 "%s ne peut pas s’auto-configurer en raison de l'absence de permissions en "
 "écriture."
 
-#: inc/admin/ui/notices.php:886
+#: inc/admin/ui/notices.php:907
 #, php-format
 msgid "Affected file/folder: %s"
 msgstr "Fichier/dossier affecté : %s"
-
-#: inc/admin/ui/notices.php:892
-#, php-format
-msgid "Troubleshoot: %1$sHow to make system files writeable%2$s"
-msgstr ""
-"Pour résoudre le problème : %1$sComment rendre les fichiers systèmes "
-"accessible à l'écriture%2$s"
-
-#: inc/admin/ui/notices.php:894
-msgid ""
-"https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
-"config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
-msgstr ""
-"https://fr.docs.wp-rocket.me/article/945-fichiers-systemes-accessible-"
-"ecriture/?utm_source=wp_plugin&utm_medium=wp_rocket"
 
 #: inc/admin/updater.php:75 inc/admin/updater.php:84
 #, php-format
@@ -1954,7 +1978,7 @@ msgstr ""
 " liens sur %1$s à cause d'une erreur durant la lecture du sitemap XML. "
 "%2$sPlus d'info%3$s."
 
-#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:130
+#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:138
 #, php-format
 msgid ""
 "Critical CSS generation is currently running: %1$d of %2$d page types "
@@ -1963,20 +1987,27 @@ msgstr ""
 "La génération du CSS critique est en cours : %1$d de %2$d de types de "
 "contenus complétés. (Rafraîchir pour voir la progression)"
 
-#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:181
+#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:189
 #, php-format
 msgid "Critical CSS generation finished for %1$d of %2$d page types."
 msgstr ""
 "La génération du CSS critique est terminée pour %1$d des %2$d types de "
 "contenus."
 
-#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:194
+#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:202
 msgid "Critical CSS generation encountered one or more errors."
 msgstr "La génération du CSS critique a rencontré une ou plusieurs erreur(s)."
 
-#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:194
+#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:202
 msgid "Learn more."
 msgstr "En savoir plus."
+
+#: inc/classes/subscriber/Tools/class-cache-dir-size-check-subscriber.php:50
+#: inc/classes/subscriber/class-facebook-tracking-cache-busting-subscriber.php:97
+#: inc/classes/subscriber/class-google-tracking-cache-busting-subscriber.php:156
+#: inc/common/cron.php:33
+msgid "weekly"
+msgstr "hebdomadaire"
 
 #: inc/classes/subscriber/admin/Database/class-optimization-subscriber.php:148
 msgid "Database optimization process is running"
@@ -2018,12 +2049,6 @@ msgstr "Optimisation des images"
 #: inc/classes/subscriber/admin/Settings/class-page-subscriber.php:161
 msgid "Compress your images"
 msgstr "Compresser vos images"
-
-#: inc/classes/subscriber/class-facebook-tracking-cache-busting-subscriber.php:97
-#: inc/classes/subscriber/class-google-tracking-cache-busting-subscriber.php:156
-#: inc/common/cron.php:33
-msgid "weekly"
-msgstr "hebdomadaire"
 
 #: inc/classes/subscriber/preload/class-preload-subscriber.php:211
 #, php-format
@@ -2459,23 +2484,31 @@ msgstr "Réglages de WP Rocket anonymisés :"
 msgid "Which WP Rocket settings are active"
 msgstr "Quels sont les réglages activés de WP Rocket"
 
-#: inc/functions/cloudflare.php:17
+#: inc/functions/cloudflare.php:14
+msgid ""
+"Curl functions are disabled, they are required for the Cloudflare Add-on to "
+"work correctly."
+msgstr ""
+"Les fonctions \"curl\" sont désactivées, elles sont requises pour que "
+"l'ajout Cloudflare fonctionne correctement."
+
+#: inc/functions/cloudflare.php:21
 msgid "Cloudflare Email and API key are not set"
 msgstr "Le courriel et la clé d’API de Cloudflare ne sont pas définis"
 
-#: inc/functions/cloudflare.php:48
+#: inc/functions/cloudflare.php:52
 #, php-format
 msgid "Missing Cloudflare zone ID. %s could not fix this automatically."
 msgstr ""
 "Il manque l’identifiant de zone de Cloudflare. %s n’a pas pu corriger ceci "
 "automatiquement."
 
-#: inc/functions/cloudflare.php:54
+#: inc/functions/cloudflare.php:58
 #, php-format
 msgid "Read the %1$sdocumentation%2$s for further guidance."
 msgstr "Lisez la %1$sdocumentation%2$s pour de l’aide additionnelle."
 
-#: inc/functions/cloudflare.php:56
+#: inc/functions/cloudflare.php:60
 msgid ""
 "https://docs.wp-rocket.me/article/18-using-wp-rocket-with-"
 "cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket"
@@ -2483,19 +2516,19 @@ msgstr ""
 "https://fr.docs.wp-rocket.me/article/247-utiliser-wp-rocket-avec-"
 "cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket"
 
-#: inc/functions/cloudflare.php:96
+#: inc/functions/cloudflare.php:100
 msgid "Connection to Cloudflare failed"
 msgstr "La connexion à Cloudflare a échoué"
 
-#: inc/functions/cloudflare.php:118
+#: inc/functions/cloudflare.php:122
 msgid "Choose a domain from the list"
 msgstr "Choisissez un domaine dans la liste"
 
-#: inc/functions/cloudflare.php:131
+#: inc/functions/cloudflare.php:135
 msgid "No domain available in your Cloudflare account"
 msgstr "Aucun domaine disponible dans votre compte Cloudflare"
 
-#: inc/functions/options.php:582 inc/functions/options.php:621
+#: inc/functions/options.php:580 inc/functions/options.php:619
 msgid ""
 "License validation failed. Our server could not resolve the request from "
 "your website."
@@ -2503,7 +2536,7 @@ msgstr ""
 "Échec de la validation de la licence. Notre serveur ne peut compléter la "
 "requête de votre site web."
 
-#: inc/functions/options.php:582 inc/functions/options.php:621
+#: inc/functions/options.php:580 inc/functions/options.php:619
 #, php-format
 msgid ""
 "Try clicking %1$sSave Changes%2$s below. If the error persists, follow "
@@ -2512,7 +2545,7 @@ msgstr ""
 "Essayez de cliquer %1$sSauvegarder les changements%2$s ci-dessous. Si "
 "l'erreur persiste, suivez %3$sce guide%4$s."
 
-#: inc/functions/options.php:598
+#: inc/functions/options.php:596
 msgid ""
 "License validation failed. You may be using a nulled version of the plugin. "
 "Please do the following:"
@@ -2520,63 +2553,63 @@ msgstr ""
 "La validation de votre licence a échoué. Vous utilisez peut-être une version"
 " piratée de cette extension. Veuillez suivre les points suivants :"
 
-#: inc/functions/options.php:598 inc/functions/options.php:640
+#: inc/functions/options.php:596 inc/functions/options.php:638
 #, php-format
 msgid "Login to your WP Rocket %1$saccount%2$s"
 msgstr "Connectez-vous à votre %1$scompte%2$s WP Rocket"
 
-#: inc/functions/options.php:598 inc/functions/options.php:640
+#: inc/functions/options.php:596 inc/functions/options.php:638
 msgid "Download the zip file"
 msgstr "Télécharger le fichier ZIP"
 
-#: inc/functions/options.php:598 inc/functions/options.php:640
+#: inc/functions/options.php:596 inc/functions/options.php:638
 msgid "Reinstall"
 msgstr "Réinstaller"
 
-#: inc/functions/options.php:598
+#: inc/functions/options.php:596
 #, php-format
 msgid ""
 "If you do not have a WP Rocket account, please %1$spurchase a license%2$s."
 msgstr ""
 "Si vous n'avez pas de compte WP Rocket, svp %1$sacheter une licence%2$s."
 
-#: inc/functions/options.php:606
+#: inc/functions/options.php:604
 msgid ""
 "License validation failed. This user account does not exist in our database."
 msgstr ""
 "Échec de validation de la licence. Le compte d'usager n'existe pas dans "
 "notre base de données."
 
-#: inc/functions/options.php:606
+#: inc/functions/options.php:604
 msgid "To resolve, please contact support."
 msgstr "Pour résoudre, svp contacter le soutien technique."
 
-#: inc/functions/options.php:614
+#: inc/functions/options.php:612
 msgid "License validation failed. This user account is blacklisted."
 msgstr ""
 "Échec de validation de la licence. Ce compte usager est sur notre liste "
 "noire."
 
-#: inc/functions/options.php:614
+#: inc/functions/options.php:612
 #, php-format
 msgid "Please see %1$sthis guide%2$s for more info."
 msgstr "Veuillez consulter %1$sce guide%2$s pour plus d'info."
 
-#: inc/functions/options.php:634
+#: inc/functions/options.php:632
 msgid "Your license is not valid."
 msgstr "Votre licence n’est pas valide."
 
-#: inc/functions/options.php:634
+#: inc/functions/options.php:632
 #, php-format
 msgid "Make sure you have an active %1$sWP Rocket license%2$s."
 msgstr "Assurez-vous d'avoir une licence %1$sactive de WP Rocket %2$s."
 
-#: inc/functions/options.php:636
+#: inc/functions/options.php:634
 msgid "You have added as many sites as your current license allows."
 msgstr ""
 "Vous avez ajouté autant de sites que votre licence actuelle le permet."
 
-#: inc/functions/options.php:636
+#: inc/functions/options.php:634
 #, php-format
 msgid ""
 "Upgrade your %1$saccount%2$s or %3$stransfer your license%2$s to this "
@@ -2585,25 +2618,25 @@ msgstr ""
 "Rehausser votre %1$scompte%2$s ou %3$stransférer votre licence%2$s à ce "
 "domaine."
 
-#: inc/functions/options.php:638
+#: inc/functions/options.php:636
 msgid "This website is not allowed."
 msgstr "Ce site n'est pas autorisé."
 
-#: inc/functions/options.php:638
+#: inc/functions/options.php:636
 #, php-format
 msgid "Please %1$scontact support%2$s."
 msgstr "Svp %1$scontacter le soutien technique%2$s."
 
-#: inc/functions/options.php:640
+#: inc/functions/options.php:638
 msgid "This license key is not recognized."
 msgstr "La clé de licence n'est pas reconnue."
 
-#: inc/functions/options.php:640
+#: inc/functions/options.php:638
 #, php-format
 msgid "If the issue persists, please %1$scontact support%2$s."
 msgstr "Si le problème persiste, svp %1$scontacter le soutien technique%2$s."
 
-#: inc/functions/options.php:646
+#: inc/functions/options.php:644
 #, php-format
 msgid "License validation failed: %s"
 msgstr "Échec de validation de la licence : %s"
