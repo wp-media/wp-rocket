@@ -154,6 +154,7 @@ function rocket_deactivation() {
 	// Unschedule WP Cron events.
 	wp_clear_scheduled_hook( 'rocket_facebook_tracking_cache_update' );
 	wp_clear_scheduled_hook( 'rocket_google_tracking_cache_update' );
+	wp_clear_scheduled_hook( 'rocket_cache_dir_size_check' );
 }
 register_deactivation_hook( WP_ROCKET_FILE, 'rocket_deactivation' );
 

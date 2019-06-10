@@ -138,6 +138,7 @@ class Plugin {
 			'elementor_subscriber',
 			'bridge_subscriber',
 			'ngg_subscriber',
+			'cache_dir_size_check_subscriber',
 		];
 
 		$subscribers = array_merge( $subscribers, $common_subscribers );

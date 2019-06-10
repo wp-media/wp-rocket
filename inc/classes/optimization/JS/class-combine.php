@@ -470,6 +470,7 @@ class Combine extends Abstract_JS_Optimization {
 			'_atrk_opts',
 			'quicklinkOptions',
 			'ct_checkjs_',
+			'WP_Statistics_http',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );

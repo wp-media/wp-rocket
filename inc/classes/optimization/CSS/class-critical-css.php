@@ -33,9 +33,9 @@ class Critical_CSS {
 	 *
 	 * @since 2.11
 	 * @var string path to the critical css directory
-	 * @access public
+	 * @access private
 	 */
-	public $critical_css_path;
+	private $critical_css_path;
 
 	/**
 	 * Class constructor.
@@ -56,6 +56,18 @@ class Critical_CSS {
 	}
 
 	/**
+	 * Returns the current site critical CSS path
+	 *
+	 * @since 3.3.5
+	 * @author Remy Perona
+	 *
+	 * @return string
+	 */
+	public function get_critical_css_path() {
+		return $this->critical_css_path;
+	}
+
+	/**
 	 * Performs the critical CSS generation
 	 *
 	 * @since 2.11
@@ -73,6 +85,10 @@ class Critical_CSS {
 		 * @param bool $do_rocket_critical_css_generation True to activate the automatic generation, false to prevent it.
 		 */
 		if ( ! apply_filters( 'do_rocket_critical_css_generation', true ) ) { // WPCS: prefix ok.
+			return;
+		}
+
+		if ( get_transient( 'rocket_critical_css_generation_process_running' ) ) {
 			return;
 		}
 
@@ -307,6 +323,8 @@ class Critical_CSS {
 	 * @return bool|string False if critical CSS file doesn't exist, file path otherwise
 	 */
 	public function get_current_page_critical_css() {
+		$name = 'front_page.css';
+
 		if ( is_home() && 'page' === get_option( 'show_on_front' ) ) {
 			$name = 'home.css';
 		} elseif ( is_front_page() ) {
@@ -321,8 +339,6 @@ class Critical_CSS {
 		} elseif ( is_singular() ) {
 			$post_type = get_post_type();
 			$name      = $post_type . '.css';
-		} else {
-			$name = 'front_page.css';
 		}
 
 		$file = $this->critical_css_path . $name;

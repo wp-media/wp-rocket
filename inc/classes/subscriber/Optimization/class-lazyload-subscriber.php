@@ -138,7 +138,7 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 		$polyfill = apply_filters( 'rocket_lazyload_polyfill', false );
 
 		$args = [
-			'base_url'  => get_rocket_cdn_url( WP_ROCKET_ASSETS_JS_URL . 'lazyload/' ),
+			'base_url'  => get_rocket_cdn_url( WP_ROCKET_ASSETS_JS_URL . 'lazyload/', [ 'all', 'js', 'css_and_js' ] ),
 			'threshold' => $threshold,
 			'version'   => '11.0.6',
 			'polyfill'  => $polyfill,
@@ -316,8 +316,8 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 		}
 
 		if ( $this->options->get( 'lazyload' ) && $this->can_lazyload_images() ) {
-			$html = $this->image->lazyloadImages( $html, $buffer );
 			$html = $this->image->lazyloadPictures( $html, $buffer );
+			$html = $this->image->lazyloadImages( $html, $buffer );
 
 			/**
 			 * Filters the application of lazyload on background images
