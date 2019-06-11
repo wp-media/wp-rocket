@@ -436,6 +436,7 @@ class Combine extends Abstract_JS_Optimization {
 			'TL_Const',
 			'bimber_front_microshare',
 			'setAttribute("id"',
+			'setAttribute( "id"',
 			'TribeEventsPro',
 			'peepsotimedata',
 			'wphc_data',
