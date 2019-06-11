@@ -436,6 +436,7 @@ class Combine extends Abstract_JS_Optimization {
 			'TL_Const',
 			'bimber_front_microshare',
 			'setAttribute("id"',
+			'setAttribute( "id"',
 			'TribeEventsPro',
 			'peepsotimedata',
 			'wphc_data',
@@ -471,6 +472,10 @@ class Combine extends Abstract_JS_Optimization {
 			'quicklinkOptions',
 			'ct_checkjs_',
 			'WP_Statistics_http',
+			'penci_block_',
+			'omapi_data',
+			'tminusnow',
+			'nfForms',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );

@@ -18,7 +18,7 @@ class Cache_Dir_Size_Check_Subscriber implements Subscriber_Interface {
 	/**
 	 * Maximum allowed size
 	 */
-	const MAX_SIZE = 1073741824;
+	const MAX_SIZE = 10737418240;
 
 	/**
 	 * @inheritDoc
@@ -76,6 +76,10 @@ class Cache_Dir_Size_Check_Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function cache_dir_size_check() {
+		if ( false !== get_transient( 'rocket_cache_dir_size_check' ) ) {
+			return;
+		}
+
 		$current_blog_id = get_current_blog_id();
 
 		$checks = [
@@ -90,6 +94,8 @@ class Cache_Dir_Size_Check_Subscriber implements Subscriber_Interface {
 				$this->send_notification( $type );
 			}
 		}
+
+		set_transient( 'rocket_cache_dir_size_check', time(), 7 * DAY_IN_SECONDS );
 	}
 
 	/**
