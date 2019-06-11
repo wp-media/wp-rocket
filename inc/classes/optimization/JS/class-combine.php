@@ -474,6 +474,7 @@ class Combine extends Abstract_JS_Optimization {
 			'WP_Statistics_http',
 			'penci_block_',
 			'omapi_data',
+			'tminusnow',
 			'nfForms',
 		];
 
