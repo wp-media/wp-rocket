@@ -473,6 +473,7 @@ class Combine extends Abstract_JS_Optimization {
 			'WP_Statistics_http',
 			'penci_block_',
 			'omapi_data',
+			'nfForms',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
