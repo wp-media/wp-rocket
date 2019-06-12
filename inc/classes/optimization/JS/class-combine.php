@@ -616,6 +616,7 @@ class Combine extends Abstract_JS_Optimization {
 			'gform_post_render',
 			'mts_view_count',
 			'act_css_tooltip',
+			'window.SLB',
 		];
 
 		/**
