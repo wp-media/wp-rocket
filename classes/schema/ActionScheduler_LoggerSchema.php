@@ -35,8 +35,7 @@ class ActionScheduler_LoggerSchema extends ActionScheduler_Abstract_Schema {
 				        log_date_local datetime NOT NULL default '0000-00-00 00:00:00',
 				        PRIMARY KEY  (log_id),
 				        KEY action_id (action_id),
-				        KEY log_date_gmt (log_date_gmt),
-				        KEY log_date_local (log_date_local)
+				        KEY log_date_gmt (log_date_gmt)
 				        ) $charset_collate";
 
 			default:
