@@ -25,7 +25,7 @@
  *
  */
 
-if ( ! function_exists( 'action_scheduler_register_2_dot_2_dot_5' ) ) {
+if ( ! function_exists( 'action_scheduler_register_2_dot_2_dot_5' ) && function_exists( 'add_action' ) ) {
 
 	if ( ! class_exists( 'ActionScheduler_Versions' ) ) {
 		require_once( 'classes/ActionScheduler_Versions.php' );
