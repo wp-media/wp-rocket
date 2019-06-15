@@ -483,6 +483,9 @@ class Combine extends Abstract_JS_Optimization {
 			'advadsGATracking.postContext',
 			'woopack_config',
 			'ulp_content_id',
+			'wp-cumulus/tagcloud.swf?r=',
+			'ctSetCookie(\'ct_checkjs\'',
+			'woof_really_curr_tax',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
@@ -627,7 +630,8 @@ class Combine extends Abstract_JS_Optimization {
 			'wpt_view_count',
 			'var dateNow',
 			'gallery_product_',
-			'.flo-block-slideshow-'
+			'.flo-block-slideshow-',
+			'data=\'api-key=ct-',
 		];
 
 		/**
