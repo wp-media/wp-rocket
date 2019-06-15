@@ -426,6 +426,7 @@ class Combine extends Abstract_JS_Optimization {
 			'bs_deferred_loading_',
 			'theChampRedirectionUrl',
 			'theChampFBCommentUrl',
+			'theChampTwitterRedirect',
 			'theChampRegRedirectionUrl',
 			'ESSB_CACHE_URL',
 			'oneall_social_login_providers_',
@@ -478,6 +479,10 @@ class Combine extends Abstract_JS_Optimization {
 			'nfForms',
 			'galleries.gallery_',
 			'wcj_evt.prodID',
+			'advads_tracking_ads',
+			'advadsGATracking.postContext',
+			'woopack_config',
+			'ulp_content_id',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
@@ -621,6 +626,8 @@ class Combine extends Abstract_JS_Optimization {
 			'window.SLB',
 			'wpt_view_count',
 			'var dateNow',
+			'gallery_product_',
+			'.flo-block-slideshow-'
 		];
 
 		/**
