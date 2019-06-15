@@ -476,6 +476,8 @@ class Combine extends Abstract_JS_Optimization {
 			'omapi_data',
 			'tminusnow',
 			'nfForms',
+			'galleries.gallery_',
+			'wcj_evt.prodID',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
@@ -617,6 +619,8 @@ class Combine extends Abstract_JS_Optimization {
 			'mts_view_count',
 			'act_css_tooltip',
 			'window.SLB',
+			'wpt_view_count',
+			'var dateNow',
 		];
 
 		/**
