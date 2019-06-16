@@ -486,6 +486,9 @@ class Combine extends Abstract_JS_Optimization {
 			'wp-cumulus/tagcloud.swf?r=',
 			'ctSetCookie(\'ct_checkjs\'',
 			'woof_really_curr_tax',
+			'uLogin.customInit',
+			'i18n_no_matching_variations_text',
+			'alsp_map_markers_attrs',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
@@ -632,6 +635,8 @@ class Combine extends Abstract_JS_Optimization {
 			'gallery_product_',
 			'.flo-block-slideshow-',
 			'data=\'api-key=ct-',
+			'ip_common_function()',
+			'("style#gsf-custom-css").append',
 		];
 
 		/**
