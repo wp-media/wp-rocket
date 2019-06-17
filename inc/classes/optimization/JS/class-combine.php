@@ -490,6 +490,10 @@ class Combine extends Abstract_JS_Optimization {
 			'i18n_no_matching_variations_text',
 			'alsp_map_markers_attrs',
 			'var inc_opt =',
+			'iworks_upprev',
+			'yith_wcevti_tickets',
+			'window.metrilo.ensure_cbuid',
+			'metrilo.event',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
@@ -643,6 +647,8 @@ class Combine extends Abstract_JS_Optimization {
 			'window.FlowFlowOpts',
 			'jQuery(\'.td_uid_',
 			'jQuery(".slider-',
+			'#dfd-vcard-widget-',
+			'#sf-instagram-widget-',
 		];
 
 		/**
