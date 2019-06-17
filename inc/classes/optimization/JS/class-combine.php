@@ -489,6 +489,7 @@ class Combine extends Abstract_JS_Optimization {
 			'uLogin.customInit',
 			'i18n_no_matching_variations_text',
 			'alsp_map_markers_attrs',
+			'var inc_opt =',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
@@ -637,6 +638,11 @@ class Combine extends Abstract_JS_Optimization {
 			'data=\'api-key=ct-',
 			'ip_common_function()',
 			'("style#gsf-custom-css").append',
+			'a3revWCDynamicGallery_',
+			'#owl-carousel-instagram-',
+			'window.FlowFlowOpts',
+			'jQuery(\'.td_uid_',
+			'jQuery(".slider-',
 		];
 
 		/**
