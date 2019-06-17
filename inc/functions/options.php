@@ -354,30 +354,6 @@ function get_rocket_cache_reject_ua() {
 }
 
 /**
- * Get all files we don't allow to get in CDN.
- *
- * @since 2.5
- *
- * @return string A pipe-separated list of rejected files.
- */
-function get_rocket_cdn_reject_files() {
-	$files = get_rocket_option( 'cdn_reject_files', [] );
-
-	/**
-	 * Filter the rejected files.
-	 *
-	 * @since 2.5
-	 *
-	 * @param array $files List of rejected files.
-	*/
-	$files = (array) apply_filters( 'rocket_cdn_reject_files', $files );
-	$files = array_filter( $files );
-	$files = array_flip( array_flip( $files ) );
-
-	return implode( '|', $files );
-}
-
-/**
  * Get all CNAMES.
  *
  * @since 2.1
