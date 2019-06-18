@@ -217,7 +217,7 @@ class Combine extends Abstract_JS_Optimization {
 			} else {
 				preg_match( '/<script\b([^>]*)>(?:\/\*\s*<!\[CDATA\[\s*\*\/)?\s*([\s\S]*?)\s*(?:\/\*\s*\]\]>\s*\*\/)?<\/script>/msi', $script[0], $matches_inline );
 
-				if ( strpos( $matches_inline[1], 'type' ) !== false && ! preg_match( '/type\s*=\s*["\']?(?:text|application)\/(?:(?:x\-)?javascript|ecmascript)["\']?/i', $matches_inline[1] ) ) {
+				if ( isset($matches_inline[1]) && strpos( $matches_inline[1], 'type' ) !== false && ! preg_match( '/type\s*=\s*["\']?(?:text|application)\/(?:(?:x\-)?javascript|ecmascript)["\']?/i', $matches_inline[1] ) ) {
 					Logger::debug( 'Inline script is not JS.', [
 						'js combine process',
 						'attributes' => $matches_inline[1],
@@ -225,7 +225,7 @@ class Combine extends Abstract_JS_Optimization {
 					return;
 				}
 
-				if ( false !== strpos( $matches_inline[1], 'src=' ) ) {
+				if ( isset($matches_inline[1]) && false !== strpos( $matches_inline[1], 'src=' ) ) {
 					Logger::debug( 'Inline script has a `src` attribute.', [
 						'js combine process',
 						'attributes' => $matches_inline[1],
@@ -240,7 +240,7 @@ class Combine extends Abstract_JS_Optimization {
 				}
 
 				foreach ( $this->get_excluded_inline_content() as $excluded_content ) {
-					if ( false !== strpos( $matches_inline[2], $excluded_content ) ) {
+					if ( isset($matches_inline[2]) && false !== strpos( $matches_inline[2], $excluded_content ) ) {
 						Logger::debug( 'Inline script has excluded content.', [
 							'js combine process',
 							'excluded_content' => $excluded_content,
@@ -250,7 +250,7 @@ class Combine extends Abstract_JS_Optimization {
 				}
 
 				foreach ( $this->get_move_after_inline_scripts() as $move_after_script ) {
-					if ( false !== strpos( $matches_inline[2], $move_after_script ) ) {
+					if ( isset($matches_inline[2]) && false !== strpos( $matches_inline[2], $move_after_script ) ) {
 						$this->move_after[] = $script[0];
 						return;
 					}
