@@ -18,6 +18,7 @@ if ( 'uncode' === strtolower( $current_theme->get( 'Name' ) ) || 'uncode' === st
 		$excluded_js[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/min/init.min.js' );
 		$excluded_js[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/ai-uncode.js' );
 		$excluded_js[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/min/ai-uncode.min.js' );
+		$excluded_js[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/woocommerce-uncode.js' );
 
 		return $excluded_js;
 	}
@@ -76,6 +77,7 @@ if ( 'uncode' === strtolower( $current_theme->get( 'Name' ) ) || 'uncode' === st
 		$exclude_busting[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/app.min.js' );
 		$exclude_busting[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/plugins.js' );
 		$exclude_busting[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/plugins.min.js' );
+		$exclude_busting[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/woocommerce-uncode.js' );
 
 		return $exclude_busting;
 	}
