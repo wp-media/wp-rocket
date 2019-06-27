@@ -383,8 +383,17 @@ class Updater_Subscriber extends Updater_Api_Subscriber {
 	 * }
 	 */
 	public function get_cached_latest_version_data() {
-		if ( ! is_string( filter_input( INPUT_GET, 'rocket_force_update' ) ) ) {
-			// No force update.
+		static $response;
+
+		if ( isset( $response ) ) {
+			// "force update" won’t bypass the static cache: only one http request by page load.
+			return $response;
+		}
+
+		$force_update = is_string( filter_input( INPUT_GET, 'rocket_force_update' ) );
+
+		if ( ! $force_update ) {
+			// No "force update": try to get the result from a transient.
 			$response = get_site_transient( $this->cache_transient_name );
 
 			if ( $response && is_object( $response ) ) {
@@ -401,7 +410,7 @@ class Updater_Subscriber extends Updater_Api_Subscriber {
 			$error_data = $response->get_error_data();
 
 			if ( ! empty( $error_data['error_code'] ) ) {
-				// `wp_remote_get()` returned an error.
+				// `wp_remote_get()` returned an internal error ('error_code' contains a WP_Error code ).
 				$cache_duration = HOUR_IN_SECONDS;
 			} elseif ( ! empty( $error_data['http_code'] ) && $error_data['http_code'] >= 400 ) {
 				// We got a 4xx or 5xx HTTP error.
