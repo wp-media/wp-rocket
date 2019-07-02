@@ -87,6 +87,8 @@ abstract class ActionScheduler {
 			}
 		} elseif ( strpos( $class, 'CronExpression' ) === 0 ) {
 			$dir = self::plugin_path( 'lib' . $d . 'cron-expression' . $d );
+		} elseif ( strpos( $class, 'WP_Async_Request' ) === 0 ) {
+			$dir = self::plugin_path( 'lib' . $d );
 		} else {
 			return;
 		}
