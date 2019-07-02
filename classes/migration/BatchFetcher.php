@@ -6,7 +6,14 @@ namespace Action_Scheduler\Migration;
 
 use ActionScheduler_Store as Store;
 
-class ActionScheduler_BatchFetcher {
+/**
+ * Class BatchFetcher
+ *
+ * @package Action_Scheduler\Migration
+ *
+ * @codeCoverageIgnore
+ */
+class BatchFetcher {
 	private $store;
 
 	public function __construct( Store $source_store ) {

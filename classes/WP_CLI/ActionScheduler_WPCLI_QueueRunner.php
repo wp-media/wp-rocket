@@ -1,6 +1,6 @@
 <?php
 
-use Action_Scheduler\WP_CLI\ActionScheduler_WPCLI_ProgressBar;
+use Action_Scheduler\WP_CLI\ProgressBar;
 
 /**
  * WP CLI Queue runner.
@@ -90,7 +90,7 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 	 */
 	protected function setup_progress_bar() {
 		$count              = count( $this->actions );
-		$this->progress_bar = new ActionScheduler_WPCLI_ProgressBar(
+		$this->progress_bar = new ProgressBar(
 			sprintf( _n( 'Running %d action', 'Running %d actions', $count, 'action-scheduler' ), number_format_i18n( $count ) ),
 			$count
 		);
@@ -177,7 +177,7 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 	 * @deprecated 3.0.0
 	 */
 	protected function stop_the_insanity( $sleep_time = 0 ) {
-		_deprecated_function( 'ActionScheduler_WPCLI_QueueRunner::stop_the_insanity', '3.0.0', 'ActionScheduler_WPCLI_ProgressBar::free_memory' );
+		_deprecated_function( 'ActionScheduler_WPCLI_QueueRunner::stop_the_insanity', '3.0.0', 'ActionScheduler\WPCLI\ProgressBar::free_memory' );
 
 		if ( 0 < $sleep_time ) {
 			WP_CLI::warning( sprintf( 'Stopped the insanity for %d %s', $sleep_time, _n( 'second', 'seconds', $sleep_time ) ) );

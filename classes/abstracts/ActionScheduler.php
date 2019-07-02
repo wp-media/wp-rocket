@@ -96,6 +96,8 @@ abstract class ActionScheduler {
 					$dir = $classes_dir;
 					break;
 			}
+		} elseif ( self::is_class_cli( $class ) ) {
+			$dir = $classes_dir . 'WP_CLI' . $d;
 		} elseif ( strpos( $class, 'CronExpression' ) === 0 ) {
 			$dir = self::plugin_path( 'lib' . $d . 'cron-expression' . $d );
 		} else {
@@ -181,20 +183,42 @@ abstract class ActionScheduler {
 	 */
 	protected static function is_class_migration( $class ) {
 		static $migration_segments = array(
-			'ActionMigrator'     => true,
-			'BatchFetcher'       => true,
-			'DBStoreMigrator'    => true,
-			'DryRun'             => true,
-			'LogMigrator'        => true,
-			'MigrationConfig'    => true,
-			'MigrationRunner'    => true,
-			'MigrationScheduler' => true,
+			'ActionMigrator'  => true,
+			'BatchFetcher'    => true,
+			'DBStoreMigrator' => true,
+			'DryRun'          => true,
+			'LogMigrator'     => true,
+			'Config'          => true,
+			'Runner'          => true,
+			'Scheduler'       => true,
 		);
 
 		$segments = explode( '_', $class );
-		$segment = isset( $segments[ 1 ] ) ? $segments[ 1 ] : '';
+		$segment = isset( $segments[ 1 ] ) ? $segments[ 1 ] : $class;
 
 		return isset( $migration_segments[ $segment ] ) && $migration_segments[ $segment ];
+	}
+
+	/**
+	 * Determine if the class is one of our WP CLI classes.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param string $class The class name.
+	 *
+	 * @return bool
+	 */
+	protected static function is_class_cli( $class ) {
+		static $cli_segments = array(
+			'QueueRunner' => true,
+			'Command'     => true,
+			'ProgressBar' => true,
+		);
+
+		$segments = explode( '_', $class );
+		$segment = isset( $segments[ 1 ] ) ? $segments[ 1 ] : $class;
+
+		return isset( $cli_segments[ $segment ] ) && $cli_segments[ $segment ];
 	}
 
 	final public function __clone() {

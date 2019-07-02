@@ -2,11 +2,18 @@
 
 namespace Action_Scheduler\WP_CLI;
 
-
 /**
  * WP_CLI progress bar for the Action Scheduler by Prospress.
  */
-class ActionScheduler_WPCLI_ProgressBar {
+
+/**
+ * Class ProgressBar
+ *
+ * @package Action_Scheduler\WP_CLI
+ *
+ * @codeCoverageIgnore
+ */
+class ProgressBar {
 
 	/** @var integer */
 	protected $total_ticks;
@@ -27,7 +34,7 @@ class ActionScheduler_WPCLI_ProgressBar {
 	protected $progress_bar;
 
 	/**
-	 * ActionScheduler_WPCLI_ProgressBar constructor.
+	 * ProgressBar constructor.
 	 *
 	 * @param string  $message    Text to display before the progress bar.
 	 * @param integer $count      Total number of ticks to be performed.

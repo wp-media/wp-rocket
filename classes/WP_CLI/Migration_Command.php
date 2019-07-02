@@ -3,21 +3,21 @@
 
 namespace Action_Scheduler\WP_CLI;
 
-use Action_Scheduler\Migration\ActionScheduler_MigrationConfig;
-use Action_Scheduler\Migration\ActionScheduler_MigrationRunner;
-use Action_Scheduler\Migration\ActionScheduler_MigrationScheduler;
+use Action_Scheduler\Migration\Config;
+use Action_Scheduler\Migration\Runner;
+use Action_Scheduler\Migration\Scheduler;
 use ActionScheduler_Data;
 use WP_CLI;
 use WP_CLI_Command;
 
 /**
- * Class ActionScheduler_WPCLI_Migration_Command
+ * Class Migration_Command
  *
  * @package Action_Scheduler\WP_CLI
  *
  * @codeCoverageIgnore
  */
-class ActionScheduler_WPCLI_Migration_Command extends WP_CLI_Command {
+class Migration_Command extends WP_CLI_Command {
 
 	/**
 	 * Migrates actions to the DB tables store
@@ -67,7 +67,7 @@ class ActionScheduler_WPCLI_Migration_Command extends WP_CLI_Command {
 		$this->init_logging();
 
 		$config = $this->get_migration_config( $assoc_args );
-		$runner = new ActionScheduler_MigrationRunner( $config );
+		$runner = new Runner( $config );
 		$runner->init_destination();
 
 		$batch_size = isset( $assoc_args[ 'batch-size' ] ) ? (int) $assoc_args[ 'batch-size' ] : 100;
@@ -79,7 +79,7 @@ class ActionScheduler_WPCLI_Migration_Command extends WP_CLI_Command {
 
 		if ( ! $config->get_dry_run() ) {
 			// let the scheduler know that there's nothing left to do
-			$scheduler = new ActionScheduler_MigrationScheduler();
+			$scheduler = new Scheduler();
 			$scheduler->mark_complete();
 		}
 
@@ -87,11 +87,11 @@ class ActionScheduler_WPCLI_Migration_Command extends WP_CLI_Command {
 	}
 
 	/**
-	 * Build the config object used to create the ActionScheduler_MigrationRunner
+	 * Build the config object used to create the Runner
 	 *
 	 * @param array $args
 	 *
-	 * @return ActionScheduler_MigrationConfig
+	 * @return ActionScheduler\Migration\Config
 	 */
 	private function get_migration_config( $args ) {
 		$args = wp_parse_args( $args, [

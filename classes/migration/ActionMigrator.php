@@ -3,13 +3,19 @@
 
 namespace Action_Scheduler\Migration;
 
-
-class ActionScheduler_ActionMigrator {
+/**
+ * Class ActionMigrator
+ *
+ * @package Action_Scheduler\WP_CLI
+ *
+ * @codeCoverageIgnore
+ */
+class ActionMigrator {
 	private $source;
 	private $destination;
 	private $log_migrator;
 
-	public function __construct( \ActionScheduler_Store $source_store, \ActionScheduler_Store $destination_store, ActionScheduler_LogMigrator $log_migrator ) {
+	public function __construct( \ActionScheduler_Store $source_store, \ActionScheduler_Store $destination_store, LogMigrator $log_migrator ) {
 		$this->source       = $source_store;
 		$this->destination  = $destination_store;
 		$this->log_migrator = $log_migrator;

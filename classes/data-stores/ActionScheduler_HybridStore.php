@@ -1,8 +1,8 @@
 <?php
 
 use ActionScheduler_Store as Store;
-use Action_Scheduler\Migration\ActionScheduler_MigrationRunner;
-use Action_Scheduler\Migration\ActionScheduler_MigrationConfig;
+use Action_Scheduler\Migration\Runner;
+use Action_Scheduler\Migration\Config;
 
 /**
  * Class ActionScheduler_HybridStore
@@ -29,14 +29,14 @@ class ActionScheduler_HybridStore extends Store {
 	 */
 	private $demarkation_id = 0;
 
-	public function __construct( ActionScheduler_MigrationConfig $config = null ) {
+	public function __construct( Config $config = null ) {
 		$this->demarkation_id = (int) get_option( self::DEMARKATION_OPTION, 0 );
 		if ( empty( $config ) ) {
 			$config = ActionScheduler_Data::instance()->get_migration_config_object();
 		}
 		$this->primary_store    = $config->get_destination_store();
 		$this->secondary_store  = $config->get_source_store();
-		$this->migration_runner = new ActionScheduler_MigrationRunner( $config );
+		$this->migration_runner = new Runner( $config );
 	}
 
 	/**

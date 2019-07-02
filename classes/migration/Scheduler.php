@@ -5,7 +5,14 @@ namespace Action_Scheduler\Migration;
 
 use ActionScheduler_Data;
 
-class ActionScheduler_MigrationScheduler {
+/**
+ * Class Scheduler
+ *
+ * @package Action_Scheduler\WP_CLI
+ *
+ * @codeCoverageIgnore
+ */
+class Scheduler {
 	const STATUS_FLAG     = 'action_scheduler_migration_status';
 	const STATUS_COMPLETE = 'complete';
 	const HOOK            = 'action_scheduler/migration_hook';
@@ -121,12 +128,12 @@ class ActionScheduler_MigrationScheduler {
 	}
 
 	/**
-	 * @return ActionScheduler_MigrationRunner
+	 * @return Runner
 	 */
 	private function get_migration_runner() {
 		$config = ActionScheduler_Data::instance()->get_migration_config_object();
 
-		return new ActionScheduler_MigrationRunner( $config );
+		return new Runner( $config );
 	}
 
 }

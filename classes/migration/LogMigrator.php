@@ -5,7 +5,14 @@ namespace Action_Scheduler\Migration;
 
 use ActionScheduler_Logger;
 
-class ActionScheduler_LogMigrator {
+/**
+ * Class LogMigrator
+ *
+ * @package Action_Scheduler\Migration
+ *
+ * @codeCoverageIgnore
+ */
+class LogMigrator {
 	private $source;
 	private $destination;
 

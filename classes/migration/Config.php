@@ -3,16 +3,18 @@
 
 namespace Action_Scheduler\Migration;
 
-use Action_Scheduler\WP_CLI\ActionScheduler_WPCLI_ProgressBar;
+use Action_Scheduler\WP_CLI\ProgressBar;
 use ActionScheduler_Logger as Logger;
 use ActionScheduler_Store as Store;
 
 /**
- * Class ActionScheduler_MigrationConfig
+ * Class Config
  *
- * A config builder for the ActionScheduler_MigrationRunner class
+ * @package Action_Scheduler\Migration
+ *
+ * A config builder for the ActionScheduler\Migration\Runner class
  */
-class ActionScheduler_MigrationConfig {
+class Config {
 	/** @var Store */
 	private $source_store;
 
@@ -119,16 +121,16 @@ class ActionScheduler_MigrationConfig {
 	}
 
 	/**
-	 * @return ActionScheduler_WPCLI_ProgressBar
+	 * @return ActionScheduler\WPCLI\ProgressBar
 	 */
 	public function get_progress_bar() {
 		return $this->progress_bar;
 	}
 
 	/**
-	 * @param ActionScheduler_WPCLI_ProgressBar $progress_bar
+	 * @param ActionScheduler\WPCLI\ProgressBar $progress_bar
 	 */
-	public function set_progress_bar( ActionScheduler_WPCLI_ProgressBar $progress_bar ) {
+	public function set_progress_bar( ProgressBar $progress_bar ) {
 		$this->progress_bar = $progress_bar;
 	}
 }

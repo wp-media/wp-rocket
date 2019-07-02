@@ -48,11 +48,9 @@ class ActionScheduler_StoreSchema extends ActionScheduler_Abstract_Schema {
 				        KEY hook (hook($max_index_length)),
 				        KEY status (status),
 				        KEY scheduled_date_gmt (scheduled_date_gmt),
-				        KEY scheduled_date_local (scheduled_date_local),
 				        KEY args (args($max_index_length)),
 				        KEY group_id (group_id),
 				        KEY last_attempt_gmt (last_attempt_gmt),
-				        KEY last_attempt_local (last_attempt_local),
 				        KEY claim_id (claim_id)
 				        ) $charset_collate";
 

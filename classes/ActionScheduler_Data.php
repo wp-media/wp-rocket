@@ -1,9 +1,9 @@
 <?php
 
-use Action_Scheduler\Migration\ActionScheduler_MigrationConfig;
-use Action_Scheduler\Migration\ActionScheduler_MigrationScheduler;
-use Action_Scheduler\WP_CLI\ActionScheduler_WPCLI_Migration_Command;
-use Action_Scheduler\WP_CLI\ActionScheduler_WPCLI_ProgressBar;
+use Action_Scheduler\Migration\Config;
+use Action_Scheduler\Migration\Scheduler;
+use Action_Scheduler\WP_CLI\Migration_Command;
+use Action_Scheduler\WP_CLI\ProgressBar;
 
 /**
  * Class ActionScheduler_Data
@@ -20,7 +20,7 @@ use Action_Scheduler\WP_CLI\ActionScheduler_WPCLI_ProgressBar;
 class ActionScheduler_Data {
 	private static $instance;
 
-	/** @var ActionScheduler_MigrationScheduler */
+	/** @var Action_Scheduler\Migration\Scheduler */
 	private $migration_scheduler;
 
 	/** @var string */
@@ -35,9 +35,9 @@ class ActionScheduler_Data {
 	/**
 	 * ActionScheduler_Data constructor.
 	 *
-	 * @param Migration_Scheduler $migration_scheduler
+	 * @param Scheduler $migration_scheduler
 	 */
-	public function __construct( ActionScheduler_MigrationScheduler $migration_scheduler ) {
+	public function __construct( Scheduler $migration_scheduler ) {
 		$this->migration_scheduler = $migration_scheduler;
 		$this->store_classname     = '';
 	}
@@ -85,7 +85,7 @@ class ActionScheduler_Data {
 	 */
 	public function register_cli_command() {
 		if ( defined( 'WP_CLI' ) && WP_CLI && $this->allow_custom_migration() && ! $this->migration_scheduler->is_migration_complete() && $this->migration_scheduler->dependencies_met() ) {
-			$command = new ActionScheduler_WPCLI_Migration_Command();
+			$command = new Migration_Command();
 			$command->register();
 		}
 	}
@@ -106,20 +106,20 @@ class ActionScheduler_Data {
 	/**
 	 * Get the default migration config object
 	 *
-	 * @return Migration\Migration_Config
+	 * @return ActionScheduler\Migration\Config
 	 */
 	public function get_migration_config_object() {
 		$source_store = $this->store_classname ? new $this->store_classname() : new ActionScheduler_wpPostStore();
 		$source_logger = $this->logger_classname ? new $this->logger_classname() : new ActionScheduler_wpCommentLogger();
 
-		$config = new ActionScheduler_MigrationConfig();
+		$config = new Config();
 		$config->set_source_store( $source_store );
 		$config->set_source_logger( $source_logger );
 		$config->set_destination_store( new ActionScheduler_DBStoreMigrator() );
 		$config->set_destination_logger( new ActionScheduler_DBLogger() );
 
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
-			$config->set_progress_bar( new ActionScheduler_WPCLI_ProgressBar( '', 0 ) );
+			$config->set_progress_bar( new ProgressBar( '', 0 ) );
 		}
 
 		return apply_filters( 'action_scheduler/migration_config', $config );
@@ -177,7 +177,7 @@ class ActionScheduler_Data {
 
 	public static function instance() {
 		if ( ! isset( self::$instance ) ) {
-			self::$instance = new static( new ActionScheduler_MigrationScheduler() );
+			self::$instance = new static( new Scheduler() );
 		}
 
 		return self::$instance;
