@@ -494,6 +494,8 @@ class Combine extends Abstract_JS_Optimization {
 			'yith_wcevti_tickets',
 			'window.metrilo.ensure_cbuid',
 			'metrilo.event',
+			'wordpress_page_root',
+			'wcct_info',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
@@ -649,6 +651,7 @@ class Combine extends Abstract_JS_Optimization {
 			'jQuery(".slider-',
 			'#dfd-vcard-widget-',
 			'#sf-instagram-widget-',
+			'$(\'.woocommerce-tabs-',
 		];
 
 		/**
