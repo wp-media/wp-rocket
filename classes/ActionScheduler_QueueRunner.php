@@ -8,6 +8,9 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 
 	const WP_CRON_SCHEDULE = 'every_minute';
 
+	/** @var ActionScheduler_AsyncRequest_QueueRunner */
+	protected $async_request;
+
 	/** @var ActionScheduler_QueueRunner  */
 	private static $runner = null;
 
@@ -30,8 +33,10 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	 * @param ActionScheduler_FatalErrorMonitor $monitor
 	 * @param ActionScheduler_QueueCleaner      $cleaner
 	 */
-	public function __construct( ActionScheduler_Store $store = null, ActionScheduler_FatalErrorMonitor $monitor = null, ActionScheduler_QueueCleaner $cleaner = null ) {
+	public function __construct( ActionScheduler_Store $store = null, ActionScheduler_FatalErrorMonitor $monitor = null, ActionScheduler_QueueCleaner $cleaner = null, ActionScheduler_AsyncRequest_QueueRunner $async_request = null ) {
 		parent::__construct( $store, $monitor, $cleaner );
+		$this->async_request = new ActionScheduler_AsyncRequest_QueueRunner( $this->store );
+
 	}
 
 	/**
@@ -47,6 +52,18 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 		}
 
 		add_action( self::WP_CRON_HOOK, array( self::instance(), 'run' ) );
+
+		add_filter( 'shutdown', array( $this, 'maybe_dispatch_async_request' ) );
+	}
+
+	/**
+	 * If we're in the admin context, haven't exceeded the number of allowed batches and async
+	 * runner is enabled, then maybe dispatch another request if there are pending actions.
+	 */
+	public function maybe_dispatch_async_request() {
+		if ( is_admin() && ! $this->has_maximum_concurrent_batches() && apply_filters( 'action_scheduler_allow_async_runner', true ) ) {
+			$this->async_request->maybe_dispatch();
+		}
 	}
 
 	public function run() {
