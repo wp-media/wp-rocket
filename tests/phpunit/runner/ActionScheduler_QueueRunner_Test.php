@@ -121,14 +121,14 @@ class ActionScheduler_QueueRunner_Test extends ActionScheduler_UnitTestCase {
 		add_action( $random, array( $mock, 'action' ) );
 		$schedule = new ActionScheduler_SimpleSchedule(new ActionScheduler_DateTime('1 day ago'));
 
-		for ( $i = 0 ; $i < 30 ; $i++ ) {
+		for ( $i = 0 ; $i < 15 ; $i++ ) {
 			$action = new ActionScheduler_Action( $random, array($random), $schedule );
 			$store->save_action( $action );
 		}
 
 		$claims = array();
 
-		for ( $i = 0 ; $i < 5 ; $i++ ) {
+		for ( $i = 0 ; $i < 2 ; $i++ ) {
 			$claims[] = $store->stake_claim( 5 );
 		}
 
