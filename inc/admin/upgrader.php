@@ -161,7 +161,7 @@ function rocket_first_install() {
 		 */
 		apply_filters(
 			'rocket_first_install_options',
-			array(
+			[
 				'secret_cache_key'            => $secret_cache_key,
 				'cache_mobile'                => 1,
 				'do_caching_mobile_files'     => 0,
@@ -233,7 +233,7 @@ function rocket_first_install() {
 				'facebook_pixel_cache'        => 0,
 				'sucury_waf_cache_sync'       => 0,
 				'sucury_waf_api_key'          => '',
-			)
+			]
 		)
 	);
 	rocket_dismiss_box( 'rocket_warning_plugin_modification' );
