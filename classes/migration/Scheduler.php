@@ -10,24 +10,35 @@ use ActionScheduler_Data;
  *
  * @package Action_Scheduler\WP_CLI
  *
+ * @since 3.0.0
+ *
  * @codeCoverageIgnore
  */
 class Scheduler {
+	/** Migration status option name. */
 	const STATUS_FLAG     = 'action_scheduler_migration_status';
+
+	/** Migration status option value. */
 	const STATUS_COMPLETE = 'complete';
+
+	/** Migration action hook. */
 	const HOOK            = 'action_scheduler/migration_hook';
+
+	/** Migration action group. */
 	const GROUP           = 'action-scheduler-DB-tables';
+
+	/** Migration minimum required PHP version. */
 	const MIN_PHP_VERSION = '5.5';
 
 	/**
-	 * Set up the callback for the scheduled job
+	 * Set up the callback for the scheduled job.
 	 */
 	public function hook() {
 		add_action( self::HOOK, array( $this, 'run_migration' ), 10, 0 );
 	}
 
 	/**
-	 * Remove the callback for the scheduled job
+	 * Remove the callback for the scheduled job.
 	 */
 	public function unhook() {
 		remove_action( self::HOOK, array( $this, 'run_migration' ), 10 );
@@ -47,6 +58,9 @@ class Scheduler {
 		}
 	}
 
+	/**
+	 * Mark the migration complete.
+	 */
 	public function mark_complete() {
 		$migration_runner   = $this->get_migration_runner();
 		$destination_store  = $migration_runner->get_destination_store();
@@ -65,6 +79,8 @@ class Scheduler {
 	}
 
 	/**
+	 * Get a flag indicating whether the migration is complete.
+	 *
 	 * @return bool Whether the flag has been set marking the migration as complete
 	 */
 	public function is_migration_complete() {
@@ -72,6 +88,8 @@ class Scheduler {
 	}
 
 	/**
+	 * Get a flag indicating whether the migration is scheduled.
+	 *
 	 * @return bool Whether there is a pending action in the store to handle the migration
 	 */
 	public function is_migration_scheduled() {
@@ -81,7 +99,9 @@ class Scheduler {
 	}
 
 	/**
-	 * @param int $when Timestamp to run the next migration batch. Defaults to now.
+	 * Schedule the migration.
+	 *
+	 * @param int $when Optional timestamp to run the next migration batch. Defaults to now.
 	 *
 	 * @return string The action ID
 	 */
@@ -100,20 +120,24 @@ class Scheduler {
 	}
 
 	/**
-	 * Removes the scheduled migration action
+	 * Remove the scheduled migration action.
 	 */
 	public function unschedule_migration() {
 		as_unschedule_action( self::HOOK, null, self::GROUP );
 	}
 
 	/**
-	 * @return bool Environment dependencies met for database data store.
+	 * Get a flag indicating whether the migration environment dependencies are met.
+	 *
+	 * @return bool
 	 */
 	public function dependencies_met() {
 		return version_compare( PHP_VERSION, self::MIN_PHP_VERSION, '>=' );
 	}
 
 	/**
+	 * Get migration batch schedule interval.
+	 *
 	 * @return int Seconds between migration runs. Defaults to two minutes.
 	 */
 	private function get_schedule_interval() {
@@ -121,6 +145,8 @@ class Scheduler {
 	}
 
 	/**
+	 * Get migration batch size.
+	 *
 	 * @return int Number of actions to migrate in each batch. Defaults to 1000.
 	 */
 	private function get_batch_size() {
@@ -128,6 +154,8 @@ class Scheduler {
 	}
 
 	/**
+	 * Get migration runner object.
+	 *
 	 * @return Runner
 	 */
 	private function get_migration_runner() {

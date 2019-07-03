@@ -8,12 +8,13 @@ use Action_Scheduler\WP_CLI\ProgressBar;
 /**
  * Class ActionScheduler_Data
  *
- * The main plugin/initialization class for the
- * Action Scheduler Custom Tables plugin.
+ * The main plugin/initialization class for custom tables.
  *
  * Responsible for hooking everything up with WordPress.
  *
  * @package Action_Scheduler
+ *
+ * @since 3.0.0
  *
  * @codeCoverageIgnore
  */
@@ -35,9 +36,9 @@ class ActionScheduler_Data {
 	/**
 	 * ActionScheduler_Data constructor.
 	 *
-	 * @param Scheduler $migration_scheduler
+	 * @param Scheduler $migration_scheduler Migration scheduler object.
 	 */
-	public function __construct( Scheduler $migration_scheduler ) {
+	protected function __construct( Scheduler $migration_scheduler ) {
 		$this->migration_scheduler = $migration_scheduler;
 		$this->store_classname     = '';
 	}
@@ -125,6 +126,9 @@ class ActionScheduler_Data {
 		return apply_filters( 'action_scheduler/migration_config', $config );
 	}
 
+	/**
+	 * Hook dashboard migration notice.
+	 */
 	public function hook_admin_notices() {
 		if ( ! $this->allow_custom_migration() || $this->migration_scheduler->is_migration_complete() ) {
 			return;
@@ -132,10 +136,16 @@ class ActionScheduler_Data {
 		add_action( 'admin_notices', array( $this, 'display_migration_notice' ), 10, 0 );
 	}
 
+	/**
+	 * Show a dashboard notice that migration is in progress.
+	 */
 	public function display_migration_notice() {
 		printf( '<div class="notice notice-warning"><p>%s</p></div>', __( 'Action Scheduler migration in progress. The list of scheduled actions may be incomplete.' ) );
 	}
 
+	/**
+	 * Add store classes. Hook migration.
+	 */
 	private function hook() {
 		add_filter( 'action_scheduler_store_class', array( $this, 'get_store_class' ), 100, 1 );
 		add_filter( 'action_scheduler_logger_class', array( $this, 'get_logger_class' ), 100, 1 );
@@ -161,6 +171,9 @@ class ActionScheduler_Data {
 		$this->register_cli_command();
 	}
 
+	/**
+	 * Allow custom datastores to enable migration to AS tables.
+	 */
 	public function allow_custom_migration() {
 		if ( null === $this->migrate_custom_store ) {
 			$this->migrate_custom_store = apply_filters( 'action_scheduler_migrate_custom_data_store', false );
@@ -169,12 +182,18 @@ class ActionScheduler_Data {
 		return empty( $this->store_classname ) || $this->migrate_custom_store;
 	}
 
+	/**
+	 * Proceed with the migration if the dependencies have been met.
+	 */
 	public static function init() {
 		if ( self::instance()->migration_scheduler->dependencies_met() ) {
 			self::instance()->hook();
 		}
 	}
 
+	/**
+	 * Singleton factory.
+	 */
 	public static function instance() {
 		if ( ! isset( self::$instance ) ) {
 			self::$instance = new static( new Scheduler() );

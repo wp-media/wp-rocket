@@ -12,19 +12,21 @@ use ActionScheduler_Store as Store;
  *
  * @package Action_Scheduler\Migration
  *
+ * @since 3.0.0
+ *
  * A config builder for the ActionScheduler\Migration\Runner class
  */
 class Config {
-	/** @var Store */
+	/** @var ActionScheduler_Store */
 	private $source_store;
 
-	/** @var Logger */
+	/** @var ActionScheduler_Logger */
 	private $source_logger;
 
-	/** @var Store */
+	/** @var ActionScheduler_Store */
 	private $destination_store;
 
-	/** @var Logger */
+	/** @var ActionScheduler_Logger */
 	private $destination_logger;
 
 	/** @var Progress bar */
@@ -33,10 +35,18 @@ class Config {
 	/** @var bool */
 	private $dry_run = false;
 
+	/**
+	 * Config constructor.
+	 */
 	public function __construct() {
 
 	}
 
+	/**
+	 * Get the configured source store.
+	 *
+	 * @return ActionScheduler_Store
+	 */
 	public function get_source_store() {
 		if ( empty( $this->source_store ) ) {
 			throw new \RuntimeException( __( 'Source store must be configured before running a migration', 'action-scheduler' ) );
@@ -46,14 +56,18 @@ class Config {
 	}
 
 	/**
-	 * @param Store $store
+	 * Set the configured source store.
+	 *
+	 * @param ActionScheduler_Store $store Source store object.
 	 */
 	public function set_source_store( Store $store ) {
 		$this->source_store = $store;
 	}
 
 	/**
-	 * @return Logger
+	 * Get the configured source loger.
+	 *
+	 * @return ActionScheduler_Logger
 	 */
 	public function get_source_logger() {
 		if ( empty( $this->source_logger ) ) {
@@ -64,14 +78,18 @@ class Config {
 	}
 
 	/**
-	 * @param Logger $logger
+	 * Set the configured source logger.
+	 *
+	 * @param ActionScheduler_Logger $logger
 	 */
 	public function set_source_logger( Logger $logger ) {
 		$this->source_logger = $logger;
 	}
 
 	/**
-	 * @return Store
+	 * Get the configured destination store.
+	 *
+	 * @return ActionScheduler_Store
 	 */
 	public function get_destination_store() {
 		if ( empty( $this->destination_store ) ) {
@@ -82,14 +100,18 @@ class Config {
 	}
 
 	/**
-	 * @param Store $store
+	 * Set the configured destination store.
+	 *
+	 * @param ActionScheduler_Store $store
 	 */
 	public function set_destination_store( Store $store ) {
 		$this->destination_store = $store;
 	}
 
 	/**
-	 * @return Logger
+	 * Get the configured destination logger.
+	 *
+	 * @return ActionScheduler_Logger
 	 */
 	public function get_destination_logger() {
 		if ( empty( $this->destination_logger ) ) {
@@ -100,13 +122,17 @@ class Config {
 	}
 
 	/**
-	 * @param Logger $logger
+	 * Set the configured destination logger.
+	 *
+	 * @param ActionScheduler_Logger $logger
 	 */
 	public function set_destination_logger( Logger $logger ) {
 		$this->destination_logger = $logger;
 	}
 
 	/**
+	 * Get flag indicating whether it's a dry run.
+	 *
 	 * @return bool
 	 */
 	public function get_dry_run() {
@@ -114,6 +140,8 @@ class Config {
 	}
 
 	/**
+	 * Set flag indicating whether it's a dry run.
+	 *
 	 * @param bool $dry_run
 	 */
 	public function set_dry_run( $dry_run ) {
@@ -121,6 +149,8 @@ class Config {
 	}
 
 	/**
+	 * Get progress bar object.
+	 *
 	 * @return ActionScheduler\WPCLI\ProgressBar
 	 */
 	public function get_progress_bar() {
@@ -128,6 +158,8 @@ class Config {
 	}
 
 	/**
+	 * Set progress bar object.
+	 *
 	 * @param ActionScheduler\WPCLI\ProgressBar $progress_bar
 	 */
 	public function set_progress_bar( ProgressBar $progress_bar ) {

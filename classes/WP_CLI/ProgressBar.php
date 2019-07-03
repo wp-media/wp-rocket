@@ -11,6 +11,8 @@ namespace Action_Scheduler\WP_CLI;
  *
  * @package Action_Scheduler\WP_CLI
  *
+ * @since 3.0.0
+ *
  * @codeCoverageIgnore
  */
 class ProgressBar {
@@ -74,6 +76,8 @@ class ProgressBar {
 
 	/**
 	 * Get the progress bar tick count.
+	 *
+	 * @return int
 	 */
 	public function current() {
 		return $this->progress_bar ? $this->progress_bar->current() : 0;

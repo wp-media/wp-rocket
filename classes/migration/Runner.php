@@ -8,19 +8,40 @@ namespace Action_Scheduler\Migration;
  *
  * @package Action_Scheduler\Migration
  *
+ * @since 3.0.0
+ *
  * @codeCoverageIgnore
  */
 class Runner {
+	/** @var ActionScheduler_Store */
 	private $source_store;
+
+	/** @var ActionScheduler_Store */
 	private $destination_store;
+
+	/** @var ActionScheduler_Logger */
 	private $source_logger;
+
+	/** @var ActionScheduler_Logger */
 	private $destination_logger;
 
+	/** @var BatchFetcher */
 	private $batch_fetcher;
+
+	/** @var ActionMigrator */
 	private $action_migrator;
+
+	/** @var LogMigrator */
 	private $log_migrator;
+
+	/** @var ProgressBar */
 	private $progress_bar;
 
+	/**
+	 * Runner constructor.
+	 *
+	 * @param Config $config Migration configuration object.
+	 */
 	public function __construct( Config $config ) {
 		$this->source_store       = $config->get_source_store();
 		$this->destination_store  = $config->get_destination_store();
@@ -41,6 +62,13 @@ class Runner {
 		}
 	}
 
+	/**
+	 * Run migration batch.
+	 *
+	 * @param int $batch_size Optional batch size. Default 10.
+	 *
+	 * @return int Size of batch processed.
+	 */
 	public function run( $batch_size = 10 ) {
 		$batch = $this->batch_fetcher->fetch( $batch_size );
 		$batch_size = count( $batch );
@@ -59,6 +87,11 @@ class Runner {
 		return $batch_size;
 	}
 
+	/**
+	 * Migration a batch of actions.
+	 *
+	 * @param array $action_ids List of action IDs to migrate.
+	 */
 	public function migrate_actions( array $action_ids ) {
 		do_action( 'action_scheduler/migration_batch_starting', $action_ids );
 
@@ -92,15 +125,24 @@ class Runner {
 		do_action( 'action_scheduler/migration_batch_complete', $action_ids );
 	}
 
+	/**
+	 * Initialize destination store and logger.
+	 */
 	public function init_destination() {
 		$this->destination_store->init();
 		$this->destination_logger->init();
 	}
 
+	/**
+	 * Get destination store.
+	 */
 	public function get_destination_store() {
 		return $this->destination_store;
 	}
 
+	/**
+	 * Get destination logger.
+	 */
 	public function get_destination_logger() {
 		return $this->destination_logger;
 	}

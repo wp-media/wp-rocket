@@ -1,13 +1,22 @@
 <?php
 
+/**
+ * Class ActionScheduler_DBLogger
+ *
+ * Action logs data table data store.
+ *
+ * @since 3.0.0
+ */
 class ActionScheduler_DBLogger extends ActionScheduler_Logger {
 
 	/**
-	 * @param string   $action_id
-	 * @param string   $message
-	 * @param DateTime $date
+	 * Add a record to an action log.
 	 *
-	 * @return string The log entry ID
+	 * @param int      $action_id Action ID.
+	 * @param string   $message Message to be saved in the log entry.
+	 * @param DateTime $date Timestamp of the log entry.
+	 *
+	 * @return int     The log entry ID.
 	 */
 	public function log( $action_id, $message, DateTime $date = null ) {
 		if ( empty( $date ) ) {
@@ -33,7 +42,9 @@ class ActionScheduler_DBLogger extends ActionScheduler_Logger {
 	}
 
 	/**
-	 * @param string $entry_id
+	 * Retrieve an action log entry.
+	 *
+	 * @param int $entry_id Log entry ID.
 	 *
 	 * @return ActionScheduler_LogEntry
 	 */
@@ -46,7 +57,9 @@ class ActionScheduler_DBLogger extends ActionScheduler_Logger {
 	}
 
 	/**
-	 * @param object $record
+	 * Create an action log entry from a database record.
+	 *
+	 * @param object $record Log entry database record object.
 	 *
 	 * @return ActionScheduler_LogEntry
 	 */
@@ -61,7 +74,9 @@ class ActionScheduler_DBLogger extends ActionScheduler_Logger {
 	}
 
 	/**
-	 * @param string $action_id
+	 * Retrieve the an action's log entries from the database.
+	 *
+	 * @param int $action_id Action ID.
 	 *
 	 * @return ActionScheduler_LogEntry[]
 	 */
@@ -75,6 +90,8 @@ class ActionScheduler_DBLogger extends ActionScheduler_Logger {
 	}
 
 	/**
+	 * Initialize the data store.
+	 *
 	 * @codeCoverageIgnore
 	 */
 	public function init() {
@@ -87,6 +104,11 @@ class ActionScheduler_DBLogger extends ActionScheduler_Logger {
 		add_action( 'action_scheduler_deleted_action', [ $this, 'clear_deleted_action_logs' ], 10, 1 );
 	}
 
+	/**
+	 * Delete the action logs for an action.
+	 *
+	 * @param int $action_id Action ID.
+	 */
 	public function clear_deleted_action_logs( $action_id ) {
 		/** @var \wpdb $wpdb */
 		global $wpdb;

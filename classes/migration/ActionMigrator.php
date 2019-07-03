@@ -6,21 +6,42 @@ namespace Action_Scheduler\Migration;
 /**
  * Class ActionMigrator
  *
- * @package Action_Scheduler\WP_CLI
+ * @package Action_Scheduler\Migration
+ *
+ * @since 3.0.0
  *
  * @codeCoverageIgnore
  */
 class ActionMigrator {
+	/** var ActionScheduler_Store */
 	private $source;
+
+	/** var ActionScheduler_Store */
 	private $destination;
+
+	/** var LogMigrator */
 	private $log_migrator;
 
+	/**
+	 * ActionMigrator constructor.
+	 *
+	 * @param ActionScheduler_Store $source_store Source store object.
+	 * @param ActionScheduler_Store $destination_store Destination store object.
+	 * @param LogMigrator           $log_migrator Log migrator object.
+	 */
 	public function __construct( \ActionScheduler_Store $source_store, \ActionScheduler_Store $destination_store, LogMigrator $log_migrator ) {
 		$this->source       = $source_store;
 		$this->destination  = $destination_store;
 		$this->log_migrator = $log_migrator;
 	}
 
+	/**
+	 * Migrate an action.
+	 *
+	 * @param int $source_action_id Action ID.
+	 *
+	 * @return int 0|new action ID
+	 */
 	public function migrate( $source_action_id ) {
 		$action = $this->source->fetch_action( $source_action_id );
 

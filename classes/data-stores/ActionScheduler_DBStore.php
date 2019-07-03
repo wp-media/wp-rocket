@@ -1,9 +1,17 @@
 <?php
 
+/**
+ * Class ActionScheduler_DBStore
+ *
+ * Action data table data store.
+ *
+ * @since 3.0.0
+ */
 class ActionScheduler_DBStore extends ActionScheduler_Store {
 
-
 	/**
+	 * Initialize the data store
+	 *
 	 * @codeCoverageIgnore
 	 */
 	public function init() {
@@ -11,7 +19,12 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 		$table_maker->register_tables();
 	}
 
-
+	/**
+	 * Save an action.
+	 *
+	 * @param ActionScheduler_Action $action Action object.
+	 * @param DateTime               $date Optional schedule date. Default null.
+	 */
 	public function save_action( ActionScheduler_Action $action, \DateTime $date = null ) {
 		try {
 			/** @var \wpdb $wpdb */
@@ -64,6 +77,13 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 		return $group_id;
 	}
 
+	/**
+	 * Create an action group.
+	 *
+	 * @param string $slug Group slug.
+	 *
+	 * @return int Group ID.
+	 */
 	protected function create_group( $slug ) {
 		/** @var \wpdb $wpdb */
 		global $wpdb;
@@ -72,6 +92,13 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 		return (int) $wpdb->insert_id;
 	}
 
+	/**
+	 * Retrieve an action.
+	 *
+	 * @param int $action_id Action ID.
+	 *
+	 * @return ActionScheduler_Action
+	 */
 	public function fetch_action( $action_id ) {
 		/** @var \wpdb $wpdb */
 		global $wpdb;
@@ -87,10 +114,22 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 		return $this->make_action_from_db_record( $data );
 	}
 
+	/**
+	 * Create a null action.
+	 *
+	 * @return ActionScheduler_NullAction
+	 */
 	protected function get_null_action() {
 		return new ActionScheduler_NullAction();
 	}
 
+	/**
+	 * Create an action from a database record.
+	 *
+	 * @param array $data Action database record.
+	 *
+	 * @return ActionScheduler_NullAction
+	 */
 	protected function make_action_from_db_record( $data ) {
 
 		$hook     = $data->hook;
@@ -112,8 +151,10 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 	}
 
 	/**
-	 * @param string $hook
-	 * @param array  $params
+	 * Find an action.
+	 *
+	 * @param string $hook Action hook
+	 * @param array  $params Parameters of the action to find.
 	 *
 	 * @return string ID of the next action matching the criteria or NULL if not found
 	 */
@@ -300,8 +341,11 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 	}
 
 	/**
-	 * @param array $query
+	 * Query for action count of list of action IDs.
+	 *
+	 * @param array  $query Query parameters.
 	 * @param string $query_type Whether to select or count the results. Default, select.
+	 *
 	 * @return null|string|array The IDs of actions matching the query
 	 */
 	public function query_actions( $query = [], $query_type = 'select' ) {
@@ -339,6 +383,8 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 	}
 
 	/**
+	 * Cancel an action.
+	 *
 	 * @param string $action_id
 	 *
 	 * @throws \InvalidArgumentException
@@ -360,7 +406,11 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 		do_action( 'action_scheduler_canceled_action', $action_id );
 	}
 
-
+	/**
+	 * Delte an action.
+	 *
+	 * @param int $action_id Action ID,
+	 */
 	public function delete_action( $action_id ) {
 		/** @var \wpdb $wpdb */
 		global $wpdb;
@@ -372,7 +422,9 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 	}
 
 	/**
-	 * @param string $action_id
+	 * Get the schedule date for an action.
+	 *
+	 * @param string $action_id Action ID.
 	 *
 	 * @throws \InvalidArgumentException
 	 * @return \DateTime The local date the action is scheduled to run, or the date that it ran.
@@ -384,7 +436,9 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 	}
 
 	/**
-	 * @param string $action_id
+	 * Get the GMT schedule date for an action.
+	 *
+	 * @param string $action_id Action ID.
 	 *
 	 * @throws \InvalidArgumentException
 	 * @return \DateTime The GMT date the action is scheduled to run, or the date that it ran.
@@ -403,9 +457,10 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 		}
 	}
 
-
 	/**
-	 * @param int       $max_actions
+	 * Stake a claim on actions.
+	 *
+	 * @param int       $max_actions Maximum number of action to include in claim.
 	 * @param \DateTime $before_date Jobs must be schedule before this date. Defaults to now.
 	 *
 	 * @return ActionScheduler_ActionClaim
@@ -418,7 +473,11 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 		return new ActionScheduler_ActionClaim( $claim_id, $action_ids );
 	}
 
-
+	/**
+	 * Generate a new action claim.
+	 *
+	 * @return int Claim ID.
+	 */
 	protected function generate_claim_id() {
 		/** @var \wpdb $wpdb */
 		global $wpdb;
@@ -429,8 +488,10 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 	}
 
 	/**
-	 * @param string    $claim_id
-	 * @param int       $limit
+	 * Mark actions claimed.
+	 *
+	 * @param string    $claim_id Claim Id.
+	 * @param int       $limit Number of action to include in claim.
 	 * @param \DateTime $before_date Should use UTC timezone.
 	 *
 	 * @return int The number of actions that were claimed
@@ -488,6 +549,8 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 	}
 
 	/**
+	 * Get the number of active claims.
+	 *
 	 * @return int
 	 */
 	public function get_claim_count() {
@@ -502,7 +565,7 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 	/**
 	 * Return an action's claim ID, as stored in the claim_id column
 	 *
-	 * @param string $action_id
+	 * @param string $action_id Action ID.
 	 * @return mixed
 	 */
 	public function get_claim_id( $action_id ) {
@@ -516,7 +579,9 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 	}
 
 	/**
-	 * @param string $claim_id
+	 * Retrieve the action IDs of action in a claim.
+	 *
+	 * @param string $claim_id Claim ID.
 	 *
 	 * @return int[]
 	 */
@@ -532,6 +597,11 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 		return array_map( 'intval', $action_ids );
 	}
 
+	/**
+	 * Release actions from a claim and delete the claim.
+	 *
+	 * @param ActionScheduler_ActionClaim $claim Claim object.
+	 */
 	public function release_claim( ActionScheduler_ActionClaim $claim ) {
 		/** @var \wpdb $wpdb */
 		global $wpdb;
@@ -540,7 +610,9 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 	}
 
 	/**
-	 * @param string $action_id
+	 * Remove the claim from an action.
+	 *
+	 * @param int $action_id Action ID.
 	 *
 	 * @return void
 	 */
@@ -556,6 +628,11 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 		);
 	}
 
+	/**
+	 * Mark an action as failed.
+	 *
+	 * @param int $action_id Action ID.
+	 */
 	public function mark_failure( $action_id ) {
 		/** @var \wpdb $wpdb */
 		global $wpdb;
@@ -572,7 +649,9 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 	}
 
 	/**
-	 * @param string $action_id
+	 * Add execution message to action log.
+	 *
+	 * @param int $action_id Action ID.
 	 *
 	 * @return void
 	 */
@@ -585,7 +664,13 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 		$wpdb->query( $sql );
 	}
 
-
+	/**
+	 * Mark an action as complete.
+	 *
+	 * @param int $action_id Action ID.
+	 *
+	 * @return void
+	 */
 	public function mark_complete( $action_id ) {
 		/** @var \wpdb $wpdb */
 		global $wpdb;
@@ -605,6 +690,13 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 		}
 	}
 
+	/**
+	 * Get an action's status.
+	 *
+	 * @param int $action_id Action ID.
+	 *
+	 * @return string
+	 */
 	public function get_status( $action_id ) {
 		/** @var \wpdb $wpdb */
 		global $wpdb;
@@ -620,6 +712,4 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 			return $status;
 		}
 	}
-
-
 }

@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Class ActionScheduler_DBStoreMigrator
+ *
+ * A  class for direct saving of actions to the table data store during migration.
+ *
+ * @since 3.0.0
+ */
 class ActionScheduler_DBStoreMigrator extends ActionScheduler_DBStore {
 
 	/**

@@ -15,14 +15,13 @@ use WP_CLI_Command;
  *
  * @package Action_Scheduler\WP_CLI
  *
+ * @since 3.0.0
+ *
  * @codeCoverageIgnore
  */
 class Migration_Command extends WP_CLI_Command {
 
-	/**
-	 * Migrates actions to the DB tables store
-	 */
-
+	/** @var int */
 	private $total_processed = 0;
 
 	/**
@@ -54,8 +53,10 @@ class Migration_Command extends WP_CLI_Command {
 	}
 
 	/**
-	 * @param array $positional_args
-	 * @param array $assoc_args
+	 * Process the data migration.
+	 *
+	 * @param array $positional_args Required for WP CLI. Not used in migration.
+	 * @param array $assoc_args Optional arguments.
 	 *
 	 * @return void
 	 */
@@ -89,7 +90,7 @@ class Migration_Command extends WP_CLI_Command {
 	/**
 	 * Build the config object used to create the Runner
 	 *
-	 * @param array $args
+	 * @param array $args Optional arguments.
 	 *
 	 * @return ActionScheduler\Migration\Config
 	 */
@@ -104,6 +105,9 @@ class Migration_Command extends WP_CLI_Command {
 		return $config;
 	}
 
+	/**
+	 * Hook command line logging into migration actions.
+	 */
 	private function init_logging() {
 		add_action( 'action_scheduler/migrate_action_dry_run', function ( $action_id ) {
 			WP_CLI::debug( sprintf( 'Dry-run: migrated action %d', $action_id ) );
