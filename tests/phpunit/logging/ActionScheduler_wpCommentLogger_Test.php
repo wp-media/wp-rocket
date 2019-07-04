@@ -194,8 +194,7 @@ class ActionScheduler_wpCommentLogger_Test extends ActionScheduler_UnitTestCase 
 
 	private function using_comment_logger() {
 		if ( null === $this->use_comment_logger ) {
-			$scheduler = new Action_Scheduler\Migration\ActionScheduler_MigrationScheduler();
-			$this->use_comment_logger = ! $scheduler->dependencies_met();
+			$this->use_comment_logger = ! ActionScheduler_DataController::dependencies_met();
 		}
 
 		return $this->use_comment_logger;

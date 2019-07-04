@@ -1,13 +1,13 @@
 <?php
 
-use Action_Scheduler\Migration\ActionScheduler_MigrationScheduler;
+use Action_Scheduler\Migration\Scheduler;
 use ActionScheduler_wpPostStore as PostStore;
 
 /**
- * Class ActionScheduler_MigrationScheduler_Test
+ * Class Scheduler_Test
  * @group migration
  */
-class ActionScheduler_MigrationScheduler_Test extends ActionScheduler_UnitTestCase {
+class Scheduler_Test extends ActionScheduler_UnitTestCase {
 	public function setUp() {
 		parent::setUp();
 		if ( ! taxonomy_exists( PostStore::GROUP_TAXONOMY ) ) {
@@ -18,26 +18,24 @@ class ActionScheduler_MigrationScheduler_Test extends ActionScheduler_UnitTestCa
 	}
 
 	public function test_migration_is_complete() {
-		$scheduler = new ActionScheduler_MigrationScheduler();
-		update_option( ActionScheduler_MigrationScheduler::STATUS_FLAG, ActionScheduler_MigrationScheduler::STATUS_COMPLETE );
-		$this->assertTrue( $scheduler->is_migration_complete() );
+		ActionScheduler_DataController::mark_migration_complete();
+		$this->assertTrue( ActionScheduler_DataController::is_migration_complete() );
 	}
 
 	public function test_migration_is_not_complete() {
-		$scheduler = new ActionScheduler_MigrationScheduler();
-		$this->assertFalse( $scheduler->is_migration_complete() );
-		update_option( ActionScheduler_MigrationScheduler::STATUS_FLAG, 'something_random' );
-		$this->assertFalse( $scheduler->is_migration_complete() );
+		$this->assertFalse( ActionScheduler_DataController::is_migration_complete() );
+		update_option( ActionScheduler_DataController::STATUS_FLAG, 'something_random' );
+		$this->assertFalse( ActionScheduler_DataController::is_migration_complete() );
 	}
 
 	public function test_migration_is_scheduled() {
-		$scheduler = new ActionScheduler_MigrationScheduler();
+		$scheduler = new Scheduler();
 		$scheduler->schedule_migration();
 		$this->assertTrue( $scheduler->is_migration_scheduled() );
 	}
 
 	public function test_migration_is_not_scheduled() {
-		$scheduler = new ActionScheduler_MigrationScheduler();
+		$scheduler = new Scheduler();
 		$this->assertFalse( $scheduler->is_migration_scheduled() );
 	}
 
@@ -64,7 +62,7 @@ class ActionScheduler_MigrationScheduler_Test extends ActionScheduler_UnitTestCa
 
 		$this->assertCount( 20, $source_store->query_actions( [ 'per_page' => 0 ] ) );
 
-		$scheduler = new ActionScheduler_MigrationScheduler();
+		$scheduler = new Scheduler();
 		$scheduler->schedule_migration();
 
 		$queue_runner = new \ActionScheduler_QueueRunner( $destination_store );
@@ -89,7 +87,7 @@ class ActionScheduler_MigrationScheduler_Test extends ActionScheduler_UnitTestCa
 
 		$this->assertCount( 5, $source_store->query_actions( [ 'per_page' => 0 ] ) );
 
-		$scheduler = new ActionScheduler_MigrationScheduler();
+		$scheduler = new Scheduler();
 		$scheduler->schedule_migration();
 
 		$queue_runner = new \ActionScheduler_QueueRunner( $destination_store );
@@ -108,7 +106,7 @@ class ActionScheduler_MigrationScheduler_Test extends ActionScheduler_UnitTestCa
 		$scheduler->unhook();
 
 		// ensure the flag is set marking migration as complete
-		$this->assertTrue( $scheduler->is_migration_complete() );
+		$this->assertTrue( ActionScheduler_DataController::is_migration_complete() );
 
 		// ensure that another instance has not been scheduled
 		$this->assertFalse( $scheduler->is_migration_scheduled() );

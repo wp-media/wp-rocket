@@ -1,13 +1,13 @@
 <?php
 
-use Action_Scheduler\Migration\ActionScheduler_BatchFetcher;
+use Action_Scheduler\Migration\BatchFetcher;
 use ActionScheduler_wpPostStore as PostStore;
 
 /**
- * Class ActionScheduler_BatchFetcher_Test
+ * Class BatchFetcher_Test
  * @group migration
  */
-class ActionScheduler_BatchFetcher_Test extends ActionScheduler_UnitTestCase {
+class BatchFetcher_Test extends ActionScheduler_UnitTestCase {
 	public function setUp() {
 		parent::setUp();
 		if ( ! taxonomy_exists( PostStore::GROUP_TAXONOMY ) ) {
@@ -19,7 +19,7 @@ class ActionScheduler_BatchFetcher_Test extends ActionScheduler_UnitTestCase {
 
 	public function test_nothing_to_migrate() {
 		$store         = new PostStore();
-		$ActionScheduler_BatchFetcher = new ActionScheduler_BatchFetcher( $store );
+		$ActionScheduler_BatchFetcher = new BatchFetcher( $store );
 
 		$actions = $ActionScheduler_BatchFetcher->fetch();
 		$this->assertEmpty( $actions );
@@ -42,7 +42,7 @@ class ActionScheduler_BatchFetcher_Test extends ActionScheduler_UnitTestCase {
 			$due[]    = $store->save_action( $action );
 		}
 
-		$ActionScheduler_BatchFetcher = new ActionScheduler_BatchFetcher( $store );
+		$ActionScheduler_BatchFetcher = new BatchFetcher( $store );
 
 		$actions = $ActionScheduler_BatchFetcher->fetch();
 
@@ -67,7 +67,7 @@ class ActionScheduler_BatchFetcher_Test extends ActionScheduler_UnitTestCase {
 			$complete[] = $store->save_action( $action );
 		}
 
-		$ActionScheduler_BatchFetcher = new ActionScheduler_BatchFetcher( $store );
+		$ActionScheduler_BatchFetcher = new BatchFetcher( $store );
 
 		$actions = $ActionScheduler_BatchFetcher->fetch();
 

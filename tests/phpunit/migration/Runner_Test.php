@@ -1,16 +1,16 @@
 <?php
 
 
-use Action_Scheduler\Migration\ActionScheduler_MigrationConfig;
-use Action_Scheduler\Migration\ActionScheduler_MigrationRunner;
+use Action_Scheduler\Migration\Config;
+use Action_Scheduler\Migration\Runner;
 use ActionScheduler_wpCommentLogger as CommentLogger;
 use ActionScheduler_wpPostStore as PostStore;
 
 /**
- * Class ActionScheduler_MigrationRunner_Test
+ * Class Runner_Test
  * @group migration
  */
-class ActionScheduler_MigrationRunner_Test extends ActionScheduler_UnitTestCase {
+class Runner_Test extends ActionScheduler_UnitTestCase {
 	public function setUp() {
 		parent::setUp();
 		if ( ! taxonomy_exists( PostStore::GROUP_TAXONOMY ) ) {
@@ -26,13 +26,13 @@ class ActionScheduler_MigrationRunner_Test extends ActionScheduler_UnitTestCase 
 		$source_logger      = new CommentLogger();
 		$destination_logger = new ActionScheduler_DBLogger();
 
-		$config = new ActionScheduler_MigrationConfig();
+		$config = new Config();
 		$config->set_source_store( $source_store );
 		$config->set_source_logger( $source_logger );
 		$config->set_destination_store( $destination_store );
 		$config->set_destination_logger( $destination_logger );
 
-		$runner = new ActionScheduler_MigrationRunner( $config );
+		$runner = new Runner( $config );
 
 		$due      = [];
 		$future   = [];

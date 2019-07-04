@@ -1,13 +1,12 @@
 <?php
 
-use Action_Scheduler\Migration\ActionScheduler_ActionMigrator;
-use Action_Scheduler\Migration\ActionScheduler_LogMigrator;
+use Action_Scheduler\Migration\LogMigrator;
 
 /**
- * Class ActionScheduler_LogMigrator_Test
+ * Class LogMigrator_Test
  * @group migration
  */
-class ActionScheduler_LogMigrator_Test extends ActionScheduler_UnitTestCase {
+class LogMigrator_Test extends ActionScheduler_UnitTestCase {
 	function setUp() {
 		parent::setUp();
 		if ( ! taxonomy_exists( ActionScheduler_wpPostStore::GROUP_TAXONOMY )  ) {
@@ -20,7 +19,7 @@ class ActionScheduler_LogMigrator_Test extends ActionScheduler_UnitTestCase {
 	public function test_migrate_from_wpComment_to_db() {
 		$source = new ActionScheduler_wpCommentLogger();
 		$destination = new ActionScheduler_DBLogger();
-		$migrator = new ActionScheduler_LogMigrator( $source, $destination );
+		$migrator = new LogMigrator( $source, $destination );
 		$source_action_id = rand( 10, 10000 );
 		$destination_action_id = rand( 10, 10000 );
 
