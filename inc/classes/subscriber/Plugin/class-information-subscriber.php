@@ -9,7 +9,9 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  * @since  3.3.6
  * @author Grégory Viguier
  */
-class Information_Subscriber extends Updater_Api_Subscriber {
+class Information_Subscriber implements Subscriber_Interface {
+	use \WP_Rocket\Traits\Updater_Api_Subscriber;
+
 	/**
 	 * Plugin slug.
 	 *

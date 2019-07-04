@@ -1,16 +1,15 @@
 <?php
-namespace WP_Rocket\Subscriber\Plugin;
+namespace WP_Rocket\Traits;
 
-use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Logger\Logger;
 
 /**
- * Abstract class for the plugin updater.
+ * Trait for the plugin updater.
  *
  * @since  3.3.6
  * @author Grégory Viguier
  */
-abstract class Updater_Api_Subscriber implements Subscriber_Interface {
+trait Updater_Api_Subscriber {
 	/**
 	 * An ID to use when a API request fails.
 	 *
@@ -19,7 +18,7 @@ abstract class Updater_Api_Subscriber implements Subscriber_Interface {
 	 * @access protected
 	 * @author Grégory Viguier
 	 */
-	protected $request_error_id;
+	/*protected $request_error_id;*/
 
 	/** ----------------------------------------------------------------------------------------- */
 	/** TOOLS =================================================================================== */
