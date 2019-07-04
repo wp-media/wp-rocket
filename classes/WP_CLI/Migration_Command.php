@@ -6,7 +6,7 @@ namespace Action_Scheduler\WP_CLI;
 use Action_Scheduler\Migration\Config;
 use Action_Scheduler\Migration\Runner;
 use Action_Scheduler\Migration\Scheduler;
-use ActionScheduler_Data;
+use Action_Scheduler\Migration\Controller;
 use WP_CLI;
 use WP_CLI_Command;
 
@@ -32,7 +32,7 @@ class Migration_Command extends WP_CLI_Command {
 			return;
 		}
 
-		WP_CLI::add_command( 'action-scheduler db-tables migrate', [ $this, 'migrate' ], [
+		WP_CLI::add_command( 'action-scheduler migrate', [ $this, 'migrate' ], [
 			'shortdesc' => 'Migrates actions to the DB tables store',
 			'synopsis'  => [
 				[
@@ -41,6 +41,20 @@ class Migration_Command extends WP_CLI_Command {
 					'optional'    => true,
 					'default'     => 100,
 					'description' => 'The number of actions to process in each batch',
+				],
+				[
+					'type'        => 'assoc',
+					'name'        => 'free-memory-on',
+					'optional'    => true,
+					'default'     => 50,
+					'description' => 'The number of actions to process between freeing memory. 0 disables freeing memory',
+				],
+				[
+					'type'        => 'assoc',
+					'name'        => 'pause',
+					'optional'    => true,
+					'default'     => 0,
+					'description' => 'The number of seconds to pause when freeing memory',
 				],
 				[
 					'type'        => 'flag',
@@ -61,10 +75,6 @@ class Migration_Command extends WP_CLI_Command {
 	 * @return void
 	 */
 	public function migrate( $positional_args, $assoc_args ) {
-		if ( ! defined( 'WP_CLI' ) || ! WP_CLI ) {
-			return;
-		}
-
 		$this->init_logging();
 
 		$config = $this->get_migration_config( $assoc_args );
@@ -72,6 +82,10 @@ class Migration_Command extends WP_CLI_Command {
 		$runner->init_destination();
 
 		$batch_size = isset( $assoc_args[ 'batch-size' ] ) ? (int) $assoc_args[ 'batch-size' ] : 100;
+		$free_on    = isset( $assoc_args[ 'free-memory-on' ] ) ? (int) $assoc_args[ 'free-memory-on' ] : 50;
+		$sleep      = isset( $assoc_args[ 'pause' ] ) ? (int) $assoc_args[ 'pause' ] : 0;
+		\ActionScheduler_DataController::set_free_ticks( $free_on );
+		\ActionScheduler_DataController::set_sleep_time( $sleep );
 
 		do {
 			$actions_processed     = $runner->run( $batch_size );
@@ -99,7 +113,7 @@ class Migration_Command extends WP_CLI_Command {
 			'dry-run' => false,
 		] );
 
-		$config = ActionScheduler_Data::instance()->get_migration_config_object();
+		$config = Controller::instance()->get_migration_config_object();
 		$config->set_dry_run( ! empty( $args[ 'dry-run' ] ) );
 
 		return $config;

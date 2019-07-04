@@ -21,9 +21,6 @@ class ProgressBar {
 	protected $total_ticks;
 
 	/** @var integer */
-	protected $free_ticks;
-
-	/** @var integer */
 	protected $count;
 
 	/** @var integer */
@@ -40,22 +37,20 @@ class ProgressBar {
 	 *
 	 * @param string  $message    Text to display before the progress bar.
 	 * @param integer $count      Total number of ticks to be performed.
-	 * @param integer $free_ticks Optional. The number of ticks before freeing memory. Default 50.
 	 * @param integer $interval   Optional. The interval in milliseconds between updates. Default 100.
  	 *
 	 * @throws Exception When this is not run within WP CLI
 	 */
-	public function __construct( $message, $count, $free_ticks = 50, $interval = 100 ) {
+	public function __construct( $message, $count, $interval = 100 ) {
 		if ( ! ( defined( 'WP_CLI' ) && WP_CLI ) ) {
 			/* translators: %s php class name */
-			throw new Exception( sprintf( __( 'The %s class can only be run within WP CLI.', 'action-scheduler' ), __CLASS__ ) );
+			throw new \Exception( sprintf( __( 'The %s class can only be run within WP CLI.', 'action-scheduler' ), __CLASS__ ) );
 		}
 
-		$total_ticks      = 0;
-		$this->message    = $message;
-		$this->count      = $count;
-		$this->free_ticks = $free_ticks;
-		$this->interval   = $interval;
+		$this->total_ticks = 0;
+		$this->message     = $message;
+		$this->count       = $count;
+		$this->interval    = $interval;
 	}
 
 	/**
@@ -69,9 +64,7 @@ class ProgressBar {
 		$this->progress_bar->tick();
 		$this->total_ticks++;
 
-		if ( $this->free_ticks && 0 === $this->total_ticks % $this->free_ticks ) {
-			$this->free_memory();
-		}
+		do_action( 'action_scheduler/progress_tick', $this->total_ticks );
 	}
 
 	/**
@@ -122,40 +115,5 @@ class ProgressBar {
 			$this->count,
 			$this->interval
 		);
-	}
-
-	/**
-	 * Reduce memory footprint by clearing the database query and object caches.
-	 *
-	 * @param integer $sleep_time The number of seconds to pause before resuming operation. Optional. Default 0.
-	 */
-	protected function free_memory( $sleep_time = 0 ) {
-		if ( 0 < $sleep_time ) {
-			\WP_CLI::warning( sprintf( _n( 'Stopped the insanity for %d second', 'Stopped the insanity for %d seconds', $sleep_time, 'action-scheduler' ), $sleep_time ) );
-			sleep( $sleep_time );
-		}
-
-		\WP_CLI::warning( __( 'Attempting to reduce used memory...', 'action-scheduler' ) );
-
-		/**
-		 * @var $wpdb            \wpdb
-		 * @var $wp_object_cache \WP_Object_Cache
-		 */
-		global $wpdb, $wp_object_cache;
-
-		$wpdb->queries = array();
-
-		if ( ! is_object( $wp_object_cache ) ) {
-			return;
-		}
-
-		$wp_object_cache->group_ops      = array();
-		$wp_object_cache->stats          = array();
-		$wp_object_cache->memcache_debug = array();
-		$wp_object_cache->cache          = array();
-
-		if ( is_callable( array( $wp_object_cache, '__remoteset' ) ) ) {
-			call_user_func( array( $wp_object_cache, '__remoteset' ) ); // important
-		}
 	}
 }

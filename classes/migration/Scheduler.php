@@ -3,8 +3,6 @@
 
 namespace Action_Scheduler\Migration;
 
-use ActionScheduler_Data;
-
 /**
  * Class Scheduler
  *
@@ -15,20 +13,11 @@ use ActionScheduler_Data;
  * @codeCoverageIgnore
  */
 class Scheduler {
-	/** Migration status option name. */
-	const STATUS_FLAG     = 'action_scheduler_migration_status';
-
-	/** Migration status option value. */
-	const STATUS_COMPLETE = 'complete';
-
 	/** Migration action hook. */
 	const HOOK            = 'action_scheduler/migration_hook';
 
 	/** Migration action group. */
-	const GROUP           = 'action-scheduler-DB-tables';
-
-	/** Migration minimum required PHP version. */
-	const MIN_PHP_VERSION = '5.5';
+	const GROUP           = 'action-scheduler-migration';
 
 	/**
 	 * Set up the callback for the scheduled job.
@@ -74,17 +63,8 @@ class Scheduler {
 
 		$this->unschedule_migration();
 
-		update_option( self::STATUS_FLAG, self::STATUS_COMPLETE );
+		\ActionScheduler_DataController::mark_migration_complete();
 		do_action( 'action_scheduler/migration_complete' );
-	}
-
-	/**
-	 * Get a flag indicating whether the migration is complete.
-	 *
-	 * @return bool Whether the flag has been set marking the migration as complete
-	 */
-	public function is_migration_complete() {
-		return get_option( self::STATUS_FLAG ) === self::STATUS_COMPLETE;
 	}
 
 	/**
@@ -127,15 +107,6 @@ class Scheduler {
 	}
 
 	/**
-	 * Get a flag indicating whether the migration environment dependencies are met.
-	 *
-	 * @return bool
-	 */
-	public function dependencies_met() {
-		return version_compare( PHP_VERSION, self::MIN_PHP_VERSION, '>=' );
-	}
-
-	/**
 	 * Get migration batch schedule interval.
 	 *
 	 * @return int Seconds between migration runs. Defaults to two minutes.
@@ -159,7 +130,7 @@ class Scheduler {
 	 * @return Runner
 	 */
 	private function get_migration_runner() {
-		$config = ActionScheduler_Data::instance()->get_migration_config_object();
+		$config = Controller::instance()->get_migration_config_object();
 
 		return new Runner( $config );
 	}

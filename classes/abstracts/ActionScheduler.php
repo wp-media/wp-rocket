@@ -1,5 +1,8 @@
 <?php
 
+use Action_Scheduler\WP_CLI\Migration_Command;
+use Action_Scheduler\Migration\Controller;
+
 /**
  * Class ActionScheduler
  * @codeCoverageIgnore
@@ -126,7 +129,7 @@ abstract class ActionScheduler {
 		do_action( 'action_scheduler_pre_init' );
 
 		require_once( self::plugin_path('functions.php') );
-		ActionScheduler_Data::init();
+		ActionScheduler_DataController::init();
 
 		$store = self::store();
 		add_action( 'init', array( $store, 'init' ), 1, 0 );
@@ -146,6 +149,10 @@ abstract class ActionScheduler {
 
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
 			WP_CLI::add_command( 'action-scheduler', 'ActionScheduler_WPCLI_Scheduler_command' );
+			if ( ! ActionScheduler_DataController::is_migration_complete() && Controller::instance()->allow_migration() ) {
+				$command = new Migration_Command();
+				$command->register();
+			}
 		}
 	}
 
@@ -189,6 +196,7 @@ abstract class ActionScheduler {
 			'DryRun'          => true,
 			'LogMigrator'     => true,
 			'Config'          => true,
+			'Controller'      => true,
 			'Runner'          => true,
 			'Scheduler'       => true,
 		);

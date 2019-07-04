@@ -59,11 +59,11 @@ abstract class ActionScheduler_Logger {
 	}
 
 	public function hook_stored_action() {
-		add_action( 'action_scheduler_stored_action', array( $this, 'log_stored_action' ), 10, 1 );
+		add_action( 'action_scheduler_stored_action', array( $this, 'log_stored_action' ) );
 	}
 
 	public function unhook_stored_action() {
-		remove_action( 'action_scheduler_stored_action', array( $this, 'log_stored_action' ), 10, 1 );
+		remove_action( 'action_scheduler_stored_action', array( $this, 'log_stored_action' ) );
 	}
 
 	public function log_stored_action( $action_id ) {

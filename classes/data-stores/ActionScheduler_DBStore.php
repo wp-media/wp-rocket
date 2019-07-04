@@ -212,7 +212,7 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 	protected function get_query_actions_sql( array $query, $select_or_count = 'select' ) {
 
 		if ( ! in_array( $select_or_count, array( 'select', 'count' ) ) ) {
-			throw new \InvalidArgumentException( __( 'Invalid valud for select or count parameter. Cannot query actions.', 'action-scheduler' ) );
+			throw new InvalidArgumentException( __( 'Invalid valud for select or count parameter. Cannot query actions.', 'action-scheduler' ) );
 		}
 
 		$query = wp_parse_args( $query, [
