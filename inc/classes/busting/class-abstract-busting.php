@@ -107,7 +107,7 @@ abstract class Abstract_Busting {
 	 */
 	protected function get_busting_url() {
 		// This filter is documented in inc/functions/minify.php.
-		return apply_filters( 'rocket_js_url', get_rocket_cdn_url( $this->busting_url . $this->filename, array( 'all', 'css_and_js', 'js' ) ) );
+		return apply_filters( 'rocket_js_url', $this->busting_url . $this->filename );
 	}
 
 	/**
