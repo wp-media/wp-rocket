@@ -124,7 +124,9 @@ function as_unschedule_all_actions( $hook, $args = array(), $group = '' ) {
  * @return int|bool The timestamp for the next occurrence, or false if nothing was found
  */
 function as_next_scheduled_action( $hook, $args = NULL, $group = '' ) {
-	$params = array();
+	$params = array(
+		'status' => ActionScheduler_Store::STATUS_PENDING,
+	);
 	if ( is_array($args) ) {
 		$params['args'] = $args;
 	}
