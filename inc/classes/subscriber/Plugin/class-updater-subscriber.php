@@ -10,7 +10,7 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  * @author Grégory Viguier
  */
 class Updater_Subscriber implements Subscriber_Interface {
-	use \WP_Rocket\Traits\Updater_Api_Subscriber;
+	use \WP_Rocket\Traits\Updater_Api_Tools;
 
 	/**
 	 * Full path to the plugin.

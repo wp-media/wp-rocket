@@ -9,7 +9,7 @@ use WP_Rocket\Logger\Logger;
  * @since  3.3.6
  * @author Grégory Viguier
  */
-trait Updater_Api_Subscriber {
+trait Updater_Api_Tools {
 	/**
 	 * An ID to use when a API request fails.
 	 *
