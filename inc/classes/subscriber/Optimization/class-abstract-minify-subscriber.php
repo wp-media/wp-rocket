@@ -102,7 +102,8 @@ abstract class Minify_Subscriber implements Subscriber_Interface {
 			return $url;
 		}
 
-		if ( in_array( rocket_extract_url_component( $url, PHP_URL_HOST ), get_rocket_cnames_host( $this->get_zones() ), true ) ) {
+		// This filter is documented in inc/classes/admin/settings/class-settings.php.
+		if ( in_array( rocket_extract_url_component( $url, PHP_URL_HOST ), apply_filters( 'rocket_cdn_hosts', [], ( $this->get_zones() ) ), true ) ) {
 			return $url;
 		}
 
@@ -129,14 +130,14 @@ abstract class Minify_Subscriber implements Subscriber_Interface {
 			return $url;
 		}
 
-		$cnames = \get_rocket_cdn_cnames( $this->get_zones() );
-		$cnames = array_map( 'rocket_remove_url_protocol', $cnames );
-
 		if ( ! in_array( $_SERVER['HTTP_HOST'], \get_rocket_i18n_host(), true ) ) {
 			return $url;
 		}
 
-		if ( in_array( $url_host, $cnames, true ) ) {
+		// This filter is documented in inc/classes/admin/settings/class-settings.php.
+		$cdn_hosts = apply_filters( 'rocket_cdn_hosts', [], ( $this->get_zones() ) );
+
+		if ( in_array( $url_host, $cdn_hosts, true ) ) {
 			return $url;
 		}
 
