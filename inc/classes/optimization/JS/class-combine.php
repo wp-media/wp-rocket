@@ -496,6 +496,7 @@ class Combine extends Abstract_JS_Optimization {
 			'metrilo.event',
 			'wordpress_page_root',
 			'wcct_info',
+			'Springbot.product_id',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
