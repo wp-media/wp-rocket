@@ -229,6 +229,10 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 			return;
 		}
 
+		if ( ! $this->options->get( 'lazyload' ) && ! $this->options->get( 'lazyload_iframes' ) ) {
+			return;
+		}
+
 		$this->assets->insertNoJSCSS();
 	}
 
