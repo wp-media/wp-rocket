@@ -104,7 +104,6 @@ class Plugin {
 				'minify_css_subscriber',
 				'minify_js_subscriber',
 				'cache_dynamic_resource_subscriber',
-				'cdn_favicons_subscriber',
 				'remove_query_string_subscriber',
 			];
 
@@ -122,6 +121,7 @@ class Plugin {
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Hostings_Subscribers' );
 
 		$common_subscribers = [
+			'cdn_subscriber',
 			'critical_css_subscriber',
 			'sucuri_subscriber',
 			'facebook_tracking_subscriber',
