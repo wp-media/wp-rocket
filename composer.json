@@ -60,6 +60,9 @@
 		"exclude-from-classmap": [
 			"inc/vendors/classes/class-rocket-mobile-detect.php",
 			"inc/classes/class-wp-rocket-requirements-check.php"
+		],
+		"files": [
+			"inc/api.php"
 		]
 	},
 	"autoload-dev": {
