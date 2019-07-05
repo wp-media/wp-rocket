@@ -5,11 +5,13 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  * Get CNAMES hosts
  *
  * @since 2.3
+ * @deprecated 3.4
  *
  * @param  string $zones CNAMES zones.
  * @return array $hosts CNAMES hosts
  */
 function get_rocket_cnames_host( $zones = array( 'all' ) ) {
+	_deprecated_function( __FUNCTION__ . '()', '3.4', '\WP_Rocket\Subscriber\CDN\CDNSubscriber::get_cdn_hosts()' );
 	$hosts = array();
 
 	$cnames = get_rocket_cdn_cnames( $zones );
@@ -24,67 +26,17 @@ function get_rocket_cnames_host( $zones = array( 'all' ) ) {
 }
 
 /**
- * Get an URL with one of CNAMES added in options
- *
- * @since 2.1
- *
- * @param  string $url The URL to parse.
- * @param  array  $zone (default: array( 'all' )).
- * @return string $url The URL with one of CNAMES
- */
-function get_rocket_cdn_url( $url, $zone = array( 'all' ) ) {
-	$cnames             = get_rocket_cdn_cnames( $zone );
-	$wp_content_dirname = ltrim( str_replace( home_url(), '', WP_CONTENT_URL ), '/' ) . '/';
-	$home               = home_url();
-
-	if ( ( defined( 'DONOTCDN' ) && DONOTCDN ) || (int) get_rocket_option( 'cdn' ) === 0 || empty( $cnames ) || is_rocket_post_excluded_option( 'cdn' ) ) {
-		return $url;
-	}
-
-	$parse_url          = get_rocket_parse_url( $url );
-	$parse_url['query'] = ! empty( $parse_url['query'] ) ? '?' . $parse_url['query'] : '';
-
-	// Exclude rejected & external files from CDN.
-	$rejected_files = get_rocket_cdn_reject_files();
-	if ( ( ! empty( $rejected_files ) && preg_match( '#(' . $rejected_files . ')#', $parse_url['path'] ) ) || ( ! empty( $parse_url['scheme'] ) && rocket_extract_url_component( home_url(), PHP_URL_HOST ) !== $parse_url['host'] && ! in_array( $parse_url['host'], get_rocket_i18n_host(), true ) ) ) {
-		return $url;
-	}
-
-	if ( empty( $parse_url['scheme'] ) ) {
-		// Check if the URL is external.
-		if ( strpos( $parse_url['path'], $home ) === false && ! preg_match( '#(' . $wp_content_dirname . '|wp-includes)#', $parse_url['path'] ) ) {
-			return $url;
-		} else {
-			$parse_url['path'] = str_replace( $home, '', ltrim( $parse_url['path'], '//' ) );
-		}
-	}
-
-	$url = untrailingslashit( $cnames[ ( abs( crc32( $parse_url['path'] ) ) % count( $cnames ) ) ] ) . '/' . ltrim( $parse_url['path'], '/' ) . $parse_url['query'];
-	$url = rocket_add_url_protocol( $url );
-	return $url;
-}
-
-/**
- * Wrapper of get_rocket_cdn_url() and print result
- *
- * @since 2.1
- *
- * @param string $url The URL to parse.
- * @param array  $zone (default: array( 'all' )).
- */
-function rocket_cdn_url( $url, $zone = array( 'all' ) ) {
-	echo get_rocket_cdn_url( $url, $zone );
-}
-
-/**
  * Apply CDN on CSS properties (background, background-image, @import, src:url (fonts))
  *
  * @since 2.6
+ * @since 3.4
  *
  * @param  string $buffer file content.
  * @return string modified file content
  */
 function rocket_cdn_css_properties( $buffer ) {
+	_deprecated_function( __FUNCTION__ . '()', '3.4', '\WP_Rocket\Subscriber\CDN\CDN::rewrite_css_properties()' );
+
 	$zone   = array(
 		'all',
 		'images',
@@ -134,11 +86,13 @@ function rocket_cdn_css_properties( $buffer ) {
  * Apply CDN on custom data attributes.
  *
  * @since 2.5.5
+ * @deprecated 3.4
  *
  * @param   string $html Original Output.
  * @return  string $html Output that will be printed
  */
 function rocket_add_cdn_on_custom_attr( $html ) {
+	_deprecated_function( __FUNCTION__ . '()', '3.4' );
 	if ( preg_match( '/(data-lazy-src|data-lazyload|data-src|data-retina)=[\'"]?([^\'"\s>]+)[\'"]/i', $html, $matches ) ) {
 		$html = str_replace( $matches[2], get_rocket_cdn_url( $matches[2], array( 'all', 'images' ) ), $html );
 	}
@@ -151,11 +105,13 @@ function rocket_add_cdn_on_custom_attr( $html ) {
  * Replace URL by CDN of all thumbnails and smilies.
  *
  * @since 2.1
+ * @deprecated 3.4
  *
  * @param string $url URL of the file to replace the domain with the CDN.
  * @return string modified URL
  */
 function rocket_cdn_file( $url ) {
+	_deprecated_function( __FUNCTION__ . '()', '3.4' );
 	if ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) {
 		return $url;
 	}
@@ -208,6 +164,7 @@ function rocket_cdn_file( $url ) {
  * Replace URL by CDN of images displayed using wp_get_attachment_image_src
  *
  * @since 2.9.2
+ * @deprecated 3.4
  * @author Remy Perona
  * @source https://github.com/wp-media/wp-rocket/issues/271#issuecomment-269849927
  *
@@ -215,6 +172,7 @@ function rocket_cdn_file( $url ) {
  * @return array Array with updated src URL
  */
 function rocket_cdn_attachment_image_src( $image ) {
+	_deprecated_function( __FUNCTION__ . '()', '3.4' );
 	if ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) {
 		return $image;
 	}
@@ -243,12 +201,14 @@ function rocket_cdn_attachment_image_src( $image ) {
  *
  * @since WP 4.4
  * @since 2.6.14
+ * @deprecated 3.4
  * @author Remy Perona
  *
  * @param  array $sources multidimensional array containing srcset images urls.
  * @return array $sources
  */
 function rocket_add_cdn_on_srcset( $sources ) {
+	_deprecated_function( __FUNCTION__ . '()', '3.4' );
 	if ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) {
 		return $sources;
 	}
@@ -265,11 +225,13 @@ function rocket_add_cdn_on_srcset( $sources ) {
  * Replace URL by CDN of all images display in a post content or a widget text.
  *
  * @since 2.1
+ * @deprecated 3.4
  *
  * @param  string $html HTML content to parse.
  * @return string modified HTML content
  */
 function rocket_cdn_images( $html ) {
+	_deprecated_function( __FUNCTION__ . '()', '3.4' );
 	// Don't use CDN if the image is in admin, a feed or in a post preview.
 	if ( is_admin() || is_feed() || is_preview() || empty( $html ) || defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) {
 		return $html;
@@ -353,12 +315,14 @@ function rocket_cdn_images( $html ) {
  * Replace URL by CDN of all inline styles containing url()
  *
  * @since 2.9
+ * @deprecated 3.4
  * @author Remy Perona
  *
  * @param  string $html HTML content of the page.
  * @return string modified HTML content
  */
 function rocket_cdn_inline_styles( $html ) {
+	_deprecated_function( __FUNCTION__ . '()', '3.4' );
 	if ( is_preview() || empty( $html ) || defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) {
 		return $html;
 	}
@@ -394,12 +358,14 @@ function rocket_cdn_inline_styles( $html ) {
  * Replace URL by CDN for custom files
  *
  * @since 2.9
+ * @deprecated 3.4
  * @author Remy Perona
  *
  * @param string $html HTML content of the page.
  * @return string modified HTML content
  */
 function rocket_cdn_custom_files( $html ) {
+	_deprecated_function( __FUNCTION__ . '()', '3.4' );
 	if ( is_preview() || empty( $html ) || defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) {
 		return $html;
 	}
@@ -497,11 +463,13 @@ function rocket_cdn_custom_files( $html ) {
  *
  * @since 2.9 Only add protocol if $src is an absolute url
  * @since 2.1
+ * @deprecated 3.4
  *
  * @param  string $src URL of the file.
  * @return string modified URL
  */
 function rocket_cdn_enqueue( $src ) {
+	_deprecated_function( __FUNCTION__ . '()', '3.4' );
 	// Don't use CDN if in admin, in login page, in register page or in a post preview.
 	if ( is_admin() || is_preview() || in_array( $GLOBALS['pagenow'], array( 'wp-login.php', 'wp-register.php' ), true ) || defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) {
 		return $src;
@@ -538,10 +506,13 @@ function rocket_cdn_enqueue( $src ) {
  * Get all files we don't allow to get in CDN.
  *
  * @since 2.5
+ * @deprecated 3.4
  *
  * @return string A pipe-separated list of rejected files.
  */
 function get_rocket_cdn_reject_files() {
+	_deprecated_function( __FUNCTION__ . '()', '3.4', '\WP_Rocket\Subscriber\CDN\CDN::get_excluded_files()' );
+
 	$files = get_rocket_option( 'cdn_reject_files', [] );
 
 	/**
@@ -556,4 +527,198 @@ function get_rocket_cdn_reject_files() {
 	$files = array_flip( array_flip( $files ) );
 
 	return implode( '|', $files );
+}
+
+/**
+ * Conflict with Envira Gallery: changes the URL argument if using WP Rocket CDN and Envira
+ *
+ * @since 2.6.5
+ * @since 3.4
+ *
+ * @param array $args An array of arguments.
+ * @return array Updated array of arguments
+ */
+function rocket_cdn_resize_image_args_on_envira_gallery( $args ) {
+	_deprecated_function( __FUNCTION__ . '()', '3.4' );
+	if ( ! isset( $args['url'] ) || (int) get_rocket_option( 'cdn' ) === 0 ) {
+		return $args;
+	}
+
+	$cnames_host = array_flip( get_rocket_cnames_host() );
+	$url_host    = rocket_extract_url_component( $args['url'], PHP_URL_HOST );
+	$home_host   = rocket_extract_url_component( home_url(), PHP_URL_HOST );
+
+	if ( isset( $cnames_host[ $url_host ] ) ) {
+		$args['url'] = str_replace( $url_host, $home_host , $args['url'] );
+	}
+
+	return $args;
+}
+
+/**
+ * Conflict with Envira Gallery: changes the resized URL if using WP Rocket CDN and Envira
+ *
+ * @since 2.6.5
+ * @since 3.4
+ *
+ * @param string $url Resized image URL.
+ * @return string Resized image URL using the CDN URL
+ */
+function rocket_cdn_resized_url_on_envira_gallery( $url ) {
+	_deprecated_function( __FUNCTION__ . '()', '3.4' );
+	if ( (int) get_rocket_option( 'cdn' ) === 0 ) {
+		return $url;
+	}
+
+	$url = get_rocket_cdn_url( $url, array( 'all', 'images' ) );
+	return $url;
+}
+
+/**
+ * Apply CDN settings to Beaver Builder parallax.
+ *
+ * @since  3.2.1
+ * @deprecated 3.4
+ * @author Grégory Viguier
+ *
+ * @param  array $attrs HTML attributes.
+ * @return array
+ */
+function rocket_beaver_builder_add_cdn_to_parallax( $attrs ) {
+	_deprecated_function( __FUNCTION__ . '()', '3.4' );
+
+	if ( ! empty( $attrs['data-parallax-image'] ) ) {
+		$attrs['data-parallax-image'] = get_rocket_cdn_url( $attrs['data-parallax-image'], [ 'all', 'images' ] );
+	}
+
+	return $attrs;
+}
+
+if ( class_exists( 'WR2X_Admin' ) ) :
+	/**
+	 * Conflict with WP Retina x2: Apply CDN on srcset attribute.
+	 *
+	 * @since 2.9.1 Use global $wr2x_admin
+	 * @since 2.5.5
+	 * @deprecated 3.4
+	 *
+	 * @param string $url URL of the image.
+	 * @return string Updated URL with CDN
+	 */
+	function rocket_cdn_on_images_from_wp_retina_x2( $url ) {
+		_deprecated_function( __FUNCTION__ . '()', '3.4' );
+
+		global $wr2x_admin;
+
+		if ( ! method_exists( $wr2x_admin, 'is_pro' ) || ! $wr2x_admin->is_pro() ) {
+			return $url;
+		}
+
+		$cdn_domain = get_option( 'wr2x_cdn_domain' );
+
+		if ( ! empty( $cdn_domain ) ) {
+			return $url;
+		}
+
+		return get_rocket_cdn_url( $url, array( 'all', 'images' ) );
+	}
+endif;
+
+/**
+ * Conflict with Avada theme and WP Rocket CDN
+ *
+ * @since 2.6.1
+ * @deprecated 3.4
+ *
+ * @param array  $vars An array of variables.
+ * @param string $handle Name of the avada resource.
+ * @return array updated array of variables
+ */
+function rocket_fix_cdn_for_avada_theme( $vars, $handle ) {
+	_deprecated_function( __FUNCTION__ . '()', '3.4' );
+	if ( 'avada-dynamic' === $handle && get_rocket_option( 'cdn' ) ) {
+		$src                        = get_rocket_cdn_url( get_template_directory_uri() . '/assets/less/theme/dynamic.less' );
+		$vars['template-directory'] = sprintf( '~"%s"', dirname( dirname( dirname( dirname( $src ) ) ) ) );
+		$vars['lessurl']            = sprintf( '~"%s"', dirname( $src ) );
+	}
+	return $vars;
+}
+
+/**
+ * Conflict with Aqua Resizer & IrishMiss Framework: Apply CDN without blank src!!
+ *
+ * @since 2.5.8 Add compatibility with IrishMiss Framework
+ * @since 2.5.5
+ * @deprecated 3.4
+ */
+function rocket_cdn_on_aqua_resizer() {
+	_deprecated_function( __FUNCTION__ . '()', '3.4' );
+
+	if ( function_exists( 'aq_resize' ) || function_exists( 'miss_display_image' ) ) {
+		remove_filter( 'wp_get_attachment_url' , 'rocket_cdn_file', PHP_INT_MAX );
+		add_filter( 'rocket_lazyload_html', 'rocket_add_cdn_on_custom_attr' );
+	}
+}
+
+/**
+ * Conflict with Revolution Slider & Master Slider: Apply CDN on data-lazyload|data-src attribute.
+ *
+ * @since 2.5.5
+ * @deprecated 3.4
+ */
+function rocket_cdn_on_sliders_with_lazyload() {
+	_deprecated_function( __FUNCTION__ . '()', '3.4' );
+
+	if ( class_exists( 'RevSliderFront' ) || class_exists( 'Master_Slider' ) ) {
+		add_filter( 'rocket_cdn_images_html', 'rocket_add_cdn_on_custom_attr' );
+	}
+}
+
+/**
+ * Get all CNAMES.
+ *
+ * @since 2.1
+ * @since 3.0 Don't check for WP Rocket CDN option activated to be able to use the function on Hosting with CDN auto-enabled.
+ * @deprecated 3.4
+ *
+ * @param  string $zone List of zones. Default is 'all'.
+ * @return array        List of CNAMES
+ */
+function get_rocket_cdn_cnames( $zone = 'all' ) {
+	_deprecated_function( __FUNCTION__ . '()', '3.4' );
+
+	$hosts  = [];
+	$cnames = get_rocket_option( 'cdn_cnames', [] );
+
+	if ( $cnames ) {
+		$cnames_zone = get_rocket_option( 'cdn_zone', [] );
+		$zone        = (array) $zone;
+
+		foreach ( $cnames as $k => $_urls ) {
+			if ( ! in_array( $cnames_zone[ $k ], $zone, true ) ) {
+				continue;
+			}
+
+			$_urls = explode( ',', $_urls );
+			$_urls = array_map( 'trim', $_urls );
+
+			foreach ( $_urls as $url ) {
+				$hosts[] = $url;
+			}
+		}
+	}
+
+	/**
+	 * Filter all CNAMES.
+	 *
+	 * @since 2.7
+	 *
+	 * @param array $hosts List of CNAMES.
+	 */
+	$hosts = (array) apply_filters( 'rocket_cdn_cnames', $hosts );
+	$hosts = array_filter( $hosts );
+	$hosts = array_flip( array_flip( $hosts ) );
+	$hosts = array_values( $hosts );
+
+	return $hosts;
 }
