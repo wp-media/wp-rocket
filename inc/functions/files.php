@@ -59,7 +59,7 @@ function get_rocket_advanced_cache_file() {
 		[
 			\'cache_dir_path\' => \'' . WP_ROCKET_CACHE_PATH . '\',
 		]
-	) )->maybe_init_process();;' . "\n";
+	) )->maybe_init_process();' . "\n";
 	$buffer .= "} else {\n";
 	// Add a constant to provent include issue.
 	$buffer .= "\tdefine( 'WP_ROCKET_ADVANCED_CACHE_PROBLEM', true );\n";
