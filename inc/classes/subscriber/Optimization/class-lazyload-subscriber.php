@@ -12,6 +12,7 @@ use WP_Rocket\Admin\Options_Data;
 use RocketLazyload\Assets;
 use RocketLazyload\Image;
 use RocketLazyload\Iframe;
+use MatthiasMullie\Minify\JS;
 
 /**
  * Lazyload Subscriber
@@ -137,20 +138,23 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 		 */
 		$polyfill = apply_filters( 'rocket_lazyload_polyfill', false );
 
-		$args = [
-			'base_url'  => get_rocket_cdn_url( WP_ROCKET_ASSETS_JS_URL . 'lazyload/', [ 'all', 'js', 'css_and_js' ] ),
+		$script_args = [
+			'base_url' => get_rocket_cdn_url( WP_ROCKET_ASSETS_JS_URL . 'lazyload/', [ 'all', 'js', 'css_and_js' ] ),
+			'version'  => '11.0.6',
+			'polyfill' => $polyfill,
+		];
+
+		$inline_args = [
 			'threshold' => $threshold,
-			'version'   => '11.0.6',
-			'polyfill'  => $polyfill,
 		];
 
 		if ( $this->options->get( 'lazyload' ) ) {
-			$args['elements']['image']            = 'img[data-lazy-src]';
-			$args['elements']['background_image'] = '.rocket-lazyload';
+			$inline_args['elements']['image']            = 'img[data-lazy-src]';
+			$inline_args['elements']['background_image'] = '.rocket-lazyload';
 		}
 
 		if ( $this->options->get( 'lazyload_iframes' ) ) {
-			$args['elements']['iframe'] = 'iframe[data-lazy-src]';
+			$inline_args['elements']['iframe'] = 'iframe[data-lazy-src]';
 		}
 
 		/**
@@ -159,11 +163,20 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 		 * @since 3.3
 		 * @author Remy Perona
 		 *
-		 * @param array $args Arguments used for the lazyload script options.
+		 * @param array $inline_args Arguments used for the lazyload script options.
 		 */
-		$args = apply_filters( 'rocket_lazyload_script_args', $args );
+		$inline_args = apply_filters( 'rocket_lazyload_script_args', $inline_args );
 
-		$this->assets->insertLazyloadScript( $args );
+		$inline_script = $this->assets->getInlineLazyloadScript( $inline_args );
+
+		if ( ! defined( 'SCRIPT_DEBUG' ) || ! SCRIPT_DEBUG ) {
+			$minify = new JS( $inline_script );
+
+			$inline_script = $minify->minify();
+		}
+
+		echo '<script>' . $inline_script . '</script>';
+		$this->assets->insertLazyloadScript( $script_args );
 	}
 
 	/**
