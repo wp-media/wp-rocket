@@ -50,6 +50,32 @@ class procedural_api_Test extends ActionScheduler_UnitTestCase {
 		$this->assertEquals( $time->getTimestamp(), $next );
 	}
 
+	public function test_get_next_async() {
+		$hook = md5(rand());
+		$action_id = as_enqueue_async_action( $hook );
+
+		$next = as_next_scheduled_action( $hook );
+
+		$this->assertTrue( $next );
+
+		$store = ActionScheduler::store();
+
+		// Completed async actions should still return false
+		$store->mark_complete( $action_id );
+		$next = as_next_scheduled_action( $hook );
+		$this->assertFalse( $next );
+
+		// Failed async actions should still return false
+		$store->mark_failure( $action_id );
+		$next = as_next_scheduled_action( $hook );
+		$this->assertFalse( $next );
+
+		// Cancelled async actions should still return false
+		$store->cancel_action( $action_id );
+		$next = as_next_scheduled_action( $hook );
+		$this->assertFalse( $next );
+	}
+
 	public function provider_time_hook_args_group() {
 		$time  = time() + 60 * 2;
 		$hook  = md5( rand() );

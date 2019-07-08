@@ -380,7 +380,7 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 		$schedule_display_string = '';
 
 		if ( ! $schedule->next() ) {
-			return $schedule_display_string;
+			return '0000-00-00 00:00:00';
 		}
 
 		$next_timestamp = $schedule->next()->getTimestamp();
