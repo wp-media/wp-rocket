@@ -57,13 +57,56 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	}
 
 	/**
-	 * If we're in the admin context and haven't exceeded the number of allowed batches, then
-	 * maybe dispatch another request to process pending actions.
+	 * Check if we should dispatch an async request to process actions.
+	 *
+	 * This method is attached to 'shutdown', so is called frequently. To avoid slowing down
+	 * the site, it mitigates the work performed in each request by:
+	 * 1. checking if it's in the admin context and then
+	 * 2. haven't run on the 'shutdown' hook within the lock time (60 seconds by default)
+	 * 3. haven't exceeded the number of allowed batches.
+	 *
+	 * The order of these checks is important, because they run from a check on a value:
+	 * 1. in memory - is_admin() maps to $GLOBALS or the WP_ADMIN constant
+	 * 2. in memory - transients use autoloaded options by default
+	 * 3. from a database query - has_maximum_concurrent_batches() run the query
+	 *    $this->store->get_claim_count() to find the current number of claims in the DB.
+	 *
+	 * If all of these conditions are met, then we request an async runner check whether it
+	 * should dispatch a request to process pending actions.
 	 */
 	public function maybe_dispatch_async_request() {
-		if ( is_admin() && ! $this->has_maximum_concurrent_batches() ) {
+		if ( is_admin() && ! $this->is_locked( 'async-request-runner' ) && ! $this->has_maximum_concurrent_batches() ) {
 			$this->async_request->maybe_dispatch();
 		}
+	}
+
+	/**
+	 * Check and set a lock using transients for a given amount of time (60 seconds by default).
+	 *
+	 * Use transient locks to avoid running database queries or other resource intensive tasks
+	 * on frequently triggered hooks, like 'init' or 'shutdown'.
+	 *
+	 * For example, $this->maybe_dispatch_async_request() uses a lock to avoid calling
+	 * $this->has_maximum_concurrent_batches() on 'shutdown', because that method calls
+	 * $this->store->get_claim_count() to find the current number of claims in the database.
+	 *
+	 * @param string $lock_type A string to identify different lock types. Ideally, keep it below 23
+	 *        characters to be compatible with versions of WordPress < 4.4, which has the 64 character
+	 *        limit on option keys: https://www.barrykooij.com/maximum-option-transient-key-length/
+	 * @return bool
+	 */
+	protected function is_locked( $lock_type ) {
+
+		$transient_key = sprintf( 'action_scheduler_lock_%s', $lock_type );
+
+		if ( 'yes' !== get_transient( $transient_key ) ) {
+			set_transient( $transient_key, 'yes', apply_filters( 'action_scheduler_lock_time', 60, $lock_type ) );
+			$is_locked = false;
+		} else {
+			$is_locked = true;
+		}
+
+		return $is_locked;
 	}
 
 	public function run() {
