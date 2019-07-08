@@ -586,16 +586,16 @@
         },
         {
             "name": "wp-media/rocket-lazyload-common",
-            "version": "v2.3.10",
+            "version": "v2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wp-media/rocket-lazyload-common.git",
-                "reference": "4c0eb1c3e0a5fe7723e036e287daab1d51574ece"
+                "reference": "fcebb3db1687ce4f88854c6fbc67a36e8ae9e2bf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wp-media/rocket-lazyload-common/zipball/4c0eb1c3e0a5fe7723e036e287daab1d51574ece",
-                "reference": "4c0eb1c3e0a5fe7723e036e287daab1d51574ece",
+                "url": "https://api.github.com/repos/wp-media/rocket-lazyload-common/zipball/fcebb3db1687ce4f88854c6fbc67a36e8ae9e2bf",
+                "reference": "fcebb3db1687ce4f88854c6fbc67a36e8ae9e2bf",
                 "shasum": ""
             },
             "require": {
@@ -630,7 +630,7 @@
                 }
             ],
             "description": "Common Code between WP Rocket and Lazyload by WP Rocket",
-            "time": "2019-06-17T16:08:55+00:00"
+            "time": "2019-07-08T16:41:10+00:00"
         }
     ],
     "packages-dev": [
@@ -2500,12 +2500,12 @@
             "version": "2.1.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards.git",
+                "url": "https://github.com/WordPress/WordPress-Coding-Standards.git",
                 "reference": "bd9c33152115e6741e3510ff7189605b35167908"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/WordPress-Coding-Standards/WordPress-Coding-Standards/zipball/bd9c33152115e6741e3510ff7189605b35167908",
+                "url": "https://api.github.com/repos/WordPress/WordPress-Coding-Standards/zipball/bd9c33152115e6741e3510ff7189605b35167908",
                 "reference": "bd9c33152115e6741e3510ff7189605b35167908",
                 "shasum": ""
             },
