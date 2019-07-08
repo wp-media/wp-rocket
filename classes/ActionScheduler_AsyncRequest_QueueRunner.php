@@ -54,9 +54,14 @@ class ActionScheduler_AsyncRequest_QueueRunner extends WP_Async_Request {
 	}
 
 	/**
-	 * If there are pending actions, dispatch an async request to process them.
+	 * If the async request runner is allowed, and there are pending actions,
+	 * dispatch an async request to process them.
 	 */
 	public function maybe_dispatch() {
+		if ( ! $this->allow() ) {
+			return;
+		}
+
 		$pending_actions = $this->store->query_actions( array(
 			'date'   => as_get_datetime_object(),
 			'status' => ActionScheduler_Store::STATUS_PENDING,
@@ -65,5 +70,12 @@ class ActionScheduler_AsyncRequest_QueueRunner extends WP_Async_Request {
 		if ( $pending_actions ) {
 			$this->dispatch();
 		}
+	}
+
+	/**
+	 * Allow 3rd party code to disable running actions via async requets.
+	 */
+	protected function allow() {
+		return apply_filters( 'action_scheduler_allow_async_request_runner', true );
 	}
 }

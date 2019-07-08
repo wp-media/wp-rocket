@@ -57,11 +57,11 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	}
 
 	/**
-	 * If we're in the admin context, haven't exceeded the number of allowed batches and async
-	 * runner is enabled, then maybe dispatch another request if there are pending actions.
+	 * If we're in the admin context and haven't exceeded the number of allowed batches, then
+	 * maybe dispatch another request to process pending actions.
 	 */
 	public function maybe_dispatch_async_request() {
-		if ( is_admin() && ! $this->has_maximum_concurrent_batches() && apply_filters( 'action_scheduler_allow_async_runner', true ) ) {
+		if ( is_admin() && ! $this->has_maximum_concurrent_batches() ) {
 			$this->async_request->maybe_dispatch();
 		}
 	}
