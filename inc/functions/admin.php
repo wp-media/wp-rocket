@@ -124,10 +124,25 @@ function rocket_get_active_plugins() {
 /**
  * Check if the whole website is on the SSL protocol
  *
+ * @since 3.3.6 Use the superglobal $_SERVER values to detect SSL.
  * @since 2.7
  */
 function rocket_is_ssl_website() {
-	return 'https' === rocket_extract_url_component( home_url(), PHP_URL_SCHEME );
+	if ( isset( $_SERVER['HTTPS'] ) ) {
+		$https = sanitize_text_field( wp_unslash( $_SERVER['HTTPS'] ) );
+
+		if ( 'on' === strtolower( $https ) ) {
+			return true;
+		}
+
+		if ( '1' === (string) $https ) {
+			return true;
+		}
+	} elseif ( isset( $_SERVER['SERVER_PORT'] ) && '443' === (string) sanitize_text_field( wp_unslash( $_SERVER['SERVER_PORT'] ) ) ) {
+		return true;
+	}
+
+	return false;
 }
 
 /**
