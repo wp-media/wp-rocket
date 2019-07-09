@@ -75,38 +75,11 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	 * should dispatch a request to process pending actions.
 	 */
 	public function maybe_dispatch_async_request() {
-		if ( is_admin() && ! $this->is_locked( 'async-request-runner' ) && ! $this->has_maximum_concurrent_batches() ) {
+		if ( is_admin() && ! ActionScheduler::lock()->is_locked( 'async-request-runner' ) && ! $this->has_maximum_concurrent_batches() ) {
+			// Only start an async queue at most once every 60 seconds
+			ActionScheduler::lock()->set( 'async-request-runner' );
 			$this->async_request->maybe_dispatch();
 		}
-	}
-
-	/**
-	 * Check and set a lock using transients for a given amount of time (60 seconds by default).
-	 *
-	 * Use transient locks to avoid running database queries or other resource intensive tasks
-	 * on frequently triggered hooks, like 'init' or 'shutdown'.
-	 *
-	 * For example, $this->maybe_dispatch_async_request() uses a lock to avoid calling
-	 * $this->has_maximum_concurrent_batches() on 'shutdown', because that method calls
-	 * $this->store->get_claim_count() to find the current number of claims in the database.
-	 *
-	 * @param string $lock_type A string to identify different lock types. Ideally, keep it below 23
-	 *        characters to be compatible with versions of WordPress < 4.4, which has the 64 character
-	 *        limit on option keys: https://www.barrykooij.com/maximum-option-transient-key-length/
-	 * @return bool
-	 */
-	protected function is_locked( $lock_type ) {
-
-		$transient_key = sprintf( 'action_scheduler_lock_%s', $lock_type );
-
-		if ( 'yes' !== get_transient( $transient_key ) ) {
-			set_transient( $transient_key, 'yes', apply_filters( 'action_scheduler_lock_time', 60, $lock_type ) );
-			$is_locked = false;
-		} else {
-			$is_locked = true;
-		}
-
-		return $is_locked;
 	}
 
 	public function run() {
