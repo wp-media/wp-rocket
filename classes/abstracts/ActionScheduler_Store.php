@@ -206,42 +206,12 @@ abstract class ActionScheduler_Store {
 	public function init() {}
 
 	/**
-	 * Mark an action that failed to fetch correctly as failed.
-	 *
-	 * @since 2.2.6
-	 *
-	 * @param int $action_id The ID of the action.
-	 */
-	public function mark_failed_fetch_action( $action_id ) {
-		self::$store->mark_failure( $action_id );
-	}
-
-	/**
-	 * Add base hooks
-	 *
-	 * @since 2.2.6
-	 */
-	public static function hook() {
-		add_action( 'action_scheduler_failed_fetch_action', array( self::$store, 'mark_failed_fetch_action' ), 20 );
-	}
-
-	/**
-	 * Remove base hooks
-	 *
-	 * @since 2.2.6
-	 */
-	public static function unhook() {
-		remove_action( 'action_scheduler_failed_fetch_action', array( self::$store, 'mark_failed_fetch_action' ), 20 );
-	}
-
-	/**
 	 * @return ActionScheduler_Store
 	 */
 	public static function instance() {
 		if ( empty( self::$store ) ) {
 			$class = apply_filters( 'action_scheduler_store_class', self::DEFAULT_CLASS );
 			self::$store = new $class();
-			self::hook();
 		}
 		return self::$store;
 	}
