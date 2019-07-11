@@ -134,7 +134,15 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		if ( empty($post) || $post->post_type != self::POST_TYPE ) {
 			return $this->get_null_action();
 		}
-		return $this->make_action_from_post($post);
+
+		try {
+			$action = $this->make_action_from_post( $post );
+		} catch ( ActionScheduler_InvalidActionException $exception ) {
+			do_action( 'action_scheduler_failed_fetch_action', $post->ID, $exception );
+			return $this->get_null_action();
+		}
+
+		return $action;
 	}
 
 	protected function get_post( $action_id ) {
@@ -151,18 +159,12 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	protected function make_action_from_post( $post ) {
 		$hook = $post->post_title;
 
-		try {
-			$args = json_decode( $post->post_content, true );
-			$this->validate_args( $args, $post->ID );
+		$args = json_decode( $post->post_content, true );
+		$this->validate_args( $args, $post->ID );
 
-			$schedule = get_post_meta( $post->ID, self::SCHEDULE_META_KEY, true );
-			if ( empty( $schedule ) || ! is_a( $schedule, 'ActionScheduler_Schedule' ) ) {
-				throw ActionScheduler_InvalidActionException::from_schedule( $post->ID, $schedule );
-			}
-		} catch ( ActionScheduler_InvalidActionException $exception ) {
-			$schedule = new ActionScheduler_NullSchedule();
-			$args = array();
-			do_action( 'action_scheduler_failed_fetch_action', $post->ID, $exception );
+		$schedule = get_post_meta( $post->ID, self::SCHEDULE_META_KEY, true );
+		if ( empty( $schedule ) || ! is_a( $schedule, 'ActionScheduler_Schedule' ) ) {
+			throw ActionScheduler_InvalidActionException::from_schedule( $post->ID, $schedule );
 		}
 
 		$group = wp_get_object_terms( $post->ID, self::GROUP_TAXONOMY, array('fields' => 'names') );
