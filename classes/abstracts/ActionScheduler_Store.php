@@ -4,7 +4,7 @@
  * Class ActionScheduler_Store
  * @codeCoverageIgnore
  */
-abstract class ActionScheduler_Store {
+abstract class ActionScheduler_Store extends ActionScheduler_Store_Deprecated {
 	const STATUS_COMPLETE = 'complete';
 	const STATUS_PENDING  = 'pending';
 	const STATUS_RUNNING  = 'in-progress';
@@ -214,16 +214,5 @@ abstract class ActionScheduler_Store {
 			self::$store = new $class();
 		}
 		return self::$store;
-	}
-
-	/**
-	 * Get the site's local time.
-	 *
-	 * @deprecated 2.1.0
-	 * @return DateTimeZone
-	 */
-	protected function get_local_timezone() {
-		_deprecated_function( __FUNCTION__, '2.1.0', 'ActionScheduler_TimezoneHelper::set_local_timezone()' );
-		return ActionScheduler_TimezoneHelper::get_local_timezone();
 	}
 }
