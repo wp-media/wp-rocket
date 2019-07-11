@@ -162,7 +162,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		} catch ( ActionScheduler_InvalidActionException $exception ) {
 			$schedule = new ActionScheduler_NullSchedule();
 			$args = array();
-			do_action( 'action_scheduler_failed_fetch_action', $post->ID );
+			do_action( 'action_scheduler_failed_fetch_action', $post->ID, $exception );
 		}
 
 		$group = wp_get_object_terms( $post->ID, self::GROUP_TAXONOMY, array('fields' => 'names') );
