@@ -829,7 +829,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 
 		// Validate JSON decoding if possible.
 		if ( function_exists( 'json_last_error' ) && JSON_ERROR_NONE !== json_last_error() ) {
-			throw ActionScheduler_InvalidActionException::from_decoding_args( $action_id );
+			throw ActionScheduler_InvalidActionException::from_decoding_args( $action_id, $args );
 		}
 	}
 }

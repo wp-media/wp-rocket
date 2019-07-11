@@ -17,10 +17,11 @@ class ActionScheduler_InvalidActionException extends \InvalidArgumentException i
 	 * @param string $action_id The action ID with bad args.
 	 * @return static
 	 */
-	public static function from_decoding_args( $action_id ) {
+	public static function from_decoding_args( $action_id, $args = array() ) {
 		$message = sprintf(
-			__( 'Action [%s] has invalid arguments. It cannot be JSON decoded to an array.', 'action-scheduler' ),
-			$action_id
+			__( 'Action [%s] has invalid arguments. It cannot be JSON decoded to an array. $args = %s', 'action-scheduler' ),
+			$action_id,
+			var_export( $args, true )
 		);
 
 		return new static( $message );
