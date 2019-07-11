@@ -54,9 +54,7 @@ class ActionScheduler_wpPostStore_Test extends ActionScheduler_UnitTestCase {
 			'post_content' => $content,
 		) );
 
-		ActionScheduler_Store::unhook();
 		$fetched = $store->fetch_action( $post_id );
-		ActionScheduler_Store::hook();
 		$this->assertInstanceOf( 'ActionScheduler_NullSchedule', $fetched->get_schedule() );
 	}
 
