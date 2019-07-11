@@ -9,7 +9,7 @@ class ActionScheduler_AdminView extends ActionScheduler_AdminView_Deprecated {
 	private static $admin_view = NULL;
 
 	/**
-	 * @return ActionScheduler_QueueRunner
+	 * @return ActionScheduler_AdminView
 	 * @codeCoverageIgnore
 	 */
 	public static function instance() {

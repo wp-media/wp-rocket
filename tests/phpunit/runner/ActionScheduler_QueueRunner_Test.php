@@ -104,7 +104,7 @@ class ActionScheduler_QueueRunner_Test extends ActionScheduler_UnitTestCase {
 
 
 		$this->assertEquals( $random, $new_action->get_hook() );
-		$this->assertEquals( $schedule->next(as_get_datetime_object())->getTimestamp(), $new_action->get_schedule()->next(as_get_datetime_object())->getTimestamp() );
+		$this->assertEquals( $schedule->next( as_get_datetime_object() )->getTimestamp(), $new_action->get_schedule()->next( as_get_datetime_object() )->getTimestamp(), '', 1 );
 	}
 
 	public function test_hooked_into_wp_cron() {
