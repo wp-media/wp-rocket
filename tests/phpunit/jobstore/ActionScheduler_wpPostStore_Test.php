@@ -246,7 +246,7 @@ class ActionScheduler_wpPostStore_Test extends ActionScheduler_UnitTestCase {
 		$now = as_get_datetime_object();
 		$store->mark_complete( $action_id );
 
-		$this->assertEquals( $store->get_date($action_id)->getTimestamp(), $now->getTimestamp(), '', 1 ); // allow timestamp to be 1 second off for older versions of PHP
+		$this->assertEquals( $store->get_date( $action_id )->getTimestamp(), $now->getTimestamp(), '', 1 ); // allow timestamp to be 1 second off for older versions of PHP
 
 		$next = $action->get_schedule()->next( $now );
 		$new_action_id = $store->save_action( $action, $next );
