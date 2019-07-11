@@ -315,10 +315,26 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 	 */
 	public function display_admin_notices() {
 
-		if ( $this->store->get_claim_count() >= $this->runner->get_allowed_concurrent_batches() ) {
+		if ( $this->runner->has_maximum_concurrent_batches() ) {
 			$this->admin_notices[] = array(
 				'class'   => 'updated',
 				'message' => sprintf( __( 'Maximum simultaneous batches already in progress (%s queues). No actions will be processed until the current batches are complete.', 'action-scheduler' ), $this->store->get_claim_count() ),
+			);
+		} elseif ( $this->store->has_pending_actions_due() ) {
+
+			$async_request_lock_expiration = ActionScheduler::lock()->get_expiration( 'async-request-runner' );
+
+			// No lock set or lock expired
+			if ( false === $async_request_lock_expiration || $async_request_lock_expiration < time() ) {
+				$in_progress_url       = add_query_arg( 'status', 'in-progress', remove_query_arg( 'status' ) );
+				$async_request_message = sprintf( __( 'A new queue has begun processing. %sView actions in-progress%s', 'action-scheduler' ), '<a href="' . esc_url( $in_progress_url ) . '">', ' &raquo;</a>' );
+			} else {
+				$async_request_message = sprintf( __( 'The next queue will begin processing in approximately %d seconds.', 'action-scheduler' ), $async_request_lock_expiration - time() );
+			}
+
+			$this->admin_notices[] = array(
+				'class'   => 'notice notice-info',
+				'message' => $async_request_message,
 			);
 		}
 

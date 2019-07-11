@@ -8,7 +8,7 @@ To use it in your plugin, simply require the `action-scheduler/action-scheduler.
 
 ### I don't want to use WP-Cron. Does Action Scheduler depend on WP-Cron?
 
-By default, Action Scheduler is initiated by WP-Cron. However, it has no dependency on the WP-Cron system. You can initiate the Action Scheduler queue in other ways with just one or two lines of code.
+By default, Action Scheduler is initiated by WP-Cron (and the `'shutdown'` hook on admin requests). However, it has no dependency on the WP-Cron system. You can initiate the Action Scheduler queue in other ways with just one or two lines of code.
 
 For example, you can start a queue directly by calling:
 

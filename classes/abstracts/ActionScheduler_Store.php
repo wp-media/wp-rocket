@@ -186,6 +186,22 @@ abstract class ActionScheduler_Store {
 		);
 	}
 
+	/**
+	 * Check if there are any pending scheduled actions due to run.
+	 *
+	 * @param ActionScheduler_Action $action
+	 * @param DateTime $scheduled_date (optional)
+	 * @return string
+	 */
+	public function has_pending_actions_due() {
+		$pending_actions = $this->query_actions( array(
+			'date'   => as_get_datetime_object(),
+			'status' => ActionScheduler_Store::STATUS_PENDING,
+		) );
+
+		return ! empty( $pending_actions );
+	}
+
 	public function init() {}
 
 	/**

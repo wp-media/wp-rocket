@@ -8,6 +8,9 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 
 	const WP_CRON_SCHEDULE = 'every_minute';
 
+	/** @var ActionScheduler_AsyncRequest_QueueRunner */
+	protected $async_request;
+
 	/** @var ActionScheduler_QueueRunner  */
 	private static $runner = null;
 
@@ -30,8 +33,10 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	 * @param ActionScheduler_FatalErrorMonitor $monitor
 	 * @param ActionScheduler_QueueCleaner      $cleaner
 	 */
-	public function __construct( ActionScheduler_Store $store = null, ActionScheduler_FatalErrorMonitor $monitor = null, ActionScheduler_QueueCleaner $cleaner = null ) {
+	public function __construct( ActionScheduler_Store $store = null, ActionScheduler_FatalErrorMonitor $monitor = null, ActionScheduler_QueueCleaner $cleaner = null, ActionScheduler_AsyncRequest_QueueRunner $async_request = null ) {
 		parent::__construct( $store, $monitor, $cleaner );
+		$this->async_request = new ActionScheduler_AsyncRequest_QueueRunner( $this->store );
+
 	}
 
 	/**
@@ -47,6 +52,34 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 		}
 
 		add_action( self::WP_CRON_HOOK, array( self::instance(), 'run' ) );
+
+		add_filter( 'shutdown', array( $this, 'maybe_dispatch_async_request' ) );
+	}
+
+	/**
+	 * Check if we should dispatch an async request to process actions.
+	 *
+	 * This method is attached to 'shutdown', so is called frequently. To avoid slowing down
+	 * the site, it mitigates the work performed in each request by:
+	 * 1. checking if it's in the admin context and then
+	 * 2. haven't run on the 'shutdown' hook within the lock time (60 seconds by default)
+	 * 3. haven't exceeded the number of allowed batches.
+	 *
+	 * The order of these checks is important, because they run from a check on a value:
+	 * 1. in memory - is_admin() maps to $GLOBALS or the WP_ADMIN constant
+	 * 2. in memory - transients use autoloaded options by default
+	 * 3. from a database query - has_maximum_concurrent_batches() run the query
+	 *    $this->store->get_claim_count() to find the current number of claims in the DB.
+	 *
+	 * If all of these conditions are met, then we request an async runner check whether it
+	 * should dispatch a request to process pending actions.
+	 */
+	public function maybe_dispatch_async_request() {
+		if ( is_admin() && ! ActionScheduler::lock()->is_locked( 'async-request-runner' ) && ! $this->has_maximum_concurrent_batches() ) {
+			// Only start an async queue at most once every 60 seconds
+			ActionScheduler::lock()->set( 'async-request-runner' );
+			$this->async_request->maybe_dispatch();
+		}
 	}
 
 	public function run() {
@@ -55,7 +88,7 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 		do_action( 'action_scheduler_before_process_queue' );
 		$this->run_cleanup();
 		$processed_actions = 0;
-		if ( $this->store->get_claim_count() < $this->get_allowed_concurrent_batches() ) {
+		if ( false === $this->has_maximum_concurrent_batches() ) {
 			$batch_size = apply_filters( 'action_scheduler_queue_runner_batch_size', 25 );
 			do {
 				$processed_actions_in_batch = $this->do_batch( $batch_size );

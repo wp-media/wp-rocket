@@ -20,6 +20,10 @@ abstract class ActionScheduler {
 		return ActionScheduler_Store::instance();
 	}
 
+	public static function lock() {
+		return ActionScheduler_Lock::instance();
+	}
+
 	public static function logger() {
 		return ActionScheduler_Logger::instance();
 	}
@@ -87,6 +91,8 @@ abstract class ActionScheduler {
 			}
 		} elseif ( strpos( $class, 'CronExpression' ) === 0 ) {
 			$dir = self::plugin_path( 'lib' . $d . 'cron-expression' . $d );
+		} elseif ( strpos( $class, 'WP_Async_Request' ) === 0 ) {
+			$dir = self::plugin_path( 'lib' . $d );
 		} else {
 			return;
 		}
@@ -149,6 +155,7 @@ abstract class ActionScheduler {
 			'ActionScheduler'                      => true,
 			'ActionScheduler_Abstract_ListTable'   => true,
 			'ActionScheduler_Abstract_QueueRunner' => true,
+			'ActionScheduler_Lock'                 => true,
 			'ActionScheduler_Logger'               => true,
 			'ActionScheduler_Store'                => true,
 			'ActionScheduler_TimezoneHelper'       => true,

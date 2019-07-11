@@ -52,9 +52,7 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 		$this->add_hooks();
 
 		// Check to make sure there aren't too many concurrent processes running.
-		$claim_count = $this->store->get_claim_count();
-		$too_many    = $claim_count >= $this->get_allowed_concurrent_batches();
-		if ( $too_many ) {
+		if ( $this->has_maximum_concurrent_batches() ) {
 			if ( $force ) {
 				WP_CLI::warning( __( 'There are too many concurrent batches, but the run is forced to continue.', 'action-scheduler' ) );
 			} else {
