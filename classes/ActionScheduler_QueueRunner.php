@@ -46,9 +46,18 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 
 		add_filter( 'cron_schedules', array( self::instance(), 'add_wp_cron_schedule' ) );
 
-		if ( !wp_next_scheduled(self::WP_CRON_HOOK) ) {
+		$cron_context = array( 'WP Cron' );
+
+		if ( ! wp_next_scheduled( self::WP_CRON_HOOK, $cron_context ) ) {
+
+			// Check for and remove any WP Cron hook scheduled by Action Scheduler < 3.0.0, which didn't include the $context param
+			$next_timestamp = wp_next_scheduled( self::WP_CRON_HOOK );
+			if ( $next_timestamp ) {
+				wp_unschedule_event( $next_timestamp, self::WP_CRON_HOOK );
+			}
+
 			$schedule = apply_filters( 'action_scheduler_run_schedule', self::WP_CRON_SCHEDULE );
-			wp_schedule_event( time(), $schedule, self::WP_CRON_HOOK );
+			wp_schedule_event( time(), $schedule, self::WP_CRON_HOOK, $cron_context );
 		}
 
 		add_action( self::WP_CRON_HOOK, array( self::instance(), 'run' ) );
@@ -82,7 +91,20 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 		}
 	}
 
-	public function run() {
+	/**
+	 * Process actions in the queue. Attached to self::WP_CRON_HOOK i.e. 'action_scheduler_run_queue'
+	 *
+	 * The $context param of this method defaults to 'WP Cron', because prior to Action Scheduler 3.0.0
+	 * that was the only context in which this method was run, and the self::WP_CRON_HOOK hook had no context
+	 * passed along with it. New code calling this method directly, or by triggering the self::WP_CRON_HOOK,
+	 * should set a context as the first parameter. For an example of this, refer to the code seen in
+	 * @see ActionScheduler_AsyncRequest_QueueRunner::handle()
+	 *
+	 * @param string $context Optional identifer for the context in which this action is being processed, e.g. 'WP CLI' or 'WP Cron'
+	 *        Generally, this should be capitalised and not localised as it's a proper noun.
+	 * @return int The number of actions processed.
+	 */
+	public function run( $context = 'WP Cron' ) {
 		ActionScheduler_Compatibility::raise_memory_limit();
 		ActionScheduler_Compatibility::raise_time_limit( $this->get_time_limit() );
 		do_action( 'action_scheduler_before_process_queue' );
@@ -91,7 +113,7 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 		if ( false === $this->has_maximum_concurrent_batches() ) {
 			$batch_size = apply_filters( 'action_scheduler_queue_runner_batch_size', 25 );
 			do {
-				$processed_actions_in_batch = $this->do_batch( $batch_size );
+				$processed_actions_in_batch = $this->do_batch( $batch_size, $context );
 				$processed_actions         += $processed_actions_in_batch;
 			} while ( $processed_actions_in_batch > 0 && ! $this->batch_limits_exceeded( $processed_actions ) ); // keep going until we run out of actions, time, or memory
 		}
@@ -100,7 +122,18 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 		return $processed_actions;
 	}
 
-	protected function do_batch( $size = 100 ) {
+	/**
+	 * Process a batch of actions pending in the queue.
+	 *
+	 * Actions are processed by claiming a set of pending actions then processing each one until either the batch
+	 * size is completed, or memory or time limits are reached, defined by @see $this->batch_limits_exceeded().
+	 *
+	 * @param int $size The maximum number of actions to process in the batch.
+	 * @param string $context Optional identifer for the context in which this action is being processed, e.g. 'WP CLI' or 'WP Cron'
+	 *        Generally, this should be capitalised and not localised as it's a proper noun.
+	 * @return int The number of actions processed.
+	 */
+	protected function do_batch( $size = 100, $context = '' ) {
 		$claim = $this->store->stake_claim($size);
 		$this->monitor->attach($claim);
 		$processed_actions = 0;
@@ -110,7 +143,7 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 			if ( ! in_array( $action_id, $this->store->find_actions_by_claim_id( $claim->get_id() ) ) ) {
 				break;
 			}
-			$this->process_action( $action_id );
+			$this->process_action( $action_id, $context );
 			$processed_actions++;
 
 			if ( $this->batch_limits_exceeded( $processed_actions ) ) {
