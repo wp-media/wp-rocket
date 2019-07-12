@@ -508,6 +508,7 @@ class Combine extends Abstract_JS_Optimization {
 			'penci_megamenu',
 			'fts_security',
 			'algoliaAutocomplete',
+			'avia_framework_globals',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
