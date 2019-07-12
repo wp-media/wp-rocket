@@ -510,6 +510,7 @@ class Combine extends Abstract_JS_Optimization {
 			'algoliaAutocomplete',
 			'avia_framework_globals',
 			'tabs.easyResponsiveTabs',
+			'searchlocationHeader',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
