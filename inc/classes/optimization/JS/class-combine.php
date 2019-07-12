@@ -505,6 +505,7 @@ class Combine extends Abstract_JS_Optimization {
 			'pysWooProductData',
 			'dfd-heading',
 			'owl=$("#',
+			'penci_megamenu',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
