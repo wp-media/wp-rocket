@@ -504,6 +504,7 @@ class Combine extends Abstract_JS_Optimization {
 			'Springbot.product_id',
 			'pysWooProductData',
 			'dfd-heading',
+			'owl=$("#',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
