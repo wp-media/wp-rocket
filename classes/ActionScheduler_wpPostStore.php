@@ -308,11 +308,8 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 			$sql .= " INNER JOIN {$wpdb->term_relationships} tr ON tr.object_id=p.ID";
 			$sql .= " INNER JOIN {$wpdb->term_taxonomy} tt ON tr.term_taxonomy_id=tt.term_taxonomy_id";
 			$sql .= " INNER JOIN {$wpdb->terms} t ON tt.term_id=t.term_id";
-
-			if ( ! empty( $query['group'] ) ) {
-				$sql .= " AND t.slug=%s";
-				$sql_params[] = $query['group'];
-			}
+			$sql .= " AND t.slug=%s";
+			$sql_params[] = $query['group'];
 		}
 		$sql .= " WHERE post_type=%s";
 		$sql_params[] = self::POST_TYPE;
