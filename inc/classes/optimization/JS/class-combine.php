@@ -506,6 +506,7 @@ class Combine extends Abstract_JS_Optimization {
 			'dfd-heading',
 			'owl=$("#',
 			'penci_megamenu',
+			'fts_security',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
