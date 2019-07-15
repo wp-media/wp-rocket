@@ -350,6 +350,8 @@ function do_admin_post_rocket_purge_cache() {
 					update_option( WP_ROCKET_SLUG, $options );
 				}
 
+				wp_safe_remote_get( home_url( $lang ) );
+
 				rocket_dismiss_box( 'rocket_warning_plugin_modification' );
 
 				break;
