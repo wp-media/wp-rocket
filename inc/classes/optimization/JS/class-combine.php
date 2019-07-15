@@ -670,6 +670,7 @@ class Combine extends Abstract_JS_Optimization {
 			'penci_megamenu__',
 			'vc_prepareHoverBox',
 			'wp-temp-form-div',
+			'_wswebinarsystem_already_',
 		];
 
 		/**
