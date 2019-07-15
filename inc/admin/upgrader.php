@@ -418,13 +418,13 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 	}
 
 	if ( version_compare( $actual_version, '3.3.6', '<' ) ) {
-		if ( rocket_is_ssl_website() ) {
-			update_rocket_option( 'cache_ssl', 1 );
-			rocket_generate_config_file();
-		}
-
 		delete_site_transient( 'update_wprocket' );
 		delete_site_transient( 'update_wprocket_response' );
+	}
+
+	if ( rocket_is_ssl_website() ) {
+		update_rocket_option( 'cache_ssl', 1 );
+		rocket_generate_config_file();
 	}
 }
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );
