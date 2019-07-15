@@ -668,6 +668,7 @@ class Combine extends Abstract_JS_Optimization {
 			'#sf-instagram-widget-',
 			'.woocommerce-tabs-',
 			'penci_megamenu__',
+			'vc_prepareHoverBox',
 		];
 
 		/**
