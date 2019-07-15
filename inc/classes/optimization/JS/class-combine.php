@@ -666,7 +666,8 @@ class Combine extends Abstract_JS_Optimization {
 			'jQuery(".slider-',
 			'#dfd-vcard-widget-',
 			'#sf-instagram-widget-',
-			'$(\'.woocommerce-tabs-',
+			'.woocommerce-tabs-',
+			'penci_megamenu__',
 		];
 
 		/**
