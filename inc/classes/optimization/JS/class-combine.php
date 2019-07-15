@@ -669,6 +669,7 @@ class Combine extends Abstract_JS_Optimization {
 			'.woocommerce-tabs-',
 			'penci_megamenu__',
 			'vc_prepareHoverBox',
+			'wp-temp-form-div',
 		];
 
 		/**
