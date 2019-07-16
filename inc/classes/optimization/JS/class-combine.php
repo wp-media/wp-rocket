@@ -671,6 +671,7 @@ class Combine extends Abstract_JS_Optimization {
 			'vc_prepareHoverBox',
 			'wp-temp-form-div',
 			'_wswebinarsystem_already_',
+			'#views-extra-css").text',
 		];
 
 		/**
