@@ -512,6 +512,7 @@ class Combine extends Abstract_JS_Optimization {
 			'tabs.easyResponsiveTabs',
 			'searchlocationHeader',
 			'yithautocomplete',
+			'data-parallax-speed',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
