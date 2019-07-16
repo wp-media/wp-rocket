@@ -134,6 +134,7 @@ class Config {
 			'secret_cache_key'          => '',
 			'cache_reject_uri'          => '',
 			'cache_query_strings'       => [],
+			'cache_ignored_parameters'  => [],
 			'cache_reject_cookies'      => '',
 			'cache_reject_ua'           => '',
 			'cache_mandatory_cookies'   => '',
