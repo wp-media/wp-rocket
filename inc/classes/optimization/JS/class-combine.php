@@ -513,6 +513,7 @@ class Combine extends Abstract_JS_Optimization {
 			'searchlocationHeader',
 			'yithautocomplete',
 			'data-parallax-speed',
+			'currency_data=',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
