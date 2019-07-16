@@ -675,6 +675,7 @@ class Combine extends Abstract_JS_Optimization {
 			'fusetag.setTargeting',
 			'hit.uptrendsdata.com',
 			'callback:window.renderBadge',
+			'test_run_nf_conditional_logic',
 		];
 
 		/**
