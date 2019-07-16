@@ -672,6 +672,7 @@ class Combine extends Abstract_JS_Optimization {
 			'wp-temp-form-div',
 			'_wswebinarsystem_already_',
 			'#views-extra-css").text',
+			'fusetag.setTargeting',
 		];
 
 		/**
