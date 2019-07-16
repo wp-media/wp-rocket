@@ -674,6 +674,7 @@ class Combine extends Abstract_JS_Optimization {
 			'#views-extra-css").text',
 			'fusetag.setTargeting',
 			'hit.uptrendsdata.com',
+			'callback:window.renderBadge',
 		];
 
 		/**
