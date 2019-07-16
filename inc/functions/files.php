@@ -139,7 +139,18 @@ function get_rocket_config_file() {
 	$buffer .= '$rocket_cache_mobile_files_tablet = \'' . apply_filters( 'rocket_cache_mobile_files_tablet', 'desktop' ) . "';\n";
 
 	foreach ( $options as $option => $value ) {
-		if ( 'cache_ssl' === $option || 'cache_mobile' === $option || 'do_caching_mobile_files' === $option ) {
+		if ( 'cache_ssl' === $option ) {
+			if ( 1 !== (int) $value ) {
+				if ( rocket_is_ssl_website() ) {
+					update_rocket_option( 'cache_ssl', 1 );
+					$value = 1;
+				}
+			}
+
+			$buffer .= '$rocket_' . $option . ' = ' . (int) $value . ";\n";
+		}
+
+		if ( 'cache_mobile' === $option || 'do_caching_mobile_files' === $option ) {
 			$buffer .= '$rocket_' . $option . ' = ' . (int) $value . ";\n";
 		}
 
