@@ -673,6 +673,7 @@ class Combine extends Abstract_JS_Optimization {
 			'_wswebinarsystem_already_',
 			'#views-extra-css").text',
 			'fusetag.setTargeting',
+			'hit.uptrendsdata.com',
 		];
 
 		/**
