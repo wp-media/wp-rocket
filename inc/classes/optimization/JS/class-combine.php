@@ -676,6 +676,7 @@ class Combine extends Abstract_JS_Optimization {
 			'hit.uptrendsdata.com',
 			'callback:window.renderBadge',
 			'test_run_nf_conditional_logic',
+			'cb_nombre',
 		];
 
 		/**
