@@ -66,7 +66,7 @@ abstract class ActionScheduler_Abstract_QueueRunner extends ActionScheduler_Abst
 			do_action( 'action_scheduler_failed_execution', $action_id, $e, $context );
 		}
 
-		if ( isset( $action ) && is_a( $action, 'ActionScheduler_Action' ) ) {
+		if ( isset( $action ) && is_a( $action, 'ActionScheduler_Action' ) && $action->get_schedule()->is_recurring() ) {
 			$this->schedule_next_instance( $action );
 		}
 	}
