@@ -335,10 +335,10 @@ class Updater_Subscriber implements Subscriber_Interface {
 
 		/**
 		 * This will match:
-		 * - `2.3.4.5||1.2.3.4||||||||||||||||||||||||||||||||`: expired license.
-		 * - `2.3.4.5|https://wp-rocket.me/i-should-write-a-funny-thing-here/wp-rocket_1.2.3.4.zip|1.2.3.4`: valid license.
+		 * - `2.3.4.5-beta1||1.2.3.4-beta2||||||||||||||||||||||||||||||||`: expired license.
+		 * - `2.3.4.5-beta1|https://wp-rocket.me/i-should-write-a-funny-thing-here/wp-rocket_1.2.3.4-beta2.zip|1.2.3.4-beta2`: valid license.
 		 */
-		if ( ! preg_match( '@^(?<stable_version>\d+(?:\.\d+){1,3})\|(?<package>(?:http.+\.zip)?)\|(?<user_version>\d+(?:\.\d+){1,3})(?:\|+)?$@', $res, $match ) ) {
+		if ( ! preg_match( '@^(?<stable_version>\d+(?:\.\d+){1,3}[^|]*)\|(?<package>(?:http.+\.zip)?)\|(?<user_version>\d+(?:\.\d+){1,3}[^|]*)(?:\|+)?$@', $res, $match ) ) {
 			/**
 			 * If the response doesn’t have the right format, it is an error.
 			 */
