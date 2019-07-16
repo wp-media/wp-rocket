@@ -125,6 +125,7 @@ class Updater_Subscriber implements Subscriber_Interface {
 			'http_request_args'                     => [ 'exclude_rocket_from_wp_updates', 5, 2 ],
 			'pre_set_site_transient_update_plugins' => 'maybe_add_rocket_update_data',
 			'deleted_site_transient'                => 'maybe_delete_rocket_update_data_cache',
+			'wp_rocket_loaded'                      => 'maybe_force_check',
 		];
 	}
 
@@ -270,6 +271,19 @@ class Updater_Subscriber implements Subscriber_Interface {
 	public function maybe_delete_rocket_update_data_cache( $transient_name ) {
 		if ( 'update_plugins' === $transient_name ) {
 			$this->delete_rocket_update_data_cache();
+		}
+	}
+
+	/**
+	 * If the `rocket_force_update` query arg is set, force WP to refresh the list of plugins to update.
+	 *
+	 * @since  3.3.6
+	 * @access public
+	 * @author Grégory Viguier
+	 */
+	public function maybe_force_check() {
+		if ( is_string( filter_input( INPUT_GET, 'rocket_force_update' ) ) ) {
+			delete_site_transient( 'update_plugins' );
 		}
 	}
 
