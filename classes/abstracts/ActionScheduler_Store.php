@@ -221,7 +221,7 @@ abstract class ActionScheduler_Store {
 	 *
 	 * @since 2.2.6
 	 */
-	protected static function hook() {
+	public static function hook() {
 		add_action( 'action_scheduler_failed_fetch_action', array( self::$store, 'mark_failed_fetch_action' ), 20 );
 	}
 
@@ -230,7 +230,7 @@ abstract class ActionScheduler_Store {
 	 *
 	 * @since 2.2.6
 	 */
-	protected static function unhook() {
+	public static function unhook() {
 		remove_action( 'action_scheduler_failed_fetch_action', array( self::$store, 'mark_failed_fetch_action' ), 20 );
 	}
 
