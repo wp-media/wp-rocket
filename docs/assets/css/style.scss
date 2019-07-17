@@ -35,7 +35,7 @@ footer {
 	animation:octocat-wave 560ms ease-in-out
 }
 
-@keyframes octocat-wave{
+@keyframes octocat-wave {
 	0%,100%{
 		transform:rotate(0)
 	}
@@ -51,7 +51,7 @@ footer {
 	.github-corner:hover .octo-arm {
 		animation:none
 	}
-	.github-corner .octo-arm{
+	.github-corner .octo-arm {
 		animation:octocat-wave 560ms ease-in-out
 	}
 }

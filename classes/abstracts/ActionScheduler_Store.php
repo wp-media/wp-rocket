@@ -150,7 +150,7 @@ abstract class ActionScheduler_Store {
 	protected function get_scheduled_date_string( ActionScheduler_Action $action, DateTime $scheduled_date = NULL ) {
 		$next = null === $scheduled_date ? $action->get_schedule()->next() : $scheduled_date;
 		if ( ! $next ) {
-			throw new InvalidArgumentException( __( 'Invalid schedule. Cannot save action.', 'action-scheduler' ) );
+			return '0000-00-00 00:00:00';
 		}
 		$next->setTimezone( new DateTimeZone( 'UTC' ) );
 
@@ -167,7 +167,7 @@ abstract class ActionScheduler_Store {
 	protected function get_scheduled_date_string_local( ActionScheduler_Action $action, DateTime $scheduled_date = NULL ) {
 		$next = null === $scheduled_date ? $action->get_schedule()->next() : $scheduled_date;
 		if ( ! $next ) {
-			throw new InvalidArgumentException( __( 'Invalid schedule. Cannot save action.', 'action-scheduler' ) );
+			return '0000-00-00 00:00:00';
 		}
 
 		ActionScheduler_TimezoneHelper::set_local_timezone( $next );
@@ -187,7 +187,52 @@ abstract class ActionScheduler_Store {
 		);
 	}
 
+	/**
+	 * Check if there are any pending scheduled actions due to run.
+	 *
+	 * @param ActionScheduler_Action $action
+	 * @param DateTime $scheduled_date (optional)
+	 * @return string
+	 */
+	public function has_pending_actions_due() {
+		$pending_actions = $this->query_actions( array(
+			'date'   => as_get_datetime_object(),
+			'status' => ActionScheduler_Store::STATUS_PENDING,
+		) );
+
+		return ! empty( $pending_actions );
+	}
+
 	public function init() {}
+
+	/**
+	 * Mark an action that failed to fetch correctly as failed.
+	 *
+	 * @since 2.2.6
+	 *
+	 * @param int $action_id The ID of the action.
+	 */
+	public function mark_failed_fetch_action( $action_id ) {
+		self::$store->mark_failure( $action_id );
+	}
+
+	/**
+	 * Add base hooks
+	 *
+	 * @since 2.2.6
+	 */
+	protected static function hook() {
+		add_action( 'action_scheduler_failed_fetch_action', array( self::$store, 'mark_failed_fetch_action' ), 20 );
+	}
+
+	/**
+	 * Remove base hooks
+	 *
+	 * @since 2.2.6
+	 */
+	protected static function unhook() {
+		remove_action( 'action_scheduler_failed_fetch_action', array( self::$store, 'mark_failed_fetch_action' ), 20 );
+	}
 
 	/**
 	 * @return ActionScheduler_Store
@@ -196,6 +241,7 @@ abstract class ActionScheduler_Store {
 		if ( empty( self::$store ) ) {
 			$class = apply_filters( 'action_scheduler_store_class', self::DEFAULT_CLASS );
 			self::$store = new $class();
+			self::hook();
 		}
 		return self::$store;
 	}

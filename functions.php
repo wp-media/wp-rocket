@@ -5,6 +5,18 @@
  */
 
 /**
+ * Enqueue an action to run one time, as soon as possible
+ *
+ * @param string $hook The hook to trigger.
+ * @param array  $args Arguments to pass when the hook triggers.
+ * @param string $group The group to assign this job to.
+ * @return string The action ID.
+ */
+function as_enqueue_async_action( $hook, $args = array(), $group = '' ) {
+	return ActionScheduler::factory()->async( $hook, $args, $group );
+}
+
+/**
  * Schedule an action to run one time
  *
  * @param int $timestamp When the job will run
@@ -109,10 +121,12 @@ function as_unschedule_all_actions( $hook, $args = array(), $group = '' ) {
  * @param array $args
  * @param string $group
  *
- * @return int|bool The timestamp for the next occurrence, or false if nothing was found
+ * @return int|bool The timestamp for the next occurrence of a scheduled action, true for an async action or false if there is no matching, pending action.
  */
 function as_next_scheduled_action( $hook, $args = NULL, $group = '' ) {
-	$params = array();
+	$params = array(
+		'status' => ActionScheduler_Store::STATUS_PENDING,
+	);
 	if ( is_array($args) ) {
 		$params['args'] = $args;
 	}
@@ -127,6 +141,8 @@ function as_next_scheduled_action( $hook, $args = NULL, $group = '' ) {
 	$next = $job->get_schedule()->next();
 	if ( $next ) {
 		return (int)($next->format('U'));
+	} elseif ( NULL === $next ) { // pending async action with NullSchedule
+		return true;
 	}
 	return false;
 }

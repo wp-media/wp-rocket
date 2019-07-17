@@ -49,7 +49,20 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	protected function save_post_array( $post_array ) {
 		add_filter( 'wp_insert_post_data', array( $this, 'filter_insert_post_data' ), 10, 1 );
 		add_filter( 'pre_wp_unique_post_slug', array( $this, 'set_unique_post_slug' ), 10, 5 );
+
+		$has_kses = false !== has_filter( 'content_save_pre', 'wp_filter_post_kses' );
+
+		if ( $has_kses ) {
+			// Prevent KSES from corrupting JSON in post_content.
+			kses_remove_filters();
+		}
+
 		$post_id = wp_insert_post($post_array);
+
+		if ( $has_kses ) {
+			kses_init_filters();
+		}
+
 		remove_filter( 'wp_insert_post_data', array( $this, 'filter_insert_post_data' ), 10 );
 		remove_filter( 'pre_wp_unique_post_slug', array( $this, 'set_unique_post_slug' ), 10 );
 
