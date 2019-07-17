@@ -24,6 +24,8 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 	 *
 	 * @param ActionScheduler_Action $action Action object.
 	 * @param DateTime               $date Optional schedule date. Default null.
+	 *
+	 * @return int Action ID.
 	 */
 	public function save_action( ActionScheduler_Action $action, \DateTime $date = null ) {
 		try {
@@ -61,6 +63,7 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 	 *
 	 * @param string $slug The string name of a group.
 	 * @param bool $create_if_not_exists Whether to create the group if it does not already exist. Default, true - create the group.
+	 *
 	 * @return int The group's ID, if it exists or is created, or 0 if it does not exist and is not created.
 	 */
 	protected function get_group_id( $slug, $create_if_not_exists = true ) {
@@ -126,9 +129,9 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 	/**
 	 * Create an action from a database record.
 	 *
-	 * @param array $data Action database record.
+	 * @param object $data Action database record.
 	 *
-	 * @return ActionScheduler_NullAction
+	 * @return ActionScheduler_Action|ActionScheduler_CanceledAction|ActionScheduler_FinishedAction
 	 */
 	protected function make_action_from_db_record( $data ) {
 
@@ -153,10 +156,10 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 	/**
 	 * Find an action.
 	 *
-	 * @param string $hook Action hook
+	 * @param string $hook Action hook.
 	 * @param array  $params Parameters of the action to find.
 	 *
-	 * @return string ID of the next action matching the criteria or NULL if not found
+	 * @return string|null ID of the next action matching the criteria or NULL if not found.
 	 */
 	public function find_action( $hook, $params = [] ) {
 		$params = wp_parse_args( $params, [
@@ -186,9 +189,9 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 			$args[] = $params[ 'status' ];
 
 			if ( self::STATUS_PENDING == $params[ 'status' ] ) {
-				$order = 'ASC'; // Find the next action that matches
+				$order = 'ASC'; // Find the next action that matches.
 			} else {
-				$order = 'DESC'; // Find the most recent action that matches
+				$order = 'DESC'; // Find the most recent action that matches.
 			}
 		}
 
@@ -204,10 +207,10 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 	/**
 	 * Returns the SQL statement to query (or count) actions.
 	 *
-	 * @param array $query Filtering options
-	 * @param string $select_or_count  Whether the SQL should select and return the IDs or just the row count
+	 * @param array  $query Filtering options.
+	 * @param string $select_or_count  Whether the SQL should select and return the IDs or just the row count.
 	 *
-	 * @return string SQL statement. The returned SQL is already properly escaped.
+	 * @return string SQL statement already properly escaped.
 	 */
 	protected function get_query_actions_sql( array $query, $select_or_count = 'select' ) {
 
@@ -358,7 +361,7 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 	}
 
 	/**
-	 * Get a count of all actions in the store, grouped by status
+	 * Get a count of all actions in the store, grouped by status.
 	 *
 	 * @return array Set of 'status' => int $count pairs for statuses with 1 or more actions of that status.
 	 */
@@ -385,7 +388,7 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 	/**
 	 * Cancel an action.
 	 *
-	 * @param string $action_id
+	 * @param int $action_id Action ID.
 	 *
 	 * @throws \InvalidArgumentException
 	 * @return void
@@ -407,9 +410,9 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 	}
 
 	/**
-	 * Delte an action.
+	 * Delete an action.
 	 *
-	 * @param int $action_id Action ID,
+	 * @param int $action_id Action ID.
 	 */
 	public function delete_action( $action_id ) {
 		/** @var \wpdb $wpdb */
@@ -438,7 +441,7 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 	/**
 	 * Get the GMT schedule date for an action.
 	 *
-	 * @param string $action_id Action ID.
+	 * @param int $action_id Action ID.
 	 *
 	 * @throws \InvalidArgumentException
 	 * @return \DateTime The GMT date the action is scheduled to run, or the date that it ran.
@@ -494,7 +497,7 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 	 * @param int       $limit Number of action to include in claim.
 	 * @param \DateTime $before_date Should use UTC timezone.
 	 *
-	 * @return int The number of actions that were claimed
+	 * @return int The number of actions that were claimed.
 	 * @throws \RuntimeException
 	 */
 	protected function claim_actions( $claim_id, $limit, \DateTime $before_date = null, $hooks = array(), $group = '' ) {
@@ -563,7 +566,7 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 	}
 
 	/**
-	 * Return an action's claim ID, as stored in the claim_id column
+	 * Return an action's claim ID, as stored in the claim_id column.
 	 *
 	 * @param string $action_id Action ID.
 	 * @return mixed
