@@ -52,8 +52,7 @@ class Beacon {
 	 * @return string
 	 */
 	public function insert_script() {
-		/** This filter is documented in inc/admin-bar.php */
-		if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			return;
 		}
 
