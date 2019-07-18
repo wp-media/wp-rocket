@@ -12,7 +12,7 @@ class procedural_api_Test extends ActionScheduler_UnitTestCase {
 
 		$store = ActionScheduler::store();
 		$action = $store->fetch_action($action_id);
-		$this->assertEquals( $time, $action->get_schedule()->next()->getTimestamp() );
+		$this->assertEquals( $time, $action->get_schedule()->get_date()->getTimestamp() );
 		$this->assertEquals( $hook, $action->get_hook() );
 	}
 
@@ -23,8 +23,8 @@ class procedural_api_Test extends ActionScheduler_UnitTestCase {
 
 		$store = ActionScheduler::store();
 		$action = $store->fetch_action($action_id);
-		$this->assertEquals( $time, $action->get_schedule()->next()->getTimestamp() );
-		$this->assertEquals( $time + HOUR_IN_SECONDS + 2, $action->get_schedule()->next(as_get_datetime_object($time + 2))->getTimestamp());
+		$this->assertEquals( $time, $action->get_schedule()->get_date()->getTimestamp() );
+		$this->assertEquals( $time + HOUR_IN_SECONDS + 2, $action->get_schedule()->get_next(as_get_datetime_object($time + 2))->getTimestamp());
 		$this->assertEquals( $hook, $action->get_hook() );
 	}
 
@@ -36,7 +36,7 @@ class procedural_api_Test extends ActionScheduler_UnitTestCase {
 		$store = ActionScheduler::store();
 		$action = $store->fetch_action($action_id);
 		$expected_date = as_get_datetime_object('2014-10-10');
-		$this->assertEquals( $expected_date->getTimestamp(), $action->get_schedule()->next()->getTimestamp() );
+		$this->assertEquals( $expected_date->getTimestamp(), $action->get_schedule()->get_date()->getTimestamp() );
 		$this->assertEquals( $hook, $action->get_hook() );
 	}
 
@@ -137,13 +137,13 @@ class procedural_api_Test extends ActionScheduler_UnitTestCase {
 
 		// Make sure the next scheduled action is unscheduled
 		$this->assertEquals( $hook, $unscheduled_action->get_hook() );
-		$this->assertNull( $unscheduled_action->get_schedule()->next() );
+		$this->assertNull( $unscheduled_action->get_schedule()->get_date() );
 
 		// Make sure other scheduled actions are not unscheduled
 		$scheduled_action = $store->fetch_action( $action_id_scheduled );
 
 		$this->assertEquals( $hook, $scheduled_action->get_hook() );
-		$this->assertEquals( $action_scheduled_time, $scheduled_action->get_schedule()->next()->getTimestamp() );
+		$this->assertEquals( $action_scheduled_time, $scheduled_action->get_schedule()->get_date()->getTimestamp() );
 	}
 
 	/**
@@ -168,7 +168,7 @@ class procedural_api_Test extends ActionScheduler_UnitTestCase {
 		foreach ( $action_ids as $action_id ) {
 			$action = $store->fetch_action($action_id);
 
-			$this->assertNull($action->get_schedule()->next());
+			$this->assertNull($action->get_schedule()->get_date());
 			$this->assertEquals($hook, $action->get_hook() );
 		}
 	}

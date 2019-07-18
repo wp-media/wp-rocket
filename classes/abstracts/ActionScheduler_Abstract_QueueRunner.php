@@ -77,12 +77,9 @@ abstract class ActionScheduler_Abstract_QueueRunner extends ActionScheduler_Abst
 	 * @param ActionScheduler_Action $action
 	 */
 	protected function schedule_next_instance( ActionScheduler_Action $action ) {
-		$schedule = $action->get_schedule();
-		$next     = $schedule->next( as_get_datetime_object() );
-
-		if ( ! is_null( $next ) && $schedule->is_recurring() ) {
-			$schedule->set_next( $next );
-			$this->store->save_action( $action, $next );
+		try {
+			ActionScheduler::factory()->repeat( $action );
+		} catch ( Exception $e ) {
 		}
 	}
 

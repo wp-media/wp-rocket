@@ -138,10 +138,10 @@ function as_next_scheduled_action( $hook, $args = NULL, $group = '' ) {
 		return false;
 	}
 	$job = ActionScheduler::store()->fetch_action( $job_id );
-	$next = $job->get_schedule()->next();
-	if ( $next ) {
-		return (int)($next->format('U'));
-	} elseif ( NULL === $next ) { // pending async action with NullSchedule
+	$scheduled_date = $job->get_schedule()->get_date();
+	if ( $scheduled_date ) {
+		return (int) $scheduled_date->format( 'U' );
+	} elseif ( NULL === $scheduled_date ) { // pending async action with NullSchedule
 		return true;
 	}
 	return false;

@@ -33,7 +33,7 @@ class ActionMigrator_Test extends ActionScheduler_UnitTestCase {
 		$retrieved = $destination->fetch_action( $new_id );
 		$this->assertEquals( $action->get_hook(), $retrieved->get_hook() );
 		$this->assertEqualSets( $action->get_args(), $retrieved->get_args() );
-		$this->assertEquals( $action->get_schedule()->next()->format( 'U' ), $retrieved->get_schedule()->next()->format( 'U' ) );
+		$this->assertEquals( $action->get_schedule()->get_date()->format( 'U' ), $retrieved->get_schedule()->get_date()->format( 'U' ) );
 		$this->assertEquals( $action->get_group(), $retrieved->get_group() );
 		$this->assertEquals( \ActionScheduler_Store::STATUS_PENDING, $destination->get_status( $new_id ) );
 
@@ -75,7 +75,7 @@ class ActionMigrator_Test extends ActionScheduler_UnitTestCase {
 		$retrieved = $destination->fetch_action( $new_id );
 		$this->assertEquals( $action->get_hook(), $retrieved->get_hook() );
 		$this->assertEqualSets( $action->get_args(), $retrieved->get_args() );
-		$this->assertEquals( $action->get_schedule()->next()->format( 'U' ), $retrieved->get_schedule()->next()->format( 'U' ) );
+		$this->assertEquals( $action->get_schedule()->get_date()->format( 'U' ), $retrieved->get_schedule()->get_date()->format( 'U' ) );
 		$this->assertEquals( $action->get_group(), $retrieved->get_group() );
 		$this->assertTrue( $retrieved->is_finished() );
 		$this->assertEquals( \ActionScheduler_Store::STATUS_COMPLETE, $destination->get_status( $new_id ) );
@@ -102,7 +102,7 @@ class ActionMigrator_Test extends ActionScheduler_UnitTestCase {
 		$retrieved = $destination->fetch_action( $new_id );
 		$this->assertEquals( $action->get_hook(), $retrieved->get_hook() );
 		$this->assertEqualSets( $action->get_args(), $retrieved->get_args() );
-		$this->assertEquals( $action->get_schedule()->next()->format( 'U' ), $retrieved->get_schedule()->next()->format( 'U' ) );
+		$this->assertEquals( $action->get_schedule()->get_date()->format( 'U' ), $retrieved->get_schedule()->get_date()->format( 'U' ) );
 		$this->assertEquals( $action->get_group(), $retrieved->get_group() );
 		$this->assertTrue( $retrieved->is_finished() );
 		$this->assertEquals( \ActionScheduler_Store::STATUS_FAILED, $destination->get_status( $new_id ) );

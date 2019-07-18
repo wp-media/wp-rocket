@@ -37,7 +37,7 @@ class ActionScheduler_wpPostStore_Test extends ActionScheduler_UnitTestCase {
 		$retrieved = $store->fetch_action($action_id);
 		$this->assertEquals($action->get_hook(), $retrieved->get_hook());
 		$this->assertEqualSets($action->get_args(), $retrieved->get_args());
-		$this->assertEquals($action->get_schedule()->next()->getTimestamp(), $retrieved->get_schedule()->next()->getTimestamp());
+		$this->assertEquals( $action->get_schedule()->get_date()->getTimestamp(), $retrieved->get_schedule()->get_date()->getTimestamp() );
 		$this->assertEquals($action->get_group(), $retrieved->get_group());
 	}
 
@@ -225,7 +225,7 @@ class ActionScheduler_wpPostStore_Test extends ActionScheduler_UnitTestCase {
 		$action->execute();
 		$store->mark_complete( $action_id );
 
-		$next = $action->get_schedule()->next( as_get_datetime_object() );
+		$next = $action->get_schedule()->get_next( as_get_datetime_object() );
 		$new_action_id = $store->save_action( $action, $next );
 
 		$this->assertEquals('publish', get_post_status($action_id));
@@ -248,7 +248,7 @@ class ActionScheduler_wpPostStore_Test extends ActionScheduler_UnitTestCase {
 
 		$this->assertEquals( $store->get_date( $action_id )->getTimestamp(), $now->getTimestamp(), '', 1 ); // allow timestamp to be 1 second off for older versions of PHP
 
-		$next = $action->get_schedule()->next( $now );
+		$next = $action->get_schedule()->get_next( $now );
 		$new_action_id = $store->save_action( $action, $next );
 
 		$this->assertEquals( (int)($now->getTimestamp()) + HOUR_IN_SECONDS, $store->get_date($new_action_id)->getTimestamp() );

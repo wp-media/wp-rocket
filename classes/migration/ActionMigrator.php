@@ -51,7 +51,7 @@ class ActionMigrator {
 			$status = '';
 		}
 
-		if ( empty( $status ) || ! $action->get_schedule()->next() ) {
+		if ( empty( $status ) || ! $action->get_schedule()->get_date() ) {
 			// empty status means the action didn't exist
 			// null schedule means it's missing vital data
 			// delete it and move on

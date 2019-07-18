@@ -3,78 +3,58 @@
 /**
  * Class ActionScheduler_IntervalSchedule
  */
-class ActionScheduler_IntervalSchedule implements ActionScheduler_Schedule {
-	/** @var DateTime */
-	private $first = NULL;
-	private $start = NULL;
-	private $first_timestamp = 0;
-	private $start_timestamp = 0;
-	private $interval_in_seconds = 0;
-
-	public function __construct( DateTime $first, $interval ) {
-		$this->first = $first;
-		$this->start = $first;
-		$this->interval_in_seconds = (int)$interval;
-	}
+class ActionScheduler_IntervalSchedule extends ActionScheduler_Abstract_RecurringSchedule implements ActionScheduler_Schedule {
 
 	/**
-	 * @param DateTime $after
+	 * Deprecated property @see $this->__wakeup() for details.
+	 **/
+	private $start_timestamp = NULL;
+
+	/**
+	 * Deprecated property @see $this->__wakeup() for details.
+	 **/
+	private $interval_in_seconds = NULL;
+
+	/**
+	 * Calculate when this schedule should start after a given date & time using
+	 * the number of seconds between recurrences.
 	 *
-	 * @return DateTime|null
-	 */
-	public function next( DateTime $after = NULL ) {
-		$after = empty($after) ? as_get_datetime_object('@0') : clone $after;
-		if ( $after > $this->first ) {
-			$after->modify('+'.$this->interval_in_seconds.' seconds');
-			return $after;
-		}
-		return clone $this->first;
-	}
-
-	/**
+	 * @param DateTime $after
 	 * @return DateTime
 	 */
-	public function get_start() {
-		return $this->start;
-	}
-
-	/**
-	 * @param DateTime $next
-	 */
-	public function set_next( DateTime $next ) {
-		$this->start = $next;
-	}
-
-	/**
-	 * @return bool
-	 */
-	public function is_recurring() {
-		return true;
+	protected function calculate_next( DateTime $after ) {
+		$after->modify( '+' . (int) $this->get_recurrence() . ' seconds' );
+		return $after;
 	}
 
 	/**
 	 * @return int
 	 */
 	public function interval_in_seconds() {
-		return $this->interval_in_seconds;
+		_deprecated_function( __METHOD__, '3.0.0', '(int)ActionScheduler_Abstract_RecurringSchedule::get_recurrence()' );
+		return (int) $this->get_recurrence();
 	}
 
 	/**
-	 * For PHP 5.2 compat, since DateTime objects can't be serialized
-	 * @return array
+	 * Unserialize recurring schedules serialized/stored prior to AS 3.0.0
+	 *
+	 * Prior to Action Scheduler 3.0.0, schedules used different property names to refer
+	 * to equivalent data. For example, ActionScheduler_IntervalSchedule::start_timestamp
+	 * was the same as ActionScheduler_SimpleSchedule::timestamp. Action Scheduler 3.0.0
+	 * aligned properties and property names for better inheritance. To maintain backward
+	 * compatibility with schedules serialized and stored prior to 3.0, we need to correctly
+	 * map the old property names with matching visibility.
 	 */
-	public function __sleep() {
-		$this->first_timestamp = $this->first->getTimestamp();
-		$this->start_timestamp = $this->start->getTimestamp();
-		return array(
-			'first_timestamp',
-			'start_timestamp',
-			'interval_in_seconds'
-		);
-	}
-
 	public function __wakeup() {
-		$this->first = as_get_datetime_object($this->first_timestamp);
-		$this->start = as_get_datetime_object($this->start_timestamp);
+		if ( ! is_null( $this->start_timestamp ) ) {
+			$this->scheduled_timestamp = $this->start_timestamp;
+			unset( $this->start_timestamp );
+		}
+
+		if ( ! is_null( $this->interval_in_seconds ) ) {
+			$this->recurrence = $this->interval_in_seconds;
+			unset( $this->interval_in_seconds );
+		}
+		parent::__wakeup();
 	}
 }
