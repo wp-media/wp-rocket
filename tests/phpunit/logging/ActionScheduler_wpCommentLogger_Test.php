@@ -118,6 +118,21 @@ class ActionScheduler_wpCommentLogger_Test extends ActionScheduler_UnitTestCase 
 		$this->assertTrue( in_array( $this->log_entry_to_array( $failed ), $this->log_entry_to_array( $logs ) ) );
 	}
 
+	public function test_failed_schedule_next_instance_comments() {
+		$action_id = rand();
+		$logger    = ActionScheduler::logger();
+		$log_entry = new ActionScheduler_LogEntry( $action_id, 'There was a failure scheduling the next instance of this action: Execution failed' );
+
+		try {
+			$this->_a_hook_callback_that_throws_an_exception();
+		} catch ( Exception $e ) {
+			do_action( 'action_scheduler_failed_to_schedule_next_instance', $action_id, $e, new ActionScheduler_Action('my_hook') );
+		}
+
+		$logs = $logger->get_logs( $action_id );
+		$this->assertTrue( in_array( $this->log_entry_to_array( $log_entry ), $this->log_entry_to_array( $logs ) ) );
+	}
+
 	public function test_fatal_error_comments() {
 		$hook = md5(rand());
 		$action_id = as_schedule_single_action( time(), $hook );

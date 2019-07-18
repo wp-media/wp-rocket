@@ -67,7 +67,7 @@ abstract class ActionScheduler_Abstract_QueueRunner extends ActionScheduler_Abst
 		}
 
 		if ( isset( $action ) && is_a( $action, 'ActionScheduler_Action' ) && $action->get_schedule()->is_recurring() ) {
-			$this->schedule_next_instance( $action );
+			$this->schedule_next_instance( $action, $action_id );
 		}
 	}
 
@@ -75,11 +75,13 @@ abstract class ActionScheduler_Abstract_QueueRunner extends ActionScheduler_Abst
 	 * Schedule the next instance of the action if necessary.
 	 *
 	 * @param ActionScheduler_Action $action
+	 * @param int $action_id
 	 */
-	protected function schedule_next_instance( ActionScheduler_Action $action ) {
+	protected function schedule_next_instance( ActionScheduler_Action $action, $action_id ) {
 		try {
 			ActionScheduler::factory()->repeat( $action );
 		} catch ( Exception $e ) {
+			do_action( 'action_scheduler_failed_to_schedule_next_instance', $action_id, $e, $action );
 		}
 	}
 
