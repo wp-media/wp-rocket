@@ -107,17 +107,19 @@ class ActionScheduler_ActionFactory {
 	 *
 	 * @param string $hook The hook to trigger when this action runs
 	 * @param array $args Args to pass when the hook is triggered
-	 * @param int $first Unix timestamp for the first run
+	 * @param int $base_timestamp The first instance of the action will be scheduled
+	 *        to run at a time calculated after this timestamp matching the cron
+	 *        expression. This can be used to delay the first instance of the action.
 	 * @param int $schedule A cron definition string
 	 * @param string $group A group to put the action in
 	 *
 	 * @return string The ID of the stored action
 	 */
-	public function cron( $hook, $args = array(), $first = null, $schedule = null, $group = '' ) {
+	public function cron( $hook, $args = array(), $base_timestamp = null, $schedule = null, $group = '' ) {
 		if ( empty($schedule) ) {
-			return $this->single( $hook, $args, $first, $group );
+			return $this->single( $hook, $args, $base_timestamp, $group );
 		}
-		$date = as_get_datetime_object( $first );
+		$date = as_get_datetime_object( $base_timestamp );
 		$cron = CronExpression::factory( $schedule );
 		$schedule = new ActionScheduler_CronSchedule( $date, $cron );
 		$action = new ActionScheduler_Action( $hook, $args, $schedule, $group );

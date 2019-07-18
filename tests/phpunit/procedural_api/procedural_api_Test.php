@@ -38,6 +38,9 @@ class procedural_api_Test extends ActionScheduler_UnitTestCase {
 		$expected_date = as_get_datetime_object('2014-10-10');
 		$this->assertEquals( $expected_date->getTimestamp(), $action->get_schedule()->get_date()->getTimestamp() );
 		$this->assertEquals( $hook, $action->get_hook() );
+
+		$expected_date = as_get_datetime_object( '2015-10-10' );
+		$this->assertEquals( $expected_date->getTimestamp(), $action->get_schedule()->get_next( as_get_datetime_object( '2015-01-02' ) )->getTimestamp() );
 	}
 
 	public function test_get_next() {
