@@ -22,6 +22,9 @@ class ActionScheduler_ActionFactory {
 				break;
 			case ActionScheduler_Store::STATUS_CANCELED :
 				$action_class = 'ActionScheduler_CanceledAction';
+				if ( ! is_null( $schedule ) && ! is_a( $schedule, 'ActionScheduler_CanceledSchedule' ) ) {
+					$schedule = new ActionScheduler_CanceledSchedule( $schedule->get_date() );
+				}
 				break;
 			default :
 				$action_class = 'ActionScheduler_FinishedAction';

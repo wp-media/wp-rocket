@@ -77,10 +77,14 @@ class ActionMigrator {
 			return 0; // could not save the action in the new store
 		}
 
-
 		try {
-			if ( $status === \ActionScheduler_Store::STATUS_FAILED ) {
-				$this->destination->mark_failure( $destination_action_id );
+			switch ( $status ) {
+				case \ActionScheduler_Store::STATUS_FAILED :
+					$this->destination->mark_failure( $destination_action_id );
+					break;
+				case \ActionScheduler_Store::STATUS_CANCELED :
+					$this->destination->cancel_action( $destination_action_id );
+					break;
 			}
 
 			$this->log_migrator->migrate( $source_action_id, $destination_action_id );
