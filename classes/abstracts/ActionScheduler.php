@@ -130,6 +130,10 @@ abstract class ActionScheduler {
 		$admin_view = self::admin_view();
 		add_action( 'init', array( $admin_view, 'init' ), 0, 0 ); // run before $store::init()
 
+		if ( is_admin() ) {
+			add_action( 'current_screen', array( 'ActionScheduler_AdminHelp', 'add_help_tabs' ) );
+		}
+
 		require_once( self::plugin_path('functions.php') );
 
 		if ( apply_filters( 'action_scheduler_load_deprecated_functions', true ) ) {
