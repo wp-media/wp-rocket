@@ -318,7 +318,7 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 		if ( $this->runner->has_maximum_concurrent_batches() ) {
 			$this->admin_notices[] = array(
 				'class'   => 'updated',
-				'message' => sprintf( __( 'Maximum simultaneous batches already in progress (%s queues). No actions will be processed until the current batches are complete.', 'action-scheduler' ), $this->store->get_claim_count() ),
+				'message' => sprintf( __( 'Maximum simultaneous queues already in progress (%s queues). No additional queues will begin processing until the current queues are complete.', 'action-scheduler' ), $this->store->get_claim_count() ),
 			);
 		} elseif ( $this->store->has_pending_actions_due() ) {
 
