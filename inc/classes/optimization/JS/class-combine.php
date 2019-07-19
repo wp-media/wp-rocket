@@ -503,6 +503,9 @@ class Combine extends Abstract_JS_Optimization {
 			'wcct_info',
 			'Springbot.product_id',
 			'cedexisData',
+			'function reenableButton',
+			'#wpnbio-show',
+			'e.Newsletter2GoTrackingObject',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
