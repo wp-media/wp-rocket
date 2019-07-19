@@ -514,6 +514,10 @@ class Combine extends Abstract_JS_Optimization {
 			'yithautocomplete',
 			'data-parallax-speed',
 			'currency_data=',
+			'cedexisData',
+			'function reenableButton',
+			'#wpnbio-show',
+			'e.Newsletter2GoTrackingObject',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
