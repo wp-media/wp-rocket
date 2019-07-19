@@ -28,8 +28,8 @@ class ActionScheduler_CronSchedule extends ActionScheduler_Abstract_RecurringSch
 			$recurrence = CronExpression::factory( $recurrence );
 		}
 
-		// For backward compatibility, we need to make sure the date is set to the first matching cron date, not just the date passed in. This was previously handled in the now deprecated next() method.
-		$date = $recurrence->getNextRunDate( $start, 0, false );
+		// For backward compatibility, we need to make sure the date is set to the first matching cron date, not whatever date is passed in. Importantly, by passing true as the 3rd param, if $start matches the cron expression, then it will be used. This was previously handled in the now deprecated next() method.
+		$date = $recurrence->getNextRunDate( $start, 0, true );
 
 		// parent::__construct() will set this to $date by default, but that may be different to $start now.
 		$first = empty( $first ) ? $start : $first;
