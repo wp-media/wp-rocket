@@ -320,8 +320,7 @@ function do_admin_post_rocket_purge_cache() {
 			wp_nonce_ays( '' );
 		}
 
-		// This filter is documented in inc/admin-bar.php.
-		if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		if ( ! current_user_can( 'rocket_purge_cache' ) ) {
 			return;
 		}
 
@@ -417,8 +416,7 @@ function do_admin_post_rocket_purge_opcache() {
 		wp_nonce_ays( '' );
 	}
 
-	// This filter is documented in inc/admin-bar.php.
-	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+	if ( ! current_user_can( 'rocket_purge_opcache' ) ) {
 		return;
 	}
 
@@ -439,8 +437,7 @@ function do_admin_post_rocket_purge_cloudflare() {
 		wp_nonce_ays( '' );
 	}
 
-	// This filter is documented in inc/admin-bar.php.
-	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+	if ( ! current_user_can( 'rocket_purge_cloudflare_cache' ) ) {
 		return;
 	}
 

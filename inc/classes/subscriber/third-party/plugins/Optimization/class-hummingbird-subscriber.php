@@ -49,7 +49,7 @@ class Hummingbird_Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function warning_notice() {
-		if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			return;
 		}
 
