@@ -420,6 +420,12 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 	if ( version_compare( $actual_version, '3.3.6', '<' ) ) {
 		delete_site_transient( 'update_wprocket' );
 		delete_site_transient( 'update_wprocket_response' );
+
+		if ( get_rocket_option( 'do_cloudflare' ) && get_rocket_option( 'cloudflare_auto_settings' ) ) {
+			if ( function_exists( 'set_rocket_cloudflare_browser_cache_ttl' ) ) {
+				set_rocket_cloudflare_browser_cache_ttl( '31536000' );
+			}
+		}
 	}
 
 	if ( rocket_is_ssl_website() ) {
