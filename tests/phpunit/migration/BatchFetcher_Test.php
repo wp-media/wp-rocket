@@ -19,9 +19,9 @@ class BatchFetcher_Test extends ActionScheduler_UnitTestCase {
 
 	public function test_nothing_to_migrate() {
 		$store         = new PostStore();
-		$ActionScheduler_BatchFetcher = new BatchFetcher( $store );
+		$batch_fetcher = new BatchFetcher( $store );
 
-		$actions = $ActionScheduler_BatchFetcher->fetch();
+		$actions = $batch_fetcher->fetch();
 		$this->assertEmpty( $actions );
 	}
 
@@ -42,9 +42,9 @@ class BatchFetcher_Test extends ActionScheduler_UnitTestCase {
 			$due[]    = $store->save_action( $action );
 		}
 
-		$ActionScheduler_BatchFetcher = new BatchFetcher( $store );
+		$batch_fetcher = new BatchFetcher( $store );
 
-		$actions = $ActionScheduler_BatchFetcher->fetch();
+		$actions = $batch_fetcher->fetch();
 
 		$this->assertEqualSets( $due, $actions );
 	}
@@ -67,9 +67,9 @@ class BatchFetcher_Test extends ActionScheduler_UnitTestCase {
 			$complete[] = $store->save_action( $action );
 		}
 
-		$ActionScheduler_BatchFetcher = new BatchFetcher( $store );
+		$batch_fetcher = new BatchFetcher( $store );
 
-		$actions = $ActionScheduler_BatchFetcher->fetch();
+		$actions = $batch_fetcher->fetch();
 
 		$this->assertEqualSets( $future, $actions );
 	}

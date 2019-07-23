@@ -20,7 +20,7 @@ class ActionMigrator_Test extends ActionScheduler_UnitTestCase {
 	public function test_migrate_from_wpPost_to_db() {
 		$source = new ActionScheduler_wpPostStore();
 		$destination = new ActionScheduler_DBStore();
-		$migrator = new ActionMigrator( $source, $destination, $this->get_ActionScheduler_LogMigrator() );
+		$migrator = new ActionMigrator( $source, $destination, $this->get_log_migrator() );
 
 		$time      = as_get_datetime_object();
 		$schedule  = new ActionScheduler_SimpleSchedule( $time );
@@ -46,7 +46,7 @@ class ActionMigrator_Test extends ActionScheduler_UnitTestCase {
 	public function test_does_not_migrate_missing_action_from_wpPost_to_db() {
 		$source = new ActionScheduler_wpPostStore();
 		$destination = new ActionScheduler_DBStore();
-		$migrator = new ActionMigrator( $source, $destination, $this->get_ActionScheduler_LogMigrator() );
+		$migrator = new ActionMigrator( $source, $destination, $this->get_log_migrator() );
 
 		$action_id = rand( 100, 100000 );
 
@@ -61,7 +61,7 @@ class ActionMigrator_Test extends ActionScheduler_UnitTestCase {
 	public function test_migrate_completed_action_from_wpPost_to_db() {
 		$source = new ActionScheduler_wpPostStore();
 		$destination = new ActionScheduler_DBStore();
-		$migrator = new ActionMigrator( $source, $destination, $this->get_ActionScheduler_LogMigrator() );
+		$migrator = new ActionMigrator( $source, $destination, $this->get_log_migrator() );
 
 		$time      = as_get_datetime_object();
 		$schedule  = new ActionScheduler_SimpleSchedule( $time );
@@ -88,7 +88,7 @@ class ActionMigrator_Test extends ActionScheduler_UnitTestCase {
 	public function test_migrate_failed_action_from_wpPost_to_db() {
 		$source = new ActionScheduler_wpPostStore();
 		$destination = new ActionScheduler_DBStore();
-		$migrator = new ActionMigrator( $source, $destination, $this->get_ActionScheduler_LogMigrator() );
+		$migrator = new ActionMigrator( $source, $destination, $this->get_log_migrator() );
 
 		$time      = as_get_datetime_object();
 		$schedule  = new ActionScheduler_SimpleSchedule( $time );
@@ -115,7 +115,7 @@ class ActionMigrator_Test extends ActionScheduler_UnitTestCase {
 	public function test_does_not_migrate_canceled_action_from_wpPost_to_db() {
 		$source = new ActionScheduler_wpPostStore();
 		$destination = new ActionScheduler_DBStore();
-		$migrator = new ActionMigrator( $source, $destination, $this->get_ActionScheduler_LogMigrator() );
+		$migrator = new ActionMigrator( $source, $destination, $this->get_log_migrator() );
 
 		$time      = as_get_datetime_object();
 		$schedule  = new ActionScheduler_SimpleSchedule( $time );
@@ -132,7 +132,7 @@ class ActionMigrator_Test extends ActionScheduler_UnitTestCase {
 		$this->assertInstanceOf( 'ActionScheduler_NullAction', $old_action );
 	}
 
-	private function get_ActionScheduler_LogMigrator() {
+	private function get_log_migrator() {
 		return new LogMigrator( \ActionScheduler::logger(), new ActionScheduler_DBLogger() );
 	}
 }

@@ -48,14 +48,14 @@ class ActionScheduler_HybridStore_Test extends ActionScheduler_UnitTestCase {
 		$config->set_destination_store( $destination_store );
 		$config->set_destination_logger( $destination_logger );
 
-		$ActionScheduler_HybridStore = new ActionScheduler_HybridStore( $config );
+		$hybrid_store = new ActionScheduler_HybridStore( $config );
 
 		$time      = as_get_datetime_object( '10 minutes ago' );
 		$schedule  = new ActionScheduler_SimpleSchedule( $time );
 		$action    = new ActionScheduler_Action( __FUNCTION__, [], $schedule );
 		$source_id = $source_store->save_action( $action );
 
-		$found = $ActionScheduler_HybridStore->find_action( __FUNCTION__, [] );
+		$found = $hybrid_store->find_action( __FUNCTION__, [] );
 
 		$this->assertNotEquals( $source_id, $found );
 		$this->assertGreaterThanOrEqual( $this->demarkation_id, $found );
@@ -77,7 +77,7 @@ class ActionScheduler_HybridStore_Test extends ActionScheduler_UnitTestCase {
 		$config->set_destination_store( $destination_store );
 		$config->set_destination_logger( $destination_logger );
 
-		$ActionScheduler_HybridStore = new ActionScheduler_HybridStore( $config );
+		$hybrid_store = new ActionScheduler_HybridStore( $config );
 
 		$source_actions      = [];
 		$destination_actions = [];
@@ -98,7 +98,7 @@ class ActionScheduler_HybridStore_Test extends ActionScheduler_UnitTestCase {
 			$destination_actions[] = $destination_store->save_action( $action );
 		}
 
-		$found = $ActionScheduler_HybridStore->query_actions([
+		$found = $hybrid_store->query_actions([
 			'hook' => __FUNCTION__,
 			'per_page' => 6,
 		] );
@@ -136,7 +136,7 @@ class ActionScheduler_HybridStore_Test extends ActionScheduler_UnitTestCase {
 		$config->set_destination_store( $destination_store );
 		$config->set_destination_logger( $destination_logger );
 
-		$ActionScheduler_HybridStore = new ActionScheduler_HybridStore( $config );
+		$hybrid_store = new ActionScheduler_HybridStore( $config );
 
 		$source_actions      = [];
 		$destination_actions = [];
@@ -157,7 +157,7 @@ class ActionScheduler_HybridStore_Test extends ActionScheduler_UnitTestCase {
 			$destination_actions[] = $destination_store->save_action( $action );
 		}
 
-		$claim = $ActionScheduler_HybridStore->stake_claim( 6 );
+		$claim = $hybrid_store->stake_claim( 6 );
 
 		$claimed_actions = $claim->get_actions();
 		$this->assertCount( 6, $claimed_actions );
@@ -174,7 +174,7 @@ class ActionScheduler_HybridStore_Test extends ActionScheduler_UnitTestCase {
 
 		$this->assertEquals( 0, $source_store->get_claim_count() );
 		$this->assertEquals( 1, $destination_store->get_claim_count() );
-		$this->assertEquals( 1, $ActionScheduler_HybridStore->get_claim_count() );
+		$this->assertEquals( 1, $hybrid_store->get_claim_count() );
 
 	}
 
@@ -190,7 +190,7 @@ class ActionScheduler_HybridStore_Test extends ActionScheduler_UnitTestCase {
 		$config->set_destination_store( $destination_store );
 		$config->set_destination_logger( $destination_logger );
 
-		$ActionScheduler_HybridStore = new ActionScheduler_HybridStore( $config );
+		$hybrid_store = new ActionScheduler_HybridStore( $config );
 
 		$source_actions      = [];
 		$destination_actions = [];
@@ -212,13 +212,13 @@ class ActionScheduler_HybridStore_Test extends ActionScheduler_UnitTestCase {
 		}
 
 		foreach ( $source_actions as $action_id ) {
-			$action = $ActionScheduler_HybridStore->fetch_action( $action_id );
+			$action = $hybrid_store->fetch_action( $action_id );
 			$this->assertInstanceOf( ActionScheduler_Action::class, $action );
 			$this->assertNotInstanceOf( NullAction::class, $action );
 		}
 
 		foreach ( $destination_actions as $action_id ) {
-			$action = $ActionScheduler_HybridStore->fetch_action( $action_id );
+			$action = $hybrid_store->fetch_action( $action_id );
 			$this->assertInstanceOf( ActionScheduler_Action::class, $action );
 			$this->assertNotInstanceOf( NullAction::class, $action );
 		}
@@ -236,7 +236,7 @@ class ActionScheduler_HybridStore_Test extends ActionScheduler_UnitTestCase {
 		$config->set_destination_store( $destination_store );
 		$config->set_destination_logger( $destination_logger );
 
-		$ActionScheduler_HybridStore = new ActionScheduler_HybridStore( $config );
+		$hybrid_store = new ActionScheduler_HybridStore( $config );
 
 		$source_actions      = [];
 		$destination_actions = [];
@@ -258,14 +258,14 @@ class ActionScheduler_HybridStore_Test extends ActionScheduler_UnitTestCase {
 		}
 
 		foreach ( $source_actions as $action_id ) {
-			$ActionScheduler_HybridStore->mark_complete( $action_id );
-			$action = $ActionScheduler_HybridStore->fetch_action( $action_id );
+			$hybrid_store->mark_complete( $action_id );
+			$action = $hybrid_store->fetch_action( $action_id );
 			$this->assertInstanceOf( ActionScheduler_FinishedAction::class, $action );
 		}
 
 		foreach ( $destination_actions as $action_id ) {
-			$ActionScheduler_HybridStore->mark_complete( $action_id );
-			$action = $ActionScheduler_HybridStore->fetch_action( $action_id );
+			$hybrid_store->mark_complete( $action_id );
+			$action = $hybrid_store->fetch_action( $action_id );
 			$this->assertInstanceOf( ActionScheduler_FinishedAction::class, $action );
 		}
 	}
