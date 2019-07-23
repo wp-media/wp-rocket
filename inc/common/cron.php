@@ -25,23 +25,6 @@ function rocket_purge_cron_schedule( $schedules ) {
 		);
 	}
 
-	if ( get_rocket_option( 'schedule_automatic_cleanup', false ) ) {
-		switch ( get_rocket_option( 'automatic_cleanup_frequency' ) ) {
-			case 'weekly':
-				$schedules['weekly'] = array(
-					'interval' => 604800,
-					'display'  => __( 'weekly', 'rocket' ),
-				);
-				break;
-			case 'monthly':
-				$schedules['monthly'] = array(
-					'interval' => 2592000,
-					'display'  => __( 'monthly', 'rocket' ),
-				);
-				break;
-		}
-	}
-
 	return $schedules;
 }
 add_filter( 'cron_schedules', 'rocket_purge_cron_schedule' );

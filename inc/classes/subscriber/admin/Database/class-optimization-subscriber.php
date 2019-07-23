@@ -30,6 +30,7 @@ class Optimization_Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
+			'cron_schedules'                          => 'add_cron_schedule',
 			'init'                                    => 'database_optimization_scheduled',
 			'rocket_database_optimization_time_event' => 'cron_optimize',
 			'pre_update_option_' . WP_ROCKET_SLUG     => 'save_optimize',
@@ -38,6 +39,40 @@ class Optimization_Subscriber implements Subscriber_Interface {
 				[ 'notice_process_complete' ],
 			],
 		];
+	}
+
+	/**
+	 * Add a new interval for the cron job.
+	 * This adds a weekly/monthly interval for database optimization.
+	 *
+	 * @access public
+	 * @since  3.5
+	 * @author Grégory Viguier
+	 *
+	 * @param  array $schedules An array of intervals used by cron jobs.
+	 * @return array            Updated array of intervals.
+	 */
+	public function add_cron_schedule( $schedules ) {
+		if ( ! $this->options->get( 'schedule_automatic_cleanup', false ) ) {
+			return $schedules;
+		}
+
+		switch ( $this->options->get( 'automatic_cleanup_frequency', 'weekly' ) ) {
+			case 'weekly':
+				$schedules['weekly'] = array(
+					'interval' => 604800,
+					'display'  => __( 'weekly', 'rocket' ),
+				);
+				break;
+			case 'monthly':
+				$schedules['monthly'] = array(
+					'interval' => 2592000,
+					'display'  => __( 'monthly', 'rocket' ),
+				);
+				break;
+		}
+
+		return $schedules;
 	}
 
 	/**
