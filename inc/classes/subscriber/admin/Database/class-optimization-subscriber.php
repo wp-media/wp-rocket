@@ -68,8 +68,8 @@ class Optimization_Subscriber implements Subscriber_Interface {
 	 * Add a new interval for the cron job.
 	 * This adds a weekly/monthly interval for database optimization.
 	 *
-	 * @access public
 	 * @since  3.5
+	 * @access public
 	 * @author Grégory Viguier
 	 *
 	 * @param  array $schedules An array of intervals used by cron jobs.
@@ -82,16 +82,16 @@ class Optimization_Subscriber implements Subscriber_Interface {
 
 		switch ( $this->options->get( 'automatic_cleanup_frequency', 'weekly' ) ) {
 			case 'weekly':
-				$schedules['weekly'] = array(
+				$schedules['weekly'] = [
 					'interval' => 604800,
 					'display'  => __( 'weekly', 'rocket' ),
-				);
+				];
 				break;
 			case 'monthly':
-				$schedules['monthly'] = array(
+				$schedules['monthly'] = [
 					'interval' => 2592000,
 					'display'  => __( 'monthly', 'rocket' ),
-				);
+				];
 				break;
 		}
 
