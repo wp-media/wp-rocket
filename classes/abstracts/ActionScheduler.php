@@ -1,5 +1,8 @@
 <?php
 
+use Action_Scheduler\WP_CLI\Migration_Command;
+use Action_Scheduler\Migration\Controller;
+
 /**
  * Class ActionScheduler
  * @codeCoverageIgnore
@@ -62,17 +65,25 @@ abstract class ActionScheduler {
 	}
 
 	public static function autoload( $class ) {
-		$d = DIRECTORY_SEPARATOR;
+		$d           = DIRECTORY_SEPARATOR;
 		$classes_dir = self::plugin_path( 'classes' . $d );
+		$separator   = strrpos( $class, '\\' );
+		if ( false !== $separator ) {
+			$class = substr( $class, $separator + 1 );
+		}
 
 		if ( 'Deprecated' === substr( $class, -10 ) ) {
 			$dir = self::plugin_path( 'deprecated' . $d );
 		} elseif ( self::is_class_abstract( $class ) ) {
 			$dir = $classes_dir . 'abstracts' . $d;
+		} elseif ( self::is_class_migration( $class ) ) {
+			$dir = $classes_dir . 'migration' . $d;
 		} elseif ( 'Schedule' === substr( $class, -8 ) ) {
 			$dir = $classes_dir . 'schedules' . $d;
 		} elseif ( 'Action' === substr( $class, -6 ) ) {
 			$dir = $classes_dir . 'actions' . $d;
+		} elseif ( 'Schema' === substr( $class, -6 ) ) {
+			$dir = $classes_dir . 'schema' . $d;
 		} elseif ( strpos( $class, 'ActionScheduler' ) === 0 ) {
 			$segments = explode( '_', $class );
 			$type = isset( $segments[ 1 ] ) ? $segments[ 1 ] : '';
@@ -81,6 +92,9 @@ abstract class ActionScheduler {
 				case 'WPCLI':
 					$dir = $classes_dir . 'WP_CLI' . $d;
 					break;
+				case 'DBLogger':
+				case 'DBStore':
+				case 'HybridStore':
 				case 'wpPostStore':
 				case 'wpCommentLogger':
 					$dir = $classes_dir . 'data-stores' . $d;
@@ -89,6 +103,8 @@ abstract class ActionScheduler {
 					$dir = $classes_dir;
 					break;
 			}
+		} elseif ( self::is_class_cli( $class ) ) {
+			$dir = $classes_dir . 'WP_CLI' . $d;
 		} elseif ( strpos( $class, 'CronExpression' ) === 0 ) {
 			$dir = self::plugin_path( 'lib' . $d . 'cron-expression' . $d );
 		} elseif ( strpos( $class, 'WP_Async_Request' ) === 0 ) {
@@ -118,6 +134,9 @@ abstract class ActionScheduler {
 		 */
 		do_action( 'action_scheduler_pre_init' );
 
+		require_once( self::plugin_path('functions.php') );
+		ActionScheduler_DataController::init();
+
 		$store = self::store();
 		add_action( 'init', array( $store, 'init' ), 1, 0 );
 
@@ -130,14 +149,16 @@ abstract class ActionScheduler {
 		$admin_view = self::admin_view();
 		add_action( 'init', array( $admin_view, 'init' ), 0, 0 ); // run before $store::init()
 
-		require_once( self::plugin_path('functions.php') );
-
 		if ( apply_filters( 'action_scheduler_load_deprecated_functions', true ) ) {
 			require_once( self::plugin_path('deprecated/functions.php') );
 		}
 
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
 			WP_CLI::add_command( 'action-scheduler', 'ActionScheduler_WPCLI_Scheduler_command' );
+			if ( ! ActionScheduler_DataController::is_migration_complete() && Controller::instance()->allow_migration() ) {
+				$command = new Migration_Command();
+				$command->register();
+			}
 		}
 	}
 
@@ -157,11 +178,62 @@ abstract class ActionScheduler {
 			'ActionScheduler_Abstract_QueueRunner' => true,
 			'ActionScheduler_Lock'                 => true,
 			'ActionScheduler_Logger'               => true,
+			'ActionScheduler_Abstract_Schema'      => true,
 			'ActionScheduler_Store'                => true,
 			'ActionScheduler_TimezoneHelper'       => true,
 		);
 
 		return isset( $abstracts[ $class ] ) && $abstracts[ $class ];
+	}
+
+	/**
+	 * Determine if the class is one of our migration classes.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param string $class The class name.
+	 *
+	 * @return bool
+	 */
+	protected static function is_class_migration( $class ) {
+		static $migration_segments = array(
+			'ActionMigrator'  => true,
+			'BatchFetcher'    => true,
+			'DBStoreMigrator' => true,
+			'DryRun'          => true,
+			'LogMigrator'     => true,
+			'Config'          => true,
+			'Controller'      => true,
+			'Runner'          => true,
+			'Scheduler'       => true,
+		);
+
+		$segments = explode( '_', $class );
+		$segment = isset( $segments[ 1 ] ) ? $segments[ 1 ] : $class;
+
+		return isset( $migration_segments[ $segment ] ) && $migration_segments[ $segment ];
+	}
+
+	/**
+	 * Determine if the class is one of our WP CLI classes.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param string $class The class name.
+	 *
+	 * @return bool
+	 */
+	protected static function is_class_cli( $class ) {
+		static $cli_segments = array(
+			'QueueRunner' => true,
+			'Command'     => true,
+			'ProgressBar' => true,
+		);
+
+		$segments = explode( '_', $class );
+		$segment = isset( $segments[ 1 ] ) ? $segments[ 1 ] : $class;
+
+		return isset( $cli_segments[ $segment ] ) && $cli_segments[ $segment ];
 	}
 
 	final public function __clone() {

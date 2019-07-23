@@ -46,7 +46,7 @@ abstract class ActionScheduler_Logger {
 	 * @codeCoverageIgnore
 	 */
 	public function init() {
-		add_action( 'action_scheduler_stored_action', array( $this, 'log_stored_action' ), 10, 1 );
+		$this->hook_stored_action();
 		add_action( 'action_scheduler_canceled_action', array( $this, 'log_canceled_action' ), 10, 1 );
 		add_action( 'action_scheduler_before_execute', array( $this, 'log_started_action' ), 10, 1 );
 		add_action( 'action_scheduler_after_execute', array( $this, 'log_completed_action' ), 10, 1 );
@@ -56,6 +56,14 @@ abstract class ActionScheduler_Logger {
 		add_action( 'action_scheduler_reset_action', array( $this, 'log_reset_action' ), 10, 1 );
 		add_action( 'action_scheduler_execution_ignored', array( $this, 'log_ignored_action' ), 10, 1 );
 		add_action( 'action_scheduler_failed_fetch_action', array( $this, 'log_failed_fetch_action' ), 10, 1 );
+	}
+
+	public function hook_stored_action() {
+		add_action( 'action_scheduler_stored_action', array( $this, 'log_stored_action' ) );
+	}
+
+	public function unhook_stored_action() {
+		remove_action( 'action_scheduler_stored_action', array( $this, 'log_stored_action' ) );
 	}
 
 	public function log_stored_action( $action_id ) {

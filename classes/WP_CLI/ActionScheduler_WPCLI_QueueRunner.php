@@ -1,5 +1,7 @@
 <?php
 
+use Action_Scheduler\WP_CLI\ProgressBar;
+
 /**
  * WP CLI Queue runner.
  *
@@ -86,7 +88,7 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 	 */
 	protected function setup_progress_bar() {
 		$count              = count( $this->actions );
-		$this->progress_bar = \WP_CLI\Utils\make_progress_bar(
+		$this->progress_bar = new ProgressBar(
 			sprintf( _n( 'Running %d action', 'Running %d actions', $count, 'action-scheduler' ), number_format_i18n( $count ) ),
 			$count
 		);
@@ -110,7 +112,6 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 
 			$this->process_action( $action_id );
 			$this->progress_bar->tick();
-			$this->maybe_stop_the_insanity();
 		}
 
 		$completed = $this->progress_bar->current();
@@ -171,35 +172,12 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 	 * Sleep and help avoid hitting memory limit
 	 *
 	 * @param int $sleep_time Amount of seconds to sleep
+	 * @deprecated 3.0.0
 	 */
 	protected function stop_the_insanity( $sleep_time = 0 ) {
-		if ( 0 < $sleep_time ) {
-			WP_CLI::warning( sprintf( 'Stopped the insanity for %d %s', $sleep_time, _n( 'second', 'seconds', $sleep_time ) ) );
-			sleep( $sleep_time );
-		}
+		_deprecated_function( 'ActionScheduler_WPCLI_QueueRunner::stop_the_insanity', '3.0.0', 'ActionScheduler_DataController::free_memory' );
 
-		WP_CLI::warning( __( 'Attempting to reduce used memory...', 'action-scheduler' ) );
-
-		/**
-		 * @var $wpdb            \wpdb
-		 * @var $wp_object_cache \WP_Object_Cache
-		 */
-		global $wpdb, $wp_object_cache;
-
-		$wpdb->queries = array();
-
-		if ( ! is_object( $wp_object_cache ) ) {
-			return;
-		}
-
-		$wp_object_cache->group_ops      = array();
-		$wp_object_cache->stats          = array();
-		$wp_object_cache->memcache_debug = array();
-		$wp_object_cache->cache          = array();
-
-		if ( is_callable( array( $wp_object_cache, '__remoteset' ) ) ) {
-			call_user_func( array( $wp_object_cache, '__remoteset' ) ); // important
-		}
+		ActionScheduler_DataController::free_memory();
 	}
 
 	/**

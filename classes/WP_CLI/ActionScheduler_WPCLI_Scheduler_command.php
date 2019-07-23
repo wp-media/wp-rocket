@@ -25,12 +25,20 @@ class ActionScheduler_WPCLI_Scheduler_command extends WP_CLI_Command {
 	 * [--group=<group>]
 	 * : Only run actions from the specified group. Omitting this option runs actions from all groups.
 	 *
+	 * [--free-memory-on=<count>]
+	 * : The number of actions to process between freeing memory. 0 disables freeing memory. Default 50.
+	 *
+	 * [--pause=<seconds>]
+	 * : The number of seconds to pause when freeing memory. Default no pause.
+	 *
 	 * [--force]
 	 * : Whether to force execution despite the maximum number of concurrent processes being exceeded.
 	 *
 	 * @param array $args Positional arguments.
 	 * @param array $assoc_args Keyed arguments.
 	 * @throws \WP_CLI\ExitException When an error occurs.
+	 *
+	 * @subcommand run
 	 */
 	public function run( $args, $assoc_args ) {
 		// Handle passed arguments.
@@ -40,7 +48,12 @@ class ActionScheduler_WPCLI_Scheduler_command extends WP_CLI_Command {
 		$hooks   = explode( ',', WP_CLI\Utils\get_flag_value( $assoc_args, 'hooks', '' ) );
 		$hooks   = array_filter( array_map( 'trim', $hooks ) );
 		$group   = \WP_CLI\Utils\get_flag_value( $assoc_args, 'group', '' );
+		$free_on = \WP_CLI\Utils\get_flag_value( $assoc_args, 'free-memory-on', '' );
+		$sleep   = \WP_CLI\Utils\get_flag_value( $assoc_args, 'pause', '' );
 		$force   = \WP_CLI\Utils\get_flag_value( $assoc_args, 'force', false );
+
+		ActionScheduler_DataController::set_free_ticks( $free_on );
+		ActionScheduler_DataController::set_sleep_time( $sleep );
 
 		$batches_completed = 0;
 		$actions_completed = 0;

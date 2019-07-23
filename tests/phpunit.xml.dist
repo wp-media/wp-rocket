@@ -12,8 +12,24 @@
 				 bootstrap="bootstrap.php"
 		>
 	<testsuites>
+		<testsuite name="Migration">
+			<directory phpVersion="5.6">./phpunit/migration</directory>
+		</testsuite>
+		<testsuite name="Tables">
+			<file phpVersion="5.6">./phpunit/jobstore/ActionScheduler_DBStoreMigrator_Test.php</file>
+			<file phpVersion="5.6">./phpunit/jobstore/ActionScheduler_DBStore_Test.php</file>
+			<file phpVersion="5.6">./phpunit/jobstore/ActionScheduler_HybridStore_Test.php</file>
+			<file phpVersion="5.6">./phpunit/logging/ActionScheduler_DBLogger_Test.php</file>
+		</testsuite>
 		<testsuite name="Action Scheduler">
-			<directory>./phpunit</directory>
+			<directory>./phpunit/helpers</directory>
+			<directory>./phpunit/jobs</directory>
+			<directory>./phpunit/procedural_api</directory>
+			<directory>./phpunit/runner</directory>
+			<directory>./phpunit/schedules</directory>
+			<directory>./phpunit/versioning</directory>
+			<file>./phpunit/logging/ActionScheduler_wpCommentLogger_Test.php</file>
+			<file>./phpunit/jobstore/ActionScheduler_wpPostStore_Test.php</file>
 		</testsuite>
 	</testsuites>
 	<groups>
