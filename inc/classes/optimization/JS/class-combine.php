@@ -518,6 +518,8 @@ class Combine extends Abstract_JS_Optimization {
 			'function reenableButton',
 			'#wpnbio-show',
 			'e.Newsletter2GoTrackingObject',
+			'var categories_',
+			'"+nRemaining+"',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
@@ -684,6 +686,7 @@ class Combine extends Abstract_JS_Optimization {
 			'callback:window.renderBadge',
 			'test_run_nf_conditional_logic',
 			'cb_nombre',
+			'$(\'.fl-node-',
 		];
 
 		/**
