@@ -14,6 +14,29 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  * @author Remy Perona
  */
 class Optimization_Subscriber implements Subscriber_Interface {
+
+	/**
+	 * Optimization process instance.
+	 *
+	 * @since  3.5
+	 * @access private
+	 * @author Grégory Viguier
+	 *
+	 * @var Optimization
+	 */
+	private $optimize;
+
+	/**
+	 * WP Rocket Options instance.
+	 *
+	 * @since  3.5
+	 * @access private
+	 * @author Grégory Viguier
+	 *
+	 * @var Options_Data
+	 */
+	private $options;
+
 	/**
 	 * Constructor
 	 *
