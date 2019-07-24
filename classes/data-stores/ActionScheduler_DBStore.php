@@ -114,7 +114,14 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 			return $this->get_null_action();
 		}
 
-		return $this->make_action_from_db_record( $data );
+		try {
+			$action = $this->make_action_from_db_record( $data );
+		} catch ( ActionScheduler_InvalidActionException $exception ) {
+			do_action( 'action_scheduler_failed_fetch_action', $action_id, $exception );
+			return $this->get_null_action();
+		}
+
+		return $action;
 	}
 
 	/**
@@ -138,6 +145,10 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 		$hook     = $data->hook;
 		$args     = json_decode( $data->args, true );
 		$schedule = unserialize( $data->schedule );
+
+		$this->validate_args( $args, $data->action_id );
+		$this->validate_schedule( $schedule, $data->action_id );
+
 		if ( empty( $schedule ) ) {
 			$schedule = new ActionScheduler_NullSchedule();
 		}

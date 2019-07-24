@@ -163,9 +163,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		$this->validate_args( $args, $post->ID );
 
 		$schedule = get_post_meta( $post->ID, self::SCHEDULE_META_KEY, true );
-		if ( empty( $schedule ) || ! is_a( $schedule, 'ActionScheduler_Schedule' ) ) {
-			throw ActionScheduler_InvalidActionException::from_schedule( $post->ID, $schedule );
-		}
+		$this->validate_schedule( $schedule, $post->ID );
 
 		$group = wp_get_object_terms( $post->ID, self::GROUP_TAXONOMY, array('fields' => 'names') );
 		$group = empty( $group ) ? '' : reset($group);
@@ -813,25 +811,5 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 
 		$taxonomy_registrar = new ActionScheduler_wpPostStore_TaxonomyRegistrar();
 		$taxonomy_registrar->register();
-	}
-
-	/**
-	 * Validate that we could decode action arguments.
-	 *
-	 * @param mixed $args      The decoded arguments.
-	 * @param int   $action_id The action ID.
-	 *
-	 * @throws ActionScheduler_InvalidActionException When the decoded arguments are invalid.
-	 */
-	private function validate_args( $args, $action_id ) {
-		// Ensure we have an array of args.
-		if ( ! is_array( $args ) ) {
-			throw ActionScheduler_InvalidActionException::from_decoding_args( $action_id );
-		}
-
-		// Validate JSON decoding if possible.
-		if ( function_exists( 'json_last_error' ) && JSON_ERROR_NONE !== json_last_error() ) {
-			throw ActionScheduler_InvalidActionException::from_decoding_args( $action_id, $args );
-		}
 	}
 }

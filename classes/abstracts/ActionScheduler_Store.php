@@ -175,6 +175,40 @@ abstract class ActionScheduler_Store {
 	}
 
 	/**
+	 * Validate that we could decode action arguments.
+	 *
+	 * @param mixed $args      The decoded arguments.
+	 * @param int   $action_id The action ID.
+	 *
+	 * @throws ActionScheduler_InvalidActionException When the decoded arguments are invalid.
+	 */
+	protected function validate_args( $args, $action_id ) {
+		// Ensure we have an array of args.
+		if ( ! is_array( $args ) ) {
+			throw ActionScheduler_InvalidActionException::from_decoding_args( $action_id );
+		}
+
+		// Validate JSON decoding if possible.
+		if ( function_exists( 'json_last_error' ) && JSON_ERROR_NONE !== json_last_error() ) {
+			throw ActionScheduler_InvalidActionException::from_decoding_args( $action_id, $args );
+		}
+	}
+
+	/**
+	 * Validate a ActionScheduler_Schedule object.
+	 *
+	 * @param mixed $schedule  The unserialized ActionScheduler_Schedule object.
+	 * @param int   $action_id The action ID.
+	 *
+	 * @throws ActionScheduler_InvalidActionException When the schedule is invalid.
+	 */
+	protected function validate_schedule( $schedule, $action_id ) {
+		if ( empty( $schedule ) || ! is_a( $schedule, 'ActionScheduler_Schedule' ) ) {
+			throw ActionScheduler_InvalidActionException::from_schedule( $post->ID, $schedule );
+		}
+	}
+
+	/**
 	 * @return array
 	 */
 	public function get_status_labels() {
