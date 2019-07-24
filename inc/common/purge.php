@@ -350,13 +350,15 @@ function do_admin_post_rocket_purge_cache() {
 					update_option( WP_ROCKET_SLUG, $options );
 				}
 
-				wp_safe_remote_get(
-					home_url( $lang ),
-					[
-						'blocking' => false,
-						'timeout'  => 0.01,
-					]
-				);
+				if ( get_rocket_option( 'manual_preload' ) && ( ! defined( 'WP_ROCKET_DEBUG' ) || ! WP_ROCKET_DEBUG ) ) {
+					wp_safe_remote_get(
+						home_url( $lang ),
+						[
+							'blocking' => false,
+							'timeout'  => 0.01,
+						]
+					);
+				}
 
 				rocket_dismiss_box( 'rocket_warning_plugin_modification' );
 

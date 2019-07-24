@@ -125,6 +125,7 @@ class Updater_Subscriber implements Subscriber_Interface {
 			'http_request_args'                     => [ 'exclude_rocket_from_wp_updates', 5, 2 ],
 			'pre_set_site_transient_update_plugins' => 'maybe_add_rocket_update_data',
 			'deleted_site_transient'                => 'maybe_delete_rocket_update_data_cache',
+			'wp_rocket_loaded'                      => 'maybe_force_check',
 		];
 	}
 
@@ -273,6 +274,19 @@ class Updater_Subscriber implements Subscriber_Interface {
 		}
 	}
 
+	/**
+	 * If the `rocket_force_update` query arg is set, force WP to refresh the list of plugins to update.
+	 *
+	 * @since  3.3.6
+	 * @access public
+	 * @author Grégory Viguier
+	 */
+	public function maybe_force_check() {
+		if ( is_string( filter_input( INPUT_GET, 'rocket_force_update' ) ) ) {
+			delete_site_transient( 'update_plugins' );
+		}
+	}
+
 	/** ----------------------------------------------------------------------------------------- */
 	/** TOOLS =================================================================================== */
 	/** ----------------------------------------------------------------------------------------- */
@@ -335,10 +349,10 @@ class Updater_Subscriber implements Subscriber_Interface {
 
 		/**
 		 * This will match:
-		 * - `2.3.4.5||1.2.3.4||||||||||||||||||||||||||||||||`: expired license.
-		 * - `2.3.4.5|https://wp-rocket.me/i-should-write-a-funny-thing-here/wp-rocket_1.2.3.4.zip|1.2.3.4`: valid license.
+		 * - `2.3.4.5-beta1||1.2.3.4-beta2||||||||||||||||||||||||||||||||`: expired license.
+		 * - `2.3.4.5-beta1|https://wp-rocket.me/i-should-write-a-funny-thing-here/wp-rocket_1.2.3.4-beta2.zip|1.2.3.4-beta2`: valid license.
 		 */
-		if ( ! preg_match( '@^(?<stable_version>\d+(?:\.\d+){1,3})\|(?<package>(?:http.+\.zip)?)\|(?<user_version>\d+(?:\.\d+){1,3})(?:\|+)?$@', $res, $match ) ) {
+		if ( ! preg_match( '@^(?<stable_version>\d+(?:\.\d+){1,3}[^|]*)\|(?<package>(?:http.+\.zip)?)\|(?<user_version>\d+(?:\.\d+){1,3}[^|]*)(?:\|+)?$@', $res, $match ) ) {
 			/**
 			 * If the response doesn’t have the right format, it is an error.
 			 */
