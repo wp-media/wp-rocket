@@ -171,8 +171,8 @@ function rocket_after_save_options( $oldvalue, $value ) {
 			);
 		}
 
-		// Set Browser cache to 1 month.
-		$cf_browser_cache_ttl    = ( isset( $cf_old_settings[3] ) && 0 === $value['cloudflare_auto_settings'] ) ? $cf_old_settings[3] : '2678400';
+		// Set Browser cache to 1 year.
+		$cf_browser_cache_ttl    = ( isset( $cf_old_settings[3] ) && 0 === $value['cloudflare_auto_settings'] ) ? $cf_old_settings[3] : '31536000';
 		$cf_browser_cache_return = set_rocket_cloudflare_browser_cache_ttl( $cf_browser_cache_ttl );
 
 		if ( is_wp_error( $cf_browser_cache_return ) ) {
