@@ -43,7 +43,7 @@ if ( 'uncode' === strtolower( $current_theme->get( 'Name' ) ) || 'uncode' === st
 	}
 	add_filter( 'rocket_excluded_inline_js_content', 'rocket_exclude_inline_js_uncode' );
 
-	if ( version_compare( $current_theme->get( 'Version' ), '2.10', '<' ) ) {
+	if ( version_compare( $current_theme->get( 'Version' ), '2.1', '<' ) ) {
 		/**
 		 * Excludes Uncode JS files from defer JS
 		 *
