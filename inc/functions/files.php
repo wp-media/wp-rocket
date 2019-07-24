@@ -139,7 +139,7 @@ function get_rocket_config_file() {
 	$buffer .= '$rocket_cache_mobile_files_tablet = \'' . apply_filters( 'rocket_cache_mobile_files_tablet', 'desktop' ) . "';\n";
 
 	foreach ( $options as $option => $value ) {
-		if ( 'cache_ssl' === $option || 'cache_mobile' === $option || 'do_caching_mobile_files' === $option ) {
+		if ( 'cache_ssl' === $option || 'cache_mobile' === $option || 'do_caching_mobile_files' === $option || 'cache_webp' === $option ) {
 			$buffer .= '$rocket_' . $option . ' = ' . (int) $value . ";\n";
 		}
 
