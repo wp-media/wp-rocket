@@ -62,7 +62,7 @@
 			"inc/classes/class-wp-rocket-requirements-check.php"
 		],
 		"files": [
-			"inc/api.php"
+			"inc/functions/api.php"
 		]
 	},
 	"autoload-dev": {
