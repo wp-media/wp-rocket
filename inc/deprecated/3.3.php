@@ -613,3 +613,261 @@ function rocket_lazyload_get_youtube_id_from_url( $url ) {
 	return $matches[1];
 }
 endif;
+
+if ( ! function_exists( 'rocket_user_agent' ) ) :
+	/**
+	 * Add Rocket informations into USER_AGENT
+	 *
+	 * @since 1.1.0
+	 * @deprecated 3.3.6
+	 *
+	 * @param string $user_agent User Agent value.
+	 * @return string WP Rocket user agent
+	 */
+	function rocket_user_agent( $user_agent ) {
+		_deprecated_function( __FUNCTION__ . '()', '3.3.6', '\WP_Rocket\Subscriber\Plugin\Updater_Api_Common_Subscriber->get_rocket_user_agent()' );
+
+		$consumer_key = '';
+		if ( isset( $_POST[ WP_ROCKET_SLUG ]['consumer_key'] ) ) {
+			$consumer_key = $_POST[ WP_ROCKET_SLUG ]['consumer_key'];
+		} elseif ( '' !== (string) get_rocket_option( 'consumer_key' ) ) {
+			$consumer_key = (string) get_rocket_option( 'consumer_key' );
+		}
+
+		$consumer_email = '';
+		if ( isset( $_POST[ WP_ROCKET_SLUG ]['consumer_email'] ) ) {
+			$consumer_email = $_POST[ WP_ROCKET_SLUG ]['consumer_email'];
+		} elseif ( '' !== (string) get_rocket_option( 'consumer_email' ) ) {
+			$consumer_email = (string) get_rocket_option( 'consumer_email' );
+		}
+
+		$bonus       = ! get_rocket_option( 'do_beta' ) ? '' : '+';
+		$php_version = preg_replace( '@^(\d\.\d+).*@', '\1', phpversion() );
+		$new_ua      = sprintf( '%s;WP-Rocket|%s%s|%s|%s|%s|%s;', $user_agent, WP_ROCKET_VERSION, $bonus, $consumer_key, $consumer_email, esc_url( home_url() ), $php_version );
+
+		return $new_ua;
+	}
+endif;
+
+if ( ! function_exists( 'rocket_add_own_ua' ) ) :
+	/**
+	 * Force our user agent header when we hit our urls
+	 *
+	 * @since 2.4
+	 * @deprecated 3.3.6
+	 *
+	 * @param array  $request An array of request arguments.
+	 * @param string $url     Requested URL.
+	 * @return array An array of requested arguments
+	 */
+	function rocket_add_own_ua( $request, $url ) {
+		_deprecated_function( __FUNCTION__ . '()', '3.3.6', '\WP_Rocket\Subscriber\Plugin\Updater_Api_Common_Subscriber->maybe_set_rocket_user_agent()' );
+
+		if ( ! is_string( $url ) ) {
+			return $request;
+		}
+
+		if ( strpos( $url, 'wp-rocket.me' ) !== false ) {
+			$request['user-agent'] = rocket_user_agent( $request['user-agent'] );
+		}
+		return $request;
+	}
+endif;
+
+if ( ! function_exists( 'rocket_updates_exclude' ) ) :
+	/**
+	 * Excludes WP Rocket from WP updates
+	 *
+	 * @since 1.0
+	 * @deprecated 3.3.6
+	 *
+	 * @param array  $request An array of HTTP request arguments.
+	 * @param string $url The request URL.
+	 * @return array Updated array of HTTP request arguments.
+	 */
+	function rocket_updates_exclude( $request, $url ) {
+		_deprecated_function( __FUNCTION__ . '()', '3.3.6', '\WP_Rocket\Subscriber\Plugin\Updater_Subscriber->exclude_rocket_from_wp_updates()' );
+
+		if ( ! is_string( $url ) ) {
+			return $request;
+		}
+
+		if ( 0 !== strpos( $url, 'http://api.wordpress.org/plugins/update-check' ) || ! isset( $request['body']['plugins'] ) ) {
+			return $request; // Not a plugin update request. Stop immediately.
+		}
+
+		$plugins = maybe_unserialize( $request['body']['plugins'] );
+
+		if ( isset( $plugins->plugins[ plugin_basename( WP_ROCKET_FILE ) ], $plugins->active[ array_search( plugin_basename( WP_ROCKET_FILE ), $plugins->active, true ) ] ) ) {
+			unset( $plugins->plugins[ plugin_basename( WP_ROCKET_FILE ) ] );
+			unset( $plugins->active[ array_search( plugin_basename( WP_ROCKET_FILE ), $plugins->active, true ) ] );
+		}
+
+		$request['body']['plugins'] = maybe_serialize( $plugins );
+		return $request;
+	}
+endif;
+
+if ( ! function_exists( 'rocket_force_info' ) ) :
+	/**
+	 * Hack the returned object
+	 *
+	 * @since 1.0
+	 * @deprecated 3.3.6
+	 *
+	 * @param false|object|array $bool The result object or array. Default false.
+	 * @param string             $action The type of information being requested from the Plugin Install API.
+	 * @param object             $args Plugin API arguments.
+	 * @return false|object|array Empty object if slug is WP Rocket, default value otherwise
+	 */
+	function rocket_force_info( $bool, $action, $args ) {
+		_deprecated_function( __FUNCTION__ . '()', '3.3.6', '\WP_Rocket\Subscriber\Plugin\Information_Subscriber->exclude_rocket_from_wp_info()' );
+
+		if ( 'plugin_information' === $action && 'wp-rocket' === $args->slug ) {
+			return new stdClass();
+		}
+		return $bool;
+	}
+endif;
+
+if ( ! function_exists( 'rocket_force_info_result' ) ) :
+	/**
+	 * Hack the returned result with our content
+	 *
+	 * @since 1.0
+	 * @deprecated 3.3.6
+	 *
+	 * @param object|WP_Error $res Response object or WP_Error.
+	 * @param string          $action The type of information being requested from the Plugin Install API.
+	 * @param object          $args Plugin API arguments.
+	 * @return object|WP_Error Updated response object or WP_Error
+	 */
+	function rocket_force_info_result( $res, $action, $args ) {
+		_deprecated_function( __FUNCTION__ . '()', '3.3.6', '\WP_Rocket\Subscriber\Plugin\Information_Subscriber->add_rocket_info()' );
+
+		if ( 'plugin_information' === $action && isset( $args->slug ) && 'wp-rocket' === $args->slug && isset( $res->external ) && $res->external ) {
+
+			$request = wp_remote_post(
+				WP_ROCKET_WEB_INFO, array(
+					'timeout' => 30,
+					'action'  => 'plugin_information',
+					'request' => serialize( $args ),
+				)
+			);
+
+			if ( is_wp_error( $request ) ) {
+				// translators: %s is an URL.
+				$res = new WP_Error( 'plugins_api_failed', sprintf( __( 'An unexpected error occurred. Something may be wrong with WP-Rocket.me or this server&#8217;s configuration. If you continue to have problems, <a href="%s">contact support</a>.', 'rocket' ), rocket_get_external_url( 'support', array(
+					'utm_source' => 'wp_plugin',
+					'utm_medium' => 'wp_rocket',
+				) ) ), $request->get_error_message() );
+			} else {
+				$res = maybe_unserialize( wp_remote_retrieve_body( $request ) );
+
+				if ( ! is_object( $res ) && ! is_array( $res ) ) {
+					// translators: %s is an URL.
+					$res = new WP_Error( 'plugins_api_failed', sprintf( __( 'An unexpected error occurred. Something may be wrong with WP-Rocket.me or this server&#8217;s configuration. If you continue to have problems, <a href="%s">contact support</a>.', 'rocket' ), rocket_get_external_url( 'support', array(
+						'utm_source' => 'wp_plugin',
+						'utm_medium' => 'wp_rocket',
+					) ) ), wp_remote_retrieve_body( $request ) );
+				}
+			}
+		}
+
+		return $res;
+	}
+endif;
+
+if ( ! function_exists( 'rocket_check_update' ) ) :
+	/**
+	 * When WP sets the update_plugins site transient, we set our own transient, then see rocket_add_response_to_updates
+	 *
+	 * @since 2.6.5
+	 * @deprecated 3.3.6
+	 *
+	 * @param Object $value Site transient object.
+	 */
+	function rocket_check_update( $value ) {
+		_deprecated_function( __FUNCTION__ . '()', '3.3.6', '\WP_Rocket\Subscriber\Plugin\Updater_Subscriber->maybe_add_rocket_update_data()' );
+
+		$timer_update_wprocket = (int) get_site_transient( 'update_wprocket' );
+		$temp_object           = get_site_transient( 'update_wprocket_response' );
+		if ( ( ! isset( $_GET['rocket_force_update'] ) || defined( 'WP_INSTALLING' ) ) &&
+			( 12 * HOUR_IN_SECONDS ) > ( time() - $timer_update_wprocket ) // retry in 12 hours.
+		) {
+			if ( is_object( $value ) && false !== $temp_object ) {
+				if ( version_compare( $temp_object->new_version, WP_ROCKET_VERSION ) > 0 ) {
+					$value->response[ $temp_object->plugin ] = $temp_object;
+				} else {
+					delete_site_transient( 'update_wprocket_response' );
+				}
+			}
+			return $value;
+		}
+
+		if ( isset( $_GET['rocket_force_update'] ) ) {
+			$_SERVER['REQUEST_URI'] = remove_query_arg( 'rocket_force_update' );
+		}
+
+		$plugin_folder = plugin_basename( dirname( WP_ROCKET_FILE ) );
+		$plugin_file   = basename( WP_ROCKET_FILE );
+		$version       = true;
+		if ( ! $value ) {
+			$value               = new stdClass();
+			$value->last_checked = time();
+		}
+
+		$response = wp_remote_get(
+			WP_ROCKET_WEB_CHECK, array(
+				'timeout' => 30,
+			)
+		);
+		if ( ! is_a( $response, 'WP_Error' ) && 200 === $response['response']['code'] && strlen( $response['body'] ) > 32 ) {
+
+			set_site_transient( 'update_wprocket', time() );
+
+			list( $version, $url ) = explode( '|', $response['body'] );
+			if ( version_compare( $version, WP_ROCKET_VERSION ) <= 0 ) {
+				return $value;
+			}
+
+			$temp_array = array(
+				'slug'        => $plugin_folder,
+				'plugin'      => $plugin_folder . '/' . $plugin_file,
+				'new_version' => $version,
+				'url'         => 'https://wp-rocket.me',
+				'package'     => $url,
+			);
+
+			$temp_object = (object) $temp_array;
+			$value->response[ $plugin_folder . '/' . $plugin_file ] = $temp_object;
+
+			set_site_transient( 'update_wprocket_response', $temp_object );
+		} else {
+			set_site_transient( 'update_wprocket', ( time() + ( 11 * HOUR_IN_SECONDS ) ) ); // retry in 1 hour in case of error..
+		}
+		return $value;
+	}
+endif;
+
+if ( ! function_exists( 'rocket_reset_check_update_timer' ) ) :
+	/**
+	 * When WP deletes the update_plugins site transient or updates the plugins, we delete our own transients to avoid another 12 hours waiting
+	 *
+	 * @since 2.6.8
+	 * @deprecated 3.3.6
+	 *
+	 * @param string $transient Transient name.
+	 * @param object $value Transient object.
+	 */
+	function rocket_reset_check_update_timer( $transient = 'update_plugins', $value = null ) {
+		_deprecated_function( __FUNCTION__ . '()', '3.3.6' );
+
+		// $value used by setted.
+		if ( 'update_plugins' === $transient ) {
+			if ( is_null( $value ) || is_object( $value ) && ! isset( $value->response ) ) {
+				delete_site_transient( 'update_wprocket' );
+			}
+		}
+	}
+endif;

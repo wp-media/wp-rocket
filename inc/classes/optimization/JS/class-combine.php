@@ -215,32 +215,37 @@ class Combine extends Abstract_JS_Optimization {
 					'content' => $file_path,
 				];
 			} else {
-				preg_match( '/<script\b([^>]*)>(?:\/\*\s*<!\[CDATA\[\s*\*\/)?\s*([\s\S]*?)\s*(?:\/\*\s*\]\]>\s*\*\/)?<\/script>/msi', $script[0], $matches_inline );
+				preg_match( '/<script\b(?<attrs>[^>]*)>\s*(?:\/\*\s*<!\[CDATA\[\s*\*\/)?\s*(?<content>[\s\S]*?)\s*(?:\/\*\s*\]\]>\s*\*\/)?\s*<\/script>/msi', $script[0], $matches_inline );
 
-				if ( strpos( $matches_inline[1], 'type' ) !== false && ! preg_match( '/type\s*=\s*["\']?(?:text|application)\/(?:(?:x\-)?javascript|ecmascript)["\']?/i', $matches_inline[1] ) ) {
+				if ( strpos( $matches_inline['attrs'], 'type' ) !== false && ! preg_match( '/type\s*=\s*["\']?(?:text|application)\/(?:(?:x\-)?javascript|ecmascript)["\']?/i', $matches_inline['attrs'] ) ) {
 					Logger::debug( 'Inline script is not JS.', [
 						'js combine process',
-						'attributes' => $matches_inline[1],
+						'attributes' => $matches_inline['attrs'],
 					] );
 					return;
 				}
 
-				if ( false !== strpos( $matches_inline[1], 'src=' ) ) {
+				if ( false !== strpos( $matches_inline['attrs'], 'src=' ) ) {
 					Logger::debug( 'Inline script has a `src` attribute.', [
 						'js combine process',
-						'attributes' => $matches_inline[1],
+						'attributes' => $matches_inline['attrs'],
 					] );
 					return;
 				}
 
-				$test_localize_script = str_replace( array( "\r", "\n" ), '', $matches_inline[2] );
-
-				if ( in_array( $test_localize_script, $this->get_localized_scripts(), true ) ) {
+				if ( in_array( $matches_inline['content'], $this->get_localized_scripts(), true ) ) {
+					Logger::debug(
+						'Inline script is a localize script',
+						[
+							'js combine process',
+							'excluded_content' => $matches_inline['content'],
+						]
+					);
 					return;
 				}
 
 				foreach ( $this->get_excluded_inline_content() as $excluded_content ) {
-					if ( false !== strpos( $matches_inline[2], $excluded_content ) ) {
+					if ( false !== strpos( $matches_inline['content'], $excluded_content ) ) {
 						Logger::debug( 'Inline script has excluded content.', [
 							'js combine process',
 							'excluded_content' => $excluded_content,
@@ -250,7 +255,7 @@ class Combine extends Abstract_JS_Optimization {
 				}
 
 				foreach ( $this->get_move_after_inline_scripts() as $move_after_script ) {
-					if ( false !== strpos( $matches_inline[2], $move_after_script ) ) {
+					if ( false !== strpos( $matches_inline['content'], $move_after_script ) ) {
 						$this->move_after[] = $script[0];
 						return;
 					}
@@ -258,7 +263,7 @@ class Combine extends Abstract_JS_Optimization {
 
 				$this->scripts[] = [
 					'type'    => 'inline',
-					'content' => $matches_inline[2],
+					'content' => $matches_inline['content'],
 				];
 			}
 
@@ -426,6 +431,7 @@ class Combine extends Abstract_JS_Optimization {
 			'bs_deferred_loading_',
 			'theChampRedirectionUrl',
 			'theChampFBCommentUrl',
+			'theChampTwitterRedirect',
 			'theChampRegRedirectionUrl',
 			'ESSB_CACHE_URL',
 			'oneall_social_login_providers_',
@@ -436,6 +442,7 @@ class Combine extends Abstract_JS_Optimization {
 			'TL_Const',
 			'bimber_front_microshare',
 			'setAttribute("id"',
+			'setAttribute( "id"',
 			'TribeEventsPro',
 			'peepsotimedata',
 			'wphc_data',
@@ -471,6 +478,48 @@ class Combine extends Abstract_JS_Optimization {
 			'quicklinkOptions',
 			'ct_checkjs_',
 			'WP_Statistics_http',
+			'penci_block_',
+			'omapi_data',
+			'tminusnow',
+			'nfForms',
+			'galleries.gallery_',
+			'wcj_evt.prodID',
+			'advads_tracking_ads',
+			'advadsGATracking.postContext',
+			'woopack_config',
+			'ulp_content_id',
+			'wp-cumulus/tagcloud.swf?r=',
+			'ctSetCookie(\'ct_checkjs\'',
+			'woof_really_curr_tax',
+			'uLogin.customInit',
+			'i18n_no_matching_variations_text',
+			'alsp_map_markers_attrs',
+			'var inc_opt =',
+			'iworks_upprev',
+			'yith_wcevti_tickets',
+			'window.metrilo.ensure_cbuid',
+			'metrilo.event',
+			'wordpress_page_root',
+			'wcct_info',
+			'Springbot.product_id',
+			'pysWooProductData',
+			'dfd-heading',
+			'owl=$("#',
+			'penci_megamenu',
+			'fts_security',
+			'algoliaAutocomplete',
+			'avia_framework_globals',
+			'tabs.easyResponsiveTabs',
+			'searchlocationHeader',
+			'yithautocomplete',
+			'data-parallax-speed',
+			'currency_data=',
+			'cedexisData',
+			'function reenableButton',
+			'#wpnbio-show',
+			'e.Newsletter2GoTrackingObject',
+			'var categories_',
+			'"+nRemaining+"',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
@@ -611,6 +660,33 @@ class Combine extends Abstract_JS_Optimization {
 			'gform_post_render',
 			'mts_view_count',
 			'act_css_tooltip',
+			'window.SLB',
+			'wpt_view_count',
+			'var dateNow',
+			'gallery_product_',
+			'.flo-block-slideshow-',
+			'data=\'api-key=ct-',
+			'ip_common_function()',
+			'("style#gsf-custom-css").append',
+			'a3revWCDynamicGallery_',
+			'#owl-carousel-instagram-',
+			'window.FlowFlowOpts',
+			'jQuery(\'.td_uid_',
+			'jQuery(".slider-',
+			'#dfd-vcard-widget-',
+			'#sf-instagram-widget-',
+			'.woocommerce-tabs-',
+			'penci_megamenu__',
+			'vc_prepareHoverBox',
+			'wp-temp-form-div',
+			'_wswebinarsystem_already_',
+			'#views-extra-css").text',
+			'fusetag.setTargeting',
+			'hit.uptrendsdata.com',
+			'callback:window.renderBadge',
+			'test_run_nf_conditional_logic',
+			'cb_nombre',
+			'$(\'.fl-node-',
 		];
 
 		/**
@@ -648,7 +724,7 @@ class Combine extends Abstract_JS_Optimization {
 				continue;
 			}
 
-			$localized_scripts[] = '/* <![CDATA[ */' . $data . '/* ]]> */';
+			$localized_scripts[] = $data;
 		}
 
 		return $localized_scripts;

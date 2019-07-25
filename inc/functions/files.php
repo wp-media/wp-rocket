@@ -59,7 +59,7 @@ function get_rocket_advanced_cache_file() {
 		[
 			\'cache_dir_path\' => \'' . WP_ROCKET_CACHE_PATH . '\',
 		]
-	) )->maybe_init_process();;' . "\n";
+	) )->maybe_init_process();' . "\n";
 	$buffer .= "} else {\n";
 	// Add a constant to provent include issue.
 	$buffer .= "\tdefine( 'WP_ROCKET_ADVANCED_CACHE_PROBLEM', true );\n";
@@ -139,7 +139,18 @@ function get_rocket_config_file() {
 	$buffer .= '$rocket_cache_mobile_files_tablet = \'' . apply_filters( 'rocket_cache_mobile_files_tablet', 'desktop' ) . "';\n";
 
 	foreach ( $options as $option => $value ) {
-		if ( 'cache_ssl' === $option || 'cache_mobile' === $option || 'do_caching_mobile_files' === $option ) {
+		if ( 'cache_ssl' === $option ) {
+			if ( 1 !== (int) $value ) {
+				if ( rocket_is_ssl_website() ) {
+					update_rocket_option( 'cache_ssl', 1 );
+					$value = 1;
+				}
+			}
+
+			$buffer .= '$rocket_' . $option . ' = ' . (int) $value . ";\n";
+		}
+
+		if ( 'cache_mobile' === $option || 'do_caching_mobile_files' === $option ) {
 			$buffer .= '$rocket_' . $option . ' = ' . (int) $value . ";\n";
 		}
 
