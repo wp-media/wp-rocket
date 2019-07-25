@@ -249,6 +249,7 @@ class CDN {
 			'webp',
 			'bmp',
 			'tiff',
+			'svg',
 		];
 
 		if ( 'css' === $ext || 'js' === $ext ) {
