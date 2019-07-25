@@ -119,6 +119,7 @@ class Plugin {
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Common_Subscribers' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Third_Party_Subscribers' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Hostings_Subscribers' );
+		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Updater_Subscribers' );
 
 		$common_subscribers = [
 			'cdn_subscriber',
@@ -139,6 +140,9 @@ class Plugin {
 			'bridge_subscriber',
 			'ngg_subscriber',
 			'cache_dir_size_check_subscriber',
+			'plugin_updater_common_subscriber',
+			'plugin_information_subscriber',
+			'plugin_updater_subscriber',
 		];
 
 		$subscribers = array_merge( $subscribers, $common_subscribers );

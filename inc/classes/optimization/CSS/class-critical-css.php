@@ -190,6 +190,8 @@ class Critical_CSS {
 				'karma-slider',
 				'tt-gallery',
 				'xlwcty_thankyou',
+				'fusion_template',
+				'blocks',
 			]
 		);
 
@@ -246,6 +248,7 @@ class Critical_CSS {
 				'karma-slider-category',
 				'truethemes-gallery-category',
 				'coupon_campaign',
+				'element_category',
 			]
 		);
 

@@ -18,16 +18,17 @@ class Cache_Dir_Size_Check_Subscriber implements Subscriber_Interface {
 	/**
 	 * Maximum allowed size
 	 */
-	const MAX_SIZE = 1073741824;
+	const MAX_SIZE = 10737418240;
 
 	/**
 	 * @inheritDoc
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'cron_schedules' => 'add_schedule',
-			'init'           => 'schedule_cache_dir_size_check',
-			self::CRON_NAME  => 'cache_dir_size_check',
+			'cron_schedules'    => 'add_schedule',
+			'init'              => 'schedule_cache_dir_size_check',
+			self::CRON_NAME     => 'cache_dir_size_check',
+			'wp_rocket_upgrade' => [ 'delete_option_after_upgrade', 11, 2 ],
 		];
 	}
 
@@ -76,6 +77,10 @@ class Cache_Dir_Size_Check_Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function cache_dir_size_check() {
+		if ( 1 === (int) get_option( self::CRON_NAME ) ) {
+			return;
+		}
+
 		$current_blog_id = get_current_blog_id();
 
 		$checks = [
@@ -89,6 +94,23 @@ class Cache_Dir_Size_Check_Subscriber implements Subscriber_Interface {
 			if ( $size > self::MAX_SIZE ) {
 				$this->send_notification( $type );
 			}
+		}
+
+		update_option( self::CRON_NAME, 1 );
+	}
+
+	/**
+	 * Deletes the check size option when updating the plugin
+	 *
+	 * @since 3.3.6
+	 * @author Remy Perona
+	 *
+	 * @param string $new_version       Latest WP Rocket version.
+	 * @param string $current_version   Installed WP Rocket version.
+	 */
+	public function delete_option_after_upgrade( $new_version, $current_version ) {
+		if ( version_compare( $current_version, $new_version, '<' ) ) {
+			delete_option( self::CRON_NAME );
 		}
 	}
 

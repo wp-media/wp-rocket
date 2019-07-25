@@ -42,7 +42,6 @@ function rocket_init() {
 	require WP_ROCKET_DEPRECATED_PATH . '3.4.php';
 	require WP_ROCKET_3RD_PARTY_PATH . '3rd-party.php';
 	require WP_ROCKET_COMMON_PATH . 'admin-bar.php';
-	require WP_ROCKET_COMMON_PATH . 'updater.php';
 	require WP_ROCKET_COMMON_PATH . 'emoji.php';
 	require WP_ROCKET_COMMON_PATH . 'embeds.php';
 
@@ -63,7 +62,6 @@ function rocket_init() {
 
 	if ( is_admin() ) {
 		require WP_ROCKET_ADMIN_PATH . 'upgrader.php';
-		require WP_ROCKET_ADMIN_PATH . 'updater.php';
 		require WP_ROCKET_ADMIN_PATH . 'options.php';
 		require WP_ROCKET_ADMIN_PATH . 'admin.php';
 		require WP_ROCKET_ADMIN_UI_PATH . 'enqueue.php';

@@ -29,36 +29,6 @@ function rocket_need_api_key() {
 }
 
 /**
- * Add Rocket informations into USER_AGENT
- *
- * @since 1.1.0
- *
- * @param string $user_agent User Agent value.
- * @return string WP Rocket user agent
- */
-function rocket_user_agent( $user_agent ) {
-	$consumer_key = '';
-	if ( isset( $_POST[ WP_ROCKET_SLUG ]['consumer_key'] ) ) {
-		$consumer_key = $_POST[ WP_ROCKET_SLUG ]['consumer_key'];
-	} elseif ( '' !== (string) get_rocket_option( 'consumer_key' ) ) {
-		$consumer_key = (string) get_rocket_option( 'consumer_key' );
-	}
-
-	$consumer_email = '';
-	if ( isset( $_POST[ WP_ROCKET_SLUG ]['consumer_email'] ) ) {
-		$consumer_email = $_POST[ WP_ROCKET_SLUG ]['consumer_email'];
-	} elseif ( '' !== (string) get_rocket_option( 'consumer_email' ) ) {
-		$consumer_email = (string) get_rocket_option( 'consumer_email' );
-	}
-
-	$bonus       = ! get_rocket_option( 'do_beta' ) ? '' : '+';
-	$php_version = preg_replace( '@^(\d\.\d+).*@', '\1', phpversion() );
-	$new_ua      = sprintf( '%s;WP-Rocket|%s%s|%s|%s|%s|%s;', $user_agent, WP_ROCKET_VERSION, $bonus, $consumer_key, $consumer_email, esc_url( home_url() ), $php_version );
-
-	return $new_ua;
-}
-
-/**
  * Renew all boxes for everyone if $uid is missing
  *
  * @since 1.1.10
@@ -133,27 +103,6 @@ function create_rocket_uniqid() {
 }
 
 /**
- * Force our user agent header when we hit our urls
- *
- * @since 2.4
- *
- * @param array  $request An array of request arguments.
- * @param string $url     Requested URL.
- * @return array An array of requested arguments
- */
-function rocket_add_own_ua( $request, $url ) {
-	if ( ! is_string( $url ) ) {
-		return $request;
-	}
-
-	if ( strpos( $url, 'wp-rocket.me' ) !== false ) {
-		$request['user-agent'] = rocket_user_agent( $request['user-agent'] );
-	}
-	return $request;
-}
-add_filter( 'http_request_args', 'rocket_add_own_ua', 10, 3 );
-
-/**
  * Gets names of all active plugins.
  *
  * @since 2.11 Only get the name
@@ -175,10 +124,25 @@ function rocket_get_active_plugins() {
 /**
  * Check if the whole website is on the SSL protocol
  *
+ * @since 3.3.6 Use the superglobal $_SERVER values to detect SSL.
  * @since 2.7
  */
 function rocket_is_ssl_website() {
-	return 'https' === rocket_extract_url_component( home_url(), PHP_URL_SCHEME );
+	if ( isset( $_SERVER['HTTPS'] ) ) {
+		$https = sanitize_text_field( wp_unslash( $_SERVER['HTTPS'] ) );
+
+		if ( 'on' === strtolower( $https ) ) {
+			return true;
+		}
+
+		if ( '1' === (string) $https ) {
+			return true;
+		}
+	} elseif ( isset( $_SERVER['SERVER_PORT'] ) && '443' === (string) sanitize_text_field( wp_unslash( $_SERVER['SERVER_PORT'] ) ) ) {
+		return true;
+	}
+
+	return false;
 }
 
 /**
