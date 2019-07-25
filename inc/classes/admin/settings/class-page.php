@@ -890,7 +890,7 @@ class Page {
 					'description' => __( 'Prevents others from embedding content from your site, prevents you from embedding content from other (non-whitelisted) sites, and removes JavaScript requests related to WordPress embeds', 'rocket' ),
 					'page'        => 'media',
 				],
-				'webp_section' => [
+				'webp_section'     => [
 					'title'       => 'WebP',
 					'type'        => 'fields_container',
 					'description' => '',
@@ -965,12 +965,12 @@ class Page {
 					'default'           => 1,
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
-				'cache_webp' => [
-					'type' => 'checkbox',
-					'label' => __( 'Enable WebP support', 'rocket' ),
-					'section' => 'webp_section',
-					'page' => 'media',
-					'default' => 0,
+				'cache_webp'       => [
+					'type'              => 'checkbox',
+					'label'             => __( 'Enable WebP support', 'rocket' ),
+					'section'           => 'webp_section',
+					'page'              => 'media',
+					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
 			]
