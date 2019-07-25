@@ -439,7 +439,6 @@ class Page {
 		$user_cache_beacon   = $this->beacon->get_suggest( 'user_cache' );
 		$nonce_beacon        = $this->beacon->get_suggest( 'nonce' );
 		$cache_life_beacon   = $this->beacon->get_suggest( 'cache_lifespan' );
-		$cache_ssl_beacon    = $this->beacon->get_suggest( 'cache_ssl' );
 
 		$this->settings->add_page_section(
 			'cache',
@@ -860,7 +859,7 @@ class Page {
 			'media',
 			[
 				'title'            => __( 'Media', 'rocket' ),
-				'menu_description' => __( 'LazyLoad, emojis, embeds', 'rocket' ),
+				'menu_description' => __( 'LazyLoad, emojis, embeds, WebP', 'rocket' ),
 			]
 		);
 
@@ -891,6 +890,12 @@ class Page {
 					'description' => __( 'Prevents others from embedding content from your site, prevents you from embedding content from other (non-whitelisted) sites, and removes JavaScript requests related to WordPress embeds', 'rocket' ),
 					'page'        => 'media',
 				],
+				'webp_section' => [
+					'title'       => 'WebP',
+					'type'        => 'fields_container',
+					'description' => '',
+					'page'        => 'media',
+				],
 			]
 		);
 
@@ -909,7 +914,7 @@ class Page {
 					'input_attr'        => [
 						'disabled' => ( rocket_avada_maybe_disable_lazyload() || rocket_maybe_disable_lazyload() ) ? 1 : 0,
 					],
-					'description'       => rocket_avada_maybe_disable_lazyload() ? _x('Lazyload for images is currently activated in Avada. If you want to use WP Rocket’s LazyLoad, disable this option in Avada.', 'Avada', 'rocket' ) : '',
+					'description'       => rocket_avada_maybe_disable_lazyload() ? _x( 'Lazyload for images is currently activated in Avada. If you want to use WP Rocket’s LazyLoad, disable this option in Avada.', 'Avada', 'rocket' ) : '',
 				],
 				'lazyload_iframes' => [
 					'container_class'   => [
@@ -958,6 +963,14 @@ class Page {
 					'section'           => 'embeds_section',
 					'page'              => 'media',
 					'default'           => 1,
+					'sanitize_callback' => 'sanitize_checkbox',
+				],
+				'cache_webp' => [
+					'type' => 'checkbox',
+					'label' => __( 'Enable WebP support', 'rocket' ),
+					'section' => 'webp_section',
+					'page' => 'media',
+					'default' => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
 			]
