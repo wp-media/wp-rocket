@@ -80,7 +80,7 @@ class Plugin {
 				[
 					'slug'       => WP_ROCKET_PLUGIN_SLUG,
 					'title'      => WP_ROCKET_PLUGIN_NAME,
-					'capability' => apply_filters( 'rocket_capacity', 'manage_options' ),
+					'capability' => 'rocket_manage_options',
 				]
 			);
 			$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Beacon' );
@@ -143,6 +143,7 @@ class Plugin {
 			'plugin_updater_common_subscriber',
 			'plugin_information_subscriber',
 			'plugin_updater_subscriber',
+			'capabilities_subscriber',
 		];
 
 		$subscribers = array_merge( $subscribers, $common_subscribers );
