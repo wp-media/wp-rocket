@@ -520,6 +520,7 @@ class Combine extends Abstract_JS_Optimization {
 			'e.Newsletter2GoTrackingObject',
 			'var categories_',
 			'"+nRemaining+"',
+			'cartsguru_cart_token',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
