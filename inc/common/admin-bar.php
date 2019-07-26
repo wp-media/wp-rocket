@@ -28,7 +28,7 @@ function rocket_admin_bar( $wp_admin_bar ) {
 		[
 			'id'    => 'wp-rocket',
 			'title' => WP_ROCKET_PLUGIN_NAME,
-			'href'  => current_user_can( 'rocket_manage_options' ) ? admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG ) : '#',
+			'href'  => current_user_can( 'rocket_manage_options' ) ? admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG ) : false,
 		]
 	);
 
@@ -62,7 +62,6 @@ function rocket_admin_bar( $wp_admin_bar ) {
 						'parent' => 'wp-rocket',
 						'id'     => 'purge-all',
 						'title'  => __( 'Clear cache', 'rocket' ),
-						'href'   => '#',
 					]
 				);
 
@@ -212,7 +211,7 @@ function rocket_admin_bar( $wp_admin_bar ) {
 			$action = 'preload';
 
 			// Go robot gogo!
-			if ( get_rocket_option( 'manual_preload', 1 ) ) {
+			if ( get_rocket_option( 'manual_preload', 0 ) ) {
 				$i18n_plugin = rocket_has_i18n();
 
 				if ( $i18n_plugin ) {
@@ -222,7 +221,6 @@ function rocket_admin_bar( $wp_admin_bar ) {
 							'parent' => 'wp-rocket',
 							'id'     => 'preload-cache',
 							'title'  => __( 'Preload cache', 'rocket' ),
-							'href'   => '#',
 						]
 					);
 
