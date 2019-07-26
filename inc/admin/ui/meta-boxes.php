@@ -72,7 +72,7 @@ function rocket_display_cache_options_meta_boxes() {
 			$fields = array(
 				'lazyload'         => __( 'LazyLoad for images', 'rocket' ),
 				'lazyload_iframes' => __( 'LazyLoad for iframes/videos', 'rocket' ),
-				'minify_html'      => __( 'Minify/combine HTML', 'rocket' ),
+				'minify_html'      => __( 'Minify HTML', 'rocket' ),
 				'minify_css'       => __( 'Minify/combine CSS', 'rocket' ),
 				'minify_js'        => __( 'Minify/combine JS', 'rocket' ),
 				'cdn'              => __( 'CDN', 'rocket' ),

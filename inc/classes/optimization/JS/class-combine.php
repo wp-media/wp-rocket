@@ -215,32 +215,45 @@ class Combine extends Abstract_JS_Optimization {
 					'content' => $file_path,
 				];
 			} else {
-				preg_match( '/<script\b([^>]*)>(?:\/\*\s*<!\[CDATA\[\s*\*\/)?\s*([\s\S]*?)\s*(?:\/\*\s*\]\]>\s*\*\/)?<\/script>/msi', $script[0], $matches_inline );
+				preg_match( '/<script\b(?<attrs>[^>]*)>\s*(?:\/\*\s*<!\[CDATA\[\s*\*\/)?\s*(?<content>[\s\S]*?)\s*(?:\/\*\s*\]\]>\s*\*\/)?\s*<\/script>/msi', $script[0], $matches_inline );
 
-				if ( isset($matches_inline[1]) && strpos( $matches_inline[1], 'type' ) !== false && ! preg_match( '/type\s*=\s*["\']?(?:text|application)\/(?:(?:x\-)?javascript|ecmascript)["\']?/i', $matches_inline[1] ) ) {
+				if (preg_last_error() == PREG_BACKTRACK_LIMIT_ERROR) {
+					Logger::debug( 'PCRE regex execution Catastrophic Backtracking', [
+						'inline JS backtracking error',
+						'content' => $matches_inline['content'],
+					] );
+					return;
+				}
+
+				if ( isset( $matches_inline['attrs'] ) && strpos( $matches_inline['attrs'], 'type' ) !== false && ! preg_match( '/type\s*=\s*["\']?(?:text|application)\/(?:(?:x\-)?javascript|ecmascript)["\']?/i', $matches_inline['attrs'] ) ) {
 					Logger::debug( 'Inline script is not JS.', [
 						'js combine process',
-						'attributes' => $matches_inline[1],
+						'attributes' => $matches_inline['attrs'],
 					] );
 					return;
 				}
 
-				if ( isset($matches_inline[1]) && false !== strpos( $matches_inline[1], 'src=' ) ) {
+				if ( isset( $matches_inline['attrs'] ) && false !== strpos( $matches_inline['attrs'], 'src=' ) ) {
 					Logger::debug( 'Inline script has a `src` attribute.', [
 						'js combine process',
-						'attributes' => $matches_inline[1],
+						'attributes' => $matches_inline['attrs'],
 					] );
 					return;
 				}
 
-				$test_localize_script = str_replace( array( "\r", "\n" ), '', $matches_inline[2] );
-
-				if ( in_array( $test_localize_script, $this->get_localized_scripts(), true ) ) {
+				if ( in_array( $matches_inline['content'], $this->get_localized_scripts(), true ) ) {
+					Logger::debug(
+						'Inline script is a localize script',
+						[
+							'js combine process',
+							'excluded_content' => $matches_inline['content'],
+						]
+					);
 					return;
 				}
 
 				foreach ( $this->get_excluded_inline_content() as $excluded_content ) {
-					if ( isset($matches_inline[2]) && false !== strpos( $matches_inline[2], $excluded_content ) ) {
+					if ( isset( $matches_inline['content'] ) && false !== strpos( $matches_inline['content'], $excluded_content ) ) {
 						Logger::debug( 'Inline script has excluded content.', [
 							'js combine process',
 							'excluded_content' => $excluded_content,
@@ -250,7 +263,7 @@ class Combine extends Abstract_JS_Optimization {
 				}
 
 				foreach ( $this->get_move_after_inline_scripts() as $move_after_script ) {
-					if ( isset($matches_inline[2]) && false !== strpos( $matches_inline[2], $move_after_script ) ) {
+					if ( isset( $matches_inline['content'] ) && false !== strpos( $matches_inline['content'], $move_after_script ) ) {
 						$this->move_after[] = $script[0];
 						return;
 					}
@@ -258,7 +271,7 @@ class Combine extends Abstract_JS_Optimization {
 
 				$this->scripts[] = [
 					'type'    => 'inline',
-					'content' => $matches_inline[2],
+					'content' => $matches_inline['content'],
 				];
 			}
 
@@ -494,6 +507,28 @@ class Combine extends Abstract_JS_Optimization {
 			'yith_wcevti_tickets',
 			'window.metrilo.ensure_cbuid',
 			'metrilo.event',
+			'wordpress_page_root',
+			'wcct_info',
+			'Springbot.product_id',
+			'pysWooProductData',
+			'dfd-heading',
+			'owl=$("#',
+			'penci_megamenu',
+			'fts_security',
+			'algoliaAutocomplete',
+			'avia_framework_globals',
+			'tabs.easyResponsiveTabs',
+			'searchlocationHeader',
+			'yithautocomplete',
+			'data-parallax-speed',
+			'currency_data=',
+			'cedexisData',
+			'function reenableButton',
+			'#wpnbio-show',
+			'e.Newsletter2GoTrackingObject',
+			'var categories_',
+			'"+nRemaining+"',
+			'cartsguru_cart_token',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
@@ -649,6 +684,18 @@ class Combine extends Abstract_JS_Optimization {
 			'jQuery(".slider-',
 			'#dfd-vcard-widget-',
 			'#sf-instagram-widget-',
+			'.woocommerce-tabs-',
+			'penci_megamenu__',
+			'vc_prepareHoverBox',
+			'wp-temp-form-div',
+			'_wswebinarsystem_already_',
+			'#views-extra-css").text',
+			'fusetag.setTargeting',
+			'hit.uptrendsdata.com',
+			'callback:window.renderBadge',
+			'test_run_nf_conditional_logic',
+			'cb_nombre',
+			'$(\'.fl-node-',
 		];
 
 		/**
@@ -686,7 +733,7 @@ class Combine extends Abstract_JS_Optimization {
 				continue;
 			}
 
-			$localized_scripts[] = '/* <![CDATA[ */' . $data . '/* ]]> */';
+			$localized_scripts[] = $data;
 		}
 
 		return $localized_scripts;
