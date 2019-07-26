@@ -967,7 +967,7 @@ class Page {
 				],
 				'cache_webp'       => [
 					'type'              => 'checkbox',
-					'label'             => __( 'Enable WebP support', 'rocket' ),
+					'label'             => __( 'Enable WebP caching', 'rocket' ),
 					'section'           => 'webp_section',
 					'page'              => 'media',
 					'default'           => 0,
