@@ -57,7 +57,6 @@ class Preload_Subscriber implements Subscriber_Interface {
 				[ 'notice_preload_complete' ],
 			],
 			'admin_post_rocket_stop_preload'  => [ 'do_admin_post_stop_preload' ],
-			'rocket_purge_time_event'         => [ 'run_preload', 11 ],
 			'pagely_cache_purge_after'        => [ 'run_preload', 11 ],
 			'update_option_' . WP_ROCKET_SLUG => [
 				[ 'maybe_launch_preload', 11, 2 ],
@@ -243,7 +242,7 @@ class Preload_Subscriber implements Subscriber_Interface {
 		$status = 'success';
 		// translators: %1$s = Number of pages preloaded.
 		$message = '<p>' . sprintf( _n( 'Preload: %1$s uncached page has now been preloaded. (refresh to see progress)', 'Preload: %1$s uncached pages have now been preloaded. (refresh to see progress)', $running, 'rocket' ), number_format_i18n( $running ) ) . '</p>';
-		
+
 		if ( defined( 'WP_ROCKET_DEBUG' ) && WP_ROCKET_DEBUG ) {
 
 			$errors = get_transient( 'rocket_preload_errors' );
