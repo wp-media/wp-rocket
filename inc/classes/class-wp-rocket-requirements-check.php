@@ -139,8 +139,7 @@ class WP_Rocket_Requirements_Check {
 	 * @author Remy Perona
 	 */
 	public function notice() {
-		/** This filter is documented in inc/admin-bar.php */
-		if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			return;
 		}
 
@@ -174,7 +173,7 @@ class WP_Rocket_Requirements_Check {
 	public function rollback() {
 		check_ajax_referer( 'rocket_rollback' );
 
-		if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			wp_die();
 		}
 

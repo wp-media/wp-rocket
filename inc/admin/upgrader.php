@@ -38,7 +38,7 @@ function rocket_upgrader() {
 		update_option( WP_ROCKET_SLUG, $options );
 	}
 
-	if ( ! rocket_valid_key() && current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) &&
+	if ( ! rocket_valid_key() && current_user_can( 'rocket_manage_options' ) &&
 		( isset( $_GET['page'] ) && 'wprocket' === $_GET['page'] ) ) {
 		add_action( 'admin_notices', 'rocket_need_api_key' );
 	}
