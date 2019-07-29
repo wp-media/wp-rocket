@@ -152,21 +152,6 @@ function rocket_get_dns_prefetch_domains() {
 }
 
 /**
- * Get the interval task cron purge in seconds
- * This setting can be changed from the options page of the plugin
- *
- * @since 1.0
- *
- * @return int The interval task cron purge in seconds
- */
-function get_rocket_purge_cron_interval() {
-	if ( ! get_rocket_option( 'purge_cron_interval' ) || ! get_rocket_option( 'purge_cron_unit' ) ) {
-		return 0;
-	}
-	return (int) ( get_rocket_option( 'purge_cron_interval' ) * constant( get_rocket_option( 'purge_cron_unit' ) ) );
-}
-
-/**
  * Get all uri we don't cache.
  *
  * @since 3.3.2 Exclude embedded URLs
