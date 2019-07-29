@@ -183,7 +183,7 @@ class CDN {
 	 * @return string
 	 */
 	private function get_allowed_paths() {
-		$wp_content_dirname = ltrim( wp_parse_url( content_url(), PHP_URL_PATH ), '/' );
+		$wp_content_dirname = ltrim( trailingslashit( wp_parse_url( content_url(), PHP_URL_PATH ) ), '/' );
 
 		$upload_dirname = '';
 		$uploads_info   = wp_upload_dir();
@@ -192,7 +192,7 @@ class CDN {
 			$upload_dirname = '|' . ltrim( trailingslashit( wp_parse_url( $uploads_info['baseurl'], PHP_URL_PATH ) ), '/' );
 		}
 
-		return $wp_content_dirname . $upload_dirname . '|wp-includes';
+		return $wp_content_dirname . $upload_dirname . '|wp-includes/';
 	}
 
 	/**
@@ -210,6 +210,10 @@ class CDN {
 		}
 
 		$path = wp_parse_url( $url, PHP_URL_PATH );
+
+		if ( ! $path ) {
+			return true;
+		}
 
 		if ( ! isset( $path ) ) {
 			return true;
@@ -292,6 +296,6 @@ class CDN {
 		$files = array_filter( $files );
 		$files = array_flip( array_flip( $files ) );
 
-		return implode( '|', $files );
+		return preg_quote( implode( '|', $files ), '|' );
 	}
 }
