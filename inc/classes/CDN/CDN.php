@@ -223,7 +223,7 @@ class CDN {
 			return true;
 		}
 
-		if ( preg_match( '#^(' . $this->get_excluded_files() . ')$#', $path ) ) {
+		if ( preg_match( '#^(' . $this->get_excluded_files( '#' ) . ')$#', $path ) ) {
 			return true;
 		}
 
@@ -280,9 +280,10 @@ class CDN {
 	 *
 	 * @since 2.5
 	 *
+	 * @param string $delimiter RegEx delimiter.
 	 * @return string A pipe-separated list of excluded files.
 	 */
-	private function get_excluded_files() {
+	private function get_excluded_files( $delimiter ) {
 		$files = $this->options->get( 'cdn_reject_files', [] );
 
 		/**
@@ -294,8 +295,19 @@ class CDN {
 		*/
 		$files = (array) apply_filters( 'rocket_cdn_reject_files', $files );
 		$files = array_filter( $files );
-		$files = array_flip( array_flip( $files ) );
 
-		return preg_quote( implode( '|', $files ), '|' );
+		if ( ! $files ) {
+			return '';
+		}
+
+		$files = array_flip( array_flip( $files ) );
+		$files = array_map(
+			function ( $file ) use ( $delimiter ) {
+				return preg_quote( $file, $delimiter );
+			},
+			$files
+		);
+
+		return implode( '|', $files );
 	}
 }
