@@ -572,7 +572,16 @@ class Settings {
 			return false;
 		}
 
-		$hosts   = get_rocket_cnames_host( [ 'all', 'css_and_js', 'css', 'js' ] );
+		/**
+		 * Filters the allowed hosts for optimization
+		 *
+		 * @since 3.4
+		 * @author Remy Perona
+		 *
+		 * @param array $hosts Allowed hosts.
+		 * @param array $zones Zones to check available hosts.
+		 */
+		$hosts   = apply_filters( 'rocket_cdn_hosts', [], [ 'all', 'css_and_js', 'css', 'js' ] );
 		$hosts[] = wp_parse_url( WP_CONTENT_URL, PHP_URL_HOST );
 		$langs   = get_rocket_i18n_uri();
 

@@ -63,7 +63,6 @@ require WP_ROCKET_3RD_PARTY_PATH . 'plugins/security/secupress.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/security/sf-move-login.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/security/wps-hide-login.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/simple-custom-css.php';
-require WP_ROCKET_3RD_PARTY_PATH . 'plugins/wp-retina-2x.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/varnish-http-purge.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/thrive-leads.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/mailchimp.php';
@@ -80,4 +79,3 @@ require WP_ROCKET_3RD_PARTY_PATH . 'themes/studiopress.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'themes/uncode.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'themes/impreza.php';
 
-require WP_ROCKET_3RD_PARTY_PATH . 'aqua-resizer.php';

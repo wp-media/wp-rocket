@@ -120,7 +120,7 @@ class Abstract_JS_Optimization extends Abstract_Optimization {
 	 * @return string
 	 */
 	protected function get_minify_url( $filename ) {
-		$minify_url = get_rocket_cdn_url( $this->minify_base_url . $filename, $this->get_zones() );
+		$minify_url = $this->minify_base_url . $filename;
 
 		/**
 		 * Filters JS file URL with CDN hostname

@@ -132,14 +132,7 @@ function is_rocket_generate_caching_mobile_files() {
  * return Array An array of domain names to DNS prefetch
  */
 function rocket_get_dns_prefetch_domains() {
-	$cdn_cnames = get_rocket_cdn_cnames( array( 'all', 'images', 'css_and_js', 'css', 'js' ) );
-
-	// Don't add CNAMES if CDN is disabled.
-	if ( ! get_rocket_option( 'cdn' ) || is_rocket_post_excluded_option( 'cdn' ) ) {
-		$cdn_cnames = array();
-	}
-
-	$domains = array_merge( $cdn_cnames, (array) get_rocket_option( 'dns_prefetch' ) );
+	$domains = (array) get_rocket_option( 'dns_prefetch' );
 
 	/**
 	 * Filter list of domains to prefetch DNS
@@ -392,76 +385,6 @@ function get_rocket_cache_reject_ua() {
 	$ua = implode( '|', $ua );
 
 	return str_replace( array( ' ', '\\\\ ' ), '\\ ', $ua );
-}
-
-/**
- * Get all files we don't allow to get in CDN.
- *
- * @since 2.5
- *
- * @return string A pipe-separated list of rejected files.
- */
-function get_rocket_cdn_reject_files() {
-	$files = get_rocket_option( 'cdn_reject_files', [] );
-
-	/**
-	 * Filter the rejected files.
-	 *
-	 * @since 2.5
-	 *
-	 * @param array $files List of rejected files.
-	*/
-	$files = (array) apply_filters( 'rocket_cdn_reject_files', $files );
-	$files = array_filter( $files );
-	$files = array_flip( array_flip( $files ) );
-
-	return implode( '|', $files );
-}
-
-/**
- * Get all CNAMES.
- *
- * @since 2.1
- * @since 3.0 Don't check for WP Rocket CDN option activated to be able to use the function on Hosting with CDN auto-enabled.
- *
- * @param  string $zone List of zones. Default is 'all'.
- * @return array        List of CNAMES
- */
-function get_rocket_cdn_cnames( $zone = 'all' ) {
-	$hosts  = [];
-	$cnames = get_rocket_option( 'cdn_cnames', [] );
-
-	if ( $cnames ) {
-		$cnames_zone = get_rocket_option( 'cdn_zone', [] );
-		$zone        = (array) $zone;
-
-		foreach ( $cnames as $k => $_urls ) {
-			if ( ! in_array( $cnames_zone[ $k ], $zone, true ) ) {
-				continue;
-			}
-
-			$_urls = explode( ',', $_urls );
-			$_urls = array_map( 'trim', $_urls );
-
-			foreach ( $_urls as $url ) {
-				$hosts[] = $url;
-			}
-		}
-	}
-
-	/**
-	 * Filter all CNAMES.
-	 *
-	 * @since 2.7
-	 *
-	 * @param array $hosts List of CNAMES.
-	 */
-	$hosts = (array) apply_filters( 'rocket_cdn_cnames', $hosts );
-	$hosts = array_filter( $hosts );
-	$hosts = array_flip( array_flip( $hosts ) );
-	$hosts = array_values( $hosts );
-
-	return $hosts;
 }
 
 /**

@@ -257,7 +257,7 @@ function rocket_get_cache_busting_paths( $filename, $extension ) {
 	$cache_busting_path     = WP_ROCKET_CACHE_BUSTING_PATH . $blog_id;
 	$filename               = rocket_realpath( rtrim( str_replace( array( ' ', '%20' ), '-', $filename ) ) );
 	$cache_busting_filepath = $cache_busting_path . $filename;
-	$cache_busting_url      = get_rocket_cdn_url( WP_ROCKET_CACHE_BUSTING_URL . $blog_id . $filename, array( 'all', 'css_and_js', $extension ) );
+	$cache_busting_url      = WP_ROCKET_CACHE_BUSTING_URL . $blog_id . $filename;
 
 	switch ( $extension ) {
 		case 'css':
