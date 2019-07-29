@@ -262,7 +262,7 @@ class Page {
 	public function toggle_option() {
 		check_ajax_referer( 'rocket-ajax' );
 
-		if ( ! current_user_can( apply_filters( 'rocket_capability', 'manage_options' ) ) ) {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			wp_die();
 		}
 

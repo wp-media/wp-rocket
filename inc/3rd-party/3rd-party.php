@@ -38,6 +38,7 @@ require WP_ROCKET_3RD_PARTY_PATH . 'plugins/appbanners.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/autoptimize.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/envira-gallery.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/cookies/cookie-notice.php';
+require WP_ROCKET_3RD_PARTY_PATH . 'plugins/cookies/uk-cookie-consent.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/cookies/eu-cookie-law.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/cookies/weepie-cookie-allow.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/cookies/gdpr.php';
@@ -76,3 +77,5 @@ require WP_ROCKET_3RD_PARTY_PATH . 'themes/divi.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'themes/avada.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'themes/studiopress.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'themes/uncode.php';
+require WP_ROCKET_3RD_PARTY_PATH . 'themes/impreza.php';
+

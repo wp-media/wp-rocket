@@ -29,6 +29,7 @@ class Common_Subscribers extends AbstractServiceProvider {
 		'cache_dir_size_check_subscriber',
 		'cdn',
 		'cdn_subscriber',
+		'capabilities_subscriber',
 	];
 
 	/**
@@ -57,5 +58,6 @@ class Common_Subscribers extends AbstractServiceProvider {
 		$this->getContainer()->share( 'cdn_subscriber', 'WP_Rocket\Subscriber\CDN\CDNSubscriber' )
 			->withArgument( $this->getContainer()->get( 'options' ) )
 			->withArgument( $this->getContainer()->get( 'cdn' ) );
+		$this->getContainer()->share( 'capabilities_subscriber', 'WP_Rocket\Subscriber\Plugin\Capabilities_Subscriber' );
 	}
 }
