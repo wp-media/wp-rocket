@@ -185,12 +185,11 @@ class Preload_Subscriber implements Subscriber_Interface {
 	 * @author Remy Perona
 	 */
 	public function notice_preload_triggered() {
-		$screen = get_current_screen();
-
-		// This filter is documented in inc/admin-bar.php.
-		if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		if ( ! current_user_can( 'rocket_preload_cache' ) ) {
 			return;
 		}
+
+		$screen = get_current_screen();
 
 		if ( 'settings_page_wprocket' === $screen->id ) {
 			return;
@@ -222,12 +221,11 @@ class Preload_Subscriber implements Subscriber_Interface {
 	 * @author Remy Perona
 	 */
 	public function notice_preload_running() {
-		$screen = get_current_screen();
-
-		// This filter is documented in inc/admin-bar.php.
-		if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		if ( ! current_user_can( 'rocket_preload_cache' ) ) {
 			return;
 		}
+
+		$screen = get_current_screen();
 
 		if ( 'settings_page_wprocket' !== $screen->id ) {
 			return;
@@ -274,12 +272,11 @@ class Preload_Subscriber implements Subscriber_Interface {
 	 * @author Remy Perona
 	 */
 	public function notice_preload_complete() {
-		$screen = get_current_screen();
-
-		/** This filter is documented in inc/admin-bar.php */
-		if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		if ( ! current_user_can( 'rocket_preload_cache' ) ) {
 			return;
 		}
+
+		$screen = get_current_screen();
 
 		if ( 'settings_page_wprocket' !== $screen->id ) {
 			return;
@@ -313,8 +310,7 @@ class Preload_Subscriber implements Subscriber_Interface {
 			wp_nonce_ays( '' );
 		}
 
-		/** This filter is documented in inc/admin-bar.php */
-		if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		if ( ! current_user_can( 'rocket_preload_cache' ) ) {
 			wp_safe_redirect( wp_get_referer() );
 			die();
 		}

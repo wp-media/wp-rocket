@@ -92,12 +92,11 @@ class Sitemap_Preload_Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function simplexml_notice() {
-		$screen = get_current_screen();
-
-		// This filter is documented in inc/admin-bar.php.
-		if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		if ( ! current_user_can( 'rocket_preload_cache' ) ) {
 			return;
 		}
+
+		$screen = get_current_screen();
 
 		if ( 'settings_page_wprocket' !== $screen->id ) {
 			return;

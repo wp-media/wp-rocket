@@ -155,7 +155,7 @@ class Optimization_Subscriber implements Subscriber_Interface {
 
 		unset( $value['submit_optimize'] );
 
-		if ( ! current_user_can( apply_filters( 'rocket_capability', 'manage_options' ) ) ) {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			return $value;
 		}
 
@@ -186,7 +186,7 @@ class Optimization_Subscriber implements Subscriber_Interface {
 	public function notice_process_running() {
 		$screen = get_current_screen();
 
-		if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			return;
 		}
 
@@ -217,7 +217,7 @@ class Optimization_Subscriber implements Subscriber_Interface {
 	public function notice_process_complete() {
 		$screen = get_current_screen();
 
-		if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			return;
 		}
 

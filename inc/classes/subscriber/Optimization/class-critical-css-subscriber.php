@@ -119,7 +119,7 @@ class Critical_CSS_Subscriber implements Subscriber_Interface {
 	 * @author Remy Perona
 	 */
 	public function critical_css_generation_running_notice() {
-		if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		if ( ! current_user_can( 'rocket_regenerate_critical_css' ) ) {
 			return;
 		}
 
@@ -162,7 +162,7 @@ class Critical_CSS_Subscriber implements Subscriber_Interface {
 	 * @author Remy Perona
 	 */
 	public function critical_css_generation_complete_notice() {
-		if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		if ( ! current_user_can( 'rocket_regenerate_critical_css' ) ) {
 			return;
 		}
 
@@ -219,7 +219,7 @@ class Critical_CSS_Subscriber implements Subscriber_Interface {
 	 * @author Remy Perona
 	 */
 	public function warning_critical_css_dir_permissions() {
-		if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
+		if ( current_user_can( 'rocket_manage_options' )
 			&& ( ! rocket_direct_filesystem()->is_writable( WP_ROCKET_CRITICAL_CSS_PATH ) )
 			&& ( $this->options->get( 'async_css', false ) )
 			&& rocket_valid_key() ) {

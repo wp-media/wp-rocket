@@ -38,7 +38,7 @@ function rocket_upgrader() {
 		update_option( WP_ROCKET_SLUG, $options );
 	}
 
-	if ( ! rocket_valid_key() && current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) &&
+	if ( ! rocket_valid_key() && current_user_can( 'rocket_manage_options' ) &&
 		( isset( $_GET['page'] ) && 'wprocket' === $_GET['page'] ) ) {
 		add_action( 'admin_notices', 'rocket_need_api_key' );
 	}
@@ -418,13 +418,19 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 	}
 
 	if ( version_compare( $actual_version, '3.3.6', '<' ) ) {
-		if ( rocket_is_ssl_website() ) {
-			update_rocket_option( 'cache_ssl', 1 );
-			rocket_generate_config_file();
-		}
-
 		delete_site_transient( 'update_wprocket' );
 		delete_site_transient( 'update_wprocket_response' );
+
+		if ( get_rocket_option( 'do_cloudflare' ) && get_rocket_option( 'cloudflare_auto_settings' ) ) {
+			if ( function_exists( 'set_rocket_cloudflare_browser_cache_ttl' ) ) {
+				set_rocket_cloudflare_browser_cache_ttl( '31536000' );
+			}
+		}
+	}
+
+	if ( rocket_is_ssl_website() ) {
+		update_rocket_option( 'cache_ssl', 1 );
+		rocket_generate_config_file();
 	}
 
 	if ( version_compare( $actual_version, '3.5', '<' ) ) {

@@ -152,6 +152,47 @@ function rocket_get_dns_prefetch_domains() {
 }
 
 /**
+ * Gets the parameters ignored during caching
+ *
+ * These parameters are ignored when checking the query string during caching to allow serving the default cache when they are present
+ *
+ * @since 3.4
+ * @author Remy Perona
+ *
+ * @return array
+ */
+function rocket_get_ignored_parameters() {
+	$params = [
+		'utm_source'      => 1,
+		'utm_medium'      => 1,
+		'utm_campaign'    => 1,
+		'utm_expid'       => 1,
+		'utm_term'        => 1,
+		'utm_content'     => 1,
+		'fb_action_ids'   => 1,
+		'fb_action_types' => 1,
+		'fb_source'       => 1,
+		'fbclid'          => 1,
+		'gclid'           => 1,
+		'age-verified'    => 1,
+		'ao_noptimize'    => 1,
+		'usqp'            => 1,
+		'cn-reloaded'     => 1,
+		'_ga'             => 1,
+	];
+
+	/**
+	 * Filters the ignored parameters
+	 *
+	 * @since 3.4
+	 * @author Remy Perona
+	 *
+	 * @param array $params An array of ignored parameters as array keys.
+	 */
+	return apply_filters( 'rocket_cache_ignored_parameters', $params );
+}
+
+/**
  * Get all uri we don't cache.
  *
  * @since 3.3.2 Exclude embedded URLs
