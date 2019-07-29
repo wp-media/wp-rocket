@@ -215,10 +215,6 @@ class CDN {
 			return true;
 		}
 
-		if ( ! isset( $path ) ) {
-			return true;
-		}
-
 		if ( '/' === $path ) {
 			return true;
 		}
