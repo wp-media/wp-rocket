@@ -153,6 +153,14 @@ function rocket_deactivation() {
 	wp_clear_scheduled_hook( 'rocket_facebook_tracking_cache_update' );
 	wp_clear_scheduled_hook( 'rocket_google_tracking_cache_update' );
 	wp_clear_scheduled_hook( 'rocket_cache_dir_size_check' );
+
+	/**
+	 * WP Rocket deactivation.
+	 *
+	 * @since  3.1.5
+	 * @author Grégory Viguier
+	 */
+	do_action( 'rocket_deactivation' );
 }
 register_deactivation_hook( WP_ROCKET_FILE, 'rocket_deactivation' );
 
@@ -195,6 +203,14 @@ function rocket_activation() {
 
 	// Create advanced-cache.php file.
 	rocket_generate_advanced_cache_file();
+
+	/**
+	 * WP Rocket activation.
+	 *
+	 * @since  3.1.5
+	 * @author Grégory Viguier
+	 */
+	do_action( 'rocket_activation' );
 
 	// Update customer key & licence.
 	wp_remote_get(
