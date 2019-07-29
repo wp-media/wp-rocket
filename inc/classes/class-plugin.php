@@ -145,6 +145,10 @@ class Plugin {
 			'plugin_updater_subscriber',
 		];
 
+		if ( \rocket_valid_key() ) {
+			$common_subscribers[] = 'automatic_cache_purge_subscriber';
+		}
+
 		$subscribers = array_merge( $subscribers, $common_subscribers );
 
 		foreach ( $subscribers as $subscriber ) {
