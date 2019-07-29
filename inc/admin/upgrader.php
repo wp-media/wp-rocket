@@ -426,5 +426,10 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		delete_site_transient( 'update_wprocket' );
 		delete_site_transient( 'update_wprocket_response' );
 	}
+
+	if ( version_compare( $actual_version, '3.5', '<' ) ) {
+		wp_clear_scheduled_hook( 'rocket_purge_time_event' );
+		rocket_clean_domain();
+	}
 }
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );
