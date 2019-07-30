@@ -32,7 +32,6 @@ class Sitemap_Preload_Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_purge_time_event'         => [ 'preload', 12 ],
 			'pagely_cache_purge_after'        => [ 'preload', 12 ],
 			'update_option_' . WP_ROCKET_SLUG => [ 'maybe_cancel_preload', 10, 2 ],
 			'admin_notices'                   => [ 'simplexml_notice' ],

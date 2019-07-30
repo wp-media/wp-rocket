@@ -127,6 +127,7 @@ class Plugin {
 			'sucuri_subscriber',
 			'facebook_tracking_subscriber',
 			'google_tracking_subscriber',
+			'automatic_cache_purge_subscriber',
 			'preload_subscriber',
 			'sitemap_preload_subscriber',
 			'partial_preload_subscriber',
