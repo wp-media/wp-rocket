@@ -192,8 +192,15 @@ class Automatic_Cache_Purge_Subscriber implements Subscriber_Interface {
 			// Grab cache folders.
 			$host_pattern = '@^' . preg_quote( $file['host'], '@' ) . '@';
 			$sub_dir      = rtrim( $file['path'], '/' );
-			$iterator     = new \DirectoryIterator( $this->cache_path );
-			$iterator     = new \CallbackFilterIterator(
+
+			try {
+				$iterator = new \DirectoryIterator( $this->cache_path );
+			}
+			catch ( \Exception $e ) {
+				continue;
+			}
+
+			$iterator = new \CallbackFilterIterator(
 				$iterator,
 				function ( $current ) use ( $host_pattern, $sub_dir ) {
 					if ( ! $current->isDir() || $current->isDot() ) {
@@ -394,7 +401,14 @@ class Automatic_Cache_Purge_Subscriber implements Subscriber_Interface {
 	public function purge_dir( $dir_path, $file_age_limit ) {
 		$deleted = [];
 
-		foreach ( new \DirectoryIterator( $dir_path ) as $item ) {
+		try {
+			$iterator = new \DirectoryIterator( $dir_path );
+		}
+		catch ( \Exception $e ) {
+			return [];
+		}
+
+		foreach ( $iterator as $item ) {
 			if ( $item->isDot() ) {
 				continue;
 			}
@@ -449,7 +463,14 @@ class Automatic_Cache_Purge_Subscriber implements Subscriber_Interface {
 	 * @return bool             True if empty. False if it contains files.
 	 */
 	public function is_dir_empty( $dir_path ) {
-		foreach ( new \DirectoryIterator( $dir_path ) as $item ) {
+		try {
+			$iterator = new \DirectoryIterator( $dir_path );
+		}
+		catch ( \Exception $e ) {
+			return [];
+		}
+
+		foreach ( $iterator as $item ) {
 			if ( $item->isDot() ) {
 				continue;
 			}
