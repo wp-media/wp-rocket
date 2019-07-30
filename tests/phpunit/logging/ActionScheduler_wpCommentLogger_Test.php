@@ -89,11 +89,11 @@ class ActionScheduler_wpCommentLogger_Test extends ActionScheduler_UnitTestCase 
 	public function test_execution_comments() {
 		$action_id = as_schedule_single_action( time(), 'a hook' );
 		$logger = ActionScheduler::logger();
-		$started = new ActionScheduler_LogEntry( $action_id, 'action started' );
-		$finished = new ActionScheduler_LogEntry( $action_id, 'action complete' );
+		$started = new ActionScheduler_LogEntry( $action_id, 'action started via Unit Tests' );
+		$finished = new ActionScheduler_LogEntry( $action_id, 'action complete via Unit Tests' );
 
 		$runner = new ActionScheduler_QueueRunner();
-		$runner->run();
+		$runner->run( 'Unit Tests' );
 
 		$logs = $logger->get_logs( $action_id );
 		$this->assertTrue( in_array( $this->log_entry_to_array( $started ), $this->log_entry_to_array( $logs ) ) );
@@ -105,12 +105,12 @@ class ActionScheduler_wpCommentLogger_Test extends ActionScheduler_UnitTestCase 
 		add_action( $hook, array( $this, '_a_hook_callback_that_throws_an_exception' ) );
 		$action_id = as_schedule_single_action( time(), $hook );
 		$logger = ActionScheduler::logger();
-		$started = new ActionScheduler_LogEntry( $action_id, 'action started' );
-		$finished = new ActionScheduler_LogEntry( $action_id, 'action complete' );
-		$failed = new ActionScheduler_LogEntry( $action_id, 'action failed: Execution failed' );
+		$started = new ActionScheduler_LogEntry( $action_id, 'action started via Unit Tests' );
+		$finished = new ActionScheduler_LogEntry( $action_id, 'action complete via Unit Tests' );
+		$failed = new ActionScheduler_LogEntry( $action_id, 'action failed via Unit Tests: Execution failed' );
 
 		$runner = new ActionScheduler_QueueRunner();
-		$runner->run();
+		$runner->run( 'Unit Tests' );
 
 		$logs = $logger->get_logs( $action_id );
 		$this->assertTrue( in_array( $this->log_entry_to_array( $started ), $this->log_entry_to_array( $logs ) ) );

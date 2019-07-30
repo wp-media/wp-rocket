@@ -458,7 +458,7 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 		try {
 			switch ( $row_action_type ) {
 				case 'run' :
-					$this->runner->process_action( $action_id );
+					$this->runner->process_action( $action_id, 'Admin List Table' );
 					break;
 				case 'cancel' :
 					$this->store->cancel_action( $action_id );

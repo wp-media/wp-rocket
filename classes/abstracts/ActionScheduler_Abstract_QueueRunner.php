@@ -44,24 +44,26 @@ abstract class ActionScheduler_Abstract_QueueRunner extends ActionScheduler_Abst
 	 * Process an individual action.
 	 *
 	 * @param int $action_id The action ID to process.
+	 * @param string $context Optional identifer for the context in which this action is being processed, e.g. 'WP CLI' or 'WP Cron'
+	 *        Generally, this should be capitalised and not localised as it's a proper noun.
 	 */
-	public function process_action( $action_id ) {
+	public function process_action( $action_id, $context = '' ) {
 		try {
-			do_action( 'action_scheduler_before_execute', $action_id );
+			do_action( 'action_scheduler_before_execute', $action_id, $context );
 
 			if ( ActionScheduler_Store::STATUS_PENDING !== $this->store->get_status( $action_id ) ) {
-				do_action( 'action_scheduler_execution_ignored', $action_id );
+				do_action( 'action_scheduler_execution_ignored', $action_id, $context );
 				return;
 			}
 
 			$action = $this->store->fetch_action( $action_id );
 			$this->store->log_execution( $action_id );
 			$action->execute();
-			do_action( 'action_scheduler_after_execute', $action_id, $action );
+			do_action( 'action_scheduler_after_execute', $action_id, $action, $context );
 			$this->store->mark_complete( $action_id );
 		} catch ( Exception $e ) {
 			$this->store->mark_failure( $action_id );
-			do_action( 'action_scheduler_failed_execution', $action_id, $e );
+			do_action( 'action_scheduler_failed_execution', $action_id, $e, $context );
 		}
 
 		if ( isset( $action ) && is_a( $action, 'ActionScheduler_Action' ) ) {
@@ -222,7 +224,9 @@ abstract class ActionScheduler_Abstract_QueueRunner extends ActionScheduler_Abst
 	 * Process actions in the queue.
 	 *
 	 * @author Jeremy Pry
+	 * @param string $context Optional identifer for the context in which this action is being processed, e.g. 'WP CLI' or 'WP Cron'
+	 *        Generally, this should be capitalised and not localised as it's a proper noun.
 	 * @return int The number of actions processed.
 	 */
-	abstract public function run();
+	abstract public function run( $context = '' );
 }

@@ -110,7 +110,7 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 				break;
 			}
 
-			$this->process_action( $action_id );
+			$this->process_action( $action_id, 'WP CLI' );
 			$this->progress_bar->tick();
 		}
 

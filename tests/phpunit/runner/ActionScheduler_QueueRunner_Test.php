@@ -108,7 +108,7 @@ class ActionScheduler_QueueRunner_Test extends ActionScheduler_UnitTestCase {
 	}
 
 	public function test_hooked_into_wp_cron() {
-		$next = wp_next_scheduled( ActionScheduler_QueueRunner::WP_CRON_HOOK );
+		$next = wp_next_scheduled( ActionScheduler_QueueRunner::WP_CRON_HOOK, array( 'WP Cron' ) );
 		$this->assertNotEmpty($next);
 	}
 

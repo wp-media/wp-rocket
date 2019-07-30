@@ -19,7 +19,7 @@ ActionScheduler::runner()->run();
 Or trigger the `'action_scheduler_run_queue'` hook and let Action Scheduler do it for you:
 
 ```php
-do_action( 'action_scheduler_run_queue' );
+do_action( 'action_scheduler_run_queue', $context_identifier );
 ```
 
 Further customization can be done by extending the `ActionScheduler_Abstract_QueueRunner` class to create a custom Queue Runner. For an example of a customized queue runner, see the [`ActionScheduler_WPCLI_QueueRunner`](https://github.com/Prospress/action-scheduler/blob/master/classes/ActionScheduler_WPCLI_QueueRunner.php), which is used when running WP CLI.
