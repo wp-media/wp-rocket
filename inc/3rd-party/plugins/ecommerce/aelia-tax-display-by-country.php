@@ -10,8 +10,8 @@ if ( class_exists( 'Aelia\WC\TaxDisplayByCountry\WC_Aelia_Tax_Display_By_Country
 	/**
 	 * Generate a caching file depending to the tax display cookie values
 	 */
-	add_filter( 'rocket_htaccess_mod_rewrite'    , '__return_false' );
-	add_filter( 'rocket_cache_dynamic_cookies'   , 'rocket_add_aelia_tax_display_by_country_dynamic_cookies' );
+	add_filter( 'rocket_htaccess_mod_rewrite' , '__return_false', 68 );
+	add_filter( 'rocket_cache_dynamic_cookies', 'rocket_add_aelia_tax_display_by_country_dynamic_cookies' );
 endif;
 
 /**
@@ -21,8 +21,8 @@ endif;
  * @author Remy Perona
  */
 function rocket_activate_aelia_tax_display_by_country() {
-	add_filter( 'rocket_htaccess_mod_rewrite'    , '__return_false' );
-	add_filter( 'rocket_cache_dynamic_cookies'   , 'rocket_add_aelia_tax_display_by_country_dynamic_cookies' );
+	add_filter( 'rocket_htaccess_mod_rewrite' , '__return_false', 68 );
+	add_filter( 'rocket_cache_dynamic_cookies', 'rocket_add_aelia_tax_display_by_country_dynamic_cookies' );
 
 	// Update the WP Rocket rules on the .htaccess file.
 	flush_rocket_htaccess();
@@ -39,7 +39,7 @@ add_action( 'activate_woocommerce-tax-display-by-country/woocommerce-tax-display
  * @author Remy Perona
  */
 function rocket_deactivate_aelia_tax_display_by_country() {
-	remove_filter( 'rocket_htaccess_mod_rewrite' , '__return_false' );
+	remove_filter( 'rocket_htaccess_mod_rewrite' , '__return_false', 68 );
 	remove_filter( 'rocket_cache_dynamic_cookies', 'rocket_add_aelia_tax_display_by_country_dynamic_cookies' );
 
 	// Update the WP Rocket rules on the .htaccess file.

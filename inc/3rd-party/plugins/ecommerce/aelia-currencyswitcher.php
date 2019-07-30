@@ -30,9 +30,9 @@ if ( class_exists( 'WC_Aelia_CurrencySwitcher' ) ) :
 	/**
 	 * Generate a caching file depending on the currency cookie value
 	 */
-	add_filter( 'rocket_htaccess_mod_rewrite'    , '__return_false' );
-	add_filter( 'rocket_cache_dynamic_cookies'   , 'rocket_add_aelia_currencyswitcher_dynamic_cookies' );
-	add_filter( 'rocket_cache_mandatory_cookies' , 'rocket_add_aelia_currencyswitcher_mandatory_cookie' );
+	add_filter( 'rocket_htaccess_mod_rewrite'   , '__return_false', 64 );
+	add_filter( 'rocket_cache_dynamic_cookies'  , 'rocket_add_aelia_currencyswitcher_dynamic_cookies' );
+	add_filter( 'rocket_cache_mandatory_cookies', 'rocket_add_aelia_currencyswitcher_mandatory_cookie' );
 endif;
 
 /**
@@ -41,9 +41,9 @@ endif;
  * @since 2.7
  */
 function rocket_activate_aelia_currencyswitcher() {
-	add_filter( 'rocket_htaccess_mod_rewrite'    , '__return_false' );
-	add_filter( 'rocket_cache_dynamic_cookies'   , 'rocket_add_aelia_currencyswitcher_dynamic_cookies' );
-	add_filter( 'rocket_cache_mandatory_cookies' , 'rocket_add_aelia_currencyswitcher_mandatory_cookie' );
+	add_filter( 'rocket_htaccess_mod_rewrite'   , '__return_false', 64 );
+	add_filter( 'rocket_cache_dynamic_cookies'  , 'rocket_add_aelia_currencyswitcher_dynamic_cookies' );
+	add_filter( 'rocket_cache_mandatory_cookies', 'rocket_add_aelia_currencyswitcher_mandatory_cookie' );
 
 	// Update the WP Rocket rules on the .htaccess file.
 	flush_rocket_htaccess();
@@ -59,7 +59,7 @@ add_action( 'activate_woocommerce-aelia-currencyswitcher/woocommerce-aelia-curre
  * @since 2.7
  */
 function rocket_deactivate_aelia_currencyswitcher() {
-	remove_filter( 'rocket_htaccess_mod_rewrite'   , '__return_false' );
+	remove_filter( 'rocket_htaccess_mod_rewrite'   , '__return_false', 64 );
 	remove_filter( 'rocket_cache_dynamic_cookies'  , 'rocket_add_aelia_currencyswitcher_dynamic_cookies' );
 	remove_filter( 'rocket_cache_mandatory_cookies', 'rocket_add_aelia_currencyswitcher_mandatory_cookie' );
 
