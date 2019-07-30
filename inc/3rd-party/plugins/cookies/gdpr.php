@@ -9,7 +9,7 @@
 defined( 'ABSPATH' ) || die( 'Cheatin\' uh?' );
 
 if ( class_exists( 'GDPR' ) ) {
-	add_filter( 'rocket_htaccess_mod_rewrite', '__return_false' );
+	add_filter( 'rocket_htaccess_mod_rewrite', '__return_false', 60 );
 	// Create cache version based on value set in gdpr[] cookies.
 	add_filter( 'rocket_cache_dynamic_cookies', 'rocket_get_gdpr_dynamic_cookies' );
 }
@@ -53,7 +53,7 @@ function rocket_get_gdpr_dynamic_cookies( $cookies ) {
  * @author jorditarrida
  */
 function rocket_add_gdpr_mandatory_cookies() {
-	add_filter( 'rocket_htaccess_mod_rewrite', '__return_false' );
+	add_filter( 'rocket_htaccess_mod_rewrite', '__return_false', 60 );
 
 	// Create cache version based on value set in GDPR cookies.
 	add_filter( 'rocket_cache_dynamic_cookies', 'rocket_get_gdpr_dynamic_cookies' );
@@ -73,7 +73,7 @@ add_action( 'activate_gdpr/gdpr.php', 'rocket_add_gdpr_mandatory_cookies', 11 );
  * @author jorditarrida
  */
 function rocket_remove_gdpr_mandatory_cookies() {
-	remove_filter( 'rocket_htaccess_mod_rewrite', '__return_false' );
+	remove_filter( 'rocket_htaccess_mod_rewrite', '__return_false', 60 );
 
 	// Delete the dynamic cookie filter.
 	remove_filter( 'rocket_cache_dynamic_cookies', 'rocket_get_gdpr_dynamic_cookies' );
