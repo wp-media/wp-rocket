@@ -127,7 +127,7 @@ if ( class_exists( 'Jetpack' ) ) :
 		add_filter( 'rocket_cache_mandatory_cookies' , 'rocket_add_jetpack_cookie_law_mandatory_cookie' );
 
 		// Don't add the WP Rocket rewrite rules to avoid issues.
-		add_filter( 'rocket_htaccess_mod_rewrite', '__return_false' );
+		add_filter( 'rocket_htaccess_mod_rewrite', '__return_false', 76 );
 
 		/**
 		 * Add Jetpack cookie when:
@@ -146,8 +146,8 @@ if ( class_exists( 'Jetpack' ) ) :
 				is_active_widget( false, false, 'eu_cookie_law_widget' )
 				&& empty( $rocket_jp_eu_cookie_widget )
 			) {
-				add_filter( 'rocket_htaccess_mod_rewrite'    , '__return_false' );
-				add_filter( 'rocket_cache_mandatory_cookies' , 'rocket_add_jetpack_cookie_law_mandatory_cookie' );
+				add_filter( 'rocket_htaccess_mod_rewrite'   , '__return_false', 76 );
+				add_filter( 'rocket_cache_mandatory_cookies', 'rocket_add_jetpack_cookie_law_mandatory_cookie' );
 
 				// Update the WP Rocket rules on the .htaccess file.
 				flush_rocket_htaccess();
@@ -172,7 +172,7 @@ endif; // End if Jetpack is active check.
  * @author Jeremy Herve
  */
 function rocket_remove_jetpack_cookie_law_mandatory_cookie() {
-	remove_filter( 'rocket_htaccess_mod_rewrite' , '__return_false' );
+	remove_filter( 'rocket_htaccess_mod_rewrite'   , '__return_false', 76 );
 	remove_filter( 'rocket_cache_mandatory_cookies', '_rocket_add_eu_cookie_law_mandatory_cookie' );
 
 	// Update the WP Rocket rules on the .htaccess file.

@@ -32,7 +32,7 @@ if ( function_exists( 'eucookie_start' ) ) :
 	add_action( 'update_option_peadig_eucookie', 'rocket_after_update_eu_cookie_law_options', 10, 2 );
 
 	// Don't add the WP Rocket rewrite rules to avoid issues.
-	add_filter( 'rocket_htaccess_mod_rewrite', '__return_false' );
+	add_filter( 'rocket_htaccess_mod_rewrite', '__return_false', 58 );
 endif;
 
 /**
@@ -41,8 +41,8 @@ endif;
  * @since 2.7
  */
 function rocket_activate_eu_cookie_law() {
-	add_filter( 'rocket_htaccess_mod_rewrite'    , '__return_false' );
-	add_filter( 'rocket_cache_mandatory_cookies' , 'rocket_add_eu_cookie_law_mandatory_cookie' );
+	add_filter( 'rocket_htaccess_mod_rewrite'   , '__return_false', 58 );
+	add_filter( 'rocket_cache_mandatory_cookies', 'rocket_add_eu_cookie_law_mandatory_cookie' );
 
 	// Update the WP Rocket rules on the .htaccess file.
 	flush_rocket_htaccess();
@@ -58,7 +58,7 @@ add_action( 'activate_eu-cookie-law/eu-cookie-law.php', 'rocket_activate_eu_cook
  * @since 2.7
  */
 function rocket_deactivate_eu_cookie_law() {
-	remove_filter( 'rocket_htaccess_mod_rewrite' , '__return_false' );
+	remove_filter( 'rocket_htaccess_mod_rewrite'   , '__return_false', 58 );
 	remove_filter( 'rocket_cache_mandatory_cookies', 'rocket_add_eu_cookie_law_mandatory_cookie' );
 
 	// Update the WP Rocket rules on the .htaccess file.
