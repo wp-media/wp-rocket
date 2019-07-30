@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\Subscriber\Optimization;
+namespace WP_Rocket\Subscriber\Cache;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
