@@ -79,7 +79,7 @@ class Automatic_Cache_Purge_Subscriber implements Subscriber_Interface {
 		return [
 			'init'                => 'schedule_event',
 			'rocket_deactivation' => 'unschedule_event',
-			static::EVENT_NAME    => 'do_event',
+			static::EVENT_NAME    => 'purge_old_files',
 		];
 	}
 
@@ -120,7 +120,7 @@ class Automatic_Cache_Purge_Subscriber implements Subscriber_Interface {
 	 * @access public
 	 * @author Grégory Viguier
 	 */
-	public function do_event() {
+	public function purge_old_files() {
 		$lifespan = $this->get_cache_lifespan();
 
 		if ( ! $lifespan ) {
