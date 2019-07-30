@@ -7,7 +7,7 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
 /**
  * Event subscriber to clear cached files after lifespan.
  *
- * @since  3.5
+ * @since  3.4
  * @author Grégory Viguier
  */
 class Automatic_Cache_Purge_Subscriber implements Subscriber_Interface {
@@ -15,7 +15,7 @@ class Automatic_Cache_Purge_Subscriber implements Subscriber_Interface {
 	/**
 	 * Cron name.
 	 *
-	 * @since  3.5
+	 * @since  3.4
 	 * @author Grégory Viguier
 	 *
 	 * @var string
@@ -25,7 +25,7 @@ class Automatic_Cache_Purge_Subscriber implements Subscriber_Interface {
 	/**
 	 * Path to the global cache folder.
 	 *
-	 * @since  3.5
+	 * @since  3.4
 	 * @access private
 	 * @author Grégory Viguier
 	 *
@@ -36,7 +36,7 @@ class Automatic_Cache_Purge_Subscriber implements Subscriber_Interface {
 	/**
 	 * WP Rocket Options instance.
 	 *
-	 * @since  3.5
+	 * @since  3.4
 	 * @access private
 	 * @author Grégory Viguier
 	 *
@@ -47,7 +47,7 @@ class Automatic_Cache_Purge_Subscriber implements Subscriber_Interface {
 	/**
 	 * Filesystem object.
 	 *
-	 * @since  3.5
+	 * @since  3.4
 	 * @access private
 	 * @author Grégory Viguier
 	 *
@@ -69,7 +69,7 @@ class Automatic_Cache_Purge_Subscriber implements Subscriber_Interface {
 	/**
 	 * Return an array of events that this subscriber wants to listen to.
 	 *
-	 * @since  3.5
+	 * @since  3.4
 	 * @access public
 	 * @author Grégory Viguier
 	 *
@@ -92,7 +92,7 @@ class Automatic_Cache_Purge_Subscriber implements Subscriber_Interface {
 	 * Scheduling the cron event.
 	 * If the task is not programmed, it is automatically added.
 	 *
-	 * @since  3.5
+	 * @since  3.4
 	 * @access public
 	 * @author Grégory Viguier
 	 */
@@ -105,7 +105,7 @@ class Automatic_Cache_Purge_Subscriber implements Subscriber_Interface {
 	/**
 	 * Unschedule the event.
 	 *
-	 * @since  3.5
+	 * @since  3.4
 	 * @access public
 	 * @author Grégory Viguier
 	 */
@@ -116,7 +116,7 @@ class Automatic_Cache_Purge_Subscriber implements Subscriber_Interface {
 	/**
 	 * Perform the event action.
 	 *
-	 * @since  3.5
+	 * @since  3.4
 	 * @access public
 	 * @author Grégory Viguier
 	 */
@@ -134,7 +134,7 @@ class Automatic_Cache_Purge_Subscriber implements Subscriber_Interface {
 		/**
 		 * Filter home URLs that will be searched for old cache files.
 		 *
-		 * @since  3.5
+		 * @since  3.4
 		 * @author Grégory Viguier
 		 *
 		 * @param array $urls           URLs that will be searched for old cache files.
@@ -166,7 +166,7 @@ class Automatic_Cache_Purge_Subscriber implements Subscriber_Interface {
 			/**
 			 * Fires before purging a cache directory.
 			 *
-			 * @since  3.5
+			 * @since  3.4
 			 * @author Grégory Viguier
 			 *
 			 * @param string $url          The home url.
@@ -252,7 +252,7 @@ class Automatic_Cache_Purge_Subscriber implements Subscriber_Interface {
 			/**
 			 * Fires after a cache directory is purged.
 			 *
-			 * @since  3.5
+			 * @since  3.4
 			 * @author Grégory Viguier
 			 *
 		 * @param array $deleted {
@@ -300,7 +300,7 @@ class Automatic_Cache_Purge_Subscriber implements Subscriber_Interface {
 		/**
 		 * Fires after cache directories are purged.
 		 *
-		 * @since  3.5
+		 * @since  3.4
 		 * @author Grégory Viguier
 		 *
 		 * @param array $deleted {
@@ -358,7 +358,7 @@ class Automatic_Cache_Purge_Subscriber implements Subscriber_Interface {
 	 * If no value is filled in the settings, return 0. It means the purge is disabled.
 	 * If the value from the settings is filled but invalid, fallback to the initial value (10 hours).
 	 *
-	 * @since  3.5
+	 * @since  3.4
 	 * @access public
 	 * @author Grégory Viguier
 	 *
@@ -383,7 +383,7 @@ class Automatic_Cache_Purge_Subscriber implements Subscriber_Interface {
 	/**
 	 * Purge a folder from old files.
 	 *
-	 * @since  3.5
+	 * @since  3.4
 	 * @access public
 	 * @author Grégory Viguier
 	 *
@@ -448,7 +448,7 @@ class Automatic_Cache_Purge_Subscriber implements Subscriber_Interface {
 	/**
 	 * Tell if a folder is empty.
 	 *
-	 * @since  3.5
+	 * @since  3.4
 	 * @access public
 	 * @author Grégory Viguier
 	 *

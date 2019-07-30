@@ -7,12 +7,12 @@ if ( ! function_exists( 'get_rocket_purge_cron_interval' ) ) :
 	 * This setting can be changed from the options page of the plugin
 	 *
 	 * @since 1.0
-	 * @deprecated 3.5
+	 * @deprecated 3.4
 	 *
 	 * @return int The interval task cron purge in seconds
 	 */
 	function get_rocket_purge_cron_interval() {
-		_deprecated_function( __FUNCTION__ . '()', '3.5' );
+		_deprecated_function( __FUNCTION__ . '()', '3.4' );
 
 		if ( ! get_rocket_option( 'purge_cron_interval' ) || ! get_rocket_option( 'purge_cron_unit' ) ) {
 			return 0;
@@ -33,13 +33,13 @@ if ( ! function_exists( 'rocket_purge_cron_schedule' ) ) :
 	 *
 	 * @since 1.0
 	 * @since 2.8.9 Add weekly and monthly intervals
-	 * @deprecated 3.5
+	 * @deprecated 3.4
 	 *
 	 * @param Array $schedules An array of intervals used by cron jobs.
 	 * @return Array Updated array of intervals
 	 */
 	function rocket_purge_cron_schedule( $schedules ) {
-		_deprecated_function( __FUNCTION__ . '()', '3.5' );
+		_deprecated_function( __FUNCTION__ . '()', '3.4' );
 
 		if ( 0 < (int) get_rocket_option( 'purge_cron_interval' ) ) {
 			$schedules['rocket_purge'] = array(
@@ -76,10 +76,10 @@ if ( ! function_exists( 'rocket_purge_cron_schedule' ) ) :
 	 * If the task is not programmed, it is automatically triggered
 	 *
 	 * @since 1.0
-	 * @deprecated 3.5
+	 * @deprecated 3.4
 	 */
 	function rocket_purge_cron_scheduled() {
-		_deprecated_function( __FUNCTION__ . '()', '3.5' );
+		_deprecated_function( __FUNCTION__ . '()', '3.4' );
 
 		if ( 0 < (int) get_rocket_option( 'purge_cron_interval' ) && ! wp_next_scheduled( 'rocket_purge_time_event' ) ) {
 			wp_schedule_event( time() + get_rocket_purge_cron_interval(), 'rocket_purge', 'rocket_purge_time_event' );
@@ -94,10 +94,10 @@ if ( ! function_exists( 'do_rocket_purge_cron' ) ) :
 	 *
 	 * @since 1.0
 	 * @since 2.0 Clear cache files for all langs when a plugin translation is activated
-	 * @deprecated 3.5
+	 * @deprecated 3.4
 	 */
 	function do_rocket_purge_cron() {
-		_deprecated_function( __FUNCTION__ . '()', '3.5' );
+		_deprecated_function( __FUNCTION__ . '()', '3.4' );
 
 		// Purge domain cache files.
 		rocket_clean_domain();

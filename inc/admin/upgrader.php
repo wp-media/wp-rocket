@@ -433,7 +433,7 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		rocket_generate_config_file();
 	}
 
-	if ( version_compare( $actual_version, '3.5', '<' ) ) {
+	if ( version_compare( $actual_version, '3.4', '<' ) ) {
 		wp_clear_scheduled_hook( 'rocket_purge_time_event' );
 		rocket_clean_domain();
 	}

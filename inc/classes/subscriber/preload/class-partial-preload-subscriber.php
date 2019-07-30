@@ -107,7 +107,7 @@ class Partial_Preload_Subscriber implements Subscriber_Interface {
 	/**
 	 * Pushes URLs to preload to the queue after cache directories are purged.
 	 *
-	 * @since  3.5
+	 * @since  3.4
 	 * @access public
 	 * @author Grégory Viguier
 	 *
@@ -186,7 +186,7 @@ class Partial_Preload_Subscriber implements Subscriber_Interface {
 		 * Limit the number of URLs to preload.
 		 * The value may change in the future, depending on the results.
 		 *
-		 * @since  3.5
+		 * @since  3.4
 		 * @author Grégory Viguier
 		 *
 		 * @param int $limit Maximum number of URLs to preload at once.

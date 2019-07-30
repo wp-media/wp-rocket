@@ -18,7 +18,7 @@ class Optimization_Subscriber implements Subscriber_Interface {
 	/**
 	 * Optimization process instance.
 	 *
-	 * @since  3.5
+	 * @since  3.4
 	 * @access private
 	 * @author Grégory Viguier
 	 *
@@ -29,7 +29,7 @@ class Optimization_Subscriber implements Subscriber_Interface {
 	/**
 	 * WP Rocket Options instance.
 	 *
-	 * @since  3.5
+	 * @since  3.4
 	 * @access private
 	 * @author Grégory Viguier
 	 *
@@ -68,7 +68,7 @@ class Optimization_Subscriber implements Subscriber_Interface {
 	 * Add a new interval for the cron job.
 	 * This adds a weekly/monthly interval for database optimization.
 	 *
-	 * @since  3.5
+	 * @since  3.4
 	 * @access public
 	 * @author Grégory Viguier
 	 *
