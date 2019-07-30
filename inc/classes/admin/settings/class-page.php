@@ -893,7 +893,15 @@ class Page {
 				'webp_section'     => [
 					'title'       => 'WebP',
 					'type'        => 'fields_container',
-					'description' => '',
+					/**
+					 * Filters the description for the WebP caching option
+					 *
+					 * @since 3.4
+					 * @author Remy Perona
+					 *
+					 * @param string $description Section description.
+					 */
+					'description' => apply_filters( 'rocket_webp_section_description', '' ),
 					'page'        => 'media',
 				],
 			]
