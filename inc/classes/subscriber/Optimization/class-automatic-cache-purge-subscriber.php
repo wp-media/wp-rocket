@@ -58,19 +58,12 @@ class Automatic_Cache_Purge_Subscriber implements Subscriber_Interface {
 	/**
 	 * Constructor.
 	 *
-	 * @param array $args {
-	 *     Required arguments to populate the class properties.
-	 *
-	 *     @type Options $options    Options instance.
-	 *     @type string  $cache_path Path to the global cache folder.
-	 * }
+	 * @param Options_Data $options    Options instance.
+	 * @param string       $cache_path Path to the global cache folder.
 	 */
-	public function __construct( $args ) {
-		foreach ( [ 'options', 'cache_path' ] as $setting ) {
-			if ( isset( $args[ $setting ] ) ) {
-				$this->$setting = $args[ $setting ];
-			}
-		}
+	public function __construct( Options_Data $options, $cache_path ) {
+		$this->options    = $options;
+		$this->cache_path = $cache_path;
 	}
 
 	/**
