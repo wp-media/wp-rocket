@@ -127,6 +127,7 @@ class Plugin {
 			'sucuri_subscriber',
 			'facebook_tracking_subscriber',
 			'google_tracking_subscriber',
+			'automatic_cache_purge_subscriber',
 			'preload_subscriber',
 			'sitemap_preload_subscriber',
 			'partial_preload_subscriber',
@@ -145,10 +146,6 @@ class Plugin {
 			'plugin_updater_subscriber',
 			'capabilities_subscriber',
 		];
-
-		if ( \rocket_valid_key() ) {
-			$common_subscribers[] = 'automatic_cache_purge_subscriber';
-		}
 
 		$subscribers = array_merge( $subscribers, $common_subscribers );
 
