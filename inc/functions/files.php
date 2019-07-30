@@ -1,4 +1,7 @@
 <?php
+
+use WP_Rocket\Logger\Logger;
+
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
@@ -492,8 +495,21 @@ function rocket_clean_minify( $extensions = array( 'js', 'css' ) ) {
 function rocket_clean_cache_busting( $extensions = array( 'js', 'css' ) ) {
 	$extensions = is_string( $extensions ) ? (array) $extensions : $extensions;
 
+	$cache_busting_path = WP_ROCKET_CACHE_BUSTING_PATH . get_current_blog_id();
+
+	if ( ! rocket_direct_filesystem()->is_dir( $cache_busting_path ) ) {
+		rocket_mkdir_p( $cache_busting_path );
+
+		Logger::debug( 'No Cache Busting folder found.', [
+			'mkdir cache busting folder',
+			'cache_busting_path' => $cache_busting_path,
+		] );
+
+		return;
+	}
+
 	try {
-		$dir = new RecursiveDirectoryIterator( WP_ROCKET_CACHE_BUSTING_PATH . get_current_blog_id(), FilesystemIterator::SKIP_DOTS );
+		$dir = new RecursiveDirectoryIterator( $cache_busting_path, FilesystemIterator::SKIP_DOTS );
 	} catch ( \UnexpectedValueException $e ) {
 		// No logging yet.
 		return;
