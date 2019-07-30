@@ -125,7 +125,7 @@ class Beacon {
 			'WordPress Version'        => $wp_version,
 			'WP Rocket Version'        => WP_ROCKET_VERSION,
 			'Theme'                    => $theme->get( 'Name' ),
-			'Plugins Enabled'          => substr( implode( ' - ', rocket_get_active_plugins() ), 0, 200 ),
+			'Plugins Enabled'          => implode( ' - ', rocket_get_active_plugins() ),
 			'WP Rocket Active Options' => implode( ' - ', $active_options ),
 		];
 	}
