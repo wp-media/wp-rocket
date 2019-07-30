@@ -51,16 +51,6 @@ class Scheduler {
 	 * Mark the migration complete.
 	 */
 	public function mark_complete() {
-		$migration_runner   = $this->get_migration_runner();
-		$destination_store  = $migration_runner->get_destination_store();
-		$destination_logger = $migration_runner->get_destination_logger();
-
-		$action_id = $destination_store->find_action( self::HOOK );
-		if ( $action_id ) {
-			$destination_logger->hook_stored_action();
-			$destination_store->mark_complete( $action_id );
-		}
-
 		$this->unschedule_migration();
 
 		\ActionScheduler_DataController::mark_migration_complete();

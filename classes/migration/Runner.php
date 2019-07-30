@@ -132,18 +132,4 @@ class Runner {
 		$this->destination_store->init();
 		$this->destination_logger->init();
 	}
-
-	/**
-	 * Get destination store.
-	 */
-	public function get_destination_store() {
-		return $this->destination_store;
-	}
-
-	/**
-	 * Get destination logger.
-	 */
-	public function get_destination_logger() {
-		return $this->destination_logger;
-	}
 }
