@@ -33,7 +33,6 @@ function rocket_init() {
 	require WP_ROCKET_FUNCTIONS_PATH . 'admin.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'preload.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'formatting.php';
-	require WP_ROCKET_FUNCTIONS_PATH . 'cdn.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'i18n.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'htaccess.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'varnish.php';
@@ -48,10 +47,6 @@ function rocket_init() {
 
 	if ( rocket_valid_key() ) {
 		require WP_ROCKET_COMMON_PATH . 'purge.php';
-
-		if ( 0 < (int) get_rocket_option( 'cdn' ) ) {
-			require WP_ROCKET_FRONT_PATH . 'cdn.php';
-		}
 
 		if ( 0 < (int) get_rocket_option( 'do_cloudflare' ) ) {
 			require WP_ROCKET_FUNCTIONS_PATH . 'cloudflare.php';

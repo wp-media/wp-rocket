@@ -335,8 +335,7 @@ class Remove_Query_String extends Abstract_Optimization {
 	 * @return string
 	 */
 	protected function get_busting_url( $filename, $extension ) {
-		$zones = [ 'all', 'css_and_js', $extension ];
-		$url   = get_rocket_cdn_url( $this->busting_url . $filename, $zones );
+		$url = $this->busting_url . $filename;
 
 		switch ( $extension ) {
 			case 'css':

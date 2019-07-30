@@ -27,6 +27,8 @@ class Common_Subscribers extends AbstractServiceProvider {
 		'critical_css',
 		'critical_css_subscriber',
 		'cache_dir_size_check_subscriber',
+		'cdn',
+		'cdn_subscriber',
 		'capabilities_subscriber',
 	];
 
@@ -54,6 +56,11 @@ class Common_Subscribers extends AbstractServiceProvider {
 		$this->getContainer()->share( 'automatic_cache_purge_subscriber', 'WP_Rocket\Subscriber\Cache\Automatic_Cache_Purge_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'options' ) )
 			->withArgument( WP_ROCKET_CACHE_PATH );
+		$this->getContainer()->share( 'cdn', 'WP_Rocket\CDN\CDN' )
+			->withArgument( $this->getContainer()->get( 'options' ) );
+		$this->getContainer()->share( 'cdn_subscriber', 'WP_Rocket\Subscriber\CDN\CDNSubscriber' )
+			->withArgument( $this->getContainer()->get( 'options' ) )
+			->withArgument( $this->getContainer()->get( 'cdn' ) );
 		$this->getContainer()->share( 'capabilities_subscriber', 'WP_Rocket\Subscriber\Plugin\Capabilities_Subscriber' );
 	}
 }

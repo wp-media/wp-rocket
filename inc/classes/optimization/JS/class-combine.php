@@ -215,7 +215,7 @@ class Combine extends Abstract_JS_Optimization {
 					'content' => $file_path,
 				];
 			} else {
-				preg_match( '/<script\b(?<attrs>[^>]*)>\s*(?:\/\*\s*<!\[CDATA\[\s*\*\/)?\s*(?<content>[\s\S]*?)\s*(?:\/\*\s*\]\]>\s*\*\/)?\s*<\/script>/msi', $script[0], $matches_inline );
+				preg_match( '/<script\b(?<attrs>[^>]*)>(?:\/\*\s*<!\[CDATA\[\s*\*\/)?\s*(?<content>[\s\S]*?)\s*(?:\/\*\s*\]\]>\s*\*\/)?<\/script>/msi', $script[0], $matches_inline );
 
 				if (preg_last_error() == PREG_BACKTRACK_LIMIT_ERROR) {
 					Logger::debug( 'PCRE regex execution Catastrophic Backtracking', [
