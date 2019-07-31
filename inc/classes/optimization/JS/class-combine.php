@@ -505,6 +505,7 @@ class Combine extends Abstract_JS_Optimization {
 			'et_animation_data=',
 			'current_url="',
 			'CustomEvent.prototype=window.Event.prototype',
+			'electro-wc-product-gallery',
 			
 		];
 
