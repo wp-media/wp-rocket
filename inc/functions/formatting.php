@@ -329,7 +329,7 @@ function rocket_url_to_path( $url, $hosts = '' ) {
 	}
 
 	// CDN.
-	if ( isset( $hosts[ $url_host ] ) && 'home' !== $hosts[ $url_host ] ) {
+	if ( get_rocket_option( 'cdn' ) && isset( $hosts[ $url_host ] ) && 'home' !== $hosts[ $url_host ] ) {
 		$url = str_replace( $url_host, wp_parse_url( site_url(), PHP_URL_HOST ), $url );
 	}
 
