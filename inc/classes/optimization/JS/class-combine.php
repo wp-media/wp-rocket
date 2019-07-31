@@ -503,6 +503,7 @@ class Combine extends Abstract_JS_Optimization {
 			'wcct_info',
 			'Springbot.product_id',
 			'et_animation_data=',
+			'current_url="',
 			
 		];
 
