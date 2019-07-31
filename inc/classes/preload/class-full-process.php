@@ -111,6 +111,7 @@ class Full_Process extends \WP_Background_Process {
 	 */
 	public function complete() {
 		set_transient( 'rocket_preload_complete', get_transient( 'rocket_preload_running' ) );
+		set_transient( 'rocket_preload_complete_time', date("Y-m-d h:i:sa") );
 		delete_transient( 'rocket_preload_running' );
 		parent::complete();
 	}

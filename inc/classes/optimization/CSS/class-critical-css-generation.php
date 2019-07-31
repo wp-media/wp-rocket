@@ -85,7 +85,7 @@ class Critical_CSS_Generation extends \WP_Background_Process {
 
 			if ( isset( $data->message ) ) {
 				// translators: %1$s = type of content, %2$s = error message.
-				$transient['items'][] = sprintf( __( 'Critical CSS for %1$s not generated. Error: %2$s', 'rocket' ), $item['type'], $data->message );
+				$transient['items'][] = sprintf( __( 'Critical CSS for %1$s not generated. Error: %2$s (%3$s)', 'rocket' ), $item['type'], $data->message, '<em>' . date("Y-m-d h:i:sa") .'</em>' );
 				set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
 			}
 
@@ -94,7 +94,7 @@ class Critical_CSS_Generation extends \WP_Background_Process {
 
 		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
 			// translators: %1$s = type of content, %2$s = error message.
-			$transient['items'][] = sprintf( __( 'Critical CSS for %1$s not generated. Error: %2$s', 'rocket' ), $item['type'], __( 'The API returned an invalid response code.', 'rocket' ) );
+			$transient['items'][] = sprintf( __( 'Critical CSS for %1$s not generated. Error: %2$s (%3$s)', 'rocket' ), $item['type'], __( 'The API returned an invalid response code.', 'rocket' ), '<em>' . date("Y-m-d h:i:sa") .'</em>' );
 			set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
 			return false;
 		}
@@ -103,7 +103,7 @@ class Critical_CSS_Generation extends \WP_Background_Process {
 
 		if ( ! isset( $data->data ) ) {
 			// translators: %1$s = type of content, %2$s = error message.
-			$transient['items'][] = sprintf( __( 'Critical CSS for %1$s not generated. Error: %2$s', 'rocket' ), $item['type'], __( 'The API returned an empty response.', 'rocket' ) );
+			$transient['items'][] = sprintf( __( 'Critical CSS for %1$s not generated. Error: %2$s (%3$s)', 'rocket' ), $item['type'], __( 'The API returned an empty response.', 'rocket' ), '<em>' . date("Y-m-d h:i:sa") .'</em>' );
 			set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
 			return false;
 		}
@@ -111,7 +111,7 @@ class Critical_CSS_Generation extends \WP_Background_Process {
 		while ( $job_data = $this->get_critical_path( $data->data->id ) ) {
 			if ( 400 === (int) $job_data->status ) {
 				// translators: %1$s = type of content, %2$s = error message.
-				$transient['items'][] = sprintf( __( 'Critical CSS for %1$s not generated. Error: %2$s', 'rocket' ), $item['type'], $job_data->message );
+				$transient['items'][] = sprintf( __( 'Critical CSS for %1$s not generated. Error: %2$s (%3$s)', 'rocket' ), $item['type'], $job_data->message, '<em>' . date("Y-m-d h:i:sa") .'</em>' );
 				set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
 				break;
 			}
@@ -131,17 +131,18 @@ class Critical_CSS_Generation extends \WP_Background_Process {
 				if ( ! $result ) {
 					$transient['items'][] = sprintf(
 						// translators: %1$s = type of content, %2$s = error message.
-						__( 'Critical CSS for %1$s not generated. Error: %2$s', 'rocket' ),
+						__( 'Critical CSS for %1$s not generated. Error: %2$s (%3$s)', 'rocket' ),
 						$item['type'],
 						// translators: %s = critical CSS directory path.
-						sprintf( __( 'The critical CSS content could not be saved as a file in %s.', 'rocket' ), $critical_css_path )
+						sprintf( __( 'The critical CSS content could not be saved as a file in %s.', 'rocket' ), $critical_css_path ),
+						'<em>' . date("Y-m-d h:i:sa") .'</em>'
 					);
 					set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
 					break;
 				}
 
 				// translators: %s = type of content.
-				$transient['items'][] = sprintf( __( 'Critical CSS for %s generated.', 'rocket' ), $item['type'] );
+				$transient['items'][] = sprintf( __( 'Critical CSS for %s generated. (%s)', 'rocket' ), $item['type'], '<em>' . date("Y-m-d h:i:sa") .'</em>' );
 				$transient['generated']++;
 				set_transient( 'rocket_critical_css_generation_process_running', $transient, HOUR_IN_SECONDS );
 
@@ -187,6 +188,7 @@ class Critical_CSS_Generation extends \WP_Background_Process {
 		do_action( 'rocket_critical_css_generation_process_complete' );
 
 		set_transient( 'rocket_critical_css_generation_process_complete', get_transient( 'rocket_critical_css_generation_process_running' ), HOUR_IN_SECONDS );
+		set_transient( 'rocket_critical_css_generation_process_complete_time', date("Y-m-d h:i:sa"), HOUR_IN_SECONDS );
 		delete_transient( 'rocket_critical_css_generation_process_running' );
 
 		parent::complete();

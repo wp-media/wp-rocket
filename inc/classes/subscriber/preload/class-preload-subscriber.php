@@ -1,6 +1,7 @@
 <?php
 namespace WP_Rocket\Subscriber\Preload;
 
+use WP_Rocket\Logger\Logger;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Preload\Homepage;
@@ -239,7 +240,7 @@ class Preload_Subscriber implements Subscriber_Interface {
 
 		$status = 'success';
 		// translators: %1$s = Number of pages preloaded.
-		$message = '<p>' . sprintf( _n( 'Preload: %1$s uncached page has now been preloaded. (refresh to see progress)', 'Preload: %1$s uncached pages have now been preloaded. (refresh to see progress)', $running, 'rocket' ), number_format_i18n( $running ) ) . '</p>';
+		$message = '<p>' . sprintf( _n( 'Preload: %1$s uncached page has now been preloaded. (refresh to see progress) - (%2$s)', 'Preload: %1$s uncached pages have now been preloaded. (refresh to see progress) - (%2$s)', $running, 'rocket' ), number_format_i18n( $running ), '<em>' . date("Y-m-d h:i:sa") .'</em>' ) . '</p>';
 
 		if ( defined( 'WP_ROCKET_DEBUG' ) && WP_ROCKET_DEBUG ) {
 
@@ -288,13 +289,20 @@ class Preload_Subscriber implements Subscriber_Interface {
 			return;
 		}
 
+		$result_timestamp = get_transient( 'rocket_preload_complete_time' );
+
+		if ( false === $result_timestamp ) {
+			return;
+		}
+
 		delete_transient( 'rocket_preload_complete' );
 		delete_transient( 'rocket_preload_errors' );
+		delete_transient( 'rocket_preload_complete_time' );
 
 		\rocket_notice_html(
 			[
 				// translators: %d is the number of pages preloaded.
-				'message' => sprintf( __( 'Preload: %d pages have been cached.', 'rocket' ), $result ),
+				'message' => sprintf( __( 'Preload: %d pages have been cached. (%s)', 'rocket' ), $result, '<em>' . $result_timestamp . '</em>' ),
 			]
 		);
 	}
