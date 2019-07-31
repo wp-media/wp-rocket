@@ -148,7 +148,7 @@ abstract class ActionScheduler_Store extends ActionScheduler_Store_Deprecated {
 	 * @return string
 	 */
 	protected function get_scheduled_date_string( ActionScheduler_Action $action, DateTime $scheduled_date = NULL ) {
-		$next = null === $scheduled_date ? $action->get_schedule()->next() : $scheduled_date;
+		$next = null === $scheduled_date ? $action->get_schedule()->get_date() : $scheduled_date;
 		if ( ! $next ) {
 			return '0000-00-00 00:00:00';
 		}
@@ -165,7 +165,7 @@ abstract class ActionScheduler_Store extends ActionScheduler_Store_Deprecated {
 	 * @return string
 	 */
 	protected function get_scheduled_date_string_local( ActionScheduler_Action $action, DateTime $scheduled_date = NULL ) {
-		$next = null === $scheduled_date ? $action->get_schedule()->next() : $scheduled_date;
+		$next = null === $scheduled_date ? $action->get_schedule()->get_date() : $scheduled_date;
 		if ( ! $next ) {
 			return '0000-00-00 00:00:00';
 		}

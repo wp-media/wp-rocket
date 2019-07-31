@@ -80,31 +80,104 @@ class ActionScheduler_QueueRunner_Test extends ActionScheduler_UnitTestCase {
 		$this->assertTrue( $finished_action->is_finished() );
 	}
 
-	public function test_next_instance_of_action() {
-		$store = ActionScheduler::store();
-		$runner = new ActionScheduler_QueueRunner( $store );
+	public function test_next_instance_of_cron_action() {
+		// Create an action with daily Cron expression (i.e. midnight each day)
+		$random    = md5( rand() );
+		$action_id = ActionScheduler::factory()->cron( $random, array(), null, '0 0 * * *' );
+		$store     = ActionScheduler::store();
+		$runner    = new ActionScheduler_QueueRunner( $store );
 
-		$random = md5(rand());
-		$schedule = new ActionScheduler_IntervalSchedule(as_get_datetime_object('12 hours ago'), DAY_IN_SECONDS);
+		// Make sure the 1st instance of the action is scheduled to occur tomorrow
+		$date = as_get_datetime_object( 'tomorrow' );
+		$date->modify( '-1 minute' );
+		$claim = $store->stake_claim( 10, $date );
+		$this->assertCount( 0, $claim->get_actions() );
 
-		$action = new ActionScheduler_Action( $random, array(), $schedule );
-		$store->save_action( $action );
+		$store->release_claim( $claim );
 
+		$date->modify( '+1 minute' );
+
+		$claim = $store->stake_claim( 10, $date );
+		$actions = $claim->get_actions();
+		$this->assertCount( 1, $actions );
+
+		$fetched_action_id = reset( $actions );
+		$fetched_action    = $store->fetch_action( $fetched_action_id );
+
+		$this->assertEquals( $fetched_action_id, $action_id );
+		$this->assertEquals( $random, $fetched_action->get_hook() );
+		$this->assertEquals( $date->getTimestamp(), $fetched_action->get_schedule()->get_date()->getTimestamp(), '', 1 );
+
+		$store->release_claim( $claim );
+
+		// Make sure the 2nd instance of the cron action is scheduled to occur tomorrow still
+		$runner->process_action( $action_id );
+
+		$claim = $store->stake_claim( 10, $date );
+		$actions = $claim->get_actions();
+		$this->assertCount( 1, $actions );
+
+		$fetched_action_id = reset( $actions );
+		$fetched_action    = $store->fetch_action( $fetched_action_id );
+
+		$this->assertNotEquals( $fetched_action_id, $action_id );
+		$this->assertEquals( $random, $fetched_action->get_hook() );
+		$this->assertEquals( $date->getTimestamp(), $fetched_action->get_schedule()->get_date()->getTimestamp(), '', 1 );
+	}
+
+	public function test_next_instance_of_interval_action() {
+		// Create an action to recur every 24 hours, with the first instance scheduled to run 12 hours ago
+		$random    = md5( rand() );
+		$date      = as_get_datetime_object( '12 hours ago' );
+		$action_id = ActionScheduler::factory()->recurring( $random, array(), $date->getTimestamp(), DAY_IN_SECONDS );
+		$store     = ActionScheduler::store();
+		$runner    = new ActionScheduler_QueueRunner( $store );
+
+		// Make sure the 1st instance of the action is scheduled to occur 12 hours ago
+		$claim = $store->stake_claim( 10, $date );
+		$actions = $claim->get_actions();
+		$this->assertCount( 1, $actions );
+
+		$fetched_action_id = reset( $actions );
+		$fetched_action    = $store->fetch_action( $fetched_action_id );
+
+		$this->assertEquals( $fetched_action_id, $action_id );
+		$this->assertEquals( $random, $fetched_action->get_hook() );
+		$this->assertEquals( $date->getTimestamp(), $fetched_action->get_schedule()->get_date()->getTimestamp(), '', 1 );
+
+		$store->release_claim( $claim );
+
+		// Make sure after the queue is run, the 2nd instance of the action is scheduled to occur in 24 hours
 		$runner->run();
 
-		$claim = $store->stake_claim(10, as_get_datetime_object((DAY_IN_SECONDS - 60).' seconds'));
-		$this->assertCount(0, $claim->get_actions());
-
-		$claim = $store->stake_claim(10, as_get_datetime_object(DAY_IN_SECONDS.' seconds'));
+		$date = as_get_datetime_object( '+1 day' );
+		$claim = $store->stake_claim( 10, $date );
 		$actions = $claim->get_actions();
-		$this->assertCount(1, $actions);
+		$this->assertCount( 1, $actions );
 
-		$action_id = reset($actions);
-		$new_action = $store->fetch_action($action_id);
+		$fetched_action_id = reset( $actions );
+		$fetched_action    = $store->fetch_action( $fetched_action_id );
 
+		$this->assertNotEquals( $fetched_action_id, $action_id );
+		$this->assertEquals( $random, $fetched_action->get_hook() );
+		$this->assertEquals( $date->getTimestamp(), $fetched_action->get_schedule()->get_date()->getTimestamp(), '', 1 );
 
-		$this->assertEquals( $random, $new_action->get_hook() );
-		$this->assertEquals( $schedule->next( as_get_datetime_object() )->getTimestamp(), $new_action->get_schedule()->next( as_get_datetime_object() )->getTimestamp(), '', 1 );
+		$store->release_claim( $claim );
+
+		// Make sure the 3rd instance of the cron action is scheduled for 24 hours from now, as the action was run early, ahead of schedule
+		$runner->process_action( $action_id );
+		$date = as_get_datetime_object( '+1 day' );
+
+		$claim = $store->stake_claim( 10, $date );
+		$actions = $claim->get_actions();
+		$this->assertCount( 1, $actions );
+
+		$fetched_action_id = reset( $actions );
+		$fetched_action    = $store->fetch_action( $fetched_action_id );
+
+		$this->assertNotEquals( $fetched_action_id, $action_id );
+		$this->assertEquals( $random, $fetched_action->get_hook() );
+		$this->assertEquals( $date->getTimestamp(), $fetched_action->get_schedule()->get_date()->getTimestamp(), '', 1 );
 	}
 
 	public function test_hooked_into_wp_cron() {

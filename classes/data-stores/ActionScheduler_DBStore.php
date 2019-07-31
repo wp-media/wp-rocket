@@ -153,15 +153,8 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 			$schedule = new ActionScheduler_NullSchedule();
 		}
 		$group = $data->group ? $data->group : '';
-		if ( $data->status == self::STATUS_PENDING ) {
-			$action = new ActionScheduler_Action( $hook, $args, $schedule, $group );
-		} elseif ( $data->status == self::STATUS_CANCELED ) {
-			$action = new ActionScheduler_CanceledAction( $hook, $args, $schedule, $group );
-		} else {
-			$action = new ActionScheduler_FinishedAction( $hook, $args, $schedule, $group );
-		}
 
-		return $action;
+		return ActionScheduler::factory()->get_stored_action( $data->status, $data->hook, $args, $schedule, $group );
 	}
 
 	/**

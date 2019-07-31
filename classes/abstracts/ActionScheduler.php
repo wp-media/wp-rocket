@@ -173,14 +173,16 @@ abstract class ActionScheduler {
 	 */
 	protected static function is_class_abstract( $class ) {
 		static $abstracts = array(
-			'ActionScheduler'                      => true,
-			'ActionScheduler_Abstract_ListTable'   => true,
-			'ActionScheduler_Abstract_QueueRunner' => true,
-			'ActionScheduler_Lock'                 => true,
-			'ActionScheduler_Logger'               => true,
-			'ActionScheduler_Abstract_Schema'      => true,
-			'ActionScheduler_Store'                => true,
-			'ActionScheduler_TimezoneHelper'       => true,
+			'ActionScheduler'                            => true,
+			'ActionScheduler_Abstract_ListTable'         => true,
+			'ActionScheduler_Abstract_QueueRunner'       => true,
+			'ActionScheduler_Abstract_Schedule'          => true,
+			'ActionScheduler_Abstract_RecurringSchedule' => true,
+			'ActionScheduler_Lock'                       => true,
+			'ActionScheduler_Logger'                     => true,
+			'ActionScheduler_Abstract_Schema'            => true,
+			'ActionScheduler_Store'                      => true,
+			'ActionScheduler_TimezoneHelper'             => true,
 		);
 
 		return isset( $abstracts[ $class ] ) && $abstracts[ $class ];

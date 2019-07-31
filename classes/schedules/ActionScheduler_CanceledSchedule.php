@@ -3,7 +3,7 @@
 /**
  * Class ActionScheduler_SimpleSchedule
  */
-class ActionScheduler_SimpleSchedule extends ActionScheduler_Abstract_Schedule {
+class ActionScheduler_CanceledSchedule extends ActionScheduler_SimpleSchedule {
 
 	/**
 	 * Deprecated property @see $this->__wakeup() for details.
@@ -16,6 +16,17 @@ class ActionScheduler_SimpleSchedule extends ActionScheduler_Abstract_Schedule {
 	 * @return DateTime|null
 	 */
 	public function calculate_next( DateTime $after ) {
+		return null;
+	}
+
+	/**
+	 * Cancelled actions should never have a next schedule, even if get_next()
+	 * is called with $after < $this->scheduled_date.
+	 *
+	 * @param DateTime $after
+	 * @return DateTime|null
+	 */
+	public function get_next( DateTime $after ) {
 		return null;
 	}
 

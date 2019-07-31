@@ -33,7 +33,7 @@ class ActionMigrator_Test extends ActionScheduler_UnitTestCase {
 		$retrieved = $destination->fetch_action( $new_id );
 		$this->assertEquals( $action->get_hook(), $retrieved->get_hook() );
 		$this->assertEqualSets( $action->get_args(), $retrieved->get_args() );
-		$this->assertEquals( $action->get_schedule()->next()->format( 'U' ), $retrieved->get_schedule()->next()->format( 'U' ) );
+		$this->assertEquals( $action->get_schedule()->get_date()->format( 'U' ), $retrieved->get_schedule()->get_date()->format( 'U' ) );
 		$this->assertEquals( $action->get_group(), $retrieved->get_group() );
 		$this->assertEquals( \ActionScheduler_Store::STATUS_PENDING, $destination->get_status( $new_id ) );
 
@@ -75,7 +75,7 @@ class ActionMigrator_Test extends ActionScheduler_UnitTestCase {
 		$retrieved = $destination->fetch_action( $new_id );
 		$this->assertEquals( $action->get_hook(), $retrieved->get_hook() );
 		$this->assertEqualSets( $action->get_args(), $retrieved->get_args() );
-		$this->assertEquals( $action->get_schedule()->next()->format( 'U' ), $retrieved->get_schedule()->next()->format( 'U' ) );
+		$this->assertEquals( $action->get_schedule()->get_date()->format( 'U' ), $retrieved->get_schedule()->get_date()->format( 'U' ) );
 		$this->assertEquals( $action->get_group(), $retrieved->get_group() );
 		$this->assertTrue( $retrieved->is_finished() );
 		$this->assertEquals( \ActionScheduler_Store::STATUS_COMPLETE, $destination->get_status( $new_id ) );
@@ -102,7 +102,7 @@ class ActionMigrator_Test extends ActionScheduler_UnitTestCase {
 		$retrieved = $destination->fetch_action( $new_id );
 		$this->assertEquals( $action->get_hook(), $retrieved->get_hook() );
 		$this->assertEqualSets( $action->get_args(), $retrieved->get_args() );
-		$this->assertEquals( $action->get_schedule()->next()->format( 'U' ), $retrieved->get_schedule()->next()->format( 'U' ) );
+		$this->assertEquals( $action->get_schedule()->get_date()->format( 'U' ), $retrieved->get_schedule()->get_date()->format( 'U' ) );
 		$this->assertEquals( $action->get_group(), $retrieved->get_group() );
 		$this->assertTrue( $retrieved->is_finished() );
 		$this->assertEquals( \ActionScheduler_Store::STATUS_FAILED, $destination->get_status( $new_id ) );
@@ -112,7 +112,7 @@ class ActionMigrator_Test extends ActionScheduler_UnitTestCase {
 		$this->assertInstanceOf( 'ActionScheduler_NullAction', $old_action );
 	}
 
-	public function test_does_not_migrate_canceled_action_from_wpPost_to_db() {
+	public function test_migrate_canceled_action_from_wpPost_to_db() {
 		$source = new ActionScheduler_wpPostStore();
 		$destination = new ActionScheduler_DBStore();
 		$migrator = new ActionMigrator( $source, $destination, $this->get_log_migrator() );
@@ -125,7 +125,14 @@ class ActionMigrator_Test extends ActionScheduler_UnitTestCase {
 
 		$new_id = $migrator->migrate( $action_id );
 
-		$this->assertEquals( 0, $new_id );
+		// ensure we get the same record out of the new store as we stored in the old
+		$retrieved = $destination->fetch_action( $new_id );
+		$this->assertEquals( $action->get_hook(), $retrieved->get_hook() );
+		$this->assertEqualSets( $action->get_args(), $retrieved->get_args() );
+		$this->assertEquals( $action->get_schedule()->get_date()->format( 'U' ), $retrieved->get_schedule()->get_date()->format( 'U' ) );
+		$this->assertEquals( $action->get_group(), $retrieved->get_group() );
+		$this->assertTrue( $retrieved->is_finished() );
+		$this->assertEquals( \ActionScheduler_Store::STATUS_CANCELED, $destination->get_status( $new_id ) );
 
 		// ensure that the record in the old store does not exist
 		$old_action = $source->fetch_action( $action_id );

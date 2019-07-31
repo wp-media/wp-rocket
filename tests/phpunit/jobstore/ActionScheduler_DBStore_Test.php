@@ -36,7 +36,7 @@ class ActionScheduler_DBStore_Test extends ActionScheduler_UnitTestCase {
 		$retrieved = $store->fetch_action( $action_id );
 		$this->assertEquals( $action->get_hook(), $retrieved->get_hook() );
 		$this->assertEqualSets( $action->get_args(), $retrieved->get_args() );
-		$this->assertEquals( $action->get_schedule()->next()->format( 'U' ), $retrieved->get_schedule()->next()->format( 'U' ) );
+		$this->assertEquals( $action->get_schedule()->get_date()->format( 'U' ), $retrieved->get_schedule()->get_date()->format( 'U' ) );
 		$this->assertEquals( $action->get_group(), $retrieved->get_group() );
 	}
 
@@ -334,7 +334,7 @@ class ActionScheduler_DBStore_Test extends ActionScheduler_UnitTestCase {
 
 		$this->assertEquals( $now->format( 'U' ), $store->get_date( $action_id )->format( 'U' ) );
 
-		$next          = $action->get_schedule()->next( $now );
+		$next          = $action->get_schedule()->get_next( $now );
 		$new_action_id = $store->save_action( $action, $next );
 
 		$this->assertEquals( (int) ( $now->format( 'U' ) ) + HOUR_IN_SECONDS, $store->get_date( $new_action_id )->format( 'U' ) );

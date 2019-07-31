@@ -56,6 +56,7 @@ abstract class ActionScheduler_Logger {
 		add_action( 'action_scheduler_reset_action', array( $this, 'log_reset_action' ), 10, 1 );
 		add_action( 'action_scheduler_execution_ignored', array( $this, 'log_ignored_action' ), 10, 2 );
 		add_action( 'action_scheduler_failed_fetch_action', array( $this, 'log_failed_fetch_action' ), 10, 2 );
+		add_action( 'action_scheduler_failed_to_schedule_next_instance', array( $this, 'log_failed_schedule_next_instance' ), 10, 2 );
 	}
 
 	public function hook_stored_action() {
@@ -139,5 +140,9 @@ abstract class ActionScheduler_Logger {
 		}
 
 		$this->log( $action_id, $log_message );
+	}
+
+	public function log_failed_schedule_next_instance( $action_id, Exception $exception ) {
+		$this->log( $action_id, sprintf( __( 'There was a failure scheduling the next instance of this action: %s', 'action-scheduler' ), $exception->getMessage() ) );
 	}
 }

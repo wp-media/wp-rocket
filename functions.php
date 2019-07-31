@@ -48,7 +48,9 @@ function as_schedule_recurring_action( $timestamp, $interval_in_seconds, $hook, 
 /**
  * Schedule an action that recurs on a cron-like schedule.
  *
- * @param int $timestamp The schedule will start on or after this time
+ * @param int $base_timestamp The first instance of the action will be scheduled
+ *        to run at a time calculated after this timestamp matching the cron
+ *        expression. This can be used to delay the first instance of the action.
  * @param string $schedule A cron-link schedule string
  * @see http://en.wikipedia.org/wiki/Cron
  *   *    *    *    *    *    *
@@ -138,10 +140,10 @@ function as_next_scheduled_action( $hook, $args = NULL, $group = '' ) {
 		return false;
 	}
 	$job = ActionScheduler::store()->fetch_action( $job_id );
-	$next = $job->get_schedule()->next();
-	if ( $next ) {
-		return (int)($next->format('U'));
-	} elseif ( NULL === $next ) { // pending async action with NullSchedule
+	$scheduled_date = $job->get_schedule()->get_date();
+	if ( $scheduled_date ) {
+		return (int) $scheduled_date->format( 'U' );
+	} elseif ( NULL === $scheduled_date ) { // pending async action with NullSchedule
 		return true;
 	}
 	return false;
