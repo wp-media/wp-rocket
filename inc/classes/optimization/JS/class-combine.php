@@ -504,6 +504,7 @@ class Combine extends Abstract_JS_Optimization {
 			'Springbot.product_id',
 			'et_animation_data=',
 			'current_url="',
+			'CustomEvent.prototype=window.Event.prototype',
 			
 		];
 
