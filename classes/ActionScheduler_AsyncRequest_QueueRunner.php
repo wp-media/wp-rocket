@@ -50,6 +50,13 @@ class ActionScheduler_AsyncRequest_QueueRunner extends WP_Async_Request {
 	 */
 	protected function handle() {
 		do_action( 'action_scheduler_run_queue', 'Async Request' ); // run a queue in the same way as WP Cron, but declare the Async Request context
+
+		$sleep_seconds = $this->get_sleep_seconds();
+
+		if ( $sleep_seconds ) {
+			sleep( $sleep_seconds );
+		}
+
 		$this->maybe_dispatch();
 	}
 
@@ -70,5 +77,12 @@ class ActionScheduler_AsyncRequest_QueueRunner extends WP_Async_Request {
 	 */
 	protected function allow() {
 		return apply_filters( 'action_scheduler_allow_async_request_runner', true );
+	}
+
+	/**
+	 * Chaining async requests can crash MySQL. A brief sleep call in PHP prevents that.
+	 */
+	protected function get_sleep_seconds() {
+		return apply_filters( 'action_scheduler_async_request_sleep_seconds', 1, $this );
 	}
 }
