@@ -49,6 +49,121 @@ function rocket_sanitize_js( $file ) {
 }
 
 /**
+ * Sanitize and validate JS files to exclude from the minification.
+ *
+ * @since  3.4
+ * @author Remy Perona
+ * @author Grégory Viguier
+ *
+ * @param  string $file filepath to sanitize.
+ * @return string
+ */
+function rocket_validate_js( $file ) {
+	if ( rocket_is_internal_file( $file ) ) {
+		$file = trim( $file );
+		$file = rocket_clean_exclude_file( $file );
+		$file = rocket_sanitize_js( $file );
+
+		return $file;
+	}
+
+	return sanitize_text_field( \rocket_remove_url_protocol( strtok( $file, '?' ) ) );
+}
+
+/**
+ * Check if the passed value is an internal URL (default domain or CDN/Multilingual).
+ *
+ * @since  3.4
+ * @author Remy Perona
+ * @author Grégory Viguier
+ *
+ * @param  string $file string to test.
+ * @return bool
+ */
+function rocket_is_internal_file( $file ) {
+	$file_host = wp_parse_url( $file, PHP_URL_HOST );
+
+	if ( ! $file_host ) {
+		return false;
+	}
+
+	/**
+	 * Filters the allowed hosts for optimization
+	 *
+	 * @since  3.4
+	 * @author Remy Perona
+	 *
+	 * @param array $hosts Allowed hosts.
+	 * @param array $zones Zones to check available hosts.
+	 */
+	$hosts   = apply_filters( 'rocket_cdn_hosts', [], [ 'all', 'css_and_js', 'css', 'js' ] );
+	$hosts[] = wp_parse_url( WP_CONTENT_URL, PHP_URL_HOST );
+	$langs   = get_rocket_i18n_uri();
+
+	// Get host for all langs.
+	if ( $langs ) {
+		foreach ( $langs as $lang ) {
+			$hosts[] = wp_parse_url( $lang, PHP_URL_HOST );
+		}
+	}
+
+	$hosts_index = array_flip( array_unique( $hosts ) );
+
+	return isset( $hosts_index[ $file_host ] );
+}
+
+/**
+ * Sanitize a setting value meant for a textarea.
+ *
+ * @since  3.4
+ * @author Grégory Viguier
+ *
+ * @param  string       $field The field’s name. Can be one of the following:
+ *                             'exclude_css', 'exclude_inline_js', 'exclude_js', 'cache_reject_uri',
+ *                             'cache_reject_ua', 'cache_purge_pages', 'cdn_reject_files'.
+ * @param  array|string $value The value to sanitize.
+ * @return array|null
+ */
+function rocket_sanitize_textarea_field( $field, $value ) {
+	$fields = [
+		'cache_purge_pages'    => [ 'esc_url', 'rocket_clean_exclude_file' ], // Pattern.
+		'cache_reject_cookies' => [ 'rocket_sanitize_key' ],
+		'cache_reject_ua'      => [ 'rocket_sanitize_ua' ], // Pattern.
+		'cache_reject_uri'     => [ 'esc_url', 'rocket_clean_exclude_file' ], // Pattern.
+		'cache_query_strings'  => [ 'rocket_sanitize_key' ],
+		'cdn_reject_files'     => [ 'rocket_clean_exclude_file' ], // Pattern.
+		'dns_prefetch'         => [ 'esc_url' ],
+		'exclude_css'          => [ 'rocket_clean_exclude_file', 'rocket_sanitize_css' ], // Pattern.
+		'exclude_inline_js'    => [ 'sanitize_text_field' ], // Pattern.
+		'exclude_js'           => [ 'rocket_validate_js' ], // Pattern.
+	];
+
+	if ( ! isset( $fields[ $field ] ) ) {
+		return null;
+	}
+
+	$sanitizations = $fields[ $field ];
+
+	if ( ! is_array( $value ) ) {
+		$value = explode( "\n", $value );
+	}
+
+	$value = array_map( 'trim', $value );
+	$value = array_filter( $value );
+
+	if ( ! $value ) {
+		return [];
+	}
+
+	// Sanitize.
+	foreach ( $sanitizations as $sanitization ) {
+		$value = array_map( $sanitization, $value );
+	}
+
+	return array_unique( $value );
+}
+
+/**
  * Used with array_filter to remove files without .xml extension
  *
  * @since 2.8
