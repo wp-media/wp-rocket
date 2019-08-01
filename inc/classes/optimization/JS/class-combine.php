@@ -509,6 +509,8 @@ class Combine extends Abstract_JS_Optimization {
 			'top.location.href=thispage',
 			'woof_is_mobile',
 			'top.location,thispage',
+			'wpp_params',
+			'selection+pagelink',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
