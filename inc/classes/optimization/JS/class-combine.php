@@ -511,6 +511,7 @@ class Combine extends Abstract_JS_Optimization {
 			'top.location,thispage',
 			'wpp_params',
 			'selection+pagelink',
+			'us.templateDirectoryUri=',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
