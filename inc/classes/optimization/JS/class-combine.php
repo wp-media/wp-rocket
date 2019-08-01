@@ -508,6 +508,7 @@ class Combine extends Abstract_JS_Optimization {
 			'electro-wc-product-gallery',
 			'top.location.href=thispage',
 			'woof_is_mobile',
+			'top.location,thispage',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
