@@ -98,9 +98,12 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 	 * Process actions in the queue.
 	 *
 	 * @author Jeremy Pry
+	 *
+	 * @param string $context Optional runner context. Default 'WP CLI'.
+	 *
 	 * @return int The number of actions processed.
 	 */
-	public function run() {
+	public function run( $context = 'WP CLI' ) {
 		do_action( 'action_scheduler_before_process_queue' );
 		$this->setup_progress_bar();
 		foreach ( $this->actions as $action_id ) {
@@ -110,7 +113,7 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 				break;
 			}
 
-			$this->process_action( $action_id, 'WP CLI' );
+			$this->process_action( $action_id, $context );
 			$this->progress_bar->tick();
 		}
 
