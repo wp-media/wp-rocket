@@ -512,6 +512,7 @@ class Combine extends Abstract_JS_Optimization {
 			'wpp_params',
 			'selection+pagelink',
 			'us.templateDirectoryUri=',
+			'.fat-gallery-item',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
