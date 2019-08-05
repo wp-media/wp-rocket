@@ -517,6 +517,7 @@ class Combine extends Abstract_JS_Optimization {
 			'user_rating.prototype.eraseCookie',
 			'test_run_nf_conditional',
 			'ic_window_resolution',
+			'dpsp-networks-btns-wrapper',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
