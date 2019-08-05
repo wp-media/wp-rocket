@@ -513,6 +513,8 @@ class Combine extends Abstract_JS_Optimization {
 			'selection+pagelink',
 			'us.templateDirectoryUri=',
 			'.fat-gallery-item',
+			'.ratingbox',
+			
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
