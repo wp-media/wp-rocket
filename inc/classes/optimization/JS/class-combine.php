@@ -514,7 +514,7 @@ class Combine extends Abstract_JS_Optimization {
 			'us.templateDirectoryUri=',
 			'.fat-gallery-item',
 			'.ratingbox',
-			
+			'user_rating.prototype.eraseCookie',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
