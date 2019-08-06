@@ -19,7 +19,7 @@ class ActionScheduler_CronSchedule extends ActionScheduler_Abstract_RecurringSch
 	 * Wrapper for parent constructor to accept a cron expression string and map it to a CronExpression for this
 	 * objects $recurrence property.
 	 *
-	 * @param DateTime $start The date & time to run the action.
+	 * @param DateTime $start The date & time to run the action at or after. If $start aligns with the CronSchedule passed via $recurrence, it will be used. If it does not align, the first matching date after it will be used.
 	 * @param CronExpression|string $recurrence The CronExpression used to calculate the schedule's next instance.
 	 * @param DateTime|null $first (Optional) The date & time the first instance of this interval schedule ran. Default null, meaning this is the first instance.
 	 */
