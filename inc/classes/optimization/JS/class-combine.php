@@ -520,6 +520,7 @@ class Combine extends Abstract_JS_Optimization {
 			'dpsp-networks-btns-wrapper',
 			'mecGoogleMaps',
 			'pa_woo_product_info',
+			'Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
