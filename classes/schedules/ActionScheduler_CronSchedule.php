@@ -56,14 +56,9 @@ class ActionScheduler_CronSchedule extends ActionScheduler_Abstract_RecurringSch
 	}
 
 	/**
-	 * Unserialize recurring schedules serialized/stored prior to AS 3.0.0
+	 * Unserialize cron schedules serialized/stored prior to AS 3.0.0
 	 *
-	 * Prior to Action Scheduler 3.0.0, schedules used different property names to refer
-	 * to equivalent data. For example, ActionScheduler_IntervalSchedule::start_timestamp
-	 * was the same as ActionScheduler_SimpleSchedule::timestamp. This was addressed in
-	 * Action Scheduler 3.0.0, where properties and property names were aligned for better
-	 * inheritance. To maintain backward compatibility with scheduled serialized and stored
-	 * prior to 3.0, we need to correctly map the old property names.
+	 * For more background, @see ActionScheduler_Abstract_RecurringSchedule::__wakeup().
 	 */
 	public function __wakeup() {
 		if ( ! is_null( $this->start_timestamp ) ) {
