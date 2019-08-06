@@ -41,9 +41,10 @@ abstract class ActionScheduler_Store extends ActionScheduler_Store_Deprecated {
 
 	/**
 	 * @param array $query
+	 * @param string $query_type Whether to select or count the results. Default, select.
 	 * @return array The IDs of actions matching the query
 	 */
-	abstract public function query_actions( $query = array() );
+	abstract public function query_actions( $query = array(), $query_type = 'select' );
 
 	/**
 	 * Get a count of all actions in the store, grouped by status
