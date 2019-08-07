@@ -121,6 +121,7 @@ class Plugin {
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Third_Party_Subscribers' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Hostings_Subscribers' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Updater_Subscribers' );
+		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Webp_Subscribers' );
 
 		$common_subscribers = [
 			'critical_css_subscriber',
@@ -144,6 +145,15 @@ class Plugin {
 			'plugin_information_subscriber',
 			'plugin_updater_subscriber',
 		];
+
+		if ( \rocket_valid_key() ) {
+			$common_subscribers = array_merge(
+				$common_subscribers,
+				[
+					'webp_subscriber',
+				]
+			);
+		}
 
 		$subscribers = array_merge( $subscribers, $common_subscribers );
 
