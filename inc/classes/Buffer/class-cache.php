@@ -515,6 +515,20 @@ class Cache extends Abstract_Buffer {
 			return $filename;
 		}
 
+		/**
+		 * Allow to disable separate WebP cache.
+		 *
+		 * @since  3.4
+		 * @author Grégory Viguier
+		 *
+		 * @param bool $cache_webp False to disable separate WebP cache. True by default.
+		 */
+		$cache_webp = apply_filters( 'rocket_cache_webp', true );
+
+		if ( ! $cache_webp ) {
+			return $filename;
+		}
+
 		if ( function_exists( 'apache_request_headers' ) ) {
 			$headers     = apache_request_headers();
 			$http_accept = ( isset( $headers['Accept'] ) ) ? $headers['Accept'] : '';

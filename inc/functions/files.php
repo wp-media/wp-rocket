@@ -44,13 +44,13 @@ function get_rocket_advanced_cache_file() {
 		}
 		return;
 	}
-	
+
 	$rocket_config_class = new \WP_Rocket\Buffer\Config(
 		[
 			\'config_dir_path\' => \'' . WP_ROCKET_CONFIG_PATH . '\',
 		]
 	);
-	
+
 	( new \WP_Rocket\Buffer\Cache(
 		new \WP_Rocket\Buffer\Tests(
 			$rocket_config_class
@@ -125,6 +125,15 @@ function get_rocket_config_file() {
 	 */
 	if ( apply_filters( 'rocket_common_cache_logged_users', false ) ) {
 		$buffer .= '$rocket_common_cache_logged_users = 1;' . "\n";
+	}
+
+	if ( ! empty( $options['cache_webp'] ) ) {
+		/** This filter is documented in inc/classes/buffer/class-cache.php */
+		$cache_webp = apply_filters( 'rocket_cache_webp', true );
+
+		if ( ! $cache_webp ) {
+			$options['cache_webp'] = 0;
+		}
 	}
 
 	/**
