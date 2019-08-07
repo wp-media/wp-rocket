@@ -140,7 +140,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 	public function webp_section_description( $description ) {
 		$webp_plugins = $this->check_webp_plugins();
 
-		if ( ! $webp_plugin ) {
+		if ( ! $webp_plugins ) {
 			return $description;
 		}
 
@@ -497,6 +497,14 @@ class Webp_Subscriber implements Subscriber_Interface {
 	 * @return bool
 	 */
 	private function is_plugin_active( $plugin_basename ) {
-		return \rocket_is_plugin_active( $plugin_basename ) && ! \doing_action( 'deactivate_' . $plugin_basename );
+		if ( \doing_action( 'deactivate_' . $plugin_basename ) ) {
+			return false;
+		}
+
+		if ( \doing_action( 'activate_' . $plugin_basename ) ) {
+			return true;
+		}
+
+		return \rocket_is_plugin_active( $plugin_basename );
 	}
 }
