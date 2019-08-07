@@ -19,9 +19,7 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 			$this->validate_action( $action );
 			$post_array = $this->create_post_array( $action, $scheduled_date );
 			$post_id = $this->save_post_array( $post_array );
-			$schedule = $action->get_schedule();
-
-			$this->save_post_schedule( $post_id, $schedule );
+			$this->save_post_schedule( $post_id, $action->get_schedule() );
 			$this->save_action_group( $post_id, $action->get_group() );
 			do_action( 'action_scheduler_stored_action', $post_id );
 			return $post_id;
