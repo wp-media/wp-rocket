@@ -323,16 +323,12 @@ class Imagify_Subscriber implements Subscriber_Interface {
 			return $is;
 		}
 
-		if ( defined( 'IMAGIFY_FILE' ) ) {
-			if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
-				require_once ABSPATH . 'wp-admin/includes/plugin.php';
-			}
-
-			$is = is_multisite() && is_plugin_active_for_network( plugin_basename( IMAGIFY_FILE ) );
-			return $is;
+		if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}
 
-		$is = is_multisite();
+		$file = defined( 'IMAGIFY_FILE' ) ? plugin_basename( IMAGIFY_FILE ) : 'imagify/imagify.php';
+		$is   = is_multisite() && is_plugin_active_for_network( $file );
 		return $is;
 	}
 }
