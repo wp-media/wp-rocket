@@ -524,6 +524,7 @@ class Combine extends Abstract_JS_Optimization {
 			'sharing_enabled_on_post_via_metabox',
 			'#product-search-field-',
 			'GOTMLS_login_offset',
+			'PHP.wp_p_id',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
