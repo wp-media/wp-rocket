@@ -521,8 +521,7 @@ class Combine extends Abstract_JS_Optimization {
 			'mecGoogleMaps',
 			'pa_woo_product_info',
 			'Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera',
-			'trwcAccordion',
-			'#myCarousel',
+			'sharing_enabled_on_post_via_metabox',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
