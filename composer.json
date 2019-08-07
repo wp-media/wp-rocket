@@ -55,8 +55,7 @@
 	"autoload": {
 		"classmap": [
 			"inc/classes",
-			"inc/vendors/classes",
-			"inc/3rd-party/plugins/webp"
+			"inc/vendors/classes"
 		],
 		"exclude-from-classmap": [
 			"inc/vendors/classes/class-rocket-mobile-detect.php",

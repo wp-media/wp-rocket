@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\Subscriber\ThirdParty\Webp;
+namespace WP_Rocket\Subscriber\Third_Party\Plugins\Images;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;

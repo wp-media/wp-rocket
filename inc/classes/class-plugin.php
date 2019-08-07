@@ -121,7 +121,6 @@ class Plugin {
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Third_Party_Subscribers' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Hostings_Subscribers' );
 		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Updater_Subscribers' );
-		$this->container->addServiceProvider( 'WP_Rocket\ServiceProvider\Webp_Subscribers' );
 
 		$common_subscribers = [
 			'critical_css_subscriber',
@@ -151,7 +150,7 @@ class Plugin {
 				$common_subscribers,
 				[
 					'webp_subscriber',
-					'imagify_webp_subscriber',
+					'imagify_subscriber',
 				]
 			);
 		}
