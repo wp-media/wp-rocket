@@ -467,11 +467,18 @@ class Webp_Subscriber implements Subscriber_Interface {
 	private function check_webp_plugins() {
 		$webp_plugins = [];
 		$checks       = [
-			'imagify' => [
+			'imagify'    => [
 				'name'     => 'Imagify',
 				'callback' => function() {
 					$file = defined( 'IMAGIFY_FILE' ) ? plugin_basename( IMAGIFY_FILE ) : 'imagify/imagify.php';
 					return function_exists( 'get_imagify_option' ) && get_imagify_option( 'display_webp' ) && $this->is_plugin_active( $file );
+				},
+			],
+			'shortpixel' => [
+				'name'     => 'ShortPixel',
+				'callback' => function() {
+					$file = defined( 'SHORTPIXEL_PLUGIN_FILE' ) ? plugin_basename( SHORTPIXEL_PLUGIN_FILE ) : 'shortpixel-image-optimiser/wp-shortpixel.php';
+					return get_option( 'wp-short-pixel-create-webp-markup' ) && $this->is_plugin_active( $file );
 				},
 			],
 		];

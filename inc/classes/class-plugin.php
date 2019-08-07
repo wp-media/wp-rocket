@@ -151,6 +151,7 @@ class Plugin {
 				[
 					'webp_subscriber',
 					'imagify_subscriber',
+					'shortpixel_subscriber',
 				]
 			);
 		}
