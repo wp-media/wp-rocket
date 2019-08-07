@@ -328,7 +328,7 @@ class Imagify_Subscriber implements Subscriber_Interface {
 		}
 
 		$file = defined( 'IMAGIFY_FILE' ) ? plugin_basename( IMAGIFY_FILE ) : 'imagify/imagify.php';
-		$is   = is_multisite() && is_plugin_active_for_network( $file );
+		$is   = is_plugin_active_for_network( $file );
 		return $is;
 	}
 }
