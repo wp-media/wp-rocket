@@ -117,7 +117,7 @@ class Imagify_Subscriber implements Subscriber_Interface {
 	 * @author Grégory Viguier
 	 */
 	public function plugin_activation() {
-		if ( $this->options->get( 'cache_webp' ) && function_exists( 'get_imagify_option' ) && get_imagify_option( 'display_webp' ) ) {
+		if ( function_exists( 'get_imagify_option' ) && get_imagify_option( 'display_webp' ) ) {
 			$this->trigger_webp_change( true );
 		}
 	}
@@ -131,7 +131,7 @@ class Imagify_Subscriber implements Subscriber_Interface {
 	 * @author Grégory Viguier
 	 */
 	public function plugin_deactivation() {
-		if ( $this->options->get( 'cache_webp' ) && function_exists( 'get_imagify_option' ) && get_imagify_option( 'display_webp' ) ) {
+		if ( function_exists( 'get_imagify_option' ) && get_imagify_option( 'display_webp' ) ) {
 			$this->trigger_webp_change( false );
 		}
 	}
