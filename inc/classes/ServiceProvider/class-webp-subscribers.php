@@ -22,6 +22,7 @@ class Webp_Subscribers extends AbstractServiceProvider {
 	 */
 	protected $provides = [
 		'webp_subscriber',
+		'imagify_webp_subscriber',
 	];
 
 	/**
@@ -33,6 +34,8 @@ class Webp_Subscribers extends AbstractServiceProvider {
 	 */
 	public function register() {
 		$this->getContainer()->share( 'webp_subscriber', 'WP_Rocket\Subscriber\Media\Webp_Subscriber' )
+			->withArgument( $this->getContainer()->get( 'options' ) );
+		$this->getContainer()->share( 'imagify_webp_subscriber', 'WP_Rocket\Subscriber\ThirdParty\Webp\Imagify_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'options' ) );
 	}
 }

@@ -151,6 +151,7 @@ class Plugin {
 				$common_subscribers,
 				[
 					'webp_subscriber',
+					'imagify_webp_subscriber',
 				]
 			);
 		}
