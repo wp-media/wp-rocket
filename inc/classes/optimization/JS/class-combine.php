@@ -523,6 +523,7 @@ class Combine extends Abstract_JS_Optimization {
 			'Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera',
 			'sharing_enabled_on_post_via_metabox',
 			'#product-search-field-',
+			'GOTMLS_login_offset',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
