@@ -78,5 +78,6 @@ abstract class ActionScheduler_Abstract_Schedule extends ActionScheduler_Schedul
 
 	public function __wakeup() {
 		$this->scheduled_date = as_get_datetime_object( $this->scheduled_timestamp );
+		unset( $this->scheduled_timestamp );
 	}
 }
