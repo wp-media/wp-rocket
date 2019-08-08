@@ -483,6 +483,41 @@ class Webp_Subscriber implements Subscriber_Interface {
 			],
 		];
 
+		/**
+		 * Add Webp plugins.
+		 *
+		 * @since  3.4
+		 * @author Grégory Viguier
+		 *
+		 * @param array $webp_checks {
+		 *     An array of arrays as follow. Array keys are plugin identifiers.
+		 *
+		 *     @type string   $name     The plugin name.
+		 *     @type callable $callback A callable that returns a boolean: true when the option to serve Webp images on frontend is enabled. False otherwise.
+		 * }
+		 */
+		$webp_checks = (array) apply_filters( 'rocket_webp_plugins', [] );
+
+		if ( $webp_checks ) {
+			$webp_checks = array_filter(
+				$webp_checks,
+				function( $webp_check, $plugin_id ) use ( $webp_plugins ) {
+					if ( ! $plugin_id || isset( $webp_plugins[ $plugin_id ] ) ) {
+						return false;
+					}
+
+					if ( ! is_array( $webp_check ) || empty( $webp_check['name'] ) || empty( $webp_check['callback'] ) ) {
+						return false;
+					}
+
+					return is_string( $plugin_id ) && is_string( $webp_check['name'] ) && is_callable( $webp_check['callback'] );
+				},
+				ARRAY_FILTER_USE_BOTH
+			);
+
+			$checks = array_merge( $webp_plugins, $webp_checks );
+		}
+
 		foreach ( $checks as $plugin_id => $plugin ) {
 			if ( call_user_func( $plugin['callback'] ) ) {
 				$webp_plugins[ $plugin_id ] = $plugin['name'];
