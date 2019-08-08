@@ -205,7 +205,7 @@ abstract class ActionScheduler_Store extends ActionScheduler_Store_Deprecated {
 	 */
 	protected function validate_schedule( $schedule, $action_id ) {
 		if ( empty( $schedule ) || ! is_a( $schedule, 'ActionScheduler_Schedule' ) ) {
-			throw ActionScheduler_InvalidActionException::from_schedule( $post->ID, $schedule );
+			throw ActionScheduler_InvalidActionException::from_schedule( $action_id, $schedule );
 		}
 	}
 
