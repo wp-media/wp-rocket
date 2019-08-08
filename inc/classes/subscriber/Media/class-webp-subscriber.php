@@ -515,7 +515,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 				ARRAY_FILTER_USE_BOTH
 			);
 
-			$checks = array_merge( $webp_plugins, $webp_checks );
+			$checks = array_merge( $checks, $webp_checks );
 		}
 
 		foreach ( $checks as $plugin_id => $plugin ) {
