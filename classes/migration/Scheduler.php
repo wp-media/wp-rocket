@@ -99,10 +99,10 @@ class Scheduler {
 	/**
 	 * Get migration batch schedule interval.
 	 *
-	 * @return int Seconds between migration runs. Defaults to two minutes.
+	 * @return int Seconds between migration runs. Defaults to 30 seconds - the time allowed per batch.
 	 */
 	private function get_schedule_interval() {
-		return (int) apply_filters( 'action_scheduler/migration_interval', 2 * MINUTE_IN_SECONDS );
+		return (int) apply_filters( 'action_scheduler/migration_interval', 30 );
 	}
 
 	/**

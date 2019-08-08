@@ -22,7 +22,7 @@ abstract class ActionScheduler_Abstract_RecurringSchedule extends ActionSchedule
 	 *
 	 * @var int
 	 */
-	protected $first_timestamp = 0;
+	protected $first_timestamp = NULL;
 
 	/**
 	 * The recurrance between each time an action is run using this schedule.

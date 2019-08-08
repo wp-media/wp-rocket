@@ -17,7 +17,7 @@ abstract class ActionScheduler_Abstract_Schedule extends ActionScheduler_Schedul
 	 *
 	 * @var int
 	 */
-	protected $scheduled_timestamp = 0;
+	protected $scheduled_timestamp = NULL;
 
 	/**
 	 * @param DateTime $date The date & time to run the action.
@@ -78,5 +78,6 @@ abstract class ActionScheduler_Abstract_Schedule extends ActionScheduler_Schedul
 
 	public function __wakeup() {
 		$this->scheduled_date = as_get_datetime_object( $this->scheduled_timestamp );
+		unset( $this->scheduled_timestamp );
 	}
 }
