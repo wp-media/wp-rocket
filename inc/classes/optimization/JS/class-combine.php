@@ -530,6 +530,7 @@ class Combine extends Abstract_JS_Optimization {
 			'window.vc_googleMapsPointer',
 			'var sinceID_',
 			'#ut-background-video-ut-section'
+			'ShopifyBuy.UI.onReady(client)',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
