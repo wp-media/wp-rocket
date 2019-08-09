@@ -194,29 +194,24 @@ class ActionScheduler_QueueRunner_Test extends ActionScheduler_UnitTestCase {
 		add_action( $random, array( $mock, 'action' ) );
 		$schedule = new ActionScheduler_SimpleSchedule(new ActionScheduler_DateTime('1 day ago'));
 
-		for ( $i = 0 ; $i < 15 ; $i++ ) {
+		for ( $i = 0 ; $i < 2 ; $i++ ) {
 			$action = new ActionScheduler_Action( $random, array($random), $schedule );
 			$store->save_action( $action );
 		}
 
-		$claims = array();
-
-		for ( $i = 0 ; $i < 2 ; $i++ ) {
-			$claims[] = $store->stake_claim( 5 );
-		}
+		$claim = $store->stake_claim();
 
 		$actions_run = $runner->run();
-
 
 		$this->assertEquals( 0, $mock->get_call_count() );
 		$this->assertEquals( 0, $actions_run );
 
-		$first = reset($claims);
-		$store->release_claim( $first );
+		$store->release_claim( $claim );
 
 		$actions_run = $runner->run();
-		$this->assertEquals( 10, $mock->get_call_count() );
-		$this->assertEquals( 10, $actions_run );
+
+		$this->assertEquals( 2, $mock->get_call_count() );
+		$this->assertEquals( 2, $actions_run );
 
 		remove_action( $random, array( $mock, 'action' ) );
 	}

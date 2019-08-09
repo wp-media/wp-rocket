@@ -100,7 +100,7 @@ abstract class ActionScheduler_Abstract_QueueRunner extends ActionScheduler_Abst
 	 * @return int
 	 */
 	public function get_allowed_concurrent_batches() {
-		return apply_filters( 'action_scheduler_queue_runner_concurrent_batches', 2 );
+		return apply_filters( 'action_scheduler_queue_runner_concurrent_batches', 1 );
 	}
 
 	/**
