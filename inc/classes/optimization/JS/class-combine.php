@@ -527,6 +527,7 @@ class Combine extends Abstract_JS_Optimization {
 			'PHP.wp_p_id',
 			'berocket_aapf_time_to_fix_products_style',
 			'ajax_pricing_rules_price_container_is',
+			'window.vc_googleMapsPointer',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
