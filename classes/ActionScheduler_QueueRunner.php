@@ -35,8 +35,12 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	 */
 	public function __construct( ActionScheduler_Store $store = null, ActionScheduler_FatalErrorMonitor $monitor = null, ActionScheduler_QueueCleaner $cleaner = null, ActionScheduler_AsyncRequest_QueueRunner $async_request = null ) {
 		parent::__construct( $store, $monitor, $cleaner );
-		$this->async_request = new ActionScheduler_AsyncRequest_QueueRunner( $this->store );
 
+		if ( is_null( $async_request ) ) {
+			$async_request = new ActionScheduler_AsyncRequest_QueueRunner( $this->store );
+		}
+
+		$this->async_request = $async_request;
 	}
 
 	/**
