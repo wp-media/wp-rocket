@@ -529,6 +529,7 @@ class Combine extends Abstract_JS_Optimization {
 			'ajax_pricing_rules_price_container_is',
 			'window.vc_googleMapsPointer',
 			'var sinceID_',
+			'#ut-background-video-ut-section'
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
