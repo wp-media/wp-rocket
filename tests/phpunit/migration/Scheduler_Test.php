@@ -48,6 +48,12 @@ class Scheduler_Test extends ActionScheduler_UnitTestCase {
 		};
 		add_filter( 'action_scheduler/migration_batch_size', $return_5 );
 
+		// Make sure successive migration actions are delayed so all actions aren't migrated at once on separate hooks
+		$return_60 = function () {
+			return 60;
+		};
+		add_filter( 'action_scheduler/migration_interval', $return_60 );
+
 		for ( $i = 0; $i < 10; $i ++ ) {
 			$time     = as_get_datetime_object( $i + 1 . ' minutes' );
 			$schedule = new ActionScheduler_SimpleSchedule( $time );
@@ -72,6 +78,7 @@ class Scheduler_Test extends ActionScheduler_UnitTestCase {
 		$this->assertCount( 15, $source_store->query_actions( [ 'per_page' => 0 ] ) );
 
 		remove_filter( 'action_scheduler/migration_batch_size', $return_5 );
+		remove_filter( 'action_scheduler/migration_interval', $return_60 );
 	}
 
 	public function test_scheduler_marks_itself_complete() {

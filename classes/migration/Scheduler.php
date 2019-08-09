@@ -99,10 +99,10 @@ class Scheduler {
 	/**
 	 * Get migration batch schedule interval.
 	 *
-	 * @return int Seconds between migration runs. Defaults to 30 seconds - the time allowed per batch.
+	 * @return int Seconds between migration runs. Defaults to 0 seconds to allow chaining migration via Async Runners.
 	 */
 	private function get_schedule_interval() {
-		return (int) apply_filters( 'action_scheduler/migration_interval', 30 );
+		return (int) apply_filters( 'action_scheduler/migration_interval', 0 );
 	}
 
 	/**
