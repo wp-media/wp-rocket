@@ -531,6 +531,7 @@ class Combine extends Abstract_JS_Optimization {
 			'var sinceID_',
 			'#ut-background-video-ut-section'
 			'ShopifyBuy.UI.onReady(client)',
+			'+window.comment_tab_width+',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
