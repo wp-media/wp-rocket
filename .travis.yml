@@ -1,5 +1,7 @@
 sudo: false
 language: php
+services:
+  - mysql
 notifications:
   slack: wp-media:nnBz5DMaiRLNaEqIStaUgygW
   email:
