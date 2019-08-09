@@ -108,10 +108,10 @@ class Scheduler {
 	/**
 	 * Get migration batch size.
 	 *
-	 * @return int Number of actions to migrate in each batch. Defaults to 1000.
+	 * @return int Number of actions to migrate in each batch. Defaults to 250.
 	 */
 	private function get_batch_size() {
-		return (int) apply_filters( 'action_scheduler/migration_batch_size', 1000 );
+		return (int) apply_filters( 'action_scheduler/migration_batch_size', 250 );
 	}
 
 	/**
