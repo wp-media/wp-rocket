@@ -88,7 +88,7 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	 * should dispatch a request to process pending actions.
 	 */
 	public function maybe_dispatch_async_request() {
-		if ( is_admin() && ! ActionScheduler::lock()->is_locked( 'async-request-runner' ) && ! $this->has_maximum_concurrent_batches() ) {
+		if ( is_admin() && ! ActionScheduler::lock()->is_locked( 'async-request-runner' ) ) {
 			// Only start an async queue at most once every 60 seconds
 			ActionScheduler::lock()->set( 'async-request-runner' );
 			$this->async_request->maybe_dispatch();

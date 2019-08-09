@@ -61,11 +61,10 @@ class ActionScheduler_AsyncRequest_QueueRunner extends WP_Async_Request {
 	}
 
 	/**
-	 * If the async request runner is allowed, and there are pending actions,
-	 * dispatch an async request to process them.
+	 * If the async request runner is needed and allowed to run, dispatch a request.
 	 */
 	public function maybe_dispatch() {
-		if ( ! $this->allow() || ! $this->store->has_pending_actions_due() ) {
+		if ( ! $this->allow() ) {
 			return;
 		}
 
@@ -73,10 +72,19 @@ class ActionScheduler_AsyncRequest_QueueRunner extends WP_Async_Request {
 	}
 
 	/**
-	 * Allow 3rd party code to disable running actions via async requets.
+	 * Only allow async requests when needed.
+	 *
+	 * Also allow 3rd party code to disable running actions via async requests.
 	 */
 	protected function allow() {
-		return apply_filters( 'action_scheduler_allow_async_request_runner', true );
+
+		if ( ! has_action( 'action_scheduler_run_queue' ) || ActionScheduler::runner()->has_maximum_concurrent_batches() || ! $this->store->has_pending_actions_due() ) {
+			$allow = false;
+		} else {
+			$allow = true;
+		}
+
+		return apply_filters( 'action_scheduler_allow_async_request_runner', $allow );
 	}
 
 	/**
