@@ -7,7 +7,7 @@
 class ActionScheduler_QueueRunner_Test extends ActionScheduler_UnitTestCase {
 	public function test_create_runner() {
 		$store = ActionScheduler::store();
-		$runner = new ActionScheduler_QueueRunner( $store );
+		$runner = ActionScheduler_Mocker::get_queue_runner( $store );
 		$actions_run = $runner->run();
 
 		$this->assertEquals( 0, $actions_run );
@@ -15,7 +15,7 @@ class ActionScheduler_QueueRunner_Test extends ActionScheduler_UnitTestCase {
 
 	public function test_run() {
 		$store = ActionScheduler::store();
-		$runner = new ActionScheduler_QueueRunner( $store );
+		$runner = ActionScheduler_Mocker::get_queue_runner( $store );
 
 		$mock = new MockAction();
 		$random = md5(rand());
@@ -37,7 +37,7 @@ class ActionScheduler_QueueRunner_Test extends ActionScheduler_UnitTestCase {
 
 	public function test_run_with_future_actions() {
 		$store = ActionScheduler::store();
-		$runner = new ActionScheduler_QueueRunner( $store );
+		$runner = ActionScheduler_Mocker::get_queue_runner( $store );
 
 		$mock = new MockAction();
 		$random = md5(rand());
@@ -65,7 +65,7 @@ class ActionScheduler_QueueRunner_Test extends ActionScheduler_UnitTestCase {
 
 	public function test_completed_action_status() {
 		$store = ActionScheduler::store();
-		$runner = new ActionScheduler_QueueRunner( $store );
+		$runner = ActionScheduler_Mocker::get_queue_runner( $store );
 
 		$random = md5(rand());
 		$schedule = new ActionScheduler_SimpleSchedule(as_get_datetime_object('12 hours ago'));
@@ -85,7 +85,7 @@ class ActionScheduler_QueueRunner_Test extends ActionScheduler_UnitTestCase {
 		$random    = md5( rand() );
 		$action_id = ActionScheduler::factory()->cron( $random, array(), null, '0 0 * * *' );
 		$store     = ActionScheduler::store();
-		$runner    = new ActionScheduler_QueueRunner( $store );
+		$runner    = ActionScheduler_Mocker::get_queue_runner( $store );
 
 		// Make sure the 1st instance of the action is scheduled to occur tomorrow
 		$date = as_get_datetime_object( 'tomorrow' );
@@ -131,7 +131,7 @@ class ActionScheduler_QueueRunner_Test extends ActionScheduler_UnitTestCase {
 		$date      = as_get_datetime_object( '12 hours ago' );
 		$action_id = ActionScheduler::factory()->recurring( $random, array(), $date->getTimestamp(), DAY_IN_SECONDS );
 		$store     = ActionScheduler::store();
-		$runner    = new ActionScheduler_QueueRunner( $store );
+		$runner    = ActionScheduler_Mocker::get_queue_runner( $store );
 
 		// Make sure the 1st instance of the action is scheduled to occur 12 hours ago
 		$claim = $store->stake_claim( 10, $date );
@@ -187,7 +187,7 @@ class ActionScheduler_QueueRunner_Test extends ActionScheduler_UnitTestCase {
 
 	public function test_batch_count_limit() {
 		$store = ActionScheduler::store();
-		$runner = new ActionScheduler_QueueRunner( $store );
+		$runner = ActionScheduler_Mocker::get_queue_runner( $store );
 
 		$mock = new MockAction();
 		$random = md5(rand());
@@ -218,7 +218,7 @@ class ActionScheduler_QueueRunner_Test extends ActionScheduler_UnitTestCase {
 
 	public function test_changing_batch_count_limit() {
 		$store = ActionScheduler::store();
-		$runner = new ActionScheduler_QueueRunner( $store );
+		$runner = ActionScheduler_Mocker::get_queue_runner( $store );
 
 		$random = md5(rand());
 		$schedule = new ActionScheduler_SimpleSchedule(new ActionScheduler_DateTime('1 day ago'));

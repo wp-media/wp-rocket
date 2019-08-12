@@ -71,7 +71,7 @@ class Scheduler_Test extends ActionScheduler_UnitTestCase {
 		$scheduler = new Scheduler();
 		$scheduler->schedule_migration();
 
-		$queue_runner = new \ActionScheduler_QueueRunner( $destination_store );
+		$queue_runner = ActionScheduler_Mocker::get_queue_runner( $destination_store );
 		$queue_runner->run();
 
 		// 5 actions should have moved from the source store when the queue runner triggered the migration action
@@ -97,7 +97,7 @@ class Scheduler_Test extends ActionScheduler_UnitTestCase {
 		$scheduler = new Scheduler();
 		$scheduler->schedule_migration();
 
-		$queue_runner = new \ActionScheduler_QueueRunner( $destination_store );
+		$queue_runner = ActionScheduler_Mocker::get_queue_runner( $destination_store );
 		$queue_runner->run();
 
 		// All actions should have moved from the source store when the queue runner triggered the migration action

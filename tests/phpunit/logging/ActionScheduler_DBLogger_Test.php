@@ -46,7 +46,7 @@ class ActionScheduler_DBLogger_Test extends ActionScheduler_UnitTestCase {
 		$started = new ActionScheduler_LogEntry( $action_id, 'action started via Unit Tests' );
 		$finished = new ActionScheduler_LogEntry( $action_id, 'action complete via Unit Tests' );
 
-		$runner = new ActionScheduler_QueueRunner();
+		$runner = ActionScheduler_Mocker::get_queue_runner();
 		$runner->run( 'Unit Tests' );
 
 		// Expect 3 logs with the correct action ID.
@@ -71,7 +71,7 @@ class ActionScheduler_DBLogger_Test extends ActionScheduler_UnitTestCase {
 		$finished = new ActionScheduler_LogEntry( $action_id, 'action complete via Unit Tests' );
 		$failed = new ActionScheduler_LogEntry( $action_id, 'action failed via Unit Tests: Execution failed' );
 
-		$runner = new ActionScheduler_QueueRunner();
+		$runner = ActionScheduler_Mocker::get_queue_runner();
 		$runner->run( 'Unit Tests' );
 
 		// Expect 3 logs with the correct action ID.
