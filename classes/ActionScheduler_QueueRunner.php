@@ -35,8 +35,12 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	 */
 	public function __construct( ActionScheduler_Store $store = null, ActionScheduler_FatalErrorMonitor $monitor = null, ActionScheduler_QueueCleaner $cleaner = null, ActionScheduler_AsyncRequest_QueueRunner $async_request = null ) {
 		parent::__construct( $store, $monitor, $cleaner );
-		$this->async_request = new ActionScheduler_AsyncRequest_QueueRunner( $this->store );
 
+		if ( is_null( $async_request ) ) {
+			$async_request = new ActionScheduler_AsyncRequest_QueueRunner( $this->store );
+		}
+
+		$this->async_request = $async_request;
 	}
 
 	/**
@@ -84,7 +88,7 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	 * should dispatch a request to process pending actions.
 	 */
 	public function maybe_dispatch_async_request() {
-		if ( is_admin() && ! ActionScheduler::lock()->is_locked( 'async-request-runner' ) && ! $this->has_maximum_concurrent_batches() ) {
+		if ( is_admin() && ! ActionScheduler::lock()->is_locked( 'async-request-runner' ) ) {
 			// Only start an async queue at most once every 60 seconds
 			ActionScheduler::lock()->set( 'async-request-runner' );
 			$this->async_request->maybe_dispatch();
