@@ -394,23 +394,81 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 	 *
 	 * @param int $action_id Action ID.
 	 *
-	 * @throws \InvalidArgumentException
 	 * @return void
 	 */
 	public function cancel_action( $action_id ) {
-		/** @var \wpdb $wpdb */
-		global $wpdb;
-		$updated = $wpdb->update(
-			$wpdb->actionscheduler_actions,
-			[ 'status' => self::STATUS_CANCELED ],
+		$updated = $this->cancel_actions(
 			[ 'action_id' => $action_id ],
-			[ '%s' ],
 			[ '%d' ]
 		);
-		if ( empty( $updated ) ) {
-			throw new \InvalidArgumentException( sprintf( __( 'Unidentified action %s', 'action-scheduler' ), $action_id ) );
+
+		if ( $updated ) {
+			do_action( 'action_scheduler_canceled_action', $action_id );
 		}
-		do_action( 'action_scheduler_canceled_action', $action_id );
+	}
+
+	/**
+	 * Cancel pending actions by hook.
+	 *
+	 * @param string $hook Hook name.
+	 *
+	 * @return void
+	 */
+	public function cancel_actions_by_hook( $hook ) {
+		$updated = $this->cancel_actions(
+			[ 'hook' => $hook, 'status' => self::STATUS_PENDING ],
+			[ '%s', '%s' ]
+		);
+
+		if ( $updated ) {
+			do_action( 'action_scheduler_canceled_hook_actions', $hook );
+		}
+	}
+
+	/**
+	 * Cancel pending actions by group.
+	 *
+	 * @param string $group Group slug.
+	 *
+	 * @return void
+	 */
+	public function cancel_actions_by_group( $group ) {
+		$group_id = $this->get_group_id( $group, false );
+		if ( ! $group_id ) {
+			return;
+		}
+
+		$updated = $this->cancel_actions(
+			[ 'group_id' => $group_id, 'status' => self::STATUS_PENDING ],
+			[ '%d', '%s' ]
+		);
+
+		if ( $updated ) {
+			do_action( 'action_scheduler_canceled_group_actions', $group );
+		}
+	}
+
+	/**
+	 * Cancel actions.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param array $where A named array of WHERE clauses.
+	 * @param array $where_formats An array of WHERE clause value formats.
+	 *
+	 * @return bool Success.
+	 */
+	protected function cancel_actions( $where, $where_formats ) {
+		/** @var \wpdb $wpdb */
+		global $wpdb;
+
+		return $wpdb->update(
+			$wpdb->actionscheduler_actions,
+			[ 'status' => self::STATUS_CANCELED ],
+			$where,
+			[ '%s' ],
+			$where_formats
+		);
 	}
 
 	/**
