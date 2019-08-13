@@ -388,11 +388,11 @@ function get_rocket_cdn_reject_files() {
  */
 function get_rocket_cdn_cnames( $zone = 'all' ) {
 	$hosts  = [];
+	$zone   = (array) $zone;
 	$cnames = get_rocket_option( 'cdn_cnames', [] );
 
 	if ( $cnames ) {
 		$cnames_zone = get_rocket_option( 'cdn_zone', [] );
-		$zone        = (array) $zone;
 
 		foreach ( $cnames as $k => $_urls ) {
 			if ( ! in_array( $cnames_zone[ $k ], $zone, true ) ) {
@@ -412,10 +412,12 @@ function get_rocket_cdn_cnames( $zone = 'all' ) {
 	 * Filter all CNAMES.
 	 *
 	 * @since 2.7
+	 * @since 3.4 Added $zone parameter.
 	 *
 	 * @param array $hosts List of CNAMES.
+	 * @param array $zone  List of zones. Default is [ 'all' ].
 	 */
-	$hosts = (array) apply_filters( 'rocket_cdn_cnames', $hosts );
+	$hosts = (array) apply_filters( 'rocket_cdn_cnames', $hosts, $zone );
 	$hosts = array_filter( $hosts );
 	$hosts = array_flip( array_flip( $hosts ) );
 	$hosts = array_values( $hosts );

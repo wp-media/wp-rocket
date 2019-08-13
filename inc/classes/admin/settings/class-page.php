@@ -907,6 +907,16 @@ class Page {
 			]
 		);
 
+		/**
+		 * Add more content to the 'cache_webp' setting field.
+		 *
+		 * @since  3.4
+		 * @author Grégory Viguier
+		 *
+		 * @param array $cache_webp_field Data to be added to the setting field.
+		 */
+		$cache_webp_field = (array) apply_filters( 'rocket_cache_webp_setting_field', [] );
+
 		$this->settings->add_settings_fields(
 			[
 				'lazyload'         => [
@@ -973,14 +983,17 @@ class Page {
 					'default'           => 1,
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
-				'cache_webp'       => [
-					'type'              => 'checkbox',
-					'label'             => __( 'Enable WebP caching', 'rocket' ),
-					'section'           => 'webp_section',
-					'page'              => 'media',
-					'default'           => 0,
-					'sanitize_callback' => 'sanitize_checkbox',
-				],
+				'cache_webp'       => array_merge(
+					$cache_webp_field,
+					[
+						'type'              => 'checkbox',
+						'label'             => __( 'Enable WebP caching', 'rocket' ),
+						'section'           => 'webp_section',
+						'page'              => 'media',
+						'default'           => 0,
+						'sanitize_callback' => 'sanitize_checkbox',
+					]
+				),
 			]
 		);
 	}
@@ -1499,17 +1512,30 @@ class Page {
 			) . '<br>';
 		}
 
+		/**
+		 * Add more content to the 'cdn' setting field.
+		 *
+		 * @since  3.4
+		 * @author Grégory Viguier
+		 *
+		 * @param array $cdn_field Data to be added to the setting field.
+		 */
+		$cdn_field = (array) apply_filters( 'rocket_cdn_setting_field', [] );
+
 		$this->settings->add_settings_fields(
 			[
-				'cdn'              => [
-					'type'              => 'checkbox',
-					'label'             => __( 'Enable Content Delivery Network', 'rocket' ),
-					'helper'            => $maybe_display_cdn_helper,
-					'section'           => 'cdn_section',
-					'page'              => 'page_cdn',
-					'default'           => 0,
-					'sanitize_callback' => 'sanitize_checkbox',
-				],
+				'cdn'              => array_merge(
+					$cdn_field,
+					[
+						'type'              => 'checkbox',
+						'label'             => __( 'Enable Content Delivery Network', 'rocket' ),
+						'helper'            => $maybe_display_cdn_helper,
+						'section'           => 'cdn_section',
+						'page'              => 'page_cdn',
+						'default'           => 0,
+						'sanitize_callback' => 'sanitize_checkbox',
+					]
+				),
 				'cdn_cnames'       => [
 					'type'        => 'cnames',
 					'label'       => __( 'CDN CNAME(s)', 'rocket' ),

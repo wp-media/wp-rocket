@@ -1,16 +1,19 @@
 <?php
-namespace WP_Rocket\Subscriber\Third_Party\Plugins\Images;
+namespace WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
  * Subscriber for the WebP support with Imagify.
+ * Rocket will let Imagify serve webp images if its option is enabled, unless Imagify uses the rewrite rules method and a CDN is set (see `is_serving_webp()`).
  *
  * @since  3.4
  * @author Grégory Viguier
  */
-class Imagify_Subscriber implements Subscriber_Interface {
+class Imagify_Subscriber implements Webp_Interface, Subscriber_Interface {
+	use Webp_Common;
+
 	/**
 	 * Options instance.
 	 *
@@ -21,20 +24,38 @@ class Imagify_Subscriber implements Subscriber_Interface {
 	private $options;
 
 	/**
-	 * Imagify webp option value.
+	 * Imagify basename.
+	 *
+	 * @var    string
+	 * @access private
+	 * @author Grégory Viguier
+	 */
+	private $plugin_basename;
+
+	/**
+	 * Imagify’s "serve webp" option name.
+	 *
+	 * @var    string
+	 * @access private
+	 * @author Grégory Viguier
+	 */
+	private $plugin_option_name_to_serve_webp;
+
+	/**
+	 * Temporarily store the result of $this->is_serving_webp().
 	 *
 	 * @var    bool
 	 * @access private
 	 * @author Grégory Viguier
 	 */
-	private $plugin_display_webp;
+	private $tmp_is_serving_webp;
 
 	/**
 	 * Constructor.
 	 *
 	 * @since  3.4
 	 * @access public
-	 * @author Remy Perona
+	 * @author Grégory Viguier
 	 *
 	 * @param Options_Data $options Options instance.
 	 */
@@ -53,7 +74,8 @@ class Imagify_Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'wp_rocket_loaded' => 'load_hooks',
+			'rocket_webp_plugins' => 'register',
+			'wp_rocket_loaded'    => 'load_hooks',
 		];
 	}
 
@@ -73,26 +95,24 @@ class Imagify_Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		if ( ! class_exists( '\Imagify_Options' ) || ! method_exists( '\Imagify_Options', 'get_instance' ) ) {
-			return;
-		}
+		/**
+		 * Every time Imagify is (de)activated, we must "sync" our webp cache option.
+		 */
+		add_action( 'imagify_activation',   [ $this, 'plugin_activation' ], 20 );
+		add_action( 'imagify_deactivation', [ $this, 'plugin_deactivation' ], 20 );
 
-		$instance = \Imagify_Options::get_instance();
-
-		if ( ! method_exists( $instance, 'get_option_name' ) ) {
+		if ( ! defined( 'IMAGIFY_VERSION' ) ) {
 			return;
 		}
 
 		/**
-		 * Every time Imagify is (de)activated, we must "sync" our webp cache option.
+		 * Since Rocket already updates the config file after updating its options, there is no need to do it again if the CDN or zone options change.
 		 */
-		add_action( 'imagify_activation',   [ $this, 'plugin_activation' ] );
-		add_action( 'imagify_deactivation', [ $this, 'plugin_deactivation' ] );
 
 		/**
 		 * Every time Imagify’s option changes, we must "sync" our webp cache option.
 		 */
-		$option_name = $instance->get_option_name();
+		$option_name = $this->get_option_name_to_serve_webp();
 
 		if ( $this->is_active_for_network() ) {
 			add_filter( 'add_site_option_' . $option_name,        [ $this, 'sync_on_network_option_add' ], 10, 3 );
@@ -109,34 +129,6 @@ class Imagify_Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Maybe deactivate webp cache on Imagify activation.
-	 *
-	 * @since  3.4
-	 * @since  Imagify 1.9
-	 * @access public
-	 * @author Grégory Viguier
-	 */
-	public function plugin_activation() {
-		if ( function_exists( 'get_imagify_option' ) && get_imagify_option( 'display_webp' ) ) {
-			$this->trigger_webp_change( true );
-		}
-	}
-
-	/**
-	 * Maybe activate webp cache on Imagify activation.
-	 *
-	 * @since  3.4
-	 * @since  Imagify 1.9
-	 * @access public
-	 * @author Grégory Viguier
-	 */
-	public function plugin_deactivation() {
-		if ( function_exists( 'get_imagify_option' ) && get_imagify_option( 'display_webp' ) ) {
-			$this->trigger_webp_change( false );
-		}
-	}
-
-	/**
 	 * Maybe deactivate webp cache after Imagify network option has been successfully added.
 	 *
 	 * @since  3.4
@@ -149,7 +141,7 @@ class Imagify_Subscriber implements Subscriber_Interface {
 	 */
 	public function sync_on_network_option_add( $option, $value, $network_id ) {
 		if ( get_current_network_id() === $network_id && ! empty( $value['display_webp'] ) ) {
-			$this->trigger_webp_change( true );
+			$this->trigger_webp_change();
 		}
 	}
 
@@ -166,10 +158,9 @@ class Imagify_Subscriber implements Subscriber_Interface {
 	 * @param int    $network_id ID of the network.
 	 */
 	public function sync_on_network_option_update( $option, $value, $old_value, $network_id ) {
-		if ( get_current_network_id() !== $network_id ) {
-			return;
+		if ( get_current_network_id() === $network_id ) {
+			$this->sync_on_option_update( $old_value, $value );
 		}
-		$this->sync_on_option_update( $old_value, $value );
 	}
 
 	/**
@@ -183,12 +174,9 @@ class Imagify_Subscriber implements Subscriber_Interface {
 	 * @param int    $network_id ID of the network.
 	 */
 	public function store_option_value_before_network_delete( $option, $network_id ) {
-		if ( get_current_network_id() !== $network_id ) {
-			return;
+		if ( get_current_network_id() === $network_id ) {
+			$this->tmp_is_serving_webp = $this->is_serving_webp();
 		}
-
-		$this->plugin_display_webp = get_network_option( $network_id, $option, [] );
-		$this->plugin_display_webp = ! empty( $this->plugin_display_webp['display_webp'] );
 	}
 
 	/**
@@ -202,8 +190,8 @@ class Imagify_Subscriber implements Subscriber_Interface {
 	 * @param int    $network_id ID of the network.
 	 */
 	public function sync_on_network_option_delete( $option, $network_id ) {
-		if ( get_current_network_id() === $network_id && false !== $this->plugin_display_webp ) {
-			$this->trigger_webp_change( false );
+		if ( get_current_network_id() === $network_id && false !== $this->tmp_is_serving_webp ) {
+			$this->trigger_webp_change();
 		}
 	}
 
@@ -219,7 +207,7 @@ class Imagify_Subscriber implements Subscriber_Interface {
 	 */
 	public function sync_on_option_add( $option, $value ) {
 		if ( ! empty( $value['display_webp'] ) ) {
-			$this->trigger_webp_change( true );
+			$this->trigger_webp_change();
 		}
 	}
 
@@ -234,11 +222,11 @@ class Imagify_Subscriber implements Subscriber_Interface {
 	 * @param mixed $value     The new option value.
 	 */
 	public function sync_on_option_update( $old_value, $value ) {
-		$old_value = ! empty( $old_value['display_webp'] );
-		$value     = ! empty( $value['display_webp'] );
+		$old_display = ! empty( $old_value['display_webp'] );
+		$display     = ! empty( $value['display_webp'] );
 
-		if ( $old_value !== $value ) {
-			$this->trigger_webp_change( $value );
+		if ( $old_display !== $display || $old_value['display_webp_method'] !== $value['display_webp_method'] ) {
+			$this->trigger_webp_change();
 		}
 	}
 
@@ -252,14 +240,9 @@ class Imagify_Subscriber implements Subscriber_Interface {
 	 * @param string $option Name of the option to delete.
 	 */
 	public function store_option_value_before_delete( $option ) {
-		$option_name = \Imagify_Options::get_instance()->get_option_name();
-
-		if ( $option_name !== $option ) {
-			return;
+		if ( $this->get_option_name_to_serve_webp() === $option ) {
+			$this->tmp_is_serving_webp = $this->is_serving_webp();
 		}
-
-		$this->plugin_display_webp = get_option( $option, [] );
-		$this->plugin_display_webp = ! empty( $this->plugin_display_webp['display_webp'] );
 	}
 
 	/**
@@ -272,34 +255,145 @@ class Imagify_Subscriber implements Subscriber_Interface {
 	 * @param string $option Name of the deleted option.
 	 */
 	public function sync_on_option_delete( $option ) {
-		if ( false !== $this->plugin_display_webp ) {
-			$this->trigger_webp_change( false );
+		if ( false !== $this->tmp_is_serving_webp ) {
+			$this->trigger_webp_change();
 		}
 	}
 
 	/** ----------------------------------------------------------------------------------------- */
-	/** TOOLS =================================================================================== */
+	/** PUBLIC TOOLS ============================================================================ */
 	/** ----------------------------------------------------------------------------------------- */
 
 	/**
-	 * Trigger an action when the webp feature is enabled/disabled in a third party plugin.
+	 * Get the plugin name.
 	 *
 	 * @since  3.4
 	 * @access public
 	 * @author Grégory Viguier
 	 *
-	 * @param bool $active True if the webp feature is now active in the third party plugin. False otherwise.
+	 * @return string
 	 */
-	private function trigger_webp_change( $active ) {
+	public function get_name() {
+		return 'Imagify';
+	}
+
+	/**
+	 * Get the plugin identifier.
+	 *
+	 * @since  3.4
+	 * @access public
+	 * @author Grégory Viguier
+	 *
+	 * @return string
+	 */
+	public function get_id() {
+		return 'imagify';
+	}
+
+	/**
+	 * Tell if the plugin converts images to webp.
+	 *
+	 * @since  3.4
+	 * @access public
+	 * @author Grégory Viguier
+	 *
+	 * @return bool
+	 */
+	public function is_converting_to_webp() {
+		if ( ! function_exists( 'get_imagify_option' ) ) {
+			// No Imagify, no webp.
+			return false;
+		}
+
+		return (bool) get_imagify_option( 'convert_to_webp' );
+	}
+
+	/**
+	 * Tell if the plugin serves webp images on frontend.
+	 *
+	 * @since  3.4
+	 * @access public
+	 * @author Grégory Viguier
+	 *
+	 * @return bool
+	 */
+	public function is_serving_webp() {
+		if ( ! function_exists( 'get_imagify_option' ) ) {
+			// No Imagify, no webp.
+			return false;
+		}
+
+		if ( ! get_imagify_option( 'display_webp' ) ) {
+			// The option is not enabled, no webp.
+			return false;
+		}
+
 		/**
-		 * Trigger an action when the webp feature is enabled/disabled in a third party plugin.
-		 *
-		 * @since  3.4
-		 * @author Grégory Viguier
-		 *
-		 * @param bool $active True if the webp feature is now active in the third party plugin. False otherwise.
+		 * At this point, Imagify is serving webp.
+		 * In the case "CDN + Imagify rewrite rules", we act like it doesn’t serve webp.
 		 */
-		do_action( 'rocket_third_party_webp_change', $active );
+		$use_cdn     = $this->is_using_cdn();
+		$use_rewrite = 'rewrite' === get_imagify_option( 'display_webp_method' );
+
+		if ( $use_cdn && $use_rewrite ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Get the plugin basename.
+	 *
+	 * @since  3.4
+	 * @access public
+	 * @author Grégory Viguier
+	 *
+	 * @return bool
+	 */
+	public function get_basename() {
+		if ( empty( $this->plugin_basename ) ) {
+			$this->plugin_basename = defined( 'IMAGIFY_FILE' ) ? plugin_basename( IMAGIFY_FILE ) : 'imagify/imagify.php';
+		}
+
+		return $this->plugin_basename;
+	}
+
+	/** ----------------------------------------------------------------------------------------- */
+	/** PRIVATE TOOLS =========================================================================== */
+	/** ----------------------------------------------------------------------------------------- */
+
+	/**
+	 * Get the name of the Imagify’s "serve webp" option.
+	 *
+	 * @since  3.4
+	 * @access private
+	 * @author Grégory Viguier
+	 *
+	 * @return string
+	 */
+	private function get_option_name_to_serve_webp() {
+		if ( ! empty( $this->plugin_option_name_to_serve_webp ) ) {
+			return $this->plugin_option_name_to_serve_webp;
+		}
+
+		$default = 'imagify_settings';
+
+		if ( ! class_exists( '\Imagify_Options' ) || ! method_exists( '\Imagify_Options', 'get_instance' ) ) {
+			$this->plugin_option_name_to_serve_webp = $default;
+			return $this->plugin_option_name_to_serve_webp;
+		}
+
+		$instance = \Imagify_Options::get_instance();
+
+		if ( ! method_exists( $instance, 'get_option_name' ) ) {
+			$this->plugin_option_name_to_serve_webp = $default;
+			return $this->plugin_option_name_to_serve_webp;
+		}
+
+		$this->plugin_option_name_to_serve_webp = $instance->get_option_name();
+
+		return $this->plugin_option_name_to_serve_webp;
 	}
 
 	/**
@@ -323,12 +417,17 @@ class Imagify_Subscriber implements Subscriber_Interface {
 			return $is;
 		}
 
+		if ( ! is_multisite() ) {
+			$is = false;
+			return $is;
+		}
+
 		if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
 			require_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}
 
-		$file = defined( 'IMAGIFY_FILE' ) ? plugin_basename( IMAGIFY_FILE ) : 'imagify/imagify.php';
-		$is   = is_plugin_active_for_network( $file );
+		$is = is_plugin_active_for_network( $this->get_basename() );
+
 		return $is;
 	}
 }

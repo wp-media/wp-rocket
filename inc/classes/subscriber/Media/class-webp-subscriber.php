@@ -3,6 +3,7 @@ namespace WP_Rocket\Subscriber\Media;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Webp_Interface;
 
 /**
  * Subscriber for the WebP support.
@@ -77,7 +78,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 	 * @return string
 	 */
 	public function convert_to_webp( $html ) {
-		if ( ! $this->options->get( 'cache_webp' ) || $this->check_webp_plugins() ) {
+		if ( ! $this->options->get( 'cache_webp' ) || $this->get_plugins_serving_webp() ) {
 			return $html;
 		}
 
@@ -133,26 +134,54 @@ class Webp_Subscriber implements Subscriber_Interface {
 	 * @since  3.4
 	 * @access public
 	 * @author Remy Perona
+	 * @author Grégory Viguier
 	 *
 	 * @param string $description Section description.
 	 * @return string
 	 */
 	public function webp_section_description( $description ) {
-		$webp_plugins = $this->check_webp_plugins();
+		$webp_plugins = $this->get_webp_plugins();
+		$serving      = [];
+		$creating     = [];
+		$info_url     = '';
 
-		if ( ! $webp_plugins ) {
-			return $description;
+		if ( $webp_plugins ) {
+			foreach ( $webp_plugins as $plugin ) {
+				if ( $plugin->is_serving_webp() ) {
+					$serving[ $plugin->get_id() ] = $plugin->get_name();
+				} elseif ( ! $serving && $plugin->is_converting_to_webp() ) {
+					$creating[ $plugin->get_id() ] = $plugin->get_name();
+				}
+			}
 		}
 
-		$description = sprintf(
-			// Translators: %1$s = plugin name(s), %2$s = opening link tag, %3$s = closing link tag.
-			_n( 'You are using %1$s to serve images as WebP. %2$sMore info%3$s', 'You are using %1$s to serve images as WebP. %2$sMore info%3$s', count( $webp_plugins ), 'rocket' ),
-			wp_sprintf_l( '%l', $webp_plugins ),
-			'<a href="">',
+		if ( $serving ) {
+			return sprintf(
+				// Translators: %1$s = plugin name(s), %2$s = opening link tag, %3$s = closing link tag.
+				_n( 'You are using %1$s to serve images as WebP. %2$sMore info%3$s', 'You are using %1$s to serve images as WebP. %2$sMore info%3$s', count( $serving ), 'rocket' ),
+				wp_sprintf_l( '%l', $serving ),
+				'<a href="' . $info_url . '">',
+				'</a>'
+			);
+		}
+
+		if ( $creating ) {
+			return sprintf(
+				// Translators: %1$s = plugin name(s), %2$s = opening link tag, %3$s = closing link tag.
+				_n( 'You are using %1$s to convert images to WebP. %2$sMore info%3$s', 'You are using %1$s to convert images to WebP. %2$sMore info%3$s', count( $creating ), 'rocket' ),
+				wp_sprintf_l( '%l', $creating ),
+				'<a href="' . $info_url . '">',
+				'</a>'
+			);
+		}
+
+		return sprintf(
+			// Translators: %1$s and %2$s = opening link tag, %3$s = closing link tag.
+			__( 'You are not using a method to convert and serve images as WebP that WP Rocket supports. Consider using %1$sImagify%3$s or another supported plugin. %2$sMore info%3$s', 'rocket' ),
+			'<a href="https://wordpress.org/plugins/imagify/">',
+			'<a href="' . $info_url . '">',
 			'</a>'
 		);
-
-		return $description;
 	}
 
 	/**
@@ -166,7 +195,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 	 * @return bool
 	 */
 	public function allow_webp_cache( $cache_webp ) {
-		return $cache_webp && $this->check_webp_plugins() ? false : $cache_webp;
+		return $cache_webp && $this->get_plugins_serving_webp() ? false : $cache_webp;
 	}
 
 	/**
@@ -456,7 +485,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Checks for the existence of WebP plugins.
+	 * Get a list of plugins that serve webp images on frontend.
 	 *
 	 * @since  3.4
 	 * @access private
@@ -464,63 +493,58 @@ class Webp_Subscriber implements Subscriber_Interface {
 	 *
 	 * @return array The WebP plugin names.
 	 */
-	private function check_webp_plugins() {
-		$webp_plugins = [];
-		$checks       = [
-			'imagify'    => [
-				'name'     => 'Imagify',
-				'callback' => function() {
-					$file = defined( 'IMAGIFY_FILE' ) ? plugin_basename( IMAGIFY_FILE ) : 'imagify/imagify.php';
-					return function_exists( 'get_imagify_option' ) && get_imagify_option( 'display_webp' ) && $this->is_plugin_active( $file );
-				},
-			],
-			'shortpixel' => [
-				'name'     => 'ShortPixel',
-				'callback' => function() {
-					$file = defined( 'SHORTPIXEL_PLUGIN_FILE' ) ? plugin_basename( SHORTPIXEL_PLUGIN_FILE ) : 'shortpixel-image-optimiser/wp-shortpixel.php';
-					return get_option( 'wp-short-pixel-create-webp-markup' ) && $this->is_plugin_active( $file );
-				},
-			],
-		];
+	private function get_plugins_serving_webp() {
+		$webp_plugins = $this->get_webp_plugins();
 
+		if ( ! $webp_plugins ) {
+			// Somebody probably messed up.
+			return [];
+		}
+
+		$checks = [];
+
+		foreach ( $webp_plugins as $plugin ) {
+			if ( $plugin->is_serving_webp() ) {
+				$checks[ $plugin->get_id() ] = $plugin->get_name();
+			}
+		}
+
+		return $checks;
+	}
+
+	/**
+	 * Get a list of active plugins that convert and/or serve webp images.
+	 *
+	 * @since  3.4
+	 * @access private
+	 * @author Grégory Viguier
+	 *
+	 * @return array An array of Webp_Interface objects.
+	 */
+	private function get_webp_plugins() {
 		/**
 		 * Add Webp plugins.
 		 *
 		 * @since  3.4
 		 * @author Grégory Viguier
 		 *
-		 * @param array $webp_checks {
-		 *     An array of arrays as follow. Array keys are plugin identifiers.
-		 *
-		 *     @type string   $name     The plugin name.
-		 *     @type callable $callback A callable that returns a boolean: true when the option to serve Webp images on frontend is enabled. False otherwise.
-		 * }
+		 * @param array $webp_plugins An array of Webp_Interface objects.
 		 */
-		$webp_checks = (array) apply_filters( 'rocket_webp_plugins', [] );
+		$webp_plugins = (array) apply_filters( 'rocket_webp_plugins', [] );
 
-		if ( $webp_checks ) {
-			$webp_checks = array_filter(
-				$webp_checks,
-				function( $webp_check, $plugin_id ) use ( $webp_plugins ) {
-					if ( ! $plugin_id || isset( $webp_plugins[ $plugin_id ] ) ) {
-						return false;
-					}
-
-					if ( ! is_array( $webp_check ) || empty( $webp_check['name'] ) || empty( $webp_check['callback'] ) ) {
-						return false;
-					}
-
-					return is_string( $plugin_id ) && is_string( $webp_check['name'] ) && is_callable( $webp_check['callback'] );
-				},
-				ARRAY_FILTER_USE_BOTH
-			);
-
-			$checks = array_merge( $checks, $webp_checks );
+		if ( ! $webp_plugins ) {
+			// Somebody probably messed up.
+			return [];
 		}
 
-		foreach ( $checks as $plugin_id => $plugin ) {
-			if ( call_user_func( $plugin['callback'] ) ) {
-				$webp_plugins[ $plugin_id ] = $plugin['name'];
+		foreach ( $webp_plugins as $i => $plugin ) {
+			if ( ! is_a( $plugin, '\WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Webp_Interface' ) ) {
+				unset( $webp_plugins[ $i ] );
+				continue;
+			}
+			if ( ! $this->is_plugin_active( $plugin->get_basename() ) ) {
+				unset( $webp_plugins[ $i ] );
+				continue;
 			}
 		}
 

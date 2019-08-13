@@ -150,8 +150,11 @@ class Plugin {
 				$common_subscribers,
 				[
 					'webp_subscriber',
-					'imagify_subscriber',
-					'shortpixel_subscriber',
+					'custom_webp_subscriber',
+					'imagify_webp_subscriber',
+					'shortpixel_webp_subscriber',
+					'ewww_webp_subscriber',
+					'optimus_webp_subscriber',
 				]
 			);
 		}
