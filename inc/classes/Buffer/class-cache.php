@@ -516,16 +516,16 @@ class Cache extends Abstract_Buffer {
 		}
 
 		/**
-		 * Allow to disable separate WebP cache.
+		 * Force WP Rocket to disable its webp cache.
 		 *
 		 * @since  3.4
 		 * @author Grégory Viguier
 		 *
-		 * @param bool $cache_webp False to disable separate WebP cache. True by default.
+		 * @param bool $disable_webp_cache Set to true to disable the webp cache.
 		 */
-		$cache_webp = apply_filters( 'rocket_cache_webp', true );
+		$disable_webp_cache = apply_filters( 'rocket_disable_webp_cache', false );
 
-		if ( ! $cache_webp ) {
+		if ( $disable_webp_cache ) {
 			return $filename;
 		}
 

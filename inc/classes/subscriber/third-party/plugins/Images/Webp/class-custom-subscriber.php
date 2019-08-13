@@ -89,14 +89,7 @@ class Custom_Subscriber implements Webp_Interface, Subscriber_Interface {
 	 * @return bool
 	 */
 	public function is_serving_webp() {
-		/**
-		 * Force WP Rocket to disable its webp cache.
-		 *
-		 * @since  3.4
-		 * @author Grégory Viguier
-		 *
-		 * @param bool $force Set to true to disable the webp cache.
-		 */
+		/** This filter is documented in inc/classes/buffer/class-cache.php */
 		return (bool) apply_filters( 'rocket_disable_webp_cache', false );
 	}
 
