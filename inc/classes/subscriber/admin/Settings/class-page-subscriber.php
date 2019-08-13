@@ -87,7 +87,7 @@ class Page_Subscriber implements Subscriber_Interface {
 	public function refresh_customer_data() {
 		check_ajax_referer( 'rocket-ajax' );
 
-		if ( ! current_user_can( apply_filters( 'rocket_capability', 'manage_options' ) ) ) {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			wp_die();
 		}
 

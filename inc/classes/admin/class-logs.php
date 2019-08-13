@@ -160,8 +160,7 @@ class Logs implements Subscriber_Interface {
 	 * @return bool
 	 */
 	protected function current_user_can() {
-		/** This filter is documented in inc/admin-bar.php */
-		return current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) );
+		return current_user_can( 'rocket_manage_options' );
 	}
 
 	/**

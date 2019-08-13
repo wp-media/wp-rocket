@@ -320,8 +320,7 @@ function do_admin_post_rocket_purge_cache() {
 			wp_nonce_ays( '' );
 		}
 
-		// This filter is documented in inc/admin-bar.php.
-		if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		if ( ! current_user_can( 'rocket_purge_cache' ) ) {
 			return;
 		}
 
@@ -350,13 +349,15 @@ function do_admin_post_rocket_purge_cache() {
 					update_option( WP_ROCKET_SLUG, $options );
 				}
 
-				wp_safe_remote_get(
-					home_url( $lang ),
-					[
-						'blocking' => false,
-						'timeout'  => 0.01,
-					]
-				);
+				if ( get_rocket_option( 'manual_preload' ) && ( ! defined( 'WP_ROCKET_DEBUG' ) || ! WP_ROCKET_DEBUG ) ) {
+					wp_safe_remote_get(
+						home_url( $lang ),
+						[
+							'blocking' => false,
+							'timeout'  => 0.01,
+						]
+					);
+				}
 
 				rocket_dismiss_box( 'rocket_warning_plugin_modification' );
 
@@ -417,8 +418,7 @@ function do_admin_post_rocket_purge_opcache() {
 		wp_nonce_ays( '' );
 	}
 
-	// This filter is documented in inc/admin-bar.php.
-	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+	if ( ! current_user_can( 'rocket_purge_opcache' ) ) {
 		return;
 	}
 
@@ -439,8 +439,7 @@ function do_admin_post_rocket_purge_cloudflare() {
 		wp_nonce_ays( '' );
 	}
 
-	// This filter is documented in inc/admin-bar.php.
-	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+	if ( ! current_user_can( 'rocket_purge_cloudflare_cache' ) ) {
 		return;
 	}
 

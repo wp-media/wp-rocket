@@ -1,4 +1,7 @@
 <?php
+
+use WP_Rocket\Logger\Logger;
+
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 /**
@@ -148,7 +151,18 @@ function get_rocket_config_file() {
 	$buffer .= '$rocket_cache_mobile_files_tablet = \'' . apply_filters( 'rocket_cache_mobile_files_tablet', 'desktop' ) . "';\n";
 
 	foreach ( $options as $option => $value ) {
-		if ( 'cache_ssl' === $option || 'cache_mobile' === $option || 'do_caching_mobile_files' === $option || 'cache_webp' === $option ) {
+		if ( 'cache_ssl' === $option ) {
+			if ( 1 !== (int) $value ) {
+				if ( rocket_is_ssl_website() ) {
+					update_rocket_option( 'cache_ssl', 1 );
+					$value = 1;
+				}
+			}
+
+			$buffer .= '$rocket_' . $option . ' = ' . (int) $value . ";\n";
+		}
+
+		if ( 'cache_mobile' === $option || 'do_caching_mobile_files' === $option || 'cache_webp' === $option ) {
 			$buffer .= '$rocket_' . $option . ' = ' . (int) $value . ";\n";
 		}
 
@@ -184,6 +198,7 @@ function get_rocket_config_file() {
 		}
 	}
 
+	$buffer .= '$rocket_cache_ignored_parameters = ' . call_user_func( 'var_export', rocket_get_ignored_parameters(), true ) . ";\n";
 	$buffer .= '$rocket_cache_mandatory_cookies = ' . call_user_func( 'var_export', get_rocket_cache_mandatory_cookies(), true ) . ";\n";
 
 	$buffer .= '$rocket_cache_dynamic_cookies = ' . call_user_func( 'var_export', get_rocket_cache_dynamic_cookies(), true ) . ";\n";
@@ -489,8 +504,21 @@ function rocket_clean_minify( $extensions = array( 'js', 'css' ) ) {
 function rocket_clean_cache_busting( $extensions = array( 'js', 'css' ) ) {
 	$extensions = is_string( $extensions ) ? (array) $extensions : $extensions;
 
+	$cache_busting_path = WP_ROCKET_CACHE_BUSTING_PATH . get_current_blog_id();
+
+	if ( ! rocket_direct_filesystem()->is_dir( $cache_busting_path ) ) {
+		rocket_mkdir_p( $cache_busting_path );
+
+		Logger::debug( 'No Cache Busting folder found.', [
+			'mkdir cache busting folder',
+			'cache_busting_path' => $cache_busting_path,
+		] );
+
+		return;
+	}
+
 	try {
-		$dir = new RecursiveDirectoryIterator( WP_ROCKET_CACHE_BUSTING_PATH . get_current_blog_id(), FilesystemIterator::SKIP_DOTS );
+		$dir = new RecursiveDirectoryIterator( $cache_busting_path, FilesystemIterator::SKIP_DOTS );
 	} catch ( \UnexpectedValueException $e ) {
 		// No logging yet.
 		return;

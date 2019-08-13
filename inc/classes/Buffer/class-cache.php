@@ -323,7 +323,7 @@ class Cache extends Abstract_Buffer {
 		// Ensure proper formatting of the path.
 		$request_uri_path = preg_replace_callback( '/%[0-9A-F]{2}/', [ $this, 'reset_lowercase' ], $request_uri_path );
 		// Directories in Windows can't contain question marks.
-		$request_uri_path = str_replace( '?', '_', $request_uri_path );
+		$request_uri_path = str_replace( '?', '#', $request_uri_path );
 		// Limit filename max length to 255 characters.
 		$request_uri_path .= '/' . substr( $filename, 0, 250 ) . '.html';
 
