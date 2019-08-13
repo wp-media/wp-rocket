@@ -132,9 +132,9 @@ function get_rocket_config_file() {
 
 	if ( ! empty( $options['cache_webp'] ) ) {
 		/** This filter is documented in inc/classes/buffer/class-cache.php */
-		$cache_webp = apply_filters( 'rocket_cache_webp', true );
+		$disable_webp_cache = apply_filters( 'rocket_disable_webp_cache', false );
 
-		if ( ! $cache_webp ) {
+		if ( $disable_webp_cache ) {
 			$options['cache_webp'] = 0;
 		}
 	}

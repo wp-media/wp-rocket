@@ -57,7 +57,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 		return [
 			'rocket_buffer'                   => [ 'convert_to_webp', 23 ],
 			'rocket_webp_section_description' => 'webp_section_description',
-			'rocket_cache_webp'               => 'allow_webp_cache',
+			'rocket_disable_webp_cache'       => 'maybe_disable_webp_cache',
 			'rocket_third_party_webp_change'  => 'sync_webp_cache_with_third_party_plugins',
 		];
 	}
@@ -158,17 +158,22 @@ class Webp_Subscriber implements Subscriber_Interface {
 		if ( $serving ) {
 			return sprintf(
 				// Translators: %1$s = plugin name(s), %2$s = opening link tag, %3$s = closing link tag.
-				_n( 'You are using %1$s to serve images as WebP. %2$sMore info%3$s', 'You are using %1$s to serve images as WebP. %2$sMore info%3$s', count( $serving ), 'rocket' ),
+				_n( 'You are using %1$s to serve images as WebP. WP Rocket will NOT create a dedicated cache for WebP support. %2$sMore info%3$s', 'You are using %1$s to serve images as WebP. WP Rocket will NOT create a dedicated cache for WebP support. %2$sMore info%3$s', count( $serving ), 'rocket' ),
 				wp_sprintf_l( '%l', $serving ),
 				'<a href="' . $info_url . '">',
 				'</a>'
 			);
 		}
 
+		/** This filter is documented in inc/classes/buffer/class-cache.php */
+		if ( apply_filters( 'rocket_disable_webp_cache', false ) ) {
+			return __( 'WebP cache is disabled by filter.', 'rocket' );
+		}
+
 		if ( $creating ) {
 			return sprintf(
 				// Translators: %1$s = plugin name(s), %2$s = opening link tag, %3$s = closing link tag.
-				_n( 'You are using %1$s to convert images to WebP. %2$sMore info%3$s', 'You are using %1$s to convert images to WebP. %2$sMore info%3$s', count( $creating ), 'rocket' ),
+				_n( 'You are using %1$s to convert images to WebP. WP Rocket will create a dedicated cache for WebP support. %2$sMore info%3$s', 'You are using %1$s to convert images to WebP. WP Rocket will create a dedicated cache for WebP support. %2$sMore info%3$s', count( $creating ), 'rocket' ),
 				wp_sprintf_l( '%l', $creating ),
 				'<a href="' . $info_url . '">',
 				'</a>'
@@ -191,11 +196,11 @@ class Webp_Subscriber implements Subscriber_Interface {
 	 * @access public
 	 * @author Grégory Viguier
 	 *
-	 * @param  bool $cache_webp True to allow WebP cache (default). False otherwise.
+	 * @param  bool $disable_webp_cache True to allow WebP cache (default). False otherwise.
 	 * @return bool
 	 */
-	public function allow_webp_cache( $cache_webp ) {
-		return $cache_webp && $this->get_plugins_serving_webp() ? false : $cache_webp;
+	public function maybe_disable_webp_cache( $disable_webp_cache ) {
+		return ! $disable_webp_cache && $this->get_plugins_serving_webp() ? true : $disable_webp_cache;
 	}
 
 	/**
