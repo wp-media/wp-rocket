@@ -129,6 +129,7 @@ class Config {
 			'common_cache_logged_users' => 0,
 			'cache_mobile_files_tablet' => 'desktop',
 			'cache_ssl'                 => 0,
+			'cache_webp'                => 0,
 			'cache_mobile'              => 0,
 			'do_caching_mobile_files'   => 0,
 			'secret_cache_key'          => '',
