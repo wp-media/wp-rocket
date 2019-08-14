@@ -134,32 +134,69 @@ class EWWW_Subscriber implements Webp_Interface, Subscriber_Interface {
 	}
 
 	/**
-	 * Maybe deactivate webp cache after EWWW option has been successfully added.
+	 * Remove CDN hosts for images if EWWW uses ExactDN.
 	 *
 	 * @since  3.4
 	 * @access public
 	 * @author Grégory Viguier
 	 *
-	 * @param  array $hosts List of CNAMES.
-	 * @param  array $zone  List of zones. Default is [ 'all' ].
+	 * @param  array $hosts List of CDN URLs.
+	 * @param  array $zones List of zones. Default is [ 'all' ].
 	 * @return array
 	 */
-	public function maybe_remove_images_cnames( $hosts, $zone ) {
+	public function maybe_remove_images_cnames( $hosts, $zones ) {
 		if ( ! $hosts ) {
-			return $hosts;
-		}
-		if ( ! $this->options->get( 'cdn' ) ) {
-			return $hosts;
-		}
-		if ( ! in_array( 'images', $zone, true ) ) {
 			return $hosts;
 		}
 		if ( ! ewww_image_optimizer_get_option( 'ewww_image_optimizer_exactdn' ) ) {
 			return $hosts;
 		}
-
 		// EWWW uses ExactDN: WPR CDN should be disabled for images.
-		return [];
+		if ( ! in_array( 'images', $zones, true ) ) {
+			// Not asking for images.
+			return $hosts;
+		}
+		if ( ! array_diff( $zones, [ 'all', 'images' ] ) ) {
+			// This is clearly for images: return an empty list of hosts.
+			return [];
+		}
+
+		// We also want other things, like js and css: let's only remove the hosts for 'images'.
+		$cdn_urls = $this->options->get( 'cdn_cnames', [] );
+
+		if ( ! $cdn_urls ) {
+			return $hosts;
+		}
+
+		// Separate image hosts from the other ones.
+		$image_hosts = [];
+		$other_hosts = [];
+		$cdn_zones   = $this->options->get( 'cdn_zone', [] );
+
+		foreach ( $cdn_urls as $k => $urls ) {
+			if ( ! in_array( $cdn_zones[ $k ], $zones, true ) ) {
+				continue;
+			}
+
+			$urls = explode( ',', $urls );
+			$urls = array_map( 'trim', $urls );
+
+			if ( 'images' === $cdn_zones[ $k ] ) {
+				foreach ( $urls as $url ) {
+					$image_hosts[] = $url;
+				}
+			} else {
+				foreach ( $urls as $url ) {
+					$other_hosts[] = $url;
+				}
+			}
+		}
+
+		// Make sure the image hosts are not also used for other things (duplicate).
+		$image_hosts = array_diff( $image_hosts, $other_hosts );
+
+		// Then remove the remaining from the final list.
+		return array_diff( $hosts, $image_hosts );
 	}
 
 	/**
