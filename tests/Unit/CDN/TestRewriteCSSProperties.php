@@ -1,22 +1,11 @@
 <?php
 namespace WP_Rocket\Tests\Unit\CDN;
 
-use PHPUnit\Framework\TestCase;
 use WP_Rocket\CDN\CDN;
-use Brain\Monkey;
+use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 class TestRewriteCSSProperties extends TestCase {
-    protected function setUp() {
-        parent::setUp();
-        Monkey\setUp();
-    }
-
-    protected function tearDown() {
-        Monkey\tearDown();
-        parent::tearDown();
-    }
-
     public function testShouldRewriteCSSProperties() {
         $options = $this->createMock('WP_Rocket\Admin\Options_Data');
         $map     = [
