@@ -2,7 +2,6 @@
 namespace WP_Rocket\Tests\Unit\Functions\Options;
 
 use WP_Rocket\Tests\Unit\TestCase;
-use Brain\Monkey;
 use Brain\Monkey\Functions;
 
 /**
@@ -11,7 +10,6 @@ use Brain\Monkey\Functions;
 class TestExcludeDeferJS extends TestCase {
     protected function setUp() {
         parent::setUp();
-        Monkey\setUp();
 
         require( WP_ROCKET_PLUGIN_ROOT . 'inc/functions/options.php' );
     }
