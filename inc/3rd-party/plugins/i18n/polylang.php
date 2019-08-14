@@ -23,7 +23,7 @@ if ( defined( 'POLYLANG_VERSION' ) && POLYLANG_VERSION ) :
 		add_filter( 'rocket_cache_mandatory_cookies', 'rocket_add_polylang_mandatory_cookie' );
 
 		// Remove WP Rocket rewrite rules from .htaccess file.
-		add_filter( 'rocket_htaccess_mod_rewrite', '__return_false' );
+		add_filter( 'rocket_htaccess_mod_rewrite', '__return_false', 74 );
 	}
 endif;
 
@@ -63,7 +63,7 @@ function rocket_activate_polylang() {
 		add_filter( 'rocket_cache_mandatory_cookies', 'rocket_add_polylang_mandatory_cookie' );
 
 		// Remove WP Rocket rewrite rules from .htaccess file.
-		add_filter( 'rocket_htaccess_mod_rewrite', '__return_false' );
+		add_filter( 'rocket_htaccess_mod_rewrite', '__return_false', 74 );
 
 		// Regenerate the config file.
 		rocket_generate_config_file();
@@ -88,7 +88,7 @@ function rocket_deactivate_polylang() {
 	remove_filter( 'rocket_cache_mandatory_cookies', 'rocket_add_polylang_mandatory_cookie' );
 
 	// Add back WP Rocket rewrite rules from .htaccess file.
-	remove_filter( 'rocket_htaccess_mod_rewrite', '__return_false' );
+	remove_filter( 'rocket_htaccess_mod_rewrite', '__return_false', 74 );
 
 	// Regenerate the config file.
 	rocket_generate_config_file();
@@ -115,7 +115,7 @@ function rocket_detect_browser_language_status_change( $value ) {
 		add_filter( 'rocket_cache_mandatory_cookies', 'rocket_add_polylang_mandatory_cookie' );
 
 		// Remove WP Rocket rewrite rules from .htaccess file.
-		add_filter( 'rocket_htaccess_mod_rewrite', '__return_false' );
+		add_filter( 'rocket_htaccess_mod_rewrite', '__return_false', 74 );
 
 		// Regenerate the config file.
 		rocket_generate_config_file();
@@ -130,7 +130,7 @@ function rocket_detect_browser_language_status_change( $value ) {
 		remove_filter( 'rocket_cache_mandatory_cookies', 'rocket_add_polylang_mandatory_cookie' );
 
 		// Add back WP Rocket rewrite rules from .htaccess file.
-		remove_filter( 'rocket_htaccess_mod_rewrite', '__return_false' );
+		remove_filter( 'rocket_htaccess_mod_rewrite', '__return_false', 74 );
 
 		// Regenerate the config file.
 		rocket_generate_config_file();

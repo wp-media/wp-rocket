@@ -401,11 +401,11 @@ function rocket_warning_htaccess_permissions() {
 		'</a>'
 	);
 
-	add_filter( 'rocket_htaccess_mod_rewrite', '__return_false' );
+	add_filter( 'rocket_htaccess_mod_rewrite', '__return_false', 42 );
 
 	$message .= '<p>' . __( 'Don’t worry, WP Rocket’s page caching and settings will still function correctly.', 'rocket' ) . '<br>' . __( 'For optimal performance, adding the following lines into your .htaccess is recommended (not required):', 'rocket' ) . '<br><textarea readonly="readonly" id="rocket_htaccess_rules" name="rocket_htaccess_rules" class="large-text readonly" rows="6">' . esc_textarea( get_rocket_htaccess_marker() ) . '</textarea></p>';
 
-	remove_filter( 'rocket_htaccess_mod_rewrite', '__return_false' );
+	remove_filter( 'rocket_htaccess_mod_rewrite', '__return_false', 42 );
 
 	rocket_notice_html(
 		[

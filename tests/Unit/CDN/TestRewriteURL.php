@@ -1,22 +1,11 @@
 <?php
 namespace WP_Rocket\Tests\Unit\CDN;
 
-use PHPUnit\Framework\TestCase;
 use WP_Rocket\CDN\CDN;
-use Brain\Monkey;
+use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 class TestRewriteURL extends TestCase {
-    protected function setUp() {
-        parent::setUp();
-        Monkey\setUp();
-    }
-
-    protected function tearDown() {
-        Monkey\tearDown();
-        parent::tearDown();
-    }
-
     /**
      * @dataProvider rewriteURLProvider
      */

@@ -1,22 +1,11 @@
 <?php
 namespace WP_Rocket\Tests\Unit\Optimize\CSS\Combine;
 
-use PHPUnit\Framework\TestCase;
+use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Optimization\CSS\Combine;
-use Brain\Monkey;
 use Brain\Monkey\Functions;
 
 class TestInsertCombinedCSS extends TestCase {
-    protected function setUp() {
-        parent::setUp();
-        Monkey\setUp();
-    }
-
-    protected function tearDown() {
-        Monkey\tearDown();
-        parent::tearDown();
-    }
-
     public function testShouldInsertCombinedCSS() {
         Functions\when('create_rocket_uniqid')->justReturn('1234');
         Functions\when('get_current_blog_id')->justReturn('1');
