@@ -2,6 +2,7 @@
 namespace WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp;
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\CDN\CDN;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
@@ -15,13 +16,22 @@ class EWWW_Subscriber implements Webp_Interface, Subscriber_Interface {
 	use Webp_Common;
 
 	/**
-	 * Options instance.
+	 * Options_Data instance.
 	 *
 	 * @var    Options_Data
 	 * @access private
 	 * @author Remy Perona
 	 */
 	private $options;
+
+	/**
+	 * CDN instance.
+	 *
+	 * @var    CDN
+	 * @access private
+	 * @author Grégory Viguier
+	 */
+	private $cdn;
 
 	/**
 	 * EWWW basename.
@@ -40,9 +50,11 @@ class EWWW_Subscriber implements Webp_Interface, Subscriber_Interface {
 	 * @author Grégory Viguier
 	 *
 	 * @param Options_Data $options Options instance.
+	 * @param CDN          $cdn     CDN instance.
 	 */
-	public function __construct( Options_Data $options ) {
+	public function __construct( Options_Data $options, CDN $cdn ) {
 		$this->options = $options;
+		$this->cdn     = $cdn;
 	}
 
 	/**

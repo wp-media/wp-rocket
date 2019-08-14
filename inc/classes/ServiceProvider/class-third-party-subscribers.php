@@ -50,11 +50,14 @@ class Third_Party_Subscribers extends AbstractServiceProvider {
 		$this->getContainer()->share( 'bridge_subscriber', 'WP_Rocket\Subscriber\Third_Party\Themes\Bridge_Subscriber' );
 		$this->getContainer()->share( 'ngg_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\NGG_Subscriber' );
 		$this->getContainer()->share( 'imagify_webp_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber' )
-			->withArgument( $this->getContainer()->get( 'options' ) );
+			->withArgument( $this->getContainer()->get( 'options' ) )
+			->withArgument( $this->getContainer()->get( 'cdn' ) );
 		$this->getContainer()->share( 'shortpixel_webp_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\ShortPixel_Subscriber' )
-			->withArgument( $this->getContainer()->get( 'options' ) );
+			->withArgument( $this->getContainer()->get( 'options' ) )
+			->withArgument( $this->getContainer()->get( 'cdn' ) );
 		$this->getContainer()->share( 'ewww_webp_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber' )
-			->withArgument( $this->getContainer()->get( 'options' ) );
+			->withArgument( $this->getContainer()->get( 'options' ) )
+			->withArgument( $this->getContainer()->get( 'cdn' ) );
 		$this->getContainer()->share( 'optimus_webp_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Optimus_Subscriber' );
 	}
 }

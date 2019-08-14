@@ -2,6 +2,7 @@
 namespace WP_Rocket\Subscriber\Media;
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Subscriber\CDN\CDNSubscriber;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Webp_Interface;
 
@@ -23,6 +24,15 @@ class Webp_Subscriber implements Subscriber_Interface {
 	private $options;
 
 	/**
+	 * CDNSubscriber instance.
+	 *
+	 * @var    CDNSubscriber
+	 * @access private
+	 * @author Grégory Viguier
+	 */
+	private $cdn_subscriber;
+
+	/**
 	 * \WP_Filesystem_Direct instance.
 	 *
 	 * @var    \WP_Filesystem_Direct
@@ -38,10 +48,12 @@ class Webp_Subscriber implements Subscriber_Interface {
 	 * @access public
 	 * @author Remy Perona
 	 *
-	 * @param Options_Data $options Options instance.
+	 * @param Options_Data  $options       Options instance.
+	 * @param CDNSubscriber $cdn_subsciber CDNSubscriber instance.
 	 */
-	public function __construct( Options_Data $options ) {
-		$this->options = $options;
+	public function __construct( Options_Data $options, CDNSubscriber $cdn_subsciber ) {
+		$this->options       = $options;
+		$this->cdn_subsciber = $cdn_subsciber;
 	}
 
 	/**
@@ -316,7 +328,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 
 		// CDN.
 		if ( ! isset( $hosts ) ) {
-			$hosts = get_rocket_cnames_host( [ 'all', 'images' ] );
+			$hosts = $this->cdn_subsciber->get_cdn_hosts( [ 'all', 'images' ] );
 			$hosts = array_flip( $hosts );
 		}
 

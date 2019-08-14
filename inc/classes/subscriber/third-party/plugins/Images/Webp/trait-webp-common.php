@@ -78,7 +78,7 @@ trait Webp_Common {
 	 */
 	private function is_using_cdn() {
 		// Don't use `$this->options->get( 'cdn' )` here, we need an up-to-date value when the CDN option changes.
-		$use = get_rocket_option( 'cdn' ) && get_rocket_cdn_cnames( [ 'all', 'images' ] );
+		$use = get_rocket_option( 'cdn' ) && $this->cdn->get_cdn_urls( [ 'all', 'images' ] );
 		/**
 		 * Filter whether WP Rocket is using a CDN for webp images.
 		 *
