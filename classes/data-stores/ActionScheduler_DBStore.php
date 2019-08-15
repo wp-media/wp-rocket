@@ -410,6 +410,8 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 	/**
 	 * Cancel pending actions by hook.
 	 *
+	 * @since 3.0.0
+	 *
 	 * @param string $hook Hook name.
 	 *
 	 * @return void
