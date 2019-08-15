@@ -245,7 +245,7 @@ abstract class ActionScheduler_Store extends ActionScheduler_Store_Deprecated {
 	 *
 	 * @return void
 	 */
-	public function cancel_actions_by_group( $hook ) {
+	public function cancel_actions_by_group( $group ) {
 		$action_ids = true;
 		while ( ! empty( $action_ids ) ) {
 			$action_ids = $this->query_actions(
