@@ -99,6 +99,7 @@ class ActionScheduler_wpPostStore_Test extends ActionScheduler_UnitTestCase {
 		$store   = new ActionScheduler_wpPostStore();
 		$actions = [];
 		$group   = 'by_group_test';
+
 		for ( $day = 1; $day <= 3; $day++ ) {
 			$delta     = sprintf( '+%d day', $day );
 			$time      = as_get_datetime_object( $delta );

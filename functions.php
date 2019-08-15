@@ -113,6 +113,16 @@ function as_unschedule_action( $hook, $args = array(), $group = '' ) {
  * @param string $group
  */
 function as_unschedule_all_actions( $hook, $args = array(), $group = '' ) {
+	if ( empty( $args ) ) {
+		if ( ! empty( $hook ) && empty( $group ) ) {
+			ActionScheduler_Store::instance()->cancel_actions_by_hook( $hook );
+			return;
+		}
+		if ( ! empty( $group ) && empty( $hook ) ) {
+			ActionScheduler_Store::instance()->cancel_actions_by_group( $group );
+			return;
+		}
+	}
 	do {
 		$unscheduled_action = as_unschedule_action( $hook, $args, $group );
 	} while ( ! empty( $unscheduled_action ) );
