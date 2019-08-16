@@ -22,7 +22,7 @@ class TestScheduleEvent extends TestCase {
 
 		$expired_cache_purge_subscriber->schedule_event();
 
-		$event = wp_get_scheduled_event( 'rocket_purge_time_event' );
+		$event = wp_next_scheduled( 'rocket_purge_time_event' );
 
 		$this->assertNotFalse( $event );
 
@@ -43,7 +43,7 @@ class TestScheduleEvent extends TestCase {
 
 		$expired_cache_purge_subscriber->schedule_event();
 
-		$event = wp_get_scheduled_event( 'rocket_purge_time_event' );
+		$event = wp_next_scheduled( 'rocket_purge_time_event' );
 
 		$this->assertFalse( $event );
 	}
