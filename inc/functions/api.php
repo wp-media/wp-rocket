@@ -1,6 +1,4 @@
 <?php
-defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
-
 /**
  * Get an URL with one of CNAMES added in options
  *

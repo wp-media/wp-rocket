@@ -1,27 +1,13 @@
 <?php
-namespace WP_Rocket\Subscriber\Cache;
-
-use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Event_Management\Subscriber_Interface;
+namespace WP_Rocket\Cache;
 
 /**
- * Event subscriber to clear cached files after lifespan.
+ * Purge expired cache files based on the defined lifespan
  *
  * @since  3.4
  * @author Grégory Viguier
  */
-class Automatic_Cache_Purge_Subscriber implements Subscriber_Interface {
-
-	/**
-	 * Cron name.
-	 *
-	 * @since  3.4
-	 * @author Grégory Viguier
-	 *
-	 * @var string
-	 */
-	const EVENT_NAME = 'rocket_purge_time_event';
-
+class Expired_Cache_Purge {
 	/**
 	 * Path to the global cache folder.
 	 *
@@ -32,17 +18,6 @@ class Automatic_Cache_Purge_Subscriber implements Subscriber_Interface {
 	 * @var string
 	 */
 	private $cache_path;
-
-	/**
-	 * WP Rocket Options instance.
-	 *
-	 * @since  3.4
-	 * @access private
-	 * @author Grégory Viguier
-	 *
-	 * @var Options_Data
-	 */
-	private $options;
 
 	/**
 	 * Filesystem object.
@@ -56,61 +31,12 @@ class Automatic_Cache_Purge_Subscriber implements Subscriber_Interface {
 	private $filesystem;
 
 	/**
-	 * Constructor.
+	 * Constructor
 	 *
-	 * @param Options_Data $options    Options instance.
-	 * @param string       $cache_path Path to the global cache folder.
+	 * @param string $cache_path Path to the global cache folder.
 	 */
-	public function __construct( Options_Data $options, $cache_path ) {
-		$this->options    = $options;
+	public function __construct( $cache_path ) {
 		$this->cache_path = $cache_path;
-	}
-
-	/**
-	 * Return an array of events that this subscriber wants to listen to.
-	 *
-	 * @since  3.4
-	 * @access public
-	 * @author Grégory Viguier
-	 *
-	 * @return array
-	 */
-	public static function get_subscribed_events() {
-		return [
-			'init'                => 'schedule_event',
-			'rocket_deactivation' => 'unschedule_event',
-			static::EVENT_NAME    => 'purge_old_files',
-		];
-	}
-
-
-	/** ----------------------------------------------------------------------------------------- */
-	/** HOOK CALLBACKS ========================================================================== */
-	/** ----------------------------------------------------------------------------------------- */
-
-	/**
-	 * Scheduling the cron event.
-	 * If the task is not programmed, it is automatically added.
-	 *
-	 * @since  3.4
-	 * @access public
-	 * @author Grégory Viguier
-	 */
-	public function schedule_event() {
-		if ( $this->get_cache_lifespan() && ! wp_next_scheduled( static::EVENT_NAME ) ) {
-			wp_schedule_event( time() + HOUR_IN_SECONDS, 'hourly', static::EVENT_NAME );
-		}
-	}
-
-	/**
-	 * Unschedule the event.
-	 *
-	 * @since  3.4
-	 * @access public
-	 * @author Grégory Viguier
-	 */
-	public function unschedule_event() {
-		wp_clear_scheduled_hook( static::EVENT_NAME );
 	}
 
 	/**
@@ -119,10 +45,10 @@ class Automatic_Cache_Purge_Subscriber implements Subscriber_Interface {
 	 * @since  3.4
 	 * @access public
 	 * @author Grégory Viguier
+	 *
+	 * @param int $lifespan The cache lifespan in seconds.
 	 */
-	public function purge_old_files() {
-		$lifespan = $this->get_cache_lifespan();
-
+	public function purge_expired_files( $lifespan ) {
 		if ( ! $lifespan ) {
 			// Uh?
 			return;
@@ -182,42 +108,12 @@ class Automatic_Cache_Purge_Subscriber implements Subscriber_Interface {
 				$file['host'] = str_replace( '.', '_', $file['host'] );
 			}
 
-			// Grab cache folders.
-			$host_pattern = '@^' . preg_quote( $file['host'], '@' ) . '@';
-			$sub_dir      = rtrim( $file['path'], '/' );
+			$sub_dir = rtrim( $file['path'], '/' );
 
-			try {
-				$iterator = new \DirectoryIterator( $this->cache_path );
-			}
-			catch ( \Exception $e ) {
-				continue;
-			}
-
-			$iterator = new \CallbackFilterIterator(
-				$iterator,
-				function ( $current ) use ( $host_pattern, $sub_dir ) {
-					if ( ! $current->isDir() || $current->isDot() ) {
-						// We look for folders only, and don't want '.' nor '..'.
-						return false;
-					}
-
-					if ( ! preg_match( $host_pattern, $current->getFilename() ) ) {
-						// Not the right host.
-						return false;
-					}
-
-					if ( '' !== $sub_dir && ! $this->filesystem->exists( $current->getPathname() . $sub_dir ) ) {
-						// Not the right path.
-						return false;
-					}
-
-					return true;
-				}
-			);
-
+			$files       = $this->get_cache_files_in_dir( $file );
 			$url_deleted = [];
 
-			foreach ( $iterator as $item ) {
+			foreach ( $files as $item ) {
 				$dir_path     = $item->getPathname();
 				$sub_dir_path = $dir_path . $sub_dir;
 
@@ -255,34 +151,34 @@ class Automatic_Cache_Purge_Subscriber implements Subscriber_Interface {
 			 * @since  3.4
 			 * @author Grégory Viguier
 			 *
-		 * @param array $deleted {
-		 *     An array of arrays sharing the same home URL, described like: {
-		 *         @type string $home_url  The home URL. This is the same as $args['url'].
-		 *         @type string $home_path Path to home.
-		 *         @type bool   $logged_in True if the home path corresponds to a logged in user’s folder.
-		 *         @type array  $files     A list of paths of files that have been deleted.
-		 *     }
-		 *     Ex:
-		 *     [
-		 *         [
-		 *             'home_url'  => 'http://example.com/home1',
-		 *             'home_path' => '/path-to/home1/wp-content/cache/wp-rocket/example.com/home1',
-		 *             'logged_in' => false,
-		 *             'files'     => [
-		 *                 '/path-to/home1/wp-content/cache/wp-rocket/example.com/home1/deleted-page',
-		 *                 '/path-to/home1/wp-content/cache/wp-rocket/example.com/home1/very-dead-page',
-		 *             ],
-		 *         ],
-		 *         [
-		 *             'home_url'  => 'http://example.com/home1',
-		 *             'home_path' => '/path-to/home1/wp-content/cache/wp-rocket/example.com-Greg-594d03f6ae698691165999/home1',
-		 *             'logged_in' => true,
-		 *             'files'     => [
-		 *                 '/path-to/home1/wp-content/cache/wp-rocket/example.com-Greg-594d03f6ae698691165999/home1/how-to-prank-your-coworkers',
-		 *                 '/path-to/home1/wp-content/cache/wp-rocket/example.com-Greg-594d03f6ae698691165999/home1/best-source-of-gifs',
-		 *             ],
-		 *         ],
-		 *     ]
+			 * @param array $deleted {
+			 *     An array of arrays sharing the same home URL, described like: {
+			 *         @type string $home_url  The home URL. This is the same as $args['url'].
+			 *         @type string $home_path Path to home.
+			 *         @type bool   $logged_in True if the home path corresponds to a logged in user’s folder.
+			 *         @type array  $files     A list of paths of files that have been deleted.
+			 *     }
+			 *     Ex:
+			 *     [
+			 *         [
+			 *             'home_url'  => 'http://example.com/home1',
+			 *             'home_path' => '/path-to/home1/wp-content/cache/wp-rocket/example.com/home1',
+			 *             'logged_in' => false,
+			 *             'files'     => [
+			 *                 '/path-to/home1/wp-content/cache/wp-rocket/example.com/home1/deleted-page',
+			 *                 '/path-to/home1/wp-content/cache/wp-rocket/example.com/home1/very-dead-page',
+			 *             ],
+			 *         ],
+			 *         [
+			 *             'home_url'  => 'http://example.com/home1',
+			 *             'home_path' => '/path-to/home1/wp-content/cache/wp-rocket/example.com-Greg-594d03f6ae698691165999/home1',
+			 *             'logged_in' => true,
+			 *             'files'     => [
+			 *                 '/path-to/home1/wp-content/cache/wp-rocket/example.com-Greg-594d03f6ae698691165999/home1/how-to-prank-your-coworkers',
+			 *                 '/path-to/home1/wp-content/cache/wp-rocket/example.com-Greg-594d03f6ae698691165999/home1/best-source-of-gifs',
+			 *             ],
+			 *         ],
+			 *     ]
 			 * @param array $args    {
 			 *     @type string $url            The home url.
 			 *     @type int    $lifespan       Files lifespan in seconds.
@@ -352,46 +248,62 @@ class Automatic_Cache_Purge_Subscriber implements Subscriber_Interface {
 	/** ----------------------------------------------------------------------------------------- */
 	/** TOOLS =================================================================================== */
 	/** ----------------------------------------------------------------------------------------- */
-
 	/**
-	 * Get the cache lifespan in seconds.
-	 * If no value is filled in the settings, return 0. It means the purge is disabled.
-	 * If the value from the settings is filled but invalid, fallback to the initial value (10 hours).
+	 * Get all cache files for the provided URL
 	 *
-	 * @since  3.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.4
+	 * @author Gregory Viguier
 	 *
-	 * @return int The cache lifespan in seconds.
+	 * @param array $file An array of the parsed URL parts.
+	 * @return Bool|DirectoryIterator
 	 */
-	public function get_cache_lifespan() {
-		$lifespan = $this->options->get( 'purge_cron_interval' );
+	private function get_cache_files_in_dir( $file ) {
+		// Grab cache folders.
+		$host_pattern = '@^' . preg_quote( $file['host'], '@' ) . '@';
+		$sub_dir      = rtrim( $file['path'], '/' );
 
-		if ( ! $lifespan ) {
-			return 0;
+		try {
+			$iterator = new \DirectoryIterator( $this->cache_path );
+		}
+		catch ( \Exception $e ) {
+			return false;
 		}
 
-		$unit = $this->options->get( 'purge_cron_unit' );
+		return new \CallbackFilterIterator(
+			$iterator,
+			function ( $current ) use ( $host_pattern, $sub_dir ) {
+				if ( ! $current->isDir() || $current->isDot() ) {
+					// We look for folders only, and don't want '.' nor '..'.
+					return false;
+				}
 
-		if ( $lifespan < 0 || ! $unit || ! defined( $unit ) ) {
-			return 10 * HOUR_IN_SECONDS;
-		}
+				if ( ! preg_match( $host_pattern, $current->getFilename() ) ) {
+					// Not the right host.
+					return false;
+				}
 
-		return $lifespan * constant( $unit );
+				if ( '' !== $sub_dir && ! $this->filesystem->exists( $current->getPathname() . $sub_dir ) ) {
+					// Not the right path.
+					return false;
+				}
+
+				return true;
+			}
+		);
 	}
 
 	/**
 	 * Purge a folder from old files.
 	 *
 	 * @since  3.4
-	 * @access public
+	 * @access private
 	 * @author Grégory Viguier
 	 *
 	 * @param  string $dir_path     Path to the folder to purge.
 	 * @param  int    $file_age_limit Timestamp of the maximum age files must have.
 	 * @return array                A list of files that have been deleted.
 	 */
-	public function purge_dir( $dir_path, $file_age_limit ) {
+	private function purge_dir( $dir_path, $file_age_limit ) {
 		$deleted = [];
 
 		try {
@@ -449,13 +361,13 @@ class Automatic_Cache_Purge_Subscriber implements Subscriber_Interface {
 	 * Tell if a folder is empty.
 	 *
 	 * @since  3.4
-	 * @access public
+	 * @access private
 	 * @author Grégory Viguier
 	 *
 	 * @param  string $dir_path Path to the folder to purge.
 	 * @return bool             True if empty. False if it contains files.
 	 */
-	public function is_dir_empty( $dir_path ) {
+	private function is_dir_empty( $dir_path ) {
 		try {
 			$iterator = new \DirectoryIterator( $dir_path );
 		}

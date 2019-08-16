@@ -133,7 +133,7 @@ class Partial_Preload_Subscriber implements Subscriber_Interface {
 			foreach ( $data['files'] as $file_path ) {
 				if ( strpos( $file_path, '#' ) ) {
 					// URL with query string.
-					continue;
+					$file_path = preg_replace( '/#/', '?', $file_path, 1 );
 				}
 
 				$this->urls[] = str_replace( $data['home_path'], $data['home_url'], $file_path );

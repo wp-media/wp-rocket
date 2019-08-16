@@ -206,7 +206,7 @@ class CDN {
 	 * @param string $url URL to check.
 	 * @return boolean
 	 */
-	private function is_excluded( $url ) {
+	public function is_excluded( $url ) {
 		if ( 'php' === pathinfo( strtok( $url, '?' ), PATHINFO_EXTENSION ) ) {
 			return true;
 		}

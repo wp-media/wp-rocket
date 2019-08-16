@@ -44,6 +44,7 @@
 		"brain/monkey": "^2.0",
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
 		"doctrine/instantiator": "1.0.*",
+		"mikey179/vfsstream": "^1.6",
 		"myclabs/deep-copy": "1.6.*",
 		"phpcompatibility/phpcompatibility-wp": "^2.0",
 		"phpdocumentor/reflection-docblock": "^3.3",
