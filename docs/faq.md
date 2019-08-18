@@ -30,7 +30,7 @@ Want to create some other method for initiating Action Scheduler? [Open a new is
 
 By default, Action Scheduler is designed to work alongside WP-Cron and not change any of its behaviour. This helps avoid unexpectedly overriding WP-Cron on sites installing your plugin, which may have nothing to do with WP-Cron.
 
-However, we can understand why you might want to replace WP-Cron completely in environments within you control, especially as it gets you the advantages of Action Scheduler. This should be possible without too much code.
+However, we can understand why you might want to replace WP-Cron completely in environments within your control, especially as it gets you the advantages of Action Scheduler. This should be possible without too much code.
 
 You could use the `'schedule_event'` hook in WordPress to use Action Scheduler for only newly scheduled WP-Cron jobs and map the `$event` param to Action Scheduler API functions.
 
@@ -96,6 +96,6 @@ It requires no setup, and won't override any WordPress APIs (unless you want it 
 
 ### How does Action Scheduler work on WordPress Multisite?
 
-Action Scheduler is designed to manage the scheduled actions on a single site. It has no special handling for running queues across multiple sites in a multisite network. That said, because it's storage and Queue Runner are completely swappable, it would be possible to write multisite handling classes to use with it.
+Action Scheduler is designed to manage the scheduled actions on a single site. It has no special handling for running queues across multiple sites in a multisite network. That said, because its storage and Queue Runner are completely swappable, it would be possible to write multisite handling classes to use with it.
 
 If you'd like to create a multisite plugin to do this and release it publicly to help others, [open a new issue to let us know](https://github.com/Prospress/action-scheduler/issues/new), we'd love to help you with it.
