@@ -109,7 +109,6 @@ class Critical_CSS_Subscriber implements Subscriber_Interface {
 
 			delete_transient( 'rocket_critical_css_generation_process_running' );
 			delete_transient( 'rocket_critical_css_generation_process_complete' );
-			delete_transient( 'rocket_critical_css_generation_process_complete_time' );
 		}
 	}
 
@@ -178,12 +177,6 @@ class Critical_CSS_Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$transient_timestamp = get_transient( 'rocket_critical_css_generation_process_complete_time' );
-
-		if ( ! $transient_timestamp ) {
-			return;
-		}
-
 		$status = 'success';
 
 		if ( 0 === $transient['generated'] ) {
@@ -193,7 +186,8 @@ class Critical_CSS_Subscriber implements Subscriber_Interface {
 		}
 
 		// Translators: %1$d = number of critical CSS generated, %2$d = total number of critical CSS to generate.
-		$message = '<p>' . sprintf( __( 'Critical CSS generation finished for %1$d of %2$d page types. (%3$s)', 'rocket' ), $transient['generated'], $transient['total'], $transient_timestamp ) . '</p>';
+		$message = '<p>' . sprintf( __( 'Critical CSS generation finished for %1$d of %2$d page types.', 'rocket' ), $transient['generated'], $transient['total'] );
+		$message .= ' <em> (' . date_i18n( "F j, Y @ G:i", time() ) .') </em>' . '</p>';
 
 		if ( ! empty( $transient['items'] ) ) {
 			$message .= '<ul>';
@@ -217,7 +211,6 @@ class Critical_CSS_Subscriber implements Subscriber_Interface {
 		);
 
 		delete_transient( 'rocket_critical_css_generation_process_complete' );
-		delete_transient( 'rocket_critical_css_generation_process_complete_time' );
 	}
 
 	/**

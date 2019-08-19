@@ -764,25 +764,29 @@ function rocket_clear_cache_notice() {
 		case 'all':
 			if ( current_user_can( 'rocket_purge_cache' ) ) {
 				// translators: %s = plugin name.
-				$notice = sprintf( __( '%s: Cache cleared. (%s)', 'rocket' ), '<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>', '<em>' . date("Y-m-d h:i:sa") .'</em>' );
+				$notice = sprintf( __( '%s: Cache cleared.', 'rocket' ), '<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>' );
+				$notice .= '<em> (' . date_i18n( "F j, Y @ G:i", time() ) .') </em>';
 			}
 			break;
 		case 'post':
 			if ( current_user_can( 'rocket_purge_posts' ) ) {
 				// translators: %s = plugin name.
-				$notice = sprintf( __( '%s: Post cache cleared. (%s)', 'rocket' ), '<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>', '<em>' . date("Y-m-d h:i:sa") .'</em>' );
+				$notice = sprintf( __( '%s: Post cache cleared.', 'rocket' ), '<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>' );
+				$notice .= '<em> (' . date_i18n( "F j, Y @ G:i", time() ) .') </em>';
 			}
 			break;
 		case 'term':
 			if ( current_user_can( 'rocket_purge_terms' ) ) {
 				// translators: %s = plugin name.
-				$notice = sprintf( __( '%s: Term cache cleared. (%s)', 'rocket' ), '<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>', '<em>' . date("Y-m-d h:i:sa") .'</em>' );
+				$notice = sprintf( __( '%s: Term cache cleared.', 'rocket' ), '<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>' );
+				$notice .= '<em> (' . date_i18n( "F j, Y @ G:i", time() ) .') </em>';
 			}
 			break;
 		case 'user':
 			if ( current_user_can( 'rocket_purge_users' ) ) {
 				// translators: %s = plugin name).
-				$notice = sprintf( __( '%s: User cache cleared. (%s)', 'rocket' ), '<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>', '<em>' . date("Y-m-d h:i:sa") .'</em>' );
+				$notice = sprintf( __( '%s: User cache cleared.', 'rocket' ), '<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>' );
+				$notice .= '<em> (' . date_i18n( "F j, Y @ G:i", time() ) .') </em>';
 			}
 			break;
 		default:
