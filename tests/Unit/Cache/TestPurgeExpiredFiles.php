@@ -36,12 +36,17 @@ class TestPurgeExpiredFiles extends TestCase {
 						'index.html_gzip' => '',
 					],
 				],
+				'example.org-Greg-594d03f6ae698691165999' => [
+					'index.html' => '',
+					'index.html_gzip' => '',
+				],
 			],
 		];
 
 		$this->cache_path = vfsStream::setup( 'cache', null, $structure );
 		$this->cache_path->getChild('wp-rocket')->getChild('example.org')->getChild('blog')->getChild('index.html')->lastAttributeModified( strtotime( '11 hours ago' ) );
 		$this->cache_path->getChild('wp-rocket')->getChild('example.org')->getChild('blog')->getChild('index.html_gzip')->lastAttributeModified( strtotime( '11 hours ago' ) );
+		$this->cache_path->getChild('wp-rocket')->getChild('example.org-Greg-594d03f6ae698691165999')->getChild('index.html')->lastAttributeModified( strtotime( '11 hours ago' ) );
 
 		$this->mock_fs = $this->getMockBuilder( 'WP_Filesystem_Direct' )
 							->setMethods( [
@@ -103,6 +108,9 @@ class TestPurgeExpiredFiles extends TestCase {
 		);
 		$this->assertTrue(
 			$this->cache_path->getChild('wp-rocket')->getChild('example.org')->getChild('about')->hasChild('index.html')
+		);
+		$this->assertFalse(
+			$this->cache_path->getChild('wp-rocket')->getChild('example.org-Greg-594d03f6ae698691165999')->hasChild('index.html')
 		);
 	}
 }
