@@ -328,7 +328,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 
 		// CDN.
 		if ( ! isset( $hosts ) ) {
-			$hosts = $this->cdn_subsciber->get_cdn_hosts( [], [ 'all', 'images' ] );
+			$hosts = $this->cdn_subscriber->get_cdn_hosts( [], [ 'all', 'images' ] );
 			$hosts = array_flip( $hosts );
 		}
 
