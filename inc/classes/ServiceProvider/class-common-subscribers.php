@@ -31,7 +31,7 @@ class Common_Subscribers extends AbstractServiceProvider {
 		'cdn_subscriber',
 		'capabilities_subscriber',
 		'webp_subscriber',
-    'expired_cache_purge',
+		'expired_cache_purge',
 		'expired_cache_purge_subscriber',
 	];
 

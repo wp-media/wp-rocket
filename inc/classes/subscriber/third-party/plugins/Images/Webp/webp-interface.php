@@ -1,9 +1,6 @@
 <?php
 namespace WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp;
 
-use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Event_Management\Subscriber_Interface;
-
 /**
  * Interface to use for webp subscribers.
  *

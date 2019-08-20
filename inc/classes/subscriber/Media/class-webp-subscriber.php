@@ -4,7 +4,6 @@ namespace WP_Rocket\Subscriber\Media;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Subscriber\CDN\CDNSubscriber;
 use WP_Rocket\Event_Management\Subscriber_Interface;
-use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Webp_Interface;
 
 /**
  * Subscriber for the WebP support.
