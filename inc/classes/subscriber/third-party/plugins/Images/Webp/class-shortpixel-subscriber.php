@@ -25,7 +25,7 @@ class ShortPixel_Subscriber implements Webp_Interface, Subscriber_Interface {
 	private $options;
 
 	/**
-	 * CDNSubscriber instance.
+	 * CDN instance.
 	 *
 	 * @var    CDNSubscriber
 	 * @access private
