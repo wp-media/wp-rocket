@@ -47,12 +47,12 @@ class Webp_Subscriber implements Subscriber_Interface {
 	 * @access public
 	 * @author Remy Perona
 	 *
-	 * @param Options_Data  $options       Options instance.
-	 * @param CDNSubscriber $cdn_subsciber CDNSubscriber instance.
+	 * @param Options_Data  $options        Options instance.
+	 * @param CDNSubscriber $cdn_subscriber CDNSubscriber instance.
 	 */
-	public function __construct( Options_Data $options, CDNSubscriber $cdn_subsciber ) {
-		$this->options       = $options;
-		$this->cdn_subsciber = $cdn_subsciber;
+	public function __construct( Options_Data $options, CDNSubscriber $cdn_subscriber ) {
+		$this->options        = $options;
+		$this->cdn_subscriber = $cdn_subscriber;
 	}
 
 	/**
