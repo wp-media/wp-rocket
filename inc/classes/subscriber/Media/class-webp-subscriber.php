@@ -236,12 +236,12 @@ class Webp_Subscriber implements Subscriber_Interface {
 	 * Get the list of file extensions that may have a webp version.
 	 *
 	 * @since  3.4
-	 * @access public
+	 * @access private
 	 * @author Grégory Viguier
 	 *
 	 * @return array
 	 */
-	public function get_extensions() {
+	private function get_extensions() {
 		$extensions = [ 'jpg', 'jpeg', 'jpe', 'png', 'gif' ];
 
 		/**
@@ -267,12 +267,12 @@ class Webp_Subscriber implements Subscriber_Interface {
 	 * Get the names of the HTML attributes where WP Rocket must search for image files.
 	 *
 	 * @since  3.4
-	 * @access public
+	 * @access private
 	 * @author Grégory Viguier
 	 *
 	 * @return array
 	 */
-	public function get_attribute_names() {
+	private function get_attribute_names() {
 		$attributes = [ 'href', 'src', 'srcset', 'content' ];
 
 		/**
