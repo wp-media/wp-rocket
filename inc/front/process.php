@@ -116,6 +116,15 @@ $rocket_remove_query_strings = [
 	'_ga'             => 1,
 ];
 
+/**
+ * Allow standard caching query parameters to be extended using a constant
+ *
+ * Example: define( 'WP_ROCKET_STANDARD_CACHING_QUERY_PARAMS', [ 'foo' => 1 ] );
+ */
+if ( defined( 'WP_ROCKET_STANDARD_CACHING_QUERY_PARAMS' ) && is_array( WP_ROCKET_STANDARD_CACHING_QUERY_PARAMS ) ) {
+	$rocket_remove_query_strings = array_merge( $rocket_remove_query_strings, WP_ROCKET_STANDARD_CACHING_QUERY_PARAMS );
+}
+
 $params = [];
 
 if ( ! empty( $_GET ) ) {
