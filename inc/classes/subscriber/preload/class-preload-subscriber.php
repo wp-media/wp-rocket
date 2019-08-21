@@ -240,10 +240,10 @@ class Preload_Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$status = 'success';
+		$status = 'info';
 		// translators: %1$s = Number of pages preloaded.
 		$message = '<p>' . sprintf( _n( 'Preload: %1$s uncached page has now been preloaded. (refresh to see progress)', 'Preload: %1$s uncached pages have now been preloaded. (refresh to see progress)', $running, 'rocket' ), number_format_i18n( $running ) ) . '</p>';
-		
+
 		if ( defined( 'WP_ROCKET_DEBUG' ) && WP_ROCKET_DEBUG ) {
 
 			$errors = get_transient( 'rocket_preload_errors' );
@@ -298,7 +298,7 @@ class Preload_Subscriber implements Subscriber_Interface {
 		\rocket_notice_html(
 			[
 				// translators: %d is the number of pages preloaded.
-				'message' => sprintf( __( 'Preload: %d pages have been cached.', 'rocket' ), $result ),
+				'message' => sprintf( __( 'Preload complete: %d pages have been cached.', 'rocket' ), $result ),
 			]
 		);
 	}
@@ -310,7 +310,7 @@ class Preload_Subscriber implements Subscriber_Interface {
 	 * @author Remy Perona
 	 */
 	public function do_admin_post_stop_preload() {
-		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'rocket_stop_preload' ) ) {
+		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'rocket_stop_preload' ) ) {
 			wp_nonce_ays( '' );
 		}
 
