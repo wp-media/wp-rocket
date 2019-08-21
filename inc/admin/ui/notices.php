@@ -821,20 +821,24 @@ function rocket_clear_cache_notice() {
 
 	switch ( $cleared_cache ) {
 		case 'all':
-			// translators: %s = plugin name.
-			$notice = sprintf( __( '%s: Cache cleared.', 'rocket' ), '<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>' );
+				// translators: %s = plugin name.
+				$notice  = sprintf( __( '%s: Cache cleared.', 'rocket' ), '<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>' );
+				$notice .= '<em> (' . date_i18n( 'F j, Y @ G:i', time() ) . ') </em>';
 			break;
 		case 'post':
-			// translators: %s = plugin name.
-			$notice = sprintf( __( '%s: Post cache cleared.', 'rocket' ), '<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>' );
+				// translators: %s = plugin name.
+				$notice  = sprintf( __( '%s: Post cache cleared.', 'rocket' ), '<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>' );
+				$notice .= '<em> (' . date_i18n( 'F j, Y @ G:i', time() ) . ') </em>';
 			break;
 		case 'term':
-			// translators: %s = plugin name.
-			$notice = sprintf( __( '%s: Term cache cleared.', 'rocket' ), '<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>' );
+				// translators: %s = plugin name.
+				$notice  = sprintf( __( '%s: Term cache cleared.', 'rocket' ), '<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>' );
+				$notice .= '<em> (' . date_i18n( 'F j, Y @ G:i', time() ) . ') </em>';
 			break;
 		case 'user':
-			// translators: %s = plugin name).
-			$notice = sprintf( __( '%s: User cache cleared.', 'rocket' ), '<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>' );
+				// translators: %s = plugin name).
+				$notice  = sprintf( __( '%s: User cache cleared.', 'rocket' ), '<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>' );
+				$notice .= '<em> (' . date_i18n( 'F j, Y @ G:i', time() ) . ') </em>';
 			break;
 		default:
 			$notice = '';
@@ -845,9 +849,11 @@ function rocket_clear_cache_notice() {
 		return;
 	}
 
-	rocket_notice_html( array(
-		'message' => $notice,
-	) );
+	rocket_notice_html(
+		[
+			'message' => $notice,
+		]
+	);
 }
 add_action( 'admin_notices', 'rocket_clear_cache_notice' );
 
