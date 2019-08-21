@@ -273,14 +273,19 @@ class Sucuri_Subscriber implements Subscriber_Interface {
 		$url            = sprintf( static::API_URL, $params );
 
 		try {
-			$response = wp_remote_get( $url, [
-				'timeout'     => 5,
-				'redirection' => 5,
-				'httpversion' => '1.1',
-				'blocking'    => true,
-				/** This filter is documented in wp-includes/class-wp-http-streams.php */
-				'sslverify'   => apply_filters( 'https_ssl_verify', true ),
-			] );
+			$args = apply_filters(
+				'rocket_sucuri_api_request_args',
+				[
+					'timeout'     => 5,
+					'redirection' => 5,
+					'httpversion' => '1.1',
+					'blocking'    => true,
+					/** This filter is documented in wp-includes/class-wp-http-streams.php */
+					'sslverify'   => apply_filters( 'https_ssl_verify', true ),
+				]
+			);
+
+			$response = wp_remote_get( $url, $args );
 		} catch ( \Exception $e ) {
 			Logger::error( 'Error when contacting the API.', [
 				'sucuri firewall cache',
