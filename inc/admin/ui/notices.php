@@ -248,6 +248,43 @@ function rocket_warning_footer_js_plugin() {
 add_action( 'admin_notices', 'rocket_warning_footer_js_plugin' );
 
 /**
+ * Display a warning if Endurance Cache is not disabled
+ *
+ * @since 3.3.7
+ * @author Remy Perona
+ *
+ * @return void
+ */
+function rocket_warning_endurance_cache() {
+	$screen = get_current_screen();
+
+	// This filter is documented in inc/admin-bar.php.
+	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		return;
+	}
+
+	if ( 'settings_page_wprocket' !== $screen->id ) {
+		return;
+	}
+
+	if ( ! class_exists( 'Endurance_Page_Cache' ) ) {
+		return;
+	}
+
+	if ( 0 === get_option( 'endurance_cache_level' ) ) {
+		return;
+	}
+
+	rocket_notice_html(
+		[
+			'status'  => 'error',
+			'message' => __( 'Endurance Cache is currently enabled, which will conflict with WP Rocket Cache. Please turn the Endurance Cache off (Level 0) from the plugin settings to prevent any issue.', 'rocket' ),
+		]
+	);
+}
+add_action( 'admin_notices', 'rocket_warning_endurance_cache' );
+
+/**
  * This warning is displayed when there is no permalink structure in the configuration.
  *
  * @since 1.0
