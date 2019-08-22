@@ -278,7 +278,12 @@ function rocket_warning_endurance_cache() {
 	rocket_notice_html(
 		[
 			'status'  => 'error',
-			'message' => __( 'Endurance Cache is currently enabled, which will conflict with WP Rocket Cache. Please turn the Endurance Cache off (Level 0) from the plugin settings to prevent any issue.', 'rocket' ),
+			'message' => sprintf(
+				// translators: %1$s = opening link tag, %2$s = closing link tag.
+				__( 'Endurance Cache is currently enabled, which will conflict with WP Rocket Cache. Please set the Endurance Cache cache level to Off (Level 0) on the %1$sSettings > General%2$s page to prevent any issues.', 'rocket' ),
+				'<a href="' . admin_url( 'options-general.php#epc_settings' ) . '">',
+				'</a>'
+			),
 		]
 	);
 }
