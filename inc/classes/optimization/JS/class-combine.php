@@ -534,6 +534,7 @@ class Combine extends Abstract_JS_Optimization {
 			'+window.comment_tab_width+',
 			'jQuery(\'.videonextup',
 			'dfd-button-hover-in',
+			'wpseo-address-wrapper',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
