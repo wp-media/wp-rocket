@@ -859,7 +859,7 @@ function rocket_warning_cron() {
 		return;
 	}
 
-	$message = _n( 'The following scheduled event failed to run. This may indicate the CRON system is not running properly, which can prevent some WP Rocket features from working as intended:', 'The following scheduled events failed to run. This may indicate the CRON system is not running properly, which can prevent some WP Rocket features from working as intended.', count( $events ), 'rocket' );
+	$message = '<p>' . _n( 'The following scheduled event failed to run. This may indicate the CRON system is not running properly, which can prevent some WP Rocket features from working as intended:', 'The following scheduled events failed to run. This may indicate the CRON system is not running properly, which can prevent some WP Rocket features from working as intended:', count( $events ), 'rocket' ) . '</p>';
 
 	$message .= '<ul>';
 
@@ -868,6 +868,7 @@ function rocket_warning_cron() {
 	}
 
 	$message .= '</ul>';
+	$message .= '<p>' . __( 'Please contact your host to check if CRON is working.', 'rocket' ) . '</p>';
 
 	rocket_notice_html(
 		[
