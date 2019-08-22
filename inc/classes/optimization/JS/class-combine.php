@@ -533,6 +533,7 @@ class Combine extends Abstract_JS_Optimization {
 			'ShopifyBuy.UI.onReady(client)',
 			'+window.comment_tab_width+',
 			'jQuery(\'.videonextup',
+			'dfd-button-hover-in',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
