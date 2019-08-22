@@ -535,6 +535,8 @@ class Combine extends Abstract_JS_Optimization {
 			'styles: \' #custom-menu-',
 			'function svc_center_',
 			'#svc_carousel2_container_',
+			'wpseo_map_init',
+			'mdf_current_page_url',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
@@ -702,6 +704,7 @@ class Combine extends Abstract_JS_Optimization {
 			'test_run_nf_conditional_logic',
 			'cb_nombre',
 			'$(\'.fl-node-',
+			'function($){google_maps_'
 		];
 
 		/**
