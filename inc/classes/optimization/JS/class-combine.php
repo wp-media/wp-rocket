@@ -535,6 +535,7 @@ class Combine extends Abstract_JS_Optimization {
 			'jQuery(\'.videonextup',
 			'dfd-button-hover-in',
 			'wpseo-address-wrapper',
+			'platform.stumbleupon.com',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
