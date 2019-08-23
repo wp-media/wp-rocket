@@ -536,6 +536,7 @@ class Combine extends Abstract_JS_Optimization {
 			'dfd-button-hover-in',
 			'wpseo-address-wrapper',
 			'platform.stumbleupon.com',
+			'orig_request_uri',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
