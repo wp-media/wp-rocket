@@ -66,28 +66,4 @@ trait Webp_Common {
 		 */
 		do_action( 'rocket_third_party_webp_change' );
 	}
-
-	/**
-	 * Tell if WP Rocket uses a CDN for images.
-	 *
-	 * @since  3.4
-	 * @access private
-	 * @author Grégory Viguier
-	 *
-	 * @return bool
-	 */
-	private function is_using_cdn() {
-		// Don't use `$this->options->get( 'cdn' )` here, we need an up-to-date value when the CDN option changes.
-		$use = get_rocket_option( 'cdn' ) && $this->cdn->get_cdn_urls( [ 'all', 'images' ] );
-		/**
-		 * Filter whether WP Rocket is using a CDN for webp images.
-		 *
-		 * @since  3.4
-		 * @author Grégory Viguier
-		 *
-		 * @param bool   $use       True if WP Rocket is using a CDN for webp images. False otherwise.
-		 * @param string $plugin_id The plugin identifier.
-		 */
-		return (bool) apply_filters( 'rocket_webp_is_using_cdn', $use, $this->get_id() );
-	}
 }

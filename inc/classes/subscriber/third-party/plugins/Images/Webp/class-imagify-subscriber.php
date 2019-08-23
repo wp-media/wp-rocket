@@ -2,12 +2,10 @@
 namespace WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp;
 
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\CDN\CDN;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
  * Subscriber for the WebP support with Imagify.
- * Rocket will let Imagify serve webp images if its option is enabled, unless Imagify uses the rewrite rules method and a CDN is set (see `is_serving_webp()`).
  *
  * @since  3.4
  * @author Grégory Viguier
@@ -23,15 +21,6 @@ class Imagify_Subscriber implements Webp_Interface, Subscriber_Interface {
 	 * @author Remy Perona
 	 */
 	private $options;
-
-	/**
-	 * CDN instance.
-	 *
-	 * @var    CDN
-	 * @access private
-	 * @author Grégory Viguier
-	 */
-	private $cdn;
 
 	/**
 	 * Imagify basename.
@@ -68,11 +57,9 @@ class Imagify_Subscriber implements Webp_Interface, Subscriber_Interface {
 	 * @author Grégory Viguier
 	 *
 	 * @param Options_Data $options Options instance.
-	 * @param CDN          $cdn     CDN instance.
 	 */
-	public function __construct( Options_Data $options, CDN $cdn ) {
+	public function __construct( Options_Data $options ) {
 		$this->options = $options;
-		$this->cdn     = $cdn;
 	}
 
 	/**
@@ -335,23 +322,24 @@ class Imagify_Subscriber implements Webp_Interface, Subscriber_Interface {
 			return false;
 		}
 
-		if ( ! get_imagify_option( 'display_webp' ) ) {
-			// The option is not enabled, no webp.
+		return (bool) get_imagify_option( 'display_webp' );
+	}
+
+	/**
+	 * Tell if the plugin uses a CDN-compatible technique to serve webp images on frontend.
+	 *
+	 * @since  3.4
+	 * @access public
+	 * @author Grégory Viguier
+	 *
+	 * @return bool
+	 */
+	public function is_serving_webp_compatible_with_cdn() {
+		if ( ! $this->is_serving_webp() ) {
 			return false;
 		}
 
-		/**
-		 * At this point, Imagify is serving webp.
-		 * In the case "CDN + Imagify rewrite rules", we act like it doesn’t serve webp.
-		 */
-		$use_cdn     = $this->is_using_cdn();
-		$use_rewrite = 'rewrite' === get_imagify_option( 'display_webp_method' );
-
-		if ( $use_cdn && $use_rewrite ) {
-			return false;
-		}
-
-		return true;
+		return 'rewrite' !== get_imagify_option( 'display_webp_method' );
 	}
 
 	/**

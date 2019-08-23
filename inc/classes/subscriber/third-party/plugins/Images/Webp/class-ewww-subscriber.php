@@ -2,12 +2,10 @@
 namespace WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp;
 
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\CDN\CDN;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
  * Subscriber for the WebP support with EWWW.
- * Rocket will let EWWW serve webp images if its option is enabled, unless EWWW uses the rewrite rules method and a CDN is set (see `is_serving_webp()`).
  *
  * @since  3.4
  * @author Grégory Viguier
@@ -23,15 +21,6 @@ class EWWW_Subscriber implements Webp_Interface, Subscriber_Interface {
 	 * @author Remy Perona
 	 */
 	private $options;
-
-	/**
-	 * CDN instance.
-	 *
-	 * @var    CDN
-	 * @access private
-	 * @author Grégory Viguier
-	 */
-	private $cdn;
 
 	/**
 	 * EWWW basename.
@@ -50,11 +39,9 @@ class EWWW_Subscriber implements Webp_Interface, Subscriber_Interface {
 	 * @author Grégory Viguier
 	 *
 	 * @param Options_Data $options Options instance.
-	 * @param CDN          $cdn     CDN instance.
 	 */
-	public function __construct( Options_Data $options, CDN $cdn ) {
+	public function __construct( Options_Data $options ) {
 		$this->options = $options;
-		$this->cdn     = $cdn;
 	}
 
 	/**
@@ -313,19 +300,25 @@ class EWWW_Subscriber implements Webp_Interface, Subscriber_Interface {
 	 * @return bool
 	 */
 	public function is_serving_webp() {
-		if ( ! function_exists( 'ewww_image_optimizer_get_option' ) || ! function_exists( 'ewww_image_optimizer_webp_rewrite_verify' ) ) {
+		if ( ! function_exists( 'ewww_image_optimizer_get_option' ) ) {
 			// No EWWW, no webp.
 			return false;
 		}
 
 		if ( ewww_image_optimizer_get_option( 'ewww_image_optimizer_exactdn' ) ) {
-			// EWWW uses ExactDN: WPR CDN should be disabled for images.
+			// EWWW uses ExactDN (WPR CDN should be disabled for images).
 			return true;
 		}
 
 		if ( ewww_image_optimizer_get_option( 'ewww_image_optimizer_webp_for_cdn' ) ) {
 			// EWWW uses JS to rewrite file extensions.
 			return true;
+		}
+
+		// Decide if rewrite rules are used.
+		if ( ! function_exists( 'ewww_image_optimizer_webp_rewrite_verify' ) ) {
+			// Uh?
+			return false;
 		}
 
 		if ( ! function_exists( 'get_home_path' ) ) {
@@ -352,22 +345,36 @@ class EWWW_Subscriber implements Webp_Interface, Subscriber_Interface {
 		 *
 		 * @param bool $use_rewrite_rules True when EWWW uses rewrite rules. False otherwise.
 		 */
-		$use_rewrite_rules = apply_filters( 'rocket_webp_ewww_use_rewrite_rules', $use_rewrite_rules );
+		return (bool) apply_filters( 'rocket_webp_ewww_use_rewrite_rules', $use_rewrite_rules );
+	}
 
-		if ( ! $use_rewrite_rules ) {
-			// The .htaccess file doesn’t have the rewrite rules.
+	/**
+	 * Tell if the plugin uses a CDN-compatible technique to serve webp images on frontend.
+	 *
+	 * @since  3.4
+	 * @access public
+	 * @author Grégory Viguier
+	 *
+	 * @return bool
+	 */
+	public function is_serving_webp_compatible_with_cdn() {
+		if ( ! function_exists( 'ewww_image_optimizer_get_option' ) ) {
+			// No EWWW, no webp.
 			return false;
 		}
 
-		/**
-		 * At this point, EWWW is serving webp via rewrite rules.
-		 * In the case "WPR CDN + EWWW rewrite rules", we act like it doesn’t serve webp.
-		 */
-		if ( $this->is_using_cdn() ) {
-			return false;
+		if ( ewww_image_optimizer_get_option( 'ewww_image_optimizer_exactdn' ) ) {
+			// EWWW uses ExactDN.
+			return true;
 		}
 
-		return true;
+		if ( ewww_image_optimizer_get_option( 'ewww_image_optimizer_webp_for_cdn' ) ) {
+			// EWWW uses JS to rewrite file extensions.
+			return true;
+		}
+
+		// At this point, the plugin is using rewrite rules or nothing.
+		return false;
 	}
 
 	/**

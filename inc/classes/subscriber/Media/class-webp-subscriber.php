@@ -68,6 +68,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 		return [
 			'rocket_buffer'                   => [ 'convert_to_webp', 23 ],
 			'rocket_webp_section_description' => 'webp_section_description',
+			'rocket_cache_webp_setting_field' => 'maybe_disable_setting_field',
 			'rocket_disable_webp_cache'       => 'maybe_disable_webp_cache',
 			'rocket_third_party_webp_change'  => 'sync_webp_cache_with_third_party_plugins',
 		];
@@ -89,7 +90,12 @@ class Webp_Subscriber implements Subscriber_Interface {
 	 * @return string
 	 */
 	public function convert_to_webp( $html ) {
-		if ( ! $this->options->get( 'cache_webp' ) || $this->get_plugins_serving_webp() ) {
+		if ( ! $this->options->get( 'cache_webp' ) ) {
+			return $html;
+		}
+
+		/** This filter is documented in inc/classes/buffer/class-cache.php */
+		if ( apply_filters( 'rocket_disable_webp_cache', false ) ) {
 			return $html;
 		}
 
@@ -118,7 +124,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 				/**
 				 * This is a srcset attribute, with probably multiple URLs.
 				 */
-				$new_value = $this->srcset_to_webp( $new_value, $extensions );
+				$new_value = $this->srcset_to_webp( $attribute['value'], $extensions );
 			} else {
 				/**
 				 * A single URL attibute.
@@ -152,6 +158,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 	 */
 	public function webp_section_description( $description ) {
 		$webp_plugins = $this->get_webp_plugins();
+		$is_using_cdn = $this->is_using_cdn();
 		$serving      = [];
 		$creating     = [];
 		$info_url     = '';
@@ -159,8 +166,13 @@ class Webp_Subscriber implements Subscriber_Interface {
 		if ( $webp_plugins ) {
 			foreach ( $webp_plugins as $plugin ) {
 				if ( $plugin->is_serving_webp() ) {
-					$serving[ $plugin->get_id() ] = $plugin->get_name();
-				} elseif ( ! $serving && $plugin->is_converting_to_webp() ) {
+					if ( ! $is_using_cdn || $plugin->is_serving_webp_compatible_with_cdn() ) {
+						// Serving WebP when no CDN or with a CDN-compatible method.
+						$serving[ $plugin->get_id() ] = $plugin->get_name();
+					}
+				}
+				if ( $plugin->is_converting_to_webp() ) {
+					// Generating WebP.
 					$creating[ $plugin->get_id() ] = $plugin->get_name();
 				}
 			}
@@ -169,7 +181,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 		if ( $serving ) {
 			return sprintf(
 				// Translators: %1$s = plugin name(s), %2$s = opening link tag, %3$s = closing link tag.
-				_n( 'You are using %1$s to serve images as WebP. WP Rocket will NOT create a dedicated cache for WebP support. %2$sMore info%3$s', 'You are using %1$s to serve images as WebP. WP Rocket will NOT create a dedicated cache for WebP support. %2$sMore info%3$s', count( $serving ), 'rocket' ),
+				_n( 'You are using %1$s to serve images as WebP. If you want WP Rocket to serve WebP images for you instead, please disable it from serving in %1$s. %2$sMore info%3$s', 'You are using %1$s to serve images as WebP.  If you want WP Rocket to serve WebP images for you instead, please disable it from serving in %1$s. %2$sMore info%3$s', count( $serving ), 'rocket' ),
 				wp_sprintf_l( '%l', $serving ),
 				'<a href="' . $info_url . '">',
 				'</a>'
@@ -182,6 +194,16 @@ class Webp_Subscriber implements Subscriber_Interface {
 		}
 
 		if ( $creating ) {
+			if ( ! $this->options->get( 'cache_webp' ) ) {
+				return sprintf(
+					// Translators: %1$s = plugin name(s), %2$s = opening link tag, %3$s = closing link tag.
+					_n( 'You are using %1$s to convert images to WebP. By ticking this box, WP Rocket will create separate cache files to serve WebP images to compatible browsers.  %2$sMore info%3$s', 'You are using %1$s to convert images to WebP. By ticking this box, WP Rocket will create separate cache files to serve WebP images to compatible browsers. %2$sMore info%3$s', count( $creating ), 'rocket' ),
+					wp_sprintf_l( '%l', $creating ),
+					'<a href="' . $info_url . '">',
+					'</a>'
+				);
+			}
+
 			return sprintf(
 				// Translators: %1$s = plugin name(s), %2$s = opening link tag, %3$s = closing link tag.
 				_n( 'You are using %1$s to convert images to WebP. WP Rocket will create a dedicated cache for WebP support. %2$sMore info%3$s', 'You are using %1$s to convert images to WebP. WP Rocket will create a dedicated cache for WebP support. %2$sMore info%3$s', count( $creating ), 'rocket' ),
@@ -191,13 +213,52 @@ class Webp_Subscriber implements Subscriber_Interface {
 			);
 		}
 
+		if ( ! $this->options->get( 'cache_webp' ) ) {
+			return sprintf(
+				// Translators: %1$s and %2$s = opening link tag, %3$s = closing link tag.
+				__( 'By ticking this box, WP Rocket will create separate cache files to serve WebP images. Any WebP images you have on your site will be served from these files to compatible browsers. Since you don’t seem to use any method to convert and serve images as WebP, consider using %1$sImagify%3$s or another supported plugin. %2$sMore info%3$s', 'rocket' ),
+				'<a href="https://wordpress.org/plugins/imagify/">',
+				'<a href="' . $info_url . '">',
+				'</a>'
+			);
+		}
+
 		return sprintf(
 			// Translators: %1$s and %2$s = opening link tag, %3$s = closing link tag.
-			__( 'You are not using a method to convert and serve images as WebP that WP Rocket supports. Consider using %1$sImagify%3$s or another supported plugin. %2$sMore info%3$s', 'rocket' ),
+			__( 'WP Rocket will create separate cache files to serve WebP images. Any WebP images you have on your site will be served from these files to compatible browsers. Since you don’t seem to use any method to convert and serve images as WebP, consider using %1$sImagify%3$s or another supported plugin. %2$sMore info%3$s', 'rocket' ),
 			'<a href="https://wordpress.org/plugins/imagify/">',
 			'<a href="' . $info_url . '">',
 			'</a>'
 		);
+	}
+
+	/**
+	 * Disable 'cache_webp' setting field if another plugin serves WebP.
+	 *
+	 * @since  3.4
+	 * @access public
+	 * @author Grégory Viguier
+	 *
+	 * @param  array $cache_webp_field Data to be added to the setting field.
+	 * @return array
+	 */
+	public function maybe_disable_setting_field( $cache_webp_field ) {
+		/** This filter is documented in inc/classes/buffer/class-cache.php */
+		if ( ! apply_filters( 'rocket_disable_webp_cache', false ) ) {
+			return $cache_webp_field;
+		}
+
+		foreach ( [ 'input_attr', 'container_class' ] as $attr ) {
+			if ( ! isset( $cache_webp_field[ $attr ] ) || ! is_array( $cache_webp_field[ $attr ] ) ) {
+				$cache_webp_field[ $attr ] = [];
+			}
+		}
+
+		$cache_webp_field['input_attr']['disabled'] = 1;
+		$cache_webp_field['container_class'][]      = 'wpr-isDisabled';
+		$cache_webp_field['container_class'][]      = 'wpr-isParent';
+
+		return $cache_webp_field;
 	}
 
 	/**
@@ -305,7 +366,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 	 * @return string|bool
 	 */
 	private function url_to_path( $url ) {
-		static $hosts, $subdir_levels;
+		static $hosts, $site_host, $subdir_levels;
 
 		$url_host = wp_parse_url( $url, PHP_URL_HOST );
 
@@ -332,7 +393,12 @@ class Webp_Subscriber implements Subscriber_Interface {
 		}
 
 		if ( isset( $hosts[ $url_host ] ) ) {
-			$url = preg_replace( '@^https?://' . $url_host . '/@', site_url( '/' ), $url );
+			if ( ! isset( $site_host ) ) {
+				$site_host = wp_parse_url( site_url( '/' ), PHP_URL_HOST );
+			}
+			if ( $site_host ) {
+				$url = preg_replace( '@^(https?://)' . $url_host . '/@', '$1' . $site_host . '/', $url );
+			}
 		}
 
 		// URL to path.
@@ -502,6 +568,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 
 	/**
 	 * Get a list of plugins that serve webp images on frontend.
+	 * If the CDN is used, this won't list plugins that use a technique not compatible with CDN.
 	 *
 	 * @since  3.4
 	 * @access private
@@ -517,10 +584,13 @@ class Webp_Subscriber implements Subscriber_Interface {
 			return [];
 		}
 
-		$checks = [];
+		$checks       = [];
+		$is_using_cdn = $this->is_using_cdn();
 
 		foreach ( $webp_plugins as $plugin ) {
-			if ( $plugin->is_serving_webp() ) {
+			if ( $is_using_cdn && $plugin->is_serving_webp_compatible_with_cdn() ) {
+				$checks[ $plugin->get_id() ] = $plugin->get_name();
+			} elseif ( ! $is_using_cdn && $plugin->is_serving_webp() ) {
 				$checks[ $plugin->get_id() ] = $plugin->get_name();
 			}
 		}
@@ -588,5 +658,28 @@ class Webp_Subscriber implements Subscriber_Interface {
 		}
 
 		return \rocket_is_plugin_active( $plugin_basename );
+	}
+
+	/**
+	 * Tell if WP Rocket uses a CDN for images.
+	 *
+	 * @since  3.4
+	 * @access private
+	 * @author Grégory Viguier
+	 *
+	 * @return bool
+	 */
+	private function is_using_cdn() {
+		// Don't use `$this->options->get( 'cdn' )` here, we need an up-to-date value when the CDN option changes.
+		$use = get_rocket_option( 'cdn' ) && $this->cdn_subscriber->get_cdn_hosts( [], [ 'all', 'images' ] );
+		/**
+		 * Filter whether WP Rocket is using a CDN for webp images.
+		 *
+		 * @since  3.4
+		 * @author Grégory Viguier
+		 *
+		 * @param bool $use True if WP Rocket is using a CDN for webp images. False otherwise.
+		 */
+		return (bool) apply_filters( 'rocket_webp_is_using_cdn', $use );
 	}
 }

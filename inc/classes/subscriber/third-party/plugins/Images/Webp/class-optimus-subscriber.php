@@ -121,6 +121,19 @@ class Optimus_Subscriber implements Webp_Interface, Subscriber_Interface {
 	}
 
 	/**
+	 * Tell if the plugin uses a CDN-compatible technique to serve webp images on frontend.
+	 *
+	 * @since  3.4
+	 * @access public
+	 * @author Grégory Viguier
+	 *
+	 * @return bool
+	 */
+	public function is_serving_webp_compatible_with_cdn() {
+		return false;
+	}
+
+	/**
 	 * Get the plugin basename.
 	 *
 	 * @since  3.4
