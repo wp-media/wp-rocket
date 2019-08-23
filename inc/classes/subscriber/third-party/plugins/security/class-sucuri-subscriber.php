@@ -273,6 +273,14 @@ class Sucuri_Subscriber implements Subscriber_Interface {
 		$url            = sprintf( static::API_URL, $params );
 
 		try {
+			/**
+			 * Filters the arguments for the Sucuri API request
+			 *
+			 * @since 3.3.4
+			 * @author Soponar Cristina
+			 *
+			 * @param array $args Arguments for the request.
+			 */
 			$args = apply_filters(
 				'rocket_sucuri_api_request_args',
 				[
