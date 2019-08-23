@@ -37,7 +37,7 @@ class CDN {
 	 */
 	public function rewrite( $html ) {
 		$pattern = '#(?<url>(?<=[(\"\'])(?:(?:https?:|)' . preg_quote( $this->get_base_url(), '#' ) . ')?\/(?:(?:(?:' . $this->get_allowed_paths() . ')[^\"\')]+)|(?:[^\/\"\']+\.[^\/\"\')]+))(?=[\"\')]))#i';
-
+		error_log( $pattern );
 		return preg_replace_callback(
 			$pattern,
 			function( $matches ) {
@@ -169,9 +169,7 @@ class CDN {
 	 * @return string
 	 */
 	private function get_base_url() {
-		$home = get_option( 'home' );
-
-		return substr( $home, strpos( $home, '//' ) );
+		return '//' . wp_parse_url( get_option( 'home' ), PHP_URL_HOST );
 	}
 
 	/**
@@ -183,7 +181,8 @@ class CDN {
 	 * @return string
 	 */
 	private function get_allowed_paths() {
-		$wp_content_dirname = ltrim( trailingslashit( wp_parse_url( content_url(), PHP_URL_PATH ) ), '/' );
+		$wp_content_dirname  = ltrim( trailingslashit( wp_parse_url( content_url(), PHP_URL_PATH ) ), '/' );
+		$wp_includes_dirname = ltrim( trailingslashit( wp_parse_url( includes_url(), PHP_URL_PATH ) ), '/' );
 
 		$upload_dirname = '';
 		$uploads_info   = wp_upload_dir();
@@ -192,7 +191,7 @@ class CDN {
 			$upload_dirname = '|' . ltrim( trailingslashit( wp_parse_url( $uploads_info['baseurl'], PHP_URL_PATH ) ), '/' );
 		}
 
-		return $wp_content_dirname . $upload_dirname . '|wp-includes/';
+		return $wp_content_dirname . $upload_dirname . '|' . $wp_includes_dirname;
 	}
 
 	/**
