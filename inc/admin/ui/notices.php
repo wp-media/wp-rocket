@@ -271,7 +271,7 @@ function rocket_warning_endurance_cache() {
 		return;
 	}
 
-	if ( 0 === get_option( 'endurance_cache_level' ) ) {
+	if ( 0 === (int) get_option( 'endurance_cache_level' ) ) {
 		return;
 	}
 
