@@ -382,8 +382,8 @@ msgid ""
 "properly. %2$sGo to permalinks settings%3$s"
 msgstr ""
 "%1$s: pentru ca modulul să funcționeze cum trebuie, este necesară o "
-"structură pentru legăturile permanente. %2$sDu-te la setări Legături "
-"permanente%3$s"
+"structură personalizată pentru legăturile permanente. %2$sDu-te la setări "
+"Legături permanente%3$s"
 
 #: inc/admin/ui/notices.php:442
 #, php-format
@@ -474,7 +474,7 @@ msgstr "Îți mulțumim!"
 
 #: inc/admin/ui/notices.php:788
 msgid "WP Rocket now collects these metrics from your website:"
-msgstr "WP Rocket colectează acum aceste valori de pe site-ul tău web:"
+msgstr "Acum WP Rocket colectează aceste valori de pe site-ul tău web:"
 
 #: inc/admin/ui/notices.php:825
 #, php-format
@@ -804,13 +804,13 @@ msgid ""
 "your GTMetrix score. %1$sMore info%2$s"
 msgstr ""
 "Înlătură șirul de interogare a versiunii din fișierele statice (de exemplu, "
-"style.css?ver=1.0) și codifică în schimb numele fișierului (de exemplu, "
+"style.css?ver=1.0) și codifică în schimb numele fișierului (de exemplu, "
 "style-1.0.css). Îți poate îmbunătăți punctajul GTMetrix. %1$sMai multe "
 "informații%2$s"
 
 #: inc/classes/admin/settings/class-page.php:649
 msgid "Minify CSS files"
-msgstr "Minifică fișiere CSS"
+msgstr "Minifică fișierele CSS"
 
 #: inc/classes/admin/settings/class-page.php:650
 msgid "Minify CSS removes whitespace and comments to reduce the file size."
@@ -843,7 +843,7 @@ msgstr "Activează minifică CSS"
 #: inc/classes/admin/settings/class-page.php:670
 msgid "Combine CSS files <em>(Enable Minify CSS files to select)</em>"
 msgstr ""
-"Combină fișierele CSS <em>(activează Minifică fișiere CSS pentru a "
+"Combină fișierele CSS <em>(activează Minifică fișierele CSS pentru a "
 "selecta)</em>"
 
 #: inc/classes/admin/settings/class-page.php:672
@@ -866,7 +866,7 @@ msgid ""
 " (one per line)."
 msgstr ""
 "Specifică URL-urile fișierelor CSS care să fie excluse din minificare și "
-"concatenare (câte unul pe rând)."
+"concatenare (câte unul pe un rând)."
 
 #: inc/classes/admin/settings/class-page.php:694
 msgid ""
@@ -959,7 +959,7 @@ msgid ""
 " per line). %1$sMore info%2$s"
 msgstr ""
 "Specifică structurile JavaScript în-line care să fie excluse din concatenare"
-" (câte una pe rând). %1$sMai multe informații%2$s"
+" (câte una pe un rând). %1$sMai multe informații%2$s"
 
 #: inc/classes/admin/settings/class-page.php:803
 msgid ""
@@ -967,7 +967,7 @@ msgid ""
 "concatenation (one per line)."
 msgstr ""
 "Specifică URL-urile fișierelor JavaScript care să fie excluse din minificare"
-" și concatenare (câte unul pe rând)."
+" și concatenare (câte unul pe un rând)."
 
 #: inc/classes/admin/settings/class-page.php:804
 msgid ""
