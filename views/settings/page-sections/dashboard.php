@@ -182,10 +182,11 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 	</div>
 	<div class="wpr-Page-row">
 		<div class="wpr-Page-col">
+			<?php $this->render_part( 'getting_started' ); ?>
 			<div class="wpr-optionHeader">
 				<h3 class="wpr-title2"><?php esc_html_e( 'Frequently Asked Questions', 'rocket' ); ?></h3>
 			</div>
-			<fieldset class="wpr-fieldsContainer-fieldset">
+			<div class="wpr-fieldsContainer-fieldset">
 				<div class="wpr-field">
 					<ul class="wpr-field-list">
 					<?php foreach ( $data['faq'] as $rocket_faq_item ) : ?>
@@ -216,7 +217,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 						</div>
 					</div>
 				</div>
-			</fieldset>
+			</div>
 		</div>
 
 		<div class="wpr-Page-col wpr-Page-col--fixed">
