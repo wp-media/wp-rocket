@@ -150,5 +150,10 @@
 }
 .wpr-icon-tutorial:before {
   content: url('../img/play.svg');
-  color: $cBlueLight1;
+}
+.wpr-icon-tutorial-hover:before {
+  content: url('../img/play-hover.svg');
+}
+.wpr-icon-tutorial-alt:before {
+  content: url('../img/play-alt.svg');
 }
