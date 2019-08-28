@@ -275,7 +275,7 @@ msgstr "Non mettere in cache questa pagina"
 
 #: inc/admin/ui/meta-boxes.php:70
 msgid "Activate these options on this post:"
-msgstr "Attiva le seguenti opzioni su questo post:"
+msgstr "Attiva le seguenti opzioni su questo articolo:"
 
 #: inc/admin/ui/meta-boxes.php:73
 msgid "LazyLoad for images"
@@ -1374,8 +1374,8 @@ msgstr[1] "%s bozze nel tuo database."
 #, php-format
 msgid "%s trashed post in your database."
 msgid_plural "%s trashed posts in your database."
-msgstr[0] "%s articolo eliminato nel tuo database."
-msgstr[1] "%s articoli eliminati nel tuo database."
+msgstr[0] "%s articolo cestinato nel tuo database."
+msgstr[1] "%s articoli cestinati nel tuo database."
 
 #: inc/classes/admin/settings/class-page.php:1321
 #, php-format
@@ -1388,8 +1388,8 @@ msgstr[1] "%s commenti spam nel tuo database."
 #, php-format
 msgid "%s trashed comment in your database."
 msgid_plural "%s trashed comments in your database."
-msgstr[0] "%s commento eliminato nel tuo database."
-msgstr[1] "%s commenti eliminati nel tuo database."
+msgstr[0] "%s commento cestinato nel tuo database."
+msgstr[1] "%s commenti cestinati nel tuo database."
 
 #: inc/classes/admin/settings/class-page.php:1341
 #, php-format
