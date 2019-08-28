@@ -1,8 +1,8 @@
 # Copyright (C) 2016 WP Rocket
 # This file is distributed under the same license as the WP Rocket package.
 # Translators:
-# wpmedia <contact@wp-media.me>, 2019
 # Ciomîrtan Andrei <refuonline@gmail.com>, 2019
+# wpmedia <contact@wp-media.me>, 2019
 # Dan Caragea <dan_caragea@yahoo.com>, 2019
 # 
 #, fuzzy
@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: WP Rocket 3.3.7\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
 "POT-Creation-Date: 2019-08-26 11:14-0400\n"
-"PO-Revision-Date: 2019-08-26 15:14+0000\n"
+"PO-Revision-Date: 2019-08-28 13:41+0000\n"
 "Last-Translator: Dan Caragea <dan_caragea@yahoo.com>, 2019\n"
 "Language-Team: Romanian (Romania) (https://www.transifex.com/wp-media/teams/18133/ro_RO/)\n"
 "MIME-Version: 1.0\n"
@@ -1480,8 +1480,8 @@ msgid_plural ""
 "%1$s%2$s Add-ons%3$s are currently enabled. Configuration of the CDN "
 "settings is not required for %2$s to work on your site."
 msgstr[0] ""
-"În prezent este activat %1$s%2$s supliment%3$s. Configurarea setărilor CDN "
-"nu este necesară pentru ca %2$s să funcționeze pe site-ul tău. "
+"În prezent este activ %1$s%2$s supliment%3$s. Configurarea setărilor CDN nu "
+"este necesară pentru ca %2$s să funcționeze pe site-ul tău."
 msgstr[1] ""
 "În prezent sunt activate %1$s%2$s suplimente%3$s. Configurarea setărilor CDN"
 " nu este necesară pentru ca %2$s să funcționeze pe site-ul tău."
@@ -2114,14 +2114,14 @@ msgid_plural ""
 "Preload: %1$s uncached pages have now been preloaded. (refresh to see "
 "progress)"
 msgstr[0] ""
-"Pre-încărcare: %1$s pagină nememorată în cache a fost acum preîncărcată "
+"Pre-încărcare: %1$s pagină nememorată în cache a fost acum pre-încărcată "
 "(reîmprospătează pentru a vedea progresul)."
 msgstr[1] ""
-"Pre-încărcare: %1$s pagini nememorate în cache au fost acum preîncărcate "
+"Pre-încărcare: %1$s pagini nememorate în cache au fost acum pre-încărcate "
 "(reîmprospătează pentru a vedea progresul)."
 msgstr[2] ""
-"Pre-încărcare: %1$s de pagini nememorate în cache au fost acum preîncărcate "
-"(reîmprospătează pentru a vedea progresul)."
+"Pre-încărcare: %1$s de pagini nememorate în cache au fost acum pre-încărcate"
+" (reîmprospătează pentru a vedea progresul)."
 
 #: inc/classes/subscriber/preload/class-preload-subscriber.php:255
 msgid "The following error happened during gathering of the URLs to preload:"
@@ -2507,7 +2507,7 @@ msgid_plural ""
 "There seems to be an issue validating your license. You can see the error "
 "messages below."
 msgstr[0] ""
-"Se pare că există o problemă de validare cu licența ta. Te rog vezi mai jos "
+"Se pare că există o problemă de validare cu licența ta. Poți vedea mai jos "
 "mesajul de eroare."
 msgstr[1] ""
 "Se pare că există o problemă de validare cu licența ta. Poți vedea mai jos "
