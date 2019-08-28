@@ -10,6 +10,10 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 <h3 class="wpr-Sidebar-title wpr-title2"><?php _e( 'How to correctly measure your website’s loading time', 'rocket' ); ?></h3>
 <div class="wpr-Sidebar-notice">
+	<p><?php esc_html_e( 'Check our tutorial and learn how to measure the speed of your site.', 'rocket' ); ?></p>
+	<script src="https://fast.wistia.com/embed/medias/j042jylrre.jsonp" async></script><script src="https://fast.wistia.com/assets/external/E-v1.js" async></script><img src="<?php echo esc_url( WP_ROCKET_ASSETS_IMG_URL . 'play-alt.svg' ); ?>" width="10" height="10" alt=""> <span class="wpr-tutorial-link wpr-Sidebar-notice-link wistia_embed wistia_async_j042jylrre popover=true popoverContent=link" style="display:inline;position:relative"><?php esc_html_e( 'Watch the video', 'rocket' ); ?></span>
+</div>
+<div class="wpr-Sidebar-notice">
 	<p><?php _e( 'Learn how to use best practices to correctly measure your site\'s performance.', 'rocket' ); ?></p>
 	<a href="<?php echo esc_url( __( 'https://wp-rocket.me/blog/correctly-measure-websites-page-load-time/?utm_source=wp_plugin&utm_medium=wp_rocket', 'rocket' ) ); ?>" target="_blank" class="wpr-Sidebar-notice-link"><?php _e( 'Read our guide', 'rocket' ); ?></a>
 </div>
