@@ -47,13 +47,13 @@ function get_rocket_advanced_cache_file() {
 		}
 		return;
 	}
-	
+
 	$rocket_config_class = new \WP_Rocket\Buffer\Config(
 		[
 			\'config_dir_path\' => \'' . WP_ROCKET_CONFIG_PATH . '\',
 		]
 	);
-	
+
 	( new \WP_Rocket\Buffer\Cache(
 		new \WP_Rocket\Buffer\Tests(
 			$rocket_config_class
@@ -130,6 +130,15 @@ function get_rocket_config_file() {
 		$buffer .= '$rocket_common_cache_logged_users = 1;' . "\n";
 	}
 
+	if ( ! empty( $options['cache_webp'] ) ) {
+		/** This filter is documented in inc/classes/buffer/class-cache.php */
+		$disable_webp_cache = apply_filters( 'rocket_disable_webp_cache', false );
+
+		if ( $disable_webp_cache ) {
+			$options['cache_webp'] = 0;
+		}
+	}
+
 	/**
 	 * Filters the use of the mobile cache version for tablets
 	 * 'desktop' will serve desktop to tablets, 'mobile' will serve mobile to tablets
@@ -153,7 +162,7 @@ function get_rocket_config_file() {
 			$buffer .= '$rocket_' . $option . ' = ' . (int) $value . ";\n";
 		}
 
-		if ( 'cache_mobile' === $option || 'do_caching_mobile_files' === $option ) {
+		if ( 'cache_mobile' === $option || 'do_caching_mobile_files' === $option || 'cache_webp' === $option ) {
 			$buffer .= '$rocket_' . $option . ' = ' . (int) $value . ";\n";
 		}
 

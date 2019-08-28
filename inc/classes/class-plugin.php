@@ -147,6 +147,19 @@ class Plugin {
 			'capabilities_subscriber',
 		];
 
+		if ( \rocket_valid_key() ) {
+			$common_subscribers = array_merge(
+				$common_subscribers,
+				[
+					'webp_subscriber',
+					'imagify_webp_subscriber',
+					'shortpixel_webp_subscriber',
+					'ewww_webp_subscriber',
+					'optimus_webp_subscriber',
+				]
+			);
+		}
+
 		$subscribers = array_merge( $subscribers, $common_subscribers );
 
 		foreach ( $subscribers as $subscriber ) {

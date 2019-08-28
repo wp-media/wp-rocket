@@ -124,11 +124,11 @@ class CDN {
 	 */
 	public function get_cdn_urls( $zones = 'all' ) {
 		$hosts    = [];
+		$zones    = (array) $zones;
 		$cdn_urls = $this->options->get( 'cdn_cnames', [] );
 
 		if ( $cdn_urls ) {
 			$cdn_zones = $this->options->get( 'cdn_zone', [] );
-			$zones     = (array) $zones;
 
 			foreach ( $cdn_urls as $k => $urls ) {
 				if ( ! in_array( $cdn_zones[ $k ], $zones, true ) ) {
@@ -148,10 +148,12 @@ class CDN {
 		 * Filter all CDN URLs.
 		 *
 		 * @since 2.7
+		 * @since 3.4 Added $zone parameter.
 		 *
 		 * @param array $hosts List of CDN URLs.
+		 * @param array $zones List of zones. Default is [ 'all' ].
 		 */
-		$hosts = (array) apply_filters( 'rocket_cdn_cnames', $hosts );
+		$hosts = (array) apply_filters( 'rocket_cdn_cnames', $hosts, $zones );
 		$hosts = array_filter( $hosts );
 		$hosts = array_flip( array_flip( $hosts ) );
 		$hosts = array_values( $hosts );

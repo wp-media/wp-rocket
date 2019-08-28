@@ -439,7 +439,6 @@ class Page {
 		$user_cache_beacon   = $this->beacon->get_suggest( 'user_cache' );
 		$nonce_beacon        = $this->beacon->get_suggest( 'nonce' );
 		$cache_life_beacon   = $this->beacon->get_suggest( 'cache_lifespan' );
-		$cache_ssl_beacon    = $this->beacon->get_suggest( 'cache_ssl' );
 
 		$this->settings->add_page_section(
 			'cache',
@@ -859,7 +858,7 @@ class Page {
 			'media',
 			[
 				'title'            => __( 'Media', 'rocket' ),
-				'menu_description' => __( 'LazyLoad, emojis, embeds', 'rocket' ),
+				'menu_description' => __( 'LazyLoad, emojis, embeds, WebP', 'rocket' ),
 			]
 		);
 
@@ -890,8 +889,32 @@ class Page {
 					'description' => __( 'Prevents others from embedding content from your site, prevents you from embedding content from other (non-whitelisted) sites, and removes JavaScript requests related to WordPress embeds', 'rocket' ),
 					'page'        => 'media',
 				],
+				'webp_section'     => [
+					'title'       => 'WebP',
+					'type'        => 'fields_container',
+					/**
+					 * Filters the description for the WebP caching option
+					 *
+					 * @since 3.4
+					 * @author Remy Perona
+					 *
+					 * @param string $description Section description.
+					 */
+					'description' => apply_filters( 'rocket_webp_section_description', '' ),
+					'page'        => 'media',
+				],
 			]
 		);
+
+		/**
+		 * Add more content to the 'cache_webp' setting field.
+		 *
+		 * @since  3.4
+		 * @author Grégory Viguier
+		 *
+		 * @param array $cache_webp_field Data to be added to the setting field.
+		 */
+		$cache_webp_field = (array) apply_filters( 'rocket_cache_webp_setting_field', [] );
 
 		$this->settings->add_settings_fields(
 			[
@@ -908,7 +931,7 @@ class Page {
 					'input_attr'        => [
 						'disabled' => ( rocket_avada_maybe_disable_lazyload() || rocket_maybe_disable_lazyload() ) ? 1 : 0,
 					],
-					'description'       => rocket_avada_maybe_disable_lazyload() ? _x('Lazyload for images is currently activated in Avada. If you want to use WP Rocket’s LazyLoad, disable this option in Avada.', 'Avada', 'rocket' ) : '',
+					'description'       => rocket_avada_maybe_disable_lazyload() ? _x( 'Lazyload for images is currently activated in Avada. If you want to use WP Rocket’s LazyLoad, disable this option in Avada.', 'Avada', 'rocket' ) : '',
 				],
 				'lazyload_iframes' => [
 					'container_class'   => [
@@ -959,6 +982,17 @@ class Page {
 					'default'           => 1,
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
+				'cache_webp'       => array_merge(
+					$cache_webp_field,
+					[
+						'type'              => 'checkbox',
+						'label'             => __( 'Enable WebP caching', 'rocket' ),
+						'section'           => 'webp_section',
+						'page'              => 'media',
+						'default'           => 0,
+						'sanitize_callback' => 'sanitize_checkbox',
+					]
+				),
 			]
 		);
 	}
@@ -1477,17 +1511,30 @@ class Page {
 			) . '<br>';
 		}
 
+		/**
+		 * Add more content to the 'cdn' setting field.
+		 *
+		 * @since  3.4
+		 * @author Grégory Viguier
+		 *
+		 * @param array $cdn_field Data to be added to the setting field.
+		 */
+		$cdn_field = (array) apply_filters( 'rocket_cdn_setting_field', [] );
+
 		$this->settings->add_settings_fields(
 			[
-				'cdn'              => [
-					'type'              => 'checkbox',
-					'label'             => __( 'Enable Content Delivery Network', 'rocket' ),
-					'helper'            => $maybe_display_cdn_helper,
-					'section'           => 'cdn_section',
-					'page'              => 'page_cdn',
-					'default'           => 0,
-					'sanitize_callback' => 'sanitize_checkbox',
-				],
+				'cdn'              => array_merge(
+					$cdn_field,
+					[
+						'type'              => 'checkbox',
+						'label'             => __( 'Enable Content Delivery Network', 'rocket' ),
+						'helper'            => $maybe_display_cdn_helper,
+						'section'           => 'cdn_section',
+						'page'              => 'page_cdn',
+						'default'           => 0,
+						'sanitize_callback' => 'sanitize_checkbox',
+					]
+				),
 				'cdn_cnames'       => [
 					'type'        => 'cnames',
 					'label'       => __( 'CDN CNAME(s)', 'rocket' ),
