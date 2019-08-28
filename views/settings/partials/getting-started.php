@@ -21,7 +21,7 @@ $tutorials = [
 	<div class="wpr-field">
 		<ul class="wpr-field-list">
 			<?php foreach ( $tutorials as $id => $title ) : ?>
-			<li class="wpr-icon-tutorial"><script src="https://fast.wistia.com/embed/medias/<?php echo esc_attr( $id ); ?>.jsonp" async></script><script src="https://fast.wistia.com/assets/external/E-v1.js" async></script><span class="wpr-tutorial-link wistia_embed wistia_async_<?php echo esc_attr( $id ); ?> popover=true popoverContent=link" style="display:inline;position:relative"><?php echo esc_html( $title ); ?></span></li>
+			<li class="wpr-icon-tutorial-alt"><script src="https://fast.wistia.com/embed/medias/<?php echo esc_attr( $id ); ?>.jsonp" async></script><script src="https://fast.wistia.com/assets/external/E-v1.js" async></script><span class="wpr-tutorial-link wistia_embed wistia_async_<?php echo esc_attr( $id ); ?> popover=true popoverContent=link" style="display:inline;position:relative"><?php echo esc_html( $title ); ?></span></li>
 			<?php endforeach; ?>
 		</ul>
 	</div>
