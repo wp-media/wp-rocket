@@ -316,6 +316,8 @@ class Cache extends Abstract_Buffer {
 			$filename .= '-https';
 		}
 
+		$filename = $this->maybe_webp_filename( $filename );
+
 		$filename = $this->maybe_dynamic_cookies_filename( $filename, $cookies );
 
 		// Ensure proper formatting of the path.
@@ -340,7 +342,7 @@ class Cache extends Abstract_Buffer {
 	 */
 	final private function define_donotoptimize_true() {
 		if ( ! defined( 'DONOTROCKETOPTIMIZE' ) ) {
-			define( 'DONOTROCKETOPTIMIZE', true ); // WPCS: prefix ok.
+			define( 'DONOTROCKETOPTIMIZE', true ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 		}
 	}
 
@@ -425,7 +427,7 @@ class Cache extends Abstract_Buffer {
 		 *
 		 * @param bool True will force the cache file generation.
 		 */
-		return (bool) apply_filters( 'do_rocket_generate_caching_files', true ); // WPCS: prefix ok.
+		return (bool) apply_filters( 'do_rocket_generate_caching_files', true ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	}
 
 	/**
@@ -497,6 +499,52 @@ class Cache extends Abstract_Buffer {
 		}
 
 		return $filename;
+	}
+
+	/**
+	 * Modifies the filename if the request is WebP compatible
+	 *
+	 * @since 3.4
+	 * @author Remy Perona
+	 *
+	 * @param string $filename Cache filename.
+	 * @return string
+	 */
+	private function maybe_webp_filename( $filename ) {
+		if ( ! $this->config->get_config( 'cache_webp' ) ) {
+			return $filename;
+		}
+
+		/**
+		 * Force WP Rocket to disable its webp cache.
+		 *
+		 * @since  3.4
+		 * @author Grégory Viguier
+		 *
+		 * @param bool $disable_webp_cache Set to true to disable the webp cache.
+		 */
+		$disable_webp_cache = apply_filters( 'rocket_disable_webp_cache', false );
+
+		if ( $disable_webp_cache ) {
+			return $filename;
+		}
+
+		if ( function_exists( 'apache_request_headers' ) ) {
+			$headers     = apache_request_headers();
+			$http_accept = ( isset( $headers['Accept'] ) ) ? $headers['Accept'] : '';
+		} else {
+			$http_accept = $this->config->get_server_input( 'HTTP_ACCEPT', '' );
+		}
+
+		if ( ! $http_accept ) {
+			return $filename;
+		}
+
+		if ( false === strpos( $http_accept, 'webp' ) ) {
+			return $filename;
+		}
+
+		return $filename . '-webp';
 	}
 
 	/**

@@ -1,0 +1,13 @@
+.wpr-tutorials-section {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+div.wpr-tutorial-item {
+    width: 25%;
+    padding-right: 5px;
+
+    &:last-child {
+        padding-right: 0;
+    }
+}

@@ -144,6 +144,16 @@ class Render extends Abstract_render {
 	}
 
 	/**
+	 * Render the Tutorials page section.
+	 *
+	 * @since 3.4
+	 * @author Remy Perona
+	 */
+	public function render_tutorials_section() {
+		echo $this->generate( 'page-sections/tutorials' );
+	}
+
+	/**
 	 * Render the tools page section.
 	 *
 	 * @since 3.0
