@@ -42,6 +42,7 @@ class Page_Subscriber implements Subscriber_Interface {
 			'rocket_settings_menu_navigation'      => [
 				[ 'add_menu_tools_page' ],
 				[ 'add_imagify_page', 9 ],
+				[ 'add_tutorials_page', 11 ],
 			],
 		];
 	}
@@ -159,6 +160,25 @@ class Page_Subscriber implements Subscriber_Interface {
 			'id'               => 'imagify',
 			'title'            => __( 'Image Optimization', 'rocket' ),
 			'menu_description' => __( 'Compress your images', 'rocket' ),
+		];
+
+		return $navigation;
+	}
+
+	/**
+	 * Add Tutorials section to navigation
+	 *
+	 * @since 3.4
+	 * @author Remy Perona
+	 *
+	 * @param array $navigation Array of menu items.
+	 * @return array
+	 */
+	public function add_tutorials_page( $navigation ) {
+		$navigation['tutorials'] = [
+			'id'               => 'tutorials',
+			'title'            => __( 'Tutorials', 'rocket' ),
+			'menu_description' => __( 'Getting started and how to videos', 'rocket' ),
 		];
 
 		return $navigation;
