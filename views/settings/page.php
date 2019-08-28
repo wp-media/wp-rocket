@@ -46,6 +46,7 @@ settings_errors( $data['slug'] ); ?>
 				}
 
 				$this->render_tools_section();
+				$this->render_tutorials_section();
 			?>
 			<div class="wpr-Content-tips">
 				<div class="wpr-radio wpr-radio--reverse wpr-radio--tips">
