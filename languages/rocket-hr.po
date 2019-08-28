@@ -1,8 +1,8 @@
 # Copyright (C) 2016 WP Rocket
 # This file is distributed under the same license as the WP Rocket package.
 # Translators:
-# wpmedia <contact@wp-media.me>, 2019
 # Ivica Delic <ivica.delic@gmail.com>, 2019
+# wpmedia <contact@wp-media.me>, 2019
 # Borko Livić <borkolivic@gmail.com>, 2019
 # 
 #, fuzzy
@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: WP Rocket 3.3.7\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
 "POT-Creation-Date: 2019-08-26 11:14-0400\n"
-"PO-Revision-Date: 2019-08-26 15:14+0000\n"
+"PO-Revision-Date: 2019-08-28 13:41+0000\n"
 "Last-Translator: Borko Livić <borkolivic@gmail.com>, 2019\n"
 "Language-Team: Croatian (https://www.transifex.com/wp-media/teams/18133/hr/)\n"
 "MIME-Version: 1.0\n"
@@ -502,7 +502,7 @@ msgid_plural ""
 "system is not running properly, which can prevent some WP Rocket features "
 "from working as intended:"
 msgstr[0] ""
-"Sljedeći planirani događaj nije uspio. To može značiti da CRON sustav ne "
+"Sljedeći planirani događaji nije uspio. To može značiti da CRON sustav ne "
 "radi ispravno, što može spriječiti da neke značajke WP Rocketa rade kako je "
 "predviđeno:"
 msgstr[1] ""
@@ -1117,7 +1117,7 @@ msgstr "Onemogući WordPress embede"
 #: inc/classes/admin/settings/class-page.php:988
 #: inc/deprecated/deprecated.php:1778
 msgid "Preload"
-msgstr "Preloading"
+msgstr "Predučitavanje"
 
 #: inc/classes/admin/settings/class-page.php:979
 msgid "Generate cache files"
@@ -1354,15 +1354,15 @@ msgid "%s revision in your database."
 msgid_plural "%s revisions in your database."
 msgstr[0] "%s revizija u vašoj bazi podataka."
 msgstr[1] "%s revizija u vašoj bazi podataka."
-msgstr[2] "%s revizija u vašoj bazi podataka."
+msgstr[2] "%s revizije u vašoj bazi podataka."
 
 #: inc/classes/admin/settings/class-page.php:1301
 #, php-format
 msgid "%s draft in your database."
 msgid_plural "%s drafts in your database."
 msgstr[0] "%s skica u vašoj bazi podataka."
-msgstr[1] "%s skica u vašoj bazi podataka."
-msgstr[2] "%s skica u vašoj bazi podataka."
+msgstr[1] "%s skice u vašoj bazi podataka."
+msgstr[2] "%s skice u vašoj bazi podataka."
 
 #: inc/classes/admin/settings/class-page.php:1311
 #, php-format
@@ -1384,7 +1384,7 @@ msgstr[2] "%s spam komentara u vašoj bazi podataka."
 #, php-format
 msgid "%s trashed comment in your database."
 msgid_plural "%s trashed comments in your database."
-msgstr[0] "%s obrisan komentar u vašoj bazi podataka."
+msgstr[0] "%s obrisani komentar u vašoj bazi podataka."
 msgstr[1] "%s obrisanih komentara u vašoj bazi podataka."
 msgstr[2] "%s obrisanih komentara u vašoj bazi podataka."
 
@@ -1471,7 +1471,7 @@ msgid_plural ""
 "settings is not required for %2$s to work on your site."
 msgstr[0] ""
 "%1$s%2$s Dodatak%3$s je trenutno omogućen. Konfiguracija CDN postavki nije "
-"potrebna%2$s kako bi radila na vašoj web-lokaciji."
+"potrebna%2$s kako bi radio na vašoj web-lokaciji."
 msgstr[1] ""
 "%1$s%2$s Dodataka%3$s je trenutno omogućeno. Konfiguracija CDN postavki nije"
 " potrebna%2$s kako bi radila na vašoj web-lokaciji."
@@ -2019,7 +2019,7 @@ msgid ""
 "completed. (Refresh this page to view progress)"
 msgstr ""
 "Trenutno se izvodi generiranje ključnog CSS-a: %1$d od %2$d vrsta stranica "
-"dovršeno (Osvježite ovu stranicu da biste vidjeli napredak)"
+"dovršeno (Osvježite ovu stranicu kako biste vidjeli napredak)"
 
 #: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:189
 #, php-format
@@ -2101,13 +2101,13 @@ msgid_plural ""
 "progress)"
 msgstr[0] ""
 "Predučitavanje: %1$s ne-cachirana  stranica je predučitana (osvježite kako "
-"biste vdjeli napredak)"
+"biste vidjeli napredak)"
 msgstr[1] ""
 "Predučitavanje: %1$s ne-cachiranih  stranica je predučitano (osvježite kako "
-"biste vdjeli napredak)"
+"biste vidjeli napredak)"
 msgstr[2] ""
 "Predučitavanje: %1$s ne-cachiranih  stranica je predučitano (osvježite kako "
-"biste vdjeli napredak)"
+"biste vidjeli napredak)"
 
 #: inc/classes/subscriber/preload/class-preload-subscriber.php:255
 msgid "The following error happened during gathering of the URLs to preload:"
@@ -2360,7 +2360,7 @@ msgid ""
 "progress)"
 msgstr ""
 "Predučitavanje mape we-lokacije: %d necachiranih stranica je uspješno "
-"predučitano (osvježite da biste vidjeli napredak)"
+"predučitano (osvježite kako biste vidjeli napredak)"
 
 #: inc/deprecated/deprecated.php:242
 msgid "<strong>JS</strong> files with Deferred Loading JavaScript"
