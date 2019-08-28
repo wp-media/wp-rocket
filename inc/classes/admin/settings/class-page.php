@@ -785,7 +785,6 @@ class Page {
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 					'description'       => sprintf( __( 'Specify patterns of inline JavaScript to be excluded from concatenation (one per line). %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $inline_js_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $inline_js_beacon['id'] ) . '" rel="noopener noreferrer" target="_blank">', '</a>' ),
 					'container_class'   => [
-						get_rocket_option( 'minify_concatenate_js' ) ? '' : 'wpr-isDisabled',
 						'wpr-field--children',
 					],
 					'placeholder'       => 'recaptcha',

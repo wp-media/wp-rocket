@@ -248,6 +248,48 @@ function rocket_warning_footer_js_plugin() {
 add_action( 'admin_notices', 'rocket_warning_footer_js_plugin' );
 
 /**
+ * Display a warning if Endurance Cache is not disabled
+ *
+ * @since 3.3.7
+ * @author Remy Perona
+ *
+ * @return void
+ */
+function rocket_warning_endurance_cache() {
+	$screen = get_current_screen();
+
+	// This filter is documented in inc/admin-bar.php.
+	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		return;
+	}
+
+	if ( 'settings_page_wprocket' !== $screen->id ) {
+		return;
+	}
+
+	if ( ! class_exists( 'Endurance_Page_Cache' ) ) {
+		return;
+	}
+
+	if ( 0 === (int) get_option( 'endurance_cache_level' ) ) {
+		return;
+	}
+
+	rocket_notice_html(
+		[
+			'status'  => 'error',
+			'message' => sprintf(
+				// translators: %1$s = opening link tag, %2$s = closing link tag.
+				__( 'Endurance Cache is currently enabled, which will conflict with WP Rocket Cache. Please set the Endurance Cache cache level to Off (Level 0) on the %1$sSettings > General%2$s page to prevent any issues.', 'rocket' ),
+				'<a href="' . admin_url( 'options-general.php#epc_settings' ) . '">',
+				'</a>'
+			),
+		]
+	);
+}
+add_action( 'admin_notices', 'rocket_warning_endurance_cache' );
+
+/**
  * This warning is displayed when there is no permalink structure in the configuration.
  *
  * @since 1.0
@@ -409,11 +451,11 @@ function rocket_warning_htaccess_permissions() {
 		'</a>'
 	);
 
-	add_filter( 'rocket_htaccess_mod_rewrite', '__return_false' );
+	add_filter( 'rocket_htaccess_mod_rewrite', '__return_false', 42 );
 
 	$message .= '<p>' . __( 'Don’t worry, WP Rocket’s page caching and settings will still function correctly.', 'rocket' ) . '<br>' . __( 'For optimal performance, adding the following lines into your .htaccess is recommended (not required):', 'rocket' ) . '<br><textarea readonly="readonly" id="rocket_htaccess_rules" name="rocket_htaccess_rules" class="large-text readonly" rows="6">' . esc_textarea( get_rocket_htaccess_marker() ) . '</textarea></p>';
 
-	remove_filter( 'rocket_htaccess_mod_rewrite', '__return_false' );
+	remove_filter( 'rocket_htaccess_mod_rewrite', '__return_false', 42 );
 
 	rocket_notice_html(
 		[
@@ -718,7 +760,6 @@ add_action( 'admin_notices', 'rocket_analytics_optin_notice' );
  * @author Remy Perona
  */
 function rocket_analytics_optin_thankyou_notice() {
-
 	$screen = get_current_screen();
 
 	// This filter is documented in inc/admin-bar.php.
@@ -780,20 +821,24 @@ function rocket_clear_cache_notice() {
 
 	switch ( $cleared_cache ) {
 		case 'all':
-			// translators: %s = plugin name.
-			$notice = sprintf( __( '%s: Cache cleared.', 'rocket' ), '<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>' );
+				// translators: %s = plugin name.
+				$notice  = sprintf( __( '%s: Cache cleared.', 'rocket' ), '<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>' );
+				$notice .= '<em> (' . date_i18n( 'F j, Y @ G:i', time() ) . ') </em>';
 			break;
 		case 'post':
-			// translators: %s = plugin name.
-			$notice = sprintf( __( '%s: Post cache cleared.', 'rocket' ), '<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>' );
+				// translators: %s = plugin name.
+				$notice  = sprintf( __( '%s: Post cache cleared.', 'rocket' ), '<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>' );
+				$notice .= '<em> (' . date_i18n( 'F j, Y @ G:i', time() ) . ') </em>';
 			break;
 		case 'term':
-			// translators: %s = plugin name.
-			$notice = sprintf( __( '%s: Term cache cleared.', 'rocket' ), '<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>' );
+				// translators: %s = plugin name.
+				$notice  = sprintf( __( '%s: Term cache cleared.', 'rocket' ), '<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>' );
+				$notice .= '<em> (' . date_i18n( 'F j, Y @ G:i', time() ) . ') </em>';
 			break;
 		case 'user':
-			// translators: %s = plugin name).
-			$notice = sprintf( __( '%s: User cache cleared.', 'rocket' ), '<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>' );
+				// translators: %s = plugin name).
+				$notice  = sprintf( __( '%s: User cache cleared.', 'rocket' ), '<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>' );
+				$notice .= '<em> (' . date_i18n( 'F j, Y @ G:i', time() ) . ') </em>';
 			break;
 		default:
 			$notice = '';
@@ -804,11 +849,85 @@ function rocket_clear_cache_notice() {
 		return;
 	}
 
-	rocket_notice_html( array(
-		'message' => $notice,
-	) );
+	rocket_notice_html(
+		[
+			'message' => $notice,
+		]
+	);
 }
 add_action( 'admin_notices', 'rocket_clear_cache_notice' );
+
+/**
+ * Display a warning notice if WP Rocket scheduled events are not running properly
+ *
+ * @since 3.3.7
+ * @author Remy Perona
+ *
+ * @return void
+ */
+function rocket_warning_cron() {
+	$screen = get_current_screen();
+
+	// This filter is documented in inc/admin-bar.php.
+	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		return;
+	}
+
+	if ( 'settings_page_wprocket' !== $screen->id ) {
+		return;
+	}
+
+	if ( 0 === (int) get_rocket_option( 'purge_cron_interval' ) && 0 === get_rocket_option( 'async_css' ) && 0 === get_rocket_option( 'manual_preload' ) && 0 === get_rocket_option( 'schedule_automatic_cleanup' ) ) {
+		return;
+	}
+
+	$events = [
+		'rocket_purge_time_event'                      => 'Scheduled Cache Purge',
+		'rocket_database_optimization_time_event'      => 'Scheduled Database Optimization',
+		'rocket_database_optimization_cron_interval'   => 'Database Optimization Process',
+		'rocket_preload_cron_interval'                 => 'Preload',
+		'rocket_critical_css_generation_cron_interval' => 'Critical Path CSS Generation Process',
+	];
+
+	foreach ( $events as $event => $description ) {
+		$timestamp = wp_next_scheduled( $event );
+
+		if ( false === $timestamp ) {
+			unset( $events[ $event ] );
+			continue;
+		}
+
+		if ( $timestamp - time() > 0 ) {
+			unset( $events[ $event ] );
+			continue;
+		}
+	}
+
+	if ( empty( $events ) ) {
+		return;
+	}
+
+	$message = '<p>' . _n( 'The following scheduled event failed to run. This may indicate the CRON system is not running properly, which can prevent some WP Rocket features from working as intended:', 'The following scheduled events failed to run. This may indicate the CRON system is not running properly, which can prevent some WP Rocket features from working as intended:', count( $events ), 'rocket' ) . '</p>';
+
+	$message .= '<ul>';
+
+	foreach ( $events as $description ) {
+		$message .= '<li>' . $description . '</li>';
+	}
+
+	$message .= '</ul>';
+	$message .= '<p>' . __( 'Please contact your host to check if CRON is working.', 'rocket' ) . '</p>';
+
+	rocket_notice_html(
+		[
+			'status'         => 'warning',
+			'dismissible'    => '',
+			'message'        => $message,
+			'dismiss_button' => __FUNCTION__,
+		]
+	);
+}
+add_action( 'admin_notices', 'rocket_warning_cron' );
 
 /**
  * Outputs notice HTML

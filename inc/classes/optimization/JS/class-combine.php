@@ -215,7 +215,7 @@ class Combine extends Abstract_JS_Optimization {
 					'content' => $file_path,
 				];
 			} else {
-				preg_match( '/<script\b(?<attrs>[^>]*)>\s*(?:\/\*\s*<!\[CDATA\[\s*\*\/)?\s*(?<content>[\s\S]*?)\s*(?:\/\*\s*\]\]>\s*\*\/)?\s*<\/script>/msi', $script[0], $matches_inline );
+				preg_match( '/<script\b(?<attrs>[^>]*)>(?:\/\*\s*<!\[CDATA\[\s*\*\/)?\s*(?<content>[\s\S]*?)\s*(?:\/\*\s*\]\]>\s*\*\/)?<\/script>/msi', $script[0], $matches_inline );
 
 				if ( strpos( $matches_inline['attrs'], 'type' ) !== false && ! preg_match( '/type\s*=\s*["\']?(?:text|application)\/(?:(?:x\-)?javascript|ecmascript)["\']?/i', $matches_inline['attrs'] ) ) {
 					Logger::debug( 'Inline script is not JS.', [
@@ -503,6 +503,18 @@ class Combine extends Abstract_JS_Optimization {
 			'wcct_info',
 			'Springbot.product_id',
 			'cedexisData',
+			'function reenableButton',
+			'#wpnbio-show',
+			'e.Newsletter2GoTrackingObject',
+			'var categories_',
+			'"+nRemaining+"',
+			'cartsguru_cart_token',
+			'after_share_easyoptin',
+			'location_data.push',
+			'thirstyFunctions.isThirstyLink',
+			'styles: \' #custom-menu-',
+			'function svc_center_',
+			'#svc_carousel2_container_',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );

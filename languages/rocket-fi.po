@@ -1,17 +1,17 @@
 # Copyright (C) 2016 WP Rocket
 # This file is distributed under the same license as the WP Rocket package.
 # Translators:
-# timoleinio <tjlein@gmail.com>, 2019
 # wpmedia <contact@wp-media.me>, 2019
+# timoleinio <tjlein@gmail.com>, 2019
 # Riku Turunen <riku@ksf.fi>, 2019
 # 
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.3\n"
+"Project-Id-Version: WP Rocket 3.3.7\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2019-05-15 07:30-0400\n"
-"PO-Revision-Date: 2019-05-15 16:03+0000\n"
+"POT-Creation-Date: 2019-08-26 11:14-0400\n"
+"PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Riku Turunen <riku@ksf.fi>, 2019\n"
 "Language-Team: Finnish (https://www.transifex.com/wp-media/teams/18133/fi/)\n"
 "MIME-Version: 1.0\n"
@@ -68,6 +68,7 @@ msgstr "Esilataa sivukartta Jetpack-lisäosasta"
 #: inc/3rd-party/plugins/jetpack.php:96
 #: inc/3rd-party/plugins/seo/all-in-one-seo-pack.php:88
 #: inc/3rd-party/plugins/seo/rank-math-seo.php:34
+#: inc/3rd-party/plugins/seo/seopress.php:85
 #: inc/3rd-party/plugins/seo/the-seo-framework.php:123
 #: inc/3rd-party/plugins/seo/yoast-seo.php:86
 #, php-format
@@ -85,6 +86,10 @@ msgstr "All in One SEO XML -sivukartta"
 #: inc/3rd-party/plugins/seo/rank-math-seo.php:32
 msgid "Rank Math XML sitemap"
 msgstr "Rank Math XML -sivukartta"
+
+#: inc/3rd-party/plugins/seo/seopress.php:83
+msgid "SEOPress XML sitemap"
+msgstr ""
 
 #: inc/3rd-party/plugins/seo/the-seo-framework.php:121
 msgid "The SEO Framework XML sitemap"
@@ -211,7 +216,46 @@ msgstr "Cloudflare browser cache -virhe: %s"
 msgid "Cloudflare browser cache set to %s seconds"
 msgstr "Cloudflare browser cache asetettu %s sekuntiin"
 
-#: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/notices.php:815
+#: inc/admin/options.php:241 inc/classes/admin/settings/class-page.php:692
+msgid "Excluded CSS Files"
+msgstr "Poissuljetut CSS -tiedostot"
+
+#: inc/admin/options.php:242 inc/classes/admin/settings/class-page.php:784
+msgid "Excluded Inline JavaScript"
+msgstr "Sulje pois inline-JavaScript"
+
+#: inc/admin/options.php:243 inc/classes/admin/settings/class-page.php:802
+msgid "Excluded JavaScript Files"
+msgstr "Pois suljetut JavaScript -tiedostot"
+
+#: inc/admin/options.php:244 inc/classes/admin/settings/class-page.php:1128
+msgid "Never Cache URL(s)"
+msgstr "Välimuistista pois suljettavat URL-osoitteet"
+
+#: inc/admin/options.php:245 inc/classes/admin/settings/class-page.php:1144
+msgid "Never Cache User Agent(s)"
+msgstr "Välimuistista pois suljettavat selain-agentit"
+
+#: inc/admin/options.php:246 inc/classes/admin/settings/class-page.php:1149
+msgid "Always Purge URL(s)"
+msgstr "Tyhjennä aina välimuisti -osoitteet"
+
+#: inc/admin/options.php:247 inc/classes/admin/settings/class-page.php:1443
+msgid "Exclude files from CDN"
+msgstr "Sulje pois CDN:stä"
+
+#: inc/admin/options.php:265
+#, php-format
+msgid "%1$s: <em>%2$s</em>."
+msgstr ""
+
+#: inc/admin/options.php:275
+msgid "The following pattern is invalid and has been removed:"
+msgid_plural "The following patterns are invalid and have been removed:"
+msgstr[0] ""
+msgstr[1] ""
+
+#: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/notices.php:955
 #: inc/common/admin-bar.php:65 inc/common/admin-bar.php:118
 #: views/settings/page-sections/dashboard.php:115
 msgid "Clear cache"
@@ -238,8 +282,9 @@ msgid "LazyLoad for iframes/videos"
 msgstr "LazyLoad iframeille/videoille"
 
 #: inc/admin/ui/meta-boxes.php:75
-msgid "Minify/combine HTML"
-msgstr "Kutista/yhdistä HTML"
+#: inc/classes/admin/settings/class-page.php:615
+msgid "Minify HTML"
+msgstr "Kutista HTML"
 
 #: inc/admin/ui/meta-boxes.php:76
 msgid "Minify/combine CSS"
@@ -250,8 +295,8 @@ msgid "Minify/combine JS"
 msgstr "Kutista/yhdistä JS"
 
 #: inc/admin/ui/meta-boxes.php:78
-#: inc/classes/admin/settings/class-page.php:1419
-#: inc/classes/admin/settings/class-page.php:1430
+#: inc/classes/admin/settings/class-page.php:1413
+#: inc/classes/admin/settings/class-page.php:1424
 #: inc/deprecated/deprecated.php:1775
 msgid "CDN"
 msgstr "CDN"
@@ -320,7 +365,15 @@ msgstr ""
 "Rocket:in ominaisuuksia toimimasta oikein. Ole hyvä ja poista se käytöstä "
 "mikäli törmäät ongelmiin."
 
-#: inc/admin/ui/notices.php:263
+#: inc/admin/ui/notices.php:283
+#, php-format
+msgid ""
+"Endurance Cache is currently enabled, which will conflict with WP Rocket "
+"Cache. Please set the Endurance Cache cache level to Off (Level 0) on the "
+"%1$sSettings > General%2$s page to prevent any issues."
+msgstr ""
+
+#: inc/admin/ui/notices.php:305
 #, php-format
 msgid ""
 "%1$s: A custom permalink structure is required for the plugin to work "
@@ -329,7 +382,39 @@ msgstr ""
 "%1$s: Mukautettu osoiterakenne on pakollinen, jotta tämä lisäosa toimisi "
 "oikein. %2$sMene osoiterakenteen asetuksiin %3$s"
 
-#: inc/admin/ui/notices.php:537
+#: inc/admin/ui/notices.php:442
+#, php-format
+msgid ""
+"%s could not modify the .htaccess file due to missing writing permissions."
+msgstr ""
+
+#: inc/admin/ui/notices.php:448 inc/admin/ui/notices.php:1032
+#, php-format
+msgid "Troubleshoot: %1$sHow to make system files writeable%2$s"
+msgstr ""
+"Vianetsintä: %1$sKuinka antaa järjestelmän tiedostoille kirjoitusoikeus %2$s"
+
+#: inc/admin/ui/notices.php:450 inc/admin/ui/notices.php:1034
+msgid ""
+"https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
+"config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
+msgstr ""
+"https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
+"config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
+
+#: inc/admin/ui/notices.php:456
+msgid ""
+"Don’t worry, WP Rocket’s page caching and settings will still function "
+"correctly."
+msgstr ""
+
+#: inc/admin/ui/notices.php:456
+msgid ""
+"For optimal performance, adding the following lines into your .htaccess is "
+"recommended (not required):"
+msgstr ""
+
+#: inc/admin/ui/notices.php:600
 #, php-format
 msgid ""
 "%1$s is good to go! %2$sTest your load time%4$s, or visit your "
@@ -338,7 +423,7 @@ msgstr ""
 "%1$s on käyttövalmisvalmis! %2$sTestaa sivusilatausaika %4$s, tai tsekkaa "
 "%3$s asetukset %4$s."
 
-#: inc/admin/ui/notices.php:658
+#: inc/admin/ui/notices.php:721
 msgid ""
 "Would you allow WP Rocket to collect non-sensitive diagnostic data from this"
 " website?"
@@ -346,16 +431,16 @@ msgstr ""
 "Sallitko WP Rocketin kerätä ei-sensitiivistä diagnostiikkadataa "
 "verkkosivultasi?"
 
-#: inc/admin/ui/notices.php:659
+#: inc/admin/ui/notices.php:722
 msgid "This would help us to improve WP Rocket for you in the future."
 msgstr ""
 "Tämä auttaisi meitä parantamaan WP Rocketin toimintaa tulevaisuudessa."
 
-#: inc/admin/ui/notices.php:665
+#: inc/admin/ui/notices.php:728
 msgid "What info will we collect?"
 msgstr "Mitä tietoja keräämme?"
 
-#: inc/admin/ui/notices.php:670
+#: inc/admin/ui/notices.php:733
 msgid ""
 "Below is a detailed view of all data WP Rocket will collect if granted "
 "permission. WP Rocket will never transmit any domain names or email "
@@ -367,120 +452,111 @@ msgstr ""
 "sähköpostiosoitteita (paitsi lisenssin vahvistuksen yhteydessä), IP-"
 "osoitteita, tai kolmannen osapuolen API-avaimia."
 
-#: inc/admin/ui/notices.php:679
+#: inc/admin/ui/notices.php:742
 msgid "Yes, allow"
 msgstr "Kyllä, salli"
 
-#: inc/admin/ui/notices.php:682
+#: inc/admin/ui/notices.php:745
 msgid "No, thanks"
 msgstr "Ei kiitos"
 
-#: inc/admin/ui/notices.php:721
+#: inc/admin/ui/notices.php:783
 msgid "Thank you!"
 msgstr "Kiitos!"
 
-#: inc/admin/ui/notices.php:726
+#: inc/admin/ui/notices.php:788
 msgid "WP Rocket now collects these metrics from your website:"
 msgstr "WP Rocket kerää nyt seuraavat tiedot verkkosivustasi:"
 
-#: inc/admin/ui/notices.php:763
+#: inc/admin/ui/notices.php:825
 #, php-format
 msgid "%s: Cache cleared."
 msgstr "%s: Välimuisti tyhjennetty."
 
-#: inc/admin/ui/notices.php:767
+#: inc/admin/ui/notices.php:830
 #, php-format
 msgid "%s: Post cache cleared."
 msgstr "%s: Postauksen välimuisti tyhjennetty."
 
-#: inc/admin/ui/notices.php:771
+#: inc/admin/ui/notices.php:835
 #, php-format
 msgid "%s: Term cache cleared."
 msgstr "%s: Avainsanan välimuisti tyhjennetty."
 
-#: inc/admin/ui/notices.php:775
+#: inc/admin/ui/notices.php:840
 #, php-format
 msgid "%s: User cache cleared."
 msgstr "%s: Käyttäjän välimuisti tyhjennetty."
 
-#: inc/admin/ui/notices.php:818
+#: inc/admin/ui/notices.php:910
+msgid ""
+"The following scheduled event failed to run. This may indicate the CRON "
+"system is not running properly, which can prevent some WP Rocket features "
+"from working as intended:"
+msgid_plural ""
+"The following scheduled events failed to run. This may indicate the CRON "
+"system is not running properly, which can prevent some WP Rocket features "
+"from working as intended:"
+msgstr[0] ""
+msgstr[1] ""
+
+#: inc/admin/ui/notices.php:919
+msgid "Please contact your host to check if CRON is working."
+msgstr ""
+
+#: inc/admin/ui/notices.php:958
 msgid "Stop Preload"
 msgstr "Pysäytä esilataus"
 
-#: inc/admin/ui/notices.php:836
+#: inc/admin/ui/notices.php:976
 msgid "Force deactivation "
 msgstr "Pakota deaktivointi"
 
-#: inc/admin/ui/notices.php:849
+#: inc/admin/ui/notices.php:989
 msgid "The following code should have been written to this file:"
 msgstr "Alla olevan koodin olisi pitänyt päätyä tähän tiedostoon:"
 
-#: inc/admin/ui/notices.php:859 views/settings/page-sections/dashboard.php:45
+#: inc/admin/ui/notices.php:999 views/settings/page-sections/dashboard.php:45
 msgid "Dismiss this notice."
 msgstr "Kuittaa tämä tiedote."
 
-#: inc/admin/ui/notices.php:880
+#: inc/admin/ui/notices.php:1020
 #, php-format
 msgid "%s cannot configure itself due to missing writing permissions."
 msgstr "%s konfigurointi ei onnistunut puuttuvien kirjoitusoikeuksien vuoksi."
 
-#: inc/admin/ui/notices.php:886
+#: inc/admin/ui/notices.php:1026
 #, php-format
 msgid "Affected file/folder: %s"
 msgstr "Tiedosto/kansio: %s"
 
-#: inc/admin/ui/notices.php:892
-#, php-format
-msgid "Troubleshoot: %1$sHow to make system files writeable%2$s"
-msgstr ""
-"Vianetsintä: %1$sKuinka antaa järjestelmän tiedostoille kirjoitusoikeus %2$s"
-
-#: inc/admin/ui/notices.php:894
-msgid ""
-"https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
-"config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
-msgstr ""
-"https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
-"config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
-
-#: inc/admin/updater.php:75 inc/admin/updater.php:84
-#, php-format
-msgid ""
-"An unexpected error occurred. Something may be wrong with WP-Rocket.me or "
-"this server&#8217;s configuration. If you continue to have problems, <a "
-"href=\"%s\">contact support</a>."
-msgstr ""
-"Odottamaton virhe. Vika voi olla joko WP-Rocket.me:n päässä tai tämän "
-"palvelimen asetuksissa. Jos ongelmat jatkuvat, <a href=\"%s\">ota yhteys "
-"tukeen</a>."
-
 #: inc/classes/admin/Database/class-optimization.php:41
-#: inc/classes/admin/settings/class-page.php:1295
+#: inc/classes/admin/settings/class-page.php:1289
 msgid "Revisions"
 msgstr "Versiot"
 
 #: inc/classes/admin/Database/class-optimization.php:42
-#: inc/classes/admin/settings/class-page.php:1305
+#: inc/classes/admin/settings/class-page.php:1299
 msgid "Auto Drafts"
 msgstr "Automaattiset luonnokset"
 
 #: inc/classes/admin/Database/class-optimization.php:43
-#: inc/classes/admin/settings/class-page.php:1315
+#: inc/classes/admin/settings/class-page.php:1309
 msgid "Trashed Posts"
 msgstr "Postaukset roskakorissa"
 
 #: inc/classes/admin/Database/class-optimization.php:44
-#: inc/classes/admin/settings/class-page.php:1325
+#: inc/classes/admin/settings/class-page.php:1319
 msgid "Spam Comments"
 msgstr "Roskapostikommentit"
 
 #: inc/classes/admin/Database/class-optimization.php:45
-#: inc/classes/admin/settings/class-page.php:1335
+#: inc/classes/admin/settings/class-page.php:1329
 msgid "Trashed Comments"
 msgstr "Kommentit roskakorissa"
 
 #: inc/classes/admin/Database/class-optimization.php:46
-#: inc/classes/admin/settings/class-page.php:1345
+#: inc/classes/admin/settings/class-page.php:1339
 msgid "Expired transients"
 msgstr "Vanhentuneet transientit"
 
@@ -587,21 +663,10 @@ msgstr ""
 "käyttäjäkohtaista sisältöä sivullasi."
 
 #: inc/classes/admin/settings/class-page.php:477
-msgid "SSL Cache"
-msgstr "SSL -välimuisti"
-
-#: inc/classes/admin/settings/class-page.php:480
-#, php-format
-msgid "%1$sSSL Cache%2$s works best when your entire website runs on HTTPS."
-msgstr ""
-"%1$sSSL -välimuisti%2$s toimii parhaiten kun koko sivustosi pyörii HTTPS:n "
-"alla."
-
-#: inc/classes/admin/settings/class-page.php:491
 msgid "Cache Lifespan"
 msgstr "Välimuistin elinikä"
 
-#: inc/classes/admin/settings/class-page.php:494
+#: inc/classes/admin/settings/class-page.php:480
 #, php-format
 msgid ""
 "Cache lifespan is the period of time after which all cache files are "
@@ -612,19 +677,19 @@ msgstr ""
 " <br> Salli %1$sesilataus%2$s välimuistille luodaksesi välimuistin "
 "automaattisesti uudelleen eliniän loputtua."
 
-#: inc/classes/admin/settings/class-page.php:508
+#: inc/classes/admin/settings/class-page.php:494
 msgid "Enable caching for logged-in WordPress users"
 msgstr "Salli välimuisti kirjautuneille WordPress -käyttäjille"
 
-#: inc/classes/admin/settings/class-page.php:516
+#: inc/classes/admin/settings/class-page.php:502
 msgid "Enable caching for mobile devices"
 msgstr "Salli välimuisti mobiililaitteille"
 
-#: inc/classes/admin/settings/class-page.php:531
+#: inc/classes/admin/settings/class-page.php:517
 msgid "Separate cache files for mobile devices"
 msgstr "Erillinen välimuisti mobiililaitteille"
 
-#: inc/classes/admin/settings/class-page.php:533
+#: inc/classes/admin/settings/class-page.php:519
 #, php-format
 msgid ""
 "%1$sMobile cache%2$s works safest with both options enabled. When in doubt, "
@@ -633,18 +698,14 @@ msgstr ""
 "%1$sMobiilivälimuisti %2$s toimii parhaiten kun sallit molemmat asetukset. "
 "Jos sinua epäilyttää, pidä molemmat päällä."
 
-#: inc/classes/admin/settings/class-page.php:549
-msgid "Enable caching for pages with <code>https://</code>"
-msgstr "Salli välimuisti <code>https://</code> -sivuille"
-
-#: inc/classes/admin/settings/class-page.php:557
+#: inc/classes/admin/settings/class-page.php:535
 msgid ""
 "Specify time after which the global cache is cleared<br>(0 = unlimited )"
 msgstr ""
 "Määritä aika, jonka jälkeen globaali välimuisti tyhjennetään<br>(0 = ei "
 "aikarajaa)"
 
-#: inc/classes/admin/settings/class-page.php:559
+#: inc/classes/admin/settings/class-page.php:537
 #, php-format
 msgid ""
 "Reduce lifespan to 10 hours or less if you notice issues that seem to appear"
@@ -653,33 +714,33 @@ msgstr ""
 "Pienennä elinikä kymmeneen tuntiin tai pienemmäksi, jos huomaat ongelmia "
 "jotka tuntuvat katoavan säännöllisin väliajoin. %1$sMiksi?%2$s"
 
-#: inc/classes/admin/settings/class-page.php:565
+#: inc/classes/admin/settings/class-page.php:543
 msgid "Minutes"
 msgstr "Minuuttia"
 
-#: inc/classes/admin/settings/class-page.php:566
+#: inc/classes/admin/settings/class-page.php:544
 msgid "Hours"
 msgstr "Tuntia"
 
-#: inc/classes/admin/settings/class-page.php:567
+#: inc/classes/admin/settings/class-page.php:545
 msgid "Days"
 msgstr "Päivää"
 
-#: inc/classes/admin/settings/class-page.php:593
+#: inc/classes/admin/settings/class-page.php:571
 msgid "File Optimization"
 msgstr "Tiedostojen optimointi"
 
-#: inc/classes/admin/settings/class-page.php:594
+#: inc/classes/admin/settings/class-page.php:572
 msgid "Optimize CSS & JS"
 msgstr "Optimoi CSS & JS"
 
-#: inc/classes/admin/settings/class-page.php:601
+#: inc/classes/admin/settings/class-page.php:579
 msgid "Basic Settings"
 msgstr "Perusasetukset"
 
-#: inc/classes/admin/settings/class-page.php:608
-#: inc/classes/admin/settings/class-page.php:618
-#: inc/classes/admin/settings/class-page.php:628
+#: inc/classes/admin/settings/class-page.php:586
+#: inc/classes/admin/settings/class-page.php:596
+#: inc/classes/admin/settings/class-page.php:606
 #, php-format
 msgid ""
 "%1$s Minification is currently activated in <strong>Autoptimize</strong>. If"
@@ -688,37 +749,33 @@ msgstr ""
 "%1$s Kutistus on aktivoitu <strong>Autoptimize</strong>:ssä. Jos haluat "
 "käyttää %2$s -kutistusta, poista kyseiset asetukset Autoptimize:stä."
 
-#: inc/classes/admin/settings/class-page.php:611
+#: inc/classes/admin/settings/class-page.php:589
 msgid "CSS Files"
 msgstr "CSS -tiedostot"
 
-#: inc/classes/admin/settings/class-page.php:621
+#: inc/classes/admin/settings/class-page.php:599
 msgid "JavaScript Files"
 msgstr "JavaScript -tiedostot"
 
-#: inc/classes/admin/settings/class-page.php:637
-msgid "Minify HTML"
-msgstr "Kutista HTML"
-
-#: inc/classes/admin/settings/class-page.php:641
+#: inc/classes/admin/settings/class-page.php:619
 msgid "Minifying HTML removes whitespace and comments to reduce the size."
 msgstr ""
 "HTML:n kutistaminen positaa turhat välilyönnit ja kommentit pienentääkseen "
 "tiedoston kokoa."
 
-#: inc/classes/admin/settings/class-page.php:652
+#: inc/classes/admin/settings/class-page.php:630
 msgid "Combine Google Fonts files"
 msgstr "Yhdistä Google Font -tiedostot"
 
-#: inc/classes/admin/settings/class-page.php:653
+#: inc/classes/admin/settings/class-page.php:631
 msgid "Combining Google Fonts will reduce the number of HTTP requests."
 msgstr "Google Font -tiedostojen yhdistäminen vähentää HTTP-kyselyjen määrää."
 
-#: inc/classes/admin/settings/class-page.php:661
+#: inc/classes/admin/settings/class-page.php:639
 msgid "Remove query strings from static resources"
 msgstr "Poista muuttujat staattisista tiedostoista"
 
-#: inc/classes/admin/settings/class-page.php:663
+#: inc/classes/admin/settings/class-page.php:641
 #, php-format
 msgid ""
 "Removes the version query string from static files (e.g. style.css?ver=1.0) "
@@ -729,27 +786,27 @@ msgstr ""
 "ja muuttaa sen staattiseksi tiedostonimeksi (esim. style-1.0.css). Voi "
 "parantaa GTMetrix -pisteitä. %1$sLisätietoja%2$s"
 
-#: inc/classes/admin/settings/class-page.php:671
+#: inc/classes/admin/settings/class-page.php:649
 msgid "Minify CSS files"
 msgstr "Kutista CSS -tiedostot"
 
-#: inc/classes/admin/settings/class-page.php:672
+#: inc/classes/admin/settings/class-page.php:650
 msgid "Minify CSS removes whitespace and comments to reduce the file size."
 msgstr ""
 "CSS -tiedstojen kutistaminen poistaa turhat välilyönnit ja kommentit "
 "pienentääkseen tiedoston kokoa."
 
+#: inc/classes/admin/settings/class-page.php:663
 #: inc/classes/admin/settings/class-page.php:685
-#: inc/classes/admin/settings/class-page.php:707
+#: inc/classes/admin/settings/class-page.php:755
 #: inc/classes/admin/settings/class-page.php:777
-#: inc/classes/admin/settings/class-page.php:799
 msgid "This could break things!"
 msgstr "Tämä saattaa rikkoa asioita!"
 
+#: inc/classes/admin/settings/class-page.php:664
 #: inc/classes/admin/settings/class-page.php:686
-#: inc/classes/admin/settings/class-page.php:708
+#: inc/classes/admin/settings/class-page.php:756
 #: inc/classes/admin/settings/class-page.php:778
-#: inc/classes/admin/settings/class-page.php:800
 msgid ""
 "If you notice any errors on your website after having activated this "
 "setting, just deactivate it again, and your site will be back to normal."
@@ -757,15 +814,15 @@ msgstr ""
 "Jos huomaat virheitä sivustollasi tämän asetuksen aktivoinnin jälkeen, "
 "poista tämä asetus käytöstä ja sivustosi toiminta palaa normaaliksi."
 
-#: inc/classes/admin/settings/class-page.php:687
+#: inc/classes/admin/settings/class-page.php:665
 msgid "Activate minify CSS"
 msgstr "Aktivoi CSS:n kutistus"
 
-#: inc/classes/admin/settings/class-page.php:692
+#: inc/classes/admin/settings/class-page.php:670
 msgid "Combine CSS files <em>(Enable Minify CSS files to select)</em>"
 msgstr "Yhdistä CSS -tiedostot <em>(aktivoi CSS:n kutistus ensin)</em>"
 
-#: inc/classes/admin/settings/class-page.php:694
+#: inc/classes/admin/settings/class-page.php:672
 #, php-format
 msgid ""
 "Combine CSS merges all your files into 1, reducing HTTP requests. Not "
@@ -775,15 +832,11 @@ msgstr ""
 "vähentäen HTTP-kyselyiden määrää. Ei suositeltavaa, jos sivustosi käyttää "
 "HTTP/2 -yhteyksiä. %1$sLisätietoja%2$s"
 
-#: inc/classes/admin/settings/class-page.php:709
+#: inc/classes/admin/settings/class-page.php:687
 msgid "Activate combine CSS"
 msgstr "Aktivoi CSS:n yhdistäminen"
 
-#: inc/classes/admin/settings/class-page.php:714
-msgid "Excluded CSS Files"
-msgstr "Poissuljetut CSS -tiedostot"
-
-#: inc/classes/admin/settings/class-page.php:715
+#: inc/classes/admin/settings/class-page.php:693
 msgid ""
 "Specify URLs of CSS files to be excluded from minification and concatenation"
 " (one per line)."
@@ -791,7 +844,7 @@ msgstr ""
 "Määritä verkko-osoitteet niihin CSS -tiedostoihin jotka haluat sulkea pois "
 "kutistuksesta ja yhdistämisestä (yksi osoite per rivi)."
 
-#: inc/classes/admin/settings/class-page.php:716
+#: inc/classes/admin/settings/class-page.php:694
 msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use (.*).css "
 "wildcards to exclude all CSS files located at a specific path."
@@ -799,11 +852,11 @@ msgstr ""
 "Verkkotunnus-osa poistetaan automaattisesti. <br>Voit käyttää (.*).css "
 "-jokereita sulkeaksesi pois kaikki CSS -tiedostot tietystä kansiosta."
 
-#: inc/classes/admin/settings/class-page.php:729
+#: inc/classes/admin/settings/class-page.php:707
 msgid "Optimize CSS delivery"
 msgstr "Optimoi CSS:n jakelu"
 
-#: inc/classes/admin/settings/class-page.php:736
+#: inc/classes/admin/settings/class-page.php:714
 #, php-format
 msgctxt "WP Critical CSS compatibility"
 msgid ""
@@ -813,7 +866,7 @@ msgstr ""
 "CSS:n optimoitu jakelua hoitaa tällä hetkellä %1$s -lisäosa. Jos haluat "
 "käyttää WP Rocketin CSS:n optimoitua jakelua, poista käytöstä %1$s -lisäosa."
 
-#: inc/classes/admin/settings/class-page.php:738
+#: inc/classes/admin/settings/class-page.php:716
 #, php-format
 msgid ""
 "Optimize CSS delivery eliminates render-blocking CSS on your website for "
@@ -823,11 +876,11 @@ msgstr ""
 "verkkosivultasi ja mahdollistaa nopeamman visuaalisen latausajan. "
 "%1$sLisätietoa%2$s"
 
-#: inc/classes/admin/settings/class-page.php:749
+#: inc/classes/admin/settings/class-page.php:727
 msgid "Fallback critical CSS"
 msgstr "Kriittisen CSS:n turvaverkko"
 
-#: inc/classes/admin/settings/class-page.php:754
+#: inc/classes/admin/settings/class-page.php:732
 #, php-format
 msgid ""
 "Provides a fallback if auto-generated critical path CSS is incomplete. "
@@ -836,29 +889,29 @@ msgstr ""
 "Tarjoaa turvaverkon mikäli automaattisesti luotu kriittinen CSS on "
 "virheellinen. %1$sLisätietoja%2$s"
 
-#: inc/classes/admin/settings/class-page.php:763
+#: inc/classes/admin/settings/class-page.php:741
 msgid "Minify JavaScript files"
 msgstr "Kutista JavaScript -tiedostot"
 
-#: inc/classes/admin/settings/class-page.php:764
+#: inc/classes/admin/settings/class-page.php:742
 msgid ""
 "Minify JavaScript removes whitespace and comments to reduce the file size."
 msgstr ""
 "JavaScript -tiedostojen kutistaminen poistaa turhat välilyönnit ja kommentit"
 " pienentääkseen tiedoston kokoa."
 
-#: inc/classes/admin/settings/class-page.php:779
+#: inc/classes/admin/settings/class-page.php:757
 msgid "Activate minify JavaScript"
 msgstr "Aktivoi JavaScript:in kutistus"
 
-#: inc/classes/admin/settings/class-page.php:784
+#: inc/classes/admin/settings/class-page.php:762
 msgid ""
 "Combine JavaScript files <em>(Enable Minify JavaScript files to select)</em>"
 msgstr ""
 "Yhdistä JavaScript -tiedstot <em>(salli JavaScript:in kutistaminen "
 "ensin)</em>"
 
-#: inc/classes/admin/settings/class-page.php:786
+#: inc/classes/admin/settings/class-page.php:764
 #, php-format
 msgid ""
 "Combine JavaScript files combines your site’s internal, 3rd party and inline"
@@ -869,15 +922,11 @@ msgstr ""
 "JavaScript -koodit yhteen vähentäen HTTP-pyyntöjä. Ei suositeltavaa jos "
 "käytössäsi on HTTP/2. %1$sLisätietoja%2$s"
 
-#: inc/classes/admin/settings/class-page.php:801
+#: inc/classes/admin/settings/class-page.php:779
 msgid "Activate combine JavaScript"
 msgstr "Aktivoi JavaScript:in yhdistäminen"
 
-#: inc/classes/admin/settings/class-page.php:806
-msgid "Excluded Inline JavaScript"
-msgstr "Sulje pois inline-JavaScript"
-
-#: inc/classes/admin/settings/class-page.php:808
+#: inc/classes/admin/settings/class-page.php:786
 #, php-format
 msgid ""
 "Specify patterns of inline JavaScript to be excluded from concatenation (one"
@@ -886,11 +935,7 @@ msgstr ""
 "Määritä sopivat kaaviot inline-JavaScriptille, jonka haluat sulkea pois "
 "yhdistämisestä (yksi per rivi). %1$sLisätietoa%2$s"
 
-#: inc/classes/admin/settings/class-page.php:825
-msgid "Excluded JavaScript Files"
-msgstr "Pois suljetut JavaScript -tiedostot"
-
-#: inc/classes/admin/settings/class-page.php:826
+#: inc/classes/admin/settings/class-page.php:803
 msgid ""
 "Specify URLs of JavaScript files to be excluded from minification and "
 "concatenation (one per line)."
@@ -898,7 +943,7 @@ msgstr ""
 "Määritä verkko-osoitteet pois suljettaville JavaScript -tiedostoille, joita "
 "et halua mukaan kutistukseen ja yhdistämiseen (yksi per rivi)."
 
-#: inc/classes/admin/settings/class-page.php:827
+#: inc/classes/admin/settings/class-page.php:804
 msgid ""
 "<strong>Internal:</strong> The domain part of the URL will be stripped "
 "automatically. Use (.*).js wildcards to exclude all JS files located at a "
@@ -908,7 +953,7 @@ msgstr ""
 "jätetään automaattisesti pois. Käytä (.*).js -jokerimerkkiä sulkeaksesi pois"
 " kaikki JS-tiedostot tietystä kansiosta."
 
-#: inc/classes/admin/settings/class-page.php:829
+#: inc/classes/admin/settings/class-page.php:806
 #, php-format
 msgid ""
 "<strong>3rd Party:</strong> Use either the full URL path or only the domain "
@@ -917,11 +962,11 @@ msgstr ""
 "<strong>Ulkoiset:</strong> Anna joko kokonainen URL, tai pelkkä domain-nimi "
 "sulkeaksesi pois ulkoiset JS-tiedostot. %1$sLisätietoa%2$s"
 
-#: inc/classes/admin/settings/class-page.php:845
+#: inc/classes/admin/settings/class-page.php:822
 msgid "Load JavaScript deferred"
 msgstr "Lataa JavaScript puskuroidusti"
 
-#: inc/classes/admin/settings/class-page.php:847
+#: inc/classes/admin/settings/class-page.php:824
 #, php-format
 msgid ""
 "Load JavaScript deferred eliminates render-blocking JS on your site and can "
@@ -930,11 +975,11 @@ msgstr ""
 "JavaScript:in lataaminen puskuroidusti poistaa renderöinnin estävän JS:n "
 "lataamisen ja voi parantaa sivusi latausaikaa. %1$sLisätietoa%2$s"
 
-#: inc/classes/admin/settings/class-page.php:858
+#: inc/classes/admin/settings/class-page.php:835
 msgid "Safe Mode for jQuery (recommended)"
 msgstr "Turvallinen jQueryn lataaminen (suositeltu)"
 
-#: inc/classes/admin/settings/class-page.php:859
+#: inc/classes/admin/settings/class-page.php:836
 msgid ""
 "Safe mode for jQuery for deferred JS ensures support for inline jQuery "
 "references from themes and plugins by loading jQuery at the top of the "
@@ -947,19 +992,19 @@ msgstr ""
 "deaktivointi voi rikkoa sivusi toiminnallisuutta, testaa "
 "perusteellisesti!</em>"
 
-#: inc/classes/admin/settings/class-page.php:884
+#: inc/classes/admin/settings/class-page.php:861
 msgid "Media"
 msgstr "Media"
 
-#: inc/classes/admin/settings/class-page.php:885
+#: inc/classes/admin/settings/class-page.php:862
 msgid "LazyLoad, emojis, embeds"
 msgstr "LazyLoad, emojit, sisällytykset"
 
-#: inc/classes/admin/settings/class-page.php:892
+#: inc/classes/admin/settings/class-page.php:869
 msgid "LazyLoad"
 msgstr "LazyLoad"
 
-#: inc/classes/admin/settings/class-page.php:895
+#: inc/classes/admin/settings/class-page.php:872
 #, php-format
 msgid ""
 "It can improve actual and perceived loading time as images, iframes, and "
@@ -970,11 +1015,18 @@ msgstr ""
 "videot ladataan vasta kun ne ilmestyvät (tai ovat juuri ilmestymässä) "
 "näkyviin. Tämä vähentää HTTP-pyyntöjen määrää. %1$sLisätietoja%2$s"
 
-#: inc/classes/admin/settings/class-page.php:903
+#: inc/classes/admin/settings/class-page.php:879
+#, php-format
+msgid ""
+"Lazyload is currently activated in <strong>Autoptimize</strong>. If you want"
+" to use %1$s’s lazyload, disable this option in Autoptimize."
+msgstr ""
+
+#: inc/classes/admin/settings/class-page.php:882
 msgid "Emoji 👻"
 msgstr "Emoji 👻"
 
-#: inc/classes/admin/settings/class-page.php:905
+#: inc/classes/admin/settings/class-page.php:884
 msgid ""
 "Use default emoji of visitor's browser instead of loading emoji from "
 "WordPress.org"
@@ -982,11 +1034,11 @@ msgstr ""
 "Käytä käyttäjän selaimen oletus-emojitä, äläkä lataa niitä WordPress.org "
 "-sivustolta"
 
-#: inc/classes/admin/settings/class-page.php:909
+#: inc/classes/admin/settings/class-page.php:888
 msgid "Embeds"
 msgstr "Sisällytykset"
 
-#: inc/classes/admin/settings/class-page.php:911
+#: inc/classes/admin/settings/class-page.php:890
 msgid ""
 "Prevents others from embedding content from your site, prevents you from "
 "embedding content from other (non-whitelisted) sites, and removes JavaScript"
@@ -996,19 +1048,26 @@ msgstr ""
 "sisällyttämästä (ei sallittujen) muita sivuja, sekä poistaa sisällytykseen "
 "liittyvät JavaScript-koodit."
 
-#: inc/classes/admin/settings/class-page.php:921
+#: inc/classes/admin/settings/class-page.php:900
 msgid "Enable for images"
 msgstr "Käytä kuviin"
 
-#: inc/classes/admin/settings/class-page.php:932
+#: inc/classes/admin/settings/class-page.php:911
+msgctxt "Avada"
+msgid ""
+"Lazyload for images is currently activated in Avada. If you want to use WP "
+"Rocket’s LazyLoad, disable this option in Avada."
+msgstr ""
+
+#: inc/classes/admin/settings/class-page.php:919
 msgid "Enable for iframes and videos"
 msgstr "Käytä iframeihin ja videoihin"
 
-#: inc/classes/admin/settings/class-page.php:943
+#: inc/classes/admin/settings/class-page.php:934
 msgid "Replace YouTube iframe with preview image"
 msgstr "Korvaa YouTuben iframe esikatselukuvalla"
 
-#: inc/classes/admin/settings/class-page.php:944
+#: inc/classes/admin/settings/class-page.php:935
 msgid ""
 "This can significantly improve your loading time if you have a lot of "
 "YouTube videos on a page."
@@ -1016,30 +1075,30 @@ msgstr ""
 "Tämä voi parantaa sivusi latausaikaa merkittävästi, jos sivullasi on paljon "
 "YouTube -videoita."
 
-#: inc/classes/admin/settings/class-page.php:953
+#: inc/classes/admin/settings/class-page.php:947
 msgid "Disable Emoji"
 msgstr "Poista emojit käytöstä"
 
-#: inc/classes/admin/settings/class-page.php:954
+#: inc/classes/admin/settings/class-page.php:948
 msgid "Disable Emoji will reduce the number of external HTTP requests."
 msgstr ""
 "Poistamalla emojit käytöstä, voit vähentää ulkoisten HTTP-kyselyjen määrää."
 
-#: inc/classes/admin/settings/class-page.php:962
+#: inc/classes/admin/settings/class-page.php:956
 msgid "Disable WordPress embeds"
 msgstr "Poista käytöstä WordPress -sisällytykset"
 
-#: inc/classes/admin/settings/class-page.php:984
-#: inc/classes/admin/settings/class-page.php:994
+#: inc/classes/admin/settings/class-page.php:978
+#: inc/classes/admin/settings/class-page.php:988
 #: inc/deprecated/deprecated.php:1778
 msgid "Preload"
 msgstr "Esilataa"
 
-#: inc/classes/admin/settings/class-page.php:985
+#: inc/classes/admin/settings/class-page.php:979
 msgid "Generate cache files"
 msgstr "Luo välimuistitiedostot"
 
-#: inc/classes/admin/settings/class-page.php:997
+#: inc/classes/admin/settings/class-page.php:991
 #, php-format
 msgid ""
 "When you enable preloading WP Rocket will generate the cache starting with "
@@ -1055,11 +1114,11 @@ msgstr ""
 "sivujasi, sekä se voidaan myös aloittaa manuaalisesti hallinta-valikosta tai"
 " %1$sWP Rocket:in kojelaudasta%2$s."
 
-#: inc/classes/admin/settings/class-page.php:1005
+#: inc/classes/admin/settings/class-page.php:999
 msgid "Prefetch DNS Requests"
 msgstr "Ennakkohae DNS-kyselyjä"
 
-#: inc/classes/admin/settings/class-page.php:1007
+#: inc/classes/admin/settings/class-page.php:1001
 msgid ""
 "DNS prefetching can make external files load faster, especially on mobile "
 "networks"
@@ -1067,27 +1126,27 @@ msgstr ""
 "DNS-kyselyjen esilataaminen voi nopeuttaa ulkoisten tiedostojen lataamisen "
 "etenkin mobiiliverkoissa"
 
-#: inc/classes/admin/settings/class-page.php:1021
+#: inc/classes/admin/settings/class-page.php:1015
 msgid "Activate Preloading"
 msgstr "Aktivoi esilataus"
 
-#: inc/classes/admin/settings/class-page.php:1040
+#: inc/classes/admin/settings/class-page.php:1034
 msgid "Activate sitemap-based cache preloading"
 msgstr "Aktivoi sivukartta-pohjainen esilataus"
 
-#: inc/classes/admin/settings/class-page.php:1059
+#: inc/classes/admin/settings/class-page.php:1053
 msgid "Sitemaps for preloading"
 msgstr "Sivukartat esilatausta varten"
 
-#: inc/classes/admin/settings/class-page.php:1063
+#: inc/classes/admin/settings/class-page.php:1057
 msgid "Specify XML sitemap(s) to be used for preloading"
 msgstr "Määritä XML-sivukartat, jotka luetaan esilataukseen"
 
-#: inc/classes/admin/settings/class-page.php:1073
+#: inc/classes/admin/settings/class-page.php:1067
 msgid "URLs to prefetch"
 msgstr "URL-osoitteet esilataukseen"
 
-#: inc/classes/admin/settings/class-page.php:1074
+#: inc/classes/admin/settings/class-page.php:1068
 msgid ""
 "Specify external hosts to be prefetched (no <code>http:</code>, one per "
 "line)"
@@ -1095,47 +1154,47 @@ msgstr ""
 "Määritä verkko-isännät jotka esiladataan (ei <code>http:</code>, yksi isäntä"
 " per rivi)"
 
-#: inc/classes/admin/settings/class-page.php:1097
+#: inc/classes/admin/settings/class-page.php:1091
 msgid "Advanced Rules"
 msgstr "Lisäasetukset"
 
-#: inc/classes/admin/settings/class-page.php:1098
+#: inc/classes/admin/settings/class-page.php:1092
 msgid "Fine-tune cache rules"
 msgstr "Hienosäädä välimuistisääntöjä"
 
-#: inc/classes/admin/settings/class-page.php:1107
+#: inc/classes/admin/settings/class-page.php:1101
 msgid ""
 "Sensitive pages like custom login/logout URLs should be excluded from cache."
 msgstr ""
 "Arkaluontoiset sivut, kuten räätälöidyt kirjautumis-sivut tulisi poissulkea "
 "välimuistista."
 
-#: inc/classes/admin/settings/class-page.php:1110
+#: inc/classes/admin/settings/class-page.php:1104
 msgctxt "plugin name"
 msgid "WooCommerce"
 msgstr "WooCommerce"
 
-#: inc/classes/admin/settings/class-page.php:1112
+#: inc/classes/admin/settings/class-page.php:1106
 msgctxt "plugin name"
 msgid "Easy Digital Downloads"
 msgstr "Easy Digital Downloads"
 
-#: inc/classes/admin/settings/class-page.php:1114
+#: inc/classes/admin/settings/class-page.php:1108
 msgctxt "plugin name"
 msgid "iThemes Exchange"
 msgstr "iThemes Exchange"
 
-#: inc/classes/admin/settings/class-page.php:1116
+#: inc/classes/admin/settings/class-page.php:1110
 msgctxt "plugin name"
 msgid "Jigoshop"
 msgstr "Jigoshop"
 
-#: inc/classes/admin/settings/class-page.php:1118
+#: inc/classes/admin/settings/class-page.php:1112
 msgctxt "plugin name"
 msgid "WP-Shop"
 msgstr "WP-Shop"
 
-#: inc/classes/admin/settings/class-page.php:1124
+#: inc/classes/admin/settings/class-page.php:1118
 #, php-format
 msgid ""
 "<br>Cart, checkout and \"my account\" pages set in "
@@ -1145,27 +1204,15 @@ msgstr ""
 "<strong>%1$s%2$s%3$s</strong> tunnistetaan automaattisesti eikä niitä ladata"
 " välimuistiin."
 
-#: inc/classes/admin/settings/class-page.php:1134
-msgid "Never Cache URL(s)"
-msgstr "Välimuistista pois suljettavat URL-osoitteet"
-
-#: inc/classes/admin/settings/class-page.php:1145
+#: inc/classes/admin/settings/class-page.php:1139
 msgid "Never Cache Cookies"
 msgstr "Välimuistista pois suljettavat evästeet"
 
-#: inc/classes/admin/settings/class-page.php:1150
-msgid "Never Cache User Agent(s)"
-msgstr "Välimuistista pois suljettavat selain-agentit"
-
-#: inc/classes/admin/settings/class-page.php:1155
-msgid "Always Purge URL(s)"
-msgstr "Tyhjennä aina välimuisti -osoitteet"
-
-#: inc/classes/admin/settings/class-page.php:1164
+#: inc/classes/admin/settings/class-page.php:1158
 msgid "Cache Query String(s)"
 msgstr "Muuttujat välimuistiin"
 
-#: inc/classes/admin/settings/class-page.php:1167
+#: inc/classes/admin/settings/class-page.php:1161
 #, php-format
 msgid ""
 "%1$sCache for query strings%2$s enables you to force caching for specific "
@@ -1174,15 +1221,15 @@ msgstr ""
 "%1$sMuuttujat välimuistiin -optio%2$s mahdollistaa sinut pakottamaan tietyt "
 "GET-parametrit välimuistiin."
 
-#: inc/classes/admin/settings/class-page.php:1181
+#: inc/classes/admin/settings/class-page.php:1175
 msgid ""
 "Specify URLs of pages or posts that should never be cached (one per line)"
 msgstr ""
 "Määritä URL-osoitteet sivuista tai postauksista jotka aluat sulkea pois "
 "välimuistista (yksi per rivi)"
 
-#: inc/classes/admin/settings/class-page.php:1182
-#: inc/classes/admin/settings/class-page.php:1210
+#: inc/classes/admin/settings/class-page.php:1176
+#: inc/classes/admin/settings/class-page.php:1204
 msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use (.*) "
 "wildcards to address multiple URLs under a given path."
@@ -1190,7 +1237,7 @@ msgstr ""
 "Domain-osuus osoitteesta riisutaan automaattisesti. <br>Käytä (.*) "
 "-jokerimerkkiä sulkeaksesi pois useamman osoitteen samasta polusta."
 
-#: inc/classes/admin/settings/class-page.php:1191
+#: inc/classes/admin/settings/class-page.php:1185
 msgid ""
 "Specify the IDs of cookies that, when set in the visitor's browser, should "
 "prevent a page from getting cached (one per line)"
@@ -1198,18 +1245,18 @@ msgstr ""
 "Määritä niiden evästeiden ID-tunnus jota kantavalle käyttäjälle ei koskaan "
 "näytetä välimuistissa olevia sivuja (yksi per rivi)"
 
-#: inc/classes/admin/settings/class-page.php:1199
+#: inc/classes/admin/settings/class-page.php:1193
 msgid ""
 "Specify user agent strings that should never see cached pages (one per line)"
 msgstr ""
 "Määritä selain-agentit joille ei näytetä koskaan välimuistissa olevaa sivua "
 "(yksi per rivi)"
 
-#: inc/classes/admin/settings/class-page.php:1200
+#: inc/classes/admin/settings/class-page.php:1194
 msgid "Use (.*) wildcards to detect parts of UA strings."
 msgstr "Käytä (.*) -jokerimerkkiä tunnistaaksesi osan selain-agentista."
 
-#: inc/classes/admin/settings/class-page.php:1209
+#: inc/classes/admin/settings/class-page.php:1203
 msgid ""
 "Specify URLs you always want purged from cache whenever you update any post "
 "or page (one per line)"
@@ -1217,24 +1264,24 @@ msgstr ""
 "Määritä ereityiset verkko-osoitteet joiden välimuistin haluat aina tyhjentää"
 " kun päivität jonkun sivun tai postauksen (yksi per rivi)"
 
-#: inc/classes/admin/settings/class-page.php:1218
+#: inc/classes/admin/settings/class-page.php:1212
 msgid "Specify query strings for caching (one per line)"
 msgstr "Määritä osoitteen muuttujat välimuistia varten (yksi per rivi)"
 
-#: inc/classes/admin/settings/class-page.php:1246
+#: inc/classes/admin/settings/class-page.php:1240
 #: inc/deprecated/deprecated.php:1777
 msgid "Database"
 msgstr "Tietokanta"
 
-#: inc/classes/admin/settings/class-page.php:1247
+#: inc/classes/admin/settings/class-page.php:1241
 msgid "Optimize, reduce bloat"
 msgstr "Optimoi, vähennä turhaa bloattia"
 
-#: inc/classes/admin/settings/class-page.php:1256
+#: inc/classes/admin/settings/class-page.php:1250
 msgid "Post Cleanup"
 msgstr "Postauksien putsaus"
 
-#: inc/classes/admin/settings/class-page.php:1258
+#: inc/classes/admin/settings/class-page.php:1252
 msgid ""
 "Post revisions and drafts will be permanently deleted. Do not use this "
 "option if you need to retain revisions or drafts."
@@ -1242,19 +1289,19 @@ msgstr ""
 "Postauksien versiot ja luonnokset poistetaan pysyvästi. Älä käytä tätä "
 "toimintoa jos haluat säilyttää eri versiot tai luonnokset."
 
-#: inc/classes/admin/settings/class-page.php:1266
+#: inc/classes/admin/settings/class-page.php:1260
 msgid "Comments Cleanup"
 msgstr "Kommentien siivous"
 
-#: inc/classes/admin/settings/class-page.php:1268
+#: inc/classes/admin/settings/class-page.php:1262
 msgid "Spam and trashed comments will be permanently deleted."
 msgstr "Roskapostit ja roskakoriin siirretyt kommentit poistetaan pysyvästi."
 
-#: inc/classes/admin/settings/class-page.php:1272
+#: inc/classes/admin/settings/class-page.php:1266
 msgid "Transients Cleanup"
 msgstr "Transienttien siivous"
 
-#: inc/classes/admin/settings/class-page.php:1274
+#: inc/classes/admin/settings/class-page.php:1268
 msgid ""
 "Transients are temporary options; they are safe to remove. They will be "
 "automatically regenerated as your plugins require them."
@@ -1263,107 +1310,107 @@ msgstr ""
 "Transientit luodaan automaattisesti uudestaan niitä käyttävien lisäosien "
 "toimesta."
 
-#: inc/classes/admin/settings/class-page.php:1278
+#: inc/classes/admin/settings/class-page.php:1272
 msgid "Database Cleanup"
 msgstr "Tietokannan siivous"
 
-#: inc/classes/admin/settings/class-page.php:1280
+#: inc/classes/admin/settings/class-page.php:1274
 msgid "Reduces overhead of database tables"
 msgstr "Vähentää tietokantataulujen hävikkiä"
 
-#: inc/classes/admin/settings/class-page.php:1284
+#: inc/classes/admin/settings/class-page.php:1278
 msgid "Automatic cleanup"
 msgstr "Automaattinen siivous"
 
-#: inc/classes/admin/settings/class-page.php:1297
+#: inc/classes/admin/settings/class-page.php:1291
 #, php-format
 msgid "%s revision in your database."
 msgid_plural "%s revisions in your database."
-msgstr[0] "%s versiota tietokannassasi."
-msgstr[1] "%s versiota tietokannassasi"
+msgstr[0] ""
+msgstr[1] ""
 
-#: inc/classes/admin/settings/class-page.php:1307
+#: inc/classes/admin/settings/class-page.php:1301
 #, php-format
 msgid "%s draft in your database."
 msgid_plural "%s drafts in your database."
-msgstr[0] "%s luonnosta tietokannassasi"
-msgstr[1] "%s luonnosta tietokannassasi"
+msgstr[0] ""
+msgstr[1] ""
 
-#: inc/classes/admin/settings/class-page.php:1317
+#: inc/classes/admin/settings/class-page.php:1311
 #, php-format
 msgid "%s trashed post in your database."
 msgid_plural "%s trashed posts in your database."
-msgstr[0] "%s roskakoriin siirretty postaus tietokannassasi"
-msgstr[1] "%s roskakoriin siirrettyä postausta tietokannassasi"
+msgstr[0] ""
+msgstr[1] ""
 
-#: inc/classes/admin/settings/class-page.php:1327
+#: inc/classes/admin/settings/class-page.php:1321
 #, php-format
 msgid "%s spam comment in your database."
 msgid_plural "%s spam comments in your database."
-msgstr[0] "%s roskapostikommentti tietokannassasi."
-msgstr[1] "%s roskapostikommentia tietokannassasi."
+msgstr[0] ""
+msgstr[1] ""
 
-#: inc/classes/admin/settings/class-page.php:1337
+#: inc/classes/admin/settings/class-page.php:1331
 #, php-format
 msgid "%s trashed comment in your database."
 msgid_plural "%s trashed comments in your database."
-msgstr[0] "%s roskakoriin siirretty kommentti tietokannassasi."
-msgstr[1] "%s roskakoriin siirrettyä kommenttia tietokannassasi."
+msgstr[0] ""
+msgstr[1] ""
 
-#: inc/classes/admin/settings/class-page.php:1347
+#: inc/classes/admin/settings/class-page.php:1341
 #, php-format
 msgid "%s expired transient in your database."
 msgid_plural "%s expired transients in your database."
-msgstr[0] "%s vanhentunut transientti tietokannassasi."
-msgstr[1] "%s vanhentunutta transienttia tietokannassasi."
+msgstr[0] ""
+msgstr[1] ""
 
-#: inc/classes/admin/settings/class-page.php:1355
+#: inc/classes/admin/settings/class-page.php:1349
 msgid "All transients"
 msgstr "Kaikki transientit"
 
-#: inc/classes/admin/settings/class-page.php:1357
+#: inc/classes/admin/settings/class-page.php:1351
 #, php-format
 msgid "%s transient in your database."
 msgid_plural "%s transients in your database."
-msgstr[0] "%s transientti tietokannassasi"
-msgstr[1] "%s transienttia tietokannassasi."
+msgstr[0] ""
+msgstr[1] ""
 
-#: inc/classes/admin/settings/class-page.php:1365
+#: inc/classes/admin/settings/class-page.php:1359
 msgid "Optimize Tables"
 msgstr "Optimoi taulut"
 
-#: inc/classes/admin/settings/class-page.php:1367
+#: inc/classes/admin/settings/class-page.php:1361
 #, php-format
 msgid "%s table to optimize in your database."
 msgid_plural "%s tables to optimize in your database."
-msgstr[0] "%s taulu optimoitavissa."
-msgstr[1] "%s taulu optimoitavissa."
+msgstr[0] ""
+msgstr[1] ""
 
-#: inc/classes/admin/settings/class-page.php:1378
+#: inc/classes/admin/settings/class-page.php:1372
 msgid "Schedule Automatic Cleanup"
 msgstr "Ajasta automaattinen siivous"
 
-#: inc/classes/admin/settings/class-page.php:1390
+#: inc/classes/admin/settings/class-page.php:1384
 msgid "Frequency"
 msgstr "Toistuvuus"
 
-#: inc/classes/admin/settings/class-page.php:1398
+#: inc/classes/admin/settings/class-page.php:1392
 msgid "Daily"
 msgstr "Päivittäin"
 
-#: inc/classes/admin/settings/class-page.php:1399
+#: inc/classes/admin/settings/class-page.php:1393
 msgid "Weekly"
 msgstr "Viikottain"
 
-#: inc/classes/admin/settings/class-page.php:1400
+#: inc/classes/admin/settings/class-page.php:1394
 msgid "Monthly"
 msgstr "Kuukausittain"
 
-#: inc/classes/admin/settings/class-page.php:1420
+#: inc/classes/admin/settings/class-page.php:1414
 msgid "Integrate your CDN"
 msgstr "Integroi CDN-palveluntarjoajasi"
 
-#: inc/classes/admin/settings/class-page.php:1432
+#: inc/classes/admin/settings/class-page.php:1426
 msgid ""
 "All URLs of static files (CSS, JS, images) will be rewritten to the CNAME(s)"
 " you provide."
@@ -1371,7 +1418,7 @@ msgstr ""
 "Kaikki staattisten tiedostojen (CSS, JS, kuvat) URL-osoitteet korvataan "
 "antamallasi CNAME-tietueella."
 
-#: inc/classes/admin/settings/class-page.php:1434
+#: inc/classes/admin/settings/class-page.php:1428
 #, php-format
 msgid ""
 "Not required for services like Cloudflare and Sucuri. Please see our "
@@ -1380,11 +1427,7 @@ msgstr ""
 "Ei vaadittu tietyissä palveluissa kuten Cloudflare ja Sucuri. Ole hyvä ja "
 "katso saatavilla olevat %1$slisäosat%2$s."
 
-#: inc/classes/admin/settings/class-page.php:1449
-msgid "Exclude files from CDN"
-msgstr "Sulje pois CDN:stä"
-
-#: inc/classes/admin/settings/class-page.php:1475
+#: inc/classes/admin/settings/class-page.php:1469
 #, php-format
 msgid ""
 "%1$s%2$s Add-on%3$s is currently enabled. Configuration of the CDN settings "
@@ -1393,32 +1436,28 @@ msgid_plural ""
 "%1$s%2$s Add-ons%3$s are currently enabled. Configuration of the CDN "
 "settings is not required for %2$s to work on your site."
 msgstr[0] ""
-"%1$s%2$sLisäosa%3$s on aktivoitu. CDN-asetusten muuttaminen ei ole tarpeen "
-"jotta %2$s toimisi sivustollasi."
 msgstr[1] ""
-"%1$s%2$s Lisäosaa%3$s on tällä hetkellä aktiivisena. CDN-asetusten "
-"muuttaminen ei ole tarpeellista jotta %2$s toimisi sivustollasi."
 
-#: inc/classes/admin/settings/class-page.php:1490
+#: inc/classes/admin/settings/class-page.php:1484
 msgid "Enable Content Delivery Network"
 msgstr "Aktivoi CDN (Content Delivery Network)"
 
-#: inc/classes/admin/settings/class-page.php:1499
+#: inc/classes/admin/settings/class-page.php:1493
 msgid "CDN CNAME(s)"
 msgstr "CDN CNAME(t)"
 
-#: inc/classes/admin/settings/class-page.php:1500
+#: inc/classes/admin/settings/class-page.php:1494
 msgid "Specify the CNAME(s) below"
 msgstr "Määritä CNAME(t) alle"
 
-#: inc/classes/admin/settings/class-page.php:1507
+#: inc/classes/admin/settings/class-page.php:1501
 msgid ""
 "Specify URL(s) of files that should not get served via CDN (one per line)."
 msgstr ""
 "Määritä URL-osoitteet joiden tiedostoja ei tarjoilla CDN-palvelusta (yksi "
 "per rivi)."
 
-#: inc/classes/admin/settings/class-page.php:1508
+#: inc/classes/admin/settings/class-page.php:1502
 msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use (.*) "
 "wildcards to exclude all files of a given file type located at a specific "
@@ -1427,16 +1466,16 @@ msgstr ""
 "Domain-osuus URL-osoitteesta poistetaan automaattisesti.<br>Käytä (.*) "
 "-jokeria sulkeaksesi pois kaikki tiedostotyypit annetusta polusta."
 
-#: inc/classes/admin/settings/class-page.php:1531
-#: inc/classes/admin/settings/class-page.php:1539
+#: inc/classes/admin/settings/class-page.php:1525
+#: inc/classes/admin/settings/class-page.php:1533
 msgid "Heartbeat"
 msgstr "Sydämen syke"
 
-#: inc/classes/admin/settings/class-page.php:1532
+#: inc/classes/admin/settings/class-page.php:1526
 msgid "Control WordPress Heartbeat API"
 msgstr "Kontrolloi WordPressin Sydämen sykkeen rajapintaa"
 
-#: inc/classes/admin/settings/class-page.php:1540
+#: inc/classes/admin/settings/class-page.php:1534
 msgid ""
 "Reducing or disabling the Heartbeat API’s activity can help save some of "
 "your server’s resources."
@@ -1444,65 +1483,65 @@ msgstr ""
 "Vähennä tai poista kokonaan käytöstä Sydämen sykkeen rajapinta "
 "helpottaaksesi palvelimesi kuormaa."
 
-#: inc/classes/admin/settings/class-page.php:1549
+#: inc/classes/admin/settings/class-page.php:1543
 msgid "Reduce or disable Heartbeat activity"
 msgstr "Vähennä tai poista Sydämen syke"
 
-#: inc/classes/admin/settings/class-page.php:1550
+#: inc/classes/admin/settings/class-page.php:1544
 msgid ""
 "Reducing activity will change Heartbeat frequency from one hit each minute "
 "to one hit every 2 minutes."
 msgstr ""
 "Sykkeen harvennus muuttaa yhden kyselyn minuutista joka toiseen minuuttiin."
 
-#: inc/classes/admin/settings/class-page.php:1550
+#: inc/classes/admin/settings/class-page.php:1544
 msgid ""
 "Disabling Heartbeat entirely may break plugins and themes using this API."
 msgstr ""
 "Jos poistat Sykkeen kokonaan käytöstä, saatat rikkoa muiden lisäosien "
 "toimivuuden."
 
-#: inc/classes/admin/settings/class-page.php:1564
+#: inc/classes/admin/settings/class-page.php:1558
 msgid "Do not limit"
 msgstr "Älä rajoita"
 
-#: inc/classes/admin/settings/class-page.php:1565
+#: inc/classes/admin/settings/class-page.php:1559
 msgid "Reduce activity"
 msgstr "Vähennetty syke"
 
-#: inc/classes/admin/settings/class-page.php:1566
+#: inc/classes/admin/settings/class-page.php:1560
 msgid "Disable"
 msgstr "Poista käytöstä"
 
-#: inc/classes/admin/settings/class-page.php:1574
+#: inc/classes/admin/settings/class-page.php:1568
 msgid "Control Heartbeat"
 msgstr "Kontrolloi Sydämen sykettä"
 
-#: inc/classes/admin/settings/class-page.php:1583
+#: inc/classes/admin/settings/class-page.php:1577
 msgid "Behavior in backend"
 msgstr "Syke hallintasivulla"
 
-#: inc/classes/admin/settings/class-page.php:1590
+#: inc/classes/admin/settings/class-page.php:1584
 msgid "Behavior in post editor"
 msgstr "Syke postauksen editorissa"
 
-#: inc/classes/admin/settings/class-page.php:1596
+#: inc/classes/admin/settings/class-page.php:1590
 msgid "Behavior in frontend"
 msgstr "Syke julkisivulla"
 
-#: inc/classes/admin/settings/class-page.php:1615
+#: inc/classes/admin/settings/class-page.php:1609
 msgid "Add-ons"
 msgstr "Lisäosat"
 
-#: inc/classes/admin/settings/class-page.php:1616
+#: inc/classes/admin/settings/class-page.php:1610
 msgid "Add more features"
 msgstr "Lisää uusia ominaisuuksia"
 
-#: inc/classes/admin/settings/class-page.php:1623
+#: inc/classes/admin/settings/class-page.php:1617
 msgid "One-click Rocket Add-ons"
 msgstr "Yhden klikkauksen Rocket -lisäosat"
 
-#: inc/classes/admin/settings/class-page.php:1624
+#: inc/classes/admin/settings/class-page.php:1618
 msgid ""
 "One-Click Add-ons are features extending available options without "
 "configuration needed. Switch the option \"on\" to enable from this screen."
@@ -1511,25 +1550,25 @@ msgstr ""
 "käytettävissä olevia asetuksia helposti. Ota ominaisuus käyttöön tältä "
 "sivulta."
 
-#: inc/classes/admin/settings/class-page.php:1634
+#: inc/classes/admin/settings/class-page.php:1628
 msgid "Rocket Add-ons"
 msgstr "Rocket -lisäosat"
 
-#: inc/classes/admin/settings/class-page.php:1635
+#: inc/classes/admin/settings/class-page.php:1629
 msgid "Rocket Add-ons are complementary features extending available options."
 msgstr ""
 "Rocket -lisäosat ovat täydentäviä ominaisuuksia, jotka laajentavat "
 "käytettävissä olevia ominaisuuksia."
 
-#: inc/classes/admin/settings/class-page.php:1648
+#: inc/classes/admin/settings/class-page.php:1642
 msgid "Google Tracking"
 msgstr "Google Tracking"
 
-#: inc/classes/admin/settings/class-page.php:1654
+#: inc/classes/admin/settings/class-page.php:1648
 msgid "Improve browser caching for Google Analytics"
 msgstr "Paranna selaimen välimuistia Google Analyticsille"
 
-#: inc/classes/admin/settings/class-page.php:1656
+#: inc/classes/admin/settings/class-page.php:1650
 #, php-format
 msgid ""
 "WP Rocket will host these Google scripts locally on your server to help "
@@ -1540,15 +1579,15 @@ msgstr ""
 " PageSpeed -suosituksissa koskien <em>Hyödynnä selaimen "
 "välimuistia</em>.<br>%1$sLue lisää aiheesta%2$s"
 
-#: inc/classes/admin/settings/class-page.php:1671
+#: inc/classes/admin/settings/class-page.php:1665
 msgid "Facebook Pixel"
 msgstr "Facebook Pixel"
 
-#: inc/classes/admin/settings/class-page.php:1677
+#: inc/classes/admin/settings/class-page.php:1671
 msgid "Improve browser caching for Facebook Pixel"
 msgstr "Paranna selaimeen välimuistia Facebook Pixel:iä varten"
 
-#: inc/classes/admin/settings/class-page.php:1679
+#: inc/classes/admin/settings/class-page.php:1673
 #, php-format
 msgid ""
 "WP Rocket will host these Facebook Pixels locally on your server to help "
@@ -1559,17 +1598,17 @@ msgstr ""
 "auttaakseen PageSpeed -suosituksissa koskien <em>Hyödynnä selaimen "
 "välimuistia</em>.<br>%1$sLue lisää aiheesta%2$s"
 
-#: inc/classes/admin/settings/class-page.php:1712
+#: inc/classes/admin/settings/class-page.php:1706
 msgid "Varnish"
 msgstr "Varnish"
 
-#: inc/classes/admin/settings/class-page.php:1718
+#: inc/classes/admin/settings/class-page.php:1712
 msgid "If Varnish runs on your server, you must activate this add-on."
 msgstr ""
 "Jos sinulla on Varnish asennettuna palvelimellesi, ota tämä ominaisuus "
 "käyttöön."
 
-#: inc/classes/admin/settings/class-page.php:1720
+#: inc/classes/admin/settings/class-page.php:1714
 #, php-format
 msgid ""
 "Varnish cache will be purged each time WP Rocket clears its cache to ensure "
@@ -1578,16 +1617,16 @@ msgstr ""
 "Varnish-välimuisti tyhjennetään automaattisesti aina kun WP Rocket:in "
 "välimuisti tyhjennetään.<br>%1$sLue lisää%2$s"
 
-#: inc/classes/admin/settings/class-page.php:1735
-#: inc/classes/admin/settings/class-page.php:1795
+#: inc/classes/admin/settings/class-page.php:1729
+#: inc/classes/admin/settings/class-page.php:1789
 msgid "Cloudflare"
 msgstr "Cloudflare"
 
-#: inc/classes/admin/settings/class-page.php:1741
+#: inc/classes/admin/settings/class-page.php:1735
 msgid "Integrate your Cloudflare account with this add-on."
 msgstr "Integroi Cloudflare -tilisi tällä lisäosalla."
 
-#: inc/classes/admin/settings/class-page.php:1742
+#: inc/classes/admin/settings/class-page.php:1736
 msgid ""
 "Provide your account email, global API key, and domain to use options such "
 "as clearing the Cloudflare cache and enabling optimal settings with WP "
@@ -1597,41 +1636,41 @@ msgstr ""
 "omainsuuksia kuten Cloudflaren välimusitin tyhjennus, sekä optimaaliset "
 "asetukset WP Rocket:ille."
 
-#: inc/classes/admin/settings/class-page.php:1754
+#: inc/classes/admin/settings/class-page.php:1748
 msgid "Clear the Sucuri cache when WP Rocket’s cache is cleared."
 msgstr ""
 "Tyhjennä Sucuri:n välimuisti kun WP Rocket:in välimuisti tyhjennetään."
 
-#: inc/classes/admin/settings/class-page.php:1757
+#: inc/classes/admin/settings/class-page.php:1751
 msgid ""
 "Provide your API key to clear the Sucuri cache when WP Rocket’s cache is "
 "cleared."
 msgstr ""
 "Syötä API-avaimesi tyhjentääksesi Sucuri:n välimuistin automaattisesti."
 
-#: inc/classes/admin/settings/class-page.php:1765
-#: inc/classes/admin/settings/class-page.php:1913
+#: inc/classes/admin/settings/class-page.php:1759
+#: inc/classes/admin/settings/class-page.php:1907
 msgid "Sucuri"
 msgstr "Sucuri"
 
-#: inc/classes/admin/settings/class-page.php:1771
+#: inc/classes/admin/settings/class-page.php:1765
 msgid "Synchronize Sucuri cache with this add-on."
 msgstr "Synkronoi Sucuri:n välimuisti tällä lisäosalla."
 
-#: inc/classes/admin/settings/class-page.php:1811
+#: inc/classes/admin/settings/class-page.php:1805
 msgid "Cloudflare credentials"
 msgstr "Cloudflare -tunnukset"
 
-#: inc/classes/admin/settings/class-page.php:1820
+#: inc/classes/admin/settings/class-page.php:1814
 msgid "Cloudflare settings"
 msgstr "Cloudflare -asetukset"
 
-#: inc/classes/admin/settings/class-page.php:1834
+#: inc/classes/admin/settings/class-page.php:1828
 msgctxt "Cloudflare"
 msgid "Global API key:"
 msgstr "Globaali API-avain:"
 
-#: inc/classes/admin/settings/class-page.php:1835
+#: inc/classes/admin/settings/class-page.php:1829
 msgid ""
 "https://support.cloudflare.com/hc/en-us/articles/200167836-Where-do-I-find-"
 "my-Cloudflare-API-key-"
@@ -1639,26 +1678,26 @@ msgstr ""
 "https://support.cloudflare.com/hc/en-us/articles/200167836-Where-do-I-find-"
 "my-Cloudflare-API-key-"
 
-#: inc/classes/admin/settings/class-page.php:1835
+#: inc/classes/admin/settings/class-page.php:1829
 msgctxt "Cloudflare"
 msgid "Find your API key"
 msgstr "Löydä API-avaimesi"
 
-#: inc/classes/admin/settings/class-page.php:1847
+#: inc/classes/admin/settings/class-page.php:1841
 msgctxt "Cloudflare"
 msgid "Account email"
 msgstr "Tilisi sähköposti"
 
-#: inc/classes/admin/settings/class-page.php:1856
+#: inc/classes/admin/settings/class-page.php:1850
 msgctxt "Cloudflare"
 msgid "Zone ID"
 msgstr "Zone ID"
 
-#: inc/classes/admin/settings/class-page.php:1866
+#: inc/classes/admin/settings/class-page.php:1860
 msgid "Development mode"
 msgstr "Kehitystila"
 
-#: inc/classes/admin/settings/class-page.php:1868
+#: inc/classes/admin/settings/class-page.php:1862
 #, php-format
 msgid ""
 "Temporarily activate development mode on your website. This setting will "
@@ -1667,11 +1706,11 @@ msgstr ""
 "Aktivoi väliaikaisesti kehitystila. Tämä asetus poistetaan automaattiseesti "
 "kolmen tunnin kuluttua. %1$sLue lisää%2$s"
 
-#: inc/classes/admin/settings/class-page.php:1876
+#: inc/classes/admin/settings/class-page.php:1870
 msgid "Optimal settings"
 msgstr "Optimaaliset asetukset"
 
-#: inc/classes/admin/settings/class-page.php:1877
+#: inc/classes/admin/settings/class-page.php:1871
 msgid ""
 "Automatically enhances your Cloudflare configuration for speed, performance "
 "grade and compatibility."
@@ -1679,11 +1718,11 @@ msgstr ""
 "Automaattisesti paranna Cloudflare:n asetuksia nopeuden ja yhteensopivuuden "
 "suhteen."
 
-#: inc/classes/admin/settings/class-page.php:1885
+#: inc/classes/admin/settings/class-page.php:1879
 msgid "Relative protocol"
 msgstr "Suhteellinen protokolla"
 
-#: inc/classes/admin/settings/class-page.php:1886
+#: inc/classes/admin/settings/class-page.php:1880
 msgid ""
 "Should only be used with Cloudflare's flexible SSL feature. URLs of static "
 "files (CSS, JS, images) will be rewritten to use // instead of http:// or "
@@ -1693,11 +1732,11 @@ msgstr ""
 "kanssa. Staattisten tiedostojen (CSS, JS, kuvat) osoitteet "
 "uudelleenkirjoitetaan muotoon //."
 
-#: inc/classes/admin/settings/class-page.php:1926
+#: inc/classes/admin/settings/class-page.php:1920
 msgid "Sucuri credentials"
 msgstr "Sucuri -tunnukset"
 
-#: inc/classes/admin/settings/class-page.php:1939
+#: inc/classes/admin/settings/class-page.php:1933
 msgctxt "Sucuri"
 msgid ""
 "Firewall API key (for plugin), must be in format <code>{32 characters}/{32 "
@@ -1706,7 +1745,7 @@ msgstr ""
 "Palomuurin API-avain (lisäosan), täytyy olla formaatissa <code>{32 "
 "characters}/{32 characters}</code>:"
 
-#: inc/classes/admin/settings/class-page.php:1940
+#: inc/classes/admin/settings/class-page.php:1934
 msgctxt "Sucuri"
 msgid "Find your API key"
 msgstr "Löydä API-avaimesi"
@@ -1716,7 +1755,7 @@ msgstr "Löydä API-avaimesi"
 msgid "Upload file and import settings"
 msgstr "Tallenna tiedosto ja tuo asetukset"
 
-#: inc/classes/admin/settings/class-settings.php:457
+#: inc/classes/admin/settings/class-settings.php:385
 msgid ""
 "Sucuri Add-on: The API key for the Sucuri firewall must be in format "
 "<code>{32 characters}/{32 characters}</code>."
@@ -1724,7 +1763,7 @@ msgstr ""
 "Sucuri -lisäosa: API-avain täytyy olla muodossa <code>{32 characters}/{32 "
 "characters}</code>."
 
-#: inc/classes/admin/settings/class-settings.php:540
+#: inc/classes/admin/settings/class-settings.php:462
 #: inc/deprecated/deprecated.php:1247
 msgid "Settings saved."
 msgstr "Asetukset tallennettu."
@@ -1781,33 +1820,33 @@ msgid "The logs are not saved into a file."
 msgstr "Lokeja ei talleneta tiedostoon."
 
 #: inc/classes/optimization/CSS/class-critical-css-generation.php:88
-#: inc/classes/optimization/CSS/class-critical-css-generation.php:97
-#: inc/classes/optimization/CSS/class-critical-css-generation.php:106
-#: inc/classes/optimization/CSS/class-critical-css-generation.php:114
-#: inc/classes/optimization/CSS/class-critical-css-generation.php:134
+#: inc/classes/optimization/CSS/class-critical-css-generation.php:99
+#: inc/classes/optimization/CSS/class-critical-css-generation.php:110
+#: inc/classes/optimization/CSS/class-critical-css-generation.php:120
+#: inc/classes/optimization/CSS/class-critical-css-generation.php:142
 #, php-format
 msgid "Critical CSS for %1$s not generated. Error: %2$s"
 msgstr "Kriittinen CSS sivulle %1$s ei generoitunut. Virhe: %2$s"
 
-#: inc/classes/optimization/CSS/class-critical-css-generation.php:97
+#: inc/classes/optimization/CSS/class-critical-css-generation.php:99
 msgid "The API returned an invalid response code."
 msgstr "API palautti virheellisen vastauskoodin."
 
-#: inc/classes/optimization/CSS/class-critical-css-generation.php:106
+#: inc/classes/optimization/CSS/class-critical-css-generation.php:110
 msgid "The API returned an empty response."
 msgstr "Api palautti tyhjän vastauksen."
 
-#: inc/classes/optimization/CSS/class-critical-css-generation.php:137
+#: inc/classes/optimization/CSS/class-critical-css-generation.php:145
 #, php-format
 msgid "The critical CSS content could not be saved as a file in %s."
 msgstr "Kriittistä CSS-sisältöä ei voitu tallentaa tiedostoksi kohteessa %s."
 
-#: inc/classes/optimization/CSS/class-critical-css-generation.php:144
+#: inc/classes/optimization/CSS/class-critical-css-generation.php:154
 #, php-format
 msgid "Critical CSS for %s generated."
 msgstr "Kriittinen CSS sivulle %s generoitu."
 
-#: inc/classes/preload/class-homepage.php:77
+#: inc/classes/preload/class-homepage.php:83
 #, php-format
 msgid ""
 "Preload encountered an error. Could not gather links on %1$s because of the "
@@ -1816,7 +1855,7 @@ msgstr ""
 "Esilatauksessa tapahtui virhe. Linkkejä ei voitu kerätä sivulta %1$s "
 "seuraavan virheen takia: %2$s. %3$sLue lisää%4$s."
 
-#: inc/classes/preload/class-homepage.php:90
+#: inc/classes/preload/class-homepage.php:96
 #, php-format
 msgid ""
 "Preload encountered an error. %1$s is not accessible to due to the following"
@@ -1827,7 +1866,7 @@ msgstr ""
 "seuraavan virhekoodin: %2$s. Turvallisuusasetukset saattavat estää pääsyn "
 "sivulle. %3$sLue lisää%4$s."
 
-#: inc/classes/preload/class-homepage.php:96
+#: inc/classes/preload/class-homepage.php:102
 #, php-format
 msgid ""
 "Preload encountered an error. %1$s is not accessible to due to the following"
@@ -1838,7 +1877,7 @@ msgstr ""
 "virhekoodin 404 . Varmista että etusivusi on avattavissa selaimessasi. "
 "%2$sLue lisää%3$s."
 
-#: inc/classes/preload/class-homepage.php:102
+#: inc/classes/preload/class-homepage.php:108
 #, php-format
 msgid ""
 "Preload encountered an error. %1$s is not accessible to due to the following"
@@ -1848,7 +1887,7 @@ msgstr ""
 "Esilatauksessa tapahtui virhe. Sivu %1$s ei ole saatavilla ja se palautti "
 "virhekoodin 500 . Tarkista palvelimesi asetukset. %2$sLue lisää%3$s."
 
-#: inc/classes/preload/class-homepage.php:108
+#: inc/classes/preload/class-homepage.php:114
 #, php-format
 msgid ""
 "Preload encountered an error. Could not gather links on %1$s because it "
@@ -1857,7 +1896,7 @@ msgstr ""
 "Esilatauksessa tapahtui virhe. Linkkejä ei voitu kerätä sivulta %1$s koska "
 "se palautti virheen: %2$s. %3$sLue lisää%4$s."
 
-#: inc/classes/preload/class-sitemap.php:131
+#: inc/classes/preload/class-sitemap.php:138
 #, php-format
 msgid ""
 "Sitemap preload encountered an error. Could not gather links on %1$s because"
@@ -1866,7 +1905,7 @@ msgstr ""
 "Sivukartan esilatauksessa tapahtui virhe. Linkkejä ei voitu kerätä sivulta "
 "%1$s seuraavan virheen takia: %2$s. %3$sLue lisää%4$s."
 
-#: inc/classes/preload/class-sitemap.php:146
+#: inc/classes/preload/class-sitemap.php:153
 #, php-format
 msgid ""
 "Sitemap preload encountered an error. %1$s is not accessible to due to the "
@@ -1877,7 +1916,7 @@ msgstr ""
 "palautti seuraavan virhekoodin: %2$s. Turvallisuusasetukset saattavat estää "
 "pääsyn sivulle. %3$sLue lisää%4$s."
 
-#: inc/classes/preload/class-sitemap.php:151
+#: inc/classes/preload/class-sitemap.php:158
 #, php-format
 msgid ""
 "Sitemap preload encountered an error. %1$s is not accessible to due to the "
@@ -1888,7 +1927,7 @@ msgstr ""
 "palautti virhekoodin 404 . Varmista että etusivusi on avattavissa "
 "selaimessasi. %2$sLue lisää%3$s."
 
-#: inc/classes/preload/class-sitemap.php:156
+#: inc/classes/preload/class-sitemap.php:163
 #, php-format
 msgid ""
 "Sitemap preload encountered an error. %1$s is not accessible to due to the "
@@ -1899,7 +1938,7 @@ msgstr ""
 "palautti virhekoodin 500 . Tarkista palvelimesi asetukset. %2$sLue "
 "lisää%3$s."
 
-#: inc/classes/preload/class-sitemap.php:161
+#: inc/classes/preload/class-sitemap.php:168
 #, php-format
 msgid ""
 "Sitemap preload encountered an error. Could not gather links on %1$s because"
@@ -1908,7 +1947,7 @@ msgstr ""
 "Sivukartan esilatauksessa tapahtui virhe. Linkkejä ei voitu kerätä sivulta "
 "%1$s koska se palautti virheen: %2$s. %3$sLue lisää%4$s."
 
-#: inc/classes/preload/class-sitemap.php:177
+#: inc/classes/preload/class-sitemap.php:184
 #, php-format
 msgid ""
 "Sitemap preload encountered an error. Could not collect links from %1$s "
@@ -1917,7 +1956,7 @@ msgstr ""
 "Sivukartan esilatauksessa tapahtui virhe. Linkkejä ei voitu kerätä sivulta "
 "%1$s koska tiedosto vaikuttaisi olevan tyhjä. %2$sLue lisää%3$s."
 
-#: inc/classes/preload/class-sitemap.php:198
+#: inc/classes/preload/class-sitemap.php:205
 #, php-format
 msgid ""
 "Sitemap preload encountered an error. Could not collect links from %1$s "
@@ -1926,7 +1965,7 @@ msgstr ""
 "Sivukartan esilatauksessa tapahtui virhe. Linkkejä ei voitu kerätä sivulta "
 "%1$s koska XML-sivukartan koostamisessa tapahtui virhe. %2$sLue lisää%3$s."
 
-#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:130
+#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:138
 #, php-format
 msgid ""
 "Critical CSS generation is currently running: %1$d of %2$d page types "
@@ -1935,18 +1974,25 @@ msgstr ""
 "Kriittisen CSS:n generointi on parhaillaan käynnissä: %1$d / %2$d "
 "sivutyypistä on valmis. (Päivitä tämä sivu nähdäksesi etenemisen)"
 
-#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:181
+#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:189
 #, php-format
 msgid "Critical CSS generation finished for %1$d of %2$d page types."
 msgstr "Kriittisen CSS:n generointi valmistunut %1$d / %2$d sivutyypille."
 
-#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:194
+#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:203
 msgid "Critical CSS generation encountered one or more errors."
 msgstr "Kriittisen CSS:n generoinnissa tapahtui virhe."
 
-#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:194
+#: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:203
 msgid "Learn more."
 msgstr "Lue lisää."
+
+#: inc/classes/subscriber/Tools/class-cache-dir-size-check-subscriber.php:51
+#: inc/classes/subscriber/class-facebook-tracking-cache-busting-subscriber.php:97
+#: inc/classes/subscriber/class-google-tracking-cache-busting-subscriber.php:154
+#: inc/common/cron.php:33
+msgid "weekly"
+msgstr "viikottain"
 
 #: inc/classes/subscriber/admin/Database/class-optimization-subscriber.php:148
 msgid "Database optimization process is running"
@@ -1986,13 +2032,7 @@ msgstr "Kuvien optimointi"
 msgid "Compress your images"
 msgstr "Pakkaa kuvat"
 
-#: inc/classes/subscriber/class-facebook-tracking-cache-busting-subscriber.php:97
-#: inc/classes/subscriber/class-google-tracking-cache-busting-subscriber.php:156
-#: inc/common/cron.php:33
-msgid "weekly"
-msgstr "viikottain"
-
-#: inc/classes/subscriber/preload/class-preload-subscriber.php:211
+#: inc/classes/subscriber/preload/class-preload-subscriber.php:212
 #, php-format
 msgid ""
 "Preload: WP Rocket has started preloading your website. Go to the %1$sWP "
@@ -2001,7 +2041,7 @@ msgstr ""
 "Esilataus: WP Rocket on aloittanut sivustosi välimuistin esilatauksen. "
 "Siirry %1$sWP Rocket -asetuksiin%2$s nähdäksesi etenemisen."
 
-#: inc/classes/subscriber/preload/class-preload-subscriber.php:245
+#: inc/classes/subscriber/preload/class-preload-subscriber.php:246
 #, php-format
 msgid ""
 "Preload: %1$s uncached page has now been preloaded. (refresh to see "
@@ -2010,23 +2050,19 @@ msgid_plural ""
 "Preload: %1$s uncached pages have now been preloaded. (refresh to see "
 "progress)"
 msgstr[0] ""
-"Esilataus: %1$s sivu on nyt esiladattu välimuistiin. (päivitä sivu "
-"nähdäksesi etenemisen)"
 msgstr[1] ""
-"Esilataus: %1$s sivua on nyt esiladattu välimuistiin. (päivitä sivu "
-"nähdäksesi etenemisen)"
 
-#: inc/classes/subscriber/preload/class-preload-subscriber.php:253
+#: inc/classes/subscriber/preload/class-preload-subscriber.php:255
 msgid "The following error happened during gathering of the URLs to preload:"
 msgid_plural ""
 "The following errors happened during gathering of the URLs to preload:"
-msgstr[0] "Seuraava virhe tapahtui esilatauksen valmistelussa:"
-msgstr[1] "Seuraavat virheet havaittiin esilatauksen valmistelussa:"
+msgstr[0] ""
+msgstr[1] ""
 
-#: inc/classes/subscriber/preload/class-preload-subscriber.php:301
+#: inc/classes/subscriber/preload/class-preload-subscriber.php:308
 #, php-format
-msgid "Preload: %d pages have been cached."
-msgstr "Esilataus: %d sivua on välimuistissa."
+msgid "Preload complete: %d pages have been cached."
+msgstr ""
 
 #: inc/classes/subscriber/preload/class-sitemap-preload-subscriber.php:117
 #, php-format
@@ -2049,11 +2085,7 @@ msgid_plural ""
 "Please deactivate the following %s options which conflict with WP Rocket "
 "features:"
 msgstr[0] ""
-"Ole hyvä ja poista käytöstä seuraava %s asetus, joka on ristiriidassa WP "
-"Rocketin kanssa:"
 msgstr[1] ""
-"Ole hyvä ja poista käytöstä seuraavat %s asetukset, jotka ovat ristiriidassa"
-" WP Rocketin kanssa:"
 
 #: inc/classes/subscriber/third-party/plugins/Optimization/class-hummingbird-subscriber.php:145
 #, php-format
@@ -2134,35 +2166,47 @@ msgstr "Sucurin palomuurin API-avainta ei löytynyt."
 msgid "Sucuri firewall API key is invalid."
 msgstr "Sucurin palomuurin API-avain on virheellinen."
 
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:290
+#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:303
 msgid "Error when contacting Sucuri firewall API."
 msgstr "Virhe yhteydessä Sucurin palomuurin rajapintaan."
 
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:300
+#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:313
 #, php-format
 msgid "Error when contacting Sucuri firewall API. Error message was: %s"
 msgstr ""
 "Tapahtui virhe otettaessa yhteyttä Sucurin palomuurin rajapintaan. "
 "Virheilmoitus oli: %s"
 
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:311
+#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:324
 msgid "Could not get a response from the Sucuri firewall API."
 msgstr "Sucurin palomuurin rajapinnalta ei saatu vastausta."
 
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:322
+#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:335
 msgid "Got an invalid response from the Sucuri firewall API."
 msgstr "Sucurin palomuurin rajapinta palautti virheellisen vastauksen."
 
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:332
+#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:345
 msgid "The Sucuri firewall API returned an unknown error."
 msgstr "Sucurin palomuurin rajapinta palautti tuntemattoman virheen."
 
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:335
+#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:348
 #, php-format
 msgid "The Sucuri firewall API returned the following error: %s"
 msgid_plural "The Sucuri firewall API returned the following errors: %s"
-msgstr[0] "Sucurin palomuurin rajapinta palautti seuraavan virheen: %s"
-msgstr[1] "Sucurin palomuurin rajapinta palautti seuraavat virheet: %s"
+msgstr[0] ""
+msgstr[1] ""
+
+#: inc/classes/traits/trait-updater-api-tools.php:53
+#: inc/deprecated/3.3.php:760 inc/deprecated/3.3.php:769
+#, php-format
+msgid ""
+"An unexpected error occurred. Something may be wrong with WP-Rocket.me or "
+"this server&#8217;s configuration. If you continue to have problems, <a "
+"href=\"%s\">contact support</a>."
+msgstr ""
+"Odottamaton virhe. Vika voi olla joko WP-Rocket.me:n päässä tai tämän "
+"palvelimen asetuksissa. Jos ongelmat jatkuvat, <a href=\"%s\">ota yhteys "
+"tukeen</a>."
 
 #: inc/common/admin-bar.php:106 inc/common/admin-bar.php:260
 #: inc/functions/i18n.php:39 inc/functions/i18n.php:48
@@ -2207,12 +2251,12 @@ msgstr "%s tyhjennä"
 msgid "monthly"
 msgstr "kuukausittain"
 
-#: inc/common/purge.php:446
+#: inc/common/purge.php:456
 #, php-format
 msgid "Cloudflare cache purge error: %s"
 msgstr "Cloudflaren välimuistin tyhjennyksen virhe: %s"
 
-#: inc/common/purge.php:451
+#: inc/common/purge.php:461
 msgid "Cloudflare cache successfully purged"
 msgstr "Cloudflaren välimuisti tyhjennetty"
 
@@ -2376,68 +2420,71 @@ msgid_plural ""
 "There seems to be an issue validating your license. You can see the error "
 "messages below."
 msgstr[0] ""
-"Lisenssin varmennuksessa tapahtui virhe. Alla näet tarkemman "
-"virheilmoituksen."
 msgstr[1] ""
-"Lisenssin tarkistuksessa tapahtui virhe. Alla näet virheilmoitukset."
 
-#: inc/functions/admin.php:397
+#: inc/functions/admin.php:361
 msgid "Server type:"
 msgstr "Palvelimen tyyppi:"
 
-#: inc/functions/admin.php:406
+#: inc/functions/admin.php:370
 msgid "PHP version number:"
 msgstr "PHP:n versio:"
 
-#: inc/functions/admin.php:415
+#: inc/functions/admin.php:379
 msgid "WordPress version number:"
 msgstr "WordPress:in versio:"
 
-#: inc/functions/admin.php:424
+#: inc/functions/admin.php:388
 msgid "WordPress multisite:"
 msgstr "WordPress multisite:"
 
-#: inc/functions/admin.php:433
+#: inc/functions/admin.php:397
 msgid "Current theme:"
 msgstr "Nykyinen teema:"
 
-#: inc/functions/admin.php:442
+#: inc/functions/admin.php:406
 msgid "Current site language:"
 msgstr "Sivuston nykyinen kieli:"
 
-#: inc/functions/admin.php:451
+#: inc/functions/admin.php:415
 msgid "Active plugins:"
 msgstr "Aktiiviset lisäosat:"
 
-#: inc/functions/admin.php:454
+#: inc/functions/admin.php:418
 msgid "Plugin names of all active plugins"
 msgstr "Aktiivisten lisäosien nimet"
 
-#: inc/functions/admin.php:460
+#: inc/functions/admin.php:424
 msgid "Anonymized WP Rocket settings:"
 msgstr "Anonymisoidut WP Rocket -asetukset:"
 
-#: inc/functions/admin.php:463
+#: inc/functions/admin.php:427
 msgid "Which WP Rocket settings are active"
 msgstr "Mitkä WP Rocket:in asetukset on aktivoitu"
 
-#: inc/functions/cloudflare.php:17
+#: inc/functions/cloudflare.php:14
+msgid ""
+"Curl functions are disabled, they are required for the Cloudflare Add-on to "
+"work correctly."
+msgstr ""
+
+#: inc/functions/cloudflare.php:21
 msgid "Cloudflare Email and API key are not set"
 msgstr "Cloudflaren sähköposti ja API-avain on asettamatta"
 
-#: inc/functions/cloudflare.php:48
+#: inc/functions/cloudflare.php:52
 #, php-format
 msgid "Missing Cloudflare zone ID. %s could not fix this automatically."
 msgstr ""
 "Cloudflaren zone ID puuttuu. %s ongelmaa ei pystytty korjaamaan "
 "automaattisesti."
 
-#: inc/functions/cloudflare.php:54
+#: inc/functions/cloudflare.php:58
 #, php-format
 msgid "Read the %1$sdocumentation%2$s for further guidance."
 msgstr "Lue %1$sdokumentaatio%2$s saadaksesi lisätietoja."
 
-#: inc/functions/cloudflare.php:56
+#: inc/functions/cloudflare.php:60
 msgid ""
 "https://docs.wp-rocket.me/article/18-using-wp-rocket-with-"
 "cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket"
@@ -2445,19 +2492,19 @@ msgstr ""
 "https://docs.wp-rocket.me/article/18-using-wp-rocket-with-"
 "cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket"
 
-#: inc/functions/cloudflare.php:96
+#: inc/functions/cloudflare.php:100
 msgid "Connection to Cloudflare failed"
 msgstr "Yhteys Cloudflareen epäonnistui"
 
-#: inc/functions/cloudflare.php:118
+#: inc/functions/cloudflare.php:122
 msgid "Choose a domain from the list"
 msgstr "Valitse verkkotunnus listalta"
 
-#: inc/functions/cloudflare.php:131
+#: inc/functions/cloudflare.php:135
 msgid "No domain available in your Cloudflare account"
 msgstr "Cloudflare -tililtäsi ei löytynyt yhtään verkkotunnusta"
 
-#: inc/functions/options.php:578 inc/functions/options.php:617
+#: inc/functions/options.php:580 inc/functions/options.php:619
 msgid ""
 "License validation failed. Our server could not resolve the request from "
 "your website."
@@ -2465,7 +2512,7 @@ msgstr ""
 "Lisenssin varmennus epäonnistui. Palvelimemme ei pystynyt käsittelemään "
 "pyyntöäsi."
 
-#: inc/functions/options.php:578 inc/functions/options.php:617
+#: inc/functions/options.php:580 inc/functions/options.php:619
 #, php-format
 msgid ""
 "Try clicking %1$sSave Changes%2$s below. If the error persists, follow "
@@ -2474,7 +2521,7 @@ msgstr ""
 "Yritä klikata %1$sTallenna muutokset%2$s -painiketta. Jos virhe toistuu, "
 "seuraa %3$stätä ohjetta%4$s."
 
-#: inc/functions/options.php:594
+#: inc/functions/options.php:596
 msgid ""
 "License validation failed. You may be using a nulled version of the plugin. "
 "Please do the following:"
@@ -2482,61 +2529,61 @@ msgstr ""
 "Lisenssin varmennus epäonnistui. Syynä voi olla, että käytät epäkelpoa "
 "versiota lisäosasta. Ole hyvä ja toimi seuraavasti:"
 
-#: inc/functions/options.php:594 inc/functions/options.php:636
+#: inc/functions/options.php:596 inc/functions/options.php:638
 #, php-format
 msgid "Login to your WP Rocket %1$saccount%2$s"
 msgstr "Kirjaudu WP Rocket %1$s-tilillesi%2$s"
 
-#: inc/functions/options.php:594 inc/functions/options.php:636
+#: inc/functions/options.php:596 inc/functions/options.php:638
 msgid "Download the zip file"
 msgstr "Lataa zip-paketti"
 
-#: inc/functions/options.php:594 inc/functions/options.php:636
+#: inc/functions/options.php:596 inc/functions/options.php:638
 msgid "Reinstall"
 msgstr "Asenna uudelleen"
 
-#: inc/functions/options.php:594
+#: inc/functions/options.php:596
 #, php-format
 msgid ""
 "If you do not have a WP Rocket account, please %1$spurchase a license%2$s."
 msgstr ""
 "Jos sinulla ei ole WP Rocket -tiliä, ole hyvä ja %1$sosta lisenssi%2$s."
 
-#: inc/functions/options.php:602
+#: inc/functions/options.php:604
 msgid ""
 "License validation failed. This user account does not exist in our database."
 msgstr ""
 "Lisenssin varmennus epäonnistui. Tätä käyttäjää ei löydy tietokannastamme."
 
-#: inc/functions/options.php:602
+#: inc/functions/options.php:604
 msgid "To resolve, please contact support."
 msgstr "Ratkaistaksesi ongelma, ota yhteys tukeemme."
 
-#: inc/functions/options.php:610
+#: inc/functions/options.php:612
 msgid "License validation failed. This user account is blacklisted."
 msgstr "Lisenssin varmennus epäonnistui. Tämä käyttäjätili on bannattu."
 
-#: inc/functions/options.php:610
+#: inc/functions/options.php:612
 #, php-format
 msgid "Please see %1$sthis guide%2$s for more info."
 msgstr "Ole hyvä ja katso %1$stästä oppaasta%2$s lisätietoja."
 
-#: inc/functions/options.php:630
+#: inc/functions/options.php:632
 msgid "Your license is not valid."
 msgstr "Lisenssi ei ole validi."
 
-#: inc/functions/options.php:630
+#: inc/functions/options.php:632
 #, php-format
 msgid "Make sure you have an active %1$sWP Rocket license%2$s."
 msgstr ""
 "Ole hyvä ja varmista, että sinulla on aktiivinen %1$sWP Rocket "
 "-lisenssi%2$s."
 
-#: inc/functions/options.php:632
+#: inc/functions/options.php:634
 msgid "You have added as many sites as your current license allows."
 msgstr "Olet lisännyt maksimimäärän sivuja jonka lisenssisi sallii."
 
-#: inc/functions/options.php:632
+#: inc/functions/options.php:634
 #, php-format
 msgid ""
 "Upgrade your %1$saccount%2$s or %3$stransfer your license%2$s to this "
@@ -2545,25 +2592,25 @@ msgstr ""
 "Päivitä %1$stilisi%2$s tai %3$ssiirrä%2$s lisenssisi tälle "
 "verkkotunnukselle."
 
-#: inc/functions/options.php:634
+#: inc/functions/options.php:636
 msgid "This website is not allowed."
 msgstr "Tämä verkkosivusto ei ole sallittu."
 
-#: inc/functions/options.php:634
+#: inc/functions/options.php:636
 #, php-format
 msgid "Please %1$scontact support%2$s."
 msgstr "Ole hyvä ja %1$sota yhteys tukeen%2$s."
 
-#: inc/functions/options.php:636
+#: inc/functions/options.php:638
 msgid "This license key is not recognized."
 msgstr "Lisenssiavainta ei tunnistettu."
 
-#: inc/functions/options.php:636
+#: inc/functions/options.php:638
 #, php-format
 msgid "If the issue persists, please %1$scontact support%2$s."
 msgstr "Jos ongelma jatkuu, ole hyvä ja %1$sota yhteys tukeen%2$s."
 
-#: inc/functions/options.php:642
+#: inc/functions/options.php:644
 #, php-format
 msgid "License validation failed: %s"
 msgstr "Lisenssin varmennus epäonnistui: %s"

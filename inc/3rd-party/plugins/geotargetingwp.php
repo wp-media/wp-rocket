@@ -8,9 +8,9 @@ defined( 'ABSPATH' ) || die( 'Cheatin\' uh?' );
  */
 if ( class_exists( 'GeotWP\GeotargetingWP' ) ) :
 
-	add_filter( 'rocket_htaccess_mod_rewrite'    , '__return_false' );
-	add_filter( 'rocket_cache_dynamic_cookies'   , 'rocket_add_geotargetingwp_dynamic_cookies' );
-	add_filter( 'rocket_cache_mandatory_cookies' , 'rocket_add_geotargetingwp_mandatory_cookie' );
+	add_filter( 'rocket_htaccess_mod_rewrite'   , '__return_false', 72 );
+	add_filter( 'rocket_cache_dynamic_cookies'  , 'rocket_add_geotargetingwp_dynamic_cookies' );
+	add_filter( 'rocket_cache_mandatory_cookies', 'rocket_add_geotargetingwp_mandatory_cookie' );
 
 	/**
 	 * If we recently deactivated a plugin of the family but
@@ -34,9 +34,9 @@ endif;
  * @author Damian Logghe
  */
 function rocket_activate_geotargetingwp() {
-	add_filter( 'rocket_htaccess_mod_rewrite'    , '__return_false' );
-	add_filter( 'rocket_cache_dynamic_cookies'   , 'rocket_add_geotargetingwp_dynamic_cookies' );
-	add_filter( 'rocket_cache_mandatory_cookies' , 'rocket_add_geotargetingwp_mandatory_cookie' );
+	add_filter( 'rocket_htaccess_mod_rewrite'   , '__return_false', 72 );
+	add_filter( 'rocket_cache_dynamic_cookies'  , 'rocket_add_geotargetingwp_dynamic_cookies' );
+	add_filter( 'rocket_cache_mandatory_cookies', 'rocket_add_geotargetingwp_mandatory_cookie' );
 
 	// Update the WP Rocket rules on the .htaccess file.
 	flush_rocket_htaccess();
@@ -55,8 +55,8 @@ add_action( 'geotWP/activated', 'rocket_activate_geotargetingwp', 11 );
 function rocket_deactivate_geotargetingwp() {
 	// add into db a record saying we deactivated one of the family plugins.
 	update_option( 'geotWP-deactivated', true );
-	remove_filter( 'rocket_htaccess_mod_rewrite' , '__return_false' );
-	remove_filter( 'rocket_cache_dynamic_cookies', 'rocket_add_geotargetingwp_dynamic_cookies' );
+	remove_filter( 'rocket_htaccess_mod_rewrite'   , '__return_false', 72 );
+	remove_filter( 'rocket_cache_dynamic_cookies'  , 'rocket_add_geotargetingwp_dynamic_cookies' );
 	remove_filter( 'rocket_cache_mandatory_cookies', 'rocket_add_geotargetingwp_mandatory_cookie' );
 
 	// Update the WP Rocket rules on the .htaccess file.
