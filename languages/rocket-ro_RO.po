@@ -81,19 +81,19 @@ msgstr ""
 
 #: inc/3rd-party/plugins/seo/all-in-one-seo-pack.php:86
 msgid "All in One SEO XML sitemap"
-msgstr "Hartă site XML All in One SEO"
+msgstr "Hărți site XML All in One SEO"
 
 #: inc/3rd-party/plugins/seo/rank-math-seo.php:32
 msgid "Rank Math XML sitemap"
-msgstr "Hartă site XML Rank Math"
+msgstr "Hărți site XML Rank Math"
 
 #: inc/3rd-party/plugins/seo/seopress.php:83
 msgid "SEOPress XML sitemap"
-msgstr ""
+msgstr "Hărți site SEOPress"
 
 #: inc/3rd-party/plugins/seo/the-seo-framework.php:121
 msgid "The SEO Framework XML sitemap"
-msgstr "Hartă site XML The SEO Framework"
+msgstr "Hărți site XML The SEO Framework"
 
 #: inc/3rd-party/plugins/seo/yoast-seo.php:84
 msgid "Yoast SEO XML sitemap"
@@ -154,11 +154,11 @@ msgstr "Importul setărilor a eșuat: "
 
 #: inc/admin/admin.php:571
 msgid "Settings import failed: unexpected file content."
-msgstr "Importul setărilor a eșuat: conținut neașteptat pentru fișier."
+msgstr "Importul setărilor a eșuat: conținut neașteptat pentru fișier."
 
 #: inc/admin/admin.php:592
 msgid "Settings imported and saved."
-msgstr "Setările au fost importate şi salvate."
+msgstr "Setările au fost importate și salvate."
 
 #: inc/admin/options.php:101
 #, php-format
@@ -246,14 +246,14 @@ msgstr "Exclude fișiere din CDN"
 #: inc/admin/options.php:265
 #, php-format
 msgid "%1$s: <em>%2$s</em>."
-msgstr ""
+msgstr "%1$s: <em>%2$s</em>."
 
 #: inc/admin/options.php:275
 msgid "The following pattern is invalid and has been removed:"
 msgid_plural "The following patterns are invalid and have been removed:"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Următorul model este invalid și a fost înlăturat:"
+msgstr[1] "Următoarele modele sunt invalide și au fost înlăturate:"
+msgstr[2] "Următoarele modele sunt invalide și au fost înlăturate:"
 
 #: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/notices.php:955
 #: inc/common/admin-bar.php:65 inc/common/admin-bar.php:118
@@ -370,6 +370,10 @@ msgid ""
 "Cache. Please set the Endurance Cache cache level to Off (Level 0) on the "
 "%1$sSettings > General%2$s page to prevent any issues."
 msgstr ""
+"În prezent, Endurance Cache este activat și va intra în conflict cu cache-ul"
+" WP Rocket. Te rog setează nivelul de cache la Oprit (nivel 0) pentru "
+"Endurance Cache în pagina %1$sSetări > Generale%2$s pentru a nu avea "
+"probleme."
 
 #: inc/admin/ui/notices.php:305
 #, php-format
@@ -378,8 +382,8 @@ msgid ""
 "properly. %2$sGo to permalinks settings%3$s"
 msgstr ""
 "%1$s: pentru ca modulul să funcționeze cum trebuie, este necesară o "
-"structură pentru legăturile permanente. %2$sDu-te la setări Legături "
-"permanente%3$s"
+"structură personalizată pentru legăturile permanente. %2$sDu-te la setări "
+"Legături permanente%3$s"
 
 #: inc/admin/ui/notices.php:442
 #, php-format
@@ -470,7 +474,7 @@ msgstr "Îți mulțumim!"
 
 #: inc/admin/ui/notices.php:788
 msgid "WP Rocket now collects these metrics from your website:"
-msgstr "WP Rocket colectează acum aceste valori de pe site-ul tău web:"
+msgstr "Acum WP Rocket colectează aceste valori de pe site-ul tău web:"
 
 #: inc/admin/ui/notices.php:825
 #, php-format
@@ -502,12 +506,23 @@ msgid_plural ""
 "system is not running properly, which can prevent some WP Rocket features "
 "from working as intended:"
 msgstr[0] ""
+"Următorul eveniment programat a eșuat în timpul rulării. Acest lucru poate "
+"indica că sistemul CRON nu funcționează corect și poate împiedica unele "
+"funcționalități WP Rocket să lucreze așa cum ar trebui:"
 msgstr[1] ""
+"Următoarele evenimente programate au eșuat în timpul rulării. Acest lucru "
+"poate indica că sistemul CRON nu funcționează corect și poate împiedica "
+"unele funcționalități WP Rocket să lucreze așa cum ar trebui:"
 msgstr[2] ""
+"Următoarele evenimente programate au eșuat în timpul rulării. Acest lucru "
+"poate indica că sistemul CRON nu funcționează corect și poate împiedica "
+"unele funcționalități WP Rocket să lucreze așa cum ar trebui:"
 
 #: inc/admin/ui/notices.php:919
 msgid "Please contact your host to check if CRON is working."
 msgstr ""
+"Te rog contactează serviciul tău de găzduire pentru a verifica dacă CRON "
+"funcționează."
 
 #: inc/admin/ui/notices.php:958
 msgid "Stop Preload"
@@ -789,13 +804,13 @@ msgid ""
 "your GTMetrix score. %1$sMore info%2$s"
 msgstr ""
 "Înlătură șirul de interogare a versiunii din fișierele statice (de exemplu, "
-"style.css?ver=1.0) și codifică în schimb numele fișierului (de exemplu, "
+"style.css?ver=1.0) și codifică în schimb numele fișierului (de exemplu, "
 "style-1.0.css). Îți poate îmbunătăți punctajul GTMetrix. %1$sMai multe "
 "informații%2$s"
 
 #: inc/classes/admin/settings/class-page.php:649
 msgid "Minify CSS files"
-msgstr "Minifică fișiere CSS"
+msgstr "Minifică fișierele CSS"
 
 #: inc/classes/admin/settings/class-page.php:650
 msgid "Minify CSS removes whitespace and comments to reduce the file size."
@@ -828,7 +843,7 @@ msgstr "Activează minifică CSS"
 #: inc/classes/admin/settings/class-page.php:670
 msgid "Combine CSS files <em>(Enable Minify CSS files to select)</em>"
 msgstr ""
-"Combină fișierele CSS <em>(activează Minifică fișiere CSS pentru a "
+"Combină fișierele CSS <em>(activează Minifică fișierele CSS pentru a "
 "selecta)</em>"
 
 #: inc/classes/admin/settings/class-page.php:672
@@ -851,7 +866,7 @@ msgid ""
 " (one per line)."
 msgstr ""
 "Specifică URL-urile fișierelor CSS care să fie excluse din minificare și "
-"concatenare (câte unul pe rând)."
+"concatenare (câte unul pe un rând)."
 
 #: inc/classes/admin/settings/class-page.php:694
 msgid ""
@@ -944,7 +959,7 @@ msgid ""
 " per line). %1$sMore info%2$s"
 msgstr ""
 "Specifică structurile JavaScript în-line care să fie excluse din concatenare"
-" (câte una pe rând). %1$sMai multe informații%2$s"
+" (câte una pe un rând). %1$sMai multe informații%2$s"
 
 #: inc/classes/admin/settings/class-page.php:803
 msgid ""
@@ -952,7 +967,7 @@ msgid ""
 "concatenation (one per line)."
 msgstr ""
 "Specifică URL-urile fișierelor JavaScript care să fie excluse din minificare"
-" și concatenare (câte unul pe rând)."
+" și concatenare (câte unul pe un rând)."
 
 #: inc/classes/admin/settings/class-page.php:804
 msgid ""
@@ -1347,49 +1362,49 @@ msgstr "Curățare automată"
 #, php-format
 msgid "%s revision in your database."
 msgid_plural "%s revisions in your database."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%s revizie în baza ta de date."
+msgstr[1] "%s revizii în baza ta de date."
+msgstr[2] "%s de revizii în baza ta de date."
 
 #: inc/classes/admin/settings/class-page.php:1301
 #, php-format
 msgid "%s draft in your database."
 msgid_plural "%s drafts in your database."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%s ciornă în baza ta de date."
+msgstr[1] "%s ciorne în baza ta de date."
+msgstr[2] "%s de ciorne în baza ta de date."
 
 #: inc/classes/admin/settings/class-page.php:1311
 #, php-format
 msgid "%s trashed post in your database."
 msgid_plural "%s trashed posts in your database."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%s articol aruncat la gunoi în baza ta de date."
+msgstr[1] "%s articole aruncate la gunoi în baza ta de date."
+msgstr[2] "%s de articole aruncate la gunoi în baza ta de date."
 
 #: inc/classes/admin/settings/class-page.php:1321
 #, php-format
 msgid "%s spam comment in your database."
 msgid_plural "%s spam comments in your database."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%s comentariu spam în baza ta de date."
+msgstr[1] "%s comentarii spam în baza ta de date."
+msgstr[2] "%s de comentarii spam în baza ta de date."
 
 #: inc/classes/admin/settings/class-page.php:1331
 #, php-format
 msgid "%s trashed comment in your database."
 msgid_plural "%s trashed comments in your database."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%s comentariu aruncat la gunoi în baza ta de date."
+msgstr[1] "%s comentarii aruncate la gunoi în baza ta de date."
+msgstr[2] "%s de comentarii aruncate la gunoi în baza ta de date."
 
 #: inc/classes/admin/settings/class-page.php:1341
 #, php-format
 msgid "%s expired transient in your database."
 msgid_plural "%s expired transients in your database."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%s tranzient expirat în baza ta de date."
+msgstr[1] "%s tranzienți expirați în baza ta de date."
+msgstr[2] "%s de tranzienți expirați în baza ta de date."
 
 #: inc/classes/admin/settings/class-page.php:1349
 msgid "All transients"
@@ -1399,9 +1414,9 @@ msgstr "Toți tranzienții"
 #, php-format
 msgid "%s transient in your database."
 msgid_plural "%s transients in your database."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%s tranzient în baza ta de date."
+msgstr[1] "%s tranzienți în baza ta de date."
+msgstr[2] "%s de tranzienți în baza ta de date."
 
 #: inc/classes/admin/settings/class-page.php:1359
 msgid "Optimize Tables"
@@ -1411,9 +1426,9 @@ msgstr "Optimizează tabelele"
 #, php-format
 msgid "%s table to optimize in your database."
 msgid_plural "%s tables to optimize in your database."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%s tabel de optimizat în baza ta de date."
+msgstr[1] "%s tabele de optimizat în baza ta de date."
+msgstr[2] "%s de tabele de optimizat în baza ta de date."
 
 #: inc/classes/admin/settings/class-page.php:1372
 msgid "Schedule Automatic Cleanup"
@@ -1465,8 +1480,14 @@ msgid_plural ""
 "%1$s%2$s Add-ons%3$s are currently enabled. Configuration of the CDN "
 "settings is not required for %2$s to work on your site."
 msgstr[0] ""
+"În prezent este activat %1$s%2$s supliment%3$s. Configurarea setărilor CDN "
+"nu este necesară pentru ca %2$s să funcționeze pe site-ul tău. "
 msgstr[1] ""
+"În prezent sunt activate %1$s%2$s suplimente%3$s. Configurarea setărilor CDN"
+" nu este necesară pentru ca %2$s să funcționeze pe site-ul tău."
 msgstr[2] ""
+"În prezent sunt activate %1$s%2$s de suplimente%3$s. Configurarea setărilor "
+"CDN nu este necesară pentru ca %2$s să funcționeze pe site-ul tău."
 
 #: inc/classes/admin/settings/class-page.php:1484
 msgid "Enable Content Delivery Network"
@@ -2093,21 +2114,33 @@ msgid_plural ""
 "Preload: %1$s uncached pages have now been preloaded. (refresh to see "
 "progress)"
 msgstr[0] ""
+"Pre-încărcare: %1$s pagină nememorată în cache a fost acum preîncărcată "
+"(reîmprospătează pentru a vedea progresul)."
 msgstr[1] ""
+"Pre-încărcare: %1$s pagini nememorate în cache au fost acum preîncărcate "
+"(reîmprospătează pentru a vedea progresul)."
 msgstr[2] ""
+"Pre-încărcare: %1$s de pagini nememorate în cache au fost acum preîncărcate "
+"(reîmprospătează pentru a vedea progresul)."
 
 #: inc/classes/subscriber/preload/class-preload-subscriber.php:255
 msgid "The following error happened during gathering of the URLs to preload:"
 msgid_plural ""
 "The following errors happened during gathering of the URLs to preload:"
 msgstr[0] ""
+"A apărut următoarea eroare în timpul colectării URL-urilor pentru pre-"
+"încărcare:"
 msgstr[1] ""
+"Au apărut următoarele erori în timpul colectării URL-urilor pentru pre-"
+"încărcare:"
 msgstr[2] ""
+"Au apărut următoarele erori în timpul colectării URL-urilor pentru pre-"
+"încărcare:"
 
 #: inc/classes/subscriber/preload/class-preload-subscriber.php:308
 #, php-format
 msgid "Preload complete: %d pages have been cached."
-msgstr ""
+msgstr "Pre-încărcare completă: %d de pagini au fost memorate în cache."
 
 #: inc/classes/subscriber/preload/class-sitemap-preload-subscriber.php:117
 #, php-format
@@ -2130,8 +2163,14 @@ msgid_plural ""
 "Please deactivate the following %s options which conflict with WP Rocket "
 "features:"
 msgstr[0] ""
+"Te rog dezactivează %s opțiune care intră în conflict cu funcționalitățile "
+"WP Rocket:"
 msgstr[1] ""
+"Te rog dezactivează următoarele %s opțiuni care intră în conflict cu "
+"funcționalitățile WP Rocket:"
 msgstr[2] ""
+"Te rog dezactivează următoarele %s de opțiuni care intră în conflict cu "
+"funcționalitățile WP Rocket:"
 
 #: inc/classes/subscriber/third-party/plugins/Optimization/class-hummingbird-subscriber.php:145
 #, php-format
@@ -2139,6 +2178,8 @@ msgctxt "Hummingbird notice"
 msgid ""
 "%1$s %2$sdisable emoji%3$s conflicts with WP Rockets %2$sdisable emoji%3$s"
 msgstr ""
+"%2$sDezactivează emoticoanele%3$s %1$s intră în conflict cu %2$sdezactivează"
+" emoticoanele%3$s WP Rockets"
 
 #: inc/classes/subscriber/third-party/plugins/Optimization/class-hummingbird-subscriber.php:167
 #, php-format
@@ -2147,6 +2188,8 @@ msgid ""
 "%1$s %2$sremove query strings%3$s conflicts with WP Rocket %2$sremove query "
 "strings%3$s"
 msgstr ""
+"%2$sÎnlătură șirurile de interogare%3$s %1$s intră în conflict cu "
+"%2$sînlătură șirurile de interogare%3$s WP Rocket"
 
 #: inc/classes/subscriber/third-party/plugins/Optimization/class-hummingbird-subscriber.php:203
 #, php-format
@@ -2155,6 +2198,8 @@ msgid ""
 "%1$s %2$sGZIP compression%3$s conflicts with WP Rocket %2$sGZIP "
 "compression%3$s"
 msgstr ""
+"%2$sCompresia GZIP%3$s %1$s intră în conflict cu %2$scompresia GZIP%3$s WP "
+"Rocket"
 
 #: inc/classes/subscriber/third-party/plugins/Optimization/class-hummingbird-subscriber.php:239
 #, php-format
@@ -2163,6 +2208,8 @@ msgid ""
 "%1$s %2$sbrowser caching%3$s conflicts with WP Rocket %2$sbrowser "
 "caching%3$s"
 msgstr ""
+"%2$scache-ul navigatorului%3$s %1$s intră în conflict cu %2$scache-ul "
+"navigatorului%3$s WP Rocket"
 
 #: inc/classes/subscriber/third-party/plugins/Optimization/class-hummingbird-subscriber.php:271
 #, php-format
@@ -2170,6 +2217,8 @@ msgctxt "Hummingbird notice"
 msgid ""
 "%1$s %2$spage caching%3$s conflicts with WP Rocket %2$spage caching%3$s"
 msgstr ""
+"%2$sCache-ul paginilor%3$s %1$s intră în conflict cu %2$scache-ul "
+"paginilor%3$s WP Rocket"
 
 #: inc/classes/subscriber/third-party/plugins/Optimization/class-hummingbird-subscriber.php:305
 #, php-format
@@ -2178,6 +2227,8 @@ msgid ""
 "%1$s %2$sasset optimization%3$s conflicts with WP Rocket %2$sfile "
 "optimization%3$s"
 msgstr ""
+"%2$sOptimizarea resurselor%3$s %1$s intră în conflict cu %2$soptimizarea "
+"resurselor%3$s WP Rocket"
 
 #: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:123
 #, php-format
@@ -2227,9 +2278,9 @@ msgstr "API-ului firewall-ului Sucuri a returnat o eroare necunoscută."
 #, php-format
 msgid "The Sucuri firewall API returned the following error: %s"
 msgid_plural "The Sucuri firewall API returned the following errors: %s"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "API-ului firewall-ului Sucuri a returnat următoarea eroare: %s"
+msgstr[1] "API-ului firewall-ului Sucuri a returnat următoarele erori: %s"
+msgstr[2] "API-ului firewall-ului Sucuri a returnat următoarele erori: %s"
 
 #: inc/classes/traits/trait-updater-api-tools.php:53
 #: inc/deprecated/3.3.php:760 inc/deprecated/3.3.php:769
@@ -2456,8 +2507,14 @@ msgid_plural ""
 "There seems to be an issue validating your license. You can see the error "
 "messages below."
 msgstr[0] ""
+"Se pare că există o problemă de validare cu licența ta. Te rog vezi mai jos "
+"mesajul de eroare."
 msgstr[1] ""
+"Se pare că există o problemă de validare cu licența ta. Poți vedea mai jos "
+"mesajele de eroare."
 msgstr[2] ""
+"Se pare că există o problemă de validare cu licența ta. Poți vedea mai jos "
+"mesajele de eroare."
 
 #: inc/functions/admin.php:361
 msgid "Server type:"
