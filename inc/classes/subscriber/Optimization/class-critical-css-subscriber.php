@@ -200,7 +200,7 @@ class Critical_CSS_Subscriber implements Subscriber_Interface {
 		}
 
 		if ( 'error' === $status || 'warning' === $status ) {
-			$message .= '<p>' . __( 'Critical CSS generation encountered one or more errors.', 'rocket' ) . ' ' . '<a href="https://docs.wp-rocket.me/article/108-render-blocking-javascript-and-css-pagespeed#errors" target="_blank" rel="noreferer noopener">' . __( 'Learn more.', 'rocket' ) . '</a>';
+			$message .= '<p>' . __( 'Critical CSS generation encountered one or more errors.', 'rocket' ) . ' <a href="https://docs.wp-rocket.me/article/1267-troubleshooting-critical-css-generation-issues" data-beacon-article="5d5214d10428631e94f94ae6" target="_blank" rel="noreferer noopener">' . __( 'Learn more.', 'rocket' ) . '</a>';
 		}
 
 		rocket_notice_html(
