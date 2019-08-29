@@ -462,16 +462,6 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 	 * {@inheritDoc}
 	 */
 	public function prepare_items() {
-		$this->process_bulk_action();
-
-		$this->process_row_actions();
-
-		if ( ! empty( $_REQUEST['_wp_http_referer'] ) ) {
-			// _wp_http_referer is used only on bulk actions, we remove it to keep the $_GET shorter
-			wp_redirect( remove_query_arg( array( '_wp_http_referer', '_wpnonce' ), wp_unslash( $_SERVER['REQUEST_URI'] ) ) );
-			exit;
-		}
-
 		$this->prepare_column_headers();
 
 		$per_page = $this->get_items_per_page( $this->package . '_items_per_page', $this->items_per_page );
