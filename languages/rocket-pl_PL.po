@@ -63,7 +63,7 @@ msgstr "Mapa witryny XML wtyczki Jetpack"
 
 #: inc/3rd-party/plugins/jetpack.php:88
 msgid "Preload the sitemap from the Jetpack plugin"
-msgstr "Załaduj mapę witryny z wtyczki Jetpack"
+msgstr "Załaduj wstępnie mapę witryny z wtyczki Jetpack"
 
 #: inc/3rd-party/plugins/jetpack.php:96
 #: inc/3rd-party/plugins/seo/all-in-one-seo-pack.php:88
@@ -89,7 +89,7 @@ msgstr "Mapa witryny XML Rank Math"
 
 #: inc/3rd-party/plugins/seo/seopress.php:83
 msgid "SEOPress XML sitemap"
-msgstr ""
+msgstr "Mapa witryny XML SEOPress"
 
 #: inc/3rd-party/plugins/seo/the-seo-framework.php:121
 msgid "The SEO Framework XML sitemap"
@@ -248,15 +248,15 @@ msgstr "Pomiń pliki z CDN"
 #: inc/admin/options.php:265
 #, php-format
 msgid "%1$s: <em>%2$s</em>."
-msgstr ""
+msgstr "%1$s: <em>%2$s</em>."
 
 #: inc/admin/options.php:275
 msgid "The following pattern is invalid and has been removed:"
 msgid_plural "The following patterns are invalid and have been removed:"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "Poniższy wzór jest nieprawidłowy i został usunięty:"
+msgstr[1] "Poniższe wzory są nieprawidłowe i zostały usunięte:"
+msgstr[2] "Poniższe wzory są nieprawidłowe i zostały usunięte:"
+msgstr[3] "Poniższe wzory są nieprawidłowe i zostały usunięte:"
 
 #: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/notices.php:955
 #: inc/common/admin-bar.php:65 inc/common/admin-bar.php:118
@@ -375,6 +375,10 @@ msgid ""
 "Cache. Please set the Endurance Cache cache level to Off (Level 0) on the "
 "%1$sSettings > General%2$s page to prevent any issues."
 msgstr ""
+"Endurance Cache jest obecnie włączony, co spowoduje konflikt z WP Rocket "
+"Cache. Proszę ustawić poziom pamięci podręcznej Endurance Cache na Off "
+"(Level 0) na stronie %1$sUstawienia > Ogólne%2$s, aby zapobiec potencjalnym "
+"problemom."
 
 #: inc/admin/ui/notices.php:305
 #, php-format
@@ -391,6 +395,7 @@ msgstr ""
 msgid ""
 "%s could not modify the .htaccess file due to missing writing permissions."
 msgstr ""
+"%s nie mógł zmienić pliku .htaccess z powodu braku uprawnień do zapisu."
 
 #: inc/admin/ui/notices.php:448 inc/admin/ui/notices.php:1032
 #, php-format
@@ -412,12 +417,16 @@ msgid ""
 "Don’t worry, WP Rocket’s page caching and settings will still function "
 "correctly."
 msgstr ""
+"Nie martw się, pamięć podręczna stron WP Rocket i ustawienia nadal będą "
+"działać poprawnie."
 
 #: inc/admin/ui/notices.php:456
 msgid ""
 "For optimal performance, adding the following lines into your .htaccess is "
 "recommended (not required):"
 msgstr ""
+"W celu zapewnienia optymalnej wydajności zaleca się dodanie następujących "
+"linii do pliku .htaccess (nie jest to wymagane):"
 
 #: inc/admin/ui/notices.php:600
 #, php-format
@@ -502,13 +511,27 @@ msgid_plural ""
 "system is not running properly, which can prevent some WP Rocket features "
 "from working as intended:"
 msgstr[0] ""
+"Następujące zaplanowane zdarzenie zakończyło się niepowodzeniem. Może to "
+"wskazywać na to, że system CRON nie działa prawidłowo, co może uniemożliwić "
+"działanie niektórych funkcji WP Rocket zgodnie z przeznaczeniem:"
 msgstr[1] ""
+"Następujące zaplanowane zdarzenia zakończyły się niepowodzeniem. Może to "
+"wskazywać na to, że system CRON nie działa prawidłowo, co może uniemożliwić "
+"działanie niektórych funkcji WP Rocket zgodnie z przeznaczeniem:"
 msgstr[2] ""
+"Następujące zaplanowane zdarzenia zakończyły się niepowodzeniem. Może to "
+"wskazywać na to, że system CRON nie działa prawidłowo, co może uniemożliwić "
+"działanie niektórych funkcji WP Rocket zgodnie z przeznaczeniem:"
 msgstr[3] ""
+"Następujące zaplanowane zdarzenia zakończyły się niepowodzeniem. Może to "
+"wskazywać na to, że system CRON nie działa prawidłowo, co może uniemożliwić "
+"działanie niektórych funkcji WP Rocket zgodnie z przeznaczeniem:"
 
 #: inc/admin/ui/notices.php:919
 msgid "Please contact your host to check if CRON is working."
 msgstr ""
+"Prosimy o kontakt z dostawcą hostingu w celu sprawdzenia, czy usługa CRON "
+"działa."
 
 #: inc/admin/ui/notices.php:958
 msgid "Stop Preload"
@@ -1150,7 +1173,7 @@ msgstr ""
 
 #: inc/classes/admin/settings/class-page.php:1053
 msgid "Sitemaps for preloading"
-msgstr "Mapy stron do wstępnego wczytywania"
+msgstr "Preload map witryn"
 
 #: inc/classes/admin/settings/class-page.php:1057
 msgid "Specify XML sitemap(s) to be used for preloading"
@@ -1346,55 +1369,55 @@ msgstr "Automatyczne czyszczenie"
 #, php-format
 msgid "%s revision in your database."
 msgid_plural "%s revisions in your database."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "%s wersja w Twojej bazie danych."
+msgstr[1] "%s wersje w Twojej bazie danych."
+msgstr[2] "%s wersji w Twojej bazie danych."
+msgstr[3] "%s wersji w Twojej bazie danych."
 
 #: inc/classes/admin/settings/class-page.php:1301
 #, php-format
 msgid "%s draft in your database."
 msgid_plural "%s drafts in your database."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "%s szkic w Twojej bazie danych."
+msgstr[1] "%s szkice w Twojej bazie danych."
+msgstr[2] "%s szkicy w Twojej bazie danych."
+msgstr[3] "%s szkicy w Twojej bazie danych."
 
 #: inc/classes/admin/settings/class-page.php:1311
 #, php-format
 msgid "%s trashed post in your database."
 msgid_plural "%s trashed posts in your database."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "%s znajdujący się w koszu wpis w Twojej bazie danych."
+msgstr[1] "%s znajdujące się w koszu wpisy w Twojej bazie danych."
+msgstr[2] "%s znajdujących się w koszu wpisów w Twojej bazie danych."
+msgstr[3] "%s znajdujących się w koszu wpisów w Twojej bazie danych."
 
 #: inc/classes/admin/settings/class-page.php:1321
 #, php-format
 msgid "%s spam comment in your database."
 msgid_plural "%s spam comments in your database."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "%s spamowy komentarz w Twojej bazie danych."
+msgstr[1] "%s spamowe komentarze w Twojej bazie danych."
+msgstr[2] "%s spamowych komentarzy w Twojej bazie danych."
+msgstr[3] "%s spamowych komentarzy w Twojej bazie danych."
 
 #: inc/classes/admin/settings/class-page.php:1331
 #, php-format
 msgid "%s trashed comment in your database."
 msgid_plural "%s trashed comments in your database."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "%s znajdujący się w koszu komentarz w Twojej bazie danych."
+msgstr[1] "%s znajdujące się w koszu komentarze w Twojej bazie danych."
+msgstr[2] "%s znajdujących się w koszu komentarzy w Twojej bazie danych."
+msgstr[3] "%s znajdujących się w koszu komentarzy w Twojej bazie danych."
 
 #: inc/classes/admin/settings/class-page.php:1341
 #, php-format
 msgid "%s expired transient in your database."
 msgid_plural "%s expired transients in your database."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "%s wygasły wpis tymczasowy w Twojej bazie danych."
+msgstr[1] "%s wygasłe wpisy tymczasowe w Twojej bazie danych."
+msgstr[2] "%s wygasłych wpisów tymczasowych w Twojej bazie danych."
+msgstr[3] "%s wygasłych wpisów tymczasowych w Twojej bazie danych."
 
 #: inc/classes/admin/settings/class-page.php:1349
 msgid "All transients"
@@ -1404,10 +1427,10 @@ msgstr "Wszystkie tymczasowe wpisy"
 #, php-format
 msgid "%s transient in your database."
 msgid_plural "%s transients in your database."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "%s wpis tymczasowy w Twojej bazie danych."
+msgstr[1] "%s wpisy tymczasowe w Twojej bazie danych."
+msgstr[2] "%s wpisów tymczasowych w Twojej bazie danych."
+msgstr[3] "%s wpisów tymczasowych w Twojej bazie danych."
 
 #: inc/classes/admin/settings/class-page.php:1359
 msgid "Optimize Tables"
@@ -1417,10 +1440,10 @@ msgstr "Optymalizacja tabel"
 #, php-format
 msgid "%s table to optimize in your database."
 msgid_plural "%s tables to optimize in your database."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "%s tabela do optymalizacji w Twojej bazie danych."
+msgstr[1] "%s tabele do optymalizacji w Twojej bazie danych."
+msgstr[2] "%s tabeli do optymalizacji w Twojej bazie danych."
+msgstr[3] "%s tabeli do optymalizacji w Twojej bazie danych."
 
 #: inc/classes/admin/settings/class-page.php:1372
 msgid "Schedule Automatic Cleanup"
@@ -1472,9 +1495,17 @@ msgid_plural ""
 "%1$s%2$s Add-ons%3$s are currently enabled. Configuration of the CDN "
 "settings is not required for %2$s to work on your site."
 msgstr[0] ""
+"%1$s%2$s Dodatek%3$s jest obecnie włączony. Konfiguracja ustawień CDN nie "
+"jest wymagana, aby %2$s działał w Twojej witrynie."
 msgstr[1] ""
+"%1$s%2$s Dodatki%3$s są obecnie włączone. Konfiguracja ustawień CDN nie jest"
+" wymagana, aby %2$s działał w Twojej witrynie."
 msgstr[2] ""
+"%1$s%2$s Dodatków%3$s jest obecnie włączonych. Konfiguracja ustawień CDN nie"
+" jest wymagana, aby %2$s działał w Twojej witrynie."
 msgstr[3] ""
+"%1$s%2$s Dodatków%3$s jest obecnie włączonych. Konfiguracja ustawień CDN nie"
+" jest wymagana, aby %2$s działał w Twojej witrynie."
 
 #: inc/classes/admin/settings/class-page.php:1484
 msgid "Enable Content Delivery Network"
@@ -1891,8 +1922,8 @@ msgid ""
 "Preload encountered an error. Could not gather links on %1$s because of the "
 "following error: %2$s. %3$sLearn more%4$s."
 msgstr ""
-"Napotkano błąd przy ładowaniu wstępnym. Nie można było zgromadzić linków na "
-"%1$s z powodu następującego błędu: %2$s. %3$sDowiedz się więcej%4$s."
+"Napotkano błąd podczas ładowania wstępnego. Nie można było zgromadzić linków"
+" na %1$s z powodu następującego błędu: %2$s. %3$sDowiedz się więcej%4$s."
 
 #: inc/classes/preload/class-homepage.php:96
 #, php-format
@@ -2100,23 +2131,39 @@ msgid_plural ""
 "Preload: %1$s uncached pages have now been preloaded. (refresh to see "
 "progress)"
 msgstr[0] ""
+"Wstępne ładowanie: %1$s niebuforowana strona zostało teraz wstępnie "
+"załadowana. (odśwież, aby zobaczyć postęp)"
 msgstr[1] ""
+"Wstępne ładowanie: %1$s niebuforowane strony zostały teraz wstępnie "
+"załadowane. (odśwież, aby zobaczyć postęp)"
 msgstr[2] ""
+"Wstępne ładowanie: %1$s niebuforowanych stron zostało teraz wstępnie "
+"załadowanych. (odśwież, aby zobaczyć postęp)"
 msgstr[3] ""
+"Wstępne ładowanie: %1$s niebuforowanych stron zostało teraz wstępnie "
+"załadowanych. (odśwież, aby zobaczyć postęp)"
 
 #: inc/classes/subscriber/preload/class-preload-subscriber.php:255
 msgid "The following error happened during gathering of the URLs to preload:"
 msgid_plural ""
 "The following errors happened during gathering of the URLs to preload:"
 msgstr[0] ""
+"Podczas pobierania adresów URL do wstępnego załadowania wystąpił następujący"
+" błąd:"
 msgstr[1] ""
+"Podczas pobierania adresów URL do wstępnego załadowania wystąpiły "
+"następujące błędy:"
 msgstr[2] ""
+"Podczas pobierania adresów URL do wstępnego załadowania wystąpiły "
+"następujące błędy:"
 msgstr[3] ""
+"Podczas pobierania adresów URL do wstępnego załadowania wystąpiły "
+"następujące błędy:"
 
 #: inc/classes/subscriber/preload/class-preload-subscriber.php:308
 #, php-format
 msgid "Preload complete: %d pages have been cached."
-msgstr ""
+msgstr "Preload zakończono: strony %d zostały zbuforowane."
 
 #: inc/classes/subscriber/preload/class-sitemap-preload-subscriber.php:117
 #, php-format
@@ -2139,10 +2186,10 @@ msgid ""
 msgid_plural ""
 "Please deactivate the following %s options which conflict with WP Rocket "
 "features:"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "Proszę wyłączyć %s opcję, konfliktującą z funkcjami WP Rocket:"
+msgstr[1] "Proszę wyłączyć %s opcje, konfliktujące z funkcjami WP Rocket:"
+msgstr[2] "Proszę wyłączyć %s opcji, konfliktujących z funkcjami WP Rocket:"
+msgstr[3] "Proszę wyłączyć %s opcji, konfliktujących z funkcjami WP Rocket:"
 
 #: inc/classes/subscriber/third-party/plugins/Optimization/class-hummingbird-subscriber.php:145
 #, php-format
@@ -2249,10 +2296,10 @@ msgstr "API zapory sieciowej Sucuri zwróciło nieznany błąd."
 #, php-format
 msgid "The Sucuri firewall API returned the following error: %s"
 msgid_plural "The Sucuri firewall API returned the following errors: %s"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "API zapory Sucuri zwróciło następujący błąd: %s"
+msgstr[1] "API zapory Sucuri zwróciło następujące błędy: %s"
+msgstr[2] "API zapory Sucuri zwróciło następujące błędy: %s"
+msgstr[3] "API zapory Sucuri zwróciło następujące błędy: %s"
 
 #: inc/classes/traits/trait-updater-api-tools.php:53
 #: inc/deprecated/3.3.php:760 inc/deprecated/3.3.php:769
@@ -2481,9 +2528,17 @@ msgid_plural ""
 "There seems to be an issue validating your license. You can see the error "
 "messages below."
 msgstr[0] ""
+"Wydaje się, że istnieje problem z walidacją licencji. Proszę zapoznać się z "
+"poniższym komunikatem o błędzie."
 msgstr[1] ""
+"Wydaje się, że istnieje problem z walidacją licencji. Proszę zapoznać się z "
+"poniższymi komunikatami o błędach."
 msgstr[2] ""
+"Wydaje się, że istnieją problemy z walidacją licencji. Proszę zapoznać się z"
+" poniższymi komunikatami o błędach."
 msgstr[3] ""
+"Wydaje się, że istnieją problemy z walidacją licencji. Proszę zapoznać się z"
+" poniższymi komunikatami o błędach."
 
 #: inc/functions/admin.php:361
 msgid "Server type:"
@@ -2530,6 +2585,8 @@ msgid ""
 "Curl functions are disabled, they are required for the Cloudflare Add-on to "
 "work correctly."
 msgstr ""
+"Funkcje curl są wyłączone, ale są wymagane, aby dodatek Cloudflare działał "
+"prawidłowo."
 
 #: inc/functions/cloudflare.php:21
 msgid "Cloudflare Email and API key are not set"
@@ -2874,7 +2931,7 @@ msgid ""
 "pages!"
 msgstr ""
 "Upewnij się, że patrzysz na swoją witrynę podczas gdy jesteś wylogowany, aby"
-" zobaczyć cachowane strony!"
+" zobaczyć buforowane strony!"
 
 #: views/deactivation-intent/form.php:93
 msgid ""
