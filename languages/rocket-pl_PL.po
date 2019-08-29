@@ -1,8 +1,8 @@
 # Copyright (C) 2016 WP Rocket
 # This file is distributed under the same license as the WP Rocket package.
 # Translators:
-# wpmedia <contact@wp-media.me>, 2019
 # www.servitium.pl <lgustaw@gmail.com>, 2019
+# wpmedia <contact@wp-media.me>, 2019
 # Dariusz Zielonka <info@dariusz-zielonka.pl>, 2019
 # 
 #, fuzzy
@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: WP Rocket 3.3.7\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
 "POT-Creation-Date: 2019-08-26 11:14-0400\n"
-"PO-Revision-Date: 2019-08-26 15:14+0000\n"
+"PO-Revision-Date: 2019-08-28 13:41+0000\n"
 "Last-Translator: Dariusz Zielonka <info@dariusz-zielonka.pl>, 2019\n"
 "Language-Team: Polish (Poland) (https://www.transifex.com/wp-media/teams/18133/pl_PL/)\n"
 "MIME-Version: 1.0\n"
