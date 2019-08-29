@@ -7,7 +7,7 @@
 class ActionScheduler_AdminHelp {
 	const SCREEN_ID = 'tools_page_action-scheduler';
 
-	public function add_help_tabs() {
+	public static function add_help_tabs() {
 		$screen = get_current_screen();
 
 		if ( ! $screen || self::SCREEN_ID != $screen->id ) {
