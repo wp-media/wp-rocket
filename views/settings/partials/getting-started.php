@@ -9,9 +9,9 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 $tutorials = [
 	'7seqacq2ol' => __( 'What WP Rocket Does For You By Default', 'rocket' ),
-	'fj42vucf99' => __( 'Finding the best settings for your site', 'rocket' ),
-	'z1qxl7s2zn' => __( 'How to check if WP Rocket is caching your site', 'rocket' ),
-	'j042jylrre' => __( 'How to measure the speed of your site', 'rocket' ),
+	'fj42vucf99' => __( 'Finding the Best Settings for Your Site', 'rocket' ),
+	'z1qxl7s2zn' => __( 'How to Check if WP Rocket is Caching Your Site', 'rocket' ),
+	'j042jylrre' => __( 'How to Measure the Speed of Your Site', 'rocket' ),
 ];
 ?>
 <div class="wpr-optionHeader">
