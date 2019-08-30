@@ -74,12 +74,3 @@ a, button{
         display: none !important;
     }
 }
-
-.wpr-tutorial-link {
-    cursor: pointer;
-    transition: color 200ms ease-out;
-
-    &:hover {
-        color: $cBlue;
-    }
-}

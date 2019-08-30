@@ -53,7 +53,7 @@ $tutorials = [
 	<?php foreach ( $section['tutorials'] as $id => $title ) : ?>
 	<div class="wpr-tutorial-item">
 	<script src="https://fast.wistia.com/embed/medias/<?php echo esc_attr( $id ); ?>.jsonp" async></script><script src="https://fast.wistia.com/assets/external/E-v1.js" async></script><div class="wistia_responsive_padding" style="padding:56.25% 0 0 0;position:relative;"><div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;"><span class="wistia_embed wistia_async_<?php echo esc_attr( $id ); ?> popover=true popoverAnimateThumbnail=true videoFoam=true" style="display:inline-block;height:100%;position:relative;width:100%">&nbsp;</span></div></div>
-	<h4 class="wpr-title3"><?php echo esc_html( $title ); ?></h4>
+	<h4 class="wpr-fieldsContainer-description"><?php echo esc_html( $title ); ?></h4>
 	</div>
 	<?php endforeach; ?>
 		</div>
