@@ -14,7 +14,7 @@ if ( 'impreza' === strtolower( $current_theme->get( 'Name' ) ) || 'impreza' === 
 	 * @return array
 	 */
 	function rocket_exclude_js_impreza( $excluded_js ) {
-		$excluded_js[] = rocket_clean_exclude_file( get_template_directory_uri() . '/framework/js/us.core.min.js' );
+		$excluded_js[] = rocket_clean_exclude_file( get_template_directory_uri() . '/js/us.core.min.js' );
 
 		return $excluded_js;
 	}
