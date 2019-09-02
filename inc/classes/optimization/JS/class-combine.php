@@ -537,6 +537,7 @@ class Combine extends Abstract_JS_Optimization {
 			'wpseo-address-wrapper',
 			'platform.stumbleupon.com',
 			'orig_request_uri',
+			'spu_action=spu_load"',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
