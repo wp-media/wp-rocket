@@ -693,6 +693,7 @@ class Combine extends Abstract_JS_Optimization {
 			'#dfd-vcard-widget-',
 			'#sf-instagram-widget-',
 			'$(\'.woocommerce-tabs-',
+			'current_url=',
 		];
 
 		/**
