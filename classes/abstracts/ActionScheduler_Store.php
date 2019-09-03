@@ -230,9 +230,7 @@ abstract class ActionScheduler_Store extends ActionScheduler_Store_Deprecated {
 				)
 			);
 
-			foreach ( $action_ids as $action_id ) {
-				$this->cancel_action( $action_id );
-			}
+			$this->bulk_cancel_actions( $action_ids );
 		}
 	}
 
@@ -256,10 +254,25 @@ abstract class ActionScheduler_Store extends ActionScheduler_Store_Deprecated {
 				)
 			);
 
-			foreach ( $action_ids as $action_id ) {
-				$this->cancel_action( $action_id );
-			}
+			$this->bulk_cancel_actions( $action_ids );
 		}
+	}
+
+	/**
+	 * Cancel a set of action IDs.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param array $action_ids List of action IDs.
+	 *
+	 * @return void
+	 */
+	private function bulk_cancel_actions( $action_ids ) {
+		foreach ( $action_ids as $action_id ) {
+			$this->cancel_action( $action_id );
+		}
+
+		do_action( 'action_scheduler_bulk_cancel_actions', $action_ids );
 	}
 
 	/**
