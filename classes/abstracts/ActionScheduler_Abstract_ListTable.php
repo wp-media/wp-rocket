@@ -634,6 +634,21 @@ abstract class ActionScheduler_Abstract_ListTable extends WP_List_Table {
 	}
 
 	/**
+	 * Process any pending actions.
+	 */
+	public function process_actions() {
+		$this->process_bulk_action();
+
+		$this->process_row_actions();
+
+		if ( ! empty( $_REQUEST['_wp_http_referer'] ) ) {
+			// _wp_http_referer is used only on bulk actions, we remove it to keep the $_GET shorter
+			wp_redirect( remove_query_arg( array( '_wp_http_referer', '_wpnonce' ), wp_unslash( $_SERVER['REQUEST_URI'] ) ) );
+			exit;
+		}
+	}
+
+	/**
 	 * Render the list table page, including header, notices, status filters and table.
 	 */
 	public function display_page() {

@@ -67,7 +67,7 @@ class ActionScheduler_AdminView extends ActionScheduler_AdminView_Deprecated {
 	 * System Status page, and for sites where WooCommerce isn't active.
 	 */
 	public function register_menu() {
-		add_submenu_page(
+		$hook_suffix = add_submenu_page(
 			'tools.php',
 			__( 'Scheduled Actions', 'action-scheduler' ),
 			__( 'Scheduled Actions', 'action-scheduler' ),
@@ -75,6 +75,15 @@ class ActionScheduler_AdminView extends ActionScheduler_AdminView_Deprecated {
 			'action-scheduler',
 			array( $this, 'render_admin_ui' )
 		);
+		add_action( 'load-' . $hook_suffix , array( $this, 'process_admin_ui' ) );
+	}
+
+	/**
+	 * Triggers processing of any pending actions.
+	 */
+	public function process_admin_ui() {
+		$table = new ActionScheduler_ListTable( ActionScheduler::store(), ActionScheduler::logger(), ActionScheduler::runner() );
+		$table->process_actions();
 	}
 
 	/**
