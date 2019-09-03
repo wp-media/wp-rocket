@@ -77,10 +77,16 @@ class CDN {
 			return rocket_add_url_protocol( $cdn_url . '/' . ltrim( $url, '/' ) );
 		}
 
-		$home      = get_option( 'home' );
-		$home_host = wp_parse_url( $home, PHP_URL_HOST );
+		$home       = get_option( 'home' );
+		$home_parts = wp_parse_url( $home );
 
-		return str_replace( $home_host, $cdn_url, $url );
+		if ( ! isset( $parsed_url['scheme'] ) ) {
+			return str_replace( $home_parts['host'], rocket_remove_url_protocol( $cdn_url ), $url );
+		}
+
+		$home_url = $home_parts['scheme'] . '://' . $home_parts['host'];
+
+		return str_replace( $home_url, rocket_add_url_protocol( $cdn_url ), $url );
 	}
 
 	/**

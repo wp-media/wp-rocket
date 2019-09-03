@@ -44,7 +44,7 @@ class TestRewriteCSSProperties extends TestCase {
         });
         Functions\when('get_option')->justReturn('http://example.org');
         Functions\when('rocket_add_url_protocol')->alias(function($url) {
-            return 'https://' . $url;
+            return 'http://' . $url;
         });
 
         $original = \file_get_contents( WP_ROCKET_PLUGIN_TESTS_ROOT . '/../Fixtures/CDN/original.css');

@@ -42,12 +42,12 @@ class TestRewrite extends TestCase {
         Functions\when('wp_parse_url')->alias(function ($url, $component = -1 ) {
             return parse_url($url, $component);
         });
-        Functions\when('content_url')->justReturn('https://example.org/wp-content/');
-        Functions\when('includes_url')->justReturn('https://example.org/wp-includes/');
-        Functions\when('wp_upload_dir')->justReturn('https://example.org/wp-content/uploads/');
-        Functions\when('get_option')->justReturn('https://example.org');
+        Functions\when('content_url')->justReturn('http://example.org/wp-content/');
+        Functions\when('includes_url')->justReturn('http://example.org/wp-includes/');
+        Functions\when('wp_upload_dir')->justReturn('http://example.org/wp-content/uploads/');
+        Functions\when('get_option')->justReturn('http://example.org');
         Functions\when('rocket_add_url_protocol')->alias(function($url) {
-            return 'https://' . $url;
+            return 'http://' . $url;
         });
 
         $original = \file_get_contents( WP_ROCKET_PLUGIN_TESTS_ROOT . '/../Fixtures/CDN/original.html');
