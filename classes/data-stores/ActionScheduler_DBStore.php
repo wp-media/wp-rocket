@@ -394,12 +394,12 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 	 *
 	 * @param int $action_id Action ID.
 	 *
-	 * @throws \InvalidArgumentException
 	 * @return void
 	 */
 	public function cancel_action( $action_id ) {
 		/** @var \wpdb $wpdb */
 		global $wpdb;
+
 		$updated = $wpdb->update(
 			$wpdb->actionscheduler_actions,
 			[ 'status' => self::STATUS_CANCELED ],
@@ -411,6 +411,81 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 			throw new \InvalidArgumentException( sprintf( __( 'Unidentified action %s', 'action-scheduler' ), $action_id ) );
 		}
 		do_action( 'action_scheduler_canceled_action', $action_id );
+	}
+
+	/**
+	 * Cancel pending actions by hook.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param string $hook Hook name.
+	 *
+	 * @return void
+	 */
+	public function cancel_actions_by_hook( $hook ) {
+		$this->bulk_cancel_actions( [ 'hook' => $hook ] );
+	}
+
+	/**
+	 * Cancel pending actions by group.
+	 *
+	 * @param string $group Group slug.
+	 *
+	 * @return void
+	 */
+	public function cancel_actions_by_group( $group ) {
+		$this->bulk_cancel_actions( [ 'group' => $group ] );
+	}
+
+	/**
+	 * Bulk cancel actions.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param array $query_args Query parameters.
+	 */
+	protected function bulk_cancel_actions( $query_args ) {
+		/** @var \wpdb $wpdb */
+		global $wpdb;
+
+		if ( ! is_array( $query_args ) ) {
+			return;
+		}
+
+		// Don't cancel actions that are already canceled.
+		if ( isset( $query_args['status'] ) && $query_args['status'] == self::STATUS_CANCELED ) {
+			return;
+		}
+
+		$action_ids = true;
+		$query_args = wp_parse_args(
+			$query_args,
+			[
+				'per_page' => 1000,
+				'status' => self::STATUS_PENDING,
+			]
+		);
+
+		while ( $action_ids ) {
+			$action_ids = $this->query_actions( $query_args );
+			if ( empty( $action_ids ) ) {
+				break;
+			}
+
+			$format     = array_fill( 0, count( $action_ids ), '%d' );
+			$query_in   = '(' . implode( ',', $format ) . ')';
+			$parameters = $action_ids;
+			array_unshift( $parameters, self::STATUS_CANCELED );
+
+			$wpdb->query(
+				$wpdb->prepare( // wpcs: PreparedSQLPlaceholders replacement count ok.
+					"UPDATE {$wpdb->actionscheduler_actions} SET status = %s WHERE action_id IN {$query_in}",
+					$parameters
+				)
+			);
+
+			do_action( 'action_scheduler_bulk_cancel_actions', $action_ids );
+		}
 	}
 
 	/**

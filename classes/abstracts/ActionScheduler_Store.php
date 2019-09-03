@@ -33,16 +33,17 @@ abstract class ActionScheduler_Store extends ActionScheduler_Store_Deprecated {
 	abstract public function fetch_action( $action_id );
 
 	/**
-	 * @param string $hook
-	 * @param array $params
-	 * @return string ID of the next action matching the criteria
+	 * @param string $hook Hook name/slug.
+	 * @param array  $params Hook arguments.
+	 * @return string ID of the next action matching the criteria.
 	 */
 	abstract public function find_action( $hook, $params = array() );
 
 	/**
-	 * @param array $query
+	 * @param array  $query Query parameters.
 	 * @param string $query_type Whether to select or count the results. Default, select.
-	 * @return array The IDs of actions matching the query
+	 *
+	 * @return array|int The IDs of or count of actions matching the query.
 	 */
 	abstract public function query_actions( $query = array(), $query_type = 'select' );
 
@@ -207,6 +208,71 @@ abstract class ActionScheduler_Store extends ActionScheduler_Store_Deprecated {
 		if ( empty( $schedule ) || ! is_a( $schedule, 'ActionScheduler_Schedule' ) ) {
 			throw ActionScheduler_InvalidActionException::from_schedule( $action_id, $schedule );
 		}
+	}
+
+	/**
+	 * Cancel pending actions by hook.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param string $hook Hook name.
+	 *
+	 * @return void
+	 */
+	public function cancel_actions_by_hook( $hook ) {
+		$action_ids = true;
+		while ( ! empty( $action_ids ) ) {
+			$action_ids = $this->query_actions(
+				array(
+					'hook' => $hook,
+					'status' => self::STATUS_PENDING,
+					'per_page' => 1000,
+				)
+			);
+
+			$this->bulk_cancel_actions( $action_ids );
+		}
+	}
+
+	/**
+	 * Cancel pending actions by group.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param string $group Group slug.
+	 *
+	 * @return void
+	 */
+	public function cancel_actions_by_group( $group ) {
+		$action_ids = true;
+		while ( ! empty( $action_ids ) ) {
+			$action_ids = $this->query_actions(
+				array(
+					'group' => $group,
+					'status' => self::STATUS_PENDING,
+					'per_page' => 1000,
+				)
+			);
+
+			$this->bulk_cancel_actions( $action_ids );
+		}
+	}
+
+	/**
+	 * Cancel a set of action IDs.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param array $action_ids List of action IDs.
+	 *
+	 * @return void
+	 */
+	private function bulk_cancel_actions( $action_ids ) {
+		foreach ( $action_ids as $action_id ) {
+			$this->cancel_action( $action_id );
+		}
+
+		do_action( 'action_scheduler_bulk_cancel_actions', $action_ids );
 	}
 
 	/**

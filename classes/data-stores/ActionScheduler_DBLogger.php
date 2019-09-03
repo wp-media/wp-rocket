@@ -114,4 +114,33 @@ class ActionScheduler_DBLogger extends ActionScheduler_Logger {
 		global $wpdb;
 		$wpdb->delete( $wpdb->actionscheduler_logs, [ 'action_id' => $action_id, ], [ '%d' ] );
 	}
+
+	/**
+	 * Bulk add cancel action log entries.
+	 *
+	 * @param array $action_ids List of action ID.
+	 */
+	public function bulk_log_cancel_actions( $action_ids ) {
+		if ( empty( $action_ids ) ) {
+			return;
+		}
+
+		/** @var \wpdb $wpdb */
+		global $wpdb;
+		$date     = as_get_datetime_object();
+		$date_gmt = $date->format( 'Y-m-d H:i:s' );
+		ActionScheduler_TimezoneHelper::set_local_timezone( $date );
+		$date_local = $date->format( 'Y-m-d H:i:s' );
+		$message    = __( 'action canceled', 'action-scheduler' );
+		$format     = '(%d, ' . $wpdb->prepare( '%s, %s, %s', $message, $date_gmt, $date_local ) . ')';
+		$sql_query  = "INSERT {$wpdb->actionscheduler_logs} (action_id, message, log_date_gmt, log_date_local) VALUES ";
+		$value_rows = [];
+
+		foreach ( $action_ids as $action_id ) {
+			$value_rows[] = $wpdb->prepare( $format, $action_id );
+		}
+		$sql_query .= implode( ',', $value_rows );
+
+		$wpdb->query( $sql_query );
+	}
 }
