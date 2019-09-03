@@ -5,7 +5,7 @@
  * Description: A robust scheduling library for use in WordPress plugins.
  * Author: Prospress
  * Author URI: https://prospress.com/
- * Version: 3.0.0
+ * Version: 3.0.0-beta-1
  * License: GPLv3
  *
  * Copyright 2019 Prospress, Inc.  (email : freedoms@prospress.com)
@@ -25,21 +25,21 @@
  *
  */
 
-if ( ! function_exists( 'action_scheduler_register_3_dot_0_dot_0' ) ) {
+if ( ! function_exists( 'action_scheduler_register_3_dot_0_dot_0_beta_1' ) ) {
 
 	if ( ! class_exists( 'ActionScheduler_Versions' ) ) {
 		require_once( 'classes/ActionScheduler_Versions.php' );
 		add_action( 'plugins_loaded', array( 'ActionScheduler_Versions', 'initialize_latest_version' ), 1, 0 );
 	}
 
-	add_action( 'plugins_loaded', 'action_scheduler_register_3_dot_0_dot_0', 0, 0 );
+	add_action( 'plugins_loaded', 'action_scheduler_register_3_dot_0_dot_0_beta_1', 0, 0 );
 
-	function action_scheduler_register_3_dot_0_dot_0() {
+	function action_scheduler_register_3_dot_0_dot_0_beta_1() {
 		$versions = ActionScheduler_Versions::instance();
-		$versions->register( '3.0.0', 'action_scheduler_initialize_3_dot_0_dot_0' );
+		$versions->register( '3.0.0-beta-1', 'action_scheduler_initialize_3_dot_0_dot_0_beta_1' );
 	}
 
-	function action_scheduler_initialize_3_dot_0_dot_0() {
+	function action_scheduler_initialize_3_dot_0_dot_0_beta_1() {
 		require_once( 'classes/abstracts/ActionScheduler.php' );
 		ActionScheduler::init( __FILE__ );
 	}
