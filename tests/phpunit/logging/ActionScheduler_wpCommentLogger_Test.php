@@ -5,10 +5,16 @@
  * @package test_cases\logging
  */
 class ActionScheduler_wpCommentLogger_Test extends ActionScheduler_UnitTestCase {
+	private $use_comment_logger;
+
 	public function test_default_logger() {
 		$logger = ActionScheduler::logger();
 		$this->assertInstanceOf( 'ActionScheduler_Logger', $logger );
-		$this->assertInstanceOf( 'ActionScheduler_wpCommentLogger', $logger );
+		if ( $this->using_comment_logger() ) {
+			$this->assertInstanceOf( 'ActionScheduler_wpCommentLogger', $logger );
+		} else {
+			$this->assertNotInstanceOf( 'ActionScheduler_wpCommentLogger', $logger );
+		}
 	}
 
 	public function test_add_log_entry() {
@@ -83,11 +89,11 @@ class ActionScheduler_wpCommentLogger_Test extends ActionScheduler_UnitTestCase 
 	public function test_execution_comments() {
 		$action_id = as_schedule_single_action( time(), 'a hook' );
 		$logger = ActionScheduler::logger();
-		$started = new ActionScheduler_LogEntry( $action_id, 'action started' );
-		$finished = new ActionScheduler_LogEntry( $action_id, 'action complete' );
+		$started = new ActionScheduler_LogEntry( $action_id, 'action started via Unit Tests' );
+		$finished = new ActionScheduler_LogEntry( $action_id, 'action complete via Unit Tests' );
 
-		$runner = new ActionScheduler_QueueRunner();
-		$runner->run();
+		$runner = ActionScheduler_Mocker::get_queue_runner();
+		$runner->run( 'Unit Tests' );
 
 		$logs = $logger->get_logs( $action_id );
 		$this->assertTrue( in_array( $this->log_entry_to_array( $started ), $this->log_entry_to_array( $logs ) ) );
@@ -99,17 +105,32 @@ class ActionScheduler_wpCommentLogger_Test extends ActionScheduler_UnitTestCase 
 		add_action( $hook, array( $this, '_a_hook_callback_that_throws_an_exception' ) );
 		$action_id = as_schedule_single_action( time(), $hook );
 		$logger = ActionScheduler::logger();
-		$started = new ActionScheduler_LogEntry( $action_id, 'action started' );
-		$finished = new ActionScheduler_LogEntry( $action_id, 'action complete' );
-		$failed = new ActionScheduler_LogEntry( $action_id, 'action failed: Execution failed' );
+		$started = new ActionScheduler_LogEntry( $action_id, 'action started via Unit Tests' );
+		$finished = new ActionScheduler_LogEntry( $action_id, 'action complete via Unit Tests' );
+		$failed = new ActionScheduler_LogEntry( $action_id, 'action failed via Unit Tests: Execution failed' );
 
-		$runner = new ActionScheduler_QueueRunner();
-		$runner->run();
+		$runner = ActionScheduler_Mocker::get_queue_runner();
+		$runner->run( 'Unit Tests' );
 
 		$logs = $logger->get_logs( $action_id );
 		$this->assertTrue( in_array( $this->log_entry_to_array( $started ), $this->log_entry_to_array( $logs ) ) );
 		$this->assertFalse( in_array( $this->log_entry_to_array( $finished ), $this->log_entry_to_array( $logs ) ) );
 		$this->assertTrue( in_array( $this->log_entry_to_array( $failed ), $this->log_entry_to_array( $logs ) ) );
+	}
+
+	public function test_failed_schedule_next_instance_comments() {
+		$action_id = rand();
+		$logger    = ActionScheduler::logger();
+		$log_entry = new ActionScheduler_LogEntry( $action_id, 'There was a failure scheduling the next instance of this action: Execution failed' );
+
+		try {
+			$this->_a_hook_callback_that_throws_an_exception();
+		} catch ( Exception $e ) {
+			do_action( 'action_scheduler_failed_to_schedule_next_instance', $action_id, $e, new ActionScheduler_Action('my_hook') );
+		}
+
+		$logs = $logger->get_logs( $action_id );
+		$this->assertTrue( in_array( $this->log_entry_to_array( $log_entry ), $this->log_entry_to_array( $logs ) ) );
 	}
 
 	public function test_fatal_error_comments() {
@@ -147,6 +168,10 @@ class ActionScheduler_wpCommentLogger_Test extends ActionScheduler_UnitTestCase 
 	}
 
 	public function test_filtering_of_get_comments() {
+		if ( ! $this->using_comment_logger() ) {
+			return;
+		}
+
 		$post_id = $this->factory->post->create_object(array(
 			'post_title' => __FUNCTION__,
 		));
@@ -180,6 +205,14 @@ class ActionScheduler_wpCommentLogger_Test extends ActionScheduler_UnitTestCase 
 		// Expecting two: one when the action is created, another when we added our custom log
 		$this->assertCount( 2, $comments );
 		$this->assertContains( $log_id, wp_list_pluck($comments, 'comment_ID'));
+	}
+
+	private function using_comment_logger() {
+		if ( null === $this->use_comment_logger ) {
+			$this->use_comment_logger = ! ActionScheduler_DataController::dependencies_met();
+		}
+
+		return $this->use_comment_logger;
 	}
 }
  

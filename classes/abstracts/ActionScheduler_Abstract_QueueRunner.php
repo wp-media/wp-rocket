@@ -44,28 +44,30 @@ abstract class ActionScheduler_Abstract_QueueRunner extends ActionScheduler_Abst
 	 * Process an individual action.
 	 *
 	 * @param int $action_id The action ID to process.
+	 * @param string $context Optional identifer for the context in which this action is being processed, e.g. 'WP CLI' or 'WP Cron'
+	 *        Generally, this should be capitalised and not localised as it's a proper noun.
 	 */
-	public function process_action( $action_id ) {
+	public function process_action( $action_id, $context = '' ) {
 		try {
-			do_action( 'action_scheduler_before_execute', $action_id );
+			do_action( 'action_scheduler_before_execute', $action_id, $context );
 
 			if ( ActionScheduler_Store::STATUS_PENDING !== $this->store->get_status( $action_id ) ) {
-				do_action( 'action_scheduler_execution_ignored', $action_id );
+				do_action( 'action_scheduler_execution_ignored', $action_id, $context );
 				return;
 			}
 
 			$action = $this->store->fetch_action( $action_id );
 			$this->store->log_execution( $action_id );
 			$action->execute();
-			do_action( 'action_scheduler_after_execute', $action_id, $action );
+			do_action( 'action_scheduler_after_execute', $action_id, $action, $context );
 			$this->store->mark_complete( $action_id );
 		} catch ( Exception $e ) {
 			$this->store->mark_failure( $action_id );
-			do_action( 'action_scheduler_failed_execution', $action_id, $e );
+			do_action( 'action_scheduler_failed_execution', $action_id, $e, $context );
 		}
 
-		if ( isset( $action ) && is_a( $action, 'ActionScheduler_Action' ) ) {
-			$this->schedule_next_instance( $action );
+		if ( isset( $action ) && is_a( $action, 'ActionScheduler_Action' ) && $action->get_schedule()->is_recurring() ) {
+			$this->schedule_next_instance( $action, $action_id );
 		}
 	}
 
@@ -73,13 +75,13 @@ abstract class ActionScheduler_Abstract_QueueRunner extends ActionScheduler_Abst
 	 * Schedule the next instance of the action if necessary.
 	 *
 	 * @param ActionScheduler_Action $action
+	 * @param int $action_id
 	 */
-	protected function schedule_next_instance( ActionScheduler_Action $action ) {
-		$schedule = $action->get_schedule();
-		$next     = $schedule->next( as_get_datetime_object() );
-
-		if ( ! is_null( $next ) && $schedule->is_recurring() ) {
-			$this->store->save_action( $action, $next );
+	protected function schedule_next_instance( ActionScheduler_Action $action, $action_id ) {
+		try {
+			ActionScheduler::factory()->repeat( $action );
+		} catch ( Exception $e ) {
+			do_action( 'action_scheduler_failed_to_schedule_next_instance', $action_id, $e, $action );
 		}
 	}
 
@@ -98,7 +100,16 @@ abstract class ActionScheduler_Abstract_QueueRunner extends ActionScheduler_Abst
 	 * @return int
 	 */
 	public function get_allowed_concurrent_batches() {
-		return apply_filters( 'action_scheduler_queue_runner_concurrent_batches', 5 );
+		return apply_filters( 'action_scheduler_queue_runner_concurrent_batches', 1 );
+	}
+
+	/**
+	 * Check if the number of allowed concurrent batches is met or exceeded.
+	 *
+	 * @return bool
+	 */
+	public function has_maximum_concurrent_batches() {
+		return $this->store->get_claim_count() >= $this->get_allowed_concurrent_batches();
 	}
 
 	/**
@@ -213,7 +224,9 @@ abstract class ActionScheduler_Abstract_QueueRunner extends ActionScheduler_Abst
 	 * Process actions in the queue.
 	 *
 	 * @author Jeremy Pry
+	 * @param string $context Optional identifer for the context in which this action is being processed, e.g. 'WP CLI' or 'WP Cron'
+	 *        Generally, this should be capitalised and not localised as it's a proper noun.
 	 * @return int The number of actions processed.
 	 */
-	abstract public function run();
+	abstract public function run( $context = '' );
 }

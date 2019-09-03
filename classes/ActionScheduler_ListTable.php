@@ -221,14 +221,14 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 	 * @return string
 	 */
 	protected function get_recurrence( $action ) {
-		$recurrence = $action->get_schedule();
-		if ( $recurrence->is_recurring() ) {
-			if ( method_exists( $recurrence, 'interval_in_seconds' ) ) {
-				return sprintf( __( 'Every %s', 'action-scheduler' ), self::human_interval( $recurrence->interval_in_seconds() ) );
-			}
+		$schedule = $action->get_schedule();
+		if ( $schedule->is_recurring() ) {
+			$recurrence = $schedule->get_recurrence();
 
-			if ( method_exists( $recurrence, 'get_recurrence' ) ) {
-				return sprintf( __( 'Cron %s', 'action-scheduler' ), $recurrence->get_recurrence() );
+			if ( is_numeric( $recurrence ) ) {
+				return sprintf( __( 'Every %s', 'action-scheduler' ), self::human_interval( $recurrence ) );
+			} else {
+				return sprintf( __( '%s', 'action-scheduler' ), $recurrence );
 			}
 		}
 
@@ -315,10 +315,26 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 	 */
 	public function display_admin_notices() {
 
-		if ( $this->store->get_claim_count() >= $this->runner->get_allowed_concurrent_batches() ) {
+		if ( $this->runner->has_maximum_concurrent_batches() ) {
 			$this->admin_notices[] = array(
 				'class'   => 'updated',
-				'message' => sprintf( __( 'Maximum simultaneous batches already in progress (%s queues). No actions will be processed until the current batches are complete.', 'action-scheduler' ), $this->store->get_claim_count() ),
+				'message' => sprintf( __( 'Maximum simultaneous queues already in progress (%s queues). No additional queues will begin processing until the current queues are complete.', 'action-scheduler' ), $this->store->get_claim_count() ),
+			);
+		} elseif ( $this->store->has_pending_actions_due() ) {
+
+			$async_request_lock_expiration = ActionScheduler::lock()->get_expiration( 'async-request-runner' );
+
+			// No lock set or lock expired
+			if ( false === $async_request_lock_expiration || $async_request_lock_expiration < time() ) {
+				$in_progress_url       = add_query_arg( 'status', 'in-progress', remove_query_arg( 'status' ) );
+				$async_request_message = sprintf( __( 'A new queue has begun processing. %sView actions in-progress%s', 'action-scheduler' ), '<a href="' . esc_url( $in_progress_url ) . '">', ' &raquo;</a>' );
+			} else {
+				$async_request_message = sprintf( __( 'The next queue will begin processing in approximately %d seconds.', 'action-scheduler' ), $async_request_lock_expiration - time() );
+			}
+
+			$this->admin_notices[] = array(
+				'class'   => 'notice notice-info',
+				'message' => $async_request_message,
 			);
 		}
 
@@ -379,13 +395,13 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 
 		$schedule_display_string = '';
 
-		if ( ! $schedule->next() ) {
-			return $schedule_display_string;
+		if ( ! $schedule->get_date() ) {
+			return '0000-00-00 00:00:00';
 		}
 
-		$next_timestamp = $schedule->next()->getTimestamp();
+		$next_timestamp = $schedule->get_date()->getTimestamp();
 
-		$schedule_display_string .= $schedule->next()->format( 'Y-m-d H:i:s O' );
+		$schedule_display_string .= $schedule->get_date()->format( 'Y-m-d H:i:s O' );
 		$schedule_display_string .= '<br/>';
 
 		if ( gmdate( 'U' ) > $next_timestamp ) {
@@ -442,7 +458,7 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 		try {
 			switch ( $row_action_type ) {
 				case 'run' :
-					$this->runner->process_action( $action_id );
+					$this->runner->process_action( $action_id, 'Admin List Table' );
 					break;
 				case 'cancel' :
 					$this->store->cancel_action( $action_id );

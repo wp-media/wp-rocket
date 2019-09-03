@@ -37,7 +37,7 @@ class ActionScheduler_wpPostStore_Test extends ActionScheduler_UnitTestCase {
 		$retrieved = $store->fetch_action($action_id);
 		$this->assertEquals($action->get_hook(), $retrieved->get_hook());
 		$this->assertEqualSets($action->get_args(), $retrieved->get_args());
-		$this->assertEquals($action->get_schedule()->next()->getTimestamp(), $retrieved->get_schedule()->next()->getTimestamp());
+		$this->assertEquals( $action->get_schedule()->get_date()->getTimestamp(), $retrieved->get_schedule()->get_date()->getTimestamp() );
 		$this->assertEquals($action->get_group(), $retrieved->get_group());
 	}
 
@@ -74,6 +74,45 @@ class ActionScheduler_wpPostStore_Test extends ActionScheduler_UnitTestCase {
 
 		$fetched = $store->fetch_action( $action_id );
 		$this->assertInstanceOf( 'ActionScheduler_CanceledAction', $fetched );
+	}
+
+	public function test_cancel_actions_by_hook() {
+		$store   = new ActionScheduler_wpPostStore();
+		$actions = array();
+		$hook    = 'by_hook_test';
+		for ( $day = 1; $day <= 3; $day++ ) {
+			$delta     = sprintf( '+%d day', $day );
+			$time      = as_get_datetime_object( $delta );
+			$schedule  = new ActionScheduler_SimpleSchedule( $time );
+			$action    = new ActionScheduler_Action( $hook, array(), $schedule, 'my_group' );
+			$actions[] = $store->save_action( $action );
+		}
+		$store->cancel_actions_by_hook( $hook );
+
+		foreach ( $actions as $action_id ) {
+			$fetched = $store->fetch_action( $action_id );
+			$this->assertInstanceOf( 'ActionScheduler_CanceledAction', $fetched );
+		}
+	}
+
+	public function test_cancel_actions_by_group() {
+		$store   = new ActionScheduler_wpPostStore();
+		$actions = array();
+		$group   = 'by_group_test';
+
+		for ( $day = 1; $day <= 3; $day++ ) {
+			$delta     = sprintf( '+%d day', $day );
+			$time      = as_get_datetime_object( $delta );
+			$schedule  = new ActionScheduler_SimpleSchedule( $time );
+			$action    = new ActionScheduler_Action( 'my_hook', array(), $schedule, $group );
+			$actions[] = $store->save_action( $action );
+		}
+		$store->cancel_actions_by_group( $group );
+
+		foreach ( $actions as $action_id ) {
+			$fetched = $store->fetch_action( $action_id );
+			$this->assertInstanceOf( 'ActionScheduler_CanceledAction', $fetched );
+		}
 	}
 
 	public function test_claim_actions() {
@@ -225,7 +264,7 @@ class ActionScheduler_wpPostStore_Test extends ActionScheduler_UnitTestCase {
 		$action->execute();
 		$store->mark_complete( $action_id );
 
-		$next = $action->get_schedule()->next( as_get_datetime_object() );
+		$next = $action->get_schedule()->get_next( as_get_datetime_object() );
 		$new_action_id = $store->save_action( $action, $next );
 
 		$this->assertEquals('publish', get_post_status($action_id));
@@ -246,9 +285,9 @@ class ActionScheduler_wpPostStore_Test extends ActionScheduler_UnitTestCase {
 		$now = as_get_datetime_object();
 		$store->mark_complete( $action_id );
 
-		$this->assertEquals( $store->get_date( $action_id )->getTimestamp(), $now->getTimestamp(), '', 1 );
+		$this->assertEquals( $store->get_date( $action_id )->getTimestamp(), $now->getTimestamp(), '', 1 ); // allow timestamp to be 1 second off for older versions of PHP
 
-		$next = $action->get_schedule()->next( $now );
+		$next = $action->get_schedule()->get_next( $now );
 		$new_action_id = $store->save_action( $action, $next );
 
 		$this->assertEquals( (int)($now->getTimestamp()) + HOUR_IN_SECONDS, $store->get_date($new_action_id)->getTimestamp() );

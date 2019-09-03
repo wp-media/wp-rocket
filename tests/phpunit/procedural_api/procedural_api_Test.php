@@ -12,7 +12,7 @@ class procedural_api_Test extends ActionScheduler_UnitTestCase {
 
 		$store = ActionScheduler::store();
 		$action = $store->fetch_action($action_id);
-		$this->assertEquals( $time, $action->get_schedule()->next()->getTimestamp() );
+		$this->assertEquals( $time, $action->get_schedule()->get_date()->getTimestamp() );
 		$this->assertEquals( $hook, $action->get_hook() );
 	}
 
@@ -23,8 +23,8 @@ class procedural_api_Test extends ActionScheduler_UnitTestCase {
 
 		$store = ActionScheduler::store();
 		$action = $store->fetch_action($action_id);
-		$this->assertEquals( $time, $action->get_schedule()->next()->getTimestamp() );
-		$this->assertEquals( $time + HOUR_IN_SECONDS + 2, $action->get_schedule()->next(as_get_datetime_object($time + 2))->getTimestamp());
+		$this->assertEquals( $time, $action->get_schedule()->get_date()->getTimestamp() );
+		$this->assertEquals( $time + HOUR_IN_SECONDS + 2, $action->get_schedule()->get_next(as_get_datetime_object($time + 2))->getTimestamp());
 		$this->assertEquals( $hook, $action->get_hook() );
 	}
 
@@ -36,8 +36,11 @@ class procedural_api_Test extends ActionScheduler_UnitTestCase {
 		$store = ActionScheduler::store();
 		$action = $store->fetch_action($action_id);
 		$expected_date = as_get_datetime_object('2014-10-10');
-		$this->assertEquals( $expected_date->getTimestamp(), $action->get_schedule()->next()->getTimestamp() );
+		$this->assertEquals( $expected_date->getTimestamp(), $action->get_schedule()->get_date()->getTimestamp() );
 		$this->assertEquals( $hook, $action->get_hook() );
+
+		$expected_date = as_get_datetime_object( '2015-10-10' );
+		$this->assertEquals( $expected_date->getTimestamp(), $action->get_schedule()->get_next( as_get_datetime_object( '2015-01-02' ) )->getTimestamp() );
 	}
 
 	public function test_get_next() {
@@ -48,6 +51,32 @@ class procedural_api_Test extends ActionScheduler_UnitTestCase {
 		$next = as_next_scheduled_action( $hook );
 
 		$this->assertEquals( $time->getTimestamp(), $next );
+	}
+
+	public function test_get_next_async() {
+		$hook = md5(rand());
+		$action_id = as_enqueue_async_action( $hook );
+
+		$next = as_next_scheduled_action( $hook );
+
+		$this->assertTrue( $next );
+
+		$store = ActionScheduler::store();
+
+		// Completed async actions should still return false
+		$store->mark_complete( $action_id );
+		$next = as_next_scheduled_action( $hook );
+		$this->assertFalse( $next );
+
+		// Failed async actions should still return false
+		$store->mark_failure( $action_id );
+		$next = as_next_scheduled_action( $hook );
+		$this->assertFalse( $next );
+
+		// Cancelled async actions should still return false
+		$store->cancel_action( $action_id );
+		$next = as_next_scheduled_action( $hook );
+		$this->assertFalse( $next );
 	}
 
 	public function provider_time_hook_args_group() {
@@ -111,13 +140,16 @@ class procedural_api_Test extends ActionScheduler_UnitTestCase {
 
 		// Make sure the next scheduled action is unscheduled
 		$this->assertEquals( $hook, $unscheduled_action->get_hook() );
-		$this->assertNull( $unscheduled_action->get_schedule()->next() );
+		$this->assertEquals( as_get_datetime_object($time), $unscheduled_action->get_schedule()->get_date() );
+		$this->assertEquals( ActionScheduler_Store::STATUS_CANCELED, $store->get_status( $action_id_unscheduled ) );
+		$this->assertNull( $unscheduled_action->get_schedule()->get_next( as_get_datetime_object() ) );
 
 		// Make sure other scheduled actions are not unscheduled
+		$this->assertEquals( ActionScheduler_Store::STATUS_PENDING, $store->get_status( $action_id_scheduled ) );
 		$scheduled_action = $store->fetch_action( $action_id_scheduled );
 
 		$this->assertEquals( $hook, $scheduled_action->get_hook() );
-		$this->assertEquals( $action_scheduled_time, $scheduled_action->get_schedule()->next()->getTimestamp() );
+		$this->assertEquals( $action_scheduled_time, $scheduled_action->get_schedule()->get_date()->getTimestamp() );
 	}
 
 	/**
@@ -137,13 +169,18 @@ class procedural_api_Test extends ActionScheduler_UnitTestCase {
 		$next = as_next_scheduled_action( $hook );
 		$this->assertFalse($next);
 
+		$after = as_get_datetime_object( $time );
+		$after->modify( '+1 minute' );
+
 		$store = ActionScheduler::store();
 
 		foreach ( $action_ids as $action_id ) {
 			$action = $store->fetch_action($action_id);
 
-			$this->assertNull($action->get_schedule()->next());
-			$this->assertEquals($hook, $action->get_hook() );
+			$this->assertEquals( $hook, $action->get_hook() );
+			$this->assertEquals( as_get_datetime_object( $time ), $action->get_schedule()->get_date() );
+			$this->assertEquals( ActionScheduler_Store::STATUS_CANCELED, $store->get_status( $action_id ) );
+			$this->assertNull( $action->get_schedule()->get_next( $after ) );
 		}
 	}
 

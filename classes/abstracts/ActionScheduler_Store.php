@@ -4,12 +4,13 @@
  * Class ActionScheduler_Store
  * @codeCoverageIgnore
  */
-abstract class ActionScheduler_Store {
+abstract class ActionScheduler_Store extends ActionScheduler_Store_Deprecated {
 	const STATUS_COMPLETE = 'complete';
 	const STATUS_PENDING  = 'pending';
 	const STATUS_RUNNING  = 'in-progress';
 	const STATUS_FAILED   = 'failed';
 	const STATUS_CANCELED = 'canceled';
+	const DEFAULT_CLASS   = 'ActionScheduler_wpPostStore';
 
 	/** @var ActionScheduler_Store */
 	private static $store = NULL;
@@ -32,17 +33,19 @@ abstract class ActionScheduler_Store {
 	abstract public function fetch_action( $action_id );
 
 	/**
-	 * @param string $hook
-	 * @param array $params
-	 * @return string ID of the next action matching the criteria
+	 * @param string $hook Hook name/slug.
+	 * @param array  $params Hook arguments.
+	 * @return string ID of the next action matching the criteria.
 	 */
 	abstract public function find_action( $hook, $params = array() );
 
 	/**
-	 * @param array $query
-	 * @return array The IDs of actions matching the query
+	 * @param array  $query Query parameters.
+	 * @param string $query_type Whether to select or count the results. Default, select.
+	 *
+	 * @return array|int The IDs of or count of actions matching the query.
 	 */
-	abstract public function query_actions( $query = array() );
+	abstract public function query_actions( $query = array(), $query_type = 'select' );
 
 	/**
 	 * Get a count of all actions in the store, grouped by status
@@ -147,9 +150,9 @@ abstract class ActionScheduler_Store {
 	 * @return string
 	 */
 	protected function get_scheduled_date_string( ActionScheduler_Action $action, DateTime $scheduled_date = NULL ) {
-		$next = null === $scheduled_date ? $action->get_schedule()->next() : $scheduled_date;
+		$next = null === $scheduled_date ? $action->get_schedule()->get_date() : $scheduled_date;
 		if ( ! $next ) {
-			throw new InvalidArgumentException( __( 'Invalid schedule. Cannot save action.', 'action-scheduler' ) );
+			return '0000-00-00 00:00:00';
 		}
 		$next->setTimezone( new DateTimeZone( 'UTC' ) );
 
@@ -164,13 +167,112 @@ abstract class ActionScheduler_Store {
 	 * @return string
 	 */
 	protected function get_scheduled_date_string_local( ActionScheduler_Action $action, DateTime $scheduled_date = NULL ) {
-		$next = null === $scheduled_date ? $action->get_schedule()->next() : $scheduled_date;
+		$next = null === $scheduled_date ? $action->get_schedule()->get_date() : $scheduled_date;
 		if ( ! $next ) {
-			throw new InvalidArgumentException( __( 'Invalid schedule. Cannot save action.', 'action-scheduler' ) );
+			return '0000-00-00 00:00:00';
 		}
 
 		ActionScheduler_TimezoneHelper::set_local_timezone( $next );
 		return $next->format( 'Y-m-d H:i:s' );
+	}
+
+	/**
+	 * Validate that we could decode action arguments.
+	 *
+	 * @param mixed $args      The decoded arguments.
+	 * @param int   $action_id The action ID.
+	 *
+	 * @throws ActionScheduler_InvalidActionException When the decoded arguments are invalid.
+	 */
+	protected function validate_args( $args, $action_id ) {
+		// Ensure we have an array of args.
+		if ( ! is_array( $args ) ) {
+			throw ActionScheduler_InvalidActionException::from_decoding_args( $action_id );
+		}
+
+		// Validate JSON decoding if possible.
+		if ( function_exists( 'json_last_error' ) && JSON_ERROR_NONE !== json_last_error() ) {
+			throw ActionScheduler_InvalidActionException::from_decoding_args( $action_id, $args );
+		}
+	}
+
+	/**
+	 * Validate a ActionScheduler_Schedule object.
+	 *
+	 * @param mixed $schedule  The unserialized ActionScheduler_Schedule object.
+	 * @param int   $action_id The action ID.
+	 *
+	 * @throws ActionScheduler_InvalidActionException When the schedule is invalid.
+	 */
+	protected function validate_schedule( $schedule, $action_id ) {
+		if ( empty( $schedule ) || ! is_a( $schedule, 'ActionScheduler_Schedule' ) ) {
+			throw ActionScheduler_InvalidActionException::from_schedule( $action_id, $schedule );
+		}
+	}
+
+	/**
+	 * Cancel pending actions by hook.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param string $hook Hook name.
+	 *
+	 * @return void
+	 */
+	public function cancel_actions_by_hook( $hook ) {
+		$action_ids = true;
+		while ( ! empty( $action_ids ) ) {
+			$action_ids = $this->query_actions(
+				array(
+					'hook' => $hook,
+					'status' => self::STATUS_PENDING,
+					'per_page' => 1000,
+				)
+			);
+
+			$this->bulk_cancel_actions( $action_ids );
+		}
+	}
+
+	/**
+	 * Cancel pending actions by group.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param string $group Group slug.
+	 *
+	 * @return void
+	 */
+	public function cancel_actions_by_group( $group ) {
+		$action_ids = true;
+		while ( ! empty( $action_ids ) ) {
+			$action_ids = $this->query_actions(
+				array(
+					'group' => $group,
+					'status' => self::STATUS_PENDING,
+					'per_page' => 1000,
+				)
+			);
+
+			$this->bulk_cancel_actions( $action_ids );
+		}
+	}
+
+	/**
+	 * Cancel a set of action IDs.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param array $action_ids List of action IDs.
+	 *
+	 * @return void
+	 */
+	private function bulk_cancel_actions( $action_ids ) {
+		foreach ( $action_ids as $action_id ) {
+			$this->cancel_action( $action_id );
+		}
+
+		do_action( 'action_scheduler_bulk_cancel_actions', $action_ids );
 	}
 
 	/**
@@ -186,57 +288,32 @@ abstract class ActionScheduler_Store {
 		);
 	}
 
+	/**
+	 * Check if there are any pending scheduled actions due to run.
+	 *
+	 * @param ActionScheduler_Action $action
+	 * @param DateTime $scheduled_date (optional)
+	 * @return string
+	 */
+	public function has_pending_actions_due() {
+		$pending_actions = $this->query_actions( array(
+			'date'   => as_get_datetime_object(),
+			'status' => ActionScheduler_Store::STATUS_PENDING,
+		) );
+
+		return ! empty( $pending_actions );
+	}
+
 	public function init() {}
-
-	/**
-	 * Mark an action that failed to fetch correctly as failed.
-	 *
-	 * @since 2.2.6
-	 *
-	 * @param int $action_id The ID of the action.
-	 */
-	public function mark_failed_fetch_action( $action_id ) {
-		self::$store->mark_failure( $action_id );
-	}
-
-	/**
-	 * Add base hooks
-	 *
-	 * @since 2.2.6
-	 */
-	protected static function hook() {
-		add_action( 'action_scheduler_failed_fetch_action', array( self::$store, 'mark_failed_fetch_action' ), 20 );
-	}
-
-	/**
-	 * Remove base hooks
-	 *
-	 * @since 2.2.6
-	 */
-	protected static function unhook() {
-		remove_action( 'action_scheduler_failed_fetch_action', array( self::$store, 'mark_failed_fetch_action' ), 20 );
-	}
 
 	/**
 	 * @return ActionScheduler_Store
 	 */
 	public static function instance() {
-		if ( empty(self::$store) ) {
-			$class = apply_filters( 'action_scheduler_store_class', 'ActionScheduler_wpPostStore' );
+		if ( empty( self::$store ) ) {
+			$class = apply_filters( 'action_scheduler_store_class', self::DEFAULT_CLASS );
 			self::$store = new $class();
-			self::hook();
 		}
 		return self::$store;
-	}
-
-	/**
-	 * Get the site's local time.
-	 *
-	 * @deprecated 2.1.0
-	 * @return DateTimeZone
-	 */
-	protected function get_local_timezone() {
-		_deprecated_function( __FUNCTION__, '2.1.0', 'ActionScheduler_TimezoneHelper::set_local_timezone()' );
-		return ActionScheduler_TimezoneHelper::get_local_timezone();
 	}
 }

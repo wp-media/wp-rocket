@@ -10,7 +10,7 @@ class ActionScheduler_NullAction_Test extends ActionScheduler_UnitTestCase {
 
 		$this->assertEmpty($action->get_hook());
 		$this->assertEmpty($action->get_args());
-		$this->assertNull($action->get_schedule()->next());
+		$this->assertNull( $action->get_schedule()->get_date() );
 	}
 }
  
