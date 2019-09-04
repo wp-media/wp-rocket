@@ -34,6 +34,7 @@ class Capabilities_Subscriber implements Subscriber_Interface {
 	public static function get_subscribed_events() {
 		return [
 			'init'                         => [ 'add_rocket_capabilities', 11 ],
+			'option_page_capability_' . WP_ROCKET_PLUGIN_SLUG => 'required_capability',
 			'ure_built_in_wp_caps'         => 'add_caps_to_ure',
 			'ure_capabilities_groups_tree' => 'add_group_to_ure',
 		];
@@ -53,6 +54,19 @@ class Capabilities_Subscriber implements Subscriber_Interface {
 		foreach ( $this->get_capabilities() as $cap ) {
 			$role->add_cap( $cap );
 		}
+	}
+
+	/**
+	 * Sets the capability for the options page.
+	 *
+	 * @since 3.4
+	 * @author Remy Perona
+	 *
+	 * @param string $capability The capability used for the page, which is manage_options by default.
+	 * @return string
+	 */
+	public function required_capability( $capability ) {
+		return 'rocket_manage_options';
 	}
 
 	/**
