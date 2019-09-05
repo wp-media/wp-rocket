@@ -135,6 +135,7 @@ class Plugin {
 			'db_optimization_subscriber',
 			'mobile_subscriber',
 			'woocommerce_subscriber',
+			'bigcommerce_subscriber',
 			'pressable_subscriber',
 			'syntaxhighlighter_subscriber',
 			'elementor_subscriber',

@@ -244,7 +244,7 @@ class Preload_Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$status = 'success';
+		$status = 'info';
 		// translators: %1$s = Number of pages preloaded.
 		$message  = '<p>' . sprintf( _n( 'Preload: %1$s uncached page has now been preloaded. (refresh to see progress)', 'Preload: %1$s uncached pages have now been preloaded. (refresh to see progress)', $running, 'rocket' ), number_format_i18n( $running ) );
 		$message .= ' <em> - (' . date_i18n( get_option( 'date_format' ), current_time( 'timestamp' ) ) . ' @ ' . date_i18n( get_option( 'time_format' ), current_time( 'timestamp' ) ) . ') </em></p>';
@@ -306,12 +306,12 @@ class Preload_Subscriber implements Subscriber_Interface {
 		delete_transient( 'rocket_preload_errors' );
 		delete_transient( 'rocket_preload_complete_time' );
 
-		$notice_message = sprintf( __( 'Preload: %d pages have been cached.', 'rocket' ), $result );
-		$notice_message .= ' <em> (' . $result_timestamp .') </em>';
+		// translators: %d is the number of pages preloaded.
+		$notice_message  = sprintf( __( 'Preload complete: %d pages have been cached.', 'rocket' ), $result );
+		$notice_message .= ' <em> (' . $result_timestamp . ') </em>';
 
 		\rocket_notice_html(
 			[
-				// translators: %d is the number of pages preloaded.
 				'message' => $notice_message,
 			]
 		);
@@ -324,7 +324,7 @@ class Preload_Subscriber implements Subscriber_Interface {
 	 * @author Remy Perona
 	 */
 	public function do_admin_post_stop_preload() {
-		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'rocket_stop_preload' ) ) {
+		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'rocket_stop_preload' ) ) {
 			wp_nonce_ays( '' );
 		}
 

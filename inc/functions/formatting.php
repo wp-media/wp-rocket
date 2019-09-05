@@ -51,7 +51,7 @@ function rocket_sanitize_js( $file ) {
 /**
  * Sanitize and validate JS files to exclude from the minification.
  *
- * @since  3.4
+ * @since  3.3.7
  * @author Remy Perona
  * @author Grégory Viguier
  *
@@ -73,7 +73,7 @@ function rocket_validate_js( $file ) {
 /**
  * Check if the passed value is an internal URL (default domain or CDN/Multilingual).
  *
- * @since  3.4
+ * @since  3.3.7
  * @author Remy Perona
  * @author Grégory Viguier
  *
@@ -115,7 +115,7 @@ function rocket_is_internal_file( $file ) {
 /**
  * Sanitize a setting value meant for a textarea.
  *
- * @since  3.4
+ * @since  3.3.7
  * @author Grégory Viguier
  *
  * @param  string       $field The field’s name. Can be one of the following:
