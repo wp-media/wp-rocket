@@ -202,15 +202,21 @@ class Preload_Subscriber implements Subscriber_Interface {
 
 		delete_transient( 'rocket_preload_triggered' );
 
+		$message = __( 'Preload: WP Rocket has started preloading your website.', 'rocket' );
+
+		if ( current_user_can( 'rocket_manage_options' ) ) {
+			$message = ' ' . sprintf(
+				// Translators: %1$s = opening link tag, %2$s = closing link tag.
+				__( 'Go to the %1$sWP Rocket settings%2$s page to track progress.', 'rocket' ),
+				'<a href="' . esc_url( admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG ) ) . '">',
+				'</a>'
+			);
+		}
+
 		\rocket_notice_html(
 			[
 				'status'  => 'info',
-				'message' => sprintf(
-					// Translators: %1$s = opening link tag, %2$s = closing link tag.
-					__( 'Preload: WP Rocket has started preloading your website. Go to the %1$sWP Rocket settings%2$s page to track progress.', 'rocket' ),
-					'<a href="' . esc_url( admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG ) ) . '">',
-					'</a>'
-				),
+				'message' => $message,
 			]
 		);
 	}
