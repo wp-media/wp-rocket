@@ -854,6 +854,7 @@ class Page {
 	 */
 	private function media_section() {
 		$lazyload_beacon = $this->beacon->get_suggest( 'lazyload' );
+		$webp_beacon     = $this->beacon->get_suggest( 'webp' );
 
 		$this->settings->add_page_section(
 			'media',
@@ -905,7 +906,7 @@ class Page {
 					'description' => sprintf(
 						// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 						__( 'Enable this option if you would like WP Rocket to create a separate cache file for WebP compatible browsers. Please note that WP Rocket cannot create WebP images for you. %1$sMore info%2$s', 'rocket' ),
-						'<a href="">',
+						'<a href="' . esc_url( $webp_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $webp_beacon['id'] ) . '" target="_blank">',
 						'</a>'
 					),
 					'page'        => 'media',

@@ -347,6 +347,12 @@ class Beacon {
 					'url' => 'https://fr.docs.wp-rocket.me/article/1146-utiliser-lazyload-images-wp-rocket/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
+			'webp' => [
+				'en' => [
+					'id'  => '5d72919704286364bc8ed49d',
+					'url' => 'https://docs.wp-rocket.me/article/1282-webp',
+				],
+			],
 			'lazyload_section'       => [
 				'en' => '5c884cf80428633d2cf38314,54b85754e4b0512429883a86,5418c792e4b0e7b8127bed99,569ec4a69033603f7da32c93,5419e246e4b099def9b5561e,5a299b332c7d3a1a640cb402',
 				'fr' => '56967a859033603f7da30858,56967952c69791436155e60a,56cb9c9d90336008e9e9e3dc,569676ea9033603f7da3083d,5a3a66f52c7d3a1943676524',
