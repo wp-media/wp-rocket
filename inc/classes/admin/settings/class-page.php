@@ -901,7 +901,13 @@ class Page {
 					 *
 					 * @param string $description Section description.
 					 */
-					'description' => apply_filters( 'rocket_webp_section_description', '' ),
+					'helper'      => apply_filters( 'rocket_webp_section_description', '' ),
+					'description' => sprintf(
+						// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+						__( 'Enable this option if you would like WP Rocket to create a separate cache file for WebP compatible browsers. Please note that WP Rocket cannot create WebP images for you. %1$sMore info%2$s', 'rocket' ),
+						'<a href="">',
+						'</a>'
+					),
 					'page'        => 'media',
 				],
 			]
