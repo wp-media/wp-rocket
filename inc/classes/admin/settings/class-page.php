@@ -476,7 +476,7 @@ class Page {
 					'title'       => __( 'Cache Lifespan', 'rocket' ),
 					'type'        => 'fields_container',
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description' => sprintf( __( 'Cache lifespan is the period of time after which all cache files are removed.<br>Enable %1$spreloading%2$s for the cache to be rebuilt automatically after lifespan expiration.', 'rocket' ), '<a href="#preload">', '</a>' ),
+					'description' => sprintf( __( 'Cache files older than the specified lifespan will be deleted.<br>Enable %1$spreloading%2$s for the cache to be rebuilt automatically after lifespan expiration.', 'rocket' ), '<a href="#preload">', '</a>' ),
 					'help'        => [
 						'url' => $cache_life_beacon['url'],
 						'id'  => $this->beacon->get_suggest( 'cache_lifespan_section' ),
