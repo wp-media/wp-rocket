@@ -64,6 +64,27 @@ class RocketCDNSubscriber implements Subscriber_Interface {
 			[
 				'method'   => 'PUT',
 				'callback' => [ $this, 'enable' ],
+				'args'     => [
+					'email' => [
+						'required'          => true,
+						'validate_callback' => [ $this, 'validate_email' ],
+					],
+					'key'   => [
+						'required'          => true,
+						'validate_callback' => [ $this, 'validate_key' ],
+					],
+					'url'   => [
+						'required'          => true,
+						'validate_callback' => function( $param, $request, $key ) {
+							$url = esc_url_raw( $param );
+
+							return ! empty( $url );
+						},
+						'sanitize_callback' => function( $param, $request, $key ) {
+							return esc_url_raw( $param );
+						},
+					],
+				],
 			]
 		);
 	}
@@ -83,6 +104,16 @@ class RocketCDNSubscriber implements Subscriber_Interface {
 			[
 				'method'   => 'PUT',
 				'callback' => [ $this, 'disable' ],
+				'args'     => [
+					'email' => [
+						'required'          => true,
+						'validate_callback' => [ $this, 'validate_email' ],
+					],
+					'key'   => [
+						'required'          => true,
+						'validate_callback' => [ $this, 'validate_key' ],
+					],
+				],
 			]
 		);
 	}
@@ -121,5 +152,35 @@ class RocketCDNSubscriber implements Subscriber_Interface {
 		$this->options->set( 'cdn_zones', [] );
 
 		$this->options_api->set( $this->options_api->get_option_name( 'settings' ), $this->options->get_options() );
+	}
+
+	/**
+	 * Checks that the email sent along the request corresponds to the one saved in the DB
+	 *
+	 * @since 3.5
+	 * @author Remy Perona
+	 *
+	 * @param string           $param Parameter value to validate.
+	 * @param \WP_REST_Request $request WP REST Request object.
+	 * @param string           $key Parameter key.
+	 * @return bool
+	 */
+	public function validate_email( $param, $request, $key ) {
+		return $param === $this->options->get( 'consumer_email' );
+	}
+
+	/**
+	 * Checks that the key sent along the request corresponds to the one saved in the DB
+	 *
+	 * @since 3.5
+	 * @author Remy Perona
+	 *
+	 * @param string           $param Parameter value to validate.
+	 * @param \WP_REST_Request $request WP REST Request object.
+	 * @param string           $key Parameter key.
+	 * @return bool
+	 */
+	public function validate_key( $param, $request, $key ) {
+		return $param === $this->options->get( 'consumer_key' );
 	}
 }
