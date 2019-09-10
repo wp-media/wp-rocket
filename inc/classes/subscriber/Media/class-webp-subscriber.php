@@ -1,6 +1,7 @@
 <?php
 namespace WP_Rocket\Subscriber\Media;
 
+use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Subscriber\CDN\CDNSubscriber;
 use WP_Rocket\Event_Management\Subscriber_Interface;
@@ -14,13 +15,22 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  */
 class Webp_Subscriber implements Subscriber_Interface {
 	/**
-	 * Options instance.
+	 * Options_Data instance.
 	 *
 	 * @var    Options_Data
 	 * @access private
 	 * @author Remy Perona
 	 */
-	private $options;
+	private $options_data;
+
+	/**
+	 * Options instance.
+	 *
+	 * @var    Options
+	 * @access private
+	 * @author Grégory Viguier
+	 */
+	private $options_api;
 
 	/**
 	 * CDNSubscriber instance.
@@ -47,11 +57,13 @@ class Webp_Subscriber implements Subscriber_Interface {
 	 * @access public
 	 * @author Remy Perona
 	 *
-	 * @param Options_Data  $options        Options instance.
+	 * @param Options_Data  $options_data   Options_Data instance.
+	 * @param Options       $options_api    Options instance.
 	 * @param CDNSubscriber $cdn_subscriber CDNSubscriber instance.
 	 */
-	public function __construct( Options_Data $options, CDNSubscriber $cdn_subscriber ) {
-		$this->options        = $options;
+	public function __construct( Options_Data $options_data, Options $options_api, CDNSubscriber $cdn_subscriber ) {
+		$this->options_data   = $options_data;
+		$this->options_api    = $options_api;
 		$this->cdn_subscriber = $cdn_subscriber;
 	}
 
@@ -90,7 +102,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 	 * @return string
 	 */
 	public function convert_to_webp( $html ) {
-		if ( ! $this->options->get( 'cache_webp' ) ) {
+		if ( ! $this->options_data->get( 'cache_webp' ) ) {
 			return $html;
 		}
 
@@ -271,6 +283,11 @@ class Webp_Subscriber implements Subscriber_Interface {
 	 * @param bool $active True if the webp feature is now active in the 3rd party plugin. False otherwise.
 	 */
 	public function sync_webp_cache_with_third_party_plugins( $active ) {
+		if ( $this->options_data->get( 'cache_webp' ) && $this->get_plugins_serving_webp() ) {
+			// Disable the cache webp option.
+			$this->options_data->set( 'cache_webp', 0 );
+			$this->options_api->set( 'settings', $this->options_data->get_options() );
+		}
 		rocket_generate_config_file();
 	}
 
@@ -656,7 +673,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 	 * @return bool
 	 */
 	private function is_using_cdn() {
-		// Don't use `$this->options->get( 'cdn' )` here, we need an up-to-date value when the CDN option changes.
+		// Don't use `$this->options_data->get( 'cdn' )` here, we need an up-to-date value when the CDN option changes.
 		$use = get_rocket_option( 'cdn' ) && $this->cdn_subscriber->get_cdn_hosts( [], [ 'all', 'images' ] );
 		/**
 		 * Filter whether WP Rocket is using a CDN for webp images.
