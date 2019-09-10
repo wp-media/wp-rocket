@@ -210,7 +210,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 			return sprintf(
 				// Translators: %1$s = opening link tag, %2$s = closing link tag.
 				__( 'If you activate this option, WP Rocket will create separate cache files to serve WebP images. Any WebP images you have on your site will be served from these files to compatible browsers. Since you don’t seem to use any method to convert and serve images as WebP, consider using %1$sImagify%2$s or another supported plugin.', 'rocket' ),
-				'<a href="https://wordpress.org/plugins/imagify/">',
+				'<a href="#imagify">',
 				'</a>'
 			);
 		}
