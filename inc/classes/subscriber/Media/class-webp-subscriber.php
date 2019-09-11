@@ -121,7 +121,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 		$extensions      = implode( '|', $extensions );
 		$attribute_names = implode( '|', $attribute_names );
 
-		if ( ! preg_match_all( '@["\'\s](?<name>(?:data-[a-z0-9_-]*)?(?:' . $attribute_names . '))\s*=\s*["\']\s*(?<value>(?:https?:/)?/[^"\']+\.(?:' . $extensions . ')[^"\']*?)\s*["\']@is', $html, $attributes, PREG_SET_ORDER ) ) {
+		if ( ! preg_match_all( '@["\'\s](?<name>(?:data-(?:[a-z0-9_-]+-)?)?(?:' . $attribute_names . '))\s*=\s*["\']\s*(?<value>(?:https?:/)?/[^"\']+\.(?:' . $extensions . ')[^"\']*?)\s*["\']@is', $html, $attributes, PREG_SET_ORDER ) ) {
 			return $html;
 		}
 
@@ -158,7 +158,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Modifies the WebP section description of WP Rocket settings
+	 * Modifies the WebP section description of WP Rocket settings.
 	 *
 	 * @since  3.4
 	 * @access public
