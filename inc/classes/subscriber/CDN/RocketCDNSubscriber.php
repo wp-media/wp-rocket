@@ -131,7 +131,7 @@ class RocketCDNSubscriber implements Subscriber_Interface {
 		$params = $request->get_body_params();
 
 		$this->options->set( 'cdn', 1 );
-		$this->options->set( 'cdn_cnames' [ $params['rocketcdn_url'] ] );
+		$this->options->set( 'cdn_cnames' [ $params['url'] ] );
 		$this->options->set( 'cdn_zones', [ 'all' ] );
 
 		$this->options_api->set( $this->options_api->get_option_name( 'settings' ), $this->options->get_options() );
