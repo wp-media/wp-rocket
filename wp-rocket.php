@@ -19,8 +19,8 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 // Rocket defines.
 define( 'WP_ROCKET_VERSION',               '3.4-beta1' );
-define( 'WP_ROCKET_WP_VERSION',            '4.7' );
-define( 'WP_ROCKET_PHP_VERSION',           '5.4' );
+define( 'WP_ROCKET_WP_VERSION',            '4.9' );
+define( 'WP_ROCKET_PHP_VERSION',           '5.6' );
 define( 'WP_ROCKET_PRIVATE_KEY',           false );
 define( 'WP_ROCKET_SLUG',                  'wp_rocket_settings' );
 define( 'WP_ROCKET_WEB_MAIN',              'https://wp-rocket.me/' );
@@ -65,7 +65,7 @@ define( 'WP_ROCKET_MINIFY_CACHE_URL',  WP_ROCKET_CACHE_ROOT_URL . 'min/' );
 define( 'WP_ROCKET_CACHE_BUSTING_URL', WP_ROCKET_CACHE_ROOT_URL . 'busting/' );
 
 if ( ! defined( 'CHMOD_WP_ROCKET_CACHE_DIRS' ) ) {
-	define( 'CHMOD_WP_ROCKET_CACHE_DIRS', 0755 );
+	define( 'CHMOD_WP_ROCKET_CACHE_DIRS', 0755 ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 }
 if ( ! defined( 'WP_ROCKET_LASTVERSION' ) ) {
 	define( 'WP_ROCKET_LASTVERSION', '3.2.6' );
@@ -88,7 +88,7 @@ function rocket_load_textdomain() {
 	$locale = get_locale();
 
 	// This filter is documented in /wp-includes/l10n.php.
-	$locale = apply_filters( 'plugin_locale', $locale, 'rocket' );
+	$locale = apply_filters( 'plugin_locale', $locale, 'rocket' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	load_textdomain( 'rocket', WP_LANG_DIR . '/plugins/wp-rocket-' . $locale . '.mo' );
 
 	load_plugin_textdomain( 'rocket', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
