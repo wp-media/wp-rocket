@@ -255,19 +255,16 @@ class TestConvertToWebp extends TestCase {
 			return parse_url( $url, $component );
 		} );
 
-		// is_ssl().
-		Functions\when( 'is_ssl' )->justReturn( true );
-
 		// set_url_scheme().
 		Functions\when( 'set_url_scheme' )->alias( function( $url, $scheme = null ) {
 			$orig_scheme = $scheme;
 
 			if ( ! $scheme ) {
-				$scheme = \is_ssl() ? 'https' : 'http';
+				$scheme = 'https';
 			} elseif ( $scheme === 'admin' || $scheme === 'login' || $scheme === 'login_post' || $scheme === 'rpc' ) {
-				$scheme = \is_ssl() || force_ssl_admin() ? 'https' : 'http';
+				$scheme = 'https';
 			} elseif ( $scheme !== 'http' && $scheme !== 'https' && $scheme !== 'relative' ) {
-				$scheme = \is_ssl() ? 'https' : 'http';
+				$scheme = 'https';
 			}
 
 			$url = trim( $url );
