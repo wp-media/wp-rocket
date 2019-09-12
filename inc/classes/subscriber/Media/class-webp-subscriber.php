@@ -170,11 +170,12 @@ class Webp_Subscriber implements Subscriber_Interface {
 	 */
 	public function webp_section_description( $description ) {
 		$webp_plugins = $this->get_webp_plugins();
-		$is_using_cdn = $this->is_using_cdn();
 		$serving      = [];
 		$creating     = [];
 
 		if ( $webp_plugins ) {
+			$is_using_cdn = $this->is_using_cdn();
+
 			foreach ( $webp_plugins as $plugin ) {
 				if ( $plugin->is_serving_webp() ) {
 					if ( ! $is_using_cdn || $plugin->is_serving_webp_compatible_with_cdn() ) {
@@ -203,7 +204,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 		}
 
 		if ( $creating ) {
-			if ( ! $this->options->get( 'cache_webp' ) ) {
+			if ( ! $this->options_data->get( 'cache_webp' ) ) {
 				return sprintf(
 					// Translators: %1$s = plugin name(s).
 					_n( 'You are using %1$s to convert images to WebP. If you activate this option, WP Rocket will create separate cache files to serve WebP images to compatible browsers. ', 'You are using %1$s to convert images to WebP. If you activate this option, WP Rocket will create separate cache files to serve WebP images to compatible browsers.', count( $creating ), 'rocket' ),
@@ -218,7 +219,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 			);
 		}
 
-		if ( ! $this->options->get( 'cache_webp' ) ) {
+		if ( ! $this->options_data->get( 'cache_webp' ) ) {
 			return sprintf(
 				// Translators: %1$s = opening link tag, %2$s = closing link tag.
 				__( 'If you activate this option, WP Rocket will create separate cache files to serve WebP images. Any WebP images you have on your site will be served from these files to compatible browsers. Since you don’t seem to use any method to convert and serve images as WebP, consider using %1$sImagify%2$s or another supported plugin.', 'rocket' ),
