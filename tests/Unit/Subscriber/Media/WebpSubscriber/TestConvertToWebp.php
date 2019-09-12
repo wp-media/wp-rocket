@@ -206,8 +206,9 @@ class TestConvertToWebp extends TestCase {
 	 * @author Grégory Viguier
 	 * @access private
 	 *
-	 * @param int   $cache_webp_option_value Value to return for $mocks['optionsData']->get( 'cache_webp' ).
-	 * @param array $cdn_hosts               An array of URL hosts.
+	 * @param  int   $cache_webp_option_value Value to return for $mocks['optionsData']->get( 'cache_webp' ).
+	 * @param  array $cdn_hosts               An array of URL hosts.
+	 * @return array An array containing the 3 mocks.
 	 */
 	private function getConstructorMocks( $cache_webp_option_value = 1, $cdn_hosts = [ 'cdn-example.net' ] ) {
 		// Mock the 3 required objets for Webp_Subscriber.
