@@ -78,11 +78,13 @@ class Webp_Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_buffer'                   => [ 'convert_to_webp', 23 ],
-			'rocket_webp_section_description' => 'webp_section_description',
-			'rocket_cache_webp_setting_field' => 'maybe_disable_setting_field',
-			'rocket_disable_webp_cache'       => 'maybe_disable_webp_cache',
-			'rocket_third_party_webp_change'  => 'sync_webp_cache_with_third_party_plugins',
+			'rocket_buffer'                           => [ 'convert_to_webp', 23 ],
+			'rocket_webp_section_description'         => 'webp_section_description',
+			'rocket_cache_webp_setting_field'         => 'maybe_disable_setting_field',
+			'rocket_disable_webp_cache'               => 'maybe_disable_webp_cache',
+			'rocket_third_party_webp_change'          => 'sync_webp_cache_with_third_party_plugins',
+			'rocket_preload_url_request_args'         => 'add_accept_header',
+			'rocket_partial_preload_url_request_args' => 'add_accept_header',
 		];
 	}
 
@@ -289,6 +291,25 @@ class Webp_Subscriber implements Subscriber_Interface {
 			$this->options_api->set( 'settings', $this->options_data->get_options() );
 		}
 		rocket_generate_config_file();
+	}
+
+	/**
+	 * Add WebP to the HTTP_ACCEPT headers on preload request when the WebP option is active
+	 *
+	 * @since 3.4
+	 * @author Remy Perona
+	 *
+	 * @param array $args Arguments for the request.
+	 * @return array
+	 */
+	public function add_accept_headers( $args ) {
+		if ( ! $this->options_data->get( 'cache_webp' ) ) {
+			return $args;
+		}
+
+		$args['headers']['HTTP_ACCEPT'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8';
+
+		return $args;
 	}
 
 	/** ----------------------------------------------------------------------------------------- */
