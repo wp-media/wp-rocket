@@ -173,6 +173,7 @@ class Page {
 			$this->cdn_section();
 			$this->heartbeat_section();
 			$this->addons_section();
+			$this->varnish_section();
 			$this->cloudflare_section();
 			$this->sucuri_section();
 		} else {
@@ -1757,7 +1758,7 @@ class Page {
 					'rocket_varnish_field_settings',
 					[
 						'varnish_auto_purge' => [
-							'type'              => 'one_click_addon',
+							'type'              => 'rocket_addon',
 							'label'             => __( 'Varnish', 'rocket' ),
 							'logo'              => [
 								'url'    => WP_ROCKET_ASSETS_IMG_URL . 'logo-varnish.svg',
@@ -1767,7 +1768,7 @@ class Page {
 							'title'             => __( 'If Varnish runs on your server, you must activate this add-on.', 'rocket' ),
 							// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 							'description'       => sprintf( __( 'Varnish cache will be purged each time WP Rocket clears its cache to ensure content is always up-to-date.<br>%1$sLearn more%2$s', 'rocket' ), '<a href="' . esc_url( $varnish_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $varnish_beacon['id'] ) . '" target="_blank">', '</a>' ),
-							'section'           => 'one_click',
+							'section'           => 'addons',
 							'page'              => 'addons',
 							'default'           => 0,
 							'sanitize_callback' => 'sanitize_checkbox',
@@ -1825,6 +1826,36 @@ class Page {
 					'default'           => 0,
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
+			]
+		);
+	}
+
+	private function varnish_section() {
+		$this->settings->add_page_section(
+			'varnish',
+			[
+				'title' => 'Varnish',
+				'menu_description' => '',
+				'class' => [
+					'wpr-subMenuItem',
+					'wpr-addonSubMenuItem',
+				],
+			]
+		);
+
+		$this->settings->add_settings_sections(
+			[
+				'varnish_settings' => [
+					'type'  => 'fields_container',
+					'title' => __( 'Varnish Settings', 'rocket' ),
+					'page'  => 'varnish',
+				],
+			]
+		);
+
+		$this->settings->add_settings_fields(
+			[
+
 			]
 		);
 	}
