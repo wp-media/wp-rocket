@@ -1830,13 +1830,19 @@ class Page {
 		);
 	}
 
+	/**
+	 * Registers Varnish section
+	 *
+	 * @since 3.5
+	 * @author Remy Perona
+	 */
 	private function varnish_section() {
 		$this->settings->add_page_section(
 			'varnish',
 			[
-				'title' => 'Varnish',
+				'title'            => 'Varnish',
 				'menu_description' => '',
-				'class' => [
+				'class'            => [
 					'wpr-subMenuItem',
 					'wpr-addonSubMenuItem',
 				],
@@ -1855,7 +1861,13 @@ class Page {
 
 		$this->settings->add_settings_fields(
 			[
-
+				'varnish_custom_ip' => [
+					'label'       => _x( 'Custom Host/IP:', 'Varnish', 'rocket' ),
+					'description' => '',
+					'default'     => '',
+					'section'     => 'varnish_settings',
+					'page'        => 'varnish',
+				],
 			]
 		);
 	}
