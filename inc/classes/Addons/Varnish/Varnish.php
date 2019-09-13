@@ -1,6 +1,8 @@
 <?php
 namespace WP_Rocket\Addons\Varnish;
 
+use WP_Rocket\Admin\Options_Data;
+
 /**
  * Varnish cache purge
  *
@@ -8,10 +10,16 @@ namespace WP_Rocket\Addons\Varnish;
  * @author Remy Perona
  */
 class Varnish {
+	private $options;
+
+	public function __construct( Options_Data $options ) {
+		$this->options = $options;
+	}
+
 	/**
 	 * Send purge request to Varnish
 	 *
-	 * @since 2.6.8
+	 * @since 3.5
 	 *
 	 * @param  string $url The URL to purge.
 	 * @return void
@@ -33,7 +41,7 @@ class Varnish {
 		* @since 2.6.8
 		* @param string The Varnish IP
 		*/
-		$varnish_ip = apply_filters( 'rocket_varnish_ip', '' );
+		$varnish_ip = apply_filters( 'rocket_varnish_ip', $this->options->get( 'varnish_custom_ip' ) );
 
 		if ( defined( 'WP_ROCKET_VARNISH_IP' ) && ! $varnish_ip ) {
 			$varnish_ip = WP_ROCKET_VARNISH_IP;
@@ -52,7 +60,7 @@ class Varnish {
 
 		wp_remote_request(
 			$purgeme,
-			array(
+			[
 				'method'      => 'PURGE',
 				'blocking'    => false,
 				'redirection' => 0,
@@ -77,7 +85,7 @@ class Varnish {
 						'X-Purge-Method' => $varnish_x_purgemethod,
 					]
 				),
-			)
+			]
 		);
 	}
 }
