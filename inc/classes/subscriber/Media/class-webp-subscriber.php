@@ -271,7 +271,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 	 * @return bool
 	 */
 	public function maybe_disable_webp_cache( $disable_webp_cache ) {
-		return ! $disable_webp_cache && $this->get_plugins_serving_webp() ? true : $disable_webp_cache;
+		return ! $disable_webp_cache && $this->get_plugins_serving_webp() ? true : (bool) $disable_webp_cache;
 	}
 
 	/**
