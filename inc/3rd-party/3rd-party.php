@@ -4,7 +4,6 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 require WP_ROCKET_3RD_PARTY_PATH . 'hosting/wpengine.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'hosting/flywheel.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'hosting/wp-serveur.php';
-require WP_ROCKET_3RD_PARTY_PATH . 'hosting/varnish.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'hosting/pagely.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'hosting/nginx.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'hosting/siteground.php';
