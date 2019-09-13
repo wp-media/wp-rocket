@@ -228,6 +228,7 @@ function rocket_first_install() {
 				'heartbeat_admin_behavior'    => 'reduce_periodicity',
 				'heartbeat_editor_behavior'   => 'reduce_periodicity',
 				'varnish_auto_purge'          => 0,
+				'varnish_custom_ip'           => '',
 				'do_beta'                     => 0,
 				'analytics_enabled'           => 0,
 				'google_analytics_cache'      => 0,
