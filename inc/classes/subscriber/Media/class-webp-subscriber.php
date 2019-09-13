@@ -280,10 +280,8 @@ class Webp_Subscriber implements Subscriber_Interface {
 	 * @since  3.4
 	 * @access public
 	 * @author Grégory Viguier
-	 *
-	 * @param bool $active True if the webp feature is now active in the 3rd party plugin. False otherwise.
 	 */
-	public function sync_webp_cache_with_third_party_plugins( $active ) {
+	public function sync_webp_cache_with_third_party_plugins() {
 		if ( $this->options_data->get( 'cache_webp' ) && $this->get_plugins_serving_webp() ) {
 			// Disable the cache webp option.
 			$this->options_data->set( 'cache_webp', 0 );
