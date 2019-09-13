@@ -21,7 +21,7 @@ class TestMaybeDisableWebpCache extends TestCase {
 	}
 
 	/**
-	 * Test Webp_Subscriber->maybe_disable_webp_cache() should return false when webp cache is not already disabled and no webp plugin are enabled.
+	 * Test Webp_Subscriber->maybe_disable_webp_cache() should return false when webp cache is not already disabled and no webp plugins are enabled.
 	 */
 	public function testShouldReturnFalseWhenWebpCacheNotAlreadyEnabledAndNoWebpPluginEnabled() {
 		Functions\when( 'rocket_is_plugin_active' )->alias( function( $plugin ) {
