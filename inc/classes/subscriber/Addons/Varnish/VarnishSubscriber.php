@@ -57,7 +57,7 @@ class VarnishSubscriber implements Subscriber_Interface {
 	 * @return bool
 	 */
 	private function should_purge() {
-		if ( ! apply_filters( 'do_rocket_varnish_http_purge', false ) ) {
+		if ( ! apply_filters( 'do_rocket_varnish_http_purge', false ) ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 			return false;
 		}
 
@@ -81,7 +81,7 @@ class VarnishSubscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$this->varnish->http_purge( trailingslashit( $url ) . '?vregex' );
+		$this->varnish->purge( trailingslashit( $url ) . '?regex' );
 	}
 
 	/**
@@ -95,7 +95,7 @@ class VarnishSubscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$this->varnish->http_purge( trailingslashit( $url ) . '?vregex' );
+		$this->varnish->purge( trailingslashit( $url ) . '?regex' );
 	}
 
 	/**
@@ -111,9 +111,9 @@ class VarnishSubscriber implements Subscriber_Interface {
 		}
 
 		$home_url            = trailingslashit( get_rocket_i18n_home_url( $lang ) );
-		$home_pagination_url = $home_url . trailingslashit( $GLOBALS['wp_rewrite']->pagination_base ) . '?vregex';
+		$home_pagination_url = $home_url . trailingslashit( $GLOBALS['wp_rewrite']->pagination_base ) . '?regex';
 
-		$this->varnish->varnish_http_purge( $home_url );
-		$this->varnish->varnish_http_purge( $home_pagination_url );
+		$this->varnish->purge( $home_url );
+		$this->varnish->purge( $home_pagination_url );
 	}
 }
