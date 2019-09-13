@@ -39,7 +39,7 @@ class Varnish {
 		* Filter the Varnish IP to call
 		*
 		* @since 2.6.8
-		* @param string The Varnish IP
+		* @param string|array The Varnish IP
 		*/
 		$varnish_ip = apply_filters( 'rocket_varnish_ip', $this->options->get( 'varnish_custom_ip' ) );
 
@@ -47,45 +47,51 @@ class Varnish {
 			$varnish_ip = WP_ROCKET_VARNISH_IP;
 		}
 
-		/**
-		* Filter the HTTP protocol (scheme)
-		*
-		* @since 2.7.3
-		* @param string The HTTP protocol
-		*/
-		$scheme = apply_filters( 'rocket_varnish_http_purge_scheme', 'http' );
+		if ( \is_string( $varnish_ip ) ) {
+			$varnish_ip = (array) $varnish_ip;
+		}
 
-		$parse_url['host'] = ( $varnish_ip ) ? $varnish_ip : $parse_url['host'];
-		$purgeme           = $scheme . '://' . $parse_url['host'] . $parse_url['path'] . $regex;
+		foreach ( $varnish_ip as $ip ) {
+			/**
+			* Filter the HTTP protocol (scheme)
+			*
+			* @since 2.7.3
+			* @param string The HTTP protocol
+			*/
+			$scheme = apply_filters( 'rocket_varnish_http_purge_scheme', 'http' );
 
-		wp_remote_request(
-			$purgeme,
-			[
-				'method'      => 'PURGE',
-				'blocking'    => false,
-				'redirection' => 0,
-				/**
-				* Filters the headers to send with the Varnish purge request
-				*
-				* @since 3.1
-				* @author Remy Perona
-				*
-				* @param array $headers Headers to send.
-				*/
-				'headers'     => apply_filters(
-					'rocket_varnish_purge_headers',
-					[
-						/**
-						* Filters the host value passed in the request headers
-						*
-						* @since 2.8.15
-						* @param string The host
-						*/
-						'host'           => apply_filters( 'rocket_varnish_purge_request_host', $parse_url['host'] ),
-						'X-Purge-Method' => $varnish_x_purgemethod,
-					]
-				),
-			]
-		);
+			$parse_url['host'] = ! empty( $varnish_ip ) ? $varnish_ip : $parse_url['host'];
+			$purgeme           = $scheme . '://' . $parse_url['host'] . $parse_url['path'] . $regex;
+
+			wp_remote_request(
+				$purgeme,
+				[
+					'method'      => 'PURGE',
+					'blocking'    => false,
+					'redirection' => 0,
+					/**
+					* Filters the headers to send with the Varnish purge request
+					*
+					* @since 3.1
+					* @author Remy Perona
+					*
+					* @param array $headers Headers to send.
+					*/
+					'headers'     => apply_filters(
+						'rocket_varnish_purge_headers',
+						[
+							/**
+							* Filters the host value passed in the request headers
+							*
+							* @since 2.8.15
+							* @param string The host
+							*/
+							'host'           => apply_filters( 'rocket_varnish_purge_request_host', $parse_url['host'] ),
+							'X-Purge-Method' => $varnish_x_purgemethod,
+						]
+					),
+				]
+			);
+		}
 	}
 }
