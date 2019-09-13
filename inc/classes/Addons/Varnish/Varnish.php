@@ -10,8 +10,18 @@ use WP_Rocket\Admin\Options_Data;
  * @author Remy Perona
  */
 class Varnish {
+	/**
+	 * WP Rocket options instance.
+	 *
+	 * @var Options_Data
+	 */
 	private $options;
 
+	/**
+	 * Constructor
+	 *
+	 * @param Options_Data $options WP Rocket options instance.
+	 */
 	public function __construct( Options_Data $options ) {
 		$this->options = $options;
 	}
@@ -24,24 +34,23 @@ class Varnish {
 	 * @param  string $url The URL to purge.
 	 * @return void
 	 */
-	public function http_purge( $url ) {
-		$parse_url = get_rocket_parse_url( $url );
+	public function purge( $url ) {
+		$parse_url      = get_rocket_parse_url( $url );
+		$x_purge_method = 'default';
+		$regex          = '';
 
-		$varnish_x_purgemethod = 'default';
-		$regex                 = '';
-
-		if ( 'vregex' === $parse_url['query'] ) {
-			$varnish_x_purgemethod = 'regex';
-			$regex                 = '.*';
+		if ( 'regex' === $parse_url['query'] ) {
+			$x_purge_method = 'regex';
+			$regex          = '.*';
 		}
 
 		/**
 		* Filter the Varnish IP to call
 		*
 		* @since 2.6.8
-		* @param string|array The Varnish IP
+		* @param string|array $varnish_ip The Varnish IP
 		*/
-		$varnish_ip = apply_filters( 'rocket_varnish_ip', $this->options->get( 'varnish_custom_ip' ) );
+		$varnish_ip = apply_filters( 'rocket_varnish_ip', $this->options->get( 'varnish_custom_ip', '' ) );
 
 		if ( defined( 'WP_ROCKET_VARNISH_IP' ) && ! $varnish_ip ) {
 			$varnish_ip = WP_ROCKET_VARNISH_IP;
@@ -56,42 +65,53 @@ class Varnish {
 			* Filter the HTTP protocol (scheme)
 			*
 			* @since 2.7.3
-			* @param string The HTTP protocol
+			* @param string $scheme The HTTP protocol
 			*/
-			$scheme = apply_filters( 'rocket_varnish_http_purge_scheme', 'http' );
+			$scheme    = apply_filters( 'rocket_varnish_http_purge_scheme', $parse_url['scheme'] );
+			$host      = ! empty( $varnish_ip ) ? $varnish_ip : str_replace( '*', '', $parse_url['host'] );
+			$purge_url = $scheme . '://' . $host . $parse_url['path'] . $regex;
 
-			$parse_url['host'] = ! empty( $varnish_ip ) ? $varnish_ip : $parse_url['host'];
-			$purgeme           = $scheme . '://' . $parse_url['host'] . $parse_url['path'] . $regex;
+			/**
+			 * Filters the headers to send with the Varnish purge request
+			 *
+			 * @since 3.1
+			 * @author Remy Perona
+			 *
+			 * @param array $headers Headers to send.
+			 */
+			$headers = apply_filters(
+				'rocket_varnish_purge_headers',
+				[
+					/**
+					* Filters the host value passed in the request headers
+					*
+					* @since 2.8.15
+					* @param string $host The host value.
+					*/
+					'host'           => apply_filters( 'rocket_varnish_purge_request_host', $host ),
+					'X-Purge-Method' => $x_purge_method,
+				]
+			);
 
-			wp_remote_request(
-				$purgeme,
+			/**
+			 * Filters the arguments passed to the Varnish purge request
+			 *
+			 * @since 3.5
+			 * @author Remy Perona
+			 *
+			 * @param array Array of arguments for the request.
+			 */
+			$args = apply_filters(
+				'rocket_varnish_purge_request_args',
 				[
 					'method'      => 'PURGE',
 					'blocking'    => false,
 					'redirection' => 0,
-					/**
-					* Filters the headers to send with the Varnish purge request
-					*
-					* @since 3.1
-					* @author Remy Perona
-					*
-					* @param array $headers Headers to send.
-					*/
-					'headers'     => apply_filters(
-						'rocket_varnish_purge_headers',
-						[
-							/**
-							* Filters the host value passed in the request headers
-							*
-							* @since 2.8.15
-							* @param string The host
-							*/
-							'host'           => apply_filters( 'rocket_varnish_purge_request_host', $parse_url['host'] ),
-							'X-Purge-Method' => $varnish_x_purgemethod,
-						]
-					),
+					'headers'     => $headers,
 				]
 			);
+
+			wp_remote_request( $purge_url, $args );
 		}
 	}
 }
