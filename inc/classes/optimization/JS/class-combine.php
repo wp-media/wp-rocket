@@ -508,12 +508,7 @@ class Combine extends Abstract_JS_Optimization {
 			'ic_window_resolution',
 			'PHP.wp_p_id',
 			'ShopifyBuy.UI.onReady(client)',
-
-			'dfd-button-hover-in',
-			'wpseo-address-wrapper',
-			'platform.stumbleupon.com',
 			'orig_request_uri',
-			'spu_action=spu_load"',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
@@ -670,8 +665,7 @@ class Combine extends Abstract_JS_Optimization {
 			'#dfd-vcard-widget-',
 			'#sf-instagram-widget-',
 			'$(\'.woocommerce-tabs-',
-			'current_url=',
-			
+
 			'et_animation_data=',
 			'current_url="',
 			'CustomEvent.prototype=window.Event.prototype',
@@ -694,6 +688,9 @@ class Combine extends Abstract_JS_Optimization {
 			'sinceID_',
 			'#ut-background-video-ut-section'
 			'+window.comment_tab_width+',
+			'dfd-button-hover-in',
+			'wpseo-address-wrapper',
+			'platform.stumbleupon.com',
 		];
 
 		/**
