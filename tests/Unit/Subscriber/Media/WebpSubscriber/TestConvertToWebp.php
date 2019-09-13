@@ -35,7 +35,7 @@ class TestConvertToWebp extends TestCase {
 		// Mock the 3 required objets for Webp_Subscriber.
 		$mocks = $this->getConstructorMocks();
 
-		// Make sure the filter to disable caching runs once with the expected entry and output values.
+		// Make sure the filter to disable caching runs once with the expected output value.
 		Filters\expectApplied( 'rocket_disable_webp_cache' )
 			->once()
 			->andReturn( true ); // Simulate a filter.
