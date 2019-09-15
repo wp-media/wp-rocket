@@ -710,7 +710,7 @@ class Combine extends Abstract_JS_Optimization {
 			'test_run_nf_conditional_logic',
 			'cb_nombre',
 			'$(\'.fl-node-',
-			'function($){google_maps_'
+			'function($){google_maps_',
 			'et_animation_data=',
 			'current_url="',
 			'CustomEvent.prototype=window.Event.prototype',
@@ -731,7 +731,7 @@ class Combine extends Abstract_JS_Optimization {
 			'berocket_aapf_time_to_fix_products_style',
 			'window.vc_googleMapsPointer',
 			'sinceID_',
-			'#ut-background-video-ut-section'
+			'#ut-background-video-ut-section',
 			'+window.comment_tab_width+',
 			'dfd-button-hover-in',
 			'wpseo-address-wrapper',
