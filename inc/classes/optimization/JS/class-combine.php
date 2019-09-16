@@ -515,6 +515,10 @@ class Combine extends Abstract_JS_Optimization {
 			'styles: \' #custom-menu-',
 			'function svc_center_',
 			'#svc_carousel2_container_',
+			'$("#myCarousel',
+			'advads.move',
+			'elementid',
+			'advads_has_ads',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
