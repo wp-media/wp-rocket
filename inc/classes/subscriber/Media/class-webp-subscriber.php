@@ -302,7 +302,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 	 * @param array $args Arguments for the request.
 	 * @return array
 	 */
-	public function add_accept_headers( $args ) {
+	public function add_accept_header( $args ) {
 		if ( ! $this->options_data->get( 'cache_webp' ) ) {
 			return $args;
 		}
