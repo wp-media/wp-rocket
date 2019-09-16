@@ -23,22 +23,21 @@ class TestCase extends PHPUnitTestCase {
 	 * @access protected
 	 */
 	protected function mockCommonWpFunctions() {
-		$functions = [
-			'__',
-			'esc_attr__',
-			'esc_html__',
-			'_x',
-			'esc_attr_x',
-			'esc_html_x',
-			'_n',
-			'_nx',
-			'esc_attr',
-			'esc_html',
-		];
-
-		foreach ( $functions as $function ) {
-			Monkey\Functions\when( $function )->returnArg();
-		}
+		Monkey\Functions\stubs(
+			[
+				'__',
+				'esc_attr__',
+				'esc_html__',
+				'_x',
+				'esc_attr_x',
+				'esc_html_x',
+				'_n',
+				'_nx',
+				'esc_attr',
+				'esc_html',
+				'esc_textarea',
+			]
+		);
 
 		$functions = [
 			'_e',
