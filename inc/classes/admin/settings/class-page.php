@@ -1770,6 +1770,7 @@ class Page {
 							'description'       => sprintf( __( 'Varnish cache will be purged each time WP Rocket clears its cache to ensure content is always up-to-date.<br>%1$sLearn more%2$s', 'rocket' ), '<a href="' . esc_url( $varnish_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $varnish_beacon['id'] ) . '" target="_blank">', '</a>' ),
 							'section'           => 'addons',
 							'page'              => 'addons',
+							'settings_page'     => 'varnish',
 							'default'           => 0,
 							'sanitize_callback' => 'sanitize_checkbox',
 						],
