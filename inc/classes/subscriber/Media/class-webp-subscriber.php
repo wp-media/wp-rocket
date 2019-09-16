@@ -42,6 +42,15 @@ class Webp_Subscriber implements Subscriber_Interface {
 	private $cdn_subscriber;
 
 	/**
+	 * Values of $_SERVER to use for some tests.
+	 *
+	 * @var    array
+	 * @access private
+	 * @author Grégory Viguier
+	 */
+	private $server;
+
+	/**
 	 * \WP_Filesystem_Direct instance.
 	 *
 	 * @var    \WP_Filesystem_Direct
@@ -60,11 +69,18 @@ class Webp_Subscriber implements Subscriber_Interface {
 	 * @param Options_Data  $options_data   Options_Data instance.
 	 * @param Options       $options_api    Options instance.
 	 * @param CDNSubscriber $cdn_subscriber CDNSubscriber instance.
+	 * @param array         $server         Values of $_SERVER to use for the tests. Default is $_SERVER.
 	 */
-	public function __construct( Options_Data $options_data, Options $options_api, CDNSubscriber $cdn_subscriber ) {
+	public function __construct( Options_Data $options_data, Options $options_api, CDNSubscriber $cdn_subscriber, $server = null ) {
 		$this->options_data   = $options_data;
 		$this->options_api    = $options_api;
 		$this->cdn_subscriber = $cdn_subscriber;
+
+		if ( ! isset( $server ) && ! empty( $_SERVER ) && is_array( $_SERVER ) ) {
+			$server = $_SERVER;
+		}
+
+		$this->server = $server && is_array( $server ) ? $server : [];
 	}
 
 	/**
@@ -113,6 +129,18 @@ class Webp_Subscriber implements Subscriber_Interface {
 			return $html;
 		}
 
+		// Only to supporting browsers.
+		if ( function_exists( 'apache_request_headers' ) ) {
+			$headers     = apache_request_headers();
+			$http_accept = isset( $headers['Accept'] ) ? $headers['Accept'] : '';
+		} else {
+			$http_accept = isset( $this->server['HTTP_ACCEPT'] ) ? $this->server['HTTP_ACCEPT'] : '';
+		}
+
+		if ( ! $http_accept || false === strpos( $http_accept, 'webp' ) ) {
+			return $html;
+		}
+
 		$extensions      = $this->get_extensions();
 		$attribute_names = $this->get_attribute_names();
 
@@ -130,8 +158,6 @@ class Webp_Subscriber implements Subscriber_Interface {
 		if ( ! isset( $this->filesystem ) ) {
 			$this->filesystem = \rocket_direct_filesystem();
 		}
-
-		$result = [];
 
 		foreach ( $attributes as $attribute ) {
 			if ( preg_match( '@srcset$@i', strtolower( $attribute['name'] ) ) ) {
