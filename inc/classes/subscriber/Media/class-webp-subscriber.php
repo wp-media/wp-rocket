@@ -159,6 +159,8 @@ class Webp_Subscriber implements Subscriber_Interface {
 			$this->filesystem = \rocket_direct_filesystem();
 		}
 
+		$has_hebp = false;
+
 		foreach ( $attributes as $attribute ) {
 			if ( preg_match( '@srcset$@i', strtolower( $attribute['name'] ) ) ) {
 				/**
@@ -178,8 +180,27 @@ class Webp_Subscriber implements Subscriber_Interface {
 			}
 
 			// Replace in content.
+			$has_hebp = true;
 			$new_attr = preg_replace( '@' . $attribute['name'] . '\s*=\s*["\'][^"\']+["\']@s', $attribute['name'] . '="' . $new_value . '"', $attribute[0] );
 			$html     = str_replace( $attribute[0], $new_attr, $html );
+		}
+
+		/**
+		 * Tell if the page contains webp files.
+		 *
+		 * @since  3.4
+		 * @author Grégory Viguier
+		 *
+		 * @param bool   $has_hebp True if the page contains webp files. False otherwise.
+		 * @param string $html     The page’s html contents.
+		 */
+		$has_hebp = apply_filters( 'rocket_page_has_hebp_files', $has_hebp, $html );
+
+		// Tell the cache process if some URLs have been replaced.
+		if ( $has_hebp ) {
+			$html .= '<!-- Rocket has webp -->';
+		} else {
+			$html .= '<!-- Rocket no webp -->';
 		}
 
 		return $html;
