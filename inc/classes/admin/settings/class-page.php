@@ -909,6 +909,10 @@ class Page {
 						'<a href="' . esc_url( $webp_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $webp_beacon['id'] ) . '" target="_blank">',
 						'</a>'
 					),
+					'help'        => [
+						'id'  => $webp_beacon['id'],
+						'url' => $webp_beacon['url'],
+					],
 					'page'        => 'media',
 				],
 			]
