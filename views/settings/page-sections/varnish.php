@@ -19,7 +19,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 <div id="<?php echo esc_attr( $data['id'] ); ?>" class="wpr-Page">
 	<div class="wpr-sectionHeader">
 		<h2 class="wpr-title1">
-			<img src="<?php echo esc_url( WP_ROCKET_ASSETS_IMG_URL . 'logo-varnish.svg' ); ?>" width="152" height="135" alt="<?php echo esc_attr( $data['title'] ); ?>">
+			<img src="<?php echo esc_url( WP_ROCKET_ASSETS_IMG_URL . 'logo-varnish.svg' ); ?>" width="48" height="42" alt="" class="wpr-sectionHeader-logo"><?php echo esc_html( $data['title'] ); ?>
 		</h2>
 	</div>
 	<?php $this->render_settings_sections( $data['id'] ); ?>
