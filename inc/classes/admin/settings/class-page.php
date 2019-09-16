@@ -892,7 +892,7 @@ class Page {
 					'page'        => 'media',
 				],
 				'webp_section'     => [
-					'title'       => 'WebP',
+					'title'       => __( 'WebP compatibility', 'rocket' ),
 					'type'        => 'fields_container',
 					/**
 					 * Filters the description for the WebP caching option
