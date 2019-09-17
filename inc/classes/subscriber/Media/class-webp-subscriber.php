@@ -42,6 +42,15 @@ class Webp_Subscriber implements Subscriber_Interface {
 	private $cdn_subscriber;
 
 	/**
+	 * Values of $_SERVER to use for some tests.
+	 *
+	 * @var    array
+	 * @access private
+	 * @author Grégory Viguier
+	 */
+	private $server;
+
+	/**
 	 * \WP_Filesystem_Direct instance.
 	 *
 	 * @var    \WP_Filesystem_Direct
@@ -60,11 +69,18 @@ class Webp_Subscriber implements Subscriber_Interface {
 	 * @param Options_Data  $options_data   Options_Data instance.
 	 * @param Options       $options_api    Options instance.
 	 * @param CDNSubscriber $cdn_subscriber CDNSubscriber instance.
+	 * @param array         $server         Values of $_SERVER to use for the tests. Default is $_SERVER.
 	 */
-	public function __construct( Options_Data $options_data, Options $options_api, CDNSubscriber $cdn_subscriber ) {
+	public function __construct( Options_Data $options_data, Options $options_api, CDNSubscriber $cdn_subscriber, $server = null ) {
 		$this->options_data   = $options_data;
 		$this->options_api    = $options_api;
 		$this->cdn_subscriber = $cdn_subscriber;
+
+		if ( ! isset( $server ) && ! empty( $_SERVER ) && is_array( $_SERVER ) ) {
+			$server = $_SERVER;
+		}
+
+		$this->server = $server && is_array( $server ) ? $server : [];
 	}
 
 	/**
@@ -113,6 +129,18 @@ class Webp_Subscriber implements Subscriber_Interface {
 			return $html;
 		}
 
+		// Only to supporting browsers.
+		if ( function_exists( 'apache_request_headers' ) ) {
+			$headers     = apache_request_headers();
+			$http_accept = isset( $headers['Accept'] ) ? $headers['Accept'] : '';
+		} else {
+			$http_accept = isset( $this->server['HTTP_ACCEPT'] ) ? $this->server['HTTP_ACCEPT'] : '';
+		}
+
+		if ( ! $http_accept || false === strpos( $http_accept, 'webp' ) ) {
+			return $html;
+		}
+
 		$extensions      = $this->get_extensions();
 		$attribute_names = $this->get_attribute_names();
 
@@ -131,7 +159,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 			$this->filesystem = \rocket_direct_filesystem();
 		}
 
-		$result = [];
+		$has_hebp = false;
 
 		foreach ( $attributes as $attribute ) {
 			if ( preg_match( '@srcset$@i', strtolower( $attribute['name'] ) ) ) {
@@ -152,8 +180,27 @@ class Webp_Subscriber implements Subscriber_Interface {
 			}
 
 			// Replace in content.
+			$has_hebp = true;
 			$new_attr = preg_replace( '@' . $attribute['name'] . '\s*=\s*["\'][^"\']+["\']@s', $attribute['name'] . '="' . $new_value . '"', $attribute[0] );
 			$html     = str_replace( $attribute[0], $new_attr, $html );
+		}
+
+		/**
+		 * Tell if the page contains webp files.
+		 *
+		 * @since  3.4
+		 * @author Grégory Viguier
+		 *
+		 * @param bool   $has_hebp True if the page contains webp files. False otherwise.
+		 * @param string $html     The page’s html contents.
+		 */
+		$has_hebp = apply_filters( 'rocket_page_has_hebp_files', $has_hebp, $html );
+
+		// Tell the cache process if some URLs have been replaced.
+		if ( $has_hebp ) {
+			$html .= '<!-- Rocket has webp -->';
+		} else {
+			$html .= '<!-- Rocket no webp -->';
 		}
 
 		return $html;

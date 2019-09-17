@@ -101,14 +101,45 @@ class Cache extends Abstract_Buffer {
 
 		$cache_filepath_gzip = $cache_filepath . '_gzip';
 		$accept_encoding     = $this->config->get_server_input( 'HTTP_ACCEPT_ENCODING' );
+		$accept_gzip         = $accept_encoding && false !== strpos( $accept_encoding, 'gzip' );
 
 		// Check if cache file exist.
-		if ( $accept_encoding && false !== strpos( $accept_encoding, 'gzip' ) && is_readable( $cache_filepath_gzip ) ) {
+		if ( $accept_gzip && is_readable( $cache_filepath_gzip ) ) {
 			$this->serve_gzip_cache_file( $cache_filepath_gzip );
 		}
 
 		if ( is_readable( $cache_filepath ) ) {
 			$this->serve_cache_file( $cache_filepath );
+		}
+
+		// Maybe we're looking for a webp file.
+		$cache_filename = basename( $cache_filepath );
+
+		if ( strpos( $cache_filename, '-webp' ) !== false ) {
+			// We're looking for a webp file that doesn't exist: try to locate any `.no-webp` file.
+			$cache_dir_path = rtrim( dirname( $cache_filepath ), '/\\' ) . DIRECTORY_SEPARATOR;
+
+			if ( file_exists( $cache_dir_path . '.no-webp' ) ) {
+				// We have a `.no-webp` file: try to deliver a non-webp cache file.
+				$cache_filepath      = $cache_dir_path . str_replace( '-webp', '', $cache_filename );
+				$cache_filepath_gzip = $cache_filepath . '_gzip';
+
+				$this->log(
+					'Looking for non-webp cache file.',
+					[
+						'path' => $cache_filepath,
+					]
+				);
+
+				// Try to deliver the non-webp version instead.
+				if ( $accept_gzip && is_readable( $cache_filepath_gzip ) ) {
+					$this->serve_gzip_cache_file( $cache_filepath_gzip );
+				}
+
+				if ( is_readable( $cache_filepath ) ) {
+					$this->serve_cache_file( $cache_filepath );
+				}
+			}
 		}
 
 		/**
@@ -250,7 +281,9 @@ class Cache extends Abstract_Buffer {
 			return $buffer . $footprint;
 		}
 
-		$cache_filepath = $this->get_cache_path();
+		$webp_enabled   = preg_match( '@<!-- Rocket (has|no) webp -->@', $buffer, $webp_tag );
+		$has_webp       = ! empty( $webp_tag ) ? 'has' === $webp_tag[1] : false;
+		$cache_filepath = $this->get_cache_path( [ 'webp' => $has_webp ] );
 		$cache_dir_path = dirname( $cache_filepath );
 
 		// Create cache folders.
@@ -258,6 +291,18 @@ class Cache extends Abstract_Buffer {
 
 		if ( $is_html ) {
 			$footprint = $this->get_rocket_footprint( time() );
+		}
+
+		// Webp request.
+		if ( $webp_enabled ) {
+			$buffer = str_replace( $webp_tag[0], '', $buffer );
+
+			if ( ! $has_webp ) {
+				// The buffer doesn’t contain webp files.
+				$cache_dir_path = rtrim( dirname( $cache_filepath ), '/\\' );
+
+				$this->maybe_create_nowebp_file( $cache_dir_path );
+			}
 		}
 
 		// Save the cache file.
@@ -296,15 +341,20 @@ class Cache extends Abstract_Buffer {
 	 * @access public
 	 * @author Grégory Viguier
 	 *
+	 * @param  array $args {
+	 *     A list of arguments.
+	 *
+	 *     @type bool $webp Set to false to prevent adding the part related to webp.
+	 * }
 	 * @return string
 	 */
-	public function get_cache_path() {
-		static $request_uri_path;
-
-		if ( isset( $request_uri_path ) ) {
-			return $request_uri_path;
-		}
-
+	public function get_cache_path( $args = [] ) {
+		$args             = array_merge(
+			[
+				'webp' => true,
+			],
+			$args
+		);
 		$cookies          = $this->tests->get_cookies();
 		$request_uri_path = $this->get_request_cache_path( $cookies );
 		$filename         = 'index';
@@ -316,7 +366,9 @@ class Cache extends Abstract_Buffer {
 			$filename .= '-https';
 		}
 
-		$filename = $this->maybe_webp_filename( $filename );
+		if ( $args['webp'] ) {
+			$filename = $this->maybe_webp_filename( $filename );
+		}
 
 		$filename = $this->maybe_dynamic_cookies_filename( $filename, $cookies );
 
@@ -408,6 +460,25 @@ class Cache extends Abstract_Buffer {
 		}
 
 		rocket_direct_filesystem()->touch( $nginx_mobile_detect );
+	}
+
+	/**
+	 * Create a hidden empty file when webp is enabled but the buffer doesn’t contain webp files.
+	 *
+	 * @since  3.4
+	 * @access private
+	 * @author Grégory Viguier
+	 *
+	 * @param string $cache_dir_path Path to the current cache directory (without trailing slah).
+	 */
+	private function maybe_create_nowebp_file( $cache_dir_path ) {
+		$nowebp_filepath = $cache_dir_path . DIRECTORY_SEPARATOR . '.no-webp';
+
+		if ( rocket_direct_filesystem()->exists( $nowebp_filepath ) ) {
+			return;
+		}
+
+		rocket_direct_filesystem()->touch( $nowebp_filepath );
 	}
 
 	/**
