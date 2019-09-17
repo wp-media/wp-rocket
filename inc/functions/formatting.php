@@ -87,7 +87,16 @@ function rocket_is_internal_file( $file ) {
 		return false;
 	}
 
-	$hosts   = get_rocket_cnames_host( [ 'all', 'css_and_js', 'css', 'js' ] );
+	/**
+	 * Filters the allowed hosts for optimization
+	 *
+	 * @since  3.4
+	 * @author Remy Perona
+	 *
+	 * @param array $hosts Allowed hosts.
+	 * @param array $zones Zones to check available hosts.
+	 */
+	$hosts   = apply_filters( 'rocket_cdn_hosts', [], [ 'all', 'css_and_js', 'css', 'js' ] );
 	$hosts[] = wp_parse_url( WP_CONTENT_URL, PHP_URL_HOST );
 	$langs   = get_rocket_i18n_uri();
 
@@ -363,7 +372,7 @@ function rocket_get_cache_busting_paths( $filename, $extension ) {
 	$cache_busting_path     = WP_ROCKET_CACHE_BUSTING_PATH . $blog_id;
 	$filename               = rocket_realpath( rtrim( str_replace( array( ' ', '%20' ), '-', $filename ) ) );
 	$cache_busting_filepath = $cache_busting_path . $filename;
-	$cache_busting_url      = get_rocket_cdn_url( WP_ROCKET_CACHE_BUSTING_URL . $blog_id . $filename, array( 'all', 'css_and_js', $extension ) );
+	$cache_busting_url      = WP_ROCKET_CACHE_BUSTING_URL . $blog_id . $filename;
 
 	switch ( $extension ) {
 		case 'css':
@@ -435,7 +444,7 @@ function rocket_url_to_path( $url, $hosts = '' ) {
 	}
 
 	// CDN.
-	if ( isset( $hosts[ $url_host ] ) && 'home' !== $hosts[ $url_host ] ) {
+	if ( get_rocket_option( 'cdn' ) && isset( $hosts[ $url_host ] ) && 'home' !== $hosts[ $url_host ] ) {
 		$url = str_replace( $url_host, wp_parse_url( site_url(), PHP_URL_HOST ), $url );
 	}
 

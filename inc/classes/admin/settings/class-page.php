@@ -262,7 +262,7 @@ class Page {
 	public function toggle_option() {
 		check_ajax_referer( 'rocket-ajax' );
 
-		if ( ! current_user_can( apply_filters( 'rocket_capability', 'manage_options' ) ) ) {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			wp_die();
 		}
 
@@ -439,7 +439,6 @@ class Page {
 		$user_cache_beacon   = $this->beacon->get_suggest( 'user_cache' );
 		$nonce_beacon        = $this->beacon->get_suggest( 'nonce' );
 		$cache_life_beacon   = $this->beacon->get_suggest( 'cache_lifespan' );
-		$cache_ssl_beacon    = $this->beacon->get_suggest( 'cache_ssl' );
 
 		$this->settings->add_page_section(
 			'cache',
@@ -477,7 +476,7 @@ class Page {
 					'title'       => __( 'Cache Lifespan', 'rocket' ),
 					'type'        => 'fields_container',
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description' => sprintf( __( 'Cache lifespan is the period of time after which all cache files are removed.<br>Enable %1$spreloading%2$s for the cache to be rebuilt automatically after lifespan expiration.', 'rocket' ), '<a href="#preload">', '</a>' ),
+					'description' => sprintf( __( 'Cache files older than the specified lifespan will be deleted.<br>Enable %1$spreloading%2$s for the cache to be rebuilt automatically after lifespan expiration.', 'rocket' ), '<a href="#preload">', '</a>' ),
 					'help'        => [
 						'url' => $cache_life_beacon['url'],
 						'id'  => $this->beacon->get_suggest( 'cache_lifespan_section' ),
@@ -560,7 +559,8 @@ class Page {
 	private function assets_section() {
 		$remove_qs_beacon  = $this->beacon->get_suggest( 'remove_query_strings' );
 		$combine_beacon    = $this->beacon->get_suggest( 'combine' );
-		$defer_beacon      = $this->beacon->get_suggest( 'defer' );
+		$defer_js_beacon   = $this->beacon->get_suggest( 'defer_js' );
+		$async_beacon      = $this->beacon->get_suggest( 'async' );
 		$files_beacon      = $this->beacon->get_suggest( 'file_optimization' );
 		$inline_js_beacon  = $this->beacon->get_suggest( 'exclude_inline_js' );
 		$exclude_js_beacon = $this->beacon->get_suggest( 'exclude_js' );
@@ -713,7 +713,7 @@ class Page {
 					// translators: %1$s = plugin name.
 					sprintf( _x( 'Optimize CSS Delivery is currently handled by the %1$s plugin. If you want to use WP Rocket’s Optimize CSS Delivery option, disable the %1$s plugin.', 'WP Critical CSS compatibility', 'rocket' ), 'WP Critical CSS' ) :
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					sprintf( __( 'Optimize CSS delivery eliminates render-blocking CSS on your website for faster perceived load time. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $defer_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $defer_beacon['id'] ) . '" target="_blank">', '</a>' ),
+					sprintf( __( 'Optimize CSS delivery eliminates render-blocking CSS on your website for faster perceived load time. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $async_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $async_beacon['id'] ) . '" target="_blank">', '</a>' ),
 					'section'           => 'css',
 					'page'              => 'file_optimization',
 					'default'           => 0,
@@ -729,7 +729,7 @@ class Page {
 						'wpr-field--children',
 					],
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'helper'            => sprintf( __( 'Provides a fallback if auto-generated critical path CSS is incomplete. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $defer_beacon['url'] ) . '#fallback" data-beacon-article="' . esc_attr( $defer_beacon['id'] ) . '" target="_blank">', '</a>' ),
+					'helper'            => sprintf( __( 'Provides a fallback if auto-generated critical path CSS is incomplete. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $async_beacon['url'] ) . '#fallback" data-beacon-article="' . esc_attr( $async_beacon['id'] ) . '" target="_blank">', '</a>' ),
 					'parent'            => 'async_css',
 					'section'           => 'css',
 					'page'              => 'file_optimization',
@@ -821,7 +821,7 @@ class Page {
 					'type'              => 'checkbox',
 					'label'             => __( 'Load JavaScript deferred', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'       => sprintf( __( 'Load JavaScript deferred eliminates render-blocking JS on your site and can improve load time. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $defer_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $defer_beacon['id'] ) . '" target="_blank">', '</a>' ),
+					'description'       => sprintf( __( 'Load JavaScript deferred eliminates render-blocking JS on your site and can improve load time. %1$sMore info%2$s', 'rocket' ), '<a href="' . esc_url( $defer_js_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $defer_js_beacon['id'] ) . '" target="_blank">', '</a>' ),
 					'section'           => 'js',
 					'page'              => 'file_optimization',
 					'default'           => 0,
@@ -854,12 +854,13 @@ class Page {
 	 */
 	private function media_section() {
 		$lazyload_beacon = $this->beacon->get_suggest( 'lazyload' );
+		$webp_beacon     = $this->beacon->get_suggest( 'webp' );
 
 		$this->settings->add_page_section(
 			'media',
 			[
 				'title'            => __( 'Media', 'rocket' ),
-				'menu_description' => __( 'LazyLoad, emojis, embeds', 'rocket' ),
+				'menu_description' => __( 'LazyLoad, emojis, embeds, WebP', 'rocket' ),
 			]
 		);
 
@@ -890,8 +891,38 @@ class Page {
 					'description' => __( 'Prevents others from embedding content from your site, prevents you from embedding content from other (non-whitelisted) sites, and removes JavaScript requests related to WordPress embeds', 'rocket' ),
 					'page'        => 'media',
 				],
+				'webp_section'     => [
+					'title'       => 'WebP',
+					'type'        => 'fields_container',
+					/**
+					 * Filters the description for the WebP caching option
+					 *
+					 * @since 3.4
+					 * @author Remy Perona
+					 *
+					 * @param string $description Section description.
+					 */
+					'helper'      => apply_filters( 'rocket_webp_section_description', '' ),
+					'description' => sprintf(
+						// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+						__( 'Enable this option if you would like WP Rocket to create a separate cache file for WebP compatible browsers. Please note that WP Rocket cannot create WebP images for you. %1$sMore info%2$s', 'rocket' ),
+						'<a href="' . esc_url( $webp_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $webp_beacon['id'] ) . '" target="_blank">',
+						'</a>'
+					),
+					'page'        => 'media',
+				],
 			]
 		);
+
+		/**
+		 * Add more content to the 'cache_webp' setting field.
+		 *
+		 * @since  3.4
+		 * @author Grégory Viguier
+		 *
+		 * @param array $cache_webp_field Data to be added to the setting field.
+		 */
+		$cache_webp_field = (array) apply_filters( 'rocket_cache_webp_setting_field', [] );
 
 		$this->settings->add_settings_fields(
 			[
@@ -908,7 +939,7 @@ class Page {
 					'input_attr'        => [
 						'disabled' => ( rocket_avada_maybe_disable_lazyload() || rocket_maybe_disable_lazyload() ) ? 1 : 0,
 					],
-					'description'       => rocket_avada_maybe_disable_lazyload() ? _x('Lazyload for images is currently activated in Avada. If you want to use WP Rocket’s LazyLoad, disable this option in Avada.', 'Avada', 'rocket' ) : '',
+					'description'       => rocket_avada_maybe_disable_lazyload() ? _x( 'Lazyload for images is currently activated in Avada. If you want to use WP Rocket’s LazyLoad, disable this option in Avada.', 'Avada', 'rocket' ) : '',
 				],
 				'lazyload_iframes' => [
 					'container_class'   => [
@@ -959,6 +990,17 @@ class Page {
 					'default'           => 1,
 					'sanitize_callback' => 'sanitize_checkbox',
 				],
+				'cache_webp'       => array_merge(
+					$cache_webp_field,
+					[
+						'type'              => 'checkbox',
+						'label'             => __( 'Enable WebP caching', 'rocket' ),
+						'section'           => 'webp_section',
+						'page'              => 'media',
+						'default'           => 0,
+						'sanitize_callback' => 'sanitize_checkbox',
+					]
+				),
 			]
 		);
 	}
@@ -1477,17 +1519,30 @@ class Page {
 			) . '<br>';
 		}
 
+		/**
+		 * Add more content to the 'cdn' setting field.
+		 *
+		 * @since  3.4
+		 * @author Grégory Viguier
+		 *
+		 * @param array $cdn_field Data to be added to the setting field.
+		 */
+		$cdn_field = (array) apply_filters( 'rocket_cdn_setting_field', [] );
+
 		$this->settings->add_settings_fields(
 			[
-				'cdn'              => [
-					'type'              => 'checkbox',
-					'label'             => __( 'Enable Content Delivery Network', 'rocket' ),
-					'helper'            => $maybe_display_cdn_helper,
-					'section'           => 'cdn_section',
-					'page'              => 'page_cdn',
-					'default'           => 0,
-					'sanitize_callback' => 'sanitize_checkbox',
-				],
+				'cdn'              => array_merge(
+					$cdn_field,
+					[
+						'type'              => 'checkbox',
+						'label'             => __( 'Enable Content Delivery Network', 'rocket' ),
+						'helper'            => $maybe_display_cdn_helper,
+						'section'           => 'cdn_section',
+						'page'              => 'page_cdn',
+						'default'           => 0,
+						'sanitize_callback' => 'sanitize_checkbox',
+					]
+				),
 				'cdn_cnames'       => [
 					'type'        => 'cnames',
 					'label'       => __( 'CDN CNAME(s)', 'rocket' ),

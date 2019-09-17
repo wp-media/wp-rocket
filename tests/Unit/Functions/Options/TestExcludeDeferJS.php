@@ -1,8 +1,7 @@
 <?php
 namespace WP_Rocket\Tests\Unit\Functions\Options;
 
-use PHPUnit\Framework\TestCase;
-use Brain\Monkey;
+use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
@@ -11,14 +10,8 @@ use Brain\Monkey\Functions;
 class TestExcludeDeferJS extends TestCase {
     protected function setUp() {
         parent::setUp();
-        Monkey\setUp();
 
         require( WP_ROCKET_PLUGIN_ROOT . 'inc/functions/options.php' );
-    }
-
-    protected function tearDown() {
-        Monkey\tearDown();
-        parent::tearDown();
     }
 
     public function testShouldReturnExcludeDeferJSArray() {

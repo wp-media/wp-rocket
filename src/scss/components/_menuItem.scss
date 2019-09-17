@@ -128,6 +128,9 @@
     &-imagify{ @extend .wpr-icon-imagify; }
     &-imagify:hover{ @extend .wpr-icon-imagify-hover; }
     &-imagify.isActive{ @extend .wpr-icon-imagify-hover; }
+    &-tutorials{ @extend .wpr-icon-tutorial; }
+    &-tutorials:hover{ @extend .wpr-icon-tutorial-hover; }
+    &-tutorials.isActive{ @extend .wpr-icon-tutorial-hover; }
 }
 
 .wpr-addonSubMenuItem {

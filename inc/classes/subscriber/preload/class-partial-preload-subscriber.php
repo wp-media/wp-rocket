@@ -61,9 +61,10 @@ class Partial_Preload_Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'after_rocket_clean_post' => [ 'preload_after_clean_post', 10, 3 ],
-			'after_rocket_clean_term' => [ 'preload_after_clean_term', 10, 3 ],
-			'shutdown'                => [ 'maybe_dispatch', 0 ],
+			'after_rocket_clean_post'            => [ 'preload_after_clean_post', 10, 3 ],
+			'after_rocket_clean_term'            => [ 'preload_after_clean_term', 10, 3 ],
+			'rocket_after_automatic_cache_purge' => 'preload_after_automatic_cache_purge',
+			'shutdown'                           => [ 'maybe_dispatch', 0 ],
 		];
 	}
 
@@ -104,6 +105,43 @@ class Partial_Preload_Subscriber implements Subscriber_Interface {
 	}
 
 	/**
+	 * Pushes URLs to preload to the queue after cache directories are purged.
+	 *
+	 * @since  3.4
+	 * @access public
+	 * @author Grégory Viguier
+	 *
+	 * @param array $deleted {
+	 *     An array of arrays, described like: {.
+	 *         @type string $home_url  The home URL.
+	 *         @type string $home_path Path to home.
+	 *         @type bool   $logged_in True if the home path corresponds to a logged in user’s folder.
+	 *         @type array  $files     A list of paths of files that have been deleted.
+	 *     }
+	 * }
+	 */
+	public function preload_after_automatic_cache_purge( $deleted ) {
+		if ( ! $deleted || ! $this->options->get( 'manual_preload' ) ) {
+			return;
+		}
+
+		foreach ( $deleted as $data ) {
+			if ( $data['logged_in'] ) {
+				// Logged in user: no need to preload those since we would need the corresponding cookies.
+				continue;
+			}
+			foreach ( $data['files'] as $file_path ) {
+				if ( strpos( $file_path, '#' ) ) {
+					// URL with query string.
+					$file_path = preg_replace( '/#/', '?', $file_path, 1 );
+				}
+
+				$this->urls[] = str_replace( $data['home_path'], $data['home_url'], $file_path );
+			}
+		}
+	}
+
+	/**
 	 * Pushes URLs to preload to the queue after a term has been updated
 	 *
 	 * @since 3.2
@@ -134,10 +172,6 @@ class Partial_Preload_Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function maybe_dispatch() {
-		if ( ! is_admin() ) {
-			return;
-		}
-
 		if ( wp_doing_ajax() ) {
 			return;
 		}
@@ -148,6 +182,18 @@ class Partial_Preload_Subscriber implements Subscriber_Interface {
 
 		$this->urls = array_unique( $this->urls );
 
+		/**
+		 * Limit the number of URLs to preload.
+		 * The value may change in the future, depending on the results.
+		 *
+		 * @since  3.4
+		 * @author Grégory Viguier
+		 *
+		 * @param int $limit Maximum number of URLs to preload at once.
+		 */
+		$limit = (int) apply_filters( 'rocket_preload_limit_number', 100 );
+		$count = 0;
+
 		foreach ( $this->urls as $url ) {
 			$path = wp_parse_url( $url, PHP_URL_PATH );
 
@@ -156,6 +202,12 @@ class Partial_Preload_Subscriber implements Subscriber_Interface {
 			}
 
 			$this->partial_preload->push_to_queue( $url );
+
+			++$count;
+
+			if ( $count >= $limit ) {
+				break;
+			}
 		}
 
 		$this->partial_preload->save()->dispatch();
