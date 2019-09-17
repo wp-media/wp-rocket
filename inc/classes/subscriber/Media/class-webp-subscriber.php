@@ -151,7 +151,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 		$extensions      = implode( '|', $extensions );
 		$attribute_names = implode( '|', $attribute_names );
 
-		if ( ! preg_match_all( '@["\'\s](?<name>(?:data-[a-z0-9_-]*)?(?:' . $attribute_names . '))\s*=\s*["\']\s*(?<value>(?:https?:/)?/[^"\']+\.(?:' . $extensions . ')[^"\']*?)\s*["\']@is', $html, $attributes, PREG_SET_ORDER ) ) {
+		if ( ! preg_match_all( '@["\'\s](?<name>(?:data-(?:[a-z0-9_-]+-)?)?(?:' . $attribute_names . '))\s*=\s*["\']\s*(?<value>(?:https?:/)?/[^"\']+\.(?:' . $extensions . ')[^"\']*?)\s*["\']@is', $html, $attributes, PREG_SET_ORDER ) ) {
 			return $html;
 		}
 
@@ -207,7 +207,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Modifies the WebP section description of WP Rocket settings
+	 * Modifies the WebP section description of WP Rocket settings.
 	 *
 	 * @since  3.4
 	 * @access public
@@ -219,11 +219,12 @@ class Webp_Subscriber implements Subscriber_Interface {
 	 */
 	public function webp_section_description( $description ) {
 		$webp_plugins = $this->get_webp_plugins();
-		$is_using_cdn = $this->is_using_cdn();
 		$serving      = [];
 		$creating     = [];
 
 		if ( $webp_plugins ) {
+			$is_using_cdn = $this->is_using_cdn();
+
 			foreach ( $webp_plugins as $plugin ) {
 				if ( $plugin->is_serving_webp() ) {
 					if ( ! $is_using_cdn || $plugin->is_serving_webp_compatible_with_cdn() ) {
@@ -319,7 +320,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 	 * @return bool
 	 */
 	public function maybe_disable_webp_cache( $disable_webp_cache ) {
-		return ! $disable_webp_cache && $this->get_plugins_serving_webp() ? true : $disable_webp_cache;
+		return ! $disable_webp_cache && $this->get_plugins_serving_webp() ? true : (bool) $disable_webp_cache;
 	}
 
 	/**
@@ -328,10 +329,8 @@ class Webp_Subscriber implements Subscriber_Interface {
 	 * @since  3.4
 	 * @access public
 	 * @author Grégory Viguier
-	 *
-	 * @param bool $active True if the webp feature is now active in the 3rd party plugin. False otherwise.
 	 */
-	public function sync_webp_cache_with_third_party_plugins( $active ) {
+	public function sync_webp_cache_with_third_party_plugins() {
 		if ( $this->options_data->get( 'cache_webp' ) && $this->get_plugins_serving_webp() ) {
 			// Disable the cache webp option.
 			$this->options_data->set( 'cache_webp', 0 );
