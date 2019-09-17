@@ -68,7 +68,7 @@ class Varnish {
 			* @param string $scheme The HTTP protocol
 			*/
 			$scheme    = apply_filters( 'rocket_varnish_http_purge_scheme', $parse_url['scheme'] );
-			$host      = ! empty( $varnish_ip ) ? $varnish_ip : str_replace( '*', '', $parse_url['host'] );
+			$host      = ! empty( $ip ) ? $ip : str_replace( '*', '', $parse_url['host'] );
 			$purge_url = $scheme . '://' . $host . $parse_url['path'] . $regex;
 
 			/**
@@ -88,7 +88,7 @@ class Varnish {
 					* @since 2.8.15
 					* @param string $host The host value.
 					*/
-					'host'           => apply_filters( 'rocket_varnish_purge_request_host', $host ),
+					'host'           => apply_filters( 'rocket_varnish_purge_request_host', $parse_url['host'] ),
 					'X-Purge-Method' => $x_purge_method,
 				]
 			);
