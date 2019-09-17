@@ -535,6 +535,9 @@ class Combine extends Abstract_JS_Optimization {
 			'styles: \' #custom-menu-',
 			'function svc_center_',
 			'#svc_carousel2_container_',
+			'advads.move',
+			'elementid',
+			'advads_has_ads',
 			'wpseo_map_init',
 			'mdf_current_page_url',
 		];
@@ -704,7 +707,8 @@ class Combine extends Abstract_JS_Optimization {
 			'test_run_nf_conditional_logic',
 			'cb_nombre',
 			'$(\'.fl-node-',
-			'function($){google_maps_'
+			'function($){google_maps_',
+      			'$("#myCarousel',
 		];
 
 		/**
