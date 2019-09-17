@@ -894,18 +894,9 @@ class Page {
 				'webp_section'     => [
 					'title'       => __( 'WebP compatibility', 'rocket' ),
 					'type'        => 'fields_container',
-					/**
-					 * Filters the description for the WebP caching option
-					 *
-					 * @since 3.4
-					 * @author Remy Perona
-					 *
-					 * @param string $description Section description.
-					 */
-					'helper'      => apply_filters( 'rocket_webp_section_description', '' ),
 					'description' => sprintf(
 						// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-						__( 'Enable this option if you would like WP Rocket to create a separate cache file for WebP compatible browsers. Please note that WP Rocket cannot create WebP images for you. %1$sMore info%2$s', 'rocket' ),
+						__( 'Enable this option if you would like WP Rocket to serve WebP images to compatible browsers. Please note that WP Rocket cannot create WebP images for you. %1$sMore info%2$s', 'rocket' ),
 						'<a href="' . esc_url( $webp_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $webp_beacon['id'] ) . '" target="_blank">',
 						'</a>'
 					),
