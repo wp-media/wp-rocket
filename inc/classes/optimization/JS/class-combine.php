@@ -708,7 +708,7 @@ class Combine extends Abstract_JS_Optimization {
 			'cb_nombre',
 			'$(\'.fl-node-',
 			'function($){google_maps_',
-      '$("#myCarousel',
+      			'$("#myCarousel',
 		];
 
 		/**
