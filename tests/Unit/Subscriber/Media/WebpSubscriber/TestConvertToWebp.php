@@ -35,13 +35,51 @@ class TestConvertToWebp extends TestCase {
 		// Mock the 3 required objets for Webp_Subscriber.
 		$mocks = $this->getConstructorMocks();
 
+		Functions\when( 'apache_request_headers' )
+			->alias( function() {
+				return [
+					'Accept' => 'webp',
+				];
+			} );
+
 		// Make sure the filter to disable caching runs once with the expected output value.
 		Filters\expectApplied( 'rocket_disable_webp_cache' )
 			->once()
 			->andReturn( true ); // Simulate a filter.
 
 		// Make sure the method get_extensions() never runs.
+		Filters\expectApplied( 'rocket_file_extensions_for_webp' )
+			->never();
+
+		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'] );
+
+		// Assert that the HTML is the same.
+		$this->assertSame( $html, $webpSubscriber->convert_to_webp( $html ) );
+	}
+
+	/**
+	 * Test Webp_Subscriber->convert_to_webp() should return the identical HTML when not getting webp header.
+	 */
+	public function testShouldReturnIdenticalHtmlWhenNoWebpHeader() {
+		$html = $this->getMatchingContents();
+
+		// Mock the 3 required objets for Webp_Subscriber.
+		$mocks = $this->getConstructorMocks();
+
+		Functions\when( 'apache_request_headers' )
+			->alias( function() {
+				return [
+					'Accept' => '*/*',
+				];
+			} );
+
+		// Make sure the filter to disable caching runs once with the expected output value.
 		Filters\expectApplied( 'rocket_disable_webp_cache' )
+			->once()
+			->andReturn( true ); // Simulate a filter.
+
+		// Make sure the method get_extensions() never runs.
+		Filters\expectApplied( 'rocket_file_extensions_for_webp' )
 			->never();
 
 		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'] );
@@ -58,6 +96,13 @@ class TestConvertToWebp extends TestCase {
 
 		// Mock the 3 required objets for Webp_Subscriber.
 		$mocks = $this->getConstructorMocks();
+
+		Functions\when( 'apache_request_headers' )
+			->alias( function() {
+				return [
+					'Accept' => 'webp',
+				];
+			} );
 
 		// Make sure the the method get_extensions() runs once and returns an empty array.
 		Filters\expectApplied( 'rocket_file_extensions_for_webp' )
@@ -82,6 +127,13 @@ class TestConvertToWebp extends TestCase {
 		// Mock the 3 required objets for Webp_Subscriber.
 		$mocks = $this->getConstructorMocks();
 
+		Functions\when( 'apache_request_headers' )
+			->alias( function() {
+				return [
+					'Accept' => 'webp',
+				];
+			} );
+
 		// Make sure the the method get_attribute_names() runs once and returns an empty array.
 		Filters\expectApplied( 'rocket_attributes_for_webp' )
 			->once()
@@ -105,6 +157,13 @@ class TestConvertToWebp extends TestCase {
 		// Mock the 3 required objets for Webp_Subscriber.
 		$mocks = $this->getConstructorMocks();
 
+		Functions\when( 'apache_request_headers' )
+			->alias( function() {
+				return [
+					'Accept' => 'webp',
+				];
+			} );
+
 		// Make sure the function rocket_direct_filesystem() never runs.
 		Functions\expect( 'rocket_direct_filesystem' )->never();
 
@@ -122,6 +181,13 @@ class TestConvertToWebp extends TestCase {
 
 		// Mock the 3 required objets for Webp_Subscriber.
 		$mocks = $this->getConstructorMocks();
+
+		Functions\when( 'apache_request_headers' )
+			->alias( function() {
+				return [
+					'Accept' => 'webp',
+				];
+			} );
 
 		// Make sure the function rocket_direct_filesystem() never runs.
 		Functions\expect( 'rocket_direct_filesystem' )->never();
@@ -141,6 +207,13 @@ class TestConvertToWebp extends TestCase {
 		// Mock the 3 required objets for Webp_Subscriber.
 		$mocks = $this->getConstructorMocks();
 
+		Functions\when( 'apache_request_headers' )
+			->alias( function() {
+				return [
+					'Accept' => 'webp',
+				];
+			} );
+
 		// Make sure the function rocket_direct_filesystem() never runs.
 		Functions\expect( 'rocket_direct_filesystem' )->never();
 
@@ -156,6 +229,13 @@ class TestConvertToWebp extends TestCase {
 	public function testShouldReturnModifiedHtml() {
 		// Mock the 3 required objets for Webp_Subscriber.
 		$mocks = $this->getConstructorMocks();
+
+		Functions\when( 'apache_request_headers' )
+			->alias( function() {
+				return [
+					'Accept' => 'webp',
+				];
+			} );
 
 		// rocket_direct_filesystem().
 		Functions\when( 'rocket_direct_filesystem' )->alias( function() {
