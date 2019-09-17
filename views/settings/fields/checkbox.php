@@ -55,7 +55,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 		</div>
 		<?php if ( isset( $data['warning']['description'] ) ) : ?>
 			<div class="wpr-fieldWarning-description">
-				<?php echo esc_html( $data['warning']['description'] ); ?>
+				<?php echo $data['warning']['description']; ?>
 			</div>
 		<?php endif; ?>
 		<button class="wpr-button wpr-button--small wpr-button--icon wpr-icon-check"><?php echo esc_html( $data['warning']['button_label'] ); ?></button>
