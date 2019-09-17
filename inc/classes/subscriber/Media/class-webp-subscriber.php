@@ -95,8 +95,10 @@ class Webp_Subscriber implements Subscriber_Interface {
 	public static function get_subscribed_events() {
 		return [
 			'rocket_buffer'                           => [ 'convert_to_webp', 23 ],
-			'rocket_webp_section_description'         => 'webp_section_description',
-			'rocket_cache_webp_setting_field'         => 'maybe_disable_setting_field',
+			'rocket_cache_webp_setting_field'         => [
+				[ 'maybe_disable_setting_field' ],
+				[ 'webp_section_description' ],
+			],
 			'rocket_disable_webp_cache'               => 'maybe_disable_webp_cache',
 			'rocket_third_party_webp_change'          => 'sync_webp_cache_with_third_party_plugins',
 			'rocket_preload_url_request_args'         => 'add_accept_header',
@@ -214,10 +216,10 @@ class Webp_Subscriber implements Subscriber_Interface {
 	 * @author Remy Perona
 	 * @author Grégory Viguier
 	 *
-	 * @param string $description Section description.
+	 * @param string $cache_webp_field Section description.
 	 * @return string
 	 */
-	public function webp_section_description( $description ) {
+	public function webp_section_description( $cache_webp_field ) {
 		$webp_plugins = $this->get_webp_plugins();
 		$serving      = [];
 		$creating     = [];
@@ -240,44 +242,66 @@ class Webp_Subscriber implements Subscriber_Interface {
 		}
 
 		if ( $serving ) {
-			return sprintf(
+			$cache_webp_field['helper'] = sprintf(
 				// Translators: %1$s = plugin name(s).
 				_n( 'You are using %1$s to serve images as WebP. If you want WP Rocket to serve WebP images for you instead, please disable it from serving in %1$s.', 'You are using %1$s to serve images as WebP.  If you want WP Rocket to serve WebP images for you instead, please disable it from serving in %1$s.', count( $serving ), 'rocket' ),
 				wp_sprintf_l( '%l', $serving )
 			);
+
+			return $cache_webp_field;
 		}
 
 		/** This filter is documented in inc/classes/buffer/class-cache.php */
 		if ( apply_filters( 'rocket_disable_webp_cache', false ) ) {
-			return __( 'WebP cache is disabled by filter.', 'rocket' );
+			$cache_webp_field['helper'] = __( 'WebP cache is disabled by filter.', 'rocket' );
+
+			return $cache_webp_field;
 		}
 
 		if ( $creating ) {
 			if ( ! $this->options_data->get( 'cache_webp' ) ) {
-				return sprintf(
+				$cache_webp_field['helper'] = sprintf(
 					// Translators: %1$s = plugin name(s).
 					_n( 'You are using %1$s to convert images to WebP. If you activate this option, WP Rocket will create separate cache files to serve WebP images to compatible browsers. ', 'You are using %1$s to convert images to WebP. If you activate this option, WP Rocket will create separate cache files to serve WebP images to compatible browsers.', count( $creating ), 'rocket' ),
 					wp_sprintf_l( '%l', $creating )
 				);
+
+				return $cache_webp_field;
 			}
 
-			return sprintf(
+			$cache_webp_field['helper'] = sprintf(
 				// Translators: %1$s = plugin name(s).
 				_n( 'You are using %1$s to convert images to WebP. WP Rocket will create a dedicated cache for WebP support.', 'You are using %1$s to convert images to WebP. WP Rocket will create a dedicated cache for WebP support.', count( $creating ), 'rocket' ),
 				wp_sprintf_l( '%l', $creating )
 			);
+
+			return $cache_webp_field;
 		}
 
 		if ( ! $this->options_data->get( 'cache_webp' ) ) {
-			return sprintf(
-				// Translators: %1$s = opening link tag, %2$s = closing link tag.
-				__( 'If you activate this option, WP Rocket will create separate cache files to serve WebP images. Any WebP images you have on your site will be served from these files to compatible browsers. Since you don’t seem to use any method to convert and serve images as WebP, consider using %1$sImagify%2$s or another supported plugin.', 'rocket' ),
-				'<a href="#imagify">',
-				'</a>'
-			);
+			$cache_webp_field['container_class'][] = 'wpr-field--parent';
+			$cache_webp_field['warning']           = [
+				'title'        => __( 'We have not detected any compatible WebP plugin!', 'rocket' ),
+				'description'  => sprintf(
+					// Translators: %1$s = opening link tag, %2$s = closing link tag.
+					esc_html__( 'If you activate this option, WP Rocket will create separate cache files to serve WebP images. Any WebP images you have on your site will be served from these files to compatible browsers. Since you don’t seem to use any method to convert and serve images as WebP, consider using %1$sImagify%2$s or another supported plugin.', 'rocket' ),
+					'<a href="#imagify">',
+					'</a>'
+				),
+				'button_label' => __( 'Enable WebP caching', 'rocket' ),
+			];
+
+			return $cache_webp_field;
 		}
 
-		return __( 'WP Rocket will create separate cache files to serve WebP images. Any WebP images you have on your site will be served from these files to compatible browsers. You don’t seem to be using a method to convert and serve WebP that we are auto-compatible with. Only enable this option if you are already using WebP images on your site.', 'rocket' );
+		$cache_webp_field['helper'] = sprintf(
+			// Translators: %1$s = opening link tag, %2$s = closing link tag.
+			__( 'If you activate this option, WP Rocket will create separate cache files to serve WebP images. Any WebP images you have on your site will be served from these files to compatible browsers. Since you don’t seem to use any method to convert and serve images as WebP, consider using %1$sImagify%2$s or another supported plugin.', 'rocket' ),
+			'<a href="#imagify">',
+			'</a>'
+		);
+
+		return $cache_webp_field;
 	}
 
 	/**
