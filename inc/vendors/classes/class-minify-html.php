@@ -98,10 +98,16 @@ class Minify_HTML
         $this->_placeholders = array();
 
         // replace SCRIPTs (and minify) with placeholders
-        $this->_html = preg_replace_callback(
+        // preg_replace_callback - on errors the return is NULL
+        // On big scripts PREG_BACKTRACK_LIMIT_ERROR is reached and causes the empty page
+        $pregJs = preg_replace_callback(
             '/(\\s*)<script(\\b[^>]*?>)([\\s\\S]*?)<\\/script>(\\s*)/i'
             ,array($this, '_removeScriptCB')
             ,$this->_html);
+
+        if (isset($pregJs) && !empty($pregJs)) {
+            $this->_html = $pregJs;
+        }
 
         // replace STYLEs (and minify) with placeholders
         $this->_html = preg_replace_callback(
@@ -248,7 +254,7 @@ class Minify_HTML
 
     protected function _removeCdata($str)
     {
-	   	$data = array();
+	    $data = array();
 
 	    if ( false !== strpos( $str, '<![CDATA[' ) ) {
 		    $data['content'] = str_replace( array( '/* <![CDATA[ */', '/* ]]> */' ), '', $str );
