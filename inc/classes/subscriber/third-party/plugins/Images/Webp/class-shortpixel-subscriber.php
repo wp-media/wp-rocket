@@ -152,8 +152,14 @@ class ShortPixel_Subscriber implements Webp_Interface, Subscriber_Interface {
 	 * @param mixed $value     The new option value.
 	 */
 	public function sync_on_option_update( $old_value, $value ) {
-		$old_value = 3 === (int) $old_value;
-		$value     = 3 === (int) $value;
+		/**
+		 * 0 = Don’t serve webp.
+		 * 1 = <picture> + buffer
+		 * 2 = <picture> + hooks
+		 * 3 = .htaccess
+		 */
+		$old_value = $old_value > 0;
+		$value     = $value > 0;
 
 		if ( $old_value !== $value ) {
 			$this->trigger_webp_change();
