@@ -540,6 +540,8 @@ class Combine extends Abstract_JS_Optimization {
 			'advads_has_ads',
 			'wpseo_map_init',
 			'mdf_current_page_url',
+			'tptn_tracker',
+			'dpsp_pin_button_data',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
@@ -708,7 +710,7 @@ class Combine extends Abstract_JS_Optimization {
 			'cb_nombre',
 			'$(\'.fl-node-',
 			'function($){google_maps_',
-      			'$("#myCarousel',
+                '$("#myCarousel',
 		];
 
 		/**
