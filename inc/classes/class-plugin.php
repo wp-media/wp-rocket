@@ -105,6 +105,7 @@ class Plugin {
 				'minify_js_subscriber',
 				'cache_dynamic_resource_subscriber',
 				'remove_query_string_subscriber',
+				'dequeue_jquery_migrate_subscriber',
 			];
 
 			// Don't insert the LazyLoad file if Rocket LazyLoad is activated.
