@@ -128,7 +128,10 @@ class Minify_HTML
 
         // trim each line.
         // @todo take into account attribute values that span multiple lines.
-        $this->_html = preg_replace('/^\\s+|\\s+$/m', '', $this->_html);
+        // Fixed attribute values which span on multiple lines. Causes double spaces "  "
+        $this->_html = preg_replace('/^\\s+|\\s+$/m', ' ', $this->_html);
+        // Fixed double spaces. Replaced with a single space
+        $this->_html = preg_replace('/  +/', ' ', $this->_html);
 
         // remove ws around block/undisplayed elements
         $this->_html = preg_replace('/\\s+(<\\/?(?:area|article|aside|base(?:font)?|blockquote|body'
@@ -248,7 +251,7 @@ class Minify_HTML
 
     protected function _removeCdata($str)
     {
-	   	$data = array();
+	    $data = array();
 
 	    if ( false !== strpos( $str, '<![CDATA[' ) ) {
 		    $data['content'] = str_replace( array( '/* <![CDATA[ */', '/* ]]> */' ), '', $str );
