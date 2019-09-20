@@ -24,7 +24,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 			<p class="wpr-imagify-more"><?php esc_html_e( 'More on Imagify:', 'rocket' ); ?></p>
 			<ul>
 				<li><a href="https://wordpress.org/plugins/imagify/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Imagify Plugin Page', 'rocket' ); ?></a></li>
-				<li><a href="https://imagify.io/?utm_source=wp-rocket&utm_campaign=plugin_partner&utm_medium=partnership" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Imagify Website', 'rocket' ); ?></a></li>
+				<li><a href="https://imagify.io/?utm_source=wp_plugin&utm_medium=wp-rocket&utm_campaign=partnership" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Imagify Website', 'rocket' ); ?></a></li>
 				<li><a href="https://www.imagely.com/image-optimization-plugin-comparison/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Review of Image Compression Plugins', 'rocket' ); ?></a></li>
 			</ul>
 			<?php
