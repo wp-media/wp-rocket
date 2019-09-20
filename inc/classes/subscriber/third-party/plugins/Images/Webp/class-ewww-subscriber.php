@@ -97,10 +97,8 @@ class EWWW_Subscriber implements Webp_Interface, Subscriber_Interface {
 		 * Sadly, we can’t monitor EWWW options accurately to update our config file.
 		 */
 
-		add_filter( 'rocket_cdn_cnames',               [ $this, 'maybe_remove_images_cnames' ], 1000, 2 );
-		add_filter( 'rocket_allow_cdn_images',         [ $this, 'maybe_remove_images_from_cdn_dropdown' ] );
-		add_filter( 'rocket_cache_webp_setting_field', [ $this, 'maybe_add_cdn_warning' ] );
-		add_filter( 'rocket_cdn_setting_field',        [ $this, 'maybe_add_cdn_warning' ] );
+		add_filter( 'rocket_cdn_cnames',       [ $this, 'maybe_remove_images_cnames' ], 1000, 2 );
+		add_filter( 'rocket_allow_cdn_images', [ $this, 'maybe_remove_images_from_cdn_dropdown' ] );
 
 		$option_names = [
 			'ewww_image_optimizer_exactdn',
@@ -206,40 +204,6 @@ class EWWW_Subscriber implements Webp_Interface, Subscriber_Interface {
 
 		// EWWW uses ExactDN: WPR CDN should be disabled for images.
 		return false;
-	}
-
-	/**
-	 * Maybe remove the images option from the CDN dropdown.
-	 *
-	 * @since  3.4
-	 * @access public
-	 * @author Grégory Viguier
-	 *
-	 * @param  array $cache_webp_field Data to be added to the setting field.
-	 * @return array
-	 */
-	public function maybe_add_cdn_warning( $cache_webp_field ) {
-		if ( ! $this->options->get( 'cdn' ) ) {
-			return $cache_webp_field;
-		}
-		if ( ! ewww_image_optimizer_get_option( 'ewww_image_optimizer_exactdn' ) ) {
-			return $cache_webp_field;
-		}
-
-		// EWWW uses ExactDN: WPR CDN should be disabled for images.
-		return array_merge(
-			$cache_webp_field,
-			[
-				'container_class' => [
-					'wpr-field--parent',
-				],
-				'warning'         => [
-					'title'        => __( 'WP Rocket’s CDN and EWWW’s ExactDN', 'rocket' ),
-					'description'  => __( 'Since WP Rocket’s CDN and EWWW’s ExactDN cannot be used at the same time, WP Rocket’s CDN will be disabled for images.', 'rocket' ),
-					'button_label' => __( 'Enable WebP caching', 'rocket' ),
-				],
-			]
-		);
 	}
 
 	/** ----------------------------------------------------------------------------------------- */
