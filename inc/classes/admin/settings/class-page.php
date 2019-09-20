@@ -901,7 +901,7 @@ class Page {
 					'title'       => __( 'WebP compatibility', 'rocket' ),
 					'type'        => 'fields_container',
 					'description' => sprintf(
-						// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+						// translators: %1$s and %3$s = opening <a> tag, %2$s = closing </a> tag.
 						__( 'Enable this option if you would like WP Rocket to serve WebP images to compatible browsers. Please note that WP Rocket cannot create WebP images for you. To create WebP images we recommend %1$sImagify%2$s. %3$sMore info%2$s', 'rocket' ),
 						$imagify_link,
 						'</a>',
