@@ -3,6 +3,7 @@ namespace WP_Rocket\Subscriber\Media;
 
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Admin\Settings\Beacon;
 use WP_Rocket\Subscriber\CDN\CDNSubscriber;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
@@ -42,6 +43,15 @@ class Webp_Subscriber implements Subscriber_Interface {
 	private $cdn_subscriber;
 
 	/**
+	 * Beacon instance
+	 *
+	 * @var    Beacon
+	 * @access private
+	 * @author Grégory Viguier
+	 */
+	private $beacon;
+
+	/**
 	 * Values of $_SERVER to use for some tests.
 	 *
 	 * @var    array
@@ -69,12 +79,14 @@ class Webp_Subscriber implements Subscriber_Interface {
 	 * @param Options_Data  $options_data   Options_Data instance.
 	 * @param Options       $options_api    Options instance.
 	 * @param CDNSubscriber $cdn_subscriber CDNSubscriber instance.
+	 * @param Beacon        $beacon         Beacon instance.
 	 * @param array         $server         Values of $_SERVER to use for the tests. Default is $_SERVER.
 	 */
-	public function __construct( Options_Data $options_data, Options $options_api, CDNSubscriber $cdn_subscriber, $server = null ) {
+	public function __construct( Options_Data $options_data, Options $options_api, CDNSubscriber $cdn_subscriber, Beacon $beacon, $server = null ) {
 		$this->options_data   = $options_data;
 		$this->options_api    = $options_api;
 		$this->cdn_subscriber = $cdn_subscriber;
+		$this->beacon         = $beacon;
 
 		if ( ! isset( $server ) && ! empty( $_SERVER ) && is_array( $_SERVER ) ) {
 			$server = $_SERVER;
@@ -221,17 +233,22 @@ class Webp_Subscriber implements Subscriber_Interface {
 	 * @return string
 	 */
 	public function webp_section_description( $cache_webp_field ) {
-		$webp_plugins = $this->get_webp_plugins();
-		$serving      = [];
-		$creating     = [];
+		$webp_beacon            = $this->beacon->get_suggest( 'webp' );
+		$webp_plugins           = $this->get_webp_plugins();
+		$serving                = [];
+		$serving_not_compatible = [];
+		$creating               = [];
 
 		if ( $webp_plugins ) {
 			$is_using_cdn = $this->is_using_cdn();
 
 			foreach ( $webp_plugins as $plugin ) {
 				if ( $plugin->is_serving_webp() ) {
-					if ( ! $is_using_cdn || $plugin->is_serving_webp_compatible_with_cdn() ) {
-						// Serving WebP when no CDN or with a CDN-compatible method.
+					if ( $is_using_cdn && ! $plugin->is_serving_webp_compatible_with_cdn() ) {
+						// Serving WebP using a method not compatible with CDN.
+						$serving_not_compatible[ $plugin->get_id() ] = $plugin->get_name();
+					} else {
+						// Serving WebP when no CDN or with a method compatible with CDN.
 						$serving[ $plugin->get_id() ] = $plugin->get_name();
 					}
 				}
@@ -243,10 +260,13 @@ class Webp_Subscriber implements Subscriber_Interface {
 		}
 
 		if ( $serving ) {
+			// 5, 8.
 			$cache_webp_field['helper'] = sprintf(
-				// Translators: %1$s = plugin name(s).
-				_n( 'You are using %1$s to serve images as WebP. If you want WP Rocket to serve WebP images for you instead, please disable it from serving in %1$s.', 'You are using %1$s to serve images as WebP.  If you want WP Rocket to serve WebP images for you instead, please disable it from serving in %1$s.', count( $serving ), 'rocket' ),
-				wp_sprintf_l( '%l', $serving )
+				// Translators: %1$s = plugin name(s), %2$s = opening <a> tag, %3$s = closing </a> tag.
+				esc_html( _n( 'You are using %1$s to serve WebP images. If you prefer to have WP Rocket serve WebP for you, please disable them from serving in %1$s. %2$sMore info%3$s', 'You are using %1$s to serve WebP images. If you prefer to have WP Rocket serve WebP for you, please disable them from serving in %1$s. %2$sMore info%3$s', count( $serving ), 'rocket' ) ),
+				esc_html( wp_sprintf_l( '%l', $serving ) ),
+				'<a href="' . esc_url( $webp_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $webp_beacon['id'] ) . '" target="_blank" rel="noopener noreferrer">',
+				'</a>'
 			);
 
 			return $cache_webp_field;
@@ -254,53 +274,96 @@ class Webp_Subscriber implements Subscriber_Interface {
 
 		/** This filter is documented in inc/classes/buffer/class-cache.php */
 		if ( apply_filters( 'rocket_disable_webp_cache', false ) ) {
-			$cache_webp_field['helper'] = __( 'WebP cache is disabled by filter.', 'rocket' );
+			$cache_webp_field['helper'] = esc_html__( 'WebP cache is disabled by filter.', 'rocket' );
+
+			return $cache_webp_field;
+		}
+
+		if ( $serving_not_compatible ) {
+			if ( ! $this->options_data->get( 'cache_webp' ) ) {
+				// 6.
+				$cache_webp_field['helper'] = sprintf(
+					// Translators: %1$s = plugin name(s), %2$s = opening <a> tag, %3$s = closing </a> tag.
+					esc_html( _n( 'You are using %1$s to convert images to WebP. If you want WP Rocket to serve them for you, activate this option. %2$sMore info%3$s', 'You are using %1$s to convert images to WebP. If you want WP Rocket to serve them for you, activate this option. %2$sMore info%3$s', count( $serving_not_compatible ), 'rocket' ) ),
+					esc_html( wp_sprintf_l( '%l', $serving_not_compatible ) ),
+					'<a href="' . esc_url( $webp_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $webp_beacon['id'] ) . '" target="_blank" rel="noopener noreferrer">',
+					'</a>'
+				);
+
+				return $cache_webp_field;
+			}
+
+			// 7.
+			$cache_webp_field['helper'] = sprintf(
+				// Translators: %1$s = plugin name(s), %2$s = opening <a> tag, %3$s = closing </a> tag.
+				esc_html( _n( 'You are using %1$s to convert images to WebP. WP Rocket will create separate cache files to serve your WebP images. %2$sMore info%3$s', 'You are using %1$s to convert images to WebP. WP Rocket will create separate cache files to serve your WebP images. %2$sMore info%3$s', count( $serving_not_compatible ), 'rocket' ) ),
+				esc_html( wp_sprintf_l( '%l', $serving_not_compatible ) ),
+				'<a href="' . esc_url( $webp_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $webp_beacon['id'] ) . '" target="_blank" rel="noopener noreferrer">',
+				'</a>'
+			);
 
 			return $cache_webp_field;
 		}
 
 		if ( $creating ) {
 			if ( ! $this->options_data->get( 'cache_webp' ) ) {
+				// 3.
 				$cache_webp_field['helper'] = sprintf(
-					// Translators: %1$s = plugin name(s).
-					_n( 'You are using %1$s to convert images to WebP. If you activate this option, WP Rocket will create separate cache files to serve WebP images to compatible browsers. ', 'You are using %1$s to convert images to WebP. If you activate this option, WP Rocket will create separate cache files to serve WebP images to compatible browsers.', count( $creating ), 'rocket' ),
-					wp_sprintf_l( '%l', $creating )
+					// Translators: %1$s = plugin name(s), %2$s = opening <a> tag, %3$s = closing </a> tag.
+					esc_html( _n( 'You are using %1$s to convert images to WebP. If you want WP Rocket to serve them for you, activate this option. %2$sMore info%3$s', 'You are using %1$s to convert images to WebP. If you want WP Rocket to serve them for you, activate this option. %2$sMore info%3$s', count( $creating ), 'rocket' ) ),
+					esc_html( wp_sprintf_l( '%l', $creating ) ),
+					'<a href="' . esc_url( $webp_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $webp_beacon['id'] ) . '" target="_blank" rel="noopener noreferrer">',
+					'</a>'
 				);
 
 				return $cache_webp_field;
 			}
 
+			// 4.
 			$cache_webp_field['helper'] = sprintf(
-				// Translators: %1$s = plugin name(s).
-				_n( 'You are using %1$s to convert images to WebP. WP Rocket will create a dedicated cache for WebP support.', 'You are using %1$s to convert images to WebP. WP Rocket will create a dedicated cache for WebP support.', count( $creating ), 'rocket' ),
-				wp_sprintf_l( '%l', $creating )
+				// Translators: %1$s = plugin name(s), %2$s = opening <a> tag, %3$s = closing </a> tag.
+				esc_html( _n( 'You are using %1$s to convert images to WebP. WP Rocket will create separate cache files to serve your WebP images. %2$sMore info%3$s', 'You are using %1$s to convert images to WebP. WP Rocket will create separate cache files to serve your WebP images. %2$sMore info%3$s', count( $creating ), 'rocket' ) ),
+				esc_html( wp_sprintf_l( '%l', $creating ) ),
+				'<a href="' . esc_url( $webp_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $webp_beacon['id'] ) . '" target="_blank" rel="noopener noreferrer">',
+				'</a>'
 			);
 
 			return $cache_webp_field;
 		}
 
 		if ( ! $this->options_data->get( 'cache_webp' ) ) {
+			// 1.
+			if ( rocket_valid_key() && ! \Imagify_Partner::has_imagify_api_key() ) {
+				$imagify_link = '<a href="#imagify">';
+			} else {
+				// The Imagify page is not displayed.
+				$imagify_link = '<a href="https://imagify.io/?utm_source=wp_plugin&utm_medium=wp-rocket&utm_campaign=webp" target="_blank" rel="noopener noreferrer">';
+			}
+
 			$cache_webp_field['container_class'][] = 'wpr-field--parent';
+			$cache_webp_field['helper']            = sprintf(
+				// Translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+				esc_html__( 'You don’t seem to be using a method to create and serve WebP that we are auto-compatible with. If you are not using WebP do not enable this option. %1$sMore info%2$s', 'rocket' ),
+				'<a href="' . esc_url( $webp_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $webp_beacon['id'] ) . '" target="_blank" rel="noopener noreferrer">',
+				'</a>'
+			);
 			$cache_webp_field['warning']           = [
 				'title'        => __( 'We have not detected any compatible WebP plugin!', 'rocket' ),
 				'description'  => sprintf(
-					// Translators: %1$s = opening link tag, %2$s = closing link tag.
-					esc_html__( 'If you activate this option, WP Rocket will create separate cache files to serve WebP images. Any WebP images you have on your site will be served from these files to compatible browsers. Since you don’t seem to use any method to convert and serve images as WebP, consider using %1$sImagify%2$s or another supported plugin.', 'rocket' ),
-					'<a href="#imagify">',
+					// Translators: %1$s and %2$s = opening <a> tags, %3$s = closing </a> tag.
+					esc_html__( 'If you activate this option WP Rocket will create separate cache files to serve WebP images. Any WebP images you have on your site will be served from these files to compatible browsers. If you don’t already have WebP images on your site consider using %1$sImagify%3$s or another supported plugin. %2$sMore info%3$s', 'rocket' ),
+					$imagify_link,
+					'<a href="' . esc_url( $webp_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $webp_beacon['id'] ) . '" target="_blank" rel="noopener noreferrer">',
 					'</a>'
 				),
-				'button_label' => __( 'Enable WebP caching', 'rocket' ),
+				'button_label' => esc_html__( 'Enable WebP caching', 'rocket' ),
 			];
 
 			return $cache_webp_field;
 		}
 
-		$cache_webp_field['helper'] = sprintf(
-			// Translators: %1$s = opening link tag, %2$s = closing link tag.
-			__( 'If you activate this option, WP Rocket will create separate cache files to serve WebP images. Any WebP images you have on your site will be served from these files to compatible browsers. Since you don’t seem to use any method to convert and serve images as WebP, consider using %1$sImagify%2$s or another supported plugin.', 'rocket' ),
-			'<a href="#imagify">',
-			'</a>'
-		);
+		// 2.
+		$cache_webp_field['helper'] = esc_html__( 'WP Rocket will create separate cache files to serve your WebP images.', 'rocket' );
 
 		return $cache_webp_field;
 	}
