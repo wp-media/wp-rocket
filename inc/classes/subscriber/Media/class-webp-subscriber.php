@@ -229,7 +229,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 	 * @author Remy Perona
 	 * @author Grégory Viguier
 	 *
-	 * @param string $cache_webp_field Section description.
+	 * @param  array $cache_webp_field Section description.
 	 * @return string
 	 */
 	public function webp_section_description( $cache_webp_field ) {

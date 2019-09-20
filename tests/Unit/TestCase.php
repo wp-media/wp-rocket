@@ -36,6 +36,7 @@ class TestCase extends PHPUnitTestCase {
 				'esc_attr',
 				'esc_html',
 				'esc_textarea',
+				'esc_url',
 			]
 		);
 
