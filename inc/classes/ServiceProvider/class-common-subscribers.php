@@ -70,6 +70,7 @@ class Common_Subscribers extends AbstractServiceProvider {
 		$this->getContainer()->share( 'webp_subscriber', 'WP_Rocket\Subscriber\Media\Webp_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'options' ) )
 			->withArgument( $this->getContainer()->get( 'options_api' ) )
-			->withArgument( $this->getContainer()->get( 'cdn_subscriber' ) );
+			->withArgument( $this->getContainer()->get( 'cdn_subscriber' ) )
+			->withArgument( $this->getContainer()->get( 'beacon' ) );
 	}
 }
