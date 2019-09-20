@@ -18,7 +18,7 @@ class TestWebpSectionDescription extends TestCase {
 		// Webp cache option disabled.
 		$mocks = $this->getConstructorMocks( 0 );
 
-		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'] );
+		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'], $mocks['beacon'] );
 
 		$this->assertTrue( strpos( $webpSubscriber->webp_section_description( '' ), $expectedText ) === 0 );
 	}
@@ -34,7 +34,7 @@ class TestWebpSectionDescription extends TestCase {
 		// Webp cache option enabled.
 		$mocks = $this->getConstructorMocks();
 
-		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'] );
+		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'], $mocks['beacon'] );
 
 		$this->assertTrue( strpos( $webpSubscriber->webp_section_description( '' ), $expectedText ) === 0 );
 	}
@@ -84,7 +84,7 @@ class TestWebpSectionDescription extends TestCase {
 		// Webp cache option disabled.
 		$mocks = $this->getConstructorMocks( 0 );
 
-		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'] );
+		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'], $mocks['beacon'] );
 
 		$this->assertTrue( strpos( $webpSubscriber->webp_section_description( '' ), $expectedText ) === 0 );
 	}
@@ -134,7 +134,7 @@ class TestWebpSectionDescription extends TestCase {
 		// Webp cache option enabled.
 		$mocks = $this->getConstructorMocks();
 
-		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'] );
+		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'], $mocks['beacon'] );
 
 		$this->assertTrue( strpos( $webpSubscriber->webp_section_description( '' ), $expectedText ) === 0 );
 	}
@@ -184,14 +184,14 @@ class TestWebpSectionDescription extends TestCase {
 		// Webp cache option disabled.
 		$mocks = $this->getConstructorMocks( 0 );
 
-		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'] );
+		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'], $mocks['beacon'] );
 
 		$this->assertTrue( strpos( $webpSubscriber->webp_section_description( '' ), $expectedText ) === 0 );
 
 		// Webp cache option enabled.
 		$mocks = $this->getConstructorMocks();
 
-		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'] );
+		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'], $mocks['beacon'] );
 
 		$this->assertTrue( strpos( $webpSubscriber->webp_section_description( '' ), $expectedText ) === 0 );
 	}
@@ -246,14 +246,14 @@ class TestWebpSectionDescription extends TestCase {
 		// Webp cache option disabled.
 		$mocks = $this->getConstructorMocks( 0 );
 
-		$webpSubscriberNoCache = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'] );
+		$webpSubscriberNoCache = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'], $mocks['beacon'] );
 
 		$this->assertSame( $expectedText, $webpSubscriberNoCache->webp_section_description( '' ) );
 
 		// Webp cache option enabled.
 		$mocks = $this->getConstructorMocks( 1 );
 
-		$webpSubscriberWithCache = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'] );
+		$webpSubscriberWithCache = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'], $mocks['beacon'] );
 
 		$this->assertSame( $expectedText, $webpSubscriberWithCache->webp_section_description( '' ) );
 
@@ -274,7 +274,7 @@ class TestWebpSectionDescription extends TestCase {
 	}
 
 	/**
-	 * Get the 3 mocks required by Webp_Subscriber’s constructor.
+	 * Get the mocks required by Webp_Subscriber’s constructor.
 	 *
 	 * @since  3.4
 	 * @author Grégory Viguier
@@ -282,14 +282,15 @@ class TestWebpSectionDescription extends TestCase {
 	 *
 	 * @param  int   $cache_webp_option_value Value to return for $mocks['optionsData']->get( 'cache_webp' ).
 	 * @param  array $cdn_hosts               An array of URL hosts.
-	 * @return array An array containing the 3 mocks.
+	 * @return array An array containing the mocks.
 	 */
 	private function getConstructorMocks( $cache_webp_option_value = 1, $cdn_hosts = [ 'cdn-example.net' ] ) {
-		// Mock the 3 required objets for Webp_Subscriber.
+		// Mock the required objets for Webp_Subscriber.
 		$mocks = [
 			'optionsData' => $this->createMock( 'WP_Rocket\Admin\Options_Data' ),
 			'optionsApi'  => $this->createMock( 'WP_Rocket\Admin\Options' ),
 			'cdn'         => $this->createMock( 'WP_Rocket\Subscriber\CDN\CDNSubscriber' ),
+			'beacon'      => $this->createMock( 'WP_Rocket\Admin\Settings\Beacon' ),
 		];
 
 		$mocks['optionsData']
@@ -308,6 +309,19 @@ class TestWebpSectionDescription extends TestCase {
 				$this->returnValueMap(
 					[
 						[ [], [ 'all', 'images' ], $cdn_hosts ],
+					]
+				)
+			);
+
+		$mocks['beacon']
+			->method( 'get_suggest' )
+			->will(
+				$this->returnValueMap(
+					[
+						[ 'webp', [
+							'id'  => 'some-random-id',
+							'url' => 'https://docs.wp-rocket.me/some/request-uri/part',
+						] ],
 					]
 				)
 			);

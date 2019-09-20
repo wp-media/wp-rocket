@@ -347,7 +347,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 				'<a href="' . esc_url( $webp_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $webp_beacon['id'] ) . '" target="_blank" rel="noopener noreferrer">',
 				'</a>'
 			);
-			$cache_webp_field['warning']           = [
+			$cache_webp_field['warning'] = [
 				'title'        => __( 'We have not detected any compatible WebP plugin!', 'rocket' ),
 				'description'  => sprintf(
 					// Translators: %1$s and %2$s = opening <a> tags, %3$s = closing </a> tag.
