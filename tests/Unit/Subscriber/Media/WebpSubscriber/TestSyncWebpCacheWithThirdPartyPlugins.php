@@ -19,7 +19,7 @@ class TestSyncWebpCacheWithThirdPartyPlugins extends TestCase {
 			->expects( $this->never() )
 			->method( 'set' );
 
-		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'] );
+		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'], $mocks['beacon'] );
 
 		$webpSubscriber->sync_webp_cache_with_third_party_plugins();
 	}
@@ -45,7 +45,7 @@ class TestSyncWebpCacheWithThirdPartyPlugins extends TestCase {
 			->expects( $this->never() )
 			->method( 'set' );
 
-		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'] );
+		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'], $mocks['beacon'] );
 
 		$webpSubscriber->sync_webp_cache_with_third_party_plugins();
 
@@ -58,7 +58,7 @@ class TestSyncWebpCacheWithThirdPartyPlugins extends TestCase {
 			->once()
 			->andReturn( [ $webpPluginMock ] ); // Simulate a filter.
 
-		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'] );
+		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'], $mocks['beacon'] );
 
 		$webpSubscriber->sync_webp_cache_with_third_party_plugins();
 
@@ -112,7 +112,7 @@ class TestSyncWebpCacheWithThirdPartyPlugins extends TestCase {
 			->once()
 			->andReturn( [ $webpPluginMock ] ); // Simulate a filter.
 
-		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'] );
+		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'], $mocks['beacon'] );
 
 		$webpSubscriber->sync_webp_cache_with_third_party_plugins();
 
@@ -142,13 +142,13 @@ class TestSyncWebpCacheWithThirdPartyPlugins extends TestCase {
 			->once()
 			->andReturn( [ $webpPluginMock ] ); // Simulate a filter.
 
-		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'] );
+		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'], $mocks['beacon'] );
 
 		$webpSubscriber->sync_webp_cache_with_third_party_plugins();
 	}
 
 	/**
-	 * Get the 3 mocks required by Webp_Subscriber’s constructor.
+	 * Get the mocks required by Webp_Subscriber’s constructor.
 	 *
 	 * @since  3.4
 	 * @author Grégory Viguier
@@ -156,14 +156,15 @@ class TestSyncWebpCacheWithThirdPartyPlugins extends TestCase {
 	 *
 	 * @param  int   $cache_webp_option_value Value to return for $mocks['optionsData']->get( 'cache_webp' ).
 	 * @param  array $cdn_hosts               An array of URL hosts.
-	 * @return array An array containing the 3 mocks.
+	 * @return array An array containing the mocks.
 	 */
 	private function getConstructorMocks( $cache_webp_option_value = 1, $cdn_hosts = [ 'cdn-example.net' ] ) {
-		// Mock the 3 required objets for Webp_Subscriber.
+		// Mock the required objets for Webp_Subscriber.
 		$mocks = [
 			'optionsData' => $this->createMock( 'WP_Rocket\Admin\Options_Data' ),
 			'optionsApi'  => $this->createMock( 'WP_Rocket\Admin\Options' ),
 			'cdn'         => $this->createMock( 'WP_Rocket\Subscriber\CDN\CDNSubscriber' ),
+			'beacon'      => $this->createMock( 'WP_Rocket\Admin\Settings\Beacon' ),
 		];
 
 		$mocks['optionsData']
@@ -176,16 +177,25 @@ class TestSyncWebpCacheWithThirdPartyPlugins extends TestCase {
 				)
 			);
 
-		$mocks['optionsData']
-			->method( 'get_options' )
-			->willreturn( [ 'cache_webp' => $cache_webp_option_value ] );
-
 		$mocks['cdn']
 			->method( 'get_cdn_hosts' )
 			->will(
 				$this->returnValueMap(
 					[
 						[ [], [ 'all', 'images' ], $cdn_hosts ],
+					]
+				)
+			);
+
+		$mocks['beacon']
+			->method( 'get_suggest' )
+			->will(
+				$this->returnValueMap(
+					[
+						[ 'webp', [
+							'id'  => 'some-random-id',
+							'url' => 'https://docs.wp-rocket.me/some/request-uri/part',
+						] ],
 					]
 				)
 			);

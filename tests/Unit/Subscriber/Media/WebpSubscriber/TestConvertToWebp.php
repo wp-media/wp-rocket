@@ -13,14 +13,14 @@ class TestConvertToWebp extends TestCase {
 	public function testShouldReturnIdenticalHtmlWhenCacheIsDisabledByOption() {
 		$html = $this->getMatchingContents();
 
-		// Mock the 3 required objets for Webp_Subscriber.
+		// Mock the required objets for Webp_Subscriber.
 		$mocks = $this->getConstructorMocks( 0 );
 
 		// Make sure the filter to disable caching never runs.
 		Filters\expectApplied( 'rocket_disable_webp_cache' )
 			->never();
 
-		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'] );
+		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'], $mocks['beacon'] );
 
 		// Assert that the HTML is the same.
 		$this->assertSame( $html, $webpSubscriber->convert_to_webp( $html ) );
@@ -32,7 +32,7 @@ class TestConvertToWebp extends TestCase {
 	public function testShouldReturnIdenticalHtmlWhenWebpCacheIsDisabledByFilter() {
 		$html = $this->getMatchingContents();
 
-		// Mock the 3 required objets for Webp_Subscriber.
+		// Mock the required objets for Webp_Subscriber.
 		$mocks = $this->getConstructorMocks();
 
 		Functions\when( 'apache_request_headers' )
@@ -51,7 +51,7 @@ class TestConvertToWebp extends TestCase {
 		Filters\expectApplied( 'rocket_file_extensions_for_webp' )
 			->never();
 
-		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'] );
+		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'], $mocks['beacon'] );
 
 		// Assert that the HTML is the same.
 		$this->assertSame( $html, $webpSubscriber->convert_to_webp( $html ) );
@@ -63,7 +63,7 @@ class TestConvertToWebp extends TestCase {
 	public function testShouldReturnIdenticalHtmlWhenNoWebpHeader() {
 		$html = $this->getMatchingContents();
 
-		// Mock the 3 required objets for Webp_Subscriber.
+		// Mock the required objets for Webp_Subscriber.
 		$mocks = $this->getConstructorMocks();
 
 		Functions\when( 'apache_request_headers' )
@@ -82,7 +82,7 @@ class TestConvertToWebp extends TestCase {
 		Filters\expectApplied( 'rocket_file_extensions_for_webp' )
 			->never();
 
-		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'] );
+		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'], $mocks['beacon'] );
 
 		// Assert that the HTML is the same.
 		$this->assertSame( $html, $webpSubscriber->convert_to_webp( $html ) );
@@ -94,7 +94,7 @@ class TestConvertToWebp extends TestCase {
 	public function testShouldReturnIdenticalHtmlWhenNoFileExtensions() {
 		$html = $this->getMatchingContents();
 
-		// Mock the 3 required objets for Webp_Subscriber.
+		// Mock the required objets for Webp_Subscriber.
 		$mocks = $this->getConstructorMocks();
 
 		Functions\when( 'apache_request_headers' )
@@ -112,7 +112,7 @@ class TestConvertToWebp extends TestCase {
 		// Make sure the function rocket_direct_filesystem() never runs.
 		Functions\expect( 'rocket_direct_filesystem' )->never();
 
-		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'] );
+		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'], $mocks['beacon'] );
 
 		// Assert that the HTML is the same.
 		$this->assertSame( $html, $webpSubscriber->convert_to_webp( $html ) );
@@ -124,7 +124,7 @@ class TestConvertToWebp extends TestCase {
 	public function testShouldReturnIdenticalHtmlWhenNoAttributeNames() {
 		$html = $this->getMatchingContents();
 
-		// Mock the 3 required objets for Webp_Subscriber.
+		// Mock the required objets for Webp_Subscriber.
 		$mocks = $this->getConstructorMocks();
 
 		Functions\when( 'apache_request_headers' )
@@ -142,7 +142,7 @@ class TestConvertToWebp extends TestCase {
 		// Make sure the function rocket_direct_filesystem() never runs.
 		Functions\expect( 'rocket_direct_filesystem' )->never();
 
-		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'] );
+		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'], $mocks['beacon'] );
 
 		// Assert that the HTML is the same.
 		$this->assertSame( $html, $webpSubscriber->convert_to_webp( $html ) );
@@ -154,7 +154,7 @@ class TestConvertToWebp extends TestCase {
 	public function testShouldReturnIdenticalHtmlWhenNoImageExtensionsFound() {
 		$html = $this->getContentsNotMatchingFileExtensions();
 
-		// Mock the 3 required objets for Webp_Subscriber.
+		// Mock the required objets for Webp_Subscriber.
 		$mocks = $this->getConstructorMocks();
 
 		Functions\when( 'apache_request_headers' )
@@ -167,7 +167,7 @@ class TestConvertToWebp extends TestCase {
 		// Make sure the function rocket_direct_filesystem() never runs.
 		Functions\expect( 'rocket_direct_filesystem' )->never();
 
-		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'] );
+		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'], $mocks['beacon'] );
 
 		// Assert that the HTML is the same.
 		$this->assertSame( $html, $webpSubscriber->convert_to_webp( $html ) );
@@ -179,7 +179,7 @@ class TestConvertToWebp extends TestCase {
 	public function testShouldReturnIdenticalHtmlWhenNoImageAttributesFound() {
 		$html = $this->getContentsNotMatchingAttributes();
 
-		// Mock the 3 required objets for Webp_Subscriber.
+		// Mock the required objets for Webp_Subscriber.
 		$mocks = $this->getConstructorMocks();
 
 		Functions\when( 'apache_request_headers' )
@@ -192,7 +192,7 @@ class TestConvertToWebp extends TestCase {
 		// Make sure the function rocket_direct_filesystem() never runs.
 		Functions\expect( 'rocket_direct_filesystem' )->never();
 
-		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'] );
+		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'], $mocks['beacon'] );
 
 		// Assert that the HTML is the same.
 		$this->assertSame( $html, $webpSubscriber->convert_to_webp( $html ) );
@@ -204,7 +204,7 @@ class TestConvertToWebp extends TestCase {
 	public function testShouldReturnIdenticalHtmlWhenImagesHaveEmptyAttributes() {
 		$html = $this->getContentsWithEmptySources();
 
-		// Mock the 3 required objets for Webp_Subscriber.
+		// Mock the required objets for Webp_Subscriber.
 		$mocks = $this->getConstructorMocks();
 
 		Functions\when( 'apache_request_headers' )
@@ -217,7 +217,7 @@ class TestConvertToWebp extends TestCase {
 		// Make sure the function rocket_direct_filesystem() never runs.
 		Functions\expect( 'rocket_direct_filesystem' )->never();
 
-		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'] );
+		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'], $mocks['beacon'] );
 
 		// Assert that the HTML is the same.
 		$this->assertSame( $html, $webpSubscriber->convert_to_webp( $html ) );
@@ -227,7 +227,7 @@ class TestConvertToWebp extends TestCase {
 	 * Test Webp_Subscriber->convert_to_webp() should return the modified HTML.
 	 */
 	public function testShouldReturnModifiedHtml() {
-		// Mock the 3 required objets for Webp_Subscriber.
+		// Mock the required objets for Webp_Subscriber.
 		$mocks = $this->getConstructorMocks();
 
 		Functions\when( 'apache_request_headers' )
@@ -273,14 +273,14 @@ class TestConvertToWebp extends TestCase {
 		$original_html = $this->getMatchingContents();
 		$expected_html = $this->getExpectedContents();
 
-		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'] );
+		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'], $mocks['beacon'] );
 
 		// Assert that the HTML is the same.
 		$this->assertSame( $expected_html, $webpSubscriber->convert_to_webp( $original_html ) );
 	}
 
 	/**
-	 * Get the 3 mocks required by Webp_Subscriber’s constructor.
+	 * Get the mocks required by Webp_Subscriber’s constructor.
 	 *
 	 * @since  3.4
 	 * @author Grégory Viguier
@@ -288,14 +288,15 @@ class TestConvertToWebp extends TestCase {
 	 *
 	 * @param  int   $cache_webp_option_value Value to return for $mocks['optionsData']->get( 'cache_webp' ).
 	 * @param  array $cdn_hosts               An array of URL hosts.
-	 * @return array An array containing the 3 mocks.
+	 * @return array An array containing the mocks.
 	 */
 	private function getConstructorMocks( $cache_webp_option_value = 1, $cdn_hosts = [ 'cdn-example.net' ] ) {
-		// Mock the 3 required objets for Webp_Subscriber.
+		// Mock the required objets for Webp_Subscriber.
 		$mocks = [
 			'optionsData' => $this->createMock( 'WP_Rocket\Admin\Options_Data' ),
 			'optionsApi'  => $this->createMock( 'WP_Rocket\Admin\Options' ),
 			'cdn'         => $this->createMock( 'WP_Rocket\Subscriber\CDN\CDNSubscriber' ),
+			'beacon'      => $this->createMock( 'WP_Rocket\Admin\Settings\Beacon' ),
 		];
 
 		$mocks['optionsData']
@@ -314,6 +315,19 @@ class TestConvertToWebp extends TestCase {
 				$this->returnValueMap(
 					[
 						[ [], [ 'all', 'images' ], $cdn_hosts ],
+					]
+				)
+			);
+
+		$mocks['beacon']
+			->method( 'get_suggest' )
+			->will(
+				$this->returnValueMap(
+					[
+						[ 'webp', [
+							'id'  => 'some-random-id',
+							'url' => 'https://docs.wp-rocket.me/some/request-uri/part',
+						] ],
 					]
 				)
 			);

@@ -9,41 +9,57 @@ use Brain\Monkey\Functions;
 class TestWebpSectionDescription extends TestCase {
 	/**
 	 * Test Webp_Subscriber->webp_section_description() should return specific text when no webp plugin is available and cache option is disabled.
+	 * Case 1.
 	 */
 	public function testShouldReturnTextWhenNoPluginsAndCacheOptionDisabled() {
-		$expectedText = 'If you activate this option, WP Rocket will create separate cache files to serve WebP images.';
-
 		$this->mockCommonWpFunctions();
+
+		Functions\when( 'rocket_valid_key' )->justReturn( false );
 
 		// Webp cache option disabled.
 		$mocks = $this->getConstructorMocks( 0 );
 
-		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'] );
+		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'], $mocks['beacon'] );
+		$field          = $webpSubscriber->webp_section_description( [] );
 
-		$this->assertTrue( strpos( $webpSubscriber->webp_section_description( '' ), $expectedText ) === 0 );
+		// Text under field.
+		$expectedText = 'You don’t seem to be using a method to create and serve WebP that we are auto-compatible with.';
+
+		$this->assertArrayHasKey( 'helper', $field );
+		$this->assertStringStartsWith( $expectedText, $field['helper'] );
+
+		// Double check.
+		$expectedText = 'If you activate this option WP Rocket will create separate cache files to serve WebP images.';
+
+		$this->assertArrayHasKey( 'warning', $field );
+		$this->assertStringStartsWith( $expectedText, $field['warning']['description'] );
 	}
 
 	/**
 	 * Test Webp_Subscriber->webp_section_description() should return specific text when no webp plugin is available and cache option is enabled.
+	 * Case 2.
 	 */
 	public function testShouldReturnTextWhenNoPluginsAndCacheOptionEnabled() {
-		$expectedText = 'WP Rocket will create separate cache files to serve WebP images.';
+		$expectedText = 'WP Rocket will create separate cache files to serve your WebP images.';
 
 		$this->mockCommonWpFunctions();
 
 		// Webp cache option enabled.
 		$mocks = $this->getConstructorMocks();
 
-		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'] );
+		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'], $mocks['beacon'] );
+		$field          = $webpSubscriber->webp_section_description( [] );
 
-		$this->assertTrue( strpos( $webpSubscriber->webp_section_description( '' ), $expectedText ) === 0 );
+		$this->assertArrayHasKey( 'helper', $field );
+		$this->assertSame( $expectedText, $field['helper'] );
 	}
 
 	/**
 	 * Test Webp_Subscriber->webp_section_description() should return specific text when a plugin creating webp (but not serving) is available and cache option is disabled.
+	 * Case 3.
 	 */
 	public function testShouldReturnTextWhenPluginCreatingWebpAvailableAndCacheOptionDisabled() {
-		$expectedText = 'You are using Mock to convert images to WebP. If you activate this option,';
+		$expectedText = 'You are using Mock to convert images to WebP. If you want WP Rocket to serve them for you,';
 
 		$this->mockCommonWpFunctions();
 
@@ -84,16 +100,19 @@ class TestWebpSectionDescription extends TestCase {
 		// Webp cache option disabled.
 		$mocks = $this->getConstructorMocks( 0 );
 
-		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'] );
+		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'], $mocks['beacon'] );
+		$field          = $webpSubscriber->webp_section_description( [] );
 
-		$this->assertTrue( strpos( $webpSubscriber->webp_section_description( '' ), $expectedText ) === 0 );
+		$this->assertArrayHasKey( 'helper', $field );
+		$this->assertStringStartsWith( $expectedText, $field['helper'] );
 	}
 
 	/**
 	 * Test Webp_Subscriber->webp_section_description() should return specific text when a plugin creating webp (but not serving) is available and cache option is enabled.
+	 * Case 4.
 	 */
 	public function testShouldReturnTextWhenPluginCreatingWebpAvailableAndCacheOptionEnabled() {
-		$expectedText = 'You are using Mock to convert images to WebP. WP Rocket will create';
+		$expectedText = 'You are using Mock to convert images to WebP. WP Rocket will create separate cache files';
 
 		$this->mockCommonWpFunctions();
 
@@ -134,16 +153,125 @@ class TestWebpSectionDescription extends TestCase {
 		// Webp cache option enabled.
 		$mocks = $this->getConstructorMocks();
 
-		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'] );
+		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'], $mocks['beacon'] );
+		$field          = $webpSubscriber->webp_section_description( [] );
 
-		$this->assertTrue( strpos( $webpSubscriber->webp_section_description( '' ), $expectedText ) === 0 );
+		$this->assertArrayHasKey( 'helper', $field );
+		$this->assertStringStartsWith( $expectedText, $field['helper'] );
+	}
+
+	/**
+	 * Test Webp_Subscriber->webp_section_description() should return specific text when a plugin is serving webp, but not with a compatible method, and cache option is disabled.
+	 * Case 6.
+	 */
+	public function testShouldReturnTextWhenPluginServingWebpNotCompatibleAndCacheOptionDisabled() {
+		$expectedText = 'You are using Mock to convert images to WebP. If you want WP Rocket to serve them for you,';
+
+		$this->mockCommonWpFunctions();
+
+		Functions\when( 'rocket_is_plugin_active' )->alias( function( $plugin ) {
+			return 'mock/mock.php' === $plugin;
+		} );
+		Functions\when( 'get_rocket_option' )->alias( function( $option, $default = '' ) {
+			return 'cdn' === $option;
+		} );
+		Functions\when( 'wp_sprintf_l' )->alias( function( $pattern, $args ) {
+			return implode( ', ', $args );
+		} );
+
+		$webpPluginMock = $this->createMock( '\WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Webp_Interface' );
+		$webpPluginMock
+			->method( 'get_name' )
+			->willReturn( 'Mock' );
+		$webpPluginMock
+			->method( 'get_id' )
+			->willReturn( 'mock' );
+		$webpPluginMock
+			->method( 'is_converting_to_webp' )
+			->willReturn( true );
+		$webpPluginMock
+			->method( 'is_serving_webp' )
+			->willReturn( true );
+		$webpPluginMock
+			->method( 'is_serving_webp_compatible_with_cdn' )
+			->willReturn( false );
+		$webpPluginMock
+			->method( 'get_basename' )
+			->willReturn( 'mock/mock.php' );
+
+		Filters\expectApplied( 'rocket_webp_plugins' )
+			->once()
+			->andReturn( [ $webpPluginMock ] ); // Simulate a filter.
+
+		// Webp cache option disabled.
+		$mocks = $this->getConstructorMocks( 0 );
+
+		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'], $mocks['beacon'] );
+		$field          = $webpSubscriber->webp_section_description( [] );
+
+		$this->assertArrayHasKey( 'helper', $field );
+		$this->assertStringStartsWith( $expectedText, $field['helper'] );
+	}
+
+	/**
+	 * Test Webp_Subscriber->webp_section_description() should return specific text when a plugin is serving webp, but not with a compatible method, and cache option is enabled.
+	 * Case 7.
+	 */
+	public function testShouldReturnTextWhenPluginServingWebpNotCompatibleAndCacheOptionEnabled() {
+		$expectedText = 'You are using Mock to convert images to WebP. WP Rocket will create separate cache files';
+
+		$this->mockCommonWpFunctions();
+
+		Functions\when( 'rocket_is_plugin_active' )->alias( function( $plugin ) {
+			return 'mock/mock.php' === $plugin;
+		} );
+		Functions\when( 'get_rocket_option' )->alias( function( $option, $default = '' ) {
+			return 'cdn' === $option;
+		} );
+		Functions\when( 'wp_sprintf_l' )->alias( function( $pattern, $args ) {
+			return implode( ', ', $args );
+		} );
+
+		$webpPluginMock = $this->createMock( '\WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Webp_Interface' );
+		$webpPluginMock
+			->method( 'get_name' )
+			->willReturn( 'Mock' );
+		$webpPluginMock
+			->method( 'get_id' )
+			->willReturn( 'mock' );
+		$webpPluginMock
+			->method( 'is_converting_to_webp' )
+			->willReturn( true );
+		$webpPluginMock
+			->method( 'is_serving_webp' )
+			->willReturn( true );
+		$webpPluginMock
+			->method( 'is_serving_webp_compatible_with_cdn' )
+			->willReturn( false );
+		$webpPluginMock
+			->method( 'get_basename' )
+			->willReturn( 'mock/mock.php' );
+
+		Filters\expectApplied( 'rocket_webp_plugins' )
+			->once()
+			->andReturn( [ $webpPluginMock ] ); // Simulate a filter.
+
+		// Webp cache option enabled.
+		$mocks = $this->getConstructorMocks();
+
+		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'], $mocks['beacon'] );
+		$field          = $webpSubscriber->webp_section_description( [] );
+
+		$this->assertArrayHasKey( 'helper', $field );
+		$this->assertStringStartsWith( $expectedText, $field['helper'] );
 	}
 
 	/**
 	 * Test Webp_Subscriber->webp_section_description() should return specific text when a plugin serving webp is available.
+	 * Cases 5 and 8.
 	 */
 	public function testShouldReturnTextWhenPluginServingWebpAvailable() {
-		$expectedText = 'You are using Mock to serve images as WebP.';
+		$expectedText = 'You are using Mock to serve WebP images. If you prefer to have WP Rocket serve WebP for you,';
 
 		$this->mockCommonWpFunctions();
 
@@ -184,16 +312,20 @@ class TestWebpSectionDescription extends TestCase {
 		// Webp cache option disabled.
 		$mocks = $this->getConstructorMocks( 0 );
 
-		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'] );
+		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'], $mocks['beacon'] );
+		$field          = $webpSubscriber->webp_section_description( [] );
 
-		$this->assertTrue( strpos( $webpSubscriber->webp_section_description( '' ), $expectedText ) === 0 );
+		$this->assertArrayHasKey( 'helper', $field );
+		$this->assertStringStartsWith( $expectedText, $field['helper'] );
 
 		// Webp cache option enabled.
 		$mocks = $this->getConstructorMocks();
 
-		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'] );
+		$webpSubscriber = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'], $mocks['beacon'] );
+		$field          = $webpSubscriber->webp_section_description( [] );
 
-		$this->assertTrue( strpos( $webpSubscriber->webp_section_description( '' ), $expectedText ) === 0 );
+		$this->assertArrayHasKey( 'helper', $field );
+		$this->assertStringStartsWith( $expectedText, $field['helper'] );
 	}
 
 	/**
@@ -246,16 +378,20 @@ class TestWebpSectionDescription extends TestCase {
 		// Webp cache option disabled.
 		$mocks = $this->getConstructorMocks( 0 );
 
-		$webpSubscriberNoCache = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'] );
+		$webpSubscriberNoCache = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'], $mocks['beacon'] );
+		$field                 = $webpSubscriberNoCache->webp_section_description( [] );
 
-		$this->assertSame( $expectedText, $webpSubscriberNoCache->webp_section_description( '' ) );
+		$this->assertArrayHasKey( 'helper', $field );
+		$this->assertSame( $expectedText, $field['helper'] );
 
 		// Webp cache option enabled.
 		$mocks = $this->getConstructorMocks( 1 );
 
-		$webpSubscriberWithCache = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'] );
+		$webpSubscriberWithCache = new Webp_Subscriber( $mocks['optionsData'], $mocks['optionsApi'], $mocks['cdn'], $mocks['beacon'] );
+		$field                   = $webpSubscriberWithCache->webp_section_description( [] );
 
-		$this->assertSame( $expectedText, $webpSubscriberWithCache->webp_section_description( '' ) );
+		$this->assertArrayHasKey( 'helper', $field );
+		$this->assertSame( $expectedText, $field['helper'] );
 
 		// Generating but not serving webp.
 		$webpPluginMock
@@ -267,14 +403,20 @@ class TestWebpSectionDescription extends TestCase {
 			->andReturn( [ $webpPluginMock ] ); // Simulate a filter.
 
 		// Webp cache option disabled.
-		$this->assertSame( $expectedText, $webpSubscriberNoCache->webp_section_description( '' ) );
+		$field = $webpSubscriberNoCache->webp_section_description( [] );
+
+		$this->assertArrayHasKey( 'helper', $field );
+		$this->assertSame( $expectedText, $field['helper'] );
 
 		// Webp cache option enabled.
-		$this->assertSame( $expectedText, $webpSubscriberWithCache->webp_section_description( '' ) );
+		$field = $webpSubscriberWithCache->webp_section_description( [] );
+
+		$this->assertArrayHasKey( 'helper', $field );
+		$this->assertSame( $expectedText, $field['helper'] );
 	}
 
 	/**
-	 * Get the 3 mocks required by Webp_Subscriber’s constructor.
+	 * Get the mocks required by Webp_Subscriber’s constructor.
 	 *
 	 * @since  3.4
 	 * @author Grégory Viguier
@@ -282,14 +424,15 @@ class TestWebpSectionDescription extends TestCase {
 	 *
 	 * @param  int   $cache_webp_option_value Value to return for $mocks['optionsData']->get( 'cache_webp' ).
 	 * @param  array $cdn_hosts               An array of URL hosts.
-	 * @return array An array containing the 3 mocks.
+	 * @return array An array containing the mocks.
 	 */
 	private function getConstructorMocks( $cache_webp_option_value = 1, $cdn_hosts = [ 'cdn-example.net' ] ) {
-		// Mock the 3 required objets for Webp_Subscriber.
+		// Mock the required objets for Webp_Subscriber.
 		$mocks = [
 			'optionsData' => $this->createMock( 'WP_Rocket\Admin\Options_Data' ),
 			'optionsApi'  => $this->createMock( 'WP_Rocket\Admin\Options' ),
 			'cdn'         => $this->createMock( 'WP_Rocket\Subscriber\CDN\CDNSubscriber' ),
+			'beacon'      => $this->createMock( 'WP_Rocket\Admin\Settings\Beacon' ),
 		];
 
 		$mocks['optionsData']
@@ -308,6 +451,19 @@ class TestWebpSectionDescription extends TestCase {
 				$this->returnValueMap(
 					[
 						[ [], [ 'all', 'images' ], $cdn_hosts ],
+					]
+				)
+			);
+
+		$mocks['beacon']
+			->method( 'get_suggest' )
+			->will(
+				$this->returnValueMap(
+					[
+						[ 'webp', [
+							'id'  => 'some-random-id',
+							'url' => 'https://docs.wp-rocket.me/some/request-uri/part',
+						] ],
 					]
 				)
 			);
