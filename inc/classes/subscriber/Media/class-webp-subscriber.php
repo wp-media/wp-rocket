@@ -145,11 +145,11 @@ class Webp_Subscriber implements Subscriber_Interface {
 		}
 
 		// Only to supporting browsers.
-		if ( function_exists( 'apache_request_headers' ) ) {
+		$http_accept = isset( $this->server['HTTP_ACCEPT'] ) ? $this->server['HTTP_ACCEPT'] : '';
+
+		if ( ! $http_accept && function_exists( 'apache_request_headers' ) ) {
 			$headers     = apache_request_headers();
 			$http_accept = isset( $headers['Accept'] ) ? $headers['Accept'] : '';
-		} else {
-			$http_accept = isset( $this->server['HTTP_ACCEPT'] ) ? $this->server['HTTP_ACCEPT'] : '';
 		}
 
 		if ( ! $http_accept || false === strpos( $http_accept, 'webp' ) ) {
