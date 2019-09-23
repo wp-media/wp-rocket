@@ -362,6 +362,10 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 		$newvalue = array_merge( $newvalue, $keys );
 	}
 
+	if ( ! function_exists( 'get_settings_errors' ) ) {
+		require_once ABSPATH . 'wp-admin/includes/template.php';
+	}
+
 	if ( get_settings_errors() ) {
 		// Display an error notice.
 		set_transient( 'settings_errors', get_settings_errors(), 30 );

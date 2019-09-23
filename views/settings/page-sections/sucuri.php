@@ -26,6 +26,9 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 	<div class="wpr-optionHeader">
 		<h3 class="wpr-title2"><?php echo esc_html( $data['title'] ); ?></h3>
 	</div>
+	<?php
+	if ( current_user_can( 'rocket_purge_sucuri' ) ) :
+		?>
 	<div class="wpr-fieldsContainer">
 		<div class="wpr-fieldsContainer-description">
 			<?php
@@ -37,7 +40,6 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 			?>
 		</div><br>
 		<?php
-		if ( current_user_can( 'rocket_purge_sucuri' ) ) {
 			$this->render_action_button(
 				'link',
 				'rocket_purge_sucuri',
@@ -48,7 +50,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 					],
 				]
 			);
-		}
 		?>
 	</div>
+	<?php endif; ?>
 </div>

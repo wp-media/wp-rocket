@@ -25,6 +25,10 @@ function flush_rocket_htaccess( $remove_rules = false ) {
 		return false;
 	}
 
+	if ( ! function_exists( 'get_home_path' ) ) {
+		require_once ABSPATH . 'wp-admin/includes/file.php';
+	}
+
 	$htaccess_file = get_home_path() . '.htaccess';
 
 	if ( ! rocket_direct_filesystem()->is_writable( $htaccess_file ) ) {
@@ -670,6 +674,10 @@ function rocket_has_wp_htaccess_rules( $content ) {
  * @return bool
  */
 function rocket_check_htaccess_rules() {
+	if ( ! function_exists( 'get_home_path' ) ) {
+		require_once ABSPATH . 'wp-admin/includes/file.php';
+	}
+
 	$htaccess_file = get_home_path() . '.htaccess';
 
 	if ( ! rocket_direct_filesystem()->is_readable( $htaccess_file ) ) {
