@@ -23,12 +23,10 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 		</h2>
 	</div>
 	<?php $this->render_settings_sections( $data['id'] ); ?>
+	<?php if ( current_user_can( 'rocket_purge_sucuri' ) ) : ?>
 	<div class="wpr-optionHeader">
 		<h3 class="wpr-title2"><?php echo esc_html( $data['title'] ); ?></h3>
 	</div>
-	<?php
-	if ( current_user_can( 'rocket_purge_sucuri' ) ) :
-		?>
 	<div class="wpr-fieldsContainer">
 		<div class="wpr-fieldsContainer-description">
 			<?php
