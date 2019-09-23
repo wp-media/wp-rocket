@@ -55,8 +55,12 @@ class Dequeue_JQuery_Migrate_Subscriber implements Subscriber_Interface
      */
     public function dequeue_jquery_migrate($scripts)
     {
+        if ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) {
+			return false;
+        }
+
         if ( ! $this->is_allowed() ) {
-            return;
+            return false;
         }
 
         if ( ! empty($scripts->registered['jquery']) ) {
