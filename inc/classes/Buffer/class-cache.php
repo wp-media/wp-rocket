@@ -600,18 +600,14 @@ class Cache extends Abstract_Buffer {
 			return $filename;
 		}
 
-		if ( function_exists( 'apache_request_headers' ) ) {
+		$http_accept = $this->config->get_server_input( 'HTTP_ACCEPT', '' );
+
+		if ( ! $http_accept && function_exists( 'apache_request_headers' ) ) {
 			$headers     = apache_request_headers();
-			$http_accept = ( isset( $headers['Accept'] ) ) ? $headers['Accept'] : '';
-		} else {
-			$http_accept = $this->config->get_server_input( 'HTTP_ACCEPT', '' );
+			$http_accept = isset( $headers['Accept'] ) ? $headers['Accept'] : '';
 		}
 
-		if ( ! $http_accept ) {
-			return $filename;
-		}
-
-		if ( false === strpos( $http_accept, 'webp' ) ) {
+		if ( ! $http_accept || false === strpos( $http_accept, 'webp' ) ) {
 			return $filename;
 		}
 
