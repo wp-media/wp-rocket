@@ -14,7 +14,7 @@ class TestIsServingWebp extends TestCase {
 		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
 		$subscriber  = new EWWW_Subscriber( $optionsData );
 
-		$this->assertSame( false, $subscriber->is_serving_webp() );
+		$this->assertFalse( $subscriber->is_serving_webp() );
 	}
 
 	/**
@@ -28,7 +28,7 @@ class TestIsServingWebp extends TestCase {
 			->once()
 			->andReturn( true );
 
-		$this->assertSame( true, $subscriber->is_serving_webp() );
+		$this->assertTrue( $subscriber->is_serving_webp() );
 	}
 
 	/**
@@ -44,7 +44,7 @@ class TestIsServingWebp extends TestCase {
 				return 'ewww_image_optimizer_webp_for_cdn' === $option_name;
 			} );
 
-		$this->assertSame( true, $subscriber->is_serving_webp() );
+		$this->assertTrue( $subscriber->is_serving_webp() );
 	}
 
 	/**
@@ -67,7 +67,7 @@ class TestIsServingWebp extends TestCase {
 			->once()
 			->with( true );
 
-		$this->assertSame( true, $subscriber->is_serving_webp() );
+		$this->assertTrue( $subscriber->is_serving_webp() );
 	}
 
 	/**
@@ -91,6 +91,6 @@ class TestIsServingWebp extends TestCase {
 			->once()
 			->with( false );
 
-		$this->assertSame( false, $subscriber->is_serving_webp() );
+		$this->assertFalse( $subscriber->is_serving_webp() );
 	}
 }
