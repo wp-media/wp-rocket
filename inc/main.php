@@ -149,6 +149,7 @@ function rocket_deactivation() {
 	wp_clear_scheduled_hook( 'rocket_google_tracking_cache_update' );
 	wp_clear_scheduled_hook( 'rocket_cache_dir_size_check' );
 
+	( new WP_Rocket\Subscriber\Plugin\Capabilities_Subscriber() )->remove_rocket_capabilities();
 	/**
 	 * WP Rocket deactivation.
 	 *
@@ -165,6 +166,8 @@ register_deactivation_hook( WP_ROCKET_FILE, 'rocket_deactivation' );
  * @since 1.1.0
  */
 function rocket_activation() {
+	( new WP_Rocket\Subscriber\Plugin\Capabilities_Subscriber() )->add_rocket_capabilities();
+
 	// Last constants.
 	define( 'WP_ROCKET_PLUGIN_NAME', 'WP Rocket' );
 	define( 'WP_ROCKET_PLUGIN_SLUG', sanitize_key( WP_ROCKET_PLUGIN_NAME ) );
