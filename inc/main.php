@@ -149,7 +149,6 @@ function rocket_deactivation() {
 	wp_clear_scheduled_hook( 'rocket_google_tracking_cache_update' );
 	wp_clear_scheduled_hook( 'rocket_cache_dir_size_check' );
 
-	( new WP_Rocket\Subscriber\Plugin\Capabilities_Subscriber() )->remove_rocket_capabilities();
 	/**
 	 * WP Rocket deactivation.
 	 *
@@ -157,6 +156,8 @@ function rocket_deactivation() {
 	 * @author Grégory Viguier
 	 */
 	do_action( 'rocket_deactivation' );
+
+	( new WP_Rocket\Subscriber\Plugin\Capabilities_Subscriber() )->remove_rocket_capabilities();
 }
 register_deactivation_hook( WP_ROCKET_FILE, 'rocket_deactivation' );
 
