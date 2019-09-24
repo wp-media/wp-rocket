@@ -10,6 +10,10 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  * @return array Updated array of links
  */
 function rocket_settings_action_links( $actions ) {
+	if ( ! current_user_can( 'rocket_manage_options' ) ) {
+		return $actions;
+	}
+
 	array_unshift( $actions, sprintf( '<a href="%s">%s</a>', 'https://wp-rocket.me/support/?utm_source=wp_plugin&utm_medium=wp_rocket', __( 'Support', 'rocket' ) ) );
 
 	array_unshift( $actions, sprintf( '<a href="%s">%s</a>', get_rocket_documentation_url(), __( 'Docs', 'rocket' ) ) );
@@ -58,10 +62,13 @@ add_action( 'plugin_row_meta', 'rocket_plugin_row_meta', 10, 2 );
  * @return array Updated array of row action links
  */
 function rocket_post_row_actions( $actions, $post ) {
-	if ( current_user_can( 'rocket_purge_posts' ) ) {
-		$url                     = wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=post-' . $post->ID ), 'purge_cache_post-' . $post->ID );
-		$actions['rocket_purge'] = sprintf( '<a href="%s">%s</a>', $url, __( 'Clear this cache', 'rocket' ) );
+	if ( ! current_user_can( 'rocket_purge_posts' ) ) {
+		return $actions;
 	}
+
+	$url                     = wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=post-' . $post->ID ), 'purge_cache_post-' . $post->ID );
+	$actions['rocket_purge'] = sprintf( '<a href="%s">%s</a>', $url, __( 'Clear this cache', 'rocket' ) );
+
 	return $actions;
 }
 add_filter( 'page_row_actions', 'rocket_post_row_actions', 10, 2 );
@@ -79,10 +86,12 @@ add_filter( 'post_row_actions', 'rocket_post_row_actions', 10, 2 );
 function rocket_tag_row_actions( $actions, $term ) {
 	global $taxnow;
 
-	if ( current_user_can( 'rocket_purge_terms' ) ) {
-		$url                     = wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=term-' . $term->term_id . '&taxonomy=' . $taxnow ), 'purge_cache_term-' . $term->term_id );
-		$actions['rocket_purge'] = sprintf( '<a href="%s">%s</a>', $url, __( 'Clear this cache', 'rocket' ) );
+	if ( ! current_user_can( 'rocket_purge_terms' ) ) {
+		return $actions;
 	}
+
+	$url                     = wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=term-' . $term->term_id . '&taxonomy=' . $taxnow ), 'purge_cache_term-' . $term->term_id );
+	$actions['rocket_purge'] = sprintf( '<a href="%s">%s</a>', $url, __( 'Clear this cache', 'rocket' ) );
 
 	return $actions;
 }
@@ -97,10 +106,12 @@ add_filter( 'tag_row_actions', 'rocket_tag_row_actions', 10, 2 );
  * @return array Updated array of row action links
  */
 function rocket_user_row_actions( $actions, $user ) {
-	if ( current_user_can( 'rocket_purge_users' ) && get_rocket_option( 'cache_logged_user', false ) ) {
-		$url                     = wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=user-' . $user->ID ), 'purge_cache_user-' . $user->ID );
-		$actions['rocket_purge'] = sprintf( '<a href="%s">%s</a>', $url, __( 'Clear this cache', 'rocket' ) );
+	if ( ! current_user_can( 'rocket_purge_users' ) || ! get_rocket_option( 'cache_logged_user', false ) ) {
+		return $actions;
 	}
+
+	$url                     = wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=user-' . $user->ID ), 'purge_cache_user-' . $user->ID );
+	$actions['rocket_purge'] = sprintf( '<a href="%s">%s</a>', $url, __( 'Clear this cache', 'rocket' ) );
 
 	return $actions;
 }
