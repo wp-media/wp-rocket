@@ -14,7 +14,7 @@ class TestIsServingWebpCompatibleWithCdn extends TestCase {
 		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
 		$subscriber  = new EWWW_Subscriber( $optionsData );
 
-		$this->assertSame( false, $subscriber->is_serving_webp_compatible_with_cdn() );
+		$this->assertFalse( $subscriber->is_serving_webp_compatible_with_cdn() );
 	}
 
 	/**
@@ -28,7 +28,7 @@ class TestIsServingWebpCompatibleWithCdn extends TestCase {
 			->once()
 			->andReturn( true );
 
-		$this->assertSame( true, $subscriber->is_serving_webp_compatible_with_cdn() );
+		$this->assertTrue( $subscriber->is_serving_webp_compatible_with_cdn() );
 	}
 
 	/**
@@ -44,7 +44,7 @@ class TestIsServingWebpCompatibleWithCdn extends TestCase {
 				return 'ewww_image_optimizer_webp_for_cdn' === $option_name;
 			} );
 
-		$this->assertSame( true, $subscriber->is_serving_webp_compatible_with_cdn() );
+		$this->assertTrue( $subscriber->is_serving_webp_compatible_with_cdn() );
 	}
 
 	/**
@@ -62,7 +62,7 @@ class TestIsServingWebpCompatibleWithCdn extends TestCase {
 		Functions\when( 'extract_from_markers' );
 		Functions\when( 'ewww_image_optimizer_webp_rewrite_verify' );
 
-		$this->assertSame( false, $subscriber->is_serving_webp_compatible_with_cdn() );
+		$this->assertFalse( $subscriber->is_serving_webp_compatible_with_cdn() );
 	}
 
 	/**
@@ -81,6 +81,6 @@ class TestIsServingWebpCompatibleWithCdn extends TestCase {
 		Functions\expect( 'ewww_image_optimizer_webp_rewrite_verify' )
 			->andReturn( 'random rewrite rules' );
 
-		$this->assertSame( false, $subscriber->is_serving_webp_compatible_with_cdn() );
+		$this->assertFalse( $subscriber->is_serving_webp_compatible_with_cdn() );
 	}
 }

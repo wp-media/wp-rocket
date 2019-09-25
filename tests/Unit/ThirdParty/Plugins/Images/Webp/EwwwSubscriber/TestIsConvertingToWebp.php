@@ -13,13 +13,13 @@ class TestIsConvertingToWebp extends TestCase {
 		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
 		$subscriber  = new EWWW_Subscriber( $optionsData );
 
-		$this->assertSame( false, $subscriber->is_converting_to_webp() );
+		$this->assertFalse( $subscriber->is_converting_to_webp() );
 
 		Functions\expect( 'ewww_image_optimizer_get_option' )
 			->once()
 			->andReturn( false );
 
-		$this->assertSame( false, $subscriber->is_converting_to_webp() );
+		$this->assertFalse( $subscriber->is_converting_to_webp() );
 	}
 
 	/**
@@ -33,6 +33,6 @@ class TestIsConvertingToWebp extends TestCase {
 			->once()
 			->andReturn( true );
 
-		$this->assertSame( true, $subscriber->is_converting_to_webp() );
+		$this->assertTrue( $subscriber->is_converting_to_webp() );
 	}
 }

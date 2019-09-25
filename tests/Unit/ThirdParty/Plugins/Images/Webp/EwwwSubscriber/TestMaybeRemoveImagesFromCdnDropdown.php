@@ -17,8 +17,8 @@ class TestMaybeRemoveImagesFromCdnDropdown extends TestCase {
 
 		$subscriber = new EWWW_Subscriber( $optionsData );
 
-		$this->assertSame( false, $subscriber->maybe_remove_images_from_cdn_dropdown( false ) );
-		$this->assertSame( true, $subscriber->maybe_remove_images_from_cdn_dropdown( true ) );
+		$this->assertFalse( $subscriber->maybe_remove_images_from_cdn_dropdown( false ) );
+		$this->assertTrue( $subscriber->maybe_remove_images_from_cdn_dropdown( true ) );
 	}
 
 	/**
@@ -32,7 +32,7 @@ class TestMaybeRemoveImagesFromCdnDropdown extends TestCase {
 
 		$subscriber = new EWWW_Subscriber( $optionsData );
 
-		$this->assertSame( false, $subscriber->maybe_remove_images_from_cdn_dropdown( false ) );
-		$this->assertSame( false, $subscriber->maybe_remove_images_from_cdn_dropdown( true ) );
+		$this->assertFalse( $subscriber->maybe_remove_images_from_cdn_dropdown( false ) );
+		$this->assertFalse( $subscriber->maybe_remove_images_from_cdn_dropdown( true ) );
 	}
 }
