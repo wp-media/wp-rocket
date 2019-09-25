@@ -540,6 +540,8 @@ class Combine extends Abstract_JS_Optimization {
 			'advads_has_ads',
 			'wpseo_map_init',
 			'mdf_current_page_url',
+			'searchwp_live_search_params',
+			'wpp_params',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
