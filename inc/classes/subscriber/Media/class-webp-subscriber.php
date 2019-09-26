@@ -264,7 +264,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 			// 5, 8.
 			$cache_webp_field['helper'] = sprintf(
 				// Translators: %1$s = plugin name(s), %2$s = opening <a> tag, %3$s = closing </a> tag.
-				esc_html( _n( 'You are using %1$s to serve WebP images. If you prefer to have WP Rocket serve WebP for you, please disable them from serving in %1$s. %2$sMore info%3$s', 'You are using %1$s to serve WebP images. If you prefer to have WP Rocket serve WebP for you, please disable them from serving in %1$s. %2$sMore info%3$s', count( $serving ), 'rocket' ) ),
+				esc_html( _n( 'You are using %1$s to serve WebP images so you do not need to enable this option. If you prefer to have WP Rocket serve WebP for you instead, please disable them from serving in %1$s. %2$sMore info%3$s', 'You are using %1$s to serve WebP images so you do not need to enable this option. If you prefer to have WP Rocket serve WebP for you instead, please disable them from serving in %1$s. %2$sMore info%3$s', count( $serving ), 'rocket' ) ),
 				esc_html( wp_sprintf_l( '%l', $serving ) ),
 				'<a href="' . esc_url( $webp_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $webp_beacon['id'] ) . '" target="_blank" rel="noopener noreferrer">',
 				'</a>'
