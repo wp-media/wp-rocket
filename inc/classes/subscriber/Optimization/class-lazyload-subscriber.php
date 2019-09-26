@@ -13,7 +13,6 @@ use RocketLazyload\Assets;
 use RocketLazyload\Image;
 use RocketLazyload\Iframe;
 use MatthiasMullie\Minify\JS;
-use Logger\Logger;
 
 /**
  * Lazyload Subscriber
