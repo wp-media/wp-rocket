@@ -13,6 +13,7 @@ use RocketLazyload\Assets;
 use RocketLazyload\Image;
 use RocketLazyload\Iframe;
 use MatthiasMullie\Minify\JS;
+use Logger\Logger;
 
 /**
  * Lazyload Subscriber
@@ -116,6 +117,10 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 
 		if ( ! $this->should_lazyload() ) {
 			return;
+		}
+
+		if ( is_rocket_post_excluded_option( 'lazyload' ) ) {
+		 return;
 		}
 
 		/**
