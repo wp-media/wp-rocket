@@ -271,7 +271,7 @@ class TestWebpSectionDescription extends TestCase {
 	 * Cases 5 and 8.
 	 */
 	public function testShouldReturnTextWhenPluginServingWebpAvailable() {
-		$expectedText = 'You are using Mock to serve WebP images. If you prefer to have WP Rocket serve WebP for you,';
+		$expectedText = 'You are using Mock to serve WebP images so you do not need to enable this option.';
 
 		$this->mockCommonWpFunctions();
 
