@@ -338,7 +338,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 				$imagify_link = '<a href="#imagify">';
 			} else {
 				// The Imagify page is not displayed.
-				$imagify_link = '<a href="https://imagify.io/?utm_source=wp_plugin&utm_medium=wp-rocket&utm_campaign=webp" target="_blank" rel="noopener noreferrer">';
+				$imagify_link = '<a href="https://wordpress.org/plugins/imagify/" target="_blank" rel="noopener noreferrer">';
 			}
 
 			$cache_webp_field['container_class'][] = 'wpr-field--parent';

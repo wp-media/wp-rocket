@@ -859,7 +859,7 @@ class Page {
 		if ( rocket_valid_key() && ! \Imagify_Partner::has_imagify_api_key() ) {
 			$imagify_link = '<a href="#imagify">';
 		} else {
-			$imagify_link = '<a href="https://imagify.io/?utm_source=wp_plugin&utm_medium=wp-rocket&utm_campaign=webp" target="_blank" rel="noopener noreferrer">';
+			$imagify_link = '<a href="https://wordpress.org/plugins/imagify/" target="_blank" rel="noopener noreferrer">';
 		}
 
 		$this->settings->add_page_section(
