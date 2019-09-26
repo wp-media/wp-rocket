@@ -10,8 +10,7 @@ function rocket_bad_deactivations() {
 	global $current_user;
 
 	$msgs = get_transient( $current_user->ID . '_donotdeactivaterocket' );
-	// This filter is documented in inc/admin-bar.php.
-	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) && $msgs ) {
+	if ( current_user_can( 'rocket_manage_options' ) && $msgs ) {
 
 		delete_transient( $current_user->ID . '_donotdeactivaterocket' );
 		$errors = array();
@@ -67,8 +66,7 @@ add_action( 'admin_notices', 'rocket_bad_deactivations' );
  * @since 1.3.0
  */
 function rocket_warning_plugin_modification() {
-	// This filter is documented in inc/admin-bar.php.
-	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) && rocket_valid_key() ) {
+	if ( current_user_can( 'rocket_manage_options' ) && rocket_valid_key() ) {
 
 		$boxes = get_user_meta( $GLOBALS['current_user']->ID, 'rocket_boxes', true );
 
@@ -186,8 +184,7 @@ function rocket_plugins_to_deactivate() {
 
 	$plugins = array_filter( $plugins, 'is_plugin_active' );
 
-	// This filter is documented in inc/admin-bar.php.
-	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
+	if ( current_user_can( 'rocket_manage_options' )
 		&& count( $plugins )
 		&& rocket_valid_key()
 	) {
@@ -224,8 +221,7 @@ add_action( 'admin_notices', 'rocket_plugins_to_deactivate' );
 function rocket_warning_footer_js_plugin() {
 	$screen = get_current_screen();
 
-	// This filter is documented in inc/admin-bar.php.
-	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+	if ( ! current_user_can( 'rocket_manage_options' ) ) {
 		return;
 	}
 
@@ -271,7 +267,7 @@ function rocket_warning_endurance_cache() {
 		return;
 	}
 
-	if ( 0 === get_option( 'endurance_cache_level' ) ) {
+	if ( 0 === (int) get_option( 'endurance_cache_level' ) ) {
 		return;
 	}
 
@@ -295,8 +291,7 @@ add_action( 'admin_notices', 'rocket_warning_endurance_cache' );
  * @since 1.0
  */
 function rocket_warning_using_permalinks() {
-	// This filter is documented in inc/admin-bar.php.
-	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
+	if ( current_user_can( 'rocket_manage_options' )
 		&& ! $GLOBALS['wp_rewrite']->using_permalinks()
 		&& rocket_valid_key()
 	) {
@@ -326,8 +321,8 @@ function rocket_warning_wp_config_permissions() {
 	$config_file = rocket_find_wpconfig_path();
 
 	if ( ! ( 'plugins.php' === $GLOBALS['pagenow'] && isset( $_GET['activate'] ) )
-		// This filter is documented in inc/admin-bar.php.
-		&& current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
+
+		&& current_user_can( 'rocket_manage_options' )
 		&& ( ! rocket_direct_filesystem()->is_writable( $config_file ) && ( ! defined( 'WP_CACHE' ) || ! WP_CACHE ) )
 		&& rocket_valid_key() ) {
 
@@ -358,8 +353,7 @@ add_action( 'admin_notices', 'rocket_warning_wp_config_permissions' );
 function rocket_warning_advanced_cache_permissions() {
 	$advanced_cache_file = WP_CONTENT_DIR . '/advanced-cache.php';
 
-	// This filter is documented in inc/admin-bar.php.
-	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
+	if ( current_user_can( 'rocket_manage_options' )
 		&& ! rocket_direct_filesystem()->is_writable( $advanced_cache_file )
 		&& ( ! defined( 'WP_ROCKET_ADVANCED_CACHE' ) || ! WP_ROCKET_ADVANCED_CACHE )
 		&& rocket_valid_key() ) {
@@ -389,9 +383,8 @@ add_action( 'admin_notices', 'rocket_warning_advanced_cache_permissions' );
  * @since 2.2
  */
 function rocket_warning_advanced_cache_not_ours() {
-	// This filter is documented in inc/admin-bar.php.
 	if ( ! ( 'plugins.php' === $GLOBALS['pagenow'] && isset( $_GET['activate'] ) )
-		&& current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
+		&& current_user_can( 'rocket_manage_options' )
 		&& ! defined( 'WP_ROCKET_ADVANCED_CACHE' )
 		&& ( defined( 'WP_CACHE' ) && WP_CACHE )
 		&& get_rocket_option( 'version' ) === WP_ROCKET_VERSION
@@ -417,8 +410,7 @@ function rocket_warning_htaccess_permissions() {
 	global $is_apache;
 	$htaccess_file = get_home_path() . '.htaccess';
 
-	// This filter is documented in inc/admin-bar.php.
-	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
+	if ( ! current_user_can( 'rocket_manage_options' )
 		|| ( rocket_direct_filesystem()->is_writable( $htaccess_file ) )
 		|| ! $is_apache
 		// This filter is documented in inc/functions/htaccess.php.
@@ -474,8 +466,7 @@ add_action( 'admin_notices', 'rocket_warning_htaccess_permissions' );
  * @since 2.0.2
  */
 function rocket_warning_config_dir_permissions() {
-	/** This filter is documented in inc/admin-bar.php */
-	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
+	if ( current_user_can( 'rocket_manage_options' )
 		&& ( ! rocket_direct_filesystem()->is_writable( WP_ROCKET_CONFIG_PATH ) )
 		&& rocket_valid_key() ) {
 
@@ -502,8 +493,7 @@ add_action( 'admin_notices', 'rocket_warning_config_dir_permissions' );
  * @since 1.0
  */
 function rocket_warning_cache_dir_permissions() {
-	/** This filter is documented in inc/admin-bar.php */
-	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
+	if ( current_user_can( 'rocket_manage_options' )
 		&& ( ! rocket_direct_filesystem()->is_writable( WP_ROCKET_CACHE_PATH ) )
 		&& rocket_valid_key() ) {
 
@@ -530,8 +520,7 @@ add_action( 'admin_notices', 'rocket_warning_cache_dir_permissions' );
  * @since 2.1
  */
 function rocket_warning_minify_cache_dir_permissions() {
-	// This filter is documented in inc/admin-bar.php.
-	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
+	if ( current_user_can( 'rocket_manage_options' )
 		&& ( ! rocket_direct_filesystem()->is_writable( WP_ROCKET_MINIFY_CACHE_PATH ) )
 		&& ( get_rocket_option( 'minify_css', false ) || get_rocket_option( 'minify_js', false ) )
 		&& rocket_valid_key() ) {
@@ -560,8 +549,7 @@ add_action( 'admin_notices', 'rocket_warning_minify_cache_dir_permissions' );
  * @author Remy Perona
  */
 function rocket_warning_busting_cache_dir_permissions() {
-	// This filter is documented in inc/admin-bar.php.
-	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) )
+	if ( current_user_can( 'rocket_manage_options' )
 		&& ( ! rocket_direct_filesystem()->is_writable( WP_ROCKET_CACHE_BUSTING_PATH ) )
 		&& ( get_rocket_option( 'remove_query_strings', false ) )
 		&& rocket_valid_key() ) {
@@ -617,8 +605,7 @@ add_action( 'admin_notices', 'rocket_thank_you_license' );
  */
 function rocket_cloudflare_purge_result() {
 	global $current_user;
-	// This filter is documented in inc/admin-bar.php.
-	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+	if ( ! current_user_can( 'rocket_purge_cloudflare_cache' ) ) {
 		return;
 	}
 
@@ -650,8 +637,7 @@ function rocket_cloudflare_update_settings() {
 	global $current_user;
 	$screen = get_current_screen();
 
-	// This filter is documented in inc/admin-bar.php.
-	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+	if ( ! current_user_can( 'rocket_manage_options' ) ) {
 		return;
 	}
 
@@ -698,8 +684,7 @@ function rocket_analytics_optin_notice() {
 
 	$screen = get_current_screen();
 
-	// This filter is documented in inc/admin-bar.php.
-	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+	if ( ! current_user_can( 'rocket_manage_options' ) ) {
 		return;
 	}
 
@@ -762,8 +747,7 @@ add_action( 'admin_notices', 'rocket_analytics_optin_notice' );
 function rocket_analytics_optin_thankyou_notice() {
 	$screen = get_current_screen();
 
-	// This filter is documented in inc/admin-bar.php.
-	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+	if ( ! current_user_can( 'rocket_manage_options' ) ) {
 		return;
 	}
 
@@ -807,10 +791,6 @@ add_action( 'admin_notices', 'rocket_analytics_optin_thankyou_notice' );
  * @author Remy Perona
  */
 function rocket_clear_cache_notice() {
-	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
-		return;
-	}
-
 	$cleared_cache = get_transient( 'rocket_clear_cache' );
 
 	if ( ! $cleared_cache ) {
@@ -819,29 +799,38 @@ function rocket_clear_cache_notice() {
 
 	delete_transient( 'rocket_clear_cache' );
 
+	$notice = '';
+
 	switch ( $cleared_cache ) {
 		case 'all':
+			if ( current_user_can( 'rocket_purge_cache' ) ) {
 				// translators: %s = plugin name.
 				$notice  = sprintf( __( '%s: Cache cleared.', 'rocket' ), '<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>' );
-				$notice .= '<em> (' . date_i18n( 'F j, Y @ G:i', time() ) . ') </em>';
+				$notice .= '<em> (' . date_i18n( get_option( 'date_format' ), current_time( 'timestamp' ) ) . ' @ ' . date_i18n( get_option( 'time_format' ), current_time( 'timestamp' ) ) .') </em>';
+			}
 			break;
 		case 'post':
+			if ( current_user_can( 'rocket_purge_posts' ) ) {
 				// translators: %s = plugin name.
 				$notice  = sprintf( __( '%s: Post cache cleared.', 'rocket' ), '<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>' );
-				$notice .= '<em> (' . date_i18n( 'F j, Y @ G:i', time() ) . ') </em>';
+				$notice .= '<em> (' . date_i18n( get_option( 'date_format' ), current_time( 'timestamp' ) ) . ' @ ' . date_i18n( get_option( 'time_format' ), current_time( 'timestamp' ) ) .') </em>';
+			}
 			break;
 		case 'term':
+			if ( current_user_can( 'rocket_purge_terms' ) ) {
 				// translators: %s = plugin name.
 				$notice  = sprintf( __( '%s: Term cache cleared.', 'rocket' ), '<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>' );
-				$notice .= '<em> (' . date_i18n( 'F j, Y @ G:i', time() ) . ') </em>';
+				$notice .= '<em> (' . date_i18n( get_option( 'date_format' ), current_time( 'timestamp' ) ) . ' @ ' . date_i18n( get_option( 'time_format' ), current_time( 'timestamp' ) ) .') </em>';
+			}
 			break;
 		case 'user':
+			if ( current_user_can( 'rocket_purge_users' ) ) {
 				// translators: %s = plugin name).
 				$notice  = sprintf( __( '%s: User cache cleared.', 'rocket' ), '<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>' );
-				$notice .= '<em> (' . date_i18n( 'F j, Y @ G:i', time() ) . ') </em>';
+				$notice .= '<em> (' . date_i18n( get_option( 'date_format' ), current_time( 'timestamp' ) ) . ' @ ' . date_i18n( get_option( 'time_format' ), current_time( 'timestamp' ) ) .') </em>';
+			}
 			break;
 		default:
-			$notice = '';
 			break;
 	}
 
@@ -874,6 +863,12 @@ function rocket_warning_cron() {
 	}
 
 	if ( 'settings_page_wprocket' !== $screen->id ) {
+		return;
+	}
+
+	$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
+
+	if ( in_array( __FUNCTION__, (array) $boxes, true ) ) {
 		return;
 	}
 

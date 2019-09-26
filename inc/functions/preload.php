@@ -78,8 +78,7 @@ function do_admin_post_rocket_preload_cache() {
 		wp_nonce_ays( '' );
 	}
 
-	/** This filter is documented in inc/admin-bar.php */
-	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+	if ( ! current_user_can( 'rocket_preload_cache' ) ) {
 		wp_safe_redirect( wp_get_referer() );
 		die();
 	}

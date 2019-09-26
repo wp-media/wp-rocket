@@ -85,7 +85,7 @@ class Bridge_Subscriber implements Subscriber_Interface {
 		}
 
 		if ( $clear ) {
-			\rocket_clean_cache();
+			\rocket_clean_domain();
 			\rocket_clean_minify();
 			\rocket_clean_cache_busting();
 		}

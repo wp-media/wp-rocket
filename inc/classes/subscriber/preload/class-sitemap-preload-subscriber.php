@@ -32,7 +32,6 @@ class Sitemap_Preload_Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_purge_time_event'         => [ 'preload', 12 ],
 			'pagely_cache_purge_after'        => [ 'preload', 12 ],
 			'update_option_' . WP_ROCKET_SLUG => [ 'maybe_cancel_preload', 10, 2 ],
 			'admin_notices'                   => [ 'simplexml_notice' ],
@@ -93,12 +92,11 @@ class Sitemap_Preload_Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function simplexml_notice() {
-		$screen = get_current_screen();
-
-		// This filter is documented in inc/admin-bar.php.
-		if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		if ( ! current_user_can( 'rocket_preload_cache' ) ) {
 			return;
 		}
+
+		$screen = get_current_screen();
 
 		if ( 'settings_page_wprocket' !== $screen->id ) {
 			return;

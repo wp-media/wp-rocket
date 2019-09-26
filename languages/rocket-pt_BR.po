@@ -1353,22 +1353,22 @@ msgstr "Limpeza automática"
 #, php-format
 msgid "%s revision in your database."
 msgid_plural "%s revisions in your database."
-msgstr[0] "%s revisão no seu banco de dados."
-msgstr[1] "%s revisões no seu banco de dados."
+msgstr[0] ""
+msgstr[1] ""
 
 #: inc/classes/admin/settings/class-page.php:1301
 #, php-format
 msgid "%s draft in your database."
 msgid_plural "%s drafts in your database."
-msgstr[0] "%s rascunho no seu banco de dados."
-msgstr[1] "%s rascunhos no seu banco de dados."
+msgstr[0] ""
+msgstr[1] ""
 
 #: inc/classes/admin/settings/class-page.php:1311
 #, php-format
 msgid "%s trashed post in your database."
 msgid_plural "%s trashed posts in your database."
-msgstr[0] "%s post na lixeira no seu banco de dados."
-msgstr[1] "%s posts na lixeira no seu banco de dados."
+msgstr[0] ""
+msgstr[1] ""
 
 #: inc/classes/admin/settings/class-page.php:1321
 #, php-format
@@ -1381,15 +1381,15 @@ msgstr[1] "%s comentários spam no seu banco de dados:"
 #, php-format
 msgid "%s trashed comment in your database."
 msgid_plural "%s trashed comments in your database."
-msgstr[0] "%s comentário na lixeira no seu banco de dados."
-msgstr[1] "%s comentários na lixeira no seu banco de dados."
+msgstr[0] ""
+msgstr[1] ""
 
 #: inc/classes/admin/settings/class-page.php:1341
 #, php-format
 msgid "%s expired transient in your database."
 msgid_plural "%s expired transients in your database."
-msgstr[0] "%s transiente expirado no seu banco de dados."
-msgstr[1] "%s transientes expirados no seu banco de dados."
+msgstr[0] ""
+msgstr[1] ""
 
 #: inc/classes/admin/settings/class-page.php:1349
 msgid "All transients"
@@ -1399,8 +1399,8 @@ msgstr "Todos os transientes"
 #, php-format
 msgid "%s transient in your database."
 msgid_plural "%s transients in your database."
-msgstr[0] "%s transiente no seu banco de dados."
-msgstr[1] "%s transientes no seu banco de dados."
+msgstr[0] ""
+msgstr[1] ""
 
 #: inc/classes/admin/settings/class-page.php:1359
 msgid "Optimize Tables"
@@ -1410,8 +1410,8 @@ msgstr "Otimizar Tabelas"
 #, php-format
 msgid "%s table to optimize in your database."
 msgid_plural "%s tables to optimize in your database."
-msgstr[0] "%s tabela a otimizar no seu banco de dados."
-msgstr[1] "%s tabelas a otimizar no seu banco de dados."
+msgstr[0] ""
+msgstr[1] ""
 
 #: inc/classes/admin/settings/class-page.php:1372
 msgid "Schedule Automatic Cleanup"
@@ -2089,11 +2089,7 @@ msgid_plural ""
 "Preload: %1$s uncached pages have now been preloaded. (refresh to see "
 "progress)"
 msgstr[0] ""
-"Pré-carregamento: %1$s página sem cache foi pré-carregada. (atualize a "
-"página para ver o progresso)"
 msgstr[1] ""
-"Pré-carregamento: %1$s páginas sem cache foram pré-carregadas. (atualize a "
-"página para ver o progresso)"
 
 #: inc/classes/subscriber/preload/class-preload-subscriber.php:255
 msgid "The following error happened during gathering of the URLs to preload:"

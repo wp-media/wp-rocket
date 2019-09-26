@@ -1014,24 +1014,7 @@ class Tests {
 		// Remove some parameters.
 		$params = array_diff_key(
 			self::$get,
-			[
-				'utm_source'      => 1,
-				'utm_medium'      => 1,
-				'utm_campaign'    => 1,
-				'utm_expid'       => 1,
-				'utm_term'        => 1,
-				'utm_content'     => 1,
-				'fb_action_ids'   => 1,
-				'fb_action_types' => 1,
-				'fb_source'       => 1,
-				'fbclid'          => 1,
-				'gclid'           => 1,
-				'age-verified'    => 1,
-				'ao_noptimize'    => 1,
-				'usqp'            => 1,
-				'cn-reloaded'     => 1,
-				'_ga'             => 1,
-			]
+			$this->config->get_config( 'cache_ignored_parameters' )
 		);
 
 		if ( $params ) {

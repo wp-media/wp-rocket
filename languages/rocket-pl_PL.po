@@ -1,8 +1,8 @@
 # Copyright (C) 2016 WP Rocket
 # This file is distributed under the same license as the WP Rocket package.
 # Translators:
-# www.servitium.pl <lgustaw@gmail.com>, 2019
 # wpmedia <contact@wp-media.me>, 2019
+# www.servitium.pl <lgustaw@gmail.com>, 2019
 # Dariusz Zielonka <info@dariusz-zielonka.pl>, 2019
 # 
 #, fuzzy
@@ -1387,37 +1387,37 @@ msgstr[3] "%s szkicy w Twojej bazie danych."
 #, php-format
 msgid "%s trashed post in your database."
 msgid_plural "%s trashed posts in your database."
-msgstr[0] "%s znajdujący się w koszu wpis w Twojej bazie danych."
-msgstr[1] "%s znajdujące się w koszu wpisy w Twojej bazie danych."
-msgstr[2] "%s znajdujących się w koszu wpisów w Twojej bazie danych."
-msgstr[3] "%s znajdujących się w koszu wpisów w Twojej bazie danych."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 #: inc/classes/admin/settings/class-page.php:1321
 #, php-format
 msgid "%s spam comment in your database."
 msgid_plural "%s spam comments in your database."
-msgstr[0] "%s spamowy komentarz w Twojej bazie danych."
-msgstr[1] "%s spamowe komentarze w Twojej bazie danych."
-msgstr[2] "%s spamowych komentarzy w Twojej bazie danych."
-msgstr[3] "%s spamowych komentarzy w Twojej bazie danych."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 #: inc/classes/admin/settings/class-page.php:1331
 #, php-format
 msgid "%s trashed comment in your database."
 msgid_plural "%s trashed comments in your database."
-msgstr[0] "%s znajdujący się w koszu komentarz w Twojej bazie danych."
-msgstr[1] "%s znajdujące się w koszu komentarze w Twojej bazie danych."
-msgstr[2] "%s znajdujących się w koszu komentarzy w Twojej bazie danych."
-msgstr[3] "%s znajdujących się w koszu komentarzy w Twojej bazie danych."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 #: inc/classes/admin/settings/class-page.php:1341
 #, php-format
 msgid "%s expired transient in your database."
 msgid_plural "%s expired transients in your database."
-msgstr[0] "%s wygasły wpis tymczasowy w Twojej bazie danych."
-msgstr[1] "%s wygasłe wpisy tymczasowe w Twojej bazie danych."
-msgstr[2] "%s wygasłych wpisów tymczasowych w Twojej bazie danych."
-msgstr[3] "%s wygasłych wpisów tymczasowych w Twojej bazie danych."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 #: inc/classes/admin/settings/class-page.php:1349
 msgid "All transients"
@@ -1427,10 +1427,10 @@ msgstr "Wszystkie tymczasowe wpisy"
 #, php-format
 msgid "%s transient in your database."
 msgid_plural "%s transients in your database."
-msgstr[0] "%s wpis tymczasowy w Twojej bazie danych."
-msgstr[1] "%s wpisy tymczasowe w Twojej bazie danych."
-msgstr[2] "%s wpisów tymczasowych w Twojej bazie danych."
-msgstr[3] "%s wpisów tymczasowych w Twojej bazie danych."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 #: inc/classes/admin/settings/class-page.php:1359
 msgid "Optimize Tables"
@@ -1440,10 +1440,10 @@ msgstr "Optymalizacja tabel"
 #, php-format
 msgid "%s table to optimize in your database."
 msgid_plural "%s tables to optimize in your database."
-msgstr[0] "%s tabela do optymalizacji w Twojej bazie danych."
-msgstr[1] "%s tabele do optymalizacji w Twojej bazie danych."
-msgstr[2] "%s tabeli do optymalizacji w Twojej bazie danych."
-msgstr[3] "%s tabeli do optymalizacji w Twojej bazie danych."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 #: inc/classes/admin/settings/class-page.php:1372
 msgid "Schedule Automatic Cleanup"
@@ -2148,17 +2148,9 @@ msgid "The following error happened during gathering of the URLs to preload:"
 msgid_plural ""
 "The following errors happened during gathering of the URLs to preload:"
 msgstr[0] ""
-"Podczas pobierania adresów URL do wstępnego załadowania wystąpił następujący"
-" błąd:"
 msgstr[1] ""
-"Podczas pobierania adresów URL do wstępnego załadowania wystąpiły "
-"następujące błędy:"
 msgstr[2] ""
-"Podczas pobierania adresów URL do wstępnego załadowania wystąpiły "
-"następujące błędy:"
 msgstr[3] ""
-"Podczas pobierania adresów URL do wstępnego załadowania wystąpiły "
-"następujące błędy:"
 
 #: inc/classes/subscriber/preload/class-preload-subscriber.php:308
 #, php-format
@@ -2296,10 +2288,22 @@ msgstr "API zapory sieciowej Sucuri zwróciło nieznany błąd."
 #, php-format
 msgid "The Sucuri firewall API returned the following error: %s"
 msgid_plural "The Sucuri firewall API returned the following errors: %s"
-msgstr[0] "API zapory Sucuri zwróciło następujący błąd: %s"
-msgstr[1] "API zapory Sucuri zwróciło następujące błędy: %s"
-msgstr[2] "API zapory Sucuri zwróciło następujące błędy: %s"
-msgstr[3] "API zapory Sucuri zwróciło następujące błędy: %s"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+
+#: inc/classes/traits/trait-updater-api-tools.php:53
+#: inc/deprecated/3.3.php:760 inc/deprecated/3.3.php:769
+#, php-format
+msgid ""
+"An unexpected error occurred. Something may be wrong with WP-Rocket.me or "
+"this server&#8217;s configuration. If you continue to have problems, <a "
+"href=\"%s\">contact support</a>."
+msgstr ""
+"Wystąpił nieoczekiwany błąd. Coś może być nie tak z WP-Rocket.me lub "
+"konfiguracją Twojego serwera. Jeśli nadal masz problemy, <a "
+"href=\"%s\">skontaktuj się z wsparciem technicznym</a>."
 
 #: inc/classes/traits/trait-updater-api-tools.php:53
 #: inc/deprecated/3.3.php:760 inc/deprecated/3.3.php:769
@@ -2528,11 +2532,7 @@ msgid_plural ""
 "There seems to be an issue validating your license. You can see the error "
 "messages below."
 msgstr[0] ""
-"Wydaje się, że istnieje problem z walidacją licencji. Proszę zapoznać się z "
-"poniższym komunikatem o błędzie."
 msgstr[1] ""
-"Wydaje się, że istnieje problem z walidacją licencji. Proszę zapoznać się z "
-"poniższymi komunikatami o błędach."
 msgstr[2] ""
 "Wydaje się, że istnieją problemy z walidacją licencji. Proszę zapoznać się z"
 " poniższymi komunikatami o błędach."

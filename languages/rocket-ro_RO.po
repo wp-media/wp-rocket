@@ -91,6 +91,10 @@ msgstr "Hărți site XML Rank Math"
 msgid "SEOPress XML sitemap"
 msgstr "Hărți site SEOPress"
 
+#: inc/3rd-party/plugins/seo/seopress.php:83
+msgid "SEOPress XML sitemap"
+msgstr ""
+
 #: inc/3rd-party/plugins/seo/the-seo-framework.php:121
 msgid "The SEO Framework XML sitemap"
 msgstr "Hărți site XML The SEO Framework"
@@ -1362,49 +1366,49 @@ msgstr "Curățare automată"
 #, php-format
 msgid "%s revision in your database."
 msgid_plural "%s revisions in your database."
-msgstr[0] "%s revizie în baza ta de date."
-msgstr[1] "%s revizii în baza ta de date."
-msgstr[2] "%s de revizii în baza ta de date."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 #: inc/classes/admin/settings/class-page.php:1301
 #, php-format
 msgid "%s draft in your database."
 msgid_plural "%s drafts in your database."
-msgstr[0] "%s ciornă în baza ta de date."
-msgstr[1] "%s ciorne în baza ta de date."
-msgstr[2] "%s de ciorne în baza ta de date."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 #: inc/classes/admin/settings/class-page.php:1311
 #, php-format
 msgid "%s trashed post in your database."
 msgid_plural "%s trashed posts in your database."
-msgstr[0] "%s articol aruncat la gunoi în baza ta de date."
-msgstr[1] "%s articole aruncate la gunoi în baza ta de date."
-msgstr[2] "%s de articole aruncate la gunoi în baza ta de date."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 #: inc/classes/admin/settings/class-page.php:1321
 #, php-format
 msgid "%s spam comment in your database."
 msgid_plural "%s spam comments in your database."
-msgstr[0] "%s comentariu spam în baza ta de date."
-msgstr[1] "%s comentarii spam în baza ta de date."
-msgstr[2] "%s de comentarii spam în baza ta de date."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 #: inc/classes/admin/settings/class-page.php:1331
 #, php-format
 msgid "%s trashed comment in your database."
 msgid_plural "%s trashed comments in your database."
-msgstr[0] "%s comentariu aruncat la gunoi în baza ta de date."
-msgstr[1] "%s comentarii aruncate la gunoi în baza ta de date."
-msgstr[2] "%s de comentarii aruncate la gunoi în baza ta de date."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 #: inc/classes/admin/settings/class-page.php:1341
 #, php-format
 msgid "%s expired transient in your database."
 msgid_plural "%s expired transients in your database."
-msgstr[0] "%s tranzient expirat în baza ta de date."
-msgstr[1] "%s tranzienți expirați în baza ta de date."
-msgstr[2] "%s de tranzienți expirați în baza ta de date."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 #: inc/classes/admin/settings/class-page.php:1349
 msgid "All transients"
@@ -1414,9 +1418,9 @@ msgstr "Toți tranzienții"
 #, php-format
 msgid "%s transient in your database."
 msgid_plural "%s transients in your database."
-msgstr[0] "%s tranzient în baza ta de date."
-msgstr[1] "%s tranzienți în baza ta de date."
-msgstr[2] "%s de tranzienți în baza ta de date."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 #: inc/classes/admin/settings/class-page.php:1359
 msgid "Optimize Tables"
@@ -1426,9 +1430,9 @@ msgstr "Optimizează tabelele"
 #, php-format
 msgid "%s table to optimize in your database."
 msgid_plural "%s tables to optimize in your database."
-msgstr[0] "%s tabel de optimizat în baza ta de date."
-msgstr[1] "%s tabele de optimizat în baza ta de date."
-msgstr[2] "%s de tabele de optimizat în baza ta de date."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 #: inc/classes/admin/settings/class-page.php:1372
 msgid "Schedule Automatic Cleanup"
@@ -2278,9 +2282,21 @@ msgstr "API-ului firewall-ului Sucuri a returnat o eroare necunoscută."
 #, php-format
 msgid "The Sucuri firewall API returned the following error: %s"
 msgid_plural "The Sucuri firewall API returned the following errors: %s"
-msgstr[0] "API-ului firewall-ului Sucuri a returnat următoarea eroare: %s"
-msgstr[1] "API-ului firewall-ului Sucuri a returnat următoarele erori: %s"
-msgstr[2] "API-ului firewall-ului Sucuri a returnat următoarele erori: %s"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: inc/classes/traits/trait-updater-api-tools.php:53
+#: inc/deprecated/3.3.php:760 inc/deprecated/3.3.php:769
+#, php-format
+msgid ""
+"An unexpected error occurred. Something may be wrong with WP-Rocket.me or "
+"this server&#8217;s configuration. If you continue to have problems, <a "
+"href=\"%s\">contact support</a>."
+msgstr ""
+"A apărut o eroare neașteptată. Este posibil să fie ceva greșit la WP-"
+"Rocket.me sau la configurarea acestui server. Dacă ai probleme în "
+"continuare, <a href=\"%s\">contactează suportul</a>."
 
 #: inc/classes/traits/trait-updater-api-tools.php:53
 #: inc/deprecated/3.3.php:760 inc/deprecated/3.3.php:769

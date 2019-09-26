@@ -217,6 +217,14 @@ class Combine extends Abstract_JS_Optimization {
 			} else {
 				preg_match( '/<script\b(?<attrs>[^>]*)>(?:\/\*\s*<!\[CDATA\[\s*\*\/)?\s*(?<content>[\s\S]*?)\s*(?:\/\*\s*\]\]>\s*\*\/)?<\/script>/msi', $script[0], $matches_inline );
 
+				if ( preg_last_error() == PREG_BACKTRACK_LIMIT_ERROR ) {
+					Logger::debug( 'PCRE regex execution Catastrophic Backtracking', [
+						'inline JS backtracking error',
+						'content' => $matches_inline['content'],
+					] );
+					return;
+				}
+
 				if ( strpos( $matches_inline['attrs'], 'type' ) !== false && ! preg_match( '/type\s*=\s*["\']?(?:text|application)\/(?:(?:x\-)?javascript|ecmascript)["\']?/i', $matches_inline['attrs'] ) ) {
 					Logger::debug( 'Inline script is not JS.', [
 						'js combine process',
@@ -502,6 +510,18 @@ class Combine extends Abstract_JS_Optimization {
 			'wordpress_page_root',
 			'wcct_info',
 			'Springbot.product_id',
+			'pysWooProductData',
+			'dfd-heading',
+			'owl=$("#',
+			'penci_megamenu',
+			'fts_security',
+			'algoliaAutocomplete',
+			'avia_framework_globals',
+			'tabs.easyResponsiveTabs',
+			'searchlocationHeader',
+			'yithautocomplete',
+			'data-parallax-speed',
+			'currency_data=',
 			'cedexisData',
 			'function reenableButton',
 			'#wpnbio-show',
@@ -515,6 +535,14 @@ class Combine extends Abstract_JS_Optimization {
 			'styles: \' #custom-menu-',
 			'function svc_center_',
 			'#svc_carousel2_container_',
+			'wpseo_map_init',
+			'mdf_current_page_url',
+			'top.location,thispage',
+			'selection+pagelink',
+			'ic_window_resolution',
+			'PHP.wp_p_id',
+			'ShopifyBuy.UI.onReady(client)',
+			'orig_request_uri',
 		];
 
 		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
@@ -670,7 +698,44 @@ class Combine extends Abstract_JS_Optimization {
 			'jQuery(".slider-',
 			'#dfd-vcard-widget-',
 			'#sf-instagram-widget-',
-			'$(\'.woocommerce-tabs-',
+			'.woocommerce-tabs-',
+			'penci_megamenu__',
+			'vc_prepareHoverBox',
+			'wp-temp-form-div',
+			'_wswebinarsystem_already_',
+			'#views-extra-css").text',
+			'fusetag.setTargeting',
+			'hit.uptrendsdata.com',
+			'callback:window.renderBadge',
+			'test_run_nf_conditional_logic',
+			'cb_nombre',
+			'$(\'.fl-node-',
+			'function($){google_maps_',
+			'et_animation_data=',
+			'current_url="',
+			'CustomEvent.prototype=window.Event.prototype',
+			'electro-wc-product-gallery',
+			'woof_is_mobile',
+			'jQuery(\'.videonextup',
+			'wpp_params',
+			'us.templateDirectoryUri=',
+			'.fat-gallery-item',
+			'.ratingbox',
+			'user_rating.prototype.eraseCookie',
+			'test_run_nf_conditional',
+			'dpsp-networks-btns-wrapper',
+			'pa_woo_product_info',
+			'sharing_enabled_on_post_via_metabox',
+			'#product-search-field-',
+			'GOTMLS_login_offset',
+			'berocket_aapf_time_to_fix_products_style',
+			'window.vc_googleMapsPointer',
+			'sinceID_',
+			'#ut-background-video-ut-section',
+			'+window.comment_tab_width+',
+			'dfd-button-hover-in',
+			'wpseo-address-wrapper',
+			'platform.stumbleupon.com',
 		];
 
 		/**

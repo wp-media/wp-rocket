@@ -320,8 +320,7 @@ function do_admin_post_rocket_purge_cache() {
 			wp_nonce_ays( '' );
 		}
 
-		// This filter is documented in inc/admin-bar.php.
-		if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		if ( ! current_user_can( 'rocket_purge_cache' ) ) {
 			return;
 		}
 
@@ -351,12 +350,26 @@ function do_admin_post_rocket_purge_cache() {
 				}
 
 				if ( get_rocket_option( 'manual_preload' ) && ( ! defined( 'WP_ROCKET_DEBUG' ) || ! WP_ROCKET_DEBUG ) ) {
+					/**
+					 * Filters the arguments for the preload request being triggered after clearing the cache.
+					 *
+					 * @since  3.4
+					 * @author Grégory Viguier
+					 *
+					 * @param array $args Request arguments.
+					 */
+					$args = apply_filters(
+						'rocket_preload_after_purge_cache_request_args',
+						[
+							'blocking'   => false,
+							'timeout'    => 0.01,
+							'user-agent' => 'WP Rocket/Homepage_Preload_After_Purge_Cache',
+							'sslverify'  => apply_filters( 'https_local_ssl_verify', false ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+						]
+					);
 					wp_safe_remote_get(
 						home_url( $lang ),
-						[
-							'blocking' => false,
-							'timeout'  => 0.01,
-						]
+						$args
 					);
 				}
 
@@ -419,8 +432,7 @@ function do_admin_post_rocket_purge_opcache() {
 		wp_nonce_ays( '' );
 	}
 
-	// This filter is documented in inc/admin-bar.php.
-	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+	if ( ! current_user_can( 'rocket_purge_opcache' ) ) {
 		return;
 	}
 
@@ -441,8 +453,7 @@ function do_admin_post_rocket_purge_cloudflare() {
 		wp_nonce_ays( '' );
 	}
 
-	// This filter is documented in inc/admin-bar.php.
-	if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+	if ( ! current_user_can( 'rocket_purge_cloudflare_cache' ) ) {
 		return;
 	}
 

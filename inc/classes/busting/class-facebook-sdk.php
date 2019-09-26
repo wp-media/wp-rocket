@@ -473,7 +473,7 @@ class Facebook_SDK extends Abstract_Busting {
 		$filename = $this->get_busting_file_name( $locale );
 
 		// This filter is documented in inc/functions/minify.php.
-		return apply_filters( 'rocket_js_url', get_rocket_cdn_url( $this->busting_url . $filename, [ 'all', 'css_and_js', 'js' ] ) );
+		return apply_filters( 'rocket_js_url', apply_filters( 'rocket_facebook_sdk_url', $this->busting_url . $filename ) );
 	}
 
 	/**

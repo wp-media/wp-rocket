@@ -33,13 +33,13 @@ function rocket_init() {
 	require WP_ROCKET_FUNCTIONS_PATH . 'admin.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'preload.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'formatting.php';
-	require WP_ROCKET_FUNCTIONS_PATH . 'cdn.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'i18n.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'htaccess.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'varnish.php';
 	require WP_ROCKET_DEPRECATED_PATH . 'deprecated.php';
 	require WP_ROCKET_DEPRECATED_PATH . '3.2.php';
 	require WP_ROCKET_DEPRECATED_PATH . '3.3.php';
+	require WP_ROCKET_DEPRECATED_PATH . '3.4.php';
 	require WP_ROCKET_3RD_PARTY_PATH . '3rd-party.php';
 	require WP_ROCKET_COMMON_PATH . 'admin-bar.php';
 	require WP_ROCKET_COMMON_PATH . 'emoji.php';
@@ -47,11 +47,6 @@ function rocket_init() {
 
 	if ( rocket_valid_key() ) {
 		require WP_ROCKET_COMMON_PATH . 'purge.php';
-		require WP_ROCKET_COMMON_PATH . 'cron.php';
-
-		if ( 0 < (int) get_rocket_option( 'cdn' ) ) {
-			require WP_ROCKET_FRONT_PATH . 'cdn.php';
-		}
 
 		if ( 0 < (int) get_rocket_option( 'do_cloudflare' ) ) {
 			require WP_ROCKET_FUNCTIONS_PATH . 'cloudflare.php';
@@ -153,6 +148,16 @@ function rocket_deactivation() {
 	wp_clear_scheduled_hook( 'rocket_facebook_tracking_cache_update' );
 	wp_clear_scheduled_hook( 'rocket_google_tracking_cache_update' );
 	wp_clear_scheduled_hook( 'rocket_cache_dir_size_check' );
+
+	/**
+	 * WP Rocket deactivation.
+	 *
+	 * @since  3.1.5
+	 * @author Grégory Viguier
+	 */
+	do_action( 'rocket_deactivation' );
+
+	( new WP_Rocket\Subscriber\Plugin\Capabilities_Subscriber() )->remove_rocket_capabilities();
 }
 register_deactivation_hook( WP_ROCKET_FILE, 'rocket_deactivation' );
 
@@ -162,6 +167,8 @@ register_deactivation_hook( WP_ROCKET_FILE, 'rocket_deactivation' );
  * @since 1.1.0
  */
 function rocket_activation() {
+	( new WP_Rocket\Subscriber\Plugin\Capabilities_Subscriber() )->add_rocket_capabilities();
+
 	// Last constants.
 	define( 'WP_ROCKET_PLUGIN_NAME', 'WP Rocket' );
 	define( 'WP_ROCKET_PLUGIN_SLUG', sanitize_key( WP_ROCKET_PLUGIN_NAME ) );
@@ -195,6 +202,14 @@ function rocket_activation() {
 
 	// Create advanced-cache.php file.
 	rocket_generate_advanced_cache_file();
+
+	/**
+	 * WP Rocket activation.
+	 *
+	 * @since  3.1.5
+	 * @author Grégory Viguier
+	 */
+	do_action( 'rocket_activation' );
 
 	// Update customer key & licence.
 	wp_remote_get(

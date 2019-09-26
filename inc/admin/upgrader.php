@@ -38,7 +38,7 @@ function rocket_upgrader() {
 		update_option( WP_ROCKET_SLUG, $options );
 	}
 
-	if ( ! rocket_valid_key() && current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) &&
+	if ( ! rocket_valid_key() && current_user_can( 'rocket_manage_options' ) &&
 		( isset( $_GET['page'] ) && 'wprocket' === $_GET['page'] ) ) {
 		add_action( 'admin_notices', 'rocket_need_api_key' );
 	}
@@ -165,6 +165,7 @@ function rocket_first_install() {
 				'secret_cache_key'            => $secret_cache_key,
 				'cache_mobile'                => 1,
 				'do_caching_mobile_files'     => 0,
+				'cache_webp'                  => 0,
 				'cache_logged_user'           => 0,
 				'cache_ssl'                   => 1,
 				'emoji'                       => 1,
@@ -431,6 +432,11 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 	if ( rocket_is_ssl_website() ) {
 		update_rocket_option( 'cache_ssl', 1 );
 		rocket_generate_config_file();
+	}
+
+	if ( version_compare( $actual_version, '3.4', '<' ) ) {
+		wp_clear_scheduled_hook( 'rocket_purge_time_event' );
+		rocket_clean_domain();
 	}
 }
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );

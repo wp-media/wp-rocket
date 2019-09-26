@@ -47,13 +47,13 @@ function get_rocket_advanced_cache_file() {
 		}
 		return;
 	}
-	
+
 	$rocket_config_class = new \WP_Rocket\Buffer\Config(
 		[
 			\'config_dir_path\' => \'' . WP_ROCKET_CONFIG_PATH . '\',
 		]
 	);
-	
+
 	( new \WP_Rocket\Buffer\Cache(
 		new \WP_Rocket\Buffer\Tests(
 			$rocket_config_class
@@ -130,6 +130,15 @@ function get_rocket_config_file() {
 		$buffer .= '$rocket_common_cache_logged_users = 1;' . "\n";
 	}
 
+	if ( ! empty( $options['cache_webp'] ) ) {
+		/** This filter is documented in inc/classes/buffer/class-cache.php */
+		$disable_webp_cache = apply_filters( 'rocket_disable_webp_cache', false );
+
+		if ( $disable_webp_cache ) {
+			$options['cache_webp'] = 0;
+		}
+	}
+
 	/**
 	 * Filters the use of the mobile cache version for tablets
 	 * 'desktop' will serve desktop to tablets, 'mobile' will serve mobile to tablets
@@ -153,7 +162,7 @@ function get_rocket_config_file() {
 			$buffer .= '$rocket_' . $option . ' = ' . (int) $value . ";\n";
 		}
 
-		if ( 'cache_mobile' === $option || 'do_caching_mobile_files' === $option ) {
+		if ( 'cache_mobile' === $option || 'do_caching_mobile_files' === $option || 'cache_webp' === $option ) {
 			$buffer .= '$rocket_' . $option . ' = ' . (int) $value . ";\n";
 		}
 
@@ -189,6 +198,7 @@ function get_rocket_config_file() {
 		}
 	}
 
+	$buffer .= '$rocket_cache_ignored_parameters = ' . call_user_func( 'var_export', rocket_get_ignored_parameters(), true ) . ";\n";
 	$buffer .= '$rocket_cache_mandatory_cookies = ' . call_user_func( 'var_export', get_rocket_cache_mandatory_cookies(), true ) . ";\n";
 
 	$buffer .= '$rocket_cache_dynamic_cookies = ' . call_user_func( 'var_export', get_rocket_cache_dynamic_cookies(), true ) . ";\n";
@@ -705,6 +715,14 @@ function rocket_clean_home( $lang = '' ) {
 		}
 	}
 
+	// Remove the hidden empty file for webp.
+	$nowebp_detect_files = glob( $root . '/.no-webp', GLOB_BRACE | GLOB_NOSORT );
+	if ( $nowebp_detect_files ) {
+		foreach ( $nowebp_detect_files as $nowebp_detect_file ) { // no array map to use @.
+			rocket_direct_filesystem()->delete( $nowebp_detect_file );
+		}
+	}
+
 	/**
 	 * Fires after the home cache file was deleted
 	 *
@@ -1017,6 +1035,13 @@ function rocket_rrmdir( $dir, $dirs_to_preserve = array() ) {
 
 	if ( rocket_direct_filesystem()->is_dir( $dir ) && rocket_direct_filesystem()->exists( $nginx_mobile_detect_file ) ) {
 		rocket_direct_filesystem()->delete( $nginx_mobile_detect_file );
+	}
+
+	// Remove the hidden empty file for webp.
+	$nowebp_detect_file = $dir . '/.no-webp';
+
+	if ( rocket_direct_filesystem()->is_dir( $dir ) && rocket_direct_filesystem()->exists( $nowebp_detect_file ) ) {
+		rocket_direct_filesystem()->delete( $nowebp_detect_file );
 	}
 
 	if ( ! rocket_direct_filesystem()->is_dir( $dir ) ) {

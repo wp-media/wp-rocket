@@ -1,7 +1,7 @@
 <?php
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
-if (function_exists('seopress_get_toggle_xml_sitemap_option') && seopress_get_toggle_xml_sitemap_option() =='1') :
+if ( function_exists( 'seopress_get_toggle_xml_sitemap_option' ) && 1 === (int) seopress_get_toggle_xml_sitemap_option() ) :
 
 	/**
 	 * Improvement with SEOPress: auto-detect the XML sitemaps for the preload option
@@ -10,7 +10,7 @@ if (function_exists('seopress_get_toggle_xml_sitemap_option') && seopress_get_to
 	 * @author Benjamin Denis
 	 * @source ./yoast-seo.php (Remy Perona)
 	 */
-	if (function_exists('seopress_xml_sitemap_general_enable_option') && seopress_xml_sitemap_general_enable_option() =='1') {
+	if ( function_exists( 'seopress_xml_sitemap_general_enable_option' ) && 1 === (int) seopress_xml_sitemap_general_enable_option() ) {
 		/**
 		 * Add SEOPress sitemap option to WP Rocket default options
 		 *
@@ -57,7 +57,7 @@ if (function_exists('seopress_get_toggle_xml_sitemap_option') && seopress_get_to
 		 */
 		function rocket_add_seopress_sitemap( $sitemaps ) {
 			if ( get_rocket_option( 'seopress_xml_sitemap', false ) ) {
-				$sitemaps[] = WPSEO_Sitemaps_Router::get_base_url( 'sitemaps.xml' );
+				$sitemaps[] = get_home_url() . '/sitemaps.xml';
 			}
 
 			return $sitemaps;

@@ -1,8 +1,8 @@
 # Copyright (C) 2016 WP Rocket
 # This file is distributed under the same license as the WP Rocket package.
 # Translators:
-# Ivica Delic <ivica.delic@gmail.com>, 2019
 # wpmedia <contact@wp-media.me>, 2019
+# Ivica Delic <ivica.delic@gmail.com>, 2019
 # Borko Livić <borkolivic@gmail.com>, 2019
 # 
 #, fuzzy
@@ -1384,7 +1384,7 @@ msgstr[2] "%s spam komentara u vašoj bazi podataka."
 #, php-format
 msgid "%s trashed comment in your database."
 msgid_plural "%s trashed comments in your database."
-msgstr[0] "%s obrisani komentar u vašoj bazi podataka."
+msgstr[0] "%s obrisan komentar u vašoj bazi podataka."
 msgstr[1] "%s obrisanih komentara u vašoj bazi podataka."
 msgstr[2] "%s obrisanih komentara u vašoj bazi podataka."
 

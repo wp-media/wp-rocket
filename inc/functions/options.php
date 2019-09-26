@@ -132,14 +132,7 @@ function is_rocket_generate_caching_mobile_files() {
  * return Array An array of domain names to DNS prefetch
  */
 function rocket_get_dns_prefetch_domains() {
-	$cdn_cnames = get_rocket_cdn_cnames( array( 'all', 'images', 'css_and_js', 'css', 'js' ) );
-
-	// Don't add CNAMES if CDN is disabled.
-	if ( ! get_rocket_option( 'cdn' ) || is_rocket_post_excluded_option( 'cdn' ) ) {
-		$cdn_cnames = array();
-	}
-
-	$domains = array_merge( $cdn_cnames, (array) get_rocket_option( 'dns_prefetch' ) );
+	$domains = (array) get_rocket_option( 'dns_prefetch' );
 
 	/**
 	 * Filter list of domains to prefetch DNS
@@ -152,18 +145,44 @@ function rocket_get_dns_prefetch_domains() {
 }
 
 /**
- * Get the interval task cron purge in seconds
- * This setting can be changed from the options page of the plugin
+ * Gets the parameters ignored during caching
  *
- * @since 1.0
+ * These parameters are ignored when checking the query string during caching to allow serving the default cache when they are present
  *
- * @return int The interval task cron purge in seconds
+ * @since 3.4
+ * @author Remy Perona
+ *
+ * @return array
  */
-function get_rocket_purge_cron_interval() {
-	if ( ! get_rocket_option( 'purge_cron_interval' ) || ! get_rocket_option( 'purge_cron_unit' ) ) {
-		return 0;
-	}
-	return (int) ( get_rocket_option( 'purge_cron_interval' ) * constant( get_rocket_option( 'purge_cron_unit' ) ) );
+function rocket_get_ignored_parameters() {
+	$params = [
+		'utm_source'      => 1,
+		'utm_medium'      => 1,
+		'utm_campaign'    => 1,
+		'utm_expid'       => 1,
+		'utm_term'        => 1,
+		'utm_content'     => 1,
+		'fb_action_ids'   => 1,
+		'fb_action_types' => 1,
+		'fb_source'       => 1,
+		'fbclid'          => 1,
+		'gclid'           => 1,
+		'age-verified'    => 1,
+		'ao_noptimize'    => 1,
+		'usqp'            => 1,
+		'cn-reloaded'     => 1,
+		'_ga'             => 1,
+	];
+
+	/**
+	 * Filters the ignored parameters
+	 *
+	 * @since 3.4
+	 * @author Remy Perona
+	 *
+	 * @param array $params An array of ignored parameters as array keys.
+	 */
+	return apply_filters( 'rocket_cache_ignored_parameters', $params );
 }
 
 /**
@@ -351,76 +370,6 @@ function get_rocket_cache_reject_ua() {
 	$ua = implode( '|', $ua );
 
 	return str_replace( array( ' ', '\\\\ ' ), '\\ ', $ua );
-}
-
-/**
- * Get all files we don't allow to get in CDN.
- *
- * @since 2.5
- *
- * @return string A pipe-separated list of rejected files.
- */
-function get_rocket_cdn_reject_files() {
-	$files = get_rocket_option( 'cdn_reject_files', [] );
-
-	/**
-	 * Filter the rejected files.
-	 *
-	 * @since 2.5
-	 *
-	 * @param array $files List of rejected files.
-	*/
-	$files = (array) apply_filters( 'rocket_cdn_reject_files', $files );
-	$files = array_filter( $files );
-	$files = array_flip( array_flip( $files ) );
-
-	return implode( '|', $files );
-}
-
-/**
- * Get all CNAMES.
- *
- * @since 2.1
- * @since 3.0 Don't check for WP Rocket CDN option activated to be able to use the function on Hosting with CDN auto-enabled.
- *
- * @param  string $zone List of zones. Default is 'all'.
- * @return array        List of CNAMES
- */
-function get_rocket_cdn_cnames( $zone = 'all' ) {
-	$hosts  = [];
-	$cnames = get_rocket_option( 'cdn_cnames', [] );
-
-	if ( $cnames ) {
-		$cnames_zone = get_rocket_option( 'cdn_zone', [] );
-		$zone        = (array) $zone;
-
-		foreach ( $cnames as $k => $_urls ) {
-			if ( ! in_array( $cnames_zone[ $k ], $zone, true ) ) {
-				continue;
-			}
-
-			$_urls = explode( ',', $_urls );
-			$_urls = array_map( 'trim', $_urls );
-
-			foreach ( $_urls as $url ) {
-				$hosts[] = $url;
-			}
-		}
-	}
-
-	/**
-	 * Filter all CNAMES.
-	 *
-	 * @since 2.7
-	 *
-	 * @param array $hosts List of CNAMES.
-	 */
-	$hosts = (array) apply_filters( 'rocket_cdn_cnames', $hosts );
-	$hosts = array_filter( $hosts );
-	$hosts = array_flip( array_flip( $hosts ) );
-	$hosts = array_values( $hosts );
-
-	return $hosts;
 }
 
 /**
