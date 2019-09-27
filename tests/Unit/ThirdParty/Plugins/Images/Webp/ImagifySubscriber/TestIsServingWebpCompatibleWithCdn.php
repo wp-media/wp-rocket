@@ -11,6 +11,10 @@ class TestIsServingWebpCompatibleWithCdn extends TestCase {
 	 * Test Imagify_Subscriber->is_serving_webp_compatible_with_cdn() should return false when Imagify is not enabled.
 	 */
 	public function testShouldReturnFalseWhenImagifyNotEnabled() {
+		Functions\expect( 'get_imagify_option' )
+			->once()
+			->andReturn( false );
+
 		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
 		$subscriber  = new Imagify_Subscriber( $optionsData );
 
