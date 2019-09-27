@@ -1,13 +1,4 @@
 <?php
-namespace WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp {
-
-	function function_exists( $function_name ) {
-		global $ewww_get_option;
-		return $ewww_get_option && 'ewww_image_optimizer_get_option' === $function_name;
-	}
-
-}
-
 namespace WP_Rocket\Tests\Unit\ThirdParty\Plugins\Images\Webp\EwwwSubscriber {
 
 	use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber;
@@ -34,7 +25,7 @@ namespace WP_Rocket\Tests\Unit\ThirdParty\Plugins\Images\Webp\EwwwSubscriber {
 
 			$subscriber = new EWWW_Subscriber( $optionsData );
 
-			Actions\expectAdded( 'activate_' . $subscriber->get_basename() )
+			Actions\expectAdded( 'activate_ewww-image-optimizer/ewww-image-optimizer.php' )
 				->never();
 
 			$subscriber->load_hooks();
@@ -58,16 +49,18 @@ namespace WP_Rocket\Tests\Unit\ThirdParty\Plugins\Images\Webp\EwwwSubscriber {
 				);
 
 			$subscriber = new EWWW_Subscriber( $optionsData );
-			$basename   = $subscriber->get_basename();
 
-			Actions\expectAdded( 'activate_' . $basename )
+			Actions\expectAdded( 'activate_ewww-image-optimizer/ewww-image-optimizer.php' )
 				->once()
 				->with( [ $subscriber, 'plugin_activation' ], 20 );
-			Actions\expectAdded( 'deactivate_' . $basename )
+			Actions\expectAdded( 'deactivate_ewww-image-optimizer/ewww-image-optimizer.php' )
 				->once()
 				->with( [ $subscriber, 'plugin_deactivation' ], 20 );
 			Actions\expectAdded( 'rocket_cdn_cnames' )
 				->never();
+
+			Functions\When( 'plugin_basename')->justReturn('ewww-image-optimizer/ewww-image-optimizer.php');
+			Functions\When( 'is_multisite')->justReturn( false );
 
 			$subscriber->load_hooks();
 
@@ -99,11 +92,12 @@ namespace WP_Rocket\Tests\Unit\ThirdParty\Plugins\Images\Webp\EwwwSubscriber {
 			$subscriber
 				->expects( $this->once() )
 				->method( 'plugin_deactivation' );
+			
+			Functions\When( 'plugin_basename')->justReturn('ewww-image-optimizer/ewww-image-optimizer.php');
+			Functions\When( 'is_multisite')->justReturn( false );
 
-			$basename = $subscriber->get_basename();
-
-			do_action( 'activate_' . $basename );
-			do_action( 'deactivate_' . $basename );
+			do_action( 'activate_ewww-image-optimizer/ewww-image-optimizer.php' );
+			do_action( 'deactivate_ewww-image-optimizer/ewww-image-optimizer.php' );
 
 			$subscriber->load_hooks();
 		}
@@ -125,6 +119,7 @@ namespace WP_Rocket\Tests\Unit\ThirdParty\Plugins\Images\Webp\EwwwSubscriber {
 					)
 				);
 
+			Functions\When( 'plugin_basename')->justReturn('ewww-image-optimizer/ewww-image-optimizer.php');
 			Functions\when( 'is_multisite' )
 				->justReturn( false );
 
@@ -137,12 +132,6 @@ namespace WP_Rocket\Tests\Unit\ThirdParty\Plugins\Images\Webp\EwwwSubscriber {
 			Filters\expectAdded( 'rocket_allow_cdn_images' )
 				->once()
 				->with( [ $subscriber, 'maybe_remove_images_from_cdn_dropdown' ] );
-			Filters\expectAdded( 'rocket_cache_webp_setting_field' )
-				->once()
-				->with( [ $subscriber, 'maybe_add_cdn_warning' ] );
-			Filters\expectAdded( 'rocket_cdn_setting_field' )
-				->once()
-				->with( [ $subscriber, 'maybe_add_cdn_warning' ] );
 
 			$option_names = [
 				'ewww_image_optimizer_exactdn',
