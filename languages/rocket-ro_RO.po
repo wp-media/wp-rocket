@@ -1,17 +1,17 @@
 # Copyright (C) 2016 WP Rocket
 # This file is distributed under the same license as the WP Rocket package.
 # Translators:
-# Ciomîrtan Andrei <refuonline@gmail.com>, 2019
 # wpmedia <contact@wp-media.me>, 2019
+# Ciomîrtan Andrei <refuonline@gmail.com>, 2019
 # Dan Caragea <dan_caragea@yahoo.com>, 2019
 # 
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.3.7\n"
+"Project-Id-Version: WP Rocket 3.4\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2019-08-26 11:14-0400\n"
-"PO-Revision-Date: 2019-08-28 13:41+0000\n"
+"POT-Creation-Date: 2019-09-26 17:27-0500\n"
+"PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Dan Caragea <dan_caragea@yahoo.com>, 2019\n"
 "Language-Team: Romanian (Romania) (https://www.transifex.com/wp-media/teams/18133/ro_RO/)\n"
 "MIME-Version: 1.0\n"
@@ -91,10 +91,6 @@ msgstr "Hărți site XML Rank Math"
 msgid "SEOPress XML sitemap"
 msgstr "Hărți site SEOPress"
 
-#: inc/3rd-party/plugins/seo/seopress.php:83
-msgid "SEOPress XML sitemap"
-msgstr ""
-
 #: inc/3rd-party/plugins/seo/the-seo-framework.php:121
 msgid "The SEO Framework XML sitemap"
 msgstr "Hărți site XML The SEO Framework"
@@ -103,64 +99,64 @@ msgstr "Hărți site XML The SEO Framework"
 msgid "Yoast SEO XML sitemap"
 msgstr "Hărți site XML Yoast SEO"
 
-#: inc/admin/admin.php:13 inc/common/admin-bar.php:311
+#: inc/admin/admin.php:17 inc/common/admin-bar.php:338
 #: inc/deprecated/deprecated.php:1789
 msgid "Support"
 msgstr "Suport"
 
-#: inc/admin/admin.php:15
+#: inc/admin/admin.php:19
 msgid "Docs"
 msgstr "Documentații"
 
-#: inc/admin/admin.php:17 inc/common/admin-bar.php:299
+#: inc/admin/admin.php:21 inc/common/admin-bar.php:326
 msgid "FAQ"
 msgstr "Întrebări frecvente"
 
-#: inc/admin/admin.php:19 inc/common/admin-bar.php:46
+#: inc/admin/admin.php:23 inc/common/admin-bar.php:63
 msgid "Settings"
 msgstr "Setări"
 
-#: inc/admin/admin.php:64 inc/admin/admin.php:86 inc/admin/admin.php:105
+#: inc/admin/admin.php:70 inc/admin/admin.php:94 inc/admin/admin.php:114
 msgid "Clear this cache"
 msgstr "Șterge acest cache"
 
-#: inc/admin/admin.php:249 inc/admin/admin.php:264
-#: inc/classes/class-wp-rocket-requirements-check.php:204
+#: inc/admin/admin.php:257 inc/admin/admin.php:272
+#: inc/classes/class-wp-rocket-requirements-check.php:203
 #: inc/classes/class-wp-rocket-requirements-check.php:214
 #, php-format
 msgid "%s Update Rollback"
 msgstr "Actualizează restaurarea %s"
 
-#: inc/admin/admin.php:290
+#: inc/admin/admin.php:298
 #, php-format
 msgid "%1$sReturn to WP Rocket%2$s or %3$sgo to Plugins page%2$s"
 msgstr "%1$sÎntoarce-te la WP Rocket%2$s sau %3$smergi la pagina Module%2$s"
 
-#: inc/admin/admin.php:529
+#: inc/admin/admin.php:537
 msgid "Settings import failed: you do not have the permissions to do this."
 msgstr "Importul setărilor a eșuat: nu ai permisiunea de a face asta."
 
-#: inc/admin/admin.php:533
+#: inc/admin/admin.php:541
 msgid "Settings import failed: no file uploaded."
 msgstr "Importul setărilor a eșuat: niciun fișier încărcat."
 
-#: inc/admin/admin.php:537
+#: inc/admin/admin.php:545
 msgid "Settings import failed: incorrect filename."
 msgstr "Importul setărilor a eșuat: nume fișier incorect."
 
-#: inc/admin/admin.php:546
+#: inc/admin/admin.php:554
 msgid "Settings import failed: incorrect filetype."
 msgstr "Importul setărilor a eșuat: tip de fișier incorect."
 
-#: inc/admin/admin.php:554
+#: inc/admin/admin.php:562
 msgid "Settings import failed: "
 msgstr "Importul setărilor a eșuat: "
 
-#: inc/admin/admin.php:571
+#: inc/admin/admin.php:579
 msgid "Settings import failed: unexpected file content."
 msgstr "Importul setărilor a eșuat: conținut neașteptat pentru fișier."
 
-#: inc/admin/admin.php:592
+#: inc/admin/admin.php:600
 msgid "Settings imported and saved."
 msgstr "Setările au fost importate și salvate."
 
@@ -219,106 +215,113 @@ msgstr "Eroare cache navigator Cloudflare: %s"
 msgid "Cloudflare browser cache set to %s seconds"
 msgstr "Cache navigator Cloudflare setat la %s secunde"
 
-#: inc/admin/options.php:241 inc/classes/admin/settings/class-page.php:692
+#: inc/admin/options.php:234 inc/admin/options.php:280
+#: inc/classes/admin/settings/class-page.php:692
 msgid "Excluded CSS Files"
 msgstr "Fișiere CSS excluse"
 
-#: inc/admin/options.php:242 inc/classes/admin/settings/class-page.php:784
+#: inc/admin/options.php:235 inc/admin/options.php:281
+#: inc/classes/admin/settings/class-page.php:784
 msgid "Excluded Inline JavaScript"
 msgstr "JavaScript în-linie exclus"
 
-#: inc/admin/options.php:243 inc/classes/admin/settings/class-page.php:802
+#: inc/admin/options.php:236 inc/admin/options.php:282
+#: inc/classes/admin/settings/class-page.php:802
 msgid "Excluded JavaScript Files"
 msgstr "Fișiere JavaScript excluse"
 
-#: inc/admin/options.php:244 inc/classes/admin/settings/class-page.php:1128
+#: inc/admin/options.php:237 inc/admin/options.php:283
+#: inc/classes/admin/settings/class-page.php:1172
 msgid "Never Cache URL(s)"
 msgstr "Nu memora niciodată în cache URL-uri"
 
-#: inc/admin/options.php:245 inc/classes/admin/settings/class-page.php:1144
+#: inc/admin/options.php:238 inc/admin/options.php:284
+#: inc/classes/admin/settings/class-page.php:1188
 msgid "Never Cache User Agent(s)"
 msgstr "Nu memora niciodată în cache agentul (agenții) utilizator"
 
-#: inc/admin/options.php:246 inc/classes/admin/settings/class-page.php:1149
+#: inc/admin/options.php:239 inc/admin/options.php:285
+#: inc/classes/admin/settings/class-page.php:1193
 msgid "Always Purge URL(s)"
 msgstr "Curăță întotdeauna URL-ul (URL-urile)"
 
-#: inc/admin/options.php:247 inc/classes/admin/settings/class-page.php:1443
+#: inc/admin/options.php:240 inc/admin/options.php:286
+#: inc/classes/admin/settings/class-page.php:1487
 msgid "Exclude files from CDN"
 msgstr "Exclude fișiere din CDN"
 
-#: inc/admin/options.php:265
+#: inc/admin/options.php:258 inc/admin/options.php:304
 #, php-format
 msgid "%1$s: <em>%2$s</em>."
 msgstr "%1$s: <em>%2$s</em>."
 
-#: inc/admin/options.php:275
+#: inc/admin/options.php:268 inc/admin/options.php:314
 msgid "The following pattern is invalid and has been removed:"
 msgid_plural "The following patterns are invalid and have been removed:"
 msgstr[0] "Următorul model este invalid și a fost înlăturat:"
 msgstr[1] "Următoarele modele sunt invalide și au fost înlăturate:"
 msgstr[2] "Următoarele modele sunt invalide și au fost înlăturate:"
 
-#: inc/admin/ui/meta-boxes.php:14 inc/admin/ui/notices.php:955
-#: inc/common/admin-bar.php:65 inc/common/admin-bar.php:118
-#: views/settings/page-sections/dashboard.php:115
+#: inc/admin/ui/meta-boxes.php:13 inc/admin/ui/notices.php:950
+#: inc/common/admin-bar.php:84 inc/common/admin-bar.php:136
+#: views/settings/page-sections/dashboard.php:116
 msgid "Clear cache"
 msgstr "Șterge cache"
 
-#: inc/admin/ui/meta-boxes.php:36
+#: inc/admin/ui/meta-boxes.php:35
 msgid "WP Rocket Options"
 msgstr "Opțiuni WP Rocket"
 
-#: inc/admin/ui/meta-boxes.php:66
+#: inc/admin/ui/meta-boxes.php:64
 msgid "Never cache this page"
 msgstr "Nu memora niciodată în cache această pagină"
 
-#: inc/admin/ui/meta-boxes.php:70
+#: inc/admin/ui/meta-boxes.php:68
 msgid "Activate these options on this post:"
 msgstr "Activează aceste opțiuni pentru acest articol:"
 
-#: inc/admin/ui/meta-boxes.php:73
+#: inc/admin/ui/meta-boxes.php:71
 msgid "LazyLoad for images"
 msgstr "Încărcare lentă pentru imagini"
 
-#: inc/admin/ui/meta-boxes.php:74
+#: inc/admin/ui/meta-boxes.php:72
 msgid "LazyLoad for iframes/videos"
 msgstr "Încărcare lentă pentru iframe-uri/videouri"
 
-#: inc/admin/ui/meta-boxes.php:75
+#: inc/admin/ui/meta-boxes.php:73
 #: inc/classes/admin/settings/class-page.php:615
 msgid "Minify HTML"
 msgstr "Minifică HTML"
 
-#: inc/admin/ui/meta-boxes.php:76
+#: inc/admin/ui/meta-boxes.php:74
 msgid "Minify/combine CSS"
 msgstr "Minifică/combină CSS"
 
-#: inc/admin/ui/meta-boxes.php:77
+#: inc/admin/ui/meta-boxes.php:75
 msgid "Minify/combine JS"
 msgstr "Minifică/combină JS"
 
-#: inc/admin/ui/meta-boxes.php:78
-#: inc/classes/admin/settings/class-page.php:1413
-#: inc/classes/admin/settings/class-page.php:1424
+#: inc/admin/ui/meta-boxes.php:76
+#: inc/classes/admin/settings/class-page.php:1457
+#: inc/classes/admin/settings/class-page.php:1468
 #: inc/deprecated/deprecated.php:1775
 msgid "CDN"
 msgstr "CDN"
 
-#: inc/admin/ui/meta-boxes.php:79
+#: inc/admin/ui/meta-boxes.php:77
 msgid "Optimize CSS Delivery"
 msgstr "Optimizează livrarea CSS"
 
-#: inc/admin/ui/meta-boxes.php:80
+#: inc/admin/ui/meta-boxes.php:78
 msgid "Defer JS"
 msgstr "Amână JS"
 
-#: inc/admin/ui/meta-boxes.php:86
+#: inc/admin/ui/meta-boxes.php:84
 #, php-format
 msgid "Activate first the %s option."
 msgstr "Activează mai întâi opțiunea %s."
 
-#: inc/admin/ui/meta-boxes.php:102
+#: inc/admin/ui/meta-boxes.php:100
 #, php-format
 msgid ""
 "%1$sNote:%2$s None of these options will be applied if this post has been "
@@ -327,7 +330,7 @@ msgstr ""
 "%1$sNotă:%2$s niciuna dintre aceste opțiuni nu va fi aplicată dacă acest "
 "articol a fost exclus din cache în setările globale privind cache-ul."
 
-#: inc/admin/ui/notices.php:24 inc/admin/ui/notices.php:34
+#: inc/admin/ui/notices.php:23 inc/admin/ui/notices.php:33
 #, php-format
 msgid ""
 "<strong>%1$s</strong> has not been deactivated due to missing writing permissions.<br>\n"
@@ -336,7 +339,7 @@ msgstr ""
 "<strong>%1$s</strong> nu a fost dezactivat deoarece lipsesc permisiunile de scriere.<br>\n"
 "Fă ca <strong>%2$s</strong> să poată fi scris și reîncearcă dezactivarea sau forțează dezactivarea acum:"
 
-#: inc/admin/ui/notices.php:83
+#: inc/admin/ui/notices.php:81
 #, php-format
 msgid ""
 "<strong>%s</strong>: One or more plugins have been enabled or disabled, "
@@ -345,7 +348,7 @@ msgstr ""
 "<strong>%s</strong>: unul sau mai multe module au fost activate sau "
 "dezactivate, șterge cache-ul dacă ele afectează partea din față a site-ului."
 
-#: inc/admin/ui/notices.php:196
+#: inc/admin/ui/notices.php:193
 #, php-format
 msgid ""
 "<strong>%s</strong>: The following plugins are not compatible with this "
@@ -354,11 +357,11 @@ msgstr ""
 "<strong>%s</strong>: următoarele module nu sunt compatibile cu acest modul "
 "și pot duce la rezultate neașteptate:"
 
-#: inc/admin/ui/notices.php:202
+#: inc/admin/ui/notices.php:199
 msgid "Deactivate"
 msgstr "Dezactivează"
 
-#: inc/admin/ui/notices.php:243
+#: inc/admin/ui/notices.php:239
 msgid ""
 "WP Rocket Footer JS is not an official add-on. It prevents some options in "
 "WP Rocket from working correctly. Please deactivate it if you have problems."
@@ -367,7 +370,7 @@ msgstr ""
 " din WP Rocket să funcționeze corect. Te rog dezactivează-l dacă ai "
 "probleme."
 
-#: inc/admin/ui/notices.php:283
+#: inc/admin/ui/notices.php:279
 #, php-format
 msgid ""
 "Endurance Cache is currently enabled, which will conflict with WP Rocket "
@@ -379,7 +382,7 @@ msgstr ""
 "Endurance Cache în pagina %1$sSetări > Generale%2$s pentru a nu avea "
 "probleme."
 
-#: inc/admin/ui/notices.php:305
+#: inc/admin/ui/notices.php:300
 #, php-format
 msgid ""
 "%1$s: A custom permalink structure is required for the plugin to work "
@@ -389,7 +392,7 @@ msgstr ""
 "structură personalizată pentru legăturile permanente. %2$sDu-te la setări "
 "Legături permanente%3$s"
 
-#: inc/admin/ui/notices.php:442
+#: inc/admin/ui/notices.php:434
 #, php-format
 msgid ""
 "%s could not modify the .htaccess file due to missing writing permissions."
@@ -397,13 +400,13 @@ msgstr ""
 "%s nu a putut modifica fișierul .htaccess deoarece lipsesc permisiunile de "
 "scriere."
 
-#: inc/admin/ui/notices.php:448 inc/admin/ui/notices.php:1032
+#: inc/admin/ui/notices.php:440 inc/admin/ui/notices.php:1027
 #, php-format
 msgid "Troubleshoot: %1$sHow to make system files writeable%2$s"
 msgstr ""
 "Depanare: %1$scum să faci ca fișierele de sistem să poată fi scrise%2$s"
 
-#: inc/admin/ui/notices.php:450 inc/admin/ui/notices.php:1034
+#: inc/admin/ui/notices.php:442 inc/admin/ui/notices.php:1029
 msgid ""
 "https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
 "config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
@@ -411,7 +414,7 @@ msgstr ""
 "https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
 "config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
 
-#: inc/admin/ui/notices.php:456
+#: inc/admin/ui/notices.php:448
 msgid ""
 "Don’t worry, WP Rocket’s page caching and settings will still function "
 "correctly."
@@ -419,7 +422,7 @@ msgstr ""
 "Nu-ți face griji, cache-ul paginilor și setările WP Rocket vor funcționa "
 "corect."
 
-#: inc/admin/ui/notices.php:456
+#: inc/admin/ui/notices.php:448
 msgid ""
 "For optimal performance, adding the following lines into your .htaccess is "
 "recommended (not required):"
@@ -427,7 +430,7 @@ msgstr ""
 "Pentru o performanță optimă, se recomandă adăugarea următoarelor linii în "
 "fișierul .htaccess (dat nu sunt obligatorii):"
 
-#: inc/admin/ui/notices.php:600
+#: inc/admin/ui/notices.php:588
 #, php-format
 msgid ""
 "%1$s is good to go! %2$sTest your load time%4$s, or visit your "
@@ -436,7 +439,7 @@ msgstr ""
 "%1$s este un început bun! %2$sTestează timpul de încărcare%4$ssau mergi la "
 "%3$sSetări%4$s."
 
-#: inc/admin/ui/notices.php:721
+#: inc/admin/ui/notices.php:706
 msgid ""
 "Would you allow WP Rocket to collect non-sensitive diagnostic data from this"
 " website?"
@@ -444,15 +447,15 @@ msgstr ""
 "Vrei să-i permiți modulului WP Rocket să colecteze de pe acest site date de "
 "diagnosticare care nu sunt sensibile?"
 
-#: inc/admin/ui/notices.php:722
+#: inc/admin/ui/notices.php:707
 msgid "This would help us to improve WP Rocket for you in the future."
 msgstr "Acest lucru ne ajută să îmbunătățim WP Rocket în viitor."
 
-#: inc/admin/ui/notices.php:728
+#: inc/admin/ui/notices.php:713
 msgid "What info will we collect?"
 msgstr "Ce informații vom colecta?"
 
-#: inc/admin/ui/notices.php:733
+#: inc/admin/ui/notices.php:718
 msgid ""
 "Below is a detailed view of all data WP Rocket will collect if granted "
 "permission. WP Rocket will never transmit any domain names or email "
@@ -464,43 +467,43 @@ msgstr ""
 "domenii sau adrese de email (cu excepția validării licenței), adrese IP sau "
 "chei API de la părți terțe."
 
-#: inc/admin/ui/notices.php:742
+#: inc/admin/ui/notices.php:727
 msgid "Yes, allow"
 msgstr "Da, permit"
 
-#: inc/admin/ui/notices.php:745
+#: inc/admin/ui/notices.php:730
 msgid "No, thanks"
 msgstr "Nu, mulțumesc"
 
-#: inc/admin/ui/notices.php:783
+#: inc/admin/ui/notices.php:767
 msgid "Thank you!"
 msgstr "Îți mulțumim!"
 
-#: inc/admin/ui/notices.php:788
+#: inc/admin/ui/notices.php:772
 msgid "WP Rocket now collects these metrics from your website:"
 msgstr "Acum WP Rocket colectează aceste valori de pe site-ul tău web:"
 
-#: inc/admin/ui/notices.php:825
+#: inc/admin/ui/notices.php:808
 #, php-format
 msgid "%s: Cache cleared."
 msgstr "%s: cache șters."
 
-#: inc/admin/ui/notices.php:830
+#: inc/admin/ui/notices.php:815
 #, php-format
 msgid "%s: Post cache cleared."
 msgstr "%s: cache articol șters."
 
-#: inc/admin/ui/notices.php:835
+#: inc/admin/ui/notices.php:822
 #, php-format
 msgid "%s: Term cache cleared."
 msgstr "%s: cache termen șters."
 
-#: inc/admin/ui/notices.php:840
+#: inc/admin/ui/notices.php:829
 #, php-format
 msgid "%s: User cache cleared."
 msgstr "%s: cache utilizator șters."
 
-#: inc/admin/ui/notices.php:910
+#: inc/admin/ui/notices.php:905
 msgid ""
 "The following scheduled event failed to run. This may indicate the CRON "
 "system is not running properly, which can prevent some WP Rocket features "
@@ -522,66 +525,66 @@ msgstr[2] ""
 "poate indica că sistemul CRON nu funcționează corect și poate împiedica "
 "unele funcționalități WP Rocket să lucreze așa cum ar trebui:"
 
-#: inc/admin/ui/notices.php:919
+#: inc/admin/ui/notices.php:914
 msgid "Please contact your host to check if CRON is working."
 msgstr ""
 "Te rog contactează serviciul tău de găzduire pentru a verifica dacă CRON "
 "funcționează."
 
-#: inc/admin/ui/notices.php:958
+#: inc/admin/ui/notices.php:953
 msgid "Stop Preload"
 msgstr "Oprește pre-încărcarea"
 
-#: inc/admin/ui/notices.php:976
+#: inc/admin/ui/notices.php:971
 msgid "Force deactivation "
 msgstr "Forțează dezactivarea"
 
-#: inc/admin/ui/notices.php:989
+#: inc/admin/ui/notices.php:984
 msgid "The following code should have been written to this file:"
 msgstr "Codul următor ar fi trebuit să poată fi scris în acest fișier:"
 
-#: inc/admin/ui/notices.php:999 views/settings/page-sections/dashboard.php:45
+#: inc/admin/ui/notices.php:994 views/settings/page-sections/dashboard.php:45
 msgid "Dismiss this notice."
 msgstr "Respinge această notificare."
 
-#: inc/admin/ui/notices.php:1020
+#: inc/admin/ui/notices.php:1015
 #, php-format
 msgid "%s cannot configure itself due to missing writing permissions."
 msgstr ""
 "%s nu se poate configura singur deoarece lipsesc permisiunile de scriere."
 
-#: inc/admin/ui/notices.php:1026
+#: inc/admin/ui/notices.php:1021
 #, php-format
 msgid "Affected file/folder: %s"
 msgstr "Fișier/dosar afectat: %s"
 
 #: inc/classes/admin/Database/class-optimization.php:41
-#: inc/classes/admin/settings/class-page.php:1289
+#: inc/classes/admin/settings/class-page.php:1333
 msgid "Revisions"
 msgstr "Revizii"
 
 #: inc/classes/admin/Database/class-optimization.php:42
-#: inc/classes/admin/settings/class-page.php:1299
+#: inc/classes/admin/settings/class-page.php:1343
 msgid "Auto Drafts"
 msgstr "Ciorne automate"
 
 #: inc/classes/admin/Database/class-optimization.php:43
-#: inc/classes/admin/settings/class-page.php:1309
+#: inc/classes/admin/settings/class-page.php:1353
 msgid "Trashed Posts"
 msgstr "Articole aruncate la gunoi"
 
 #: inc/classes/admin/Database/class-optimization.php:44
-#: inc/classes/admin/settings/class-page.php:1319
+#: inc/classes/admin/settings/class-page.php:1363
 msgid "Spam Comments"
 msgstr "Comentarii spam"
 
 #: inc/classes/admin/Database/class-optimization.php:45
-#: inc/classes/admin/settings/class-page.php:1329
+#: inc/classes/admin/settings/class-page.php:1373
 msgid "Trashed Comments"
 msgstr "Comentarii aruncate la gunoi"
 
 #: inc/classes/admin/Database/class-optimization.php:46
-#: inc/classes/admin/settings/class-page.php:1339
+#: inc/classes/admin/settings/class-page.php:1383
 msgid "Expired transients"
 msgstr "Tranzienți expirați"
 
@@ -628,7 +631,7 @@ msgstr "Primești ajutor, informații despre cont"
 msgid "My Status"
 msgstr "Starea mea"
 
-#: inc/classes/admin/settings/class-page.php:408 views/settings/page.php:71
+#: inc/classes/admin/settings/class-page.php:408 views/settings/page.php:72
 msgid "Rocket Tester"
 msgstr "Tester Rocket"
 
@@ -636,7 +639,7 @@ msgstr "Tester Rocket"
 msgid "I am part of the WP Rocket Beta Testing Program."
 msgstr "Iau parte la programul de testare WP Rocket Beta."
 
-#: inc/classes/admin/settings/class-page.php:417 views/settings/page.php:89
+#: inc/classes/admin/settings/class-page.php:417 views/settings/page.php:90
 msgid "Rocket Analytics"
 msgstr "Analitice Rocket"
 
@@ -649,24 +652,24 @@ msgstr ""
 "Sunt de acord să partajez date anonime cu echipa de dezvoltare pentru a "
 "ajuta la îmbunătățirea WP Rocket. %1$sCe informații vom colecta?%2$s"
 
-#: inc/classes/admin/settings/class-page.php:447
+#: inc/classes/admin/settings/class-page.php:446
 msgid "Cache"
 msgstr "Cache"
 
-#: inc/classes/admin/settings/class-page.php:448
+#: inc/classes/admin/settings/class-page.php:447
 msgid "Basic cache options"
 msgstr "Opțiuni de bază pentru cache"
 
-#: inc/classes/admin/settings/class-page.php:455
+#: inc/classes/admin/settings/class-page.php:454
 msgid "Mobile Cache"
 msgstr "Cache pentru mobil"
 
-#: inc/classes/admin/settings/class-page.php:457
+#: inc/classes/admin/settings/class-page.php:456
 msgid "Speed up your site for mobile visitors."
 msgstr ""
 "Îți accelerează site-ul pentru vizitatorii care folosesc dispozitive mobile."
 
-#: inc/classes/admin/settings/class-page.php:462
+#: inc/classes/admin/settings/class-page.php:461
 msgid ""
 "We detected you use a plugin that requires a separate cache for mobile, and "
 "automatically enabled this option for compatibility."
@@ -674,11 +677,11 @@ msgstr ""
 "Am detectat că folosești un modul care solicită un cache separat pentru "
 "mobil și s-a activat automat această opțiune pentru compatibilitate."
 
-#: inc/classes/admin/settings/class-page.php:466
+#: inc/classes/admin/settings/class-page.php:465
 msgid "User Cache"
 msgstr "Cache utilizatori"
 
-#: inc/classes/admin/settings/class-page.php:469
+#: inc/classes/admin/settings/class-page.php:468
 #, php-format
 msgid ""
 "%1$sUser cache%2$s is great when you have user-specific or restricted "
@@ -687,34 +690,34 @@ msgstr ""
 "%1$sCache utilizatori%2$s este foarte bun când ai conținut specific pentru "
 "utilizatori sau conținut restricționat pe site-ul tău web."
 
-#: inc/classes/admin/settings/class-page.php:477
+#: inc/classes/admin/settings/class-page.php:476
 msgid "Cache Lifespan"
 msgstr "Durată de viață cache"
 
-#: inc/classes/admin/settings/class-page.php:480
+#: inc/classes/admin/settings/class-page.php:479
 #, php-format
 msgid ""
-"Cache lifespan is the period of time after which all cache files are "
-"removed.<br>Enable %1$spreloading%2$s for the cache to be rebuilt "
-"automatically after lifespan expiration."
+"Cache files older than the specified lifespan will be deleted.<br>Enable "
+"%1$spreloading%2$s for the cache to be rebuilt automatically after lifespan "
+"expiration."
 msgstr ""
-"Durata de viață cache este perioada de timp după care toate fișierele cache "
-"sunt înlăturate. <br>Activează %1$spre-încărcarea%2$s pentru cache ca să fie"
-" reconstruit automat după expirarea duratei de viață."
+"Fișierele cache mai vechi decât durata de viață specificată vor fi șterse. "
+"<br>Activează %1$spre-încărcarea%2$s pentru cache-ul care să fie reconstruit"
+" automat după expirarea duratei de viață."
 
-#: inc/classes/admin/settings/class-page.php:494
+#: inc/classes/admin/settings/class-page.php:493
 msgid "Enable caching for logged-in WordPress users"
 msgstr "Activează cache pentru utilizatorii WordPress autentificați"
 
-#: inc/classes/admin/settings/class-page.php:502
+#: inc/classes/admin/settings/class-page.php:501
 msgid "Enable caching for mobile devices"
 msgstr "Activează cache pentru dispozitivele mobile"
 
-#: inc/classes/admin/settings/class-page.php:517
+#: inc/classes/admin/settings/class-page.php:516
 msgid "Separate cache files for mobile devices"
 msgstr "Separă fișierele cache pentru dispozitivele mobile"
 
-#: inc/classes/admin/settings/class-page.php:519
+#: inc/classes/admin/settings/class-page.php:518
 #, php-format
 msgid ""
 "%1$sMobile cache%2$s works safest with both options enabled. When in doubt, "
@@ -723,13 +726,13 @@ msgstr ""
 "%1$sCache pentru mobil%2$s funcționează în siguranță cu ambele opțiuni "
 "activate. Când ai dubii, menține-le pe amândouă."
 
-#: inc/classes/admin/settings/class-page.php:535
+#: inc/classes/admin/settings/class-page.php:534
 msgid ""
 "Specify time after which the global cache is cleared<br>(0 = unlimited )"
 msgstr ""
 "Specifică timpul după care cache-ul global este șters<br>(0 = nelimitat)"
 
-#: inc/classes/admin/settings/class-page.php:537
+#: inc/classes/admin/settings/class-page.php:536
 #, php-format
 msgid ""
 "Reduce lifespan to 10 hours or less if you notice issues that seem to appear"
@@ -738,19 +741,20 @@ msgstr ""
 "Reduci durata de viață la 10 ore sau mai puțin dacă remarci probleme care "
 "par să apară periodic. %1$sDe ce?%2$s"
 
-#: inc/classes/admin/settings/class-page.php:543
+#: inc/classes/admin/settings/class-page.php:542
 msgid "Minutes"
 msgstr "Minute"
 
-#: inc/classes/admin/settings/class-page.php:544
+#: inc/classes/admin/settings/class-page.php:543
 msgid "Hours"
 msgstr "Ore"
 
-#: inc/classes/admin/settings/class-page.php:545
+#: inc/classes/admin/settings/class-page.php:544
 msgid "Days"
 msgstr "Zile"
 
 #: inc/classes/admin/settings/class-page.php:571
+#: views/settings/page-sections/tutorials.php:21
 msgid "File Optimization"
 msgstr "Optimizare fișiere"
 
@@ -1023,19 +1027,19 @@ msgstr ""
 "<em><br>Dezactivarea poate duce la o funcționare defectuoasă, testează "
 "temeinic!</em>"
 
-#: inc/classes/admin/settings/class-page.php:861
+#: inc/classes/admin/settings/class-page.php:868
 msgid "Media"
 msgstr "Media"
 
-#: inc/classes/admin/settings/class-page.php:862
-msgid "LazyLoad, emojis, embeds"
-msgstr "Încărcare lentă, emoticoane, înglobări"
-
 #: inc/classes/admin/settings/class-page.php:869
+msgid "LazyLoad, emojis, embeds, WebP"
+msgstr "Încărcare lentă, emoticoane, înglobări, WebP"
+
+#: inc/classes/admin/settings/class-page.php:876
 msgid "LazyLoad"
 msgstr "Încărcare lentă"
 
-#: inc/classes/admin/settings/class-page.php:872
+#: inc/classes/admin/settings/class-page.php:879
 #, php-format
 msgid ""
 "It can improve actual and perceived loading time as images, iframes, and "
@@ -1047,7 +1051,7 @@ msgstr ""
 "care intră (sau urmează să intre) în fereastra de vizualizare, astfel se "
 "reduce numărul de cereri HTTP. %1$sMai multe informații%2$s"
 
-#: inc/classes/admin/settings/class-page.php:879
+#: inc/classes/admin/settings/class-page.php:886
 #, php-format
 msgid ""
 "Lazyload is currently activated in <strong>Autoptimize</strong>. If you want"
@@ -1057,11 +1061,11 @@ msgstr ""
 "<strong>Autoptimize</strong>. Dacă vrei să folosești încărcarea lentă a "
 "imaginilor de la %1$s, dezactivează această opțiune în Autoptimize."
 
-#: inc/classes/admin/settings/class-page.php:882
+#: inc/classes/admin/settings/class-page.php:889
 msgid "Emoji 👻"
 msgstr "Emoticon 👻"
 
-#: inc/classes/admin/settings/class-page.php:884
+#: inc/classes/admin/settings/class-page.php:891
 msgid ""
 "Use default emoji of visitor's browser instead of loading emoji from "
 "WordPress.org"
@@ -1069,11 +1073,11 @@ msgstr ""
 "Folosește emoticonul implicit al navigatorului vizitatorilor în loc de a "
 "încărca emoticonul de la WordPress.org"
 
-#: inc/classes/admin/settings/class-page.php:888
+#: inc/classes/admin/settings/class-page.php:895
 msgid "Embeds"
 msgstr "Înglobări"
 
-#: inc/classes/admin/settings/class-page.php:890
+#: inc/classes/admin/settings/class-page.php:897
 msgid ""
 "Prevents others from embedding content from your site, prevents you from "
 "embedding content from other (non-whitelisted) sites, and removes JavaScript"
@@ -1083,11 +1087,28 @@ msgstr ""
 "să înglobezi conținut de pe alte site-uri (care nu sunt în lista ta albă) și"
 " înlătură cererile JavaScript legate de înglobările WordPress"
 
-#: inc/classes/admin/settings/class-page.php:900
+#: inc/classes/admin/settings/class-page.php:901
+msgid "WebP compatibility"
+msgstr "Compatibilitate cu WebP"
+
+#: inc/classes/admin/settings/class-page.php:905
+#, php-format
+msgid ""
+"Enable this option if you would like WP Rocket to serve WebP images to "
+"compatible browsers. Please note that WP Rocket cannot create WebP images "
+"for you. To create WebP images we recommend %1$sImagify%2$s. %3$sMore "
+"info%2$s"
+msgstr ""
+"Activează această opțiune dacă vrei ca WP Rocket să servească imagini WebP "
+"în navigatoarele compatibile. Reține că WP Rocket nu poate crea imagini WebP"
+" pentru tine. Pentru a crea imagini WebP recomandăm %1$sImagify%2$s. %3$sMai"
+" multe informații%2$s"
+
+#: inc/classes/admin/settings/class-page.php:933
 msgid "Enable for images"
 msgstr "Activează pentru imagini"
 
-#: inc/classes/admin/settings/class-page.php:911
+#: inc/classes/admin/settings/class-page.php:944
 msgctxt "Avada"
 msgid ""
 "Lazyload for images is currently activated in Avada. If you want to use WP "
@@ -1097,15 +1118,15 @@ msgstr ""
 "folosești încărcarea lentă a imaginilor de la WP Rocket, dezactivează "
 "această opțiune în Avada."
 
-#: inc/classes/admin/settings/class-page.php:919
+#: inc/classes/admin/settings/class-page.php:952
 msgid "Enable for iframes and videos"
 msgstr "Activează pentru iframe-uri și videouri"
 
-#: inc/classes/admin/settings/class-page.php:934
+#: inc/classes/admin/settings/class-page.php:967
 msgid "Replace YouTube iframe with preview image"
 msgstr "Înlocuiește iframe-ul YouTube cu imaginea de previzualizare"
 
-#: inc/classes/admin/settings/class-page.php:935
+#: inc/classes/admin/settings/class-page.php:968
 msgid ""
 "This can significantly improve your loading time if you have a lot of "
 "YouTube videos on a page."
@@ -1113,29 +1134,35 @@ msgstr ""
 "Îți poate îmbunătăți semnificativ timpul de încărcare dacă ai o mulțime de "
 "videouri YouTube pe o pagină."
 
-#: inc/classes/admin/settings/class-page.php:947
+#: inc/classes/admin/settings/class-page.php:980
 msgid "Disable Emoji"
 msgstr "Dezactivează emoticoanele"
 
-#: inc/classes/admin/settings/class-page.php:948
+#: inc/classes/admin/settings/class-page.php:981
 msgid "Disable Emoji will reduce the number of external HTTP requests."
 msgstr "Dezactivarea emoticoanelor va reduce numărul de cereri HTTP externe."
 
-#: inc/classes/admin/settings/class-page.php:956
+#: inc/classes/admin/settings/class-page.php:989
 msgid "Disable WordPress embeds"
 msgstr "Dezactivează înglobările WordPress"
 
-#: inc/classes/admin/settings/class-page.php:978
-#: inc/classes/admin/settings/class-page.php:988
+#: inc/classes/admin/settings/class-page.php:999
+#: inc/classes/subscriber/Media/class-webp-subscriber.php:360
+msgid "Enable WebP caching"
+msgstr "Activează cache-ul pentru WebP"
+
+#: inc/classes/admin/settings/class-page.php:1022
+#: inc/classes/admin/settings/class-page.php:1032
 #: inc/deprecated/deprecated.php:1778
+#: views/settings/page-sections/tutorials.php:29
 msgid "Preload"
 msgstr "Pre-încărcare"
 
-#: inc/classes/admin/settings/class-page.php:979
+#: inc/classes/admin/settings/class-page.php:1023
 msgid "Generate cache files"
 msgstr "Generează fișiere cache"
 
-#: inc/classes/admin/settings/class-page.php:991
+#: inc/classes/admin/settings/class-page.php:1035
 #, php-format
 msgid ""
 "When you enable preloading WP Rocket will generate the cache starting with "
@@ -1150,11 +1177,11 @@ msgstr ""
 "îl actualizezi și poți s-o declanșezi manual și din bara de administrare sau"
 " din %1$sPanoul de control WP Rocket%2$s."
 
-#: inc/classes/admin/settings/class-page.php:999
+#: inc/classes/admin/settings/class-page.php:1043
 msgid "Prefetch DNS Requests"
 msgstr "Pre-aduce cereri DNS"
 
-#: inc/classes/admin/settings/class-page.php:1001
+#: inc/classes/admin/settings/class-page.php:1045
 msgid ""
 "DNS prefetching can make external files load faster, especially on mobile "
 "networks"
@@ -1162,28 +1189,28 @@ msgstr ""
 "Pre-aducerea DNS poate face ca fișierele externe să se încarce mai rapid, în"
 " special în rețelele pentru mobil"
 
-#: inc/classes/admin/settings/class-page.php:1015
+#: inc/classes/admin/settings/class-page.php:1059
 msgid "Activate Preloading"
 msgstr "Activează pre-încărcarea"
 
-#: inc/classes/admin/settings/class-page.php:1034
+#: inc/classes/admin/settings/class-page.php:1078
 msgid "Activate sitemap-based cache preloading"
 msgstr "Activează pre-încărcarea cache-ului pe baza hărților site"
 
-#: inc/classes/admin/settings/class-page.php:1053
+#: inc/classes/admin/settings/class-page.php:1097
 msgid "Sitemaps for preloading"
 msgstr "Hărți site pentru pre-încărcare"
 
-#: inc/classes/admin/settings/class-page.php:1057
+#: inc/classes/admin/settings/class-page.php:1101
 msgid "Specify XML sitemap(s) to be used for preloading"
 msgstr ""
 "Specifică hărțile (harta) site XML care să fie folosite pentru pre-încărcare"
 
-#: inc/classes/admin/settings/class-page.php:1067
+#: inc/classes/admin/settings/class-page.php:1111
 msgid "URLs to prefetch"
 msgstr "URL-uri de pre-adus"
 
-#: inc/classes/admin/settings/class-page.php:1068
+#: inc/classes/admin/settings/class-page.php:1112
 msgid ""
 "Specify external hosts to be prefetched (no <code>http:</code>, one per "
 "line)"
@@ -1191,47 +1218,47 @@ msgstr ""
 "Specifică gazdele externe care să fie pre-aduse (fără <code>http:</code>, "
 "una pe linie)"
 
-#: inc/classes/admin/settings/class-page.php:1091
+#: inc/classes/admin/settings/class-page.php:1135
 msgid "Advanced Rules"
 msgstr "Reguli avansate"
 
-#: inc/classes/admin/settings/class-page.php:1092
+#: inc/classes/admin/settings/class-page.php:1136
 msgid "Fine-tune cache rules"
 msgstr "Ajustează fin regulile cache"
 
-#: inc/classes/admin/settings/class-page.php:1101
+#: inc/classes/admin/settings/class-page.php:1145
 msgid ""
 "Sensitive pages like custom login/logout URLs should be excluded from cache."
 msgstr ""
 "Paginile sensibile, cum ar fi URL-urile personalizate de "
 "autentificare/dezautentificare, ar trebui să fie excluse din cache."
 
-#: inc/classes/admin/settings/class-page.php:1104
+#: inc/classes/admin/settings/class-page.php:1148
 msgctxt "plugin name"
 msgid "WooCommerce"
 msgstr "WooCommerce"
 
-#: inc/classes/admin/settings/class-page.php:1106
+#: inc/classes/admin/settings/class-page.php:1150
 msgctxt "plugin name"
 msgid "Easy Digital Downloads"
 msgstr "Easy Digital Downloads"
 
-#: inc/classes/admin/settings/class-page.php:1108
+#: inc/classes/admin/settings/class-page.php:1152
 msgctxt "plugin name"
 msgid "iThemes Exchange"
 msgstr "iThemes Exchange"
 
-#: inc/classes/admin/settings/class-page.php:1110
+#: inc/classes/admin/settings/class-page.php:1154
 msgctxt "plugin name"
 msgid "Jigoshop"
 msgstr "Jigoshop"
 
-#: inc/classes/admin/settings/class-page.php:1112
+#: inc/classes/admin/settings/class-page.php:1156
 msgctxt "plugin name"
 msgid "WP-Shop"
 msgstr "WP-Shop"
 
-#: inc/classes/admin/settings/class-page.php:1118
+#: inc/classes/admin/settings/class-page.php:1162
 #, php-format
 msgid ""
 "<br>Cart, checkout and \"my account\" pages set in "
@@ -1241,15 +1268,15 @@ msgstr ""
 "în <strong>%1$s%2$s%3$s</strong> vor fi detectate și implicit nu sunt "
 "memorate niciodată în cache."
 
-#: inc/classes/admin/settings/class-page.php:1139
+#: inc/classes/admin/settings/class-page.php:1183
 msgid "Never Cache Cookies"
 msgstr "Nu memora niciodată în cache cookie-uri"
 
-#: inc/classes/admin/settings/class-page.php:1158
+#: inc/classes/admin/settings/class-page.php:1202
 msgid "Cache Query String(s)"
 msgstr "Memorează în cache șirul (șirurile) de interogare"
 
-#: inc/classes/admin/settings/class-page.php:1161
+#: inc/classes/admin/settings/class-page.php:1205
 #, php-format
 msgid ""
 "%1$sCache for query strings%2$s enables you to force caching for specific "
@@ -1258,15 +1285,15 @@ msgstr ""
 "%1$sCache pentru șiruri de interogare%2$s îți permite să forțezi cache-ul "
 "pentru parametrii GET specifici."
 
-#: inc/classes/admin/settings/class-page.php:1175
+#: inc/classes/admin/settings/class-page.php:1219
 msgid ""
 "Specify URLs of pages or posts that should never be cached (one per line)"
 msgstr ""
 "Specifică URL-urile paginilor sau articolelor care nu ar trebui să fie "
 "niciodată memorate în cache (unul pe linie)"
 
-#: inc/classes/admin/settings/class-page.php:1176
-#: inc/classes/admin/settings/class-page.php:1204
+#: inc/classes/admin/settings/class-page.php:1220
+#: inc/classes/admin/settings/class-page.php:1248
 msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use (.*) "
 "wildcards to address multiple URLs under a given path."
@@ -1275,7 +1302,7 @@ msgstr ""
 "metacaracterele (.*) pentru a scrie adresa mai multor URL-uri pentru o cale "
 "dată."
 
-#: inc/classes/admin/settings/class-page.php:1185
+#: inc/classes/admin/settings/class-page.php:1229
 msgid ""
 "Specify the IDs of cookies that, when set in the visitor's browser, should "
 "prevent a page from getting cached (one per line)"
@@ -1284,18 +1311,18 @@ msgstr ""
 "navigatorul vizitatorilor, ar trebui să împiedice o pagină să fie memorată "
 "în cache (unul pe linie)"
 
-#: inc/classes/admin/settings/class-page.php:1193
+#: inc/classes/admin/settings/class-page.php:1237
 msgid ""
 "Specify user agent strings that should never see cached pages (one per line)"
 msgstr ""
 "Specifică șirurile de agenți utilizator care nu ar trebui să vadă niciodată "
 "pagini memorate în cache (unul pe linie)"
 
-#: inc/classes/admin/settings/class-page.php:1194
+#: inc/classes/admin/settings/class-page.php:1238
 msgid "Use (.*) wildcards to detect parts of UA strings."
 msgstr "Folosește metacaractere (.*) pentru a detecta părți din șirurile UA."
 
-#: inc/classes/admin/settings/class-page.php:1203
+#: inc/classes/admin/settings/class-page.php:1247
 msgid ""
 "Specify URLs you always want purged from cache whenever you update any post "
 "or page (one per line)"
@@ -1303,25 +1330,25 @@ msgstr ""
 "Specifică URL-urile care vrei să fie curățate întotdeauna din cache ori de "
 "câte ori actualizezi un articol sau o pagină (unul pe linie)"
 
-#: inc/classes/admin/settings/class-page.php:1212
+#: inc/classes/admin/settings/class-page.php:1256
 msgid "Specify query strings for caching (one per line)"
 msgstr ""
 "Specifică șirurile de interogare pentru memorare în cache (unul pe linie)"
 
-#: inc/classes/admin/settings/class-page.php:1240
+#: inc/classes/admin/settings/class-page.php:1284
 #: inc/deprecated/deprecated.php:1777
 msgid "Database"
 msgstr "Bază de date"
 
-#: inc/classes/admin/settings/class-page.php:1241
+#: inc/classes/admin/settings/class-page.php:1285
 msgid "Optimize, reduce bloat"
 msgstr "Optimizează, reduce dimensiunea"
 
-#: inc/classes/admin/settings/class-page.php:1250
+#: inc/classes/admin/settings/class-page.php:1294
 msgid "Post Cleanup"
 msgstr "Curățare articole"
 
-#: inc/classes/admin/settings/class-page.php:1252
+#: inc/classes/admin/settings/class-page.php:1296
 msgid ""
 "Post revisions and drafts will be permanently deleted. Do not use this "
 "option if you need to retain revisions or drafts."
@@ -1329,20 +1356,20 @@ msgstr ""
 "Reviziile și ciornele articolelor vor fi șterse definitiv. Nu folosi această"
 " opțiune dacă trebuie să păstrezi reviziile sau ciornele."
 
-#: inc/classes/admin/settings/class-page.php:1260
+#: inc/classes/admin/settings/class-page.php:1304
 msgid "Comments Cleanup"
 msgstr "Curățare comentarii"
 
-#: inc/classes/admin/settings/class-page.php:1262
+#: inc/classes/admin/settings/class-page.php:1306
 msgid "Spam and trashed comments will be permanently deleted."
 msgstr ""
 "Comentariile spam și comentariile aruncate la gunoi vor fi șterse definitiv."
 
-#: inc/classes/admin/settings/class-page.php:1266
+#: inc/classes/admin/settings/class-page.php:1310
 msgid "Transients Cleanup"
 msgstr "Curățare tranzienți"
 
-#: inc/classes/admin/settings/class-page.php:1268
+#: inc/classes/admin/settings/class-page.php:1312
 msgid ""
 "Transients are temporary options; they are safe to remove. They will be "
 "automatically regenerated as your plugins require them."
@@ -1350,115 +1377,115 @@ msgstr ""
 "Tranzienții sunt opțiuni temporare; pot fi înlăturați fără probleme. Vor fi "
 "regenerați automat pe măsură ce modulele tale îi cer."
 
-#: inc/classes/admin/settings/class-page.php:1272
+#: inc/classes/admin/settings/class-page.php:1316
 msgid "Database Cleanup"
 msgstr "Curățare bază de date"
 
-#: inc/classes/admin/settings/class-page.php:1274
+#: inc/classes/admin/settings/class-page.php:1318
 msgid "Reduces overhead of database tables"
 msgstr "Reduce costul de funcționare a tabelelor din baza de date"
 
-#: inc/classes/admin/settings/class-page.php:1278
+#: inc/classes/admin/settings/class-page.php:1322
 msgid "Automatic cleanup"
 msgstr "Curățare automată"
 
-#: inc/classes/admin/settings/class-page.php:1291
+#: inc/classes/admin/settings/class-page.php:1335
 #, php-format
 msgid "%s revision in your database."
 msgid_plural "%s revisions in your database."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%s revizie în baza ta de date."
+msgstr[1] "%s revizii în baza ta de date."
+msgstr[2] "%s de revizii în baza ta de date."
 
-#: inc/classes/admin/settings/class-page.php:1301
+#: inc/classes/admin/settings/class-page.php:1345
 #, php-format
 msgid "%s draft in your database."
 msgid_plural "%s drafts in your database."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%s ciornă în baza ta de date."
+msgstr[1] "%s ciorne în baza ta de date."
+msgstr[2] "%s de ciorne în baza ta de date."
 
-#: inc/classes/admin/settings/class-page.php:1311
+#: inc/classes/admin/settings/class-page.php:1355
 #, php-format
 msgid "%s trashed post in your database."
 msgid_plural "%s trashed posts in your database."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%s articol aruncat la gunoi în baza ta de date."
+msgstr[1] "%s articole aruncate la gunoi în baza ta de date."
+msgstr[2] "%s de articole aruncate la gunoi în baza ta de date."
 
-#: inc/classes/admin/settings/class-page.php:1321
+#: inc/classes/admin/settings/class-page.php:1365
 #, php-format
 msgid "%s spam comment in your database."
 msgid_plural "%s spam comments in your database."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%s comentariu spam în baza ta de date."
+msgstr[1] "%s comentarii spam în baza ta de date."
+msgstr[2] "%s de comentarii spam în baza ta de date."
 
-#: inc/classes/admin/settings/class-page.php:1331
+#: inc/classes/admin/settings/class-page.php:1375
 #, php-format
 msgid "%s trashed comment in your database."
 msgid_plural "%s trashed comments in your database."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%s comentariu aruncat la gunoi în baza ta de date."
+msgstr[1] "%s comentarii aruncate la gunoi în baza ta de date."
+msgstr[2] "%s de comentarii aruncate la gunoi în baza ta de date."
 
-#: inc/classes/admin/settings/class-page.php:1341
+#: inc/classes/admin/settings/class-page.php:1385
 #, php-format
 msgid "%s expired transient in your database."
 msgid_plural "%s expired transients in your database."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%s tranzient expirat în baza ta de date."
+msgstr[1] "%s tranzienți expirați în baza ta de date."
+msgstr[2] "%s de tranzienți expirați în baza ta de date."
 
-#: inc/classes/admin/settings/class-page.php:1349
+#: inc/classes/admin/settings/class-page.php:1393
 msgid "All transients"
 msgstr "Toți tranzienții"
 
-#: inc/classes/admin/settings/class-page.php:1351
+#: inc/classes/admin/settings/class-page.php:1395
 #, php-format
 msgid "%s transient in your database."
 msgid_plural "%s transients in your database."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%s tranzient în baza ta de date."
+msgstr[1] "%s tranzienți în baza ta de date."
+msgstr[2] "%s de tranzienți în baza ta de date."
 
-#: inc/classes/admin/settings/class-page.php:1359
+#: inc/classes/admin/settings/class-page.php:1403
 msgid "Optimize Tables"
 msgstr "Optimizează tabelele"
 
-#: inc/classes/admin/settings/class-page.php:1361
+#: inc/classes/admin/settings/class-page.php:1405
 #, php-format
 msgid "%s table to optimize in your database."
 msgid_plural "%s tables to optimize in your database."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%s tabel de optimizat în baza ta de date."
+msgstr[1] "%s tabele de optimizat în baza ta de date."
+msgstr[2] "%s de tabele de optimizat în baza ta de date."
 
-#: inc/classes/admin/settings/class-page.php:1372
+#: inc/classes/admin/settings/class-page.php:1416
 msgid "Schedule Automatic Cleanup"
 msgstr "Programează ștergerea automată"
 
-#: inc/classes/admin/settings/class-page.php:1384
+#: inc/classes/admin/settings/class-page.php:1428
 msgid "Frequency"
 msgstr "Frecvență"
 
-#: inc/classes/admin/settings/class-page.php:1392
+#: inc/classes/admin/settings/class-page.php:1436
 msgid "Daily"
 msgstr "Zilnic"
 
-#: inc/classes/admin/settings/class-page.php:1393
+#: inc/classes/admin/settings/class-page.php:1437
 msgid "Weekly"
 msgstr "Săptămânal"
 
-#: inc/classes/admin/settings/class-page.php:1394
+#: inc/classes/admin/settings/class-page.php:1438
 msgid "Monthly"
 msgstr "Lunar"
 
-#: inc/classes/admin/settings/class-page.php:1414
+#: inc/classes/admin/settings/class-page.php:1458
 msgid "Integrate your CDN"
 msgstr "Integrează-ți CDN-ul"
 
-#: inc/classes/admin/settings/class-page.php:1426
+#: inc/classes/admin/settings/class-page.php:1470
 msgid ""
 "All URLs of static files (CSS, JS, images) will be rewritten to the CNAME(s)"
 " you provide."
@@ -1466,7 +1493,7 @@ msgstr ""
 "Toate URL-urile fișierelor statice (CSS, JS, imagini) vor fi rescrise în "
 "CNAME-ul furnizat (CNAME-urile furnizate)."
 
-#: inc/classes/admin/settings/class-page.php:1428
+#: inc/classes/admin/settings/class-page.php:1472
 #, php-format
 msgid ""
 "Not required for services like Cloudflare and Sucuri. Please see our "
@@ -1475,7 +1502,7 @@ msgstr ""
 "Nu este necesar pentru servicii cum ar fi Cloudflare și Sucuri. Te rog vezi "
 "%1$ssuplimentele%2$s noastre disponibile."
 
-#: inc/classes/admin/settings/class-page.php:1469
+#: inc/classes/admin/settings/class-page.php:1513
 #, php-format
 msgid ""
 "%1$s%2$s Add-on%3$s is currently enabled. Configuration of the CDN settings "
@@ -1484,8 +1511,8 @@ msgid_plural ""
 "%1$s%2$s Add-ons%3$s are currently enabled. Configuration of the CDN "
 "settings is not required for %2$s to work on your site."
 msgstr[0] ""
-"În prezent este activ %1$s%2$s supliment%3$s. Configurarea setărilor CDN nu "
-"este necesară pentru ca %2$s să funcționeze pe site-ul tău."
+"În prezent este activat %1$s%2$s supliment%3$s. Configurarea setărilor CDN "
+"nu este necesară pentru ca %2$s să funcționeze pe site-ul tău. "
 msgstr[1] ""
 "În prezent sunt activate %1$s%2$s suplimente%3$s. Configurarea setărilor CDN"
 " nu este necesară pentru ca %2$s să funcționeze pe site-ul tău."
@@ -1493,26 +1520,26 @@ msgstr[2] ""
 "În prezent sunt activate %1$s%2$s de suplimente%3$s. Configurarea setărilor "
 "CDN nu este necesară pentru ca %2$s să funcționeze pe site-ul tău."
 
-#: inc/classes/admin/settings/class-page.php:1484
+#: inc/classes/admin/settings/class-page.php:1540
 msgid "Enable Content Delivery Network"
 msgstr "Activează rețeaua de livrare a conținutului"
 
-#: inc/classes/admin/settings/class-page.php:1493
+#: inc/classes/admin/settings/class-page.php:1550
 msgid "CDN CNAME(s)"
 msgstr "CNAME (CNAME-uri) CDN"
 
-#: inc/classes/admin/settings/class-page.php:1494
+#: inc/classes/admin/settings/class-page.php:1551
 msgid "Specify the CNAME(s) below"
 msgstr "Specifică CNAME-ul (CNAME-urile) mai jos"
 
-#: inc/classes/admin/settings/class-page.php:1501
+#: inc/classes/admin/settings/class-page.php:1558
 msgid ""
 "Specify URL(s) of files that should not get served via CDN (one per line)."
 msgstr ""
 "Specifică URL-urile fișierelor care nu ar trebui să fie servite prin CDN "
 "(unul pe linie)."
 
-#: inc/classes/admin/settings/class-page.php:1502
+#: inc/classes/admin/settings/class-page.php:1559
 msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use (.*) "
 "wildcards to exclude all files of a given file type located at a specific "
@@ -1522,16 +1549,16 @@ msgstr ""
 "metacaracterele (.*) pentru a exclude toate fișierele unui tip de fișier dat"
 " localizate pe o anumită cale."
 
-#: inc/classes/admin/settings/class-page.php:1525
-#: inc/classes/admin/settings/class-page.php:1533
+#: inc/classes/admin/settings/class-page.php:1582
+#: inc/classes/admin/settings/class-page.php:1590
 msgid "Heartbeat"
 msgstr "Heartbeat"
 
-#: inc/classes/admin/settings/class-page.php:1526
+#: inc/classes/admin/settings/class-page.php:1583
 msgid "Control WordPress Heartbeat API"
 msgstr "Controlează WordPress Heartbeat API"
 
-#: inc/classes/admin/settings/class-page.php:1534
+#: inc/classes/admin/settings/class-page.php:1591
 msgid ""
 "Reducing or disabling the Heartbeat API’s activity can help save some of "
 "your server’s resources."
@@ -1539,11 +1566,11 @@ msgstr ""
 "Reducând sau dezactivând activitățile API-ului Heartbeat te poate ajuta să "
 "nu mai folosești o parte din resursele serverului tău."
 
-#: inc/classes/admin/settings/class-page.php:1543
+#: inc/classes/admin/settings/class-page.php:1600
 msgid "Reduce or disable Heartbeat activity"
 msgstr "Reduce sau dezactivează activitățile Heartbeat"
 
-#: inc/classes/admin/settings/class-page.php:1544
+#: inc/classes/admin/settings/class-page.php:1601
 msgid ""
 "Reducing activity will change Heartbeat frequency from one hit each minute "
 "to one hit every 2 minutes."
@@ -1551,54 +1578,55 @@ msgstr ""
 "Reducerea activității va modifica frecvența Heartbeat de la o vizită în "
 "fiecare minut la o vizită la fiecare 2 minute."
 
-#: inc/classes/admin/settings/class-page.php:1544
+#: inc/classes/admin/settings/class-page.php:1601
 msgid ""
 "Disabling Heartbeat entirely may break plugins and themes using this API."
 msgstr ""
 "Dezactivarea completă a Heartbeat poate întrerupe funcționarea modulelor și "
 "temelor când de folosește acest API."
 
-#: inc/classes/admin/settings/class-page.php:1558
+#: inc/classes/admin/settings/class-page.php:1615
 msgid "Do not limit"
 msgstr "Nu limita"
 
-#: inc/classes/admin/settings/class-page.php:1559
+#: inc/classes/admin/settings/class-page.php:1616
 msgid "Reduce activity"
 msgstr "Reduce activitatea"
 
-#: inc/classes/admin/settings/class-page.php:1560
+#: inc/classes/admin/settings/class-page.php:1617
 msgid "Disable"
 msgstr "Dezactivează"
 
-#: inc/classes/admin/settings/class-page.php:1568
+#: inc/classes/admin/settings/class-page.php:1625
 msgid "Control Heartbeat"
 msgstr "Controlează Heartbeat"
 
-#: inc/classes/admin/settings/class-page.php:1577
+#: inc/classes/admin/settings/class-page.php:1634
 msgid "Behavior in backend"
 msgstr "Comportament în partea administrativă a sitului"
 
-#: inc/classes/admin/settings/class-page.php:1584
+#: inc/classes/admin/settings/class-page.php:1641
 msgid "Behavior in post editor"
 msgstr "Comportament în editor de articole"
 
-#: inc/classes/admin/settings/class-page.php:1590
+#: inc/classes/admin/settings/class-page.php:1647
 msgid "Behavior in frontend"
 msgstr "Comportament în partea din față a sitului"
 
-#: inc/classes/admin/settings/class-page.php:1609
+#: inc/classes/admin/settings/class-page.php:1666
+#: views/settings/page-sections/tutorials.php:35
 msgid "Add-ons"
 msgstr "Suplimente"
 
-#: inc/classes/admin/settings/class-page.php:1610
+#: inc/classes/admin/settings/class-page.php:1667
 msgid "Add more features"
 msgstr "Adaugă mai multe funcționalități"
 
-#: inc/classes/admin/settings/class-page.php:1617
+#: inc/classes/admin/settings/class-page.php:1674
 msgid "One-click Rocket Add-ons"
 msgstr "Suplimente Rocket cu un singur clic"
 
-#: inc/classes/admin/settings/class-page.php:1618
+#: inc/classes/admin/settings/class-page.php:1675
 msgid ""
 "One-Click Add-ons are features extending available options without "
 "configuration needed. Switch the option \"on\" to enable from this screen."
@@ -1607,25 +1635,25 @@ msgstr ""
 "disponibile fără a fi necesară o configurare. Comută opțiunea pe „pornit” "
 "pentru a le activa din acest ecran."
 
-#: inc/classes/admin/settings/class-page.php:1628
+#: inc/classes/admin/settings/class-page.php:1685
 msgid "Rocket Add-ons"
 msgstr "Suplimente Rocket"
 
-#: inc/classes/admin/settings/class-page.php:1629
+#: inc/classes/admin/settings/class-page.php:1686
 msgid "Rocket Add-ons are complementary features extending available options."
 msgstr ""
 "Suplimentele Rocket sunt funcționalități complementare care extind opțiunile"
 " disponibile."
 
-#: inc/classes/admin/settings/class-page.php:1642
+#: inc/classes/admin/settings/class-page.php:1699
 msgid "Google Tracking"
 msgstr "Urmărire Google"
 
-#: inc/classes/admin/settings/class-page.php:1648
+#: inc/classes/admin/settings/class-page.php:1705
 msgid "Improve browser caching for Google Analytics"
 msgstr "Îmbunătățește cache-ul navigatorului pentru Google Analytics"
 
-#: inc/classes/admin/settings/class-page.php:1650
+#: inc/classes/admin/settings/class-page.php:1707
 #, php-format
 msgid ""
 "WP Rocket will host these Google scripts locally on your server to help "
@@ -1636,15 +1664,15 @@ msgstr ""
 "răspunde la recomandarea PageSpeed pentru <em>Utilizează la maxim cache-ul "
 "navigatorului</em>. <br>%1$sAflă mai multe%2$s"
 
-#: inc/classes/admin/settings/class-page.php:1665
+#: inc/classes/admin/settings/class-page.php:1722
 msgid "Facebook Pixel"
 msgstr "Pixel Facebook"
 
-#: inc/classes/admin/settings/class-page.php:1671
+#: inc/classes/admin/settings/class-page.php:1728
 msgid "Improve browser caching for Facebook Pixel"
 msgstr "Îmbunătățește cache-ul navigatorului pentru Pixel Facebook"
 
-#: inc/classes/admin/settings/class-page.php:1673
+#: inc/classes/admin/settings/class-page.php:1730
 #, php-format
 msgid ""
 "WP Rocket will host these Facebook Pixels locally on your server to help "
@@ -1655,16 +1683,16 @@ msgstr ""
 "te conformezi recomandării PageSpeed pentru <em>Utilizează la maxim cache-ul"
 " navigatorului</em>. <br>%1$sAflă mai mult%2$s"
 
-#: inc/classes/admin/settings/class-page.php:1706
+#: inc/classes/admin/settings/class-page.php:1763
 msgid "Varnish"
 msgstr "Varnish"
 
-#: inc/classes/admin/settings/class-page.php:1712
+#: inc/classes/admin/settings/class-page.php:1769
 msgid "If Varnish runs on your server, you must activate this add-on."
 msgstr ""
 "Dacă Varnish rulează pe serverul tău, trebuie să activezi acest supliment."
 
-#: inc/classes/admin/settings/class-page.php:1714
+#: inc/classes/admin/settings/class-page.php:1771
 #, php-format
 msgid ""
 "Varnish cache will be purged each time WP Rocket clears its cache to ensure "
@@ -1674,16 +1702,16 @@ msgstr ""
 "cache-ul, astfel conținutul este întotdeauna actualizat.<br>%1$sAflă mai "
 "mult%2$s"
 
-#: inc/classes/admin/settings/class-page.php:1729
-#: inc/classes/admin/settings/class-page.php:1789
+#: inc/classes/admin/settings/class-page.php:1786
+#: inc/classes/admin/settings/class-page.php:1846
 msgid "Cloudflare"
 msgstr "Cloudflare"
 
-#: inc/classes/admin/settings/class-page.php:1735
+#: inc/classes/admin/settings/class-page.php:1792
 msgid "Integrate your Cloudflare account with this add-on."
 msgstr "Integrează-ți contul Cloudflare cu acest supliment."
 
-#: inc/classes/admin/settings/class-page.php:1736
+#: inc/classes/admin/settings/class-page.php:1793
 msgid ""
 "Provide your account email, global API key, and domain to use options such "
 "as clearing the Cloudflare cache and enabling optimal settings with WP "
@@ -1693,11 +1721,11 @@ msgstr ""
 "câteva opțiuni, cum ar fi ștergerea cache-ului Cloudflare și activarea "
 "setărilor optime cu WP Rocket."
 
-#: inc/classes/admin/settings/class-page.php:1748
+#: inc/classes/admin/settings/class-page.php:1805
 msgid "Clear the Sucuri cache when WP Rocket’s cache is cleared."
 msgstr "Șterge cache-ul Sucuri când cache-ul WP Rocket este șters."
 
-#: inc/classes/admin/settings/class-page.php:1751
+#: inc/classes/admin/settings/class-page.php:1808
 msgid ""
 "Provide your API key to clear the Sucuri cache when WP Rocket’s cache is "
 "cleared."
@@ -1705,29 +1733,29 @@ msgstr ""
 "Furnizează cheia ta API pentru a șterge cache-ul Sucuri când cache-ul WP "
 "Rocket este șters."
 
-#: inc/classes/admin/settings/class-page.php:1759
-#: inc/classes/admin/settings/class-page.php:1907
+#: inc/classes/admin/settings/class-page.php:1816
+#: inc/classes/admin/settings/class-page.php:1964
 msgid "Sucuri"
 msgstr "Sucuri"
 
-#: inc/classes/admin/settings/class-page.php:1765
+#: inc/classes/admin/settings/class-page.php:1822
 msgid "Synchronize Sucuri cache with this add-on."
 msgstr "Sincronizează cache-ul Sucuri cu acest supliment."
 
-#: inc/classes/admin/settings/class-page.php:1805
+#: inc/classes/admin/settings/class-page.php:1862
 msgid "Cloudflare credentials"
 msgstr "Date de conectare Cloudflare"
 
-#: inc/classes/admin/settings/class-page.php:1814
+#: inc/classes/admin/settings/class-page.php:1871
 msgid "Cloudflare settings"
 msgstr "Setări Cloudflare"
 
-#: inc/classes/admin/settings/class-page.php:1828
+#: inc/classes/admin/settings/class-page.php:1885
 msgctxt "Cloudflare"
 msgid "Global API key:"
 msgstr "Cheie API globală:"
 
-#: inc/classes/admin/settings/class-page.php:1829
+#: inc/classes/admin/settings/class-page.php:1886
 msgid ""
 "https://support.cloudflare.com/hc/en-us/articles/200167836-Where-do-I-find-"
 "my-Cloudflare-API-key-"
@@ -1735,26 +1763,26 @@ msgstr ""
 "https://support.cloudflare.com/hc/en-us/articles/200167836-Where-do-I-find-"
 "my-Cloudflare-API-key-"
 
-#: inc/classes/admin/settings/class-page.php:1829
+#: inc/classes/admin/settings/class-page.php:1886
 msgctxt "Cloudflare"
 msgid "Find your API key"
 msgstr "Găsește-ți cheia API"
 
-#: inc/classes/admin/settings/class-page.php:1841
+#: inc/classes/admin/settings/class-page.php:1898
 msgctxt "Cloudflare"
 msgid "Account email"
 msgstr "Email cont"
 
-#: inc/classes/admin/settings/class-page.php:1850
+#: inc/classes/admin/settings/class-page.php:1907
 msgctxt "Cloudflare"
 msgid "Zone ID"
 msgstr "ID zonă"
 
-#: inc/classes/admin/settings/class-page.php:1860
+#: inc/classes/admin/settings/class-page.php:1917
 msgid "Development mode"
 msgstr "Mod dezvoltare"
 
-#: inc/classes/admin/settings/class-page.php:1862
+#: inc/classes/admin/settings/class-page.php:1919
 #, php-format
 msgid ""
 "Temporarily activate development mode on your website. This setting will "
@@ -1763,11 +1791,11 @@ msgstr ""
 "Activează temporar modul dezvoltare pe site-ul tău web. Această setare va fi"
 " oprită automat după 3 ore. %1$sAflă mai mult%2$s"
 
-#: inc/classes/admin/settings/class-page.php:1870
+#: inc/classes/admin/settings/class-page.php:1927
 msgid "Optimal settings"
 msgstr "Setări optime"
 
-#: inc/classes/admin/settings/class-page.php:1871
+#: inc/classes/admin/settings/class-page.php:1928
 msgid ""
 "Automatically enhances your Cloudflare configuration for speed, performance "
 "grade and compatibility."
@@ -1775,11 +1803,11 @@ msgstr ""
 "Îți îmbunătățește automat configurarea Cloudflare pentru viteză, grad de "
 "performanță și compatibilitate."
 
-#: inc/classes/admin/settings/class-page.php:1879
+#: inc/classes/admin/settings/class-page.php:1936
 msgid "Relative protocol"
 msgstr "Protocol relativ"
 
-#: inc/classes/admin/settings/class-page.php:1880
+#: inc/classes/admin/settings/class-page.php:1937
 msgid ""
 "Should only be used with Cloudflare's flexible SSL feature. URLs of static "
 "files (CSS, JS, images) will be rewritten to use // instead of http:// or "
@@ -1789,11 +1817,11 @@ msgstr ""
 "Cloudflare. URL-urile fișierelor statice (CSS, JS, imagini) vor fi rescrise "
 "pentru a folosi // în loc de http:// sau https://."
 
-#: inc/classes/admin/settings/class-page.php:1920
+#: inc/classes/admin/settings/class-page.php:1977
 msgid "Sucuri credentials"
 msgstr "Date de conectare Sucuri"
 
-#: inc/classes/admin/settings/class-page.php:1933
+#: inc/classes/admin/settings/class-page.php:1990
 msgctxt "Sucuri"
 msgid ""
 "Firewall API key (for plugin), must be in format <code>{32 characters}/{32 "
@@ -1802,12 +1830,12 @@ msgstr ""
 "Cheia API pentru firewall (pentru modul) trebuie să fie în formatul de "
 "<code>{32 de caractere}/{32 de caractere}</code>:"
 
-#: inc/classes/admin/settings/class-page.php:1934
+#: inc/classes/admin/settings/class-page.php:1991
 msgctxt "Sucuri"
 msgid "Find your API key"
 msgstr "Găsește-ți cheia API"
 
-#: inc/classes/admin/settings/class-render.php:486
+#: inc/classes/admin/settings/class-render.php:496
 #: inc/deprecated/deprecated.php:1296
 msgid "Upload file and import settings"
 msgstr "Încarcă fișierul și importă setările"
@@ -1820,17 +1848,17 @@ msgstr ""
 "Supliment Sucuri: cheia API pentru firewall-ul Sucuri trebuie să fie în "
 "formatul <code>{32 de caractere}/{32 de caractere}</code>."
 
-#: inc/classes/admin/settings/class-settings.php:462
+#: inc/classes/admin/settings/class-settings.php:461
 #: inc/deprecated/deprecated.php:1247
 msgid "Settings saved."
 msgstr "Setări salvate."
 
-#: inc/classes/class-wp-rocket-requirements-check.php:148
+#: inc/classes/class-wp-rocket-requirements-check.php:147
 #, php-format
 msgid "To function properly, %1$s %2$s requires at least:"
 msgstr "Pentru a funcționa cum trebuie, %1$s%2$s necesită cel puțin:"
 
-#: inc/classes/class-wp-rocket-requirements-check.php:152
+#: inc/classes/class-wp-rocket-requirements-check.php:151
 #, php-format
 msgid ""
 "PHP %1$s. To use this WP Rocket version, please ask your web host how to "
@@ -1839,7 +1867,7 @@ msgstr ""
 "PHP %1$s. Pentru a folosi această versiune a WP Rocket, întreabă-ți gazda "
 "web cum să actualizezi serverul la PHP %1$s sau la o versiune ulterioară. "
 
-#: inc/classes/class-wp-rocket-requirements-check.php:157
+#: inc/classes/class-wp-rocket-requirements-check.php:156
 #, php-format
 msgid ""
 "WordPress %1$s. To use this WP Rocket version, please upgrade WordPress to "
@@ -1848,7 +1876,7 @@ msgstr ""
 "WordPress %1$s. Pentru a folosi această versiune a WP Rocket, te rog "
 "actualizează WordPress la versiunea %1$s sau la una ulterioară."
 
-#: inc/classes/class-wp-rocket-requirements-check.php:160
+#: inc/classes/class-wp-rocket-requirements-check.php:159
 msgid ""
 "If you are not able to upgrade, you can rollback to the previous version by "
 "using the button below."
@@ -1856,7 +1884,7 @@ msgstr ""
 "Dacă nu reușești să faci actualizarea, poți restaura o versiune anterioară "
 "folosind butonul de mai jos."
 
-#: inc/classes/class-wp-rocket-requirements-check.php:162
+#: inc/classes/class-wp-rocket-requirements-check.php:161
 #: inc/deprecated/deprecated.php:1949
 #, php-format
 msgid "Re-install version %s"
@@ -2027,6 +2055,115 @@ msgstr ""
 "legături din %1$s din cauza unei erori în timpul interpretării hărții site "
 "XML. %2$sAflă mai multe%3$s."
 
+#: inc/classes/subscriber/Media/class-webp-subscriber.php:267
+#, php-format
+msgid ""
+"You are using %1$s to serve WebP images so you do not need to enable this "
+"option. If you prefer to have WP Rocket serve WebP for you instead, please "
+"disable them from serving in %1$s. %2$sMore info%3$s"
+msgid_plural ""
+"You are using %1$s to serve WebP images so you do not need to enable this "
+"option. If you prefer to have WP Rocket serve WebP for you instead, please "
+"disable them from serving in %1$s. %2$sMore info%3$s"
+msgstr[0] ""
+"Folosești %1$s pentru a servi imaginile WebP, deci nu trebuie să activezi "
+"această opțiune. Dacă, în schimb, preferi ca WP Rocket să-ți servească "
+"imaginile WebP, te rog dezactivează servirea lor în %1$s. %2$sMai multe "
+"informații%3$s"
+msgstr[1] ""
+"Folosești %1$s pentru a servi imaginile WebP, deci nu trebuie să activezi "
+"această opțiune. Dacă, în schimb, preferi ca WP Rocket să-ți servească "
+"imaginile WebP, te rog dezactivează servirea lor în %1$s. %2$sMai multe "
+"informații%3$s"
+msgstr[2] ""
+"Folosești %1$s pentru a servi imaginile WebP, deci nu trebuie să activezi "
+"această opțiune. Dacă, în schimb, preferi ca WP Rocket să-ți servească "
+"imaginile WebP, te rog dezactivează servirea lor în %1$s. %2$sMai multe "
+"informații%3$s"
+
+#: inc/classes/subscriber/Media/class-webp-subscriber.php:278
+msgid "WebP cache is disabled by filter."
+msgstr "Cache-ul WebP este dezactivat printr-un filtru."
+
+#: inc/classes/subscriber/Media/class-webp-subscriber.php:288
+#: inc/classes/subscriber/Media/class-webp-subscriber.php:314
+#, php-format
+msgid ""
+"You are using %1$s to convert images to WebP. If you want WP Rocket to serve"
+" them for you, activate this option. %2$sMore info%3$s"
+msgid_plural ""
+"You are using %1$s to convert images to WebP. If you want WP Rocket to serve"
+" them for you, activate this option. %2$sMore info%3$s"
+msgstr[0] ""
+"Folosești %1$s pentru a converti imaginile în WebP. Dacă vrei ca WP Rocket "
+"să le servească pentru tine, activează această opțiune. %2$sMai multe "
+"informații%3$s"
+msgstr[1] ""
+"Folosești %1$s pentru a converti imaginile în WebP. Dacă vrei ca WP Rocket "
+"să le servească pentru tine, activează această opțiune. %2$sMai multe "
+"informații%3$s"
+msgstr[2] ""
+"Folosești %1$s pentru a converti imaginile în WebP. Dacă vrei ca WP Rocket "
+"să le servească pentru tine, activează această opțiune. %2$sMai multe "
+"informații%3$s"
+
+#: inc/classes/subscriber/Media/class-webp-subscriber.php:300
+#: inc/classes/subscriber/Media/class-webp-subscriber.php:326
+#, php-format
+msgid ""
+"You are using %1$s to convert images to WebP. WP Rocket will create separate"
+" cache files to serve your WebP images. %2$sMore info%3$s"
+msgid_plural ""
+"You are using %1$s to convert images to WebP. WP Rocket will create separate"
+" cache files to serve your WebP images. %2$sMore info%3$s"
+msgstr[0] ""
+"Folosești %1$s pentru a converti imaginile în WebP. WP Rocket va crea "
+"fișiere cache separate pentru a-ți servi imaginile WebP. %2$sMai multe "
+"informații%3$s"
+msgstr[1] ""
+"Folosești %1$s pentru a converti imaginile în WebP. WP Rocket va crea "
+"fișiere cache separate pentru a-ți servi imaginile WebP. %2$sMai multe "
+"informații%3$s"
+msgstr[2] ""
+"Folosești %1$s pentru a converti imaginile în WebP. WP Rocket va crea "
+"fișiere cache separate pentru a-ți servi imaginile WebP. %2$sMai multe "
+"informații%3$s"
+
+#: inc/classes/subscriber/Media/class-webp-subscriber.php:347
+#, php-format
+msgid ""
+"You don’t seem to be using a method to create and serve WebP that we are "
+"auto-compatible with. If you are not using WebP do not enable this option. "
+"%1$sMore info%2$s"
+msgstr ""
+"Se pare că nu folosești o metodă pentru a crea și servi imagini WebP care "
+"sunt compatibile automat. Dacă nu folosești WebP nu activa această opțiune. "
+"%1$sMai multe informații%2$s"
+
+#: inc/classes/subscriber/Media/class-webp-subscriber.php:352
+msgid "We have not detected any compatible WebP plugin!"
+msgstr "Nu am detectat niciun modul compatibil cu WebP!"
+
+#: inc/classes/subscriber/Media/class-webp-subscriber.php:355
+#, php-format
+msgid ""
+"If you activate this option WP Rocket will create separate cache files to "
+"serve WebP images. Any WebP images you have on your site will be served from"
+" these files to compatible browsers. If you don’t already have WebP images "
+"on your site consider using %1$sImagify%3$s or another supported plugin. "
+"%2$sMore info%3$s"
+msgstr ""
+"Dacă activezi această opțiune, WP Rocket va crea separat fișiere cache "
+"pentru a servi imaginile WebP. Toate imaginile WebP pe care le ai pe site "
+"vor fi servite în navigatoarele compatibile din aceste fișiere. Dacă nu ai "
+"deja imagini WebP pe site, ar trebui să folosești %1$sImagify%3$s sau un alt"
+" modul. %2$sMai multe informații%3$s"
+
+#: inc/classes/subscriber/Media/class-webp-subscriber.php:367
+msgid "WP Rocket will create separate cache files to serve your WebP images."
+msgstr ""
+"WP Rocket va crea separat fișiere cache pentru a-ți servi imaginile WebP."
+
 #: inc/classes/subscriber/Optimization/class-critical-css-subscriber.php:138
 #, php-format
 msgid ""
@@ -2052,64 +2189,77 @@ msgid "Learn more."
 msgstr "Află mai mult."
 
 #: inc/classes/subscriber/Tools/class-cache-dir-size-check-subscriber.php:51
+#: inc/classes/subscriber/admin/Database/class-optimization-subscriber.php:87
 #: inc/classes/subscriber/class-facebook-tracking-cache-busting-subscriber.php:97
 #: inc/classes/subscriber/class-google-tracking-cache-busting-subscriber.php:154
-#: inc/common/cron.php:33
 msgid "weekly"
 msgstr "săptămânal"
 
-#: inc/classes/subscriber/admin/Database/class-optimization-subscriber.php:148
+#: inc/classes/subscriber/admin/Database/class-optimization-subscriber.php:93
+msgid "monthly"
+msgstr "lunar"
+
+#: inc/classes/subscriber/admin/Database/class-optimization-subscriber.php:206
 msgid "Database optimization process is running"
 msgstr "Procesul de optimizare a bazei de date rulează acum"
 
-#: inc/classes/subscriber/admin/Database/class-optimization-subscriber.php:179
+#: inc/classes/subscriber/admin/Database/class-optimization-subscriber.php:237
 msgid ""
 "Database optimization process is complete. Everything was already optimized!"
 msgstr ""
 "Procesul de optimizare a bazei de date s-a finalizat. Totul a fost deja "
 "optimizat!"
 
-#: inc/classes/subscriber/admin/Database/class-optimization-subscriber.php:182
+#: inc/classes/subscriber/admin/Database/class-optimization-subscriber.php:240
 msgid ""
 "Database optimization process is complete. List of optimized items below:"
 msgstr ""
 "Procesul de optimizare a bazei de date s-a finalizat. Mai jos este lista "
 "elementelor optimizate:"
 
-#: inc/classes/subscriber/admin/Database/class-optimization-subscriber.php:190
+#: inc/classes/subscriber/admin/Database/class-optimization-subscriber.php:248
 #, php-format
 msgid "%1$d %2$s optimized."
 msgstr "%1$d (de) %2$s optimizate (optimizați)."
 
-#: inc/classes/subscriber/admin/Settings/class-page-subscriber.php:137
+#: inc/classes/subscriber/admin/Settings/class-page-subscriber.php:123
 #: inc/deprecated/deprecated.php:1788
 #: views/settings/page-sections/tools.php:33
 msgid "Tools"
 msgstr "Unelte"
 
-#: inc/classes/subscriber/admin/Settings/class-page-subscriber.php:138
+#: inc/classes/subscriber/admin/Settings/class-page-subscriber.php:124
 msgid "Import, Export, Rollback"
 msgstr "Import, export, restaurare"
 
-#: inc/classes/subscriber/admin/Settings/class-page-subscriber.php:160
+#: inc/classes/subscriber/admin/Settings/class-page-subscriber.php:146
 #: views/settings/page-sections/imagify.php:13
 msgid "Image Optimization"
 msgstr "Optimizare imagini"
 
-#: inc/classes/subscriber/admin/Settings/class-page-subscriber.php:161
+#: inc/classes/subscriber/admin/Settings/class-page-subscriber.php:147
 msgid "Compress your images"
 msgstr "Comprimă-ți imaginile"
 
-#: inc/classes/subscriber/preload/class-preload-subscriber.php:212
-#, php-format
-msgid ""
-"Preload: WP Rocket has started preloading your website. Go to the %1$sWP "
-"Rocket settings%2$s page to track progress."
-msgstr ""
-"Pre-încărcare: WP Rocket a început pre-încărcarea site-ul tău web. Mergi la "
-"pagina %1$sSetări WP Rocket%2$s pentru a urmări progresul."
+#: inc/classes/subscriber/admin/Settings/class-page-subscriber.php:165
+#: views/settings/page-sections/tutorials.php:44
+msgid "Tutorials"
+msgstr "Tutoriale"
 
-#: inc/classes/subscriber/preload/class-preload-subscriber.php:246
+#: inc/classes/subscriber/admin/Settings/class-page-subscriber.php:166
+msgid "Getting started and how to videos"
+msgstr "Noțiuni de bază și cum să vezi videourile"
+
+#: inc/classes/subscriber/preload/class-preload-subscriber.php:205
+msgid "Preload: WP Rocket has started preloading your website."
+msgstr "Pre-încărcare: WP Rocket a început pre-încărcarea site-ului tău web."
+
+#: inc/classes/subscriber/preload/class-preload-subscriber.php:210
+#, php-format
+msgid "Go to the %1$sWP Rocket settings%2$s page to track progress."
+msgstr "Mergi la pagina %1$sSetări WP Rocket%2$s pentru a urmări progresul."
+
+#: inc/classes/subscriber/preload/class-preload-subscriber.php:249
 #, php-format
 msgid ""
 "Preload: %1$s uncached page has now been preloaded. (refresh to see "
@@ -2118,16 +2268,16 @@ msgid_plural ""
 "Preload: %1$s uncached pages have now been preloaded. (refresh to see "
 "progress)"
 msgstr[0] ""
-"Pre-încărcare: %1$s pagină nememorată în cache a fost acum pre-încărcată "
+"Pre-încărcare: %1$s pagină nememorată în cache a fost acum preîncărcată "
 "(reîmprospătează pentru a vedea progresul)."
 msgstr[1] ""
-"Pre-încărcare: %1$s pagini nememorate în cache au fost acum pre-încărcate "
+"Pre-încărcare: %1$s pagini nememorate în cache au fost acum preîncărcate "
 "(reîmprospătează pentru a vedea progresul)."
 msgstr[2] ""
-"Pre-încărcare: %1$s de pagini nememorate în cache au fost acum pre-încărcate"
-" (reîmprospătează pentru a vedea progresul)."
+"Pre-încărcare: %1$s de pagini nememorate în cache au fost acum preîncărcate "
+"(reîmprospătează pentru a vedea progresul)."
 
-#: inc/classes/subscriber/preload/class-preload-subscriber.php:255
+#: inc/classes/subscriber/preload/class-preload-subscriber.php:258
 msgid "The following error happened during gathering of the URLs to preload:"
 msgid_plural ""
 "The following errors happened during gathering of the URLs to preload:"
@@ -2141,12 +2291,12 @@ msgstr[2] ""
 "Au apărut următoarele erori în timpul colectării URL-urilor pentru pre-"
 "încărcare:"
 
-#: inc/classes/subscriber/preload/class-preload-subscriber.php:308
+#: inc/classes/subscriber/preload/class-preload-subscriber.php:310
 #, php-format
 msgid "Preload complete: %d pages have been cached."
 msgstr "Pre-încărcare completă: %d de pagini au fost memorate în cache."
 
-#: inc/classes/subscriber/preload/class-sitemap-preload-subscriber.php:117
+#: inc/classes/subscriber/preload/class-sitemap-preload-subscriber.php:115
 #, php-format
 msgid ""
 "%1$sSimpleXML PHP extension%2$s is not enabled on your server. Please "
@@ -2234,12 +2384,12 @@ msgstr ""
 "%2$sOptimizarea resurselor%3$s %1$s intră în conflict cu %2$soptimizarea "
 "resurselor%3$s WP Rocket"
 
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:123
+#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:122
 #, php-format
 msgid "Sucuri cache purge error: %s"
 msgstr "Eroare ștergere cache Sucuri: %s"
 
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:128
+#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:127
 msgid ""
 "The Sucuri cache is being cleared. Note that it may take up to two minutes "
 "for it to be fully flushed."
@@ -2247,44 +2397,44 @@ msgstr ""
 "Cache-ul Sucuri este șters acum. Reține că s-ar putea să dureze până la două"
 " minute pentru a fi șters complet."
 
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:242
+#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:240
 msgid "Sucuri firewall API key was not found."
 msgstr "Cheia API pentru firewall-ul Sucuri nu a fost găsită."
 
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:251
+#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:249
 msgid "Sucuri firewall API key is invalid."
 msgstr "Cheia API pentru firewall-ul Sucuri este invalidă."
 
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:303
+#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:301
 msgid "Error when contacting Sucuri firewall API."
 msgstr "Eroare la stabilirea contactului cu API-ul firewall-ului Sucuri."
 
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:313
+#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:311
 #, php-format
 msgid "Error when contacting Sucuri firewall API. Error message was: %s"
 msgstr ""
 "Eroare la stabilirea contactului cu API-ul firewall-ului Sucuri. Mesajul de "
 "eroare a fost: %s"
 
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:324
+#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:322
 msgid "Could not get a response from the Sucuri firewall API."
 msgstr "Nu am primit un răspuns de la API-ului firewall-ului Sucuri."
 
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:335
+#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:333
 msgid "Got an invalid response from the Sucuri firewall API."
 msgstr "Am primit un răspuns invalid de la API-ului firewall-ului Sucuri."
 
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:345
+#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:343
 msgid "The Sucuri firewall API returned an unknown error."
 msgstr "API-ului firewall-ului Sucuri a returnat o eroare necunoscută."
 
-#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:348
+#: inc/classes/subscriber/third-party/plugins/security/class-sucuri-subscriber.php:346
 #, php-format
 msgid "The Sucuri firewall API returned the following error: %s"
 msgid_plural "The Sucuri firewall API returned the following errors: %s"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "API-ului firewall-ului Sucuri a returnat următoarea eroare: %s"
+msgstr[1] "API-ului firewall-ului Sucuri a returnat următoarele erori: %s"
+msgstr[2] "API-ului firewall-ului Sucuri a returnat următoarele erori: %s"
 
 #: inc/classes/traits/trait-updater-api-tools.php:53
 #: inc/deprecated/3.3.php:760 inc/deprecated/3.3.php:769
@@ -2298,67 +2448,46 @@ msgstr ""
 "Rocket.me sau la configurarea acestui server. Dacă ai probleme în "
 "continuare, <a href=\"%s\">contactează suportul</a>."
 
-#: inc/classes/traits/trait-updater-api-tools.php:53
-#: inc/deprecated/3.3.php:760 inc/deprecated/3.3.php:769
-#, php-format
-msgid ""
-"An unexpected error occurred. Something may be wrong with WP-Rocket.me or "
-"this server&#8217;s configuration. If you continue to have problems, <a "
-"href=\"%s\">contact support</a>."
-msgstr ""
-"A apărut o eroare neașteptată. Este posibil să fie ceva greșit la WP-"
-"Rocket.me sau la configurarea acestui server. Dacă ai probleme în "
-"continuare, <a href=\"%s\">contactează suportul</a>."
-
-#: inc/common/admin-bar.php:106 inc/common/admin-bar.php:260
+#: inc/common/admin-bar.php:124 inc/common/admin-bar.php:286
 #: inc/functions/i18n.php:39 inc/functions/i18n.php:48
 msgid "All languages"
 msgstr "Toate limbile"
 
-#: inc/common/admin-bar.php:133
+#: inc/common/admin-bar.php:151
 msgid "Clear this post"
 msgstr "Șterge acest articol"
 
-#: inc/common/admin-bar.php:147
+#: inc/common/admin-bar.php:165
 msgid "Purge this URL"
 msgstr "Curăță acest URL"
 
-#: inc/common/admin-bar.php:163
+#: inc/common/admin-bar.php:184
 msgid "Purge OPcache"
 msgstr "Curăță OPcache"
 
-#: inc/common/admin-bar.php:180
+#: inc/common/admin-bar.php:203
 msgid "Regenerate Critical Path CSS"
 msgstr "Regenerează CSS-ul de cale critic"
 
-#: inc/common/admin-bar.php:196
+#: inc/common/admin-bar.php:221
 msgid "Clear Cloudflare cache"
 msgstr "Șterge cache Cloudflare"
 
-#: inc/common/admin-bar.php:217 inc/common/admin-bar.php:272
-#: views/settings/page-sections/dashboard.php:135
+#: inc/common/admin-bar.php:244 inc/common/admin-bar.php:298
+#: views/settings/page-sections/dashboard.php:136
 msgid "Preload cache"
 msgstr "Pre-încarcă cache"
 
-#: inc/common/admin-bar.php:287 views/settings/partials/documentation.php:13
+#: inc/common/admin-bar.php:314 views/settings/partials/documentation.php:13
 msgid "Documentation"
 msgstr "Documentație"
 
-#: inc/common/cron.php:24
-#, php-format
-msgid "%s clear"
-msgstr "Șterge %s"
-
-#: inc/common/cron.php:39
-msgid "monthly"
-msgstr "lunar"
-
-#: inc/common/purge.php:456
+#: inc/common/purge.php:467
 #, php-format
 msgid "Cloudflare cache purge error: %s"
 msgstr "Eroare de curățare cache Cloudflare: %s"
 
-#: inc/common/purge.php:461
+#: inc/common/purge.php:472
 msgid "Cloudflare cache successfully purged"
 msgstr "Cache Cloudflare curățat cu succes"
 
@@ -2485,7 +2614,7 @@ msgstr "Imagini"
 msgid "Add CNAME"
 msgstr "Adaugă CNAME"
 
-#: inc/deprecated/deprecated.php:1708
+#: inc/deprecated/deprecated.php:1708 views/settings/partials/sidebar.php:14
 msgid "Watch the video"
 msgstr "Urmărește videoul"
 
@@ -2523,7 +2652,7 @@ msgid_plural ""
 "There seems to be an issue validating your license. You can see the error "
 "messages below."
 msgstr[0] ""
-"Se pare că există o problemă de validare cu licența ta. Poți vedea mai jos "
+"Se pare că există o problemă de validare cu licența ta. Te rog vezi mai jos "
 "mesajul de eroare."
 msgstr[1] ""
 "Se pare că există o problemă de validare cu licența ta. Poți vedea mai jos "
@@ -2532,43 +2661,43 @@ msgstr[2] ""
 "Se pare că există o problemă de validare cu licența ta. Poți vedea mai jos "
 "mesajele de eroare."
 
-#: inc/functions/admin.php:361
+#: inc/functions/admin.php:362
 msgid "Server type:"
 msgstr "Tip de server:"
 
-#: inc/functions/admin.php:370
+#: inc/functions/admin.php:371
 msgid "PHP version number:"
 msgstr "Număr versiune PHP:"
 
-#: inc/functions/admin.php:379
+#: inc/functions/admin.php:380
 msgid "WordPress version number:"
 msgstr "Număr versiune WordPress:"
 
-#: inc/functions/admin.php:388
+#: inc/functions/admin.php:389
 msgid "WordPress multisite:"
 msgstr "Multi-site WordPress:"
 
-#: inc/functions/admin.php:397
+#: inc/functions/admin.php:398
 msgid "Current theme:"
 msgstr "Tema actuală:"
 
-#: inc/functions/admin.php:406
+#: inc/functions/admin.php:407
 msgid "Current site language:"
 msgstr "Limba actuală a site-ului:"
 
-#: inc/functions/admin.php:415
+#: inc/functions/admin.php:416
 msgid "Active plugins:"
 msgstr "Module active:"
 
-#: inc/functions/admin.php:418
+#: inc/functions/admin.php:419
 msgid "Plugin names of all active plugins"
 msgstr "Numele tuturor modulelor active"
 
-#: inc/functions/admin.php:424
+#: inc/functions/admin.php:425
 msgid "Anonymized WP Rocket settings:"
 msgstr "Setări WP Rocket făcute anonime:"
 
-#: inc/functions/admin.php:427
+#: inc/functions/admin.php:428
 msgid "Which WP Rocket settings are active"
 msgstr "Care setări WP Rocket sunt active"
 
@@ -2614,7 +2743,7 @@ msgstr "Alege un domeniu din listă"
 msgid "No domain available in your Cloudflare account"
 msgstr "Nu este disponibil niciun domeniu în contul tău Cloudflare"
 
-#: inc/functions/options.php:580 inc/functions/options.php:619
+#: inc/functions/options.php:529 inc/functions/options.php:568
 msgid ""
 "License validation failed. Our server could not resolve the request from "
 "your website."
@@ -2622,7 +2751,7 @@ msgstr ""
 "Validarea licenței a eșuat. Serverul nostru nu a putut rezolva cererea de pe"
 " site-ul tău web."
 
-#: inc/functions/options.php:580 inc/functions/options.php:619
+#: inc/functions/options.php:529 inc/functions/options.php:568
 #, php-format
 msgid ""
 "Try clicking %1$sSave Changes%2$s below. If the error persists, follow "
@@ -2631,7 +2760,7 @@ msgstr ""
 "Încearcă să dai clic pe %1$sSalvează modificările%2$s mai jos. Dacă eroarea "
 "persistă, urmează %3$sacest ghid%4$s."
 
-#: inc/functions/options.php:596
+#: inc/functions/options.php:545
 msgid ""
 "License validation failed. You may be using a nulled version of the plugin. "
 "Please do the following:"
@@ -2639,60 +2768,60 @@ msgstr ""
 "Validarea licenței a eșuat. Probabil folosești o versiune a modulului "
 "nevalidă. Te rog să faci următoarele:"
 
-#: inc/functions/options.php:596 inc/functions/options.php:638
+#: inc/functions/options.php:545 inc/functions/options.php:587
 #, php-format
 msgid "Login to your WP Rocket %1$saccount%2$s"
 msgstr "Autentifică-te în %1$scontul%2$s tău WP Rocket"
 
-#: inc/functions/options.php:596 inc/functions/options.php:638
+#: inc/functions/options.php:545 inc/functions/options.php:587
 msgid "Download the zip file"
 msgstr "Descarcă fișierul zip"
 
-#: inc/functions/options.php:596 inc/functions/options.php:638
+#: inc/functions/options.php:545 inc/functions/options.php:587
 msgid "Reinstall"
 msgstr "Reinstalează"
 
-#: inc/functions/options.php:596
+#: inc/functions/options.php:545
 #, php-format
 msgid ""
 "If you do not have a WP Rocket account, please %1$spurchase a license%2$s."
 msgstr "Dacă nu ai un cont WP Rocket, te rog %1$scumpără o licență%2$s."
 
-#: inc/functions/options.php:604
+#: inc/functions/options.php:553
 msgid ""
 "License validation failed. This user account does not exist in our database."
 msgstr ""
 "Validarea licenței a eșuat. Acest cont de utilizator nu există în baza "
 "noastră de date."
 
-#: inc/functions/options.php:604
+#: inc/functions/options.php:553
 msgid "To resolve, please contact support."
 msgstr "Pentru a rezolva, te rog contactează suportul."
 
-#: inc/functions/options.php:612
+#: inc/functions/options.php:561
 msgid "License validation failed. This user account is blacklisted."
 msgstr ""
 "Validarea licenței a eșuat. Acest cont de utilizator este în lista neagră."
 
-#: inc/functions/options.php:612
+#: inc/functions/options.php:561
 #, php-format
 msgid "Please see %1$sthis guide%2$s for more info."
 msgstr "Pentru mai multe informații, te rog vezi %1$sacest ghid%2$s."
 
-#: inc/functions/options.php:632
+#: inc/functions/options.php:581
 msgid "Your license is not valid."
 msgstr "Licența ta nu este validă."
 
-#: inc/functions/options.php:632
+#: inc/functions/options.php:581
 #, php-format
 msgid "Make sure you have an active %1$sWP Rocket license%2$s."
 msgstr "Asigură-te că ai o %1$slicență WP Rocket%2$s activă."
 
-#: inc/functions/options.php:634
+#: inc/functions/options.php:583
 msgid "You have added as many sites as your current license allows."
 msgstr "Ai adăugat numărul de site-uri pe care le permite licența ta actuală."
 
-#: inc/functions/options.php:634
+#: inc/functions/options.php:583
 #, php-format
 msgid ""
 "Upgrade your %1$saccount%2$s or %3$stransfer your license%2$s to this "
@@ -2701,25 +2830,25 @@ msgstr ""
 "Actualizează-ți %1$scontul%2$s sau %3$stransferă-ți licența%2$s la acest "
 "domeniu."
 
-#: inc/functions/options.php:636
+#: inc/functions/options.php:585
 msgid "This website is not allowed."
 msgstr "Acest site web nu este permis."
 
-#: inc/functions/options.php:636
+#: inc/functions/options.php:585
 #, php-format
 msgid "Please %1$scontact support%2$s."
 msgstr "Te rog %1$scontactează suportul%2$s."
 
-#: inc/functions/options.php:638
+#: inc/functions/options.php:587
 msgid "This license key is not recognized."
 msgstr "Această cheie de licență nu este recunoscută."
 
-#: inc/functions/options.php:638
+#: inc/functions/options.php:587
 #, php-format
 msgid "If the issue persists, please %1$scontact support%2$s."
 msgstr "Dacă problema persistă, te rog %1$scontactează suportul%2$s."
 
-#: inc/functions/options.php:644
+#: inc/functions/options.php:593
 #, php-format
 msgid "License validation failed: %s"
 msgstr "Validarea licenței a eșuat: %s"
@@ -3019,14 +3148,14 @@ msgstr "Setări import"
 
 #: views/settings/fields/one-click-addon.php:39
 #: views/settings/fields/rocket-addon.php:31
-#: views/settings/fields/sliding-checkbox.php:24 views/settings/page.php:54
+#: views/settings/fields/sliding-checkbox.php:24 views/settings/page.php:55
 msgctxt "Active state of checkbox"
 msgid "On"
 msgstr "Pornit"
 
 #: views/settings/fields/one-click-addon.php:40
 #: views/settings/fields/rocket-addon.php:32
-#: views/settings/fields/sliding-checkbox.php:25 views/settings/page.php:55
+#: views/settings/fields/sliding-checkbox.php:25 views/settings/page.php:56
 msgctxt "Inactive state of checkbox"
 msgid "Off"
 msgstr "Oprit"
@@ -3044,22 +3173,22 @@ msgstr "Modifică opțiunile"
 msgid "Cloudflare Cache"
 msgstr "Cache Cloudflare"
 
-#: views/settings/page-sections/cloudflare.php:33
-#: views/settings/page-sections/sucuri.php:34
+#: views/settings/page-sections/cloudflare.php:34
+#: views/settings/page-sections/sucuri.php:35
 #, php-format
 msgid "Purges cached resources for your website. %s"
 msgstr "Șterge resursele memorate în cache pentru site-ul tău web. %s"
 
-#: views/settings/page-sections/cloudflare.php:34
+#: views/settings/page-sections/cloudflare.php:35
 msgid "https://support.cloudflare.com/hc/en-us/articles/200169246"
 msgstr "https://support.cloudflare.com/hc/en-us/articles/200169246"
 
-#: views/settings/page-sections/cloudflare.php:34
-#: views/settings/page-sections/sucuri.php:35
+#: views/settings/page-sections/cloudflare.php:35
+#: views/settings/page-sections/sucuri.php:36
 msgid "Learn more"
 msgstr "Află mai mult"
 
-#: views/settings/page-sections/cloudflare.php:40
+#: views/settings/page-sections/cloudflare.php:44
 msgid "Clear all Cloudflare cache files"
 msgstr "Șterge toate fișierele cache Cloudflare"
 
@@ -3115,43 +3244,43 @@ msgstr "Vezi contul meu"
 msgid "Quick Actions"
 msgstr "Acțiuni rapide"
 
-#: views/settings/page-sections/dashboard.php:109
+#: views/settings/page-sections/dashboard.php:110
 msgid "Remove all cached files"
 msgstr "Înlătură toate fișierele cache"
 
-#: views/settings/page-sections/dashboard.php:129
+#: views/settings/page-sections/dashboard.php:130
 msgid "Start cache preloading"
 msgstr "Începe pre-încărcarea cache"
 
-#: views/settings/page-sections/dashboard.php:147
+#: views/settings/page-sections/dashboard.php:148
 msgid "Purge OPCache content"
 msgstr "Curăță conținutul OPCache"
 
-#: views/settings/page-sections/dashboard.php:153
+#: views/settings/page-sections/dashboard.php:154
 msgid "Purge OPCache"
 msgstr "Curăță OPCache"
 
-#: views/settings/page-sections/dashboard.php:164
-#: views/settings/page-sections/dashboard.php:170
+#: views/settings/page-sections/dashboard.php:165
+#: views/settings/page-sections/dashboard.php:171
 msgid "Regenerate Critical CSS"
 msgstr "Regenerează CSS critic"
 
-#: views/settings/page-sections/dashboard.php:186
+#: views/settings/page-sections/dashboard.php:188
 msgid "Frequently Asked Questions"
 msgstr "Întrebări frecvente"
 
-#: views/settings/page-sections/dashboard.php:199
+#: views/settings/page-sections/dashboard.php:201
 msgid "Still cannot find a solution?"
 msgstr "Încă nu poți găsi o soluție?"
 
-#: views/settings/page-sections/dashboard.php:200
+#: views/settings/page-sections/dashboard.php:202
 msgid ""
 "Submit a ticket and get help from our friendly and knowledgeable Rocketeers."
 msgstr ""
 "Trimite un tichet și primești ajutor de la membrii prietenoși și pricepuți "
 "WP Rocket."
 
-#: views/settings/page-sections/dashboard.php:208
+#: views/settings/page-sections/dashboard.php:210
 msgid "Ask support"
 msgstr "Contactează suportul"
 
@@ -3224,7 +3353,7 @@ msgstr ""
 "https://docs.wp-rocket.me/article/100-resolving-problems-with-license-"
 "validation/?utm_source=wp_plugin&utm_medium=wp_rocket"
 
-#: views/settings/page-sections/sucuri.php:41
+#: views/settings/page-sections/sucuri.php:45
 msgid "Clear all Sucuri cache files"
 msgstr "Șterge toate fișierele cache Sucuri"
 
@@ -3285,6 +3414,51 @@ msgstr "Mod depanare"
 msgid "Create a debug log file."
 msgstr "Creează un fișier jurnal de depanare."
 
+#: views/settings/page-sections/tutorials.php:12
+#: views/settings/partials/getting-started.php:18
+msgid "Getting Started"
+msgstr "Noțiuni de bază"
+
+#: views/settings/page-sections/tutorials.php:14
+#: views/settings/partials/getting-started.php:11
+msgid "What WP Rocket Does For You By Default"
+msgstr "Ce face implicit WP Rocket pentru tine"
+
+#: views/settings/page-sections/tutorials.php:15
+#: views/settings/partials/getting-started.php:12
+msgid "Finding the Best Settings for Your Site"
+msgstr "Îți găsește cele mai bune setări pentru site"
+
+#: views/settings/page-sections/tutorials.php:16
+#: views/settings/partials/getting-started.php:13
+msgid "How to Check if WP Rocket is Caching Your Site"
+msgstr "Cum să verifici dacă WP Rocket îți memorează în cache site-ul"
+
+#: views/settings/page-sections/tutorials.php:17
+#: views/settings/partials/getting-started.php:14
+msgid "How to Measure the Speed of Your Site"
+msgstr "Cum să măsori viteza site-ului"
+
+#: views/settings/page-sections/tutorials.php:23
+msgid "My Website is Broken"
+msgstr "Site-ul meu a căzut"
+
+#: views/settings/page-sections/tutorials.php:24
+msgid "How to Find the Right JavaScript to Exclude"
+msgstr "Cum să găsești JavaScript-ul care poate fi exclus"
+
+#: views/settings/page-sections/tutorials.php:25
+msgid "Why External Resources are Bad"
+msgstr "De ce resursele externe sunt dăunătoare"
+
+#: views/settings/page-sections/tutorials.php:31
+msgid "How Preloading Works"
+msgstr "Cum funcționează pre-încărcarea"
+
+#: views/settings/page-sections/tutorials.php:37
+msgid "Set Up the Cloudflare Add-on"
+msgstr "Inițializează suplimentele Cloudflare"
+
 #: views/settings/page.php:16
 msgid "WP Rocket Settings"
 msgstr "Setări WP Rocket"
@@ -3298,15 +3472,15 @@ msgstr "versiunea %s"
 msgid "Save Changes"
 msgstr "Salvează modificările"
 
-#: views/settings/page.php:56
+#: views/settings/page.php:57
 msgid "Show Sidebar"
 msgstr "Arată bara laterală"
 
-#: views/settings/page.php:75
+#: views/settings/page.php:76
 msgid "Thanks for choosing to participate in the WP Rocket beta program!"
 msgstr "Îți mulțumim că ai ales să participi la programul beta WP Rocket!"
 
-#: views/settings/page.php:76
+#: views/settings/page.php:77
 msgid ""
 "A beta version is usually one that has new features and improvements, but we"
 " want to test it a little more before full launch."
@@ -3314,7 +3488,7 @@ msgstr ""
 "De obicei, o versiune beta este una care are funcționalități noi și "
 "îmbunătățiri, dar pe care dorim să o testăm înainte de a o lansa definitiv."
 
-#: views/settings/page.php:77
+#: views/settings/page.php:78
 msgid ""
 "We’d love it if you took our beta versions for a ride, but please keep in "
 "mind that it might be less stable than our other releases. Don’t worry, you "
@@ -3325,7 +3499,7 @@ msgstr ""
 "lansate. Dar nu-ți face griji, poți reveni oricând la ultima versiune "
 "stabilă lansată."
 
-#: views/settings/page.php:78
+#: views/settings/page.php:79
 msgid ""
 "Your mission: please send all feedback about our beta versions, including "
 "bug reports, to support@wp-rocket.me"
@@ -3333,17 +3507,17 @@ msgstr ""
 "Scopul este să ne trimiți toate impresiile și informațiile tale despre "
 "versiunile beta, inclusiv rapoartele de erori, la support@wp-rocket.me"
 
-#: views/settings/page.php:80
+#: views/settings/page.php:81
 msgid "If you don’t want to join the beta program, simply close this window."
 msgstr ""
 "Dacă nu vrei să participi la programul nostru beta, închide pur și simplu "
 "această fereastră."
 
-#: views/settings/page.php:82
+#: views/settings/page.php:83
 msgid "Activate Rocket Tester"
 msgstr "Activează testerul Rocket"
 
-#: views/settings/page.php:93
+#: views/settings/page.php:94
 msgid ""
 "Below is a detailed view of all data WP Rocket will collect <strong>if "
 "granted permission.</strong>"
@@ -3351,7 +3525,7 @@ msgstr ""
 "Mai jos este o listă detaliată a tuturor datelor pe care WP Rocket le va "
 "colecta, <strong>dacă acorzi permisiunea.</strong>"
 
-#: views/settings/page.php:96
+#: views/settings/page.php:97
 msgid ""
 "WP Rocket will never transmit any domain names or email addresses (except "
 "for license validation), IP addresses, or third-party API keys."
@@ -3359,7 +3533,7 @@ msgstr ""
 "WP Rocket nu va divulga niciodată nume de domenii sau adrese de email (cu "
 "excepția validării licenței), adrese IP sau chei API de la părți terțe."
 
-#: views/settings/page.php:98
+#: views/settings/page.php:99
 msgid "Activate Rocket analytics"
 msgstr "Activează analitice Rocket"
 
@@ -3378,6 +3552,10 @@ msgid "How to correctly measure your website’s loading time"
 msgstr "Cum să măsori corect timpul de încărcare al site-ului tău web"
 
 #: views/settings/partials/sidebar.php:13
+msgid "Check our tutorial and learn how to measure the speed of your site."
+msgstr "Vezi tutorialul nostru și învață cum să măsori viteza site-ului."
+
+#: views/settings/partials/sidebar.php:17
 msgid ""
 "Learn how to use best practices to correctly measure your site's "
 "performance."
@@ -3385,7 +3563,7 @@ msgstr ""
 "Află cum să folosești cele mai bune practici pentru a măsura corect "
 "performanța site-ului tău."
 
-#: views/settings/partials/sidebar.php:14
+#: views/settings/partials/sidebar.php:18
 msgid ""
 "https://wp-rocket.me/blog/correctly-measure-websites-page-load-"
 "time/?utm_source=wp_plugin&utm_medium=wp_rocket"
@@ -3393,17 +3571,17 @@ msgstr ""
 "https://wp-rocket.me/blog/correctly-measure-websites-page-load-"
 "time/?utm_source=wp_plugin&utm_medium=wp_rocket"
 
-#: views/settings/partials/sidebar.php:14
+#: views/settings/partials/sidebar.php:18
 msgid "Read our guide"
 msgstr "Citește ghidul nostru"
 
-#: views/settings/partials/sidebar.php:17
+#: views/settings/partials/sidebar.php:21
 msgid "Why Google PageSpeed grade should not matter"
 msgstr ""
 "De ce gradul de optimizare PageSpeed Insights Google nu ar trebui să aibă "
 "importanță"
 
-#: views/settings/partials/sidebar.php:18
+#: views/settings/partials/sidebar.php:22
 msgid ""
 "https://wp-rocket.me/blog/the-truth-about-google-pagespeed-"
 "insights/?utm_source=wp_plugin&utm_medium=wp_rocket"
@@ -3411,15 +3589,15 @@ msgstr ""
 "https://wp-rocket.me/blog/the-truth-about-google-pagespeed-"
 "insights/?utm_source=wp_plugin&utm_medium=wp_rocket"
 
-#: views/settings/partials/sidebar.php:18
+#: views/settings/partials/sidebar.php:22
 msgid "Read more"
 msgstr "Citește mai mult"
 
-#: views/settings/partials/sidebar.php:23
+#: views/settings/partials/sidebar.php:27
 msgid "You have not activated logged-in user cache."
 msgstr "Nu ai activat cache-ul pentru utilizatorii autentificați."
 
-#: views/settings/partials/sidebar.php:24
+#: views/settings/partials/sidebar.php:28
 msgid ""
 "Use a private browser to check your website's speed and visual appearance."
 msgstr ""
