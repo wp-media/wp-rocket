@@ -866,6 +866,12 @@ function rocket_warning_cron() {
 		return;
 	}
 
+	$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
+
+	if ( in_array( __FUNCTION__, (array) $boxes, true ) ) {
+		return;
+	}
+
 	if ( 0 === (int) get_rocket_option( 'purge_cron_interval' ) && 0 === get_rocket_option( 'async_css' ) && 0 === get_rocket_option( 'manual_preload' ) && 0 === get_rocket_option( 'schedule_automatic_cleanup' ) ) {
 		return;
 	}

@@ -89,6 +89,10 @@ class TestRewrite extends TestCase {
         );
     }
 
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     */
     public function testShouldReturnOriginalWhenNoCNAME() {
         update_option(
             'wp_rocket_settings',

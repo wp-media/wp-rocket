@@ -244,7 +244,7 @@ class CDN {
 	private function get_zones_for_url( $url ) {
 		$zones = [ 'all' ];
 
-		$ext = pathinfo( $url, PATHINFO_EXTENSION );
+		$ext = pathinfo( wp_parse_url( $url, PHP_URL_PATH ), PATHINFO_EXTENSION );
 
 		$image_types = [
 			'jpg',

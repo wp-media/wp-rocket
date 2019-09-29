@@ -856,6 +856,12 @@ class Page {
 		$lazyload_beacon = $this->beacon->get_suggest( 'lazyload' );
 		$webp_beacon     = $this->beacon->get_suggest( 'webp' );
 
+		if ( rocket_valid_key() && ! \Imagify_Partner::has_imagify_api_key() ) {
+			$imagify_link = '<a href="#imagify">';
+		} else {
+			$imagify_link = '<a href="https://wordpress.org/plugins/imagify/" target="_blank" rel="noopener noreferrer">';
+		}
+
 		$this->settings->add_page_section(
 			'media',
 			[
@@ -870,7 +876,7 @@ class Page {
 					'title'       => __( 'LazyLoad', 'rocket' ),
 					'type'        => 'fields_container',
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description' => sprintf( __( 'It can improve actual and perceived loading time as images, iframes, and videos will be loaded only as they enter (or about to enter) the viewport and reduces the number of HTTP requests. %1$sMore Info%2$s', 'rocket' ), '<a href="' . esc_url( $lazyload_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $lazyload_beacon['id'] ) . '" target="_blank">', '</a>' ),
+					'description' => sprintf( __( 'It can improve actual and perceived loading time as images, iframes, and videos will be loaded only as they enter (or about to enter) the viewport and reduces the number of HTTP requests. %1$sMore Info%2$s', 'rocket' ), '<a href="' . esc_url( $lazyload_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $lazyload_beacon['id'] ) . '" target="_blank" rel="noopener noreferrer">', '</a>' ),
 					'help'        => [
 						'id'  => $this->beacon->get_suggest( 'lazyload_section' ),
 						'url' => $lazyload_beacon['url'],
@@ -892,23 +898,19 @@ class Page {
 					'page'        => 'media',
 				],
 				'webp_section'     => [
-					'title'       => 'WebP',
+					'title'       => __( 'WebP compatibility', 'rocket' ),
 					'type'        => 'fields_container',
-					/**
-					 * Filters the description for the WebP caching option
-					 *
-					 * @since 3.4
-					 * @author Remy Perona
-					 *
-					 * @param string $description Section description.
-					 */
-					'helper'      => apply_filters( 'rocket_webp_section_description', '' ),
 					'description' => sprintf(
-						// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-						__( 'Enable this option if you would like WP Rocket to create a separate cache file for WebP compatible browsers. Please note that WP Rocket cannot create WebP images for you. %1$sMore info%2$s', 'rocket' ),
-						'<a href="' . esc_url( $webp_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $webp_beacon['id'] ) . '" target="_blank">',
-						'</a>'
+						// translators: %1$s and %3$s = opening <a> tag, %2$s = closing </a> tag.
+						__( 'Enable this option if you would like WP Rocket to serve WebP images to compatible browsers. Please note that WP Rocket cannot create WebP images for you. To create WebP images we recommend %1$sImagify%2$s. %3$sMore info%2$s', 'rocket' ),
+						$imagify_link,
+						'</a>',
+						'<a href="' . esc_url( $webp_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $webp_beacon['id'] ) . '" target="_blank" rel="noopener noreferrer">'
 					),
+					'help'        => [
+						'id'  => $webp_beacon['id'],
+						'url' => $webp_beacon['url'],
+					],
 					'page'        => 'media',
 				],
 			]
