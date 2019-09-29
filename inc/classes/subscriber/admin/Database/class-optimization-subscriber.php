@@ -14,6 +14,29 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  * @author Remy Perona
  */
 class Optimization_Subscriber implements Subscriber_Interface {
+
+	/**
+	 * Optimization process instance.
+	 *
+	 * @since  3.4
+	 * @access private
+	 * @author Grégory Viguier
+	 *
+	 * @var Optimization
+	 */
+	private $optimize;
+
+	/**
+	 * WP Rocket Options instance.
+	 *
+	 * @since  3.4
+	 * @access private
+	 * @author Grégory Viguier
+	 *
+	 * @var Options_Data
+	 */
+	private $options;
+
 	/**
 	 * Constructor
 	 *
@@ -30,6 +53,7 @@ class Optimization_Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
+			'cron_schedules'                          => 'add_cron_schedule',
 			'init'                                    => 'database_optimization_scheduled',
 			'rocket_database_optimization_time_event' => 'cron_optimize',
 			'pre_update_option_' . WP_ROCKET_SLUG     => 'save_optimize',
@@ -38,6 +62,40 @@ class Optimization_Subscriber implements Subscriber_Interface {
 				[ 'notice_process_complete' ],
 			],
 		];
+	}
+
+	/**
+	 * Add a new interval for the cron job.
+	 * This adds a weekly/monthly interval for database optimization.
+	 *
+	 * @since  3.4
+	 * @access public
+	 * @author Grégory Viguier
+	 *
+	 * @param  array $schedules An array of intervals used by cron jobs.
+	 * @return array            Updated array of intervals.
+	 */
+	public function add_cron_schedule( $schedules ) {
+		if ( ! $this->options->get( 'schedule_automatic_cleanup', false ) ) {
+			return $schedules;
+		}
+
+		switch ( $this->options->get( 'automatic_cleanup_frequency', 'weekly' ) ) {
+			case 'weekly':
+				$schedules['weekly'] = [
+					'interval' => 604800,
+					'display'  => __( 'weekly', 'rocket' ),
+				];
+				break;
+			case 'monthly':
+				$schedules['monthly'] = [
+					'interval' => 2592000,
+					'display'  => __( 'monthly', 'rocket' ),
+				];
+				break;
+		}
+
+		return $schedules;
 	}
 
 	/**
@@ -97,7 +155,7 @@ class Optimization_Subscriber implements Subscriber_Interface {
 
 		unset( $value['submit_optimize'] );
 
-		if ( ! current_user_can( apply_filters( 'rocket_capability', 'manage_options' ) ) ) {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			return $value;
 		}
 
@@ -128,7 +186,7 @@ class Optimization_Subscriber implements Subscriber_Interface {
 	public function notice_process_running() {
 		$screen = get_current_screen();
 
-		if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			return;
 		}
 
@@ -159,7 +217,7 @@ class Optimization_Subscriber implements Subscriber_Interface {
 	public function notice_process_complete() {
 		$screen = get_current_screen();
 
-		if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			return;
 		}
 

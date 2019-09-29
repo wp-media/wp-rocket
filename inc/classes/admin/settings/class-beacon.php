@@ -52,8 +52,7 @@ class Beacon {
 	 * @return string
 	 */
 	public function insert_script() {
-		/** This filter is documented in inc/admin-bar.php */
-		if ( ! current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			return;
 		}
 
@@ -318,14 +317,24 @@ class Beacon {
 					'url' => 'https://docs.wp-rocket.me/article/39-excluding-external-js-from-concatenation/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
-			'defer'                  => [
+			'defer_js'               => [
 				'en' => [
-					'id'  => '5578cfbbe4b027e1978e6bb1',
-					'url' => 'https://docs.wp-rocket.me/article/108-render-blocking-javascript-and-css-pagespeed/?utm_source=wp_plugin&utm_medium=wp_rocket',
+					'id'  => '5d52138d2c7d3a68825e8faa',
+					'url' => 'https://docs.wp-rocket.me/article/1265-load-javascript-deferred/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 				'fr' => [
-					'id'  => '56957209c69791436155e0f6',
-					'url' => 'https://fr.docs.wp-rocket.me/article/230-javascript-et-css-bloquant-le-rendu-pagespeed/?utm_source=wp_plugin&utm_medium=wp_rocket',
+					'id'  => '5d5ac08b2c7d3a7920be3649',
+					'url' => 'https://fr.​docs.​wp-rocket.​me/article/1270-chargement-differe-des-fichiers-js/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
+			'async' => [
+				'en' => [
+					'id'  => '5d52144c0428631e94f94ae2',
+					'url' => 'https://docs.wp-rocket.me/article/1266-optimize-css-delivery/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '5d5abada0428634552d85bff',
+					'url' => 'https://fr.​docs.​wp-rocket.​me/article/1268-optimiser-le-chargement-du-css/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 			'lazyload'               => [
@@ -336,6 +345,12 @@ class Beacon {
 				'fr' => [
 					'id'  => '5c98ff532c7d3a1544614cf4',
 					'url' => 'https://fr.docs.wp-rocket.me/article/1146-utiliser-lazyload-images-wp-rocket/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
+			'webp' => [
+				'en' => [
+					'id'  => '5d72919704286364bc8ed49d',
+					'url' => 'https://docs.wp-rocket.me/article/1282-webp',
 				],
 			],
 			'lazyload_section'       => [

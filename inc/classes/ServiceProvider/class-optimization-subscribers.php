@@ -26,7 +26,6 @@ class Optimization_Subscribers extends AbstractServiceProvider {
 		'buffer_optimization',
 		'buffer_subscriber',
 		'cache_dynamic_resource',
-		'cdn_favicons',
 		'remove_query_string',
 		'ie_conditionals_subscriber',
 		'minify_html_subscriber',
@@ -34,7 +33,6 @@ class Optimization_Subscribers extends AbstractServiceProvider {
 		'minify_css_subscriber',
 		'minify_js_subscriber',
 		'cache_dynamic_resource_subscriber',
-		'cdn_favicons_subscriber',
 		'remove_query_string_subscriber',
 	];
 
@@ -59,8 +57,6 @@ class Optimization_Subscribers extends AbstractServiceProvider {
 			->withArgument( $this->getContainer()->get( 'options' ) )
 			->withArgument( WP_ROCKET_CACHE_BUSTING_PATH )
 			->withArgument( WP_ROCKET_CACHE_BUSTING_URL );
-		$this->getContainer()->add( 'cdn_favicons', 'WP_Rocket\Optimization\CDN_Favicons' )
-			->withArgument( $this->getContainer()->get( 'options' ) );
 		$this->getContainer()->add( 'remove_query_string', 'WP_Rocket\Optimization\Remove_Query_String' )
 			->withArgument( $this->getContainer()->get( 'options' ) )
 			->withArgument( WP_ROCKET_CACHE_BUSTING_PATH )
@@ -76,8 +72,6 @@ class Optimization_Subscribers extends AbstractServiceProvider {
 			->withArgument( $this->getContainer()->get( 'options' ) );
 		$this->getContainer()->share( 'cache_dynamic_resource_subscriber', 'WP_Rocket\Subscriber\Optimization\Cache_Dynamic_Resource_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'cache_dynamic_resource' ) );
-		$this->getContainer()->share( 'cdn_favicons_subscriber', 'WP_Rocket\Subscriber\Optimization\CDN_Favicons_Subscriber' )
-			->withArgument( $this->getContainer()->get( 'cdn_favicons' ) );
 		$this->getContainer()->share( 'remove_query_string_subscriber', 'WP_Rocket\Subscriber\Optimization\Remove_Query_String_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'remove_query_string' ) );
 	}

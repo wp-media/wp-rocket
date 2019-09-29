@@ -960,7 +960,7 @@ class Facebook_Pickles {
 		$filename = $this->get_busting_file_name( $locale, $version );
 
 		// This filter is documented in inc/functions/minify.php.
-		return apply_filters( 'rocket_js_url', get_rocket_cdn_url( $this->busting_url . $filename, [ 'all', 'css_and_js', 'js' ] ) );
+		return apply_filters( 'rocket_js_url', $this->busting_url . $filename );
 	}
 
 	/**

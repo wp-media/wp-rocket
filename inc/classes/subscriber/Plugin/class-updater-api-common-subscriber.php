@@ -171,7 +171,7 @@ class Updater_Api_Common_Subscriber implements Subscriber_Interface {
 	 * @return string
 	 */
 	protected function get_current_option( $field_name ) {
-		if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) && wp_verify_nonce( filter_input( INPUT_POST, '_wpnonce' ), $this->settings_nonce_key . '-options' ) ) {
+		if ( current_user_can( 'rocket_manage_options' ) && wp_verify_nonce( filter_input( INPUT_POST, '_wpnonce' ), $this->settings_nonce_key . '-options' ) ) {
 			$posted = filter_input( INPUT_POST, $this->settings_slug, FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
 
 			if ( ! empty( $posted[ $field_name ] ) && is_string( $posted[ $field_name ] ) ) {

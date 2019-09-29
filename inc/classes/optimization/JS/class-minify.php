@@ -114,7 +114,7 @@ class Minify extends Abstract_JS_Optimization {
 		$filename  = preg_replace( '/\.js$/', '-' . $unique_id . '.js', ltrim( rocket_realpath( rocket_extract_url_component( $url, PHP_URL_PATH ) ), '/' ) );
 
 		$minified_file = $this->minify_base_path . $filename;
-		$minified_url  = $this->get_minify_url( $filename );
+		$minified_url  = $this->get_minify_url( $filename, $url );
 
 		if ( rocket_direct_filesystem()->exists( $minified_file ) ) {
 			Logger::debug( 'Minified JS file already exists.', [

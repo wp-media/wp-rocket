@@ -19,10 +19,11 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 <div id="<?php echo esc_attr( $data['id'] ); ?>" class="wpr-Page">
 	<div class="wpr-sectionHeader">
 		<h2 class="wpr-title1">
-			<img src="<?php echo WP_ROCKET_ASSETS_IMG_URL; ?>logo-sucuri.png" width="99" height="35" alt="<?php echo esc_attr( $data['title'] ); ?>">
+			<img src="<?php echo esc_url( WP_ROCKET_ASSETS_IMG_URL . 'logo-sucuri.png' ); ?>" width="99" height="35" alt="<?php echo esc_attr( $data['title'] ); ?>">
 		</h2>
 	</div>
 	<?php $this->render_settings_sections( $data['id'] ); ?>
+	<?php if ( current_user_can( 'rocket_purge_sucuri' ) ) : ?>
 	<div class="wpr-optionHeader">
 		<h3 class="wpr-title2"><?php echo esc_html( $data['title'] ); ?></h3>
 	</div>
@@ -37,12 +38,17 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 			?>
 		</div><br>
 		<?php
-		$this->render_action_button( 'link', 'rocket_purge_sucuri', [
-			'label'      => __( 'Clear all Sucuri cache files', 'rocket' ),
-			'attributes' => [
-				'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-button--purple wpr-icon-trash',
-			],
-		] );
+			$this->render_action_button(
+				'link',
+				'rocket_purge_sucuri',
+				[
+					'label'      => __( 'Clear all Sucuri cache files', 'rocket' ),
+					'attributes' => [
+						'class' => 'wpr-button wpr-button--icon wpr-button--small wpr-button--purple wpr-icon-trash',
+					],
+				]
+			);
 		?>
 	</div>
+	<?php endif; ?>
 </div>
