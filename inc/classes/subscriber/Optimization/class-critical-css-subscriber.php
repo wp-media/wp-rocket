@@ -125,9 +125,9 @@ class Critical_CSS_Subscriber implements Subscriber_Interface {
 
 		$screen = get_current_screen();
 
-		if ( 'settings_page_wprocket' !== $screen->id ) {
-			return;
-		}
+		// if ( 'settings_page_wprocket' !== $screen->id ) {
+		//  return;
+		// }
 
 		$transient = get_transient( 'rocket_critical_css_generation_process_running' );
 		if ( ! $transient ) {
@@ -168,9 +168,9 @@ class Critical_CSS_Subscriber implements Subscriber_Interface {
 
 		$screen = get_current_screen();
 
-		if ( 'settings_page_wprocket' !== $screen->id ) {
-			return;
-		}
+		// if ( 'settings_page_wprocket' !== $screen->id ) {
+		//  return;
+		// }
 
 		$transient = get_transient( 'rocket_critical_css_generation_process_complete' );
 		if ( ! $transient ) {
