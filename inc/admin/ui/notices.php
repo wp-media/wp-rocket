@@ -628,6 +628,36 @@ function rocket_cloudflare_purge_result() {
 add_action( 'admin_notices', 'rocket_cloudflare_purge_result' );
 
 /**
+ * This notice is displayed after purging OPcache
+ *
+ * @since 3.4.1
+ * @author Soponar Cristina
+ */
+function rocket_opcache_purge_result() {
+	global $current_user;
+	if ( ! current_user_can( 'rocket_purge_opcache' ) ) {
+		return;
+	}
+
+	if ( ! is_admin() ) {
+		return;
+	}
+
+	$notice = get_transient( $current_user->ID . '_opcache_purge_result' );
+	if ( ! $notice ) {
+		return;
+	}
+
+	delete_transient( $current_user->ID . '_opcache_purge_result' );
+
+	rocket_notice_html( array(
+		'status'  => $notice['result'],
+		'message' => $notice['message'],
+	) );
+}
+add_action( 'admin_notices', 'rocket_opcache_purge_result' );
+
+/**
  * This notice is displayed after modifying the CloudFlare settings
  *
  * @since 2.9

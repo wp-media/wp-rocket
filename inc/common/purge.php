@@ -436,7 +436,21 @@ function do_admin_post_rocket_purge_opcache() {
 		return;
 	}
 
-	rocket_reset_opcache();
+	$reset_opcache = rocket_reset_opcache();
+
+	if ( ! $reset_opcache ) {
+		$op_purge_result = array(
+			'result'  => 'error',
+			'message' => __( 'OPcache purge failed.', 'rocket' ),
+		);
+	} else {
+		$op_purge_result = array(
+			'result'  => 'success',
+			'message' => __( 'OPcache successfully purged', 'rocket' ),
+		);
+	}
+
+	set_transient( $GLOBALS['current_user']->ID . '_opcache_purge_result', $op_purge_result );
 
 	wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
 	die();
