@@ -36,7 +36,7 @@ class CDN {
 	 * @return string
 	 */
 	public function rewrite( $html ) {
-		$pattern = '#(?<url>(?<=[(\"\'])(?:(?:https?:|)' . preg_quote( $this->get_base_url(), '#' ) . ')?\/(?:(?:(?:' . $this->get_allowed_paths() . ')[^\"\')]+)|(?:[^\/\"\']+\.[^\/\"\')]+))(?=[\"\')]))#i';
+		$pattern = '#(?<url>(?<=[(\"\'])(?:(?:https?:|)' . preg_quote( $this->get_base_url(), '#' ) . ')?\/(?:(?:(?:' . $this->get_allowed_paths() . ')[^\"\')]+)|(?:[^\/\"\'>]+\.[^\/\"\')]+))(?=[\"\')]))#i';
 		return preg_replace_callback(
 			$pattern,
 			function( $matches ) {
