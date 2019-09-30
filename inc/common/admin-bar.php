@@ -225,6 +225,24 @@ function rocket_admin_bar( $wp_admin_bar ) {
 		}
 	}
 
+	if ( current_user_can( 'rocket_purge_sucuri_cache' ) ) {
+		/**
+		 * Purge Sucuri cache if Sucuri is active.
+		 */
+		if ( get_rocket_option( 'sucury_waf_cache_sync', 0 ) ) {
+			$action = 'rocket_purge_sucuri';
+
+			$wp_admin_bar->add_menu(
+				[
+					'parent' => 'wp-rocket',
+					'id'     => 'purge-sucuri',
+					'title'  => __( 'Purge Sucuri cache', 'rocket' ),
+					'href'   => wp_nonce_url( admin_url( 'admin-post.php?action=' . $action . $referer ), $action ),
+				]
+			);
+		}
+	}
+
 	if ( current_user_can( 'rocket_preload_cache' ) ) {
 		/**
 		 * Cache Preload.
