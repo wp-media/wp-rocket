@@ -146,17 +146,27 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 
 		$inline_args = [
 			'threshold' => $threshold,
-			'options'   => [
-				'use_native' => 'true',
-			],
 		];
 
+		if ( apply_filters( 'rocket_use_native_lazyload', false ) ) {
+			$inline_args['options'] = [
+				'use_native' => 'true',
+			];
+		}
+
 		if ( $this->options->get( 'lazyload' ) || $this->options->get( 'lazyload_iframes' ) ) {
-			$inline_args['elements']['loading'] = '[loading=lazy]';
+			if ( apply_filters( 'rocket_use_native_lazyload', false ) ) {
+				$inline_args['elements']['loading'] = '[loading=lazy]';
+			}
 		}
 
 		if ( $this->options->get( 'lazyload' ) ) {
+			$inline_args['elements']['image']            = 'img[data-lazy-src]';
 			$inline_args['elements']['background_image'] = '.rocket-lazyload';
+		}
+
+		if ( $this->options->get( 'lazyload_iframes' ) ) {
+			$inline_args['elements']['iframe'] = 'iframe[data-lazy-src]';
 		}
 
 		/**
