@@ -71,7 +71,9 @@ if ( ! defined( 'WP_ROCKET_LASTVERSION' ) ) {
 	define( 'WP_ROCKET_LASTVERSION', '3.2.6' );
 }
 
-if ( @file_exists( WP_ROCKET_PATH . 'licence-data.php' ) ) {
+WP_Filesystem();
+
+if ( $wp_filesystem->exists( WP_ROCKET_PATH . 'licence-data.php' ) ) {
 	require WP_ROCKET_PATH . 'licence-data.php';
 }
 
