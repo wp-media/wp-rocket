@@ -439,7 +439,7 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		rocket_clean_domain();
 	}
 
-	if ( version_compare( $actual_version, '3.4.1' ) ) {
+	if ( version_compare( $actual_version, '3.4.0.1', '<' ) ) {
 		( new WP_Rocket\Subscriber\Plugin\Capabilities_Subscriber() )->add_rocket_capabilities();
 	}
 }
