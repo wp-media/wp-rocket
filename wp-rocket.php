@@ -71,7 +71,12 @@ if ( ! defined( 'WP_ROCKET_LASTVERSION' ) ) {
 	define( 'WP_ROCKET_LASTVERSION', '3.2.6' );
 }
 
+if ( ! function_exists( 'WP_Filesystem' ) ) {
+	require ABSPATH . 'wp-admin/includes/file.php';
+}
+
 WP_Filesystem();
+global $wp_filesystem;
 
 if ( $wp_filesystem->exists( WP_ROCKET_PATH . 'licence-data.php' ) ) {
 	require WP_ROCKET_PATH . 'licence-data.php';
