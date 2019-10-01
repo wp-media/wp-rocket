@@ -105,17 +105,21 @@ class Controller {
 	 * @return ActionScheduler\Migration\Config
 	 */
 	public function get_migration_config_object() {
-		$source_store  = $this->store_classname ? new $this->store_classname() : new \ActionScheduler_wpPostStore();
-		$source_logger = $this->logger_classname ? new $this->logger_classname() : new \ActionScheduler_wpCommentLogger();
+		static $config = null;
 
-		$config = new Config();
-		$config->set_source_store( $source_store );
-		$config->set_source_logger( $source_logger );
-		$config->set_destination_store( new \ActionScheduler_DBStoreMigrator() );
-		$config->set_destination_logger( new \ActionScheduler_DBLogger() );
+		if ( ! $config ) {
+			$source_store  = $this->store_classname ? new $this->store_classname() : new \ActionScheduler_wpPostStore();
+			$source_logger = $this->logger_classname ? new $this->logger_classname() : new \ActionScheduler_wpCommentLogger();
 
-		if ( defined( 'WP_CLI' ) && WP_CLI ) {
-			$config->set_progress_bar( new ProgressBar( '', 0 ) );
+			$config = new Config();
+			$config->set_source_store( $source_store );
+			$config->set_source_logger( $source_logger );
+			$config->set_destination_store( new \ActionScheduler_DBStoreMigrator() );
+			$config->set_destination_logger( new \ActionScheduler_DBLogger() );
+
+			if ( defined( 'WP_CLI' ) && WP_CLI ) {
+				$config->set_progress_bar( new ProgressBar( '', 0 ) );
+			}
 		}
 
 		return apply_filters( 'action_scheduler/migration_config', $config );
