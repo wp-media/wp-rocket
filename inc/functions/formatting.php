@@ -21,6 +21,35 @@ function rocket_clean_exclude_file( $file ) {
 }
 
 /**
+ * Clean Never Cache URL(s) bad wildcards
+ *
+ * @since 3.4.2
+ * @author Soponar Cristina
+ *
+ * @param  string       $path URL which needs to be cleaned
+ * @return bool\string  false if $path is empty or cleaned URL
+ */
+function rocket_clean_wildcards ( $path ) {
+	if ( ! $path ) {
+		return false;
+	}
+
+	$path_components = explode( '/', $path );
+    $arr             = array(
+            ".*"   => "(.*)" ,
+            "*"    => "(.*)" ,
+            "(.*)" => "(.*)" ,
+        );
+
+	foreach ($path_components as &$path_component) {
+		$path_component = strtr($path_component, $arr);
+	}
+	$path = implode('/', $path_components);
+
+	return $path;
+}
+
+/**
  * Used with array_filter to remove files without .css extension
  *
  * @since 1.0
@@ -129,7 +158,7 @@ function rocket_sanitize_textarea_field( $field, $value ) {
 		'cache_purge_pages'    => [ 'esc_url', 'rocket_clean_exclude_file' ], // Pattern.
 		'cache_reject_cookies' => [ 'rocket_sanitize_key' ],
 		'cache_reject_ua'      => [ 'rocket_sanitize_ua' ], // Pattern.
-		'cache_reject_uri'     => [ 'esc_url', 'rocket_clean_exclude_file' ], // Pattern.
+		'cache_reject_uri'     => [ 'esc_url', 'rocket_clean_exclude_file', 'rocket_clean_wildcards' ], // Pattern.
 		'cache_query_strings'  => [ 'rocket_sanitize_key' ],
 		'cdn_reject_files'     => [ 'rocket_clean_exclude_file' ], // Pattern.
 		'dns_prefetch'         => [ 'esc_url' ],
