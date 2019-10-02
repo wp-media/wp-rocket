@@ -3,8 +3,8 @@
  * Plugin Name: WP Rocket
  * Plugin URI: https://wp-rocket.me
  * Description: The best WordPress performance plugin.
- * Version: 3.4.0.2
- * Code Name: Scarif
+ * Version: 3.5-alpha1
+ * Code Name: Coruscant
  * Author: WP Media
  * Author URI: https://wp-media.me
  * Licence: GPLv2 or later
@@ -18,7 +18,7 @@
 defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 // Rocket defines.
-define( 'WP_ROCKET_VERSION',               '3.4.0.2' );
+define( 'WP_ROCKET_VERSION',               '3.5-alpha1' );
 define( 'WP_ROCKET_WP_VERSION',            '4.9' );
 define( 'WP_ROCKET_PHP_VERSION',           '5.6' );
 define( 'WP_ROCKET_PRIVATE_KEY',           false );
