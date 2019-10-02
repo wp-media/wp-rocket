@@ -367,6 +367,12 @@ class Settings {
 			$input['cloudflare_api_key'] = WP_ROCKET_CF_API_KEY;
 		}
 
+		$is_api_keys_valid_cloudflare = is_api_keys_valid_cloudflare( $input['cloudflare_email'], $input['cloudflare_api_key'], $input['cloudflare_zone_id']);
+		if ( is_wp_error( $is_api_keys_valid_cloudflare ) ) {
+			$cloudflare_error_message = $is_api_keys_valid_cloudflare->get_error_message();
+			add_settings_error( 'general', 'cloudflare_api_key_invalid', __( 'Cloudflare Add-on: Credentials are invalid - ', 'rocket' ) . $cloudflare_error_message, 'error' );
+		}
+
 		// Options: Sucuri cache. And yeah, there's a typo, but now it's too late to fix ^^'.
 		$input['sucury_waf_cache_sync'] = ! empty( $input['sucury_waf_cache_sync'] ) ? 1 : 0;
 
