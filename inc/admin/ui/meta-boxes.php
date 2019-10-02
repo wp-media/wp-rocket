@@ -7,8 +7,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
  * @since 1.0
  */
 function rocket_post_submitbox_start() {
-	/** This filter is documented in inc/admin-bar.php */
-	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+	if ( current_user_can( 'rocket_purge_posts' ) ) {
 		global $post;
 		$url = wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=post-' . $post->ID ), 'purge_cache_post-' . $post->ID );
 		printf( '<div id="purge-action"><a class="button-secondary" href="%s">%s</a></div>', esc_url( $url ), esc_html__( 'Clear cache', 'rocket' ) );
@@ -22,7 +21,7 @@ add_action( 'post_submitbox_start', 'rocket_post_submitbox_start' );
  * @since 2.5
  */
 function rocket_cache_options_meta_boxes() {
-	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+	if ( current_user_can( 'rocket_manage_options' ) ) {
 		$cpts = get_post_types(
 			array(
 				'public' => true,
@@ -45,8 +44,7 @@ add_action( 'add_meta_boxes', 'rocket_cache_options_meta_boxes' );
  * @since 2.5
  */
 function rocket_display_cache_options_meta_boxes() {
-	/** This filter is documented in inc/admin-bar.php */
-	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) ) {
+	if ( current_user_can( 'rocket_manage_options' ) ) {
 		global $post, $pagenow;
 		wp_nonce_field( 'rocket_box_option', '_rocketnonce', false, true );
 		?>
@@ -114,7 +112,7 @@ function rocket_display_cache_options_meta_boxes() {
  * @since 2.5
  */
 function rocket_save_metabox_options() {
-	if ( current_user_can( apply_filters( 'rocket_capacity', 'manage_options' ) ) &&
+	if ( current_user_can( 'rocket_manage_options' ) &&
 		isset( $_POST['post_ID'], $_POST['rocket_post_exclude_hidden'], $_POST['_rocketnonce'] ) ) {
 
 		check_admin_referer( 'rocket_box_option', '_rocketnonce' );

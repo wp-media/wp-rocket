@@ -405,7 +405,6 @@ class Settings {
 		if ( isset( $input['cdn_cnames'] ) ) {
 			$input['cdn_cnames'] = array_map( 'sanitize_text_field', $input['cdn_cnames'] );
 			$input['cdn_cnames'] = array_filter( $input['cdn_cnames'] );
-			$input['cdn_cnames'] = array_unique( $input['cdn_cnames'] );
 		} else {
 			$input['cdn_cnames'] = [];
 		}

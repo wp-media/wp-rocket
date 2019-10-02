@@ -30,7 +30,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 <div class="wpr-warningContainer">
 <?php endif; ?>
 
-	<div class="wpr-field wpr-field--checkbox <?php echo $data['container_class']; ?>"<?php echo $data['parent']; ?>>
+	<div class="wpr-field wpr-field--checkbox <?php echo esc_attr( $data['container_class'] ); ?>"<?php echo $data['parent']; ?>>
 		<div class="wpr-checkbox">
 			<input type="checkbox" id="<?php echo esc_attr( $data['id'] ); ?>" class="" name="wp_rocket_settings[<?php echo esc_attr( $data['id'] ); ?>]" value="1" <?php checked( $data['value'], 1 ); ?>
 			<?php echo $data['input_attr']; ?>>
@@ -43,11 +43,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 		</div>
 		<?php endif; ?>
 	</div>
-<?php if ( ! empty( $data['helper'] ) ) : ?>
-	<div class="wpr-field-description wpr-field-description-helper wpr-icon-important">
-		<?php echo $data['helper']; ?>
-	</div>
-<?php endif; ?>
+
 <?php if ( ! empty( $data['warning'] ) ) : ?>
 	<div class="wpr-fieldWarning">
 		<div class="wpr-fieldWarning-title wpr-icon-important">
@@ -55,11 +51,20 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 		</div>
 		<?php if ( isset( $data['warning']['description'] ) ) : ?>
 			<div class="wpr-fieldWarning-description">
-				<?php echo esc_html( $data['warning']['description'] ); ?>
+				<?php echo $data['warning']['description']; ?>
 			</div>
 		<?php endif; ?>
 		<button class="wpr-button wpr-button--small wpr-button--icon wpr-icon-check"><?php echo esc_html( $data['warning']['button_label'] ); ?></button>
 	</div>
+<?php endif; ?>
+
+<?php if ( ! empty( $data['helper'] ) ) : ?>
+	<div class="wpr-field-description wpr-field-description-helper wpr-icon-important">
+		<?php echo $data['helper']; ?>
+	</div>
+<?php endif; ?>
+
+<?php if ( ! empty( $data['warning'] ) ) : ?>
 </div>
+<?php endif; ?>
 <?php
-endif;

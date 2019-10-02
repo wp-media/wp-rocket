@@ -193,6 +193,7 @@ class Critical_CSS {
 				'fusion_template',
 				'blocks',
 				'jet-woo-builder',
+				'fl-builder-template'
 			]
 		);
 

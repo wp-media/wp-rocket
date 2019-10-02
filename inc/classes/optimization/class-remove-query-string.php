@@ -295,7 +295,7 @@ class Remove_Query_String extends Abstract_Optimization {
 		}
 
 		$busting_file = $this->busting_path . $filename;
-		$busting_url  = $this->get_busting_url( $filename, $extension );
+		$busting_url  = $this->get_busting_url( $filename, $extension, $url );
 
 		if ( rocket_direct_filesystem()->is_readable( $busting_file ) ) {
 			return $busting_url;
@@ -332,20 +332,20 @@ class Remove_Query_String extends Abstract_Optimization {
 	 *
 	 * @param string $filename  Cache busting filename.
 	 * @param string $extension File extension.
+	 * @param string $original_url Original URL for the file.
 	 * @return string
 	 */
-	protected function get_busting_url( $filename, $extension ) {
-		$zones = [ 'all', 'css_and_js', $extension ];
-		$url   = get_rocket_cdn_url( $this->busting_url . $filename, $zones );
+	protected function get_busting_url( $filename, $extension, $original_url ) {
+		$url = $this->busting_url . $filename;
 
 		switch ( $extension ) {
 			case 'css':
 				// This filter is documented in inc/classes/optimization/css/class-abstract-css-optimization.php.
-				$url = apply_filters( 'rocket_css_url', $url );
+				$url = apply_filters( 'rocket_css_url', $url, $original_url );
 				break;
 			case 'js':
 				// This filter is documented in inc/classes/optimization/css/class-abstract-js-optimization.php.
-				$url = apply_filters( 'rocket_js_url', $url );
+				$url = apply_filters( 'rocket_js_url', $url, $original_url );
 				break;
 		}
 

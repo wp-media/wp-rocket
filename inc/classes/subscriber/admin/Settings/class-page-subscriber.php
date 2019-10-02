@@ -38,10 +38,10 @@ class Page_Subscriber implements Subscriber_Interface {
 			'admin_init'                           => 'configure',
 			'wp_ajax_rocket_refresh_customer_data' => 'refresh_customer_data',
 			'wp_ajax_rocket_toggle_option'         => 'toggle_option',
-			'option_page_capability_' . WP_ROCKET_PLUGIN_SLUG => 'required_capability',
 			'rocket_settings_menu_navigation'      => [
 				[ 'add_menu_tools_page' ],
 				[ 'add_imagify_page', 9 ],
+				[ 'add_tutorials_page', 11 ],
 			],
 		];
 	}
@@ -87,7 +87,7 @@ class Page_Subscriber implements Subscriber_Interface {
 	public function refresh_customer_data() {
 		check_ajax_referer( 'rocket-ajax' );
 
-		if ( ! current_user_can( apply_filters( 'rocket_capability', 'manage_options' ) ) ) {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			wp_die();
 		}
 
@@ -106,20 +106,6 @@ class Page_Subscriber implements Subscriber_Interface {
 	 */
 	public function toggle_option() {
 		$this->page->toggle_option();
-	}
-
-	/**
-	 * Sets the capability for the options page if custom.
-	 *
-	 * @since 3.0
-	 * @author Remy Perona
-	 *
-	 * @param string $capability Custom capability to replace manage_options.
-	 * @return string
-	 */
-	public function required_capability( $capability ) {
-		/** This filter is documented in inc/admin-bar.php */
-		return apply_filters( 'rocket_capacity', $capability );
 	}
 
 	/**
@@ -159,6 +145,25 @@ class Page_Subscriber implements Subscriber_Interface {
 			'id'               => 'imagify',
 			'title'            => __( 'Image Optimization', 'rocket' ),
 			'menu_description' => __( 'Compress your images', 'rocket' ),
+		];
+
+		return $navigation;
+	}
+
+	/**
+	 * Add Tutorials section to navigation
+	 *
+	 * @since 3.4
+	 * @author Remy Perona
+	 *
+	 * @param array $navigation Array of menu items.
+	 * @return array
+	 */
+	public function add_tutorials_page( $navigation ) {
+		$navigation['tutorials'] = [
+			'id'               => 'tutorials',
+			'title'            => __( 'Tutorials', 'rocket' ),
+			'menu_description' => __( 'Getting started and how to videos', 'rocket' ),
 		];
 
 		return $navigation;

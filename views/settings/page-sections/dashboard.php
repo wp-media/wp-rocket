@@ -105,6 +105,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 
 			<div class="wpr-fieldsContainer">
 				<fieldset class="wpr-fieldsContainer-fieldset">
+					<?php if ( current_user_can( 'rocket_purge_cache' ) ) : ?>
 					<div class="wpr-field">
 						<h4 class="wpr-title3"><?php esc_html_e( 'Remove all cached files', 'rocket' ); ?></h4>
 						<?php
@@ -123,8 +124,8 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 						);
 						?>
 					</div>
-
-					<?php if ( get_rocket_option( 'manual_preload' ) ) : ?>
+					<?php endif; ?>
+					<?php if ( get_rocket_option( 'manual_preload' ) && current_user_can( 'rocket_preload_cache' ) ) : ?>
 					<div class="wpr-field">
 						<h4 class="wpr-title3"><?php esc_html_e( 'Start cache preloading', 'rocket' ); ?></h4>
 						<?php
@@ -142,7 +143,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 					</div>
 					<?php endif; ?>
 
-					<?php if ( function_exists( 'opcache_reset' ) ) : ?>
+					<?php if ( function_exists( 'opcache_reset' ) && current_user_can( 'rocket_purge_opcache' ) ) : ?>
 					<div class="wpr-field">
 						<h4 class="wpr-title3"><?php esc_html_e( 'Purge OPCache content', 'rocket' ); ?></h4>
 						<?php
@@ -159,7 +160,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 						?>
 					</div>
 					<?php endif; ?>
-					<?php if ( get_rocket_option( 'async_css' ) && apply_filters( 'do_rocket_critical_css_generation', true ) ) : ?>
+					<?php if ( get_rocket_option( 'async_css' ) && apply_filters( 'do_rocket_critical_css_generation', true ) && current_user_can( 'rocket_regenerate_critical_css' ) ) : ?>
 					<div class="wpr-field">
 						<h4 class="wpr-title3"><?php esc_html_e( 'Regenerate Critical CSS', 'rocket' ); ?></h4>
 						<?php
@@ -182,10 +183,11 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 	</div>
 	<div class="wpr-Page-row">
 		<div class="wpr-Page-col">
+			<?php $this->render_part( 'getting-started' ); ?>
 			<div class="wpr-optionHeader">
 				<h3 class="wpr-title2"><?php esc_html_e( 'Frequently Asked Questions', 'rocket' ); ?></h3>
 			</div>
-			<fieldset class="wpr-fieldsContainer-fieldset">
+			<div class="wpr-fieldsContainer-fieldset">
 				<div class="wpr-field">
 					<ul class="wpr-field-list">
 					<?php foreach ( $data['faq'] as $rocket_faq_item ) : ?>
@@ -216,7 +218,7 @@ defined( 'ABSPATH' ) || die( 'Cheatin&#8217; uh?' );
 						</div>
 					</div>
 				</div>
-			</fieldset>
+			</div>
 		</div>
 
 		<div class="wpr-Page-col wpr-Page-col--fixed">
