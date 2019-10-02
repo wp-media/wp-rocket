@@ -36,7 +36,7 @@ class CDN {
 	 * @return string
 	 */
 	public function rewrite( $html ) {
-		$pattern = '#(?<url>(?<=[(\"\'])(?:(?:https?:|)' . preg_quote( $this->get_base_url(), '#' ) . ')?\/(?:(?:(?:' . $this->get_allowed_paths() . ')[^\"\')]+)|(?:[^\/\"\']+\.[^\/\"\')]+))(?=[\"\')]))#i';
+		$pattern = '#(?<url>(?<=[(\"\'])(?:(?:https?:|)' . preg_quote( $this->get_base_url(), '#' ) . ')?\/(?:(?:(?:' . $this->get_allowed_paths() . ')[^\"\')]+)|(?:[^\/\"\'>]+\.[^\/\"\')]+))(?=[\"\')]))#i';
 		return preg_replace_callback(
 			$pattern,
 			function( $matches ) {
@@ -244,7 +244,7 @@ class CDN {
 	private function get_zones_for_url( $url ) {
 		$zones = [ 'all' ];
 
-		$ext = pathinfo( $url, PATHINFO_EXTENSION );
+		$ext = pathinfo( wp_parse_url( $url, PHP_URL_PATH ), PATHINFO_EXTENSION );
 
 		$image_types = [
 			'jpg',

@@ -715,6 +715,14 @@ function rocket_clean_home( $lang = '' ) {
 		}
 	}
 
+	// Remove the hidden empty file for webp.
+	$nowebp_detect_files = glob( $root . '/.no-webp', GLOB_BRACE | GLOB_NOSORT );
+	if ( $nowebp_detect_files ) {
+		foreach ( $nowebp_detect_files as $nowebp_detect_file ) { // no array map to use @.
+			rocket_direct_filesystem()->delete( $nowebp_detect_file );
+		}
+	}
+
 	/**
 	 * Fires after the home cache file was deleted
 	 *
@@ -1027,6 +1035,13 @@ function rocket_rrmdir( $dir, $dirs_to_preserve = array() ) {
 
 	if ( rocket_direct_filesystem()->is_dir( $dir ) && rocket_direct_filesystem()->exists( $nginx_mobile_detect_file ) ) {
 		rocket_direct_filesystem()->delete( $nginx_mobile_detect_file );
+	}
+
+	// Remove the hidden empty file for webp.
+	$nowebp_detect_file = $dir . '/.no-webp';
+
+	if ( rocket_direct_filesystem()->is_dir( $dir ) && rocket_direct_filesystem()->exists( $nowebp_detect_file ) ) {
+		rocket_direct_filesystem()->delete( $nowebp_detect_file );
 	}
 
 	if ( ! rocket_direct_filesystem()->is_dir( $dir ) ) {
