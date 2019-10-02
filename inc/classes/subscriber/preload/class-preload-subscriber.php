@@ -205,7 +205,7 @@ class Preload_Subscriber implements Subscriber_Interface {
 		$message = __( 'Preload: WP Rocket has started preloading your website.', 'rocket' );
 
 		if ( current_user_can( 'rocket_manage_options' ) ) {
-			$message = ' ' . sprintf(
+			$message .= ' ' . sprintf(
 				// Translators: %1$s = opening link tag, %2$s = closing link tag.
 				__( 'Go to the %1$sWP Rocket settings%2$s page to track progress.', 'rocket' ),
 				'<a href="' . esc_url( admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG ) ) . '">',
