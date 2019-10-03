@@ -120,7 +120,6 @@ class Runner {
 		}
 
 		\ActionScheduler::logger()->hook_stored_action();
-		$this->destination_logger->hook_stored_action();
 
 		do_action( 'action_scheduler/migration_batch_complete', $action_ids );
 	}
