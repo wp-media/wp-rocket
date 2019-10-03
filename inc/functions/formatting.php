@@ -29,25 +29,27 @@ function rocket_clean_exclude_file( $file ) {
  * @param  string       $path URL which needs to be cleaned
  * @return bool\string  false if $path is empty or cleaned URL
  */
-function rocket_clean_wildcards ( $path ) {
-	if ( ! $path ) {
-		return false;
-	}
+function rocket_clean_wildcards( $path ) {
+    if ( ! $path ) {
+        return false;
+    }
 
-	$path_components = explode( '/', $path );
+    $path_components = explode( '/', $path );
     $arr             = array(
             ".*"   => "(.*)" ,
             "*"    => "(.*)" ,
+            '(*)'  => '(.*)' ,
             "(.*)" => "(.*)" ,
         );
 
-	foreach ($path_components as &$path_component) {
-		$path_component = strtr($path_component, $arr);
-	}
-	$path = implode('/', $path_components);
+    foreach ( $path_components as &$path_component ) {
+        $path_component = strtr( $path_component, $arr );
+    }
+    $path = implode( '/', $path_components );
 
-	return $path;
+    return $path;
 }
+
 
 /**
  * Used with array_filter to remove files without .css extension
@@ -155,16 +157,16 @@ function rocket_is_internal_file( $file ) {
  */
 function rocket_sanitize_textarea_field( $field, $value ) {
 	$fields = [
-		'cache_purge_pages'    => [ 'esc_url', 'rocket_clean_exclude_file' ], // Pattern.
+		'cache_purge_pages'    => [ 'esc_url', 'rocket_clean_exclude_file', 'rocket_clean_wildcards' ], // Pattern.
 		'cache_reject_cookies' => [ 'rocket_sanitize_key' ],
-		'cache_reject_ua'      => [ 'rocket_sanitize_ua' ], // Pattern.
+		'cache_reject_ua'      => [ 'rocket_sanitize_ua', 'rocket_clean_wildcards' ], // Pattern.
 		'cache_reject_uri'     => [ 'esc_url', 'rocket_clean_exclude_file', 'rocket_clean_wildcards' ], // Pattern.
 		'cache_query_strings'  => [ 'rocket_sanitize_key' ],
-		'cdn_reject_files'     => [ 'rocket_clean_exclude_file' ], // Pattern.
+		'cdn_reject_files'     => [ 'rocket_clean_exclude_file', 'rocket_clean_wildcards' ], // Pattern.
 		'dns_prefetch'         => [ 'esc_url' ],
-		'exclude_css'          => [ 'rocket_clean_exclude_file', 'rocket_sanitize_css' ], // Pattern.
+		'exclude_css'          => [ 'rocket_clean_exclude_file', 'rocket_sanitize_css', 'rocket_clean_wildcards' ], // Pattern.
 		'exclude_inline_js'    => [ 'sanitize_text_field' ], // Pattern.
-		'exclude_js'           => [ 'rocket_validate_js' ], // Pattern.
+		'exclude_js'           => [ 'rocket_validate_js', 'rocket_clean_wildcards' ], // Pattern.
 	];
 
 	if ( ! isset( $fields[ $field ] ) ) {
