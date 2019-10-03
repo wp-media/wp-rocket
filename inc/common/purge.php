@@ -184,7 +184,7 @@ function rocket_clean_post( $post_id, $post = null ) {
 	}
 
 	// Add the author page.
-	$purge_author = array( get_author_posts_url( $post->post_author ) );
+	$purge_author = [ get_author_posts_url( $post->post_author ) ];
 	$purge_urls   = array_merge( $purge_urls, $purge_author );
 
 	// Add all parents.
@@ -249,7 +249,7 @@ add_action( 'wp_update_comment_count', 'rocket_clean_post' );
  * @return array An array of pattern to use for clearing the cache
  */
 function rocket_clean_files_users( $urls ) {
-	$pattern_urls = array();
+	$pattern_urls = [];
 	foreach ( $urls as $url ) {
 		$parse_url      = get_rocket_parse_url( $url );
 		$pattern_urls[] = $parse_url['scheme'] . '://' . $parse_url['host'] . '*' . $parse_url['path'];
@@ -439,18 +439,18 @@ function do_admin_post_rocket_purge_opcache() {
 	$reset_opcache = rocket_reset_opcache();
 
 	if ( ! $reset_opcache ) {
-		$op_purge_result = array(
+		$op_purge_result = [
 			'result'  => 'error',
 			'message' => __( 'OPcache purge failed.', 'rocket' ),
-		);
+		];
 	} else {
-		$op_purge_result = array(
+		$op_purge_result = [
 			'result'  => 'success',
 			'message' => __( 'OPcache successfully purged', 'rocket' ),
-		);
+		];
 	}
 
-	set_transient( $GLOBALS['current_user']->ID . '_opcache_purge_result', $op_purge_result );
+	set_transient( get_current_user_id() . '_opcache_purge_result', $op_purge_result );
 
 	wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
 	die();
@@ -475,19 +475,19 @@ function do_admin_post_rocket_purge_cloudflare() {
 	$cf_purge = rocket_purge_cloudflare();
 
 	if ( is_wp_error( $cf_purge ) ) {
-		$cf_purge_result = array(
+		$cf_purge_result = [
 			'result'  => 'error',
 			// translators: %s = CloudFare API return message.
 			'message' => sprintf( __( 'Cloudflare cache purge error: %s', 'rocket' ), $cf_purge->get_error_message() ),
-		);
+		];
 	} else {
-		$cf_purge_result = array(
+		$cf_purge_result = [
 			'result'  => 'success',
 			'message' => __( 'Cloudflare cache successfully purged', 'rocket' ),
-		);
+		];
 	}
 
-	set_transient( $GLOBALS['current_user']->ID . '_cloudflare_purge_result', $cf_purge_result );
+	set_transient( get_current_user_id() . '_cloudflare_purge_result', $cf_purge_result );
 
 	wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
 	die();
