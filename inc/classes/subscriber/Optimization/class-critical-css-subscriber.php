@@ -172,13 +172,13 @@ class Critical_CSS_Subscriber implements Subscriber_Interface {
 
 		$screen = get_current_screen();
 
+		if ( 'settings_page_wprocket' !== $screen->id ) {
+		    return;
+		}
+
 		$transient = get_transient( 'rocket_critical_css_generation_process_running' );
 		if ( ! $transient ) {
 			return;
-		}
-
-		if ( 'settings_page_wprocket' !== $screen->id ) {
-		    return;
 		}
 
 		// Translators: %1$d = number of critical CSS generated, %2$d = total number of critical CSS to generate.
