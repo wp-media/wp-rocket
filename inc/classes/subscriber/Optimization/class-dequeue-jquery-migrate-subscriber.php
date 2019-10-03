@@ -55,10 +55,6 @@ class Dequeue_JQuery_Migrate_Subscriber implements Subscriber_Interface
      */
     public function dequeue_jquery_migrate($scripts)
     {
-        if ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) {
-			return false;
-        }
-
         if ( ! $this->is_allowed() ) {
             return false;
         }
@@ -79,6 +75,10 @@ class Dequeue_JQuery_Migrate_Subscriber implements Subscriber_Interface
      */
     protected function is_allowed()
     {
+        if ( defined( 'DONOTROCKETOPTIMIZE' ) && DONOTROCKETOPTIMIZE ) {
+			return false;
+        }
+        
         if ( ! $this->options->get('dequeue_jquery_migrate') ) {
             return false;
         }
