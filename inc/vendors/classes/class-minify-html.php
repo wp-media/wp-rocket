@@ -95,7 +95,7 @@ class Minify_HTML
         }
 
         $this->_replacementHash = 'MINIFYHTML' . md5($_SERVER['REQUEST_TIME']);
-        $this->_placeholders = array();
+        $this->_placeholders    = array();
 
         // replace SCRIPTs (and minify) with placeholders
         // preg_replace_callback - on errors the return is NULL
@@ -105,7 +105,7 @@ class Minify_HTML
             ,array($this, '_removeScriptCB')
             ,$this->_html);
 
-        if (isset($pregJs) && !empty($pregJs)) {
+        if ( isset($pregJs) && ! empty( $pregJs ) ) {
             $this->_html = $pregJs;
         }
 
@@ -117,7 +117,7 @@ class Minify_HTML
             ,array($this, '_removeStyleCB')
             ,$this->_html);
 
-        if (isset($pregCSS) && !empty($pregCSS)) {
+        if ( isset( $pregCSS ) && ! empty( $pregCSS ) ) {
             $this->_html = $pregCSS;
         }
 
