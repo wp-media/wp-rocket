@@ -129,9 +129,9 @@ class Minify_HTML
         // trim each line.
         // @todo take into account attribute values that span multiple lines.
         // Fixed attribute values which span on multiple lines. Causes double spaces "  "
-        $this->_html = preg_replace('/^\\s+|\\s+$/m', ' ', $this->_html);
+        $this->_html = preg_replace('/^\s+|\s+$/m', ' ', $this->_html);
         // Fixed double spaces. Replaced with a single space
-        $this->_html = preg_replace('/  +/', ' ', $this->_html);
+        $this->_html = preg_replace('/\s+/', ' ', $this->_html);
 
         // remove ws around block/undisplayed elements
         $this->_html = preg_replace('/\\s+(<\\/?(?:area|article|aside|base(?:font)?|blockquote|body'
