@@ -95,19 +95,31 @@ class Minify_HTML
         }
 
         $this->_replacementHash = 'MINIFYHTML' . md5($_SERVER['REQUEST_TIME']);
-        $this->_placeholders = array();
+        $this->_placeholders    = array();
 
         // replace SCRIPTs (and minify) with placeholders
-        $this->_html = preg_replace_callback(
+        // preg_replace_callback - on errors the return is NULL
+        // On big scripts PREG_BACKTRACK_LIMIT_ERROR is reached and causes the empty page
+        $pregJs = preg_replace_callback(
             '/(\\s*)<script(\\b[^>]*?>)([\\s\\S]*?)<\\/script>(\\s*)/i'
             ,array($this, '_removeScriptCB')
             ,$this->_html);
 
+        if ( isset($pregJs) && ! empty( $pregJs ) ) {
+            $this->_html = $pregJs;
+        }
+
         // replace STYLEs (and minify) with placeholders
-        $this->_html = preg_replace_callback(
+        // preg_replace_callback - on errors the return is NULL
+        // On big scripts PREG_BACKTRACK_LIMIT_ERROR is reached and causes the empty page
+        $pregCSS = preg_replace_callback(
             '/\\s*<style(\\b[^>]*>)([\\s\\S]*?)<\\/style>\\s*/i'
             ,array($this, '_removeStyleCB')
             ,$this->_html);
+
+        if ( isset( $pregCSS ) && ! empty( $pregCSS ) ) {
+            $this->_html = $pregCSS;
+        }
 
         // remove HTML comments (not containing IE conditional comments).
         $this->_html = preg_replace_callback(
