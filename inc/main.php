@@ -36,6 +36,7 @@ function rocket_init() {
 	require WP_ROCKET_FUNCTIONS_PATH . 'i18n.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'htaccess.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'varnish.php';
+	require WP_ROCKET_FUNCTIONS_PATH . 'litespeed.php';
 	require WP_ROCKET_DEPRECATED_PATH . 'deprecated.php';
 	require WP_ROCKET_DEPRECATED_PATH . '3.2.php';
 	require WP_ROCKET_DEPRECATED_PATH . '3.3.php';
