@@ -90,7 +90,7 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 			],
 			'wp_head'              => [ 'insert_nojs_style', PHP_INT_MAX ],
 			'wp_enqueue_scripts'   => [ 'insert_youtube_thumbnail_style', PHP_INT_MAX ],
-			'rocket_buffer'        => [ 'lazyload', 25 ],
+			'rocket_buffer'        => [ 'lazyload', 30 ],
 			'rocket_lazyload_html' => 'lazyload_responsive',
 			'init'                 => 'lazyload_smilies',
 			'wp'                   => 'deactivate_lazyload_on_specific_posts',
