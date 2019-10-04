@@ -57,11 +57,7 @@ class VarnishSubscriber implements Subscriber_Interface {
 	 * @return bool
 	 */
 	private function should_purge() {
-		if ( ! apply_filters( 'do_rocket_varnish_http_purge', false ) ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
-			return false;
-		}
-
-		if ( ! $this->options->get( 'varnish_auto_purge', 0 ) ) {
+		if ( ! apply_filters( 'do_rocket_varnish_http_purge', false ) && ! $this->options->get( 'varnish_auto_purge', 0 ) ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 			return false;
 		}
 
