@@ -34,6 +34,7 @@ class Optimization_Subscribers extends AbstractServiceProvider {
 		'minify_js_subscriber',
 		'cache_dynamic_resource_subscriber',
 		'remove_query_string_subscriber',
+		'dequeue_jquery_migrate_subscriber',
 	];
 
 	/**
@@ -74,5 +75,7 @@ class Optimization_Subscribers extends AbstractServiceProvider {
 			->withArgument( $this->getContainer()->get( 'cache_dynamic_resource' ) );
 		$this->getContainer()->share( 'remove_query_string_subscriber', 'WP_Rocket\Subscriber\Optimization\Remove_Query_String_Subscriber' )
 			->withArgument( $this->getContainer()->get( 'remove_query_string' ) );
+		$this->getContainer()->share( 'dequeue_jquery_migrate_subscriber', 'WP_Rocket\Subscriber\Optimization\Dequeue_JQuery_Migrate_Subscriber' )
+			->withArgument( $this->getContainer()->get( 'options' ) );
 	}
 }
