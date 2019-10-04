@@ -42,8 +42,8 @@ class Critical_CSS_Subscriber implements Subscriber_Interface {
 			],
 			'wp_head'                                 => [ 'insert_load_css', PHP_INT_MAX ],
 			'rocket_buffer'                           => [
-				[ 'insert_critical_css_buffer', 12 ],
-				[ 'async_css', 20 ],
+				[ 'insert_critical_css_buffer', 18 ],
+				[ 'async_css', 24 ],
 			],
 			'switch_theme'                            => 'maybe_regenerate_cpcss',
 			'rocket_critical_css_generation_process_complete' => 'clean_domain_on_complete',

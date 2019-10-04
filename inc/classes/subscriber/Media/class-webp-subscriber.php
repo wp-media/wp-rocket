@@ -106,7 +106,7 @@ class Webp_Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_buffer'                                 => [ 'convert_to_webp', 23 ],
+			'rocket_buffer'                                 => [ 'convert_to_webp', 28 ],
 			'rocket_cache_webp_setting_field'               => [
 				[ 'maybe_disable_setting_field' ],
 				[ 'webp_section_description' ],
