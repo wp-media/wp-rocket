@@ -35,12 +35,12 @@ function rocket_clean_wildcards( $path ) {
     }
 
     $path_components = explode( '/', $path );
-    $arr             = array(
-            ".*"   => "(.*)" ,
-            "*"    => "(.*)" ,
-            '(*)'  => '(.*)' ,
-            "(.*)" => "(.*)" ,
-        );
+    $arr             = [
+            ".*"   => "(.*)",
+            "*"    => "(.*)",
+            '(*)'  => '(.*)',
+            "(.*)" => "(.*)",
+	];
 
     foreach ( $path_components as &$path_component ) {
         $path_component = strtr( $path_component, $arr );
@@ -245,7 +245,7 @@ function rocket_sanitize_ua( $user_agent ) {
  * @return string $url The URL without protocol
  */
 function rocket_remove_url_protocol( $url, $no_dots = false ) {
-	$url = str_replace( array( 'http://', 'https://' ), '', $url );
+	$url = str_replace( [ 'http://', 'https://' ], '', $url );
 
 	/** This filter is documented in inc/front/htaccess.php */
 	if ( apply_filters( 'rocket_url_no_dots', $no_dots ) ) {
@@ -401,7 +401,7 @@ function rocket_extract_url_component( $url, $component ) {
 function rocket_get_cache_busting_paths( $filename, $extension ) {
 	$blog_id                = get_current_blog_id();
 	$cache_busting_path     = WP_ROCKET_CACHE_BUSTING_PATH . $blog_id;
-	$filename               = rocket_realpath( rtrim( str_replace( array( ' ', '%20' ), '-', $filename ) ) );
+	$filename               = rocket_realpath( rtrim( str_replace( [ ' ', '%20' ], '-', $filename ) ) );
 	$cache_busting_filepath = $cache_busting_path . $filename;
 	$cache_busting_url      = WP_ROCKET_CACHE_BUSTING_URL . $blog_id . $filename;
 
@@ -416,11 +416,11 @@ function rocket_get_cache_busting_paths( $filename, $extension ) {
 			break;
 	}
 
-	return array(
+	return [
 		'bustingpath' => $cache_busting_path,
 		'filepath'    => $cache_busting_filepath,
 		'url'         => $cache_busting_url,
-	);
+	];
 }
 
 /**
@@ -433,7 +433,7 @@ function rocket_get_cache_busting_paths( $filename, $extension ) {
  * @return string Resolved file path
  */
 function rocket_realpath( $file ) {
-	$path = array();
+	$path = [];
 
 	foreach ( explode( '/', $file ) as $part ) {
 		if ( '' === $part || '.' === $part ) {
@@ -511,34 +511,34 @@ function rocket_url_to_path( $url, $hosts = '' ) {
  * @param  array  $query_args An array of query arguments.
  * @return string The URL.
  */
-function rocket_get_external_url( $target, $query_args = array() ) {
+function rocket_get_external_url( $target, $query_args = [] ) {
 	$site_url = WP_ROCKET_WEB_MAIN;
 
 	switch ( $target ) {
 		case 'support':
 			$locale = function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale();
-			$paths  = array(
+			$paths  = [
 				'default' => 'support',
 				'fr_FR'   => 'fr/support',
 				'fr_CA'   => 'fr/support',
 				'it_IT'   => 'it/supporto',
 				'de_DE'   => 'de/support',
 				'es_ES'   => 'es/soporte',
-			);
+			];
 
 			$url = isset( $paths[ $locale ] ) ? $paths[ $locale ] : $paths['default'];
 			$url = $site_url . $url . '/';
 			break;
 		case 'account':
 			$locale = function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale();
-			$paths  = array(
+			$paths  = [
 				'default' => 'account',
 				'fr_FR'   => 'fr/compte',
 				'fr_CA'   => 'fr/compte',
 				'it_IT'   => 'it/account/',
 				'de_DE'   => 'de/konto/',
 				'es_ES'   => 'es/cuenta/',
-			);
+			];
 
 			$url = isset( $paths[ $locale ] ) ? $paths[ $locale ] : $paths['default'];
 			$url = $site_url . $url . '/';
