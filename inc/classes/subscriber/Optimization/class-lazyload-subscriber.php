@@ -184,7 +184,7 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function insert_youtube_thumbnail_script() {
-		if ( ! $this->can_lazyload_iframes() ) {
+		if ( ! $this->options->get( 'lazyload_youtube' ) || ! $this->can_lazyload_iframes() ) {
 			return;
 		}
 
@@ -254,7 +254,7 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function insert_youtube_thumbnail_style() {
-		if ( ! $this->can_lazyload_iframes() ) {
+		if ( ! $this->options->get( 'lazyload_youtube' ) || ! $this->can_lazyload_iframes() ) {
 			return;
 		}
 
@@ -452,10 +452,6 @@ class Lazyload_Subscriber implements Subscriber_Interface {
 	 * @return boolean
 	 */
 	private function can_lazyload_iframes() {
-		if ( ! $this->options->get( 'lazyload_youtube' ) ) {
-			return false;
-		}
-
 		if ( ! $this->options->get( 'lazyload_iframes' ) ) {
 			return false;
 		}
